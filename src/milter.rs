@@ -237,29 +237,65 @@ impl MilterConnection {
                 }
                 
                 self.context.headers.insert(name, value);
+                
+                // Check if we have enough information to evaluate rules
+                // We need at least sender and either subject or mailer for most rules
+                if self.context.sender.is_some() && 
+                   (self.context.subject.is_some() || self.context.mailer.is_some()) {
+                    
+                    let action = self.engine.evaluate(&self.context);
+                    match action {
+                        Action::Reject { message } => {
+                            log::info!("Rejecting message: {}", message);
+                            let response = format!("550 5.7.1 {}", message);
+                            self.send_response(SMFIR_REPLYCODE, response.as_bytes())?;
+                            return Ok(true);
+                        }
+                        Action::TagAsSpam { header_name, header_value } => {
+                            log::info!("Adding spam header: {}: {}", header_name, header_value);
+                            let header_data = format!("{}\0{}\0", header_name, header_value);
+                            self.send_response(SMFIR_ADDHEADER, header_data.as_bytes())?;
+                            // Continue processing but mark as evaluated
+                            self.context.headers.insert("_FOFF_EVALUATED".to_string(), "true".to_string());
+                        }
+                        Action::Accept => {
+                            log::debug!("Message accepted during header processing");
+                            // Mark as evaluated to avoid double-processing
+                            self.context.headers.insert("_FOFF_EVALUATED".to_string(), "true".to_string());
+                        }
+                    }
+                }
+                
                 self.send_response(SMFIR_CONTINUE, &[])?;
                 Ok(true)
             }
             SMFIC_EOH => {
-                log::debug!("End of headers - evaluating message");
-                let action = self.engine.evaluate(&self.context);
+                log::debug!("End of headers - checking if evaluation needed");
                 
-                match action {
-                    Action::Reject { message } => {
-                        log::info!("Rejecting message: {}", message);
-                        let response = format!("550 5.7.1 {}", message);
-                        self.send_response(SMFIR_REPLYCODE, response.as_bytes())?;
+                // Only evaluate if we haven't already done so during header processing
+                if !self.context.headers.contains_key("_FOFF_EVALUATED") {
+                    let action = self.engine.evaluate(&self.context);
+                    
+                    match action {
+                        Action::Reject { message } => {
+                            log::info!("Rejecting message: {}", message);
+                            let response = format!("550 5.7.1 {}", message);
+                            self.send_response(SMFIR_REPLYCODE, response.as_bytes())?;
+                        }
+                        Action::TagAsSpam { header_name, header_value } => {
+                            log::info!("Adding spam header: {}: {}", header_name, header_value);
+                            let header_data = format!("{}\0{}\0", header_name, header_value);
+                            self.send_response(SMFIR_ADDHEADER, header_data.as_bytes())?;
+                            self.send_response(SMFIR_CONTINUE, &[])?;
+                        }
+                        Action::Accept => {
+                            log::debug!("Accepting message");
+                            self.send_response(SMFIR_CONTINUE, &[])?;
+                        }
                     }
-                    Action::TagAsSpam { header_name, header_value } => {
-                        log::info!("Adding spam header: {}: {}", header_name, header_value);
-                        let header_data = format!("{}\0{}\0", header_name, header_value);
-                        self.send_response(SMFIR_ADDHEADER, header_data.as_bytes())?;
-                        self.send_response(SMFIR_CONTINUE, &[])?;
-                    }
-                    Action::Accept => {
-                        log::debug!("Accepting message");
-                        self.send_response(SMFIR_CONTINUE, &[])?;
-                    }
+                } else {
+                    log::debug!("Message already evaluated during header processing");
+                    self.send_response(SMFIR_CONTINUE, &[])?;
                 }
                 Ok(true)
             }
