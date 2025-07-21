@@ -20,6 +20,7 @@ const SMFIC_EOH: u8 = b'N';
 const SMFIC_OPTNEG: u8 = b'O';
 const SMFIC_QUIT: u8 = b'Q';
 const SMFIC_RCPT: u8 = b'R';
+const SMFIC_DATA: u8 = b'T';
 
 // Milter response constants
 const SMFIR_ADDRCPT: u8 = b'+';
@@ -196,6 +197,31 @@ impl MilterConnection {
                 let recipient = self.parse_mail_data(&data)?;
                 log::debug!("Rcpt to: {}", recipient);
                 self.context.recipients.push(recipient);
+                self.send_response(SMFIR_CONTINUE, &[])?;
+                Ok(true)
+            }
+            SMFIC_DATA => {
+                log::debug!("Data command received");
+                // DATA command indicates start of message data
+                // We don't need to do anything special here
+                self.send_response(SMFIR_CONTINUE, &[])?;
+                Ok(true)
+            }
+            SMFIC_MACRO => {
+                // Macro definitions from sendmail - we can parse these for additional context
+                log::debug!("Macro command received with {} bytes", data.len());
+                if !data.is_empty() {
+                    let macro_stage = data[0];
+                    let macro_data = &data[1..];
+                    log::debug!("Macro stage: 0x{:02x}, data length: {}", macro_stage, macro_data.len());
+                    
+                    // Parse macro data if needed (format: name\0value\0name\0value\0...)
+                    // For now, we'll just log and continue
+                    if log::log_enabled!(log::Level::Debug) {
+                        let macro_str = String::from_utf8_lossy(macro_data);
+                        log::debug!("Macro data: {}", macro_str.replace('\0', " | "));
+                    }
+                }
                 self.send_response(SMFIR_CONTINUE, &[])?;
                 Ok(true)
             }
