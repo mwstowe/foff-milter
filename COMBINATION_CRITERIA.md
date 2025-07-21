@@ -4,24 +4,55 @@
 
 FOFF Milter supports complex combinations of criteria using AND/OR logic, allowing you to create sophisticated filtering rules that match multiple conditions simultaneously.
 
-## Your Specific Use Case
+## Production Examples
 
-**Requirement**: Block emails where the mailer matches "sparkmail.com" AND the subject contains Japanese text.
+### Example 1: Chinese Service with Japanese Content
+
+**Requirement**: Block emails where the mailer matches "service.*.cn" AND the subject contains Japanese characters.
 
 **Configuration**:
 ```yaml
-- name: "Block Sparkmail with Japanese content"
+- name: "Block Chinese services with Japanese content"
   criteria:
     type: "And"
     criteria:
       - type: "MailerPattern"
-        pattern: ".*sparkmail\\.com.*"
+        pattern: "service\\..*\\.cn"
       - type: "SubjectContainsLanguage"
         language: "japanese"
   action:
     type: "Reject"
-    message: "Sparkmail with Japanese content blocked"
+    message: "Chinese service with Japanese content blocked"
 ```
+
+**How it works**:
+- ✅ X-Mailer: "service.mail.cn" + Subject: "こんにちは！" = **BLOCKED**
+- ❌ X-Mailer: "service.mail.cn" + Subject: "Hello" = **ACCEPTED**
+- ❌ X-Mailer: "gmail.com" + Subject: "こんにちは！" = **ACCEPTED**
+
+### Example 2: Sparkpost to Specific User
+
+**Requirement**: Block emails where the mailer matches "*.sparkpostmail.com" AND the email was sent to user@example.com.
+
+**Configuration**:
+```yaml
+- name: "Block Sparkpost to user@example.com"
+  criteria:
+    type: "And"
+    criteria:
+      - type: "MailerPattern"
+        pattern: ".*\\.sparkpostmail\\.com"
+      - type: "RecipientPattern"
+        pattern: "user@example\\.com"
+  action:
+    type: "Reject"
+    message: "Sparkpost to user@example.com blocked"
+```
+
+**How it works**:
+- ✅ X-Mailer: "relay.sparkpostmail.com" + To: "user@example.com" = **BLOCKED**
+- ❌ X-Mailer: "relay.sparkpostmail.com" + To: "admin@example.com" = **ACCEPTED**
+- ❌ X-Mailer: "gmail.com" + To: "user@example.com" = **ACCEPTED**
 
 ## How It Works
 
