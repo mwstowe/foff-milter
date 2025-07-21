@@ -1,0 +1,161 @@
+# FOFF Milter - Combination Criteria Examples
+# This demonstrates complex combinations of criteria
+
+socket_path: "/var/run/foff-milter.sock"
+default_action:
+  type: "Accept"
+
+rules:
+  # Your specific example: sparkmail.com mailer AND Japanese in title
+  - name: "Block Sparkmail with Japanese content"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "MailerPattern"
+          pattern: ".*sparkmail\\.com.*"
+        - type: "SubjectContainsLanguage"
+          language: "japanese"
+    action:
+      type: "Reject"
+      message: "Sparkmail with Japanese content blocked"
+
+  # Alternative: Tag instead of reject
+  - name: "Tag Sparkmail with Japanese content"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "MailerPattern"
+          pattern: ".*sparkmail\\.com.*"
+        - type: "SubjectContainsLanguage"
+          language: "japanese"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Sparkmail-Japanese"
+      header_value: "YES"
+
+  # More complex: Multiple mailers OR patterns with Japanese
+  - name: "Block suspicious mailers with Japanese"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "MailerPattern"
+              pattern: ".*sparkmail\\.com.*"
+            - type: "MailerPattern"
+              pattern: ".*bulkmail\\..*"
+            - type: "MailerPattern"
+              pattern: ".*massmail\\..*"
+        - type: "SubjectContainsLanguage"
+          language: "japanese"
+    action:
+      type: "Reject"
+      message: "Suspicious mailer with Japanese content blocked"
+
+  # Chinese content with specific domains
+  - name: "Block Chinese content from suspicious domains"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@.*\\.(cn|tk|ml)$"
+        - type: "Or"
+          criteria:
+            - type: "SubjectContainsLanguage"
+              language: "chinese"
+            - type: "HeaderContainsLanguage"
+              header: "x-mailer"
+              language: "chinese"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Chinese-Suspicious"
+      header_value: "Chinese content from suspicious domain"
+
+  # Korean spam detection
+  - name: "Detect Korean spam patterns"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SubjectContainsLanguage"
+          language: "korean"
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i)(urgent|winner|lottery|money)"
+            - type: "MailerPattern"
+              pattern: ".*(bulk|mass|spam).*"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Korean"
+      header_value: "Korean spam pattern detected"
+
+  # Arabic content with high priority (potential phishing)
+  - name: "Flag Arabic high-priority emails"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SubjectContainsLanguage"
+          language: "arabic"
+        - type: "Or"
+          criteria:
+            - type: "HeaderPattern"
+              header: "x-priority"
+              pattern: "1"
+            - type: "HeaderPattern"
+              header: "importance"
+              pattern: "(?i)high"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Arabic-Priority"
+      header_value: "Arabic high-priority email"
+
+  # Russian content from non-Russian domains (potential spoofing)
+  - name: "Flag Russian content from non-Russian domains"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SubjectContainsLanguage"
+          language: "russian"
+        - type: "SenderPattern"
+          pattern: ".*@.*\\.(com|net|org|info|biz)$"  # Common non-Russian TLDs
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Russian-Spoofing"
+      header_value: "Russian content from non-Russian domain"
+
+  # Multi-language detection (potential spam)
+  - name: "Flag emails with multiple Asian languages"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SubjectContainsLanguage"
+          language: "japanese"
+        - type: "Or"
+          criteria:
+            - type: "SubjectContainsLanguage"
+              language: "chinese"
+            - type: "SubjectContainsLanguage"
+              language: "korean"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Multi-Language"
+      header_value: "Multiple Asian languages detected"
+
+  # Complex business logic: Block promotional emails in Japanese from non-Japanese domains
+  - name: "Block Japanese promotions from non-Japanese domains"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SubjectContainsLanguage"
+          language: "japanese"
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i)(sale|discount|promotion|offer|deal)"
+            - type: "SubjectPattern"
+              pattern: "(?i)(セール|割引|プロモーション|オファー)"  # Japanese promotional terms
+        - type: "SenderPattern"
+          pattern: ".*@.*\\.(com|net|org|info|biz)$"  # Common non-Japanese TLDs
+    action:
+      type: "Reject"
+      message: "Japanese promotional content from non-Japanese domain blocked"

@@ -1,0 +1,32 @@
+# Simple example: Block sparkmail.com mailer AND Japanese in title
+socket_path: "/var/run/foff-milter.sock"
+default_action:
+  type: "Accept"
+
+rules:
+  # Your specific requirement: sparkmail.com mailer AND Japanese in title
+  - name: "Block Sparkmail with Japanese content"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "MailerPattern"
+          pattern: ".*sparkmail\\.com.*"
+        - type: "SubjectContainsLanguage"
+          language: "japanese"
+    action:
+      type: "Reject"
+      message: "Sparkmail with Japanese content blocked"
+
+  # Alternative: Tag instead of reject
+  - name: "Tag Sparkmail with Japanese content as spam"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "MailerPattern"
+          pattern: ".*sparkmail\\.com.*"
+        - type: "SubjectContainsLanguage"
+          language: "japanese"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Sparkmail-Japanese"
+      header_value: "YES"
