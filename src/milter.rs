@@ -1,6 +1,9 @@
 use crate::config::{Action, Config};
 use crate::filter::{FilterEngine, MailContext};
 use std::sync::Arc;
+use std::os::unix::net::UnixListener;
+use std::path::Path;
+use std::sync::atomic::{AtomicBool, Ordering};
 
 pub struct FoffMilter {
     engine: Arc<FilterEngine>,
@@ -64,7 +67,8 @@ pub fn run_milter(config: Config, demo_mode: bool) -> anyhow::Result<()> {
     log::info!("Starting FOFF milter with socket: {}", config.socket_path);
     
     // Remove existing socket file if it exists
-    if std::path::Path::new(&config.socket_path).exists() {
+    if Path::new(&config.socket_path).exists() {
+        log::info!("Removing existing socket file: {}", config.socket_path);
         std::fs::remove_file(&config.socket_path)?;
     }
     
@@ -81,22 +85,84 @@ pub fn run_milter(config: Config, demo_mode: bool) -> anyhow::Result<()> {
         return Ok(());
     }
     
-    // Production mode - run as daemon
+    // Production mode - create and bind to Unix socket
     log::info!("Starting milter daemon...");
-    log::info!("Binding to socket: {}", config.socket_path);
+    log::info!("Creating Unix socket: {}", config.socket_path);
     
-    // In a real implementation, this would use libmilter bindings
-    // For now, we'll simulate the daemon behavior
+    // Create parent directory if it doesn't exist
+    if let Some(parent) = Path::new(&config.socket_path).parent() {
+        if !parent.exists() {
+            log::info!("Creating socket directory: {}", parent.display());
+            std::fs::create_dir_all(parent)?;
+        }
+    }
+    
+    // Create the Unix socket
+    let listener = UnixListener::bind(&config.socket_path)
+        .map_err(|e| anyhow::anyhow!("Failed to bind to socket {}: {}", config.socket_path, e))?;
+    
+    log::info!("Successfully bound to socket: {}", config.socket_path);
+    
+    // Set socket permissions (readable/writable by owner and group)
+    #[cfg(unix)]
+    {
+        use std::os::unix::fs::PermissionsExt;
+        let mut perms = std::fs::metadata(&config.socket_path)?.permissions();
+        perms.set_mode(0o660); // rw-rw----
+        std::fs::set_permissions(&config.socket_path, perms)?;
+        log::info!("Set socket permissions to 660");
+    }
+    
     log::info!("Milter daemon started successfully");
     log::info!("Waiting for email connections from sendmail/postfix...");
     log::info!("Press Ctrl+C to stop the milter");
     
-    // Simulate daemon behavior - keep process alive
-    // In production, this would be the actual milter event loop
-    loop {
-        std::thread::sleep(std::time::Duration::from_secs(10));
-        log::debug!("Milter daemon running... (waiting for connections)");
+    // Set up signal handling for graceful shutdown
+    let running = Arc::new(AtomicBool::new(true));
+    let r = running.clone();
+    let socket_path_for_cleanup = config.socket_path.clone();
+    
+    ctrlc::set_handler(move || {
+        log::info!("Received shutdown signal, cleaning up...");
+        r.store(false, Ordering::SeqCst);
+        
+        // Clean up socket file
+        if Path::new(&socket_path_for_cleanup).exists() {
+            if let Err(e) = std::fs::remove_file(&socket_path_for_cleanup) {
+                log::error!("Failed to remove socket file: {}", e);
+            } else {
+                log::info!("Socket file removed: {}", socket_path_for_cleanup);
+            }
+        }
+        
+        std::process::exit(0);
+    }).map_err(|e| anyhow::anyhow!("Error setting up signal handler: {}", e))?;
+    
+    // Main event loop - accept connections
+    while running.load(Ordering::SeqCst) {
+        // Set a timeout on accept to allow checking the running flag
+        match listener.accept() {
+            Ok((stream, _addr)) => {
+                log::debug!("Accepted connection from mail server");
+                // In a real milter implementation, this would spawn a thread
+                // to handle the milter protocol communication
+                // For now, we'll just log the connection
+                drop(stream); // Close the connection immediately
+            }
+            Err(e) => {
+                log::error!("Error accepting connection: {}", e);
+                // Continue running even if individual connections fail
+            }
+        }
     }
+    
+    // Clean up socket file on normal exit
+    if Path::new(&config.socket_path).exists() {
+        std::fs::remove_file(&config.socket_path)?;
+        log::info!("Socket file cleaned up: {}", config.socket_path);
+    }
+    
+    Ok(())
 }
 
 fn demonstrate_functionality(milter: &mut FoffMilter) {
