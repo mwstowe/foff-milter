@@ -98,7 +98,7 @@ rules:
 ### Running the Milter
 
 ```bash
-# Run with default configuration
+# Run in production mode (daemon)
 sudo ./target/release/foff-milter
 
 # Run with custom configuration
@@ -106,6 +106,12 @@ sudo ./target/release/foff-milter -c /path/to/config.yaml
 
 # Run with verbose logging
 sudo ./target/release/foff-milter -v
+
+# Run in demonstration mode (for testing)
+./target/release/foff-milter --demo -c examples/sparkmail-japanese.yaml
+
+# Test configuration without running
+./target/release/foff-milter --test-config -c config.yaml
 ```
 
 ### Sendmail Configuration

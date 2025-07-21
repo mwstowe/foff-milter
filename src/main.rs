@@ -29,6 +29,12 @@ fn main() {
                 .action(clap::ArgAction::SetTrue)
         )
         .arg(
+            Arg::new("demo")
+                .long("demo")
+                .help("Run in demonstration mode (simulate email processing)")
+                .action(clap::ArgAction::SetTrue)
+        )
+        .arg(
             Arg::new("verbose")
                 .short('v')
                 .long("verbose")
@@ -73,9 +79,11 @@ fn main() {
         return;
     }
 
+    let demo_mode = matches.get_flag("demo");
+
     log::info!("Starting FOFF milter...");
     
-    if let Err(e) = run_milter(config) {
+    if let Err(e) = run_milter(config, demo_mode) {
         log::error!("Milter error: {}", e);
         process::exit(1);
     }

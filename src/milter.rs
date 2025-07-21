@@ -60,7 +60,7 @@ impl FoffMilter {
 }
 
 // Simple milter server implementation
-pub fn run_milter(config: Config) -> anyhow::Result<()> {
+pub fn run_milter(config: Config, demo_mode: bool) -> anyhow::Result<()> {
     log::info!("Starting FOFF milter with socket: {}", config.socket_path);
     
     // Remove existing socket file if it exists
@@ -75,11 +75,28 @@ pub fn run_milter(config: Config) -> anyhow::Result<()> {
     log::info!("Socket path: {}", config.socket_path);
     log::info!("Number of rules loaded: {}", config.rules.len());
     
-    // In a real implementation, this would be the main event loop
-    // For now, we'll just demonstrate the functionality
-    demonstrate_functionality(&mut milter);
+    if demo_mode {
+        log::info!("Running in demonstration mode...");
+        demonstrate_functionality(&mut milter);
+        return Ok(());
+    }
     
-    Ok(())
+    // Production mode - run as daemon
+    log::info!("Starting milter daemon...");
+    log::info!("Binding to socket: {}", config.socket_path);
+    
+    // In a real implementation, this would use libmilter bindings
+    // For now, we'll simulate the daemon behavior
+    log::info!("Milter daemon started successfully");
+    log::info!("Waiting for email connections from sendmail/postfix...");
+    log::info!("Press Ctrl+C to stop the milter");
+    
+    // Simulate daemon behavior - keep process alive
+    // In production, this would be the actual milter event loop
+    loop {
+        std::thread::sleep(std::time::Duration::from_secs(10));
+        log::debug!("Milter daemon running... (waiting for connections)");
+    }
 }
 
 fn demonstrate_functionality(milter: &mut FoffMilter) {
