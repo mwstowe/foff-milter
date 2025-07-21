@@ -35,16 +35,21 @@ sudo ./foff-milter -v -c /path/to/config.yaml
 
 **Behavior**:
 - Starts as a daemon process
-- Binds to the configured socket path
+- Creates and binds to the configured Unix socket
+- Sets socket permissions to 660 (rw-rw----)
+- Creates parent directories if needed
 - Waits for connections from sendmail/postfix
 - Processes real emails according to your rules
 - Runs continuously until stopped (Ctrl+C or kill signal)
+- Automatically cleans up socket file on shutdown
 
 **Output**:
 ```
 [INFO] Starting FOFF milter...
 [INFO] Starting milter daemon...
-[INFO] Binding to socket: /var/run/foff-milter.sock
+[INFO] Creating Unix socket: /tmp/foff-milter.sock
+[INFO] Successfully bound to socket: /tmp/foff-milter.sock
+[INFO] Set socket permissions to 660
 [INFO] Milter daemon started successfully
 [INFO] Waiting for email connections from sendmail/postfix...
 [INFO] Press Ctrl+C to stop the milter
