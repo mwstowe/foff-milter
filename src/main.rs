@@ -41,6 +41,13 @@ fn main() {
                 .help("Enable verbose logging")
                 .action(clap::ArgAction::SetTrue),
         )
+        .arg(
+            Arg::new("daemon")
+                .short('d')
+                .long("daemon")
+                .help("Run as a daemon (background process)")
+                .action(clap::ArgAction::SetTrue),
+        )
         .get_matches();
 
     // Initialize logger based on verbose flag
@@ -80,6 +87,54 @@ fn main() {
     }
 
     let demo_mode = matches.get_flag("demo");
+    let daemon_mode = matches.get_flag("daemon");
+
+    // Handle daemon mode (FreeBSD/Unix)
+    if daemon_mode && !demo_mode {
+        #[cfg(unix)]
+        {
+            use std::process;
+            
+            log::info!("Starting FOFF milter in daemon mode...");
+            
+            // Fork the process
+            match unsafe { libc::fork() } {
+                -1 => {
+                    log::error!("Failed to fork process");
+                    process::exit(1);
+                }
+                0 => {
+                    // Child process - continue as daemon
+                    // Create new session
+                    if unsafe { libc::setsid() } == -1 {
+                        log::error!("Failed to create new session");
+                        process::exit(1);
+                    }
+                    
+                    // Change working directory to root
+                    if unsafe { libc::chdir(b"/\0".as_ptr() as *const i8) } == -1 {
+                        log::warn!("Failed to change working directory to /");
+                    }
+                    
+                    // Close standard file descriptors
+                    unsafe {
+                        libc::close(0); // stdin
+                        libc::close(1); // stdout  
+                        libc::close(2); // stderr
+                    }
+                }
+                _ => {
+                    // Parent process - exit
+                    process::exit(0);
+                }
+            }
+        }
+        
+        #[cfg(not(unix))]
+        {
+            log::warn!("Daemon mode not supported on this platform, running in foreground");
+        }
+    }
 
     log::info!("Starting FOFF milter...");
 

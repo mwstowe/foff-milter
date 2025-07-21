@@ -22,7 +22,7 @@ load_rc_config $name
 : ${foff_milter_group:="wheel"}
 
 command="/usr/local/bin/foff-milter"
-command_args="-c ${foff_milter_config}"
+command_args="--daemon -c ${foff_milter_config}"
 pidfile="/var/run/foff-milter.pid"
 
 start_precmd="foff_milter_prestart"
@@ -40,8 +40,13 @@ foff_milter_prestart()
         rm -f /var/run/foff-milter.sock
     fi
     
+    # Remove stale PID file if it exists
+    if [ -f "${pidfile}" ]; then
+        rm -f "${pidfile}"
+    fi
+    
     # Test configuration
-    if ! ${command} --test-config -c ${foff_milter_config}; then
+    if ! /usr/local/bin/foff-milter --test-config -c ${foff_milter_config}; then
         echo "Configuration test failed"
         return 1
     fi
@@ -52,6 +57,11 @@ foff_milter_poststop()
     # Clean up socket file
     if [ -S "/var/run/foff-milter.sock" ]; then
         rm -f /var/run/foff-milter.sock
+    fi
+    
+    # Clean up PID file
+    if [ -f "${pidfile}" ]; then
+        rm -f "${pidfile}"
     fi
 }
 
