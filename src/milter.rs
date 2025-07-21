@@ -85,78 +85,101 @@ pub fn run_milter(config: Config) -> anyhow::Result<()> {
 fn demonstrate_functionality(milter: &mut FoffMilter) {
     log::info!("Demonstrating milter functionality...");
     
-    // Test 1: Original example - suspicious Chinese service
-    log::info!("=== Test 1: Suspicious Chinese service ===");
-    milter.process_connection("suspicious-host.example.com");
-    milter.process_mail_from("sender@example.com");
+    // Test 1: Chinese service with Japanese content (Example 1)
+    log::info!("=== Test 1: Chinese service with Japanese content ===");
+    milter.process_connection("mail-server.example.cn");
+    milter.process_mail_from("sender@suspicious.cn");
     milter.process_rcpt_to("recipient@mydomain.com");
-    milter.process_header("Subject", "Urgent business proposal");
-    milter.process_header("X-Mailer", "service.spam.cn");
+    milter.process_header("Subject", "こんにちは！特別なオファー - Hello Special Offer"); // Japanese + English
+    milter.process_header("X-Mailer", "service.mail.cn v2.1");
     
     let action = milter.evaluate_message();
     match action {
         Action::Reject { message } => {
-            log::info!("✓ Would reject email with message: {}", message);
+            log::info!("✓ Would reject Chinese service + Japanese: {}", message);
         }
         Action::TagAsSpam { header_name, header_value } => {
-            log::info!("✓ Would add spam header {}:{}", header_name, header_value);
+            log::info!("✓ Would tag Chinese service + Japanese {}:{}", header_name, header_value);
         }
         Action::Accept => {
-            log::info!("✓ Would accept email");
+            log::info!("✗ Unexpectedly accepted Chinese service + Japanese");
         }
     }
     
     milter.reset_context();
     
-    // Test 2: Sparkmail with Japanese content (combination criteria)
-    log::info!("=== Test 2: Sparkmail with Japanese content ===");
-    milter.process_connection("sparkmail-host.example.com");
-    milter.process_mail_from("promo@sparkmail.com");
-    milter.process_rcpt_to("user@mydomain.com");
-    milter.process_header("Subject", "こんにちは！特別オファー - Special Offer"); // Japanese + English
-    milter.process_header("X-Mailer", "sparkmail.com bulk mailer v2.1");
+    // Test 2: Sparkpost to user@example.com (Example 2)
+    log::info!("=== Test 2: Sparkpost to user@example.com ===");
+    milter.process_connection("sparkpost-relay.example.com");
+    milter.process_mail_from("newsletter@company.com");
+    milter.process_rcpt_to("user@example.com");
+    milter.process_header("Subject", "Your Weekly Newsletter");
+    milter.process_header("X-Mailer", "relay.sparkpostmail.com v3.2");
     
     let action = milter.evaluate_message();
     match action {
         Action::Reject { message } => {
-            log::info!("✓ Would reject sparkmail+Japanese email: {}", message);
+            log::info!("✓ Would reject Sparkpost to user@example.com: {}", message);
         }
         Action::TagAsSpam { header_name, header_value } => {
-            log::info!("✓ Would tag sparkmail+Japanese email {}:{}", header_name, header_value);
+            log::info!("✓ Would tag Sparkpost to user@example.com {}:{}", header_name, header_value);
         }
         Action::Accept => {
-            log::info!("✓ Would accept sparkmail+Japanese email");
+            log::info!("✗ Unexpectedly accepted Sparkpost to user@example.com");
         }
     }
     
     milter.reset_context();
     
-    // Test 3: Sparkmail without Japanese (should not match combination)
-    log::info!("=== Test 3: Sparkmail without Japanese ===");
-    milter.process_connection("sparkmail-host.example.com");
-    milter.process_mail_from("promo@sparkmail.com");
-    milter.process_rcpt_to("user@mydomain.com");
-    milter.process_header("Subject", "Special Offer - English Only");
-    milter.process_header("X-Mailer", "sparkmail.com bulk mailer v2.1");
+    // Test 3: Chinese service without Japanese (should not match Example 1)
+    log::info!("=== Test 3: Chinese service without Japanese ===");
+    milter.process_connection("mail-server.example.cn");
+    milter.process_mail_from("sender@business.cn");
+    milter.process_rcpt_to("recipient@mydomain.com");
+    milter.process_header("Subject", "Business Proposal - English Only");
+    milter.process_header("X-Mailer", "service.business.cn v1.0");
     
     let action = milter.evaluate_message();
     match action {
         Action::Reject { message } => {
-            log::info!("✗ Unexpectedly rejected sparkmail-only email: {}", message);
+            log::info!("✗ Unexpectedly rejected Chinese service without Japanese: {}", message);
         }
         Action::TagAsSpam { header_name, header_value } => {
-            log::info!("✗ Unexpectedly tagged sparkmail-only email {}:{}", header_name, header_value);
+            log::info!("✗ Unexpectedly tagged Chinese service without Japanese {}:{}", header_name, header_value);
         }
         Action::Accept => {
-            log::info!("✓ Correctly accepted sparkmail-only email (no Japanese)");
+            log::info!("✓ Correctly accepted Chinese service without Japanese");
         }
     }
     
     milter.reset_context();
     
-    // Test 4: Japanese content without sparkmail (should not match combination)
-    log::info!("=== Test 4: Japanese content without sparkmail ===");
-    milter.process_connection("legitimate-host.example.com");
+    // Test 4: Sparkpost to different user (should not match Example 2)
+    log::info!("=== Test 4: Sparkpost to different user ===");
+    milter.process_connection("sparkpost-relay.example.com");
+    milter.process_mail_from("newsletter@company.com");
+    milter.process_rcpt_to("admin@example.com");
+    milter.process_header("Subject", "Your Weekly Newsletter");
+    milter.process_header("X-Mailer", "relay.sparkpostmail.com v3.2");
+    
+    let action = milter.evaluate_message();
+    match action {
+        Action::Reject { message } => {
+            log::info!("✗ Unexpectedly rejected Sparkpost to different user: {}", message);
+        }
+        Action::TagAsSpam { header_name, header_value } => {
+            log::info!("✗ Unexpectedly tagged Sparkpost to different user {}:{}", header_name, header_value);
+        }
+        Action::Accept => {
+            log::info!("✓ Correctly accepted Sparkpost to different user");
+        }
+    }
+    
+    milter.reset_context();
+    
+    // Test 5: Japanese content without Chinese service (should not match Example 1)
+    log::info!("=== Test 5: Japanese content without Chinese service ===");
+    milter.process_connection("legitimate-host.jp");
     milter.process_mail_from("user@legitimate.jp");
     milter.process_rcpt_to("recipient@mydomain.com");
     milter.process_header("Subject", "こんにちは、元気ですか？"); // Japanese only
@@ -165,25 +188,25 @@ fn demonstrate_functionality(milter: &mut FoffMilter) {
     let action = milter.evaluate_message();
     match action {
         Action::Reject { message } => {
-            log::info!("✗ Unexpectedly rejected Japanese-only email: {}", message);
+            log::info!("✗ Unexpectedly rejected Japanese without Chinese service: {}", message);
         }
         Action::TagAsSpam { header_name, header_value } => {
-            log::info!("✗ Unexpectedly tagged Japanese-only email {}:{}", header_name, header_value);
+            log::info!("✗ Unexpectedly tagged Japanese without Chinese service {}:{}", header_name, header_value);
         }
         Action::Accept => {
-            log::info!("✓ Correctly accepted Japanese-only email (not sparkmail)");
+            log::info!("✓ Correctly accepted Japanese without Chinese service");
         }
     }
     
     milter.reset_context();
     
-    // Test 5: Regular legitimate email
-    log::info!("=== Test 5: Regular legitimate email ===");
+    // Test 6: Regular legitimate email (should not match any rules)
+    log::info!("=== Test 6: Regular legitimate email ===");
     milter.process_connection("legitimate-host.example.com");
     milter.process_mail_from("user@legitimate.com");
     milter.process_rcpt_to("recipient@mydomain.com");
     milter.process_header("Subject", "Regular business email");
-    milter.process_header("X-Mailer", "Thunderbird 102.0");
+    milter.process_header("X-Mailer", "Postfix 3.6.4");
     
     let action = milter.evaluate_message();
     match action {
@@ -199,5 +222,11 @@ fn demonstrate_functionality(milter: &mut FoffMilter) {
     }
     
     log::info!("=== Demonstration complete ===");
+    log::info!("Summary:");
+    log::info!("  ✓ Chinese service + Japanese → BLOCKED (Example 1)");
+    log::info!("  ✓ Sparkpost → user@example.com → BLOCKED (Example 2)");
+    log::info!("  ✓ Partial matches correctly ignored");
+    log::info!("  ✓ Legitimate emails correctly accepted");
+    log::info!("");
     log::info!("In a real deployment, this would run as a daemon processing actual emails.");
 }

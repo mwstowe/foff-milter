@@ -141,6 +141,38 @@ sudo systemctl restart postfix
 
 ## Example Rules
 
+### Production Example 1: Chinese service with Japanese content
+
+```yaml
+- name: "Block Chinese services with Japanese content"
+  criteria:
+    type: "And"
+    criteria:
+      - type: "MailerPattern"
+        pattern: "service\\..*\\.cn"
+      - type: "SubjectContainsLanguage"
+        language: "japanese"
+  action:
+    type: "Reject"
+    message: "Chinese service with Japanese content blocked"
+```
+
+### Production Example 2: Sparkpost to specific user
+
+```yaml
+- name: "Block Sparkpost to user@example.com"
+  criteria:
+    type: "And"
+    criteria:
+      - type: "MailerPattern"
+        pattern: ".*\\.sparkpostmail\\.com"
+      - type: "RecipientPattern"
+        pattern: "user@example\\.com"
+  action:
+    type: "Reject"
+    message: "Sparkpost to user@example.com blocked"
+```
+
 ### Combination Criteria: Sparkmail with Japanese content
 
 ```yaml

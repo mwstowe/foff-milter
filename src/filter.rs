@@ -249,4 +249,98 @@ mod tests {
             _ => panic!("Expected accept action for non-sparkmail with Japanese"),
         }
     }
+
+    #[test]
+    fn test_production_examples() {
+        use crate::config::{FilterRule, Action};
+        
+        // Create config with the two production examples
+        let mut config = Config::default();
+        config.rules = vec![
+            // Example 1: Chinese service with Japanese content
+            FilterRule {
+                name: "Block Chinese services with Japanese content".to_string(),
+                criteria: Criteria::And {
+                    criteria: vec![
+                        Criteria::MailerPattern {
+                            pattern: r"service\..*\.cn".to_string(),
+                        },
+                        Criteria::SubjectContainsLanguage {
+                            language: "japanese".to_string(),
+                        },
+                    ],
+                },
+                action: Action::Reject {
+                    message: "Chinese service with Japanese content blocked".to_string(),
+                },
+            },
+            // Example 2: Sparkpost to specific user
+            FilterRule {
+                name: "Block Sparkpost to user@example.com".to_string(),
+                criteria: Criteria::And {
+                    criteria: vec![
+                        Criteria::MailerPattern {
+                            pattern: r".*\.sparkpostmail\.com".to_string(),
+                        },
+                        Criteria::RecipientPattern {
+                            pattern: r"user@example\.com".to_string(),
+                        },
+                    ],
+                },
+                action: Action::Reject {
+                    message: "Sparkpost to user@example.com blocked".to_string(),
+                },
+            },
+        ];
+        
+        let engine = FilterEngine::new(config).unwrap();
+        
+        // Test Example 1: Chinese service + Japanese (should match)
+        let mut context1 = MailContext::default();
+        context1.mailer = Some("service.mail.cn v2.1".to_string());
+        context1.subject = Some("こんにちは！特別なオファー".to_string()); // Japanese
+        
+        let action1 = engine.evaluate(&context1);
+        match action1 {
+            Action::Reject { message } => {
+                assert!(message.contains("Chinese service"));
+            }
+            _ => panic!("Expected reject for Chinese service + Japanese"),
+        }
+        
+        // Test Example 2: Sparkpost to user@example.com (should match)
+        let mut context2 = MailContext::default();
+        context2.mailer = Some("relay.sparkpostmail.com v3.2".to_string());
+        context2.recipients = vec!["user@example.com".to_string()];
+        
+        let action2 = engine.evaluate(&context2);
+        match action2 {
+            Action::Reject { message } => {
+                assert!(message.contains("Sparkpost"));
+            }
+            _ => panic!("Expected reject for Sparkpost to user@example.com"),
+        }
+        
+        // Test partial match 1: Chinese service without Japanese (should not match)
+        let mut context3 = MailContext::default();
+        context3.mailer = Some("service.business.cn v1.0".to_string());
+        context3.subject = Some("Business Proposal".to_string()); // English only
+        
+        let action3 = engine.evaluate(&context3);
+        match action3 {
+            Action::Accept => assert!(true),
+            _ => panic!("Expected accept for Chinese service without Japanese"),
+        }
+        
+        // Test partial match 2: Sparkpost to different user (should not match)
+        let mut context4 = MailContext::default();
+        context4.mailer = Some("relay.sparkpostmail.com v3.2".to_string());
+        context4.recipients = vec!["admin@example.com".to_string()];
+        
+        let action4 = engine.evaluate(&context4);
+        match action4 {
+            Action::Accept => assert!(true),
+            _ => panic!("Expected accept for Sparkpost to different user"),
+        }
+    }
 }

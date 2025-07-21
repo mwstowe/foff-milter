@@ -1,0 +1,99 @@
+# Production Examples - Real-world filtering scenarios
+socket_path: "/var/run/foff-milter.sock"
+default_action:
+  type: "Accept"
+
+rules:
+  # Production Example 1: Block Chinese services with Japanese content
+  # Matches: X-Mailer contains "service.something.cn" AND subject has Japanese text
+  - name: "Block Chinese services with Japanese content"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "MailerPattern"
+          pattern: "service\\..*\\.cn"
+        - type: "SubjectContainsLanguage"
+          language: "japanese"
+    action:
+      type: "Reject"
+      message: "Mail from Chinese service with Japanese content rejected"
+
+  # Production Example 2: Block Sparkpost mail to specific user
+  # Matches: X-Mailer contains "*.sparkpostmail.com" AND recipient is user@example.com
+  - name: "Block Sparkpost to user@example.com"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "MailerPattern"
+          pattern: ".*\\.sparkpostmail\\.com"
+        - type: "RecipientPattern"
+          pattern: "user@example\\.com"
+    action:
+      type: "Reject"
+      message: "Sparkpost mail to user@example.com blocked"
+
+  # Variation: Block multiple Sparkpost patterns
+  - name: "Block various Sparkpost services to specific user"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "MailerPattern"
+              pattern: ".*\\.sparkpostmail\\.com"
+            - type: "MailerPattern"
+              pattern: ".*sparkpost.*"
+            - type: "MailerPattern"
+              pattern: ".*\\.sprkpst\\.com"
+        - type: "RecipientPattern"
+          pattern: "user@example\\.com"
+    action:
+      type: "Reject"
+      message: "Sparkpost-related mail to user@example.com blocked"
+
+  # Variation: Broader Chinese service blocking with Japanese
+  - name: "Block broader Chinese services with Japanese"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "MailerPattern"
+              pattern: "service\\..*\\.cn"
+            - type: "MailerPattern"
+              pattern: "mail\\..*\\.cn"
+            - type: "MailerPattern"
+              pattern: "smtp\\..*\\.cn"
+        - type: "SubjectContainsLanguage"
+          language: "japanese"
+    action:
+      type: "Reject"
+      message: "Chinese mail service with Japanese content blocked"
+
+  # Example: Tag instead of reject for monitoring
+  - name: "Monitor Chinese services with Japanese (tag only)"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "MailerPattern"
+          pattern: "service\\..*\\.cn"
+        - type: "SubjectContainsLanguage"
+          language: "japanese"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Monitor-Chinese-Japanese"
+      header_value: "Chinese service with Japanese content detected"
+
+  # Example: Monitor Sparkpost to specific user (tag only)
+  - name: "Monitor Sparkpost to user@example.com (tag only)"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "MailerPattern"
+          pattern: ".*\\.sparkpostmail\\.com"
+        - type: "RecipientPattern"
+          pattern: "user@example\\.com"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Monitor-Sparkpost-User"
+      header_value: "Sparkpost mail to user@example.com detected"
