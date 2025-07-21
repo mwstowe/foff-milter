@@ -1,9 +1,259 @@
 use crate::config::{Action, Config};
 use crate::filter::{FilterEngine, MailContext};
 use std::sync::Arc;
-use std::os::unix::net::UnixListener;
+use std::os::unix::net::{UnixListener, UnixStream};
 use std::path::Path;
 use std::sync::atomic::{AtomicBool, Ordering};
+use std::io::{Read, Write};
+use std::thread;
+
+// Milter protocol constants
+const SMFIC_ABORT: u8 = b'A';
+const SMFIC_BODY: u8 = b'B';
+const SMFIC_CONNECT: u8 = b'C';
+const SMFIC_MACRO: u8 = b'D';
+const SMFIC_BODYEOB: u8 = b'E';
+const SMFIC_HELO: u8 = b'H';
+const SMFIC_HEADER: u8 = b'L';
+const SMFIC_MAIL: u8 = b'M';
+const SMFIC_EOH: u8 = b'N';
+const SMFIC_OPTNEG: u8 = b'O';
+const SMFIC_QUIT: u8 = b'Q';
+const SMFIC_RCPT: u8 = b'R';
+
+// Milter response constants
+const SMFIR_ADDRCPT: u8 = b'+';
+const SMFIR_DELRCPT: u8 = b'-';
+const SMFIR_ACCEPT: u8 = b'a';
+const SMFIR_REPLBODY: u8 = b'b';
+const SMFIR_CONTINUE: u8 = b'c';
+const SMFIR_DISCARD: u8 = b'd';
+const SMFIR_ADDHEADER: u8 = b'h';
+const SMFIR_INSHEADER: u8 = b'i';
+const SMFIR_SETSYMLIST: u8 = b'l';
+const SMFIR_CHGHEADER: u8 = b'm';
+const SMFIR_PROGRESS: u8 = b'p';
+const SMFIR_QUARANTINE: u8 = b'q';
+const SMFIR_REJECT: u8 = b'r';
+const SMFIR_SKIP: u8 = b's';
+const SMFIR_TEMPFAIL: u8 = b't';
+const SMFIR_REPLYCODE: u8 = b'y';
+
+struct MilterConnection {
+    stream: UnixStream,
+    engine: Arc<FilterEngine>,
+    context: MailContext,
+}
+
+impl MilterConnection {
+    fn new(stream: UnixStream, engine: Arc<FilterEngine>) -> Self {
+        Self {
+            stream,
+            engine,
+            context: MailContext::default(),
+        }
+    }
+
+    fn handle(&mut self) -> anyhow::Result<()> {
+        log::debug!("Handling new milter connection");
+        
+        loop {
+            match self.read_command() {
+                Ok(Some((command, data))) => {
+                    match self.process_command(command, data) {
+                        Ok(true) => continue,  // Continue processing
+                        Ok(false) => break,    // Connection should close
+                        Err(e) => {
+                            log::error!("Error processing command: {}", e);
+                            break;
+                        }
+                    }
+                }
+                Ok(None) => break, // Connection closed
+                Err(e) => {
+                    log::error!("Error reading command: {}", e);
+                    break;
+                }
+            }
+        }
+        
+        log::debug!("Milter connection closed");
+        Ok(())
+    }
+
+    fn read_command(&mut self) -> anyhow::Result<Option<(u8, Vec<u8>)>> {
+        // Read 4-byte length header
+        let mut len_buf = [0u8; 4];
+        match self.stream.read_exact(&mut len_buf) {
+            Ok(()) => {},
+            Err(e) if e.kind() == std::io::ErrorKind::UnexpectedEof => return Ok(None),
+            Err(e) => return Err(e.into()),
+        }
+        
+        let len = u32::from_be_bytes(len_buf) as usize;
+        if len == 0 {
+            return Ok(None);
+        }
+        
+        // Read command byte
+        let mut cmd_buf = [0u8; 1];
+        self.stream.read_exact(&mut cmd_buf)?;
+        let command = cmd_buf[0];
+        
+        // Read data (len - 1 because we already read the command byte)
+        let mut data = vec![0u8; len - 1];
+        if len > 1 {
+            self.stream.read_exact(&mut data)?;
+        }
+        
+        Ok(Some((command, data)))
+    }
+
+    fn send_response(&mut self, response: u8, data: &[u8]) -> anyhow::Result<()> {
+        let len = (data.len() + 1) as u32;
+        self.stream.write_all(&len.to_be_bytes())?;
+        self.stream.write_all(&[response])?;
+        if !data.is_empty() {
+            self.stream.write_all(data)?;
+        }
+        self.stream.flush()?;
+        Ok(())
+    }
+
+    fn process_command(&mut self, command: u8, data: Vec<u8>) -> anyhow::Result<bool> {
+        match command {
+            SMFIC_OPTNEG => {
+                log::debug!("Received option negotiation");
+                // Send back our capabilities
+                let response = [0, 0, 0, 0, 0, 0, 0, 0]; // No special capabilities
+                self.send_response(SMFIC_OPTNEG, &response)?;
+                Ok(true)
+            }
+            SMFIC_CONNECT => {
+                let hostname = self.parse_connect_data(&data)?;
+                log::debug!("Connection from: {}", hostname);
+                self.context.hostname = Some(hostname);
+                self.send_response(SMFIR_CONTINUE, &[])?;
+                Ok(true)
+            }
+            SMFIC_HELO => {
+                let helo = String::from_utf8_lossy(&data).trim_end_matches('\0').to_string();
+                log::debug!("HELO: {}", helo);
+                self.context.helo = Some(helo);
+                self.send_response(SMFIR_CONTINUE, &[])?;
+                Ok(true)
+            }
+            SMFIC_MAIL => {
+                let sender = self.parse_mail_data(&data)?;
+                log::debug!("Mail from: {}", sender);
+                self.context.sender = Some(sender);
+                self.send_response(SMFIR_CONTINUE, &[])?;
+                Ok(true)
+            }
+            SMFIC_RCPT => {
+                let recipient = self.parse_mail_data(&data)?;
+                log::debug!("Rcpt to: {}", recipient);
+                self.context.recipients.push(recipient);
+                self.send_response(SMFIR_CONTINUE, &[])?;
+                Ok(true)
+            }
+            SMFIC_HEADER => {
+                let (name, value) = self.parse_header_data(&data)?;
+                log::debug!("Header: {}: {}", name, value);
+                
+                // Store important headers
+                match name.to_lowercase().as_str() {
+                    "subject" => self.context.subject = Some(value.clone()),
+                    "x-mailer" | "user-agent" => self.context.mailer = Some(value.clone()),
+                    _ => {}
+                }
+                
+                self.context.headers.insert(name, value);
+                self.send_response(SMFIR_CONTINUE, &[])?;
+                Ok(true)
+            }
+            SMFIC_EOH => {
+                log::debug!("End of headers - evaluating message");
+                let action = self.engine.evaluate(&self.context);
+                
+                match action {
+                    Action::Reject { message } => {
+                        log::info!("Rejecting message: {}", message);
+                        let response = format!("550 5.7.1 {}", message);
+                        self.send_response(SMFIR_REPLYCODE, response.as_bytes())?;
+                    }
+                    Action::TagAsSpam { header_name, header_value } => {
+                        log::info!("Adding spam header: {}: {}", header_name, header_value);
+                        let header_data = format!("{}\0{}\0", header_name, header_value);
+                        self.send_response(SMFIR_ADDHEADER, header_data.as_bytes())?;
+                        self.send_response(SMFIR_CONTINUE, &[])?;
+                    }
+                    Action::Accept => {
+                        log::debug!("Accepting message");
+                        self.send_response(SMFIR_CONTINUE, &[])?;
+                    }
+                }
+                Ok(true)
+            }
+            SMFIC_BODY => {
+                // We don't need to process body for our current rules
+                self.send_response(SMFIR_CONTINUE, &[])?;
+                Ok(true)
+            }
+            SMFIC_BODYEOB => {
+                log::debug!("End of message");
+                self.send_response(SMFIR_ACCEPT, &[])?;
+                Ok(true)
+            }
+            SMFIC_ABORT => {
+                log::debug!("Message aborted");
+                self.context = MailContext::default(); // Reset context
+                Ok(true)
+            }
+            SMFIC_QUIT => {
+                log::debug!("Quit command received");
+                Ok(false) // Close connection
+            }
+            _ => {
+                log::warn!("Unknown command: 0x{:02x}", command);
+                self.send_response(SMFIR_CONTINUE, &[])?;
+                Ok(true)
+            }
+        }
+    }
+
+    fn parse_connect_data(&self, data: &[u8]) -> anyhow::Result<String> {
+        // Connect data format: hostname\0family\0port\0address\0
+        let hostname = String::from_utf8_lossy(data)
+            .split('\0')
+            .next()
+            .unwrap_or("unknown")
+            .to_string();
+        Ok(hostname)
+    }
+
+    fn parse_mail_data(&self, data: &[u8]) -> anyhow::Result<String> {
+        // Mail data format: <email@domain.com>\0
+        let email = String::from_utf8_lossy(data)
+            .trim_end_matches('\0')
+            .trim_start_matches('<')
+            .trim_end_matches('>')
+            .to_string();
+        Ok(email)
+    }
+
+    fn parse_header_data(&self, data: &[u8]) -> anyhow::Result<(String, String)> {
+        // Header data format: name\0value\0
+        let data_str = String::from_utf8_lossy(data);
+        let parts: Vec<&str> = data_str.split('\0').collect();
+        
+        if parts.len() >= 2 {
+            Ok((parts[0].to_string(), parts[1].to_string()))
+        } else {
+            Ok(("unknown".to_string(), "".to_string()))
+        }
+    }
+}
 
 pub struct FoffMilter {
     engine: Arc<FilterEngine>,
@@ -138,16 +388,24 @@ pub fn run_milter(config: Config, demo_mode: bool) -> anyhow::Result<()> {
         std::process::exit(0);
     }).map_err(|e| anyhow::anyhow!("Error setting up signal handler: {}", e))?;
     
-    // Main event loop - accept connections
+    // Create the filter engine once for sharing
+    let filter_engine = Arc::new(FilterEngine::new(config.clone())?);
+    
+    // Main event loop - accept connections and spawn threads
     while running.load(Ordering::SeqCst) {
-        // Set a timeout on accept to allow checking the running flag
         match listener.accept() {
             Ok((stream, _addr)) => {
-                log::debug!("Accepted connection from mail server");
-                // In a real milter implementation, this would spawn a thread
-                // to handle the milter protocol communication
-                // For now, we'll just log the connection
-                drop(stream); // Close the connection immediately
+                log::info!("Accepted milter connection from mail server");
+                
+                let engine_clone = filter_engine.clone();
+                
+                // Spawn a thread to handle this connection
+                thread::spawn(move || {
+                    let mut connection = MilterConnection::new(stream, engine_clone);
+                    if let Err(e) = connection.handle() {
+                        log::error!("Error handling milter connection: {}", e);
+                    }
+                });
             }
             Err(e) => {
                 log::error!("Error accepting connection: {}", e);

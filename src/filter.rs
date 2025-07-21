@@ -15,6 +15,8 @@ pub struct MailContext {
     pub headers: HashMap<String, String>,
     pub mailer: Option<String>,
     pub subject: Option<String>,
+    pub hostname: Option<String>,
+    pub helo: Option<String>,
 }
 
 impl FilterEngine {
