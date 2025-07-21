@@ -112,7 +112,8 @@ fn main() {
                     }
 
                     // Change working directory to root
-                    if unsafe { libc::chdir(c"/".as_ptr()) } == -1 {
+                    let root_path = std::ffi::CString::new("/").unwrap();
+                    if unsafe { libc::chdir(root_path.as_ptr()) } == -1 {
                         log::warn!("Failed to change working directory to /");
                     }
 
