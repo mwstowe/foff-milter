@@ -1,0 +1,49 @@
+socket_path: "/var/run/foff-milter.sock"
+default_action: "Accept"
+
+rules:
+  - name: "Block Chinese services with Japanese content"
+    criteria:
+      And:
+        - MailerPattern:
+            pattern: "service\\..*\\.cn"
+        - SubjectContainsLanguage:
+            language: "japanese"
+    action:
+      Reject:
+        message: "Chinese service with Japanese content blocked"
+
+  - name: "Block Sparkpost to specific user"
+    criteria:
+      And:
+        - MailerPattern:
+            pattern: ".*sparkpostmail\\.com.*"
+        - RecipientPattern:
+            pattern: "user@example\\.com"
+    action:
+      Reject:
+        message: "Sparkpost mail to user@example.com blocked"
+
+  - name: "Tag Chinese services with Japanese content"
+    criteria:
+      And:
+        - MailerPattern:
+            pattern: "service\\..*\\.cn"
+        - SubjectContainsLanguage:
+            language: "japanese"
+    action:
+      TagAsSpam:
+        header_name: "X-Spam-Chinese-Japanese"
+        header_value: "Chinese service with Japanese content detected"
+
+  - name: "Tag Sparkpost to specific user"
+    criteria:
+      And:
+        - MailerPattern:
+            pattern: ".*sparkpostmail\\.com.*"
+        - RecipientPattern:
+            pattern: "user@example\\.com"
+    action:
+      TagAsSpam:
+        header_name: "X-Spam-Sparkpost-User"
+        header_value: "Sparkpost to specific user detected"
