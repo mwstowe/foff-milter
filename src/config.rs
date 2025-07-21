@@ -39,7 +39,7 @@ pub enum Action {
 impl Default for Config {
     fn default() -> Self {
         Config {
-            socket_path: "/tmp/foff-milter.sock".to_string(),
+            socket_path: "/var/run/foff-milter.sock".to_string(),
             rules: vec![
                 FilterRule {
                     name: "Block suspicious Chinese services".to_string(),

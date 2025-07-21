@@ -36,7 +36,7 @@ def test_sparkpost_rule():
     
     try:
         print("Testing Sparkpost to user@example.com (should be REJECTED)...")
-        sock.connect('/tmp/foff-milter.sock')
+        sock.connect('/var/run/foff-milter.sock')
         
         send_command(sock, b'O', b'\x00\x00\x00\x00\x00\x00\x00\x00')
         read_response(sock)

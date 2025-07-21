@@ -48,7 +48,7 @@ def test_milter():
     
     try:
         print("Connecting to milter socket...")
-        sock.connect('/tmp/foff-milter.sock')
+        sock.connect('/var/run/foff-milter.sock')
         print("Connected successfully!")
         
         # Option negotiation

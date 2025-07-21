@@ -44,7 +44,7 @@ def test_legitimate_email():
     
     try:
         print("Testing legitimate email (should be ACCEPTED)...")
-        sock.connect('/tmp/foff-milter.sock')
+        sock.connect('/var/run/foff-milter.sock')
         
         # Option negotiation
         send_command(sock, b'O', b'\x00\x00\x00\x00\x00\x00\x00\x00')

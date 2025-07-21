@@ -124,9 +124,51 @@ impl MilterConnection {
         match command {
             SMFIC_OPTNEG => {
                 log::debug!("Received option negotiation");
-                // Send back our capabilities
-                let response = [0, 0, 0, 0, 0, 0, 0, 0]; // No special capabilities
+                
+                // Parse the option negotiation data from sendmail
+                if data.len() >= 24 {
+                    let version = u32::from_be_bytes([data[0], data[1], data[2], data[3]]);
+                    let actions = u32::from_be_bytes([data[4], data[5], data[6], data[7]]);
+                    let protocol = u32::from_be_bytes([data[8], data[9], data[10], data[11]]);
+                    
+                    log::debug!("Sendmail version: {}, actions: 0x{:x}, protocol: 0x{:x}", 
+                               version, actions, protocol);
+                }
+                
+                // Send back our negotiation response
+                // Format: version(4) + actions(4) + protocol(4) + reserved(12)
+                let mut response = Vec::with_capacity(24);
+                
+                // Version: 6 (milter protocol version)
+                response.extend_from_slice(&6u32.to_be_bytes());
+                
+                // Actions we want to perform:
+                // SMFIF_ADDHDRS (0x01) - Add headers
+                // SMFIF_CHGHDRS (0x02) - Change headers  
+                // SMFIF_ADDRCPT (0x04) - Add recipients
+                // SMFIF_DELRCPT (0x08) - Delete recipients
+                // SMFIF_CHGBODY (0x10) - Change body
+                // SMFIF_QUARANTINE (0x20) - Quarantine
+                let actions = 0x01u32; // We only need ADDHDRS for our spam tagging
+                response.extend_from_slice(&actions.to_be_bytes());
+                
+                // Protocol steps we want to skip:
+                // SMFIP_NOCONNECT (0x01) - Skip connection info
+                // SMFIP_NOHELO (0x02) - Skip HELO
+                // SMFIP_NOMAIL (0x04) - Skip MAIL FROM
+                // SMFIP_NORCPT (0x08) - Skip RCPT TO
+                // SMFIP_NOBODY (0x10) - Skip body
+                // SMFIP_NOHDRS (0x20) - Skip headers
+                // SMFIP_NOEOH (0x40) - Skip end of headers
+                // We want all steps, so protocol = 0
+                let protocol = 0u32;
+                response.extend_from_slice(&protocol.to_be_bytes());
+                
+                // Reserved fields (12 bytes of zeros)
+                response.extend_from_slice(&[0u8; 12]);
+                
                 self.send_response(SMFIC_OPTNEG, &response)?;
+                log::debug!("Sent option negotiation response");
                 Ok(true)
             }
             SMFIC_CONNECT => {

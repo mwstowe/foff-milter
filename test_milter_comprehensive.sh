@@ -81,11 +81,11 @@ echo "✓ Milter protocol tests passed"
 # Test socket cleanup
 echo ""
 echo "6. Testing socket cleanup..."
-if [ ! -f /tmp/foff-milter.sock ]; then
+if [ ! -f /var/run/foff-milter.sock ]; then
     echo "✓ Socket properly cleaned up"
 else
     echo "✗ Socket not cleaned up"
-    rm -f /tmp/foff-milter.sock
+    rm -f /var/run/foff-milter.sock
 fi
 
 echo ""
@@ -106,5 +106,5 @@ echo ""
 echo "To deploy:"
 echo "1. Copy binary: sudo cp target/release/foff-milter /usr/local/bin/"
 echo "2. Copy config: sudo cp examples/sparkmail-japanese.yaml /etc/foff-milter.yaml"
-echo "3. Configure sendmail/postfix to use unix:/tmp/foff-milter.sock"
+echo "3. Configure sendmail/postfix to use unix:/var/run/foff-milter.sock"
 echo "4. Start: sudo /usr/local/bin/foff-milter -c /etc/foff-milter.yaml"
