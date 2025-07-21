@@ -31,8 +31,13 @@ pub enum Criteria {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(tag = "type")]
 pub enum Action {
-    Reject { message: String },
-    TagAsSpam { header_name: String, header_value: String },
+    Reject {
+        message: String,
+    },
+    TagAsSpam {
+        header_name: String,
+        header_value: String,
+    },
     Accept,
 }
 

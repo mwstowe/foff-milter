@@ -1,10 +1,10 @@
 use crate::config::{Action, Config};
 use crate::filter::{FilterEngine, MailContext};
-use std::sync::Arc;
+use std::io::{Read, Write};
 use std::os::unix::net::{UnixListener, UnixStream};
 use std::path::Path;
 use std::sync::atomic::{AtomicBool, Ordering};
-use std::io::{Read, Write};
+use std::sync::Arc;
 use std::thread;
 
 // Milter protocol constants
@@ -57,13 +57,13 @@ impl MilterConnection {
 
     fn handle(&mut self) -> anyhow::Result<()> {
         log::debug!("Handling new milter connection");
-        
+
         loop {
             match self.read_command() {
                 Ok(Some((command, data))) => {
                     match self.process_command(command, data) {
-                        Ok(true) => continue,  // Continue processing
-                        Ok(false) => break,    // Connection should close
+                        Ok(true) => continue, // Continue processing
+                        Ok(false) => break,   // Connection should close
                         Err(e) => {
                             log::error!("Error processing command: {}", e);
                             break;
@@ -77,7 +77,7 @@ impl MilterConnection {
                 }
             }
         }
-        
+
         log::debug!("Milter connection closed");
         Ok(())
     }
@@ -86,27 +86,27 @@ impl MilterConnection {
         // Read 4-byte length header
         let mut len_buf = [0u8; 4];
         match self.stream.read_exact(&mut len_buf) {
-            Ok(()) => {},
+            Ok(()) => {}
             Err(e) if e.kind() == std::io::ErrorKind::UnexpectedEof => return Ok(None),
             Err(e) => return Err(e.into()),
         }
-        
+
         let len = u32::from_be_bytes(len_buf) as usize;
         if len == 0 {
             return Ok(None);
         }
-        
+
         // Read command byte
         let mut cmd_buf = [0u8; 1];
         self.stream.read_exact(&mut cmd_buf)?;
         let command = cmd_buf[0];
-        
+
         // Read data (len - 1 because we already read the command byte)
         let mut data = vec![0u8; len - 1];
         if len > 1 {
             self.stream.read_exact(&mut data)?;
         }
-        
+
         Ok(Some((command, data)))
     }
 
@@ -125,34 +125,38 @@ impl MilterConnection {
         match command {
             SMFIC_OPTNEG => {
                 log::debug!("Received option negotiation");
-                
+
                 // Parse the option negotiation data from sendmail
                 if data.len() >= 24 {
                     let version = u32::from_be_bytes([data[0], data[1], data[2], data[3]]);
                     let actions = u32::from_be_bytes([data[4], data[5], data[6], data[7]]);
                     let protocol = u32::from_be_bytes([data[8], data[9], data[10], data[11]]);
-                    
-                    log::debug!("Sendmail version: {}, actions: 0x{:x}, protocol: 0x{:x}", 
-                               version, actions, protocol);
+
+                    log::debug!(
+                        "Sendmail version: {}, actions: 0x{:x}, protocol: 0x{:x}",
+                        version,
+                        actions,
+                        protocol
+                    );
                 }
-                
+
                 // Send back our negotiation response
                 // Format: version(4) + actions(4) + protocol(4) + reserved(12)
                 let mut response = Vec::with_capacity(24);
-                
+
                 // Version: 6 (milter protocol version)
                 response.extend_from_slice(&6u32.to_be_bytes());
-                
+
                 // Actions we want to perform:
                 // SMFIF_ADDHDRS (0x01) - Add headers
-                // SMFIF_CHGHDRS (0x02) - Change headers  
+                // SMFIF_CHGHDRS (0x02) - Change headers
                 // SMFIF_ADDRCPT (0x04) - Add recipients
                 // SMFIF_DELRCPT (0x08) - Delete recipients
                 // SMFIF_CHGBODY (0x10) - Change body
                 // SMFIF_QUARANTINE (0x20) - Quarantine
                 let actions = 0x01u32; // We only need ADDHDRS for our spam tagging
                 response.extend_from_slice(&actions.to_be_bytes());
-                
+
                 // Protocol steps we want to skip:
                 // SMFIP_NOCONNECT (0x01) - Skip connection info
                 // SMFIP_NOHELO (0x02) - Skip HELO
@@ -164,10 +168,10 @@ impl MilterConnection {
                 // We want all steps, so protocol = 0
                 let protocol = 0u32;
                 response.extend_from_slice(&protocol.to_be_bytes());
-                
+
                 // Reserved fields (12 bytes of zeros)
                 response.extend_from_slice(&[0u8; 12]);
-                
+
                 self.send_response(SMFIC_OPTNEG, &response)?;
                 log::debug!("Sent option negotiation response");
                 Ok(true)
@@ -180,7 +184,9 @@ impl MilterConnection {
                 Ok(true)
             }
             SMFIC_HELO => {
-                let helo = String::from_utf8_lossy(&data).trim_end_matches('\0').to_string();
+                let helo = String::from_utf8_lossy(&data)
+                    .trim_end_matches('\0')
+                    .to_string();
                 log::debug!("HELO: {}", helo);
                 self.context.helo = Some(helo);
                 self.send_response(SMFIR_CONTINUE, &[])?;
@@ -213,8 +219,12 @@ impl MilterConnection {
                 if !data.is_empty() {
                     let macro_stage = data[0];
                     let macro_data = &data[1..];
-                    log::debug!("Macro stage: 0x{:02x}, data length: {}", macro_stage, macro_data.len());
-                    
+                    log::debug!(
+                        "Macro stage: 0x{:02x}, data length: {}",
+                        macro_stage,
+                        macro_data.len()
+                    );
+
                     // Parse macro data if needed (format: name\0value\0name\0value\0...)
                     // For now, we'll just log and continue
                     if log::log_enabled!(log::Level::Debug) {
@@ -228,21 +238,21 @@ impl MilterConnection {
             SMFIC_HEADER => {
                 let (name, value) = self.parse_header_data(&data)?;
                 log::debug!("Header: {}: {}", name, value);
-                
+
                 // Store important headers
                 match name.to_lowercase().as_str() {
                     "subject" => self.context.subject = Some(value.clone()),
                     "x-mailer" | "user-agent" => self.context.mailer = Some(value.clone()),
                     _ => {}
                 }
-                
+
                 self.context.headers.insert(name, value);
-                
+
                 // Check if we have enough information to evaluate rules
                 // We need at least sender and either subject or mailer for most rules
-                if self.context.sender.is_some() && 
-                   (self.context.subject.is_some() || self.context.mailer.is_some()) {
-                    
+                if self.context.sender.is_some()
+                    && (self.context.subject.is_some() || self.context.mailer.is_some())
+                {
                     let action = self.engine.evaluate(&self.context);
                     match action {
                         Action::Reject { message } => {
@@ -251,38 +261,48 @@ impl MilterConnection {
                             self.send_response(SMFIR_REPLYCODE, response.as_bytes())?;
                             return Ok(true);
                         }
-                        Action::TagAsSpam { header_name, header_value } => {
+                        Action::TagAsSpam {
+                            header_name,
+                            header_value,
+                        } => {
                             log::info!("Adding spam header: {}: {}", header_name, header_value);
                             let header_data = format!("{}\0{}\0", header_name, header_value);
                             self.send_response(SMFIR_ADDHEADER, header_data.as_bytes())?;
                             // Continue processing but mark as evaluated
-                            self.context.headers.insert("_FOFF_EVALUATED".to_string(), "true".to_string());
+                            self.context
+                                .headers
+                                .insert("_FOFF_EVALUATED".to_string(), "true".to_string());
                         }
                         Action::Accept => {
                             log::debug!("Message accepted during header processing");
                             // Mark as evaluated to avoid double-processing
-                            self.context.headers.insert("_FOFF_EVALUATED".to_string(), "true".to_string());
+                            self.context
+                                .headers
+                                .insert("_FOFF_EVALUATED".to_string(), "true".to_string());
                         }
                     }
                 }
-                
+
                 self.send_response(SMFIR_CONTINUE, &[])?;
                 Ok(true)
             }
             SMFIC_EOH => {
                 log::debug!("End of headers - checking if evaluation needed");
-                
+
                 // Only evaluate if we haven't already done so during header processing
                 if !self.context.headers.contains_key("_FOFF_EVALUATED") {
                     let action = self.engine.evaluate(&self.context);
-                    
+
                     match action {
                         Action::Reject { message } => {
                             log::info!("Rejecting message: {}", message);
                             let response = format!("550 5.7.1 {}", message);
                             self.send_response(SMFIR_REPLYCODE, response.as_bytes())?;
                         }
-                        Action::TagAsSpam { header_name, header_value } => {
+                        Action::TagAsSpam {
+                            header_name,
+                            header_value,
+                        } => {
                             log::info!("Adding spam header: {}: {}", header_name, header_value);
                             let header_data = format!("{}\0{}\0", header_name, header_value);
                             self.send_response(SMFIR_ADDHEADER, header_data.as_bytes())?;
@@ -350,7 +370,7 @@ impl MilterConnection {
         // Header data format: name\0value\0
         let data_str = String::from_utf8_lossy(data);
         let parts: Vec<&str> = data_str.split('\0').collect();
-        
+
         if parts.len() >= 2 {
             Ok((parts[0].to_string(), parts[1].to_string()))
         } else {
@@ -390,10 +410,12 @@ impl FoffMilter {
 
     pub fn process_header(&mut self, name: &str, value: &str) {
         log::debug!("Header: {}: {}", name, value);
-        
+
         // Store all headers
-        self.context.headers.insert(name.to_lowercase(), value.to_string());
-        
+        self.context
+            .headers
+            .insert(name.to_lowercase(), value.to_string());
+
         // Extract specific headers we care about
         match name.to_lowercase().as_str() {
             "subject" => {
@@ -419,30 +441,30 @@ impl FoffMilter {
 // Simple milter server implementation
 pub fn run_milter(config: Config, demo_mode: bool) -> anyhow::Result<()> {
     log::info!("Starting FOFF milter with socket: {}", config.socket_path);
-    
+
     // Remove existing socket file if it exists
     if Path::new(&config.socket_path).exists() {
         log::info!("Removing existing socket file: {}", config.socket_path);
         std::fs::remove_file(&config.socket_path)?;
     }
-    
+
     // Create the milter instance
     let mut milter = FoffMilter::new(config.clone())?;
-    
+
     log::info!("FOFF milter initialized successfully");
     log::info!("Socket path: {}", config.socket_path);
     log::info!("Number of rules loaded: {}", config.rules.len());
-    
+
     if demo_mode {
         log::info!("Running in demonstration mode...");
         demonstrate_functionality(&mut milter);
         return Ok(());
     }
-    
+
     // Production mode - create and bind to Unix socket
     log::info!("Starting milter daemon...");
     log::info!("Creating Unix socket: {}", config.socket_path);
-    
+
     // Create parent directory if it doesn't exist
     if let Some(parent) = Path::new(&config.socket_path).parent() {
         if !parent.exists() {
@@ -450,13 +472,13 @@ pub fn run_milter(config: Config, demo_mode: bool) -> anyhow::Result<()> {
             std::fs::create_dir_all(parent)?;
         }
     }
-    
+
     // Create the Unix socket
     let listener = UnixListener::bind(&config.socket_path)
         .map_err(|e| anyhow::anyhow!("Failed to bind to socket {}: {}", config.socket_path, e))?;
-    
+
     log::info!("Successfully bound to socket: {}", config.socket_path);
-    
+
     // Set socket permissions (readable/writable by owner and group)
     #[cfg(unix)]
     {
@@ -466,20 +488,20 @@ pub fn run_milter(config: Config, demo_mode: bool) -> anyhow::Result<()> {
         std::fs::set_permissions(&config.socket_path, perms)?;
         log::info!("Set socket permissions to 660");
     }
-    
+
     log::info!("Milter daemon started successfully");
     log::info!("Waiting for email connections from sendmail/postfix...");
     log::info!("Press Ctrl+C to stop the milter");
-    
+
     // Set up signal handling for graceful shutdown
     let running = Arc::new(AtomicBool::new(true));
     let r = running.clone();
     let socket_path_for_cleanup = config.socket_path.clone();
-    
+
     ctrlc::set_handler(move || {
         log::info!("Received shutdown signal, cleaning up...");
         r.store(false, Ordering::SeqCst);
-        
+
         // Clean up socket file
         if Path::new(&socket_path_for_cleanup).exists() {
             if let Err(e) = std::fs::remove_file(&socket_path_for_cleanup) {
@@ -488,21 +510,22 @@ pub fn run_milter(config: Config, demo_mode: bool) -> anyhow::Result<()> {
                 log::info!("Socket file removed: {}", socket_path_for_cleanup);
             }
         }
-        
+
         std::process::exit(0);
-    }).map_err(|e| anyhow::anyhow!("Error setting up signal handler: {}", e))?;
-    
+    })
+    .map_err(|e| anyhow::anyhow!("Error setting up signal handler: {}", e))?;
+
     // Create the filter engine once for sharing
     let filter_engine = Arc::new(FilterEngine::new(config.clone())?);
-    
+
     // Main event loop - accept connections and spawn threads
     while running.load(Ordering::SeqCst) {
         match listener.accept() {
             Ok((stream, _addr)) => {
                 log::info!("Accepted milter connection from mail server");
-                
+
                 let engine_clone = filter_engine.clone();
-                
+
                 // Spawn a thread to handle this connection
                 thread::spawn(move || {
                     let mut connection = MilterConnection::new(stream, engine_clone);
@@ -517,42 +540,52 @@ pub fn run_milter(config: Config, demo_mode: bool) -> anyhow::Result<()> {
             }
         }
     }
-    
+
     // Clean up socket file on normal exit
     if Path::new(&config.socket_path).exists() {
         std::fs::remove_file(&config.socket_path)?;
         log::info!("Socket file cleaned up: {}", config.socket_path);
     }
-    
+
     Ok(())
 }
 
 fn demonstrate_functionality(milter: &mut FoffMilter) {
     log::info!("Demonstrating milter functionality...");
-    
+
     // Test 1: Chinese service with Japanese content (Example 1)
     log::info!("=== Test 1: Chinese service with Japanese content ===");
     milter.process_connection("mail-server.example.cn");
     milter.process_mail_from("sender@suspicious.cn");
     milter.process_rcpt_to("recipient@mydomain.com");
-    milter.process_header("Subject", "こんにちは！特別なオファー - Hello Special Offer"); // Japanese + English
+    milter.process_header(
+        "Subject",
+        "こんにちは！特別なオファー - Hello Special Offer",
+    ); // Japanese + English
     milter.process_header("X-Mailer", "service.mail.cn v2.1");
-    
+
     let action = milter.evaluate_message();
     match action {
         Action::Reject { message } => {
             log::info!("✓ Would reject Chinese service + Japanese: {}", message);
         }
-        Action::TagAsSpam { header_name, header_value } => {
-            log::info!("✓ Would tag Chinese service + Japanese {}:{}", header_name, header_value);
+        Action::TagAsSpam {
+            header_name,
+            header_value,
+        } => {
+            log::info!(
+                "✓ Would tag Chinese service + Japanese {}:{}",
+                header_name,
+                header_value
+            );
         }
         Action::Accept => {
             log::info!("✗ Unexpectedly accepted Chinese service + Japanese");
         }
     }
-    
+
     milter.reset_context();
-    
+
     // Test 2: Sparkpost to user@example.com (Example 2)
     log::info!("=== Test 2: Sparkpost to user@example.com ===");
     milter.process_connection("sparkpost-relay.example.com");
@@ -560,22 +593,29 @@ fn demonstrate_functionality(milter: &mut FoffMilter) {
     milter.process_rcpt_to("user@example.com");
     milter.process_header("Subject", "Your Weekly Newsletter");
     milter.process_header("X-Mailer", "relay.sparkpostmail.com v3.2");
-    
+
     let action = milter.evaluate_message();
     match action {
         Action::Reject { message } => {
             log::info!("✓ Would reject Sparkpost to user@example.com: {}", message);
         }
-        Action::TagAsSpam { header_name, header_value } => {
-            log::info!("✓ Would tag Sparkpost to user@example.com {}:{}", header_name, header_value);
+        Action::TagAsSpam {
+            header_name,
+            header_value,
+        } => {
+            log::info!(
+                "✓ Would tag Sparkpost to user@example.com {}:{}",
+                header_name,
+                header_value
+            );
         }
         Action::Accept => {
             log::info!("✗ Unexpectedly accepted Sparkpost to user@example.com");
         }
     }
-    
+
     milter.reset_context();
-    
+
     // Test 3: Chinese service without Japanese (should not match Example 1)
     log::info!("=== Test 3: Chinese service without Japanese ===");
     milter.process_connection("mail-server.example.cn");
@@ -583,22 +623,32 @@ fn demonstrate_functionality(milter: &mut FoffMilter) {
     milter.process_rcpt_to("recipient@mydomain.com");
     milter.process_header("Subject", "Business Proposal - English Only");
     milter.process_header("X-Mailer", "service.business.cn v1.0");
-    
+
     let action = milter.evaluate_message();
     match action {
         Action::Reject { message } => {
-            log::info!("✗ Unexpectedly rejected Chinese service without Japanese: {}", message);
+            log::info!(
+                "✗ Unexpectedly rejected Chinese service without Japanese: {}",
+                message
+            );
         }
-        Action::TagAsSpam { header_name, header_value } => {
-            log::info!("✗ Unexpectedly tagged Chinese service without Japanese {}:{}", header_name, header_value);
+        Action::TagAsSpam {
+            header_name,
+            header_value,
+        } => {
+            log::info!(
+                "✗ Unexpectedly tagged Chinese service without Japanese {}:{}",
+                header_name,
+                header_value
+            );
         }
         Action::Accept => {
             log::info!("✓ Correctly accepted Chinese service without Japanese");
         }
     }
-    
+
     milter.reset_context();
-    
+
     // Test 4: Sparkpost to different user (should not match Example 2)
     log::info!("=== Test 4: Sparkpost to different user ===");
     milter.process_connection("sparkpost-relay.example.com");
@@ -606,22 +656,32 @@ fn demonstrate_functionality(milter: &mut FoffMilter) {
     milter.process_rcpt_to("admin@example.com");
     milter.process_header("Subject", "Your Weekly Newsletter");
     milter.process_header("X-Mailer", "relay.sparkpostmail.com v3.2");
-    
+
     let action = milter.evaluate_message();
     match action {
         Action::Reject { message } => {
-            log::info!("✗ Unexpectedly rejected Sparkpost to different user: {}", message);
+            log::info!(
+                "✗ Unexpectedly rejected Sparkpost to different user: {}",
+                message
+            );
         }
-        Action::TagAsSpam { header_name, header_value } => {
-            log::info!("✗ Unexpectedly tagged Sparkpost to different user {}:{}", header_name, header_value);
+        Action::TagAsSpam {
+            header_name,
+            header_value,
+        } => {
+            log::info!(
+                "✗ Unexpectedly tagged Sparkpost to different user {}:{}",
+                header_name,
+                header_value
+            );
         }
         Action::Accept => {
             log::info!("✓ Correctly accepted Sparkpost to different user");
         }
     }
-    
+
     milter.reset_context();
-    
+
     // Test 5: Japanese content without Chinese service (should not match Example 1)
     log::info!("=== Test 5: Japanese content without Chinese service ===");
     milter.process_connection("legitimate-host.jp");
@@ -629,22 +689,32 @@ fn demonstrate_functionality(milter: &mut FoffMilter) {
     milter.process_rcpt_to("recipient@mydomain.com");
     milter.process_header("Subject", "こんにちは、元気ですか？"); // Japanese only
     milter.process_header("X-Mailer", "Thunderbird 102.0");
-    
+
     let action = milter.evaluate_message();
     match action {
         Action::Reject { message } => {
-            log::info!("✗ Unexpectedly rejected Japanese without Chinese service: {}", message);
+            log::info!(
+                "✗ Unexpectedly rejected Japanese without Chinese service: {}",
+                message
+            );
         }
-        Action::TagAsSpam { header_name, header_value } => {
-            log::info!("✗ Unexpectedly tagged Japanese without Chinese service {}:{}", header_name, header_value);
+        Action::TagAsSpam {
+            header_name,
+            header_value,
+        } => {
+            log::info!(
+                "✗ Unexpectedly tagged Japanese without Chinese service {}:{}",
+                header_name,
+                header_value
+            );
         }
         Action::Accept => {
             log::info!("✓ Correctly accepted Japanese without Chinese service");
         }
     }
-    
+
     milter.reset_context();
-    
+
     // Test 6: Regular legitimate email (should not match any rules)
     log::info!("=== Test 6: Regular legitimate email ===");
     milter.process_connection("legitimate-host.example.com");
@@ -652,20 +722,27 @@ fn demonstrate_functionality(milter: &mut FoffMilter) {
     milter.process_rcpt_to("recipient@mydomain.com");
     milter.process_header("Subject", "Regular business email");
     milter.process_header("X-Mailer", "Postfix 3.6.4");
-    
+
     let action = milter.evaluate_message();
     match action {
         Action::Reject { message } => {
             log::info!("✗ Unexpectedly rejected legitimate email: {}", message);
         }
-        Action::TagAsSpam { header_name, header_value } => {
-            log::info!("✗ Unexpectedly tagged legitimate email {}:{}", header_name, header_value);
+        Action::TagAsSpam {
+            header_name,
+            header_value,
+        } => {
+            log::info!(
+                "✗ Unexpectedly tagged legitimate email {}:{}",
+                header_name,
+                header_value
+            );
         }
         Action::Accept => {
             log::info!("✓ Correctly accepted legitimate email");
         }
     }
-    
+
     log::info!("=== Demonstration complete ===");
     log::info!("Summary:");
     log::info!("  ✓ Chinese service + Japanese → BLOCKED (Example 1)");

@@ -1,5 +1,5 @@
 use clap::{Arg, Command};
-use foff_milter::{Config, run_milter};
+use foff_milter::{run_milter, Config};
 use log::LevelFilter;
 use std::process;
 
@@ -13,33 +13,33 @@ fn main() {
                 .long("config")
                 .value_name("FILE")
                 .help("Configuration file path")
-                .default_value("/etc/foff-milter.yaml")
+                .default_value("/etc/foff-milter.yaml"),
         )
         .arg(
             Arg::new("generate-config")
                 .long("generate-config")
                 .value_name("FILE")
                 .help("Generate a default configuration file")
-                .action(clap::ArgAction::Set)
+                .action(clap::ArgAction::Set),
         )
         .arg(
             Arg::new("test-config")
                 .long("test-config")
                 .help("Test the configuration file and exit")
-                .action(clap::ArgAction::SetTrue)
+                .action(clap::ArgAction::SetTrue),
         )
         .arg(
             Arg::new("demo")
                 .long("demo")
                 .help("Run in demonstration mode (simulate email processing)")
-                .action(clap::ArgAction::SetTrue)
+                .action(clap::ArgAction::SetTrue),
         )
         .arg(
             Arg::new("verbose")
                 .short('v')
                 .long("verbose")
                 .help("Enable verbose logging")
-                .action(clap::ArgAction::SetTrue)
+                .action(clap::ArgAction::SetTrue),
         )
         .get_matches();
 
@@ -49,7 +49,7 @@ fn main() {
     } else {
         LevelFilter::Info
     };
-    
+
     env_logger::Builder::from_default_env()
         .filter_level(log_level)
         .init();
@@ -82,7 +82,7 @@ fn main() {
     let demo_mode = matches.get_flag("demo");
 
     log::info!("Starting FOFF milter...");
-    
+
     if let Err(e) = run_milter(config, demo_mode) {
         log::error!("Milter error: {}", e);
         process::exit(1);
@@ -93,7 +93,10 @@ fn load_config(path: &str) -> anyhow::Result<Config> {
     if std::path::Path::new(path).exists() {
         Config::from_file(path)
     } else {
-        log::warn!("Configuration file '{}' not found, using default configuration", path);
+        log::warn!(
+            "Configuration file '{}' not found, using default configuration",
+            path
+        );
         Ok(Config::default())
     }
 }

@@ -98,7 +98,7 @@ impl LanguageDetector {
 
     pub fn detect_languages(text: &str) -> Vec<String> {
         let mut languages = Vec::new();
-        
+
         if Self::contains_japanese(text) {
             languages.push("Japanese".to_string());
         }
@@ -120,7 +120,7 @@ impl LanguageDetector {
         if Self::contains_hebrew(text) {
             languages.push("Hebrew".to_string());
         }
-        
+
         languages
     }
 }
@@ -168,7 +168,10 @@ mod tests {
 
     #[test]
     fn test_language_detection_api() {
-        assert!(LanguageDetector::contains_language("こんにちは", "japanese"));
+        assert!(LanguageDetector::contains_language(
+            "こんにちは",
+            "japanese"
+        ));
         assert!(LanguageDetector::contains_language("こんにちは", "ja"));
         assert!(LanguageDetector::contains_language("你好", "chinese"));
         assert!(LanguageDetector::contains_language("안녕하세요", "korean"));
