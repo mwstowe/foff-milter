@@ -94,9 +94,9 @@ fn main() {
         #[cfg(unix)]
         {
             use std::process;
-            
+
             log::info!("Starting FOFF milter in daemon mode...");
-            
+
             // Fork the process
             match unsafe { libc::fork() } {
                 -1 => {
@@ -110,16 +110,16 @@ fn main() {
                         log::error!("Failed to create new session");
                         process::exit(1);
                     }
-                    
+
                     // Change working directory to root
-                    if unsafe { libc::chdir(b"/\0".as_ptr() as *const i8) } == -1 {
+                    if unsafe { libc::chdir(c"/".as_ptr()) } == -1 {
                         log::warn!("Failed to change working directory to /");
                     }
-                    
+
                     // Close standard file descriptors
                     unsafe {
                         libc::close(0); // stdin
-                        libc::close(1); // stdout  
+                        libc::close(1); // stdout
                         libc::close(2); // stderr
                     }
                 }
@@ -129,7 +129,7 @@ fn main() {
                 }
             }
         }
-        
+
         #[cfg(not(unix))]
         {
             log::warn!("Daemon mode not supported on this platform, running in foreground");

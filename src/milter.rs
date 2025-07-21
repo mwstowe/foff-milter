@@ -23,20 +23,32 @@ const SMFIC_RCPT: u8 = b'R';
 const SMFIC_DATA: u8 = b'T';
 
 // Milter response constants
+#[allow(dead_code)]
 const SMFIR_ADDRCPT: u8 = b'+';
+#[allow(dead_code)]
 const SMFIR_DELRCPT: u8 = b'-';
 const SMFIR_ACCEPT: u8 = b'a';
+#[allow(dead_code)]
 const SMFIR_REPLBODY: u8 = b'b';
 const SMFIR_CONTINUE: u8 = b'c';
+#[allow(dead_code)]
 const SMFIR_DISCARD: u8 = b'd';
 const SMFIR_ADDHEADER: u8 = b'h';
+#[allow(dead_code)]
 const SMFIR_INSHEADER: u8 = b'i';
+#[allow(dead_code)]
 const SMFIR_SETSYMLIST: u8 = b'l';
+#[allow(dead_code)]
 const SMFIR_CHGHEADER: u8 = b'm';
+#[allow(dead_code)]
 const SMFIR_PROGRESS: u8 = b'p';
+#[allow(dead_code)]
 const SMFIR_QUARANTINE: u8 = b'q';
+#[allow(dead_code)]
 const SMFIR_REJECT: u8 = b'r';
+#[allow(dead_code)]
 const SMFIR_SKIP: u8 = b's';
+#[allow(dead_code)]
 const SMFIR_TEMPFAIL: u8 = b't';
 const SMFIR_REPLYCODE: u8 = b'y';
 
