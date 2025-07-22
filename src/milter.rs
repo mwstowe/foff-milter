@@ -271,7 +271,8 @@ impl MilterConnection {
                 if self.context.sender.is_some()
                     && (self.context.subject.is_some() || self.context.mailer.is_some())
                     && !self.context.headers.contains_key("_FOFF_EVALUATED")
-                    && self.context.headers.len() > 4  // Wait for more headers (DKIM, From, Subject, etc.)
+                    && self.context.headers.len() > 4
+                // Wait for more headers (DKIM, From, Subject, etc.)
                 {
                     let action = self.engine.evaluate(&self.context);
                     match action {
@@ -403,8 +404,11 @@ impl MilterConnection {
         if header.contains("=?utf-8?B?") {
             // Base64 encoded UTF-8
             let parts: Vec<&str> = header.split("?").collect();
-            if parts.len() >= 4 && parts[1].to_lowercase() == "utf-8" && parts[2].to_uppercase() == "B" {
-                use base64::{Engine as _, engine::general_purpose};
+            if parts.len() >= 4
+                && parts[1].to_lowercase() == "utf-8"
+                && parts[2].to_uppercase() == "B"
+            {
+                use base64::{engine::general_purpose, Engine as _};
                 if let Ok(decoded_bytes) = general_purpose::STANDARD.decode(parts[3]) {
                     if let Ok(decoded_string) = String::from_utf8(decoded_bytes) {
                         return decoded_string;
