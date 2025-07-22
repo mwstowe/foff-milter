@@ -1,0 +1,59 @@
+socket_path: "/var/run/foff-milter.sock"
+default_action:
+  type: "Accept"
+
+rules:
+  # Tag emails with invalid unsubscribe links (DNS check only - fast)
+  - name: "Invalid unsubscribe links (DNS only)"
+    criteria:
+      type: "UnsubscribeLinkValidation"
+      timeout_seconds: 3
+      check_dns: true
+      check_http: false
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Invalid-Unsubscribe"
+      header_value: "DNS validation failed"
+
+  # More thorough validation (DNS + HTTP - slower but more accurate)
+  - name: "Invalid unsubscribe links (full validation)"
+    criteria:
+      type: "UnsubscribeLinkValidation"
+      timeout_seconds: 5
+      check_dns: true
+      check_http: true
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Invalid-Unsubscribe-Full"
+      header_value: "Full validation failed"
+
+  # Combine with other criteria for more targeted filtering
+  - name: "Suspicious sender with invalid unsubscribe"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@.*\\.(tk|ml|ga|cf)$"  # Suspicious TLDs
+        - type: "UnsubscribeLinkValidation"
+          timeout_seconds: 3
+          check_dns: true
+          check_http: false
+    action:
+      type: "Reject"
+      message: "Suspicious sender with invalid unsubscribe link"
+
+  # Tag javaburrn with unsubscribe validation
+  - name: "Javaburrn with invalid unsubscribe"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@.*javaburrn\\.rest$"
+        - type: "UnsubscribeLinkValidation"
+          timeout_seconds: 2
+          check_dns: true
+          check_http: false
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Javaburrn-Invalid-Unsub"
+      header_value: "Javaburrn with invalid unsubscribe link"

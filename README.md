@@ -74,6 +74,7 @@ rules:
 - **HeaderPattern**: Match against any email header
 - **SubjectContainsLanguage**: Detect specific languages in email subject
 - **HeaderContainsLanguage**: Detect specific languages in email headers
+- **UnsubscribeLinkValidation**: Validate unsubscribe links in email body and headers
 - **And**: All sub-criteria must match
 - **Or**: Any sub-criteria must match
 
@@ -235,6 +236,21 @@ sudo systemctl restart postfix
     type: "TagAsSpam"
     header_name: "X-Spam-Chinese-Suspicious"
     header_value: "Chinese content from suspicious domain"
+```
+
+### Unsubscribe link validation
+
+```yaml
+- name: "Tag emails with invalid unsubscribe links"
+  criteria:
+    type: "UnsubscribeLinkValidation"
+    timeout_seconds: 5        # Optional: timeout for validation (default: 5)
+    check_dns: true          # Optional: check DNS resolution (default: true)
+    check_http: false        # Optional: check HTTP accessibility (default: false)
+  action:
+    type: "TagAsSpam"
+    header_name: "X-Spam-Invalid-Unsubscribe"
+    header_value: "Unsubscribe link validation failed"
 ```
 
 ### Complex rule with multiple conditions

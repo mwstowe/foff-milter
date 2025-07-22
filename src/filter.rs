@@ -2,6 +2,10 @@ use crate::config::{Action, Config, Criteria};
 use crate::language::LanguageDetector;
 use regex::Regex;
 use std::collections::HashMap;
+use std::time::Duration;
+use trust_dns_resolver::config::*;
+use trust_dns_resolver::Resolver;
+use url::Url;
 
 pub struct FilterEngine {
     config: Config,
@@ -17,6 +21,7 @@ pub struct MailContext {
     pub subject: Option<String>,
     pub hostname: Option<String>,
     pub helo: Option<String>,
+    pub body: Option<String>,
 }
 
 impl FilterEngine {
@@ -104,6 +109,10 @@ impl FilterEngine {
                     return Err(anyhow::anyhow!("Unsupported language: {}", language));
                 }
             }
+            Criteria::UnsubscribeLinkValidation { .. } => {
+                // No regex patterns to compile for unsubscribe link validation
+                // Validation is done at runtime
+            }
             Criteria::And { criteria } | Criteria::Or { criteria } => {
                 for c in criteria {
                     self.compile_criteria_patterns(c)?;
@@ -130,6 +139,139 @@ impl FilterEngine {
             self.config.default_action
         );
         &self.config.default_action
+    }
+
+    /// Extract unsubscribe links from email body and headers
+    fn extract_unsubscribe_links(&self, context: &MailContext) -> Vec<String> {
+        let mut links = Vec::new();
+        
+        // Check List-Unsubscribe header (RFC 2369)
+        if let Some(list_unsubscribe) = context.headers.get("list-unsubscribe") {
+            // Extract URLs from List-Unsubscribe header: <url1>, <url2>
+            let url_regex = Regex::new(r"<(https?://[^>]+)>").unwrap();
+            for cap in url_regex.captures_iter(list_unsubscribe) {
+                if let Some(url) = cap.get(1) {
+                    links.push(url.as_str().to_string());
+                }
+            }
+        }
+        
+        // Check email body for unsubscribe links
+        if let Some(body) = &context.body {
+            // Look for common unsubscribe link patterns
+            let unsubscribe_patterns = [
+                r#"(?i)href=["'](https?://[^"']*unsubscribe[^"']*)["']"#,
+                r#"(?i)href=["'](https?://[^"']*opt[_-]?out[^"']*)["']"#,
+                r#"(?i)href=["'](https?://[^"']*remove[^"']*)["']"#,
+                r#"(?i)(https?://[^\s<>"']*unsubscribe[^\s<>"']*)"#,
+                r#"(?i)(https?://[^\s<>"']*opt[_-]?out[^\s<>"']*)"#,
+            ];
+            
+            for pattern in &unsubscribe_patterns {
+                if let Ok(regex) = Regex::new(pattern) {
+                    for cap in regex.captures_iter(body) {
+                        if let Some(url) = cap.get(1) {
+                            links.push(url.as_str().to_string());
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Remove duplicates and return
+        links.sort();
+        links.dedup();
+        links
+    }
+
+    /// Validate an unsubscribe link
+    fn validate_unsubscribe_link(&self, url: &str, timeout_seconds: u64, check_dns: bool, check_http: bool) -> bool {
+        log::debug!("Validating unsubscribe link: {}", url);
+        
+        // Parse URL
+        let parsed_url = match Url::parse(url) {
+            Ok(url) => url,
+            Err(e) => {
+                log::debug!("Invalid URL format: {}", e);
+                return false;
+            }
+        };
+        
+        // Get hostname
+        let hostname = match parsed_url.host_str() {
+            Some(host) => host,
+            None => {
+                log::debug!("No hostname in URL");
+                return false;
+            }
+        };
+        
+        // DNS validation
+        if check_dns {
+            log::debug!("Checking DNS for hostname: {}", hostname);
+            let resolver = match Resolver::new(ResolverConfig::default(), ResolverOpts::default()) {
+                Ok(resolver) => resolver,
+                Err(e) => {
+                    log::debug!("Failed to create DNS resolver: {}", e);
+                    return false;
+                }
+            };
+            
+            match resolver.lookup_ip(hostname) {
+                Ok(response) => {
+                    if response.iter().count() == 0 {
+                        log::debug!("DNS lookup returned no results for {}", hostname);
+                        return false;
+                    }
+                    log::debug!("DNS lookup successful for {}", hostname);
+                }
+                Err(e) => {
+                    log::debug!("DNS lookup failed for {}: {}", hostname, e);
+                    return false;
+                }
+            }
+        }
+        
+        // HTTP validation
+        if check_http {
+            log::debug!("Checking HTTP accessibility for: {}", url);
+            let client = reqwest::blocking::Client::builder()
+                .timeout(Duration::from_secs(timeout_seconds))
+                .user_agent("FOFF-Milter/1.0")
+                .build();
+                
+            let client = match client {
+                Ok(client) => client,
+                Err(e) => {
+                    log::debug!("Failed to create HTTP client: {}", e);
+                    return false;
+                }
+            };
+            
+            // Use HEAD request to avoid downloading content
+            match client.head(url).send() {
+                Ok(response) => {
+                    let status = response.status();
+                    log::debug!("HTTP HEAD response: {} for {}", status, url);
+                    
+                    // Consider 2xx, 3xx, and even 405 (Method Not Allowed) as valid
+                    // Some servers don't support HEAD but the URL might still be valid
+                    if status.is_success() || status.is_redirection() || status == 405 {
+                        return true;
+                    } else {
+                        log::debug!("HTTP validation failed with status: {}", status);
+                        return false;
+                    }
+                }
+                Err(e) => {
+                    log::debug!("HTTP request failed: {}", e);
+                    return false;
+                }
+            }
+        }
+        
+        // If we're not checking HTTP, DNS success is enough
+        true
     }
 
     fn evaluate_criteria(&self, criteria: &Criteria, context: &MailContext) -> bool {
@@ -186,6 +328,34 @@ impl FilterEngine {
                     return LanguageDetector::contains_language(header_value, language);
                 }
                 false
+            }
+            Criteria::UnsubscribeLinkValidation { timeout_seconds, check_dns, check_http } => {
+                let timeout = timeout_seconds.unwrap_or(5); // Default 5 second timeout
+                let dns_check = check_dns.unwrap_or(true);  // Default: check DNS
+                let http_check = check_http.unwrap_or(false); // Default: don't check HTTP (faster)
+                
+                log::debug!("Checking unsubscribe link validation (timeout: {}s, DNS: {}, HTTP: {})", 
+                           timeout, dns_check, http_check);
+                
+                let links = self.extract_unsubscribe_links(context);
+                
+                if links.is_empty() {
+                    log::debug!("No unsubscribe links found");
+                    return false; // No unsubscribe links found - suspicious
+                }
+                
+                log::debug!("Found {} unsubscribe links: {:?}", links.len(), links);
+                
+                // Check if ANY unsubscribe link is invalid
+                for link in &links {
+                    if !self.validate_unsubscribe_link(link, timeout, dns_check, http_check) {
+                        log::info!("Invalid unsubscribe link detected: {}", link);
+                        return true; // Found invalid link - matches criteria
+                    }
+                }
+                
+                log::debug!("All unsubscribe links are valid");
+                false // All links are valid
             }
             Criteria::And { criteria } => {
                 criteria.iter().all(|c| self.evaluate_criteria(c, context))

@@ -24,6 +24,11 @@ pub enum Criteria {
     HeaderPattern { header: String, pattern: String },
     SubjectContainsLanguage { language: String },
     HeaderContainsLanguage { header: String, language: String },
+    UnsubscribeLinkValidation { 
+        timeout_seconds: Option<u64>,
+        check_dns: Option<bool>,
+        check_http: Option<bool>,
+    },
     And { criteria: Vec<Criteria> },
     Or { criteria: Vec<Criteria> },
 }

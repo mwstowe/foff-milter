@@ -361,7 +361,21 @@ impl MilterConnection {
                 Ok(true)
             }
             SMFIC_BODY => {
-                // We don't need to process body for our current rules
+                // Capture body content for unsubscribe link validation
+                if data.len() > 1 {
+                    let body_chunk = String::from_utf8_lossy(&data[1..]);
+                    log::debug!("Body chunk received: {} bytes", body_chunk.len());
+                    
+                    // Append to existing body content
+                    match &mut self.context.body {
+                        Some(existing_body) => {
+                            existing_body.push_str(&body_chunk);
+                        }
+                        None => {
+                            self.context.body = Some(body_chunk.to_string());
+                        }
+                    }
+                }
                 self.send_response(SMFIR_CONTINUE, &[])?;
                 Ok(true)
             }
@@ -507,7 +521,17 @@ impl FoffMilter {
         }
     }
 
+    pub fn process_body(&mut self, body: &str) {
+        log::debug!("Body content: {} bytes", body.len());
+        self.context.body = Some(body.to_string());
+    }
+
     pub fn evaluate_message(&self) -> &Action {
+        log::debug!("=== EVALUATION DEBUG ===");
+        log::debug!("Sender: {:?}", self.context.sender);
+        log::debug!("Recipients: {:?}", self.context.recipients);
+        log::debug!("Headers count: {}", self.context.headers.len());
+        log::debug!("========================");
         log::debug!("Evaluating message against rules");
         self.engine.evaluate(&self.context)
     }
@@ -852,6 +876,66 @@ fn demonstrate_functionality(milter: &mut FoffMilter) {
         }
         Action::Accept => {
             log::info!("✗ Unexpectedly accepted Russian domain without tagging");
+        }
+    }
+
+    milter.reset_context();
+
+    // Test 8: Javaburrn domain tagging (typosquatting)
+    log::info!("=== Test 8: Javaburrn domain tagging ===");
+    milter.process_connection("garden.javaburrn.rest");
+    milter.process_mail_from("WeirdShrub@javaburrn.rest");
+    milter.process_rcpt_to("user@example.com");
+    milter.process_header("Subject", "The African Shrub that Awakens Your Deepest Desire...");
+    milter.process_header("From", "African Shrub <WeirdShrub@javaburrn.rest>");
+
+    let action = milter.evaluate_message();
+    match action {
+        Action::Reject { message } => {
+            log::info!("✗ Unexpectedly rejected javaburrn domain: {message}");
+        }
+        Action::TagAsSpam {
+            header_name,
+            header_value,
+        } => {
+            log::info!("✓ Would tag javaburrn domain {header_name}:{header_value}");
+        }
+        Action::Accept => {
+            log::info!("✗ Unexpectedly accepted javaburrn domain without tagging");
+        }
+    }
+
+    milter.reset_context();
+
+    // Test 9: Unsubscribe link validation
+    log::info!("=== Test 9: Unsubscribe link validation ===");
+    milter.process_connection("spam.example.com");
+    milter.process_mail_from("spammer@spam.example.com");
+    milter.process_rcpt_to("user@example.com");
+    milter.process_header("Subject", "Amazing offer - click to unsubscribe!");
+    milter.process_header("From", "Spammer <spammer@spam.example.com>");
+    
+    // Simulate email body with fake unsubscribe link
+    milter.process_body(
+        r#"<html><body>
+        <p>Amazing offer! Buy now!</p>
+        <p><a href="http://fake-unsubscribe-domain-that-does-not-exist.invalid/unsubscribe">Unsubscribe here</a></p>
+        </body></html>"#
+    );
+
+    let action = milter.evaluate_message();
+    match action {
+        Action::Reject { message } => {
+            log::info!("✓ Would reject email with invalid unsubscribe: {message}");
+        }
+        Action::TagAsSpam {
+            header_name,
+            header_value,
+        } => {
+            log::info!("✓ Would tag email with invalid unsubscribe {header_name}:{header_value}");
+        }
+        Action::Accept => {
+            log::info!("✗ Unexpectedly accepted email with invalid unsubscribe");
         }
     }
 
