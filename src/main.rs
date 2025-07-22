@@ -93,9 +93,9 @@ fn main() {
     if daemon_mode && !demo_mode {
         #[cfg(unix)]
         {
-            use std::process;
             use std::fs::OpenOptions;
             use std::os::unix::io::AsRawFd;
+            use std::process;
 
             log::info!("Starting FOFF milter in daemon mode...");
 
@@ -155,14 +155,14 @@ fn main() {
             // This prevents issues with logging and other operations that might try to use them
             if let Ok(dev_null) = OpenOptions::new().read(true).write(true).open("/dev/null") {
                 let null_fd = dev_null.as_raw_fd();
-                
+
                 unsafe {
                     // Redirect stdin, stdout, stderr to /dev/null
                     libc::dup2(null_fd, 0); // stdin
-                    libc::dup2(null_fd, 1); // stdout  
+                    libc::dup2(null_fd, 1); // stdout
                     libc::dup2(null_fd, 2); // stderr
                 }
-                
+
                 // Don't close dev_null fd as it's being used
                 std::mem::forget(dev_null);
             } else {

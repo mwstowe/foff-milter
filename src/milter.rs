@@ -532,13 +532,12 @@ pub fn run_milter(config: Config, demo_mode: bool) -> anyhow::Result<()> {
     }
 
     // Create the Unix socket
-    let listener = UnixListener::bind(&config.socket_path)
-        .map_err(|e| {
-            log::error!("Failed to bind to socket {}: {}", config.socket_path, e);
-            log::error!("Make sure the directory exists and has proper permissions");
-            log::error!("Try: sudo mkdir -p /var/run && sudo chown milter:milter /var/run");
-            anyhow::anyhow!("Failed to bind to socket {}: {}", config.socket_path, e)
-        })?;
+    let listener = UnixListener::bind(&config.socket_path).map_err(|e| {
+        log::error!("Failed to bind to socket {}: {}", config.socket_path, e);
+        log::error!("Make sure the directory exists and has proper permissions");
+        log::error!("Try: sudo mkdir -p /var/run && sudo chown milter:milter /var/run");
+        anyhow::anyhow!("Failed to bind to socket {}: {}", config.socket_path, e)
+    })?;
 
     log::info!("Successfully bound to socket: {}", config.socket_path);
 
@@ -582,7 +581,7 @@ pub fn run_milter(config: Config, demo_mode: bool) -> anyhow::Result<()> {
     let filter_engine = Arc::new(FilterEngine::new(config.clone())?);
 
     log::info!("FOFF milter daemon started successfully, waiting for connections...");
-    
+
     // Track last heartbeat for daemon health monitoring
     let mut last_heartbeat = std::time::Instant::now();
     let heartbeat_interval = std::time::Duration::from_secs(300); // 5 minutes
@@ -591,11 +590,11 @@ pub fn run_milter(config: Config, demo_mode: bool) -> anyhow::Result<()> {
     while running.load(Ordering::SeqCst) {
         // Set a timeout on accept to allow periodic heartbeat logging
         listener.set_nonblocking(true)?;
-        
+
         match listener.accept() {
             Ok((stream, _addr)) => {
                 log::info!("Accepted milter connection from mail server");
-                
+
                 // Reset to blocking mode for the connection
                 stream.set_nonblocking(false)?;
 
@@ -608,7 +607,7 @@ pub fn run_milter(config: Config, demo_mode: bool) -> anyhow::Result<()> {
                         log::error!("Error handling milter connection: {e}");
                     }
                 });
-                
+
                 // Reset heartbeat timer on successful connection
                 last_heartbeat = std::time::Instant::now();
             }
