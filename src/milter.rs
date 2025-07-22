@@ -293,13 +293,14 @@ impl MilterConnection {
                             header_name,
                             header_value,
                         } => {
-                            log::info!("Adding spam header: {header_name}: {header_value}");
-                            let header_data = format!("{header_name}\0{header_value}\0");
-                            self.send_response(SMFIR_ADDHEADER, header_data.as_bytes())?;
+                            log::info!("Will add spam header: {header_name}: {header_value}");
+                            // Store the tagging action for end-of-message processing
+                            self.context.headers.insert("_FOFF_TAG_HEADER".to_string(), header_name.clone());
+                            self.context.headers.insert("_FOFF_TAG_VALUE".to_string(), header_value.clone());
                             // Continue processing but mark as evaluated
                             self.context
                                 .headers
-                                .insert("_FOFF_EVALUATED".to_string(), "true".to_string());
+                                .insert("_FOFF_EVALUATED".to_string(), "tagged".to_string());
                         }
                         Action::Accept => {
                             log::debug!("Message accepted during header processing");
@@ -331,9 +332,11 @@ impl MilterConnection {
                             header_name,
                             header_value,
                         } => {
-                            log::info!("Adding spam header: {header_name}: {header_value}");
-                            let header_data = format!("{header_name}\0{header_value}\0");
-                            self.send_response(SMFIR_ADDHEADER, header_data.as_bytes())?;
+                            log::info!("Will add spam header: {header_name}: {header_value}");
+                            // Store the tagging action for end-of-message processing
+                            self.context.headers.insert("_FOFF_TAG_HEADER".to_string(), header_name.clone());
+                            self.context.headers.insert("_FOFF_TAG_VALUE".to_string(), header_value.clone());
+                            self.context.headers.insert("_FOFF_EVALUATED".to_string(), "tagged".to_string());
                             self.send_response(SMFIR_CONTINUE, &[])?;
                         }
                         Action::Accept => {
@@ -354,6 +357,17 @@ impl MilterConnection {
             }
             SMFIC_BODYEOB => {
                 log::debug!("End of message");
+                
+                // Check if we need to add spam headers
+                if let (Some(header_name), Some(header_value)) = (
+                    self.context.headers.get("_FOFF_TAG_HEADER"),
+                    self.context.headers.get("_FOFF_TAG_VALUE")
+                ) {
+                    log::info!("Adding spam header: {header_name}: {header_value}");
+                    let header_data = format!("{header_name}\0{header_value}\0");
+                    self.send_response(SMFIR_ADDHEADER, header_data.as_bytes())?;
+                }
+                
                 self.send_response(SMFIR_ACCEPT, &[])?;
                 Ok(true)
             }
@@ -802,6 +816,32 @@ fn demonstrate_functionality(milter: &mut FoffMilter) {
         }
         Action::Accept => {
             log::info!("✓ Correctly accepted legitimate email");
+        }
+    }
+
+    milter.reset_context();
+
+    // Test 7: Russian domain tagging
+    log::info!("=== Test 7: Russian domain tagging ===");
+    milter.process_connection("mail.cartsgorilla.ru.com");
+    milter.process_mail_from("LiquidGold@cartsgorilla.ru.com");
+    milter.process_rcpt_to("user@example.com");
+    milter.process_header("Subject", "Doctor Caught Drinking THIS in His Kitchen");
+    milter.process_header("From", "Liquid Gold <LiquidGold@cartsgorilla.ru.com>");
+
+    let action = milter.evaluate_message();
+    match action {
+        Action::Reject { message } => {
+            log::info!("✗ Unexpectedly rejected Russian domain: {message}");
+        }
+        Action::TagAsSpam {
+            header_name,
+            header_value,
+        } => {
+            log::info!("✓ Would tag Russian domain {header_name}:{header_value}");
+        }
+        Action::Accept => {
+            log::info!("✗ Unexpectedly accepted Russian domain without tagging");
         }
     }
 
