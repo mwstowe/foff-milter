@@ -278,10 +278,10 @@ impl MilterConnection {
                     && self.context.headers.len() > 6
                 // Wait for more headers (DKIM, From, Subject, X-mailer, etc.)
                 {
-                    log::debug!("Evaluating rules with {} headers, sender: {:?}, subject: {:?}, mailer: {:?}", 
-                        self.context.headers.len(), 
-                        self.context.sender, 
-                        self.context.subject, 
+                    log::debug!("Evaluating rules with {} headers, sender: {:?}, subject: {:?}, mailer: {:?}",
+                        self.context.headers.len(),
+                        self.context.sender,
+                        self.context.subject,
                         self.context.mailer
                     );
                     let action = self.engine.evaluate(&self.context);
