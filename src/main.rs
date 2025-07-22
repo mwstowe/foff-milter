@@ -195,10 +195,7 @@ fn load_config(path: &str) -> anyhow::Result<Config> {
     if std::path::Path::new(path).exists() {
         Config::from_file(path)
     } else {
-        log::warn!(
-            "Configuration file '{}' not found, using default configuration",
-            path
-        );
+        log::warn!("Configuration file '{path}' not found, using default configuration");
         Ok(Config::default())
     }
 }
@@ -207,11 +204,11 @@ fn generate_default_config(path: &str) {
     let config = Config::default();
     match config.to_file(path) {
         Ok(()) => {
-            println!("Default configuration written to: {}", path);
+            println!("Default configuration written to: {path}");
             println!("Please edit the configuration file to suit your needs.");
         }
         Err(e) => {
-            eprintln!("Error writing configuration file: {}", e);
+            eprintln!("Error writing configuration file: {e}");
             process::exit(1);
         }
     }

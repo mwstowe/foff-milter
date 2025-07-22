@@ -11,7 +11,7 @@ impl LanguageDetector {
             "thai" | "th" => Self::contains_thai(text),
             "hebrew" | "he" => Self::contains_hebrew(text),
             _ => {
-                log::warn!("Unsupported language for detection: {}", language);
+                log::warn!("Unsupported language for detection: {language}");
                 false
             }
         }

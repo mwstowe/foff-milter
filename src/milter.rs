@@ -145,10 +145,7 @@ impl MilterConnection {
                     let protocol = u32::from_be_bytes([data[8], data[9], data[10], data[11]]);
 
                     log::debug!(
-                        "Sendmail version: {}, actions: 0x{:x}, protocol: 0x{:x}",
-                        version,
-                        actions,
-                        protocol
+                        "Sendmail version: {version}, actions: 0x{actions:x}, protocol: 0x{protocol:x}"
                     );
                 }
 
@@ -190,7 +187,7 @@ impl MilterConnection {
             }
             SMFIC_CONNECT => {
                 let hostname = self.parse_connect_data(&data)?;
-                log::debug!("Connection from: {}", hostname);
+                log::debug!("Connection from: {hostname}");
                 self.context.hostname = Some(hostname);
                 self.send_response(SMFIR_CONTINUE, &[])?;
                 Ok(true)
@@ -199,21 +196,21 @@ impl MilterConnection {
                 let helo = String::from_utf8_lossy(&data)
                     .trim_end_matches('\0')
                     .to_string();
-                log::debug!("HELO: {}", helo);
+                log::debug!("HELO: {helo}");
                 self.context.helo = Some(helo);
                 self.send_response(SMFIR_CONTINUE, &[])?;
                 Ok(true)
             }
             SMFIC_MAIL => {
                 let sender = self.parse_mail_data(&data)?;
-                log::debug!("Mail from: {}", sender);
+                log::debug!("Mail from: {sender}");
                 self.context.sender = Some(sender);
                 self.send_response(SMFIR_CONTINUE, &[])?;
                 Ok(true)
             }
             SMFIC_RCPT => {
                 let recipient = self.parse_mail_data(&data)?;
-                log::debug!("Rcpt to: {}", recipient);
+                log::debug!("Rcpt to: {recipient}");
                 self.context.recipients.push(recipient);
                 self.send_response(SMFIR_CONTINUE, &[])?;
                 Ok(true)
@@ -296,8 +293,8 @@ impl MilterConnection {
                             header_name,
                             header_value,
                         } => {
-                            log::info!("Adding spam header: {}: {}", header_name, header_value);
-                            let header_data = format!("{}\0{}\0", header_name, header_value);
+                            log::info!("Adding spam header: {header_name}: {header_value}");
+                            let header_data = format!("{header_name}\0{header_value}\0");
                             self.send_response(SMFIR_ADDHEADER, header_data.as_bytes())?;
                             // Continue processing but mark as evaluated
                             self.context
@@ -334,8 +331,8 @@ impl MilterConnection {
                             header_name,
                             header_value,
                         } => {
-                            log::info!("Adding spam header: {}: {}", header_name, header_value);
-                            let header_data = format!("{}\0{}\0", header_name, header_value);
+                            log::info!("Adding spam header: {header_name}: {header_value}");
+                            let header_data = format!("{header_name}\0{header_value}\0");
                             self.send_response(SMFIR_ADDHEADER, header_data.as_bytes())?;
                             self.send_response(SMFIR_CONTINUE, &[])?;
                         }
@@ -370,7 +367,7 @@ impl MilterConnection {
                 Ok(false) // Close connection
             }
             _ => {
-                log::warn!("Unknown command: 0x{:02x}", command);
+                log::warn!("Unknown command: 0x{command:02x}");
                 self.send_response(SMFIR_CONTINUE, &[])?;
                 Ok(true)
             }
@@ -452,17 +449,17 @@ impl FoffMilter {
     }
 
     pub fn process_connection(&mut self, hostname: &str) {
-        log::info!("Connection from hostname: {}", hostname);
+        log::info!("Connection from hostname: {hostname}");
         self.context = MailContext::default();
     }
 
     pub fn process_mail_from(&mut self, mail_from: &str) {
-        log::debug!("MAIL FROM: {}", mail_from);
+        log::debug!("MAIL FROM: {mail_from}");
         self.context.sender = Some(mail_from.to_string());
     }
 
     pub fn process_rcpt_to(&mut self, rcpt_to: &str) {
-        log::debug!("RCPT TO: {}", rcpt_to);
+        log::debug!("RCPT TO: {rcpt_to}");
         self.context.recipients.push(rcpt_to.to_string());
     }
 
@@ -567,9 +564,9 @@ pub fn run_milter(config: Config, demo_mode: bool) -> anyhow::Result<()> {
         // Clean up socket file
         if Path::new(&socket_path_for_cleanup).exists() {
             if let Err(e) = std::fs::remove_file(&socket_path_for_cleanup) {
-                log::error!("Failed to remove socket file: {}", e);
+                log::error!("Failed to remove socket file: {e}");
             } else {
-                log::info!("Socket file removed: {}", socket_path_for_cleanup);
+                log::info!("Socket file removed: {socket_path_for_cleanup}");
             }
         }
 
@@ -659,17 +656,13 @@ fn demonstrate_functionality(milter: &mut FoffMilter) {
     let action = milter.evaluate_message();
     match action {
         Action::Reject { message } => {
-            log::info!("✓ Would reject Chinese service + Japanese: {}", message);
+            log::info!("✓ Would reject Chinese service + Japanese: {message}");
         }
         Action::TagAsSpam {
             header_name,
             header_value,
         } => {
-            log::info!(
-                "✓ Would tag Chinese service + Japanese {}:{}",
-                header_name,
-                header_value
-            );
+            log::info!("✓ Would tag Chinese service + Japanese {header_name}:{header_value}");
         }
         Action::Accept => {
             log::info!("✗ Unexpectedly accepted Chinese service + Japanese");
@@ -689,17 +682,13 @@ fn demonstrate_functionality(milter: &mut FoffMilter) {
     let action = milter.evaluate_message();
     match action {
         Action::Reject { message } => {
-            log::info!("✓ Would reject Sparkpost to user@example.com: {}", message);
+            log::info!("✓ Would reject Sparkpost to user@example.com: {message}");
         }
         Action::TagAsSpam {
             header_name,
             header_value,
         } => {
-            log::info!(
-                "✓ Would tag Sparkpost to user@example.com {}:{}",
-                header_name,
-                header_value
-            );
+            log::info!("✓ Would tag Sparkpost to user@example.com {header_name}:{header_value}");
         }
         Action::Accept => {
             log::info!("✗ Unexpectedly accepted Sparkpost to user@example.com");
@@ -719,19 +708,14 @@ fn demonstrate_functionality(milter: &mut FoffMilter) {
     let action = milter.evaluate_message();
     match action {
         Action::Reject { message } => {
-            log::info!(
-                "✗ Unexpectedly rejected Chinese service without Japanese: {}",
-                message
-            );
+            log::info!("✗ Unexpectedly rejected Chinese service without Japanese: {message}");
         }
         Action::TagAsSpam {
             header_name,
             header_value,
         } => {
             log::info!(
-                "✗ Unexpectedly tagged Chinese service without Japanese {}:{}",
-                header_name,
-                header_value
+                "✗ Unexpectedly tagged Chinese service without Japanese {header_name}:{header_value}"
             );
         }
         Action::Accept => {
@@ -752,19 +736,14 @@ fn demonstrate_functionality(milter: &mut FoffMilter) {
     let action = milter.evaluate_message();
     match action {
         Action::Reject { message } => {
-            log::info!(
-                "✗ Unexpectedly rejected Sparkpost to different user: {}",
-                message
-            );
+            log::info!("✗ Unexpectedly rejected Sparkpost to different user: {message}");
         }
         Action::TagAsSpam {
             header_name,
             header_value,
         } => {
             log::info!(
-                "✗ Unexpectedly tagged Sparkpost to different user {}:{}",
-                header_name,
-                header_value
+                "✗ Unexpectedly tagged Sparkpost to different user {header_name}:{header_value}"
             );
         }
         Action::Accept => {
@@ -785,19 +764,14 @@ fn demonstrate_functionality(milter: &mut FoffMilter) {
     let action = milter.evaluate_message();
     match action {
         Action::Reject { message } => {
-            log::info!(
-                "✗ Unexpectedly rejected Japanese without Chinese service: {}",
-                message
-            );
+            log::info!("✗ Unexpectedly rejected Japanese without Chinese service: {message}");
         }
         Action::TagAsSpam {
             header_name,
             header_value,
         } => {
             log::info!(
-                "✗ Unexpectedly tagged Japanese without Chinese service {}:{}",
-                header_name,
-                header_value
+                "✗ Unexpectedly tagged Japanese without Chinese service {header_name}:{header_value}"
             );
         }
         Action::Accept => {
@@ -818,17 +792,13 @@ fn demonstrate_functionality(milter: &mut FoffMilter) {
     let action = milter.evaluate_message();
     match action {
         Action::Reject { message } => {
-            log::info!("✗ Unexpectedly rejected legitimate email: {}", message);
+            log::info!("✗ Unexpectedly rejected legitimate email: {message}");
         }
         Action::TagAsSpam {
             header_name,
             header_value,
         } => {
-            log::info!(
-                "✗ Unexpectedly tagged legitimate email {}:{}",
-                header_name,
-                header_value
-            );
+            log::info!("✗ Unexpectedly tagged legitimate email {header_name}:{header_value}");
         }
         Action::Accept => {
             log::info!("✓ Correctly accepted legitimate email");
