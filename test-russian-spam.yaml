@@ -1,0 +1,34 @@
+socket_path: "/var/run/foff-milter.sock"
+default_action:
+  type: "Accept"
+
+rules:
+  # Tag Russian spam
+  - name: "Tag Russian spam"
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*\\.ru\\.com"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # More specific Russian pattern for testing
+  - name: "Tag cartsgorilla specifically"
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*cartsgorilla\\.ru\\.com$"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Cartsgorilla"
+      header_value: "YES"
+
+  # Broader Russian pattern
+  - name: "Tag any .ru.com domain"
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*\\.ru\\.com$"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Russian-Domain"
+      header_value: "YES"
