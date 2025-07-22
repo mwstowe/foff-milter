@@ -254,12 +254,16 @@ impl MilterConnection {
                 // Store important headers
                 match name.to_lowercase().as_str() {
                     "subject" => {
+                        log::debug!("Processing subject header: {value}");
                         // Decode Base64 encoded subjects (RFC 2047)
                         let decoded_subject = self.decode_mime_header(&value);
                         log::debug!("Decoded subject: {decoded_subject}");
                         self.context.subject = Some(decoded_subject);
                     }
-                    "x-mailer" | "user-agent" => self.context.mailer = Some(value.clone()),
+                    "x-mailer" | "user-agent" => {
+                        log::debug!("Processing mailer header: {value}");
+                        self.context.mailer = Some(value.clone());
+                    }
                     _ => {}
                 }
 
@@ -271,9 +275,15 @@ impl MilterConnection {
                 if self.context.sender.is_some()
                     && (self.context.subject.is_some() || self.context.mailer.is_some())
                     && !self.context.headers.contains_key("_FOFF_EVALUATED")
-                    && self.context.headers.len() > 4
-                // Wait for more headers (DKIM, From, Subject, etc.)
+                    && self.context.headers.len() > 6
+                // Wait for more headers (DKIM, From, Subject, X-mailer, etc.)
                 {
+                    log::debug!("Evaluating rules with {} headers, sender: {:?}, subject: {:?}, mailer: {:?}", 
+                        self.context.headers.len(), 
+                        self.context.sender, 
+                        self.context.subject, 
+                        self.context.mailer
+                    );
                     let action = self.engine.evaluate(&self.context);
                     match action {
                         Action::Reject { message } => {
@@ -400,22 +410,28 @@ impl MilterConnection {
     }
 
     fn decode_mime_header(&self, header: &str) -> String {
+        log::debug!("MIME decode input: {header}");
         // Simple RFC 2047 decoder for =?charset?encoding?encoded-text?= format
         if header.contains("=?utf-8?B?") {
+            log::debug!("Found Base64 encoded header");
             // Base64 encoded UTF-8
             let parts: Vec<&str> = header.split("?").collect();
+            log::debug!("Split parts: {parts:?}");
             if parts.len() >= 4
                 && parts[1].to_lowercase() == "utf-8"
                 && parts[2].to_uppercase() == "B"
             {
+                log::debug!("Valid Base64 format, decoding: {}", parts[3]);
                 use base64::{engine::general_purpose, Engine as _};
                 if let Ok(decoded_bytes) = general_purpose::STANDARD.decode(parts[3]) {
                     if let Ok(decoded_string) = String::from_utf8(decoded_bytes) {
+                        log::debug!("Successfully decoded to: {decoded_string}");
                         return decoded_string;
                     }
                 }
             }
         }
+        log::debug!("No decoding needed, returning original: {header}");
         // Return original if decoding fails or not encoded
         header.to_string()
     }
