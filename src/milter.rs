@@ -295,8 +295,12 @@ impl MilterConnection {
                         } => {
                             log::info!("Will add spam header: {header_name}: {header_value}");
                             // Store the tagging action for end-of-message processing
-                            self.context.headers.insert("_FOFF_TAG_HEADER".to_string(), header_name.clone());
-                            self.context.headers.insert("_FOFF_TAG_VALUE".to_string(), header_value.clone());
+                            self.context
+                                .headers
+                                .insert("_FOFF_TAG_HEADER".to_string(), header_name.clone());
+                            self.context
+                                .headers
+                                .insert("_FOFF_TAG_VALUE".to_string(), header_value.clone());
                             // Continue processing but mark as evaluated
                             self.context
                                 .headers
@@ -334,9 +338,15 @@ impl MilterConnection {
                         } => {
                             log::info!("Will add spam header: {header_name}: {header_value}");
                             // Store the tagging action for end-of-message processing
-                            self.context.headers.insert("_FOFF_TAG_HEADER".to_string(), header_name.clone());
-                            self.context.headers.insert("_FOFF_TAG_VALUE".to_string(), header_value.clone());
-                            self.context.headers.insert("_FOFF_EVALUATED".to_string(), "tagged".to_string());
+                            self.context
+                                .headers
+                                .insert("_FOFF_TAG_HEADER".to_string(), header_name.clone());
+                            self.context
+                                .headers
+                                .insert("_FOFF_TAG_VALUE".to_string(), header_value.clone());
+                            self.context
+                                .headers
+                                .insert("_FOFF_EVALUATED".to_string(), "tagged".to_string());
                             self.send_response(SMFIR_CONTINUE, &[])?;
                         }
                         Action::Accept => {
@@ -357,17 +367,17 @@ impl MilterConnection {
             }
             SMFIC_BODYEOB => {
                 log::debug!("End of message");
-                
+
                 // Check if we need to add spam headers
                 if let (Some(header_name), Some(header_value)) = (
                     self.context.headers.get("_FOFF_TAG_HEADER"),
-                    self.context.headers.get("_FOFF_TAG_VALUE")
+                    self.context.headers.get("_FOFF_TAG_VALUE"),
                 ) {
                     log::info!("Adding spam header: {header_name}: {header_value}");
                     let header_data = format!("{header_name}\0{header_value}\0");
                     self.send_response(SMFIR_ADDHEADER, header_data.as_bytes())?;
                 }
-                
+
                 self.send_response(SMFIR_ACCEPT, &[])?;
                 Ok(true)
             }
