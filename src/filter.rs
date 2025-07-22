@@ -1,10 +1,10 @@
 use crate::config::{Action, Config, Criteria};
 use crate::language::LanguageDetector;
+use hickory_resolver::config::*;
+use hickory_resolver::Resolver;
 use regex::Regex;
 use std::collections::HashMap;
 use std::time::Duration;
-use trust_dns_resolver::config::*;
-use trust_dns_resolver::Resolver;
 use url::Url;
 
 pub struct FilterEngine {
@@ -144,7 +144,7 @@ impl FilterEngine {
     /// Extract unsubscribe links from email body and headers
     fn extract_unsubscribe_links(&self, context: &MailContext) -> Vec<String> {
         let mut links = Vec::new();
-        
+
         // Check List-Unsubscribe header (RFC 2369)
         if let Some(list_unsubscribe) = context.headers.get("list-unsubscribe") {
             // Extract URLs from List-Unsubscribe header: <url1>, <url2>
@@ -155,7 +155,7 @@ impl FilterEngine {
                 }
             }
         }
-        
+
         // Check email body for unsubscribe links
         if let Some(body) = &context.body {
             // Look for common unsubscribe link patterns
@@ -166,7 +166,7 @@ impl FilterEngine {
                 r#"(?i)(https?://[^\s<>"']*unsubscribe[^\s<>"']*)"#,
                 r#"(?i)(https?://[^\s<>"']*opt[_-]?out[^\s<>"']*)"#,
             ];
-            
+
             for pattern in &unsubscribe_patterns {
                 if let Ok(regex) = Regex::new(pattern) {
                     for cap in regex.captures_iter(body) {
@@ -177,7 +177,7 @@ impl FilterEngine {
                 }
             }
         }
-        
+
         // Remove duplicates and return
         links.sort();
         links.dedup();
@@ -185,9 +185,15 @@ impl FilterEngine {
     }
 
     /// Validate an unsubscribe link
-    fn validate_unsubscribe_link(&self, url: &str, timeout_seconds: u64, check_dns: bool, check_http: bool) -> bool {
+    fn validate_unsubscribe_link(
+        &self,
+        url: &str,
+        timeout_seconds: u64,
+        check_dns: bool,
+        check_http: bool,
+    ) -> bool {
         log::debug!("Validating unsubscribe link: {}", url);
-        
+
         // Parse URL
         let parsed_url = match Url::parse(url) {
             Ok(url) => url,
@@ -196,7 +202,7 @@ impl FilterEngine {
                 return false;
             }
         };
-        
+
         // Get hostname
         let hostname = match parsed_url.host_str() {
             Some(host) => host,
@@ -205,7 +211,7 @@ impl FilterEngine {
                 return false;
             }
         };
-        
+
         // DNS validation
         if check_dns {
             log::debug!("Checking DNS for hostname: {}", hostname);
@@ -216,7 +222,7 @@ impl FilterEngine {
                     return false;
                 }
             };
-            
+
             match resolver.lookup_ip(hostname) {
                 Ok(response) => {
                     if response.iter().count() == 0 {
@@ -231,7 +237,7 @@ impl FilterEngine {
                 }
             }
         }
-        
+
         // HTTP validation
         if check_http {
             log::debug!("Checking HTTP accessibility for: {}", url);
@@ -239,7 +245,7 @@ impl FilterEngine {
                 .timeout(Duration::from_secs(timeout_seconds))
                 .user_agent("FOFF-Milter/1.0")
                 .build();
-                
+
             let client = match client {
                 Ok(client) => client,
                 Err(e) => {
@@ -247,13 +253,13 @@ impl FilterEngine {
                     return false;
                 }
             };
-            
+
             // Use HEAD request to avoid downloading content
             match client.head(url).send() {
                 Ok(response) => {
                     let status = response.status();
                     log::debug!("HTTP HEAD response: {} for {}", status, url);
-                    
+
                     // Consider 2xx, 3xx, and even 405 (Method Not Allowed) as valid
                     // Some servers don't support HEAD but the URL might still be valid
                     if status.is_success() || status.is_redirection() || status == 405 {
@@ -269,7 +275,7 @@ impl FilterEngine {
                 }
             }
         }
-        
+
         // If we're not checking HTTP, DNS success is enough
         true
     }
@@ -329,23 +335,31 @@ impl FilterEngine {
                 }
                 false
             }
-            Criteria::UnsubscribeLinkValidation { timeout_seconds, check_dns, check_http } => {
+            Criteria::UnsubscribeLinkValidation {
+                timeout_seconds,
+                check_dns,
+                check_http,
+            } => {
                 let timeout = timeout_seconds.unwrap_or(5); // Default 5 second timeout
-                let dns_check = check_dns.unwrap_or(true);  // Default: check DNS
+                let dns_check = check_dns.unwrap_or(true); // Default: check DNS
                 let http_check = check_http.unwrap_or(false); // Default: don't check HTTP (faster)
-                
-                log::debug!("Checking unsubscribe link validation (timeout: {}s, DNS: {}, HTTP: {})", 
-                           timeout, dns_check, http_check);
-                
+
+                log::debug!(
+                    "Checking unsubscribe link validation (timeout: {}s, DNS: {}, HTTP: {})",
+                    timeout,
+                    dns_check,
+                    http_check
+                );
+
                 let links = self.extract_unsubscribe_links(context);
-                
+
                 if links.is_empty() {
                     log::debug!("No unsubscribe links found");
                     return false; // No unsubscribe links found - suspicious
                 }
-                
+
                 log::debug!("Found {} unsubscribe links: {:?}", links.len(), links);
-                
+
                 // Check if ANY unsubscribe link is invalid
                 for link in &links {
                     if !self.validate_unsubscribe_link(link, timeout, dns_check, http_check) {
@@ -353,7 +367,7 @@ impl FilterEngine {
                         return true; // Found invalid link - matches criteria
                     }
                 }
-                
+
                 log::debug!("All unsubscribe links are valid");
                 false // All links are valid
             }

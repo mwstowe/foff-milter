@@ -17,20 +17,40 @@ pub struct FilterRule {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(tag = "type")]
 pub enum Criteria {
-    MailerPattern { pattern: String },
-    SenderPattern { pattern: String },
-    RecipientPattern { pattern: String },
-    SubjectPattern { pattern: String },
-    HeaderPattern { header: String, pattern: String },
-    SubjectContainsLanguage { language: String },
-    HeaderContainsLanguage { header: String, language: String },
-    UnsubscribeLinkValidation { 
+    MailerPattern {
+        pattern: String,
+    },
+    SenderPattern {
+        pattern: String,
+    },
+    RecipientPattern {
+        pattern: String,
+    },
+    SubjectPattern {
+        pattern: String,
+    },
+    HeaderPattern {
+        header: String,
+        pattern: String,
+    },
+    SubjectContainsLanguage {
+        language: String,
+    },
+    HeaderContainsLanguage {
+        header: String,
+        language: String,
+    },
+    UnsubscribeLinkValidation {
         timeout_seconds: Option<u64>,
         check_dns: Option<bool>,
         check_http: Option<bool>,
     },
-    And { criteria: Vec<Criteria> },
-    Or { criteria: Vec<Criteria> },
+    And {
+        criteria: Vec<Criteria>,
+    },
+    Or {
+        criteria: Vec<Criteria>,
+    },
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

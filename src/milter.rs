@@ -365,7 +365,7 @@ impl MilterConnection {
                 if data.len() > 1 {
                     let body_chunk = String::from_utf8_lossy(&data[1..]);
                     log::debug!("Body chunk received: {} bytes", body_chunk.len());
-                    
+
                     // Append to existing body content
                     match &mut self.context.body {
                         Some(existing_body) => {
@@ -886,7 +886,10 @@ fn demonstrate_functionality(milter: &mut FoffMilter) {
     milter.process_connection("garden.javaburrn.rest");
     milter.process_mail_from("WeirdShrub@javaburrn.rest");
     milter.process_rcpt_to("user@example.com");
-    milter.process_header("Subject", "The African Shrub that Awakens Your Deepest Desire...");
+    milter.process_header(
+        "Subject",
+        "The African Shrub that Awakens Your Deepest Desire...",
+    );
     milter.process_header("From", "African Shrub <WeirdShrub@javaburrn.rest>");
 
     let action = milter.evaluate_message();
@@ -914,7 +917,7 @@ fn demonstrate_functionality(milter: &mut FoffMilter) {
     milter.process_rcpt_to("user@example.com");
     milter.process_header("Subject", "Amazing offer - click to unsubscribe!");
     milter.process_header("From", "Spammer <spammer@spam.example.com>");
-    
+
     // Simulate email body with fake unsubscribe link
     milter.process_body(
         r#"<html><body>
