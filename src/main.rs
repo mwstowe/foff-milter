@@ -94,41 +94,87 @@ fn main() {
         #[cfg(unix)]
         {
             use std::process;
+            use std::fs::OpenOptions;
+            use std::os::unix::io::AsRawFd;
 
             log::info!("Starting FOFF milter in daemon mode...");
 
-            // Fork the process
+            // First fork
             match unsafe { libc::fork() } {
                 -1 => {
                     log::error!("Failed to fork process");
                     process::exit(1);
                 }
                 0 => {
-                    // Child process - continue as daemon
-                    // Create new session
-                    if unsafe { libc::setsid() } == -1 {
-                        log::error!("Failed to create new session");
-                        process::exit(1);
-                    }
-
-                    // Change working directory to root
-                    let root_path = std::ffi::CString::new("/").unwrap();
-                    if unsafe { libc::chdir(root_path.as_ptr()) } == -1 {
-                        log::warn!("Failed to change working directory to /");
-                    }
-
-                    // Close standard file descriptors
-                    unsafe {
-                        libc::close(0); // stdin
-                        libc::close(1); // stdout
-                        libc::close(2); // stderr
-                    }
+                    // Child process continues
                 }
                 _ => {
-                    // Parent process - exit
+                    // Parent process exits
                     process::exit(0);
                 }
             }
+
+            // Create new session (become session leader)
+            if unsafe { libc::setsid() } == -1 {
+                log::error!("Failed to create new session");
+                process::exit(1);
+            }
+
+            // Ignore SIGHUP to prevent daemon from being killed when session leader exits
+            unsafe {
+                libc::signal(libc::SIGHUP, libc::SIG_IGN);
+            }
+
+            // Second fork to ensure we're not a session leader (prevents acquiring controlling terminal)
+            match unsafe { libc::fork() } {
+                -1 => {
+                    log::error!("Failed to second fork");
+                    process::exit(1);
+                }
+                0 => {
+                    // Child process continues as daemon
+                }
+                _ => {
+                    // Parent process exits
+                    process::exit(0);
+                }
+            }
+
+            // Change working directory to root to avoid keeping any directory in use
+            let root_path = std::ffi::CString::new("/").unwrap();
+            if unsafe { libc::chdir(root_path.as_ptr()) } == -1 {
+                log::warn!("Failed to change working directory to /");
+            }
+
+            // Set file creation mask
+            unsafe {
+                libc::umask(0);
+            }
+
+            // Redirect standard file descriptors to /dev/null instead of closing them
+            // This prevents issues with logging and other operations that might try to use them
+            if let Ok(dev_null) = OpenOptions::new().read(true).write(true).open("/dev/null") {
+                let null_fd = dev_null.as_raw_fd();
+                
+                unsafe {
+                    // Redirect stdin, stdout, stderr to /dev/null
+                    libc::dup2(null_fd, 0); // stdin
+                    libc::dup2(null_fd, 1); // stdout  
+                    libc::dup2(null_fd, 2); // stderr
+                }
+                
+                // Don't close dev_null fd as it's being used
+                std::mem::forget(dev_null);
+            } else {
+                log::warn!("Failed to open /dev/null, closing standard file descriptors");
+                unsafe {
+                    libc::close(0); // stdin
+                    libc::close(1); // stdout
+                    libc::close(2); // stderr
+                }
+            }
+
+            log::info!("Daemon mode initialization complete");
         }
 
         #[cfg(not(unix))]

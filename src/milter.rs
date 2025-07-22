@@ -533,7 +533,12 @@ pub fn run_milter(config: Config, demo_mode: bool) -> anyhow::Result<()> {
 
     // Create the Unix socket
     let listener = UnixListener::bind(&config.socket_path)
-        .map_err(|e| anyhow::anyhow!("Failed to bind to socket {}: {}", config.socket_path, e))?;
+        .map_err(|e| {
+            log::error!("Failed to bind to socket {}: {}", config.socket_path, e);
+            log::error!("Make sure the directory exists and has proper permissions");
+            log::error!("Try: sudo mkdir -p /var/run && sudo chown milter:milter /var/run");
+            anyhow::anyhow!("Failed to bind to socket {}: {}", config.socket_path, e)
+        })?;
 
     log::info!("Successfully bound to socket: {}", config.socket_path);
 
@@ -544,7 +549,7 @@ pub fn run_milter(config: Config, demo_mode: bool) -> anyhow::Result<()> {
         let mut perms = std::fs::metadata(&config.socket_path)?.permissions();
         perms.set_mode(0o660); // rw-rw----
         std::fs::set_permissions(&config.socket_path, perms)?;
-        log::info!("Set socket permissions to 660");
+        log::info!("Set socket permissions to 0o660");
     }
 
     log::info!("Milter daemon started successfully");
@@ -576,11 +581,23 @@ pub fn run_milter(config: Config, demo_mode: bool) -> anyhow::Result<()> {
     // Create the filter engine once for sharing
     let filter_engine = Arc::new(FilterEngine::new(config.clone())?);
 
+    log::info!("FOFF milter daemon started successfully, waiting for connections...");
+    
+    // Track last heartbeat for daemon health monitoring
+    let mut last_heartbeat = std::time::Instant::now();
+    let heartbeat_interval = std::time::Duration::from_secs(300); // 5 minutes
+
     // Main event loop - accept connections and spawn threads
     while running.load(Ordering::SeqCst) {
+        // Set a timeout on accept to allow periodic heartbeat logging
+        listener.set_nonblocking(true)?;
+        
         match listener.accept() {
             Ok((stream, _addr)) => {
                 log::info!("Accepted milter connection from mail server");
+                
+                // Reset to blocking mode for the connection
+                stream.set_nonblocking(false)?;
 
                 let engine_clone = filter_engine.clone();
 
@@ -588,13 +605,31 @@ pub fn run_milter(config: Config, demo_mode: bool) -> anyhow::Result<()> {
                 thread::spawn(move || {
                     let mut connection = MilterConnection::new(stream, engine_clone);
                     if let Err(e) = connection.handle() {
-                        log::error!("Error handling milter connection: {}", e);
+                        log::error!("Error handling milter connection: {e}");
                     }
                 });
+                
+                // Reset heartbeat timer on successful connection
+                last_heartbeat = std::time::Instant::now();
             }
             Err(e) => {
-                log::error!("Error accepting connection: {}", e);
-                // Continue running even if individual connections fail
+                // Check if this is just a timeout (no connections) or a real error
+                match e.kind() {
+                    std::io::ErrorKind::WouldBlock => {
+                        // No connection available, check heartbeat
+                        if last_heartbeat.elapsed() >= heartbeat_interval {
+                            log::info!("FOFF milter daemon heartbeat - running normally, waiting for connections");
+                            last_heartbeat = std::time::Instant::now();
+                        }
+                        // Sleep briefly to avoid busy waiting
+                        std::thread::sleep(std::time::Duration::from_millis(100));
+                    }
+                    _ => {
+                        log::error!("Error accepting connection: {e}");
+                        // For serious errors, sleep a bit longer before retrying
+                        std::thread::sleep(std::time::Duration::from_secs(1));
+                    }
+                }
             }
         }
     }
