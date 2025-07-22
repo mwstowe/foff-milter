@@ -77,14 +77,14 @@ impl MilterConnection {
                         Ok(true) => continue, // Continue processing
                         Ok(false) => break,   // Connection should close
                         Err(e) => {
-                            log::error!("Error processing command: {}", e);
+                            log::error!("Error processing command: {e}");
                             break;
                         }
                     }
                 }
                 Ok(None) => break, // Connection closed
                 Err(e) => {
-                    log::error!("Error reading command: {}", e);
+                    log::error!("Error reading command: {e}");
                     break;
                 }
             }
@@ -253,7 +253,12 @@ impl MilterConnection {
 
                 // Store important headers
                 match name.to_lowercase().as_str() {
-                    "subject" => self.context.subject = Some(value.clone()),
+                    "subject" => {
+                        // Decode Base64 encoded subjects (RFC 2047)
+                        let decoded_subject = self.decode_mime_header(&value);
+                        log::debug!("Decoded subject: {}", decoded_subject);
+                        self.context.subject = Some(decoded_subject);
+                    }
                     "x-mailer" | "user-agent" => self.context.mailer = Some(value.clone()),
                     _ => {}
                 }
@@ -262,8 +267,11 @@ impl MilterConnection {
 
                 // Check if we have enough information to evaluate rules
                 // We need at least sender and either subject or mailer for most rules
+                // Also wait for more headers to avoid premature evaluation
                 if self.context.sender.is_some()
                     && (self.context.subject.is_some() || self.context.mailer.is_some())
+                    && !self.context.headers.contains_key("_FOFF_EVALUATED")
+                    && self.context.headers.len() > 4  // Wait for more headers (DKIM, From, Subject, etc.)
                 {
                     let action = self.engine.evaluate(&self.context);
                     match action {
@@ -388,6 +396,24 @@ impl MilterConnection {
         } else {
             Ok(("unknown".to_string(), "".to_string()))
         }
+    }
+
+    fn decode_mime_header(&self, header: &str) -> String {
+        // Simple RFC 2047 decoder for =?charset?encoding?encoded-text?= format
+        if header.contains("=?utf-8?B?") {
+            // Base64 encoded UTF-8
+            let parts: Vec<&str> = header.split("?").collect();
+            if parts.len() >= 4 && parts[1].to_lowercase() == "utf-8" && parts[2].to_uppercase() == "B" {
+                use base64::{Engine as _, engine::general_purpose};
+                if let Ok(decoded_bytes) = general_purpose::STANDARD.decode(parts[3]) {
+                    if let Ok(decoded_string) = String::from_utf8(decoded_bytes) {
+                        return decoded_string;
+                    }
+                }
+            }
+        }
+        // Return original if decoding fails or not encoded
+        header.to_string()
     }
 }
 
