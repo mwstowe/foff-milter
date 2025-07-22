@@ -192,13 +192,13 @@ impl FilterEngine {
         check_dns: bool,
         check_http: bool,
     ) -> bool {
-        log::debug!("Validating unsubscribe link: {}", url);
+        log::debug!("Validating unsubscribe link: {url}");
 
         // Parse URL
         let parsed_url = match Url::parse(url) {
             Ok(url) => url,
             Err(e) => {
-                log::debug!("Invalid URL format: {}", e);
+                log::debug!("Invalid URL format: {e}");
                 return false;
             }
         };
@@ -214,11 +214,11 @@ impl FilterEngine {
 
         // DNS validation
         if check_dns {
-            log::debug!("Checking DNS for hostname: {}", hostname);
+            log::debug!("Checking DNS for hostname: {hostname}");
             let resolver = match Resolver::new(ResolverConfig::default(), ResolverOpts::default()) {
                 Ok(resolver) => resolver,
                 Err(e) => {
-                    log::debug!("Failed to create DNS resolver: {}", e);
+                    log::debug!("Failed to create DNS resolver: {e}");
                     return false;
                 }
             };
@@ -226,13 +226,13 @@ impl FilterEngine {
             match resolver.lookup_ip(hostname) {
                 Ok(response) => {
                     if response.iter().count() == 0 {
-                        log::debug!("DNS lookup returned no results for {}", hostname);
+                        log::debug!("DNS lookup returned no results for {hostname}");
                         return false;
                     }
-                    log::debug!("DNS lookup successful for {}", hostname);
+                    log::debug!("DNS lookup successful for {hostname}");
                 }
                 Err(e) => {
-                    log::debug!("DNS lookup failed for {}: {}", hostname, e);
+                    log::debug!("DNS lookup failed for {hostname}: {e}");
                     return false;
                 }
             }
@@ -240,7 +240,7 @@ impl FilterEngine {
 
         // HTTP validation
         if check_http {
-            log::debug!("Checking HTTP accessibility for: {}", url);
+            log::debug!("Checking HTTP accessibility for: {url}");
             let client = reqwest::blocking::Client::builder()
                 .timeout(Duration::from_secs(timeout_seconds))
                 .user_agent("FOFF-Milter/1.0")
@@ -249,7 +249,7 @@ impl FilterEngine {
             let client = match client {
                 Ok(client) => client,
                 Err(e) => {
-                    log::debug!("Failed to create HTTP client: {}", e);
+                    log::debug!("Failed to create HTTP client: {e}");
                     return false;
                 }
             };
@@ -258,19 +258,19 @@ impl FilterEngine {
             match client.head(url).send() {
                 Ok(response) => {
                     let status = response.status();
-                    log::debug!("HTTP HEAD response: {} for {}", status, url);
+                    log::debug!("HTTP HEAD response: {status} for {url}");
 
                     // Consider 2xx, 3xx, and even 405 (Method Not Allowed) as valid
                     // Some servers don't support HEAD but the URL might still be valid
                     if status.is_success() || status.is_redirection() || status == 405 {
                         return true;
                     } else {
-                        log::debug!("HTTP validation failed with status: {}", status);
+                        log::debug!("HTTP validation failed with status: {status}");
                         return false;
                     }
                 }
                 Err(e) => {
-                    log::debug!("HTTP request failed: {}", e);
+                    log::debug!("HTTP request failed: {e}");
                     return false;
                 }
             }
@@ -345,10 +345,7 @@ impl FilterEngine {
                 let http_check = check_http.unwrap_or(false); // Default: don't check HTTP (faster)
 
                 log::debug!(
-                    "Checking unsubscribe link validation (timeout: {}s, DNS: {}, HTTP: {})",
-                    timeout,
-                    dns_check,
-                    http_check
+                    "Checking unsubscribe link validation (timeout: {timeout}s, DNS: {dns_check}, HTTP: {http_check})"
                 );
 
                 let links = self.extract_unsubscribe_links(context);
@@ -363,7 +360,7 @@ impl FilterEngine {
                 // Check if ANY unsubscribe link is invalid
                 for link in &links {
                     if !self.validate_unsubscribe_link(link, timeout, dns_check, http_check) {
-                        log::info!("Invalid unsubscribe link detected: {}", link);
+                        log::info!("Invalid unsubscribe link detected: {link}");
                         return true; // Found invalid link - matches criteria
                     }
                 }
