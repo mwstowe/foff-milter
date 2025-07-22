@@ -1,5 +1,88 @@
 # FOFF Milter Deployment Guide
 
+## FreeBSD Deployment
+
+### Quick Deployment
+
+Use the automated deployment script:
+
+```bash
+sudo ./deploy-freebsd.sh
+```
+
+### Manual Deployment
+
+1. **Build the milter:**
+   ```bash
+   cargo build --release
+   ```
+
+2. **Install binary:**
+   ```bash
+   sudo cp target/release/foff-milter /usr/local/bin/
+   sudo chmod +x /usr/local/bin/foff-milter
+   ```
+
+3. **Install configuration:**
+   ```bash
+   sudo mkdir -p /usr/local/etc
+   sudo cp examples/freebsd-config.yaml /usr/local/etc/foff-milter.yaml
+   ```
+
+4. **Install rc.d service script:**
+   ```bash
+   sudo cp examples/foff-milter.rc /usr/local/etc/rc.d/foff_milter
+   sudo chmod +x /usr/local/etc/rc.d/foff_milter
+   ```
+
+5. **Enable service in rc.conf:**
+   ```bash
+   echo 'foff_milter_enable="YES"' | sudo tee -a /etc/rc.conf
+   echo 'foff_milter_config="/usr/local/etc/foff-milter.yaml"' | sudo tee -a /etc/rc.conf
+   ```
+
+6. **Start the service:**
+   ```bash
+   sudo service foff_milter start
+   ```
+
+### PID File Management
+
+The FreeBSD rc script uses `daemon(8)` to manage the process and automatically creates a PID file at `/var/run/foff-milter.pid`. This approach:
+
+- **Handles daemonization** - No need for `--daemon` flag
+- **Creates PID file** - Automatically managed by `daemon(8)`
+- **Enables proper service control** - `service foff_milter start/stop/restart/status`
+- **Integrates with FreeBSD rc system** - Standard FreeBSD service management
+
+**Service Commands:**
+```bash
+sudo service foff_milter start    # Start the service
+sudo service foff_milter stop     # Stop the service  
+sudo service foff_milter restart  # Restart the service
+sudo service foff_milter status   # Check service status
+```
+
+**Check PID file:**
+```bash
+cat /var/run/foff-milter.pid      # Show process ID
+ps -p $(cat /var/run/foff-milter.pid)  # Show process details
+```
+
+### Manual Daemon Mode
+
+If you prefer to run without the rc system:
+
+```bash
+# With built-in daemonization (creates own daemon process)
+sudo /usr/local/bin/foff-milter --daemon -c /usr/local/etc/foff-milter.yaml
+
+# With daemon(8) wrapper (creates PID file)
+sudo daemon -f -p /var/run/foff-milter.pid /usr/local/bin/foff-milter -c /usr/local/etc/foff-milter.yaml
+```
+
+**Note:** The built-in `--daemon` mode does NOT create a PID file. Use `daemon(8)` wrapper or the rc script for PID file management.
+
 ## Quick Deployment for Sendmail
 
 ### 1. Build and Install
