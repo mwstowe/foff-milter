@@ -249,14 +249,14 @@ impl MilterConnection {
             }
             SMFIC_HEADER => {
                 let (name, value) = self.parse_header_data(&data)?;
-                log::debug!("Header: {}: {}", name, value);
+                log::debug!("Header: {name}: {value}");
 
                 // Store important headers
                 match name.to_lowercase().as_str() {
                     "subject" => {
                         // Decode Base64 encoded subjects (RFC 2047)
                         let decoded_subject = self.decode_mime_header(&value);
-                        log::debug!("Decoded subject: {}", decoded_subject);
+                        log::debug!("Decoded subject: {decoded_subject}");
                         self.context.subject = Some(decoded_subject);
                     }
                     "x-mailer" | "user-agent" => self.context.mailer = Some(value.clone()),
@@ -277,8 +277,8 @@ impl MilterConnection {
                     let action = self.engine.evaluate(&self.context);
                     match action {
                         Action::Reject { message } => {
-                            log::info!("Rejecting message: {}", message);
-                            let response = format!("550 5.7.1 {}", message);
+                            log::info!("Rejecting message: {message}");
+                            let response = format!("550 5.7.1 {message}");
                             self.send_response(SMFIR_REPLYCODE, response.as_bytes())?;
                             return Ok(true);
                         }
@@ -316,8 +316,8 @@ impl MilterConnection {
 
                     match action {
                         Action::Reject { message } => {
-                            log::info!("Rejecting message: {}", message);
-                            let response = format!("550 5.7.1 {}", message);
+                            log::info!("Rejecting message: {message}");
+                            let response = format!("550 5.7.1 {message}");
                             self.send_response(SMFIR_REPLYCODE, response.as_bytes())?;
                         }
                         Action::TagAsSpam {
@@ -451,7 +451,7 @@ impl FoffMilter {
     }
 
     pub fn process_header(&mut self, name: &str, value: &str) {
-        log::debug!("Header: {}: {}", name, value);
+        log::debug!("Header: {name}: {value}");
 
         // Store all headers
         self.context

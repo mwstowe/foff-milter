@@ -71,7 +71,7 @@ fn main() {
     let config = match load_config(config_path) {
         Ok(config) => config,
         Err(e) => {
-            eprintln!("Error loading configuration: {}", e);
+            eprintln!("Error loading configuration: {e}");
             process::exit(1);
         }
     };
@@ -140,7 +140,7 @@ fn main() {
     log::info!("Starting FOFF milter...");
 
     if let Err(e) = run_milter(config, demo_mode) {
-        log::error!("Milter error: {}", e);
+        log::error!("Milter error: {e}");
         process::exit(1);
     }
 }
