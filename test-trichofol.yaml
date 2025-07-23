@@ -1,0 +1,14 @@
+socket_path: "/var/run/foff-milter.sock"
+default_action:
+  type: "Accept"
+
+rules:
+  # Tag Russian spam
+  - name: "Tag Russian spam"
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*\\.ru\\.com"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
