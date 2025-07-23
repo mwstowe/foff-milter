@@ -271,9 +271,13 @@ impl MilterConnection {
                 if self.context.sender.is_some()
                     && (self.context.subject.is_some() || self.context.mailer.is_some())
                     && !self.context.headers.contains_key("_FOFF_EVALUATED")
-                    && self.context.headers.len() > 5  // Wait for enough headers
+                    && self.context.headers.len() > 5
+                // Wait for enough headers
                 {
-                    log::debug!("Early evaluation for rejection with {} headers", self.context.headers.len());
+                    log::debug!(
+                        "Early evaluation for rejection with {} headers",
+                        self.context.headers.len()
+                    );
                     let action = self.engine.evaluate(&self.context);
                     match action {
                         Action::Reject { message } => {
@@ -285,11 +289,15 @@ impl MilterConnection {
                         Action::TagAsSpam { .. } => {
                             // Don't handle TagAsSpam here - wait for end of message
                             log::debug!("TagAsSpam action detected, will handle at end of message");
-                            self.context.headers.insert("_FOFF_PENDING_TAG".to_string(), "true".to_string());
+                            self.context
+                                .headers
+                                .insert("_FOFF_PENDING_TAG".to_string(), "true".to_string());
                         }
                         Action::Accept => {
                             log::debug!("Message accepted during header processing");
-                            self.context.headers.insert("_FOFF_EVALUATED".to_string(), "accepted".to_string());
+                            self.context
+                                .headers
+                                .insert("_FOFF_EVALUATED".to_string(), "accepted".to_string());
                         }
                     }
                 }
@@ -362,8 +370,8 @@ impl MilterConnection {
 
                 // Only evaluate if we haven't already processed this message
                 // (rejected messages would have already returned, accepted messages might need tagging)
-                if !self.context.headers.contains_key("_FOFF_EVALUATED") 
-                    || self.context.headers.contains_key("_FOFF_PENDING_TAG") 
+                if !self.context.headers.contains_key("_FOFF_EVALUATED")
+                    || self.context.headers.contains_key("_FOFF_PENDING_TAG")
                 {
                     log::debug!("Final evaluation for tagging");
                     let action = self.engine.evaluate(&self.context);
