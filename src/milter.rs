@@ -167,9 +167,12 @@ impl MilterConnection {
         match command {
             SMFIC_OPTNEG => {
                 log::info!("OPTNEG: Received option negotiation from sendmail");
+                log::info!("OPTNEG: Negotiation data length: {} bytes", data.len());
+                log::info!("OPTNEG: Raw negotiation data: {:?}", data);
 
                 // Parse the option negotiation data from sendmail
-                if data.len() >= 24 {
+                // Handle different data lengths for compatibility
+                if data.len() >= 12 {
                     let version = u32::from_be_bytes([data[0], data[1], data[2], data[3]]);
                     let actions = u32::from_be_bytes([data[4], data[5], data[6], data[7]]);
                     let protocol = u32::from_be_bytes([data[8], data[9], data[10], data[11]]);
@@ -187,8 +190,16 @@ impl MilterConnection {
                     if actions & 0x10 != 0 { offered_actions.push("CHGBODY"); }
                     if actions & 0x20 != 0 { offered_actions.push("QUARANTINE"); }
                     log::info!("OPTNEG: Sendmail offers actions: {:?}", offered_actions);
+                    
+                    // Check if sendmail offers ADDHDRS capability
+                    if actions & 0x01 == 0 {
+                        log::error!("OPTNEG: CRITICAL - Sendmail does NOT offer ADDHDRS capability!");
+                        log::error!("OPTNEG: This explains why headers are not being added to emails");
+                    } else {
+                        log::info!("OPTNEG: Good - Sendmail offers ADDHDRS capability");
+                    }
                 } else {
-                    log::warn!("OPTNEG: Invalid negotiation data length: {}", data.len());
+                    log::error!("OPTNEG: Invalid negotiation data length: {} (expected >= 12)", data.len());
                 }
 
                 // Send back our negotiation response
@@ -200,22 +211,10 @@ impl MilterConnection {
 
                 // Actions we want to perform:
                 // SMFIF_ADDHDRS (0x01) - Add headers
-                // SMFIF_CHGHDRS (0x02) - Change headers
-                // SMFIF_ADDRCPT (0x04) - Add recipients
-                // SMFIF_DELRCPT (0x08) - Delete recipients
-                // SMFIF_CHGBODY (0x10) - Change body
-                // SMFIF_QUARANTINE (0x20) - Quarantine
                 let actions = 0x01u32; // We only need ADDHDRS for our spam tagging
                 response.extend_from_slice(&actions.to_be_bytes());
 
                 // Protocol steps we want to skip:
-                // SMFIP_NOCONNECT (0x01) - Skip connection info
-                // SMFIP_NOHELO (0x02) - Skip HELO
-                // SMFIP_NOMAIL (0x04) - Skip MAIL FROM
-                // SMFIP_NORCPT (0x08) - Skip RCPT TO
-                // SMFIP_NOBODY (0x10) - Skip body
-                // SMFIP_NOHDRS (0x20) - Skip headers
-                // SMFIP_NOEOH (0x40) - Skip end of headers
                 // We want all steps, so protocol = 0
                 let protocol = 0u32;
                 response.extend_from_slice(&protocol.to_be_bytes());
@@ -224,6 +223,8 @@ impl MilterConnection {
                 response.extend_from_slice(&[0u8; 12]);
 
                 log::info!("OPTNEG: Requesting - version: 6, actions: 0x{:08x} (ADDHDRS), protocol: 0x{:08x} (all steps)", actions, protocol);
+                log::info!("OPTNEG: Response data length: {} bytes", response.len());
+                log::info!("OPTNEG: Response data: {:?}", response);
                 
                 self.send_response(SMFIC_OPTNEG, &response)?;
                 log::info!("OPTNEG: Successfully sent capability negotiation response");
