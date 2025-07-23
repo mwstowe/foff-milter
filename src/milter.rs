@@ -68,21 +68,32 @@ impl MilterConnection {
     }
 
     fn handle(&mut self) -> anyhow::Result<()> {
-        log::debug!("Handling new milter connection");
+        log::info!("Starting to handle new milter connection");
 
         loop {
+            log::info!("Waiting for next milter command...");
             match self.read_command() {
                 Ok(Some((command, data))) => {
+                    log::info!("Read command successfully, processing...");
                     match self.process_command(command, data) {
-                        Ok(true) => continue, // Continue processing
-                        Ok(false) => break,   // Connection should close
+                        Ok(true) => {
+                            log::info!("Command processed successfully, continuing...");
+                            continue; // Continue processing
+                        }
+                        Ok(false) => {
+                            log::info!("Command indicated connection should close");
+                            break;   // Connection should close
+                        }
                         Err(e) => {
                             log::error!("Error processing command: {e}");
                             break;
                         }
                     }
                 }
-                Ok(None) => break, // Connection closed
+                Ok(None) => {
+                    log::info!("Connection closed by client");
+                    break; // Connection closed
+                }
                 Err(e) => {
                     log::error!("Error reading command: {e}");
                     break;
@@ -134,6 +145,25 @@ impl MilterConnection {
     }
 
     fn process_command(&mut self, command: u8, data: Vec<u8>) -> anyhow::Result<bool> {
+        log::info!("MILTER COMMAND: 0x{:02x} ({}) with {} bytes", 
+                   command, 
+                   match command {
+                       SMFIC_OPTNEG => "OPTNEG",
+                       SMFIC_CONNECT => "CONNECT", 
+                       SMFIC_HELO => "HELO",
+                       SMFIC_MAIL => "MAIL",
+                       SMFIC_RCPT => "RCPT", 
+                       SMFIC_DATA => "DATA",
+                       SMFIC_HEADER => "HEADER",
+                       SMFIC_EOH => "EOH",
+                       SMFIC_BODY => "BODY",
+                       SMFIC_BODYEOB => "BODYEOB",
+                       SMFIC_ABORT => "ABORT",
+                       SMFIC_QUIT => "QUIT",
+                       _ => "UNKNOWN"
+                   },
+                   data.len());
+        
         match command {
             SMFIC_OPTNEG => {
                 log::debug!("Received option negotiation");
@@ -182,7 +212,7 @@ impl MilterConnection {
                 response.extend_from_slice(&[0u8; 12]);
 
                 self.send_response(SMFIC_OPTNEG, &response)?;
-                log::debug!("Sent option negotiation response");
+                log::debug!("Sent option negotiation response with ADDHDRS capability");
                 Ok(true)
             }
             SMFIC_CONNECT => {
@@ -389,16 +419,21 @@ impl MilterConnection {
                             header_value,
                         } => {
                             log::info!("Adding spam header: {header_name}: {header_value}");
-                            let header_data = format!("{header_name}\0{header_value}\0");
+                            // Try the correct milter protocol format: header_name\0header_value (no trailing null)
+                            let header_data = format!("{header_name}\0{header_value}");
                             log::debug!("Header data bytes: {:?}", header_data.as_bytes());
                             log::debug!("Header data length: {}", header_data.len());
+                            log::debug!("Header data string: {:?}", header_data);
                             
+                            log::debug!("About to send SMFIR_ADDHEADER...");
                             match self.send_response(SMFIR_ADDHEADER, header_data.as_bytes()) {
                                 Ok(_) => {
                                     log::info!("Successfully sent SMFIR_ADDHEADER response");
+                                    log::debug!("Stream still connected after SMFIR_ADDHEADER");
                                 }
                                 Err(e) => {
                                     log::error!("Failed to send SMFIR_ADDHEADER: {}", e);
+                                    return Err(e);
                                 }
                             }
                         }
@@ -410,7 +445,16 @@ impl MilterConnection {
                     log::debug!("Message already evaluated: {:?}", evaluation_status);
                 }
 
-                self.send_response(SMFIR_ACCEPT, &[])?;
+                log::debug!("About to send SMFIR_ACCEPT...");
+                match self.send_response(SMFIR_ACCEPT, &[]) {
+                    Ok(_) => {
+                        log::debug!("Successfully sent SMFIR_ACCEPT");
+                    }
+                    Err(e) => {
+                        log::error!("Failed to send SMFIR_ACCEPT: {}", e);
+                        return Err(e);
+                    }
+                }
                 Ok(true)
             }
             SMFIC_ABORT => {
