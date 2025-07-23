@@ -397,14 +397,15 @@ impl MilterConnection {
                 Ok(true)
             }
             SMFIC_BODYEOB => {
-                log::debug!("End of message");
+                log::info!("BODYEOB: End of message processing");
 
                 // Only evaluate if we haven't already processed this message for rejection
                 // or if we detected a pending tag action
                 let evaluation_status = self.context.headers.get("_FOFF_EVALUATED");
+                log::info!("BODYEOB: Evaluation status = {:?}", evaluation_status);
                 
                 if evaluation_status.is_none() || evaluation_status == Some(&"pending_tag".to_string()) {
-                    log::debug!("Final evaluation for tagging");
+                    log::info!("BODYEOB: Proceeding with final evaluation for tagging");
                     let action = self.engine.evaluate(&self.context);
                     match action {
                         Action::Reject { message } => {
@@ -442,16 +443,16 @@ impl MilterConnection {
                         }
                     }
                 } else {
-                    log::debug!("Message already evaluated: {:?}", evaluation_status);
+                    log::info!("BODYEOB: Skipping evaluation - message already evaluated: {:?}", evaluation_status);
                 }
 
-                log::debug!("About to send SMFIR_ACCEPT...");
+                log::info!("BODYEOB: About to send SMFIR_ACCEPT...");
                 match self.send_response(SMFIR_ACCEPT, &[]) {
                     Ok(_) => {
-                        log::debug!("Successfully sent SMFIR_ACCEPT");
+                        log::info!("BODYEOB: Successfully sent SMFIR_ACCEPT");
                     }
                     Err(e) => {
-                        log::error!("Failed to send SMFIR_ACCEPT: {}", e);
+                        log::error!("BODYEOB: Failed to send SMFIR_ACCEPT: {}", e);
                         return Err(e);
                     }
                 }
