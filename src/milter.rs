@@ -265,6 +265,35 @@ impl MilterConnection {
                 }
 
                 self.context.headers.insert(name, value);
+
+                // Early evaluation for REJECTION only (to catch rejections in time)
+                // We need sender and some content to evaluate most rules
+                if self.context.sender.is_some()
+                    && (self.context.subject.is_some() || self.context.mailer.is_some())
+                    && !self.context.headers.contains_key("_FOFF_EVALUATED")
+                    && self.context.headers.len() > 5  // Wait for enough headers
+                {
+                    log::debug!("Early evaluation for rejection with {} headers", self.context.headers.len());
+                    let action = self.engine.evaluate(&self.context);
+                    match action {
+                        Action::Reject { message } => {
+                            log::info!("Rejecting message during header processing: {message}");
+                            let response = format!("550 5.7.1 {message}");
+                            self.send_response(SMFIR_REPLYCODE, response.as_bytes())?;
+                            return Ok(true);
+                        }
+                        Action::TagAsSpam { .. } => {
+                            // Don't handle TagAsSpam here - wait for end of message
+                            log::debug!("TagAsSpam action detected, will handle at end of message");
+                            self.context.headers.insert("_FOFF_PENDING_TAG".to_string(), "true".to_string());
+                        }
+                        Action::Accept => {
+                            log::debug!("Message accepted during header processing");
+                            self.context.headers.insert("_FOFF_EVALUATED".to_string(), "accepted".to_string());
+                        }
+                    }
+                }
+
                 self.send_response(SMFIR_CONTINUE, &[])?;
                 Ok(true)
             }
@@ -331,25 +360,32 @@ impl MilterConnection {
             SMFIC_BODYEOB => {
                 log::debug!("End of message");
 
-                // Evaluate the message against all rules
-                let action = self.engine.evaluate(&self.context);
-                match action {
-                    Action::Reject { message } => {
-                        log::info!("Rejecting message at end-of-body: {message}");
-                        let response = format!("550 5.7.1 {message}");
-                        self.send_response(SMFIR_REPLYCODE, response.as_bytes())?;
-                        return Ok(true);
-                    }
-                    Action::TagAsSpam {
-                        header_name,
-                        header_value,
-                    } => {
-                        log::info!("Adding spam header: {header_name}: {header_value}");
-                        let header_data = format!("{header_name}\0{header_value}\0");
-                        self.send_response(SMFIR_ADDHEADER, header_data.as_bytes())?;
-                    }
-                    Action::Accept => {
-                        log::debug!("Message accepted");
+                // Only evaluate if we haven't already processed this message
+                // (rejected messages would have already returned, accepted messages might need tagging)
+                if !self.context.headers.contains_key("_FOFF_EVALUATED") 
+                    || self.context.headers.contains_key("_FOFF_PENDING_TAG") 
+                {
+                    log::debug!("Final evaluation for tagging");
+                    let action = self.engine.evaluate(&self.context);
+                    match action {
+                        Action::Reject { message } => {
+                            // This shouldn't happen if early evaluation worked, but handle it
+                            log::warn!("Late rejection attempted (may not work): {message}");
+                            let response = format!("550 5.7.1 {message}");
+                            self.send_response(SMFIR_REPLYCODE, response.as_bytes())?;
+                            return Ok(true);
+                        }
+                        Action::TagAsSpam {
+                            header_name,
+                            header_value,
+                        } => {
+                            log::info!("Adding spam header: {header_name}: {header_value}");
+                            let header_data = format!("{header_name}\0{header_value}\0");
+                            self.send_response(SMFIR_ADDHEADER, header_data.as_bytes())?;
+                        }
+                        Action::Accept => {
+                            log::debug!("Message accepted at end of message");
+                        }
                     }
                 }
 
