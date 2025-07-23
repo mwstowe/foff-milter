@@ -339,11 +339,51 @@ impl MilterConnection {
             SMFIC_EOH => {
                 log::info!("EOH: End of headers - evaluating for immediate header modifications");
 
-                // Only evaluate if we haven't already done so during header processing
-                if !self.context.headers.contains_key("_FOFF_EVALUATED") {
-                    log::info!("EOH: Proceeding with evaluation");
-                    let action = self.engine.evaluate(&self.context);
+                let evaluation_status = self.context.headers.get("_FOFF_EVALUATED");
+                log::info!("EOH: Evaluation status = {:?}", evaluation_status);
 
+                // Process TagAsSpam if we detected it during header processing
+                if evaluation_status == Some(&"pending_tag".to_string()) {
+                    log::info!("EOH: Processing pending TagAsSpam action from header evaluation");
+                    let action = self.engine.evaluate(&self.context);
+                    match action {
+                        Action::TagAsSpam {
+                            header_name,
+                            header_value,
+                        } => {
+                            log::info!("EOH: Adding spam header immediately: {header_name}: {header_value}");
+                            let header_data = format!("{header_name}\0{header_value}");
+                            log::info!("EOH: About to send SMFIR_ADDHEADER...");
+                            match self.send_response(SMFIR_ADDHEADER, header_data.as_bytes()) {
+                                Ok(_) => {
+                                    log::info!("EOH: Successfully sent SMFIR_ADDHEADER response");
+                                    // Mark as tagged to prevent double processing
+                                    self.context
+                                        .headers
+                                        .insert("_FOFF_EVALUATED".to_string(), "tagged".to_string());
+                                }
+                                Err(e) => {
+                                    log::error!("EOH: Failed to send SMFIR_ADDHEADER: {}", e);
+                                    return Err(e);
+                                }
+                            }
+                        }
+                        Action::Reject { message } => {
+                            log::info!("EOH: Rejecting message: {message}");
+                            let response = format!("550 5.7.1 {message}");
+                            self.send_response(SMFIR_REPLYCODE, response.as_bytes())?;
+                            return Ok(true);
+                        }
+                        Action::Accept => {
+                            log::info!("EOH: Message accepted");
+                            self.context
+                                .headers
+                                .insert("_FOFF_EVALUATED".to_string(), "accepted".to_string());
+                        }
+                    }
+                } else if evaluation_status.is_none() {
+                    log::info!("EOH: No prior evaluation, proceeding with fresh evaluation");
+                    let action = self.engine.evaluate(&self.context);
                     match action {
                         Action::Reject { message } => {
                             log::info!("EOH: Rejecting message: {message}");
@@ -380,7 +420,7 @@ impl MilterConnection {
                         }
                     }
                 } else {
-                    log::info!("EOH: Message already evaluated during header processing");
+                    log::info!("EOH: Message already fully processed: {:?}", evaluation_status);
                 }
                 
                 self.send_response(SMFIR_CONTINUE, &[])?;
