@@ -12,7 +12,7 @@ pub struct FilterEngine {
     compiled_patterns: HashMap<String, Regex>,
 }
 
-#[derive(Debug, Default)]
+#[derive(Debug, Default, Clone)]
 pub struct MailContext {
     pub sender: Option<String>,
     pub recipients: Vec<String>,
