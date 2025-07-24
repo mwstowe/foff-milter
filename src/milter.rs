@@ -51,6 +51,7 @@ const SMFIR_SKIP: u8 = b's';
 #[allow(dead_code)]
 const SMFIR_TEMPFAIL: u8 = b't';
 const SMFIR_REPLYCODE: u8 = b'y';
+const SMFIR_ACCEPT: u8 = b'a';
 
 struct MilterConnection {
     stream: UnixStream,
@@ -456,6 +457,9 @@ impl MilterConnection {
                                 log::info!("BODYEOB: Successfully sent SMFIR_ADDHEADER response");
                                 // Mark as tagged
                                 self.context.headers.insert("_FOFF_EVALUATED".to_string(), "tagged".to_string());
+                                // Send ACCEPT instead of CONTINUE after adding header
+                                self.send_response(SMFIR_ACCEPT, &[])?;
+                                return Ok(true);
                             }
                             Err(e) => {
                                 log::error!("BODYEOB: Failed to send SMFIR_ADDHEADER: {}", e);
@@ -483,6 +487,9 @@ impl MilterConnection {
                                 Ok(_) => {
                                     log::info!("BODYEOB: Successfully sent SMFIR_ADDHEADER response (fallback)");
                                     self.context.headers.insert("_FOFF_EVALUATED".to_string(), "tagged".to_string());
+                                    // Send ACCEPT instead of CONTINUE after adding header
+                                    self.send_response(SMFIR_ACCEPT, &[])?;
+                                    return Ok(true);
                                 }
                                 Err(e) => {
                                     log::error!("BODYEOB: Failed to send SMFIR_ADDHEADER (fallback): {}", e);
@@ -499,7 +506,11 @@ impl MilterConnection {
                     log::info!("BODYEOB: Message already evaluated: {:?}", evaluation_status);
                 }
 
-                self.send_response(SMFIR_CONTINUE, &[])?;
+                // Only send CONTINUE if we didn't already send ACCEPT
+                if !self.context.headers.contains_key("_FOFF_EVALUATED") || 
+                   self.context.headers.get("_FOFF_EVALUATED") != Some(&"tagged".to_string()) {
+                    self.send_response(SMFIR_CONTINUE, &[])?;
+                }
                 Ok(true)
             }
             SMFIC_ABORT => {
