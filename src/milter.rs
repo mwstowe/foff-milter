@@ -352,55 +352,14 @@ impl MilterConnection {
                 Ok(true)
             }
             SMFIC_EOH => {
-                log::info!("EOH: End of headers - evaluating for immediate header modifications");
+                log::info!("EOH: End of headers - evaluating rules but deferring header addition to EOM");
 
                 let evaluation_status = self.context.headers.get("_FOFF_EVALUATED");
                 log::info!("EOH: Evaluation status = {:?}", evaluation_status);
 
-                // Process TagAsSpam if we detected it during header processing
-                if evaluation_status == Some(&"pending_tag".to_string()) {
-                    log::info!("EOH: Processing pending TagAsSpam action from header evaluation");
-                    let action = self.engine.evaluate(&self.context);
-                    match action {
-                        Action::TagAsSpam {
-                            header_name,
-                            header_value,
-                        } => {
-                            log::info!("EOH: Adding spam header immediately: {header_name}: {header_value}");
-                            let header_data = format!("{header_name}\0{header_value}");
-                            log::info!("EOH: Header data format: {:?}", header_data);
-                            log::info!("EOH: Header data bytes: {:?}", header_data.as_bytes());
-                            log::info!("EOH: Header data length: {} bytes", header_data.len());
-                            log::info!("EOH: About to send SMFIR_ADDHEADER (0x{:02x})...", SMFIR_ADDHEADER);
-                            match self.send_response(SMFIR_ADDHEADER, header_data.as_bytes()) {
-                                Ok(_) => {
-                                    log::info!("EOH: Successfully sent SMFIR_ADDHEADER response");
-                                    // Mark as tagged to prevent double processing
-                                    self.context
-                                        .headers
-                                        .insert("_FOFF_EVALUATED".to_string(), "tagged".to_string());
-                                }
-                                Err(e) => {
-                                    log::error!("EOH: Failed to send SMFIR_ADDHEADER: {}", e);
-                                    return Err(e);
-                                }
-                            }
-                        }
-                        Action::Reject { message } => {
-                            log::info!("EOH: Rejecting message: {message}");
-                            let response = format!("550 5.7.1 {message}");
-                            self.send_response(SMFIR_REPLYCODE, response.as_bytes())?;
-                            return Ok(true);
-                        }
-                        Action::Accept => {
-                            log::info!("EOH: Message accepted");
-                            self.context
-                                .headers
-                                .insert("_FOFF_EVALUATED".to_string(), "accepted".to_string());
-                        }
-                    }
-                } else if evaluation_status.is_none() {
-                    log::info!("EOH: No prior evaluation, proceeding with fresh evaluation");
+                // Process evaluation if we haven't already
+                if evaluation_status.is_none() {
+                    log::info!("EOH: Proceeding with evaluation");
                     let action = self.engine.evaluate(&self.context);
                     match action {
                         Action::Reject { message } => {
@@ -409,38 +368,22 @@ impl MilterConnection {
                             self.send_response(SMFIR_REPLYCODE, response.as_bytes())?;
                             return Ok(true);
                         }
-                        Action::TagAsSpam {
-                            header_name,
-                            header_value,
-                        } => {
-                            log::info!("EOH: Adding spam header immediately: {header_name}: {header_value}");
-                            let header_data = format!("{header_name}\0{header_value}");
-                            log::info!("EOH: About to send SMFIR_ADDHEADER...");
-                            match self.send_response(SMFIR_ADDHEADER, header_data.as_bytes()) {
-                                Ok(_) => {
-                                    log::info!("EOH: Successfully sent SMFIR_ADDHEADER response");
-                                    // Mark as tagged to prevent double processing
-                                    self.context
-                                        .headers
-                                        .insert("_FOFF_EVALUATED".to_string(), "tagged".to_string());
-                                }
-                                Err(e) => {
-                                    log::error!("EOH: Failed to send SMFIR_ADDHEADER: {}", e);
-                                    return Err(e);
-                                }
-                            }
+                        Action::TagAsSpam { header_name, header_value } => {
+                            log::info!("EOH: TagAsSpam action detected - storing for EOM processing: {header_name}: {header_value}");
+                            // Store the header info for EOM processing
+                            self.context.headers.insert("_FOFF_EVALUATED".to_string(), "pending_tag".to_string());
+                            self.context.headers.insert("_FOFF_TAG_HEADER".to_string(), header_name.to_string());
+                            self.context.headers.insert("_FOFF_TAG_VALUE".to_string(), header_value.to_string());
                         }
                         Action::Accept => {
                             log::info!("EOH: Message accepted");
-                            self.context
-                                .headers
-                                .insert("_FOFF_EVALUATED".to_string(), "accepted".to_string());
+                            self.context.headers.insert("_FOFF_EVALUATED".to_string(), "accepted".to_string());
                         }
                     }
                 } else {
-                    log::info!("EOH: Message already fully processed: {:?}", evaluation_status);
+                    log::info!("EOH: Message already evaluated: {:?}", evaluation_status);
                 }
-                
+
                 self.send_response(SMFIR_CONTINUE, &[])?;
                 Ok(true)
             }
@@ -466,11 +409,39 @@ impl MilterConnection {
             SMFIC_BODYEOB => {
                 log::info!("BODYEOB: End of message processing");
 
-                // Only evaluate if we haven't already processed this message
                 let evaluation_status = self.context.headers.get("_FOFF_EVALUATED");
                 log::info!("BODYEOB: Evaluation status = {:?}", evaluation_status);
                 
-                if evaluation_status.is_none() {
+                // Process pending TagAsSpam actions
+                if evaluation_status == Some(&"pending_tag".to_string()) {
+                    log::info!("BODYEOB: Processing pending TagAsSpam action");
+                    
+                    let header_name = self.context.headers.get("_FOFF_TAG_HEADER").cloned();
+                    let header_value = self.context.headers.get("_FOFF_TAG_VALUE").cloned();
+                    
+                    if let (Some(header_name), Some(header_value)) = (header_name, header_value) {
+                        log::info!("BODYEOB: Adding spam header at EOM: {header_name}: {header_value}");
+                        let header_data = format!("{header_name}\0{header_value}\0");
+                        log::info!("BODYEOB: Header data format: {:?}", header_data);
+                        log::info!("BODYEOB: Header data bytes: {:?}", header_data.as_bytes());
+                        log::info!("BODYEOB: Header data length: {} bytes", header_data.len());
+                        log::info!("BODYEOB: About to send SMFIR_ADDHEADER (0x{:02x})...", SMFIR_ADDHEADER);
+                        
+                        match self.send_response(SMFIR_ADDHEADER, header_data.as_bytes()) {
+                            Ok(_) => {
+                                log::info!("BODYEOB: Successfully sent SMFIR_ADDHEADER response");
+                                // Mark as tagged
+                                self.context.headers.insert("_FOFF_EVALUATED".to_string(), "tagged".to_string());
+                            }
+                            Err(e) => {
+                                log::error!("BODYEOB: Failed to send SMFIR_ADDHEADER: {}", e);
+                                return Err(e);
+                            }
+                        }
+                    } else {
+                        log::error!("BODYEOB: Missing header name or value for pending tag");
+                    }
+                } else if evaluation_status.is_none() {
                     log::info!("BODYEOB: Proceeding with final evaluation (fallback)");
                     let action = self.engine.evaluate(&self.context);
                     match action {
@@ -481,12 +452,23 @@ impl MilterConnection {
                             self.send_response(SMFIR_REPLYCODE, response.as_bytes())?;
                             return Ok(true);
                         }
-                        Action::TagAsSpam { .. } => {
-                            log::warn!("BODYEOB: TagAsSpam at BODYEOB - should have been handled at EOH");
-                            // Don't process TagAsSpam here - it should be handled at EOH
+                        Action::TagAsSpam { header_name, header_value } => {
+                            log::info!("BODYEOB: Adding spam header at EOM (fallback): {header_name}: {header_value}");
+                            let header_data = format!("{header_name}\0{header_value}\0");
+                            match self.send_response(SMFIR_ADDHEADER, header_data.as_bytes()) {
+                                Ok(_) => {
+                                    log::info!("BODYEOB: Successfully sent SMFIR_ADDHEADER response (fallback)");
+                                    self.context.headers.insert("_FOFF_EVALUATED".to_string(), "tagged".to_string());
+                                }
+                                Err(e) => {
+                                    log::error!("BODYEOB: Failed to send SMFIR_ADDHEADER (fallback): {}", e);
+                                    return Err(e);
+                                }
+                            }
                         }
                         Action::Accept => {
                             log::info!("BODYEOB: Message accepted");
+                            self.context.headers.insert("_FOFF_EVALUATED".to_string(), "accepted".to_string());
                         }
                     }
                 } else {
