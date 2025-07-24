@@ -1,9 +1,11 @@
 use clap::{Arg, Command};
-use foff_milter::{run_milter, Config};
+use foff_milter::Config;
+use foff_milter::simple_milter::SimpleMilter;
 use log::LevelFilter;
 use std::process;
 
-fn main() {
+#[tokio::main]
+async fn main() {
     let matches = Command::new("foff-milter")
         .version("0.1.0")
         .about("A sendmail milter for filtering emails based on configurable criteria")
@@ -185,9 +187,14 @@ fn main() {
     
     log::info!("Starting FOFF milter...");
 
-    let result = run_milter(config, demo_mode);
+    if demo_mode {
+        log::info!("Demo mode not implemented for simple milter yet");
+        return;
+    }
 
-    if let Err(e) = result {
+    let socket_path = config.socket_path.clone();
+    let milter = SimpleMilter::new(config).expect("Failed to create milter");
+    if let Err(e) = milter.run(&socket_path).await {
         log::error!("Milter error: {e}");
         process::exit(1);
     }
