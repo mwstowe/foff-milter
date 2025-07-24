@@ -378,18 +378,7 @@ impl MilterConnection {
                 Ok(true)
             }
             SMFIC_EOH => {
-                log::info!("EOH: End of headers - TESTING IMMEDIATE HEADER ADDITION");
-                
-                // CRITICAL TEST: Add header immediately at EOH phase
-                log::info!("EOH: DEBUGGING - Adding test header at EOH phase");
-                let test_header_data = "X-FOFF-EOH-Test\0Added-At-EOH\0";
-                log::info!("EOH: DEBUG header data: {:02x?}", test_header_data.as_bytes());
-                match self.send_response(SMFIR_ADDHEADER, test_header_data.as_bytes()) {
-                    Ok(_) => log::info!("EOH: DEBUG header sent successfully"),
-                    Err(e) => log::error!("EOH: DEBUG header failed: {}", e),
-                }
-                
-                log::info!("EOH: End of headers - evaluating rules but deferring header addition to EOM");
+                log::info!("EOH: End of headers - evaluating rules");
 
                 let evaluation_status = self.context.headers.get("_FOFF_EVALUATED");
                 log::info!("EOH: Evaluation status = {:?}", evaluation_status);
@@ -461,11 +450,6 @@ impl MilterConnection {
                     if let (Some(header_name), Some(header_value)) = (header_name, header_value) {
                         log::info!("BODYEOB: Adding spam header at EOM: {header_name}: {header_value}");
                         let header_data = format!("{header_name}\0{header_value}\0");
-                        log::info!("BODYEOB: Header data format: {:?}", header_data);
-                        log::info!("BODYEOB: Header data bytes: {:?}", header_data.as_bytes());
-                        log::info!("BODYEOB: Header data length: {} bytes", header_data.len());
-                        log::info!("BODYEOB: Raw bytes: {:02x?}", header_data.as_bytes());
-                        log::info!("BODYEOB: About to send SMFIR_ADDHEADER (0x{:02x})...", SMFIR_ADDHEADER);
                         
                         match self.send_response(SMFIR_ADDHEADER, header_data.as_bytes()) {
                             Ok(_) => {
@@ -515,16 +499,7 @@ impl MilterConnection {
                     log::info!("BODYEOB: Message already evaluated: {:?}", evaluation_status);
                 }
 
-                log::info!("BODYEOB: About to send SMFIR_CONTINUE...");
-                match self.send_response(SMFIR_CONTINUE, &[]) {
-                    Ok(_) => {
-                        log::info!("BODYEOB: Successfully sent SMFIR_CONTINUE");
-                    }
-                    Err(e) => {
-                        log::error!("BODYEOB: Failed to send SMFIR_CONTINUE: {}", e);
-                        return Err(e);
-                    }
-                }
+                self.send_response(SMFIR_CONTINUE, &[])?;
                 Ok(true)
             }
             SMFIC_ABORT => {
