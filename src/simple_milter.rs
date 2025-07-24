@@ -1,6 +1,6 @@
 use crate::config::{Action, Config};
 use crate::filter::{FilterEngine, MailContext};
-use indymilter::{run, Callbacks, Status, ContextActions};
+use indymilter::{run, Callbacks, Status, ContextActions, Config as IndyConfig, Actions};
 use std::collections::HashMap;
 use std::sync::{Arc, Mutex};
 use tokio::net::UnixListener;
@@ -169,7 +169,13 @@ impl SimpleMilter {
             ..Default::default()
         };
 
-        run(listener, callbacks, Default::default(), tokio::signal::ctrl_c()).await?;
+        // Configure indymilter to enable ADD_HEADER action
+        let config = IndyConfig {
+            actions: Actions::ADD_HEADER,
+            ..Default::default()
+        };
+        
+        run(listener, callbacks, config, tokio::signal::ctrl_c()).await?;
         Ok(())
     }
 }
