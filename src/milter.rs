@@ -145,6 +145,25 @@ impl MilterConnection {
     }
 
     fn process_command(&mut self, command: u8, data: Vec<u8>) -> anyhow::Result<bool> {
+        // Log all commands for debugging
+        log::info!("RAW COMMAND: 0x{:02x} = {}", command, 
+                   match command {
+                       0x4F => "OPTNEG",
+                       0x43 => "CONNECT",
+                       0x48 => "HELO", 
+                       0x4D => "MAIL",
+                       0x52 => "RCPT",
+                       0x54 => "DATA",
+                       0x44 => "MACRO",
+                       0x4C => "HEADER",
+                       0x4E => "EOH",
+                       0x42 => "BODY",
+                       0x45 => "BODYEOB",
+                       0x41 => "ABORT",
+                       0x51 => "QUIT",
+                       _ => "UNKNOWN"
+                   });
+        
         log::info!("MILTER COMMAND: 0x{:02x} ({}) with {} bytes", 
                    command, 
                    match command {
@@ -418,14 +437,26 @@ impl MilterConnection {
             SMFIC_BODYEOB => {
                 log::info!("BODYEOB: End of message processing");
 
-                // DEBUGGING: Always try to add a test header to every email
-                log::info!("BODYEOB: DEBUGGING - Adding test header to every email");
+                // DEBUGGING: Try bundled response approach
+                log::info!("BODYEOB: DEBUGGING - Testing bundled ADDHEADER + CONTINUE");
+                
+                // Send ADDHEADER first
                 let test_header_data = "X-FOFF-Debug\0Always-Added\0";
                 log::info!("BODYEOB: DEBUG header data: {:02x?}", test_header_data.as_bytes());
                 match self.send_response(SMFIR_ADDHEADER, test_header_data.as_bytes()) {
                     Ok(_) => log::info!("BODYEOB: DEBUG header sent successfully"),
                     Err(e) => log::error!("BODYEOB: DEBUG header failed: {}", e),
                 }
+                
+                // Immediately send CONTINUE without waiting
+                log::info!("BODYEOB: Sending immediate CONTINUE after ADDHEADER");
+                match self.send_response(SMFIR_CONTINUE, &[]) {
+                    Ok(_) => log::info!("BODYEOB: CONTINUE sent successfully"),
+                    Err(e) => log::error!("BODYEOB: CONTINUE failed: {}", e),
+                }
+                
+                // Skip the normal CONTINUE at the end
+                return Ok(true);
 
                 let evaluation_status = self.context.headers.get("_FOFF_EVALUATED");
                 log::info!("BODYEOB: Evaluation status = {:?}", evaluation_status);
