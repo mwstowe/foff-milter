@@ -1,0 +1,34 @@
+socket_path: "/var/run/foff-milter.sock"
+default_action:
+  type: "Accept"
+
+rules:
+  # Test rule with non-X header to bypass potential stripping
+  - name: "Test header addition with non-X header"
+    criteria:
+      type: "SubjectPattern"
+      pattern: ".*test.*"
+    action:
+      type: "TagAsSpam"
+      header_name: "FOFF-Test-Header"
+      header_value: "HEADER-ADDITION-WORKS"
+
+  # Russian domain test with non-X header
+  - name: "Tag Russian domains with visible header"
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*\.ru\.com"
+    action:
+      type: "TagAsSpam"
+      header_name: "FOFF-Russian-Flag"
+      header_value: "Russian-Domain-Detected"
+
+  # Also test with standard X- header for comparison
+  - name: "Tag with standard X header for comparison"
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*\.ru$"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-FOFF-Standard"
+      header_value: "Standard-X-Header"

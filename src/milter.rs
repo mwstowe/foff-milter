@@ -27,7 +27,7 @@ const SMFIC_DATA: u8 = b'T';
 const SMFIR_ADDRCPT: u8 = b'+';
 #[allow(dead_code)]
 const SMFIR_DELRCPT: u8 = b'-';
-const SMFIR_ACCEPT: u8 = b'a';
+
 #[allow(dead_code)]
 const SMFIR_REPLBODY: u8 = b'b';
 const SMFIR_CONTINUE: u8 = b'c';
@@ -206,8 +206,15 @@ impl MilterConnection {
                 // Format: version(4) + actions(4) + protocol(4) + reserved(12)
                 let mut response = Vec::with_capacity(24);
 
-                // Version: 6 (milter protocol version)
-                response.extend_from_slice(&6u32.to_be_bytes());
+                // Version: Match what sendmail offered or use 6
+                let our_version = if data.len() >= 12 {
+                    let offered_version = u32::from_be_bytes([data[0], data[1], data[2], data[3]]);
+                    std::cmp::min(offered_version, 6) // Use lower of offered or our max
+                } else {
+                    6
+                };
+                log::info!("OPTNEG: Using protocol version: {}", our_version);
+                response.extend_from_slice(&our_version.to_be_bytes());
 
                 // Actions we want to perform:
                 // SMFIF_ADDHDRS (0x01) - Add headers
@@ -411,6 +418,15 @@ impl MilterConnection {
             SMFIC_BODYEOB => {
                 log::info!("BODYEOB: End of message processing");
 
+                // DEBUGGING: Always try to add a test header to every email
+                log::info!("BODYEOB: DEBUGGING - Adding test header to every email");
+                let test_header_data = "X-FOFF-Debug\0Always-Added\0";
+                log::info!("BODYEOB: DEBUG header data: {:02x?}", test_header_data.as_bytes());
+                match self.send_response(SMFIR_ADDHEADER, test_header_data.as_bytes()) {
+                    Ok(_) => log::info!("BODYEOB: DEBUG header sent successfully"),
+                    Err(e) => log::error!("BODYEOB: DEBUG header failed: {}", e),
+                }
+
                 let evaluation_status = self.context.headers.get("_FOFF_EVALUATED");
                 log::info!("BODYEOB: Evaluation status = {:?}", evaluation_status);
                 
@@ -427,6 +443,7 @@ impl MilterConnection {
                         log::info!("BODYEOB: Header data format: {:?}", header_data);
                         log::info!("BODYEOB: Header data bytes: {:?}", header_data.as_bytes());
                         log::info!("BODYEOB: Header data length: {} bytes", header_data.len());
+                        log::info!("BODYEOB: Raw bytes: {:02x?}", header_data.as_bytes());
                         log::info!("BODYEOB: About to send SMFIR_ADDHEADER (0x{:02x})...", SMFIR_ADDHEADER);
                         
                         match self.send_response(SMFIR_ADDHEADER, header_data.as_bytes()) {
