@@ -477,13 +477,13 @@ impl MilterConnection {
                     log::info!("BODYEOB: Message already evaluated: {:?}", evaluation_status);
                 }
 
-                log::info!("BODYEOB: About to send SMFIR_ACCEPT...");
-                match self.send_response(SMFIR_ACCEPT, &[]) {
+                log::info!("BODYEOB: About to send SMFIR_CONTINUE...");
+                match self.send_response(SMFIR_CONTINUE, &[]) {
                     Ok(_) => {
-                        log::info!("BODYEOB: Successfully sent SMFIR_ACCEPT");
+                        log::info!("BODYEOB: Successfully sent SMFIR_CONTINUE");
                     }
                     Err(e) => {
-                        log::error!("BODYEOB: Failed to send SMFIR_ACCEPT: {}", e);
+                        log::error!("BODYEOB: Failed to send SMFIR_CONTINUE: {}", e);
                         return Err(e);
                     }
                 }
