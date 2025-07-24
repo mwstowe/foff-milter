@@ -378,6 +378,17 @@ impl MilterConnection {
                 Ok(true)
             }
             SMFIC_EOH => {
+                log::info!("EOH: End of headers - TESTING IMMEDIATE HEADER ADDITION");
+                
+                // CRITICAL TEST: Add header immediately at EOH phase
+                log::info!("EOH: DEBUGGING - Adding test header at EOH phase");
+                let test_header_data = "X-FOFF-EOH-Test\0Added-At-EOH\0";
+                log::info!("EOH: DEBUG header data: {:02x?}", test_header_data.as_bytes());
+                match self.send_response(SMFIR_ADDHEADER, test_header_data.as_bytes()) {
+                    Ok(_) => log::info!("EOH: DEBUG header sent successfully"),
+                    Err(e) => log::error!("EOH: DEBUG header failed: {}", e),
+                }
+                
                 log::info!("EOH: End of headers - evaluating rules but deferring header addition to EOM");
 
                 let evaluation_status = self.context.headers.get("_FOFF_EVALUATED");
