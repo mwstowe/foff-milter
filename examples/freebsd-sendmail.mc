@@ -2,7 +2,10 @@
 # Add these lines to your /etc/mail/`hostname`.mc file
 
 # FOFF milter configuration
-INPUT_MAIL_FILTER(`foff-milter', `S=unix:/var/run/foff-milter.sock, T=S:30s;R:30s')
+INPUT_MAIL_FILTER(`foff-milter', `S=unix:/var/run/foff-milter.sock, F=5, T=S:30s;R:30s')
+
+# The F=5 flag enables header modifications:
+# F=1 = add headers, F=4 = change headers, F=5 = both
 
 # Optional: Configure milter macros for better context
 define(`confMILTER_MACROS_CONNECT', `j, _, {daemon_name}, {if_name}, {if_addr}')
