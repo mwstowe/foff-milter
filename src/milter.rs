@@ -357,8 +357,10 @@ impl MilterConnection {
                 let evaluation_status = self.context.headers.get("_FOFF_EVALUATED");
                 log::info!("EOH: Evaluation status = {:?}", evaluation_status);
 
-                // Process evaluation if we haven't already
-                if evaluation_status.is_none() {
+                // Process evaluation if we haven't already, or if we have pending_tag but no stored header info
+                if evaluation_status.is_none() || 
+                   (evaluation_status == Some(&"pending_tag".to_string()) && 
+                    !self.context.headers.contains_key("_FOFF_TAG_HEADER")) {
                     log::info!("EOH: Proceeding with evaluation");
                     let action = self.engine.evaluate(&self.context);
                     match action {
