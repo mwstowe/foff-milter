@@ -74,7 +74,7 @@ impl MilterConnection {
             log::info!("Waiting for next milter command...");
             match self.read_command() {
                 Ok(Some((command, data))) => {
-                    log::info!("Read command successfully, processing...");
+                    log::info!("Processing command: 0x{:02x} with {} bytes", command, data.len());
                     match self.process_command(command, data) {
                         Ok(true) => {
                             log::info!("Command processed successfully, continuing...");
