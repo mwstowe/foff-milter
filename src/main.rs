@@ -182,10 +182,12 @@ fn main() {
             log::warn!("Daemon mode not supported on this platform, running in foreground");
         }
     }
-
+    
     log::info!("Starting FOFF milter...");
 
-    if let Err(e) = run_milter(config, demo_mode) {
+    let result = run_milter(config, demo_mode);
+
+    if let Err(e) = result {
         log::error!("Milter error: {e}");
         process::exit(1);
     }

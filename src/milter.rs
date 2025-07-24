@@ -448,27 +448,6 @@ impl MilterConnection {
             SMFIC_BODYEOB => {
                 log::info!("BODYEOB: End of message processing");
 
-                // DEBUGGING: Try bundled response approach
-                log::info!("BODYEOB: DEBUGGING - Testing bundled ADDHEADER + CONTINUE");
-                
-                // Send ADDHEADER first
-                let test_header_data = "X-FOFF-Debug\0Always-Added\0";
-                log::info!("BODYEOB: DEBUG header data: {:02x?}", test_header_data.as_bytes());
-                match self.send_response(SMFIR_ADDHEADER, test_header_data.as_bytes()) {
-                    Ok(_) => log::info!("BODYEOB: DEBUG header sent successfully"),
-                    Err(e) => log::error!("BODYEOB: DEBUG header failed: {}", e),
-                }
-                
-                // Immediately send CONTINUE without waiting
-                log::info!("BODYEOB: Sending immediate CONTINUE after ADDHEADER");
-                match self.send_response(SMFIR_CONTINUE, &[]) {
-                    Ok(_) => log::info!("BODYEOB: CONTINUE sent successfully"),
-                    Err(e) => log::error!("BODYEOB: CONTINUE failed: {}", e),
-                }
-                
-                // Skip the normal CONTINUE at the end
-                return Ok(true);
-
                 let evaluation_status = self.context.headers.get("_FOFF_EVALUATED");
                 log::info!("BODYEOB: Evaluation status = {:?}", evaluation_status);
                 
@@ -830,7 +809,6 @@ pub fn run_milter(config: Config, demo_mode: bool) -> anyhow::Result<()> {
             }
         }
     }
-
     // Clean up socket file on normal exit
     if Path::new(&config.socket_path).exists() {
         std::fs::remove_file(&config.socket_path)?;
