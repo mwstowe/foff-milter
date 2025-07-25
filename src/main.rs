@@ -1,6 +1,6 @@
 use clap::{Arg, Command};
-use foff_milter::Config;
 use foff_milter::simple_milter::SimpleMilter;
+use foff_milter::Config;
 use log::LevelFilter;
 use std::process;
 
@@ -184,7 +184,7 @@ async fn main() {
             log::warn!("Daemon mode not supported on this platform, running in foreground");
         }
     }
-    
+
     log::info!("Starting FOFF milter...");
 
     if demo_mode {
