@@ -4,10 +4,10 @@ default_action:
 
 rules:
   # Tag emails with unsubscribe links pointing to Google domains
-  - name: "Tag Google unsubscribe links"
+  - name: "Tag Google API unsubscribe links"
     criteria:
       type: "UnsubscribeLinkPattern"
-      pattern: ".*\.google\.com.*"
+      pattern: ".*\.googleapis\.com.*"
     action:
       type: "TagAsSpam"
       header_name: "X-Suspicious-Unsubscribe"
