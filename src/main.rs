@@ -1,5 +1,5 @@
 use clap::{Arg, Command};
-use foff_milter::simple_milter::SimpleMilter;
+use foff_milter::milter::Milter;
 use foff_milter::Config;
 use log::LevelFilter;
 use std::process;
@@ -193,7 +193,7 @@ async fn main() {
     }
 
     let socket_path = config.socket_path.clone();
-    let milter = SimpleMilter::new(config).expect("Failed to create milter");
+    let milter = Milter::new(config).expect("Failed to create milter");
     if let Err(e) = milter.run(&socket_path).await {
         log::error!("Milter error: {e}");
         process::exit(1);
