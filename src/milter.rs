@@ -13,7 +13,6 @@ pub struct Milter {
 type StateMap = Arc<Mutex<HashMap<String, MailContext>>>;
 
 impl Milter {
-
     pub fn new(config: Config) -> anyhow::Result<Self> {
         let engine = Arc::new(FilterEngine::new(config)?);
         Ok(Milter { engine })
