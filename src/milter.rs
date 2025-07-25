@@ -148,7 +148,7 @@ impl Milter {
                         let mail_ctx_clone = state.lock().unwrap().values().last().cloned();
 
                         if let Some(mail_ctx) = mail_ctx_clone {
-                            let action = engine.evaluate(&mail_ctx);
+                            let action = engine.evaluate(&mail_ctx).await;
 
                             match action {
                                 Action::Reject { message } => {

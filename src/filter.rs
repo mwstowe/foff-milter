@@ -1,7 +1,7 @@
 use crate::config::{Action, Config, Criteria};
 use crate::language::LanguageDetector;
-use hickory_resolver::config::*;
-use hickory_resolver::Resolver;
+
+use hickory_resolver::TokioAsyncResolver;
 use regex::Regex;
 use std::collections::HashMap;
 use std::time::Duration;
@@ -122,9 +122,9 @@ impl FilterEngine {
         Ok(())
     }
 
-    pub fn evaluate(&self, context: &MailContext) -> &Action {
+    pub async fn evaluate(&self, context: &MailContext) -> &Action {
         for rule in &self.config.rules {
-            if self.evaluate_criteria(&rule.criteria, context) {
+            if self.evaluate_criteria(&rule.criteria, context).await {
                 log::info!(
                     "Rule '{}' matched, applying action: {:?}",
                     rule.name,
@@ -185,7 +185,7 @@ impl FilterEngine {
     }
 
     /// Validate an unsubscribe link
-    fn validate_unsubscribe_link(
+    async fn validate_unsubscribe_link(
         &self,
         url: &str,
         timeout_seconds: u64,
@@ -215,7 +215,7 @@ impl FilterEngine {
         // DNS validation
         if check_dns {
             log::debug!("Checking DNS for hostname: {hostname}");
-            let resolver = match Resolver::new(ResolverConfig::default(), ResolverOpts::default()) {
+            let resolver = match TokioAsyncResolver::tokio_from_system_conf() {
                 Ok(resolver) => resolver,
                 Err(e) => {
                     log::debug!("Failed to create DNS resolver: {e}");
@@ -223,7 +223,7 @@ impl FilterEngine {
                 }
             };
 
-            match resolver.lookup_ip(hostname) {
+            match resolver.lookup_ip(hostname).await {
                 Ok(response) => {
                     if response.iter().count() == 0 {
                         log::debug!("DNS lookup returned no results for {hostname}");
@@ -241,7 +241,7 @@ impl FilterEngine {
         // HTTP validation
         if check_http {
             log::debug!("Checking HTTP accessibility for: {url}");
-            let client = reqwest::blocking::Client::builder()
+            let client = reqwest::Client::builder()
                 .timeout(Duration::from_secs(timeout_seconds))
                 .user_agent("FOFF-Milter/1.0")
                 .build();
@@ -255,7 +255,7 @@ impl FilterEngine {
             };
 
             // Use HEAD request to avoid downloading content
-            match client.head(url).send() {
+            match client.head(url).send().await {
                 Ok(response) => {
                     let status = response.status();
                     log::debug!("HTTP HEAD response: {status} for {url}");
@@ -280,101 +280,120 @@ impl FilterEngine {
         true
     }
 
-    fn evaluate_criteria(&self, criteria: &Criteria, context: &MailContext) -> bool {
-        match criteria {
-            Criteria::MailerPattern { pattern } => {
-                if let Some(mailer) = &context.mailer {
-                    if let Some(regex) = self.compiled_patterns.get(pattern) {
-                        return regex.is_match(mailer);
+    fn evaluate_criteria<'a>(
+        &'a self,
+        criteria: &'a Criteria,
+        context: &'a MailContext,
+    ) -> std::pin::Pin<Box<dyn std::future::Future<Output = bool> + Send + 'a>> {
+        Box::pin(async move {
+            match criteria {
+                Criteria::MailerPattern { pattern } => {
+                    if let Some(mailer) = &context.mailer {
+                        if let Some(regex) = self.compiled_patterns.get(pattern) {
+                            return regex.is_match(mailer);
+                        }
                     }
+                    false
                 }
-                false
-            }
-            Criteria::SenderPattern { pattern } => {
-                if let Some(sender) = &context.sender {
-                    if let Some(regex) = self.compiled_patterns.get(pattern) {
-                        return regex.is_match(sender);
+                Criteria::SenderPattern { pattern } => {
+                    if let Some(sender) = &context.sender {
+                        if let Some(regex) = self.compiled_patterns.get(pattern) {
+                            return regex.is_match(sender);
+                        }
                     }
+                    false
                 }
-                false
-            }
-            Criteria::RecipientPattern { pattern } => {
-                if let Some(regex) = self.compiled_patterns.get(pattern) {
-                    return context
-                        .recipients
-                        .iter()
-                        .any(|recipient| regex.is_match(recipient));
-                }
-                false
-            }
-            Criteria::SubjectPattern { pattern } => {
-                if let Some(subject) = &context.subject {
+                Criteria::RecipientPattern { pattern } => {
                     if let Some(regex) = self.compiled_patterns.get(pattern) {
-                        return regex.is_match(subject);
+                        return context
+                            .recipients
+                            .iter()
+                            .any(|recipient| regex.is_match(recipient));
                     }
+                    false
                 }
-                false
-            }
-            Criteria::HeaderPattern { header, pattern } => {
-                if let Some(header_value) = context.headers.get(header) {
-                    if let Some(regex) = self.compiled_patterns.get(pattern) {
-                        return regex.is_match(header_value);
+                Criteria::SubjectPattern { pattern } => {
+                    if let Some(subject) = &context.subject {
+                        if let Some(regex) = self.compiled_patterns.get(pattern) {
+                            return regex.is_match(subject);
+                        }
                     }
+                    false
                 }
-                false
-            }
-            Criteria::SubjectContainsLanguage { language } => {
-                if let Some(subject) = &context.subject {
-                    return LanguageDetector::contains_language(subject, language);
+                Criteria::HeaderPattern { header, pattern } => {
+                    if let Some(header_value) = context.headers.get(header) {
+                        if let Some(regex) = self.compiled_patterns.get(pattern) {
+                            return regex.is_match(header_value);
+                        }
+                    }
+                    false
                 }
-                false
-            }
-            Criteria::HeaderContainsLanguage { header, language } => {
-                if let Some(header_value) = context.headers.get(header) {
-                    return LanguageDetector::contains_language(header_value, language);
+                Criteria::SubjectContainsLanguage { language } => {
+                    if let Some(subject) = &context.subject {
+                        return LanguageDetector::contains_language(subject, language);
+                    }
+                    false
                 }
-                false
-            }
-            Criteria::UnsubscribeLinkValidation {
-                timeout_seconds,
-                check_dns,
-                check_http,
-            } => {
-                let timeout = timeout_seconds.unwrap_or(5); // Default 5 second timeout
-                let dns_check = check_dns.unwrap_or(true); // Default: check DNS
-                let http_check = check_http.unwrap_or(false); // Default: don't check HTTP (faster)
+                Criteria::HeaderContainsLanguage { header, language } => {
+                    if let Some(header_value) = context.headers.get(header) {
+                        return LanguageDetector::contains_language(header_value, language);
+                    }
+                    false
+                }
+                Criteria::UnsubscribeLinkValidation {
+                    timeout_seconds,
+                    check_dns,
+                    check_http,
+                } => {
+                    let timeout = timeout_seconds.unwrap_or(5); // Default 5 second timeout
+                    let dns_check = check_dns.unwrap_or(true); // Default: check DNS
+                    let http_check = check_http.unwrap_or(false); // Default: don't check HTTP (faster)
 
-                log::debug!(
+                    log::debug!(
                     "Checking unsubscribe link validation (timeout: {timeout}s, DNS: {dns_check}, HTTP: {http_check})"
                 );
 
-                let links = self.extract_unsubscribe_links(context);
+                    let links = self.extract_unsubscribe_links(context);
 
-                if links.is_empty() {
-                    log::debug!("No unsubscribe links found");
-                    return false; // No unsubscribe links found - suspicious
-                }
-
-                log::debug!("Found {} unsubscribe links: {:?}", links.len(), links);
-
-                // Check if ANY unsubscribe link is invalid
-                for link in &links {
-                    if !self.validate_unsubscribe_link(link, timeout, dns_check, http_check) {
-                        log::info!("Invalid unsubscribe link detected: {link}");
-                        return true; // Found invalid link - matches criteria
+                    if links.is_empty() {
+                        log::debug!("No unsubscribe links found");
+                        return false; // No unsubscribe links found - suspicious
                     }
-                }
 
-                log::debug!("All unsubscribe links are valid");
-                false // All links are valid
+                    log::debug!("Found {} unsubscribe links: {:?}", links.len(), links);
+
+                    // Check if ANY unsubscribe link is invalid
+                    for link in &links {
+                        if !self
+                            .validate_unsubscribe_link(link, timeout, dns_check, http_check)
+                            .await
+                        {
+                            log::info!("Invalid unsubscribe link detected: {link}");
+                            return true; // Found invalid link - matches criteria
+                        }
+                    }
+
+                    log::debug!("All unsubscribe links are valid");
+                    false // All links are valid
+                }
+                Criteria::And { criteria } => {
+                    for c in criteria {
+                        if !self.evaluate_criteria(c, context).await {
+                            return false;
+                        }
+                    }
+                    true
+                }
+                Criteria::Or { criteria } => {
+                    for c in criteria {
+                        if self.evaluate_criteria(c, context).await {
+                            return true;
+                        }
+                    }
+                    false
+                }
             }
-            Criteria::And { criteria } => {
-                criteria.iter().all(|c| self.evaluate_criteria(c, context))
-            }
-            Criteria::Or { criteria } => {
-                criteria.iter().any(|c| self.evaluate_criteria(c, context))
-            }
-        }
+        })
     }
 }
 
@@ -383,8 +402,8 @@ mod tests {
     use super::*;
     use crate::config::Config;
 
-    #[test]
-    fn test_mailer_pattern_matching() {
+    #[tokio::test]
+    async fn test_mailer_pattern_matching() {
         let config = Config::default();
         let engine = FilterEngine::new(config).unwrap();
 
@@ -393,20 +412,20 @@ mod tests {
             ..Default::default()
         };
 
-        let action = engine.evaluate(&context);
+        let action = engine.evaluate(&context).await;
         match action {
             Action::Reject { .. } => {}
             _ => panic!("Expected reject action for suspicious Chinese service"),
         }
     }
 
-    #[test]
-    fn test_no_match_default_action() {
+    #[tokio::test]
+    async fn test_no_match_default_action() {
         let config = Config::default();
         let engine = FilterEngine::new(config).unwrap();
 
         let context = MailContext::default();
-        let action = engine.evaluate(&context);
+        let action = engine.evaluate(&context).await;
 
         match action {
             Action::Accept => {}
@@ -414,8 +433,8 @@ mod tests {
         }
     }
 
-    #[test]
-    fn test_combination_criteria() {
+    #[tokio::test]
+    async fn test_combination_criteria() {
         use crate::config::{Action, FilterRule};
 
         // Create a config with combination criteria: sparkmail.com mailer AND Japanese in subject
@@ -448,7 +467,7 @@ mod tests {
             ..Default::default()
         };
 
-        let action = engine.evaluate(&context);
+        let action = engine.evaluate(&context).await;
         match action {
             Action::Reject { .. } => {}
             _ => panic!("Expected reject action for sparkmail with Japanese"),
@@ -461,7 +480,7 @@ mod tests {
             ..Default::default()
         };
 
-        let action2 = engine.evaluate(&context2);
+        let action2 = engine.evaluate(&context2).await;
         match action2 {
             Action::Accept => {}
             _ => panic!("Expected accept action for sparkmail without Japanese"),
@@ -474,15 +493,15 @@ mod tests {
             ..Default::default()
         };
 
-        let action3 = engine.evaluate(&context3);
+        let action3 = engine.evaluate(&context3).await;
         match action3 {
             Action::Accept => {}
             _ => panic!("Expected accept action for non-sparkmail with Japanese"),
         }
     }
 
-    #[test]
-    fn test_production_examples() {
+    #[tokio::test]
+    async fn test_production_examples() {
         use crate::config::{Action, FilterRule};
 
         // Create config with the two production examples
@@ -535,7 +554,7 @@ mod tests {
             ..Default::default()
         };
 
-        let action1 = engine.evaluate(&context1);
+        let action1 = engine.evaluate(&context1).await;
         match action1 {
             Action::Reject { message } => {
                 assert!(message.contains("Chinese service"));
@@ -550,7 +569,7 @@ mod tests {
             ..Default::default()
         };
 
-        let action2 = engine.evaluate(&context2);
+        let action2 = engine.evaluate(&context2).await;
         match action2 {
             Action::Reject { message } => {
                 assert!(message.contains("Sparkpost"));
@@ -565,7 +584,7 @@ mod tests {
             ..Default::default()
         };
 
-        let action3 = engine.evaluate(&context3);
+        let action3 = engine.evaluate(&context3).await;
         match action3 {
             Action::Accept => {}
             _ => panic!("Expected accept for Chinese service without Japanese"),
@@ -578,7 +597,7 @@ mod tests {
             ..Default::default()
         };
 
-        let action4 = engine.evaluate(&context4);
+        let action4 = engine.evaluate(&context4).await;
         match action4 {
             Action::Accept => {}
             _ => panic!("Expected accept for Sparkpost to different user"),
