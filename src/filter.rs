@@ -385,7 +385,7 @@ impl FilterEngine {
                     false // All links are valid
                 }
                 Criteria::UnsubscribeLinkPattern { pattern } => {
-                    log::debug!("Checking unsubscribe link pattern: {}", pattern);
+                    log::debug!("Checking unsubscribe link pattern: {pattern}");
 
                     let links = self.extract_unsubscribe_links(context);
 
@@ -400,17 +400,13 @@ impl FilterEngine {
                         // Check if ANY unsubscribe link matches the pattern
                         for link in &links {
                             if regex.is_match(link) {
-                                log::info!(
-                                    "Unsubscribe link matches pattern '{}': {}",
-                                    pattern,
-                                    link
-                                );
+                                log::info!("Unsubscribe link matches pattern '{pattern}': {link}");
                                 return true;
                             }
                         }
                     }
 
-                    log::debug!("No unsubscribe links match pattern: {}", pattern);
+                    log::debug!("No unsubscribe links match pattern: {pattern}");
                     false
                 }
                 Criteria::And { criteria } => {

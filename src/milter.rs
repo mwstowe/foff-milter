@@ -19,7 +19,7 @@ impl Milter {
     }
 
     pub async fn run(&self, socket_path: &str) -> anyhow::Result<()> {
-        log::info!("Starting milter on: {}", socket_path);
+        log::info!("Starting milter on: {socket_path}");
         // Remove existing socket if it exists
         if std::path::Path::new(socket_path).exists() {
             std::fs::remove_file(socket_path)?;
@@ -37,7 +37,7 @@ impl Milter {
                     let state = state.clone();
                     Box::pin(async move {
                         let hostname_str = hostname.to_string_lossy().to_string();
-                        log::debug!("Connection from: {}", hostname_str);
+                        log::debug!("Connection from: {hostname_str}");
                         let mail_ctx = MailContext {
                             hostname: Some(hostname_str.clone()),
                             ..Default::default()
@@ -58,7 +58,7 @@ impl Milter {
                             .map(|s| s.to_string_lossy())
                             .collect::<Vec<_>>()
                             .join(",");
-                        log::debug!("Mail from: {}", sender_str);
+                        log::debug!("Mail from: {sender_str}");
                         // Update the most recent context
                         if let Some((_, mail_ctx)) = state.lock().unwrap().iter_mut().last() {
                             mail_ctx.sender = Some(sender_str);
@@ -78,7 +78,7 @@ impl Milter {
                             .map(|s| s.to_string_lossy())
                             .collect::<Vec<_>>()
                             .join(",");
-                        log::debug!("Rcpt to: {}", recipient_str);
+                        log::debug!("Rcpt to: {recipient_str}");
                         if let Some((_, mail_ctx)) = state.lock().unwrap().iter_mut().last() {
                             mail_ctx.recipients.push(recipient_str);
                         }
@@ -94,7 +94,7 @@ impl Milter {
                     Box::pin(async move {
                         let name_str = name.to_string_lossy().to_string();
                         let value_str = value.to_string_lossy().to_string();
-                        log::debug!("Header: {}: {}", name_str, value_str);
+                        log::debug!("Header: {name_str}: {value_str}");
 
                         if let Some((_, mail_ctx)) = state.lock().unwrap().iter_mut().last() {
                             // Store important headers
@@ -152,25 +152,21 @@ impl Milter {
 
                             match action {
                                 Action::Reject { message } => {
-                                    log::info!("Rejecting message: {}", message);
+                                    log::info!("Rejecting message: {message}");
                                     return Status::Reject;
                                 }
                                 Action::TagAsSpam {
                                     header_name,
                                     header_value,
                                 } => {
-                                    log::info!(
-                                        "Tagging as spam: {}: {}",
-                                        header_name,
-                                        header_value
-                                    );
+                                    log::info!("Tagging as spam: {header_name}: {header_value}");
                                     // Add the spam header
                                     if let Err(e) = _ctx
                                         .actions
                                         .add_header(header_name.clone(), header_value.clone())
                                         .await
                                     {
-                                        log::error!("Failed to add header: {}", e);
+                                        log::error!("Failed to add header: {e}");
                                     }
                                     return Status::Accept;
                                 }
