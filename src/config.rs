@@ -45,6 +45,9 @@ pub enum Criteria {
         check_dns: Option<bool>,
         check_http: Option<bool>,
     },
+    UnsubscribeLinkPattern {
+        pattern: String,
+    },
     And {
         criteria: Vec<Criteria>,
     },

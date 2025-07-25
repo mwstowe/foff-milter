@@ -196,7 +196,8 @@ async fn main() {
                     }
                 }
                 std::process::exit(0);
-            }).expect("Error setting signal handler");
+            })
+            .expect("Error setting signal handler");
 
             log::info!("Daemon mode initialization complete");
         }
