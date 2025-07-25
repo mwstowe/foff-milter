@@ -7,7 +7,7 @@ rules:
   - name: "Tag Google API unsubscribe links"
     criteria:
       type: "UnsubscribeLinkPattern"
-      pattern: ".*\.googleapis\.com.*"
+      pattern: ".*\\.googleapis\\.com.*"
     action:
       type: "TagAsSpam"
       header_name: "X-Suspicious-Unsubscribe"
@@ -17,7 +17,7 @@ rules:
   - name: "Block suspicious unsubscribe domains"
     criteria:
       type: "UnsubscribeLinkPattern"
-      pattern: ".*\.(tk|ml|ga|cf).*"
+      pattern: ".*\\.(tk|ml|ga|cf).*"
     action:
       type: "Reject"
       message: "Unsubscribe link points to suspicious domain"
@@ -26,7 +26,7 @@ rules:
   - name: "Tag URL shortener unsubscribe links"
     criteria:
       type: "UnsubscribeLinkPattern"
-      pattern: ".*(bit\.ly|tinyurl\.com|t\.co|goo\.gl|short\.link).*"
+      pattern: ".*(bit\\.ly|tinyurl\\.com|t\\.co|goo\\.gl|short\\.link).*"
     action:
       type: "TagAsSpam"
       header_name: "X-Shortener-Unsubscribe"
@@ -39,9 +39,9 @@ rules:
       criteria:
         - type: "HeaderPattern"
           header: "from"
-          pattern: ".*\.onmicrosoft\.com"
+          pattern: ".*\\.onmicrosoft\\.com"
         - type: "UnsubscribeLinkPattern"
-          pattern: ".*\.google\.com.*"
+          pattern: ".*\\.google\\.com.*"
     action:
       type: "Reject"
       message: "Fake Microsoft email with Google unsubscribe link"
