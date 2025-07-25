@@ -75,7 +75,11 @@ impl MilterConnection {
             log::info!("Waiting for next milter command...");
             match self.read_command() {
                 Ok(Some((command, data))) => {
-                    log::info!("Processing command: 0x{:02x} with {} bytes", command, data.len());
+                    log::info!(
+                        "Processing command: 0x{:02x} with {} bytes",
+                        command,
+                        data.len()
+                    );
                     match self.process_command(command, data) {
                         Ok(true) => {
                             log::info!("Command processed successfully, continuing...");
@@ -83,7 +87,7 @@ impl MilterConnection {
                         }
                         Ok(false) => {
                             log::info!("Command indicated connection should close");
-                            break;   // Connection should close
+                            break; // Connection should close
                         }
                         Err(e) => {
                             log::error!("Error processing command: {e}");
@@ -147,43 +151,48 @@ impl MilterConnection {
 
     fn process_command(&mut self, command: u8, data: Vec<u8>) -> anyhow::Result<bool> {
         // Log all commands for debugging
-        log::info!("RAW COMMAND: 0x{:02x} = {}", command, 
-                   match command {
-                       0x4F => "OPTNEG",
-                       0x43 => "CONNECT",
-                       0x48 => "HELO", 
-                       0x4D => "MAIL",
-                       0x52 => "RCPT",
-                       0x54 => "DATA",
-                       0x44 => "MACRO",
-                       0x4C => "HEADER",
-                       0x4E => "EOH",
-                       0x42 => "BODY",
-                       0x45 => "BODYEOB",
-                       0x41 => "ABORT",
-                       0x51 => "QUIT",
-                       _ => "UNKNOWN"
-                   });
-        
-        log::info!("MILTER COMMAND: 0x{:02x} ({}) with {} bytes", 
-                   command, 
-                   match command {
-                       SMFIC_OPTNEG => "OPTNEG",
-                       SMFIC_CONNECT => "CONNECT", 
-                       SMFIC_HELO => "HELO",
-                       SMFIC_MAIL => "MAIL",
-                       SMFIC_RCPT => "RCPT", 
-                       SMFIC_DATA => "DATA",
-                       SMFIC_HEADER => "HEADER",
-                       SMFIC_EOH => "EOH",
-                       SMFIC_BODY => "BODY",
-                       SMFIC_BODYEOB => "BODYEOB",
-                       SMFIC_ABORT => "ABORT",
-                       SMFIC_QUIT => "QUIT",
-                       _ => "UNKNOWN"
-                   },
-                   data.len());
-        
+        log::info!(
+            "RAW COMMAND: 0x{:02x} = {}",
+            command,
+            match command {
+                0x4F => "OPTNEG",
+                0x43 => "CONNECT",
+                0x48 => "HELO",
+                0x4D => "MAIL",
+                0x52 => "RCPT",
+                0x54 => "DATA",
+                0x44 => "MACRO",
+                0x4C => "HEADER",
+                0x4E => "EOH",
+                0x42 => "BODY",
+                0x45 => "BODYEOB",
+                0x41 => "ABORT",
+                0x51 => "QUIT",
+                _ => "UNKNOWN",
+            }
+        );
+
+        log::info!(
+            "MILTER COMMAND: 0x{:02x} ({}) with {} bytes",
+            command,
+            match command {
+                SMFIC_OPTNEG => "OPTNEG",
+                SMFIC_CONNECT => "CONNECT",
+                SMFIC_HELO => "HELO",
+                SMFIC_MAIL => "MAIL",
+                SMFIC_RCPT => "RCPT",
+                SMFIC_DATA => "DATA",
+                SMFIC_HEADER => "HEADER",
+                SMFIC_EOH => "EOH",
+                SMFIC_BODY => "BODY",
+                SMFIC_BODYEOB => "BODYEOB",
+                SMFIC_ABORT => "ABORT",
+                SMFIC_QUIT => "QUIT",
+                _ => "UNKNOWN",
+            },
+            data.len()
+        );
+
         match command {
             SMFIC_OPTNEG => {
                 log::info!("OPTNEG: Received option negotiation from sendmail");
@@ -200,26 +209,45 @@ impl MilterConnection {
                     log::info!(
                         "OPTNEG: Sendmail offers - version: {version}, actions: 0x{actions:08x}, protocol: 0x{protocol:08x}"
                     );
-                    
+
                     // Decode sendmail's offered actions
                     let mut offered_actions = Vec::new();
-                    if actions & 0x01 != 0 { offered_actions.push("ADDHDRS"); }
-                    if actions & 0x02 != 0 { offered_actions.push("CHGHDRS"); }
-                    if actions & 0x04 != 0 { offered_actions.push("ADDRCPT"); }
-                    if actions & 0x08 != 0 { offered_actions.push("DELRCPT"); }
-                    if actions & 0x10 != 0 { offered_actions.push("CHGBODY"); }
-                    if actions & 0x20 != 0 { offered_actions.push("QUARANTINE"); }
+                    if actions & 0x01 != 0 {
+                        offered_actions.push("ADDHDRS");
+                    }
+                    if actions & 0x02 != 0 {
+                        offered_actions.push("CHGHDRS");
+                    }
+                    if actions & 0x04 != 0 {
+                        offered_actions.push("ADDRCPT");
+                    }
+                    if actions & 0x08 != 0 {
+                        offered_actions.push("DELRCPT");
+                    }
+                    if actions & 0x10 != 0 {
+                        offered_actions.push("CHGBODY");
+                    }
+                    if actions & 0x20 != 0 {
+                        offered_actions.push("QUARANTINE");
+                    }
                     log::info!("OPTNEG: Sendmail offers actions: {:?}", offered_actions);
-                    
+
                     // Check if sendmail offers ADDHDRS capability
                     if actions & 0x01 == 0 {
-                        log::error!("OPTNEG: CRITICAL - Sendmail does NOT offer ADDHDRS capability!");
-                        log::error!("OPTNEG: This explains why headers are not being added to emails");
+                        log::error!(
+                            "OPTNEG: CRITICAL - Sendmail does NOT offer ADDHDRS capability!"
+                        );
+                        log::error!(
+                            "OPTNEG: This explains why headers are not being added to emails"
+                        );
                     } else {
                         log::info!("OPTNEG: Good - Sendmail offers ADDHDRS capability");
                     }
                 } else {
-                    log::error!("OPTNEG: Invalid negotiation data length: {} (expected >= 12)", data.len());
+                    log::error!(
+                        "OPTNEG: Invalid negotiation data length: {} (expected >= 12)",
+                        data.len()
+                    );
                 }
 
                 // Send back our negotiation response
@@ -252,7 +280,7 @@ impl MilterConnection {
                 log::info!("OPTNEG: Requesting - version: 6, actions: 0x{:08x} (ADDHDRS), protocol: 0x{:08x} (all steps)", actions, protocol);
                 log::info!("OPTNEG: Response data length: {} bytes", response.len());
                 log::info!("OPTNEG: Response data: {:?}", response);
-                
+
                 self.send_response(SMFIC_OPTNEG, &response)?;
                 log::info!("OPTNEG: Successfully sent capability negotiation response");
                 Ok(true)
@@ -385,9 +413,10 @@ impl MilterConnection {
                 log::info!("EOH: Evaluation status = {:?}", evaluation_status);
 
                 // Process evaluation if we haven't already, or if we have pending_tag but no stored header info
-                if evaluation_status.is_none() || 
-                   (evaluation_status == Some(&"pending_tag".to_string()) && 
-                    !self.context.headers.contains_key("_FOFF_TAG_HEADER")) {
+                if evaluation_status.is_none()
+                    || (evaluation_status == Some(&"pending_tag".to_string())
+                        && !self.context.headers.contains_key("_FOFF_TAG_HEADER"))
+                {
                     log::info!("EOH: Proceeding with evaluation");
                     let action = self.engine.evaluate(&self.context);
                     match action {
@@ -397,16 +426,27 @@ impl MilterConnection {
                             self.send_response(SMFIR_REPLYCODE, response.as_bytes())?;
                             return Ok(true);
                         }
-                        Action::TagAsSpam { header_name, header_value } => {
+                        Action::TagAsSpam {
+                            header_name,
+                            header_value,
+                        } => {
                             log::info!("EOH: TagAsSpam action detected - storing for EOM processing: {header_name}: {header_value}");
                             // Store the header info for EOM processing
-                            self.context.headers.insert("_FOFF_EVALUATED".to_string(), "pending_tag".to_string());
-                            self.context.headers.insert("_FOFF_TAG_HEADER".to_string(), header_name.to_string());
-                            self.context.headers.insert("_FOFF_TAG_VALUE".to_string(), header_value.to_string());
+                            self.context
+                                .headers
+                                .insert("_FOFF_EVALUATED".to_string(), "pending_tag".to_string());
+                            self.context
+                                .headers
+                                .insert("_FOFF_TAG_HEADER".to_string(), header_name.to_string());
+                            self.context
+                                .headers
+                                .insert("_FOFF_TAG_VALUE".to_string(), header_value.to_string());
                         }
                         Action::Accept => {
                             log::info!("EOH: Message accepted");
-                            self.context.headers.insert("_FOFF_EVALUATED".to_string(), "accepted".to_string());
+                            self.context
+                                .headers
+                                .insert("_FOFF_EVALUATED".to_string(), "accepted".to_string());
                         }
                     }
                 } else {
@@ -440,23 +480,27 @@ impl MilterConnection {
 
                 let evaluation_status = self.context.headers.get("_FOFF_EVALUATED");
                 log::info!("BODYEOB: Evaluation status = {:?}", evaluation_status);
-                
+
                 // Process pending TagAsSpam actions
                 if evaluation_status == Some(&"pending_tag".to_string()) {
                     log::info!("BODYEOB: Processing pending TagAsSpam action");
-                    
+
                     let header_name = self.context.headers.get("_FOFF_TAG_HEADER").cloned();
                     let header_value = self.context.headers.get("_FOFF_TAG_VALUE").cloned();
-                    
+
                     if let (Some(header_name), Some(header_value)) = (header_name, header_value) {
-                        log::info!("BODYEOB: Adding spam header at EOM: {header_name}: {header_value}");
+                        log::info!(
+                            "BODYEOB: Adding spam header at EOM: {header_name}: {header_value}"
+                        );
                         let header_data = format!("{header_name}\0{header_value}\0");
-                        
+
                         match self.send_response(SMFIR_ADDHEADER, header_data.as_bytes()) {
                             Ok(_) => {
                                 log::info!("BODYEOB: Successfully sent SMFIR_ADDHEADER response");
                                 // Mark as tagged
-                                self.context.headers.insert("_FOFF_EVALUATED".to_string(), "tagged".to_string());
+                                self.context
+                                    .headers
+                                    .insert("_FOFF_EVALUATED".to_string(), "tagged".to_string());
                                 // Send ACCEPT instead of CONTINUE after adding header
                                 self.send_response(SMFIR_ACCEPT, &[])?;
                                 return Ok(true);
@@ -475,40 +519,57 @@ impl MilterConnection {
                     match action {
                         Action::Reject { message } => {
                             // This shouldn't happen if early evaluation worked, but handle it
-                            log::warn!("BODYEOB: Late rejection attempted (may not work): {message}");
+                            log::warn!(
+                                "BODYEOB: Late rejection attempted (may not work): {message}"
+                            );
                             let response = format!("550 5.7.1 {message}");
                             self.send_response(SMFIR_REPLYCODE, response.as_bytes())?;
                             return Ok(true);
                         }
-                        Action::TagAsSpam { header_name, header_value } => {
+                        Action::TagAsSpam {
+                            header_name,
+                            header_value,
+                        } => {
                             log::info!("BODYEOB: Adding spam header at EOM (fallback): {header_name}: {header_value}");
                             let header_data = format!("{header_name}\0{header_value}\0");
                             match self.send_response(SMFIR_ADDHEADER, header_data.as_bytes()) {
                                 Ok(_) => {
                                     log::info!("BODYEOB: Successfully sent SMFIR_ADDHEADER response (fallback)");
-                                    self.context.headers.insert("_FOFF_EVALUATED".to_string(), "tagged".to_string());
+                                    self.context.headers.insert(
+                                        "_FOFF_EVALUATED".to_string(),
+                                        "tagged".to_string(),
+                                    );
                                     // Send ACCEPT instead of CONTINUE after adding header
                                     self.send_response(SMFIR_ACCEPT, &[])?;
                                     return Ok(true);
                                 }
                                 Err(e) => {
-                                    log::error!("BODYEOB: Failed to send SMFIR_ADDHEADER (fallback): {}", e);
+                                    log::error!(
+                                        "BODYEOB: Failed to send SMFIR_ADDHEADER (fallback): {}",
+                                        e
+                                    );
                                     return Err(e);
                                 }
                             }
                         }
                         Action::Accept => {
                             log::info!("BODYEOB: Message accepted");
-                            self.context.headers.insert("_FOFF_EVALUATED".to_string(), "accepted".to_string());
+                            self.context
+                                .headers
+                                .insert("_FOFF_EVALUATED".to_string(), "accepted".to_string());
                         }
                     }
                 } else {
-                    log::info!("BODYEOB: Message already evaluated: {:?}", evaluation_status);
+                    log::info!(
+                        "BODYEOB: Message already evaluated: {:?}",
+                        evaluation_status
+                    );
                 }
 
                 // Only send CONTINUE if we didn't already send ACCEPT
-                if !self.context.headers.contains_key("_FOFF_EVALUATED") || 
-                   self.context.headers.get("_FOFF_EVALUATED") != Some(&"tagged".to_string()) {
+                if !self.context.headers.contains_key("_FOFF_EVALUATED")
+                    || self.context.headers.get("_FOFF_EVALUATED") != Some(&"tagged".to_string())
+                {
                     self.send_response(SMFIR_CONTINUE, &[])?;
                 }
                 Ok(true)

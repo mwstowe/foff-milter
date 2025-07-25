@@ -1,6 +1,6 @@
 use crate::config::{Action, Config};
 use crate::filter::{FilterEngine, MailContext};
-use indymilter::{run, Callbacks, Status, ContextActions, Config as IndyConfig, Actions};
+use indymilter::{run, Actions, Callbacks, Config as IndyConfig, ContextActions, Status};
 use std::collections::HashMap;
 use std::sync::{Arc, Mutex};
 use tokio::net::UnixListener;
@@ -52,7 +52,11 @@ impl SimpleMilter {
                 move |_ctx: &mut indymilter::Context<()>, sender| {
                     let state = state.clone();
                     Box::pin(async move {
-                        let sender_str = sender.iter().map(|s| s.to_string_lossy()).collect::<Vec<_>>().join(",");
+                        let sender_str = sender
+                            .iter()
+                            .map(|s| s.to_string_lossy())
+                            .collect::<Vec<_>>()
+                            .join(",");
                         log::debug!("Mail from: {}", sender_str);
                         // Update the most recent context
                         if let Some((_, mail_ctx)) = state.lock().unwrap().iter_mut().last() {
@@ -68,7 +72,11 @@ impl SimpleMilter {
                 move |_ctx: &mut indymilter::Context<()>, recipient| {
                     let state = state.clone();
                     Box::pin(async move {
-                        let recipient_str = recipient.iter().map(|s| s.to_string_lossy()).collect::<Vec<_>>().join(",");
+                        let recipient_str = recipient
+                            .iter()
+                            .map(|s| s.to_string_lossy())
+                            .collect::<Vec<_>>()
+                            .join(",");
                         log::debug!("Rcpt to: {}", recipient_str);
                         if let Some((_, mail_ctx)) = state.lock().unwrap().iter_mut().last() {
                             mail_ctx.recipients.push(recipient_str);
@@ -86,7 +94,7 @@ impl SimpleMilter {
                         let name_str = name.to_string_lossy().to_string();
                         let value_str = value.to_string_lossy().to_string();
                         log::debug!("Header: {}: {}", name_str, value_str);
-                        
+
                         if let Some((_, mail_ctx)) = state.lock().unwrap().iter_mut().last() {
                             // Store important headers
                             match name_str.to_lowercase().as_str() {
@@ -134,22 +142,33 @@ impl SimpleMilter {
                     let state = state.clone();
                     Box::pin(async move {
                         log::info!("End of message - evaluating");
-                        
+
                         // Clone mail context to avoid holding mutex across await
                         let mail_ctx_clone = state.lock().unwrap().values().last().cloned();
-                        
+
                         if let Some(mail_ctx) = mail_ctx_clone {
                             let action = engine.evaluate(&mail_ctx);
-                            
+
                             match action {
                                 Action::Reject { message } => {
                                     log::info!("Rejecting message: {}", message);
                                     return Status::Reject;
                                 }
-                                Action::TagAsSpam { header_name, header_value } => {
-                                    log::info!("Tagging as spam: {}: {}", header_name, header_value);
+                                Action::TagAsSpam {
+                                    header_name,
+                                    header_value,
+                                } => {
+                                    log::info!(
+                                        "Tagging as spam: {}: {}",
+                                        header_name,
+                                        header_value
+                                    );
                                     // Add the spam header
-                                    if let Err(e) = _ctx.actions.add_header(header_name.clone(), header_value.clone()).await {
+                                    if let Err(e) = _ctx
+                                        .actions
+                                        .add_header(header_name.clone(), header_value.clone())
+                                        .await
+                                    {
                                         log::error!("Failed to add header: {}", e);
                                     }
                                     return Status::Accept;
@@ -160,7 +179,7 @@ impl SimpleMilter {
                                 }
                             }
                         }
-                        
+
                         Status::Accept
                     })
                 }
@@ -174,7 +193,7 @@ impl SimpleMilter {
             actions: Actions::ADD_HEADER,
             ..Default::default()
         };
-        
+
         run(listener, callbacks, config, tokio::signal::ctrl_c()).await?;
         Ok(())
     }
