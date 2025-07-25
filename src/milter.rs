@@ -142,24 +142,29 @@ impl Milter {
                     let engine = engine.clone();
                     let state = state.clone();
                     Box::pin(async move {
-                        log::info!("End of message - evaluating");
-
                         // Clone mail context to avoid holding mutex across await
                         let mail_ctx_clone = state.lock().unwrap().values().last().cloned();
 
                         if let Some(mail_ctx) = mail_ctx_clone {
+                            let sender = mail_ctx.sender.as_deref().unwrap_or("<unknown>");
+                            let recipients = if mail_ctx.recipients.is_empty() {
+                                "<unknown>".to_string()
+                            } else {
+                                mail_ctx.recipients.join(", ")
+                            };
+                            
                             let action = engine.evaluate(&mail_ctx).await;
 
                             match action {
                                 Action::Reject { message } => {
-                                    log::info!("Rejecting message: {message}");
+                                    log::info!("REJECT from={sender} to={recipients} reason={message}");
                                     return Status::Reject;
                                 }
                                 Action::TagAsSpam {
                                     header_name,
                                     header_value,
                                 } => {
-                                    log::info!("Tagging as spam: {header_name}: {header_value}");
+                                    log::info!("TAG from={sender} to={recipients} header={header_name}:{header_value}");
                                     // Add the spam header
                                     if let Err(e) = _ctx
                                         .actions
@@ -171,7 +176,7 @@ impl Milter {
                                     return Status::Accept;
                                 }
                                 Action::Accept => {
-                                    log::info!("Accepting message");
+                                    log::info!("ACCEPT from={sender} to={recipients}");
                                     return Status::Accept;
                                 }
                             }
