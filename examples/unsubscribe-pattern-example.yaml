@@ -1,0 +1,47 @@
+socket_path: "/var/run/foff-milter.sock"
+default_action:
+  type: "Accept"
+
+rules:
+  # Tag emails with unsubscribe links pointing to Google domains
+  - name: "Tag Google unsubscribe links"
+    criteria:
+      type: "UnsubscribeLinkPattern"
+      pattern: ".*\.google\.com.*"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Suspicious-Unsubscribe"
+      header_value: "YES"
+
+  # Reject emails with unsubscribe links pointing to suspicious domains
+  - name: "Block suspicious unsubscribe domains"
+    criteria:
+      type: "UnsubscribeLinkPattern"
+      pattern: ".*\.(tk|ml|ga|cf).*"
+    action:
+      type: "Reject"
+      message: "Unsubscribe link points to suspicious domain"
+
+  # Tag emails with unsubscribe links using URL shorteners
+  - name: "Tag URL shortener unsubscribe links"
+    criteria:
+      type: "UnsubscribeLinkPattern"
+      pattern: ".*(bit\.ly|tinyurl\.com|t\.co|goo\.gl|short\.link).*"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Shortener-Unsubscribe"
+      header_value: "YES"
+
+  # Example combining unsubscribe pattern with other criteria
+  - name: "Block fake Microsoft with Google unsubscribe"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "HeaderPattern"
+          header: "from"
+          pattern: ".*\.onmicrosoft\.com"
+        - type: "UnsubscribeLinkPattern"
+          pattern: ".*\.google\.com.*"
+    action:
+      type: "Reject"
+      message: "Fake Microsoft email with Google unsubscribe link"

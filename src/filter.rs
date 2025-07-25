@@ -113,6 +113,14 @@ impl FilterEngine {
                 // No regex patterns to compile for unsubscribe link validation
                 // Validation is done at runtime
             }
+            Criteria::UnsubscribeLinkPattern { pattern } => {
+                if !self.compiled_patterns.contains_key(pattern) {
+                    let regex = Regex::new(pattern).map_err(|e| {
+                        anyhow::anyhow!("Invalid regex pattern '{}': {}", pattern, e)
+                    })?;
+                    self.compiled_patterns.insert(pattern.clone(), regex);
+                }
+            }
             Criteria::And { criteria } | Criteria::Or { criteria } => {
                 for c in criteria {
                     self.compile_criteria_patterns(c)?;
@@ -376,6 +384,35 @@ impl FilterEngine {
                     log::debug!("All unsubscribe links are valid");
                     false // All links are valid
                 }
+                Criteria::UnsubscribeLinkPattern { pattern } => {
+                    log::debug!("Checking unsubscribe link pattern: {}", pattern);
+
+                    let links = self.extract_unsubscribe_links(context);
+
+                    if links.is_empty() {
+                        log::debug!("No unsubscribe links found for pattern matching");
+                        return false;
+                    }
+
+                    log::debug!("Found {} unsubscribe links: {:?}", links.len(), links);
+
+                    if let Some(regex) = self.compiled_patterns.get(pattern) {
+                        // Check if ANY unsubscribe link matches the pattern
+                        for link in &links {
+                            if regex.is_match(link) {
+                                log::info!(
+                                    "Unsubscribe link matches pattern '{}': {}",
+                                    pattern,
+                                    link
+                                );
+                                return true;
+                            }
+                        }
+                    }
+
+                    log::debug!("No unsubscribe links match pattern: {}", pattern);
+                    false
+                }
                 Criteria::And { criteria } => {
                     for c in criteria {
                         if !self.evaluate_criteria(c, context).await {
@@ -601,6 +638,104 @@ mod tests {
         match action4 {
             Action::Accept => {}
             _ => panic!("Expected accept for Sparkpost to different user"),
+        }
+    }
+
+    #[tokio::test]
+    async fn test_unsubscribe_link_pattern() {
+        use crate::config::{Action, FilterRule};
+        use std::collections::HashMap;
+
+        // Create config to tag emails with unsubscribe links pointing to google.com
+        let config = Config {
+            rules: vec![FilterRule {
+                name: "Tag Google unsubscribe links".to_string(),
+                criteria: Criteria::UnsubscribeLinkPattern {
+                    pattern: r".*\.google\.com.*".to_string(),
+                },
+                action: Action::TagAsSpam {
+                    header_name: "X-Suspicious-Unsubscribe".to_string(),
+                    header_value: "YES".to_string(),
+                },
+            }],
+            ..Default::default()
+        };
+
+        let engine = FilterEngine::new(config).unwrap();
+
+        // Test case 1: Email with google.com unsubscribe link in body - should match
+        let mut headers1 = HashMap::new();
+        headers1.insert("from".to_string(), "test@example.com".to_string());
+
+        let context1 = MailContext {
+            headers: headers1,
+            body: Some(
+                r#"<a href="https://unsubscribe.google.com/remove?id=123">Unsubscribe</a>"#
+                    .to_string(),
+            ),
+            ..Default::default()
+        };
+
+        let action1 = engine.evaluate(&context1).await;
+        match action1 {
+            Action::TagAsSpam {
+                header_name,
+                header_value,
+            } => {
+                assert_eq!(header_name, "X-Suspicious-Unsubscribe");
+                assert_eq!(header_value, "YES");
+            }
+            _ => panic!("Expected TagAsSpam action for google.com unsubscribe link"),
+        }
+
+        // Test case 2: Email with List-Unsubscribe header pointing to google.com - should match
+        let mut headers2 = HashMap::new();
+        headers2.insert("from".to_string(), "test@example.com".to_string());
+        headers2.insert(
+            "list-unsubscribe".to_string(),
+            "<https://mail.google.com/unsubscribe?token=abc123>".to_string(),
+        );
+
+        let context2 = MailContext {
+            headers: headers2,
+            ..Default::default()
+        };
+
+        let action2 = engine.evaluate(&context2).await;
+        match action2 {
+            Action::TagAsSpam { .. } => {}
+            _ => panic!("Expected TagAsSpam action for google.com List-Unsubscribe header"),
+        }
+
+        // Test case 3: Email with non-google unsubscribe link - should not match
+        let mut headers3 = HashMap::new();
+        headers3.insert("from".to_string(), "test@example.com".to_string());
+
+        let context3 = MailContext {
+            headers: headers3,
+            body: Some(
+                r#"<a href="https://unsubscribe.example.com/remove?id=123">Unsubscribe</a>"#
+                    .to_string(),
+            ),
+            ..Default::default()
+        };
+
+        let action3 = engine.evaluate(&context3).await;
+        match action3 {
+            Action::Accept => {}
+            _ => panic!("Expected Accept action for non-google unsubscribe link"),
+        }
+
+        // Test case 4: Email with no unsubscribe links - should not match
+        let context4 = MailContext {
+            body: Some("Regular email content with no unsubscribe links".to_string()),
+            ..Default::default()
+        };
+
+        let action4 = engine.evaluate(&context4).await;
+        match action4 {
+            Action::Accept => {}
+            _ => panic!("Expected Accept action for email with no unsubscribe links"),
         }
     }
 }
