@@ -176,6 +176,28 @@ async fn main() {
                 }
             }
 
+            // Write PID file for FreeBSD rc system
+            let pid = unsafe { libc::getpid() };
+            if let Err(e) = std::fs::write("/var/run/foff-milter.pid", pid.to_string()) {
+                log::warn!("Failed to write PID file: {}", e);
+            } else {
+                log::info!("PID file written: /var/run/foff-milter.pid ({})", pid);
+            }
+
+            // Set up signal handler to clean up PID file on exit
+            let pid_file_path = "/var/run/foff-milter.pid";
+            ctrlc::set_handler(move || {
+                log::info!("Received shutdown signal, cleaning up...");
+                if std::path::Path::new(pid_file_path).exists() {
+                    if let Err(e) = std::fs::remove_file(pid_file_path) {
+                        log::warn!("Failed to remove PID file: {}", e);
+                    } else {
+                        log::info!("PID file removed");
+                    }
+                }
+                std::process::exit(0);
+            }).expect("Error setting signal handler");
+
             log::info!("Daemon mode initialization complete");
         }
 

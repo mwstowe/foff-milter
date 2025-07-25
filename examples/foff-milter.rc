@@ -21,10 +21,11 @@ load_rc_config $name
 : ${foff_milter_user:="root"}
 : ${foff_milter_group:="wheel"}
 
-# Use daemon(8) to manage the process - it handles PID file creation
-command="/usr/sbin/daemon"
-command_args="-f -p /var/run/foff-milter.pid /usr/local/bin/foff-milter -c ${foff_milter_config}"
+# Use foff-milter's built-in daemon mode
+command="/usr/local/bin/foff-milter"
+command_args="--daemon -c ${foff_milter_config}"
 pidfile="/var/run/foff-milter.pid"
+command_interpreter=""
 
 start_precmd="foff_milter_prestart"
 stop_postcmd="foff_milter_poststop"
@@ -63,7 +64,7 @@ foff_milter_poststop()
         echo "Removed socket file"
     fi
     
-    # Clean up PID file (daemon(8) should handle this, but just in case)
+    # Clean up PID file (application should handle this, but just in case)
     if [ -f "${pidfile}" ]; then
         rm -f "${pidfile}"
         echo "Removed PID file"
