@@ -39,8 +39,10 @@ impl SimpleMilter {
                     Box::pin(async move {
                         let hostname_str = hostname.to_string_lossy().to_string();
                         log::debug!("Connection from: {}", hostname_str);
-                        let mut mail_ctx = MailContext::default();
-                        mail_ctx.hostname = Some(hostname_str.clone());
+                        let mail_ctx = MailContext {
+                            hostname: Some(hostname_str.clone()),
+                            ..Default::default()
+                        };
                         state.lock().unwrap().insert(hostname_str, mail_ctx);
                         Status::Continue
                     })

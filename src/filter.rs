@@ -388,12 +388,14 @@ mod tests {
         let config = Config::default();
         let engine = FilterEngine::new(config).unwrap();
 
-        let mut context = MailContext::default();
-        context.mailer = Some("service.example.cn".to_string());
+        let context = MailContext {
+            mailer: Some("service.example.cn".to_string()),
+            ..Default::default()
+        };
 
         let action = engine.evaluate(&context);
         match action {
-            Action::Reject { .. } => assert!(true),
+            Action::Reject { .. } => {}
             _ => panic!("Expected reject action for suspicious Chinese service"),
         }
     }
@@ -407,7 +409,7 @@ mod tests {
         let action = engine.evaluate(&context);
 
         match action {
-            Action::Accept => assert!(true),
+            Action::Accept => {}
             _ => panic!("Expected default accept action"),
         }
     }
@@ -417,56 +419,64 @@ mod tests {
         use crate::config::{Action, FilterRule};
 
         // Create a config with combination criteria: sparkmail.com mailer AND Japanese in subject
-        let mut config = Config::default();
-        config.rules = vec![FilterRule {
-            name: "Block Sparkmail with Japanese".to_string(),
-            criteria: Criteria::And {
-                criteria: vec![
-                    Criteria::MailerPattern {
-                        pattern: r".*sparkmail\.com.*".to_string(),
-                    },
-                    Criteria::SubjectContainsLanguage {
-                        language: "japanese".to_string(),
-                    },
-                ],
-            },
-            action: Action::Reject {
-                message: "Sparkmail with Japanese content blocked".to_string(),
-            },
-        }];
+        let config = Config {
+            rules: vec![FilterRule {
+                name: "Block Sparkmail with Japanese".to_string(),
+                criteria: Criteria::And {
+                    criteria: vec![
+                        Criteria::MailerPattern {
+                            pattern: r".*sparkmail\.com.*".to_string(),
+                        },
+                        Criteria::SubjectContainsLanguage {
+                            language: "japanese".to_string(),
+                        },
+                    ],
+                },
+                action: Action::Reject {
+                    message: "Sparkmail with Japanese content blocked".to_string(),
+                },
+            }],
+            ..Default::default()
+        };
 
         let engine = FilterEngine::new(config).unwrap();
 
         // Test case 1: Both conditions match - should reject
-        let mut context = MailContext::default();
-        context.mailer = Some("sparkmail.com mailer v1.0".to_string());
-        context.subject = Some("こんにちは - Special Offer".to_string()); // Contains Japanese
+        let context = MailContext {
+            mailer: Some("sparkmail.com mailer v1.0".to_string()),
+            subject: Some("こんにちは - Special Offer".to_string()), // Contains Japanese
+            ..Default::default()
+        };
 
         let action = engine.evaluate(&context);
         match action {
-            Action::Reject { .. } => assert!(true),
+            Action::Reject { .. } => {}
             _ => panic!("Expected reject action for sparkmail with Japanese"),
         }
 
         // Test case 2: Only mailer matches, no Japanese - should accept
-        let mut context2 = MailContext::default();
-        context2.mailer = Some("sparkmail.com mailer v1.0".to_string());
-        context2.subject = Some("Regular English Subject".to_string());
+        let context2 = MailContext {
+            mailer: Some("sparkmail.com mailer v1.0".to_string()),
+            subject: Some("Regular English Subject".to_string()),
+            ..Default::default()
+        };
 
         let action2 = engine.evaluate(&context2);
         match action2 {
-            Action::Accept => assert!(true),
+            Action::Accept => {}
             _ => panic!("Expected accept action for sparkmail without Japanese"),
         }
 
         // Test case 3: Only Japanese matches, different mailer - should accept
-        let mut context3 = MailContext::default();
-        context3.mailer = Some("gmail.com".to_string());
-        context3.subject = Some("こんにちは - Hello".to_string());
+        let context3 = MailContext {
+            mailer: Some("gmail.com".to_string()),
+            subject: Some("こんにちは - Hello".to_string()),
+            ..Default::default()
+        };
 
         let action3 = engine.evaluate(&context3);
         match action3 {
-            Action::Accept => assert!(true),
+            Action::Accept => {}
             _ => panic!("Expected accept action for non-sparkmail with Japanese"),
         }
     }
@@ -476,50 +486,54 @@ mod tests {
         use crate::config::{Action, FilterRule};
 
         // Create config with the two production examples
-        let mut config = Config::default();
-        config.rules = vec![
-            // Example 1: Chinese service with Japanese content
-            FilterRule {
-                name: "Block Chinese services with Japanese content".to_string(),
-                criteria: Criteria::And {
-                    criteria: vec![
-                        Criteria::MailerPattern {
-                            pattern: r"service\..*\.cn".to_string(),
-                        },
-                        Criteria::SubjectContainsLanguage {
-                            language: "japanese".to_string(),
-                        },
-                    ],
+        let config = Config {
+            rules: vec![
+                // Example 1: Chinese service with Japanese content
+                FilterRule {
+                    name: "Block Chinese services with Japanese content".to_string(),
+                    criteria: Criteria::And {
+                        criteria: vec![
+                            Criteria::MailerPattern {
+                                pattern: r"service\..*\.cn".to_string(),
+                            },
+                            Criteria::SubjectContainsLanguage {
+                                language: "japanese".to_string(),
+                            },
+                        ],
+                    },
+                    action: Action::Reject {
+                        message: "Chinese service with Japanese content blocked".to_string(),
+                    },
                 },
-                action: Action::Reject {
-                    message: "Chinese service with Japanese content blocked".to_string(),
+                // Example 2: Sparkpost to specific user
+                FilterRule {
+                    name: "Block Sparkpost to user@example.com".to_string(),
+                    criteria: Criteria::And {
+                        criteria: vec![
+                            Criteria::MailerPattern {
+                                pattern: r".*\.sparkpostmail\.com".to_string(),
+                            },
+                            Criteria::RecipientPattern {
+                                pattern: r"user@example\.com".to_string(),
+                            },
+                        ],
+                    },
+                    action: Action::Reject {
+                        message: "Sparkpost to user@example.com blocked".to_string(),
+                    },
                 },
-            },
-            // Example 2: Sparkpost to specific user
-            FilterRule {
-                name: "Block Sparkpost to user@example.com".to_string(),
-                criteria: Criteria::And {
-                    criteria: vec![
-                        Criteria::MailerPattern {
-                            pattern: r".*\.sparkpostmail\.com".to_string(),
-                        },
-                        Criteria::RecipientPattern {
-                            pattern: r"user@example\.com".to_string(),
-                        },
-                    ],
-                },
-                action: Action::Reject {
-                    message: "Sparkpost to user@example.com blocked".to_string(),
-                },
-            },
-        ];
+            ],
+            ..Default::default()
+        };
 
         let engine = FilterEngine::new(config).unwrap();
 
         // Test Example 1: Chinese service + Japanese (should match)
-        let mut context1 = MailContext::default();
-        context1.mailer = Some("service.mail.cn v2.1".to_string());
-        context1.subject = Some("こんにちは！特別なオファー".to_string()); // Japanese
+        let context1 = MailContext {
+            mailer: Some("service.mail.cn v2.1".to_string()),
+            subject: Some("こんにちは！特別なオファー".to_string()), // Japanese
+            ..Default::default()
+        };
 
         let action1 = engine.evaluate(&context1);
         match action1 {
@@ -530,9 +544,11 @@ mod tests {
         }
 
         // Test Example 2: Sparkpost to user@example.com (should match)
-        let mut context2 = MailContext::default();
-        context2.mailer = Some("relay.sparkpostmail.com v3.2".to_string());
-        context2.recipients = vec!["user@example.com".to_string()];
+        let context2 = MailContext {
+            mailer: Some("relay.sparkpostmail.com v3.2".to_string()),
+            recipients: vec!["user@example.com".to_string()],
+            ..Default::default()
+        };
 
         let action2 = engine.evaluate(&context2);
         match action2 {
@@ -543,24 +559,28 @@ mod tests {
         }
 
         // Test partial match 1: Chinese service without Japanese (should not match)
-        let mut context3 = MailContext::default();
-        context3.mailer = Some("service.business.cn v1.0".to_string());
-        context3.subject = Some("Business Proposal".to_string()); // English only
+        let context3 = MailContext {
+            mailer: Some("service.business.cn v1.0".to_string()),
+            subject: Some("Business Proposal".to_string()), // English only
+            ..Default::default()
+        };
 
         let action3 = engine.evaluate(&context3);
         match action3 {
-            Action::Accept => assert!(true),
+            Action::Accept => {}
             _ => panic!("Expected accept for Chinese service without Japanese"),
         }
 
         // Test partial match 2: Sparkpost to different user (should not match)
-        let mut context4 = MailContext::default();
-        context4.mailer = Some("relay.sparkpostmail.com v3.2".to_string());
-        context4.recipients = vec!["admin@example.com".to_string()];
+        let context4 = MailContext {
+            mailer: Some("relay.sparkpostmail.com v3.2".to_string()),
+            recipients: vec!["admin@example.com".to_string()],
+            ..Default::default()
+        };
 
         let action4 = engine.evaluate(&context4);
         match action4 {
-            Action::Accept => assert!(true),
+            Action::Accept => {}
             _ => panic!("Expected accept for Sparkpost to different user"),
         }
     }
