@@ -152,12 +152,14 @@ impl Milter {
                             } else {
                                 mail_ctx.recipients.join(", ")
                             };
-                            
+
                             let action = engine.evaluate(&mail_ctx).await;
 
                             match action {
                                 Action::Reject { message } => {
-                                    log::info!("REJECT from={sender} to={recipients} reason={message}");
+                                    log::info!(
+                                        "REJECT from={sender} to={recipients} reason={message}"
+                                    );
                                     return Status::Reject;
                                 }
                                 Action::TagAsSpam {
