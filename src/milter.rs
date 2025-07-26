@@ -87,9 +87,10 @@ impl Milter {
                             .collect::<Vec<_>>()
                             .join(",");
                         log::debug!("Rcpt to: {recipient_str}");
-                        let connection_id = format!("{:p}", _ctx as *const _);
-                        if let Some(mail_ctx) = state.lock().unwrap().get_mut(&connection_id) {
+                        if let Some(session_id) = _ctx.get_private_data::<u64>() {
+                        if let Some(mail_ctx) = state.lock().unwrap().get_mut(session_id) {
                             mail_ctx.recipients.push(recipient_str);
+                        }
                         }
                         Status::Continue
                     })
@@ -105,8 +106,8 @@ impl Milter {
                         let value_str = value.to_string_lossy().to_string();
                         log::debug!("Header: {name_str}: {value_str}");
 
-                        let connection_id = format!("{:p}", _ctx as *const _);
-                        if let Some(mail_ctx) = state.lock().unwrap().get_mut(&connection_id) {
+                        if let Some(session_id) = _ctx.get_private_data::<u64>() {
+                        if let Some(mail_ctx) = state.lock().unwrap().get_mut(session_id) {
                             // Store important headers
                             match name_str.to_lowercase().as_str() {
                                 "subject" => {
@@ -119,6 +120,7 @@ impl Milter {
                             }
                             mail_ctx.headers.insert(name_str, value_str);
                         }
+                        }
                         Status::Continue
                     })
                 }
@@ -130,8 +132,8 @@ impl Milter {
                     let state = state.clone();
                     Box::pin(async move {
                         let body_str = String::from_utf8_lossy(&body_chunk);
-                        let connection_id = format!("{:p}", _ctx as *const _);
-                        if let Some(mail_ctx) = state.lock().unwrap().get_mut(&connection_id) {
+                        if let Some(session_id) = _ctx.get_private_data::<u64>() {
+                        if let Some(mail_ctx) = state.lock().unwrap().get_mut(session_id) {
                             match &mut mail_ctx.body {
                                 Some(existing_body) => {
                                     existing_body.push_str(&body_str);
@@ -140,6 +142,7 @@ impl Milter {
                                     mail_ctx.body = Some(body_str.to_string());
                                 }
                             }
+                        }
                         }
                         Status::Continue
                     })
@@ -154,11 +157,11 @@ impl Milter {
                     let state = state.clone();
                     Box::pin(async move {
                         // Clone mail context to avoid holding mutex across await
-                        let connection_id = format!("{:p}", _ctx as *const _);
-                        let mail_ctx_clone = state.lock().unwrap().get(&connection_id).cloned();
+                        if let Some(session_id) = _ctx.get_private_data::<u64>() {
+                        let mail_ctx_clone = state.lock().unwrap().get(session_id).cloned();
                         
-                        // Clean up the state for this connection
-                        state.lock().unwrap().remove(&connection_id);
+                        // Clean up the state for this session
+                        state.lock().unwrap().remove(session_id);
 
                         if let Some(mail_ctx) = mail_ctx_clone {
                             let sender = mail_ctx.sender.as_deref().unwrap_or("<unknown>");
@@ -201,6 +204,10 @@ impl Milter {
                                     return Status::Accept;
                                 }
                             }
+                        }
+                        }
+                        } else {
+                            log::warn!("No session ID found in EOM context");
                         }
 
                         Status::Accept
