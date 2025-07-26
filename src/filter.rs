@@ -132,7 +132,9 @@ impl FilterEngine {
 
     pub async fn evaluate(&self, context: &MailContext) -> &Action {
         for rule in &self.config.rules {
-            if self.evaluate_criteria(&rule.criteria, context).await {
+            let matches = self.evaluate_criteria(&rule.criteria, context).await;
+            log::info!("Rule '{}' evaluation result: {}", rule.name, matches);
+            if matches {
                 log::info!(
                     "Rule '{}' matched, applying action: {:?}",
                     rule.name,
@@ -387,10 +389,11 @@ impl FilterEngine {
                 );
 
                     let links = self.extract_unsubscribe_links(context);
+                    log::info!("UnsubscribeLinkValidation: extracted {} links: {:?}", links.len(), links);
 
                     if links.is_empty() {
-                        log::debug!("No unsubscribe links found");
-                        return true; // No unsubscribe links found - suspicious
+                        log::info!("UnsubscribeLinkValidation: No unsubscribe links found - returning false (no match)");
+                        return false; // No unsubscribe links found - not suspicious
                     }
 
                     log::debug!("Found {} unsubscribe links: {:?}", links.len(), links);
@@ -401,12 +404,12 @@ impl FilterEngine {
                             .validate_unsubscribe_link(link, timeout, dns_check, http_check)
                             .await
                         {
-                            log::info!("Invalid unsubscribe link detected: {link}");
+                            log::info!("UnsubscribeLinkValidation: Invalid unsubscribe link detected: {link} - returning true (MATCH)");
                             return true; // Found invalid link - matches criteria
                         }
                     }
 
-                    log::debug!("All unsubscribe links are valid");
+                    log::info!("UnsubscribeLinkValidation: All unsubscribe links are valid - returning false (no match)");
                     false // All links are valid
                 }
                 Criteria::UnsubscribeLinkPattern { pattern } => {
