@@ -156,8 +156,10 @@ impl Milter {
                     let engine = engine.clone();
                     let state = state.clone();
                     Box::pin(async move {
+                        log::debug!("EOM callback invoked");
                         // Clone mail context to avoid holding mutex across await
                         if let Some(session_id) = _ctx.get_private_data::<u64>() {
+                        log::debug!("Found session ID: {session_id}");
                         let mail_ctx_clone = state.lock().unwrap().get(session_id).cloned();
                         
                         // Clean up the state for this session
