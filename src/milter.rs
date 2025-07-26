@@ -4,13 +4,13 @@ use indymilter::{run, Actions, Callbacks, Config as IndyConfig, ContextActions, 
 use std::collections::HashMap;
 use std::sync::{Arc, Mutex};
 use tokio::net::UnixListener;
-
 pub struct Milter {
     engine: Arc<FilterEngine>,
 }
 
-// Simple state storage
+// Simple state storage with unique session IDs
 type StateMap = Arc<Mutex<HashMap<String, MailContext>>>;
+static SESSION_COUNTER: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(0);
 
 impl Milter {
     pub fn new(config: Config) -> anyhow::Result<Self> {
@@ -38,12 +38,13 @@ impl Milter {
                     let state = state.clone();
                     Box::pin(async move {
                         let hostname_str = hostname.to_string_lossy().to_string();
-                        log::debug!("Connection from: {hostname_str}");
+                        let session_id = format!("{}-{}", hostname_str, SESSION_COUNTER.fetch_add(1, std::sync::atomic::Ordering::SeqCst));
+                        log::debug!("Connection from: {hostname_str} (session: {session_id})");
                         let mail_ctx = MailContext {
-                            hostname: Some(hostname_str.clone()),
+                            hostname: Some(hostname_str),
                             ..Default::default()
                         };
-                        state.lock().unwrap().insert(hostname_str, mail_ctx);
+                        state.lock().unwrap().insert(session_id, mail_ctx);
                         Status::Continue
                     })
                 }
@@ -60,8 +61,9 @@ impl Milter {
                             .collect::<Vec<_>>()
                             .join(",");
                         log::debug!("Mail from: {sender_str}");
-                        // Update the most recent context
-                        if let Some((_, mail_ctx)) = state.lock().unwrap().iter_mut().last() {
+                        // Update the most recent context (by highest session number)
+                        if let Some((_, mail_ctx)) = state.lock().unwrap().iter_mut()
+                            .max_by_key(|(k, _)| k.split('-').last().and_then(|s| s.parse::<u64>().ok()).unwrap_or(0)) {
                             mail_ctx.sender = Some(sender_str);
                         }
                         Status::Continue
@@ -80,7 +82,9 @@ impl Milter {
                             .collect::<Vec<_>>()
                             .join(",");
                         log::debug!("Rcpt to: {recipient_str}");
-                        if let Some((_, mail_ctx)) = state.lock().unwrap().iter_mut().last() {
+                        // Update the most recent context (by highest session number)
+                        if let Some((_, mail_ctx)) = state.lock().unwrap().iter_mut()
+                            .max_by_key(|(k, _)| k.split('-').last().and_then(|s| s.parse::<u64>().ok()).unwrap_or(0)) {
                             mail_ctx.recipients.push(recipient_str);
                         }
                         Status::Continue
@@ -97,7 +101,9 @@ impl Milter {
                         let value_str = value.to_string_lossy().to_string();
                         log::debug!("Header: {name_str}: {value_str}");
 
-                        if let Some((_, mail_ctx)) = state.lock().unwrap().iter_mut().last() {
+                        // Update the most recent context (by highest session number)
+                        if let Some((_, mail_ctx)) = state.lock().unwrap().iter_mut()
+                            .max_by_key(|(k, _)| k.split('-').last().and_then(|s| s.parse::<u64>().ok()).unwrap_or(0)) {
                             // Store important headers
                             match name_str.to_lowercase().as_str() {
                                 "subject" => {
@@ -121,7 +127,9 @@ impl Milter {
                     let state = state.clone();
                     Box::pin(async move {
                         let body_str = String::from_utf8_lossy(&body_chunk);
-                        if let Some((_, mail_ctx)) = state.lock().unwrap().iter_mut().last() {
+                        // Update the most recent context (by highest session number)
+                        if let Some((_, mail_ctx)) = state.lock().unwrap().iter_mut()
+                            .max_by_key(|(k, _)| k.split('-').last().and_then(|s| s.parse::<u64>().ok()).unwrap_or(0)) {
                             match &mut mail_ctx.body {
                                 Some(existing_body) => {
                                     existing_body.push_str(&body_str);
@@ -144,8 +152,10 @@ impl Milter {
                     let state = state.clone();
                     Box::pin(async move {
                         log::debug!("EOM callback invoked");
-                        // Clone mail context to avoid holding mutex across await
-                        let mail_ctx_clone = state.lock().unwrap().values().last().cloned();
+                        // Clone mail context to avoid holding mutex across await (get most recent by session number)
+                        let mail_ctx_clone = state.lock().unwrap().iter()
+                            .max_by_key(|(k, _)| k.split('-').last().and_then(|s| s.parse::<u64>().ok()).unwrap_or(0))
+                            .map(|(_, ctx)| ctx.clone());
 
                         if let Some(mail_ctx) = mail_ctx_clone {
                             let sender = mail_ctx.sender.as_deref().unwrap_or("<unknown>");
