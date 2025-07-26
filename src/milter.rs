@@ -4,6 +4,36 @@ use indymilter::{run, Actions, Callbacks, Config as IndyConfig, ContextActions, 
 use std::collections::HashMap;
 use std::sync::{Arc, Mutex};
 use tokio::net::UnixListener;
+
+/// Extract email address from a header value like "Name <email@domain.com>" or "email@domain.com"
+pub fn extract_email_from_header(header_value: &str) -> Option<String> {
+    // Handle encoded headers like =?utf-8?B?...?= <email@domain.com>
+    let decoded = if header_value.contains("=?") {
+        // Simple extraction - look for <email> pattern after encoded part
+        if let Some(start) = header_value.find('<') {
+            if let Some(end) = header_value.find('>') {
+                return Some(header_value[start + 1..end].to_string());
+            }
+        }
+        header_value
+    } else {
+        header_value
+    };
+
+    // Look for <email@domain.com> pattern
+    if let Some(start) = decoded.find('<') {
+        if let Some(end) = decoded.find('>') {
+            return Some(decoded[start + 1..end].to_string());
+        }
+    }
+
+    // If no angle brackets, assume the whole thing is an email
+    if decoded.contains('@') {
+        return Some(decoded.trim().to_string());
+    }
+
+    None
+}
 pub struct Milter {
     engine: Arc<FilterEngine>,
 }
@@ -133,6 +163,12 @@ impl Milter {
                                 }
                                 "x-mailer" | "user-agent" => {
                                     mail_ctx.mailer = Some(value_str.clone());
+                                }
+                                "from" => {
+                                    // Extract email address from From header
+                                    if let Some(email) = extract_email_from_header(&value_str) {
+                                        mail_ctx.from_header = Some(email);
+                                    }
                                 }
                                 _ => {}
                             }

@@ -14,7 +14,8 @@ pub struct FilterEngine {
 
 #[derive(Debug, Default, Clone)]
 pub struct MailContext {
-    pub sender: Option<String>,
+    pub sender: Option<String>,      // Envelope sender (MAIL FROM)
+    pub from_header: Option<String>, // From header sender
     pub recipients: Vec<String>,
     pub headers: HashMap<String, String>,
     pub mailer: Option<String>,
@@ -331,9 +332,17 @@ impl FilterEngine {
                     false
                 }
                 Criteria::SenderPattern { pattern } => {
-                    if let Some(sender) = &context.sender {
-                        if let Some(regex) = self.compiled_patterns.get(pattern) {
-                            return regex.is_match(sender);
+                    if let Some(regex) = self.compiled_patterns.get(pattern) {
+                        // Check both envelope sender and From header sender
+                        if let Some(sender) = &context.sender {
+                            if regex.is_match(sender) {
+                                return true;
+                            }
+                        }
+                        if let Some(from_header) = &context.from_header {
+                            if regex.is_match(from_header) {
+                                return true;
+                            }
                         }
                     }
                     false
@@ -459,6 +468,231 @@ impl FilterEngine {
                 }
             }
         })
+    }
+}
+
+#[cfg(test)]
+mod debug_tests {
+    use crate::config::{Action, Config, Criteria, FilterRule};
+    use crate::filter::{FilterEngine, MailContext};
+    use std::collections::HashMap;
+
+    #[tokio::test]
+    async fn test_milter_header_extraction() {
+        // Test the email extraction function
+        let from_header = "=?utf-8?B?44Ki44Oh44Oq44Kr44Oz44O744Ko44Kt44K544OX44Os44K5?= <dm-hlxihj@service.gzutzc.cn>";
+        let extracted = crate::milter::extract_email_from_header(from_header);
+        println!("Extracted email: {:?}", extracted);
+        assert_eq!(extracted, Some("dm-hlxihj@service.gzutzc.cn".to_string()));
+
+        // Test with the actual rule
+        let config = Config {
+            socket_path: "/tmp/test.sock".to_string(),
+            rules: vec![FilterRule {
+                name: "Block Chinese services with Japanese content".to_string(),
+                criteria: Criteria::And {
+                    criteria: vec![
+                        Criteria::Or {
+                            criteria: vec![
+                                Criteria::SenderPattern {
+                                    pattern: r".*@service\.[^.]+\.cn$".to_string(),
+                                },
+                                Criteria::SenderPattern {
+                                    pattern: r".*@service\..*\.cn$".to_string(),
+                                },
+                            ],
+                        },
+                        Criteria::SubjectContainsLanguage {
+                            language: "japanese".to_string(),
+                        },
+                    ],
+                },
+                action: Action::Reject {
+                    message: "Chinese service with Japanese content blocked".to_string(),
+                },
+            }],
+            default_action: Action::Accept,
+        };
+
+        let engine = FilterEngine::new(config).unwrap();
+
+        // Simulate what the milter would do: extract email from From header
+        let mut headers = HashMap::new();
+        headers.insert("from".to_string(), from_header.to_string());
+
+        let context = MailContext {
+            sender: Some("envelope@example.com".to_string()), // Envelope sender
+            from_header: extracted,                           // From header sender
+            subject: Some("限定ご招待｜大切な方と過ごすミシュランの夜".to_string()),
+            headers,
+            ..Default::default()
+        };
+
+        println!("Testing with extracted sender: {:?}", context.sender);
+
+        let action = engine.evaluate(&context).await;
+        println!("Milter simulation result: {:?}", action);
+
+        match action {
+            Action::Reject { .. } => {
+                println!("SUCCESS: Rule matched with extracted email");
+            }
+            _ => {
+                println!("FAILURE: Rule did not match with extracted email");
+                panic!("Rule should have matched but didn't");
+            }
+        }
+    }
+
+    #[tokio::test]
+    async fn test_exact_rule_from_user() {
+        // Create the exact rule the user provided
+        let config = Config {
+            socket_path: "/tmp/test.sock".to_string(),
+            rules: vec![FilterRule {
+                name: "Block Chinese services with Japanese content".to_string(),
+                criteria: Criteria::And {
+                    criteria: vec![
+                        Criteria::Or {
+                            criteria: vec![
+                                Criteria::SenderPattern {
+                                    pattern: r".*@service\.[^.]+\.cn$".to_string(),
+                                },
+                                Criteria::SenderPattern {
+                                    pattern: r".*@service\..*\.cn$".to_string(),
+                                },
+                            ],
+                        },
+                        Criteria::SubjectContainsLanguage {
+                            language: "japanese".to_string(),
+                        },
+                    ],
+                },
+                action: Action::Reject {
+                    message: "Chinese service with Japanese content blocked".to_string(),
+                },
+            }],
+            default_action: Action::Accept,
+        };
+
+        let engine = FilterEngine::new(config).unwrap();
+
+        // Create the exact email context from the headers
+        let mut headers = HashMap::new();
+        headers.insert("from".to_string(), "=?utf-8?B?44Ki44Oh44Oq44Kr44Oz44O744Ko44Kt44K544OX44Os44K5?= <dm-hlxihj@service.gzutzc.cn>".to_string());
+        headers.insert("subject".to_string(), "=?utf-8?B?6ZmQ5a6a44GU5oub5b6F772c5aSn5YiH44Gq5pa544Go6YGO44GU44GZ44Of44K344Ol44Op44Oz44Gu?= =?utf-8?B?5aSc?=".to_string());
+
+        let context = MailContext {
+            sender: Some("dm-hlxihj@service.gzutzc.cn".to_string()),
+            subject: Some("限定ご招待｜大切な方と過ごすミシュランの夜".to_string()),
+            headers,
+            ..Default::default()
+        };
+
+        println!("Testing sender: {:?}", context.sender);
+        println!("Testing subject: {:?}", context.subject);
+
+        let action = engine.evaluate(&context).await;
+        println!("Action result: {:?}", action);
+
+        match action {
+            Action::Reject { .. } => {
+                println!("SUCCESS: Rule matched as expected");
+            }
+            _ => {
+                println!("FAILURE: Rule did not match");
+                panic!("Rule should have matched but didn't");
+            }
+        }
+    }
+
+    #[tokio::test]
+    async fn test_individual_criteria() {
+        // Test each part separately
+
+        // Test SenderPattern 1
+        let config1 = Config {
+            socket_path: "/tmp/test.sock".to_string(),
+            rules: vec![FilterRule {
+                name: "Test SenderPattern 1".to_string(),
+                criteria: Criteria::SenderPattern {
+                    pattern: r".*@service\.[^.]+\.cn$".to_string(),
+                },
+                action: Action::Reject {
+                    message: "Pattern 1 matched".to_string(),
+                },
+            }],
+            default_action: Action::Accept,
+        };
+
+        let engine1 = FilterEngine::new(config1).unwrap();
+
+        // Debug: Print the compiled regex
+        println!(
+            "Compiled patterns: {:?}",
+            engine1.compiled_patterns.keys().collect::<Vec<_>>()
+        );
+        for (pattern, regex) in &engine1.compiled_patterns {
+            println!("Pattern '{}' -> Regex: {:?}", pattern, regex.as_str());
+            let test_match = regex.is_match("dm-hlxihj@service.gzutzc.cn");
+            println!("  Matches 'dm-hlxihj@service.gzutzc.cn': {}", test_match);
+        }
+
+        let context1 = MailContext {
+            sender: Some("dm-hlxihj@service.gzutzc.cn".to_string()),
+            ..Default::default()
+        };
+
+        let action1 = engine1.evaluate(&context1).await;
+        println!("SenderPattern 1 result: {:?}", action1);
+
+        // Test SenderPattern 2
+        let config2 = Config {
+            socket_path: "/tmp/test.sock".to_string(),
+            rules: vec![FilterRule {
+                name: "Test SenderPattern 2".to_string(),
+                criteria: Criteria::SenderPattern {
+                    pattern: r".*@service\..*\.cn$".to_string(),
+                },
+                action: Action::Reject {
+                    message: "Pattern 2 matched".to_string(),
+                },
+            }],
+            default_action: Action::Accept,
+        };
+
+        let engine2 = FilterEngine::new(config2).unwrap();
+        let context2 = MailContext {
+            sender: Some("dm-hlxihj@service.gzutzc.cn".to_string()),
+            ..Default::default()
+        };
+
+        let action2 = engine2.evaluate(&context2).await;
+        println!("SenderPattern 2 result: {:?}", action2);
+
+        // Test SubjectContainsLanguage
+        let config3 = Config {
+            socket_path: "/tmp/test.sock".to_string(),
+            rules: vec![FilterRule {
+                name: "Test Japanese".to_string(),
+                criteria: Criteria::SubjectContainsLanguage {
+                    language: "japanese".to_string(),
+                },
+                action: Action::Reject {
+                    message: "Japanese detected".to_string(),
+                },
+            }],
+            default_action: Action::Accept,
+        };
+
+        let engine3 = FilterEngine::new(config3).unwrap();
+        let context3 = MailContext {
+            subject: Some("限定ご招待｜大切な方と過ごすミシュランの夜".to_string()),
+            ..Default::default()
+        };
+
+        let action3 = engine3.evaluate(&context3).await;
+        println!("Japanese detection result: {:?}", action3);
     }
 }
 
