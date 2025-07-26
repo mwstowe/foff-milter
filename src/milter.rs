@@ -173,8 +173,8 @@ impl Milter {
                                     header_name,
                                     header_value,
                                 } => {
-                                    log::info!("TAG from={sender} to={recipients} header={header_name}:{header_value}");
-                                    log::debug!("Adding header: {header_name}={header_value}");
+                                    log::error!("CRITICAL: TagAsSpam action triggered! from={sender} to={recipients} header={header_name}:{header_value}");
+                                    log::error!("CRITICAL: Adding header: {header_name}={header_value}");
                                     // Add the spam header
                                     if let Err(e) = _ctx
                                         .actions
@@ -183,7 +183,7 @@ impl Milter {
                                     {
                                         log::error!("Failed to add header: {e}");
                                     } else {
-                                        log::debug!("Successfully added header: {header_name}={header_value}");
+                                        log::error!("CRITICAL: Successfully added header: {header_name}={header_value}");
                                     }
                                     return Status::Accept;
                                 }
