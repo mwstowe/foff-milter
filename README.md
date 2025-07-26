@@ -255,7 +255,7 @@ sudo systemctl restart postfix
 - name: "Tag emails with Google unsubscribe links"
   criteria:
     type: "UnsubscribeLinkPattern"
-    pattern: ".*\.google\.com.*"
+    pattern: ".*\\.google\\.com.*"
   action:
     type: "TagAsSpam"
     header_name: "X-Suspicious-Unsubscribe"
