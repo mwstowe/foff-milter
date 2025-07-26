@@ -154,7 +154,9 @@ impl FilterEngine {
         let mut links = Vec::new();
 
         // Check List-Unsubscribe header (RFC 2369) - case insensitive
-        let list_unsubscribe = context.headers.get("list-unsubscribe")
+        let list_unsubscribe = context
+            .headers
+            .get("list-unsubscribe")
             .or_else(|| context.headers.get("List-Unsubscribe"));
         if let Some(list_unsubscribe) = list_unsubscribe {
             // Extract URLs from List-Unsubscribe header: <url1>, <url2>
@@ -235,8 +237,9 @@ impl FilterEngine {
 
             // Add timeout to DNS lookup
             let lookup_future = resolver.lookup_ip(hostname);
-            let timeout_future = tokio::time::timeout(Duration::from_secs(timeout_seconds), lookup_future);
-            
+            let timeout_future =
+                tokio::time::timeout(Duration::from_secs(timeout_seconds), lookup_future);
+
             match timeout_future.await {
                 Ok(Ok(response)) => {
                     // Check if we have any IP addresses
@@ -246,9 +249,11 @@ impl FilterEngine {
                         log::debug!("DNS found IP for {hostname}: {ip}");
                         has_ips = true;
                         ip_count += 1;
-                        if ip_count >= 3 { break; } // Limit logging
+                        if ip_count >= 3 {
+                            break;
+                        } // Limit logging
                     }
-                    
+
                     if !has_ips {
                         log::warn!("DNS lookup returned no results for {hostname}");
                         return false;
@@ -661,9 +666,9 @@ mod tests {
     async fn test_klclick_dns_validation() {
         let hostname = "ctrk.klclick.com";
         println!("Testing DNS lookup for: {}", hostname);
-        
+
         let resolver = TokioAsyncResolver::tokio_from_system_conf().unwrap();
-        
+
         match resolver.lookup_ip(hostname).await {
             Ok(response) => {
                 // Test the exact logic from validate_unsubscribe_link
@@ -673,9 +678,12 @@ mod tests {
                     has_ips = true;
                     break;
                 }
-                
+
                 println!("Has IPs: {}", has_ips);
-                assert!(has_ips, "Should have found IP addresses for ctrk.klclick.com");
+                assert!(
+                    has_ips,
+                    "Should have found IP addresses for ctrk.klclick.com"
+                );
             }
             Err(e) => {
                 panic!("DNS lookup failed for {}: {}", hostname, e);

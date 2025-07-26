@@ -3,16 +3,14 @@ use crate::filter::{FilterEngine, MailContext};
 use indymilter::{run, Actions, Callbacks, Config as IndyConfig, ContextActions, Status};
 use std::collections::HashMap;
 use std::sync::{Arc, Mutex};
-use std::sync::atomic::{AtomicU64, Ordering};
 use tokio::net::UnixListener;
 
 pub struct Milter {
     engine: Arc<FilterEngine>,
 }
 
-// Simple state storage with unique session IDs
-type StateMap = Arc<Mutex<HashMap<u64, MailContext>>>;
-static SESSION_COUNTER: AtomicU64 = AtomicU64::new(1);
+// Simple state storage
+type StateMap = Arc<Mutex<HashMap<String, MailContext>>>;
 
 impl Milter {
     pub fn new(config: Config) -> anyhow::Result<Self> {
@@ -40,15 +38,12 @@ impl Milter {
                     let state = state.clone();
                     Box::pin(async move {
                         let hostname_str = hostname.to_string_lossy().to_string();
-                        let session_id = SESSION_COUNTER.fetch_add(1, Ordering::SeqCst);
-                        log::debug!("Connection from: {hostname_str} (Session: {session_id})");
+                        log::debug!("Connection from: {hostname_str}");
                         let mail_ctx = MailContext {
-                            hostname: Some(hostname_str),
+                            hostname: Some(hostname_str.clone()),
                             ..Default::default()
                         };
-                        state.lock().unwrap().insert(session_id, mail_ctx);
-                        // Store session ID in context private data
-                        _ctx.set_private_data(session_id);
+                        state.lock().unwrap().insert(hostname_str, mail_ctx);
                         Status::Continue
                     })
                 }
@@ -65,11 +60,9 @@ impl Milter {
                             .collect::<Vec<_>>()
                             .join(",");
                         log::debug!("Mail from: {sender_str}");
-                        // Update the context for this session
-                        if let Some(session_id) = _ctx.get_private_data::<u64>() {
-                        if let Some(mail_ctx) = state.lock().unwrap().get_mut(session_id) {
+                        // Update the most recent context
+                        if let Some((_, mail_ctx)) = state.lock().unwrap().iter_mut().last() {
                             mail_ctx.sender = Some(sender_str);
-                        }
                         }
                         Status::Continue
                     })
@@ -87,10 +80,8 @@ impl Milter {
                             .collect::<Vec<_>>()
                             .join(",");
                         log::debug!("Rcpt to: {recipient_str}");
-                        if let Some(session_id) = _ctx.get_private_data::<u64>() {
-                        if let Some(mail_ctx) = state.lock().unwrap().get_mut(session_id) {
+                        if let Some((_, mail_ctx)) = state.lock().unwrap().iter_mut().last() {
                             mail_ctx.recipients.push(recipient_str);
-                        }
                         }
                         Status::Continue
                     })
@@ -106,8 +97,7 @@ impl Milter {
                         let value_str = value.to_string_lossy().to_string();
                         log::debug!("Header: {name_str}: {value_str}");
 
-                        if let Some(session_id) = _ctx.get_private_data::<u64>() {
-                        if let Some(mail_ctx) = state.lock().unwrap().get_mut(session_id) {
+                        if let Some((_, mail_ctx)) = state.lock().unwrap().iter_mut().last() {
                             // Store important headers
                             match name_str.to_lowercase().as_str() {
                                 "subject" => {
@@ -120,7 +110,6 @@ impl Milter {
                             }
                             mail_ctx.headers.insert(name_str, value_str);
                         }
-                        }
                         Status::Continue
                     })
                 }
@@ -132,8 +121,7 @@ impl Milter {
                     let state = state.clone();
                     Box::pin(async move {
                         let body_str = String::from_utf8_lossy(&body_chunk);
-                        if let Some(session_id) = _ctx.get_private_data::<u64>() {
-                        if let Some(mail_ctx) = state.lock().unwrap().get_mut(session_id) {
+                        if let Some((_, mail_ctx)) = state.lock().unwrap().iter_mut().last() {
                             match &mut mail_ctx.body {
                                 Some(existing_body) => {
                                     existing_body.push_str(&body_str);
@@ -142,7 +130,6 @@ impl Milter {
                                     mail_ctx.body = Some(body_str.to_string());
                                 }
                             }
-                        }
                         }
                         Status::Continue
                     })
@@ -158,12 +145,7 @@ impl Milter {
                     Box::pin(async move {
                         log::debug!("EOM callback invoked");
                         // Clone mail context to avoid holding mutex across await
-                        if let Some(session_id) = _ctx.get_private_data::<u64>() {
-                        log::debug!("Found session ID: {session_id}");
-                        let mail_ctx_clone = state.lock().unwrap().get(session_id).cloned();
-                        
-                        // Clean up the state for this session
-                        state.lock().unwrap().remove(session_id);
+                        let mail_ctx_clone = state.lock().unwrap().values().last().cloned();
 
                         if let Some(mail_ctx) = mail_ctx_clone {
                             let sender = mail_ctx.sender.as_deref().unwrap_or("<unknown>");
@@ -174,7 +156,11 @@ impl Milter {
                             };
 
                             let action = engine.evaluate(&mail_ctx).await;
-                            log::debug!("PID {} evaluated action: {:?}", std::process::id(), action);
+                            log::debug!(
+                                "PID {} evaluated action: {:?}",
+                                std::process::id(),
+                                action
+                            );
 
                             match action {
                                 Action::Reject { message } => {
@@ -206,10 +192,6 @@ impl Milter {
                                     return Status::Accept;
                                 }
                             }
-                        }
-                        }
-                        } else {
-                            log::warn!("No session ID found in EOM context");
                         }
 
                         Status::Accept
