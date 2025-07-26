@@ -389,7 +389,11 @@ impl FilterEngine {
                 );
 
                     let links = self.extract_unsubscribe_links(context);
-                    log::info!("UnsubscribeLinkValidation: extracted {} links: {:?}", links.len(), links);
+                    log::info!(
+                        "UnsubscribeLinkValidation: extracted {} links: {:?}",
+                        links.len(),
+                        links
+                    );
 
                     if links.is_empty() {
                         log::info!("UnsubscribeLinkValidation: No unsubscribe links found - returning false (no match)");
