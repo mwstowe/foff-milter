@@ -222,32 +222,43 @@ impl FilterEngine {
 
         // DNS validation
         if check_dns {
-            log::debug!("Checking DNS for hostname: {hostname}");
+            log::debug!("Checking DNS for hostname: {hostname} (timeout: {timeout_seconds}s)");
             let resolver = match TokioAsyncResolver::tokio_from_system_conf() {
                 Ok(resolver) => resolver,
                 Err(e) => {
-                    log::debug!("Failed to create DNS resolver: {e}");
+                    log::warn!("Failed to create DNS resolver for {hostname}: {e}");
                     return false;
                 }
             };
 
-            match resolver.lookup_ip(hostname).await {
-                Ok(response) => {
+            // Add timeout to DNS lookup
+            let lookup_future = resolver.lookup_ip(hostname);
+            let timeout_future = tokio::time::timeout(Duration::from_secs(timeout_seconds), lookup_future);
+            
+            match timeout_future.await {
+                Ok(Ok(response)) => {
                     // Check if we have any IP addresses
                     let mut has_ips = false;
-                    for _ip in response.iter() {
+                    let mut ip_count = 0;
+                    for ip in response.iter() {
+                        log::debug!("DNS found IP for {hostname}: {ip}");
                         has_ips = true;
-                        break;
+                        ip_count += 1;
+                        if ip_count >= 3 { break; } // Limit logging
                     }
                     
                     if !has_ips {
-                        log::debug!("DNS lookup returned no results for {hostname}");
+                        log::warn!("DNS lookup returned no results for {hostname}");
                         return false;
                     }
-                    log::debug!("DNS lookup successful for {hostname}");
+                    log::debug!("DNS lookup successful for {hostname} ({ip_count} IPs found)");
                 }
-                Err(e) => {
-                    log::debug!("DNS lookup failed for {hostname}: {e}");
+                Ok(Err(e)) => {
+                    log::warn!("DNS lookup failed for {hostname}: {e}");
+                    return false;
+                }
+                Err(_) => {
+                    log::warn!("DNS lookup timed out for {hostname} after {timeout_seconds}s");
                     return false;
                 }
             }
@@ -641,6 +652,32 @@ mod tests {
         match action4 {
             Action::Accept => {}
             _ => panic!("Expected accept for Sparkpost to different user"),
+        }
+    }
+
+    #[tokio::test]
+    async fn test_klclick_dns_validation() {
+        let hostname = "ctrk.klclick.com";
+        println!("Testing DNS lookup for: {}", hostname);
+        
+        let resolver = TokioAsyncResolver::tokio_from_system_conf().unwrap();
+        
+        match resolver.lookup_ip(hostname).await {
+            Ok(response) => {
+                // Test the exact logic from validate_unsubscribe_link
+                let mut has_ips = false;
+                for ip in response.iter() {
+                    println!("Found IP: {}", ip);
+                    has_ips = true;
+                    break;
+                }
+                
+                println!("Has IPs: {}", has_ips);
+                assert!(has_ips, "Should have found IP addresses for ctrk.klclick.com");
+            }
+            Err(e) => {
+                panic!("DNS lookup failed for {}: {}", hostname, e);
+            }
         }
     }
 
