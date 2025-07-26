@@ -154,6 +154,7 @@ impl Milter {
                             };
 
                             let action = engine.evaluate(&mail_ctx).await;
+                            log::debug!("Evaluated action: {:?}", action);
 
                             match action {
                                 Action::Reject { message } => {
