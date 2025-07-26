@@ -233,7 +233,14 @@ impl FilterEngine {
 
             match resolver.lookup_ip(hostname).await {
                 Ok(response) => {
-                    if response.iter().count() == 0 {
+                    // Check if we have any IP addresses
+                    let mut has_ips = false;
+                    for _ip in response.iter() {
+                        has_ips = true;
+                        break;
+                    }
+                    
+                    if !has_ips {
                         log::debug!("DNS lookup returned no results for {hostname}");
                         return false;
                     }
