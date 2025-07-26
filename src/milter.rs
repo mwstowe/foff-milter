@@ -67,7 +67,11 @@ impl Milter {
                         log::debug!("Mail from: {sender_str}");
                         // Update the most recent context (by highest session number)
                         if let Some((_, mail_ctx)) =
-                            state.lock().unwrap().iter_mut().max_by_key(|(k, _)| {k.split('-').next_back().and_then(|s| s.parse::<u64>().ok()).unwrap_or(0)
+                            state.lock().unwrap().iter_mut().max_by_key(|(k, _)| {
+                                k.split('-')
+                                    .next_back()
+                                    .and_then(|s| s.parse::<u64>().ok())
+                                    .unwrap_or(0)
                             })
                         {
                             mail_ctx.sender = Some(sender_str);
@@ -90,7 +94,11 @@ impl Milter {
                         log::debug!("Rcpt to: {recipient_str}");
                         // Update the most recent context (by highest session number)
                         if let Some((_, mail_ctx)) =
-                            state.lock().unwrap().iter_mut().max_by_key(|(k, _)| {k.split('-').next_back().and_then(|s| s.parse::<u64>().ok()).unwrap_or(0)
+                            state.lock().unwrap().iter_mut().max_by_key(|(k, _)| {
+                                k.split('-')
+                                    .next_back()
+                                    .and_then(|s| s.parse::<u64>().ok())
+                                    .unwrap_or(0)
                             })
                         {
                             mail_ctx.recipients.push(recipient_str);
@@ -111,7 +119,11 @@ impl Milter {
 
                         // Update the most recent context (by highest session number)
                         if let Some((_, mail_ctx)) =
-                            state.lock().unwrap().iter_mut().max_by_key(|(k, _)| {k.split('-').next_back().and_then(|s| s.parse::<u64>().ok()).unwrap_or(0)
+                            state.lock().unwrap().iter_mut().max_by_key(|(k, _)| {
+                                k.split('-')
+                                    .next_back()
+                                    .and_then(|s| s.parse::<u64>().ok())
+                                    .unwrap_or(0)
                             })
                         {
                             // Store important headers
@@ -139,7 +151,11 @@ impl Milter {
                         let body_str = String::from_utf8_lossy(&body_chunk);
                         // Update the most recent context (by highest session number)
                         if let Some((_, mail_ctx)) =
-                            state.lock().unwrap().iter_mut().max_by_key(|(k, _)| {k.split('-').next_back().and_then(|s| s.parse::<u64>().ok()).unwrap_or(0)
+                            state.lock().unwrap().iter_mut().max_by_key(|(k, _)| {
+                                k.split('-')
+                                    .next_back()
+                                    .and_then(|s| s.parse::<u64>().ok())
+                                    .unwrap_or(0)
                             })
                         {
                             match &mut mail_ctx.body {
@@ -169,7 +185,11 @@ impl Milter {
                             .lock()
                             .unwrap()
                             .iter()
-                            .max_by_key(|(k, _)| {k.split('-').next_back().and_then(|s| s.parse::<u64>().ok()).unwrap_or(0)
+                            .max_by_key(|(k, _)| {
+                                k.split('-')
+                                    .next_back()
+                                    .and_then(|s| s.parse::<u64>().ok())
+                                    .unwrap_or(0)
                             })
                             .map(|(_, ctx)| ctx.clone());
 
