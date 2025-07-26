@@ -5,11 +5,13 @@ A sendmail milter written in Rust for filtering emails based on configurable cri
 ## Features
 
 - **Pattern-based filtering**: Filter emails based on mailer, sender, recipient, subject, or custom headers
+- **Unsubscribe link analysis**: Validate and pattern-match unsubscribe links in emails
+- **Language detection**: Detect specific languages in email content (Japanese, Chinese, Korean, etc.)
 - **Flexible actions**: Reject emails or tag them as spam
 - **Complex criteria**: Support for AND/OR logic combinations
 - **Regex support**: Use regular expressions for pattern matching
 - **YAML configuration**: Easy-to-read configuration format
-- **Logging**: Comprehensive logging for debugging and monitoring
+- **Structured logging**: Actionable logs showing sender, recipient, and actions taken
 
 ## Installation
 
@@ -17,17 +19,8 @@ A sendmail milter written in Rust for filtering emails based on configurable cri
 
 - Rust 1.70 or later
 - sendmail or postfix with milter support
-- libmilter development headers
 
-On Ubuntu/Debian:
-```bash
-sudo apt-get install libmilter-dev
-```
-
-On CentOS/RHEL:
-```bash
-sudo yum install sendmail-milter-devel
-```
+**Note:** This milter uses the `indymilter` library (v0.3) which provides a pure Rust milter implementation, so you don't need libmilter development headers.
 
 ### Building
 
@@ -75,6 +68,7 @@ rules:
 - **SubjectContainsLanguage**: Detect specific languages in email subject
 - **HeaderContainsLanguage**: Detect specific languages in email headers
 - **UnsubscribeLinkValidation**: Validate unsubscribe links in email body and headers
+- **UnsubscribeLinkPattern**: Match regex patterns against unsubscribe links
 - **And**: All sub-criteria must match
 - **Or**: Any sub-criteria must match
 
@@ -255,6 +249,21 @@ sudo systemctl restart postfix
     header_value: "Unsubscribe link validation failed"
 ```
 
+### Unsubscribe link pattern matching
+
+```yaml
+- name: "Tag emails with Google unsubscribe links"
+  criteria:
+    type: "UnsubscribeLinkPattern"
+    pattern: ".*\.google\.com.*"
+  action:
+    type: "TagAsSpam"
+    header_name: "X-Suspicious-Unsubscribe"
+    header_value: "YES"
+```
+
+See `examples/unsubscribe-pattern-example.yaml` for more comprehensive examples of unsubscribe link pattern matching.
+
 ### Complex rule with multiple conditions
 
 ```yaml
@@ -277,13 +286,20 @@ sudo systemctl restart postfix
 
 ## Logging
 
-The milter logs to stdout/stderr. You can redirect logs to a file or use systemd for log management.
+The milter logs to stdout/stderr with structured, actionable log messages. You can redirect logs to a file or use systemd for log management.
 
-Log levels:
+### Log Format
+
+Email processing logs show sender, recipient, and action taken:
+- `ACCEPT from=sender@domain.com to=recipient@domain.com`
+- `REJECT from=sender@domain.com to=recipient@domain.com reason=rejection message`
+- `TAG from=sender@domain.com to=recipient@domain.com header=X-Spam-Flag:YES`
+
+### Log Levels
 - ERROR: Critical errors
 - WARN: Warning messages
-- INFO: General information (default)
-- DEBUG: Detailed debugging (use -v flag)
+- INFO: General information and email processing results (default)
+- DEBUG: Detailed debugging including rule evaluation (use -v flag)
 
 ## Systemd Service
 
