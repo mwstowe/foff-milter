@@ -3,14 +3,16 @@ use crate::filter::{FilterEngine, MailContext};
 use indymilter::{run, Actions, Callbacks, Config as IndyConfig, ContextActions, Status};
 use std::collections::HashMap;
 use std::sync::{Arc, Mutex};
+use std::sync::atomic::{AtomicU64, Ordering};
 use tokio::net::UnixListener;
 
 pub struct Milter {
     engine: Arc<FilterEngine>,
 }
 
-// Simple state storage with unique connection IDs
-type StateMap = Arc<Mutex<HashMap<String, MailContext>>>;
+// Simple state storage with unique session IDs
+type StateMap = Arc<Mutex<HashMap<u64, MailContext>>>;
+static SESSION_COUNTER: AtomicU64 = AtomicU64::new(1);
 
 impl Milter {
     pub fn new(config: Config) -> anyhow::Result<Self> {
@@ -38,13 +40,15 @@ impl Milter {
                     let state = state.clone();
                     Box::pin(async move {
                         let hostname_str = hostname.to_string_lossy().to_string();
-                        let connection_id = format!("{:p}", _ctx as *const _);
-                        log::debug!("Connection from: {hostname_str} (ID: {connection_id})");
+                        let session_id = SESSION_COUNTER.fetch_add(1, Ordering::SeqCst);
+                        log::debug!("Connection from: {hostname_str} (Session: {session_id})");
                         let mail_ctx = MailContext {
                             hostname: Some(hostname_str),
                             ..Default::default()
                         };
-                        state.lock().unwrap().insert(connection_id, mail_ctx);
+                        state.lock().unwrap().insert(session_id, mail_ctx);
+                        // Store session ID in context private data
+                        _ctx.set_private_data(session_id);
                         Status::Continue
                     })
                 }
@@ -61,10 +65,11 @@ impl Milter {
                             .collect::<Vec<_>>()
                             .join(",");
                         log::debug!("Mail from: {sender_str}");
-                        // Update the context for this connection
-                        let connection_id = format!("{:p}", _ctx as *const _);
-                        if let Some(mail_ctx) = state.lock().unwrap().get_mut(&connection_id) {
+                        // Update the context for this session
+                        if let Some(session_id) = _ctx.get_private_data::<u64>() {
+                        if let Some(mail_ctx) = state.lock().unwrap().get_mut(session_id) {
                             mail_ctx.sender = Some(sender_str);
+                        }
                         }
                         Status::Continue
                     })
