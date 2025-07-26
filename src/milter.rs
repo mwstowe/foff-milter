@@ -38,7 +38,11 @@ impl Milter {
                     let state = state.clone();
                     Box::pin(async move {
                         let hostname_str = hostname.to_string_lossy().to_string();
-                        let session_id = format!("{}-{}", hostname_str, SESSION_COUNTER.fetch_add(1, std::sync::atomic::Ordering::SeqCst));
+                        let session_id = format!(
+                            "{}-{}",
+                            hostname_str,
+                            SESSION_COUNTER.fetch_add(1, std::sync::atomic::Ordering::SeqCst)
+                        );
                         log::debug!("Connection from: {hostname_str} (session: {session_id})");
                         let mail_ctx = MailContext {
                             hostname: Some(hostname_str),
@@ -62,8 +66,14 @@ impl Milter {
                             .join(",");
                         log::debug!("Mail from: {sender_str}");
                         // Update the most recent context (by highest session number)
-                        if let Some((_, mail_ctx)) = state.lock().unwrap().iter_mut()
-                            .max_by_key(|(k, _)| k.split('-').last().and_then(|s| s.parse::<u64>().ok()).unwrap_or(0)) {
+                        if let Some((_, mail_ctx)) =
+                            state.lock().unwrap().iter_mut().max_by_key(|(k, _)| {
+                                k.split('-')
+                                    .last()
+                                    .and_then(|s| s.parse::<u64>().ok())
+                                    .unwrap_or(0)
+                            })
+                        {
                             mail_ctx.sender = Some(sender_str);
                         }
                         Status::Continue
@@ -83,8 +93,14 @@ impl Milter {
                             .join(",");
                         log::debug!("Rcpt to: {recipient_str}");
                         // Update the most recent context (by highest session number)
-                        if let Some((_, mail_ctx)) = state.lock().unwrap().iter_mut()
-                            .max_by_key(|(k, _)| k.split('-').last().and_then(|s| s.parse::<u64>().ok()).unwrap_or(0)) {
+                        if let Some((_, mail_ctx)) =
+                            state.lock().unwrap().iter_mut().max_by_key(|(k, _)| {
+                                k.split('-')
+                                    .last()
+                                    .and_then(|s| s.parse::<u64>().ok())
+                                    .unwrap_or(0)
+                            })
+                        {
                             mail_ctx.recipients.push(recipient_str);
                         }
                         Status::Continue
@@ -102,8 +118,14 @@ impl Milter {
                         log::debug!("Header: {name_str}: {value_str}");
 
                         // Update the most recent context (by highest session number)
-                        if let Some((_, mail_ctx)) = state.lock().unwrap().iter_mut()
-                            .max_by_key(|(k, _)| k.split('-').last().and_then(|s| s.parse::<u64>().ok()).unwrap_or(0)) {
+                        if let Some((_, mail_ctx)) =
+                            state.lock().unwrap().iter_mut().max_by_key(|(k, _)| {
+                                k.split('-')
+                                    .last()
+                                    .and_then(|s| s.parse::<u64>().ok())
+                                    .unwrap_or(0)
+                            })
+                        {
                             // Store important headers
                             match name_str.to_lowercase().as_str() {
                                 "subject" => {
@@ -128,8 +150,14 @@ impl Milter {
                     Box::pin(async move {
                         let body_str = String::from_utf8_lossy(&body_chunk);
                         // Update the most recent context (by highest session number)
-                        if let Some((_, mail_ctx)) = state.lock().unwrap().iter_mut()
-                            .max_by_key(|(k, _)| k.split('-').last().and_then(|s| s.parse::<u64>().ok()).unwrap_or(0)) {
+                        if let Some((_, mail_ctx)) =
+                            state.lock().unwrap().iter_mut().max_by_key(|(k, _)| {
+                                k.split('-')
+                                    .last()
+                                    .and_then(|s| s.parse::<u64>().ok())
+                                    .unwrap_or(0)
+                            })
+                        {
                             match &mut mail_ctx.body {
                                 Some(existing_body) => {
                                     existing_body.push_str(&body_str);
@@ -153,8 +181,16 @@ impl Milter {
                     Box::pin(async move {
                         log::debug!("EOM callback invoked");
                         // Clone mail context to avoid holding mutex across await (get most recent by session number)
-                        let mail_ctx_clone = state.lock().unwrap().iter()
-                            .max_by_key(|(k, _)| k.split('-').last().and_then(|s| s.parse::<u64>().ok()).unwrap_or(0))
+                        let mail_ctx_clone = state
+                            .lock()
+                            .unwrap()
+                            .iter()
+                            .max_by_key(|(k, _)| {
+                                k.split('-')
+                                    .last()
+                                    .and_then(|s| s.parse::<u64>().ok())
+                                    .unwrap_or(0)
+                            })
                             .map(|(_, ctx)| ctx.clone());
 
                         if let Some(mail_ctx) = mail_ctx_clone {
@@ -184,7 +220,9 @@ impl Milter {
                                     header_value,
                                 } => {
                                     log::error!("CRITICAL: TagAsSpam action triggered! from={sender} to={recipients} header={header_name}:{header_value}");
-                                    log::error!("CRITICAL: Adding header: {header_name}={header_value}");
+                                    log::error!(
+                                        "CRITICAL: Adding header: {header_name}={header_value}"
+                                    );
                                     // Add the spam header
                                     if let Err(e) = _ctx
                                         .actions
