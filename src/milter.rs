@@ -9,7 +9,7 @@ pub struct Milter {
     engine: Arc<FilterEngine>,
 }
 
-// Simple state storage
+// Simple state storage with unique connection IDs
 type StateMap = Arc<Mutex<HashMap<String, MailContext>>>;
 
 impl Milter {
@@ -19,7 +19,8 @@ impl Milter {
     }
 
     pub async fn run(&self, socket_path: &str) -> anyhow::Result<()> {
-        log::info!("Starting milter on: {socket_path}");
+        let instance_id = std::process::id();
+        log::info!("Starting milter on: {socket_path} (PID: {instance_id})");
         // Remove existing socket if it exists
         if std::path::Path::new(socket_path).exists() {
             std::fs::remove_file(socket_path)?;
@@ -37,12 +38,13 @@ impl Milter {
                     let state = state.clone();
                     Box::pin(async move {
                         let hostname_str = hostname.to_string_lossy().to_string();
-                        log::debug!("Connection from: {hostname_str}");
+                        let connection_id = format!("{:p}", _ctx as *const _);
+                        log::debug!("Connection from: {hostname_str} (ID: {connection_id})");
                         let mail_ctx = MailContext {
-                            hostname: Some(hostname_str.clone()),
+                            hostname: Some(hostname_str),
                             ..Default::default()
                         };
-                        state.lock().unwrap().insert(hostname_str, mail_ctx);
+                        state.lock().unwrap().insert(connection_id, mail_ctx);
                         Status::Continue
                     })
                 }
@@ -59,8 +61,9 @@ impl Milter {
                             .collect::<Vec<_>>()
                             .join(",");
                         log::debug!("Mail from: {sender_str}");
-                        // Update the most recent context
-                        if let Some((_, mail_ctx)) = state.lock().unwrap().iter_mut().last() {
+                        // Update the context for this connection
+                        let connection_id = format!("{:p}", _ctx as *const _);
+                        if let Some(mail_ctx) = state.lock().unwrap().get_mut(&connection_id) {
                             mail_ctx.sender = Some(sender_str);
                         }
                         Status::Continue
@@ -79,7 +82,8 @@ impl Milter {
                             .collect::<Vec<_>>()
                             .join(",");
                         log::debug!("Rcpt to: {recipient_str}");
-                        if let Some((_, mail_ctx)) = state.lock().unwrap().iter_mut().last() {
+                        let connection_id = format!("{:p}", _ctx as *const _);
+                        if let Some(mail_ctx) = state.lock().unwrap().get_mut(&connection_id) {
                             mail_ctx.recipients.push(recipient_str);
                         }
                         Status::Continue
@@ -96,7 +100,8 @@ impl Milter {
                         let value_str = value.to_string_lossy().to_string();
                         log::debug!("Header: {name_str}: {value_str}");
 
-                        if let Some((_, mail_ctx)) = state.lock().unwrap().iter_mut().last() {
+                        let connection_id = format!("{:p}", _ctx as *const _);
+                        if let Some(mail_ctx) = state.lock().unwrap().get_mut(&connection_id) {
                             // Store important headers
                             match name_str.to_lowercase().as_str() {
                                 "subject" => {
@@ -120,7 +125,8 @@ impl Milter {
                     let state = state.clone();
                     Box::pin(async move {
                         let body_str = String::from_utf8_lossy(&body_chunk);
-                        if let Some((_, mail_ctx)) = state.lock().unwrap().iter_mut().last() {
+                        let connection_id = format!("{:p}", _ctx as *const _);
+                        if let Some(mail_ctx) = state.lock().unwrap().get_mut(&connection_id) {
                             match &mut mail_ctx.body {
                                 Some(existing_body) => {
                                     existing_body.push_str(&body_str);
@@ -143,7 +149,11 @@ impl Milter {
                     let state = state.clone();
                     Box::pin(async move {
                         // Clone mail context to avoid holding mutex across await
-                        let mail_ctx_clone = state.lock().unwrap().values().last().cloned();
+                        let connection_id = format!("{:p}", _ctx as *const _);
+                        let mail_ctx_clone = state.lock().unwrap().get(&connection_id).cloned();
+                        
+                        // Clean up the state for this connection
+                        state.lock().unwrap().remove(&connection_id);
 
                         if let Some(mail_ctx) = mail_ctx_clone {
                             let sender = mail_ctx.sender.as_deref().unwrap_or("<unknown>");
@@ -154,7 +164,7 @@ impl Milter {
                             };
 
                             let action = engine.evaluate(&mail_ctx).await;
-                            log::debug!("Evaluated action: {:?}", action);
+                            log::debug!("PID {} evaluated action: {:?}", std::process::id(), action);
 
                             match action {
                                 Action::Reject { message } => {
@@ -168,6 +178,7 @@ impl Milter {
                                     header_value,
                                 } => {
                                     log::info!("TAG from={sender} to={recipients} header={header_name}:{header_value}");
+                                    log::debug!("Adding header: {header_name}={header_value}");
                                     // Add the spam header
                                     if let Err(e) = _ctx
                                         .actions
@@ -175,6 +186,8 @@ impl Milter {
                                         .await
                                     {
                                         log::error!("Failed to add header: {e}");
+                                    } else {
+                                        log::debug!("Successfully added header: {header_name}={header_value}");
                                     }
                                     return Status::Accept;
                                 }

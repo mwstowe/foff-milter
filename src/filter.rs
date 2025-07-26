@@ -153,8 +153,10 @@ impl FilterEngine {
     fn extract_unsubscribe_links(&self, context: &MailContext) -> Vec<String> {
         let mut links = Vec::new();
 
-        // Check List-Unsubscribe header (RFC 2369)
-        if let Some(list_unsubscribe) = context.headers.get("list-unsubscribe") {
+        // Check List-Unsubscribe header (RFC 2369) - case insensitive
+        let list_unsubscribe = context.headers.get("list-unsubscribe")
+            .or_else(|| context.headers.get("List-Unsubscribe"));
+        if let Some(list_unsubscribe) = list_unsubscribe {
             // Extract URLs from List-Unsubscribe header: <url1>, <url2>
             let url_regex = Regex::new(r"<(https?://[^>]+)>").unwrap();
             for cap in url_regex.captures_iter(list_unsubscribe) {
