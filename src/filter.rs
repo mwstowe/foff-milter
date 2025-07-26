@@ -385,7 +385,7 @@ impl FilterEngine {
 
                     if links.is_empty() {
                         log::debug!("No unsubscribe links found");
-                        return false; // No unsubscribe links found - suspicious
+                        return true; // No unsubscribe links found - suspicious
                     }
 
                     log::debug!("Found {} unsubscribe links: {:?}", links.len(), links);
