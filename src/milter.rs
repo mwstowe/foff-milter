@@ -1,24 +1,78 @@
 use crate::config::{Action, Config};
 use crate::filter::{FilterEngine, MailContext};
+use base64::Engine;
 use indymilter::{run, Actions, Callbacks, Config as IndyConfig, ContextActions, Status};
 use std::collections::HashMap;
 use std::sync::{Arc, Mutex};
 use tokio::net::UnixListener;
 
+/// Decode MIME-encoded header values like =?utf-8?B?...?= or =?utf-8?Q?...?=
+pub fn decode_mime_header(header_value: &str) -> String {
+    let mut result = String::new();
+    let mut remaining = header_value;
+
+    while let Some(start) = remaining.find("=?") {
+        // Add any text before the encoded part
+        result.push_str(&remaining[..start]);
+
+        if let Some(end) = remaining[start..].find("?=") {
+            let encoded_part = &remaining[start..start + end + 2];
+
+            // Parse =?charset?encoding?data?=
+            let parts: Vec<&str> = encoded_part[2..encoded_part.len() - 2].split('?').collect();
+            if parts.len() == 3 {
+                let _charset = parts[0];
+                let encoding = parts[1].to_uppercase();
+                let data = parts[2];
+
+                match encoding.as_str() {
+                    "B" => {
+                        // Base64 decode
+                        if let Ok(decoded_bytes) =
+                            base64::engine::general_purpose::STANDARD.decode(data)
+                        {
+                            if let Ok(decoded_str) = String::from_utf8(decoded_bytes) {
+                                result.push_str(&decoded_str);
+                            } else {
+                                result.push_str(encoded_part); // Fallback to original
+                            }
+                        } else {
+                            result.push_str(encoded_part); // Fallback to original
+                        }
+                    }
+                    "Q" => {
+                        // Quoted-printable decode (simplified)
+                        let decoded = data
+                            .replace('_', " ")
+                            .replace("=20", " ")
+                            .replace("=3D", "=");
+                        result.push_str(&decoded);
+                    }
+                    _ => {
+                        result.push_str(encoded_part); // Unknown encoding, keep original
+                    }
+                }
+            } else {
+                result.push_str(encoded_part); // Malformed, keep original
+            }
+
+            remaining = &remaining[start + end + 2..];
+        } else {
+            // No closing ?=, add rest and break
+            result.push_str(remaining);
+            break;
+        }
+    }
+
+    // Add any remaining text
+    result.push_str(remaining);
+    result.trim().to_string()
+}
+
 /// Extract email address from a header value like "Name <email@domain.com>" or "email@domain.com"
 pub fn extract_email_from_header(header_value: &str) -> Option<String> {
-    // Handle encoded headers like =?utf-8?B?...?= <email@domain.com>
-    let decoded = if header_value.contains("=?") {
-        // Simple extraction - look for <email> pattern after encoded part
-        if let Some(start) = header_value.find('<') {
-            if let Some(end) = header_value.find('>') {
-                return Some(header_value[start + 1..end].to_string());
-            }
-        }
-        header_value
-    } else {
-        header_value
-    };
+    // First decode any MIME encoding
+    let decoded = decode_mime_header(header_value);
 
     // Look for <email@domain.com> pattern
     if let Some(start) = decoded.find('<') {
@@ -159,7 +213,9 @@ impl Milter {
                             // Store important headers
                             match name_str.to_lowercase().as_str() {
                                 "subject" => {
-                                    mail_ctx.subject = Some(value_str.clone());
+                                    // Decode MIME-encoded subject before storing
+                                    let decoded_subject = decode_mime_header(&value_str);
+                                    mail_ctx.subject = Some(decoded_subject);
                                 }
                                 "x-mailer" | "user-agent" => {
                                     mail_ctx.mailer = Some(value_str.clone());
