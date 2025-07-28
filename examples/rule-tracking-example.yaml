@@ -9,11 +9,11 @@ rules:
       criteria:
         - type: "HeaderPattern"
           header: "Return-Path"
-          pattern: ".*sendgrid\.net"
+          pattern: ".*sendgrid\\.net"
         - type: "PhishingSuspiciousLinks"
           check_url_shorteners: true
           suspicious_patterns:
-            - ".*\.sslip\.io.*"
+            - ".*\\.sslip\\.io.*"
     action:
       type: "TagAsSpam"
       header_name: "X-Phishing-Detected"
@@ -27,7 +27,7 @@ rules:
           header: "Authentication-Results"
           pattern: "dkim=fail"
         - type: "SenderPattern"
-          pattern: ".*\.(tk|ml|ga|cf|click|download|zip)$"
+          pattern: ".*\\.(tk|ml|ga|cf|click|download|zip)$"
     action:
       type: "TagAsSpam"
       header_name: "X-DKIM-Suspicious"
@@ -38,7 +38,7 @@ rules:
       type: "And"
       criteria:
         - type: "SenderPattern"
-          pattern: ".*@service\..*\.cn$"
+          pattern: ".*@service\\..*\\.cn$"
         - type: "SubjectContainsLanguage"
           language: "japanese"
     action:
