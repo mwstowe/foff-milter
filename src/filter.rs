@@ -336,10 +336,10 @@ impl FilterEngine {
             }
         }
 
-        // Check if we hit the redirect limit (potential redirect loop)
+        // Check if we hit the redirect limit - this alone is not suspicious
+        // Only flag as suspicious if we also found suspicious patterns
         if redirect_count >= max_redirects {
-            log::info!("Suspicious redirect loop detected: {redirect_count} redirects for {url}");
-            return (true, redirect_chain);
+            log::debug!("Redirect limit reached: {redirect_count} redirects for {url} (not inherently suspicious)");
         }
 
         // Check final destination for suspicious patterns
@@ -499,8 +499,8 @@ impl FilterEngine {
                         has_ips = true;
                         ip_count += 1;
                         if ip_count >= 3 {
-                            break;
-                        } // Limit logging
+                            break; // Limit logging
+                        }
                     }
 
                     if !has_ips {
@@ -644,8 +644,8 @@ impl FilterEngine {
                     let http_check = check_http.unwrap_or(false); // Default: don't check HTTP (faster)
 
                     log::debug!(
-                    "Checking unsubscribe link validation (timeout: {timeout}s, DNS: {dns_check}, HTTP: {http_check})"
-                );
+                        "Checking unsubscribe link validation (timeout: {timeout}s, DNS: {dns_check}, HTTP: {http_check})"
+                    );
 
                     let links = self.extract_unsubscribe_links(context);
                     log::info!(
@@ -1043,11 +1043,6 @@ impl FilterEngine {
 }
 
 #[cfg(test)]
-mod debug_tests {
-    // Tests removed due to compilation issues - will be added back after fixing syntax
-}
-
-#[cfg(test)]
 mod tests {
     use super::*;
     use crate::config::Config;
@@ -1146,6 +1141,85 @@ mod tests {
         match action3 {
             Action::Accept => {}
             _ => panic!("Expected accept action for non-sparkmail with Japanese"),
+        }
+    }
+
+    #[tokio::test]
+    async fn test_debug_onmicrosoft_header_pattern() {
+        use crate::config::{Action, FilterRule};
+        use std::collections::HashMap;
+
+        // Create config with the exact rule from the user
+        let config = Config {
+            rules: vec![FilterRule {
+                name: "Fake Microsoft".to_string(),
+                criteria: Criteria::HeaderPattern {
+                    header: "from".to_string(),
+                    pattern: r".*onmicrosoft\.com".to_string(),
+                },
+                action: Action::TagAsSpam {
+                    header_name: "X-Spam-Flag".to_string(),
+                    header_value: "YES".to_string(),
+                },
+            }],
+            ..Default::default()
+        };
+
+        let engine = FilterEngine::new(config).unwrap();
+
+        // Test with the exact From header from the user's email
+        let mut headers = HashMap::new();
+        headers.insert(
+            "from".to_string(),
+            r#""Member Adventure Support #9kz7ve" <noreply@dailydials19.onmicrosoft.com>"#
+                .to_string(),
+        );
+
+        let context = MailContext {
+            headers,
+            ..Default::default()
+        };
+
+        println!("Testing header pattern matching...");
+        println!("From header: {:?}", context.headers.get("from"));
+
+        // Test the decode function
+        if let Some(from_value) = context.headers.get("from") {
+            let decoded = crate::milter::decode_mime_header(from_value);
+            println!("Decoded header: {}", decoded);
+
+            // Test the regex directly
+            let pattern = r".*onmicrosoft\.com";
+            let regex = regex::Regex::new(pattern).unwrap();
+            let matches = regex.is_match(&decoded);
+            println!("Pattern '{}' matches: {}", pattern, matches);
+
+            if let Some(m) = regex.find(&decoded) {
+                println!("Matched substring: '{}'", m.as_str());
+            }
+        }
+
+        let (action, matched_rules) = engine.evaluate(&context).await;
+        println!("Action: {:?}", action);
+        println!("Matched rules: {:?}", matched_rules);
+
+        // This should match and tag as spam
+        match action {
+            Action::TagAsSpam {
+                header_name,
+                header_value,
+            } => {
+                assert_eq!(header_name, "X-Spam-Flag");
+                assert_eq!(header_value, "YES");
+                assert_eq!(matched_rules.len(), 1);
+                assert_eq!(matched_rules[0], "Fake Microsoft");
+            }
+            _ => {
+                panic!(
+                    "Expected TagAsSpam action for onmicrosoft.com domain, got: {:?}",
+                    action
+                );
+            }
         }
     }
 
