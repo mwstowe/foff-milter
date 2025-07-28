@@ -313,24 +313,43 @@ impl Milter {
                                     header_value,
                                 } => {
                                     log::error!("CRITICAL: TagAsSpam action triggered! from={sender} to={recipients} header={header_name}:{header_value}");
-                                    log::error!(
-                                        "CRITICAL: Adding header: {header_name}={header_value}"
-                                    );
-                                    // Add the spam header
-                                    if let Err(e) = _ctx
-                                        .actions
-                                        .add_header(header_name.clone(), header_value.clone())
-                                        .await
-                                    {
-                                        log::error!("Failed to add header: {e}");
+
+                                    // Check if the header already exists to avoid duplicates
+                                    let header_exists = mail_ctx.headers.iter().any(|(k, v)| {
+                                        k.to_lowercase() == header_name.to_lowercase()
+                                            && v == header_value
+                                    });
+
+                                    if header_exists {
+                                        log::info!("Header {header_name}={header_value} already exists, skipping duplicate");
                                     } else {
-                                        log::error!("CRITICAL: Successfully added header: {header_name}={header_value}");
+                                        log::error!(
+                                            "CRITICAL: Adding header: {header_name}={header_value}"
+                                        );
+                                        // Add the spam header
+                                        if let Err(e) = _ctx
+                                            .actions
+                                            .add_header(header_name.clone(), header_value.clone())
+                                            .await
+                                        {
+                                            log::error!("Failed to add header: {e}");
+                                        } else {
+                                            log::error!("CRITICAL: Successfully added header: {header_name}={header_value}");
+                                        }
                                     }
 
-                                    // Add X-FOFF-Rule-Matched header with matched rule names
+                                    // Check if X-FOFF-Rule-Matched header already exists with this rule
                                     if !matched_rules.is_empty() {
                                         let rule_header_value = matched_rules.join(", ");
-                                        if let Err(e) = _ctx
+                                        let rule_header_exists =
+                                            mail_ctx.headers.iter().any(|(k, v)| {
+                                                k.to_lowercase() == "x-foff-rule-matched"
+                                                    && v == &rule_header_value
+                                            });
+
+                                        if rule_header_exists {
+                                            log::info!("X-FOFF-Rule-Matched header with value '{rule_header_value}' already exists, skipping duplicate");
+                                        } else if let Err(e) = _ctx
                                             .actions
                                             .add_header(
                                                 "X-FOFF-Rule-Matched".to_string(),
