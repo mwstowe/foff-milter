@@ -48,6 +48,21 @@ pub enum Criteria {
     UnsubscribeLinkPattern {
         pattern: String,
     },
+    PhishingSenderSpoofing {
+        // Detects when From header display name claims to be from a different domain than the actual sender
+        trusted_domains: Vec<String>,
+    },
+    PhishingSuspiciousLinks {
+        // Detects suspicious link patterns commonly used in phishing
+        check_url_shorteners: Option<bool>,
+        check_suspicious_tlds: Option<bool>,
+        check_ip_addresses: Option<bool>,
+        suspicious_patterns: Option<Vec<String>>,
+    },
+    PhishingDomainMismatch {
+        // Detects when Reply-To domain differs significantly from sender domain
+        allow_subdomains: Option<bool>,
+    },
     And {
         criteria: Vec<Criteria>,
     },
