@@ -162,6 +162,9 @@ impl FilterEngine {
             Criteria::ImageOnlyEmail { .. } => {
                 // No regex patterns to compile for image-only detection
             }
+            Criteria::PhishingFreeEmailReplyTo { .. } => {
+                // No regex patterns to compile for free email detection
+            }
             Criteria::And { criteria } | Criteria::Or { criteria } => {
                 for c in criteria {
                     self.compile_criteria_patterns(c)?;
@@ -1021,6 +1024,77 @@ impl FilterEngine {
 
                     false
                 }
+                Criteria::PhishingFreeEmailReplyTo {
+                    free_email_domains,
+                    allow_same_domain,
+                } => {
+                    log::debug!("Checking for free email reply-to vs different from domain");
+
+                    let allow_same = allow_same_domain.unwrap_or(false);
+                    let default_free_domains = vec![
+                        "gmail.com".to_string(),
+                        "yahoo.com".to_string(),
+                        "hotmail.com".to_string(),
+                        "outlook.com".to_string(),
+                        "aol.com".to_string(),
+                        "icloud.com".to_string(),
+                        "protonmail.com".to_string(),
+                        "mail.com".to_string(),
+                        "yandex.com".to_string(),
+                        "zoho.com".to_string(),
+                    ];
+                    let free_domains = free_email_domains.as_ref().unwrap_or(&default_free_domains);
+
+                    let reply_to = context.headers.get("reply-to");
+                    let from_email = context.from_header.as_ref().or(context.sender.as_ref());
+
+                    if let (Some(reply_to_raw), Some(from_email)) = (reply_to, from_email) {
+                        // Extract email from reply-to header
+                        if let Some(reply_to_email) = extract_email_from_header(reply_to_raw) {
+                            // Extract domains
+                            let from_domain = from_email.split('@').nth(1);
+                            let reply_domain = reply_to_email.split('@').nth(1);
+
+                            if let (Some(f_domain), Some(r_domain)) = (from_domain, reply_domain) {
+                                let f_domain = f_domain.to_lowercase();
+                                let r_domain = r_domain.to_lowercase();
+
+                                // Check if reply-to is from a free email service
+                                let is_free_email = free_domains.iter().any(|domain| {
+                                    r_domain == domain.to_lowercase()
+                                        || r_domain
+                                            .ends_with(&format!(".{}", domain.to_lowercase()))
+                                });
+
+                                if is_free_email {
+                                    // Check if from domain is different
+                                    if f_domain != r_domain {
+                                        if !allow_same {
+                                            log::info!("Free email reply-to detected: from '{f_domain}' but reply-to '{r_domain}'");
+                                            return true;
+                                        } else {
+                                            // Check if they're not the same organization
+                                            let f_base = f_domain
+                                                .split('.')
+                                                .next_back()
+                                                .unwrap_or(&f_domain);
+                                            let r_base = r_domain
+                                                .split('.')
+                                                .next_back()
+                                                .unwrap_or(&r_domain);
+                                            if f_base != r_base {
+                                                log::info!("Free email reply-to detected: from '{f_domain}' but reply-to '{r_domain}'");
+                                                return true;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    false
+                }
                 Criteria::And { criteria } => {
                     for c in criteria {
                         if !self.evaluate_criteria(c, context).await {
@@ -1500,6 +1574,96 @@ mod tests {
         match action4 {
             Action::TagAsSpam { .. } => {}
             _ => panic!("Expected TagAsSpam action for data URI image"),
+        }
+    }
+
+    #[tokio::test]
+    async fn test_free_email_reply_to_detection() {
+        use crate::config::{Action, FilterRule};
+        use std::collections::HashMap;
+
+        // Create config to detect free email reply-to phishing
+        let config = Config {
+            rules: vec![FilterRule {
+                name: "Detect free email reply-to".to_string(),
+                criteria: Criteria::PhishingFreeEmailReplyTo {
+                    free_email_domains: None, // Use defaults
+                    allow_same_domain: Some(false),
+                },
+                action: Action::TagAsSpam {
+                    header_name: "X-Free-Email-Reply-To".to_string(),
+                    header_value: "YES".to_string(),
+                },
+            }],
+            ..Default::default()
+        };
+
+        let engine = FilterEngine::new(config).unwrap();
+
+        // Test case 1: Business from address with Gmail reply-to - should match
+        let mut headers1 = HashMap::new();
+        headers1.insert("reply-to".to_string(), "support@gmail.com".to_string());
+
+        let context1 = MailContext {
+            headers: headers1,
+            from_header: Some("noreply@bigbank.com".to_string()),
+            ..Default::default()
+        };
+
+        let (action1, _) = engine.evaluate(&context1).await;
+        match action1 {
+            Action::TagAsSpam {
+                header_name,
+                header_value,
+            } => {
+                assert_eq!(header_name, "X-Free-Email-Reply-To");
+                assert_eq!(header_value, "YES");
+            }
+            _ => panic!("Expected TagAsSpam action for free email reply-to"),
+        }
+
+        // Test case 2: Same domain - should not match
+        let mut headers2 = HashMap::new();
+        headers2.insert("reply-to".to_string(), "support@bigbank.com".to_string());
+
+        let context2 = MailContext {
+            headers: headers2,
+            from_header: Some("noreply@bigbank.com".to_string()),
+            ..Default::default()
+        };
+
+        let (action2, _) = engine.evaluate(&context2).await;
+        match action2 {
+            Action::Accept => {}
+            _ => panic!("Expected Accept action for same domain"),
+        }
+
+        // Test case 3: Both from free email services - should not match
+        let mut headers3 = HashMap::new();
+        headers3.insert("reply-to".to_string(), "user@gmail.com".to_string());
+
+        let context3 = MailContext {
+            headers: headers3,
+            from_header: Some("user@gmail.com".to_string()),
+            ..Default::default()
+        };
+
+        let (action3, _) = engine.evaluate(&context3).await;
+        match action3 {
+            Action::Accept => {}
+            _ => panic!("Expected Accept action for same free email domain"),
+        }
+
+        // Test case 4: No reply-to header - should not match
+        let context4 = MailContext {
+            from_header: Some("noreply@bigbank.com".to_string()),
+            ..Default::default()
+        };
+
+        let (action4, _) = engine.evaluate(&context4).await;
+        match action4 {
+            Action::Accept => {}
+            _ => panic!("Expected Accept action for no reply-to header"),
         }
     }
 
