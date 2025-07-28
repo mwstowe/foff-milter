@@ -76,6 +76,11 @@ pub enum Criteria {
         ignore_whitespace: Option<bool>,
         check_attachments: Option<bool>,
     },
+    PhishingFreeEmailReplyTo {
+        // Detects when Reply-To is from a free email service but From is from a different domain
+        free_email_domains: Option<Vec<String>>,
+        allow_same_domain: Option<bool>,
+    },
     And {
         criteria: Vec<Criteria>,
     },
