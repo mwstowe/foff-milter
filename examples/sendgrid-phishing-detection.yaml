@@ -10,9 +10,9 @@ rules:
       timeout_seconds: 10
       check_final_destination: true
       suspicious_redirect_patterns:
-        - ".*\.sslip\.io.*"  # Suspicious wildcard DNS service
+        - ".*\\.sslip\\.io.*"  # Suspicious wildcard DNS service
         - ".*wordpress-.*"    # Compromised WordPress sites
-        - ".*\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}.*"  # IP addresses
+        - ".*\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}.*"  # IP addresses
     action:
       type: "Reject"
       message: "Suspicious redirect chain detected in email links"
@@ -26,10 +26,10 @@ rules:
           check_suspicious_tlds: false
           check_ip_addresses: false
           suspicious_patterns:
-            - ".*sendgrid\.net.*"
+            - ".*sendgrid\\.net.*"
         - type: "HeaderPattern"
           header: "Return-Path"
-          pattern: ".*sendgrid\.net"
+          pattern: ".*sendgrid\\.net"
     action:
       type: "TagAsSpam"
       header_name: "X-SendGrid-Tracking"
@@ -44,10 +44,10 @@ rules:
           pattern: "dkim=fail"
         - type: "HeaderPattern"
           header: "Return-Path"
-          pattern: ".*sendgrid\.net"
+          pattern: ".*sendgrid\\.net"
         - type: "HeaderPattern"
           header: "DKIM-Signature"
-          pattern: "d=(?!sendgrid\.net).*\.(tk|ml|ga|cf|click|download|zip|review|country|kim|work)"
+          pattern: "d=(?!sendgrid\\.net).*\\.(tk|ml|ga|cf|click|download|zip|review|country|kim|work)"
     action:
       type: "Reject"
       message: "DKIM failure from suspicious domain via SendGrid"
