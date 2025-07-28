@@ -70,6 +70,12 @@ pub enum Criteria {
         suspicious_redirect_patterns: Option<Vec<String>>,
         check_final_destination: Option<bool>,
     },
+    ImageOnlyEmail {
+        // Detects emails that contain only images or image links with minimal text
+        max_text_length: Option<usize>,
+        ignore_whitespace: Option<bool>,
+        check_attachments: Option<bool>,
+    },
     And {
         criteria: Vec<Criteria>,
     },

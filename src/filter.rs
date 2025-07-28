@@ -159,6 +159,9 @@ impl FilterEngine {
                     }
                 }
             }
+            Criteria::ImageOnlyEmail { .. } => {
+                // No regex patterns to compile for image-only detection
+            }
             Criteria::And { criteria } | Criteria::Or { criteria } => {
                 for c in criteria {
                     self.compile_criteria_patterns(c)?;
@@ -356,6 +359,90 @@ impl FilterEngine {
         }
 
         (false, redirect_chain)
+    }
+
+    /// Check if email body contains image content (img tags, image links, etc.)
+    fn has_image_content(&self, body: &str) -> bool {
+        // Check for HTML img tags
+        if body.contains("<img") || body.contains("<IMG") {
+            return true;
+        }
+
+        // Check for image file extensions in links
+        let image_extensions = [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".webp", ".svg"];
+        for ext in &image_extensions {
+            if body.to_lowercase().contains(ext) {
+                return true;
+            }
+        }
+
+        // Check for data: image URLs
+        if body.contains("data:image/") {
+            return true;
+        }
+
+        // Check for common image hosting domains
+        let image_hosts = ["imgur.com", "flickr.com", "photobucket.com", "tinypic.com"];
+        for host in &image_hosts {
+            if body.contains(host) {
+                return true;
+            }
+        }
+
+        false
+    }
+
+    /// Count the number of images in the email body
+    fn count_images(&self, body: &str) -> usize {
+        let mut count = 0;
+
+        // Count img tags
+        count += body.matches("<img").count();
+        count += body.matches("<IMG").count();
+
+        // Count image file links
+        let image_extensions = [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".webp"];
+        for ext in &image_extensions {
+            count += body.to_lowercase().matches(ext).count();
+        }
+
+        count
+    }
+
+    /// Extract text content from email body, removing HTML tags and image references
+    fn extract_text_content(&self, body: &str, ignore_whitespace: bool) -> String {
+        let mut text = body.to_string();
+
+        // Remove HTML tags
+        let tag_regex = Regex::new(r"<[^>]*>").unwrap();
+        text = tag_regex.replace_all(&text, " ").to_string();
+
+        // Remove URLs (they're not meaningful text content)
+        let url_regex = Regex::new(r"https?://[^\s<>]+").unwrap();
+        text = url_regex.replace_all(&text, " ").to_string();
+
+        // Remove email addresses
+        let email_regex = Regex::new(r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}").unwrap();
+        text = email_regex.replace_all(&text, " ").to_string();
+
+        // Remove common email artifacts
+        text = text.replace("&nbsp;", " ");
+        text = text.replace("&amp;", "&");
+        text = text.replace("&lt;", "<");
+        text = text.replace("&gt;", ">");
+        text = text.replace("&quot;", "\"");
+
+        if ignore_whitespace {
+            // Remove all whitespace and newlines
+            text = text.chars().filter(|c| !c.is_whitespace()).collect();
+        } else {
+            // Just normalize whitespace
+            let ws_regex = Regex::new(r"\s+").unwrap();
+            text = ws_regex.replace_all(&text, " ").to_string();
+            text = text.trim().to_string();
+        }
+
+        text
     }
 
     /// Validate an unsubscribe link
@@ -885,6 +972,55 @@ impl FilterEngine {
 
                     false
                 }
+                Criteria::ImageOnlyEmail {
+                    max_text_length,
+                    ignore_whitespace,
+                    check_attachments,
+                } => {
+                    log::debug!("Checking for image-only email content");
+
+                    let max_text = max_text_length.unwrap_or(50); // Default: allow up to 50 chars of text
+                    let ignore_ws = ignore_whitespace.unwrap_or(true); // Default: ignore whitespace
+                    let _check_attach = check_attachments.unwrap_or(false); // Default: don't check attachments
+
+                    if let Some(body) = &context.body {
+                        // Check if email contains images
+                        let has_images = self.has_image_content(body);
+
+                        if !has_images {
+                            log::debug!("No image content found in email");
+                            return false;
+                        }
+
+                        // Extract text content (remove HTML tags and image references)
+                        let text_content = self.extract_text_content(body, ignore_ws);
+
+                        log::debug!(
+                            "Extracted text content length: {} (max allowed: {})",
+                            text_content.len(),
+                            max_text
+                        );
+                        log::debug!(
+                            "Text content: '{}'...",
+                            text_content.chars().take(100).collect::<String>()
+                        );
+
+                        // Check if text content is minimal
+                        if text_content.len() <= max_text {
+                            log::info!(
+                                "Image-only email detected: {} chars of text, {} images found",
+                                text_content.len(),
+                                self.count_images(body)
+                            );
+                            return true;
+                        }
+                    }
+
+                    // TODO: If check_attachments is true, also check MIME attachments
+                    // This would require parsing MIME structure which isn't currently available
+
+                    false
+                }
                 Criteria::And { criteria } => {
                     for c in criteria {
                         if !self.evaluate_criteria(c, context).await {
@@ -1214,10 +1350,89 @@ mod tests {
     }
 
     #[tokio::test]
+    async fn test_image_only_email_detection() {
+        use crate::config::{Action, FilterRule};
+
+        // Create config to detect image-only emails
+        let config = Config {
+            rules: vec![FilterRule {
+                name: "Detect image-only emails".to_string(),
+                criteria: Criteria::ImageOnlyEmail {
+                    max_text_length: Some(20),
+                    ignore_whitespace: Some(true),
+                    check_attachments: Some(false),
+                },
+                action: Action::TagAsSpam {
+                    header_name: "X-Image-Only".to_string(),
+                    header_value: "YES".to_string(),
+                },
+            }],
+            ..Default::default()
+        };
+
+        let engine = FilterEngine::new(config).unwrap();
+
+        // Test case 1: Email with only an image - should match
+        let context1 = MailContext {
+            body: Some(r#"<html><body><img src="https://example.com/image.jpg" alt="Image"></body></html>"#.to_string()),
+            ..Default::default()
+        };
+
+        let (action1, _) = engine.evaluate(&context1).await;
+        match action1 {
+            Action::TagAsSpam {
+                header_name,
+                header_value,
+            } => {
+                assert_eq!(header_name, "X-Image-Only");
+                assert_eq!(header_value, "YES");
+            }
+            _ => panic!("Expected TagAsSpam action for image-only email"),
+        }
+
+        // Test case 2: Email with image and significant text - should not match
+        let context2 = MailContext {
+            body: Some(r#"<html><body><img src="image.png"><p>This is a long paragraph with significant text content that should prevent this from being classified as image-only.</p></body></html>"#.to_string()),
+            ..Default::default()
+        };
+
+        let (action2, _) = engine.evaluate(&context2).await;
+        match action2 {
+            Action::Accept => {}
+            _ => panic!("Expected Accept action for email with significant text"),
+        }
+
+        // Test case 3: Email with no images - should not match
+        let context3 = MailContext {
+            body: Some(
+                "<html><body><p>Just text content, no images here.</p></body></html>".to_string(),
+            ),
+            ..Default::default()
+        };
+
+        let (action3, _) = engine.evaluate(&context3).await;
+        match action3 {
+            Action::Accept => {}
+            _ => panic!("Expected Accept action for text-only email"),
+        }
+
+        // Test case 4: Email with data URI image - should match
+        let context4 = MailContext {
+            body: Some(r#"<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==">"#.to_string()),
+            ..Default::default()
+        };
+
+        let (action4, _) = engine.evaluate(&context4).await;
+        match action4 {
+            Action::TagAsSpam { .. } => {}
+            _ => panic!("Expected TagAsSpam action for data URI image"),
+        }
+    }
+
+    #[tokio::test]
     async fn test_unsubscribe_link_pattern() {
         use crate::config::{Action, FilterRule};
-        use std::collections::{HashMap, HashSet};
-
+        use std::collections::HashMap;
         // Create config to tag emails with unsubscribe links pointing to google.com
         let config = Config {
             rules: vec![FilterRule {

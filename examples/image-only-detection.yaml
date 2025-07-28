@@ -1,0 +1,54 @@
+socket_path: "/var/run/foff-milter.sock"
+default_action:
+  type: "Accept"
+
+rules:
+  # Detect and tag emails that are primarily images with minimal text
+  - name: "Tag image-only emails"
+    criteria:
+      type: "ImageOnlyEmail"
+      max_text_length: 30  # Allow up to 30 characters of text
+      ignore_whitespace: true  # Don't count whitespace as meaningful text
+      check_attachments: false  # Don't check MIME attachments (not implemented yet)
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Image-Only-Email"
+      header_value: "YES"
+
+  # Reject emails that are purely images (very strict)
+  - name: "Reject pure image emails"
+    criteria:
+      type: "ImageOnlyEmail"
+      max_text_length: 5  # Allow only 5 characters (very strict)
+      ignore_whitespace: true
+      check_attachments: false
+    action:
+      type: "Reject"
+      message: "Email contains only images with no meaningful text content"
+
+  # Example: Combine image-only detection with sender pattern
+  - name: "Block image-only emails from suspicious domains"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@(suspicious-domain\.com|spam-images\.net)"
+        - type: "ImageOnlyEmail"
+          max_text_length: 50
+          ignore_whitespace: true
+          check_attachments: false
+    action:
+      type: "Reject"
+      message: "Image-only email from suspicious sender blocked"
+
+  # Tag emails with many images and little text (potential spam)
+  - name: "Tag potential image spam"
+    criteria:
+      type: "ImageOnlyEmail"
+      max_text_length: 100  # More lenient threshold
+      ignore_whitespace: true
+      check_attachments: false
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Potential-Image-Spam"
+      header_value: "YES"
