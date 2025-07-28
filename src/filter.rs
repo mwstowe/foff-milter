@@ -273,9 +273,7 @@ impl FilterEngine {
                     if let Some(regex) = self.compiled_patterns.get(pattern) {
                         if regex.is_match(&current_url) {
                             log::info!(
-                                "Suspicious redirect pattern matched '{}': {}",
-                                pattern,
-                                current_url
+                                "Suspicious redirect pattern matched '{pattern}': {current_url}"
                             );
                             return (true, redirect_chain);
                         }
@@ -329,7 +327,7 @@ impl FilterEngine {
                     }
                 }
                 Err(e) => {
-                    log::debug!("HTTP request failed for {}: {}", current_url, e);
+                    log::debug!("HTTP request failed for {current_url}: {e}");
                     break;
                 }
             }
@@ -352,9 +350,7 @@ impl FilterEngine {
                     if let Some(regex) = self.compiled_patterns.get(pattern) {
                         if regex.is_match(final_url) {
                             log::info!(
-                                "Final destination matches suspicious pattern '{}': {}",
-                                pattern,
-                                final_url
+                                "Final destination matches suspicious pattern '{pattern}': {final_url}"
                             );
                             return (true, redirect_chain);
                         }
@@ -820,7 +816,7 @@ impl FilterEngine {
                                 || url.contains("click")
                                 || url.contains("track")
                             {
-                                log::debug!("Analyzing redirect chain for: {}", url);
+                                log::debug!("Analyzing redirect chain for: {url}");
 
                                 let (is_suspicious, redirect_chain) = self
                                     .analyze_redirect_chain(
@@ -833,8 +829,7 @@ impl FilterEngine {
 
                                 if is_suspicious {
                                     log::info!(
-                                        "Suspicious redirect chain detected: {:?}",
-                                        redirect_chain
+                                        "Suspicious redirect chain detected: {redirect_chain:?}"
                                     );
                                     return true;
                                 }
@@ -862,7 +857,7 @@ impl FilterEngine {
 
                                                 for tld in &suspicious_tlds {
                                                     if host.to_lowercase().ends_with(tld) {
-                                                        log::info!("Redirect leads to suspicious TLD: {} -> {}", url, final_url);
+                                                        log::info!("Redirect leads to suspicious TLD: {url} -> {final_url}");
                                                         return true;
                                                     }
                                                 }
@@ -870,9 +865,7 @@ impl FilterEngine {
                                                 // Check for IP addresses in final destination
                                                 if ip_regex.is_match(host) {
                                                     log::info!(
-                                                        "Redirect leads to IP address: {} -> {}",
-                                                        url,
-                                                        final_url
+                                                        "Redirect leads to IP address: {url} -> {final_url}"
                                                     );
                                                     return true;
                                                 }
