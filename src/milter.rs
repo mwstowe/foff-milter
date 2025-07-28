@@ -293,11 +293,12 @@ impl Milter {
                                 mail_ctx.recipients.join(", ")
                             };
 
-                            let action = engine.evaluate(&mail_ctx).await;
+                            let (action, matched_rules) = engine.evaluate(&mail_ctx).await;
                             log::debug!(
-                                "PID {} evaluated action: {:?}",
+                                "PID {} evaluated action: {:?}, matched_rules: {:?}",
                                 std::process::id(),
-                                action
+                                action,
+                                matched_rules
                             );
 
                             match action {
@@ -325,6 +326,26 @@ impl Milter {
                                     } else {
                                         log::error!("CRITICAL: Successfully added header: {header_name}={header_value}");
                                     }
+
+                                    // Add X-FOFF-Rule-Matched header with matched rule names
+                                    if !matched_rules.is_empty() {
+                                        let rule_header_value = matched_rules.join(", ");
+                                        if let Err(e) = _ctx
+                                            .actions
+                                            .add_header(
+                                                "X-FOFF-Rule-Matched".to_string(),
+                                                rule_header_value.clone(),
+                                            )
+                                            .await
+                                        {
+                                            log::error!(
+                                                "Failed to add X-FOFF-Rule-Matched header: {e}"
+                                            );
+                                        } else {
+                                            log::info!("Added X-FOFF-Rule-Matched header: {rule_header_value}");
+                                        }
+                                    }
+
                                     return Status::Accept;
                                 }
                                 Action::Accept => {

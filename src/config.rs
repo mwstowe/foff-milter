@@ -63,6 +63,13 @@ pub enum Criteria {
         // Detects when Reply-To domain differs significantly from sender domain
         allow_subdomains: Option<bool>,
     },
+    PhishingLinkRedirection {
+        // Follows redirect chains to detect malicious final destinations
+        max_redirects: Option<u32>,
+        timeout_seconds: Option<u64>,
+        suspicious_redirect_patterns: Option<Vec<String>>,
+        check_final_destination: Option<bool>,
+    },
     And {
         criteria: Vec<Criteria>,
     },

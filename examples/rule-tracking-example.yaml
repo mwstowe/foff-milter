@@ -1,0 +1,47 @@
+socket_path: "/var/run/foff-milter.sock"
+default_action:
+  type: "Accept"
+
+rules:
+  - name: "Suspicious SendGrid Phishing"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "HeaderPattern"
+          header: "Return-Path"
+          pattern: ".*sendgrid\.net"
+        - type: "PhishingSuspiciousLinks"
+          check_url_shorteners: true
+          suspicious_patterns:
+            - ".*\.sslip\.io.*"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Phishing-Detected"
+      header_value: "SendGrid-Suspicious-Links"
+
+  - name: "DKIM Failure with Suspicious Domain"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "HeaderPattern"
+          header: "Authentication-Results"
+          pattern: "dkim=fail"
+        - type: "SenderPattern"
+          pattern: ".*\.(tk|ml|ga|cf|click|download|zip)$"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-DKIM-Suspicious"
+      header_value: "FAIL"
+
+  - name: "Japanese Spam from Chinese Services"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@service\..*\.cn$"
+        - type: "SubjectContainsLanguage"
+          language: "japanese"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Language-Mismatch"
+      header_value: "Japanese-Chinese-Service"
