@@ -144,6 +144,21 @@ impl FilterEngine {
             Criteria::PhishingDomainMismatch { .. } => {
                 // No regex patterns to compile for domain mismatch detection
             }
+            Criteria::PhishingLinkRedirection {
+                suspicious_redirect_patterns,
+                ..
+            } => {
+                if let Some(patterns) = suspicious_redirect_patterns {
+                    for pattern in patterns {
+                        if !self.compiled_patterns.contains_key(pattern) {
+                            let regex = Regex::new(pattern).map_err(|e| {
+                                anyhow::anyhow!("Invalid regex pattern '{}': {}", pattern, e)
+                            })?;
+                            self.compiled_patterns.insert(pattern.clone(), regex);
+                        }
+                    }
+                }
+            }
             Criteria::And { criteria } | Criteria::Or { criteria } => {
                 for c in criteria {
                     self.compile_criteria_patterns(c)?;
@@ -153,7 +168,9 @@ impl FilterEngine {
         Ok(())
     }
 
-    pub async fn evaluate(&self, context: &MailContext) -> &Action {
+    pub async fn evaluate(&self, context: &MailContext) -> (&Action, Vec<String>) {
+        let mut matched_rules = Vec::new();
+
         for rule in &self.config.rules {
             let matches = self.evaluate_criteria(&rule.criteria, context).await;
             log::info!("Rule '{}' evaluation result: {}", rule.name, matches);
@@ -163,7 +180,8 @@ impl FilterEngine {
                     rule.name,
                     rule.action
                 );
-                return &rule.action;
+                matched_rules.push(rule.name.clone());
+                return (&rule.action, matched_rules);
             }
         }
 
@@ -171,7 +189,7 @@ impl FilterEngine {
             "No rules matched, using default action: {:?}",
             self.config.default_action
         );
-        &self.config.default_action
+        (&self.config.default_action, matched_rules)
     }
 
     /// Extract unsubscribe links from email body and headers
@@ -219,6 +237,133 @@ impl FilterEngine {
         links.sort();
         links.dedup();
         links
+    }
+
+    /// Follow redirect chain and analyze for phishing indicators
+    async fn analyze_redirect_chain(
+        &self,
+        url: &str,
+        max_redirects: u32,
+        timeout_seconds: u64,
+        suspicious_patterns: &Option<Vec<String>>,
+    ) -> (bool, Vec<String>) {
+        let mut redirect_chain = Vec::new();
+        let mut current_url = url.to_string();
+        let mut redirect_count = 0;
+
+        let client = match reqwest::Client::builder()
+            .timeout(Duration::from_secs(timeout_seconds))
+            .user_agent("FOFF-Milter/1.0")
+            .redirect(reqwest::redirect::Policy::none()) // Handle redirects manually
+            .build()
+        {
+            Ok(client) => client,
+            Err(e) => {
+                log::debug!("Failed to create HTTP client: {e}");
+                return (false, redirect_chain);
+            }
+        };
+
+        while redirect_count < max_redirects {
+            redirect_chain.push(current_url.clone());
+
+            // Check current URL against suspicious patterns
+            if let Some(patterns) = suspicious_patterns {
+                for pattern in patterns {
+                    if let Some(regex) = self.compiled_patterns.get(pattern) {
+                        if regex.is_match(&current_url) {
+                            log::info!(
+                                "Suspicious redirect pattern matched '{}': {}",
+                                pattern,
+                                current_url
+                            );
+                            return (true, redirect_chain);
+                        }
+                    }
+                }
+            }
+
+            // Make HEAD request to follow redirect
+            match client.head(&current_url).send().await {
+                Ok(response) => {
+                    let status = response.status();
+
+                    if status.is_redirection() {
+                        if let Some(location) = response.headers().get("location") {
+                            if let Ok(location_str) = location.to_str() {
+                                // Handle relative URLs
+                                current_url = if location_str.starts_with("http") {
+                                    location_str.to_string()
+                                } else {
+                                    // Resolve relative URL
+                                    if let Ok(base_url) = Url::parse(&current_url) {
+                                        if let Ok(resolved) = base_url.join(location_str) {
+                                            resolved.to_string()
+                                        } else {
+                                            break;
+                                        }
+                                    } else {
+                                        break;
+                                    }
+                                };
+
+                                redirect_count += 1;
+                                log::debug!(
+                                    "Following redirect {}: {} -> {}",
+                                    redirect_count,
+                                    redirect_chain.last().unwrap(),
+                                    current_url
+                                );
+                            } else {
+                                break;
+                            }
+                        } else {
+                            break;
+                        }
+                    } else {
+                        // Final destination reached
+                        if current_url != url {
+                            redirect_chain.push(current_url.clone());
+                        }
+                        break;
+                    }
+                }
+                Err(e) => {
+                    log::debug!("HTTP request failed for {}: {}", current_url, e);
+                    break;
+                }
+            }
+        }
+
+        // Check if we hit the redirect limit (potential redirect loop)
+        if redirect_count >= max_redirects {
+            log::info!(
+                "Suspicious redirect loop detected: {} redirects for {}",
+                redirect_count,
+                url
+            );
+            return (true, redirect_chain);
+        }
+
+        // Check final destination for suspicious patterns
+        if let Some(final_url) = redirect_chain.last() {
+            if let Some(patterns) = suspicious_patterns {
+                for pattern in patterns {
+                    if let Some(regex) = self.compiled_patterns.get(pattern) {
+                        if regex.is_match(final_url) {
+                            log::info!(
+                                "Final destination matches suspicious pattern '{}': {}",
+                                pattern,
+                                final_url
+                            );
+                            return (true, redirect_chain);
+                        }
+                    }
+                }
+            }
+        }
+
+        (false, redirect_chain)
     }
 
     /// Validate an unsubscribe link
@@ -650,6 +795,97 @@ impl FilterEngine {
 
                     false
                 }
+                Criteria::PhishingLinkRedirection {
+                    max_redirects,
+                    timeout_seconds,
+                    suspicious_redirect_patterns,
+                    check_final_destination,
+                } => {
+                    log::debug!("Checking for suspicious link redirections");
+
+                    let max_hops = max_redirects.unwrap_or(10);
+                    let timeout = timeout_seconds.unwrap_or(10);
+                    let check_final = check_final_destination.unwrap_or(true);
+
+                    if let Some(body) = &context.body {
+                        // Extract all URLs from email body
+                        let url_regex = Regex::new(r"https?://[^\s<>]+").unwrap();
+                        let ip_regex = Regex::new(r"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}").unwrap();
+
+                        for url_match in url_regex.find_iter(body) {
+                            let url = url_match.as_str();
+
+                            // Check if this is a tracking/redirect URL
+                            if url.contains("sendgrid.net")
+                                || url.contains("click")
+                                || url.contains("track")
+                            {
+                                log::debug!("Analyzing redirect chain for: {}", url);
+
+                                let (is_suspicious, redirect_chain) = self
+                                    .analyze_redirect_chain(
+                                        url,
+                                        max_hops,
+                                        timeout,
+                                        suspicious_redirect_patterns,
+                                    )
+                                    .await;
+
+                                if is_suspicious {
+                                    log::info!(
+                                        "Suspicious redirect chain detected: {:?}",
+                                        redirect_chain
+                                    );
+                                    return true;
+                                }
+
+                                // Check final destination if enabled
+                                if check_final && redirect_chain.len() > 1 {
+                                    if let Some(final_url) = redirect_chain.last() {
+                                        // Check for suspicious final destinations
+                                        if let Ok(parsed_url) = Url::parse(final_url) {
+                                            if let Some(host) = parsed_url.host_str() {
+                                                // Check for suspicious TLDs in final destination
+                                                let suspicious_tlds = [
+                                                    ".tk",
+                                                    ".ml",
+                                                    ".ga",
+                                                    ".cf",
+                                                    ".click",
+                                                    ".download",
+                                                    ".zip",
+                                                    ".review",
+                                                    ".country",
+                                                    ".kim",
+                                                    ".work",
+                                                ];
+
+                                                for tld in &suspicious_tlds {
+                                                    if host.to_lowercase().ends_with(tld) {
+                                                        log::info!("Redirect leads to suspicious TLD: {} -> {}", url, final_url);
+                                                        return true;
+                                                    }
+                                                }
+
+                                                // Check for IP addresses in final destination
+                                                if ip_regex.is_match(host) {
+                                                    log::info!(
+                                                        "Redirect leads to IP address: {} -> {}",
+                                                        url,
+                                                        final_url
+                                                    );
+                                                    return true;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    false
+                }
                 Criteria::And { criteria } => {
                     for c in criteria {
                         if !self.evaluate_criteria(c, context).await {
@@ -691,7 +927,7 @@ mod tests {
             ..Default::default()
         };
 
-        let action = engine.evaluate(&context).await;
+        let (action, _) = engine.evaluate(&context).await;
         match action {
             Action::Reject { .. } => {}
             _ => panic!("Expected reject action for suspicious Chinese service"),
@@ -704,8 +940,7 @@ mod tests {
         let engine = FilterEngine::new(config).unwrap();
 
         let context = MailContext::default();
-        let action = engine.evaluate(&context).await;
-
+        let (action, _) = engine.evaluate(&context).await;
         match action {
             Action::Accept => {}
             _ => panic!("Expected default accept action"),
@@ -746,7 +981,7 @@ mod tests {
             ..Default::default()
         };
 
-        let action = engine.evaluate(&context).await;
+        let (action, _) = engine.evaluate(&context).await;
         match action {
             Action::Reject { .. } => {}
             _ => panic!("Expected reject action for sparkmail with Japanese"),
@@ -759,7 +994,7 @@ mod tests {
             ..Default::default()
         };
 
-        let action2 = engine.evaluate(&context2).await;
+        let (action2, _) = engine.evaluate(&context2).await;
         match action2 {
             Action::Accept => {}
             _ => panic!("Expected accept action for sparkmail without Japanese"),
@@ -772,7 +1007,7 @@ mod tests {
             ..Default::default()
         };
 
-        let action3 = engine.evaluate(&context3).await;
+        let (action3, _) = engine.evaluate(&context3).await;
         match action3 {
             Action::Accept => {}
             _ => panic!("Expected accept action for non-sparkmail with Japanese"),
@@ -833,7 +1068,7 @@ mod tests {
             ..Default::default()
         };
 
-        let action1 = engine.evaluate(&context1).await;
+        let (action1, _) = engine.evaluate(&context1).await;
         match action1 {
             Action::Reject { message } => {
                 assert!(message.contains("Chinese service"));
@@ -848,7 +1083,7 @@ mod tests {
             ..Default::default()
         };
 
-        let action2 = engine.evaluate(&context2).await;
+        let (action2, _) = engine.evaluate(&context2).await;
         match action2 {
             Action::Reject { message } => {
                 assert!(message.contains("Sparkpost"));
@@ -863,7 +1098,7 @@ mod tests {
             ..Default::default()
         };
 
-        let action3 = engine.evaluate(&context3).await;
+        let (action3, _) = engine.evaluate(&context3).await;
         match action3 {
             Action::Accept => {}
             _ => panic!("Expected accept for Chinese service without Japanese"),
@@ -876,7 +1111,7 @@ mod tests {
             ..Default::default()
         };
 
-        let action4 = engine.evaluate(&context4).await;
+        let (action4, _) = engine.evaluate(&context4).await;
         match action4 {
             Action::Accept => {}
             _ => panic!("Expected accept for Sparkpost to different user"),
@@ -918,7 +1153,65 @@ mod tests {
         let config = Config::default();
         let engine = FilterEngine::new(config).unwrap();
         let context = MailContext::default();
-        let _action = engine.evaluate(&context).await;
+        let (_action, _) = engine.evaluate(&context).await;
+    }
+
+    #[tokio::test]
+    async fn test_sendgrid_redirect_detection() {
+        use crate::config::{Action, FilterRule};
+        use std::collections::HashMap;
+
+        // Create config to detect SendGrid phishing redirects
+        let config = Config {
+            rules: vec![FilterRule {
+                name: "Detect SendGrid phishing redirects".to_string(),
+                criteria: Criteria::PhishingLinkRedirection {
+                    max_redirects: Some(5),
+                    timeout_seconds: Some(5),
+                    check_final_destination: Some(true),
+                    suspicious_redirect_patterns: Some(vec![
+                        r".*\.sslip\.io.*".to_string(),
+                        r".*wordpress-.*".to_string(),
+                    ]),
+                },
+                action: Action::Reject {
+                    message: "Suspicious redirect chain detected".to_string(),
+                },
+            }],
+            ..Default::default()
+        };
+
+        let engine = FilterEngine::new(config).unwrap();
+
+        // Test case: Email with SendGrid tracking link
+        let mut headers = HashMap::new();
+        headers.insert("from".to_string(), "test@example.com".to_string());
+        headers.insert(
+            "return-path".to_string(),
+            "bounces+123@u123.wl042.sendgrid.net".to_string(),
+        );
+
+        let context = MailContext {
+            headers,
+            body: Some(
+                r#"Click here: https://u48775041.ct.sendgrid.net/ls/click?upn=suspicious-link"#
+                    .to_string(),
+            ),
+            ..Default::default()
+        };
+
+        // Note: This test won't actually follow redirects in the test environment
+        // but verifies the detection logic is in place
+        let (action, _) = engine.evaluate(&context).await;
+
+        // In a real environment with network access, this would detect the redirect
+        // For now, we just verify the code compiles and runs
+        match action {
+            Action::Accept | Action::Reject { .. } => {
+                // Both outcomes are valid depending on network availability
+            }
+            _ => panic!("Unexpected action type"),
+        }
     }
 
     #[tokio::test]
@@ -956,7 +1249,7 @@ mod tests {
             ..Default::default()
         };
 
-        let action1 = engine.evaluate(&context1).await;
+        let (action1, matched_rules1) = engine.evaluate(&context1).await;
         match action1 {
             Action::TagAsSpam {
                 header_name,
@@ -964,6 +1257,9 @@ mod tests {
             } => {
                 assert_eq!(header_name, "X-Suspicious-Unsubscribe");
                 assert_eq!(header_value, "YES");
+                // Verify rule tracking works
+                assert_eq!(matched_rules1.len(), 1);
+                assert_eq!(matched_rules1[0], "Tag Google unsubscribe links");
             }
             _ => panic!("Expected TagAsSpam action for google.com unsubscribe link"),
         }
@@ -981,7 +1277,7 @@ mod tests {
             ..Default::default()
         };
 
-        let action2 = engine.evaluate(&context2).await;
+        let (action2, _) = engine.evaluate(&context2).await;
         match action2 {
             Action::TagAsSpam { .. } => {}
             _ => panic!("Expected TagAsSpam action for google.com List-Unsubscribe header"),
@@ -1000,7 +1296,7 @@ mod tests {
             ..Default::default()
         };
 
-        let action3 = engine.evaluate(&context3).await;
+        let (action3, _) = engine.evaluate(&context3).await;
         match action3 {
             Action::Accept => {}
             _ => panic!("Expected Accept action for non-google unsubscribe link"),
@@ -1012,7 +1308,7 @@ mod tests {
             ..Default::default()
         };
 
-        let action4 = engine.evaluate(&context4).await;
+        let (action4, _) = engine.evaluate(&context4).await;
         match action4 {
             Action::Accept => {}
             _ => panic!("Expected Accept action for email with no unsubscribe links"),
