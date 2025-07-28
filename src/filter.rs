@@ -335,11 +335,7 @@ impl FilterEngine {
 
         // Check if we hit the redirect limit (potential redirect loop)
         if redirect_count >= max_redirects {
-            log::info!(
-                "Suspicious redirect loop detected: {} redirects for {}",
-                redirect_count,
-                url
-            );
+            log::info!("Suspicious redirect loop detected: {redirect_count} redirects for {url}");
             return (true, redirect_chain);
         }
 
