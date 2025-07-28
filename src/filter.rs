@@ -4,7 +4,7 @@ use crate::milter::extract_email_from_header;
 
 use hickory_resolver::TokioAsyncResolver;
 use regex::Regex;
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 use std::time::Duration;
 use url::Url;
 
@@ -526,7 +526,9 @@ impl FilterEngine {
                 Criteria::HeaderPattern { header, pattern } => {
                     if let Some(header_value) = context.headers.get(header) {
                         if let Some(regex) = self.compiled_patterns.get(pattern) {
-                            return regex.is_match(header_value);
+                            // Decode MIME headers before pattern matching
+                            let decoded_value = crate::milter::decode_mime_header(header_value);
+                            return regex.is_match(&decoded_value);
                         }
                     }
                     false
@@ -539,7 +541,9 @@ impl FilterEngine {
                 }
                 Criteria::HeaderContainsLanguage { header, language } => {
                     if let Some(header_value) = context.headers.get(header) {
-                        return LanguageDetector::contains_language(header_value, language);
+                        // Decode MIME headers before language detection
+                        let decoded_value = crate::milter::decode_mime_header(header_value);
+                        return LanguageDetector::contains_language(&decoded_value, language);
                     }
                     false
                 }
@@ -663,13 +667,16 @@ impl FilterEngine {
                     let check_ips = check_ip_addresses.unwrap_or(true);
 
                     if let Some(body) = &context.body {
-                        // Extract all URLs from email body
+                        // Extract all URLs from email body and deduplicate
                         let url_regex = Regex::new(r"https?://[^\s<>]+").unwrap();
                         let ip_regex = Regex::new(r"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}").unwrap();
 
+                        let mut urls = HashSet::new();
                         for url_match in url_regex.find_iter(body) {
-                            let url = url_match.as_str();
+                            urls.insert(url_match.as_str().to_string());
+                        }
 
+                        for url in &urls {
                             if let Ok(parsed_url) = Url::parse(url) {
                                 if let Some(host) = parsed_url.host_str() {
                                     // Check for URL shorteners
@@ -800,13 +807,16 @@ impl FilterEngine {
                     let check_final = check_final_destination.unwrap_or(true);
 
                     if let Some(body) = &context.body {
-                        // Extract all URLs from email body
+                        // Extract all URLs from email body and deduplicate
                         let url_regex = Regex::new(r"https?://[^\s<>]+").unwrap();
                         let ip_regex = Regex::new(r"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}").unwrap();
 
+                        let mut urls = HashSet::new();
                         for url_match in url_regex.find_iter(body) {
-                            let url = url_match.as_str();
+                            urls.insert(url_match.as_str().to_string());
+                        }
 
+                        for url in &urls {
                             // Check if this is a tracking/redirect URL
                             if url.contains("sendgrid.net")
                                 || url.contains("click")
@@ -1148,7 +1158,7 @@ mod tests {
     #[tokio::test]
     async fn test_sendgrid_redirect_detection() {
         use crate::config::{Action, FilterRule};
-        use std::collections::HashMap;
+        use std::collections::{HashMap, HashSet};
 
         // Create config to detect SendGrid phishing redirects
         let config = Config {
@@ -1206,7 +1216,7 @@ mod tests {
     #[tokio::test]
     async fn test_unsubscribe_link_pattern() {
         use crate::config::{Action, FilterRule};
-        use std::collections::HashMap;
+        use std::collections::{HashMap, HashSet};
 
         // Create config to tag emails with unsubscribe links pointing to google.com
         let config = Config {
