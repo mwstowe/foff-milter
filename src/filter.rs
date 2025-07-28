@@ -501,7 +501,7 @@ impl FilterEngine {
                                                 .to_lowercase()
                                                 .contains(&trusted_domain.to_lowercase())
                                             {
-                                                log::info!("Phishing spoofing detected: Display name claims '{}' but sender is from '{}'", trusted_domain, sender_domain);
+                                                log::info!("Phishing spoofing detected: Display name claims '{trusted_domain}' but sender is from '{sender_domain}'");
                                                 return true;
                                             }
                                         }
@@ -553,8 +553,7 @@ impl FilterEngine {
                                         for shortener in &shortener_domains {
                                             if host.to_lowercase().contains(shortener) {
                                                 log::info!(
-                                                    "Suspicious URL shortener detected: {}",
-                                                    url
+                                                    "Suspicious URL shortener detected: {url}"
                                                 );
                                                 return true;
                                             }
@@ -579,7 +578,7 @@ impl FilterEngine {
 
                                         for tld in &suspicious_tlds {
                                             if host.to_lowercase().ends_with(tld) {
-                                                log::info!("Suspicious TLD detected: {}", url);
+                                                log::info!("Suspicious TLD detected: {url}");
                                                 return true;
                                             }
                                         }
@@ -587,7 +586,7 @@ impl FilterEngine {
 
                                     // Check for IP addresses instead of domains
                                     if check_ips && ip_regex.is_match(host) {
-                                        log::info!("Suspicious IP address URL detected: {}", url);
+                                        log::info!("Suspicious IP address URL detected: {url}");
                                         return true;
                                     }
 
@@ -598,9 +597,7 @@ impl FilterEngine {
                                             {
                                                 if regex.is_match(url) {
                                                     log::info!(
-                                                        "URL matches suspicious pattern '{}': {}",
-                                                        pattern,
-                                                        url
+                                                        "URL matches suspicious pattern '{pattern}': {url}"
                                                     );
                                                     return true;
                                                 }
@@ -639,11 +636,11 @@ impl FilterEngine {
                                         if !s_domain.ends_with(&r_domain)
                                             && !r_domain.ends_with(&s_domain)
                                         {
-                                            log::info!("Domain mismatch detected: sender '{}' vs reply-to '{}'", s_domain, r_domain);
+                                            log::info!("Domain mismatch detected: sender '{s_domain}' vs reply-to '{r_domain}'");
                                             return true;
                                         }
                                     } else {
-                                        log::info!("Domain mismatch detected: sender '{}' vs reply-to '{}'", s_domain, r_domain);
+                                        log::info!("Domain mismatch detected: sender '{s_domain}' vs reply-to '{r_domain}'");
                                         return true;
                                     }
                                 }
