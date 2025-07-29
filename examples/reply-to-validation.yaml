@@ -1,0 +1,48 @@
+# Example configuration for validating that reply-to email addresses
+# have valid DNS records (A/AAAA and optionally MX records)
+
+socket_path: "/var/run/foff-milter.sock"
+
+rules:
+  - name: "Validate reply-to DNS resolution"
+    criteria:
+      type: "ReplyToValidation"
+      # Optional: DNS lookup timeout in seconds (default: 5)
+      timeout_seconds: 5
+      # Optional: check for MX records in addition to A/AAAA (default: true)
+      check_mx_record: true
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Invalid-Reply-To"
+      header_value: "YES"
+
+  # Example: More strict rule that rejects emails with invalid reply-to
+  - name: "Reject emails with unresolvable reply-to"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "ReplyToValidation"
+          timeout_seconds: 3
+          check_mx_record: true
+        - type: "SenderPattern"
+          pattern: ".*@(suspicious-domain|fake-bank)\..*"
+    action:
+      type: "Reject"
+      message: "Reply-to address does not resolve"
+
+  # Example: Combine with free email detection
+  - name: "Tag suspicious reply-to patterns"
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "ReplyToValidation"
+          check_mx_record: false  # Only check A/AAAA records for faster validation
+        - type: "PhishingFreeEmailReplyTo"
+          allow_same_domain: false
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Suspicious-Reply-To"
+      header_value: "YES"
+
+default_action:
+  type: "Accept"

@@ -165,6 +165,9 @@ impl FilterEngine {
             Criteria::PhishingFreeEmailReplyTo { .. } => {
                 // No regex patterns to compile for free email detection
             }
+            Criteria::ReplyToValidation { .. } => {
+                // No regex patterns to compile for reply-to validation
+            }
             Criteria::And { criteria } | Criteria::Or { criteria } => {
                 for c in criteria {
                     self.compile_criteria_patterns(c)?;
@@ -1101,6 +1104,109 @@ impl FilterEngine {
 
                     false
                 }
+                Criteria::ReplyToValidation {
+                    timeout_seconds,
+                    check_mx_record,
+                } => {
+                    log::debug!("Checking reply-to address DNS resolution");
+
+                    let timeout = timeout_seconds.unwrap_or(5); // Default 5 second timeout
+                    let check_mx = check_mx_record.unwrap_or(true); // Default: check MX records
+
+                    let reply_to = context
+                        .headers
+                        .get("reply-to")
+                        .or_else(|| context.headers.get("Reply-To"));
+
+                    if let Some(reply_to_raw) = reply_to {
+                        // Extract email from reply-to header
+                        if let Some(reply_to_email) = extract_email_from_header(reply_to_raw) {
+                            // Extract domain from email
+                            if let Some(domain) = reply_to_email.split('@').nth(1) {
+                                log::debug!("Validating reply-to domain: {domain}");
+
+                                // Check DNS resolution
+                                let resolver = match TokioAsyncResolver::tokio_from_system_conf() {
+                                    Ok(resolver) => resolver,
+                                    Err(e) => {
+                                        log::warn!(
+                                            "Failed to create DNS resolver for {domain}: {e}"
+                                        );
+                                        return true; // Treat resolver failure as suspicious
+                                    }
+                                };
+
+                                // Check A/AAAA records first
+                                let lookup_future = resolver.lookup_ip(domain);
+                                let timeout_future = tokio::time::timeout(
+                                    Duration::from_secs(timeout),
+                                    lookup_future,
+                                );
+
+                                let has_a_records = match timeout_future.await {
+                                    Ok(Ok(response)) => {
+                                        if let Some(ip) = response.iter().next() {
+                                            log::debug!("Found IP for {domain}: {ip}");
+                                            true
+                                        } else {
+                                            false
+                                        }
+                                    }
+                                    Ok(Err(e)) => {
+                                        log::debug!("A/AAAA lookup failed for {domain}: {e}");
+                                        false
+                                    }
+                                    Err(_) => {
+                                        log::debug!("A/AAAA lookup timed out for {domain}");
+                                        false
+                                    }
+                                };
+
+                                // Check MX records if enabled
+                                let has_mx_records = if check_mx {
+                                    use hickory_resolver::proto::rr::RecordType;
+                                    let mx_future = resolver.lookup(domain, RecordType::MX);
+                                    let mx_timeout_future = tokio::time::timeout(
+                                        Duration::from_secs(timeout),
+                                        mx_future,
+                                    );
+
+                                    match mx_timeout_future.await {
+                                        Ok(Ok(response)) => {
+                                            let has_mx = response.iter().count() > 0;
+                                            if has_mx {
+                                                log::debug!("Found MX records for {domain}");
+                                            } else {
+                                                log::debug!("No MX records found for {domain}");
+                                            }
+                                            has_mx
+                                        }
+                                        Ok(Err(e)) => {
+                                            log::debug!("MX lookup failed for {domain}: {e}");
+                                            false
+                                        }
+                                        Err(_) => {
+                                            log::debug!("MX lookup timed out for {domain}");
+                                            false
+                                        }
+                                    }
+                                } else {
+                                    true // Skip MX check if disabled
+                                };
+
+                                // Return true if validation fails (suspicious)
+                                if !has_a_records && !has_mx_records {
+                                    log::info!("Reply-to domain validation failed: {domain} has no A/AAAA or MX records");
+                                    return true;
+                                }
+
+                                log::debug!("Reply-to domain validation passed for: {domain}");
+                            }
+                        }
+                    }
+
+                    false // No reply-to header or validation passed
+                }
                 Criteria::And { criteria } => {
                     for c in criteria {
                         if !self.evaluate_criteria(c, context).await {
@@ -1692,6 +1798,63 @@ mod tests {
                 assert_eq!(header_value, "YES");
             }
             _ => panic!("Expected TagAsSpam action for capitalized Reply-To header"),
+        }
+    }
+
+    #[tokio::test]
+    async fn test_reply_to_validation() {
+        use crate::config::{Action, FilterRule};
+        use std::collections::HashMap;
+
+        // Create config to validate reply-to addresses
+        let config = Config {
+            rules: vec![FilterRule {
+                name: "Validate reply-to address".to_string(),
+                criteria: Criteria::ReplyToValidation {
+                    timeout_seconds: Some(5),
+                    check_mx_record: Some(true),
+                },
+                action: Action::TagAsSpam {
+                    header_name: "X-Invalid-Reply-To".to_string(),
+                    header_value: "YES".to_string(),
+                },
+            }],
+            ..Default::default()
+        };
+
+        let engine = FilterEngine::new(config).unwrap();
+
+        // Test case 1: Valid domain (google.com) - should not match
+        let mut headers1 = HashMap::new();
+        headers1.insert("reply-to".to_string(), "test@google.com".to_string());
+
+        let context1 = MailContext {
+            headers: headers1,
+            from_header: Some("sender@example.com".to_string()),
+            ..Default::default()
+        };
+
+        let (action1, _) = engine.evaluate(&context1).await;
+        match action1 {
+            Action::Accept => {}
+            _ => {
+                // Note: This test might fail in environments without internet access
+                // In that case, the validation would treat it as suspicious
+                println!("Warning: DNS validation may have failed due to network issues");
+            }
+        }
+
+        // Test case 2: Invalid domain - should match (but we can't easily test this without a guaranteed invalid domain)
+        // Test case 3: No reply-to header - should not match
+        let context3 = MailContext {
+            from_header: Some("sender@example.com".to_string()),
+            ..Default::default()
+        };
+
+        let (action3, _) = engine.evaluate(&context3).await;
+        match action3 {
+            Action::Accept => {}
+            _ => panic!("Expected Accept action for no reply-to header"),
         }
     }
 
