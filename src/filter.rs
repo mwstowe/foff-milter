@@ -849,7 +849,10 @@ impl FilterEngine {
                     log::debug!("Checking for domain mismatch between sender and reply-to");
 
                     let allow_subs = allow_subdomains.unwrap_or(true);
-                    let reply_to = context.headers.get("reply-to");
+                    let reply_to = context
+                        .headers
+                        .get("reply-to")
+                        .or_else(|| context.headers.get("Reply-To"));
                     let sender_email = context.from_header.as_ref().or(context.sender.as_ref());
 
                     if let (Some(reply_to_raw), Some(sender)) = (reply_to, sender_email) {
@@ -1045,7 +1048,10 @@ impl FilterEngine {
                     ];
                     let free_domains = free_email_domains.as_ref().unwrap_or(&default_free_domains);
 
-                    let reply_to = context.headers.get("reply-to");
+                    let reply_to = context
+                        .headers
+                        .get("reply-to")
+                        .or_else(|| context.headers.get("Reply-To"));
                     let from_email = context.from_header.as_ref().or(context.sender.as_ref());
 
                     if let (Some(reply_to_raw), Some(from_email)) = (reply_to, from_email) {
@@ -1664,6 +1670,28 @@ mod tests {
         match action4 {
             Action::Accept => {}
             _ => panic!("Expected Accept action for no reply-to header"),
+        }
+
+        // Test case 5: Capitalized Reply-To header - should match
+        let mut headers5 = HashMap::new();
+        headers5.insert("Reply-To".to_string(), "support@gmail.com".to_string());
+
+        let context5 = MailContext {
+            headers: headers5,
+            from_header: Some("noreply@bigbank.com".to_string()),
+            ..Default::default()
+        };
+
+        let (action5, _) = engine.evaluate(&context5).await;
+        match action5 {
+            Action::TagAsSpam {
+                header_name,
+                header_value,
+            } => {
+                assert_eq!(header_name, "X-Free-Email-Reply-To");
+                assert_eq!(header_value, "YES");
+            }
+            _ => panic!("Expected TagAsSpam action for capitalized Reply-To header"),
         }
     }
 
