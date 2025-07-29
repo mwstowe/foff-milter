@@ -81,6 +81,11 @@ pub enum Criteria {
         free_email_domains: Option<Vec<String>>,
         allow_same_domain: Option<bool>,
     },
+    ReplyToValidation {
+        // Validates that the Reply-To email address domain resolves via DNS
+        timeout_seconds: Option<u64>,
+        check_mx_record: Option<bool>,
+    },
     And {
         criteria: Vec<Criteria>,
     },
