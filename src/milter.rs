@@ -74,16 +74,41 @@ pub fn extract_email_from_header(header_value: &str) -> Option<String> {
     // First decode any MIME encoding
     let decoded = decode_mime_header(header_value);
 
-    // Look for <email@domain.com> pattern
-    if let Some(start) = decoded.find('<') {
+    let email = if let Some(start) = decoded.find('<') {
         if let Some(end) = decoded.find('>') {
-            return Some(decoded[start + 1..end].to_string());
+            decoded[start + 1..end].to_string()
+        } else {
+            // Malformed - no closing >
+            return None;
         }
-    }
+    } else if decoded.contains('@') {
+        // If no angle brackets, assume the whole thing is an email
+        decoded.trim().to_string()
+    } else {
+        return None;
+    };
 
-    // If no angle brackets, assume the whole thing is an email
-    if decoded.contains('@') {
-        return Some(decoded.trim().to_string());
+    // Clean up the email address - remove SMTP artifacts
+    let cleaned_email = email
+        .split_whitespace() // Remove whitespace
+        .next()? // Take first part
+        .split('>') // Remove > characters
+        .next()?
+        .split(',') // Remove comma-separated parameters
+        .next()?
+        .split(';') // Remove semicolon-separated parameters
+        .next()?
+        .trim(); // Final cleanup
+
+    // Basic email validation
+    if cleaned_email.contains('@') && cleaned_email.len() < 320 {
+        // RFC 5321 limit
+        // Additional validation - email should only contain valid characters
+        if cleaned_email.chars().all(|c| {
+            c.is_ascii_alphanumeric() || c == '@' || c == '.' || c == '-' || c == '_' || c == '+'
+        }) {
+            return Some(cleaned_email.to_lowercase());
+        }
     }
 
     None
@@ -390,5 +415,55 @@ impl Milter {
 
         run(listener, callbacks, config, tokio::signal::ctrl_c()).await?;
         Ok(())
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_extract_email_from_header() {
+        // Normal cases
+        assert_eq!(
+            extract_email_from_header("user@example.com"),
+            Some("user@example.com".to_string())
+        );
+        assert_eq!(
+            extract_email_from_header("Name <user@example.com>"),
+            Some("user@example.com".to_string())
+        );
+        assert_eq!(
+            extract_email_from_header("\"Display Name\" <user@domain.org>"),
+            Some("user@domain.org".to_string())
+        );
+
+        // Malformed cases that should be cleaned up
+        assert_eq!(
+            extract_email_from_header("user@auth0user.net>,body=8bitmime"),
+            Some("user@auth0user.net".to_string())
+        );
+        assert_eq!(
+            extract_email_from_header("user@domain.com,param=value"),
+            Some("user@domain.com".to_string())
+        );
+        assert_eq!(
+            extract_email_from_header("user@domain.com;param=value"),
+            Some("user@domain.com".to_string())
+        );
+        assert_eq!(
+            extract_email_from_header("user@domain.com extra stuff"),
+            Some("user@domain.com".to_string())
+        );
+        assert_eq!(
+            extract_email_from_header("<user@sendgrid.net>,body=8bitmime"),
+            Some("user@sendgrid.net".to_string())
+        );
+
+        // Invalid cases
+        assert_eq!(extract_email_from_header("invalid"), None);
+        assert_eq!(extract_email_from_header("Name Only"), None);
+        assert_eq!(extract_email_from_header(""), None);
+        assert_eq!(extract_email_from_header("user@invalid_chars!"), None);
     }
 }

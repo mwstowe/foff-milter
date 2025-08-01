@@ -110,6 +110,18 @@ impl DomainAgeChecker {
         let root_domain = self.extract_root_domain(domain);
         log::debug!("Checking domain age for {domain} (root: {root_domain})");
 
+        // Basic domain validation to prevent invalid WHOIS queries
+        if root_domain.is_empty()
+            || root_domain.contains(',')
+            || root_domain.contains(';')
+            || root_domain.contains('>')
+            || root_domain.contains(' ')
+            || !root_domain.contains('.')
+        {
+            log::warn!("Invalid domain format: {root_domain} (from: {domain})");
+            return Ok(false); // Invalid domains are not considered "young"
+        }
+
         let domain_info = self.get_domain_info(&root_domain).await?;
 
         match domain_info.age_days {
