@@ -39,10 +39,29 @@ impl DomainAgeChecker {
             if at_pos == 0 {
                 return None;
             }
-            let domain = &email[at_pos + 1..];
+            let domain_part = &email[at_pos + 1..];
+
+            // Clean up the domain part - remove common SMTP artifacts
+            let domain = domain_part
+                .split_whitespace() // Remove whitespace
+                .next()? // Take first part
+                .split('>') // Remove > characters
+                .next()?
+                .split(',') // Remove comma-separated parameters
+                .next()?
+                .split(';') // Remove semicolon-separated parameters
+                .next()?
+                .trim(); // Final cleanup
+
             // Basic domain validation
-            if domain.contains('.') && !domain.is_empty() {
-                return Some(domain.to_lowercase());
+            if domain.contains('.') && !domain.is_empty() && domain.len() < 255 {
+                // Additional validation - domain should only contain valid characters
+                if domain
+                    .chars()
+                    .all(|c| c.is_ascii_alphanumeric() || c == '.' || c == '-')
+                {
+                    return Some(domain.to_lowercase());
+                }
             }
         }
         None
@@ -454,6 +473,7 @@ mod tests {
 
     #[test]
     fn test_extract_domain() {
+        // Normal cases
         assert_eq!(
             DomainAgeChecker::extract_domain("user@example.com"),
             Some("example.com".to_string())
@@ -462,8 +482,37 @@ mod tests {
             DomainAgeChecker::extract_domain("test@sub.domain.org"),
             Some("sub.domain.org".to_string())
         );
+
+        // Malformed cases that should be cleaned up
+        assert_eq!(
+            DomainAgeChecker::extract_domain("user@sendgrid.net>,body=8bitmime"),
+            Some("sendgrid.net".to_string())
+        );
+        assert_eq!(
+            DomainAgeChecker::extract_domain("user@example.com>"),
+            Some("example.com".to_string())
+        );
+        assert_eq!(
+            DomainAgeChecker::extract_domain("user@domain.com,param=value"),
+            Some("domain.com".to_string())
+        );
+        assert_eq!(
+            DomainAgeChecker::extract_domain("user@domain.com;param=value"),
+            Some("domain.com".to_string())
+        );
+        assert_eq!(
+            DomainAgeChecker::extract_domain("user@domain.com extra stuff"),
+            Some("domain.com".to_string())
+        );
+
+        // Invalid cases
         assert_eq!(DomainAgeChecker::extract_domain("invalid"), None);
         assert_eq!(DomainAgeChecker::extract_domain("@domain.com"), None);
+        assert_eq!(DomainAgeChecker::extract_domain("user@"), None);
+        assert_eq!(
+            DomainAgeChecker::extract_domain("user@invalid_chars!"),
+            None
+        );
     }
 
     #[test]
