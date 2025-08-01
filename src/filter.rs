@@ -1219,7 +1219,7 @@ impl FilterEngine {
                     timeout_seconds,
                     use_mock_data,
                 } => {
-                    log::debug!("Checking domain age (max_age_days: {})", max_age_days);
+                    log::debug!("Checking domain age (max_age_days: {max_age_days})");
 
                     let timeout = timeout_seconds.unwrap_or(10);
                     let use_mock = use_mock_data.unwrap_or(false);
@@ -1273,26 +1273,17 @@ impl FilterEngine {
                             Ok(is_young) => {
                                 if is_young {
                                     log::info!(
-                                        "Young domain detected: {} from {} (≤ {} days old)",
-                                        domain,
-                                        source,
-                                        max_age_days
+                                        "Young domain detected: {domain} from {source} (≤ {max_age_days} days old)"
                                     );
                                     return true;
                                 }
                                 log::debug!(
-                                    "Domain {} from {} is older than {} days",
-                                    domain,
-                                    source,
-                                    max_age_days
+                                    "Domain {domain} from {source} is older than {max_age_days} days"
                                 );
                             }
                             Err(e) => {
                                 log::warn!(
-                                    "Failed to check age for domain {} from {}: {}",
-                                    domain,
-                                    source,
-                                    e
+                                    "Failed to check age for domain {domain} from {source}: {e}"
                                 );
                                 // Continue checking other domains rather than failing
                             }

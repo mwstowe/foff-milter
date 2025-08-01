@@ -1,4 +1,5 @@
 #![allow(clippy::field_reassign_with_default)]
+#![allow(clippy::uninlined_format_args)]
 
 use foff_milter::config::Config;
 use foff_milter::filter::{FilterEngine, MailContext};

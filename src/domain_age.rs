@@ -54,16 +54,11 @@ impl DomainAgeChecker {
 
         match domain_info.age_days {
             Some(age) => {
-                log::debug!(
-                    "Domain {} is {} days old (threshold: {})",
-                    domain,
-                    age,
-                    max_age_days
-                );
+                log::debug!("Domain {domain} is {age} days old (threshold: {max_age_days})");
                 Ok(age <= max_age_days)
             }
             None => {
-                log::warn!("Could not determine age for domain: {}", domain);
+                log::warn!("Could not determine age for domain: {domain}");
                 Ok(false) // If we can't determine age, don't flag as young
             }
         }
@@ -82,7 +77,7 @@ impl DomainAgeChecker {
                     .unwrap_or(Duration::from_secs(0));
 
                 if cache_age < self.cache_ttl {
-                    log::debug!("Using cached domain info for: {}", domain);
+                    log::debug!("Using cached domain info for: {domain}");
                     return Ok(cached_info.clone());
                 }
             }
@@ -106,15 +101,11 @@ impl DomainAgeChecker {
 
     /// Fetch domain information from WHOIS servers
     async fn fetch_domain_info(&self, domain: &str) -> Result<DomainInfo> {
-        log::debug!("Fetching WHOIS data for domain: {}", domain);
+        log::debug!("Fetching WHOIS data for domain: {domain}");
 
         // First, determine the appropriate WHOIS server for this domain
         let whois_server = self.get_whois_server(domain).await?;
-        log::debug!(
-            "Using WHOIS server: {} for domain: {}",
-            whois_server,
-            domain
-        );
+        log::debug!("Using WHOIS server: {whois_server} for domain: {domain}");
 
         // Query the WHOIS server directly
         match self.query_whois_server(&whois_server, domain).await {
@@ -123,7 +114,7 @@ impl DomainAgeChecker {
                 self.parse_text_whois(&whois_text, domain)
             }
             Err(e) => {
-                log::debug!("WHOIS query failed: {}", e);
+                log::debug!("WHOIS query failed: {e}");
                 // Try fallback servers
                 self.try_fallback_whois_servers(domain).await
             }
@@ -175,14 +166,14 @@ impl DomainAgeChecker {
         use tokio::net::TcpStream;
         use tokio::time::timeout;
 
-        log::debug!("Connecting to WHOIS server: {}:43", server);
+        log::debug!("Connecting to WHOIS server: {server}:43");
 
         // Connect to WHOIS server on port 43
         let mut stream =
-            timeout(self.timeout, TcpStream::connect(format!("{}:43", server))).await??;
+            timeout(self.timeout, TcpStream::connect(format!("{server}:43"))).await??;
 
         // Send domain query
-        let query = format!("{}\r\n", domain);
+        let query = format!("{domain}\r\n");
         stream.write_all(query.as_bytes()).await?;
 
         // Read response
@@ -201,7 +192,7 @@ impl DomainAgeChecker {
         let fallback_servers = vec!["whois.iana.org", "whois.internic.net"];
 
         for server in fallback_servers {
-            log::debug!("Trying fallback WHOIS server: {}", server);
+            log::debug!("Trying fallback WHOIS server: {server}");
             match self.query_whois_server(server, domain).await {
                 Ok(whois_text) => {
                     if let Ok(info) = self.parse_text_whois(&whois_text, domain) {
@@ -209,7 +200,7 @@ impl DomainAgeChecker {
                     }
                 }
                 Err(e) => {
-                    log::debug!("Fallback server {} failed: {}", server, e);
+                    log::debug!("Fallback server {server} failed: {e}");
                     continue;
                 }
             }
@@ -254,15 +245,12 @@ impl DomainAgeChecker {
                 if let Some(captures) = regex.captures(text) {
                     if let Some(date_match) = captures.get(1) {
                         let date_str = date_match.as_str().trim();
-                        log::debug!("Found potential creation date: '{}'", date_str);
+                        log::debug!("Found potential creation date: '{date_str}'");
 
                         if let Ok(creation_date) = self.parse_date_string(date_str) {
                             let age_days = self.calculate_age_days(creation_date);
                             log::info!(
-                                "Successfully parsed creation date for {}: {} ({} days old)",
-                                domain,
-                                date_str,
-                                age_days
+                                "Successfully parsed creation date for {domain}: {date_str} ({age_days} days old)"
                             );
                             return Ok(DomainInfo {
                                 domain: domain.to_string(),
@@ -271,7 +259,7 @@ impl DomainAgeChecker {
                                 cached_at: SystemTime::now(),
                             });
                         } else {
-                            log::debug!("Could not parse date format: '{}'", date_str);
+                            log::debug!("Could not parse date format: '{date_str}'");
                         }
                     }
                 }
@@ -284,17 +272,14 @@ impl DomainAgeChecker {
         } else {
             text.to_string()
         };
-        log::debug!(
-            "Could not find creation date in WHOIS response. Preview: {}",
-            preview
-        );
+        log::debug!("Could not find creation date in WHOIS response. Preview: {preview}");
 
         Err(anyhow!("Could not parse creation date from WHOIS text"))
     }
 
     /// Fallback method using DNS to estimate domain age
     async fn fallback_domain_check(&self, domain: &str) -> Result<DomainInfo> {
-        log::debug!("Using DNS fallback for domain: {}", domain);
+        log::debug!("Using DNS fallback for domain: {domain}");
 
         use hickory_resolver::TokioAsyncResolver;
 
@@ -302,7 +287,7 @@ impl DomainAgeChecker {
 
         match resolver.lookup_ip(domain).await {
             Ok(_) => {
-                log::debug!("Domain {} resolves, but age unknown", domain);
+                log::debug!("Domain {domain} resolves, but age unknown");
                 // Domain resolves, but we can't determine age
                 Ok(DomainInfo {
                     domain: domain.to_string(),
@@ -317,7 +302,7 @@ impl DomainAgeChecker {
 
     /// Get mock domain information for testing
     async fn get_mock_domain_info(&self, domain: &str) -> Result<DomainInfo> {
-        log::debug!("Using mock data for domain: {}", domain);
+        log::debug!("Using mock data for domain: {domain}");
 
         // Mock data for testing - you can customize this
         let mock_data = HashMap::from([
