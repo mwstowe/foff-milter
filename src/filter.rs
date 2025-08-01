@@ -1,4 +1,5 @@
 use crate::config::{Action, Config, Criteria};
+use crate::domain_age::DomainAgeChecker;
 use crate::language::LanguageDetector;
 use crate::milter::extract_email_from_header;
 
@@ -167,6 +168,9 @@ impl FilterEngine {
             }
             Criteria::ReplyToValidation { .. } => {
                 // No regex patterns to compile for reply-to validation
+            }
+            Criteria::DomainAge { .. } => {
+                // No regex patterns to compile for domain age checking
             }
             Criteria::And { criteria } | Criteria::Or { criteria } => {
                 for c in criteria {
@@ -1207,6 +1211,96 @@ impl FilterEngine {
 
                     false // No reply-to header or validation passed
                 }
+                Criteria::DomainAge {
+                    max_age_days,
+                    check_sender,
+                    check_reply_to,
+                    check_from_header,
+                    timeout_seconds,
+                    use_mock_data,
+                } => {
+                    log::debug!("Checking domain age (max_age_days: {})", max_age_days);
+
+                    let timeout = timeout_seconds.unwrap_or(10);
+                    let use_mock = use_mock_data.unwrap_or(false);
+                    let check_sender_flag = check_sender.unwrap_or(true);
+                    let check_reply_to_flag = check_reply_to.unwrap_or(false);
+                    let check_from_header_flag = check_from_header.unwrap_or(false);
+
+                    // Create a domain age checker with the specified settings
+                    let checker = DomainAgeChecker::new(timeout, use_mock);
+                    let mut domains_to_check = Vec::new();
+
+                    // Collect domains to check based on configuration
+                    if check_sender_flag {
+                        if let Some(sender) = &context.sender {
+                            if let Some(domain) = DomainAgeChecker::extract_domain(sender) {
+                                domains_to_check.push(("sender", domain));
+                            }
+                        }
+                    }
+
+                    if check_from_header_flag {
+                        if let Some(from_header) = &context.from_header {
+                            if let Some(domain) = DomainAgeChecker::extract_domain(from_header) {
+                                domains_to_check.push(("from_header", domain));
+                            }
+                        }
+                    }
+
+                    if check_reply_to_flag {
+                        let reply_to = context
+                            .headers
+                            .get("reply-to")
+                            .or_else(|| context.headers.get("Reply-To"));
+
+                        if let Some(reply_to_raw) = reply_to {
+                            if let Some(reply_to_email) = extract_email_from_header(reply_to_raw) {
+                                if let Some(domain) =
+                                    DomainAgeChecker::extract_domain(&reply_to_email)
+                                {
+                                    domains_to_check.push(("reply_to", domain));
+                                }
+                            }
+                        }
+                    }
+
+                    log::debug!("Checking {} domains for age", domains_to_check.len());
+
+                    // Check each domain - return true if ANY domain is young
+                    for (source, domain) in domains_to_check {
+                        match checker.is_domain_young(&domain, *max_age_days).await {
+                            Ok(is_young) => {
+                                if is_young {
+                                    log::info!(
+                                        "Young domain detected: {} from {} (≤ {} days old)",
+                                        domain,
+                                        source,
+                                        max_age_days
+                                    );
+                                    return true;
+                                }
+                                log::debug!(
+                                    "Domain {} from {} is older than {} days",
+                                    domain,
+                                    source,
+                                    max_age_days
+                                );
+                            }
+                            Err(e) => {
+                                log::warn!(
+                                    "Failed to check age for domain {} from {}: {}",
+                                    domain,
+                                    source,
+                                    e
+                                );
+                                // Continue checking other domains rather than failing
+                            }
+                        }
+                    }
+
+                    false // No young domains found
+                }
                 Criteria::And { criteria } => {
                     for c in criteria {
                         if !self.evaluate_criteria(c, context).await {
@@ -1554,7 +1648,7 @@ mod tests {
     #[tokio::test]
     async fn test_sendgrid_redirect_detection() {
         use crate::config::{Action, FilterRule};
-        use std::collections::{HashMap, HashSet};
+        use std::collections::HashMap;
 
         // Create config to detect SendGrid phishing redirects
         let config = Config {

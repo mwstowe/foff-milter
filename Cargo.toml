@@ -7,6 +7,7 @@ edition = "2021"
 regex = "1.10"
 serde = { version = "1.0", features = ["derive"] }
 serde_yaml = "0.9"
+serde_json = "1.0"
 log = "0.4"
 env_logger = "0.10"
 clap = { version = "4.4", features = ["derive"] }
@@ -27,3 +28,19 @@ path = "src/lib.rs"
 [[bin]]
 name = "foff-milter"
 path = "src/main.rs"
+
+[[bin]]
+name = "test-domain-age"
+path = "test_domain_age.rs"
+
+[[bin]]
+name = "test-spam-example"
+path = "test_spam_example.rs"
+
+[[bin]]
+name = "test-real-whois"
+path = "test_real_whois.rs"
+
+[[bin]]
+name = "test-real-spam-detection"
+path = "test_real_spam_detection.rs"

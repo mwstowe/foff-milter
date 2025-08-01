@@ -1,0 +1,80 @@
+socket_path: "/var/run/foff-milter.sock"
+default_action:
+  type: "Accept"
+
+rules:
+  # Example 1: Block emails from domains younger than 90 days
+  - name: "Block young domains"
+    criteria:
+      type: "DomainAge"
+      max_age_days: 90
+      check_sender: true
+      check_reply_to: false
+      check_from_header: false
+      timeout_seconds: 10
+      use_mock_data: true  # Use mock data for testing
+    action:
+      type: "Reject"
+      message: "Email from recently registered domain rejected"
+
+  # Example 2: Tag emails from very young domains (30 days)
+  - name: "Tag very young domains"
+    criteria:
+      type: "DomainAge"
+      max_age_days: 30
+      check_sender: true
+      check_reply_to: true
+      check_from_header: true
+      timeout_seconds: 5
+      use_mock_data: true
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Young-Domain"
+      header_value: "Domain registered within 30 days"
+
+  # Example 3: Complex rule - Young domain with brand impersonation
+  - name: "Young domain impersonating State Farm"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "DomainAge"
+          max_age_days: 120
+          check_sender: true
+          use_mock_data: true
+        - type: "HeaderPattern"
+          header: "from"
+          pattern: "(?i)state\\s*farm"
+    action:
+      type: "Reject"
+      message: "Young domain impersonating State Farm blocked"
+
+  # Example 4: Young domain with suspicious TLD
+  - name: "Young domain with suspicious TLD"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "DomainAge"
+          max_age_days: 60
+          check_sender: true
+          use_mock_data: true
+        - type: "SenderPattern"
+          pattern: ".*@.*\\.(tk|ml|ga|cf|info)$"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Young-Suspicious-TLD"
+      header_value: "Young domain with suspicious TLD"
+
+  # Example 5: Check multiple sources (sender, reply-to, from header)
+  - name: "Comprehensive young domain check"
+    criteria:
+      type: "DomainAge"
+      max_age_days: 45
+      check_sender: true
+      check_reply_to: true
+      check_from_header: true
+      timeout_seconds: 8
+      use_mock_data: true
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Multi-Source-Young"
+      header_value: "Young domain detected in multiple headers"
