@@ -86,6 +86,15 @@ pub enum Criteria {
         timeout_seconds: Option<u64>,
         check_mx_record: Option<bool>,
     },
+    DomainAge {
+        // Checks if domains are younger than specified threshold
+        max_age_days: u32,
+        check_sender: Option<bool>, // Check sender domain (default: true)
+        check_reply_to: Option<bool>, // Check reply-to domain (default: false)
+        check_from_header: Option<bool>, // Check from header domain (default: false)
+        timeout_seconds: Option<u64>, // WHOIS lookup timeout (default: 10)
+        use_mock_data: Option<bool>, // Use mock data for testing (default: false)
+    },
     And {
         criteria: Vec<Criteria>,
     },

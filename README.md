@@ -69,6 +69,7 @@ rules:
 - **HeaderContainsLanguage**: Detect specific languages in email headers
 - **UnsubscribeLinkValidation**: Validate unsubscribe links in email body and headers
 - **UnsubscribeLinkPattern**: Match regex patterns against unsubscribe links
+- **DomainAge**: Check if domains are younger than specified threshold (useful for detecting spam from recently registered domains)
 - **And**: All sub-criteria must match
 - **Or**: Any sub-criteria must match
 
@@ -263,6 +264,40 @@ sudo systemctl restart postfix
 ```
 
 See `examples/unsubscribe-pattern-example.yaml` for more comprehensive examples of unsubscribe link pattern matching.
+
+### Domain age checking
+
+```yaml
+- name: "Block young domains"
+  criteria:
+    type: "DomainAge"
+    max_age_days: 90
+    check_sender: true
+    check_reply_to: false
+    timeout_seconds: 10
+    use_mock_data: false  # Set to true for testing
+  action:
+    type: "Reject"
+    message: "Email from recently registered domain rejected"
+```
+
+```yaml
+- name: "Young domain impersonating brands"
+  criteria:
+    type: "And"
+    criteria:
+      - type: "DomainAge"
+        max_age_days: 120
+        check_sender: true
+      - type: "HeaderPattern"
+        header: "from"
+        pattern: "(?i)(paypal|amazon|microsoft|state farm)"
+  action:
+    type: "Reject"
+    message: "Young domain impersonating trusted brand blocked"
+```
+
+See `examples/domain-age-example.yaml` and `DOMAIN_AGE.md` for comprehensive domain age checking examples.
 
 ### Complex rule with multiple conditions
 
