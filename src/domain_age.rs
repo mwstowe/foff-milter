@@ -48,9 +48,50 @@ impl DomainAgeChecker {
         None
     }
 
+    /// Extract root domain for WHOIS queries (removes subdomains)
+    /// e.g., "email.nationalgeographic.com" -> "nationalgeographic.com"
+    pub fn extract_root_domain(&self, domain: &str) -> String {
+        let parts: Vec<&str> = domain.split('.').collect();
+
+        // Handle special cases and common TLD patterns
+        if parts.len() >= 2 {
+            // For most domains, take the last two parts (domain.tld)
+            let root = format!("{}.{}", parts[parts.len() - 2], parts[parts.len() - 1]);
+
+            // Handle common two-part TLDs like .co.uk, .com.au, etc.
+            if parts.len() >= 3 {
+                let potential_tld =
+                    format!("{}.{}", parts[parts.len() - 2], parts[parts.len() - 1]);
+                let common_two_part_tlds = [
+                    "co.uk", "com.au", "co.jp", "co.kr", "com.br", "co.za", "com.mx", "co.in",
+                    "com.sg", "co.nz", "com.ar", "co.il", "org.uk", "net.au", "gov.uk", "ac.uk",
+                    "edu.au",
+                ];
+
+                if common_two_part_tlds.contains(&potential_tld.as_str()) {
+                    return format!(
+                        "{}.{}.{}",
+                        parts[parts.len() - 3],
+                        parts[parts.len() - 2],
+                        parts[parts.len() - 1]
+                    );
+                }
+            }
+
+            root
+        } else {
+            // If less than 2 parts, return as-is
+            domain.to_string()
+        }
+    }
+
     /// Check if domain is younger than max_age_days
     pub async fn is_domain_young(&self, domain: &str, max_age_days: u32) -> Result<bool> {
-        let domain_info = self.get_domain_info(domain).await?;
+        // Extract root domain for WHOIS query
+        let root_domain = self.extract_root_domain(domain);
+        log::debug!("Checking domain age for {domain} (root: {root_domain})");
+
+        let domain_info = self.get_domain_info(&root_domain).await?;
 
         match domain_info.age_days {
             Some(age) => {
@@ -58,7 +99,7 @@ impl DomainAgeChecker {
                 Ok(age <= max_age_days)
             }
             None => {
-                log::warn!("Could not determine age for domain: {domain}");
+                log::warn!("Could not determine age for domain: {domain} (root: {root_domain})");
                 Ok(false) // If we can't determine age, don't flag as young
             }
         }
@@ -423,6 +464,44 @@ mod tests {
         );
         assert_eq!(DomainAgeChecker::extract_domain("invalid"), None);
         assert_eq!(DomainAgeChecker::extract_domain("@domain.com"), None);
+    }
+
+    #[test]
+    fn test_extract_root_domain() {
+        let checker = DomainAgeChecker::new(10, false);
+
+        // Basic domains
+        assert_eq!(checker.extract_root_domain("example.com"), "example.com");
+        assert_eq!(checker.extract_root_domain("google.com"), "google.com");
+
+        // Subdomains
+        assert_eq!(
+            checker.extract_root_domain("email.nationalgeographic.com"),
+            "nationalgeographic.com"
+        );
+        assert_eq!(checker.extract_root_domain("mail.google.com"), "google.com");
+        assert_eq!(
+            checker.extract_root_domain("sub.domain.example.org"),
+            "example.org"
+        );
+
+        // Two-part TLDs
+        assert_eq!(
+            checker.extract_root_domain("example.co.uk"),
+            "example.co.uk"
+        );
+        assert_eq!(
+            checker.extract_root_domain("mail.example.co.uk"),
+            "example.co.uk"
+        );
+        assert_eq!(
+            checker.extract_root_domain("test.company.com.au"),
+            "company.com.au"
+        );
+
+        // Edge cases
+        assert_eq!(checker.extract_root_domain("single"), "single");
+        assert_eq!(checker.extract_root_domain("a.b"), "a.b");
     }
 
     #[tokio::test]
