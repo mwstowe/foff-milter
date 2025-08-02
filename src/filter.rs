@@ -506,6 +506,12 @@ impl FilterEngine {
                     let mut ip_count = 0;
                     for ip in response.iter() {
                         log::debug!("DNS found IP for {hostname}: {ip}");
+
+                        // Check if the IP resolves to localhost (127.0.0.1)
+                        if ip.to_string() == "127.0.0.1" {
+                            log::warn!("Unsubscribe link resolves to localhost (127.0.0.1): {hostname} - marking as invalid");
+                            return false;
+                        }
                         has_ips = true;
                         ip_count += 1;
                         if ip_count >= 3 {
@@ -2037,5 +2043,32 @@ mod tests {
             Action::Accept => {}
             _ => panic!("Expected Accept action for email with no unsubscribe links"),
         }
+    }
+
+    #[tokio::test]
+    async fn test_localhost_unsubscribe_link_validation() {
+        let config = Config::default();
+        let engine = FilterEngine::new(config).unwrap();
+
+        // Test that localhost (127.0.0.1) is rejected
+        let result = engine
+            .validate_unsubscribe_link("http://localhost/unsubscribe", 5, true, false)
+            .await;
+        assert!(!result, "Localhost unsubscribe links should be invalid");
+
+        // Test that 127.0.0.1 is rejected
+        let result = engine
+            .validate_unsubscribe_link("http://127.0.0.1/unsubscribe", 5, true, false)
+            .await;
+        assert!(!result, "127.0.0.1 unsubscribe links should be invalid");
+
+        // Test that a valid domain (if it resolves) is accepted
+        // Note: This test might fail in environments without internet access
+        let result = engine
+            .validate_unsubscribe_link("http://example.com/unsubscribe", 5, true, false)
+            .await;
+        // We don't assert the result here since example.com might not always resolve
+        // but we want to make sure the function doesn't panic
+        println!("example.com validation result: {result}");
     }
 }
