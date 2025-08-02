@@ -1457,13 +1457,13 @@ mod tests {
         // Test the decode function
         if let Some(from_value) = context.headers.get("from") {
             let decoded = crate::milter::decode_mime_header(from_value);
-            println!("Decoded header: {}", decoded);
+            println!("Decoded header: {decoded}");
 
             // Test the regex directly
             let pattern = r".*onmicrosoft\.com";
             let regex = regex::Regex::new(pattern).unwrap();
             let matches = regex.is_match(&decoded);
-            println!("Pattern '{}' matches: {}", pattern, matches);
+            println!("Pattern '{pattern}' matches: {matches}");
 
             if let Some(m) = regex.find(&decoded) {
                 println!("Matched substring: '{}'", m.as_str());
@@ -1471,8 +1471,8 @@ mod tests {
         }
 
         let (action, matched_rules) = engine.evaluate(&context).await;
-        println!("Action: {:?}", action);
-        println!("Matched rules: {:?}", matched_rules);
+        println!("Action: {action:?}");
+        println!("Matched rules: {matched_rules:?}");
 
         // This should match and tag as spam
         match action {
@@ -1486,10 +1486,7 @@ mod tests {
                 assert_eq!(matched_rules[0], "Fake Microsoft");
             }
             _ => {
-                panic!(
-                    "Expected TagAsSpam action for onmicrosoft.com domain, got: {:?}",
-                    action
-                );
+                panic!("Expected TagAsSpam action for onmicrosoft.com domain, got: {action:?}");
             }
         }
     }
@@ -1601,7 +1598,7 @@ mod tests {
     #[tokio::test]
     async fn test_klclick_dns_validation() {
         let hostname = "ctrk.klclick.com";
-        println!("Testing DNS lookup for: {}", hostname);
+        println!("Testing DNS lookup for: {hostname}");
 
         let resolver = TokioAsyncResolver::tokio_from_system_conf().unwrap();
 
@@ -1609,20 +1606,19 @@ mod tests {
             Ok(response) => {
                 // Test the exact logic from validate_unsubscribe_link
                 let mut has_ips = false;
-                for ip in response.iter() {
-                    println!("Found IP: {}", ip);
+                if let Some(ip) = response.iter().next() {
+                    println!("Found IP: {ip}");
                     has_ips = true;
-                    break;
                 }
 
-                println!("Has IPs: {}", has_ips);
+                println!("Has IPs: {has_ips}");
                 assert!(
                     has_ips,
                     "Should have found IP addresses for ctrk.klclick.com"
                 );
             }
             Err(e) => {
-                panic!("DNS lookup failed for {}: {}", hostname, e);
+                panic!("DNS lookup failed for {hostname}: {e}");
             }
         }
     }
