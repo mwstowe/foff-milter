@@ -1,313 +1,219 @@
-# FOFF Milter Deployment Guide
+# FOFF Milter Deployment Scripts
 
-## FreeBSD Deployment
+This directory contains deployment scripts for automatically deploying the FOFF milter to FreeBSD and AlmaLinux systems.
 
-### Quick Deployment
+## Scripts
 
-Use the automated deployment script:
+### `deploy.sh` - Basic Deployment Script
+A straightforward deployment script that handles the core functionality.
 
+**Features:**
+- Host reachability checks
+- VirtualBox VM management
+- Sequential deployment
+- Basic error handling
+- Colored output
+
+**Usage:**
 ```bash
-sudo ./deploy-freebsd.sh
+# Deploy to both systems
+./deploy.sh
+
+# Deploy to FreeBSD only
+./deploy.sh --freebsd-only
+
+# Deploy to AlmaLinux only
+./deploy.sh --almalinux-only
+
+# Show help
+./deploy.sh --help
 ```
 
-### Manual Deployment
+### `deploy_advanced.sh` - Advanced Deployment Script
+An enhanced version with additional features for production use.
 
-1. **Build the milter:**
-   ```bash
-   cargo build --release
-   ```
+**Features:**
+- Comprehensive logging with timestamps
+- SSH connectivity verification
+- System information gathering
+- Deployment script validation
+- Parallel deployment option
+- Debug mode
+- Performance timing
+- Detailed error reporting
 
-2. **Install binary:**
-   ```bash
-   sudo cp target/release/foff-milter /usr/local/bin/
-   sudo chmod +x /usr/local/bin/foff-milter
-   ```
-
-3. **Install configuration:**
-   ```bash
-   sudo mkdir -p /usr/local/etc
-   sudo cp examples/freebsd-config.yaml /usr/local/etc/foff-milter.yaml
-   ```
-
-4. **Install rc.d service script:**
-   ```bash
-   sudo cp examples/foff-milter.rc /usr/local/etc/rc.d/foff_milter
-   sudo chmod +x /usr/local/etc/rc.d/foff_milter
-   ```
-
-5. **Enable service in rc.conf:**
-   ```bash
-   echo 'foff_milter_enable="YES"' | sudo tee -a /etc/rc.conf
-   echo 'foff_milter_config="/usr/local/etc/foff-milter.yaml"' | sudo tee -a /etc/rc.conf
-   ```
-
-6. **Start the service:**
-   ```bash
-   sudo service foff_milter start
-   ```
-
-### PID File Management
-
-The FreeBSD rc script uses `daemon(8)` to manage the process and automatically creates a PID file at `/var/run/foff-milter.pid`. This approach:
-
-- **Handles daemonization** - No need for `--daemon` flag
-- **Creates PID file** - Automatically managed by `daemon(8)`
-- **Enables proper service control** - `service foff_milter start/stop/restart/status`
-- **Integrates with FreeBSD rc system** - Standard FreeBSD service management
-
-**Service Commands:**
+**Usage:**
 ```bash
-sudo service foff_milter start    # Start the service
-sudo service foff_milter stop     # Stop the service  
-sudo service foff_milter restart  # Restart the service
-sudo service foff_milter status   # Check service status
+# Deploy to both systems (sequential)
+./deploy_advanced.sh
+
+# Deploy to both systems in parallel
+./deploy_advanced.sh --parallel
+
+# Deploy with debug logging
+./deploy_advanced.sh --debug
+
+# Deploy to FreeBSD only
+./deploy_advanced.sh --freebsd-only
+
+# Deploy to AlmaLinux only
+./deploy_advanced.sh --almalinux-only
+
+# Show help
+./deploy_advanced.sh --help
 ```
 
-**Check PID file:**
+**Environment Variables:**
 ```bash
-cat /var/run/foff-milter.pid      # Show process ID
-ps -p $(cat /var/run/foff-milter.pid)  # Show process details
+# Enable debug mode
+DEBUG=1 ./deploy_advanced.sh
+
+# Enable parallel deployment
+PARALLEL=1 ./deploy_advanced.sh
 ```
 
-### Manual Daemon Mode
+## Target Systems
 
-If you prefer to run without the rc system:
+### FreeBSD System
+- **Hostname:** `vegapunk.johnson.home`
+- **VirtualBox VM:** `vegapunk`
+- **Deployment Script:** `/usr/tools/deploy_foff.sh`
 
-```bash
-# With built-in daemonization (creates own daemon process)
-sudo /usr/local/bin/foff-milter --daemon -c /usr/local/etc/foff-milter.yaml
+### AlmaLinux System
+- **Hostname:** `almalinux.johnson.home`
+- **VirtualBox VM:** `almalinux`
+- **Deployment Script:** `/usr/tools/deploy_foff.sh`
 
-# With daemon(8) wrapper (creates PID file)
-sudo daemon -f -p /var/run/foff-milter.pid /usr/local/bin/foff-milter -c /usr/local/etc/foff-milter.yaml
-```
+## Prerequisites
 
-**Note:** The built-in `--daemon` mode does NOT create a PID file. Use `daemon(8)` wrapper or the rc script for PID file management.
+### Local System Requirements
+- **VirtualBox:** Must be installed with `VBoxManage` command available
+- **SSH Access:** Passwordless SSH access to both target systems as root
+- **Network:** Target systems must be reachable when running
 
-## Quick Deployment for Sendmail
+### Target System Requirements
+- **Deployment Script:** `/usr/tools/deploy_foff.sh` must exist and be executable
+- **SSH Server:** Must be running and accessible
+- **Root Access:** SSH access as root user required
 
-### 1. Build and Install
+## Deployment Process
 
-```bash
-# Build the milter
-cargo build --release
+The scripts follow this process for each target system:
 
-# Install binary
-sudo cp target/release/foff-milter /usr/local/bin/
-sudo chmod +x /usr/local/bin/foff-milter
+1. **Connectivity Check**
+   - Ping the target hostname
+   - If unreachable, proceed to VM startup
 
-# Install configuration
-sudo cp examples/sparkmail-japanese.yaml /etc/foff-milter.yaml
-```
+2. **VM Management** (if needed)
+   - Identify the VirtualBox VM name
+   - Check current VM state
+   - Start/resume the VM if necessary
+   - Wait for the system to become reachable
 
-### 2. Configure Sendmail
+3. **Pre-deployment Validation**
+   - Verify SSH connectivity
+   - Check deployment script exists and is executable
+   - Gather system information (advanced script only)
 
-Add this line to your `/etc/mail/sendmail.mc` file:
+4. **Deployment Execution**
+   - Execute `/usr/tools/deploy_foff.sh` on the target system
+   - Monitor output and capture logs
+   - Report success/failure status
 
-```
-INPUT_MAIL_FILTER(`foff-milter', `S=unix:/var/run/foff-milter.sock, T=S:30s;R:30s')
-```
+5. **Summary Report**
+   - Display deployment results for all systems
+   - Show timing information
+   - Provide log file locations
 
-Rebuild sendmail configuration:
+## Logging
 
-```bash
-sudo make -C /etc/mail
-sudo systemctl restart sendmail
-```
+### Basic Script (`deploy.sh`)
+- Console output with colored status messages
+- No persistent logging
 
-### 3. Test the Configuration
+### Advanced Script (`deploy_advanced.sh`)
+- **Main Log:** `./deployment_logs/deploy_YYYYMMDD_HHMMSS.log`
+- **System Logs:** `./deployment_logs/freebsd_YYYYMMDD_HHMMSS.log`
+- **System Logs:** `./deployment_logs/almalinux_YYYYMMDD_HHMMSS.log`
+- Timestamped entries with log levels
+- Console output with colored status messages
 
-```bash
-# Test configuration file
-sudo /usr/local/bin/foff-milter --test-config -c /etc/foff-milter.yaml
+## Error Handling
 
-# Run demonstration mode
-sudo /usr/local/bin/foff-milter --demo -c /etc/foff-milter.yaml
-```
+Both scripts include comprehensive error handling:
 
-### 4. Start the Milter
-
-```bash
-# Start manually for testing
-sudo /usr/local/bin/foff-milter -v -c /etc/foff-milter.yaml
-
-# Or create systemd service (see below)
-```
-
-### 5. Create Systemd Service
-
-Create `/etc/systemd/system/foff-milter.service`:
-
-```ini
-[Unit]
-Description=FOFF Email Milter
-After=network.target
-Before=sendmail.service
-
-[Service]
-Type=simple
-User=root
-Group=root
-ExecStart=/usr/local/bin/foff-milter -c /etc/foff-milter.yaml
-Restart=always
-RestartSec=5
-StandardOutput=journal
-StandardError=journal
-
-# Security settings
-NoNewPrivileges=true
-ProtectSystem=strict
-ProtectHome=true
-ReadWritePaths=/var/run
-
-[Install]
-WantedBy=multi-user.target
-```
-
-Enable and start the service:
-
-```bash
-sudo systemctl daemon-reload
-sudo systemctl enable foff-milter
-sudo systemctl start foff-milter
-sudo systemctl status foff-milter
-```
-
-### 6. Verify Operation
-
-Check that the milter is running:
-
-```bash
-# Check service status
-sudo systemctl status foff-milter
-
-# Check socket exists
-ls -la /var/run/foff-milter.sock
-
-# Check logs
-sudo journalctl -u foff-milter -f
-```
-
-Send a test email and check logs:
-
-```bash
-# Watch milter logs
-sudo journalctl -u foff-milter -f
-
-# In another terminal, send test email
-echo "Test email" | mail -s "Test Subject" user@example.com
-```
+- **Network Issues:** Automatic VM startup if hosts are unreachable
+- **VM Problems:** Detailed VM state checking and management
+- **SSH Issues:** Connection timeout and retry logic
+- **Deployment Failures:** Clear error messages and exit codes
+- **Missing Dependencies:** Validation of required tools and scripts
 
 ## Troubleshooting
 
 ### Common Issues
 
-1. **Permission denied on socket**:
-   ```bash
-   sudo chown root:mail /var/run/foff-milter.sock
-   sudo chmod 660 /var/run/foff-milter.sock
-   ```
+1. **VBoxManage not found**
+   - Install VirtualBox or add to PATH
+   - Verify VirtualBox installation
 
-2. **Milter not receiving emails**:
-   - Check sendmail configuration: `sudo sendmail -bt -d0.1`
-   - Verify socket path in sendmail.mc matches milter config
-   - Check sendmail logs: `sudo tail -f /var/log/maillog`
+2. **VM not found**
+   - Check VM names in VirtualBox
+   - Ensure VMs are properly configured
 
-3. **Option negotiation errors**:
-   - Ensure you're using the latest version with proper negotiation
-   - Check milter logs for detailed negotiation info
+3. **SSH connection failed**
+   - Verify SSH keys are set up
+   - Check SSH service on target systems
+   - Confirm root access is enabled
 
-4. **Service won't start**:
-   ```bash
-   # Check detailed error
-   sudo systemctl status foff-milter -l
-   
-   # Run manually to see errors
-   sudo /usr/local/bin/foff-milter -v -c /etc/foff-milter.yaml
-   ```
+4. **Deployment script not found**
+   - Ensure `/usr/tools/deploy_foff.sh` exists on target systems
+   - Verify script permissions (executable)
 
-### Log Analysis
+5. **Host unreachable after VM start**
+   - Check VM network configuration
+   - Verify VM is fully booted
+   - Check firewall settings
 
-Your rules in action:
+### Debug Mode
+
+Use the advanced script with debug mode for detailed troubleshooting:
 
 ```bash
-# Watch for Chinese service + Japanese blocks
-sudo journalctl -u foff-milter -f | grep "Chinese service"
-
-# Watch for Sparkpost blocks  
-sudo journalctl -u foff-milter -f | grep "Sparkpost"
-
-# Watch for all rejections
-sudo journalctl -u foff-milter -f | grep "Rejecting message"
+DEBUG=1 ./deploy_advanced.sh --debug
 ```
 
-### Testing Your Rules
-
-Use the included test scripts:
-
-```bash
-# Test option negotiation
-sudo python3 test_option_negotiation.py
-
-# Test full protocol
-sudo python3 test_milter_protocol.py
-
-# Run comprehensive tests
-sudo ./test_milter_comprehensive.sh
-```
-
-## Production Monitoring
-
-### Log Rotation
-
-Create `/etc/logrotate.d/foff-milter`:
-
-```
-/var/log/foff-milter.log {
-    daily
-    rotate 30
-    compress
-    delaycompress
-    missingok
-    notifempty
-    postrotate
-        systemctl reload foff-milter
-    endscript
-}
-```
-
-### Monitoring Commands
-
-```bash
-# Check milter performance
-sudo journalctl -u foff-milter --since "1 hour ago" | grep "Accepted milter connection" | wc -l
-
-# Check rejection rate
-sudo journalctl -u foff-milter --since "1 day ago" | grep "Rejecting message" | wc -l
-
-# Monitor specific rules
-sudo journalctl -u foff-milter --since "1 day ago" | grep "Rule.*matched"
-```
-
-## Your Specific Rules
-
-The deployed configuration includes your two specific rules:
-
-1. **Chinese service + Japanese content**: 
-   - Blocks emails where X-Mailer matches `service.*.cn` AND subject contains Japanese
-   - Returns: `550 5.7.1 Chinese service with Japanese content blocked`
-
-2. **Sparkpost to user@example.com**:
-   - Blocks emails where X-Mailer matches `*.sparkpostmail.com` AND sent to `user@example.com`
-   - Returns: `550 5.7.1 Sparkpost mail to user@example.com blocked`
-
-Both rules use AND logic, so both conditions must match for the rule to trigger.
+This provides additional logging including:
+- Detailed ping and SSH attempts
+- VirtualBox command output
+- System information gathering
+- Step-by-step process tracking
 
 ## Security Considerations
 
-- Run as root (required for /var/run socket access)
-- Socket permissions set to 660 (rw-rw----)
-- Regular expression patterns are compiled once at startup
-- Multi-threaded design handles concurrent connections safely
-- Graceful shutdown cleans up socket file
+- **SSH Keys:** Use SSH key authentication instead of passwords
+- **Root Access:** Limit root SSH access to deployment systems only
+- **Network Security:** Ensure target systems are on trusted networks
+- **Log Security:** Protect deployment logs as they may contain sensitive information
 
-Your FOFF milter is now ready for production use with sendmail! 🚀
+## Integration
+
+These scripts can be integrated into CI/CD pipelines or automated deployment systems:
+
+```bash
+# Example CI/CD integration
+if ./deploy_advanced.sh --parallel; then
+    echo "Deployment successful"
+    # Continue with post-deployment tasks
+else
+    echo "Deployment failed"
+    exit 1
+fi
+```
+
+## Support
+
+For issues with the deployment scripts:
+1. Check the troubleshooting section above
+2. Review log files in `./deployment_logs/`
+3. Run with debug mode for detailed information
+4. Verify all prerequisites are met
