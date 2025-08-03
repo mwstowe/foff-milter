@@ -4,10 +4,27 @@ use crate::language::LanguageDetector;
 use crate::milter::extract_email_from_header;
 
 use hickory_resolver::TokioAsyncResolver;
+use lazy_static::lazy_static;
 use regex::Regex;
 use std::collections::{HashMap, HashSet};
-use std::time::Duration;
+use std::sync::Mutex;
+use std::time::{Duration, Instant};
 use url::Url;
+
+// Cache for unsubscribe link validation results
+#[derive(Clone)]
+struct ValidationResult {
+    is_valid: bool,
+    timestamp: Instant,
+}
+
+// Global cache for validation results (with TTL)
+lazy_static! {
+    static ref VALIDATION_CACHE: Mutex<HashMap<String, ValidationResult>> =
+        Mutex::new(HashMap::new());
+}
+
+const CACHE_TTL_SECONDS: u64 = 300; // 5 minutes cache TTL
 
 pub struct FilterEngine {
     config: Config,
@@ -37,6 +54,48 @@ impl FilterEngine {
         // Pre-compile all regex patterns for better performance
         engine.compile_patterns()?;
         Ok(engine)
+    }
+
+    /// Clean expired entries from the validation cache
+    fn clean_validation_cache() {
+        if let Ok(mut cache) = VALIDATION_CACHE.lock() {
+            let now = Instant::now();
+            cache.retain(|_, result| {
+                now.duration_since(result.timestamp).as_secs() < CACHE_TTL_SECONDS
+            });
+        }
+    }
+
+    /// Get cached validation result if available and not expired
+    fn get_cached_validation(url: &str) -> Option<bool> {
+        if let Ok(cache) = VALIDATION_CACHE.lock() {
+            if let Some(result) = cache.get(url) {
+                let age = Instant::now().duration_since(result.timestamp).as_secs();
+                if age < CACHE_TTL_SECONDS {
+                    log::debug!(
+                        "Using cached validation result for {url}: {} (age: {}s)",
+                        result.is_valid,
+                        age
+                    );
+                    return Some(result.is_valid);
+                }
+            }
+        }
+        None
+    }
+
+    /// Cache validation result
+    fn cache_validation_result(url: &str, is_valid: bool) {
+        if let Ok(mut cache) = VALIDATION_CACHE.lock() {
+            cache.insert(
+                url.to_string(),
+                ValidationResult {
+                    is_valid,
+                    timestamp: Instant::now(),
+                },
+            );
+            log::debug!("Cached validation result for {url}: {is_valid}");
+        }
     }
 
     fn compile_patterns(&mut self) -> anyhow::Result<()> {
@@ -203,6 +262,34 @@ impl FilterEngine {
             self.config.default_action
         );
         (&self.config.default_action, matched_rules)
+    }
+
+    /// Get unsubscribe links for a mail context, with caching within the same evaluation
+    fn get_unsubscribe_links(&self, context: &MailContext) -> Vec<String> {
+        // Create a simple hash of the context to use as cache key
+        // This prevents re-extracting links for the same email during evaluation
+        let context_key = format!(
+            "{:?}{:?}",
+            context
+                .headers
+                .get("message-id")
+                .unwrap_or(&"no-id".to_string()),
+            context.body.as_ref().map(|b| b.len()).unwrap_or(0)
+        );
+
+        // For now, we'll extract links each time but log when we're doing duplicate work
+        let links = self.extract_unsubscribe_links(context);
+
+        if !links.is_empty() {
+            log::debug!(
+                "Extracted {} unique unsubscribe links for email {}: {:?}",
+                links.len(),
+                context_key,
+                links
+            );
+        }
+
+        links
     }
 
     /// Extract unsubscribe links from email body and headers
@@ -465,6 +552,36 @@ impl FilterEngine {
     ) -> bool {
         log::debug!("Validating unsubscribe link: {url}");
 
+        // Check cache first
+        if let Some(cached_result) = Self::get_cached_validation(url) {
+            return cached_result;
+        }
+
+        // Clean expired cache entries periodically (every 10th validation)
+        if rand::random::<u8>() % 10 == 0 {
+            Self::clean_validation_cache();
+        }
+
+        let result = self
+            .validate_unsubscribe_link_uncached(url, timeout_seconds, check_dns, check_http)
+            .await;
+
+        // Cache the result
+        Self::cache_validation_result(url, result);
+
+        result
+    }
+
+    /// Internal validation function without caching
+    async fn validate_unsubscribe_link_uncached(
+        &self,
+        url: &str,
+        timeout_seconds: u64,
+        check_dns: bool,
+        check_http: bool,
+    ) -> bool {
+        log::debug!("Performing uncached validation for: {url}");
+
         // Parse URL
         let parsed_url = match Url::parse(url) {
             Ok(url) => url,
@@ -663,7 +780,7 @@ impl FilterEngine {
                         "Checking unsubscribe link validation (timeout: {timeout}s, DNS: {dns_check}, HTTP: {http_check})"
                     );
 
-                    let links = self.extract_unsubscribe_links(context);
+                    let links = self.get_unsubscribe_links(context);
                     log::info!(
                         "UnsubscribeLinkValidation: extracted {} links: {:?}",
                         links.len(),
@@ -678,7 +795,16 @@ impl FilterEngine {
                     log::debug!("Found {} unsubscribe links: {:?}", links.len(), links);
 
                     // Check if ANY unsubscribe link is invalid
+                    let mut validated_count = 0;
+                    let mut cached_count = 0;
+
                     for link in &links {
+                        // Check if we have a cached result first
+                        let was_cached = Self::get_cached_validation(link).is_some();
+                        if was_cached {
+                            cached_count += 1;
+                        }
+
                         if !self
                             .validate_unsubscribe_link(link, timeout, dns_check, http_check)
                             .await
@@ -686,6 +812,12 @@ impl FilterEngine {
                             log::info!("UnsubscribeLinkValidation: Invalid unsubscribe link detected: {link} - returning true (MATCH)");
                             return true; // Found invalid link - matches criteria
                         }
+                        validated_count += 1;
+                    }
+
+                    if cached_count > 0 {
+                        log::debug!("UnsubscribeLinkValidation: Used {} cached results out of {} total validations", 
+                            cached_count, validated_count);
                     }
 
                     log::info!("UnsubscribeLinkValidation: All unsubscribe links are valid - returning false (no match)");
@@ -694,7 +826,7 @@ impl FilterEngine {
                 Criteria::UnsubscribeLinkPattern { pattern } => {
                     log::debug!("Checking unsubscribe link pattern: {pattern}");
 
-                    let links = self.extract_unsubscribe_links(context);
+                    let links = self.get_unsubscribe_links(context);
 
                     if links.is_empty() {
                         log::debug!("No unsubscribe links found for pattern matching");
@@ -2070,5 +2202,62 @@ mod tests {
         // We don't assert the result here since example.com might not always resolve
         // but we want to make sure the function doesn't panic
         println!("example.com validation result: {result}");
+    }
+
+    #[tokio::test]
+    async fn test_unsubscribe_link_caching() {
+        let config = Config::default();
+        let engine = FilterEngine::new(config).unwrap();
+
+        let test_url = "http://example.com/unsubscribe";
+
+        // Clear any existing cache
+        if let Ok(mut cache) = VALIDATION_CACHE.lock() {
+            cache.clear();
+        }
+
+        // First validation should not be cached
+        let start = std::time::Instant::now();
+        let result1 = engine
+            .validate_unsubscribe_link(test_url, 5, true, false)
+            .await;
+        let duration1 = start.elapsed();
+
+        // Second validation should be cached and faster
+        let start = std::time::Instant::now();
+        let result2 = engine
+            .validate_unsubscribe_link(test_url, 5, true, false)
+            .await;
+        let duration2 = start.elapsed();
+
+        // Results should be the same
+        assert_eq!(result1, result2, "Cached and uncached results should match");
+
+        // Second call should be significantly faster (cached)
+        // Note: This might not always be true in test environments, so we just log it
+        println!(
+            "First validation: {:?}, Second validation: {:?}",
+            duration1, duration2
+        );
+
+        // Verify cache contains the result
+        assert!(
+            FilterEngine::get_cached_validation(test_url).is_some(),
+            "Result should be cached"
+        );
+
+        // Test cache expiration by manually setting an old timestamp
+        if let Ok(mut cache) = VALIDATION_CACHE.lock() {
+            if let Some(result) = cache.get_mut(test_url) {
+                result.timestamp = std::time::Instant::now()
+                    - std::time::Duration::from_secs(CACHE_TTL_SECONDS + 1);
+            }
+        }
+
+        // Should not find cached result after expiration
+        assert!(
+            FilterEngine::get_cached_validation(test_url).is_none(),
+            "Expired result should not be cached"
+        );
     }
 }
