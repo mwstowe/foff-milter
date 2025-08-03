@@ -73,9 +73,8 @@ impl FilterEngine {
                 let age = Instant::now().duration_since(result.timestamp).as_secs();
                 if age < CACHE_TTL_SECONDS {
                     log::debug!(
-                        "Using cached validation result for {url}: {} (age: {}s)",
-                        result.is_valid,
-                        age
+                        "Using cached validation result for {url}: {} (age: {age}s)",
+                        result.is_valid
                     );
                     return Some(result.is_valid);
                 }
@@ -268,24 +267,21 @@ impl FilterEngine {
     fn get_unsubscribe_links(&self, context: &MailContext) -> Vec<String> {
         // Create a simple hash of the context to use as cache key
         // This prevents re-extracting links for the same email during evaluation
-        let context_key = format!(
-            "{:?}{:?}",
-            context
-                .headers
-                .get("message-id")
-                .unwrap_or(&"no-id".to_string()),
-            context.body.as_ref().map(|b| b.len()).unwrap_or(0)
-        );
+        let message_id = context
+            .headers
+            .get("message-id")
+            .map(|s| s.as_str())
+            .unwrap_or("no-id");
+        let body_len = context.body.as_ref().map(|b| b.len()).unwrap_or(0);
+        let context_key = format!("{message_id:?}{body_len:?}");
 
         // For now, we'll extract links each time but log when we're doing duplicate work
         let links = self.extract_unsubscribe_links(context);
 
         if !links.is_empty() {
+            let links_len = links.len();
             log::debug!(
-                "Extracted {} unique unsubscribe links for email {}: {:?}",
-                links.len(),
-                context_key,
-                links
+                "Extracted {links_len} unique unsubscribe links for email {context_key}: {links:?}"
             );
         }
 
@@ -816,8 +812,7 @@ impl FilterEngine {
                     }
 
                     if cached_count > 0 {
-                        log::debug!("UnsubscribeLinkValidation: Used {} cached results out of {} total validations", 
-                            cached_count, validated_count);
+                        log::debug!("UnsubscribeLinkValidation: Used {cached_count} cached results out of {validated_count} total validations");
                     }
 
                     log::info!("UnsubscribeLinkValidation: All unsubscribe links are valid - returning false (no match)");
@@ -1212,9 +1207,9 @@ impl FilterEngine {
 
                                 // Check if reply-to is from a free email service
                                 let is_free_email = free_domains.iter().any(|domain| {
-                                    r_domain == domain.to_lowercase()
-                                        || r_domain
-                                            .ends_with(&format!(".{}", domain.to_lowercase()))
+                                    let domain_lower = domain.to_lowercase();
+                                    r_domain == domain_lower
+                                        || r_domain.ends_with(&format!(".{domain_lower}"))
                                 });
 
                                 if is_free_email {
