@@ -182,6 +182,10 @@ impl FilterEngine {
                     self.compiled_patterns.insert(pattern.clone(), regex);
                 }
             }
+            Criteria::UnsubscribeMailtoOnly { .. } => {
+                // No regex patterns to compile for mailto-only detection
+                // Detection is done at runtime by analyzing link types
+            }
             Criteria::PhishingSenderSpoofing { .. } => {
                 // No regex patterns to compile for sender spoofing detection
             }
@@ -299,7 +303,8 @@ impl FilterEngine {
             .or_else(|| context.headers.get("List-Unsubscribe"));
         if let Some(list_unsubscribe) = list_unsubscribe {
             // Extract URLs from List-Unsubscribe header: <url1>, <url2>
-            let url_regex = Regex::new(r"<(https?://[^>]+)>").unwrap();
+            // Support both HTTP and mailto links
+            let url_regex = Regex::new(r"<((?:https?|mailto)://[^>]+|mailto:[^>]+)>").unwrap();
             for cap in url_regex.captures_iter(list_unsubscribe) {
                 if let Some(url) = cap.get(1) {
                     links.push(url.as_str().to_string());
@@ -309,13 +314,18 @@ impl FilterEngine {
 
         // Check email body for unsubscribe links
         if let Some(body) = &context.body {
-            // Look for common unsubscribe link patterns
+            // Look for common unsubscribe link patterns (HTTP and mailto)
             let unsubscribe_patterns = [
                 r#"(?i)href=["'](https?://[^"']*unsubscribe[^"']*)["']"#,
                 r#"(?i)href=["'](https?://[^"']*opt[_-]?out[^"']*)["']"#,
                 r#"(?i)href=["'](https?://[^"']*remove[^"']*)["']"#,
+                r#"(?i)href=["'](mailto:[^"']*unsubscribe[^"']*)["']"#,
+                r#"(?i)href=["'](mailto:[^"']*opt[_-]?out[^"']*)["']"#,
+                r#"(?i)href=["'](mailto:[^"']*remove[^"']*)["']"#,
                 r#"(?i)(https?://[^\s<>"']*unsubscribe[^\s<>"']*)"#,
                 r#"(?i)(https?://[^\s<>"']*opt[_-]?out[^\s<>"']*)"#,
+                r#"(?i)(mailto:[^\s<>"']*unsubscribe[^\s<>"']*)"#,
+                r#"(?i)(mailto:[^\s<>"']*opt[_-]?out[^\s<>"']*)"#,
             ];
 
             for pattern in &unsubscribe_patterns {
@@ -841,6 +851,46 @@ impl FilterEngine {
                     }
 
                     log::debug!("No unsubscribe links match pattern: {pattern}");
+                    false
+                }
+                Criteria::UnsubscribeMailtoOnly { allow_mixed } => {
+                    log::debug!("Checking for mailto-only unsubscribe links");
+
+                    let links = self.get_unsubscribe_links(context);
+
+                    if links.is_empty() {
+                        log::debug!("No unsubscribe links found for mailto-only check");
+                        return false;
+                    }
+
+                    let allow_mixed_links = allow_mixed.unwrap_or(false);
+                    let mut mailto_count = 0;
+                    let mut http_count = 0;
+
+                    for link in &links {
+                        if link.starts_with("mailto:") {
+                            mailto_count += 1;
+                        } else if link.starts_with("http://") || link.starts_with("https://") {
+                            http_count += 1;
+                        }
+                    }
+
+                    log::debug!("Found {mailto_count} mailto links and {http_count} HTTP links out of {} total", links.len());
+
+                    if allow_mixed_links {
+                        // Only flag if ALL links are mailto
+                        if mailto_count > 0 && http_count == 0 {
+                            log::info!("All unsubscribe links are mailto-only: {links:?}");
+                            return true;
+                        }
+                    } else {
+                        // Flag if ANY mailto links are present (default behavior)
+                        if mailto_count > 0 {
+                            log::info!("Found {mailto_count} mailto unsubscribe links: {links:?}");
+                            return true;
+                        }
+                    }
+
                     false
                 }
                 Criteria::PhishingSenderSpoofing { trusted_domains } => {
@@ -2254,5 +2304,132 @@ mod tests {
             FilterEngine::get_cached_validation(test_url).is_none(),
             "Expired result should not be cached"
         );
+    }
+
+    #[tokio::test]
+    async fn test_unsubscribe_mailto_only() {
+        use crate::config::{Action, FilterRule};
+        use std::collections::HashMap;
+
+        // Test case 1: Email with only mailto unsubscribe links (should match)
+        let config = Config {
+            rules: vec![FilterRule {
+                name: "Block mailto-only unsubscribe".to_string(),
+                criteria: Criteria::UnsubscribeMailtoOnly {
+                    allow_mixed: Some(false), // Flag any mailto links
+                },
+                action: Action::Reject {
+                    message: "Suspicious mailto-only unsubscribe".to_string(),
+                },
+            }],
+            ..Default::default()
+        };
+
+        let engine = FilterEngine::new(config).unwrap();
+
+        // Test with List-Unsubscribe header containing only mailto
+        let mut headers1 = HashMap::new();
+        headers1.insert(
+            "list-unsubscribe".to_string(),
+            "<mailto:unsubscribe@example.com?subject=unsubscribe>".to_string(),
+        );
+
+        let context1 = MailContext {
+            headers: headers1,
+            ..Default::default()
+        };
+
+        let (action1, _) = engine.evaluate(&context1).await;
+        match action1 {
+            Action::Reject { .. } => {}
+            _ => panic!("Expected Reject action for mailto-only unsubscribe"),
+        }
+
+        // Test case 2: Email with mixed HTTP and mailto links (should match with allow_mixed=false)
+        let mut headers2 = HashMap::new();
+        headers2.insert(
+            "list-unsubscribe".to_string(),
+            "<https://example.com/unsubscribe>, <mailto:unsubscribe@example.com>".to_string(),
+        );
+
+        let context2 = MailContext {
+            headers: headers2,
+            ..Default::default()
+        };
+
+        let (action2, _) = engine.evaluate(&context2).await;
+        match action2 {
+            Action::Reject { .. } => {}
+            _ => panic!("Expected Reject action for mixed links with allow_mixed=false"),
+        }
+
+        // Test case 3: Email with only HTTP links (should not match)
+        let config3 = Config {
+            rules: vec![FilterRule {
+                name: "Block mailto-only unsubscribe".to_string(),
+                criteria: Criteria::UnsubscribeMailtoOnly {
+                    allow_mixed: Some(true), // Only flag if ALL links are mailto
+                },
+                action: Action::Reject {
+                    message: "Suspicious mailto-only unsubscribe".to_string(),
+                },
+            }],
+            ..Default::default()
+        };
+
+        let engine3 = FilterEngine::new(config3).unwrap();
+
+        let mut headers3 = HashMap::new();
+        headers3.insert(
+            "list-unsubscribe".to_string(),
+            "<https://example.com/unsubscribe>".to_string(),
+        );
+
+        let context3 = MailContext {
+            headers: headers3,
+            ..Default::default()
+        };
+
+        let (action3, _) = engine3.evaluate(&context3).await;
+        match action3 {
+            Action::Accept => {}
+            _ => panic!("Expected Accept action for HTTP-only unsubscribe"),
+        }
+
+        // Test case 4: Email with mixed links but allow_mixed=true (should not match)
+        let mut headers4 = HashMap::new();
+        headers4.insert(
+            "list-unsubscribe".to_string(),
+            "<https://example.com/unsubscribe>, <mailto:unsubscribe@example.com>".to_string(),
+        );
+
+        let context4 = MailContext {
+            headers: headers4,
+            ..Default::default()
+        };
+
+        let (action4, _) = engine3.evaluate(&context4).await;
+        match action4 {
+            Action::Accept => {}
+            _ => panic!("Expected Accept action for mixed links with allow_mixed=true"),
+        }
+
+        // Test case 5: Email with only mailto links and allow_mixed=true (should match)
+        let mut headers5 = HashMap::new();
+        headers5.insert(
+            "list-unsubscribe".to_string(),
+            "<mailto:unsubscribe@example.com>, <mailto:remove@example.com>".to_string(),
+        );
+
+        let context5 = MailContext {
+            headers: headers5,
+            ..Default::default()
+        };
+
+        let (action5, _) = engine3.evaluate(&context5).await;
+        match action5 {
+            Action::Reject { .. } => {}
+            _ => panic!("Expected Reject action for mailto-only links with allow_mixed=true"),
+        }
     }
 }

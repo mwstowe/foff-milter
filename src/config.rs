@@ -48,6 +48,11 @@ pub enum Criteria {
     UnsubscribeLinkPattern {
         pattern: String,
     },
+    UnsubscribeMailtoOnly {
+        // Detects emails where ALL unsubscribe links are mailto: links
+        // This is suspicious as legitimate bulk email services use HTTP links
+        allow_mixed: Option<bool>, // If true, only flag if ALL links are mailto (default: false)
+    },
     PhishingSenderSpoofing {
         // Detects when From header display name claims to be from a different domain than the actual sender
         trusted_domains: Vec<String>,

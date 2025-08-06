@@ -1,0 +1,74 @@
+socket_path: "/var/run/foff-milter.sock"
+default_action: "Accept"
+
+rules:
+  # Detect emails with exclusively mailto unsubscribe links
+  # This is suspicious as legitimate bulk email services use HTTP links
+  - name: "Block emails with mailto-only unsubscribe links"
+    criteria:
+      type: "UnsubscribeMailtoOnly"
+      allow_mixed: false  # Flag any emails with mailto links (default behavior)
+    action:
+      type: "Reject"
+      message: "Suspicious email with mailto-only unsubscribe links"
+
+  # Alternative: Only flag emails where ALL unsubscribe links are mailto
+  - name: "Tag emails with exclusively mailto unsubscribe links"
+    criteria:
+      type: "UnsubscribeMailtoOnly"
+      allow_mixed: true   # Only flag if ALL links are mailto
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Phishing-Mailto-Only"
+      header_value: "All unsubscribe links are mailto"
+
+  # Combine with other phishing indicators for better accuracy
+  - name: "Advanced phishing detection with mailto unsubscribe"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "UnsubscribeMailtoOnly"
+          allow_mixed: true  # Only flag if ALL links are mailto
+        - type: "Or"
+          criteria:
+            # Suspicious subjects
+            - type: "SubjectPattern"
+              pattern: "(?i)(urgent|verify|confirm|suspended|action required)"
+            # Free email senders
+            - type: "SenderPattern"
+              pattern: ".*@(gmail|yahoo|hotmail|outlook)\\.com$"
+            # Generic sender names
+            - type: "HeaderPattern"
+              header: "from"
+              pattern: "(?i)(support|admin|security|noreply)@"
+    action:
+      type: "Reject"
+      message: "Multiple phishing indicators including mailto-only unsubscribe"
+
+  # Detect specific phishing patterns with mailto unsubscribe
+  - name: "Financial phishing with mailto unsubscribe"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "UnsubscribeMailtoOnly"
+          allow_mixed: false  # Any mailto links are suspicious
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i)(account|payment|transfer|fund|wire|asset)"
+            - type: "HeaderPattern"
+              header: "from"
+              pattern: "(?i)(bank|financial|credit|paypal|amazon|microsoft)"
+    action:
+      type: "Reject"
+      message: "Financial phishing attempt with mailto unsubscribe detected"
+
+  # Log all emails with mailto unsubscribe links for analysis
+  - name: "Log mailto unsubscribe for analysis"
+    criteria:
+      type: "UnsubscribeMailtoOnly"
+      allow_mixed: false  # Any mailto links
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Analysis-Mailto-Unsubscribe"
+      header_value: "Contains mailto unsubscribe links"
