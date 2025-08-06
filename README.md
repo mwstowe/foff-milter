@@ -69,6 +69,7 @@ rules:
 - **HeaderContainsLanguage**: Detect specific languages in email headers
 - **UnsubscribeLinkValidation**: Validate unsubscribe links in email body and headers
 - **UnsubscribeLinkPattern**: Match regex patterns against unsubscribe links
+- **UnsubscribeMailtoOnly**: Detect emails with exclusively mailto unsubscribe links (phishing indicator)
 - **DomainAge**: Check if domains are younger than specified threshold (useful for detecting spam from recently registered domains)
 - **And**: All sub-criteria must match
 - **Or**: Any sub-criteria must match
@@ -264,6 +265,31 @@ sudo systemctl restart postfix
 ```
 
 See `examples/unsubscribe-pattern-example.yaml` for more comprehensive examples of unsubscribe link pattern matching.
+
+### Mailto-only unsubscribe detection
+
+```yaml
+- name: "Block emails with mailto-only unsubscribe links"
+  criteria:
+    type: "UnsubscribeMailtoOnly"
+    allow_mixed: false  # Flag any emails with mailto links (default)
+  action:
+    type: "Reject"
+    message: "Suspicious email with mailto-only unsubscribe links"
+```
+
+```yaml
+- name: "Tag emails with exclusively mailto unsubscribe links"
+  criteria:
+    type: "UnsubscribeMailtoOnly"
+    allow_mixed: true   # Only flag if ALL links are mailto
+  action:
+    type: "TagAsSpam"
+    header_name: "X-Phishing-Mailto-Only"
+    header_value: "All unsubscribe links are mailto"
+```
+
+See `examples/mailto-unsubscribe-example.yaml` for comprehensive examples of mailto unsubscribe detection.
 
 ### Domain age checking
 
