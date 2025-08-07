@@ -100,6 +100,10 @@ pub enum Criteria {
         timeout_seconds: Option<u64>, // WHOIS lookup timeout (default: 10)
         use_mock_data: Option<bool>, // Use mock data for testing (default: false)
     },
+    /// Detect emails with invalid unsubscribe header combinations
+    /// This catches emails that have List-Unsubscribe-Post but no List-Unsubscribe header
+    /// which is an RFC violation and common spam pattern
+    InvalidUnsubscribeHeaders,
     And {
         criteria: Vec<Criteria>,
     },
