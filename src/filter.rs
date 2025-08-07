@@ -640,6 +640,11 @@ impl FilterEngine {
             return true;
         }
 
+        // Check for MIME image content types
+        if body.contains("Content-Type: image/") {
+            return true;
+        }
+
         // Check for image file extensions in links
         let image_extensions = [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".webp", ".svg"];
         for ext in &image_extensions {
@@ -685,6 +690,21 @@ impl FilterEngine {
     fn extract_text_content(&self, body: &str, ignore_whitespace: bool) -> String {
         let mut text = body.to_string();
 
+        // Remove MIME boundaries and headers
+        let boundary_regex = Regex::new(r"--[a-zA-Z0-9]+(--)?\n?").unwrap();
+        text = boundary_regex.replace_all(&text, "\n").to_string();
+
+        // Remove Content-Type headers and other MIME headers (more flexible matching)
+        let mime_header_regex = Regex::new(
+            r"(?i)(content-type|content-transfer-encoding|content-disposition|mime-version):[^\n]*",
+        )
+        .unwrap();
+        text = mime_header_regex.replace_all(&text, "").to_string();
+
+        // Remove base64 encoded content (long strings of base64 characters)
+        let base64_regex = Regex::new(r"[A-Za-z0-9+/]{50,}={0,2}").unwrap();
+        text = base64_regex.replace_all(&text, " ").to_string();
+
         // Remove HTML tags
         let tag_regex = Regex::new(r"<[^>]*>").unwrap();
         text = tag_regex.replace_all(&text, " ").to_string();
@@ -715,6 +735,115 @@ impl FilterEngine {
         }
 
         text
+    }
+
+    /// Check if email has large image attachments based on MIME structure
+    fn has_large_image_attachment(&self, body: &str) -> bool {
+        // Look for MIME boundaries and image content types
+        if body.contains("Content-Type: image/") {
+            // Check for large base64 encoded content (rough heuristic)
+            // Base64 encoding increases size by ~33%, so 200KB becomes ~266KB
+            // Look for long base64 strings that might indicate large images
+            let base64_pattern = Regex::new(r"[A-Za-z0-9+/]{1000,}").unwrap();
+            if base64_pattern.is_match(body) {
+                log::debug!("Found large base64 content, likely image attachment");
+                return true;
+            }
+
+            // Check for Content-Transfer-Encoding: base64 with substantial content
+            if body.contains("Content-Transfer-Encoding: base64") {
+                // Count lines after base64 declaration - large images have many lines
+                let lines_after_base64 = body
+                    .split("Content-Transfer-Encoding: base64")
+                    .nth(1)
+                    .map(|content| content.lines().take(100).count())
+                    .unwrap_or(0);
+
+                if lines_after_base64 > 20 {
+                    log::debug!(
+                        "Found base64 content with {lines_after_base64} lines, likely large image"
+                    );
+                    return true;
+                }
+            }
+        }
+
+        // Check for image file extensions in MIME headers
+        let image_types = [
+            "image/gif",
+            "image/jpeg",
+            "image/png",
+            "image/bmp",
+            "image/webp",
+        ];
+        for img_type in &image_types {
+            if body.contains(img_type) {
+                // If we find image MIME types, check if there's substantial content
+                if body.len() > 50000 {
+                    // 50KB+ suggests large image content
+                    log::debug!(
+                        "Found {} with large body size ({}), likely large image attachment",
+                        img_type,
+                        body.len()
+                    );
+                    return true;
+                }
+            }
+        }
+
+        false
+    }
+
+    /// Check if text content looks like decoy text (common patterns in image-based phishing)
+    fn is_likely_decoy_text(&self, text: &str) -> bool {
+        let text_lower = text.to_lowercase();
+
+        // Common decoy patterns in image-based phishing
+        let decoy_patterns = [
+            // Random addresses/locations
+            r"\d+\s+[a-z]+\s+(street|st|avenue|ave|road|rd|drive|dr|lane|ln|way|blvd|boulevard)",
+            // Random phone numbers
+            r"\(\d{3}\)\s*\d{3}-\d{4}",
+            // Random zip codes
+            r"\b\d{5}(-\d{4})?\b",
+            // Generic business text
+            r"(customer service|support|help desk|contact us)",
+            // Random names
+            r"(john|jane|mike|sarah|david|lisa)\s+(smith|johnson|williams|brown|jones)",
+        ];
+
+        for pattern in &decoy_patterns {
+            if let Ok(regex) = Regex::new(pattern) {
+                if regex.is_match(&text_lower) {
+                    log::debug!("Found decoy text pattern: {pattern}");
+                    return true;
+                }
+            }
+        }
+
+        // Check for very short, generic text that's likely decoy
+        if text.len() < 100 {
+            let generic_words = ["address", "phone", "contact", "info", "details", "location"];
+            let word_count = generic_words
+                .iter()
+                .filter(|&word| text_lower.contains(word))
+                .count();
+
+            if word_count >= 2 {
+                log::debug!("Found multiple generic words in short text, likely decoy");
+                return true;
+            }
+        }
+
+        // Check for text that's mostly numbers/addresses (like street addresses)
+        let digit_ratio =
+            text.chars().filter(|c| c.is_ascii_digit()).count() as f32 / text.len() as f32;
+        if digit_ratio > 0.3 && text.len() < 200 {
+            log::debug!("High digit ratio ({digit_ratio:.2}) in short text, likely decoy address");
+            return true;
+        }
+
+        false
     }
 
     /// Validate an unsubscribe link
@@ -1305,11 +1434,14 @@ impl FilterEngine {
 
                     let max_text = max_text_length.unwrap_or(50); // Default: allow up to 50 chars of text
                     let ignore_ws = ignore_whitespace.unwrap_or(true); // Default: ignore whitespace
-                    let _check_attach = check_attachments.unwrap_or(false); // Default: don't check attachments
+                    let check_attach = check_attachments.unwrap_or(true); // Default: check attachments
 
                     if let Some(body) = &context.body {
-                        // Check if email contains images
-                        let has_images = self.has_image_content(body);
+                        // Check for MIME structure indicating large image attachments
+                        let has_large_image_attachment = self.has_large_image_attachment(body);
+
+                        // Check if email contains images (inline or attached)
+                        let has_images = self.has_image_content(body) || has_large_image_attachment;
 
                         if !has_images {
                             log::debug!("No image content found in email");
@@ -1329,7 +1461,25 @@ impl FilterEngine {
                             text_content.chars().take(100).collect::<String>()
                         );
 
-                        // Check if text content is minimal
+                        // Enhanced detection for image-heavy emails with minimal text
+                        if check_attach && has_large_image_attachment {
+                            // For emails with large image attachments, be more lenient with text
+                            // but still flag if text is clearly minimal compared to image content
+                            let adjusted_max_text = std::cmp::max(max_text, 200); // Allow up to 200 chars for decoy text
+
+                            if text_content.len() <= adjusted_max_text {
+                                // Check if the text content looks like decoy content
+                                if self.is_likely_decoy_text(&text_content) {
+                                    log::info!(
+                                        "Image-heavy email with decoy text detected: {} chars of text, large image attachment present",
+                                        text_content.len()
+                                    );
+                                    return true;
+                                }
+                            }
+                        }
+
+                        // Original logic: Check if text content is minimal
                         if text_content.len() <= max_text {
                             log::info!(
                                 "Image-only email detected: {} chars of text, {} images found",
@@ -1339,9 +1489,6 @@ impl FilterEngine {
                             return true;
                         }
                     }
-
-                    // TODO: If check_attachments is true, also check MIME attachments
-                    // This would require parsing MIME structure which isn't currently available
 
                     false
                 }
@@ -2944,6 +3091,194 @@ mod tests {
         match action4 {
             Action::Accept => {}
             _ => panic!("Expected Accept for List-Unsubscribe without Post header"),
+        }
+    }
+
+    #[tokio::test]
+    async fn test_image_detection_debug() {
+        let engine = FilterEngine::new(Config::default()).unwrap();
+
+        // Test the helper functions directly
+        let large_image_body = format!(
+            "Content-Type: multipart/mixed; boundary=\"boundary123\"\n\
+            \n\
+            --boundary123\n\
+            Content-Type: text/plain\n\
+            \n\
+            123 Main Street\n\
+            Anytown, NY 12345\n\
+            Customer Service\n\
+            \n\
+            --boundary123\n\
+            Content-Type: image/gif\n\
+            Content-Transfer-Encoding: base64\n\
+            \n\
+            {}\n\
+            --boundary123--",
+            "R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7".repeat(100)
+        );
+
+        println!("Body length: {}", large_image_body.len());
+        println!(
+            "Has large image attachment: {}",
+            engine.has_large_image_attachment(&large_image_body)
+        );
+        println!(
+            "Has image content: {}",
+            engine.has_image_content(&large_image_body)
+        );
+
+        let text_content = engine.extract_text_content(&large_image_body, true);
+        println!("Extracted text: '{}'", text_content);
+        println!("Text length: {}", text_content.len());
+        println!(
+            "Is likely decoy: {}",
+            engine.is_likely_decoy_text(&text_content)
+        );
+    }
+
+    #[tokio::test]
+    async fn test_enhanced_image_only_detection() {
+        use crate::config::{Action, FilterRule};
+        use std::collections::HashMap;
+
+        // Test enhanced image-only detection with large attachments
+        let config = Config {
+            rules: vec![FilterRule {
+                name: "Detect image-heavy emails with decoy text".to_string(),
+                criteria: Criteria::ImageOnlyEmail {
+                    max_text_length: Some(50),
+                    ignore_whitespace: Some(true),
+                    check_attachments: Some(true),
+                },
+                action: Action::Reject {
+                    message: "Image-only email with minimal text detected".to_string(),
+                },
+            }],
+            ..Default::default()
+        };
+
+        let engine = FilterEngine::new(config).unwrap();
+
+        // Test case 1: Should be flagged - Large image attachment with decoy address text
+        let large_image_body = format!(
+            "Content-Type: multipart/mixed; boundary=\"boundary123\"\n\
+            \n\
+            --boundary123\n\
+            Content-Type: text/plain\n\
+            \n\
+            123 Main Street\n\
+            Anytown, NY 12345\n\
+            Customer Service\n\
+            \n\
+            --boundary123\n\
+            Content-Type: image/gif\n\
+            Content-Transfer-Encoding: base64\n\
+            \n\
+            {}\n\
+            --boundary123--",
+            "R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7".repeat(100) // Simulate large base64 image
+        );
+
+        let mut headers1 = HashMap::new();
+        headers1.insert("from".to_string(), "phishing@suspicious.com".to_string());
+        headers1.insert(
+            "subject".to_string(),
+            "PayPal Payment Confirmation".to_string(),
+        );
+
+        let context1 = MailContext {
+            headers: headers1,
+            sender: Some("phishing@suspicious.com".to_string()),
+            body: Some(large_image_body),
+            ..Default::default()
+        };
+
+        let (action1, _) = engine.evaluate(&context1).await;
+        match action1 {
+            Action::Reject { .. } => {}
+            _ => panic!("Expected Reject for large image attachment with decoy text"),
+        }
+
+        // Test case 2: Should be flagged - Traditional image-only email (minimal text)
+        let minimal_text_body =
+            "<html><body><img src='phishing.jpg' width='600' height='400'></body></html>"
+                .to_string();
+
+        let mut headers2 = HashMap::new();
+        headers2.insert("from".to_string(), "spam@example.com".to_string());
+
+        let context2 = MailContext {
+            headers: headers2,
+            sender: Some("spam@example.com".to_string()),
+            body: Some(minimal_text_body),
+            ..Default::default()
+        };
+
+        let (action2, _) = engine.evaluate(&context2).await;
+        match action2 {
+            Action::Reject { .. } => {}
+            _ => panic!("Expected Reject for traditional image-only email"),
+        }
+
+        // Test case 3: Should NOT be flagged - Legitimate email with substantial text
+        let legitimate_body = "Dear Customer,\n\
+            Thank you for your recent purchase. We're writing to confirm your order details.\n\
+            Your order #12345 has been processed and will ship within 2-3 business days.\n\
+            \n\
+            Order Summary:\n\
+            - Product A: $29.99\n\
+            - Product B: $19.99\n\
+            - Shipping: $5.99\n\
+            Total: $55.97\n\
+            \n\
+            If you have any questions, please contact our customer service team.\n\
+            \n\
+            Best regards,\n\
+            The Sales Team\n\
+            \n\
+            <img src='logo.png' alt='Company Logo'>"
+            .to_string();
+
+        let mut headers3 = HashMap::new();
+        headers3.insert(
+            "from".to_string(),
+            "orders@legitimate-store.com".to_string(),
+        );
+
+        let context3 = MailContext {
+            headers: headers3,
+            sender: Some("orders@legitimate-store.com".to_string()),
+            body: Some(legitimate_body),
+            ..Default::default()
+        };
+
+        let (action3, _) = engine.evaluate(&context3).await;
+        match action3 {
+            Action::Accept => {}
+            _ => panic!("Expected Accept for legitimate email with substantial text"),
+        }
+
+        // Test case 4: Should NOT be flagged - Email with no images
+        let no_image_body = "This is a plain text email with no images at all.\n\
+            It contains substantial text content and should not be flagged\n\
+            as an image-only email."
+            .to_string();
+
+        let mut headers4 = HashMap::new();
+        headers4.insert("from".to_string(), "newsletter@company.com".to_string());
+
+        let context4 = MailContext {
+            headers: headers4,
+            sender: Some("newsletter@company.com".to_string()),
+            body: Some(no_image_body),
+            ..Default::default()
+        };
+
+        let (action4, _) = engine.evaluate(&context4).await;
+        match action4 {
+            Action::Accept => {}
+            _ => panic!("Expected Accept for email with no images"),
         }
     }
 }
