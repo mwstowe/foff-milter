@@ -2673,4 +2673,119 @@ mod tests {
             println!("Warning: example.com validation may have failed due to network issues");
         }
     }
+
+    #[tokio::test]
+    async fn test_bulk_spam_undisclosed_recipients() {
+        use crate::config::{Action, FilterRule};
+        use std::collections::HashMap;
+
+        // Test bulk spam detection with undisclosed recipients from free email
+        let config = Config {
+            rules: vec![FilterRule {
+                name: "Block bulk spam with undisclosed recipients from free email".to_string(),
+                criteria: Criteria::And {
+                    criteria: vec![
+                        Criteria::HeaderPattern {
+                            header: "to".to_string(),
+                            pattern: "(?i)undisclosed.{0,15}recipients".to_string(),
+                        },
+                        Criteria::SenderPattern {
+                            pattern: ".*@(outlook|gmail|yahoo|hotmail|aol)\\.(com|net|org)$"
+                                .to_string(),
+                        },
+                    ],
+                },
+                action: Action::Reject {
+                    message:
+                        "Bulk spam with undisclosed recipients from free email service blocked"
+                            .to_string(),
+                },
+            }],
+            ..Default::default()
+        };
+
+        let engine = FilterEngine::new(config).unwrap();
+
+        // Test case 1: Should be blocked - undisclosed recipients + outlook.com
+        let mut headers1 = HashMap::new();
+        headers1.insert("to".to_string(), "undisclosed-recipients:;".to_string());
+        headers1.insert(
+            "from".to_string(),
+            "ANNIVERSARY AWARD <sfgvsfgsdfgffffw@outlook.com>".to_string(),
+        );
+
+        let context1 = MailContext {
+            headers: headers1,
+            sender: Some("sfgvsfgsdfgffffw@outlook.com".to_string()),
+            ..Default::default()
+        };
+
+        let (action1, _) = engine.evaluate(&context1).await;
+        match action1 {
+            Action::Reject { .. } => {}
+            _ => {
+                panic!("Expected Reject for bulk spam with undisclosed recipients from outlook.com")
+            }
+        }
+
+        // Test case 2: Should be blocked - undisclosed recipients + gmail.com
+        let mut headers2 = HashMap::new();
+        headers2.insert("to".to_string(), "undisclosed-recipients:;".to_string());
+        headers2.insert(
+            "from".to_string(),
+            "Winner Notification <randomchars123@gmail.com>".to_string(),
+        );
+
+        let context2 = MailContext {
+            headers: headers2,
+            sender: Some("randomchars123@gmail.com".to_string()),
+            ..Default::default()
+        };
+
+        let (action2, _) = engine.evaluate(&context2).await;
+        match action2 {
+            Action::Reject { .. } => {}
+            _ => panic!("Expected Reject for bulk spam with undisclosed recipients from gmail.com"),
+        }
+
+        // Test case 3: Should NOT be blocked - undisclosed recipients but from corporate domain
+        let mut headers3 = HashMap::new();
+        headers3.insert("to".to_string(), "undisclosed-recipients:;".to_string());
+        headers3.insert(
+            "from".to_string(),
+            "Newsletter <newsletter@company.com>".to_string(),
+        );
+
+        let context3 = MailContext {
+            headers: headers3,
+            sender: Some("newsletter@company.com".to_string()),
+            ..Default::default()
+        };
+
+        let (action3, _) = engine.evaluate(&context3).await;
+        match action3 {
+            Action::Accept => {}
+            _ => panic!("Expected Accept for corporate domain with undisclosed recipients"),
+        }
+
+        // Test case 4: Should NOT be blocked - free email but normal recipient
+        let mut headers4 = HashMap::new();
+        headers4.insert("to".to_string(), "user@example.com".to_string());
+        headers4.insert(
+            "from".to_string(),
+            "Personal Email <person@gmail.com>".to_string(),
+        );
+
+        let context4 = MailContext {
+            headers: headers4,
+            sender: Some("person@gmail.com".to_string()),
+            ..Default::default()
+        };
+
+        let (action4, _) = engine.evaluate(&context4).await;
+        match action4 {
+            Action::Accept => {}
+            _ => panic!("Expected Accept for normal email from free service"),
+        }
+    }
 }

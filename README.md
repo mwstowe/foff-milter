@@ -325,6 +325,46 @@ See `examples/mailto-unsubscribe-example.yaml` for comprehensive examples of mai
 
 See `examples/domain-age-example.yaml` and `DOMAIN_AGE.md` for comprehensive domain age checking examples.
 
+### Bulk spam detection
+
+```yaml
+- name: "Block bulk spam with undisclosed recipients from free email"
+  criteria:
+    type: "And"
+    criteria:
+      - type: "HeaderPattern"
+        header: "to"
+        pattern: "(?i)undisclosed.{0,15}recipients"
+      - type: "SenderPattern"
+        pattern: ".*@(outlook|gmail|yahoo|hotmail|aol)\\.(com|net|org)$"
+  action:
+    type: "Reject"
+    message: "Bulk spam with undisclosed recipients from free email service blocked"
+```
+
+```yaml
+- name: "Advanced bulk spam with multiple indicators"
+  criteria:
+    type: "And"
+    criteria:
+      - type: "SenderPattern"
+        pattern: ".*@(outlook|gmail|yahoo|hotmail)\\.(com|net)$"
+      - type: "HeaderPattern"
+        header: "to"
+        pattern: "(?i)undisclosed.{0,15}recipients"
+      - type: "Or"
+        criteria:
+          - type: "SubjectPattern"
+            pattern: "(?i)(congratulations|award|prize|winner|lottery)"
+          - type: "SenderPattern"
+            pattern: "^[a-z]{8,}@"
+  action:
+    type: "Reject"
+    message: "Multi-indicator bulk spam detected"
+```
+
+See `examples/bulk-spam-detection.yaml` for comprehensive bulk spam detection rules.
+
 ### Complex rule with multiple conditions
 
 ```yaml
