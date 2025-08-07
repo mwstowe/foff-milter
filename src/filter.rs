@@ -66,6 +66,29 @@ impl FilterEngine {
         }
     }
 
+    /// Check if domain1 is a subdomain of domain2
+    /// Examples:
+    /// - is_subdomain_of("mail.etsy.com", "etsy.com") -> true
+    /// - is_subdomain_of("etsy.com", "mail.etsy.com") -> false  
+    /// - is_subdomain_of("badsite.com", "etsy.com") -> false
+    /// - is_subdomain_of("notetsy.com", "etsy.com") -> false
+    fn is_subdomain_of(&self, domain1: &str, domain2: &str) -> bool {
+        if domain1 == domain2 {
+            return true;
+        }
+
+        // domain1 is a subdomain of domain2 if:
+        // 1. domain1 ends with domain2
+        // 2. The character before domain2 in domain1 is a dot
+        if domain1.len() > domain2.len() && domain1.ends_with(domain2) {
+            let prefix_len = domain1.len() - domain2.len();
+            // Check if there's a dot before the parent domain
+            domain1.chars().nth(prefix_len - 1) == Some('.')
+        } else {
+            false
+        }
+    }
+
     /// Get cached validation result if available and not expired
     fn get_cached_validation(url: &str) -> Option<bool> {
         if let Ok(cache) = VALIDATION_CACHE.lock() {
@@ -1111,8 +1134,8 @@ impl FilterEngine {
                                 if s_domain != r_domain {
                                     if allow_subs {
                                         // Check if one is a subdomain of the other
-                                        if !s_domain.ends_with(&r_domain)
-                                            && !r_domain.ends_with(&s_domain)
+                                        if !self.is_subdomain_of(&s_domain, &r_domain)
+                                            && !self.is_subdomain_of(&r_domain, &s_domain)
                                         {
                                             log::info!("Domain mismatch detected: sender '{s_domain}' vs reply-to '{r_domain}'");
                                             return true;
@@ -2527,5 +2550,38 @@ mod tests {
                 "Warning: mailto with params validation may have failed due to network issues"
             );
         }
+    }
+
+    #[tokio::test]
+    async fn test_subdomain_detection() {
+        let engine = FilterEngine::new(Config::default()).unwrap();
+
+        // Test legitimate subdomain relationships
+        assert!(engine.is_subdomain_of("mail.etsy.com", "etsy.com"));
+        assert!(engine.is_subdomain_of("email.marketing.amazon.com", "amazon.com"));
+        assert!(engine.is_subdomain_of("noreply.github.com", "github.com"));
+
+        // Test reverse (parent is not subdomain of child)
+        assert!(!engine.is_subdomain_of("etsy.com", "mail.etsy.com"));
+        assert!(!engine.is_subdomain_of("amazon.com", "email.marketing.amazon.com"));
+
+        // Test same domain
+        assert!(engine.is_subdomain_of("etsy.com", "etsy.com"));
+        assert!(engine.is_subdomain_of("mail.etsy.com", "mail.etsy.com"));
+
+        // Test unrelated domains
+        assert!(!engine.is_subdomain_of("badsite.com", "etsy.com"));
+        assert!(!engine.is_subdomain_of("notetsy.com", "etsy.com"));
+        assert!(!engine.is_subdomain_of("fake-etsy.com", "etsy.com"));
+
+        // Test edge cases
+        assert!(!engine.is_subdomain_of("etsy.com.evil.com", "etsy.com"));
+        assert!(!engine.is_subdomain_of("", "etsy.com"));
+        assert!(!engine.is_subdomain_of("etsy.com", ""));
+
+        // Test multi-level subdomains
+        assert!(engine.is_subdomain_of("a.b.c.example.com", "example.com"));
+        assert!(engine.is_subdomain_of("a.b.c.example.com", "c.example.com"));
+        assert!(engine.is_subdomain_of("a.b.c.example.com", "b.c.example.com"));
     }
 }
