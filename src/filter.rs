@@ -83,6 +83,98 @@ impl FilterEngine {
         None
     }
 
+    /// Validate a mailto unsubscribe link
+    async fn validate_mailto_link(
+        &self,
+        mailto_url: &str,
+        timeout_seconds: u64,
+        check_dns: bool,
+    ) -> bool {
+        log::debug!("Validating mailto link: {mailto_url}");
+
+        // Extract email address from mailto: URL
+        // Format: mailto:email@domain.com or mailto:email@domain.com?subject=...
+        let email_part = mailto_url.strip_prefix("mailto:").unwrap_or(mailto_url);
+
+        // Split on '?' to remove query parameters if present
+        let email_address = email_part.split('?').next().unwrap_or(email_part);
+
+        // Extract domain from email address
+        let domain = match email_address.split('@').nth(1) {
+            Some(domain) => domain,
+            None => {
+                log::debug!("Invalid mailto format - no @ symbol found: {mailto_url}");
+                return false;
+            }
+        };
+
+        log::debug!("Extracted domain from mailto: {domain}");
+
+        // If DNS checking is disabled, consider mailto links valid
+        // (since we can't validate the email address without sending email)
+        if !check_dns {
+            log::debug!("DNS checking disabled for mailto - considering valid");
+            return true;
+        }
+
+        // Validate the domain via DNS lookup
+        self.validate_domain_dns(domain, timeout_seconds).await
+    }
+
+    /// Validate domain via DNS lookup
+    async fn validate_domain_dns(&self, domain: &str, timeout_seconds: u64) -> bool {
+        log::debug!("Checking DNS for domain: {domain} (timeout: {timeout_seconds}s)");
+
+        let resolver = match TokioAsyncResolver::tokio_from_system_conf() {
+            Ok(resolver) => resolver,
+            Err(e) => {
+                log::warn!("Failed to create DNS resolver for {domain}: {e}");
+                return false;
+            }
+        };
+
+        // Add timeout to DNS lookup
+        let lookup_future = resolver.lookup_ip(domain);
+        let timeout_future =
+            tokio::time::timeout(Duration::from_secs(timeout_seconds), lookup_future);
+
+        match timeout_future.await {
+            Ok(Ok(response)) => {
+                // Check if we have any IP addresses
+                let mut has_ips = false;
+                let mut ip_count = 0;
+                for ip in response.iter() {
+                    log::debug!("DNS found IP for {domain}: {ip}");
+
+                    // Check if the IP resolves to localhost (127.0.0.1)
+                    if ip.to_string() == "127.0.0.1" {
+                        log::warn!("Domain resolves to localhost (127.0.0.1): {domain} - marking as invalid");
+                        return false;
+                    }
+
+                    has_ips = true;
+                    ip_count += 1;
+                }
+
+                if has_ips {
+                    log::debug!("DNS validation successful for {domain} ({ip_count} IPs found)");
+                    true
+                } else {
+                    log::debug!("DNS lookup returned no IPs for {domain}");
+                    false
+                }
+            }
+            Ok(Err(e)) => {
+                log::debug!("DNS lookup failed for {domain}: {e}");
+                false
+            }
+            Err(_) => {
+                log::debug!("DNS lookup timed out for {domain} after {timeout_seconds}s");
+                false
+            }
+        }
+    }
+
     /// Cache validation result
     fn cache_validation_result(url: &str, is_valid: bool) {
         if let Ok(mut cache) = VALIDATION_CACHE.lock() {
@@ -588,7 +680,14 @@ impl FilterEngine {
     ) -> bool {
         log::debug!("Performing uncached validation for: {url}");
 
-        // Parse URL
+        // Handle mailto URLs differently
+        if url.starts_with("mailto:") {
+            return self
+                .validate_mailto_link(url, timeout_seconds, check_dns)
+                .await;
+        }
+
+        // Parse HTTP/HTTPS URL
         let parsed_url = match Url::parse(url) {
             Ok(url) => url,
             Err(e) => {
@@ -607,56 +706,8 @@ impl FilterEngine {
         };
 
         // DNS validation
-        if check_dns {
-            log::debug!("Checking DNS for hostname: {hostname} (timeout: {timeout_seconds}s)");
-            let resolver = match TokioAsyncResolver::tokio_from_system_conf() {
-                Ok(resolver) => resolver,
-                Err(e) => {
-                    log::warn!("Failed to create DNS resolver for {hostname}: {e}");
-                    return false;
-                }
-            };
-
-            // Add timeout to DNS lookup
-            let lookup_future = resolver.lookup_ip(hostname);
-            let timeout_future =
-                tokio::time::timeout(Duration::from_secs(timeout_seconds), lookup_future);
-
-            match timeout_future.await {
-                Ok(Ok(response)) => {
-                    // Check if we have any IP addresses
-                    let mut has_ips = false;
-                    let mut ip_count = 0;
-                    for ip in response.iter() {
-                        log::debug!("DNS found IP for {hostname}: {ip}");
-
-                        // Check if the IP resolves to localhost (127.0.0.1)
-                        if ip.to_string() == "127.0.0.1" {
-                            log::warn!("Unsubscribe link resolves to localhost (127.0.0.1): {hostname} - marking as invalid");
-                            return false;
-                        }
-                        has_ips = true;
-                        ip_count += 1;
-                        if ip_count >= 3 {
-                            break; // Limit logging
-                        }
-                    }
-
-                    if !has_ips {
-                        log::warn!("DNS lookup returned no results for {hostname}");
-                        return false;
-                    }
-                    log::debug!("DNS lookup successful for {hostname} ({ip_count} IPs found)");
-                }
-                Ok(Err(e)) => {
-                    log::warn!("DNS lookup failed for {hostname}: {e}");
-                    return false;
-                }
-                Err(_) => {
-                    log::warn!("DNS lookup timed out for {hostname} after {timeout_seconds}s");
-                    return false;
-                }
-            }
+        if check_dns && !self.validate_domain_dns(hostname, timeout_seconds).await {
+            return false;
         }
 
         // HTTP validation
@@ -2430,6 +2481,51 @@ mod tests {
         match action5 {
             Action::Reject { .. } => {}
             _ => panic!("Expected Reject action for mailto-only links with allow_mixed=true"),
+        }
+    }
+
+    #[tokio::test]
+    async fn test_mailto_link_validation() {
+        let engine = FilterEngine::new(Config::default()).unwrap();
+
+        // Test valid mailto link with legitimate domain
+        let valid_mailto = "mailto:unsubscribe@target.com";
+        let result = engine
+            .validate_unsubscribe_link(valid_mailto, 5, true, false)
+            .await;
+        // Should be true (valid) since target.com is a legitimate domain
+        // Note: This test might fail in environments without internet access
+        if !result {
+            println!("Warning: mailto validation may have failed due to network issues");
+        }
+
+        // Test invalid mailto format
+        let invalid_mailto = "mailto:invalid-email-format";
+        let result = engine
+            .validate_unsubscribe_link(invalid_mailto, 5, true, false)
+            .await;
+        assert!(!result, "Invalid mailto format should be rejected");
+
+        // Test mailto with DNS checking disabled (should be valid)
+        let mailto_no_dns = "mailto:test@example.com";
+        let result = engine
+            .validate_unsubscribe_link(mailto_no_dns, 5, false, false)
+            .await;
+        assert!(
+            result,
+            "mailto links should be valid when DNS checking is disabled"
+        );
+
+        // Test mailto with query parameters
+        let mailto_with_params = "mailto:leave-test@em.target.com?subject=unsubscribe";
+        let result = engine
+            .validate_unsubscribe_link(mailto_with_params, 5, true, false)
+            .await;
+        // Should be true since we extract the domain correctly
+        if !result {
+            println!(
+                "Warning: mailto with params validation may have failed due to network issues"
+            );
         }
     }
 }
