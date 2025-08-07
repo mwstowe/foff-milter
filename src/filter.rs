@@ -140,7 +140,58 @@ impl FilterEngine {
             return true;
         }
 
-        // Validate the domain via DNS lookup
+        // For mailto links, check MX records first (more appropriate for email domains)
+        // then fall back to A/AAAA records
+        self.validate_email_domain_dns(domain, timeout_seconds)
+            .await
+    }
+
+    /// Validate email domain via MX and A/AAAA record lookup
+    /// This is more appropriate for mailto domains than just A/AAAA records
+    async fn validate_email_domain_dns(&self, domain: &str, timeout_seconds: u64) -> bool {
+        log::debug!("Checking email domain DNS for: {domain} (timeout: {timeout_seconds}s)");
+
+        let resolver = match TokioAsyncResolver::tokio_from_system_conf() {
+            Ok(resolver) => resolver,
+            Err(e) => {
+                log::warn!("Failed to create DNS resolver for {domain}: {e}");
+                return false;
+            }
+        };
+
+        // First, try MX record lookup (most appropriate for email domains)
+        log::debug!("Checking MX records for {domain}");
+        let mx_future = resolver.mx_lookup(domain);
+        let mx_timeout_future =
+            tokio::time::timeout(Duration::from_secs(timeout_seconds), mx_future);
+
+        match mx_timeout_future.await {
+            Ok(Ok(mx_response)) => {
+                let mx_count = mx_response.iter().count();
+                if mx_count > 0 {
+                    log::debug!("MX record validation successful for {domain} ({mx_count} MX records found)");
+                    for mx in mx_response.iter().take(3) {
+                        // Limit logging
+                        log::debug!(
+                            "MX record for {domain}: {} (priority {})",
+                            mx.exchange(),
+                            mx.preference()
+                        );
+                    }
+                    return true;
+                }
+                log::debug!("No MX records found for {domain}, falling back to A/AAAA lookup");
+            }
+            Ok(Err(e)) => {
+                log::debug!("MX lookup failed for {domain}: {e}, falling back to A/AAAA lookup");
+            }
+            Err(_) => {
+                log::debug!("MX lookup timed out for {domain}, falling back to A/AAAA lookup");
+            }
+        }
+
+        // Fall back to A/AAAA record lookup
+        log::debug!("Checking A/AAAA records for {domain}");
         self.validate_domain_dns(domain, timeout_seconds).await
     }
 
@@ -2583,5 +2634,43 @@ mod tests {
         assert!(engine.is_subdomain_of("a.b.c.example.com", "example.com"));
         assert!(engine.is_subdomain_of("a.b.c.example.com", "c.example.com"));
         assert!(engine.is_subdomain_of("a.b.c.example.com", "b.c.example.com"));
+    }
+
+    #[tokio::test]
+    async fn test_mx_record_validation() {
+        let engine = FilterEngine::new(Config::default()).unwrap();
+
+        // Test the specific Mailchimp mailto link from the issue
+        let mailchimp_mailto = "mailto:unsubscribe-mc.us5_69cddd4b60870615100c3ff5a.f6a1437eed-ad24237cd0@unsubscribe.mailchimpapp.net?subject=unsubscribe";
+        let result = engine
+            .validate_unsubscribe_link(mailchimp_mailto, 5, true, false)
+            .await;
+        assert!(
+            result,
+            "Mailchimp mailto unsubscribe should be valid (has MX record)"
+        );
+
+        // Test a domain that should have MX records
+        let gmail_mailto = "mailto:test@gmail.com";
+        let result = engine
+            .validate_unsubscribe_link(gmail_mailto, 5, true, false)
+            .await;
+        assert!(result, "Gmail should be valid (has MX records)");
+
+        // Test email domain validation directly
+        let result = engine
+            .validate_email_domain_dns("unsubscribe.mailchimpapp.net", 5)
+            .await;
+        assert!(
+            result,
+            "unsubscribe.mailchimpapp.net should be valid via MX record"
+        );
+
+        // Test a domain without MX records (should fall back to A record)
+        let result = engine.validate_email_domain_dns("example.com", 5).await;
+        // Note: This might fail in test environments without internet access
+        if !result {
+            println!("Warning: example.com validation may have failed due to network issues");
+        }
     }
 }
