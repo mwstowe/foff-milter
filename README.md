@@ -71,6 +71,7 @@ rules:
 - **UnsubscribeLinkPattern**: Match regex patterns against unsubscribe links
 - **UnsubscribeMailtoOnly**: Detect emails with exclusively mailto unsubscribe links (phishing indicator)
 - **DomainAge**: Check if domains are younger than specified threshold (useful for detecting spam from recently registered domains)
+- **InvalidUnsubscribeHeaders**: Detect emails with List-Unsubscribe-Post but no List-Unsubscribe header (RFC violation)
 - **And**: All sub-criteria must match
 - **Or**: Any sub-criteria must match
 
@@ -364,6 +365,34 @@ See `examples/domain-age-example.yaml` and `DOMAIN_AGE.md` for comprehensive dom
 ```
 
 See `examples/bulk-spam-detection.yaml` for comprehensive bulk spam detection rules.
+
+### Invalid unsubscribe headers detection
+
+```yaml
+- name: "Block emails with invalid unsubscribe headers"
+  criteria:
+    type: "InvalidUnsubscribeHeaders"
+  action:
+    type: "Reject"
+    message: "Invalid unsubscribe headers detected (RFC violation)"
+```
+
+```yaml
+- name: "Enhanced spam detection with invalid unsubscribe headers"
+  criteria:
+    type: "And"
+    criteria:
+      - type: "InvalidUnsubscribeHeaders"
+      - type: "SubjectPattern"
+        pattern: "(?i)(weight.{0,10}loss|secret.{0,10}revealed|elon.{0,10}musk)"
+  action:
+    type: "Reject"
+    message: "Spam with invalid unsubscribe headers and suspicious content"
+```
+
+This detects emails that have `List-Unsubscribe-Post: List-Unsubscribe=One-Click` but no actual `List-Unsubscribe` header, which is an RFC violation and common spam pattern.
+
+See `examples/invalid-unsubscribe-headers.yaml` for comprehensive invalid unsubscribe header detection rules.
 
 ### Complex rule with multiple conditions
 

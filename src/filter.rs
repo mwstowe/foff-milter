@@ -400,6 +400,9 @@ impl FilterEngine {
             Criteria::DomainAge { .. } => {
                 // No regex patterns to compile for domain age checking
             }
+            Criteria::InvalidUnsubscribeHeaders => {
+                // No regex patterns to compile for invalid unsubscribe headers
+            }
             Criteria::And { criteria } | Criteria::Or { criteria } => {
                 for c in criteria {
                     self.compile_criteria_patterns(c)?;
@@ -1600,6 +1603,43 @@ impl FilterEngine {
 
                     false // No young domains found
                 }
+                Criteria::InvalidUnsubscribeHeaders => {
+                    log::debug!("Checking for invalid unsubscribe header combinations");
+
+                    // Check if List-Unsubscribe-Post exists
+                    let has_unsubscribe_post = context
+                        .headers
+                        .get("list-unsubscribe-post")
+                        .or_else(|| context.headers.get("List-Unsubscribe-Post"))
+                        .is_some();
+
+                    // Check if List-Unsubscribe exists
+                    let has_unsubscribe = context
+                        .headers
+                        .get("list-unsubscribe")
+                        .or_else(|| context.headers.get("List-Unsubscribe"))
+                        .is_some();
+
+                    // RFC violation: List-Unsubscribe-Post without List-Unsubscribe
+                    if has_unsubscribe_post && !has_unsubscribe {
+                        log::info!("Invalid unsubscribe headers detected: List-Unsubscribe-Post present but List-Unsubscribe missing (RFC violation)");
+                        return true;
+                    }
+
+                    // Also check for the specific spam pattern: List-Unsubscribe-Post: List-Unsubscribe=One-Click
+                    if let Some(post_header) = context
+                        .headers
+                        .get("list-unsubscribe-post")
+                        .or_else(|| context.headers.get("List-Unsubscribe-Post"))
+                    {
+                        if post_header.contains("List-Unsubscribe=One-Click") && !has_unsubscribe {
+                            log::info!("Spam pattern detected: One-Click unsubscribe claim without actual unsubscribe mechanism");
+                            return true;
+                        }
+                    }
+
+                    false // Valid unsubscribe headers or no unsubscribe headers
+                }
                 Criteria::And { criteria } => {
                     for c in criteria {
                         if !self.evaluate_criteria(c, context).await {
@@ -2786,6 +2826,124 @@ mod tests {
         match action4 {
             Action::Accept => {}
             _ => panic!("Expected Accept for normal email from free service"),
+        }
+    }
+
+    #[tokio::test]
+    async fn test_invalid_unsubscribe_headers() {
+        use crate::config::{Action, FilterRule};
+        use std::collections::HashMap;
+
+        // Test invalid unsubscribe headers detection
+        let config = Config {
+            rules: vec![FilterRule {
+                name: "Detect invalid unsubscribe headers".to_string(),
+                criteria: Criteria::InvalidUnsubscribeHeaders,
+                action: Action::Reject {
+                    message: "Invalid unsubscribe headers detected (RFC violation)".to_string(),
+                },
+            }],
+            ..Default::default()
+        };
+
+        let engine = FilterEngine::new(config).unwrap();
+
+        // Test case 1: Should be flagged - List-Unsubscribe-Post without List-Unsubscribe
+        let mut headers1 = HashMap::new();
+        headers1.insert(
+            "from".to_string(),
+            "Elon Musk-s Weight Loss <congratulations@psybook.info>".to_string(),
+        );
+        headers1.insert(
+            "subject".to_string(),
+            "Elon Musk's Secret Revealed".to_string(),
+        );
+        headers1.insert(
+            "list-unsubscribe-post".to_string(),
+            "List-Unsubscribe=One-Click".to_string(),
+        );
+        // Note: No List-Unsubscribe header
+
+        let context1 = MailContext {
+            headers: headers1,
+            sender: Some("congratulations@psybook.info".to_string()),
+            ..Default::default()
+        };
+
+        let (action1, _) = engine.evaluate(&context1).await;
+        match action1 {
+            Action::Reject { .. } => {}
+            _ => panic!("Expected Reject for List-Unsubscribe-Post without List-Unsubscribe"),
+        }
+
+        // Test case 2: Should NOT be flagged - Both headers present (legitimate)
+        let mut headers2 = HashMap::new();
+        headers2.insert(
+            "from".to_string(),
+            "The New York Times <fromthetimes-noreply@nytimes.com>".to_string(),
+        );
+        headers2.insert(
+            "list-unsubscribe-post".to_string(),
+            "List-Unsubscribe=One-Click".to_string(),
+        );
+        headers2.insert(
+            "list-unsubscribe".to_string(),
+            "<mailto:unsubscribe@example.com>,<https://example.com/unsubscribe>".to_string(),
+        );
+
+        let context2 = MailContext {
+            headers: headers2,
+            sender: Some("fromthetimes-noreply@nytimes.com".to_string()),
+            ..Default::default()
+        };
+
+        let (action2, _) = engine.evaluate(&context2).await;
+        match action2 {
+            Action::Accept => {}
+            _ => panic!("Expected Accept for valid unsubscribe headers"),
+        }
+
+        // Test case 3: Should NOT be flagged - No unsubscribe headers at all
+        let mut headers3 = HashMap::new();
+        headers3.insert(
+            "from".to_string(),
+            "Personal Email <friend@example.com>".to_string(),
+        );
+        headers3.insert("subject".to_string(), "Personal message".to_string());
+
+        let context3 = MailContext {
+            headers: headers3,
+            sender: Some("friend@example.com".to_string()),
+            ..Default::default()
+        };
+
+        let (action3, _) = engine.evaluate(&context3).await;
+        match action3 {
+            Action::Accept => {}
+            _ => panic!("Expected Accept for email with no unsubscribe headers"),
+        }
+
+        // Test case 4: Should NOT be flagged - Only List-Unsubscribe (no Post header)
+        let mut headers4 = HashMap::new();
+        headers4.insert(
+            "from".to_string(),
+            "Newsletter <newsletter@company.com>".to_string(),
+        );
+        headers4.insert(
+            "list-unsubscribe".to_string(),
+            "<https://company.com/unsubscribe>".to_string(),
+        );
+
+        let context4 = MailContext {
+            headers: headers4,
+            sender: Some("newsletter@company.com".to_string()),
+            ..Default::default()
+        };
+
+        let (action4, _) = engine.evaluate(&context4).await;
+        match action4 {
+            Action::Accept => {}
+            _ => panic!("Expected Accept for List-Unsubscribe without Post header"),
         }
     }
 }
