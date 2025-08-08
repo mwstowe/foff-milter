@@ -104,6 +104,20 @@ pub enum Criteria {
     /// This catches emails that have List-Unsubscribe-Post but no List-Unsubscribe header
     /// which is an RFC violation and common spam pattern
     InvalidUnsubscribeHeaders,
+    /// Detect emails that consist primarily of attachments with minimal text content
+    /// Useful for catching malware delivery and phishing attempts via PDF/document attachments
+    AttachmentOnlyEmail {
+        // Maximum allowed text content length (default: 100 characters)
+        max_text_length: Option<usize>,
+        // Whether to ignore whitespace when counting text (default: true)
+        ignore_whitespace: Option<bool>,
+        // Specific attachment types to flag (default: ["pdf", "doc", "docx", "xls", "xlsx"])
+        suspicious_types: Option<Vec<String>>,
+        // Minimum attachment size to consider suspicious (default: 10KB)
+        min_attachment_size: Option<usize>,
+        // Whether to check Content-Disposition headers for attachment indicators
+        check_disposition: Option<bool>,
+    },
     And {
         criteria: Vec<Criteria>,
     },

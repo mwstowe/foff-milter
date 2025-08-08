@@ -403,6 +403,9 @@ impl FilterEngine {
             Criteria::InvalidUnsubscribeHeaders => {
                 // No regex patterns to compile for invalid unsubscribe headers
             }
+            Criteria::AttachmentOnlyEmail { .. } => {
+                // No regex patterns to compile for attachment-only detection
+            }
             Criteria::And { criteria } | Criteria::Or { criteria } => {
                 for c in criteria {
                     self.compile_criteria_patterns(c)?;
@@ -844,6 +847,185 @@ impl FilterEngine {
         }
 
         false
+    }
+
+    /// Check if email has suspicious attachments based on type and size
+    fn has_suspicious_attachments(
+        &self,
+        body: &str,
+        types: &[String],
+        min_size: usize,
+        check_disposition: bool,
+    ) -> bool {
+        // Check for Content-Type headers indicating attachments
+        for attachment_type in types {
+            let content_type_patterns = match attachment_type.as_str() {
+                "pdf" => vec!["application/pdf", "application/x-pdf"],
+                "doc" => vec!["application/msword", "application/vnd.ms-word"],
+                "docx" => {
+                    vec!["application/vnd.openxmlformats-officedocument.wordprocessingml.document"]
+                }
+                "xls" => vec!["application/vnd.ms-excel", "application/excel"],
+                "xlsx" => vec!["application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"],
+                "zip" => vec!["application/zip", "application/x-zip-compressed"],
+                "exe" => vec!["application/x-msdownload", "application/octet-stream"],
+                _ => vec![],
+            };
+
+            for pattern in content_type_patterns {
+                if body.contains(pattern) {
+                    log::debug!("Found suspicious attachment type: {pattern}");
+
+                    // Check if attachment meets minimum size requirement
+                    // For now, use total body size as a proxy for attachment size
+                    if body.len() >= min_size {
+                        log::debug!(
+                            "Email body size ({}) meets minimum requirement ({})",
+                            body.len(),
+                            min_size
+                        );
+                        return true;
+                    }
+                }
+            }
+        }
+
+        // Check for Content-Disposition: attachment headers if enabled
+        if check_disposition && body.contains("Content-Disposition: attachment") {
+            log::debug!("Found Content-Disposition: attachment header");
+
+            // Look for filename extensions
+            for attachment_type in types {
+                let filename_pattern = format!("filename=\".*\\.{attachment_type}\"");
+                if body
+                    .to_lowercase()
+                    .contains(&filename_pattern.to_lowercase())
+                {
+                    log::debug!(
+                        "Found attachment with suspicious filename extension: {attachment_type}"
+                    );
+                    return true;
+                }
+            }
+
+            // If we found attachment disposition but couldn't determine type, check if email is large
+            if body.len() >= min_size {
+                log::debug!("Large email with attachment disposition, assuming suspicious");
+                return true;
+            }
+        }
+
+        false
+    }
+
+    /// Estimate attachment size based on base64 content or other indicators
+    fn estimate_attachment_size(&self, body: &str, content_type: &str) -> usize {
+        // Find content after the Content-Type header
+        if let Some(content_start) = body.find(content_type) {
+            let remaining_content = &body[content_start..];
+
+            // Look for base64 encoded content
+            if remaining_content.contains("Content-Transfer-Encoding: base64") {
+                // Find the base64 content section
+                if let Some(base64_start) =
+                    remaining_content.find("Content-Transfer-Encoding: base64")
+                {
+                    let base64_section = &remaining_content[base64_start..];
+
+                    // Count base64 characters (rough estimation)
+                    let base64_chars = base64_section
+                        .lines()
+                        .skip(2) // Skip the encoding header and empty line
+                        .take_while(|line| !line.starts_with("--")) // Stop at next MIME boundary
+                        .map(|line| line.trim().len())
+                        .sum::<usize>();
+
+                    // Base64 encoding: 4 characters = 3 bytes, so divide by 4/3
+                    let estimated_size = (base64_chars * 3) / 4;
+                    log::debug!(
+                        "Estimated attachment size: {} bytes (from {} base64 chars)",
+                        estimated_size,
+                        base64_chars
+                    );
+                    return estimated_size;
+                }
+            }
+        }
+
+        // If we can't estimate, assume it's large enough to be suspicious
+        15000 // 15KB default assumption
+    }
+
+    /// Extract text content excluding attachment data
+    fn extract_text_content_excluding_attachments(
+        &self,
+        body: &str,
+        ignore_whitespace: bool,
+    ) -> String {
+        let mut text = body.to_string();
+
+        // Remove entire attachment sections (between MIME boundaries)
+        let boundary_regex = Regex::new(r"--[a-zA-Z0-9]+\r?\n").unwrap();
+        let parts: Vec<&str> = boundary_regex.split(&text).collect();
+
+        let mut clean_text = String::new();
+        for part in parts {
+            // Skip parts that contain attachment content types
+            if part.contains("Content-Type: application/")
+                || part.contains("Content-Disposition: attachment")
+                || part.contains("Content-Transfer-Encoding: base64")
+            {
+                continue;
+            }
+
+            // Only include text/plain or text/html parts
+            if part.contains("Content-Type: text/")
+                || (!part.contains("Content-Type:") && !part.trim().is_empty())
+            {
+                clean_text.push_str(part);
+                clean_text.push(' ');
+            }
+        }
+
+        text = clean_text;
+
+        // Remove remaining MIME headers
+        let mime_header_regex = Regex::new(
+            r"(?i)(content-type|content-transfer-encoding|content-disposition|mime-version):[^\n]*",
+        )
+        .unwrap();
+        text = mime_header_regex.replace_all(&text, "").to_string();
+
+        // Remove HTML tags
+        let tag_regex = Regex::new(r"<[^>]*>").unwrap();
+        text = tag_regex.replace_all(&text, " ").to_string();
+
+        // Remove URLs
+        let url_regex = Regex::new(r"https?://[^\s<>]+").unwrap();
+        text = url_regex.replace_all(&text, " ").to_string();
+
+        // Remove email addresses
+        let email_regex = Regex::new(r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}").unwrap();
+        text = email_regex.replace_all(&text, " ").to_string();
+
+        // Remove common email artifacts
+        text = text.replace("&nbsp;", " ");
+        text = text.replace("&amp;", "&");
+        text = text.replace("&lt;", "<");
+        text = text.replace("&gt;", ">");
+        text = text.replace("&quot;", "\"");
+
+        if ignore_whitespace {
+            // Remove all whitespace and newlines
+            text = text.chars().filter(|c| !c.is_whitespace()).collect();
+        } else {
+            // Just normalize whitespace
+            let ws_regex = Regex::new(r"\s+").unwrap();
+            text = ws_regex.replace_all(&text, " ").to_string();
+            text = text.trim().to_string();
+        }
+
+        text
     }
 
     /// Validate an unsubscribe link
@@ -1786,6 +1968,64 @@ impl FilterEngine {
                     }
 
                     false // Valid unsubscribe headers or no unsubscribe headers
+                }
+                Criteria::AttachmentOnlyEmail {
+                    max_text_length,
+                    ignore_whitespace,
+                    suspicious_types,
+                    min_attachment_size,
+                    check_disposition,
+                } => {
+                    log::debug!("Checking for attachment-only email content");
+
+                    let max_text = max_text_length.unwrap_or(100); // Default: allow up to 100 chars of text
+                    let ignore_ws = ignore_whitespace.unwrap_or(true); // Default: ignore whitespace
+                    let min_size = min_attachment_size.unwrap_or(10240); // Default: 10KB minimum
+                    let check_disp = check_disposition.unwrap_or(true); // Default: check disposition headers
+                    let default_types = vec![
+                        "pdf".to_string(),
+                        "doc".to_string(),
+                        "docx".to_string(),
+                        "xls".to_string(),
+                        "xlsx".to_string(),
+                    ];
+                    let types = suspicious_types.as_ref().unwrap_or(&default_types);
+
+                    if let Some(body) = &context.body {
+                        // Check if email has suspicious attachments
+                        let has_suspicious_attachments =
+                            self.has_suspicious_attachments(body, types, min_size, check_disp);
+
+                        if !has_suspicious_attachments {
+                            log::debug!("No suspicious attachments found in email");
+                            return false;
+                        }
+
+                        // Extract text content (remove attachments and MIME structure)
+                        let text_content =
+                            self.extract_text_content_excluding_attachments(body, ignore_ws);
+
+                        log::debug!(
+                            "Extracted text content length: {} (max allowed: {})",
+                            text_content.len(),
+                            max_text
+                        );
+                        log::debug!(
+                            "Text content: '{}'...",
+                            text_content.chars().take(100).collect::<String>()
+                        );
+
+                        // Check if text content is minimal
+                        if text_content.len() <= max_text {
+                            log::info!(
+                                "Attachment-only email detected: {} chars of text, suspicious attachments found",
+                                text_content.len()
+                            );
+                            return true;
+                        }
+                    }
+
+                    false
                 }
                 Criteria::And { criteria } => {
                     for c in criteria {
@@ -3279,6 +3519,205 @@ mod tests {
         match action4 {
             Action::Accept => {}
             _ => panic!("Expected Accept for email with no images"),
+        }
+    }
+
+    #[tokio::test]
+    async fn test_attachment_detection_debug() {
+        let engine = FilterEngine::new(Config::default()).unwrap();
+
+        // Test the helper functions directly
+        let pdf_body = format!(
+            "Content-Type: multipart/mixed; boundary=\"boundary123\"\n\
+            \n\
+            --boundary123\n\
+            Content-Type: text/plain\n\
+            \n\
+            Please see attached.\n\
+            \n\
+            --boundary123\n\
+            Content-Type: application/pdf\n\
+            Content-Disposition: attachment; filename=\"invoice.pdf\"\n\
+            Content-Transfer-Encoding: base64\n\
+            \n\
+            {}\n\
+            --boundary123--",
+            "JVBERi0xLjQKJcOkw7zDtsO4DQo".repeat(200)
+        );
+
+        let types = vec!["pdf".to_string()];
+        println!("Body length: {}", pdf_body.len());
+        println!(
+            "Has suspicious attachments: {}",
+            engine.has_suspicious_attachments(&pdf_body, &types, 5000, true)
+        );
+
+        let text_content = engine.extract_text_content_excluding_attachments(&pdf_body, true);
+        println!("Extracted text: '{}'", text_content);
+        println!("Text length: {}", text_content.len());
+    }
+
+    #[tokio::test]
+    async fn test_attachment_only_email_detection() {
+        use crate::config::{Action, FilterRule};
+        use std::collections::HashMap;
+
+        // Test attachment-only email detection
+        let config = Config {
+            rules: vec![FilterRule {
+                name: "Detect attachment-only emails".to_string(),
+                criteria: Criteria::AttachmentOnlyEmail {
+                    max_text_length: Some(50),
+                    ignore_whitespace: Some(true),
+                    suspicious_types: Some(vec!["pdf".to_string(), "doc".to_string()]),
+                    min_attachment_size: Some(1000), // 1KB minimum (reduced from 5KB)
+                    check_disposition: Some(true),
+                },
+                action: Action::Reject {
+                    message: "Attachment-only email detected".to_string(),
+                },
+            }],
+            ..Default::default()
+        };
+
+        let engine = FilterEngine::new(config).unwrap();
+
+        // Test case 1: Should be flagged - PDF attachment with minimal text
+        let pdf_attachment_body = format!(
+            "Content-Type: multipart/mixed; boundary=\"boundary123\"\n\
+            \n\
+            --boundary123\n\
+            Content-Type: text/plain\n\
+            \n\
+            Please see attached.\n\
+            \n\
+            --boundary123\n\
+            Content-Type: application/pdf\n\
+            Content-Disposition: attachment; filename=\"invoice.pdf\"\n\
+            Content-Transfer-Encoding: base64\n\
+            \n\
+            {}\n\
+            --boundary123--",
+            "JVBERi0xLjQKJcOkw7zDtsO4DQo".repeat(200) // Simulate large PDF base64 content
+        );
+
+        let mut headers1 = HashMap::new();
+        headers1.insert(
+            "from".to_string(),
+            "Aaron Archibold <kabshagagsntafsbanaksbs4@gmail.com>".to_string(),
+        );
+        headers1.insert(
+            "subject".to_string(),
+            "Order Confirmation M9N030MBIVVTP".to_string(),
+        );
+
+        let context1 = MailContext {
+            headers: headers1,
+            sender: Some("kabshagagsntafsbanaksbs4@gmail.com".to_string()),
+            body: Some(pdf_attachment_body),
+            ..Default::default()
+        };
+
+        let (action1, _) = engine.evaluate(&context1).await;
+        match action1 {
+            Action::Reject { .. } => {}
+            _ => panic!("Expected Reject for PDF attachment with minimal text"),
+        }
+
+        // Test case 2: Should be flagged - DOC attachment with no meaningful text
+        let doc_attachment_body = format!(
+            "Content-Type: multipart/mixed; boundary=\"boundary456\"\n\
+            \n\
+            --boundary456\n\
+            Content-Type: application/msword\n\
+            Content-Disposition: attachment; filename=\"document.doc\"\n\
+            Content-Transfer-Encoding: base64\n\
+            \n\
+            {}\n\
+            --boundary456--",
+            "0M8R4KGxGuEAAAAAAAAAAAAAAAAAAAAAPgADAP7/CQAGAAAAAAAAAAAAAAABAAAAPgAAAAAAAAA="
+                .repeat(50)
+        );
+
+        let mut headers2 = HashMap::new();
+        headers2.insert("from".to_string(), "sender@example.com".to_string());
+
+        let context2 = MailContext {
+            headers: headers2,
+            sender: Some("sender@example.com".to_string()),
+            body: Some(doc_attachment_body),
+            ..Default::default()
+        };
+
+        let (action2, _) = engine.evaluate(&context2).await;
+        match action2 {
+            Action::Reject { .. } => {}
+            _ => panic!("Expected Reject for DOC attachment with no text"),
+        }
+
+        // Test case 3: Should NOT be flagged - Email with substantial text content
+        let legitimate_email_body = "Content-Type: multipart/mixed; boundary=\"boundary789\"\n\
+            \n\
+            --boundary789\n\
+            Content-Type: text/plain\n\
+            \n\
+            Dear Customer,\n\
+            \n\
+            Thank you for your inquiry. I'm attaching the requested document for your review.\n\
+            Please let me know if you have any questions about the contents or need any\n\
+            clarification on the information provided. We appreciate your business and\n\
+            look forward to working with you on this project.\n\
+            \n\
+            Best regards,\n\
+            John Smith\n\
+            Account Manager\n\
+            \n\
+            --boundary789\n\
+            Content-Type: application/pdf\n\
+            Content-Disposition: attachment; filename=\"proposal.pdf\"\n\
+            Content-Transfer-Encoding: base64\n\
+            \n\
+            JVBERi0xLjQKJcOkw7zDtsO4DQo=\n\
+            --boundary789--"
+            .to_string();
+
+        let mut headers3 = HashMap::new();
+        headers3.insert("from".to_string(), "john.smith@company.com".to_string());
+
+        let context3 = MailContext {
+            headers: headers3,
+            sender: Some("john.smith@company.com".to_string()),
+            body: Some(legitimate_email_body),
+            ..Default::default()
+        };
+
+        let (action3, _) = engine.evaluate(&context3).await;
+        match action3 {
+            Action::Accept => {}
+            _ => panic!("Expected Accept for email with substantial text content"),
+        }
+
+        // Test case 4: Should NOT be flagged - Email with no attachments
+        let no_attachment_body = "Content-Type: text/plain\n\
+            \n\
+            This is a regular email with no attachments.\n\
+            It contains only text content and should not be flagged."
+            .to_string();
+
+        let mut headers4 = HashMap::new();
+        headers4.insert("from".to_string(), "normal@example.com".to_string());
+
+        let context4 = MailContext {
+            headers: headers4,
+            sender: Some("normal@example.com".to_string()),
+            body: Some(no_attachment_body),
+            ..Default::default()
+        };
+
+        let (action4, _) = engine.evaluate(&context4).await;
+        match action4 {
+            Action::Accept => {}
+            _ => panic!("Expected Accept for email with no attachments"),
         }
     }
 }
