@@ -922,44 +922,6 @@ impl FilterEngine {
         false
     }
 
-    /// Estimate attachment size based on base64 content or other indicators
-    fn estimate_attachment_size(&self, body: &str, content_type: &str) -> usize {
-        // Find content after the Content-Type header
-        if let Some(content_start) = body.find(content_type) {
-            let remaining_content = &body[content_start..];
-
-            // Look for base64 encoded content
-            if remaining_content.contains("Content-Transfer-Encoding: base64") {
-                // Find the base64 content section
-                if let Some(base64_start) =
-                    remaining_content.find("Content-Transfer-Encoding: base64")
-                {
-                    let base64_section = &remaining_content[base64_start..];
-
-                    // Count base64 characters (rough estimation)
-                    let base64_chars = base64_section
-                        .lines()
-                        .skip(2) // Skip the encoding header and empty line
-                        .take_while(|line| !line.starts_with("--")) // Stop at next MIME boundary
-                        .map(|line| line.trim().len())
-                        .sum::<usize>();
-
-                    // Base64 encoding: 4 characters = 3 bytes, so divide by 4/3
-                    let estimated_size = (base64_chars * 3) / 4;
-                    log::debug!(
-                        "Estimated attachment size: {} bytes (from {} base64 chars)",
-                        estimated_size,
-                        base64_chars
-                    );
-                    return estimated_size;
-                }
-            }
-        }
-
-        // If we can't estimate, assume it's large enough to be suspicious
-        15000 // 15KB default assumption
-    }
-
     /// Check if a URL contains an IP address instead of a domain name
     fn contains_ip_address(
         &self,
@@ -972,37 +934,29 @@ impl FilterEngine {
         let host = if let Some(host) = self.extract_host_from_url(url) {
             host
         } else {
-            log::debug!("Could not extract host from URL: {}", url);
+            log::debug!("Could not extract host from URL: {url}");
             return false;
         };
 
-        log::debug!("Extracted host from URL '{}': '{}'", url, host);
+        log::debug!("Extracted host from URL '{url}': '{host}'");
 
         // Check for IPv4 addresses
         if check_ipv4 && self.is_ipv4_address(&host) {
             if !allow_private && self.is_private_ipv4(&host) {
-                log::debug!(
-                    "Found private IPv4 address (allowed: {}): {}",
-                    allow_private,
-                    host
-                );
+                log::debug!("Found private IPv4 address (allowed: {allow_private}): {host}");
                 return false;
             }
-            log::debug!("Found IPv4 address in unsubscribe link: {}", host);
+            log::debug!("Found IPv4 address in unsubscribe link: {host}");
             return true;
         }
 
         // Check for IPv6 addresses
         if check_ipv6 && self.is_ipv6_address(&host) {
             if !allow_private && self.is_private_ipv6(&host) {
-                log::debug!(
-                    "Found private IPv6 address (allowed: {}): {}",
-                    allow_private,
-                    host
-                );
+                log::debug!("Found private IPv6 address (allowed: {allow_private}): {host}");
                 return false;
             }
-            log::debug!("Found IPv6 address in unsubscribe link: {}", host);
+            log::debug!("Found IPv6 address in unsubscribe link: {host}");
             return true;
         }
 
@@ -1019,7 +973,7 @@ impl FilterEngine {
         }
 
         // Handle URLs without protocol
-        let test_url = format!("http://{}", url);
+        let test_url = format!("http://{url}");
         if let Ok(parsed_url) = url::Url::parse(&test_url) {
             return parsed_url.host_str().map(|s| s.to_string());
         }
