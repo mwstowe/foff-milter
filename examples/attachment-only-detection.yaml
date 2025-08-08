@@ -1,0 +1,104 @@
+socket_path: "/var/run/foff-milter.sock"
+default_action: "Accept"
+
+rules:
+  # Basic attachment-only detection for PDFs
+  - name: "Block PDF-only emails with minimal text"
+    criteria:
+      type: "AttachmentOnlyEmail"
+      max_text_length: 100
+      ignore_whitespace: true
+      suspicious_types: ["pdf"]
+      min_attachment_size: 10240  # 10KB minimum
+      check_disposition: true
+    action:
+      type: "Reject"
+      message: "PDF-only email with minimal text detected"
+
+  # Comprehensive attachment-only detection
+  - name: "Block suspicious document attachments with minimal text"
+    criteria:
+      type: "AttachmentOnlyEmail"
+      max_text_length: 50
+      ignore_whitespace: true
+      suspicious_types: ["pdf", "doc", "docx", "xls", "xlsx", "zip"]
+      min_attachment_size: 5120   # 5KB minimum
+      check_disposition: true
+    action:
+      type: "Reject"
+      message: "Suspicious document attachment with minimal text"
+
+  # Tag mode for monitoring
+  - name: "Tag attachment-only emails for analysis"
+    criteria:
+      type: "AttachmentOnlyEmail"
+      max_text_length: 200
+      ignore_whitespace: true
+      suspicious_types: ["pdf", "doc", "docx", "exe"]
+      min_attachment_size: 20480  # 20KB minimum
+      check_disposition: true
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Attachment-Only"
+      header_value: "Minimal text with suspicious attachment"
+
+  # Combined rule: Random sender + attachment-only
+  - name: "Block random Gmail addresses with attachment-only emails"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SenderPattern"
+          pattern: "^[a-z]{15,}\\d*@gmail\\.com$"
+        - type: "AttachmentOnlyEmail"
+          max_text_length: 100
+          suspicious_types: ["pdf", "doc", "docx"]
+          min_attachment_size: 5120
+          check_disposition: true
+    action:
+      type: "Reject"
+      message: "Random Gmail address sending attachment-only email"
+
+  # Enhanced phishing detection: Attachment + commercial subject
+  - name: "Block attachment-only emails with commercial subjects"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "AttachmentOnlyEmail"
+          max_text_length: 50
+          suspicious_types: ["pdf"]
+          min_attachment_size: 10240
+        - type: "SubjectPattern"
+          pattern: "(?i)(order|invoice|payment|confirmation|receipt).*[A-Z0-9._~]{10,}"
+    action:
+      type: "Reject"
+      message: "Attachment-only phishing email with commercial subject"
+
+  # Free email + attachment-only detection
+  - name: "Block free email services sending attachment-only emails"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@(gmail|outlook|yahoo|hotmail)\\.(com|net)$"
+        - type: "AttachmentOnlyEmail"
+          max_text_length: 30
+          suspicious_types: ["pdf", "doc", "exe"]
+          min_attachment_size: 15360  # 15KB
+        - type: "SubjectPattern"
+          pattern: "(?i)(document|file|attachment|invoice|order|payment)"
+    action:
+      type: "Reject"
+      message: "Free email service sending suspicious attachment-only email"
+
+  # Executable attachment detection (high risk)
+  - name: "Block executable attachments with minimal text"
+    criteria:
+      type: "AttachmentOnlyEmail"
+      max_text_length: 200
+      ignore_whitespace: true
+      suspicious_types: ["exe", "zip"]
+      min_attachment_size: 1024   # 1KB minimum (executables can be small)
+      check_disposition: true
+    action:
+      type: "Reject"
+      message: "Executable attachment with minimal text blocked"

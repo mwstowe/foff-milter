@@ -72,6 +72,7 @@ rules:
 - **UnsubscribeMailtoOnly**: Detect emails with exclusively mailto unsubscribe links (phishing indicator)
 - **DomainAge**: Check if domains are younger than specified threshold (useful for detecting spam from recently registered domains)
 - **InvalidUnsubscribeHeaders**: Detect emails with List-Unsubscribe-Post but no List-Unsubscribe header (RFC violation)
+- **AttachmentOnlyEmail**: Detect emails consisting primarily of attachments with minimal text content (malware/phishing vector)
 - **And**: All sub-criteria must match
 - **Or**: Any sub-criteria must match
 
@@ -393,6 +394,50 @@ See `examples/bulk-spam-detection.yaml` for comprehensive bulk spam detection ru
 This detects emails that have `List-Unsubscribe-Post: List-Unsubscribe=One-Click` but no actual `List-Unsubscribe` header, which is an RFC violation and common spam pattern.
 
 See `examples/invalid-unsubscribe-headers.yaml` for comprehensive invalid unsubscribe header detection rules.
+
+### Attachment-only email detection
+
+```yaml
+- name: "Block PDF-only emails with minimal text"
+  criteria:
+    type: "AttachmentOnlyEmail"
+    max_text_length: 100
+    ignore_whitespace: true
+    suspicious_types: ["pdf"]
+    min_attachment_size: 10240  # 10KB minimum
+    check_disposition: true
+  action:
+    type: "Reject"
+    message: "PDF-only email with minimal text detected"
+```
+
+```yaml
+- name: "Block random Gmail addresses with attachment-only emails"
+  criteria:
+    type: "And"
+    criteria:
+      - type: "SenderPattern"
+        pattern: "^[a-z]{15,}\\d*@gmail\\.com$"
+      - type: "AttachmentOnlyEmail"
+        max_text_length: 50
+        suspicious_types: ["pdf", "doc", "docx"]
+        min_attachment_size: 5120
+        check_disposition: true
+  action:
+    type: "Reject"
+    message: "Random Gmail address sending attachment-only email"
+```
+
+This detects emails that consist primarily of attachments (PDF, DOC, DOCX, etc.) with minimal text content, which is a common vector for malware delivery and phishing attacks.
+
+**Configuration Options:**
+- `max_text_length`: Maximum allowed text content (default: 100 characters)
+- `ignore_whitespace`: Whether to ignore whitespace when counting text (default: true)
+- `suspicious_types`: Attachment types to flag (default: ["pdf", "doc", "docx", "xls", "xlsx"])
+- `min_attachment_size`: Minimum attachment size to consider suspicious (default: 10KB)
+- `check_disposition`: Whether to check Content-Disposition headers (default: true)
+
+See `examples/attachment-only-detection.yaml` for comprehensive attachment-only email detection rules.
 
 ### Complex rule with multiple conditions
 
