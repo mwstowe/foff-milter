@@ -348,6 +348,10 @@ impl FilterEngine {
                     self.compiled_patterns.insert(pattern.clone(), regex);
                 }
             }
+            Criteria::UnsubscribeLinkIPAddress { .. } => {
+                // No regex patterns to compile for IP address detection
+                // Detection is done at runtime by analyzing unsubscribe URLs
+            }
             Criteria::UnsubscribeMailtoOnly { .. } => {
                 // No regex patterns to compile for mailto-only detection
                 // Detection is done at runtime by analyzing link types
@@ -956,6 +960,130 @@ impl FilterEngine {
         15000 // 15KB default assumption
     }
 
+    /// Check if a URL contains an IP address instead of a domain name
+    fn contains_ip_address(
+        &self,
+        url: &str,
+        check_ipv4: bool,
+        check_ipv6: bool,
+        allow_private: bool,
+    ) -> bool {
+        // Extract the host part from the URL
+        let host = if let Some(host) = self.extract_host_from_url(url) {
+            host
+        } else {
+            log::debug!("Could not extract host from URL: {}", url);
+            return false;
+        };
+
+        log::debug!("Extracted host from URL '{}': '{}'", url, host);
+
+        // Check for IPv4 addresses
+        if check_ipv4 && self.is_ipv4_address(&host) {
+            if !allow_private && self.is_private_ipv4(&host) {
+                log::debug!(
+                    "Found private IPv4 address (allowed: {}): {}",
+                    allow_private,
+                    host
+                );
+                return false;
+            }
+            log::debug!("Found IPv4 address in unsubscribe link: {}", host);
+            return true;
+        }
+
+        // Check for IPv6 addresses
+        if check_ipv6 && self.is_ipv6_address(&host) {
+            if !allow_private && self.is_private_ipv6(&host) {
+                log::debug!(
+                    "Found private IPv6 address (allowed: {}): {}",
+                    allow_private,
+                    host
+                );
+                return false;
+            }
+            log::debug!("Found IPv6 address in unsubscribe link: {}", host);
+            return true;
+        }
+
+        false
+    }
+
+    /// Extract host from URL (handles http://, https://, and bare domains)
+    fn extract_host_from_url(&self, url: &str) -> Option<String> {
+        // Handle URLs with protocol
+        if url.starts_with("http://") || url.starts_with("https://") {
+            if let Ok(parsed_url) = url::Url::parse(url) {
+                return parsed_url.host_str().map(|s| s.to_string());
+            }
+        }
+
+        // Handle URLs without protocol
+        let test_url = format!("http://{}", url);
+        if let Ok(parsed_url) = url::Url::parse(&test_url) {
+            return parsed_url.host_str().map(|s| s.to_string());
+        }
+
+        // Fallback: extract host manually
+        let cleaned = url
+            .trim_start_matches("http://")
+            .trim_start_matches("https://");
+        let host_part = cleaned
+            .split('/')
+            .next()?
+            .split('?')
+            .next()?
+            .split('#')
+            .next()?;
+
+        // Remove port if present
+        let host = host_part.split(':').next()?;
+
+        if !host.is_empty() {
+            Some(host.to_string())
+        } else {
+            None
+        }
+    }
+
+    /// Check if a string is a valid IPv4 address
+    fn is_ipv4_address(&self, host: &str) -> bool {
+        use std::net::Ipv4Addr;
+        host.parse::<Ipv4Addr>().is_ok()
+    }
+
+    /// Check if a string is a valid IPv6 address
+    fn is_ipv6_address(&self, host: &str) -> bool {
+        use std::net::Ipv6Addr;
+        // Remove brackets if present (common in URLs)
+        let cleaned = host.trim_start_matches('[').trim_end_matches(']');
+        cleaned.parse::<Ipv6Addr>().is_ok()
+    }
+
+    /// Check if an IPv4 address is private/local
+    fn is_private_ipv4(&self, host: &str) -> bool {
+        use std::net::Ipv4Addr;
+        if let Ok(ip) = host.parse::<Ipv4Addr>() {
+            ip.is_private() || ip.is_loopback() || ip.is_link_local()
+        } else {
+            false
+        }
+    }
+
+    /// Check if an IPv6 address is private/local
+    fn is_private_ipv6(&self, host: &str) -> bool {
+        use std::net::Ipv6Addr;
+        let cleaned = host.trim_start_matches('[').trim_end_matches(']');
+        if let Ok(ip) = cleaned.parse::<Ipv6Addr>() {
+            ip.is_loopback() || ip.is_multicast() ||
+            // Check for private IPv6 ranges (fc00::/7 and fe80::/10)
+            (ip.segments()[0] & 0xfe00) == 0xfc00 || // fc00::/7 (unique local)
+            (ip.segments()[0] & 0xffc0) == 0xfe80 // fe80::/10 (link local)
+        } else {
+            false
+        }
+    }
+
     /// Extract text content excluding attachment data
     fn extract_text_content_excluding_attachments(
         &self,
@@ -1290,6 +1418,44 @@ impl FilterEngine {
                     }
 
                     log::debug!("No unsubscribe links match pattern: {pattern}");
+                    false
+                }
+                Criteria::UnsubscribeLinkIPAddress {
+                    check_ipv4,
+                    check_ipv6,
+                    allow_private_ips,
+                } => {
+                    log::debug!("Checking for unsubscribe links with IP addresses");
+
+                    let links = self.get_unsubscribe_links(context);
+
+                    if links.is_empty() {
+                        log::debug!("No unsubscribe links found for IP address check");
+                        return false;
+                    }
+
+                    let check_ipv4_enabled = check_ipv4.unwrap_or(true);
+                    let check_ipv6_enabled = check_ipv6.unwrap_or(true);
+                    let allow_private = allow_private_ips.unwrap_or(false);
+
+                    log::debug!(
+                        "Found {} unsubscribe links to check for IP addresses",
+                        links.len()
+                    );
+
+                    for link in &links {
+                        if self.contains_ip_address(
+                            link,
+                            check_ipv4_enabled,
+                            check_ipv6_enabled,
+                            allow_private,
+                        ) {
+                            log::info!("Unsubscribe link contains IP address: {link}");
+                            return true;
+                        }
+                    }
+
+                    log::debug!("No unsubscribe links contain IP addresses");
                     false
                 }
                 Criteria::UnsubscribeMailtoOnly { allow_mixed } => {
@@ -3520,6 +3686,322 @@ mod tests {
             Action::Accept => {}
             _ => panic!("Expected Accept for email with no images"),
         }
+    }
+
+    #[tokio::test]
+    async fn test_unsubscribe_link_ip_address_detection() {
+        use crate::config::{Action, FilterRule};
+        use std::collections::HashMap;
+
+        // Test unsubscribe link IP address detection
+        let config = Config {
+            rules: vec![FilterRule {
+                name: "Detect unsubscribe links with IP addresses".to_string(),
+                criteria: Criteria::UnsubscribeLinkIPAddress {
+                    check_ipv4: Some(true),
+                    check_ipv6: Some(true),
+                    allow_private_ips: Some(false),
+                },
+                action: Action::Reject {
+                    message: "Unsubscribe link uses IP address instead of domain".to_string(),
+                },
+            }],
+            ..Default::default()
+        };
+
+        let engine = FilterEngine::new(config).unwrap();
+
+        // Test case 1: Should be flagged - IPv4 address in unsubscribe link
+        let mut headers1 = HashMap::new();
+        headers1.insert("from".to_string(), "spammer@example.com".to_string());
+        headers1.insert(
+            "list-unsubscribe".to_string(),
+            "<http://8.8.8.8/unsubscribe>".to_string(),
+        );
+
+        let context1 = MailContext {
+            headers: headers1,
+            sender: Some("spammer@example.com".to_string()),
+            ..Default::default()
+        };
+
+        let (action1, _) = engine.evaluate(&context1).await;
+        match action1 {
+            Action::Reject { .. } => {}
+            _ => panic!("Expected Reject for IPv4 address in unsubscribe link"),
+        }
+
+        // Test case 2: Should be flagged - IPv6 address in unsubscribe link
+        let mut headers2 = HashMap::new();
+        headers2.insert("from".to_string(), "spammer@example.com".to_string());
+        headers2.insert(
+            "list-unsubscribe".to_string(),
+            "<http://[2001:db8::1]/unsubscribe>".to_string(),
+        );
+
+        let context2 = MailContext {
+            headers: headers2,
+            sender: Some("spammer@example.com".to_string()),
+            ..Default::default()
+        };
+
+        let (action2, _) = engine.evaluate(&context2).await;
+        match action2 {
+            Action::Reject { .. } => {}
+            _ => panic!("Expected Reject for IPv6 address in unsubscribe link"),
+        }
+
+        // Test case 3: Should be flagged - Public IPv4 address
+        let mut headers3 = HashMap::new();
+        headers3.insert("from".to_string(), "spammer@example.com".to_string());
+        headers3.insert(
+            "list-unsubscribe".to_string(),
+            "<https://8.8.8.8/unsubscribe?id=123>".to_string(),
+        );
+
+        let context3 = MailContext {
+            headers: headers3,
+            sender: Some("spammer@example.com".to_string()),
+            ..Default::default()
+        };
+
+        let (action3, _) = engine.evaluate(&context3).await;
+        match action3 {
+            Action::Reject { .. } => {}
+            _ => panic!("Expected Reject for public IPv4 address in unsubscribe link"),
+        }
+
+        // Test case 4: Should NOT be flagged - Legitimate domain name
+        let mut headers4 = HashMap::new();
+        headers4.insert("from".to_string(), "legitimate@company.com".to_string());
+        headers4.insert(
+            "list-unsubscribe".to_string(),
+            "<https://company.com/unsubscribe>".to_string(),
+        );
+
+        let context4 = MailContext {
+            headers: headers4,
+            sender: Some("legitimate@company.com".to_string()),
+            ..Default::default()
+        };
+
+        let (action4, _) = engine.evaluate(&context4).await;
+        match action4 {
+            Action::Accept => {}
+            _ => panic!("Expected Accept for legitimate domain name"),
+        }
+
+        // Test case 5: Should NOT be flagged - Multiple legitimate links
+        let mut headers5 = HashMap::new();
+        headers5.insert("from".to_string(), "newsletter@service.com".to_string());
+        headers5.insert(
+            "list-unsubscribe".to_string(),
+            "<https://service.com/unsubscribe>, <mailto:unsubscribe@service.com>".to_string(),
+        );
+
+        let context5 = MailContext {
+            headers: headers5,
+            sender: Some("newsletter@service.com".to_string()),
+            ..Default::default()
+        };
+
+        let (action5, _) = engine.evaluate(&context5).await;
+        match action5 {
+            Action::Accept => {}
+            _ => panic!("Expected Accept for multiple legitimate links"),
+        }
+    }
+
+    #[tokio::test]
+    async fn test_unsubscribe_link_ip_address_private_ips() {
+        use crate::config::{Action, FilterRule};
+        use std::collections::HashMap;
+
+        // Test with private IPs allowed
+        let config = Config {
+            rules: vec![FilterRule {
+                name: "Detect unsubscribe links with IP addresses (allow private)".to_string(),
+                criteria: Criteria::UnsubscribeLinkIPAddress {
+                    check_ipv4: Some(true),
+                    check_ipv6: Some(true),
+                    allow_private_ips: Some(true), // Allow private IPs
+                },
+                action: Action::Reject {
+                    message: "Unsubscribe link uses IP address".to_string(),
+                },
+            }],
+            ..Default::default()
+        };
+
+        let engine = FilterEngine::new(config).unwrap();
+
+        // Test case 1: Should be flagged - Private IPv4 address (but allowed)
+        let mut headers1 = HashMap::new();
+        headers1.insert("from".to_string(), "test@example.com".to_string());
+        headers1.insert(
+            "list-unsubscribe".to_string(),
+            "<http://192.168.1.100/unsubscribe>".to_string(),
+        );
+
+        let context1 = MailContext {
+            headers: headers1,
+            sender: Some("test@example.com".to_string()),
+            ..Default::default()
+        };
+
+        let (action1, _) = engine.evaluate(&context1).await;
+        match action1 {
+            Action::Reject { .. } => {}
+            _ => panic!("Expected Reject for private IPv4 address when allowed"),
+        }
+
+        // Test case 2: Should be flagged - Public IPv4 address
+        let mut headers2 = HashMap::new();
+        headers2.insert("from".to_string(), "test@example.com".to_string());
+        headers2.insert(
+            "list-unsubscribe".to_string(),
+            "<http://8.8.8.8/unsubscribe>".to_string(),
+        );
+
+        let context2 = MailContext {
+            headers: headers2,
+            sender: Some("test@example.com".to_string()),
+            ..Default::default()
+        };
+
+        let (action2, _) = engine.evaluate(&context2).await;
+        match action2 {
+            Action::Reject { .. } => {}
+            _ => panic!("Expected Reject for public IPv4 address"),
+        }
+    }
+
+    #[tokio::test]
+    async fn test_unsubscribe_link_ip_address_private_ips_blocked() {
+        use crate::config::{Action, FilterRule};
+        use std::collections::HashMap;
+
+        // Test with private IPs blocked (default)
+        let config = Config {
+            rules: vec![FilterRule {
+                name: "Detect unsubscribe links with IP addresses (block private)".to_string(),
+                criteria: Criteria::UnsubscribeLinkIPAddress {
+                    check_ipv4: Some(true),
+                    check_ipv6: Some(true),
+                    allow_private_ips: Some(false), // Block private IPs
+                },
+                action: Action::Reject {
+                    message: "Unsubscribe link uses IP address".to_string(),
+                },
+            }],
+            ..Default::default()
+        };
+
+        let engine = FilterEngine::new(config).unwrap();
+
+        // Test case 1: Should NOT be flagged - Private IPv4 address (blocked)
+        let mut headers1 = HashMap::new();
+        headers1.insert("from".to_string(), "test@example.com".to_string());
+        headers1.insert(
+            "list-unsubscribe".to_string(),
+            "<http://192.168.1.100/unsubscribe>".to_string(),
+        );
+
+        let context1 = MailContext {
+            headers: headers1,
+            sender: Some("test@example.com".to_string()),
+            ..Default::default()
+        };
+
+        let (action1, _) = engine.evaluate(&context1).await;
+        match action1 {
+            Action::Accept => {}
+            _ => panic!("Expected Accept for private IPv4 address when blocked"),
+        }
+
+        // Test case 2: Should be flagged - Public IPv4 address
+        let mut headers2 = HashMap::new();
+        headers2.insert("from".to_string(), "test@example.com".to_string());
+        headers2.insert(
+            "list-unsubscribe".to_string(),
+            "<http://8.8.8.8/unsubscribe>".to_string(),
+        );
+
+        let context2 = MailContext {
+            headers: headers2,
+            sender: Some("test@example.com".to_string()),
+            ..Default::default()
+        };
+
+        let (action2, _) = engine.evaluate(&context2).await;
+        match action2 {
+            Action::Reject { .. } => {}
+            _ => panic!("Expected Reject for public IPv4 address"),
+        }
+    }
+
+    #[tokio::test]
+    async fn test_ip_address_helper_functions() {
+        let engine = FilterEngine::new(Config::default()).unwrap();
+
+        // Test IPv4 detection
+        assert!(engine.is_ipv4_address("192.168.1.1"));
+        assert!(engine.is_ipv4_address("8.8.8.8"));
+        assert!(engine.is_ipv4_address("127.0.0.1"));
+        assert!(!engine.is_ipv4_address("example.com"));
+        assert!(!engine.is_ipv4_address("not.an.ip"));
+
+        // Test IPv6 detection
+        assert!(engine.is_ipv6_address("2001:db8::1"));
+        assert!(engine.is_ipv6_address("::1"));
+        assert!(engine.is_ipv6_address("fe80::1"));
+        assert!(engine.is_ipv6_address("[2001:db8::1]")); // With brackets
+        assert!(!engine.is_ipv6_address("example.com"));
+        assert!(!engine.is_ipv6_address("192.168.1.1"));
+
+        // Test private IPv4 detection
+        assert!(engine.is_private_ipv4("192.168.1.1"));
+        assert!(engine.is_private_ipv4("10.0.0.1"));
+        assert!(engine.is_private_ipv4("172.16.0.1"));
+        assert!(engine.is_private_ipv4("127.0.0.1"));
+        assert!(!engine.is_private_ipv4("8.8.8.8"));
+        assert!(!engine.is_private_ipv4("1.1.1.1"));
+
+        // Test private IPv6 detection
+        assert!(engine.is_private_ipv6("::1"));
+        assert!(engine.is_private_ipv6("fe80::1"));
+        assert!(engine.is_private_ipv6("fc00::1"));
+        assert!(!engine.is_private_ipv6("2001:db8::1"));
+
+        // Test host extraction
+        assert_eq!(
+            engine.extract_host_from_url("http://example.com/path"),
+            Some("example.com".to_string())
+        );
+        assert_eq!(
+            engine.extract_host_from_url("https://192.168.1.1/unsubscribe"),
+            Some("192.168.1.1".to_string())
+        );
+        assert_eq!(
+            engine.extract_host_from_url("http://[2001:db8::1]/path"),
+            Some("[2001:db8::1]".to_string())
+        );
+        assert_eq!(
+            engine.extract_host_from_url("example.com:8080/path"),
+            Some("example.com".to_string())
+        );
+        assert_eq!(
+            engine.extract_host_from_url("192.168.1.1"),
+            Some("192.168.1.1".to_string())
+        );
+
+        // Test IP address detection in URLs
+        assert!(engine.contains_ip_address("http://192.168.1.1/unsubscribe", true, false, true));
+        assert!(engine.contains_ip_address("https://8.8.8.8/path", true, false, false));
+        assert!(engine.contains_ip_address("http://[2001:db8::1]/unsubscribe", false, true, false));
+        assert!(!engine.contains_ip_address("https://example.com/unsubscribe", true, true, false));
+        assert!(!engine.contains_ip_address("http://192.168.1.1/unsubscribe", true, false, false));
+        // Private IP blocked
     }
 
     #[tokio::test]
