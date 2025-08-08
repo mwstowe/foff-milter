@@ -10,7 +10,7 @@ rules:
   - name: "Block suspicious Chinese services"
     criteria:
       type: "MailerPattern"
-      pattern: "service\\..*\\.cn"
+      pattern: 'service\\..*\\.cn'
     action:
       type: "Reject"
       message: "Mail from suspicious service rejected"
@@ -34,7 +34,7 @@ rules:
   - name: "Block blacklisted domains"
     criteria:
       type: "SenderPattern"
-      pattern: ".*@(spam-domain|bad-domain|malicious)\\.com$"
+      pattern: '.*@(spam-domain|bad-domain|malicious)\\.com$'
     action:
       type: "Reject"
       message: "Sender domain is blacklisted"
@@ -69,7 +69,7 @@ rules:
       type: "And"
       criteria:
         - type: "SenderPattern"
-          pattern: ".*@.*\\.(cn|ru|tk|ml|ga)$"
+          pattern: '.*@.*\\.(cn|ru|tk|ml|ga)$'
         - type: "Or"
           criteria:
             - type: "SubjectPattern"
@@ -95,7 +95,7 @@ rules:
           pattern: "(?i)application/(zip|rar|exe|bat|scr)"
         - type: "HeaderPattern"
           header: "content-disposition"
-          pattern: "(?i)filename=.*\\.(exe|bat|scr|com|pif)\"?"
+          pattern: '(?i)filename=.*\\.(exe|bat|scr|com|pif)\"?'
     action:
       type: "TagAsSpam"
       header_name: "X-Spam-Attachment"
@@ -135,10 +135,10 @@ rules:
         - type: "Or"
           criteria:
             - type: "SenderPattern"
-              pattern: ".*@(?!.*\\.(bank|paypal|amazon|microsoft|google)\\.com).*"
+              pattern: '.*@.*\.(tk|ml|ga|cf|cn|ru|info|biz)$'
             - type: "HeaderPattern"
               header: "reply-to"
-              pattern: ".*@(?!.*\\.(bank|paypal|amazon|microsoft|google)\\.com).*"
+              pattern: '.*@.*\.(tk|ml|ga|cf|cn|ru|info|biz)$'
     action:
       type: "TagAsSpam"
       header_name: "X-Spam-Phishing"

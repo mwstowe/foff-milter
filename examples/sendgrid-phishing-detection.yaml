@@ -47,7 +47,7 @@ rules:
           pattern: ".*sendgrid\\.net"
         - type: "HeaderPattern"
           header: "DKIM-Signature"
-          pattern: "d=(?!sendgrid\\.net).*\\.(tk|ml|ga|cf|click|download|zip|review|country|kim|work)"
+          pattern: "d=.*\\.(tk|ml|ga|cf|click|download|zip|review|country|kim|work)"
     action:
       type: "Reject"
       message: "DKIM failure from suspicious domain via SendGrid"

@@ -32,9 +32,9 @@ rules:
       check_suspicious_tlds: true
       check_ip_addresses: true
       suspicious_patterns:
-        - ".*\.sslip\.io.*"  # Matches the example: wordpress-i8k0c0s0884kso44gckkwso0.86.106.104.15.sslip.io
-        - ".*wordpress.*[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}.*"
-        - ".*[a-z0-9]{20,}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}.*"
+        - '.*\.sslip\.io.*'  # Matches the example: wordpress-i8k0c0s0884kso44gckkwso0.86.106.104.15.sslip.io
+        - '.*wordpress.*[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}.*'
+        - '.*[a-z0-9]{20,}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}.*'
     action:
       type: "TagAsSpam"
       header_name: "X-Phishing-Links"
@@ -87,7 +87,7 @@ rules:
         - type: "SubjectPattern"
           pattern: "(?i)(password|login|signin|account|expire|suspend)"
         - type: "SenderPattern"
-          pattern: ".*@(?!.*(baddomain|paypal|amazon|microsoft|google|apple)\.com).*"
+          pattern: '.*@.*\.(tk|ml|ga|cf|cn|ru|info|biz)$'
     action:
       type: "TagAsSpam"
       header_name: "X-Phishing-Password"
@@ -116,7 +116,7 @@ rules:
           trusted_domains: ["baddomain.com"]
         - type: "PhishingSuspiciousLinks"
           suspicious_patterns:
-            - ".*\.sslip\.io.*"
+            - '.*\.sslip\.io.*'
         - type: "SubjectPattern"
           pattern: "(?i)(password.*expire|release.*email|inbox)"
     action:
