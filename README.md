@@ -69,6 +69,7 @@ rules:
 - **HeaderContainsLanguage**: Detect specific languages in email headers
 - **UnsubscribeLinkValidation**: Validate unsubscribe links in email body and headers
 - **UnsubscribeLinkPattern**: Match regex patterns against unsubscribe links
+- **UnsubscribeLinkIPAddress**: Detect unsubscribe links that use IP addresses instead of domain names (spam indicator)
 - **UnsubscribeMailtoOnly**: Detect emails with exclusively mailto unsubscribe links (phishing indicator)
 - **DomainAge**: Check if domains are younger than specified threshold (useful for detecting spam from recently registered domains)
 - **InvalidUnsubscribeHeaders**: Detect emails with List-Unsubscribe-Post but no List-Unsubscribe header (RFC violation)
@@ -267,6 +268,51 @@ sudo systemctl restart postfix
 ```
 
 See `examples/unsubscribe-pattern-example.yaml` for more comprehensive examples of unsubscribe link pattern matching.
+
+### Unsubscribe link IP address detection
+
+```yaml
+- name: "Block unsubscribe links with IP addresses"
+  criteria:
+    type: "UnsubscribeLinkIPAddress"
+    check_ipv4: true
+    check_ipv6: true
+    allow_private_ips: false
+  action:
+    type: "Reject"
+    message: "Unsubscribe link uses IP address instead of domain name"
+```
+
+```yaml
+- name: "Block free email with IP-based unsubscribe links"
+  criteria:
+    type: "And"
+    criteria:
+      - type: "SenderPattern"
+        pattern: ".*@(gmail|outlook|yahoo|hotmail)\\.(com|net)$"
+      - type: "UnsubscribeLinkIPAddress"
+        check_ipv4: true
+        check_ipv6: true
+        allow_private_ips: false
+  action:
+    type: "Reject"
+    message: "Free email service with IP-based unsubscribe link"
+```
+
+This detects unsubscribe links that use IP addresses instead of proper domain names, which is a strong spam indicator since legitimate businesses use proper domains for their unsubscribe mechanisms.
+
+**Configuration Options:**
+- `check_ipv4`: Whether to check for IPv4 addresses (default: true)
+- `check_ipv6`: Whether to check for IPv6 addresses (default: true)
+- `allow_private_ips`: Whether to allow private/local IP addresses (default: false)
+
+**Detected Patterns:**
+- IPv4 addresses: `http://192.168.1.1/unsubscribe`, `https://8.8.8.8/opt-out`
+- IPv6 addresses: `http://[2001:db8::1]/unsubscribe`, `https://[::1]/remove`
+- Private IP filtering: Distinguishes between private (192.168.x.x, 10.x.x.x) and public IPs
+- URL parsing: Handles various URL formats and protocols
+
+See `examples/ip-address-unsubscribe-detection.yaml` for comprehensive IP address unsubscribe link detection rules.
 
 ### Mailto-only unsubscribe detection
 

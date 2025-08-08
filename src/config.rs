@@ -48,6 +48,16 @@ pub enum Criteria {
     UnsubscribeLinkPattern {
         pattern: String,
     },
+    /// Detect unsubscribe links that use IP addresses instead of domain names
+    /// This is a strong spam indicator as legitimate businesses use proper domains
+    UnsubscribeLinkIPAddress {
+        // Whether to check both IPv4 and IPv6 addresses (default: true)
+        check_ipv4: Option<bool>,
+        // Whether to check IPv6 addresses (default: true)
+        check_ipv6: Option<bool>,
+        // Whether to allow private/local IP addresses (default: false)
+        allow_private_ips: Option<bool>,
+    },
     UnsubscribeMailtoOnly {
         // Detects emails where ALL unsubscribe links are mailto: links
         // This is suspicious as legitimate bulk email services use HTTP links
