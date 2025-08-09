@@ -169,6 +169,31 @@ pub fn generate_test_email_corpus() -> Vec<EmailTestData> {
         EmailTestData::new("user@example.com", "recipient@company.com", "")
             .with_body("Test email with empty subject."),
 
+        // Empty content test cases
+        EmailTestData::new("test@gmail.com", "victim@company.com", "")
+            .with_body(""),  // Completely empty
+
+        EmailTestData::new("reconnaissance@suspicious.tk", "target@company.com", "test")
+            .with_body("   "),  // Just whitespace
+
+        EmailTestData::new("empty@example.com", "user@company.com", "hi")
+            .with_body("."),  // Just punctuation
+
+        EmailTestData::new("minimal@gmail.com", "target@company.com", "")
+            .with_body("hello"),  // Minimal content
+
+        EmailTestData::new("placeholder@test.com", "user@company.com", "testing")
+            .with_body("test"),  // Test content
+
+        EmailTestData::new("automated@paypal.com", "customer@company.com", "")
+            .with_body("--\nSent from PayPal\nUnsubscribe: http://paypal.com/unsubscribe"),  // Just signature
+
+        EmailTestData::new("tracking@suspicious.tk", "victim@company.com", "")
+            .with_body("<html><body></body></html>"),  // Empty HTML
+
+        EmailTestData::new("recon@attacker.com", "target@company.com", "")
+            .with_body("Thanks\n--\nBest regards"),  // Just signature content
+
         // Unicode and special characters
         EmailTestData::new("üser@exämple.com", "recipient@company.com", "Unicode test: café résumé naïve")
             .with_body("Testing unicode characters: ñoño, café, résumé, naïve, 北京, москва"),

@@ -74,6 +74,7 @@ rules:
 - **DomainAge**: Check if domains are younger than specified threshold (useful for detecting spam from recently registered domains)
 - **InvalidUnsubscribeHeaders**: Detect emails with List-Unsubscribe-Post but no List-Unsubscribe header (RFC violation)
 - **AttachmentOnlyEmail**: Detect emails consisting primarily of attachments with minimal text content (malware/phishing vector)
+- **EmptyContentEmail**: Detect emails with no meaningful content (empty body, minimal text, reconnaissance emails)
 - **And**: All sub-criteria must match
 - **Or**: Any sub-criteria must match
 
@@ -487,6 +488,86 @@ This detects emails that consist primarily of attachments (PDF, DOC, DOCX, etc.)
 - `check_disposition`: Whether to check Content-Disposition headers (default: true)
 
 See `examples/attachment-only-detection.yaml` for comprehensive attachment-only email detection rules.
+
+### Empty content email detection
+
+```yaml
+- name: "Block completely empty emails"
+  criteria:
+    type: "EmptyContentEmail"
+    max_text_length: 5          # Allow up to 5 characters
+    ignore_whitespace: true     # Ignore whitespace when counting
+    ignore_signatures: true     # Ignore email signatures
+    require_empty_subject: false # Either empty subject OR body triggers
+    min_subject_length: 3       # Subject needs 3+ chars to not be empty
+    ignore_html_tags: true      # Ignore HTML tags when counting
+  action:
+    type: "Reject"
+    message: "Empty email content rejected"
+```
+
+```yaml
+- name: "Block reconnaissance emails"
+  criteria:
+    type: "And"
+    criteria:
+      - type: "EmptyContentEmail"
+        max_text_length: 15       # Very minimal content
+        ignore_whitespace: true
+        ignore_signatures: true
+        require_empty_subject: false
+        min_subject_length: 2
+        ignore_html_tags: true
+      - type: "Or"
+        criteria:
+          - type: "SubjectPattern"
+            pattern: "(?i)^(test|hello|hi|hey)$"
+          - type: "SubjectPattern"
+            pattern: "^$"  # Completely empty subject
+  action:
+    type: "Reject"
+    message: "Reconnaissance email blocked"
+```
+
+```yaml
+- name: "Tag empty emails from free email services"
+  criteria:
+    type: "And"
+    criteria:
+      - type: "SenderPattern"
+        pattern: ".*@(gmail|outlook|yahoo|hotmail|aol)\\.(com|net|org)$"
+      - type: "EmptyContentEmail"
+        max_text_length: 10
+        ignore_whitespace: true
+        ignore_signatures: true
+        require_empty_subject: false
+        min_subject_length: 5
+        ignore_html_tags: true
+  action:
+    type: "TagAsSpam"
+    header_name: "X-Spam-Empty-Content"
+    header_value: "Empty email from free service"
+```
+
+This detects emails with no meaningful content, which are often used for reconnaissance, address validation, or as part of multi-stage attacks.
+
+**Configuration Options:**
+- `max_text_length`: Maximum allowed text content (default: 10 characters)
+- `ignore_whitespace`: Whether to ignore whitespace when counting text (default: true)
+- `ignore_signatures`: Whether to ignore common email signatures and footers (default: true)
+- `require_empty_subject`: Whether to require both empty subject AND body (default: false - either is sufficient)
+- `min_subject_length`: Minimum subject length to not be considered empty (default: 3 characters)
+- `ignore_html_tags`: Whether to ignore HTML tags when counting content (default: true)
+
+**Detected Patterns:**
+- Completely empty emails (no subject, no body)
+- Emails with only whitespace or punctuation
+- Emails with only signatures/footers
+- Minimal content emails ("hi", "test", "hello")
+- HTML emails with no actual text content
+- Reconnaissance emails with placeholder content
+
+See `examples/empty-content-detection.yaml` for comprehensive empty content email detection rules.
 
 ### Complex rule with multiple conditions
 

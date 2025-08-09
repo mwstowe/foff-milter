@@ -410,6 +410,9 @@ impl FilterEngine {
             Criteria::AttachmentOnlyEmail { .. } => {
                 // No regex patterns to compile for attachment-only detection
             }
+            Criteria::EmptyContentEmail { .. } => {
+                // No regex patterns to compile for empty content detection
+            }
             Criteria::And { criteria } | Criteria::Or { criteria } => {
                 for c in criteria {
                     self.compile_criteria_patterns(c)?;
@@ -1096,6 +1099,132 @@ impl FilterEngine {
         text = text.replace("&lt;", "<");
         text = text.replace("&gt;", ">");
         text = text.replace("&quot;", "\"");
+
+        if ignore_whitespace {
+            // Remove all whitespace and newlines
+            text = text.chars().filter(|c| !c.is_whitespace()).collect();
+        } else {
+            // Just normalize whitespace
+            let ws_regex = Regex::new(r"\s+").unwrap();
+            text = ws_regex.replace_all(&text, " ").to_string();
+            text = text.trim().to_string();
+        }
+
+        text
+    }
+
+    /// Extract meaningful text content for empty content detection
+    /// More aggressive than attachment exclusion - removes signatures, footers, and minimal content
+    fn extract_meaningful_text_content(
+        &self,
+        body: &str,
+        ignore_whitespace: bool,
+        ignore_signatures: bool,
+        ignore_html_tags: bool,
+    ) -> String {
+        let mut text = body.to_string();
+
+        // Remove MIME boundaries and headers first
+        let boundary_regex = Regex::new(r"--[a-zA-Z0-9]+\r?\n").unwrap();
+        let parts: Vec<&str> = boundary_regex.split(&text).collect();
+
+        let mut clean_text = String::new();
+        for part in parts {
+            // Skip attachment parts
+            if part.contains("Content-Type: application/")
+                || part.contains("Content-Disposition: attachment")
+                || part.contains("Content-Transfer-Encoding: base64")
+            {
+                continue;
+            }
+
+            // Only include text parts
+            if part.contains("Content-Type: text/")
+                || (!part.contains("Content-Type:") && !part.trim().is_empty())
+            {
+                clean_text.push_str(part);
+                clean_text.push(' ');
+            }
+        }
+
+        text = clean_text;
+
+        // Remove MIME headers
+        let mime_header_regex = Regex::new(
+            r"(?i)(content-type|content-transfer-encoding|content-disposition|mime-version|message-id|date|from|to|subject|return-path|received|dkim-signature|authentication-results):[^\n]*",
+        )
+        .unwrap();
+        text = mime_header_regex.replace_all(&text, "").to_string();
+
+        // Remove HTML tags if requested
+        if ignore_html_tags {
+            let tag_regex = Regex::new(r"<[^>]*>").unwrap();
+            text = tag_regex.replace_all(&text, " ").to_string();
+        }
+
+        // Remove common email signatures and footers if requested
+        if ignore_signatures {
+            // Remove common signature patterns
+            let sig_patterns = [
+                r"(?i)--\s*\n.*$",      // Standard signature delimiter
+                r"(?i)best regards.*$", // Common closings
+                r"(?i)sincerely.*$",
+                r"(?i)thanks.*$",
+                r"(?i)sent from my.*$",                 // Mobile signatures
+                r"(?i)this email was sent.*$",          // Auto-generated footers
+                r"(?i)unsubscribe.*$",                  // Unsubscribe footers
+                r"(?i)privacy policy.*$",               // Legal footers
+                r"(?i)confidential.*$",                 // Confidentiality notices
+                r"(?i)please consider.*environment.*$", // Environmental notices
+            ];
+
+            for pattern in &sig_patterns {
+                if let Ok(regex) = Regex::new(pattern) {
+                    text = regex.replace_all(&text, "").to_string();
+                }
+            }
+        }
+
+        // Remove URLs (often just tracking/unsubscribe links in empty emails)
+        let url_regex = Regex::new(r"https?://[^\s<>]+").unwrap();
+        text = url_regex.replace_all(&text, " ").to_string();
+
+        // Remove email addresses
+        let email_regex = Regex::new(r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}").unwrap();
+        text = email_regex.replace_all(&text, " ").to_string();
+
+        // Remove common empty content patterns
+        let empty_patterns = [
+            r"(?i)^\s*$",                  // Just whitespace
+            r"(?i)^\s*\.\s*$",             // Just a period
+            r"(?i)^\s*-+\s*$",             // Just dashes
+            r"(?i)^\s*=+\s*$",             // Just equals signs
+            r"(?i)^\s*_+\s*$",             // Just underscores
+            r"(?i)^\s*\*+\s*$",            // Just asterisks
+            r"(?i)^\s*(test|testing)\s*$", // Just "test"
+            r"(?i)^\s*hello\s*$",          // Just "hello"
+            r"(?i)^\s*hi\s*$",             // Just "hi"
+        ];
+
+        for pattern in &empty_patterns {
+            if let Ok(regex) = Regex::new(pattern) {
+                text = regex.replace_all(&text, "").to_string();
+            }
+        }
+
+        // Remove HTML entities
+        text = text.replace("&nbsp;", " ");
+        text = text.replace("&amp;", "&");
+        text = text.replace("&lt;", "<");
+        text = text.replace("&gt;", ">");
+        text = text.replace("&quot;", "\"");
+        text = text.replace("&#39;", "'");
+
+        // Remove common punctuation-only content
+        let punct_regex = Regex::new(r"^[[:punct:]\s]*$").unwrap();
+        if punct_regex.is_match(&text) {
+            text = String::new();
+        }
 
         if ignore_whitespace {
             // Remove all whitespace and newlines
@@ -2143,6 +2272,71 @@ impl FilterEngine {
                             );
                             return true;
                         }
+                    }
+
+                    false
+                }
+                Criteria::EmptyContentEmail {
+                    max_text_length,
+                    ignore_whitespace,
+                    ignore_signatures,
+                    require_empty_subject,
+                    min_subject_length,
+                    ignore_html_tags,
+                } => {
+                    log::debug!("Checking for empty content email");
+
+                    let max_text = max_text_length.unwrap_or(10); // Default: allow up to 10 chars
+                    let ignore_ws = ignore_whitespace.unwrap_or(true); // Default: ignore whitespace
+                    let ignore_sigs = ignore_signatures.unwrap_or(true); // Default: ignore signatures
+                    let require_empty_subj = require_empty_subject.unwrap_or(false); // Default: either empty subject OR body
+                    let min_subj_len = min_subject_length.unwrap_or(3); // Default: subject needs 3+ chars to not be empty
+                    let ignore_html = ignore_html_tags.unwrap_or(true); // Default: ignore HTML tags
+
+                    // Check subject emptiness
+                    let subject_empty = if let Some(subject) = &context.subject {
+                        let cleaned_subject = if ignore_ws { subject.trim() } else { subject };
+                        cleaned_subject.len() < min_subj_len
+                    } else {
+                        true // No subject = empty
+                    };
+
+                    // Check body emptiness
+                    let body_empty = if let Some(body) = &context.body {
+                        let text_content = self.extract_meaningful_text_content(
+                            body,
+                            ignore_ws,
+                            ignore_sigs,
+                            ignore_html,
+                        );
+
+                        log::debug!(
+                            "Extracted meaningful text content length: {} (max allowed: {})",
+                            text_content.len(),
+                            max_text
+                        );
+                        log::debug!(
+                            "Text content preview: '{}'",
+                            text_content.chars().take(50).collect::<String>()
+                        );
+
+                        text_content.len() <= max_text
+                    } else {
+                        true // No body = empty
+                    };
+
+                    // Determine if email is empty based on requirements
+                    let is_empty = if require_empty_subj {
+                        subject_empty && body_empty // Both must be empty
+                    } else {
+                        subject_empty || body_empty // Either can be empty
+                    };
+
+                    if is_empty {
+                        log::info!(
+                            "Empty content email detected: subject_empty={subject_empty}, body_empty={body_empty}, require_both={require_empty_subj}"
+                        );
+                        return true;
                     }
 
                     false
@@ -4155,5 +4349,135 @@ mod tests {
             Action::Accept => {}
             _ => panic!("Expected Accept for email with no attachments"),
         }
+    }
+
+    #[tokio::test]
+    async fn test_empty_content_email_detection() {
+        let config = Config::default();
+        let engine = FilterEngine::new(config).unwrap();
+
+        // Test completely empty email
+        let empty_context = MailContext {
+            sender: Some("test@example.com".to_string()),
+            recipients: vec!["recipient@company.com".to_string()],
+            subject: Some("".to_string()),
+            body: Some("".to_string()),
+            headers: HashMap::new(),
+            from_header: Some("test@example.com".to_string()),
+            helo: Some("example.com".to_string()),
+            hostname: Some("mail.example.com".to_string()),
+            mailer: None,
+        };
+
+        let empty_criteria = Criteria::EmptyContentEmail {
+            max_text_length: Some(5),
+            ignore_whitespace: Some(true),
+            ignore_signatures: Some(true),
+            require_empty_subject: Some(false),
+            min_subject_length: Some(3),
+            ignore_html_tags: Some(true),
+        };
+
+        assert!(
+            engine
+                .evaluate_criteria(&empty_criteria, &empty_context)
+                .await,
+            "Should detect completely empty email"
+        );
+
+        // Test email with minimal content
+        let minimal_context = MailContext {
+            sender: Some("test@example.com".to_string()),
+            recipients: vec!["recipient@company.com".to_string()],
+            subject: Some("hi".to_string()),
+            body: Some("hello".to_string()),
+            headers: HashMap::new(),
+            from_header: Some("test@example.com".to_string()),
+            helo: Some("example.com".to_string()),
+            hostname: Some("mail.example.com".to_string()),
+            mailer: None,
+        };
+
+        assert!(
+            engine
+                .evaluate_criteria(&empty_criteria, &minimal_context)
+                .await,
+            "Should detect email with minimal content"
+        );
+
+        // Test email with substantial content
+        let substantial_context = MailContext {
+            sender: Some("test@example.com".to_string()),
+            recipients: vec!["recipient@company.com".to_string()],
+            subject: Some("Important meeting tomorrow".to_string()),
+            body: Some(
+                "Hi there, let's meet tomorrow at 2pm to discuss the project details.".to_string(),
+            ),
+            headers: HashMap::new(),
+            from_header: Some("test@example.com".to_string()),
+            helo: Some("example.com".to_string()),
+            hostname: Some("mail.example.com".to_string()),
+            mailer: None,
+        };
+
+        assert!(
+            !engine
+                .evaluate_criteria(&empty_criteria, &substantial_context)
+                .await,
+            "Should not detect email with substantial content"
+        );
+
+        // Test strict empty content (both subject and body must be empty)
+        let strict_criteria = Criteria::EmptyContentEmail {
+            max_text_length: Some(0),
+            ignore_whitespace: Some(true),
+            ignore_signatures: Some(true),
+            require_empty_subject: Some(true),
+            min_subject_length: Some(1),
+            ignore_html_tags: Some(true),
+        };
+
+        assert!(
+            engine
+                .evaluate_criteria(&strict_criteria, &empty_context)
+                .await,
+            "Should detect completely empty email with strict criteria"
+        );
+
+        assert!(
+            !engine
+                .evaluate_criteria(&strict_criteria, &minimal_context)
+                .await,
+            "Should not detect email with subject when requiring both empty"
+        );
+
+        // Test signature ignoring
+        let signature_context = MailContext {
+            sender: Some("test@example.com".to_string()),
+            recipients: vec!["recipient@company.com".to_string()],
+            subject: Some("".to_string()),
+            body: Some("--\nBest regards\nJohn Doe\nSent from my iPhone".to_string()),
+            headers: HashMap::new(),
+            from_header: Some("test@example.com".to_string()),
+            helo: Some("example.com".to_string()),
+            hostname: Some("mail.example.com".to_string()),
+            mailer: None,
+        };
+
+        let signature_criteria = Criteria::EmptyContentEmail {
+            max_text_length: Some(5),
+            ignore_whitespace: Some(true),
+            ignore_signatures: Some(true),
+            require_empty_subject: Some(false),
+            min_subject_length: Some(3),
+            ignore_html_tags: Some(true),
+        };
+
+        assert!(
+            engine
+                .evaluate_criteria(&signature_criteria, &signature_context)
+                .await,
+            "Should detect email with only signature content"
+        );
     }
 }
