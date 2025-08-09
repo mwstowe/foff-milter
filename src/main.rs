@@ -1,4 +1,5 @@
 use clap::{Arg, Command};
+use foff_milter::config_test;
 use foff_milter::milter::Milter;
 use foff_milter::Config;
 use log::LevelFilter;
@@ -28,6 +29,12 @@ async fn main() {
             Arg::new("test-config")
                 .long("test-config")
                 .help("Test the configuration file and exit")
+                .action(clap::ArgAction::SetTrue),
+        )
+        .arg(
+            Arg::new("test-comprehensive")
+                .long("test-comprehensive")
+                .help("Run comprehensive configuration testing with regex validation and performance analysis")
                 .action(clap::ArgAction::SetTrue),
         )
         .arg(
@@ -78,12 +85,27 @@ async fn main() {
         }
     };
 
-    if matches.get_flag("test-config") {
-        println!("Configuration file is valid!");
-        println!("Socket path: {}", config.socket_path);
-        println!("Number of rules: {}", config.rules.len());
-        for (i, rule) in config.rules.iter().enumerate() {
-            println!("  Rule {}: {}", i + 1, rule.name);
+    if matches.get_flag("test-config") || matches.get_flag("test-comprehensive") {
+        let comprehensive = matches.get_flag("test-comprehensive");
+        
+        if comprehensive {
+            println!("🔍 Running comprehensive configuration testing...");
+            println!();
+            
+            let test_results = config_test::validate_config_comprehensive(&config);
+            config_test::print_test_results(&test_results);
+            
+            if !test_results.valid {
+                process::exit(1);
+            }
+        } else {
+            // Basic validation (original behavior)
+            println!("Configuration file is valid!");
+            println!("Socket path: {}", config.socket_path);
+            println!("Number of rules: {}", config.rules.len());
+            for (i, rule) in config.rules.iter().enumerate() {
+                println!("  Rule {}: {}", i + 1, rule.name);
+            }
         }
         return;
     }
