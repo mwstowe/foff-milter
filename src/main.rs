@@ -87,14 +87,14 @@ async fn main() {
 
     if matches.get_flag("test-config") || matches.get_flag("test-comprehensive") {
         let comprehensive = matches.get_flag("test-comprehensive");
-        
+
         if comprehensive {
             println!("🔍 Running comprehensive configuration testing...");
             println!();
-            
+
             let test_results = config_test::validate_config_comprehensive(&config);
             config_test::print_test_results(&test_results);
-            
+
             if !test_results.valid {
                 process::exit(1);
             }
