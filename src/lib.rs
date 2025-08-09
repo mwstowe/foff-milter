@@ -1,4 +1,5 @@
 pub mod config;
+pub mod config_test;
 pub mod domain_age;
 pub mod filter;
 pub mod language;

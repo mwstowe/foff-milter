@@ -112,6 +112,9 @@ sudo ./target/release/foff-milter -v
 
 # Test configuration without running
 ./target/release/foff-milter --test-config -c config.yaml
+
+# Run comprehensive configuration testing with regex validation and performance analysis
+./target/release/foff-milter --test-comprehensive -c config.yaml
 ```
 
 ### Sendmail Configuration
@@ -557,6 +560,74 @@ sudo systemctl start foff-milter
 - Regularly review and update your filtering rules
 - Monitor logs for potential issues
 - Test configuration changes in a non-production environment
+
+## Configuration Testing
+
+### Basic Configuration Validation
+
+Test your configuration file syntax and structure:
+
+```bash
+./target/release/foff-milter --test-config -c config.yaml
+```
+
+This performs basic validation:
+- ✅ YAML syntax checking
+- ✅ Configuration structure validation
+- ✅ Rule loading verification
+
+### Comprehensive Configuration Testing
+
+For production deployments, use comprehensive testing that validates regex patterns against real email scenarios:
+
+```bash
+./target/release/foff-milter --test-comprehensive -c config.yaml
+```
+
+This performs advanced validation:
+- ✅ **Regex compilation testing** - Ensures all patterns are valid
+- ✅ **Performance analysis** - Identifies slow regex patterns
+- ✅ **Email corpus testing** - Tests patterns against 20+ sample emails
+- ✅ **Edge case detection** - Tests with unicode, empty fields, long content
+- ✅ **Runtime safety** - Catches patterns that could panic during execution
+
+#### Example Output
+
+```
+🔍 Running comprehensive configuration testing...
+
+✅ Configuration validation PASSED!
+
+📊 Test Summary:
+  Total rules: 10
+  Total regex patterns: 20
+  Test time: 175ms
+
+⚠️  Performance Warnings (2):
+  • Rule 4 (Tag pharmaceutical spam): SubjectPattern pattern '(?i)(viagra|cialis|pharmacy)' is slow (2.09ms for 1000 iterations)
+  • Rule 6 (Suspicious urgent emails): SubjectPattern pattern contains nested .* which may cause performance issues
+
+🎉 All patterns are valid and performant!
+```
+
+#### What Gets Tested
+
+The comprehensive testing validates patterns against:
+- **Legitimate emails** (PayPal, Amazon, corporate)
+- **Suspicious emails** (free email services, suspicious TLDs)
+- **Phishing attempts** (spoofed domains, urgent language)
+- **Language detection** (Japanese, Chinese, Korean text)
+- **Unsubscribe links** (valid, IP-based, mailto-only)
+- **Edge cases** (empty fields, unicode, very long content)
+
+#### Performance Benchmarking
+
+Patterns are benchmarked for performance:
+- **Fast patterns**: < 1ms for 1000 iterations ✅
+- **Slow patterns**: > 1ms for 1000 iterations ⚠️
+- **Problematic patterns**: Nested `.*` or very long patterns 🚨
+
+Use comprehensive testing before deploying to production to catch regex issues that could cause crashes or performance problems.
 
 ## Troubleshooting
 
