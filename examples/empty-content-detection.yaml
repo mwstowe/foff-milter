@@ -1,0 +1,115 @@
+# FOFF Milter - Empty Content Email Detection Examples
+# This demonstrates detection of emails with no meaningful content
+
+socket_path: "/var/run/foff-milter.sock"
+default_action:
+  type: "Accept"
+
+rules:
+  # Basic empty content detection
+  - name: "Block completely empty emails"
+    criteria:
+      type: "EmptyContentEmail"
+      max_text_length: 5          # Allow up to 5 characters
+      ignore_whitespace: true     # Ignore whitespace when counting
+      ignore_signatures: true     # Ignore email signatures
+      require_empty_subject: false # Either empty subject OR body triggers
+      min_subject_length: 3       # Subject needs 3+ chars to not be empty
+      ignore_html_tags: true      # Ignore HTML tags when counting
+    action:
+      type: "Reject"
+      message: "Empty email content rejected"
+
+  # Strict empty content detection (both subject and body must be empty)
+  - name: "Block emails with both empty subject and body"
+    criteria:
+      type: "EmptyContentEmail"
+      max_text_length: 0          # No text allowed
+      ignore_whitespace: true
+      ignore_signatures: true
+      require_empty_subject: true # BOTH subject AND body must be empty
+      min_subject_length: 1       # Any subject content counts
+      ignore_html_tags: true
+    action:
+      type: "Reject"
+      message: "Completely empty email rejected"
+
+  # Tag suspicious empty emails from free services
+  - name: "Tag empty emails from free email services"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@(gmail|outlook|yahoo|hotmail|aol)\\.(com|net|org)$"
+        - type: "EmptyContentEmail"
+          max_text_length: 10
+          ignore_whitespace: true
+          ignore_signatures: true
+          require_empty_subject: false
+          min_subject_length: 5
+          ignore_html_tags: true
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Empty-Content"
+      header_value: "Empty email from free service"
+
+  # Detect reconnaissance emails (common in targeted attacks)
+  - name: "Block reconnaissance emails"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "EmptyContentEmail"
+          max_text_length: 15       # Very minimal content
+          ignore_whitespace: true
+          ignore_signatures: true
+          require_empty_subject: false
+          min_subject_length: 2
+          ignore_html_tags: true
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i)^(test|hello|hi|hey)$"
+            - type: "SubjectPattern"
+              pattern: "^$"  # Completely empty subject
+    action:
+      type: "Reject"
+      message: "Reconnaissance email blocked"
+
+  # Allow legitimate automated emails with minimal content
+  - name: "Allow empty emails from trusted domains"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@(paypal|amazon|microsoft|apple|google)\\.com$"
+        - type: "EmptyContentEmail"
+          max_text_length: 20       # Allow more content from trusted sources
+          ignore_whitespace: true
+          ignore_signatures: true
+          require_empty_subject: false
+          min_subject_length: 1
+          ignore_html_tags: true
+    action:
+      type: "Accept"  # Explicitly allow these
+
+  # Detect placeholder/test emails
+  - name: "Block placeholder test emails"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "EmptyContentEmail"
+          max_text_length: 25
+          ignore_whitespace: true
+          ignore_signatures: false  # Don't ignore signatures for this test
+          require_empty_subject: false
+          min_subject_length: 3
+          ignore_html_tags: true
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i)(test|testing|placeholder|sample)"
+            - type: "SenderPattern"
+              pattern: "(?i)(test|testing|placeholder|sample)"
+    action:
+      type: "Reject"
+      message: "Test/placeholder email blocked"

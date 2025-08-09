@@ -128,6 +128,22 @@ pub enum Criteria {
         // Whether to check Content-Disposition headers for attachment indicators
         check_disposition: Option<bool>,
     },
+    /// Detect emails with no meaningful content (empty body, minimal text)
+    /// Useful for catching reconnaissance emails, address validation attempts, and placeholder emails
+    EmptyContentEmail {
+        // Maximum allowed text content length (default: 10 characters)
+        max_text_length: Option<usize>,
+        // Whether to ignore whitespace when counting text (default: true)
+        ignore_whitespace: Option<bool>,
+        // Whether to ignore common email signatures and footers (default: true)
+        ignore_signatures: Option<bool>,
+        // Whether to require both empty subject AND body (default: false - either is sufficient)
+        require_empty_subject: Option<bool>,
+        // Minimum subject length to not be considered empty (default: 3 characters)
+        min_subject_length: Option<usize>,
+        // Whether to ignore HTML tags when counting content (default: true)
+        ignore_html_tags: Option<bool>,
+    },
     And {
         criteria: Vec<Criteria>,
     },
