@@ -183,16 +183,16 @@ pub fn generate_test_email_corpus() -> Vec<EmailTestData> {
 pub fn validate_config_comprehensive(config: &Config) -> ConfigTestResults {
     let start_time = Instant::now();
     let mut results = ConfigTestResults::new();
-    
+
     results.total_rules = config.rules.len();
-    
+
     // Generate test corpus
     let test_emails = generate_test_email_corpus();
-    
+
     for (rule_idx, rule) in config.rules.iter().enumerate() {
         validate_rule_comprehensive(rule, rule_idx, &test_emails, &mut results);
     }
-    
+
     results.total_test_time_ms = start_time.elapsed().as_millis();
     results
 }
@@ -218,7 +218,14 @@ fn validate_criteria_comprehensive(
     match criteria {
         Criteria::MailerPattern { pattern } => {
             validate_pattern("MailerPattern", pattern, rule_idx, rule_name, results);
-            test_pattern_against_emails("X-Mailer", pattern, test_emails, rule_idx, rule_name, results);
+            test_pattern_against_emails(
+                "X-Mailer",
+                pattern,
+                test_emails,
+                rule_idx,
+                rule_name,
+                results,
+            );
         }
         Criteria::SenderPattern { pattern } => {
             validate_pattern("SenderPattern", pattern, rule_idx, rule_name, results);
@@ -233,21 +240,45 @@ fn validate_criteria_comprehensive(
             test_subject_pattern(pattern, test_emails, rule_idx, rule_name, results);
         }
         Criteria::HeaderPattern { header, pattern } => {
-            validate_pattern(&format!("HeaderPattern({header})"), pattern, rule_idx, rule_name, results);
+            validate_pattern(
+                &format!("HeaderPattern({header})"),
+                pattern,
+                rule_idx,
+                rule_name,
+                results,
+            );
             test_pattern_against_emails(header, pattern, test_emails, rule_idx, rule_name, results);
         }
         Criteria::UnsubscribeLinkPattern { pattern } => {
-            validate_pattern("UnsubscribeLinkPattern", pattern, rule_idx, rule_name, results);
+            validate_pattern(
+                "UnsubscribeLinkPattern",
+                pattern,
+                rule_idx,
+                rule_name,
+                results,
+            );
             test_unsubscribe_pattern(pattern, test_emails, rule_idx, rule_name, results);
         }
         Criteria::And { criteria } => {
             for sub_criteria in criteria {
-                validate_criteria_comprehensive(sub_criteria, rule_idx, rule_name, test_emails, results);
+                validate_criteria_comprehensive(
+                    sub_criteria,
+                    rule_idx,
+                    rule_name,
+                    test_emails,
+                    results,
+                );
             }
         }
         Criteria::Or { criteria } => {
             for sub_criteria in criteria {
-                validate_criteria_comprehensive(sub_criteria, rule_idx, rule_name, test_emails, results);
+                validate_criteria_comprehensive(
+                    sub_criteria,
+                    rule_idx,
+                    rule_name,
+                    test_emails,
+                    results,
+                );
             }
         }
         // Non-regex criteria don't need pattern validation
@@ -264,7 +295,7 @@ fn validate_pattern(
     results: &mut ConfigTestResults,
 ) {
     results.total_patterns += 1;
-    
+
     // Test regex compilation
     let regex_result = Regex::new(pattern);
     match regex_result {
@@ -276,7 +307,7 @@ fn validate_pattern(
                 let _ = regex.is_match(test_string);
             }
             let duration = start.elapsed();
-            
+
             // Warn about slow patterns (>1ms for 1000 iterations)
             if duration.as_millis() > 1 {
                 results.add_warning(format!(
@@ -288,7 +319,7 @@ fn validate_pattern(
                     duration.as_secs_f64() * 1000.0
                 ));
             }
-            
+
             // Check for potentially problematic patterns
             if pattern.contains(".*.*") {
                 results.add_warning(format!(
@@ -296,18 +327,25 @@ fn validate_pattern(
                     rule_idx + 1, rule_name, pattern_type, pattern
                 ));
             }
-            
+
             if pattern.len() > 200 {
                 results.add_warning(format!(
                     "Rule {} ({}): {} pattern is very long ({} chars) - consider simplifying",
-                    rule_idx + 1, rule_name, pattern_type, pattern.len()
+                    rule_idx + 1,
+                    rule_name,
+                    pattern_type,
+                    pattern.len()
                 ));
             }
         }
         Err(e) => {
             results.add_error(format!(
                 "Rule {} ({}): Invalid {} pattern '{}': {}",
-                rule_idx + 1, rule_name, pattern_type, pattern, e
+                rule_idx + 1,
+                rule_name,
+                pattern_type,
+                pattern,
+                e
             ));
         }
     }
@@ -324,11 +362,15 @@ fn test_sender_pattern(
     if let Ok(regex) = Regex::new(pattern) {
         for (email_idx, email) in test_emails.iter().enumerate() {
             match std::panic::catch_unwind(|| regex.is_match(&email.sender)) {
-                Ok(_) => {}, // Success
+                Ok(_) => {} // Success
                 Err(_) => {
                     results.add_test_failure(format!(
                         "Rule {} ({}): SenderPattern '{}' panicked on test email {} (sender: '{}')",
-                        rule_idx + 1, rule_name, pattern, email_idx + 1, email.sender
+                        rule_idx + 1,
+                        rule_name,
+                        pattern,
+                        email_idx + 1,
+                        email.sender
                     ));
                 }
             }
@@ -347,7 +389,7 @@ fn test_recipient_pattern(
     if let Ok(regex) = Regex::new(pattern) {
         for (email_idx, email) in test_emails.iter().enumerate() {
             match std::panic::catch_unwind(|| regex.is_match(&email.recipient)) {
-                Ok(_) => {}, // Success
+                Ok(_) => {} // Success
                 Err(_) => {
                     results.add_test_failure(format!(
                         "Rule {} ({}): RecipientPattern '{}' panicked on test email {} (recipient: '{}')",
@@ -370,7 +412,7 @@ fn test_subject_pattern(
     if let Ok(regex) = Regex::new(pattern) {
         for (email_idx, email) in test_emails.iter().enumerate() {
             match std::panic::catch_unwind(|| regex.is_match(&email.subject)) {
-                Ok(_) => {}, // Success
+                Ok(_) => {} // Success
                 Err(_) => {
                     results.add_test_failure(format!(
                         "Rule {} ({}): SubjectPattern '{}' panicked on test email {} (subject: '{}')",
@@ -394,13 +436,15 @@ fn test_pattern_against_emails(
     if let Ok(regex) = Regex::new(pattern) {
         for (email_idx, email) in test_emails.iter().enumerate() {
             // Find the header value
-            let header_value = email.headers.iter()
+            let header_value = email
+                .headers
+                .iter()
                 .find(|(name, _)| name.eq_ignore_ascii_case(header_name))
                 .map(|(_, value)| value.as_str())
                 .unwrap_or("");
-                
+
             match std::panic::catch_unwind(|| regex.is_match(header_value)) {
-                Ok(_) => {}, // Success
+                Ok(_) => {} // Success
                 Err(_) => {
                     results.add_test_failure(format!(
                         "Rule {} ({}): HeaderPattern({}) '{}' panicked on test email {} (header value: '{}')",
@@ -424,7 +468,7 @@ fn test_unsubscribe_pattern(
         for (email_idx, email) in test_emails.iter().enumerate() {
             // Test against body content (where unsubscribe links typically appear)
             match std::panic::catch_unwind(|| regex.is_match(&email.body)) {
-                Ok(_) => {}, // Success
+                Ok(_) => {} // Success
                 Err(_) => {
                     results.add_test_failure(format!(
                         "Rule {} ({}): UnsubscribeLinkPattern '{}' panicked on test email {} (body length: {})",
@@ -443,13 +487,13 @@ pub fn print_test_results(results: &ConfigTestResults) {
     } else {
         println!("❌ Configuration validation FAILED!");
     }
-    
+
     println!();
     println!("📊 Test Summary:");
     println!("  Total rules: {}", results.total_rules);
     println!("  Total regex patterns: {}", results.total_patterns);
     println!("  Test time: {}ms", results.total_test_time_ms);
-    
+
     if !results.pattern_errors.is_empty() {
         println!();
         println!("🚨 Pattern Errors ({}):", results.pattern_errors.len());
@@ -457,7 +501,7 @@ pub fn print_test_results(results: &ConfigTestResults) {
             println!("  • {error}");
         }
     }
-    
+
     if !results.test_failures.is_empty() {
         println!();
         println!("💥 Test Failures ({}):", results.test_failures.len());
@@ -465,15 +509,18 @@ pub fn print_test_results(results: &ConfigTestResults) {
             println!("  • {failure}");
         }
     }
-    
+
     if !results.performance_warnings.is_empty() {
         println!();
-        println!("⚠️  Performance Warnings ({}):", results.performance_warnings.len());
+        println!(
+            "⚠️  Performance Warnings ({}):",
+            results.performance_warnings.len()
+        );
         for warning in &results.performance_warnings {
             println!("  • {warning}");
         }
     }
-    
+
     if results.valid && results.performance_warnings.is_empty() {
         println!();
         println!("🎉 All patterns are valid and performant!");
