@@ -493,8 +493,21 @@ impl FilterEngine {
 
         // Check email body for unsubscribe links
         if let Some(body) = &context.body {
-            // Look for common unsubscribe link patterns (HTTP and mailto)
-            let unsubscribe_patterns = [
+            // Look for unsubscribe links based on anchor text (more reliable than URL content)
+            let anchor_text_patterns = [
+                // Match <a href="URL">...unsubscribe...</a> patterns
+                r#"(?i)<a[^>]*href=["'](https?://[^"']+)["'][^>]*>[^<]*unsubscribe[^<]*</a>"#,
+                r#"(?i)<a[^>]*href=["'](https?://[^"']+)["'][^>]*>[^<]*opt[_\s-]*out[^<]*</a>"#,
+                r#"(?i)<a[^>]*href=["'](https?://[^"']+)["'][^>]*>[^<]*remove[^<]*</a>"#,
+                r#"(?i)<a[^>]*href=["'](https?://[^"']+)["'][^>]*>[^<]*stop[^<]*</a>"#,
+                r#"(?i)<a[^>]*href=["'](mailto:[^"']+)["'][^>]*>[^<]*unsubscribe[^<]*</a>"#,
+                r#"(?i)<a[^>]*href=["'](mailto:[^"']+)["'][^>]*>[^<]*opt[_\s-]*out[^<]*</a>"#,
+                r#"(?i)<a[^>]*href=["'](mailto:[^"']+)["'][^>]*>[^<]*remove[^<]*</a>"#,
+                r#"(?i)<a[^>]*href=["'](mailto:[^"']+)["'][^>]*>[^<]*stop[^<]*</a>"#,
+            ];
+
+            // Also keep some URL-based patterns for backwards compatibility
+            let url_based_patterns = [
                 r#"(?i)href=["'](https?://[^"']*unsubscribe[^"']*)["']"#,
                 r#"(?i)href=["'](https?://[^"']*opt[_-]?out[^"']*)["']"#,
                 r#"(?i)href=["'](https?://[^"']*remove[^"']*)["']"#,
@@ -507,7 +520,19 @@ impl FilterEngine {
                 r#"(?i)(mailto:[^\s<>"']*opt[_-]?out[^\s<>"']*)"#,
             ];
 
-            for pattern in &unsubscribe_patterns {
+            // Process anchor text patterns first (higher priority)
+            for pattern in &anchor_text_patterns {
+                if let Ok(regex) = Regex::new(pattern) {
+                    for cap in regex.captures_iter(body) {
+                        if let Some(url) = cap.get(1) {
+                            links.push(url.as_str().to_string());
+                        }
+                    }
+                }
+            }
+
+            // Process URL-based patterns for backwards compatibility
+            for pattern in &url_based_patterns {
                 if let Ok(regex) = Regex::new(pattern) {
                     for cap in regex.captures_iter(body) {
                         if let Some(url) = cap.get(1) {
@@ -4479,5 +4504,177 @@ mod tests {
                 .await,
             "Should detect email with only signature content"
         );
+    }
+
+    #[tokio::test]
+    async fn test_unsubscribe_anchor_text_detection() {
+        use crate::config::{Action, Config};
+
+        let config = Config {
+            socket_path: "/tmp/test.sock".to_string(),
+            default_action: Action::Accept,
+            rules: vec![],
+        };
+
+        let engine = FilterEngine::new(config).expect("Failed to create FilterEngine");
+
+        // Test case 1: The original problematic case - Mandrill tracking URL with "Unsubscribe" text
+        let mandrill_html = r#"
+            <html>
+            <body>
+                <p>Thank you for your purchase!</p>
+                <p><a href="https://mandrillapp.com/track/click/31179027/mandrillapp.com?p=eyJzIjoiaEdkZGZwbFJFZ3ZCY2tkVDlXa0NjUHRqNktvIiwidiI6MiwicCI6IntcInVcIjozMTE3OTAyNyxcInZcIjoyLFwidXJsXCI6XCJodHRwOlxcXC9cXFwvbWFuZHJpbGxhcHAuY29tXFxcL3RyYWNrXFxcL3Vuc3ViLnBocD91PTMxMTc5MDI3JmlkPTY3ZDczNGMyYjEzZDQzMjNiOTVmMTFkY2FlYmE0ZjM3LjZ0Y2tzY1llaFZnUHVmR3JDOGREaFpORkwwTSUzRCZyPWh0dHBzJTNBJTJGJTJGdGhhbmdzLmNvbSUzRm1kX2VtYWlsJTNEbSUyNTJBJTI1MkElMjUyQSUyNTJBJTI1NDBiJTI1MkElMjUyQSUyNTJBJTI1MkEuJTI1MkElMjUyQSUyNTJB">Unsubscribe</a></p>
+            </body>
+            </html>
+        "#;
+
+        let context = MailContext {
+            headers: HashMap::new(),
+            body: Some(mandrill_html.to_string()),
+            sender: Some("test@example.com".to_string()),
+            from_header: None,
+            recipients: vec![],
+            subject: None,
+            helo: Some("example.com".to_string()),
+            hostname: Some("mail.example.com".to_string()),
+            mailer: None,
+        };
+
+        let links = engine.get_unsubscribe_links(&context);
+
+        println!("Found {} unsubscribe links:", links.len());
+        for link in &links {
+            println!("  - {}", link);
+        }
+
+        // Should detect the HTTPS link based on anchor text
+        assert_eq!(links.len(), 1);
+        assert!(links[0].starts_with("https://mandrillapp.com/track/click/"));
+
+        // Test that UnsubscribeMailtoOnly with allow_mixed=true does NOT trigger
+        // because we now have an HTTP link detected
+        let mailto_only_criteria = Criteria::UnsubscribeMailtoOnly {
+            allow_mixed: Some(true),
+        };
+
+        let result = engine
+            .evaluate_criteria(&mailto_only_criteria, &context)
+            .await;
+        assert!(
+            !result,
+            "Should NOT trigger UnsubscribeMailtoOnly because HTTP link was detected"
+        );
+    }
+
+    #[tokio::test]
+    async fn test_mixed_unsubscribe_links() {
+        use crate::config::{Action, Config};
+
+        let config = Config {
+            socket_path: "/tmp/test.sock".to_string(),
+            default_action: Action::Accept,
+            rules: vec![],
+        };
+
+        let engine = FilterEngine::new(config).expect("Failed to create FilterEngine");
+
+        // Test case: Mixed HTTP and mailto links
+        let mixed_html = r#"
+            <html>
+            <body>
+                <p>To unsubscribe:</p>
+                <p><a href="https://tracking.service.com/xyz123">Click here to unsubscribe</a></p>
+                <p>Or email: <a href="mailto:unsubscribe@example.com">unsubscribe@example.com</a></p>
+            </body>
+            </html>
+        "#;
+
+        let context = MailContext {
+            headers: HashMap::new(),
+            body: Some(mixed_html.to_string()),
+            sender: Some("test@example.com".to_string()),
+            from_header: None,
+            recipients: vec![],
+            subject: None,
+            helo: Some("example.com".to_string()),
+            hostname: Some("mail.example.com".to_string()),
+            mailer: None,
+        };
+
+        let links = engine.get_unsubscribe_links(&context);
+
+        println!("Found {} unsubscribe links:", links.len());
+        for link in &links {
+            println!("  - {}", link);
+        }
+
+        // Should detect both HTTPS and mailto links
+        assert_eq!(links.len(), 2);
+        assert!(links.iter().any(|l| l.starts_with("https://")));
+        assert!(links.iter().any(|l| l.starts_with("mailto:")));
+
+        // Test that UnsubscribeMailtoOnly with allow_mixed=true does NOT trigger
+        // because we have mixed link types
+        let mailto_only_criteria = Criteria::UnsubscribeMailtoOnly {
+            allow_mixed: Some(true),
+        };
+
+        let result = engine
+            .evaluate_criteria(&mailto_only_criteria, &context)
+            .await;
+        assert!(
+            !result,
+            "Should NOT trigger UnsubscribeMailtoOnly because we have mixed link types"
+        );
+    }
+
+    #[tokio::test]
+    async fn test_anchor_text_variations() {
+        use crate::config::{Action, Config};
+
+        let config = Config {
+            socket_path: "/tmp/test.sock".to_string(),
+            default_action: Action::Accept,
+            rules: vec![],
+        };
+
+        let engine = FilterEngine::new(config).expect("Failed to create FilterEngine");
+
+        // Test case: Various anchor text variations
+        let variations_html = r#"
+            <html>
+            <body>
+                <p><a href="https://example.com/track1">Unsubscribe from this list</a></p>
+                <p><a href="https://example.com/track2">Opt out of emails</a></p>
+                <p><a href="https://example.com/track3">Remove me from list</a></p>
+                <p><a href="https://example.com/track4">Stop receiving emails</a></p>
+            </body>
+            </html>
+        "#;
+
+        let context = MailContext {
+            headers: HashMap::new(),
+            body: Some(variations_html.to_string()),
+            sender: Some("test@example.com".to_string()),
+            from_header: None,
+            recipients: vec![],
+            subject: None,
+            helo: Some("example.com".to_string()),
+            hostname: Some("mail.example.com".to_string()),
+            mailer: None,
+        };
+
+        let links = engine.get_unsubscribe_links(&context);
+
+        println!("Found {} unsubscribe links:", links.len());
+        for link in &links {
+            println!("  - {}", link);
+        }
+
+        // Should detect all 4 variations
+        assert_eq!(links.len(), 4);
+        assert!(links
+            .iter()
+            .all(|l| l.starts_with("https://example.com/track")));
     }
 }
