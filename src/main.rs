@@ -97,7 +97,7 @@ async fn main() {
             }
             Err(e) => {
                 println!("❌ Configuration validation failed:");
-                println!("Error: {}", e);
+                println!("Error: {e}");
                 process::exit(1);
             }
         }
