@@ -1,0 +1,107 @@
+socket_path: "/var/run/foff-milter.sock"
+default_action: "Accept"
+
+rules:
+  # Simple, targeted rule to block fake mail administrator phishing
+  # Focuses on the most reliable indicators to minimize false positives
+  - name: "Block fake mail administrator phishing - high confidence"
+    criteria:
+      type: "And"
+      criteria:
+        # 1. Subject mentions password expiry for a specific email address
+        - type: "SubjectPattern"
+          pattern: "(?i)password.{1,20}expir.{1,20}notification.{1,20}for.{1,20}[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,}"
+        
+        # 2. From display name contains a domain but sender is from completely different domain
+        - type: "HeaderPattern"
+          header: "from"
+          pattern: "(?i)\"[^\"]*([a-z0-9.-]+\\.(com|net|org|edu))\"\\s*<[^@]+@(?!.*\\1)[a-z0-9.-]+\\.[a-z]{2,}>"
+    action:
+      type: "Reject"
+      message: "Fake mail administrator email blocked - domain spoofing detected"
+
+  # Detect phishing links in password-related emails
+  - name: "Block password emails with unrelated phishing links"
+    criteria:
+      type: "And"
+      criteria:
+        # Password-related subject or content
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i)(password|account).{1,30}(expir|notification|suspend|block)"
+            - type: "HeaderPattern"
+              header: "from"
+              pattern: "(?i)(admin|administrator|support|security|noreply)@"
+        
+        # Links to completely unrelated domains (strong phishing indicator)
+        - type: "Or"
+          criteria:
+            # Random-looking domain names (8+ chars, common in phishing)
+            - type: "HeaderPattern"
+              header: "body"
+              pattern: "(?i)href=[\"']https?://[a-z]{8,20}[a-z0-9]*\\.(com|net|org|info|biz)/"
+            
+            # Suspicious path patterns with email addresses in URL fragment
+            - type: "HeaderPattern"
+              header: "body"
+              pattern: "(?i)href=[\"']https?://[^/\"']+/[^\"']*#[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,}"
+            
+            # Links with "secured" or similar in path (phishing tactic)
+            - type: "HeaderPattern"
+              header: "body"
+              pattern: "(?i)href=[\"']https?://[^/\"']+/(secured?|secure|auth|login|verify|confirm)/"
+    action:
+      type: "Reject"
+      message: "Password email with suspicious unrelated links blocked"
+
+  # Detect specific phishing button patterns
+  - name: "Block suspicious password action buttons"
+    criteria:
+      type: "And"
+      criteria:
+        # Password-related subject
+        - type: "SubjectPattern"
+          pattern: "(?i)(password|account).{1,30}(expir|notification)"
+        
+        # Suspicious button text that encourages keeping current password
+        - type: "Or"
+          criteria:
+            - type: "HeaderPattern"
+              header: "body"
+              pattern: "(?i)(keep.{1,10}same.{1,10}password|keep.{1,10}current.{1,10}password)"
+            
+            - type: "HeaderPattern"
+              header: "body"
+              pattern: "(?i)(no.{1,10}change|don't.{1,10}change|maintain.{1,10}password)"
+            
+            # Buttons that link to external domains
+            - type: "HeaderPattern"
+              header: "body"
+              pattern: "(?i)<[^>]*href=[\"']https?://[^/\"']+/[^\"']*[\"'][^>]*>(keep|maintain|no.{1,10}change)"
+    action:
+      type: "Reject"
+      message: "Phishing email with suspicious password action buttons blocked"
+
+  # Optional: Tag for manual review (less strict, for monitoring)
+  - name: "Tag suspicious admin emails for review"
+    criteria:
+      type: "And"
+      criteria:
+        # Password expiry subject
+        - type: "SubjectPattern"
+          pattern: "(?i)password.{1,30}expir.{1,30}notification"
+        
+        # From display name looks like a domain
+        - type: "HeaderPattern"
+          header: "from"
+          pattern: "(?i)\"[a-z0-9.-]+\\.(com|net|org|edu)\""
+        
+        # But sender domain doesn't match display name domain
+        - type: "HeaderPattern"
+          header: "from"
+          pattern: "<[^@]+@[a-z0-9.-]+\\.[a-z]{2,}>"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Suspicious-Admin"
+      header_value: "Potential domain spoofing - review recommended"
