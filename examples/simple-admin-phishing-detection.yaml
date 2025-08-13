@@ -2,106 +2,57 @@ socket_path: "/var/run/foff-milter.sock"
 default_action: "Accept"
 
 rules:
-  # Simple, targeted rule to block fake mail administrator phishing
-  # Focuses on the most reliable indicators to minimize false positives
-  - name: "Block fake mail administrator phishing - high confidence"
+  # Generic rule: Block emails where From display name contains a domain 
+  # but sender is from a completely different domain
+  - name: "Block domain spoofing in From header"
     criteria:
-      type: "And"
-      criteria:
-        # 1. Subject mentions password expiry for a specific email address
-        - type: "SubjectPattern"
-          pattern: "(?i)password.{1,20}expir.{1,20}notification.{1,20}for.{1,20}[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,}"
-        
-        # 2. From display name contains a domain but sender is from completely different domain
-        - type: "HeaderPattern"
-          header: "from"
-          pattern: "(?i)\"[^\"]*([a-z0-9.-]+\\.(com|net|org|edu))\"\\s*<[^@]+@(?!.*\\1)[a-z0-9.-]+\\.[a-z]{2,}>"
+      type: "HeaderPattern"
+      header: "from"
+      pattern: "(?i)\"[^\"]*\\b([a-z0-9.-]+\\.(com|net|org|edu|gov))\\b[^\"]*\"\\s*<[^@]+@(?!.*\\1)[a-z0-9.-]+\\.[a-z]{2,}>"
     action:
       type: "Reject"
-      message: "Fake mail administrator email blocked - domain spoofing detected"
+      message: "Domain spoofing detected in From header"
 
-  # Detect phishing links in password-related emails
-  - name: "Block password emails with unrelated phishing links"
+  # Generic rule: Block administrative emails with links to unrelated domains
+  - name: "Block admin emails with external links"
     criteria:
       type: "And"
       criteria:
-        # Password-related subject or content
+        # Administrative subject or sender
         - type: "Or"
           criteria:
             - type: "SubjectPattern"
-              pattern: "(?i)(password|account).{1,30}(expir|notification|suspend|block)"
+              pattern: "(?i)(password|account|security|notification|alert|expir|suspend|verify|confirm)"
             - type: "HeaderPattern"
               header: "from"
-              pattern: "(?i)(admin|administrator|support|security|noreply)@"
+              pattern: "(?i)(admin|administrator|support|security|noreply|no-reply)@"
         
-        # Links to completely unrelated domains (strong phishing indicator)
-        - type: "Or"
-          criteria:
-            # Random-looking domain names (8+ chars, common in phishing)
-            - type: "HeaderPattern"
-              header: "body"
-              pattern: "(?i)href=[\"']https?://[a-z]{8,20}[a-z0-9]*\\.(com|net|org|info|biz)/"
-            
-            # Suspicious path patterns with email addresses in URL fragment
-            - type: "HeaderPattern"
-              header: "body"
-              pattern: "(?i)href=[\"']https?://[^/\"']+/[^\"']*#[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,}"
-            
-            # Links with "secured" or similar in path (phishing tactic)
-            - type: "HeaderPattern"
-              header: "body"
-              pattern: "(?i)href=[\"']https?://[^/\"']+/(secured?|secure|auth|login|verify|confirm)/"
+        # Contains links with email addresses in URL (phishing tactic)
+        - type: "HeaderPattern"
+          header: "body"
+          pattern: "(?i)href=[\"']https?://[^\"']*[#?&][^\"']*[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,}"
     action:
       type: "Reject"
-      message: "Password email with suspicious unrelated links blocked"
+      message: "Administrative email with suspicious links blocked"
 
-  # Detect specific phishing button patterns
-  - name: "Block suspicious password action buttons"
+  # Generic rule: Block emails with DKIM failures claiming to be administrative
+  - name: "Block failed DKIM administrative emails"
     criteria:
       type: "And"
       criteria:
-        # Password-related subject
-        - type: "SubjectPattern"
-          pattern: "(?i)(password|account).{1,30}(expir|notification)"
+        # DKIM authentication failed
+        - type: "HeaderPattern"
+          header: "authentication-results"
+          pattern: "(?i)dkim=fail"
         
-        # Suspicious button text that encourages keeping current password
+        # Claims to be administrative
         - type: "Or"
           criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i)(password|account|security).{1,30}(expir|notification|alert|suspend)"
             - type: "HeaderPattern"
-              header: "body"
-              pattern: "(?i)(keep.{1,10}same.{1,10}password|keep.{1,10}current.{1,10}password)"
-            
-            - type: "HeaderPattern"
-              header: "body"
-              pattern: "(?i)(no.{1,10}change|don't.{1,10}change|maintain.{1,10}password)"
-            
-            # Buttons that link to external domains
-            - type: "HeaderPattern"
-              header: "body"
-              pattern: "(?i)<[^>]*href=[\"']https?://[^/\"']+/[^\"']*[\"'][^>]*>(keep|maintain|no.{1,10}change)"
+              header: "from"
+              pattern: "(?i)\"[^\"]*\\b[a-z0-9.-]+\\.(com|net|org|edu)\\b[^\"]*\""
     action:
       type: "Reject"
-      message: "Phishing email with suspicious password action buttons blocked"
-
-  # Optional: Tag for manual review (less strict, for monitoring)
-  - name: "Tag suspicious admin emails for review"
-    criteria:
-      type: "And"
-      criteria:
-        # Password expiry subject
-        - type: "SubjectPattern"
-          pattern: "(?i)password.{1,30}expir.{1,30}notification"
-        
-        # From display name looks like a domain
-        - type: "HeaderPattern"
-          header: "from"
-          pattern: "(?i)\"[a-z0-9.-]+\\.(com|net|org|edu)\""
-        
-        # But sender domain doesn't match display name domain
-        - type: "HeaderPattern"
-          header: "from"
-          pattern: "<[^@]+@[a-z0-9.-]+\\.[a-z]{2,}>"
-    action:
-      type: "TagAsSpam"
-      header_name: "X-Suspicious-Admin"
-      header_value: "Potential domain spoofing - review recommended"
+      message: "Failed DKIM authentication on administrative email"
