@@ -484,6 +484,7 @@ This detects emails that consist primarily of attachments (PDF, DOC, DOCX, etc.)
 - `max_text_length`: Maximum allowed text content (default: 100 characters)
 - `ignore_whitespace`: Whether to ignore whitespace when counting text (default: true)
 - `suspicious_types`: Attachment types to flag (default: ["pdf", "doc", "docx", "xls", "xlsx"])
+  - Supported types: "pdf", "doc", "docx", "xls", "xlsx", "zip", "rar", "exe"
 - `min_attachment_size`: Minimum attachment size to consider suspicious (default: 10KB)
 - `check_disposition`: Whether to check Content-Disposition headers (default: true)
 
