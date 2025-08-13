@@ -1,5 +1,5 @@
 use clap::{Arg, Command};
-use foff_milter::config_test;
+use foff_milter::filter::FilterEngine;
 use foff_milter::milter::Milter;
 use foff_milter::Config;
 use log::LevelFilter;
@@ -28,13 +28,7 @@ async fn main() {
         .arg(
             Arg::new("test-config")
                 .long("test-config")
-                .help("Test the configuration file and exit")
-                .action(clap::ArgAction::SetTrue),
-        )
-        .arg(
-            Arg::new("test-comprehensive")
-                .long("test-comprehensive")
-                .help("Run comprehensive configuration testing with regex validation and performance analysis")
+                .help("Test the configuration file for validity and exit")
                 .action(clap::ArgAction::SetTrue),
         )
         .arg(
@@ -85,26 +79,26 @@ async fn main() {
         }
     };
 
-    if matches.get_flag("test-config") || matches.get_flag("test-comprehensive") {
-        let comprehensive = matches.get_flag("test-comprehensive");
+    if matches.get_flag("test-config") {
+        println!("🔍 Testing configuration...");
+        println!();
 
-        if comprehensive {
-            println!("🔍 Running comprehensive configuration testing...");
-            println!();
-
-            let test_results = config_test::validate_config_comprehensive(&config);
-            config_test::print_test_results(&test_results);
-
-            if !test_results.valid {
-                process::exit(1);
+        // Try to create FilterEngine to validate all regex patterns
+        match FilterEngine::new(config.clone()) {
+            Ok(_) => {
+                println!("✅ Configuration is valid!");
+                println!("Socket path: {}", config.socket_path);
+                println!("Number of rules: {}", config.rules.len());
+                for (i, rule) in config.rules.iter().enumerate() {
+                    println!("  Rule {}: {}", i + 1, rule.name);
+                }
+                println!();
+                println!("All regex patterns compiled successfully.");
             }
-        } else {
-            // Basic validation (original behavior)
-            println!("Configuration file is valid!");
-            println!("Socket path: {}", config.socket_path);
-            println!("Number of rules: {}", config.rules.len());
-            for (i, rule) in config.rules.iter().enumerate() {
-                println!("  Rule {}: {}", i + 1, rule.name);
+            Err(e) => {
+                println!("❌ Configuration validation failed:");
+                println!("Error: {}", e);
+                process::exit(1);
             }
         }
         return;
