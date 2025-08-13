@@ -2,19 +2,19 @@ socket_path: "/var/run/foff-milter.sock"
 default_action: "Accept"
 
 rules:
-  # Generic rule: Block emails where From display name contains a domain 
-  # but sender is from a completely different domain
+  # Simple rule: Block emails where From display name looks like a domain
+  # This catches most domain spoofing without complex regex
   - name: "Block domain spoofing in From header"
     criteria:
       type: "HeaderPattern"
       header: "from"
-      pattern: "(?i)\"[^\"]*\\b([a-z0-9.-]+\\.(com|net|org|edu|gov))\\b[^\"]*\"\\s*<[^@]+@(?!.*\\1)[a-z0-9.-]+\\.[a-z]{2,}>"
+      pattern: "(?i)\"[a-z0-9.-]+\\.(com|net|org|edu|gov)\"\\s*<[^@]+@[a-z0-9.-]+\\.[a-z]{2,}>"
     action:
       type: "Reject"
-      message: "Domain spoofing detected in From header"
+      message: "Potential domain spoofing detected in From header"
 
-  # Generic rule: Block administrative emails with links to unrelated domains
-  - name: "Block admin emails with external links"
+  # Simple rule: Block administrative emails with email addresses in URLs
+  - name: "Block admin emails with email addresses in links"
     criteria:
       type: "And"
       criteria:
@@ -27,7 +27,7 @@ rules:
               header: "from"
               pattern: "(?i)(admin|administrator|support|security|noreply|no-reply)@"
         
-        # Contains links with email addresses in URL (phishing tactic)
+        # Contains links with email addresses in URL (strong phishing indicator)
         - type: "HeaderPattern"
           header: "body"
           pattern: "(?i)href=[\"']https?://[^\"']*[#?&][^\"']*[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,}"
@@ -35,7 +35,7 @@ rules:
       type: "Reject"
       message: "Administrative email with suspicious links blocked"
 
-  # Generic rule: Block emails with DKIM failures claiming to be administrative
+  # Simple rule: Block DKIM failures with administrative claims
   - name: "Block failed DKIM administrative emails"
     criteria:
       type: "And"
@@ -45,14 +45,9 @@ rules:
           header: "authentication-results"
           pattern: "(?i)dkim=fail"
         
-        # Claims to be administrative
-        - type: "Or"
-          criteria:
-            - type: "SubjectPattern"
-              pattern: "(?i)(password|account|security).{1,30}(expir|notification|alert|suspend)"
-            - type: "HeaderPattern"
-              header: "from"
-              pattern: "(?i)\"[^\"]*\\b[a-z0-9.-]+\\.(com|net|org|edu)\\b[^\"]*\""
+        # Administrative subject
+        - type: "SubjectPattern"
+          pattern: "(?i)(password|account|security).{1,30}(expir|notification|alert|suspend)"
     action:
       type: "Reject"
       message: "Failed DKIM authentication on administrative email"
