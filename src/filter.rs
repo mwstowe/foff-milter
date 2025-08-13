@@ -900,6 +900,11 @@ impl FilterEngine {
                 "xls" => vec!["application/vnd.ms-excel", "application/excel"],
                 "xlsx" => vec!["application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"],
                 "zip" => vec!["application/zip", "application/x-zip-compressed"],
+                "rar" => vec![
+                    "application/x-rar-compressed",
+                    "application/vnd.rar",
+                    "application/x-rar",
+                ],
                 "exe" => vec!["application/x-msdownload", "application/octet-stream"],
                 _ => vec![],
             };
@@ -4676,5 +4681,131 @@ mod tests {
         assert!(links
             .iter()
             .all(|l| l.starts_with("https://example.com/track")));
+    }
+
+    #[tokio::test]
+    async fn test_rar_attachment_detection() {
+        use crate::config::{Action, Config};
+
+        let config = Config {
+            socket_path: "/tmp/test.sock".to_string(),
+            default_action: Action::Accept,
+            rules: vec![],
+        };
+
+        let engine = FilterEngine::new(config).expect("Failed to create FilterEngine");
+
+        // Test case: Email with RAR attachment
+        let rar_email_body = r#"
+Content-Type: multipart/mixed; boundary="boundary123"
+
+--boundary123
+Content-Type: text/plain
+
+Here is your file.
+
+--boundary123
+Content-Type: application/x-rar-compressed
+Content-Disposition: attachment; filename="document.rar"
+Content-Transfer-Encoding: base64
+
+UmFyIRoHAM+QcwAADQAAAAAAAACkCgAAAGRvY3VtZW50LnR4dAAA
+--boundary123--
+        "#;
+
+        let context = MailContext {
+            headers: HashMap::new(),
+            body: Some(rar_email_body.to_string()),
+            sender: Some("test@example.com".to_string()),
+            from_header: None,
+            recipients: vec![],
+            subject: Some("Document attached".to_string()),
+            helo: Some("example.com".to_string()),
+            hostname: Some("mail.example.com".to_string()),
+            mailer: None,
+        };
+
+        // Test AttachmentOnlyEmail criteria with RAR type
+        let rar_criteria = Criteria::AttachmentOnlyEmail {
+            max_text_length: Some(1000),
+            ignore_whitespace: Some(true),
+            suspicious_types: Some(vec!["rar".to_string()]),
+            min_attachment_size: Some(100),
+            check_disposition: Some(true),
+        };
+
+        let result = engine.evaluate_criteria(&rar_criteria, &context).await;
+        assert!(result, "Should detect RAR attachment");
+
+        println!("✅ RAR attachment detection test passed");
+    }
+
+    #[tokio::test]
+    async fn test_rar_content_type_variations() {
+        use crate::config::{Action, Config};
+
+        let config = Config {
+            socket_path: "/tmp/test.sock".to_string(),
+            default_action: Action::Accept,
+            rules: vec![],
+        };
+
+        let engine = FilterEngine::new(config).expect("Failed to create FilterEngine");
+
+        // Test different RAR MIME types
+        let test_cases = vec![
+            ("application/x-rar-compressed", "Standard RAR MIME type"),
+            ("application/vnd.rar", "Alternative RAR MIME type"),
+            ("application/x-rar", "Another RAR MIME type"),
+        ];
+
+        for (mime_type, description) in test_cases {
+            let email_body = format!(
+                r#"
+Content-Type: multipart/mixed; boundary="boundary123"
+
+--boundary123
+Content-Type: text/plain
+
+Test email with RAR attachment.
+
+--boundary123
+Content-Type: {mime_type}
+Content-Disposition: attachment; filename="test.rar"
+
+[RAR content here]
+--boundary123--
+            "#
+            );
+
+            let context = MailContext {
+                headers: HashMap::new(),
+                body: Some(email_body),
+                sender: Some("test@example.com".to_string()),
+                from_header: None,
+                recipients: vec![],
+                subject: Some("Test".to_string()),
+                helo: Some("example.com".to_string()),
+                hostname: Some("mail.example.com".to_string()),
+                mailer: None,
+            };
+
+            let rar_criteria = Criteria::AttachmentOnlyEmail {
+                max_text_length: Some(1000),
+                ignore_whitespace: Some(true),
+                suspicious_types: Some(vec!["rar".to_string()]),
+                min_attachment_size: Some(50),
+                check_disposition: Some(true),
+            };
+
+            let result = engine.evaluate_criteria(&rar_criteria, &context).await;
+            assert!(
+                result,
+                "Should detect RAR attachment for {}: {}",
+                mime_type, description
+            );
+        }
+
+        println!("✅ RAR MIME type variations test passed");
     }
 }
