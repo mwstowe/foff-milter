@@ -2395,7 +2395,17 @@ impl FilterEngine {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::config::Config;
+    use crate::config::{Config, FilterRule, Action};
+
+    // Helper function to create test configs without statistics
+    fn create_test_config(rules: Vec<FilterRule>) -> Config {
+        Config {
+            socket_path: "/tmp/test.sock".to_string(),
+            default_action: Action::Accept,
+            rules,
+            statistics: None,
+        }
+    }
 
     #[tokio::test]
     async fn test_mailer_pattern_matching() {
@@ -2432,25 +2442,22 @@ mod tests {
         use crate::config::{Action, FilterRule};
 
         // Create a config with combination criteria: sparkmail.com mailer AND Japanese in subject
-        let config = Config {
-            rules: vec![FilterRule {
-                name: "Block Sparkmail with Japanese".to_string(),
-                criteria: Criteria::And {
-                    criteria: vec![
-                        Criteria::MailerPattern {
-                            pattern: r".*sparkmail\.com.*".to_string(),
-                        },
-                        Criteria::SubjectContainsLanguage {
-                            language: "japanese".to_string(),
-                        },
-                    ],
-                },
-                action: Action::Reject {
-                    message: "Sparkmail with Japanese content blocked".to_string(),
-                },
-            }],
-            ..Default::default()
-        };
+        let config = create_test_config(vec![FilterRule {
+            name: "Block Sparkmail with Japanese".to_string(),
+            criteria: Criteria::And {
+                criteria: vec![
+                    Criteria::MailerPattern {
+                        pattern: r".*sparkmail\.com.*".to_string(),
+                    },
+                    Criteria::SubjectContainsLanguage {
+                        language: "japanese".to_string(),
+                    },
+                ],
+            },
+            action: Action::Reject {
+                message: "Sparkmail with Japanese content blocked".to_string(),
+            },
+        }]);
 
         let engine = FilterEngine::new(config).unwrap();
 
@@ -2500,8 +2507,7 @@ mod tests {
         use std::collections::HashMap;
 
         // Create config with the exact rule from the user
-        let config = Config {
-            rules: vec![FilterRule {
+        let config = create_test_config(vec![FilterRule {
                 name: "Fake Microsoft".to_string(),
                 criteria: Criteria::HeaderPattern {
                     header: "from".to_string(),
@@ -2511,9 +2517,7 @@ mod tests {
                     header_name: "X-Spam-Flag".to_string(),
                     header_value: "YES".to_string(),
                 },
-            }],
-            ..Default::default()
-        };
+            }]);
 
         let engine = FilterEngine::new(config).unwrap();
 
@@ -2575,8 +2579,7 @@ mod tests {
         use crate::config::{Action, FilterRule};
 
         // Create config with the two production examples
-        let config = Config {
-            rules: vec![
+        let config = create_test_config(vec![
                 // Example 1: Chinese service with Japanese content
                 FilterRule {
                     name: "Block Chinese services with Japanese content".to_string(),
@@ -2611,9 +2614,7 @@ mod tests {
                         message: "Sparkpost to user@example.com blocked".to_string(),
                     },
                 },
-            ],
-            ..Default::default()
-        };
+            ]);
 
         let engine = FilterEngine::new(config).unwrap();
 
@@ -2717,8 +2718,7 @@ mod tests {
         use std::collections::HashMap;
 
         // Create config to detect SendGrid phishing redirects
-        let config = Config {
-            rules: vec![FilterRule {
+        let config = create_test_config(vec![FilterRule {
                 name: "Detect SendGrid phishing redirects".to_string(),
                 criteria: Criteria::PhishingLinkRedirection {
                     max_redirects: Some(5),
@@ -2732,9 +2732,7 @@ mod tests {
                 action: Action::Reject {
                     message: "Suspicious redirect chain detected".to_string(),
                 },
-            }],
-            ..Default::default()
-        };
+            }]);
 
         let engine = FilterEngine::new(config).unwrap();
 
@@ -2774,8 +2772,7 @@ mod tests {
         use crate::config::{Action, FilterRule};
 
         // Create config to detect image-only emails
-        let config = Config {
-            rules: vec![FilterRule {
+        let config = create_test_config(vec![FilterRule {
                 name: "Detect image-only emails".to_string(),
                 criteria: Criteria::ImageOnlyEmail {
                     max_text_length: Some(20),
@@ -2786,9 +2783,7 @@ mod tests {
                     header_name: "X-Image-Only".to_string(),
                     header_value: "YES".to_string(),
                 },
-            }],
-            ..Default::default()
-        };
+            }]);
 
         let engine = FilterEngine::new(config).unwrap();
 
@@ -2855,8 +2850,7 @@ mod tests {
         use std::collections::HashMap;
 
         // Create config to detect free email reply-to phishing
-        let config = Config {
-            rules: vec![FilterRule {
+        let config = create_test_config(vec![FilterRule {
                 name: "Detect free email reply-to".to_string(),
                 criteria: Criteria::PhishingFreeEmailReplyTo {
                     free_email_domains: None, // Use defaults
@@ -2866,9 +2860,7 @@ mod tests {
                     header_name: "X-Free-Email-Reply-To".to_string(),
                     header_value: "YES".to_string(),
                 },
-            }],
-            ..Default::default()
-        };
+            }]);
 
         let engine = FilterEngine::new(config).unwrap();
 
@@ -2967,8 +2959,7 @@ mod tests {
         use std::collections::HashMap;
 
         // Create config to validate reply-to addresses
-        let config = Config {
-            rules: vec![FilterRule {
+        let config = create_test_config(vec![FilterRule {
                 name: "Validate reply-to address".to_string(),
                 criteria: Criteria::ReplyToValidation {
                     timeout_seconds: Some(5),
@@ -2978,9 +2969,7 @@ mod tests {
                     header_name: "X-Invalid-Reply-To".to_string(),
                     header_value: "YES".to_string(),
                 },
-            }],
-            ..Default::default()
-        };
+            }]);
 
         let engine = FilterEngine::new(config).unwrap();
 
@@ -3023,8 +3012,7 @@ mod tests {
         use crate::config::{Action, FilterRule};
         use std::collections::HashMap;
         // Create config to tag emails with unsubscribe links pointing to google.com
-        let config = Config {
-            rules: vec![FilterRule {
+        let config = create_test_config(vec![FilterRule {
                 name: "Tag Google unsubscribe links".to_string(),
                 criteria: Criteria::UnsubscribeLinkPattern {
                     pattern: r".*\.google\.com.*".to_string(),
@@ -3033,9 +3021,7 @@ mod tests {
                     header_name: "X-Suspicious-Unsubscribe".to_string(),
                     header_value: "YES".to_string(),
                 },
-            }],
-            ..Default::default()
-        };
+            }]);
 
         let engine = FilterEngine::new(config).unwrap();
 
@@ -3208,8 +3194,7 @@ mod tests {
         use std::collections::HashMap;
 
         // Test case 1: Email with only mailto unsubscribe links (should match)
-        let config = Config {
-            rules: vec![FilterRule {
+        let config = create_test_config(vec![FilterRule {
                 name: "Block mailto-only unsubscribe".to_string(),
                 criteria: Criteria::UnsubscribeMailtoOnly {
                     allow_mixed: Some(false), // Flag any mailto links
@@ -3217,9 +3202,7 @@ mod tests {
                 action: Action::Reject {
                     message: "Suspicious mailto-only unsubscribe".to_string(),
                 },
-            }],
-            ..Default::default()
-        };
+            }]);
 
         let engine = FilterEngine::new(config).unwrap();
 
@@ -3260,8 +3243,7 @@ mod tests {
         }
 
         // Test case 3: Email with only HTTP links (should not match)
-        let config3 = Config {
-            rules: vec![FilterRule {
+        let config3 = create_test_config(vec![FilterRule {
                 name: "Block mailto-only unsubscribe".to_string(),
                 criteria: Criteria::UnsubscribeMailtoOnly {
                     allow_mixed: Some(true), // Only flag if ALL links are mailto
@@ -3269,9 +3251,7 @@ mod tests {
                 action: Action::Reject {
                     message: "Suspicious mailto-only unsubscribe".to_string(),
                 },
-            }],
-            ..Default::default()
-        };
+            }]);
 
         let engine3 = FilterEngine::new(config3).unwrap();
 
@@ -3451,8 +3431,7 @@ mod tests {
         use std::collections::HashMap;
 
         // Test bulk spam detection with undisclosed recipients from free email
-        let config = Config {
-            rules: vec![FilterRule {
+        let config = create_test_config(vec![FilterRule {
                 name: "Block bulk spam with undisclosed recipients from free email".to_string(),
                 criteria: Criteria::And {
                     criteria: vec![
@@ -3471,9 +3450,7 @@ mod tests {
                         "Bulk spam with undisclosed recipients from free email service blocked"
                             .to_string(),
                 },
-            }],
-            ..Default::default()
-        };
+            }]);
 
         let engine = FilterEngine::new(config).unwrap();
 
@@ -3566,16 +3543,13 @@ mod tests {
         use std::collections::HashMap;
 
         // Test invalid unsubscribe headers detection
-        let config = Config {
-            rules: vec![FilterRule {
+        let config = create_test_config(vec![FilterRule {
                 name: "Detect invalid unsubscribe headers".to_string(),
                 criteria: Criteria::InvalidUnsubscribeHeaders,
                 action: Action::Reject {
                     message: "Invalid unsubscribe headers detected (RFC violation)".to_string(),
                 },
-            }],
-            ..Default::default()
-        };
+            }]);
 
         let engine = FilterEngine::new(config).unwrap();
 
@@ -3727,8 +3701,7 @@ mod tests {
         use std::collections::HashMap;
 
         // Test enhanced image-only detection with large attachments
-        let config = Config {
-            rules: vec![FilterRule {
+        let config = create_test_config(vec![FilterRule {
                 name: "Detect image-heavy emails with decoy text".to_string(),
                 criteria: Criteria::ImageOnlyEmail {
                     max_text_length: Some(50),
@@ -3738,9 +3711,7 @@ mod tests {
                 action: Action::Reject {
                     message: "Image-only email with minimal text detected".to_string(),
                 },
-            }],
-            ..Default::default()
-        };
+            }]);
 
         let engine = FilterEngine::new(config).unwrap();
 
@@ -3872,8 +3843,7 @@ mod tests {
         use std::collections::HashMap;
 
         // Test unsubscribe link IP address detection
-        let config = Config {
-            rules: vec![FilterRule {
+        let config = create_test_config(vec![FilterRule {
                 name: "Detect unsubscribe links with IP addresses".to_string(),
                 criteria: Criteria::UnsubscribeLinkIPAddress {
                     check_ipv4: Some(true),
@@ -3883,9 +3853,7 @@ mod tests {
                 action: Action::Reject {
                     message: "Unsubscribe link uses IP address instead of domain".to_string(),
                 },
-            }],
-            ..Default::default()
-        };
+            }]);
 
         let engine = FilterEngine::new(config).unwrap();
 
@@ -3996,8 +3964,7 @@ mod tests {
         use std::collections::HashMap;
 
         // Test with private IPs allowed
-        let config = Config {
-            rules: vec![FilterRule {
+        let config = create_test_config(vec![FilterRule {
                 name: "Detect unsubscribe links with IP addresses (allow private)".to_string(),
                 criteria: Criteria::UnsubscribeLinkIPAddress {
                     check_ipv4: Some(true),
@@ -4007,9 +3974,7 @@ mod tests {
                 action: Action::Reject {
                     message: "Unsubscribe link uses IP address".to_string(),
                 },
-            }],
-            ..Default::default()
-        };
+            }]);
 
         let engine = FilterEngine::new(config).unwrap();
 
@@ -4060,8 +4025,7 @@ mod tests {
         use std::collections::HashMap;
 
         // Test with private IPs blocked (default)
-        let config = Config {
-            rules: vec![FilterRule {
+        let config = create_test_config(vec![FilterRule {
                 name: "Detect unsubscribe links with IP addresses (block private)".to_string(),
                 criteria: Criteria::UnsubscribeLinkIPAddress {
                     check_ipv4: Some(true),
@@ -4071,9 +4035,7 @@ mod tests {
                 action: Action::Reject {
                     message: "Unsubscribe link uses IP address".to_string(),
                 },
-            }],
-            ..Default::default()
-        };
+            }]);
 
         let engine = FilterEngine::new(config).unwrap();
 
@@ -4223,8 +4185,7 @@ mod tests {
         use std::collections::HashMap;
 
         // Test attachment-only email detection
-        let config = Config {
-            rules: vec![FilterRule {
+        let config = create_test_config(vec![FilterRule {
                 name: "Detect attachment-only emails".to_string(),
                 criteria: Criteria::AttachmentOnlyEmail {
                     max_text_length: Some(50),
@@ -4236,9 +4197,7 @@ mod tests {
                 action: Action::Reject {
                     message: "Attachment-only email detected".to_string(),
                 },
-            }],
-            ..Default::default()
-        };
+            }]);
 
         let engine = FilterEngine::new(config).unwrap();
 
@@ -4513,13 +4472,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_unsubscribe_anchor_text_detection() {
-        use crate::config::{Action, Config};
-
-        let config = Config {
-            socket_path: "/tmp/test.sock".to_string(),
-            default_action: Action::Accept,
-            rules: vec![],
-        };
+        let config = create_test_config(vec![]);
 
         let engine = FilterEngine::new(config).expect("Failed to create FilterEngine");
 
@@ -4573,13 +4526,8 @@ mod tests {
 
     #[tokio::test]
     async fn test_mixed_unsubscribe_links() {
-        use crate::config::{Action, Config};
 
-        let config = Config {
-            socket_path: "/tmp/test.sock".to_string(),
-            default_action: Action::Accept,
-            rules: vec![],
-        };
+        let config = create_test_config(vec![]);
 
         let engine = FilterEngine::new(config).expect("Failed to create FilterEngine");
 
@@ -4635,13 +4583,8 @@ mod tests {
 
     #[tokio::test]
     async fn test_anchor_text_variations() {
-        use crate::config::{Action, Config};
 
-        let config = Config {
-            socket_path: "/tmp/test.sock".to_string(),
-            default_action: Action::Accept,
-            rules: vec![],
-        };
+        let config = create_test_config(vec![]);
 
         let engine = FilterEngine::new(config).expect("Failed to create FilterEngine");
 
@@ -4685,13 +4628,8 @@ mod tests {
 
     #[tokio::test]
     async fn test_rar_attachment_detection() {
-        use crate::config::{Action, Config};
 
-        let config = Config {
-            socket_path: "/tmp/test.sock".to_string(),
-            default_action: Action::Accept,
-            rules: vec![],
-        };
+        let config = create_test_config(vec![]);
 
         let engine = FilterEngine::new(config).expect("Failed to create FilterEngine");
 
@@ -4742,13 +4680,8 @@ UmFyIRoHAM+QcwAADQAAAAAAAACkCgAAAGRvY3VtZW50LnR4dAAA
 
     #[tokio::test]
     async fn test_rar_content_type_variations() {
-        use crate::config::{Action, Config};
 
-        let config = Config {
-            socket_path: "/tmp/test.sock".to_string(),
-            default_action: Action::Accept,
-            rules: vec![],
-        };
+        let config = create_test_config(vec![]);
 
         let engine = FilterEngine::new(config).expect("Failed to create FilterEngine");
 
