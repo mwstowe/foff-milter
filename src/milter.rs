@@ -1,5 +1,6 @@
 use crate::config::{Action, Config};
 use crate::filter::{FilterEngine, MailContext};
+use crate::statistics::{StatEvent, StatisticsCollector};
 use base64::Engine;
 use indymilter::{run, Actions, Callbacks, Config as IndyConfig, ContextActions, Status};
 use std::collections::HashMap;
@@ -115,6 +116,7 @@ pub fn extract_email_from_header(header_value: &str) -> Option<String> {
 }
 pub struct Milter {
     engine: Arc<FilterEngine>,
+    statistics: Option<Arc<StatisticsCollector>>,
 }
 
 // Simple state storage with unique session IDs
@@ -123,8 +125,24 @@ static SESSION_COUNTER: std::sync::atomic::AtomicU64 = std::sync::atomic::Atomic
 
 impl Milter {
     pub fn new(config: Config) -> anyhow::Result<Self> {
-        let engine = Arc::new(FilterEngine::new(config)?);
-        Ok(Milter { engine })
+        let engine = Arc::new(FilterEngine::new(config.clone())?);
+        
+        // Create statistics collector if enabled
+        let statistics = if let Some(stats_config) = &config.statistics {
+            if stats_config.enabled {
+                let collector = StatisticsCollector::new(
+                    stats_config.database_path.clone(),
+                    stats_config.flush_interval_seconds.unwrap_or(60),
+                )?;
+                Some(Arc::new(collector))
+            } else {
+                None
+            }
+        } else {
+            None
+        };
+        
+        Ok(Milter { engine, statistics })
     }
 
     pub async fn run(&self, socket_path: &str) -> anyhow::Result<()> {
@@ -292,9 +310,11 @@ impl Milter {
             eom: Some(Box::new({
                 let engine = engine.clone();
                 let state = state.clone();
+                let statistics = self.statistics.clone();
                 move |_ctx: &mut indymilter::EomContext<()>| {
                     let engine = engine.clone();
                     let state = state.clone();
+                    let statistics = statistics.clone();
                     Box::pin(async move {
                         log::debug!("EOM callback invoked");
                         // Clone mail context to avoid holding mutex across await (get most recent by session number)
@@ -325,6 +345,31 @@ impl Milter {
                                 action,
                                 matched_rules
                             );
+
+                            // Record statistics if enabled
+                            if let Some(stats) = &statistics {
+                                // Always record that an email was processed
+                                stats.record_event(StatEvent::EmailProcessed);
+                                
+                                // Record rule matches or no match
+                                if matched_rules.is_empty() {
+                                    stats.record_event(StatEvent::NoRuleMatch);
+                                } else {
+                                    // Record each matched rule
+                                    for rule_name in &matched_rules {
+                                        let action_str = match action {
+                                            Action::Accept => "Accept",
+                                            Action::Reject { .. } => "Reject",
+                                            Action::TagAsSpam { .. } => "TagAsSpam",
+                                        };
+                                        stats.record_event(StatEvent::RuleMatch {
+                                            rule_name: rule_name.clone(),
+                                            action: action_str.to_string(),
+                                            processing_time_ms: 0, // TODO: Add timing if needed
+                                        });
+                                    }
+                                }
+                            }
 
                             match action {
                                 Action::Reject { message } => {
