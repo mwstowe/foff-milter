@@ -2,6 +2,12 @@ socket_path: "/var/run/foff-milter.sock"
 default_action:
   type: "Accept"
 
+# Statistics configuration
+statistics:
+  enabled: true
+  database_path: "./foff-milter-stats.db"
+  flush_interval_seconds: 60
+
 rules:
   # Simple rule: Block emails where From display name looks like a domain
   # This catches most domain spoofing without complex regex

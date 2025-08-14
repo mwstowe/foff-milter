@@ -5,6 +5,24 @@ pub struct Config {
     pub socket_path: String,
     pub rules: Vec<FilterRule>,
     pub default_action: Action,
+    pub statistics: Option<StatisticsConfig>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct StatisticsConfig {
+    pub enabled: bool,
+    pub database_path: String,
+    pub flush_interval_seconds: Option<u64>, // How often to flush stats to disk (default: 60)
+}
+
+impl Default for StatisticsConfig {
+    fn default() -> Self {
+        Self {
+            enabled: true,
+            database_path: "/var/lib/foff-milter/stats.db".to_string(),
+            flush_interval_seconds: Some(60),
+        }
+    }
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -191,6 +209,7 @@ impl Default for Config {
                 },
             ],
             default_action: Action::Accept,
+            statistics: Some(StatisticsConfig::default()),
         }
     }
 }

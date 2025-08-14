@@ -1,6 +1,7 @@
 use clap::{Arg, Command};
 use foff_milter::filter::FilterEngine;
 use foff_milter::milter::Milter;
+use foff_milter::statistics::StatisticsCollector;
 use foff_milter::Config;
 use log::LevelFilter;
 use std::process;
@@ -29,6 +30,24 @@ async fn main() {
             Arg::new("test-config")
                 .long("test-config")
                 .help("Test the configuration file for validity and exit")
+                .action(clap::ArgAction::SetTrue),
+        )
+        .arg(
+            Arg::new("stats")
+                .long("stats")
+                .help("Show current statistics and exit")
+                .action(clap::ArgAction::SetTrue),
+        )
+        .arg(
+            Arg::new("stats-unmatched")
+                .long("stats-unmatched")
+                .help("Show rules that have never matched and exit")
+                .action(clap::ArgAction::SetTrue),
+        )
+        .arg(
+            Arg::new("stats-reset")
+                .long("stats-reset")
+                .help("Reset all statistics and exit")
                 .action(clap::ArgAction::SetTrue),
         )
         .arg(
@@ -99,6 +118,148 @@ async fn main() {
                 println!("❌ Configuration validation failed:");
                 println!("Error: {e}");
                 process::exit(1);
+            }
+        }
+        return;
+    }
+
+    // Handle statistics commands
+    if matches.get_flag("stats")
+        || matches.get_flag("stats-unmatched")
+        || matches.get_flag("stats-reset")
+    {
+        let stats_config = config.statistics.as_ref();
+
+        if stats_config.is_none() || !stats_config.unwrap().enabled {
+            println!("❌ Statistics are not enabled in configuration");
+            process::exit(1);
+        }
+
+        let stats_config = stats_config.unwrap();
+        let collector = match StatisticsCollector::new(stats_config.database_path.clone(), 60) {
+            Ok(collector) => collector,
+            Err(e) => {
+                println!("❌ Failed to access statistics database: {e}");
+                process::exit(1);
+            }
+        };
+
+        if matches.get_flag("stats-reset") {
+            match collector.reset_stats() {
+                Ok(()) => println!("✅ Statistics reset successfully"),
+                Err(e) => {
+                    println!("❌ Failed to reset statistics: {e}");
+                    process::exit(1);
+                }
+            }
+        } else if matches.get_flag("stats-unmatched") {
+            let rule_names: Vec<String> = config.rules.iter().map(|r| r.name.clone()).collect();
+            match collector.get_unmatched_rules(&rule_names) {
+                Ok(unmatched) => {
+                    if unmatched.is_empty() {
+                        println!("✅ All rules have been matched at least once");
+                    } else {
+                        println!(
+                            "📊 Rules that have never matched ({} total):",
+                            unmatched.len()
+                        );
+                        println!("═══════════════════════════════════════");
+                        for rule_name in unmatched {
+                            println!("  • {rule_name}");
+                        }
+                        println!();
+                        println!("💡 Consider reviewing these rules - they may be:");
+                        println!("   - Too restrictive");
+                        println!("   - Targeting threats that haven't occurred");
+                        println!("   - Redundant with other rules");
+                    }
+                }
+                Err(e) => {
+                    println!("❌ Failed to get unmatched rules: {e}");
+                    process::exit(1);
+                }
+            }
+        } else {
+            // Show stats
+            match collector.get_stats() {
+                Ok((global_stats, rule_stats)) => {
+                    println!("📊 FOFF Milter Statistics");
+                    println!("═══════════════════════════════════════");
+                    println!();
+                    println!("📈 Global Statistics:");
+                    println!("  Total Emails Processed: {}", global_stats.total_emails);
+                    if global_stats.total_emails > 0 {
+                        let accept_pct = (global_stats.total_accepts as f64
+                            / global_stats.total_emails as f64)
+                            * 100.0;
+                        let reject_pct = (global_stats.total_rejects as f64
+                            / global_stats.total_emails as f64)
+                            * 100.0;
+                        let tag_pct = (global_stats.total_tags as f64
+                            / global_stats.total_emails as f64)
+                            * 100.0;
+                        let no_match_pct = (global_stats.no_rule_matches as f64
+                            / global_stats.total_emails as f64)
+                            * 100.0;
+
+                        println!(
+                            "  ├─ Accepted: {} ({:.1}%)",
+                            global_stats.total_accepts, accept_pct
+                        );
+                        println!(
+                            "  ├─ Rejected: {} ({:.1}%)",
+                            global_stats.total_rejects, reject_pct
+                        );
+                        println!(
+                            "  ├─ Tagged as Spam: {} ({:.1}%)",
+                            global_stats.total_tags, tag_pct
+                        );
+                        println!(
+                            "  └─ No Rule Matches: {} ({:.1}%)",
+                            global_stats.no_rule_matches, no_match_pct
+                        );
+                    }
+                    println!();
+                    println!(
+                        "  Started: {}",
+                        global_stats.start_time.format("%Y-%m-%d %H:%M:%S UTC")
+                    );
+                    println!(
+                        "  Last Updated: {}",
+                        global_stats.last_updated.format("%Y-%m-%d %H:%M:%S UTC")
+                    );
+                    println!();
+
+                    if !rule_stats.is_empty() {
+                        println!("🎯 Rule Statistics (sorted by matches):");
+                        println!("┌─────────────────────────────────────────────────────────────────────────────┐");
+                        println!("│ Rule Name                                    │ Matches │ Accept │ Reject │ Tag │");
+                        println!("├─────────────────────────────────────────────────────────────────────────────┤");
+
+                        for stats in rule_stats.iter().take(20) {
+                            // Show top 20
+                            println!(
+                                "│ {:<44} │ {:>7} │ {:>6} │ {:>6} │ {:>3} │",
+                                truncate_string(&stats.rule_name, 44),
+                                stats.matches,
+                                stats.accepts,
+                                stats.rejects,
+                                stats.tags
+                            );
+                        }
+                        println!("└─────────────────────────────────────────────────────────────────────────────┘");
+
+                        if rule_stats.len() > 20 {
+                            println!("  ... and {} more rules", rule_stats.len() - 20);
+                        }
+                    } else {
+                        println!("📭 No rule matches recorded yet");
+                    }
+                }
+                Err(e) => {
+                    println!("❌ Failed to get statistics: {e}");
+                    process::exit(1);
+                }
             }
         }
         return;
@@ -259,5 +420,13 @@ fn generate_default_config(path: &str) {
             eprintln!("Error writing configuration file: {e}");
             process::exit(1);
         }
+    }
+}
+
+fn truncate_string(s: &str, max_len: usize) -> String {
+    if s.len() <= max_len {
+        s.to_string()
+    } else {
+        format!("{}...", &s[..max_len.saturating_sub(3)])
     }
 }
