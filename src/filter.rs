@@ -263,6 +263,49 @@ impl FilterEngine {
         }
     }
 
+    /// Extract email address from an optional string (sender field)
+    fn extract_email_address(&self, email_option: &Option<String>) -> Option<String> {
+        email_option
+            .as_ref()
+            .and_then(|email| extract_email_from_header(email))
+    }
+
+    /// Extract email address from header value using the existing function
+    fn extract_email_from_header(&self, header_value: &str) -> Option<String> {
+        extract_email_from_header(header_value)
+    }
+
+    /// Check if an IP address is in a private range
+    fn is_private_ip(&self, ip_str: &str) -> bool {
+        let parts: Vec<&str> = ip_str.split('.').collect();
+        if parts.len() != 4 {
+            return false;
+        }
+
+        // Parse octets
+        let octets: Result<Vec<u8>, _> = parts.iter().map(|s| s.parse::<u8>()).collect();
+        if let Ok(octets) = octets {
+            // Check private IP ranges
+            // 10.0.0.0/8 (10.0.0.0 to 10.255.255.255)
+            if octets[0] == 10 {
+                return true;
+            }
+            // 172.16.0.0/12 (172.16.0.0 to 172.31.255.255)
+            if octets[0] == 172 && octets[1] >= 16 && octets[1] <= 31 {
+                return true;
+            }
+            // 192.168.0.0/16 (192.168.0.0 to 192.168.255.255)
+            if octets[0] == 192 && octets[1] == 168 {
+                return true;
+            }
+            // 127.0.0.0/8 (localhost)
+            if octets[0] == 127 {
+                return true;
+            }
+        }
+        false
+    }
+
     fn compile_patterns(&mut self) -> anyhow::Result<()> {
         let rules = self.config.rules.clone();
         for rule in &rules {
@@ -420,6 +463,10 @@ impl FilterEngine {
             Criteria::GoogleGroupsAbuse { .. } => {
                 // No regex patterns to compile for Google Groups abuse detection
                 // Uses string matching and wildcard pattern operations instead
+            }
+            Criteria::SenderSpoofingExtortion { .. } => {
+                // No regex patterns to compile for sender spoofing extortion detection
+                // Uses string matching and email address comparison instead
             }
             Criteria::And { criteria } | Criteria::Or { criteria } => {
                 for c in criteria {
@@ -2754,13 +2801,14 @@ impl FilterEngine {
                             let sender_lower = sender.to_lowercase();
                             for domain_pattern in &domains {
                                 // Convert wildcard patterns to regex-like matching
-                                let pattern_check = if let Some(suffix) = domain_pattern.strip_prefix('*') {
-                                    sender_lower.contains(suffix)
-                                } else if let Some(prefix) = domain_pattern.strip_suffix('*') {
-                                    sender_lower.contains(prefix)
-                                } else {
-                                    sender_lower.contains(domain_pattern)
-                                };
+                                let pattern_check =
+                                    if let Some(suffix) = domain_pattern.strip_prefix('*') {
+                                        sender_lower.contains(suffix)
+                                    } else if let Some(prefix) = domain_pattern.strip_suffix('*') {
+                                        sender_lower.contains(prefix)
+                                    } else {
+                                        sender_lower.contains(domain_pattern)
+                                    };
 
                                 if pattern_check {
                                     abuse_indicators += 1;
@@ -2809,6 +2857,262 @@ impl FilterEngine {
                     }
 
                     is_abuse
+                }
+                Criteria::SenderSpoofingExtortion {
+                    extortion_keywords,
+                    check_sender_recipient_match,
+                    check_external_source,
+                    check_missing_authentication,
+                    require_extortion_content,
+                    min_indicators,
+                } => {
+                    log::debug!("Checking for sender spoofing extortion");
+
+                    // Default extortion keywords
+                    let default_extortion_keywords = vec![
+                        // Payment/money terms
+                        "payment",
+                        "pay now",
+                        "send money",
+                        "transfer funds",
+                        "waiting for payment",
+                        "payment due",
+                        "overdue payment",
+                        "final payment",
+                        "immediate payment",
+                        // Cryptocurrency terms
+                        "bitcoin",
+                        "btc",
+                        "cryptocurrency",
+                        "crypto",
+                        "wallet",
+                        "blockchain",
+                        "digital currency",
+                        "virtual currency",
+                        "crypto wallet",
+                        "bitcoin address",
+                        // Blackmail/extortion terms
+                        "blackmail",
+                        "extortion",
+                        "compromising",
+                        "embarrassing",
+                        "adult content",
+                        "intimate video",
+                        "private video",
+                        "webcam",
+                        "recording",
+                        "footage",
+                        "screenshots",
+                        "photos",
+                        "images",
+                        "evidence",
+                        "proof",
+                        "masturbat",
+                        // Threat terms
+                        "expose",
+                        "reveal",
+                        "publish",
+                        "share",
+                        "distribute",
+                        "send to contacts",
+                        "family and friends",
+                        "social media",
+                        "facebook",
+                        "instagram",
+                        "twitter",
+                        // Urgency terms
+                        "24 hours",
+                        "48 hours",
+                        "deadline",
+                        "expires",
+                        "time limit",
+                        "act now",
+                        "immediate action",
+                        "urgent",
+                        "final warning",
+                        "last chance",
+                    ];
+                    let keywords = if let Some(custom_keywords) = extortion_keywords {
+                        custom_keywords
+                            .iter()
+                            .map(|s| s.as_str())
+                            .collect::<Vec<_>>()
+                    } else {
+                        default_extortion_keywords
+                    };
+
+                    let check_sender_match = check_sender_recipient_match.unwrap_or(true);
+                    let check_external = check_external_source.unwrap_or(true);
+                    let check_auth = check_missing_authentication.unwrap_or(true);
+                    let require_extortion = require_extortion_content.unwrap_or(true);
+                    let min_indicators_required = min_indicators.unwrap_or(2);
+
+                    let mut extortion_indicators = 0;
+
+                    // Check if sender and recipient match (spoofing indicator)
+                    if check_sender_match {
+                        let sender_email = self.extract_email_address(&context.sender);
+                        let mut recipient_match = false;
+
+                        // Check against all recipients
+                        for recipient in &context.recipients {
+                            let recipient_email =
+                                self.extract_email_address(&Some(recipient.clone()));
+                            if sender_email.is_some() && sender_email == recipient_email {
+                                recipient_match = true;
+                                log::debug!(
+                                    "Sender-recipient match detected: {} -> {}",
+                                    sender_email.as_ref().unwrap(),
+                                    recipient_email.as_ref().unwrap()
+                                );
+                                break;
+                            }
+                        }
+
+                        // Also check From header against To header
+                        if !recipient_match {
+                            if let (Some(from_header), Some(to_header)) =
+                                (context.headers.get("from"), context.headers.get("to"))
+                            {
+                                let from_email = self.extract_email_from_header(from_header);
+                                let to_email = self.extract_email_from_header(to_header);
+                                if from_email.is_some() && from_email == to_email {
+                                    recipient_match = true;
+                                    log::debug!(
+                                        "From-To header match detected: {} -> {}",
+                                        from_email.as_ref().unwrap(),
+                                        to_email.as_ref().unwrap()
+                                    );
+                                }
+                            }
+                        }
+
+                        if recipient_match {
+                            extortion_indicators += 1;
+                        }
+                    }
+
+                    // Check for extortion content in subject and body
+                    if require_extortion {
+                        let mut has_extortion_content = false;
+
+                        // Check subject
+                        if let Some(subject) = &context.subject {
+                            let subject_lower = subject.to_lowercase();
+                            for keyword in &keywords {
+                                if subject_lower.contains(keyword) {
+                                    has_extortion_content = true;
+                                    log::debug!("Extortion keyword detected in subject: {keyword}");
+                                    break;
+                                }
+                            }
+                        }
+
+                        // Check body if subject didn't match
+                        if !has_extortion_content {
+                            if let Some(body) = &context.body {
+                                let body_lower = body.to_lowercase();
+                                for keyword in &keywords {
+                                    if body_lower.contains(keyword) {
+                                        has_extortion_content = true;
+                                        log::debug!(
+                                            "Extortion keyword detected in body: {keyword}"
+                                        );
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+
+                        if has_extortion_content {
+                            extortion_indicators += 1;
+                        }
+                    }
+
+                    // Check for external/suspicious source
+                    if check_external {
+                        let mut is_external_source = false;
+
+                        // Look for direct IP connections in Received headers
+                        for (header_name, header_value) in &context.headers {
+                            if header_name.to_lowercase() == "received" {
+                                // Check for IP addresses in square brackets [x.x.x.x]
+                                if header_value.contains("[") && header_value.contains("]") {
+                                    // Extract IP pattern
+                                    if let Some(start) = header_value.find('[') {
+                                        if let Some(end) = header_value.find(']') {
+                                            let ip_part = &header_value[start + 1..end];
+                                            // Check if it looks like an IP address
+                                            if ip_part.matches('.').count() == 3
+                                                && ip_part
+                                                    .chars()
+                                                    .all(|c| c.is_ascii_digit() || c == '.')
+                                            {
+                                                // Check if it's a private IP range
+                                                let is_private = self.is_private_ip(ip_part);
+                                                if !is_private {
+                                                    is_external_source = true;
+                                                    log::debug!(
+                                                        "External IP source detected: {ip_part}"
+                                                    );
+                                                    break;
+                                                } else {
+                                                    log::debug!("Private IP detected, not flagging as external: {ip_part}");
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        if is_external_source {
+                            extortion_indicators += 1;
+                        }
+                    }
+
+                    // Check for missing or failed DKIM authentication
+                    if check_auth {
+                        let mut missing_auth = false;
+
+                        // Check authentication results
+                        if let Some(auth_results) = context.headers.get("authentication-results") {
+                            let auth_lower = auth_results.to_lowercase();
+                            if auth_lower.contains("dkim=none")
+                                || auth_lower.contains("dkim=fail")
+                                || auth_lower.contains("dkim=temperror")
+                                || auth_lower.contains("dkim=permerror")
+                            {
+                                missing_auth = true;
+                                log::debug!("Missing/failed DKIM authentication detected");
+                            }
+                        } else {
+                            // No authentication results header at all
+                            missing_auth = true;
+                            log::debug!("No authentication results header found");
+                        }
+
+                        // Also check if there's no DKIM signature at all
+                        if !missing_auth && !context.headers.contains_key("dkim-signature") {
+                            missing_auth = true;
+                            log::debug!("No DKIM signature found");
+                        }
+
+                        if missing_auth {
+                            extortion_indicators += 1;
+                        }
+                    }
+
+                    // Check if we have enough indicators for extortion
+                    let is_extortion = extortion_indicators >= min_indicators_required;
+
+                    if is_extortion {
+                        log::info!(
+                            "Sender spoofing extortion detected: {extortion_indicators} indicators found (min required: {min_indicators_required})"
+                        );
+                    }
+
+                    is_extortion
                 }
                 Criteria::And { criteria } => {
                     for c in criteria {
@@ -5534,5 +5838,256 @@ Content-Disposition: attachment; filename="test.rar"
         assert!(matched_rules5.is_empty());
 
         println!("✅ Google Groups abuse detection test passed");
+    }
+
+    #[tokio::test]
+    async fn test_sender_spoofing_extortion_detection() {
+        use std::collections::HashMap;
+
+        // Test case 1: Classic sender spoofing extortion (should match)
+        let config = create_test_config(vec![FilterRule {
+            name: "Detect sender spoofing extortion".to_string(),
+            criteria: Criteria::SenderSpoofingExtortion {
+                extortion_keywords: None, // Use defaults
+                check_sender_recipient_match: Some(true),
+                check_external_source: Some(true),
+                check_missing_authentication: Some(true),
+                require_extortion_content: Some(true),
+                min_indicators: Some(2), // Require 2 indicators
+            },
+            action: Action::Reject {
+                message: "Sender spoofing extortion detected".to_string(),
+            },
+        }]);
+
+        let engine = FilterEngine::new(config).unwrap();
+
+        // Create context that matches the sender spoofing extortion example
+        let mut headers = HashMap::new();
+        headers.insert("from".to_string(), "<robert@example.com>".to_string());
+        headers.insert("to".to_string(), "<robert@example.com>".to_string());
+        headers.insert(
+            "received".to_string(),
+            "from [38.25.18.110] ([38.25.18.110])".to_string(),
+        );
+        headers.insert(
+            "authentication-results".to_string(),
+            "dkim=none".to_string(),
+        );
+
+        let context = MailContext {
+            sender: Some("robert@example.com".to_string()),
+            from_header: Some("<robert@example.com>".to_string()),
+            recipients: vec!["robert@example.com".to_string()],
+            headers,
+            mailer: Some("Microsoft Office Outlook 11".to_string()),
+            subject: Some("Waiting for the payment.".to_string()),
+            hostname: Some("external.com".to_string()),
+            helo: Some("external.com".to_string()),
+            body: Some(
+                "You need to pay bitcoin immediately or I will expose your secrets.".to_string(),
+            ),
+        };
+
+        let (action, matched_rules) = engine.evaluate(&context).await;
+        assert!(matches!(action, Action::Reject { .. }));
+        assert_eq!(matched_rules, vec!["Detect sender spoofing extortion"]);
+
+        // Test case 2: Legitimate self-sent email (should not match)
+        let mut legitimate_headers = HashMap::new();
+        legitimate_headers.insert("from".to_string(), "user@company.com".to_string());
+        legitimate_headers.insert("to".to_string(), "user@company.com".to_string());
+        legitimate_headers.insert(
+            "received".to_string(),
+            "from mail.company.com (mail.company.com [192.168.1.10])".to_string(),
+        );
+        legitimate_headers.insert(
+            "dkim-signature".to_string(),
+            "v=1; a=rsa-sha256; d=company.com; s=default; b=...".to_string(),
+        );
+        legitimate_headers.insert(
+            "authentication-results".to_string(),
+            "dkim=pass".to_string(),
+        );
+
+        let legitimate_context = MailContext {
+            sender: Some("user@company.com".to_string()),
+            from_header: Some("user@company.com".to_string()),
+            recipients: vec!["user@company.com".to_string()],
+            headers: legitimate_headers,
+            mailer: Some("Outlook 365".to_string()),
+            subject: Some("Reminder: Meeting tomorrow".to_string()),
+            hostname: Some("company.com".to_string()),
+            helo: Some("mail.company.com".to_string()),
+            body: Some("Don't forget about our meeting tomorrow at 2 PM.".to_string()),
+        };
+
+        let (action2, matched_rules2) = engine.evaluate(&legitimate_context).await;
+        assert!(matches!(action2, Action::Accept));
+        assert!(matched_rules2.is_empty());
+
+        // Test case 3: External email without sender spoofing or extortion (should not match)
+        let mut no_spoofing_headers = HashMap::new();
+        no_spoofing_headers.insert("from".to_string(), "sender@company.com".to_string());
+        no_spoofing_headers.insert("to".to_string(), "recipient@example.com".to_string());
+        no_spoofing_headers.insert(
+            "received".to_string(),
+            "from mail.company.com (mail.company.com [1.2.3.4])".to_string(),
+        );
+        no_spoofing_headers.insert(
+            "dkim-signature".to_string(),
+            "v=1; a=rsa-sha256; d=company.com; s=default; b=...".to_string(),
+        );
+        no_spoofing_headers.insert(
+            "authentication-results".to_string(),
+            "dkim=pass".to_string(),
+        );
+
+        let no_spoofing_context = MailContext {
+            sender: Some("sender@company.com".to_string()),
+            from_header: Some("sender@company.com".to_string()),
+            recipients: vec!["recipient@example.com".to_string()],
+            headers: no_spoofing_headers,
+            mailer: Some("Outlook 365".to_string()),
+            subject: Some("Business proposal".to_string()),
+            hostname: Some("company.com".to_string()),
+            helo: Some("mail.company.com".to_string()),
+            body: Some("I have a legitimate business proposal for you.".to_string()),
+        };
+
+        let (action3, matched_rules3) = engine.evaluate(&no_spoofing_context).await;
+        assert!(matches!(action3, Action::Accept));
+        assert!(matched_rules3.is_empty());
+
+        // Test case 4: Custom configuration with specific keywords
+        let custom_config = create_test_config(vec![FilterRule {
+            name: "Custom extortion detection".to_string(),
+            criteria: Criteria::SenderSpoofingExtortion {
+                extortion_keywords: Some(vec!["custom_threat".to_string(), "pay_me".to_string()]),
+                check_sender_recipient_match: Some(true),
+                check_external_source: Some(true),
+                check_missing_authentication: Some(false), // Disable auth checking
+                require_extortion_content: Some(true),
+                min_indicators: Some(2),
+            },
+            action: Action::TagAsSpam {
+                header_name: "X-Custom-Extortion".to_string(),
+                header_value: "YES".to_string(),
+            },
+        }]);
+
+        let custom_engine = FilterEngine::new(custom_config).unwrap();
+
+        let mut custom_headers = HashMap::new();
+        custom_headers.insert("from".to_string(), "test@example.com".to_string());
+        custom_headers.insert("to".to_string(), "test@example.com".to_string());
+        custom_headers.insert(
+            "received".to_string(),
+            "from [5.6.7.8] ([5.6.7.8])".to_string(),
+        );
+
+        let custom_context = MailContext {
+            sender: Some("test@example.com".to_string()),
+            from_header: Some("test@example.com".to_string()),
+            recipients: vec!["test@example.com".to_string()],
+            headers: custom_headers,
+            mailer: None,
+            subject: Some("You must pay_me immediately".to_string()),
+            hostname: Some("external.com".to_string()),
+            helo: Some("external.com".to_string()),
+            body: Some("This is a custom_threat message.".to_string()),
+        };
+
+        let (action4, matched_rules4) = custom_engine.evaluate(&custom_context).await;
+        assert!(matches!(action4, Action::TagAsSpam { .. }));
+        assert_eq!(matched_rules4, vec!["Custom extortion detection"]);
+
+        // Test case 5: Only 1 indicator (should not match with min_indicators=2)
+        let single_indicator_config = create_test_config(vec![FilterRule {
+            name: "Single indicator test".to_string(),
+            criteria: Criteria::SenderSpoofingExtortion {
+                extortion_keywords: None,
+                check_sender_recipient_match: Some(true),
+                check_external_source: Some(false), // Disable external checking
+                check_missing_authentication: Some(false), // Disable auth checking
+                require_extortion_content: Some(false), // Disable content checking
+                min_indicators: Some(2),            // Require 2 indicators
+            },
+            action: Action::Reject {
+                message: "Should not match".to_string(),
+            },
+        }]);
+
+        let single_engine = FilterEngine::new(single_indicator_config).unwrap();
+
+        let mut single_headers = HashMap::new();
+        single_headers.insert("from".to_string(), "user@test.com".to_string());
+        single_headers.insert("to".to_string(), "user@test.com".to_string()); // Only sender match indicator
+
+        let single_context = MailContext {
+            sender: Some("user@test.com".to_string()),
+            from_header: Some("user@test.com".to_string()),
+            recipients: vec!["user@test.com".to_string()],
+            headers: single_headers,
+            mailer: None,
+            subject: Some("Normal subject".to_string()), // No extortion content
+            hostname: Some("test.com".to_string()),
+            helo: Some("test.com".to_string()),
+            body: Some("Normal content".to_string()),
+        };
+
+        let (action5, matched_rules5) = single_engine.evaluate(&single_context).await;
+        assert!(matches!(action5, Action::Accept)); // Should not match with only 1 indicator
+        assert!(matched_rules5.is_empty());
+
+        // Test case 6: Bitcoin extortion with cryptocurrency keywords
+        let crypto_config = create_test_config(vec![FilterRule {
+            name: "Cryptocurrency extortion".to_string(),
+            criteria: Criteria::SenderSpoofingExtortion {
+                extortion_keywords: None, // Use defaults (includes bitcoin, cryptocurrency, etc.)
+                check_sender_recipient_match: Some(true),
+                check_external_source: Some(true),
+                check_missing_authentication: Some(true),
+                require_extortion_content: Some(true),
+                min_indicators: Some(3), // Higher threshold
+            },
+            action: Action::Reject {
+                message: "Cryptocurrency extortion blocked".to_string(),
+            },
+        }]);
+
+        let crypto_engine = FilterEngine::new(crypto_config).unwrap();
+
+        let mut crypto_headers = HashMap::new();
+        crypto_headers.insert("from".to_string(), "victim@domain.com".to_string());
+        crypto_headers.insert("to".to_string(), "victim@domain.com".to_string());
+        crypto_headers.insert(
+            "received".to_string(),
+            "from [9.10.11.12] ([9.10.11.12])".to_string(),
+        );
+        crypto_headers.insert(
+            "authentication-results".to_string(),
+            "dkim=fail".to_string(),
+        );
+
+        let crypto_context = MailContext {
+            sender: Some("victim@domain.com".to_string()),
+            from_header: Some("victim@domain.com".to_string()),
+            recipients: vec!["victim@domain.com".to_string()],
+            headers: crypto_headers,
+            mailer: None,
+            subject: Some("Send bitcoin to this wallet immediately".to_string()),
+            hostname: Some("external.com".to_string()),
+            helo: Some("external.com".to_string()),
+            body: Some(
+                "I have compromising photos. Send cryptocurrency to avoid exposure.".to_string(),
+            ),
+        };
+
+        let (action6, matched_rules6) = crypto_engine.evaluate(&crypto_context).await;
+        assert!(matches!(action6, Action::Reject { .. }));
+        assert_eq!(matched_rules6, vec!["Cryptocurrency extortion"]);
+
+        println!("✅ Sender spoofing extortion detection test passed");
     }
 }
