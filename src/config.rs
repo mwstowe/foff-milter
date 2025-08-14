@@ -162,6 +162,23 @@ pub enum Criteria {
         // Whether to ignore HTML tags when counting content (default: true)
         ignore_html_tags: Option<bool>,
     },
+    /// Detect abuse of legitimate email services for phishing and brand impersonation
+    /// This catches when attackers use services like SendGrid, Mailchimp, etc. to send
+    /// phishing emails that impersonate major brands with mismatched reply-to addresses
+    EmailServiceAbuse {
+        // Legitimate email service domains/patterns to check (default: common services)
+        legitimate_services: Option<Vec<String>>,
+        // Brand keywords that indicate impersonation (default: major brands)
+        brand_keywords: Option<Vec<String>>,
+        // Free email domains for reply-to mismatch detection (default: common free services)
+        free_email_domains: Option<Vec<String>>,
+        // Whether to check for reply-to domain mismatch (default: true)
+        check_reply_to_mismatch: Option<bool>,
+        // Whether to check for brand impersonation in From header (default: true)
+        check_brand_impersonation: Option<bool>,
+        // Whether to check for suspicious subject patterns (default: true)
+        check_suspicious_subjects: Option<bool>,
+    },
     And {
         criteria: Vec<Criteria>,
     },

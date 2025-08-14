@@ -83,6 +83,7 @@ rules:
 - **InvalidUnsubscribeHeaders**: Detect emails with List-Unsubscribe-Post but no List-Unsubscribe header (RFC violation)
 - **AttachmentOnlyEmail**: Detect emails consisting primarily of attachments with minimal text content (malware/phishing vector)
 - **EmptyContentEmail**: Detect emails with no meaningful content (empty body, minimal text, reconnaissance emails)
+- **EmailServiceAbuse**: Detect abuse of legitimate email services (SendGrid, Mailchimp, etc.) for phishing and brand impersonation
 - **And**: All sub-criteria must match
 - **Or**: Any sub-criteria must match
 
@@ -574,6 +575,82 @@ This detects emails with no meaningful content, which are often used for reconna
 - Reconnaissance emails with placeholder content
 
 See `examples/empty-content-detection.yaml` for comprehensive empty content email detection rules.
+
+### Email service abuse detection
+
+Detect when legitimate email services (SendGrid, Mailchimp, etc.) are being abused for phishing and brand impersonation:
+
+```yaml
+- name: "Block email service abuse with brand impersonation"
+  criteria:
+    type: "EmailServiceAbuse"
+    # All options use defaults - detects major email services and brands
+    check_reply_to_mismatch: true      # Check for free email reply-to addresses
+    check_brand_impersonation: true    # Check for major brand names in From header
+    check_suspicious_subjects: true    # Check for suspicious subject patterns
+  action:
+    type: "Reject"
+    message: "Email service abuse detected - brand impersonation with reply-to mismatch"
+```
+
+```yaml
+- name: "Custom email service abuse detection"
+  criteria:
+    type: "EmailServiceAbuse"
+    legitimate_services: ["sendgrid.net", "mailchimp.com", "constantcontact.com"]
+    brand_keywords: ["ebay", "paypal", "amazon", "microsoft", "apple", "google"]
+    free_email_domains: ["gmail.com", "outlook.com", "yahoo.com", "hotmail.com"]
+    check_reply_to_mismatch: true
+    check_brand_impersonation: true
+    check_suspicious_subjects: false   # Disable subject checking
+  action:
+    type: "TagAsSpam"
+    header_name: "X-Email-Service-Abuse"
+    header_value: "Brand impersonation detected"
+```
+
+```yaml
+- name: "eBay impersonation via SendGrid"
+  criteria:
+    type: "And"
+    criteria:
+      - type: "EmailServiceAbuse"
+        legitimate_services: ["sendgrid.net"]
+        brand_keywords: ["ebay", "myebay"]
+        check_reply_to_mismatch: true
+        check_brand_impersonation: true
+        check_suspicious_subjects: true
+      - type: "SubjectPattern"
+        pattern: "(?i)(received.*message|new.*message|inbox.*message)"
+  action:
+    type: "Reject"
+    message: "eBay impersonation via SendGrid blocked"
+```
+
+This detects sophisticated phishing attacks where attackers abuse legitimate email services to send emails that impersonate major brands while using free email addresses for replies.
+
+**Configuration Options:**
+- `legitimate_services`: Email service domains to check (default: SendGrid, Mailchimp, ConstantContact, Mailgun, etc.)
+- `brand_keywords`: Brand names that indicate impersonation (default: eBay, PayPal, Amazon, Microsoft, Apple, Google, etc.)
+- `free_email_domains`: Free email domains for reply-to mismatch detection (default: Gmail, Outlook, Yahoo, Hotmail, etc.)
+- `check_reply_to_mismatch`: Whether to check for reply-to domain mismatch (default: true)
+- `check_brand_impersonation`: Whether to check for brand impersonation in From header (default: true)
+- `check_suspicious_subjects`: Whether to check for suspicious subject patterns (default: true)
+
+**Detected Patterns:**
+- SendGrid emails with "myeBay" in From header and Gmail reply-to
+- Mailchimp emails impersonating PayPal with Outlook reply-to
+- Brand impersonation: Major brand names in From header via email services
+- Reply-to hijacking: Responses redirected to attacker's free email
+- Suspicious subjects: "You Received (2) new Inbox Message", "Urgent: Verify your account"
+
+**Why This Works:**
+- Legitimate brands don't use email services with free email reply-to addresses
+- Attackers abuse trusted email services to bypass SPF/DKIM authentication
+- Multiple indicators (service + brand + reply mismatch) reduce false positives
+- Requires at least 2 abuse indicators for a match to avoid false positives
+
+See `examples/email-service-abuse-example.yaml` for comprehensive email service abuse detection rules.
 
 ### Complex rule with multiple conditions
 

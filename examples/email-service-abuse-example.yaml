@@ -1,0 +1,136 @@
+socket_path: "/var/run/foff-milter.sock"
+default_action:
+  type: "Accept"
+
+# Statistics configuration (optional)
+statistics:
+  enabled: true
+  database_path: "/var/lib/foff-milter/stats.db"
+  flush_interval_seconds: 60
+
+rules:
+  # Example 1: Basic email service abuse detection with defaults
+  - name: "Block email service abuse with brand impersonation"
+    criteria:
+      type: "EmailServiceAbuse"
+      # All options use defaults:
+      # - legitimate_services: SendGrid, Mailchimp, ConstantContact, etc.
+      # - brand_keywords: eBay, PayPal, Amazon, Microsoft, Apple, Google, etc.
+      # - free_email_domains: Gmail, Outlook, Yahoo, Hotmail, etc.
+      # - check_reply_to_mismatch: true
+      # - check_brand_impersonation: true
+      # - check_suspicious_subjects: true
+    action:
+      type: "Reject"
+      message: "Email service abuse detected - brand impersonation with reply-to mismatch"
+
+  # Example 2: Custom email service abuse detection
+  - name: "Custom email service abuse detection"
+    criteria:
+      type: "EmailServiceAbuse"
+      legitimate_services: ["sendgrid.net", "mailchimp.com", "constantcontact.com"]
+      brand_keywords: ["ebay", "paypal", "amazon", "microsoft", "apple", "google", "netflix", "bank"]
+      free_email_domains: ["gmail.com", "outlook.com", "yahoo.com", "hotmail.com"]
+      check_reply_to_mismatch: true
+      check_brand_impersonation: true
+      check_suspicious_subjects: true
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Email-Service-Abuse"
+      header_value: "Brand impersonation detected"
+
+  # Example 3: Focus only on reply-to mismatch (disable other checks)
+  - name: "Email service with free email reply-to"
+    criteria:
+      type: "EmailServiceAbuse"
+      check_reply_to_mismatch: true
+      check_brand_impersonation: false
+      check_suspicious_subjects: false
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Reply-To-Mismatch"
+      header_value: "Email service with free email reply-to"
+
+  # Example 4: Comprehensive detection with multiple indicators
+  - name: "Advanced email service abuse detection"
+    criteria:
+      type: "And"
+      criteria:
+        # Must be from email service with abuse indicators
+        - type: "EmailServiceAbuse"
+          check_reply_to_mismatch: true
+          check_brand_impersonation: true
+          check_suspicious_subjects: true
+        
+        # Additional suspicious patterns
+        - type: "Or"
+          criteria:
+            # Urgent/threatening subjects
+            - type: "SubjectPattern"
+              pattern: "(?i)(urgent|immediate|action required|final notice|suspended|locked|expired)"
+            
+            # Generic greetings (reconnaissance)
+            - type: "SubjectPattern"
+              pattern: "(?i)^(hello|hi|hey|greetings)$"
+            
+            # Financial threats
+            - type: "SubjectPattern"
+              pattern: "(?i)(unpaid|overdue|charges?|\\$[0-9]+\\.[0-9]{2}|payment|debt)"
+    action:
+      type: "Reject"
+      message: "Advanced email service abuse with multiple threat indicators"
+
+  # Example 5: Detect specific brand impersonation patterns
+  - name: "eBay impersonation via email services"
+    criteria:
+      type: "And"
+      criteria:
+        # Email service infrastructure
+        - type: "Or"
+          criteria:
+            - type: "SenderPattern"
+              pattern: ".*@sendgrid\\.net$"
+            - type: "HeaderPattern"
+              header: "received"
+              pattern: "(sendgrid|mailchimp|constantcontact)\\.(net|com)"
+        
+        # eBay brand impersonation
+        - type: "HeaderPattern"
+          header: "from"
+          pattern: "(?i)(ebay|myebay)"
+        
+        # Free email reply-to
+        - type: "HeaderPattern"
+          header: "reply-to"
+          pattern: ".*@(gmail|outlook|yahoo|hotmail)\\.(com|net)$"
+    action:
+      type: "Reject"
+      message: "eBay impersonation via email service blocked"
+
+  # Example 6: PayPal impersonation detection
+  - name: "PayPal impersonation via email services"
+    criteria:
+      type: "EmailServiceAbuse"
+      brand_keywords: ["paypal", "mypaypal"]
+      legitimate_services: ["sendgrid.net", "mailchimp.com", "mailgun.net"]
+      free_email_domains: ["gmail.com", "outlook.com", "yahoo.com", "hotmail.com", "aol.com"]
+      check_reply_to_mismatch: true
+      check_brand_impersonation: true
+      check_suspicious_subjects: false  # Focus on brand/reply mismatch only
+    action:
+      type: "Reject"
+      message: "PayPal impersonation via email service detected"
+
+# Real-world patterns this catches:
+#
+# 1. SendGrid phishing: "myeBay <sender@sendgrid.net>" with reply-to "scammer@gmail.com"
+# 2. Mailchimp abuse: "Microsoft Support <noreply@mailchimp.com>" with reply-to "help@outlook.com"
+# 3. Brand impersonation: Any major brand name in From header via email service with free email reply
+# 4. Suspicious subjects: "You Received (2) new Inbox Message" from email services
+# 5. Financial threats: "Your account has unpaid charges" via legitimate email infrastructure
+#
+# This feature is particularly effective because:
+# - Legitimate brands don't use email services with free email reply-tos
+# - Attackers abuse trusted email services to bypass SPF/DKIM checks
+# - Multiple indicators (service + brand + reply mismatch) reduce false positives
+# - Configurable thresholds allow fine-tuning for different environments
