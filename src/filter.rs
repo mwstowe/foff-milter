@@ -417,6 +417,10 @@ impl FilterEngine {
                 // No regex patterns to compile for email service abuse detection
                 // Uses string matching and contains() operations instead
             }
+            Criteria::GoogleGroupsAbuse { .. } => {
+                // No regex patterns to compile for Google Groups abuse detection
+                // Uses string matching and wildcard pattern operations instead
+            }
             Criteria::And { criteria } | Criteria::Or { criteria } => {
                 for c in criteria {
                     self.compile_criteria_patterns(c)?;
@@ -2588,6 +2592,219 @@ impl FilterEngine {
                     if is_abuse {
                         log::info!(
                             "Email service abuse detected: {abuse_indicators} indicators found (service detected, brand_impersonation={check_brand_imp}, reply_mismatch={check_reply_mismatch}, suspicious_subject={check_suspicious_subj})"
+                        );
+                    }
+
+                    is_abuse
+                }
+                Criteria::GoogleGroupsAbuse {
+                    suspicious_domains,
+                    reward_keywords,
+                    suspicious_sender_names,
+                    check_domain_reputation,
+                    check_reward_subjects,
+                    check_suspicious_senders,
+                    min_indicators,
+                } => {
+                    log::debug!("Checking for Google Groups abuse");
+
+                    // First, verify this is actually a Google Groups email
+                    let mut is_google_groups = false;
+
+                    // Check for Google Groups indicators
+                    for (header_name, header_value) in &context.headers {
+                        let header_lower = header_name.to_lowercase();
+                        let value_lower = header_value.to_lowercase();
+
+                        if (header_lower == "list-id" && value_lower.contains("groups.google.com"))
+                            || (header_lower == "x-google-group-id")
+                            || (header_lower == "precedence" && value_lower == "list")
+                            || (header_lower == "mailing-list" && value_lower.contains("list "))
+                            || (header_lower == "received"
+                                && value_lower.contains("groups.google.com"))
+                        {
+                            is_google_groups = true;
+                            log::debug!(
+                                "Google Groups infrastructure detected in header: {header_name}"
+                            );
+                            break;
+                        }
+                    }
+
+                    if !is_google_groups {
+                        log::debug!("No Google Groups infrastructure detected");
+                        return false;
+                    }
+
+                    // Default suspicious domain patterns
+                    let default_suspicious_domains = vec![
+                        // Suspicious TLDs
+                        "*.tk",
+                        "*.ml",
+                        "*.ga",
+                        "*.cf",
+                        "*.top",
+                        "*.click",
+                        "*.download",
+                        "*.loan",
+                        "*.racing",
+                        "*.review",
+                        "*.science",
+                        "*.work",
+                        "*.party",
+                        "*.date",
+                        "*.stream",
+                        "*.trade",
+                        "*.bid",
+                        "*.win",
+                        "*.cricket",
+                        "*.accountant",
+                        "*.faith",
+                        "*.men",
+                        "*.gq",
+                        "*.xyz",
+                        "*.info",
+                        "*.biz",
+                        // Random domain patterns
+                        "*texas.com",
+                        "*texas.net",
+                        "*texas.org",
+                        // Generic service patterns
+                        "service.*",
+                        "support.*",
+                        "noreply.*",
+                        "info.*",
+                        "admin.*",
+                    ];
+                    let domains = if let Some(custom_domains) = suspicious_domains {
+                        custom_domains
+                            .iter()
+                            .map(|s| s.as_str())
+                            .collect::<Vec<_>>()
+                    } else {
+                        default_suspicious_domains
+                    };
+
+                    // Default reward/prize keywords
+                    let default_reward_keywords = vec![
+                        "reward",
+                        "prize",
+                        "winner",
+                        "congratulations",
+                        "expires",
+                        "urgent",
+                        "limited time",
+                        "act now",
+                        "claim now",
+                        "free gift",
+                        "emergency kit",
+                        "car kit",
+                        "bonus",
+                        "cash",
+                        "money",
+                        "lottery",
+                        "sweepstakes",
+                        "selected",
+                        "chosen",
+                        "exclusive",
+                        "special offer",
+                    ];
+                    let rewards = if let Some(custom_rewards) = reward_keywords {
+                        custom_rewards
+                            .iter()
+                            .map(|s| s.as_str())
+                            .collect::<Vec<_>>()
+                    } else {
+                        default_reward_keywords
+                    };
+
+                    // Default suspicious sender name patterns
+                    let default_suspicious_senders = vec![
+                        "confirmation required",
+                        "urgent",
+                        "important",
+                        "admin",
+                        "service",
+                        "support",
+                        "noreply",
+                        "notification",
+                        "alert",
+                        "system",
+                        "automated",
+                    ];
+                    let sender_names = if let Some(custom_senders) = suspicious_sender_names {
+                        custom_senders
+                            .iter()
+                            .map(|s| s.as_str())
+                            .collect::<Vec<_>>()
+                    } else {
+                        default_suspicious_senders
+                    };
+
+                    let check_domain_rep = check_domain_reputation.unwrap_or(true);
+                    let check_reward_subj = check_reward_subjects.unwrap_or(true);
+                    let check_suspicious_send = check_suspicious_senders.unwrap_or(true);
+                    let min_indicators_required = min_indicators.unwrap_or(2);
+
+                    let mut abuse_indicators = 0;
+
+                    // Check for suspicious domain patterns
+                    if check_domain_rep {
+                        if let Some(sender) = &context.sender {
+                            let sender_lower = sender.to_lowercase();
+                            for domain_pattern in &domains {
+                                // Convert wildcard patterns to regex-like matching
+                                let pattern_check = if let Some(suffix) = domain_pattern.strip_prefix('*') {
+                                    sender_lower.contains(suffix)
+                                } else if let Some(prefix) = domain_pattern.strip_suffix('*') {
+                                    sender_lower.contains(prefix)
+                                } else {
+                                    sender_lower.contains(domain_pattern)
+                                };
+
+                                if pattern_check {
+                                    abuse_indicators += 1;
+                                    log::debug!("Suspicious domain pattern detected: {domain_pattern} in {sender}");
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    // Check for reward/prize subjects
+                    if check_reward_subj {
+                        if let Some(subject) = &context.subject {
+                            let subject_lower = subject.to_lowercase();
+                            for reward_keyword in &rewards {
+                                if subject_lower.contains(reward_keyword) {
+                                    abuse_indicators += 1;
+                                    log::debug!("Reward/prize keyword detected: {reward_keyword} in subject");
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    // Check for suspicious sender names
+                    if check_suspicious_send {
+                        if let Some(from_header) = context.headers.get("from") {
+                            let from_lower = from_header.to_lowercase();
+                            for sender_pattern in &sender_names {
+                                if from_lower.contains(sender_pattern) {
+                                    abuse_indicators += 1;
+                                    log::debug!("Suspicious sender name detected: {sender_pattern} in From header");
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    // Check if we have enough indicators for abuse
+                    let is_abuse = abuse_indicators >= min_indicators_required;
+
+                    if is_abuse {
+                        log::info!(
+                            "Google Groups abuse detected: {abuse_indicators} indicators found (min required: {min_indicators_required})"
                         );
                     }
 
@@ -5108,5 +5325,214 @@ Content-Disposition: attachment; filename="test.rar"
         assert_eq!(matched_rules4, vec!["Custom email service abuse"]);
 
         println!("✅ Email service abuse detection test passed");
+    }
+
+    #[tokio::test]
+    async fn test_google_groups_abuse_detection() {
+        use std::collections::HashMap;
+
+        // Test case 1: Google Groups with suspicious domain and reward subject (should match)
+        let config = create_test_config(vec![FilterRule {
+            name: "Detect Google Groups abuse".to_string(),
+            criteria: Criteria::GoogleGroupsAbuse {
+                suspicious_domains: None,      // Use defaults
+                reward_keywords: None,         // Use defaults
+                suspicious_sender_names: None, // Use defaults
+                check_domain_reputation: Some(true),
+                check_reward_subjects: Some(true),
+                check_suspicious_senders: Some(true),
+                min_indicators: Some(2), // Require 2 indicators
+            },
+            action: Action::Reject {
+                message: "Google Groups abuse detected".to_string(),
+            },
+        }]);
+
+        let engine = FilterEngine::new(config).unwrap();
+
+        // Create context that matches the Google Groups phishing example
+        let mut headers = HashMap::new();
+        headers.insert(
+            "from".to_string(),
+            "\"Confirmation_required .\" <service@niz.slotintexas.com>".to_string(),
+        );
+        headers.insert(
+            "list-id".to_string(),
+            "<cv.niz.slotintexas.com>".to_string(),
+        );
+        headers.insert("x-google-group-id".to_string(), "282548616536".to_string());
+        headers.insert("precedence".to_string(), "list".to_string());
+        headers.insert(
+            "mailing-list".to_string(),
+            "list cv@niz.slotintexas.com; contact cv+owners@niz.slotintexas.com".to_string(),
+        );
+
+        let context = MailContext {
+            sender: Some("service@niz.slotintexas.com".to_string()),
+            from_header: Some(
+                "\"Confirmation_required .\" <service@niz.slotintexas.com>".to_string(),
+            ),
+            recipients: vec!["user@example.com".to_string()],
+            headers,
+            mailer: None,
+            subject: Some("Expires soon: your Car Emergency Kit reward.".to_string()),
+            hostname: Some("groups.google.com".to_string()),
+            helo: Some("groups.google.com".to_string()),
+            body: Some("Claim your reward now!".to_string()),
+        };
+
+        let (action, matched_rules) = engine.evaluate(&context).await;
+        assert!(matches!(action, Action::Reject { .. }));
+        assert_eq!(matched_rules, vec!["Detect Google Groups abuse"]);
+
+        // Test case 2: Legitimate Google Groups email (should not match)
+        let mut legitimate_headers = HashMap::new();
+        legitimate_headers.insert(
+            "from".to_string(),
+            "Company Team <team@company.com>".to_string(),
+        );
+        legitimate_headers.insert("list-id".to_string(), "<team.company.com>".to_string());
+        legitimate_headers.insert("x-google-group-id".to_string(), "123456789".to_string());
+        legitimate_headers.insert("precedence".to_string(), "list".to_string());
+
+        let legitimate_context = MailContext {
+            sender: Some("team@company.com".to_string()),
+            from_header: Some("Company Team <team@company.com>".to_string()),
+            recipients: vec!["user@example.com".to_string()],
+            headers: legitimate_headers,
+            mailer: None,
+            subject: Some("Weekly team update".to_string()),
+            hostname: Some("groups.google.com".to_string()),
+            helo: Some("groups.google.com".to_string()),
+            body: Some("Here's this week's update...".to_string()),
+        };
+
+        let (action2, matched_rules2) = engine.evaluate(&legitimate_context).await;
+        assert!(matches!(action2, Action::Accept));
+        assert!(matched_rules2.is_empty());
+
+        // Test case 3: Non-Google Groups email (should not match)
+        let mut no_groups_headers = HashMap::new();
+        no_groups_headers.insert(
+            "from".to_string(),
+            "Scammer <scam@suspicious.tk>".to_string(),
+        );
+
+        let no_groups_context = MailContext {
+            sender: Some("scam@suspicious.tk".to_string()),
+            from_header: Some("Scammer <scam@suspicious.tk>".to_string()),
+            recipients: vec!["user@example.com".to_string()],
+            headers: no_groups_headers,
+            mailer: None,
+            subject: Some("You won a prize!".to_string()),
+            hostname: Some("suspicious.tk".to_string()),
+            helo: Some("suspicious.tk".to_string()),
+            body: Some("Claim your reward!".to_string()),
+        };
+
+        let (action3, matched_rules3) = engine.evaluate(&no_groups_context).await;
+        assert!(matches!(action3, Action::Accept));
+        assert!(matched_rules3.is_empty());
+
+        // Test case 4: Custom configuration with specific patterns
+        let custom_config = create_test_config(vec![FilterRule {
+            name: "Custom Google Groups abuse".to_string(),
+            criteria: Criteria::GoogleGroupsAbuse {
+                suspicious_domains: Some(vec![
+                    "*.customdomain.com".to_string(),
+                    "suspicious.*".to_string(),
+                ]),
+                reward_keywords: Some(vec![
+                    "custom_reward".to_string(),
+                    "special_offer".to_string(),
+                ]),
+                suspicious_sender_names: Some(vec!["custom_sender".to_string()]),
+                check_domain_reputation: Some(true),
+                check_reward_subjects: Some(true),
+                check_suspicious_senders: Some(true),
+                min_indicators: Some(1), // Lower threshold for testing
+            },
+            action: Action::TagAsSpam {
+                header_name: "X-Custom-Groups-Abuse".to_string(),
+                header_value: "YES".to_string(),
+            },
+        }]);
+
+        let custom_engine = FilterEngine::new(custom_config).unwrap();
+
+        let mut custom_headers = HashMap::new();
+        custom_headers.insert(
+            "from".to_string(),
+            "custom_sender <test@test.customdomain.com>".to_string(),
+        );
+        custom_headers.insert(
+            "list-id".to_string(),
+            "<test.groups.google.com>".to_string(),
+        );
+        custom_headers.insert("precedence".to_string(), "list".to_string());
+
+        let custom_context = MailContext {
+            sender: Some("test@test.customdomain.com".to_string()),
+            from_header: Some("custom_sender <test@test.customdomain.com>".to_string()),
+            recipients: vec!["user@example.com".to_string()],
+            headers: custom_headers,
+            mailer: None,
+            subject: Some("Your custom_reward is waiting".to_string()),
+            hostname: Some("groups.google.com".to_string()),
+            helo: Some("groups.google.com".to_string()),
+            body: Some("Test body".to_string()),
+        };
+
+        let (action4, matched_rules4) = custom_engine.evaluate(&custom_context).await;
+        assert!(matches!(action4, Action::TagAsSpam { .. }));
+        assert_eq!(matched_rules4, vec!["Custom Google Groups abuse"]);
+
+        // Test case 5: Google Groups with only 1 indicator (should not match with default min_indicators=2)
+        let single_indicator_config = create_test_config(vec![FilterRule {
+            name: "Single indicator test".to_string(),
+            criteria: Criteria::GoogleGroupsAbuse {
+                suspicious_domains: None,
+                reward_keywords: None,
+                suspicious_sender_names: None,
+                check_domain_reputation: Some(true),
+                check_reward_subjects: Some(false), // Disable reward checking
+                check_suspicious_senders: Some(false), // Disable sender checking
+                min_indicators: Some(2),            // Require 2 indicators
+            },
+            action: Action::Reject {
+                message: "Should not match".to_string(),
+            },
+        }]);
+
+        let single_engine = FilterEngine::new(single_indicator_config).unwrap();
+
+        let mut single_headers = HashMap::new();
+        single_headers.insert(
+            "from".to_string(),
+            "Normal Sender <sender@legitimate.com>".to_string(),
+        );
+        single_headers.insert(
+            "list-id".to_string(),
+            "<test.groups.google.com>".to_string(),
+        );
+        single_headers.insert("precedence".to_string(), "list".to_string());
+
+        let single_context = MailContext {
+            sender: Some("sender@suspicious.tk".to_string()), // Only 1 indicator (suspicious domain)
+            from_header: Some("Normal Sender <sender@legitimate.com>".to_string()),
+            recipients: vec!["user@example.com".to_string()],
+            headers: single_headers,
+            mailer: None,
+            subject: Some("Normal subject".to_string()), // No reward keywords
+            hostname: Some("groups.google.com".to_string()),
+            helo: Some("groups.google.com".to_string()),
+            body: Some("Normal content".to_string()),
+        };
+
+        let (action5, matched_rules5) = single_engine.evaluate(&single_context).await;
+        assert!(matches!(action5, Action::Accept)); // Should not match with only 1 indicator
+        assert!(matched_rules5.is_empty());
+
+        println!("✅ Google Groups abuse detection test passed");
     }
 }

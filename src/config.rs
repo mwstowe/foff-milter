@@ -179,6 +179,25 @@ pub enum Criteria {
         // Whether to check for suspicious subject patterns (default: true)
         check_suspicious_subjects: Option<bool>,
     },
+    /// Detect abuse of Google Groups mailing lists for phishing campaigns
+    /// This catches when attackers use Google Groups infrastructure to send
+    /// phishing emails with reward/prize scams from suspicious domains
+    GoogleGroupsAbuse {
+        // Suspicious domain patterns to check (default: common spam TLDs and patterns)
+        suspicious_domains: Option<Vec<String>>,
+        // Reward/prize keywords that indicate scam content (default: common scam terms)
+        reward_keywords: Option<Vec<String>>,
+        // Suspicious sender name patterns (default: generic/urgent patterns)
+        suspicious_sender_names: Option<Vec<String>>,
+        // Whether to check domain reputation (default: true)
+        check_domain_reputation: Option<bool>,
+        // Whether to check for reward/prize subjects (default: true)
+        check_reward_subjects: Option<bool>,
+        // Whether to check for suspicious sender names (default: true)
+        check_suspicious_senders: Option<bool>,
+        // Minimum number of abuse indicators required for a match (default: 2)
+        min_indicators: Option<u32>,
+    },
     And {
         criteria: Vec<Criteria>,
     },

@@ -1,0 +1,170 @@
+socket_path: "/var/run/foff-milter.sock"
+default_action:
+  type: "Accept"
+
+# Statistics configuration (optional)
+statistics:
+  enabled: true
+  database_path: "/var/lib/foff-milter/stats.db"
+  flush_interval_seconds: 60
+
+rules:
+  # Example 1: Basic Google Groups abuse detection with defaults
+  - name: "Block Google Groups phishing campaigns"
+    criteria:
+      type: "GoogleGroupsAbuse"
+      # All options use defaults:
+      # - suspicious_domains: *.tk, *.ml, *.ga, *.cf, *.top, etc.
+      # - reward_keywords: reward, prize, winner, expires, urgent, etc.
+      # - suspicious_sender_names: confirmation required, urgent, admin, etc.
+      # - check_domain_reputation: true
+      # - check_reward_subjects: true
+      # - check_suspicious_senders: true
+      # - min_indicators: 2 (requires at least 2 abuse indicators)
+    action:
+      type: "Reject"
+      message: "Google Groups phishing campaign blocked"
+
+  # Example 2: Custom Google Groups abuse detection
+  - name: "Custom Google Groups abuse detection"
+    criteria:
+      type: "GoogleGroupsAbuse"
+      suspicious_domains: ["*.tk", "*.ml", "*.ga", "*.top", "*texas.com", "service.*", "support.*"]
+      reward_keywords: ["reward", "prize", "expires", "urgent", "emergency kit", "car kit", "bonus"]
+      suspicious_sender_names: ["confirmation required", "urgent", "admin", "service", "support"]
+      check_domain_reputation: true
+      check_reward_subjects: true
+      check_suspicious_senders: true
+      min_indicators: 2
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Google-Groups-Abuse"
+      header_value: "Phishing campaign detected"
+
+  # Example 3: Focus only on domain reputation (disable other checks)
+  - name: "Google Groups with suspicious domains only"
+    criteria:
+      type: "GoogleGroupsAbuse"
+      suspicious_domains: ["*.tk", "*.ml", "*.ga", "*.cf", "*.top", "*.click", "*.download"]
+      check_domain_reputation: true
+      check_reward_subjects: false
+      check_suspicious_senders: false
+      min_indicators: 1  # Only need domain indicator
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Suspicious-Domain-Groups"
+      header_value: "Google Groups from suspicious domain"
+
+  # Example 4: Comprehensive detection with multiple patterns
+  - name: "Advanced Google Groups abuse detection"
+    criteria:
+      type: "And"
+      criteria:
+        # Must be Google Groups with abuse indicators
+        - type: "GoogleGroupsAbuse"
+          check_domain_reputation: true
+          check_reward_subjects: true
+          check_suspicious_senders: true
+          min_indicators: 2
+        
+        # Additional suspicious patterns
+        - type: "Or"
+          criteria:
+            # Financial/urgent subjects
+            - type: "SubjectPattern"
+              pattern: "(?i)(expires?.*soon|limited.*time|act.*now|claim.*now|final.*notice)"
+            
+            # Prize/reward subjects
+            - type: "SubjectPattern"
+              pattern: "(?i)(congratulations|winner|selected|chosen|exclusive|special.*offer)"
+            
+            # Emergency/urgency subjects
+            - type: "SubjectPattern"
+              pattern: "(?i)(emergency.*kit|car.*kit|urgent|important|immediate)"
+    action:
+      type: "Reject"
+      message: "Advanced Google Groups phishing with multiple threat indicators"
+
+  # Example 5: Detect specific reward scam patterns
+  - name: "Car Emergency Kit reward scam"
+    criteria:
+      type: "And"
+      criteria:
+        # Google Groups infrastructure
+        - type: "Or"
+          criteria:
+            - type: "HeaderPattern"
+              header: "list-id"
+              pattern: ".*\\.groups\\.google\\.com"
+            - type: "HeaderPattern"
+              header: "x-google-group-id"
+              pattern: "[0-9]+"
+            - type: "HeaderPattern"
+              header: "precedence"
+              pattern: "list"
+        
+        # Car Emergency Kit specific scam
+        - type: "SubjectPattern"
+          pattern: "(?i)(car.*emergency.*kit|emergency.*car.*kit|auto.*emergency|roadside.*kit)"
+        
+        # Suspicious domain or sender
+        - type: "Or"
+          criteria:
+            - type: "SenderPattern"
+              pattern: ".*@.*\\.(tk|ml|ga|cf|top|click|download|loan|racing|review|science|work|party|date|stream|trade|bid|win|cricket|accountant|faith|men|gq|xyz|info|biz)$"
+            - type: "HeaderPattern"
+              header: "from"
+              pattern: "(?i)(confirmation.*required|urgent|service|support|admin)"
+    action:
+      type: "Reject"
+      message: "Car Emergency Kit reward scam via Google Groups blocked"
+
+  # Example 6: Texas-themed domain abuse
+  - name: "Texas-themed domain abuse via Google Groups"
+    criteria:
+      type: "GoogleGroupsAbuse"
+      suspicious_domains: ["*texas.com", "*texas.net", "*texas.org", "*intexas.com"]
+      reward_keywords: ["reward", "prize", "winner", "expires", "urgent", "claim"]
+      suspicious_sender_names: ["confirmation required", "urgent", "service"]
+      check_domain_reputation: true
+      check_reward_subjects: true
+      check_suspicious_senders: true
+      min_indicators: 2
+    action:
+      type: "Reject"
+      message: "Texas-themed domain abuse via Google Groups detected"
+
+  # Example 7: Low threshold detection for monitoring
+  - name: "Monitor potential Google Groups abuse"
+    criteria:
+      type: "GoogleGroupsAbuse"
+      check_domain_reputation: true
+      check_reward_subjects: true
+      check_suspicious_senders: true
+      min_indicators: 1  # Lower threshold for monitoring
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Potential-Groups-Abuse"
+      header_value: "Monitoring - potential abuse detected"
+
+# Real-world patterns this catches:
+#
+# 1. Google Groups phishing: "Confirmation_required ." from service@niz.slotintexas.com
+# 2. Reward scams: "Expires soon: your Car Emergency Kit reward" via Google Groups
+# 3. Suspicious domains: *.tk, *.ml, *.ga domains using Google Groups infrastructure
+# 4. Generic senders: "service", "support", "admin" names with reward subjects
+# 5. Texas-themed abuse: Domains like "slotintexas.com" with reward campaigns
+#
+# This feature is particularly effective because:
+# - Legitimate businesses don't use Google Groups with suspicious domains for rewards
+# - Attackers abuse trusted Google infrastructure to bypass email filters
+# - Multiple indicators (groups + domain + reward + sender) reduce false positives
+# - Configurable thresholds allow fine-tuning for different environments
+# - Wildcard domain matching catches variations of suspicious patterns
+#
+# Google Groups indicators detected:
+# - List-ID headers containing groups.google.com
+# - X-Google-Group-ID headers with numeric IDs
+# - Precedence: list headers
+# - Mailing-list headers with list patterns
+# - Received headers mentioning groups.google.com
