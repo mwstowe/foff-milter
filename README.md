@@ -84,6 +84,7 @@ rules:
 - **AttachmentOnlyEmail**: Detect emails consisting primarily of attachments with minimal text content (malware/phishing vector)
 - **EmptyContentEmail**: Detect emails with no meaningful content (empty body, minimal text, reconnaissance emails)
 - **EmailServiceAbuse**: Detect abuse of legitimate email services (SendGrid, Mailchimp, etc.) for phishing and brand impersonation
+- **GoogleGroupsAbuse**: Detect abuse of Google Groups mailing lists for phishing campaigns and reward scams
 - **And**: All sub-criteria must match
 - **Or**: Any sub-criteria must match
 
@@ -651,6 +652,93 @@ This detects sophisticated phishing attacks where attackers abuse legitimate ema
 - Requires at least 2 abuse indicators for a match to avoid false positives
 
 See `examples/email-service-abuse-example.yaml` for comprehensive email service abuse detection rules.
+
+### Google Groups abuse detection
+
+Detect when Google Groups mailing lists are being abused for phishing campaigns and reward scams:
+
+```yaml
+- name: "Block Google Groups phishing campaigns"
+  criteria:
+    type: "GoogleGroupsAbuse"
+    # All options use defaults - detects suspicious domains and reward patterns
+    check_domain_reputation: true      # Check for suspicious domain patterns
+    check_reward_subjects: true        # Check for reward/prize subject patterns
+    check_suspicious_senders: true     # Check for suspicious sender names
+    min_indicators: 2                  # Require at least 2 abuse indicators
+  action:
+    type: "Reject"
+    message: "Google Groups phishing campaign blocked"
+```
+
+```yaml
+- name: "Custom Google Groups abuse detection"
+  criteria:
+    type: "GoogleGroupsAbuse"
+    suspicious_domains: ["*.tk", "*.ml", "*.ga", "*.top", "*texas.com", "service.*"]
+    reward_keywords: ["reward", "prize", "expires", "urgent", "emergency kit", "car kit"]
+    suspicious_sender_names: ["confirmation required", "urgent", "admin", "service"]
+    check_domain_reputation: true
+    check_reward_subjects: true
+    check_suspicious_senders: true
+    min_indicators: 2
+  action:
+    type: "TagAsSpam"
+    header_name: "X-Google-Groups-Abuse"
+    header_value: "Phishing campaign detected"
+```
+
+```yaml
+- name: "Car Emergency Kit reward scam"
+  criteria:
+    type: "And"
+    criteria:
+      - type: "GoogleGroupsAbuse"
+        suspicious_domains: ["*texas.com", "*.tk", "*.ml"]
+        reward_keywords: ["car emergency kit", "emergency kit", "reward", "expires"]
+        check_domain_reputation: true
+        check_reward_subjects: true
+        min_indicators: 2
+      - type: "SubjectPattern"
+        pattern: "(?i)(expires?.*soon|car.*emergency.*kit|emergency.*car.*kit)"
+  action:
+    type: "Reject"
+    message: "Car Emergency Kit reward scam via Google Groups blocked"
+```
+
+This detects sophisticated phishing attacks where attackers abuse Google Groups infrastructure to send reward scams and phishing emails from suspicious domains.
+
+**Configuration Options:**
+- `suspicious_domains`: Domain patterns to check (default: *.tk, *.ml, *.ga, *.top, *texas.com, service.*, etc.)
+- `reward_keywords`: Keywords indicating reward/prize scams (default: reward, prize, winner, expires, urgent, etc.)
+- `suspicious_sender_names`: Sender name patterns (default: confirmation required, urgent, admin, service, etc.)
+- `check_domain_reputation`: Whether to check for suspicious domain patterns (default: true)
+- `check_reward_subjects`: Whether to check for reward/prize subjects (default: true)
+- `check_suspicious_senders`: Whether to check for suspicious sender names (default: true)
+- `min_indicators`: Minimum abuse indicators required for a match (default: 2)
+
+**Detected Patterns:**
+- Google Groups with suspicious TLD domains (*.tk, *.ml, *.ga, etc.)
+- Reward/prize scam subjects: "Expires soon: your Car Emergency Kit reward"
+- Suspicious sender names: "Confirmation_required .", "Urgent", "Admin"
+- Domain spoofing: Texas-themed domains like "slotintexas.com"
+- Generic service domains: "service.*", "support.*", "noreply.*"
+
+**Google Groups Infrastructure Detection:**
+- List-ID headers containing groups.google.com
+- X-Google-Group-ID headers with numeric group IDs
+- Precedence: list headers
+- Mailing-list headers with list patterns
+- Received headers mentioning groups.google.com
+
+**Why This Works:**
+- Legitimate businesses don't use Google Groups with suspicious domains for reward campaigns
+- Attackers abuse trusted Google Groups infrastructure to bypass email filters
+- Multiple indicators (groups + domain + reward + sender) reduce false positives
+- Configurable thresholds allow fine-tuning for different environments
+- Wildcard domain matching catches variations of suspicious patterns
+
+See `examples/google-groups-abuse-example.yaml` for comprehensive Google Groups abuse detection rules.
 
 ### Complex rule with multiple conditions
 
