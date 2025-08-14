@@ -413,6 +413,10 @@ impl FilterEngine {
             Criteria::EmptyContentEmail { .. } => {
                 // No regex patterns to compile for empty content detection
             }
+            Criteria::EmailServiceAbuse { .. } => {
+                // No regex patterns to compile for email service abuse detection
+                // Uses string matching and contains() operations instead
+            }
             Criteria::And { criteria } | Criteria::Or { criteria } => {
                 for c in criteria {
                     self.compile_criteria_patterns(c)?;
@@ -2370,6 +2374,224 @@ impl FilterEngine {
                     }
 
                     false
+                }
+                Criteria::EmailServiceAbuse {
+                    legitimate_services,
+                    brand_keywords,
+                    free_email_domains,
+                    check_reply_to_mismatch,
+                    check_brand_impersonation,
+                    check_suspicious_subjects,
+                } => {
+                    log::debug!("Checking for email service abuse");
+
+                    // Default legitimate email services
+                    let default_services = vec![
+                        "sendgrid.net",
+                        "mailchimp.com",
+                        "constantcontact.com",
+                        "mailgun.net",
+                        "amazonses.com",
+                        "sparkpostmail.com",
+                        "mandrill.com",
+                        "postmarkapp.com",
+                    ];
+                    let services = if let Some(custom_services) = legitimate_services {
+                        custom_services
+                            .iter()
+                            .map(|s| s.as_str())
+                            .collect::<Vec<_>>()
+                    } else {
+                        default_services
+                    };
+
+                    // Default brand keywords for impersonation detection
+                    let default_brands = vec![
+                        "ebay",
+                        "paypal",
+                        "amazon",
+                        "microsoft",
+                        "apple",
+                        "google",
+                        "facebook",
+                        "netflix",
+                        "spotify",
+                        "adobe",
+                        "dropbox",
+                        "linkedin",
+                        "twitter",
+                        "instagram",
+                        "whatsapp",
+                        "bank",
+                        "visa",
+                        "mastercard",
+                        "wells.fargo",
+                        "chase",
+                        "citibank",
+                        "bofa",
+                        "usbank",
+                    ];
+                    let brands = if let Some(custom_brands) = brand_keywords {
+                        custom_brands.iter().map(|s| s.as_str()).collect::<Vec<_>>()
+                    } else {
+                        default_brands
+                    };
+
+                    // Default free email domains
+                    let default_free_domains = vec![
+                        "gmail.com",
+                        "outlook.com",
+                        "yahoo.com",
+                        "hotmail.com",
+                        "aol.com",
+                        "protonmail.com",
+                        "zoho.com",
+                        "zohomail.com",
+                        "icloud.com",
+                    ];
+                    let free_domains = if let Some(custom_domains) = free_email_domains {
+                        custom_domains
+                            .iter()
+                            .map(|s| s.as_str())
+                            .collect::<Vec<_>>()
+                    } else {
+                        default_free_domains
+                    };
+
+                    let check_reply_mismatch = check_reply_to_mismatch.unwrap_or(true);
+                    let check_brand_imp = check_brand_impersonation.unwrap_or(true);
+                    let check_suspicious_subj = check_suspicious_subjects.unwrap_or(true);
+
+                    // Step 1: Check if email is sent via legitimate email service
+                    let mut uses_email_service = false;
+
+                    // Check sender domain
+                    if let Some(sender) = &context.sender {
+                        for service in &services {
+                            if sender.contains(service) {
+                                uses_email_service = true;
+                                log::debug!("Detected email service in sender: {service}");
+                                break;
+                            }
+                        }
+                    }
+
+                    // Check Received headers for email service infrastructure
+                    if !uses_email_service {
+                        for (header_name, header_value) in &context.headers {
+                            if header_name.to_lowercase() == "received" {
+                                for service in &services {
+                                    if header_value.to_lowercase().contains(service) {
+                                        uses_email_service = true;
+                                        log::debug!(
+                                            "Detected email service in Received header: {service}"
+                                        );
+                                        break;
+                                    }
+                                }
+                                if uses_email_service {
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    // Check X-Mailer or similar headers
+                    if !uses_email_service {
+                        if let Some(mailer) = &context.mailer {
+                            for service in &services {
+                                if mailer.to_lowercase().contains(service) {
+                                    uses_email_service = true;
+                                    log::debug!("Detected email service in mailer: {service}");
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    if !uses_email_service {
+                        log::debug!("No legitimate email service detected");
+                        return false;
+                    }
+
+                    let mut abuse_indicators = 0;
+
+                    // Step 2: Check for brand impersonation in From header
+                    if check_brand_imp {
+                        if let Some(from_header) = context.headers.get("from") {
+                            let from_lower = from_header.to_lowercase();
+                            for brand in &brands {
+                                // Check for exact brand name or "my" prefix (myeBay, myPayPal, etc.)
+                                if from_lower.contains(brand)
+                                    || from_lower.contains(&format!("my{brand}"))
+                                {
+                                    abuse_indicators += 1;
+                                    log::debug!(
+                                        "Brand impersonation detected: {brand} in From header"
+                                    );
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    // Step 3: Check for reply-to mismatch with free email domains
+                    if check_reply_mismatch {
+                        if let Some(reply_to) = context.headers.get("reply-to") {
+                            let reply_lower = reply_to.to_lowercase();
+                            for free_domain in &free_domains {
+                                if reply_lower.contains(free_domain) {
+                                    abuse_indicators += 1;
+                                    log::debug!("Free email reply-to detected: {free_domain}");
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    // Step 4: Check for suspicious subject patterns
+                    if check_suspicious_subj {
+                        if let Some(subject) = &context.subject {
+                            let subject_lower = subject.to_lowercase();
+                            let suspicious_patterns = [
+                                "received.*message",
+                                "new.*message",
+                                "inbox.*message",
+                                "notification",
+                                "alert",
+                                "verify",
+                                "confirm",
+                                "suspended",
+                                "locked",
+                                "expired",
+                                "urgent",
+                                "immediate",
+                                "action required",
+                                "final notice",
+                                "you received",
+                                "new inbox",
+                            ];
+
+                            for pattern in &suspicious_patterns {
+                                if subject_lower.contains(pattern) {
+                                    abuse_indicators += 1;
+                                    log::debug!("Suspicious subject pattern detected: {pattern}");
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    // Require at least 2 abuse indicators for a match
+                    let is_abuse = abuse_indicators >= 2;
+
+                    if is_abuse {
+                        log::info!(
+                            "Email service abuse detected: {abuse_indicators} indicators found (service detected, brand_impersonation={check_brand_imp}, reply_mismatch={check_reply_mismatch}, suspicious_subject={check_suspicious_subj})"
+                        );
+                    }
+
+                    is_abuse
                 }
                 Criteria::And { criteria } => {
                     for c in criteria {
@@ -4735,5 +4957,156 @@ Content-Disposition: attachment; filename="test.rar"
         }
 
         println!("✅ RAR MIME type variations test passed");
+    }
+
+    #[tokio::test]
+    async fn test_email_service_abuse_detection() {
+        use std::collections::HashMap;
+
+        // Test case 1: SendGrid with eBay impersonation and free email reply-to (should match)
+        let config = create_test_config(vec![FilterRule {
+            name: "Detect email service abuse".to_string(),
+            criteria: Criteria::EmailServiceAbuse {
+                legitimate_services: None, // Use defaults
+                brand_keywords: None,      // Use defaults
+                free_email_domains: None,  // Use defaults
+                check_reply_to_mismatch: Some(true),
+                check_brand_impersonation: Some(true),
+                check_suspicious_subjects: Some(true),
+            },
+            action: Action::Reject {
+                message: "Email service abuse detected".to_string(),
+            },
+        }]);
+
+        let engine = FilterEngine::new(config).unwrap();
+
+        // Create context that matches the SendGrid phishing example
+        let mut headers = HashMap::new();
+        headers.insert("from".to_string(), "myeBay <test@example.com>".to_string());
+        headers.insert(
+            "reply-to".to_string(),
+            "jimmycorten27@outlook.com".to_string(),
+        );
+        headers.insert(
+            "received".to_string(),
+            "from sendgrid.net (sendgrid.net [1.2.3.4])".to_string(),
+        );
+
+        let context = MailContext {
+            sender: Some("bounces@sendgrid.net".to_string()),
+            from_header: Some("myeBay <test@example.com>".to_string()),
+            recipients: vec!["user@example.com".to_string()],
+            headers,
+            mailer: None,
+            subject: Some("You Received (2) new Inbox Message".to_string()),
+            hostname: Some("sendgrid.net".to_string()),
+            helo: Some("sendgrid.net".to_string()),
+            body: Some("Test body".to_string()),
+        };
+
+        let (action, matched_rules) = engine.evaluate(&context).await;
+        assert!(matches!(action, Action::Reject { .. }));
+        assert_eq!(matched_rules, vec!["Detect email service abuse"]);
+
+        // Test case 2: Legitimate Mailchimp email (should not match)
+        let mut legitimate_headers = HashMap::new();
+        legitimate_headers.insert(
+            "from".to_string(),
+            "Company Newsletter <info@company.com>".to_string(),
+        );
+        legitimate_headers.insert("reply-to".to_string(), "support@company.com".to_string());
+        legitimate_headers.insert(
+            "received".to_string(),
+            "from mailchimp.com (mailchimp.com [1.2.3.4])".to_string(),
+        );
+
+        let legitimate_context = MailContext {
+            sender: Some("bounce@mailchimp.com".to_string()),
+            from_header: Some("Company Newsletter <info@company.com>".to_string()),
+            recipients: vec!["user@example.com".to_string()],
+            headers: legitimate_headers,
+            mailer: Some("Mailchimp".to_string()),
+            subject: Some("Monthly Newsletter".to_string()),
+            hostname: Some("mailchimp.com".to_string()),
+            helo: Some("mailchimp.com".to_string()),
+            body: Some("Newsletter content".to_string()),
+        };
+
+        let (action2, matched_rules2) = engine.evaluate(&legitimate_context).await;
+        assert!(matches!(action2, Action::Accept));
+        assert!(matched_rules2.is_empty());
+
+        // Test case 3: Brand impersonation without email service (should not match)
+        let mut no_service_headers = HashMap::new();
+        no_service_headers.insert(
+            "from".to_string(),
+            "myPayPal <test@example.com>".to_string(),
+        );
+        no_service_headers.insert("reply-to".to_string(), "scammer@gmail.com".to_string());
+
+        let no_service_context = MailContext {
+            sender: Some("test@example.com".to_string()),
+            from_header: Some("myPayPal <test@example.com>".to_string()),
+            recipients: vec!["user@example.com".to_string()],
+            headers: no_service_headers,
+            mailer: None,
+            subject: Some("Urgent: Verify your account".to_string()),
+            hostname: Some("example.com".to_string()),
+            helo: Some("example.com".to_string()),
+            body: Some("Phishing content".to_string()),
+        };
+
+        let (action3, matched_rules3) = engine.evaluate(&no_service_context).await;
+        assert!(matches!(action3, Action::Accept));
+        assert!(matched_rules3.is_empty());
+
+        // Test case 4: Custom configuration with specific services and brands
+        let custom_config = create_test_config(vec![FilterRule {
+            name: "Custom email service abuse".to_string(),
+            criteria: Criteria::EmailServiceAbuse {
+                legitimate_services: Some(vec!["customservice.com".to_string()]),
+                brand_keywords: Some(vec!["custombrand".to_string()]),
+                free_email_domains: Some(vec!["freemail.com".to_string()]),
+                check_reply_to_mismatch: Some(true),
+                check_brand_impersonation: Some(true),
+                check_suspicious_subjects: Some(false), // Disable subject checking
+            },
+            action: Action::TagAsSpam {
+                header_name: "X-Custom-Abuse".to_string(),
+                header_value: "YES".to_string(),
+            },
+        }]);
+
+        let custom_engine = FilterEngine::new(custom_config).unwrap();
+
+        let mut custom_headers = HashMap::new();
+        custom_headers.insert(
+            "from".to_string(),
+            "custombrand Support <test@example.com>".to_string(),
+        );
+        custom_headers.insert("reply-to".to_string(), "scammer@freemail.com".to_string());
+        custom_headers.insert(
+            "received".to_string(),
+            "from customservice.com (customservice.com [1.2.3.4])".to_string(),
+        );
+
+        let custom_context = MailContext {
+            sender: Some("noreply@customservice.com".to_string()),
+            from_header: Some("custombrand Support <test@example.com>".to_string()),
+            recipients: vec!["user@example.com".to_string()],
+            headers: custom_headers,
+            mailer: None,
+            subject: Some("Normal subject".to_string()), // Not suspicious
+            hostname: Some("customservice.com".to_string()),
+            helo: Some("customservice.com".to_string()),
+            body: Some("Test body".to_string()),
+        };
+
+        let (action4, matched_rules4) = custom_engine.evaluate(&custom_context).await;
+        assert!(matches!(action4, Action::TagAsSpam { .. }));
+        assert_eq!(matched_rules4, vec!["Custom email service abuse"]);
+
+        println!("✅ Email service abuse detection test passed");
     }
 }
