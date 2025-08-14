@@ -126,7 +126,7 @@ static SESSION_COUNTER: std::sync::atomic::AtomicU64 = std::sync::atomic::Atomic
 impl Milter {
     pub fn new(config: Config) -> anyhow::Result<Self> {
         let engine = Arc::new(FilterEngine::new(config.clone())?);
-        
+
         // Create statistics collector if enabled
         let statistics = if let Some(stats_config) = &config.statistics {
             if stats_config.enabled {
@@ -141,7 +141,7 @@ impl Milter {
         } else {
             None
         };
-        
+
         Ok(Milter { engine, statistics })
     }
 
@@ -350,7 +350,7 @@ impl Milter {
                             if let Some(stats) = &statistics {
                                 // Always record that an email was processed
                                 stats.record_event(StatEvent::EmailProcessed);
-                                
+
                                 // Record rule matches or no match
                                 if matched_rules.is_empty() {
                                     stats.record_event(StatEvent::NoRuleMatch);
