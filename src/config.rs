@@ -198,6 +198,22 @@ pub enum Criteria {
         // Minimum number of abuse indicators required for a match (default: 2)
         min_indicators: Option<u32>,
     },
+    /// Detect sender spoofing extortion attempts where attackers pretend to be the recipient
+    /// This catches extortion/sextortion emails that spoof the sender to appear self-sent
+    SenderSpoofingExtortion {
+        // Extortion keywords that indicate blackmail/sextortion content (default: common extortion terms)
+        extortion_keywords: Option<Vec<String>>,
+        // Whether to check if sender and recipient addresses match (default: true)
+        check_sender_recipient_match: Option<bool>,
+        // Whether to check for external/suspicious source IPs (default: true)
+        check_external_source: Option<bool>,
+        // Whether to check for missing DKIM authentication (default: true)
+        check_missing_authentication: Option<bool>,
+        // Whether to require extortion content in subject/body (default: true)
+        require_extortion_content: Option<bool>,
+        // Minimum number of indicators required for a match (default: 2)
+        min_indicators: Option<u32>,
+    },
     And {
         criteria: Vec<Criteria>,
     },

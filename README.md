@@ -85,6 +85,7 @@ rules:
 - **EmptyContentEmail**: Detect emails with no meaningful content (empty body, minimal text, reconnaissance emails)
 - **EmailServiceAbuse**: Detect abuse of legitimate email services (SendGrid, Mailchimp, etc.) for phishing and brand impersonation
 - **GoogleGroupsAbuse**: Detect abuse of Google Groups mailing lists for phishing campaigns and reward scams
+- **SenderSpoofingExtortion**: Detect extortion attempts where attackers spoof the sender to appear as the recipient
 - **And**: All sub-criteria must match
 - **Or**: Any sub-criteria must match
 
@@ -739,6 +740,91 @@ This detects sophisticated phishing attacks where attackers abuse Google Groups 
 - Wildcard domain matching catches variations of suspicious patterns
 
 See `examples/google-groups-abuse-example.yaml` for comprehensive Google Groups abuse detection rules.
+
+### Sender spoofing extortion detection
+
+Detect extortion attempts where attackers spoof the sender to appear as if the email is coming from the recipient themselves:
+
+```yaml
+- name: "Block sender spoofing extortion attempts"
+  criteria:
+    type: "SenderSpoofingExtortion"
+    # All options use defaults - detects common extortion patterns
+    check_sender_recipient_match: true      # Check if sender equals recipient
+    check_external_source: true             # Check for external IP sources
+    check_missing_authentication: true      # Check for missing/failed DKIM
+    require_extortion_content: true         # Require extortion keywords
+    min_indicators: 2                       # Require at least 2 indicators
+  action:
+    type: "Reject"
+    message: "Sender spoofing extortion attempt blocked"
+```
+
+```yaml
+- name: "Custom extortion detection"
+  criteria:
+    type: "SenderSpoofingExtortion"
+    extortion_keywords: ["bitcoin", "cryptocurrency", "payment", "blackmail", "compromising"]
+    check_sender_recipient_match: true
+    check_external_source: true
+    check_missing_authentication: true
+    require_extortion_content: true
+    min_indicators: 2
+  action:
+    type: "TagAsSpam"
+    header_name: "X-Sender-Spoofing-Extortion"
+    header_value: "Extortion attempt detected"
+```
+
+```yaml
+- name: "Bitcoin extortion detection"
+  criteria:
+    type: "And"
+    criteria:
+      - type: "SenderSpoofingExtortion"
+        extortion_keywords: ["bitcoin", "btc", "cryptocurrency", "crypto", "wallet"]
+        check_sender_recipient_match: true
+        check_external_source: true
+        min_indicators: 2
+      - type: "SubjectPattern"
+        pattern: "(?i)(waiting.*payment|bitcoin|cryptocurrency|pay.*now)"
+  action:
+    type: "Reject"
+    message: "Bitcoin extortion via sender spoofing blocked"
+```
+
+This detects sophisticated extortion scams where attackers spoof the sender address to make emails appear self-sent while demanding payment or threatening exposure.
+
+**Configuration Options:**
+- `extortion_keywords`: Keywords indicating extortion content (default: payment, bitcoin, blackmail, compromising, etc.)
+- `check_sender_recipient_match`: Whether to check if sender equals recipient (default: true)
+- `check_external_source`: Whether to check for external IP sources, excluding private ranges (default: true)
+- `check_missing_authentication`: Whether to check for missing/failed DKIM authentication (default: true)
+- `require_extortion_content`: Whether to require extortion keywords in subject/body (default: true)
+- `min_indicators`: Minimum abuse indicators required for a match (default: 2)
+
+**Detected Patterns:**
+- Sender-recipient address matching (perfect spoofing)
+- Extortion keywords: "waiting for payment", "bitcoin", "blackmail", "compromising"
+- External IP sources (excluding private IP ranges like 192.168.x.x, 10.x.x.x)
+- Missing or failed DKIM authentication
+- Cryptocurrency terms: "bitcoin", "btc", "cryptocurrency", "wallet"
+- Threat language: "expose", "reveal", "publish", "embarrassing"
+
+**Why This Works:**
+- Legitimate emails are never self-sent with extortion content from external sources
+- Combines multiple indicators (spoofing + content + source + auth) for high accuracy
+- Excludes private IP ranges to avoid false positives from internal mail servers
+- Configurable thresholds allow fine-tuning for different threat levels
+- Comprehensive keyword matching catches various extortion/sextortion patterns
+
+**Common Extortion Patterns Detected:**
+- **Classic extortion**: "Waiting for the payment." from victim@domain.com to victim@domain.com
+- **Bitcoin sextortion**: "I have compromising video, send bitcoin to wallet address"
+- **Deadline pressure**: "You have 24 hours to pay or I will expose your secrets"
+- **Social media threats**: "I will share this with your family and friends on Facebook"
+
+See `examples/sender-spoofing-extortion-example.yaml` for comprehensive sender spoofing extortion detection rules.
 
 ### Complex rule with multiple conditions
 
