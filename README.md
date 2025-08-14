@@ -12,6 +12,7 @@ A sendmail milter written in Rust for filtering emails based on configurable cri
 - **Regex support**: Use regular expressions for pattern matching
 - **YAML configuration**: Easy-to-read configuration format
 - **Structured logging**: Actionable logs showing sender, recipient, and actions taken
+- **Statistics tracking**: Persistent statistics to monitor rule effectiveness and identify unused rules
 
 ## Installation
 
@@ -46,16 +47,23 @@ Test your configuration:
 
 ```yaml
 socket_path: "/var/run/foff-milter.sock"
-default_action: "Accept"
+default_action:
+  type: "Accept"
+
+# Statistics configuration (optional)
+statistics:
+  enabled: true
+  database_path: "/var/lib/foff-milter/stats.db"
+  flush_interval_seconds: 60
 
 rules:
   - name: "Block suspicious Chinese services"
     criteria:
-      MailerPattern:
-        pattern: "service\\..*\\.cn"
+      type: "MailerPattern"
+      pattern: "service\\..*\\.cn"
     action:
-      Reject:
-        message: "Mail from suspicious service rejected"
+      type: "Reject"
+      message: "Mail from suspicious service rejected"
 ```
 
 ### Criteria Types
@@ -113,9 +121,6 @@ sudo ./target/release/foff-milter -v
 
 # Test configuration without running
 ./target/release/foff-milter --test-config -c config.yaml
-
-# Run comprehensive configuration testing with regex validation and performance analysis
-./target/release/foff-milter --test-comprehensive -c config.yaml
 ```
 
 ### Sendmail Configuration
@@ -607,6 +612,129 @@ Email processing logs show sender, recipient, and action taken:
 - INFO: General information and email processing results (default)
 - DEBUG: Detailed debugging including rule evaluation (use -v flag)
 
+## Statistics
+
+The milter includes a comprehensive statistics system to track email processing patterns and rule effectiveness. Statistics persist across reboots, upgrades, and service restarts.
+
+### Configuration
+
+Add statistics configuration to your YAML file:
+
+```yaml
+socket_path: "/var/run/foff-milter.sock"
+default_action:
+  type: "Accept"
+
+# Statistics configuration
+statistics:
+  enabled: true                              # Enable/disable statistics collection
+  database_path: "/var/lib/foff-milter/stats.db"  # SQLite database location
+  flush_interval_seconds: 60                 # How often to flush stats to disk (optional, default: 60)
+
+rules:
+  # Your filtering rules here...
+```
+
+### Statistics Options
+
+- **enabled**: Set to `false` to disable statistics collection entirely
+- **database_path**: Path to SQLite database file (directory will be created if needed)
+- **flush_interval_seconds**: How often to write buffered stats to disk (default: 60 seconds)
+
+### Viewing Statistics
+
+#### Show Current Statistics
+
+```bash
+./target/release/foff-milter --stats -c /etc/foff-milter.yaml
+```
+
+Example output:
+```
+📊 FOFF Milter Statistics
+═══════════════════════════════════════
+
+📈 Global Statistics:
+  Total Emails Processed: 15,847
+  ├─ Accepted: 14,203 (89.6%)
+  ├─ Rejected: 1,521 (9.6%)
+  ├─ Tagged as Spam: 123 (0.8%)
+  └─ No Rule Matches: 12,456 (78.6%)
+
+  Started: 2025-08-01 10:30:15 UTC
+  Last Updated: 2025-08-14 05:45:22 UTC
+
+🎯 Rule Statistics (sorted by matches):
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ Rule Name                                    │ Matches │ Accept │ Reject │ Tag │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ Block domain spoofing in From header        │     892 │      0 │    892 │   0 │
+│ Block admin emails with email addresses     │     445 │      0 │    445 │   0 │
+│ Block failed DKIM administrative emails     │     184 │      0 │    184 │   0 │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+#### Find Unused Rules
+
+Identify rules that have never matched (may be too restrictive or targeting non-existent threats):
+
+```bash
+./target/release/foff-milter --stats-unmatched -c /etc/foff-milter.yaml
+```
+
+Example output:
+```
+📊 Rules that have never matched (3 total):
+═══════════════════════════════════════
+  • Block suspicious Chinese services
+  • Tag pharmaceutical spam
+  • Block young domains
+
+💡 Consider reviewing these rules - they may be:
+   - Too restrictive
+   - Targeting threats that haven't occurred
+   - Redundant with other rules
+```
+
+#### Reset Statistics
+
+Clear all statistics (useful for testing or starting fresh):
+
+```bash
+./target/release/foff-milter --stats-reset -c /etc/foff-milter.yaml
+```
+
+### What Gets Tracked
+
+#### Global Statistics
+- **Total emails processed**
+- **Actions taken**: Accept, Reject, TagAsSpam counts and percentages
+- **No rule matches**: Emails that passed through without matching any rule
+- **Time tracking**: When statistics started and last updated
+
+#### Per-Rule Statistics
+- **Match count**: How many times each rule matched
+- **Action breakdown**: Accept/Reject/Tag counts per rule
+- **First/last match**: When rule was first and last triggered
+- **Processing time**: Total time spent evaluating each rule
+
+### Benefits
+
+✅ **Identify effective rules** - See which rules are catching threats  
+✅ **Find unused rules** - Discover rules that never match (may need adjustment)  
+✅ **Monitor email patterns** - Track accept/reject ratios over time  
+✅ **Performance analysis** - Identify slow rules that need optimization  
+✅ **Persistent data** - Statistics survive reboots and upgrades  
+✅ **Minimal overhead** - Background processing with batched writes  
+
+### Performance Impact
+
+The statistics system is designed for minimal performance impact:
+- **Asynchronous collection** - No blocking of email processing
+- **Batched writes** - Statistics are buffered and written periodically
+- **Configurable flush interval** - Balance between performance and data safety
+- **Optional** - Can be completely disabled if not needed
+
 ## Systemd Service
 
 Create `/etc/systemd/system/foff-milter.service`:
@@ -645,71 +773,35 @@ sudo systemctl start foff-milter
 
 ## Configuration Testing
 
-### Basic Configuration Validation
-
-Test your configuration file syntax and structure:
+Test your configuration file to ensure it's valid and all regex patterns compile correctly:
 
 ```bash
 ./target/release/foff-milter --test-config -c config.yaml
 ```
 
-This performs basic validation:
+This performs comprehensive validation:
 - ✅ YAML syntax checking
 - ✅ Configuration structure validation
 - ✅ Rule loading verification
-
-### Comprehensive Configuration Testing
-
-For production deployments, use comprehensive testing that validates regex patterns against real email scenarios:
-
-```bash
-./target/release/foff-milter --test-comprehensive -c config.yaml
-```
-
-This performs advanced validation:
-- ✅ **Regex compilation testing** - Ensures all patterns are valid
-- ✅ **Performance analysis** - Identifies slow regex patterns
-- ✅ **Email corpus testing** - Tests patterns against 20+ sample emails
-- ✅ **Edge case detection** - Tests with unicode, empty fields, long content
-- ✅ **Runtime safety** - Catches patterns that could panic during execution
+- ✅ **Regex compilation testing** - Ensures all patterns are valid and prevents runtime panics
+- ✅ **FilterEngine creation** - Tests the complete filter setup
 
 #### Example Output
 
 ```
-🔍 Running comprehensive configuration testing...
+🔍 Testing configuration...
 
-✅ Configuration validation PASSED!
+✅ Configuration is valid!
+Socket path: /var/run/foff-milter.sock
+Number of rules: 10
+  Rule 1: Block domain spoofing in From header
+  Rule 2: Block admin emails with email addresses in links
+  Rule 3: Block failed DKIM administrative emails
 
-📊 Test Summary:
-  Total rules: 10
-  Total regex patterns: 20
-  Test time: 175ms
-
-⚠️  Performance Warnings (2):
-  • Rule 4 (Tag pharmaceutical spam): SubjectPattern pattern '(?i)(viagra|cialis|pharmacy)' is slow (2.09ms for 1000 iterations)
-  • Rule 6 (Suspicious urgent emails): SubjectPattern pattern contains nested .* which may cause performance issues
-
-🎉 All patterns are valid and performant!
+All regex patterns compiled successfully.
 ```
 
-#### What Gets Tested
-
-The comprehensive testing validates patterns against:
-- **Legitimate emails** (PayPal, Amazon, corporate)
-- **Suspicious emails** (free email services, suspicious TLDs)
-- **Phishing attempts** (spoofed domains, urgent language)
-- **Language detection** (Japanese, Chinese, Korean text)
-- **Unsubscribe links** (valid, IP-based, mailto-only)
-- **Edge cases** (empty fields, unicode, very long content)
-
-#### Performance Benchmarking
-
-Patterns are benchmarked for performance:
-- **Fast patterns**: < 1ms for 1000 iterations ✅
-- **Slow patterns**: > 1ms for 1000 iterations ⚠️
-- **Problematic patterns**: Nested `.*` or very long patterns 🚨
-
-Use comprehensive testing before deploying to production to catch regex issues that could cause crashes or performance problems.
+**Important**: Always run `--test-config` before deploying to production to catch regex compilation errors and other configuration issues that would cause the service to panic.
 
 ## Troubleshooting
 
