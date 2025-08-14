@@ -2395,7 +2395,7 @@ impl FilterEngine {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::config::{Config, FilterRule, Action};
+    use crate::config::{Action, Config, FilterRule};
 
     // Helper function to create test configs without statistics
     fn create_test_config(rules: Vec<FilterRule>) -> Config {
@@ -2508,16 +2508,16 @@ mod tests {
 
         // Create config with the exact rule from the user
         let config = create_test_config(vec![FilterRule {
-                name: "Fake Microsoft".to_string(),
-                criteria: Criteria::HeaderPattern {
-                    header: "from".to_string(),
-                    pattern: r".*onmicrosoft\.com".to_string(),
-                },
-                action: Action::TagAsSpam {
-                    header_name: "X-Spam-Flag".to_string(),
-                    header_value: "YES".to_string(),
-                },
-            }]);
+            name: "Fake Microsoft".to_string(),
+            criteria: Criteria::HeaderPattern {
+                header: "from".to_string(),
+                pattern: r".*onmicrosoft\.com".to_string(),
+            },
+            action: Action::TagAsSpam {
+                header_name: "X-Spam-Flag".to_string(),
+                header_value: "YES".to_string(),
+            },
+        }]);
 
         let engine = FilterEngine::new(config).unwrap();
 
@@ -2580,41 +2580,41 @@ mod tests {
 
         // Create config with the two production examples
         let config = create_test_config(vec![
-                // Example 1: Chinese service with Japanese content
-                FilterRule {
-                    name: "Block Chinese services with Japanese content".to_string(),
-                    criteria: Criteria::And {
-                        criteria: vec![
-                            Criteria::MailerPattern {
-                                pattern: r"service\..*\.cn".to_string(),
-                            },
-                            Criteria::SubjectContainsLanguage {
-                                language: "japanese".to_string(),
-                            },
-                        ],
-                    },
-                    action: Action::Reject {
-                        message: "Chinese service with Japanese content blocked".to_string(),
-                    },
+            // Example 1: Chinese service with Japanese content
+            FilterRule {
+                name: "Block Chinese services with Japanese content".to_string(),
+                criteria: Criteria::And {
+                    criteria: vec![
+                        Criteria::MailerPattern {
+                            pattern: r"service\..*\.cn".to_string(),
+                        },
+                        Criteria::SubjectContainsLanguage {
+                            language: "japanese".to_string(),
+                        },
+                    ],
                 },
-                // Example 2: Sparkpost to specific user
-                FilterRule {
-                    name: "Block Sparkpost to user@example.com".to_string(),
-                    criteria: Criteria::And {
-                        criteria: vec![
-                            Criteria::MailerPattern {
-                                pattern: r".*\.sparkpostmail\.com".to_string(),
-                            },
-                            Criteria::RecipientPattern {
-                                pattern: r"user@example\.com".to_string(),
-                            },
-                        ],
-                    },
-                    action: Action::Reject {
-                        message: "Sparkpost to user@example.com blocked".to_string(),
-                    },
+                action: Action::Reject {
+                    message: "Chinese service with Japanese content blocked".to_string(),
                 },
-            ]);
+            },
+            // Example 2: Sparkpost to specific user
+            FilterRule {
+                name: "Block Sparkpost to user@example.com".to_string(),
+                criteria: Criteria::And {
+                    criteria: vec![
+                        Criteria::MailerPattern {
+                            pattern: r".*\.sparkpostmail\.com".to_string(),
+                        },
+                        Criteria::RecipientPattern {
+                            pattern: r"user@example\.com".to_string(),
+                        },
+                    ],
+                },
+                action: Action::Reject {
+                    message: "Sparkpost to user@example.com blocked".to_string(),
+                },
+            },
+        ]);
 
         let engine = FilterEngine::new(config).unwrap();
 
@@ -2719,20 +2719,20 @@ mod tests {
 
         // Create config to detect SendGrid phishing redirects
         let config = create_test_config(vec![FilterRule {
-                name: "Detect SendGrid phishing redirects".to_string(),
-                criteria: Criteria::PhishingLinkRedirection {
-                    max_redirects: Some(5),
-                    timeout_seconds: Some(5),
-                    check_final_destination: Some(true),
-                    suspicious_redirect_patterns: Some(vec![
-                        r".*\.sslip\.io.*".to_string(),
-                        r".*wordpress-.*".to_string(),
-                    ]),
-                },
-                action: Action::Reject {
-                    message: "Suspicious redirect chain detected".to_string(),
-                },
-            }]);
+            name: "Detect SendGrid phishing redirects".to_string(),
+            criteria: Criteria::PhishingLinkRedirection {
+                max_redirects: Some(5),
+                timeout_seconds: Some(5),
+                check_final_destination: Some(true),
+                suspicious_redirect_patterns: Some(vec![
+                    r".*\.sslip\.io.*".to_string(),
+                    r".*wordpress-.*".to_string(),
+                ]),
+            },
+            action: Action::Reject {
+                message: "Suspicious redirect chain detected".to_string(),
+            },
+        }]);
 
         let engine = FilterEngine::new(config).unwrap();
 
@@ -2773,17 +2773,17 @@ mod tests {
 
         // Create config to detect image-only emails
         let config = create_test_config(vec![FilterRule {
-                name: "Detect image-only emails".to_string(),
-                criteria: Criteria::ImageOnlyEmail {
-                    max_text_length: Some(20),
-                    ignore_whitespace: Some(true),
-                    check_attachments: Some(false),
-                },
-                action: Action::TagAsSpam {
-                    header_name: "X-Image-Only".to_string(),
-                    header_value: "YES".to_string(),
-                },
-            }]);
+            name: "Detect image-only emails".to_string(),
+            criteria: Criteria::ImageOnlyEmail {
+                max_text_length: Some(20),
+                ignore_whitespace: Some(true),
+                check_attachments: Some(false),
+            },
+            action: Action::TagAsSpam {
+                header_name: "X-Image-Only".to_string(),
+                header_value: "YES".to_string(),
+            },
+        }]);
 
         let engine = FilterEngine::new(config).unwrap();
 
@@ -2851,16 +2851,16 @@ mod tests {
 
         // Create config to detect free email reply-to phishing
         let config = create_test_config(vec![FilterRule {
-                name: "Detect free email reply-to".to_string(),
-                criteria: Criteria::PhishingFreeEmailReplyTo {
-                    free_email_domains: None, // Use defaults
-                    allow_same_domain: Some(false),
-                },
-                action: Action::TagAsSpam {
-                    header_name: "X-Free-Email-Reply-To".to_string(),
-                    header_value: "YES".to_string(),
-                },
-            }]);
+            name: "Detect free email reply-to".to_string(),
+            criteria: Criteria::PhishingFreeEmailReplyTo {
+                free_email_domains: None, // Use defaults
+                allow_same_domain: Some(false),
+            },
+            action: Action::TagAsSpam {
+                header_name: "X-Free-Email-Reply-To".to_string(),
+                header_value: "YES".to_string(),
+            },
+        }]);
 
         let engine = FilterEngine::new(config).unwrap();
 
@@ -2960,16 +2960,16 @@ mod tests {
 
         // Create config to validate reply-to addresses
         let config = create_test_config(vec![FilterRule {
-                name: "Validate reply-to address".to_string(),
-                criteria: Criteria::ReplyToValidation {
-                    timeout_seconds: Some(5),
-                    check_mx_record: Some(true),
-                },
-                action: Action::TagAsSpam {
-                    header_name: "X-Invalid-Reply-To".to_string(),
-                    header_value: "YES".to_string(),
-                },
-            }]);
+            name: "Validate reply-to address".to_string(),
+            criteria: Criteria::ReplyToValidation {
+                timeout_seconds: Some(5),
+                check_mx_record: Some(true),
+            },
+            action: Action::TagAsSpam {
+                header_name: "X-Invalid-Reply-To".to_string(),
+                header_value: "YES".to_string(),
+            },
+        }]);
 
         let engine = FilterEngine::new(config).unwrap();
 
@@ -3013,15 +3013,15 @@ mod tests {
         use std::collections::HashMap;
         // Create config to tag emails with unsubscribe links pointing to google.com
         let config = create_test_config(vec![FilterRule {
-                name: "Tag Google unsubscribe links".to_string(),
-                criteria: Criteria::UnsubscribeLinkPattern {
-                    pattern: r".*\.google\.com.*".to_string(),
-                },
-                action: Action::TagAsSpam {
-                    header_name: "X-Suspicious-Unsubscribe".to_string(),
-                    header_value: "YES".to_string(),
-                },
-            }]);
+            name: "Tag Google unsubscribe links".to_string(),
+            criteria: Criteria::UnsubscribeLinkPattern {
+                pattern: r".*\.google\.com.*".to_string(),
+            },
+            action: Action::TagAsSpam {
+                header_name: "X-Suspicious-Unsubscribe".to_string(),
+                header_value: "YES".to_string(),
+            },
+        }]);
 
         let engine = FilterEngine::new(config).unwrap();
 
@@ -3195,14 +3195,14 @@ mod tests {
 
         // Test case 1: Email with only mailto unsubscribe links (should match)
         let config = create_test_config(vec![FilterRule {
-                name: "Block mailto-only unsubscribe".to_string(),
-                criteria: Criteria::UnsubscribeMailtoOnly {
-                    allow_mixed: Some(false), // Flag any mailto links
-                },
-                action: Action::Reject {
-                    message: "Suspicious mailto-only unsubscribe".to_string(),
-                },
-            }]);
+            name: "Block mailto-only unsubscribe".to_string(),
+            criteria: Criteria::UnsubscribeMailtoOnly {
+                allow_mixed: Some(false), // Flag any mailto links
+            },
+            action: Action::Reject {
+                message: "Suspicious mailto-only unsubscribe".to_string(),
+            },
+        }]);
 
         let engine = FilterEngine::new(config).unwrap();
 
@@ -3244,14 +3244,14 @@ mod tests {
 
         // Test case 3: Email with only HTTP links (should not match)
         let config3 = create_test_config(vec![FilterRule {
-                name: "Block mailto-only unsubscribe".to_string(),
-                criteria: Criteria::UnsubscribeMailtoOnly {
-                    allow_mixed: Some(true), // Only flag if ALL links are mailto
-                },
-                action: Action::Reject {
-                    message: "Suspicious mailto-only unsubscribe".to_string(),
-                },
-            }]);
+            name: "Block mailto-only unsubscribe".to_string(),
+            criteria: Criteria::UnsubscribeMailtoOnly {
+                allow_mixed: Some(true), // Only flag if ALL links are mailto
+            },
+            action: Action::Reject {
+                message: "Suspicious mailto-only unsubscribe".to_string(),
+            },
+        }]);
 
         let engine3 = FilterEngine::new(config3).unwrap();
 
@@ -3432,25 +3432,24 @@ mod tests {
 
         // Test bulk spam detection with undisclosed recipients from free email
         let config = create_test_config(vec![FilterRule {
-                name: "Block bulk spam with undisclosed recipients from free email".to_string(),
-                criteria: Criteria::And {
-                    criteria: vec![
-                        Criteria::HeaderPattern {
-                            header: "to".to_string(),
-                            pattern: "(?i)undisclosed.{0,15}recipients".to_string(),
-                        },
-                        Criteria::SenderPattern {
-                            pattern: ".*@(outlook|gmail|yahoo|hotmail|aol)\\.(com|net|org)$"
-                                .to_string(),
-                        },
-                    ],
-                },
-                action: Action::Reject {
-                    message:
-                        "Bulk spam with undisclosed recipients from free email service blocked"
+            name: "Block bulk spam with undisclosed recipients from free email".to_string(),
+            criteria: Criteria::And {
+                criteria: vec![
+                    Criteria::HeaderPattern {
+                        header: "to".to_string(),
+                        pattern: "(?i)undisclosed.{0,15}recipients".to_string(),
+                    },
+                    Criteria::SenderPattern {
+                        pattern: ".*@(outlook|gmail|yahoo|hotmail|aol)\\.(com|net|org)$"
                             .to_string(),
-                },
-            }]);
+                    },
+                ],
+            },
+            action: Action::Reject {
+                message: "Bulk spam with undisclosed recipients from free email service blocked"
+                    .to_string(),
+            },
+        }]);
 
         let engine = FilterEngine::new(config).unwrap();
 
@@ -3544,12 +3543,12 @@ mod tests {
 
         // Test invalid unsubscribe headers detection
         let config = create_test_config(vec![FilterRule {
-                name: "Detect invalid unsubscribe headers".to_string(),
-                criteria: Criteria::InvalidUnsubscribeHeaders,
-                action: Action::Reject {
-                    message: "Invalid unsubscribe headers detected (RFC violation)".to_string(),
-                },
-            }]);
+            name: "Detect invalid unsubscribe headers".to_string(),
+            criteria: Criteria::InvalidUnsubscribeHeaders,
+            action: Action::Reject {
+                message: "Invalid unsubscribe headers detected (RFC violation)".to_string(),
+            },
+        }]);
 
         let engine = FilterEngine::new(config).unwrap();
 
@@ -3702,16 +3701,16 @@ mod tests {
 
         // Test enhanced image-only detection with large attachments
         let config = create_test_config(vec![FilterRule {
-                name: "Detect image-heavy emails with decoy text".to_string(),
-                criteria: Criteria::ImageOnlyEmail {
-                    max_text_length: Some(50),
-                    ignore_whitespace: Some(true),
-                    check_attachments: Some(true),
-                },
-                action: Action::Reject {
-                    message: "Image-only email with minimal text detected".to_string(),
-                },
-            }]);
+            name: "Detect image-heavy emails with decoy text".to_string(),
+            criteria: Criteria::ImageOnlyEmail {
+                max_text_length: Some(50),
+                ignore_whitespace: Some(true),
+                check_attachments: Some(true),
+            },
+            action: Action::Reject {
+                message: "Image-only email with minimal text detected".to_string(),
+            },
+        }]);
 
         let engine = FilterEngine::new(config).unwrap();
 
@@ -3844,16 +3843,16 @@ mod tests {
 
         // Test unsubscribe link IP address detection
         let config = create_test_config(vec![FilterRule {
-                name: "Detect unsubscribe links with IP addresses".to_string(),
-                criteria: Criteria::UnsubscribeLinkIPAddress {
-                    check_ipv4: Some(true),
-                    check_ipv6: Some(true),
-                    allow_private_ips: Some(false),
-                },
-                action: Action::Reject {
-                    message: "Unsubscribe link uses IP address instead of domain".to_string(),
-                },
-            }]);
+            name: "Detect unsubscribe links with IP addresses".to_string(),
+            criteria: Criteria::UnsubscribeLinkIPAddress {
+                check_ipv4: Some(true),
+                check_ipv6: Some(true),
+                allow_private_ips: Some(false),
+            },
+            action: Action::Reject {
+                message: "Unsubscribe link uses IP address instead of domain".to_string(),
+            },
+        }]);
 
         let engine = FilterEngine::new(config).unwrap();
 
@@ -3965,16 +3964,16 @@ mod tests {
 
         // Test with private IPs allowed
         let config = create_test_config(vec![FilterRule {
-                name: "Detect unsubscribe links with IP addresses (allow private)".to_string(),
-                criteria: Criteria::UnsubscribeLinkIPAddress {
-                    check_ipv4: Some(true),
-                    check_ipv6: Some(true),
-                    allow_private_ips: Some(true), // Allow private IPs
-                },
-                action: Action::Reject {
-                    message: "Unsubscribe link uses IP address".to_string(),
-                },
-            }]);
+            name: "Detect unsubscribe links with IP addresses (allow private)".to_string(),
+            criteria: Criteria::UnsubscribeLinkIPAddress {
+                check_ipv4: Some(true),
+                check_ipv6: Some(true),
+                allow_private_ips: Some(true), // Allow private IPs
+            },
+            action: Action::Reject {
+                message: "Unsubscribe link uses IP address".to_string(),
+            },
+        }]);
 
         let engine = FilterEngine::new(config).unwrap();
 
@@ -4026,16 +4025,16 @@ mod tests {
 
         // Test with private IPs blocked (default)
         let config = create_test_config(vec![FilterRule {
-                name: "Detect unsubscribe links with IP addresses (block private)".to_string(),
-                criteria: Criteria::UnsubscribeLinkIPAddress {
-                    check_ipv4: Some(true),
-                    check_ipv6: Some(true),
-                    allow_private_ips: Some(false), // Block private IPs
-                },
-                action: Action::Reject {
-                    message: "Unsubscribe link uses IP address".to_string(),
-                },
-            }]);
+            name: "Detect unsubscribe links with IP addresses (block private)".to_string(),
+            criteria: Criteria::UnsubscribeLinkIPAddress {
+                check_ipv4: Some(true),
+                check_ipv6: Some(true),
+                allow_private_ips: Some(false), // Block private IPs
+            },
+            action: Action::Reject {
+                message: "Unsubscribe link uses IP address".to_string(),
+            },
+        }]);
 
         let engine = FilterEngine::new(config).unwrap();
 
@@ -4186,18 +4185,18 @@ mod tests {
 
         // Test attachment-only email detection
         let config = create_test_config(vec![FilterRule {
-                name: "Detect attachment-only emails".to_string(),
-                criteria: Criteria::AttachmentOnlyEmail {
-                    max_text_length: Some(50),
-                    ignore_whitespace: Some(true),
-                    suspicious_types: Some(vec!["pdf".to_string(), "doc".to_string()]),
-                    min_attachment_size: Some(1000), // 1KB minimum (reduced from 5KB)
-                    check_disposition: Some(true),
-                },
-                action: Action::Reject {
-                    message: "Attachment-only email detected".to_string(),
-                },
-            }]);
+            name: "Detect attachment-only emails".to_string(),
+            criteria: Criteria::AttachmentOnlyEmail {
+                max_text_length: Some(50),
+                ignore_whitespace: Some(true),
+                suspicious_types: Some(vec!["pdf".to_string(), "doc".to_string()]),
+                min_attachment_size: Some(1000), // 1KB minimum (reduced from 5KB)
+                check_disposition: Some(true),
+            },
+            action: Action::Reject {
+                message: "Attachment-only email detected".to_string(),
+            },
+        }]);
 
         let engine = FilterEngine::new(config).unwrap();
 
@@ -4526,7 +4525,6 @@ mod tests {
 
     #[tokio::test]
     async fn test_mixed_unsubscribe_links() {
-
         let config = create_test_config(vec![]);
 
         let engine = FilterEngine::new(config).expect("Failed to create FilterEngine");
@@ -4583,7 +4581,6 @@ mod tests {
 
     #[tokio::test]
     async fn test_anchor_text_variations() {
-
         let config = create_test_config(vec![]);
 
         let engine = FilterEngine::new(config).expect("Failed to create FilterEngine");
@@ -4628,7 +4625,6 @@ mod tests {
 
     #[tokio::test]
     async fn test_rar_attachment_detection() {
-
         let config = create_test_config(vec![]);
 
         let engine = FilterEngine::new(config).expect("Failed to create FilterEngine");
@@ -4680,7 +4676,6 @@ UmFyIRoHAM+QcwAADQAAAAAAAACkCgAAAGRvY3VtZW50LnR4dAAA
 
     #[tokio::test]
     async fn test_rar_content_type_variations() {
-
         let config = create_test_config(vec![]);
 
         let engine = FilterEngine::new(config).expect("Failed to create FilterEngine");
