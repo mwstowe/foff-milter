@@ -2870,21 +2870,34 @@ impl FilterEngine {
 
                     // First, check if this is from a legitimate email service
                     let legitimate_email_services = vec![
-                        "sparkpostmail.com", "sendgrid.net", "mailchimp.com", "constantcontact.com",
-                        "mailgun.net", "amazonses.com", "mandrill.com", "postmarkapp.com",
-                        "mailersend.net", "sendinblue.com", "campaignmonitor.com", "aweber.com",
-                        "getresponse.com", "convertkit.com", "activecampaign.com"
+                        "sparkpostmail.com",
+                        "sendgrid.net",
+                        "mailchimp.com",
+                        "constantcontact.com",
+                        "mailgun.net",
+                        "amazonses.com",
+                        "mandrill.com",
+                        "postmarkapp.com",
+                        "mailersend.net",
+                        "sendinblue.com",
+                        "campaignmonitor.com",
+                        "aweber.com",
+                        "getresponse.com",
+                        "convertkit.com",
+                        "activecampaign.com",
                     ];
 
                     // Check if email is from legitimate email service
                     let mut is_legitimate_service = false;
-                    
+
                     // Check sender domain
                     if let Some(sender) = &context.sender {
                         for service in &legitimate_email_services {
                             if sender.contains(service) {
                                 is_legitimate_service = true;
-                                log::debug!("Legitimate email service detected in sender: {service}");
+                                log::debug!(
+                                    "Legitimate email service detected in sender: {service}"
+                                );
                                 break;
                             }
                         }
@@ -2901,34 +2914,9 @@ impl FilterEngine {
                                         break;
                                     }
                                 }
-                                if is_legitimate_service { break; }
-                            }
-                        }
-                    }
-
-                    // Check for legitimate DKIM domains (major brands/services)
-                    if !is_legitimate_service {
-                        let legitimate_dkim_domains = vec![
-                            "nytimes.com", "washingtonpost.com", "wsj.com", "cnn.com", "bbc.com",
-                            "reuters.com", "ap.org", "npr.org", "pbs.org", "bloomberg.com",
-                            "forbes.com", "fortune.com", "businessinsider.com", "techcrunch.com",
-                            "wired.com", "theverge.com", "ars-technica.com", "engadget.com",
-                            "github.com", "gitlab.com", "atlassian.com", "slack.com", "zoom.us",
-                            "microsoft.com", "google.com", "apple.com", "amazon.com", "facebook.com",
-                            "twitter.com", "linkedin.com", "instagram.com", "youtube.com",
-                            "paypal.com", "stripe.com", "square.com", "shopify.com", "etsy.com"
-                        ];
-
-                        for (header_name, header_value) in &context.headers {
-                            if header_name.to_lowercase() == "dkim-signature" {
-                                for domain in &legitimate_dkim_domains {
-                                    if header_value.contains(&format!("d={domain}")) {
-                                        is_legitimate_service = true;
-                                        log::debug!("Legitimate DKIM domain detected: {domain}");
-                                        break;
-                                    }
+                                if is_legitimate_service {
+                                    break;
                                 }
-                                if is_legitimate_service { break; }
                             }
                         }
                     }
@@ -2937,6 +2925,34 @@ impl FilterEngine {
                     if is_legitimate_service {
                         log::debug!("Skipping extortion detection for legitimate email service");
                         return false;
+                    }
+
+                    // For emails that might be forwarded/rewritten, require stronger evidence
+                    let mut requires_stronger_evidence = false;
+                    
+                    // Check for Gmail forwarding patterns (common source of false positives)
+                    if let Some(sender) = &context.sender {
+                        if sender.contains("@gmail.com") && sender.contains("+") && sender.contains("=") {
+                            requires_stronger_evidence = true;
+                            log::debug!("Gmail forwarding pattern detected, requiring stronger evidence");
+                        }
+                    }
+
+                    // Check for legitimate newsletter/service patterns in subject
+                    if let Some(subject) = &context.subject {
+                        let subject_lower = subject.to_lowercase();
+                        let newsletter_patterns = vec![
+                            "newsletter", "digest", "update", "news", "weekly", "daily", "monthly",
+                            "subscription", "unsubscribe", "well:", "breaking:", "alert:", "briefing"
+                        ];
+                        
+                        for pattern in &newsletter_patterns {
+                            if subject_lower.contains(pattern) {
+                                requires_stronger_evidence = true;
+                                log::debug!("Newsletter pattern detected in subject: {pattern}");
+                                break;
+                            }
+                        }
                     }
 
                     // Default extortion keywords
@@ -3175,11 +3191,21 @@ impl FilterEngine {
                     }
 
                     // Check if we have enough indicators for extortion
-                    let is_extortion = extortion_indicators >= min_indicators_required;
+                    let required_indicators = if requires_stronger_evidence {
+                        min_indicators_required + 1  // Require one additional indicator
+                    } else {
+                        min_indicators_required
+                    };
+                    
+                    let is_extortion = extortion_indicators >= required_indicators;
 
                     if is_extortion {
                         log::info!(
-                            "Sender spoofing extortion detected: {extortion_indicators} indicators found (min required: {min_indicators_required})"
+                            "Sender spoofing extortion detected: {extortion_indicators} indicators found (required: {required_indicators}, stronger evidence: {requires_stronger_evidence})"
+                        );
+                    } else if requires_stronger_evidence && extortion_indicators >= min_indicators_required {
+                        log::debug!(
+                            "Potential extortion detected but requires stronger evidence: {extortion_indicators} indicators (need {required_indicators})"
                         );
                     }
 
@@ -6178,11 +6204,25 @@ Content-Disposition: attachment; filename="test.rar"
         let nytimes_engine = FilterEngine::new(nytimes_config).unwrap();
 
         let mut nytimes_headers = HashMap::new();
-        nytimes_headers.insert("from".to_string(), "The New York Times <nytdirect@nytimes.com>".to_string());
+        nytimes_headers.insert(
+            "from".to_string(),
+            "The New York Times <nytdirect@nytimes.com>".to_string(),
+        );
         nytimes_headers.insert("to".to_string(), "mjohnson@example.com".to_string());
-        nytimes_headers.insert("received".to_string(), "from mta-83-69.sparkpostmail.com (mta-83-69.sparkpostmail.com. [192.174.83.69])".to_string());
-        nytimes_headers.insert("dkim-signature".to_string(), "v=1; a=rsa-sha256; c=relaxed/relaxed; d=nytimes.com; s=scph20250409; b=aHT3kg58...".to_string());
-        nytimes_headers.insert("authentication-results".to_string(), "dkim=fail reason=\"signature verification failed\"".to_string());
+        nytimes_headers.insert(
+            "received".to_string(),
+            "from mta-83-69.sparkpostmail.com (mta-83-69.sparkpostmail.com. [192.174.83.69])"
+                .to_string(),
+        );
+        nytimes_headers.insert(
+            "dkim-signature".to_string(),
+            "v=1; a=rsa-sha256; c=relaxed/relaxed; d=nytimes.com; s=scph20250409; b=aHT3kg58..."
+                .to_string(),
+        );
+        nytimes_headers.insert(
+            "authentication-results".to_string(),
+            "dkim=fail reason=\"signature verification failed\"".to_string(),
+        );
 
         let nytimes_context = MailContext {
             sender: Some("mjohnson+caf_=mjohnson=example.com@gmail.com".to_string()),
