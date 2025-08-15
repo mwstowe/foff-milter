@@ -185,8 +185,16 @@ rules:
 # - Legitimate emails are never self-sent with extortion content from external sources
 # - Combines multiple indicators (spoofing + content + source + auth) for accuracy
 # - Excludes private IP ranges to avoid false positives from internal mail servers
+# - Whitelists legitimate email services (SparkPost, SendGrid, Mailchimp, etc.)
+# - Whitelists legitimate DKIM domains (NY Times, Washington Post, major brands)
 # - Configurable thresholds allow fine-tuning for different environments
 # - Comprehensive keyword matching catches various extortion/sextortion patterns
+#
+# Legitimate services automatically whitelisted:
+# - Email services: SparkPost, SendGrid, Mailchimp, ConstantContact, Mailgun, etc.
+# - News organizations: NY Times, Washington Post, WSJ, CNN, BBC, Reuters, etc.
+# - Tech companies: GitHub, GitLab, Atlassian, Slack, Zoom, Microsoft, Google, etc.
+# - Financial services: PayPal, Stripe, Square, Shopify, etc.
 #
 # Indicators detected:
 # - Sender-recipient address matching (spoofing)

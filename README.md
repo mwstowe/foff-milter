@@ -815,6 +815,8 @@ This detects sophisticated extortion scams where attackers spoof the sender addr
 - Legitimate emails are never self-sent with extortion content from external sources
 - Combines multiple indicators (spoofing + content + source + auth) for high accuracy
 - Excludes private IP ranges to avoid false positives from internal mail servers
+- **Whitelists legitimate email services** (SparkPost, SendGrid, Mailchimp, etc.)
+- **Whitelists legitimate DKIM domains** (NY Times, major news/tech/financial brands)
 - Configurable thresholds allow fine-tuning for different threat levels
 - Comprehensive keyword matching catches various extortion/sextortion patterns
 
