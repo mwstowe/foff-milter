@@ -494,9 +494,11 @@ This detects emails that consist primarily of attachments (PDF, DOC, DOCX, etc.)
 - `max_text_length`: Maximum allowed text content (default: 100 characters)
 - `ignore_whitespace`: Whether to ignore whitespace when counting text (default: true)
 - `suspicious_types`: Attachment types to flag (default: ["pdf", "doc", "docx", "xls", "xlsx"])
-  - Supported types: "pdf", "doc", "docx", "xls", "xlsx", "zip", "rar", "exe"
+  - Supported types: "pdf", "doc", "docx", "xls", "xlsx", "zip", "rar", "exe", "ics", "vcf"
 - `min_attachment_size`: Minimum attachment size to consider suspicious (default: 10KB)
 - `check_disposition`: Whether to check Content-Disposition headers (default: true)
+
+**Important**: The `suspicious_types` parameter is strictly enforced. If you specify `suspicious_types: ["rar"]`, only emails with RAR attachments will be flagged. Legitimate attachments like ICS calendar files, PDFs, or other types will be ignored unless explicitly included in the list.
 
 See `examples/attachment-only-detection.yaml` for comprehensive attachment-only email detection rules.
 
