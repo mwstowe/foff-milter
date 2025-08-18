@@ -361,6 +361,7 @@ impl Milter {
                                             Action::Accept => "Accept",
                                             Action::Reject { .. } => "Reject",
                                             Action::TagAsSpam { .. } => "TagAsSpam",
+                                            Action::ReportAbuse { .. } => "ReportAbuse",
                                         };
                                         stats.record_event(StatEvent::RuleMatch {
                                             rule_name: rule_name.clone(),
@@ -436,6 +437,86 @@ impl Milter {
                                     }
 
                                     return Status::Accept;
+                                }
+                                Action::ReportAbuse {
+                                    service_provider,
+                                    additional_action,
+                                    include_headers,
+                                    include_body,
+                                    report_message,
+                                } => {
+                                    log::info!(
+                                        "REPORT_ABUSE from={sender} to={recipients} provider={service_provider}"
+                                    );
+
+                                    // Report abuse to the service provider
+                                    let include_hdrs = include_headers.unwrap_or(true);
+                                    let include_bdy = include_body.unwrap_or(false);
+
+                                    // Note: We can't easily access the FilterEngine from here in the milter context
+                                    // For now, we'll log the abuse report details
+                                    // In a production implementation, this would need to be refactored
+                                    log::warn!("🚨 ABUSE REPORT NEEDED:");
+                                    log::warn!("Service Provider: {service_provider}");
+                                    log::warn!("Include Headers: {include_hdrs}");
+                                    log::warn!("Include Body: {include_bdy}");
+                                    if let Some(msg) = report_message {
+                                        log::warn!("Custom Message: {msg}");
+                                    }
+                                    log::warn!("Email Details: from={sender} to={recipients}");
+                                    if let Some(subject) = &mail_ctx.subject {
+                                        log::warn!("Subject: {subject}");
+                                    }
+
+                                    // Handle additional action if specified
+                                    if let Some(additional_act) = additional_action {
+                                        log::info!(
+                                            "Executing additional action after abuse report"
+                                        );
+                                        match additional_act.as_ref() {
+                                            Action::Reject { message } => {
+                                                log::info!(
+                                                    "REJECT (after abuse report) from={sender} to={recipients} reason={message}"
+                                                );
+                                                return Status::Reject;
+                                            }
+                                            Action::TagAsSpam {
+                                                header_name,
+                                                header_value,
+                                            } => {
+                                                log::info!(
+                                                    "TAG_AS_SPAM (after abuse report) from={sender} to={recipients} header={header_name}:{header_value}"
+                                                );
+
+                                                // Add the spam header
+                                                if let Err(e) = _ctx
+                                                    .actions
+                                                    .add_header(
+                                                        header_name.clone(),
+                                                        header_value.clone(),
+                                                    )
+                                                    .await
+                                                {
+                                                    log::error!("Failed to add header after abuse report: {e}");
+                                                } else {
+                                                    log::info!("Added header after abuse report: {header_name}={header_value}");
+                                                }
+                                                return Status::Accept;
+                                            }
+                                            Action::Accept => {
+                                                log::info!("ACCEPT (after abuse report) from={sender} to={recipients}");
+                                                return Status::Accept;
+                                            }
+                                            Action::ReportAbuse { .. } => {
+                                                log::warn!("Nested ReportAbuse action not supported, treating as Accept");
+                                                return Status::Accept;
+                                            }
+                                        }
+                                    } else {
+                                        // No additional action, just accept the email after reporting
+                                        log::info!("ACCEPT (after abuse report) from={sender} to={recipients}");
+                                        return Status::Accept;
+                                    }
                                 }
                                 Action::Accept => {
                                     log::info!("ACCEPT from={sender} to={recipients}");

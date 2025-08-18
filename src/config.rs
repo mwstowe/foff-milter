@@ -244,6 +244,19 @@ pub enum Action {
         header_name: String,
         header_value: String,
     },
+    /// Report abuse to the email service provider and optionally take additional action
+    ReportAbuse {
+        // Email service provider to report to (e.g., "sendgrid", "mailchimp", "constantcontact")
+        service_provider: String,
+        // Additional action to take after reporting (optional)
+        additional_action: Option<Box<Action>>,
+        // Whether to include email headers in the abuse report (default: true)
+        include_headers: Option<bool>,
+        // Whether to include email body in the abuse report (default: false for privacy)
+        include_body: Option<bool>,
+        // Custom abuse report message (optional)
+        report_message: Option<String>,
+    },
     Accept,
 }
 

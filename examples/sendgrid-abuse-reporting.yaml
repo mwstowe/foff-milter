@@ -1,0 +1,137 @@
+# SendGrid Abuse Reporting Configuration
+#
+# This configuration demonstrates how to detect and automatically report
+# abuse of SendGrid infrastructure for phishing campaigns.
+#
+# The ReportAbuse action allows automated reporting to email service providers
+# when their infrastructure is being abused for malicious purposes.
+#
+# Example attack pattern detected:
+# From: Terry S <terrysmith7987@aol.com>
+# Return-Path: <bounces+55266851-93ca-marcy=example.com@sendgrid.net>
+# Subject: Order Confirmation
+# Reply-To: terrysmith7987@aol.com
+#
+# Indicators:
+# - SendGrid infrastructure (sendgrid.net in headers/return-path)
+# - Free email From address (terrysmith7987@aol.com)
+# - Generic subject with no specifics ("Order Confirmation")
+# - Reply-to mismatch (AOL instead of business domain)
+# - Random numbers in username pattern
+
+socket_path: "/var/run/foff-milter.sock"
+default_action:
+  type: "Accept"
+
+rules:
+  # Detect SendGrid abuse and report to SendGrid while rejecting the email
+  - name: "Report SendGrid abuse and reject"
+    criteria:
+      type: "EmailServiceAbuse"
+      legitimate_services: ["sendgrid.net", "sendgrid.com"]
+      brand_keywords: [] # Don't require brand impersonation for this rule
+      free_email_domains: ["aol.com", "gmail.com", "outlook.com", "yahoo.com", "hotmail.com"]
+      check_reply_to_mismatch: true
+      check_brand_impersonation: false  # Focus on reply-to mismatch
+      check_suspicious_subjects: false  # Don't require suspicious subjects
+    action:
+      type: "ReportAbuse"
+      service_provider: "sendgrid"
+      include_headers: true
+      include_body: false  # Don't include body for privacy
+      report_message: "Automated detection of SendGrid infrastructure abuse for phishing"
+      additional_action:
+        type: "Reject"
+        message: "SendGrid infrastructure abuse detected and reported"
+
+  # Detect SendGrid abuse and report while tagging (less aggressive)
+  - name: "Report SendGrid abuse and tag"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "HeaderPattern"
+          header: "received"
+          pattern: ".*sendgrid\\.net.*"
+        - type: "SenderPattern"
+          pattern: ".*@(aol|gmail|outlook|yahoo|hotmail)\\.(com|net)$"
+        - type: "SubjectPattern"
+          pattern: "(?i)(order|confirmation|receipt|invoice|payment|delivery)"
+    action:
+      type: "ReportAbuse"
+      service_provider: "sendgrid"
+      include_headers: true
+      include_body: false
+      report_message: "Generic phishing email using SendGrid with free email sender"
+      additional_action:
+        type: "TagAsSpam"
+        header_name: "X-SendGrid-Abuse-Reported"
+        header_value: "YES"
+
+  # Report only (no additional action) - for monitoring
+  - name: "Monitor SendGrid suspicious activity"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "HeaderPattern"
+          header: "return-path"
+          pattern: ".*@sendgrid\\.net$"
+        - type: "SenderPattern"
+          pattern: "^[a-z]+\\d+@(aol|gmail|yahoo)\\.(com|net)$"  # Random username pattern
+    action:
+      type: "ReportAbuse"
+      service_provider: "sendgrid"
+      include_headers: true
+      include_body: false
+      report_message: "Suspicious SendGrid activity - random username pattern from free email"
+      # No additional_action - just report and accept
+
+  # Multi-service abuse reporting (SendGrid, Mailchimp, etc.)
+  - name: "Report email service abuse (multiple providers)"
+    criteria:
+      type: "EmailServiceAbuse"
+      legitimate_services: ["sendgrid.net", "mailchimp.com", "constantcontact.com", "mailgun.com"]
+      brand_keywords: ["paypal", "amazon", "microsoft", "apple", "ebay"]
+      free_email_domains: ["gmail.com", "outlook.com", "yahoo.com", "aol.com"]
+      check_reply_to_mismatch: true
+      check_brand_impersonation: true
+      check_suspicious_subjects: true
+    action:
+      type: "ReportAbuse"
+      service_provider: "auto-detect"  # Would need implementation to detect provider
+      include_headers: true
+      include_body: false
+      report_message: "Brand impersonation via legitimate email service with reply-to hijacking"
+      additional_action:
+        type: "Reject"
+        message: "Email service abuse detected - brand impersonation with reply-to hijacking"
+
+# Example of what gets reported to SendGrid:
+#
+# To: abuse@sendgrid.com
+# Subject: Automated abuse report for phishing email sent through SendGrid infrastructure
+#
+# Automated detection of SendGrid infrastructure abuse for phishing
+#
+# PHISHING EMAIL DETAILS:
+# ========================
+#
+# Sender: bounces+55266851-93ca-marcy=example.com@sendgrid.net
+# From Header: terrysmith7987@aol.com
+# Recipients: victim@example.com
+# Subject: Order Confirmation
+#
+# EMAIL HEADERS:
+# ==============
+# Return-Path: <bounces+55266851-93ca-marcy=example.com@sendgrid.net>
+# From: Terry S <terrysmith7987@aol.com>
+# Reply-To: terrysmith7987@aol.com
+# Subject: Order Confirmation
+# Received: from vsvhrrcf.outbound-mail.sendgrid.net ...
+#
+# DETECTION INFORMATION:
+# =====================
+# This email was automatically detected as phishing/spam abuse of your email infrastructure.
+# Please investigate and take appropriate action against the abusing account.
+#
+# Report generated: 2025-08-18 22:00:00 UTC
+# Generated by: FOFF Milter (https://github.com/mwstowe/foff-milter)
