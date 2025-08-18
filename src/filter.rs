@@ -969,6 +969,8 @@ impl FilterEngine {
                     "application/x-rar",
                 ],
                 "exe" => vec!["application/x-msdownload", "application/octet-stream"],
+                "ics" => vec!["text/calendar", "application/ics"],
+                "vcf" => vec!["text/vcard", "text/x-vcard"],
                 _ => vec![],
             };
 
@@ -994,7 +996,7 @@ impl FilterEngine {
         if check_disposition && body.contains("Content-Disposition: attachment") {
             log::debug!("Found Content-Disposition: attachment header");
 
-            // Look for filename extensions
+            // Look for filename extensions - ONLY flag if it matches our suspicious types
             for attachment_type in types {
                 let filename_pattern = format!("filename=\".*\\.{attachment_type}\"");
                 if body
@@ -1004,15 +1006,22 @@ impl FilterEngine {
                     log::debug!(
                         "Found attachment with suspicious filename extension: {attachment_type}"
                     );
-                    return true;
+                    
+                    // Check size requirement for filename-based detection too
+                    if body.len() >= min_size {
+                        log::debug!(
+                            "Email body size ({}) meets minimum requirement ({})",
+                            body.len(),
+                            min_size
+                        );
+                        return true;
+                    }
                 }
             }
 
-            // If we found attachment disposition but couldn't determine type, check if email is large
-            if body.len() >= min_size {
-                log::debug!("Large email with attachment disposition, assuming suspicious");
-                return true;
-            }
+            // REMOVED: The fallback that was catching legitimate attachments
+            // We now ONLY flag attachments that match the specified suspicious_types
+            log::debug!("Found attachment disposition but no matching suspicious types");
         }
 
         false
@@ -5388,6 +5397,97 @@ mod tests {
             Action::Accept => {}
             _ => panic!("Expected Accept for email with no attachments"),
         }
+    }
+
+    #[tokio::test]
+    async fn test_attachment_only_respects_suspicious_types() {
+        let engine = FilterEngine::new(create_test_config(vec![])).unwrap();
+
+        // Create email with ICS calendar attachment
+        let ics_body = r#"Content-Type: multipart/mixed; boundary="boundary123"
+
+--boundary123
+Content-Type: text/plain
+
+Meeting invitation attached.
+
+--boundary123
+Content-Type: text/calendar; name="meeting.ics"
+Content-Disposition: attachment; filename="meeting.ics"
+
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Test//Test//EN
+BEGIN:VEVENT
+DTSTART:20250819T100000Z
+DTEND:20250819T110000Z
+SUMMARY:Test Meeting
+END:VEVENT
+END:VCALENDAR
+
+--boundary123--"#;
+
+        let mut context = MailContext {
+            sender: Some("sender@example.com".to_string()),
+            recipients: vec!["recipient@example.com".to_string()],
+            subject: Some("Meeting Invitation".to_string()),
+            body: Some(ics_body.to_string()),
+            headers: HashMap::new(),
+            from_header: Some("sender@example.com".to_string()),
+            helo: Some("example.com".to_string()),
+            hostname: Some("mail.example.com".to_string()),
+            mailer: None,
+        };
+
+        // Test with RAR-only suspicious types - should NOT match ICS
+        let rar_only_criteria = Criteria::AttachmentOnlyEmail {
+            max_text_length: Some(100),
+            ignore_whitespace: Some(true),
+            suspicious_types: Some(vec!["rar".to_string()]),
+            min_attachment_size: Some(256),
+            check_disposition: Some(true),
+        };
+
+        let result = engine.evaluate_criteria(&rar_only_criteria, &mut context).await;
+        assert!(!result, "Should NOT match ICS attachment when looking for RAR only");
+
+        // Test with ICS in suspicious types - should match
+        let ics_criteria = Criteria::AttachmentOnlyEmail {
+            max_text_length: Some(100),
+            ignore_whitespace: Some(true),
+            suspicious_types: Some(vec!["ics".to_string()]),
+            min_attachment_size: Some(256),
+            check_disposition: Some(true),
+        };
+
+        let result = engine.evaluate_criteria(&ics_criteria, &mut context).await;
+        assert!(result, "Should match ICS attachment when ICS is in suspicious_types");
+
+        // Create email with RAR attachment
+        let rar_body = r#"Content-Type: multipart/mixed; boundary="boundary456"
+
+--boundary456
+Content-Type: text/plain
+
+Archive attached.
+
+--boundary456
+Content-Type: application/x-rar-compressed; name="archive.rar"
+Content-Disposition: attachment; filename="archive.rar"
+
+[RAR file content would be here - this is long enough to meet size requirements]
+
+--boundary456--"#;
+
+        context.body = Some(rar_body.to_string());
+
+        // Test RAR criteria with RAR attachment - should match
+        let result = engine.evaluate_criteria(&rar_only_criteria, &mut context).await;
+        assert!(result, "Should match RAR attachment when looking for RAR");
+
+        // Test ICS criteria with RAR attachment - should NOT match
+        let result = engine.evaluate_criteria(&ics_criteria, &mut context).await;
+        assert!(!result, "Should NOT match RAR attachment when looking for ICS only");
     }
 
     #[tokio::test]
