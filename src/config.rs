@@ -214,6 +214,18 @@ pub enum Criteria {
         // Minimum number of indicators required for a match (default: 2)
         min_indicators: Option<u32>,
     },
+    /// Detect abuse of DocuSign infrastructure for phishing campaigns
+    /// This catches sophisticated phishing attacks that abuse legitimate DocuSign services
+    DocuSignAbuse {
+        // Whether to check for reply-to domain mismatch (default: true)
+        check_reply_to_mismatch: Option<bool>,
+        // Whether to check for panic/urgent subjects (default: true)
+        check_panic_subjects: Option<bool>,
+        // Whether to check for suspicious base64 encoding in From header (default: true)
+        check_suspicious_encoding: Option<bool>,
+        // Minimum number of indicators required for detection (default: 2)
+        min_indicators: Option<u32>,
+    },
     And {
         criteria: Vec<Criteria>,
     },

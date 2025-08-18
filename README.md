@@ -86,6 +86,7 @@ rules:
 - **EmailServiceAbuse**: Detect abuse of legitimate email services (SendGrid, Mailchimp, etc.) for phishing and brand impersonation
 - **GoogleGroupsAbuse**: Detect abuse of Google Groups mailing lists for phishing campaigns and reward scams
 - **SenderSpoofingExtortion**: Detect extortion attempts where attackers spoof the sender to appear as the recipient
+- **DocuSignAbuse**: Detect abuse of DocuSign infrastructure for phishing campaigns
 - **And**: All sub-criteria must match
 - **Or**: Any sub-criteria must match
 
@@ -827,6 +828,73 @@ This detects sophisticated extortion scams where attackers spoof the sender addr
 - **Social media threats**: "I will share this with your family and friends on Facebook"
 
 See `examples/sender-spoofing-extortion-example.yaml` for comprehensive sender spoofing extortion detection rules.
+
+### DocuSign abuse detection
+
+Detect when legitimate DocuSign infrastructure is being abused for phishing campaigns:
+
+```yaml
+- name: "Block DocuSign phishing abuse"
+  criteria:
+    type: "DocuSignAbuse"
+    check_reply_to_mismatch: true      # Check for non-DocuSign reply-to addresses
+    check_panic_subjects: true         # Check for urgent/threatening subjects
+    check_suspicious_encoding: true    # Check for suspicious base64 encoding
+    min_indicators: 2                  # Require at least 2 indicators
+  action:
+    type: "Reject"
+    message: "DocuSign infrastructure abuse detected"
+```
+
+```yaml
+- name: "Conservative DocuSign abuse detection"
+  criteria:
+    type: "DocuSignAbuse"
+    check_reply_to_mismatch: true
+    check_panic_subjects: true
+    check_suspicious_encoding: true
+    min_indicators: 3                  # Require 3 indicators for high confidence
+  action:
+    type: "Reject"
+    message: "High-confidence DocuSign phishing attack blocked"
+```
+
+This detects sophisticated phishing attacks where attackers abuse legitimate DocuSign infrastructure to send emails that appear to come from DocuSign but redirect responses to attacker-controlled addresses.
+
+**Configuration Options:**
+- `check_reply_to_mismatch`: Whether to check for reply-to domain mismatch (default: true)
+- `check_panic_subjects`: Whether to check for panic/urgent subjects (default: true)
+- `check_suspicious_encoding`: Whether to check for suspicious base64 encoding in From header (default: true)
+- `min_indicators`: Minimum number of indicators required for detection (default: 2)
+
+**Detected Patterns:**
+- DocuSign infrastructure with non-DocuSign reply-to addresses
+- Panic subjects: "Verify Now: Payment Suspended", "Account Suspended", etc.
+- Base64 encoded From headers with suspicious content ("Remediation Unit", etc.)
+- Random usernames in reply-to addresses (deloria548472@ysl.awesome47.com)
+- Free email services used for replies (Gmail, Outlook, Yahoo, etc.)
+
+**Why This Works:**
+- Focuses specifically on DocuSign infrastructure abuse (avoids false positives)
+- Combines multiple indicators for high accuracy (reduces false positives)
+- Detects sophisticated attacks that bypass traditional SPF/DKIM filters
+- Configurable thresholds allow fine-tuning for different environments
+- Avoids DKIM complexity that could cause false positives
+
+**Example Attack Detected:**
+```
+From: "=?utf-8?B?8J+Fv2F58J+Fv2FsIFJlbWVkaWF0aW9uIFVuaXQgdmlhIERvY3VzaWdu?=" <dse@eumail.docusign.net>
+Reply-To: "deloria548472" <deloria548472@ysl.awesome47.com>
+Subject: Verify Now: Payment Suspended for Verification at Our Security Center
+
+Indicators detected:
+1. Reply-to mismatch: deloria548472@ysl.awesome47.com (not DocuSign domain)
+2. Panic subject: "Verify Now: Payment Suspended for Verification"
+3. Suspicious encoding: Base64 encoded "Remediation Unit via DocuSign"
+Result: 3 indicators >= 2 required = BLOCKED
+```
+
+See `examples/docusign-abuse-example.yaml` for comprehensive DocuSign abuse detection rules.
 
 ### Complex rule with multiple conditions
 

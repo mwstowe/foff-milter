@@ -468,6 +468,10 @@ impl FilterEngine {
                 // No regex patterns to compile for sender spoofing extortion detection
                 // Uses string matching and email address comparison instead
             }
+            Criteria::DocuSignAbuse { .. } => {
+                // No regex patterns to compile for DocuSign abuse detection
+                // Uses string matching and domain comparison instead
+            }
             Criteria::And { criteria } | Criteria::Or { criteria } => {
                 for c in criteria {
                     self.compile_criteria_patterns(c)?;
@@ -2929,12 +2933,17 @@ impl FilterEngine {
 
                     // For emails that might be forwarded/rewritten, require stronger evidence
                     let mut requires_stronger_evidence = false;
-                    
+
                     // Check for Gmail forwarding patterns (common source of false positives)
                     if let Some(sender) = &context.sender {
-                        if sender.contains("@gmail.com") && sender.contains("+") && sender.contains("=") {
+                        if sender.contains("@gmail.com")
+                            && sender.contains("+")
+                            && sender.contains("=")
+                        {
                             requires_stronger_evidence = true;
-                            log::debug!("Gmail forwarding pattern detected, requiring stronger evidence");
+                            log::debug!(
+                                "Gmail forwarding pattern detected, requiring stronger evidence"
+                            );
                         }
                     }
 
@@ -2942,10 +2951,21 @@ impl FilterEngine {
                     if let Some(subject) = &context.subject {
                         let subject_lower = subject.to_lowercase();
                         let newsletter_patterns = vec![
-                            "newsletter", "digest", "update", "news", "weekly", "daily", "monthly",
-                            "subscription", "unsubscribe", "well:", "breaking:", "alert:", "briefing"
+                            "newsletter",
+                            "digest",
+                            "update",
+                            "news",
+                            "weekly",
+                            "daily",
+                            "monthly",
+                            "subscription",
+                            "unsubscribe",
+                            "well:",
+                            "breaking:",
+                            "alert:",
+                            "briefing",
                         ];
-                        
+
                         for pattern in &newsletter_patterns {
                             if subject_lower.contains(pattern) {
                                 requires_stronger_evidence = true;
@@ -3192,24 +3212,210 @@ impl FilterEngine {
 
                     // Check if we have enough indicators for extortion
                     let required_indicators = if requires_stronger_evidence {
-                        min_indicators_required + 1  // Require one additional indicator
+                        min_indicators_required + 1 // Require one additional indicator
                     } else {
                         min_indicators_required
                     };
-                    
+
                     let is_extortion = extortion_indicators >= required_indicators;
 
                     if is_extortion {
                         log::info!(
                             "Sender spoofing extortion detected: {extortion_indicators} indicators found (required: {required_indicators}, stronger evidence: {requires_stronger_evidence})"
                         );
-                    } else if requires_stronger_evidence && extortion_indicators >= min_indicators_required {
+                    } else if requires_stronger_evidence
+                        && extortion_indicators >= min_indicators_required
+                    {
                         log::debug!(
                             "Potential extortion detected but requires stronger evidence: {extortion_indicators} indicators (need {required_indicators})"
                         );
                     }
 
                     is_extortion
+                }
+                Criteria::DocuSignAbuse {
+                    check_reply_to_mismatch,
+                    check_panic_subjects,
+                    check_suspicious_encoding,
+                    min_indicators,
+                } => {
+                    log::debug!("Checking for DocuSign infrastructure abuse");
+
+                    // Check if this is actually from DocuSign infrastructure
+                    let mut is_docusign_infrastructure = false;
+
+                    // Check sender domain
+                    if let Some(sender) = &context.sender {
+                        log::debug!("Checking sender: {sender}");
+                        if sender.contains("@eumail.docusign.net")
+                            || sender.contains("@docusign.net")
+                        {
+                            is_docusign_infrastructure = true;
+                            log::debug!("DocuSign infrastructure detected in sender: {sender}");
+                        }
+                    }
+
+                    // Check Received headers for DocuSign infrastructure
+                    if !is_docusign_infrastructure {
+                        for (header_name, header_value) in &context.headers {
+                            if header_name.to_lowercase() == "received" {
+                                log::debug!("Checking received header: {header_value}");
+                                if header_value.contains("docusign.net")
+                                    || header_value.contains("eumail.docusign.net")
+                                {
+                                    is_docusign_infrastructure = true;
+                                    log::debug!(
+                                        "DocuSign infrastructure detected in Received header"
+                                    );
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    log::debug!("DocuSign infrastructure detected: {is_docusign_infrastructure}");
+
+                    // Skip detection if not from DocuSign infrastructure
+                    if !is_docusign_infrastructure {
+                        log::debug!(
+                            "Not from DocuSign infrastructure, skipping DocuSign abuse detection"
+                        );
+                        return false;
+                    }
+
+                    let check_reply_mismatch = check_reply_to_mismatch.unwrap_or(true);
+                    let check_panic = check_panic_subjects.unwrap_or(true);
+                    let check_encoding = check_suspicious_encoding.unwrap_or(true);
+                    let min_indicators_required = min_indicators.unwrap_or(2) as usize;
+
+                    let mut abuse_indicators = 0;
+
+                    // Check for reply-to domain mismatch
+                    if check_reply_mismatch {
+                        if let Some(reply_to) = context.headers.get("reply-to") {
+                            log::debug!("Found reply-to header: {reply_to}");
+                            let reply_email = self.extract_email_from_header(reply_to);
+                            log::debug!("Extracted reply email: {reply_email:?}");
+                            if let Some(email) = reply_email {
+                                // Check if reply-to is not a DocuSign domain
+                                if !email.contains("@docusign.net")
+                                    && !email.contains("@eumail.docusign.net")
+                                {
+                                    log::debug!("Reply-to is not DocuSign domain: {email}");
+                                    // Check for suspicious reply-to patterns
+                                    let suspicious_patterns = vec![
+                                        // Random usernames with numbers
+                                        r"^[a-z]+\d+@",
+                                        // Suspicious domains
+                                        r"@.*\.awesome\d+\.com$",
+                                        r"@ysl\.",
+                                        // Free email services (common in phishing)
+                                        r"@(gmail|outlook|yahoo|hotmail|aol)\.(com|net)$",
+                                    ];
+
+                                    for pattern in &suspicious_patterns {
+                                        if let Ok(regex) = regex::Regex::new(pattern) {
+                                            if regex.is_match(&email) {
+                                                abuse_indicators += 1;
+                                                log::debug!("Suspicious reply-to pattern detected: {email} matches {pattern}");
+                                                break;
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    log::debug!("Reply-to is DocuSign domain, skipping: {email}");
+                                }
+                            } else {
+                                log::debug!("Could not extract email from reply-to header");
+                            }
+                        } else {
+                            log::debug!("No reply-to header found");
+                        }
+                    }
+
+                    // Check for panic/urgent subjects
+                    if check_panic {
+                        if let Some(subject) = &context.subject {
+                            let subject_lower = subject.to_lowercase();
+                            let panic_keywords = vec![
+                                "verify now",
+                                "payment suspended",
+                                "account suspended",
+                                "urgent verification",
+                                "immediate action",
+                                "verify immediately",
+                                "suspended for verification",
+                                "security center",
+                                "action required",
+                                "verify your account",
+                                "payment failed",
+                                "account locked",
+                                "verify payment",
+                            ];
+
+                            for keyword in &panic_keywords {
+                                if subject_lower.contains(keyword) {
+                                    abuse_indicators += 1;
+                                    log::debug!("Panic subject keyword detected: {keyword}");
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    // Check for suspicious base64 encoding in From header
+                    if check_encoding {
+                        if let Some(from_header) = context.headers.get("from") {
+                            // Check for base64 encoded content with suspicious patterns
+                            if from_header.contains("=?utf-8?B?") {
+                                // Decode and check for suspicious content
+                                let decoded = crate::milter::decode_mime_header(from_header);
+                                let decoded_lower = decoded.to_lowercase();
+
+                                // Look for suspicious encoded content
+                                let suspicious_encoded = vec![
+                                    "remediation unit",
+                                    "security center",
+                                    "verification unit",
+                                    "compliance team",
+                                    "fraud prevention",
+                                    "account security",
+                                ];
+
+                                for pattern in &suspicious_encoded {
+                                    if decoded_lower.contains(pattern) {
+                                        abuse_indicators += 1;
+                                        log::debug!("Suspicious base64 encoded From header detected: {pattern}");
+                                        break;
+                                    }
+                                }
+
+                                // Also check for unusual characters that might indicate obfuscation
+                                if decoded.chars().any(|c| !c.is_ascii() && !c.is_whitespace()) {
+                                    // Contains non-ASCII characters that might be used for obfuscation
+                                    if decoded.len() > 20 {
+                                        // Only flag if substantial content
+                                        abuse_indicators += 1;
+                                        log::debug!("Suspicious non-ASCII characters in encoded From header");
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    let is_abuse = abuse_indicators >= min_indicators_required;
+
+                    if is_abuse {
+                        log::info!(
+                            "DocuSign infrastructure abuse detected: {abuse_indicators} indicators found (min required: {min_indicators_required})"
+                        );
+                    } else {
+                        log::debug!(
+                            "DocuSign abuse indicators insufficient: {abuse_indicators} found (need {min_indicators_required})"
+                        );
+                    }
+
+                    is_abuse
                 }
                 Criteria::And { criteria } => {
                     for c in criteria {
@@ -5935,6 +6141,162 @@ Content-Disposition: attachment; filename="test.rar"
         assert!(matched_rules5.is_empty());
 
         println!("✅ Google Groups abuse detection test passed");
+    }
+
+    #[tokio::test]
+    async fn test_docusign_abuse_detection() {
+        use crate::config::{Action, FilterRule};
+        use std::collections::HashMap;
+
+        // Initialize logging for the test
+        let _ = env_logger::builder().is_test(true).try_init();
+
+        // Test case 1: Classic DocuSign phishing attack (should match)
+        let config = create_test_config(vec![FilterRule {
+            name: "Detect DocuSign abuse".to_string(),
+            criteria: Criteria::DocuSignAbuse {
+                check_reply_to_mismatch: Some(true),
+                check_panic_subjects: Some(true),
+                check_suspicious_encoding: Some(true),
+                min_indicators: Some(2),
+            },
+            action: Action::Reject {
+                message: "DocuSign infrastructure abuse detected".to_string(),
+            },
+        }]);
+
+        let mut engine = FilterEngine::new(config).unwrap();
+        engine.compile_patterns().unwrap();
+
+        // Create context matching the actual phishing attack
+        let mut headers = HashMap::new();
+        headers.insert("from".to_string(), "\"=?utf-8?B?8J+Fv2F58J+Fv2FsIFJlbWVkaWF0aW9uIFVuaXQgdmlhIERvY3VzaWdu?=\" <dse@eumail.docusign.net>".to_string());
+        headers.insert(
+            "reply-to".to_string(),
+            "\"deloria548472\" <deloria548472@ysl.awesome47.com>".to_string(),
+        );
+        headers.insert(
+            "received".to_string(),
+            "from mailfr.eumail.docusign.net (fr-c101-f51-81.euad.docusign.net [10.111.81.9])"
+                .to_string(),
+        );
+
+        let context = MailContext {
+            sender: Some("dse@eumail.docusign.net".to_string()),
+            recipients: vec!["victim@example.com".to_string()],
+            subject: Some(
+                "Verify Now: Payment Suspended for Verification at Our Security Center".to_string(),
+            ),
+            body: Some("Your payment has been suspended. Click here to verify.".to_string()),
+            headers,
+            from_header: Some("dse@eumail.docusign.net".to_string()),
+            helo: Some("eumail.docusign.net".to_string()),
+            hostname: Some("mailfr.eumail.docusign.net".to_string()),
+            mailer: None,
+        };
+
+        let (action, matched_rules) = engine.evaluate(&context).await;
+        assert!(matches!(action, Action::Reject { .. }));
+        assert_eq!(matched_rules, vec!["Detect DocuSign abuse"]);
+
+        // Test case 2: Legitimate DocuSign email (should not match)
+        let mut legitimate_headers = HashMap::new();
+        legitimate_headers.insert(
+            "from".to_string(),
+            "DocuSign <noreply@docusign.net>".to_string(),
+        );
+        legitimate_headers.insert("reply-to".to_string(), "support@docusign.net".to_string());
+        legitimate_headers.insert("received".to_string(), "from mail.docusign.net".to_string());
+
+        let legitimate_context = MailContext {
+            sender: Some("noreply@docusign.net".to_string()),
+            recipients: vec!["user@example.com".to_string()],
+            subject: Some("Document ready for signature".to_string()),
+            body: Some("Please review and sign the document.".to_string()),
+            headers: legitimate_headers,
+            from_header: Some("noreply@docusign.net".to_string()),
+            helo: Some("docusign.net".to_string()),
+            hostname: Some("mail.docusign.net".to_string()),
+            mailer: None,
+        };
+
+        let (action2, matched_rules2) = engine.evaluate(&legitimate_context).await;
+        assert!(matches!(action2, Action::Accept));
+        assert!(matched_rules2.is_empty());
+
+        // Test case 3: Non-DocuSign email (should not match)
+        let mut non_docusign_headers = HashMap::new();
+        non_docusign_headers.insert("from".to_string(), "phisher@evil.com".to_string());
+        non_docusign_headers.insert("reply-to".to_string(), "reply@evil.com".to_string());
+
+        let non_docusign_context = MailContext {
+            sender: Some("phisher@evil.com".to_string()),
+            recipients: vec!["victim@example.com".to_string()],
+            subject: Some("Verify Now: Payment Suspended".to_string()),
+            body: Some("Phishing attempt".to_string()),
+            headers: non_docusign_headers,
+            from_header: Some("phisher@evil.com".to_string()),
+            helo: Some("evil.com".to_string()),
+            hostname: Some("mail.evil.com".to_string()),
+            mailer: None,
+        };
+
+        let (action3, matched_rules3) = engine.evaluate(&non_docusign_context).await;
+        assert!(matches!(action3, Action::Accept));
+        assert!(matched_rules3.is_empty());
+
+        // Test case 4: DocuSign with only 1 indicator (should not match with min_indicators=2)
+        let mut single_indicator_headers = HashMap::new();
+        single_indicator_headers.insert(
+            "from".to_string(),
+            "DocuSign <dse@eumail.docusign.net>".to_string(),
+        );
+        single_indicator_headers.insert(
+            "reply-to".to_string(),
+            "randomuser123@gmail.com".to_string(),
+        ); // Matches free email pattern
+        single_indicator_headers.insert(
+            "received".to_string(),
+            "from mailfr.eumail.docusign.net".to_string(),
+        );
+
+        let single_indicator_context = MailContext {
+            sender: Some("dse@eumail.docusign.net".to_string()),
+            recipients: vec!["victim@example.com".to_string()],
+            subject: Some("Normal document notification".to_string()), // No panic keywords
+            body: Some("Please review the document.".to_string()),
+            headers: single_indicator_headers,
+            from_header: Some("dse@eumail.docusign.net".to_string()),
+            helo: Some("eumail.docusign.net".to_string()),
+            hostname: Some("mailfr.eumail.docusign.net".to_string()),
+            mailer: None,
+        };
+
+        let (action4, matched_rules4) = engine.evaluate(&single_indicator_context).await;
+        assert!(matches!(action4, Action::Accept));
+        assert!(matched_rules4.is_empty());
+
+        // Test case 5: DocuSign with custom min_indicators=1 (should match)
+        let single_indicator_config = create_test_config(vec![FilterRule {
+            name: "Single indicator DocuSign abuse".to_string(),
+            criteria: Criteria::DocuSignAbuse {
+                check_reply_to_mismatch: Some(true),
+                check_panic_subjects: Some(false), // Disable panic checking
+                check_suspicious_encoding: Some(false), // Disable encoding checking
+                min_indicators: Some(1),           // Only need 1 indicator
+            },
+            action: Action::TagAsSpam {
+                header_name: "X-DocuSign-Abuse".to_string(),
+                header_value: "Single indicator detected".to_string(),
+            },
+        }]);
+
+        let mut single_engine = FilterEngine::new(single_indicator_config).unwrap();
+        single_engine.compile_patterns().unwrap();
+
+        let (action5, matched_rules5) = single_engine.evaluate(&single_indicator_context).await;
+        assert!(matches!(action5, Action::TagAsSpam { .. }));
+        assert_eq!(matched_rules5, vec!["Single indicator DocuSign abuse"]);
     }
 
     #[tokio::test]
