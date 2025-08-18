@@ -155,9 +155,11 @@ impl AbuseReporter {
         let from_address = format!("{} <{}>", from_name, smtp_config.from_email);
 
         let email = Message::builder()
-            .from(from_address.parse().map_err(|e| {
-                AbuseReportError::ConfigError(format!("Invalid from address: {e}"))
-            })?)
+            .from(
+                from_address.parse().map_err(|e| {
+                    AbuseReportError::ConfigError(format!("Invalid from address: {e}"))
+                })?,
+            )
             .to(to_email
                 .parse()
                 .map_err(|e| AbuseReportError::ConfigError(format!("Invalid to address: {e}")))?)
