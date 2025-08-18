@@ -1,3 +1,4 @@
+use crate::abuse_reporter::AbuseReporter;
 use crate::config::{Action, Config, Criteria};
 use crate::domain_age::DomainAgeChecker;
 use crate::language::LanguageDetector;
@@ -29,6 +30,8 @@ const CACHE_TTL_SECONDS: u64 = 300; // 5 minutes cache TTL
 pub struct FilterEngine {
     config: Config,
     compiled_patterns: HashMap<String, Regex>,
+    #[allow(dead_code)] // TODO: Implement full abuse reporting integration
+    abuse_reporter: AbuseReporter,
 }
 
 #[derive(Debug, Default, Clone)]
@@ -49,6 +52,7 @@ impl FilterEngine {
         let mut engine = FilterEngine {
             config,
             compiled_patterns: HashMap::new(),
+            abuse_reporter: AbuseReporter::new(),
         };
 
         // Pre-compile all regex patterns for better performance

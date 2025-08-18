@@ -83,6 +83,20 @@ async fn main() -> anyhow::Result<()> {
             println!("\n❌ MISSED!");
             println!("⚠️  The spam would not be caught (this shouldn't happen)");
         }
+        foff_milter::config::Action::ReportAbuse {
+            service_provider,
+            additional_action,
+            ..
+        } => {
+            println!("\n🚨 ABUSE REPORT!");
+            println!(
+                "✅ The spam would trigger abuse report to: {}",
+                service_provider
+            );
+            if let Some(additional_act) = additional_action {
+                println!("📝 Additional action: {:?}", additional_act);
+            }
+        }
     }
 
     // Test with a legitimate old domain

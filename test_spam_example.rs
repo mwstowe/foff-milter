@@ -105,6 +105,19 @@ rules:
         foff_milter::config::Action::Accept => {
             println!("\n❌ MISSED: This spam would be accepted (not caught)");
         }
+        foff_milter::config::Action::ReportAbuse {
+            service_provider,
+            additional_action,
+            ..
+        } => {
+            println!(
+                "\n🚨 ABUSE REPORT: This spam would trigger abuse report to: {}",
+                service_provider
+            );
+            if let Some(additional_act) = additional_action {
+                println!("Additional action: {:?}", additional_act);
+            }
+        }
     }
 
     // Test with a legitimate email from an old domain
