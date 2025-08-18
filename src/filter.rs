@@ -1006,7 +1006,7 @@ impl FilterEngine {
                     log::debug!(
                         "Found attachment with suspicious filename extension: {attachment_type}"
                     );
-                    
+
                     // Check size requirement for filename-based detection too
                     if body.len() >= min_size {
                         log::debug!(
@@ -5448,8 +5448,13 @@ END:VCALENDAR
             check_disposition: Some(true),
         };
 
-        let result = engine.evaluate_criteria(&rar_only_criteria, &mut context).await;
-        assert!(!result, "Should NOT match ICS attachment when looking for RAR only");
+        let result = engine
+            .evaluate_criteria(&rar_only_criteria, &mut context)
+            .await;
+        assert!(
+            !result,
+            "Should NOT match ICS attachment when looking for RAR only"
+        );
 
         // Test with ICS in suspicious types - should match
         let ics_criteria = Criteria::AttachmentOnlyEmail {
@@ -5461,7 +5466,10 @@ END:VCALENDAR
         };
 
         let result = engine.evaluate_criteria(&ics_criteria, &mut context).await;
-        assert!(result, "Should match ICS attachment when ICS is in suspicious_types");
+        assert!(
+            result,
+            "Should match ICS attachment when ICS is in suspicious_types"
+        );
 
         // Create email with RAR attachment
         let rar_body = r#"Content-Type: multipart/mixed; boundary="boundary456"
@@ -5482,12 +5490,17 @@ Content-Disposition: attachment; filename="archive.rar"
         context.body = Some(rar_body.to_string());
 
         // Test RAR criteria with RAR attachment - should match
-        let result = engine.evaluate_criteria(&rar_only_criteria, &mut context).await;
+        let result = engine
+            .evaluate_criteria(&rar_only_criteria, &mut context)
+            .await;
         assert!(result, "Should match RAR attachment when looking for RAR");
 
         // Test ICS criteria with RAR attachment - should NOT match
         let result = engine.evaluate_criteria(&ics_criteria, &mut context).await;
-        assert!(!result, "Should NOT match RAR attachment when looking for ICS only");
+        assert!(
+            !result,
+            "Should NOT match RAR attachment when looking for ICS only"
+        );
     }
 
     #[tokio::test]
