@@ -50,9 +50,9 @@ pub struct MailContext {
 impl FilterEngine {
     pub fn new(config: Config) -> anyhow::Result<Self> {
         let mut engine = FilterEngine {
+            abuse_reporter: AbuseReporter::with_smtp_config(config.smtp.clone()),
             config,
             compiled_patterns: HashMap::new(),
-            abuse_reporter: AbuseReporter::new(),
         };
 
         // Pre-compile all regex patterns for better performance
@@ -3454,6 +3454,7 @@ mod tests {
             default_action: Action::Accept,
             rules,
             statistics: None,
+            smtp: None,
         }
     }
 

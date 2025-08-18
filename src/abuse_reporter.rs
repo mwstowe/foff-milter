@@ -1,10 +1,17 @@
+use crate::config::SmtpConfig;
 use crate::filter::MailContext;
+use lettre::message::{header, Message};
+use lettre::transport::smtp::authentication::Credentials;
+use lettre::{SmtpTransport, Transport};
 use std::collections::HashMap;
+use std::time::Duration;
 
 /// Handles reporting abuse to email service providers
 pub struct AbuseReporter {
     // Configuration for different service providers
     service_configs: HashMap<String, ServiceConfig>,
+    // SMTP configuration for sending emails
+    smtp_config: Option<SmtpConfig>,
 }
 
 #[derive(Clone)]
@@ -16,6 +23,10 @@ struct ServiceConfig {
 
 impl AbuseReporter {
     pub fn new() -> Self {
+        Self::with_smtp_config(None)
+    }
+
+    pub fn with_smtp_config(smtp_config: Option<SmtpConfig>) -> Self {
         let mut service_configs = HashMap::new();
 
         // SendGrid abuse reporting
@@ -56,7 +67,10 @@ impl AbuseReporter {
             },
         );
 
-        Self { service_configs }
+        Self {
+            service_configs,
+            smtp_config,
+        }
     }
 
     /// Report abuse to the specified service provider
@@ -73,7 +87,7 @@ impl AbuseReporter {
             .get(service_provider)
             .ok_or_else(|| AbuseReportError::UnsupportedProvider(service_provider.to_string()))?;
 
-        let report = self.generate_abuse_report(
+        let report_body = self.generate_abuse_report(
             service_config,
             context,
             include_headers,
@@ -81,32 +95,114 @@ impl AbuseReporter {
             custom_message,
         );
 
-        // Log the abuse report (in production, this would send the actual report)
-        log::info!("🚨 ABUSE REPORT GENERATED for {service_provider}:");
-        log::info!("To: {}", service_config.abuse_email);
-        if let Some(url) = &service_config.report_url {
-            log::info!("Report URL: {url}");
-        }
-        log::info!("Report Content:\n{report}");
+        let subject = service_config.headers_template.clone();
 
-        // TODO: In production, implement actual email sending or HTTP POST to abuse endpoints
-        // For now, we log the report for manual submission
+        // Try to send email if SMTP is configured, otherwise log for manual submission
+        if let Some(smtp_config) = &self.smtp_config {
+            match self
+                .send_email_report(
+                    smtp_config,
+                    &service_config.abuse_email,
+                    &subject,
+                    &report_body,
+                )
+                .await
+            {
+                Ok(()) => {
+                    log::info!(
+                        "✅ ABUSE REPORT SENT to {service_provider} ({}):",
+                        service_config.abuse_email
+                    );
+                    log::info!("Subject: {subject}");
+                    if let Some(url) = &service_config.report_url {
+                        log::info!("Report URL: {url}");
+                    }
+                    log::debug!("Report content:\n{report_body}");
+                }
+                Err(e) => {
+                    log::error!("❌ FAILED to send abuse report to {service_provider}: {e}");
+                    log::warn!("📧 MANUAL SUBMISSION REQUIRED:");
+                    log::warn!("To: {}", service_config.abuse_email);
+                    log::warn!("Subject: {subject}");
+                    log::info!("Report content:\n{report_body}");
+                    return Err(e);
+                }
+            }
+        } else {
+            // No SMTP configured, log for manual submission
+            log::warn!("📧 SMTP NOT CONFIGURED - MANUAL SUBMISSION REQUIRED:");
+            log::warn!("🚨 ABUSE REPORT for {service_provider}:");
+            log::warn!("To: {}", service_config.abuse_email);
+            log::warn!("Subject: {subject}");
+            if let Some(url) = &service_config.report_url {
+                log::warn!("Report URL: {url}");
+            }
+            log::info!("Report content:\n{report_body}");
+        }
+
+        Ok(())
+    }
+
+    async fn send_email_report(
+        &self,
+        smtp_config: &SmtpConfig,
+        to_email: &str,
+        subject: &str,
+        body: &str,
+    ) -> Result<(), AbuseReportError> {
+        // Build the email message
+        let from_name = smtp_config.from_name.as_deref().unwrap_or("FOFF Milter");
+        let from_address = format!("{} <{}>", from_name, smtp_config.from_email);
+
+        let email = Message::builder()
+            .from(from_address.parse().map_err(|e| {
+                AbuseReportError::ConfigError(format!("Invalid from address: {e}"))
+            })?)
+            .to(to_email
+                .parse()
+                .map_err(|e| AbuseReportError::ConfigError(format!("Invalid to address: {e}")))?)
+            .subject(subject)
+            .header(header::ContentType::TEXT_PLAIN)
+            .body(body.to_string())
+            .map_err(|e| AbuseReportError::ConfigError(format!("Failed to build email: {e}")))?;
+
+        // Configure SMTP transport (simplified - lettre will handle TLS automatically)
+        let port = smtp_config.port.unwrap_or(587); // Default to STARTTLS port
+        let timeout = Duration::from_secs(smtp_config.timeout_seconds.unwrap_or(30));
+
+        let mut transport_builder = SmtpTransport::relay(&smtp_config.server)
+            .map_err(|e| AbuseReportError::NetworkError(format!("SMTP relay error: {e}")))?
+            .port(port)
+            .timeout(Some(timeout));
+
+        // lettre automatically handles STARTTLS for port 587
+        // and SSL/TLS for port 465
+
+        // Add authentication if configured
+        if let (Some(username), Some(password)) = (&smtp_config.username, &smtp_config.password) {
+            transport_builder =
+                transport_builder.credentials(Credentials::new(username.clone(), password.clone()));
+        }
+
+        let mailer = transport_builder.build();
+
+        // Send the email
+        mailer
+            .send(&email)
+            .map_err(|e| AbuseReportError::NetworkError(format!("Failed to send email: {e}")))?;
 
         Ok(())
     }
 
     fn generate_abuse_report(
         &self,
-        service_config: &ServiceConfig,
+        _service_config: &ServiceConfig,
         context: &MailContext,
         include_headers: bool,
         include_body: bool,
         custom_message: Option<&str>,
     ) -> String {
         let mut report = String::new();
-
-        // Report header
-        report.push_str(&format!("Subject: {}\n\n", service_config.headers_template));
 
         // Custom message if provided
         if let Some(message) = custom_message {
@@ -223,7 +319,7 @@ mod tests {
             mailer: None,
         };
 
-        // Test SendGrid abuse reporting
+        // Test SendGrid abuse reporting (will log since no SMTP configured)
         let result = reporter
             .report_abuse(
                 "sendgrid",
@@ -270,5 +366,22 @@ mod tests {
             result,
             Err(AbuseReportError::UnsupportedProvider(_))
         ));
+    }
+
+    #[test]
+    fn test_smtp_config_creation() {
+        let smtp_config = SmtpConfig {
+            server: "smtp.example.com".to_string(),
+            port: Some(587),
+            username: Some("user@example.com".to_string()),
+            password: Some("password".to_string()),
+            from_email: "noreply@example.com".to_string(),
+            from_name: Some("Test Milter".to_string()),
+            use_tls: Some(true),
+            timeout_seconds: Some(30),
+        };
+
+        let reporter = AbuseReporter::with_smtp_config(Some(smtp_config));
+        assert_eq!(reporter.supported_providers().len(), 4);
     }
 }

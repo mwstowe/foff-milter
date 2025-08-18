@@ -6,6 +6,7 @@ pub struct Config {
     pub rules: Vec<FilterRule>,
     pub default_action: Action,
     pub statistics: Option<StatisticsConfig>,
+    pub smtp: Option<SmtpConfig>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -13,6 +14,18 @@ pub struct StatisticsConfig {
     pub enabled: bool,
     pub database_path: String,
     pub flush_interval_seconds: Option<u64>, // How often to flush stats to disk (default: 60)
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct SmtpConfig {
+    pub server: String,               // SMTP server hostname
+    pub port: Option<u16>,            // SMTP port (default: 587 for STARTTLS, 465 for SSL)
+    pub username: Option<String>,     // SMTP username (optional for anonymous)
+    pub password: Option<String>,     // SMTP password (optional for anonymous)
+    pub from_email: String,           // From email address for abuse reports
+    pub from_name: Option<String>,    // From name for abuse reports (default: "FOFF Milter")
+    pub use_tls: Option<bool>,        // Use STARTTLS (default: true)
+    pub timeout_seconds: Option<u64>, // Connection timeout (default: 30)
 }
 
 impl Default for StatisticsConfig {
@@ -287,6 +300,7 @@ impl Default for Config {
             ],
             default_action: Action::Accept,
             statistics: Some(StatisticsConfig::default()),
+            smtp: None,
         }
     }
 }
