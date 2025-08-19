@@ -245,6 +245,9 @@ pub enum Criteria {
     Or {
         criteria: Vec<Criteria>,
     },
+    Not {
+        criteria: Box<Criteria>,
+    },
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

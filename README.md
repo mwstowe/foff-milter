@@ -89,6 +89,7 @@ rules:
 - **DocuSignAbuse**: Detect abuse of DocuSign infrastructure for phishing campaigns
 - **And**: All sub-criteria must match
 - **Or**: Any sub-criteria must match
+- **Not**: Negates the result of the nested criteria (inverts true/false)
 
 ### Supported Languages for Detection
 
@@ -234,6 +235,53 @@ sudo systemctl restart postfix
     type: "TagAsSpam"
     header_name: "X-Spam-Pharma"
     header_value: "YES"
+```
+
+### Exclude legitimate services from filtering
+
+```yaml
+- name: "Tag suspicious mailto-only unsubscribe (excluding legitimate services)"
+  criteria:
+    type: "And"
+    criteria:
+      # Detect mailto-only unsubscribe links
+      - type: "UnsubscribeMailtoOnly"
+        allow_mixed: true
+      # Exclude legitimate business services
+      - type: "Not"
+        criteria:
+          type: "SenderPattern"
+          pattern: ".*@(signnow|docusign|hellosign|pandadoc|adobe|pdffiller)\\.com$"
+  action:
+    type: "TagAsSpam"
+    header_name: "X-Phishing-Mailto-Only"
+    header_value: "Suspicious mailto-only unsubscribe from unknown sender"
+```
+
+### Complex logic with Not criteria
+
+```yaml
+- name: "Tag suspicious emails from free services (excluding newsletters)"
+  criteria:
+    type: "And"
+    criteria:
+      # From free email services
+      - type: "SenderPattern"
+        pattern: ".*@(gmail|outlook|yahoo|hotmail)\\.(com|net)$"
+      # NOT legitimate newsletter patterns
+      - type: "Not"
+        criteria:
+          type: "Or"
+          criteria:
+            - type: "HeaderPattern"
+              header: "list-unsubscribe"
+              pattern: ".*"
+            - type: "SubjectPattern"
+              pattern: "(?i)(newsletter|digest|weekly|monthly)"
+  action:
+    type: "TagAsSpam"
+    header_name: "X-Free-Email-Suspicious"
+    header_value: "Free email without newsletter indicators"
 ```
 
 ### Language detection with domain filtering

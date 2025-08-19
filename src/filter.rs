@@ -481,6 +481,9 @@ impl FilterEngine {
                     self.compile_criteria_patterns(c)?;
                 }
             }
+            Criteria::Not { criteria } => {
+                self.compile_criteria_patterns(criteria)?;
+            }
         }
         Ok(())
     }
@@ -3445,6 +3448,10 @@ impl FilterEngine {
                         }
                     }
                     false
+                }
+                Criteria::Not { criteria } => {
+                    // Return the opposite of the nested criteria evaluation
+                    !self.evaluate_criteria(criteria, context).await
                 }
             }
         })
@@ -6721,5 +6728,99 @@ Content-Disposition: attachment; filename="test.rar"
         assert!(matched_rules7.is_empty());
 
         println!("✅ Sender spoofing extortion detection test passed");
+    }
+
+    #[tokio::test]
+    async fn test_not_criteria() {
+        // Test 1: Not with SenderPattern - should NOT match Gmail
+        let config1 = create_test_config(vec![FilterRule {
+            name: "Not Gmail test".to_string(),
+            criteria: Criteria::Not {
+                criteria: Box::new(Criteria::SenderPattern {
+                    pattern: ".*@gmail\\.com$".to_string(),
+                }),
+            },
+            action: Action::Reject {
+                message: "Not Gmail".to_string(),
+            },
+        }]);
+
+        let engine1 = FilterEngine::new(config1).unwrap();
+
+        let gmail_context = MailContext {
+            sender: Some("test@gmail.com".to_string()),
+            recipients: vec!["recipient@example.com".to_string()],
+            subject: Some("Test Subject".to_string()),
+            body: Some("Test body content".to_string()),
+            headers: HashMap::new(),
+            from_header: Some("test@gmail.com".to_string()),
+            helo: Some("gmail.com".to_string()),
+            hostname: Some("mail.gmail.com".to_string()),
+            mailer: None,
+        };
+
+        let (action1, _) = engine1.evaluate(&gmail_context).await;
+        assert!(
+            matches!(action1, Action::Accept),
+            "Not Gmail rule should NOT match Gmail sender (should Accept)"
+        );
+
+        // Test 2: Not with SenderPattern - should match Yahoo (since it's NOT Gmail)
+        let yahoo_context = MailContext {
+            sender: Some("test@yahoo.com".to_string()),
+            recipients: vec!["recipient@example.com".to_string()],
+            subject: Some("Test Subject".to_string()),
+            body: Some("Test body content".to_string()),
+            headers: HashMap::new(),
+            from_header: Some("test@yahoo.com".to_string()),
+            helo: Some("yahoo.com".to_string()),
+            hostname: Some("mail.yahoo.com".to_string()),
+            mailer: None,
+        };
+
+        let (action2, _) = engine1.evaluate(&yahoo_context).await;
+        assert!(
+            matches!(action2, Action::Reject { .. }),
+            "Not Gmail rule should match Yahoo sender (should Reject)"
+        );
+
+        // Test 3: Not with And criteria
+        let config3 = create_test_config(vec![FilterRule {
+            name: "Not (Gmail AND Test subject)".to_string(),
+            criteria: Criteria::Not {
+                criteria: Box::new(Criteria::And {
+                    criteria: vec![
+                        Criteria::SenderPattern {
+                            pattern: ".*@gmail\\.com$".to_string(),
+                        },
+                        Criteria::SubjectPattern {
+                            pattern: "(?i)test.*".to_string(),
+                        },
+                    ],
+                }),
+            },
+            action: Action::TagAsSpam {
+                header_name: "X-Not-Gmail-Test".to_string(),
+                header_value: "YES".to_string(),
+            },
+        }]);
+
+        let engine3 = FilterEngine::new(config3).unwrap();
+
+        // Should NOT match (Accept) because Gmail + Test subject matches the And, so Not And is false
+        let (action3, _) = engine3.evaluate(&gmail_context).await;
+        assert!(
+            matches!(action3, Action::Accept),
+            "Not (Gmail AND Test) should NOT match Gmail with Test subject"
+        );
+
+        // Should match (TagAsSpam) because Yahoo + Test subject doesn't fully match the And, so Not And is true
+        let (action4, _) = engine3.evaluate(&yahoo_context).await;
+        assert!(
+            matches!(action4, Action::TagAsSpam { .. }),
+            "Not (Gmail AND Test) should match Yahoo with Test subject"
+        );
+
+        println!("✅ Not criteria test passed");
     }
 }
