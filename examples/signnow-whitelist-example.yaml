@@ -1,0 +1,118 @@
+# SignNow Whitelist Example Configuration
+# 
+# This example shows how to use the Not criteria to exclude legitimate
+# services like SignNow from mailto-only unsubscribe detection.
+#
+# Problem: SignNow uses legitimate mailto-only unsubscribe links, but
+# the UnsubscribeMailtoOnly rule was flagging them as suspicious.
+#
+# Solution: Use Not criteria to exclude known legitimate services.
+
+socket_path: "/var/run/foff-milter.sock"
+default_action:
+  type: "Accept"
+
+rules:
+  # Fixed rule that excludes legitimate document signing services
+  - name: "Tag suspicious mailto-only unsubscribe (excluding legitimate services)"
+    criteria:
+      type: "And"
+      criteria:
+        # Detect mailto-only unsubscribe links
+        - type: "UnsubscribeMailtoOnly"
+          allow_mixed: true   # Only flag if ALL links are mailto
+        # Exclude legitimate business services using Not criteria
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@(signnow|docusign|hellosign|pandadoc|adobe|pdffiller)\\.com$"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Phishing-Mailto-Only"
+      header_value: "Suspicious mailto-only unsubscribe from unknown sender"
+
+  # Alternative: More targeted approach focusing on actual phishing patterns
+  - name: "Tag phishing with mailto-only unsubscribe"
+    criteria:
+      type: "And"
+      criteria:
+        # Mailto-only unsubscribe
+        - type: "UnsubscribeMailtoOnly"
+          allow_mixed: true
+        # AND suspicious sender patterns (free email, random domains, etc.)
+        - type: "Or"
+          criteria:
+            # Free email services
+            - type: "SenderPattern"
+              pattern: ".*@(gmail|outlook|yahoo|hotmail|aol)\\.(com|net)$"
+            # Suspicious domain patterns
+            - type: "SenderPattern"
+              pattern: ".*@.*[0-9]{3,}.*\\.com$"
+            # Random character domains
+            - type: "SenderPattern"
+              pattern: ".*@[a-z]{10,}\\.(tk|ml|ga|top)$"
+        # AND suspicious subject patterns
+        - type: "SubjectPattern"
+          pattern: "(?i)(urgent|verify|suspended|expired|winner|prize|reward)"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Phishing-Mailto-Only"
+      header_value: "Phishing email with mailto-only unsubscribe"
+
+  # Example: Complex Not criteria with nested logic
+  - name: "Tag free email without legitimate indicators"
+    criteria:
+      type: "And"
+      criteria:
+        # From free email services
+        - type: "SenderPattern"
+          pattern: ".*@(gmail|outlook|yahoo|hotmail)\\.(com|net)$"
+        # NOT legitimate newsletter or business patterns
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              # Has unsubscribe headers (newsletters)
+              - type: "HeaderPattern"
+                header: "list-unsubscribe"
+                pattern: ".*"
+              # Newsletter-like subjects
+              - type: "SubjectPattern"
+                pattern: "(?i)(newsletter|digest|weekly|monthly|update)"
+              # Business communication patterns
+              - type: "SubjectPattern"
+                pattern: "(?i)(invoice|receipt|order|confirmation|delivery)"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Free-Email-Suspicious"
+      header_value: "Free email without legitimate business indicators"
+
+# Key Benefits of Using Not Criteria:
+#
+# 1. Maintains Security:
+#    - Still catches phishing emails using mailto-only to avoid real unsubscribe
+#    - Still flags suspicious free email senders with mailto-only
+#    - Still detects random domain generators using mailto-only
+#
+# 2. Eliminates False Positives:
+#    - Allows legitimate document signing services (SignNow, DocuSign, etc.)
+#    - Allows established business services that prefer mailto
+#    - Maintains functionality for actual business communications
+#
+# 3. Flexible Logic:
+#    - Can combine multiple exclusion patterns
+#    - Supports complex nested logic
+#    - Easy to maintain and update whitelist
+#
+# Example Legitimate Emails That Will NOT Be Flagged:
+# - SignNow document signature requests
+# - DocuSign notifications
+# - Adobe Sign communications
+# - PandaDoc document sharing
+# - Other legitimate business services
+#
+# Example Phishing Emails That WILL Still Be Flagged:
+# - Gmail/Yahoo senders with mailto-only unsubscribe
+# - Random domain generators with suspicious patterns
+# - Phishing emails with urgent/suspicious subjects
+# - Emails from suspicious TLDs (.tk, .ml, .ga, etc.)
