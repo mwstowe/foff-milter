@@ -311,7 +311,7 @@ impl Milter {
                 let engine = engine.clone();
                 let state = state.clone();
                 let statistics = self.statistics.clone();
-                move |_ctx: &mut indymilter::EomContext<()>| {
+                move |ctx: &mut indymilter::EomContext<()>| {
                     let engine = engine.clone();
                     let state = state.clone();
                     let statistics = statistics.clone();
@@ -362,6 +362,9 @@ impl Milter {
                                             Action::Reject { .. } => "Reject",
                                             Action::TagAsSpam { .. } => "TagAsSpam",
                                             Action::ReportAbuse { .. } => "ReportAbuse",
+                                            Action::UnsubscribeGoogleGroup { .. } => {
+                                                "UnsubscribeGoogleGroup"
+                                            }
                                         };
                                         stats.record_event(StatEvent::RuleMatch {
                                             rule_name: rule_name.clone(),
@@ -398,7 +401,7 @@ impl Milter {
                                             "CRITICAL: Adding header: {header_name}={header_value}"
                                         );
                                         // Add the spam header
-                                        if let Err(e) = _ctx
+                                        if let Err(e) = ctx
                                             .actions
                                             .add_header(header_name.clone(), header_value.clone())
                                             .await
@@ -420,7 +423,7 @@ impl Milter {
 
                                         if rule_header_exists {
                                             log::info!("X-FOFF-Rule-Matched header with value '{rule_header_value}' already exists, skipping duplicate");
-                                        } else if let Err(e) = _ctx
+                                        } else if let Err(e) = ctx
                                             .actions
                                             .add_header(
                                                 "X-FOFF-Rule-Matched".to_string(),
@@ -489,7 +492,7 @@ impl Milter {
                                                 );
 
                                                 // Add the spam header
-                                                if let Err(e) = _ctx
+                                                if let Err(e) = ctx
                                                     .actions
                                                     .add_header(
                                                         header_name.clone(),
@@ -511,10 +514,124 @@ impl Milter {
                                                 log::warn!("Nested ReportAbuse action not supported, treating as Accept");
                                                 return Status::Accept;
                                             }
+                                            Action::UnsubscribeGoogleGroup { .. } => {
+                                                log::warn!("Nested UnsubscribeGoogleGroup action not supported, treating as Accept");
+                                                return Status::Accept;
+                                            }
                                         }
                                     } else {
                                         // No additional action, just accept the email after reporting
                                         log::info!("ACCEPT (after abuse report) from={sender} to={recipients}");
+                                        return Status::Accept;
+                                    }
+                                }
+                                Action::UnsubscribeGoogleGroup {
+                                    additional_action,
+                                    reason,
+                                } => {
+                                    log::info!(
+                                        "UNSUBSCRIBE_GOOGLE_GROUP from={sender} to={recipients}"
+                                    );
+
+                                    // Perform Google Groups unsubscribe
+                                    let unsubscriber = crate::google_groups_unsubscriber::GoogleGroupsUnsubscriber::new();
+
+                                    // Extract Google Group information from headers
+                                    if let Some(group_info) =
+                                        unsubscriber.extract_group_info(&mail_ctx.headers)
+                                    {
+                                        log::info!(
+                                            "Attempting to unsubscribe {} from Google Group ID: {:?}, Domain: {:?}",
+                                            recipients,
+                                            group_info.group_id,
+                                            group_info.domain
+                                        );
+
+                                        // Attempt unsubscribe for each recipient
+                                        for recipient in &mail_ctx.recipients {
+                                            match tokio::runtime::Handle::try_current() {
+                                                Ok(handle) => {
+                                                    let unsubscriber_clone = crate::google_groups_unsubscriber::GoogleGroupsUnsubscriber::new();
+                                                    let group_info_clone = group_info.clone();
+                                                    let recipient_clone = recipient.clone();
+                                                    let reason_clone = reason.clone();
+
+                                                    handle.spawn(async move {
+                                                        match unsubscriber_clone.unsubscribe(&group_info_clone, &recipient_clone, reason_clone.as_deref()).await {
+                                                            Ok(result) => {
+                                                                if result.success {
+                                                                    log::info!("Successfully unsubscribed {recipient_clone} from Google Group");
+                                                                } else {
+                                                                    log::warn!("Failed to unsubscribe {} from Google Group: {:?}", recipient_clone, result.methods);
+                                                                }
+                                                            }
+                                                            Err(e) => {
+                                                                log::error!("Error unsubscribing {recipient_clone} from Google Group: {e}");
+                                                            }
+                                                        }
+                                                    });
+                                                }
+                                                Err(_) => {
+                                                    // No async runtime available, log for manual processing
+                                                    log::warn!(
+                                                        "No async runtime available for Google Groups unsubscribe, logging for manual processing: recipient={}, group_id={:?}",
+                                                        recipient,
+                                                        group_info.group_id
+                                                    );
+                                                }
+                                            }
+                                        }
+                                    } else {
+                                        log::warn!("Could not extract Google Group information from email headers");
+                                    }
+
+                                    // Handle additional action if specified
+                                    if let Some(additional_act) = additional_action {
+                                        log::info!(
+                                            "Executing additional action after Google Groups unsubscribe: from={sender} to={recipients}"
+                                        );
+                                        match additional_act.as_ref() {
+                                            Action::Reject { message } => {
+                                                log::info!(
+                                                    "REJECT (after unsubscribe) from={sender} to={recipients} reason={message}"
+                                                );
+                                                return Status::Reject;
+                                            }
+                                            Action::TagAsSpam {
+                                                header_name,
+                                                header_value,
+                                            } => {
+                                                log::info!(
+                                                    "TAG (after unsubscribe) from={sender} to={recipients} header={header_name}:{header_value}"
+                                                );
+                                                if let Err(e) = ctx
+                                                    .actions
+                                                    .add_header(
+                                                        header_name.clone(),
+                                                        header_value.clone(),
+                                                    )
+                                                    .await
+                                                {
+                                                    log::error!("Failed to add header after unsubscribe: {e}");
+                                                }
+                                                return Status::Accept;
+                                            }
+                                            Action::Accept => {
+                                                log::info!("ACCEPT (after unsubscribe) from={sender} to={recipients}");
+                                                return Status::Accept;
+                                            }
+                                            Action::ReportAbuse { .. } => {
+                                                log::warn!("Nested ReportAbuse action not supported after unsubscribe, treating as Accept");
+                                                return Status::Accept;
+                                            }
+                                            Action::UnsubscribeGoogleGroup { .. } => {
+                                                log::warn!("Nested UnsubscribeGoogleGroup action not supported, treating as Accept");
+                                                return Status::Accept;
+                                            }
+                                        }
+                                    } else {
+                                        // No additional action, just accept the email after unsubscribing
+                                        log::info!("ACCEPT (after unsubscribe) from={sender} to={recipients}");
                                         return Status::Accept;
                                     }
                                 }

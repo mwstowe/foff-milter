@@ -273,6 +273,13 @@ pub enum Action {
         // Custom abuse report message (optional)
         report_message: Option<String>,
     },
+    /// Automatically unsubscribe from Google Groups and optionally take additional action
+    UnsubscribeGoogleGroup {
+        // Additional action to take after unsubscribing (optional)
+        additional_action: Option<Box<Action>>,
+        // Custom reason for unsubscribing (optional)
+        reason: Option<String>,
+    },
     Accept,
 }
 

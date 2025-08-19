@@ -3,6 +3,7 @@ pub mod config;
 pub mod config_test;
 pub mod domain_age;
 pub mod filter;
+pub mod google_groups_unsubscriber;
 pub mod language;
 pub mod milter;
 pub mod statistics;
