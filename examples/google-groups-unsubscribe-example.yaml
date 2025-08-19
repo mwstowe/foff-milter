@@ -1,0 +1,182 @@
+# Google Groups Unsubscribe Example Configuration
+#
+# This example shows how to use the UnsubscribeGoogleGroup action to automatically
+# unsubscribe from abusive Google Groups while taking additional actions.
+#
+# Problem: The same Google Group ID (282548616536) is being used for multiple
+# scam campaigns (Temu, AAA car kit, etc.) targeting your users.
+#
+# Solution: Automatically unsubscribe from the abusive group and block the email.
+
+socket_path: "/var/run/foff-milter.sock"
+default_action:
+  type: "Accept"
+
+rules:
+  # Automatically unsubscribe from specific abusive Google Group and reject
+  - name: "Unsubscribe from abusive Google Group 282548616536 and reject"
+    criteria:
+      type: "HeaderPattern"
+      header: "x-google-group-id"
+      pattern: "282548616536"
+    action:
+      type: "UnsubscribeGoogleGroup"
+      reason: "Automated unsubscribe due to spam/scam detection - Group ID 282548616536"
+      additional_action:
+        type: "Reject"
+        message: "Abusive Google Group blocked and unsubscribed"
+
+  # Unsubscribe from Google Groups with suspicious domains and tag as spam
+  - name: "Unsubscribe from Google Groups with suspicious domains"
+    criteria:
+      type: "And"
+      criteria:
+        # Google Groups infrastructure
+        - type: "HeaderPattern"
+          header: "list-id"
+          pattern: ".*\\..*\\.(site|tk|ml|ga|top).*"
+        # Reward/scam content
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(reward|prize|expires|urgent|aaa|temu|amazon).*"
+            - type: "HeaderPattern"
+              header: "from"
+              pattern: "(?i).*(reward|prize|aaa|temu|amazon).*"
+    action:
+      type: "UnsubscribeGoogleGroup"
+      reason: "Automated unsubscribe due to suspicious domain and reward scam content"
+      additional_action:
+        type: "TagAsSpam"
+        header_name: "X-Google-Groups-Scam"
+        header_value: "Unsubscribed from suspicious Google Group"
+
+  # Unsubscribe from beusnesez.site Google Groups (specific domain)
+  - name: "Unsubscribe from beusnesez.site Google Groups"
+    criteria:
+      type: "HeaderPattern"
+      header: "list-id"
+      pattern: ".*\\.beusnesez\\.site.*"
+    action:
+      type: "UnsubscribeGoogleGroup"
+      reason: "Automated unsubscribe from beusnesez.site - known scam domain"
+      additional_action:
+        type: "Reject"
+        message: "beusnesez.site Google Group scam blocked and unsubscribed"
+
+  # Comprehensive Google Groups abuse detection with unsubscribe
+  - name: "Detect and unsubscribe from Google Groups brand impersonation"
+    criteria:
+      type: "And"
+      criteria:
+        # Google Groups infrastructure
+        - type: "Or"
+          criteria:
+            - type: "HeaderPattern"
+              header: "x-google-group-id"
+              pattern: "\\d+"
+            - type: "HeaderPattern"
+              header: "list-id"
+              pattern: ".*\\..*\\.(site|tk|ml|ga|top|business|reward).*"
+        # Brand impersonation
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(aaa|temu|amazon|walmart|target|costco).*"
+            - type: "HeaderPattern"
+              header: "from"
+              pattern: "(?i).*(aaa|temu|amazon|walmart|target|costco).*"
+        # Reward/scam indicators
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(reward|prize|expires|urgent|reminder|kit|shipping).*"
+            - type: "HeaderPattern"
+              header: "from"
+              pattern: "(?i).*(reward|prize|kit|shipping|emergency).*"
+    action:
+      type: "UnsubscribeGoogleGroup"
+      reason: "Automated unsubscribe due to brand impersonation and reward scam detection"
+      additional_action:
+        type: "Reject"
+        message: "Google Groups brand impersonation scam blocked and unsubscribed"
+
+  # Unsubscribe only (no additional action) - for monitoring
+  - name: "Monitor and unsubscribe from suspicious Google Groups"
+    criteria:
+      type: "And"
+      criteria:
+        # Google Groups with suspicious sender names
+        - type: "HeaderPattern"
+          header: "x-google-group-id"
+          pattern: "\\d+"
+        - type: "HeaderPattern"
+          header: "from"
+          pattern: "(?i).*(your_|reward_|urgent_|confirmation_required).*"
+    action:
+      type: "UnsubscribeGoogleGroup"
+      reason: "Automated unsubscribe due to suspicious sender name patterns"
+      # No additional_action - just unsubscribe and accept the email for analysis
+
+# How the UnsubscribeGoogleGroup Action Works:
+#
+# 1. **Extracts Google Group Information:**
+#    - X-Google-Group-ID header (e.g., "282548616536")
+#    - List-ID header (e.g., "<db.beusnesez.site>")
+#    - List-Unsubscribe links
+#    - Mailing-list contact information
+#
+# 2. **Attempts Multiple Unsubscribe Methods:**
+#    - Google Groups API unsubscribe (if group info available)
+#    - HTTP unsubscribe links (from List-Unsubscribe header)
+#    - Email unsubscribe (logs for manual processing)
+#
+# 3. **Executes Additional Action:**
+#    - Reject: Block the email after unsubscribing
+#    - TagAsSpam: Add spam headers after unsubscribing
+#    - Accept: Allow email through after unsubscribing (for monitoring)
+#    - None: Just unsubscribe and accept
+#
+# 4. **Logging and Monitoring:**
+#    - Logs all unsubscribe attempts and results
+#    - Reports success/failure for each method tried
+#    - Provides detailed information for troubleshooting
+
+# Benefits of Automatic Unsubscribe:
+#
+# ✅ **Proactive Defense**: Stops future emails from the same abusive groups
+# ✅ **Reduces Load**: Fewer spam emails to process over time
+# ✅ **Multiple Methods**: Tries various unsubscribe mechanisms
+# ✅ **Flexible Actions**: Can reject, tag, or monitor after unsubscribing
+# ✅ **Comprehensive Logging**: Full audit trail of unsubscribe attempts
+# ✅ **Async Processing**: Doesn't block email processing
+# ✅ **Error Handling**: Graceful fallback if unsubscribe fails
+
+# Example Log Output:
+#
+# INFO UNSUBSCRIBE_GOOGLE_GROUP from=service@beusnesez.site to=victim@example.com
+# INFO Attempting to unsubscribe victim@example.com from Google Group ID: Some("282548616536"), Domain: Some("beusnesez.site")
+# INFO Successfully unsubscribed victim@example.com from Google Group
+# INFO REJECT (after unsubscribe) from=service@beusnesez.site to=victim@example.com reason=Google Groups scam blocked and unsubscribed
+
+# Real-World Attack Examples This Will Stop:
+#
+# 1. **Temu Reward Scam**: "Reminder about your Temu reward From Amazon"
+#    - Group ID: 282548616536, Domain: beusnesez.site
+#    - Action: Unsubscribe + Reject
+#
+# 2. **AAA Car Kit Scam**: "Reminder about your Car Emergency Kit reward From AAA"
+#    - Group ID: 282548616536, Domain: beusnesez.site  
+#    - Action: Unsubscribe + Reject
+#
+# 3. **Future Campaigns**: Any new scam using the same infrastructure
+#    - Same Group ID or suspicious domain patterns
+#    - Action: Automatic unsubscribe prevents future emails
+
+# Security Considerations:
+#
+# - Unsubscribe attempts are made asynchronously to avoid blocking email processing
+# - Multiple fallback methods ensure unsubscribe attempts even if one method fails
+# - Comprehensive logging provides audit trail for security analysis
+# - Additional actions ensure immediate protection while unsubscribe takes effect
+# - Error handling prevents crashes if unsubscribe services are unavailable

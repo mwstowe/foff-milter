@@ -97,6 +97,19 @@ async fn main() -> anyhow::Result<()> {
                 println!("📝 Additional action: {:?}", additional_act);
             }
         }
+        foff_milter::config::Action::UnsubscribeGoogleGroup {
+            additional_action,
+            reason,
+        } => {
+            println!("\n📧 GOOGLE GROUPS UNSUBSCRIBE!");
+            println!("✅ The spam would trigger Google Groups unsubscribe");
+            if let Some(reason_msg) = reason {
+                println!("📝 Reason: {}", reason_msg);
+            }
+            if let Some(additional_act) = additional_action {
+                println!("📝 Additional action: {:?}", additional_act);
+            }
+        }
     }
 
     // Test with a legitimate old domain
