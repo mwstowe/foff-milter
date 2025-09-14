@@ -20,11 +20,14 @@ load_rc_config $name
 : ${foff_milter_config:="/usr/local/etc/foff-milter.yaml"}
 : ${foff_milter_user:="root"}
 : ${foff_milter_group:="wheel"}
+: ${foff_milter_pidfile:="/var/run/foff-milter.pid"}
+: ${foff_milter_socket:="/var/run/foff-milter.sock"}
+
+pidfile="${foff_milter_pidfile}"
 
 # Use foff-milter's built-in daemon mode
 command="/usr/local/bin/foff-milter"
 command_args="--daemon -c ${foff_milter_config}"
-pidfile="/var/run/foff-milter.pid"
 command_interpreter=""
 
 start_precmd="foff_milter_prestart"
@@ -32,19 +35,40 @@ stop_postcmd="foff_milter_poststop"
 
 foff_milter_prestart()
 {
+    # Check if already running by checking both PID file and actual process
+    if [ -f "${pidfile}" ]; then
+        local pid=$(cat "${pidfile}" 2>/dev/null)
+        if [ -n "${pid}" ] && kill -0 "${pid}" 2>/dev/null; then
+            echo "${name} is already running as pid ${pid}"
+            return 1
+        else
+            echo "Removing stale PID file"
+            rm -f "${pidfile}"
+        fi
+    fi
+    
+    # Check for any existing foff-milter processes
+    local existing_pid=$(pgrep -f "foff-milter.*daemon" | head -1)
+    if [ -n "${existing_pid}" ]; then
+        echo "${name} is already running as pid ${existing_pid} (no PID file)"
+        echo "Killing existing process..."
+        kill "${existing_pid}" 2>/dev/null || true
+        sleep 2
+        # Force kill if still running
+        if kill -0 "${existing_pid}" 2>/dev/null; then
+            kill -9 "${existing_pid}" 2>/dev/null || true
+        fi
+    fi
+    
     # Ensure the socket directory exists
     if [ ! -d "/var/run" ]; then
         mkdir -p /var/run
     fi
     
     # Remove stale socket if it exists
-    if [ -S "/var/run/foff-milter.sock" ]; then
-        rm -f /var/run/foff-milter.sock
-    fi
-    
-    # Remove stale PID file if it exists
-    if [ -f "${pidfile}" ]; then
-        rm -f "${pidfile}"
+    if [ -S "${foff_milter_socket}" ]; then
+        echo "Removing stale socket file"
+        rm -f "${foff_milter_socket}"
     fi
     
     # Test configuration
@@ -53,14 +77,14 @@ foff_milter_prestart()
         return 1
     fi
     
-    echo "Starting ${name} with PID file management..."
+    echo "Starting ${name} with daemon mode..."
 }
 
 foff_milter_poststop()
 {
     # Clean up socket file
-    if [ -S "/var/run/foff-milter.sock" ]; then
-        rm -f /var/run/foff-milter.sock
+    if [ -S "${foff_milter_socket}" ]; then
+        rm -f "${foff_milter_socket}"
         echo "Removed socket file"
     fi
     
@@ -69,6 +93,53 @@ foff_milter_poststop()
         rm -f "${pidfile}"
         echo "Removed PID file"
     fi
+    
+    # Make sure no processes are left running
+    local remaining_pids=$(pgrep -f "foff-milter.*daemon" 2>/dev/null || true)
+    if [ -n "${remaining_pids}" ]; then
+        echo "Cleaning up remaining processes: ${remaining_pids}"
+        echo "${remaining_pids}" | xargs kill 2>/dev/null || true
+        sleep 1
+        # Force kill any stubborn processes
+        remaining_pids=$(pgrep -f "foff-milter.*daemon" 2>/dev/null || true)
+        if [ -n "${remaining_pids}" ]; then
+            echo "${remaining_pids}" | xargs kill -9 2>/dev/null || true
+        fi
+    fi
 }
+
+# Custom status function to check both PID and actual process
+foff_milter_status()
+{
+    if [ -f "${pidfile}" ]; then
+        local pid=$(cat "${pidfile}" 2>/dev/null)
+        if [ -n "${pid}" ] && kill -0 "${pid}" 2>/dev/null; then
+            echo "${name} is running as pid ${pid}."
+            if [ -S "${foff_milter_socket}" ]; then
+                echo "Socket ${foff_milter_socket} exists."
+            else
+                echo "Warning: Socket ${foff_milter_socket} does not exist."
+            fi
+            return 0
+        else
+            echo "${name} is not running (stale PID file)."
+            return 1
+        fi
+    else
+        # Check for running processes without PID file
+        local existing_pid=$(pgrep -f "foff-milter.*daemon" | head -1)
+        if [ -n "${existing_pid}" ]; then
+            echo "${name} is running as pid ${existing_pid} (no PID file)."
+            return 0
+        else
+            echo "${name} is not running."
+            return 1
+        fi
+    fi
+}
+
+# Override the default status command
+extra_commands="status"
+status_cmd="foff_milter_status"
 
 run_rc_command "$1"
