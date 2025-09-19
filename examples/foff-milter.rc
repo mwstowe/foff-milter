@@ -25,10 +25,9 @@ load_rc_config $name
 
 pidfile="${foff_milter_pidfile}"
 
-# Use foff-milter's built-in daemon mode
-command="/usr/local/bin/foff-milter"
-command_args="--daemon -c ${foff_milter_config}"
-command_interpreter=""
+# Use FreeBSD's daemon(8) to properly daemonize the process
+command="/usr/sbin/daemon"
+command_args="-f -p ${pidfile} /usr/local/bin/foff-milter -c ${foff_milter_config}"
 
 start_precmd="foff_milter_prestart"
 stop_postcmd="foff_milter_poststop"
@@ -48,15 +47,17 @@ foff_milter_prestart()
     fi
     
     # Check for any existing foff-milter processes
-    local existing_pid=$(pgrep -f "foff-milter.*daemon" | head -1)
-    if [ -n "${existing_pid}" ]; then
-        echo "${name} is already running as pid ${existing_pid} (no PID file)"
-        echo "Killing existing process..."
-        kill "${existing_pid}" 2>/dev/null || true
+    local existing_pids=$(pgrep -f "foff-milter" | grep -v $$ | head -5)
+    if [ -n "${existing_pids}" ]; then
+        echo "${name} processes found: ${existing_pids}"
+        echo "Killing existing processes..."
+        echo "${existing_pids}" | xargs kill 2>/dev/null || true
         sleep 2
         # Force kill if still running
-        if kill -0 "${existing_pid}" 2>/dev/null; then
-            kill -9 "${existing_pid}" 2>/dev/null || true
+        existing_pids=$(pgrep -f "foff-milter" | grep -v $$ | head -5)
+        if [ -n "${existing_pids}" ]; then
+            echo "${existing_pids}" | xargs kill -9 2>/dev/null || true
+            sleep 1
         fi
     fi
     
@@ -72,12 +73,13 @@ foff_milter_prestart()
     fi
     
     # Test configuration
+    echo "Testing configuration..."
     if ! /usr/local/bin/foff-milter --test-config -c ${foff_milter_config}; then
         echo "Configuration test failed"
         return 1
     fi
     
-    echo "Starting ${name} with daemon mode..."
+    echo "Starting ${name}..."
 }
 
 foff_milter_poststop()
@@ -88,20 +90,20 @@ foff_milter_poststop()
         echo "Removed socket file"
     fi
     
-    # Clean up PID file (application should handle this, but just in case)
+    # Clean up PID file
     if [ -f "${pidfile}" ]; then
         rm -f "${pidfile}"
         echo "Removed PID file"
     fi
     
     # Make sure no processes are left running
-    local remaining_pids=$(pgrep -f "foff-milter.*daemon" 2>/dev/null || true)
+    local remaining_pids=$(pgrep -f "foff-milter" | grep -v $$ 2>/dev/null || true)
     if [ -n "${remaining_pids}" ]; then
         echo "Cleaning up remaining processes: ${remaining_pids}"
         echo "${remaining_pids}" | xargs kill 2>/dev/null || true
         sleep 1
         # Force kill any stubborn processes
-        remaining_pids=$(pgrep -f "foff-milter.*daemon" 2>/dev/null || true)
+        remaining_pids=$(pgrep -f "foff-milter" | grep -v $$ 2>/dev/null || true)
         if [ -n "${remaining_pids}" ]; then
             echo "${remaining_pids}" | xargs kill -9 2>/dev/null || true
         fi
@@ -117,6 +119,7 @@ foff_milter_status()
             echo "${name} is running as pid ${pid}."
             if [ -S "${foff_milter_socket}" ]; then
                 echo "Socket ${foff_milter_socket} exists."
+                ls -la "${foff_milter_socket}"
             else
                 echo "Warning: Socket ${foff_milter_socket} does not exist."
             fi
@@ -127,9 +130,9 @@ foff_milter_status()
         fi
     else
         # Check for running processes without PID file
-        local existing_pid=$(pgrep -f "foff-milter.*daemon" | head -1)
-        if [ -n "${existing_pid}" ]; then
-            echo "${name} is running as pid ${existing_pid} (no PID file)."
+        local existing_pids=$(pgrep -f "foff-milter" | grep -v $$ | head -1)
+        if [ -n "${existing_pids}" ]; then
+            echo "${name} is running as pid ${existing_pids} (no PID file)."
             return 0
         else
             echo "${name} is not running."
