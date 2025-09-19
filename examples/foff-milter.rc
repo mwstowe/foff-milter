@@ -30,7 +30,9 @@ command="/usr/sbin/daemon"
 command_args="-f -p ${pidfile} /usr/local/bin/foff-milter -c ${foff_milter_config}"
 
 start_precmd="foff_milter_prestart"
-stop_postcmd="foff_milter_poststop"
+stop_cmd="foff_milter_stop"
+status_cmd="foff_milter_status"
+restart_cmd="foff_milter_restart"
 
 foff_milter_prestart()
 {
@@ -82,21 +84,34 @@ foff_milter_prestart()
     echo "Starting ${name}..."
 }
 
-foff_milter_poststop()
+foff_milter_stop()
 {
-    # Clean up socket file
-    if [ -S "${foff_milter_socket}" ]; then
-        rm -f "${foff_milter_socket}"
-        echo "Removed socket file"
-    fi
+    local pid
     
-    # Clean up PID file
+    # Try to get PID from file first
     if [ -f "${pidfile}" ]; then
+        pid=$(cat "${pidfile}" 2>/dev/null)
+        if [ -n "${pid}" ] && kill -0 "${pid}" 2>/dev/null; then
+            echo "Stopping ${name} (PID: ${pid})"
+            kill "${pid}" 2>/dev/null || true
+            
+            # Wait for graceful shutdown
+            local count=0
+            while [ $count -lt 10 ] && kill -0 "${pid}" 2>/dev/null; do
+                sleep 1
+                count=$((count + 1))
+            done
+            
+            # Force kill if still running
+            if kill -0 "${pid}" 2>/dev/null; then
+                echo "Force killing ${name}"
+                kill -9 "${pid}" 2>/dev/null || true
+            fi
+        fi
         rm -f "${pidfile}"
-        echo "Removed PID file"
     fi
     
-    # Make sure no processes are left running
+    # Clean up any remaining foff-milter processes
     local remaining_pids=$(pgrep -f "foff-milter" | grep -v $$ 2>/dev/null || true)
     if [ -n "${remaining_pids}" ]; then
         echo "Cleaning up remaining processes: ${remaining_pids}"
@@ -108,9 +123,16 @@ foff_milter_poststop()
             echo "${remaining_pids}" | xargs kill -9 2>/dev/null || true
         fi
     fi
+    
+    # Clean up socket file
+    if [ -S "${foff_milter_socket}" ]; then
+        rm -f "${foff_milter_socket}"
+        echo "Removed socket file"
+    fi
+    
+    echo "${name} stopped"
 }
 
-# Custom status function to check both PID and actual process
 foff_milter_status()
 {
     if [ -f "${pidfile}" ]; then
@@ -141,8 +163,11 @@ foff_milter_status()
     fi
 }
 
-# Override the default status command
-extra_commands="status"
-status_cmd="foff_milter_status"
+foff_milter_restart()
+{
+    foff_milter_stop
+    sleep 2
+    run_rc_command "start"
+}
 
 run_rc_command "$1"
