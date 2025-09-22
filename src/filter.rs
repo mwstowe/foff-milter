@@ -488,10 +488,14 @@ impl FilterEngine {
         Ok(())
     }
 
-    pub async fn evaluate(&self, context: &MailContext) -> (&Action, Vec<String>) {
+    pub async fn evaluate(
+        &self,
+        context: &MailContext,
+    ) -> (&Action, Vec<String>, Vec<(String, String)>) {
         let mut matched_rules = Vec::new();
         let mut all_actions = Vec::new();
         let mut final_action = &self.config.default_action;
+        let mut headers_to_add = Vec::new();
 
         // Process ALL rules instead of stopping at first match
         for rule in &self.config.rules {
@@ -547,6 +551,14 @@ impl FilterEngine {
                 "No rules matched, using default action: {:?}",
                 self.config.default_action
             );
+            // Add analysis header when no rules match
+            headers_to_add.push((
+                "X-FOFF-Analysis".to_string(),
+                format!(
+                    "analyzed by foff-milter v{} (rules: {})",
+                    self.config.version, self.config.rule_set_timestamp
+                ),
+            ));
         } else {
             log::info!(
                 "Matched {} rules: {:?}, final action: {:?}",
@@ -556,7 +568,7 @@ impl FilterEngine {
             );
         }
 
-        (final_action, matched_rules)
+        (final_action, matched_rules, headers_to_add)
     }
 
     /// Get all matched rules with their actions (for processing all rules)

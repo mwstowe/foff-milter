@@ -70,6 +70,13 @@ async fn main() {
                 .help("Run as a daemon (background process)")
                 .action(clap::ArgAction::SetTrue),
         )
+        .arg(
+            Arg::new("test-email")
+                .long("test-email")
+                .value_name("FILE")
+                .help("Test an email file against the rules and show which rules match")
+                .action(clap::ArgAction::Set),
+        )
         .get_matches();
 
     // Initialize logger based on verbose flag
@@ -97,6 +104,11 @@ async fn main() {
             process::exit(1);
         }
     };
+
+    if let Some(email_file) = matches.get_one::<String>("test-email") {
+        test_email_file(&config, email_file).await;
+        return;
+    }
 
     if matches.get_flag("test-config") {
         println!("🔍 Testing configuration...");
@@ -427,5 +439,164 @@ fn truncate_string(s: &str, max_len: usize) -> String {
         s.to_string()
     } else {
         format!("{}...", &s[..max_len.saturating_sub(3)])
+    }
+}
+
+async fn test_email_file(config: &Config, email_file: &str) {
+    use foff_milter::config::Action;
+    use foff_milter::filter::MailContext;
+    use std::collections::HashMap;
+    use std::fs;
+
+    println!("🧪 Testing email file: {}", email_file);
+    println!();
+
+    // Read the email file
+    let email_content = match fs::read_to_string(email_file) {
+        Ok(content) => content,
+        Err(e) => {
+            eprintln!("❌ Error reading email file: {}", e);
+            process::exit(1);
+        }
+    };
+
+    // Parse email headers
+    let mut headers: HashMap<String, String> = HashMap::new();
+    let mut sender = String::new();
+    let mut recipients = vec!["test@example.com".to_string()]; // Default recipient
+    let mut body = String::new();
+    let mut in_headers = true;
+
+    for line in email_content.lines() {
+        if in_headers {
+            if line.trim().is_empty() {
+                in_headers = false;
+                continue;
+            }
+
+            if line.starts_with(' ') || line.starts_with('\t') {
+                // Continuation of previous header
+                if let Some((_, last_value)) = headers.iter_mut().last() {
+                    last_value.push(' ');
+                    last_value.push_str(line.trim());
+                }
+                continue;
+            }
+
+            if let Some((key, value)) = line.split_once(':') {
+                let key = key.trim().to_lowercase();
+                let value = value.trim().to_string();
+
+                // Extract sender from Return-Path or From
+                if key == "return-path" {
+                    sender = value.trim_matches(['<', '>']).to_string();
+                } else if key == "from" && sender.is_empty() {
+                    // Extract email from "Name <email@domain.com>" format
+                    if let Some(start) = value.rfind('<') {
+                        if let Some(end) = value.rfind('>') {
+                            sender = value[start + 1..end].to_string();
+                        }
+                    } else {
+                        sender = value.clone();
+                    }
+                }
+
+                headers.insert(key, value);
+            }
+        } else {
+            body.push_str(line);
+            body.push('\n');
+        }
+    }
+
+    if sender.is_empty() {
+        sender = "unknown@example.com".to_string();
+    }
+
+    println!("📧 Email Details:");
+    println!("   Sender: {}", sender);
+    println!("   Recipients: {:?}", recipients);
+    if let Some(from) = headers.get("from") {
+        println!("   From: {}", from);
+    }
+    if let Some(subject) = headers.get("subject") {
+        println!("   Subject: {}", subject);
+    }
+    if let Some(auth) = headers.get("authentication-results") {
+        println!("   Auth: {}", truncate_string(auth, 100));
+    }
+    println!();
+
+    // Create filter engine
+    let filter_engine = match FilterEngine::new(config.clone()) {
+        Ok(engine) => engine,
+        Err(e) => {
+            eprintln!("❌ Error creating filter engine: {}", e);
+            process::exit(1);
+        }
+    };
+
+    // Create mail context
+    let context = MailContext {
+        sender: Some(sender.clone()),
+        from_header: headers.get("from").cloned(),
+        recipients: recipients.clone(),
+        headers: headers.clone(),
+        mailer: headers.get("x-mailer").cloned(),
+        subject: headers.get("subject").cloned(),
+        hostname: None,
+        helo: None,
+        body: Some(body),
+    };
+
+    // Test the email
+    println!("🔍 Testing against rules...");
+
+    // Evaluate the email (already in async context)
+    let (action, matched_rules, headers_to_add) = filter_engine.evaluate(&context).await;
+
+    println!();
+    match action {
+        Action::Accept => {
+            println!("✅ Result: ACCEPT");
+            if !matched_rules.is_empty() {
+                println!("   Matched rules: {:?}", matched_rules);
+            } else {
+                println!("   No rules matched - default action");
+            }
+            // Show analysis headers
+            for (header_name, header_value) in &headers_to_add {
+                println!("   Analysis header: {}: {}", header_name, header_value);
+            }
+        }
+        Action::Reject { message } => {
+            println!("❌ Result: REJECT");
+            println!("   Message: {}", message);
+            if !matched_rules.is_empty() {
+                println!("   Matched rules: {:?}", matched_rules);
+            }
+        }
+        Action::TagAsSpam {
+            header_name,
+            header_value,
+        } => {
+            println!("🏷️  Result: TAG AS SPAM");
+            println!("   Header: {}: {}", header_name, header_value);
+            if !matched_rules.is_empty() {
+                println!("   Matched rules: {:?}", matched_rules);
+            }
+        }
+        Action::ReportAbuse { .. } => {
+            println!("📧 Result: REPORT ABUSE");
+            if !matched_rules.is_empty() {
+                println!("   Matched rules: {:?}", matched_rules);
+            }
+        }
+        Action::UnsubscribeGoogleGroup { .. } => {
+            println!("🚫 Result: UNSUBSCRIBE GOOGLE GROUP");
+            if !matched_rules.is_empty() {
+                println!("   Matched rules: {:?}", matched_rules);
+            }
+        }
     }
 }

@@ -338,7 +338,8 @@ impl Milter {
                                 mail_ctx.recipients.join(", ")
                             };
 
-                            let (action, matched_rules) = engine.evaluate(&mail_ctx).await;
+                            let (action, matched_rules, _headers_to_add) =
+                                engine.evaluate(&mail_ctx).await;
                             log::debug!(
                                 "PID {} evaluated action: {:?}, matched_rules: {:?}",
                                 std::process::id(),
