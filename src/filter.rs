@@ -5571,9 +5571,7 @@ END:VCALENDAR
             check_disposition: Some(true),
         };
 
-        let result = engine
-            .evaluate_criteria(&rar_only_criteria, &context)
-            .await;
+        let result = engine.evaluate_criteria(&rar_only_criteria, &context).await;
         assert!(
             !result,
             "Should NOT match ICS attachment when looking for RAR only"
@@ -5613,9 +5611,7 @@ Content-Disposition: attachment; filename="archive.rar"
         context.body = Some(rar_body.to_string());
 
         // Test RAR criteria with RAR attachment - should match
-        let result = engine
-            .evaluate_criteria(&rar_only_criteria, &context)
-            .await;
+        let result = engine.evaluate_criteria(&rar_only_criteria, &context).await;
         assert!(result, "Should match RAR attachment when looking for RAR");
 
         // Test ICS criteria with RAR attachment - should NOT match
@@ -6535,7 +6531,8 @@ Content-Disposition: attachment; filename="test.rar"
         let mut single_engine = FilterEngine::new(single_indicator_config).unwrap();
         single_engine.compile_patterns().unwrap();
 
-        let (action5, matched_rules5, _headers) = single_engine.evaluate(&single_indicator_context).await;
+        let (action5, matched_rules5, _headers) =
+            single_engine.evaluate(&single_indicator_context).await;
         assert!(matches!(action5, Action::TagAsSpam { .. }));
         assert_eq!(matched_rules5, vec!["Single indicator DocuSign abuse"]);
     }
