@@ -1474,7 +1474,7 @@ impl FilterEngine {
         }
 
         // Clean expired cache entries periodically (every 10th validation)
-        if rand::random::<u8>() % 10 == 0 {
+        if rand::random::<u8>().is_multiple_of(10) {
             Self::clean_validation_cache();
         }
 
