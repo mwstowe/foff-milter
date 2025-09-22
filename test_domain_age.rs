@@ -28,7 +28,7 @@ async fn main() -> anyhow::Result<()> {
     context1.headers = headers1;
 
     println!("\n=== Test Case 1: psybook.info (young domain) ===");
-    let (action1, rules1) = engine.evaluate(&context1).await;
+    let (action1, rules1, _headers) = engine.evaluate(&context1).await;
     println!("Action: {:?}", action1);
     println!("Matched rules: {:?}", rules1);
 
@@ -45,7 +45,7 @@ async fn main() -> anyhow::Result<()> {
     context2.headers = headers2;
 
     println!("\n=== Test Case 2: google.com (old domain) ===");
-    let (action2, rules2) = engine.evaluate(&context2).await;
+    let (action2, rules2, _headers) = engine.evaluate(&context2).await;
     println!("Action: {:?}", action2);
     println!("Matched rules: {:?}", rules2);
 
@@ -63,7 +63,7 @@ async fn main() -> anyhow::Result<()> {
     context3.headers = headers3;
 
     println!("\n=== Test Case 3: suspicious.tk (very young domain with suspicious TLD) ===");
-    let (action3, rules3) = engine.evaluate(&context3).await;
+    let (action3, rules3, _headers) = engine.evaluate(&context3).await;
     println!("Action: {:?}", action3);
     println!("Matched rules: {:?}", rules3);
 
@@ -77,7 +77,7 @@ async fn main() -> anyhow::Result<()> {
     context4.headers = headers4;
 
     println!("\n=== Test Case 4: newdomain.info (45 days old) ===");
-    let (action4, rules4) = engine.evaluate(&context4).await;
+    let (action4, rules4, _headers) = engine.evaluate(&context4).await;
     println!("Action: {:?}", action4);
     println!("Matched rules: {:?}", rules4);
 

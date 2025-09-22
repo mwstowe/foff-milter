@@ -58,7 +58,7 @@ async fn main() -> anyhow::Result<()> {
     println!("Subject: {}", spam_context.subject.as_ref().unwrap());
     println!("\n🔍 Performing REAL WHOIS lookup for psybook.info...");
 
-    let (action, matched_rules) = engine.evaluate(&spam_context).await;
+    let (action, matched_rules, _headers) = engine.evaluate(&spam_context).await;
 
     println!("\n=== RESULTS ===");
     println!("Action: {:?}", action);
@@ -131,7 +131,7 @@ async fn main() -> anyhow::Result<()> {
     legit_context.subject = Some("Security alert for your account".to_string());
 
     println!("🔍 Performing REAL WHOIS lookup for google.com...");
-    let (legit_action, legit_rules) = engine.evaluate(&legit_context).await;
+    let (legit_action, legit_rules, _headers) = engine.evaluate(&legit_context).await;
 
     println!("Legitimate email action: {:?}", legit_action);
     println!("Legitimate email matched rules: {:?}", legit_rules);

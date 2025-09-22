@@ -84,7 +84,7 @@ rules:
     println!("From Display: {}", context.headers.get("from").unwrap());
     println!("Subject: {}", context.subject.as_ref().unwrap());
 
-    let (action, matched_rules) = engine.evaluate(&context).await;
+    let (action, matched_rules, _headers) = engine.evaluate(&context).await;
 
     println!("\n=== Results ===");
     println!("Action: {:?}", action);
@@ -150,7 +150,7 @@ rules:
     legit_context.headers = legit_headers;
     legit_context.subject = Some("Security alert for your account".to_string());
 
-    let (legit_action, legit_rules) = engine.evaluate(&legit_context).await;
+    let (legit_action, legit_rules, _headers) = engine.evaluate(&legit_context).await;
 
     println!("Legitimate email action: {:?}", legit_action);
     println!("Legitimate email matched rules: {:?}", legit_rules);
