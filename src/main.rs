@@ -463,7 +463,7 @@ async fn test_email_file(config: &Config, email_file: &str) {
     // Parse email headers
     let mut headers: HashMap<String, String> = HashMap::new();
     let mut sender = String::new();
-    let mut recipients = vec!["test@example.com".to_string()]; // Default recipient
+    let recipients = vec!["test@example.com".to_string()]; // Default recipient
     let mut body = String::new();
     let mut in_headers = true;
 
