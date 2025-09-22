@@ -1,3 +1,4 @@
+use chrono;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -7,6 +8,20 @@ pub struct Config {
     pub default_action: Action,
     pub statistics: Option<StatisticsConfig>,
     pub smtp: Option<SmtpConfig>,
+    #[serde(default = "default_version")]
+    pub version: String,
+    #[serde(default = "default_rule_set_timestamp")]
+    pub rule_set_timestamp: String,
+}
+
+fn default_version() -> String {
+    env!("CARGO_PKG_VERSION").to_string()
+}
+
+fn default_rule_set_timestamp() -> String {
+    chrono::Utc::now()
+        .format("%Y-%m-%d %H:%M:%S UTC")
+        .to_string()
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -311,6 +326,8 @@ impl Default for Config {
             default_action: Action::Accept,
             statistics: Some(StatisticsConfig::default()),
             smtp: None,
+            version: default_version(),
+            rule_set_timestamp: default_rule_set_timestamp(),
         }
     }
 }
