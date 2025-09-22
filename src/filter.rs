@@ -3585,6 +3585,8 @@ mod tests {
             rules,
             statistics: None,
             smtp: None,
+            version: "test".to_string(),
+            rule_set_timestamp: "test".to_string(),
         }
     }
 
@@ -3598,7 +3600,7 @@ mod tests {
             ..Default::default()
         };
 
-        let (action, _) = engine.evaluate(&context).await;
+        let (action, _, _headers) = engine.evaluate(&context).await;
         match action {
             Action::Reject { .. } => {}
             _ => panic!("Expected reject action for suspicious Chinese service"),
@@ -3611,7 +3613,7 @@ mod tests {
         let engine = FilterEngine::new(config).unwrap();
 
         let context = MailContext::default();
-        let (action, _) = engine.evaluate(&context).await;
+        let (action, _, _headers) = engine.evaluate(&context).await;
         match action {
             Action::Accept => {}
             _ => panic!("Expected default accept action"),
@@ -3649,7 +3651,7 @@ mod tests {
             ..Default::default()
         };
 
-        let (action, _) = engine.evaluate(&context).await;
+        let (action, _, _headers) = engine.evaluate(&context).await;
         match action {
             Action::Reject { .. } => {}
             _ => panic!("Expected reject action for sparkmail with Japanese"),
@@ -3662,7 +3664,7 @@ mod tests {
             ..Default::default()
         };
 
-        let (action2, _) = engine.evaluate(&context2).await;
+        let (action2, _, _headers) = engine.evaluate(&context2).await;
         match action2 {
             Action::Accept => {}
             _ => panic!("Expected accept action for sparkmail without Japanese"),
@@ -3675,7 +3677,7 @@ mod tests {
             ..Default::default()
         };
 
-        let (action3, _) = engine.evaluate(&context3).await;
+        let (action3, _, _headers) = engine.evaluate(&context3).await;
         match action3 {
             Action::Accept => {}
             _ => panic!("Expected accept action for non-sparkmail with Japanese"),
@@ -3734,7 +3736,7 @@ mod tests {
             }
         }
 
-        let (action, matched_rules) = engine.evaluate(&context).await;
+        let (action, matched_rules, _headers) = engine.evaluate(&context).await;
         println!("Action: {action:?}");
         println!("Matched rules: {matched_rules:?}");
 
@@ -3806,7 +3808,7 @@ mod tests {
             ..Default::default()
         };
 
-        let (action1, _) = engine.evaluate(&context1).await;
+        let (action1, _, _headers) = engine.evaluate(&context1).await;
         match action1 {
             Action::Reject { message } => {
                 assert!(message.contains("Chinese service"));
@@ -3821,7 +3823,7 @@ mod tests {
             ..Default::default()
         };
 
-        let (action2, _) = engine.evaluate(&context2).await;
+        let (action2, _, _headers) = engine.evaluate(&context2).await;
         match action2 {
             Action::Reject { message } => {
                 assert!(message.contains("Sparkpost"));
@@ -3836,7 +3838,7 @@ mod tests {
             ..Default::default()
         };
 
-        let (action3, _) = engine.evaluate(&context3).await;
+        let (action3, _, _headers) = engine.evaluate(&context3).await;
         match action3 {
             Action::Accept => {}
             _ => panic!("Expected accept for Chinese service without Japanese"),
@@ -3849,7 +3851,7 @@ mod tests {
             ..Default::default()
         };
 
-        let (action4, _) = engine.evaluate(&context4).await;
+        let (action4, _, _headers) = engine.evaluate(&context4).await;
         match action4 {
             Action::Accept => {}
             _ => panic!("Expected accept for Sparkpost to different user"),
@@ -3890,7 +3892,7 @@ mod tests {
         let config = Config::default();
         let engine = FilterEngine::new(config).unwrap();
         let context = MailContext::default();
-        let (_action, _) = engine.evaluate(&context).await;
+        let (_action, _, _headers) = engine.evaluate(&context).await;
     }
 
     #[tokio::test]
@@ -3936,7 +3938,7 @@ mod tests {
 
         // Note: This test won't actually follow redirects in the test environment
         // but verifies the detection logic is in place
-        let (action, _) = engine.evaluate(&context).await;
+        let (action, _, _headers) = engine.evaluate(&context).await;
 
         // In a real environment with network access, this would detect the redirect
         // For now, we just verify the code compiles and runs
@@ -3974,7 +3976,7 @@ mod tests {
             ..Default::default()
         };
 
-        let (action1, _) = engine.evaluate(&context1).await;
+        let (action1, _, _headers) = engine.evaluate(&context1).await;
         match action1 {
             Action::TagAsSpam {
                 header_name,
@@ -3992,7 +3994,7 @@ mod tests {
             ..Default::default()
         };
 
-        let (action2, _) = engine.evaluate(&context2).await;
+        let (action2, _, _headers) = engine.evaluate(&context2).await;
         match action2 {
             Action::Accept => {}
             _ => panic!("Expected Accept action for email with significant text"),
@@ -4006,7 +4008,7 @@ mod tests {
             ..Default::default()
         };
 
-        let (action3, _) = engine.evaluate(&context3).await;
+        let (action3, _, _headers) = engine.evaluate(&context3).await;
         match action3 {
             Action::Accept => {}
             _ => panic!("Expected Accept action for text-only email"),
@@ -4018,7 +4020,7 @@ mod tests {
             ..Default::default()
         };
 
-        let (action4, _) = engine.evaluate(&context4).await;
+        let (action4, _, _headers) = engine.evaluate(&context4).await;
         match action4 {
             Action::TagAsSpam { .. } => {}
             _ => panic!("Expected TagAsSpam action for data URI image"),
@@ -4055,7 +4057,7 @@ mod tests {
             ..Default::default()
         };
 
-        let (action1, _) = engine.evaluate(&context1).await;
+        let (action1, _, _headers) = engine.evaluate(&context1).await;
         match action1 {
             Action::TagAsSpam {
                 header_name,
@@ -4077,7 +4079,7 @@ mod tests {
             ..Default::default()
         };
 
-        let (action2, _) = engine.evaluate(&context2).await;
+        let (action2, _, _headers) = engine.evaluate(&context2).await;
         match action2 {
             Action::Accept => {}
             _ => panic!("Expected Accept action for same domain"),
@@ -4093,7 +4095,7 @@ mod tests {
             ..Default::default()
         };
 
-        let (action3, _) = engine.evaluate(&context3).await;
+        let (action3, _, _headers) = engine.evaluate(&context3).await;
         match action3 {
             Action::Accept => {}
             _ => panic!("Expected Accept action for same free email domain"),
@@ -4105,7 +4107,7 @@ mod tests {
             ..Default::default()
         };
 
-        let (action4, _) = engine.evaluate(&context4).await;
+        let (action4, _, _headers) = engine.evaluate(&context4).await;
         match action4 {
             Action::Accept => {}
             _ => panic!("Expected Accept action for no reply-to header"),
@@ -4121,7 +4123,7 @@ mod tests {
             ..Default::default()
         };
 
-        let (action5, _) = engine.evaluate(&context5).await;
+        let (action5, _, _headers) = engine.evaluate(&context5).await;
         match action5 {
             Action::TagAsSpam {
                 header_name,
@@ -4164,7 +4166,7 @@ mod tests {
             ..Default::default()
         };
 
-        let (action1, _) = engine.evaluate(&context1).await;
+        let (action1, _, _headers) = engine.evaluate(&context1).await;
         match action1 {
             Action::Accept => {}
             _ => {
@@ -4181,7 +4183,7 @@ mod tests {
             ..Default::default()
         };
 
-        let (action3, _) = engine.evaluate(&context3).await;
+        let (action3, _, _headers) = engine.evaluate(&context3).await;
         match action3 {
             Action::Accept => {}
             _ => panic!("Expected Accept action for no reply-to header"),
@@ -4219,7 +4221,7 @@ mod tests {
             ..Default::default()
         };
 
-        let (action1, matched_rules1) = engine.evaluate(&context1).await;
+        let (action1, matched_rules1, _headers) = engine.evaluate(&context1).await;
         match action1 {
             Action::TagAsSpam {
                 header_name,
@@ -4247,7 +4249,7 @@ mod tests {
             ..Default::default()
         };
 
-        let (action2, _) = engine.evaluate(&context2).await;
+        let (action2, _, _headers) = engine.evaluate(&context2).await;
         match action2 {
             Action::TagAsSpam { .. } => {}
             _ => panic!("Expected TagAsSpam action for google.com List-Unsubscribe header"),
@@ -4266,7 +4268,7 @@ mod tests {
             ..Default::default()
         };
 
-        let (action3, _) = engine.evaluate(&context3).await;
+        let (action3, _, _headers) = engine.evaluate(&context3).await;
         match action3 {
             Action::Accept => {}
             _ => panic!("Expected Accept action for non-google unsubscribe link"),
@@ -4278,7 +4280,7 @@ mod tests {
             ..Default::default()
         };
 
-        let (action4, _) = engine.evaluate(&context4).await;
+        let (action4, _, _headers) = engine.evaluate(&context4).await;
         match action4 {
             Action::Accept => {}
             _ => panic!("Expected Accept action for email with no unsubscribe links"),
@@ -4399,7 +4401,7 @@ mod tests {
             ..Default::default()
         };
 
-        let (action1, _) = engine.evaluate(&context1).await;
+        let (action1, _, _headers) = engine.evaluate(&context1).await;
         match action1 {
             Action::Reject { .. } => {}
             _ => panic!("Expected Reject action for mailto-only unsubscribe"),
@@ -4417,7 +4419,7 @@ mod tests {
             ..Default::default()
         };
 
-        let (action2, _) = engine.evaluate(&context2).await;
+        let (action2, _, _headers) = engine.evaluate(&context2).await;
         match action2 {
             Action::Reject { .. } => {}
             _ => panic!("Expected Reject action for mixed links with allow_mixed=false"),
@@ -4447,7 +4449,7 @@ mod tests {
             ..Default::default()
         };
 
-        let (action3, _) = engine3.evaluate(&context3).await;
+        let (action3, _, _headers) = engine3.evaluate(&context3).await;
         match action3 {
             Action::Accept => {}
             _ => panic!("Expected Accept action for HTTP-only unsubscribe"),
@@ -4465,7 +4467,7 @@ mod tests {
             ..Default::default()
         };
 
-        let (action4, _) = engine3.evaluate(&context4).await;
+        let (action4, _, _headers) = engine3.evaluate(&context4).await;
         match action4 {
             Action::Accept => {}
             _ => panic!("Expected Accept action for mixed links with allow_mixed=true"),
@@ -4483,7 +4485,7 @@ mod tests {
             ..Default::default()
         };
 
-        let (action5, _) = engine3.evaluate(&context5).await;
+        let (action5, _, _headers) = engine3.evaluate(&context5).await;
         match action5 {
             Action::Reject { .. } => {}
             _ => panic!("Expected Reject action for mailto-only links with allow_mixed=true"),
@@ -4648,7 +4650,7 @@ mod tests {
             ..Default::default()
         };
 
-        let (action1, _) = engine.evaluate(&context1).await;
+        let (action1, _, _headers) = engine.evaluate(&context1).await;
         match action1 {
             Action::Reject { .. } => {}
             _ => {
@@ -4670,7 +4672,7 @@ mod tests {
             ..Default::default()
         };
 
-        let (action2, _) = engine.evaluate(&context2).await;
+        let (action2, _, _headers) = engine.evaluate(&context2).await;
         match action2 {
             Action::Reject { .. } => {}
             _ => panic!("Expected Reject for bulk spam with undisclosed recipients from gmail.com"),
@@ -4690,7 +4692,7 @@ mod tests {
             ..Default::default()
         };
 
-        let (action3, _) = engine.evaluate(&context3).await;
+        let (action3, _, _headers) = engine.evaluate(&context3).await;
         match action3 {
             Action::Accept => {}
             _ => panic!("Expected Accept for corporate domain with undisclosed recipients"),
@@ -4710,7 +4712,7 @@ mod tests {
             ..Default::default()
         };
 
-        let (action4, _) = engine.evaluate(&context4).await;
+        let (action4, _, _headers) = engine.evaluate(&context4).await;
         match action4 {
             Action::Accept => {}
             _ => panic!("Expected Accept for normal email from free service"),
@@ -4755,7 +4757,7 @@ mod tests {
             ..Default::default()
         };
 
-        let (action1, _) = engine.evaluate(&context1).await;
+        let (action1, _, _headers) = engine.evaluate(&context1).await;
         match action1 {
             Action::Reject { .. } => {}
             _ => panic!("Expected Reject for List-Unsubscribe-Post without List-Unsubscribe"),
@@ -4782,7 +4784,7 @@ mod tests {
             ..Default::default()
         };
 
-        let (action2, _) = engine.evaluate(&context2).await;
+        let (action2, _, _headers) = engine.evaluate(&context2).await;
         match action2 {
             Action::Accept => {}
             _ => panic!("Expected Accept for valid unsubscribe headers"),
@@ -4802,7 +4804,7 @@ mod tests {
             ..Default::default()
         };
 
-        let (action3, _) = engine.evaluate(&context3).await;
+        let (action3, _, _headers) = engine.evaluate(&context3).await;
         match action3 {
             Action::Accept => {}
             _ => panic!("Expected Accept for email with no unsubscribe headers"),
@@ -4825,7 +4827,7 @@ mod tests {
             ..Default::default()
         };
 
-        let (action4, _) = engine.evaluate(&context4).await;
+        let (action4, _, _headers) = engine.evaluate(&context4).await;
         match action4 {
             Action::Accept => {}
             _ => panic!("Expected Accept for List-Unsubscribe without Post header"),
@@ -4929,7 +4931,7 @@ mod tests {
             ..Default::default()
         };
 
-        let (action1, _) = engine.evaluate(&context1).await;
+        let (action1, _, _headers) = engine.evaluate(&context1).await;
         match action1 {
             Action::Reject { .. } => {}
             _ => panic!("Expected Reject for large image attachment with decoy text"),
@@ -4950,7 +4952,7 @@ mod tests {
             ..Default::default()
         };
 
-        let (action2, _) = engine.evaluate(&context2).await;
+        let (action2, _, _headers) = engine.evaluate(&context2).await;
         match action2 {
             Action::Reject { .. } => {}
             _ => panic!("Expected Reject for traditional image-only email"),
@@ -4988,7 +4990,7 @@ mod tests {
             ..Default::default()
         };
 
-        let (action3, _) = engine.evaluate(&context3).await;
+        let (action3, _, _headers) = engine.evaluate(&context3).await;
         match action3 {
             Action::Accept => {}
             _ => panic!("Expected Accept for legitimate email with substantial text"),
@@ -5010,7 +5012,7 @@ mod tests {
             ..Default::default()
         };
 
-        let (action4, _) = engine.evaluate(&context4).await;
+        let (action4, _, _headers) = engine.evaluate(&context4).await;
         match action4 {
             Action::Accept => {}
             _ => panic!("Expected Accept for email with no images"),
@@ -5051,7 +5053,7 @@ mod tests {
             ..Default::default()
         };
 
-        let (action1, _) = engine.evaluate(&context1).await;
+        let (action1, _, _headers) = engine.evaluate(&context1).await;
         match action1 {
             Action::Reject { .. } => {}
             _ => panic!("Expected Reject for IPv4 address in unsubscribe link"),
@@ -5071,7 +5073,7 @@ mod tests {
             ..Default::default()
         };
 
-        let (action2, _) = engine.evaluate(&context2).await;
+        let (action2, _, _headers) = engine.evaluate(&context2).await;
         match action2 {
             Action::Reject { .. } => {}
             _ => panic!("Expected Reject for IPv6 address in unsubscribe link"),
@@ -5091,7 +5093,7 @@ mod tests {
             ..Default::default()
         };
 
-        let (action3, _) = engine.evaluate(&context3).await;
+        let (action3, _, _headers) = engine.evaluate(&context3).await;
         match action3 {
             Action::Reject { .. } => {}
             _ => panic!("Expected Reject for public IPv4 address in unsubscribe link"),
@@ -5111,7 +5113,7 @@ mod tests {
             ..Default::default()
         };
 
-        let (action4, _) = engine.evaluate(&context4).await;
+        let (action4, _, _headers) = engine.evaluate(&context4).await;
         match action4 {
             Action::Accept => {}
             _ => panic!("Expected Accept for legitimate domain name"),
@@ -5131,7 +5133,7 @@ mod tests {
             ..Default::default()
         };
 
-        let (action5, _) = engine.evaluate(&context5).await;
+        let (action5, _, _headers) = engine.evaluate(&context5).await;
         match action5 {
             Action::Accept => {}
             _ => panic!("Expected Accept for multiple legitimate links"),
@@ -5172,7 +5174,7 @@ mod tests {
             ..Default::default()
         };
 
-        let (action1, _) = engine.evaluate(&context1).await;
+        let (action1, _, _headers) = engine.evaluate(&context1).await;
         match action1 {
             Action::Reject { .. } => {}
             _ => panic!("Expected Reject for private IPv4 address when allowed"),
@@ -5192,7 +5194,7 @@ mod tests {
             ..Default::default()
         };
 
-        let (action2, _) = engine.evaluate(&context2).await;
+        let (action2, _, _headers) = engine.evaluate(&context2).await;
         match action2 {
             Action::Reject { .. } => {}
             _ => panic!("Expected Reject for public IPv4 address"),
@@ -5233,7 +5235,7 @@ mod tests {
             ..Default::default()
         };
 
-        let (action1, _) = engine.evaluate(&context1).await;
+        let (action1, _, _headers) = engine.evaluate(&context1).await;
         match action1 {
             Action::Accept => {}
             _ => panic!("Expected Accept for private IPv4 address when blocked"),
@@ -5253,7 +5255,7 @@ mod tests {
             ..Default::default()
         };
 
-        let (action2, _) = engine.evaluate(&context2).await;
+        let (action2, _, _headers) = engine.evaluate(&context2).await;
         match action2 {
             Action::Reject { .. } => {}
             _ => panic!("Expected Reject for public IPv4 address"),
@@ -5417,7 +5419,7 @@ mod tests {
             ..Default::default()
         };
 
-        let (action1, _) = engine.evaluate(&context1).await;
+        let (action1, _, _headers) = engine.evaluate(&context1).await;
         match action1 {
             Action::Reject { .. } => {}
             _ => panic!("Expected Reject for PDF attachment with minimal text"),
@@ -5448,7 +5450,7 @@ mod tests {
             ..Default::default()
         };
 
-        let (action2, _) = engine.evaluate(&context2).await;
+        let (action2, _, _headers) = engine.evaluate(&context2).await;
         match action2 {
             Action::Reject { .. } => {}
             _ => panic!("Expected Reject for DOC attachment with no text"),
@@ -5490,7 +5492,7 @@ mod tests {
             ..Default::default()
         };
 
-        let (action3, _) = engine.evaluate(&context3).await;
+        let (action3, _, _headers) = engine.evaluate(&context3).await;
         match action3 {
             Action::Accept => {}
             _ => panic!("Expected Accept for email with substantial text content"),
@@ -5513,7 +5515,7 @@ mod tests {
             ..Default::default()
         };
 
-        let (action4, _) = engine.evaluate(&context4).await;
+        let (action4, _, _headers) = engine.evaluate(&context4).await;
         match action4 {
             Action::Accept => {}
             _ => panic!("Expected Accept for email with no attachments"),
@@ -5570,7 +5572,7 @@ END:VCALENDAR
         };
 
         let result = engine
-            .evaluate_criteria(&rar_only_criteria, &mut context)
+            .evaluate_criteria(&rar_only_criteria, &context)
             .await;
         assert!(
             !result,
@@ -5586,7 +5588,7 @@ END:VCALENDAR
             check_disposition: Some(true),
         };
 
-        let result = engine.evaluate_criteria(&ics_criteria, &mut context).await;
+        let result = engine.evaluate_criteria(&ics_criteria, &context).await;
         assert!(
             result,
             "Should match ICS attachment when ICS is in suspicious_types"
@@ -5612,12 +5614,12 @@ Content-Disposition: attachment; filename="archive.rar"
 
         // Test RAR criteria with RAR attachment - should match
         let result = engine
-            .evaluate_criteria(&rar_only_criteria, &mut context)
+            .evaluate_criteria(&rar_only_criteria, &context)
             .await;
         assert!(result, "Should match RAR attachment when looking for RAR");
 
         // Test ICS criteria with RAR attachment - should NOT match
-        let result = engine.evaluate_criteria(&ics_criteria, &mut context).await;
+        let result = engine.evaluate_criteria(&ics_criteria, &context).await;
         assert!(
             !result,
             "Should NOT match RAR attachment when looking for ICS only"
@@ -6068,7 +6070,7 @@ Content-Disposition: attachment; filename="test.rar"
             body: Some("Test body".to_string()),
         };
 
-        let (action, matched_rules) = engine.evaluate(&context).await;
+        let (action, matched_rules, _headers) = engine.evaluate(&context).await;
         assert!(matches!(action, Action::Reject { .. }));
         assert_eq!(matched_rules, vec!["Detect email service abuse"]);
 
@@ -6096,7 +6098,7 @@ Content-Disposition: attachment; filename="test.rar"
             body: Some("Newsletter content".to_string()),
         };
 
-        let (action2, matched_rules2) = engine.evaluate(&legitimate_context).await;
+        let (action2, matched_rules2, _headers) = engine.evaluate(&legitimate_context).await;
         assert!(matches!(action2, Action::Accept));
         assert!(matched_rules2.is_empty());
 
@@ -6120,7 +6122,7 @@ Content-Disposition: attachment; filename="test.rar"
             body: Some("Phishing content".to_string()),
         };
 
-        let (action3, matched_rules3) = engine.evaluate(&no_service_context).await;
+        let (action3, matched_rules3, _headers) = engine.evaluate(&no_service_context).await;
         assert!(matches!(action3, Action::Accept));
         assert!(matched_rules3.is_empty());
 
@@ -6166,7 +6168,7 @@ Content-Disposition: attachment; filename="test.rar"
             body: Some("Test body".to_string()),
         };
 
-        let (action4, matched_rules4) = custom_engine.evaluate(&custom_context).await;
+        let (action4, matched_rules4, _headers) = custom_engine.evaluate(&custom_context).await;
         assert!(matches!(action4, Action::TagAsSpam { .. }));
         assert_eq!(matched_rules4, vec!["Custom email service abuse"]);
 
@@ -6227,7 +6229,7 @@ Content-Disposition: attachment; filename="test.rar"
             body: Some("Claim your reward now!".to_string()),
         };
 
-        let (action, matched_rules) = engine.evaluate(&context).await;
+        let (action, matched_rules, _headers) = engine.evaluate(&context).await;
         assert!(matches!(action, Action::Reject { .. }));
         assert_eq!(matched_rules, vec!["Detect Google Groups abuse"]);
 
@@ -6253,7 +6255,7 @@ Content-Disposition: attachment; filename="test.rar"
             body: Some("Here's this week's update...".to_string()),
         };
 
-        let (action2, matched_rules2) = engine.evaluate(&legitimate_context).await;
+        let (action2, matched_rules2, _headers) = engine.evaluate(&legitimate_context).await;
         assert!(matches!(action2, Action::Accept));
         assert!(matched_rules2.is_empty());
 
@@ -6276,7 +6278,7 @@ Content-Disposition: attachment; filename="test.rar"
             body: Some("Claim your reward!".to_string()),
         };
 
-        let (action3, matched_rules3) = engine.evaluate(&no_groups_context).await;
+        let (action3, matched_rules3, _headers) = engine.evaluate(&no_groups_context).await;
         assert!(matches!(action3, Action::Accept));
         assert!(matched_rules3.is_empty());
 
@@ -6329,7 +6331,7 @@ Content-Disposition: attachment; filename="test.rar"
             body: Some("Test body".to_string()),
         };
 
-        let (action4, matched_rules4) = custom_engine.evaluate(&custom_context).await;
+        let (action4, matched_rules4, _headers) = custom_engine.evaluate(&custom_context).await;
         assert!(matches!(action4, Action::TagAsSpam { .. }));
         assert_eq!(matched_rules4, vec!["Custom Google Groups abuse"]);
 
@@ -6375,7 +6377,7 @@ Content-Disposition: attachment; filename="test.rar"
             body: Some("Normal content".to_string()),
         };
 
-        let (action5, matched_rules5) = single_engine.evaluate(&single_context).await;
+        let (action5, matched_rules5, _headers) = single_engine.evaluate(&single_context).await;
         assert!(matches!(action5, Action::Accept)); // Should not match with only 1 indicator
         assert!(matched_rules5.is_empty());
 
@@ -6434,7 +6436,7 @@ Content-Disposition: attachment; filename="test.rar"
             mailer: None,
         };
 
-        let (action, matched_rules) = engine.evaluate(&context).await;
+        let (action, matched_rules, _headers) = engine.evaluate(&context).await;
         assert!(matches!(action, Action::Reject { .. }));
         assert_eq!(matched_rules, vec!["Detect DocuSign abuse"]);
 
@@ -6459,7 +6461,7 @@ Content-Disposition: attachment; filename="test.rar"
             mailer: None,
         };
 
-        let (action2, matched_rules2) = engine.evaluate(&legitimate_context).await;
+        let (action2, matched_rules2, _headers) = engine.evaluate(&legitimate_context).await;
         assert!(matches!(action2, Action::Accept));
         assert!(matched_rules2.is_empty());
 
@@ -6480,7 +6482,7 @@ Content-Disposition: attachment; filename="test.rar"
             mailer: None,
         };
 
-        let (action3, matched_rules3) = engine.evaluate(&non_docusign_context).await;
+        let (action3, matched_rules3, _headers) = engine.evaluate(&non_docusign_context).await;
         assert!(matches!(action3, Action::Accept));
         assert!(matched_rules3.is_empty());
 
@@ -6511,7 +6513,7 @@ Content-Disposition: attachment; filename="test.rar"
             mailer: None,
         };
 
-        let (action4, matched_rules4) = engine.evaluate(&single_indicator_context).await;
+        let (action4, matched_rules4, _headers) = engine.evaluate(&single_indicator_context).await;
         assert!(matches!(action4, Action::Accept));
         assert!(matched_rules4.is_empty());
 
@@ -6533,7 +6535,7 @@ Content-Disposition: attachment; filename="test.rar"
         let mut single_engine = FilterEngine::new(single_indicator_config).unwrap();
         single_engine.compile_patterns().unwrap();
 
-        let (action5, matched_rules5) = single_engine.evaluate(&single_indicator_context).await;
+        let (action5, matched_rules5, _headers) = single_engine.evaluate(&single_indicator_context).await;
         assert!(matches!(action5, Action::TagAsSpam { .. }));
         assert_eq!(matched_rules5, vec!["Single indicator DocuSign abuse"]);
     }
@@ -6587,7 +6589,7 @@ Content-Disposition: attachment; filename="test.rar"
             ),
         };
 
-        let (action, matched_rules) = engine.evaluate(&context).await;
+        let (action, matched_rules, _headers) = engine.evaluate(&context).await;
         assert!(matches!(action, Action::Reject { .. }));
         assert_eq!(matched_rules, vec!["Detect sender spoofing extortion"]);
 
@@ -6620,7 +6622,7 @@ Content-Disposition: attachment; filename="test.rar"
             body: Some("Don't forget about our meeting tomorrow at 2 PM.".to_string()),
         };
 
-        let (action2, matched_rules2) = engine.evaluate(&legitimate_context).await;
+        let (action2, matched_rules2, _headers) = engine.evaluate(&legitimate_context).await;
         assert!(matches!(action2, Action::Accept));
         assert!(matched_rules2.is_empty());
 
@@ -6653,7 +6655,7 @@ Content-Disposition: attachment; filename="test.rar"
             body: Some("I have a legitimate business proposal for you.".to_string()),
         };
 
-        let (action3, matched_rules3) = engine.evaluate(&no_spoofing_context).await;
+        let (action3, matched_rules3, _headers) = engine.evaluate(&no_spoofing_context).await;
         assert!(matches!(action3, Action::Accept));
         assert!(matched_rules3.is_empty());
 
@@ -6696,7 +6698,7 @@ Content-Disposition: attachment; filename="test.rar"
             body: Some("This is a custom_threat message.".to_string()),
         };
 
-        let (action4, matched_rules4) = custom_engine.evaluate(&custom_context).await;
+        let (action4, matched_rules4, _headers) = custom_engine.evaluate(&custom_context).await;
         assert!(matches!(action4, Action::TagAsSpam { .. }));
         assert_eq!(matched_rules4, vec!["Custom extortion detection"]);
 
@@ -6734,7 +6736,7 @@ Content-Disposition: attachment; filename="test.rar"
             body: Some("Normal content".to_string()),
         };
 
-        let (action5, matched_rules5) = single_engine.evaluate(&single_context).await;
+        let (action5, matched_rules5, _headers) = single_engine.evaluate(&single_context).await;
         assert!(matches!(action5, Action::Accept)); // Should not match with only 1 indicator
         assert!(matched_rules5.is_empty());
 
@@ -6782,7 +6784,7 @@ Content-Disposition: attachment; filename="test.rar"
             ),
         };
 
-        let (action6, matched_rules6) = crypto_engine.evaluate(&crypto_context).await;
+        let (action6, matched_rules6, _headers) = crypto_engine.evaluate(&crypto_context).await;
         assert!(matches!(action6, Action::Reject { .. }));
         assert_eq!(matched_rules6, vec!["Cryptocurrency extortion"]);
 
@@ -6837,7 +6839,7 @@ Content-Disposition: attachment; filename="test.rar"
             body: Some("Your weekly wellness newsletter from The New York Times.".to_string()),
         };
 
-        let (action7, matched_rules7) = nytimes_engine.evaluate(&nytimes_context).await;
+        let (action7, matched_rules7, _headers) = nytimes_engine.evaluate(&nytimes_context).await;
         assert!(matches!(action7, Action::Accept)); // Should not match due to legitimate service
         assert!(matched_rules7.is_empty());
 
@@ -6873,7 +6875,7 @@ Content-Disposition: attachment; filename="test.rar"
             mailer: None,
         };
 
-        let (action1, _) = engine1.evaluate(&gmail_context).await;
+        let (action1, _, _headers) = engine1.evaluate(&gmail_context).await;
         assert!(
             matches!(action1, Action::Accept),
             "Not Gmail rule should NOT match Gmail sender (should Accept)"
@@ -6892,7 +6894,7 @@ Content-Disposition: attachment; filename="test.rar"
             mailer: None,
         };
 
-        let (action2, _) = engine1.evaluate(&yahoo_context).await;
+        let (action2, _, _headers) = engine1.evaluate(&yahoo_context).await;
         assert!(
             matches!(action2, Action::Reject { .. }),
             "Not Gmail rule should match Yahoo sender (should Reject)"
@@ -6922,14 +6924,14 @@ Content-Disposition: attachment; filename="test.rar"
         let engine3 = FilterEngine::new(config3).unwrap();
 
         // Should NOT match (Accept) because Gmail + Test subject matches the And, so Not And is false
-        let (action3, _) = engine3.evaluate(&gmail_context).await;
+        let (action3, _, _headers) = engine3.evaluate(&gmail_context).await;
         assert!(
             matches!(action3, Action::Accept),
             "Not (Gmail AND Test) should NOT match Gmail with Test subject"
         );
 
         // Should match (TagAsSpam) because Yahoo + Test subject doesn't fully match the And, so Not And is true
-        let (action4, _) = engine3.evaluate(&yahoo_context).await;
+        let (action4, _, _headers) = engine3.evaluate(&yahoo_context).await;
         assert!(
             matches!(action4, Action::TagAsSpam { .. }),
             "Not (Gmail AND Test) should match Yahoo with Test subject"
