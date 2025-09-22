@@ -9,7 +9,7 @@ use std::process;
 #[tokio::main]
 async fn main() {
     let matches = Command::new("foff-milter")
-        .version("0.1.0")
+        .version(env!("CARGO_PKG_VERSION"))
         .about("A sendmail milter for filtering emails based on configurable criteria")
         .arg(
             Arg::new("config")
