@@ -338,7 +338,7 @@ impl Milter {
                                 mail_ctx.recipients.join(", ")
                             };
 
-                            let (action, matched_rules, _headers_to_add) =
+                            let (action, matched_rules, headers_to_add) =
                                 engine.evaluate(&mail_ctx).await;
                             log::debug!(
                                 "PID {} evaluated action: {:?}, matched_rules: {:?}",
@@ -638,6 +638,21 @@ impl Milter {
                                 }
                                 Action::Accept => {
                                     log::info!("ACCEPT from={sender} to={recipients}");
+                                    
+                                    // Add analysis headers if any
+                                    for (header_name, header_value) in &headers_to_add {
+                                        log::info!("Adding analysis header: {header_name}={header_value}");
+                                        if let Err(e) = ctx
+                                            .actions
+                                            .add_header(header_name.clone(), header_value.clone())
+                                            .await
+                                        {
+                                            log::error!("Failed to add analysis header: {e}");
+                                        } else {
+                                            log::info!("Successfully added analysis header: {header_name}={header_value}");
+                                        }
+                                    }
+                                    
                                     return Status::Accept;
                                 }
                             }
