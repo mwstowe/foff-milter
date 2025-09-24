@@ -501,6 +501,8 @@ impl FilterEngine {
         for rule in &self.config.rules {
             let matches = self.evaluate_criteria(&rule.criteria, context).await;
             log::info!("Rule '{}' evaluation result: {}", rule.name, matches);
+            
+            // Add explicit debugging to catch the bug
             if matches {
                 log::info!(
                     "Rule '{}' matched, collecting action: {:?}",
