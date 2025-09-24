@@ -498,14 +498,15 @@ impl FilterEngine {
         let mut headers_to_add = Vec::new();
 
         // Process ALL rules instead of stopping at first match
-        for rule in &self.config.rules {
+        for (rule_index, rule) in self.config.rules.iter().enumerate() {
             let matches = self.evaluate_criteria(&rule.criteria, context).await;
-            log::info!("Rule '{}' evaluation result: {}", rule.name, matches);
+            log::info!("Rule {} '{}' evaluation result: {}", rule_index + 1, rule.name, matches);
             
             // Add explicit debugging to catch the bug
             if matches {
                 log::info!(
-                    "Rule '{}' matched, collecting action: {:?}",
+                    "Rule {} '{}' matched, collecting action: {:?}",
+                    rule_index + 1,
                     rule.name,
                     rule.action
                 );
@@ -1591,15 +1592,20 @@ impl FilterEngine {
                     if let Some(regex) = self.compiled_patterns.get(pattern) {
                         // Check both envelope sender and From header sender
                         if let Some(sender) = &context.sender {
+                            log::debug!("SenderPattern checking envelope sender: '{}' against pattern: '{}'", sender, pattern);
                             if regex.is_match(sender) {
+                                log::debug!("SenderPattern matched envelope sender: '{}'", sender);
                                 return true;
                             }
                         }
                         if let Some(from_header) = &context.from_header {
+                            log::debug!("SenderPattern checking from_header: '{}' against pattern: '{}'", from_header, pattern);
                             if regex.is_match(from_header) {
+                                log::debug!("SenderPattern matched from_header: '{}'", from_header);
                                 return true;
                             }
                         }
+                        log::debug!("SenderPattern no match for pattern: '{}'", pattern);
                     }
                     false
                 }
