@@ -2439,6 +2439,54 @@ rules:
       header_name: "X-Spam-Flag"
       header_value: "YES"
 
+  # Tag MAILER-DAEMON spoofing attacks
+  - name: "Tag MAILER-DAEMON spoofing attacks"
+    criteria:
+      type: "And"
+      criteria:
+        # MAILER-DAEMON return-path
+        - type: "HeaderPattern"
+          header: "return-path"
+          pattern: "MAILER-DAEMON"
+        # DKIM failure or external source
+        - type: "Or"
+          criteria:
+            - type: "HeaderPattern"
+              header: "authentication-results"
+              pattern: "(?i)dkim=fail"
+            # External suspicious domains
+            - type: "HeaderPattern"
+              header: "received"
+              pattern: ".*\\.(vote|tk|ml|ga|cf|top|click|download|loan|racing|review|science|work|party|date|stream|trade|bid|win|cricket|accountant|faith|men|gq).*"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Tag simple MAILER-DAEMON spoofing attacks
+  - name: "Tag MAILER-DAEMON spoofing with DKIM failures"
+    criteria:
+      type: "And"
+      criteria:
+        # MAILER-DAEMON return-path
+        - type: "HeaderPattern"
+          header: "return-path"
+          pattern: "(?i).*<.*mailer-daemon.*>.*"
+        # DKIM failure
+        - type: "HeaderPattern"
+          header: "authentication-results"
+          pattern: "(?i)dkim=fail"
+        # External source (not from legitimate mail servers)
+        - type: "Not"
+          criteria:
+            type: "HeaderPattern"
+            header: "received"
+            pattern: ".*(baddomain\\.com|localhost|127\\.0\\.0\\.1).*"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
   # Tag sophisticated MAILER-DAEMON + brand impersonation scams
   - name: "Tag sophisticated MAILER-DAEMON + brand impersonation scams"
     criteria:
