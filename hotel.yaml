@@ -878,8 +878,15 @@ rules:
       type: "And"
       criteria:
         # Kit delivery/reward subject patterns
-        - type: "SubjectPattern"
-          pattern: "(?i).*(car.*emergency.*kit|emergency.*car.*kit|car.*kit.*confirmed|emergency.*kit.*confirmed|aaa.*car.*kit|car.*safety.*kit|roadside.*kit|auto.*emergency|your.*kit.*is.*queued|kit.*queued.*for.*delivery|kit.*is.*ready|reward.*kit|cvs.*kit|pharmacy.*kit|health.*kit|safety.*kit|tool.*set.*is.*ready|your.*tool.*set|tool.*kit|harbor.*freight.*kit|tools.*ready|tool.*delivery).*"
+        - type: "Or"
+          criteria:
+            # Regular text patterns
+            - type: "SubjectPattern"
+              pattern: "(?i).*(car.*emergency.*kit|emergency.*car.*kit|car.*kit.*confirmed|emergency.*kit.*confirmed|aaa.*car.*kit|car.*safety.*kit|roadside.*kit|auto.*emergency|your.*kit.*is.*queued|kit.*queued.*for.*delivery|kit.*is.*ready|reward.*kit|cvs.*kit|pharmacy.*kit|health.*kit|safety.*kit|tool.*set.*is.*ready|your.*tool.*set|tool.*kit|harbor.*freight.*kit|tools.*ready|tool.*delivery).*"
+            # Base64 encoded Car Emergency Kit patterns
+            - type: "HeaderPattern"
+              header: "subject"
+              pattern: "=\\?UTF-8\\?B\\?WW91ciBGcmVlIENhciBFbWVyZ2VuY3kgS2l0IGlzIFJlYWR5IQ==\\?="
         # Suspicious indicators
         - type: "Or"
           criteria:
@@ -2434,6 +2441,29 @@ rules:
             - type: "HeaderPattern"
               header: "return-path"
               pattern: "(?i)mailer-daemon"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Tag AAA brand impersonation
+  - name: "Tag AAA brand impersonation"
+    criteria:
+      type: "And"
+      criteria:
+        # AAA in From header
+        - type: "HeaderPattern"
+          header: "from"
+          pattern: "(?i).*AAA.*"
+        # Not from legitimate AAA domains
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@(aaa|csaa|aaaclub|aaasouth|aaanc|aaane|aaawi|aaaco|aaatexas)\\.com$"
+        # DKIM failure
+        - type: "HeaderPattern"
+          header: "authentication-results"
+          pattern: "(?i)dkim=fail"
     action:
       type: "TagAsSpam"
       header_name: "X-Spam-Flag"
