@@ -1551,30 +1551,27 @@ rules:
         # Portuguese/international phishing patterns
         - type: "Or"
           criteria:
-            # Portuguese financial/administrative terms
-            - type: "Or"
-              criteria:
-                - type: "HeaderPattern"
-                  header: "from"
-                  pattern: "(?i).*(administra.*o|transa.*es|digitais|financeiro|banco|documento|contrato|revis.*o|verifica.*o|seguran.*a|autentica.*o|mercadolivre|mercado.*livre|suporte|atendimento|vendas|compras|delegacia|policia|autoridade|registro|ocorrencia|boletim).*"
-                - type: "SubjectPattern"
-                  pattern: "(?i).*(documento|contrato|transa.*o|administra.*o|verifica.*o|revis.*o|dispon.*vel|urgente|importante|seguran.*a|detalhes.*do.*seu.*pedido|pedido|mercadolivre|mercado.*livre|compra|venda|entrega|pagamento|fatura|boleto|pendente|assinatura|protocolo|delegacia|policia|registro.*ocorrencia|boletim.*ocorrencia|aviso.*sobre).*"
-            # Spanish financial/administrative terms
-            - type: "Or"
-              criteria:
-                - type: "HeaderPattern"
-                  header: "from"
-                  pattern: "(?i).*(administraci.*n|transacci.*n|digitales|financiero|banco|documento|contrato|revisi.*n|verificaci.*n|seguridad|autenticaci.*n).*"
-                - type: "SubjectPattern"
-                  pattern: "(?i).*(documento|contrato|transacci.*n|administraci.*n|verificaci.*n|revisi.*n|disponible|urgente|importante|seguridad).*"
-            # French financial/administrative terms
-            - type: "Or"
-              criteria:
-                - type: "HeaderPattern"
-                  header: "from"
-                  pattern: "(?i).*(administration|transaction|num.*rique|financier|banque|document|contrat|r.*vision|v.*rification|s.*curit.*|authentification).*"
-                - type: "SubjectPattern"
-                  pattern: "(?i).*(document|contrat|transaction|administration|v.*rification|r.*vision|disponible|urgent|important|s.*curit.*).*"
+            # Portuguese financial/administrative terms - From header
+            - type: "HeaderPattern"
+              header: "from"
+              pattern: "(?i).*(administra.*o|transa.*es|digitais|financeiro|banco|documento|contrato|revis.*o|verifica.*o|seguran.*a|autentica.*o|mercadolivre|mercado.*livre|suporte|atendimento|vendas|compras|delegacia|policia|autoridade|registro|ocorrencia|boletim).*"
+            # Portuguese financial/administrative terms - Subject
+            - type: "SubjectPattern"
+              pattern: "(?i).*(documento|contrato|transa.*o|administra.*o|verifica.*o|revis.*o|dispon.*vel|urgente|importante|seguran.*a|detalhes.*do.*seu.*pedido|pedido|mercadolivre|mercado.*livre|compra|venda|entrega|pagamento|fatura|boleto|pendente|assinatura|protocolo|delegacia|policia|registro.*ocorrencia|boletim.*ocorrencia|aviso.*sobre).*"
+            # Spanish financial/administrative terms - From header
+            - type: "HeaderPattern"
+              header: "from"
+              pattern: "(?i).*(administraci.*n|transacci.*n|digitales|financiero|banco|documento|contrato|revisi.*n|verificaci.*n|seguridad|autenticaci.*n).*"
+            # Spanish financial/administrative terms - Subject
+            - type: "SubjectPattern"
+              pattern: "(?i).*(documento|contrato|transacci.*n|administraci.*n|verificaci.*n|revisi.*n|disponible|urgente|importante|seguridad).*"
+            # French financial/administrative terms - From header
+            - type: "HeaderPattern"
+              header: "from"
+              pattern: "(?i).*(administration|transaction|num.*rique|financier|banque|document|contrat|r.*vision|v.*rification|s.*curit.*|authentification).*"
+            # French financial/administrative terms - Subject
+            - type: "SubjectPattern"
+              pattern: "(?i).*(document|contrat|transaction|administration|v.*rification|r.*vision|disponible|urgent|important|s.*curit.*).*"
         # Suspicious infrastructure
         - type: "Or"
           criteria:
