@@ -2439,6 +2439,33 @@ rules:
       header_name: "X-Spam-Flag"
       header_value: "YES"
 
+  # Tag WeTransfer brand impersonation
+  - name: "Tag WeTransfer brand impersonation"
+    criteria:
+      type: "And"
+      criteria:
+        # WeTransfer in From header
+        - type: "HeaderPattern"
+          header: "from"
+          pattern: "(?i)wetransfer"
+        # Not from legitimate WeTransfer domains
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@(wetransfer|we\\.tl)\\.(com|net)$"
+        # DKIM failure or suspicious patterns
+        - type: "Or"
+          criteria:
+            - type: "HeaderPattern"
+              header: "authentication-results"
+              pattern: "(?i)dkim=fail"
+            - type: "SubjectPattern"
+              pattern: "(?i).*(expired|recover|download.*now|urgent|act.*now).*"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
   # Tag MAILER-DAEMON spoofing attacks
   - name: "Tag MAILER-DAEMON spoofing attacks"
     criteria:
