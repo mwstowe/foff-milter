@@ -1,0 +1,2574 @@
+# My rules!
+socket_path: "/var/run/foff-milter.sock"
+default_action:
+  type: "Accept"
+
+# SMTP Configuration for sending abuse reports
+smtp:
+  server: "localhost"
+  port: 25
+  from_email: "noreply@baddomain.com"
+  from_name: "Abuse Reporter"
+  use_tls: false
+  timeout_seconds: 30
+
+# Statistics configuration
+statistics:
+  enabled: true                              # Enable/disable statistics collection
+  database_path: "/var/db/foff/stats.db"     # SQLite database location
+  flush_interval_seconds: 300                 # How often to flush stats to disk (optional, default: 60)
+
+
+rules:
+  # Tag SEO and marketing spam
+  - name: "Tag SEO and marketing spam"
+    criteria:
+      type: "Or"
+      criteria:
+        # SEO and web marketing subjects
+        - type: "SubjectPattern"
+          pattern: "(?i).*(why.*pay.*for.*ads|pay.*for.*results|seo.*service|web.*ranking|search.*engine.*optimization|increase.*website.*traffic|boost.*your.*ranking|get.*more.*leads|digital.*marketing.*service|website.*promotion|online.*marketing|web.*development.*service|rank.*higher.*on.*google|improve.*your.*seo|guaranteed.*results|first.*page.*google).*"
+        # Marketing service domains and senders
+        - type: "Or"
+          criteria:
+            - type: "SenderPattern"
+              pattern: ".*@.*(seo|webrank|marketing|digitalmarketing|webdev|webdesign|onlinemarketing|searchengine|webpromo|leadgen|webservice).*\\.(com|net|org)$"
+            - type: "HeaderPattern"
+              header: "from"
+              pattern: "(?i).*(seo.*specialist|marketing.*expert|web.*developer|digital.*marketer|lead.*generation|website.*promotion).*"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Reject Chinese service domains with spam content (any language)
+  - name: "Reject Chinese service domains with spam content (any language)"
+    criteria:
+      type: "And"
+      criteria:
+        # Chinese service domains
+        - type: "SenderPattern"
+          pattern: ".*@(service|mail|smtp|email|send|bulk|mass|marketing).*\\.(cn|com\\.cn)$"
+        # Spam content indicators
+        - type: "Or"
+          criteria:
+            # Email list/marketing spam
+            - type: "SubjectPattern"
+              pattern: "(?i).*(email.*list|mailing.*list|100%.*valid|any.*country|bulk.*email|mass.*email|marketing.*list|lead.*generation|database.*email|verified.*email|fresh.*email|targeted.*email|business.*email|consumer.*email).*"
+            # Sender spoofing (claims Gmail but from .cn)
+            - type: "And"
+              criteria:
+                - type: "HeaderPattern"
+                  header: "from"
+                  pattern: ".*@gmail\\.com$"
+                - type: "SenderPattern"
+                  pattern: ".*@.*\\.(cn|com\\.cn)$"
+    action:
+      type: "Reject"
+      message: "Chinese service domain spam rejected"
+
+  # Reject Chinese service domains (.cn) sending Japanese content
+  - name: "Reject Chinese service domains (.cn) sending Japanese content"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SenderPattern"
+              pattern: ".*@service\\.[^.]+\\.cn$"  # Matches service.vpoy.cn
+            - type: "SenderPattern"  
+              pattern: ".*@service\\..*\\.cn$"    # Matches service.something.cn
+        - type: "SubjectContainsLanguage"
+          language: "japanese"
+    action:
+      type: "Reject"
+      message: "Chinese service with Japanese content blocked"
+
+
+  # Reject service.*.com domains sending Japanese content
+  - name: "Reject service.*.com domains sending Japanese content"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SenderPattern"
+          pattern: "service\\..*\\.com"
+        - type: "SubjectContainsLanguage"
+          language: "japanese"
+    action:
+      type: "Reject"
+      message: "Spam rejected"
+
+  # Reject SparkPost emails to queued@baddomain.com
+  - name: "Reject SparkPost emails to queued@baddomain.com"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "MailerPattern"
+          pattern: ".*\\.sparkpostmail\\.com"
+        - type: "RecipientPattern"
+          pattern: "queued@baddomain\\.com"
+    action:
+      type: "Reject"
+      message:  "Fuck off, Nazis"
+
+  # Tag emails with Google API unsubscribe links
+  - name: "Tag emails with Google API unsubscribe links"
+    criteria:
+      type: "UnsubscribeLinkPattern"
+      pattern: ".*\\.googleapis\\.com.*"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Reject emails from .ru.com domains
+  - name: "Reject emails from .ru.com domains"
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*\\.ru\\.com"
+    action:
+      type: "Reject"
+      message: "Spam rejected"
+
+  # Tag SharePoint impersonation attacks
+  - name: "Tag SharePoint impersonation attacks"
+    criteria:
+      type: "And"
+      criteria:
+        # Claims to be from SharePoint
+        - type: "Or"
+          criteria:
+            - type: "SenderPattern"
+              pattern: ".*@sharepointonline\\.com$"
+            - type: "HeaderPattern"
+              header: "from"
+              pattern: "(?i)sharepoint"
+        # Suspicious indicators
+        - type: "Or"
+          criteria:
+            # No Microsoft DKIM signature
+            - type: "Not"
+              criteria:
+                type: "HeaderPattern"
+                header: "dkim-signature"
+                pattern: "d=(microsoft|sharepointonline|outlook|office365)\\.com"
+            # External IP source (not Microsoft)
+            - type: "HeaderPattern"
+              header: "received"
+              pattern: "from \\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\]"
+            # Suspicious content patterns
+            - type: "Or"
+              criteria:
+                - type: "SubjectPattern"
+                  pattern: "(?i).*(wire.*remittance|wire.*transfer|payment.*confirmation|invoice.*shared|document.*shared|file.*shared|urgent.*document|confidential.*document).*"
+                - type: "HeaderPattern"
+                  header: "received"
+                  pattern: ".*\\.(openredirect|redirect|phishing|malware)\\."
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Tag suspicious Microsoft onmicrosoft.com domain abuse
+  - name: "Tag suspicious Microsoft onmicrosoft.com domain abuse"
+    criteria:
+      type: "And"
+      criteria:
+        # onmicrosoft.com domain
+        - type: "SenderPattern"
+          pattern: ".*@.*\\.onmicrosoft\\.com$"
+        # Suspicious indicators
+        - type: "Or"
+          criteria:
+            # DKIM failures
+            - type: "HeaderPattern"
+              header: "authentication-results"
+              pattern: "(?i)dkim=fail"
+            # Non-Microsoft DKIM signatures
+            - type: "HeaderPattern"
+              header: "dkim-signature"
+              pattern: "d=.*gappssmtp\\.com"
+            # Random/suspicious subdomain names or random usernames
+            - type: "Or"
+              criteria:
+                - type: "SenderPattern"
+                  pattern: ".*@(dailydials|entrprise|enterprise|random|test|temp|spam).*\\.onmicrosoft\\.com$"
+                # Random username patterns (like vpw2xstala6aw)
+                - type: "SenderPattern"
+                  pattern: "^[a-z0-9]{8,}@.*\\.onmicrosoft\\.com$"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Tag fake Microsoft and Microsoft services abuse
+  - name: "Tag fake Microsoft and Microsoft services abuse"
+    criteria:
+      type: "And"
+      criteria:
+        # Microsoft domains in various headers
+        - type: "Or"
+          criteria:
+            # onmicrosoft.com patterns (existing)
+            - type: "HeaderPattern"
+              header: "reply-to"
+              pattern: ".*\\.onmicrosoft\\.com"
+            - type: "HeaderPattern"
+              header: "from"
+              pattern: ".*\\.onmicrosoft\\.com"
+            - type: "SenderPattern"
+              pattern: ".*@.*\\.onmicrosoft\\.com$"
+            # SharePoint and other Microsoft services (new)
+            - type: "SenderPattern"
+              pattern: ".*@(sharepointonline|outlook|live|hotmail|microsoft|office365)\\.com$"
+        # Suspicious origin indicators
+        - type: "Or"
+          criteria:
+            # DKIM domain abuse (existing)
+            - type: "HeaderPattern"
+              header: "dkim-signature"
+              pattern: "d=.*onmicrosoft.*\\.com"
+            # External IP addresses (new - key detection)
+            - type: "HeaderPattern"
+              header: "received"
+              pattern: "from \\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\]"
+            # Suspicious enterprise names (existing)
+            - type: "SenderPattern"
+              pattern: ".*@(enterprise|entrprise|company|business|corp).*\\.onmicrosoft\\.com$"
+        # No proper Microsoft DKIM (new - critical validation)
+        - type: "Not"
+          criteria:
+            type: "HeaderPattern"
+            header: "dkim-signature"
+            pattern: "d=(microsoft|sharepointonline|outlook|office365|onmicrosoft)\\.com"
+        # Additional suspicious patterns
+        - type: "Or"
+          criteria:
+            # Harbor Freight impersonation (existing)
+            - type: "HeaderPattern"
+              header: "from"
+              pattern: "(?i).*(harbor.*freight|customer.*dispatch).*"
+            # Document/SharePoint phishing (new)
+            - type: "Or"
+              criteria:
+                - type: "SubjectPattern"
+                  pattern: "(?i).*(sign.*here|document.*sign|review.*document|sharepoint).*"
+                - type: "HeaderPattern"
+                  header: "from"
+                  pattern: "(?i).*(sharepoint|document|signature|no-reply).*"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Tag legitimate domains from external IPs without proper authentication
+  - name: "Tag legitimate domains from external IPs without proper authentication"
+    criteria:
+      type: "And"
+      criteria:
+        # Claims to be from major service domains
+        - type: "SenderPattern"
+          pattern: ".*@(microsoft|google|apple|amazon|adobe|docusign|dropbox|slack|zoom|salesforce|sharepointonline|outlook|gmail|paypal|ebay|netflix|spotify|office365)\\.com$"
+        # Comes from external IP address (not their infrastructure)
+        - type: "HeaderPattern"
+          header: "received"
+          pattern: "from \\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\]"
+        # No proper DKIM from the claimed domain
+        - type: "Not"
+          criteria:
+            type: "HeaderPattern"
+            header: "dkim-signature"
+            pattern: "d=(microsoft|google|apple|amazon|adobe|docusign|dropbox|slack|zoom|salesforce|sharepointonline|outlook|gmail|paypal|ebay|netflix|spotify|office365)\\.com"
+        # Exclude legitimate forwarding scenarios
+        - type: "Not"
+          criteria:
+            type: "HeaderPattern"
+            header: "received"
+            pattern: "(?i).*(forwarded|relay|gateway|mimecast|proofpoint).*"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Tag emails from aizen.ink domains
+  - name: "Tag emails from aizen.ink domains"
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*\\.aizen\\.ink"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Tag emails from .za.com domains
+  - name: "Tag emails from .za.com domains"
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*\\.za\\.com"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Tag emails from .sa.com domains
+  - name: "Tag emails from .sa.com domains"
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*\\.sa\\.com"
+    action:
+      type: "Reject"
+      message: "Fuck right off"
+
+  # Tag emails with invalid unsubscribe links (DNS check only - fast)
+  # Tag emails with invalid unsubscribe links (DNS only)
+  - name: "Tag emails with invalid unsubscribe links (DNS only)"
+    criteria:
+      type: "And"
+      criteria:
+        # Check for invalid unsubscribe links
+        - type: "UnsubscribeLinkValidation"
+          timeout_seconds: 10
+          check_dns: true
+          check_http: false
+        # Exclude legitimate media, entertainment, and business services
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              # Major media and entertainment companies
+              - type: "SenderPattern"
+                pattern: ".*@.*(iheart|spotify|pandora|netflix|hulu|disney|paramount|hbo|showtime|starz|peacock|appletv|amazon|youtube|twitch|tiktok|instagram|facebook|twitter|linkedin)\\.(com|net)$"
+              # News and media outlets
+              - type: "SenderPattern"
+                pattern: ".*@.*(cnn|fox|nbc|abc|cbs|npr|pbs|reuters|ap|bloomberg|wsj|nytimes|washingtonpost|usatoday|time|newsweek|fortune|forbes)\\.(com|net)$"
+              # Podcast platforms and networks
+              - type: "SenderPattern"
+                pattern: ".*@.*(podcast|podcastone|stitcher|castbox|overcast|pocketcasts|radiolab|thisamericanlife|serialpodcast)\\.(com|net)$"
+              # Major retailers and e-commerce
+              - type: "SenderPattern"
+                pattern: ".*@.*(amazon|walmart|target|bestbuy|homedepot|lowes|costco|macys|nordstrom|wayfair|overstock|ebay|etsy|shopify)\\.(com|net)$"
+              # Email service providers
+              - type: "SenderPattern"
+                pattern: ".*@.*(mailchimp|constantcontact|sendgrid|mailgun|customer\\.io|intercom|hubspot|salesforce)\\.(com|net)$"
+              # Google Groups and mailing lists
+              - type: "HeaderPattern"
+                header: "list-id"
+                pattern: "<.*\\.(com|org|net|edu|gov)>$"
+              - type: "HeaderPattern"
+                header: "x-google-group-id"
+                pattern: "\\d+"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Tag Microsoft Reply Spam
+  - name: "Tag Microsoft Reply Spam"
+    criteria:
+      type: "And"
+      criteria:
+      - type: "HeaderPattern"
+        header: "Auto-Submitted"
+        pattern: "auto-replied"
+      - type: "HeaderPattern"
+        header: "X-MS-PublicTrafficType"
+        pattern: ".*"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Tag emails from click tracking domains
+  - name: "Tag emails from click tracking domains"
+    criteria:
+      type: "Or"
+      criteria:
+      - type: "SenderPattern"
+        pattern: ".*@.*\\.click$"
+      - type: "HeaderPattern"
+        header: "received"
+        pattern: ".*\\.click"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Detect sender spoofing - when display name claims to be from a trusted domain
+  # but the actual sender is from a different domain
+  # Tag sender spoofing attempts
+  - name: "Tag sender spoofing attempts"
+    criteria:
+      type: "PhishingSenderSpoofing"
+      trusted_domains:
+        - "baddomain.com"
+        - "paypal.com"
+        - "amazon.com"
+        - "microsoft.com"
+        - "google.com"
+        - "apple.com"
+        - "netflix.com"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Comprehensive phishing detection rule combining multiple indicators
+  # Tag comprehensive phishing attempts
+  - name: "Tag comprehensive phishing attempts"
+    criteria:
+      type: "And"
+      criteria:
+        # Main phishing detection logic
+        - type: "Or"
+          criteria:
+            # Urgent/threatening language with suspicious sender
+            - type: "And"
+              criteria:
+                - type: "SubjectPattern"
+                  pattern: "(?i)(expire|suspend|verify|update|confirm|urgent|immediate|security|alert|warning)"
+                - type: "Or"
+                  criteria:
+                    - type: "PhishingSenderSpoofing"
+                      trusted_domains: ["baddomain.com", "paypal.com", "amazon.com", "microsoft.com"]
+                    - type: "PhishingDomainMismatch"
+                      allow_subdomains: true
+            # Suspicious links with urgent language
+            - type: "And"
+              criteria:
+                - type: "PhishingSuspiciousLinks"
+                  check_url_shorteners: true
+                  check_suspicious_tlds: true
+                  check_ip_addresses: true
+                - type: "SubjectPattern"
+                  pattern: "(?i)(click|release|inbox|email|message|account)"
+        # Exclude legitimate Amazon/Woot infrastructure and email service providers
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              # Legitimate Amazon domains
+              - type: "SenderPattern"
+                pattern: ".*@(amazon|amazonses|woot|audible|twitch|imdb|goodreads|zappos|shopbop|eastdane|myhabit|diapers|soap|beautybar|casa|yoox)\\.(com|net)$"
+              # Amazon SES infrastructure
+              - type: "HeaderPattern"
+                header: "received"
+                pattern: ".*amazonses\\.com.*"
+              # Woot.com specific patterns
+              - type: "HeaderPattern"
+                header: "feedback-id"
+                pattern: ".*AmazonSES.*"
+              # Mailchimp infrastructure
+              - type: "HeaderPattern"
+                header: "x-mailer"
+                pattern: ".*Mailchimp.*"
+              - type: "HeaderPattern"
+                header: "received"
+                pattern: ".*(mailchimp|mcsv\\.net|rsgsv\\.net).*"
+              - type: "HeaderPattern"
+                header: "feedback-id"
+                pattern: ".*:mc$"
+              # Other legitimate email service providers
+              - type: "HeaderPattern"
+                header: "received"
+                pattern: ".*(constantcontact|sendgrid|mailgun|customeriomail)\\.(com|net).*"
+              # Google Groups mailing lists
+              - type: "HeaderPattern"
+                header: "x-google-group-id"
+                pattern: "\\d+"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Tag SendGrid phishing redirects
+  - name: "Tag SendGrid phishing redirects"
+    criteria:
+      type: "PhishingLinkRedirection"
+      max_redirects: 5
+      timeout_seconds: 10
+      check_final_destination: true
+      suspicious_redirect_patterns:
+        - ".*\\.sslip\\.io.*"  # Suspicious wildcard DNS service
+        - ".*wordpress-.*"    # Compromised WordPress sites
+        - ".*\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}.*"  # IP addresses
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Tag SendGrid with free email reply-to
+  - name: "Tag SendGrid with free email reply-to"
+    criteria:
+      type: "And"
+      criteria:
+        # SendGrid infrastructure (multiple detection methods)
+        - type: "Or"
+          criteria:
+            - type: "MailerPattern"
+              pattern: ".*sendgrid\\.net.*"
+            - type: "HeaderPattern"
+              header: "return-path"
+              pattern: ".*@sendgrid\\.net$"
+            - type: "HeaderPattern"
+              header: "received"
+              pattern: ".*sendgrid\\.net.*"
+        # Free email reply-to or sender
+        - type: "Or"
+          criteria:
+            - type: "PhishingFreeEmailReplyTo"
+              free_email_domains: ["outlook.com", "gmail.com", "yahoo.com", "hotmail.com", "aol.com"]
+              allow_same_domain: false
+            - type: "SenderPattern"
+              pattern: ".*@(outlook|gmail|yahoo|hotmail|aol)\\.(com|net)$"
+        # Additional suspicious indicators
+        - type: "Or"
+          criteria:
+            # DKIM failures
+            - type: "HeaderPattern"
+              header: "authentication-results"
+              pattern: "(?i)dkim=fail"
+            # Generic subjects
+            - type: "SubjectPattern"
+              pattern: "(?i)^(welcome|hello|hi|greetings|notification|alert|update|message|important|urgent)$"
+            # Random email patterns
+            - type: "Or"
+              criteria:
+                - type: "SenderPattern"
+                  pattern: ".*[a-z]+\\d{5,}@(gmail|outlook|yahoo|hotmail)\\.(com|net)$"
+                - type: "HeaderPattern"
+                  header: "reply-to"
+                  pattern: ".*[a-z]+\\d{5,}@(gmail|outlook|yahoo|hotmail)\\.(com|net)$"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+# Detect and tag emails that are primarily images with minimal text
+  - name: "Tag image-only emails"
+    criteria:
+      type: "ImageOnlyEmail"
+      max_text_length: 30  # Allow up to 30 characters of text
+      ignore_whitespace: true  # Don't count whitespace as meaningful text
+      check_attachments: false  
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Tag free email reply-to phishing (conservative)
+  - name: "Tag free email reply-to phishing (conservative)"
+    criteria:
+      type: "And"
+      criteria:
+        # Free email reply-to detection
+        - type: "PhishingFreeEmailReplyTo"
+          free_email_domains: ["gmail.com", "yahoo.com", "hotmail.com", "outlook.com", "aol.com", "protonmail.com"]
+          allow_same_domain: false
+        # Exclude legitimate services that properly use free email reply-to
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              # Google services (Calendar, Drive, etc.)
+              - type: "SenderPattern"
+                pattern: ".*@(google|googlemail|gmail)\\.com$"
+              # Legitimate Google Groups (custom domains and groups.google.com)
+              - type: "HeaderPattern"
+                header: "list-id"
+                pattern: "<.*\\.(com|org|net|edu|gov)>$"
+              # Google Groups with X-Google-Group-Id header
+              - type: "HeaderPattern"
+                header: "x-google-group-id"
+                pattern: "\\d+"
+              # Microsoft services
+              - type: "SenderPattern"
+                pattern: ".*@(microsoft|outlook|live|hotmail|msn)\\.com$"
+              # Apple services
+              - type: "SenderPattern"
+                pattern: ".*@(apple|icloud|me)\\.com$"
+              # Other legitimate services that use free email reply-to
+              - type: "SenderPattern"
+                pattern: ".*@(dropbox|slack|zoom|spotify|netflix)\\.com$"
+              # Auto-generated notifications
+              - type: "HeaderPattern"
+                header: "auto-submitted"
+                pattern: "auto-generated"
+              # Calendar/notification services
+              - type: "Or"
+                criteria:
+                  - type: "SenderPattern"
+                    pattern: ".*calendar.*@.*"
+                  - type: "SenderPattern"
+                    pattern: ".*notification.*@.*"
+                  - type: "SubjectPattern"
+                    pattern: "(?i).*(notification|calendar|reminder|meeting|appointment).*"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Tag emails with invalid reply-to DNS resolution (conservative)
+  - name: "Tag emails with invalid reply-to DNS resolution (conservative)"
+    criteria:
+      type: "And"
+      criteria:
+        # DNS validation fails
+        - type: "ReplyToValidation"
+          timeout_seconds: 10        # Longer timeout to avoid network issues
+          check_mx_record: false     # Don't require MX records (many legitimate services don't have them)
+        # Additional suspicious indicators to reduce false positives
+        - type: "Or"
+          criteria:
+            # Free email domains with DNS issues (more suspicious)
+            - type: "HeaderPattern"
+              header: "reply-to"
+              pattern: ".*@(gmail|outlook|yahoo|hotmail|aol|protonmail|zoho)\\.(com|net|org)$"
+            # Suspicious TLDs with DNS issues
+            - type: "HeaderPattern"
+              header: "reply-to"
+              pattern: ".*\\.(tk|ml|ga|cf|top|click|download|loan|racing|review|science|work|party|date|stream|trade|bid|win|cricket|accountant|faith|men|gq)$"
+            # No DKIM authentication (combined with DNS issues)
+            - type: "Not"
+              criteria:
+                type: "HeaderPattern"
+                header: "authentication-results"
+                pattern: "dkim=pass"
+        # Exclude legitimate services that might have DNS quirks
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              # Major email services and their subdomains
+              - type: "HeaderPattern"
+                header: "reply-to"
+                pattern: ".*@.*(plex|netflix|spotify|adobe|dropbox|slack|zoom|salesforce|hubspot|mailchimp|constantcontact|sendgrid|mailgun)\\..*"
+              # Legitimate business domains
+              - type: "HeaderPattern"
+                header: "reply-to"
+                pattern: ".*@.*(amazon|microsoft|google|apple|paypal|ebay|etsy|walmart|target|costco)\\..*"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Tag emails from young domains (comprehensive check)
+  - name: "Tag emails from young domains (comprehensive check)"
+    criteria:
+      type: "And"
+      criteria:
+        # Young domain detection
+        - type: "DomainAge"
+          max_age_days: 365
+          check_sender: true
+          check_reply_to: true
+          check_from_header: true
+          timeout_seconds: 15
+          use_mock_data: false
+        # Additional suspicious indicators (not just young domain alone)
+        - type: "Or"
+          criteria:
+            # DKIM failures (authentication issues)
+            - type: "HeaderPattern"
+              header: "authentication-results"
+              pattern: "(?i)dkim=fail"
+            # Suspicious content patterns
+            - type: "Or"
+              criteria:
+                # Health/pharmaceutical spam
+                - type: "SubjectPattern"
+                  pattern: "(?i).*(testosterone|male.*enhancement|weight.*loss|diet.*pill|viagra|cialis|miracle.*cure|secret.*formula|health.*breakthrough|medicare.*kit|medicare.*essentials|cvs.*medicare|free.*medicare).*"
+                # Financial scams
+                - type: "SubjectPattern"
+                  pattern: "(?i).*(lottery|jackpot|winner|prize|make.*money|find.*money|ancient.*song|effortlessly|helps.*\\d+.*find).*"
+                # Phishing patterns
+                - type: "SubjectPattern"
+                  pattern: "(?i).*(password.*expir|account.*expir|verify.*account|security.*alert|urgent.*action|suspended.*account).*"
+            # Suspicious sender patterns
+            - type: "Or"
+              criteria:
+                - type: "SenderPattern"
+                  pattern: "(?i).*_(testosterone|male|enhancement|lottery|money|winner|admin|security|verify).*@.*"
+                - type: "HeaderPattern"
+                  header: "from"
+                  pattern: "(?i).*(admin|security|verify|support|noreply|no-reply).*"
+        # Exclude legitimate business categories
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              # E-commerce and product platforms
+              - type: "SenderPattern"
+                pattern: ".*@.*(shop|store|market|commerce|retail|product|launch|backer|crowdfund|kickstart|indiegogo|choice|select|pick).*\\.(com|net|org)$"
+              # Technology and startup domains
+              - type: "SenderPattern"
+                pattern: ".*@.*(tech|app|software|platform|service|solution|system|tool|api|cloud|digital|online|web).*\\.(com|net|org|io)$"
+              # Legitimate business patterns
+              - type: "SenderPattern"
+                pattern: ".*@.*(company|corp|inc|llc|ltd|business|enterprise|group|team|studio|agency|consulting|services).*\\.(com|net|org)$"
+              # Product and brand domains
+              - type: "SenderPattern"
+                pattern: ".*@.*(brand|design|creative|innovation|maker|craft|artisan|boutique|collection|series).*\\.(com|net|org)$"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Broader brand protection
+  # Tag brand impersonation from free email
+  - name: "Tag brand impersonation from free email"
+    criteria:
+      type: "And"
+      criteria:
+      - type: "HeaderPattern"
+        header: "from"
+        pattern: "(?i)@(outlook|gmail|yahoo|hotmail)\\.com$"
+      - type: "Or"
+        criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(paypal|amazon|microsoft|apple|google|bank|security|account|verify).*"
+        - type: "HeaderPattern"
+          header: "from"
+          pattern: "(?i).*(paypal|amazon|microsoft|apple|google|bank).*"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Tag bulk spam with undisclosed recipients from free email
+  - name: "Tag bulk spam with undisclosed recipients from free email"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "HeaderPattern"
+          header: "to"
+          pattern: "(?i)undisclosed.{0,15}recipients"
+        - type: "SenderPattern"
+          pattern: ".*@(outlook|gmail|yahoo|hotmail|aol|msn|live|protonmail|icloud|yandex|mail|gmx)\\.(com|net|org|ru)$"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Tag emails with invalid unsubscribe headers
+  - name: "Tag emails with invalid unsubscribe headers"
+    criteria:
+      type: "InvalidUnsubscribeHeaders"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Tag emails with unsubscribe links using IP addresses
+  - name: "Tag emails with unsubscribe links using IP addresses"
+    criteria:
+      type: "UnsubscribeLinkIPAddress"
+      check_ipv4: true
+      check_ipv6: true
+      allow_private_ips: false  # Block private IPs (default)
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  - name: "Tag empty emails from free email services"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@(gmail|outlook|yahoo|hotmail|aol)\\.(com|net|org)$"
+        - type: "EmptyContentEmail"
+          max_text_length: 10
+          ignore_whitespace: true
+          ignore_signatures: true
+          require_empty_subject: false
+          min_subject_length: 5
+          ignore_html_tags: true
+        # Exclude legitimate email patterns
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              # Has attachments
+              - type: "HeaderPattern"
+                header: "x-ms-has-attach"
+                pattern: "yes"
+              - type: "HeaderPattern"
+                header: "content-type"
+                pattern: "multipart/mixed"
+              # Is a reply in a conversation
+              - type: "HeaderPattern"
+                header: "in-reply-to"
+                pattern: ".*"
+              - type: "HeaderPattern"
+                header: "references"
+                pattern: ".*"
+              # Has meaningful subject (not generic)
+              - type: "SubjectPattern"
+                pattern: "(?i).*(re:|fwd:|fw:|reply|forward|wood|electrical|work|project|business|meeting|appointment|schedule|invoice|quote|estimate|contract|service|repair|fix|install|construction|home|house).*"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Tag known abusive Google Group ID 282548616536
+  - name: "Tag known abusive Google Group ID 282548616536"
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "HeaderPattern"
+          header: "x-google-group-id"
+          pattern: "282548616536"
+        - type: "HeaderPattern"
+          header: "X-Google-Group-Id"
+          pattern: "282548616536"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Automatically unsubscribe from known abusive Google Group ID 282548616536
+  - name: "Unsubscribe from abusive Google Group ID 282548616536"
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "HeaderPattern"
+          header: "x-google-group-id"
+          pattern: "282548616536"
+        - type: "HeaderPattern"
+          header: "X-Google-Group-Id"
+          pattern: "282548616536"
+    action:
+      type: "UnsubscribeGoogleGroup"
+      reason: "Automated unsubscribe from known abusive Google Group 282548616536"
+      additional_action:
+        type: "TagAsSpam"
+        header_name: "X-Spam-Flag"
+        header_value: "YES"
+
+  # Tag random Gmail addresses with keyboard mashing patterns
+  - name: "Tag random Gmail addresses with keyboard mashing patterns"
+    criteria:
+      type: "And"
+      criteria:
+        # Gmail address with keyboard mashing patterns or suspicious number patterns
+        - type: "SenderPattern"
+          pattern: "^[a-z]*[fghjkl]{3,}[a-z]*@gmail\\.com$|^[a-z]*[qwerty]{4,}[a-z]*@gmail\\.com$|^[a-z]*[asdf]{3,}[a-z]*@gmail\\.com$|^[a-z]*[zxcv]{3,}[a-z]*@gmail\\.com$|^[a-z]{15,}@gmail\\.com$|^[a-z]{2,}[0-9]{6,}@gmail\\.com$"
+        # Suspicious content indicators
+        - type: "Or"
+          criteria:
+            # DKIM failures
+            - type: "HeaderPattern"
+              header: "authentication-results"
+              pattern: "(?i)dkim=fail"
+            # Order/phishing subjects
+            - type: "SubjectPattern"
+              pattern: "(?i).*(order.*status|order.*#|tracking|shipment|delivery|invoice|receipt|payment|refund|confirm|verification|account|suspended|expired).*"
+            # Name mismatches (different names in From and To)
+            - type: "HeaderPattern"
+              header: "to"
+              pattern: "(?i)[a-z]+ [a-z]+"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Tag Car Emergency Kit and reward kit scams
+  - name: "Tag Car Emergency Kit and reward kit scams"
+    criteria:
+      type: "And"
+      criteria:
+        # Kit delivery/reward subject patterns
+        - type: "SubjectPattern"
+          pattern: "(?i).*(car.*emergency.*kit|emergency.*car.*kit|car.*kit.*confirmed|emergency.*kit.*confirmed|aaa.*car.*kit|car.*safety.*kit|roadside.*kit|auto.*emergency|your.*kit.*is.*queued|kit.*queued.*for.*delivery|kit.*is.*ready|reward.*kit|cvs.*kit|pharmacy.*kit|health.*kit|safety.*kit|tool.*set.*is.*ready|your.*tool.*set|tool.*kit|harbor.*freight.*kit|tools.*ready|tool.*delivery).*"
+        # Suspicious indicators
+        - type: "Or"
+          criteria:
+            # Brand impersonation from non-legitimate domains
+            - type: "And"
+              criteria:
+                - type: "Or"
+                  criteria:
+                    - type: "HeaderPattern"
+                      header: "from"
+                      pattern: "(?i)(aaa|cvs|pharmacy|health.*rewards|safety.*rewards|harbor.*freight|tools)"
+                    - type: "SubjectPattern"
+                      pattern: "(?i)(aaa|cvs|pharmacy|health.*rewards|safety.*rewards|harbor.*freight|tools)"
+                - type: "Not"
+                  criteria:
+                    type: "SenderPattern"
+                    pattern: ".*@(aaa|csaa|cvs|cvshealth|harborfreight)\\.com$"
+            # DKIM failures
+            - type: "HeaderPattern"
+              header: "authentication-results"
+              pattern: "(?i)dkim=(fail|permerror)"
+            # Google infrastructure abuse
+            - type: "SenderPattern"
+              pattern: ".*@.*\\.(onmicrosoft\\.com|gappssmtp\\.com|bounces\\.google\\.com)$"
+            # Suspicious domains with typos
+            - type: "SenderPattern"
+              pattern: ".*@.*(entrprise|enterprize|buisness|compnay|servce|suport|dailydials).*"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Tag Amazon.co.jp brand impersonation from non-Amazon domains
+  - name: "Tag Amazon.co.jp brand impersonation from non-Amazon domains"
+    criteria:
+      type: "And"
+      criteria:
+        # Claims to be from Amazon.co.jp in From header
+        - type: "HeaderPattern"
+          header: "from"
+          pattern: "(?i)amazon\\.co\\.jp"
+        # But sender is NOT from legitimate Amazon domains
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@(amazon\\.co\\.jp|amazon\\.com|amazonses\\.com)$"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Tag suspicious PDF attachments with financial content
+  - name: "Tag suspicious PDF attachments with financial content"
+    criteria:
+      type: "And"
+      criteria:
+        # Has PDF attachments
+        - type: "HeaderPattern"
+          header: "content-type"
+          pattern: "multipart/mixed"
+        # Financial or payment related content
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(paiement|payment|facture|invoice|rappel|reminder|bailleur|landlord|loyer|rent|direct.*pay|pay.*direct|banking|bank.*transfer|wire.*transfer|urgent.*payment).*"
+            - type: "HeaderPattern"
+              header: "to"
+              pattern: "(?i).*(payment|paiement|billing|finance|accounting|bank).*"
+        # Suspicious indicators
+        - type: "Or"
+          criteria:
+            # DKIM failures
+            - type: "HeaderPattern"
+              header: "authentication-results"
+              pattern: "(?i)dkim=fail"
+            # Educational domains (often compromised for financial scams)
+            - type: "SenderPattern"
+              pattern: ".*@.*\\.(edu|ac\\.[a-z]{2}|ugr\\.es|univ-.*|university).*"
+            # Foreign language with financial terms
+            - type: "And"
+              criteria:
+                - type: "SubjectPattern"
+                  pattern: "(?i).*(rappel|paiement|facture|bailleur|loyer).*"
+                - type: "Not"
+                  criteria:
+                    type: "SenderPattern"
+                    pattern: ".*@.*(bank|banque|finance|accounting|payment|billing)\\.(com|fr|ca)$"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Tag emails with RAR attachments (high malware risk)
+  - name: "Tag emails with RAR attachments (high malware risk)"
+    criteria:
+      type: "AttachmentOnlyEmail"
+      max_text_length: 500
+      suspicious_types: ["rar"]
+      min_attachment_size: 1024
+      check_disposition: true
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  - name: "Tag suspicious attachment-only emails"
+    criteria:
+      type: "And"
+      criteria:
+        # Attachment-only email detection
+        - type: "AttachmentOnlyEmail"
+          max_text_length: 100
+          suspicious_types: ["pdf", "doc", "docx", "rar", "zip", "exe"]
+          min_attachment_size: 1024
+          check_disposition: true
+        # Suspicious sender patterns
+        - type: "Or"
+          criteria:
+            # Random Gmail addresses
+            - type: "SenderPattern"
+              pattern: "^[a-z0-9]{6,}@gmail\\.com$"
+            # Other suspicious patterns
+            - type: "SenderPattern"
+              pattern: "^[a-z]{3,}[0-9]{2,}@(gmail|outlook|yahoo|hotmail)\\.com$"
+        # Additional suspicious indicators
+        - type: "Or"
+          criteria:
+            # DKIM failures
+            - type: "HeaderPattern"
+              header: "authentication-results"
+              pattern: "(?i)dkim=fail"
+            # Random subject patterns
+            - type: "SubjectPattern"
+              pattern: "^[A-Z0-9_]{6,}$"
+            # Gmail API usage
+            - type: "HeaderPattern"
+              header: "received"
+              pattern: ".*gmailapi\\.google\\.com.*"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Tag phishing with DKIM failure and domain mismatch
+  - name: "Tag phishing with DKIM failure and domain mismatch"
+    criteria:
+      type: "And"
+      criteria:
+        # DKIM authentication failed
+        - type: "HeaderPattern"
+          header: "authentication-results"
+          pattern: "dkim=fail"
+      
+        # Suspicious TLD
+        - type: "SenderPattern"
+          pattern: ".*@.*\\.(top|tk|ml|ga|cf|click|download|loan|racing|review|science|work|party|date|stream|trade|bid|win|cricket|accountant|faith|men|gq)$"
+      
+        # Free email reply-to
+        - type: "HeaderPattern"
+          header: "reply-to"
+          pattern: ".*@(gmail|outlook|yahoo|hotmail|zoho|aol|protonmail)\\.(com|net|org)$"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Tag bulk financial threats from educational domains
+  - name: "Tag bulk financial threats from educational domains"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "HeaderPattern"
+          header: "to"
+          pattern: "(?i)undisclosed.{0,15}recipients"
+        - type: "SubjectPattern"
+          pattern: "(?i)(unpaid|charges?|amount|\\$[0-9]+\\.[0-9]{2}|activation|order.*underway|underway|processing|pending|awaiting|confirmation)"
+        - type: "SenderPattern"
+          pattern: ".*@.*(edu|school|raiders|athletics|university|college|\\.ac\\.)\\.*"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Tag email service abuse (comprehensive)
+  - name: "Tag email service abuse (comprehensive)"
+    criteria:
+      type: "EmailServiceAbuse"
+      legitimate_services: ["sendgrid.net", "mailchimp.com", "constantcontact.com", "mailgun.com", "sparkpostmail.com", "citebanner.com", "exacttarget.com", "salesforce.com", "pardot.com"]
+      brand_keywords: [
+        # Major tech companies
+        "ebay", "paypal", "amazon", "microsoft", "apple", "google", "netflix", "spotify", "adobe", "dropbox", "slack", "zoom",
+        # Banking and financial institutions
+        "citibank", "citi", "bank of america", "bofa", "chase", "wells fargo", "capital one", "discover", "american express", "amex", 
+        "visa", "mastercard", "venmo", "zelle", "quickpay", "apple pay", "google pay",
+        # Major retailers
+        "walmart", "target", "costco", "home depot", "lowes", "best buy", "macys", "nordstrom",
+        # Sports and outdoor retailers
+        "pure hockey", "dicks sporting goods", "sports authority", "modells", "big 5", "academy sports", "rei", "cabelas", "bass pro shops",
+        # Other major retailers
+        "kohls", "jcpenney", "sears", "bed bath beyond", "pier 1", "williams sonoma", "pottery barn", "crate barrel",
+        # Government and official entities
+        "irs", "social security", "medicare", "usps", "fedex", "ups", "dhl"
+      ]
+      free_email_domains: ["outlook.com", "gmail.com", "yahoo.com", "hotmail.com", "aol.com", "protonmail.com", "icloud.com"]
+      check_reply_to_mismatch: true
+      check_brand_impersonation: true
+      check_suspicious_subjects: true
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Block brand impersonation with DKIM failures
+  # Tag brand impersonation with authentication failures
+  - name: "Tag brand impersonation with authentication failures"
+    criteria:
+      type: "And"
+      criteria:
+        # DKIM authentication failure
+        - type: "HeaderPattern"
+          header: "authentication-results"
+          pattern: "(?i)dkim=fail"
+        # Brand impersonation in From header
+        - type: "Or"
+          criteria:
+            # Sports and retail brands
+            - type: "HeaderPattern"
+              header: "from"
+              pattern: "(?i).*(pure hockey|dicks sporting|sports authority|modells|big 5|academy sports|rei|cabelas|bass pro).*"
+            # Major retailers
+            - type: "HeaderPattern"
+              header: "from"
+              pattern: "(?i).*(walmart|target|costco|home depot|lowes|best buy|macys|nordstrom|kohls|jcpenney|cvs|walgreens|rite aid).*"
+            # Tech companies
+            - type: "HeaderPattern"
+              header: "from"
+              pattern: "(?i).*(amazon|microsoft|apple|google|netflix|spotify|adobe).*"
+            # Financial institutions
+            - type: "HeaderPattern"
+              header: "from"
+              pattern: "(?i).*(paypal|chase|wells fargo|bank of america|citibank|capital one).*"
+            # Healthcare and government services
+            - type: "HeaderPattern"
+              header: "from"
+              pattern: "(?i).*(medicare|medicaid|social security|irs|usps|fedex|ups|dhl).*"
+        # Not from legitimate domain
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              # Pure Hockey legitimate domains
+              - type: "SenderPattern"
+                pattern: ".*@(purehockey|pure-hockey)\\.com$"
+              # Other major brand domains (examples)
+              - type: "SenderPattern"
+                pattern: ".*@(amazon|microsoft|apple|google|netflix|spotify|adobe|paypal|chase|wellsfargo|bankofamerica|citibank|capitalone|walmart|target|costco|homedepot|lowes|bestbuy|macys|nordstrom|cvs|walgreens|riteaid|medicare|medicaid|ssa|irs|usps|fedex|ups|dhl)\\.com$"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Block retargeting spam with suspicious subjects
+  # Tag retargeting spam with suspicious patterns
+  - name: "Tag retargeting spam with suspicious patterns"
+    criteria:
+      type: "And"
+      criteria:
+        # Retargeting/browsing subjects
+        - type: "SubjectPattern"
+          pattern: "(?i).*(browsing.*for|were.*you.*browsing|left.*something|cart.*reminder|still.*interested|finish.*purchase|complete.*order|abandoned.*cart).*"
+        # DKIM failure or suspicious infrastructure
+        - type: "Or"
+          criteria:
+            - type: "HeaderPattern"
+              header: "authentication-results"
+              pattern: "(?i)dkim=fail"
+            - type: "SenderPattern"
+              pattern: ".*@(citebanner|emailbanner|mailbanner|adsbanner|marketingbanner)\\.com$"
+        # Brand impersonation (not from legitimate brand domain)
+        - type: "Or"
+          criteria:
+            - type: "HeaderPattern"
+              header: "from"
+              pattern: "(?i).*(pure hockey|dicks sporting|sports authority|rei|cabelas|bass pro|walmart|target|costco|home depot|best buy).*"
+            - type: "HeaderPattern"
+              header: "from"
+              pattern: "(?i).*(amazon|microsoft|apple|google|netflix|spotify|adobe|paypal).*"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Tag pharmaceutical and health spam
+  - name: "Tag pharmaceutical and health spam"
+    criteria:
+      type: "And"
+      criteria:
+        # Pharmaceutical/health spam patterns
+        - type: "Or"
+          criteria:
+            # Male enhancement and testosterone spam (more specific)
+            - type: "Or"
+              criteria:
+                - type: "SubjectPattern"
+                  pattern: "(?i).*(t-level|testosterone|manhood|male.*enhancement|erectile|libido|stamina.*enhancement|sexual.*performance|enhance.*sexual|boost.*testosterone|enhance.*virility|boost.*libido|virility|potency).*"
+                - type: "HeaderPattern"
+                  header: "from"
+                  pattern: "(?i).*(manhood|testosterone|male.*enhancement|virility|potency|libido).*"
+                - type: "SenderPattern"
+                  pattern: "(?i).*_(manhood|testosterone|male|virility|potency|libido).*@.*"
+            # Weight loss and diet spam
+            - type: "SubjectPattern"
+              pattern: "(?i).*(weight.*loss|lose.*weight|diet.*pill|fat.*burn|belly.*fat|keto|garcinia|forskolin).*"
+            # Urinary and bladder health spam
+            - type: "Or"
+              criteria:
+                - type: "SubjectPattern"
+                  pattern: "(?i).*(empty.*bladder|bladder.*control|urinary.*health|prostate.*health|bladder.*problem|urinary.*problem|frequent.*urination|bladder.*leak|incontinence).*"
+                - type: "HeaderPattern"
+                  header: "from"
+                  pattern: "(?i).*(bladder|urinary|prostate|tonic|health.*supplement|medical.*solution).*"
+                - type: "SenderPattern"
+                  pattern: "(?i).*_(bladder|urinary|prostate|tonic|health|medical).*@.*"
+            # General health and wellness spam
+            - type: "Or"
+              criteria:
+                - type: "SubjectPattern"
+                  pattern: "(?i).*(health.*secret|wellness.*secret|natural.*remedy|herbal.*remedy|health.*breakthrough|medical.*breakthrough|doctor.*secret|ancient.*remedy|joint.*heal|joint.*repair|joint.*replacement|surgery.*alternative|without.*surgery|heal.*joint|repair.*joint|alzheimer|dementia|brain.*health|memory.*loss|cognitive|neurological|drink.*linked|food.*linked|avoid.*this.*drink|ditch.*this.*drink|stop.*drinking|dangerous.*drink|diabetes|diabetic|blood.*sugar|a1c|insulin|reverse.*diabetes|cure.*diabetes|beat.*diabetes|type.*2.*diabetes|blood.*glucose).*"
+                - type: "HeaderPattern"
+                  header: "from"
+                  pattern: "(?i).*(health|wellness|remedy|natural|herbal|medical|doctor|ancient|tonic|supplement|joint|heal|repair|surgery|ditch|avoid|stop|brain|memory|cognitive).*"
+                - type: "SenderPattern"
+                  pattern: "(?i).*(joint|heal|repair|surgery|medical|health|wellness|remedy|natural|ditch|avoid|stop|brain|memory|cognitive).*@.*"
+            # General pharmaceutical spam
+            - type: "Or"
+              criteria:
+                - type: "SubjectPattern"
+                  pattern: "(?i).*(viagra|cialis|levitra|pharmacy|prescription|medication|pills|supplement|cure|treatment).*"
+                - type: "SubjectPattern"
+                  pattern: "(?i).*(secret.*formula|miracle.*cure|doctor.*recommend|clinically.*proven|breakthrough).*"
+            # Suspicious health claims (more specific)
+            - type: "SubjectPattern"
+              pattern: "(?i).*(overnight.*result|instant.*result|rapid.*weight|amazing.*result|incredible.*result|shocking.*result|secret.*health|miracle.*health|breakthrough.*health|revolutionary.*health).*"
+        # Exclude legitimate retailers and services
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              # Major retailers
+              - type: "SenderPattern"
+                pattern: ".*@.*(wayfair|amazon|walmart|target|costco|homedepot|lowes|bestbuy|macys|nordstrom|kohls|jcpenney|overstock|bedbathandbeyond|williams-sonoma|potterybarn|crateandbarrel|pier1|ikea)\\.(com|net)$"
+              # Major e-commerce platforms
+              - type: "SenderPattern"
+                pattern: ".*@.*(aliexpress|alibaba|ebay|etsy|shopify|wish|banggood|gearbest|dhgate|lightinthebox|tomtop|cafago|chinavasion|dealextreme|focalprice|miniinthebox|rosegal|sammydress|zaful|shein|romwe)\\.(com|net)$"
+              # Legitimate health/fitness companies
+              - type: "SenderPattern"
+                pattern: ".*@.*(fitbit|myfitnesspal|weightwatchers|nutrisystem|peloton|nike|adidas|underarmour|lululemon|gymshark)\\.(com|net)$"
+              # Legitimate supplement companies
+              - type: "SenderPattern"
+                pattern: ".*@.*(gnc|vitaminworld|iherb|vitacost|swansonvitamins|puritan|naturemade|centrum|optimumnutrition)\\.(com|net)$"
+              # Major pharmacy chains and healthcare providers
+              - type: "SenderPattern"
+                pattern: ".*@.*(walgreens|cvs|cvshealth|rite-aid|riteaid|pharmacy|rxorder|prescription|medco|express-scripts|expressscripts|caremark|optumrx|humana|aetna|cigna|bluecross|anthem|iqhealth|virginiamason|mayoclinic|clevelandclinic|johnshopkins|mountsinai|cedars-sinai|kp\\.org|kaiserpermanente|sutter|providence|intermountain|adventhealth|commonspirit|ascension|hca|tenet|lifepoint|communityhealth|universalhealth|selectmedical|encompasshealth|kindred|genesis|brookdale|amedisys|lhc|almost-family|chemed|encompass|healthsouth|kindredhealthcare|post-acute|skilled-nursing|rehabilitation|hospice|home-health|medical-center|hospital|clinic|health-system|healthcare|healthpartners|bcbs|blueshield|unitedhealthcare|wellcare|molina|centene|medicaid|medicare)\\.(com|net|org)$"
+              # Financial and investment services
+              - type: "SenderPattern"
+                pattern: ".*@.*(arrived|fundrise|yieldstreet|realty|realtyshares|crowdstreet|roofstock|groundfloor|republic|seedinvest|startengine|wealthfront|betterment|robinhood|schwab|fidelity|vanguard|etrade|tdameritrade)\\.(com|net)$"
+              # Fidelity NetBenefits (health accounts)
+              - type: "SenderPattern"
+                pattern: ".*@.*fidelity\\.netbenefits\\.com$"
+              # Business and productivity services
+              - type: "SenderPattern"
+                pattern: ".*@.*(salesforce|hubspot|mailchimp|constantcontact|sendgrid|mailgun|customer\\.io|intercom|zendesk|slack|microsoft|google|adobe|dropbox|box|zoom|webex|gotomeeting)\\.(com|net)$"
+              # Email service providers (legitimate)
+              - type: "SenderPattern"
+                pattern: ".*@.*\\.(customeriomail|mailgun|sendgrid|constantcontact|mailchimp)\\.(com|net)$"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Block suspicious TLDs and hosting providers
+  # Tag suspicious TLDs and hosting with spam content
+  - name: "Tag suspicious TLDs and hosting with spam content"
+    criteria:
+      type: "And"
+      criteria:
+        # Suspicious TLDs commonly used for spam
+        - type: "Or"
+          criteria:
+            - type: "SenderPattern"
+              pattern: ".*@.*\\.(shop|store|online|site|website|web|click|download|loan|racing|review|science|work|party|date|stream|trade|bid|win|cricket|accountant|faith|men|gq|tk|ml|ga|cf|top|fun|live|life|world|today|news|info|buzz|cool|best|cheap|free|sale|sbs|xyz|pw|cc|tv|me|co|io|ly|be|ws|am|fm|to|cfd|icu|cyou|bond|lol|fans|club|vip|pro|tech)$"
+            - type: "HeaderPattern"
+              header: "received"
+              pattern: ".*(greencloudvps|cheapvps|hostinger|namecheap|godaddy)\\.(com|net).*"
+        # Spam content indicators (more specific)
+        - type: "Or"
+          criteria:
+            # Health/pharmaceutical spam (more specific)
+            - type: "SubjectPattern"
+              pattern: "(?i).*(secret.*health|miracle.*cure|breakthrough.*health|overnight.*result|instant.*result|amazing.*result|incredible.*result|shocking.*result|revolutionary.*health|ripped.*muscle|soaring.*testosterone|boost.*testosterone|enhance.*performance|increase.*stamina|empty.*bladder|bladder.*control|urinary.*health|prostate.*health|natural.*remedy|ancient.*remedy|health.*tonic|joint.*heal|joint.*repair|joint.*replacement|surgery.*alternative|without.*surgery|heal.*joint|repair.*joint).*"
+            # Financial scam patterns
+            - type: "SubjectPattern"
+              pattern: "(?i).*(find.*money|make.*money|effortlessly|ancient.*song|lottery|jackpot|winner|prize|helps.*\\d+.*find|thousands.*discovered).*"
+            # Inappropriate sender names
+            - type: "SenderPattern"
+              pattern: "(?i).*(manhood|testosterone|male|virility|potency|libido|sexy|adult|xxx|davinci_brain|money_maker|lottery_winner|tonic|bladder|urinary|prostate|health|wellness|remedy).*@.*"
+            # Suspicious subject patterns
+            - type: "SubjectPattern"
+              pattern: "(?i).*(grandpa.*secret|doctor.*hate|weird.*trick|one.*simple.*trick|this.*will.*shock|ancient.*song|helps.*\\d+).*"
+        # Exclude legitimate retailers
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(wayfair|amazon|walmart|target|costco|homedepot|lowes|bestbuy|macys|nordstrom|kohls|jcpenney|overstock|bedbathandbeyond|williams-sonoma|potterybarn|crateandbarrel|pier1|ikea|shopify|etsy|ebay|aliexpress|alibaba|wish|banggood|gearbest|dhgate|shein|romwe)\\.(com|net)$"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Block inappropriate sender names and adult content
+  # Tag inappropriate sender names and adult content
+  - name: "Tag inappropriate sender names and adult content"
+    criteria:
+      type: "Or"
+      criteria:
+        # Inappropriate sender names
+        - type: "Or"
+          criteria:
+            - type: "HeaderPattern"
+              header: "from"
+              pattern: "(?i).*(your.*manhood|your.*penis|your.*member|male.*enhancement|testosterone|virility|potency|libido).*"
+            - type: "SenderPattern"
+              pattern: "(?i).*(manhood|penis|member|testosterone|virility|potency|libido|sexy|adult|xxx|porn).*@.*"
+        # Adult/inappropriate email addresses
+        - type: "SenderPattern"
+          pattern: "(?i).*_(manhood|penis|member|testosterone|male|virility|potency|libido|sexy|adult|xxx).*@.*"
+        # Suspicious domain patterns for adult content
+        - type: "SenderPattern"
+          pattern: ".*@.*(adult|xxx|sex|porn|manhood|testosterone|male|virility|enhancement).*\\.(shop|store|online|site|tk|ml|ga|cf|top)$"
+        # Adult content in subject lines
+        - type: "SubjectPattern"
+          pattern: "(?i).*(sex.*industry|penis.*ritual|adult.*content|xxx|porn|sexual.*enhancement|male.*enhancement|grow.*penis|enlarge.*penis|bigger.*penis|sexual.*performance|bedroom.*performance).*"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Block testosterone and male enhancement spam (specific patterns)
+  # Tag testosterone and male enhancement spam patterns
+  - name: "Tag testosterone and male enhancement spam patterns"
+    criteria:
+      type: "And"
+      criteria:
+        # Testosterone/male enhancement content
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(t-level|testosterone|manhood|male.*enhancement|ripped.*grandpa|secret.*to.*send|levels.*soaring|overnight|boost.*testosterone).*"
+            - type: "HeaderPattern"
+              header: "from"
+              pattern: "(?i).*(your.*manhood|testosterone|male.*enhancement|t.*level|boost|enhance).*"
+        # Suspicious infrastructure or patterns
+        - type: "Or"
+          criteria:
+            # .shop domains (commonly used for spam)
+            - type: "SenderPattern"
+              pattern: ".*@.*\\.shop$"
+            # Cheap hosting providers
+            - type: "HeaderPattern"
+              header: "received"
+              pattern: ".*(greencloudvps|cheapvps|hostinger)\\.(com|net).*"
+            # Inappropriate sender names
+            - type: "SenderPattern"
+              pattern: "(?i).*_(manhood|testosterone|male|boost|enhance).*@.*"
+            # Spam subject patterns
+            - type: "SubjectPattern"
+              pattern: "(?i).*(grandpa.*secret|secret.*to|overnight|soaring|ripped|weird.*trick|doctors.*hate).*"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Block financial scams and get-rich-quick schemes
+  # Tag financial scams and get-rich-quick schemes
+  - name: "Tag financial scams and get-rich-quick schemes"
+    criteria:
+      type: "And"
+      criteria:
+        # Suspicious financial content
+        - type: "Or"
+          criteria:
+            # Get-rich-quick and money-making scams
+            - type: "SubjectPattern"
+              pattern: "(?i).*(find.*money|make.*money|earn.*money|easy.*money|fast.*money|quick.*money|effortlessly|ancient.*song|secret.*method|weird.*trick).*"
+            # Lottery and gambling scams (more specific)
+            - type: "SubjectPattern"
+              pattern: "(?i).*(lottery.*winner|jackpot.*winner|you.*won|congratulations.*winner|prize.*winner|sweepstakes.*winner|contest.*winner|lucky.*winner|fortune.*winner|windfall).*"
+            # Investment and trading scams
+            - type: "SubjectPattern"
+              pattern: "(?i).*(investment.*opportunity|trading.*secret|forex.*system|crypto.*mining|bitcoin.*investment|stock.*tip|insider.*trading|guaranteed.*return|passive.*income).*"
+            # Charity and donation scams (advance fee fraud)
+            - type: "SubjectPattern"
+              pattern: "(?i).*(charity.*work|donation|donate.*money|sick.*bed|dying.*wish|inheritance|will.*money|beneficiary|million.*usd|million.*dollars|fund.*transfer|widow|orphan|refugee|disaster.*relief).*"
+            # Business funding and loan scams
+            - type: "SubjectPattern"
+              pattern: "(?i).*(business.*funding|business.*loan|quick.*loan|easy.*loan|guaranteed.*loan|no.*credit.*check|instant.*approval|funding.*available|capital.*funding|investment.*funding|unsecured.*loan|bad.*credit.*loan|emergency.*funding).*"
+            # Credit card and payment processing scams
+            - type: "SubjectPattern"
+              pattern: "(?i).*(credit.*card.*fee|removing.*fee|eliminate.*fee|reduce.*fee|lower.*fee|processing.*fee|merchant.*fee|payment.*fee|transaction.*fee|card.*processing|fee.*elimination|zero.*fee|no.*fee).*"
+        # Exclude legitimate businesses
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              # Major retailers and services
+              - type: "SenderPattern"
+                pattern: ".*@(amazon|amazonses|walmart|target|costco|bestbuy|ebay|paypal|microsoft|google|apple|netflix|spotify|adobe|dropbox)\\.(com|net)$"
+              # Financial institutions
+              - type: "SenderPattern"
+                pattern: ".*@(chase|bankofamerica|wellsfargo|citibank|usbank|capitalone|discover|americanexpress|schwab|fidelity|vanguard|etrade|robinhood)\\.(com|net)$"
+              # Email services with proper authentication
+              - type: "And"
+                criteria:
+                  - type: "HeaderPattern"
+                    header: "authentication-results"
+                    pattern: "(?i)dkim=pass"
+                  - type: "SenderPattern"
+                    pattern: ".*@(gmail|outlook|yahoo|hotmail)\\.(com|net)$"
+        # Suspicious sender names for financial scams
+        - type: "Or"
+          criteria:
+            - type: "HeaderPattern"
+              header: "from"
+              pattern: "(?i).*(davinci.*brain|money.*maker|wealth.*builder|fortune.*teller|lottery.*winner|cash.*flow).*"
+            - type: "SenderPattern"
+              pattern: "(?i).*(davinci_brain|money_maker|wealth_builder|fortune_teller|lottery_winner|cash_flow).*@.*"
+        # Financial scam claims
+        - type: "SubjectPattern"
+          pattern: "(?i).*(helps.*\\d+.*find|\\d+.*people.*found|thousands.*discovered|millions.*earned|guaranteed.*income|no.*work.*required).*"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Block WordPress compromise and malicious links
+  # Tag WordPress compromise and malicious phishing links
+  - name: "Tag WordPress compromise and malicious phishing links"
+    criteria:
+      type: "And"
+      criteria:
+        # Main detection logic
+        - type: "Or"
+          criteria:
+            # WordPress admin compromise patterns
+            - type: "SubjectPattern"
+              pattern: "(?i).*(password.*expir|password.*notif|account.*expir|login.*expir|security.*alert|verify.*account).*"
+            # Malicious WordPress paths (common in phishing)
+            - type: "Or"
+              criteria:
+                # WordPress admin paths used for phishing
+                - type: "HeaderPattern"
+                  header: "received"
+                  pattern: ".*/wp-admin/.*"
+        # Exclude legitimate account verification services
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              # Legitimate pharmacy and healthcare services
+              - type: "SenderPattern"
+                pattern: ".*@(express-scripts|cvs|walgreens|rite-aid|optum|humana|anthem|aetna|cigna|bluecross|kaiser|unitedhealth)\\.(com|net)$"
+              # Legitimate authentication services
+              - type: "SenderPattern"
+                pattern: ".*@(okta|auth0|ping|onelogin|duo|microsoft|google|apple|amazon)\\.(com|net)$"
+              # Okta infrastructure
+              - type: "HeaderPattern"
+                header: "received"
+                pattern: ".*okta\\.com.*"
+              # Express Scripts specific
+              - type: "HeaderPattern"
+                header: "from"
+                pattern: ".*express-scripts.*"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Tag domain impersonation in display names with DKIM failures
+  - name: "Tag domain impersonation in display names with DKIM failures"
+    criteria:
+      type: "And"
+      criteria:
+        # Domain impersonation in From display name (baddomain.com in display name)
+        - type: "HeaderPattern"
+          header: "from"
+          pattern: "(?i).*baddomain\\.com.*<.*@.*>.*"
+        # But sender is NOT from baddomain.com
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@baddomain\\.com$"
+        # DKIM authentication failure
+        - type: "HeaderPattern"
+          header: "authentication-results"
+          pattern: "(?i)dkim=fail"
+        # Password/security related content OR email delivery issues
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(password.*expir|password.*notif|account.*expir|security.*alert|login.*expir|verify.*account|account.*suspend|email.*delivery.*issue|delivery.*issue|email.*problem|mail.*delivery.*fail|bounce.*notification|undelivered.*mail|delivery.*status|email.*not.*delivered).*"
+            - type: "HeaderPattern"
+              header: "reply-to"
+              pattern: "(?i).*@.*"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Block password expiration phishing attempts
+  # Tag password expiration phishing attempts
+  - name: "Tag password expiration phishing attempts"
+    criteria:
+      type: "And"
+      criteria:
+        # Password expiration subject patterns
+        - type: "SubjectPattern"
+          pattern: "(?i).*(password.*expir|password.*notif|account.*expir|login.*expir|security.*alert|verify.*account|account.*suspend|password.*reset|credentials.*expir|ssl.*certificate.*renewal|certificate.*renewal|ssl.*expir|certificate.*expir|certificate.*deferred|ssl.*deferred|domain.*expir|hosting.*expir|website.*expir|renewal.*deferred|certificate.*notif|ssl.*notif).*"
+        # Not from legitimate domain
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@baddomain\\.com$"
+        # Suspicious indicators
+        - type: "Or"
+          criteria:
+            # DKIM failures
+            - type: "HeaderPattern"
+              header: "authentication-results"
+              pattern: "(?i)dkim=fail"
+            # External suspicious domains
+            - type: "SenderPattern"
+              pattern: ".*@.*(remix|music|song|temp|test|demo|maintenance|service|support|security|verify|update|login|portal).*\\.(com|net|org)$"
+            # Reply-to mismatch (not from baddomain.com)
+            - type: "And"
+              criteria:
+                - type: "HeaderPattern"
+                  header: "reply-to"
+                  pattern: ".*@.*"
+                - type: "Not"
+                  criteria:
+                    type: "HeaderPattern"
+                    header: "reply-to"
+                    pattern: ".*@baddomain\\.com.*"
+            # Suspicious links in body (WordPress compromise)
+            - type: "HeaderPattern"
+              header: "body"
+              pattern: ".*/wp-admin/.*"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Block Portuguese and international phishing
+  # Tag Portuguese and international phishing attempts
+  - name: "Tag Portuguese and international phishing attempts"
+    criteria:
+      type: "And"
+      criteria:
+        # Portuguese/international phishing patterns
+        - type: "Or"
+          criteria:
+            # Portuguese financial/administrative terms - From header
+            - type: "HeaderPattern"
+              header: "from"
+              pattern: "(?i).*(administra.*o|transa.*es|digitais|financeiro|banco|documento|contrato|revis.*o|verifica.*o|seguran.*a|autentica.*o|mercadolivre|mercado.*livre|suporte|atendimento|vendas|compras|delegacia|policia|autoridade|registro|ocorrencia|boletim).*"
+            # Portuguese financial/administrative terms - Subject
+            - type: "SubjectPattern"
+              pattern: "(?i).*(documento|contrato|transa.*o|administra.*o|verifica.*o|revis.*o|dispon.*vel|urgente|importante|seguran.*a|detalhes.*do.*seu.*pedido|pedido|mercadolivre|mercado.*livre|compra|venda|entrega|pagamento|fatura|boleto|pendente|assinatura|protocolo|delegacia|policia|registro.*ocorrencia|boletim.*ocorrencia|aviso.*sobre).*"
+            # Spanish financial/administrative terms - From header
+            - type: "HeaderPattern"
+              header: "from"
+              pattern: "(?i).*(administraci.*n|transacci.*n|digitales|financiero|banco|documento|contrato|revisi.*n|verificaci.*n|seguridad|autenticaci.*n).*"
+            # Spanish financial/administrative terms - Subject
+            - type: "SubjectPattern"
+              pattern: "(?i).*(documento|contrato|transacci.*n|administraci.*n|verificaci.*n|revisi.*n|disponible|urgente|importante|seguridad).*"
+            # French financial/administrative terms - From header
+            - type: "HeaderPattern"
+              header: "from"
+              pattern: "(?i).*(administration|transaction|num.*rique|financier|banque|document|contrat|r.*vision|v.*rification|s.*curit.*|authentification).*"
+            # French financial/administrative terms - Subject
+            - type: "SubjectPattern"
+              pattern: "(?i).*(document|contrat|transaction|administration|v.*rification|r.*vision|disponible|urgent|important|s.*curit.*).*"
+        # Suspicious infrastructure
+        - type: "Or"
+          criteria:
+            # DKIM failures
+            - type: "HeaderPattern"
+              header: "authentication-results"
+              pattern: "(?i)dkim=fail"
+            # Google Cloud hosting
+            - type: "HeaderPattern"
+              header: "received"
+              pattern: ".*\\.bc\\.googleusercontent\\.com.*"
+            # Suspicious domains
+            - type: "SenderPattern"
+              pattern: ".*@.*\\.(online|site|website|tk|ml|ga|cf|top|shop|store)$"
+            # Random subdomains
+            - type: "SenderPattern"
+              pattern: ".*@[a-z0-9]{4,8}\\.[a-z]+\\.(com|net|org|online)$"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Tag Portuguese financial phishing (broader detection)
+  - name: "Tag Portuguese financial phishing (broader detection)"
+    criteria:
+      type: "And"
+      criteria:
+        # Portuguese financial/administrative content
+        - type: "Or"
+          criteria:
+            # Financial terms in subject
+            - type: "SubjectPattern"
+              pattern: "(?i).*(financiamento.*aprovado|documento.*pendente|pendente.*assinatura|protocolo.*\\d+|contrato.*assinatura|assinatura.*digital|certificado.*digital|documento.*digital|aprovado.*documento|documento.*aprovado).*"
+            # Administrative/legal terms
+            - type: "SubjectPattern"
+              pattern: "(?i).*(certisign|certificado|assinatura|protocolo|documento|contrato|financiamento|aprovado|pendente).*"
+        # From suspicious or generic domains (not major brands)
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@(certisign|docusign|adobe|microsoft|google|itau|bradesco|santander|bb|caixa|nubank|inter|original|c6bank|safra|votorantim|sicredi|sicoob|banrisul|bnb|banese|banpara|brb|banese|banestes|banese|banpara|brb|banese|banestes)\\.com(\\.br)?$"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Block document and contract scams
+  # Tag document and contract scam attempts
+  - name: "Tag document and contract scam attempts"
+    criteria:
+      type: "And"
+      criteria:
+        # Document/contract scam patterns
+        - type: "Or"
+          criteria:
+            # Document-related subjects (multiple languages)
+            - type: "SubjectPattern"
+              pattern: "(?i).*(document.*available|contract.*available|document.*review|contract.*review|documento.*dispon|contrato.*dispon|document.*urgent|contract.*urgent).*"
+            # Administrative/financial authority impersonation
+            - type: "Or"
+              criteria:
+                - type: "HeaderPattern"
+                  header: "from"
+                  pattern: "(?i).*(administration|administra.*o|administraci.*n|transaction|transa.*o|transacci.*n|digital.*transaction|financial.*administration|document.*administration).*"
+                - type: "SenderPattern"
+                  pattern: "(?i).*(admin|administration|transaction|document|contract|financial|digital).*\\d+@.*"
+        # Suspicious infrastructure or authentication
+        - type: "Or"
+          criteria:
+            # DKIM failures
+            - type: "HeaderPattern"
+              header: "authentication-results"
+              pattern: "(?i)dkim=fail"
+            # Cloud hosting (Google, AWS, etc.)
+            - type: "HeaderPattern"
+              header: "received"
+              pattern: ".*(googleusercontent|amazonaws|digitalocean)\\.com.*"
+            # Suspicious TLDs
+            - type: "SenderPattern"
+              pattern: ".*@.*\\.(online|site|website|tk|ml|ga|cf|top|shop|store|click)$"
+            # Random domain patterns
+            - type: "SenderPattern"
+              pattern: ".*@[a-z0-9]{4,8}\\.[a-z]+online\\.(com|net|org)$"
+        # Not from legitimate document/contract services
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@(docusign|hellosign|adobe|pandadoc|signnow|echosign|rightfax|esignlive|signrequest|signable)\\.(com|net)$"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Tag .shop domain spam campaigns
+  - name: "Tag .shop domain spam campaigns"
+    criteria:
+      type: "And"
+      criteria:
+        # .shop domain
+        - type: "SenderPattern"
+          pattern: ".*@.*\\.shop$"
+        # Spam campaign patterns
+        - type: "Or"
+          criteria:
+            # Health/medical spam content
+            - type: "Or"
+              criteria:
+                - type: "SubjectPattern"
+                  pattern: "(?i).*(empty.*bladder|bladder.*control|t-level|testosterone|manhood|male.*enhancement|weight.*loss|health.*secret|natural.*remedy|ancient.*remedy|tonic|supplement|joint.*heal|joint.*repair|joint.*replacement|surgery.*alternative|without.*surgery|heal.*joint|repair.*joint|alzheimer|dementia|brain.*health|memory.*loss|cognitive|neurological|drink.*linked|food.*linked|avoid.*this.*drink|ditch.*this.*drink|stop.*drinking|dangerous.*drink|diabetes|diabetic|blood.*sugar|a1c|insulin|reverse.*diabetes|cure.*diabetes|beat.*diabetes|type.*2.*diabetes|blood.*glucose|toenail.*fungus|nail.*fungus|foot.*fungus|fungus.*vanish|soak.*feet|feet.*soak|vanish.*fungus|eliminate.*fungus|tinnitus|hearing.*loss|ear.*ringing|stop.*eating|harvard.*warns|doctors.*warn|study.*reveals|research.*shows|scientists.*discover|constipation|bowel.*trick|bowel.*movement|apple.*cider.*vinegar|digestive.*health|gut.*health|colon.*cleanse|detox|cleanse|listerine.*on.*your.*toes|pour.*listerine|listerine.*toes|weird.*but.*genius|toenails|toe.*nails|can.*t.*get.*out.*of.*bed|no.*energy|tired.*all.*the.*time|exhausted|fatigue|boost.*energy|increase.*energy|vitamin.*deficiency|low.*energy|harvard.*stretch|stretch.*your.*foot|foot.*stretch|stretch.*like.*this|poor.*balance|balance.*problem).*"
+                - type: "HeaderPattern"
+                  header: "from"
+                  pattern: "(?i).*(tonic|health|wellness|remedy|natural|herbal|medical|bladder|urinary|prostate|testosterone|manhood|enhancement|joint|heal|repair|surgery|ditch|avoid|stop|brain|memory|cognitive|constipation|bowel|digestive|gut|colon|detox|cleanse|toenails|nails|fungus|vitamin|supplement|energy|boost|fatigue|tired).*"
+                - type: "SenderPattern"
+                  pattern: "(?i).*(joint|heal|repair|surgery|medical|health|wellness|remedy|natural|ditch|avoid|stop|brain|memory|cognitive).*@.*"
+            # Financial/lottery spam content
+            - type: "Or"
+              criteria:
+                - type: "SubjectPattern"
+                  pattern: "(?i).*(find.*money|make.*money|lottery|jackpot|ancient.*song|effortlessly|helps.*\\d+.*find|davinci.*brain).*"
+                - type: "HeaderPattern"
+                  header: "from"
+                  pattern: "(?i).*(money|lottery|jackpot|davinci|brain|wealth|fortune|cash).*"
+            # Service/promotional spam content
+            - type: "Or"
+              criteria:
+                - type: "SubjectPattern"
+                  pattern: "(?i).*(service.*promotion|promotional.*offer|special.*deal|limited.*offer|exclusive.*access|messages.*waiting|waiting.*review|pending.*messages|messages.*pending|admin.*support|system.*notification|account.*notification).*"
+                - type: "HeaderPattern"
+                  header: "from"
+                  pattern: "(?i).*(service|promotion|deal|offer|exclusive).*"
+            # Reward/prize and brand impersonation spam
+            - type: "Or"
+              criteria:
+                # Reward and prize scams
+                - type: "SubjectPattern"
+                  pattern: "(?i).*(reward.*you|rewards.*you|you.*won|winner|prize|congratulations|selected.*for|chosen.*for|claim.*your|expires.*soon|limited.*time|trailer.*reward|gift.*card|free.*gift|exclusive.*offer|special.*offer).*"
+                # Brand impersonation from .shop domains
+                - type: "And"
+                  criteria:
+                    - type: "SubjectPattern"
+                      pattern: "(?i).*(tractor.*supply|home.*depot|lowes|walmart|target|costco|amazon|best.*buy|cvs|walgreens|aaa|state.*farm|geico|progressive).*"
+                    - type: "Not"
+                      criteria:
+                        type: "SenderPattern"
+                        pattern: ".*@(tractorsupply|homedepot|lowes|walmart|target|costco|amazon|bestbuy|cvs|walgreens|aaa|statefarm|geico|progressive)\\.(com|net)$"
+            - type: "Or"
+              criteria:
+                - type: "SubjectPattern"
+                  pattern: "(?i).*(don't.*miss.*out|limited.*time|first.*application|special.*offer|\\$\\d+\\.\\d+|discount|save.*\\$|act.*now|call.*now|free.*estimate|partner|resources|application|treatment|service).*"
+                - type: "HeaderPattern"
+                  header: "from"
+                  pattern: "(?i).*(partner|resources|service|treatment|application|lawn|green|care|maintenance|discount|offer|deal).*"
+                - type: "SenderPattern"
+                  pattern: "(?i).*(partner|resources|service|treatment|application|lawn|green|care|maintenance).*@.*"
+            # Suspicious sender patterns
+            - type: "SenderPattern"
+              pattern: "(?i).*_(tonic|health|wellness|remedy|bladder|urinary|prostate|testosterone|manhood|money|lottery|brain).*@.*"
+        # Return-path campaign pattern (same spam operation)
+        - type: "HeaderPattern"
+          header: "return-path"
+          pattern: ".*\\d+-\\d+-\\d+-\\d+-.*=.*@mail\\.[a-z]+\\.shop.*"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Tag SendGrid phishing using heuristic scoring (scalable approach)
+  - name: "Tag SendGrid phishing using heuristic scoring (scalable approach)"
+    criteria:
+      type: "And"
+      criteria:
+        # SendGrid infrastructure (required)
+        - type: "Or"
+          criteria:
+            - type: "HeaderPattern"
+              header: "return-path"
+              pattern: ".*@.*sendgrid\\.net$"
+            - type: "HeaderPattern"
+              header: "received"
+              pattern: ".*sendgrid\\.net.*"
+        # Multiple suspicious indicators (heuristic scoring)
+        - type: "Or"
+          criteria:
+            # High-confidence phishing patterns (any one triggers)
+            - type: "And"
+              criteria:
+                # Generic business subjects
+                - type: "SubjectPattern"
+                  pattern: "(?i).*(thank.*you.*for.*(your.*(purchase|order|payment|shopping)|joining|subscribing|signing.*up|shopping.*with)|your.*(order|purchase|payment|subscription|membership).*is.*(ready|complete|confirmed|active)|payment.*(received|confirmed|processed)|purchase.*(confirmation|receipt)|order.*(confirmation|receipt)|welcome.*to.*(prime|membership|subscription)|order.*#.*wal-.*\\d+|order.*#.*amz-.*\\d+|order.*#.*tgt-.*\\d+|case.*#.*\\d+|payment.*declined|payment.*failed|billing.*issue|update.*billing|your.*walmart.*order|order.*summary.*\\(.*#|walmart.*order.*#|walmart.*order.*summary).*"
+                # Authentication issues OR unknown domain
+                - type: "Or"
+                  criteria:
+                    - type: "HeaderPattern"
+                      header: "authentication-results"
+                      pattern: "(?i)dkim=fail"
+                    - type: "Not"
+                      criteria:
+                        type: "SenderPattern"
+                        pattern: ".*@(amazon|ebay|paypal|stripe|square|shopify|etsy|walmart|target|bestbuy|homedepot|lowes|macys|nordstrom|apple|microsoft|google)\\.(com|net)$"
+            # Medium-confidence patterns (require multiple indicators)
+            - type: "And"
+              criteria:
+                # Generic subjects
+                - type: "SubjectPattern"
+                  pattern: "(?i)^(order|purchase|payment|transaction|invoice|receipt|delivery|shipping|account|notification|alert|update|confirmation|case|ticket|support|help|service).*"
+                # Multiple red flags
+                - type: "Or"
+                  criteria:
+                    # Authentication failure
+                    - type: "HeaderPattern"
+                      header: "authentication-results"
+                      pattern: "(?i)dkim=fail"
+                    # Generic unsubscribe
+                    - type: "HeaderPattern"
+                      header: "list-unsubscribe"
+                      pattern: "https://mc\\.sendgrid\\.com/"
+                    # Short/suspicious domain
+                    - type: "SenderPattern"
+                      pattern: ".*@[a-z]{3,8}\\.(com|net|org)$"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Tag SendGrid with generic subjects (no DKIM requirement)
+  - name: "Tag SendGrid with generic subjects (no DKIM requirement)"
+    criteria:
+      type: "And"
+      criteria:
+        # SendGrid infrastructure
+        - type: "Or"
+          criteria:
+            - type: "HeaderPattern"
+              header: "return-path"
+              pattern: ".*@.*sendgrid\\.net$"
+            - type: "HeaderPattern"
+              header: "received"
+              pattern: ".*sendgrid\\.net.*"
+        # Generic subjects that are commonly used for phishing
+        - type: "SubjectPattern"
+          pattern: "(?i)^(order.*details|order.*status|order.*confirmation|transaction.*details|transaction.*receipt|payment.*details|invoice.*details|receipt.*details|delivery.*details|shipping.*details|address.*update|address.*confirmation|confirmation.*for.*your|update.*confirmation|\\$\\d+\\.\\d+.*sent|money.*sent|payment.*sent|transfer.*complete|funds.*sent|\\$\\d+.*transfer|receipt.*#\\d+|invoice.*#\\d+|transaction.*#\\d+|\\$\\d+\\.\\d+.*charged|\\$\\d+\\.\\d+.*billed|\\$\\d+\\.\\d+.*paid|payment.*charged|payment.*billed|application.*information|application.*details|information.*request|document.*information|account.*information|card.*application.*confirmation|credit.*card.*application|visa.*card.*application.*confirmation|visa.*card.*application|application.*confirmation|suspicious.*transaction.*alert|thank.*you.*for.*your.*purchase|zelle.*transfer.*receipt|zelle.*payment.*receipt|zelle.*receipt|venmo.*transfer.*receipt|venmo.*payment.*receipt|cashapp.*transfer.*receipt|paypal.*transfer.*receipt|wire.*transfer.*receipt|bank.*transfer.*receipt|transfer.*receipt|payment.*receipt)$"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Report and tag SendGrid abuse with DKIM failures and generic subjects
+  - name: "Report and tag SendGrid abuse with DKIM failures and generic subjects"
+    criteria:
+      type: "And"
+      criteria:
+        # SendGrid infrastructure
+        - type: "Or"
+          criteria:
+            - type: "HeaderPattern"
+              header: "return-path"
+              pattern: ".*@sendgrid\\.net$"
+            - type: "HeaderPattern"
+              header: "received"
+              pattern: ".*sendgrid\\.net.*"
+        # DKIM failure
+        - type: "HeaderPattern"
+          header: "authentication-results"
+          pattern: "(?i)dkim=fail"
+        # Generic/suspicious patterns
+        - type: "Or"
+          criteria:
+            # Generic subjects (including multi-word patterns)
+            - type: "SubjectPattern"
+              pattern: "(?i).*(welcome|hello|hi|greetings|notification|alert|update|message|important|urgent|test|transaction|document|file|info|information|details|report|summary).*"
+            # Financial phishing subjects
+            - type: "SubjectPattern"
+              pattern: "(?i).*(processing.*fee|one.*time.*fee|payment.*required|fee.*required|account.*fee|service.*fee|verification.*fee|transaction.*fee|paypal|payment.*pending|payment.*failed|payment.*declined|invoice|receipt|refund|chargeback|thank.*you.*for.*your.*purchase|purchase.*confirmation|order.*confirmation|payment.*confirmation|transaction.*complete).*"
+            # Order number patterns
+            - type: "SubjectPattern"
+              pattern: "(?i).*(order.*#|order.*number|order.*:\\s*\\d|#.*\\d{3,}|order.*\\d{3,}).*"
+            # Free email sender or reply-to
+            - type: "Or"
+              criteria:
+                - type: "SenderPattern"
+                  pattern: ".*@(gmail|outlook|yahoo|hotmail|aol)\\.(com|net)$"
+                - type: "HeaderPattern"
+                  header: "reply-to"
+                  pattern: ".*@(gmail|outlook|yahoo|hotmail|aol)\\.(com|net)$"
+            # Random email patterns
+            - type: "Or"
+              criteria:
+                - type: "SenderPattern"
+                  pattern: ".*[a-z]+\\d{5,}@(gmail|outlook|yahoo|hotmail)\\.(com|net)$"
+                - type: "HeaderPattern"
+                  header: "reply-to"
+                  pattern: ".*[a-z]+\\d{5,}@(gmail|outlook|yahoo|hotmail)\\.(com|net)$"
+    action:
+      type: "ReportAbuse"
+      service_provider: "sendgrid"
+      include_headers: true
+      include_body: false
+      report_message: "SendGrid infrastructure abuse with DKIM failure and suspicious patterns"
+      additional_action:
+        type: "TagAsSpam"
+        header_name: "X-Spam-Flag"
+        header_value: "YES"
+
+  # Block PayPal phishing attempts
+  # Tag PayPal phishing attempts
+  - name: "Tag PayPal phishing attempts"
+    criteria:
+      type: "And"
+      criteria:
+        # PayPal-related content
+        - type: "Or"
+          criteria:
+            # PayPal phishing subjects
+            - type: "SubjectPattern"
+              pattern: "(?i).*(processing.*fee|one.*time.*fee|payment.*required|fee.*required|account.*fee|service.*fee|verification.*fee|transaction.*fee|paypal|payment.*pending|payment.*failed|payment.*declined|invoice.*paypal|paypal.*invoice|refund.*paypal|paypal.*refund).*"
+            # PayPal in sender name (but not from PayPal)
+            - type: "HeaderPattern"
+              header: "from"
+              pattern: "(?i).*paypal.*"
+        # Not from legitimate PayPal
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@(paypal|paypal-communication)\\.(com|net)$"
+        # Suspicious indicators
+        - type: "Or"
+          criteria:
+            # Free email senders
+            - type: "SenderPattern"
+              pattern: ".*@(gmail|outlook|yahoo|hotmail|aol)\\.(com|net)$"
+            # DKIM failures
+            - type: "HeaderPattern"
+              header: "authentication-results"
+              pattern: "(?i)dkim=fail"
+            # Email service abuse (SendGrid, etc.)
+            - type: "Or"
+              criteria:
+                - type: "HeaderPattern"
+                  header: "return-path"
+                  pattern: ".*@sendgrid\\.net$"
+                - type: "HeaderPattern"
+                  header: "received"
+                  pattern: ".*(sendgrid|mailchimp|constantcontact|mailgun)\\.net.*"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Block Amazon brand impersonation attempts
+  # Tag Amazon brand impersonation attempts
+  - name: "Tag Amazon brand impersonation attempts"
+    criteria:
+      type: "And"
+      criteria:
+        # Amazon brand in From header
+        - type: "HeaderPattern"
+          header: "from"
+          pattern: "(?i).*amazon.*"
+        # Not from legitimate Amazon domains
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@(amazon|amazonses|amazon-corp)\\.(com|net)$"
+        # Suspicious indicators
+        - type: "Or"
+          criteria:
+            # Free email senders
+            - type: "SenderPattern"
+              pattern: ".*@(gmail|outlook|yahoo|hotmail|aol)\\.(com|net)$"
+            # DKIM failures
+            - type: "HeaderPattern"
+              header: "authentication-results"
+              pattern: "(?i)dkim=fail"
+            # Email service abuse
+            - type: "Or"
+              criteria:
+                - type: "HeaderPattern"
+                  header: "return-path"
+                  pattern: ".*@sendgrid\\.net$"
+                - type: "HeaderPattern"
+                  header: "received"
+                  pattern: ".*(sendgrid|mailchimp|constantcontact|mailgun)\\.net.*"
+            # Order-related subjects
+            - type: "SubjectPattern"
+              pattern: "(?i).*(order.*#|order.*number|order.*:\\s*\\d|#.*\\d{3,}|order.*\\d{3,}|delivery|shipment|tracking|wal-.*\\d+|amz-.*\\d+|tgt-.*\\d+|bb-.*\\d+|hd-.*\\d+|cvs-.*\\d+|ebay.*\\d+|etsy.*\\d+).*"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Tag Twilio brand impersonation attempts
+  - name: "Tag Twilio brand impersonation attempts"
+    criteria:
+      type: "And"
+      criteria:
+        # Twilio brand in From header or subject
+        - type: "Or"
+          criteria:
+            - type: "HeaderPattern"
+              header: "from"
+              pattern: "(?i).*twilio.*"
+            - type: "SubjectPattern"
+              pattern: "(?i).*twilio.*"
+        # Not from legitimate Twilio domains
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@(twilio|sendgrid)\\.(com|net)$"
+        # Suspicious indicators
+        - type: "Or"
+          criteria:
+            # Payment/billing issues
+            - type: "SubjectPattern"
+              pattern: "(?i).*(payment.*declined|payment.*failed|billing.*issue|update.*billing|case.*#).*"
+            # DKIM failures and errors
+            - type: "HeaderPattern"
+              header: "authentication-results"
+              pattern: "(?i)dkim=(fail|temperror)"
+            # SendGrid infrastructure abuse
+            - type: "HeaderPattern"
+              header: "return-path"
+              pattern: ".*@.*sendgrid\\.net$"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Block suspicious Gmail addresses with phishing patterns
+  # Tag suspicious Gmail addresses with phishing patterns
+  - name: "Tag suspicious Gmail addresses with phishing patterns"
+    criteria:
+      type: "And"
+      criteria:
+        # Gmail address
+        - type: "SenderPattern"
+          pattern: ".*@gmail\\.com$"
+        # Suspicious indicators
+        - type: "Or"
+          criteria:
+            # Random character patterns (10+ consecutive letters/numbers)
+            - type: "SenderPattern"
+              pattern: "^[a-z0-9]{10,}@gmail\\.com$"
+            # DKIM failures
+            - type: "HeaderPattern"
+              header: "authentication-results"
+              pattern: "(?i)dkim=fail"
+            # Order/phishing subjects with random patterns
+            - type: "And"
+              criteria:
+                - type: "SubjectPattern"
+                  pattern: "(?i).*(order.*status|order.*#|order.*number|tracking|shipment|delivery|invoice|receipt|payment|refund).*"
+                - type: "SenderPattern"
+                  pattern: "^[a-z]{8,}[0-9]*@gmail\\.com$"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Block Microsoft 365/Google Workspace brand impersonation
+  # Tag Microsoft 365/Google Workspace brand impersonation
+  - name: "Tag Microsoft 365/Google Workspace brand impersonation"
+    criteria:
+      type: "And"
+      criteria:
+        # Microsoft 365 or Google Workspace infrastructure
+        - type: "Or"
+          criteria:
+            - type: "SenderPattern"
+              pattern: ".*@.*\\.onmicrosoft\\.com$"
+            - type: "HeaderPattern"
+              header: "received"
+              pattern: ".*(gappssmtp|google\\.com).*"
+        # Brand impersonation in From header
+        - type: "HeaderPattern"
+          header: "from"
+          pattern: "(?i).*(harbor.*freight|home.*depot|lowes|walmart|target|costco|amazon|fedex|ups|dhl|usps|dispatch.*team|delivery.*team|shipping.*team|tool.*set|package.*delivery).*"
+        # Not from legitimate domains
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@(harborfreight|homedepot|lowes|walmart|target|costco|amazon|fedex|ups|dhl|usps)\\.(com|net)$"
+        # Suspicious indicators
+        - type: "Or"
+          criteria:
+            # DKIM failures
+            - type: "HeaderPattern"
+              header: "authentication-results"
+              pattern: "(?i)dkim=fail"
+            # Delivery/shipping scam subjects
+            - type: "SubjectPattern"
+              pattern: "(?i).*(tool.*set|package.*delivery|shipment.*ready|delivery.*secured|order.*ready|dispatch|shipping.*notification).*"
+            # Random codes/tracking numbers
+            - type: "SubjectPattern"
+              pattern: "(?i).*#[a-z0-9]{5,}\\*?.*"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Japanese subject
+  - name: "Tag Japanese content"
+    criteria:
+      type: "SubjectContainsLanguage"
+      language: "japanese"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  - name: "Enhanced DocuSign abuse and impersonation detection"
+    criteria:
+      type: "Or"
+      criteria:
+        # Original DocuSign infrastructure abuse
+        - type: "DocuSignAbuse"
+          check_reply_to_mismatch: true      # Check for non-DocuSign reply-to addresses
+          check_panic_subjects: true         # Check for urgent/threatening subjects
+          check_suspicious_encoding: true    # Check for suspicious base64 encoding
+          min_indicators: 2                  # Require at least 2 indicators
+        # Direct DocuSign impersonation
+        - type: "And"
+          criteria:
+            # Claims to be from DocuSign domain
+            - type: "SenderPattern"
+              pattern: ".*@docusign\\.com$"
+            # But doesn't originate from DocuSign infrastructure
+            - type: "Not"
+              criteria:
+                type: "Or"
+                criteria:
+                  # Real DocuSign infrastructure patterns
+                  - type: "HeaderPattern"
+                    header: "received"
+                    pattern: ".*docusign\\.(net|com).*"
+                  - type: "HeaderPattern"
+                    header: "message-id"
+                    pattern: ".*@.*docusign\\.(net|com).*"
+                  # Real DocuSign DKIM
+                  - type: "HeaderPattern"
+                    header: "dkim-signature"
+                    pattern: "d=docusign\\.(net|com)"
+        # Portuguese/foreign DocuSign document scams
+        - type: "And"
+          criteria:
+            # DocuSign-related content
+            - type: "Or"
+              criteria:
+                - type: "SenderPattern"
+                  pattern: ".*@docusign\\.com$"
+                - type: "HeaderPattern"
+                  header: "from"
+                  pattern: "(?i).*(docusign|documento).*"
+                - type: "SubjectPattern"
+                  pattern: "(?i).*(docusign|documento.*digital|assinatura.*digital).*"
+            # Suspicious infrastructure indicators
+            - type: "Or"
+              criteria:
+                # Suspicious TLDs
+                - type: "HeaderPattern"
+                  header: "received"
+                  pattern: ".*\\.(autos|tk|ml|ga|cf|top|click|site|info|biz).*"
+                # Client ID patterns
+                - type: "HeaderPattern"
+                  header: "return-path"
+                  pattern: ".*@cliente[0-9]+\\."
+                # Root user patterns
+                - type: "HeaderPattern"
+                  header: "return-path"
+                  pattern: ".*root@.*"
+                # Foreign language document scams
+                - type: "SubjectPattern"
+                  pattern: "(?i).*(documento|assinatura|protocolo|seu|esta|pronto|analise|pendente|aguardando|disponivel|revisar).*"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  - name: "Tag SendGrid abuse with free email sender"
+    criteria:
+      type: "And"
+      criteria:
+        # Detect SendGrid infrastructure
+        - type: "Or"
+          criteria:
+            - type: "HeaderPattern"
+              header: "return-path"
+              pattern: ".*@sendgrid\\.net$"
+            - type: "HeaderPattern"
+              header: "received"
+              pattern: ".*sendgrid\\.net.*"
+        # Detect free email sender OR reply-to
+        - type: "Or"
+          criteria:
+            # Free email sender
+            - type: "SenderPattern"
+              pattern: ".*@(aol|gmail|outlook|yahoo|hotmail)\\.(com|net)$"
+            # Free email reply-to
+            - type: "HeaderPattern"
+              header: "reply-to"
+              pattern: ".*@(aol|gmail|outlook|yahoo|hotmail)\\.(com|net)$"
+        # Suspicious patterns (expanded)
+        - type: "Or"
+          criteria:
+            # Generic business subjects
+            - type: "SubjectPattern"
+              pattern: "(?i)(order|confirmation|receipt|invoice|payment|delivery)"
+            # Order number patterns
+            - type: "SubjectPattern"
+              pattern: "(?i).*(order.*#|order.*number|order.*:\\s*\\d|#.*\\d{3,}|order.*\\d{3,}).*"
+            # Financial phishing subjects
+            - type: "SubjectPattern"
+              pattern: "(?i).*(processing.*fee|one.*time.*fee|payment.*required|fee.*required|account.*fee|service.*fee|verification.*fee|transaction.*fee|paypal|payment.*pending|payment.*failed|payment.*declined|refund|chargeback|thank.*you.*for.*your.*purchase|purchase.*confirmation|order.*confirmation|payment.*confirmation|transaction.*complete).*"
+            # Generic/vague subjects
+            - type: "SubjectPattern"
+              pattern: "(?i)^(welcome|hello|hi|greetings|notification|alert|update|message|important|urgent|transaction|document|file|info|information|details|report|summary)$"
+            # Random Gmail patterns
+            - type: "Or"
+              criteria:
+                - type: "SenderPattern"
+                  pattern: ".*[a-z]+\\d{5,}@gmail\\.com$"
+                - type: "HeaderPattern"
+                  header: "reply-to"
+                  pattern: ".*[a-z]+\\d{5,}@gmail\\.com$"
+    action:
+      type: "ReportAbuse"
+      service_provider: "sendgrid"
+      include_headers: true
+      include_body: false
+      report_message: "SendGrid infrastructure abuse with free email sender and suspicious patterns"
+      additional_action:
+        type: "TagAsSpam"
+        header_name: "X-Spam-Flag"
+        header_value: "YES"
+
+  - name: "Tag Google Groups brand impersonation and reward scams"
+    criteria:
+      type: "GoogleGroupsAbuse"
+      suspicious_domains: ["*pool*.com", "*.tk", "*.ml", "*.ga", "*.top", "*.shop", "*aceh*", "*texas*", "*name*"]
+      reward_keywords: ["temu", "reward", "survey", "customer experience", "prize", "won", "winner", "congratulations", "luxury", "pillows", "marriott", "mariott", "hotel", "aaa", "car kit", "emergency kit"]
+      suspicious_sender_names: ["temu", "reward", "your_", "customer", "marriott", "mariott", "hotel", "support", "customer-support", "aaa", "emergency"]
+      check_domain_reputation: true
+      check_reward_subjects: true
+      check_suspicious_senders: true
+      min_indicators: 2
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  - name: "Tag sophisticated email spoofing attacks"
+    criteria:
+      type: "And"
+      criteria:
+        # MAILER-DAEMON return-path abuse
+        - type: "HeaderPattern"
+          header: "return-path"
+          pattern: "(?i).*mailer-daemon.*"
+        # DKIM authentication failures
+        - type: "HeaderPattern"
+          header: "authentication-results"
+          pattern: "(?i)dkim=(fail|permerror|temperror)"
+        # Suspicious domains with mixed case patterns
+        - type: "SenderPattern"
+          pattern: ".*@.*[A-Z]{2,}[a-z]{2,}[A-Z]{2,}.*\\.com$"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  - name: "Tag suspicious mailto-only unsubscribe (excluding legitimate services)"
+    criteria:
+      type: "And"
+      criteria:
+        # Detect mailto-only unsubscribe links
+        - type: "UnsubscribeMailtoOnly"
+          allow_mixed: true   # Only flag if ALL links are mailto
+        # Exclude legitimate business services
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              # Document signing services
+              - type: "SenderPattern"
+                pattern: ".*@(signnow|docusign|hellosign|pandadoc|adobe)\\.com$"
+              # Email marketing platforms that legitimately use mailto
+              - type: "SenderPattern"
+                pattern: ".*@(mailchimp|constantcontact|campaignmonitor)\\.com$"
+              # Other legitimate services known to use mailto unsubscribe
+              - type: "SenderPattern"
+                pattern: ".*@(pdffiller)\\.com$"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Tag SendGrid tax authority impersonation scams
+  - name: "Tag SendGrid tax authority impersonation scams"
+    criteria:
+      type: "And"
+      criteria:
+        # SendGrid infrastructure
+        - type: "Or"
+          criteria:
+            - type: "HeaderPattern"
+              header: "return-path"
+              pattern: ".*@sendgrid\\.net$"
+            - type: "HeaderPattern"
+              header: "received"
+              pattern: ".*sendgrid\\.net.*"
+        # Free email sender
+        - type: "SenderPattern"
+          pattern: ".*@(outlook|gmail|yahoo|hotmail|aol)\\.(com|net)$"
+        # Tax/Government impersonation
+        - type: "SubjectPattern"
+          pattern: "(?i).*(tax|irs|revenue|evasion|audit|refund|penalty|notice|official|authority).*"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  - name: "Unsubscribe from Google Groups brand impersonation scams"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "HeaderPattern"
+          header: "list-id"
+          pattern: ".*\\.(site|tk|ml|ga|top).*"
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(aaa|temu|amazon|reward|prize|sephora|beauty|won|winner|congratulations|selected|chosen).*"
+            - type: "HeaderPattern"
+              header: "from"
+              pattern: "(?i).*(reward|prize|emergency.*kit|sephora|beauty|won|winner).*"
+    action:
+      type: "UnsubscribeGoogleGroup"
+      reason: "Automated unsubscribe from brand impersonation scam"
+      additional_action:
+        type: "TagAsSpam"
+        header_name: "X-Spam-Flag"
+        header_value: "YES"
+
+  # Tag SendGrid purchase phishing with unsubscribe brand spoofing
+  - name: "Tag SendGrid purchase phishing with unsubscribe brand spoofing"
+    criteria:
+      type: "And"
+      criteria:
+        # SendGrid infrastructure
+        - type: "HeaderPattern"
+          header: "return-path"
+          pattern: ".*@sendgrid\\.net$"
+        # Free email sender
+        - type: "SenderPattern"
+          pattern: ".*@(aol|gmail|outlook|yahoo|hotmail)\\.(com|net)$"
+        # Purchase/transaction subjects
+        - type: "SubjectPattern"
+          pattern: "(?i).*(thank.*you.*purchase|purchase.*confirmation|order.*confirmation|receipt|transaction).*"
+        # Brand spoofing in unsubscribe links
+        - type: "HeaderPattern"
+          header: "list-unsubscribe"
+          pattern: "(?i).*(amazon|ebay|etsy|paypal|apple|google|walmart|target)\\.com.*"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Tag suspicious Google Cloud bulk emails
+  - name: "Tag suspicious Google Cloud bulk emails"
+    criteria:
+      type: "And"
+      criteria:
+        # Google Cloud infrastructure
+        - type: "HeaderPattern"
+          header: "received"
+          pattern: ".*\\.bc\\.googleusercontent\\.com.*"
+        # Suspicious indicators
+        - type: "Or"
+          criteria:
+            # Bulk/auto-generated
+            - type: "Or"
+              criteria:
+                - type: "HeaderPattern"
+                  header: "precedence"
+                  pattern: "bulk"
+                - type: "HeaderPattern"
+                  header: "auto-submitted"
+                  pattern: "auto-generated"
+            # DKIM failures
+            - type: "HeaderPattern"
+              header: "authentication-results"
+              pattern: "(?i)dkim=fail"
+            # Suspicious content patterns
+            - type: "Or"
+              criteria:
+                - type: "SubjectPattern"
+                  pattern: "(?i).*(document.*dispon|contrato.*dispon|administra.*o|transa.*es|verifica.*o|revis.*o|urgente|importante).*"
+                - type: "HeaderPattern"
+                  header: "from"
+                  pattern: "(?i).*(administra.*o|transaction|document|contract|financial|digital).*\\d+@.*"
+        # Suspicious domain patterns (enhanced)
+        - type: "Or"
+          criteria:
+            - type: "SenderPattern"
+              pattern: ".*@[a-z0-9]{5,}\\.[a-z0-9]{5,}\\.(me|tk|ml|ga|cf|top|click|site)$"
+            - type: "SenderPattern"
+              pattern: ".*@[a-z0-9]{4,8}\\.[a-z]+online\\.(com|net|org)$"
+            - type: "SenderPattern"
+              pattern: ".*@.*\\.(online|site|website|click|download)$"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Tag cloud backup and storage phishing attacks
+  - name: "Tag cloud backup and storage phishing attacks"
+    criteria:
+      type: "And"
+      criteria:
+        # Cloud backup/storage phishing subjects
+        - type: "SubjectPattern"
+          pattern: "(?i).*(cloud.*backup.*stopped|backup.*stopped|storage.*alert|cloud.*storage.*alert|restore.*backup|backup.*expired|storage.*full|cloud.*suspended|backup.*failed|storage.*warning).*"
+        # Suspicious indicators
+        - type: "Or"
+          criteria:
+            # DKIM failures
+            - type: "HeaderPattern"
+              header: "authentication-results"
+              pattern: "(?i)dkim=(fail|permerror)"
+            # Unicode obfuscation in From header
+            - type: "HeaderPattern"
+              header: "from"
+              pattern: "=\\?UTF-8\\?B\\?"
+            # Suspicious domains
+            - type: "SenderPattern"
+              pattern: ".*@.*\\.(info|tk|ml|ga|cf|top|click|xyz)$"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Tag emails with Unicode mathematical symbol obfuscation
+  - name: "Tag emails with Unicode mathematical symbol obfuscation"
+    criteria:
+      type: "And"
+      criteria:
+        # Unicode mathematical symbols in From header (Base64 encoded)
+        - type: "HeaderPattern"
+          header: "from"
+          pattern: "=\\?UTF-8\\?B\\?[A-Za-z0-9+/=]{50,}\\?="
+        # DKIM failures
+        - type: "HeaderPattern"
+          header: "authentication-results"
+          pattern: "(?i)dkim=(fail|permerror)"
+        # External suspicious source
+        - type: "Or"
+          criteria:
+            - type: "HeaderPattern"
+              header: "received"
+              pattern: ".*\\.(xyz|tk|ml|ga|cf|top|click).*"
+            - type: "HeaderPattern"
+              header: "return-path"
+              pattern: "(?i)mailer-daemon"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Tag sophisticated MAILER-DAEMON + brand impersonation scams
+  - name: "Tag sophisticated MAILER-DAEMON + brand impersonation scams"
+    criteria:
+      type: "And"
+      criteria:
+        # MAILER-DAEMON abuse
+        - type: "HeaderPattern"
+          header: "return-path"
+          pattern: "(?i)mailer-daemon"
+        # Authentication problems (DKIM failures or missing DKIM)
+        - type: "Or"
+          criteria:
+            - type: "HeaderPattern"
+              header: "authentication-results"
+              pattern: "(?i)dkim=(permerror|fail)"
+            # No DKIM signature at all (suspicious for MAILER-DAEMON)
+            - type: "Not"
+              criteria:
+                type: "HeaderPattern"
+                header: "dkim-signature"
+                pattern: ".*"
+        # Prize/giveaway content or Unicode obfuscation
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(won|free|prize|giveaway|winner|congratulations|beauty.*box|gift|financial|gold|company|investment|crypto|bitcoin|shipment.*pending|confirm.*info|confirm.*your.*info|please.*confirm|delivery.*pending|package.*pending|shipment.*confirmation|delivery.*confirmation).*"
+            # Unicode mathematical symbols (common obfuscation)
+            - type: "SubjectPattern"
+              pattern: ".*[𝗔-𝘇𝘈-𝘻𝙰-𝚉𝚊-𝚣𝐀-𝑧𝑨-𝒵𝒶-𝓏𝓐-𝔃𝔄-𝔷𝕬-𝖟𝖠-𝗓𝗔-𝘇𝘈-𝘻𝙰-𝚉𝚊-𝚣].*"
+            # Base64 encoded subjects (suspicious)
+            - type: "HeaderPattern"
+              header: "subject"
+              pattern: "=\\?UTF-8\\?B\\?.*"
+        # Brand impersonation
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(sephora|lancome|ulta|amazon|apple|microsoft|google|target|walmart|trader.*joe|rewards|missing.*out|major.*rewards|urgent.*reward).*"
+            - type: "HeaderPattern"
+              header: "from"
+              pattern: "(?i).*(sephora|department|beauty|cosmetic|giveaway|trader.*joe|survey.*about|shipment.*pending|support.*|delivery.*pending|package.*pending|confirm.*info).*"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Block sophisticated brand impersonation with keyword stuffing
+  # Tag keyword stuffing in From header
+  - name: "Tag keyword stuffing in From header"
+    criteria:
+      type: "And"
+      criteria:
+        # Keyword stuffing or suspicious From header patterns
+        - type: "Or"
+          criteria:
+            # Very long From header (>100 chars)
+            - type: "HeaderPattern"
+              header: "from"
+              pattern: ".{100,}"
+            # Random alphanumeric strings (20+ chars)
+            - type: "HeaderPattern"
+              header: "from"
+              pattern: ".*[A-Za-z0-9]{20,}.*"
+            # Multiple business keywords crammed together
+            - type: "HeaderPattern"
+              header: "from"
+              pattern: "(?i).*(support.*admin|admin.*help|help.*service|service.*account|account.*setup|setup.*mail|mail.*online|online.*desk|desk.*team|team.*center|center.*security|security.*verify|verify.*update|update.*confirm).*"
+            # Excessive business keyword patterns (alternative approach)
+            - type: "HeaderPattern"
+              header: "from"
+              pattern: "(?i).*(support.*help.*service|admin.*setup.*mail|account.*verify.*update|online.*desk.*team|help.*service.*account|setup.*mail.*online).*"
+        # Brand impersonation indicators
+        - type: "Or"
+          criteria:
+            - type: "HeaderPattern"
+              header: "from"
+              pattern: "(?i).*(coinbase|paypal|amazon|microsoft|google|apple|netflix|spotify|adobe|dropbox|slack|zoom|salesforce|hubspot|bank|visa|mastercard|amex|chase|wells.*fargo|bofa|citibank|support|admin|helpdesk).*"
+            - type: "SubjectPattern"
+              pattern: "(?i).*(coinbase|paypal|amazon|microsoft|google|apple|netflix|bank|visa|mastercard).*"
+        # Not from legitimate domains
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@(coinbase|coinbase-mail|cb-mail|paypal|paypal-mail|pp-mail|amazon|amazonses|amazon-mail|microsoft|outlook|live|hotmail|msn|google|gmail|googlemail|apple|icloud|me|netflix|spotify|adobe|dropbox|slack|zoom|salesforce|hubspot)\\.com$"
+    action:
+      type: "Reject"
+      message: "Keyword stuffing in From header detected - likely brand impersonation scam"
+
+  # Block sender spoofing and domain impersonation attacks (simplified)
+  # Tag sender spoofing and domain impersonation
+  - name: "Tag sender spoofing and domain impersonation"
+    criteria:
+      type: "And"
+      criteria:
+        # Sender claims to be from our domain
+        - type: "SenderPattern"
+          pattern: ".*@baddomain\\.com$"
+        # External origin (Google Cloud or localhost)
+        - type: "Or"
+          criteria:
+            - type: "HeaderPattern"
+              header: "received"
+              pattern: ".*googleusercontent\\.com.*"
+            - type: "HeaderPattern"
+              header: "received"
+              pattern: ".*localhost.*"
+        # No proper DKIM from our domain
+        - type: "Not"
+          criteria:
+            type: "HeaderPattern"
+            header: "dkim-signature"
+            pattern: "d=baddomain\\.com"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Simple test rule for domain spoofing debugging
+  - name: "Test domain spoofing detection"
+    criteria:
+      type: "And"
+      criteria:
+        # Simple sender pattern
+        - type: "SenderPattern"
+          pattern: ".*@baddomain\\.com$"
+        # Google Cloud origin
+        - type: "HeaderPattern"
+          header: "received"
+          pattern: ".*googleusercontent\\.com.*"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
