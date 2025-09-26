@@ -66,8 +66,8 @@ test_email() {
         return
     fi
     
-    # Run test
-    result=$($MILTER --test-email "$email_file" -c "$CONFIG" 2>/dev/null)
+    # Run test (keep stderr to avoid evaluation bugs)
+    result=$($MILTER --test-email "$email_file" -c "$CONFIG" 2>&1)
     
     # Check if email was flagged
     if echo "$result" | grep -q "Result: TAG AS SPAM\|Result: REJECT"; then
