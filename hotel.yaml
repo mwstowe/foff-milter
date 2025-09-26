@@ -40,14 +40,20 @@ rules:
     message: SparkPost blocked for internal queue
 - name: Tag SEO and marketing spam
   criteria:
-    type: Or
+    type: And
     criteria:
-    - type: SubjectPattern
-      pattern: (?i).*(why.*pay.*for.*ads|pay.*for.*results|seo.*service|web.*ranking|search.*engine.*optimization|increase.*website.*traffic|boost.*your.*ranking|get.*more.*leads|digital.*marketing.*service|website.*promotion|online.*marketing|web.*development.*service|rank.*higher.*on.*google|improve.*your.*seo|guaranteed.*results|first.*page.*google).*
     - type: Or
       criteria:
-      - type: SenderPattern
-        pattern: .*@.*(seo|webrank|marketing|digitalmarketing|webdev|webdesign|onlinemarketing|searchengine|webpromo|leadgen|webservice).*\.(com|net|org)$
+      - type: SubjectPattern
+        pattern: (?i).*(why.*pay.*for.*ads|pay.*for.*results|seo.*service|web.*ranking|search.*engine.*optimization|increase.*website.*traffic|boost.*your.*ranking|get.*more.*leads|digital.*marketing.*service|website.*promotion|online.*marketing|web.*development.*service|rank.*higher.*on.*google|improve.*your.*seo|guaranteed.*results|first.*page.*google).*
+      - type: And
+        criteria:
+        - type: SenderPattern
+          pattern: .*@.*(seo|webrank|marketing|digitalmarketing|webdev|webdesign|onlinemarketing|searchengine|webpromo|leadgen|webservice).*\.(com|net|org)$
+        - type: Not
+          criteria:
+            type: SenderPattern
+            pattern: .*@.*(lyftmail|ubermail|amazonses|mailchimp|constantcontact|sendgrid|mailgun|sparkpost|mandrill|postmark|salesforce|hubspot|marketo|pardot|eloqua|responsys|exacttarget|campaignmonitor|aweber|getresponse|convertkit|activecampaign|klaviyo|sendinblue|mailjet|pepipost|socketlabs|elastic|postmark|sendpulse|moosend|benchmark|emma|vertical|icontact|mad|streamsend|campaigner|directmail|mailerlite|omnisend|drip|autopilot|intercom|drift|zendesk|freshworks|zoho).*\.(com|net|org)$
       - type: HeaderPattern
         header: from
         pattern: (?i).*(seo.*specialist|marketing.*expert|web.*developer|digital.*marketer|lead.*generation|website.*promotion).*
@@ -735,9 +741,8 @@ rules:
       criteria:
       - type: SubjectPattern
         pattern: (?i).*(car.*emergency.*kit|emergency.*car.*kit|car.*kit.*confirmed|emergency.*kit.*confirmed|aaa.*car.*kit|car.*safety.*kit|roadside.*kit|auto.*emergency|your.*kit.*is.*queued|kit.*queued.*for.*delivery|kit.*is.*ready|reward.*kit|cvs.*kit|pharmacy.*kit|health.*kit|safety.*kit|tool.*set.*is.*ready|your.*tool.*set|tool.*kit|harbor.*freight.*kit|tools.*ready|tool.*delivery).*
-      - type: HeaderPattern
-        header: subject
-        pattern: =\?UTF-8\?B\?WW91ciBGcmVlIENhciBFbWVyZ2VuY3kgS2l0IGlzIFJlYWR5IQ==\?=
+      - type: SubjectPattern
+        pattern: .*WW91ciBGcmVlIENhciBFbWVyZ2VuY3kgS2l0IGlzIFJlYWR5IQ==.*
     - type: Or
       criteria:
       - type: And
@@ -755,7 +760,7 @@ rules:
             pattern: .*@(aaa|csaa|cvs|cvshealth|harborfreight)\.com$
       - type: HeaderPattern
         header: authentication-results
-        pattern: (?i)dkim=(fail|permerror)
+        pattern: (?i)dkim=(fail|permerror|temperror)
       - type: SenderPattern
         pattern: .*@.*\.(onmicrosoft\.com|gappssmtp\.com|bounces\.google\.com)$
       - type: SenderPattern
@@ -1359,6 +1364,10 @@ rules:
         pattern: .*@.*\.(online|site|website|tk|ml|ga|cf|top|shop|store)$
       - type: SenderPattern
         pattern: .*@[a-z0-9]{4,8}\.[a-z]+\.(com|net|org|online)$
+    - type: Not
+      criteria:
+        type: SenderPattern
+        pattern: .*@.*(newegg|amazon|ebay|walmart|target|bestbuy|homedepot|lowes|costco|samsclub|macys|nordstrom|zappos|overstock|wayfair|etsy|shopify|paypal|stripe|square)\.com$
   action:
     type: TagAsSpam
     header_name: X-Spam-Flag

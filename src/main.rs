@@ -489,7 +489,7 @@ async fn test_email_file(config: &Config, email_file: &str) {
             if let Some((key, value)) = line.split_once(':') {
                 let key = key.trim().to_lowercase();
                 let value = value.trim().to_string();
-                
+
                 last_header_key = Some(key.clone());
 
                 // Extract sender from Return-Path or From
