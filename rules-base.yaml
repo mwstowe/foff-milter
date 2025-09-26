@@ -873,16 +873,15 @@ rules:
     criteria:
       type: "And"
       criteria:
-        # Kit delivery/reward subject patterns
+        # Kit delivery/reward subject patterns (both encoded and decoded)
         - type: "Or"
           criteria:
             # Regular text patterns
             - type: "SubjectPattern"
               pattern: "(?i).*(car.*emergency.*kit|emergency.*car.*kit|car.*kit.*confirmed|emergency.*kit.*confirmed|aaa.*car.*kit|car.*safety.*kit|roadside.*kit|auto.*emergency|your.*kit.*is.*queued|kit.*queued.*for.*delivery|kit.*is.*ready|reward.*kit|cvs.*kit|pharmacy.*kit|health.*kit|safety.*kit|tool.*set.*is.*ready|your.*tool.*set|tool.*kit|harbor.*freight.*kit|tools.*ready|tool.*delivery).*"
-            # Base64 encoded Car Emergency Kit patterns
-            - type: "HeaderPattern"
-              header: "subject"
-              pattern: "=\\?UTF-8\\?B\\?WW91ciBGcmVlIENhciBFbWVyZ2VuY3kgS2l0IGlzIFJlYWR5IQ==\\?="
+            # Base64 encoded patterns (common Car Emergency Kit encodings)
+            - type: "SubjectPattern"
+              pattern: ".*WW91ciBGcmVlIENhciBFbWVyZ2VuY3kgS2l0IGlzIFJlYWR5IQ==.*"
         # Suspicious indicators
         - type: "Or"
           criteria:
@@ -903,7 +902,7 @@ rules:
             # DKIM failures
             - type: "HeaderPattern"
               header: "authentication-results"
-              pattern: "(?i)dkim=(fail|permerror)"
+              pattern: "(?i)dkim=(fail|permerror|temperror)"
             # Google infrastructure abuse
             - type: "SenderPattern"
               pattern: ".*@.*\\.(onmicrosoft\\.com|gappssmtp\\.com|bounces\\.google\\.com)$"
