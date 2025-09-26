@@ -1,0 +1,53 @@
+socket_path: "/var/run/foff-milter.sock"
+default_action:
+  type: "Accept"
+
+rules:
+  # Block AAA car emergency kit scams
+  - name: "Block AAA car emergency kit scams"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "HeaderPattern"
+          header: "from"
+          pattern: "(?i)AAA.*car.*emergency.*kit"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@(aaa|csaa)\\.com$"
+    action:
+      type: "Reject"
+      message: "AAA car emergency kit scam blocked"
+
+  # Block failed DKIM with brand impersonation
+  - name: "Block failed DKIM brand impersonation"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "HeaderPattern"
+          header: "authentication-results"
+          pattern: "dkim=fail"
+        - type: "HeaderPattern"
+          header: "from"
+          pattern: "(?i)(AAA|paypal|amazon|microsoft|apple|google|ebay)"
+    action:
+      type: "Reject"
+      message: "Failed DKIM authentication with brand impersonation"
+
+  # Block car emergency kit reward scams
+  - name: "Block car emergency kit reward scams"
+    criteria:
+      type: "SubjectPattern"
+      pattern: "(?i)(car.*emergency.*kit|emergency.*car.*kit).*ready"
+    action:
+      type: "Reject"
+      message: "Car emergency kit scam blocked"
+
+  # Block suspicious go-au.net domain
+  - name: "Block suspicious go-au.net domain"
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@go-au\\.net$"
+    action:
+      type: "Reject"
+      message: "Suspicious domain blocked"
