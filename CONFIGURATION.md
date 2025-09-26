@@ -37,7 +37,14 @@ The milter currently uses a single YAML configuration file (`hotel.yaml`) that c
 
 ### 3. Example Whitelist Configuration
 
-Create `whitelist-production.yaml`:
+Copy the example and customize for your environment:
+
+```bash
+cp examples/whitelist-production.yaml.example whitelist.yaml
+# Edit whitelist.yaml with your trusted senders and domains
+```
+
+Example `whitelist.yaml`:
 
 ```yaml
 # Production whitelist configuration
