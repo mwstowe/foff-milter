@@ -466,6 +466,7 @@ async fn test_email_file(config: &Config, email_file: &str) {
     let recipients = vec!["test@example.com".to_string()]; // Default recipient
     let mut body = String::new();
     let mut in_headers = true;
+    let mut last_header_key: Option<String> = None;
 
     for line in email_content.lines() {
         if in_headers {
@@ -476,9 +477,11 @@ async fn test_email_file(config: &Config, email_file: &str) {
 
             if line.starts_with(' ') || line.starts_with('\t') {
                 // Continuation of previous header
-                if let Some((_, last_value)) = headers.iter_mut().last() {
-                    last_value.push(' ');
-                    last_value.push_str(line.trim());
+                if let Some(ref key) = last_header_key {
+                    if let Some(existing_value) = headers.get_mut(key) {
+                        existing_value.push(' ');
+                        existing_value.push_str(line.trim());
+                    }
                 }
                 continue;
             }
@@ -486,6 +489,8 @@ async fn test_email_file(config: &Config, email_file: &str) {
             if let Some((key, value)) = line.split_once(':') {
                 let key = key.trim().to_lowercase();
                 let value = value.trim().to_string();
+                
+                last_header_key = Some(key.clone());
 
                 // Extract sender from Return-Path or From
                 if key == "return-path" {
