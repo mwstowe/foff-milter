@@ -1586,6 +1586,11 @@ rules:
             # Random subdomains
             - type: "SenderPattern"
               pattern: ".*@[a-z0-9]{4,8}\\.[a-z]+\\.(com|net|org|online)$"
+        # Exclude legitimate e-commerce and business domains
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(newegg|amazon|ebay|walmart|target|bestbuy|homedepot|lowes|costco|samsclub|macys|nordstrom|zappos|overstock|wayfair|etsy|shopify|paypal|stripe|square)\\.com$"
     action:
       type: "TagAsSpam"
       header_name: "X-Spam-Flag"
