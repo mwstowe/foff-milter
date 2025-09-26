@@ -1655,26 +1655,32 @@ impl FilterEngine {
                     if let Some(header_value) = context.headers.get(header) {
                         // DEBUG: Log exact header value for authentication-results
                         if header == "authentication-results" {
-                            log::info!("DEBUG: authentication-results header value: '{}'", header_value);
+                            log::info!(
+                                "DEBUG: authentication-results header value: '{}'",
+                                header_value
+                            );
                             log::info!("DEBUG: pattern to match: '{}'", pattern);
                         }
-                        
+
                         if let Some(regex) = self.compiled_patterns.get(pattern) {
                             // Decode MIME headers before pattern matching
                             let decoded_value = crate::milter::decode_mime_header(header_value);
                             let matches = regex.is_match(&decoded_value);
-                            
+
                             // DEBUG: Log pattern matching result for authentication-results
                             if header == "authentication-results" {
                                 log::info!("DEBUG: decoded value: '{}'", decoded_value);
                                 log::info!("DEBUG: regex match result: {}", matches);
                             }
-                            
+
                             return matches;
                         }
                     } else if header == "authentication-results" {
                         log::info!("DEBUG: authentication-results header NOT FOUND in context");
-                        log::info!("DEBUG: available headers: {:?}", context.headers.keys().collect::<Vec<_>>());
+                        log::info!(
+                            "DEBUG: available headers: {:?}",
+                            context.headers.keys().collect::<Vec<_>>()
+                        );
                     }
                     false
                 }
