@@ -45,7 +45,7 @@ rules:
       header_value: "Domain less than 1 year old"
 "#;
 
-    let config: Config = serde_yaml::from_str(config_yaml)?;
+    let config: Config = serde_yml::from_str(config_yaml)?;
     let engine = FilterEngine::new(config)?;
 
     // Recreate the spam email context from your example
