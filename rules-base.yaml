@@ -26,16 +26,22 @@ rules:
   # Tag SEO and marketing spam
   - name: "Tag SEO and marketing spam"
     criteria:
-      type: "Or"
+      type: "And"
       criteria:
-        # SEO and web marketing subjects
-        - type: "SubjectPattern"
-          pattern: "(?i).*(why.*pay.*for.*ads|pay.*for.*results|seo.*service|web.*ranking|search.*engine.*optimization|increase.*website.*traffic|boost.*your.*ranking|get.*more.*leads|digital.*marketing.*service|website.*promotion|online.*marketing|web.*development.*service|rank.*higher.*on.*google|improve.*your.*seo|guaranteed.*results|first.*page.*google).*"
-        # Marketing service domains and senders
         - type: "Or"
           criteria:
-            - type: "SenderPattern"
-              pattern: ".*@.*(seo|webrank|marketing|digitalmarketing|webdev|webdesign|onlinemarketing|searchengine|webpromo|leadgen|webservice).*\\.(com|net|org)$"
+            # SEO and web marketing subjects
+            - type: "SubjectPattern"
+              pattern: "(?i).*(why.*pay.*for.*ads|pay.*for.*results|seo.*service|web.*ranking|search.*engine.*optimization|increase.*website.*traffic|boost.*your.*ranking|get.*more.*leads|digital.*marketing.*service|website.*promotion|online.*marketing|web.*development.*service|rank.*higher.*on.*google|improve.*your.*seo|guaranteed.*results|first.*page.*google).*"
+            # Marketing service domains and senders (excluding legitimate companies)
+            - type: "And"
+              criteria:
+                - type: "SenderPattern"
+                  pattern: ".*@.*(seo|webrank|marketing|digitalmarketing|webdev|webdesign|onlinemarketing|searchengine|webpromo|leadgen|webservice).*\\.(com|net|org)$"
+                - type: "Not"
+                  criteria:
+                    type: "SenderPattern"
+                    pattern: ".*@.*(lyftmail|ubermail|amazonses|mailchimp|constantcontact|sendgrid|mailgun|sparkpost|mandrill|postmark|salesforce|hubspot|marketo|pardot|eloqua|responsys|exacttarget|campaignmonitor|aweber|getresponse|convertkit|activecampaign|klaviyo|sendinblue|mailjet|pepipost|socketlabs|elastic|postmark|sendpulse|moosend|benchmark|emma|vertical|icontact|mad|streamsend|campaigner|directmail|mailerlite|omnisend|drip|autopilot|intercom|drift|zendesk|freshworks|zoho).*\\.(com|net|org)$"
             - type: "HeaderPattern"
               header: "from"
               pattern: "(?i).*(seo.*specialist|marketing.*expert|web.*developer|digital.*marketer|lead.*generation|website.*promotion).*"
