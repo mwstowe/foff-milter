@@ -500,8 +500,13 @@ impl FilterEngine {
         // Process rules with whitelist logic - stop on Accept actions
         for (rule_index, rule) in self.config.rules.iter().enumerate() {
             let matches = self.evaluate_criteria(&rule.criteria, context).await;
-            log::info!("Rule {} '{}' evaluation result: {}", rule_index + 1, rule.name, matches);
-            
+            log::info!(
+                "Rule {} '{}' evaluation result: {}",
+                rule_index + 1,
+                rule.name,
+                matches
+            );
+
             // Add explicit debugging to catch the bug
             if matches {
                 log::info!(
@@ -1610,7 +1615,11 @@ impl FilterEngine {
                             }
                         }
                         if let Some(from_header) = &context.from_header {
-                            log::debug!("SenderPattern checking from_header: '{}' against pattern: '{}'", from_header, pattern);
+                            log::debug!(
+                                "SenderPattern checking from_header: '{}' against pattern: '{}'",
+                                from_header,
+                                pattern
+                            );
                             if regex.is_match(from_header) {
                                 log::debug!("SenderPattern matched from_header: '{}'", from_header);
                                 return true;

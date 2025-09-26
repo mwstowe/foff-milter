@@ -638,10 +638,12 @@ impl Milter {
                                 }
                                 Action::Accept => {
                                     log::info!("ACCEPT from={sender} to={recipients}");
-                                    
+
                                     // Add analysis headers if any
                                     for (header_name, header_value) in &headers_to_add {
-                                        log::info!("Adding analysis header: {header_name}={header_value}");
+                                        log::info!(
+                                            "Adding analysis header: {header_name}={header_value}"
+                                        );
                                         if let Err(e) = ctx
                                             .actions
                                             .add_header(header_name.clone(), header_value.clone())
@@ -652,7 +654,7 @@ impl Milter {
                                             log::info!("Successfully added analysis header: {header_name}={header_value}");
                                         }
                                     }
-                                    
+
                                     return Status::Accept;
                                 }
                             }
