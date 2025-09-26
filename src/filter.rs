@@ -497,7 +497,7 @@ impl FilterEngine {
         let mut final_action = &self.config.default_action;
         let mut headers_to_add = Vec::new();
 
-        // Process ALL rules instead of stopping at first match
+        // Process rules with whitelist logic - stop on Accept actions
         for (rule_index, rule) in self.config.rules.iter().enumerate() {
             let matches = self.evaluate_criteria(&rule.criteria, context).await;
             log::info!("Rule {} '{}' evaluation result: {}", rule_index + 1, rule.name, matches);
@@ -513,7 +513,18 @@ impl FilterEngine {
                 matched_rules.push(rule.name.clone());
                 all_actions.push(&rule.action);
 
-                // Determine the most restrictive action
+                // WHITELIST LOGIC: If this is an Accept action, stop processing immediately
+                if matches!(rule.action, Action::Accept) {
+                    log::info!(
+                        "Rule {} '{}' is a whitelist rule (Accept action), stopping rule processing",
+                        rule_index + 1,
+                        rule.name
+                    );
+                    final_action = &rule.action;
+                    break;
+                }
+
+                // Determine the most restrictive action for non-Accept actions
                 // Priority: Reject > TagAsSpam > Accept
                 match (&final_action, &rule.action) {
                     // If we already have Reject, keep it

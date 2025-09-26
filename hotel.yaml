@@ -29,44 +29,10 @@ rules:
     action:
       type: "Accept"
 
-  - name: "Whitelist trusted Gmail senders"
+  - name: "Whitelist trusted Gmail sender patoertel39"
     criteria:
       type: "SenderPattern"
       pattern: "patoertel39@gmail\\.com"
-    action:
-      type: "Accept"
-
-  - name: "Whitelist legitimate personal emails with DKIM pass"
-    criteria:
-      type: "And"
-      criteria:
-        # DKIM passes
-        - type: "HeaderPattern"
-          header: "authentication-results"
-          pattern: "(?i)dkim=pass"
-        # Personal conversation patterns
-        - type: "Or"
-          criteria:
-            # Reply threads
-            - type: "SubjectPattern"
-              pattern: "(?i)^re:\\s"
-            # Forward threads  
-            - type: "SubjectPattern"
-              pattern: "(?i)^fwd?:\\s"
-            # Has proper message threading
-            - type: "HeaderPattern"
-              header: "in-reply-to"
-              pattern: ".*"
-        # Not suspicious content
-        - type: "Not"
-          criteria:
-            type: "Or"
-            criteria:
-              - type: "SubjectPattern"
-                pattern: "(?i).*(prize|winner|congratulations|urgent|verify|suspended|expired|click.*here|act.*now).*"
-              - type: "HeaderPattern"
-                header: "from"
-                pattern: "(?i).*(noreply|no-reply|donotreply|support|admin|service).*"
     action:
       type: "Accept"
 
@@ -2066,6 +2032,11 @@ rules:
         # Gmail address
         - type: "SenderPattern"
           pattern: ".*@gmail\\.com$"
+        # Not trusted senders
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: "patoertel39@gmail\\.com"
         # Suspicious indicators
         - type: "Or"
           criteria:
