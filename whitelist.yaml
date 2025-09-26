@@ -1,0 +1,51 @@
+socket_path: "/var/run/foff-milter.sock"
+default_action:
+  type: "Accept"
+
+# Statistics configuration
+statistics:
+  enabled: true
+  database_path: "/var/lib/foff-milter/stats.db"
+  flush_interval_seconds: 60
+
+rules:
+  # WHITELIST RULES - Environment-specific trusted senders
+  # These rules are processed first and stop further rule evaluation
+
+  # Whitelist Google Groups mailing lists
+  - name: "Whitelist Google Groups mailing lists"
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "HeaderPattern"
+          header: "list-id"
+          pattern: ".*\\.googlegroups\\.com"
+        - type: "HeaderPattern"
+          header: "x-google-group-id"
+          pattern: "\\d+"
+        - type: "HeaderPattern"
+          header: "received"
+          pattern: ".*groups\\.google\\.com.*"
+    action:
+      type: "Accept"
+
+  # Trusted Gmail sender (environment-specific)
+  - name: "Whitelist trusted Gmail sender patoertel39"
+    criteria:
+      type: "SenderPattern"
+      pattern: "patoertel39@gmail\\.com"
+    action:
+      type: "Accept"
+
+  # Environment-specific blocking rule for internal queue
+  - name: "Reject SparkPost emails to queued@baddomain.com"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "MailerPattern"
+          pattern: ".*\\.sparkpostmail\\.com"
+        - type: "RecipientPattern"
+          pattern: "queued@baddomain\\.com"
+    action:
+      type: "Reject"
+      message: "SparkPost blocked for internal queue"
