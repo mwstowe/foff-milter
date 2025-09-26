@@ -2446,6 +2446,38 @@ rules:
       header_name: "X-Spam-Flag"
       header_value: "YES"
 
+  # Tag McDonald's brand impersonation
+  - name: "Tag McDonald's brand impersonation"
+    criteria:
+      type: "And"
+      criteria:
+        # McDonald's in From header
+        - type: "HeaderPattern"
+          header: "from"
+          pattern: "(?i)mcdonald"
+        # Not from legitimate McDonald's domains
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@(mcdonalds|mcd)\\.com$"
+        # Suspicious patterns
+        - type: "Or"
+          criteria:
+            # Typosquatting domains
+            - type: "SenderPattern"
+              pattern: ".*@.*mcdonld.*"
+            # MAILER-DAEMON abuse
+            - type: "HeaderPattern"
+              header: "return-path"
+              pattern: "MAILER-DAEMON"
+            # Sweepstakes/prize content
+            - type: "SubjectPattern"
+              pattern: "(?i).*(sweepstakes|prize|winner|congratulations|qualify|exclusive).*"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
   # Tag AAA brand impersonation
   - name: "Tag AAA brand impersonation"
     criteria:
