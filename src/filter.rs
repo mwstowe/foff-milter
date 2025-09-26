@@ -526,6 +526,11 @@ impl FilterEngine {
                         rule.name
                     );
                     final_action = &rule.action;
+                    // Add whitelist analysis header
+                    headers_to_add.push((
+                        "X-FOFF-Whitelist".to_string(),
+                        format!("whitelisted by rule: {}", rule.name),
+                    ));
                     break;
                 }
 
