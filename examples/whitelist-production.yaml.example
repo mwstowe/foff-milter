@@ -29,23 +29,23 @@ rules:
     action:
       type: "Accept"
 
-  # Trusted Gmail sender (environment-specific)
-  - name: "Whitelist trusted Gmail sender patoertel39"
+  # Trusted Gmail sender (REPLACE WITH YOUR TRUSTED SENDER)
+  - name: "Whitelist trusted Gmail sender"
     criteria:
       type: "SenderPattern"
-      pattern: "patoertel39@gmail\\.com"
+      pattern: "trusted\\.user@gmail\\.com"  # REPLACE WITH ACTUAL EMAIL
     action:
       type: "Accept"
 
-  # Environment-specific blocking rule for internal queue
-  - name: "Reject SparkPost emails to queued@baddomain.com"
+  # Environment-specific blocking rule for internal queue (REPLACE WITH YOUR DOMAIN)
+  - name: "Reject SparkPost emails to internal queue"
     criteria:
       type: "And"
       criteria:
         - type: "MailerPattern"
           pattern: ".*\\.sparkpostmail\\.com"
         - type: "RecipientPattern"
-          pattern: "queued@baddomain\\.com"
+          pattern: "queue@yourdomain\\.com"  # REPLACE WITH YOUR DOMAIN
     action:
       type: "Reject"
       message: "SparkPost blocked for internal queue"
