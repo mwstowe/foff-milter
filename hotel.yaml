@@ -20,6 +20,16 @@ statistics:
 
 
 rules:
+  # WHITELIST - These rules bypass all other rules when matched
+  - name: "Whitelist Google Groups mailing lists"
+    criteria:
+      type: "HeaderPattern"
+      header: "x-google-group-id"
+      pattern: "\\d+"
+    action:
+      type: "Accept"
+
+  # FILTERING RULES - Only processed if whitelist rules don't match
   # Tag SEO and marketing spam
   - name: "Tag SEO and marketing spam"
     criteria:
