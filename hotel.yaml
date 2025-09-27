@@ -1091,6 +1091,11 @@ rules:
           pattern: (?i).*(viagra|cialis|levitra|pharmacy|prescription|medication|pills|supplement|cure|treatment).*
         - type: SubjectPattern
           pattern: (?i).*(secret.*formula|miracle.*cure|doctor.*recommend|clinically.*proven|breakthrough).*
+        - type: SubjectPattern
+          pattern: (?i).*(medicare.*kit|medicare.*essentials|cvs.*medicare|free.*medicare|medicare.*benefits|medicare.*coverage|medicare.*plan|cvs.*kit|pharmacy.*kit|health.*kit).*
+        - type: HeaderPattern
+          header: from
+          pattern: (?i).*(medicare|cvs.*medicare|pharmacy.*kit|health.*kit|medicare.*kit).*
       - type: SubjectPattern
         pattern: (?i).*(overnight.*result|instant.*result|rapid.*weight|amazing.*result|incredible.*result|shocking.*result|secret.*health|miracle.*health|breakthrough.*health|revolutionary.*health).*
     - type: Not
