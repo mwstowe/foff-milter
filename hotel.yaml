@@ -21,20 +21,20 @@ rules:
       pattern: .*groups\.google\.com.*
   action:
     type: Accept
-- name: Whitelist trusted Gmail sender patoertel39
+- name: Whitelist trusted Gmail sender
   criteria:
     type: SenderPattern
-    pattern: patoertel39@gmail\.com
+    pattern: trusted\.user@gmail\.com
   action:
     type: Accept
-- name: Reject SparkPost emails to queued@baddomain.com
+- name: Reject SparkPost emails to internal queue
   criteria:
     type: And
     criteria:
     - type: MailerPattern
       pattern: .*\.sparkpostmail\.com
     - type: RecipientPattern
-      pattern: queued@baddomain\.com
+      pattern: queue@yourdomain\.com
   action:
     type: Reject
     message: SparkPost blocked for internal queue
@@ -1080,9 +1080,11 @@ rules:
         criteria:
         - type: SubjectPattern
           pattern: (?i).*(health.*secret|wellness.*secret|natural.*remedy|herbal.*remedy|health.*breakthrough|medical.*breakthrough|doctor.*secret|ancient.*remedy|joint.*heal|joint.*repair|joint.*replacement|surgery.*alternative|without.*surgery|heal.*joint|repair.*joint|alzheimer|dementia|brain.*health|memory.*loss|cognitive|neurological|drink.*linked|food.*linked|avoid.*this.*drink|ditch.*this.*drink|stop.*drinking|dangerous.*drink|diabetes|diabetic|blood.*sugar|a1c|insulin|reverse.*diabetes|cure.*diabetes|beat.*diabetes|type.*2.*diabetes|blood.*glucose).*
+        - type: SubjectPattern
+          pattern: (?i).*(no.*chemo.*needed|chemo.*alternative|cancer.*cure|cure.*cancer|beat.*cancer|reverse.*cancer|cancer.*secret|cancer.*breakthrough|nobel.*prize.*discovery|nobel.*discovery|cancer.*flush|flush.*cancer|eliminate.*cancer|destroy.*cancer|kill.*cancer|cancer.*cells|tumor.*shrink|shrink.*tumor|oncologist.*hate|doctors.*hate.*this|big.*pharma.*hate|pharma.*doesn.*want|medical.*industry.*hate).*
         - type: HeaderPattern
           header: from
-          pattern: (?i).*(health|wellness|remedy|natural|herbal|medical|doctor|ancient|tonic|supplement|joint|heal|repair|surgery|ditch|avoid|stop|brain|memory|cognitive).*
+          pattern: (?i).*(health|wellness|remedy|natural|herbal|medical|doctor|ancient|tonic|supplement|joint|heal|repair|surgery|ditch|avoid|stop|brain|memory|cognitive|cancer|chemo|cure|flush).*
         - type: SenderPattern
           pattern: (?i).*(joint|heal|repair|surgery|medical|health|wellness|remedy|natural|ditch|avoid|stop|brain|memory|cognitive).*@.*
       - type: Or
