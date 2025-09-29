@@ -888,7 +888,7 @@ rules:
       header: to
       pattern: (?i)undisclosed.{0,15}recipients
     - type: SubjectPattern
-      pattern: (?i)(unpaid|charges?|amount|\$[0-9]+\.[0-9]{2}|activation|order.*underway|underway|processing|pending|awaiting|confirmation)
+      pattern: (?i)(unpaid|charges?|amount|\$[0-9]+\.?[0-9]*|activation|order.*underway|underway|processing|pending|awaiting|confirmation)
     - type: SenderPattern
       pattern: .*@.*(edu|school|raiders|athletics|university|college|\.ac\.)\.*
   action:
@@ -1551,7 +1551,7 @@ rules:
         header: received
         pattern: .*sendgrid\.net.*
     - type: SubjectPattern
-      pattern: (?i)^(order.*details|order.*status|order.*confirmation|transaction.*details|transaction.*receipt|payment.*details|invoice.*details|receipt.*details|delivery.*details|shipping.*details|address.*update|address.*confirmation|confirmation.*for.*your|update.*confirmation|\$\d+\.\d+.*sent|money.*sent|payment.*sent|transfer.*complete|funds.*sent|\$\d+.*transfer|receipt.*#\d+|invoice.*#\d+|transaction.*#\d+|\$\d+\.\d+.*charged|\$\d+\.\d+.*billed|\$\d+\.\d+.*paid|payment.*charged|payment.*billed|application.*information|application.*details|information.*request|document.*information|account.*information|card.*application.*confirmation|credit.*card.*application|visa.*card.*application.*confirmation|visa.*card.*application|application.*confirmation|suspicious.*transaction.*alert|thank.*you.*for.*your.*purchase|zelle.*transfer.*receipt|zelle.*payment.*receipt|zelle.*receipt|venmo.*transfer.*receipt|venmo.*payment.*receipt|cashapp.*transfer.*receipt|paypal.*transfer.*receipt|wire.*transfer.*receipt|bank.*transfer.*receipt|transfer.*receipt|payment.*receipt)$
+      pattern: (?i)^(order.*details|order.*status|order.*confirmation|transaction.*details|transaction.*receipt|payment.*details|invoice.*details|receipt.*details|delivery.*details|shipping.*details|address.*update|address.*confirmation|confirmation.*for.*your|update.*confirmation|\$\d+\.\d+.*sent|money.*sent|payment.*sent|transfer.*complete|funds.*sent|\$\d+.*transfer|receipt.*#\d+|invoice.*#\d+|transaction.*#\d+|\$\d+\.\d+.*charged|\$\d+\.\d+.*billed|\$\d+\.\d+.*paid|payment.*charged|payment.*billed|application.*information|application.*details|information.*request|document.*information|account.*information|card.*application.*confirmation|credit.*card.*application|visa.*card.*application.*confirmation|visa.*card.*application|application.*confirmation|suspicious.*transaction.*alert|thank.*you.*for.*your.*purchase|zelle.*transfer.*receipt|zelle.*payment.*receipt|zelle.*receipt|venmo.*transfer.*receipt|venmo.*payment.*receipt|cashapp.*transfer.*receipt|paypal.*transfer.*receipt|wire.*transfer.*receipt|wire.*transfer.*confirmation|bank.*transfer.*receipt|bank.*transfer.*confirmation|transfer.*receipt|transfer.*confirmation|payment.*receipt|payment.*confirmation)$
   action:
     type: TagAsSpam
     header_name: X-Spam-Flag

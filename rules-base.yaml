@@ -2280,6 +2280,13 @@ rules:
               # Email marketing platforms that legitimately use mailto
               - type: "SenderPattern"
                 pattern: ".*@(mailchimp|constantcontact|campaignmonitor)\\.com$"
+              # Major appliance and home brands
+              - type: "SenderPattern"
+                pattern: ".*@.*(bosch|bosch-home|whirlpool|ge|samsung|lg|frigidaire|kitchenaid|maytag|electrolux|kenmore|viking|thermador|jenn-air|amana|hotpoint|haier|miele|asko|fisher-paykel|dacor|monogram|cafe|profile|artistry|signature).*\\.(com|net)$"
+              # Amazon SES for legitimate brands (check From header)
+              - type: "HeaderPattern"
+                header: "from"
+                pattern: ".*<.*@.*(bosch|bosch-home|whirlpool|ge|samsung|lg|frigidaire|kitchenaid|maytag|electrolux|kenmore|viking|thermador|jenn-air|amana|hotpoint|haier|miele|asko|fisher-paykel|dacor|monogram|cafe|profile|artistry|signature).*\\.(com|net)>.*"
               # Other legitimate services known to use mailto unsubscribe
               - type: "SenderPattern"
                 pattern: ".*@(pdffiller)\\.com$"
