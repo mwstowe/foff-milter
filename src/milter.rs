@@ -271,7 +271,7 @@ impl Milter {
                                 }
                                 _ => {}
                             }
-                            
+
                             // Handle header continuation lines by concatenating values
                             let header_key = name_str.to_lowercase();
                             if let Some(existing_value) = mail_ctx.headers.get(&header_key) {
