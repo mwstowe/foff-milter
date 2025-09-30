@@ -271,7 +271,17 @@ impl Milter {
                                 }
                                 _ => {}
                             }
-                            mail_ctx.headers.insert(name_str, value_str);
+                            
+                            // Handle header continuation lines by concatenating values
+                            let header_key = name_str.to_lowercase();
+                            if let Some(existing_value) = mail_ctx.headers.get(&header_key) {
+                                // Concatenate with existing value (continuation line)
+                                let combined_value = format!("{} {}", existing_value, value_str);
+                                mail_ctx.headers.insert(header_key, combined_value);
+                            } else {
+                                // First occurrence of this header
+                                mail_ctx.headers.insert(header_key, value_str);
+                            }
                         }
                         Status::Continue
                     })
