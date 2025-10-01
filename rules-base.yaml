@@ -23,6 +23,38 @@ rules:
   # FILTERING RULES - Universal spam detection rules
   # Environment-specific whitelists are merged from whitelist.yaml
 
+  # Tag Japanese spam from suspicious domains
+  - name: "Tag Japanese spam from suspicious domains"
+    criteria:
+      type: "And"
+      criteria:
+        # Japanese content in subject or from header
+        - type: "Or"
+          criteria:
+            - type: "SubjectContainsLanguage"
+              language: "japanese"
+            - type: "HeaderContainsLanguage"
+              header: "from"
+              language: "japanese"
+        # Suspicious domain patterns or DKIM issues
+        - type: "Or"
+          criteria:
+            # Suspicious TLD or hosting patterns
+            - type: "SenderPattern"
+              pattern: ".*@.*\\.(tk|ml|ga|cf|top|click|download|loan|racing|review|science|work|party|date|stream|trade|bid|win|cricket|accountant|faith|men|gq)$"
+            # Generic MTA/mail server patterns
+            - type: "SenderPattern"
+              pattern: ".*@(mta[0-9]+|mail[0-9]+|smtp[0-9]+|server[0-9]+|host[0-9]+)\\."
+            # DKIM authentication issues
+            - type: "DkimAnalysis"
+              require_signature: false
+              check_domain_mismatch: true
+              suspicious_domains: ["tpmer.com", "mta07.tpmer.com"]
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
   # Tag SEO and marketing spam
   - name: "Tag SEO and marketing spam"
     criteria:
