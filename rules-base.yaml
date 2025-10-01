@@ -2744,3 +2744,30 @@ rules:
       type: "TagAsSpam"
       header_name: "X-Spam-Flag"
       header_value: "YES"
+
+  # Tag product spam with DKIM failures
+  - name: "Tag product spam with DKIM failures"
+    criteria:
+      type: "And"
+      criteria:
+        # DKIM authentication failure
+        - type: "HeaderPattern"
+          header: "authentication-results"
+          pattern: "(?i)dkim=fail"
+        # Product spam indicators
+        - type: "Or"
+          criteria:
+            # Product names in From header
+            - type: "HeaderPattern"
+              header: "from"
+              pattern: "(?i).*(heaters?|portable.*heater|space.*heater|electric.*heater|ceramic.*heater|infrared.*heater|heating|warmth|warm.*comfort).*"
+            # Product spam subjects
+            - type: "SubjectPattern"
+              pattern: "(?i).*(stay.*warm|keep.*warm|warm.*comfort|heating.*solution|portable.*heat|space.*heat|electric.*heat|ceramic.*heat|infrared.*heat|winter.*ready|cold.*weather|heat.*anywhere|comfort.*everywhere).*"
+            # Generic product spam patterns
+            - type: "SubjectPattern"
+              pattern: "(?i).*(revolutionary.*product|amazing.*device|incredible.*invention|breakthrough.*technology|must.*have.*gadget|life.*changing.*device).*"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
