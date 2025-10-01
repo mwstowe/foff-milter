@@ -3613,22 +3613,26 @@ impl FilterEngine {
                     suspicious_domains,
                 } => {
                     log::debug!("Checking DKIM analysis");
-                    
+
                     let require_sig = require_signature.unwrap_or(true);
                     let check_mismatch = check_domain_mismatch.unwrap_or(true);
-                    let suspicious_list = suspicious_domains.as_ref().map(|v| v.as_slice()).unwrap_or(&[]);
-                    
+                    let suspicious_list = suspicious_domains
+                        .as_ref()
+                        .map(|v| v.as_slice())
+                        .unwrap_or(&[]);
+
                     let mut auth_failure_indicators = 0;
-                    
+
                     // Check for DKIM signature presence
                     let has_dkim_signature = context.headers.contains_key("dkim-signature");
-                    let has_domainkey_signature = context.headers.contains_key("domainkey-signature");
-                    
+                    let has_domainkey_signature =
+                        context.headers.contains_key("domainkey-signature");
+
                     if require_sig && !has_dkim_signature && !has_domainkey_signature {
                         auth_failure_indicators += 1;
                         log::debug!("No DKIM or DomainKey signatures found");
                     }
-                    
+
                     // Check for domain mismatch in DKIM signature
                     if check_mismatch && has_dkim_signature {
                         if let Some(dkim_sig) = context.headers.get("dkim-signature") {
@@ -3638,13 +3642,17 @@ impl FilterEngine {
                                 if let Some(sender_domain) = extract_sender_domain(context) {
                                     if dkim_domain != sender_domain {
                                         auth_failure_indicators += 1;
-                                        log::debug!("DKIM domain mismatch: signature={}, sender={}", dkim_domain, sender_domain);
+                                        log::debug!(
+                                            "DKIM domain mismatch: signature={}, sender={}",
+                                            dkim_domain,
+                                            sender_domain
+                                        );
                                     }
                                 }
                             }
                         }
                     }
-                    
+
                     // Check for suspicious domains in DKIM signature
                     if has_dkim_signature {
                         if let Some(dkim_sig) = context.headers.get("dkim-signature") {
@@ -3652,20 +3660,26 @@ impl FilterEngine {
                                 for suspicious in suspicious_list {
                                     if dkim_domain.contains(suspicious) {
                                         auth_failure_indicators += 1;
-                                        log::debug!("Suspicious domain in DKIM signature: {}", dkim_domain);
+                                        log::debug!(
+                                            "Suspicious domain in DKIM signature: {}",
+                                            dkim_domain
+                                        );
                                         break;
                                     }
                                 }
                             }
                         }
                     }
-                    
+
                     let has_auth_failure = auth_failure_indicators > 0;
-                    
+
                     if has_auth_failure {
-                        log::debug!("DKIM authentication failure detected: {} indicators", auth_failure_indicators);
+                        log::debug!(
+                            "DKIM authentication failure detected: {} indicators",
+                            auth_failure_indicators
+                        );
                     }
-                    
+
                     has_auth_failure
                 }
                 Criteria::And { criteria } => {
@@ -7064,8 +7078,8 @@ fn extract_dkim_domain(dkim_signature: &str) -> Option<String> {
     // Look for d= parameter in DKIM signature
     for part in dkim_signature.split(';') {
         let part = part.trim();
-        if part.starts_with("d=") {
-            return Some(part[2..].trim().to_lowercase());
+        if let Some(stripped) = part.strip_prefix("d=") {
+            return Some(stripped.trim().to_lowercase());
         }
     }
     None
@@ -7079,14 +7093,14 @@ fn extract_sender_domain(context: &MailContext) -> Option<String> {
             return Some(domain);
         }
     }
-    
+
     // Fallback to envelope sender
     if let Some(sender) = &context.sender {
         if let Some(domain) = extract_domain_from_email(sender) {
             return Some(domain);
         }
     }
-    
+
     None
 }
 
@@ -7101,13 +7115,13 @@ fn extract_domain_from_email(email: &str) -> Option<String> {
     } else {
         email.trim()
     };
-    
+
     // Extract domain part after @
     let at_pos = email_part.rfind('@')?;
     let domain = &email_part[at_pos + 1..];
-    
+
     // Remove any trailing characters like ]
     let domain = domain.trim_end_matches(']').trim_end_matches('[');
-    
+
     Some(domain.to_lowercase())
 }

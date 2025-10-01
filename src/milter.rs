@@ -243,7 +243,7 @@ impl Milter {
                         let name_str = name.to_string_lossy().to_string();
                         let value_str = value.to_string_lossy().to_string();
                         log::debug!("Header: {name_str}: {value_str}");
-                        
+
                         // Special debug logging for Authentication-Results
                         if name_str.to_lowercase() == "authentication-results" {
                             log::error!("CRITICAL: Authentication-Results header received: '{name_str}: {value_str}'");
