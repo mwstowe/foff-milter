@@ -354,7 +354,7 @@ rules:
       - type: And
         criteria:
         - type: SubjectPattern
-          pattern: (?i)(expire|suspend|verify|update|confirm|urgent|immediate|security|alert|warning)
+          pattern: (?i)(expire|suspend|verify|update|confirm|urgent|immediate|security|alert|warning|action.*required|required.*action|action.*needed|needed.*action|attention.*required|required.*attention)
         - type: Or
           criteria:
           - type: PhishingSenderSpoofing
@@ -2317,6 +2317,39 @@ rules:
     - type: HeaderPattern
       header: received
       pattern: .*googleusercontent\.com.*
+  action:
+    type: TagAsSpam
+    header_name: X-Spam-Flag
+    header_value: 'YES'
+- name: Tag generic phishing with DKIM failures
+  criteria:
+    type: And
+    criteria:
+    - type: HeaderPattern
+      header: authentication-results
+      pattern: (?i)dkim=fail
+    - type: SubjectPattern
+      pattern: (?i).*(action.*required|required.*action|action.*needed|needed.*action|attention.*required|required.*attention|verify.*account|account.*verify|suspend|expire|urgent|immediate|security.*alert|alert.*security|notification|email.*notification).*
+  action:
+    type: TagAsSpam
+    header_name: X-Spam-Flag
+    header_value: 'YES'
+- name: Tag product spam with DKIM failures
+  criteria:
+    type: And
+    criteria:
+    - type: HeaderPattern
+      header: authentication-results
+      pattern: (?i)dkim=fail
+    - type: Or
+      criteria:
+      - type: HeaderPattern
+        header: from
+        pattern: (?i).*(heaters?|portable.*heater|space.*heater|electric.*heater|ceramic.*heater|infrared.*heater|heating|warmth|warm.*comfort).*
+      - type: SubjectPattern
+        pattern: (?i).*(stay.*warm|keep.*warm|warm.*comfort|heating.*solution|portable.*heat|space.*heat|electric.*heat|ceramic.*heat|infrared.*heat|winter.*ready|cold.*weather|heat.*anywhere|comfort.*everywhere).*
+      - type: SubjectPattern
+        pattern: (?i).*(revolutionary.*product|amazing.*device|incredible.*invention|breakthrough.*technology|must.*have.*gadget|life.*changing.*device).*
   action:
     type: TagAsSpam
     header_name: X-Spam-Flag
