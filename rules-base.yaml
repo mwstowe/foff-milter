@@ -1118,7 +1118,7 @@ rules:
             # Tech companies
             - type: "HeaderPattern"
               header: "from"
-              pattern: "(?i).*(amazon|microsoft|apple|google|netflix|spotify|adobe).*"
+              pattern: "(?i).*(amazon|microsoft|apple|google|netflix|spotify|adobe|quickbooks|intuit|docusign).*"
             # Financial institutions
             - type: "HeaderPattern"
               header: "from"
@@ -2092,11 +2092,25 @@ rules:
       header_name: "X-Spam-Flag"
       header_value: "YES"
 
-  # Japanese subject
-  - name: "Tag Japanese content"
+  # Tag SendGrid display name brand impersonation
+  - name: "Tag SendGrid display name brand impersonation"
     criteria:
-      type: "SubjectContainsLanguage"
-      language: "japanese"
+      type: "And"
+      criteria:
+        # SendGrid infrastructure
+        - type: "SenderPattern"
+          pattern: ".*@.*\\.sendgrid\\.net$"
+        # Brand impersonation in display name
+        - type: "HeaderPattern"
+          header: "from"
+          pattern: "(?i).*(docusign|quickbooks|intuit|paypal|amazon|microsoft|apple|google|adobe|netflix|spotify|ebay|walmart|target|costco|home depot|lowes|best buy).*"
+        # Suspicious subjects
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(document|edocument|received|review|sign|signature|invoice|payment|account|suspended|verify|confirm|urgent|immediate).*"
+            - type: "SubjectPattern"
+              pattern: "(?i).*(tax|refund|irs|revenue|customs|hmrc|ato).*"
     action:
       type: "TagAsSpam"
       header_name: "X-Spam-Flag"
