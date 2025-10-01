@@ -38,6 +38,33 @@ rules:
   action:
     type: Reject
     message: SparkPost blocked for internal queue
+- name: Tag Japanese spam from suspicious domains
+  criteria:
+    type: And
+    criteria:
+    - type: Or
+      criteria:
+      - type: SubjectContainsLanguage
+        language: japanese
+      - type: HeaderContainsLanguage
+        header: from
+        language: japanese
+    - type: Or
+      criteria:
+      - type: SenderPattern
+        pattern: .*@.*\.(tk|ml|ga|cf|top|click|download|loan|racing|review|science|work|party|date|stream|trade|bid|win|cricket|accountant|faith|men|gq)$
+      - type: SenderPattern
+        pattern: .*@(mta[0-9]+|mail[0-9]+|smtp[0-9]+|server[0-9]+|host[0-9]+)\.
+      - type: DkimAnalysis
+        require_signature: false
+        check_domain_mismatch: true
+        suspicious_domains:
+        - tpmer.com
+        - mta07.tpmer.com
+  action:
+    type: TagAsSpam
+    header_name: X-Spam-Flag
+    header_value: 'YES'
 - name: Tag SEO and marketing spam
   criteria:
     type: And

@@ -548,7 +548,9 @@ async fn test_email_file(config: &Config, email_file: &str) {
         recipients: recipients.clone(),
         headers: headers.clone(),
         mailer: headers.get("x-mailer").cloned(),
-        subject: headers.get("subject").map(|s| foff_milter::milter::decode_mime_header(s)),
+        subject: headers
+            .get("subject")
+            .map(|s| foff_milter::milter::decode_mime_header(s)),
         hostname: None,
         helo: None,
         body: Some(body),
