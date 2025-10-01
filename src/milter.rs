@@ -243,6 +243,11 @@ impl Milter {
                         let name_str = name.to_string_lossy().to_string();
                         let value_str = value.to_string_lossy().to_string();
                         log::debug!("Header: {name_str}: {value_str}");
+                        
+                        // Special debug logging for Authentication-Results
+                        if name_str.to_lowercase() == "authentication-results" {
+                            log::error!("CRITICAL: Authentication-Results header received: '{name_str}: {value_str}'");
+                        }
 
                         // Update the most recent context (by highest session number)
                         if let Some((_, mail_ctx)) =
@@ -277,9 +282,11 @@ impl Milter {
                             if let Some(existing_value) = mail_ctx.headers.get(&header_key) {
                                 // Concatenate with existing value (continuation line)
                                 let combined_value = format!("{} {}", existing_value, value_str);
+                                log::error!("CRITICAL: Concatenating header '{header_key}': '{existing_value}' + '{value_str}' = '{combined_value}'");
                                 mail_ctx.headers.insert(header_key, combined_value);
                             } else {
                                 // First occurrence of this header
+                                log::error!("CRITICAL: First occurrence of header '{header_key}': '{value_str}'");
                                 mail_ctx.headers.insert(header_key, value_str);
                             }
                         }
