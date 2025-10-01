@@ -421,7 +421,7 @@ rules:
             - type: "And"
               criteria:
                 - type: "SubjectPattern"
-                  pattern: "(?i)(expire|suspend|verify|update|confirm|urgent|immediate|security|alert|warning)"
+                  pattern: "(?i)(expire|suspend|verify|update|confirm|urgent|immediate|security|alert|warning|action.*required|required.*action|action.*needed|needed.*action|attention.*required|required.*attention)"
                 - type: "Or"
                   criteria:
                     - type: "PhishingSenderSpoofing"
@@ -2740,6 +2740,23 @@ rules:
         - type: "HeaderPattern"
           header: "received"
           pattern: ".*googleusercontent\\.com.*"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
+  # Tag generic phishing with DKIM failures
+  - name: "Tag generic phishing with DKIM failures"
+    criteria:
+      type: "And"
+      criteria:
+        # DKIM authentication failure
+        - type: "HeaderPattern"
+          header: "authentication-results"
+          pattern: "(?i)dkim=fail"
+        # Generic phishing subjects
+        - type: "SubjectPattern"
+          pattern: "(?i).*(action.*required|required.*action|action.*needed|needed.*action|attention.*required|required.*attention|verify.*account|account.*verify|suspend|expire|urgent|immediate|security.*alert|alert.*security|notification|email.*notification).*"
     action:
       type: "TagAsSpam"
       header_name: "X-Spam-Flag"
