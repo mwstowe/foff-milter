@@ -1004,7 +1004,7 @@ rules:
           aid).*
       - type: HeaderPattern
         header: from
-        pattern: (?i).*(amazon|microsoft|apple|google|netflix|spotify|adobe).*
+        pattern: (?i).*(amazon|microsoft|apple|google|netflix|spotify|adobe|quickbooks|intuit|docusign).*
       - type: HeaderPattern
         header: from
         pattern: (?i).*(paypal|chase|wells fargo|bank of america|citibank|capital
@@ -1757,10 +1757,22 @@ rules:
     type: TagAsSpam
     header_name: X-Spam-Flag
     header_value: 'YES'
-- name: Tag Japanese content
+- name: Tag SendGrid display name brand impersonation
   criteria:
-    type: SubjectContainsLanguage
-    language: japanese
+    type: And
+    criteria:
+    - type: SenderPattern
+      pattern: .*@.*\.sendgrid\.net$
+    - type: HeaderPattern
+      header: from
+      pattern: (?i).*(docusign|quickbooks|intuit|paypal|amazon|microsoft|apple|google|adobe|netflix|spotify|ebay|walmart|target|costco|home
+        depot|lowes|best buy).*
+    - type: Or
+      criteria:
+      - type: SubjectPattern
+        pattern: (?i).*(document|edocument|received|review|sign|signature|invoice|payment|account|suspended|verify|confirm|urgent|immediate).*
+      - type: SubjectPattern
+        pattern: (?i).*(tax|refund|irs|revenue|customs|hmrc|ato).*
   action:
     type: TagAsSpam
     header_name: X-Spam-Flag
