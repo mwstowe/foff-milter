@@ -1100,10 +1100,11 @@ rules:
     criteria:
       type: "And"
       criteria:
-        # DKIM authentication failure
-        - type: "HeaderPattern"
-          header: "authentication-results"
-          pattern: "(?i)dkim=fail"
+        # DKIM authentication failure or domain mismatch
+        - type: "DkimAnalysis"
+          require_signature: true
+          check_domain_mismatch: true
+          suspicious_domains: ["bcf.com.au", "lightinthebox.com"]
         # Brand impersonation in From header
         - type: "Or"
           criteria:

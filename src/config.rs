@@ -254,6 +254,16 @@ pub enum Criteria {
         // Minimum number of indicators required for detection (default: 2)
         min_indicators: Option<u32>,
     },
+    /// Direct DKIM signature analysis without relying on Authentication-Results
+    /// Analyzes DKIM signatures and domain relationships for authentication failures
+    DkimAnalysis {
+        // Whether to require DKIM signature presence (default: true)
+        require_signature: Option<bool>,
+        // Whether to check for domain mismatch between signature and sender (default: true)
+        check_domain_mismatch: Option<bool>,
+        // List of suspicious domains that indicate potential spoofing
+        suspicious_domains: Option<Vec<String>>,
+    },
     And {
         criteria: Vec<Criteria>,
     },
