@@ -989,9 +989,12 @@ rules:
   criteria:
     type: And
     criteria:
-    - type: HeaderPattern
-      header: authentication-results
-      pattern: (?i)dkim=fail
+    - type: DkimAnalysis
+      require_signature: true
+      check_domain_mismatch: true
+      suspicious_domains:
+      - bcf.com.au
+      - lightinthebox.com
     - type: Or
       criteria:
       - type: HeaderPattern
