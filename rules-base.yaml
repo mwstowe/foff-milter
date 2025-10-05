@@ -1251,9 +1251,9 @@ rules:
                   pattern: "(?i).*(no.*chemo.*needed|chemo.*alternative|cancer.*cure|cure.*cancer|beat.*cancer|reverse.*cancer|cancer.*secret|cancer.*breakthrough|nobel.*prize.*discovery|nobel.*discovery|cancer.*flush|flush.*cancer|eliminate.*cancer|destroy.*cancer|kill.*cancer|cancer.*cells|tumor.*shrink|shrink.*tumor|oncologist.*hate|doctors.*hate.*this|big.*pharma.*hate|pharma.*doesn.*want|medical.*industry.*hate).*"
                 - type: "HeaderPattern"
                   header: "from"
-                  pattern: "(?i).*(health|wellness|remedy|natural|herbal|medical|doctor|ancient|tonic|supplement|joint|heal|repair|surgery|ditch|avoid|stop|brain|memory|cognitive|cancer|chemo|cure|flush).*"
+                  pattern: "(?i).*(health|wellness|remedy|natural|herbal|medical|doctor|ancient|tonic|supplement|joint|heal|repair|surgery|ditch|avoid|stop|brain|memory|cognitive|cancer|chemo|cure|flush|pain|killer|relief|drops|medication|pills|pharmacy).*"
                 - type: "SenderPattern"
-                  pattern: "(?i).*(joint|heal|repair|surgery|medical|health|wellness|remedy|natural|ditch|avoid|stop|brain|memory|cognitive).*@.*"
+                  pattern: "(?i).*(joint|heal|repair|surgery|medical|health|wellness|remedy|natural|ditch|avoid|stop|brain|memory|cognitive|pain|killer|relief|drops|medication|pills|pharmacy).*@.*"
             # General pharmaceutical spam
             - type: "Or"
               criteria:
@@ -1261,6 +1261,9 @@ rules:
                   pattern: "(?i).*(viagra|cialis|levitra|pharmacy|prescription|medication|pills|supplement|cure|treatment).*"
                 - type: "SubjectPattern"
                   pattern: "(?i).*(secret.*formula|miracle.*cure|doctor.*recommend|clinically.*proven|breakthrough).*"
+                # Pain relief and medication patterns
+                - type: "SubjectPattern"
+                  pattern: "(?i).*(pain.*killer|pain.*relief|kill.*pain|kills.*pain|worst.*pain|chronic.*pain|back.*pain|joint.*pain|arthritis.*pain|muscle.*pain|nerve.*pain|two.*drops|few.*drops|little.*drops|instant.*relief|immediate.*relief|fast.*relief|powerful.*relief).*"
                 # Medicare and CVS impersonation patterns
                 - type: "SubjectPattern"
                   pattern: "(?i).*(medicare.*kit|medicare.*essentials|cvs.*medicare|free.*medicare|medicare.*benefits|medicare.*coverage|medicare.*plan|cvs.*kit|pharmacy.*kit|health.*kit).*"
