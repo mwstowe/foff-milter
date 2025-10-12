@@ -201,6 +201,13 @@ rules:
           pattern: .*@(dailydials|entrprise|enterprise|random|test|temp|spam).*\.onmicrosoft\.com$
         - type: SenderPattern
           pattern: ^[a-z0-9]{8,}@.*\.onmicrosoft\.com$
+      - type: Or
+        criteria:
+        - type: SubjectPattern
+          pattern: (?i).*(reward.*ready|reward.*claim|claim.*reward|loyalty.*reward|act.*quickly|expires.*soon|limited.*time|congratulations.*winner|you.*won|prize.*claim|gift.*card|cash.*reward).*
+        - type: HeaderPattern
+          header: from
+          pattern: (?i).*(reward|loyalty|prize|winner|congratulations|gift.*card|cash|state.*farm|geico|allstate|progressive|aaa|amazon|walmart|target|costco|home.*depot|best.*buy).*
   action:
     type: TagAsSpam
     header_name: X-Spam-Flag
