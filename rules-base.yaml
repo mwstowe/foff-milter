@@ -1127,7 +1127,30 @@ rules:
       header_value: "YES"
 
   # Block brand impersonation with DKIM failures
-  # Tag brand impersonation with authentication failures
+  # Tag brand impersonation from non-brand domains
+  - name: "Tag brand impersonation from non-brand domains"
+    criteria:
+      type: "And"
+      criteria:
+        # Brand impersonation in From header display name
+        - type: "HeaderPattern"
+          header: "from"
+          pattern: "(?i).*(american express|amex|paypal|chase|wells fargo|bank of america|citibank|capital one|discover|visa|mastercard|amazon|microsoft|apple|google|netflix|spotify|adobe|walmart|target|costco|home depot|lowes|best buy|macys|nordstrom|kohls|jcpenney|cvs|walgreens|rite aid|fedex|ups|dhl|usps|irs|social security|medicare|medicaid|state farm|geico|allstate|progressive).*"
+        # NOT from legitimate brand domains
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "SenderPattern"
+                pattern: ".*@.*(americanexpress|amex|paypal|chase|wellsfargo|bankofamerica|citi|capitalone|discover|visa|mastercard|amazon|microsoft|apple|google|netflix|spotify|adobe|walmart|target|costco|homedepot|lowes|bestbuy|macys|nordstrom|kohls|jcpenney|cvs|walgreens|riteaid|fedex|ups|dhl|usps|irs|ssa|cms|statefarm|geico|allstate|progressive)\\.(com|net|org|gov)$"
+              - type: "HeaderPattern"
+                header: "received"
+                pattern: ".*(americanexpress|amex|paypal|chase|wellsfargo|bankofamerica|citi|capitalone|discover|visa|mastercard|amazon|microsoft|apple|google|netflix|spotify|adobe|walmart|target|costco|homedepot|lowes|bestbuy|macys|nordstrom|kohls|jcpenney|cvs|walgreens|riteaid|fedex|ups|dhl|usps|irs|ssa|cms|statefarm|geico|allstate|progressive)\\.(com|net|org|gov).*"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
   - name: "Tag brand impersonation with authentication failures"
     criteria:
       type: "And"
@@ -1155,7 +1178,7 @@ rules:
             # Financial institutions
             - type: "HeaderPattern"
               header: "from"
-              pattern: "(?i).*(paypal|chase|wells fargo|bank of america|citibank|capital one).*"
+              pattern: "(?i).*(paypal|chase|wells fargo|bank of america|citibank|capital one|american express|amex|discover|visa|mastercard).*"
             # Healthcare and government services
             - type: "HeaderPattern"
               header: "from"
