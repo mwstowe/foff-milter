@@ -1098,7 +1098,7 @@ rules:
         - type: SenderPattern
           pattern: (?i).*_(manhood|testosterone|male|virility|potency|libido).*@.*
       - type: SubjectPattern
-        pattern: (?i).*(weight.*loss|lose.*weight|diet.*pill|fat.*burn|belly.*fat|keto|garcinia|forskolin).*
+        pattern: (?i).*(weight.*loss|lose.*weight|diet.*pill|fat.*burn|belly.*fat|keto|garcinia|forskolin|get.*lean|eat.*bread.*get.*lean|bread.*diet|lean.*body|slim.*down|shed.*pounds|melt.*fat|burn.*fat|fat.*melting|rapid.*weight|quick.*weight|instant.*weight|effortless.*weight|easy.*weight).*
       - type: Or
         criteria:
         - type: SubjectPattern
@@ -1116,15 +1116,17 @@ rules:
           pattern: (?i).*(no.*chemo.*needed|chemo.*alternative|cancer.*cure|cure.*cancer|beat.*cancer|reverse.*cancer|cancer.*secret|cancer.*breakthrough|nobel.*prize.*discovery|nobel.*discovery|cancer.*flush|flush.*cancer|eliminate.*cancer|destroy.*cancer|kill.*cancer|cancer.*cells|tumor.*shrink|shrink.*tumor|oncologist.*hate|doctors.*hate.*this|big.*pharma.*hate|pharma.*doesn.*want|medical.*industry.*hate).*
         - type: HeaderPattern
           header: from
-          pattern: (?i).*(health|wellness|remedy|natural|herbal|medical|doctor|ancient|tonic|supplement|joint|heal|repair|surgery|ditch|avoid|stop|brain|memory|cognitive|cancer|chemo|cure|flush).*
+          pattern: (?i).*(health|wellness|remedy|natural|herbal|medical|doctor|ancient|tonic|supplement|joint|heal|repair|surgery|ditch|avoid|stop|brain|memory|cognitive|cancer|chemo|cure|flush|pain|killer|relief|drops|medication|pills|pharmacy).*
         - type: SenderPattern
-          pattern: (?i).*(joint|heal|repair|surgery|medical|health|wellness|remedy|natural|ditch|avoid|stop|brain|memory|cognitive).*@.*
+          pattern: (?i).*(joint|heal|repair|surgery|medical|health|wellness|remedy|natural|ditch|avoid|stop|brain|memory|cognitive|pain|killer|relief|drops|medication|pills|pharmacy).*@.*
       - type: Or
         criteria:
         - type: SubjectPattern
           pattern: (?i).*(viagra|cialis|levitra|pharmacy|prescription|medication|pills|supplement|cure|treatment).*
         - type: SubjectPattern
           pattern: (?i).*(secret.*formula|miracle.*cure|doctor.*recommend|clinically.*proven|breakthrough).*
+        - type: SubjectPattern
+          pattern: (?i).*(pain.*killer|pain.*relief|kill.*pain|kills.*pain|worst.*pain|chronic.*pain|back.*pain|joint.*pain|arthritis.*pain|muscle.*pain|nerve.*pain|two.*drops|few.*drops|little.*drops|instant.*relief|immediate.*relief|fast.*relief|powerful.*relief).*
         - type: SubjectPattern
           pattern: (?i).*(medicare.*kit|medicare.*essentials|cvs.*medicare|free.*medicare|medicare.*benefits|medicare.*coverage|medicare.*plan|cvs.*kit|pharmacy.*kit|health.*kit).*
         - type: HeaderPattern
@@ -1179,6 +1181,8 @@ rules:
         pattern: (?i).*(manhood|testosterone|male|virility|potency|libido|sexy|adult|xxx|davinci_brain|money_maker|lottery_winner|tonic|bladder|urinary|prostate|health|wellness|remedy|generator|energy.*device|free.*energy|power.*generator|gizmo|steroids|skyview.*drones|aerial.*x|drone.*promotions|trading.*drones|airjet|air.*jet|zoomshot|zoom.*shot|cavegrip|cave.*grip|telescope|super.*telescope|elonmusk|elon.*musk|billionaire.*bridge|mental.*block|fresh.*air.*pro|portable.*cooler|ultimate.*cooler).*@.*
       - type: SubjectPattern
         pattern: (?i).*(grandpa.*secret|doctor.*hate|weird.*trick|one.*simple.*trick|this.*will.*shock|ancient.*song|helps.*\d+|controversial.*device|never.*stops|gov.*doesn.*want|government.*doesn.*want|they.*don.*want.*you|device.*never.*stops|generator.*steroids|energy.*device|free.*energy|perpetual.*motion|unlimited.*power|people.*are.*trading|trading.*in.*their|old.*drones|new.*drone|aerial.*x|skyview.*drones|iphone.*of|never.*go.*back|meet.*the.*iphone|you.*ll.*never.*go.*back|super.*telescope|\d+k.*\d+.*x.*\d+mm|telescope.*for.*mobile|zoomshot|cavegrip|ultimate.*portable|portable.*cooler|stay.*cool.*anywhere|fresh.*air.*pro).*
+      - type: SubjectPattern
+        pattern: (?i).*(built.*in.*usa|made.*in.*usa|designed.*for.*americans|american.*made|usa.*made|patriot.*made|freedom.*made|this.*ain.*t.*imported|not.*imported|american.*patriots|true.*american|real.*american|support.*america|america.*first|buy.*american|proud.*american|red.*white.*blue|stars.*stripes|land.*of.*the.*free|home.*of.*the.*brave).*
     - type: Not
       criteria:
         type: SenderPattern
