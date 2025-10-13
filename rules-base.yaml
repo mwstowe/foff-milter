@@ -1424,7 +1424,7 @@ rules:
         - type: "Or"
           criteria:
             - type: "SubjectPattern"
-              pattern: "(?i).*(t-level|testosterone|manhood|male.*enhancement|ripped.*grandpa|secret.*to.*send|levels.*soaring|overnight|boost.*testosterone).*"
+              pattern: "(?i).*(t-level|testosterone|manhood|male.*enhancement|ripped.*grandpa|secret.*to.*send|levels.*soaring|boost.*testosterone).*"
             - type: "HeaderPattern"
               header: "from"
               pattern: "(?i).*(your.*manhood|testosterone|male.*enhancement|t.*level|boost|enhance).*"
@@ -1444,6 +1444,17 @@ rules:
             # Spam subject patterns
             - type: "SubjectPattern"
               pattern: "(?i).*(grandpa.*secret|secret.*to|overnight|soaring|ripped|weird.*trick|doctors.*hate).*"
+        # Exclude legitimate platforms and services
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              # Publishing and content platforms
+              - type: "SenderPattern"
+                pattern: ".*@.*(medium|substack|linkedin|twitter|facebook|instagram|reddit|discord|slack|zoom|teams|skype|newsletter|blog|news|tech|startup|programming|developer)\\.(com|net|org)$"
+              # News and media outlets
+              - type: "SenderPattern"
+                pattern: ".*@.*(techcrunch|wired|ars-technica|engadget|verge|mashable|gizmodo|lifehacker|fastcompany|inc|entrepreneur|forbes|bloomberg|reuters|ap|cnn|bbc)\\.(com|net|org)$"
     action:
       type: "TagAsSpam"
       header_name: "X-Spam-Flag"
