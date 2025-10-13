@@ -1034,10 +1034,10 @@ rules:
         type: Or
         criteria:
         - type: SenderPattern
-          pattern: .*@.*(americanexpress|amex|paypal|chase|wellsfargo|bankofamerica|citi|capitalone|discover|visa|mastercard|amazon|microsoft|apple|google|netflix|spotify|adobe|walmart|target|costco|homedepot|lowes|bestbuy|macys|nordstrom|kohls|jcpenney|cvs|walgreens|riteaid|fedex|ups|dhl|usps|irs|ssa|cms|statefarm|geico|allstate|progressive)\.(com|net|org|gov)$
+          pattern: .*@.*(americanexpress|amex|paypal|chase|wellsfargo|bankofamerica|citi|capitalone.*|.*capitalone.*|discover|visa|mastercard|amazon.*|.*amazon.*|microsoft|apple|google|netflix|spotify|adobe|walmart|target|costco|homedepot|lowes|bestbuy|macys|nordstrom|kohls|jcpenney|cvs|walgreens|riteaid|fedex|ups|dhl|usps|irs|ssa|cms|statefarm|geico|allstate|progressive)\.(com|net|org|gov)$
         - type: HeaderPattern
           header: received
-          pattern: .*(americanexpress|amex|paypal|chase|wellsfargo|bankofamerica|citi|capitalone|discover|visa|mastercard|amazon|microsoft|apple|google|netflix|spotify|adobe|walmart|target|costco|homedepot|lowes|bestbuy|macys|nordstrom|kohls|jcpenney|cvs|walgreens|riteaid|fedex|ups|dhl|usps|irs|ssa|cms|statefarm|geico|allstate|progressive)\.(com|net|org|gov).*
+          pattern: .*(americanexpress|amex|paypal|chase|wellsfargo|bankofamerica|citi|capitalone.*|.*capitalone.*|discover|visa|mastercard|amazon.*|.*amazon.*|microsoft|apple|google|netflix|spotify|adobe|walmart|target|costco|homedepot|lowes|bestbuy|macys|nordstrom|kohls|jcpenney|cvs|walgreens|riteaid|fedex|ups|dhl|usps|irs|ssa|cms|statefarm|geico|allstate|progressive)\.(com|net|org|gov).*
   action:
     type: TagAsSpam
     header_name: X-Spam-Flag
@@ -1079,7 +1079,7 @@ rules:
         - type: SenderPattern
           pattern: .*@(purehockey|pure-hockey)\.com$
         - type: SenderPattern
-          pattern: .*@(amazon|microsoft|apple|google|netflix|spotify|adobe|paypal|chase|wellsfargo|bankofamerica|citibank|capitalone|walmart|target|costco|homedepot|lowes|bestbuy|macys|nordstrom|cvs|walgreens|riteaid|medicare|medicaid|ssa|irs|usps|fedex|ups|dhl)\.com$
+          pattern: .*@(amazon.*|.*amazon.*|microsoft|apple|google|netflix|spotify|adobe|paypal|chase|wellsfargo|bankofamerica|citibank|capitalone.*|.*capitalone.*|walmart|target|costco|homedepot|lowes|bestbuy|macys|nordstrom|cvs|walgreens|riteaid|medicare|medicaid|ssa|irs|usps|fedex|ups|dhl)\.com$
         - type: SenderPattern
           pattern: .*@.*(digital\.costco\.com|cname\.cjm\.adobe\.com|mg\.homedepot\.com|sendgrid\.net|mailchimp\.com|constantcontact\.com|mailgun\.com|customeriomail\.com|sparkpostmail\.com|amazonses\.com|outlook\.com|office365\.com).*
   action:
@@ -1251,7 +1251,7 @@ rules:
     - type: Or
       criteria:
       - type: SubjectPattern
-        pattern: (?i).*(t-level|testosterone|manhood|male.*enhancement|ripped.*grandpa|secret.*to.*send|levels.*soaring|overnight|boost.*testosterone).*
+        pattern: (?i).*(t-level|testosterone|manhood|male.*enhancement|ripped.*grandpa|secret.*to.*send|levels.*soaring|boost.*testosterone).*
       - type: HeaderPattern
         header: from
         pattern: (?i).*(your.*manhood|testosterone|male.*enhancement|t.*level|boost|enhance).*
@@ -1266,6 +1266,14 @@ rules:
         pattern: (?i).*_(manhood|testosterone|male|boost|enhance).*@.*
       - type: SubjectPattern
         pattern: (?i).*(grandpa.*secret|secret.*to|overnight|soaring|ripped|weird.*trick|doctors.*hate).*
+    - type: Not
+      criteria:
+        type: Or
+        criteria:
+        - type: SenderPattern
+          pattern: .*@.*(medium|substack|linkedin|twitter|facebook|instagram|reddit|discord|slack|zoom|teams|skype|newsletter|blog|news|tech|startup|programming|developer)\.(com|net|org)$
+        - type: SenderPattern
+          pattern: .*@.*(techcrunch|wired|ars-technica|engadget|verge|mashable|gizmodo|lifehacker|fastcompany|inc|entrepreneur|forbes|bloomberg|reuters|ap|cnn|bbc)\.(com|net|org)$
   action:
     type: TagAsSpam
     header_name: X-Spam-Flag
