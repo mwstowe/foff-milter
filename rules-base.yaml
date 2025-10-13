@@ -1150,10 +1150,10 @@ rules:
             type: "Or"
             criteria:
               - type: "SenderPattern"
-                pattern: ".*@.*(americanexpress|amex|paypal|chase|wellsfargo|bankofamerica|citi|capitalone|discover|visa|mastercard|amazon|microsoft|apple|google|netflix|spotify|adobe|walmart|target|costco|homedepot|lowes|bestbuy|macys|nordstrom|kohls|jcpenney|cvs|walgreens|riteaid|fedex|ups|dhl|usps|irs|ssa|cms|statefarm|geico|allstate|progressive)\\.(com|net|org|gov)$"
+                pattern: ".*@.*(americanexpress|amex|paypal|chase|wellsfargo|bankofamerica|citi|capitalone.*|.*capitalone.*|discover|visa|mastercard|amazon|microsoft|apple|google|netflix|spotify|adobe|walmart|target|costco|homedepot|lowes|bestbuy|macys|nordstrom|kohls|jcpenney|cvs|walgreens|riteaid|fedex|ups|dhl|usps|irs|ssa|cms|statefarm|geico|allstate|progressive)\\.(com|net|org|gov)$"
               - type: "HeaderPattern"
                 header: "received"
-                pattern: ".*(americanexpress|amex|paypal|chase|wellsfargo|bankofamerica|citi|capitalone|discover|visa|mastercard|amazon|microsoft|apple|google|netflix|spotify|adobe|walmart|target|costco|homedepot|lowes|bestbuy|macys|nordstrom|kohls|jcpenney|cvs|walgreens|riteaid|fedex|ups|dhl|usps|irs|ssa|cms|statefarm|geico|allstate|progressive)\\.(com|net|org|gov).*"
+                pattern: ".*(americanexpress|amex|paypal|chase|wellsfargo|bankofamerica|citi|capitalone.*|.*capitalone.*|discover|visa|mastercard|amazon|microsoft|apple|google|netflix|spotify|adobe|walmart|target|costco|homedepot|lowes|bestbuy|macys|nordstrom|kohls|jcpenney|cvs|walgreens|riteaid|fedex|ups|dhl|usps|irs|ssa|cms|statefarm|geico|allstate|progressive)\\.(com|net|org|gov).*"
     action:
       type: "TagAsSpam"
       header_name: "X-Spam-Flag"
@@ -1201,7 +1201,7 @@ rules:
                 pattern: ".*@(purehockey|pure-hockey)\\.com$"
               # Other major brand domains (examples)
               - type: "SenderPattern"
-                pattern: ".*@(amazon|microsoft|apple|google|netflix|spotify|adobe|paypal|chase|wellsfargo|bankofamerica|citibank|capitalone|walmart|target|costco|homedepot|lowes|bestbuy|macys|nordstrom|cvs|walgreens|riteaid|medicare|medicaid|ssa|irs|usps|fedex|ups|dhl)\\.com$"
+                pattern: ".*@(amazon|microsoft|apple|google|netflix|spotify|adobe|paypal|chase|wellsfargo|bankofamerica|citibank|capitalone.*|.*capitalone.*|walmart|target|costco|homedepot|lowes|bestbuy|macys|nordstrom|cvs|walgreens|riteaid|medicare|medicaid|ssa|irs|usps|fedex|ups|dhl)\\.com$"
               # Legitimate email service providers and marketing platforms
               - type: "SenderPattern"
                 pattern: ".*@.*(digital\\.costco\\.com|cname\\.cjm\\.adobe\\.com|mg\\.homedepot\\.com|sendgrid\\.net|mailchimp\\.com|constantcontact\\.com|mailgun\\.com|customeriomail\\.com|sparkpostmail\\.com|amazonses\\.com|outlook\\.com|office365\\.com).*"
