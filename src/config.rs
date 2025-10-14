@@ -261,6 +261,10 @@ pub enum Criteria {
         require_signature: Option<bool>,
         // Whether to check for domain mismatch between signature and sender (default: true)
         check_domain_mismatch: Option<bool>,
+        // Whether to detect multi-domain DKIM spoofing (default: false)
+        detect_spoofing: Option<bool>,
+        // List of brand domains to check for spoofing
+        brand_domains: Option<Vec<String>>,
         // List of suspicious domains that indicate potential spoofing
         suspicious_domains: Option<Vec<String>>,
     },

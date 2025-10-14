@@ -23,6 +23,23 @@ rules:
   # FILTERING RULES - Universal spam detection rules
   # Environment-specific whitelists are merged from whitelist.yaml
 
+  # Tag multi-domain DKIM spoofing
+  - name: "Tag multi-domain DKIM spoofing"
+    criteria:
+      type: "And"
+      criteria:
+        # Brand name in From header
+        - type: "HeaderPattern"
+          header: "from"
+          pattern: "(?i).*(aaa|paypal|amazon|microsoft|apple|google|chase|wellsfargo|bankofamerica|citibank|capitalone|discover|visa|mastercard|americanexpress|amex|walmart|target|costco|homedepot|bestbuy|fedex|ups|dhl|usps|netflix|spotify|adobe).*"
+        # Use enhanced DKIM analysis for spoofing detection
+        - type: "DkimAnalysis"
+          detect_spoofing: true
+          brand_domains: ["aaa.com", "paypal.com", "amazon.com", "microsoft.com", "apple.com", "google.com", "chase.com", "wellsfargo.com", "bankofamerica.com", "citibank.com", "capitalone.com", "discover.com", "visa.com", "mastercard.com", "americanexpress.com", "walmart.com", "target.com", "costco.com", "homedepot.com", "bestbuy.com", "fedex.com", "ups.com", "dhl.com", "usps.com", "netflix.com", "spotify.com", "adobe.com"]
+    action:
+      type: "Reject"
+      message: "Brand impersonation with DKIM spoofing detected"
+
   # Tag Japanese spam from suspicious domains
   - name: "Tag Japanese spam from suspicious domains"
     criteria:

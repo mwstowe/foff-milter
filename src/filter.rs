@@ -3610,6 +3610,8 @@ impl FilterEngine {
                 Criteria::DkimAnalysis {
                     require_signature,
                     check_domain_mismatch,
+                    detect_spoofing,
+                    brand_domains,
                     suspicious_domains,
                 } => {
                     log::debug!("Checking DKIM analysis");
@@ -3671,6 +3673,16 @@ impl FilterEngine {
                         }
                     }
 
+                    // Check for multi-domain DKIM spoofing
+                    if detect_spoofing.unwrap_or(false) {
+                        if let Some(brands) = brand_domains {
+                            if self.detect_multi_domain_spoofing(context, brands).await {
+                                auth_failure_indicators += 1;
+                                log::debug!("Multi-domain DKIM spoofing detected");
+                            }
+                        }
+                    }
+
                     let has_auth_failure = auth_failure_indicators > 0;
 
                     if has_auth_failure {
@@ -3704,6 +3716,44 @@ impl FilterEngine {
                 }
             }
         })
+    }
+
+    /// Detect multi-domain DKIM spoofing by analyzing authentication results and DKIM signatures
+    async fn detect_multi_domain_spoofing(&self, context: &MailContext, brand_domains: &[String]) -> bool {
+        // Get all authentication results headers
+        let auth_headers: Vec<_> = context.headers.iter()
+            .filter(|(key, _)| key.to_lowercase() == "authentication-results")
+            .collect();
+
+        // Check for brand domain DKIM failures
+        for (_, auth_value) in &auth_headers {
+            if auth_value.contains("dkim=fail") {
+                // Extract domain from authentication results
+                if let Some(domain) = self.extract_domain_from_auth_results(auth_value) {
+                    // Check if it's a brand domain
+                    for brand in brand_domains {
+                        if domain.to_lowercase() == brand.to_lowercase() {
+                            log::debug!("Brand domain DKIM failure detected: {}", domain);
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+
+        false
+    }
+
+    /// Extract domain from authentication results header
+    fn extract_domain_from_auth_results(&self, auth_results: &str) -> Option<String> {
+        // Look for header.d= parameter in authentication results
+        for part in auth_results.split_whitespace() {
+            if part.starts_with("header.d=") {
+                let domain = part.trim_start_matches("header.d=");
+                return Some(domain.to_string());
+            }
+        }
+        None
     }
 }
 
