@@ -3719,9 +3719,15 @@ impl FilterEngine {
     }
 
     /// Detect multi-domain DKIM spoofing by analyzing authentication results and DKIM signatures
-    async fn detect_multi_domain_spoofing(&self, context: &MailContext, brand_domains: &[String]) -> bool {
+    async fn detect_multi_domain_spoofing(
+        &self,
+        context: &MailContext,
+        brand_domains: &[String],
+    ) -> bool {
         // Get all authentication results headers
-        let auth_headers: Vec<_> = context.headers.iter()
+        let auth_headers: Vec<_> = context
+            .headers
+            .iter()
             .filter(|(key, _)| key.to_lowercase() == "authentication-results")
             .collect();
 
