@@ -40,7 +40,7 @@ rules:
         - type: "Not"
           criteria:
             type: "SenderPattern"
-            pattern: ".*@.*(fidelity|schwab|vanguard|tdameritrade|etrade|merrilledge|wellstrade|chase|bankofamerica|citi)\\.(com|net)$"
+            pattern: ".*@.*(fidelity|schwab|vanguard|tdameritrade|etrade|merrilledge|wellstrade|chase|bankofamerica|citi|discover|.*discover.*)\\.(com|net)$"
     action:
       type: "Reject"
       message: "Brand impersonation with DKIM spoofing detected"
@@ -1257,7 +1257,7 @@ rules:
                 pattern: ".*@(purehockey|pure-hockey)\\.com$"
               # Other major brand domains (examples)
               - type: "SenderPattern"
-                pattern: ".*@(amazon.*|.*amazon.*|microsoft|apple|google|netflix|spotify|adobe|paypal|chase|wellsfargo|bankofamerica|citibank|capitalone.*|.*capitalone.*|walmart|target|costco|homedepot|lowes|bestbuy|macys|nordstrom|cvs|walgreens|riteaid|medicare|medicaid|ssa|irs|usps|fedex|ups|dhl|.*fidelity.*)\\.com$"
+                pattern: ".*@(amazon.*|.*amazon.*|microsoft|apple|google|netflix|spotify|adobe|paypal|chase|wellsfargo|bankofamerica|citibank|capitalone.*|.*capitalone.*|walmart|target|costco|homedepot|lowes|bestbuy|macys|nordstrom|cvs|walgreens|riteaid|medicare|medicaid|ssa|irs|usps|fedex|ups|dhl|.*fidelity.*|.*discover.*)\\.com$"
               # Legitimate email service providers and marketing platforms
               - type: "SenderPattern"
                 pattern: ".*@.*(digital\\.costco\\.com|cname\\.cjm\\.adobe\\.com|mg\\.homedepot\\.com|sendgrid\\.net|mailchimp\\.com|constantcontact\\.com|mailgun\\.com|customeriomail\\.com|sparkpostmail\\.com|amazonses\\.com|outlook\\.com|office365\\.com).*"
