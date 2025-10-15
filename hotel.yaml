@@ -38,6 +38,46 @@ rules:
   action:
     type: Reject
     message: SparkPost blocked for internal queue
+- name: Tag multi-domain DKIM spoofing
+  criteria:
+    type: And
+    criteria:
+    - type: HeaderPattern
+      header: from
+      pattern: (?i).*(aaa|paypal|amazon|microsoft|apple|google|chase|wellsfargo|bankofamerica|citibank|capitalone|discover|visa|mastercard|americanexpress|amex|walmart|target|costco|homedepot|bestbuy|fedex|ups|dhl|usps|netflix|spotify|adobe).*
+    - type: DkimAnalysis
+      detect_spoofing: true
+      brand_domains:
+      - aaa.com
+      - paypal.com
+      - amazon.com
+      - microsoft.com
+      - apple.com
+      - google.com
+      - chase.com
+      - wellsfargo.com
+      - bankofamerica.com
+      - citibank.com
+      - capitalone.com
+      - discover.com
+      - visa.com
+      - mastercard.com
+      - americanexpress.com
+      - walmart.com
+      - target.com
+      - costco.com
+      - homedepot.com
+      - bestbuy.com
+      - fedex.com
+      - ups.com
+      - dhl.com
+      - usps.com
+      - netflix.com
+      - spotify.com
+      - adobe.com
+  action:
+    type: Reject
+    message: Brand impersonation with DKIM spoofing detected
 - name: Tag Japanese spam from suspicious domains
   criteria:
     type: And
@@ -52,7 +92,7 @@ rules:
     - type: Or
       criteria:
       - type: SenderPattern
-        pattern: .*@.*\.(tk|ml|ga|cf|top|click|download|loan|racing|review|science|work|party|date|stream|trade|bid|win|cricket|accountant|faith|men|gq)$
+        pattern: .*@.*\.(tk|ml|ga|cf|top|click|download|loan|racing|review|science|work|party|date|stream|trade|bid|win|cricket|accountant|faith|men|gq|cn)$
       - type: SenderPattern
         pattern: .*@(mta[0-9]+|mail[0-9]+|smtp[0-9]+|server[0-9]+|host[0-9]+)\.
       - type: DkimAnalysis
