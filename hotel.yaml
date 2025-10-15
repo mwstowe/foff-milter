@@ -78,6 +78,29 @@ rules:
   action:
     type: Reject
     message: Brand impersonation with DKIM spoofing detected
+- name: Tag bulk spam with multiple recipients and phishing subjects
+  criteria:
+    type: And
+    criteria:
+    - type: HeaderPattern
+      header: to
+      pattern: .*@.*,.*@.*,.*@.*,.*@.*,.*@.*
+    - type: SubjectPattern
+      pattern: (?i).*(your.*(payment|order|purchase|transaction|invoice|receipt|delivery|shipment).*confirmed|payment.*confirmed|order.*confirmed|purchase.*confirmed|transaction.*confirmed|delivery.*confirmed|shipment.*confirmed|your.*order.*has.*been|payment.*for.*order|order.*payment|purchase.*payment|transaction.*payment|invoice.*payment|receipt.*payment|congratulations.*you.*have|you.*have.*won|winner.*notification|prize.*notification|reward.*notification|claim.*your|your.*reward|your.*prize|urgent.*action|action.*required|verify.*account|update.*account|confirm.*account|suspended.*account|expired.*account|security.*alert|security.*warning).*
+    - type: Not
+      criteria:
+        type: Or
+        criteria:
+        - type: SenderPattern
+          pattern: .*@.*(mailchimp|constantcontact|sendgrid|mailgun|customeriomail|campaignmonitor|aweber|getresponse|convertkit|activecampaign|drip|klaviyo|omnisend|sendinblue|brevo)\.(com|net)$
+        - type: SenderPattern
+          pattern: .*@.*(amazon|ebay|paypal|stripe|square|shopify|etsy|walmart|target|bestbuy|homedepot|lowes|macys|nordstrom|apple|microsoft|google|netflix|spotify|adobe)\.(com|net)$
+        - type: SenderPattern
+          pattern: .*@.*(newsletter|news|media|press|marketing|communications|updates|notifications)\.(com|net|org)$
+  action:
+    type: TagAsSpam
+    header_name: X-Spam-Flag
+    header_value: 'YES'
 - name: Tag Japanese spam from suspicious domains
   criteria:
     type: And
