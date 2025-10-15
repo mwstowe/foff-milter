@@ -2128,11 +2128,21 @@ rules:
         # Gmail address
         - type: "SenderPattern"
           pattern: ".*@gmail\\.com$"
-        # Not trusted senders
+        # Not trusted senders or legitimate forwarded newsletters
         - type: "Not"
           criteria:
-            type: "SenderPattern"
-            pattern: "patoertel39@gmail\\.com"
+            type: "Or"
+            criteria:
+              - type: "SenderPattern"
+                pattern: "patoertel39@gmail\\.com"
+              # Legitimate newsletters that might be forwarded through Gmail
+              - type: "HeaderPattern"
+                header: "from"
+                pattern: ".*@(first-backer|morning-brew|themorningbrew|substack|medium|linkedin|newsletter|mailchimp|constantcontact|convertkit|beehiiv|ghost|tinyletter)\\.(com|net|org)$"
+              # Mailchimp infrastructure
+              - type: "HeaderPattern"
+                header: "received"
+                pattern: ".*(mailchimp|mcsv\\.net|constantcontact|convertkit).*"
         # Suspicious indicators
         - type: "Or"
           criteria:
