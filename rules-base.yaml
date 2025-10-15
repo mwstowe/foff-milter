@@ -40,6 +40,37 @@ rules:
       type: "Reject"
       message: "Brand impersonation with DKIM spoofing detected"
 
+  # Tag bulk spam with multiple recipients and phishing subjects
+  - name: "Tag bulk spam with multiple recipients and phishing subjects"
+    criteria:
+      type: "And"
+      criteria:
+        # Multiple recipients (bulk email pattern)
+        - type: "HeaderPattern"
+          header: "to"
+          pattern: ".*@.*,.*@.*,.*@.*,.*@.*,.*@.*"  # 5+ recipients
+        # Generic phishing/spam subjects
+        - type: "SubjectPattern"
+          pattern: "(?i).*(your.*(payment|order|purchase|transaction|invoice|receipt|delivery|shipment).*confirmed|payment.*confirmed|order.*confirmed|purchase.*confirmed|transaction.*confirmed|delivery.*confirmed|shipment.*confirmed|your.*order.*has.*been|payment.*for.*order|order.*payment|purchase.*payment|transaction.*payment|invoice.*payment|receipt.*payment|congratulations.*you.*have|you.*have.*won|winner.*notification|prize.*notification|reward.*notification|claim.*your|your.*reward|your.*prize|urgent.*action|action.*required|verify.*account|update.*account|confirm.*account|suspended.*account|expired.*account|security.*alert|security.*warning).*"
+        # Exclude legitimate bulk senders
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              # Legitimate bulk email services
+              - type: "SenderPattern"
+                pattern: ".*@.*(mailchimp|constantcontact|sendgrid|mailgun|customeriomail|campaignmonitor|aweber|getresponse|convertkit|activecampaign|drip|klaviyo|omnisend|sendinblue|brevo)\\.(com|net)$"
+              # Legitimate business domains
+              - type: "SenderPattern"
+                pattern: ".*@.*(amazon|ebay|paypal|stripe|square|shopify|etsy|walmart|target|bestbuy|homedepot|lowes|macys|nordstrom|apple|microsoft|google|netflix|spotify|adobe)\\.(com|net)$"
+              # Newsletter and media companies
+              - type: "SenderPattern"
+                pattern: ".*@.*(newsletter|news|media|press|marketing|communications|updates|notifications)\\.(com|net|org)$"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
   # Tag Japanese spam from suspicious domains
   - name: "Tag Japanese spam from suspicious domains"
     criteria:

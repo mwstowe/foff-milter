@@ -470,7 +470,9 @@ rules:
           pattern: .*:mc$
         - type: HeaderPattern
           header: received
-          pattern: .*(constantcontact|sendgrid|mailgun|customeriomail)\.(com|net).*
+          pattern: .*(constantcontact|sendgrid|mailgun|customeriomail|14westmail|sparkpost|oxfordclub|motleyfool|investorplace|banyanhill|stansberryresearch|palmbeachgroup|agora|agorafinancial)\.(com|net).*
+        - type: SenderPattern
+          pattern: .*@.*(oxfordclub|motleyfool|investorplace|banyanhill|stansberryresearch|palmbeachgroup|agora|agorafinancial|morningstar|barrons|wsj|marketwatch|fool|seeking|alpha|zacks|thestreet)\.(com|net)$
         - type: HeaderPattern
           header: x-google-group-id
           pattern: \d+
@@ -814,7 +816,7 @@ rules:
     - type: Or
       criteria:
       - type: SubjectPattern
-        pattern: (?i).*(car.*emergency.*kit|emergency.*car.*kit|car.*kit.*confirmed|emergency.*kit.*confirmed|aaa.*car.*kit|car.*safety.*kit|roadside.*kit|auto.*emergency|your.*kit.*is.*queued|kit.*queued.*for.*delivery|kit.*is.*ready|reward.*kit|cvs.*kit|pharmacy.*kit|health.*kit|safety.*kit|tool.*set.*is.*ready|your.*tool.*set|tool.*kit|harbor.*freight.*kit|tools.*ready|tool.*delivery).*
+        pattern: (?i).*(car.*emergency.*kit|emergency.*car.*kit|car.*kit.*confirmed|emergency.*kit.*confirmed|aaa.*car.*kit|aaa.*kit|car.*safety.*kit|roadside.*kit|auto.*emergency|your.*kit.*is.*queued|kit.*queued.*for.*delivery|kit.*is.*ready|reward.*kit|cvs.*kit|pharmacy.*kit|health.*kit|safety.*kit|tool.*set.*is.*ready|your.*tool.*set|tool.*kit|harbor.*freight.*kit|tools.*ready|tool.*delivery|kit.*reservation|kit.*expires|emergency.*kit.*expires).*
       - type: SubjectPattern
         pattern: .*WW91ciBGcmVlIENhciBFbWVyZ2VuY3kgS2l0IGlzIFJlYWR5IQ==.*
     - type: Or
@@ -1213,7 +1215,7 @@ rules:
         - type: SenderPattern
           pattern: .*@.*(aliexpress|alibaba|ebay|etsy|shopify|wish|banggood|gearbest|dhgate|lightinthebox|tomtop|cafago|chinavasion|dealextreme|focalprice|miniinthebox|rosegal|sammydress|zaful|shein|romwe)\.(com|net)$
         - type: SenderPattern
-          pattern: .*@.*(fitbit|myfitnesspal|weightwatchers|nutrisystem|peloton|nike|adidas|underarmour|lululemon|gymshark)\.(com|net)$
+          pattern: .*@.*(fitbit|myfitnesspal|weightwatchers|nutrisystem|peloton|nike|adidas|underarmour|lululemon|gymshark|nationalgeographic|natgeo|webmd|healthline|mayoclinic|clevelandclinic|johnshopkins|harvard|stanford|nih|cdc|who|medicalnews|healthday|everydayhealth|prevention|menshealth|womenshealth|shape|self|health|wellness|nutrition|fitness)\.(com|net|org|gov)$
         - type: SenderPattern
           pattern: .*@.*(gnc|vitaminworld|iherb|vitacost|swansonvitamins|puritan|naturemade|centrum|optimumnutrition)\.(com|net)$
         - type: SenderPattern
@@ -1635,7 +1637,7 @@ rules:
           - type: Not
             criteria:
               type: SenderPattern
-              pattern: .*@(amazon|ebay|paypal|stripe|square|shopify|etsy|walmart|target|bestbuy|homedepot|lowes|macys|nordstrom|apple|microsoft|google)\.(com|net)$
+              pattern: .*@(amazon|ebay|paypal|stripe|square|shopify|etsy|walmart|target|bestbuy|homedepot|lowes|macys|nordstrom|apple|microsoft|google|getquip|quip|hellofresh|blueapron|birchbox|ipsy|stichfix|stitchfix|casper|warby|warbyparker|allbirds|bombas|away|glossier|outdoor|patagonia|rei|lululemon|nike|adidas|underarmour|peloton|fitbit|garmin|spotify|netflix|hulu|disney|paramount|hbo|showtime|peacock|crunchyroll|funimation|vrv|roosterteeth)\.(com|net)$
       - type: And
         criteria:
         - type: SubjectPattern
@@ -1823,8 +1825,16 @@ rules:
       pattern: .*@gmail\.com$
     - type: Not
       criteria:
-        type: SenderPattern
-        pattern: patoertel39@gmail\.com
+        type: Or
+        criteria:
+        - type: SenderPattern
+          pattern: patoertel39@gmail\.com
+        - type: HeaderPattern
+          header: from
+          pattern: .*@(first-backer|morning-brew|themorningbrew|substack|medium|linkedin|newsletter|mailchimp|constantcontact|convertkit|beehiiv|ghost|tinyletter)\.(com|net|org)$
+        - type: HeaderPattern
+          header: received
+          pattern: .*(mailchimp|mcsv\.net|constantcontact|convertkit).*
     - type: Or
       criteria:
       - type: SenderPattern
