@@ -520,10 +520,13 @@ rules:
               - type: "HeaderPattern"
                 header: "feedback-id"
                 pattern: ".*:mc$"
-              # Other legitimate email service providers
+              # Other legitimate email service providers and financial newsletters
               - type: "HeaderPattern"
                 header: "received"
-                pattern: ".*(constantcontact|sendgrid|mailgun|customeriomail)\\.(com|net).*"
+                pattern: ".*(constantcontact|sendgrid|mailgun|customeriomail|14westmail|sparkpost|oxfordclub|motleyfool|investorplace|banyanhill|stansberryresearch|palmbeachgroup|agora|agorafinancial)\\.(com|net).*"
+              # Legitimate financial newsletter domains
+              - type: "SenderPattern"
+                pattern: ".*@.*(oxfordclub|motleyfool|investorplace|banyanhill|stansberryresearch|palmbeachgroup|agora|agorafinancial|morningstar|barrons|wsj|marketwatch|fool|seeking|alpha|zacks|thestreet)\\.(com|net)$"
               # Google Groups mailing lists
               - type: "HeaderPattern"
                 header: "x-google-group-id"
