@@ -1605,9 +1605,9 @@ rules:
               # Legitimate pharmacy and healthcare services
               - type: "SenderPattern"
                 pattern: ".*@(express-scripts|cvs|walgreens|rite-aid|optum|humana|anthem|aetna|cigna|bluecross|kaiser|unitedhealth)\\.(com|net)$"
-              # Legitimate authentication services
+              # Legitimate authentication services and tech companies
               - type: "SenderPattern"
-                pattern: ".*@(okta|auth0|ping|onelogin|duo|microsoft|google|apple|amazon)\\.(com|net)$"
+                pattern: ".*@(okta|auth0|ping|onelogin|duo|microsoft|google|apple|amazon|.*ecoflow.*|tesla|netflix|spotify|adobe|paypal|ebay|etsy|shopify|stripe|square|zoom|slack|dropbox|github|gitlab|bitbucket|atlassian|salesforce|hubspot|mailchimp|constantcontact|sendgrid|twilio|lastpass|1password|bitwarden|dashlane|nordvpn|expressvpn|surfshark)\\.(com|net)$"
               # Okta infrastructure
               - type: "HeaderPattern"
                 header: "received"
@@ -1664,8 +1664,13 @@ rules:
         # Not from legitimate domain
         - type: "Not"
           criteria:
-            type: "SenderPattern"
-            pattern: ".*@baddomain\\.com$"
+            type: "Or"
+            criteria:
+              - type: "SenderPattern"
+                pattern: ".*@baddomain\\.com$"
+              # Legitimate companies that send account verification emails
+              - type: "SenderPattern"
+                pattern: ".*@.*(.*ecoflow.*|tesla|apple|microsoft|google|amazon|netflix|spotify|adobe|paypal|ebay|etsy|shopify|stripe|square|zoom|slack|dropbox|github|gitlab|bitbucket|atlassian|salesforce|hubspot|mailchimp|constantcontact|sendgrid|twilio|auth0|okta|onelogin|duo|lastpass|1password|bitwarden|dashlane|nordvpn|expressvpn|surfshark)\\.(com|net|org)$"
         # Suspicious indicators
         - type: "Or"
           criteria:
