@@ -1481,25 +1481,38 @@ rules:
   # Tag inappropriate sender names and adult content
   - name: "Tag inappropriate sender names and adult content"
     criteria:
-      type: "Or"
+      type: "And"
       criteria:
-        # Inappropriate sender names
+        # Main inappropriate content detection
         - type: "Or"
           criteria:
-            - type: "HeaderPattern"
-              header: "from"
-              pattern: "(?i).*(your.*manhood|your.*penis|your.*member|male.*enhancement|testosterone|virility|potency|libido).*"
+            # Inappropriate sender names
+            - type: "Or"
+              criteria:
+                - type: "HeaderPattern"
+                  header: "from"
+                  pattern: "(?i).*(your.*manhood|your.*penis|your.*member|male.*enhancement|testosterone|virility|potency|libido).*"
+                - type: "SenderPattern"
+                  pattern: "(?i).*(manhood|penis|member|testosterone|virility|potency|libido|sexy|adult|xxx|porn).*@.*"
+            # Adult/inappropriate email addresses
             - type: "SenderPattern"
-              pattern: "(?i).*(manhood|penis|member|testosterone|virility|potency|libido|sexy|adult|xxx|porn).*@.*"
-        # Adult/inappropriate email addresses
-        - type: "SenderPattern"
-          pattern: "(?i).*_(manhood|penis|member|testosterone|male|virility|potency|libido|sexy|adult|xxx).*@.*"
-        # Suspicious domain patterns for adult content
-        - type: "SenderPattern"
-          pattern: ".*@.*(adult|xxx|sex|porn|manhood|testosterone|male|virility|enhancement).*\\.(shop|store|online|site|tk|ml|ga|cf|top)$"
-        # Adult content in subject lines
-        - type: "SubjectPattern"
-          pattern: "(?i).*(sex.*industry|penis.*ritual|adult.*content|xxx|porn|sexual.*enhancement|male.*enhancement|grow.*penis|enlarge.*penis|bigger.*penis|sexual.*performance|bedroom.*performance).*"
+              pattern: "(?i).*_(manhood|penis|member|testosterone|male|virility|potency|libido|sexy|adult|xxx).*@.*"
+            # Suspicious domain patterns for adult content
+            - type: "SenderPattern"
+              pattern: ".*@.*(adult|xxx|sex|porn|manhood|testosterone|male|virility|enhancement).*\\.(shop|store|online|site|tk|ml|ga|cf|top)$"
+            # Adult content in subject lines
+            - type: "SubjectPattern"
+              pattern: "(?i).*(sex.*industry|penis.*ritual|adult.*content|xxx|porn|sexual.*enhancement|male.*enhancement|grow.*penis|enlarge.*penis|bigger.*penis|sexual.*performance|bedroom.*performance).*"
+        # Exclude legitimate civil liberties and advocacy organizations
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "SenderPattern"
+                pattern: ".*@.*(eff|aclu|amnesty|hrw|cdt|epic|freepress|publicknowledge|ala|pen|cpj|rsf|transparency|sunlightfoundation|commoncause|publiccitizen|citizen|democracy|civilrights|civilliberties|advocacy|nonprofit|ngo)\\.(org|com|net)$"
+              - type: "HeaderPattern"
+                header: "from"
+                pattern: ".*<.*@.*(eff|aclu|amnesty|hrw|cdt|epic|freepress|publicknowledge|ala|pen|cpj|rsf|transparency|sunlightfoundation|commoncause|publiccitizen|citizen|democracy|civilrights|civilliberties|advocacy|nonprofit|ngo)\\.(org|com|net)>.*"
     action:
       type: "TagAsSpam"
       header_name: "X-Spam-Flag"
