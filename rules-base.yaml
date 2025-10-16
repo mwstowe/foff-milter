@@ -76,6 +76,38 @@ rules:
       header_name: "X-Spam-Flag"
       header_value: "YES"
 
+  # Tag utility bill and heating cost scams
+  - name: "Tag utility bill and heating cost scams"
+    criteria:
+      type: "And"
+      criteria:
+        # Utility bill scam subjects
+        - type: "SubjectPattern"
+          pattern: "(?i).*(tired.*of.*expensive.*utility|expensive.*utility.*bills|utility.*bills.*here|stay.*warm.*fraction|warm.*fraction.*cost|heating.*cost|utility.*cost|energy.*bill|electric.*bill|gas.*bill|power.*bill|save.*on.*utility|reduce.*utility|lower.*utility|cut.*utility|slash.*utility|heating.*solution|warming.*solution).*"
+        # Suspicious indicators
+        - type: "Or"
+          criteria:
+            # DKIM failure (any authentication-results header)
+            - type: "HeaderPattern"
+              header: "authentication-results"
+              pattern: "(?i)dkim=fail"
+            # Name/email mismatches in From vs Reply-To
+            - type: "And"
+              criteria:
+                - type: "HeaderPattern"
+                  header: "from"
+                  pattern: ".*<[^@]+@[^>]+>.*"
+                - type: "HeaderPattern"
+                  header: "reply-to"
+                  pattern: ".*<[^@]+@[^>]+>.*"
+            # Suspicious domains
+            - type: "SenderPattern"
+              pattern: ".*@.*(gravizo|temp|fake|spam|scam|phish)\\.(space|tk|ml|ga|cf|top)$"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+
   # Tag Japanese spam from suspicious domains
   - name: "Tag Japanese spam from suspicious domains"
     criteria:

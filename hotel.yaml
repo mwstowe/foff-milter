@@ -75,6 +75,10 @@ rules:
       - netflix.com
       - spotify.com
       - adobe.com
+    - type: Not
+      criteria:
+        type: SenderPattern
+        pattern: .*@.*(fidelity|schwab|vanguard|tdameritrade|etrade|merrilledge|wellstrade|chase|bankofamerica|citi|discover|.*discover.*)\.(com|net)$
   action:
     type: Reject
     message: Brand impersonation with DKIM spoofing detected
@@ -1099,10 +1103,10 @@ rules:
         type: Or
         criteria:
         - type: SenderPattern
-          pattern: .*@.*(americanexpress|amex|paypal|chase|wellsfargo|bankofamerica|citi|capitalone.*|.*capitalone.*|discover|visa|mastercard|amazon.*|.*amazon.*|microsoft|apple|google|netflix|spotify|adobe|walmart|target|costco|homedepot|lowes|bestbuy|macys|nordstrom|kohls|jcpenney|cvs|walgreens|riteaid|fedex|ups|dhl|usps|irs|ssa|cms|statefarm|geico|allstate|progressive)\.(com|net|org|gov)$
+          pattern: .*@.*(americanexpress|amex|paypal|chase|wellsfargo|bankofamerica|citi|capitalone.*|.*capitalone.*|discover|visa|mastercard|amazon.*|.*amazon.*|microsoft|apple|google|netflix|spotify|adobe|walmart|target|costco|homedepot|lowes|bestbuy|macys|nordstrom|kohls|jcpenney|cvs|walgreens|riteaid|fedex|ups|dhl|usps|irs|ssa|cms|statefarm|geico|allstate|progressive|fidelity)\.(com|net|org|gov)$
         - type: HeaderPattern
           header: received
-          pattern: .*(americanexpress|amex|paypal|chase|wellsfargo|bankofamerica|citi|capitalone.*|.*capitalone.*|discover|visa|mastercard|amazon.*|.*amazon.*|microsoft|apple|google|netflix|spotify|adobe|walmart|target|costco|homedepot|lowes|bestbuy|macys|nordstrom|kohls|jcpenney|cvs|walgreens|riteaid|fedex|ups|dhl|usps|irs|ssa|cms|statefarm|geico|allstate|progressive)\.(com|net|org|gov).*
+          pattern: .*(americanexpress|amex|paypal|chase|wellsfargo|bankofamerica|citi|capitalone.*|.*capitalone.*|discover|visa|mastercard|amazon.*|.*amazon.*|microsoft|apple|google|netflix|spotify|adobe|walmart|target|costco|homedepot|lowes|bestbuy|macys|nordstrom|kohls|jcpenney|cvs|walgreens|riteaid|fedex|ups|dhl|usps|irs|ssa|cms|statefarm|geico|allstate|progressive|fidelity)\.(com|net|org|gov).*
   action:
     type: TagAsSpam
     header_name: X-Spam-Flag
@@ -1144,7 +1148,7 @@ rules:
         - type: SenderPattern
           pattern: .*@(purehockey|pure-hockey)\.com$
         - type: SenderPattern
-          pattern: .*@(amazon.*|.*amazon.*|microsoft|apple|google|netflix|spotify|adobe|paypal|chase|wellsfargo|bankofamerica|citibank|capitalone.*|.*capitalone.*|walmart|target|costco|homedepot|lowes|bestbuy|macys|nordstrom|cvs|walgreens|riteaid|medicare|medicaid|ssa|irs|usps|fedex|ups|dhl)\.com$
+          pattern: .*@(amazon.*|.*amazon.*|microsoft|apple|google|netflix|spotify|adobe|paypal|chase|wellsfargo|bankofamerica|citibank|capitalone.*|.*capitalone.*|walmart|target|costco|homedepot|lowes|bestbuy|macys|nordstrom|cvs|walgreens|riteaid|medicare|medicaid|ssa|irs|usps|fedex|ups|dhl|.*fidelity.*|.*discover.*)\.com$
         - type: SenderPattern
           pattern: .*@.*(digital\.costco\.com|cname\.cjm\.adobe\.com|mg\.homedepot\.com|sendgrid\.net|mailchimp\.com|constantcontact\.com|mailgun\.com|customeriomail\.com|sparkpostmail\.com|amazonses\.com|outlook\.com|office365\.com).*
   action:
@@ -1409,7 +1413,7 @@ rules:
         - type: SenderPattern
           pattern: .*@(express-scripts|cvs|walgreens|rite-aid|optum|humana|anthem|aetna|cigna|bluecross|kaiser|unitedhealth)\.(com|net)$
         - type: SenderPattern
-          pattern: .*@(okta|auth0|ping|onelogin|duo|microsoft|google|apple|amazon)\.(com|net)$
+          pattern: .*@(okta|auth0|ping|onelogin|duo|microsoft|google|apple|amazon|.*ecoflow.*|tesla|netflix|spotify|adobe|paypal|ebay|etsy|shopify|stripe|square|zoom|slack|dropbox|github|gitlab|bitbucket|atlassian|salesforce|hubspot|mailchimp|constantcontact|sendgrid|twilio|lastpass|1password|bitwarden|dashlane|nordvpn|expressvpn|surfshark)\.(com|net)$
         - type: HeaderPattern
           header: received
           pattern: .*okta\.com.*
@@ -1453,8 +1457,12 @@ rules:
       pattern: (?i).*(password.*expir|password.*notif|account.*expir|login.*expir|security.*alert|verify.*account|account.*suspend|password.*reset|credentials.*expir|ssl.*certificate.*renewal|certificate.*renewal|ssl.*expir|certificate.*expir|certificate.*deferred|ssl.*deferred|domain.*expir|hosting.*expir|website.*expir|renewal.*deferred|certificate.*notif|ssl.*notif).*
     - type: Not
       criteria:
-        type: SenderPattern
-        pattern: .*@baddomain\.com$
+        type: Or
+        criteria:
+        - type: SenderPattern
+          pattern: .*@baddomain\.com$
+        - type: SenderPattern
+          pattern: .*@.*(.*ecoflow.*|tesla|apple|microsoft|google|amazon|netflix|spotify|adobe|paypal|ebay|etsy|shopify|stripe|square|zoom|slack|dropbox|github|gitlab|bitbucket|atlassian|salesforce|hubspot|mailchimp|constantcontact|sendgrid|twilio|auth0|okta|onelogin|duo|lastpass|1password|bitwarden|dashlane|nordvpn|expressvpn|surfshark)\.(com|net|org)$
     - type: Or
       criteria:
       - type: HeaderPattern

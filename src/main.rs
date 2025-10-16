@@ -506,7 +506,15 @@ async fn test_email_file(config: &Config, email_file: &str) {
                     }
                 }
 
-                headers.insert(key, value);
+                // Handle header continuation lines by concatenating values (match milter behavior)
+                if let Some(existing_value) = headers.get(&key) {
+                    // Concatenate with existing value (same as milter)
+                    let combined_value = format!("{} {}", existing_value, value);
+                    headers.insert(key, combined_value);
+                } else {
+                    // First occurrence of this header
+                    headers.insert(key, value);
+                }
             }
         } else {
             body.push_str(line);
