@@ -399,7 +399,13 @@ impl Milter {
                                         "REJECT from={sender} to={recipients} reason={message}"
                                     );
                                     // Log to syslog for maillog visibility
-                                    if syslog::init(syslog::Facility::LOG_MAIL, log::LevelFilter::Info, Some("foff-milter")).is_ok() {
+                                    if syslog::init(
+                                        syslog::Facility::LOG_MAIL,
+                                        log::LevelFilter::Info,
+                                        Some("foff-milter"),
+                                    )
+                                    .is_ok()
+                                    {
                                         log::info!("REJECTED from={sender} to={recipients} reason={message}");
                                     }
                                     return Status::Reject;
@@ -432,7 +438,13 @@ impl Milter {
                                         } else {
                                             log::error!("CRITICAL: Successfully added header: {header_name}={header_value}");
                                             // Log to syslog for maillog visibility
-                                            if syslog::init(syslog::Facility::LOG_MAIL, log::LevelFilter::Info, Some("foff-milter")).is_ok() {
+                                            if syslog::init(
+                                                syslog::Facility::LOG_MAIL,
+                                                log::LevelFilter::Info,
+                                                Some("foff-milter"),
+                                            )
+                                            .is_ok()
+                                            {
                                                 log::info!("TAGGED from={sender} to={recipients} header={header_name}:{header_value}");
                                             }
                                         }
@@ -463,7 +475,13 @@ impl Milter {
                                         } else {
                                             log::info!("Added X-FOFF-Rule-Matched header: {rule_header_value}");
                                             // Log to syslog for maillog visibility
-                                            if syslog::init(syslog::Facility::LOG_MAIL, log::LevelFilter::Info, Some("foff-milter")).is_ok() {
+                                            if syslog::init(
+                                                syslog::Facility::LOG_MAIL,
+                                                log::LevelFilter::Info,
+                                                Some("foff-milter"),
+                                            )
+                                            .is_ok()
+                                            {
                                                 log::info!("RULE_MATCHED from={sender} to={recipients} rules={rule_header_value}");
                                             }
                                         }
