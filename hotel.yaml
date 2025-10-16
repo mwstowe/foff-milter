@@ -105,6 +105,31 @@ rules:
     type: TagAsSpam
     header_name: X-Spam-Flag
     header_value: 'YES'
+- name: Tag utility bill and heating cost scams
+  criteria:
+    type: And
+    criteria:
+    - type: SubjectPattern
+      pattern: (?i).*(tired.*of.*expensive.*utility|expensive.*utility.*bills|utility.*bills.*here|stay.*warm.*fraction|warm.*fraction.*cost|heating.*cost|utility.*cost|energy.*bill|electric.*bill|gas.*bill|power.*bill|save.*on.*utility|reduce.*utility|lower.*utility|cut.*utility|slash.*utility|heating.*solution|warming.*solution).*
+    - type: Or
+      criteria:
+      - type: HeaderPattern
+        header: authentication-results
+        pattern: (?i)dkim=fail
+      - type: And
+        criteria:
+        - type: HeaderPattern
+          header: from
+          pattern: .*<[^@]+@[^>]+>.*
+        - type: HeaderPattern
+          header: reply-to
+          pattern: .*<[^@]+@[^>]+>.*
+      - type: SenderPattern
+        pattern: .*@.*(gravizo|temp|fake|spam|scam|phish)\.(space|tk|ml|ga|cf|top)$
+  action:
+    type: TagAsSpam
+    header_name: X-Spam-Flag
+    header_value: 'YES'
 - name: Tag Japanese spam from suspicious domains
   criteria:
     type: And
@@ -1244,9 +1269,11 @@ rules:
         - type: SenderPattern
           pattern: .*@.*(fitbit|myfitnesspal|weightwatchers|nutrisystem|peloton|nike|adidas|underarmour|lululemon|gymshark|nationalgeographic|natgeo|webmd|healthline|mayoclinic|clevelandclinic|johnshopkins|harvard|stanford|nih|cdc|who|medicalnews|healthday|everydayhealth|prevention|menshealth|womenshealth|shape|self|health|wellness|nutrition|fitness)\.(com|net|org|gov)$
         - type: SenderPattern
+          pattern: .*@.*(washingtonpost|nytimes|wsj|usatoday|cnn|bbc|reuters|ap|npr|pbs|abc|nbc|cbs|fox|msnbc|bloomberg|economist|time|newsweek|usnews|politico|axios|vox|buzzfeed|huffpost|slate|salon|theatlantic|newyorker|guardian|telegraph|independent|dailymail|mirror|sun|express|metro|standard|observer|times|sunday|herald|tribune|chronicle|gazette|journal|news|press|post|star|globe|sentinel|dispatch|register|record|leader|courier|examiner|inquirer|bulletin|democrat|republican|conservative|liberal|progressive|.*news.*|.*mail.*|.*post.*|.*times.*)\.(com|net|org|co\.uk)$
+        - type: SenderPattern
           pattern: .*@.*(gnc|vitaminworld|iherb|vitacost|swansonvitamins|puritan|naturemade|centrum|optimumnutrition)\.(com|net)$
         - type: SenderPattern
-          pattern: .*@.*(walgreens|cvs|cvshealth|rite-aid|riteaid|pharmacy|rxorder|prescription|medco|express-scripts|expressscripts|caremark|optumrx|humana|aetna|cigna|bluecross|anthem|iqhealth|virginiamason|mayoclinic|clevelandclinic|johnshopkins|mountsinai|cedars-sinai|kp\.org|kaiserpermanente|sutter|providence|intermountain|adventhealth|commonspirit|ascension|hca|tenet|lifepoint|communityhealth|universalhealth|selectmedical|encompasshealth|kindred|genesis|brookdale|amedisys|lhc|almost-family|chemed|encompass|healthsouth|kindredhealthcare|post-acute|skilled-nursing|rehabilitation|hospice|home-health|medical-center|hospital|clinic|health-system|healthcare|healthpartners|bcbs|blueshield|unitedhealthcare|wellcare|molina|centene|medicaid|medicare|adapthealth.*|.*adapthealth.*)\.(com|net|org)$
+          pattern: .*@.*(walgreens|cvs|cvshealth|rite-aid|riteaid|pharmacy|rxorder|prescription|medco|express-scripts|expressscripts|caremark|optumrx|humana|aetna|cigna|bluecross|anthem|iqhealth|virginiamason|mayoclinic|clevelandclinic|johnshopkins|mountsinai|cedars-sinai|kp\.org|kaiserpermanente|sutter|providence|intermountain|adventhealth|commonspirit|ascension|hca|tenet|lifepoint|communityhealth|universalhealth|selectmedical|encompasshealth|kindred|genesis|brookdale|amedisys|lhc|almost-family|chemed|encompass|healthsouth|kindredhealthcare|post-acute|skilled-nursing|rehabilitation|hospice|home-health|medical-center|hospital|clinic|health-system|healthcare|healthpartners|bcbs|blueshield|unitedhealthcare|wellcare|molina|centene|medicaid|medicare|healthaccountservices|adapthealth.*|.*adapthealth.*)\.(com|net|org)$
         - type: SenderPattern
           pattern: .*@.*(arrived|fundrise|yieldstreet|realty|realtyshares|crowdstreet|roofstock|groundfloor|republic|seedinvest|startengine|wealthfront|betterment|robinhood|schwab|fidelity|vanguard|etrade|tdameritrade)\.(com|net)$
         - type: SenderPattern
@@ -1294,21 +1321,32 @@ rules:
     header_value: 'YES'
 - name: Tag inappropriate sender names and adult content
   criteria:
-    type: Or
+    type: And
     criteria:
     - type: Or
       criteria:
-      - type: HeaderPattern
-        header: from
-        pattern: (?i).*(your.*manhood|your.*penis|your.*member|male.*enhancement|testosterone|virility|potency|libido).*
+      - type: Or
+        criteria:
+        - type: HeaderPattern
+          header: from
+          pattern: (?i).*(your.*manhood|your.*penis|your.*member|male.*enhancement|testosterone|virility|potency|libido).*
+        - type: SenderPattern
+          pattern: (?i).*(manhood|penis|member|testosterone|virility|potency|libido|sexy|adult|xxx|porn).*@.*
       - type: SenderPattern
-        pattern: (?i).*(manhood|penis|member|testosterone|virility|potency|libido|sexy|adult|xxx|porn).*@.*
-    - type: SenderPattern
-      pattern: (?i).*_(manhood|penis|member|testosterone|male|virility|potency|libido|sexy|adult|xxx).*@.*
-    - type: SenderPattern
-      pattern: .*@.*(adult|xxx|sex|porn|manhood|testosterone|male|virility|enhancement).*\.(shop|store|online|site|tk|ml|ga|cf|top)$
-    - type: SubjectPattern
-      pattern: (?i).*(sex.*industry|penis.*ritual|adult.*content|xxx|porn|sexual.*enhancement|male.*enhancement|grow.*penis|enlarge.*penis|bigger.*penis|sexual.*performance|bedroom.*performance).*
+        pattern: (?i).*_(manhood|penis|member|testosterone|male|virility|potency|libido|sexy|adult|xxx).*@.*
+      - type: SenderPattern
+        pattern: .*@.*(adult|xxx|sex|porn|manhood|testosterone|male|virility|enhancement).*\.(shop|store|online|site|tk|ml|ga|cf|top)$
+      - type: SubjectPattern
+        pattern: (?i).*(sex.*industry|penis.*ritual|adult.*content|xxx|porn|sexual.*enhancement|male.*enhancement|grow.*penis|enlarge.*penis|bigger.*penis|sexual.*performance|bedroom.*performance).*
+    - type: Not
+      criteria:
+        type: Or
+        criteria:
+        - type: SenderPattern
+          pattern: .*@.*(eff|aclu|amnesty|hrw|cdt|epic|freepress|publicknowledge|ala|pen|cpj|rsf|transparency|sunlightfoundation|commoncause|publiccitizen|citizen|democracy|civilrights|civilliberties|advocacy|nonprofit|ngo)\.(org|com|net)$
+        - type: HeaderPattern
+          header: from
+          pattern: .*<.*@.*(eff|aclu|amnesty|hrw|cdt|epic|freepress|publicknowledge|ala|pen|cpj|rsf|transparency|sunlightfoundation|commoncause|publiccitizen|citizen|democracy|civilrights|civilliberties|advocacy|nonprofit|ngo)\.(org|com|net)>.*
   action:
     type: TagAsSpam
     header_name: X-Spam-Flag
