@@ -334,10 +334,10 @@ impl Milter {
                     let statistics = statistics.clone();
                     Box::pin(async move {
                         log::debug!("EOM callback invoked");
-                        
+
                         // Add delay to let OpenDKIM finish processing Authentication-Results
                         tokio::time::sleep(std::time::Duration::from_millis(100)).await;
-                        
+
                         // Clone mail context to avoid holding mutex across await (get most recent by session number)
                         let mail_ctx_clone = state
                             .lock()
