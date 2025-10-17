@@ -1443,7 +1443,7 @@ rules:
       criteria:
         # Suspicious TLDs commonly used for spam
         - type: "SenderPattern"
-          pattern: ".*@.*\\.(shop|store|online|site|website|web|click|download|loan|racing|review|science|work|party|date|stream|trade|bid|win|cricket|accountant|faith|men|gq|tk|ml|ga|cf|top|fun|live|life|world|today|news|info|buzz|cool|best|cheap|free|sale|sbs|xyz|pw|cc|tv|me|co|io|ly|be|ws|am|fm|to|cfd|icu|cyou|bond|lol|fans|club|vip|pro|tech)$"
+          pattern: ".*@.*\\.(shop|store|online|site|website|web|click|download|loan|racing|review|science|work|party|date|stream|trade|bid|win|cricket|accountant|faith|men|gq|tk|ml|ga|cf|top|fun|live|life|world|today|news|info|buzz|cool|best|cheap|free|sale|sbs|xyz|pw|cc|tv|me|co|io|ly|be|ws|am|fm|to|cfd|icu|cyou|bond|lol|fans|club|vip|pro|tech|help)$"
         # Brand impersonation in From header
         - type: "HeaderPattern"
           header: "from"
@@ -1462,7 +1462,7 @@ rules:
         - type: "Or"
           criteria:
             - type: "SenderPattern"
-              pattern: ".*@.*\\.(shop|store|online|site|website|web|click|download|loan|racing|review|science|work|party|date|stream|trade|bid|win|cricket|accountant|faith|men|gq|tk|ml|ga|cf|top|fun|live|life|world|today|news|info|buzz|cool|best|cheap|free|sale|sbs|xyz|pw|cc|tv|me|co|io|ly|be|ws|am|fm|to|cfd|icu|cyou|bond|lol|fans|club|vip|pro|tech)$"
+              pattern: ".*@.*\\.(shop|store|online|site|website|web|click|download|loan|racing|review|science|work|party|date|stream|trade|bid|win|cricket|accountant|faith|men|gq|tk|ml|ga|cf|top|fun|live|life|world|today|news|info|buzz|cool|best|cheap|free|sale|sbs|xyz|pw|cc|tv|me|co|io|ly|be|ws|am|fm|to|cfd|icu|cyou|bond|lol|fans|club|vip|pro|tech|help)$"
             - type: "HeaderPattern"
               header: "received"
               pattern: ".*(greencloudvps|cheapvps|hostinger|namecheap|godaddy)\\.(com|net).*"
@@ -1484,6 +1484,16 @@ rules:
             # Patriotic/nationalist marketing spam
             - type: "SubjectPattern"
               pattern: "(?i).*(built.*in.*usa|made.*in.*usa|designed.*for.*americans|american.*made|usa.*made|patriot.*made|freedom.*made|this.*ain.*t.*imported|not.*imported|american.*patriots|true.*american|real.*american|support.*america|america.*first|buy.*american|proud.*american|red.*white.*blue|stars.*stripes|land.*of.*the.*free|home.*of.*the.*brave).*"
+            # Medical misinformation and conspiracy patterns
+            - type: "Or"
+              criteria:
+                - type: "SubjectPattern"
+                  pattern: "(?i).*(bombshell|drops.*bombshell|shocking.*truth|hidden.*truth|truth.*report|pharma.*files|vaccine.*truth|medical.*expose|big.*pharma|pharma.*conspiracy|doctors.*hate|medical.*industry.*hate|fda.*hide|cdc.*hide|government.*hide|cover.*up|conspiracy|rfk.*jr|robert.*kennedy).*"
+                - type: "HeaderPattern"
+                  header: "from"
+                  pattern: "(?i).*(pharma.*files|vaccine.*truth|medical.*expose|truth.*report|expose.*daily|conspiracy|rfk|kennedy).*"
+                - type: "SenderPattern"
+                  pattern: "(?i).*(pharma|vaccine|truth|expose|conspiracy|medical.*expose|health.*truth).*@.*"
         # Exclude legitimate retailers
         - type: "Not"
           criteria:

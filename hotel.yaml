@@ -1288,6 +1288,19 @@ rules:
     type: TagAsSpam
     header_name: X-Spam-Flag
     header_value: 'YES'
+- name: Tag brand impersonation from suspicious domains
+  criteria:
+    type: And
+    criteria:
+    - type: SenderPattern
+      pattern: .*@.*\.(shop|store|online|site|website|web|click|download|loan|racing|review|science|work|party|date|stream|trade|bid|win|cricket|accountant|faith|men|gq|tk|ml|ga|cf|top|fun|live|life|world|today|news|info|buzz|cool|best|cheap|free|sale|sbs|xyz|pw|cc|tv|me|co|io|ly|be|ws|am|fm|to|cfd|icu|cyou|bond|lol|fans|club|vip|pro|tech)$
+    - type: HeaderPattern
+      header: from
+      pattern: (?i).*(ana|jal|united|delta|american.*airlines|southwest|lufthansa|british.*airways|air.*france|klm|emirates|qatar|singapore.*airlines|cathay|virgin|jetblue|alaska.*airlines|spirit|frontier|ryanair|easyjet|westjet|air.*canada|qantas|etihad|turkish.*airlines|aeroflot|korean.*air|asiana|china.*eastern|china.*southern|air.*china|eva.*air|thai.*airways|malaysia.*airlines|garuda|philippine.*airlines|cebu.*pacific|jetstar|scoot|peach|vanilla.*air|spring.*airlines|lucky.*air|hainan.*airlines|xiamen.*air|shenzhen.*airlines|juneyao.*airlines|9.*air|okay.*airways|jin.*air|eastar.*jet|jeju.*air|t.*way|fly.*gangwon|air.*busan|air.*seoul).*
+  action:
+    type: TagAsSpam
+    header_name: X-Spam-Flag
+    header_value: 'YES'
 - name: Tag suspicious TLDs and hosting with spam content
   criteria:
     type: And
