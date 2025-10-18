@@ -340,41 +340,40 @@ impl Milter {
                             .lock()
                             .unwrap()
                             .iter()
-                            .max_by_key(|(k, _)| {
-                                k.parse::<u32>().unwrap_or(0)
-                            })
+                            .max_by_key(|(k, _)| k.parse::<u32>().unwrap_or(0))
                             .map(|(_, v)| v.clone());
 
                         if let Some(mail_ctx) = mail_ctx_for_check {
                             // Check if DKIM processing has started (DKIM-Filter header present)
-                            if mail_ctx.headers.contains_key("dkim-filter") || 
-                               mail_ctx.headers.contains_key("dkim-signature") {
-                                
+                            if mail_ctx.headers.contains_key("dkim-filter")
+                                || mail_ctx.headers.contains_key("dkim-signature")
+                            {
                                 // Wait for Authentication-Results header to appear (up to 500ms)
                                 let mut attempts = 0;
                                 let max_attempts = 10; // 10 attempts * 50ms = 500ms max
-                                
+
                                 while attempts < max_attempts {
                                     let current_ctx = state
                                         .lock()
                                         .unwrap()
                                         .iter()
-                                        .max_by_key(|(k, _)| {
-                                            k.parse::<u32>().unwrap_or(0)
-                                        })
+                                        .max_by_key(|(k, _)| k.parse::<u32>().unwrap_or(0))
                                         .map(|(_, v)| v.clone());
-                                    
+
                                     if let Some(ctx) = current_ctx {
                                         if ctx.headers.contains_key("authentication-results") {
-                                            log::debug!("Authentication-Results header detected after {}ms", attempts * 50);
+                                            log::debug!(
+                                                "Authentication-Results header detected after {}ms",
+                                                attempts * 50
+                                            );
                                             break;
                                         }
                                     }
-                                    
+
                                     tokio::time::sleep(std::time::Duration::from_millis(50)).await;
                                     attempts += 1;
                                 }
-                                
+
                                 if attempts >= max_attempts {
                                     log::warn!("Timeout waiting for Authentication-Results header after DKIM processing started");
                                 }
