@@ -1,0 +1,72 @@
+# Machine learning enhancement configuration
+adaptive_learning:
+  enabled: true
+  learning_rate: 0.01
+  update_frequency_minutes: 60
+  min_samples_for_update: 100
+  confidence_adjustment: true
+  pattern_learning: true
+
+anomaly_detection:
+  enabled: true
+  algorithm: "isolation_forest"  # isolation_forest, one_class_svm, autoencoder
+  contamination_rate: 0.1
+  sensitivity: 0.8
+  window_size_hours: 24
+  min_baseline_samples: 1000
+
+behavioral_analysis:
+  enabled: true
+  sender_reputation: true
+  domain_reputation: true
+  temporal_patterns: true
+  content_analysis: true
+  reputation_decay_days: 30
+
+predictive_detection:
+  enabled: true
+  threat_forecasting: true
+  campaign_detection: true
+  emerging_threat_detection: true
+  prediction_horizon_hours: 48
+  confidence_threshold: 0.7
+
+self_optimization:
+  enabled: true
+  threshold_tuning: true
+  module_weighting: true
+  performance_optimization: true
+  ab_testing: false
+  optimization_interval_hours: 24
+
+feature_engineering:
+  enabled: true
+  content_features: true
+  metadata_features: true
+  behavioral_features: true
+  temporal_features: true
+  linguistic_features: true
+  network_features: true
+
+model_management:
+  model_storage_path: "/var/lib/foff-milter/models"
+  model_versioning: true
+  automatic_retraining: true
+  retraining_threshold: 0.05
+  model_backup: true
+  max_model_versions: 10
+
+performance_settings:
+  inference_timeout_ms: 100
+  batch_prediction: true
+  batch_size: 32
+  model_caching: true
+  feature_caching: true
+  parallel_inference: true
+
+explainability:
+  enabled: true
+  feature_importance: true
+  decision_reasoning: true
+  confidence_explanation: true
+  audit_trail: true

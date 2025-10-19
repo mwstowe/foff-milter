@@ -1,5 +1,6 @@
 use crate::analytics::AnalyticsEngine;
 use crate::config::Config;
+use crate::machine_learning::MachineLearningEngine;
 use crate::detection::{
     adult_content::AdultContentDetector,
     brand_impersonation::BrandImpersonationDetector,
@@ -29,6 +30,7 @@ pub struct ModuleManager {
     pub multi_language: Option<MultiLanguageDetector>,
     pub performance_optimizer: Option<PerformanceOptimizer>,
     pub analytics_engine: Option<AnalyticsEngine>,
+    pub ml_engine: Option<MachineLearningEngine>,
 }
 
 impl ModuleManager {
@@ -45,6 +47,7 @@ impl ModuleManager {
             multi_language: None,
             performance_optimizer: None,
             analytics_engine: None,
+            ml_engine: None,
         }
     }
 
@@ -213,6 +216,22 @@ impl ModuleManager {
             }
         }
 
+        // Load machine learning engine (always try to load for adaptive intelligence)
+        let ml_path = Path::new(config_dir).join("machine-learning.yaml");
+        if ml_path.exists() {
+            match MachineLearningEngine::load_from_file(ml_path.to_str().unwrap()) {
+                Ok(engine) => {
+                    manager.ml_engine = Some(engine);
+                    log::info!("Loaded machine learning engine");
+                }
+                Err(e) => {
+                    log::warn!("Failed to load machine learning engine: {}, ML disabled", e);
+                }
+            }
+        } else {
+            log::info!("No machine-learning.yaml found, ML disabled");
+        }
+
         // Load analytics engine (always try to load for monitoring)
         let analytics_path = Path::new(config_dir).join("analytics.yaml");
         if analytics_path.exists() {
@@ -355,6 +374,14 @@ impl ModuleManager {
             optimizer.record_email_processed(total_time);
         }
 
+        // ML enhancement (placeholder - would need email data)
+        if let Some(_ml_engine) = &self.ml_engine {
+            // Note: In real implementation, we'd extract features and get ML prediction
+            // let features = ml_engine.extract_features(sender, subject, body);
+            // let prediction = ml_engine.predict_threat(&features);
+            // ml_engine.update_model(&features, !results.is_empty(), prediction.confidence);
+        }
+
         // Record analytics event (placeholder - would need email data)
         if let Some(_analytics) = &self.analytics_engine {
             // Note: In real implementation, we'd pass email data here
@@ -407,6 +434,38 @@ impl ModuleManager {
     pub fn cleanup_analytics_data(&self) {
         if let Some(analytics) = &self.analytics_engine {
             analytics.cleanup_old_data();
+        }
+    }
+
+    pub fn get_ml_prediction(&self, sender: &str, subject: &str, body: &str) -> Option<crate::machine_learning::MLPrediction> {
+        if let Some(ml_engine) = &self.ml_engine {
+            let features = ml_engine.extract_features(sender, subject, body);
+            Some(ml_engine.predict_threat(&features))
+        } else {
+            None
+        }
+    }
+
+    pub fn update_ml_model(&self, sender: &str, subject: &str, body: &str, is_threat: bool, confidence: f64) {
+        if let Some(ml_engine) = &self.ml_engine {
+            let features = ml_engine.extract_features(sender, subject, body);
+            ml_engine.update_model(&features, is_threat, confidence);
+        }
+    }
+
+    pub fn get_ml_performance(&self) -> Option<std::collections::HashMap<String, f64>> {
+        self.ml_engine.as_ref().map(|engine| engine.get_model_performance())
+    }
+
+    pub fn detect_threat_campaigns(&self) -> Vec<crate::machine_learning::ThreatCampaign> {
+        self.ml_engine.as_ref()
+            .map(|engine| engine.detect_campaigns())
+            .unwrap_or_default()
+    }
+
+    pub fn cleanup_ml_data(&self) {
+        if let Some(ml_engine) = &self.ml_engine {
+            ml_engine.cleanup_old_data();
         }
     }
 }

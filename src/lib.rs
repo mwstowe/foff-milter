@@ -8,6 +8,7 @@ pub mod filter;
 pub mod google_groups_unsubscriber;
 pub mod language;
 pub mod legacy_config;
+pub mod machine_learning;
 pub mod milter;
 pub mod performance;
 pub mod statistics;
