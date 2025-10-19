@@ -654,44 +654,37 @@ fn generate_modular_configs(dir_path: &str) {
     println!("🔧 Generating modular configuration files in: {}", dir_path);
     println!();
 
-    // Copy all module configs from the source configs directory
-    let source_configs = Path::new("configs");
-    if !source_configs.exists() {
-        eprintln!("❌ Source configs directory not found. Run from project root or ensure configs/ exists.");
-        process::exit(1);
-    }
-
+    // Embedded module configurations
     let modules = [
-        "suspicious-domains.yaml",
-        "brand-impersonation.yaml",
-        "health-spam.yaml",
-        "phishing-scams.yaml",
-        "adult-content.yaml",
-        "ecommerce-scams.yaml",
-        "financial-services.yaml",
-        "technology-scams.yaml",
-        "multi-language.yaml",
-        "performance.yaml",
-        "analytics.yaml",
-        "machine-learning.yaml",
-        "integration.yaml",
-        "advanced-security.yaml",
+        ("suspicious-domains.yaml", include_str!("../configs/suspicious-domains.yaml")),
+        ("brand-impersonation.yaml", include_str!("../configs/brand-impersonation.yaml")),
+        ("health-spam.yaml", include_str!("../configs/health-spam.yaml")),
+        ("phishing-scams.yaml", include_str!("../configs/phishing-scams.yaml")),
+        ("adult-content.yaml", include_str!("../configs/adult-content.yaml")),
+        ("ecommerce-scams.yaml", include_str!("../configs/ecommerce-scams.yaml")),
+        ("financial-services.yaml", include_str!("../configs/financial-services.yaml")),
+        ("technology-scams.yaml", include_str!("../configs/technology-scams.yaml")),
+        ("multi-language.yaml", include_str!("../configs/multi-language.yaml")),
+        ("performance.yaml", include_str!("../configs/performance.yaml")),
+        ("analytics.yaml", include_str!("../configs/analytics.yaml")),
+        ("machine-learning.yaml", include_str!("../configs/machine-learning.yaml")),
+        ("integration.yaml", include_str!("../configs/integration.yaml")),
+        ("advanced-security.yaml", include_str!("../configs/advanced-security.yaml")),
     ];
 
-    let mut copied = 0;
+    let mut created = 0;
     let mut failed = 0;
 
-    for module in &modules {
-        let source = source_configs.join(module);
-        let target = target_dir.join(module);
-
-        match fs::copy(&source, &target) {
+    for (filename, content) in &modules {
+        let target_path = target_dir.join(filename);
+        
+        match fs::write(&target_path, content) {
             Ok(_) => {
-                println!("✅ Generated: {}", module);
-                copied += 1;
+                println!("✅ Generated: {}", filename);
+                created += 1;
             }
             Err(e) => {
-                eprintln!("❌ Failed to copy {}: {}", module, e);
+                eprintln!("❌ Failed to create {}: {}", filename, e);
                 failed += 1;
             }
         }
@@ -699,13 +692,13 @@ fn generate_modular_configs(dir_path: &str) {
 
     println!();
     println!("📊 Generation Summary:");
-    println!("  ✅ Successfully generated: {} modules", copied);
+    println!("  ✅ Successfully generated: {} modules", created);
     if failed > 0 {
         println!("  ❌ Failed: {} modules", failed);
     }
     println!();
 
-    if copied > 0 {
+    if created > 0 {
         println!("🎯 Next Steps:");
         println!("  1. Update your main config to use modular system:");
         println!("     module_config_dir: \"{}\"", dir_path);
