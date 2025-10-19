@@ -12,6 +12,7 @@ pub struct Config {
     pub version: String,
     #[serde(default = "default_rule_set_timestamp")]
     pub rule_set_timestamp: String,
+    pub module_config_dir: Option<String>,
 }
 
 fn default_version() -> String {
@@ -342,6 +343,7 @@ impl Default for Config {
             smtp: None,
             version: default_version(),
             rule_set_timestamp: default_rule_set_timestamp(),
+            module_config_dir: None,
         }
     }
 }
