@@ -1,8 +1,8 @@
+use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::sync::{Arc, Mutex};
 use std::time::{Duration, Instant};
 use tokio::task::JoinHandle;
-use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct PerformanceConfig {
@@ -168,8 +168,13 @@ impl PerformanceOptimizer {
             let execution_time = start_time.elapsed().as_millis() as u64;
             if let Ok(mut metrics) = self.metrics.lock() {
                 metrics.parallel_execution_count += 1;
-                if self.config.performance_monitoring.log_slow_operations 
-                    && execution_time > self.config.performance_monitoring.slow_operation_threshold_ms {
+                if self.config.performance_monitoring.log_slow_operations
+                    && execution_time
+                        > self
+                            .config
+                            .performance_monitoring
+                            .slow_operation_threshold_ms
+                {
                     log::warn!("Slow parallel execution: {}ms", execution_time);
                 }
             }
@@ -250,11 +255,23 @@ impl PerformanceOptimizer {
         }
 
         if let Ok(mut metrics) = self.metrics.lock() {
-            *metrics.module_execution_times.entry(module_name.to_string()).or_insert(0) += duration_ms;
-            
-            if self.config.performance_monitoring.log_slow_operations 
-                && duration_ms > self.config.performance_monitoring.slow_operation_threshold_ms {
-                log::warn!("Slow module execution: {} took {}ms", module_name, duration_ms);
+            *metrics
+                .module_execution_times
+                .entry(module_name.to_string())
+                .or_insert(0) += duration_ms;
+
+            if self.config.performance_monitoring.log_slow_operations
+                && duration_ms
+                    > self
+                        .config
+                        .performance_monitoring
+                        .slow_operation_threshold_ms
+            {
+                log::warn!(
+                    "Slow module execution: {} took {}ms",
+                    module_name,
+                    duration_ms
+                );
             }
         }
     }
@@ -267,13 +284,13 @@ impl PerformanceOptimizer {
         if let Ok(mut metrics) = self.metrics.lock() {
             metrics.total_emails_processed += 1;
             metrics.total_processing_time_ms += total_time_ms;
-            metrics.average_processing_time_ms = 
+            metrics.average_processing_time_ms =
                 metrics.total_processing_time_ms as f64 / metrics.total_emails_processed as f64;
         }
     }
 
     pub fn should_skip_remaining_modules(&self, current_confidence: u32) -> bool {
-        self.config.optimization_settings.skip_on_high_confidence 
+        self.config.optimization_settings.skip_on_high_confidence
             && current_confidence >= self.config.optimization_settings.confidence_threshold
     }
 
@@ -299,7 +316,7 @@ impl PerformanceOptimizer {
     pub fn get_cache_stats(&self) -> (usize, usize, f64) {
         let domain_cache_size = self.domain_cache.lock().map(|c| c.len()).unwrap_or(0);
         let pattern_cache_size = self.pattern_cache.lock().map(|c| c.len()).unwrap_or(0);
-        
+
         // Simple cache hit rate calculation (would need more sophisticated tracking in production)
         let hit_rate = if let Ok(metrics) = self.metrics.lock() {
             metrics.cache_hit_rate

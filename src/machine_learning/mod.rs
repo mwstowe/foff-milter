@@ -1,7 +1,7 @@
+use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::sync::{Arc, Mutex};
 use std::time::{SystemTime, UNIX_EPOCH};
-use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct MachineLearningConfig {
@@ -161,7 +161,9 @@ pub struct MachineLearningEngine {
     domain_reputations: Arc<Mutex<HashMap<String, f64>>>,
     threat_campaigns: Arc<Mutex<Vec<ThreatCampaign>>>,
     anomaly_baseline: Arc<Mutex<Vec<EmailFeatures>>>,
+    #[allow(dead_code)]
     model_weights: Arc<Mutex<HashMap<String, f64>>>,
+    #[allow(dead_code)]
     confidence_adjustments: Arc<Mutex<HashMap<String, f64>>>,
     training_data: Arc<Mutex<Vec<(EmailFeatures, bool)>>>,
 }
@@ -190,12 +192,12 @@ impl MachineLearningEngine {
         let sender_domain = self.extract_domain(sender);
         let sender_rep = self.get_sender_reputation(sender);
         let domain_rep = self.get_domain_reputation(&sender_domain);
-        
+
         let now = SystemTime::now()
             .duration_since(UNIX_EPOCH)
             .unwrap_or_default()
             .as_secs();
-        
+
         let time_of_day = ((now % 86400) as f64) / 86400.0; // 0-1 for 24 hours
         let day_of_week = (((now / 86400) % 7) as f64) / 7.0; // 0-1 for 7 days
 
@@ -221,7 +223,8 @@ impl MachineLearningEngine {
         let pattern_score = self.calculate_pattern_score(features);
 
         // Simple ensemble scoring
-        let threat_score = (anomaly_score * 0.4 + behavioral_score * 0.3 + pattern_score * 0.3).min(1.0);
+        let threat_score =
+            (anomaly_score * 0.4 + behavioral_score * 0.3 + pattern_score * 0.3).min(1.0);
         let is_threat = threat_score > 0.5;
 
         let threat_type = if threat_score > 0.8 {
@@ -254,7 +257,12 @@ impl MachineLearningEngine {
         }
     }
 
-    pub fn update_model(&self, features: &EmailFeatures, is_threat: bool, feedback_confidence: f64) {
+    pub fn update_model(
+        &self,
+        features: &EmailFeatures,
+        is_threat: bool,
+        feedback_confidence: f64,
+    ) {
         if !self.config.adaptive_learning.enabled {
             return;
         }
@@ -262,7 +270,7 @@ impl MachineLearningEngine {
         // Add to training data
         if let Ok(mut training_data) = self.training_data.lock() {
             training_data.push((features.clone(), is_threat));
-            
+
             // Limit training data size
             if training_data.len() > 10000 {
                 training_data.drain(0..1000);
@@ -270,7 +278,11 @@ impl MachineLearningEngine {
         }
 
         // Update sender reputation
-        self.update_sender_reputation(&self.extract_sender_from_features(features), is_threat, feedback_confidence);
+        self.update_sender_reputation(
+            &self.extract_sender_from_features(features),
+            is_threat,
+            feedback_confidence,
+        );
 
         // Update anomaly baseline
         if !is_threat {
@@ -298,20 +310,33 @@ impl MachineLearningEngine {
             let mut total_indicators = 0;
 
             // Check content length anomaly
-            let avg_content_length: f64 = baseline.iter().map(|f| f.content_length).sum::<f64>() / baseline.len() as f64;
-            let content_deviation = (features.content_length - avg_content_length).abs() / avg_content_length.max(1.0);
-            if content_deviation > 2.0 { anomaly_indicators += 1; }
+            let avg_content_length: f64 =
+                baseline.iter().map(|f| f.content_length).sum::<f64>() / baseline.len() as f64;
+            let content_deviation =
+                (features.content_length - avg_content_length).abs() / avg_content_length.max(1.0);
+            if content_deviation > 2.0 {
+                anomaly_indicators += 1;
+            }
             total_indicators += 1;
 
             // Check time anomaly
-            let avg_time: f64 = baseline.iter().map(|f| f.time_of_day).sum::<f64>() / baseline.len() as f64;
+            let avg_time: f64 =
+                baseline.iter().map(|f| f.time_of_day).sum::<f64>() / baseline.len() as f64;
             let time_deviation = (features.time_of_day - avg_time).abs();
-            if time_deviation > 0.3 { anomaly_indicators += 1; }
+            if time_deviation > 0.3 {
+                anomaly_indicators += 1;
+            }
             total_indicators += 1;
 
             // Check suspicious keywords anomaly
-            let avg_keywords: f64 = baseline.iter().map(|f| f.suspicious_keywords_count).sum::<f64>() / baseline.len() as f64;
-            if features.suspicious_keywords_count > avg_keywords + 2.0 { anomaly_indicators += 1; }
+            let avg_keywords: f64 = baseline
+                .iter()
+                .map(|f| f.suspicious_keywords_count)
+                .sum::<f64>()
+                / baseline.len() as f64;
+            if features.suspicious_keywords_count > avg_keywords + 2.0 {
+                anomaly_indicators += 1;
+            }
             total_indicators += 1;
 
             anomaly_indicators as f64 / total_indicators as f64
@@ -337,7 +362,8 @@ impl MachineLearningEngine {
         factors += 1;
 
         // Time-based factors
-        if features.time_of_day < 0.2 || features.time_of_day > 0.9 { // Late night/early morning
+        if features.time_of_day < 0.2 || features.time_of_day > 0.9 {
+            // Late night/early morning
             behavioral_score += 0.3;
         }
         factors += 1;
@@ -379,7 +405,8 @@ impl MachineLearningEngine {
 
     fn get_sender_reputation(&self, sender: &str) -> f64 {
         if let Ok(reputations) = self.sender_reputations.lock() {
-            reputations.get(sender)
+            reputations
+                .get(sender)
                 .map(|rep| rep.reputation_score)
                 .unwrap_or(0.5) // Default neutral reputation
         } else {
@@ -397,17 +424,21 @@ impl MachineLearningEngine {
 
     fn update_sender_reputation(&self, sender: &str, is_threat: bool, _confidence: f64) {
         if let Ok(mut reputations) = self.sender_reputations.lock() {
-            let reputation = reputations.entry(sender.to_string()).or_insert_with(|| {
-                SenderReputation {
-                    email: sender.to_string(),
-                    domain: self.extract_domain(sender),
-                    threat_count: 0,
-                    total_emails: 0,
-                    reputation_score: 0.5,
-                    last_seen: SystemTime::now().duration_since(UNIX_EPOCH).unwrap_or_default().as_secs(),
-                    behavioral_patterns: HashMap::new(),
-                }
-            });
+            let reputation =
+                reputations
+                    .entry(sender.to_string())
+                    .or_insert_with(|| SenderReputation {
+                        email: sender.to_string(),
+                        domain: self.extract_domain(sender),
+                        threat_count: 0,
+                        total_emails: 0,
+                        reputation_score: 0.5,
+                        last_seen: SystemTime::now()
+                            .duration_since(UNIX_EPOCH)
+                            .unwrap_or_default()
+                            .as_secs(),
+                        behavioral_patterns: HashMap::new(),
+                    });
 
             reputation.total_emails += 1;
             if is_threat {
@@ -417,21 +448,37 @@ impl MachineLearningEngine {
             // Update reputation score with learning rate
             let threat_rate = reputation.threat_count as f64 / reputation.total_emails as f64;
             let learning_rate = self.config.adaptive_learning.learning_rate;
-            reputation.reputation_score = (1.0 - learning_rate) * reputation.reputation_score + 
-                                        learning_rate * (1.0 - threat_rate);
-            
-            reputation.last_seen = SystemTime::now().duration_since(UNIX_EPOCH).unwrap_or_default().as_secs();
+            reputation.reputation_score = (1.0 - learning_rate) * reputation.reputation_score
+                + learning_rate * (1.0 - threat_rate);
+
+            reputation.last_seen = SystemTime::now()
+                .duration_since(UNIX_EPOCH)
+                .unwrap_or_default()
+                .as_secs();
         }
     }
 
     fn count_suspicious_keywords(&self, text: &str) -> f64 {
         let suspicious_keywords = [
-            "urgent", "immediate", "act now", "limited time", "free", "winner", "congratulations",
-            "click here", "verify", "suspend", "expire", "bitcoin", "cryptocurrency", "investment"
+            "urgent",
+            "immediate",
+            "act now",
+            "limited time",
+            "free",
+            "winner",
+            "congratulations",
+            "click here",
+            "verify",
+            "suspend",
+            "expire",
+            "bitcoin",
+            "cryptocurrency",
+            "investment",
         ];
-        
+
         let text_lower = text.to_lowercase();
-        suspicious_keywords.iter()
+        suspicious_keywords
+            .iter()
             .filter(|&keyword| text_lower.contains(keyword))
             .count() as f64
     }
@@ -442,8 +489,10 @@ impl MachineLearningEngine {
 
     fn calculate_encoding_complexity(&self, text: &str) -> f64 {
         let total_chars = text.len() as f64;
-        if total_chars == 0.0 { return 0.0; }
-        
+        if total_chars == 0.0 {
+            return 0.0;
+        }
+
         let non_ascii_chars = text.chars().filter(|c| !c.is_ascii()).count() as f64;
         (non_ascii_chars / total_chars).min(1.0)
     }
@@ -455,18 +504,26 @@ impl MachineLearningEngine {
         let has_arabic = text.chars().any(|c| matches!(c, '\u{0600}'..='\u{06FF}'));
 
         let script_count = [has_latin, has_cyrillic, has_chinese, has_arabic]
-            .iter().filter(|&&x| x).count();
-        
-        if script_count > 1 { 0.8 } else { 0.0 }
+            .iter()
+            .filter(|&&x| x)
+            .count();
+
+        if script_count > 1 {
+            0.8
+        } else {
+            0.0
+        }
     }
 
     fn calculate_brand_similarity(&self, subject: &str, body: &str) -> f64 {
         let brand_keywords = ["paypal", "amazon", "microsoft", "apple", "google", "ebay"];
         let combined_text = format!("{} {}", subject, body).to_lowercase();
-        
-        brand_keywords.iter()
+
+        brand_keywords
+            .iter()
             .filter(|&brand| combined_text.contains(brand))
-            .count() as f64 / brand_keywords.len() as f64
+            .count() as f64
+            / brand_keywords.len() as f64
     }
 
     fn extract_domain(&self, email: &str) -> String {
@@ -494,13 +551,19 @@ impl MachineLearningEngine {
 
     pub fn get_model_performance(&self) -> HashMap<String, f64> {
         let mut performance = HashMap::new();
-        
+
         if let Ok(training_data) = self.training_data.lock() {
             let total_samples = training_data.len() as f64;
-            let threat_samples = training_data.iter().filter(|(_, is_threat)| *is_threat).count() as f64;
-            
+            let threat_samples = training_data
+                .iter()
+                .filter(|(_, is_threat)| *is_threat)
+                .count() as f64;
+
             performance.insert("total_samples".to_string(), total_samples);
-            performance.insert("threat_ratio".to_string(), threat_samples / total_samples.max(1.0));
+            performance.insert(
+                "threat_ratio".to_string(),
+                threat_samples / total_samples.max(1.0),
+            );
             performance.insert("model_accuracy".to_string(), 0.85); // Placeholder
         }
 
@@ -508,11 +571,13 @@ impl MachineLearningEngine {
     }
 
     pub fn cleanup_old_data(&self) {
-        let retention_seconds = self.config.behavioral_analysis.reputation_decay_days as u64 * 24 * 3600;
+        let retention_seconds =
+            self.config.behavioral_analysis.reputation_decay_days as u64 * 24 * 3600;
         let cutoff_time = SystemTime::now()
             .duration_since(UNIX_EPOCH)
             .unwrap_or_default()
-            .as_secs() - retention_seconds;
+            .as_secs()
+            - retention_seconds;
 
         // Clean up old sender reputations
         if let Ok(mut reputations) = self.sender_reputations.lock() {

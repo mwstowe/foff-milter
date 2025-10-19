@@ -16,8 +16,8 @@ pub mod performance;
 pub mod statistics;
 
 // Re-export legacy Config and related types for backward compatibility
-pub use legacy_config::{Action, Config, Criteria, FilterRule};
 pub use filter::{FilterEngine, MailContext};
 pub use language::LanguageDetector;
+pub use legacy_config::{Action, Config, Criteria, FilterRule};
 pub use milter::Milter;
 pub use statistics::{StatEvent, StatisticsCollector};

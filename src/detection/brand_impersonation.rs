@@ -60,7 +60,11 @@ impl BrandImpersonationDetector {
         Ok(Self::new(config))
     }
 
-    pub fn check_brand_impersonation(&self, from_header: &str, sender_domain: &str) -> DetectionResult {
+    pub fn check_brand_impersonation(
+        &self,
+        from_header: &str,
+        sender_domain: &str,
+    ) -> DetectionResult {
         let mut confidence = 0;
         let mut reasons = Vec::new();
         let mut matched_brand = None;
@@ -86,7 +90,10 @@ impl BrandImpersonationDetector {
         if let Some((category, _brand)) = &matched_brand {
             if !self.is_legitimate_domain(sender_domain, category) {
                 confidence += self.config.confidence_scoring.domain_mismatch;
-                reasons.push(format!("Domain mismatch: {} not legitimate for {}", sender_domain, category));
+                reasons.push(format!(
+                    "Domain mismatch: {} not legitimate for {}",
+                    sender_domain, category
+                ));
             }
         }
 
@@ -103,10 +110,19 @@ impl BrandImpersonationDetector {
             reasons.join(", ")
         };
 
-        DetectionResult::new(matched, confidence, reason, "BrandImpersonation".to_string())
+        DetectionResult::new(
+            matched,
+            confidence,
+            reason,
+            "BrandImpersonation".to_string(),
+        )
     }
 
-    fn check_brand_in_category(&self, from_header: &str, category: &BrandCategory) -> Option<String> {
+    fn check_brand_in_category(
+        &self,
+        from_header: &str,
+        category: &BrandCategory,
+    ) -> Option<String> {
         let from_lower = from_header.to_lowercase();
 
         // Check English brands

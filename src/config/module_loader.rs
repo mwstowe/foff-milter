@@ -1,20 +1,15 @@
 use crate::advanced_security::AdvancedSecurityEngine;
 use crate::analytics::AnalyticsEngine;
 use crate::config::Config;
+use crate::detection::{
+    adult_content::AdultContentDetector, brand_impersonation::BrandImpersonationDetector,
+    ecommerce_scams::EcommerceScamsDetector, financial_services::FinancialServicesDetector,
+    health_spam::HealthSpamDetector, multi_language::MultiLanguageDetector,
+    phishing_scams::PhishingScamsDetector, suspicious_domains::SuspiciousDomainDetector,
+    technology_scams::TechnologyScamsDetector, DetectionResult,
+};
 use crate::integration::IntegrationEngine;
 use crate::machine_learning::MachineLearningEngine;
-use crate::detection::{
-    adult_content::AdultContentDetector,
-    brand_impersonation::BrandImpersonationDetector,
-    ecommerce_scams::EcommerceScamsDetector,
-    financial_services::FinancialServicesDetector,
-    health_spam::HealthSpamDetector,
-    multi_language::MultiLanguageDetector,
-    phishing_scams::PhishingScamsDetector,
-    suspicious_domains::SuspiciousDomainDetector,
-    technology_scams::TechnologyScamsDetector,
-    DetectionResult,
-};
 use crate::performance::PerformanceOptimizer;
 use anyhow::Result;
 use std::path::Path;
@@ -35,6 +30,12 @@ pub struct ModuleManager {
     pub ml_engine: Option<MachineLearningEngine>,
     pub integration_engine: Option<IntegrationEngine>,
     pub advanced_security: Option<AdvancedSecurityEngine>,
+}
+
+impl Default for ModuleManager {
+    fn default() -> Self {
+        Self::new()
+    }
 }
 
 impl ModuleManager {
@@ -73,7 +74,10 @@ impl ModuleManager {
                             }
                             Err(e) => {
                                 log::error!("Failed to load suspicious-domains module: {}", e);
-                                return Err(anyhow::anyhow!("Failed to load suspicious-domains module: {}", e));
+                                return Err(anyhow::anyhow!(
+                                    "Failed to load suspicious-domains module: {}",
+                                    e
+                                ));
                             }
                         }
                     } else {
@@ -90,7 +94,10 @@ impl ModuleManager {
                             }
                             Err(e) => {
                                 log::error!("Failed to load brand-impersonation module: {}", e);
-                                return Err(anyhow::anyhow!("Failed to load brand-impersonation module: {}", e));
+                                return Err(anyhow::anyhow!(
+                                    "Failed to load brand-impersonation module: {}",
+                                    e
+                                ));
                             }
                         }
                     } else {
@@ -107,7 +114,10 @@ impl ModuleManager {
                             }
                             Err(e) => {
                                 log::error!("Failed to load health-spam module: {}", e);
-                                return Err(anyhow::anyhow!("Failed to load health-spam module: {}", e));
+                                return Err(anyhow::anyhow!(
+                                    "Failed to load health-spam module: {}",
+                                    e
+                                ));
                             }
                         }
                     } else {
@@ -124,7 +134,10 @@ impl ModuleManager {
                             }
                             Err(e) => {
                                 log::error!("Failed to load phishing-scams module: {}", e);
-                                return Err(anyhow::anyhow!("Failed to load phishing-scams module: {}", e));
+                                return Err(anyhow::anyhow!(
+                                    "Failed to load phishing-scams module: {}",
+                                    e
+                                ));
                             }
                         }
                     } else {
@@ -141,7 +154,10 @@ impl ModuleManager {
                             }
                             Err(e) => {
                                 log::error!("Failed to load adult-content module: {}", e);
-                                return Err(anyhow::anyhow!("Failed to load adult-content module: {}", e));
+                                return Err(anyhow::anyhow!(
+                                    "Failed to load adult-content module: {}",
+                                    e
+                                ));
                             }
                         }
                     } else {
@@ -158,7 +174,10 @@ impl ModuleManager {
                             }
                             Err(e) => {
                                 log::error!("Failed to load ecommerce-scams module: {}", e);
-                                return Err(anyhow::anyhow!("Failed to load ecommerce-scams module: {}", e));
+                                return Err(anyhow::anyhow!(
+                                    "Failed to load ecommerce-scams module: {}",
+                                    e
+                                ));
                             }
                         }
                     } else {
@@ -175,7 +194,10 @@ impl ModuleManager {
                             }
                             Err(e) => {
                                 log::error!("Failed to load financial-services module: {}", e);
-                                return Err(anyhow::anyhow!("Failed to load financial-services module: {}", e));
+                                return Err(anyhow::anyhow!(
+                                    "Failed to load financial-services module: {}",
+                                    e
+                                ));
                             }
                         }
                     } else {
@@ -192,7 +214,10 @@ impl ModuleManager {
                             }
                             Err(e) => {
                                 log::error!("Failed to load technology-scams module: {}", e);
-                                return Err(anyhow::anyhow!("Failed to load technology-scams module: {}", e));
+                                return Err(anyhow::anyhow!(
+                                    "Failed to load technology-scams module: {}",
+                                    e
+                                ));
                             }
                         }
                     } else {
@@ -209,7 +234,10 @@ impl ModuleManager {
                             }
                             Err(e) => {
                                 log::error!("Failed to load multi-language module: {}", e);
-                                return Err(anyhow::anyhow!("Failed to load multi-language module: {}", e));
+                                return Err(anyhow::anyhow!(
+                                    "Failed to load multi-language module: {}",
+                                    e
+                                ));
                             }
                         }
                     } else {
@@ -231,7 +259,10 @@ impl ModuleManager {
                     log::info!("Loaded advanced security engine");
                 }
                 Err(e) => {
-                    log::warn!("Failed to load advanced security engine: {}, advanced security disabled", e);
+                    log::warn!(
+                        "Failed to load advanced security engine: {}, advanced security disabled",
+                        e
+                    );
                 }
             }
         } else {
@@ -247,7 +278,10 @@ impl ModuleManager {
                     log::info!("Loaded integration engine");
                 }
                 Err(e) => {
-                    log::warn!("Failed to load integration engine: {}, integrations disabled", e);
+                    log::warn!(
+                        "Failed to load integration engine: {}, integrations disabled",
+                        e
+                    );
                 }
             }
         } else {
@@ -295,7 +329,10 @@ impl ModuleManager {
                     log::info!("Loaded performance optimizer");
                 }
                 Err(e) => {
-                    log::warn!("Failed to load performance optimizer: {}, using defaults", e);
+                    log::warn!(
+                        "Failed to load performance optimizer: {}, using defaults",
+                        e
+                    );
                 }
             }
         } else {
@@ -333,7 +370,8 @@ impl ModuleManager {
         // Check health spam
         if let Some(detector) = &self.health_spam {
             if let Some(domain) = extract_domain(&email_data.sender) {
-                let result = detector.check_health_spam(&email_data.subject, &email_data.body, &domain);
+                let result =
+                    detector.check_health_spam(&email_data.subject, &email_data.body, &domain);
                 if result.matched {
                     results.push(result);
                 }
@@ -342,7 +380,12 @@ impl ModuleManager {
 
         // Check phishing scams
         if let Some(detector) = &self.phishing_scams {
-            let result = detector.check_phishing_scam(&email_data.subject, &email_data.body, &email_data.sender, &email_data.from_header);
+            let result = detector.check_phishing_scam(
+                &email_data.subject,
+                &email_data.body,
+                &email_data.sender,
+                &email_data.from_header,
+            );
             if result.matched {
                 results.push(result);
             }
@@ -351,7 +394,12 @@ impl ModuleManager {
         // Check adult content
         if let Some(detector) = &self.adult_content {
             if let Some(domain) = extract_domain(&email_data.sender) {
-                let result = detector.check_adult_content(&email_data.subject, &email_data.body, &email_data.sender, &domain);
+                let result = detector.check_adult_content(
+                    &email_data.subject,
+                    &email_data.body,
+                    &email_data.sender,
+                    &domain,
+                );
                 if result.matched {
                     results.push(result);
                 }
@@ -361,7 +409,12 @@ impl ModuleManager {
         // Check ecommerce scams
         if let Some(detector) = &self.ecommerce_scams {
             if let Some(domain) = extract_domain(&email_data.sender) {
-                let result = detector.check_ecommerce_scam(&email_data.subject, &email_data.body, &email_data.sender, &domain);
+                let result = detector.check_ecommerce_scam(
+                    &email_data.subject,
+                    &email_data.body,
+                    &email_data.sender,
+                    &domain,
+                );
                 if result.matched {
                     results.push(result);
                 }
@@ -371,7 +424,12 @@ impl ModuleManager {
         // Check financial services
         if let Some(detector) = &self.financial_services {
             if let Some(domain) = extract_domain(&email_data.sender) {
-                let result = detector.check_financial_scam(&email_data.subject, &email_data.body, &email_data.sender, &domain);
+                let result = detector.check_financial_scam(
+                    &email_data.subject,
+                    &email_data.body,
+                    &email_data.sender,
+                    &domain,
+                );
                 if result.matched {
                     results.push(result);
                 }
@@ -381,7 +439,12 @@ impl ModuleManager {
         // Check technology scams
         if let Some(detector) = &self.technology_scams {
             if let Some(domain) = extract_domain(&email_data.sender) {
-                let result = detector.check_technology_scam(&email_data.subject, &email_data.body, &email_data.sender, &domain);
+                let result = detector.check_technology_scam(
+                    &email_data.subject,
+                    &email_data.body,
+                    &email_data.sender,
+                    &domain,
+                );
                 if result.matched {
                     results.push(result);
                 }
@@ -391,7 +454,12 @@ impl ModuleManager {
         // Check multi-language threats
         if let Some(detector) = &self.multi_language {
             if let Some(domain) = extract_domain(&email_data.sender) {
-                let result = detector.check_multi_language_threat(&email_data.subject, &email_data.body, &email_data.sender, &domain);
+                let result = detector.check_multi_language_threat(
+                    &email_data.subject,
+                    &email_data.body,
+                    &email_data.sender,
+                    &domain,
+                );
                 if result.matched {
                     results.push(result);
                 }
@@ -405,7 +473,11 @@ impl ModuleManager {
         results.iter().map(|r| r.confidence).sum()
     }
 
-    fn finalize_results(&self, results: Vec<DetectionResult>, start_time: Instant) -> Vec<DetectionResult> {
+    fn finalize_results(
+        &self,
+        results: Vec<DetectionResult>,
+        start_time: Instant,
+    ) -> Vec<DetectionResult> {
         // Record overall processing time
         let total_time = start_time.elapsed().as_millis() as u64;
         if let Some(optimizer) = &self.performance_optimizer {
@@ -430,7 +502,9 @@ impl ModuleManager {
     }
 
     pub fn get_performance_metrics(&self) -> Option<crate::performance::PerformanceMetrics> {
-        self.performance_optimizer.as_ref().and_then(|opt| opt.get_metrics())
+        self.performance_optimizer
+            .as_ref()
+            .and_then(|opt| opt.get_metrics())
     }
 
     pub fn reset_performance_metrics(&self) {
@@ -445,18 +519,30 @@ impl ModuleManager {
         }
     }
 
-    pub fn record_email_analytics(&self, sender: &str, recipient: &str, subject: &str, 
-                                 results: &[DetectionResult], processing_time_ms: u64) {
+    pub fn record_email_analytics(
+        &self,
+        sender: &str,
+        recipient: &str,
+        subject: &str,
+        results: &[DetectionResult],
+        processing_time_ms: u64,
+    ) {
         if let Some(analytics) = &self.analytics_engine {
             analytics.record_email_event(sender, recipient, subject, results, processing_time_ms);
         }
     }
 
     pub fn get_analytics_dashboard(&self) -> Option<crate::analytics::DashboardData> {
-        self.analytics_engine.as_ref().and_then(|engine| engine.get_dashboard_data())
+        self.analytics_engine
+            .as_ref()
+            .and_then(|engine| engine.get_dashboard_data())
     }
 
-    pub fn generate_analytics_report(&self, format: &str, time_range_hours: u32) -> Result<String, Box<dyn std::error::Error>> {
+    pub fn generate_analytics_report(
+        &self,
+        format: &str,
+        time_range_hours: u32,
+    ) -> Result<String, Box<dyn std::error::Error>> {
         match &self.analytics_engine {
             Some(engine) => engine.generate_report(format, time_range_hours),
             None => Err("Analytics engine not available".into()),
@@ -464,7 +550,8 @@ impl ModuleManager {
     }
 
     pub fn check_analytics_alerts(&self) -> Vec<String> {
-        self.analytics_engine.as_ref()
+        self.analytics_engine
+            .as_ref()
             .map(|engine| engine.check_alerts())
             .unwrap_or_default()
     }
@@ -475,7 +562,12 @@ impl ModuleManager {
         }
     }
 
-    pub fn get_ml_prediction(&self, sender: &str, subject: &str, body: &str) -> Option<crate::machine_learning::MLPrediction> {
+    pub fn get_ml_prediction(
+        &self,
+        sender: &str,
+        subject: &str,
+        body: &str,
+    ) -> Option<crate::machine_learning::MLPrediction> {
         if let Some(ml_engine) = &self.ml_engine {
             let features = ml_engine.extract_features(sender, subject, body);
             Some(ml_engine.predict_threat(&features))
@@ -484,7 +576,14 @@ impl ModuleManager {
         }
     }
 
-    pub fn update_ml_model(&self, sender: &str, subject: &str, body: &str, is_threat: bool, confidence: f64) {
+    pub fn update_ml_model(
+        &self,
+        sender: &str,
+        subject: &str,
+        body: &str,
+        is_threat: bool,
+        confidence: f64,
+    ) {
         if let Some(ml_engine) = &self.ml_engine {
             let features = ml_engine.extract_features(sender, subject, body);
             ml_engine.update_model(&features, is_threat, confidence);
@@ -492,11 +591,14 @@ impl ModuleManager {
     }
 
     pub fn get_ml_performance(&self) -> Option<std::collections::HashMap<String, f64>> {
-        self.ml_engine.as_ref().map(|engine| engine.get_model_performance())
+        self.ml_engine
+            .as_ref()
+            .map(|engine| engine.get_model_performance())
     }
 
     pub fn detect_threat_campaigns(&self) -> Vec<crate::machine_learning::ThreatCampaign> {
-        self.ml_engine.as_ref()
+        self.ml_engine
+            .as_ref()
             .map(|engine| engine.detect_campaigns())
             .unwrap_or_default()
     }
@@ -507,7 +609,13 @@ impl ModuleManager {
         }
     }
 
-    pub fn process_api_request(&self, method: &str, path: &str, headers: &std::collections::HashMap<String, String>, body: &str) -> Result<serde_json::Value, String> {
+    pub fn process_api_request(
+        &self,
+        method: &str,
+        path: &str,
+        headers: &std::collections::HashMap<String, String>,
+        body: &str,
+    ) -> Result<serde_json::Value, String> {
         if let Some(integration) = &self.integration_engine {
             if !integration.authenticate_request(headers) {
                 return Err("Authentication failed".to_string());
@@ -518,12 +626,8 @@ impl ModuleManager {
                     // Parse email data from body (simplified)
                     integration.process_email_api("sender@example.com", "Test Subject", body)
                 }
-                ("GET", "/api/v1/analytics/dashboard") => {
-                    integration.get_analytics_api()
-                }
-                ("GET", "/api/v1/health") => {
-                    Ok(integration.get_health_status())
-                }
+                ("GET", "/api/v1/analytics/dashboard") => integration.get_analytics_api(),
+                ("GET", "/api/v1/health") => Ok(integration.get_health_status()),
                 _ => Err("Endpoint not found".to_string()),
             }
         } else {
@@ -531,19 +635,36 @@ impl ModuleManager {
         }
     }
 
-    pub fn send_webhook_notification(&self, event_type: &str, data: serde_json::Value, severity: &str) {
+    pub fn send_webhook_notification(
+        &self,
+        event_type: &str,
+        data: serde_json::Value,
+        severity: &str,
+    ) {
         if let Some(integration) = &self.integration_engine {
             integration.send_webhook(event_type, data, severity);
         }
     }
 
-    pub fn send_siem_event(&self, sender: &str, recipient: &str, subject: &str, results: &[DetectionResult], action: &str) {
+    pub fn send_siem_event(
+        &self,
+        sender: &str,
+        recipient: &str,
+        subject: &str,
+        results: &[DetectionResult],
+        action: &str,
+    ) {
         if let Some(integration) = &self.integration_engine {
             integration.send_siem_event(sender, recipient, subject, results, action);
         }
     }
 
-    pub fn export_data(&self, format: &str, start_time: u64, end_time: u64) -> Result<String, String> {
+    pub fn export_data(
+        &self,
+        format: &str,
+        start_time: u64,
+        end_time: u64,
+    ) -> Result<String, String> {
         if let Some(integration) = &self.integration_engine {
             integration.export_data(format, start_time, end_time)
         } else {
@@ -552,7 +673,8 @@ impl ModuleManager {
     }
 
     pub fn get_api_metrics(&self) -> std::collections::HashMap<String, u64> {
-        self.integration_engine.as_ref()
+        self.integration_engine
+            .as_ref()
             .map(|engine| engine.get_api_metrics())
             .unwrap_or_default()
     }
@@ -563,20 +685,35 @@ impl ModuleManager {
         }
     }
 
-    pub fn scan_attachment(&self, filename: &str, content: &[u8]) -> Option<crate::advanced_security::AttachmentScanResult> {
-        self.advanced_security.as_ref().map(|engine| engine.scan_attachment(filename, content))
+    pub fn scan_attachment(
+        &self,
+        filename: &str,
+        content: &[u8],
+    ) -> Option<crate::advanced_security::AttachmentScanResult> {
+        self.advanced_security
+            .as_ref()
+            .map(|engine| engine.scan_attachment(filename, content))
     }
 
     pub fn scan_url(&self, url: &str) -> Option<crate::advanced_security::UrlScanResult> {
-        self.advanced_security.as_ref().map(|engine| engine.scan_url(url))
+        self.advanced_security
+            .as_ref()
+            .map(|engine| engine.scan_url(url))
     }
 
-    pub fn scan_image_ocr(&self, filename: &str, content: &[u8]) -> Option<crate::advanced_security::ImageOcrResult> {
-        self.advanced_security.as_ref().map(|engine| engine.scan_image_ocr(filename, content))
+    pub fn scan_image_ocr(
+        &self,
+        filename: &str,
+        content: &[u8],
+    ) -> Option<crate::advanced_security::ImageOcrResult> {
+        self.advanced_security
+            .as_ref()
+            .map(|engine| engine.scan_image_ocr(filename, content))
     }
 
     pub fn get_security_scan_statistics(&self) -> std::collections::HashMap<String, u64> {
-        self.advanced_security.as_ref()
+        self.advanced_security
+            .as_ref()
             .map(|engine| engine.get_scan_statistics())
             .unwrap_or_default()
     }
@@ -598,7 +735,13 @@ pub struct EmailData {
 }
 
 impl EmailData {
-    pub fn new(sender: String, from_header: String, subject: String, body: String, recipients: Vec<String>) -> Self {
+    pub fn new(
+        sender: String,
+        from_header: String,
+        subject: String,
+        body: String,
+        recipients: Vec<String>,
+    ) -> Self {
         Self {
             sender,
             from_header,

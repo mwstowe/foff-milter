@@ -1,8 +1,8 @@
+use crate::detection::DetectionResult;
+use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::sync::{Arc, Mutex};
 use std::time::{SystemTime, UNIX_EPOCH};
-use serde::{Deserialize, Serialize};
-use crate::detection::DetectionResult;
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct IntegrationConfig {
@@ -266,6 +266,7 @@ pub struct SiemEvent {
 
 pub struct IntegrationEngine {
     config: IntegrationConfig,
+    #[allow(dead_code)]
     api_keys: Arc<Mutex<HashMap<String, u64>>>, // key -> expiration timestamp
     webhook_queue: Arc<Mutex<Vec<WebhookEvent>>>,
     siem_queue: Arc<Mutex<Vec<SiemEvent>>>,
@@ -319,9 +320,13 @@ impl IntegrationEngine {
         if let Some(encoded) = auth_header.strip_prefix("Basic ") {
             use base64::Engine;
             let decoded = String::from_utf8(
-                base64::engine::general_purpose::STANDARD.decode(encoded).unwrap_or_default()
-            ).unwrap_or_default();
-            let expected = format!("{}:{}", 
+                base64::engine::general_purpose::STANDARD
+                    .decode(encoded)
+                    .unwrap_or_default(),
+            )
+            .unwrap_or_default();
+            let expected = format!(
+                "{}:{}",
                 self.config.authentication.basic_auth.username,
                 self.config.authentication.basic_auth.password
             );
@@ -330,7 +335,12 @@ impl IntegrationEngine {
         false
     }
 
-    pub fn process_email_api(&self, sender: &str, subject: &str, _body: &str) -> Result<serde_json::Value, String> {
+    pub fn process_email_api(
+        &self,
+        sender: &str,
+        subject: &str,
+        _body: &str,
+    ) -> Result<serde_json::Value, String> {
         let timestamp = SystemTime::now()
             .duration_since(UNIX_EPOCH)
             .unwrap_or_default()
@@ -376,7 +386,10 @@ impl IntegrationEngine {
 
         let event = WebhookEvent {
             event_type: event_type.to_string(),
-            timestamp: SystemTime::now().duration_since(UNIX_EPOCH).unwrap_or_default().as_secs(),
+            timestamp: SystemTime::now()
+                .duration_since(UNIX_EPOCH)
+                .unwrap_or_default()
+                .as_secs(),
             data,
             severity: severity.to_string(),
             source: "foff-milter".to_string(),
@@ -385,7 +398,7 @@ impl IntegrationEngine {
         // Queue webhook for processing
         if let Ok(mut queue) = self.webhook_queue.lock() {
             queue.push(event);
-            
+
             // Limit queue size
             if queue.len() > 1000 {
                 queue.drain(0..100);
@@ -419,36 +432,67 @@ impl IntegrationEngine {
     }
 
     fn send_webhook_to_endpoint(&self, event: &WebhookEvent, endpoint: &WebhookEndpoint) {
-        log::info!("Sending webhook to {}: {} - {}", endpoint.name, event.event_type, event.severity);
+        log::info!(
+            "Sending webhook to {}: {} - {}",
+            endpoint.name,
+            event.event_type,
+            event.severity
+        );
         // In production, implement actual HTTP POST to endpoint.url
     }
 
     fn send_slack_notification(&self, event: &WebhookEvent) {
-        log::info!("Sending Slack notification: {} - {}", event.event_type, event.severity);
+        log::info!(
+            "Sending Slack notification: {} - {}",
+            event.event_type,
+            event.severity
+        );
         // In production, implement Slack webhook integration
     }
 
     fn send_teams_notification(&self, event: &WebhookEvent) {
-        log::info!("Sending Teams notification: {} - {}", event.event_type, event.severity);
+        log::info!(
+            "Sending Teams notification: {} - {}",
+            event.event_type,
+            event.severity
+        );
         // In production, implement Teams webhook integration
     }
 
-    pub fn send_siem_event(&self, sender: &str, recipient: &str, subject: &str, 
-                          results: &[DetectionResult], action: &str) {
+    pub fn send_siem_event(
+        &self,
+        sender: &str,
+        recipient: &str,
+        subject: &str,
+        results: &[DetectionResult],
+        action: &str,
+    ) {
         if !self.config.siem_integration.enabled {
             return;
         }
 
         let event = SiemEvent {
-            timestamp: SystemTime::now().duration_since(UNIX_EPOCH).unwrap_or_default().as_secs(),
+            timestamp: SystemTime::now()
+                .duration_since(UNIX_EPOCH)
+                .unwrap_or_default()
+                .as_secs(),
             event_type: "email_analysis".to_string(),
-            severity: if results.iter().any(|r| r.matched) { "high" } else { "low" }.to_string(),
+            severity: if results.iter().any(|r| r.matched) {
+                "high"
+            } else {
+                "low"
+            }
+            .to_string(),
             source_ip: "127.0.0.1".to_string(), // Would extract from email headers
             sender: sender.to_string(),
             recipient: recipient.to_string(),
             subject: subject.to_string(),
             action: action.to_string(),
-            threat_types: results.iter().filter(|r| r.matched).map(|r| r.rule_name.clone()).collect(),
+            threat_types: results
+                .iter()
+                .filter(|r| r.matched)
+                .map(|r| r.rule_name.clone())
+                .collect(),
             confidence: results.iter().map(|r| r.confidence).sum(),
             details: HashMap::new(),
         };
@@ -456,7 +500,7 @@ impl IntegrationEngine {
         // Queue SIEM event for processing
         if let Ok(mut queue) = self.siem_queue.lock() {
             queue.push(event);
-            
+
             // Limit queue size
             if queue.len() > 1000 {
                 queue.drain(0..100);
@@ -494,31 +538,57 @@ impl IntegrationEngine {
     }
 
     fn send_to_splunk(&self, event: &SiemEvent) {
-        log::info!("Sending event to Splunk: {} - {}", event.event_type, event.severity);
+        log::info!(
+            "Sending event to Splunk: {} - {}",
+            event.event_type,
+            event.severity
+        );
         // In production, implement Splunk HEC integration
     }
 
     fn send_to_elastic(&self, event: &SiemEvent) {
-        log::info!("Sending event to Elasticsearch: {} - {}", event.event_type, event.severity);
+        log::info!(
+            "Sending event to Elasticsearch: {} - {}",
+            event.event_type,
+            event.severity
+        );
         // In production, implement Elasticsearch integration
     }
 
     fn send_to_qradar(&self, event: &SiemEvent) {
-        log::info!("Sending event to QRadar: {} - {}", event.event_type, event.severity);
+        log::info!(
+            "Sending event to QRadar: {} - {}",
+            event.event_type,
+            event.severity
+        );
         // In production, implement QRadar syslog integration
     }
 
     fn send_to_sentinel(&self, event: &SiemEvent) {
-        log::info!("Sending event to Sentinel: {} - {}", event.event_type, event.severity);
+        log::info!(
+            "Sending event to Sentinel: {} - {}",
+            event.event_type,
+            event.severity
+        );
         // In production, implement Azure Sentinel integration
     }
 
-    pub fn export_data(&self, format: &str, start_time: u64, end_time: u64) -> Result<String, String> {
+    pub fn export_data(
+        &self,
+        format: &str,
+        start_time: u64,
+        end_time: u64,
+    ) -> Result<String, String> {
         if !self.config.data_export.enabled {
             return Err("Data export is disabled".to_string());
         }
 
-        if !self.config.data_export.formats.contains(&format.to_string()) {
+        if !self
+            .config
+            .data_export
+            .formats
+            .contains(&format.to_string())
+        {
             return Err(format!("Unsupported export format: {}", format));
         }
 

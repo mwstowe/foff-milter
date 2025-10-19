@@ -1,5 +1,4 @@
 use clap::{Arg, Command};
-use foff_milter::config::module_loader::ModuleManager;
 use foff_milter::filter::FilterEngine;
 use foff_milter::milter::Milter;
 use foff_milter::statistics::StatisticsCollector;
@@ -119,11 +118,11 @@ async fn main() {
         if let Some(module_dir) = config.module_config_dir.as_ref() {
             println!("Module configuration directory: {}", module_dir);
             println!("Using modular detection system");
-            
+
             // Count available module files
             let module_files = [
                 "suspicious-domains.yaml",
-                "brand-impersonation.yaml", 
+                "brand-impersonation.yaml",
                 "health-spam.yaml",
                 "phishing-scams.yaml",
                 "adult-content.yaml",
@@ -135,9 +134,9 @@ async fn main() {
                 "analytics.yaml",
                 "machine-learning.yaml",
                 "integration.yaml",
-                "advanced-security.yaml"
+                "advanced-security.yaml",
             ];
-            
+
             let mut available_modules = 0;
             for module_file in &module_files {
                 let path = std::path::Path::new(module_dir).join(module_file);
@@ -145,7 +144,7 @@ async fn main() {
                     available_modules += 1;
                 }
             }
-            
+
             println!("Number of available modules: {}", available_modules);
             println!("✅ Modular system configuration validated");
         } else {
@@ -153,7 +152,7 @@ async fn main() {
             for (i, rule) in config.rules.iter().enumerate() {
                 println!("  Rule {}: {}", i + 1, rule.name);
             }
-            
+
             // Still validate legacy rules if present
             if !config.rules.is_empty() {
                 match FilterEngine::new(config.clone()) {
@@ -477,8 +476,8 @@ fn truncate_string(s: &str, max_len: usize) -> String {
 }
 
 async fn test_email_file(config: &LegacyConfig, email_file: &str) {
-    use foff_milter::Action;
     use foff_milter::filter::MailContext;
+    use foff_milter::Action;
     use std::collections::HashMap;
     use std::fs;
 
@@ -575,49 +574,59 @@ async fn test_email_file(config: &LegacyConfig, email_file: &str) {
     println!();
 
     // Check if using modular system or legacy rules
-    if let Some(module_dir) = config.module_config_dir.as_ref() {
+    if let Some(_module_dir) = config.module_config_dir.as_ref() {
         println!("🔍 Testing against modular detection system...");
         println!();
-        
+
         // Simple pattern-based detection for demonstration
         let mut threats_detected = Vec::new();
-        let email_content = format!("{} {} {}", 
+        let email_content = format!(
+            "{} {} {}",
             headers.get("subject").unwrap_or(&String::new()),
             body,
             sender
-        ).to_lowercase();
-        
+        )
+        .to_lowercase();
+
         // Check for health spam patterns
         let health_patterns = [
-            "sciatic pain", "stuck in bed", "can't get out of bed", "yellow vitamin",
-            "miracle cure", "overnight cure", "pain disappeared", "didn't see doctor"
+            "sciatic pain",
+            "stuck in bed",
+            "can't get out of bed",
+            "yellow vitamin",
+            "miracle cure",
+            "overnight cure",
+            "pain disappeared",
+            "didn't see doctor",
         ];
-        
+
         for pattern in &health_patterns {
             if email_content.contains(pattern) {
                 threats_detected.push(format!("Health Spam ({})", pattern));
                 break;
             }
         }
-        
+
         // Check for suspicious domains
         if sender.contains("freak") || sender.contains("neuro") {
             threats_detected.push("Suspicious Domain".to_string());
         }
-        
+
         // Check for emotional manipulation
         let manipulation_patterns = [
-            "entire family thrilled", "we missed him", "senior care facility",
-            "something strange going on"
+            "entire family thrilled",
+            "we missed him",
+            "senior care facility",
+            "something strange going on",
         ];
-        
+
         for pattern in &manipulation_patterns {
             if email_content.contains(pattern) {
                 threats_detected.push(format!("Emotional Manipulation ({})", pattern));
                 break;
             }
         }
-        
+
         if !threats_detected.is_empty() {
             println!("🚨 Result: REJECT");
             println!("   Threats detected:");
@@ -629,11 +638,13 @@ async fn test_email_file(config: &LegacyConfig, email_file: &str) {
             println!("✅ Result: ACCEPT");
             println!("   No threats detected by modular system");
         }
-        
-        let analysis_header = format!("X-FOFF-Analysis: analyzed by foff-milter v{} (modular system)", 
-            config.version);
+
+        let analysis_header = format!(
+            "X-FOFF-Analysis: analyzed by foff-milter v{} (modular system)",
+            config.version
+        );
         println!("   Analysis header: {}", analysis_header);
-        
+
         return;
     }
 

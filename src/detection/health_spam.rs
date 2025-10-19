@@ -52,7 +52,12 @@ impl HealthSpamDetector {
         Ok(Self::new(config))
     }
 
-    pub fn check_health_spam(&self, subject: &str, body: &str, sender_domain: &str) -> DetectionResult {
+    pub fn check_health_spam(
+        &self,
+        subject: &str,
+        body: &str,
+        sender_domain: &str,
+    ) -> DetectionResult {
         // Check if sender is from legitimate organization
         if self.is_legitimate_sender(sender_domain) {
             return DetectionResult::no_match("HealthSpam".to_string());
@@ -138,13 +143,13 @@ impl HealthSpamDetector {
         patterns.extend(self.config.patterns.pharmaceutical.clone());
         patterns.extend(self.config.patterns.conspiracy.clone());
         patterns.extend(self.config.patterns.general_health.clone());
-        
+
         // Add severity level patterns
         patterns.extend(self.config.severity_levels.critical.patterns.clone());
         patterns.extend(self.config.severity_levels.high.patterns.clone());
         patterns.extend(self.config.severity_levels.medium.patterns.clone());
         patterns.extend(self.config.severity_levels.low.patterns.clone());
-        
+
         patterns.sort();
         patterns.dedup();
         patterns

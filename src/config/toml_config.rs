@@ -6,10 +6,10 @@ use std::path::Path;
 pub fn load_config<P: AsRef<Path>>(path: P) -> Result<Config> {
     let content = fs::read_to_string(&path)
         .with_context(|| format!("Failed to read config file: {}", path.as_ref().display()))?;
-    
+
     let config: Config = toml::from_str(&content)
         .with_context(|| format!("Failed to parse TOML config: {}", path.as_ref().display()))?;
-    
+
     Ok(config)
 }
 

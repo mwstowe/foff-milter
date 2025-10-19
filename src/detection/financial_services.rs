@@ -87,7 +87,13 @@ impl FinancialServicesDetector {
         Ok(Self::new(config))
     }
 
-    pub fn check_financial_scam(&self, subject: &str, body: &str, _sender: &str, sender_domain: &str) -> DetectionResult {
+    pub fn check_financial_scam(
+        &self,
+        subject: &str,
+        body: &str,
+        _sender: &str,
+        sender_domain: &str,
+    ) -> DetectionResult {
         // Check if sender is from legitimate financial institution
         if self.is_legitimate_financial_institution(sender_domain) {
             return DetectionResult::no_match("FinancialServices".to_string());
@@ -98,49 +104,82 @@ impl FinancialServicesDetector {
         let combined_text = format!("{} {}", subject, body).to_lowercase();
 
         // Check government impersonation (highest priority)
-        if self.check_patterns(&combined_text, &self.config.government_impersonation.irs_scams) ||
-           self.check_patterns(&combined_text, &self.config.government_impersonation.social_security) ||
-           self.check_patterns(&combined_text, &self.config.government_impersonation.treasury_scams) {
+        if self.check_patterns(
+            &combined_text,
+            &self.config.government_impersonation.irs_scams,
+        ) || self.check_patterns(
+            &combined_text,
+            &self.config.government_impersonation.social_security,
+        ) || self.check_patterns(
+            &combined_text,
+            &self.config.government_impersonation.treasury_scams,
+        ) {
             confidence += self.config.confidence_scoring.government_impersonation;
             reasons.push("Government impersonation detected".to_string());
         }
 
         // Check investment fraud
-        if self.check_patterns(&combined_text, &self.config.investment_fraud.stock_manipulation) ||
-           self.check_patterns(&combined_text, &self.config.investment_fraud.cryptocurrency_scams) ||
-           self.check_patterns(&combined_text, &self.config.investment_fraud.retirement_fraud) {
+        if self.check_patterns(
+            &combined_text,
+            &self.config.investment_fraud.stock_manipulation,
+        ) || self.check_patterns(
+            &combined_text,
+            &self.config.investment_fraud.cryptocurrency_scams,
+        ) || self.check_patterns(
+            &combined_text,
+            &self.config.investment_fraud.retirement_fraud,
+        ) {
             confidence += self.config.confidence_scoring.investment_fraud;
             reasons.push("Investment fraud detected".to_string());
         }
 
         // Check banking phishing
-        if self.check_patterns(&combined_text, &self.config.banking_phishing.major_banks) ||
-           self.check_patterns(&combined_text, &self.config.banking_phishing.credit_unions) ||
-           self.check_patterns(&combined_text, &self.config.banking_phishing.online_banks) ||
-           self.check_patterns(&combined_text, &self.config.banking_phishing.payment_processors) {
+        if self.check_patterns(&combined_text, &self.config.banking_phishing.major_banks)
+            || self.check_patterns(&combined_text, &self.config.banking_phishing.credit_unions)
+            || self.check_patterns(&combined_text, &self.config.banking_phishing.online_banks)
+            || self.check_patterns(
+                &combined_text,
+                &self.config.banking_phishing.payment_processors,
+            )
+        {
             confidence += self.config.confidence_scoring.banking_phishing;
             reasons.push("Banking phishing detected".to_string());
         }
 
         // Check credit/loan scams
-        if self.check_patterns(&combined_text, &self.config.credit_loan_scams.credit_cards) ||
-           self.check_patterns(&combined_text, &self.config.credit_loan_scams.personal_loans) ||
-           self.check_patterns(&combined_text, &self.config.credit_loan_scams.mortgage_scams) {
+        if self.check_patterns(&combined_text, &self.config.credit_loan_scams.credit_cards)
+            || self.check_patterns(
+                &combined_text,
+                &self.config.credit_loan_scams.personal_loans,
+            )
+            || self.check_patterns(
+                &combined_text,
+                &self.config.credit_loan_scams.mortgage_scams,
+            )
+        {
             confidence += self.config.confidence_scoring.credit_loan_scams;
             reasons.push("Credit/loan scam detected".to_string());
         }
 
         // Check insurance fraud
-        if self.check_patterns(&combined_text, &self.config.insurance_fraud.health_insurance) ||
-           self.check_patterns(&combined_text, &self.config.insurance_fraud.auto_insurance) ||
-           self.check_patterns(&combined_text, &self.config.insurance_fraud.life_insurance) {
+        if self.check_patterns(
+            &combined_text,
+            &self.config.insurance_fraud.health_insurance,
+        ) || self.check_patterns(&combined_text, &self.config.insurance_fraud.auto_insurance)
+            || self.check_patterns(&combined_text, &self.config.insurance_fraud.life_insurance)
+        {
             confidence += self.config.confidence_scoring.insurance_fraud;
             reasons.push("Insurance fraud detected".to_string());
         }
 
         // Check financial urgency patterns
-        if self.check_patterns(&combined_text, &self.config.financial_urgency.account_threats) ||
-           self.check_patterns(&combined_text, &self.config.financial_urgency.payment_demands) {
+        if self.check_patterns(
+            &combined_text,
+            &self.config.financial_urgency.account_threats,
+        ) || self.check_patterns(
+            &combined_text,
+            &self.config.financial_urgency.payment_demands,
+        ) {
             confidence += self.config.confidence_scoring.financial_urgency;
             reasons.push("Financial urgency tactics detected".to_string());
         }

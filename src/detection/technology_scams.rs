@@ -88,7 +88,13 @@ impl TechnologyScamsDetector {
         Ok(Self::new(config))
     }
 
-    pub fn check_technology_scam(&self, subject: &str, body: &str, _sender: &str, sender_domain: &str) -> DetectionResult {
+    pub fn check_technology_scam(
+        &self,
+        subject: &str,
+        body: &str,
+        _sender: &str,
+        sender_domain: &str,
+    ) -> DetectionResult {
         // Check if sender is from legitimate tech company
         if self.is_legitimate_tech_company(sender_domain) {
             return DetectionResult::no_match("TechnologyScams".to_string());
@@ -99,50 +105,85 @@ impl TechnologyScamsDetector {
         let combined_text = format!("{} {}", subject, body).to_lowercase();
 
         // Check cryptocurrency mining (highest priority)
-        if self.check_patterns(&combined_text, &self.config.cryptocurrency_mining.mining_software) ||
-           self.check_patterns(&combined_text, &self.config.cryptocurrency_mining.hardware_scams) ||
-           self.check_patterns(&combined_text, &self.config.cryptocurrency_mining.wallet_scams) {
+        if self.check_patterns(
+            &combined_text,
+            &self.config.cryptocurrency_mining.mining_software,
+        ) || self.check_patterns(
+            &combined_text,
+            &self.config.cryptocurrency_mining.hardware_scams,
+        ) || self.check_patterns(
+            &combined_text,
+            &self.config.cryptocurrency_mining.wallet_scams,
+        ) {
             confidence += self.config.confidence_scoring.cryptocurrency_mining;
             reasons.push("Cryptocurrency mining scam detected".to_string());
         }
 
         // Check tech support scams
-        if self.check_patterns(&combined_text, &self.config.tech_support_scams.microsoft_impersonation) ||
-           self.check_patterns(&combined_text, &self.config.tech_support_scams.apple_support) ||
-           self.check_patterns(&combined_text, &self.config.tech_support_scams.generic_tech_support) ||
-           self.check_patterns(&combined_text, &self.config.tech_support_scams.isp_impersonation) {
+        if self.check_patterns(
+            &combined_text,
+            &self.config.tech_support_scams.microsoft_impersonation,
+        ) || self.check_patterns(
+            &combined_text,
+            &self.config.tech_support_scams.apple_support,
+        ) || self.check_patterns(
+            &combined_text,
+            &self.config.tech_support_scams.generic_tech_support,
+        ) || self.check_patterns(
+            &combined_text,
+            &self.config.tech_support_scams.isp_impersonation,
+        ) {
             confidence += self.config.confidence_scoring.tech_support_scams;
             reasons.push("Tech support scam detected".to_string());
         }
 
         // Check fake software
-        if self.check_patterns(&combined_text, &self.config.fake_software.antivirus_scams) ||
-           self.check_patterns(&combined_text, &self.config.fake_software.software_downloads) ||
-           self.check_patterns(&combined_text, &self.config.fake_software.license_fraud) ||
-           self.check_patterns(&combined_text, &self.config.fake_software.browser_hijacking) {
+        if self.check_patterns(&combined_text, &self.config.fake_software.antivirus_scams)
+            || self.check_patterns(
+                &combined_text,
+                &self.config.fake_software.software_downloads,
+            )
+            || self.check_patterns(&combined_text, &self.config.fake_software.license_fraud)
+            || self.check_patterns(&combined_text, &self.config.fake_software.browser_hijacking)
+        {
             confidence += self.config.confidence_scoring.fake_software;
             reasons.push("Fake software scam detected".to_string());
         }
 
         // Check cloud/SaaS scams
-        if self.check_patterns(&combined_text, &self.config.cloud_saas_scams.fake_cloud_services) ||
-           self.check_patterns(&combined_text, &self.config.cloud_saas_scams.saas_impersonation) ||
-           self.check_patterns(&combined_text, &self.config.cloud_saas_scams.subscription_scams) {
+        if self.check_patterns(
+            &combined_text,
+            &self.config.cloud_saas_scams.fake_cloud_services,
+        ) || self.check_patterns(
+            &combined_text,
+            &self.config.cloud_saas_scams.saas_impersonation,
+        ) || self.check_patterns(
+            &combined_text,
+            &self.config.cloud_saas_scams.subscription_scams,
+        ) {
             confidence += self.config.confidence_scoring.cloud_saas_scams;
             reasons.push("Cloud/SaaS scam detected".to_string());
         }
 
         // Check device/hardware scams
-        if self.check_patterns(&combined_text, &self.config.device_hardware_scams.fake_electronics) ||
-           self.check_patterns(&combined_text, &self.config.device_hardware_scams.warranty_scams) ||
-           self.check_patterns(&combined_text, &self.config.device_hardware_scams.repair_scams) {
+        if self.check_patterns(
+            &combined_text,
+            &self.config.device_hardware_scams.fake_electronics,
+        ) || self.check_patterns(
+            &combined_text,
+            &self.config.device_hardware_scams.warranty_scams,
+        ) || self.check_patterns(
+            &combined_text,
+            &self.config.device_hardware_scams.repair_scams,
+        ) {
             confidence += self.config.confidence_scoring.device_hardware_scams;
             reasons.push("Device/hardware scam detected".to_string());
         }
 
         // Check system alerts
-        if self.check_patterns(&combined_text, &self.config.system_alerts.fake_warnings) ||
-           self.check_patterns(&combined_text, &self.config.system_alerts.urgency_tactics) {
+        if self.check_patterns(&combined_text, &self.config.system_alerts.fake_warnings)
+            || self.check_patterns(&combined_text, &self.config.system_alerts.urgency_tactics)
+        {
             confidence += self.config.confidence_scoring.system_alerts;
             reasons.push("Fake system alert detected".to_string());
         }
@@ -181,7 +222,12 @@ impl TechnologyScamsDetector {
 
     pub fn get_all_patterns(&self) -> Vec<String> {
         let mut patterns = Vec::new();
-        patterns.extend(self.config.tech_support_scams.microsoft_impersonation.clone());
+        patterns.extend(
+            self.config
+                .tech_support_scams
+                .microsoft_impersonation
+                .clone(),
+        );
         patterns.extend(self.config.tech_support_scams.apple_support.clone());
         patterns.extend(self.config.tech_support_scams.generic_tech_support.clone());
         patterns.extend(self.config.tech_support_scams.isp_impersonation.clone());

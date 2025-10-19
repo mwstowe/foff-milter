@@ -81,7 +81,13 @@ impl EcommerceScamsDetector {
         Ok(Self::new(config))
     }
 
-    pub fn check_ecommerce_scam(&self, subject: &str, body: &str, _sender: &str, sender_domain: &str) -> DetectionResult {
+    pub fn check_ecommerce_scam(
+        &self,
+        subject: &str,
+        body: &str,
+        _sender: &str,
+        sender_domain: &str,
+    ) -> DetectionResult {
         // Check if sender is from legitimate retailer
         if self.is_legitimate_retailer(sender_domain) {
             return DetectionResult::no_match("EcommerceScams".to_string());
@@ -92,43 +98,60 @@ impl EcommerceScamsDetector {
         let combined_text = format!("{} {}", subject, body).to_lowercase();
 
         // Check suspicious pricing (highest priority)
-        if self.check_patterns(&combined_text, &self.config.suspicious_pricing.too_good_to_be_true) {
+        if self.check_patterns(
+            &combined_text,
+            &self.config.suspicious_pricing.too_good_to_be_true,
+        ) {
             confidence += self.config.confidence_scoring.suspicious_pricing;
             reasons.push("Suspicious pricing detected".to_string());
         }
 
         // Check marketplace fraud
-        if self.check_patterns(&combined_text, &self.config.marketplace_fraud.amazon_impersonation) ||
-           self.check_patterns(&combined_text, &self.config.marketplace_fraud.ebay_scams) ||
-           self.check_patterns(&combined_text, &self.config.marketplace_fraud.fake_reviews) {
+        if self.check_patterns(
+            &combined_text,
+            &self.config.marketplace_fraud.amazon_impersonation,
+        ) || self.check_patterns(&combined_text, &self.config.marketplace_fraud.ebay_scams)
+            || self.check_patterns(&combined_text, &self.config.marketplace_fraud.fake_reviews)
+        {
             confidence += self.config.confidence_scoring.marketplace_fraud;
             reasons.push("Marketplace fraud detected".to_string());
         }
 
         // Check fake products
-        if self.check_patterns(&combined_text, &self.config.fake_products.electronics) ||
-           self.check_patterns(&combined_text, &self.config.fake_products.fashion) ||
-           self.check_patterns(&combined_text, &self.config.fake_products.health_supplements) {
+        if self.check_patterns(&combined_text, &self.config.fake_products.electronics)
+            || self.check_patterns(&combined_text, &self.config.fake_products.fashion)
+            || self.check_patterns(
+                &combined_text,
+                &self.config.fake_products.health_supplements,
+            )
+        {
             confidence += self.config.confidence_scoring.fake_products;
             reasons.push("Fake product indicators detected".to_string());
         }
 
         // Check counterfeit indicators
-        if self.check_patterns(&combined_text, &self.config.counterfeit_indicators.quality_claims) {
+        if self.check_patterns(
+            &combined_text,
+            &self.config.counterfeit_indicators.quality_claims,
+        ) {
             confidence += self.config.confidence_scoring.counterfeit_indicators;
             reasons.push("Counterfeit product indicators detected".to_string());
         }
 
         // Check shopping cart abandonment scams
-        if self.check_patterns(&combined_text, &self.config.shopping_cart_abandonment.recovery_scams) {
+        if self.check_patterns(
+            &combined_text,
+            &self.config.shopping_cart_abandonment.recovery_scams,
+        ) {
             confidence += self.config.confidence_scoring.shopping_cart_scams;
             reasons.push("Shopping cart abandonment scam detected".to_string());
         }
 
         // Check pressure tactics
-        if self.check_patterns(&combined_text, &self.config.pressure_tactics.flash_sales) ||
-           self.check_patterns(&combined_text, &self.config.pressure_tactics.limited_time) ||
-           self.check_patterns(&combined_text, &self.config.pressure_tactics.fake_discounts) {
+        if self.check_patterns(&combined_text, &self.config.pressure_tactics.flash_sales)
+            || self.check_patterns(&combined_text, &self.config.pressure_tactics.limited_time)
+            || self.check_patterns(&combined_text, &self.config.pressure_tactics.fake_discounts)
+        {
             confidence += self.config.confidence_scoring.pressure_tactics;
             reasons.push("Pressure tactics detected".to_string());
         }

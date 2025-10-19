@@ -66,14 +66,21 @@ impl PhishingScamsDetector {
         Ok(Self::new(config))
     }
 
-    pub fn check_phishing_scam(&self, subject: &str, body: &str, sender: &str, from_header: &str) -> DetectionResult {
+    pub fn check_phishing_scam(
+        &self,
+        subject: &str,
+        body: &str,
+        sender: &str,
+        from_header: &str,
+    ) -> DetectionResult {
         let mut confidence = 0;
         let mut reasons = Vec::new();
         let combined_text = format!("{} {}", subject, body).to_lowercase();
 
         // Check cryptocurrency extortion
-        if self.check_patterns(&combined_text, &self.config.financial_scams.cryptocurrency) &&
-           self.check_patterns(&combined_text, &self.config.financial_scams.extortion) {
+        if self.check_patterns(&combined_text, &self.config.financial_scams.cryptocurrency)
+            && self.check_patterns(&combined_text, &self.config.financial_scams.extortion)
+        {
             confidence += self.config.confidence_scoring.cryptocurrency_extortion;
             reasons.push("Cryptocurrency extortion detected".to_string());
         }
@@ -85,15 +92,17 @@ impl PhishingScamsDetector {
         }
 
         // Check reward scams
-        if self.check_patterns(&combined_text, &self.config.reward_scams.emergency_kits) ||
-           self.check_patterns(&combined_text, &self.config.reward_scams.prizes) {
+        if self.check_patterns(&combined_text, &self.config.reward_scams.emergency_kits)
+            || self.check_patterns(&combined_text, &self.config.reward_scams.prizes)
+        {
             confidence += self.config.confidence_scoring.reward_scams;
             reasons.push("Reward scam patterns detected".to_string());
         }
 
         // Check social engineering
-        if self.check_patterns(&combined_text, &self.config.social_engineering.urgency) ||
-           self.check_patterns(&combined_text, &self.config.social_engineering.panic) {
+        if self.check_patterns(&combined_text, &self.config.social_engineering.urgency)
+            || self.check_patterns(&combined_text, &self.config.social_engineering.panic)
+        {
             confidence += self.config.confidence_scoring.social_engineering;
             reasons.push("Social engineering patterns detected".to_string());
         }
@@ -126,7 +135,10 @@ impl PhishingScamsDetector {
 
     fn check_service_abuse(&self, sender: &str, from_header: &str) -> bool {
         // Check if sender is from legitimate service
-        let is_legitimate_service = self.config.service_abuse.legitimate_services
+        let is_legitimate_service = self
+            .config
+            .service_abuse
+            .legitimate_services
             .iter()
             .any(|service| sender.contains(service));
 
@@ -136,7 +148,9 @@ impl PhishingScamsDetector {
 
         // Check for abuse indicators
         let from_lower = from_header.to_lowercase();
-        self.config.service_abuse.abuse_indicators
+        self.config
+            .service_abuse
+            .abuse_indicators
             .iter()
             .any(|indicator| {
                 match indicator.as_str() {
@@ -147,14 +161,18 @@ impl PhishingScamsDetector {
                         sender_domain != from_domain
                     }
                     "free.*email.*reply" => {
-                        from_lower.contains("gmail") || from_lower.contains("outlook") || 
-                        from_lower.contains("yahoo") || from_lower.contains("hotmail")
+                        from_lower.contains("gmail")
+                            || from_lower.contains("outlook")
+                            || from_lower.contains("yahoo")
+                            || from_lower.contains("hotmail")
                     }
                     "brand.*impersonation" => {
-                        from_lower.contains("paypal") || from_lower.contains("amazon") ||
-                        from_lower.contains("microsoft") || from_lower.contains("apple")
+                        from_lower.contains("paypal")
+                            || from_lower.contains("amazon")
+                            || from_lower.contains("microsoft")
+                            || from_lower.contains("apple")
                     }
-                    _ => from_lower.contains(indicator)
+                    _ => from_lower.contains(indicator),
                 }
             })
     }
@@ -163,11 +181,11 @@ impl PhishingScamsDetector {
         // Simple spoofing checks
         let sender_email = self.extract_email(sender);
         let from_email = self.extract_email(from_header);
-        
+
         // Check if sender equals recipient (would need recipient info for full check)
         // For now, check if sender and from are different but similar
-        sender_email != from_email && 
-        (sender_email.contains(&from_email) || from_email.contains(&sender_email))
+        sender_email != from_email
+            && (sender_email.contains(&from_email) || from_email.contains(&sender_email))
     }
 
     fn extract_domain(&self, email: &str) -> String {

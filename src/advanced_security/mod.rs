@@ -1,7 +1,7 @@
+use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::sync::{Arc, Mutex};
-use std::time::{SystemTime, UNIX_EPOCH, Instant};
-use serde::{Deserialize, Serialize};
+use std::time::{Instant, SystemTime, UNIX_EPOCH};
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct AdvancedSecurityConfig {
@@ -240,7 +240,7 @@ impl AdvancedSecurityEngine {
 
     pub fn scan_attachment(&self, filename: &str, content: &[u8]) -> AttachmentScanResult {
         let start_time = Instant::now();
-        
+
         if !self.config.attachment_analysis.enabled {
             return AttachmentScanResult {
                 filename: filename.to_string(),
@@ -271,21 +271,29 @@ impl AdvancedSecurityEngine {
         let mut details = HashMap::new();
 
         // File size check
-        if content.len() > (self.config.attachment_analysis.max_file_size_mb as usize * 1024 * 1024) {
+        if content.len() > (self.config.attachment_analysis.max_file_size_mb as usize * 1024 * 1024)
+        {
             threat_detected = true;
             threat_type = "oversized_file".to_string();
             confidence = 0.8;
-            details.insert("reason".to_string(), "File exceeds maximum size limit".to_string());
+            details.insert(
+                "reason".to_string(),
+                "File exceeds maximum size limit".to_string(),
+            );
         }
 
         // Executable detection
-        if self.config.executable_analysis.enabled && self.is_executable(&file_type) {
-            if self.config.security_policies.block_executable_attachments {
-                threat_detected = true;
-                threat_type = "executable_attachment".to_string();
-                confidence = 0.9;
-                details.insert("reason".to_string(), "Executable attachment blocked by policy".to_string());
-            }
+        if self.config.executable_analysis.enabled
+            && self.is_executable(&file_type)
+            && self.config.security_policies.block_executable_attachments
+        {
+            threat_detected = true;
+            threat_type = "executable_attachment".to_string();
+            confidence = 0.9;
+            details.insert(
+                "reason".to_string(),
+                "Executable attachment blocked by policy".to_string(),
+            );
         }
 
         // PDF analysis
@@ -357,7 +365,7 @@ impl AdvancedSecurityEngine {
 
     pub fn scan_url(&self, url: &str) -> UrlScanResult {
         let start_time = Instant::now();
-        
+
         if !self.config.url_scanning.enabled {
             return UrlScanResult {
                 url: url.to_string(),
@@ -413,13 +421,12 @@ impl AdvancedSecurityEngine {
         }
 
         // URL shortener detection
-        if self.config.phishing_url_detection.url_shortener_detection {
-            if self.is_url_shortener(url) {
-                phishing_indicators.push("url_shortener".to_string());
-                if !threat_detected {
-                    threat_detected = true;
-                    threat_type = "suspicious_url_shortener".to_string();
-                }
+        if self.config.phishing_url_detection.url_shortener_detection && self.is_url_shortener(url)
+        {
+            phishing_indicators.push("url_shortener".to_string());
+            if !threat_detected {
+                threat_detected = true;
+                threat_type = "suspicious_url_shortener".to_string();
             }
         }
 
@@ -483,7 +490,12 @@ impl AdvancedSecurityEngine {
         }
 
         let image_format = self.detect_image_format(filename);
-        if !self.config.image_ocr.supported_formats.contains(&image_format) {
+        if !self
+            .config
+            .image_ocr
+            .supported_formats
+            .contains(&image_format)
+        {
             return ImageOcrResult {
                 filename: filename.to_string(),
                 image_format,
@@ -539,7 +551,7 @@ impl AdvancedSecurityEngine {
 
     fn detect_file_type(&self, filename: &str, content: &[u8]) -> String {
         // Simple file type detection based on extension and magic bytes
-        if let Some(ext) = filename.split('.').last() {
+        if let Some(ext) = filename.split('.').next_back() {
             match ext.to_lowercase().as_str() {
                 "pdf" => "pdf".to_string(),
                 "doc" | "docx" => "office_document".to_string(),
@@ -570,7 +582,10 @@ impl AdvancedSecurityEngine {
     }
 
     fn is_office_document(&self, file_type: &str) -> bool {
-        matches!(file_type, "office_document" | "office_spreadsheet" | "office_presentation")
+        matches!(
+            file_type,
+            "office_document" | "office_spreadsheet" | "office_presentation"
+        )
     }
 
     fn is_archive(&self, file_type: &str) -> bool {
@@ -579,75 +594,75 @@ impl AdvancedSecurityEngine {
 
     fn analyze_pdf(&self, _content: &[u8]) -> Vec<String> {
         let mut threats = Vec::new();
-        
+
         // Simulate PDF analysis
         if self.config.pdf_analysis.javascript_detection {
             // Check for JavaScript in PDF (simplified)
             threats.push("javascript_detected".to_string());
         }
-        
+
         if self.config.pdf_analysis.suspicious_structure_detection {
             // Check for suspicious PDF structure
             threats.push("suspicious_structure".to_string());
         }
-        
+
         threats
     }
 
     fn analyze_office_document(&self, _content: &[u8]) -> Vec<String> {
         let mut threats = Vec::new();
-        
+
         // Simulate Office document analysis
         if self.config.office_document_analysis.macro_detection {
             threats.push("macro_detected".to_string());
         }
-        
+
         if self.config.office_document_analysis.external_link_detection {
             threats.push("external_links_detected".to_string());
         }
-        
+
         threats
     }
 
     fn analyze_archive(&self, _content: &[u8]) -> Vec<String> {
         let mut threats = Vec::new();
-        
+
         // Simulate archive analysis
         if self.config.archive_analysis.suspicious_filename_detection {
             threats.push("suspicious_filenames".to_string());
         }
-        
+
         if self.config.archive_analysis.nested_archive_detection {
             threats.push("nested_archives".to_string());
         }
-        
+
         threats
     }
 
     fn detect_phishing_indicators(&self, url: &str) -> Vec<String> {
         let mut indicators = Vec::new();
-        
+
         // Homograph detection
-        if self.config.phishing_url_detection.homograph_detection {
-            if self.contains_homograph_characters(url) {
-                indicators.push("homograph_characters".to_string());
-            }
+        if self.config.phishing_url_detection.homograph_detection
+            && self.contains_homograph_characters(url)
+        {
+            indicators.push("homograph_characters".to_string());
         }
-        
+
         // Typosquatting detection
-        if self.config.phishing_url_detection.typosquatting_detection {
-            if self.is_typosquatting_domain(url) {
-                indicators.push("typosquatting".to_string());
-            }
+        if self.config.phishing_url_detection.typosquatting_detection
+            && self.is_typosquatting_domain(url)
+        {
+            indicators.push("typosquatting".to_string());
         }
-        
+
         // Suspicious TLD detection
-        if self.config.phishing_url_detection.suspicious_tld_detection {
-            if self.has_suspicious_tld(url) {
-                indicators.push("suspicious_tld".to_string());
-            }
+        if self.config.phishing_url_detection.suspicious_tld_detection
+            && self.has_suspicious_tld(url)
+        {
+            indicators.push("suspicious_tld".to_string());
         }
-        
+
         indicators
     }
 
@@ -659,7 +674,9 @@ impl AdvancedSecurityEngine {
     fn is_typosquatting_domain(&self, url: &str) -> bool {
         // Simple typosquatting detection
         let suspicious_patterns = ["g00gle", "micr0soft", "amaz0n", "payp4l"];
-        suspicious_patterns.iter().any(|pattern| url.contains(pattern))
+        suspicious_patterns
+            .iter()
+            .any(|pattern| url.contains(pattern))
     }
 
     fn has_suspicious_tld(&self, url: &str) -> bool {
@@ -673,7 +690,10 @@ impl AdvancedSecurityEngine {
     }
 
     fn is_whitelisted_domain(&self, url: &str) -> bool {
-        self.config.url_reputation.whitelist_domains.iter()
+        self.config
+            .url_reputation
+            .whitelist_domains
+            .iter()
             .any(|domain| url.contains(domain))
     }
 
@@ -681,25 +701,39 @@ impl AdvancedSecurityEngine {
         // Check cache first
         if let Ok(cache) = self.reputation_cache.lock() {
             if let Some((score, timestamp)) = cache.get(url) {
-                let cache_age_hours = (SystemTime::now().duration_since(UNIX_EPOCH).unwrap_or_default().as_secs() - timestamp) / 3600;
+                let cache_age_hours = (SystemTime::now()
+                    .duration_since(UNIX_EPOCH)
+                    .unwrap_or_default()
+                    .as_secs()
+                    - timestamp)
+                    / 3600;
                 if cache_age_hours < self.config.url_reputation.cache_duration_hours as u64 {
                     return *score;
                 }
             }
         }
-        
+
         // Simulate reputation check
         let reputation_score = if self.is_suspicious_domain(url) {
             0.3
         } else {
             0.8
         };
-        
+
         // Cache result
         if let Ok(mut cache) = self.reputation_cache.lock() {
-            cache.insert(url.to_string(), (reputation_score, SystemTime::now().duration_since(UNIX_EPOCH).unwrap_or_default().as_secs()));
+            cache.insert(
+                url.to_string(),
+                (
+                    reputation_score,
+                    SystemTime::now()
+                        .duration_since(UNIX_EPOCH)
+                        .unwrap_or_default()
+                        .as_secs(),
+                ),
+            );
         }
-        
+
         reputation_score
     }
 
@@ -709,7 +743,7 @@ impl AdvancedSecurityEngine {
     }
 
     fn detect_image_format(&self, filename: &str) -> String {
-        if let Some(ext) = filename.split('.').last() {
+        if let Some(ext) = filename.split('.').next_back() {
             ext.to_lowercase()
         } else {
             "unknown".to_string()
@@ -729,13 +763,13 @@ impl AdvancedSecurityEngine {
     fn analyze_extracted_text(&self, text: &str) -> Vec<String> {
         let mut threats = Vec::new();
         let suspicious_keywords = ["urgent", "click here", "prize", "winner", "verify account"];
-        
+
         for keyword in suspicious_keywords {
             if text.to_lowercase().contains(keyword) {
                 threats.push(format!("suspicious_keyword_{}", keyword.replace(' ', "_")));
             }
         }
-        
+
         threats
     }
 

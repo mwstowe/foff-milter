@@ -1,7 +1,7 @@
 use crate::abuse_reporter::AbuseReporter;
-use crate::legacy_config::{Action, Config, Criteria};
 use crate::domain_age::DomainAgeChecker;
 use crate::language::LanguageDetector;
+use crate::legacy_config::{Action, Config, Criteria};
 use crate::milter::extract_email_from_header;
 
 use hickory_resolver::TokioAsyncResolver;

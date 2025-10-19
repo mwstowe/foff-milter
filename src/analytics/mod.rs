@@ -1,8 +1,8 @@
+use crate::detection::DetectionResult;
+use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::sync::{Arc, Mutex};
-use std::time::{SystemTime, UNIX_EPOCH, Instant};
-use serde::{Deserialize, Serialize};
-use crate::detection::DetectionResult;
+use std::time::{Instant, SystemTime, UNIX_EPOCH};
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct AnalyticsConfig {
@@ -194,8 +194,14 @@ impl AnalyticsEngine {
         Ok(Self::new(config))
     }
 
-    pub fn record_email_event(&self, sender: &str, recipient: &str, subject: &str, 
-                             results: &[DetectionResult], processing_time_ms: u64) {
+    pub fn record_email_event(
+        &self,
+        sender: &str,
+        recipient: &str,
+        subject: &str,
+        results: &[DetectionResult],
+        processing_time_ms: u64,
+    ) {
         if !self.config.data_collection.enabled {
             return;
         }
@@ -206,11 +212,10 @@ impl AnalyticsEngine {
             .as_secs();
 
         let sender_domain = self.extract_domain(sender);
-        let threat_types: Vec<String> = results.iter()
-            .map(|r| r.rule_name.clone())
-            .collect();
+        let threat_types: Vec<String> = results.iter().map(|r| r.rule_name.clone()).collect();
         let confidence_score = results.iter().map(|r| r.confidence).sum();
-        let modules_triggered: Vec<String> = results.iter()
+        let modules_triggered: Vec<String> = results
+            .iter()
             .filter(|r| r.matched)
             .map(|r| r.rule_name.clone())
             .collect();
@@ -237,7 +242,7 @@ impl AnalyticsEngine {
         // Store event
         if let Ok(mut events) = self.events.lock() {
             events.push(event);
-            
+
             // Limit event storage
             if events.len() > 10000 {
                 events.drain(0..1000);
@@ -253,11 +258,11 @@ impl AnalyticsEngine {
     fn update_threat_metrics(&self, results: &[DetectionResult], blocked: bool) {
         if let Ok(mut metrics) = self.metrics.lock() {
             metrics.total_emails += 1;
-            
+
             if results.iter().any(|r| r.matched) {
                 metrics.threats_detected += 1;
             }
-            
+
             if blocked {
                 metrics.threats_blocked += 1;
             }
@@ -274,7 +279,10 @@ impl AnalyticsEngine {
 
             // Update top threat types
             for result in results.iter().filter(|r| r.matched) {
-                *metrics.top_threat_types.entry(result.rule_name.clone()).or_insert(0) += 1;
+                *metrics
+                    .top_threat_types
+                    .entry(result.rule_name.clone())
+                    .or_insert(0) += 1;
             }
         }
     }
@@ -282,7 +290,8 @@ impl AnalyticsEngine {
     fn update_module_metrics(&self, results: &[DetectionResult], processing_time_ms: u64) {
         if let Ok(mut module_stats) = self.module_stats.lock() {
             for result in results {
-                let stats = module_stats.entry(result.rule_name.clone())
+                let stats = module_stats
+                    .entry(result.rule_name.clone())
                     .or_insert_with(|| ModuleMetrics {
                         module_name: result.rule_name.clone(),
                         total_checks: 0,
@@ -299,7 +308,8 @@ impl AnalyticsEngine {
                 }
                 stats.match_rate = stats.matches as f64 / stats.total_checks as f64;
                 stats.total_processing_time_ms += processing_time_ms;
-                stats.average_processing_time_ms = stats.total_processing_time_ms as f64 / stats.total_checks as f64;
+                stats.average_processing_time_ms =
+                    stats.total_processing_time_ms as f64 / stats.total_checks as f64;
 
                 // Update confidence distribution
                 let confidence_range = match result.confidence {
@@ -308,7 +318,10 @@ impl AnalyticsEngine {
                     51..=75 => "High",
                     _ => "Critical",
                 };
-                *stats.confidence_distribution.entry(confidence_range.to_string()).or_insert(0) += 1;
+                *stats
+                    .confidence_distribution
+                    .entry(confidence_range.to_string())
+                    .or_insert(0) += 1;
             }
         }
     }
@@ -316,11 +329,11 @@ impl AnalyticsEngine {
     fn update_system_metrics(&self, processing_time_ms: u64) {
         if let Ok(mut system_stats) = self.system_stats.lock() {
             system_stats.uptime_seconds = self.start_time.elapsed().as_secs();
-            
+
             // Simple moving average for processing time
             let alpha = 0.1; // Smoothing factor
-            system_stats.average_processing_time_ms = 
-                alpha * processing_time_ms as f64 + (1.0 - alpha) * system_stats.average_processing_time_ms;
+            system_stats.average_processing_time_ms = alpha * processing_time_ms as f64
+                + (1.0 - alpha) * system_stats.average_processing_time_ms;
         }
     }
 
@@ -331,11 +344,18 @@ impl AnalyticsEngine {
             .as_secs();
 
         let threat_metrics = self.metrics.lock().ok()?.clone();
-        let module_metrics: Vec<ModuleMetrics> = self.module_stats.lock().ok()?
-            .values().cloned().collect();
+        let module_metrics: Vec<ModuleMetrics> =
+            self.module_stats.lock().ok()?.values().cloned().collect();
         let system_metrics = self.system_stats.lock().ok()?.clone();
-        let recent_events: Vec<EmailEvent> = self.events.lock().ok()?
-            .iter().rev().take(50).cloned().collect();
+        let recent_events: Vec<EmailEvent> = self
+            .events
+            .lock()
+            .ok()?
+            .iter()
+            .rev()
+            .take(50)
+            .cloned()
+            .collect();
         let alerts: Vec<String> = self.alerts.lock().ok()?.clone();
 
         Some(DashboardData {
@@ -348,8 +368,13 @@ impl AnalyticsEngine {
         })
     }
 
-    pub fn generate_report(&self, format: &str, _time_range_hours: u32) -> Result<String, Box<dyn std::error::Error>> {
-        let dashboard_data = self.get_dashboard_data()
+    pub fn generate_report(
+        &self,
+        format: &str,
+        _time_range_hours: u32,
+    ) -> Result<String, Box<dyn std::error::Error>> {
+        let dashboard_data = self
+            .get_dashboard_data()
             .ok_or("Failed to get dashboard data")?;
 
         match format {
@@ -360,10 +385,14 @@ impl AnalyticsEngine {
         }
     }
 
-    fn generate_csv_report(&self, data: &DashboardData) -> Result<String, Box<dyn std::error::Error>> {
+    fn generate_csv_report(
+        &self,
+        data: &DashboardData,
+    ) -> Result<String, Box<dyn std::error::Error>> {
         let mut csv = String::new();
         csv.push_str("Timestamp,Total Emails,Threats Detected,Detection Rate,Block Rate\n");
-        csv.push_str(&format!("{},{},{},{:.2}%,{:.2}%\n",
+        csv.push_str(&format!(
+            "{},{},{},{:.2}%,{:.2}%\n",
             data.timestamp,
             data.threat_metrics.total_emails,
             data.threat_metrics.threats_detected,
@@ -373,8 +402,12 @@ impl AnalyticsEngine {
         Ok(csv)
     }
 
-    fn generate_html_report(&self, data: &DashboardData) -> Result<String, Box<dyn std::error::Error>> {
-        let html = format!(r#"
+    fn generate_html_report(
+        &self,
+        data: &DashboardData,
+    ) -> Result<String, Box<dyn std::error::Error>> {
+        let html = format!(
+            r#"
 <!DOCTYPE html>
 <html>
 <head>
@@ -423,13 +456,19 @@ impl AnalyticsEngine {
         if let Ok(metrics) = self.metrics.lock() {
             // High threat detection rate alert
             if metrics.detection_rate > 0.1 && metrics.total_emails > 100 {
-                new_alerts.push(format!("High threat detection rate: {:.2}%", metrics.detection_rate * 100.0));
+                new_alerts.push(format!(
+                    "High threat detection rate: {:.2}%",
+                    metrics.detection_rate * 100.0
+                ));
             }
 
             // Low processing performance alert
             if let Ok(system_stats) = self.system_stats.lock() {
                 if system_stats.average_processing_time_ms > 1000.0 {
-                    new_alerts.push(format!("Slow processing detected: {:.2}ms average", system_stats.average_processing_time_ms));
+                    new_alerts.push(format!(
+                        "Slow processing detected: {:.2}ms average",
+                        system_stats.average_processing_time_ms
+                    ));
                 }
             }
         }
@@ -462,7 +501,8 @@ impl AnalyticsEngine {
         let cutoff_time = SystemTime::now()
             .duration_since(UNIX_EPOCH)
             .unwrap_or_default()
-            .as_secs() - retention_seconds;
+            .as_secs()
+            - retention_seconds;
 
         if let Ok(mut events) = self.events.lock() {
             events.retain(|event| event.timestamp > cutoff_time);

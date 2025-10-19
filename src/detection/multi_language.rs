@@ -94,7 +94,13 @@ impl MultiLanguageDetector {
         Ok(Self::new(config))
     }
 
-    pub fn check_multi_language_threat(&self, subject: &str, body: &str, _sender: &str, sender_domain: &str) -> DetectionResult {
+    pub fn check_multi_language_threat(
+        &self,
+        subject: &str,
+        body: &str,
+        _sender: &str,
+        sender_domain: &str,
+    ) -> DetectionResult {
         // Check if sender is from legitimate international organization
         if self.is_legitimate_international_sender(sender_domain) {
             return DetectionResult::no_match("MultiLanguage".to_string());
@@ -105,48 +111,74 @@ impl MultiLanguageDetector {
         let combined_text = format!("{} {}", subject, body);
 
         // Check character encoding abuse (highest priority)
-        if self.check_patterns(&combined_text, &self.config.character_encoding_abuse.unicode_tricks) ||
-           self.check_patterns(&combined_text, &self.config.character_encoding_abuse.mixed_scripts) ||
-           self.check_patterns(&combined_text, &self.config.character_encoding_abuse.encoding_evasion) {
+        if self.check_patterns(
+            &combined_text,
+            &self.config.character_encoding_abuse.unicode_tricks,
+        ) || self.check_patterns(
+            &combined_text,
+            &self.config.character_encoding_abuse.mixed_scripts,
+        ) || self.check_patterns(
+            &combined_text,
+            &self.config.character_encoding_abuse.encoding_evasion,
+        ) {
             confidence += self.config.confidence_scoring.character_encoding_abuse;
             reasons.push("Character encoding abuse detected".to_string());
         }
 
         // Check Chinese threats
-        if self.check_unicode_patterns(&combined_text, &self.config.chinese_threats.simplified_chinese) ||
-           self.check_unicode_patterns(&combined_text, &self.config.chinese_threats.traditional_chinese) ||
-           self.check_patterns(&combined_text, &self.config.chinese_threats.cultural_patterns) {
+        if self.check_unicode_patterns(
+            &combined_text,
+            &self.config.chinese_threats.simplified_chinese,
+        ) || self.check_unicode_patterns(
+            &combined_text,
+            &self.config.chinese_threats.traditional_chinese,
+        ) || self.check_patterns(
+            &combined_text,
+            &self.config.chinese_threats.cultural_patterns,
+        ) {
             confidence += self.config.confidence_scoring.chinese_threats;
             reasons.push("Chinese language threat detected".to_string());
         }
 
         // Check Russian/Cyrillic threats
-        if self.check_unicode_patterns(&combined_text, &self.config.russian_cyrillic.russian_spam) ||
-           self.check_unicode_patterns(&combined_text, &self.config.russian_cyrillic.cyrillic_lookalikes) ||
-           self.check_unicode_patterns(&combined_text, &self.config.russian_cyrillic.romance_scams) {
+        if self.check_unicode_patterns(&combined_text, &self.config.russian_cyrillic.russian_spam)
+            || self.check_unicode_patterns(
+                &combined_text,
+                &self.config.russian_cyrillic.cyrillic_lookalikes,
+            )
+            || self
+                .check_unicode_patterns(&combined_text, &self.config.russian_cyrillic.romance_scams)
+        {
             confidence += self.config.confidence_scoring.russian_cyrillic;
             reasons.push("Russian/Cyrillic threat detected".to_string());
         }
 
         // Check Arabic/RTL threats
-        if self.check_unicode_patterns(&combined_text, &self.config.arabic_rtl.arabic_spam) ||
-           self.check_patterns(&combined_text, &self.config.arabic_rtl.rtl_attacks) ||
-           self.check_unicode_patterns(&combined_text, &self.config.arabic_rtl.cultural_scams) {
+        if self.check_unicode_patterns(&combined_text, &self.config.arabic_rtl.arabic_spam)
+            || self.check_patterns(&combined_text, &self.config.arabic_rtl.rtl_attacks)
+            || self.check_unicode_patterns(&combined_text, &self.config.arabic_rtl.cultural_scams)
+        {
             confidence += self.config.confidence_scoring.arabic_rtl;
             reasons.push("Arabic/RTL threat detected".to_string());
         }
 
         // Check Korean/Asian threats
-        if self.check_unicode_patterns(&combined_text, &self.config.korean_asian.korean_hangul) ||
-           self.check_unicode_patterns(&combined_text, &self.config.korean_asian.thai_script) ||
-           self.check_patterns(&combined_text, &self.config.korean_asian.vietnamese) {
+        if self.check_unicode_patterns(&combined_text, &self.config.korean_asian.korean_hangul)
+            || self.check_unicode_patterns(&combined_text, &self.config.korean_asian.thai_script)
+            || self.check_patterns(&combined_text, &self.config.korean_asian.vietnamese)
+        {
             confidence += self.config.confidence_scoring.korean_asian;
             reasons.push("Korean/Asian language threat detected".to_string());
         }
 
         // Check Japanese extended patterns
-        if self.check_unicode_patterns(&combined_text, &self.config.japanese_extended.hiragana_katakana) ||
-           self.check_unicode_patterns(&combined_text, &self.config.japanese_extended.mixed_japanese) {
+        if self.check_unicode_patterns(
+            &combined_text,
+            &self.config.japanese_extended.hiragana_katakana,
+        ) || self.check_unicode_patterns(
+            &combined_text,
+            &self.config.japanese_extended.mixed_japanese,
+        ) {
             confidence += self.config.confidence_scoring.japanese_extended;
             reasons.push("Japanese language threat detected".to_string());
         }
@@ -195,7 +227,10 @@ impl MultiLanguageDetector {
             has_korean,
             has_japanese_hiragana,
             has_japanese_katakana,
-        ].iter().filter(|&&x| x).count();
+        ]
+        .iter()
+        .filter(|&&x| x)
+        .count();
 
         // Suspicious if more than 2 different scripts are mixed
         script_count > 2
@@ -223,7 +258,12 @@ impl MultiLanguageDetector {
         let mut patterns = Vec::new();
         patterns.extend(self.config.character_encoding_abuse.unicode_tricks.clone());
         patterns.extend(self.config.character_encoding_abuse.mixed_scripts.clone());
-        patterns.extend(self.config.character_encoding_abuse.encoding_evasion.clone());
+        patterns.extend(
+            self.config
+                .character_encoding_abuse
+                .encoding_evasion
+                .clone(),
+        );
         patterns.extend(self.config.chinese_threats.simplified_chinese.clone());
         patterns.extend(self.config.chinese_threats.traditional_chinese.clone());
         patterns.extend(self.config.chinese_threats.cultural_patterns.clone());
@@ -238,8 +278,18 @@ impl MultiLanguageDetector {
         patterns.extend(self.config.korean_asian.vietnamese.clone());
         patterns.extend(self.config.japanese_extended.hiragana_katakana.clone());
         patterns.extend(self.config.japanese_extended.mixed_japanese.clone());
-        patterns.extend(self.config.language_detection_patterns.suspicious_mixing.clone());
-        patterns.extend(self.config.language_detection_patterns.encoding_indicators.clone());
+        patterns.extend(
+            self.config
+                .language_detection_patterns
+                .suspicious_mixing
+                .clone(),
+        );
+        patterns.extend(
+            self.config
+                .language_detection_patterns
+                .encoding_indicators
+                .clone(),
+        );
         patterns.sort();
         patterns.dedup();
         patterns

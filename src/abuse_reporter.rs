@@ -1,5 +1,5 @@
-use crate::legacy_config::SmtpConfig;
 use crate::filter::MailContext;
+use crate::legacy_config::SmtpConfig;
 use lettre::message::{header, Message};
 use lettre::transport::smtp::authentication::Credentials;
 use lettre::{SmtpTransport, Transport};

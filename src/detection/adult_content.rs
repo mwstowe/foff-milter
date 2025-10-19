@@ -67,7 +67,13 @@ impl AdultContentDetector {
         Ok(Self::new(config))
     }
 
-    pub fn check_adult_content(&self, subject: &str, body: &str, sender: &str, sender_domain: &str) -> DetectionResult {
+    pub fn check_adult_content(
+        &self,
+        subject: &str,
+        body: &str,
+        sender: &str,
+        sender_domain: &str,
+    ) -> DetectionResult {
         // Check if sender is from legitimate organization
         if self.is_legitimate_sender(sender_domain) {
             return DetectionResult::no_match("AdultContent".to_string());
@@ -84,8 +90,14 @@ impl AdultContentDetector {
         }
 
         // Check romance fraud patterns
-        let has_emotional = self.check_patterns(&combined_text, &self.config.romance_fraud.emotional_manipulation);
-        let has_financial = self.check_patterns(&combined_text, &self.config.romance_fraud.financial_requests);
+        let has_emotional = self.check_patterns(
+            &combined_text,
+            &self.config.romance_fraud.emotional_manipulation,
+        );
+        let has_financial = self.check_patterns(
+            &combined_text,
+            &self.config.romance_fraud.financial_requests,
+        );
         if has_emotional && has_financial {
             confidence += self.config.confidence_scoring.romance_fraud;
             reasons.push("Romance fraud patterns detected".to_string());
@@ -104,8 +116,11 @@ impl AdultContentDetector {
         }
 
         // Check suggestive content
-        if self.check_patterns(&combined_text, &self.config.content_filtering.suggestive_terms) ||
-           self.check_patterns(&combined_text, &self.config.content_filtering.body_parts) {
+        if self.check_patterns(
+            &combined_text,
+            &self.config.content_filtering.suggestive_terms,
+        ) || self.check_patterns(&combined_text, &self.config.content_filtering.body_parts)
+        {
             confidence += self.config.confidence_scoring.suggestive_content;
             reasons.push("Suggestive content detected".to_string());
         }
@@ -132,12 +147,14 @@ impl AdultContentDetector {
 
     fn check_username_patterns(&self, sender: &str) -> bool {
         let sender_lower = sender.to_lowercase();
-        self.config.sender_patterns.suspicious_usernames
+        self.config
+            .sender_patterns
+            .suspicious_usernames
             .iter()
             .any(|pattern| {
                 // Simple pattern matching for usernames
                 if pattern.starts_with(".*") && pattern.ends_with(".*") {
-                    let core = &pattern[2..pattern.len()-2];
+                    let core = &pattern[2..pattern.len() - 2];
                     sender_lower.contains(core)
                 } else {
                     sender_lower.contains(pattern)

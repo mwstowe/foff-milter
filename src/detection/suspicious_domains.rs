@@ -58,14 +58,29 @@ impl SuspiciousDomainDetector {
         let mut reasons = Vec::new();
 
         // Check TLD risk level
-        if let Some(tld) = domain.split('.').last() {
-            if self.config.suspicious_tlds.high_risk.contains(&tld.to_string()) {
+        if let Some(tld) = domain.split('.').next_back() {
+            if self
+                .config
+                .suspicious_tlds
+                .high_risk
+                .contains(&tld.to_string())
+            {
                 confidence += self.config.confidence_scoring.high_risk_tld;
                 reasons.push(format!("High-risk TLD: .{}", tld));
-            } else if self.config.suspicious_tlds.medium_risk.contains(&tld.to_string()) {
+            } else if self
+                .config
+                .suspicious_tlds
+                .medium_risk
+                .contains(&tld.to_string())
+            {
                 confidence += self.config.confidence_scoring.medium_risk_tld;
                 reasons.push(format!("Medium-risk TLD: .{}", tld));
-            } else if self.config.suspicious_tlds.low_risk.contains(&tld.to_string()) {
+            } else if self
+                .config
+                .suspicious_tlds
+                .low_risk
+                .contains(&tld.to_string())
+            {
                 confidence += self.config.confidence_scoring.low_risk_tld;
                 reasons.push(format!("Low-risk TLD: .{}", tld));
             }
