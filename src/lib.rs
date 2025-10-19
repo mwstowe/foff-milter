@@ -8,6 +8,7 @@ pub mod google_groups_unsubscriber;
 pub mod language;
 pub mod legacy_config;
 pub mod milter;
+pub mod performance;
 pub mod statistics;
 
 // Re-export legacy Config and related types for backward compatibility

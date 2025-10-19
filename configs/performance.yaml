@@ -1,0 +1,34 @@
+# Performance optimization configuration
+parallel_processing:
+  enabled: true
+  max_threads: 8
+  thread_pool_size: 4
+  timeout_seconds: 30
+
+caching:
+  enabled: true
+  pattern_cache_size: 1000
+  domain_cache_size: 5000
+  config_cache_ttl_seconds: 3600
+  domain_cache_ttl_seconds: 1800
+
+memory_optimization:
+  lazy_loading: true
+  pattern_deduplication: true
+  memory_pool_size: 1024
+  gc_threshold: 100
+
+performance_monitoring:
+  enabled: true
+  metrics_collection: true
+  execution_timing: true
+  resource_monitoring: true
+  log_slow_operations: true
+  slow_operation_threshold_ms: 1000
+
+optimization_settings:
+  early_termination: true
+  confidence_threshold: 100
+  max_modules_per_email: 9
+  skip_on_high_confidence: true
+  batch_processing: false

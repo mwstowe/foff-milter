@@ -11,8 +11,10 @@ use crate::detection::{
     technology_scams::TechnologyScamsDetector,
     DetectionResult,
 };
+use crate::performance::PerformanceOptimizer;
 use anyhow::Result;
 use std::path::Path;
+use std::time::Instant;
 
 pub struct ModuleManager {
     pub suspicious_domains: Option<SuspiciousDomainDetector>,
@@ -24,6 +26,7 @@ pub struct ModuleManager {
     pub financial_services: Option<FinancialServicesDetector>,
     pub technology_scams: Option<TechnologyScamsDetector>,
     pub multi_language: Option<MultiLanguageDetector>,
+    pub performance_optimizer: Option<PerformanceOptimizer>,
 }
 
 impl ModuleManager {
@@ -38,6 +41,7 @@ impl ModuleManager {
             financial_services: None,
             technology_scams: None,
             multi_language: None,
+            performance_optimizer: None,
         }
     }
 
@@ -206,11 +210,29 @@ impl ModuleManager {
             }
         }
 
+        // Load performance optimizer (always try to load for optimization)
+        let perf_path = Path::new(config_dir).join("performance.yaml");
+        if perf_path.exists() {
+            match PerformanceOptimizer::load_from_file(perf_path.to_str().unwrap()) {
+                Ok(optimizer) => {
+                    manager.performance_optimizer = Some(optimizer);
+                    log::info!("Loaded performance optimizer");
+                }
+                Err(e) => {
+                    log::warn!("Failed to load performance optimizer: {}, using defaults", e);
+                }
+            }
+        } else {
+            log::info!("No performance.yaml found, using default performance settings");
+        }
+
         Ok(manager)
     }
 
     pub fn check_email(&self, email_data: &EmailData) -> Vec<DetectionResult> {
+        let start_time = Instant::now();
         let mut results = Vec::new();
+        let _total_confidence = 0u32;
 
         // Check suspicious domains
         if let Some(detector) = &self.suspicious_domains {
@@ -300,11 +322,36 @@ impl ModuleManager {
             }
         }
 
-        results
+        self.finalize_results(results, start_time)
     }
 
     pub fn get_total_confidence(&self, results: &[DetectionResult]) -> u32 {
         results.iter().map(|r| r.confidence).sum()
+    }
+
+    fn finalize_results(&self, results: Vec<DetectionResult>, start_time: Instant) -> Vec<DetectionResult> {
+        // Record overall processing time
+        let total_time = start_time.elapsed().as_millis() as u64;
+        if let Some(optimizer) = &self.performance_optimizer {
+            optimizer.record_email_processed(total_time);
+        }
+        results
+    }
+
+    pub fn get_performance_metrics(&self) -> Option<crate::performance::PerformanceMetrics> {
+        self.performance_optimizer.as_ref().and_then(|opt| opt.get_metrics())
+    }
+
+    pub fn reset_performance_metrics(&self) {
+        if let Some(optimizer) = &self.performance_optimizer {
+            optimizer.reset_metrics();
+        }
+    }
+
+    pub fn cleanup_caches(&self) {
+        if let Some(optimizer) = &self.performance_optimizer {
+            optimizer.cleanup_caches();
+        }
     }
 }
 
