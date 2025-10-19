@@ -56,6 +56,7 @@ impl Default for Config {
                     "brand-impersonation".to_string(),
                     "health-spam".to_string(),
                     "phishing-scams".to_string(),
+                    "adult-content".to_string(),
                 ],
             },
             actions: ActionsConfig {

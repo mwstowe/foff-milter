@@ -1,5 +1,6 @@
 use crate::config::Config;
 use crate::detection::{
+    adult_content::AdultContentDetector,
     brand_impersonation::BrandImpersonationDetector,
     health_spam::HealthSpamDetector,
     phishing_scams::PhishingScamsDetector,
@@ -14,6 +15,7 @@ pub struct ModuleManager {
     pub brand_impersonation: Option<BrandImpersonationDetector>,
     pub health_spam: Option<HealthSpamDetector>,
     pub phishing_scams: Option<PhishingScamsDetector>,
+    pub adult_content: Option<AdultContentDetector>,
 }
 
 impl ModuleManager {
@@ -23,6 +25,7 @@ impl ModuleManager {
             brand_impersonation: None,
             health_spam: None,
             phishing_scams: None,
+            adult_content: None,
         }
     }
 
@@ -100,6 +103,23 @@ impl ModuleManager {
                         log::warn!("phishing-scams.yaml not found, skipping module");
                     }
                 }
+                "adult-content" => {
+                    let path = Path::new(config_dir).join("adult-content.yaml");
+                    if path.exists() {
+                        match AdultContentDetector::load_from_file(path.to_str().unwrap()) {
+                            Ok(detector) => {
+                                manager.adult_content = Some(detector);
+                                log::info!("Loaded adult-content detection module");
+                            }
+                            Err(e) => {
+                                log::error!("Failed to load adult-content module: {}", e);
+                                return Err(anyhow::anyhow!("Failed to load adult-content module: {}", e));
+                            }
+                        }
+                    } else {
+                        log::warn!("adult-content.yaml not found, skipping module");
+                    }
+                }
                 _ => {
                     log::warn!("Unknown detection module: {}", module_name);
                 }
@@ -147,6 +167,16 @@ impl ModuleManager {
             let result = detector.check_phishing_scam(&email_data.subject, &email_data.body, &email_data.sender, &email_data.from_header);
             if result.matched {
                 results.push(result);
+            }
+        }
+
+        // Check adult content
+        if let Some(detector) = &self.adult_content {
+            if let Some(domain) = extract_domain(&email_data.sender) {
+                let result = detector.check_adult_content(&email_data.subject, &email_data.body, &email_data.sender, &domain);
+                if result.matched {
+                    results.push(result);
+                }
             }
         }
 

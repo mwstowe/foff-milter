@@ -1,3 +1,4 @@
+pub mod adult_content;
 pub mod brand_impersonation;
 pub mod health_spam;
 pub mod phishing_scams;
