@@ -594,6 +594,16 @@ impl FilterEngine {
                 matched_rules,
                 final_action
             );
+            // Add analysis header when rules match (if not already added by whitelist)
+            if !headers_to_add.iter().any(|(name, _)| name == "X-FOFF-Analysis" || name == "X-FOFF-Whitelist") {
+                headers_to_add.push((
+                    "X-FOFF-Analysis".to_string(),
+                    format!(
+                        "analyzed by foff-milter v{} (rules: {}) - matched: {}",
+                        self.config.version, self.config.rule_set_timestamp, matched_rules.join(", ")
+                    ),
+                ));
+            }
         }
 
         (final_action, matched_rules, headers_to_add)
