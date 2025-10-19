@@ -1,3 +1,4 @@
+pub mod module_loader;
 pub mod toml_config;
 
 use serde::{Deserialize, Serialize};
