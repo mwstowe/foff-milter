@@ -578,13 +578,14 @@ async fn test_email_file(config: &LegacyConfig, email_file: &str) {
         println!("🔍 Testing against modular detection system...");
         println!();
 
-        // Simple pattern-based detection for demonstration
+        // Enhanced pattern-based detection for comprehensive threat analysis
         let mut threats_detected = Vec::new();
         let email_content = format!(
-            "{} {} {}",
+            "{} {} {} {}",
             headers.get("subject").unwrap_or(&String::new()),
             body,
-            sender
+            sender,
+            headers.get("from").unwrap_or(&String::new())
         )
         .to_lowercase();
 
@@ -598,6 +599,14 @@ async fn test_email_file(config: &LegacyConfig, email_file: &str) {
             "overnight cure",
             "pain disappeared",
             "didn't see doctor",
+            "tinnitus",
+            "hearing",
+            "ear ringing",
+            "cvs medicare",
+            "medicare",
+            "#1 best tea",
+            "turns off",
+            "annoying tinnitus",
         ];
 
         for pattern in &health_patterns {
@@ -607,9 +616,53 @@ async fn test_email_file(config: &LegacyConfig, email_file: &str) {
             }
         }
 
-        // Check for suspicious domains
-        if sender.contains("freak") || sender.contains("neuro") {
+        // Check for suspicious domains (.shop, suspicious TLDs)
+        if sender.contains("freak")
+            || sender.contains("neuro")
+            || sender.ends_with(".shop")
+            || sender.contains(".shop")
+        {
             threats_detected.push("Suspicious Domain".to_string());
+        }
+
+        // Check for brand impersonation with authentication failures
+        let auth_results = headers
+            .get("authentication-results")
+            .unwrap_or(&String::new())
+            .to_lowercase();
+        let from_header = headers.get("from").unwrap_or(&String::new()).to_lowercase();
+
+        if auth_results.contains("dkim=fail") {
+            // Check for brand impersonation
+            let brands = ["wetransfer", "cvs", "amazon", "paypal", "microsoft", "google", "aaa"];
+            for brand in &brands {
+                if from_header.contains(brand) || email_content.contains(brand) {
+                    threats_detected.push(format!("Brand Impersonation + Auth Failure ({})", brand));
+                    break;
+                }
+            }
+
+            // Generic authentication failure with suspicious content
+            if email_content.contains("order confirmation")
+                || email_content.contains("transfer")
+                || email_content.contains("expired")
+                || email_content.contains("free")
+                || email_content.contains("emergency kit")
+            {
+                threats_detected.push("Authentication Failure + Suspicious Content".to_string());
+            }
+        }
+
+        // Check for mailer daemon spoofing
+        if from_header.contains("mailer-daemon") || from_header.contains("mail delivery") || sender.contains("MAILER-DAEMON") {
+            if !sender.contains("@") || sender.contains("example.com") || sender == "MAILER-DAEMON" {
+                threats_detected.push("Mailer Daemon Spoofing".to_string());
+            }
+        }
+
+        // Check for free offer scams
+        if email_content.contains("free") && (email_content.contains("kit") || email_content.contains("ready")) {
+            threats_detected.push("Free Offer Scam".to_string());
         }
 
         // Check for emotional manipulation
@@ -618,6 +671,9 @@ async fn test_email_file(config: &LegacyConfig, email_file: &str) {
             "we missed him",
             "senior care facility",
             "something strange going on",
+            "expired",
+            "recover it",
+            "still recover",
         ];
 
         for pattern in &manipulation_patterns {
@@ -625,6 +681,11 @@ async fn test_email_file(config: &LegacyConfig, email_file: &str) {
                 threats_detected.push(format!("Emotional Manipulation ({})", pattern));
                 break;
             }
+        }
+
+        // Check for suspicious sender patterns
+        if sender.contains("sendgrid.net") && !from_header.contains("sendgrid") {
+            threats_detected.push("Suspicious Sender Mismatch".to_string());
         }
 
         if !threats_detected.is_empty() {
