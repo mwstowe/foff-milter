@@ -1,4 +1,5 @@
 pub mod abuse_reporter;
+pub mod analytics;
 pub mod config;
 pub mod config_test;
 pub mod detection;

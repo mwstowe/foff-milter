@@ -1,0 +1,70 @@
+# Advanced analytics and reporting configuration
+data_collection:
+  enabled: true
+  storage_backend: "sqlite"  # sqlite, postgresql, mysql
+  database_path: "/var/lib/foff-milter/analytics.db"
+  retention_days: 90
+  batch_size: 100
+  flush_interval_seconds: 60
+
+real_time_dashboard:
+  enabled: true
+  web_interface: true
+  port: 8080
+  bind_address: "127.0.0.1"
+  update_interval_seconds: 5
+  max_connections: 50
+  authentication: false
+
+metrics_collection:
+  threat_detection_rates: true
+  module_effectiveness: true
+  processing_metrics: true
+  system_health: true
+  geographic_analysis: true
+  temporal_patterns: true
+
+trend_analysis:
+  enabled: true
+  analysis_window_hours: 24
+  trend_detection_threshold: 0.15
+  pattern_recognition: true
+  anomaly_detection: true
+  forecasting: true
+
+reporting:
+  enabled: true
+  report_formats: ["json", "csv", "html"]
+  scheduled_reports: true
+  email_delivery: false
+  report_retention_days: 30
+  executive_summary: true
+
+compliance:
+  audit_logging: true
+  gdpr_compliance: true
+  data_anonymization: true
+  retention_policy: true
+  export_capabilities: true
+
+threat_intelligence:
+  enabled: false
+  external_feeds: []
+  ioc_tracking: true
+  reputation_lookups: false
+  threat_hunting: true
+
+alerting:
+  enabled: true
+  threshold_alerts: true
+  anomaly_alerts: true
+  email_notifications: false
+  webhook_notifications: false
+  alert_cooldown_minutes: 15
+
+performance_tracking:
+  module_timing: true
+  cache_statistics: true
+  resource_usage: true
+  error_tracking: true
+  bottleneck_detection: true

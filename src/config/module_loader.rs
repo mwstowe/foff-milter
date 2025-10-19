@@ -1,3 +1,4 @@
+use crate::analytics::AnalyticsEngine;
 use crate::config::Config;
 use crate::detection::{
     adult_content::AdultContentDetector,
@@ -27,6 +28,7 @@ pub struct ModuleManager {
     pub technology_scams: Option<TechnologyScamsDetector>,
     pub multi_language: Option<MultiLanguageDetector>,
     pub performance_optimizer: Option<PerformanceOptimizer>,
+    pub analytics_engine: Option<AnalyticsEngine>,
 }
 
 impl ModuleManager {
@@ -42,6 +44,7 @@ impl ModuleManager {
             technology_scams: None,
             multi_language: None,
             performance_optimizer: None,
+            analytics_engine: None,
         }
     }
 
@@ -210,6 +213,22 @@ impl ModuleManager {
             }
         }
 
+        // Load analytics engine (always try to load for monitoring)
+        let analytics_path = Path::new(config_dir).join("analytics.yaml");
+        if analytics_path.exists() {
+            match AnalyticsEngine::load_from_file(analytics_path.to_str().unwrap()) {
+                Ok(engine) => {
+                    manager.analytics_engine = Some(engine);
+                    log::info!("Loaded analytics engine");
+                }
+                Err(e) => {
+                    log::warn!("Failed to load analytics engine: {}, analytics disabled", e);
+                }
+            }
+        } else {
+            log::info!("No analytics.yaml found, analytics disabled");
+        }
+
         // Load performance optimizer (always try to load for optimization)
         let perf_path = Path::new(config_dir).join("performance.yaml");
         if perf_path.exists() {
@@ -335,6 +354,13 @@ impl ModuleManager {
         if let Some(optimizer) = &self.performance_optimizer {
             optimizer.record_email_processed(total_time);
         }
+
+        // Record analytics event (placeholder - would need email data)
+        if let Some(_analytics) = &self.analytics_engine {
+            // Note: In real implementation, we'd pass email data here
+            // analytics.record_email_event(sender, recipient, subject, &results, total_time);
+        }
+
         results
     }
 
@@ -351,6 +377,36 @@ impl ModuleManager {
     pub fn cleanup_caches(&self) {
         if let Some(optimizer) = &self.performance_optimizer {
             optimizer.cleanup_caches();
+        }
+    }
+
+    pub fn record_email_analytics(&self, sender: &str, recipient: &str, subject: &str, 
+                                 results: &[DetectionResult], processing_time_ms: u64) {
+        if let Some(analytics) = &self.analytics_engine {
+            analytics.record_email_event(sender, recipient, subject, results, processing_time_ms);
+        }
+    }
+
+    pub fn get_analytics_dashboard(&self) -> Option<crate::analytics::DashboardData> {
+        self.analytics_engine.as_ref().and_then(|engine| engine.get_dashboard_data())
+    }
+
+    pub fn generate_analytics_report(&self, format: &str, time_range_hours: u32) -> Result<String, Box<dyn std::error::Error>> {
+        match &self.analytics_engine {
+            Some(engine) => engine.generate_report(format, time_range_hours),
+            None => Err("Analytics engine not available".into()),
+        }
+    }
+
+    pub fn check_analytics_alerts(&self) -> Vec<String> {
+        self.analytics_engine.as_ref()
+            .map(|engine| engine.check_alerts())
+            .unwrap_or_default()
+    }
+
+    pub fn cleanup_analytics_data(&self) {
+        if let Some(analytics) = &self.analytics_engine {
+            analytics.cleanup_old_data();
         }
     }
 }
