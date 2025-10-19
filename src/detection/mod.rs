@@ -1,4 +1,5 @@
 pub mod brand_impersonation;
+pub mod health_spam;
 pub mod suspicious_domains;
 
 #[derive(Debug, Clone)]
