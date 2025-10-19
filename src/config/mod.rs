@@ -59,6 +59,7 @@ impl Default for Config {
                     "adult-content".to_string(),
                     "ecommerce-scams".to_string(),
                     "financial-services".to_string(),
+                    "technology-scams".to_string(),
                 ],
             },
             actions: ActionsConfig {

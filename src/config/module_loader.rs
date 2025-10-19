@@ -7,6 +7,7 @@ use crate::detection::{
     health_spam::HealthSpamDetector,
     phishing_scams::PhishingScamsDetector,
     suspicious_domains::SuspiciousDomainDetector,
+    technology_scams::TechnologyScamsDetector,
     DetectionResult,
 };
 use anyhow::Result;
@@ -20,6 +21,7 @@ pub struct ModuleManager {
     pub adult_content: Option<AdultContentDetector>,
     pub ecommerce_scams: Option<EcommerceScamsDetector>,
     pub financial_services: Option<FinancialServicesDetector>,
+    pub technology_scams: Option<TechnologyScamsDetector>,
 }
 
 impl ModuleManager {
@@ -32,6 +34,7 @@ impl ModuleManager {
             adult_content: None,
             ecommerce_scams: None,
             financial_services: None,
+            technology_scams: None,
         }
     }
 
@@ -160,6 +163,23 @@ impl ModuleManager {
                         log::warn!("financial-services.yaml not found, skipping module");
                     }
                 }
+                "technology-scams" => {
+                    let path = Path::new(config_dir).join("technology-scams.yaml");
+                    if path.exists() {
+                        match TechnologyScamsDetector::load_from_file(path.to_str().unwrap()) {
+                            Ok(detector) => {
+                                manager.technology_scams = Some(detector);
+                                log::info!("Loaded technology-scams detection module");
+                            }
+                            Err(e) => {
+                                log::error!("Failed to load technology-scams module: {}", e);
+                                return Err(anyhow::anyhow!("Failed to load technology-scams module: {}", e));
+                            }
+                        }
+                    } else {
+                        log::warn!("technology-scams.yaml not found, skipping module");
+                    }
+                }
                 _ => {
                     log::warn!("Unknown detection module: {}", module_name);
                 }
@@ -234,6 +254,16 @@ impl ModuleManager {
         if let Some(detector) = &self.financial_services {
             if let Some(domain) = extract_domain(&email_data.sender) {
                 let result = detector.check_financial_scam(&email_data.subject, &email_data.body, &email_data.sender, &domain);
+                if result.matched {
+                    results.push(result);
+                }
+            }
+        }
+
+        // Check technology scams
+        if let Some(detector) = &self.technology_scams {
+            if let Some(domain) = extract_domain(&email_data.sender) {
+                let result = detector.check_technology_scam(&email_data.subject, &email_data.body, &email_data.sender, &domain);
                 if result.matched {
                     results.push(result);
                 }

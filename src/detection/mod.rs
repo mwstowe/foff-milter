@@ -5,6 +5,7 @@ pub mod financial_services;
 pub mod health_spam;
 pub mod phishing_scams;
 pub mod suspicious_domains;
+pub mod technology_scams;
 
 #[derive(Debug, Clone)]
 pub struct DetectionResult {
