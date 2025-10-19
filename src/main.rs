@@ -663,14 +663,12 @@ async fn test_email_file(config: &LegacyConfig, email_file: &str) {
         }
 
         // Check for mailer daemon spoofing
-        if from_header.contains("mailer-daemon")
+        if (from_header.contains("mailer-daemon")
             || from_header.contains("mail delivery")
-            || sender.contains("MAILER-DAEMON")
+            || sender.contains("MAILER-DAEMON"))
+            && (!sender.contains("@") || sender.contains("example.com") || sender == "MAILER-DAEMON")
         {
-            if !sender.contains("@") || sender.contains("example.com") || sender == "MAILER-DAEMON"
-            {
-                threats_detected.push("Mailer Daemon Spoofing".to_string());
-            }
+            threats_detected.push("Mailer Daemon Spoofing".to_string());
         }
 
         // Check for free offer scams
