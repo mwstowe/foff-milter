@@ -58,16 +58,187 @@ FOFF Milter is a production-ready email security solution that provides:
 
 ### Prerequisites
 
-- Rust 1.70 or later
-- sendmail or postfix with milter support
+- **Rust 1.70 or later**
+- **sendmail or postfix** with milter support
+- **Linux system** (tested on Ubuntu 20.04+, CentOS 8+, RHEL 8+)
+- **Root or sudo access** for system installation
 
 **Note:** This milter uses the `indymilter` library (v0.3) which provides a pure Rust milter implementation, so you don't need libmilter development headers.
 
-### Building
+### Quick Installation
 
 ```bash
+# Clone the repository
+git clone https://github.com/mwjohnson/foff-milter.git
+cd foff-milter
+
+# Build the release binary
+cargo build --release
+
+# Install system-wide
+sudo ./install.sh
+```
+
+### Manual Installation
+
+#### 1. Build the Application
+
+```bash
+# Clone and build
+git clone https://github.com/mwjohnson/foff-milter.git
+cd foff-milter
 cargo build --release
 ```
+
+#### 2. Create System User
+
+```bash
+# Create dedicated user for the milter
+sudo useradd -r -s /bin/false -d /var/lib/foff-milter foff-milter
+```
+
+#### 3. Create Directories
+
+```bash
+# Create required directories
+sudo mkdir -p /etc/foff-milter/configs
+sudo mkdir -p /var/lib/foff-milter
+sudo mkdir -p /var/log/foff-milter
+sudo mkdir -p /var/run/foff-milter
+
+# Set ownership
+sudo chown -R foff-milter:foff-milter /var/lib/foff-milter
+sudo chown -R foff-milter:foff-milter /var/log/foff-milter
+sudo chown -R foff-milter:foff-milter /var/run/foff-milter
+sudo chown -R root:foff-milter /etc/foff-milter
+sudo chmod 750 /etc/foff-milter
+```
+
+#### 4. Install Binary and Configuration
+
+```bash
+# Install binary
+sudo cp target/release/foff-milter /usr/local/bin/
+sudo chmod 755 /usr/local/bin/foff-milter
+
+# Install configuration files
+sudo cp foff-milter.yaml /etc/foff-milter/
+sudo cp -r configs/* /etc/foff-milter/configs/
+sudo chown -R root:foff-milter /etc/foff-milter
+sudo chmod 640 /etc/foff-milter/*.yaml
+sudo chmod 640 /etc/foff-milter/configs/*.yaml
+```
+
+#### 5. Create Systemd Service
+
+```bash
+# Create systemd service file
+sudo tee /etc/systemd/system/foff-milter.service > /dev/null << 'EOF'
+[Unit]
+Description=FOFF Milter - Enterprise Email Security Platform
+After=network.target
+Wants=network.target
+
+[Service]
+Type=simple
+User=foff-milter
+Group=foff-milter
+ExecStart=/usr/local/bin/foff-milter -c /etc/foff-milter/foff-milter.yaml
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=foff-milter
+
+# Security settings
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/foff-milter /var/run/foff-milter
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+# Reload systemd and enable service
+sudo systemctl daemon-reload
+sudo systemctl enable foff-milter
+```
+
+#### 6. Configure Main Settings
+
+Edit the main configuration file:
+
+```bash
+sudo nano /etc/foff-milter/foff-milter.yaml
+```
+
+Update paths if needed:
+```yaml
+socket_path: "/var/run/foff-milter/foff-milter.sock"
+statistics:
+  database_path: "/var/lib/foff-milter/stats.db"
+module_config_dir: "/etc/foff-milter/configs"
+```
+
+#### 7. Test Configuration
+
+```bash
+# Test configuration as the foff-milter user
+sudo -u foff-milter /usr/local/bin/foff-milter --test-config -c /etc/foff-milter/foff-milter.yaml
+```
+
+#### 8. Start the Service
+
+```bash
+# Start the service
+sudo systemctl start foff-milter
+
+# Check status
+sudo systemctl status foff-milter
+
+# View logs
+sudo journalctl -u foff-milter -f
+```
+
+### Post-Installation Verification
+
+#### 1. Verify Service Status
+
+```bash
+# Check service is running
+sudo systemctl is-active foff-milter
+
+# Check socket exists
+ls -la /var/run/foff-milter/foff-milter.sock
+
+# Check logs for errors
+sudo journalctl -u foff-milter --no-pager -l
+```
+
+#### 2. Test Email Processing
+
+```bash
+# Test with sample email
+echo "From: test@example.com
+To: admin@yourdomain.com
+Subject: Test Email
+
+This is a test email." | sudo -u foff-milter /usr/local/bin/foff-milter --test-email /dev/stdin -c /etc/foff-milter/foff-milter.yaml
+```
+
+#### 3. Verify Statistics
+
+```bash
+# Check statistics are working
+sudo -u foff-milter /usr/local/bin/foff-milter --stats -c /etc/foff-milter/foff-milter.yaml
+```
+
+### Integration with Mail Server
+
+After installation, configure your mail server to use the milter:
 
 ## Configuration
 
