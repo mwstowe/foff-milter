@@ -3766,7 +3766,7 @@ impl FilterEngine {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::config::{Action, Config, FilterRule};
+    use crate::legacy_config::{Action, Config, FilterRule};
 
     // Helper function to create test configs without statistics
     fn create_test_config(rules: Vec<FilterRule>) -> Config {
@@ -3778,6 +3778,7 @@ mod tests {
             smtp: None,
             version: "test".to_string(),
             rule_set_timestamp: "test".to_string(),
+            module_config_dir: None,
         }
     }
 
@@ -3813,7 +3814,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_combination_criteria() {
-        use crate::config::{Action, FilterRule};
+        use crate::legacy_config::{Action, FilterRule};
 
         // Create a config with combination criteria: sparkmail.com mailer AND Japanese in subject
         let config = create_test_config(vec![FilterRule {
@@ -3877,7 +3878,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_debug_onmicrosoft_header_pattern() {
-        use crate::config::{Action, FilterRule};
+        use crate::legacy_config::{Action, FilterRule};
         use std::collections::HashMap;
 
         // Create config with the exact rule from the user
@@ -3950,7 +3951,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_production_examples() {
-        use crate::config::{Action, FilterRule};
+        use crate::legacy_config::{Action, FilterRule};
 
         // Create config with the two production examples
         let config = create_test_config(vec![
@@ -4088,7 +4089,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_sendgrid_redirect_detection() {
-        use crate::config::{Action, FilterRule};
+        use crate::legacy_config::{Action, FilterRule};
         use std::collections::HashMap;
 
         // Create config to detect SendGrid phishing redirects
@@ -4143,7 +4144,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_image_only_email_detection() {
-        use crate::config::{Action, FilterRule};
+        use crate::legacy_config::{Action, FilterRule};
 
         // Create config to detect image-only emails
         let config = create_test_config(vec![FilterRule {
@@ -4220,7 +4221,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_free_email_reply_to_detection() {
-        use crate::config::{Action, FilterRule};
+        use crate::legacy_config::{Action, FilterRule};
         use std::collections::HashMap;
 
         // Create config to detect free email reply-to phishing
@@ -4329,7 +4330,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_reply_to_validation() {
-        use crate::config::{Action, FilterRule};
+        use crate::legacy_config::{Action, FilterRule};
         use std::collections::HashMap;
 
         // Create config to validate reply-to addresses
@@ -4383,7 +4384,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_unsubscribe_link_pattern() {
-        use crate::config::{Action, FilterRule};
+        use crate::legacy_config::{Action, FilterRule};
         use std::collections::HashMap;
         // Create config to tag emails with unsubscribe links pointing to google.com
         let config = create_test_config(vec![FilterRule {
@@ -4564,7 +4565,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_unsubscribe_mailto_only() {
-        use crate::config::{Action, FilterRule};
+        use crate::legacy_config::{Action, FilterRule};
         use std::collections::HashMap;
 
         // Test case 1: Email with only mailto unsubscribe links (should match)
@@ -4801,7 +4802,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_bulk_spam_undisclosed_recipients() {
-        use crate::config::{Action, FilterRule};
+        use crate::legacy_config::{Action, FilterRule};
         use std::collections::HashMap;
 
         // Test bulk spam detection with undisclosed recipients from free email
@@ -4912,7 +4913,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_invalid_unsubscribe_headers() {
-        use crate::config::{Action, FilterRule};
+        use crate::legacy_config::{Action, FilterRule};
         use std::collections::HashMap;
 
         // Test invalid unsubscribe headers detection
@@ -5070,7 +5071,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_enhanced_image_only_detection() {
-        use crate::config::{Action, FilterRule};
+        use crate::legacy_config::{Action, FilterRule};
         use std::collections::HashMap;
 
         // Test enhanced image-only detection with large attachments
@@ -5212,7 +5213,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_unsubscribe_link_ip_address_detection() {
-        use crate::config::{Action, FilterRule};
+        use crate::legacy_config::{Action, FilterRule};
         use std::collections::HashMap;
 
         // Test unsubscribe link IP address detection
@@ -5333,7 +5334,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_unsubscribe_link_ip_address_private_ips() {
-        use crate::config::{Action, FilterRule};
+        use crate::legacy_config::{Action, FilterRule};
         use std::collections::HashMap;
 
         // Test with private IPs allowed
@@ -5394,7 +5395,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_unsubscribe_link_ip_address_private_ips_blocked() {
-        use crate::config::{Action, FilterRule};
+        use crate::legacy_config::{Action, FilterRule};
         use std::collections::HashMap;
 
         // Test with private IPs blocked (default)
@@ -5554,7 +5555,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_attachment_only_email_detection() {
-        use crate::config::{Action, FilterRule};
+        use crate::legacy_config::{Action, FilterRule};
         use std::collections::HashMap;
 
         // Test attachment-only email detection
@@ -6573,7 +6574,7 @@ Content-Disposition: attachment; filename="test.rar"
 
     #[tokio::test]
     async fn test_docusign_abuse_detection() {
-        use crate::config::{Action, FilterRule};
+        use crate::legacy_config::{Action, FilterRule};
         use std::collections::HashMap;
 
         // Initialize logging for the test
