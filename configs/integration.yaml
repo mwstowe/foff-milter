@@ -1,0 +1,134 @@
+# Integration and API enhancement configuration
+rest_api:
+  enabled: true
+  bind_address: "127.0.0.1"
+  port: 8080
+  max_connections: 100
+  request_timeout_seconds: 30
+  rate_limiting: true
+  requests_per_minute: 1000
+  authentication: true
+  api_key_header: "X-API-Key"
+  cors_enabled: true
+
+authentication:
+  api_keys:
+    enabled: true
+    default_key: "foff-milter-api-key-2024"
+    key_rotation_days: 90
+  jwt_tokens:
+    enabled: false
+    secret_key: "your-jwt-secret-key"
+    expiration_hours: 24
+  basic_auth:
+    enabled: false
+    username: "admin"
+    password: "secure-password"
+
+siem_integration:
+  enabled: true
+  splunk:
+    enabled: false
+    hec_url: "https://splunk.example.com:8088/services/collector"
+    hec_token: "your-splunk-hec-token"
+    index: "email_security"
+  elastic:
+    enabled: false
+    elasticsearch_url: "https://elastic.example.com:9200"
+    index_pattern: "foff-milter-{date}"
+    username: "elastic"
+    password: "elastic-password"
+  qradar:
+    enabled: false
+    syslog_host: "qradar.example.com"
+    syslog_port: 514
+    facility: "local0"
+  sentinel:
+    enabled: false
+    workspace_id: "your-workspace-id"
+    shared_key: "your-shared-key"
+    log_type: "FoffMilterLogs"
+
+webhooks:
+  enabled: true
+  endpoints:
+    - name: "security_alerts"
+      url: "https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK"
+      events: ["threat_detected", "high_confidence_threat"]
+      headers:
+        Content-Type: "application/json"
+      retry_attempts: 3
+      timeout_seconds: 10
+  slack:
+    enabled: false
+    webhook_url: "https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK"
+    channel: "#security-alerts"
+    username: "FOFF Milter"
+  teams:
+    enabled: false
+    webhook_url: "https://outlook.office.com/webhook/YOUR/TEAMS/WEBHOOK"
+    card_format: true
+
+email_notifications:
+  enabled: false
+  smtp_server: "smtp.example.com"
+  smtp_port: 587
+  username: "alerts@example.com"
+  password: "smtp-password"
+  from_address: "foff-milter@example.com"
+  recipients:
+    - "security-team@example.com"
+    - "soc@example.com"
+  alert_templates:
+    high_threat: "High confidence threat detected from {sender}"
+    campaign_detected: "Threat campaign detected: {campaign_type}"
+
+cloud_integration:
+  aws:
+    enabled: false
+    region: "us-east-1"
+    ses_integration: false
+    cloudwatch_metrics: false
+    lambda_processing: false
+  azure:
+    enabled: false
+    tenant_id: "your-tenant-id"
+    office365_integration: false
+    sentinel_integration: false
+  gcp:
+    enabled: false
+    project_id: "your-project-id"
+    gmail_api_integration: false
+    cloud_logging: false
+
+container_support:
+  docker:
+    enabled: true
+    image_name: "foff-milter"
+    tag: "latest"
+    expose_ports: [8080, 8025]
+  kubernetes:
+    enabled: true
+    namespace: "email-security"
+    replicas: 3
+    resource_limits:
+      cpu: "500m"
+      memory: "512Mi"
+    health_checks: true
+    auto_scaling: true
+
+data_export:
+  enabled: true
+  formats: ["json", "csv", "cef", "leef"]
+  compression: true
+  encryption: false
+  batch_size: 1000
+  export_schedule: "0 2 * * *"  # Daily at 2 AM
+  retention_days: 30
+
+monitoring:
+  prometheus_metrics: true
+  health_endpoint: true
+  status_endpoint: true
+  metrics_port: 9090
+  log_level: "info"

@@ -6,6 +6,7 @@ pub mod detection;
 pub mod domain_age;
 pub mod filter;
 pub mod google_groups_unsubscriber;
+pub mod integration;
 pub mod language;
 pub mod legacy_config;
 pub mod machine_learning;

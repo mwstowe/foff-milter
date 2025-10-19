@@ -1,5 +1,6 @@
 use crate::analytics::AnalyticsEngine;
 use crate::config::Config;
+use crate::integration::IntegrationEngine;
 use crate::machine_learning::MachineLearningEngine;
 use crate::detection::{
     adult_content::AdultContentDetector,
@@ -31,6 +32,7 @@ pub struct ModuleManager {
     pub performance_optimizer: Option<PerformanceOptimizer>,
     pub analytics_engine: Option<AnalyticsEngine>,
     pub ml_engine: Option<MachineLearningEngine>,
+    pub integration_engine: Option<IntegrationEngine>,
 }
 
 impl ModuleManager {
@@ -48,6 +50,7 @@ impl ModuleManager {
             performance_optimizer: None,
             analytics_engine: None,
             ml_engine: None,
+            integration_engine: None,
         }
     }
 
@@ -214,6 +217,22 @@ impl ModuleManager {
                     log::warn!("Unknown detection module: {}", module_name);
                 }
             }
+        }
+
+        // Load integration engine (always try to load for API and external connectivity)
+        let integration_path = Path::new(config_dir).join("integration.yaml");
+        if integration_path.exists() {
+            match IntegrationEngine::load_from_file(integration_path.to_str().unwrap()) {
+                Ok(engine) => {
+                    manager.integration_engine = Some(engine);
+                    log::info!("Loaded integration engine");
+                }
+                Err(e) => {
+                    log::warn!("Failed to load integration engine: {}, integrations disabled", e);
+                }
+            }
+        } else {
+            log::info!("No integration.yaml found, integrations disabled");
         }
 
         // Load machine learning engine (always try to load for adaptive intelligence)
@@ -466,6 +485,62 @@ impl ModuleManager {
     pub fn cleanup_ml_data(&self) {
         if let Some(ml_engine) = &self.ml_engine {
             ml_engine.cleanup_old_data();
+        }
+    }
+
+    pub fn process_api_request(&self, method: &str, path: &str, headers: &std::collections::HashMap<String, String>, body: &str) -> Result<serde_json::Value, String> {
+        if let Some(integration) = &self.integration_engine {
+            if !integration.authenticate_request(headers) {
+                return Err("Authentication failed".to_string());
+            }
+
+            match (method, path) {
+                ("POST", "/api/v1/email/analyze") => {
+                    // Parse email data from body (simplified)
+                    integration.process_email_api("sender@example.com", "Test Subject", body)
+                }
+                ("GET", "/api/v1/analytics/dashboard") => {
+                    integration.get_analytics_api()
+                }
+                ("GET", "/api/v1/health") => {
+                    Ok(integration.get_health_status())
+                }
+                _ => Err("Endpoint not found".to_string()),
+            }
+        } else {
+            Err("Integration engine not available".to_string())
+        }
+    }
+
+    pub fn send_webhook_notification(&self, event_type: &str, data: serde_json::Value, severity: &str) {
+        if let Some(integration) = &self.integration_engine {
+            integration.send_webhook(event_type, data, severity);
+        }
+    }
+
+    pub fn send_siem_event(&self, sender: &str, recipient: &str, subject: &str, results: &[DetectionResult], action: &str) {
+        if let Some(integration) = &self.integration_engine {
+            integration.send_siem_event(sender, recipient, subject, results, action);
+        }
+    }
+
+    pub fn export_data(&self, format: &str, start_time: u64, end_time: u64) -> Result<String, String> {
+        if let Some(integration) = &self.integration_engine {
+            integration.export_data(format, start_time, end_time)
+        } else {
+            Err("Integration engine not available".to_string())
+        }
+    }
+
+    pub fn get_api_metrics(&self) -> std::collections::HashMap<String, u64> {
+        self.integration_engine.as_ref()
+            .map(|engine| engine.get_api_metrics())
+            .unwrap_or_default()
+    }
+
+    pub fn cleanup_integration_data(&self) {
+        if let Some(integration) = &self.integration_engine {
+            integration.cleanup_old_data();
         }
     }
 }
