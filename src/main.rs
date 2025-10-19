@@ -33,6 +33,13 @@ async fn main() {
                 .action(clap::ArgAction::Set),
         )
         .arg(
+            Arg::new("generate-modules")
+                .long("generate-modules")
+                .value_name("DIR")
+                .help("Generate all 14 modular configuration files in specified directory")
+                .action(clap::ArgAction::Set),
+        )
+        .arg(
             Arg::new("test-config")
                 .long("test-config")
                 .help("Test configuration validity (supports both legacy and modular systems)")
@@ -119,6 +126,11 @@ async fn main() {
 
     if let Some(generate_path) = matches.get_one::<String>("generate-config") {
         generate_default_config(generate_path);
+        return;
+    }
+
+    if let Some(modules_dir) = matches.get_one::<String>("generate-modules") {
+        generate_modular_configs(modules_dir);
         return;
     }
 
@@ -559,6 +571,82 @@ fn load_config(path: &str) -> anyhow::Result<LegacyConfig> {
     } else {
         log::warn!("Configuration file '{path}' not found, using default configuration");
         Ok(LegacyConfig::default())
+    }
+}
+
+fn generate_modular_configs(dir_path: &str) {
+    use std::fs;
+    use std::path::Path;
+
+    let target_dir = Path::new(dir_path);
+    
+    // Create directory if it doesn't exist
+    if let Err(e) = fs::create_dir_all(target_dir) {
+        eprintln!("❌ Error creating directory {}: {}", dir_path, e);
+        process::exit(1);
+    }
+
+    println!("🔧 Generating modular configuration files in: {}", dir_path);
+    println!();
+
+    // Copy all module configs from the source configs directory
+    let source_configs = Path::new("configs");
+    if !source_configs.exists() {
+        eprintln!("❌ Source configs directory not found. Run from project root or ensure configs/ exists.");
+        process::exit(1);
+    }
+
+    let modules = [
+        "suspicious-domains.yaml",
+        "brand-impersonation.yaml", 
+        "health-spam.yaml",
+        "phishing-scams.yaml",
+        "adult-content.yaml",
+        "ecommerce-scams.yaml",
+        "financial-services.yaml",
+        "technology-scams.yaml",
+        "multi-language.yaml",
+        "performance.yaml",
+        "analytics.yaml",
+        "machine-learning.yaml",
+        "integration.yaml",
+        "advanced-security.yaml"
+    ];
+
+    let mut copied = 0;
+    let mut failed = 0;
+
+    for module in &modules {
+        let source = source_configs.join(module);
+        let target = target_dir.join(module);
+        
+        match fs::copy(&source, &target) {
+            Ok(_) => {
+                println!("✅ Generated: {}", module);
+                copied += 1;
+            }
+            Err(e) => {
+                eprintln!("❌ Failed to copy {}: {}", module, e);
+                failed += 1;
+            }
+        }
+    }
+
+    println!();
+    println!("📊 Generation Summary:");
+    println!("  ✅ Successfully generated: {} modules", copied);
+    if failed > 0 {
+        println!("  ❌ Failed: {} modules", failed);
+    }
+    println!();
+    
+    if copied > 0 {
+        println!("🎯 Next Steps:");
+        println!("  1. Update your main config to use modular system:");
+        println!("     module_config_dir: \"{}\"", dir_path);
+        println!("  2. Customize individual module configurations as needed");
+        println!("  3. Test configuration: foff-milter --test-config");
+        println!("  4. List modules: foff-milter --list-modules");
     }
 }
 
