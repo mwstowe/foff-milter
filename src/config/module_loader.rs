@@ -1,3 +1,4 @@
+use crate::advanced_security::AdvancedSecurityEngine;
 use crate::analytics::AnalyticsEngine;
 use crate::config::Config;
 use crate::integration::IntegrationEngine;
@@ -33,6 +34,7 @@ pub struct ModuleManager {
     pub analytics_engine: Option<AnalyticsEngine>,
     pub ml_engine: Option<MachineLearningEngine>,
     pub integration_engine: Option<IntegrationEngine>,
+    pub advanced_security: Option<AdvancedSecurityEngine>,
 }
 
 impl ModuleManager {
@@ -51,6 +53,7 @@ impl ModuleManager {
             analytics_engine: None,
             ml_engine: None,
             integration_engine: None,
+            advanced_security: None,
         }
     }
 
@@ -217,6 +220,22 @@ impl ModuleManager {
                     log::warn!("Unknown detection module: {}", module_name);
                 }
             }
+        }
+
+        // Load advanced security engine (always try to load for deep inspection)
+        let advanced_security_path = Path::new(config_dir).join("advanced-security.yaml");
+        if advanced_security_path.exists() {
+            match AdvancedSecurityEngine::load_from_file(advanced_security_path.to_str().unwrap()) {
+                Ok(engine) => {
+                    manager.advanced_security = Some(engine);
+                    log::info!("Loaded advanced security engine");
+                }
+                Err(e) => {
+                    log::warn!("Failed to load advanced security engine: {}, advanced security disabled", e);
+                }
+            }
+        } else {
+            log::info!("No advanced-security.yaml found, advanced security disabled");
         }
 
         // Load integration engine (always try to load for API and external connectivity)
@@ -541,6 +560,30 @@ impl ModuleManager {
     pub fn cleanup_integration_data(&self) {
         if let Some(integration) = &self.integration_engine {
             integration.cleanup_old_data();
+        }
+    }
+
+    pub fn scan_attachment(&self, filename: &str, content: &[u8]) -> Option<crate::advanced_security::AttachmentScanResult> {
+        self.advanced_security.as_ref().map(|engine| engine.scan_attachment(filename, content))
+    }
+
+    pub fn scan_url(&self, url: &str) -> Option<crate::advanced_security::UrlScanResult> {
+        self.advanced_security.as_ref().map(|engine| engine.scan_url(url))
+    }
+
+    pub fn scan_image_ocr(&self, filename: &str, content: &[u8]) -> Option<crate::advanced_security::ImageOcrResult> {
+        self.advanced_security.as_ref().map(|engine| engine.scan_image_ocr(filename, content))
+    }
+
+    pub fn get_security_scan_statistics(&self) -> std::collections::HashMap<String, u64> {
+        self.advanced_security.as_ref()
+            .map(|engine| engine.get_scan_statistics())
+            .unwrap_or_default()
+    }
+
+    pub fn cleanup_security_caches(&self) {
+        if let Some(advanced_security) = &self.advanced_security {
+            advanced_security.cleanup_caches();
         }
     }
 }
