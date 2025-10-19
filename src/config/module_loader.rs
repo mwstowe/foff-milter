@@ -5,6 +5,7 @@ use crate::detection::{
     ecommerce_scams::EcommerceScamsDetector,
     financial_services::FinancialServicesDetector,
     health_spam::HealthSpamDetector,
+    multi_language::MultiLanguageDetector,
     phishing_scams::PhishingScamsDetector,
     suspicious_domains::SuspiciousDomainDetector,
     technology_scams::TechnologyScamsDetector,
@@ -22,6 +23,7 @@ pub struct ModuleManager {
     pub ecommerce_scams: Option<EcommerceScamsDetector>,
     pub financial_services: Option<FinancialServicesDetector>,
     pub technology_scams: Option<TechnologyScamsDetector>,
+    pub multi_language: Option<MultiLanguageDetector>,
 }
 
 impl ModuleManager {
@@ -35,6 +37,7 @@ impl ModuleManager {
             ecommerce_scams: None,
             financial_services: None,
             technology_scams: None,
+            multi_language: None,
         }
     }
 
@@ -180,6 +183,23 @@ impl ModuleManager {
                         log::warn!("technology-scams.yaml not found, skipping module");
                     }
                 }
+                "multi-language" => {
+                    let path = Path::new(config_dir).join("multi-language.yaml");
+                    if path.exists() {
+                        match MultiLanguageDetector::load_from_file(path.to_str().unwrap()) {
+                            Ok(detector) => {
+                                manager.multi_language = Some(detector);
+                                log::info!("Loaded multi-language detection module");
+                            }
+                            Err(e) => {
+                                log::error!("Failed to load multi-language module: {}", e);
+                                return Err(anyhow::anyhow!("Failed to load multi-language module: {}", e));
+                            }
+                        }
+                    } else {
+                        log::warn!("multi-language.yaml not found, skipping module");
+                    }
+                }
                 _ => {
                     log::warn!("Unknown detection module: {}", module_name);
                 }
@@ -264,6 +284,16 @@ impl ModuleManager {
         if let Some(detector) = &self.technology_scams {
             if let Some(domain) = extract_domain(&email_data.sender) {
                 let result = detector.check_technology_scam(&email_data.subject, &email_data.body, &email_data.sender, &domain);
+                if result.matched {
+                    results.push(result);
+                }
+            }
+        }
+
+        // Check multi-language threats
+        if let Some(detector) = &self.multi_language {
+            if let Some(domain) = extract_domain(&email_data.sender) {
+                let result = detector.check_multi_language_threat(&email_data.subject, &email_data.body, &email_data.sender, &domain);
                 if result.matched {
                     results.push(result);
                 }

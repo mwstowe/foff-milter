@@ -1,0 +1,205 @@
+# Multi-language and localization threat detection patterns
+character_encoding_abuse:
+  unicode_tricks:
+    - "homograph.*attack"
+    - "punycode.*domain"
+    - "unicode.*normalization"
+    - "invisible.*character"
+    - "zero.*width.*space"
+    - "rtl.*override"
+    - "bidi.*override"
+    - "combining.*character"
+
+  mixed_scripts:
+    - "cyrillic.*latin.*mix"
+    - "ascii.*unicode.*mix"
+    - "script.*spoofing"
+    - "character.*substitution"
+    - "lookalike.*character"
+    - "confusable.*unicode"
+
+  encoding_evasion:
+    - "base64.*obfuscation"
+    - "url.*encoding.*abuse"
+    - "html.*entity.*abuse"
+    - "percent.*encoding"
+    - "unicode.*escape"
+    - "utf.*encoding.*trick"
+
+chinese_threats:
+  simplified_chinese:
+    - "免费"  # free
+    - "赚钱"  # make money
+    - "投资"  # investment
+    - "贷款"  # loan
+    - "中奖"  # win prize
+    - "优惠"  # discount
+    - "促销"  # promotion
+    - "限时"  # limited time
+    - "紧急"  # urgent
+    - "立即"  # immediately
+
+  traditional_chinese:
+    - "免費"  # free (traditional)
+    - "賺錢"  # make money (traditional)
+    - "投資"  # investment (traditional)
+    - "貸款"  # loan (traditional)
+    - "中獎"  # win prize (traditional)
+    - "優惠"  # discount (traditional)
+    - "促銷"  # promotion (traditional)
+    - "限時"  # limited time (traditional)
+
+  cultural_patterns:
+    - "微信"  # WeChat
+    - "支付宝"  # Alipay
+    - "淘宝"  # Taobao
+    - "京东"  # JD.com
+    - "百度"  # Baidu
+    - "腾讯"  # Tencent
+
+russian_cyrillic:
+  russian_spam:
+    - "бесплатно"  # free
+    - "деньги"     # money
+    - "заработок"  # earnings
+    - "кредит"     # credit
+    - "займ"       # loan
+    - "скидка"     # discount
+    - "акция"      # promotion
+    - "срочно"     # urgent
+    - "немедленно" # immediately
+    - "выигрыш"    # winnings
+
+  cyrillic_lookalikes:
+    - "а"  # Cyrillic 'a' (looks like Latin 'a')
+    - "е"  # Cyrillic 'e' (looks like Latin 'e')
+    - "о"  # Cyrillic 'o' (looks like Latin 'o')
+    - "р"  # Cyrillic 'p' (looks like Latin 'p')
+    - "с"  # Cyrillic 'c' (looks like Latin 'c')
+    - "х"  # Cyrillic 'x' (looks like Latin 'x')
+
+  romance_scams:
+    - "знакомства"  # dating
+    - "любовь"      # love
+    - "встреча"     # meeting
+    - "отношения"   # relationship
+    - "замужество"  # marriage
+    - "невеста"     # bride
+
+arabic_rtl:
+  arabic_spam:
+    - "مجاني"      # free
+    - "أموال"      # money
+    - "استثمار"    # investment
+    - "قرض"        # loan
+    - "خصم"        # discount
+    - "عرض"        # offer
+    - "عاجل"       # urgent
+    - "فوري"       # immediate
+
+  rtl_attacks:
+    - "rtl.*manipulation"
+    - "bidi.*attack"
+    - "right.*to.*left.*abuse"
+    - "arabic.*latin.*mix"
+    - "persian.*script"
+    - "urdu.*text"
+
+  cultural_scams:
+    - "حلال"       # halal
+    - "إسلامي"     # Islamic
+    - "مسلم"       # Muslim
+    - "قرآن"       # Quran
+    - "حج"         # Hajj
+    - "زكاة"       # Zakat
+
+korean_asian:
+  korean_hangul:
+    - "무료"        # free
+    - "돈"          # money
+    - "투자"        # investment
+    - "대출"        # loan
+    - "할인"        # discount
+    - "긴급"        # urgent
+    - "즉시"        # immediate
+
+  thai_script:
+    - "ฟรี"         # free
+    - "เงิน"        # money
+    - "ลงทุน"       # investment
+    - "กู้เงิน"     # loan
+    - "ลดราคา"      # discount
+    - "ด่วน"        # urgent
+
+  vietnamese:
+    - "miễn phí"    # free
+    - "tiền"        # money
+    - "đầu tư"      # investment
+    - "vay tiền"    # loan
+    - "giảm giá"    # discount
+    - "khẩn cấp"    # urgent
+
+japanese_extended:
+  hiragana_katakana:
+    - "むりょう"    # free (hiragana)
+    - "おかね"      # money (hiragana)
+    - "とうし"      # investment (hiragana)
+    - "かしつけ"    # loan (hiragana)
+    - "わりびき"    # discount (hiragana)
+
+  mixed_japanese:
+    - "フリー"      # free (katakana)
+    - "マネー"      # money (katakana)
+    - "ローン"      # loan (katakana)
+    - "セール"      # sale (katakana)
+
+language_detection_patterns:
+  suspicious_mixing:
+    - "english.*chinese.*mix"
+    - "latin.*cyrillic.*mix"
+    - "arabic.*latin.*mix"
+    - "multiple.*script.*abuse"
+    - "language.*switching"
+    - "script.*confusion"
+
+  encoding_indicators:
+    - "charset.*abuse"
+    - "encoding.*mismatch"
+    - "utf.*manipulation"
+    - "unicode.*normalization.*attack"
+    - "mojibake.*pattern"
+
+legitimate_exclusions:
+  international_companies:
+    - "alibaba.com"
+    - "baidu.com"
+    - "tencent.com"
+    - "yandex.com"
+    - "mail.ru"
+    - "naver.com"
+    - "rakuten.com"
+
+  news_organizations:
+    - "xinhua.net"
+    - "rt.com"
+    - "sputniknews.com"
+    - "aljazeera.com"
+    - "bbc.co.uk"
+    - "nhk.or.jp"
+
+  government_domains:
+    - "gov.cn"
+    - "gov.ru"
+    - "gov.sa"
+    - "gov.kr"
+    - "go.jp"
+    - "gov.ae"
+
+confidence_scoring:
+  character_encoding_abuse: 70
+  chinese_threats: 65
+  russian_cyrillic: 65
+  arabic_rtl: 60
+  korean_asian: 60
+  japanese_extended: 55
+  language_mixing: 50

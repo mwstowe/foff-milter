@@ -3,6 +3,7 @@ pub mod brand_impersonation;
 pub mod ecommerce_scams;
 pub mod financial_services;
 pub mod health_spam;
+pub mod multi_language;
 pub mod phishing_scams;
 pub mod suspicious_domains;
 pub mod technology_scams;

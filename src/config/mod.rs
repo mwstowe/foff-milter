@@ -60,6 +60,7 @@ impl Default for Config {
                     "ecommerce-scams".to_string(),
                     "financial-services".to_string(),
                     "technology-scams".to_string(),
+                    "multi-language".to_string(),
                 ],
             },
             actions: ActionsConfig {
