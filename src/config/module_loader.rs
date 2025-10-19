@@ -2,6 +2,7 @@ use crate::config::Config;
 use crate::detection::{
     brand_impersonation::BrandImpersonationDetector,
     health_spam::HealthSpamDetector,
+    phishing_scams::PhishingScamsDetector,
     suspicious_domains::SuspiciousDomainDetector,
     DetectionResult,
 };
@@ -12,6 +13,7 @@ pub struct ModuleManager {
     pub suspicious_domains: Option<SuspiciousDomainDetector>,
     pub brand_impersonation: Option<BrandImpersonationDetector>,
     pub health_spam: Option<HealthSpamDetector>,
+    pub phishing_scams: Option<PhishingScamsDetector>,
 }
 
 impl ModuleManager {
@@ -20,6 +22,7 @@ impl ModuleManager {
             suspicious_domains: None,
             brand_impersonation: None,
             health_spam: None,
+            phishing_scams: None,
         }
     }
 
@@ -80,6 +83,23 @@ impl ModuleManager {
                         log::warn!("health-spam.yaml not found, skipping module");
                     }
                 }
+                "phishing-scams" => {
+                    let path = Path::new(config_dir).join("phishing-scams.yaml");
+                    if path.exists() {
+                        match PhishingScamsDetector::load_from_file(path.to_str().unwrap()) {
+                            Ok(detector) => {
+                                manager.phishing_scams = Some(detector);
+                                log::info!("Loaded phishing-scams detection module");
+                            }
+                            Err(e) => {
+                                log::error!("Failed to load phishing-scams module: {}", e);
+                                return Err(anyhow::anyhow!("Failed to load phishing-scams module: {}", e));
+                            }
+                        }
+                    } else {
+                        log::warn!("phishing-scams.yaml not found, skipping module");
+                    }
+                }
                 _ => {
                     log::warn!("Unknown detection module: {}", module_name);
                 }
@@ -119,6 +139,14 @@ impl ModuleManager {
                 if result.matched {
                     results.push(result);
                 }
+            }
+        }
+
+        // Check phishing scams
+        if let Some(detector) = &self.phishing_scams {
+            let result = detector.check_phishing_scam(&email_data.subject, &email_data.body, &email_data.sender, &email_data.from_header);
+            if result.matched {
+                results.push(result);
             }
         }
 

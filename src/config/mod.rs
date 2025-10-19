@@ -55,6 +55,7 @@ impl Default for Config {
                     "suspicious-domains".to_string(),
                     "brand-impersonation".to_string(),
                     "health-spam".to_string(),
+                    "phishing-scams".to_string(),
                 ],
             },
             actions: ActionsConfig {
