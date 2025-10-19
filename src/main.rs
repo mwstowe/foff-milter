@@ -634,10 +634,19 @@ async fn test_email_file(config: &LegacyConfig, email_file: &str) {
 
         if auth_results.contains("dkim=fail") {
             // Check for brand impersonation
-            let brands = ["wetransfer", "cvs", "amazon", "paypal", "microsoft", "google", "aaa"];
+            let brands = [
+                "wetransfer",
+                "cvs",
+                "amazon",
+                "paypal",
+                "microsoft",
+                "google",
+                "aaa",
+            ];
             for brand in &brands {
                 if from_header.contains(brand) || email_content.contains(brand) {
-                    threats_detected.push(format!("Brand Impersonation + Auth Failure ({})", brand));
+                    threats_detected
+                        .push(format!("Brand Impersonation + Auth Failure ({})", brand));
                     break;
                 }
             }
@@ -654,14 +663,20 @@ async fn test_email_file(config: &LegacyConfig, email_file: &str) {
         }
 
         // Check for mailer daemon spoofing
-        if from_header.contains("mailer-daemon") || from_header.contains("mail delivery") || sender.contains("MAILER-DAEMON") {
-            if !sender.contains("@") || sender.contains("example.com") || sender == "MAILER-DAEMON" {
+        if from_header.contains("mailer-daemon")
+            || from_header.contains("mail delivery")
+            || sender.contains("MAILER-DAEMON")
+        {
+            if !sender.contains("@") || sender.contains("example.com") || sender == "MAILER-DAEMON"
+            {
                 threats_detected.push("Mailer Daemon Spoofing".to_string());
             }
         }
 
         // Check for free offer scams
-        if email_content.contains("free") && (email_content.contains("kit") || email_content.contains("ready")) {
+        if email_content.contains("free")
+            && (email_content.contains("kit") || email_content.contains("ready"))
+        {
             threats_detected.push("Free Offer Scam".to_string());
         }
 
