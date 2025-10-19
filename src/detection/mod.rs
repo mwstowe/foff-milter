@@ -1,3 +1,4 @@
+pub mod brand_impersonation;
 pub mod suspicious_domains;
 
 #[derive(Debug, Clone)]
