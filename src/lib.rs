@@ -1,6 +1,7 @@
 pub mod abuse_reporter;
 pub mod config;
 pub mod config_test;
+pub mod detection;
 pub mod domain_age;
 pub mod filter;
 pub mod google_groups_unsubscriber;

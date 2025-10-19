@@ -1,0 +1,92 @@
+# Suspicious domain patterns and reputation data
+suspicious_tlds:
+  high_risk:
+    - tk
+    - ml
+    - ga
+    - cf
+    - cfd
+  medium_risk:
+    - shop
+    - store
+    - online
+    - info
+    - help
+    - click
+    - download
+    - loan
+    - racing
+    - review
+    - science
+    - work
+    - party
+    - date
+    - stream
+    - trade
+    - bid
+    - win
+    - cricket
+    - accountant
+    - faith
+    - men
+    - gq
+    - top
+    - fun
+    - live
+    - life
+    - world
+    - today
+    - news
+    - buzz
+    - cool
+    - best
+    - cheap
+    - free
+    - sale
+    - sbs
+    - xyz
+    - pw
+    - cc
+    - tv
+    - me
+    - co
+    - io
+    - ly
+    - be
+    - ws
+    - am
+    - fm
+    - to
+    - icu
+    - cyou
+    - bond
+    - lol
+    - fans
+    - club
+    - vip
+    - pro
+    - tech
+  low_risk:
+    - site
+    - website
+    - web
+
+domain_age:
+  max_age_days: 365
+  check_sender: true
+  check_reply_to: false
+  timeout_seconds: 10
+
+suspicious_hosting:
+  patterns:
+    - "greencloudvps.com"
+    - "cheapvps.com"
+    - "hostinger.com"
+    - "colocrossing.com"
+
+confidence_scoring:
+  high_risk_tld: 40
+  medium_risk_tld: 25
+  low_risk_tld: 10
+  young_domain: 30
+  suspicious_hosting: 20
