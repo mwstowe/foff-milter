@@ -656,20 +656,59 @@ fn generate_modular_configs(dir_path: &str) {
 
     // Embedded module configurations
     let modules = [
-        ("suspicious-domains.yaml", include_str!("../configs/suspicious-domains.yaml")),
-        ("brand-impersonation.yaml", include_str!("../configs/brand-impersonation.yaml")),
-        ("health-spam.yaml", include_str!("../configs/health-spam.yaml")),
-        ("phishing-scams.yaml", include_str!("../configs/phishing-scams.yaml")),
-        ("adult-content.yaml", include_str!("../configs/adult-content.yaml")),
-        ("ecommerce-scams.yaml", include_str!("../configs/ecommerce-scams.yaml")),
-        ("financial-services.yaml", include_str!("../configs/financial-services.yaml")),
-        ("technology-scams.yaml", include_str!("../configs/technology-scams.yaml")),
-        ("multi-language.yaml", include_str!("../configs/multi-language.yaml")),
-        ("performance.yaml", include_str!("../configs/performance.yaml")),
+        (
+            "suspicious-domains.yaml",
+            include_str!("../configs/suspicious-domains.yaml"),
+        ),
+        (
+            "brand-impersonation.yaml",
+            include_str!("../configs/brand-impersonation.yaml"),
+        ),
+        (
+            "health-spam.yaml",
+            include_str!("../configs/health-spam.yaml"),
+        ),
+        (
+            "phishing-scams.yaml",
+            include_str!("../configs/phishing-scams.yaml"),
+        ),
+        (
+            "adult-content.yaml",
+            include_str!("../configs/adult-content.yaml"),
+        ),
+        (
+            "ecommerce-scams.yaml",
+            include_str!("../configs/ecommerce-scams.yaml"),
+        ),
+        (
+            "financial-services.yaml",
+            include_str!("../configs/financial-services.yaml"),
+        ),
+        (
+            "technology-scams.yaml",
+            include_str!("../configs/technology-scams.yaml"),
+        ),
+        (
+            "multi-language.yaml",
+            include_str!("../configs/multi-language.yaml"),
+        ),
+        (
+            "performance.yaml",
+            include_str!("../configs/performance.yaml"),
+        ),
         ("analytics.yaml", include_str!("../configs/analytics.yaml")),
-        ("machine-learning.yaml", include_str!("../configs/machine-learning.yaml")),
-        ("integration.yaml", include_str!("../configs/integration.yaml")),
-        ("advanced-security.yaml", include_str!("../configs/advanced-security.yaml")),
+        (
+            "machine-learning.yaml",
+            include_str!("../configs/machine-learning.yaml"),
+        ),
+        (
+            "integration.yaml",
+            include_str!("../configs/integration.yaml"),
+        ),
+        (
+            "advanced-security.yaml",
+            include_str!("../configs/advanced-security.yaml"),
+        ),
     ];
 
     let mut created = 0;
@@ -677,7 +716,7 @@ fn generate_modular_configs(dir_path: &str) {
 
     for (filename, content) in &modules {
         let target_path = target_dir.join(filename);
-        
+
         match fs::write(&target_path, content) {
             Ok(_) => {
                 println!("✅ Generated: {}", filename);
