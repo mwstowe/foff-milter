@@ -1,0 +1,23 @@
+[server]
+socket_path = "/var/run/foff-milter.sock"
+timeout_seconds = 30
+
+[detection]
+config_dir = "configs"
+enabled_modules = [
+    "suspicious-domains",
+    "brand-impersonation", 
+    "health-spam"
+]
+
+[actions]
+default_action = "Accept"
+
+[statistics]
+enabled = true
+database_path = "/var/lib/foff-milter/stats.db"
+flush_interval_seconds = 60
+
+[logging]
+level = "info"
+syslog = true

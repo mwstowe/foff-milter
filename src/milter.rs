@@ -1,4 +1,4 @@
-use crate::config::{Action, Config};
+use crate::legacy_config::{Action, Config};
 use crate::filter::{FilterEngine, MailContext};
 use crate::statistics::{StatEvent, StatisticsCollector};
 use base64::Engine;

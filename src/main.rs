@@ -2,7 +2,7 @@ use clap::{Arg, Command};
 use foff_milter::filter::FilterEngine;
 use foff_milter::milter::Milter;
 use foff_milter::statistics::StatisticsCollector;
-use foff_milter::Config;
+use foff_milter::Config as LegacyConfig;
 use log::LevelFilter;
 use std::process;
 
@@ -411,17 +411,17 @@ async fn main() {
     }
 }
 
-fn load_config(path: &str) -> anyhow::Result<Config> {
+fn load_config(path: &str) -> anyhow::Result<LegacyConfig> {
     if std::path::Path::new(path).exists() {
-        Config::from_file(path)
+        LegacyConfig::from_file(path)
     } else {
         log::warn!("Configuration file '{path}' not found, using default configuration");
-        Ok(Config::default())
+        Ok(LegacyConfig::default())
     }
 }
 
 fn generate_default_config(path: &str) {
-    let config = Config::default();
+    let config = LegacyConfig::default();
     match config.to_file(path) {
         Ok(()) => {
             println!("Default configuration written to: {path}");
@@ -442,8 +442,8 @@ fn truncate_string(s: &str, max_len: usize) -> String {
     }
 }
 
-async fn test_email_file(config: &Config, email_file: &str) {
-    use foff_milter::config::Action;
+async fn test_email_file(config: &LegacyConfig, email_file: &str) {
+    use foff_milter::Action;
     use foff_milter::filter::MailContext;
     use std::collections::HashMap;
     use std::fs;
