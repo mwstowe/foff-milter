@@ -11,12 +11,14 @@ async fn main() {
     let matches = Command::new("foff-milter")
         .version(env!("CARGO_PKG_VERSION"))
         .about("Enterprise-grade email security platform with modular threat detection")
-        .long_about("FOFF Milter v0.5.0 - A comprehensive email security solution featuring:\n\
+        .long_about(
+            "FOFF Milter v0.5.0 - A comprehensive email security solution featuring:\n\
                     • 14 specialized detection modules for superior threat coverage\n\
                     • Machine learning integration with adaptive intelligence\n\
                     • Advanced security scanning with deep inspection capabilities\n\
                     • Enterprise analytics and real-time monitoring\n\
-                    • Backward compatibility with legacy rule-based configurations")
+                    • Backward compatibility with legacy rule-based configurations",
+        )
         .arg(
             Arg::new("config")
                 .short('c')
@@ -352,7 +354,10 @@ async fn main() {
         match format.to_lowercase().as_str() {
             "json" => {
                 println!("{{");
-                println!("  \"system\": \"FOFF Milter v{}\",", env!("CARGO_PKG_VERSION"));
+                println!(
+                    "  \"system\": \"FOFF Milter v{}\",",
+                    env!("CARGO_PKG_VERSION")
+                );
                 println!("  \"detection_system\": \"modular\",");
                 println!("  \"modules\": 14,");
                 println!("  \"test_coverage\": \"100%\",");
@@ -387,28 +392,88 @@ async fn main() {
     if matches.get_flag("list-modules") {
         println!("📋 Available Detection Modules");
         println!("═══════════════════════════════════════");
-        
+
         if let Some(module_dir) = config.module_config_dir.as_ref() {
             let modules = [
-                ("suspicious-domains.yaml", "Suspicious Domain Detection", "Domain reputation & TLD risk assessment"),
-                ("brand-impersonation.yaml", "Brand Impersonation Protection", "Major brand protection with authentication analysis"),
-                ("health-spam.yaml", "Health & Medical Spam", "Medical misinformation & pharmaceutical spam detection"),
-                ("phishing-scams.yaml", "Phishing & Scam Detection", "Comprehensive phishing & social engineering protection"),
-                ("adult-content.yaml", "Adult Content Filtering", "Adult content & romance fraud detection"),
-                ("ecommerce-scams.yaml", "E-commerce Fraud", "Shopping scams & marketplace fraud detection"),
-                ("financial-services.yaml", "Financial Services Protection", "Banking phishing & financial fraud detection"),
-                ("technology-scams.yaml", "Technology Scam Prevention", "Tech support fraud & software scams"),
-                ("multi-language.yaml", "Multi-Language Threat Detection", "International threats & encoding abuse"),
-                ("performance.yaml", "Performance Optimization", "System performance & monitoring"),
-                ("analytics.yaml", "Advanced Analytics", "Real-time analytics & reporting"),
-                ("machine-learning.yaml", "Machine Learning", "AI-powered adaptive intelligence"),
-                ("integration.yaml", "Enterprise Integration", "SIEM integration & API connectivity"),
-                ("advanced-security.yaml", "Advanced Security", "Deep inspection & threat analysis"),
+                (
+                    "suspicious-domains.yaml",
+                    "Suspicious Domain Detection",
+                    "Domain reputation & TLD risk assessment",
+                ),
+                (
+                    "brand-impersonation.yaml",
+                    "Brand Impersonation Protection",
+                    "Major brand protection with authentication analysis",
+                ),
+                (
+                    "health-spam.yaml",
+                    "Health & Medical Spam",
+                    "Medical misinformation & pharmaceutical spam detection",
+                ),
+                (
+                    "phishing-scams.yaml",
+                    "Phishing & Scam Detection",
+                    "Comprehensive phishing & social engineering protection",
+                ),
+                (
+                    "adult-content.yaml",
+                    "Adult Content Filtering",
+                    "Adult content & romance fraud detection",
+                ),
+                (
+                    "ecommerce-scams.yaml",
+                    "E-commerce Fraud",
+                    "Shopping scams & marketplace fraud detection",
+                ),
+                (
+                    "financial-services.yaml",
+                    "Financial Services Protection",
+                    "Banking phishing & financial fraud detection",
+                ),
+                (
+                    "technology-scams.yaml",
+                    "Technology Scam Prevention",
+                    "Tech support fraud & software scams",
+                ),
+                (
+                    "multi-language.yaml",
+                    "Multi-Language Threat Detection",
+                    "International threats & encoding abuse",
+                ),
+                (
+                    "performance.yaml",
+                    "Performance Optimization",
+                    "System performance & monitoring",
+                ),
+                (
+                    "analytics.yaml",
+                    "Advanced Analytics",
+                    "Real-time analytics & reporting",
+                ),
+                (
+                    "machine-learning.yaml",
+                    "Machine Learning",
+                    "AI-powered adaptive intelligence",
+                ),
+                (
+                    "integration.yaml",
+                    "Enterprise Integration",
+                    "SIEM integration & API connectivity",
+                ),
+                (
+                    "advanced-security.yaml",
+                    "Advanced Security",
+                    "Deep inspection & threat analysis",
+                ),
             ];
-            
+
             for (file, name, description) in &modules {
                 let path = std::path::Path::new(module_dir).join(file);
-                let status = if path.exists() { "✅ Active" } else { "❌ Missing" };
+                let status = if path.exists() {
+                    "✅ Active"
+                } else {
+                    "❌ Missing"
+                };
                 println!("  {} {}", status, name);
                 println!("    File: {}", file);
                 println!("    Description: {}", description);
@@ -579,7 +644,7 @@ fn generate_modular_configs(dir_path: &str) {
     use std::path::Path;
 
     let target_dir = Path::new(dir_path);
-    
+
     // Create directory if it doesn't exist
     if let Err(e) = fs::create_dir_all(target_dir) {
         eprintln!("❌ Error creating directory {}: {}", dir_path, e);
@@ -598,7 +663,7 @@ fn generate_modular_configs(dir_path: &str) {
 
     let modules = [
         "suspicious-domains.yaml",
-        "brand-impersonation.yaml", 
+        "brand-impersonation.yaml",
         "health-spam.yaml",
         "phishing-scams.yaml",
         "adult-content.yaml",
@@ -610,7 +675,7 @@ fn generate_modular_configs(dir_path: &str) {
         "analytics.yaml",
         "machine-learning.yaml",
         "integration.yaml",
-        "advanced-security.yaml"
+        "advanced-security.yaml",
     ];
 
     let mut copied = 0;
@@ -619,7 +684,7 @@ fn generate_modular_configs(dir_path: &str) {
     for module in &modules {
         let source = source_configs.join(module);
         let target = target_dir.join(module);
-        
+
         match fs::copy(&source, &target) {
             Ok(_) => {
                 println!("✅ Generated: {}", module);
@@ -639,7 +704,7 @@ fn generate_modular_configs(dir_path: &str) {
         println!("  ❌ Failed: {} modules", failed);
     }
     println!();
-    
+
     if copied > 0 {
         println!("🎯 Next Steps:");
         println!("  1. Update your main config to use modular system:");
