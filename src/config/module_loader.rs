@@ -3,6 +3,7 @@ use crate::detection::{
     adult_content::AdultContentDetector,
     brand_impersonation::BrandImpersonationDetector,
     ecommerce_scams::EcommerceScamsDetector,
+    financial_services::FinancialServicesDetector,
     health_spam::HealthSpamDetector,
     phishing_scams::PhishingScamsDetector,
     suspicious_domains::SuspiciousDomainDetector,
@@ -18,6 +19,7 @@ pub struct ModuleManager {
     pub phishing_scams: Option<PhishingScamsDetector>,
     pub adult_content: Option<AdultContentDetector>,
     pub ecommerce_scams: Option<EcommerceScamsDetector>,
+    pub financial_services: Option<FinancialServicesDetector>,
 }
 
 impl ModuleManager {
@@ -29,6 +31,7 @@ impl ModuleManager {
             phishing_scams: None,
             adult_content: None,
             ecommerce_scams: None,
+            financial_services: None,
         }
     }
 
@@ -140,6 +143,23 @@ impl ModuleManager {
                         log::warn!("ecommerce-scams.yaml not found, skipping module");
                     }
                 }
+                "financial-services" => {
+                    let path = Path::new(config_dir).join("financial-services.yaml");
+                    if path.exists() {
+                        match FinancialServicesDetector::load_from_file(path.to_str().unwrap()) {
+                            Ok(detector) => {
+                                manager.financial_services = Some(detector);
+                                log::info!("Loaded financial-services detection module");
+                            }
+                            Err(e) => {
+                                log::error!("Failed to load financial-services module: {}", e);
+                                return Err(anyhow::anyhow!("Failed to load financial-services module: {}", e));
+                            }
+                        }
+                    } else {
+                        log::warn!("financial-services.yaml not found, skipping module");
+                    }
+                }
                 _ => {
                     log::warn!("Unknown detection module: {}", module_name);
                 }
@@ -204,6 +224,16 @@ impl ModuleManager {
         if let Some(detector) = &self.ecommerce_scams {
             if let Some(domain) = extract_domain(&email_data.sender) {
                 let result = detector.check_ecommerce_scam(&email_data.subject, &email_data.body, &email_data.sender, &domain);
+                if result.matched {
+                    results.push(result);
+                }
+            }
+        }
+
+        // Check financial services
+        if let Some(detector) = &self.financial_services {
+            if let Some(domain) = extract_domain(&email_data.sender) {
+                let result = detector.check_financial_scam(&email_data.subject, &email_data.body, &email_data.sender, &domain);
                 if result.matched {
                     results.push(result);
                 }
