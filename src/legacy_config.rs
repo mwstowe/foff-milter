@@ -23,7 +23,7 @@ pub fn load_modules(module_dir: &str) -> Result<Vec<Module>, Box<dyn std::error:
     let mut modules = Vec::new();
     let module_files = [
         "suspicious-domains.yaml",
-        "brand-impersonation.yaml", 
+        "brand-impersonation.yaml",
         "health-spam.yaml",
         "phishing-scams.yaml",
         "adult-content.yaml",
@@ -45,7 +45,10 @@ pub fn load_modules(module_dir: &str) -> Result<Vec<Module>, Box<dyn std::error:
             println!("DEBUG: File exists, attempting to load: {}", file);
             match Module::load_from_file(&path) {
                 Ok(module) => {
-                    println!("DEBUG: Successfully loaded module: {} (enabled: {})", module.name, module.enabled);
+                    println!(
+                        "DEBUG: Successfully loaded module: {} (enabled: {})",
+                        module.name, module.enabled
+                    );
                     if module.enabled {
                         modules.push(module);
                     }

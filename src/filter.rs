@@ -52,7 +52,7 @@ impl FilterEngine {
     pub fn new(config: Config) -> anyhow::Result<Self> {
         println!("DEBUG: FilterEngine::new called");
         println!("DEBUG: module_config_dir = {:?}", config.module_config_dir);
-        
+
         // Load modules if modular system is configured
         let modules = if let Some(module_dir) = &config.module_config_dir {
             println!("DEBUG: Loading modules from: {}", module_dir);
@@ -349,7 +349,7 @@ impl FilterEngine {
                 self.compile_criteria_patterns(&rule.criteria)?;
             }
         }
-        
+
         Ok(())
     }
 
@@ -539,10 +539,10 @@ impl FilterEngine {
         // Process modules first if modular system is enabled
         if !self.modules.is_empty() {
             log::info!("Processing {} modules", self.modules.len());
-            
+
             for module in &self.modules {
                 log::info!("Processing module: {}", module.name);
-                
+
                 for (rule_index, rule) in module.rules.iter().enumerate() {
                     let matches = self.evaluate_criteria(&rule.criteria, context).await;
                     log::info!(
@@ -590,11 +590,15 @@ impl FilterEngine {
                     }
                 }
             }
-            
+
             // If modules processed, return early
             if !matched_rules.is_empty() {
-                log::info!("Matched {} module rules: [{}], final action: {:?}", 
-                    matched_rules.len(), matched_rules.join(", "), final_action);
+                log::info!(
+                    "Matched {} module rules: [{}], final action: {:?}",
+                    matched_rules.len(),
+                    matched_rules.join(", "),
+                    final_action
+                );
                 return (final_action, matched_rules, headers_to_add);
             }
         }
