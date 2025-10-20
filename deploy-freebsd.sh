@@ -38,13 +38,26 @@ echo "✓ Binary installed to /usr/local/bin/foff-milter"
 # Install configuration
 echo ""
 echo "4. Installing configuration..."
-if [ ! -f /usr/local/etc/foff-milter.yaml ]; then
-    mkdir -p /usr/local/etc
-    cp examples/freebsd-config.yaml /usr/local/etc/foff-milter.yaml
-    echo "✓ Configuration installed to /usr/local/etc/foff-milter.yaml"
+mkdir -p /usr/local/etc/foff-milter
+mkdir -p /usr/local/etc/foff-milter/legacy-configs
+mkdir -p /usr/local/etc/foff-milter/configs
+
+if [ ! -f /usr/local/etc/foff-milter/foff-milter.yaml ]; then
+    cp examples/freebsd-config.yaml /usr/local/etc/foff-milter/foff-milter.yaml
+    echo "✓ Main configuration installed to /usr/local/etc/foff-milter/foff-milter.yaml"
 else
-    echo "✓ Configuration already exists at /usr/local/etc/foff-milter.yaml"
+    echo "✓ Main configuration already exists at /usr/local/etc/foff-milter/foff-milter.yaml"
 fi
+
+# Install legacy configurations
+if [ -d "legacy-configs" ]; then
+    cp -r legacy-configs/* /usr/local/etc/foff-milter/legacy-configs/
+    echo "✓ Legacy configurations installed to /usr/local/etc/foff-milter/legacy-configs/"
+fi
+
+# Generate modular configurations
+/usr/local/bin/foff-milter --generate-modules /usr/local/etc/foff-milter/configs
+echo "✓ Modular configurations generated in /usr/local/etc/foff-milter/configs/"
 
 # Install rc.d script
 echo ""
@@ -56,7 +69,7 @@ echo "✓ Service script installed"
 # Test configuration
 echo ""
 echo "6. Testing configuration..."
-if /usr/local/bin/foff-milter --test-config -c /usr/local/etc/foff-milter.yaml; then
+if /usr/local/bin/foff-milter --test-config -c /usr/local/etc/foff-milter/foff-milter.yaml; then
     echo "✓ Configuration test passed"
 else
     echo "✗ Configuration test failed"
@@ -68,7 +81,7 @@ echo ""
 echo "7. Enabling service..."
 if ! grep -q "foff_milter_enable" /etc/rc.conf; then
     echo 'foff_milter_enable="YES"' >> /etc/rc.conf
-    echo 'foff_milter_config="/usr/local/etc/foff-milter.yaml"' >> /etc/rc.conf
+    echo 'foff_milter_config="/usr/local/etc/foff-milter/foff-milter.yaml"' >> /etc/rc.conf
     echo "✓ Service enabled in /etc/rc.conf"
 else
     echo "✓ Service already enabled in /etc/rc.conf"
@@ -113,9 +126,12 @@ echo "Manual daemon mode:"
 echo "  /usr/local/bin/foff-milter --daemon -c /usr/local/etc/foff-milter.yaml"
 echo ""
 echo "Foreground mode (for testing):"
-echo "  /usr/local/bin/foff-milter -v -c /usr/local/etc/foff-milter.yaml"
+echo "  /usr/local/bin/foff-milter -v -c /usr/local/etc/foff-milter/foff-milter.yaml"
 echo ""
-echo "Configuration file: /usr/local/etc/foff-milter.yaml"
+echo "Configuration files:"
+echo "  Main config: /usr/local/etc/foff-milter/foff-milter.yaml"
+echo "  Legacy rules: /usr/local/etc/foff-milter/legacy-configs/"
+echo "  Modular configs: /usr/local/etc/foff-milter/configs/"
 echo "Log monitoring: tail -f /var/log/messages"
 echo ""
 echo "Sendmail configuration:"
