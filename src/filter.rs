@@ -50,19 +50,26 @@ pub struct MailContext {
 
 impl FilterEngine {
     pub fn new(config: Config) -> anyhow::Result<Self> {
+        println!("DEBUG: FilterEngine::new called");
+        println!("DEBUG: module_config_dir = {:?}", config.module_config_dir);
+        
         // Load modules if modular system is configured
         let modules = if let Some(module_dir) = &config.module_config_dir {
+            println!("DEBUG: Loading modules from: {}", module_dir);
             match load_modules(module_dir) {
                 Ok(modules) => {
+                    println!("DEBUG: Successfully loaded {} modules", modules.len());
                     log::info!("Loaded {} modules from {}", modules.len(), module_dir);
                     modules
                 }
                 Err(e) => {
+                    println!("DEBUG: Failed to load modules: {}", e);
                     log::warn!("Failed to load modules from {}: {}", module_dir, e);
                     Vec::new()
                 }
             }
         } else {
+            println!("DEBUG: No module_config_dir configured, using legacy rules");
             Vec::new()
         };
 
