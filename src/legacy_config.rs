@@ -1,5 +1,60 @@
 use chrono;
 use serde::{Deserialize, Serialize};
+use std::fs;
+use std::path::Path;
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct Module {
+    pub name: String,
+    pub enabled: bool,
+    pub rules: Vec<FilterRule>,
+}
+
+impl Module {
+    pub fn load_from_file(path: &Path) -> Result<Self, Box<dyn std::error::Error>> {
+        let content = fs::read_to_string(path)?;
+        let module: Module = serde_yml::from_str(&content)?;
+        Ok(module)
+    }
+}
+
+pub fn load_modules(module_dir: &str) -> Result<Vec<Module>, Box<dyn std::error::Error>> {
+    let mut modules = Vec::new();
+    let module_files = [
+        "suspicious-domains.yaml",
+        "brand-impersonation.yaml", 
+        "health-spam.yaml",
+        "phishing-scams.yaml",
+        "adult-content.yaml",
+        "ecommerce-scams.yaml",
+        "financial-services.yaml",
+        "technology-scams.yaml",
+        "multi-language.yaml",
+        "performance.yaml",
+        "analytics.yaml",
+        "machine-learning.yaml",
+        "integration.yaml",
+        "advanced-security.yaml",
+    ];
+
+    for file in &module_files {
+        let path = Path::new(module_dir).join(file);
+        if path.exists() {
+            match Module::load_from_file(&path) {
+                Ok(module) => {
+                    if module.enabled {
+                        modules.push(module);
+                    }
+                }
+                Err(e) => {
+                    eprintln!("Warning: Failed to load module {}: {}", file, e);
+                }
+            }
+        }
+    }
+
+    Ok(modules)
+}
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Config {

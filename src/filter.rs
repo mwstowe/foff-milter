@@ -1,7 +1,7 @@
 use crate::abuse_reporter::AbuseReporter;
 use crate::domain_age::DomainAgeChecker;
 use crate::language::LanguageDetector;
-use crate::legacy_config::{Action, Config, Criteria};
+use crate::legacy_config::{load_modules, Action, Config, Criteria, Module};
 use crate::milter::extract_email_from_header;
 
 use hickory_resolver::TokioAsyncResolver;
@@ -29,6 +29,7 @@ const CACHE_TTL_SECONDS: u64 = 300; // 5 minutes cache TTL
 
 pub struct FilterEngine {
     config: Config,
+    modules: Vec<Module>,
     compiled_patterns: HashMap<String, Regex>,
     #[allow(dead_code)] // TODO: Implement full abuse reporting integration
     abuse_reporter: AbuseReporter,
@@ -49,9 +50,26 @@ pub struct MailContext {
 
 impl FilterEngine {
     pub fn new(config: Config) -> anyhow::Result<Self> {
+        // Load modules if modular system is configured
+        let modules = if let Some(module_dir) = &config.module_config_dir {
+            match load_modules(module_dir) {
+                Ok(modules) => {
+                    log::info!("Loaded {} modules from {}", modules.len(), module_dir);
+                    modules
+                }
+                Err(e) => {
+                    log::warn!("Failed to load modules from {}: {}", module_dir, e);
+                    Vec::new()
+                }
+            }
+        } else {
+            Vec::new()
+        };
+
         let mut engine = FilterEngine {
             abuse_reporter: AbuseReporter::with_smtp_config(config.smtp.clone()),
             config,
+            modules,
             compiled_patterns: HashMap::new(),
         };
 
@@ -501,7 +519,70 @@ impl FilterEngine {
         let mut final_action = &self.config.default_action;
         let mut headers_to_add = Vec::new();
 
-        // Process rules with whitelist logic - stop on Accept actions
+        // Process modules first if modular system is enabled
+        if !self.modules.is_empty() {
+            log::info!("Processing {} modules", self.modules.len());
+            
+            for module in &self.modules {
+                log::info!("Processing module: {}", module.name);
+                
+                for (rule_index, rule) in module.rules.iter().enumerate() {
+                    let matches = self.evaluate_criteria(&rule.criteria, context).await;
+                    log::info!(
+                        "Module '{}' Rule {} '{}' evaluation result: {}",
+                        module.name,
+                        rule_index + 1,
+                        rule.name,
+                        matches
+                    );
+
+                    if matches {
+                        log::info!(
+                            "Module '{}' Rule {} '{}' matched, collecting action: {:?}",
+                            module.name,
+                            rule_index + 1,
+                            rule.name,
+                            rule.action
+                        );
+                        matched_rules.push(format!("{}: {}", module.name, rule.name));
+                        all_actions.push(&rule.action);
+
+                        // Add module-specific header
+                        headers_to_add.push((
+                            "X-FOFF-Module-Matched".to_string(),
+                            format!("{}: {}", module.name, rule.name),
+                        ));
+
+                        // Handle action precedence
+                        match &rule.action {
+                            Action::Accept => {
+                                final_action = &rule.action;
+                                break; // Stop processing on Accept
+                            }
+                            Action::Reject { .. } => {
+                                final_action = &rule.action;
+                                // Continue processing other modules
+                            }
+                            Action::TagAsSpam { .. } => {
+                                if matches!(final_action, Action::Accept) {
+                                    final_action = &rule.action;
+                                }
+                            }
+                            _ => {}
+                        }
+                    }
+                }
+            }
+            
+            // If modules processed, return early
+            if !matched_rules.is_empty() {
+                log::info!("Matched {} module rules: [{}], final action: {:?}", 
+                    matched_rules.len(), matched_rules.join(", "), final_action);
+                return (final_action, matched_rules, headers_to_add);
+            }
+        }
+
+        // Process legacy rules if no modules or no module matches
         for (rule_index, rule) in self.config.rules.iter().enumerate() {
             let matches = self.evaluate_criteria(&rule.criteria, context).await;
             log::info!(
