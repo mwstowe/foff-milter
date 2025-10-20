@@ -336,8 +336,6 @@ impl FilterEngine {
     }
 
     fn compile_patterns(&mut self) -> anyhow::Result<()> {
-        println!("DEBUG: Starting pattern compilation");
-        
         // Compile patterns from legacy rules
         let rules = self.config.rules.clone();
         for rule in &rules {
@@ -347,16 +345,9 @@ impl FilterEngine {
         // Compile patterns from modules
         let modules = self.modules.clone();
         for module in &modules {
-            println!("DEBUG: Compiling patterns for module: {}", module.name);
             for rule in &module.rules {
-                println!("DEBUG: Compiling patterns for rule: {}", rule.name);
                 self.compile_criteria_patterns(&rule.criteria)?;
             }
-        }
-
-        println!("DEBUG: Pattern compilation complete. Total patterns: {}", self.compiled_patterns.len());
-        for (pattern, _) in &self.compiled_patterns {
-            println!("DEBUG: Compiled pattern: {}", pattern);
         }
         
         Ok(())
@@ -1739,24 +1730,24 @@ impl FilterEngine {
                     if let Some(regex) = self.compiled_patterns.get(pattern) {
                         // Check both envelope sender and From header sender
                         if let Some(sender) = &context.sender {
-                            println!("DEBUG: SenderPattern checking envelope sender: '{}' against pattern: '{}'", sender, pattern);
+                            log::debug!("SenderPattern checking envelope sender: '{}' against pattern: '{}'", sender, pattern);
                             if regex.is_match(sender) {
-                                println!("DEBUG: SenderPattern matched envelope sender: '{}'", sender);
+                                log::debug!("SenderPattern matched envelope sender: '{}'", sender);
                                 return true;
                             }
                         }
                         if let Some(from_header) = &context.from_header {
-                            println!(
-                                "DEBUG: SenderPattern checking from_header: '{}' against pattern: '{}'",
+                            log::debug!(
+                                "SenderPattern checking from_header: '{}' against pattern: '{}'",
                                 from_header,
                                 pattern
                             );
                             if regex.is_match(from_header) {
-                                println!("DEBUG: SenderPattern matched from_header: '{}'", from_header);
+                                log::debug!("SenderPattern matched from_header: '{}'", from_header);
                                 return true;
                             }
                         }
-                        println!("DEBUG: SenderPattern no match for pattern: '{}'", pattern);
+                        log::debug!("SenderPattern no match for pattern: '{}'", pattern);
                     }
                     false
                 }
