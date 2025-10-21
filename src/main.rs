@@ -2,6 +2,7 @@ use clap::{Arg, Command};
 use foff_milter::filter::FilterEngine;
 use foff_milter::milter::Milter;
 use foff_milter::statistics::StatisticsCollector;
+use foff_milter::toml_config::TomlConfig;
 use foff_milter::Config as LegacyConfig;
 use log::LevelFilter;
 use std::process;

@@ -30,16 +30,16 @@ cp /tmp/suspicious-domains.yaml /etc/foff-milter/configs/
 cp /tmp/brand-impersonation.yaml /etc/foff-milter/configs/
 
 # Set proper ownership
-chown -R root:foff-milter /etc/foff-milter/configs/
+chown -R root /etc/foff-milter/configs/
 chmod 640 /etc/foff-milter/configs/*.yaml
 
 # Test configuration
 echo "🔍 Testing configuration..."
-sudo -u foff-milter /usr/local/bin/foff-milter --test-config -c /etc/foff-milter/foff-milter.yaml
+/usr/local/bin/foff-milter --test-config -c /etc/foff-milter/foff-milter.yaml
 
 # Reload service
 echo "🔄 Reloading service..."
-systemctl reload foff-milter
+systemctl restart foff-milter
 
 echo "✅ Hotel production modules fixed!"
 EOF

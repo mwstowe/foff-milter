@@ -14,6 +14,7 @@ pub mod machine_learning;
 pub mod milter;
 pub mod performance;
 pub mod statistics;
+pub mod toml_config;
 
 // Re-export legacy Config and related types for backward compatibility
 pub use filter::{FilterEngine, MailContext};
