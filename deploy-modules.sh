@@ -5,7 +5,7 @@
 
 set -e
 
-SERVER="hotel"
+SERVER="hotel.example.com"
 REMOTE_DIR="/etc/foff-milter/modules"
 LOCAL_MODULES_DIR="modules"
 

@@ -646,13 +646,37 @@ fn load_config(
         // Check file extension to determine format
         if path.ends_with(".toml") {
             // Load TOML config and convert to legacy format
+            println!("✅ Loading modern TOML configuration: {}", path);
             let toml_config = TomlConfig::load_from_file(path)?;
             let legacy_config = toml_config.to_legacy_config()?;
             let whitelist_config = toml_config.whitelist.clone();
             let blocklist_config = toml_config.blocklist.clone();
             Ok((legacy_config, whitelist_config, blocklist_config))
-        } else {
+        } else if path.ends_with(".yaml") || path.ends_with(".yml") {
+            // YAML config detected - show deprecation warning
+            eprintln!("⚠️  WARNING: YAML configuration is DEPRECATED!");
+            eprintln!("   Using legacy YAML config: {}", path);
+            eprintln!("   Please migrate to TOML format for full feature support:");
+            eprintln!("   - Modern modular detection system");
+            eprintln!("   - Global whitelist/blocklist");
+            eprintln!("   - Heuristic scoring");
+            eprintln!("   - 16 specialized detection modules");
+            eprintln!("");
+            eprintln!("   Migration guide:");
+            eprintln!("   1. Use foff-milter-example.toml as template");
+            eprintln!("   2. Update systemd service to use .toml config");
+            eprintln!("   3. Deploy modules with ./deploy-modules.sh");
+            eprintln!("");
+            eprintln!("   YAML support will be removed in v0.6.0");
+            eprintln!("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+            
             // Load legacy YAML config
+            let legacy_config = LegacyConfig::from_file(path)?;
+            Ok((legacy_config, None, None))
+        } else {
+            // Unknown format - try YAML as fallback with warning
+            eprintln!("⚠️  WARNING: Unknown config format for {}", path);
+            eprintln!("   Attempting to load as legacy YAML...");
             let legacy_config = LegacyConfig::from_file(path)?;
             Ok((legacy_config, None, None))
         }
