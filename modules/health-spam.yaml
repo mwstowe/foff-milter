@@ -13,13 +13,9 @@ rules:
     description: "Medical misinformation and miracle cure claims"
   - name: "CVS Medicare phishing from free email"
     criteria:
-      type: "And"
-      criteria:
-        - type: "SubjectPattern"
-          pattern: ".*Order.*Confirmation.*"
-        - type: "SenderPattern"
-          pattern: ".*@(aol\\.com|gmail\\.com|yahoo\\.com|hotmail\\.com)$"
-    score: 45
+      type: "SubjectPattern"
+      pattern: ".*Order.*Confirmation.*"
+    score: 55
     action:
       type: "TagAsSpam"
       header_name: "X-Spam-Flag"
@@ -40,3 +36,13 @@ rules:
       header_name: "X-Spam-Flag"
       header_value: "YES"
     description: "Health spam with DKIM failures"
+  - name: "Account verification phishing"
+    criteria:
+      type: "SubjectPattern"
+      pattern: "(?i).*(verify.*account|account.*suspended|urgent.*action|immediate.*verification).*"
+    score: 30
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+    description: "Phishing attempts requesting account verification"
