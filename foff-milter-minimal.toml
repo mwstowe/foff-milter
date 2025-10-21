@@ -1,0 +1,33 @@
+# FOFF Milter - Minimal Production Configuration
+
+[system]
+socket_path = "/var/run/foff-milter.sock"
+
+[modules]
+enabled = true
+config_dir = "/etc/foff-milter/modules"
+
+[heuristics]
+reject_threshold = 100
+spam_threshold = 50
+accept_threshold = 0
+
+[whitelist]
+enabled = true
+addresses = []
+domains = ["paypal.com", "amazon.com", "github.com"]
+domain_patterns = [".*\\.gov$", ".*\\.edu$"]
+
+[blocklist]
+enabled = true
+addresses = []
+domains = []
+domain_patterns = [".*\\.tk$", ".*\\.ml$", ".*\\.ga$", ".*\\.cf$"]
+
+[statistics]
+enabled = true
+database_path = "/var/lib/foff-milter/stats.db"
+flush_interval_seconds = 60
+
+[default_action]
+type = "Accept"

@@ -1,0 +1,149 @@
+# FOFF Milter v0.5.2 - Complete Configuration Example
+# This file demonstrates all available configuration options
+
+# =============================================================================
+# SYSTEM CONFIGURATION
+# =============================================================================
+[system]
+# Unix socket path for milter communication
+socket_path = "/var/run/foff-milter.sock"
+
+# =============================================================================
+# LOGGING CONFIGURATION
+# =============================================================================
+[logging]
+# Log level: trace, debug, info, warn, error
+level = "info"
+
+# =============================================================================
+# MODULAR DETECTION SYSTEM
+# =============================================================================
+[modules]
+# Enable modular detection system
+enabled = true
+# Directory containing module configuration files
+config_dir = "/etc/foff-milter/modules"
+
+# =============================================================================
+# HEURISTIC SCORING SYSTEM
+# =============================================================================
+[heuristics]
+# Score threshold for REJECT action
+reject_threshold = 100
+# Score threshold for TAG AS SPAM action
+spam_threshold = 50
+# Score threshold for ACCEPT action (below this = accept)
+accept_threshold = 0
+
+# =============================================================================
+# GLOBAL WHITELIST
+# =============================================================================
+[whitelist]
+# Enable whitelist (highest priority - bypasses all checks)
+enabled = true
+
+# Exact email addresses to whitelist
+addresses = [
+    "noreply@paypal.com",
+    "security@amazon.com",
+    "notifications@github.com",
+    "alerts@microsoft.com",
+    "no-reply@google.com"
+]
+
+# Exact domains to whitelist
+domains = [
+    "paypal.com",
+    "amazon.com", 
+    "github.com",
+    "microsoft.com",
+    "google.com",
+    "apple.com"
+]
+
+# Domain patterns to whitelist (regex)
+domain_patterns = [
+    ".*\\.gov$",        # Government domains
+    ".*\\.edu$",        # Educational institutions
+    ".*\\.mil$",        # Military domains
+    ".*\\.bank$",       # Banking domains
+    ".*@.*\\.internal$" # Internal corporate domains
+]
+
+# =============================================================================
+# GLOBAL BLOCKLIST
+# =============================================================================
+[blocklist]
+# Enable blocklist (second priority - blocks before rule evaluation)
+enabled = true
+
+# Exact email addresses to block
+addresses = [
+    "spam@badactor.com",
+    "phishing@scammer.net",
+    "malware@suspicious.tk"
+]
+
+# Exact domains to block
+domains = [
+    "badactor.com",
+    "scammer.net",
+    "malware.tk",
+    "phishing-site.ml"
+]
+
+# Domain patterns to block (regex)
+domain_patterns = [
+    ".*\\.tk$",         # Tokelau (free domain)
+    ".*\\.ml$",         # Mali (free domain)
+    ".*\\.ga$",         # Gabon (free domain)
+    ".*\\.cf$",         # Central African Republic (free domain)
+    ".*\\.pw$",         # Palau (commonly abused)
+    ".*\\.top$",        # Generic (commonly abused)
+    ".*-phishing.*",    # Obvious phishing patterns
+    ".*malware.*"       # Obvious malware patterns
+]
+
+# =============================================================================
+# LEGACY YAML SUPPORT
+# =============================================================================
+[legacy]
+# Enable legacy YAML rule support (for migration)
+enabled = false
+# Path to legacy YAML configuration file
+config_file = "/etc/foff-milter/legacy-rules.yaml"
+
+# =============================================================================
+# STATISTICS & ANALYTICS
+# =============================================================================
+[statistics]
+# Enable statistics collection
+enabled = true
+# SQLite database path for statistics
+database_path = "/var/lib/foff-milter/stats.db"
+# How often to flush statistics to database (seconds)
+flush_interval_seconds = 60
+
+# =============================================================================
+# DEFAULT ACTION
+# =============================================================================
+[default_action]
+# Action to take when no rules match
+type = "Accept"
+
+# Alternative default actions:
+# type = "Reject"
+# message = "Message rejected by policy"
+#
+# type = "TagAsSpam"
+# header_name = "X-Spam-Flag"
+# header_value = "YES"
+
+# =============================================================================
+# PERFORMANCE TUNING
+# =============================================================================
+[performance]
+# Maximum number of concurrent emails to process
+max_concurrent_emails = 100
+# Timeout for email processing in seconds
+timeout_seconds = 30
