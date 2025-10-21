@@ -125,6 +125,10 @@ pub struct FilterRule {
     pub name: String,
     pub criteria: Criteria,
     pub action: Action,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub score: Option<i32>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub description: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -392,6 +396,8 @@ impl Default for Config {
                     action: Action::Reject {
                         message: "Mail from suspicious service rejected".to_string(),
                     },
+                    score: None,
+                    description: None,
                 },
                 FilterRule {
                     name: "Tag potential spam".to_string(),
@@ -402,6 +408,8 @@ impl Default for Config {
                         header_name: "X-Spam-Flag".to_string(),
                         header_value: "YES".to_string(),
                     },
+                    score: None,
+                    description: None,
                 },
             ],
             default_action: Action::Accept,

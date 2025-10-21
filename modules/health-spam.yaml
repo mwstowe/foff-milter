@@ -5,10 +5,8 @@ rules:
     criteria:
       type: "SubjectPattern"
       pattern: "(?i).*(miracle|doctors.*hate|chronic.*pain|overnight.*cure).*"
-    action:
-      type: "TagAsSpam"
-      header_name: "X-Spam-Flag"
-      header_value: "YES"
+    score: 35
+    description: "Medical misinformation and miracle cure claims"
   - name: "CVS Medicare phishing from free email"
     criteria:
       type: "And"
@@ -17,10 +15,8 @@ rules:
           pattern: ".*Order.*Confirmation.*"
         - type: "SenderPattern"
           pattern: ".*@(aol\\.com|gmail\\.com|yahoo\\.com|hotmail\\.com)$"
-    action:
-      type: "TagAsSpam"
-      header_name: "X-Spam-Flag"
-      header_value: "YES"
+    score: 45
+    description: "Order confirmations from free email providers"
   - name: "Tinnitus spam from suspicious domains"
     criteria:
       type: "And"
@@ -29,7 +25,5 @@ rules:
           pattern: ".*TINNITUS.*"
         - type: "HeaderPattern"
           pattern: ".*dkim=fail.*"
-    action:
-      type: "TagAsSpam"
-      header_name: "X-Spam-Flag"
-      header_value: "YES"
+    score: 40
+    description: "Health spam with DKIM failures"

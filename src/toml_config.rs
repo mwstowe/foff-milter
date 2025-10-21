@@ -8,6 +8,7 @@ pub struct TomlConfig {
     pub logging: Option<LoggingConfig>,
     pub statistics: Option<StatisticsConfig>,
     pub modules: Option<ModulesConfig>,
+    pub heuristics: Option<HeuristicsConfig>,
     pub legacy: Option<LegacyConfigRef>,
     pub default_action: DefaultActionConfig,
     pub performance: Option<PerformanceConfig>,
@@ -34,6 +35,13 @@ pub struct StatisticsConfig {
 pub struct ModulesConfig {
     pub enabled: bool,
     pub config_dir: String,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct HeuristicsConfig {
+    pub reject_threshold: i32,
+    pub spam_threshold: i32,
+    pub accept_threshold: i32,
 }
 
 #[derive(Debug, Deserialize, Serialize)]

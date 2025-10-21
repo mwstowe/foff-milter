@@ -1,11 +1,33 @@
 name: "Suspicious Domains"
 enabled: true
 rules:
-  - name: "Tag suspicious TLD domains"
+  - name: "High-risk TLD domains"
     criteria:
       type: "SenderPattern"
-      pattern: ".*@.*\\.(tk|ml|ga|cf|top|click|download|loan|racing|review|science|work|party|date|stream|trade|bid|win|cricket|accountant|faith|men|gq|cn)$"
+      pattern: ".*@.*\\.(tk|ml|ga|cf|gq|top|click|download|stream)$"
+    score: 40
     action:
       type: "TagAsSpam"
       header_name: "X-Spam-Flag"
       header_value: "YES"
+    description: "Domains using high-risk TLDs commonly used for spam"
+  - name: "Medium-risk TLD domains"
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*\\.(loan|racing|review|science|work|party|date|trade|bid|win|cricket|accountant|faith|men|cn)$"
+    score: 25
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+    description: "Domains using medium-risk TLDs"
+  - name: "Suspicious domain patterns"
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*(secure-|bank-|paypal-|amazon-|microsoft-).*"
+    score: 30
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+    description: "Domains mimicking legitimate services"

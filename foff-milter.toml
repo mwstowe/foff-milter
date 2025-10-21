@@ -8,6 +8,12 @@ socket_path = "/var/run/foff-milter.sock"
 enabled = true
 config_dir = "modules"
 
+[heuristics]
+# Score thresholds for actions
+reject_threshold = 100
+spam_threshold = 50
+accept_threshold = 0
+
 [legacy]
 enabled = false
 config_file = "/etc/foff-milter/legacy-rules.yaml"
