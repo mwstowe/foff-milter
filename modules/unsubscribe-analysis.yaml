@@ -5,6 +5,7 @@ rules:
     enabled: true
     criteria:
       type: "InvalidUnsubscribeHeaders"
+    score: 30
     action:
       type: "TagAsSpam"
       header_name: "X-FOFF-Unsubscribe"
@@ -18,6 +19,7 @@ rules:
       check_ipv4: true
       check_ipv6: true
       allow_private_ips: false
+    score: 40
     action:
       type: "TagAsSpam"
       header_name: "X-FOFF-Unsubscribe"
@@ -29,6 +31,7 @@ rules:
     criteria:
       type: "UnsubscribeMailtoOnly"
       allow_mixed: false
+    score: 25
     action:
       type: "TagAsSpam"
       header_name: "X-FOFF-Unsubscribe"
@@ -40,6 +43,7 @@ rules:
     criteria:
       type: "UnsubscribeLinkPattern"
       pattern: "(?i).*(bit\\.ly|tinyurl|t\\.co|goo\\.gl|short\\.link|click\\.here|unsubscribe.*\\d{10,}|remove.*[a-f0-9]{20,}).*"
+    score: 30
     action:
       type: "TagAsSpam"
       header_name: "X-FOFF-Unsubscribe"

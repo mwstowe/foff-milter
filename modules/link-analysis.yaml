@@ -12,6 +12,7 @@ rules:
         - "(?i).*(bit\\.ly|tinyurl|t\\.co|goo\\.gl|short\\.link).*"
         - "(?i).*(click.*here|urgent.*link|verify.*account|update.*payment).*"
         - "(?i).*(secure.*login|confirm.*identity|suspended.*account).*"
+    score: 35
     action:
       type: "TagAsSpam"
       header_name: "X-FOFF-Link"
@@ -25,6 +26,7 @@ rules:
       check_ip_addresses: true
       check_url_shorteners: false
       check_suspicious_tlds: false
+    score: 50
     action:
       type: "Reject"
       message: "Links using IP addresses are not allowed"
@@ -39,6 +41,7 @@ rules:
       check_ip_addresses: false
       suspicious_patterns:
         - "(?i).*\\.(tk|ml|ga|cf|pw|top|click|download)($|/)"
+    score: 30
     action:
       type: "TagAsSpam"
       header_name: "X-FOFF-Link"
