@@ -924,8 +924,8 @@ impl FilterEngine {
             headers_to_add.push((
                 "X-FOFF-Analysis".to_string(),
                 format!(
-                    "analyzed by foff-milter v{} (rules: {})",
-                    self.config.version, self.config.rule_set_timestamp
+                    "analyzed by foff-milter v{} (score: {})",
+                    self.config.version, total_score
                 ),
             ));
         } else {
@@ -943,9 +943,9 @@ impl FilterEngine {
                 headers_to_add.push((
                     "X-FOFF-Analysis".to_string(),
                     format!(
-                        "analyzed by foff-milter v{} (rules: {}) - matched: {}",
+                        "analyzed by foff-milter v{} (score: {}) - matched: {}",
                         self.config.version,
-                        self.config.rule_set_timestamp,
+                        total_score,
                         matched_rules.join(", ")
                     ),
                 ));
