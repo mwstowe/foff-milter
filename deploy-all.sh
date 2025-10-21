@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # FOFF Milter Complete Deployment Script
-# Builds, deploys binary, configs, and modules to multiple servers
+# Builds, deploys binary and modules to multiple servers (configs managed manually)
 
 set -e
 
@@ -35,11 +35,6 @@ for server_config in "${SERVERS[@]}"; do
     scp target/release/foff-milter "$server:/tmp/"
     ssh "$server" "sudo mv /tmp/foff-milter /usr/local/bin/ && sudo chown root:root /usr/local/bin/foff-milter && sudo chmod 755 /usr/local/bin/foff-milter"
     
-    # Deploy main TOML config
-    echo "⚙️  Deploying main configuration..."
-    scp foff-milter.toml "$server:/tmp/"
-    ssh "$server" "sudo mv /tmp/foff-milter.toml $remote_base_dir.toml && sudo chown root:root $remote_base_dir.toml && sudo chmod 644 $remote_base_dir.toml"
-    
     # Deploy all module files
     echo "📋 Deploying module configurations..."
     for module in $LOCAL_MODULES_DIR/*.yaml; do
@@ -54,11 +49,6 @@ for server_config in "${SERVERS[@]}"; do
     # Set proper ownership for runtime directories
     echo "🔐 Setting permissions..."
     ssh "$server" "sudo chown -R foff-milter:foff-milter /var/lib/foff-milter /var/log/foff-milter /var/run/foff-milter 2>/dev/null || true"
-    
-    # Test configuration
-    echo "🧪 Testing configuration..."
-    config_path="$remote_base_dir.toml"
-    ssh "$server" "sudo -u foff-milter /usr/local/bin/foff-milter --test-config -c $config_path 2>/dev/null || /usr/local/bin/foff-milter --test-config -c $config_path"
     
     # Restart service if it exists
     echo "🔄 Restarting service..."
@@ -88,6 +78,8 @@ done
 
 echo ""
 echo "🎯 Complete deployment successful!"
+echo ""
+echo "ℹ️  Note: Main config files are NOT overwritten - manage manually"
 echo ""
 echo "📊 Service status:"
 for server_config in "${SERVERS[@]}"; do

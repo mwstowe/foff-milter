@@ -37,11 +37,6 @@ for server_config in "${SERVERS[@]}"; do
         fi
     done
     
-    # Deploy main TOML config
-    echo "⚙️  Deploying main configuration..."
-    scp foff-milter.toml "$server:/tmp/"
-    ssh "$server" "sudo mv /tmp/foff-milter.toml $remote_base_dir.toml && sudo chown root:root $remote_base_dir.toml && sudo chmod 644 $remote_base_dir.toml"
-    
     # Verify deployment
     echo "✅ Verifying deployment on $server..."
     ssh "$server" "ls -la $remote_modules_dir/"
@@ -60,3 +55,5 @@ echo "      scp target/release/foff-milter juliett.example.com:/usr/local/bin/"
 echo "   3. Restart services:"
 echo "      ssh hotel 'sudo systemctl restart foff-milter'"
 echo "      ssh juliett.example.com 'sudo service foff-milter restart'"
+echo ""
+echo "ℹ️  Note: Main config files are NOT overwritten - manage manually"
