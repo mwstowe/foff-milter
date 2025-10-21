@@ -3,16 +3,11 @@ enabled: true
 rules:
   - name: "Mailer daemon spoofing"
     criteria:
-      type: "And"
-      criteria:
-        - type: "SenderPattern"
-          pattern: ".*MAILER-DAEMON.*"
-        - type: "HeaderPattern"
-          header: "Authentication-Results"
-          pattern: ".*dkim=fail.*"
-    score: 45
+      type: "SenderPattern"
+      pattern: ".*MAILER-DAEMON.*"
+    score: 60
     action:
       type: "TagAsSpam"
       header_name: "X-Spam-Flag"
       header_value: "YES"
-    description: "MAILER-DAEMON spoofing with DKIM failures"
+    description: "MAILER-DAEMON spoofing detection"

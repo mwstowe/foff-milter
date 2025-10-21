@@ -56,3 +56,13 @@ rules:
       header_name: "X-Spam-Flag"
       header_value: "YES"
     description: "Generic spam keyword detection"
+  - name: "Sweepstakes and contest fraud"
+    criteria:
+      type: "SubjectPattern"
+      pattern: "(?i).*(sweepstakes|you.*won|congratulations.*won|exclusive.*entry|qualify.*sweepstakes).*"
+    score: 50
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+    description: "Fraudulent sweepstakes and contest notifications"
