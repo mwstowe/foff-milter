@@ -633,7 +633,15 @@ async fn main() {
 
 fn load_config(path: &str) -> anyhow::Result<LegacyConfig> {
     if std::path::Path::new(path).exists() {
-        LegacyConfig::from_file(path)
+        // Check file extension to determine format
+        if path.ends_with(".toml") {
+            // Load TOML config and convert to legacy format
+            let toml_config = TomlConfig::load_from_file(path)?;
+            toml_config.to_legacy_config()
+        } else {
+            // Load legacy YAML config
+            LegacyConfig::from_file(path)
+        }
     } else {
         log::warn!("Configuration file '{path}' not found, using default configuration");
         Ok(LegacyConfig::default())
