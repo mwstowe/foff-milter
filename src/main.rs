@@ -2,7 +2,7 @@ use clap::{Arg, Command};
 use foff_milter::filter::FilterEngine;
 use foff_milter::milter::Milter;
 use foff_milter::statistics::StatisticsCollector;
-use foff_milter::toml_config::{TomlConfig, WhitelistConfig};
+use foff_milter::toml_config::{TomlConfig, WhitelistConfig, BlocklistConfig};
 use foff_milter::Config as LegacyConfig;
 use log::LevelFilter;
 use std::process;
@@ -137,8 +137,8 @@ async fn main() {
         return;
     }
 
-    let (config, whitelist_config) = match load_config(config_path) {
-        Ok((config, whitelist)) => (config, whitelist),
+    let (config, whitelist_config, blocklist_config) = match load_config(config_path) {
+        Ok((config, whitelist, blocklist)) => (config, whitelist, blocklist),
         Err(e) => {
             eprintln!("Error loading configuration: {e}");
             process::exit(1);
@@ -146,7 +146,7 @@ async fn main() {
     };
 
     if let Some(email_file) = matches.get_one::<String>("test-email") {
-        test_email_file(&config, &whitelist_config, email_file).await;
+        test_email_file(&config, &whitelist_config, &blocklist_config, email_file).await;
         return;
     }
 
@@ -198,6 +198,7 @@ async fn main() {
                 match FilterEngine::new(config.clone()) {
                     Ok(mut engine) => {
                         engine.set_whitelist_config(whitelist_config.clone());
+                        engine.set_blocklist_config(blocklist_config.clone());
                         println!("All regex patterns compiled successfully.");
                     }
                     Err(e) => {
@@ -634,7 +635,7 @@ async fn main() {
     }
 }
 
-fn load_config(path: &str) -> anyhow::Result<(LegacyConfig, Option<WhitelistConfig>)> {
+fn load_config(path: &str) -> anyhow::Result<(LegacyConfig, Option<WhitelistConfig>, Option<BlocklistConfig>)> {
     if std::path::Path::new(path).exists() {
         // Check file extension to determine format
         if path.ends_with(".toml") {
@@ -642,15 +643,16 @@ fn load_config(path: &str) -> anyhow::Result<(LegacyConfig, Option<WhitelistConf
             let toml_config = TomlConfig::load_from_file(path)?;
             let legacy_config = toml_config.to_legacy_config()?;
             let whitelist_config = toml_config.whitelist.clone();
-            Ok((legacy_config, whitelist_config))
+            let blocklist_config = toml_config.blocklist.clone();
+            Ok((legacy_config, whitelist_config, blocklist_config))
         } else {
             // Load legacy YAML config
             let legacy_config = LegacyConfig::from_file(path)?;
-            Ok((legacy_config, None))
+            Ok((legacy_config, None, None))
         }
     } else {
         log::warn!("Configuration file '{path}' not found, using default configuration");
-        Ok((LegacyConfig::default(), None))
+        Ok((LegacyConfig::default(), None, None))
     }
 }
 
@@ -784,7 +786,7 @@ fn truncate_string(s: &str, max_len: usize) -> String {
     }
 }
 
-async fn test_email_file(config: &LegacyConfig, whitelist_config: &Option<WhitelistConfig>, email_file: &str) {
+async fn test_email_file(config: &LegacyConfig, whitelist_config: &Option<WhitelistConfig>, blocklist_config: &Option<BlocklistConfig>, email_file: &str) {
     use foff_milter::filter::MailContext;
     use foff_milter::Action;
     use std::collections::HashMap;
@@ -893,6 +895,9 @@ async fn test_email_file(config: &LegacyConfig, whitelist_config: &Option<Whitel
 
     // Set whitelist configuration if available
     filter_engine.set_whitelist_config(whitelist_config.clone());
+    
+    // Set blocklist configuration if available
+    filter_engine.set_blocklist_config(blocklist_config.clone());
 
     // Create mail context
     let context = MailContext {

@@ -3,7 +3,7 @@ use crate::domain_age::DomainAgeChecker;
 use crate::language::LanguageDetector;
 use crate::legacy_config::{load_modules, Action, Config, Criteria, Module};
 use crate::milter::extract_email_from_header;
-use crate::toml_config::WhitelistConfig;
+use crate::toml_config::{WhitelistConfig, BlocklistConfig};
 
 use hickory_resolver::TokioAsyncResolver;
 use lazy_static::lazy_static;
@@ -39,6 +39,8 @@ pub struct FilterEngine {
     heuristic_spam: Action,
     // Whitelist configuration
     whitelist_config: Option<WhitelistConfig>,
+    // Blocklist configuration
+    blocklist_config: Option<BlocklistConfig>,
 }
 
 #[derive(Debug, Default, Clone)]
@@ -92,6 +94,7 @@ impl FilterEngine {
                 header_value: "YES".to_string(),
             },
             whitelist_config: None,
+            blocklist_config: None,
         };
 
         // Pre-compile all regex patterns for better performance
@@ -101,6 +104,78 @@ impl FilterEngine {
 
     pub fn set_whitelist_config(&mut self, whitelist_config: Option<WhitelistConfig>) {
         self.whitelist_config = whitelist_config;
+    }
+
+    pub fn set_blocklist_config(&mut self, blocklist_config: Option<BlocklistConfig>) {
+        self.blocklist_config = blocklist_config;
+    }
+
+    fn is_blocklisted(&self, context: &MailContext) -> bool {
+        if let Some(blocklist) = &self.blocklist_config {
+            if !blocklist.enabled {
+                return false;
+            }
+
+            // Check sender email address
+            if let Some(sender) = &context.sender {
+                // Check exact addresses
+                if blocklist.addresses.contains(sender) {
+                    log::info!("Email blocklisted by exact address: {}", sender);
+                    return true;
+                }
+
+                // Extract domain from sender
+                if let Some(domain) = extract_domain_from_email(sender) {
+                    // Check exact domains
+                    if blocklist.domains.contains(&domain) {
+                        log::info!("Email blocklisted by domain: {}", domain);
+                        return true;
+                    }
+
+                    // Check domain patterns
+                    for pattern in &blocklist.domain_patterns {
+                        if let Ok(regex) = Regex::new(pattern) {
+                            if regex.is_match(&domain) {
+                                log::info!("Email blocklisted by domain pattern '{}': {}", pattern, domain);
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Check From header if different from sender
+            if let Some(from_header) = &context.from_header {
+                if let Some(from_email) = extract_email_from_header(from_header) {
+                    // Check exact addresses
+                    if blocklist.addresses.contains(&from_email) {
+                        log::info!("Email blocklisted by From header address: {}", from_email);
+                        return true;
+                    }
+
+                    // Extract domain from From header
+                    if let Some(domain) = extract_domain_from_email(&from_email) {
+                        // Check exact domains
+                        if blocklist.domains.contains(&domain) {
+                            log::info!("Email blocklisted by From header domain: {}", domain);
+                            return true;
+                        }
+
+                        // Check domain patterns
+                        for pattern in &blocklist.domain_patterns {
+                            if let Ok(regex) = Regex::new(pattern) {
+                                if regex.is_match(&domain) {
+                                    log::info!("Email blocklisted by From header domain pattern '{}': {}", pattern, domain);
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        false
     }
 
     fn is_whitelisted(&self, context: &MailContext) -> bool {
@@ -621,6 +696,12 @@ impl FilterEngine {
         if self.is_whitelisted(context) {
             log::info!("Email whitelisted, accepting without further processing");
             return (&self.config.default_action, vec!["Whitelisted".to_string()], vec![]);
+        }
+
+        // Check blocklist second - if blocklisted, reject immediately
+        if self.is_blocklisted(context) {
+            log::info!("Email blocklisted, rejecting immediately");
+            return (&self.heuristic_reject, vec!["Blocklisted".to_string()], vec![]);
         }
 
         let mut matched_rules = Vec::new();

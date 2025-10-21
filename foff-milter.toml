@@ -36,6 +36,27 @@ domain_patterns = [
     ".*\\.mil$"
 ]
 
+[blocklist]
+enabled = true
+# Exact email addresses to block
+addresses = [
+    "spam@badactor.com",
+    "phishing@scammer.net"
+]
+# Domains to block (exact match)
+domains = [
+    "badactor.com",
+    "scammer.net",
+    "malware.tk"
+]
+# Domain patterns to block (regex)
+domain_patterns = [
+    ".*\\.tk$",
+    ".*\\.ml$",
+    ".*\\.ga$",
+    ".*\\.cf$"
+]
+
 [legacy]
 enabled = false
 config_file = "/etc/foff-milter/legacy-rules.yaml"

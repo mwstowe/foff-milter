@@ -10,6 +10,7 @@ pub struct TomlConfig {
     pub modules: Option<ModulesConfig>,
     pub heuristics: Option<HeuristicsConfig>,
     pub whitelist: Option<WhitelistConfig>,
+    pub blocklist: Option<BlocklistConfig>,
     pub legacy: Option<LegacyConfigRef>,
     pub default_action: DefaultActionConfig,
     pub performance: Option<PerformanceConfig>,
@@ -47,6 +48,14 @@ pub struct HeuristicsConfig {
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct WhitelistConfig {
+    pub enabled: bool,
+    pub addresses: Vec<String>,
+    pub domains: Vec<String>,
+    pub domain_patterns: Vec<String>,
+}
+
+#[derive(Debug, Deserialize, Serialize, Clone)]
+pub struct BlocklistConfig {
     pub enabled: bool,
     pub addresses: Vec<String>,
     pub domains: Vec<String>,
