@@ -1,23 +1,38 @@
 name: "Link Analysis"
 enabled: true
 rules:
-  - name: "Suspicious Link Patterns"
+  - name: "Suspicious Link Patterns (External Only)"
     enabled: true
     criteria:
       type: "PhishingSuspiciousLinks"
       check_url_shorteners: true
-      check_suspicious_tlds: true
-      check_ip_addresses: true
+      check_suspicious_tlds: false
+      check_ip_addresses: false
+      allow_sender_domain: true
+      allow_email_infrastructure: true
+      email_infrastructure_domains:
+        - "mailchimp.com"
+        - "constantcontact.com"
+        - "sendgrid.net"
+        - "mailgun.org"
+        - "amazonses.com"
+        - "outlook.com"
+        - "gmail.com"
+        - "google.com"
+        - "microsoft.com"
+        - "salesforce.com"
+        - "hubspot.com"
+        - "marketo.com"
       suspicious_patterns:
         - "(?i).*(bit\\.ly|tinyurl|t\\.co|goo\\.gl|short\\.link).*"
         - "(?i).*(click.*here|urgent.*link|verify.*account|update.*payment).*"
         - "(?i).*(secure.*login|confirm.*identity|suspended.*account).*"
-    score: 35
+    score: 25
     action:
       type: "TagAsSpam"
       header_name: "X-FOFF-Link"
-      header_value: "Suspicious-Pattern"
-    description: "Detects URL shorteners and suspicious link patterns"
+      header_value: "Suspicious-External-Pattern"
+    description: "Detects suspicious patterns in links to external domains (excludes sender domain and email infrastructure)"
 
   - name: "Links Using IP Addresses"
     enabled: true
@@ -26,24 +41,54 @@ rules:
       check_ip_addresses: true
       check_url_shorteners: false
       check_suspicious_tlds: false
+      allow_sender_domain: false
+      allow_email_infrastructure: false
     score: 50
     action:
       type: "Reject"
       message: "Links using IP addresses are not allowed"
-    description: "Legitimate sites use domains, not raw IP addresses"
+    description: "IP addresses in links are always suspicious regardless of sender"
 
-  - name: "Suspicious TLD Links"
+  - name: "Suspicious TLD Links (External Only)"
     enabled: true
     criteria:
       type: "PhishingSuspiciousLinks"
       check_suspicious_tlds: true
       check_url_shorteners: false
       check_ip_addresses: false
+      allow_sender_domain: true
+      allow_email_infrastructure: true
+      email_infrastructure_domains:
+        - "mailchimp.com"
+        - "constantcontact.com"
+        - "sendgrid.net"
+        - "mailgun.org"
+        - "amazonses.com"
       suspicious_patterns:
         - "(?i).*\\.(tk|ml|ga|cf|pw|top|click|download)($|/)"
+    score: 20
+    action:
+      type: "TagAsSpam"
+      header_name: "X-FOFF-Link"
+      header_value: "Suspicious-External-TLD"
+    description: "Links to suspicious TLDs from external domains (excludes sender domain and email infrastructure)"
+
+  - name: "Phishing Link Text Patterns"
+    enabled: true
+    criteria:
+      type: "PhishingSuspiciousLinks"
+      check_url_shorteners: false
+      check_suspicious_tlds: false
+      check_ip_addresses: false
+      allow_sender_domain: false
+      allow_email_infrastructure: false
+      suspicious_patterns:
+        - "(?i).*(urgent.*action|account.*suspended|verify.*now|click.*immediately).*"
+        - "(?i).*(security.*alert|unusual.*activity|confirm.*payment|update.*billing).*"
+        - "(?i).*(limited.*time|act.*now|expires.*today|final.*notice).*"
     score: 30
     action:
       type: "TagAsSpam"
       header_name: "X-FOFF-Link"
-      header_value: "Suspicious-TLD"
-    description: "Links to domains with suspicious or free TLDs"
+      header_value: "Phishing-Text-Pattern"
+    description: "Detects phishing-style link text regardless of destination domain"
