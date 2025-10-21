@@ -4,21 +4,31 @@ rules:
   - name: "Medical miracle cure spam"
     criteria:
       type: "SubjectPattern"
-      pattern: "(?i).*(miracle.*cure|doctors.*hate|breakthrough.*cure|chronic.*pain|overnight.*cure).*"
+      pattern: "(?i).*(miracle|doctors.*hate|chronic.*pain|overnight.*cure).*"
     action:
       type: "TagAsSpam"
       header_name: "X-Spam-Flag"
       header_value: "YES"
-  - name: "CVS Medicare phishing with DKIM failure"
+  - name: "CVS Medicare phishing from free email"
     criteria:
       type: "And"
       criteria:
         - type: "SubjectPattern"
-          pattern: "(?i).*(order.*confirmation|confirmation).*"
-        - type: "HeaderPattern"
-          pattern: "(?i).*dkim=fail.*"
+          pattern: ".*Order.*Confirmation.*"
         - type: "SenderPattern"
           pattern: ".*@(aol\\.com|gmail\\.com|yahoo\\.com|hotmail\\.com)$"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+  - name: "Tinnitus spam from suspicious domains"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*TINNITUS.*"
+        - type: "HeaderPattern"
+          pattern: ".*dkim=fail.*"
     action:
       type: "TagAsSpam"
       header_name: "X-Spam-Flag"

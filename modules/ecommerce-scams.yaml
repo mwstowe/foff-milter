@@ -1,3 +1,27 @@
 name: "Ecommerce Scams"
 enabled: true
-rules: []
+rules:
+  - name: "OneStopPlus customer service impersonation"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*OneStopPlus.*"
+        - type: "SubjectPattern"
+          pattern: ".*Items.*never.*arrived.*"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+  - name: "ZoomCare marketing impersonation"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*ZoomCare.*"
+        - type: "SubjectPattern"
+          pattern: ".*flu.*shot.*"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"

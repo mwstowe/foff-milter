@@ -1,3 +1,11 @@
 name: "Financial Services"
 enabled: true
-rules: []
+rules:
+  - name: "Get rich quick scams"
+    criteria:
+      type: "SubjectPattern"
+      pattern: ".*(get.*rich.*quick|guaranteed.*income|make.*money.*fast|work.*from.*home.*opportunity).*"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
