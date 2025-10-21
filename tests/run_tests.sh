@@ -2,8 +2,6 @@
 # FOFF Milter Test Suite
 # Tests both positive (should be caught) and negative (should pass) cases
 
-set -e
-
 # Change to parent directory so relative paths work
 cd "$(dirname "$0")/.."
 
@@ -28,11 +26,20 @@ if [ ! -f "$CONFIG" ]; then
     exit 1
 fi
 
-echo "📧 Testing positive cases (should be caught)..."
+echo "🔧 Testing configuration validation..."
+if $BINARY --test-config -c "$CONFIG" >/dev/null 2>&1; then
+    echo "✅ Configuration is valid"
+    ((PASSED++))
+else
+    echo "❌ Configuration is invalid"
+    ((FAILED++))
+fi
+
+echo
 for email in tests/positive/*.eml; do
     if [ -f "$email" ]; then
         echo -n "Testing $(basename "$email"): "
-        output=$($BINARY --test-email "$email" -c "$CONFIG" 2>/dev/null)
+        output=$($BINARY --test-email "$email" -c "$CONFIG" 2>/dev/null || true)
         if echo "$output" | grep -q "Result: TAG AS SPAM\|Result: REJECT"; then
             echo "✅ CAUGHT"
             ((PASSED++))
@@ -48,7 +55,7 @@ echo "📧 Testing negative cases (should pass)..."
 for email in tests/negative/*.eml; do
     if [ -f "$email" ]; then
         echo -n "Testing $(basename "$email"): "
-        output=$($BINARY --test-email "$email" -c "$CONFIG" 2>/dev/null)
+        output=$($BINARY --test-email "$email" -c "$CONFIG" 2>/dev/null || true)
         if echo "$output" | grep -q "Result: ACCEPT"; then
             echo "✅ PASSED"
             ((PASSED++))
@@ -63,7 +70,10 @@ echo
 echo "📊 Test Results:"
 echo "✅ Passed: $PASSED"
 echo "❌ Failed: $FAILED"
-echo "📈 Success Rate: $(( PASSED * 100 / (PASSED + FAILED) ))%"
+
+if [ $((PASSED + FAILED)) -gt 0 ]; then
+    echo "📈 Success Rate: $(( PASSED * 100 / (PASSED + FAILED) ))%"
+fi
 
 if [ $FAILED -eq 0 ]; then
     echo "🎉 All tests passed!"
