@@ -33,6 +33,9 @@ pub struct FilterEngine {
     compiled_patterns: HashMap<String, Regex>,
     #[allow(dead_code)] // TODO: Implement full abuse reporting integration
     abuse_reporter: AbuseReporter,
+    // Heuristic actions
+    heuristic_reject: Action,
+    heuristic_spam: Action,
 }
 
 #[derive(Debug, Default, Clone)]
@@ -78,6 +81,13 @@ impl FilterEngine {
             config,
             modules,
             compiled_patterns: HashMap::new(),
+            heuristic_reject: Action::Reject {
+                message: "Message rejected by heuristic analysis".to_string(),
+            },
+            heuristic_spam: Action::TagAsSpam {
+                header_name: "X-Spam-Flag".to_string(),
+                header_value: "YES".to_string(),
+            },
         };
 
         // Pre-compile all regex patterns for better performance
@@ -535,6 +545,8 @@ impl FilterEngine {
         let mut all_actions = Vec::new();
         let mut final_action = &self.config.default_action;
         let mut headers_to_add = Vec::new();
+        let mut total_score = 0i32;
+        let mut scoring_rules = Vec::new();
 
         // Process modules first if modular system is enabled
         if !self.modules.is_empty() {
@@ -554,40 +566,70 @@ impl FilterEngine {
                     );
 
                     if matches {
-                        log::info!(
-                            "Module '{}' Rule {} '{}' matched, collecting action: {:?}",
-                            module.name,
-                            rule_index + 1,
-                            rule.name,
-                            rule.action
-                        );
                         matched_rules.push(format!("{}: {}", module.name, rule.name));
-                        all_actions.push(&rule.action);
+                        
+                        // Accumulate score if present
+                        if let Some(score) = rule.score {
+                            total_score += score;
+                            scoring_rules.push(format!("{}: {} (+{})", module.name, rule.name, score));
+                            log::info!(
+                                "Module '{}' Rule '{}' matched, score: +{}, total: {}",
+                                module.name, rule.name, score, total_score
+                            );
+                        } else {
+                            // Fallback to action-based for rules without scores
+                            all_actions.push(&rule.action);
+                            log::info!(
+                                "Module '{}' Rule '{}' matched, action: {:?}",
+                                module.name, rule.name, rule.action
+                            );
+                            
+                            // Handle action precedence for non-scoring rules
+                            match &rule.action {
+                                Action::Accept => {
+                                    final_action = &rule.action;
+                                    break; // Stop processing on Accept
+                                }
+                                Action::Reject { .. } => {
+                                    final_action = &rule.action;
+                                }
+                                Action::TagAsSpam { .. } => {
+                                    if matches!(final_action, Action::Accept) {
+                                        final_action = &rule.action;
+                                    }
+                                }
+                                _ => {}
+                            }
+                        }
 
                         // Add module-specific header
                         headers_to_add.push((
                             "X-FOFF-Module-Matched".to_string(),
                             format!("{}: {}", module.name, rule.name),
                         ));
-
-                        // Handle action precedence
-                        match &rule.action {
-                            Action::Accept => {
-                                final_action = &rule.action;
-                                break; // Stop processing on Accept
-                            }
-                            Action::Reject { .. } => {
-                                final_action = &rule.action;
-                                // Continue processing other modules
-                            }
-                            Action::TagAsSpam { .. } => {
-                                if matches!(final_action, Action::Accept) {
-                                    final_action = &rule.action;
-                                }
-                            }
-                            _ => {}
-                        }
                     }
+                }
+            }
+
+            // Apply heuristic scoring if we have scoring rules
+            if !scoring_rules.is_empty() {
+                log::info!("Heuristic evaluation: total_score={}, rules: [{}]", total_score, scoring_rules.join(", "));
+                
+                // Add score header
+                headers_to_add.push((
+                    "X-FOFF-Score".to_string(),
+                    format!("{}", total_score),
+                ));
+                
+                // Determine action based on thresholds (hardcoded for now)
+                if total_score >= 100 {
+                    final_action = &self.heuristic_reject;
+                    log::info!("Heuristic result: REJECT (score {} >= 100)", total_score);
+                } else if total_score >= 50 {
+                    final_action = &self.heuristic_spam;
+                    log::info!("Heuristic result: TAG AS SPAM (score {} >= 50)", total_score);
+                } else {
+                    log::info!("Heuristic result: ACCEPT (score {} < 50)", total_score);
                 }
             }
 
