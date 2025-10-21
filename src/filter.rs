@@ -3,6 +3,7 @@ use crate::domain_age::DomainAgeChecker;
 use crate::language::LanguageDetector;
 use crate::legacy_config::{load_modules, Action, Config, Criteria, Module};
 use crate::milter::extract_email_from_header;
+use crate::toml_config::WhitelistConfig;
 
 use hickory_resolver::TokioAsyncResolver;
 use lazy_static::lazy_static;
@@ -36,6 +37,8 @@ pub struct FilterEngine {
     // Heuristic actions
     heuristic_reject: Action,
     heuristic_spam: Action,
+    // Whitelist configuration
+    whitelist_config: Option<WhitelistConfig>,
 }
 
 #[derive(Debug, Default, Clone)]
@@ -88,11 +91,84 @@ impl FilterEngine {
                 header_name: "X-Spam-Flag".to_string(),
                 header_value: "YES".to_string(),
             },
+            whitelist_config: None,
         };
 
         // Pre-compile all regex patterns for better performance
         engine.compile_patterns()?;
         Ok(engine)
+    }
+
+    pub fn set_whitelist_config(&mut self, whitelist_config: Option<WhitelistConfig>) {
+        self.whitelist_config = whitelist_config;
+    }
+
+    fn is_whitelisted(&self, context: &MailContext) -> bool {
+        if let Some(whitelist) = &self.whitelist_config {
+            if !whitelist.enabled {
+                return false;
+            }
+
+            // Check sender email address
+            if let Some(sender) = &context.sender {
+                // Check exact addresses
+                if whitelist.addresses.contains(sender) {
+                    log::info!("Email whitelisted by exact address: {}", sender);
+                    return true;
+                }
+
+                // Extract domain from sender
+                if let Some(domain) = extract_domain_from_email(sender) {
+                    // Check exact domains
+                    if whitelist.domains.contains(&domain) {
+                        log::info!("Email whitelisted by domain: {}", domain);
+                        return true;
+                    }
+
+                    // Check domain patterns
+                    for pattern in &whitelist.domain_patterns {
+                        if let Ok(regex) = Regex::new(pattern) {
+                            if regex.is_match(&domain) {
+                                log::info!("Email whitelisted by domain pattern '{}': {}", pattern, domain);
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Check From header if different from sender
+            if let Some(from_header) = &context.from_header {
+                if let Some(from_email) = extract_email_from_header(from_header) {
+                    // Check exact addresses
+                    if whitelist.addresses.contains(&from_email) {
+                        log::info!("Email whitelisted by From header address: {}", from_email);
+                        return true;
+                    }
+
+                    // Extract domain from From header
+                    if let Some(domain) = extract_domain_from_email(&from_email) {
+                        // Check exact domains
+                        if whitelist.domains.contains(&domain) {
+                            log::info!("Email whitelisted by From header domain: {}", domain);
+                            return true;
+                        }
+
+                        // Check domain patterns
+                        for pattern in &whitelist.domain_patterns {
+                            if let Ok(regex) = Regex::new(pattern) {
+                                if regex.is_match(&domain) {
+                                    log::info!("Email whitelisted by From header domain pattern '{}': {}", pattern, domain);
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        false
     }
 
     /// Clean expired entries from the validation cache
@@ -541,6 +617,12 @@ impl FilterEngine {
         &self,
         context: &MailContext,
     ) -> (&Action, Vec<String>, Vec<(String, String)>) {
+        // Check whitelist first - if whitelisted, accept immediately
+        if self.is_whitelisted(context) {
+            log::info!("Email whitelisted, accepting without further processing");
+            return (&self.config.default_action, vec!["Whitelisted".to_string()], vec![]);
+        }
+
         let mut matched_rules = Vec::new();
         let mut all_actions = Vec::new();
         let mut final_action = &self.config.default_action;

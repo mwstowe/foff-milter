@@ -14,6 +14,28 @@ reject_threshold = 100
 spam_threshold = 50
 accept_threshold = 0
 
+[whitelist]
+enabled = true
+# Exact email addresses to whitelist
+addresses = [
+    "noreply@paypal.com",
+    "security@amazon.com",
+    "notifications@github.com"
+]
+# Domains to whitelist (exact match)
+domains = [
+    "paypal.com",
+    "amazon.com", 
+    "github.com",
+    "microsoft.com"
+]
+# Domain patterns to whitelist (regex)
+domain_patterns = [
+    ".*\\.gov$",
+    ".*\\.edu$",
+    ".*\\.mil$"
+]
+
 [legacy]
 enabled = false
 config_file = "/etc/foff-milter/legacy-rules.yaml"

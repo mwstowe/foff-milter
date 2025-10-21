@@ -9,6 +9,7 @@ pub struct TomlConfig {
     pub statistics: Option<StatisticsConfig>,
     pub modules: Option<ModulesConfig>,
     pub heuristics: Option<HeuristicsConfig>,
+    pub whitelist: Option<WhitelistConfig>,
     pub legacy: Option<LegacyConfigRef>,
     pub default_action: DefaultActionConfig,
     pub performance: Option<PerformanceConfig>,
@@ -42,6 +43,14 @@ pub struct HeuristicsConfig {
     pub reject_threshold: i32,
     pub spam_threshold: i32,
     pub accept_threshold: i32,
+}
+
+#[derive(Debug, Deserialize, Serialize, Clone)]
+pub struct WhitelistConfig {
+    pub enabled: bool,
+    pub addresses: Vec<String>,
+    pub domains: Vec<String>,
+    pub domain_patterns: Vec<String>,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
