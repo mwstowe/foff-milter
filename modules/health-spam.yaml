@@ -4,7 +4,7 @@ rules:
   - name: "Medical miracle cure spam"
     criteria:
       type: "SubjectPattern"
-      pattern: "(?i).*(miracle|doctors.*hate|chronic.*pain|overnight.*cure).*"
+      pattern: "(?i).*(miracle|doctors.*hate|chronic.*pain|overnight.*cure|health.*breakthrough|amazing.*health|revolutionary.*product|secret.*health).*"
     score: 55
     action:
       type: "TagAsSpam"
@@ -25,12 +25,13 @@ rules:
     criteria:
       type: "And"
       criteria:
-        - type: "SenderPattern"
+        - type: "HeaderPattern"
+          header: "From"
           pattern: ".*TINNITUS.*"
         - type: "HeaderPattern"
           header: "Authentication-Results"
           pattern: ".*dkim=fail.*"
-    score: 40
+    score: 60
     action:
       type: "TagAsSpam"
       header_name: "X-Spam-Flag"
@@ -66,3 +67,13 @@ rules:
       header_name: "X-Spam-Flag"
       header_value: "YES"
     description: "Fraudulent sweepstakes and contest notifications"
+  - name: "Tinnitus health spam"
+    criteria:
+      type: "SubjectPattern"
+      pattern: "(?i).*(tinnitus|ear.*ringing|hearing.*loss|turns.*off.*tinnitus).*"
+    score: 55
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+    description: "Tinnitus and hearing-related health spam"
