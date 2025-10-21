@@ -15,7 +15,6 @@ pub struct TomlConfig {
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct SystemConfig {
-    pub version: String,
     pub socket_path: String,
 }
 
@@ -74,7 +73,7 @@ impl TomlConfig {
             module_config_dir: None,
             rules: vec![],
             smtp: None,
-            version: self.system.version.clone(),
+            version: env!("CARGO_PKG_VERSION").to_string(),
             rule_set_timestamp: chrono::Utc::now().format("%Y-%m-%d %H:%M:%S UTC").to_string(),
         };
 
