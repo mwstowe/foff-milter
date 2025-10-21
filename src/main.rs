@@ -2,7 +2,7 @@ use clap::{Arg, Command};
 use foff_milter::filter::FilterEngine;
 use foff_milter::milter::Milter;
 use foff_milter::statistics::StatisticsCollector;
-use foff_milter::toml_config::{TomlConfig, WhitelistConfig, BlocklistConfig};
+use foff_milter::toml_config::{BlocklistConfig, TomlConfig, WhitelistConfig};
 use foff_milter::Config as LegacyConfig;
 use log::LevelFilter;
 use std::process;
@@ -635,7 +635,13 @@ async fn main() {
     }
 }
 
-fn load_config(path: &str) -> anyhow::Result<(LegacyConfig, Option<WhitelistConfig>, Option<BlocklistConfig>)> {
+fn load_config(
+    path: &str,
+) -> anyhow::Result<(
+    LegacyConfig,
+    Option<WhitelistConfig>,
+    Option<BlocklistConfig>,
+)> {
     if std::path::Path::new(path).exists() {
         // Check file extension to determine format
         if path.ends_with(".toml") {
@@ -786,7 +792,12 @@ fn truncate_string(s: &str, max_len: usize) -> String {
     }
 }
 
-async fn test_email_file(config: &LegacyConfig, whitelist_config: &Option<WhitelistConfig>, blocklist_config: &Option<BlocklistConfig>, email_file: &str) {
+async fn test_email_file(
+    config: &LegacyConfig,
+    whitelist_config: &Option<WhitelistConfig>,
+    blocklist_config: &Option<BlocklistConfig>,
+    email_file: &str,
+) {
     use foff_milter::filter::MailContext;
     use foff_milter::Action;
     use std::collections::HashMap;
@@ -895,7 +906,7 @@ async fn test_email_file(config: &LegacyConfig, whitelist_config: &Option<Whitel
 
     // Set whitelist configuration if available
     filter_engine.set_whitelist_config(whitelist_config.clone());
-    
+
     // Set blocklist configuration if available
     filter_engine.set_blocklist_config(blocklist_config.clone());
 

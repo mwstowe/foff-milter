@@ -1,6 +1,6 @@
+use crate::legacy_config::{Action, Config as LegacyConfig};
 use serde::{Deserialize, Serialize};
 use std::path::Path;
-use crate::legacy_config::{Config as LegacyConfig, Action};
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct TomlConfig {
@@ -100,16 +100,20 @@ impl TomlConfig {
             rules: vec![],
             smtp: None,
             version: env!("CARGO_PKG_VERSION").to_string(),
-            rule_set_timestamp: chrono::Utc::now().format("%Y-%m-%d %H:%M:%S UTC").to_string(),
+            rule_set_timestamp: chrono::Utc::now()
+                .format("%Y-%m-%d %H:%M:%S UTC")
+                .to_string(),
         };
 
         // Set default action
         legacy_config.default_action = match self.default_action.action_type.as_str() {
             "Accept" => Action::Accept,
-            "Reject" => Action::Reject { message: "Rejected by policy".to_string() },
-            "TagAsSpam" => Action::TagAsSpam { 
-                header_name: "X-Spam-Flag".to_string(), 
-                header_value: "YES".to_string() 
+            "Reject" => Action::Reject {
+                message: "Rejected by policy".to_string(),
+            },
+            "TagAsSpam" => Action::TagAsSpam {
+                header_name: "X-Spam-Flag".to_string(),
+                header_value: "YES".to_string(),
             },
             _ => Action::Accept,
         };

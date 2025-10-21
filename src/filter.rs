@@ -3,7 +3,7 @@ use crate::domain_age::DomainAgeChecker;
 use crate::language::LanguageDetector;
 use crate::legacy_config::{load_modules, Action, Config, Criteria, Module};
 use crate::milter::extract_email_from_header;
-use crate::toml_config::{WhitelistConfig, BlocklistConfig};
+use crate::toml_config::{BlocklistConfig, WhitelistConfig};
 
 use hickory_resolver::TokioAsyncResolver;
 use lazy_static::lazy_static;
@@ -136,7 +136,11 @@ impl FilterEngine {
                     for pattern in &blocklist.domain_patterns {
                         if let Ok(regex) = Regex::new(pattern) {
                             if regex.is_match(&domain) {
-                                log::info!("Email blocklisted by domain pattern '{}': {}", pattern, domain);
+                                log::info!(
+                                    "Email blocklisted by domain pattern '{}': {}",
+                                    pattern,
+                                    domain
+                                );
                                 return true;
                             }
                         }
@@ -165,7 +169,11 @@ impl FilterEngine {
                         for pattern in &blocklist.domain_patterns {
                             if let Ok(regex) = Regex::new(pattern) {
                                 if regex.is_match(&domain) {
-                                    log::info!("Email blocklisted by From header domain pattern '{}': {}", pattern, domain);
+                                    log::info!(
+                                        "Email blocklisted by From header domain pattern '{}': {}",
+                                        pattern,
+                                        domain
+                                    );
                                     return true;
                                 }
                             }
@@ -204,7 +212,11 @@ impl FilterEngine {
                     for pattern in &whitelist.domain_patterns {
                         if let Ok(regex) = Regex::new(pattern) {
                             if regex.is_match(&domain) {
-                                log::info!("Email whitelisted by domain pattern '{}': {}", pattern, domain);
+                                log::info!(
+                                    "Email whitelisted by domain pattern '{}': {}",
+                                    pattern,
+                                    domain
+                                );
                                 return true;
                             }
                         }
@@ -233,7 +245,11 @@ impl FilterEngine {
                         for pattern in &whitelist.domain_patterns {
                             if let Ok(regex) = Regex::new(pattern) {
                                 if regex.is_match(&domain) {
-                                    log::info!("Email whitelisted by From header domain pattern '{}': {}", pattern, domain);
+                                    log::info!(
+                                        "Email whitelisted by From header domain pattern '{}': {}",
+                                        pattern,
+                                        domain
+                                    );
                                     return true;
                                 }
                             }
@@ -695,13 +711,21 @@ impl FilterEngine {
         // Check whitelist first - if whitelisted, accept immediately
         if self.is_whitelisted(context) {
             log::info!("Email whitelisted, accepting without further processing");
-            return (&self.config.default_action, vec!["Whitelisted".to_string()], vec![]);
+            return (
+                &self.config.default_action,
+                vec!["Whitelisted".to_string()],
+                vec![],
+            );
         }
 
         // Check blocklist second - if blocklisted, reject immediately
         if self.is_blocklisted(context) {
             log::info!("Email blocklisted, rejecting immediately");
-            return (&self.heuristic_reject, vec!["Blocklisted".to_string()], vec![]);
+            return (
+                &self.heuristic_reject,
+                vec!["Blocklisted".to_string()],
+                vec![],
+            );
         }
 
         let mut matched_rules = Vec::new();
@@ -730,23 +754,29 @@ impl FilterEngine {
 
                     if matches {
                         matched_rules.push(format!("{}: {}", module.name, rule.name));
-                        
+
                         // Accumulate score if present
                         if let Some(score) = rule.score {
                             total_score += score;
-                            scoring_rules.push(format!("{}: {} (+{})", module.name, rule.name, score));
+                            scoring_rules
+                                .push(format!("{}: {} (+{})", module.name, rule.name, score));
                             log::info!(
                                 "Module '{}' Rule '{}' matched, score: +{}, total: {}",
-                                module.name, rule.name, score, total_score
+                                module.name,
+                                rule.name,
+                                score,
+                                total_score
                             );
                         } else {
                             // Fallback to action-based for rules without scores
                             all_actions.push(&rule.action);
                             log::info!(
                                 "Module '{}' Rule '{}' matched, action: {:?}",
-                                module.name, rule.name, rule.action
+                                module.name,
+                                rule.name,
+                                rule.action
                             );
-                            
+
                             // Handle action precedence for non-scoring rules
                             match &rule.action {
                                 Action::Accept => {
@@ -776,21 +806,25 @@ impl FilterEngine {
 
             // Apply heuristic scoring if we have scoring rules
             if !scoring_rules.is_empty() {
-                log::info!("Heuristic evaluation: total_score={}, rules: [{}]", total_score, scoring_rules.join(", "));
-                
+                log::info!(
+                    "Heuristic evaluation: total_score={}, rules: [{}]",
+                    total_score,
+                    scoring_rules.join(", ")
+                );
+
                 // Add score header
-                headers_to_add.push((
-                    "X-FOFF-Score".to_string(),
-                    format!("{}", total_score),
-                ));
-                
+                headers_to_add.push(("X-FOFF-Score".to_string(), format!("{}", total_score)));
+
                 // Determine action based on thresholds (hardcoded for now)
                 if total_score >= 100 {
                     final_action = &self.heuristic_reject;
                     log::info!("Heuristic result: REJECT (score {} >= 100)", total_score);
                 } else if total_score >= 50 {
                     final_action = &self.heuristic_spam;
-                    log::info!("Heuristic result: TAG AS SPAM (score {} >= 50)", total_score);
+                    log::info!(
+                        "Heuristic result: TAG AS SPAM (score {} >= 50)",
+                        total_score
+                    );
                 } else {
                     log::info!("Heuristic result: ACCEPT (score {} < 50)", total_score);
                 }
