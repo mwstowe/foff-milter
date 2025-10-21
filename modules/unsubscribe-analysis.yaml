@@ -1,0 +1,47 @@
+name: "Unsubscribe Analysis"
+enabled: true
+rules:
+  - name: "Invalid Unsubscribe Headers"
+    enabled: true
+    criteria:
+      type: "InvalidUnsubscribeHeaders"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-FOFF-Unsubscribe"
+      header_value: "Invalid-Headers"
+    description: "Detects RFC violation: List-Unsubscribe-Post without List-Unsubscribe header"
+
+  - name: "Unsubscribe Link Uses IP Address"
+    enabled: true
+    criteria:
+      type: "UnsubscribeLinkIPAddress"
+      check_ipv4: true
+      check_ipv6: true
+      allow_private_ips: false
+    action:
+      type: "TagAsSpam"
+      header_name: "X-FOFF-Unsubscribe"
+      header_value: "IP-Address-Link"
+    description: "Legitimate businesses use domains, not IP addresses for unsubscribe links"
+
+  - name: "Mailto-Only Unsubscribe Links"
+    enabled: true
+    criteria:
+      type: "UnsubscribeMailtoOnly"
+      allow_mixed: false
+    action:
+      type: "TagAsSpam"
+      header_name: "X-FOFF-Unsubscribe"
+      header_value: "Mailto-Only"
+    description: "Suspicious when ALL unsubscribe links are mailto: instead of HTTP"
+
+  - name: "Suspicious Unsubscribe Link Patterns"
+    enabled: true
+    criteria:
+      type: "UnsubscribeLinkPattern"
+      pattern: "(?i).*(bit\\.ly|tinyurl|t\\.co|goo\\.gl|short\\.link|click\\.here|unsubscribe.*\\d{10,}|remove.*[a-f0-9]{20,}).*"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-FOFF-Unsubscribe"
+      header_value: "Suspicious-Pattern"
+    description: "URL shorteners and suspicious patterns in unsubscribe links"

@@ -1,0 +1,46 @@
+name: "Link Analysis"
+enabled: true
+rules:
+  - name: "Suspicious Link Patterns"
+    enabled: true
+    criteria:
+      type: "PhishingSuspiciousLinks"
+      check_url_shorteners: true
+      check_suspicious_tlds: true
+      check_ip_addresses: true
+      suspicious_patterns:
+        - "(?i).*(bit\\.ly|tinyurl|t\\.co|goo\\.gl|short\\.link).*"
+        - "(?i).*(click.*here|urgent.*link|verify.*account|update.*payment).*"
+        - "(?i).*(secure.*login|confirm.*identity|suspended.*account).*"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-FOFF-Link"
+      header_value: "Suspicious-Pattern"
+    description: "Detects URL shorteners and suspicious link patterns"
+
+  - name: "Links Using IP Addresses"
+    enabled: true
+    criteria:
+      type: "PhishingSuspiciousLinks"
+      check_ip_addresses: true
+      check_url_shorteners: false
+      check_suspicious_tlds: false
+    action:
+      type: "Reject"
+      message: "Links using IP addresses are not allowed"
+    description: "Legitimate sites use domains, not raw IP addresses"
+
+  - name: "Suspicious TLD Links"
+    enabled: true
+    criteria:
+      type: "PhishingSuspiciousLinks"
+      check_suspicious_tlds: true
+      check_url_shorteners: false
+      check_ip_addresses: false
+      suspicious_patterns:
+        - "(?i).*\\.(tk|ml|ga|cf|pw|top|click|download)($|/)"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-FOFF-Link"
+      header_value: "Suspicious-TLD"
+    description: "Links to domains with suspicious or free TLDs"

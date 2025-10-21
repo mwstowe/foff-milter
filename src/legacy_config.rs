@@ -36,6 +36,8 @@ pub fn load_modules(module_dir: &str) -> Result<Vec<Module>, Box<dyn std::error:
         "machine-learning.yaml",
         "integration.yaml",
         "advanced-security.yaml",
+        "unsubscribe-analysis.yaml",
+        "link-analysis.yaml",
     ];
 
     for file in &module_files {
