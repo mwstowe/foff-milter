@@ -1,32 +1,21 @@
-# FOFF Milter v0.5.1+ Configuration
-# Main configuration file in TOML format
+# FOFF Milter Main Configuration
+# Production configuration in TOML format
 
 [system]
 socket_path = "/var/run/foff-milter.sock"
 
-[logging]
-level = "info"
-# Options: error, warn, info, debug, trace
+[modules]
+enabled = true
+config_dir = "/etc/foff-milter/modules"
+
+[legacy]
+enabled = false
+config_file = "/etc/foff-milter/legacy-rules.yaml"
 
 [statistics]
 enabled = true
 database_path = "/var/lib/foff-milter/stats.db"
 flush_interval_seconds = 60
 
-[modules]
-# Modular detection system (recommended)
-enabled = true
-config_dir = "/etc/foff-milter/modules"
-
-[legacy]
-# Legacy rule system (optional, for backward compatibility)
-enabled = false
-config_file = "/etc/foff-milter/legacy-rules.yaml"
-
 [default_action]
 type = "Accept"
-# Options: Accept, Reject, TagAsSpam
-
-[performance]
-max_concurrent_emails = 100
-timeout_seconds = 30
