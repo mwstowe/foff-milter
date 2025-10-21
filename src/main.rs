@@ -667,56 +667,56 @@ fn generate_modular_configs(dir_path: &str) {
     let modules = [
         (
             "suspicious-domains.yaml",
-            include_str!("../configs/suspicious-domains.yaml"),
+            include_str!("../modules/suspicious-domains.yaml"),
         ),
         (
             "brand-impersonation.yaml",
-            include_str!("../configs/brand-impersonation.yaml"),
+            include_str!("../modules/brand-impersonation.yaml"),
         ),
         (
             "health-spam.yaml",
-            include_str!("../configs/health-spam.yaml"),
+            include_str!("../modules/health-spam.yaml"),
         ),
         (
             "phishing-scams.yaml",
-            include_str!("../configs/phishing-scams.yaml"),
+            include_str!("../modules/phishing-scams.yaml"),
         ),
         (
             "adult-content.yaml",
-            include_str!("../configs/adult-content.yaml"),
+            include_str!("../modules/adult-content.yaml"),
         ),
         (
             "ecommerce-scams.yaml",
-            include_str!("../configs/ecommerce-scams.yaml"),
+            include_str!("../modules/ecommerce-scams.yaml"),
         ),
         (
             "financial-services.yaml",
-            include_str!("../configs/financial-services.yaml"),
+            include_str!("../modules/financial-services.yaml"),
         ),
         (
             "technology-scams.yaml",
-            include_str!("../configs/technology-scams.yaml"),
+            include_str!("../modules/technology-scams.yaml"),
         ),
         (
             "multi-language.yaml",
-            include_str!("../configs/multi-language.yaml"),
+            include_str!("../modules/multi-language.yaml"),
         ),
         (
             "performance.yaml",
-            include_str!("../configs/performance.yaml"),
+            include_str!("../modules/performance.yaml"),
         ),
-        ("analytics.yaml", include_str!("../configs/analytics.yaml")),
+        ("analytics.yaml", include_str!("../modules/analytics.yaml")),
         (
             "machine-learning.yaml",
-            include_str!("../configs/machine-learning.yaml"),
+            include_str!("../modules/machine-learning.yaml"),
         ),
         (
             "integration.yaml",
-            include_str!("../configs/integration.yaml"),
+            include_str!("../modules/integration.yaml"),
         ),
         (
             "advanced-security.yaml",
-            include_str!("../configs/advanced-security.yaml"),
+            include_str!("../modules/advanced-security.yaml"),
         ),
     ];
 
