@@ -35,3 +35,39 @@ rules:
       type: "TagAsSpam"
       header_name: "X-Spam-Flag"
       header_value: "YES"
+  - name: "AAA brand impersonation"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(aaa.*car.*kit|free.*car.*emergency|aaa.*emergency).*"
+            - type: "SenderPattern"
+              pattern: "(?i).*aaa.*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@(aaa\\.com|csaa\\.com)$"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+  - name: "WeTransfer brand impersonation"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(wetransfer|transfer.*expired|file.*expired|recover.*transfer).*"
+            - type: "SenderPattern"
+              pattern: "(?i).*wetransfer.*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@(wetransfer\\.com|we\\.tl)$"
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
