@@ -5,7 +5,7 @@ rules:
     criteria:
       type: "SubjectPattern"
       pattern: "(?i).*(miracle|doctors.*hate|chronic.*pain|overnight.*cure).*"
-    score: 35
+    score: 55
     action:
       type: "TagAsSpam"
       header_name: "X-Spam-Flag"
@@ -46,3 +46,13 @@ rules:
       header_name: "X-Spam-Flag"
       header_value: "YES"
     description: "Phishing attempts requesting account verification"
+  - name: "Generic spam keywords"
+    criteria:
+      type: "SubjectPattern"
+      pattern: "(?i).*(spam|test.*spam|generic.*spam).*"
+    score: 25
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+    description: "Generic spam keyword detection"
