@@ -1,3 +1,47 @@
 name: "Advanced Security"
 enabled: true
-rules: []
+rules:
+  - name: "Attachment-Only Emails"
+    enabled: true
+    criteria:
+      type: "AttachmentOnlyEmail"
+    score: 30
+    action:
+      type: "TagAsSpam"
+      header_name: "X-FOFF-Security"
+      header_value: "Attachment-Only"
+    description: "Emails with only attachments and no meaningful content"
+
+  - name: "Empty Content Emails"
+    enabled: true
+    criteria:
+      type: "EmptyContentEmail"
+    score: 25
+    action:
+      type: "TagAsSpam"
+      header_name: "X-FOFF-Security"
+      header_value: "Empty-Content"
+    description: "Emails with no subject or body content"
+
+  - name: "Image-Only Emails"
+    enabled: true
+    criteria:
+      type: "ImageOnlyEmail"
+    score: 35
+    action:
+      type: "TagAsSpam"
+      header_name: "X-FOFF-Security"
+      header_value: "Image-Only"
+    description: "Emails containing only images to bypass text filters"
+
+  - name: "Suspicious Encoding Patterns"
+    enabled: true
+    criteria:
+      type: "SubjectPattern"
+      pattern: "(?i).*=\\?[a-z0-9-]+\\?[bq]\\?[a-z0-9+/=]{50,}\\?=.*"
+    score: 20
+    action:
+      type: "TagAsSpam"
+      header_name: "X-FOFF-Security"
+      header_value: "Suspicious-Encoding"
+    description: "Suspicious base64 or quoted-printable encoding patterns"
