@@ -131,21 +131,6 @@ impl FilterEngine {
         Ok(engine)
     }
 
-    /// Convert REJECT action to TAG if reject_to_tag setting is enabled
-    fn convert_action_if_needed(&self, action: &Action) -> Action {
-        if let Some(ref toml_config) = self.toml_config {
-            if toml_config.system.reject_to_tag {
-                if let Action::Reject { message } = action {
-                    return Action::TagAsSpam {
-                        header_name: "X-FOFF-Reject-Converted".to_string(),
-                        header_value: format!("WOULD-REJECT: {}", message),
-                    };
-                }
-            }
-        }
-        action.clone()
-    }
-
     pub fn set_toml_config(&mut self, toml_config: crate::toml_config::TomlConfig) {
         self.toml_config = Some(toml_config);
     }
@@ -782,11 +767,7 @@ impl FilterEngine {
         // Check whitelist first - if whitelisted, accept immediately
         if self.is_whitelisted(context) {
             log::info!("Email whitelisted, accepting without further processing");
-            return (
-                Action::Accept,
-                vec!["Whitelisted".to_string()],
-                vec![],
-            );
+            return (Action::Accept, vec!["Whitelisted".to_string()], vec![]);
         }
 
         // Check blocklist second - if blocklisted, reject immediately
@@ -804,11 +785,7 @@ impl FilterEngine {
             } else {
                 self.heuristic_reject.clone()
             };
-            return (
-                reject_action,
-                vec!["Blocklisted".to_string()],
-                vec![],
-            );
+            return (reject_action, vec!["Blocklisted".to_string()], vec![]);
         }
 
         let mut matched_rules = Vec::new();
@@ -2453,14 +2430,20 @@ impl FilterEngine {
                                     // Check sender domain whitelist
                                     if let Some(ref sender_domain) = sender_domain {
                                         if host.ends_with(sender_domain) {
-                                            log::debug!("URL {} whitelisted (sender domain: {})", url, sender_domain);
+                                            log::debug!(
+                                                "URL {} whitelisted (sender domain: {})",
+                                                url,
+                                                sender_domain
+                                            );
                                             is_whitelisted = true;
                                         }
                                     }
 
                                     // Check email infrastructure whitelist
                                     if !is_whitelisted && allow_infra {
-                                        if let Some(ref infra_domains) = email_infrastructure_domains {
+                                        if let Some(ref infra_domains) =
+                                            email_infrastructure_domains
+                                        {
                                             for infra_domain in infra_domains {
                                                 if host.ends_with(infra_domain) {
                                                     log::debug!("URL {} whitelisted (infrastructure domain: {})", url, infra_domain);

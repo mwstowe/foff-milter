@@ -134,7 +134,14 @@ async fn main() {
     };
 
     if let Some(email_file) = matches.get_one::<String>("test-email") {
-        test_email_file(&config, &whitelist_config, &blocklist_config, &toml_config, email_file).await;
+        test_email_file(
+            &config,
+            &whitelist_config,
+            &blocklist_config,
+            &toml_config,
+            email_file,
+        )
+        .await;
         return;
     }
 
@@ -629,6 +636,7 @@ async fn main() {
     }
 }
 
+#[allow(clippy::type_complexity)]
 fn load_config(
     path: &str,
 ) -> anyhow::Result<(
@@ -646,7 +654,12 @@ fn load_config(
             let legacy_config = toml_config.to_legacy_config()?;
             let whitelist_config = toml_config.whitelist.clone();
             let blocklist_config = toml_config.blocklist.clone();
-            Ok((legacy_config, whitelist_config, blocklist_config, Some(toml_config)))
+            Ok((
+                legacy_config,
+                whitelist_config,
+                blocklist_config,
+                Some(toml_config),
+            ))
         } else {
             // YAML config no longer supported
             eprintln!("❌ ERROR: YAML configuration is NO LONGER SUPPORTED!");

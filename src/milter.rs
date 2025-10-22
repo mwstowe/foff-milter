@@ -124,7 +124,10 @@ type StateMap = Arc<Mutex<HashMap<String, MailContext>>>;
 static SESSION_COUNTER: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(0);
 
 impl Milter {
-    pub fn new(config: Config, toml_config: crate::toml_config::TomlConfig) -> anyhow::Result<Self> {
+    pub fn new(
+        config: Config,
+        toml_config: crate::toml_config::TomlConfig,
+    ) -> anyhow::Result<Self> {
         let mut engine = FilterEngine::new(config.clone())?;
         engine.set_toml_config(toml_config);
         let engine = Arc::new(engine);
