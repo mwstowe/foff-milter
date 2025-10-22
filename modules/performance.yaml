@@ -1,3 +1,82 @@
 name: "Performance"
 enabled: true
-rules: []
+rules:
+  - name: "Trusted Domain Fast Path"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*(gmail\\.com|outlook\\.com|yahoo\\.com|hotmail\\.com|icloud\\.com|protonmail\\.com|fastmail\\.com)$"
+    score: -50
+    action:
+      type: "Accept"
+    description: "Fast path for trusted email providers - skip heavy processing"
+
+  - name: "Obvious Spam Early Rejection"
+    enabled: true
+    criteria:
+      type: "SubjectPattern"
+      pattern: "(?i).*(viagra|cialis|lottery.*winner|nigerian.*prince|inheritance.*fund|click.*here.*now|act.*now|limited.*time|urgent.*response).*"
+    score: 100
+    action:
+      type: "Reject"
+      message: "Obvious spam pattern detected"
+    description: "Early rejection for blatantly obvious spam patterns"
+
+  - name: "VIP Sender Priority"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*(government\\.gov|edu|mil|bank.*com|.*bank\\.com)$"
+    score: -30
+    action:
+      type: "Accept"
+    description: "Priority processing for government, education, military, and banking domains"
+
+  - name: "Resource Intensive Pattern Limit"
+    enabled: true
+    criteria:
+      type: "SubjectPattern"
+      pattern: ".{200,}"
+    score: 15
+    action:
+      type: "TagAsSpam"
+      header_name: "X-FOFF-Performance"
+      header_value: "Long-Subject"
+    description: "Flag extremely long subjects that may cause processing delays"
+
+  - name: "Bulk Email Quick Detection"
+    enabled: true
+    criteria:
+      type: "HeaderPattern"
+      header: "List-Unsubscribe"
+      pattern: ".*"
+    score: -10
+    action:
+      type: "Accept"
+    description: "Quick accept for emails with proper unsubscribe headers (likely legitimate bulk)"
+
+  - name: "Empty Content Quick Reject"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "^\\s*$"
+        - type: "EmptyContentEmail"
+    score: 80
+    action:
+      type: "Reject"
+      message: "Empty email content"
+    description: "Quick rejection for completely empty emails"
+
+  - name: "Attachment Bomb Prevention"
+    enabled: true
+    criteria:
+      type: "HeaderPattern"
+      header: "Content-Length"
+      pattern: "[5-9][0-9]{7,}|[1-9][0-9]{8,}"
+    score: 40
+    action:
+      type: "Reject"
+      message: "Email size exceeds limits"
+    description: "Prevent processing of extremely large emails (50MB+)"
