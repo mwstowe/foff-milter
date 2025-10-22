@@ -543,6 +543,10 @@ impl FilterEngine {
         // Compile patterns from legacy rules
         let rules = self.config.rules.clone();
         for rule in &rules {
+            // Skip disabled rules during pattern compilation
+            if !rule.enabled {
+                continue;
+            }
             self.compile_criteria_patterns(&rule.criteria)?;
         }
 
@@ -550,6 +554,10 @@ impl FilterEngine {
         let modules = self.modules.clone();
         for module in &modules {
             for rule in &module.rules {
+                // Skip disabled rules during pattern compilation
+                if !rule.enabled {
+                    continue;
+                }
                 self.compile_criteria_patterns(&rule.criteria)?;
             }
         }
@@ -784,6 +792,17 @@ impl FilterEngine {
                 log::info!("Processing module: {}", module.name);
 
                 for (rule_index, rule) in module.rules.iter().enumerate() {
+                    // Skip disabled rules
+                    if !rule.enabled {
+                        log::debug!(
+                            "Module '{}' Rule {} '{}' is disabled, skipping",
+                            module.name,
+                            rule_index + 1,
+                            rule.name
+                        );
+                        continue;
+                    }
+
                     let matches = self.evaluate_criteria(&rule.criteria, context).await;
                     log::info!(
                         "Module '{}' Rule {} '{}' evaluation result: {}",
@@ -885,6 +904,16 @@ impl FilterEngine {
 
         // Process legacy rules if no modules or no module matches
         for (rule_index, rule) in self.config.rules.iter().enumerate() {
+            // Skip disabled rules
+            if !rule.enabled {
+                log::debug!(
+                    "Rule {} '{}' is disabled, skipping",
+                    rule_index + 1,
+                    rule.name
+                );
+                continue;
+            }
+
             let matches = self.evaluate_criteria(&rule.criteria, context).await;
             log::info!(
                 "Rule {} '{}' evaluation result: {}",
@@ -1003,6 +1032,12 @@ impl FilterEngine {
 
         // Process ALL rules and collect matches
         for rule in &self.config.rules {
+            // Skip disabled rules
+            if !rule.enabled {
+                log::debug!("Rule '{}' is disabled, skipping", rule.name);
+                continue;
+            }
+
             let matches = self.evaluate_criteria(&rule.criteria, context).await;
             log::info!("Rule '{}' evaluation result: {}", rule.name, matches);
             if matches {
@@ -2303,12 +2338,24 @@ impl FilterEngine {
                     check_suspicious_tlds,
                     check_ip_addresses,
                     suspicious_patterns,
+                    allow_sender_domain,
+                    allow_email_infrastructure,
+                    email_infrastructure_domains,
                 } => {
                     log::debug!("Checking for suspicious links in email body");
 
                     let check_shorteners = check_url_shorteners.unwrap_or(true);
                     let check_tlds = check_suspicious_tlds.unwrap_or(true);
                     let check_ips = check_ip_addresses.unwrap_or(true);
+                    let allow_sender = allow_sender_domain.unwrap_or(false);
+                    let allow_infra = allow_email_infrastructure.unwrap_or(false);
+
+                    // Get sender domain for whitelist checking
+                    let sender_domain = if allow_sender {
+                        extract_sender_domain(context)
+                    } else {
+                        None
+                    };
 
                     if let Some(body) = &context.body {
                         // Extract all URLs from email body and deduplicate
@@ -2323,6 +2370,35 @@ impl FilterEngine {
                         for url in &urls {
                             if let Ok(parsed_url) = Url::parse(url) {
                                 if let Some(host) = parsed_url.host_str() {
+                                    // Check whitelist first - skip if domain is whitelisted
+                                    let mut is_whitelisted = false;
+
+                                    // Check sender domain whitelist
+                                    if let Some(ref sender_domain) = sender_domain {
+                                        if host.ends_with(sender_domain) {
+                                            log::debug!("URL {} whitelisted (sender domain: {})", url, sender_domain);
+                                            is_whitelisted = true;
+                                        }
+                                    }
+
+                                    // Check email infrastructure whitelist
+                                    if !is_whitelisted && allow_infra {
+                                        if let Some(ref infra_domains) = email_infrastructure_domains {
+                                            for infra_domain in infra_domains {
+                                                if host.ends_with(infra_domain) {
+                                                    log::debug!("URL {} whitelisted (infrastructure domain: {})", url, infra_domain);
+                                                    is_whitelisted = true;
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    // Skip suspicious checks if whitelisted
+                                    if is_whitelisted {
+                                        continue;
+                                    }
+
                                     // Check for URL shorteners
                                     if check_shorteners {
                                         let shortener_domains = [

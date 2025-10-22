@@ -125,12 +125,18 @@ impl Default for StatisticsConfig {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FilterRule {
     pub name: String,
+    #[serde(default = "default_enabled")]
+    pub enabled: bool,
     pub criteria: Criteria,
     pub action: Action,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub score: Option<i32>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
+}
+
+fn default_enabled() -> bool {
+    true
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -192,6 +198,9 @@ pub enum Criteria {
         check_suspicious_tlds: Option<bool>,
         check_ip_addresses: Option<bool>,
         suspicious_patterns: Option<Vec<String>>,
+        allow_sender_domain: Option<bool>,
+        allow_email_infrastructure: Option<bool>,
+        email_infrastructure_domains: Option<Vec<String>>,
     },
     PhishingDomainMismatch {
         // Detects when Reply-To domain differs significantly from sender domain
@@ -408,6 +417,7 @@ impl Default for Config {
             rules: vec![
                 FilterRule {
                     name: "Block suspicious Chinese services".to_string(),
+                    enabled: true,
                     criteria: Criteria::MailerPattern {
                         pattern: r"service\..*\.cn".to_string(),
                     },
@@ -419,6 +429,7 @@ impl Default for Config {
                 },
                 FilterRule {
                     name: "Tag potential spam".to_string(),
+                    enabled: true,
                     criteria: Criteria::MailerPattern {
                         pattern: r".*spam.*".to_string(),
                     },
