@@ -289,7 +289,7 @@ impl ModuleManager {
         }
 
         // Load machine learning engine (always try to load for adaptive intelligence)
-        let ml_path = Path::new(config_dir).join("machine-learning.yaml");
+        let ml_path = Path::new(config_dir).join("advanced-heuristics.yaml");
         if ml_path.exists() {
             match MachineLearningEngine::load_from_file(ml_path.to_str().unwrap()) {
                 Ok(engine) => {
@@ -301,7 +301,7 @@ impl ModuleManager {
                 }
             }
         } else {
-            log::info!("No machine-learning.yaml found, ML disabled");
+            log::info!("No advanced-heuristics.yaml found, ML disabled");
         }
 
         // Load analytics engine (always try to load for monitoring)

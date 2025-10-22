@@ -1,4 +1,4 @@
-name: "Machine Learning"
+name: "Advanced Heuristics"
 enabled: true
 rules:
   - name: "Bayesian Spam Word Patterns"
@@ -9,7 +9,7 @@ rules:
     score: 20
     action:
       type: "TagAsSpam"
-      header_name: "X-FOFF-ML"
+      header_name: "X-FOFF-Heuristics"
       header_value: "Spam-Words"
     description: "High-probability spam words based on Bayesian analysis"
 
@@ -21,7 +21,7 @@ rules:
     score: 35
     action:
       type: "TagAsSpam"
-      header_name: "X-FOFF-ML"
+      header_name: "X-FOFF-Heuristics"
       header_value: "Low-Reputation-Domain"
     description: "Low reputation domains with random names on suspicious TLDs"
 
@@ -33,7 +33,7 @@ rules:
     score: 15
     action:
       type: "TagAsSpam"
-      header_name: "X-FOFF-ML"
+      header_name: "X-FOFF-Heuristics"
       header_value: "Duplicate-Prefixes"
     description: "Multiple reply/forward prefixes indicating content manipulation"
 
@@ -49,7 +49,7 @@ rules:
     score: 45
     action:
       type: "TagAsSpam"
-      header_name: "X-FOFF-ML"
+      header_name: "X-FOFF-Heuristics"
       header_value: "Money-Temp-Email"
     description: "Money-related content from temporary email services"
 
@@ -61,7 +61,7 @@ rules:
     score: 25
     action:
       type: "TagAsSpam"
-      header_name: "X-FOFF-ML"
+      header_name: "X-FOFF-Heuristics"
       header_value: "Mixed-Languages"
     description: "Suspicious mixing of Latin and non-Latin scripts"
 
@@ -73,7 +73,7 @@ rules:
     score: 18
     action:
       type: "TagAsSpam"
-      header_name: "X-FOFF-ML"
+      header_name: "X-FOFF-Heuristics"
       header_value: "Urgency-Pattern"
     description: "Artificial urgency patterns common in spam and phishing"
 
@@ -94,7 +94,7 @@ rules:
     score: 12
     action:
       type: "TagAsSpam"
-      header_name: "X-FOFF-ML"
+      header_name: "X-FOFF-Heuristics"
       header_value: "Weak-Signals"
     description: "Multiple exclamation marks, excessive caps, multiple dollar amounts, or numeric sender names"
 
@@ -113,6 +113,6 @@ rules:
     score: 30
     action:
       type: "TagAsSpam"
-      header_name: "X-FOFF-ML"
+      header_name: "X-FOFF-Heuristics"
       header_value: "Action-No-Unsubscribe"
     description: "Action-oriented content without proper unsubscribe headers"

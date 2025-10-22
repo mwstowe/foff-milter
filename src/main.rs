@@ -160,7 +160,7 @@ async fn main() {
                 "multi-language.yaml",
                 "performance.yaml",
                 "analytics.yaml",
-                "machine-learning.yaml",
+                "advanced-heuristics.yaml",
                 "integration.yaml",
                 "advanced-security.yaml",
             ];
@@ -444,7 +444,7 @@ async fn main() {
                     "Real-time analytics & reporting",
                 ),
                 (
-                    "machine-learning.yaml",
+                    "advanced-heuristics.yaml",
                     "Machine Learning",
                     "AI-powered adaptive intelligence",
                 ),
@@ -725,8 +725,8 @@ fn generate_modular_configs(dir_path: &str) {
         ),
         ("analytics.yaml", include_str!("../modules/analytics.yaml")),
         (
-            "machine-learning.yaml",
-            include_str!("../modules/machine-learning.yaml"),
+            "advanced-heuristics.yaml",
+            include_str!("../modules/advanced-heuristics.yaml"),
         ),
         (
             "integration.yaml",

@@ -1,14 +1,14 @@
 #!/bin/bash
 
 # FOFF Milter Module Deployment Script
-# Deploys all module configurations to multiple servers
+# Deploys all module configurations to multiple servers and restarts services
 
 set -e
 
-# Server configurations: hostname:config_dir
+# Server configurations: hostname:config_dir:service_command
 SERVERS=(
-    "hotel.example.com:/etc/foff-milter"
-    "juliett.example.com:/usr/local/etc/foff-milter"
+    "hotel.example.com:/etc/foff-milter:systemctl"
+    "juliett.example.com:/usr/local/etc/foff-milter:service"
 )
 
 LOCAL_MODULES_DIR="modules"
@@ -16,7 +16,7 @@ LOCAL_MODULES_DIR="modules"
 echo "🚀 Deploying FOFF Milter modules to multiple servers..."
 
 for server_config in "${SERVERS[@]}"; do
-    IFS=':' read -r server remote_base_dir <<< "$server_config"
+    IFS=':' read -r server remote_base_dir service_cmd <<< "$server_config"
     remote_modules_dir="$remote_base_dir/modules"
     
     echo ""
@@ -37,6 +37,24 @@ for server_config in "${SERVERS[@]}"; do
         fi
     done
     
+    # Restart service to reload modules
+    echo "🔄 Restarting service to reload modules..."
+    if [ "$service_cmd" = "systemctl" ]; then
+        if ssh "$server" "systemctl is-active --quiet foff-milter 2>/dev/null"; then
+            ssh "$server" "sudo systemctl restart foff-milter"
+            echo "✅ Systemd service restarted successfully"
+        else
+            echo "ℹ️  Systemd service not running - start manually with: sudo systemctl start foff-milter"
+        fi
+    else
+        if ssh "$server" "service foff-milter status >/dev/null 2>&1"; then
+            ssh "$server" "sudo service foff-milter restart"
+            echo "✅ BSD service restarted successfully"
+        else
+            echo "ℹ️  BSD service not running - start manually with: sudo service foff-milter start"
+        fi
+    fi
+    
     # Verify deployment
     echo "✅ Verifying deployment on $server..."
     ssh "$server" "ls -la $remote_modules_dir/"
@@ -47,13 +65,16 @@ done
 echo ""
 echo "🎯 All deployments complete!"
 echo ""
-echo "📋 Next steps:"
-echo "   1. Build and deploy the binary: cargo build --release"
-echo "   2. Copy binary to servers:"
-echo "      scp target/release/foff-milter hotel.example.com:/usr/local/bin/"
-echo "      scp target/release/foff-milter juliett.example.com:/usr/local/bin/"
-echo "   3. Restart services:"
-echo "      ssh hotel.example.com 'systemctl restart foff-milter'"
-echo "      ssh juliett.example.com 'service foff-milter restart'"
+echo "📊 Service status:"
+for server_config in "${SERVERS[@]}"; do
+    IFS=':' read -r server remote_base_dir service_cmd <<< "$server_config"
+    echo "🖥️  $server:"
+    if [ "$service_cmd" = "systemctl" ]; then
+        ssh "$server" "sudo systemctl status foff-milter --no-pager -l" 2>/dev/null || echo "   Service not configured yet"
+    else
+        ssh "$server" "sudo service foff-milter status" 2>/dev/null || echo "   Service not configured yet"
+    fi
+done
+
 echo ""
 echo "ℹ️  Note: Main config files are NOT overwritten - manage manually"

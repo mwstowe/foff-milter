@@ -33,7 +33,7 @@ pub fn load_modules(module_dir: &str) -> Result<Vec<Module>, Box<dyn std::error:
         "multi-language.yaml",
         "performance.yaml",
         "analytics.yaml",
-        "machine-learning.yaml",
+        "advanced-heuristics.yaml",
         "integration.yaml",
         "advanced-security.yaml",
         "unsubscribe-analysis.yaml",
