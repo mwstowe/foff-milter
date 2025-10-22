@@ -591,7 +591,8 @@ impl FilterEngine {
             Criteria::MailerPattern { pattern }
             | Criteria::SenderPattern { pattern }
             | Criteria::RecipientPattern { pattern }
-            | Criteria::SubjectPattern { pattern } => {
+            | Criteria::SubjectPattern { pattern }
+            | Criteria::BodyPattern { pattern } => {
                 if !self.compiled_patterns.contains_key(pattern) {
                     let regex = Regex::new(pattern).map_err(|e| {
                         anyhow::anyhow!("Invalid regex pattern '{}': {}", pattern, e)
@@ -2151,6 +2152,14 @@ impl FilterEngine {
                     if let Some(subject) = &context.subject {
                         if let Some(regex) = self.compiled_patterns.get(pattern) {
                             return regex.is_match(subject);
+                        }
+                    }
+                    false
+                }
+                Criteria::BodyPattern { pattern } => {
+                    if let Some(body) = &context.body {
+                        if let Some(regex) = self.compiled_patterns.get(pattern) {
+                            return regex.is_match(body);
                         }
                     }
                     false

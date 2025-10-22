@@ -34,6 +34,18 @@ rules:
       header_value: "Image-Only"
     description: "Emails containing only images to bypass text filters"
 
+  - name: "HTML Entity Obfuscation"
+    enabled: true
+    criteria:
+      type: "BodyPattern"
+      pattern: "(?i).*&#[0-9]{2,3};.*&#[0-9]{2,3};.*&#[0-9]{2,3};.*"
+    score: 30
+    action:
+      type: "TagAsSpam"
+      header_name: "X-FOFF-HTML-Obfuscation"
+      header_value: "HTML entity obfuscation detected"
+    description: "Detects HTML entity encoding used to obfuscate malicious domains"
+
   - name: "Suspicious Encoding Patterns"
     enabled: true
     criteria:

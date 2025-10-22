@@ -156,6 +156,9 @@ pub enum Criteria {
     SubjectPattern {
         pattern: String,
     },
+    BodyPattern {
+        pattern: String,
+    },
     HeaderPattern {
         header: String,
         pattern: String,
