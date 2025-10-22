@@ -7,7 +7,7 @@ set -e
 
 # Server configurations: hostname:config_dir:service_command
 SERVERS=(
-    "hotel:/etc/foff-milter:systemctl"
+    "hotel.example.com:/etc/foff-milter:systemctl"
     "juliett.example.com:/usr/local/etc/foff-milter:service"
 )
 
