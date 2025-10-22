@@ -4,6 +4,7 @@ use std::fs;
 use std::path::Path;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct Module {
     pub name: String,
     pub enabled: bool,
@@ -123,6 +124,7 @@ impl Default for StatisticsConfig {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct FilterRule {
     pub name: String,
     #[serde(default = "default_enabled")]
@@ -140,7 +142,7 @@ fn default_enabled() -> bool {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(tag = "type")]
+#[serde(tag = "type", deny_unknown_fields)]
 pub enum Criteria {
     MailerPattern {
         pattern: String,
@@ -378,7 +380,7 @@ pub enum Criteria {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(tag = "type")]
+#[serde(tag = "type", deny_unknown_fields)]
 pub enum Action {
     Reject {
         message: String,
