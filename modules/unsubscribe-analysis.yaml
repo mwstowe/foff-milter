@@ -27,10 +27,10 @@ rules:
     description: "Legitimate businesses use domains, not IP addresses for unsubscribe links"
 
   - name: "Mailto-Only Unsubscribe Links"
-    enabled: false
+    enabled: true
     criteria:
       type: "UnsubscribeMailtoOnly"
-      allow_mixed: false
+      allow_mixed: true
     score: 25
     action:
       type: "TagAsSpam"
