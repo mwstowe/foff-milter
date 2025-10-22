@@ -67,6 +67,22 @@ rules:
       header_name: "X-Spam-Flag"
       header_value: "YES"
     description: "Fraudulent sweepstakes and contest notifications"
+  - name: "Health rewards and insurance spam"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(health.*reward|united.*health|insurance.*reward|medicare.*reward|health.*benefit|congratulations.*health).*"
+        - type: "SenderPattern"
+          pattern: "(?i).*(health.*reward|united.*health|insurance.*reward|medicare.*reward).*"
+    score: 40
+    action:
+      type: "TagAsSpam"
+      header_name: "X-FOFF-Health-Rewards-Spam"
+      header_value: "Health rewards spam detected"
+    description: "Detects health insurance reward spam campaigns"
+
   - name: "Tinnitus health spam"
     criteria:
       type: "SubjectPattern"

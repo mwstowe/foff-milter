@@ -53,6 +53,17 @@ rules:
       type: "TagAsSpam"
       header_name: "X-Spam-Flag"
       header_value: "YES"
+  - name: "Return-Path and From domain mismatch"
+    enabled: true
+    criteria:
+      type: "PhishingDomainMismatch"
+    score: 25
+    action:
+      type: "TagAsSpam"
+      header_name: "X-FOFF-Domain-Mismatch"
+      header_value: "Return-Path and From domain mismatch"
+    description: "Detects when Return-Path and From headers use different domains"
+
   - name: "WeTransfer brand impersonation"
     criteria:
       type: "And"
