@@ -111,7 +111,9 @@ impl MultiLanguageDetector {
         let combined_text = format!("{} {}", subject, body);
 
         // Check language/geography mismatches (highest priority)
-        if let Some(mismatch_result) = self.check_language_geography_mismatch(&combined_text, sender_domain) {
+        if let Some(mismatch_result) =
+            self.check_language_geography_mismatch(&combined_text, sender_domain)
+        {
             return mismatch_result;
         }
 
@@ -209,7 +211,11 @@ impl MultiLanguageDetector {
         DetectionResult::new(matched, confidence, reason, "MultiLanguage".to_string())
     }
 
-    fn check_language_geography_mismatch(&self, text: &str, domain: &str) -> Option<DetectionResult> {
+    fn check_language_geography_mismatch(
+        &self,
+        text: &str,
+        domain: &str,
+    ) -> Option<DetectionResult> {
         // Japanese text from Chinese domain
         if domain.ends_with(".cn") && self.has_japanese_text(text) {
             return Some(DetectionResult::new(
@@ -231,9 +237,14 @@ impl MultiLanguageDetector {
         }
 
         // Korean text from suspicious domains
-        if (domain.ends_with(".cn") || domain.ends_with(".jp") || domain.ends_with(".ru") || 
-            domain.ends_with(".tk") || domain.ends_with(".ml") || domain.ends_with(".ga")) 
-            && self.has_korean_text(text) {
+        if (domain.ends_with(".cn")
+            || domain.ends_with(".jp")
+            || domain.ends_with(".ru")
+            || domain.ends_with(".tk")
+            || domain.ends_with(".ml")
+            || domain.ends_with(".ga"))
+            && self.has_korean_text(text)
+        {
             return Some(DetectionResult::new(
                 true,
                 35,
@@ -243,9 +254,13 @@ impl MultiLanguageDetector {
         }
 
         // Cyrillic text from Asian domains
-        if (domain.ends_with(".cn") || domain.ends_with(".jp") || domain.ends_with(".kr") || 
-            domain.ends_with(".tw") || domain.ends_with(".hk")) 
-            && self.has_cyrillic_text(text) {
+        if (domain.ends_with(".cn")
+            || domain.ends_with(".jp")
+            || domain.ends_with(".kr")
+            || domain.ends_with(".tw")
+            || domain.ends_with(".hk"))
+            && self.has_cyrillic_text(text)
+        {
             return Some(DetectionResult::new(
                 true,
                 30,
@@ -279,7 +294,7 @@ impl MultiLanguageDetector {
         if has_latin && has_cjk {
             let latin_count = text.chars().filter(|c| c.is_ascii_alphabetic()).count();
             let cjk_count = text.chars().filter(|c| matches!(*c, '\u{4E00}'..='\u{9FFF}' | '\u{3040}'..='\u{309F}' | '\u{30A0}'..='\u{30FF}' | '\u{AC00}'..='\u{D7AF}')).count();
-            
+
             // Suspicious if both scripts are heavily used (not just occasional mixing)
             if latin_count > 10 && cjk_count > 10 {
                 suspicious_combinations += 1;
@@ -299,7 +314,8 @@ impl MultiLanguageDetector {
     }
 
     fn has_japanese_text(&self, text: &str) -> bool {
-        text.chars().any(|c| matches!(c, '\u{3040}'..='\u{309F}' | '\u{30A0}'..='\u{30FF}'))
+        text.chars()
+            .any(|c| matches!(c, '\u{3040}'..='\u{309F}' | '\u{30A0}'..='\u{30FF}'))
     }
 
     fn has_chinese_text(&self, text: &str) -> bool {
@@ -311,7 +327,8 @@ impl MultiLanguageDetector {
     }
 
     fn has_cyrillic_text(&self, text: &str) -> bool {
-        text.chars().any(|c| matches!(c, '\u{0400}'..='\u{04FF}' | '\u{0500}'..='\u{052F}'))
+        text.chars()
+            .any(|c| matches!(c, '\u{0400}'..='\u{04FF}' | '\u{0500}'..='\u{052F}'))
     }
 
     fn check_patterns(&self, text: &str, patterns: &[String]) -> bool {

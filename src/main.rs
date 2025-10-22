@@ -645,19 +645,19 @@ fn load_config(
             eprintln!("❌ ERROR: YAML configuration is NO LONGER SUPPORTED!");
             eprintln!("   Attempted to load: {}", path);
             eprintln!("   YAML support was removed in v0.6.0");
-            eprintln!("");
+            eprintln!();
             eprintln!("   Please migrate to TOML format:");
             eprintln!("   1. Use foff-milter-example.toml as template");
             eprintln!("   2. Update systemd service to use .toml config");
             eprintln!("   3. Deploy modules with ./deploy-modules.sh");
-            eprintln!("");
+            eprintln!();
             eprintln!("   Modern TOML features:");
             eprintln!("   - Modular detection system");
             eprintln!("   - Global whitelist/blocklist");
             eprintln!("   - Heuristic scoring");
             eprintln!("   - 16 specialized detection modules");
             eprintln!("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-            
+
             anyhow::bail!("YAML configuration no longer supported. Please migrate to TOML format.")
         }
     } else {
@@ -773,8 +773,6 @@ fn generate_modular_configs(dir_path: &str) {
         println!("  4. List modules: foff-milter --list-modules");
     }
 }
-
-
 
 fn truncate_string(s: &str, max_len: usize) -> String {
     if s.len() <= max_len {
