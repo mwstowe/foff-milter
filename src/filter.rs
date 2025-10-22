@@ -57,6 +57,7 @@ const CACHE_TTL_SECONDS: u64 = 300; // 5 minutes cache TTL
 
 pub struct FilterEngine {
     config: Config,
+    toml_config: Option<crate::toml_config::TomlConfig>,
     modules: Vec<Module>,
     compiled_patterns: HashMap<String, Regex>,
     #[allow(dead_code)] // TODO: Implement full abuse reporting integration
@@ -111,6 +112,7 @@ impl FilterEngine {
         let mut engine = FilterEngine {
             abuse_reporter: AbuseReporter::with_smtp_config(config.smtp.clone()),
             config,
+            toml_config: None,
             modules,
             compiled_patterns: HashMap::new(),
             heuristic_reject: Action::Reject {
@@ -127,6 +129,25 @@ impl FilterEngine {
         // Pre-compile all regex patterns for better performance
         engine.compile_patterns()?;
         Ok(engine)
+    }
+
+    /// Convert REJECT action to TAG if reject_to_tag setting is enabled
+    fn convert_action_if_needed(&self, action: &Action) -> Action {
+        if let Some(ref toml_config) = self.toml_config {
+            if toml_config.system.reject_to_tag {
+                if let Action::Reject { message } = action {
+                    return Action::TagAsSpam {
+                        header_name: "X-FOFF-Reject-Converted".to_string(),
+                        header_value: format!("WOULD-REJECT: {}", message),
+                    };
+                }
+            }
+        }
+        action.clone()
+    }
+
+    pub fn set_toml_config(&mut self, toml_config: crate::toml_config::TomlConfig) {
+        self.toml_config = Some(toml_config);
     }
 
     pub fn set_whitelist_config(&mut self, whitelist_config: Option<WhitelistConfig>) {
@@ -756,12 +777,12 @@ impl FilterEngine {
     pub async fn evaluate(
         &self,
         context: &MailContext,
-    ) -> (&Action, Vec<String>, Vec<(String, String)>) {
+    ) -> (Action, Vec<String>, Vec<(String, String)>) {
         // Check whitelist first - if whitelisted, accept immediately
         if self.is_whitelisted(context) {
             log::info!("Email whitelisted, accepting without further processing");
             return (
-                &self.config.default_action,
+                Action::Accept,
                 vec!["Whitelisted".to_string()],
                 vec![],
             );
@@ -770,8 +791,20 @@ impl FilterEngine {
         // Check blocklist second - if blocklisted, reject immediately
         if self.is_blocklisted(context) {
             log::info!("Email blocklisted, rejecting immediately");
+            let reject_action = if let Some(ref toml_config) = self.toml_config {
+                if toml_config.system.reject_to_tag {
+                    Action::TagAsSpam {
+                        header_name: "X-FOFF-Reject-Converted".to_string(),
+                        header_value: "WOULD-REJECT: Message rejected by blocklist".to_string(),
+                    }
+                } else {
+                    self.heuristic_reject.clone()
+                }
+            } else {
+                self.heuristic_reject.clone()
+            };
             return (
-                &self.heuristic_reject,
+                reject_action,
                 vec!["Blocklisted".to_string()],
                 vec![],
             );
@@ -898,7 +931,24 @@ impl FilterEngine {
                     matched_rules.join(", "),
                     final_action
                 );
-                return (final_action, matched_rules, headers_to_add);
+                // Convert REJECT to TAG if setting is enabled
+                let converted_action = if let Some(ref toml_config) = self.toml_config {
+                    if toml_config.system.reject_to_tag {
+                        if let Action::Reject { message } = final_action {
+                            Action::TagAsSpam {
+                                header_name: "X-FOFF-Reject-Converted".to_string(),
+                                header_value: format!("WOULD-REJECT: {}", message),
+                            }
+                        } else {
+                            final_action.clone()
+                        }
+                    } else {
+                        final_action.clone()
+                    }
+                } else {
+                    final_action.clone()
+                };
+                return (converted_action, matched_rules, headers_to_add);
             }
         }
 
@@ -1021,6 +1071,24 @@ impl FilterEngine {
                 ));
             }
         }
+
+        // Convert REJECT to TAG if setting is enabled
+        let final_action = if let Some(ref toml_config) = self.toml_config {
+            if toml_config.system.reject_to_tag {
+                if let Action::Reject { message } = final_action {
+                    Action::TagAsSpam {
+                        header_name: "X-FOFF-Reject-Converted".to_string(),
+                        header_value: format!("WOULD-REJECT: {}", message),
+                    }
+                } else {
+                    final_action.clone()
+                }
+            } else {
+                final_action.clone()
+            }
+        } else {
+            final_action.clone()
+        };
 
         (final_action, matched_rules, headers_to_add)
     }

@@ -21,6 +21,9 @@ Main configuration file: `/etc/foff-milter.toml`
 ```toml
 [system]
 socket_path = "/var/run/foff-milter.sock"
+# Convert REJECT actions to TAG actions (default: true)
+# When enabled, emails that would be rejected are tagged instead
+reject_to_tag = true
 
 [modules]
 enabled = true

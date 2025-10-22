@@ -2,7 +2,7 @@ use crate::legacy_config::{Action, Config as LegacyConfig};
 use serde::{Deserialize, Serialize};
 use std::path::Path;
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct TomlConfig {
     pub system: SystemConfig,
     pub logging: Option<LoggingConfig>,
@@ -16,30 +16,61 @@ pub struct TomlConfig {
     pub performance: Option<PerformanceConfig>,
 }
 
-#[derive(Debug, Deserialize, Serialize)]
-pub struct SystemConfig {
-    pub socket_path: String,
+impl Default for TomlConfig {
+    fn default() -> Self {
+        Self {
+            system: SystemConfig {
+                socket_path: "/var/run/foff-milter.sock".to_string(),
+                reject_to_tag: true,
+            },
+            logging: None,
+            statistics: None,
+            modules: Some(ModulesConfig {
+                enabled: true,
+                config_dir: "modules".to_string(),
+            }),
+            heuristics: None,
+            whitelist: None,
+            blocklist: None,
+            legacy: None,
+            default_action: DefaultActionConfig {
+                action_type: "Accept".to_string(),
+            },
+            performance: None,
+        }
+    }
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
+pub struct SystemConfig {
+    pub socket_path: String,
+    #[serde(default = "default_reject_to_tag")]
+    pub reject_to_tag: bool,
+}
+
+fn default_reject_to_tag() -> bool {
+    true
+}
+
+#[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct LoggingConfig {
     pub level: String,
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct StatisticsConfig {
     pub enabled: bool,
     pub database_path: String,
     pub flush_interval_seconds: u64,
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct ModulesConfig {
     pub enabled: bool,
     pub config_dir: String,
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct HeuristicsConfig {
     pub reject_threshold: i32,
     pub spam_threshold: i32,
@@ -62,19 +93,19 @@ pub struct BlocklistConfig {
     pub domain_patterns: Vec<String>,
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct LegacyConfigRef {
     pub enabled: bool,
     pub config_file: String,
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct DefaultActionConfig {
     #[serde(rename = "type")]
     pub action_type: String,
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct PerformanceConfig {
     pub max_concurrent_emails: u32,
     pub timeout_seconds: u32,

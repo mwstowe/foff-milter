@@ -8,6 +8,11 @@
 # Unix socket path for milter communication
 socket_path = "/var/run/foff-milter.sock"
 
+# Convert REJECT actions to TAG actions (default: true)
+# When enabled, emails that would be rejected are tagged with X-FOFF-Reject-Converted header instead
+# This allows for safer deployment and monitoring of what would have been rejected
+reject_to_tag = true
+
 # =============================================================================
 # LOGGING CONFIGURATION
 # =============================================================================

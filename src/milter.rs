@@ -124,8 +124,10 @@ type StateMap = Arc<Mutex<HashMap<String, MailContext>>>;
 static SESSION_COUNTER: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(0);
 
 impl Milter {
-    pub fn new(config: Config) -> anyhow::Result<Self> {
-        let engine = Arc::new(FilterEngine::new(config.clone())?);
+    pub fn new(config: Config, toml_config: crate::toml_config::TomlConfig) -> anyhow::Result<Self> {
+        let mut engine = FilterEngine::new(config.clone())?;
+        engine.set_toml_config(toml_config);
+        let engine = Arc::new(engine);
 
         // Create statistics collector if enabled
         let statistics = if let Some(stats_config) = &config.statistics {
@@ -406,7 +408,7 @@ impl Milter {
                             log::debug!(
                                 "PID {} evaluated action: {:?}, matched_rules: {:?}",
                                 std::process::id(),
-                                action,
+                                &action,
                                 matched_rules
                             );
 
@@ -439,7 +441,7 @@ impl Milter {
                                 }
                             }
 
-                            match action {
+                            match &action {
                                 Action::Reject { message } => {
                                     log::info!(
                                         "REJECT from={sender} to={recipients} reason={message}"

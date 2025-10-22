@@ -125,8 +125,8 @@ async fn main() {
         return;
     }
 
-    let (config, whitelist_config, blocklist_config) = match load_config(config_path) {
-        Ok((config, whitelist, blocklist)) => (config, whitelist, blocklist),
+    let (config, whitelist_config, blocklist_config, toml_config) = match load_config(config_path) {
+        Ok((config, whitelist, blocklist, toml_cfg)) => (config, whitelist, blocklist, toml_cfg),
         Err(e) => {
             eprintln!("Error loading configuration: {e}");
             process::exit(1);
@@ -134,7 +134,7 @@ async fn main() {
     };
 
     if let Some(email_file) = matches.get_one::<String>("test-email") {
-        test_email_file(&config, &whitelist_config, &blocklist_config, email_file).await;
+        test_email_file(&config, &whitelist_config, &blocklist_config, &toml_config, email_file).await;
         return;
     }
 
@@ -616,7 +616,13 @@ async fn main() {
     }
 
     let socket_path = config.socket_path.clone();
-    let milter = Milter::new(config).expect("Failed to create milter");
+    let milter = if let Some(toml_cfg) = toml_config {
+        Milter::new(config, toml_cfg).expect("Failed to create milter")
+    } else {
+        // Create default TOML config if none provided
+        let default_toml = TomlConfig::default();
+        Milter::new(config, default_toml).expect("Failed to create milter")
+    };
     if let Err(e) = milter.run(&socket_path).await {
         log::error!("Milter error: {e}");
         process::exit(1);
@@ -629,6 +635,7 @@ fn load_config(
     LegacyConfig,
     Option<WhitelistConfig>,
     Option<BlocklistConfig>,
+    Option<TomlConfig>,
 )> {
     if std::path::Path::new(path).exists() {
         // Check file extension to determine format
@@ -639,7 +646,7 @@ fn load_config(
             let legacy_config = toml_config.to_legacy_config()?;
             let whitelist_config = toml_config.whitelist.clone();
             let blocklist_config = toml_config.blocklist.clone();
-            Ok((legacy_config, whitelist_config, blocklist_config))
+            Ok((legacy_config, whitelist_config, blocklist_config, Some(toml_config)))
         } else {
             // YAML config no longer supported
             eprintln!("❌ ERROR: YAML configuration is NO LONGER SUPPORTED!");
@@ -662,7 +669,7 @@ fn load_config(
         }
     } else {
         log::warn!("Configuration file '{path}' not found, using default configuration");
-        Ok((LegacyConfig::default(), None, None))
+        Ok((LegacyConfig::default(), None, None, None))
     }
 }
 
@@ -786,6 +793,7 @@ async fn test_email_file(
     config: &LegacyConfig,
     whitelist_config: &Option<WhitelistConfig>,
     blocklist_config: &Option<BlocklistConfig>,
+    toml_config: &Option<TomlConfig>,
     email_file: &str,
 ) {
     use foff_milter::filter::MailContext;
@@ -900,6 +908,13 @@ async fn test_email_file(
     // Set blocklist configuration if available
     filter_engine.set_blocklist_config(blocklist_config.clone());
 
+    // Set TOML configuration
+    if let Some(toml_cfg) = toml_config {
+        filter_engine.set_toml_config(toml_cfg.clone());
+    } else {
+        filter_engine.set_toml_config(TomlConfig::default());
+    }
+
     // Create mail context
     let context = MailContext {
         sender: Some(sender.clone()),
@@ -922,7 +937,7 @@ async fn test_email_file(
     let (action, matched_rules, headers_to_add) = filter_engine.evaluate(&context).await;
 
     println!();
-    match action {
+    match &action {
         Action::Accept => {
             println!("✅ Result: ACCEPT");
             if !matched_rules.is_empty() {
