@@ -63,6 +63,23 @@ rules:
       header_value: "Generic-Sender"
     description: "Generic sender addresses often used in bulk spam campaigns"
 
+  - name: "Sender Name Mismatch"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SenderPattern"
+          pattern: "(?i).*@(gmail|yahoo|hotmail|outlook|aol)\\.(com|co\\.uk)$"
+        - type: "HeaderPattern"
+          header: "from"
+          pattern: "(?i)^[A-Z]{3,15}\\s*<.*@.*>$"
+    score: 20
+    action:
+      type: "TagAsSpam"
+      header_name: "X-FOFF-Sender-Mismatch"
+      header_value: "Generic sender name from free email provider"
+    description: "Detects generic all-caps sender names from free email providers"
+
   - name: "Suspicious Domain Age Indicators"
     enabled: true
     criteria:

@@ -46,6 +46,23 @@ rules:
       header_value: "HTML entity obfuscation detected"
     description: "Detects HTML entity encoding used to obfuscate malicious domains"
 
+  - name: "Suspicious Attachment Filenames"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(invoice|billing|report|document|statement|receipt).*[A-Z0-9]{10,}.*"
+        - type: "HeaderPattern"
+          header: "content-disposition"
+          pattern: "(?i).*filename.*[A-Z0-9]{10,}\\.(pdf|doc|docx|xls|xlsx|zip).*"
+    score: 35
+    action:
+      type: "TagAsSpam"
+      header_name: "X-FOFF-Suspicious-Attachment"
+      header_value: "Suspicious attachment filename pattern"
+    description: "Detects suspicious attachment filenames with random characters"
+
   - name: "Suspicious Encoding Patterns"
     enabled: true
     criteria:

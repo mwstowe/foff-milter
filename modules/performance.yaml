@@ -4,12 +4,21 @@ rules:
   - name: "Trusted Domain Fast Path"
     enabled: true
     criteria:
-      type: "SenderPattern"
-      pattern: ".*@.*(gmail\\.com|outlook\\.com|yahoo\\.com|hotmail\\.com|icloud\\.com|protonmail\\.com|fastmail\\.com)$"
-    score: -50
+      type: "And"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@.*(amazon\\.com|microsoft\\.com|apple\\.com|google\\.com|paypal\\.com|ebay\\.com|linkedin\\.com|twitter\\.com|facebook\\.com)$"
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "AttachmentOnlyEmail"
+              - type: "SubjectPattern"
+                pattern: "(?i).*(invoice|billing|urgent|verify|suspend|click|winner|congratulations).*"
+    score: -30
     action:
       type: "Accept"
-    description: "Fast path for trusted email providers - skip heavy processing"
+    description: "Fast path for trusted corporate domains without suspicious patterns"
 
   - name: "Obvious Spam Early Rejection"
     enabled: true
