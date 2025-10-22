@@ -39,10 +39,10 @@ rules:
     description: "Suspicious when ALL unsubscribe links are mailto: instead of HTTP"
 
   - name: "Suspicious Unsubscribe Link Patterns"
-    enabled: true
+    enabled: false
     criteria:
       type: "UnsubscribeLinkPattern"
-      pattern: "(?i).*(bit\\.ly|tinyurl|t\\.co|goo\\.gl|short\\.link|click\\.here).*"
+      pattern: "(?i).*(bit\\.ly|tinyurl|t\\.co|goo\\.gl|short\\.link|click\\.here|suspicious\\.domain|malware).*"
     score: 30
     action:
       type: "TagAsSpam"
