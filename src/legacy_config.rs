@@ -341,6 +341,22 @@ pub enum Criteria {
         // List of suspicious domains that indicate potential spoofing
         suspicious_domains: Option<Vec<String>>,
     },
+    /// Detect language/geography mismatches (e.g., Japanese text from Chinese domains)
+    LanguageGeographyMismatch {
+        // Domain pattern to match (e.g., "(?i).*\\.cn$")
+        domain_pattern: String,
+        // Content pattern to detect language (e.g., Japanese Unicode ranges)
+        content_pattern: String,
+        // Description of the mismatch being detected
+        description: String,
+    },
+    /// Detect suspicious mixing of different writing systems for obfuscation
+    MixedScriptDetection {
+        // List of suspicious script combinations to detect
+        suspicious_combinations: Vec<String>,
+        // Threshold for number of different scripts before flagging
+        threshold: u32,
+    },
     And {
         criteria: Vec<Criteria>,
     },

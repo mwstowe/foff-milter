@@ -692,6 +692,14 @@ impl FilterEngine {
                 // No regex patterns to compile for DKIM analysis
                 // Uses string parsing and domain extraction instead
             }
+            Criteria::LanguageGeographyMismatch { domain_pattern, content_pattern, .. } => {
+                self.compiled_patterns.insert(domain_pattern.clone(), Regex::new(domain_pattern)?);
+                self.compiled_patterns.insert(content_pattern.clone(), Regex::new(content_pattern)?);
+            }
+            Criteria::MixedScriptDetection { .. } => {
+                // No regex patterns to compile for mixed script detection
+                // Uses Unicode character range analysis instead
+            }
             Criteria::And { criteria } | Criteria::Or { criteria } => {
                 for c in criteria {
                     self.compile_criteria_patterns(c)?;
@@ -4049,6 +4057,62 @@ impl FilterEngine {
                     }
 
                     has_auth_failure
+                }
+                Criteria::LanguageGeographyMismatch { domain_pattern, content_pattern, .. } => {
+                    log::debug!("Checking language/geography mismatch");
+                    
+                    // Get sender domain
+                    let sender_domain = extract_sender_domain(context).unwrap_or_default();
+                    
+                    // Check if domain matches the pattern
+                    if let Some(domain_regex) = self.compiled_patterns.get(domain_pattern) {
+                        if domain_regex.is_match(&sender_domain) {
+                            // Check if content matches the language pattern
+                            let combined_text = format!("{} {}", 
+                                context.subject.as_deref().unwrap_or(""), 
+                                context.body.as_deref().unwrap_or("")
+                            );
+                            if let Some(content_regex) = self.compiled_patterns.get(content_pattern) {
+                                let is_match = content_regex.is_match(&combined_text);
+                                log::debug!("Language/geography mismatch check: domain={}, match={}", sender_domain, is_match);
+                                return is_match;
+                            }
+                        }
+                    }
+                    false
+                }
+                Criteria::MixedScriptDetection { suspicious_combinations, threshold } => {
+                    log::debug!("Checking mixed script detection");
+                    
+                    let combined_text = format!("{} {}", 
+                        context.subject.as_deref().unwrap_or(""), 
+                        context.body.as_deref().unwrap_or("")
+                    );
+                    let mut detected_combinations = 0;
+                    
+                    let has_latin = combined_text.chars().any(|c| c.is_ascii_alphabetic());
+                    let has_cyrillic = combined_text.chars().any(|c| matches!(c, '\u{0400}'..='\u{04FF}'));
+                    let has_arabic = combined_text.chars().any(|c| matches!(c, '\u{0600}'..='\u{06FF}'));
+                    let has_cjk = combined_text.chars().any(|c| matches!(c, '\u{4E00}'..='\u{9FFF}' | '\u{3040}'..='\u{309F}' | '\u{30A0}'..='\u{30FF}' | '\u{AC00}'..='\u{D7AF}'));
+                    
+                    for combination in suspicious_combinations {
+                        match combination.as_str() {
+                            "latin_cyrillic" if has_latin && has_cyrillic => detected_combinations += 1,
+                            "latin_arabic" if has_latin && has_arabic => detected_combinations += 1,
+                            "latin_cjk_excessive" if has_latin && has_cjk => {
+                                let latin_count = combined_text.chars().filter(|c| c.is_ascii_alphabetic()).count();
+                                let cjk_count = combined_text.chars().filter(|c| matches!(*c, '\u{4E00}'..='\u{9FFF}' | '\u{3040}'..='\u{309F}' | '\u{30A0}'..='\u{30FF}' | '\u{AC00}'..='\u{D7AF}')).count();
+                                if latin_count > 10 && cjk_count > 10 {
+                                    detected_combinations += 1;
+                                }
+                            }
+                            _ => {}
+                        }
+                    }
+                    
+                    let is_suspicious = detected_combinations >= *threshold;
+                    log::debug!("Mixed script detection: combinations={}, threshold={}, suspicious={}", detected_combinations, threshold, is_suspicious);
+                    is_suspicious
                 }
                 Criteria::And { criteria } => {
                     for c in criteria {

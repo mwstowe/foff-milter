@@ -110,6 +110,16 @@ impl MultiLanguageDetector {
         let mut reasons = Vec::new();
         let combined_text = format!("{} {}", subject, body);
 
+        // Check language/geography mismatches (highest priority)
+        if let Some(mismatch_result) = self.check_language_geography_mismatch(&combined_text, sender_domain) {
+            return mismatch_result;
+        }
+
+        // Check mixed script confusion
+        if let Some(script_result) = self.check_mixed_script_confusion(&combined_text) {
+            return script_result;
+        }
+
         // Check character encoding abuse (highest priority)
         if self.check_patterns(
             &combined_text,
@@ -197,6 +207,111 @@ impl MultiLanguageDetector {
         };
 
         DetectionResult::new(matched, confidence, reason, "MultiLanguage".to_string())
+    }
+
+    fn check_language_geography_mismatch(&self, text: &str, domain: &str) -> Option<DetectionResult> {
+        // Japanese text from Chinese domain
+        if domain.ends_with(".cn") && self.has_japanese_text(text) {
+            return Some(DetectionResult::new(
+                true,
+                40,
+                "Japanese text from Chinese (.cn) domain".to_string(),
+                "MultiLanguage".to_string(),
+            ));
+        }
+
+        // Chinese text from Japanese domain
+        if domain.ends_with(".jp") && self.has_chinese_text(text) {
+            return Some(DetectionResult::new(
+                true,
+                35,
+                "Chinese text from Japanese (.jp) domain".to_string(),
+                "MultiLanguage".to_string(),
+            ));
+        }
+
+        // Korean text from suspicious domains
+        if (domain.ends_with(".cn") || domain.ends_with(".jp") || domain.ends_with(".ru") || 
+            domain.ends_with(".tk") || domain.ends_with(".ml") || domain.ends_with(".ga")) 
+            && self.has_korean_text(text) {
+            return Some(DetectionResult::new(
+                true,
+                35,
+                "Korean text from suspicious foreign domain".to_string(),
+                "MultiLanguage".to_string(),
+            ));
+        }
+
+        // Cyrillic text from Asian domains
+        if (domain.ends_with(".cn") || domain.ends_with(".jp") || domain.ends_with(".kr") || 
+            domain.ends_with(".tw") || domain.ends_with(".hk")) 
+            && self.has_cyrillic_text(text) {
+            return Some(DetectionResult::new(
+                true,
+                30,
+                "Cyrillic text from Asian domain".to_string(),
+                "MultiLanguage".to_string(),
+            ));
+        }
+
+        None
+    }
+
+    fn check_mixed_script_confusion(&self, text: &str) -> Option<DetectionResult> {
+        let has_latin = text.chars().any(|c| c.is_ascii_alphabetic());
+        let has_cyrillic = text.chars().any(|c| matches!(c, '\u{0400}'..='\u{04FF}'));
+        let has_arabic = text.chars().any(|c| matches!(c, '\u{0600}'..='\u{06FF}'));
+        let has_cjk = text.chars().any(|c| matches!(c, '\u{4E00}'..='\u{9FFF}' | '\u{3040}'..='\u{309F}' | '\u{30A0}'..='\u{30FF}' | '\u{AC00}'..='\u{D7AF}'));
+
+        let mut suspicious_combinations = 0;
+
+        // Latin + Cyrillic (common in phishing)
+        if has_latin && has_cyrillic {
+            suspicious_combinations += 1;
+        }
+
+        // Latin + Arabic (suspicious mixing)
+        if has_latin && has_arabic {
+            suspicious_combinations += 1;
+        }
+
+        // Excessive Latin + CJK mixing (beyond normal usage)
+        if has_latin && has_cjk {
+            let latin_count = text.chars().filter(|c| c.is_ascii_alphabetic()).count();
+            let cjk_count = text.chars().filter(|c| matches!(*c, '\u{4E00}'..='\u{9FFF}' | '\u{3040}'..='\u{309F}' | '\u{30A0}'..='\u{30FF}' | '\u{AC00}'..='\u{D7AF}')).count();
+            
+            // Suspicious if both scripts are heavily used (not just occasional mixing)
+            if latin_count > 10 && cjk_count > 10 {
+                suspicious_combinations += 1;
+            }
+        }
+
+        if suspicious_combinations >= 1 {
+            return Some(DetectionResult::new(
+                true,
+                25,
+                "Suspicious mixing of different writing systems".to_string(),
+                "MultiLanguage".to_string(),
+            ));
+        }
+
+        None
+    }
+
+    fn has_japanese_text(&self, text: &str) -> bool {
+        text.chars().any(|c| matches!(c, '\u{3040}'..='\u{309F}' | '\u{30A0}'..='\u{30FF}'))
+    }
+
+    fn has_chinese_text(&self, text: &str) -> bool {
+        text.chars().any(|c| matches!(c, '\u{4E00}'..='\u{9FAF}'))
+    }
+
+    fn has_korean_text(&self, text: &str) -> bool {
+        text.chars().any(|c| matches!(c, '\u{AC00}'..='\u{D7AF}' | '\u{1100}'..='\u{11FF}' | '\u{3130}'..='\u{318F}'))
+    }
+
+    fn has_cyrillic_text(&self, text: &str) -> bool {
+        text.chars().any(|c| matches!(c, '\u{0400}'..='\u{04FF}' | '\u{0500}'..='\u{052F}'))
     }
 
     fn check_patterns(&self, text: &str, patterns: &[String]) -> bool {
