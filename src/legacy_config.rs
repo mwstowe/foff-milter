@@ -423,17 +423,3 @@ impl Default for Config {
         }
     }
 }
-
-impl Config {
-    pub fn from_file(path: &str) -> anyhow::Result<Self> {
-        let content = std::fs::read_to_string(path)?;
-        let config: Config = serde_yml::from_str(&content)?;
-        Ok(config)
-    }
-
-    pub fn to_file(&self, path: &str) -> anyhow::Result<()> {
-        let content = serde_yml::to_string(self)?;
-        std::fs::write(path, content)?;
-        Ok(())
-    }
-}

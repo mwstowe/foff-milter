@@ -29,17 +29,10 @@ async fn main() {
                 .default_value("/etc/foff-milter.yaml"),
         )
         .arg(
-            Arg::new("generate-config")
-                .long("generate-config")
-                .value_name("FILE")
-                .help("Generate a default configuration file")
-                .action(clap::ArgAction::Set),
-        )
-        .arg(
             Arg::new("generate-modules")
                 .long("generate-modules")
                 .value_name("DIR")
-                .help("Generate all 14 modular configuration files in specified directory")
+                .help("Generate all 16 modular configuration files in specified directory")
                 .action(clap::ArgAction::Set),
         )
         .arg(
@@ -126,11 +119,6 @@ async fn main() {
         .init();
 
     let config_path = matches.get_one::<String>("config").unwrap();
-
-    if let Some(generate_path) = matches.get_one::<String>("generate-config") {
-        generate_default_config(generate_path);
-        return;
-    }
 
     if let Some(modules_dir) = matches.get_one::<String>("generate-modules") {
         generate_modular_configs(modules_dir);
@@ -786,19 +774,7 @@ fn generate_modular_configs(dir_path: &str) {
     }
 }
 
-fn generate_default_config(path: &str) {
-    let config = LegacyConfig::default();
-    match config.to_file(path) {
-        Ok(()) => {
-            println!("Default configuration written to: {path}");
-            println!("Please edit the configuration file to suit your needs.");
-        }
-        Err(e) => {
-            eprintln!("Error writing configuration file: {e}");
-            process::exit(1);
-        }
-    }
-}
+
 
 fn truncate_string(s: &str, max_len: usize) -> String {
     if s.len() <= max_len {
