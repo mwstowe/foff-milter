@@ -7,7 +7,7 @@ set -e
 
 # Server configurations: hostname:config_dir
 SERVERS=(
-    "hotel:/etc/foff-milter"
+    "hotel.example.com:/etc/foff-milter"
     "juliett.example.com:/usr/local/etc/foff-milter"
 )
 
@@ -33,7 +33,7 @@ for server_config in "${SERVERS[@]}"; do
             module_name=$(basename "$module")
             echo "   → $module_name"
             scp "$module" "$server:/tmp/"
-            ssh "$server" "sudo mv /tmp/$module_name $remote_modules_dir/ && sudo chown root:root $remote_modules_dir/$module_name && sudo chmod 644 $remote_modules_dir/$module_name"
+            ssh "$server" "sudo mv /tmp/$module_name $remote_modules_dir/ && sudo chown root $remote_modules_dir/$module_name && sudo chmod 644 $remote_modules_dir/$module_name"
         fi
     done
     
@@ -50,10 +50,10 @@ echo ""
 echo "📋 Next steps:"
 echo "   1. Build and deploy the binary: cargo build --release"
 echo "   2. Copy binary to servers:"
-echo "      scp target/release/foff-milter hotel:/usr/local/bin/"
+echo "      scp target/release/foff-milter hotel.example.com:/usr/local/bin/"
 echo "      scp target/release/foff-milter juliett.example.com:/usr/local/bin/"
 echo "   3. Restart services:"
-echo "      ssh hotel 'sudo systemctl restart foff-milter'"
-echo "      ssh juliett.example.com 'sudo service foff-milter restart'"
+echo "      ssh hotel.example.com 'systemctl restart foff-milter'"
+echo "      ssh juliett.example.com 'service foff-milter restart'"
 echo ""
 echo "ℹ️  Note: Main config files are NOT overwritten - manage manually"
