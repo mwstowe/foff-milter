@@ -1,3 +1,91 @@
 name: "Integration"
 enabled: true
-rules: []
+rules:
+  - name: "Cloud Storage Phishing"
+    enabled: true
+    criteria:
+      type: "SubjectPattern"
+      pattern: "(?i).*(dropbox.*shared|google.*drive.*shared|onedrive.*shared|file.*shared.*you|document.*shared|shared.*folder|download.*file|view.*document).*"
+    score: 35
+    action:
+      type: "TagAsSpam"
+      header_name: "X-FOFF-Integration"
+      header_value: "Cloud-Storage-Phishing"
+    description: "Fake cloud storage sharing notifications"
+
+  - name: "Payment Service Abuse"
+    enabled: true
+    criteria:
+      type: "SubjectPattern"
+      pattern: "(?i).*(paypal.*payment|stripe.*payment|square.*payment|payment.*received|money.*sent|invoice.*paid|transaction.*complete|refund.*processed).*"
+    score: 40
+    action:
+      type: "TagAsSpam"
+      header_name: "X-FOFF-Integration"
+      header_value: "Payment-Service-Abuse"
+    description: "Fake payment service notifications"
+
+  - name: "Social Media Impersonation"
+    enabled: true
+    criteria:
+      type: "SubjectPattern"
+      pattern: "(?i).*(facebook.*notification|twitter.*mention|linkedin.*message|instagram.*follow|social.*media.*alert|friend.*request|connection.*request).*"
+    score: 30
+    action:
+      type: "TagAsSpam"
+      header_name: "X-FOFF-Integration"
+      header_value: "Social-Media-Impersonation"
+    description: "Fake social media notifications"
+
+  - name: "GitHub/Developer Service Abuse"
+    enabled: true
+    criteria:
+      type: "SubjectPattern"
+      pattern: "(?i).*(github.*notification|pull.*request|code.*review|repository.*access|developer.*alert|api.*key|security.*vulnerability).*"
+    score: 25
+    action:
+      type: "TagAsSpam"
+      header_name: "X-FOFF-Integration"
+      header_value: "Developer-Service-Abuse"
+    description: "Fake developer service notifications"
+
+  - name: "Shipping/Delivery Scams"
+    enabled: true
+    criteria:
+      type: "SubjectPattern"
+      pattern: "(?i).*(package.*delivery|shipment.*notification|fedex.*delivery|ups.*package|dhl.*shipment|delivery.*failed|package.*held|customs.*fee).*"
+    score: 45
+    action:
+      type: "TagAsSpam"
+      header_name: "X-FOFF-Integration"
+      header_value: "Shipping-Scam"
+    description: "Fake shipping and delivery notifications"
+
+  - name: "Subscription Service Abuse"
+    enabled: true
+    criteria:
+      type: "SubjectPattern"
+      pattern: "(?i).*(netflix.*account|spotify.*premium|amazon.*prime|subscription.*expired|billing.*failed|auto.*renewal|cancel.*subscription).*"
+    score: 35
+    action:
+      type: "TagAsSpam"
+      header_name: "X-FOFF-Integration"
+      header_value: "Subscription-Abuse"
+    description: "Fake subscription service notifications"
+
+  - name: "Legitimate Service Domain Mismatch"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(paypal|amazon|microsoft|google|apple|facebook|netflix|dropbox).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(paypal|amazon|microsoft|google|apple|facebook|netflix|dropbox)\\.(com|net|org)$"
+    score: 50
+    action:
+      type: "Reject"
+      message: "Impersonation of legitimate service detected"
+    description: "Subject mentions legitimate service but sender domain doesn't match"
