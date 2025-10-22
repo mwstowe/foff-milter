@@ -42,10 +42,10 @@ rules:
     enabled: true
     criteria:
       type: "UnsubscribeLinkPattern"
-      pattern: "(?i).*(bit\\.ly|tinyurl|t\\.co|goo\\.gl|short\\.link|click\\.here|unsubscribe.*\\d{10,}|remove.*[a-f0-9]{20,}).*"
+      pattern: "(?i).*(bit\\.ly|tinyurl|t\\.co|goo\\.gl|short\\.link|click\\.here).*"
     score: 30
     action:
       type: "TagAsSpam"
       header_name: "X-FOFF-Unsubscribe"
       header_value: "Suspicious-Pattern"
-    description: "URL shorteners and suspicious patterns in unsubscribe links"
+    description: "URL shorteners and suspicious patterns in unsubscribe links (excludes legitimate tracking tokens)"
