@@ -28,6 +28,11 @@ for server_config in "${SERVERS[@]}"; do
     
     # Deploy all module files
     echo "📦 Deploying module configurations..."
+    
+    # Clean up old renamed files
+    echo "🧹 Cleaning up old module files..."
+    ssh "$server" "sudo rm -f $remote_modules_dir/machine-learning.yaml" 2>/dev/null || true
+    
     for module in $LOCAL_MODULES_DIR/*.yaml; do
         if [ -f "$module" ]; then
             module_name=$(basename "$module")
