@@ -4,8 +4,24 @@ rules:
   - name: "High Volume Sender Detection"
     enabled: true
     criteria:
-      type: "SenderPattern"
-      pattern: ".*@.*(bulk|mass|newsletter|marketing|promo|campaign|blast|mailer).*"
+      type: "And"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@.*(bulk|mass|newsletter|marketing|promo|campaign|blast|mailer).*"
+        - type: "Not"
+          criteria:
+            type: "And"
+            criteria:
+              - type: "HeaderPattern"
+                header: "Authentication-Results"
+                pattern: "dkim=pass"
+              - type: "HeaderPattern"
+                header: "List-Unsubscribe"
+                pattern: ".*"
+        - type: "Not"
+          criteria:
+            type: "BodyPattern"
+            pattern: "(?i).*(unsubscribe|privacy.*policy|newsletter|promotional.*content).*"
     score: 15
     action:
       type: "TagAsSpam"
@@ -60,9 +76,19 @@ rules:
           pattern: ".*(no-reply|noreply|donotreply|admin|support|info|contact|service|team|notification|alert)@.*"
         - type: "Not"
           criteria:
-            type: "HeaderPattern"
-            header: "From"
-            pattern: ".*@(asus\\.com|.*\\.asus\\.com|microsoft\\.com|.*\\.microsoft\\.com|google\\.com|.*\\.google\\.com|amazon\\.com|.*\\.amazon\\.com|apple\\.com|.*\\.apple\\.com|shopify\\.com|.*\\.shopify\\.com|lovepopcards\\.com).*"
+            type: "Or"
+            criteria:
+              - type: "HeaderPattern"
+                header: "From"
+                pattern: ".*@(asus\\.com|.*\\.asus\\.com|microsoft\\.com|.*\\.microsoft\\.com|google\\.com|.*\\.google\\.com|amazon\\.com|.*\\.amazon\\.com|apple\\.com|.*\\.apple\\.com|shopify\\.com|.*\\.shopify\\.com|lovepopcards\\.com|pixlr\\.com|.*\\.pixlr\\.com).*"
+              - type: "And"
+                criteria:
+                  - type: "HeaderPattern"
+                    header: "Authentication-Results"
+                    pattern: "dkim=pass"
+                  - type: "HeaderPattern"
+                    header: "List-Unsubscribe"
+                    pattern: ".*"
     score: 5
     action:
       type: "TagAsSpam"
