@@ -122,6 +122,8 @@ rules:
                     pattern: ".*"
                   - type: "BodyPattern"
                     pattern: "(?i).*(newsletter|unsubscribe|promotional.*content|marketing.*email).*"
+                  - type: "SenderPattern"
+                    pattern: ".*@(empower\\.com|.*\\.empower\\.com)$"
     score: 12
     action:
       type: "TagAsSpam"
