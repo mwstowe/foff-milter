@@ -13,6 +13,27 @@ fn extract_domain_from_email(email: &str) -> Option<String> {
     email.split('@').nth(1).map(|s| s.to_string())
 }
 
+fn get_hostname() -> String {
+    std::env::var("HOSTNAME")
+        .or_else(|_| {
+            use std::process::Command;
+            Command::new("hostname")
+                .output()
+                .ok()
+                .and_then(|output| {
+                    if output.status.success() {
+                        String::from_utf8(output.stdout)
+                            .ok()
+                            .map(|s| s.trim().to_string())
+                    } else {
+                        None
+                    }
+                })
+                .ok_or(())
+        })
+        .unwrap_or_else(|_| "unknown".to_string())
+}
+
 fn extract_dkim_domain(dkim_sig: &str) -> Option<String> {
     // Extract d= parameter from DKIM signature
     for part in dkim_sig.split(';') {
@@ -1032,8 +1053,8 @@ impl FilterEngine {
             headers_to_add.push((
                 "X-FOFF-Analysis".to_string(),
                 format!(
-                    "analyzed by foff-milter v{} (score: {})",
-                    self.config.version, total_score
+                    "analyzed by foff-milter v{} on {} (score: {})",
+                    self.config.version, get_hostname(), total_score
                 ),
             ));
         } else {
@@ -1051,8 +1072,9 @@ impl FilterEngine {
                 headers_to_add.push((
                     "X-FOFF-Analysis".to_string(),
                     format!(
-                        "analyzed by foff-milter v{} (score: {}) - matched: {}",
+                        "analyzed by foff-milter v{} on {} (score: {}) - matched: {}",
                         self.config.version,
+                        get_hostname(),
                         total_score,
                         matched_rules.join(", ")
                     ),
