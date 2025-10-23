@@ -82,10 +82,14 @@ rules:
           pattern: "(?i).*(paypal|amazon|microsoft|google|apple|facebook|netflix|dropbox).*"
         - type: "Not"
           criteria:
-            type: "SenderPattern"
-            pattern: ".*@.*(paypal|amazon|microsoft|google|apple|facebook|netflix|dropbox)\\.(com|net|org)$"
+            type: "Or"
+            criteria:
+              - type: "SenderPattern"
+                pattern: ".*@.*(paypal|amazon|microsoft|google|apple|facebook|netflix|dropbox)\\.(com|net|org)$"
+              - type: "SenderPattern"
+                pattern: ".*@.*woot\\.com$"
     score: 50
     action:
       type: "Reject"
       message: "Impersonation of legitimate service detected"
-    description: "Subject mentions legitimate service but sender domain doesn't match"
+    description: "Subject mentions legitimate service but sender domain doesn't match (excludes legitimate resellers like Woot)"
