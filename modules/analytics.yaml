@@ -54,8 +54,15 @@ rules:
   - name: "Generic Sender Names"
     enabled: true
     criteria:
-      type: "SenderPattern"
-      pattern: ".*(no-reply|noreply|donotreply|admin|support|info|contact|service|team|notification|alert)@.*"
+      type: "And"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*(no-reply|noreply|donotreply|admin|support|info|contact|service|team|notification|alert)@.*"
+        - type: "Not"
+          criteria:
+            type: "HeaderPattern"
+            header: "From"
+            pattern: ".*@(asus\\.com|.*\\.asus\\.com|microsoft\\.com|.*\\.microsoft\\.com|google\\.com|.*\\.google\\.com|amazon\\.com|.*\\.amazon\\.com|apple\\.com|.*\\.apple\\.com|shopify\\.com|.*\\.shopify\\.com|lovepopcards\\.com).*"
     score: 5
     action:
       type: "TagAsSpam"

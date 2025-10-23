@@ -99,16 +99,16 @@ rules:
       type: "And"
       criteria:
         - type: "BodyPattern"
-          pattern: "(?i).*(septic.*tank|eliminates.*smell|tiny.*tab|prestigious.*university|scientists.*developed|worry.*free|pumped.*anymore).*"
+          pattern: "(?i).*(septic.*tank|eliminates.*smell|tiny.*tab|prestigious.*university|scientists.*developed|pumped.*anymore).*"
         - type: "Not"
           criteria:
             type: "Or"
             criteria:
               - type: "HeaderPattern"
                 header: "From"
-                pattern: ".*@(lovepopcards\\.com|shopify\\.com|.*\\.shopify\\.com).*"
+                pattern: ".*@(lovepopcards\\.com|shopify\\.com|.*\\.shopify\\.com|asus\\.com|.*\\.asus\\.com).*"
               - type: "BodyPattern"
-                pattern: "(?i).*(order.*confirmation|you.*saved.*\\$|lovepop|pop-up.*card).*"
+                pattern: "(?i).*(order.*confirmation|you.*saved.*\\$|lovepop|pop-up.*card|asus|zenwifi|router|mesh.*router).*"
     score: 45
     action:
       type: "TagAsSpam"
