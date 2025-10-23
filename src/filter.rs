@@ -1054,7 +1054,9 @@ impl FilterEngine {
                 "X-FOFF-Analysis".to_string(),
                 format!(
                     "analyzed by foff-milter v{} on {} (score: {})",
-                    self.config.version, get_hostname(), total_score
+                    self.config.version,
+                    get_hostname(),
+                    total_score
                 ),
             ));
         } else {
