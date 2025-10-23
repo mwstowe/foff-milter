@@ -894,7 +894,7 @@ impl FilterEngine {
                         // Add rule-specific header (consolidated format)
                         headers_to_add.push((
                             "X-FOFF-Rule-Matched".to_string(),
-                            format!("{}: {}", module.name, rule.name),
+                            format!("{}: {} ({})", module.name, rule.name, get_hostname()),
                         ));
                     }
                 }
@@ -912,7 +912,7 @@ impl FilterEngine {
                 headers_to_add.push((
                     "X-FOFF-Score".to_string(),
                     format!(
-                        "{} - analyzed by foff-milter v{} on {}",
+                        "{} - foff-milter v{} ({})",
                         total_score,
                         self.config.version,
                         get_hostname()
@@ -1082,7 +1082,7 @@ impl FilterEngine {
                 headers_to_add.push((
                     "X-FOFF-Score".to_string(),
                     format!(
-                        "{} - analyzed by foff-milter v{} on {} - matched: {}",
+                        "{} - foff-milter v{} ({}) - matched: {}",
                         total_score,
                         self.config.version,
                         get_hostname(),
