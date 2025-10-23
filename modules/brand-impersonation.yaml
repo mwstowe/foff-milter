@@ -78,6 +78,10 @@ rules:
               - type: "HeaderPattern"
                 header: "return-path"
                 pattern: ".*noreply.*@.*"
+              - type: "SenderPattern"
+                pattern: ".*@.*\\.bmsend\\.com$"
+              - type: "SenderPattern"
+                pattern: ".*@.*\\.benchmarkemail\\.com$"
     score: 25
     action:
       type: "TagAsSpam"
