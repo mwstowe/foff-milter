@@ -30,7 +30,7 @@ impl Default for TomlConfig {
                 config_dir: "modules".to_string(),
             }),
             heuristics: Some(HeuristicsConfig {
-                reject_threshold: 100,
+                reject_threshold: 350,
                 spam_threshold: 50,
                 accept_threshold: 0,
             }),
