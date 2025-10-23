@@ -53,9 +53,12 @@ rules:
             criteria:
               - type: "HeaderPattern"
                 header: "From"
-                pattern: ".*@(lovepopcards\\.com|shopify\\.com|.*\\.shopify\\.com|sendgrid\\.net|.*\\.sendgrid\\.net).*"
+                pattern: ".*@(lovepopcards\\.com|shopify\\.com|.*\\.shopify\\.com|sendgrid\\.net|.*\\.sendgrid\\.net|nytimes\\.com|.*\\.nytimes\\.com|nytdirect@nytimes\\.com).*"
               - type: "BodyPattern"
-                pattern: "(?i).*(order.*confirmation|lovepop|pop-up.*card|thank.*you.*for.*placing).*"
+                pattern: "(?i).*(order.*confirmation|lovepop|pop-up.*card|thank.*you.*for.*placing|the.*new.*york.*times|nytimes\\.com|newsletter).*"
+              - type: "HeaderPattern"
+                header: "Content-Transfer-Encoding"
+                pattern: "quoted-printable"
     score: 30
     action:
       type: "TagAsSpam"
