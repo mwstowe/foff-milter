@@ -891,9 +891,9 @@ impl FilterEngine {
                             }
                         }
 
-                        // Add module-specific header
+                        // Add rule-specific header (consolidated format)
                         headers_to_add.push((
-                            "X-FOFF-Module-Matched".to_string(),
+                            "X-FOFF-Rule-Matched".to_string(),
                             format!("{}: {}", module.name, rule.name),
                         ));
                     }

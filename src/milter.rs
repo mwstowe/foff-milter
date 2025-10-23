@@ -501,43 +501,6 @@ impl Milter {
                                         }
                                     }
 
-                                    // Check if X-FOFF-Rule-Matched header already exists with this rule
-                                    if !matched_rules.is_empty() {
-                                        let rule_header_value = matched_rules.join(", ");
-                                        let rule_header_exists =
-                                            mail_ctx.headers.iter().any(|(k, v)| {
-                                                k.to_lowercase() == "x-foff-rule-matched"
-                                                    && v == &rule_header_value
-                                            });
-
-                                        if rule_header_exists {
-                                            log::info!("X-FOFF-Rule-Matched header with value '{rule_header_value}' already exists, skipping duplicate");
-                                        } else if let Err(e) = ctx
-                                            .actions
-                                            .add_header(
-                                                "X-FOFF-Rule-Matched".to_string(),
-                                                rule_header_value.clone(),
-                                            )
-                                            .await
-                                        {
-                                            log::error!(
-                                                "Failed to add X-FOFF-Rule-Matched header: {e}"
-                                            );
-                                        } else {
-                                            log::info!("Added X-FOFF-Rule-Matched header: {rule_header_value}");
-                                            // Log to syslog for maillog visibility
-                                            if syslog::init(
-                                                syslog::Facility::LOG_MAIL,
-                                                log::LevelFilter::Info,
-                                                Some("foff-milter"),
-                                            )
-                                            .is_ok()
-                                            {
-                                                log::info!("RULE_MATCHED from={sender} to={recipients} rules={rule_header_value}");
-                                            }
-                                        }
-                                    }
-
                                     return Status::Accept;
                                 }
                                 Action::ReportAbuse {
