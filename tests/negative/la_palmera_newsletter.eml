@@ -1,0 +1,266 @@
+Return-Path: <user+caf_=user=testdomain.com@gmail.com>
+Received: from hotel.testdomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.testdomain.com (8.18.1/8.18.1) with ESMTPS id 59NEqbD2019471
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <user@testdomain.com>; Thu, 23 Oct 2025 14:52:38 GMT
+	(envelope-from user+caf_=user=testdomain.com@gmail.com)
+Authentication-Results: juliett.testdomain.com;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=toast-restaurants.com header.i=no-reply+4e0f4996@toast-restaurants.com header.b=ZocgtxX5;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=bnc3.mailjet.com header.i=@bnc3.mailjet.com header.b=C0vuLbY0
+X-Authentication-Warning: juliett.testdomain.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.testdomain.com
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+	by hotel.testdomain.com (8.16.1/8.16.1) with ESMTPS id 59NEqZRR016330
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=OK)
+	for <user@testdomain.com>; Thu, 23 Oct 2025 09:52:37 -0500
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.testdomain.com 59NEqZRR016330
+Authentication-Results: hotel.testdomain.com;
+	dkim=pass (1024-bit key, unprotected) header.d=toast-restaurants.com header.i=no-reply+4e0f4996@toast-restaurants.com header.a=rsa-sha256 header.s=mailjet header.b=ZocgtxX5;
+	dkim=pass (1024-bit key, unprotected) header.d=bnc3.mailjet.com header.i=@bnc3.mailjet.com header.a=rsa-sha256 header.s=mailjet1 header.b=C0vuLbY0
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-b5c18993b73so167150866b.0
+        for <user@testdomain.com>; Thu, 23 Oct 2025 07:52:36 -0700 (PDT)
+ARC-Seal: i=2; a=rsa-sha256; t=1761231155; cv=pass;
+        d=google.com; s=arc-20240605;
+        b=Ke5TEUoYU07acraJF21/YLFGGnB6ar41j9VopBJOpXJ+t1/Zl5zLQTbQ+ziWhJg+aZ
+         pjZf1FImFD7d9C1qYAeEA0n2SNvxDBSIwNBd8lVOa/PCjvX1gqIbw6SP8aChQw86bQkn
+         H7OgjvDmSvEcvmYOH+G+A/vLZU0mpYp4fsQJWpYKFsyKi7gNhlmHoBoUCILrQzF46Pkn
+         04JjJboP7Mf+ad+2i8qUDMeklqiZhBO0C4yZY2sUhqhkm54VrwaVTMrQY2X0axPOq9Fm
+         r4jv2DkVlYmwJJstKG7qYLM3BavLXbGzUFSt9PMEJMsrgOfzya6XotFuzj8wboGhGqX7
+         w7ag==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:precedence:feedback-id
+         :list-unsubscribe-post:list-unsubscribe:list-id:date:subject:to
+         :reply-to:from:mime-version:message-id:dkim-signature:dkim-signature
+         :delivered-to;
+        bh=yfaa3mr3FPlJZNk439aZmFeXPdrnEP1g/cOhT02aYLg=;
+        fh=s8vMlGFpZh9DA7nTil27cQOpleBKE6YliyJItuRFSqI=;
+        b=KXIiy24z73L6qLKSAD2XttlLo0oZe24pEQL7Tbh1chuAVWvJqTQ6briZxJN1151ztq
+         MgTtg+0mAkfB1NLE2lAMg7B2VnAmZ0CisyYTO9yQVpPmoOghtu+SHgMLUObAv1v3tryr
+         vFs8SS+Y6KZiKidEYGxn4hHtkRwIJy4a3O3tqLtEZwj3PgGVwMrIzhPpURTYP4yLYw+Q
+         p/xlsqqztd1Knplht+kGfySttLeitW7bBbzSwlMP/DszbQPhALBj0g3h2PKRoE5yc653
+         FYX8Ew1fgtgFxmLPnDP5KwYE3C35CfTivOaiGtjxNmx7UazTLKJZqSVmSbDcaMPs5QN7
+         XkYw==;
+        darn=testdomain.com
+ARC-Authentication-Results: i=2; mx.google.com;
+       dkim=pass header.i=@toast-restaurants.com header.s=mailjet header.b=ZocgtxX5;
+       dkim=pass header.i=@bnc3.mailjet.com header.s=mailjet1 header.b=C0vuLbY0;
+       spf=pass (google.com: domain of 68c73782.awkaaiiuucuaacp_fwgaafbggjcaaycrvpwajurnabqoqqbo-ket@a1321025.bnc3.mailjet.com designates 87.253.233.120 as permitted sender) smtp.mailfrom=68c73782.AWkAAIIuUcUAAcp_fWgAAfBGgJcAAYCrvpwAJURNABQoQQBo-kEt@a1321025.bnc3.mailjet.com;
+       dmarc=pass (p=NONE sp=NONE dis=NONE) header.from=toast-restaurants.com
+Message-Id: <68c73782.AWkAAIIuUcUAAcp_fWgAAfBGgJcAAYCrvpwAJURNABQoQQBo-kEt@mailjet.com>
+MIME-Version: 1.0
+From: La Palmera - South Lake Union
+	<no-reply+4e0f4996@toast-restaurants.com>
+Reply-To: info@lapalmerafmr.com
+To: user@gmail.com
+Subject: Brunch Lovers, This One's for You — $20 Seattle Restaurant Week Special
+Date: Thu, 23 Oct 2025 14:52:29 +0000 (UTC)
+List-Id: <no-reply.4e0f4996.toast-restaurants.com.x68ql-swuig.mj>
+List-Unsubscribe:
+	<mailto:unsub-68c73782.x68ql.lk0uu5gmqu7l@bnc3.mailjet.com>,
+	<https://x68ql.mjt.lu/unsub2?m=AWkAAIIuUcUAAcp_fWgAAfBGgJcAAYCrvpwAJURNABQoQQBo-kEt5jK_vgLgTSubPLCSour-gAARcWs&b=68c73782&e=30315008&x=ruN6Sx0EAA39aa6aQPHPXg>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+Feedback-Id: 42.1321025.1143147:MJ
+Precedence: bulk
+X-CampaignID: 7692320104
+X-CSA-Complaints: csa-complaints@eco.de
+X-MJ-Mid:
+	AWkAAIIuUcUAAcp_fWgAAfBGgJcAAYCrvpwAJURNABQoQQBo-kEt5jK_vgLgTSubPLCSour-gAARcWs
+X-MJ-SMTPGUID: e632bfbe-02e0-4d2b-9b3c-b092a2eafe80
+X-REPORT-ABUSE-TO: Message sent by Mailjet please report to
+	abuse@mailjet.com with a copy of the message
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+<!doctype html><html lang="en" dir="ltr">
+<head><title>Brunch Lovers, This One's for You — $20 Seattle Restaurant Week Special</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+</head>
+<body style="word-spacing:normal;background-color:#f7f7f7;">
+
+<div style="display:none;font-size:1px;color:#ffffff;line-height:1px;max-height:0px;max-width:0px;opacity:0;overflow:hidden;">
+Celebrate Seattle Restaurant Week with our $20 brunch special — only four days to enjoy it!
+</div>
+
+<div style="background-color:#f7f7f7;" role="main" lang="en" dir="ltr">
+<div style="margin:0px auto;max-width:600px;">
+<table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width:100%;">
+<tbody><tr><td style="direction:ltr;font-size:0px;padding:5px 0px 5px 0px;text-align:center;">
+
+<div style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:middle;width:100%;">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" style="vertical-align:middle;" width="100%">
+<tbody><tr><td align="right" style="font-size:0px;padding:0px 15px 0px 0px;word-break:break-word;">
+<div style="font-family:Verdana, Helvetica, Arial, sans-serif;font-size:12px;letter-spacing:normal;line-height:22px;text-align:right;color:#9399a1;">
+<p style="text-align: right; margin: 10px 0;">
+<a style="color:inherit;text-decoration:none;" target="_blank" href="https://example.com/view-online">
+<span style="color:#707070;font-family:Lato, Arial, sans-serif;font-size:12px;line-height:24px">View online version</span>
+</a>
+</p>
+</div>
+</td></tr></tbody></table>
+</div>
+
+</td></tr></tbody></table>
+</div>
+
+<div style="background:#ffffff;background-color:#ffffff;margin:0px auto;max-width:600px;">
+<table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="background:#ffffff;background-color:#ffffff;width:100%;">
+<tbody><tr><td style="direction:ltr;font-size:0px;padding:20px 0px 20px 0px;text-align:center;">
+
+<div style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" style="vertical-align:top;" width="100%">
+<tbody><tr><td align="center" style="font-size:0px;padding:0px 0px 0px 0px;word-break:break-word;">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse:collapse;border-spacing:0px;">
+<tbody><tr><td style="width:200px;">
+<img alt="" src="https://example.com/logo.png" style="border:none;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:13px;" width="200" height="auto">
+</td></tr></tbody></table>
+</td></tr></tbody></table>
+</div>
+
+</td></tr></tbody></table>
+</div>
+
+<div style="background:#ffffff;background-color:#ffffff;margin:0px auto;max-width:600px;">
+<table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="background:#ffffff;background-color:#ffffff;width:100%;">
+<tbody><tr><td style="direction:ltr;font-size:0px;padding:0px 40px 50px 40px;text-align:center;">
+
+<div style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" style="vertical-align:top;" width="100%">
+<tbody><tr><td align="left" style="font-size:0px;padding:0px 0px 0px 0px;word-break:break-word;">
+<div style="font-family:Verdana, Helvetica, Arial, sans-serif;font-size:13px;letter-spacing:normal;line-height:1;text-align:left;color:#000000;">
+
+<p style="text-align: center; margin: 10px 0;">
+<span style="font-family:Lato, Arial, sans-serif;font-size:28px"><b>🥂 Seattle Restaurant Week </b></span><br>
+<span style="font-family:Lato, Arial, sans-serif;font-size:28px"><b>Brunch Special 🍳</b></span>
+</p>
+
+<p style="text-align: center; margin: 10px 0;">
+<span style="color:#000000;font-family:Lato, Arial, sans-serif;font-size:18px;line-height:24px">
+Seattle Restaurant Week is almost here, and we're celebrating with a brunch you don't want to miss! 
+For just $20, enjoy a delicious two-course experience at La Palmera South Lake Union — complete with 
+your choice of drink and a mouthwatering Mexican brunch entrée. If you haven't tried our brunch yet, 
+this is the perfect opportunity to do so! See you soon, amigos!
+</span>
+</p>
+
+<p style="text-align: center; margin: 10px 0;">
+<span style="color:#084541;font-family:Lato, Arial, sans-serif;font-size:18px;line-height:24px">
+<b>✨ Available October 26–November 8, Saturdays & Sundays only.</b>
+</span>
+</p>
+
+<p style="text-align: center; margin: 10px 0;">
+<span style="color:#084541;font-family:Lato, Arial, sans-serif;font-size:18px;line-height:24px">
+<b>📍 La Palmera - South Lake Union</b>
+</span>
+</p>
+
+<p style="text-align: center; margin: 10px 0;">
+<span style="color:#084541;font-family:Lato, Arial, sans-serif;font-size:18px;line-height:24px">
+<b>⏰ Brunch Hours: 10 AM – 2 PM</b>
+</span>
+</p>
+
+</div>
+</td></tr>
+
+<tr><td align="center" vertical-align="middle" style="font-size:0px;padding:10px 25px;word-break:break-word;">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse:separate;line-height:100%;">
+<tbody><tr><td align="center" bgcolor="#d4573e" role="presentation" style="border:none;border-radius:100px;cursor:auto;background:#d4573e;" valign="middle">
+<a href="https://www.instagram.com/lapalmerarestaurants/" style="display:inline-block;background:#d4573e;color:#ffffff;font-family:Verdana, Helvetica, Arial, sans-serif;font-size:16px;font-weight:normal;line-height:120%;margin:0;text-decoration:none;text-transform:none;padding:10px 25px;border-radius:100px;" target="_blank">
+<span style="font-family:Lato, Arial, sans-serif;font-size:15px;"><b>Follow us on Instagram</b></span>
+</a>
+</td></tr></tbody></table>
+</td></tr>
+
+<tr><td align="left" style="font-size:0px;padding:0px 0px 0px 0px;word-break:break-word;">
+<div style="font-family:Verdana, Helvetica, Arial, sans-serif;font-size:13px;letter-spacing:normal;line-height:1;text-align:left;color:#000000;">
+<p style="text-align: center; margin: 10px 0;">
+<span style="color:#084541;font-family:Lato, Arial, sans-serif;font-size:18px;line-height:24px"><b>See Menu Below</b></span>
+</p>
+</div>
+</td></tr>
+
+<tr><td align="center" style="font-size:0px;padding:10px 25px;word-break:break-word;">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse:collapse;border-spacing:0px;">
+<tbody><tr><td style="width:470px;">
+<img alt="" src="https://example.com/menu.jpg" style="border:none;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:13px;" width="470" height="auto">
+</td></tr></tbody></table>
+</td></tr>
+
+</tbody></table>
+</div>
+
+</td></tr></tbody></table>
+</div>
+
+<div style="background:transparent;background-color:transparent;margin:0px auto;max-width:600px;">
+<table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="background:transparent;background-color:transparent;width:100%;">
+<tbody><tr><td style="direction:ltr;font-size:0px;padding:0px 0px 0px 0px;text-align:center;">
+
+<div style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" style="vertical-align:top;" width="100%">
+<tbody><tr><td align="center" style="font-size:0px;padding:10px 20px 0px 20px;word-break:break-word;">
+<div style="font-family:Verdana, Helvetica, Arial, sans-serif;font-size:16px;letter-spacing:normal;line-height:22px;text-align:center;color:#55575d;">
+
+<p style="text-align: center; margin: 10px 0;">
+<span style="color:#707070;font-family:Lato, Arial, sans-serif;font-size:16px;line-height:24px"><b>La Palmera Mexican Restaurants</b></span>
+</p>
+
+<p style="text-align: center; margin: 10px 0;">
+<span style="color:#707070;font-family:Lato, Arial, sans-serif;font-size:16px;line-height:24px">
+Everett | Mill Creek | South Lake Union | Edmonds | Food Truck at Columbia Super Range
+</span>
+</p>
+
+</div>
+</td></tr>
+
+<tr><td align="center" style="font-size:0px;padding:0px 25px 0px 25px;word-break:break-word;">
+<table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="float:none;display:inline-table;">
+<tbody><tr><td aria-hidden="true" style="padding:4px;vertical-align:middle;">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" style="background:#c2c2c2;border-radius:50%;width:23px;">
+<tbody><tr><td style="padding:6px 6px 6px 6px;font-size:0;height:23px;vertical-align:middle;width:23px;">
+<a href="https://www.facebook.com/lapalmeraeverett1/" target="_blank">
+<img alt="" height="23" src="https://static.mailjet.com/ico-social/facebook.png" style="border-radius:50%;display:block;" width="23">
+</a>
+</td></tr></tbody></table>
+</td></tr></tbody></table>
+
+<table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="float:none;display:inline-table;">
+<tbody><tr><td aria-hidden="true" style="padding:4px;vertical-align:middle;">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" style="background:#c2c2c2;border-radius:50%;width:23px;">
+<tbody><tr><td style="padding:6px 6px 6px 6px;font-size:0;height:23px;vertical-align:middle;width:23px;">
+<a href="https://twitter.com/LaPalmeraFMR" target="_blank">
+<img alt="" height="23" src="https://static.mailjet.com/ico-social/twitter.png" style="border-radius:50%;display:block;" width="23">
+</a>
+</td></tr></tbody></table>
+</td></tr></tbody></table>
+</td></tr>
+
+<tr><td align="left" style="background:transparent;font-size:0px;padding:0px 25px 0px 25px;word-break:break-word;">
+<div style="font-family:Verdana, Helvetica, Arial, sans-serif;font-size:11px;letter-spacing:normal;line-height:22px;text-align:left;color:#55575d;">
+<p style="text-align: center; margin: 10px 0;">
+<a style="color:inherit;text-decoration:none;" target="_blank" href="https://example.com/unsubscribe">
+<span style="color:#707070;font-family:Lato, Arial, sans-serif;font-size:12px;line-height:24px"><u>Unsubscribe</u></span>
+</a>
+</p>
+</div>
+</td></tr>
+
+<tr><td align="center" style="font-size:0px;padding:10px 25px 30px 25px;word-break:break-word;">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse:collapse;border-spacing:0px;">
+<tbody><tr><td style="width:100px;">
+<a href="http://toasttab.com/" target="_blank">
+<img alt="" src="https://example.com/toast-logo.png" style="border:none;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:13px;" width="100" height="auto">
+</a>
+</td></tr></tbody></table>
+</td></tr>
+
+</tbody></table>
+</div>
+
+</td></tr></tbody></table>
+</div>
+
+</div>
+</body></html>

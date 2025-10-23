@@ -95,17 +95,33 @@ rules:
   - name: "Weak Signal Aggregation"
     enabled: true
     criteria:
-      type: "Or"
+      type: "And"
       criteria:
-        - type: "SubjectPattern"
-          pattern: "(?i).*[!]{3,}.*"
-        - type: "SubjectPattern"
-          pattern: "(?i).*[A-Z]{10,}.*"
-        - type: "SubjectPattern"
-          pattern: "(?i).*\\$[0-9,]+.*\\$[0-9,]+.*"
-        - type: "HeaderPattern"
-          header: "From"
-          pattern: ".*[0-9]{4,}.*"
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*[!]{3,}.*"
+            - type: "SubjectPattern"
+              pattern: "(?i).*[A-Z]{10,}.*"
+            - type: "SubjectPattern"
+              pattern: "(?i).*\\$[0-9,]+.*\\$[0-9,]+.*"
+            - type: "HeaderPattern"
+              header: "From"
+              pattern: ".*[0-9]{4,}.*"
+        - type: "Not"
+          criteria:
+            type: "And"
+            criteria:
+              - type: "HeaderPattern"
+                header: "Authentication-Results"
+                pattern: "dkim=pass"
+              - type: "Or"
+                criteria:
+                  - type: "HeaderPattern"
+                    header: "List-Unsubscribe"
+                    pattern: ".*"
+                  - type: "BodyPattern"
+                    pattern: "(?i).*(newsletter|unsubscribe|promotional.*content|marketing.*email).*"
     score: 12
     action:
       type: "TagAsSpam"
