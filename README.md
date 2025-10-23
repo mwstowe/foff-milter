@@ -29,6 +29,12 @@ reject_to_tag = true
 enabled = true
 config_dir = "/etc/foff-milter/modules"
 
+[heuristics]
+# Score thresholds for actions
+reject_threshold = 350  # High threshold - most emails tagged rather than rejected
+spam_threshold = 50     # Tag as spam at this score
+accept_threshold = 0    # Accept below spam threshold
+
 [legacy]
 enabled = false
 config_file = "/etc/foff-milter/legacy-rules.yaml"
