@@ -96,8 +96,19 @@ rules:
 
   - name: "Home improvement and septic spam"
     criteria:
-      type: "BodyPattern"
-      pattern: "(?i).*(septic.*tank|eliminates.*smell|tiny.*tab|prestigious.*university|scientists.*developed|worry.*free|save.*\\$[0-9]+|pumped.*anymore).*"
+      type: "And"
+      criteria:
+        - type: "BodyPattern"
+          pattern: "(?i).*(septic.*tank|eliminates.*smell|tiny.*tab|prestigious.*university|scientists.*developed|worry.*free|pumped.*anymore).*"
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "HeaderPattern"
+                header: "From"
+                pattern: ".*@(lovepopcards\\.com|shopify\\.com|.*\\.shopify\\.com).*"
+              - type: "BodyPattern"
+                pattern: "(?i).*(order.*confirmation|you.*saved.*\\$|lovepop|pop-up.*card).*"
     score: 45
     action:
       type: "TagAsSpam"

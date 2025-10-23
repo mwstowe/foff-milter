@@ -4,8 +4,23 @@ rules:
   - name: "Bayesian Spam Word Patterns"
     enabled: true
     criteria:
-      type: "SubjectPattern"
-      pattern: "(?i).*(free|win|winner|congratulations|urgent|act.*now|limited.*time|exclusive|special.*offer|guaranteed|amazing|incredible|revolutionary).*"
+      type: "And"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(free|win|winner|congratulations|urgent|act.*now|limited.*time|exclusive|special.*offer|guaranteed|amazing|incredible|revolutionary).*"
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "SenderPattern"
+                pattern: ".*@(dominos\\.com|e-offers\\.dominos\\.com|.*\\.dominos\\.com)$"
+              - type: "SenderPattern"
+                pattern: ".*@(amazon\\.com|.*\\.amazon\\.com|amazonses\\.com)$"
+              - type: "SenderPattern"
+                pattern: ".*@(paypal\\.com|.*\\.paypal\\.com)$"
+              - type: "HeaderPattern"
+                header: "List-Unsubscribe"
+                pattern: ".*"
     score: 20
     action:
       type: "TagAsSpam"

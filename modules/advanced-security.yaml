@@ -37,8 +37,25 @@ rules:
   - name: "HTML Entity Obfuscation"
     enabled: true
     criteria:
-      type: "BodyPattern"
-      pattern: "(?i).*&#[0-9]{2,3};.*&#[0-9]{2,3};.*&#[0-9]{2,3};.*"
+      type: "And"
+      criteria:
+        - type: "BodyPattern"
+          pattern: "(?i).*&#[0-9]{2,3};.*&#[0-9]{2,3};.*&#[0-9]{2,3};.*"
+        - type: "Or"
+          criteria:
+            - type: "BodyPattern"
+              pattern: "(?i).*&#[0-9]{2,3};.*\\.(com|org|net|info|biz).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(click|download|verify|update|secure).*&#[0-9]{2,3};.*"
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "HeaderPattern"
+                header: "From"
+                pattern: ".*@(lovepopcards\\.com|shopify\\.com|.*\\.shopify\\.com|sendgrid\\.net|.*\\.sendgrid\\.net).*"
+              - type: "BodyPattern"
+                pattern: "(?i).*(order.*confirmation|lovepop|pop-up.*card|thank.*you.*for.*placing).*"
     score: 30
     action:
       type: "TagAsSpam"

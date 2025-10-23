@@ -72,6 +72,12 @@ rules:
               - type: "HeaderPattern"
                 header: "return-path"
                 pattern: ".*\\+.*@.*"
+              - type: "HeaderPattern"
+                header: "return-path"
+                pattern: "bounce.*@.*"
+              - type: "HeaderPattern"
+                header: "return-path"
+                pattern: ".*noreply.*@.*"
     score: 25
     action:
       type: "TagAsSpam"
