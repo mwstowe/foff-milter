@@ -29,7 +29,11 @@ impl Default for TomlConfig {
                 enabled: true,
                 config_dir: "modules".to_string(),
             }),
-            heuristics: None,
+            heuristics: Some(HeuristicsConfig {
+                reject_threshold: 100,
+                spam_threshold: 50,
+                accept_threshold: 0,
+            }),
             whitelist: None,
             blocklist: None,
             legacy: None,

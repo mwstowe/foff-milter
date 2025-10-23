@@ -919,18 +919,24 @@ impl FilterEngine {
                     ),
                 ));
 
-                // Determine action based on thresholds (hardcoded for now)
+                // Determine action based on thresholds
+                let spam_threshold = self.toml_config
+                    .as_ref()
+                    .and_then(|c| c.heuristics.as_ref())
+                    .map(|h| h.spam_threshold)
+                    .unwrap_or(50);
+                
                 if total_score >= 100 {
                     final_action = &self.heuristic_reject;
                     log::info!("Heuristic result: REJECT (score {} >= 100)", total_score);
-                } else if total_score >= 50 {
+                } else if total_score >= spam_threshold {
                     final_action = &self.heuristic_spam;
                     log::info!(
-                        "Heuristic result: TAG AS SPAM (score {} >= 50)",
-                        total_score
+                        "Heuristic result: TAG AS SPAM (score {} >= {})",
+                        total_score, spam_threshold
                     );
                 } else {
-                    log::info!("Heuristic result: ACCEPT (score {} < 50)", total_score);
+                    log::info!("Heuristic result: ACCEPT (score {} < {})", total_score, spam_threshold);
                 }
             }
 
