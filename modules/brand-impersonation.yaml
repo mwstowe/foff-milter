@@ -56,13 +56,28 @@ rules:
   - name: "Return-Path and From domain mismatch"
     enabled: true
     criteria:
-      type: "PhishingDomainMismatch"
+      type: "And"
+      criteria:
+        - type: "PhishingDomainMismatch"
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "HeaderPattern"
+                header: "List-ID"
+                pattern: ".*"
+              - type: "HeaderPattern"
+                header: "X-Google-Group-Id"
+                pattern: ".*"
+              - type: "HeaderPattern"
+                header: "return-path"
+                pattern: ".*\\+.*@.*"
     score: 25
     action:
       type: "TagAsSpam"
       header_name: "X-FOFF-Domain-Mismatch"
       header_value: "Return-Path and From domain mismatch"
-    description: "Detects when Return-Path and From headers use different domains"
+    description: "Detects when Return-Path and From headers use different domains (excludes mailing lists)"
 
   - name: "WeTransfer brand impersonation"
     criteria:

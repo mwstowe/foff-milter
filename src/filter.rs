@@ -773,19 +773,23 @@ impl FilterEngine {
         // Check blocklist second - if blocklisted, reject immediately
         if self.is_blocklisted(context) {
             log::info!("Email blocklisted, rejecting immediately");
-            let reject_action = if let Some(ref toml_config) = self.toml_config {
+            let (reject_action, headers) = if let Some(ref toml_config) = self.toml_config {
                 if toml_config.system.reject_to_tag {
-                    Action::TagAsSpam {
-                        header_name: "X-FOFF-Reject-Converted".to_string(),
-                        header_value: "WOULD-REJECT: Message rejected by blocklist".to_string(),
-                    }
+                    let headers = vec![
+                        (
+                            "X-FOFF-Reject-Converted".to_string(),
+                            "WOULD-REJECT: Message rejected by blocklist".to_string(),
+                        ),
+                        ("X-Spam-Flag".to_string(), "YES".to_string()),
+                    ];
+                    (self.heuristic_spam.clone(), headers)
                 } else {
-                    self.heuristic_reject.clone()
+                    (self.heuristic_reject.clone(), vec![])
                 }
             } else {
-                self.heuristic_reject.clone()
+                (self.heuristic_reject.clone(), vec![])
             };
-            return (reject_action, vec!["Blocklisted".to_string()], vec![]);
+            return (reject_action, vec!["Blocklisted".to_string()], headers);
         }
 
         let mut matched_rules = Vec::new();
@@ -910,22 +914,28 @@ impl FilterEngine {
                     final_action
                 );
                 // Convert REJECT to TAG if setting is enabled
-                let converted_action = if let Some(ref toml_config) = self.toml_config {
-                    if toml_config.system.reject_to_tag {
-                        if let Action::Reject { message } = final_action {
-                            Action::TagAsSpam {
-                                header_name: "X-FOFF-Reject-Converted".to_string(),
-                                header_value: format!("WOULD-REJECT: {}", message),
+                let (converted_action, mut conversion_headers) =
+                    if let Some(ref toml_config) = self.toml_config {
+                        if toml_config.system.reject_to_tag {
+                            if let Action::Reject { message } = final_action {
+                                let headers = vec![
+                                    (
+                                        "X-FOFF-Reject-Converted".to_string(),
+                                        format!("WOULD-REJECT: {}", message),
+                                    ),
+                                    ("X-Spam-Flag".to_string(), "YES".to_string()),
+                                ];
+                                (self.heuristic_spam.clone(), headers)
+                            } else {
+                                (final_action.clone(), vec![])
                             }
                         } else {
-                            final_action.clone()
+                            (final_action.clone(), vec![])
                         }
                     } else {
-                        final_action.clone()
-                    }
-                } else {
-                    final_action.clone()
-                };
+                        (final_action.clone(), vec![])
+                    };
+                headers_to_add.append(&mut conversion_headers);
                 return (converted_action, matched_rules, headers_to_add);
             }
         }
@@ -1051,21 +1061,25 @@ impl FilterEngine {
         }
 
         // Convert REJECT to TAG if setting is enabled
-        let final_action = if let Some(ref toml_config) = self.toml_config {
+        let (final_action, headers_to_add) = if let Some(ref toml_config) = self.toml_config {
             if toml_config.system.reject_to_tag {
                 if let Action::Reject { message } = final_action {
-                    Action::TagAsSpam {
-                        header_name: "X-FOFF-Reject-Converted".to_string(),
-                        header_value: format!("WOULD-REJECT: {}", message),
-                    }
+                    // Add both the conversion header and the standard spam flag
+                    let mut headers = headers_to_add;
+                    headers.push((
+                        "X-FOFF-Reject-Converted".to_string(),
+                        format!("WOULD-REJECT: {}", message),
+                    ));
+                    headers.push(("X-Spam-Flag".to_string(), "YES".to_string()));
+                    (self.heuristic_spam.clone(), headers)
                 } else {
-                    final_action.clone()
+                    (final_action.clone(), headers_to_add)
                 }
             } else {
-                final_action.clone()
+                (final_action.clone(), headers_to_add)
             }
         } else {
-            final_action.clone()
+            (final_action.clone(), headers_to_add)
         };
 
         (final_action, matched_rules, headers_to_add)

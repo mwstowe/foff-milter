@@ -93,3 +93,36 @@ rules:
       header_name: "X-Spam-Flag"
       header_value: "YES"
     description: "Tinnitus and hearing-related health spam"
+
+  - name: "Home improvement and septic spam"
+    criteria:
+      type: "BodyPattern"
+      pattern: "(?i).*(septic.*tank|eliminates.*smell|tiny.*tab|prestigious.*university|scientists.*developed|worry.*free|save.*\\$[0-9]+|pumped.*anymore).*"
+    score: 45
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+    description: "Home improvement and septic tank product spam"
+
+  - name: "Blood pressure and medical authority spam"
+    criteria:
+      type: "BodyPattern"
+      pattern: "(?i).*(harvard.*researchers|dangerous.*amino.*acid|blood.*pressure.*climbing|arteries.*tightening|heart.*working.*harder|doctor.*office|162.*over.*101|overlooked.*amino.*acid).*"
+    score: 50
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+    description: "Medical misinformation using fake authority and blood pressure scare tactics"
+
+  - name: "Vision and eyesight medical misinformation"
+    criteria:
+      type: "BodyPattern"
+      pattern: "(?i).*(vision.*loss.*permanent|eyesight.*flower|eyes.*repair.*themselves|glassless.*eyes|reclaim.*20/20.*vision|eyesight.*industry.*doesn.*want|wait.*15.*minutes|sharp.*as.*razor).*"
+    score: 55
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+    description: "Vision and eyesight medical misinformation and miracle cure spam"

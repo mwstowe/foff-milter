@@ -25,3 +25,14 @@ rules:
       type: "TagAsSpam"
       header_name: "X-Spam-Flag"
       header_value: "YES"
+
+  - name: "Beauty and cosmetic product spam"
+    criteria:
+      type: "BodyPattern"
+      pattern: "(?i).*(no.*mascara.*trick|thick.*luscious.*lashes|simple.*trick|works.*on.*anyone|watch.*now|fake.*lashes.*extensions|curly.*beautiful.*lashes).*"
+    score: 40
+    action:
+      type: "TagAsSpam"
+      header_name: "X-Spam-Flag"
+      header_value: "YES"
+    description: "Beauty and cosmetic product promotion spam"

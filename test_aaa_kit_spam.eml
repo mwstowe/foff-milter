@@ -1,0 +1,132 @@
+Return-Path: <3Jh35aBAcAJME4BA0xGEx5ABEPNP0x58L05x8FOW.BA95zEBFB2G.zB9@maestro.bounces.google.com>
+Received: from hotel.example.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.example.com (8.18.1/8.18.1) with ESMTPS id 59MI6WTD021950
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <mjohnson@example.com>; Wed, 22 Oct 2025 18:06:32 GMT
+	(envelope-from 3Jh35aBAcAJME4BA0xGEx5ABEPNP0x58L05x8FOW.BA95zEBFB2G.zB9@maestro.bounces.google.com)
+Authentication-Results: juliett.example.com;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=dailydials19-onmicrosoft-com.20230601.gappssmtp.com header.i=@dailydials19-onmicrosoft-com.20230601.gappssmtp.com header.b=rlfgwLjx
+X-Authentication-Warning: juliett.example.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.example.com
+Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com [209.85.167.199])
+	by hotel.example.com (8.16.1/8.16.1) with ESMTPS id 59MI6VYJ032864
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=OK)
+	for <mjohnson@example.com>; Wed, 22 Oct 2025 13:06:32 -0500
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.example.com 59MI6VYJ032864
+Authentication-Results: hotel.example.com;
+	dkim=pass (2048-bit key, unprotected) header.d=dailydials19-onmicrosoft-com.20230601.gappssmtp.com header.i=@dailydials19-onmicrosoft-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=rlfgwLjx
+Received: by mail-oi1-f199.google.com with SMTP id 5614622812f47-443a57d4612so2269025b6e.3
+        for <mjohnson@example.com>; Wed, 22 Oct 2025 11:06:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dailydials19-onmicrosoft-com.20230601.gappssmtp.com; s=20230601; t=1761156391; x=1761761191; darn=example.com;
+        h=to:from:subject:date:message-id:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=iqO6zlMJF2vy7Evd68xu+pnZbzXlBOh/huzeYWkfSK8=;
+        b=rlfgwLjxi1tD6e2xun0pzV83DE2OY8MBzjEJoVRgEz9W+DjU05YA2qRa+2ZyQlXtqM
+         6Yg5FfWiGmRXi7VXXYGoIS0KnAiR5yoDxnr9iktTIDNcHJw+kJenUbG3wzv4WRP7A2G1
+         jDTjSck4hOUWo+cxqSN5bttTzHbKbBMXIef13YZYIKFuVXgtSfzhLAZAK/UhvahmVBkr
+         sne+ObRhZd/xJSHh6cT1RwzuXRzCw7so45s1ppDHbt5NejT1CS54p4+/X8QzWCNK/ik9
+         8NLeMKRTdraXGCPnqGkA5IQYHSmMwzZJ9gNhwnMk0cO93fR7CXXphf6+litXoKceujgF
+         oLNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761156391; x=1761761191;
+        h=to:from:subject:date:message-id:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=iqO6zlMJF2vy7Evd68xu+pnZbzXlBOh/huzeYWkfSK8=;
+        b=vxDtDuopEoKry92amPkN71UoFRXnGifriYJw9r/0NuXpto84A7F2WlKU94HvMjr+eg
+         94zTBhbQFtGanIdnJJiQ0zkVj61SJtW1q2VIGuc+twjleJsPr/SmdORJXFXbz7FnZ28/
+         gRFE8WiQNAxWvKMfDTw3/tvb5Iij6U0ylMvoZSTZtzx8tdFqUmimNjAjVn+6O4ce7xnR
+         KBOIm2JOosiSyJIUx2VRXXqBskbIt2fVyRiInnXl3bab2OuZFDBoI4uorRZEJpYGzf19
+         W8UsakocAXnJBpXypOJm0HM3Yn9j2kv/QhfHtVi6spWfil9j0upQnS4UmIbqLLbhSFvW
+         SY8g==
+X-Gm-Message-State: AOJu0YxG3VAiEFb4p8TzriAMwgnEe8Fwjjr+H+6fa9fke51SDQ9Qskvu
+	pP0jzrTue6By9Dedmaaad5sEpT+0m06oSdwZmyH1vlQuUbb1R+cTWkNGlHOV81uBZFTrDJoMAPr
+	gPB8ipCwrYB0C/CxHzJ9/BZf7beVdRk9i7TkWCvFPQk9s5hO8VBjcTxgyRamdE3a2rdzJrrPWFr
+	uR3GQW
+X-Google-Smtp-Source: AGHT+IFXawGD1tFpjQqGPjY71oDcydkwOf3zyVcg/bOycpDvhVEy0nHLU8aprkZLvlNPm1YCJ/TUZByvwQ==
+MIME-Version: 1.0
+X-Received: by 2002:a05:6808:164e:b0:43b:2829:e64d with SMTP id
+ 5614622812f47-443a2e733fdmr9146722b6e.9.1761156390773; Wed, 22 Oct 2025
+ 11:06:30 -0700 (PDT)
+Reply-To: noreply@dailydials19.onmicrosoft.com
+Message-ID: <autogen-java-986e5b72-f0b8-4994-bb96-9cfd6cb8fdeb@google.com>
+Date: Wed, 22 Oct 2025 18:06:30 +0000
+Subject: =?UTF-8?B?WW91ciBraXQgaXMgcHJlcGFyZWQgY29uZmlybWF0aW9uIGNvbXBsZXRlICNPcTREbg==?=
+From: "AAA Membership Office #nfcYv" <noreply@dailydials19.onmicrosoft.com>
+To: mjohnson@example.com
+Content-Type: multipart/alternative; boundary="00000000000010f83e0641c32dd2"
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.example.com [172.31.18.8]); Wed, 22 Oct 2025 18:06:33 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.example.com [23.95.222.152]); Wed, 22 Oct 2025 13:06:32 -0500 (CDT)
+
+--00000000000010f83e0641c32dd2
+Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
+Content-Transfer-Encoding: base64
+
+QUFBIENhciBFbWVyZ2VuY3kgS2l0IFNlY3VyZWQNCg0KWW91ciByb2Fkc2lkZSBzYWZldHkga2l0
+IGlzIGNvbmZpcm1lZA0KDQoNCkJlIHJlYWR5LiBTdGF5IHByb3RlY3RlZC4NCg0KWW91ciBBQUEg
+RW1lcmdlbmN5IEtpdCBpcyBhcHByb3ZlZCBhbmQgb24gc3RhbmRieS4gRHJpdmUgY29uZmlkZW50
+bHkgIA0Ka25vd2luZyB5b3UncmUgY292ZXJlZCBmb3IgdW5leHBlY3RlZCBtb21lbnRzLg0KDQoN
+CktpdCBJbmNsdWRlczoNCg0KDQpIZWF2eS1EdXR5IEp1bXBlciBDYWJsZXMNCkxFRCBFbWVyZ2Vu
+Y3kgTGlnaHQNCkZpcnN0IEFpZCAmIFNhZmV0eSBFc3NlbnRpYWxzDQoNCkFjdGl2YXRlIE15IEVt
+ZXJnZW5jeSBLaXQNCuKaoO+4jyBBdmFpbGFibGUgZm9yIGEgbGltaXRlZCBwZXJpb2QNCg0KDQpU
+aGlzIGNvbW11bmljYXRpb24gd2FzIHNlbnQgYXMgcGFydCBvZiB5b3VyIEFBQSBtZW1iZXJzaGlw
+IGJlbmVmaXQuDQoNClVuc3Vic2NyaWJlDQoNCg0K
+
+--00000000000010f83e0641c32dd2
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div style=3D"max-width:600px; background:#111827; margin:0 auto; border-ra=
+dius:14px; overflow:hidden; box-shadow:0 8px 24px rgba(0,0,0,0.6);">
+
+<div style=3D"background:linear-gradient(90deg, #374151, #111827); color:#f=
+9fafb; text-align:center; padding:35px 20px;">
+<h2 style=3D"margin:0; font-size:24px;">AAA Car Emergency Kit Secured</h2>
+<p style=3D"margin-top:8px; font-size:15px; color:#9ca3af;">Your roadside s=
+afety kit is confirmed</p>
+</div>
+
+<div style=3D"padding:32px 26px; color:#e5e7eb; text-align:center;">
+<h3 style=3D"font-size:20px; margin:0 0 16px;">Be ready. Stay protected.</h=
+3>
+<p style=3D"font-size:15px; line-height:1.6; color:#d1d5db;">
+Your <strong>AAA Emergency Kit</strong> is approved and on standby.
+Drive confidently knowing <strong style=3D"color:#3b82f6;">you=E2=80=99re c=
+overed</strong> for unexpected moments.
+</p>
+
+<div style=3D"background:#1f2937; padding:18px; margin:25px 0; border-radiu=
+s:8px; text-align:left; border:1px solid #374151;">
+<p style=3D"margin:0 0 8px; font-weight:600; color:#3b82f6;">Kit Includes:<=
+/p>
+<ul style=3D"margin:0; padding-left:18px; font-size:14px; color:#9ca3af;">
+<li>Heavy-Duty Jumper Cables</li>
+<li>LED Emergency Light</li>
+<li>First Aid & Safety Essentials</li>
+</ul>
+</div>
+
+<a href=3D"https://fgndrfj.pages.dev/#4qBgXx27921LaTa29paibisbzyj1367ZOZEUL=
+CLMOAZMOX905788YVKZ136619f6" style=3D"display:inline-block; background:#3b8=
+2f6; color:#ffffff; padding:14px 32px; font-size:15px; font-weight:bold; bo=
+rder-radius:30px; text-decoration:none; margin-top:10px;">
+Activate My Emergency Kit
+</a>
+
+<p style=3D"margin-top:16px; font-size:13px; color:#60a5fa;">=E2=9A=A0=EF=
+=B8=8F Available for a limited period</p>
+</div>
+
+<div style=3D"background:#111827; padding:18px 20px; text-align:center; fon=
+t-size:12px; color:#6b7280;">
+<p style=3D"margin:0;">This communication was sent as part of your AAA memb=
+ership benefit.</p>
+<p style=3D"margin-top:6px;">
+<a href=3D"https://fgndrfj.pages.dev/#5SbYOb27921pPnM29wgmusvvezj1367DAETXZ=
+CHMQCNDFB905788EFJY136619E6" style=3D"color:#3b82f6; text-decoration:none;"=
+>Unsubscribe</a>
+</p>
+</div>
+
+</div>=
+
+--00000000000010f83e0641c32dd2--
