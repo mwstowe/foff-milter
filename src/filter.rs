@@ -912,10 +912,10 @@ impl FilterEngine {
                 headers_to_add.push((
                     "X-FOFF-Score".to_string(),
                     format!(
-                        "analyzed by foff-milter v{} on {} (score: {})",
+                        "{} - analyzed by foff-milter v{} on {}",
+                        total_score,
                         self.config.version,
-                        get_hostname(),
-                        total_score
+                        get_hostname()
                     ),
                 ));
 
@@ -1061,10 +1061,10 @@ impl FilterEngine {
             headers_to_add.push((
                 "X-FOFF-Score".to_string(),
                 format!(
-                    "analyzed by foff-milter v{} on {} (score: {})",
+                    "{} - analyzed by foff-milter v{} on {}",
+                    total_score,
                     self.config.version,
-                    get_hostname(),
-                    total_score
+                    get_hostname()
                 ),
             ));
         } else {
@@ -1082,10 +1082,10 @@ impl FilterEngine {
                 headers_to_add.push((
                     "X-FOFF-Score".to_string(),
                     format!(
-                        "analyzed by foff-milter v{} on {} (score: {}) - matched: {}",
+                        "{} - analyzed by foff-milter v{} on {} - matched: {}",
+                        total_score,
                         self.config.version,
                         get_hostname(),
-                        total_score,
                         matched_rules.join(", ")
                     ),
                 ));
