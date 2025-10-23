@@ -909,7 +909,15 @@ impl FilterEngine {
                 );
 
                 // Add score header
-                headers_to_add.push(("X-FOFF-Score".to_string(), format!("{}", total_score)));
+                headers_to_add.push((
+                    "X-FOFF-Score".to_string(),
+                    format!(
+                        "analyzed by foff-milter v{} on {} (score: {})",
+                        self.config.version,
+                        get_hostname(),
+                        total_score
+                    ),
+                ));
 
                 // Determine action based on thresholds (hardcoded for now)
                 if total_score >= 100 {
@@ -1051,7 +1059,7 @@ impl FilterEngine {
             );
             // Add analysis header when no rules match
             headers_to_add.push((
-                "X-FOFF-Analysis".to_string(),
+                "X-FOFF-Score".to_string(),
                 format!(
                     "analyzed by foff-milter v{} on {} (score: {})",
                     self.config.version,
@@ -1069,10 +1077,10 @@ impl FilterEngine {
             // Add analysis header when rules match (if not already added by whitelist)
             if !headers_to_add
                 .iter()
-                .any(|(name, _)| name == "X-FOFF-Analysis" || name == "X-FOFF-Whitelist")
+                .any(|(name, _)| name == "X-FOFF-Score" || name == "X-FOFF-Whitelist")
             {
                 headers_to_add.push((
-                    "X-FOFF-Analysis".to_string(),
+                    "X-FOFF-Score".to_string(),
                     format!(
                         "analyzed by foff-milter v{} on {} (score: {}) - matched: {}",
                         self.config.version,
