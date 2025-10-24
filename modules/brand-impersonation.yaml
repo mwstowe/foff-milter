@@ -42,17 +42,42 @@ rules:
         - type: "Or"
           criteria:
             - type: "SubjectPattern"
-              pattern: "(?i).*(aaa.*car.*kit|free.*car.*emergency|aaa.*emergency).*"
+              pattern: "(?i).*(aaa.*car.*kit|free.*car.*emergency|aaa.*emergency|free.*safety.*kit).*"
             - type: "SenderPattern"
               pattern: "(?i).*aaa.*"
         - type: "Not"
           criteria:
             type: "SenderPattern"
             pattern: ".*@(aaa\\.com|csaa\\.com)$"
+    score: 30
     action:
       type: "TagAsSpam"
       header_name: "X-Spam-Flag"
       header_value: "YES"
+    description: "AAA brand impersonation from non-AAA domains"
+
+  - name: "AAA brand impersonation with auth failure"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(aaa.*car.*kit|free.*car.*emergency|aaa.*emergency|free.*safety.*kit).*"
+            - type: "SenderPattern"
+              pattern: "(?i).*aaa.*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@(aaa\\.com|csaa\\.com)$"
+        - type: "HeaderPattern"
+          header: "Authentication-Results"
+          pattern: "dkim=fail"
+    score: 60
+    action:
+      type: "Reject"
+      message: "Brand impersonation with authentication failure"
+    description: "AAA brand impersonation with failed authentication"
   - name: "Return-Path and From domain mismatch"
     enabled: true
     criteria:
