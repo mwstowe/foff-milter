@@ -22,10 +22,6 @@ rules:
                 header: "List-Unsubscribe"
                 pattern: ".*"
     score: 20
-    action:
-      type: "TagAsSpam"
-      header_name: "X-FOFF-Heuristics"
-      header_value: "Spam-Words"
     description: "High-probability spam words based on Bayesian analysis"
 
   - name: "Sender Reputation Scoring"
@@ -34,10 +30,6 @@ rules:
       type: "SenderPattern"
       pattern: ".*@[a-z0-9]{8,15}\\.(tk|ml|ga|cf|gq|top|click|download|stream|xyz|info|biz|online|site|website)$"
     score: 35
-    action:
-      type: "TagAsSpam"
-      header_name: "X-FOFF-Heuristics"
-      header_value: "Low-Reputation-Domain"
     description: "Low reputation domains with random names on suspicious TLDs"
 
   - name: "Content Similarity Detection"
@@ -46,10 +38,6 @@ rules:
       type: "SubjectPattern"
       pattern: "(?i).*(re:.*re:|fwd:.*fwd:|fw:.*fw:).*"
     score: 15
-    action:
-      type: "TagAsSpam"
-      header_name: "X-FOFF-Heuristics"
-      header_value: "Duplicate-Prefixes"
     description: "Multiple reply/forward prefixes indicating content manipulation"
 
   - name: "Behavioral Pattern Scoring"
@@ -62,10 +50,6 @@ rules:
         - type: "SenderPattern"
           pattern: ".*@.*(free|temp|disposable|10minute|guerrilla|mailinator).*"
     score: 45
-    action:
-      type: "TagAsSpam"
-      header_name: "X-FOFF-Heuristics"
-      header_value: "Money-Temp-Email"
     description: "Money-related content from temporary email services"
 
   - name: "Language Inconsistency Detection"
@@ -74,10 +58,6 @@ rules:
       type: "SubjectPattern"
       pattern: "(?i).*[a-z]+.*[\\u4E00-\\u9FFF\\u3040-\\u309F\\u30A0-\\u30FF\\u0400-\\u04FF\\u0600-\\u06FF]+.*[a-z]+.*"
     score: 25
-    action:
-      type: "TagAsSpam"
-      header_name: "X-FOFF-Heuristics"
-      header_value: "Mixed-Languages"
     description: "Suspicious mixing of Latin and non-Latin scripts"
 
   - name: "Urgency Pattern Recognition"
@@ -86,10 +66,6 @@ rules:
       type: "SubjectPattern"
       pattern: "(?i).*(urgent|asap|immediate|emergency|critical|important|action.*required|respond.*now|expires.*today).*"
     score: 18
-    action:
-      type: "TagAsSpam"
-      header_name: "X-FOFF-Heuristics"
-      header_value: "Urgency-Pattern"
     description: "Artificial urgency patterns common in spam and phishing"
 
   - name: "Weak Signal Aggregation"
@@ -125,10 +101,6 @@ rules:
                   - type: "SenderPattern"
                     pattern: ".*@(empower\\.com|.*\\.empower\\.com)$"
     score: 12
-    action:
-      type: "TagAsSpam"
-      header_name: "X-FOFF-Heuristics"
-      header_value: "Weak-Signals"
     description: "Multiple exclamation marks, excessive caps, multiple dollar amounts, or numeric sender names"
 
   - name: "Advanced Heuristic Scoring"
@@ -144,8 +116,4 @@ rules:
             header: "List-Unsubscribe"
             pattern: ".*"
     score: 30
-    action:
-      type: "TagAsSpam"
-      header_name: "X-FOFF-Heuristics"
-      header_value: "Action-No-Unsubscribe"
     description: "Action-oriented content without proper unsubscribe headers"

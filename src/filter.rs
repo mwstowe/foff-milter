@@ -814,7 +814,6 @@ impl FilterEngine {
         }
 
         let mut matched_rules = Vec::new();
-        let mut all_actions = Vec::new();
         let mut final_action = &self.config.default_action;
         let mut headers_to_add = Vec::new();
         let mut total_score = 0i32;
@@ -864,31 +863,13 @@ impl FilterEngine {
                                 total_score
                             );
                         } else {
-                            // Fallback to action-based for rules without scores
-                            all_actions.push(&rule.action);
+                            // In the new architecture, individual module actions are ignored
+                            // All decision-making is handled by the heuristic system based on scores
                             log::info!(
-                                "Module '{}' Rule '{}' matched, action: {:?}",
+                                "Module '{}' Rule '{}' matched, individual action ignored (heuristic system handles decisions)",
                                 module.name,
-                                rule.name,
-                                rule.action
+                                rule.name
                             );
-
-                            // Handle action precedence for non-scoring rules
-                            match &rule.action {
-                                Action::Accept => {
-                                    final_action = &rule.action;
-                                    break; // Stop processing on Accept
-                                }
-                                Action::Reject { .. } => {
-                                    final_action = &rule.action;
-                                }
-                                Action::TagAsSpam { .. } => {
-                                    if matches!(final_action, Action::Accept) {
-                                        final_action = &rule.action;
-                                    }
-                                }
-                                _ => {}
-                            }
                         }
 
                         // Add rule-specific header (consolidated format)
@@ -1013,63 +994,24 @@ impl FilterEngine {
 
             // Add explicit debugging to catch the bug
             if matches {
-                log::info!(
-                    "Rule {} '{}' matched, collecting action: {:?}",
-                    rule_index + 1,
-                    rule.name,
-                    rule.action
-                );
+                log::info!("Rule {} '{}' matched", rule_index + 1, rule.name);
                 matched_rules.push(rule.name.clone());
-                all_actions.push(&rule.action);
 
-                // WHITELIST LOGIC: If this is an Accept action, stop processing immediately
-                if matches!(rule.action, Action::Accept) {
+                // In the new architecture, individual actions are ignored
+                // All decision-making is handled by the heuristic system
+                if let Some(action) = &rule.action {
                     log::info!(
-                        "Rule {} '{}' is a whitelist rule (Accept action), stopping rule processing",
+                        "Rule {} '{}' has action {:?}, but individual actions are ignored in favor of heuristic system",
+                        rule_index + 1,
+                        rule.name,
+                        action
+                    );
+                } else {
+                    log::info!(
+                        "Rule {} '{}' is score-only (no individual action)",
                         rule_index + 1,
                         rule.name
                     );
-                    final_action = &rule.action;
-                    // Add whitelist analysis header
-                    headers_to_add.push((
-                        "X-FOFF-Whitelist".to_string(),
-                        format!("whitelisted by rule: {}", rule.name),
-                    ));
-                    break;
-                }
-
-                // Determine the most restrictive action for non-Accept actions
-                // Priority: Reject > TagAsSpam > Accept
-                match (&final_action, &rule.action) {
-                    // If we already have Reject, keep it
-                    (Action::Reject { .. }, _) => {}
-                    // If current is Reject, use it
-                    (_, Action::Reject { .. }) => {
-                        final_action = &rule.action;
-                    }
-                    // If we have TagAsSpam and current is TagAsSpam, keep the first one
-                    // (we'll apply all TagAsSpam actions in the milter)
-                    (Action::TagAsSpam { .. }, Action::TagAsSpam { .. }) => {}
-                    // If current is TagAsSpam and we don't have Reject, use TagAsSpam
-                    (Action::Accept, Action::TagAsSpam { .. }) => {
-                        final_action = &rule.action;
-                    }
-                    // ReportAbuse and UnsubscribeGoogleGroup are processed but don't change final action
-                    (_, Action::ReportAbuse { .. }) => {}
-                    (_, Action::UnsubscribeGoogleGroup { .. }) => {}
-                    // Handle all other combinations
-                    (Action::ReportAbuse { .. }, Action::TagAsSpam { .. }) => {
-                        final_action = &rule.action;
-                    }
-                    (Action::ReportAbuse { .. }, Action::Accept) => {}
-                    (Action::UnsubscribeGoogleGroup { .. }, Action::TagAsSpam { .. }) => {
-                        final_action = &rule.action;
-                    }
-                    (Action::UnsubscribeGoogleGroup { .. }, Action::Accept) => {}
-                    // Accept stays Accept
-                    (Action::Accept, Action::Accept) => {}
-                    // TagAsSpam + Accept = keep TagAsSpam
-                    (Action::TagAsSpam { .. }, Action::Accept) => {}
                 }
             }
         }
@@ -1139,10 +1081,10 @@ impl FilterEngine {
         (final_action, matched_rules, headers_to_add)
     }
 
-    /// Get all matched rules with their actions (for processing all rules)
-    pub async fn evaluate_all(&self, context: &MailContext) -> (Vec<(&str, &Action)>, &Action) {
-        let mut matched_rules_with_actions = Vec::new();
-        let mut final_action = &self.config.default_action;
+    /// Get all matched rules (for processing all rules)
+    pub async fn evaluate_all(&self, context: &MailContext) -> (Vec<&str>, &Action) {
+        let mut matched_rule_names = Vec::new();
+        let final_action = &self.config.default_action;
 
         // Process ALL rules and collect matches
         for rule in &self.config.rules {
@@ -1155,36 +1097,23 @@ impl FilterEngine {
             let matches = self.evaluate_criteria(&rule.criteria, context).await;
             log::info!("Rule '{}' evaluation result: {}", rule.name, matches);
             if matches {
-                log::info!("Rule '{}' matched, action: {:?}", rule.name, rule.action);
-                matched_rules_with_actions.push((rule.name.as_str(), &rule.action));
+                matched_rule_names.push(rule.name.as_str());
 
-                // Determine the most restrictive action for final decision
-                match (&final_action, &rule.action) {
-                    (Action::Reject { .. }, _) => {}
-                    (_, Action::Reject { .. }) => {
-                        final_action = &rule.action;
-                    }
-                    (Action::TagAsSpam { .. }, Action::TagAsSpam { .. }) => {}
-                    (Action::Accept, Action::TagAsSpam { .. }) => {
-                        final_action = &rule.action;
-                    }
-                    (_, Action::ReportAbuse { .. }) => {}
-                    (_, Action::UnsubscribeGoogleGroup { .. }) => {}
-                    (Action::ReportAbuse { .. }, Action::TagAsSpam { .. }) => {
-                        final_action = &rule.action;
-                    }
-                    (Action::ReportAbuse { .. }, Action::Accept) => {}
-                    (Action::UnsubscribeGoogleGroup { .. }, Action::TagAsSpam { .. }) => {
-                        final_action = &rule.action;
-                    }
-                    (Action::UnsubscribeGoogleGroup { .. }, Action::Accept) => {}
-                    (Action::Accept, Action::Accept) => {}
-                    (Action::TagAsSpam { .. }, Action::Accept) => {}
+                if let Some(action) = &rule.action {
+                    log::info!("Rule '{}' matched, action: {:?}", rule.name, action);
+                } else {
+                    log::info!("Rule '{}' matched (score-only rule)", rule.name);
                 }
+
+                // In the new architecture, individual actions are ignored
+                // All decision-making is handled by the heuristic system
+                log::info!(
+                    "Individual rule actions ignored - heuristic system handles all decisions"
+                );
             }
         }
 
-        if matched_rules_with_actions.is_empty() {
+        if matched_rule_names.is_empty() {
             log::debug!(
                 "No rules matched, using default action: {:?}",
                 self.config.default_action
@@ -1192,12 +1121,12 @@ impl FilterEngine {
         } else {
             log::info!(
                 "Matched {} rules, final action: {:?}",
-                matched_rules_with_actions.len(),
+                matched_rule_names.len(),
                 final_action
             );
         }
 
-        (matched_rules_with_actions, final_action)
+        (matched_rule_names, final_action)
     }
 
     /// Get unsubscribe links for a mail context, with caching within the same evaluation

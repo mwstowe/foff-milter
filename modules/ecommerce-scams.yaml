@@ -9,10 +9,8 @@ rules:
           pattern: ".*OneStopPlus.*"
         - type: "SubjectPattern"
           pattern: ".*Items.*never.*arrived.*"
-    action:
-      type: "TagAsSpam"
-      header_name: "X-Spam-Flag"
-      header_value: "YES"
+    score: 50
+    description: "OneStopPlus impersonation scam"
   - name: "ZoomCare marketing impersonation"
     criteria:
       type: "And"
@@ -21,10 +19,8 @@ rules:
           pattern: ".*ZoomCare.*"
         - type: "SubjectPattern"
           pattern: ".*flu.*shot.*"
-    action:
-      type: "TagAsSpam"
-      header_name: "X-Spam-Flag"
-      header_value: "YES"
+    score: 30
+    description: "ZoomCare impersonation scam"
 
   - name: "Beauty and cosmetic product spam"
     criteria:
@@ -44,8 +40,4 @@ rules:
             header: "Authentication-Results"
             pattern: "dkim=pass.*dmarc=pass"
     score: 40
-    action:
-      type: "TagAsSpam"
-      header_name: "X-Spam-Flag"
-      header_value: "YES"
     description: "Beauty and cosmetic product promotion spam"

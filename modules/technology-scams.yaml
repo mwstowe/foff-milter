@@ -7,10 +7,6 @@ rules:
       type: "SubjectPattern"
       pattern: "(?i).*(computer.*virus|system.*infected|microsoft.*support|windows.*security|tech.*support|computer.*problem|virus.*detected|security.*alert|system.*compromised).*"
     score: 45
-    action:
-      type: "TagAsSpam"
-      header_name: "X-FOFF-Tech"
-      header_value: "Tech-Support-Scam"
     description: "Fake tech support and virus alert scams"
 
   - name: "Software Scam Offers"
@@ -19,10 +15,6 @@ rules:
       type: "SubjectPattern"
       pattern: "(?i).*(free.*software|cracked.*software|keygen|serial.*number|activation.*key|license.*key.*free|pirated.*software).*"
     score: 35
-    action:
-      type: "TagAsSpam"
-      header_name: "X-FOFF-Tech"
-      header_value: "Software-Scam"
     description: "Illegal software and keygen scams"
 
   - name: "Fake Security Alerts"
@@ -31,8 +23,4 @@ rules:
       type: "SubjectPattern"
       pattern: "(?i).*(security.*breach|account.*hacked|suspicious.*activity|login.*attempt|security.*warning|unauthorized.*access).*"
     score: 40
-    action:
-      type: "TagAsSpam"
-      header_name: "X-FOFF-Tech"
-      header_value: "Fake-Security-Alert"
     description: "Fake security alerts and breach notifications"

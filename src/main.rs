@@ -979,6 +979,10 @@ async fn test_email_file(
             if !matched_rules.is_empty() {
                 println!("   Matched rules: {:?}", matched_rules);
             }
+            // Show analysis headers
+            for (header_name, header_value) in &headers_to_add {
+                println!("   Analysis header: {}: {}", header_name, header_value);
+            }
         }
         Action::ReportAbuse { .. } => {
             println!("📧 Result: REPORT ABUSE");

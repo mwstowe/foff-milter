@@ -6,10 +6,6 @@ rules:
     criteria:
       type: "AttachmentOnlyEmail"
     score: 30
-    action:
-      type: "TagAsSpam"
-      header_name: "X-FOFF-Security"
-      header_value: "Attachment-Only"
     description: "Emails with only attachments and no meaningful content"
 
   - name: "Empty Content Emails"
@@ -17,10 +13,6 @@ rules:
     criteria:
       type: "EmptyContentEmail"
     score: 25
-    action:
-      type: "TagAsSpam"
-      header_name: "X-FOFF-Security"
-      header_value: "Empty-Content"
     description: "Emails with no subject or body content"
 
   - name: "Image-Only Emails"
@@ -28,10 +20,6 @@ rules:
     criteria:
       type: "ImageOnlyEmail"
     score: 35
-    action:
-      type: "TagAsSpam"
-      header_name: "X-FOFF-Security"
-      header_value: "Image-Only"
     description: "Emails containing only images to bypass text filters"
 
   - name: "HTML Entity Obfuscation"
@@ -60,10 +48,6 @@ rules:
                 header: "Content-Transfer-Encoding"
                 pattern: "quoted-printable"
     score: 30
-    action:
-      type: "TagAsSpam"
-      header_name: "X-FOFF-HTML-Obfuscation"
-      header_value: "HTML entity obfuscation detected"
     description: "Detects HTML entity encoding used to obfuscate malicious domains"
 
   - name: "Suspicious Attachment Filenames"
@@ -77,10 +61,6 @@ rules:
           header: "content-disposition"
           pattern: "(?i).*filename.*[A-Z0-9]{10,}\\.(pdf|doc|docx|xls|xlsx|zip).*"
     score: 35
-    action:
-      type: "TagAsSpam"
-      header_name: "X-FOFF-Suspicious-Attachment"
-      header_value: "Suspicious attachment filename pattern"
     description: "Detects suspicious attachment filenames with random characters"
 
   - name: "Suspicious Encoding Patterns"
@@ -89,8 +69,4 @@ rules:
       type: "SubjectPattern"
       pattern: "(?i).*=\\?[a-z0-9-]+\\?[bq]\\?[a-z0-9+/=]{50,}\\?=.*"
     score: 20
-    action:
-      type: "TagAsSpam"
-      header_name: "X-FOFF-Security"
-      header_value: "Suspicious-Encoding"
     description: "Suspicious base64 or quoted-printable encoding patterns"

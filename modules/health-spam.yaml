@@ -6,20 +6,12 @@ rules:
       type: "SubjectPattern"
       pattern: "(?i).*(miracle|doctors.*hate|chronic.*pain|overnight.*cure|health.*breakthrough|amazing.*health|revolutionary.*product|secret.*health).*"
     score: 55
-    action:
-      type: "TagAsSpam"
-      header_name: "X-Spam-Flag"
-      header_value: "YES"
     description: "Medical misinformation and miracle cure claims"
   - name: "CVS Medicare phishing from free email"
     criteria:
       type: "SubjectPattern"
       pattern: ".*Order.*Confirmation.*"
     score: 55
-    action:
-      type: "TagAsSpam"
-      header_name: "X-Spam-Flag"
-      header_value: "YES"
     description: "Order confirmations from free email providers"
   - name: "Tinnitus spam from suspicious domains"
     criteria:
@@ -32,40 +24,24 @@ rules:
           header: "Authentication-Results"
           pattern: ".*dkim=fail.*"
     score: 60
-    action:
-      type: "TagAsSpam"
-      header_name: "X-Spam-Flag"
-      header_value: "YES"
     description: "Health spam with DKIM failures"
   - name: "Account verification phishing"
     criteria:
       type: "SubjectPattern"
       pattern: "(?i).*(verify.*account|account.*suspended|urgent.*action|immediate.*verification).*"
     score: 30
-    action:
-      type: "TagAsSpam"
-      header_name: "X-Spam-Flag"
-      header_value: "YES"
     description: "Phishing attempts requesting account verification"
   - name: "Generic spam keywords"
     criteria:
       type: "SubjectPattern"
       pattern: "(?i).*(spam|test.*spam|generic.*spam).*"
     score: 25
-    action:
-      type: "TagAsSpam"
-      header_name: "X-Spam-Flag"
-      header_value: "YES"
     description: "Generic spam keyword detection"
   - name: "Sweepstakes and contest fraud"
     criteria:
       type: "SubjectPattern"
       pattern: "(?i).*(sweepstakes|you.*won|congratulations.*won|exclusive.*entry|qualify.*sweepstakes).*"
     score: 50
-    action:
-      type: "TagAsSpam"
-      header_name: "X-Spam-Flag"
-      header_value: "YES"
     description: "Fraudulent sweepstakes and contest notifications"
   - name: "Health rewards and insurance spam"
     enabled: true
@@ -77,10 +53,6 @@ rules:
         - type: "SenderPattern"
           pattern: "(?i).*(health.*reward|united.*health|insurance.*reward|medicare.*reward).*"
     score: 40
-    action:
-      type: "TagAsSpam"
-      header_name: "X-FOFF-Health-Rewards-Spam"
-      header_value: "Health rewards spam detected"
     description: "Detects health insurance reward spam campaigns"
 
   - name: "Tinnitus health spam"
@@ -88,10 +60,6 @@ rules:
       type: "SubjectPattern"
       pattern: "(?i).*(tinnitus|ear.*ringing|hearing.*loss|turns.*off.*tinnitus).*"
     score: 55
-    action:
-      type: "TagAsSpam"
-      header_name: "X-Spam-Flag"
-      header_value: "YES"
     description: "Tinnitus and hearing-related health spam"
 
   - name: "Home improvement and septic spam"
@@ -110,10 +78,6 @@ rules:
               - type: "BodyPattern"
                 pattern: "(?i).*(order.*confirmation|you.*saved.*\\$|lovepop|pop-up.*card|asus|zenwifi|router|mesh.*router).*"
     score: 45
-    action:
-      type: "TagAsSpam"
-      header_name: "X-Spam-Flag"
-      header_value: "YES"
     description: "Home improvement and septic tank product spam"
 
   - name: "Blood pressure and medical authority spam"
@@ -121,10 +85,6 @@ rules:
       type: "BodyPattern"
       pattern: "(?i).*(harvard.*researchers|dangerous.*amino.*acid|blood.*pressure.*climbing|arteries.*tightening|heart.*working.*harder|doctor.*office|162.*over.*101|overlooked.*amino.*acid).*"
     score: 50
-    action:
-      type: "TagAsSpam"
-      header_name: "X-Spam-Flag"
-      header_value: "YES"
     description: "Medical misinformation using fake authority and blood pressure scare tactics"
 
   - name: "Vision and eyesight medical misinformation"
@@ -132,8 +92,4 @@ rules:
       type: "BodyPattern"
       pattern: "(?i).*(vision.*loss.*permanent|eyesight.*flower|eyes.*repair.*themselves|glassless.*eyes|reclaim.*20/20.*vision|eyesight.*industry.*doesn.*want|wait.*15.*minutes|sharp.*as.*razor).*"
     score: 55
-    action:
-      type: "TagAsSpam"
-      header_name: "X-Spam-Flag"
-      header_value: "YES"
     description: "Vision and eyesight medical misinformation and miracle cure spam"

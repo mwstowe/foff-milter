@@ -7,10 +7,6 @@ rules:
       type: "SubjectPattern"
       pattern: "(?i).*(adult.*content|xxx|porn|sex.*chat|dating.*site|hookup|escort|webcam.*girls|adult.*entertainment).*"
     score: 50
-    action:
-      type: "TagAsSpam"
-      header_name: "X-FOFF-Adult"
-      header_value: "Adult-Content"
     description: "Adult content and dating scam detection"
 
   - name: "Romance Scam Patterns"
@@ -19,10 +15,6 @@ rules:
       type: "SubjectPattern"
       pattern: "(?i).*(lonely.*woman|beautiful.*girl|meet.*singles|find.*love|romance.*scam|sugar.*daddy|sugar.*baby).*"
     score: 40
-    action:
-      type: "TagAsSpam"
-      header_name: "X-FOFF-Adult"
-      header_value: "Romance-Scam"
     description: "Romance and dating scam patterns"
 
   - name: "Inappropriate Content"
@@ -31,8 +23,4 @@ rules:
       type: "SubjectPattern"
       pattern: "(?i).*(explicit.*content|mature.*content|18\\+|adults.*only|nsfw|not.*safe.*work).*"
     score: 35
-    action:
-      type: "TagAsSpam"
-      header_name: "X-FOFF-Adult"
-      header_value: "Inappropriate-Content"
     description: "Inappropriate and explicit content detection"

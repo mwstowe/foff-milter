@@ -15,10 +15,9 @@ rules:
           criteria:
             type: "SenderPattern"
             pattern: ".*@(docusign\\.com|docusign\\.net)$"
-    action:
-      type: "TagAsSpam"
-      header_name: "X-Spam-Flag"
-      header_value: "YES"
+    score: 50
+    description: "DocuSign brand impersonation from non-DocuSign domains"
+
   - name: "PayPal phishing from compromised educational domains"
     criteria:
       type: "And"
@@ -31,10 +30,9 @@ rules:
               pattern: "(?i).*paypal.*"
         - type: "SenderPattern"
           pattern: ".*@.*\\.(edu|ac\\.|k12\\.).*"
-    action:
-      type: "TagAsSpam"
-      header_name: "X-Spam-Flag"
-      header_value: "YES"
+    score: 50
+    description: "PayPal phishing from compromised educational domains"
+
   - name: "AAA brand impersonation"
     criteria:
       type: "And"
@@ -50,10 +48,6 @@ rules:
             type: "SenderPattern"
             pattern: ".*@(aaa\\.com|csaa\\.com)$"
     score: 30
-    action:
-      type: "TagAsSpam"
-      header_name: "X-Spam-Flag"
-      header_value: "YES"
     description: "AAA brand impersonation from non-AAA domains"
 
   - name: "AAA brand impersonation with auth failure"
@@ -74,10 +68,8 @@ rules:
           header: "Authentication-Results"
           pattern: "dkim=fail"
     score: 60
-    action:
-      type: "Reject"
-      message: "Brand impersonation with authentication failure"
     description: "AAA brand impersonation with failed authentication"
+
   - name: "Return-Path and From domain mismatch"
     enabled: true
     criteria:
@@ -88,31 +80,30 @@ rules:
           criteria:
             type: "Or"
             criteria:
+              - type: "SenderPattern"
+                pattern: ".*@.*\\.mailgun\\.org$"
+              - type: "SenderPattern"
+                pattern: ".*@.*\\.sendgrid\\.net$"
+              - type: "SenderPattern"
+                pattern: ".*@.*\\.amazonses\\.com$"
+              - type: "SenderPattern"
+                pattern: ".*@.*\\.mailjet\\.com$"
+              - type: "SenderPattern"
+                pattern: ".*@.*\\.mandrill\\.com$"
+              - type: "SenderPattern"
+                pattern: ".*@.*\\.sparkpostmail\\.com$"
+              - type: "SenderPattern"
+                pattern: ".*@.*\\.benchmarkemail\\.com$"
               - type: "HeaderPattern"
                 header: "List-ID"
                 pattern: ".*"
               - type: "HeaderPattern"
                 header: "X-Google-Group-Id"
                 pattern: ".*"
-              - type: "HeaderPattern"
-                header: "return-path"
-                pattern: ".*\\+.*@.*"
-              - type: "HeaderPattern"
-                header: "return-path"
-                pattern: "bounce.*@.*"
-              - type: "HeaderPattern"
-                header: "return-path"
-                pattern: ".*noreply.*@.*"
               - type: "SenderPattern"
-                pattern: ".*@.*\\.bmsend\\.com$"
-              - type: "SenderPattern"
-                pattern: ".*@.*\\.benchmarkemail\\.com$"
+                pattern: ".*via.*"
     score: 25
-    action:
-      type: "TagAsSpam"
-      header_name: "X-FOFF-Domain-Mismatch"
-      header_value: "Return-Path and From domain mismatch"
-    description: "Detects when Return-Path and From headers use different domains (excludes mailing lists)"
+    description: "Suspicious domain mismatch between Return-Path and From headers"
 
   - name: "WeTransfer brand impersonation"
     criteria:
@@ -121,14 +112,12 @@ rules:
         - type: "Or"
           criteria:
             - type: "SubjectPattern"
-              pattern: "(?i).*(wetransfer|transfer.*expired|file.*expired|recover.*transfer).*"
+              pattern: "(?i).*(wetransfer|file.*transfer|download.*files|shared.*files).*"
             - type: "SenderPattern"
               pattern: "(?i).*wetransfer.*"
         - type: "Not"
           criteria:
             type: "SenderPattern"
             pattern: ".*@(wetransfer\\.com|we\\.tl)$"
-    action:
-      type: "TagAsSpam"
-      header_name: "X-Spam-Flag"
-      header_value: "YES"
+    score: 50
+    description: "WeTransfer brand impersonation from non-WeTransfer domains"

@@ -130,7 +130,8 @@ pub struct FilterRule {
     #[serde(default = "default_enabled")]
     pub enabled: bool,
     pub criteria: Criteria,
-    pub action: Action,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub action: Option<Action>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub score: Option<i32>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -426,9 +427,9 @@ impl Default for Config {
                     criteria: Criteria::MailerPattern {
                         pattern: r"service\..*\.cn".to_string(),
                     },
-                    action: Action::Reject {
+                    action: Some(Action::Reject {
                         message: "Mail from suspicious service rejected".to_string(),
-                    },
+                    }),
                     score: None,
                     description: None,
                 },
@@ -438,10 +439,10 @@ impl Default for Config {
                     criteria: Criteria::MailerPattern {
                         pattern: r".*spam.*".to_string(),
                     },
-                    action: Action::TagAsSpam {
+                    action: Some(Action::TagAsSpam {
                         header_name: "X-Spam-Flag".to_string(),
                         header_value: "YES".to_string(),
-                    },
+                    }),
                     score: None,
                     description: None,
                 },

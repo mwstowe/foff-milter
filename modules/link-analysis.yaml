@@ -85,10 +85,6 @@ rules:
                     header: "List-Unsubscribe"
                     pattern: ".*"
     score: 25
-    action:
-      type: "TagAsSpam"
-      header_name: "X-FOFF-Link"
-      header_value: "Suspicious-External-Pattern"
     description: "Detects suspicious patterns in links to external domains (excludes sender domain and email infrastructure)"
 
   - name: "Links Using IP Addresses"
@@ -101,8 +97,6 @@ rules:
       allow_sender_domain: false
       allow_email_infrastructure: false
     score: 50
-    action:
-      type: "Reject"
       message: "Links using IP addresses are not allowed"
     description: "IP addresses in links are always suspicious regardless of sender"
 
@@ -156,10 +150,6 @@ rules:
       suspicious_patterns:
         - "(?i).*\\.(tk|ml|ga|cf|pw|top|click|download)($|/)"
     score: 20
-    action:
-      type: "TagAsSpam"
-      header_name: "X-FOFF-Link"
-      header_value: "Suspicious-External-TLD"
     description: "Links to suspicious TLDs from external domains (excludes sender domain and email infrastructure)"
 
   - name: "Phishing Link Text Patterns"
@@ -176,8 +166,4 @@ rules:
         - "(?i).*(security.*alert|unusual.*activity|confirm.*payment|update.*billing).*"
         - "(?i).*(limited.*time|act.*now|expires.*today|final.*notice).*"
     score: 30
-    action:
-      type: "TagAsSpam"
-      header_name: "X-FOFF-Link"
-      header_value: "Phishing-Text-Pattern"
     description: "Detects phishing-style link text regardless of destination domain"
