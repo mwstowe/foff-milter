@@ -1,0 +1,129 @@
+Return-Path: <bounce-91_HTML-50105827-232270-514023555-20102@bounce.e.williams-sonoma.com>
+Received: from hotel.example.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.example.com (8.18.1/8.18.1) with ESMTPS id 59OKeebL012664
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <mjohnson@example.com>; Fri, 24 Oct 2025 20:40:41 GMT
+	(envelope-from bounce-91_HTML-50105827-232270-514023555-20102@bounce.e.williams-sonoma.com)
+Authentication-Results: juliett.example.com;
+	dkim=pass (2048-bit key; unprotected) header.d=e.williams-sonoma.com header.i=WilliamsSonoma@e.williams-sonoma.com header.b=Qtv+LC3f;
+	dkim=pass (2048-bit key; unprotected) header.d=s11.y.mc.salesforce.com header.i=@s11.y.mc.salesforce.com header.b=LLFPjYxN
+X-Authentication-Warning: juliett.example.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.example.com
+Received: from mta9.e.williams-sonoma.com (mta9.e.williams-sonoma.com [128.245.66.199])
+	by hotel.example.com (8.16.1/8.16.1) with ESMTPS id 59OKedJ8051571
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO)
+	for <mjohnson@example.com>; Fri, 24 Oct 2025 15:40:40 -0500
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.example.com 59OKedJ8051571
+Authentication-Results: hotel.example.com;
+	dkim=pass (2048-bit key, unprotected) header.d=e.williams-sonoma.com header.i=WilliamsSonoma@e.williams-sonoma.com header.a=rsa-sha256 header.s=11dkim1 header.b=Qtv+LC3f;
+	dkim=pass (2048-bit key, unprotected) header.d=s11.y.mc.salesforce.com header.i=@s11.y.mc.salesforce.com header.a=rsa-sha256 header.s=fbldkim11 header.b=LLFPjYxN
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=11dkim1; d=e.williams-sonoma.com;
+ h=From:To:Subject:Date:List-Unsubscribe:List-Unsubscribe-Post:MIME-Version:
+ Reply-To:Message-ID:Content-Type; i=WilliamsSonoma@e.williams-sonoma.com;
+ bh=96z2vjp+mHJdvUBSh2bFNEFavJT6zs3QbZVJ6asJGb4=;
+ b=Qtv+LC3fl3CCnuzKmb4ywlVg+QToZ/wtSj/oA+kMqEYLZE22MPcMqJTif0T2OuKSKuWJ6J5zoUu9
+   o7UCNqXECzvbh7UF7b5UpzbaypX/8TZ3SvQfnt/d0DV1BE0610TNMFX6e+b9R4zAYRd5ELAHaC1T
+   16sQWHXxzhFcDt2K1Jx8Gv1i33wrpftWFDdc0zJO//bBzx61cB/Opsz7G81Y37x2ygVv2BaquqDA
+   +1TXprBah9igdBMPXMSCmuuzPCLAziVDFd5ej/tcNiOWaCXPBcKi27nuooxP7OGIXqbVPgHo2l2j
+   apbD111oOzEtusiujs3/lKCKD499i+qkWSknxg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=fbldkim11; d=s11.y.mc.salesforce.com;
+ h=From:To:Subject:Date:List-Unsubscribe:MIME-Version:Reply-To:Message-ID:
+ Content-Type;
+ bh=96z2vjp+mHJdvUBSh2bFNEFavJT6zs3QbZVJ6asJGb4=;
+ b=LLFPjYxNnP+LhyOL8x24WP5PDt8k7hsQgb8uK/VkPwExVDOeRVkSDzq29A1wB/NvSHZtoHhoIqbl
+   zTQ3hraOlDE4vwsmV3EOZuQt+DerscdziM84RrN90Fx4p+gopIUCeuhtXrezY5wd/NNy3oqITCEQ
+   ldgTfpY6UVmuuX066dXeV5ZovbbxOvR8soF5iKbOcFfkhDYKwtufvsaGemT1Hio2P2T1OJufRGX1
+   mjPATFt1fYDOM4IONDBMgXhfdtseVHAnPKq1WLpt9OKWZ6ThVcn8VmsAurJgrch9XpFNr+3sEGsS
+   Mzt4U2ojJruyvIHwfMn4GSJLYSdRi9HYHWFBjw==
+Received: by mta9.e.williams-sonoma.com id hvfi4g2fmd4l for <mjohnson@example.com>; Fri, 24 Oct 2025 20:40:33 +0000 (envelope-from <bounce-91_HTML-50105827-232270-514023555-20102@bounce.e.williams-sonoma.com>)
+From: "Williams Sonoma" <WilliamsSonoma@e.williams-sonoma.com>
+To: <mjohnson@example.com>
+Subject: =?UTF-8?B?8J+aqCBMaW1pdGVkLXRpbWUgY2xlYXJhbmNlOiBzYXZlIHVwIHRv?=
+ =?UTF-8?B?IDc1JSB0b2RheSE=?=
+Date: Fri, 24 Oct 2025 14:40:32 -0600
+List-Unsubscribe: <https://click.e.williams-sonoma.com/subscription_center.aspx?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtaWQiOiI1MTQwMjM1NTUiLCJzIjoiNTAxMDU4MjciLCJsaWQiOiI5MSIsImoiOiIyMzIyNzAiLCJqYiI6IjIwMTAyIiwiZCI6IjExMDA1MyJ9.F1iNu95Msd6CdlxtCy8GW7B3ujnxb0yhoJCISbd23BU>, <mailto:leave-fd811d711a3c402029-fe631170746401757713-fecf16737766037d-fe3111717164067e701175-ff0a1670746406@leave.e.williams-sonoma.com>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+MIME-Version: 1.0
+Reply-To: "Williams Sonoma" <reply-fecf16737766037d-91_HTML-50105827-514023555-20102@e.williams-sonoma.com>
+X-SFMC-Stack: 11
+x-job: 514023555_232270
+Message-ID: <105d36a3-e461-490d-ade4-84f71fe202a6@atl1s11mta1150.xt.local>
+Content-Type: multipart/alternative;
+	boundary="pfgx20Z5QHCW=_?:"
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.example.com [172.31.18.8]); Fri, 24 Oct 2025 20:40:41 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.example.com [23.95.222.152]); Fri, 24 Oct 2025 15:40:40 -0500 (CDT)
+
+This is a multi-part message in MIME format.
+
+--pfgx20Z5QHCW=_?:
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+Williams-Sonoma
+ 
+ Plus, more great deals on kitchen must-haves.
+
+Limited-time clearance: save up to 75% today!
+
+Le Creuset Signature Enameled Cast Iron Oval Dutch Oven
+JURA Z10 Fully Automatic Espresso Machine with Cold Brew
+Breville Barista Touch™ Impress Espresso Machine Brass Collection
+Breville Barista Touch™ Espresso Machine
+Jura E8 Fully Automatic Espresso Machine
+Staub Enameled Cast Iron Round Dutch Oven
+
+*Quantities are limited and exclusions may apply. See site for details. 
+Offer valid on in-stock items only and cannot be applied to prior purchases. 
+Offer may not be combined with any other coupons, discounts, offers, or promotions.
+
+If you prefer not to receive promotional email messages from us, please click here.
+
+© 2025 Williams-Sonoma, Inc., Direct Marketing Dept., 3250 Van Ness Ave., San Francisco, CA 94109.
+All Rights Reserved. Read about our privacy policy.
+
+This message was sent to mjohnson@example.com.
+
+--pfgx20Z5QHCW=_?:
+Content-Type: text/html;
+	charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Williams-Sonoma</title>
+<meta http-equiv="Content-Type" content="text/html;" charset="utf-8" />
+<meta name="viewport" content="initial-scale=1,width=device-width" />
+</head>
+<body>
+<table cellspacing="0" cellpadding="0" bgcolor="#ffffff" width="100%" align="center">
+<tr><td align="center">
+<h1>Limited-time clearance: save up to 75% today!</h1>
+<p>Plus, more great deals on kitchen must-haves.</p>
+
+<h2>Featured Products:</h2>
+<ul>
+<li>Le Creuset Signature Enameled Cast Iron Oval Dutch Oven</li>
+<li>JURA Z10 Fully Automatic Espresso Machine with Cold Brew</li>
+<li>Breville Barista Touch™ Impress Espresso Machine Brass Collection</li>
+<li>Breville Barista Touch™ Espresso Machine</li>
+<li>Jura E8 Fully Automatic Espresso Machine</li>
+<li>Staub Enameled Cast Iron Round Dutch Oven</li>
+</ul>
+
+<p><small>*Quantities are limited and exclusions may apply. See site for details. 
+Offer valid on in-stock items only and cannot be applied to prior purchases. 
+Offer may not be combined with any other coupons, discounts, offers, or promotions.</small></p>
+
+<p><small>If you prefer not to receive promotional email messages from us, please click here.</small></p>
+
+<p><small>© 2025 Williams-Sonoma, Inc., Direct Marketing Dept., 3250 Van Ness Ave., San Francisco, CA 94109.
+All Rights Reserved. Read about our privacy policy.</small></p>
+
+<p><small>This message was sent to mjohnson@example.com.</small></p>
+</td></tr>
+</table>
+</body>
+</html>
+
+--pfgx20Z5QHCW=_?:--
