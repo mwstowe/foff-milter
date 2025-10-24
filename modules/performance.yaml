@@ -21,10 +21,22 @@ rules:
   - name: "Obvious Spam Early Rejection"
     enabled: true
     criteria:
-      type: "SubjectPattern"
-      pattern: "(?i).*(viagra|cialis|lottery.*winner|nigerian.*prince|inheritance.*fund|click.*here.*now|act.*now|limited.*time|urgent.*response).*"
+      type: "And"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(viagra|cialis|lottery.*winner|nigerian.*prince|inheritance.*fund|click.*here.*now|act.*now.*urgent|urgent.*response.*required).*"
+        - type: "Not"
+          criteria:
+            type: "And"
+            criteria:
+              - type: "HeaderPattern"
+                header: "List-Unsubscribe"
+                pattern: ".*"
+              - type: "HeaderPattern"
+                header: "DKIM-Signature"
+                pattern: ".*"
     score: 100
-    description: "Early rejection for blatantly obvious spam patterns"
+    description: "Early rejection for blatantly obvious spam patterns, but not legitimate marketing with proper headers"
 
   - name: "VIP Sender Priority"
     enabled: true
