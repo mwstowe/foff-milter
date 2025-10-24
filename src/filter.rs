@@ -788,7 +788,15 @@ impl FilterEngine {
         // Check whitelist first - if whitelisted, accept immediately
         if self.is_whitelisted(context) {
             log::info!("Email whitelisted, accepting without further processing");
-            return (Action::Accept, vec!["Whitelisted".to_string()], vec![]);
+            let headers = vec![(
+                "X-FOFF-Score".to_string(),
+                format!(
+                    "0 - whitelisted by foff-milter v{} on {}",
+                    env!("CARGO_PKG_VERSION"),
+                    get_hostname()
+                ),
+            )];
+            return (Action::Accept, vec!["Whitelisted".to_string()], headers);
         }
 
         // Check blocklist second - if blocklisted, reject immediately
