@@ -7,8 +7,8 @@ set -e
 
 # Server configurations: hostname:config_dir:service_command
 SERVERS=(
-    "hotel.example.com:/etc/foff-milter:systemctl"
-    "juliett.example.com:/usr/local/etc/foff-milter:service"
+    "hotel.baddomain.com:/etc/foff-milter:systemctl"
+    "juliett.baddomain.com:/usr/local/etc/foff-milter:service"
 )
 
 LOCAL_MODULES_DIR="modules"

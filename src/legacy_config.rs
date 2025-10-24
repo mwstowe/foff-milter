@@ -22,7 +22,7 @@ impl Module {
 pub fn load_modules(module_dir: &str) -> Result<Vec<Module>, Box<dyn std::error::Error>> {
     println!("DEBUG: Attempting to load modules from: {}", module_dir);
     let mut modules = Vec::new();
-    
+
     // Read all .yaml files from the modules directory
     let dir_path = Path::new(module_dir);
     if !dir_path.exists() {
@@ -45,13 +45,17 @@ pub fn load_modules(module_dir: &str) -> Result<Vec<Module>, Box<dyn std::error:
     // Sort files for consistent loading order
     yaml_files.sort();
 
-    println!("DEBUG: Found {} YAML files in {}", yaml_files.len(), module_dir);
+    println!(
+        "DEBUG: Found {} YAML files in {}",
+        yaml_files.len(),
+        module_dir
+    );
 
     for path in &yaml_files {
         let file_name = path.file_name().unwrap().to_string_lossy();
         println!("DEBUG: Checking file: {:?}", path);
         println!("DEBUG: File exists, attempting to load: {}", file_name);
-        match Module::load_from_file(&path) {
+        match Module::load_from_file(path) {
             Ok(module) => {
                 println!(
                     "DEBUG: Successfully loaded module: {} (enabled: {})",
