@@ -6,7 +6,7 @@ A comprehensive, enterprise-grade email security platform written in Rust featur
 
 FOFF Milter is a production-ready email security solution that provides:
 
-- **🛡️ Modular Threat Detection**: 14+ specialized detection modules covering all major threat vectors
+- **🛡️ Modular Threat Detection**: 17+ specialized detection modules covering all major threat vectors
 - **🔧 Clean Configuration**: TOML-based configuration with separated module system
 - **🔍 Advanced Security**: Deep inspection of attachments, URLs, and content analysis
 - **📊 Enterprise Analytics**: Real-time monitoring, reporting, and statistics
@@ -327,7 +327,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 FOFF Milter represents a complete, production-ready email security solution with:
 
 - **Modular Architecture** with clean TOML configuration
-- **14+ Detection Modules** for comprehensive threat coverage
+- **17+ Detection Modules** for comprehensive threat coverage
 - **Production Performance** optimized for high-volume email processing
 - **Enterprise Integration** ready for deployment in business environments
 
