@@ -121,3 +121,22 @@ rules:
             pattern: ".*@(wetransfer\\.com|we\\.tl)$"
     score: 50
     description: "WeTransfer brand impersonation from non-WeTransfer domains"
+
+  - name: "SBI Securities phishing"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(SBI証券|配当金|お取引履歴).*"
+            - type: "SenderPattern"
+              pattern: "(?i).*SBI.*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(SBI証券|配当金|お取引履歴|金融商品取引業者).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@(sbisec\\.co\\.jp|sbigroup\\.co\\.jp)$"
+    score: 60
+    description: "Phishing emails impersonating SBI Securities from non-SBI domains"
