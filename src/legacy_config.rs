@@ -22,47 +22,49 @@ impl Module {
 pub fn load_modules(module_dir: &str) -> Result<Vec<Module>, Box<dyn std::error::Error>> {
     println!("DEBUG: Attempting to load modules from: {}", module_dir);
     let mut modules = Vec::new();
-    let module_files = [
-        "suspicious-domains.yaml",
-        "brand-impersonation.yaml",
-        "health-spam.yaml",
-        "phishing-scams.yaml",
-        "adult-content.yaml",
-        "ecommerce-scams.yaml",
-        "financial-services.yaml",
-        "technology-scams.yaml",
-        "multi-language.yaml",
-        "performance.yaml",
-        "analytics.yaml",
-        "advanced-heuristics.yaml",
-        "integration.yaml",
-        "advanced-security.yaml",
-        "unsubscribe-analysis.yaml",
-        "link-analysis.yaml",
-    ];
+    
+    // Read all .yaml files from the modules directory
+    let dir_path = Path::new(module_dir);
+    if !dir_path.exists() {
+        return Err(format!("Module directory does not exist: {}", module_dir).into());
+    }
 
-    for file in &module_files {
-        let path = Path::new(module_dir).join(file);
-        println!("DEBUG: Checking file: {:?}", path);
-        if path.exists() {
-            println!("DEBUG: File exists, attempting to load: {}", file);
-            match Module::load_from_file(&path) {
-                Ok(module) => {
-                    println!(
-                        "DEBUG: Successfully loaded module: {} (enabled: {})",
-                        module.name, module.enabled
-                    );
-                    if module.enabled {
-                        modules.push(module);
-                    }
-                }
-                Err(e) => {
-                    println!("DEBUG: Failed to load module {}: {}", file, e);
-                    eprintln!("Warning: Failed to load module {}: {}", file, e);
+    let mut yaml_files = Vec::new();
+    for entry in fs::read_dir(dir_path)? {
+        let entry = entry?;
+        let path = entry.path();
+        if path.is_file() {
+            if let Some(extension) = path.extension() {
+                if extension == "yaml" || extension == "yml" {
+                    yaml_files.push(path);
                 }
             }
-        } else {
-            println!("DEBUG: File does not exist: {}", file);
+        }
+    }
+
+    // Sort files for consistent loading order
+    yaml_files.sort();
+
+    println!("DEBUG: Found {} YAML files in {}", yaml_files.len(), module_dir);
+
+    for path in &yaml_files {
+        let file_name = path.file_name().unwrap().to_string_lossy();
+        println!("DEBUG: Checking file: {:?}", path);
+        println!("DEBUG: File exists, attempting to load: {}", file_name);
+        match Module::load_from_file(&path) {
+            Ok(module) => {
+                println!(
+                    "DEBUG: Successfully loaded module: {} (enabled: {})",
+                    module.name, module.enabled
+                );
+                if module.enabled {
+                    modules.push(module);
+                }
+            }
+            Err(e) => {
+                println!("DEBUG: Failed to load module {}: {}", file_name, e);
+                eprintln!("Warning: Failed to load module {}: {}", file_name, e);
+            }
         }
     }
 
