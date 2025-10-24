@@ -24,7 +24,6 @@ rules:
       type: "SubjectPattern"
       pattern: "(?i).*(viagra|cialis|lottery.*winner|nigerian.*prince|inheritance.*fund|click.*here.*now|act.*now|limited.*time|urgent.*response).*"
     score: 100
-      message: "Obvious spam pattern detected"
     description: "Early rejection for blatantly obvious spam patterns"
 
   - name: "VIP Sender Priority"
@@ -61,7 +60,6 @@ rules:
           pattern: "^\\s*$"
         - type: "EmptyContentEmail"
     score: 80
-      message: "Empty email content"
     description: "Quick rejection for completely empty emails"
 
   - name: "Attachment Bomb Prevention"
@@ -71,5 +69,4 @@ rules:
       header: "Content-Length"
       pattern: "[5-9][0-9]{7,}|[1-9][0-9]{8,}"
     score: 40
-      message: "Email size exceeds limits"
     description: "Prevent processing of extremely large emails (50MB+)"
