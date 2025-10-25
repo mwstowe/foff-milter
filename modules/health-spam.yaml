@@ -148,3 +148,18 @@ rules:
               pattern: "(?i).*(1.*glass|flushes.*fat|soda.*water|coffee.*routine|transform.*coffee).*"
     score: 70
     description: "Detects weight loss and diet misinformation with fake scientific claims and unrealistic promises"
+  - name: "Dental health misinformation"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(reverse.*cavities|dental|teeth|tooth|cavity|dentist|harvard.*study.*reveals).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(reverse.*cavities|repair.*cells.*teeth|reverse.*cracks.*chips|harvard.*backed.*science|all-natural.*way.*repair|no.*trip.*dentist|repair.*teeth|cavities.*naturally).*"
+        - type: "BodyPattern"
+          pattern: "(?i).*(harvard.*backed|all-natural.*way|repair.*cells|reverse.*cracks|chips.*dents.*cavities|no.*trip.*dentist|quick.*video.*shows|30.*seconds).*"
+    score: 60
+    description: "Detects dental health misinformation claiming to reverse cavities or repair teeth naturally"
