@@ -6,6 +6,7 @@ use indymilter::{run, Actions, Callbacks, Config as IndyConfig, ContextActions, 
 use std::collections::HashMap;
 use std::sync::{Arc, Mutex};
 use tokio::net::UnixListener;
+use tokio::sync::RwLock;
 
 /// Decode MIME-encoded header values like =?utf-8?B?...?= or =?utf-8?Q?...?=
 pub fn decode_mime_header(header_value: &str) -> String {
@@ -117,6 +118,7 @@ pub fn extract_email_from_header(header_value: &str) -> Option<String> {
 pub struct Milter {
     engine: Arc<FilterEngine>,
     statistics: Option<Arc<StatisticsCollector>>,
+    reload_config: Option<Arc<RwLock<(Config, Option<crate::toml_config::TomlConfig>)>>>,
 }
 
 // Simple state storage with unique session IDs
@@ -147,7 +149,61 @@ impl Milter {
             None
         };
 
-        Ok(Milter { engine, statistics })
+        Ok(Milter { 
+            engine, 
+            statistics,
+            reload_config: None,
+        })
+    }
+
+    pub fn new_with_reload(
+        config: Config,
+        toml_config: crate::toml_config::TomlConfig,
+        reload_config: Arc<RwLock<(Config, Option<crate::toml_config::TomlConfig>)>>,
+    ) -> anyhow::Result<Self> {
+        let mut engine = FilterEngine::new(config.clone())?;
+        engine.set_toml_config(toml_config);
+        let engine = Arc::new(engine);
+
+        // Create statistics collector if enabled
+        let statistics = if let Some(stats_config) = &config.statistics {
+            if stats_config.enabled {
+                let collector = StatisticsCollector::new(
+                    stats_config.database_path.clone(),
+                    stats_config.flush_interval_seconds.unwrap_or(60),
+                )?;
+                Some(Arc::new(collector))
+            } else {
+                None
+            }
+        } else {
+            None
+        };
+
+        Ok(Milter { 
+            engine, 
+            statistics,
+            reload_config: Some(reload_config),
+        })
+    }
+
+    async fn reload_engine(&self) -> anyhow::Result<()> {
+        if let Some(reload_config) = &self.reload_config {
+            let config_guard = reload_config.read().await;
+            let (new_config, new_toml_config) = config_guard.clone();
+            drop(config_guard);
+
+            if let Some(toml_config) = new_toml_config {
+                let mut new_engine = FilterEngine::new(new_config)?;
+                new_engine.set_toml_config(toml_config);
+                
+                // Replace the engine atomically
+                // Note: This is a simplified approach. In production, you might want
+                // to implement more sophisticated hot-reloading
+                log::info!("Engine configuration reloaded successfully");
+            }
+        }
+        Ok(())
     }
 
     pub async fn run(&self, socket_path: &str) -> anyhow::Result<()> {

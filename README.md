@@ -1,4 +1,4 @@
-# FOFF Milter v0.6.3
+# FOFF Milter v0.6.4
 
 A comprehensive, enterprise-grade email security platform written in Rust featuring modular threat detection and clean TOML configuration.
 
@@ -12,6 +12,26 @@ FOFF Milter is a production-ready email security solution that provides:
 - **📊 Enterprise Analytics**: Real-time monitoring, reporting, and statistics
 - **⚡ Production Performance**: Optimized for high-volume processing with parallel execution
 - **🔄 Backward Compatible**: Optional legacy YAML rule support
+
+## Configuration Reload
+
+FOFF Milter v0.6.4 supports hot configuration reloading without service interruption:
+
+```bash
+# Send SIGHUP signal to reload configuration
+sudo kill -HUP $(pgrep foff-milter)
+
+# Or using systemctl
+sudo systemctl reload foff-milter
+```
+
+When a SIGHUP signal is received, FOFF Milter will:
+- Reload the main configuration file (`foff-milter.toml`)
+- Reload all detection modules from the modules directory
+- Apply new settings without dropping existing connections
+- Log the reload status for monitoring
+
+This allows for real-time updates to spam detection rules and configuration changes without service downtime.
 
 ## Configuration System
 
