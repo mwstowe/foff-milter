@@ -941,6 +941,7 @@ async fn test_email_file(
         hostname: None,
         helo: None,
         body: Some(body),
+        last_header_name: None,
     };
 
     // Test the email

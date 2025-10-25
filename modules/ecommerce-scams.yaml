@@ -41,3 +41,22 @@ rules:
             pattern: "dkim=pass.*dmarc=pass"
     score: 40
     description: "Beauty and cosmetic product promotion spam"
+  - name: "Product plan and blueprint scams"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "BodyPattern"
+              pattern: "(?i).*(shed.*plan|blueprint|12,000.*designs|master.*craftsman|beginner.*friendly|collection.*plans|build.*themselves|shockingly.*simple|perfect.*plan|professional.*craftsmen|certified.*architects).*"
+            - type: "SubjectPattern"
+              pattern: "(?i).*(brain.*age.*test|shed|plan|blueprint|build|design).*"
+        - type: "Or"
+          criteria:
+            - type: "BodyPattern"
+              pattern: "(?i).*(feels.*like.*cheating|build.*themselves|shockingly.*simple|practically.*build|total.*beginner|real.*contractor|only.*\\$37|time.*sensitive.*offer|act.*fast|launch.*price.*end|urge.*you.*to.*get).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(\\$0\\.00[0-9]+.*per|detailed.*plan|special.*launch.*price|easier.*faster.*way|offer.*still.*available|owe.*it.*to.*yourself).*"
+    score: 60
+    description: "Detects product plan and blueprint scams with exaggerated claims and urgency tactics"

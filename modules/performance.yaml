@@ -1,6 +1,26 @@
 name: "Performance"
 enabled: true
 rules:
+  - name: "Business System Fast Path"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "HeaderPattern"
+          header: "x-netsuite"
+          pattern: ".*"
+        - type: "SenderPattern"
+          pattern: ".*@.*netsuite\\.com$"
+        - type: "SenderPattern"
+          pattern: ".*@.*salesforce\\.com$"
+        - type: "SenderPattern"
+          pattern: ".*@.*quickbooks\\.com$"
+        - type: "HeaderPattern"
+          header: "X-Mailer"
+          pattern: ".*NetSuite.*"
+    score: -25
+    description: "Fast path for legitimate business systems like NetSuite, Salesforce, QuickBooks"
+
   - name: "Trusted Domain Fast Path"
     enabled: true
     criteria:

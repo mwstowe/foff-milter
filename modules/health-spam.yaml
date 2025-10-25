@@ -93,3 +93,58 @@ rules:
       pattern: "(?i).*(vision.*loss.*permanent|eyesight.*flower|eyes.*repair.*themselves|glassless.*eyes|reclaim.*20/20.*vision|eyesight.*industry.*doesn.*want|wait.*15.*minutes|sharp.*as.*razor).*"
     score: 55
     description: "Vision and eyesight medical misinformation and miracle cure spam"
+  - name: "ED and sexual health spam"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(erectile|dysfunction|stamina.*bedroom|sexual.*performance|libido|sexual|bedroom|intimate|massage.*revive|finger.*seconds|ED.*revive).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(pink soldier|disco stick|rod.*minute|banana.*pants|pellets.*white coat|stamina.*sack|drive.*days|organ.*pants|resurrect.*rod|stimulate.*house|fingers.*seconds|discrete.*public|confidence boost|pecker-pellet|tutorial.*vid|bigger.*seen|approaching.*first time|massage.*revive|erectile.*dysfunction).*"
+        - type: "BodyPattern"
+          pattern: "(?i).*(jaw-dropping.*discovery|scientists.*studying|microscope.*findings|researchers.*believe|stimulating.*organ|resurrect.*minute|controversial.*doc.*revealed|technique.*tutorial|viral.*countless|corrupt.*pecker.*industry|natural.*secret.*disappear|watch.*vid.*gone).*"
+    score: 75
+    description: "Detects erectile dysfunction and sexual health spam with euphemisms and medical claims"
+  - name: "Neuropathy and nerve pain medical misinformation"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(neuropathy|nerve.*damage|nerve.*pain|stanford|neurologist|prescription.*pill|drug.*causes).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(neuropathy|nerve.*damage|nerve.*pain|neurologist|stanford|prescription.*pill|gabapentin|lyrica|elavil|cymbalta|numbness|tingling|burning.*sensations|nerve.*fibers|hands.*feet).*"
+        - type: "Or"
+          criteria:
+            - type: "BodyPattern"
+              pattern: "(?i).*(warning.*stop.*taking|increase.*permanent|destroy.*nerve|avoid.*all.*costs|natural.*pain.*relieving|better.*natural|so-called.*pain.*solution).*"
+            - type: "SubjectPattern"
+              pattern: "(?i).*(warning|stop|drug.*causes|more.*damage).*"
+        - type: "BodyPattern"
+          pattern: "(?i).*(university|warns|permanent|damage|destroy|fibers|numbness|tingling|burning|sensations|avoid|costs|natural|solution).*"
+    score: 65
+    description: "Detects neuropathy and nerve pain medical misinformation targeting prescription medications"
+  - name: "Weight loss and diet misinformation"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(soda.*water.*diet|flushes.*out.*fat|lose.*weight|diet|fat.*burning|weight.*loss|coffee.*routine|transform.*coffee).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(lose.*weight|fat.*burning|soda.*powder|flush.*out.*fat|720%.*more.*fat|melt.*stubborn.*belly.*fat|coffee.*hack|viral.*tiktok|31.*pounds.*6.*weeks|lost.*31.*pounds|melts.*31.*lbs|stubborn.*fat|University.*College.*London|researchers.*discovered).*"
+        - type: "Or"
+          criteria:
+            - type: "BodyPattern"
+              pattern: "(?i).*(science.*has.*proven|tablespoons.*of.*this|fat-burning.*soda.*powder|flush.*out.*up.*to.*720%|without.*following.*any|particular.*diet.*exercise|thousands.*of.*people.*losing|hard.*to.*believe|shocking.*proof|went.*viral.*tiktok|using.*this.*trick|melts.*stubborn|coffee.*hack).*"
+            - type: "SubjectPattern"
+              pattern: "(?i).*(1.*glass|flushes.*fat|soda.*water|coffee.*routine|transform.*coffee).*"
+    score: 70
+    description: "Detects weight loss and diet misinformation with fake scientific claims and unrealistic promises"

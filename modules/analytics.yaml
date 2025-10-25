@@ -57,14 +57,17 @@ rules:
       type: "And"
       criteria:
         - type: "SenderPattern"
-          pattern: ".*(no-reply|noreply|donotreply|admin|support|info|contact|service|team|notification|alert)@.*"
+          pattern: ".*(no-reply|noreply|donotreply|admin|support|info|contact|service|team|notification|alert|system)@.*"
         - type: "Not"
           criteria:
             type: "Or"
             criteria:
               - type: "HeaderPattern"
                 header: "From"
-                pattern: ".*@(asus\\.com|.*\\.asus\\.com|microsoft\\.com|.*\\.microsoft\\.com|google\\.com|.*\\.google\\.com|amazon\\.com|.*\\.amazon\\.com|apple\\.com|.*\\.apple\\.com|shopify\\.com|.*\\.shopify\\.com|lovepopcards\\.com|pixlr\\.com|.*\\.pixlr\\.com).*"
+                pattern: ".*@(asus\\.com|.*\\.asus\\.com|microsoft\\.com|.*\\.microsoft\\.com|google\\.com|.*\\.google\\.com|amazon\\.com|.*\\.amazon\\.com|apple\\.com|.*\\.apple\\.com|shopify\\.com|.*\\.shopify\\.com|lovepopcards\\.com|pixlr\\.com|.*\\.pixlr\\.com|.*netsuite\\.com).*"
+              - type: "HeaderPattern"
+                header: "X-NetSuite"
+                pattern: ".*"
               - type: "And"
                 criteria:
                   - type: "HeaderPattern"
@@ -74,7 +77,23 @@ rules:
                     header: "List-Unsubscribe"
                     pattern: ".*"
     score: 5
-    description: "Generic sender addresses often used in bulk spam campaigns"
+    description: "Generic sender addresses often used in bulk spam campaigns, excluding business systems"
+
+  - name: "NetSuite Business System Recognition"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "HeaderPattern"
+          header: "x-netsuite"
+          pattern: ".*"
+        - type: "SenderPattern"
+          pattern: ".*@.*netsuite\\.com$"
+        - type: "HeaderPattern"
+          header: "from"
+          pattern: ".*@.*netsuite\\.com.*"
+    score: -25
+    description: "Legitimate NetSuite business system emails"
 
   - name: "Sender Name Mismatch"
     enabled: true

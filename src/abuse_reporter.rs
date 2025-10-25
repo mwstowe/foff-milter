@@ -319,6 +319,7 @@ mod tests {
             helo: Some("sendgrid.net".to_string()),
             hostname: Some("vsvhrrcf.outbound-mail.sendgrid.net".to_string()),
             mailer: None,
+            last_header_name: None,
         };
 
         // Test SendGrid abuse reporting (will log since no SMTP configured)
@@ -359,6 +360,7 @@ mod tests {
             helo: None,
             hostname: None,
             mailer: None,
+            last_header_name: None,
         };
 
         let result = reporter

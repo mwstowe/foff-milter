@@ -282,17 +282,31 @@ impl Milter {
                                 _ => {}
                             }
 
-                            // Handle header continuation lines by concatenating values
-                            let header_key = name_str.to_lowercase();
-                            if let Some(existing_value) = mail_ctx.headers.get(&header_key) {
-                                // Concatenate with existing value (continuation line)
-                                let combined_value = format!("{} {}", existing_value, value_str);
-                                log::error!("CRITICAL: Concatenating header '{header_key}': '{existing_value}' + '{value_str}' = '{combined_value}'");
-                                mail_ctx.headers.insert(header_key, combined_value);
+                            // Handle header continuation lines properly (RFC 2822)
+                            if name_str.is_empty() {
+                                // This is a continuation line (starts with whitespace)
+                                if let Some(last_header) = &mail_ctx.last_header_name {
+                                    if let Some(existing_value) = mail_ctx.headers.get(last_header)
+                                    {
+                                        let combined_value =
+                                            format!("{}{}", existing_value, value_str);
+                                        log::debug!(
+                                            "Header continuation: appending '{}' to '{}' = '{}'",
+                                            value_str,
+                                            existing_value,
+                                            combined_value
+                                        );
+                                        mail_ctx
+                                            .headers
+                                            .insert(last_header.clone(), combined_value);
+                                    }
+                                }
                             } else {
-                                // First occurrence of this header
-                                log::error!("CRITICAL: First occurrence of header '{header_key}': '{value_str}'");
-                                mail_ctx.headers.insert(header_key, value_str);
+                                // Regular header
+                                let header_key = name_str.to_lowercase();
+                                log::debug!("Header: '{}': '{}'", header_key, value_str);
+                                mail_ctx.headers.insert(header_key.clone(), value_str);
+                                mail_ctx.last_header_name = Some(header_key);
                             }
                         }
                         Status::Continue

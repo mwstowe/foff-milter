@@ -1,0 +1,196 @@
+Return-Path: <bounces+mjohnson=example.com@iad1.rp.oracleemaildelivery.com>
+Received: from hotel.example.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.example.com (8.18.1/8.18.1) with ESMTPS id 59OMmQtu017144
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <mjohnson@example.com>; Fri, 24 Oct 2025 22:48:27 GMT
+	(envelope-from bounces+mjohnson=example.com@iad1.rp.oracleemaildelivery.com)
+Authentication-Results: juliett.example.com;
+	dkim=pass (2048-bit key; unprotected) header.d=sent-via.netsuite.com header.i=@sent-via.netsuite.com header.b=kOqp+OYy;
+	dkim=pass (2048-bit key; unprotected) header.d=iad1.rp.oracleemaildelivery.com header.i=@iad1.rp.oracleemaildelivery.com header.b=ItfnhlEQ
+X-Authentication-Warning: juliett.example.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.example.com
+Received: from adg154cb126.iad1.oracleemaildelivery.com (adg154cb126.iad1.oracleemaildelivery.com [147.154.32.126])
+	by hotel.example.com (8.16.1/8.16.1) with ESMTPS id 59OMmP5N054687
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO)
+	for <mjohnson@example.com>; Fri, 24 Oct 2025 17:48:26 -0500
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.example.com 59OMmP5N054687
+Authentication-Results: hotel.example.com;
+	dkim=pass (2048-bit key, unprotected) header.d=sent-via.netsuite.com header.i=@sent-via.netsuite.com header.a=rsa-sha256 header.s=eds-us-ashburn-1-blue header.b=kOqp+OYy;
+	dkim=pass (2048-bit key, unprotected) header.d=iad1.rp.oracleemaildelivery.com header.i=@iad1.rp.oracleemaildelivery.com header.a=rsa-sha256 header.s=prod-iad-20200707 header.b=ItfnhlEQ
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=eds-us-ashburn-1-blue;
+ d=sent-via.netsuite.com;
+ h=Date:To:From:Subject:Message-Id:MIME-Version:Sender:List-Unsubscribe:List-Unsubscribe-Post;
+ bh=OoG9GTFKNkxFbgDJg/yhL6HtMl+Qj2k7HQJ7ZT+2XTg=;
+ b=kOqp+OYy1g660U4gFjaXONSB7rB/ehibw+BUzCQWKiqxCL8Zs9MtxT5IAMpZt/HEfJyHMeDfvlQs
+   Ai5SdeeR7kCOurc/lHgDP2hv9vNjjHLs2EIWkZXytJgpvtH19ZD9DSs5At0tSM8PyYdyrmIj3fL2
+   a0F9oTy3GscNqi1klqVHRWoWm3gDGP+aoblLyAYM1AD8VN6A8X6f2nPFTJBxzo3RVDN2KL4BOHkc
+   DKCTjO9Oa04fRyRhYXOFCa2WUC0O15bzJ5N2/HgqTzNN9WmgPcuNssrF0lizghTOHxydehHdeFQq
+   /wtgxIwAHe0W/ThG7VtYzRDtoPV4kIGiiG4+gg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=prod-iad-20200707;
+ d=iad1.rp.oracleemaildelivery.com;
+ h=Date:To:From:Subject:Message-Id:MIME-Version:Sender:List-Unsubscribe:List-Unsubscribe-Post;
+ bh=OoG9GTFKNkxFbgDJg/yhL6HtMl+Qj2k7HQJ7ZT+2XTg=;
+ b=ItfnhlEQFO2MDdTBJLcCz0OFGc4aHnSSK1liMObC/UmaFB77SXI0HZABM8+tRekbCrN7Nveqy/a3
+   ZudyhwFp1nLlxXoauHP01VXKN4QRKKA7UQBXXQ7gG6QvJE2zwt1Nlpuq2BTugEwerXto8FI+BpvJ
+   pTjyqz3acQYU6UvOcQ8w123XfObWj0dXM/fVriKtXw1QfDt38HyQ8PuR82z1KzQDOrmbJqztEdLf
+   YnHrWUo+LkQE9DFbMTj4QNNkzShaakJxAKH31yjCYcUDagbDozhdztaJI2cOduXSMjQlnAv+OLGe
+   aexSqQNwIt5MHVN40tMoRUa4rQyGvfHP3nQGlw==
+Received: by omta-ad3-fd3-301-us-ashburn-1.omtaad3.vcndpiad.oraclevcn.com
+ (Oracle Communications Messaging Server 8.1.0.1.20250909 64bit (built Sep  9
+ 2025))
+ with ESMTPS id <0T4N00YAXRCK8H00@omta-ad3-fd3-301-us-ashburn-1.omtaad3.vcndpiad.oraclevcn.com> for
+ mjohnson@example.com; Fri, 24 Oct 2025 22:48:20 +0000 (GMT)
+List-Unsubscribe:
+ <https://cell0.track.email.us-ashburn-1.oci.oraclecloud.com/20221014/track/unsubscribe?V=12&H=AAE-LckTPWG4_rZbl2_7MKUEqr6bUVh8VJf3VlqMEp9mRrdvis-vj2XpLOpHQXQq755NDRRUCvRJptbFV0q6bvQKymcOz6nTiZl2iPWQiRoM5maix4N1KF_qkuWtpCp9HKIc41e3FFBgNZqoKSBjCl24tQ-sxt5UfLNFc53b_L6-226a63pS9jd41I03jxexQhufM7p74mbvzKdYeNELA9hgdBF79ie0_WVarH1st6xdsxEWibPh27cpmlE-2pl7h8shYfHnlj5bsYuXVyFfZwcCEMsN1KH2rin8Xrs9z2P4aO512wGJ-wDXZ4I62VhuS7zUkedag3VuizTUo-QEHkUHXPOFpHqPf9m0fM-VvV_dNHtbatZVDw3f_DdzmnOIgZFN81spFASGCw>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+Date: Fri, 24 Oct 2025 15:48:19 -0700 (PDT)
+From: "Evergreen Tree Care (info@evergreentlc.com)"
+ <system@sent-via.netsuite.com>
+Reply-to: Evergreen Tree Care <info@evergreentlc.com>
+To: mjohnson@example.com
+Message-id:
+ <7emgks8ahye8e67gk1oq21j7f5kxwzuoaq8mutsvhjwt0h5dgqbnbss63isvti4a@netsuite.com>
+Subject: Ever-Green Tree Care, Inc: Invoice #INV20045123
+MIME-version: 1.0
+Content-type: multipart/mixed;
+	boundary="----=_Part_186_1878715284.1761346099918"
+X-NetSuite: c=4020692; s=a.fall.18.prod.iad.na10.core.ns.internal; v=2025.2.13;
+ t=SingleMerge; ec=true
+X-NetSuite-SourceDcId: iad-na10
+X-NetSuite-MetaData:
+ {"type":"company","basicEmailMetaData":{"mailingId":null,"messageId":"<7emgks8ahye8e67gk1oq21j7f5kxwzuoaq8mutsvhjwt0h5dgqbnbss63isvti4a@netsuite.com>"},"compId":"4020692","originalFrom":"info@evergreentlc.com","shouldForwardBounce":true}
+Reporting-Meta:
+ AAFPR/8B6DhMbUdiz+LWyyj4Wedy+Zn0uADKGy7n9Mkgf1N+wOzVJnMmIrSnhbaB
+ C4te6p61PHVCfERhi6Xge/C0T3RWWfVV+ECRF0iEXtBDBwyz1H/ibyanuW/OT8WM
+ gmV/5ZR21F2NrX9ItRzEEJSa40MXZZpMaqcbteM060rt5IzTyoRSfKt68eLqObuX
+ FqwrMW3aVB5OzNk0LjGGZ1BcVtgp/dvtq12mehRCrzZwqy6ZVpZGAaugAX5SDfSm
+ 2CkQkuOrjXIOuJ/CzQeYMPQpCKtRovvlsso+d2mLjX3/ItaI2LzPPvWJl2I48ulM
+ 9Yox99fLri/twqns6GwhttijYSS/x3h7EJx+icvX80M5v0sJ2Ajz78SdvwoKzpSK
+ gn6mWVYzHdENHArhFHzAI9rSkBs4lV+ikpyaYMeh4favomYaEl4ld01TsN6gI73E
+ CeV/7ojIGnvnpLVftfdLOqWa+b7HNKMC41ym4QRpVeDn9n/Ewk6CAdFGH9UuIUaW
+ i/OEv9orN9wZZbbi/D8ufQDy00ArVj3VKlBcSca5
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.example.com [172.31.18.8]); Fri, 24 Oct 2025 22:48:27 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.example.com [23.95.222.152]); Fri, 24 Oct 2025 17:48:26 -0500 (CDT)
+
+------=_Part_186_1878715284.1761346099918
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+<HTML><HEAD><BASE href='https://4020692.app.netsuite.com/'><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></HEAD><BODY style="font-family:Verdana,Arial,Helvetica,sans-serif;font-size:10pt;"><p>Thank you very much for the opportunity to serve you! We very much appreciate it!</p>
+<p>Please open the attached file to view your Invoice for your recent service.</p>
+<p>There are three options for making a payment:</p>
+<p><strong>1. Pay directly from the invoice:</strong><br />Click the payment link in the body of the attached invoice. This will allow you to pay the amount for that specific invoice. I'll send a second email with the other invoice, which will need to be paid separately. Once you confirm the payment amount, you can choose to pay by <strong>credit card</strong> or <strong>ACH</strong>.</p>
+<p><strong>2. Pay through our website:</strong><br />Visit our <a href="https://evergreentlc.jotform.com/231626546567969"><strong>Invoice/Deposit Payment Processing</strong></a> page to make a payment online. Only payment via credit card is an option here, but you can choose to pay any amount.</p>
+<p><strong>3. Mail a check to the address below</strong><br /><br />Ever-Green Tree Care, Inc.<br />PO Box 11155<br />Spokane, WA 99211<br />1-800-684-8733<br />Monday - Friday 8:00 a.m. to 5:00 p.m.<br /><br />Thank you for your business - we appreciate it very much.</p>
+<p>To view the attachment, you first need the free Adobe Acrobat Reader. If you don't have it yet, visit Adobe's Web site http://www.adobe.com/products/acrobat/readstep.html to download it.</p>
+</BODY></HTML>
+------=_Part_186_1878715284.1761346099918
+Content-Type: text/html; charset=UTF-8; 
+	name=Invoice_INV20045123_1761346097791.html
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment; 
+	filename=Invoice_INV20045123_1761346097791.html
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Invoice INV20045123</title>
+<style>
+body { font-family: Arial, sans-serif; font-size: 10pt; }
+.header { width: 100%; }
+.title { font-size: 24pt; }
+.label { font-weight: bold; }
+</style>
+</head>
+<body>
+<table class="header">
+<tr>
+<td><span class="title">INVOICE</span><br>INV20045123</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td class="label">Date:</td>
+<td>10/16/2025</td>
+</tr>
+<tr>
+<td class="label">INVOICE #:</td>
+<td>INV20045123</td>
+</tr>
+</table>
+
+<h3>Bill To:</h3>
+<p>JANE JOHNSON<br />
+123 Northwest Oak Street<br />
+Portland OR 97201</p>
+
+<h3>Work Performed At:</h3>
+<p>JANE JOHNSON<br />
+123 Northwest Oak Street<br />
+Portland OR 97201</p>
+
+<table>
+<tr>
+<th>Arborist</th>
+<th>Contract Number</th>
+<th>Contract Date</th>
+<th>DUE DATE</th>
+<th>TERMS</th>
+</tr>
+<tr>
+<td>Robert Smith</td>
+<td>EVG678901</td>
+<td>10/2/2025</td>
+<td>10/16/2025</td>
+<td>Due on receipt</td>
+</tr>
+</table>
+
+<h3>Description</h3>
+<table>
+<tr>
+<th>DESCRIPTION</th>
+<th>AMOUNT</th>
+</tr>
+<tr>
+<td>Shaping & maintaining healthy trees and to control size for visual relationship to other landscape</td>
+<td>$650.00</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td><b>SUBTOTAL</b></td>
+<td>$650.00</td>
+</tr>
+<tr>
+<td><b>TAX TOTAL</b></td>
+<td>$67.25</td>
+</tr>
+<tr>
+<td><b>TOTAL</b></td>
+<td>$717.25</td>
+</tr>
+<tr>
+<td><b>AMOUNT PAID</b></td>
+<td>$0.00</td>
+</tr>
+<tr>
+<td><b>AMOUNT DUE</b></td>
+<td>$717.25</td>
+</tr>
+</table>
+
+<p><a href="https://4020692.extforms.netsuite.com/app/site/hosting/scriptlet.nl?script=2458&deploy=1&compid=4020692" target="_BLANK">Click Here to Pay Now</a></p>
+
+<h2>We would be happy to come to your home to look at your trees and answer any of your questions. We offer free consultations with our arborists.</h2>
+
+<h2>CUSTOM TREE TRIMMING<br>
+SHRUB TRIMMING AND REMOVAL<br>
+HAZARDOUS TREE REMOVAL</h2>
+
+<p>PO Box 11155 • Spokane Valley, WA 99211-1155 • Fax (213)606-7183 • 1-800-684-TREE • www.evergreentlc.com</p>
+
+</body>
+</html>
+------=_Part_186_1878715284.1761346099918--

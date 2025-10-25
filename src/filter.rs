@@ -103,6 +103,7 @@ pub struct MailContext {
     pub hostname: Option<String>,
     pub helo: Option<String>,
     pub body: Option<String>,
+    pub last_header_name: Option<String>, // Track last header for continuation lines
 }
 
 impl FilterEngine {

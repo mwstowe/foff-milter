@@ -11,9 +11,23 @@ rules:
   - name: "Empty Content Emails"
     enabled: true
     criteria:
-      type: "EmptyContentEmail"
+      type: "And"
+      criteria:
+        - type: "EmptyContentEmail"
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "HeaderPattern"
+                header: "x-netsuite"
+                pattern: ".*"
+              - type: "SenderPattern"
+                pattern: ".*@.*netsuite\\.com$"
+              - type: "HeaderPattern"
+                header: "from"
+                pattern: ".*@.*netsuite\\.com.*"
     score: 25
-    description: "Emails with no subject or body content"
+    description: "Emails with no subject or body content, excluding NetSuite business systems"
 
   - name: "Image-Only Emails"
     enabled: true
@@ -53,15 +67,29 @@ rules:
   - name: "Suspicious Attachment Filenames"
     enabled: true
     criteria:
-      type: "Or"
+      type: "And"
       criteria:
-        - type: "SubjectPattern"
-          pattern: "(?i).*(invoice|billing|report|document|statement|receipt).*[A-Z0-9]{10,}.*"
-        - type: "HeaderPattern"
-          header: "content-disposition"
-          pattern: "(?i).*filename.*[A-Z0-9]{10,}\\.(pdf|doc|docx|xls|xlsx|zip).*"
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(invoice|billing|report|document|statement|receipt).*[A-Z0-9]{10,}.*"
+            - type: "HeaderPattern"
+              header: "content-disposition"
+              pattern: "(?i).*filename.*[A-Z0-9]{10,}\\.(pdf|doc|docx|xls|xlsx|zip).*"
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "HeaderPattern"
+                header: "x-netsuite"
+                pattern: ".*"
+              - type: "SenderPattern"
+                pattern: ".*@.*netsuite\\.com$"
+              - type: "HeaderPattern"
+                header: "from"
+                pattern: ".*@.*netsuite\\.com.*"
     score: 35
-    description: "Detects suspicious attachment filenames with random characters"
+    description: "Detects suspicious attachment filenames with random characters, excluding NetSuite business systems"
 
   - name: "Suspicious Encoding Patterns"
     enabled: true
