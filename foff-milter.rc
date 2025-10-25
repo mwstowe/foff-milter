@@ -1,0 +1,55 @@
+#!/bin/sh
+
+# PROVIDE: foff_milter
+# REQUIRE: LOGIN
+# KEYWORD: shutdown
+
+# Add the following lines to /etc/rc.conf to enable foff-milter:
+# foff_milter_enable="YES"
+# foff_milter_config="/usr/local/etc/foff-milter.toml"
+
+. /etc/rc.subr
+
+name="foff_milter"
+rcvar="foff_milter_enable"
+
+load_rc_config $name
+
+: ${foff_milter_enable:="NO"}
+: ${foff_milter_config:="/usr/local/etc/foff-milter.toml"}
+: ${foff_milter_user:="foff-milter"}
+: ${foff_milter_group:="foff-milter"}
+: ${foff_milter_pidfile:="/var/run/foff-milter/foff-milter.pid"}
+
+command="/usr/local/bin/foff-milter"
+command_args="-c ${foff_milter_config}"
+pidfile="${foff_milter_pidfile}"
+required_files="${foff_milter_config}"
+
+start_precmd="foff_milter_prestart"
+reload_cmd="foff_milter_reload"
+extra_commands="reload"
+
+foff_milter_prestart()
+{
+    if [ ! -d "/var/run/foff-milter" ]; then
+        install -d -o ${foff_milter_user} -g ${foff_milter_group} -m 755 /var/run/foff-milter
+    fi
+    if [ ! -d "/var/lib/foff-milter" ]; then
+        install -d -o ${foff_milter_user} -g ${foff_milter_group} -m 755 /var/lib/foff-milter
+    fi
+}
+
+foff_milter_reload()
+{
+    if [ -f "${pidfile}" ]; then
+        echo "Reloading ${name} configuration..."
+        kill -HUP `cat ${pidfile}`
+        echo "Configuration reload signal sent to ${name}."
+    else
+        echo "${name} is not running."
+        return 1
+    fi
+}
+
+run_rc_command "$1"

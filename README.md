@@ -21,8 +21,11 @@ FOFF Milter v0.6.4 supports hot configuration reloading without service interrup
 # Send SIGHUP signal to reload configuration
 sudo kill -HUP $(pgrep foff-milter)
 
-# Or using systemctl
+# Or using systemctl (Linux)
 sudo systemctl reload foff-milter
+
+# Or using service command (FreeBSD)
+sudo service foff_milter reload
 ```
 
 When a SIGHUP signal is received, FOFF Milter will:
@@ -170,34 +173,7 @@ sudo chmod 640 /etc/foff-milter/modules/*.yaml
 
 ```bash
 # Create systemd service file
-sudo tee /etc/systemd/system/foff-milter.service > /dev/null << 'EOF'
-[Unit]
-Description=FOFF Milter - Enterprise Email Security Platform
-After=network.target
-Wants=network.target
-
-[Service]
-Type=simple
-User=foff-milter
-Group=foff-milter
-ExecStart=/usr/local/bin/foff-milter -c /etc/foff-milter.toml
-ExecReload=/bin/kill -HUP $MAINPID
-Restart=always
-RestartSec=5
-StandardOutput=journal
-StandardError=journal
-SyslogIdentifier=foff-milter
-
-# Security settings
-NoNewPrivileges=true
-PrivateTmp=true
-ProtectSystem=strict
-ProtectHome=true
-ReadWritePaths=/var/lib/foff-milter /var/run/foff-milter
-
-[Install]
-WantedBy=multi-user.target
-EOF
+sudo cp foff-milter.service /etc/systemd/system/
 
 # Reload systemd and enable service
 sudo systemctl daemon-reload
@@ -222,6 +198,30 @@ sudo systemctl status foff-milter
 
 # View logs
 sudo journalctl -u foff-milter -f
+```
+
+### FreeBSD Installation
+
+For FreeBSD systems, use the provided rc.d script:
+
+```bash
+# Install the rc.d script
+sudo cp foff-milter.rc /usr/local/etc/rc.d/foff_milter
+sudo chmod +x /usr/local/etc/rc.d/foff_milter
+
+# Create required directories
+sudo mkdir -p /var/run/foff-milter /var/lib/foff-milter
+sudo chown foff-milter:foff-milter /var/run/foff-milter /var/lib/foff-milter
+
+# Enable the service in /etc/rc.conf
+echo 'foff_milter_enable="YES"' | sudo tee -a /etc/rc.conf
+echo 'foff_milter_config="/usr/local/etc/foff-milter.toml"' | sudo tee -a /etc/rc.conf
+
+# Start the service
+sudo service foff_milter start
+
+# Reload configuration
+sudo service foff_milter reload
 ```
 
 ## Usage
