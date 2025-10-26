@@ -20,6 +20,21 @@ if [ ! -f "$BINARY" ]; then
     exit 1
 fi
 
+# Test 1: Module Loading Test
+echo "🔧 Testing module loading..."
+EXPECTED_MODULES=14
+MODULE_COUNT=$($BINARY --test-config -c $CONFIG 2>/dev/null | grep "Number of available modules:" | grep -o '[0-9]\+')
+
+if [ "$MODULE_COUNT" -eq "$EXPECTED_MODULES" ]; then
+    echo "✅ Module loading test: PASSED ($MODULE_COUNT/$EXPECTED_MODULES modules loaded)"
+    ((PASSED++))
+else
+    echo "❌ Module loading test: FAILED ($MODULE_COUNT/$EXPECTED_MODULES modules loaded)"
+    echo "   Expected $EXPECTED_MODULES modules, but only $MODULE_COUNT loaded"
+    echo "   Check for YAML syntax errors in modules directory"
+    ((FAILED++))
+fi
+
 # Check if config exists
 if [ ! -f "$CONFIG" ]; then
     echo "❌ Config not found: $CONFIG"
