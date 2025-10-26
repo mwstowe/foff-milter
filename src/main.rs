@@ -157,32 +157,17 @@ async fn main() {
             println!("Module configuration directory: {}", module_dir);
             println!("Using modular detection system");
 
-            // Count available module files
-            let module_files = [
-                "suspicious-domains.yaml",
-                "brand-impersonation.yaml",
-                "health-spam.yaml",
-                "phishing-scams.yaml",
-                "adult-content.yaml",
-                "ecommerce-scams.yaml",
-                "financial-services.yaml",
-                "technology-scams.yaml",
-                "multi-language.yaml",
-                "performance.yaml",
-                "analytics.yaml",
-                "advanced-heuristics.yaml",
-                "integration.yaml",
-                "advanced-security.yaml",
-                "lead-generation.yaml",
-                "link-analysis.yaml",
-                "unsubscribe-analysis.yaml",
-            ];
-
+            // Count available module files dynamically
             let mut available_modules = 0;
-            for module_file in &module_files {
-                let path = std::path::Path::new(module_dir).join(module_file);
-                if path.exists() {
-                    available_modules += 1;
+            if let Ok(entries) = std::fs::read_dir(module_dir) {
+                for entry in entries {
+                    if let Ok(entry) = entry {
+                        if let Some(extension) = entry.path().extension() {
+                            if extension == "yaml" || extension == "yml" {
+                                available_modules += 1;
+                            }
+                        }
+                    }
                 }
             }
 
