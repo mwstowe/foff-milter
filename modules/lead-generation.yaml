@@ -58,3 +58,19 @@ rules:
           pattern: ".*@(outlook\\.com|gmail\\.com|yahoo\\.com|hotmail\\.com)$"
     score: 40
     description: "Unsolicited SEO and digital marketing spam from free email providers"
+
+  - name: "Bulk email advertising spam"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(advertise.*million.*emails|bulk.*email|mass.*email|email.*marketing|million.*emails).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(advertise.*200.*million.*emails|send.*your.*ad.*million|boom.*of.*sales|million.*emails|bulk.*email.*service|mass.*email.*marketing|email.*blast).*"
+        - type: "BodyPattern"
+          pattern: "(?i).*(lowest.*price|immediate.*boom|watch.*results.*online|exclusive.*online.*panel|we.*do.*all.*work|choose.*areas.*interest|real.*time|no.*extra.*cost|whatsapp.*\\+55|contactar.*gmail).*"
+    score: 70
+    description: "Detects bulk email advertising and mass email marketing spam services"
