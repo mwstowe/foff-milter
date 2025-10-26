@@ -154,22 +154,3 @@ rules:
             pattern: ".*@(sbisec\\.co\\.jp|sbigroup\\.co\\.jp)$"
     score: 60
     description: "Phishing emails impersonating SBI Securities from non-SBI domains"
-  - name: "Milwaukee Tools brand impersonation"
-    enabled: true
-    criteria:
-      type: "And"
-      criteria:
-        - type: "Or"
-          criteria:
-            - type: "SenderPattern"
-              pattern: "(?i).*(milwaukee|tools.*team|your.*tools|tools.*insider|milwaukee.*rewards).*"
-            - type: "SubjectPattern"
-              pattern: "(?i).*(milwaukee|tools|fuel.*up|jack.*link|gift.*inside).*"
-            - type: "BodyPattern"
-              pattern: "(?i).*(milwaukee.*tools|tools.*insider|milwaukee.*rewards|jack.*link|fuel.*up).*"
-        - type: "Not"
-          criteria:
-            - type: "SenderPattern"
-              pattern: ".*@(milwaukeetool\\.com|ttidirect\\.com|milwaukee\\.com)$"
-    score: 50
-    description: "Detects Milwaukee Tools brand impersonation from non-official domains"
