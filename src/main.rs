@@ -173,6 +173,9 @@ async fn main() {
                 "advanced-heuristics.yaml",
                 "integration.yaml",
                 "advanced-security.yaml",
+                "lead-generation.yaml",
+                "link-analysis.yaml",
+                "unsubscribe-analysis.yaml",
             ];
 
             let mut available_modules = 0;
