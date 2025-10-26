@@ -516,16 +516,23 @@ impl Milter {
                                     }
 
                                     // Add analysis headers for spam emails too
-                                    for (analysis_header_name, analysis_header_value) in &headers_to_add {
+                                    for (analysis_header_name, analysis_header_value) in
+                                        &headers_to_add
+                                    {
                                         log::info!(
                                             "Adding analysis header to spam: {analysis_header_name}={analysis_header_value}"
                                         );
                                         if let Err(e) = ctx
                                             .actions
-                                            .add_header(analysis_header_name.clone(), analysis_header_value.clone())
+                                            .add_header(
+                                                analysis_header_name.clone(),
+                                                analysis_header_value.clone(),
+                                            )
                                             .await
                                         {
-                                            log::error!("Failed to add analysis header to spam: {e}");
+                                            log::error!(
+                                                "Failed to add analysis header to spam: {e}"
+                                            );
                                         } else {
                                             log::info!("Successfully added analysis header to spam: {analysis_header_name}={analysis_header_value}");
                                         }
