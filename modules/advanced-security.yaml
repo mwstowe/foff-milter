@@ -26,8 +26,17 @@ rules:
               - type: "HeaderPattern"
                 header: "from"
                 pattern: ".*@.*netsuite\\.com.*"
+              - type: "HeaderPattern"
+                header: "list-id"
+                pattern: ".*"
+              - type: "HeaderPattern"
+                header: "mailing-list"
+                pattern: ".*"
+              - type: "HeaderPattern"
+                header: "precedence"
+                pattern: "list"
     score: 25
-    description: "Emails with no subject or body content, excluding NetSuite business systems"
+    description: "Emails with no subject or body content, excluding NetSuite business systems and legitimate mailing lists"
 
   - name: "Image-Only Emails"
     enabled: true

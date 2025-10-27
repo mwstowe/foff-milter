@@ -162,12 +162,18 @@ rules:
         - type: "Or"
           criteria:
             - type: "SubjectPattern"
-              pattern: "(?i).*(unitedhealthcare|united.*healthcare|uhc.*benefits|healthcare.*benefits|medical.*benefits).*"
+              pattern: "(?i).*(unitedhealthcare|united\\s+healthcare|uhc.*benefits).*"
             - type: "BodyPattern"
-              pattern: "(?i).*(unitedhealthcare|united.*healthcare|uhc|healthcare.*experiences|medical.*benefits|health.*insurance|benefits.*center).*"
+              pattern: "(?i).*(unitedhealthcare|united\\s+healthcare|uhc\\s|benefits.*center|healthcare.*experiences).*"
         - type: "Not"
           criteria:
-            type: "SenderPattern"
-            pattern: ".*@.*(unitedhealthcare\\.com|uhc\\.com|optum\\.com|myuhc\\.com)$"
+            type: "Or"
+            criteria:
+              - type: "SenderPattern"
+                pattern: ".*@.*(unitedhealthcare\\.com|uhc\\.com|optum\\.com|myuhc\\.com)$"
+              - type: "BodyPattern"
+                pattern: "(?i).*(united\\s+states|u\\.s\\.|usps|postal\\s+service).*"
+              - type: "SenderPattern"
+                pattern: ".*@.*(adapthealthmarketplace\\.com|reacthealth\\.com)$"
     score: 60
     description: "UnitedHealthcare brand impersonation from non-UHC domains"
