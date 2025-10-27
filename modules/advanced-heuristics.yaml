@@ -115,5 +115,14 @@ rules:
             type: "HeaderPattern"
             header: "List-Unsubscribe"
             pattern: ".*"
+        - type: "Not"
+          criteria:
+            type: "And"
+            criteria:
+              - type: "SenderPattern"
+                pattern: ".*@docusign\\.net$"
+              - type: "HeaderPattern"
+                header: "Authentication-Results"
+                pattern: "dkim=pass.*docusign\\.net"
     score: 30
-    description: "Action-oriented content without proper unsubscribe headers"
+    description: "Action-oriented content without proper unsubscribe headers (excludes legitimate DocuSign)"
