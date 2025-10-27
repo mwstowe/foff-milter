@@ -27,7 +27,7 @@ rules:
       type: "And"
       criteria:
         - type: "SenderPattern"
-          pattern: ".*@.*(amazon\\.com|microsoft\\.com|apple\\.com|google\\.com|paypal\\.com|ebay\\.com|linkedin\\.com|twitter\\.com|facebook\\.com)$"
+          pattern: ".*@(amazon\\.com|microsoft\\.com|apple\\.com|google\\.com|paypal\\.com|ebay\\.com|linkedin\\.com|twitter\\.com|facebook\\.com)$"
         - type: "Not"
           criteria:
             type: "Or"
@@ -36,7 +36,7 @@ rules:
               - type: "SubjectPattern"
                 pattern: "(?i).*(invoice|billing|urgent|verify|suspend|click|winner|congratulations).*"
     score: -30
-    description: "Fast path for trusted corporate domains without suspicious patterns"
+    description: "Fast path for trusted corporate domains without suspicious patterns (excludes subdomains like onmicrosoft.com)"
 
   - name: "Obvious Spam Early Rejection"
     enabled: true
