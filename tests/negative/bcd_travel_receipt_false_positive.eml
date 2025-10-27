@@ -1,0 +1,68 @@
+Return-Path: <bounce30_302cab6a41224c3a84c426278b298d09@30.bounce.concurcompleat.com>
+Received: from hotel.example.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.example.com (8.18.1/8.18.1) with ESMTPS id 59RJhHcN045715
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <test@example.com>; Mon, 27 Oct 2025 19:43:18 GMT
+	(envelope-from bounce30_302cab6a41224c3a84c426278b298d09@30.bounce.concurcompleat.com)
+Authentication-Results: juliett.example.com;
+	dkim=pass (1024-bit key; unprotected) header.d=bcdtravel.com header.i=@bcdtravel.com header.b=P10tYrxN
+Received: from smtp.concurcompleat.com (smtp.concurcompleat.com [169.145.39.241])
+	by hotel.example.com (8.16.1/8.16.1) with ESMTPS id 59RJhFY9126730
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <test@example.com>; Mon, 27 Oct 2025 14:43:16 -0500
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.example.com 59RJhFY9126730
+Authentication-Results: hotel.example.com;
+	dkim=pass (1024-bit key, unprotected) header.d=bcdtravel.com header.i=@bcdtravel.com header.a=rsa-sha256 header.s=s1_bcd header.b=P10tYrxN
+Received: from phlpr1ccwrk078 (unknown [10.201.15.189])
+	by smtp.concurcompleat.com (Postfix) with ESMTPSA id 213F220F7AC6;
+	Mon, 27 Oct 2025 19:43:10 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 smtp.concurcompleat.com 213F220F7AC6
+Authentication-Results: smtp.concurcompleat.com;
+	dkim=pass (1024-bit key, unprotected) header.d=bcdtravel.com header.i=@bcdtravel.com header.a=rsa-sha256 header.s=s1_bcd header.b=P10tYrxN
+DKIM-Signature: v=1; a=rsa-sha256; d=bcdtravel.com; s=s1_bcd; c=simple/simple;
+	t=1761594190; h=from:subject:date:message-id:to:cc:mime-version;
+	bh=8kh7iv5DzKZ8kfyS0+eSjGdiRAH5CHgaKIY6gsgnzyo=;
+	b=P10tYrxNCKWBX78drs8oLAQu2bW0U5kSY8j2Zc6qtv6Xwcf+8F3KuYKFS2Nhg19b0apZqFBY1kP
+From: amazontravelnoreply@bcdtravel.com
+Date: Mon, 27 Oct 2025 19:43:09 +0000
+Subject: Travel Receipt for SMITH/JOHN A Travel Date 28Oct
+Message-Id: <ADQJO1ZMKRU4.FD6HMN9EN8Y23@phlpr1ccwrk078>
+To: SMITHJ@COMPANY.COM
+Cc: MANAGERD@COMPANY.COM, test@example.com
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="=-aZ2s2lJtysfIeFJJrhqV4A=="
+
+--=-aZ2s2lJtysfIeFJJrhqV4A==
+Content-Type: application/pdf;
+	name="Travel Receipt Communication Attachment - ABC123 - October 28 2025.PDF"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;
+	filename*0="Travel Receipt Communication Attachment - ABC123 - October 28 20";
+	filename*1=25.PDF
+
+JVBERi0xLjQNCiW0tba3DQoxIDAgb2JqDQo8PA0KL1BhZ2VzIDIgMCBSDQovUGFnZUxheW91dCAv
+T25lQ29sdW1uDQovVHlwZSAvQ2F0YWxvZw0KL091dHB1dEludGVudHMgWzw8DQovT3V0cHV0Q29u
+ZGl0aW9uICgpDQovT3V0cHV0Q29uZGl0aW9uSWRlbnRpZmllciAoQ3VzdG9tKQ0KL1JlZ2lzdHJ5
+TmFtZSAoKQ0KL0luZm8gKHNSR0IgSUVDNjE5NjYtMi4xKQ0KL1R5cGUgL091dHB1dEludGVudA0K
+L0Rlc3RPdXRwdXRQcm9maWxlIDMgMCBSDQovUyAvR1RTX1BERkExDQo+Pg0KXQ0KL1ZpZXdlclBy
+ZWZlcmVuY2VzIDQgMCBSDQovUGFnZU1vZGUgL1VzZU5vbmUNCj4+DQoNCmVuZG9iag0KMiAwIG9i
+ag0KPDwNCi9Db3VudCA4DQovS2lkcyBbNSAwIFIgNiAwIFIgNyAwIFIgOCAwIFIgOSAwIFIgMTAg
+MCBSIDExIDAgUiAxMiAwIFJdDQovVHlwZSAvUGFnZXMNCj4+DQoNCmVuZG9iag0KNSAwIG9iag0K
+PDwNCi9SZXNvdXJjZXMgPDwNCi9Qcm9jU2V0IFsvUERGIC9UZXh0IC9JbWFnZUNdDQovWE9iamVj
+dCA8PA0KL1dudlBkZl9sZ2dsYmJpcG1laWxrbGVmb2xmZG1kbWRsZHBnZ29ibSAxMyAwIFINCj4+
+DQoNCj4+DQoNCi9QYXJlbnQgMiAwIFINCi9NZWRpYUJveCBbMC4wMDAwMCAwLjAwMDAwIDYxMi4w
+MDAwMCA3OTIuMDAwMDBdDQovQW5ub3RzIFsxNCAwIFIgMTUgMCBSXQ0KL1R5cGUgL1BhZ2UNCi9D
+b250ZW50cyBbMTYgMCBSXQ0KPj4NCg0KZW5kb2JqDQoxNiAwIG9iag0KPDwNCi9GaWx0ZXIgL0Zs
+YXRlRGVjb2RlDQovTGVuZ3RoIDEzNw0KPj4NCnN0cmVhbQ0KeF5VjDsOwyAQRHsk7rAXCFlh8KfP
+AZLKZSTMR1YW46TI+WMHsOTd5umNZppW4H6g1QFYqO2r+zgYYeEM3pwdDTmgkHonNTRC/51Sneh0
+rnCWO5gNQtk9QYnqKMJF9iirhiluA3Adl+/d+ieFQMbMa3Qzvcj5RN7G7cmuISQT4ZY4e3D2A9A2
+MHMNCmVuZHN0cmVhbQ0KDQplbmRvYmoNCjQgMCBvYmoNCjw8DQovRGlzcGxheURvY1RpdGxlIGZh
+bHNlDQovTm9uRnVsbFNjcmVlbkJlaGF2aW9yIC9Vc2VOb25lDQovRml0V2luZG93IGZhbHNlDQov
+Q2VudGVyV2luZG93IGZhbHNlDQovSGlkZVRvb2xiYXIgZmFsc2UNCi9IaWRlV2luZG93VUkgZmFs
+c2UNCi9IaWRlTWVudWJhciBmYWxzZQ0KPj4NCg0KZW5kb2JqDQoxNyAwIG9iag0KPDwNCi9Qcm9k
+dWNlciAoV2lubm92YXRpdmUgSFRNTCB0byBQREYgQ29udmVydGVyIDE2LjApDQo+Pg0KDQplbmRv
+YmoNCjYgMCBvYmoNCjw8DQovUmVzb3VyY2VzIDw8DQovUHJvY1NldCBbL1BERiAvVGV4dCAvSW1h
+Z2VDXQ0KL1hPYmplY3QgPDwNCi9XbnZQZGZfZW9qZmluaWtmZmFka3BlbW9hZG5vbGNwa2tlZ29j
+YWQgMTggMCBSDQo+Pg0KDQo+Pg0KDQovUGFyZW50IDIgMCBSDQovTWVkaWFCb3ggWzAuMDAwMDAg
+
+--=-aZ2s2lJtysfIeFJJrhqV4A==--
