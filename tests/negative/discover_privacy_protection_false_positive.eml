@@ -1,0 +1,92 @@
+Return-Path: <0100019a26d34ceb-57c829b3-1faf-4d3f-b81a-3128aec0050f-000000@services.discover.com>
+Received: from hotel.example.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.example.com (8.18.1/8.18.1) with ESMTPS id 59RHxebx042657
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <test@example.com>; Mon, 27 Oct 2025 17:59:40 GMT
+	(envelope-from 0100019a26d34ceb-57c829b3-1faf-4d3f-b81a-3128aec0050f-000000@services.discover.com)
+Authentication-Results: juliett.example.com;
+	dkim=pass (1024-bit key; unprotected) header.d=discover.com header.i=@services.discover.com header.b=c2oFU5lM;
+	dkim=pass (1024-bit key; unprotected) header.d=amazonses.com header.i=@amazonses.com header.b=K5dP47ea
+Received: from a41-200.smtp-out.amazonses.com (a41-200.smtp-out.amazonses.com [54.240.41.200])
+	by hotel.example.com (8.16.1/8.16.1) with ESMTPS id 59RHxcnh125228
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO)
+	for <test@example.com>; Mon, 27 Oct 2025 12:59:39 -0500
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.example.com 59RHxcnh125228
+Authentication-Results: hotel.example.com;
+	dkim=pass (1024-bit key, unprotected) header.d=discover.com header.i=@services.discover.com header.a=rsa-sha256 header.s=wjqzd5d5ckuh5fhnarwiv6fu6da4dhkt header.b=c2oFU5lM;
+	dkim=pass (1024-bit key, unprotected) header.d=amazonses.com header.i=@amazonses.com header.a=rsa-sha256 header.s=6gbrjpgwjskckoa6a5zn6fwqkn67xbtw header.b=K5dP47ea
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=wjqzd5d5ckuh5fhnarwiv6fu6da4dhkt; d=discover.com; t=1761587973;
+	i=@services.discover.com;
+	h=Date:From:Reply-To:To:Message-ID:Subject:MIME-Version:Content-Type;
+	bh=58IUceHvdAO7zX2MVqwtEnZMVYUj/vTG0ACUmFEiNpI=;
+	b=c2oFU5lMveVtLm1a4DrQIH+669eLT1ITRb2CS7Hw88+OXYyo8qDCCTatQ9KEQ18E
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=6gbrjpgwjskckoa6a5zn6fwqkn67xbtw; d=amazonses.com; t=1761587973;
+	h=Date:From:Reply-To:To:Message-ID:Subject:MIME-Version:Content-Type:Feedback-ID;
+	bh=58IUceHvdAO7zX2MVqwtEnZMVYUj/vTG0ACUmFEiNpI=;
+	b=K5dP47eaeOZPemiRY8za5lJ6SZ1LRWXYtJF1EZubU7K2Y+Ft1mtEBkbBLRiyIBz/
+Date: Mon, 27 Oct 2025 17:59:33 +0000
+From: Discover Card <discover@services.discover.com>
+Reply-To: dontrply@services.discovercard.com
+To: test@example.com
+Message-ID: <0100019a26d34ceb-57c829b3-1faf-4d3f-b81a-3128aec0050f-000000@email.amazonses.com>
+Subject: Online Privacy Protection: good news, no records found in latest scan
+MIME-Version: 1.0
+Content-Type: multipart/alternative; 
+	boundary="=_Part_16511638_342677152.1761587973213"
+X-FIN-AGR-TYP: CARD
+X-DFS-ENV: PROD
+Feedback-ID: ::1.us-east-1.N/DJeZ23Z6baklRh2jU65mA/q2QfUveOfBeDPzI3ako=:AmazonSES
+
+--=_Part_16511638_342677152.1761587973213
+Content-Type: text/plain;charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+
+Discover
+
+https://portal.discover.com/customersvcs/universalLogin/ac_main?link=/cardmembersvcs/achome/homepage
+Account Center 
+No news is good news, JOHN
+
+We didn't find any online personal info during our most recent scan of ten people-search sites that sell your private data. We'll keep scanning every 90 days and help remove any personal info we find for free.
+
+View Mobile Dashboard
+
+--=_Part_16511638_342677152.1761587973213
+Content-Type: text/html;charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Discover Privacy Protection</title>
+</head>
+<body style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+    <div style="text-align: center; margin-bottom: 30px;">
+        <h1 style="color: #ff6000;">Discover</h1>
+    </div>
+    
+    <div style="background: #f8f8f8; padding: 20px; border-radius: 8px;">
+        <h2 style="color: #333;">No news is good news, JOHN</h2>
+        
+        <p>We didn't find any online personal info during our most recent scan of ten people-search sites that sell your private data.</p>
+        
+        <p>We'll keep scanning every 90 days and help remove any personal info we find for free.</p>
+        
+        <div style="text-align: center; margin: 30px 0;">
+            <a href="https://portal.discover.com/customersvcs/universalLogin/ac_main" 
+               style="background: #ff6000; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; display: inline-block;">
+               View Mobile Dashboard
+            </a>
+        </div>
+    </div>
+    
+    <div style="margin-top: 30px; font-size: 12px; color: #666; text-align: center;">
+        <p>This is an automated message from Discover Card Privacy Protection Service.</p>
+    </div>
+</body>
+</html>
+
+--=_Part_16511638_342677152.1761587973213--
