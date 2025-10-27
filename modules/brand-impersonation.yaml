@@ -25,11 +25,11 @@ rules:
         - type: "Or"
           criteria:
             - type: "SubjectPattern"
-              pattern: "(?i).*(paypal|payment.*pending|account.*suspended|verify.*account|activation.*order).*"
+              pattern: "(?i).*(paypal|payment.*pending|account.*suspended|verify.*account|activation.*order|order.*activated|order.*for.*\\$).*"
             - type: "SenderPattern"
               pattern: "(?i).*paypal.*"
         - type: "SenderPattern"
-          pattern: ".*@.*\\.(edu|ac\\.|k12\\.).*"
+          pattern: ".*@.*\\.(edu|ac\\.|k12\\.|edu\\.).*"
     score: 50
     description: "PayPal phishing from compromised educational domains"
 
