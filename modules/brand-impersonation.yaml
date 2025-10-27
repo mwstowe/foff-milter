@@ -154,3 +154,20 @@ rules:
             pattern: ".*@(sbisec\\.co\\.jp|sbigroup\\.co\\.jp)$"
     score: 60
     description: "Phishing emails impersonating SBI Securities from non-SBI domains"
+
+  - name: "UnitedHealthcare brand impersonation"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(unitedhealthcare|united.*healthcare|uhc.*benefits|healthcare.*benefits|medical.*benefits).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(unitedhealthcare|united.*healthcare|uhc|healthcare.*experiences|medical.*benefits|health.*insurance|benefits.*center).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(unitedhealthcare\\.com|uhc\\.com|optum\\.com|myuhc\\.com)$"
+    score: 60
+    description: "UnitedHealthcare brand impersonation from non-UHC domains"
