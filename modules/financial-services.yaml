@@ -3,7 +3,11 @@ enabled: true
 rules:
   - name: "Get rich quick scams"
     criteria:
-      type: "SubjectPattern"
-      pattern: ".*(get.*rich.*quick|guaranteed.*income|make.*money.*fast|work.*from.*home.*opportunity).*"
-    score: 30
-    description: "Financial scam patterns"
+      type: "Or"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(get.*rich.*quick|guaranteed.*income|make.*money.*fast|work.*from.*home.*opportunity|business.*opportunity!!).*"
+        - type: "BodyPattern"
+          pattern: "(?i).*(profit.*of.*\\$.*USD.*month|need.*your.*assistance.*supplying|raw.*material.*to.*our.*company|general.*business.*consultant|pharmaceutical.*company.*contacting|mutually.*beneficial.*to.*you|income.*generating.*business.*out.*of).*"
+    score: 50
+    description: "Business opportunity and get rich quick scam patterns (specific to scam language)"
