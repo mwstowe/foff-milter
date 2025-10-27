@@ -11,3 +11,17 @@ rules:
           pattern: "(?i).*(profit.*of.*\\$.*USD.*month|need.*your.*assistance.*supplying|raw.*material.*to.*our.*company|general.*business.*consultant|pharmaceutical.*company.*contacting|mutually.*beneficial.*to.*you|income.*generating.*business.*out.*of).*"
     score: 50
     description: "Business opportunity and get rich quick scam patterns (specific to scam language)"
+  - name: "French rental payment redirect scam"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(avis.*de.*rappel.*pour.*bail|paiement.*loyer|rappel.*bail).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(adresse.*interac.*pour.*le.*paiement.*des.*loyers|nouvelle.*adresse.*suivante|paiement.*à.*la.*nouvelle.*adresse).*"
+        - type: "BodyPattern"
+          pattern: "(?i).*(adresse.*bancaire.*interac|question.*de.*sécurité|réponse.*de.*sécurité).*"
+    score: 75
+    description: "French rental payment redirect scam targeting tenants"

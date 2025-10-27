@@ -1,0 +1,111 @@
+Return-Path: <8042654@example-school.org>
+Received: from hotel.example.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by mail.example.com (8.18.1/8.18.1) with ESMTPS id 59RBP4OJ029623
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <recipient@example.com>; Mon, 27 Oct 2025 11:25:04 GMT
+	(envelope-from 8042654@example-school.org)
+Authentication-Results: mail.example.com;
+	dkim=pass (2048-bit key; unprotected) header.d=example-school.org header.i=@example-school.org header.b=S6YOjG8U
+X-Authentication-Warning: mail.example.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.example.com
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	by hotel.example.com (8.16.1/8.16.1) with ESMTPS id 59RBP2PV113648
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=OK)
+	for <recipient@example.com>; Mon, 27 Oct 2025 06:25:03 -0500
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.example.com 59RBP2PV113648
+Authentication-Results: hotel.example.com;
+	dkim=pass (2048-bit key, unprotected) header.d=example-school.org header.i=@example-school.org header.a=rsa-sha256 header.s=example header.b=S6YOjG8U
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-29292eca5dbso60195695ad.0
+        for <recipient@example.com>; Mon, 27 Oct 2025 04:25:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=example-school.org; s=example; t=1761564302; x=1762169102; darn=example.com;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ayyoeMxLZSQSFX2ZP18U+clqxSxBillfSYHstf/36+E=;
+        b=S6YOjG8U+eg1da/yAwP+Ma3O5RR7MjRS8CNp4k69XmPN+d/7DEo2svy+dzor+E4gPd
+         7o/QTEEkpwD0C3B+4r5nLnCp9TjXX3AJ+MPcqtLC1M0n8T9SZhhdDED/KWOh0t5bbK2J
+         EH+oSrk3l1hMsVotLAW8yl5dfM8mMt1svyDwPWqebdHTWcxBI9kLrySxzAKUSJ1giaQk
+         JwctKSFqZEYCTUj6+yzG1F7CH2X0d3JmKADF4LMasUb15r75kZuTH6TtNGAveTqDTS57
+         x82u6uZlQO8EeDC4mdMnqZlHrJJWxuzDd7Af1+ttnNUwgvCLCaiPmiCDEf1JBeez+rmb
+         b53Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761564302; x=1762169102;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ayyoeMxLZSQSFX2ZP18U+clqxSxBillfSYHstf/36+E=;
+        b=TmoFChCSAo8KyFWKsIlif16KfuQZFQW/Us+UedudQsiVoI5g+HWNrQc+tdW5OD1Sw9
+         YlS27uIpHJi3251Od3bh9pAGXcVRQTxiy8V4sWR5Tgf9v7DU+zeuUsLUkCDUwstDJ8EO
+         FbpwLfecRzQ3lx4rA3J1H8lRC3afRxItXI8Oict89fVecqpALQeSb7ngDyqaSVlfoOki
+         9zqbIOMcfIDECUY/SnswybhgOJIh6GHbGUy93RT6wXffZ3xqp5h/qCXeFFGx0c1HcKV1
+         8Fr5kS5jqngdoXl0uLz0svWvppBCdJLY1LG4rWF8skcX0fCacfznMzZLQQgPinNFjVTC
+         vj9w==
+X-Forwarded-Encrypted: i=1; AJvYcCUte1QELU6aIhL9wobyeCgl5HwyobI7lqlsyGE+wok3c18D1wmv6nVAo6K8L+BGzqGtO+Psprw=@example.com
+X-Gm-Message-State: AOJu0YweKriYKqmXTiIo/GOgUX5iyqHaXYWIdjsoUoKKeFwxRFsAD3K+
+	XUo3e03XsCQLy/4yyKS2SE+F2SBEzfOzPlFyzdoGkEwO6nqiZdU1ZETKznAvaGZ1Fmyur2kncRB
+	2K6LY41sllnmR+qDK7hEBbwKrGgjVPXfj5SK/koAEjA==
+X-Gm-Gg: ASbGncu63j9GzQj1cO279dvjM0+ENTWo6uGtk4oU4NctvoSmmIfHVxq3RkQKMDV1+Tg
+	lTPHr3BfagH4ulPtAENdsspRaXcx4pj1eqwuj+GbfsrNYix+J9uzJToQBNrSBNJqzN7HPIKMClO
+	aKJ440ol1pGAzyEJssQbkXSE9u+kKGLedxiLBCOyEXHI5ymMLc+eeBEcUbGlSW3sZuGjz5T08WT
+	4E2EjscLm5x8CXb28IcREZISZ270acjPNlaXhA88UessqoLUfNcMhlmnXFz6Jg=
+X-Google-Smtp-Source: AGHT+IGitwnWjcD9Z3hjSnLHLdezdpAXybcyqU4ZRw11B+3dNftyU5FQ2eDp0nR4xeyl3AODYB/F+FGtExwK0+qiP00=
+X-Received: by 2002:a17:902:ec87:b0:269:82a5:fa19 with SMTP id
+ d9443c01a7336-290cb07cbbbmr431375465ad.45.1761564302099; Mon, 27 Oct 2025
+ 04:25:02 -0700 (PDT)
+MIME-Version: 1.0
+Reply-To: scammer@gmail.com
+From: John Smith <8042654@example-school.org>
+Date: Mon, 27 Oct 2025 12:24:51 +0100
+X-Gm-Features: AWmQ_bllklsUVAOoZO5UkW2OOVk1-_O2Ar1ySrKYEb5nDkso029_g971WMIvI2g
+Message-ID: <CABkruH65YwF__9Ss5Dw=Di=CPvPBkPHLkoRJBK=xHkt30hwe9A@mail.gmail.com>
+Subject: AVIS DE RAPPEL POUR BAIL - NOVEMBRE 2025
+To: undisclosed-recipients:;
+Content-Type: multipart/alternative; boundary="00000000000079df71064222261e"
+
+--00000000000079df71064222261e
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Bonjour,
+
+Nous vous informons que depuis le 25 / 10 /2025, notre adresse Interac pour
+le paiement des loyers a =C3=A9t=C3=A9 modifi=C3=A9e. L=E2=80=99ancienne ad=
+resse n=E2=80=99est plus
+active, suite aux incidents de r=C3=A9ception constat=C3=A9s.
+
+Afin d=E2=80=99=C3=A9viter tout retard de paiement ou litige =C3=A9ventuel,=
+ merci de bien
+vouloir mettre =C3=A0 jour d=C3=A8s maintenant vos informations et d=E2=80=
+=99effectuer votre
+paiement =C3=A0 la nouvelle adresse suivante :
+
+
+
+*Adresse bancaire Interac : scammer670@gmail.com
+<scammer670@gmail.com>Question de s=C3=A9curit=C3=A9 : EauR=C3=A9ponse=
+ de s=C3=A9curit=C3=A9 :
+Terre*
+
+Nous vous rappelons que le paiement est exig=C3=A9 au plus tard le 5 Novemb=
+re
+2025 conform=C3=A9ment =C3=A0 votre contrat de location.
+
+*Service comptabilit=C3=A9*
+
+--00000000000079df71064222261e
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Bonjour,<br><br>Nous vous informons que depuis le 25 / 10 =
+/2025, notre adresse Interac pour le paiement des loyers a =C3=A9t=C3=A9 mo=
+difi=C3=A9e. L=E2=80=99ancienne adresse n=E2=80=99est plus active, suite au=
+x incidents de r=C3=A9ception constat=C3=A9s.<br><br>Afin d=E2=80=99=C3=A9v=
+iter tout retard de paiement ou litige =C3=A9ventuel, merci de bien vouloir=
+ mettre =C3=A0 jour d=C3=A8s maintenant vos informations et d=E2=80=99effec=
+tuer votre paiement =C3=A0 la nouvelle adresse suivante :<br><br><b>Adresse=
+ bancaire Interac : <font color=3D"#0000ff"><u><a href=3D"mailto:scammer670=
+@gmail.com">scammer670@gmail.com</a></u></font><br>Question de s=
+=C3=A9curit=C3=A9 : Eau<br>R=C3=A9ponse de s=C3=A9curit=C3=A9 : Terre</b><b=
+r><br>Nous vous rappelons que le paiement est exig=C3=A9 au plus tard le 5 =
+Novembre 2025 conform=C3=A9ment =C3=A0 votre contrat de location.<br><br><b=
+>Service comptabilit=C3=A9</b></div>
+
+--00000000000079df71064222261e--
