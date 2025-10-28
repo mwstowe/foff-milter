@@ -39,10 +39,21 @@ rules:
     description: "Generic spam keyword detection"
   - name: "Sweepstakes and contest fraud"
     criteria:
-      type: "SubjectPattern"
-      pattern: "(?i).*(sweepstakes|you.*won|congratulations.*won|exclusive.*entry|qualify.*sweepstakes).*"
+      type: "And"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(sweepstakes|you.*won|congratulations.*won|exclusive.*entry|qualify.*sweepstakes).*"
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "SubjectPattern"
+                pattern: "(?i).*(won't.*wait|will.*not.*wait|don't.*wait|black.*friday|cyber.*monday|sale|discount|off.*everything|% off).*"
+              - type: "HeaderPattern"
+                header: "List-Unsubscribe"
+                pattern: ".*"
     score: 50
-    description: "Fraudulent sweepstakes and contest notifications"
+    description: "Fraudulent sweepstakes and contest notifications, excluding legitimate promotional emails"
   - name: "Health rewards and insurance spam"
     enabled: true
     criteria:
