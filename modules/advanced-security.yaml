@@ -97,6 +97,16 @@ rules:
               - type: "HeaderPattern"
                 header: "from"
                 pattern: ".*@.*netsuite\\.com.*"
+              - type: "And"
+                criteria:
+                  - type: "HeaderPattern"
+                    header: "From"
+                    pattern: ".*@.*becu\\.org.*"
+                  - type: "HeaderPattern"
+                    header: "DKIM-Signature"
+                    pattern: ".*d=.*becu\\.org.*"
+                  - type: "SubjectPattern"
+                    pattern: "(?i).*(estatement|statement.*notification).*"
     score: 35
     description: "Detects suspicious attachment filenames with random characters, excluding NetSuite business systems"
 
