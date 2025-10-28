@@ -1,0 +1,40 @@
+Return-Path: <test+caf_=test=example.com@gmail.com>
+Received: from hotel.example.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.example.com (8.18.1/8.18.1) with ESMTPS id 59SGT6Gg084704
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <test@example.com>; Tue, 28 Oct 2025 16:29:06 GMT
+	(envelope-from test+caf_=test=example.com@gmail.com)
+Authentication-Results: juliett.example.com;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b=S+WzPOmz
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	by hotel.example.com (8.16.1/8.16.1) with ESMTPS id 59SGT4u4148138
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=OK)
+	for <test@example.com>; Tue, 28 Oct 2025 11:29:05 -0500
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.example.com 59SGT4u4148138
+Authentication-Results: hotel.example.com;
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=S+WzPOmz
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@gmail.com header.s=20230601 header.b=S+WzPOmz;
+       spf=pass (google.com: domain of friend234@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=friend234@gmail.com;
+       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com;
+       dara=pass header.i=@gmail.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761668941; x=1762273741; dara=google.com;
+        h=to:date:message-id:subject:mime-version:content-transfer-encoding
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Eg4HGvOJ2jVWJFic7bpmwZwrOdgNz60vJ3/L9R0zoog=;
+        b=S+WzPOmz2xZ2AByqo9ZnXGE1Ah6zcrN/bescx2of2xOTfuFtf0uNDLZFJbMOw80xBR
+From: Linda Smith <friend234@gmail.com>
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 13.4 \(3608.120.23.2.7\))
+Subject: Are you flying!
+Message-Id: <9E87F10C-EE35-470E-AA61-7EE8625F5AE3@gmail.com>
+Date: Tue, 28 Oct 2025 12:28:59 -0400
+To: John Doe <test@gmail.com>
+X-Mailer: Apple Mail (2.3608.120.23.2.7)
+Content-Transfer-Encoding: 8bit
+
+I don't know if passengers can receive messages, but I'm looking for you any time now.
+
+Stay safe.  Mom
