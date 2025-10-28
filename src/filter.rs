@@ -2563,6 +2563,39 @@ impl FilterEngine {
                                 let s_domain = s_domain.to_lowercase();
                                 let r_domain = r_domain.to_lowercase();
 
+                                // Extract receiving server domains from Received headers to exclude them
+                                let mut receiving_domains = std::collections::HashSet::new();
+                                let received_regex = regex::Regex::new(r"by\s+([^\s;]+)").unwrap();
+                                for (header_name, header_value) in &context.headers {
+                                    if header_name.to_lowercase() == "received" {
+                                        // Parse "by hostname" from Received headers
+                                        if let Some(by_match) = received_regex.captures(header_value) {
+                                            if let Some(hostname) = by_match.get(1) {
+                                                let hostname = hostname.as_str().to_lowercase();
+                                                // Extract domain from hostname
+                                                if let Some(domain_start) = hostname.find('.') {
+                                                    let domain = &hostname[domain_start + 1..];
+                                                    receiving_domains.insert(domain.to_string());
+                                                }
+                                                receiving_domains.insert(hostname);
+                                            }
+                                        }
+                                    }
+                                }
+
+                                // Check if either domain is a receiving server domain
+                                let is_receiving_domain = |domain: &str| {
+                                    receiving_domains.iter().any(|rd| {
+                                        domain == rd || domain.ends_with(&format!(".{}", rd))
+                                    })
+                                };
+
+                                if is_receiving_domain(&s_domain) || is_receiving_domain(&r_domain)
+                                {
+                                    log::debug!("Skipping mismatch check - domain is receiving server: sender '{s_domain}' vs reply-to '{r_domain}'");
+                                    return false;
+                                }
+
                                 if s_domain != r_domain {
                                     if allow_subs {
                                         // Check if one is a subdomain of the other
