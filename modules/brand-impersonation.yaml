@@ -147,6 +147,31 @@ rules:
     score: 50
     description: "WeTransfer brand impersonation from non-WeTransfer domains"
 
+  - name: "ShareFile document sharing phishing"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(document.*approval|shared.*file|secure.*file|new.*document|file.*shared|document.*review|shared.*document).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(sharefile|shared.*file|secure.*file|document.*approval|review.*approval|authorised.*colleagues|visible.*only.*you).*"
+            - type: "SenderPattern"
+              pattern: "(?i).*(sharefile|portal|document|file.*share|hr.*communication|group.*portal).*"
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "SenderPattern"
+                pattern: ".*@(sharefile\\.com|.*\\.sharefile\\.com|citrix\\.com|.*\\.citrix\\.com)$"
+              - type: "HeaderPattern"
+                header: "From"
+                pattern: ".*@(sharefile\\.com|.*\\.sharefile\\.com|citrix\\.com|.*\\.citrix\\.com).*"
+    score: 60
+    description: "ShareFile and document sharing phishing from non-ShareFile domains"
+
   - name: "SBI Securities phishing"
     criteria:
       type: "And"
