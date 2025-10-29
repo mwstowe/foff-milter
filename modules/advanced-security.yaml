@@ -97,6 +97,11 @@ rules:
               - type: "HeaderPattern"
                 header: "from"
                 pattern: ".*@.*netsuite\\.com.*"
+              - type: "SenderPattern"
+                pattern: ".*@.*becu\\.org$"
+              - type: "HeaderPattern"
+                header: "from"
+                pattern: ".*@.*becu\\.org.*"
               - type: "And"
                 criteria:
                   - type: "HeaderPattern"
