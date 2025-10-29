@@ -47,7 +47,7 @@ rules:
           criteria:
             type: "SenderPattern"
             pattern: ".*@(aaa\\.com|csaa\\.com)$"
-    score: 30
+    score: 50
     description: "AAA brand impersonation from non-AAA domains"
 
   - name: "AAA brand impersonation with auth failure"
@@ -73,14 +73,11 @@ rules:
               header: "Authentication-Results"
               pattern: "spf=fail"
             - type: "HeaderPattern"
-              header: "Authentication-Results"
-              pattern: "dkim=none.*dmarc=none"
-            - type: "HeaderPattern"
               header: "ARC-Authentication-Results"
               pattern: "spf=fail"
             - type: "HeaderPattern"
               header: "ARC-Authentication-Results"
-              pattern: "dkim=none.*dmarc=none"
+              pattern: "dmarc=none"
     score: 60
     description: "AAA brand impersonation with failed authentication"
 
