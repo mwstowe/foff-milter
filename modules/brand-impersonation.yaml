@@ -81,6 +81,24 @@ rules:
     score: 60
     description: "AAA brand impersonation with failed authentication"
 
+  - name: "Schwab brand impersonation"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(schwab.*alert|charles.*schwab|schwab.*security|schwab.*account).*"
+            - type: "SenderPattern"
+              pattern: "(?i).*schwab.*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@(schwab\\.com|charlesschwab\\.com)$"
+    score: 60
+    description: "Schwab brand impersonation from non-Schwab domains"
+
   - name: "Return-Path and From domain mismatch"
     enabled: true
     criteria:
