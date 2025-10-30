@@ -117,6 +117,24 @@ rules:
     score: 55
     description: "O'Reilly Auto Parts brand impersonation from non-O'Reilly domains"
 
+  - name: "Oral-B brand impersonation"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(oral.*b.*bundle|free.*oral.*b|oral.*b.*premium|oral.*b.*toothbrush).*"
+            - type: "SenderPattern"
+              pattern: "(?i).*oral.*b.*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@(oralb\\.com|pg\\.com|proctergamble\\.com)$"
+    score: 55
+    description: "Oral-B brand impersonation from non-Oral-B domains"
+
   - name: "Return-Path and From domain mismatch"
     enabled: true
     criteria:
