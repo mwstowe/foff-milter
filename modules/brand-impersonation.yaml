@@ -99,6 +99,24 @@ rules:
     score: 60
     description: "Schwab brand impersonation from non-Schwab domains"
 
+  - name: "O'Reilly Auto Parts brand impersonation"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(car.*upgrade.*ready|auto.*gift.*o'reilly|o'reilly.*auto.*parts).*"
+            - type: "SenderPattern"
+              pattern: "(?i).*o'reilly.*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@(oreillyauto\\.com|oreilly\\.com)$"
+    score: 55
+    description: "O'Reilly Auto Parts brand impersonation from non-O'Reilly domains"
+
   - name: "Return-Path and From domain mismatch"
     enabled: true
     criteria:

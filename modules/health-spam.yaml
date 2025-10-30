@@ -119,6 +119,18 @@ rules:
           pattern: "(?i).*(jaw-dropping.*discovery|scientists.*studying|microscope.*findings|researchers.*believe|stimulating.*organ|resurrect.*minute|controversial.*doc.*revealed|technique.*tutorial|viral.*countless|corrupt.*pecker.*industry|natural.*secret.*disappear|watch.*vid.*gone).*"
     score: 75
     description: "Detects erectile dysfunction and sexual health spam with euphemisms and medical claims"
+  - name: "Immune system misinformation"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "BodyPattern"
+          pattern: "(?i).*(immune.*system.*weakened|big.*pharma.*secret|medical.*establishment.*lying|hidden.*truth.*immune|300%.*stronger.*immune|never.*get.*sick.*again|reverse.*aging.*cellular|ancient.*immune.*secret|doctors.*ignore.*patent|boost.*energy.*like.*20|eliminate.*chronic.*inflammation).*"
+        - type: "SubjectPattern"
+          pattern: "(?i).*(hidden.*truth.*immune|immune.*system.*secret|medical.*establishment|big.*pharma.*lying).*"
+    score: 60
+    description: "Immune system and medical misinformation spam"
+
   - name: "Neuropathy and nerve pain medical misinformation"
     enabled: true
     criteria:
