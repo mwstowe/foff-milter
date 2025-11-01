@@ -503,11 +503,18 @@ async fn main() {
                     // Child process continues
                     log::info!("Daemon child process started");
                     
-                    // Close inherited file descriptors to avoid "Bad file descriptor" errors
-                    unsafe {
-                        libc::close(0); // stdin
-                        libc::close(1); // stdout  
-                        libc::close(2); // stderr
+                    // Redirect file descriptors to /dev/null instead of closing
+                    use std::fs::OpenOptions;
+                    use std::os::unix::io::AsRawFd;
+                    
+                    if let Ok(dev_null) = OpenOptions::new().read(true).write(true).open("/dev/null") {
+                        let null_fd = dev_null.as_raw_fd();
+                        unsafe {
+                            libc::dup2(null_fd, 0); // stdin -> /dev/null
+                            libc::dup2(null_fd, 1); // stdout -> /dev/null
+                            libc::dup2(null_fd, 2); // stderr -> /dev/null
+                        }
+                        std::mem::forget(dev_null); // Keep fd open
                     }
                 }
                 _ => {
