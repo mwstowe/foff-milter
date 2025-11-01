@@ -571,14 +571,23 @@ async fn main() {
 
             // Write PID file for FreeBSD rc system
             let pid = unsafe { libc::getpid() };
-            if let Err(e) = std::fs::write("/var/run/foff-milter.pid", pid.to_string()) {
+            let pid_file_path = "/var/run/foff-milter/foff-milter.pid";
+            
+            // Ensure directory exists
+            if let Some(parent) = std::path::Path::new(pid_file_path).parent() {
+                if let Err(e) = std::fs::create_dir_all(parent) {
+                    log::warn!("Failed to create PID directory: {e}");
+                }
+            }
+            
+            if let Err(e) = std::fs::write(pid_file_path, pid.to_string()) {
                 log::warn!("Failed to write PID file: {e}");
             } else {
-                log::info!("PID file written: /var/run/foff-milter.pid ({pid})");
+                log::info!("PID file written: {pid_file_path} ({pid})");
             }
 
             // Set up signal handler to clean up PID file on exit
-            let pid_file_path = "/var/run/foff-milter.pid";
+            let pid_file_path = "/var/run/foff-milter/foff-milter.pid";
             ctrlc::set_handler(move || {
                 log::info!("Received shutdown signal, cleaning up...");
                 if std::path::Path::new(pid_file_path).exists() {
