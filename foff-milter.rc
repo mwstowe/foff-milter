@@ -22,11 +22,11 @@ load_rc_config $name
 : ${foff_milter_pidfile:="/var/run/foff-milter/foff-milter.pid"}
 
 command="/usr/local/bin/foff-milter"
-command_args="-d -c ${foff_milter_config}"
+command_args="-c ${foff_milter_config}"
 pidfile="${foff_milter_pidfile}"
 required_files="${foff_milter_config}"
 
-# Run as daemon in background
+# FreeBSD rc.d handles backgrounding - no daemon flag needed
 foff_milter_user="${foff_milter_user}"
 foff_milter_group="${foff_milter_group}"
 
