@@ -83,6 +83,13 @@ async fn main() {
                 .action(clap::ArgAction::SetTrue),
         )
         .arg(
+            Arg::new("daemon")
+                .short('d')
+                .long("daemon")
+                .help("Run as a daemon (background process)")
+                .action(clap::ArgAction::SetTrue),
+        )
+        .arg(
             Arg::new("test-email")
                 .long("test-email")
                 .value_name("FILE")
@@ -478,6 +485,19 @@ async fn main() {
     }
 
     let demo_mode = matches.get_flag("demo");
+    let daemon_mode = matches.get_flag("daemon");
+
+    // Minimal daemon mode for FreeBSD
+    if daemon_mode && !demo_mode {
+        #[cfg(unix)]
+        {
+            match unsafe { libc::fork() } {
+                -1 => std::process::exit(1),
+                0 => {}, // Child continues
+                _ => std::process::exit(0), // Parent exits
+            }
+        }
+    }
 
     log::info!("Starting FOFF milter...");
 

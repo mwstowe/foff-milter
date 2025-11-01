@@ -21,8 +21,8 @@ load_rc_config $name
 : ${foff_milter_group:="foff-milter"}
 : ${foff_milter_pidfile:="/var/run/foff-milter.pid"}
 
-command="/usr/local/bin/foff-milter"
-command_args="-c ${foff_milter_config}"
+command="/usr/sbin/daemon"
+command_args="-P ${foff_milter_pidfile} -f /usr/local/bin/foff-milter -c ${foff_milter_config}"
 pidfile="${foff_milter_pidfile}"
 required_files="${foff_milter_config}"
 
