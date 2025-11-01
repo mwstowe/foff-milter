@@ -487,33 +487,25 @@ async fn main() {
     let demo_mode = matches.get_flag("demo");
     let daemon_mode = matches.get_flag("daemon");
 
-    // Handle daemon mode (FreeBSD/Unix)
+    // Handle daemon mode (FreeBSD/Unix) - Simple fork approach
     if daemon_mode && !demo_mode {
         #[cfg(unix)]
         {
-            use daemonize::Daemonize;
-
             log::info!("Starting FOFF milter in daemon mode...");
 
-            // Ensure PID directory exists
-            let pid_file_path = "/var/run/foff-milter/foff-milter.pid";
-            if let Some(parent) = std::path::Path::new(pid_file_path).parent() {
-                if let Err(e) = std::fs::create_dir_all(parent) {
-                    log::warn!("Failed to create PID directory: {e}");
-                }
-            }
-
-            let daemonize = Daemonize::new()
-                .pid_file(pid_file_path)
-                .chown_pid_file(true)
-                .working_directory(".")  // Keep current working directory
-                .umask(0o027);
-
-            match daemonize.start() {
-                Ok(_) => log::info!("Daemon started successfully"),
-                Err(e) => {
-                    log::error!("Failed to daemonize: {}", e);
+            // Simple fork - let FreeBSD rc.d handle the rest
+            match unsafe { libc::fork() } {
+                -1 => {
+                    log::error!("Failed to fork process");
                     std::process::exit(1);
+                }
+                0 => {
+                    // Child process continues
+                    log::info!("Daemon child process started");
+                }
+                _ => {
+                    // Parent process exits immediately
+                    std::process::exit(0);
                 }
             }
         }
