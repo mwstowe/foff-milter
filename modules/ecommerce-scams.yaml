@@ -24,22 +24,17 @@ rules:
 
   - name: "Beauty and cosmetic product spam"
     criteria:
-      type: "And"
+      type: "Or"
       criteria:
-        - type: "BodyPattern"
-          pattern: "(?i).*(no.*mascara.*trick|thick.*luscious.*lashes|fake.*lashes.*extensions|curly.*beautiful.*lashes|eyelash.*growth.*serum|miracle.*beauty.*secret).*"
-        - type: "Or"
+        - type: "And"
           criteria:
             - type: "BodyPattern"
-              pattern: "(?i).*(before.*and.*after|amazing.*results|doctors.*hate.*this|celebrities.*use|anti.*aging.*secret).*"
-            - type: "SubjectPattern"
-              pattern: "(?i).*(beauty.*secret|lash.*trick|mascara.*alternative|eyelash.*growth).*"
-        - type: "Not"
-          criteria:
-            type: "HeaderPattern"
-            header: "Authentication-Results"
-            pattern: "dkim=pass.*dmarc=pass"
-    score: 40
+              pattern: "(?i).*(no.*mascara.*trick|thick.*luscious.*lashes|fake.*lashes.*extensions|curly.*beautiful.*lashes|eyelash.*growth.*serum|miracle.*beauty.*secret).*"
+            - type: "SenderPattern"
+              pattern: ".*@.*\\.(shop|online|store)$"
+        - type: "SubjectPattern"
+          pattern: "(?i).*(beauty.*secret|lash.*trick|mascara.*alternative|eyelash.*growth|thick.*luscious.*lashes).*"
+    score: 50
     description: "Beauty and cosmetic product promotion spam"
   - name: "Free product scams"
     enabled: true

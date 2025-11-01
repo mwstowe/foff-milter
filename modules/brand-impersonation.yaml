@@ -55,12 +55,13 @@ rules:
         - "(?i).*(aaa.*car.*kit|free.*car.*emergency|aaa.*emergency|free.*safety.*kit|aaa.*roadside|aaa.*membership|aaa.*assistance|aaa.*covered).*"
         - "(?i).*(car.*upgrade.*ready|auto.*gift.*o'reilly|o'reilly.*auto.*parts).*"
       sender_patterns:
-        - "(?i).*aaa.*"
+        - "(?i).*(\\bAAA\\b|AAA.*auto|AAA.*roadside|AAA.*membership).*"
         - "(?i).*o'reilly.*"
       legitimate_domains:
         - "aaa.com"
         - "csaa.com"
         - "oreillyauto.com"
+        - "netatmo.com"
     score: 55
     description: "AAA and automotive services impersonation"
 
@@ -111,7 +112,7 @@ rules:
       subject_patterns:
         - "(?i).*(aaa.*car.*kit|free.*car.*emergency|aaa.*emergency|free.*safety.*kit|aaa.*roadside|aaa.*assistance|aaa.*covered).*"
       sender_patterns:
-        - "(?i).*aaa.*"
+        - "(?i).*(\\bAAA\\b|AAA.*auto|AAA.*roadside|AAA.*membership).*"
       legitimate_domains:
         - "aaa.com"
         - "csaa.com"

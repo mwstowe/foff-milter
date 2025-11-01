@@ -152,23 +152,29 @@ rules:
           pattern: "(?i).*(university|warns|permanent|damage|destroy|fibers|numbness|tingling|burning|sensations|avoid|costs|natural|solution).*"
     score: 65
     description: "Detects neuropathy and nerve pain medical misinformation targeting prescription medications"
+  - name: "Toenail fungus and foot health spam"
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(toenail.*fungus|nail.*fungus|foot.*fungus|soak.*feet|vanish.*toenail).*"
+        - type: "BodyPattern"
+          pattern: "(?i).*(toenail.*fungus|nail.*fungus|foot.*fungus|fungal.*infection|soak.*feet.*bowl|vanish.*fungus|eliminate.*fungus).*"
+    score: 55
+    description: "Toenail fungus and foot health product spam"
   - name: "Weight loss and diet misinformation"
     enabled: true
     criteria:
-      type: "And"
+      type: "Or"
       criteria:
-        - type: "Or"
+        - type: "And"
           criteria:
             - type: "SubjectPattern"
-              pattern: "(?i).*(soda.*water.*diet|flushes.*out.*fat|lose.*weight|diet|fat.*burning|weight.*loss|coffee.*routine|transform.*coffee).*"
-            - type: "BodyPattern"
-              pattern: "(?i).*(lose.*weight|fat.*burning|soda.*powder|flush.*out.*fat|720%.*more.*fat|melt.*stubborn.*belly.*fat|coffee.*hack|viral.*tiktok|31.*pounds.*6.*weeks|lost.*31.*pounds|melts.*31.*lbs|stubborn.*fat|University.*College.*London|researchers.*discovered).*"
-        - type: "Or"
-          criteria:
-            - type: "BodyPattern"
-              pattern: "(?i).*(science.*has.*proven|tablespoons.*of.*this|fat-burning.*soda.*powder|flush.*out.*up.*to.*720%|without.*following.*any|particular.*diet.*exercise|thousands.*of.*people.*losing|hard.*to.*believe|shocking.*proof|went.*viral.*tiktok|using.*this.*trick|melts.*stubborn|coffee.*hack).*"
-            - type: "SubjectPattern"
-              pattern: "(?i).*(1.*glass|flushes.*fat|soda.*water|coffee.*routine|transform.*coffee).*"
+              pattern: "(?i).*(soda.*water.*diet|flushes.*out.*fat|lose.*weight|diet|fat.*burning|weight.*loss|coffee.*routine|transform.*coffee|melt.*flab|shower.*trick).*"
+            - type: "SenderPattern"
+              pattern: ".*@.*\\.(shop|online|store)$"
+        - type: "BodyPattern"
+          pattern: "(?i).*(melts.*fat|fat.*burning|soda.*powder|flush.*out.*fat|720%.*more.*fat|melt.*stubborn.*belly.*fat|coffee.*hack|viral.*tiktok|31.*pounds.*6.*weeks|lost.*31.*pounds|melts.*31.*lbs|stubborn.*fat|University.*College.*London|researchers.*discovered|shower.*trick|burns.*fat.*faster).*"
     score: 70
     description: "Detects weight loss and diet misinformation with fake scientific claims and unrealistic promises"
   - name: "Dental health misinformation"
