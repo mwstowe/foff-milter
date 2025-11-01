@@ -535,11 +535,12 @@ async fn main() {
                 }
             }
 
-            // Change working directory to root to avoid keeping any directory in use
-            let root_path = std::ffi::CString::new("/").unwrap();
-            if unsafe { libc::chdir(root_path.as_ptr()) } == -1 {
-                log::warn!("Failed to change working directory to /");
-            }
+            // Don't change working directory to root - stay in current directory
+            // This allows relative paths in config to work properly
+            // let root_path = std::ffi::CString::new("/").unwrap();
+            // if unsafe { libc::chdir(root_path.as_ptr()) } == -1 {
+            //     log::warn!("Failed to change working directory to /");
+            // }
 
             // Set file creation mask
             unsafe {
