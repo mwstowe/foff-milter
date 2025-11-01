@@ -128,8 +128,12 @@ rules:
     criteria:
       type: "And"
       criteria:
-        - type: "SenderPattern"
-          pattern: ".*@.*\\.onmicrosoft\\.com$"
+        - type: "EmailInfrastructure"
+          infrastructure_type: "compromised"
+          tld_patterns:
+            - ".*@.*\\.onmicrosoft\\.com$"
+          check_sender: true
+          require_auth_failure: false
         - type: "Or"
           criteria:
             - type: "HeaderPattern"

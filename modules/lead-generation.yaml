@@ -17,7 +17,13 @@ rules:
               pattern: "(?i).*(screenshot|send over|reply.*ok|simply reply|would you like me to).*"
             - type: "BodyPattern"
               pattern: "(?i).*(greetings of the day|noticed.*errors|may need your attention).*"
-        - type: "FreeEmailProvider"
+        - type: "EmailInfrastructure"
+          infrastructure_type: "free_email"
+          domains:
+            - "gmail.com"
+            - "yahoo.com"
+            - "hotmail.com"
+            - "outlook.com"
           check_sender: true
     score: 50
     description: "Unsolicited website audit and lead generation spam from free email providers"

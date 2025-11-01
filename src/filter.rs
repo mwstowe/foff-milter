@@ -808,6 +808,19 @@ impl FilterEngine {
                     }
                 }
             }
+            Criteria::EmailInfrastructure { tld_patterns, .. } => {
+                // Compile TLD patterns for infrastructure detection
+                if let Some(patterns) = tld_patterns {
+                    for pattern in patterns {
+                        if !self.compiled_patterns.contains_key(pattern) {
+                            let regex = Regex::new(pattern).map_err(|e| {
+                                anyhow::anyhow!("Invalid regex pattern '{}': {}", pattern, e)
+                            })?;
+                            self.compiled_patterns.insert(pattern.clone(), regex);
+                        }
+                    }
+                }
+            }
             Criteria::FreeEmailProvider { .. } => {
                 // No regex patterns to compile for free email provider detection
                 // Uses domain list comparison instead
@@ -4510,6 +4523,95 @@ impl FilterEngine {
                     
                     if is_legitimate {
                         return false; // Legitimate sender
+                    }
+                    
+                    // Check authentication failure if required
+                    if require_auth_failure.unwrap_or(false) {
+                        let auth_failed = context.headers.get("authentication-results")
+                            .map(|auth| auth.contains("spf=fail") || auth.contains("dkim=fail") || auth.contains("dmarc=fail"))
+                            .unwrap_or(false);
+                        if !auth_failed {
+                            return false;
+                        }
+                    }
+                    
+                    true
+                }
+                Criteria::EmailInfrastructure {
+                    infrastructure_type: _,
+                    domains,
+                    tld_patterns,
+                    check_sender,
+                    check_reply_to,
+                    require_auth_failure,
+                    exclude_legitimate: _,
+                } => {
+                    let mut infrastructure_detected = false;
+                    
+                    // Check sender domain if enabled
+                    if check_sender.unwrap_or(true) {
+                        if let Some(sender) = &context.sender {
+                            if let Some(sender_domain) = sender.split('@').nth(1) {
+                                // Check specific domains
+                                if let Some(domain_list) = domains {
+                                    for domain in domain_list {
+                                        if sender_domain.eq_ignore_ascii_case(domain) {
+                                            infrastructure_detected = true;
+                                            break;
+                                        }
+                                    }
+                                }
+                                
+                                // Check TLD patterns
+                                if !infrastructure_detected {
+                                    if let Some(patterns) = tld_patterns {
+                                        for pattern in patterns {
+                                            if let Some(regex) = self.compiled_patterns.get(pattern) {
+                                                if regex.is_match(sender) {
+                                                    infrastructure_detected = true;
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                    // Check reply-to domain if enabled
+                    if !infrastructure_detected && check_reply_to.unwrap_or(false) {
+                        if let Some(reply_to) = context.headers.get("reply-to") {
+                            if let Some(reply_domain) = reply_to.split('@').nth(1) {
+                                // Check specific domains
+                                if let Some(domain_list) = domains {
+                                    for domain in domain_list {
+                                        if reply_domain.eq_ignore_ascii_case(domain) {
+                                            infrastructure_detected = true;
+                                            break;
+                                        }
+                                    }
+                                }
+                                
+                                // Check TLD patterns
+                                if !infrastructure_detected {
+                                    if let Some(patterns) = tld_patterns {
+                                        for pattern in patterns {
+                                            if let Some(regex) = self.compiled_patterns.get(pattern) {
+                                                if regex.is_match(reply_to) {
+                                                    infrastructure_detected = true;
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                    if !infrastructure_detected {
+                        return false;
                     }
                     
                     // Check authentication failure if required

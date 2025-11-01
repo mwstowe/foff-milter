@@ -22,7 +22,7 @@ fi
 
 # Test 1: Module Loading Test
 echo "🔧 Testing module loading..."
-EXPECTED_MODULES=17
+EXPECTED_MODULES=18
 MODULE_COUNT=$($BINARY --test-config -c $CONFIG 2>/dev/null | grep "Number of available modules:" | grep -o '[0-9]\+')
 
 if [ "$MODULE_COUNT" -eq "$EXPECTED_MODULES" ]; then

@@ -388,6 +388,16 @@ pub enum Criteria {
         require_auth_failure: Option<bool>,    // Require authentication failure (default: false)
         suspicious_tlds: Option<Vec<String>>,  // Specific suspicious TLDs for this brand
     },
+    EmailInfrastructure {
+        // Centralized email infrastructure detection and classification
+        infrastructure_type: String,           // Type: "free_email", "educational", "compromised", "business"
+        domains: Option<Vec<String>>,          // Specific domains to check
+        tld_patterns: Option<Vec<String>>,     // TLD patterns (e.g., ".edu", ".onmicrosoft.com")
+        check_sender: Option<bool>,            // Check sender domain (default: true)
+        check_reply_to: Option<bool>,          // Check reply-to domain (default: false)
+        require_auth_failure: Option<bool>,    // Require authentication failure (default: false)
+        exclude_legitimate: Option<bool>,      // Exclude legitimate business use (default: true)
+    },
     FreeEmailProvider {
         // Detects emails from free email providers (gmail, outlook, etc.)
         // Uses centralized domain classification from TOML config
