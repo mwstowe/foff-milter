@@ -26,9 +26,20 @@ command_args="-c ${foff_milter_config}"
 pidfile="${foff_milter_pidfile}"
 required_files="${foff_milter_config}"
 
-# FreeBSD rc.d handles backgrounding - no daemon flag needed
+# Tell FreeBSD rc.d to handle daemonization
+command_interpreter=""
+procname="${command}"
+start_cmd="foff_milter_start"
+
+# FreeBSD rc.d handles backgrounding
 foff_milter_user="${foff_milter_user}"
 foff_milter_group="${foff_milter_group}"
+
+foff_milter_start()
+{
+    echo "Starting ${name}."
+    /usr/sbin/daemon -P ${pidfile} -r -f -u ${foff_milter_user} ${command} ${command_args}
+}
 
 start_precmd="foff_milter_prestart"
 reload_cmd="foff_milter_reload"
