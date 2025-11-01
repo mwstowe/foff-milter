@@ -647,7 +647,7 @@ async fn main() {
                         let mut config_guard = milter_config_clone.write().await;
                         *config_guard = (new_config.clone(), new_toml_config.clone());
                     }
-                    
+
                     // Reload milter with new configuration and modules
                     {
                         let mut milter_guard = milter_clone.write().await;
@@ -662,7 +662,7 @@ async fn main() {
                             }
                         }
                     }
-                    
+
                     log::info!("Configuration and modules reloaded successfully");
                 }
                 Err(e) => {

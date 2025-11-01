@@ -2569,7 +2569,9 @@ impl FilterEngine {
                                 for (header_name, header_value) in &context.headers {
                                     if header_name.to_lowercase() == "received" {
                                         // Parse "by hostname" from Received headers
-                                        if let Some(by_match) = received_regex.captures(header_value) {
+                                        if let Some(by_match) =
+                                            received_regex.captures(header_value)
+                                        {
                                             if let Some(hostname) = by_match.get(1) {
                                                 let hostname = hostname.as_str().to_lowercase();
                                                 // Extract domain from hostname

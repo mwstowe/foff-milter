@@ -150,14 +150,18 @@ impl Milter {
         Ok(Milter { engine, statistics })
     }
 
-    pub fn reload(&mut self, config: Config, toml_config: crate::toml_config::TomlConfig) -> anyhow::Result<()> {
+    pub fn reload(
+        &mut self,
+        config: Config,
+        toml_config: crate::toml_config::TomlConfig,
+    ) -> anyhow::Result<()> {
         log::info!("Reloading milter configuration and modules...");
-        
+
         // Create new engine with updated configuration
         let mut new_engine = FilterEngine::new(config.clone())?;
         new_engine.set_toml_config(toml_config);
         self.engine = Arc::new(new_engine);
-        
+
         // Update statistics collector if configuration changed
         if let Some(stats_config) = &config.statistics {
             if stats_config.enabled {
@@ -172,7 +176,7 @@ impl Milter {
         } else {
             self.statistics = None;
         }
-        
+
         log::info!("Milter configuration and modules reloaded successfully");
         Ok(())
     }
