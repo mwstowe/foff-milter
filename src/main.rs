@@ -502,6 +502,13 @@ async fn main() {
                 0 => {
                     // Child process continues
                     log::info!("Daemon child process started");
+                    
+                    // Close inherited file descriptors to avoid "Bad file descriptor" errors
+                    unsafe {
+                        libc::close(0); // stdin
+                        libc::close(1); // stdout  
+                        libc::close(2); // stderr
+                    }
                 }
                 _ => {
                     // Parent process exits immediately
