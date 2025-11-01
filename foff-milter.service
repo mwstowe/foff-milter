@@ -9,6 +9,7 @@ User=foff-milter
 Group=foff-milter
 ExecStart=/usr/local/bin/foff-milter -c /etc/foff-milter.toml
 ExecReload=/bin/kill -HUP $MAINPID
+KillMode=mixed
 Restart=always
 RestartSec=5
 StandardOutput=journal
