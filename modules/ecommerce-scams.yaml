@@ -41,6 +41,18 @@ rules:
             pattern: "dkim=pass.*dmarc=pass"
     score: 40
     description: "Beauty and cosmetic product promotion spam"
+  - name: "Free product scams"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "BodyPattern"
+          pattern: "(?i).*(tools.*built.*for.*pros.*free|professional.*grade.*tools.*free|free.*professional.*kit|premium.*tools.*absolutely.*free|professional.*verification.*required|limited.*quantities.*available|claim.*your.*free.*kit).*"
+        - type: "SubjectPattern"
+          pattern: "(?i).*(tools.*built.*pros.*free|professional.*tools.*free|free.*professional.*kit).*"
+    score: 50
+    description: "Free professional tools and product scams"
+
   - name: "Product plan and blueprint scams"
     enabled: true
     criteria:

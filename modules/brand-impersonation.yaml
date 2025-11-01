@@ -135,6 +135,24 @@ rules:
     score: 55
     description: "Oral-B brand impersonation from non-Oral-B domains"
 
+  - name: "GoDaddy brand impersonation"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(godaddy.*payment|godaddy.*update|godaddy.*action.*needed|godaddy.*billing).*"
+            - type: "SenderPattern"
+              pattern: "(?i).*godaddy.*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@(godaddy\\.com|secureserver\\.net)$"
+    score: 60
+    description: "GoDaddy brand impersonation from non-GoDaddy domains"
+
   - name: "Return-Path and From domain mismatch"
     enabled: true
     criteria:
