@@ -518,10 +518,7 @@ async fn main() {
                 process::exit(1);
             }
 
-            // Ignore SIGHUP to prevent daemon from being killed when session leader exits
-            unsafe {
-                libc::signal(libc::SIGHUP, libc::SIG_IGN);
-            }
+            // Note: We don't ignore SIGHUP here to allow configuration reloading
 
             // Second fork to ensure we're not a session leader (prevents acquiring controlling terminal)
             match unsafe { libc::fork() } {
@@ -618,18 +615,55 @@ async fn main() {
     let milter_config = Arc::new(RwLock::new((config, toml_config)));
     let milter_config_clone = milter_config.clone();
 
+    // Create initial milter instance
+    let (initial_config, initial_toml_config) = {
+        let config_guard = milter_config.read().await;
+        (config_guard.0.clone(), config_guard.1.clone())
+    };
+
+    let initial_milter = if let Some(toml_cfg) = initial_toml_config {
+        Milter::new(initial_config, toml_cfg).expect("Failed to create milter")
+    } else {
+        // Create default TOML config if none provided
+        let default_toml = TomlConfig::default();
+        Milter::new(initial_config, default_toml).expect("Failed to create milter")
+    };
+
+    // Wrap milter in Arc<RwLock> for thread-safe reloading
+    let milter = Arc::new(RwLock::new(initial_milter));
+    let milter_clone = milter.clone();
+
     // Set up SIGHUP signal handler for configuration reload
     tokio::spawn(async move {
         let mut sighup = signal(SignalKind::hangup()).expect("Failed to register SIGHUP handler");
         loop {
             sighup.recv().await;
-            log::info!("Received SIGHUP signal, reloading configuration...");
+            log::info!("Received SIGHUP signal, reloading configuration and modules...");
 
             match load_config(&config_file_path) {
                 Ok((new_config, _new_whitelist, _new_blocklist, new_toml_config)) => {
-                    let mut config_guard = milter_config_clone.write().await;
-                    *config_guard = (new_config, new_toml_config);
-                    log::info!("Configuration reloaded successfully");
+                    // Update configuration
+                    {
+                        let mut config_guard = milter_config_clone.write().await;
+                        *config_guard = (new_config.clone(), new_toml_config.clone());
+                    }
+                    
+                    // Reload milter with new configuration and modules
+                    {
+                        let mut milter_guard = milter_clone.write().await;
+                        if let Some(toml_cfg) = new_toml_config {
+                            if let Err(e) = milter_guard.reload(new_config, toml_cfg) {
+                                log::error!("Failed to reload milter: {}", e);
+                            }
+                        } else {
+                            let default_toml = TomlConfig::default();
+                            if let Err(e) = milter_guard.reload(new_config, default_toml) {
+                                log::error!("Failed to reload milter: {}", e);
+                            }
+                        }
+                    }
+                    
+                    log::info!("Configuration and modules reloaded successfully");
                 }
                 Err(e) => {
                     log::error!("Failed to reload configuration: {}", e);
@@ -638,23 +672,13 @@ async fn main() {
         }
     });
 
-    // Create initial milter instance
-    let (initial_config, initial_toml_config) = {
-        let config_guard = milter_config.read().await;
-        (config_guard.0.clone(), config_guard.1.clone())
-    };
-
-    let milter = if let Some(toml_cfg) = initial_toml_config {
-        Milter::new(initial_config, toml_cfg).expect("Failed to create milter")
-    } else {
-        // Create default TOML config if none provided
-        let default_toml = TomlConfig::default();
-        Milter::new(initial_config, default_toml).expect("Failed to create milter")
-    };
-
-    if let Err(e) = milter.run(&socket_path).await {
-        log::error!("Milter error: {e}");
-        process::exit(1);
+    // Run the milter
+    {
+        let milter_guard = milter.read().await;
+        if let Err(e) = milter_guard.run(&socket_path).await {
+            log::error!("Milter error: {e}");
+            process::exit(1);
+        }
     }
 }
 

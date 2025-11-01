@@ -15,10 +15,10 @@ FOFF Milter is a production-ready email security solution that provides:
 
 ## Configuration Reload
 
-FOFF Milter v0.6.4 supports hot configuration reloading without service interruption:
+FOFF Milter v0.6.4 supports hot configuration and module reloading without service interruption:
 
 ```bash
-# Send SIGHUP signal to reload configuration
+# Send SIGHUP signal to reload configuration and modules
 sudo kill -HUP $(pgrep foff-milter)
 
 # Or using systemctl (Linux)
@@ -31,10 +31,11 @@ sudo service foff_milter reload
 When a SIGHUP signal is received, FOFF Milter will:
 - Reload the main configuration file (`foff-milter.toml`)
 - Reload all detection modules from the modules directory
+- Update spam detection rules and thresholds in real-time
 - Apply new settings without dropping existing connections
 - Log the reload status for monitoring
 
-This allows for real-time updates to spam detection rules and configuration changes without service downtime.
+This allows for real-time updates to spam detection rules, configuration changes, and module modifications without service downtime.
 
 ## Configuration System
 
