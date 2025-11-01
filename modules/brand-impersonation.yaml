@@ -39,14 +39,20 @@ rules:
       criteria:
         - type: "Or"
           criteria:
-            - type: "SubjectPattern"
-              pattern: "(?i).*(aaa.*car.*kit|free.*car.*emergency|aaa.*emergency|free.*safety.*kit).*"
+            - type: "And"
+              criteria:
+                - type: "SubjectPattern"
+                  pattern: "(?i).*(aaa.*car.*kit|free.*car.*emergency|aaa.*emergency|free.*safety.*kit|aaa.*roadside|aaa.*membership).*"
+                - type: "Not"
+                  criteria:
+                    type: "SubjectPattern"
+                    pattern: "(?i).*(batteries.*very.*low|battery.*alert|module.*low).*"
             - type: "SenderPattern"
-              pattern: "(?i).*aaa.*"
+              pattern: "(?i).*(^|[^a-z])aaa([^a-z]|$).*"
         - type: "Not"
           criteria:
             type: "SenderPattern"
-            pattern: ".*@(aaa\\.com|csaa\\.com)$"
+            pattern: ".*@(aaa\\.com|csaa\\.com|netatmo\\.com)$"
     score: 50
     description: "AAA brand impersonation from non-AAA domains"
 
