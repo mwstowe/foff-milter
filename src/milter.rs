@@ -4,8 +4,63 @@ use crate::statistics::{StatEvent, StatisticsCollector};
 use base64::Engine;
 use indymilter::{run, Actions, Callbacks, Config as IndyConfig, ContextActions, Status};
 use std::collections::HashMap;
+use std::sync::atomic::{AtomicBool, AtomicUsize, Ordering};
 use std::sync::{Arc, Mutex};
+use std::time::Duration;
 use tokio::net::UnixListener;
+
+/// Guards against shutdown/reload during email processing
+#[derive(Clone)]
+pub struct ProcessingGuard {
+    active_emails: Arc<AtomicUsize>,
+    shutdown_requested: Arc<AtomicBool>,
+}
+
+impl ProcessingGuard {
+    pub fn new() -> Self {
+        Self {
+            active_emails: Arc::new(AtomicUsize::new(0)),
+            shutdown_requested: Arc::new(AtomicBool::new(false)),
+        }
+    }
+
+    /// Start processing an email, returns None if shutdown requested
+    pub fn start_email_processing(&self) -> Option<EmailToken> {
+        if self.shutdown_requested.load(Ordering::Acquire) {
+            return None; // Reject new emails during shutdown
+        }
+        self.active_emails.fetch_add(1, Ordering::AcqRel);
+        Some(EmailToken { guard: self.clone() })
+    }
+
+    /// Wait for all active emails to complete processing
+    pub async fn wait_for_completion(&self) {
+        while self.active_emails.load(Ordering::Acquire) > 0 {
+            tokio::time::sleep(Duration::from_millis(50)).await;
+        }
+    }
+
+    /// Request graceful shutdown
+    pub fn request_shutdown(&self) {
+        self.shutdown_requested.store(true, Ordering::Release);
+    }
+
+    /// Check if shutdown was requested
+    pub fn is_shutdown_requested(&self) -> bool {
+        self.shutdown_requested.load(Ordering::Acquire)
+    }
+}
+
+/// Token that tracks email processing lifetime
+pub struct EmailToken {
+    guard: ProcessingGuard,
+}
+
+impl Drop for EmailToken {
+    fn drop(&mut self) {
+        self.guard.active_emails.fetch_sub(1, Ordering::AcqRel);
+    }
+}
 
 /// Decode MIME-encoded header values like =?utf-8?B?...?= or =?utf-8?Q?...?=
 pub fn decode_mime_header(header_value: &str) -> String {
@@ -117,6 +172,7 @@ pub fn extract_email_from_header(header_value: &str) -> Option<String> {
 pub struct Milter {
     engine: Arc<FilterEngine>,
     statistics: Option<Arc<StatisticsCollector>>,
+    processing_guard: ProcessingGuard,
 }
 
 // Simple state storage with unique session IDs
@@ -147,7 +203,15 @@ impl Milter {
             None
         };
 
-        Ok(Milter { engine, statistics })
+        Ok(Milter {
+            engine,
+            statistics,
+            processing_guard: ProcessingGuard::new(),
+        })
+    }
+
+    pub fn get_processing_guard(&self) -> ProcessingGuard {
+        self.processing_guard.clone()
     }
 
     pub fn reload(
@@ -378,12 +442,24 @@ impl Milter {
                 let engine = engine.clone();
                 let state = state.clone();
                 let statistics = self.statistics.clone();
+                let processing_guard = self.processing_guard.clone();
                 move |ctx: &mut indymilter::EomContext<()>| {
                     let engine = engine.clone();
                     let state = state.clone();
                     let statistics = statistics.clone();
+                    let processing_guard = processing_guard.clone();
                     Box::pin(async move {
                         log::debug!("EOM callback invoked");
+
+                        // Start email processing with guard protection
+                        let _email_token = match processing_guard.start_email_processing() {
+                            Some(token) => token,
+                            None => {
+                                log::info!("Rejecting email due to shutdown in progress");
+                                return Status::Tempfail;
+                            }
+                        };
+                        // Token will automatically decrement counter when dropped
 
                         // Intelligent DKIM completion detection
                         let mail_ctx_for_check = state

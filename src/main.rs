@@ -7,8 +7,8 @@ use foff_milter::Config as LegacyConfig;
 use log::LevelFilter;
 use std::process;
 use std::sync::Arc;
-use tokio::signal::unix::{signal, SignalKind};
 use tokio::sync::RwLock;
+use tokio::signal::unix::{signal, SignalKind};
 
 #[tokio::main]
 async fn main() {
@@ -527,16 +527,39 @@ async fn main() {
         Milter::new(initial_config, default_toml).expect("Failed to create milter")
     };
 
+    // Create processing guard for graceful shutdown/reload
+    let processing_guard = initial_milter.get_processing_guard();
+    let guard_clone = processing_guard.clone();
+
     // Wrap milter in Arc<RwLock> for thread-safe reloading
     let milter = Arc::new(RwLock::new(initial_milter));
     let milter_clone = milter.clone();
+
+    // Set up SIGTERM signal handler for graceful shutdown
+    let shutdown_guard = processing_guard.clone();
+    tokio::spawn(async move {
+        let mut sigterm = signal(SignalKind::terminate()).expect("Failed to register SIGTERM handler");
+        sigterm.recv().await;
+        log::info!("Received SIGTERM signal, initiating graceful shutdown...");
+        
+        // Request shutdown and wait for active emails to complete
+        shutdown_guard.request_shutdown();
+        shutdown_guard.wait_for_completion().await;
+        
+        log::info!("All emails processed, shutting down gracefully");
+        std::process::exit(0);
+    });
 
     // Set up SIGHUP signal handler for configuration reload
     tokio::spawn(async move {
         let mut sighup = signal(SignalKind::hangup()).expect("Failed to register SIGHUP handler");
         loop {
             sighup.recv().await;
-            log::info!("Received SIGHUP signal, reloading configuration and modules...");
+            log::info!("Received SIGHUP signal, waiting for active emails to complete...");
+            
+            // Wait for active email processing to complete
+            guard_clone.wait_for_completion().await;
+            log::info!("All emails processed, reloading configuration and modules...");
 
             match load_config(&config_file_path) {
                 Ok((new_config, _new_whitelist, _new_blocklist, new_toml_config)) => {
