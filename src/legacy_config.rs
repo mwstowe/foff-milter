@@ -380,29 +380,29 @@ pub enum Criteria {
     },
     BrandImpersonation {
         // Detects brand impersonation using centralized brand configuration
-        brand_name: String,                    // Brand identifier (e.g., "docusign", "paypal")
+        brand_name: String, // Brand identifier (e.g., "docusign", "paypal")
         subject_patterns: Option<Vec<String>>, // Brand-specific subject patterns
-        sender_patterns: Option<Vec<String>>,  // Brand-specific sender patterns  
-        body_patterns: Option<Vec<String>>,    // Brand-specific body patterns
-        legitimate_domains: Vec<String>,       // Official brand domains to exclude
-        require_auth_failure: Option<bool>,    // Require authentication failure (default: false)
-        suspicious_tlds: Option<Vec<String>>,  // Specific suspicious TLDs for this brand
+        sender_patterns: Option<Vec<String>>, // Brand-specific sender patterns
+        body_patterns: Option<Vec<String>>, // Brand-specific body patterns
+        legitimate_domains: Vec<String>, // Official brand domains to exclude
+        require_auth_failure: Option<bool>, // Require authentication failure (default: false)
+        suspicious_tlds: Option<Vec<String>>, // Specific suspicious TLDs for this brand
     },
     EmailInfrastructure {
         // Centralized email infrastructure detection and classification
-        infrastructure_type: String,           // Type: "free_email", "educational", "compromised", "business"
-        domains: Option<Vec<String>>,          // Specific domains to check
-        tld_patterns: Option<Vec<String>>,     // TLD patterns (e.g., ".edu", ".onmicrosoft.com")
-        check_sender: Option<bool>,            // Check sender domain (default: true)
-        check_reply_to: Option<bool>,          // Check reply-to domain (default: false)
-        require_auth_failure: Option<bool>,    // Require authentication failure (default: false)
-        exclude_legitimate: Option<bool>,      // Exclude legitimate business use (default: true)
+        infrastructure_type: String, // Type: "free_email", "educational", "compromised", "business"
+        domains: Option<Vec<String>>, // Specific domains to check
+        tld_patterns: Option<Vec<String>>, // TLD patterns (e.g., ".edu", ".onmicrosoft.com")
+        check_sender: Option<bool>,  // Check sender domain (default: true)
+        check_reply_to: Option<bool>, // Check reply-to domain (default: false)
+        require_auth_failure: Option<bool>, // Require authentication failure (default: false)
+        exclude_legitimate: Option<bool>, // Exclude legitimate business use (default: true)
     },
     FreeEmailProvider {
         // Detects emails from free email providers (gmail, outlook, etc.)
         // Uses centralized domain classification from TOML config
-        check_sender: Option<bool>,     // Check sender domain (default: true)
-        check_reply_to: Option<bool>,   // Check reply-to domain (default: false)
+        check_sender: Option<bool>, // Check sender domain (default: true)
+        check_reply_to: Option<bool>, // Check reply-to domain (default: false)
     },
     And {
         criteria: Vec<Criteria>,

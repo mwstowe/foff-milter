@@ -770,11 +770,11 @@ impl FilterEngine {
                 // No regex patterns to compile for mixed script detection
                 // Uses Unicode character range analysis instead
             }
-            Criteria::BrandImpersonation { 
-                subject_patterns, 
-                sender_patterns, 
-                body_patterns, 
-                .. 
+            Criteria::BrandImpersonation {
+                subject_patterns,
+                sender_patterns,
+                body_patterns,
+                ..
             } => {
                 // Compile all brand impersonation patterns
                 if let Some(patterns) = subject_patterns {
@@ -4407,7 +4407,7 @@ impl FilterEngine {
                     );
                     is_suspicious
                 }
-                Criteria::BrandImpersonation { 
+                Criteria::BrandImpersonation {
                     brand_name: _,
                     subject_patterns,
                     sender_patterns,
@@ -4418,7 +4418,7 @@ impl FilterEngine {
                 } => {
                     // Check if brand is mentioned in subject, sender, or body
                     let mut brand_mentioned = false;
-                    
+
                     // Check subject patterns
                     if let Some(patterns) = subject_patterns {
                         if let Some(subject) = &context.subject {
@@ -4432,7 +4432,7 @@ impl FilterEngine {
                             }
                         }
                     }
-                    
+
                     // Check sender patterns
                     if !brand_mentioned {
                         if let Some(patterns) = sender_patterns {
@@ -4462,7 +4462,7 @@ impl FilterEngine {
                             }
                         }
                     }
-                    
+
                     // Check body patterns
                     if !brand_mentioned {
                         if let Some(patterns) = body_patterns {
@@ -4478,14 +4478,14 @@ impl FilterEngine {
                             }
                         }
                     }
-                    
+
                     if !brand_mentioned {
                         return false;
                     }
-                    
+
                     // Check if sender is from legitimate domain
                     let mut is_legitimate = false;
-                    
+
                     // Check envelope sender domain
                     if let Some(sender) = &context.sender {
                         if let Some(domain) = sender.split('@').nth(1) {
@@ -4497,19 +4497,21 @@ impl FilterEngine {
                             }
                         }
                     }
-                    
+
                     // Also check From header email domain
                     if !is_legitimate {
                         if let Some(from_header) = &context.from_header {
                             // Extract email from "Display Name <email@domain.com>" format
                             let email = if from_header.contains('<') && from_header.contains('>') {
-                                from_header.split('<').nth(1)
+                                from_header
+                                    .split('<')
+                                    .nth(1)
                                     .and_then(|s| s.split('>').next())
                                     .unwrap_or(from_header)
                             } else {
                                 from_header
                             };
-                            
+
                             if let Some(domain) = email.split('@').nth(1) {
                                 for legitimate_domain in legitimate_domains {
                                     if domain.eq_ignore_ascii_case(legitimate_domain) {
@@ -4520,21 +4522,27 @@ impl FilterEngine {
                             }
                         }
                     }
-                    
+
                     if is_legitimate {
                         return false; // Legitimate sender
                     }
-                    
+
                     // Check authentication failure if required
                     if require_auth_failure.unwrap_or(false) {
-                        let auth_failed = context.headers.get("authentication-results")
-                            .map(|auth| auth.contains("spf=fail") || auth.contains("dkim=fail") || auth.contains("dmarc=fail"))
+                        let auth_failed = context
+                            .headers
+                            .get("authentication-results")
+                            .map(|auth| {
+                                auth.contains("spf=fail")
+                                    || auth.contains("dkim=fail")
+                                    || auth.contains("dmarc=fail")
+                            })
                             .unwrap_or(false);
                         if !auth_failed {
                             return false;
                         }
                     }
-                    
+
                     true
                 }
                 Criteria::EmailInfrastructure {
@@ -4547,7 +4555,7 @@ impl FilterEngine {
                     exclude_legitimate: _,
                 } => {
                     let mut infrastructure_detected = false;
-                    
+
                     // Check sender domain if enabled
                     if check_sender.unwrap_or(true) {
                         if let Some(sender) = &context.sender {
@@ -4561,12 +4569,13 @@ impl FilterEngine {
                                         }
                                     }
                                 }
-                                
+
                                 // Check TLD patterns
                                 if !infrastructure_detected {
                                     if let Some(patterns) = tld_patterns {
                                         for pattern in patterns {
-                                            if let Some(regex) = self.compiled_patterns.get(pattern) {
+                                            if let Some(regex) = self.compiled_patterns.get(pattern)
+                                            {
                                                 if regex.is_match(sender) {
                                                     infrastructure_detected = true;
                                                     break;
@@ -4578,7 +4587,7 @@ impl FilterEngine {
                             }
                         }
                     }
-                    
+
                     // Check reply-to domain if enabled
                     if !infrastructure_detected && check_reply_to.unwrap_or(false) {
                         if let Some(reply_to) = context.headers.get("reply-to") {
@@ -4592,12 +4601,13 @@ impl FilterEngine {
                                         }
                                     }
                                 }
-                                
+
                                 // Check TLD patterns
                                 if !infrastructure_detected {
                                     if let Some(patterns) = tld_patterns {
                                         for pattern in patterns {
-                                            if let Some(regex) = self.compiled_patterns.get(pattern) {
+                                            if let Some(regex) = self.compiled_patterns.get(pattern)
+                                            {
                                                 if regex.is_match(reply_to) {
                                                     infrastructure_detected = true;
                                                     break;
@@ -4609,34 +4619,47 @@ impl FilterEngine {
                             }
                         }
                     }
-                    
+
                     if !infrastructure_detected {
                         return false;
                     }
-                    
+
                     // Check authentication failure if required
                     if require_auth_failure.unwrap_or(false) {
-                        let auth_failed = context.headers.get("authentication-results")
-                            .map(|auth| auth.contains("spf=fail") || auth.contains("dkim=fail") || auth.contains("dmarc=fail"))
+                        let auth_failed = context
+                            .headers
+                            .get("authentication-results")
+                            .map(|auth| {
+                                auth.contains("spf=fail")
+                                    || auth.contains("dkim=fail")
+                                    || auth.contains("dmarc=fail")
+                            })
                             .unwrap_or(false);
                         if !auth_failed {
                             return false;
                         }
                     }
-                    
+
                     true
                 }
-                Criteria::FreeEmailProvider { check_sender, check_reply_to } => {
+                Criteria::FreeEmailProvider {
+                    check_sender,
+                    check_reply_to,
+                } => {
                     let check_sender = check_sender.unwrap_or(true);
                     let check_reply_to = check_reply_to.unwrap_or(false);
-                    
+
                     // Get free email providers from TOML config
                     let free_providers = if let Some(toml_config) = &self.toml_config {
                         if let Some(domain_classifications) = &toml_config.domain_classifications {
                             domain_classifications.free_email_providers.as_ref()
-                        } else { None }
-                    } else { None };
-                    
+                        } else {
+                            None
+                        }
+                    } else {
+                        None
+                    };
+
                     if let Some(providers) = free_providers {
                         // Check sender domain
                         if check_sender {
@@ -4648,7 +4671,7 @@ impl FilterEngine {
                                 }
                             }
                         }
-                        
+
                         // Check reply-to domain
                         if check_reply_to {
                             if let Some(reply_to) = context.headers.get("reply-to") {
