@@ -83,13 +83,6 @@ async fn main() {
                 .action(clap::ArgAction::SetTrue),
         )
         .arg(
-            Arg::new("daemon")
-                .short('d')
-                .long("daemon")
-                .help("Run as a daemon (background process)")
-                .action(clap::ArgAction::SetTrue),
-        )
-        .arg(
             Arg::new("test-email")
                 .long("test-email")
                 .value_name("FILE")
@@ -485,50 +478,6 @@ async fn main() {
     }
 
     let demo_mode = matches.get_flag("demo");
-    let daemon_mode = matches.get_flag("daemon");
-
-    // Handle daemon mode (FreeBSD/Unix) - Simple fork approach
-    if daemon_mode && !demo_mode {
-        #[cfg(unix)]
-        {
-            log::info!("Starting FOFF milter in daemon mode...");
-
-            // Simple fork - let FreeBSD rc.d handle the rest
-            match unsafe { libc::fork() } {
-                -1 => {
-                    log::error!("Failed to fork process");
-                    std::process::exit(1);
-                }
-                0 => {
-                    // Child process continues
-                    log::info!("Daemon child process started");
-                    
-                    // Redirect file descriptors to /dev/null instead of closing
-                    use std::fs::OpenOptions;
-                    use std::os::unix::io::AsRawFd;
-                    
-                    if let Ok(dev_null) = OpenOptions::new().read(true).write(true).open("/dev/null") {
-                        let null_fd = dev_null.as_raw_fd();
-                        unsafe {
-                            libc::dup2(null_fd, 0); // stdin -> /dev/null
-                            libc::dup2(null_fd, 1); // stdout -> /dev/null
-                            libc::dup2(null_fd, 2); // stderr -> /dev/null
-                        }
-                        std::mem::forget(dev_null); // Keep fd open
-                    }
-                }
-                _ => {
-                    // Parent process exits immediately
-                    std::process::exit(0);
-                }
-            }
-        }
-
-        #[cfg(not(unix))]
-        {
-            log::warn!("Daemon mode not supported on this platform, running in foreground");
-        }
-    }
 
     log::info!("Starting FOFF milter...");
 
