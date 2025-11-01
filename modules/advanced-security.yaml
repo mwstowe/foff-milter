@@ -122,3 +122,20 @@ rules:
       pattern: "(?i).*=\\?[a-z0-9-]+\\?[bq]\\?[a-z0-9+/=]{50,}\\?=.*"
     score: 20
     description: "Suspicious base64 or quoted-printable encoding patterns"
+
+  - name: "Compromised Microsoft Account Spam"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@.*\\.onmicrosoft\\.com$"
+        - type: "Or"
+          criteria:
+            - type: "HeaderPattern"
+              header: "Authentication-Results"
+              pattern: "dkim=fail"
+            - type: "SubjectPattern"
+              pattern: "(?i).*(taste|special|uid[0-9]+|restaurant|food|dining).*"
+    score: 60
+    description: "Compromised Microsoft accounts used for spam with authentication failures"

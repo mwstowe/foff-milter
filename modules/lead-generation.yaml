@@ -59,6 +59,18 @@ rules:
     score: 40
     description: "Unsolicited SEO and digital marketing spam from free email providers"
 
+  - name: "Business collaboration proposals"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "BodyPattern"
+          pattern: "(?i).*(long.*term.*collaboration|business.*partnership.*opportunity|exclusive.*distribution.*rights|industrial.*machinery.*components|manufacturing.*equipment|reliable.*business.*partners|expand.*market.*presence|competitive.*pricing.*volume.*discounts|technical.*support.*training|marketing.*assistance.*co.*branding|minimum.*order.*quantities|customized.*business.*plan|video.*conference.*call|product.*catalogs.*samples|highly.*profitable.*both.*parties|introductory.*pricing.*new.*partners).*"
+        - type: "SubjectPattern"
+          pattern: "(?i).*(proposal.*product.*inquiry.*collaboration|business.*collaboration|partnership.*opportunity|distribution.*rights).*"
+    score: 55
+    description: "Unsolicited business collaboration and partnership proposals"
+
   - name: "Bulk email advertising spam"
     enabled: true
     criteria:
@@ -74,3 +86,25 @@ rules:
           pattern: "(?i).*(lowest.*price|immediate.*boom|watch.*results.*online|exclusive.*online.*panel|we.*do.*all.*work|choose.*areas.*interest|real.*time|no.*extra.*cost|whatsapp.*\\+55|contactar.*gmail).*"
     score: 70
     description: "Detects bulk email advertising and mass email marketing spam services"
+
+  - name: "Suspicious product notification domains"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SenderPattern"
+              pattern: ".*@.*product.*notify.*"
+            - type: "SenderPattern"
+              pattern: ".*@.*notification.*hub.*"
+            - type: "SenderPattern"
+              pattern: ".*@.*demo.*notify.*"
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i)^(demo|notification|alert|update)$"
+            - type: "SubjectPattern"
+              pattern: "(?i).*(product.*demo|demo.*available|notification.*ready).*"
+    score: 55
+    description: "Suspicious domains used for product notification spam with generic subjects"
