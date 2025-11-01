@@ -5,8 +5,9 @@ Wants=network.target
 
 [Service]
 Type=simple
-User=foff-milter
-Group=foff-milter
+# Run as root since milter needs socket permissions
+# User=foff-milter
+# Group=foff-milter
 ExecStart=/usr/local/bin/foff-milter -c /etc/foff-milter.toml
 ExecReload=/bin/kill -HUP $MAINPID
 KillMode=mixed
