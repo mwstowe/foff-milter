@@ -491,118 +491,31 @@ async fn main() {
     if daemon_mode && !demo_mode {
         #[cfg(unix)]
         {
-            use std::fs::OpenOptions;
-            use std::os::unix::io::AsRawFd;
-            use std::process;
+            use daemonize::Daemonize;
 
             log::info!("Starting FOFF milter in daemon mode...");
 
-            // First fork
-            match unsafe { libc::fork() } {
-                -1 => {
-                    log::error!("Failed to fork process");
-                    process::exit(1);
-                }
-                0 => {
-                    // Child process continues
-                }
-                _ => {
-                    // Parent process exits
-                    process::exit(0);
-                }
-            }
-
-            // Create new session (become session leader)
-            if unsafe { libc::setsid() } == -1 {
-                log::error!("Failed to create new session");
-                process::exit(1);
-            }
-
-            // Note: We don't ignore SIGHUP here to allow configuration reloading
-
-            // Second fork to ensure we're not a session leader (prevents acquiring controlling terminal)
-            match unsafe { libc::fork() } {
-                -1 => {
-                    log::error!("Failed to second fork");
-                    process::exit(1);
-                }
-                0 => {
-                    // Child process continues as daemon
-                }
-                _ => {
-                    // Parent process exits
-                    process::exit(0);
-                }
-            }
-
-            // Don't change working directory to root - stay in current directory
-            // This allows relative paths in config to work properly
-            // let root_path = std::ffi::CString::new("/").unwrap();
-            // if unsafe { libc::chdir(root_path.as_ptr()) } == -1 {
-            //     log::warn!("Failed to change working directory to /");
-            // }
-
-            // Set file creation mask
-            unsafe {
-                libc::umask(0);
-            }
-
-            // Redirect standard file descriptors to /dev/null instead of closing them
-            // This prevents issues with logging and other operations that might try to use them
-            if let Ok(dev_null) = OpenOptions::new().read(true).write(true).open("/dev/null") {
-                let null_fd = dev_null.as_raw_fd();
-
-                unsafe {
-                    // Redirect stdin, stdout, stderr to /dev/null
-                    libc::dup2(null_fd, 0); // stdin
-                    libc::dup2(null_fd, 1); // stdout
-                    libc::dup2(null_fd, 2); // stderr
-                }
-
-                // Don't close dev_null fd as it's being used
-                std::mem::forget(dev_null);
-            } else {
-                log::warn!("Failed to open /dev/null, closing standard file descriptors");
-                unsafe {
-                    libc::close(0); // stdin
-                    libc::close(1); // stdout
-                    libc::close(2); // stderr
-                }
-            }
-
-            // Write PID file for FreeBSD rc system
-            let pid = unsafe { libc::getpid() };
+            // Ensure PID directory exists
             let pid_file_path = "/var/run/foff-milter/foff-milter.pid";
-            
-            // Ensure directory exists
             if let Some(parent) = std::path::Path::new(pid_file_path).parent() {
                 if let Err(e) = std::fs::create_dir_all(parent) {
                     log::warn!("Failed to create PID directory: {e}");
                 }
             }
-            
-            if let Err(e) = std::fs::write(pid_file_path, pid.to_string()) {
-                log::warn!("Failed to write PID file: {e}");
-            } else {
-                log::info!("PID file written: {pid_file_path} ({pid})");
-            }
 
-            // Set up signal handler to clean up PID file on exit
-            let pid_file_path = "/var/run/foff-milter/foff-milter.pid";
-            ctrlc::set_handler(move || {
-                log::info!("Received shutdown signal, cleaning up...");
-                if std::path::Path::new(pid_file_path).exists() {
-                    if let Err(e) = std::fs::remove_file(pid_file_path) {
-                        log::warn!("Failed to remove PID file: {e}");
-                    } else {
-                        log::info!("PID file removed");
-                    }
+            let daemonize = Daemonize::new()
+                .pid_file(pid_file_path)
+                .chown_pid_file(true)
+                .working_directory(".")  // Keep current working directory
+                .umask(0o027);
+
+            match daemonize.start() {
+                Ok(_) => log::info!("Daemon started successfully"),
+                Err(e) => {
+                    log::error!("Failed to daemonize: {}", e);
+                    std::process::exit(1);
                 }
-                std::process::exit(0);
-            })
-            .expect("Error setting signal handler");
-
-            log::info!("Daemon mode initialization complete");
+            }
         }
 
         #[cfg(not(unix))]
