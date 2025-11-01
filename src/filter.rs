@@ -770,6 +770,44 @@ impl FilterEngine {
                 // No regex patterns to compile for mixed script detection
                 // Uses Unicode character range analysis instead
             }
+            Criteria::BrandImpersonation { 
+                subject_patterns, 
+                sender_patterns, 
+                body_patterns, 
+                .. 
+            } => {
+                // Compile all brand impersonation patterns
+                if let Some(patterns) = subject_patterns {
+                    for pattern in patterns {
+                        if !self.compiled_patterns.contains_key(pattern) {
+                            let regex = Regex::new(pattern).map_err(|e| {
+                                anyhow::anyhow!("Invalid regex pattern '{}': {}", pattern, e)
+                            })?;
+                            self.compiled_patterns.insert(pattern.clone(), regex);
+                        }
+                    }
+                }
+                if let Some(patterns) = sender_patterns {
+                    for pattern in patterns {
+                        if !self.compiled_patterns.contains_key(pattern) {
+                            let regex = Regex::new(pattern).map_err(|e| {
+                                anyhow::anyhow!("Invalid regex pattern '{}': {}", pattern, e)
+                            })?;
+                            self.compiled_patterns.insert(pattern.clone(), regex);
+                        }
+                    }
+                }
+                if let Some(patterns) = body_patterns {
+                    for pattern in patterns {
+                        if !self.compiled_patterns.contains_key(pattern) {
+                            let regex = Regex::new(pattern).map_err(|e| {
+                                anyhow::anyhow!("Invalid regex pattern '{}': {}", pattern, e)
+                            })?;
+                            self.compiled_patterns.insert(pattern.clone(), regex);
+                        }
+                    }
+                }
+            }
             Criteria::FreeEmailProvider { .. } => {
                 // No regex patterns to compile for free email provider detection
                 // Uses domain list comparison instead
@@ -4355,6 +4393,136 @@ impl FilterEngine {
                         is_suspicious
                     );
                     is_suspicious
+                }
+                Criteria::BrandImpersonation { 
+                    brand_name: _,
+                    subject_patterns,
+                    sender_patterns,
+                    body_patterns,
+                    legitimate_domains,
+                    require_auth_failure,
+                    suspicious_tlds: _,
+                } => {
+                    // Check if brand is mentioned in subject, sender, or body
+                    let mut brand_mentioned = false;
+                    
+                    // Check subject patterns
+                    if let Some(patterns) = subject_patterns {
+                        if let Some(subject) = &context.subject {
+                            for pattern in patterns {
+                                if let Some(regex) = self.compiled_patterns.get(pattern) {
+                                    if regex.is_match(subject) {
+                                        brand_mentioned = true;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                    // Check sender patterns
+                    if !brand_mentioned {
+                        if let Some(patterns) = sender_patterns {
+                            // Check envelope sender
+                            if let Some(sender) = &context.sender {
+                                for pattern in patterns {
+                                    if let Some(regex) = self.compiled_patterns.get(pattern) {
+                                        if regex.is_match(sender) {
+                                            brand_mentioned = true;
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                            // Also check From header (includes display name)
+                            if !brand_mentioned {
+                                if let Some(from_header) = &context.from_header {
+                                    for pattern in patterns {
+                                        if let Some(regex) = self.compiled_patterns.get(pattern) {
+                                            if regex.is_match(from_header) {
+                                                brand_mentioned = true;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                    // Check body patterns
+                    if !brand_mentioned {
+                        if let Some(patterns) = body_patterns {
+                            if let Some(body) = &context.body {
+                                for pattern in patterns {
+                                    if let Some(regex) = self.compiled_patterns.get(pattern) {
+                                        if regex.is_match(body) {
+                                            brand_mentioned = true;
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                    if !brand_mentioned {
+                        return false;
+                    }
+                    
+                    // Check if sender is from legitimate domain
+                    let mut is_legitimate = false;
+                    
+                    // Check envelope sender domain
+                    if let Some(sender) = &context.sender {
+                        if let Some(domain) = sender.split('@').nth(1) {
+                            for legitimate_domain in legitimate_domains {
+                                if domain.eq_ignore_ascii_case(legitimate_domain) {
+                                    is_legitimate = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    
+                    // Also check From header email domain
+                    if !is_legitimate {
+                        if let Some(from_header) = &context.from_header {
+                            // Extract email from "Display Name <email@domain.com>" format
+                            let email = if from_header.contains('<') && from_header.contains('>') {
+                                from_header.split('<').nth(1)
+                                    .and_then(|s| s.split('>').next())
+                                    .unwrap_or(from_header)
+                            } else {
+                                from_header
+                            };
+                            
+                            if let Some(domain) = email.split('@').nth(1) {
+                                for legitimate_domain in legitimate_domains {
+                                    if domain.eq_ignore_ascii_case(legitimate_domain) {
+                                        is_legitimate = true;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                    if is_legitimate {
+                        return false; // Legitimate sender
+                    }
+                    
+                    // Check authentication failure if required
+                    if require_auth_failure.unwrap_or(false) {
+                        let auth_failed = context.headers.get("authentication-results")
+                            .map(|auth| auth.contains("spf=fail") || auth.contains("dkim=fail") || auth.contains("dmarc=fail"))
+                            .unwrap_or(false);
+                        if !auth_failed {
+                            return false;
+                        }
+                    }
+                    
+                    true
                 }
                 Criteria::FreeEmailProvider { check_sender, check_reply_to } => {
                     let check_sender = check_sender.unwrap_or(true);

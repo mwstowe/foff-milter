@@ -378,6 +378,16 @@ pub enum Criteria {
         // Threshold for number of different scripts before flagging
         threshold: u32,
     },
+    BrandImpersonation {
+        // Detects brand impersonation using centralized brand configuration
+        brand_name: String,                    // Brand identifier (e.g., "docusign", "paypal")
+        subject_patterns: Option<Vec<String>>, // Brand-specific subject patterns
+        sender_patterns: Option<Vec<String>>,  // Brand-specific sender patterns  
+        body_patterns: Option<Vec<String>>,    // Brand-specific body patterns
+        legitimate_domains: Vec<String>,       // Official brand domains to exclude
+        require_auth_failure: Option<bool>,    // Require authentication failure (default: false)
+        suspicious_tlds: Option<Vec<String>>,  // Specific suspicious TLDs for this brand
+    },
     FreeEmailProvider {
         // Detects emails from free email providers (gmail, outlook, etc.)
         // Uses centralized domain classification from TOML config

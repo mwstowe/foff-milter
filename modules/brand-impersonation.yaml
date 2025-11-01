@@ -1,304 +1,120 @@
 name: "Brand Impersonation Protection"
 enabled: true
 rules:
-  - name: "DocuSign phishing with suspicious domains"
+  - name: "Document signing services impersonation"
     criteria:
-      type: "And"
-      criteria:
-        - type: "Or"
-          criteria:
-            - type: "SubjectPattern"
-              pattern: "(?i).*(docusign|document.*ready|signature.*required|sign.*document|review.*document|complete.*electronically).*"
-            - type: "SenderPattern"
-              pattern: "(?i).*docusign.*"
-        - type: "Not"
-          criteria:
-            type: "SenderPattern"
-            pattern: ".*@(docusign\\.com|docusign\\.net)$"
+      type: "BrandImpersonation"
+      brand_name: "document_signing"
+      subject_patterns:
+        - "(?i).*(docusign|document.*ready|signature.*required|sign.*document|review.*document|complete.*electronically).*"
+      sender_patterns:
+        - "(?i).*docusign.*"
+      legitimate_domains:
+        - "docusign.com"
+        - "docusign.net"
     score: 50
-    description: "DocuSign brand impersonation from non-DocuSign domains"
+    description: "DocuSign and document signing service impersonation"
 
-  - name: "PayPal phishing from compromised educational domains"
+  - name: "Payment services impersonation"
     criteria:
-      type: "And"
-      criteria:
-        - type: "Or"
-          criteria:
-            - type: "SubjectPattern"
-              pattern: "(?i).*(paypal|payment.*pending|account.*suspended|verify.*account|activation.*order|order.*activated|order.*for.*\\$).*"
-            - type: "SenderPattern"
-              pattern: "(?i).*paypal.*"
-        - type: "SenderPattern"
-          pattern: ".*@.*\\.(edu|ac\\.|k12\\.|edu\\.).*"
-    score: 50
-    description: "PayPal phishing from compromised educational domains"
-
-  - name: "AAA brand impersonation"
-    criteria:
-      type: "And"
-      criteria:
-        - type: "Or"
-          criteria:
-            - type: "And"
-              criteria:
-                - type: "SubjectPattern"
-                  pattern: "(?i).*(aaa.*car.*kit|free.*car.*emergency|aaa.*emergency|free.*safety.*kit|aaa.*roadside|aaa.*membership).*"
-                - type: "Not"
-                  criteria:
-                    type: "SubjectPattern"
-                    pattern: "(?i).*(batteries.*very.*low|battery.*alert|module.*low).*"
-            - type: "SenderPattern"
-              pattern: "(?i).*(^|[^a-z])aaa([^a-z]|$).*"
-        - type: "Not"
-          criteria:
-            type: "SenderPattern"
-            pattern: ".*@(aaa\\.com|csaa\\.com|netatmo\\.com)$"
-    score: 50
-    description: "AAA brand impersonation from non-AAA domains"
-
-  - name: "AAA brand impersonation with auth failure"
-    criteria:
-      type: "And"
-      criteria:
-        - type: "Or"
-          criteria:
-            - type: "SubjectPattern"
-              pattern: "(?i).*(aaa.*car.*kit|free.*car.*emergency|aaa.*emergency|free.*safety.*kit|aaa.*roadside|aaa.*assistance|aaa.*covered).*"
-            - type: "SenderPattern"
-              pattern: "(?i).*aaa.*"
-        - type: "Not"
-          criteria:
-            type: "SenderPattern"
-            pattern: ".*@(aaa\\.com|csaa\\.com)$"
-        - type: "Or"
-          criteria:
-            - type: "HeaderPattern"
-              header: "Authentication-Results"
-              pattern: "dkim=fail"
-            - type: "HeaderPattern"
-              header: "Authentication-Results"
-              pattern: "spf=fail"
-            - type: "HeaderPattern"
-              header: "ARC-Authentication-Results"
-              pattern: "spf=fail"
-            - type: "HeaderPattern"
-              header: "ARC-Authentication-Results"
-              pattern: "dmarc=none"
+      type: "BrandImpersonation"
+      brand_name: "payment_services"
+      subject_patterns:
+        - "(?i).*(paypal|payment.*pending|account.*suspended|verify.*account|activation.*order|order.*activated|order.*for.*\\$).*"
+      sender_patterns:
+        - "(?i).*paypal.*"
+      legitimate_domains:
+        - "paypal.com"
+        - "paypal.co.uk"
     score: 60
-    description: "AAA brand impersonation with failed authentication"
+    description: "PayPal and payment service impersonation"
 
-  - name: "Schwab brand impersonation"
-    enabled: true
+  - name: "Financial services impersonation"
     criteria:
-      type: "And"
-      criteria:
-        - type: "Or"
-          criteria:
-            - type: "SubjectPattern"
-              pattern: "(?i).*(schwab.*alert|charles.*schwab|schwab.*security|schwab.*account).*"
-            - type: "SenderPattern"
-              pattern: "(?i).*schwab.*"
-        - type: "Not"
-          criteria:
-            type: "SenderPattern"
-            pattern: ".*@(schwab\\.com|charlesschwab\\.com)$"
-    score: 60
-    description: "Schwab brand impersonation from non-Schwab domains"
+      type: "BrandImpersonation"
+      brand_name: "financial_services"
+      subject_patterns:
+        - "(?i).*(schwab.*alert|charles.*schwab|schwab.*security|schwab.*account).*"
+        - "(?i).*(SBI証券|配当金|お取引履歴).*"
+      sender_patterns:
+        - "(?i).*schwab.*"
+        - "(?i).*SBI.*"
+      body_patterns:
+        - "(?i).*(SBI証券|配当金|お取引履歴).*"
+      legitimate_domains:
+        - "schwab.com"
+        - "sbisec.co.jp"
+    score: 65
+    description: "Financial services and securities impersonation"
 
-  - name: "O'Reilly Auto Parts brand impersonation"
-    enabled: true
+  - name: "Automotive services impersonation"
     criteria:
-      type: "And"
-      criteria:
-        - type: "Or"
-          criteria:
-            - type: "SubjectPattern"
-              pattern: "(?i).*(car.*upgrade.*ready|auto.*gift.*o'reilly|o'reilly.*auto.*parts).*"
-            - type: "SenderPattern"
-              pattern: "(?i).*o'reilly.*"
-        - type: "Not"
-          criteria:
-            type: "SenderPattern"
-            pattern: ".*@(oreillyauto\\.com|oreilly\\.com)$"
+      type: "BrandImpersonation"
+      brand_name: "automotive_services"
+      subject_patterns:
+        - "(?i).*(aaa.*car.*kit|free.*car.*emergency|aaa.*emergency|free.*safety.*kit|aaa.*roadside|aaa.*membership|aaa.*assistance|aaa.*covered).*"
+        - "(?i).*(car.*upgrade.*ready|auto.*gift.*o'reilly|o'reilly.*auto.*parts).*"
+      sender_patterns:
+        - "(?i).*aaa.*"
+        - "(?i).*o'reilly.*"
+      legitimate_domains:
+        - "aaa.com"
+        - "csaa.com"
+        - "oreillyauto.com"
     score: 55
-    description: "O'Reilly Auto Parts brand impersonation from non-O'Reilly domains"
+    description: "AAA and automotive services impersonation"
 
-  - name: "Oral-B brand impersonation"
-    enabled: true
+  - name: "Technology and hosting services impersonation"
     criteria:
-      type: "And"
-      criteria:
-        - type: "Or"
-          criteria:
-            - type: "SubjectPattern"
-              pattern: "(?i).*(oral.*b.*bundle|free.*oral.*b|oral.*b.*premium|oral.*b.*toothbrush).*"
-            - type: "SenderPattern"
-              pattern: "(?i).*oral.*b.*"
-        - type: "Not"
-          criteria:
-            type: "SenderPattern"
-            pattern: ".*@(oralb\\.com|pg\\.com|proctergamble\\.com)$"
-    score: 55
-    description: "Oral-B brand impersonation from non-Oral-B domains"
-
-  - name: "GoDaddy brand impersonation"
-    enabled: true
-    criteria:
-      type: "And"
-      criteria:
-        - type: "Or"
-          criteria:
-            - type: "SubjectPattern"
-              pattern: "(?i).*(godaddy.*payment|godaddy.*update|godaddy.*action.*needed|godaddy.*billing).*"
-            - type: "SenderPattern"
-              pattern: "(?i).*godaddy.*"
-        - type: "Not"
-          criteria:
-            type: "SenderPattern"
-            pattern: ".*@(godaddy\\.com|secureserver\\.net)$"
+      type: "BrandImpersonation"
+      brand_name: "technology_services"
+      subject_patterns:
+        - "(?i).*(godaddy.*payment|godaddy.*update|godaddy.*action.*needed|godaddy.*billing).*"
+        - "(?i).*(wetransfer|file.*transfer|download.*files|shared.*files).*"
+        - "(?i).*(document.*approval|shared.*file|secure.*file|new.*document|file.*shared|document.*review|shared.*document).*"
+      sender_patterns:
+        - "(?i).*godaddy.*"
+        - "(?i).*wetransfer.*"
+      body_patterns:
+        - "(?i).*(sharefile|shared.*file|secure.*file|document.*approval|review.*approval|authorised.*colleagues|visible.*only.*you).*"
+      legitimate_domains:
+        - "godaddy.com"
+        - "secureserver.net"
+        - "wetransfer.com"
+        - "sharefile.com"
     score: 60
-    description: "GoDaddy brand impersonation from non-GoDaddy domains"
+    description: "Technology and hosting services impersonation"
 
-  - name: "Return-Path and From domain mismatch"
-    enabled: true
+  - name: "Healthcare and consumer brands impersonation"
     criteria:
-      type: "And"
-      criteria:
-        - type: "PhishingDomainMismatch"
-        - type: "Not"
-          criteria:
-            type: "Or"
-            criteria:
-              - type: "SenderPattern"
-                pattern: ".*@.*\\.mailgun\\.org$"
-              - type: "SenderPattern"
-                pattern: ".*@.*\\.sendgrid\\.net$"
-              - type: "SenderPattern"
-                pattern: ".*@.*\\.amazonses\\.com$"
-              - type: "SenderPattern"
-                pattern: ".*@.*\\.mailjet\\.com$"
-              - type: "SenderPattern"
-                pattern: ".*@.*\\.mandrill\\.com$"
-              - type: "SenderPattern"
-                pattern: ".*@.*\\.sparkpostmail\\.com$"
-              - type: "SenderPattern"
-                pattern: ".*@bounce\\..*"
-              - type: "SenderPattern"
-                pattern: ".*@.*\\.salesforce\\.com$"
-              - type: "And"
-                criteria:
-                  - type: "HeaderPattern"
-                    header: "List-Unsubscribe"
-                    pattern: ".*"
-                  - type: "HeaderPattern"
-                    header: "DKIM-Signature"
-                    pattern: ".*"
-                  - type: "SenderPattern"
-                    pattern: ".*@.*\\.(com|net|org)$"
-              - type: "SenderPattern"
-                pattern: ".*@.*\\.benchmarkemail\\.com$"
-              - type: "And"
-                criteria:
-                  - type: "HeaderPattern"
-                    header: "From"
-                    pattern: ".*@.*discover\\.com.*"
-                  - type: "HeaderPattern"
-                    header: "DKIM-Signature"
-                    pattern: ".*d=discover\\.com.*"
-                  - type: "HeaderPattern"
-                    header: "Authentication-Results"
-                    pattern: "dkim=pass"
-              - type: "HeaderPattern"
-                header: "List-ID"
-                pattern: ".*"
-              - type: "HeaderPattern"
-                header: "X-Google-Group-Id"
-                pattern: ".*"
-              - type: "SenderPattern"
-                pattern: ".*via.*"
-    score: 25
-    description: "Suspicious domain mismatch between Return-Path and From headers"
-
-  - name: "WeTransfer brand impersonation"
-    criteria:
-      type: "And"
-      criteria:
-        - type: "Or"
-          criteria:
-            - type: "SubjectPattern"
-              pattern: "(?i).*(wetransfer|file.*transfer|download.*files|shared.*files).*"
-            - type: "SenderPattern"
-              pattern: "(?i).*wetransfer.*"
-        - type: "Not"
-          criteria:
-            type: "SenderPattern"
-            pattern: ".*@(wetransfer\\.com|we\\.tl)$"
+      type: "BrandImpersonation"
+      brand_name: "healthcare_consumer"
+      subject_patterns:
+        - "(?i).*(oral.*b.*bundle|free.*oral.*b|oral.*b.*premium|oral.*b.*toothbrush).*"
+        - "(?i).*(unitedhealthcare|united\\s+healthcare|uhc.*benefits).*"
+      sender_patterns:
+        - "(?i).*oral.*b.*"
+      body_patterns:
+        - "(?i).*(unitedhealthcare|united\\s+healthcare|uhc\\s|benefits.*center|healthcare.*experiences).*"
+      legitimate_domains:
+        - "oralb.com"
+        - "pg.com"
+        - "unitedhealthcare.com"
+        - "uhc.com"
     score: 50
-    description: "WeTransfer brand impersonation from non-WeTransfer domains"
+    description: "Healthcare and consumer brand impersonation"
 
-  - name: "ShareFile document sharing phishing"
-    enabled: true
+  - name: "Authentication failure brand impersonation"
     criteria:
-      type: "And"
-      criteria:
-        - type: "Or"
-          criteria:
-            - type: "SubjectPattern"
-              pattern: "(?i).*(document.*approval|shared.*file|secure.*file|new.*document|file.*shared|document.*review|shared.*document).*"
-            - type: "BodyPattern"
-              pattern: "(?i).*(sharefile|shared.*file|secure.*file|document.*approval|review.*approval|authorised.*colleagues|visible.*only.*you).*"
-            - type: "SenderPattern"
-              pattern: "(?i).*(sharefile|portal|document|file.*share|hr.*communication|group.*portal).*"
-        - type: "Not"
-          criteria:
-            type: "Or"
-            criteria:
-              - type: "SenderPattern"
-                pattern: ".*@(sharefile\\.com|.*\\.sharefile\\.com|citrix\\.com|.*\\.citrix\\.com)$"
-              - type: "HeaderPattern"
-                header: "From"
-                pattern: ".*@(sharefile\\.com|.*\\.sharefile\\.com|citrix\\.com|.*\\.citrix\\.com).*"
-    score: 60
-    description: "ShareFile and document sharing phishing from non-ShareFile domains"
-
-  - name: "SBI Securities phishing"
-    criteria:
-      type: "And"
-      criteria:
-        - type: "Or"
-          criteria:
-            - type: "SubjectPattern"
-              pattern: "(?i).*(SBI証券|配当金|お取引履歴).*"
-            - type: "SenderPattern"
-              pattern: "(?i).*SBI.*"
-            - type: "BodyPattern"
-              pattern: "(?i).*(SBI証券|配当金|お取引履歴|金融商品取引業者).*"
-        - type: "Not"
-          criteria:
-            type: "SenderPattern"
-            pattern: ".*@(sbisec\\.co\\.jp|sbigroup\\.co\\.jp)$"
-    score: 60
-    description: "Phishing emails impersonating SBI Securities from non-SBI domains"
-
-  - name: "UnitedHealthcare brand impersonation"
-    criteria:
-      type: "And"
-      criteria:
-        - type: "Or"
-          criteria:
-            - type: "SubjectPattern"
-              pattern: "(?i).*(unitedhealthcare|united\\s+healthcare|uhc.*benefits).*"
-            - type: "BodyPattern"
-              pattern: "(?i).*(unitedhealthcare|united\\s+healthcare|uhc\\s|benefits.*center|healthcare.*experiences).*"
-        - type: "Not"
-          criteria:
-            type: "Or"
-            criteria:
-              - type: "SenderPattern"
-                pattern: ".*@.*(unitedhealthcare\\.com|uhc\\.com|optum\\.com|myuhc\\.com)$"
-              - type: "BodyPattern"
-                pattern: "(?i).*(united\\s+states|u\\.s\\.|usps|postal\\s+service).*"
-              - type: "SenderPattern"
-                pattern: ".*@.*(adapthealthmarketplace\\.com|reacthealth\\.com)$"
-    score: 60
-    description: "UnitedHealthcare brand impersonation from non-UHC domains"
+      type: "BrandImpersonation"
+      brand_name: "auth_failure_brands"
+      subject_patterns:
+        - "(?i).*(aaa.*car.*kit|free.*car.*emergency|aaa.*emergency|free.*safety.*kit|aaa.*roadside|aaa.*assistance|aaa.*covered).*"
+      sender_patterns:
+        - "(?i).*aaa.*"
+      legitimate_domains:
+        - "aaa.com"
+        - "csaa.com"
+      require_auth_failure: true
+    score: 75
+    description: "Brand impersonation with authentication failure"
