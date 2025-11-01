@@ -16,6 +16,12 @@ pub struct ProcessingGuard {
     shutdown_requested: Arc<AtomicBool>,
 }
 
+impl Default for ProcessingGuard {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl ProcessingGuard {
     pub fn new() -> Self {
         Self {
@@ -30,7 +36,9 @@ impl ProcessingGuard {
             return None; // Reject new emails during shutdown
         }
         self.active_emails.fetch_add(1, Ordering::AcqRel);
-        Some(EmailToken { guard: self.clone() })
+        Some(EmailToken {
+            guard: self.clone(),
+        })
     }
 
     /// Wait for all active emails to complete processing

@@ -7,8 +7,8 @@ use foff_milter::Config as LegacyConfig;
 use log::LevelFilter;
 use std::process;
 use std::sync::Arc;
-use tokio::sync::RwLock;
 use tokio::signal::unix::{signal, SignalKind};
+use tokio::sync::RwLock;
 
 #[tokio::main]
 async fn main() {
@@ -493,7 +493,7 @@ async fn main() {
         {
             match unsafe { libc::fork() } {
                 -1 => std::process::exit(1),
-                0 => {}, // Child continues
+                0 => {}                     // Child continues
                 _ => std::process::exit(0), // Parent exits
             }
         }
@@ -538,14 +538,15 @@ async fn main() {
     // Set up SIGTERM signal handler for graceful shutdown
     let shutdown_guard = processing_guard.clone();
     tokio::spawn(async move {
-        let mut sigterm = signal(SignalKind::terminate()).expect("Failed to register SIGTERM handler");
+        let mut sigterm =
+            signal(SignalKind::terminate()).expect("Failed to register SIGTERM handler");
         sigterm.recv().await;
         log::info!("Received SIGTERM signal, initiating graceful shutdown...");
-        
+
         // Request shutdown and wait for active emails to complete
         shutdown_guard.request_shutdown();
         shutdown_guard.wait_for_completion().await;
-        
+
         log::info!("All emails processed, shutting down gracefully");
         std::process::exit(0);
     });
@@ -556,7 +557,7 @@ async fn main() {
         loop {
             sighup.recv().await;
             log::info!("Received SIGHUP signal, waiting for active emails to complete...");
-            
+
             // Wait for active email processing to complete
             guard_clone.wait_for_completion().await;
             log::info!("All emails processed, reloading configuration and modules...");
