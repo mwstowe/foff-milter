@@ -43,11 +43,22 @@ foff_milter_prestart()
 foff_milter_reload()
 {
     if [ -f "${pidfile}" ]; then
-        echo "Reloading ${name} configuration..."
-        kill -HUP `cat ${pidfile}`
-        echo "Configuration reload signal sent to ${name}."
+        pid=$(cat ${pidfile})
+        if kill -0 ${pid} 2>/dev/null; then
+            echo "Reloading ${name} configuration and modules..."
+            if kill -HUP ${pid}; then
+                echo "Configuration reload signal sent to ${name} (PID: ${pid})."
+                echo "Check logs to verify successful reload."
+            else
+                echo "Failed to send reload signal to ${name}."
+                return 1
+            fi
+        else
+            echo "${name} PID file exists but process is not running."
+            return 1
+        fi
     else
-        echo "${name} is not running."
+        echo "${name} is not running (no PID file found)."
         return 1
     fi
 }
