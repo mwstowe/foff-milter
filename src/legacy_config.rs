@@ -378,6 +378,12 @@ pub enum Criteria {
         // Threshold for number of different scripts before flagging
         threshold: u32,
     },
+    FreeEmailProvider {
+        // Detects emails from free email providers (gmail, outlook, etc.)
+        // Uses centralized domain classification from TOML config
+        check_sender: Option<bool>,     // Check sender domain (default: true)
+        check_reply_to: Option<bool>,   // Check reply-to domain (default: false)
+    },
     And {
         criteria: Vec<Criteria>,
     },

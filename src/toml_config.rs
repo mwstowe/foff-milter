@@ -14,6 +14,14 @@ pub struct TomlConfig {
     pub legacy: Option<LegacyConfigRef>,
     pub default_action: DefaultActionConfig,
     pub performance: Option<PerformanceConfig>,
+    pub domain_classifications: Option<DomainClassifications>,
+}
+
+#[derive(Debug, Deserialize, Serialize, Clone)]
+pub struct DomainClassifications {
+    pub free_email_providers: Option<Vec<String>>,
+    pub email_infrastructure: Option<Vec<String>>,
+    pub high_risk_tlds: Option<Vec<String>>,
 }
 
 impl Default for TomlConfig {
@@ -41,6 +49,26 @@ impl Default for TomlConfig {
                 action_type: "Accept".to_string(),
             },
             performance: None,
+            domain_classifications: Some(DomainClassifications {
+                free_email_providers: Some(vec![
+                    "gmail.com".to_string(),
+                    "outlook.com".to_string(),
+                    "yahoo.com".to_string(),
+                    "hotmail.com".to_string(),
+                    "aol.com".to_string(),
+                ]),
+                email_infrastructure: Some(vec![
+                    "mailchimp.com".to_string(),
+                    "sendgrid.net".to_string(),
+                    "mailgun.org".to_string(),
+                ]),
+                high_risk_tlds: Some(vec![
+                    ".tk".to_string(),
+                    ".ml".to_string(),
+                    ".ga".to_string(),
+                    ".cf".to_string(),
+                ]),
+            }),
         }
     }
 }

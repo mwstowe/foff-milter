@@ -17,8 +17,8 @@ rules:
               pattern: "(?i).*(screenshot|send over|reply.*ok|simply reply|would you like me to).*"
             - type: "BodyPattern"
               pattern: "(?i).*(greetings of the day|noticed.*errors|may need your attention).*"
-        - type: "SenderPattern"
-          pattern: ".*@(outlook\\.com|gmail\\.com|yahoo\\.com|hotmail\\.com)$"
+        - type: "FreeEmailProvider"
+          check_sender: true
     score: 50
     description: "Unsolicited website audit and lead generation spam from free email providers"
 
@@ -32,15 +32,19 @@ rules:
               pattern: "(?i).*(greetings of the day|hope this email finds you|reaching out to you).*"
             - type: "BodyPattern"
               pattern: "(?i).*(would you be interested|can I send you|let me know if you|simply reply).*"
-        - type: "SenderPattern"
-          pattern: ".*@(outlook\\.com|gmail\\.com|yahoo\\.com|hotmail\\.com)$"
+        - type: "FreeEmailProvider"
+          check_sender: true
     score: 25
     description: "Generic cold outreach patterns from free email providers"
 
   - name: "Suspicious numbered accounts"
     criteria:
-      type: "SenderPattern"
-      pattern: ".*[A-Za-z]+[0-9]{3,}@(outlook|gmail|yahoo|hotmail)\\.(com|net)$"
+      type: "And"
+      criteria:
+        - type: "SenderPattern"
+          pattern: "^[a-zA-Z]+[0-9]{3,}@.*"
+        - type: "FreeEmailProvider"
+          check_sender: true
     score: 20
     description: "Suspicious sender accounts with random numbers from free email providers"
 
@@ -54,8 +58,8 @@ rules:
               pattern: "(?i).*(seo services|digital marketing|website ranking|google ranking|increase traffic).*"
             - type: "BodyPattern"
               pattern: "(?i).*(web design|website development|online presence|social media marketing).*"
-        - type: "SenderPattern"
-          pattern: ".*@(outlook\\.com|gmail\\.com|yahoo\\.com|hotmail\\.com)$"
+        - type: "FreeEmailProvider"
+          check_sender: true
     score: 40
     description: "Unsolicited SEO and digital marketing spam from free email providers"
 

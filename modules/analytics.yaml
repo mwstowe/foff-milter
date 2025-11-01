@@ -100,8 +100,8 @@ rules:
     criteria:
       type: "And"
       criteria:
-        - type: "SenderPattern"
-          pattern: "(?i).*@(gmail|yahoo|hotmail|outlook|aol)\\.(com|co\\.uk)$"
+        - type: "FreeEmailProvider"
+          check_sender: true
         - type: "HeaderPattern"
           header: "from"
           pattern: "(?i)^[A-Z]{3,15}\\s*<.*@.*>$"

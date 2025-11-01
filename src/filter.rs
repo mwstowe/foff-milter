@@ -770,6 +770,10 @@ impl FilterEngine {
                 // No regex patterns to compile for mixed script detection
                 // Uses Unicode character range analysis instead
             }
+            Criteria::FreeEmailProvider { .. } => {
+                // No regex patterns to compile for free email provider detection
+                // Uses domain list comparison instead
+            }
             Criteria::And { criteria } | Criteria::Or { criteria } => {
                 for c in criteria {
                     self.compile_criteria_patterns(c)?;
@@ -4351,6 +4355,42 @@ impl FilterEngine {
                         is_suspicious
                     );
                     is_suspicious
+                }
+                Criteria::FreeEmailProvider { check_sender, check_reply_to } => {
+                    let check_sender = check_sender.unwrap_or(true);
+                    let check_reply_to = check_reply_to.unwrap_or(false);
+                    
+                    // Get free email providers from TOML config
+                    let free_providers = if let Some(toml_config) = &self.toml_config {
+                        if let Some(domain_classifications) = &toml_config.domain_classifications {
+                            domain_classifications.free_email_providers.as_ref()
+                        } else { None }
+                    } else { None };
+                    
+                    if let Some(providers) = free_providers {
+                        // Check sender domain
+                        if check_sender {
+                            if let Some(sender) = &context.sender {
+                                if let Some(domain) = sender.split('@').nth(1) {
+                                    if providers.iter().any(|p| domain.eq_ignore_ascii_case(p)) {
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
+                        
+                        // Check reply-to domain
+                        if check_reply_to {
+                            if let Some(reply_to) = context.headers.get("reply-to") {
+                                if let Some(domain) = reply_to.split('@').nth(1) {
+                                    if providers.iter().any(|p| domain.eq_ignore_ascii_case(p)) {
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    false
                 }
                 Criteria::And { criteria } => {
                     for c in criteria {
