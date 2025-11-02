@@ -9,13 +9,8 @@ rules:
     description: "Medical misinformation and miracle cure claims"
   - name: "CVS Medicare phishing from free email"
     criteria:
-      type: "And"
-      criteria:
-        - type: "BodyPattern"
-          pattern: "(?i).*cvs.*medicare.*"
-        - type: "HeaderPattern"
-          header: "From"
-          pattern: ".*@.*(gmail|yahoo|hotmail|outlook|aol)\\.(com|net|org).*"
+      type: "BodyPattern"
+      pattern: "(?i).*cvs.*medicare.*"
     score: 55
     description: "CVS Medicare phishing from free email providers"
   - name: "Tinnitus spam from suspicious domains"
