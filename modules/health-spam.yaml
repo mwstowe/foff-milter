@@ -192,3 +192,14 @@ rules:
           pattern: "(?i).*(harvard.*backed|all-natural.*way|repair.*cells|reverse.*cracks|chips.*dents.*cavities|no.*trip.*dentist|quick.*video.*shows|30.*seconds).*"
     score: 60
     description: "Detects dental health misinformation claiming to reverse cavities or repair teeth naturally"
+
+  - name: "Diabetes and pancreas health misinformation"
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(diabetes|diabetic|blood.*sugar|pancreas|insulin|type.*2|glucose|not.*pancreas).*"
+        - type: "BodyPattern"
+          pattern: "(?i).*(diabetes|diabetic|blood.*sugar|pancreas|insulin|type.*2|glucose|forgotten.*organ|hidden.*organ|harvard.*md|cure.*diabetes|reverse.*diabetes|diabetes.*secret|not.*your.*pancreas|diabetes.*cause|diabetic.*miracle|glucose.*control|insulin.*resistance|diabetic.*treatment|diabetes.*reversal|pumps.*blood.*sugar|causing.*type.*2|immune.*to.*diet|not.*the.*pancreas|heal.*this.*organ|reverse.*type.*2).*"
+    score: 65
+    description: "Detects diabetes misinformation and pancreas-related health scams"
