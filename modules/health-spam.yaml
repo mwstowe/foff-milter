@@ -11,14 +11,11 @@ rules:
     criteria:
       type: "And"
       criteria:
-        - type: "Or"
-          criteria:
-            - type: "SubjectPattern"
-              pattern: "(?i).*(cvs.*medicare|medicare.*cvs|cvs.*health|medicare.*plan|medicare.*enrollment|medicare.*benefits).*"
-            - type: "BodyPattern"
-              pattern: "(?i).*(cvs.*medicare|medicare.*cvs|cvs.*health|medicare.*plan|medicare.*enrollment|medicare.*benefits).*"
-        - type: "SenderPattern"
-          pattern: ".*@.*(gmail|yahoo|hotmail|outlook|aol)\\.(com|net|org)$"
+        - type: "BodyPattern"
+          pattern: "(?i).*cvs.*medicare.*"
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: ".*@.*(gmail|yahoo|hotmail|outlook|aol)\\.(com|net|org).*"
     score: 55
     description: "CVS Medicare phishing from free email providers"
   - name: "Tinnitus spam from suspicious domains"
