@@ -782,6 +782,64 @@ async fn test_email_file(
     use std::collections::HashMap;
     use std::fs;
 
+    /// Decode email body content based on Content-Transfer-Encoding
+    fn decode_email_body(body: &str, encoding: &str) -> String {
+        match encoding.to_lowercase().as_str() {
+            "quoted-printable" => {
+                // Decode quoted-printable encoding
+                let mut decoded = String::new();
+                let mut chars = body.chars().peekable();
+
+                while let Some(ch) = chars.next() {
+                    if ch == '=' {
+                        if let Some(&'\n') = chars.peek() {
+                            // Soft line break - skip the = and newline
+                            chars.next();
+                            continue;
+                        } else if let Some(&'\r') = chars.peek() {
+                            // Soft line break with CRLF - skip = and \r, then check for \n
+                            chars.next();
+                            if let Some(&'\n') = chars.peek() {
+                                chars.next();
+                            }
+                            continue;
+                        } else {
+                            // Hex encoding =XX
+                            let hex1 = chars.next().unwrap_or('0');
+                            let hex2 = chars.next().unwrap_or('0');
+                            if let Ok(byte_val) =
+                                u8::from_str_radix(&format!("{}{}", hex1, hex2), 16)
+                            {
+                                decoded.push(byte_val as char);
+                            } else {
+                                // Invalid hex, keep original
+                                decoded.push('=');
+                                decoded.push(hex1);
+                                decoded.push(hex2);
+                            }
+                        }
+                    } else {
+                        decoded.push(ch);
+                    }
+                }
+                decoded
+            }
+            "base64" => {
+                // Decode base64 encoding
+                use base64::{engine::general_purpose, Engine as _};
+                let cleaned = body
+                    .chars()
+                    .filter(|c| !c.is_whitespace())
+                    .collect::<String>();
+                match general_purpose::STANDARD.decode(&cleaned) {
+                    Ok(bytes) => String::from_utf8_lossy(&bytes).to_string(),
+                    Err(_) => body.to_string(), // Return original if decode fails
+                }
+            }
+            _ => body.to_string(), // No encoding or unknown encoding
+        }
+    }
+
     println!("🧪 Testing email file: {}", email_file);
     println!();
 
@@ -794,13 +852,14 @@ async fn test_email_file(
         }
     };
 
-    // Parse email headers
+    // Parse email content with proper MIME decoding
     let mut headers: HashMap<String, String> = HashMap::new();
     let mut sender = String::new();
     let recipients = vec!["test@example.com".to_string()]; // Default recipient
     let mut body = String::new();
     let mut in_headers = true;
     let mut last_header_key: Option<String> = None;
+    let mut content_transfer_encoding = String::new();
 
     for line in email_content.lines() {
         if in_headers {
@@ -825,6 +884,11 @@ async fn test_email_file(
                 let value = value.trim().to_string();
 
                 last_header_key = Some(key.clone());
+
+                // Track content encoding headers
+                if key == "content-transfer-encoding" {
+                    content_transfer_encoding = value.clone();
+                }
 
                 // Extract sender from Return-Path or From
                 if key == "return-path" {
@@ -855,6 +919,10 @@ async fn test_email_file(
             body.push('\n');
         }
     }
+
+    // Decode email body content to match production milter behavior
+    let decoded_body = decode_email_body(&body, &content_transfer_encoding);
+    body = decoded_body;
 
     if sender.is_empty() {
         sender = "unknown@example.com".to_string();

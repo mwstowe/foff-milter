@@ -7,3 +7,20 @@ rules:
       pattern: ".*MAILER-DAEMON.*"
     score: 60
     description: "MAILER-DAEMON spoofing detection"
+
+  - name: "SEO and marketing services spam"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(seo.*traffic|seo.*report|seo.*services|seo.*review|marketing.*services|website.*traffic|search.*ranking).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(seo.*gaps|seo.*services|traffic.*daily|search.*ranking|website.*optimization|marketing.*services|noticed.*gaps|send.*review|quick.*review).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(google|legitimate-seo|established-marketing)\\.com$"
+    score: 55
+    description: "Detects unsolicited SEO and marketing services spam"

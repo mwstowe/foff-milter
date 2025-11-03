@@ -4837,13 +4837,22 @@ impl FilterEngine {
         }
 
         // Require either List-ID, Google Groups, transactional service, or crowdfunding platform, plus at least 2 total indicators
-        let is_legitimate = (has_list_id
+        let has_mailing_list_infrastructure = (has_list_id
             || has_google_groups
             || has_transactional_service
             || has_crowdfunding_platform)
             && list_indicators >= 2;
 
-        if is_legitimate {
+        // Check for obvious spam content that should not get mailing list override
+        let has_spam_content = self.has_obvious_spam_content(context);
+
+        let is_legitimate = has_mailing_list_infrastructure && !has_spam_content;
+
+        if has_mailing_list_infrastructure && has_spam_content {
+            log::debug!(
+                "Mailing list infrastructure detected but contains obvious spam content - not applying override"
+            );
+        } else if is_legitimate {
             log::debug!(
                 "Legitimate mailing list detected with {} indicators",
                 list_indicators
@@ -4851,5 +4860,42 @@ impl FilterEngine {
         }
 
         is_legitimate
+    }
+
+    /// Detects obvious spam content that should not get mailing list override
+    fn has_obvious_spam_content(&self, context: &MailContext) -> bool {
+        let subject = context
+            .subject
+            .as_ref()
+            .map(|s| s.to_lowercase())
+            .unwrap_or_default();
+        let body = context
+            .body
+            .as_ref()
+            .map(|b| b.to_lowercase())
+            .unwrap_or_default();
+
+        // SEO and marketing spam patterns
+        let seo_patterns = [
+            "seo gaps",
+            "seo services",
+            "seo review",
+            "traffic daily",
+            "search ranking",
+            "website optimization",
+            "marketing services",
+            "noticed gaps",
+            "send review",
+            "quick review",
+        ];
+
+        for pattern in &seo_patterns {
+            if subject.contains(pattern) || body.contains(pattern) {
+                log::debug!("Detected SEO spam pattern: {}", pattern);
+                return true;
+            }
+        }
+
+        false
     }
 }

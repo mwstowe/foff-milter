@@ -1,0 +1,184 @@
+Return-Path: <analytics.setup+bncBCNLVG7FWEBBBC54UPEAMGQELNI7KPY@fake-agency.tk>
+Received: from hotel.example.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.example.com (8.18.1/8.18.1) with ESMTPS id 5A3GsqSL009909
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <user@example.com>; Mon, 3 Nov 2025 16:54:52 GMT
+	(envelope-from analytics.setup+bncBCNLVG7FWEBBBC54UPEAMGQELNI7KPY@fake-agency.tk)
+Authentication-Results: juliett.example.com;
+	dkim=pass (2048-bit key; unprotected) header.d=fake-agency.tk.20230601.gappssmtp.com header.i=@fake-agency.tk.20230601.gappssmtp.com header.b=jNvSpYSY
+X-Authentication-Warning: juliett.example.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.example.com
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com [209.85.221.70])
+	by hotel.example.com (8.16.1/8.16.1) with ESMTPS id 5A3Gsood063929
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=OK)
+	for <user@example.com>; Mon, 3 Nov 2025 10:54:51 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.example.com 5A3Gsood063929
+Authentication-Results: hotel.example.com;
+	dkim=pass (2048-bit key, unprotected) header.d=fake-agency.tk.20230601.gappssmtp.com header.i=@fake-agency.tk.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=jNvSpYSY
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-429cd08586csf856100f8f.3
+        for <user@example.com>; Mon, 03 Nov 2025 08:54:51 -0800 (PST)
+ARC-Seal: i=2; a=rsa-sha256; t=1762188889; cv=pass;
+        d=google.com; s=arc-20240605;
+        b=Ir4NjkUql5KmGz+QRwf/OC9QTH5/uCxaDA7i/KiFh0cxC7+vOwA5dPUE+ouOB0MZoK
+         Hq0V7KWHGzuoco5lYdHplEBPtG1oIFiRoL7IC4kGJPwazXJtftsL59B31geewrqTae8G
+         Tg4YAMYxvE42bdEUd8ZxzKKP6DPgR04P+zuN1LGEUBJyn6UXmDLtfoNiE5gwIT7Tpui9
+         5wSJAr06dBMpJNZ/jzPcirDjt2urtqh/uRD350v7JikcKvrkJtzfjW9mYR8PYRFqvgvW
+         3pbPoNfukx4pFo+bekd4jcxH67zkC09WbPeRVo0ATAKu1aP7gQAXy6OgdaVi8CvbgvRo
+         GLxg==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=list-unsubscribe:list-subscribe:list-archive:list-help:list-post
+         :list-id:mailing-list:precedence:to:subject:message-id:date:from
+         :mime-version:dkim-signature;
+        bh=MN+JuIP1RnaDSL9okT8QtE8YnOAjhNQUG4nAgeKBgQ4=;
+        fh=plULJliqP6KMukYZGcgKfXn+fi43Zwl4mRhDhLTRQpA=;
+        b=KA+DxVPgP8QEdtVkf8m0PXVrJnzcHg1i/8h8trs2lnGSWi0Ct7nV2hdcSFDBhSWaH/
+         9pwtJZwCMU58jn6vaqN0LGBD9g03PCwmaScoIxYRE7Y474K+FYtB4wYOSrCoDF/41jLv
+         a2p2r+/gHI8zJmS2CHgH33/Tuc9Wc6rBlN0ce0BkdFGIfxuoUXJnIULMiUghfEHkRUtv
+         lfvvQI+r2f6A8J2Y6K3d/zjyxQJzTT3GNwrJPJ2XNrIbs3LP6v5KL3IT9NSI8A+SPrm3
+         KYLLpnhIgfmYLHUCkKgnGXtUQQb2bnncfBfU+nEaxCEe47zb/UKA3EGtLD88pWpQg1E9
+         9T1g==;
+        darn=example.com
+ARC-Authentication-Results: i=2; mx.google.com;
+       dkim=pass header.i=@spam-seo.tk header.s=google header.b=MnblvFnK;
+       spf=pass (google.com: domain of kiran.chaudhary@spam-seo.tk designates 209.85.220.41 as permitted sender) smtp.mailfrom=kiran.chaudhary@spam-seo.tk;
+       dmarc=pass (p=NONE sp=NONE dis=NONE) header.from=spam-seo.tk;
+       dara=neutral header.i=@fake-agency.tk
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fake-agency.tk.20230601.gappssmtp.com; s=20230601; t=1762188889; x=1762793689; darn=example.com;
+        h=list-unsubscribe:list-subscribe:list-archive:list-help:list-post
+         :list-id:mailing-list:precedence:x-original-authentication-results
+         :x-original-sender:to:subject:message-id:date:from:mime-version:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=MN+JuIP1RnaDSL9okT8QtE8YnOAjhNQUG4nAgeKBgQ4=;
+        b=jNvSpYSYR9+Kbk65nZyLgLo3XpOXRYKF0N25hprhXk3JdTHzA7SnkuDLiscCevshRG
+         GqAGlD7HYZNfIpFvv2QtH/57qdvEoCPpqK7vrpkfU+geZP9ndNcvU44K9C3/0/PX/Z0k
+         NdUIIV73DtrUils5sdsuGZcBW/ZwQJzzWtOVfXDtqh3L3yAce2V7Fd0uPTwSUqG6xCKP
+         2JNLvA0OHAS6qIZYjjyy4kxvCSe76v/wNdlilngM341bHapaGsZzKISNvgNKQLWoPpo2
+         pVkX/cCToU6/T8i7aTVS4AQ8JmjmWofVriD2YPwnaxTq9LTANcD6WNp1B8q6TCsvWIEL
+         93gA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762188889; x=1762793689;
+        h=list-unsubscribe:list-subscribe:list-archive:list-help:list-post
+         :x-spam-checked-in-group:list-id:mailing-list:precedence
+         :x-original-authentication-results:x-original-sender:to:subject
+         :message-id:date:from:mime-version:x-beenthere:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=MN+JuIP1RnaDSL9okT8QtE8YnOAjhNQUG4nAgeKBgQ4=;
+        b=rvhXBdyPLiiZcUopclQrVKwgfimd16Wi+uXEEkrLmh+iMKWPky2yCpftayqD9KrkHl
+         vgrjIoq0oZTxMJKchvJgNW6L0yJNv0jFqPSqRlEH72ddJjTFWBB/BhK8ksLQ3AvfdiVW
+         fwKT4crmYa0rihr6NU4+yTIyivNvyATTrsBOBfK8E5gf6OZTXQ15kYrhgFSUG3TwyoKl
+         Vbs9MOWqrZNIpT6mSY56auaPmiaP3/5e8EShPNYkS1zChpPVsRDP2GJ/33A7Xqlmfvi1
+         tCO5lRmgv2bGh9go7G9p8MHq8NxHTP4ZgUPzjvrsLGgoQy8tLnSR81VJbTgIvQgqqcNs
+         9j7A==
+X-Forwarded-Encrypted: i=2; AJvYcCXFlNakV9gvioA9a3kUuZjt1bnBtK5g/YSIvtVnxYc2JgUQWBk8VcqQt1LLXn/jI/zsaUjTUUwc@example.com
+X-Gm-Message-State: AOJu0YxkYJUmmrf9fmmt5T+WnRB2CIrWwnWyo6NNX3kqto14t7C96OaT
+	w3lDfLJ+AjBiCSmTxcPzEkIgQtSTtCRDsBnEm9tryxLFfQA4Djr4rYwNLIn+ZBFW3lA=
+X-Google-Smtp-Source: AGHT+IHlwIYUoNMF6/SN9+SyGN2KjaRHOEQoxyQUmVBC1OHYM1up9YhKHppppnsNADgyT+blCwTNAA==
+X-Received: by 2002:a05:6000:24c2:b0:426:d5de:e454 with SMTP id ffacd0b85a97d-429bd6a4578mr11531083f8f.31.1762188888722;
+        Mon, 03 Nov 2025 08:54:48 -0800 (PST)
+X-BeenThere: analytics.setup@fake-agency.tk; h="Ae8XA+a7yo69Rv1hNSbkHmZZRp8ilRruYglVc8A6CYZw9YvlHQ=="
+Received: by 2002:a05:6000:25c4:b0:429:c4ad:e771 with SMTP id
+ ffacd0b85a97d-429c4adf286ls2269037f8f.0.-pod-prod-08-eu; Mon, 03 Nov 2025
+ 08:53:29 -0800 (PST)
+X-Received: by 2002:a17:906:794c:b0:b6d:565f:7862 with SMTP id a640c23a62f3a-b70701319f8mr1382438166b.14.1762188809421;
+        Mon, 03 Nov 2025 08:53:29 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1762188809; cv=none;
+        d=google.com; s=arc-20240605;
+        b=W01DKWF5t3nD1GKAcddF32yZFWzjE9JtB3j+UzgV0hOc5fqtSzvr/K9+sWvn/rKKXG
+         SQzFDG5Y/1Tul7psASMjGUWmQlR4TVCZh6QfSj7VB0k1PxaFKGe08grev/PrctGovr06
+         aX35j6VZFBPJ0+RLPrrH1T5BKWoe5BWB4wsNCkH2IHfKDDJ+dZLB1MAS9CxqEFxA52jI
+         tPa7EcvOVczwWypR3cxjwIG4bJJl/pAjtXBDzWyXBBO3HIOUUTf8TizasIFwbD+Pgyc4
+         9DT0TNAVQ8dUMQQS1WNrxtG4qNpKIJnAO6aXwHRik46+Uz0OjIcSVxNFX3zxNXMeRgX3
+         YrZw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=095Yn6jSYhcRfPMgCMNAaE9Pm1YLrnhi++Vl73t1cpQ=;
+        fh=1aXczvY+fCNRGIOlI7ab7qEXorBQGDpmRW3eOFzzqVQ=;
+        b=UrGc+28flUGMgjL+Lqvip/VDi3q3/a7khQuU9A2E5IYLqS5SqLTm9PuQHXYdSd6gvQ
+         NNw9hQ7yLg8Lg7Jr7vr++FEwVV+THj3VWpMnYHgDCKkPpZzKwqliE3yanEWK2aGRUWvR
+         joFOK9oysBni/eU6atiMGIn8WEsh7I89jSxK9J0FWuEdYJgysNUk/JWxMVgXXDKEDnZN
+         reCERIjBHZU3ZAO8ZI7iHG1CqP+4y55yealqvldSMDHghR+epywW3HDX5xvBfanxefHS
+         sMA+2fuLy9KWWJ3cvdpw4pNqpj/97QfFYwfgHOGcBONxYNklupsC05f5DbOuqymyS4Oh
+         eesQ==;
+        dara=google.com
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@spam-seo.tk header.s=google header.b=MnblvFnK;
+       spf=pass (google.com: domain of kiran.chaudhary@spam-seo.tk designates 209.85.220.41 as permitted sender) smtp.mailfrom=kiran.chaudhary@spam-seo.tk;
+       dmarc=pass (p=NONE sp=NONE dis=NONE) header.from=spam-seo.tk;
+       dara=neutral header.i=@fake-agency.tk
+Received: from mail-sor-f41.google.com (mail-sor-f41.google.com. [209.85.220.41])
+        by mx.google.com with SMTPS id a640c23a62f3a-b70779ba6fdsor310151966b.3.2025.11.03.08.53.29
+        for <analytics.setup@fake-agency.tk>
+        (Google Transport Security);
+        Mon, 03 Nov 2025 08:53:29 -0800 (PST)
+Received-SPF: pass (google.com: domain of kiran.chaudhary@spam-seo.tk designates 209.85.220.41 as permitted sender) client-ip=209.85.220.41;
+X-Gm-Gg: ASbGnctfqUO7SWA+xQ/cgK2M/ZgZDKDNGI9M98eA66YtDpc0rP1OG5mcWnM3Myxn5R8
+	INI0pEtxPHnyk6KO9Vz0yTp+6DpWbDbW58evvMAXlEn4bIB0yJlCOeOt8CQLefUTfi0y4cXbO58
+	AAZUzw5G6hT75h1gAHU/1VQkgpOAOsT1syPnLyvKP726/YEWMbs0Vz+NmV99FZwsQyPBT4qTux3
+	rOtqLYJEit7haN18iltnOolsnFBDHI9a0dLjzgPGKLeHTOtZML6qjN2wGFj
+X-Received: by 2002:a17:907:2d87:b0:b6d:6a3e:b960 with SMTP id
+ a640c23a62f3a-b707085fdcbmr1333643666b.59.1762188808530; Mon, 03 Nov 2025
+ 08:53:28 -0800 (PST)
+MIME-Version: 1.0
+From: John Spammer <kiran.chaudhary@spam-seo.tk>
+Date: Mon, 3 Nov 2025 22:23:17 +0530
+X-Gm-Features: AWmQ_bn3VvzzxAsGfYIhx1zLva8x1tv9e1PIeGtDG8-ptyrR2A16UUbkb4y-1kg
+Message-ID: <CALH-uyjXQJ7AOoNVQQ8ys0CAVjSSM1FbPLxDx_p_dMSVRVG_bQ@mail.gmail.com>
+Subject: SEO traffic report
+To: analytics.setup@fake-agency.tk
+Content-Type: multipart/alternative; boundary="000000000000f5bfba0642b38d6d"
+X-Original-Sender: kiran.chaudhary@spam-seo.tk
+X-Original-Authentication-Results: mx.google.com;       dkim=pass
+ header.i=@spam-seo.tk header.s=google header.b=MnblvFnK;       spf=pass
+ (google.com: domain of kiran.chaudhary@spam-seo.tk designates
+ 209.85.220.41 as permitted sender) smtp.mailfrom=kiran.chaudhary@spam-seo.tk;
+       dmarc=pass (p=NONE sp=NONE dis=NONE) header.from=spam-seo.tk;
+       dara=neutral header.i=@fake-agency.tk
+Precedence: list
+Mailing-list: list Analytics.Setup@fake-agency.tk; contact Analytics.Setup+owners@fake-agency.tk
+List-ID: <Analytics.Setup.fake-agency.tk>
+X-Spam-Checked-In-Group: Analytics.Setup@fake-agency.tk
+X-Google-Group-Id: 395749716987
+List-Post: <https://groups.google.com/a/fake-agency.tk/group/Analytics.Setup/post>,
+ <mailto:Analytics.Setup@fake-agency.tk>
+List-Help: <https://support.google.com/a/fake-agency.tk/bin/topic.py?topic=25838>,
+ <mailto:Analytics.Setup+help@fake-agency.tk>
+List-Archive: <https://groups.google.com/a/fake-agency.tk/group/Analytics.Setup/>
+List-Subscribe: <https://groups.google.com/a/fake-agency.tk/group/Analytics.Setup/subscribe>,
+ <mailto:Analytics.Setup+subscribe@fake-agency.tk>
+List-Unsubscribe: <mailto:googlegroups-manage+395749716987+unsubscribe@googlegroups.com>,
+ <https://groups.google.com/a/fake-agency.tk/group/Analytics.Setup/subscribe>
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.example.com [172.31.18.8]); Mon, 03 Nov 2025 16:54:52 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.example.com [23.95.222.152]); Mon, 03 Nov 2025 10:54:51 -0600 (CST)
+X-FOFF-Score: -200 - analyzed by foff-milter v0.6.5 on juliett.example.com
+X-FOFF-Score: -200 - foff-milter v0.6.5 (juliett.example.com)
+X-FOFF-Score: -200 - analyzed by foff-milter v0.6.5 on hotel.example.com
+X-FOFF-Score: -200 - foff-milter v0.6.5 (hotel.example.com)
+
+--000000000000f5bfba0642b38d6d
+Content-Type: text/plain; charset="UTF-8"
+
+Hello,
+I noticed SEO gaps that could be hurting traffic daily.
+Should I send a quick *SEO Services review* today?
+
+Best regards,
+John Spammer
+
+To unsubscribe from this group and stop receiving emails from it, send an email to Analytics.Setup+unsubscribe@fake-agency.tk.
+
+--000000000000f5bfba0642b38d6d
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr">Hello,<br>I noticed SEO gaps that could b=
+e hurting traffic daily.<br>Should I send a quick=C2=A0<b>SEO Services revi=
+ew</b>=C2=A0today?<div><br></div><div>Best regards,</div><div>Kiran Chaudha=
+ry</div></div><br></div>
+
+<p></p>
+
+To unsubscribe from this group and stop receiving emails from it, send an e=
+mail to <a href=3D"mailto:Analytics.Setup+unsubscribe@wildnetdigitalagency.=
+com">Analytics.Setup+unsubscribe@fake-agency.tk</a>.<br />
+
+--000000000000f5bfba0642b38d6d--

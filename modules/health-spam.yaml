@@ -78,16 +78,16 @@ rules:
       type: "And"
       criteria:
         - type: "BodyPattern"
-          pattern: "(?i).*(septic.*tank|eliminates.*smell|tiny.*tab|prestigious.*university|scientists.*developed|pumped.*anymore).*"
+          pattern: "(?i).*(septic.*tank.*eliminates|eliminates.*septic.*smell|tiny.*tab.*septic|prestigious.*university.*septic|scientists.*developed.*septic|never.*pumped.*anymore).*"
         - type: "Not"
           criteria:
             type: "Or"
             criteria:
               - type: "HeaderPattern"
                 header: "From"
-                pattern: ".*@(lovepopcards\\.com|shopify\\.com|.*\\.shopify\\.com|asus\\.com|.*\\.asus\\.com).*"
+                pattern: ".*@(lovepopcards\\.com|shopify\\.com|.*\\.shopify\\.com|asus\\.com|.*\\.asus\\.com|arrived\\.com|.*\\.arrived\\.com).*"
               - type: "BodyPattern"
-                pattern: "(?i).*(order.*confirmation|you.*saved.*\\$|lovepop|pop-up.*card|asus|zenwifi|router|mesh.*router).*"
+                pattern: "(?i).*(order.*confirmation|you.*saved.*\\$|lovepop|pop-up.*card|asus|zenwifi|router|mesh.*router|real.*estate|investment.*property|lease.*property).*"
     score: 45
     description: "Home improvement and septic tank product spam"
 
