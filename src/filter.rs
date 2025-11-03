@@ -4766,6 +4766,7 @@ impl FilterEngine {
         let mut list_indicators = 0;
         let mut has_list_id = false;
         let mut has_google_groups = false;
+        let mut has_transactional_service = false;
 
         for (header_name, header_value) in &context.headers {
             let header_lower = header_name.to_lowercase();
@@ -4783,18 +4784,29 @@ impl FilterEngine {
                 list_indicators += 2;
                 log::debug!("Google Groups indicator: {} = {}", header_name, header_value);
             }
+            // Legitimate transactional email services
+            else if (header_lower == "x-ses-outgoing" && value_lower.contains("amazonses"))
+                || (header_lower == "feedback-id" && value_lower.contains("amazonses"))
+                || (header_lower == "x-accountcode" && !value_lower.is_empty())
+                || (header_lower == "errors-to" && value_lower.contains("govdelivery"))
+            {
+                has_transactional_service = true;
+                list_indicators += 2;
+                log::debug!("Transactional service indicator: {} = {}", header_name, header_value);
+            }
             // Moderate indicators (count as 1 point each)
             else if header_lower == "list-post"
                 || header_lower == "mailing-list"
                 || (header_lower == "precedence" && value_lower == "list")
+                || header_lower == "list-unsubscribe-post"
             {
                 list_indicators += 1;
                 log::debug!("Moderate mailing list indicator: {} = {}", header_name, header_value);
             }
         }
 
-        // Require either List-ID or Google Groups, plus at least 2 total indicators
-        let is_legitimate = (has_list_id || has_google_groups) && list_indicators >= 2;
+        // Require either List-ID, Google Groups, or transactional service, plus at least 2 total indicators
+        let is_legitimate = (has_list_id || has_google_groups || has_transactional_service) && list_indicators >= 2;
 
         if is_legitimate {
             log::debug!(
