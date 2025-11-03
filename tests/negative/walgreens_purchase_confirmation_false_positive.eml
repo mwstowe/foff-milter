@@ -1,0 +1,708 @@
+Return-Path: <0100019a47fb5a6a-09d6ffb1-bd3b-442e-ba5f-a1c71a3797cd-000000@bounce.us.bazaarvoice-cgc.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTPS id 5A34UrM4086463
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <marcy@baddomain.com>; Mon, 3 Nov 2025 04:30:53 GMT
+	(envelope-from 0100019a47fb5a6a-09d6ffb1-bd3b-442e-ba5f-a1c71a3797cd-000000@bounce.us.bazaarvoice-cgc.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (1024-bit key; unprotected) header.d=bazaarvoice-cgc.com header.i=@bazaarvoice-cgc.com header.b=hcdtw/xm;
+	dkim=pass (1024-bit key; unprotected) header.d=amazonses.com header.i=@amazonses.com header.b=BglhmKvU
+X-Authentication-Warning: juliett.baddomain.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.baddomain.com
+Received: from a48-172.smtp-out.amazonses.com (a48-172.smtp-out.amazonses.com [54.240.48.172])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 5A34Up3P051831
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO)
+	for <marcy@baddomain.com>; Sun, 2 Nov 2025 22:30:52 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 5A34Up3P051831
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (1024-bit key, unprotected) header.d=bazaarvoice-cgc.com header.i=@bazaarvoice-cgc.com header.a=rsa-sha256 header.s=larvwfirbbmslqnn3yxx5lciobqoqv7d header.b=hcdtw/xm;
+	dkim=pass (1024-bit key, unprotected) header.d=amazonses.com header.i=@amazonses.com header.a=rsa-sha256 header.s=6gbrjpgwjskckoa6a5zn6fwqkn67xbtw header.b=BglhmKvU
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=larvwfirbbmslqnn3yxx5lciobqoqv7d; d=bazaarvoice-cgc.com;
+	t=1762144246;
+	h=From:To:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-ID:Date;
+	bh=RK5QFgbEfK5wF75rzS6kCFI5bb+FYBS8AjXykZQ1iNM=;
+	b=hcdtw/xmBBMTqEkw7Ms7ENRzbsTJqMbKekLjWbL7V3uHOqEN6EQgUZblXV/ZM3At
+	QRpXM1vy84EIWnOkErfd7RKr5YImSWcevl6bfkz7nJ/hXczdehdbzIz/D+RAokObiIp
+	bnE4lEBwl5OUaEoGPe0XlNQddGcbaT1cd34PTYLQ=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=6gbrjpgwjskckoa6a5zn6fwqkn67xbtw; d=amazonses.com; t=1762144246;
+	h=From:To:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-ID:Date:Feedback-ID;
+	bh=RK5QFgbEfK5wF75rzS6kCFI5bb+FYBS8AjXykZQ1iNM=;
+	b=BglhmKvU/rt9E/ZWk2XEuTyXCHUH9fP0z+//QJqozPyKRzzRL3jhPxGRQdzDAuXZ
+	ECFCNrT9iq/O20aBE+bggwvadZpBd63FxJKGNimFrrHiHKpytVzbChRssoy+/M0Lb2y
+	ROROJvWVxAGFisl3d5ZiH8Q8whWLdWJ8DuaevEp4=
+From: Walgreens <noreply-walgreens@bazaarvoice-cgc.com>
+To: marcy@baddomain.com
+Subject: Thanks for your recent purchase!
+MIME-Version: 1.0
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Message-ID: <0100019a47fb5a6a-09d6ffb1-bd3b-442e-ba5f-a1c71a3797cd-000000@email.amazonses.com>
+Date: Mon, 3 Nov 2025 04:30:46 +0000
+Feedback-ID: ::1.us-east-1.sScSajI8pOVmt8tDtCH7ghocXEHtzel6rZ0IltgIxr8=:AmazonSES
+X-SES-Outgoing: 2025.11.03-54.240.48.172
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Mon, 03 Nov 2025 04:30:53 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Sun, 02 Nov 2025 22:30:52 -0600 (CST)
+X-Spam-Flag: YES
+X-FOFF-Rule-Matched: Health Spam Detection: Diabetes and pancreas health misinformation (juliett.baddomain.com)
+X-FOFF-Rule-Matched: Health Spam Detection: Diabetes and pancreas health misinformation (hotel.baddomain.com)
+X-FOFF-Score: 65 - foff-milter v0.6.5 (juliett.baddomain.com)
+X-FOFF-Score: 65 - foff-milter v0.6.5 (hotel.baddomain.com)
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8" />
+<meta http-equiv=3D"X-UA-Compatible" content=3D"IE=3D9" />
+<meta name=3D"viewport" content=3D"width=3Ddevice-width, initial-scale=3D1"=
+ />
+<meta name=3D"color-scheme" content=3D"light dark"/>
+<title>Thanks for your recent purchase!</title>
+<style>
+form .a {display:none !important}
+form .b {display:block !important}
+.c {display:none !important}
+.d {display:block !important}
+form [class=3D"x_a"] {display:block !important}
+form [class=3D"x_b"] {display:none !important}
+body[data-outlook-cycle] .a {display:block !important}
+body[data-outlook-cycle] .b {display:none !important}
+.c {mso-hide:none !important}
+.d {mso-hide:all !important}
+.f {width:106px;height:106px;padding-bottom:0.5em}
+.g {border:1px solid #e0e0e0;border-radius:6px;padding:1.5em}
+.h li {margin:.1em 0;text-align:left !important}
+.h li:first-child {margin-top:-.1em}
+.h li:last-child {margin-bottom:0}
+.h label {display:inline-block;padding:.1em 0;text-align:left !important}
+.i {color:#284b9b;border-radius:.25em;border:1.5px solid #284b9b;padding:.2=
+5em;margin:.2em;}
+.h .i {padding:0;margin:.15em;width:28px;height:28px;line-height:28px;text-=
+align:center;box-sizing:border-box;font-size:16px}
+.h .i .ae {width:16px;height:16px}
+.h label {white-space:nowrap}
+label:hover .i, input:focus + .i, input:checked + .i {color:#284b9b}
+a:visited {color:#284b9b}
+.j textarea::placeholder, .j input::placeholder {color:#666666}
+.k {background-color:#323264}
+form:invalid .k {background-color:#c2c2d1}
+.j textarea, .j input {box-sizing:border-box;width:99%;max-width:99%}
+.j textarea, .j input {width:calc(100% - 1px);max-width:calc(100% - 1px)}
+.l a {text-decoration:none;color:#284b9b !important}
+.m {display:inline-block;min-width:1px;min-height:1px}
+input:checked + .m {background-image:url(https://network.bazaarvoice.com/a.=
+gif?cl=3DFeature&productId=3D300436571&client=3Dwalgreens&campaignId=3DBV_P=
+IE_FOLLOWUP_MPR&notificationId=3Dddee6773-b86d-11f0-b3ca-0affc418417b&messa=
+geType=3DPIE&recipientDomain=3Dbaddomain.com&source=3Dmpr-template&deployme=
+ntZone=3Dsame_day_delivery&locale=3Den_US&type=3DUsed&name=3DEmailStarsFiel=
+d)}
+textarea:focus + .m {background-image:url(https://network.bazaarvoice.com/a=
+.gif?cl=3DFeature&productId=3D300436571&client=3Dwalgreens&campaignId=3DBV_=
+PIE_FOLLOWUP_MPR&notificationId=3Dddee6773-b86d-11f0-b3ca-0affc418417b&mess=
+ageType=3DPIE&recipientDomain=3Dbaddomain.com&source=3Dmpr-template&deploym=
+entZone=3Dsame_day_delivery&locale=3Den_US&type=3DUsed&name=3DEmailTextFiel=
+d)}
+.j input:focus + .m {background-image:url(https://network.bazaarvoice.com/a=
+.gif?cl=3DFeature&productId=3D300436571&client=3Dwalgreens&campaignId=3DBV_=
+PIE_FOLLOWUP_MPR&notificationId=3Dddee6773-b86d-11f0-b3ca-0affc418417b&mess=
+ageType=3DPIE&recipientDomain=3Dbaddomain.com&source=3Dmpr-template&deploym=
+entZone=3Dsame_day_delivery&locale=3Den_US&type=3DUsed&name=3DEmailTitleFie=
+ld)}
+button:active + .m {background-image:url(https://network.bazaarvoice.com/a.=
+gif?cl=3DFeature&productId=3D300436571&client=3Dwalgreens&campaignId=3DBV_P=
+IE_FOLLOWUP_MPR&notificationId=3Dddee6773-b86d-11f0-b3ca-0affc418417b&messa=
+geType=3DPIE&recipientDomain=3Dbaddomain.com&source=3Dmpr-template&deployme=
+ntZone=3Dsame_day_delivery&locale=3Den_US&type=3DUsed&name=3DEmailSubmitBut=
+ton)}
+.b:hover {background-image:url(https://network.bazaarvoice.com/a.gif?cl=3DF=
+eature&productId=3D300436571&client=3Dwalgreens&campaignId=3DBV_PIE_FOLLOWU=
+P_MPR&notificationId=3Dddee6773-b86d-11f0-b3ca-0affc418417b&messageType=3DP=
+IE&recipientDomain=3Dbaddomain.com&source=3Dmpr-template&deploymentZone=3Ds=
+ame_day_delivery&locale=3Den_US&type=3DUsed&name=3DEmailForm)}
+.n {text-align:justify;font-size:10px;line-height:18px}
+.o {text-align:center;font-size:1px;line-height:1px}
+.p {display:none}
+.q {padding-left:10%;min-height:108px;max-width:59%}
+.r {height:36px}
+.s {min-width:208px}
+.b .h .i {vertical-align:middle}
+.t {direction:ltr;display:flex;flex-direction:row;gap:2px;font-size:24px}
+.u {padding:.4em;margin-right:6px;background-color:transparent !important;b=
+order:1.5px solid #284b9b;border-radius:.15em;text-decoration:none;cursor:p=
+ointer;color:#284b9b !important;text-shadow:0 0 0 #333}
+.v {display:inline !important}
+.w {display:none !important}
+.u:last-child {margin-right:0}
+.t:hover .u {background-color:#284b9b !important;color:#fff !important}
+.t:hover .u .o1{display:none !important}
+.t:hover .u .o2{display:inline !important}
+.t:hover .u:hover ~ .u {background-color:transparent !important;color:#284b=
+9b !important}
+.t:hover .u:hover ~ .u .o1{display:inline !important}
+.t:hover .u:hover ~ .u .o2{display:none !important}
+.u:focus,
+.u:focus-visible {background-color:#284b9b !important}
+.t:focus-within .u {background-color:#284b9b !important}
+.u:focus ~ .u {background-color:transparent !important}
+.c .u {padding:0.35em}
+#MessageViewBody .q {padding-left:0;min-width:208px}
+#MessageViewBody .p {display:inline-block}
+@media (min-width:376px) {
+#MessageViewBody .q {padding-left:10%;min-width:0}
+#MessageViewBody .p {display:none}
+}
+.aa {color:#99281C;font-weight:400}
+.ab:focus:invalid {border:2px solid #FF0000 !important;outline:none !import=
+ant}
+@media (max-width:519px) {
+.ac {max-width:30% !important}
+#ad .q {padding-left:4%;max-width:calc(96% - 109px)}
+.r {height:36px;height:calc(.2857em + 31.5px)}
+.s {min-width:208px}
+.ae {width:16px;height:16px;padding:.25em}
+.u {padding:0.2em}
+.i {border-radius:.25em;border:1.5px solid #284b9b;padding:0;margin:.1em}
+.k {width:auto;padding:0 1em}
+.h input {margin:0;vertical-align:middle}
+}
+@media (max-width:420px) {
+.ac {max-width:28% !important}
+.h input {margin:0;vertical-align:middle}
+.ae {width:12px;height:12px;padding:0.2em}
+.k {width:auto;padding:0 0.8em}
+.i {border-radius:.25em;border:1.5px solid #284b9b;padding:0;margin:.1em}
+}
+@media (max-width:438px){ul.h.h, ul.h[style], .h[style] {padding-left:0 !im=
+portant}}
+@media (max-width:375px) {
+#ad .q {padding-left:0;max-width:calc(100% - 109px)}
+.p {display:inline-block}
+.s, #ad .q {min-width:184px}
+.h input {margin:0;vertical-align:middle}
+.i {padding-left:1px;border-radius:.25em;border:1.5px solid #284b9b;padding=
+:0;margin:.1em}
+.ae {width:10px;height:10px}
+}
+@media (min-width:520px) {
+.q {max-width:calc(95% - 109px)}
+.r {height:31px;height:calc(.2857em + 27px)}
+.s {min-width:238px}
+.t {font-size:26px}
+.h input {margin:0;vertical-align:middle}
+.k {width:auto;padding:0 1.5em}
+}
+@media (min-width:620px) {
+.f {width:196px;height:196px;padding-bottom:.5em}
+.q {min-height:198px;max-width:calc(95% - 199px)}
+.r {height:76px;height:calc(.2857em + 72px)}
+.h input {width:1.2em;height:1.2em;margin:0;vertical-align:middle}
+}
+@media (max-width:768px) {
+.af, .ag {margin-left:0 !important;margin-right:0 !important;border-left:0 =
+!important;border-right:0 !important}
+}
+@media (max-width:519px) {
+.af, .ag {padding:1em !important}
+.ah {margin-left:1em !important;margin-right:1em !important}
+.ai {margin:1em auto !important;padding:0 1em !important}
+.af, .aj {margin:1em 0 !important}
+.ak {padding:1.25em !important}
+h1 {height:auto !important;margin-bottom:1em !important;font-size:28px !imp=
+ortant}
+}
+@media (max-width:339px) {
+.u {padding:0 1px}
+.s, #ad .q {min-width:174px}
+.af, .ag {padding:0.75em !important}
+.ah {margin-left:0.75em !important;margin-right:0.75em !important}
+.ai {margin:0.75em auto !important;padding:0 0.75em !important}
+.af, .aj {margin:0.75em 0 !important}
+.ak {padding:0.9375em !important}
+h1 {height:auto !important;margin-bottom:0.75em !important;font-size:24px !=
+important}
+.ac {max-width:80px !important;min-width:60px !important}
+}
+@media (min-width:320px) {
+.al {min-width:290px}
+}
+@media (min-width:375px) {
+.al {min-width:345px}
+}
+@media (min-width:414px) {
+.al {min-width:384px}
+}
+.moz-text-html form .a {display:block !important}
+.moz-text-html form .b {display:none !important}
+@media only screen yahoo and (max-width:1024px) {
+form .a {display:block !important}
+form .b {display:none !important}
+}
+@media (min-resolution:1dppx) and (pointer:coarse) {
+form .a {display:block !important}
+form .b {display:none !important}
+}
+#MessageViewBody form .a {display:block !important}
+#MessageViewBody form .b {display:none !important}
+@media (min-resolution:1dppx) and (max-device-width:1024px) {
+u + .am form .a {display:block !important}
+u + .am form .b {display:none !important}
+div > u + .am form .a {display:none !important}
+div > u + .am form .b {display:block !important}
+}
+@media (min-device-width:1024px) {
+.an {display:none}
+}
+@media (pointer:coarse) {
+.an {display:block}
+}
+@media (-webkit-min-device-pixel-ratio:0) and (pointer:coarse) and (max-dev=
+ice-width:768px), (-webkit-min-device-pixel-ratio:0) and (pointer:coarse) a=
+nd (device-width:834px) and (device-height:1112px), (-webkit-min-device-pix=
+el-ratio:0) and (pointer:coarse) and (device-width:1024px) and (device-heig=
+ht:1366px) {
+.an {display:none}
+}
+@media (prefers-color-scheme:dark) {
+.al {background-color:#1e1e1e !important;color:#fff !important}
+.i {color:#a3ccff !important;-webkit-text-stroke:0 !important;text-shadow:n=
+one !important;border-color:#a3ccff !important}
+.g {border:1px solid #5c5b5b;background-color:#2e2e2e}
+.u {background:transparent !important;border-color:#a3ccff !important;color=
+:#a3ccff !important;-webkit-text-stroke:0 !important}
+.sc{border-color:#a3ccff !important}
+.sc a.u{text-decoration:none !important;display:block;border-color:#a3ccff =
+!important}
+.t:hover .u {background-color:#a3ccff !important;color:transparent !importa=
+nt}
+.t:hover .u .o1{display:none !important}
+.t:hover .u .o2{display:inline !important}
+.t:hover .u:hover ~ .u {background-color:transparent !important;color:#a3cc=
+ff !important}
+.t:hover .u:hover ~ .u .o1{display:inline !important}
+.t:hover .u:hover ~ .u .o2{display:none !important}
+h1 {color:#fff !important}
+h4 {color:#fff}
+p {color:#fff}
+div {color:#fff}
+input {background-color:#2e2e2e !important;border-color:#5c5b5b !important;=
+color:#fff !important}
+textarea {background-color:#2e2e2e !important;border-color:#5c5b5b !importa=
+nt;color:#fff !important}
+.y, .z {color:#fff}
+.t:focus-within .u {background-color:#a3ccff}
+.ak {background-color:#2E2E2E !important;color:#fff !important;border-color=
+:#2E2E2E !important}
+.v {display:none !important}
+.w {display:inline !important}
+.sc a.u .o1{color:#a3ccff;display:inline}
+.sc a.u .o2{color:#fff;display:none}
+.ao,.ap,.aq,.ar,.as,.at,p,.muted,.l {color:#fff !important}
+.aa{color:#99281C !important}
+.am{color:#FED9D5 !important}
+.hm{color:#fff !important}
+}
+.sc {width:28px;height:28px;padding:0;vertical-align:middle;text-align:cent=
+er;background:transparent;font-size:16px;line-height:28px;mso-line-height-r=
+ule:exactly;border:1.5px solid #284b9b;border-radius:.15em;box-sizing:borde=
+r-box}
+.sc a.u{text-decoration:none !important;display:block}
+.sc a.u .st,.t .u .st{display:inline-block;font-size:18px;line-height:18px;=
+height:18px;text-align:center;vertical-align:middle}
+.sc a.u .o1{color:#284b9b;display:inline}
+.sc a.u .o2{color:#fff;display:none}
+.pn {text-decoration:none;cursor:default;font-weight:600;font-size:16px;let=
+ter-spacing:.2px;line-height:125%}
+.muted {color:#7b8080;font-size:.8em;text-decoration:none;cursor:default}
+.blk {display:inline-block;vertical-align:top;text-align:initial;font-size:=
+16px}
+.hc {margin:1.25em;text-align:center}
+.si {padding:0 10px;vertical-align:top;font-size:0;line-height:0;mso-line-h=
+eight-rule:exactly}
+.sil img {display:block;border:0;outline:0;text-decoration:none}
+.sil {display:block;text-decoration:none;line-height:0;font-size:0 !importa=
+nt;mso-line-height-rule:exactly}
+.hs {margin:.5em 0;font-family:'Gibson','Helvetica Neue',Helvetica,Arial,sa=
+ns-serif;word-wrap:break-word}
+.pname {color:#0a1414;font-size:1.2em;text-decoration:none}
+.pe {display:block;font-size:.85em;margin:10px 0 0 0;width:100%}
+.pe:after{content:"";display:table;clear:both}
+.pe span:last-child {text-align:right !important}
+</style>
+<style>
+form .a\0 {display:block !important}
+form .b\0 {display:none !important}
+</style>
+<style>
+@media (-webkit-min-device-pixel-ratio:0) and (min-device-width:1025px), (-=
+webkit-min-device-pixel-ratio:0) and (min-device-width:769px) and (max-devi=
+ce-width:1024px) and (max-device-height:1024px) {
+body > .al form .a {display:block !important}
+body > .al form .b {display:none !important}
+body > * > .al form .a {display:block !important}
+body > * > .al form .b {display:none !important}
+}
+</style>
+</head>
+<body class=3D"am" style=3D"background-color:#fff;padding:0;margin:0;font-f=
+amily:'Gibson','Helvetica Neue',Helvetica,Arial,sans-serif;">
+<div id=3D"ad" class=3D"al font-base" style=3D"background-color:#fff;width:=
+100%;overflow:hidden;margin:0 auto;font-size:16px;max-width:768px;">
+<!--[if (mso)|(IE)]>
+<table role=3D"presentation" width=3D"768" align=3D"center" cellpadding=3D"=
+0" cellspacing=3D"0" border=3D"0"><tr><td class=3D"font-base" style=3D"font=
+-size:16px;">
+<div align=3D"center">
+<![endif]-->
+
+<span class=3D"ai" style=3D"display:block;margin:1.25em auto .5em auto;padd=
+ing:0 1.25em;line-height:1;text-decoration:none;text-align:center;">
+<img class=3D"ac" src=3D"http://photos-us.bazaarvoice.com/photo/2/Y2xpZW50Y=
+29uZmlnaW1hZ2VzOndhbGdyZWVucw/391b5febbd267ba9189907de722f5094.png" alt=3D"=
+Walgreens logo" width=3D"120" style=3D"width:120px;max-width:120px;height:a=
+uto;background-image:url(https://notifications-data.s3.amazonaws.com/white.=
+png);border:10px solid transparent;border-image:url(https://notifications-d=
+ata.s3.amazonaws.com/white.png) 30 round;margin-top:0" aria-label=3D"Walgre=
+ens logo" />
+</span>
+
+<!--[if (mso)|(IE)]>
+</div>
+<![endif]-->
+<p class=3D"at ah" style=3D"margin:1.25em 2.5em;line-height:125%;letter-spa=
+cing:.2px;font-size:16px;font-weight:400;color:#333">
+Thank you for shopping with us! We hope you'll write about your Walgreens F=
+iber Gummies Orange while it's still fresh on your mind. Click the stars to=
+ get started:
+</p>
+<!--[if !mso]><!-->
+<div class=3D"af" style=3D"margin:1.25em;padding:1.25em;">
+<!--<![endif]-->
+<!--[if mso]>
+<table role=3D"presentation" width=3D"100%" style=3D"border-spacing:1.25em;=
+mso-cellspacing:1.25em;"><tr><td style=3D"border:2px solid #e7e6e6;padding:=
+1.25em;font-family:'Gibson', 'Helvetica Neue', Helvetica, Arial, sans-serif=
+;font-size:16px;">
+<![endif]-->
+<!--[if !IE]><!-->
+<form method=3D"get" action=3D"https://network.bazaarvoice.com/r/1jc70K5WDv=
+qF5YiN?">
+<!--<![endif]-->
+<div class=3D"a" style=3D"display: block;">
+<div class=3D"c">
+<table role=3D"presentation" border=3D"0" cellspacing=3D"0" cellpadding=3D"=
+0" style=3D"mso-table-lspace:0;mso-table-rspace:0;">
+<tr style=3D"height: 38px;">
+<td rowspan=3D"2" width=3D"106" height=3D"106" valign=3D"middle" align=3D"c=
+enter" style=3D"border:1px solid #fff;width:106px;height:106px;padding:0;ve=
+rtical-align:middle;line-height:1;mso-line-height-rule:exactly"><img src=3D=
+"http://pics.walgreens.com/prodimg/658353/155.jpg" alt=3D"" role=3D"present=
+ation" width=3D"106" style=3D"max-height:106px"/></td>
+<td rowspan=3D"2" width=3D"75" style=3D"width: 75px; padding: 0;"></td>
+<td height=3D"38" valign=3D"bottom" style=3D"padding:0 2px;vertical-align:b=
+ottom;font-size:16px;"><a class=3D"pname" href=3D"https://network.bazaarvoi=
+ce.com/r/8OFHdCHXLausAQQU?" target=3D"_blank">Walgreens Fiber Gummies Orang=
+e</a></td>
+</tr>
+<tr style=3D"height: 73px;">
+<td valign=3D"top" style=3D"vertical-align: top;">
+<table role=3D"presentation" border=3D"0" cellspacing=3D"2" cellpadding=3D"=
+0" style=3D"mso-table-lspace:0;mso-table-rspace:0;">
+<tr style=3D"height:28px;"><td class=3D"sc" width=3D"28" height=3D"28" vali=
+gn=3D"middle" align=3D"center"><a class=3D"u" href=3D"https://network.bazaa=
+rvoice.com/r/8OFHdCHXLausAQQU?&rating=3D1&location=3Dtd-star" target=3D"_bl=
+ank" aria-label=3D"Select to rate the product with 1 star. 1 star" style=3D=
+"display:block;width:28px;height:28px;line-height:28px;border:1.5px solid #=
+284b9b;border-radius:.15em;text-decoration:none;box-sizing:border-box;"><sp=
+an class=3D"st"><span class=3D"o1" style=3D"display:inline">=E2=98=86</span=
+><span class=3D"o2" style=3D"display:none">=E2=98=85</span></span></a></td>=
+<td class=3D"sc" width=3D"28" height=3D"28" valign=3D"middle" align=3D"cent=
+er"><a class=3D"u" href=3D"https://network.bazaarvoice.com/r/8OFHdCHXLausAQ=
+QU?&rating=3D2&location=3Dtd-star" target=3D"_blank" aria-label=3D"Select t=
+o rate the product with 2 stars. 2 stars" style=3D"display:block;width:28px=
+;height:28px;line-height:28px;border:1.5px solid #284b9b;border-radius:.15e=
+m;text-decoration:none;box-sizing:border-box;"><span class=3D"st"><span cla=
+ss=3D"o1" style=3D"display:inline">=E2=98=86</span><span class=3D"o2" style=
+=3D"display:none">=E2=98=85</span></span></a></td><td class=3D"sc" width=3D=
+"28" height=3D"28" valign=3D"middle" align=3D"center"><a class=3D"u" href=
+=3D"https://network.bazaarvoice.com/r/8OFHdCHXLausAQQU?&rating=3D3&location=
+=3Dtd-star" target=3D"_blank" aria-label=3D"Select to rate the product with=
+ 3 stars. 3 stars" style=3D"display:block;width:28px;height:28px;line-heigh=
+t:28px;border:1.5px solid #284b9b;border-radius:.15em;text-decoration:none;=
+box-sizing:border-box;"><span class=3D"st"><span class=3D"o1" style=3D"disp=
+lay:inline">=E2=98=86</span><span class=3D"o2" style=3D"display:none">=E2=
+=98=85</span></span></a></td><td class=3D"sc" width=3D"28" height=3D"28" va=
+lign=3D"middle" align=3D"center"><a class=3D"u" href=3D"https://network.baz=
+aarvoice.com/r/8OFHdCHXLausAQQU?&rating=3D4&location=3Dtd-star" target=3D"_=
+blank" aria-label=3D"Select to rate the product with 4 stars. 4 stars" styl=
+e=3D"display:block;width:28px;height:28px;line-height:28px;border:1.5px sol=
+id #284b9b;border-radius:.15em;text-decoration:none;box-sizing:border-box;"=
+><span class=3D"st"><span class=3D"o1" style=3D"display:inline">=E2=98=86</=
+span><span class=3D"o2" style=3D"display:none">=E2=98=85</span></span></a><=
+/td><td class=3D"sc" width=3D"28" height=3D"28" valign=3D"middle" align=3D"=
+center"><a class=3D"u" href=3D"https://network.bazaarvoice.com/r/8OFHdCHXLa=
+usAQQU?&rating=3D5&location=3Dtd-star" target=3D"_blank" aria-label=3D"Sele=
+ct to rate the product with 5 stars. 5 stars" style=3D"display:block;width:=
+28px;height:28px;line-height:28px;border:1.5px solid #284b9b;border-radius:=
+.15em;text-decoration:none;box-sizing:border-box;"><span class=3D"st"><span=
+ class=3D"o1" style=3D"display:inline">=E2=98=86</span><span class=3D"o2" s=
+tyle=3D"display:none">=E2=98=85</span></span></a></td></tr>
+</table>
+<!--[if mso]><table role=3D"presentation" width=3D"100%" cellpadding=3D"0" =
+cellspacing=3D"0"><tr><td align=3D"left" style=3D"font-size:.85em"><span cl=
+ass=3D"muted">Poor</span></td><td align=3D"right" style=3D"font-size:.85em"=
+><span class=3D"muted">Excellent</span></td></tr></table><![endif]--><!--[i=
+f !mso]><!--><div class=3D"pe"><table role=3D"presentation" width=3D"100%" =
+cellpadding=3D"0" cellspacing=3D"0"><tr><td align=3D"left" class=3D"muted">=
+Poor</td><td align=3D"right" class=3D"muted">Excellent</td></tr></table></d=
+iv><!--<![endif]-->
+</td>
+</tr>
+</table>
+</div>
+<div class=3D"g">
+<div class=3D"d n" style=3D"display: none;">
+<div class=3D"f blk" style=3D"border-radius:.5em;pointer-events:none;"><spa=
+n style=3D"display:inline-block;height:100%;vertical-align:middle;"></span>=
+<img style=3D"max-width:100%;max-height:100%;vertical-align:middle;object-f=
+it:contain;" src=3D"http://pics.walgreens.com/prodimg/658353/155.jpg" alt=
+=3D"" role=3D"none"/></div>
+<div class=3D"q blk">
+<div class=3D"r" style=3D"display:table;"><div style=3D"display:table-cell;=
+vertical-align:bottom;padding:0.5em 0;"><div style=3D"font-size:1.2em;font-=
+weight:600;line-height:125%;letter-spacing:.2px;"><span class=3D"pn">Walgre=
+ens Fiber Gummies Orange</span></div></div></div>
+<div class=3D"s">
+<div style=3D"display:inline-block;">
+<div role=3D"radiogroup" aria-label=3D"Rate this product">
+<!--[if !mso]><!--><div class=3D"t" style=3D"white-space:nowrap;">
+<a class=3D"u" href=3D"https://network.bazaarvoice.com/r/8OFHdCHXLausAQQU?&=
+rating=3D1&location=3Dlink" target=3D"_blank" role=3D"radio" aria-label=3D"=
+Select to rate the product with 1 star. 1 star"><span class=3D"st"><span cl=
+ass=3D"o1" style=3D"display:inline">=E2=98=86</span><span class=3D"o2" styl=
+e=3D"display:none">=E2=98=85</span></span></a><a class=3D"u" href=3D"https:=
+//network.bazaarvoice.com/r/8OFHdCHXLausAQQU?&rating=3D2&location=3Dlink" t=
+arget=3D"_blank" role=3D"radio" aria-label=3D"Select to rate the product wi=
+th 2 stars. 2 stars"><span class=3D"st"><span class=3D"o1" style=3D"display=
+:inline">=E2=98=86</span><span class=3D"o2" style=3D"display:none">=E2=98=
+=85</span></span></a><a class=3D"u" href=3D"https://network.bazaarvoice.com=
+/r/8OFHdCHXLausAQQU?&rating=3D3&location=3Dlink" target=3D"_blank" role=3D"=
+radio" aria-label=3D"Select to rate the product with 3 stars. 3 stars"><spa=
+n class=3D"st"><span class=3D"o1" style=3D"display:inline">=E2=98=86</span>=
+<span class=3D"o2" style=3D"display:none">=E2=98=85</span></span></a><a cla=
+ss=3D"u" href=3D"https://network.bazaarvoice.com/r/8OFHdCHXLausAQQU?&rating=
+=3D4&location=3Dlink" target=3D"_blank" role=3D"radio" aria-label=3D"Select=
+ to rate the product with 4 stars. 4 stars"><span class=3D"st"><span class=
+=3D"o1" style=3D"display:inline">=E2=98=86</span><span class=3D"o2" style=
+=3D"display:none">=E2=98=85</span></span></a><a class=3D"u" href=3D"https:/=
+/network.bazaarvoice.com/r/8OFHdCHXLausAQQU?&rating=3D5&location=3Dlink" ta=
+rget=3D"_blank" role=3D"radio" aria-label=3D"Select to rate the product wit=
+h 5 stars. 5 stars"><span class=3D"st"><span class=3D"o1" style=3D"display:=
+inline">=E2=98=86</span><span class=3D"o2" style=3D"display:none">=E2=98=85=
+</span></span></a>
+</div><!--<![endif]-->
+</div>
+<!--[if !mso]><!-->
+<!--[if mso]><table role=3D"presentation" width=3D"100%" cellpadding=3D"0" =
+cellspacing=3D"0"><tr><td align=3D"left" style=3D"font-size:.85em"><span cl=
+ass=3D"muted">Poor</span></td><td align=3D"right" style=3D"font-size:.85em"=
+><span class=3D"muted">Excellent</span></td></tr></table><![endif]--><!--[i=
+f !mso]><!--><div class=3D"pe"><table role=3D"presentation" width=3D"100%" =
+cellpadding=3D"0" cellspacing=3D"0"><tr><td align=3D"left" class=3D"muted">=
+Poor</td><td align=3D"right" class=3D"muted">Excellent</td></tr></table></d=
+iv><!--<![endif]-->
+<!--<![endif]-->
+</div>
+</div>
+</div>
+<span class=3D"p" style=3D"width:100%;height:1px;"></span>
+</div>
+</div>
+</div>
+<!--[if !mso]><!-->
+<div class=3D"b" style=3D"display: none;">
+<div class=3D"g">
+<div style=3D"display:table;"><div style=3D"display:table-cell;vertical-ali=
+gn:bottom;padding:0.5em 0;"><div style=3D"font-size:1.2em;font-weight:600;l=
+ine-height:125%;letter-spacing:.2px;"><span class=3D"pn">Walgreens Fiber Gu=
+mmies Orange</span></div></div></div>
+<div class=3D"n">
+<div class=3D"f blk" style=3D"border-radius:.5em;pointer-events: none"><spa=
+n style=3D"display:inline-block;height:100%;vertical-align:middle;"></span>=
+<img style=3D"max-width:100%;max-height:100%;vertical-align:middle;object-f=
+it:contain;" src=3D"http://pics.walgreens.com/prodimg/658353/155.jpg" alt=
+=3D"" role=3D"none"/></div>
+<ul class=3D"h blk" style=3D"list-style-type:none;margin:0;padding-left:3.5=
+em;">
+<li value=3D"1" style=3D"padding-left:.5em"><label title=3D"1 star" style=
+=3D"display:inline-block"><input type=3D"radio" name=3D"rating" value=3D"1"=
+ required=3D"required" aria-label=3D"Select to rate the product with 1 star=
+. 1 star"/><span style=3D"display:inline-block;margin-left:.5em"><span clas=
+s=3D"i m" aria-hidden=3D"true"><span class=3D"v">=E2=98=85</span><span clas=
+s=3D"w">=E2=98=85</span></span></span></label></li>
+<li value=3D"2" style=3D"padding-left:.5em"><label title=3D"2 stars" style=
+=3D"display:inline-block"><input type=3D"radio" name=3D"rating" value=3D"2"=
+ required=3D"required" aria-label=3D"Select to rate the product with 2 star=
+s. 2 stars"/><span style=3D"display:inline-block;margin-left:.5em"><span cl=
+ass=3D"i m" aria-hidden=3D"true"><span class=3D"v">=E2=98=85</span><span cl=
+ass=3D"w">=E2=98=85</span></span><span class=3D"i m" aria-hidden=3D"true"><=
+span class=3D"v">=E2=98=85</span><span class=3D"w">=E2=98=85</span></span><=
+/span></label></li>
+<li value=3D"3" style=3D"padding-left:.5em"><label title=3D"3 stars" style=
+=3D"display:inline-block"><input type=3D"radio" name=3D"rating" value=3D"3"=
+ required=3D"required" aria-label=3D"Select to rate the product with 3 star=
+s. 3 stars"/><span style=3D"display:inline-block;margin-left:.5em"><span cl=
+ass=3D"i m" aria-hidden=3D"true"><span class=3D"v">=E2=98=85</span><span cl=
+ass=3D"w">=E2=98=85</span></span><span class=3D"i m" aria-hidden=3D"true"><=
+span class=3D"v">=E2=98=85</span><span class=3D"w">=E2=98=85</span></span><=
+span class=3D"i m" aria-hidden=3D"true"><span class=3D"v">=E2=98=85</span><=
+span class=3D"w">=E2=98=85</span></span></span></label></li>
+<li value=3D"4" style=3D"padding-left:.5em"><label title=3D"4 stars" style=
+=3D"display:inline-block"><input type=3D"radio" name=3D"rating" value=3D"4"=
+ required=3D"required" aria-label=3D"Select to rate the product with 4 star=
+s. 4 stars"/><span style=3D"display:inline-block;margin-left:.5em"><span cl=
+ass=3D"i m" aria-hidden=3D"true"><span class=3D"v">=E2=98=85</span><span cl=
+ass=3D"w">=E2=98=85</span></span><span class=3D"i m" aria-hidden=3D"true"><=
+span class=3D"v">=E2=98=85</span><span class=3D"w">=E2=98=85</span></span><=
+span class=3D"i m" aria-hidden=3D"true"><span class=3D"v">=E2=98=85</span><=
+span class=3D"w">=E2=98=85</span></span><span class=3D"i m" aria-hidden=3D"=
+true"><span class=3D"v">=E2=98=85</span><span class=3D"w">=E2=98=85</span><=
+/span></span></label></li>
+<li value=3D"5" style=3D"padding-left:.5em"><label title=3D"5 stars" style=
+=3D"display:inline-block"><input type=3D"radio" name=3D"rating" value=3D"5"=
+ required=3D"required" aria-label=3D"Select to rate the product with 5 star=
+s. 5 stars"/><span style=3D"display:inline-block;margin-left:.5em"><span cl=
+ass=3D"i m" aria-hidden=3D"true"><span class=3D"v">=E2=98=85</span><span cl=
+ass=3D"w">=E2=98=85</span></span><span class=3D"i m" aria-hidden=3D"true"><=
+span class=3D"v">=E2=98=85</span><span class=3D"w">=E2=98=85</span></span><=
+span class=3D"i m" aria-hidden=3D"true"><span class=3D"v">=E2=98=85</span><=
+span class=3D"w">=E2=98=85</span></span><span class=3D"i m" aria-hidden=3D"=
+true"><span class=3D"v">=E2=98=85</span><span class=3D"w">=E2=98=85</span><=
+/span><span class=3D"i m" aria-hidden=3D"true"><span class=3D"v">=E2=98=85<=
+/span><span class=3D"w">=E2=98=85</span></span></span></label></li>
+</ul>
+<div class=3D"blk"></div>
+<span class=3D"p" style=3D"width:100%;height:1px;"></span>
+</div>
+</div>
+<div class=3D"j">
+<label for=3D"title-field" style=3D"display:block;font-weight:400;margin:1.=
+2em 0 .3em;font-size:.9em;line-height:129%;letter-spacing:.2px">Review titl=
+e<span class=3D"aa"> *</span></label>
+<div><input type=3D"text" id=3D"title-field" class=3D"ab" style=3D"font-fam=
+ily:inherit;letter-spacing:.2px;font-weight:400;line-height:129%;vertical-a=
+lign:middle;font-size:14px;padding:.5em;border:1px solid #e0e0e0;border-rad=
+ius:6px;background:#f1f1f1;color:#333;white-space:pre-wrap;-webkit-appearan=
+ce:none" name=3D"f.reviewTitle" maxlength=3D"50" placeholder=3D"What&#39;s =
+your review about?" required=3D"required" aria-label=3D"Review title What&#=
+39;s your review about?"/><span class=3D"m"></span></div>
+</div>
+<div class=3D"j" style=3D"margin-top:1.2em;">
+<label for=3D"text-field" style=3D"display:block;font-weight:400;margin:1.2=
+em 0 .3em;font-size:.9em;line-height:129%;letter-spacing:.2px">Your review<=
+span class=3D"aa"> *</span></label>
+<div><textarea id=3D"text-field" name=3D"f.reviewText" class=3D"ab" style=
+=3D"font-family:inherit;letter-spacing:.2px;font-weight:400;line-height:129=
+%;vertical-align:middle;font-size:14px;padding:.5em;border:1px solid #e0e0e=
+0;border-radius:6px;background:#f1f1f1;color:#333;white-space:pre-wrap;-web=
+kit-appearance:none" cols=3D"50" rows=3D"4" placeholder=3D"What should some=
+one know about this product?" required=3D"required" aria-label=3D"Your revi=
+ew. What should someone know about this product?. Quality insights are 2-3 =
+sentences long."></textarea><span class=3D"m"></span></div>
+<div class=3D"hm" style=3D"margin-top:0.8em;margin-left:0.2em;font-size:0.8=
+75em !important;line-height:1;color:#7b8080;">Quality insights are 2-3 sent=
+ences long.</div>
+</div>
+<div style=3D"margin:1.2em 0 0.8em;">
+<button type=3D"submit" class=3D"k" style=3D"height:3em;border-radius:1.5em=
+;color:#ffffff;font-size:1em;cursor:pointer;border:0;font-family:'Gibson','=
+Helvetica Neue',Helvetica,Arial,sans-serif;" name=3D"submit">Submit</button=
+><span class=3D"m"></span>
+</div>
+<div class=3D"l" style=3D"margin:1.5em 0 1em;font-size:.8em;color:#7b8080;"=
+>
+If you are unable to submit, copy your review and paste it into <a style=3D=
+"color:#284b9b" href=3D"https://network.bazaarvoice.com/r/RfLY5vqEhhXO1fcf?=
+">this form</a>.
+</div>
+</div>
+<!--<![endif]-->
+<!--[if mso]>
+</td></tr></table>
+<![endif]-->
+<!--[if !mso]><!-->
+</div>
+<!--<![endif]-->
+<hr class=3D"aj" style=3D"clear: left; margin: 1.25em 0; border-top: 1px so=
+lid#e0e0e0; border-bottom: 0; color: #e7e6e6;" />
+
+
+
+<div style=3D"margin: 2em 1.25em 1.25em 1.25em; text-align: center; padding=
+: 1em 0;">
+<!--[if mso | IE]>
+<table role=3D"presentation" cellspacing=3D"0" cellpadding=3D"0" border=3D"=
+0" align=3D"center">
+<tr>
+<td>
+<![endif]-->
+<table role=3D"presentation" cellspacing=3D"0" cellpadding=3D"0" border=3D"=
+0" align=3D"center" style=3D"margin:0 auto;display:inline-table">
+<tr>
+</tr>
+</table>
+<!--[if mso | IE]>
+</td>
+</tr>
+</table>
+<![endif]-->
+</div>
+<!--[if !mso]><!-->
+<p class=3D"ak" style=3D"margin:0;border:1px solid #fff;padding:1.5625em;ba=
+ckground-color:#e7e6e6;color:#0a1414;font-size:.8em;text-align:center">
+<img src=3D"http://photos-us.bazaarvoice.com/photo/2/Y2xpZW50Y29uZmlnaW1hZ2=
+VzOndhbGdyZWVucw/391b5febbd267ba9189907de722f5094.png" alt=3D"Walgreens log=
+o" width=3D"120" style=3D"width:120px;max-width:120px;height:auto;display:b=
+lock;margin:0 auto 15px auto;">
+<br>
+<!--<![endif]-->
+<!--[if mso]>
+<table role=3D"presentation" width=3D"100%" border=3D"0"><tr><td style=3D"b=
+order:1px solid #ffffff;padding:1.25em;background-color:#e7e6e6;color:#0a14=
+14;font-family:'Gibson', 'Helvetica Neue', Helvetica, Arial, sans-serif;fon=
+t-size:.8em;text-align:center;">
+<table role=3D"presentation" width=3D"120" align=3D"center" cellpadding=3D"=
+0" cellspacing=3D"0" border=3D"0" style=3D"width:120px;margin:0 auto 15px a=
+uto;">
+<tr><td width=3D"120" align=3D"center" valign=3D"middle" style=3D"width:120=
+px;line-height:1;text-align:center;">
+<img src=3D"http://photos-us.bazaarvoice.com/photo/2/Y2xpZW50Y29uZmlnaW1hZ2=
+VzOndhbGdyZWVucw/391b5febbd267ba9189907de722f5094.png" alt=3D"Walgreens log=
+o" width=3D"120" style=3D"width:120px;max-width:120px;height:auto;display:b=
+lock;" />
+</td></tr>
+</table>
+<![endif]-->
+<a style=3D"color:#284b9b !important;" href=3D"http://www.walgreens.com/">C=
+ontact Customer Service</a> with questions or concerns. If you no longer wi=
+sh to receive notifications like this, you can <a style=3D"color:#284b9b !i=
+mportant;" href=3D"https://network.bazaarvoice.com/r/5XvAGFuInfgfod2C?">uns=
+ubscribe</a> any time.
+<br />&nbsp;<br />
+This email was sent by: <strong>Walgreen Co.</strong><br />200 Wilmot Road,=
+ Deerfield, IL, 60015, USA
+<br />&nbsp;<br />
+<!--[if mso]>
+</td></tr></table>
+<![endif]-->
+<!--[if !mso]><!-->
+</p>
+<!--<![endif]-->
+<!--[if (mso)|(IE)]>
+</td></tr></table>
+<![endif]-->
+</div>
+<img src=3D"https://network.bazaarvoice.com/a.gif?cl=3DMessageLifecycle&typ=
+e=3DOpened&messageId=3Dddee6773-b86d-11f0-b3ca-0affc418417b&client=3Dwalgre=
+ens&source=3Dletterpress" alt=3D"" />
+</body>
+</html>

@@ -1,0 +1,2281 @@
+Return-Path: <0101019a3f72fcf4-7cd8356d-9e2c-4eb6-87f4-50ddb0ddddea-000000@bounce.public.govdelivery.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTPS id 5A1Ciwme006133
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <marcy@baddomain.com>; Sat, 1 Nov 2025 12:44:58 GMT
+	(envelope-from 0101019a3f72fcf4-7cd8356d-9e2c-4eb6-87f4-50ddb0ddddea-000000@bounce.public.govdelivery.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (2048-bit key; unprotected) header.d=public.govdelivery.com header.i=@public.govdelivery.com header.b=Y97YuuH8;
+	dkim=pass (1024-bit key; unprotected) header.d=messagingfabric.com header.i=@messagingfabric.com header.b=C+fibo1M
+X-Authentication-Warning: juliett.baddomain.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.baddomain.com
+Received: from mailer016201.govd2.service.govdelivery.com (mailer016201.govd2.service.govdelivery.com [66.179.16.201])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 5A1Civ5u007226
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO)
+	for <marcy@baddomain.com>; Sat, 1 Nov 2025 07:44:57 -0500
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 5A1Civ5u007226
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (2048-bit key, unprotected) header.d=public.govdelivery.com header.i=@public.govdelivery.com header.a=rsa-sha256 header.s=vek2aib7eyp4kz5trecewubzbsmhqnsp header.b=Y97YuuH8;
+	dkim=pass (1024-bit key, unprotected) header.d=messagingfabric.com header.i=@messagingfabric.com header.a=rsa-sha256 header.s=sdwquzu2a4io5lomurvncbcrpryr42dn header.b=C+fibo1M
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=vek2aib7eyp4kz5trecewubzbsmhqnsp; d=public.govdelivery.com;
+	t=1762001092;
+	h=Date:From:To:Message-ID:Subject:MIME-Version:Content-Type:List-Unsubscribe-POST;
+	bh=F9gtozw/kRjjmlDXelQ4ONnSV5LHC3R+4F51GUYCxNc=;
+	b=Y97YuuH8X5VTjMp9rXMmRBqLbUHj9af+KqdqEXvBrvcxZ/1+6iPUhNFij2FsJO7D
+	iQpL5E+ya57YPsbw+UuKIfSqVlgqU7ySy5nTxaW3k9gs7p5hCrzYlR3LjVOJTwPP1EA
+	QGR/Zybl3b/ziV9uCDz03SGv5+kqR7vsOPVCMI+yAcyXmcTBJcHHWpAORlkocewdw7K
+	tQZffXl/nAi8+5a9MRZ8cx7sQiVpgCZ4n8ssN+LdIbYsypjHetKpMHxcxXYN6JVuLr9
+	BuWNknvGmjvLm6XI44BnUvz/QfA2/fv+9EUl1rd+q6DgdpNTpXGBP4OD6fOQMRYElSX
+	umHlJ1W6KQ==
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=sdwquzu2a4io5lomurvncbcrpryr42dn; d=messagingfabric.com;
+	t=1762001092;
+	h=Date:From:To:Message-ID:Subject:MIME-Version:Content-Type:List-Unsubscribe-POST:Feedback-ID;
+	bh=F9gtozw/kRjjmlDXelQ4ONnSV5LHC3R+4F51GUYCxNc=;
+	b=C+fibo1MK4NFM0xl8LsPoLEQBVRABeZPxDBl/Me7uLm9iowW29sm8Tnli4vVJRnu
+	GYZXbumRlF0JdZU4njCPG8kU4P1jRGNOBbRKV1oKyNUdvjlo5TFVRxex6uXXAuZNH6q
+	2c5uq6tQZwyYUCjKrwlmKb14Kirs1t/E8MXOU1zQ=
+Date: Sat, 1 Nov 2025 12:44:51 +0000
+From: WA Department of Health <waDOH@public.govdelivery.com>
+To: marcy@baddomain.com
+Message-ID: <0101019a3f72fcf4-7cd8356d-9e2c-4eb6-87f4-50ddb0ddddea-000000@us-west-2.messagingfabric.com>
+Subject: Washington State Department of Health Daily Digest Bulletin
+MIME-Version: 1.0
+Content-Type: multipart/related; 
+	boundary="----=_Part_713511_1748132678.1762001070358"
+List-Unsubscribe-POST: List-Unsubscribe=One-Click
+x-subscriber: 3.7bfnnynK3/z2ZMNOeTgEHvISZg1/RONwoQg0n9rCWmjgsMdhXcIHI/xEKWVSIvxA1TLCoSVa1TfJWRtv/iRcHBJ4gnwevcZVC0IrYAN9LADsLEbgucL4187ppu0GS1XKXjQu0tD8M218BN1E8D3xkLX34jQNgVU64Dfk+26SIvfLBI8lUyJV/FFizAmUh//t
+X-Accountcode: WADOH
+X-Template: digest
+open_flag: false
+Errors-To: messages@public.govdelivery.com
+X-MailingID: 516818745160597::5373950591::800::PRD-ZIPMAIL-5373950591::::1
+X-SMHeaderMap: mid="X-MailingID"
+X-VirtualServerGroup: Default
+emailMessageID: 5373950591::3::BP3
+Feedback-ID: ::1.us-west-2.p6s0dOSD/Bh2d1AskdlzeN80W4aso1ZElT3TVYD5Rrc=:AmazonSES
+X-SES-Outgoing: 2025.11.01-66.179.16.201
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Sat, 01 Nov 2025 12:44:59 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Sat, 01 Nov 2025 07:44:58 -0500 (CDT)
+X-Spam-Flag: YES
+X-Spam-Flag: YES
+X-Spam-Flag: YES
+X-FOFF-Rule-Matched: Unsubscribe Analysis: Invalid Unsubscribe Headers (juliett.baddomain.com)
+X-FOFF-Rule-Matched: Brand Impersonation Protection: ShareFile document sharing phishing (juliett.baddomain.com)
+X-FOFF-Rule-Matched: Advanced Heuristics: Weak Signal Aggregation (juliett.baddomain.com)
+X-FOFF-Rule-Matched: Unsubscribe Analysis: Invalid Unsubscribe Headers (hotel.baddomain.com)
+X-FOFF-Rule-Matched: Brand Impersonation Protection: ShareFile document sharing phishing (hotel.baddomain.com)
+X-FOFF-Rule-Matched: Advanced Heuristics: Weak Signal Aggregation (hotel.baddomain.com)
+X-FOFF-Score: 102 - foff-milter v0.6.4 (juliett.baddomain.com)
+X-FOFF-Score: 102 - foff-milter v0.6.4 (hotel.baddomain.com)
+X-FOFF-Reject-Converted: WOULD-REJECT: Message rejected by heuristic analysis
+X-FOFF-Reject-Converted: WOULD-REJECT: Message rejected by heuristic analysis
+
+------=_Part_713511_1748132678.1762001070358
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_713512_759046590.1762001070362"
+
+------=_Part_713512_759046590.1762001070362
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+WA Department of Health Alerts =20
+*=E2=80=8B=E2=80=8BWashington State Department of Health=E2=80=8B Action: F=
+inal rules adopted =E2=80=93 =E2=80=8BOffice of Drinking Water Fee Rulemaki=
+ng=E2=80=8B=E2=80=8B*  "10/31/2025" =20
+
+=20
+
+Office of Drinking Water Logo [ https://www.doh.wa.gov/CommunityandEnvironm=
+ent/DrinkingWater ]=20
+=20
+=20
+=20
+
+View this as a web page [ https://content.govdelivery.com/accounts/WADOH/bu=
+lletins/3f9801d ]
+
+=E2=80=8B=E2=80=8BWashington State Department of Health=E2=80=8B Action: Fi=
+nal rules adopted =E2=80=93 =E2=80=8BOffice of Drinking Water Fee Rulemakin=
+g=E2=80=8B=E2=80=8B
+
+Hello,
+
+On October 31, 2025, the Washington State Department of Health (department)=
+ adopted final rule revisions to:
+
+
+  * WAC 246-290-990 for=E2=80=AFWater system evaluation and project review =
+and approval fees=E2=80=AF=E2=80=AF=C2=A0=20
+  * WAC 246-292-995 for Certified operator and public water system certific=
+ation fees=E2=80=AF=C2=A0=20
+  * WAC 246-294-070 for Operating permit fees=C2=A0=C2=A0=C2=A0=20
+
+The rules in this chapter amend fees for all programs within the Office of =
+Drinking Water to cover the costs of the programs and account for funding r=
+eductions and increased expenditures from the 2025-2027 state budget (ESSB =
+5167) and increased program expenses. This adoption also includes making ed=
+itorial updates, clarifying and repealing existing fees, and aligning with =
+the Code Reviser=E2=80=99s 2025 Bill Drafting Guide. These fee rules will b=
+ecome effective on December 1, 2025.
+
+
+  * Rule Making Order (CR-103P) and adopted rule language (attached) [ http=
+s://content.govdelivery.com/attachments/WADOH/2025/10/31/file_attachments/3=
+443781/ODW%20CR-103P.pdf ]=20
+  * Concise Explanatory Statement, a summary of comments received (attached=
+) [ https://content.govdelivery.com/attachments/WADOH/2025/10/31/file_attac=
+hments/3443802/ODW_Concise_Explanatory_Statement_.pdf ]=20
+  * Fee Narrative (attached)=C2=A0 [ https://content.govdelivery.com/attach=
+ments/WADOH/2025/10/31/file_attachments/3443804/ODW_Fee_Economic_Impact_Ana=
+lysis_Report_Final.pdf ]=20
+
+Find more information on this rulemaking on our website. [ https://doh.wa.g=
+ov/community-and-environment/drinking-water/regulation-and-compliance/rules=
+/office-drinking-water-fee-rulemaking ]
+
+Any person may petition the adoption or amendment of these rules in accorda=
+nce with RCW 34.05.330.
+
+If you have any questions regarding this announcement, please contact Zehra=
+ Siddiqui, zehra.siddiqui@doh.wa.gov and/or Jeanna Sieving, jeanna.sieving@=
+doh.wa.gov.
+
+Sincerely,=C2=A0
+
+Office of Drinking Water=C2=A0
+
+=C2=A0
+
+=C2=A0
+
+=C2=A0
+
+=20
+=20
+=20
+=20
+ =20
+=20
+ *RECALL UPDATE: Pasta Meals due to potential Listeria*  "10/31/2025" =20
+
+=20
+
+Food Recall Banner=20
+=20
+=20
+=20
+
+________________________________________________________________________
+
+=20
+=20
+=20
+=20
+=20
+
+Pre-Cooked Pasta Recall Affects Select Ready-to-Heat Meals and Ready-to-Eat=
+ Salads
+
+This announcement is an update on the Nate's Fine Foods, Inc and FreshRealm=
+ recall first announced earlier this year regarding pre-cooked pasta produc=
+ts recalled due to possible "Listeria" contamination and an associated nati=
+onwide illness outbreak.
+
+The pre-cooked pasta linked to illness was used in a variety of products an=
+d packaged under several brand labels. The recalled items include ready-to-=
+eat and heat-and-serve products and some may have been frozen.=C2=A0
+
+Firms are still working to determine if additional recalls are needed.=C2=
+=A0
+
+The following products subject to recall had distribution in Washington:
+
+=20
+=20
+=20
+=20
+
+________________________________________________________________________
+
+=20
+=20
+=20
+=20
+=20
+
+Linguine Recall=20
+=20
+
+*Walmart | Marketside Heat-and-Serve Meals*
+
+*Establishment number =E2=80=9CEST. 50784=E2=80=9D or =E2=80=9CEST. 47718=
+=E2=80=9D appears on the label in the USDA mark of inspection.*
+
+Linguine with Beef Meatballs & Marinara Sauce
+
+Prepackaged. Sold in 12-oz. package
+
+Establishment number =E2=80=9CEST. 50784=E2=80=9D or =E2=80=9CEST. 47718=E2=
+=80=9D appears on the label in the USDA mark of inspection.
+
+""*Best if Used by Date:
+*"SEP 22, 2025; SEP 24, 2025; SEP 25, 2025; SEP 29, 2025; SEP 30, 2025; and=
+ OCT 01, 2025.
+"
+
+________________________________________________________________________
+
+Grilled Chicken Alfredo with Fettuccine
+
+Prepackaged. Sold in=C2=A032.8 oz tray package
+
+Establishment number =E2=80=9CEST. 50784=E2=80=9D or =E2=80=9CEST. 47718=E2=
+=80=9D appears on the label in the USDA mark of inspection.
+
+"""*Best if Used by Date:*""
+06/27/25 or before (dates up to and including 06/27/25)"
+
+________________________________________________________________________
+
+Grilled Chicken Alfredo with Fettuccine
+
+Prepackaged. Sold in 12.3 oz tray package
+
+Establishment number =E2=80=9CEST. 50784=E2=80=9D or =E2=80=9CEST. 47718=E2=
+=80=9D appears on the label in the USDA mark of inspection.
+
+"""*Best if Used by Date:*""
+06/26/25 or before (dates up to and including 06/26/25)"
+
+=20
+=20
+=20
+=20
+
+________________________________________________________________________
+
+=20
+=20
+=20
+=20
+=20
+
+Sprouts Smoked MozzSalad=20
+=20
+
+*Sprouts Farmers Markets | Smoked Mozzarella Pasta Salad*
+
+Packaged for Grab & Go or packed upon request at deli service counter.
+
+Smoked Mozzarella Penne Salad:
+
+  * Grab & Go: UPC 2-15786-00000=20
+  * Service Case: UPC 2-15587-00000=20
+
+""*Use/Freeze/Sell by Date:
+*""Dates from 10/10/25 =E2=80=93 10/29/25
+
+=20
+=20
+=20
+=20
+
+________________________________________________________________________
+
+=20
+=20
+=20
+=20
+=20
+
+alfredo=20
+=20
+
+Kroger | Fred Meyer and/or QFC=C2=A0
+
+Basil Pesto Bowie Pasta Salad:
+
+Packaged for Grab & Go or packed upon request at deli service counter.
+
+
+  * UPC 217573-10000 or 217573-20000=20
+  * Sold on dates from SEP 6 2025 thru OCT 2 2025=20
+
+Smoked Mozzarella Penne Salad:
+
+Packaged for Grab & Go or packed upon request at deli service counter.
+
+
+  * UPC 227573-10000=20
+  * Sold dates from AUG 29 2025 thru OCT 2 2025=20
+
+Home Chef Fettucine Alfredo:
+
+Prepackaged heat & eat meal. Sold in 12.5 oz. tray packages.
+
+Establishment number =E2=80=9CEST. 50784=E2=80=9D or =E2=80=9CEST. 47718=E2=
+=80=9D appears on the label in the USDA mark of inspection.
+
+*"Use/Freeze/Sell by Date:"* "Best-by date 06/19/25 or prior (dates up to a=
+nd including 06/19/25)"
+
+
+  * UPC 227573-10000=20
+  * Sold dates from AUG 29 2025 thru OCT 2 2025=20
+=20
+=20
+=20
+=20
+
+________________________________________________________________________
+
+=20
+=20
+=20
+=20
+=20
+
+"*Product Distribution*"
+Recalled items were shipped nationwide.
+
+*"Associated Illnesses
+"*There have been 27 reported illnesses, 25 hospitalizations, and 6 deaths =
+across eighteen states. One case has been identified in Washington.=C2=A0
+
+
+  * DOH Outbreak Update: 2025 Listeria Outbreak Linked to Prepared Pasta Me=
+als | Washington State Department of Health [ https://doh.wa.gov/you-and-yo=
+ur-family/illness-and-disease-z/foodborne-illness/outbreaks/2025-listeria-o=
+utbreak-linked-prepared-pasta-meals ]=20
+  * CDC Outbreak Update: Listeria Outbreak Linked to Prepared Meals | Liste=
+ria Infection | CDC [ https://www.cdc.gov/listeria/outbreaks/chicken-fettuc=
+cine-alfredo-06-25/index.html ]=20
+
+"*Additional Information
+*"For additional information on the investigation, see the FDA Investigatio=
+n updated on 10/30/25: Outbreak Investigation of Listeria monocytogenes: Pr=
+epared Pasta Meals (June 2025) | FDA [ https://www.fda.gov/food/outbreaks-f=
+oodborne-illness/outbreak-investigation-listeria-monocytogenes-prepared-pas=
+ta-meals-june-2025 ]
+
+For more information on all of the affected recalls, see the FDA list here:=
+ 2025 Recalls of Prepared Pasta Meals (Frozen and Ready-To-Eat) Due to Pote=
+ntial Listeria monocytogenes Contamination | FDA [ https://www.fda.gov/safe=
+ty/major-product-recalls/2025-recalls-prepared-pasta-meals-frozen-and-ready=
+-eat-due-potential-listeria-monocytogenes ]
+
+"*Consumer Guidance
+*"
+
+
+  * Consumers who purchased or received recalled or affected meals should c=
+heck their refrigerators and freezers and should not eat or serve these pro=
+ducts.=20
+  * *If you or your family member have symptoms of illness you should conta=
+ct your health care provider to report your symptoms and receive care.*=20
+  * *Pregnant=C2=A0people:=C2=A0*Fever, muscle aches, and tiredness. Your i=
+llness may be mild, but=C2=A0"Listeria"=C2=A0can cause pregnancy loss or pr=
+emature birth. It can also cause serious illness or death in newborns.=20
+  * *People with weakened immune systems may have: *Headache, stiff neck, c=
+onfusion, loss of balance, and convulsions, in addition to fever, muscle ac=
+hes, and tiredness.=20
+
+  * Refer to FDA website for updates to the list of recalled foods: 2025 Re=
+calls of Prepared Pasta Meals (Frozen and Ready-To-Eat) Due to Potential Li=
+steria monocytogenes Contamination | FDA [ https://www.fda.gov/safety/major=
+-product-recalls/2025-recalls-prepared-pasta-meals-frozen-and-ready-eat-due=
+-potential-listeria-monocytogenes ]=20
+
+"*Retailer Guidance*"
+
+
+  * Check inventory to ensure all recalled pasta products are removed from =
+retail sale.=20
+  * Clean and sanitize all surfaces, utensils, and equipment that contacted=
+ recalled products.=20
+  * Ensure staff are aware of the recall and trained on proper procedures.=
+=20
+  * Continue to monitor recalls as additional items may be added.=20
+=20
+=20
+=20
+=20
+
+Local Health Jurisdictions in Washington will be asked to participate in se=
+lect recall verification and encourage field and communicable disease staff=
+ to be aware of the food recall.
+
+You are receiving this message because you expressed interest in receiving =
+notification regarding food recalls affecting Washington state. This recall=
+ will be posted on our website shortly. To see other recent food recalls af=
+fecting Washington state, visit www.doh.wa.gov/foodrecalls [ https://gcc02.=
+safelinks.protection.outlook.com/?url=3Dhttp%3A%2F%2Fwww.doh.wa.gov%2Ffoodr=
+ecalls&data=3D04%7C01%7Cirene.gering%40doh.wa.gov%7C036ce271587f47fb557408d=
+8ff616af4%7C11d0e217264e400a8ba057dcc127d72d%7C0%7C0%7C637540141181663949%7=
+CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwi=
+LCJXVCI6Mn0%3D%7C1000&sdata=3DgtRyU7eXvaOTw2iLQ0L9rRiRbQEZbg50teEb1JDrf64%3=
+D&reserved=3D0 ].
+
+=20
+=20
+=20
+=20
+ =20
+=20
+=20
+ ________________________________________________________________________
+
+________________________________________________________________________
+
+=20
+
+=C2=A0 X logo [ https://twitter.com/WADeptHealth ] facebook [ https://www.f=
+acebook.com/WADeptHealth ] instagram [ https://www.instagram.com/wadeptheal=
+th/ ] youtube [ https://www.youtube.com/user/WADepartmentofHealth ] medium =
+[ https://medium.com/wadepthealth ] subscribe [ https://public.govdelivery.=
+com/accounts/WADOH/subscriber/new?qsp=3DCODE_RED ]=20
+ To request this document in another format, call 1-800-525-0127. Deaf or h=
+ard of hearing customers, please call 711 (Washington Relay) or=20
+email doh.information@doh.wa.gov Manage Subscriptions [ https://public.govd=
+elivery.com/accounts/WADOH/subscriber/edit?preferences=3Dtrue#tab1 ] =C2=A0=
+|=C2=A0 Unsubscribe [ https://public.govdelivery.com/accounts/WADOH/subscri=
+ber/one_click_unsubscribe?verification=3D5.9a627be32136374a0ab4c380ff8ba792=
+&destination=3Dmarcy%40baddomain.com ] =C2=A0|=C2=A0 Help [ https://subscri=
+berhelp.govdelivery.com/ ] DOH logo [ http://WWW.DOH.WA.GOV ]=20
+=20
+=20
+=20
+
+________________________________________________________________________
+
+ This email was sent to marcy@baddomain.com using GovDelivery Communication=
+s Cloud on behalf of: Washington State Department of Health =C2=B7=C2=A0101=
+ Israel Road SE, Tumwater, WA 98501 GovDelivery logo [ https://subscriberhe=
+lp.granicus.com/ ]=20
+=20
+body .abe-column-block { min-height: 5px; } table.gd_combo_table img {margi=
+n-left:10px; margin-right:10px;} table.gd_combo_table div.govd_image_displa=
+y img, table.gd_combo_table td.gd_combo_image_cell img {margin-left:0px; ma=
+rgin-right:0px;} table.govd_hr {min-width: 100%;} p, li, h1, h2, h3 { overf=
+low-wrap: normal; word-wrap: normal; word-break: keep-all; -moz-hyphens: no=
+ne; -ms-hyphens: none; -webkit-hyphens: none; hyphens: none; mso-hyphenate:=
+ none; }
+------=_Part_713512_759046590.1762001070362
+Content-Type: text/html;charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"https://www.w3.org/TR/html4/loose.dtd">
+<html language=3D"en">
+=09<head>
+=09=09<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3DUTF=
+-8"/>
+=09=09<meta name=3D"viewport" content=3D"initial-scale=3D1.0"/>
+=09=09<meta name=3D"format-detection" content=3D"telephone=3Dno"/>
+=09=09<title>=20
+=09=09</title>
+=09=09<style type=3D"text/css">    #outlook a{padding:0;}
+    .ReadMsgBody { width: 100%; background-color: #f2f2f2;}
+    .ExternalClass {width: 100%; background-color: #f2f2f2;}
+    .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass f=
+ont, .ExternalClass td, .ExternalClass div {line-height:100%;}
+    div {line-height: 100%;}
+    table, td, p, a, li, blockquote{-webkit-text-size-adjust:100%; -ms-text=
+-size-adjust:100%;}
+    table {border-spacing:0;}
+    table, td{mso-table-lspace:0pt; mso-table-rspace:0pt;}
+    .yshortcuts a {border-bottom: none !important;}
+    img{-ms-interpolation-mode:bicubic;border:0; height:auto; line-height:1=
+00%; outline:none; text-decoration:none;}
+    table td {border-collapse:collapse !important;}
+    body, #bodyTable, #bodyCell{height:100% !important; margin:0; padding:0=
+; width:100% !important;}
+
+body {font-family: 'Helvetica Nueue', 'Helvetica', Helvetica, Arial, sans-s=
+erif;background-color:#ffffff;} =20
+       .digest-container-fill { width:100%;} =20
+       .digest-content-table { width:650px;} =20
+       .digest-header{text-align:center;font-family: 'Helvetica Nueue', 'He=
+lvetica', Helvetica, Arial, sans-serif;} =20
+       .digest-content-table-inner { padding-top:20px; padding-left:20px; p=
+adding-right:20px; text-align:left;}         =20
+       .digest-title-table { } =20
+       .digest-title {padding-left: 10px;font-family: 'Helvetica Nueue', 'H=
+elvetica', Helvetica, Arial, sans-serif;}         =20
+       .digest-topic-table { padding-top:20px;} =20
+       .topicv-head {padding-top:10px;padding-bottom:10px;padding-left:10px=
+;padding-right:10px;background-color:#efefef;font-family: 'Helvetica Nueue'=
+, 'Helvetica', Helvetica, Arial, sans-serif;} =20
+       .topic-title {font-size:16px;font-weight:bold;color:#333333;padding-=
+bottom:3px;font-family: 'Helvetica Nueue', 'Helvetica', Helvetica, Arial, s=
+ans-serif;} =20
+       .num-digest-items {color: #888888;font-family: 'Helvetica Nueue', 'H=
+elvetica', Helvetica, Arial, sans-serif;} =20
+       .rss_item {padding-top:20px;padding-left:15px;padding-right:15px;fon=
+t-family: 'Helvetica Nueue', 'Helvetica', Helvetica, Arial, sans-serif;} =
+=20
+       .rss_title {line-height:120% !important;font-size:24px;padding-botto=
+m:5px;font-family: 'Helvetica Nueue', 'Helvetica', Helvetica, Arial, sans-s=
+erif;} =20
+       .rss_pub_date {font-size:14px;padding-bottom:5px;color:#888888;font-=
+family: 'Helvetica Nueue', 'Helvetica', Helvetica, Arial, sans-serif;} =20
+       .rss_description {font-size:16px;color:#333333;padding-bottom:5px;li=
+ne-height: 18px;font-family: 'Helvetica Nueue', 'Helvetica', Helvetica, Ari=
+al, sans serif;}         =20
+       .topic-spacer { padding-top:20px;} =20
+       .digest-footer-table {width:100%;background-color:#efefef;}        =
+=20
+           .digest-footer{padding-top:20px;padding-bottom:40px;font-family:=
+ 'Helvetica Nueue', 'Helvetica', Helvetica, Arial, sans-serif;} =20
+           .digest-footer-table a { text-decoration: underline;} =20
+       .digest-footer-block {padding-top:20px;padding-left:20px;padding-rig=
+ht:20px;text-align:center;font-size:16px;font-family: 'Helvetica Nueue', 'H=
+elvetica', Helvetica, Arial, sans-serif;} =20
+       .digest-entry-date-sent {font-size:14px;padding-bottom:5px;color:#88=
+8888;font-family: 'Helvetica Nueue', 'Helvetica', Helvetica, Arial, sans-se=
+rif;} =20
+       .digest-entry-subject {font-size:24px;line-height:24px;padding-botto=
+m:5px;font-family: 'Helvetica Nueue', 'Helvetica', Helvetica, Arial, sans-s=
+erif;} =20
+       .digest-entry-content {font-size:16px;color:#333333;padding-bottom:5=
+px;line-height: 18px;font-family: 'Helvetica Nueue', 'Helvetica', Helvetica=
+, Arial, sans serif;} =20
+       #digest-banner-id {width: 650px;} =20
+       .digest-separator-table {padding-top:20px;} =20
+       .digest-separator {background-color:#686868;height:2px;width:100%;}
+=09=09</style>
+=09</head>
+=09<body>
+=09=09<table border=3D"0" width=3D"100%" cellpadding=3D"0" cellspacing=3D"0=
+" class=3D"digest-container-fill" style=3D"width:100%;">
+=09=09=09<tr>
+=09=09=09=09<td align=3D"center">
+=09=09=09=09=09<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" clas=
+s=3D"digest-content-table" style=3D"width:650px;">
+=09=09=09=09=09=09<tr>
+<td class=3D"digest-header" style=3D"text-align:center;font-family:'Helveti=
+ca Nueue','Helvetica',Helvetica,Arial,sans-serif;">
+=09<img id=3D"digest-banner-id" src=3D"https://public.govdelivery.com/syste=
+m/images/59987/original/WADOH_banner-new.png" style=3D"width:650px;" alt=3D=
+"WA Department of Health Alerts"/>
+</td>
+=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09<td class=3D"digest-content-table-inner" style=3D"padd=
+ing-top:20px;padding-left:20px;padding-right:20px;text-align:left;">
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" class=3D"digest-top=
+ic-table" style=3D"padding-top:20px;">
+=09<tr>
+=09=09<td class=3D"digest-entry-subject" style=3D"font-size:24px;line-heigh=
+t:24px;padding-bottom:5px;font-family:'Helvetica Nueue','Helvetica',Helveti=
+ca,Arial,sans-serif;">=E2=80=8B=E2=80=8BWashington State Department of Heal=
+th=E2=80=8B Action: Final rules adopted =E2=80=93 =E2=80=8BOffice of Drinki=
+ng Water Fee Rulemaking=E2=80=8B=E2=80=8B
+=09=09</td>
+=09</tr>
+=09<tr>
+=09=09<td class=3D"digest-entry-date-sent" style=3D"font-size:14px;padding-=
+bottom:5px;color:#888;font-family:'Helvetica Nueue','Helvetica',Helvetica,A=
+rial,sans-serif;">10/31/2025
+=09=09</td>
+=09</tr>
+=09<tr>
+=09=09<td class=3D"digest-entry-content" style=3D"font-size:16px;color:#333=
+;padding-bottom:5px;line-height:18px;font-family:'Helvetica Nueue','Helveti=
+ca',Helvetica,Arial,sans serif;"><table width=3D"100%" cellpadding=3D"0" ce=
+llspacing=3D"0" border=3D"0" align=3D"center" class=3D"gd_tbl_wrap"><tr><td=
+ style=3D"background-color: #EEEEEE; margin: 0; padding: 0; width: 100% !im=
+portant" bgcolor=3D"#EEEEEE"><table id=3D"flexible-abe-main-table" width=3D=
+"100%" align=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" st=
+yle=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; border-s=
+pacing: 0; mso-table-lspace: 0pt; mso-table-rspace: 0pt; padding-top: 20px;=
+ padding-bottom: 20px;">
+  <tr>
+    <td style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%=
+; mso-table-lspace: 0pt; mso-table-rspace: 0pt;"></td>
+    <!-- centered column -->
+    <td style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%=
+; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+<!--[if (gte mso 9)|(IE)]>
+  <table width=3D"600" align=3D"center" border=3D"0" cellpadding=3D"0" cell=
+spacing=3D"0">
+    <tr>
+      <td>
+<![endif]-->
+<div class=3D"abe-section-block" data-block-type=3D"FancyBlockSection" data=
+-block-id=3D"153759507">
+  <table class=3D"abe-section-table" width=3D"100%" align=3D"center" border=
+=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"m=
+ax-width: 600px; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%=
+; border-spacing: 0; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+    <tr id=3D"abe-section-row-734a93b2-e0cb-4276-b9ad-3a0276f2bcd1" class=
+=3D"abe-section-row" style=3D"background-color: #FFFFFF;" bgcolor=3D"#FFFFF=
+F">
+      <td style=3D"text-align: center; vertical-align: top; font-size: 0; -=
+webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-table-lspace=
+: 0pt; mso-table-rspace: 0pt;" align=3D"center" valign=3D"top">
+        <!--[if (gte mso 9)|(IE)]>
+  <table width=3D"100%" align=3D"center" border=3D"0" cellpadding=3D"0" cel=
+lspacing=3D"0" style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjus=
+t: 100%; border-spacing: 0; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+    <tr>
+<![endif]-->
+<!--[if (gte mso 9)|(IE)]>
+  <td width=3D"600" valign=3D"top" id=3D"abe-column-block-c0799db0-3081-491=
+3-8c9b-cdd772f21e6a-outlook-only" class=3D"abe-column-block-outlook-only" s=
+tyle=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-tab=
+le-lspace: 0pt; mso-table-rspace: 0pt;">
+<![endif]-->
+<div id=3D"abe-column-block-c0799db0-3081-4913-8c9b-cdd772f21e6a" class=3D"=
+abe-column-block" data-block-type=3D"FancyBlockColumn" data-block-id=3D"153=
+759508" style=3D"width: 100%; box-sizing: border-box; display: inline-block=
+; font-size: 16px; vertical-align: top;">
+  <table width=3D"100%" align=3D"center" border=3D"0" cellpadding=3D"0" cel=
+lspacing=3D"0" role=3D"presentation" style=3D"table-layout: fixed; overflow=
+-wrap: break-word; word-wrap: break-word; text-align: left; -webkit-text-si=
+ze-adjust: 100%; -ms-text-size-adjust: 100%; border-spacing: 0; mso-table-l=
+space: 0pt; mso-table-rspace: 0pt;">
+    <tr>
+      <td class=3D"abe-column-block-padding" id=3D"abe-column-block-c0799db=
+0-3081-4913-8c9b-cdd772f21e6a-padding" style=3D"-webkit-text-size-adjust: 1=
+00%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0=
+pt; padding: 15px;"><a href=3D"https://links-2.govdelivery.com/CL0/https:%2=
+F%2Fwww.doh.wa.gov%2FCommunityandEnvironment%2FDrinkingWater/1/0101019a3f72=
+fcf4-7cd8356d-9e2c-4eb6-87f4-50ddb0ddddea-000000/WaBNdznB0PF4J6OPjat4M6xm96=
+vRAnRh-cDpwTOXP4w=3D429" target=3D"_blank" rel=3D"noopener noreferrer" styl=
+e=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;"><img clas=
+s=3D"govd_template_image" src=3D"https://content.govdelivery.com/attachment=
+s/fancy_images/WADOH/2023/02/7144282/4571645/govdeliveryheader-01_crop.png"=
+ style=3D"width: 570px; height: auto; -ms-interpolation-mode: bicubic; line=
+-height: 1; outline: none; text-decoration: none; max-width: 100%; border: =
+none;" alt=3D"Office of Drinking Water Logo" width=3D"570" height=3D"125"><=
+/a></td>
+    </tr>
+  </table>
+</div>
+<!--[if (gte mso 9)|(IE)]>
+  </td>
+<![endif]-->
+<!--[if (gte mso 9)|(IE)]>
+  </tr>
+  </table>
+<![endif]-->
+      </td>
+    </tr>
+  </table>
+</div>
+<!--[if (gte mso 9)|(IE)]>
+      </td>
+    </tr>
+  </table>
+<![endif]-->
+<!--[if (gte mso 9)|(IE)]>
+  <table width=3D"600" align=3D"center" border=3D"0" cellpadding=3D"0" cell=
+spacing=3D"0">
+    <tr>
+      <td>
+<![endif]-->
+<div class=3D"abe-section-block" data-block-type=3D"FancyBlockSection" data=
+-block-id=3D"153759510">
+  <table class=3D"abe-section-table" width=3D"100%" align=3D"center" border=
+=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"m=
+ax-width: 600px; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%=
+; border-spacing: 0; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+    <tr id=3D"abe-section-row-93ac5c7d-753c-4f88-ae02-33fa02467714" class=
+=3D"abe-section-row" style=3D"background-color: #FFFFFF;" bgcolor=3D"#FFFFF=
+F">
+      <td style=3D"text-align: center; vertical-align: top; font-size: 0; -=
+webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-table-lspace=
+: 0pt; mso-table-rspace: 0pt;" align=3D"center" valign=3D"top">
+        <!--[if (gte mso 9)|(IE)]>
+  <table width=3D"100%" align=3D"center" border=3D"0" cellpadding=3D"0" cel=
+lspacing=3D"0" style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjus=
+t: 100%; border-spacing: 0; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+    <tr>
+<![endif]-->
+<!--[if (gte mso 9)|(IE)]>
+  <td width=3D"600" valign=3D"top" id=3D"abe-column-block-0b8fde1b-0380-432=
+1-bfd6-a673eb9f11b5-outlook-only" class=3D"abe-column-block-outlook-only" s=
+tyle=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-tab=
+le-lspace: 0pt; mso-table-rspace: 0pt;">
+<![endif]-->
+<div id=3D"abe-column-block-0b8fde1b-0380-4321-bfd6-a673eb9f11b5" class=3D"=
+abe-column-block" data-block-type=3D"FancyBlockColumn" data-block-id=3D"153=
+759951" style=3D"width: 100%; box-sizing: border-box; display: inline-block=
+; font-size: 16px; vertical-align: top;">
+  <table width=3D"100%" align=3D"center" border=3D"0" cellpadding=3D"0" cel=
+lspacing=3D"0" role=3D"presentation" style=3D"table-layout: fixed; overflow=
+-wrap: break-word; word-wrap: break-word; text-align: left; -webkit-text-si=
+ze-adjust: 100%; -ms-text-size-adjust: 100%; border-spacing: 0; mso-table-l=
+space: 0pt; mso-table-rspace: 0pt;">
+    <tr>
+      <td class=3D"abe-column-block-padding" id=3D"abe-column-block-0b8fde1=
+b-0380-4321-bfd6-a673eb9f11b5-padding" style=3D"-webkit-text-size-adjust: 1=
+00%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0=
+pt; padding: 15px;">
+<p style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; lin=
+e-height: 1.4; font-family: helvetica; font-size: 13px; color: #000000; tex=
+t-align: left; margin: 0 0 15px;" align=3D"left"><a href=3D"https://links-2=
+.govdelivery.com/CL0/https:%2F%2Fcontent.govdelivery.com%2Faccounts%2FWADOH=
+%2Fbulletins%2F3f9801d/1/0101019a3f72fcf4-7cd8356d-9e2c-4eb6-87f4-50ddb0ddd=
+dea-000000/DlG_Po57AkaZvicmdne6EAcFtwBlVvgg0JNGOJEBgCc=3D429" target=3D"_bl=
+ank" title=3D"" rel=3D"noopener" style=3D"-webkit-text-size-adjust: 100%; -=
+ms-text-size-adjust: 100%; color: #547AA3;">View this as a web page</a></p>
+<h1 class=3D"govd_header" style=3D"line-height: 1.2; font-family: helvetica=
+; font-size: 28px; color: #446387; margin: 0 0 20px;">=E2=80=8B=E2=80=8BWas=
+hington State Department of Health=E2=80=8B Action: Final rules adopted =E2=
+=80=93 =E2=80=8BOffice of Drinking Water Fee Rulemaking=E2=80=8B=E2=80=8B</=
+h1>
+<p style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; lin=
+e-height: 1.4; font-family: helvetica; font-size: 13px; color: #000000; tex=
+t-align: left; margin: 0 0 15px;" align=3D"left">Hello,</p>
+<p style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; lin=
+e-height: 1.4; font-family: helvetica; font-size: 13px; color: #000000; tex=
+t-align: left; margin: 0 0 15px;" align=3D"left">On October 31, 2025, the W=
+ashington State Department of Health (department) adopted final rule revisi=
+ons to:</p>
+<ul style=3D"margin-top: 0px; margin-bottom: 15px;">
+<li style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; li=
+ne-height: 1.4; font-family: helvetica; font-size: 13px; color: #000000; te=
+xt-align: left; margin-top: 0px;">WAC 246-290-990 for=E2=80=AFWater system =
+evaluation and project review and approval fees=E2=80=AF=E2=80=AF=C2=A0</li=
+>
+<li style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; li=
+ne-height: 1.4; font-family: helvetica; font-size: 13px; color: #000000; te=
+xt-align: left;">WAC 246-292-995 for Certified operator and public water sy=
+stem certification fees=E2=80=AF=C2=A0</li>
+<li style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; li=
+ne-height: 1.4; font-family: helvetica; font-size: 13px; color: #000000; te=
+xt-align: left; margin-bottom: 15px;">WAC 246-294-070 for Operating permit =
+fees=C2=A0=C2=A0=C2=A0</li>
+</ul>
+<p style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; lin=
+e-height: 1.4; font-family: helvetica; font-size: 13px; color: #000000; tex=
+t-align: left; margin: 0 0 15px;" align=3D"left">The rules in this chapter =
+amend fees for all programs within the Office of Drinking Water to cover th=
+e costs of the programs and <span data-teams=3D"true" style=3D"line-height:=
+ 1.4;">account for funding reductions and increased expenditures from the 2=
+025-2027 state budget (ESSB 5167) and increased program expenses</span>. Th=
+is adoption also includes making editorial updates, clarifying and repealin=
+g existing fees, and aligning with the Code Reviser=E2=80=99s 2025 Bill Dra=
+fting Guide. These fee rules will become effective on December 1, 2025.</p>
+<ul style=3D"margin-top: 0px; margin-bottom: 15px;">
+<li style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; li=
+ne-height: 1.4; font-family: helvetica; font-size: 13px; color: #000000; te=
+xt-align: left; margin-top: 0px;"><a href=3D"https://links-2.govdelivery.co=
+m/CL0/https:%2F%2Fcontent.govdelivery.com%2Fattachments%2FWADOH%2F2025%2F10=
+%2F31%2Ffile_attachments%2F3443781%2FODW%2520CR-103P.pdf/1/0101019a3f72fcf4=
+-7cd8356d-9e2c-4eb6-87f4-50ddb0ddddea-000000/p9AbfbeVzP1NYhpdGNJVeVOe_gabRc=
+8SxcNz89Hv2XE=3D429" target=3D"_blank" rel=3D"noopener" style=3D"-webkit-te=
+xt-size-adjust: 100%; -ms-text-size-adjust: 100%; color: #547AA3;">Rule Mak=
+ing Order (CR-103P) and adopted rule language (attached)</a></li>
+<li style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; li=
+ne-height: 1.4; font-family: helvetica; font-size: 13px; color: #000000; te=
+xt-align: left;"><a href=3D"https://links-2.govdelivery.com/CL0/https:%2F%2=
+Fcontent.govdelivery.com%2Fattachments%2FWADOH%2F2025%2F10%2F31%2Ffile_atta=
+chments%2F3443802%2FODW_Concise_Explanatory_Statement_.pdf/1/0101019a3f72fc=
+f4-7cd8356d-9e2c-4eb6-87f4-50ddb0ddddea-000000/gCCETKN-ClSmr7G0H8EPei-2bh1A=
+kLoTJw3OaJGJC0k=3D429" target=3D"_blank" rel=3D"noopener" style=3D"-webkit-=
+text-size-adjust: 100%; -ms-text-size-adjust: 100%; color: #547AA3;">Concis=
+e Explanatory Statement, a summary of comments received (attached)</a></li>
+<li style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; li=
+ne-height: 1.4; font-family: helvetica; font-size: 13px; color: #000000; te=
+xt-align: left; margin-bottom: 15px;"><a href=3D"https://links-2.govdeliver=
+y.com/CL0/https:%2F%2Fcontent.govdelivery.com%2Fattachments%2FWADOH%2F2025%=
+2F10%2F31%2Ffile_attachments%2F3443804%2FODW_Fee_Economic_Impact_Analysis_R=
+eport_Final.pdf/1/0101019a3f72fcf4-7cd8356d-9e2c-4eb6-87f4-50ddb0ddddea-000=
+000/3fgAzTzmGZjazINu76qh0vv4zdYPocUzDlGaGSzON1U=3D429" target=3D"_blank" re=
+l=3D"noopener" style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjus=
+t: 100%; color: #547AA3;">Fee Narrative (attached)=C2=A0</a></li>
+</ul>
+<p style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; lin=
+e-height: 1.4; font-family: helvetica; font-size: 13px; color: #000000; tex=
+t-align: left; margin: 0 0 15px;" align=3D"left">Find more information on t=
+his rulemaking on our <a href=3D"https://links-2.govdelivery.com/CL0/https:=
+%2F%2Fdoh.wa.gov%2Fcommunity-and-environment%2Fdrinking-water%2Fregulation-=
+and-compliance%2Frules%2Foffice-drinking-water-fee-rulemaking/1/0101019a3f7=
+2fcf4-7cd8356d-9e2c-4eb6-87f4-50ddb0ddddea-000000/QCrbdk2UVQ6YqRMrJGrE3PDMg=
+Pz5LiLv72EPHniCqb8=3D429" target=3D"_blank" rel=3D"noopener" style=3D"-webk=
+it-text-size-adjust: 100%; -ms-text-size-adjust: 100%; color: #547AA3;">web=
+site.</a></p>
+<p style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; lin=
+e-height: 1.4; font-family: helvetica; font-size: 13px; color: #000000; tex=
+t-align: left; margin: 0 0 15px;" align=3D"left">Any person may petition th=
+e adoption or amendment of these rules in accordance with RCW 34.05.330.</p=
+>
+<p style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; lin=
+e-height: 1.4; font-family: helvetica; font-size: 13px; color: #000000; tex=
+t-align: left; margin: 0 0 15px;" align=3D"left">If you have any questions =
+regarding this announcement, please contact Zehra Siddiqui, <a href=3D"mail=
+to:zehra.siddiqui@doh.wa.gov" style=3D"-webkit-text-size-adjust: 100%; -ms-=
+text-size-adjust: 100%; color: #547AA3;">zehra.siddiqui@doh.wa.gov</a> and/=
+or Jeanna Sieving, <a href=3D"mailto:jeanna.sieving@doh.wa.gov" style=3D"-w=
+ebkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; color: #547AA3;">=
+jeanna.sieving@doh.wa.gov</a>.</p>
+<p style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; lin=
+e-height: 1.4; font-family: helvetica; font-size: 13px; color: #000000; tex=
+t-align: left; margin: 0 0 15px;" align=3D"left">Sincerely,=C2=A0</p>
+<p style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; lin=
+e-height: 1.4; font-family: helvetica; font-size: 13px; color: #000000; tex=
+t-align: left; margin: 0 0 15px;" align=3D"left">Office of Drinking Water=
+=C2=A0</p>
+<p style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; lin=
+e-height: 1.4; font-family: helvetica; font-size: 13px; color: #000000; tex=
+t-align: left; margin: 0 0 15px;" align=3D"left">=C2=A0</p>
+<p style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; lin=
+e-height: 1.4; font-family: helvetica; font-size: 13px; color: #000000; tex=
+t-align: left; margin: 0 0 15px;" align=3D"left">=C2=A0</p>
+<p style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; lin=
+e-height: 1.4; font-family: helvetica; font-size: 13px; color: #000000; tex=
+t-align: left; margin: 0 0 15px;" align=3D"left">=C2=A0</p>
+</td>
+    </tr>
+  </table>
+</div>
+<!--[if (gte mso 9)|(IE)]>
+  </td>
+<![endif]-->
+<!--[if (gte mso 9)|(IE)]>
+  </tr>
+  </table>
+<![endif]-->
+      </td>
+    </tr>
+  </table>
+</div>
+<!--[if (gte mso 9)|(IE)]>
+      </td>
+    </tr>
+  </table>
+<![endif]-->
+</td>
+    <td style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%=
+; mso-table-lspace: 0pt; mso-table-rspace: 0pt;"></td>
+  </tr>
+</table>
+</td></tr></table>
+=09=09</td>
+=09</tr>
+=09<tr>
+=09=09<td class=3D"digest-entry-subject" style=3D"font-size:24px;line-heigh=
+t:24px;padding-bottom:5px;font-family:'Helvetica Nueue','Helvetica',Helveti=
+ca,Arial,sans-serif;">RECALL UPDATE: Pasta Meals due to potential Listeria
+=09=09</td>
+=09</tr>
+=09<tr>
+=09=09<td class=3D"digest-entry-date-sent" style=3D"font-size:14px;padding-=
+bottom:5px;color:#888;font-family:'Helvetica Nueue','Helvetica',Helvetica,A=
+rial,sans-serif;">10/31/2025
+=09=09</td>
+=09</tr>
+=09<tr>
+=09=09<td class=3D"digest-entry-content" style=3D"font-size:16px;color:#333=
+;padding-bottom:5px;line-height:18px;font-family:'Helvetica Nueue','Helveti=
+ca',Helvetica,Arial,sans serif;"><table width=3D"100%" cellpadding=3D"0" ce=
+llspacing=3D"0" border=3D"0" align=3D"center" class=3D"gd_tbl_wrap"><tr><td=
+ style=3D"background-color: #FFFFFF; margin: 0; padding: 0; width: 100% !im=
+portant" bgcolor=3D"#FFFFFF"><table id=3D"flexible-abe-main-table" width=3D=
+"100%" align=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" st=
+yle=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; border-s=
+pacing: 0; mso-table-lspace: 0pt; mso-table-rspace: 0pt; padding-top: 20px;=
+ padding-bottom: 20px;">
+  <tr>
+    <td style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%=
+; mso-table-lspace: 0pt; mso-table-rspace: 0pt;"></td>
+    <!-- centered column -->
+    <td style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%=
+; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+<!--[if (gte mso 9)|(IE)]>
+  <table width=3D"600" align=3D"center" border=3D"0" cellpadding=3D"0" cell=
+spacing=3D"0">
+    <tr>
+      <td>
+<![endif]-->
+<div class=3D"abe-section-block" data-block-type=3D"FancyBlockSection" data=
+-block-id=3D"151594575">
+  <table class=3D"abe-section-table" width=3D"100%" align=3D"center" border=
+=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"m=
+ax-width: 600px; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%=
+; border-spacing: 0; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+    <tr id=3D"abe-section-row-837d39d0-8738-433d-9c20-ea192ad91479" class=
+=3D"abe-section-row" style=3D"background-color: #FFFFFF;" bgcolor=3D"#FFFFF=
+F">
+      <td style=3D"text-align: center; vertical-align: top; font-size: 0; -=
+webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-table-lspace=
+: 0pt; mso-table-rspace: 0pt;" align=3D"center" valign=3D"top">
+        <!--[if (gte mso 9)|(IE)]>
+  <table width=3D"100%" align=3D"center" border=3D"0" cellpadding=3D"0" cel=
+lspacing=3D"0" style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjus=
+t: 100%; border-spacing: 0; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+    <tr>
+<![endif]-->
+<!--[if (gte mso 9)|(IE)]>
+  <td width=3D"600" valign=3D"top" id=3D"abe-column-block-e7c6c027-64d7-4fd=
+f-91cd-ca201edf3efe-outlook-only" class=3D"abe-column-block-outlook-only" s=
+tyle=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-tab=
+le-lspace: 0pt; mso-table-rspace: 0pt;">
+<![endif]-->
+<div id=3D"abe-column-block-e7c6c027-64d7-4fdf-91cd-ca201edf3efe" class=3D"=
+abe-column-block" data-block-type=3D"FancyBlockColumn" data-block-id=3D"151=
+594576" style=3D"width: 100%; box-sizing: border-box; display: inline-block=
+; font-size: 16px; vertical-align: top;">
+  <table width=3D"100%" align=3D"center" border=3D"0" cellpadding=3D"0" cel=
+lspacing=3D"0" role=3D"presentation" style=3D"table-layout: fixed; overflow=
+-wrap: break-word; word-wrap: break-word; text-align: left; -webkit-text-si=
+ze-adjust: 100%; -ms-text-size-adjust: 100%; border-spacing: 0; mso-table-l=
+space: 0pt; mso-table-rspace: 0pt;">
+    <tr>
+      <td class=3D"abe-column-block-padding" id=3D"abe-column-block-e7c6c02=
+7-64d7-4fdf-91cd-ca201edf3efe-padding" style=3D"-webkit-text-size-adjust: 1=
+00%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0=
+pt; padding: 10px; border: none;"><img class=3D"govd_template_image" src=3D=
+"https://content.govdelivery.com/attachments/fancy_images/WADOH/2025/03/111=
+74881/6046329/11071-food-recall-govdelivery-final_crop.jpg" style=3D"width:=
+ 580px; height: auto; -ms-interpolation-mode: bicubic; line-height: 1; outl=
+ine: none; text-decoration: none; max-width: 100%; border: none;" alt=3D"Fo=
+od Recall Banner" width=3D"580" height=3D"145"></td>
+    </tr>
+  </table>
+</div>
+<!--[if (gte mso 9)|(IE)]>
+  </td>
+<![endif]-->
+<!--[if (gte mso 9)|(IE)]>
+  </tr>
+  </table>
+<![endif]-->
+      </td>
+    </tr>
+  </table>
+</div>
+<!--[if (gte mso 9)|(IE)]>
+      </td>
+    </tr>
+  </table>
+<![endif]-->
+<!--[if (gte mso 9)|(IE)]>
+  <table width=3D"600" align=3D"center" border=3D"0" cellpadding=3D"0" cell=
+spacing=3D"0">
+    <tr>
+      <td>
+<![endif]-->
+<div class=3D"abe-section-block" data-block-type=3D"FancyBlockSection" data=
+-block-id=3D"151594578">
+  <table class=3D"abe-section-table" width=3D"100%" align=3D"center" border=
+=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"m=
+ax-width: 600px; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%=
+; border-spacing: 0; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+    <tr id=3D"abe-section-row-3f03982f-b192-4389-92e2-db08d90cd3b3" class=
+=3D"abe-section-row" style=3D"background-color: #FFFFFF;" bgcolor=3D"#FFFFF=
+F">
+      <td style=3D"text-align: center; vertical-align: top; font-size: 0; -=
+webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-table-lspace=
+: 0pt; mso-table-rspace: 0pt;" align=3D"center" valign=3D"top">
+        <!--[if (gte mso 9)|(IE)]>
+  <table width=3D"100%" align=3D"center" border=3D"0" cellpadding=3D"0" cel=
+lspacing=3D"0" style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjus=
+t: 100%; border-spacing: 0; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+    <tr>
+<![endif]-->
+<!--[if (gte mso 9)|(IE)]>
+  <td width=3D"600" valign=3D"top" id=3D"abe-column-block-d1665dc1-02f0-440=
+f-ae5e-bf7fe6d2457a-outlook-only" class=3D"abe-column-block-outlook-only" s=
+tyle=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-tab=
+le-lspace: 0pt; mso-table-rspace: 0pt;">
+<![endif]-->
+<div id=3D"abe-column-block-d1665dc1-02f0-440f-ae5e-bf7fe6d2457a" class=3D"=
+abe-column-block" data-block-type=3D"FancyBlockColumn" data-block-id=3D"151=
+594579" style=3D"width: 100%; box-sizing: border-box; display: inline-block=
+; font-size: 16px; vertical-align: top;">
+  <table width=3D"100%" align=3D"center" border=3D"0" cellpadding=3D"0" cel=
+lspacing=3D"0" role=3D"presentation" style=3D"table-layout: fixed; overflow=
+-wrap: break-word; word-wrap: break-word; text-align: left; -webkit-text-si=
+ze-adjust: 100%; -ms-text-size-adjust: 100%; border-spacing: 0; mso-table-l=
+space: 0pt; mso-table-rspace: 0pt;">
+    <tr>
+      <td class=3D"abe-column-block-padding" id=3D"abe-column-block-d1665dc=
+1-02f0-440f-ae5e-bf7fe6d2457a-padding" style=3D"-webkit-text-size-adjust: 1=
+00%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0=
+pt; padding: 10px; border: none;"><table class=3D"govd_hr" cellspacing=3D"0=
+" border=3D"0" align=3D"center" width=3D"100%" cellpadding=3D"0" style=3D"-=
+webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; border-spacing: =
+0; mso-table-lspace: 0pt; mso-table-rspace: 0pt; padding: 0px;"><tr class=
+=3D"govd_hr_inner"><td width=3D"100%" style=3D"-webkit-text-size-adjust: 10=
+0%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0p=
+t;"><hr></td></tr></table></td>
+    </tr>
+  </table>
+</div>
+<!--[if (gte mso 9)|(IE)]>
+  </td>
+<![endif]-->
+<!--[if (gte mso 9)|(IE)]>
+  </tr>
+  </table>
+<![endif]-->
+      </td>
+    </tr>
+  </table>
+</div>
+<!--[if (gte mso 9)|(IE)]>
+      </td>
+    </tr>
+  </table>
+<![endif]-->
+<!--[if (gte mso 9)|(IE)]>
+  <table width=3D"600" align=3D"center" border=3D"0" cellpadding=3D"0" cell=
+spacing=3D"0">
+    <tr>
+      <td>
+<![endif]-->
+<div class=3D"abe-section-block" data-block-type=3D"FancyBlockSection" data=
+-block-id=3D"151594581">
+  <table class=3D"abe-section-table" width=3D"100%" align=3D"center" border=
+=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"m=
+ax-width: 600px; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%=
+; border-spacing: 0; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+    <tr id=3D"abe-section-row-a2fd1974-24cc-453d-b37e-a5a9a357ecd4" class=
+=3D"abe-section-row" style=3D"background-color: #FFFFFF;" bgcolor=3D"#FFFFF=
+F">
+      <td style=3D"text-align: center; vertical-align: top; font-size: 0; -=
+webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-table-lspace=
+: 0pt; mso-table-rspace: 0pt;" align=3D"center" valign=3D"top">
+        <!--[if (gte mso 9)|(IE)]>
+  <table width=3D"100%" align=3D"center" border=3D"0" cellpadding=3D"0" cel=
+lspacing=3D"0" style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjus=
+t: 100%; border-spacing: 0; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+    <tr>
+<![endif]-->
+<!--[if (gte mso 9)|(IE)]>
+  <td width=3D"600" valign=3D"top" id=3D"abe-column-block-9ab51b5f-c99c-43b=
+7-9041-449abcd10c72-outlook-only" class=3D"abe-column-block-outlook-only" s=
+tyle=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-tab=
+le-lspace: 0pt; mso-table-rspace: 0pt;">
+<![endif]-->
+<div id=3D"abe-column-block-9ab51b5f-c99c-43b7-9041-449abcd10c72" class=3D"=
+abe-column-block" data-block-type=3D"FancyBlockColumn" data-block-id=3D"151=
+594582" style=3D"width: 100%; box-sizing: border-box; display: inline-block=
+; font-size: 16px; vertical-align: top;">
+  <table width=3D"100%" align=3D"center" border=3D"0" cellpadding=3D"0" cel=
+lspacing=3D"0" role=3D"presentation" style=3D"table-layout: fixed; overflow=
+-wrap: break-word; word-wrap: break-word; text-align: left; -webkit-text-si=
+ze-adjust: 100%; -ms-text-size-adjust: 100%; border-spacing: 0; mso-table-l=
+space: 0pt; mso-table-rspace: 0pt;">
+    <tr>
+      <td class=3D"abe-column-block-padding" id=3D"abe-column-block-9ab51b5=
+f-c99c-43b7-9041-449abcd10c72-padding" style=3D"-webkit-text-size-adjust: 1=
+00%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0=
+pt; padding: 10px; border: none;">
+<h1 style=3D"line-height: 1.2; font-family: georgia, palatino; font-size: 2=
+3px; color: #D57915; text-align: left; margin: 0 0 15px;" align=3D"left">Pr=
+e-Cooked Pasta Recall Affects Select Ready-to-Heat Meals and Ready-to-Eat S=
+alads</h1>
+<p style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; lin=
+e-height: 1.4; font-family: arial, helvetica, sans-serif; font-size: 15px; =
+color: #443E3A; text-align: left; margin: 0 0 15px;" align=3D"left">This an=
+nouncement is an update on the Nate's Fine Foods, Inc and FreshRealm recall=
+ first announced earlier this year regarding pre-cooked pasta products reca=
+lled due to possible <em>Listeria</em> contamination and an associated nati=
+onwide illness outbreak.</p>
+<p style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; lin=
+e-height: 1.4; font-family: arial, helvetica, sans-serif; font-size: 15px; =
+color: #443E3A; text-align: left; margin: 0 0 15px;" align=3D"left">The pre=
+-cooked pasta linked to illness was used in a variety of products and packa=
+ged under several brand labels. The recalled items include ready-to-eat and=
+ heat-and-serve products and some may have been frozen.=C2=A0</p>
+<p style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; lin=
+e-height: 1.4; font-family: arial, helvetica, sans-serif; font-size: 15px; =
+color: #443E3A; text-align: left; margin: 0 0 15px;" align=3D"left">Firms a=
+re still working to determine if additional recalls are needed.=C2=A0</p>
+<p style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; lin=
+e-height: 1.4; font-family: arial, helvetica, sans-serif; font-size: 15px; =
+color: #443E3A; text-align: left; margin: 0 0 15px;" align=3D"left">The fol=
+lowing products subject to recall had distribution in Washington:</p>
+</td>
+    </tr>
+  </table>
+</div>
+<!--[if (gte mso 9)|(IE)]>
+  </td>
+<![endif]-->
+<!--[if (gte mso 9)|(IE)]>
+  </tr>
+  </table>
+<![endif]-->
+      </td>
+    </tr>
+  </table>
+</div>
+<!--[if (gte mso 9)|(IE)]>
+      </td>
+    </tr>
+  </table>
+<![endif]-->
+<!--[if (gte mso 9)|(IE)]>
+  <table width=3D"600" align=3D"center" border=3D"0" cellpadding=3D"0" cell=
+spacing=3D"0">
+    <tr>
+      <td>
+<![endif]-->
+<div class=3D"abe-section-block" data-block-type=3D"FancyBlockSection" data=
+-block-id=3D"151595074">
+  <table class=3D"abe-section-table" width=3D"100%" align=3D"center" border=
+=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"m=
+ax-width: 600px; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%=
+; border-spacing: 0; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+    <tr id=3D"abe-section-row-e9d7b63f-ab75-4b39-9feb-815f23f87456" class=
+=3D"abe-section-row" style=3D"background-color: #FFFFFF;" bgcolor=3D"#FFFFF=
+F">
+      <td style=3D"text-align: center; vertical-align: top; font-size: 0; -=
+webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-table-lspace=
+: 0pt; mso-table-rspace: 0pt;" align=3D"center" valign=3D"top">
+        <!--[if (gte mso 9)|(IE)]>
+  <table width=3D"100%" align=3D"center" border=3D"0" cellpadding=3D"0" cel=
+lspacing=3D"0" style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjus=
+t: 100%; border-spacing: 0; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+    <tr>
+<![endif]-->
+<!--[if (gte mso 9)|(IE)]>
+  <td width=3D"600" valign=3D"top" id=3D"abe-column-block-a933a0a6-0341-437=
+6-9742-3792c11329c5-outlook-only" class=3D"abe-column-block-outlook-only" s=
+tyle=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-tab=
+le-lspace: 0pt; mso-table-rspace: 0pt;">
+<![endif]-->
+<div id=3D"abe-column-block-a933a0a6-0341-4376-9742-3792c11329c5" class=3D"=
+abe-column-block" data-block-type=3D"FancyBlockColumn" data-block-id=3D"151=
+595075" style=3D"width: 100%; box-sizing: border-box; display: inline-block=
+; font-size: 16px; vertical-align: top;">
+  <table width=3D"100%" align=3D"center" border=3D"0" cellpadding=3D"0" cel=
+lspacing=3D"0" role=3D"presentation" style=3D"table-layout: fixed; overflow=
+-wrap: break-word; word-wrap: break-word; text-align: left; -webkit-text-si=
+ze-adjust: 100%; -ms-text-size-adjust: 100%; border-spacing: 0; mso-table-l=
+space: 0pt; mso-table-rspace: 0pt;">
+    <tr>
+      <td class=3D"abe-column-block-padding" id=3D"abe-column-block-a933a0a=
+6-0341-4376-9742-3792c11329c5-padding" style=3D"-webkit-text-size-adjust: 1=
+00%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0=
+pt; padding: 10px; border: none;"><table class=3D"govd_hr" cellspacing=3D"0=
+" border=3D"0" align=3D"center" width=3D"100%" cellpadding=3D"0" style=3D"-=
+webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; border-spacing: =
+0; mso-table-lspace: 0pt; mso-table-rspace: 0pt; padding: 0px;"><tr class=
+=3D"govd_hr_inner"><td width=3D"100%" style=3D"-webkit-text-size-adjust: 10=
+0%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0p=
+t;"><hr></td></tr></table></td>
+    </tr>
+  </table>
+</div>
+<!--[if (gte mso 9)|(IE)]>
+  </td>
+<![endif]-->
+<!--[if (gte mso 9)|(IE)]>
+  </tr>
+  </table>
+<![endif]-->
+      </td>
+    </tr>
+  </table>
+</div>
+<!--[if (gte mso 9)|(IE)]>
+      </td>
+    </tr>
+  </table>
+<![endif]-->
+<!--[if (gte mso 9)|(IE)]>
+  <table width=3D"600" align=3D"center" border=3D"0" cellpadding=3D"0" cell=
+spacing=3D"0">
+    <tr>
+      <td>
+<![endif]-->
+<div class=3D"abe-section-block" data-block-type=3D"FancyBlockSection" data=
+-block-id=3D"151595077">
+  <table class=3D"abe-section-table" width=3D"100%" align=3D"center" border=
+=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"m=
+ax-width: 600px; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%=
+; border-spacing: 0; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+    <tr id=3D"abe-section-row-1c2d1fbd-05c1-4187-82e1-520ae8ebb249" class=
+=3D"abe-section-row" style=3D"background-color: #FFFFFF;" bgcolor=3D"#FFFFF=
+F">
+      <td style=3D"text-align: center; vertical-align: top; font-size: 0; -=
+webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-table-lspace=
+: 0pt; mso-table-rspace: 0pt;" align=3D"center" valign=3D"top">
+        <!--[if (gte mso 9)|(IE)]>
+  <table width=3D"100%" align=3D"center" border=3D"0" cellpadding=3D"0" cel=
+lspacing=3D"0" style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjus=
+t: 100%; border-spacing: 0; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+    <tr>
+<![endif]-->
+<!--[if (gte mso 9)|(IE)]>
+  <td width=3D"200" valign=3D"top" id=3D"abe-column-block-83148b28-c8bc-4ed=
+5-a9d9-40a62d937606-outlook-only" class=3D"abe-column-block-outlook-only" s=
+tyle=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-tab=
+le-lspace: 0pt; mso-table-rspace: 0pt;">
+<![endif]-->
+<div id=3D"abe-column-block-83148b28-c8bc-4ed5-a9d9-40a62d937606" class=3D"=
+abe-column-block" data-block-type=3D"FancyBlockColumn" data-block-id=3D"151=
+595078" style=3D"width: 200px; box-sizing: border-box; display: inline-bloc=
+k; font-size: 16px; vertical-align: top;">
+  <table width=3D"100%" align=3D"center" border=3D"0" cellpadding=3D"0" cel=
+lspacing=3D"0" role=3D"presentation" style=3D"table-layout: fixed; overflow=
+-wrap: break-word; word-wrap: break-word; text-align: left; -webkit-text-si=
+ze-adjust: 100%; -ms-text-size-adjust: 100%; border-spacing: 0; mso-table-l=
+space: 0pt; mso-table-rspace: 0pt;">
+    <tr>
+      <td class=3D"abe-column-block-padding" id=3D"abe-column-block-83148b2=
+8-c8bc-4ed5-a9d9-40a62d937606-padding" style=3D"-webkit-text-size-adjust: 1=
+00%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0=
+pt; padding: 10px; border: none;"><img class=3D"govd_template_image" src=3D=
+"https://content.govdelivery.com/attachments/fancy_images/WADOH/2025/09/124=
+21111/6523959/linguine-recall_crop.jpg" style=3D"width: 180px; height: auto=
+; -ms-interpolation-mode: bicubic; line-height: 1; outline: none; text-deco=
+ration: none; max-width: 100%; border: none;" alt=3D"Linguine Recall" width=
+=3D"180" height=3D"139"></td>
+    </tr>
+  </table>
+</div>
+<!--[if (gte mso 9)|(IE)]>
+  </td>
+<![endif]-->
+<!--[if (gte mso 9)|(IE)]>
+  <td width=3D"400" valign=3D"top" id=3D"abe-column-block-81897471-108f-473=
+9-9a14-bbdaf38a9db7-outlook-only" class=3D"abe-column-block-outlook-only" s=
+tyle=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-tab=
+le-lspace: 0pt; mso-table-rspace: 0pt;">
+<![endif]-->
+<div id=3D"abe-column-block-81897471-108f-4739-9a14-bbdaf38a9db7" class=3D"=
+abe-column-block" data-block-type=3D"FancyBlockColumn" data-block-id=3D"151=
+595080" style=3D"width: 400px; box-sizing: border-box; display: inline-bloc=
+k; font-size: 16px; vertical-align: top;">
+  <table width=3D"100%" align=3D"center" border=3D"0" cellpadding=3D"0" cel=
+lspacing=3D"0" role=3D"presentation" style=3D"table-layout: fixed; overflow=
+-wrap: break-word; word-wrap: break-word; text-align: left; -webkit-text-si=
+ze-adjust: 100%; -ms-text-size-adjust: 100%; border-spacing: 0; mso-table-l=
+space: 0pt; mso-table-rspace: 0pt;">
+    <tr>
+      <td class=3D"abe-column-block-padding" id=3D"abe-column-block-8189747=
+1-108f-4739-9a14-bbdaf38a9db7-padding" style=3D"-webkit-text-size-adjust: 1=
+00%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0=
+pt; padding: 10px; border: none;">
+<h1 style=3D"line-height: 1.2; font-family: georgia, palatino; font-size: 2=
+3px; color: #D57915; text-align: left; margin: 0 0 15px;" align=3D"left"><s=
+trong>Walmart | Marketside Heat-and-Serve Meals</strong></h1>
+<p style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; lin=
+e-height: 1.4; font-family: arial, helvetica, sans-serif; font-size: 15px; =
+color: #443E3A; text-align: left; margin: 0 0 15px;" align=3D"left"><strong=
+>Establishment number =E2=80=9CEST. 50784=E2=80=9D or =E2=80=9CEST. 47718=
+=E2=80=9D appears on the label in the USDA mark of inspection.</strong></p>
+<h3 style=3D"line-height: 1.2; font-family: arial, helvetica, sans-serif; f=
+ont-size: 20px; color: #D57915; margin: 0 0 17px;">Linguine with Beef Meatb=
+alls &amp; Marinara Sauce</h3>
+<p style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; lin=
+e-height: 1.4; font-family: arial, helvetica, sans-serif; font-size: 15px; =
+color: #443E3A; text-align: left; margin: 0 0 15px;" align=3D"left">Prepack=
+aged. Sold in 12-oz. package</p>
+<p style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; lin=
+e-height: 1.4; font-family: arial, helvetica, sans-serif; font-size: 15px; =
+color: #443E3A; text-align: left; margin: 0 0 15px;" align=3D"left">Establi=
+shment number =E2=80=9CEST. 50784=E2=80=9D or =E2=80=9CEST. 47718=E2=80=9D =
+appears on the label in the USDA mark of inspection.</p>
+<p style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; lin=
+e-height: 1.4; font-family: arial, helvetica, sans-serif; font-size: 15px; =
+color: #443E3A; text-align: left; margin: 0 0 15px;" align=3D"left"><em><em=
+><strong>Best if Used by Date:<br></strong></em>SEP 22, 2025; SEP 24, 2025;=
+ SEP 25, 2025; SEP 29, 2025; SEP 30, 2025; and OCT 01, 2025.<br></em></p>
+<hr>
+<h3 style=3D"line-height: 1.2; font-family: arial, helvetica, sans-serif; f=
+ont-size: 20px; color: #D57915; margin: 0 0 17px;">Grilled Chicken Alfredo =
+with Fettuccine</h3>
+<p style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; lin=
+e-height: 1.4; font-family: arial, helvetica, sans-serif; font-size: 15px; =
+color: #443E3A; text-align: left; margin: 0 0 15px;" align=3D"left">Prepack=
+aged. Sold in=C2=A032.8 oz tray package</p>
+<p style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; lin=
+e-height: 1.4; font-family: arial, helvetica, sans-serif; font-size: 15px; =
+color: #443E3A; text-align: left; margin: 0 0 15px;" align=3D"left">Establi=
+shment number =E2=80=9CEST. 50784=E2=80=9D or =E2=80=9CEST. 47718=E2=80=9D =
+appears on the label in the USDA mark of inspection.</p>
+<p style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; lin=
+e-height: 1.4; font-family: arial, helvetica, sans-serif; font-size: 15px; =
+color: #443E3A; text-align: left; margin: 0 0 15px;" align=3D"left"><em><em=
+><em><strong>Best if Used by Date:</strong></em></em><br>06/27/25 or before=
+ (dates up to and including 06/27/25)</em></p>
+<hr>
+<h3 style=3D"line-height: 1.2; font-family: arial, helvetica, sans-serif; f=
+ont-size: 20px; color: #D57915; margin: 0 0 17px;">Grilled Chicken Alfredo =
+with Fettuccine</h3>
+<p style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; lin=
+e-height: 1.4; font-family: arial, helvetica, sans-serif; font-size: 15px; =
+color: #443E3A; text-align: left; margin: 0 0 15px;" align=3D"left">Prepack=
+aged. Sold in 12.3 oz tray package</p>
+<p style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; lin=
+e-height: 1.4; font-family: arial, helvetica, sans-serif; font-size: 15px; =
+color: #443E3A; text-align: left; margin: 0 0 15px;" align=3D"left">Establi=
+shment number =E2=80=9CEST. 50784=E2=80=9D or =E2=80=9CEST. 47718=E2=80=9D =
+appears on the label in the USDA mark of inspection.</p>
+<p style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; lin=
+e-height: 1.4; font-family: arial, helvetica, sans-serif; font-size: 15px; =
+color: #443E3A; text-align: left; margin: 0 0 15px;" align=3D"left"><em><em=
+><em><strong>Best if Used by Date:</strong></em></em><br>06/26/25 or before=
+ (dates up to and including 06/26/25)</em></p>
+</td>
+    </tr>
+  </table>
+</div>
+<!--[if (gte mso 9)|(IE)]>
+  </td>
+<![endif]-->
+<!--[if (gte mso 9)|(IE)]>
+  </tr>
+  </table>
+<![endif]-->
+      </td>
+    </tr>
+  </table>
+</div>
+<!--[if (gte mso 9)|(IE)]>
+      </td>
+    </tr>
+  </table>
+<![endif]-->
+<!--[if (gte mso 9)|(IE)]>
+  <table width=3D"600" align=3D"center" border=3D"0" cellpadding=3D"0" cell=
+spacing=3D"0">
+    <tr>
+      <td>
+<![endif]-->
+<div class=3D"abe-section-block" data-block-type=3D"FancyBlockSection" data=
+-block-id=3D"151595090">
+  <table class=3D"abe-section-table" width=3D"100%" align=3D"center" border=
+=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"m=
+ax-width: 600px; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%=
+; border-spacing: 0; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+    <tr id=3D"abe-section-row-4c6b2180-e3c2-488b-8cc5-55100bf263c5" class=
+=3D"abe-section-row" style=3D"background-color: #FFFFFF;" bgcolor=3D"#FFFFF=
+F">
+      <td style=3D"text-align: center; vertical-align: top; font-size: 0; -=
+webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-table-lspace=
+: 0pt; mso-table-rspace: 0pt;" align=3D"center" valign=3D"top">
+        <!--[if (gte mso 9)|(IE)]>
+  <table width=3D"100%" align=3D"center" border=3D"0" cellpadding=3D"0" cel=
+lspacing=3D"0" style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjus=
+t: 100%; border-spacing: 0; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+    <tr>
+<![endif]-->
+<!--[if (gte mso 9)|(IE)]>
+  <td width=3D"600" valign=3D"top" id=3D"abe-column-block-409f50f8-8f87-460=
+2-b69c-23afa04af44d-outlook-only" class=3D"abe-column-block-outlook-only" s=
+tyle=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-tab=
+le-lspace: 0pt; mso-table-rspace: 0pt;">
+<![endif]-->
+<div id=3D"abe-column-block-409f50f8-8f87-4602-b69c-23afa04af44d" class=3D"=
+abe-column-block" data-block-type=3D"FancyBlockColumn" data-block-id=3D"151=
+595091" style=3D"width: 100%; box-sizing: border-box; display: inline-block=
+; font-size: 16px; vertical-align: top;">
+  <table width=3D"100%" align=3D"center" border=3D"0" cellpadding=3D"0" cel=
+lspacing=3D"0" role=3D"presentation" style=3D"table-layout: fixed; overflow=
+-wrap: break-word; word-wrap: break-word; text-align: left; -webkit-text-si=
+ze-adjust: 100%; -ms-text-size-adjust: 100%; border-spacing: 0; mso-table-l=
+space: 0pt; mso-table-rspace: 0pt;">
+    <tr>
+      <td class=3D"abe-column-block-padding" id=3D"abe-column-block-409f50f=
+8-8f87-4602-b69c-23afa04af44d-padding" style=3D"-webkit-text-size-adjust: 1=
+00%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0=
+pt; padding: 10px; border: none;"><table class=3D"govd_hr" cellspacing=3D"0=
+" border=3D"0" align=3D"center" width=3D"100%" cellpadding=3D"0" style=3D"-=
+webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; border-spacing: =
+0; mso-table-lspace: 0pt; mso-table-rspace: 0pt; padding: 0px;"><tr class=
+=3D"govd_hr_inner"><td width=3D"100%" style=3D"-webkit-text-size-adjust: 10=
+0%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0p=
+t;"><hr></td></tr></table></td>
+    </tr>
+  </table>
+</div>
+<!--[if (gte mso 9)|(IE)]>
+  </td>
+<![endif]-->
+<!--[if (gte mso 9)|(IE)]>
+  </tr>
+  </table>
+<![endif]-->
+      </td>
+    </tr>
+  </table>
+</div>
+<!--[if (gte mso 9)|(IE)]>
+      </td>
+    </tr>
+  </table>
+<![endif]-->
+<!--[if (gte mso 9)|(IE)]>
+  <table width=3D"600" align=3D"center" border=3D"0" cellpadding=3D"0" cell=
+spacing=3D"0">
+    <tr>
+      <td>
+<![endif]-->
+<div class=3D"abe-section-block" data-block-type=3D"FancyBlockSection" data=
+-block-id=3D"151595093">
+  <table class=3D"abe-section-table" width=3D"100%" align=3D"center" border=
+=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"m=
+ax-width: 600px; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%=
+; border-spacing: 0; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+    <tr id=3D"abe-section-row-7f7563d3-3d6b-44ed-b6a5-446d84f6a4ef" class=
+=3D"abe-section-row" style=3D"background-color: #FFFFFF;" bgcolor=3D"#FFFFF=
+F">
+      <td style=3D"text-align: center; vertical-align: top; font-size: 0; -=
+webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-table-lspace=
+: 0pt; mso-table-rspace: 0pt;" align=3D"center" valign=3D"top">
+        <!--[if (gte mso 9)|(IE)]>
+  <table width=3D"100%" align=3D"center" border=3D"0" cellpadding=3D"0" cel=
+lspacing=3D"0" style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjus=
+t: 100%; border-spacing: 0; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+    <tr>
+<![endif]-->
+<!--[if (gte mso 9)|(IE)]>
+  <td width=3D"200" valign=3D"top" id=3D"abe-column-block-4f54d19c-3d03-4e5=
+b-8415-ebc69281b73e-outlook-only" class=3D"abe-column-block-outlook-only" s=
+tyle=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-tab=
+le-lspace: 0pt; mso-table-rspace: 0pt;">
+<![endif]-->
+<div id=3D"abe-column-block-4f54d19c-3d03-4e5b-8415-ebc69281b73e" class=3D"=
+abe-column-block" data-block-type=3D"FancyBlockColumn" data-block-id=3D"151=
+595094" style=3D"width: 200px; box-sizing: border-box; display: inline-bloc=
+k; font-size: 16px; vertical-align: top;">
+  <table width=3D"100%" align=3D"center" border=3D"0" cellpadding=3D"0" cel=
+lspacing=3D"0" role=3D"presentation" style=3D"table-layout: fixed; overflow=
+-wrap: break-word; word-wrap: break-word; text-align: left; -webkit-text-si=
+ze-adjust: 100%; -ms-text-size-adjust: 100%; border-spacing: 0; mso-table-l=
+space: 0pt; mso-table-rspace: 0pt;">
+    <tr>
+      <td class=3D"abe-column-block-padding" id=3D"abe-column-block-4f54d19=
+c-3d03-4e5b-8415-ebc69281b73e-padding" style=3D"-webkit-text-size-adjust: 1=
+00%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0=
+pt; padding: 10px; border: none;"><img class=3D"govd_template_image" src=3D=
+"https://content.govdelivery.com/attachments/fancy_images/WADOH/2025/10/126=
+06846/6523960/sproutssalad_crop.png" style=3D"width: 180px; height: auto; -=
+ms-interpolation-mode: bicubic; line-height: 1; outline: none; text-decorat=
+ion: none; max-width: 100%; border: none;" alt=3D"Sprouts Smoked MozzSalad"=
+ width=3D"180" height=3D"111"></td>
+    </tr>
+  </table>
+</div>
+<!--[if (gte mso 9)|(IE)]>
+  </td>
+<![endif]-->
+<!--[if (gte mso 9)|(IE)]>
+  <td width=3D"400" valign=3D"top" id=3D"abe-column-block-23b9823d-48f4-4d6=
+7-9f94-c1c2b7d66612-outlook-only" class=3D"abe-column-block-outlook-only" s=
+tyle=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-tab=
+le-lspace: 0pt; mso-table-rspace: 0pt;">
+<![endif]-->
+<div id=3D"abe-column-block-23b9823d-48f4-4d67-9f94-c1c2b7d66612" class=3D"=
+abe-column-block" data-block-type=3D"FancyBlockColumn" data-block-id=3D"151=
+595096" style=3D"width: 400px; box-sizing: border-box; display: inline-bloc=
+k; font-size: 16px; vertical-align: top;">
+  <table width=3D"100%" align=3D"center" border=3D"0" cellpadding=3D"0" cel=
+lspacing=3D"0" role=3D"presentation" style=3D"table-layout: fixed; overflow=
+-wrap: break-word; word-wrap: break-word; text-align: left; -webkit-text-si=
+ze-adjust: 100%; -ms-text-size-adjust: 100%; border-spacing: 0; mso-table-l=
+space: 0pt; mso-table-rspace: 0pt;">
+    <tr>
+      <td class=3D"abe-column-block-padding" id=3D"abe-column-block-23b9823=
+d-48f4-4d67-9f94-c1c2b7d66612-padding" style=3D"-webkit-text-size-adjust: 1=
+00%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0=
+pt; padding: 10px; border: none;">
+<h1 style=3D"line-height: 1.2; font-family: georgia, palatino; font-size: 2=
+3px; color: #D57915; text-align: left; margin: 0 0 15px;" align=3D"left"><s=
+trong>Sprouts Farmers Markets | Smoked Mozzarella Pasta Salad</strong></h1>
+<p style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; lin=
+e-height: 1.4; font-family: arial, helvetica, sans-serif; font-size: 15px; =
+color: #443E3A; text-align: left; margin: 0 0 15px;" align=3D"left">Package=
+d for Grab &amp; Go or packed upon request at deli service counter.</p>
+<h3 style=3D"line-height: 1.2; font-family: arial, helvetica, sans-serif; f=
+ont-size: 20px; color: #D57915; margin: 0 0 17px;">Smoked Mozzarella Penne =
+Salad:</h3>
+<ul style=3D"margin-top: 0px; margin-bottom: 15px;">
+<li style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; li=
+ne-height: 1.4; font-family: arial, helvetica, sans-serif; font-size: 15px;=
+ color: #443E3A; text-align: left; margin-top: 0px;">Grab &amp; Go: UPC 2-1=
+5786-00000</li>
+<li style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; li=
+ne-height: 1.4; font-family: arial, helvetica, sans-serif; font-size: 15px;=
+ color: #443E3A; text-align: left; margin-bottom: 15px;">Service Case: UPC =
+2-15587-00000</li>
+</ul>
+<p style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; lin=
+e-height: 1.4; font-family: arial, helvetica, sans-serif; font-size: 15px; =
+color: #443E3A; text-align: left; margin: 0 0 15px;" align=3D"left"><em><em=
+><strong>Use/Freeze/Sell by Date:<br></strong></em></em>Dates from 10/10/25=
+ =E2=80=93 10/29/25</p>
+</td>
+    </tr>
+  </table>
+</div>
+<!--[if (gte mso 9)|(IE)]>
+  </td>
+<![endif]-->
+<!--[if (gte mso 9)|(IE)]>
+  </tr>
+  </table>
+<![endif]-->
+      </td>
+    </tr>
+  </table>
+</div>
+<!--[if (gte mso 9)|(IE)]>
+      </td>
+    </tr>
+  </table>
+<![endif]-->
+<!--[if (gte mso 9)|(IE)]>
+  <table width=3D"600" align=3D"center" border=3D"0" cellpadding=3D"0" cell=
+spacing=3D"0">
+    <tr>
+      <td>
+<![endif]-->
+<div class=3D"abe-section-block" data-block-type=3D"FancyBlockSection" data=
+-block-id=3D"151595106">
+  <table class=3D"abe-section-table" width=3D"100%" align=3D"center" border=
+=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"m=
+ax-width: 600px; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%=
+; border-spacing: 0; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+    <tr id=3D"abe-section-row-3a055271-f4dc-43fa-b5bc-80fc0adab7fb" class=
+=3D"abe-section-row" style=3D"background-color: #FFFFFF;" bgcolor=3D"#FFFFF=
+F">
+      <td style=3D"text-align: center; vertical-align: top; font-size: 0; -=
+webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-table-lspace=
+: 0pt; mso-table-rspace: 0pt;" align=3D"center" valign=3D"top">
+        <!--[if (gte mso 9)|(IE)]>
+  <table width=3D"100%" align=3D"center" border=3D"0" cellpadding=3D"0" cel=
+lspacing=3D"0" style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjus=
+t: 100%; border-spacing: 0; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+    <tr>
+<![endif]-->
+<!--[if (gte mso 9)|(IE)]>
+  <td width=3D"600" valign=3D"top" id=3D"abe-column-block-e382db79-54d7-4a9=
+e-8696-1108e9b58c91-outlook-only" class=3D"abe-column-block-outlook-only" s=
+tyle=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-tab=
+le-lspace: 0pt; mso-table-rspace: 0pt;">
+<![endif]-->
+<div id=3D"abe-column-block-e382db79-54d7-4a9e-8696-1108e9b58c91" class=3D"=
+abe-column-block" data-block-type=3D"FancyBlockColumn" data-block-id=3D"151=
+595107" style=3D"width: 100%; box-sizing: border-box; display: inline-block=
+; font-size: 16px; vertical-align: top;">
+  <table width=3D"100%" align=3D"center" border=3D"0" cellpadding=3D"0" cel=
+lspacing=3D"0" role=3D"presentation" style=3D"table-layout: fixed; overflow=
+-wrap: break-word; word-wrap: break-word; text-align: left; -webkit-text-si=
+ze-adjust: 100%; -ms-text-size-adjust: 100%; border-spacing: 0; mso-table-l=
+space: 0pt; mso-table-rspace: 0pt;">
+    <tr>
+      <td class=3D"abe-column-block-padding" id=3D"abe-column-block-e382db7=
+9-54d7-4a9e-8696-1108e9b58c91-padding" style=3D"-webkit-text-size-adjust: 1=
+00%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0=
+pt; padding: 10px; border: none;"><table class=3D"govd_hr" cellspacing=3D"0=
+" border=3D"0" align=3D"center" width=3D"100%" cellpadding=3D"0" style=3D"-=
+webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; border-spacing: =
+0; mso-table-lspace: 0pt; mso-table-rspace: 0pt; padding: 0px;"><tr class=
+=3D"govd_hr_inner"><td width=3D"100%" style=3D"-webkit-text-size-adjust: 10=
+0%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0p=
+t;"><hr></td></tr></table></td>
+    </tr>
+  </table>
+</div>
+<!--[if (gte mso 9)|(IE)]>
+  </td>
+<![endif]-->
+<!--[if (gte mso 9)|(IE)]>
+  </tr>
+  </table>
+<![endif]-->
+      </td>
+    </tr>
+  </table>
+</div>
+<!--[if (gte mso 9)|(IE)]>
+      </td>
+    </tr>
+  </table>
+<![endif]-->
+<!--[if (gte mso 9)|(IE)]>
+  <table width=3D"600" align=3D"center" border=3D"0" cellpadding=3D"0" cell=
+spacing=3D"0">
+    <tr>
+      <td>
+<![endif]-->
+<div class=3D"abe-section-block" data-block-type=3D"FancyBlockSection" data=
+-block-id=3D"151595109">
+  <table class=3D"abe-section-table" width=3D"100%" align=3D"center" border=
+=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"m=
+ax-width: 600px; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%=
+; border-spacing: 0; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+    <tr id=3D"abe-section-row-0cab6a08-8a57-4b48-adf6-e10be622368b" class=
+=3D"abe-section-row" style=3D"background-color: #FFFFFF;" bgcolor=3D"#FFFFF=
+F">
+      <td style=3D"text-align: center; vertical-align: top; font-size: 0; -=
+webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-table-lspace=
+: 0pt; mso-table-rspace: 0pt;" align=3D"center" valign=3D"top">
+        <!--[if (gte mso 9)|(IE)]>
+  <table width=3D"100%" align=3D"center" border=3D"0" cellpadding=3D"0" cel=
+lspacing=3D"0" style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjus=
+t: 100%; border-spacing: 0; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+    <tr>
+<![endif]-->
+<!--[if (gte mso 9)|(IE)]>
+  <td width=3D"200" valign=3D"top" id=3D"abe-column-block-7e68daef-b5a0-46d=
+3-b9f0-a240497fd3f2-outlook-only" class=3D"abe-column-block-outlook-only" s=
+tyle=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-tab=
+le-lspace: 0pt; mso-table-rspace: 0pt;">
+<![endif]-->
+<div id=3D"abe-column-block-7e68daef-b5a0-46d3-b9f0-a240497fd3f2" class=3D"=
+abe-column-block" data-block-type=3D"FancyBlockColumn" data-block-id=3D"151=
+595110" style=3D"width: 200px; box-sizing: border-box; display: inline-bloc=
+k; font-size: 16px; vertical-align: top;">
+  <table width=3D"100%" align=3D"center" border=3D"0" cellpadding=3D"0" cel=
+lspacing=3D"0" role=3D"presentation" style=3D"table-layout: fixed; overflow=
+-wrap: break-word; word-wrap: break-word; text-align: left; -webkit-text-si=
+ze-adjust: 100%; -ms-text-size-adjust: 100%; border-spacing: 0; mso-table-l=
+space: 0pt; mso-table-rspace: 0pt;">
+    <tr>
+      <td class=3D"abe-column-block-padding" id=3D"abe-column-block-7e68dae=
+f-b5a0-46d3-b9f0-a240497fd3f2-padding" style=3D"-webkit-text-size-adjust: 1=
+00%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0=
+pt; padding: 10px; border: none;"><img class=3D"govd_template_image" src=3D=
+"https://content.govdelivery.com/attachments/fancy_images/WADOH/2025/10/126=
+07946/6523961/alfredo-recall3_crop.png" style=3D"width: 180px; height: auto=
+; -ms-interpolation-mode: bicubic; line-height: 1; outline: none; text-deco=
+ration: none; max-width: 100%; border: none;" alt=3D"alfredo" width=3D"180"=
+ height=3D"196"></td>
+    </tr>
+  </table>
+</div>
+<!--[if (gte mso 9)|(IE)]>
+  </td>
+<![endif]-->
+<!--[if (gte mso 9)|(IE)]>
+  <td width=3D"400" valign=3D"top" id=3D"abe-column-block-6874b331-2d5c-4e1=
+1-b2ed-ab8c3b09499b-outlook-only" class=3D"abe-column-block-outlook-only" s=
+tyle=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-tab=
+le-lspace: 0pt; mso-table-rspace: 0pt;">
+<![endif]-->
+<div id=3D"abe-column-block-6874b331-2d5c-4e11-b2ed-ab8c3b09499b" class=3D"=
+abe-column-block" data-block-type=3D"FancyBlockColumn" data-block-id=3D"151=
+595112" style=3D"width: 400px; box-sizing: border-box; display: inline-bloc=
+k; font-size: 16px; vertical-align: top;">
+  <table width=3D"100%" align=3D"center" border=3D"0" cellpadding=3D"0" cel=
+lspacing=3D"0" role=3D"presentation" style=3D"table-layout: fixed; overflow=
+-wrap: break-word; word-wrap: break-word; text-align: left; -webkit-text-si=
+ze-adjust: 100%; -ms-text-size-adjust: 100%; border-spacing: 0; mso-table-l=
+space: 0pt; mso-table-rspace: 0pt;">
+    <tr>
+      <td class=3D"abe-column-block-padding" id=3D"abe-column-block-6874b33=
+1-2d5c-4e11-b2ed-ab8c3b09499b-padding" style=3D"-webkit-text-size-adjust: 1=
+00%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0=
+pt; padding: 10px; border: none;">
+<h1 style=3D"line-height: 1.2; font-family: georgia, palatino; font-size: 2=
+3px; color: #D57915; text-align: left; margin: 0 0 15px;" align=3D"left">Kr=
+oger | Fred Meyer and/or QFC=C2=A0</h1>
+<h3 style=3D"line-height: 1.2; font-family: arial, helvetica, sans-serif; f=
+ont-size: 20px; color: #D57915; margin: 0 0 17px;">Basil Pesto Bowie Pasta =
+Salad:</h3>
+<p style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; lin=
+e-height: 1.4; font-family: arial, helvetica, sans-serif; font-size: 15px; =
+color: #443E3A; text-align: left; margin: 0 0 15px;" align=3D"left">Package=
+d for Grab &amp; Go or packed upon request at deli service counter.</p>
+<ul style=3D"margin-top: 0px; margin-bottom: 15px;">
+<li style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; li=
+ne-height: 1.4; font-family: arial, helvetica, sans-serif; font-size: 15px;=
+ color: #443E3A; text-align: left; margin-top: 0px;">UPC 217573-10000 or 21=
+7573-20000</li>
+<li style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; li=
+ne-height: 1.4; font-family: arial, helvetica, sans-serif; font-size: 15px;=
+ color: #443E3A; text-align: left; margin-bottom: 15px;">Sold on dates from=
+ SEP 6 2025 thru OCT 2 2025</li>
+</ul>
+<h3 style=3D"line-height: 1.2; font-family: arial, helvetica, sans-serif; f=
+ont-size: 20px; color: #D57915; margin: 0 0 17px;">Smoked Mozzarella Penne =
+Salad:</h3>
+<p style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; lin=
+e-height: 1.4; font-family: arial, helvetica, sans-serif; font-size: 15px; =
+color: #443E3A; text-align: left; margin: 0 0 15px;" align=3D"left">Package=
+d for Grab &amp; Go or packed upon request at deli service counter.</p>
+<ul style=3D"margin-top: 0px; margin-bottom: 15px;">
+<li style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; li=
+ne-height: 1.4; font-family: arial, helvetica, sans-serif; font-size: 15px;=
+ color: #443E3A; text-align: left; margin-top: 0px;">UPC 227573-10000</li>
+<li style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; li=
+ne-height: 1.4; font-family: arial, helvetica, sans-serif; font-size: 15px;=
+ color: #443E3A; text-align: left; margin-bottom: 15px;">Sold dates from AU=
+G 29 2025 thru OCT 2 2025</li>
+</ul>
+<h3 style=3D"line-height: 1.2; font-family: arial, helvetica, sans-serif; f=
+ont-size: 20px; color: #D57915; margin: 0 0 17px;">Home Chef Fettucine Alfr=
+edo:</h3>
+<p style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; lin=
+e-height: 1.4; font-family: arial, helvetica, sans-serif; font-size: 15px; =
+color: #443E3A; text-align: left; margin: 0 0 15px;" align=3D"left">Prepack=
+aged heat &amp; eat meal. Sold in 12.5 oz. tray packages.</p>
+<p style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; lin=
+e-height: 1.4; font-family: arial, helvetica, sans-serif; font-size: 15px; =
+color: #443E3A; text-align: left; margin: 0 0 15px;" align=3D"left">Establi=
+shment number =E2=80=9CEST. 50784=E2=80=9D or =E2=80=9CEST. 47718=E2=80=9D =
+appears on the label in the USDA mark of inspection.</p>
+<p style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; lin=
+e-height: 1.4; font-family: arial, helvetica, sans-serif; font-size: 15px; =
+color: #443E3A; text-align: left; margin: 0 0 15px;" align=3D"left"><strong=
+><em>Use/Freeze/Sell by Date:</em></strong> <em>Best-by date 06/19/25 or pr=
+ior (dates up to and including 06/19/25)</em></p>
+<ul style=3D"margin-top: 0px; margin-bottom: 15px;">
+<li style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; li=
+ne-height: 1.4; font-family: arial, helvetica, sans-serif; font-size: 15px;=
+ color: #443E3A; text-align: left; margin-top: 0px;">UPC 227573-10000</li>
+<li style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; li=
+ne-height: 1.4; font-family: arial, helvetica, sans-serif; font-size: 15px;=
+ color: #443E3A; text-align: left; margin-bottom: 15px;">Sold dates from AU=
+G 29 2025 thru OCT 2 2025</li>
+</ul>
+</td>
+    </tr>
+  </table>
+</div>
+<!--[if (gte mso 9)|(IE)]>
+  </td>
+<![endif]-->
+<!--[if (gte mso 9)|(IE)]>
+  </tr>
+  </table>
+<![endif]-->
+      </td>
+    </tr>
+  </table>
+</div>
+<!--[if (gte mso 9)|(IE)]>
+      </td>
+    </tr>
+  </table>
+<![endif]-->
+<!--[if (gte mso 9)|(IE)]>
+  <table width=3D"600" align=3D"center" border=3D"0" cellpadding=3D"0" cell=
+spacing=3D"0">
+    <tr>
+      <td>
+<![endif]-->
+<div class=3D"abe-section-block" data-block-type=3D"FancyBlockSection" data=
+-block-id=3D"151595114">
+  <table class=3D"abe-section-table" width=3D"100%" align=3D"center" border=
+=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"m=
+ax-width: 600px; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%=
+; border-spacing: 0; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+    <tr id=3D"abe-section-row-bec24d61-77e8-4eb3-91a6-c14b9c22336f" class=
+=3D"abe-section-row" style=3D"background-color: #FFFFFF;" bgcolor=3D"#FFFFF=
+F">
+      <td style=3D"text-align: center; vertical-align: top; font-size: 0; -=
+webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-table-lspace=
+: 0pt; mso-table-rspace: 0pt;" align=3D"center" valign=3D"top">
+        <!--[if (gte mso 9)|(IE)]>
+  <table width=3D"100%" align=3D"center" border=3D"0" cellpadding=3D"0" cel=
+lspacing=3D"0" style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjus=
+t: 100%; border-spacing: 0; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+    <tr>
+<![endif]-->
+<!--[if (gte mso 9)|(IE)]>
+  <td width=3D"600" valign=3D"top" id=3D"abe-column-block-cbc44919-e308-4b1=
+a-b174-9a1a6f7d36a3-outlook-only" class=3D"abe-column-block-outlook-only" s=
+tyle=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-tab=
+le-lspace: 0pt; mso-table-rspace: 0pt;">
+<![endif]-->
+<div id=3D"abe-column-block-cbc44919-e308-4b1a-b174-9a1a6f7d36a3" class=3D"=
+abe-column-block" data-block-type=3D"FancyBlockColumn" data-block-id=3D"151=
+595115" style=3D"width: 100%; box-sizing: border-box; display: inline-block=
+; font-size: 16px; vertical-align: top;">
+  <table width=3D"100%" align=3D"center" border=3D"0" cellpadding=3D"0" cel=
+lspacing=3D"0" role=3D"presentation" style=3D"table-layout: fixed; overflow=
+-wrap: break-word; word-wrap: break-word; text-align: left; -webkit-text-si=
+ze-adjust: 100%; -ms-text-size-adjust: 100%; border-spacing: 0; mso-table-l=
+space: 0pt; mso-table-rspace: 0pt;">
+    <tr>
+      <td class=3D"abe-column-block-padding" id=3D"abe-column-block-cbc4491=
+9-e308-4b1a-b174-9a1a6f7d36a3-padding" style=3D"-webkit-text-size-adjust: 1=
+00%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0=
+pt; padding: 10px; border: none;"><table class=3D"govd_hr" cellspacing=3D"0=
+" border=3D"0" align=3D"center" width=3D"100%" cellpadding=3D"0" style=3D"-=
+webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; border-spacing: =
+0; mso-table-lspace: 0pt; mso-table-rspace: 0pt; padding: 0px;"><tr class=
+=3D"govd_hr_inner"><td width=3D"100%" style=3D"-webkit-text-size-adjust: 10=
+0%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0p=
+t;"><hr></td></tr></table></td>
+    </tr>
+  </table>
+</div>
+<!--[if (gte mso 9)|(IE)]>
+  </td>
+<![endif]-->
+<!--[if (gte mso 9)|(IE)]>
+  </tr>
+  </table>
+<![endif]-->
+      </td>
+    </tr>
+  </table>
+</div>
+<!--[if (gte mso 9)|(IE)]>
+      </td>
+    </tr>
+  </table>
+<![endif]-->
+<!--[if (gte mso 9)|(IE)]>
+  <table width=3D"600" align=3D"center" border=3D"0" cellpadding=3D"0" cell=
+spacing=3D"0">
+    <tr>
+      <td>
+<![endif]-->
+<div class=3D"abe-section-block" data-block-type=3D"FancyBlockSection" data=
+-block-id=3D"151595125">
+  <table class=3D"abe-section-table" width=3D"100%" align=3D"center" border=
+=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"m=
+ax-width: 600px; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%=
+; border-spacing: 0; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+    <tr id=3D"abe-section-row-b7b91910-c0ee-456f-b028-6499cb6522b5" class=
+=3D"abe-section-row" style=3D"background-color: #FFFFFF;" bgcolor=3D"#FFFFF=
+F">
+      <td style=3D"text-align: center; vertical-align: top; font-size: 0; -=
+webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-table-lspace=
+: 0pt; mso-table-rspace: 0pt;" align=3D"center" valign=3D"top">
+        <!--[if (gte mso 9)|(IE)]>
+  <table width=3D"100%" align=3D"center" border=3D"0" cellpadding=3D"0" cel=
+lspacing=3D"0" style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjus=
+t: 100%; border-spacing: 0; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+    <tr>
+<![endif]-->
+<!--[if (gte mso 9)|(IE)]>
+  <td width=3D"600" valign=3D"top" id=3D"abe-column-block-07e7970e-599c-4d9=
+6-b6ad-83b78c193dc7-outlook-only" class=3D"abe-column-block-outlook-only" s=
+tyle=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-tab=
+le-lspace: 0pt; mso-table-rspace: 0pt;">
+<![endif]-->
+<div id=3D"abe-column-block-07e7970e-599c-4d96-b6ad-83b78c193dc7" class=3D"=
+abe-column-block" data-block-type=3D"FancyBlockColumn" data-block-id=3D"151=
+595126" style=3D"width: 100%; box-sizing: border-box; display: inline-block=
+; font-size: 16px; vertical-align: top;">
+  <table width=3D"100%" align=3D"center" border=3D"0" cellpadding=3D"0" cel=
+lspacing=3D"0" role=3D"presentation" style=3D"table-layout: fixed; overflow=
+-wrap: break-word; word-wrap: break-word; text-align: left; -webkit-text-si=
+ze-adjust: 100%; -ms-text-size-adjust: 100%; border-spacing: 0; mso-table-l=
+space: 0pt; mso-table-rspace: 0pt;">
+    <tr>
+      <td class=3D"abe-column-block-padding" id=3D"abe-column-block-07e7970=
+e-599c-4d96-b6ad-83b78c193dc7-padding" style=3D"-webkit-text-size-adjust: 1=
+00%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0=
+pt; padding: 10px; border: none;">
+<p style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; lin=
+e-height: 1.4; font-family: arial, helvetica, sans-serif; font-size: 15px; =
+color: #443E3A; text-align: left; margin: 0 0 15px;" align=3D"left"><em><st=
+rong>Product Distribution</strong></em><br>Recalled items were shipped nati=
+onwide.</p>
+<p style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; lin=
+e-height: 1.4; font-family: arial, helvetica, sans-serif; font-size: 15px; =
+color: #443E3A; text-align: left; margin: 0 0 15px;" align=3D"left"><strong=
+><em>Associated Illnesses<br></em></strong>There have been 27 reported illn=
+esses, 25 hospitalizations, and 6 deaths across eighteen states. One case h=
+as been identified in Washington.=C2=A0</p>
+<ul style=3D"margin-top: 0px; margin-bottom: 15px;">
+<li style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; li=
+ne-height: 1.4; font-family: arial, helvetica, sans-serif; font-size: 15px;=
+ color: #443E3A; text-align: left; margin-top: 0px;">DOH Outbreak Update: <=
+a href=3D"https://links-2.govdelivery.com/CL0/https:%2F%2Fdoh.wa.gov%2Fyou-=
+and-your-family%2Fillness-and-disease-z%2Ffoodborne-illness%2Foutbreaks%2F2=
+025-listeria-outbreak-linked-prepared-pasta-meals/1/0101019a3f72fcf4-7cd835=
+6d-9e2c-4eb6-87f4-50ddb0ddddea-000000/ajuyhRIRQWj3tErXVzwkQ0tKMBgKX_T45Y8xA=
+hK2dmE=3D429" style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust=
+: 100%; color: #D57915;">2025 Listeria Outbreak Linked to Prepared Pasta Me=
+als | Washington State Department of Health</a>
+</li>
+<li style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; li=
+ne-height: 1.4; font-family: arial, helvetica, sans-serif; font-size: 15px;=
+ color: #443E3A; text-align: left; margin-bottom: 15px;">CDC Outbreak Updat=
+e: <a href=3D"https://links-2.govdelivery.com/CL0/https:%2F%2Fwww.cdc.gov%2=
+Flisteria%2Foutbreaks%2Fchicken-fettuccine-alfredo-06-25%2Findex.html/1/010=
+1019a3f72fcf4-7cd8356d-9e2c-4eb6-87f4-50ddb0ddddea-000000/cuRsy6xKme15MVFxt=
+2uY7-P_ZagsOvXcx2El0CUhdps=3D429" style=3D"-webkit-text-size-adjust: 100%; =
+-ms-text-size-adjust: 100%; color: #D57915;">Listeria Outbreak Linked to Pr=
+epared Meals | Listeria Infection | CDC</a>
+</li>
+</ul>
+<p style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; lin=
+e-height: 1.4; font-family: arial, helvetica, sans-serif; font-size: 15px; =
+color: #443E3A; text-align: left; margin: 0 0 15px;" align=3D"left"><em><st=
+rong>Additional Information<br></strong></em>For additional information on =
+the investigation, see the FDA Investigation updated on 10/30/25: <a href=
+=3D"https://links-2.govdelivery.com/CL0/https:%2F%2Fwww.fda.gov%2Ffood%2Fou=
+tbreaks-foodborne-illness%2Foutbreak-investigation-listeria-monocytogenes-p=
+repared-pasta-meals-june-2025/1/0101019a3f72fcf4-7cd8356d-9e2c-4eb6-87f4-50=
+ddb0ddddea-000000/xDVPbLIzaShB3rkd80qZuW6n4kSmpnHtiY_2WH1DS2g=3D429" style=
+=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; color: #D57=
+915;">Outbreak Investigation of Listeria monocytogenes: Prepared Pasta Meal=
+s (June 2025) | FDA</a></p>
+<p style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; lin=
+e-height: 1.4; font-family: arial, helvetica, sans-serif; font-size: 15px; =
+color: #443E3A; text-align: left; margin: 0 0 15px;" align=3D"left">For mor=
+e information on all of the affected recalls, see the FDA list here: <a hre=
+f=3D"https://links-2.govdelivery.com/CL0/https:%2F%2Fwww.fda.gov%2Fsafety%2=
+Fmajor-product-recalls%2F2025-recalls-prepared-pasta-meals-frozen-and-ready=
+-eat-due-potential-listeria-monocytogenes/1/0101019a3f72fcf4-7cd8356d-9e2c-=
+4eb6-87f4-50ddb0ddddea-000000/2iE3meiG_7AVdnHSF-sycIbktCFLRSge_g2J7ru4AM0=
+=3D429" style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%=
+; color: #D57915;">2025 Recalls of Prepared Pasta Meals (Frozen and Ready-T=
+o-Eat) Due to Potential Listeria monocytogenes Contamination | FDA</a></p>
+<p style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; lin=
+e-height: 1.4; font-family: arial, helvetica, sans-serif; font-size: 15px; =
+color: #443E3A; text-align: left; margin: 0 0 15px;" align=3D"left"><em><st=
+rong>Consumer Guidance<br></strong></em></p>
+<ul style=3D"margin-top: 0px; margin-bottom: 15px;">
+<li style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; li=
+ne-height: 1.4; font-family: arial, helvetica, sans-serif; font-size: 15px;=
+ color: #443E3A; text-align: left; margin-top: 0px;">Consumers who purchase=
+d or received recalled or affected meals should check their refrigerators a=
+nd freezers and should not eat or serve these products.</li>
+<li style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; li=
+ne-height: 1.4; font-family: arial, helvetica, sans-serif; font-size: 15px;=
+ color: #443E3A; text-align: left;">
+<strong>If you or your family member have symptoms of illness you should co=
+ntact your health care provider to report your symptoms and receive care.</=
+strong>
+<ul style=3D"margin-top: 0px; margin-bottom: 15px;">
+<li style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; li=
+ne-height: 1.4; font-family: arial, helvetica, sans-serif; font-size: 15px;=
+ color: #443E3A; text-align: left; margin-top: 0px;">
+<strong>Pregnant=C2=A0people:=C2=A0</strong>Fever, muscle aches, and tiredn=
+ess. Your illness may be mild, but=C2=A0<em>Listeria</em>=C2=A0can cause pr=
+egnancy loss or premature birth. It can also cause serious illness or death=
+ in newborns.</li>
+<li style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; li=
+ne-height: 1.4; font-family: arial, helvetica, sans-serif; font-size: 15px;=
+ color: #443E3A; text-align: left; margin-bottom: 15px;">
+<strong>People with weakened immune systems may have: </strong>Headache, st=
+iff neck, confusion, loss of balance, and convulsions, in addition to fever=
+, muscle aches, and tiredness.</li>
+</ul>
+</li>
+<li style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; li=
+ne-height: 1.4; font-family: arial, helvetica, sans-serif; font-size: 15px;=
+ color: #443E3A; text-align: left; margin-bottom: 15px;">Refer to FDA websi=
+te for updates to the list of recalled foods: <a href=3D"https://links-2.go=
+vdelivery.com/CL0/https:%2F%2Fwww.fda.gov%2Fsafety%2Fmajor-product-recalls%=
+2F2025-recalls-prepared-pasta-meals-frozen-and-ready-eat-due-potential-list=
+eria-monocytogenes/2/0101019a3f72fcf4-7cd8356d-9e2c-4eb6-87f4-50ddb0ddddea-=
+000000/k1tPOMVrJH8Bbd1WddyDYNp5XTuLbO0ZoIuCt5Wtz4w=3D429" style=3D"-webkit-=
+text-size-adjust: 100%; -ms-text-size-adjust: 100%; color: #D57915;">2025 R=
+ecalls of Prepared Pasta Meals (Frozen and Ready-To-Eat) Due to Potential L=
+isteria monocytogenes Contamination | FDA</a>
+</li>
+</ul>
+<p style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; lin=
+e-height: 1.4; font-family: arial, helvetica, sans-serif; font-size: 15px; =
+color: #443E3A; text-align: left; margin: 0 0 15px;" align=3D"left"><em><st=
+rong>Retailer Guidance</strong></em></p>
+<ul style=3D"margin-top: 0px; margin-bottom: 15px;">
+<li style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; li=
+ne-height: 1.4; font-family: arial, helvetica, sans-serif; font-size: 15px;=
+ color: #443E3A; text-align: left; margin-top: 0px;">Check inventory to ens=
+ure all recalled pasta products are removed from retail sale.</li>
+<li style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; li=
+ne-height: 1.4; font-family: arial, helvetica, sans-serif; font-size: 15px;=
+ color: #443E3A; text-align: left;">Clean and sanitize all surfaces, utensi=
+ls, and equipment that contacted recalled products.</li>
+<li style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; li=
+ne-height: 1.4; font-family: arial, helvetica, sans-serif; font-size: 15px;=
+ color: #443E3A; text-align: left;">Ensure staff are aware of the recall an=
+d trained on proper procedures.</li>
+<li style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; li=
+ne-height: 1.4; font-family: arial, helvetica, sans-serif; font-size: 15px;=
+ color: #443E3A; text-align: left; margin-bottom: 15px;">Continue to monito=
+r recalls as additional items may be added.</li>
+</ul>
+</td>
+    </tr>
+  </table>
+</div>
+<!--[if (gte mso 9)|(IE)]>
+  </td>
+<![endif]-->
+<!--[if (gte mso 9)|(IE)]>
+  </tr>
+  </table>
+<![endif]-->
+      </td>
+    </tr>
+  </table>
+</div>
+<!--[if (gte mso 9)|(IE)]>
+      </td>
+    </tr>
+  </table>
+<![endif]-->
+<!--[if (gte mso 9)|(IE)]>
+  <table width=3D"600" align=3D"center" border=3D"0" cellpadding=3D"0" cell=
+spacing=3D"0">
+    <tr>
+      <td>
+<![endif]-->
+<div class=3D"abe-section-block" data-block-type=3D"FancyBlockSection" data=
+-block-id=3D"151595128">
+  <table class=3D"abe-section-table" width=3D"100%" align=3D"center" border=
+=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"m=
+ax-width: 600px; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%=
+; border-spacing: 0; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+    <tr id=3D"abe-section-row-d1e56ac3-4a7e-4e65-8825-310b04672ce2" class=
+=3D"abe-section-row" style=3D"background-color: #EEEEEE;" bgcolor=3D"#EEEEE=
+E">
+      <td style=3D"text-align: center; vertical-align: top; font-size: 0; -=
+webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-table-lspace=
+: 0pt; mso-table-rspace: 0pt;" align=3D"center" valign=3D"top">
+        <!--[if (gte mso 9)|(IE)]>
+  <table width=3D"100%" align=3D"center" border=3D"0" cellpadding=3D"0" cel=
+lspacing=3D"0" style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjus=
+t: 100%; border-spacing: 0; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+    <tr>
+<![endif]-->
+<!--[if (gte mso 9)|(IE)]>
+  <td width=3D"600" valign=3D"top" id=3D"abe-column-block-f4047d3a-88a8-452=
+8-9172-0e4b3f2b2664-outlook-only" class=3D"abe-column-block-outlook-only" s=
+tyle=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-tab=
+le-lspace: 0pt; mso-table-rspace: 0pt;">
+<![endif]-->
+<div id=3D"abe-column-block-f4047d3a-88a8-4528-9172-0e4b3f2b2664" class=3D"=
+abe-column-block" data-block-type=3D"FancyBlockColumn" data-block-id=3D"151=
+595129" style=3D"width: 100%; box-sizing: border-box; display: inline-block=
+; font-size: 16px; vertical-align: top;">
+  <table width=3D"100%" align=3D"center" border=3D"0" cellpadding=3D"0" cel=
+lspacing=3D"0" role=3D"presentation" style=3D"table-layout: fixed; overflow=
+-wrap: break-word; word-wrap: break-word; text-align: left; -webkit-text-si=
+ze-adjust: 100%; -ms-text-size-adjust: 100%; border-spacing: 0; mso-table-l=
+space: 0pt; mso-table-rspace: 0pt;">
+    <tr>
+      <td class=3D"abe-column-block-padding" id=3D"abe-column-block-f4047d3=
+a-88a8-4528-9172-0e4b3f2b2664-padding" style=3D"-webkit-text-size-adjust: 1=
+00%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0=
+pt; padding: 30px; border: none;">
+<p style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; lin=
+e-height: 1.4; font-family: arial, helvetica, sans-serif; font-size: 15px; =
+color: #443E3A; text-align: left; margin: 0 0 15px;" align=3D"left">Local H=
+ealth Jurisdictions in Washington will be asked to participate in select re=
+call verification and encourage field and communicable disease staff to be =
+aware of the food recall.</p>
+<p style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; lin=
+e-height: 1.4; font-family: arial, helvetica, sans-serif; font-size: 15px; =
+color: #443E3A; text-align: left; margin: 0 0 15px;" align=3D"left">You are=
+ receiving this message because you expressed interest in receiving notific=
+ation regarding food recalls affecting Washington state. This recall will b=
+e posted on our website shortly. To see other recent food recalls affecting=
+ Washington state, visit <a href=3D"https://links-2.govdelivery.com/CL0/htt=
+ps:%2F%2Fgcc02.safelinks.protection.outlook.com%2F%3Furl=3Dhttp%253A%252F%2=
+52Fwww.doh.wa.gov%252Ffoodrecalls%26data=3D04%257C01%257Cirene.gering%2540d=
+oh.wa.gov%257C036ce271587f47fb557408d8ff616af4%257C11d0e217264e400a8ba057dc=
+c127d72d%257C0%257C0%257C637540141181663949%257CUnknown%257CTWFpbGZsb3d8eyJ=
+WIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%253D%257C1000%=
+26sdata=3DgtRyU7eXvaOTw2iLQ0L9rRiRbQEZbg50teEb1JDrf64%253D%26reserved=3D0/1=
+/0101019a3f72fcf4-7cd8356d-9e2c-4eb6-87f4-50ddb0ddddea-000000/QPBu7VQXVXZ2l=
+enFABca-4HWTjgnqxL1B4-qRDmW6fQ=3D429" style=3D"-webkit-text-size-adjust: 10=
+0%; -ms-text-size-adjust: 100%; color: #D57915;">www.doh.wa.gov/foodrecalls=
+</a>.</p>
+</td>
+    </tr>
+  </table>
+</div>
+<!--[if (gte mso 9)|(IE)]>
+  </td>
+<![endif]-->
+<!--[if (gte mso 9)|(IE)]>
+  </tr>
+  </table>
+<![endif]-->
+      </td>
+    </tr>
+  </table>
+</div>
+<!--[if (gte mso 9)|(IE)]>
+      </td>
+    </tr>
+  </table>
+<![endif]-->
+</td>
+    <td style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%=
+; mso-table-lspace: 0pt; mso-table-rspace: 0pt;"></td>
+  </tr>
+</table>
+</td></tr></table>
+=09=09</td>
+=09</tr>
+</table>
+=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09<td class=3D"digest-footer" style=3D"padding-top:20px;=
+padding-bottom:40px;font-family:'Helvetica Nueue','Helvetica',Helvetica,Ari=
+al,sans-serif;">
+=09=09=09=09=09=09=09=09<table border=3D"0" cellpadding=3D"0" cellspacing=
+=3D"0" width=3D"100%" class=3D"digest-footer-table" style=3D"width:100%;bac=
+kground-color:#efefef;">
+=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09<td class=3D"digest-footer-footer" ><table wi=
+dth=3D"100%" cellspacing=3D"0" cellpadding=3D"0" align=3D"center">
+<tbody>
+<tr>
+<td style=3D"text-align: center;" align=3D"center" width=3D"100%"><hr /></t=
+d>
+</tr>
+<tr>
+<td style=3D"background: #FFFFFF;" align=3D"center" bgcolor=3D"#FFFFFF" wid=
+th=3D"100%"><!--[if mso]>
+<table width=3D"600" align=3D"center" cellpadding=3D"0" cellspacing=3D"0" s=
+tyle=3D"width:600px;">
+<tr>
+<td>
+<![endif]-->
+<div style=3D"margin: 0 auto; max-width: 600px; width: 100%;">
+<table style=3D"border-collapse: collapse;" width=3D"100%" cellspacing=3D"0=
+" cellpadding=3D"0" align=3D"center">
+<tbody>
+<tr>
+<td style=3D"text-align: right;" align=3D"right" width=3D"100%">
+<table width=3D"100%" cellspacing=3D"0" cellpadding=3D"0" align=3D"right">
+<tbody>
+<tr>
+<td>&nbsp;</td>
+<td style=3D"width: 45px; text-align: right;" align=3D"right" width=3D"45">=
+<a href=3D"https://twitter.com/WADeptHealth" target=3D"_blank" rel=3D"noope=
+ner"><img src=3D"https://content.govdelivery.com/attachments/fancy_images/W=
+ADOH/2023/11/8525709/x-logo-icon-2023-70px_original.png" alt=3D"X logo" wid=
+th=3D"35" height=3D"35" style=3D"width: 35px; height: 35px;" /></a></td>
+<td style=3D"width: 45px; text-align: right;" align=3D"right" width=3D"45">=
+<a href=3D"https://www.facebook.com/WADeptHealth" target=3D"_blank" rel=3D"=
+noopener"><img src=3D"https://content.govdelivery.com/attachments/fancy_ima=
+ges/WADOH/2023/01/6993634/facebook2023-35px_original.png" alt=3D"facebook" =
+width=3D"35" height=3D"35" style=3D"width: 35px; height: 35px;" /></a></td>
+<td style=3D"width: 45px; text-align: right;" align=3D"right" width=3D"45">=
+<a href=3D"https://www.instagram.com/wadepthealth/" target=3D"_blank" rel=
+=3D"noopener"><img src=3D"https://content.govdelivery.com/attachments/fancy=
+_images/WADOH/2023/01/6993627/instagram2023-35_original.png" alt=3D"instagr=
+am" width=3D"35" height=3D"35" style=3D"width: 35px; height: 35px;" /></a><=
+/td>
+<td style=3D"width: 45px; text-align: right;" align=3D"right" width=3D"45">=
+<a href=3D"https://www.youtube.com/user/WADepartmentofHealth" target=3D"_bl=
+ank" rel=3D"noopener"><img src=3D"https://content.govdelivery.com/attachmen=
+ts/fancy_images/WADOH/2023/01/6993671/youtube2023-35_original.png" alt=3D"y=
+outube" width=3D"35" height=3D"35" style=3D"width: 35px; height: 35px;" /><=
+/a></td>
+<td style=3D"width: 45px; text-align: right;" align=3D"right" width=3D"45">=
+<a href=3D"https://medium.com/wadepthealth" target=3D"_blank" rel=3D"noopen=
+er"><img src=3D"https://content.govdelivery.com/attachments/fancy_images/WA=
+DOH/2023/01/6993654/medium2023-35px_original.png" alt=3D"medium" width=3D"3=
+5" height=3D"35" style=3D"width: 35px; height: 35px;" /></a></td>
+<td style=3D"width: 45px; text-align: right;" align=3D"right" width=3D"45">=
+<a href=3D"https://public.govdelivery.com/accounts/WADOH/subscriber/new?qsp=
+=3DCODE_RED" target=3D"_blank" rel=3D"noopener"><img src=3D"https://content=
+.govdelivery.com/attachments/fancy_images/WADOH/2023/01/6993623/govdelivery=
+2023-35px_original.png" alt=3D"subscribe" width=3D"35" height=3D"35" style=
+=3D"width: 35px; height: 35px;" /></a></td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+<tr>
+<td style=3D"font-family: Century Gothic,Apple Gothic,sans-serif; font-size=
+: 15px; padding: 10px 0px 0px; text-align: right; color: #000000;" align=3D=
+"right">To request this document in another format, call 1-800-525-0127. De=
+af or hard of hearing customers, please call 711 (Washington Relay) or <br =
+/>email <a href=3D"mailto:doh.information@doh.wa.gov" target=3D"_blank" rel=
+=3D"noopener">doh.information@doh.wa.gov</a></td>
+</tr>
+<tr>
+<td style=3D"font-family: Century Gothic,Apple Gothic,sans-serif; font-size=
+: 15px; padding: 10px 0px 15px; text-align: right; color: #349d96;" align=
+=3D"right"><a href=3D"https://links-2.govdelivery.com/CL0/https:%2F%2Fpubli=
+c.govdelivery.com%2Faccounts%2FWADOH%2Fsubscriber%2Fedit%3Fpreferences=3Dtr=
+ue%23tab1/1/0101019a3f72fcf4-7cd8356d-9e2c-4eb6-87f4-50ddb0ddddea-000000/DI=
+Vwn7rSSEQw_hlDiVaX-_4kDHOuCHLZNwFa9-fTIgE=3D429" target=3D"_blank" rel=3D"n=
+oopener">Manage Subscriptions</a> &nbsp;|&nbsp; <a href=3D"https://links-2.=
+govdelivery.com/CL0/https:%2F%2Fpublic.govdelivery.com%2Faccounts%2FWADOH%2=
+Fsubscriber%2Fone_click_unsubscribe%3Fverification=3D5.9a627be32136374a0ab4=
+c380ff8ba792%26destination=3Dmarcy%2540baddomain.com/1/0101019a3f72fcf4-7cd=
+8356d-9e2c-4eb6-87f4-50ddb0ddddea-000000/Cil7w_ppzTL8tM6jefc5dnUE_hIMz_So44=
+czcqsZhPY=3D429" target=3D"_blank" rel=3D"noopener">Unsubscribe</a> &nbsp;|=
+&nbsp; <a href=3D"https://subscriberhelp.govdelivery.com/" target=3D"_blank=
+" title=3D"Subscriber Help" rel=3D"noopener">Help</a></td>
+</tr>
+<tr>
+<td style=3D"text-align: right;" align=3D"right" width=3D"100%"><a href=3D"=
+http://WWW.DOH.WA.GOV" target=3D"_blank" title=3D"Washington State Departme=
+nt of Health" rel=3D"noopener"><img src=3D"https://content.govdelivery.com/=
+attachments/fancy_images/WADOH/2023/01/6992885/dohlogohorizontal400px_origi=
+nal.png" alt=3D"DOH logo" width=3D"400" style=3D"width: 400px; height: auto=
+; max-width: 100%;" /></a></td>
+</tr>
+</tbody>
+</table>
+</div>
+<!--[if mso]>
+</td>
+</tr>
+</table>
+<![endif]--></td>
+</tr>
+</tbody>
+</table>
+=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09<td class=3D"digest-footer-tagline" ><table s=
+tyle=3D"border-collapse: collapse; margin: 0px auto; width: 100%;" border=
+=3D"0" cellspacing=3D"0" cellpadding=3D"0">
+<tbody>
+<tr>
+<td style=3D"padding: 0 10px 0 10px;" valign=3D"top">
+<table class=3D"mobile-tagline" style=3D"border-collapse: collapse; margin:=
+ 0px auto; width: 100%;" border=3D"0" cellspacing=3D"0" cellpadding=3D"0" a=
+lign=3D"right">
+<tbody>
+<tr>
+<td style=3D"padding: 10px 0 0 0;" colspan=3D"2" valign=3D"top"><hr /></td>
+</tr>
+<tr>
+<td style=3D"padding: 10px 5px 10px 0;" align=3D"left" valign=3D"top"><span=
+ style=3D"color: #757575; font-size: 10px; font-family: arial, helvetica, s=
+ans-serif;">This email was sent to marcy@baddomain.com using GovDelivery Co=
+mmunications Cloud on behalf of: Washington State Department of Health &mid=
+dot;&nbsp;<span>101 Israel Road SE, Tumwater, WA 98501</span></span></td>
+<td style=3D"width: 95px; padding-top: 10px;" align=3D"right" valign=3D"top=
+" width=3D"95"><a href=3D"https://subscriberhelp.granicus.com/" target=3D"_=
+blank" rel=3D"noopener"><img src=3D"https://content.govdelivery.com/images/=
+govd-logo-dark.png" border=3D"0" alt=3D"GovDelivery logo" width=3D"95" heig=
+ht=3D"27" align=3D"right" /></a></td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<style type=3D"text/css">body .abe-column-block { min-height: 5px; } table.=
+gd_combo_table img {margin-left:10px; margin-right:10px;} table.gd_combo_ta=
+ble div.govd_image_display img, table.gd_combo_table td.gd_combo_image_cell=
+ img {margin-left:0px; margin-right:0px;} table.govd_hr {min-width: 100%;} =
+p, li, h1, h2, h3 { overflow-wrap: normal; word-wrap: normal; word-break: k=
+eep-all; -moz-hyphens: none; -ms-hyphens: none; -webkit-hyphens: none; hyph=
+ens: none; mso-hyphenate: none; }</style>
+=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09</table>
+=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09</tr>
+=09=09=09=09=09</table>
+=09=09=09=09</td>
+=09=09=09</tr>
+=09=09</table>
+=09<img alt=3D"" src=3D"https://links-2.govdelivery.com/CI0/0101019a3f72fcf=
+4-7cd8356d-9e2c-4eb6-87f4-50ddb0ddddea-000000/jrFsqWDWy9QzAY3XpX0yzV4LBnFjX=
+VkCgOnhlkpYln4=3D429" style=3D"display: none; width: 1px; height: 1px;">
+</body>
+</html>
+------=_Part_713512_759046590.1762001070362--
+
+------=_Part_713511_1748132678.1762001070358--

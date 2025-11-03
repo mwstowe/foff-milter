@@ -4763,27 +4763,46 @@ impl FilterEngine {
 
     /// Detects legitimate mailing list infrastructure
     fn is_legitimate_mailing_list(&self, context: &MailContext) -> bool {
+        let mut list_indicators = 0;
+        let mut has_list_id = false;
+        let mut has_google_groups = false;
+
         for (header_name, header_value) in &context.headers {
             let header_lower = header_name.to_lowercase();
             let value_lower = header_value.to_lowercase();
 
-            // Check for standard mailing list headers
-            if header_lower == "list-id"
-                || header_lower == "list-unsubscribe"
-                || header_lower == "list-post"
-                || header_lower == "mailing-list"
-                || (header_lower == "precedence" && value_lower == "list")
-                || header_lower == "x-google-group-id"
+            // Strong indicators (count as 2 points each)
+            if header_lower == "list-id" {
+                has_list_id = true;
+                list_indicators += 2;
+                log::debug!("Strong mailing list indicator: {} = {}", header_name, header_value);
+            } else if header_lower == "x-google-group-id"
                 || (header_lower == "list-id" && value_lower.contains("groups.google.com"))
             {
-                log::debug!(
-                    "Mailing list infrastructure detected: {} = {}",
-                    header_name,
-                    header_value
-                );
-                return true;
+                has_google_groups = true;
+                list_indicators += 2;
+                log::debug!("Google Groups indicator: {} = {}", header_name, header_value);
+            }
+            // Moderate indicators (count as 1 point each)
+            else if header_lower == "list-post"
+                || header_lower == "mailing-list"
+                || (header_lower == "precedence" && value_lower == "list")
+            {
+                list_indicators += 1;
+                log::debug!("Moderate mailing list indicator: {} = {}", header_name, header_value);
             }
         }
-        false
+
+        // Require either List-ID or Google Groups, plus at least 2 total indicators
+        let is_legitimate = (has_list_id || has_google_groups) && list_indicators >= 2;
+
+        if is_legitimate {
+            log::debug!(
+                "Legitimate mailing list detected with {} indicators",
+                list_indicators
+            );
+        }
+
+        is_legitimate
     }
 }
