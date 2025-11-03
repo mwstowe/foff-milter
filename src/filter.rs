@@ -883,6 +883,14 @@ impl FilterEngine {
         let mut total_score = 0i32;
         let mut scoring_rules = Vec::new();
 
+        // Check for legitimate mailing list infrastructure
+        if self.is_legitimate_mailing_list(context) {
+            log::info!("Legitimate mailing list detected - applying negative score");
+            total_score -= 200; // Strong negative score to override false positives
+            scoring_rules
+                .push("Mailing List Detection: Legitimate mailing list (-200)".to_string());
+        }
+
         // Process modules first if modular system is enabled
         if !self.modules.is_empty() {
             log::info!("Processing {} modules", self.modules.len());
@@ -4751,5 +4759,31 @@ impl FilterEngine {
             }
         }
         None
+    }
+
+    /// Detects legitimate mailing list infrastructure
+    fn is_legitimate_mailing_list(&self, context: &MailContext) -> bool {
+        for (header_name, header_value) in &context.headers {
+            let header_lower = header_name.to_lowercase();
+            let value_lower = header_value.to_lowercase();
+
+            // Check for standard mailing list headers
+            if header_lower == "list-id"
+                || header_lower == "list-unsubscribe"
+                || header_lower == "list-post"
+                || header_lower == "mailing-list"
+                || (header_lower == "precedence" && value_lower == "list")
+                || header_lower == "x-google-group-id"
+                || (header_lower == "list-id" && value_lower.contains("groups.google.com"))
+            {
+                log::debug!(
+                    "Mailing list infrastructure detected: {} = {}",
+                    header_name,
+                    header_value
+                );
+                return true;
+            }
+        }
+        false
     }
 }
