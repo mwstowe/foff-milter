@@ -4767,6 +4767,7 @@ impl FilterEngine {
         let mut has_list_id = false;
         let mut has_google_groups = false;
         let mut has_transactional_service = false;
+        let mut has_crowdfunding_platform = false;
 
         for (header_name, header_value) in &context.headers {
             let header_lower = header_name.to_lowercase();
@@ -4776,13 +4777,21 @@ impl FilterEngine {
             if header_lower == "list-id" {
                 has_list_id = true;
                 list_indicators += 2;
-                log::debug!("Strong mailing list indicator: {} = {}", header_name, header_value);
+                log::debug!(
+                    "Strong mailing list indicator: {} = {}",
+                    header_name,
+                    header_value
+                );
             } else if header_lower == "x-google-group-id"
                 || (header_lower == "list-id" && value_lower.contains("groups.google.com"))
             {
                 has_google_groups = true;
                 list_indicators += 2;
-                log::debug!("Google Groups indicator: {} = {}", header_name, header_value);
+                log::debug!(
+                    "Google Groups indicator: {} = {}",
+                    header_name,
+                    header_value
+                );
             }
             // Legitimate transactional email services
             else if (header_lower == "x-ses-outgoing" && value_lower.contains("amazonses"))
@@ -4792,7 +4801,25 @@ impl FilterEngine {
             {
                 has_transactional_service = true;
                 list_indicators += 2;
-                log::debug!("Transactional service indicator: {} = {}", header_name, header_value);
+                log::debug!(
+                    "Transactional service indicator: {} = {}",
+                    header_name,
+                    header_value
+                );
+            }
+            // Crowdfunding platforms with DKIM validation
+            else if header_lower == "dkim-signature"
+                && (value_lower.contains("d=kickstarter.com")
+                    || value_lower.contains("d=indiegogo.com")
+                    || value_lower.contains("d=gofundme.com"))
+            {
+                has_crowdfunding_platform = true;
+                list_indicators += 2;
+                log::debug!(
+                    "Crowdfunding platform indicator: {} = {}",
+                    header_name,
+                    header_value
+                );
             }
             // Moderate indicators (count as 1 point each)
             else if header_lower == "list-post"
@@ -4801,12 +4828,20 @@ impl FilterEngine {
                 || header_lower == "list-unsubscribe-post"
             {
                 list_indicators += 1;
-                log::debug!("Moderate mailing list indicator: {} = {}", header_name, header_value);
+                log::debug!(
+                    "Moderate mailing list indicator: {} = {}",
+                    header_name,
+                    header_value
+                );
             }
         }
 
-        // Require either List-ID, Google Groups, or transactional service, plus at least 2 total indicators
-        let is_legitimate = (has_list_id || has_google_groups || has_transactional_service) && list_indicators >= 2;
+        // Require either List-ID, Google Groups, transactional service, or crowdfunding platform, plus at least 2 total indicators
+        let is_legitimate = (has_list_id
+            || has_google_groups
+            || has_transactional_service
+            || has_crowdfunding_platform)
+            && list_indicators >= 2;
 
         if is_legitimate {
             log::debug!(

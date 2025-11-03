@@ -29,6 +29,23 @@ rules:
     score: 60
     description: "PayPal and payment service impersonation"
 
+  - name: "Tech support services impersonation"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(geek.*squad|protection.*plan.*renewal|invoice.*id.*fw|verifying.*order.*\\$[0-9]+).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(geek.*squad.*billing|protection.*plan.*renewed|auto.*debit.*renewal|not.*authorized.*contact|billing.*department.*immediately|cancel.*subscription.*24.*hours).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(bestbuy|geeksquad|asus|legitimate-tech)\\.com$"
+    score: 65
+    description: "Geek Squad and tech support billing scam impersonation from non-legitimate domains"
+
   - name: "Financial services impersonation"
     criteria:
       type: "BrandImpersonation"

@@ -20,6 +20,48 @@ rules:
     score: 15
     description: "Emails from free email providers"
 
+  - name: "Reply-to free email redirect"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Not"
+          criteria:
+            type: "EmailInfrastructure"
+            infrastructure_type: "free_email"
+            domains:
+              - "gmail.com"
+              - "yahoo.com"
+              - "hotmail.com"
+              - "outlook.com"
+            check_sender: true
+            check_reply_to: false
+        - type: "EmailInfrastructure"
+          infrastructure_type: "free_email"
+          domains:
+            - "gmail.com"
+            - "yahoo.com"
+            - "hotmail.com"
+            - "outlook.com"
+          check_sender: false
+          check_reply_to: true
+    score: 40
+    description: "Non-free sender redirecting replies to free email provider"
+
+  - name: "Geographic domain mismatch"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@.*\\.(cn|ru|tk|ml|ga|cf)$"
+        - type: "Or"
+          criteria:
+            - type: "BodyPattern"
+              pattern: "(?i).*(USA|United States|America|New York|California|Texas|Florida)"
+            - type: "SubjectPattern"
+              pattern: "(?i).*(USA|United States|America|New York|California|Texas|Florida)"
+    score: 35
+    description: "Foreign domain claiming US location or business"
+
   - name: "Educational domain compromise"
     criteria:
       type: "EmailInfrastructure"

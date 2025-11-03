@@ -1,0 +1,2879 @@
+Return-Path: <mstowe+caf_=mstowe=example.com@gmail.com>
+Received: from hotel.example.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.example.com (8.18.1/8.18.1) with ESMTPS id 5A3F328G006015
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <user@example.com>; Mon, 3 Nov 2025 15:03:03 GMT
+	(envelope-from mstowe+caf_=mstowe=example.com@gmail.com)
+Authentication-Results: juliett.example.com;
+	dkim=pass (2048-bit key; unprotected) header.d=kickstarter.com header.i=@kickstarter.com header.b=BkGH3/A3;
+	dkim=pass (1024-bit key; unprotected) header.d=sendgrid.info header.i=@sendgrid.info header.b=pinh95ZO
+X-Authentication-Warning: juliett.example.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.example.com
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	by hotel.example.com (8.16.1/8.16.1) with ESMTPS id 5A3F30bu061073
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=OK)
+	for <user@example.com>; Mon, 3 Nov 2025 09:03:01 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.example.com 5A3F30bu061073
+Authentication-Results: hotel.example.com;
+	dkim=pass (2048-bit key, unprotected) header.d=kickstarter.com header.i=@kickstarter.com header.a=rsa-sha256 header.s=s1 header.b=BkGH3/A3;
+	dkim=pass (1024-bit key, unprotected) header.d=sendgrid.info header.i=@sendgrid.info header.a=rsa-sha256 header.s=smtpapi header.b=pinh95ZO
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-64074f01a6eso7226611a12.2
+        for <user@example.com>; Mon, 03 Nov 2025 07:03:01 -0800 (PST)
+ARC-Seal: i=2; a=rsa-sha256; t=1762182180; cv=pass;
+        d=google.com; s=arc-20240605;
+        b=PNFn7nKGRr0Pewy7pViN7b5oHOUtp9p+uCXb4CmWA0/XRiaJrZacKVwfO7ltnjGoeA
+         02nKd3l3dKmcrbklyAhw4ftzp7wQ8DSZIhEzUxF9MTWtIHgsJyXPtc/YrhE7wYAlTDPV
+         Q8zPcOuiVXI+lRHo8kwoo7y+TQzSIvUS6bN016cuwsqhnxXX49HcsAK5diHUKeVZ3429
+         VjijYP3/FvSoDzOWWNkzbDqKq3mNXhj7TuBhcFF7R8RR454rhUhc8WFESNCxnKLkaIlX
+         vmWV7jABqWAv5NgMzfq+EfPD0s0aaZuTr0CViCum1LBcOavHhoiQMrw1LsDS8bGJPE5H
+         tJ2Q==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=to:reply-to:content-transfer-encoding:mime-version:subject
+         :message-id:from:date:dkim-signature:dkim-signature:delivered-to;
+        bh=yhPLba2VdduwM2FAcXVGmvOa8cncHaRaFl/y1wgiNvo=;
+        fh=cdrq/Hs8NYrR2Xh3ytpv0hFFg5lSYumbAZy+1OSSQaQ=;
+        b=VE7RaBkQr/9I2/NowipKj4YdCINrHO2m4g84j/F8eWdw3LwtHz8v2Ossvcwb6JslOE
+         hTH0rDdlsbYoa+r4Vm28Fmff65IlzmPe/59zo8ugOtuCjr97IV8bjibpBtmOVSvrt1Va
+         NcLq/crFZ81S/VwHwcMk7BHLzpLhZO6Ek4ReI3XkHGW9Hsm06VySgvL8XgulpOdV5rGJ
+         izRWsnn6f/g6qvZUNghZiNzt2MLlNTsrBY/1cMj8aD7b+CMrFxx4BNvX3zN1HqP7IYef
+         iP6OBqQ4IcrSWVzXz6Piv3Sp8gmIxd7LXORMY+sXSlk0JsNhb1/KlmO5HVM5aAcy/np4
+         sv9w==;
+        darn=example.com
+ARC-Authentication-Results: i=2; mx.google.com;
+       dkim=pass header.i=@kickstarter.com header.s=s1 header.b="BkGH3/A3";
+       dkim=pass header.i=@sendgrid.info header.s=smtpapi header.b=pinh95ZO;
+       spf=pass (google.com: domain of bounces+11322-46ce-mstowe=gmail.com@sg.kickstarter.com designates 167.89.20.248 as permitted sender) smtp.mailfrom="bounces+11322-46ce-mstowe=gmail.com@sg.kickstarter.com";
+       dmarc=pass (p=QUARANTINE sp=QUARANTINE dis=NONE) header.from=kickstarter.com
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762182180; x=1762786980;
+        h=to:reply-to:content-transfer-encoding:mime-version:subject
+         :message-id:from:date:dkim-signature:dkim-signature:delivered-to
+         :x-forwarded-for:x-forwarded-to:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=yhPLba2VdduwM2FAcXVGmvOa8cncHaRaFl/y1wgiNvo=;
+        b=lVnu676mmAdahrdRuYecOE+GeLBVzH5Y8H4zQnOVMbpIpC0bwohZ+DBt4TPSeDaD6b
+         X1tnSoO4Vvo2stc2LFkOmBv+COLAIBQiWRLRnwErRrrUP1KMs37GBnZtRhrqc6RUiTKa
+         PM5inLGxMM+tAR+3um5U+tuDkQiAVybTxJjQPM1QHQC9nt+hqyF0a6Rt6rBcL1Vp7Q7D
+         sNFC7vsQN+gCUsu2Km+X3j2w3ucJmmM/6tkESp+bynV9REEqVKD2TsOoZDDUDYh5HtJt
+         owXGVaTmNp4iEfvYNt7YwHRRSAqVKaQjmRGw2VKU7B0gR3TDz5knuHq7wRdBNQEvmvgC
+         kWbA==
+X-Forwarded-Encrypted: i=2; AJvYcCWSQ1GohYsDYWvcQQRs7Q78IFCQaSQh8bBPoKYUX7S8NbhUjjQ/3IPK9rg0zz9KTznwTAdrYA4=@example.com
+X-Gm-Message-State: AOJu0YxYQQV3vIJ1Rz0LaCyCGasXgORCCYa6J3bxthsUAngQMF0EqAgF
+	XMV3mcX3ee2n6AEOukqucYlA8p38DHAPoBjigjHFKw5gL0nw1mIwW4JdRPbViwdEnRBF1AOLOvV
+	wyQ4vjjK8jioE+SfCj9O/gdELB/Muo6Kq5Vu889ugdCkzSdrMh9ZewMl4zsr4YQ==
+X-Received: by 2002:a05:6402:1ec2:b0:63b:f157:bc2d with SMTP id 4fb4d7f45d1cf-64076f6bf8amr12308431a12.1.1762182179577;
+        Mon, 03 Nov 2025 07:02:59 -0800 (PST)
+X-Forwarded-To: user@example.com
+X-Forwarded-For: mstowe@gmail.com user@example.com
+Delivered-To: mstowe@gmail.com
+Received: by 2002:a05:6400:2126:b0:2ac:8275:2578 with SMTP id o38csp1572169ecx;
+        Mon, 3 Nov 2025 07:02:55 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG4u3ECXffC9s9FcbVxoJr1lmwp/Oyw5wtkMJS5R6umRFB07lsDnG9J2F+I7eftpietLAGv
+X-Received: by 2002:a05:6214:e81:b0:880:2254:36a2 with SMTP id 6a1803df08f44-8802f5258edmr141636836d6.64.1762182175457;
+        Mon, 03 Nov 2025 07:02:55 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1762182175; cv=none;
+        d=google.com; s=arc-20240605;
+        b=irdx1r6Sxh2FGCx2xU2BUeS/vW18wV7pSTsBscDNi/CAR7QtKfcZTIpgMFAhDFOCIh
+         gQ3Aa8q7AzvyPoGswGqcSHk3rOQVTWOxBUyvf2cWRj46acLeP6ZECX57wAn9YAmqo1Yy
+         1UthSQE+pGDCzTNkoKGAW7np31zgXYtwMco42bG6KEP9VkmbTCnQ5fh0I6TU1o9G5V9W
+         pmbmQd5LWwPnNPU6LP2m3bYF5bMJzZwVNn5bLWafL3n0G8dJCQtJgI8rEcbae/FVEfr0
+         Ks3aorTdVYHW75gNPgPAVioAu+YI+n4VotaCuR8vnrx+WD5IgEwjf6MwZS52f6bt4J0s
+         xPkQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=to:reply-to:content-transfer-encoding:mime-version:subject
+         :message-id:from:date:dkim-signature:dkim-signature;
+        bh=yhPLba2VdduwM2FAcXVGmvOa8cncHaRaFl/y1wgiNvo=;
+        fh=mT0Hi1oeQuwKdVkoCKIRR+MEHYH9sEP9ymI/x2O5QRU=;
+        b=Sb9nWA3KIie43C1xJ3hO+TQ8e9J5C45eGEL4VxuJt0zvk7Sa1dCVrJ7r0xh36JCQrH
+         vfaeqsq3noPvltt6e7Ifc5B/iPuueDTvcVAcnAAylj7VIb+vZQUzbhL0bgDLri1KjoIv
+         aEarYxECt1DNsZwue+d0YlyW0AKv5A6EpYP2f8tAcGS1WqfUmZ2MKqNPK91gLmrBc7fN
+         v2Bu0+Vj/COSrVUpcChpPEY0i+s5caLH4bwnHxRzGi6Q/c6b3HS/FPqrchrUczjaAom/
+         DF/sHRCz5+fV+zO9wHaGmvYARMUu/Pfr3PVISsOoFzq1I4ItYv8s3YUXqvH844XIWyBG
+         oqPg==;
+        dara=google.com
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@kickstarter.com header.s=s1 header.b="BkGH3/A3";
+       dkim=pass header.i=@sendgrid.info header.s=smtpapi header.b=pinh95ZO;
+       spf=pass (google.com: domain of bounces+11322-46ce-mstowe=gmail.com@sg.kickstarter.com designates 167.89.20.248 as permitted sender) smtp.mailfrom="bounces+11322-46ce-mstowe=gmail.com@sg.kickstarter.com";
+       dmarc=pass (p=QUARANTINE sp=QUARANTINE dis=NONE) header.from=kickstarter.com
+Received: from o1.email.kickstarter.com (o1.email.kickstarter.com. [167.89.20.248])
+        by mx.google.com with ESMTPS id 6a1803df08f44-88036352765si30522296d6.884.2025.11.03.07.02.54
+        for <mstowe@gmail.com>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 03 Nov 2025 07:02:55 -0800 (PST)
+Received-SPF: pass (google.com: domain of bounces+11322-46ce-mstowe=gmail.com@sg.kickstarter.com designates 167.89.20.248 as permitted sender) client-ip=167.89.20.248;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@kickstarter.com header.s=s1 header.b="BkGH3/A3";
+       dkim=pass header.i=@sendgrid.info header.s=smtpapi header.b=pinh95ZO;
+       spf=pass (google.com: domain of bounces+11322-46ce-mstowe=gmail.com@sg.kickstarter.com designates 167.89.20.248 as permitted sender) smtp.mailfrom="bounces+11322-46ce-mstowe=gmail.com@sg.kickstarter.com";
+       dmarc=pass (p=QUARANTINE sp=QUARANTINE dis=NONE) header.from=kickstarter.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kickstarter.com;
+	h=date:from:subject:mime-version:content-type:content-transfer-encoding:
+	reply-to:to:cc:content-type:date:feedback-id:from:subject:to;
+	s=s1; bh=yhPLba2VdduwM2FAcXVGmvOa8cncHaRaFl/y1wgiNvo=;
+	b=BkGH3/A3lHscWxjbW8DCA+B71wS7rYRATCd9C64lN3zw37U2vYUFvxeeGc+XjzckUeZ3
+	Tj9a7ocmAXdHY/VPCVxdIaZFsF2QtcSc46+UHwyK9Nx4uIt3uuIWMH3WjT0iTNQfIqVmSS
+	x2hYNk+uiHF/elrW15gByNKF67LdFZD5owsR/dr7/b1XQuaIhME+8Pf4lE9Gn/AEfwtU4X
+	faU2kEjwRudRVpBp9OpjCAmzuC0MAX/vcsOXTqJOJRn8UJSTkL6sJHImxanEfbiJw55hMP
+	jjwJAqrayR+8AQrbSZXgbpZpoRN5juRiRP6WTgjCpG+QEFncByjPeSBhx6Gyw/AA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sendgrid.info;
+	h=date:from:subject:mime-version:content-type:content-transfer-encoding:
+	reply-to:to:cc:content-type:date:feedback-id:from:subject:to;
+	s=smtpapi; bh=yhPLba2VdduwM2FAcXVGmvOa8cncHaRaFl/y1wgiNvo=;
+	b=pinh95ZODYbko6MXzq1SjsgD5sqIQz1JfbDjpRL5m8zGYuh44x52999hrnGav+q0JqpK
+	3bElhvlstfrFgr1q2noczEPbph29sQualwKf49Sn8sYEpVqq2GnwHskcTg1YIeUOxGAiF+
+	GuzU6XUO36D745g8NOiDBC88LpLQNBAHc=
+Date: Mon, 03 Nov 2025 15:02:54 +0000 (UTC)
+From: Kickstarter <no-reply@kickstarter.com>
+Message-ID: <0719e43e-eb92-44d1-ab0b-e474b3b91d58@kickstarter.com>
+Subject: Magpie Tech just launched NOVA: 4-IN-1 Laser Level, Distance, Digital
+ Angle, Bullseye
+Mime-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="--==_mimepart_6908c4163be5_8d89e14841c60371";
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-SIG: f4be95bea965e50f2bab8d203ffe93c6802b39ac
+Reply-To: No Reply <no-reply@kickstarter.com>
+X-SG-EID: 
+ =?us-ascii?Q?u001=2ES4ZFcoR0qiaR6m2MIbDuT7wr5Z+Llt2IXINfFkrC1r1Ddls05eQI6bpTH?=
+ =?us-ascii?Q?gbaGG7FgNL8WbdON24CFxMdQF62K7+sNyh1e3g0?=
+ =?us-ascii?Q?1swRGlJ92kSpVyH984w7BqKCW8CctG0yYMU3wXk?=
+ =?us-ascii?Q?9Qy7moqMrsrnZvNIWcehSj=2Fd4HcYzRbaHutPPvk?=
+ =?us-ascii?Q?0ZwCrNlvYX20u4B1jGSeee9VG5+q9hTYe4CrWqj?=
+ =?us-ascii?Q?eTq=2FLqzUOI=2F59f3b4WaF=2Fp+bXZw89Be2OsZgi1=2F?=
+ =?us-ascii?Q?Xu5q?=
+X-SG-ID: 
+ =?us-ascii?Q?u001=2ESdBcvi+Evd=2FbQef8eZF3BjIpMVmKhCz7cyDY0SArA5upLTikX+HitEaOe?=
+ =?us-ascii?Q?ULmHQnolxIPus0K3WggR=2FDZ7BFU=2Fnd6Fell5pf4?=
+ =?us-ascii?Q?zpeSNX6jsicyyp43qHurDtIWRq=2FqJqbSUdjfX89?=
+ =?us-ascii?Q?0jt4qERCCXvzawPndLteTHXOpfzwuUHero0oLmx?=
+ =?us-ascii?Q?qG=2F2Dw5JZNu8OUjM1V5RgIPkiyAVW5+yoJV3tt7?=
+ =?us-ascii?Q?BzQyiXtgrjYYXux+FN3y5R08cQQJRl1vM6V9dlX?=
+ =?us-ascii?Q?B11qEin7JjVmgTdjzym8XLHB8iZgrQxqnLzG8I+?=
+ =?us-ascii?Q?LnZKyCHuU3Avzh8QnEcvos1CPQRPRMVnmTqKVQ=2F?=
+ =?us-ascii?Q?dYxrB5bcTiY1MvY4LB1NSjfvfX39FI7GKi6q5vf?=
+ =?us-ascii?Q?sQyHAiGYdAXDRzfxWlmHW4pg+gcbw6IfmvXacA3?=
+ =?us-ascii?Q?Sthe93ho+AAB5a+lCFHmR8DzhQxpCB2rdkmLBER?=
+ =?us-ascii?Q?JZEh9X3SKeKbfrXvIVsUWFRs4XDG7NJ1aEuKW4c?=
+ =?us-ascii?Q?eGPvtNlI16BXqBGhYW+5RBcCkp3XAU7ytjPeLxq?=
+ =?us-ascii?Q?=2FvklotT3R9=2FxpiN+fQ1VmqhNHRQtaoUwMKt2=2FTY?=
+ =?us-ascii?Q?ANbcvZAGYqIg?=
+To: mstowe@gmail.com
+X-Entity-ID: u001.KsV09k5CkatHjpEOTXax1w==
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.example.com [172.31.18.8]); Mon, 03 Nov 2025 15:03:03 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.example.com [23.95.222.152]); Mon, 03 Nov 2025 09:03:02 -0600 (CST)
+X-Spam-Flag: YES
+X-FOFF-Rule-Matched: Health Spam Detection: Diabetes and pancreas health misinformation (juliett.example.com)
+X-FOFF-Rule-Matched: Analytics: Generic Sender Names (juliett.example.com)
+X-FOFF-Rule-Matched: Health Spam Detection: Diabetes and pancreas health misinformation (hotel.example.com)
+X-FOFF-Rule-Matched: Analytics: Generic Sender Names (hotel.example.com)
+X-FOFF-Score: 70 - foff-milter v0.6.5 (juliett.example.com)
+X-FOFF-Score: 70 - foff-milter v0.6.5 (hotel.example.com)
+
+
+----==_mimepart_6908c4163be5_8d89e14841c60371
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+Now's your chance to make an impact.=0D
+Magpie Tech just launched their Kickstarter project=E2=80=94be a part of it=
+ from the beginning.=0D
+=0D
+=0D
+NOVA: 4-IN-1 Laser Level, Distance, Digital Angle, Bullseye ( https://www.k=
+ickstarter.com/projects/magpietech/nova-4-in-1-laser-level-distance-digital=
+-angle-bullseye?ref=3Dksr_email_mktg_auto_user_watched_project_launched )=0D
+=0D
+4 Key Measurements in a Single Device / Unmatched 2 mm Precision / Multi-Me=
+asuring Modes in Every Function / Class 2 Green Laser=0D
+=0D
+By Magpie Tech=0D
+=0D
+**$5,000** goal=0D
+=0D
+ 24 days left Back this project to help bring it to life.=0D
+Take me there ( https://www.kickstarter.com/projects/magpietech/nova-4-in-1=
+-laser-level-distance-digital-angle-bullseye?ref=3Dksr_email_mktg_auto_user=
+_watched_project_launched )=0D
+Visit the project page and unsave it to no longer receive reminders.=0D
+=0D
+
+----==_mimepart_6908c4163be5_8d89e14841c60371
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE html>=0D
+<html>=0D
+<head>=0D
+<meta content=3D"text/html; charset=3Dutf-8" http-equiv=3D"Content-Type">=0D
+<meta content=3D"width=3Ddevice-width, initial-scale=3D1.0" name=3D"viewpor=
+t">=0D
+<title></title>=0D
+=0D
+<style>@font-face {=0D
+font-family: "Cooper Light"; font-weight: normal; font-style: normal; src: =
+url("https://d207bzo2lz83l1.cloudfront.net/cooper-light-webfont.woff2") for=
+mat("woff2"),url("https://d207bzo2lz83l1.cloudfront.net/cooper-light-webfon=
+t.woff") format("woff");=0D
+}=0D
+body {=0D
+width: 100% !important; min-width: 100%; background-color: #f0f0f0; margin:=
+ 0; padding: 0; word-break: break-word; font-family: "Helvetica Neue",Helve=
+tica,Arial,"Liberation Sans",FreeSans,sans-serif; font-size: 14px; line-hei=
+ght: 1.5; color: #282828; -webkit-text-size-adjust: 100%; -ms-text-size-adj=
+ust: 100%;=0D
+}=0D
+img {=0D
+border: 0; -ms-interpolation-mode: bicubic; outline: none; max-width: 100%;=0D
+}=0D
+.bttn-green:hover:not(:disabled) {=0D
+background-color: #037362; color: #fff;=0D
+}=0D
+.bttn-ksr10-green:hover:not(:disabled) {=0D
+background-color: #05ce78; color: #fff;=0D
+}=0D
+.link-blue:hover svg {=0D
+fill: currentColor !important;=0D
+}=0D
+.link-blue:hover {=0D
+color: #003bff;=0D
+}=0D
+.link-create-700:hover svg {=0D
+fill: currentColor !important;=0D
+}=0D
+.link-create-700:hover {=0D
+color: #05ce78;=0D
+}=0D
+.link-green:hover svg {=0D
+fill: currentColor !important;=0D
+}=0D
+.link-green:hover {=0D
+color: #282828;=0D
+}=0D
+.link-navy:hover svg {=0D
+fill: currentColor !important;=0D
+}=0D
+.link-navy:hover {=0D
+color: #007460;=0D
+}=0D
+.link-red:hover svg {=0D
+fill: currentColor !important;=0D
+}=0D
+.link-red:hover {=0D
+color: #ef0707;=0D
+}=0D
+.link-white:hover svg {=0D
+fill: currentColor !important;=0D
+}=0D
+.link-white:hover {=0D
+color: #05ce78;=0D
+}=0D
+.link-soft-black:hover {=0D
+color: #037362; fill: #037362; text-decoration: underline;=0D
+}=0D
+.link-dark-grey-500:hover {=0D
+color: #009e74; text-decoration: underline;=0D
+}=0D
+.link-ksr-green-700:hover {=0D
+color: #282828; text-decoration: underline;=0D
+}=0D
+.link-cobalt-500:hover {=0D
+color: #4c6cf8; text-decoration: underline;=0D
+}=0D
+.link-conferences-blue:hover {=0D
+color: #08207f; text-decoration: underline;=0D
+}=0D
+.link-black-blue:hover {=0D
+color: #2b60ff; fill: #2b60ff; text-decoration: underline;=0D
+}=0D
+.link-orange-500:hover {=0D
+color: #ff4f00; fill: #ff4f00; text-decoration: underline;=0D
+}=0D
+.link-trust-500:hover {=0D
+color: #55f; fill: #55f; text-decoration: underline;=0D
+}=0D
+.link-support-400:hover {=0D
+color: dimgray; fill: dimgray; text-decoration: underline;=0D
+}=0D
+@media all and (max-width: 540px) {=0D
+  .img-responsive {=0D
+    height: auto !important; max-width: 100%; width: 100% !important;=0D
+  }=0D
+  table[class*=3Dcontainer] {=0D
+    width: 320px !important;=0D
+  }=0D
+  .sm-col-1 {=0D
+    width: 3.6666666667% !important;=0D
+  }=0D
+  .sm-col-2 {=0D
+    width: 7.8333333333% !important;=0D
+  }=0D
+  .sm-col-3 {=0D
+    width: 12% !important;=0D
+  }=0D
+  .sm-col-4 {=0D
+    width: 16.1666666667% !important;=0D
+  }=0D
+  .sm-col-5 {=0D
+    width: 20.3333333333% !important;=0D
+  }=0D
+  .sm-col-6 {=0D
+    width: 24.5% !important;=0D
+  }=0D
+  .sm-col-7 {=0D
+    width: 28.6666666667% !important;=0D
+  }=0D
+  .sm-col-8 {=0D
+    width: 32.8333333333% !important;=0D
+  }=0D
+  .sm-col-9 {=0D
+    width: 37% !important;=0D
+  }=0D
+  .sm-col-10 {=0D
+    width: 41.1666666667% !important;=0D
+  }=0D
+  .sm-col-11 {=0D
+    width: 45.3333333333% !important;=0D
+  }=0D
+  .sm-col-12 {=0D
+    width: 49.5% !important;=0D
+  }=0D
+  .sm-col-13 {=0D
+    width: 53.6666666667% !important;=0D
+  }=0D
+  .sm-col-14 {=0D
+    width: 57.8333333333% !important;=0D
+  }=0D
+  .sm-col-15 {=0D
+    width: 62% !important;=0D
+  }=0D
+  .sm-col-16 {=0D
+    width: 66.1666666667% !important;=0D
+  }=0D
+  .sm-col-17 {=0D
+    width: 70.3333333333% !important;=0D
+  }=0D
+  .sm-col-18 {=0D
+    width: 74.5% !important;=0D
+  }=0D
+  .sm-col-19 {=0D
+    width: 78.6666666667% !important;=0D
+  }=0D
+  .sm-col-20 {=0D
+    width: 82.8333333333% !important;=0D
+  }=0D
+  .sm-col-21 {=0D
+    width: 87% !important;=0D
+  }=0D
+  .sm-col-22 {=0D
+    width: 91.1666666667% !important;=0D
+  }=0D
+  .sm-col-23 {=0D
+    width: 95.3333333333% !important;=0D
+  }=0D
+  .sm-col-0 {=0D
+    width: 0px !important;=0D
+  }=0D
+  .sm-col-24 {=0D
+    width: 100% !important;=0D
+  }=0D
+  .hide-sm {=0D
+    display: none !important;=0D
+  }=0D
+  table[class*=3Dnew-reply-email] {=0D
+    width: auto !important;=0D
+  }=0D
+  .new-reply-email__container {=0D
+    padding: 0 12px !important;=0D
+  }=0D
+  .new-reply-email__avatar {=0D
+    height: 36px !important; width: 36px !important;=0D
+  }=0D
+  .new-reply-email__replies-count {=0D
+    padding-left: 18px !important;=0D
+  }=0D
+  .new-reply-email__comment-reply {=0D
+    padding-left: 18px !important;=0D
+  }=0D
+}=0D
+@media (min-width: 600px) {=0D
+  .lh2-sm {=0D
+    line-height: 12px;=0D
+  }=0D
+  .lh3-sm {=0D
+    line-height: 18px;=0D
+  }=0D
+  .lh4-sm {=0D
+    line-height: 24px;=0D
+  }=0D
+  .lh5-sm {=0D
+    line-height: 30px;=0D
+  }=0D
+  .lh6-sm {=0D
+    line-height: 36px;=0D
+  }=0D
+  .lh7-sm {=0D
+    line-height: 42px;=0D
+  }=0D
+  .lh9-sm {=0D
+    line-height: 54px;=0D
+  }=0D
+  .lh11-sm {=0D
+    line-height: 66px;=0D
+  }=0D
+  .lh12-sm {=0D
+    line-height: 72px;=0D
+  }=0D
+  .lh22-sm {=0D
+    line-height: 132px;=0D
+  }=0D
+  .w0-sm {=0D
+    width: 0px;=0D
+  }=0D
+  .w1-sm {=0D
+    width: 6px;=0D
+  }=0D
+  .w2-sm {=0D
+    width: 12px;=0D
+  }=0D
+  .w3-sm {=0D
+    width: 18px;=0D
+  }=0D
+  .w4-sm {=0D
+    width: 24px;=0D
+  }=0D
+  .w5-sm {=0D
+    width: 30px;=0D
+  }=0D
+  .w6-sm {=0D
+    width: 36px;=0D
+  }=0D
+  .w7-sm {=0D
+    width: 42px;=0D
+  }=0D
+  .w8-sm {=0D
+    width: 48px;=0D
+  }=0D
+  .w9-sm {=0D
+    width: 54px;=0D
+  }=0D
+  .w10-sm {=0D
+    width: 60px;=0D
+  }=0D
+  .w11-sm {=0D
+    width: 66px;=0D
+  }=0D
+  .w12-sm {=0D
+    width: 72px;=0D
+  }=0D
+  .w13-sm {=0D
+    width: 78px;=0D
+  }=0D
+  .w14-sm {=0D
+    width: 84px;=0D
+  }=0D
+  .w15-sm {=0D
+    width: 90px;=0D
+  }=0D
+  .w16-sm {=0D
+    width: 96px;=0D
+  }=0D
+  .w17-sm {=0D
+    width: 102px;=0D
+  }=0D
+  .w18-sm {=0D
+    width: 108px;=0D
+  }=0D
+  .w19-sm {=0D
+    width: 114px;=0D
+  }=0D
+  .w20-sm {=0D
+    width: 120px;=0D
+  }=0D
+  .w25-sm {=0D
+    width: 150px;=0D
+  }=0D
+  .w30-sm {=0D
+    width: 180px;=0D
+  }=0D
+  .w37-sm {=0D
+    width: 222px;=0D
+  }=0D
+  .w45-sm {=0D
+    width: 270px;=0D
+  }=0D
+  .w50-sm {=0D
+    width: 300px;=0D
+  }=0D
+  .w100vw-sm {=0D
+    width: 100vw;=0D
+  }=0D
+  .w-stretch-sm {=0D
+    width: stretch;=0D
+  }=0D
+  .min-w4-sm {=0D
+    min-width: 24px;=0D
+  }=0D
+  .min-w6-sm {=0D
+    min-width: 36px;=0D
+  }=0D
+  .min-w20-sm {=0D
+    min-width: 120px;=0D
+  }=0D
+  .min-w28-sm {=0D
+    min-width: 168px;=0D
+  }=0D
+  .min-w30-sm {=0D
+    min-width: 180px;=0D
+  }=0D
+  .min-w35-sm {=0D
+    min-width: 210px;=0D
+  }=0D
+  .min-w46-sm {=0D
+    min-width: 276px;=0D
+  }=0D
+  .min-w50-sm {=0D
+    min-width: 300px;=0D
+  }=0D
+  .min-w10p-sm {=0D
+    min-width: 10%;=0D
+  }=0D
+  .min-w20p-sm {=0D
+    min-width: 20%;=0D
+  }=0D
+  .min-w25p-sm {=0D
+    min-width: 25%;=0D
+  }=0D
+  .min-w30p-sm {=0D
+    min-width: 30%;=0D
+  }=0D
+  .min-w33p-sm {=0D
+    min-width: 33%;=0D
+  }=0D
+  .min-w34p-sm {=0D
+    min-width: 34%;=0D
+  }=0D
+  .min-w35p-sm {=0D
+    min-width: 35%;=0D
+  }=0D
+  .min-w40p-sm {=0D
+    min-width: 40%;=0D
+  }=0D
+  .min-w50p-sm {=0D
+    min-width: 50%;=0D
+  }=0D
+  .min-w60p-sm {=0D
+    min-width: 60%;=0D
+  }=0D
+  .min-w66p-sm {=0D
+    min-width: 66%;=0D
+  }=0D
+  .min-w75p-sm {=0D
+    min-width: 75%;=0D
+  }=0D
+  .min-w80p-sm {=0D
+    min-width: 80%;=0D
+  }=0D
+  .min-w85p-sm {=0D
+    min-width: 85%;=0D
+  }=0D
+  .min-w90p-sm {=0D
+    min-width: 90%;=0D
+  }=0D
+  .min-w100p-sm {=0D
+    min-width: 100%;=0D
+  }=0D
+  .min-w-sm {=0D
+    min-width: stretch;=0D
+  }=0D
+  .max-w22-sm {=0D
+    max-width: 132px;=0D
+  }=0D
+  .max-w29-sm {=0D
+    max-width: 174px;=0D
+  }=0D
+  .max-w30-sm {=0D
+    max-width: 180px;=0D
+  }=0D
+  .max-w35-sm {=0D
+    max-width: 210px;=0D
+  }=0D
+  .max-w40-sm {=0D
+    max-width: 240px;=0D
+  }=0D
+  .max-w45-sm {=0D
+    max-width: 270px;=0D
+  }=0D
+  .max-w50-sm {=0D
+    max-width: 300px;=0D
+  }=0D
+  .max-w55-sm {=0D
+    max-width: 330px;=0D
+  }=0D
+  .max-w60-sm {=0D
+    max-width: 360px;=0D
+  }=0D
+  .max-w62-sm {=0D
+    max-width: 372px;=0D
+  }=0D
+  .max-w65-sm {=0D
+    max-width: 390px;=0D
+  }=0D
+  .max-w70-sm {=0D
+    max-width: 420px;=0D
+  }=0D
+  .max-w75-sm {=0D
+    max-width: 450px;=0D
+  }=0D
+  .max-w80-sm {=0D
+    max-width: 480px;=0D
+  }=0D
+  .max-w85-sm {=0D
+    max-width: 510px;=0D
+  }=0D
+  .max-w92-sm {=0D
+    max-width: 552px;=0D
+  }=0D
+  .max-w100-sm {=0D
+    max-width: 600px;=0D
+  }=0D
+  .max-w110-sm {=0D
+    max-width: 660px;=0D
+  }=0D
+  .max-w113-sm {=0D
+    max-width: 678px;=0D
+  }=0D
+  .max-w120-sm {=0D
+    max-width: 720px;=0D
+  }=0D
+  .max-w200-sm {=0D
+    max-width: 1200px;=0D
+  }=0D
+  .max-w230-sm {=0D
+    max-width: 1380px;=0D
+  }=0D
+  .max-w240-sm {=0D
+    max-width: 1440px;=0D
+  }=0D
+  .max-w-none-sm {=0D
+    max-width: none;=0D
+  }=0D
+  .w10p-sm {=0D
+    width: 10%;=0D
+  }=0D
+  .w20p-sm {=0D
+    width: 20%;=0D
+  }=0D
+  .w25p-sm {=0D
+    width: 25%;=0D
+  }=0D
+  .w30p-sm {=0D
+    width: 30%;=0D
+  }=0D
+  .w33p-sm {=0D
+    width: 33%;=0D
+  }=0D
+  .w34p-sm {=0D
+    width: 34%;=0D
+  }=0D
+  .w35p-sm {=0D
+    width: 35%;=0D
+  }=0D
+  .w40p-sm {=0D
+    width: 40%;=0D
+  }=0D
+  .w50p-sm {=0D
+    width: 50%;=0D
+  }=0D
+  .w60p-sm {=0D
+    width: 60%;=0D
+  }=0D
+  .w66p-sm {=0D
+    width: 66%;=0D
+  }=0D
+  .w75p-sm {=0D
+    width: 75%;=0D
+  }=0D
+  .w80p-sm {=0D
+    width: 80%;=0D
+  }=0D
+  .w85p-sm {=0D
+    width: 85%;=0D
+  }=0D
+  .w90p-sm {=0D
+    width: 90%;=0D
+  }=0D
+  .w100p-sm {=0D
+    width: 100%;=0D
+  }=0D
+  .max-w-sm {=0D
+    max-width: stretch;=0D
+  }=0D
+  .w-auto-sm {=0D
+    width: auto;=0D
+  }=0D
+  .h40px-sm {=0D
+    height: 40px;=0D
+  }=0D
+  .max-h40px-sm {=0D
+    max-height: 40px;=0D
+  }=0D
+  .min-h40px-sm {=0D
+    min-height: 40px;=0D
+  }=0D
+  .h55px-sm {=0D
+    height: 55px;=0D
+  }=0D
+  .max-h55px-sm {=0D
+    max-height: 55px;=0D
+  }=0D
+  .min-h55px-sm {=0D
+    min-height: 55px;=0D
+  }=0D
+  .h0-sm {=0D
+    height: 0px;=0D
+  }=0D
+  .h1-sm {=0D
+    height: 6px;=0D
+  }=0D
+  .h2-sm {=0D
+    height: 12px;=0D
+  }=0D
+  .h3-sm {=0D
+    height: 18px;=0D
+  }=0D
+  .h4-sm {=0D
+    height: 24px;=0D
+  }=0D
+  .h5-sm {=0D
+    height: 30px;=0D
+  }=0D
+  .h6-sm {=0D
+    height: 36px;=0D
+  }=0D
+  .h7-sm {=0D
+    height: 42px;=0D
+  }=0D
+  .h8-sm {=0D
+    height: 48px;=0D
+  }=0D
+  .h9-sm {=0D
+    height: 54px;=0D
+  }=0D
+  .h10-sm {=0D
+    height: 60px;=0D
+  }=0D
+  .h11-sm {=0D
+    height: 66px;=0D
+  }=0D
+  .h12-sm {=0D
+    height: 72px;=0D
+  }=0D
+  .h13-sm {=0D
+    height: 78px;=0D
+  }=0D
+  .h14-sm {=0D
+    height: 84px;=0D
+  }=0D
+  .h15-sm {=0D
+    height: 90px;=0D
+  }=0D
+  .h16-sm {=0D
+    height: 96px;=0D
+  }=0D
+  .h17-sm {=0D
+    height: 102px;=0D
+  }=0D
+  .h18-sm {=0D
+    height: 108px;=0D
+  }=0D
+  .h19-sm {=0D
+    height: 114px;=0D
+  }=0D
+  .h20-sm {=0D
+    height: 120px;=0D
+  }=0D
+  .h25-sm {=0D
+    height: 150px;=0D
+  }=0D
+  .h30-sm {=0D
+    height: 180px;=0D
+  }=0D
+  .h37-sm {=0D
+    height: 222px;=0D
+  }=0D
+  .h45-sm {=0D
+    height: 270px;=0D
+  }=0D
+  .h50-sm {=0D
+    height: 300px;=0D
+  }=0D
+  .h-sm {=0D
+    height: stretch;=0D
+  }=0D
+  .min-h4-sm {=0D
+    min-height: 24px;=0D
+  }=0D
+  .min-h6-sm {=0D
+    min-height: 36px;=0D
+  }=0D
+  .min-h10-sm {=0D
+    min-height: 60px;=0D
+  }=0D
+  .min-h11-sm {=0D
+    min-height: 66px;=0D
+  }=0D
+  .min-h12-sm {=0D
+    min-height: 72px;=0D
+  }=0D
+  .min-h14-sm {=0D
+    min-height: 84px;=0D
+  }=0D
+  .min-h16-sm {=0D
+    min-height: 96px;=0D
+  }=0D
+  .min-h17-sm {=0D
+    min-height: 102px;=0D
+  }=0D
+  .min-h20-sm {=0D
+    min-height: 120px;=0D
+  }=0D
+  .min-h25-sm {=0D
+    min-height: 150px;=0D
+  }=0D
+  .min-h30-sm {=0D
+    min-height: 180px;=0D
+  }=0D
+  .min-h35-sm {=0D
+    min-height: 210px;=0D
+  }=0D
+  .min-h40-sm {=0D
+    min-height: 240px;=0D
+  }=0D
+  .min-h60-sm {=0D
+    min-height: 360px;=0D
+  }=0D
+  .min-h80-sm {=0D
+    min-height: 480px;=0D
+  }=0D
+  .min-h100-sm {=0D
+    min-height: 600px;=0D
+  }=0D
+  .min-h-sm {=0D
+    min-height: stretch;=0D
+  }=0D
+  .max-h0-sm {=0D
+    max-height: 0px;=0D
+  }=0D
+  .max-h6-sm {=0D
+    max-height: 36px;=0D
+  }=0D
+  .max-h11-sm {=0D
+    max-height: 66px;=0D
+  }=0D
+  .max-h22-sm {=0D
+    max-height: 132px;=0D
+  }=0D
+  .max-h30-sm {=0D
+    max-height: 180px;=0D
+  }=0D
+  .max-h40-sm {=0D
+    max-height: 240px;=0D
+  }=0D
+  .max-h50-sm {=0D
+    max-height: 300px;=0D
+  }=0D
+  .max-h120-sm {=0D
+    max-height: 720px;=0D
+  }=0D
+  .max-h-sm {=0D
+    max-height: stretch;=0D
+  }=0D
+  .h-auto-sm {=0D
+    height: auto;=0D
+  }=0D
+  .h10p-sm {=0D
+    height: 10%;=0D
+  }=0D
+  .h20p-sm {=0D
+    height: 20%;=0D
+  }=0D
+  .h25p-sm {=0D
+    height: 25%;=0D
+  }=0D
+  .h30p-sm {=0D
+    height: 30%;=0D
+  }=0D
+  .h33p-sm {=0D
+    height: 33%;=0D
+  }=0D
+  .h34p-sm {=0D
+    height: 34%;=0D
+  }=0D
+  .h35p-sm {=0D
+    height: 35%;=0D
+  }=0D
+  .h40p-sm {=0D
+    height: 40%;=0D
+  }=0D
+  .h50p-sm {=0D
+    height: 50%;=0D
+  }=0D
+  .h60p-sm {=0D
+    height: 60%;=0D
+  }=0D
+  .h66p-sm {=0D
+    height: 66%;=0D
+  }=0D
+  .h75p-sm {=0D
+    height: 75%;=0D
+  }=0D
+  .h80p-sm {=0D
+    height: 80%;=0D
+  }=0D
+  .h85p-sm {=0D
+    height: 85%;=0D
+  }=0D
+  .h90p-sm {=0D
+    height: 90%;=0D
+  }=0D
+  .h100p-sm {=0D
+    height: 100%;=0D
+  }=0D
+  .h5vh-sm {=0D
+    height: 5vh;=0D
+  }=0D
+  .max-h5vh-sm {=0D
+    max-height: 5vh;=0D
+  }=0D
+  .min-h5vh-sm {=0D
+    min-height: 5vh;=0D
+  }=0D
+  .h12vh-sm {=0D
+    height: 12vh;=0D
+  }=0D
+  .max-h12vh-sm {=0D
+    max-height: 12vh;=0D
+  }=0D
+  .min-h12vh-sm {=0D
+    min-height: 12vh;=0D
+  }=0D
+  .h20vh-sm {=0D
+    height: 20vh;=0D
+  }=0D
+  .max-h20vh-sm {=0D
+    max-height: 20vh;=0D
+  }=0D
+  .min-h20vh-sm {=0D
+    min-height: 20vh;=0D
+  }=0D
+  .h30vh-sm {=0D
+    height: 30vh;=0D
+  }=0D
+  .max-h30vh-sm {=0D
+    max-height: 30vh;=0D
+  }=0D
+  .min-h30vh-sm {=0D
+    min-height: 30vh;=0D
+  }=0D
+  .h40vh-sm {=0D
+    height: 40vh;=0D
+  }=0D
+  .max-h40vh-sm {=0D
+    max-height: 40vh;=0D
+  }=0D
+  .min-h40vh-sm {=0D
+    min-height: 40vh;=0D
+  }=0D
+  .h50vh-sm {=0D
+    height: 50vh;=0D
+  }=0D
+  .max-h50vh-sm {=0D
+    max-height: 50vh;=0D
+  }=0D
+  .min-h50vh-sm {=0D
+    min-height: 50vh;=0D
+  }=0D
+  .h60vh-sm {=0D
+    height: 60vh;=0D
+  }=0D
+  .max-h60vh-sm {=0D
+    max-height: 60vh;=0D
+  }=0D
+  .min-h60vh-sm {=0D
+    min-height: 60vh;=0D
+  }=0D
+  .h65vh-sm {=0D
+    height: 65vh;=0D
+  }=0D
+  .max-h65vh-sm {=0D
+    max-height: 65vh;=0D
+  }=0D
+  .min-h65vh-sm {=0D
+    min-height: 65vh;=0D
+  }=0D
+  .h70vh-sm {=0D
+    height: 70vh;=0D
+  }=0D
+  .max-h70vh-sm {=0D
+    max-height: 70vh;=0D
+  }=0D
+  .min-h70vh-sm {=0D
+    min-height: 70vh;=0D
+  }=0D
+  .h75vh-sm {=0D
+    height: 75vh;=0D
+  }=0D
+  .max-h75vh-sm {=0D
+    max-height: 75vh;=0D
+  }=0D
+  .min-h75vh-sm {=0D
+    min-height: 75vh;=0D
+  }=0D
+  .h80vh-sm {=0D
+    height: 80vh;=0D
+  }=0D
+  .max-h80vh-sm {=0D
+    max-height: 80vh;=0D
+  }=0D
+  .min-h80vh-sm {=0D
+    min-height: 80vh;=0D
+  }=0D
+  .h85vh-sm {=0D
+    height: 85vh;=0D
+  }=0D
+  .max-h85vh-sm {=0D
+    max-height: 85vh;=0D
+  }=0D
+  .min-h85vh-sm {=0D
+    min-height: 85vh;=0D
+  }=0D
+  .h100vh-sm {=0D
+    height: 100vh;=0D
+  }=0D
+  .max-h100vh-sm {=0D
+    max-height: 100vh;=0D
+  }=0D
+  .min-h100vh-sm {=0D
+    min-height: 100vh;=0D
+  }=0D
+}=0D
+@media (min-width: 795px) {=0D
+  .lh2-md {=0D
+    line-height: 12px;=0D
+  }=0D
+  .lh3-md {=0D
+    line-height: 18px;=0D
+  }=0D
+  .lh4-md {=0D
+    line-height: 24px;=0D
+  }=0D
+  .lh5-md {=0D
+    line-height: 30px;=0D
+  }=0D
+  .lh6-md {=0D
+    line-height: 36px;=0D
+  }=0D
+  .lh7-md {=0D
+    line-height: 42px;=0D
+  }=0D
+  .lh9-md {=0D
+    line-height: 54px;=0D
+  }=0D
+  .lh11-md {=0D
+    line-height: 66px;=0D
+  }=0D
+  .lh12-md {=0D
+    line-height: 72px;=0D
+  }=0D
+  .lh22-md {=0D
+    line-height: 132px;=0D
+  }=0D
+  .w0-md {=0D
+    width: 0px;=0D
+  }=0D
+  .w1-md {=0D
+    width: 6px;=0D
+  }=0D
+  .w2-md {=0D
+    width: 12px;=0D
+  }=0D
+  .w3-md {=0D
+    width: 18px;=0D
+  }=0D
+  .w4-md {=0D
+    width: 24px;=0D
+  }=0D
+  .w5-md {=0D
+    width: 30px;=0D
+  }=0D
+  .w6-md {=0D
+    width: 36px;=0D
+  }=0D
+  .w7-md {=0D
+    width: 42px;=0D
+  }=0D
+  .w8-md {=0D
+    width: 48px;=0D
+  }=0D
+  .w9-md {=0D
+    width: 54px;=0D
+  }=0D
+  .w10-md {=0D
+    width: 60px;=0D
+  }=0D
+  .w11-md {=0D
+    width: 66px;=0D
+  }=0D
+  .w12-md {=0D
+    width: 72px;=0D
+  }=0D
+  .w13-md {=0D
+    width: 78px;=0D
+  }=0D
+  .w14-md {=0D
+    width: 84px;=0D
+  }=0D
+  .w15-md {=0D
+    width: 90px;=0D
+  }=0D
+  .w16-md {=0D
+    width: 96px;=0D
+  }=0D
+  .w17-md {=0D
+    width: 102px;=0D
+  }=0D
+  .w18-md {=0D
+    width: 108px;=0D
+  }=0D
+  .w19-md {=0D
+    width: 114px;=0D
+  }=0D
+  .w20-md {=0D
+    width: 120px;=0D
+  }=0D
+  .w25-md {=0D
+    width: 150px;=0D
+  }=0D
+  .w30-md {=0D
+    width: 180px;=0D
+  }=0D
+  .w37-md {=0D
+    width: 222px;=0D
+  }=0D
+  .w45-md {=0D
+    width: 270px;=0D
+  }=0D
+  .w50-md {=0D
+    width: 300px;=0D
+  }=0D
+  .w100vw-md {=0D
+    width: 100vw;=0D
+  }=0D
+  .w-stretch-md {=0D
+    width: stretch;=0D
+  }=0D
+  .min-w4-md {=0D
+    min-width: 24px;=0D
+  }=0D
+  .min-w6-md {=0D
+    min-width: 36px;=0D
+  }=0D
+  .min-w20-md {=0D
+    min-width: 120px;=0D
+  }=0D
+  .min-w28-md {=0D
+    min-width: 168px;=0D
+  }=0D
+  .min-w30-md {=0D
+    min-width: 180px;=0D
+  }=0D
+  .min-w35-md {=0D
+    min-width: 210px;=0D
+  }=0D
+  .min-w46-md {=0D
+    min-width: 276px;=0D
+  }=0D
+  .min-w50-md {=0D
+    min-width: 300px;=0D
+  }=0D
+  .min-w10p-md {=0D
+    min-width: 10%;=0D
+  }=0D
+  .min-w20p-md {=0D
+    min-width: 20%;=0D
+  }=0D
+  .min-w25p-md {=0D
+    min-width: 25%;=0D
+  }=0D
+  .min-w30p-md {=0D
+    min-width: 30%;=0D
+  }=0D
+  .min-w33p-md {=0D
+    min-width: 33%;=0D
+  }=0D
+  .min-w34p-md {=0D
+    min-width: 34%;=0D
+  }=0D
+  .min-w35p-md {=0D
+    min-width: 35%;=0D
+  }=0D
+  .min-w40p-md {=0D
+    min-width: 40%;=0D
+  }=0D
+  .min-w50p-md {=0D
+    min-width: 50%;=0D
+  }=0D
+  .min-w60p-md {=0D
+    min-width: 60%;=0D
+  }=0D
+  .min-w66p-md {=0D
+    min-width: 66%;=0D
+  }=0D
+  .min-w75p-md {=0D
+    min-width: 75%;=0D
+  }=0D
+  .min-w80p-md {=0D
+    min-width: 80%;=0D
+  }=0D
+  .min-w85p-md {=0D
+    min-width: 85%;=0D
+  }=0D
+  .min-w90p-md {=0D
+    min-width: 90%;=0D
+  }=0D
+  .min-w100p-md {=0D
+    min-width: 100%;=0D
+  }=0D
+  .min-w-md {=0D
+    min-width: stretch;=0D
+  }=0D
+  .max-w22-md {=0D
+    max-width: 132px;=0D
+  }=0D
+  .max-w29-md {=0D
+    max-width: 174px;=0D
+  }=0D
+  .max-w30-md {=0D
+    max-width: 180px;=0D
+  }=0D
+  .max-w35-md {=0D
+    max-width: 210px;=0D
+  }=0D
+  .max-w40-md {=0D
+    max-width: 240px;=0D
+  }=0D
+  .max-w45-md {=0D
+    max-width: 270px;=0D
+  }=0D
+  .max-w50-md {=0D
+    max-width: 300px;=0D
+  }=0D
+  .max-w55-md {=0D
+    max-width: 330px;=0D
+  }=0D
+  .max-w60-md {=0D
+    max-width: 360px;=0D
+  }=0D
+  .max-w62-md {=0D
+    max-width: 372px;=0D
+  }=0D
+  .max-w65-md {=0D
+    max-width: 390px;=0D
+  }=0D
+  .max-w70-md {=0D
+    max-width: 420px;=0D
+  }=0D
+  .max-w75-md {=0D
+    max-width: 450px;=0D
+  }=0D
+  .max-w80-md {=0D
+    max-width: 480px;=0D
+  }=0D
+  .max-w85-md {=0D
+    max-width: 510px;=0D
+  }=0D
+  .max-w92-md {=0D
+    max-width: 552px;=0D
+  }=0D
+  .max-w100-md {=0D
+    max-width: 600px;=0D
+  }=0D
+  .max-w110-md {=0D
+    max-width: 660px;=0D
+  }=0D
+  .max-w113-md {=0D
+    max-width: 678px;=0D
+  }=0D
+  .max-w120-md {=0D
+    max-width: 720px;=0D
+  }=0D
+  .max-w200-md {=0D
+    max-width: 1200px;=0D
+  }=0D
+  .max-w230-md {=0D
+    max-width: 1380px;=0D
+  }=0D
+  .max-w240-md {=0D
+    max-width: 1440px;=0D
+  }=0D
+  .max-w-none-md {=0D
+    max-width: none;=0D
+  }=0D
+  .w10p-md {=0D
+    width: 10%;=0D
+  }=0D
+  .w20p-md {=0D
+    width: 20%;=0D
+  }=0D
+  .w25p-md {=0D
+    width: 25%;=0D
+  }=0D
+  .w30p-md {=0D
+    width: 30%;=0D
+  }=0D
+  .w33p-md {=0D
+    width: 33%;=0D
+  }=0D
+  .w34p-md {=0D
+    width: 34%;=0D
+  }=0D
+  .w35p-md {=0D
+    width: 35%;=0D
+  }=0D
+  .w40p-md {=0D
+    width: 40%;=0D
+  }=0D
+  .w50p-md {=0D
+    width: 50%;=0D
+  }=0D
+  .w60p-md {=0D
+    width: 60%;=0D
+  }=0D
+  .w66p-md {=0D
+    width: 66%;=0D
+  }=0D
+  .w75p-md {=0D
+    width: 75%;=0D
+  }=0D
+  .w80p-md {=0D
+    width: 80%;=0D
+  }=0D
+  .w85p-md {=0D
+    width: 85%;=0D
+  }=0D
+  .w90p-md {=0D
+    width: 90%;=0D
+  }=0D
+  .w100p-md {=0D
+    width: 100%;=0D
+  }=0D
+  .max-w-md {=0D
+    max-width: stretch;=0D
+  }=0D
+  .w-auto-md {=0D
+    width: auto;=0D
+  }=0D
+  .h40px-md {=0D
+    height: 40px;=0D
+  }=0D
+  .max-h40px-md {=0D
+    max-height: 40px;=0D
+  }=0D
+  .min-h40px-md {=0D
+    min-height: 40px;=0D
+  }=0D
+  .h55px-md {=0D
+    height: 55px;=0D
+  }=0D
+  .max-h55px-md {=0D
+    max-height: 55px;=0D
+  }=0D
+  .min-h55px-md {=0D
+    min-height: 55px;=0D
+  }=0D
+  .h0-md {=0D
+    height: 0px;=0D
+  }=0D
+  .h1-md {=0D
+    height: 6px;=0D
+  }=0D
+  .h2-md {=0D
+    height: 12px;=0D
+  }=0D
+  .h3-md {=0D
+    height: 18px;=0D
+  }=0D
+  .h4-md {=0D
+    height: 24px;=0D
+  }=0D
+  .h5-md {=0D
+    height: 30px;=0D
+  }=0D
+  .h6-md {=0D
+    height: 36px;=0D
+  }=0D
+  .h7-md {=0D
+    height: 42px;=0D
+  }=0D
+  .h8-md {=0D
+    height: 48px;=0D
+  }=0D
+  .h9-md {=0D
+    height: 54px;=0D
+  }=0D
+  .h10-md {=0D
+    height: 60px;=0D
+  }=0D
+  .h11-md {=0D
+    height: 66px;=0D
+  }=0D
+  .h12-md {=0D
+    height: 72px;=0D
+  }=0D
+  .h13-md {=0D
+    height: 78px;=0D
+  }=0D
+  .h14-md {=0D
+    height: 84px;=0D
+  }=0D
+  .h15-md {=0D
+    height: 90px;=0D
+  }=0D
+  .h16-md {=0D
+    height: 96px;=0D
+  }=0D
+  .h17-md {=0D
+    height: 102px;=0D
+  }=0D
+  .h18-md {=0D
+    height: 108px;=0D
+  }=0D
+  .h19-md {=0D
+    height: 114px;=0D
+  }=0D
+  .h20-md {=0D
+    height: 120px;=0D
+  }=0D
+  .h25-md {=0D
+    height: 150px;=0D
+  }=0D
+  .h30-md {=0D
+    height: 180px;=0D
+  }=0D
+  .h37-md {=0D
+    height: 222px;=0D
+  }=0D
+  .h45-md {=0D
+    height: 270px;=0D
+  }=0D
+  .h50-md {=0D
+    height: 300px;=0D
+  }=0D
+  .h-md {=0D
+    height: stretch;=0D
+  }=0D
+  .min-h4-md {=0D
+    min-height: 24px;=0D
+  }=0D
+  .min-h6-md {=0D
+    min-height: 36px;=0D
+  }=0D
+  .min-h10-md {=0D
+    min-height: 60px;=0D
+  }=0D
+  .min-h11-md {=0D
+    min-height: 66px;=0D
+  }=0D
+  .min-h12-md {=0D
+    min-height: 72px;=0D
+  }=0D
+  .min-h14-md {=0D
+    min-height: 84px;=0D
+  }=0D
+  .min-h16-md {=0D
+    min-height: 96px;=0D
+  }=0D
+  .min-h17-md {=0D
+    min-height: 102px;=0D
+  }=0D
+  .min-h20-md {=0D
+    min-height: 120px;=0D
+  }=0D
+  .min-h25-md {=0D
+    min-height: 150px;=0D
+  }=0D
+  .min-h30-md {=0D
+    min-height: 180px;=0D
+  }=0D
+  .min-h35-md {=0D
+    min-height: 210px;=0D
+  }=0D
+  .min-h40-md {=0D
+    min-height: 240px;=0D
+  }=0D
+  .min-h60-md {=0D
+    min-height: 360px;=0D
+  }=0D
+  .min-h80-md {=0D
+    min-height: 480px;=0D
+  }=0D
+  .min-h100-md {=0D
+    min-height: 600px;=0D
+  }=0D
+  .min-h-md {=0D
+    min-height: stretch;=0D
+  }=0D
+  .max-h0-md {=0D
+    max-height: 0px;=0D
+  }=0D
+  .max-h6-md {=0D
+    max-height: 36px;=0D
+  }=0D
+  .max-h11-md {=0D
+    max-height: 66px;=0D
+  }=0D
+  .max-h22-md {=0D
+    max-height: 132px;=0D
+  }=0D
+  .max-h30-md {=0D
+    max-height: 180px;=0D
+  }=0D
+  .max-h40-md {=0D
+    max-height: 240px;=0D
+  }=0D
+  .max-h50-md {=0D
+    max-height: 300px;=0D
+  }=0D
+  .max-h120-md {=0D
+    max-height: 720px;=0D
+  }=0D
+  .max-h-md {=0D
+    max-height: stretch;=0D
+  }=0D
+  .h-auto-md {=0D
+    height: auto;=0D
+  }=0D
+  .h10p-md {=0D
+    height: 10%;=0D
+  }=0D
+  .h20p-md {=0D
+    height: 20%;=0D
+  }=0D
+  .h25p-md {=0D
+    height: 25%;=0D
+  }=0D
+  .h30p-md {=0D
+    height: 30%;=0D
+  }=0D
+  .h33p-md {=0D
+    height: 33%;=0D
+  }=0D
+  .h34p-md {=0D
+    height: 34%;=0D
+  }=0D
+  .h35p-md {=0D
+    height: 35%;=0D
+  }=0D
+  .h40p-md {=0D
+    height: 40%;=0D
+  }=0D
+  .h50p-md {=0D
+    height: 50%;=0D
+  }=0D
+  .h60p-md {=0D
+    height: 60%;=0D
+  }=0D
+  .h66p-md {=0D
+    height: 66%;=0D
+  }=0D
+  .h75p-md {=0D
+    height: 75%;=0D
+  }=0D
+  .h80p-md {=0D
+    height: 80%;=0D
+  }=0D
+  .h85p-md {=0D
+    height: 85%;=0D
+  }=0D
+  .h90p-md {=0D
+    height: 90%;=0D
+  }=0D
+  .h100p-md {=0D
+    height: 100%;=0D
+  }=0D
+  .h5vh-md {=0D
+    height: 5vh;=0D
+  }=0D
+  .max-h5vh-md {=0D
+    max-height: 5vh;=0D
+  }=0D
+  .min-h5vh-md {=0D
+    min-height: 5vh;=0D
+  }=0D
+  .h12vh-md {=0D
+    height: 12vh;=0D
+  }=0D
+  .max-h12vh-md {=0D
+    max-height: 12vh;=0D
+  }=0D
+  .min-h12vh-md {=0D
+    min-height: 12vh;=0D
+  }=0D
+  .h20vh-md {=0D
+    height: 20vh;=0D
+  }=0D
+  .max-h20vh-md {=0D
+    max-height: 20vh;=0D
+  }=0D
+  .min-h20vh-md {=0D
+    min-height: 20vh;=0D
+  }=0D
+  .h30vh-md {=0D
+    height: 30vh;=0D
+  }=0D
+  .max-h30vh-md {=0D
+    max-height: 30vh;=0D
+  }=0D
+  .min-h30vh-md {=0D
+    min-height: 30vh;=0D
+  }=0D
+  .h40vh-md {=0D
+    height: 40vh;=0D
+  }=0D
+  .max-h40vh-md {=0D
+    max-height: 40vh;=0D
+  }=0D
+  .min-h40vh-md {=0D
+    min-height: 40vh;=0D
+  }=0D
+  .h50vh-md {=0D
+    height: 50vh;=0D
+  }=0D
+  .max-h50vh-md {=0D
+    max-height: 50vh;=0D
+  }=0D
+  .min-h50vh-md {=0D
+    min-height: 50vh;=0D
+  }=0D
+  .h60vh-md {=0D
+    height: 60vh;=0D
+  }=0D
+  .max-h60vh-md {=0D
+    max-height: 60vh;=0D
+  }=0D
+  .min-h60vh-md {=0D
+    min-height: 60vh;=0D
+  }=0D
+  .h65vh-md {=0D
+    height: 65vh;=0D
+  }=0D
+  .max-h65vh-md {=0D
+    max-height: 65vh;=0D
+  }=0D
+  .min-h65vh-md {=0D
+    min-height: 65vh;=0D
+  }=0D
+  .h70vh-md {=0D
+    height: 70vh;=0D
+  }=0D
+  .max-h70vh-md {=0D
+    max-height: 70vh;=0D
+  }=0D
+  .min-h70vh-md {=0D
+    min-height: 70vh;=0D
+  }=0D
+  .h75vh-md {=0D
+    height: 75vh;=0D
+  }=0D
+  .max-h75vh-md {=0D
+    max-height: 75vh;=0D
+  }=0D
+  .min-h75vh-md {=0D
+    min-height: 75vh;=0D
+  }=0D
+  .h80vh-md {=0D
+    height: 80vh;=0D
+  }=0D
+  .max-h80vh-md {=0D
+    max-height: 80vh;=0D
+  }=0D
+  .min-h80vh-md {=0D
+    min-height: 80vh;=0D
+  }=0D
+  .h85vh-md {=0D
+    height: 85vh;=0D
+  }=0D
+  .max-h85vh-md {=0D
+    max-height: 85vh;=0D
+  }=0D
+  .min-h85vh-md {=0D
+    min-height: 85vh;=0D
+  }=0D
+  .h100vh-md {=0D
+    height: 100vh;=0D
+  }=0D
+  .max-h100vh-md {=0D
+    max-height: 100vh;=0D
+  }=0D
+  .min-h100vh-md {=0D
+    min-height: 100vh;=0D
+  }=0D
+}=0D
+@media (min-width: 1025px) {=0D
+  .lh2-lg {=0D
+    line-height: 12px;=0D
+  }=0D
+  .lh3-lg {=0D
+    line-height: 18px;=0D
+  }=0D
+  .lh4-lg {=0D
+    line-height: 24px;=0D
+  }=0D
+  .lh5-lg {=0D
+    line-height: 30px;=0D
+  }=0D
+  .lh6-lg {=0D
+    line-height: 36px;=0D
+  }=0D
+  .lh7-lg {=0D
+    line-height: 42px;=0D
+  }=0D
+  .lh9-lg {=0D
+    line-height: 54px;=0D
+  }=0D
+  .lh11-lg {=0D
+    line-height: 66px;=0D
+  }=0D
+  .lh12-lg {=0D
+    line-height: 72px;=0D
+  }=0D
+  .lh22-lg {=0D
+    line-height: 132px;=0D
+  }=0D
+  .w0-lg {=0D
+    width: 0px;=0D
+  }=0D
+  .w1-lg {=0D
+    width: 6px;=0D
+  }=0D
+  .w2-lg {=0D
+    width: 12px;=0D
+  }=0D
+  .w3-lg {=0D
+    width: 18px;=0D
+  }=0D
+  .w4-lg {=0D
+    width: 24px;=0D
+  }=0D
+  .w5-lg {=0D
+    width: 30px;=0D
+  }=0D
+  .w6-lg {=0D
+    width: 36px;=0D
+  }=0D
+  .w7-lg {=0D
+    width: 42px;=0D
+  }=0D
+  .w8-lg {=0D
+    width: 48px;=0D
+  }=0D
+  .w9-lg {=0D
+    width: 54px;=0D
+  }=0D
+  .w10-lg {=0D
+    width: 60px;=0D
+  }=0D
+  .w11-lg {=0D
+    width: 66px;=0D
+  }=0D
+  .w12-lg {=0D
+    width: 72px;=0D
+  }=0D
+  .w13-lg {=0D
+    width: 78px;=0D
+  }=0D
+  .w14-lg {=0D
+    width: 84px;=0D
+  }=0D
+  .w15-lg {=0D
+    width: 90px;=0D
+  }=0D
+  .w16-lg {=0D
+    width: 96px;=0D
+  }=0D
+  .w17-lg {=0D
+    width: 102px;=0D
+  }=0D
+  .w18-lg {=0D
+    width: 108px;=0D
+  }=0D
+  .w19-lg {=0D
+    width: 114px;=0D
+  }=0D
+  .w20-lg {=0D
+    width: 120px;=0D
+  }=0D
+  .w25-lg {=0D
+    width: 150px;=0D
+  }=0D
+  .w30-lg {=0D
+    width: 180px;=0D
+  }=0D
+  .w37-lg {=0D
+    width: 222px;=0D
+  }=0D
+  .w45-lg {=0D
+    width: 270px;=0D
+  }=0D
+  .w50-lg {=0D
+    width: 300px;=0D
+  }=0D
+  .w100vw-lg {=0D
+    width: 100vw;=0D
+  }=0D
+  .w-stretch-lg {=0D
+    width: stretch;=0D
+  }=0D
+  .min-w4-lg {=0D
+    min-width: 24px;=0D
+  }=0D
+  .min-w6-lg {=0D
+    min-width: 36px;=0D
+  }=0D
+  .min-w20-lg {=0D
+    min-width: 120px;=0D
+  }=0D
+  .min-w28-lg {=0D
+    min-width: 168px;=0D
+  }=0D
+  .min-w30-lg {=0D
+    min-width: 180px;=0D
+  }=0D
+  .min-w35-lg {=0D
+    min-width: 210px;=0D
+  }=0D
+  .min-w46-lg {=0D
+    min-width: 276px;=0D
+  }=0D
+  .min-w50-lg {=0D
+    min-width: 300px;=0D
+  }=0D
+  .min-w10p-lg {=0D
+    min-width: 10%;=0D
+  }=0D
+  .min-w20p-lg {=0D
+    min-width: 20%;=0D
+  }=0D
+  .min-w25p-lg {=0D
+    min-width: 25%;=0D
+  }=0D
+  .min-w30p-lg {=0D
+    min-width: 30%;=0D
+  }=0D
+  .min-w33p-lg {=0D
+    min-width: 33%;=0D
+  }=0D
+  .min-w34p-lg {=0D
+    min-width: 34%;=0D
+  }=0D
+  .min-w35p-lg {=0D
+    min-width: 35%;=0D
+  }=0D
+  .min-w40p-lg {=0D
+    min-width: 40%;=0D
+  }=0D
+  .min-w50p-lg {=0D
+    min-width: 50%;=0D
+  }=0D
+  .min-w60p-lg {=0D
+    min-width: 60%;=0D
+  }=0D
+  .min-w66p-lg {=0D
+    min-width: 66%;=0D
+  }=0D
+  .min-w75p-lg {=0D
+    min-width: 75%;=0D
+  }=0D
+  .min-w80p-lg {=0D
+    min-width: 80%;=0D
+  }=0D
+  .min-w85p-lg {=0D
+    min-width: 85%;=0D
+  }=0D
+  .min-w90p-lg {=0D
+    min-width: 90%;=0D
+  }=0D
+  .min-w100p-lg {=0D
+    min-width: 100%;=0D
+  }=0D
+  .min-w-lg {=0D
+    min-width: stretch;=0D
+  }=0D
+  .max-w22-lg {=0D
+    max-width: 132px;=0D
+  }=0D
+  .max-w29-lg {=0D
+    max-width: 174px;=0D
+  }=0D
+  .max-w30-lg {=0D
+    max-width: 180px;=0D
+  }=0D
+  .max-w35-lg {=0D
+    max-width: 210px;=0D
+  }=0D
+  .max-w40-lg {=0D
+    max-width: 240px;=0D
+  }=0D
+  .max-w45-lg {=0D
+    max-width: 270px;=0D
+  }=0D
+  .max-w50-lg {=0D
+    max-width: 300px;=0D
+  }=0D
+  .max-w55-lg {=0D
+    max-width: 330px;=0D
+  }=0D
+  .max-w60-lg {=0D
+    max-width: 360px;=0D
+  }=0D
+  .max-w62-lg {=0D
+    max-width: 372px;=0D
+  }=0D
+  .max-w65-lg {=0D
+    max-width: 390px;=0D
+  }=0D
+  .max-w70-lg {=0D
+    max-width: 420px;=0D
+  }=0D
+  .max-w75-lg {=0D
+    max-width: 450px;=0D
+  }=0D
+  .max-w80-lg {=0D
+    max-width: 480px;=0D
+  }=0D
+  .max-w85-lg {=0D
+    max-width: 510px;=0D
+  }=0D
+  .max-w92-lg {=0D
+    max-width: 552px;=0D
+  }=0D
+  .max-w100-lg {=0D
+    max-width: 600px;=0D
+  }=0D
+  .max-w110-lg {=0D
+    max-width: 660px;=0D
+  }=0D
+  .max-w113-lg {=0D
+    max-width: 678px;=0D
+  }=0D
+  .max-w120-lg {=0D
+    max-width: 720px;=0D
+  }=0D
+  .max-w200-lg {=0D
+    max-width: 1200px;=0D
+  }=0D
+  .max-w230-lg {=0D
+    max-width: 1380px;=0D
+  }=0D
+  .max-w240-lg {=0D
+    max-width: 1440px;=0D
+  }=0D
+  .max-w-none-lg {=0D
+    max-width: none;=0D
+  }=0D
+  .w10p-lg {=0D
+    width: 10%;=0D
+  }=0D
+  .w20p-lg {=0D
+    width: 20%;=0D
+  }=0D
+  .w25p-lg {=0D
+    width: 25%;=0D
+  }=0D
+  .w30p-lg {=0D
+    width: 30%;=0D
+  }=0D
+  .w33p-lg {=0D
+    width: 33%;=0D
+  }=0D
+  .w34p-lg {=0D
+    width: 34%;=0D
+  }=0D
+  .w35p-lg {=0D
+    width: 35%;=0D
+  }=0D
+  .w40p-lg {=0D
+    width: 40%;=0D
+  }=0D
+  .w50p-lg {=0D
+    width: 50%;=0D
+  }=0D
+  .w60p-lg {=0D
+    width: 60%;=0D
+  }=0D
+  .w66p-lg {=0D
+    width: 66%;=0D
+  }=0D
+  .w75p-lg {=0D
+    width: 75%;=0D
+  }=0D
+  .w80p-lg {=0D
+    width: 80%;=0D
+  }=0D
+  .w85p-lg {=0D
+    width: 85%;=0D
+  }=0D
+  .w90p-lg {=0D
+    width: 90%;=0D
+  }=0D
+  .w100p-lg {=0D
+    width: 100%;=0D
+  }=0D
+  .max-w-lg {=0D
+    max-width: stretch;=0D
+  }=0D
+  .w-auto-lg {=0D
+    width: auto;=0D
+  }=0D
+  .h40px-lg {=0D
+    height: 40px;=0D
+  }=0D
+  .max-h40px-lg {=0D
+    max-height: 40px;=0D
+  }=0D
+  .min-h40px-lg {=0D
+    min-height: 40px;=0D
+  }=0D
+  .h55px-lg {=0D
+    height: 55px;=0D
+  }=0D
+  .max-h55px-lg {=0D
+    max-height: 55px;=0D
+  }=0D
+  .min-h55px-lg {=0D
+    min-height: 55px;=0D
+  }=0D
+  .h0-lg {=0D
+    height: 0px;=0D
+  }=0D
+  .h1-lg {=0D
+    height: 6px;=0D
+  }=0D
+  .h2-lg {=0D
+    height: 12px;=0D
+  }=0D
+  .h3-lg {=0D
+    height: 18px;=0D
+  }=0D
+  .h4-lg {=0D
+    height: 24px;=0D
+  }=0D
+  .h5-lg {=0D
+    height: 30px;=0D
+  }=0D
+  .h6-lg {=0D
+    height: 36px;=0D
+  }=0D
+  .h7-lg {=0D
+    height: 42px;=0D
+  }=0D
+  .h8-lg {=0D
+    height: 48px;=0D
+  }=0D
+  .h9-lg {=0D
+    height: 54px;=0D
+  }=0D
+  .h10-lg {=0D
+    height: 60px;=0D
+  }=0D
+  .h11-lg {=0D
+    height: 66px;=0D
+  }=0D
+  .h12-lg {=0D
+    height: 72px;=0D
+  }=0D
+  .h13-lg {=0D
+    height: 78px;=0D
+  }=0D
+  .h14-lg {=0D
+    height: 84px;=0D
+  }=0D
+  .h15-lg {=0D
+    height: 90px;=0D
+  }=0D
+  .h16-lg {=0D
+    height: 96px;=0D
+  }=0D
+  .h17-lg {=0D
+    height: 102px;=0D
+  }=0D
+  .h18-lg {=0D
+    height: 108px;=0D
+  }=0D
+  .h19-lg {=0D
+    height: 114px;=0D
+  }=0D
+  .h20-lg {=0D
+    height: 120px;=0D
+  }=0D
+  .h25-lg {=0D
+    height: 150px;=0D
+  }=0D
+  .h30-lg {=0D
+    height: 180px;=0D
+  }=0D
+  .h37-lg {=0D
+    height: 222px;=0D
+  }=0D
+  .h45-lg {=0D
+    height: 270px;=0D
+  }=0D
+  .h50-lg {=0D
+    height: 300px;=0D
+  }=0D
+  .h-lg {=0D
+    height: stretch;=0D
+  }=0D
+  .min-h4-lg {=0D
+    min-height: 24px;=0D
+  }=0D
+  .min-h6-lg {=0D
+    min-height: 36px;=0D
+  }=0D
+  .min-h10-lg {=0D
+    min-height: 60px;=0D
+  }=0D
+  .min-h11-lg {=0D
+    min-height: 66px;=0D
+  }=0D
+  .min-h12-lg {=0D
+    min-height: 72px;=0D
+  }=0D
+  .min-h14-lg {=0D
+    min-height: 84px;=0D
+  }=0D
+  .min-h16-lg {=0D
+    min-height: 96px;=0D
+  }=0D
+  .min-h17-lg {=0D
+    min-height: 102px;=0D
+  }=0D
+  .min-h20-lg {=0D
+    min-height: 120px;=0D
+  }=0D
+  .min-h25-lg {=0D
+    min-height: 150px;=0D
+  }=0D
+  .min-h30-lg {=0D
+    min-height: 180px;=0D
+  }=0D
+  .min-h35-lg {=0D
+    min-height: 210px;=0D
+  }=0D
+  .min-h40-lg {=0D
+    min-height: 240px;=0D
+  }=0D
+  .min-h60-lg {=0D
+    min-height: 360px;=0D
+  }=0D
+  .min-h80-lg {=0D
+    min-height: 480px;=0D
+  }=0D
+  .min-h100-lg {=0D
+    min-height: 600px;=0D
+  }=0D
+  .min-h-lg {=0D
+    min-height: stretch;=0D
+  }=0D
+  .max-h0-lg {=0D
+    max-height: 0px;=0D
+  }=0D
+  .max-h6-lg {=0D
+    max-height: 36px;=0D
+  }=0D
+  .max-h11-lg {=0D
+    max-height: 66px;=0D
+  }=0D
+  .max-h22-lg {=0D
+    max-height: 132px;=0D
+  }=0D
+  .max-h30-lg {=0D
+    max-height: 180px;=0D
+  }=0D
+  .max-h40-lg {=0D
+    max-height: 240px;=0D
+  }=0D
+  .max-h50-lg {=0D
+    max-height: 300px;=0D
+  }=0D
+  .max-h120-lg {=0D
+    max-height: 720px;=0D
+  }=0D
+  .max-h-lg {=0D
+    max-height: stretch;=0D
+  }=0D
+  .h-auto-lg {=0D
+    height: auto;=0D
+  }=0D
+  .h10p-lg {=0D
+    height: 10%;=0D
+  }=0D
+  .h20p-lg {=0D
+    height: 20%;=0D
+  }=0D
+  .h25p-lg {=0D
+    height: 25%;=0D
+  }=0D
+  .h30p-lg {=0D
+    height: 30%;=0D
+  }=0D
+  .h33p-lg {=0D
+    height: 33%;=0D
+  }=0D
+  .h34p-lg {=0D
+    height: 34%;=0D
+  }=0D
+  .h35p-lg {=0D
+    height: 35%;=0D
+  }=0D
+  .h40p-lg {=0D
+    height: 40%;=0D
+  }=0D
+  .h50p-lg {=0D
+    height: 50%;=0D
+  }=0D
+  .h60p-lg {=0D
+    height: 60%;=0D
+  }=0D
+  .h66p-lg {=0D
+    height: 66%;=0D
+  }=0D
+  .h75p-lg {=0D
+    height: 75%;=0D
+  }=0D
+  .h80p-lg {=0D
+    height: 80%;=0D
+  }=0D
+  .h85p-lg {=0D
+    height: 85%;=0D
+  }=0D
+  .h90p-lg {=0D
+    height: 90%;=0D
+  }=0D
+  .h100p-lg {=0D
+    height: 100%;=0D
+  }=0D
+  .h5vh-lg {=0D
+    height: 5vh;=0D
+  }=0D
+  .max-h5vh-lg {=0D
+    max-height: 5vh;=0D
+  }=0D
+  .min-h5vh-lg {=0D
+    min-height: 5vh;=0D
+  }=0D
+  .h12vh-lg {=0D
+    height: 12vh;=0D
+  }=0D
+  .max-h12vh-lg {=0D
+    max-height: 12vh;=0D
+  }=0D
+  .min-h12vh-lg {=0D
+    min-height: 12vh;=0D
+  }=0D
+  .h20vh-lg {=0D
+    height: 20vh;=0D
+  }=0D
+  .max-h20vh-lg {=0D
+    max-height: 20vh;=0D
+  }=0D
+  .min-h20vh-lg {=0D
+    min-height: 20vh;=0D
+  }=0D
+  .h30vh-lg {=0D
+    height: 30vh;=0D
+  }=0D
+  .max-h30vh-lg {=0D
+    max-height: 30vh;=0D
+  }=0D
+  .min-h30vh-lg {=0D
+    min-height: 30vh;=0D
+  }=0D
+  .h40vh-lg {=0D
+    height: 40vh;=0D
+  }=0D
+  .max-h40vh-lg {=0D
+    max-height: 40vh;=0D
+  }=0D
+  .min-h40vh-lg {=0D
+    min-height: 40vh;=0D
+  }=0D
+  .h50vh-lg {=0D
+    height: 50vh;=0D
+  }=0D
+  .max-h50vh-lg {=0D
+    max-height: 50vh;=0D
+  }=0D
+  .min-h50vh-lg {=0D
+    min-height: 50vh;=0D
+  }=0D
+  .h60vh-lg {=0D
+    height: 60vh;=0D
+  }=0D
+  .max-h60vh-lg {=0D
+    max-height: 60vh;=0D
+  }=0D
+  .min-h60vh-lg {=0D
+    min-height: 60vh;=0D
+  }=0D
+  .h65vh-lg {=0D
+    height: 65vh;=0D
+  }=0D
+  .max-h65vh-lg {=0D
+    max-height: 65vh;=0D
+  }=0D
+  .min-h65vh-lg {=0D
+    min-height: 65vh;=0D
+  }=0D
+  .h70vh-lg {=0D
+    height: 70vh;=0D
+  }=0D
+  .max-h70vh-lg {=0D
+    max-height: 70vh;=0D
+  }=0D
+  .min-h70vh-lg {=0D
+    min-height: 70vh;=0D
+  }=0D
+  .h75vh-lg {=0D
+    height: 75vh;=0D
+  }=0D
+  .max-h75vh-lg {=0D
+    max-height: 75vh;=0D
+  }=0D
+  .min-h75vh-lg {=0D
+    min-height: 75vh;=0D
+  }=0D
+  .h80vh-lg {=0D
+    height: 80vh;=0D
+  }=0D
+  .max-h80vh-lg {=0D
+    max-height: 80vh;=0D
+  }=0D
+  .min-h80vh-lg {=0D
+    min-height: 80vh;=0D
+  }=0D
+  .h85vh-lg {=0D
+    height: 85vh;=0D
+  }=0D
+  .max-h85vh-lg {=0D
+    max-height: 85vh;=0D
+  }=0D
+  .min-h85vh-lg {=0D
+    min-height: 85vh;=0D
+  }=0D
+  .h100vh-lg {=0D
+    height: 100vh;=0D
+  }=0D
+  .max-h100vh-lg {=0D
+    max-height: 100vh;=0D
+  }=0D
+  .min-h100vh-lg {=0D
+    min-height: 100vh;=0D
+  }=0D
+}=0D
+@media (max-width: 599px) {=0D
+  .h-auto-xs {=0D
+    height: auto;=0D
+  }=0D
+}=0D
+@media all and (min-width: 540px) {=0D
+  .hide-lg {=0D
+    display: none !important;=0D
+  }=0D
+  .desktop-width {=0D
+    width: 47% !important; text-align: left !important;=0D
+  }=0D
+  .desktop-text-align {=0D
+    text-align: left !important;=0D
+  }=0D
+}=0D
+@media (max-width: 540px) {=0D
+  .welcome-header-title {=0D
+    font-size: 40px !important; line-height: 54px !important;=0D
+  }=0D
+  .welcome-header-image-padding {=0D
+    padding-left: 11px !important; padding-right: 11px !important;=0D
+  }=0D
+  .confirmation-number-box {=0D
+    padding-left: 12px !important; padding-right: 12px !important;=0D
+  }=0D
+  .confirmation-number-text {=0D
+    text-align: left !important;=0D
+  }=0D
+  .project-update-refresh-cta-table {=0D
+    text-align: center !important; width: 100% !important;=0D
+  }=0D
+  .project-update-refresh-cta-spacer {=0D
+    width: 100% !important;=0D
+  }=0D
+}=0D
+@media all and (max-width: 539px) {=0D
+  .mobile-width {=0D
+    width: 100% !important;=0D
+  }=0D
+  .mobile-text-align {=0D
+    text-align: center !important;=0D
+  }=0D
+}=0D
+</style>=0D
+</head>=0D
+<body style=3D'width: 100% !important; min-width: 100%; word-break: break-w=
+ord; font-family: "Helvetica Neue",Helvetica,Arial,"Liberation Sans",FreeSa=
+ns,sans-serif; font-size: 14px; line-height: 1.5; color: #282828; -webkit-t=
+ext-size-adjust: 100%; -ms-text-size-adjust: 100%; margin: 0; padding: 0;' =
+bgcolor=3D"#f0f0f0">=0D
+<div class=3D"preheader" style=3D"background-color: white; color: white; fo=
+nt-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; fon=
+t-size: 0px; height: 0px; line-height: 0px; overflow-y: hidden; margin: 0; =
+padding: 0; border-width: 0px;">=0D
+Back it because you believe in it.=0D
+=0D
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=0D
+</div>=0D
+=0D
+<table class=3D"hide-sm bg-grey-300 w100p" style=3D"mso-table-lspace: 0pt; =
+mso-table-rspace: 0pt; border-collapse: collapse; border-spacing: 0; width:=
+ 100%;" bgcolor=3D"#f0f0f0" width=3D"100%" height=3D"auto" cellpadding=3D"0=
+" cellspacing=3D"0">=0D
+<tr>=0D
+<td class=3D"type-0 hide-sm" style=3D"min-width: 540px; font-size: 0px; lin=
+e-height: 0px;">=0D
+<img height=3D"1" style=3D"min-width: 540px; height: 1px; -ms-interpolation=
+-mode: bicubic; outline: none; max-width: 100%; border-width: 0;" src=3D"ht=
+tps://i.kickstarter.com/36ab/utility-spacer.png?origin=3Dstatic&amp;sig=3De=
+d9vTkpAVEClAlrHRYMp7coQffsLIlfWuUdmJqC2Bng%3D">=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+<table class=3D"bg-grey-300 w100p mw100p" style=3D"mso-table-lspace: 0pt; m=
+so-table-rspace: 0pt; border-collapse: collapse; border-spacing: 0; width: =
+100%; min-width: 100%;" bgcolor=3D"#f0f0f0" width=3D"100%" height=3D"auto" =
+cellpadding=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td class=3D"text-center pt9 pb7" style=3D"padding-top: 54px; padding-botto=
+m: 42px;" align=3D"center">=0D
+<a target=3D"_blank" href=3D"https://emails.kickstarter.com/ss/c/u001.fBi2g=
+jv5SJkRd3pv0U4Zl7BfPwM5tDy_IcD0I-6kKeGuXNAyljiNrULKzgba-nx8XW0u3BGTiXsJkkPK=
+UBYpqZwqul9ZiXdczAp_Q9dkma0CJXgt5i_6yDgJMmA_qKwA/4la/KSqE-yfdQrGc12ZZH_N0Sg=
+/h0/h001.UdC78S0w_RPo-MU5KMyK3uz_kOsd2isz-yan8NVKGf4" style=3D"color: inher=
+it; text-decoration: none;"><img alt=3D"Kickstarter" width=3D"189" style=3D=
+"width: 189px; -ms-interpolation-mode: bicubic; outline: none; max-width: 1=
+00%; text-decoration: none; display: block; border-width: 0;" class=3D"bloc=
+k" src=3D"https://i.kickstarter.com/ksr_logo_superbacker043019_v1.png?origi=
+n=3Dstatic&amp;sig=3D5gE0P91CNQWUja15xYM%2B92FN%2BbrZauE093jWMJVpfpE%3D">=0D
+</a>=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+<table class=3D"mailer-body" style=3D'mso-table-lspace: 0pt; mso-table-rspa=
+ce: 0pt; width: 100% !important; min-width: 100%; word-break: break-word; f=
+ont-family: "Helvetica Neue",Helvetica,Arial,"Liberation Sans",FreeSans,san=
+s-serif; font-size: 14px; line-height: 1.5; color: #282828; -webkit-text-si=
+ze-adjust: 100%; -ms-text-size-adjust: 100%; border-collapse: collapse; bor=
+der-spacing: 0; margin: 0; padding: 0;' bgcolor=3D"#f0f0f0" width=3D"100%" =
+height=3D"auto" cellpadding=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td>=0D
+<center>=0D
+<table align=3D"center" class=3D"mx-auto" style=3D"max-width: 600px; mso-ta=
+ble-lspace: 0pt; mso-table-rspace: 0pt; border-collapse: collapse; border-s=
+pacing: 0; margin-right: auto; margin-left: auto;" width=3D"100%" height=3D=
+"auto" cellpadding=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td>=0D
+<table class=3D"w100p mw100p bg-white" style=3D"mso-table-lspace: 0pt; mso-=
+table-rspace: 0pt; border-collapse: collapse; border-spacing: 0; width: 100=
+%; min-width: 100%;" bgcolor=3D"#fff" width=3D"100%" height=3D"auto" cellpa=
+dding=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td>=0D
+<table class=3D"col-24" style=3D"mso-table-lspace: 0pt; mso-table-rspace: 0=
+pt; border-collapse: collapse; border-spacing: 0; table-layout: fixed; widt=
+h: 100%;" width=3D"100%" height=3D"auto" cellpadding=3D"0" cellspacing=3D"0=
+">=0D
+<tr>=0D
+<td class=3D"col-2 sm-col-2" style=3D"width: 7.8333333333%;"></td>=0D
+<td class=3D"col-20 sm-col-20" style=3D"width: 82.8333333333%;">=0D
+<table class=3D"bg-white block" style=3D"mso-table-lspace: 0pt; mso-table-r=
+space: 0pt; border-collapse: collapse; border-spacing: 0; display: block;" =
+bgcolor=3D"#fff" width=3D"100%" height=3D"auto" cellpadding=3D"0" cellspaci=
+ng=3D"0">=0D
+<tr>=0D
+<td class=3D"block pt10 type-28 text-center" style=3D"font-size: 28px; line=
+-height: 36px; display: block; padding-top: 60px;" align=3D"center">=0D
+Now's your chance to make an impact.=0D
+</td>=0D
+</tr>=0D
+<tr>=0D
+<td class=3D"block pt4 type-18" style=3D"font-size: 18px; line-height: 30px=
+; display: block; padding-top: 24px;">=0D
+Magpie Tech just launched their Kickstarter project=E2=80=94be a part of it=
+ from the beginning.=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+</td>=0D
+<td class=3D"col-2 sm-col-2" style=3D"width: 7.8333333333%;"></td>=0D
+</tr>=0D
+</table>=0D
+=0D
+</td>=0D
+</tr>=0D
+<tr>=0D
+<td>=0D
+<table class=3D"col-24" style=3D"mso-table-lspace: 0pt; mso-table-rspace: 0=
+pt; border-collapse: collapse; border-spacing: 0; table-layout: fixed; widt=
+h: 100%;" width=3D"100%" height=3D"auto" cellpadding=3D"0" cellspacing=3D"0=
+">=0D
+<tr>=0D
+<td class=3D"col-2 sm-col-2" style=3D"width: 7.8333333333%;"></td>=0D
+<td class=3D"col-20 sm-col-20 pt8 pb4" style=3D"width: 82.8333333333%; padd=
+ing-top: 48px; padding-bottom: 24px;">=0D
+<table class=3D"bg-white" style=3D"mso-table-lspace: 0pt; mso-table-rspace:=
+ 0pt; border-collapse: collapse; border-spacing: 0;" bgcolor=3D"#fff" width=
+=3D"100%" height=3D"auto" cellpadding=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td>=0D
+<table align=3D"left" class=3D"col-8 sm-col-24" style=3D"mso-table-lspace: =
+0pt; mso-table-rspace: 0pt; border-collapse: collapse; border-spacing: 0; t=
+able-layout: fixed; width: 32.8333333333%;" width=3D"100%" height=3D"auto" =
+cellpadding=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td class=3D"pb4 pt1 soft-black" style=3D"color: #282828; padding-top: 6px;=
+ padding-bottom: 24px;">=0D
+<a href=3D"https://emails.kickstarter.com/ss/c/u001.fBi2gjv5SJkRd3pv0U4Zl7B=
+fPwM5tDy_IcD0I-6kKeEV543PGuge6HG0wtxRHH2P6BZLIoCw81ktKT6IUaAbEj8BRQjRTVw7j6=
+sGXT5BywlLIadKZtGYN-QEB98osbJni2oSYKTqEDKZIFQU9XlKxYBGtX-nKJfwhPl7wATV6Kcri=
+s24S5FxUCIZ8W1YHeYymJb3QJKO5bl8a0kyhcxlhAHY2_6gYw0K8gYtm4Au_B4/4la/KSqE-yfd=
+QrGc12ZZH_N0Sg/h1/h001.F6aEUPS29siqRibZFWq3E1RzJ1hLa8ZTyK3Iha_95qI" style=
+=3D"color: inherit; text-decoration: none;"><img alt=3D"NOVA: 4-IN-1 Laser =
+Level, Distance, Digital Angle, Bullseye" style=3D"height: auto; -ms-interp=
+olation-mode: bicubic; outline: none; max-width: 100%; text-decoration: non=
+e; width: 100%; border-width: 0;" class=3D"w100p" src=3D"https://i.kickstar=
+ter.com/assets/051/515/067/163f94df138aed6292d65d0371eb39cb_original.jpg?an=
+im=3Dfalse&amp;fit=3Dcover&amp;gravity=3Dauto&amp;height=3D90&amp;origin=3D=
+ugc&amp;q=3D92&amp;v=3D1762175004&amp;width=3D160&amp;sig=3DidqgwXTyCwf3m7V=
+DmSDJSKCrbjEN%2BtKZ38UqifJL%2F0w%3D" width=3D"160" height=3D"90"></a>=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+<table align=3D"left" class=3D"col-1 sm-col-0 hide-sm" style=3D"mso-table-l=
+space: 0pt; mso-table-rspace: 0pt; border-collapse: collapse; border-spacin=
+g: 0; table-layout: fixed; width: 3.6666666667%;" width=3D"100%" height=3D"=
+auto" cellpadding=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td class=3D"h2" style=3D"height: 12px;"></td>=0D
+</tr>=0D
+</table>=0D
+<table align=3D"left" class=3D"col-15 sm-col-24" style=3D"mso-table-lspace:=
+ 0pt; mso-table-rspace: 0pt; border-collapse: collapse; border-spacing: 0; =
+table-layout: fixed; width: 62%;" width=3D"100%" height=3D"auto" cellpaddin=
+g=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td>=0D
+<div class=3D"type-21" style=3D"font-size: 21px; line-height: 30px;">=0D
+<a class=3D"soft-black" href=3D"https://emails.kickstarter.com/ss/c/u001.fB=
+i2gjv5SJkRd3pv0U4Zl7BfPwM5tDy_IcD0I-6kKeEV543PGuge6HG0wtxRHH2P6BZLIoCw81ktK=
+T6IUaAbEj8BRQjRTVw7j6sGXT5BywlLIadKZtGYN-QEB98osbJni2oSYKTqEDKZIFQU9XlKxYBG=
+tX-nKJfwhPl7wATV6Kcris24S5FxUCIZ8W1YHeYymJb3QJKO5bl8a0kyhcxlhAHY2_6gYw0K8gY=
+tm4Au_B4/4la/KSqE-yfdQrGc12ZZH_N0Sg/h2/h001.E36QMAk9blHv08Rw3FqEo3ZBDx3Z76P=
+u8d4Bj2dA8i0" style=3D"color: #282828; text-decoration: none;">NOVA: 4-IN-1=
+ Laser Level, Distance, Digital Angle, Bullseye</a>=0D
+</div>=0D
+<div class=3D"type-14 georgia pt2" style=3D'line-height: 22px; font-family:=
+ Georgia,Times,"Times New Roman",serif; font-size: 14px; padding-top: 12px;=
+'>=0D
+4 Key Measurements in a Single Device / Unmatched 2 mm Precision / Multi-Me=
+asuring Modes in Every Function / Class 2 Green Laser=0D
+</div>=0D
+<div class=3D"navy-600 type-12 pt2 pb3" style=3D"font-size: 12px; line-heig=
+ht: 18px; color: #656969; padding-top: 12px; padding-bottom: 18px;">=0D
+By Magpie Tech=0D
+</div>=0D
+<table align=3D"left" style=3D"mso-table-lspace: 0pt; mso-table-rspace: 0pt=
+; border-collapse: collapse; border-spacing: 0;" width=3D"100%" height=3D"a=
+uto" cellpadding=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td class=3D"ksr10-green col-8 text-center" style=3D"width: 32.8333333333%;=
+ color: #05ce78;" align=3D"center">=0D
+<p class=3D"f5 ksr10-green m0" style=3D"color: #05ce78; margin: 0px;"><b>$5=
+,000</b> goal</p>=0D
+</td>=0D
+<td class=3D"navy-600 type-12 col-8 text-center" style=3D"font-size: 12px; =
+line-height: 18px; width: 32.8333333333%; color: #656969;" align=3D"center"=
+>=0D
+24 days left=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+</td>=0D
+<td class=3D"col-2 sm-col-2" style=3D"width: 7.8333333333%;"></td>=0D
+</tr>=0D
+</table>=0D
+=0D
+</td>=0D
+</tr>=0D
+<tr>=0D
+<td>=0D
+<table class=3D"col-24 w100p mw100p" style=3D"mso-table-lspace: 0pt; mso-ta=
+ble-rspace: 0pt; border-collapse: collapse; border-spacing: 0; table-layout=
+: fixed; width: 100%; min-width: 100%;" width=3D"100%" height=3D"auto" cell=
+padding=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td class=3D"col-2 sm-col-2" style=3D"width: 7.8333333333%;"></td>=0D
+<td class=3D"col-20 sm-col-20" style=3D"width: 82.8333333333%;">=0D
+<table class=3D"w100p bg-white" style=3D"mso-table-lspace: 0pt; mso-table-r=
+space: 0pt; border-collapse: collapse; border-spacing: 0; width: 100%;" bgc=
+olor=3D"#fff" width=3D"100%" height=3D"auto" cellpadding=3D"0" cellspacing=
+=3D"0">=0D
+<tr>=0D
+<td class=3D"block type-18 text-center border-top border1px pt6" style=3D"f=
+ont-size: 18px; line-height: 30px; border-top-width: 1px; border-top-color:=
+ #dcdedd; border-top-style: solid; display: block; padding-top: 36px;" alig=
+n=3D"center">=0D
+Back this project to help bring it to life.=0D
+</td>=0D
+</tr>=0D
+<tr>=0D
+<td class=3D"px1 pt4 pb8" style=3D"padding: 24px 6px 48px;">=0D
+<table align=3D"center" class=3D"col-16 sm-col-20 mx-auto" style=3D"mso-tab=
+le-lspace: 0pt; mso-table-rspace: 0pt; border-collapse: collapse; border-sp=
+acing: 0; table-layout: fixed; width: 66.1666666667%; margin-right: auto; m=
+argin-left: auto;" width=3D"100%" height=3D"auto" cellpadding=3D"0" cellspa=
+cing=3D"0">=0D
+<tr>=0D
+<td class=3D"text-center" style=3D"" align=3D"center">=0D
+<a class=3D"bttn bg-create-700 white pt3 pb3 pr10 pl10 type-14" href=3D"htt=
+ps://emails.kickstarter.com/ss/c/u001.fBi2gjv5SJkRd3pv0U4Zl7BfPwM5tDy_IcD0I=
+-6kKeEV543PGuge6HG0wtxRHH2P6BZLIoCw81ktKT6IUaAbEj8BRQjRTVw7j6sGXT5BywlLIadK=
+ZtGYN-QEB98osbJni2oSYKTqEDKZIFQU9XlKxYBGtX-nKJfwhPl7wATV6Kcris24S5FxUCIZ8W1=
+YHeYymJb3QJKO5bl8a0kyhcxlhAHY2_6gYw0K8gYtm4Au_B4/4la/KSqE-yfdQrGc12ZZH_N0Sg=
+/h3/h001.48Cw1vSXWohzKweZoLNdL8rABKKz8flgHjE3rynBCRk" style=3D"color: #fff;=
+ text-decoration: none; font-size: 14px; line-height: 1; font-weight: 500; =
+text-align: center; cursor: pointer; position: relative; display: inline-bl=
+ock; -webkit-appearance: none; border-radius: 0; background-color: #028858;=
+ padding: 18px 60px; border-style: none;">Take me there</a>=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+</td>=0D
+<td class=3D"col-2 sm-col-2" style=3D"width: 7.8333333333%;"></td>=0D
+</tr>=0D
+</table>=0D
+=0D
+</td>=0D
+</tr>=0D
+<tr>=0D
+<td>=0D
+<table class=3D"col-24 w100p mw100p" style=3D"mso-table-lspace: 0pt; mso-ta=
+ble-rspace: 0pt; border-collapse: collapse; border-spacing: 0; table-layout=
+: fixed; width: 100%; min-width: 100%;" width=3D"100%" height=3D"auto" cell=
+padding=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td class=3D"col-2 sm-col-2" style=3D"width: 7.8333333333%;"></td>=0D
+<td class=3D"col-20 sm-col-20" style=3D"width: 82.8333333333%;">=0D
+<table class=3D"bg-white w100p" style=3D"mso-table-lspace: 0pt; mso-table-r=
+space: 0pt; border-collapse: collapse; border-spacing: 0; width: 100%;" bgc=
+olor=3D"#fff" width=3D"100%" height=3D"auto" cellpadding=3D"0" cellspacing=
+=3D"0">=0D
+<tr>=0D
+<td class=3D"type-12 text-center pt5 pb12 border-top border1px navy-600" st=
+yle=3D"font-size: 12px; line-height: 18px; border-top-width: 1px; border-to=
+p-color: #dcdedd; border-top-style: solid; color: #656969; padding-top: 30p=
+x; padding-bottom: 72px;" align=3D"center">=0D
+Visit the project page and unsave it to no longer receive reminders.=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+</td>=0D
+<td class=3D"col-2 sm-col-2" style=3D"width: 7.8333333333%;"></td>=0D
+</tr>=0D
+</table>=0D
+=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+</center>=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+<table class=3D"w100p mw100p" style=3D"mso-table-lspace: 0pt; mso-table-rsp=
+ace: 0pt; border-collapse: collapse; border-spacing: 0; width: 100%; min-wi=
+dth: 100%;" bgcolor=3D"#F0F0F0" width=3D"100%" height=3D"auto" cellpadding=
+=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td class=3D"pt8" style=3D"padding-top: 48px;">=0D
+<table class=3D"w100p mw100p" style=3D"mso-table-lspace: 0pt; mso-table-rsp=
+ace: 0pt; border-collapse: collapse; border-spacing: 0; width: 100%; min-wi=
+dth: 100%;" width=3D"100%" height=3D"auto" cellpadding=3D"0" cellspacing=3D=
+"0">=0D
+<tr>=0D
+<td class=3D"text-center pt4 type-12 soft-black font-roboto normal" style=
+=3D"font-size: 12px; line-height: 18px; color: #282828; font-family: Roboto=
+,sans-serif; font-weight: 400; padding-top: 24px;" align=3D"center">=0D
+<a class=3D"soft-black text-underline" href=3D"https://emails.kickstarter.c=
+om/ss/c/u001.fBi2gjv5SJkRd3pv0U4Zl7BfPwM5tDy_IcD0I-6kKeF_oRFLcKz_EpucOm9JB2=
+Jl7e3lS0hQV6RHnLSpPMdNyizdclw1w5bM3DofPqXOtKor_shyA0qnSNUakXVd9vldveQkKScCF=
+KQAs55nNtwGAg/4la/KSqE-yfdQrGc12ZZH_N0Sg/h4/h001.Ze03dTMwobQ-NRaD8izUbhTN08=
+6tyBrxcoMnQWbzJtA" style=3D"color: #282828; text-decoration: underline;">Ma=
+nage your notification settings</a>=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+</td>=0D
+</tr>=0D
+<tr>=0D
+<td class=3D"pt4 pb12 w100p" style=3D"width: 100%; padding-top: 24px; paddi=
+ng-bottom: 72px;" bgcolor=3D"#F0F0F0">=0D
+<table align=3D"center" class=3D"mx-auto" style=3D"width: 130px; mso-table-=
+lspace: 0pt; mso-table-rspace: 0pt; border-collapse: collapse; border-spaci=
+ng: 0; margin-right: auto; margin-left: auto;" width=3D"130" height=3D"auto=
+" cellpadding=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td align=3D"center" class=3D"text-center valign-middle" style=3D"" valign=
+=3D"middle">=0D
+<a href=3D"https://emails.kickstarter.com/ss/c/u001.fBi2gjv5SJkRd3pv0U4Zl_H=
+Auq3QgBJey-YsiY48JmsMagZqfunhCWONHZhICCSG/4la/KSqE-yfdQrGc12ZZH_N0Sg/h5/h00=
+1.Nyv8jWEZGOTNBse8M12xvozUuJG2TrK5XP17-dQmNXI" style=3D"color: inherit; tex=
+t-decoration: none;"><img alt=3D"Instagram" height=3D"24" width=3D"24" styl=
+e=3D"height: 24px; width: 24px; -ms-interpolation-mode: bicubic; outline: n=
+one; max-width: 100%; text-decoration: none; display: block; border-width: =
+0;" class=3D"block" src=3D"https://i.kickstarter.com/instagram-99e2a66.png?=
+fit=3Dscale-down&amp;origin=3Dstatic&amp;width=3D1000&amp;sig=3DxSeW6Tpj77C=
+ACy9pV1Tbm4hgQwNwo18mJYO9l8OcJek%3D">=0D
+</a>=0D
+</td>=0D
+<td align=3D"center" class=3D"text-center valign-middle px2" style=3D"paddi=
+ng-right: 12px; padding-left: 12px;" valign=3D"middle">=0D
+<a href=3D"https://emails.kickstarter.com/ss/c/u001.fBi2gjv5SJkRd3pv0U4Zlzs=
+GdBwMXceVOKvcW-xB5agfUc_ZrYn7V2xFDdjacI5q/4la/KSqE-yfdQrGc12ZZH_N0Sg/h6/h00=
+1.gxltR7XVadHRXJTpzg7cI8sQfBQzie8LN13-cgtY_YU" style=3D"color: inherit; tex=
+t-decoration: none;"><img alt=3D"Facebook" height=3D"24" width=3D"24" style=
+=3D"height: 24px; width: 24px; -ms-interpolation-mode: bicubic; outline: no=
+ne; max-width: 100%; text-decoration: none; display: block; border-width: 0=
+;" class=3D"block" src=3D"https://i.kickstarter.com/facebook-83b743e.png?fi=
+t=3Dscale-down&amp;origin=3Dstatic&amp;width=3D1000&amp;sig=3D1ZPJxWbxhQ5aF=
+ycbdCB6290j6ftHPz%2Bbfu9FzFKGsb0%3D">=0D
+</a>=0D
+</td>=0D
+<td align=3D"center" class=3D"text-center valign-middle" style=3D"" valign=
+=3D"middle">=0D
+<a href=3D"https://emails.kickstarter.com/ss/c/u001.fBi2gjv5SJkRd3pv0U4Zl_D=
+KH8lioTANpMyif2rL3ycCG7qPpoEBPFG3c-PhLG4N/4la/KSqE-yfdQrGc12ZZH_N0Sg/h7/h00=
+1.Ck4QiQ5zrPOZ5KOWzACkgId56MMJ-SR5EGNvd-neZoI" style=3D"color: inherit; tex=
+t-decoration: none;"><img alt=3D"Twitter" height=3D"24" width=3D"24" style=
+=3D"height: 24px; width: 24px; -ms-interpolation-mode: bicubic; outline: no=
+ne; max-width: 100%; text-decoration: none; display: block; border-width: 0=
+;" class=3D"block" src=3D"https://i.kickstarter.com/twitter-f0bfd08.png?fit=
+=3Dscale-down&amp;origin=3Dstatic&amp;width=3D1000&amp;sig=3DWE3WPY8h5qeq1F=
+13snVxlYAaaYoieaLCu9Ijsz8gayY%3D">=0D
+</a>=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+=0D
+<table class=3D"w100p mw100p" style=3D"mso-table-lspace: 0pt; mso-table-rsp=
+ace: 0pt; border-collapse: collapse; border-spacing: 0; width: 100%; min-wi=
+dth: 100%;" width=3D"100%" height=3D"auto" cellpadding=3D"0" cellspacing=3D=
+"0">=0D
+<tr>=0D
+<td class=3D"text-center pt4 type-12 soft-black font-roboto normal" style=
+=3D"font-size: 12px; line-height: 18px; color: #282828; font-family: Roboto=
+,sans-serif; font-weight: 400; padding-top: 24px;" align=3D"center">=0D
+Kickstarter, PBC =C2=B7 228 Park Ave S PMB 59430, New York New York 10003-1=
+502=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+<table class=3D"w100p mw100p" style=3D"mso-table-lspace: 0pt; mso-table-rsp=
+ace: 0pt; border-collapse: collapse; border-spacing: 0; width: 100%; min-wi=
+dth: 100%;" width=3D"100%" height=3D"auto" cellpadding=3D"0" cellspacing=3D=
+"0">=0D
+<tr>=0D
+<td class=3D"text-center pt2 type-12 soft-black font-roboto normal" style=
+=3D"font-size: 12px; line-height: 18px; color: #282828; font-family: Roboto=
+,sans-serif; font-weight: 400; padding-top: 12px;" align=3D"center">=0D
+<a class=3D"soft-black text-underline" href=3D"https://emails.kickstarter.c=
+om/ss/c/u001.fBi2gjv5SJkRd3pv0U4Zl7BfPwM5tDy_IcD0I-6kKeG0Wier1YnqpUUjR7CP6n=
+eA7tRYOwDXjzlGMWmS335gM-l2p8s_4Xn3Exyji4oruHE7hKfix3_7vAUZwmI-RJ18/4la/KSqE=
+-yfdQrGc12ZZH_N0Sg/h8/h001.c2gmWKhNhLjxdBtBrIzbVgeV2qX6NDnpF0MwRhPwkNE" sty=
+le=3D"color: #282828; text-decoration: underline;">Contact us</a>=0D
+</td>=0D
+</tr>=0D
+<tr>=0D
+<td class=3D"text-center pt2 type-12 soft-black font-roboto normal" style=
+=3D"font-size: 12px; line-height: 18px; color: #282828; font-family: Roboto=
+,sans-serif; font-weight: 400; padding-top: 12px;" align=3D"center">=0D
+<a class=3D"soft-black text-underline" href=3D"https://emails.kickstarter.c=
+om/ss/c/u001.fBi2gjv5SJkRd3pv0U4Zl7BfPwM5tDy_IcD0I-6kKeFZN33rwfPC3LwzDaDAky=
+V0fwZFdyXjXC0X6Tu6gN3Bzd3vxKK_m06GEt6V6-z0FcT4gdqj1Czf76_I5j7gqgGDtZFu_RrF0=
+U2k5BzYD_SnOA/4la/KSqE-yfdQrGc12ZZH_N0Sg/h9/h001.8QpW8-5wXMJJwG3Nicij-OhSG0=
+D19xy_v6JrRWvT8uQ" style=3D"color: #282828; text-decoration: underline;">Ki=
+ckstarter Terms of Use</a>=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+=0D
+<img src=3D"https://emails.kickstarter.com/ss/o/u001.yJXuQ0wBfsnNWvFXcN2PhQ=
+/4la/KSqE-yfdQrGc12ZZH_N0Sg/ho.gif" alt=3D"" width=3D"1" height=3D"1" borde=
+r=3D"0" style=3D"height:1px !important;width:1px !important;border-width:0 =
+!important;margin-top:0 !important;margin-bottom:0 !important;margin-right:=
+0 !important;margin-left:0 !important;padding-top:0 !important;padding-bott=
+om:0 !important;padding-right:0 !important;padding-left:0 !important;"/></b=
+ody>=0D
+</html>=0D
+
+----==_mimepart_6908c4163be5_8d89e14841c60371--

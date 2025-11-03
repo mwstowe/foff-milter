@@ -195,11 +195,38 @@ rules:
 
   - name: "Diabetes and pancreas health misinformation"
     criteria:
-      type: "Or"
+      type: "And"
       criteria:
-        - type: "SubjectPattern"
-          pattern: "(?i).*(diabetes|diabetic|blood.*sugar|pancreas|insulin|type.*2|glucose|not.*pancreas).*"
-        - type: "BodyPattern"
-          pattern: "(?i).*(diabetes|diabetic|blood.*sugar|pancreas|insulin|type.*2|glucose|forgotten.*organ|hidden.*organ|harvard.*md|cure.*diabetes|reverse.*diabetes|diabetes.*secret|not.*your.*pancreas|diabetes.*cause|diabetic.*miracle|glucose.*control|insulin.*resistance|diabetic.*treatment|diabetes.*reversal|pumps.*blood.*sugar|causing.*type.*2|immune.*to.*diet|not.*the.*pancreas|heal.*this.*organ|reverse.*type.*2).*"
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(cure.*diabetes|reverse.*diabetes|diabetes.*secret|not.*your.*pancreas|diabetes.*miracle|forgotten.*organ|hidden.*organ).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(cure.*diabetes|reverse.*diabetes|diabetes.*secret|not.*your.*pancreas|diabetes.*cause|diabetic.*miracle|forgotten.*organ|hidden.*organ|harvard.*md|diabetes.*reversal|pumps.*blood.*sugar|causing.*type.*2|immune.*to.*diet|not.*the.*pancreas|heal.*this.*organ|reverse.*type.*2).*"
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "SenderPattern"
+                pattern: ".*@.*(health|medical|clinic|hospital|doctor|physician|mayo|webmd|healthline).*"
+              - type: "BodyPattern"
+                pattern: "(?i).*(unsubscribe|privacy.*policy|medical.*advice|consult.*doctor|healthcare.*provider).*"
     score: 65
-    description: "Detects diabetes misinformation and pancreas-related health scams"
+    description: "Detects diabetes misinformation while excluding legitimate medical communications"
+
+  - name: "Anti-aging and longevity misinformation"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(look.*[0-9]+|[0-9]+.*year.*old.*look|anti.*aging|stop.*aging|age.*reverse|fountain.*youth|italian.*secret|formula.*tmd).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(stop.*aging|anti.*aging|age.*reverse|look.*younger|italian.*formula|fountain.*youth|longevity.*secret|feel.*better|health.*benefits|too.*many.*benefits|perfected.*formula).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(health|medical|clinic|hospital|doctor|physician|mayo|webmd|healthline).*"
+    score: 60
+    description: "Detects anti-aging and longevity health misinformation"
