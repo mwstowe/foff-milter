@@ -52,8 +52,13 @@ rules:
               - type: "HeaderPattern"
                 header: "List-Unsubscribe"
                 pattern: ".*"
+              - type: "SenderPattern"
+                pattern: "(?i).*(disney|d23|netflix|amazon|apple|microsoft|google|facebook|instagram|twitter|linkedin|spotify|hulu|paramount|hbo|warner|universal|sony|mgm).*"
+              - type: "HeaderPattern"
+                header: "From"
+                pattern: "(?i).*(disney|d23|netflix|amazon|apple|microsoft|google|facebook|instagram|twitter|linkedin|spotify|hulu|paramount|hbo|warner|universal|sony|mgm).*"
     score: 50
-    description: "Fraudulent sweepstakes and contest notifications, excluding legitimate promotional emails"
+    description: "Fraudulent sweepstakes and contest notifications, excluding legitimate promotional emails from major brands"
   - name: "Health rewards and insurance spam"
     enabled: true
     criteria:
