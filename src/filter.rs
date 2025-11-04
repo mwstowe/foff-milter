@@ -1,4 +1,5 @@
 use crate::abuse_reporter::AbuseReporter;
+use crate::attachment_analyzer::AttachmentAnalyzer;
 use crate::domain_age::DomainAgeChecker;
 use crate::language::LanguageDetector;
 use crate::legacy_config::{load_modules, Action, Config, Criteria, Module};
