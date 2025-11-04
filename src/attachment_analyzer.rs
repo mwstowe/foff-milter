@@ -19,23 +19,26 @@ impl AttachmentAnalyzer {
     fn analyze_archive_content(base64_content: &str) -> Result<Vec<String>> {
         let mut filenames = Vec::new();
         
-        // Try to decode base64 content
         if let Ok(decoded) = BASE64_STANDARD.decode(base64_content) {
-            // Simple pattern matching in decoded content for now
+            // For now, use pattern matching - RAR crate integration pending
             let content_str = String::from_utf8_lossy(&decoded);
             Self::extract_filenames_from_text(&content_str, &mut filenames);
+            
+            // TODO: Integrate proper RAR parsing when API is clarified
+            // match rar::Archive::new(&decoded) {
+            //     Ok(archive) => { /* parse entries */ }
+            //     Err(_) => { /* fallback to pattern matching */ }
+            // }
         }
         
         Ok(filenames)
     }
     
     fn extract_filenames_from_text(content: &str, filenames: &mut Vec<String>) {
-        // Look for common executable extensions in the content
         let patterns = [".exe", ".scr", ".bat", ".cmd", ".com", ".pif", ".vbs", ".js"];
         
         for pattern in &patterns {
             if let Some(pos) = content.find(pattern) {
-                // Extract potential filename around the extension
                 let start = content[..pos].rfind(|c: char| c.is_whitespace() || c == '\0' || c == '/')
                     .map(|i| i + 1).unwrap_or(0);
                 let end = pos + pattern.len();
