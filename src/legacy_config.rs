@@ -404,6 +404,16 @@ pub enum Criteria {
         check_sender: Option<bool>, // Check sender domain (default: true)
         check_reply_to: Option<bool>, // Check reply-to domain (default: false)
     },
+    /// Detect attachments containing executable files or malicious content
+    /// Analyzes archive contents (RAR, ZIP) for dangerous file types
+    MaliciousAttachment {
+        // File extensions to consider dangerous (default: exe, scr, bat, cmd, com, pif, vbs, js, jar, msi)
+        dangerous_extensions: Option<Vec<String>>,
+        // Archive types to analyze (default: rar, zip)
+        archive_types: Option<Vec<String>>,
+        // Whether to use pattern matching fallback if archive parsing fails (default: true)
+        use_pattern_fallback: Option<bool>,
+    },
     And {
         criteria: Vec<Criteria>,
     },

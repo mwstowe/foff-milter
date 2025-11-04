@@ -105,6 +105,15 @@ pub struct MailContext {
     pub helo: Option<String>,
     pub body: Option<String>,
     pub last_header_name: Option<String>, // Track last header for continuation lines
+    pub attachments: Vec<AttachmentInfo>, // New: attachment analysis
+}
+
+#[derive(Debug, Clone)]
+pub struct AttachmentInfo {
+    pub content_type: String,
+    pub filename: Option<String>,
+    pub contains_executables: bool,
+    pub executable_files: Vec<String>,
 }
 
 impl FilterEngine {
@@ -826,6 +835,10 @@ impl FilterEngine {
                 // No regex patterns to compile for free email provider detection
                 // Uses domain list comparison instead
             }
+            Criteria::MaliciousAttachment { .. } => {
+                // No regex patterns to compile for malicious attachment detection
+                // Uses attachment content analysis instead
+            }
             Criteria::And { criteria } | Criteria::Or { criteria } => {
                 for c in criteria {
                     self.compile_criteria_patterns(c)?;
@@ -842,8 +855,14 @@ impl FilterEngine {
         &self,
         context: &MailContext,
     ) -> (Action, Vec<String>, Vec<(String, String)>) {
+        // Create mutable copy for attachment analysis
+        let mut context_with_attachments = context.clone();
+        
+        // Analyze attachments for malicious content
+        self.analyze_attachments(&mut context_with_attachments);
+        
         // Check whitelist first - if whitelisted, accept immediately
-        if self.is_whitelisted(context) {
+        if self.is_whitelisted(&context_with_attachments) {
             log::info!("Email whitelisted, accepting without further processing");
             let headers = vec![(
                 "X-FOFF-Score".to_string(),
@@ -2210,6 +2229,10 @@ impl FilterEngine {
                         }
                     }
                     false
+                }
+                Criteria::MaliciousAttachment { .. } => {
+                    // Check if any attachments contain executable files
+                    context.attachments.iter().any(|attachment| attachment.contains_executables)
                 }
                 Criteria::HeaderPattern { header, pattern } => {
                     if let Some(header_value) = context.headers.get(header) {
@@ -4861,6 +4884,118 @@ impl FilterEngine {
         }
 
         is_legitimate
+    }
+
+    /// Analyze email attachments for malicious content
+    fn analyze_attachments(&self, context: &mut MailContext) {
+        if let Some(body) = &context.body {
+            // Look for MIME boundaries and attachment headers
+            let lines: Vec<&str> = body.lines().collect();
+            let mut i = 0;
+            
+            while i < lines.len() {
+                let line = lines[i];
+                
+                // Look for Content-Type headers indicating attachments
+                if line.to_lowercase().starts_with("content-type:") {
+                    if let Some(content_type) = self.extract_content_type(line) {
+                        if self.is_attachment_content_type(&content_type) {
+                            // Extract filename if present
+                            let filename = self.extract_filename_from_headers(&lines, i);
+                            
+                            // Find the base64 content
+                            if let Some(base64_content) = self.extract_base64_content(&lines, i) {
+                                // Analyze the attachment content
+                                if let Ok(found_files) = AttachmentAnalyzer::analyze_attachment_content(&content_type, &base64_content) {
+                                    let contains_executables = AttachmentAnalyzer::has_dangerous_files(&found_files);
+                                    
+                                    context.attachments.push(AttachmentInfo {
+                                        content_type: content_type.clone(),
+                                        filename,
+                                        contains_executables,
+                                        executable_files: found_files,
+                                    });
+                                }
+                            }
+                        }
+                    }
+                }
+                i += 1;
+            }
+        }
+    }
+    
+    fn extract_content_type(&self, line: &str) -> Option<String> {
+        if let Some(colon_pos) = line.find(':') {
+            let content_type = line[colon_pos + 1..].trim();
+            // Extract just the main content type, ignore parameters
+            if let Some(semicolon_pos) = content_type.find(';') {
+                Some(content_type[..semicolon_pos].trim().to_string())
+            } else {
+                Some(content_type.to_string())
+            }
+        } else {
+            None
+        }
+    }
+    
+    fn is_attachment_content_type(&self, content_type: &str) -> bool {
+        let ct = content_type.to_lowercase();
+        ct.contains("application/x-rar-compressed") 
+            || ct.contains("application/zip")
+            || ct.contains("application/x-zip")
+            || ct.contains("application/octet-stream")
+    }
+    
+    fn extract_filename_from_headers(&self, lines: &[&str], start_idx: usize) -> Option<String> {
+        // Look for Content-Disposition header with filename
+        for i in start_idx..std::cmp::min(start_idx + 5, lines.len()) {
+            let line = lines[i].to_lowercase();
+            if line.contains("content-disposition") && line.contains("filename") {
+                if let Some(filename_start) = line.find("filename=") {
+                    let filename_part = &line[filename_start + 9..];
+                    let filename = filename_part.trim_matches('"').trim();
+                    return Some(filename.to_string());
+                }
+            }
+        }
+        None
+    }
+    
+    fn extract_base64_content(&self, lines: &[&str], start_idx: usize) -> Option<String> {
+        // Look for base64 content after headers
+        let mut content = String::new();
+        let mut found_encoding = false;
+        
+        for i in start_idx..lines.len() {
+            let line = lines[i];
+            
+            if line.to_lowercase().contains("content-transfer-encoding: base64") {
+                found_encoding = true;
+                continue;
+            }
+            
+            // Skip headers until we find an empty line
+            if !found_encoding && (line.contains(':') || line.trim().is_empty()) {
+                continue;
+            }
+            
+            // Stop at next boundary
+            if line.starts_with("--") {
+                break;
+            }
+            
+            // Collect base64 content
+            if found_encoding && !line.trim().is_empty() && !line.contains(':') {
+                content.push_str(line.trim());
+            }
+        }
+        
+        if content.len() > 100 { // Reasonable minimum for base64 content
+            Some(content)
+        } else {
+            None
+        }
     }
 
     /// Detects obvious spam content that should not get mailing list override

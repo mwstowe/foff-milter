@@ -978,6 +978,7 @@ async fn test_email_file(
         helo: None,
         body: Some(body),
         last_header_name: None,
+        attachments: Vec::new(), // Will be populated by analyze_attachments
     };
 
     // Test the email
