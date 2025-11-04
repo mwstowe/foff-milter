@@ -318,6 +318,7 @@ mod tests {
             from_header: Some("terrysmith7987@aol.com".to_string()),
             helo: Some("sendgrid.net".to_string()),
             hostname: Some("vsvhrrcf.outbound-mail.sendgrid.net".to_string()),
+            attachments: Vec::new(),
             mailer: None,
             last_header_name: None,
         };
@@ -357,6 +358,7 @@ mod tests {
             body: None,
             headers: HashMap::new(),
             from_header: None,
+            attachments: Vec::new(),
             helo: None,
             hostname: None,
             mailer: None,
