@@ -1,5 +1,6 @@
 use anyhow::Result;
 use base64::prelude::*;
+use std::io::Cursor;
 
 pub struct AttachmentAnalyzer;
 
@@ -7,16 +8,54 @@ impl AttachmentAnalyzer {
     pub fn analyze_attachment_content(content_type: &str, base64_content: &str) -> Result<Vec<String>> {
         let mut found_files = Vec::new();
         
-        if content_type.contains("application/x-rar-compressed") 
-            || content_type.contains("application/zip") 
-            || content_type.contains("application/x-zip") {
-            found_files.extend(Self::analyze_archive_content(base64_content)?);
+        if content_type.contains("application/x-rar-compressed") {
+            found_files.extend(Self::analyze_rar_content(base64_content)?);
+        } else if content_type.contains("application/zip") || content_type.contains("application/x-zip") {
+            found_files.extend(Self::analyze_zip_content(base64_content)?);
+        } else if content_type.contains("application/octet-stream") {
+            // Try both RAR and ZIP parsing for octet-stream
+            if let Ok(rar_files) = Self::analyze_rar_content(base64_content) {
+                if !rar_files.is_empty() {
+                    found_files.extend(rar_files);
+                }
+            }
+            if found_files.is_empty() {
+                if let Ok(zip_files) = Self::analyze_zip_content(base64_content) {
+                    found_files.extend(zip_files);
+                }
+            }
         }
         
         Ok(found_files)
     }
     
-    fn analyze_archive_content(base64_content: &str) -> Result<Vec<String>> {
+    fn analyze_zip_content(base64_content: &str) -> Result<Vec<String>> {
+        let mut filenames = Vec::new();
+        
+        if let Ok(decoded) = BASE64_STANDARD.decode(base64_content) {
+            let cursor = Cursor::new(decoded.clone());
+            
+            // Try to parse ZIP archive
+            match zip::ZipArchive::new(cursor) {
+                Ok(mut archive) => {
+                    for i in 0..archive.len() {
+                        if let Ok(file) = archive.by_index(i) {
+                            filenames.push(file.name().to_string());
+                        }
+                    }
+                }
+                Err(_) => {
+                    // Fallback to pattern matching if ZIP parsing fails
+                    let content_str = String::from_utf8_lossy(&decoded);
+                    Self::extract_filenames_from_text(&content_str, &mut filenames);
+                }
+            }
+        }
+        
+        Ok(filenames)
+    }
+    
+    fn analyze_rar_content(base64_content: &str) -> Result<Vec<String>> {
         let mut filenames = Vec::new();
         
         if let Ok(decoded) = BASE64_STANDARD.decode(base64_content) {
