@@ -6,11 +6,11 @@ use crate::legacy_config::{load_modules, Action, Config, Criteria, Module};
 use crate::milter::extract_email_from_header;
 use crate::toml_config::{BlocklistConfig, WhitelistConfig};
 
+use base64::{engine::general_purpose::STANDARD as BASE64_STANDARD, Engine as _};
+use encoding_rs::{Encoding, UTF_8, WINDOWS_1252};
 use hickory_resolver::TokioAsyncResolver;
 use lazy_static::lazy_static;
 use regex::Regex;
-use encoding_rs::{Encoding, UTF_8, WINDOWS_1252};
-use base64::{Engine as _, engine::general_purpose::STANDARD as BASE64_STANDARD};
 
 fn extract_domain_from_email(email: &str) -> Option<String> {
     email.split('@').nth(1).map(|s| s.to_string())
@@ -20,15 +20,15 @@ fn extract_domain_from_email(email: &str) -> Option<String> {
 fn normalize_encoding(text: &str) -> String {
     // First try to decode any MIME encoded words (=?charset?encoding?data?=)
     let decoded = decode_mime_words(text);
-    
+
     // Handle malformed UTF-8 by trying different encodings
     let bytes = decoded.as_bytes();
-    
+
     // Try UTF-8 first
     if let Ok(utf8_str) = std::str::from_utf8(bytes) {
         return utf8_str.to_string();
     }
-    
+
     // Try Windows-1252 (common for malformed emails)
     let (decoded_text, _, _) = WINDOWS_1252.decode(bytes);
     decoded_text.to_string()
@@ -37,34 +37,34 @@ fn normalize_encoding(text: &str) -> String {
 /// Decode MIME encoded words like =?UTF-8?B?base64data?= and =?UTF-8?Q?quoted-printable?=
 fn decode_mime_words(text: &str) -> String {
     lazy_static! {
-        static ref MIME_WORD_RE: Regex = Regex::new(
-            r"=\?([^?]+)\?([BQbq])\?([^?]*)\?="
-        ).unwrap();
+        static ref MIME_WORD_RE: Regex = Regex::new(r"=\?([^?]+)\?([BQbq])\?([^?]*)\?=").unwrap();
     }
-    
-    MIME_WORD_RE.replace_all(text, |caps: &regex::Captures| {
-        let charset = &caps[1];
-        let encoding = caps[2].to_uppercase();
-        let data = &caps[3];
-        
-        let decoded_bytes = match encoding.as_str() {
-            "B" => BASE64_STANDARD.decode(data).unwrap_or_default(),
-            "Q" => decode_quoted_printable(data),
-            _ => data.as_bytes().to_vec(),
-        };
-        
-        // Try to decode with specified charset
-        let encoding = Encoding::for_label(charset.as_bytes()).unwrap_or(UTF_8);
-        let (decoded_text, _, _) = encoding.decode(&decoded_bytes);
-        decoded_text.to_string()
-    }).to_string()
+
+    MIME_WORD_RE
+        .replace_all(text, |caps: &regex::Captures| {
+            let charset = &caps[1];
+            let encoding = caps[2].to_uppercase();
+            let data = &caps[3];
+
+            let decoded_bytes = match encoding.as_str() {
+                "B" => BASE64_STANDARD.decode(data).unwrap_or_default(),
+                "Q" => decode_quoted_printable(data),
+                _ => data.as_bytes().to_vec(),
+            };
+
+            // Try to decode with specified charset
+            let encoding = Encoding::for_label(charset.as_bytes()).unwrap_or(UTF_8);
+            let (decoded_text, _, _) = encoding.decode(&decoded_bytes);
+            decoded_text.to_string()
+        })
+        .to_string()
 }
 
 /// Simple quoted-printable decoder
 fn decode_quoted_printable(data: &str) -> Vec<u8> {
     let mut result = Vec::new();
     let mut chars = data.chars().peekable();
-    
+
     while let Some(ch) = chars.next() {
         match ch {
             '=' => {
@@ -79,7 +79,7 @@ fn decode_quoted_printable(data: &str) -> Vec<u8> {
             _ => {} // Skip non-ASCII characters in Q encoding
         }
     }
-    
+
     result
 }
 
@@ -190,10 +190,16 @@ impl FilterEngine {
     fn normalize_mail_context(&self, context: &MailContext) -> MailContext {
         MailContext {
             sender: context.sender.as_ref().map(|s| normalize_encoding(s)),
-            recipients: context.recipients.iter().map(|r| normalize_encoding(r)).collect(),
+            recipients: context
+                .recipients
+                .iter()
+                .map(|r| normalize_encoding(r))
+                .collect(),
             subject: context.subject.as_ref().map(|s| normalize_encoding(s)),
             body: context.body.as_ref().map(|b| normalize_encoding(b)),
-            headers: context.headers.iter()
+            headers: context
+                .headers
+                .iter()
                 .map(|(k, v)| (normalize_encoding(k), normalize_encoding(v)))
                 .collect(),
             from_header: context.from_header.as_ref().map(|f| normalize_encoding(f)),
@@ -945,7 +951,7 @@ impl FilterEngine {
     ) -> (Action, Vec<String>, Vec<(String, String)>) {
         // Normalize encoding in the context to handle malformed UTF-8 and encoding evasion
         let normalized_context = self.normalize_mail_context(context);
-        
+
         // Create mutable copy for attachment analysis
         let mut context_with_attachments = normalized_context.clone();
 

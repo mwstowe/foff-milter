@@ -136,3 +136,23 @@ rules:
       require_auth_failure: true
     score: 75
     description: "Brand impersonation with authentication failure"
+
+  - name: "Yeti brand impersonation from compromised accounts"
+    enabled: true
+    score: 75
+    criteria:
+      type: "BrandImpersonation"
+      brand_name: "yeti"
+      subject_patterns:
+        - "(?i)yeti outdoor bundle"
+        - "(?i)yeti rambler"
+        - "(?i)yeti cooler"
+      body_patterns:
+        - "(?i)yeti outdoor bundle"
+        - "(?i)yeti rambler tumbler"
+        - "(?i)insulated cooler bag"
+      sender_patterns:
+        - "(?i)tractor supply"
+      legitimate_domains:
+        - "yeti.com"
+        - "tractorsupply.com"

@@ -1,33 +1,35 @@
 use clap::{Arg, Command};
+use encoding_rs::WINDOWS_1252;
 use foff_milter::filter::FilterEngine;
 use foff_milter::milter::Milter;
 use foff_milter::statistics::StatisticsCollector;
 use foff_milter::toml_config::{BlocklistConfig, TomlConfig, WhitelistConfig};
 use foff_milter::Config as LegacyConfig;
 use log::LevelFilter;
+use std::fs;
 use std::process;
 use std::sync::Arc;
 use tokio::signal::unix::{signal, SignalKind};
 use tokio::sync::RwLock;
-use encoding_rs::{Encoding, UTF_8, WINDOWS_1252};
-use std::fs;
 
 /// Read email file with encoding fallback for malformed UTF-8
-fn read_email_with_encoding_fallback(file_path: &str) -> Result<String, Box<dyn std::error::Error>> {
+fn read_email_with_encoding_fallback(
+    file_path: &str,
+) -> Result<String, Box<dyn std::error::Error>> {
     // First try reading as bytes
     let bytes = fs::read(file_path)?;
-    
+
     // Try UTF-8 first
     if let Ok(content) = String::from_utf8(bytes.clone()) {
         return Ok(content);
     }
-    
+
     // Try Windows-1252 (common for malformed emails)
     let (content, _, had_errors) = WINDOWS_1252.decode(&bytes);
     if !had_errors {
         return Ok(content.to_string());
     }
-    
+
     // Try Windows-1252 as fallback (covers most malformed cases)
     let (content, _, _) = WINDOWS_1252.decode(&bytes);
     Ok(content.to_string())
@@ -803,7 +805,6 @@ async fn test_email_file(
     use foff_milter::filter::MailContext;
     use foff_milter::Action;
     use std::collections::HashMap;
-    use std::fs;
 
     /// Decode email body content based on Content-Transfer-Encoding
     fn decode_email_body(body: &str, encoding: &str) -> String {
