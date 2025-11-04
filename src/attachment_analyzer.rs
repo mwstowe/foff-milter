@@ -5,12 +5,17 @@ use std::io::Cursor;
 pub struct AttachmentAnalyzer;
 
 impl AttachmentAnalyzer {
-    pub fn analyze_attachment_content(content_type: &str, base64_content: &str) -> Result<Vec<String>> {
+    pub fn analyze_attachment_content(
+        content_type: &str,
+        base64_content: &str,
+    ) -> Result<Vec<String>> {
         let mut found_files = Vec::new();
-        
+
         if content_type.contains("application/x-rar-compressed") {
             found_files.extend(Self::analyze_rar_content(base64_content)?);
-        } else if content_type.contains("application/zip") || content_type.contains("application/x-zip") {
+        } else if content_type.contains("application/zip")
+            || content_type.contains("application/x-zip")
+        {
             found_files.extend(Self::analyze_zip_content(base64_content)?);
         } else if content_type.contains("application/octet-stream") {
             // Try both RAR and ZIP parsing for octet-stream
@@ -25,16 +30,16 @@ impl AttachmentAnalyzer {
                 }
             }
         }
-        
+
         Ok(found_files)
     }
-    
+
     fn analyze_zip_content(base64_content: &str) -> Result<Vec<String>> {
         let mut filenames = Vec::new();
-        
+
         if let Ok(decoded) = BASE64_STANDARD.decode(base64_content) {
             let cursor = Cursor::new(decoded.clone());
-            
+
             // Try to parse ZIP archive
             match zip::ZipArchive::new(cursor) {
                 Ok(mut archive) => {
@@ -51,37 +56,41 @@ impl AttachmentAnalyzer {
                 }
             }
         }
-        
+
         Ok(filenames)
     }
-    
+
     fn analyze_rar_content(base64_content: &str) -> Result<Vec<String>> {
         let mut filenames = Vec::new();
-        
+
         if let Ok(decoded) = BASE64_STANDARD.decode(base64_content) {
             // For now, use pattern matching - RAR crate integration pending
             let content_str = String::from_utf8_lossy(&decoded);
             Self::extract_filenames_from_text(&content_str, &mut filenames);
-            
+
             // TODO: Integrate proper RAR parsing when API is clarified
             // match rar::Archive::new(&decoded) {
             //     Ok(archive) => { /* parse entries */ }
             //     Err(_) => { /* fallback to pattern matching */ }
             // }
         }
-        
+
         Ok(filenames)
     }
-    
+
     fn extract_filenames_from_text(content: &str, filenames: &mut Vec<String>) {
-        let patterns = [".exe", ".scr", ".bat", ".cmd", ".com", ".pif", ".vbs", ".js"];
-        
+        let patterns = [
+            ".exe", ".scr", ".bat", ".cmd", ".com", ".pif", ".vbs", ".js",
+        ];
+
         for pattern in &patterns {
             if let Some(pos) = content.find(pattern) {
-                let start = content[..pos].rfind(|c: char| c.is_whitespace() || c == '\0' || c == '/')
-                    .map(|i| i + 1).unwrap_or(0);
+                let start = content[..pos]
+                    .rfind(|c: char| c.is_whitespace() || c == '\0' || c == '/')
+                    .map(|i| i + 1)
+                    .unwrap_or(0);
                 let end = pos + pattern.len();
-                
+
                 if start < pos {
                     let filename = content[start..end].trim_matches('\0').trim();
                     if !filename.is_empty() && filename.len() < 100 {
@@ -91,17 +100,17 @@ impl AttachmentAnalyzer {
             }
         }
     }
-    
+
     pub fn has_dangerous_files(filenames: &[String]) -> bool {
         let dangerous_extensions = [
-            ".exe", ".scr", ".bat", ".cmd", ".com", ".pif", 
-            ".vbs", ".js", ".jar", ".app", ".msi", ".run"
+            ".exe", ".scr", ".bat", ".cmd", ".com", ".pif", ".vbs", ".js", ".jar", ".app", ".msi",
+            ".run",
         ];
-        
+
         filenames.iter().any(|filename| {
-            dangerous_extensions.iter().any(|ext| 
-                filename.to_lowercase().ends_with(ext)
-            )
+            dangerous_extensions
+                .iter()
+                .any(|ext| filename.to_lowercase().ends_with(ext))
         })
     }
 }
