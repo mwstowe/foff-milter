@@ -1,0 +1,81 @@
+Return-Path: <slhhjroe-416a-rj8l-ivxq-ulb5mlsp1gui@keciat.com>
+Received: from juliett.baddomain.com (localhost [127.0.0.1])
+	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTP id 5A49NUqA044598
+	for <mstowe@localhost>; Tue, 4 Nov 2025 09:23:30 GMT
+	(envelope-from slhhjroe-416a-rj8l-ivxq-ulb5mlsp1gui@keciat.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (2048-bit key; unprotected) header.d=keciat.com header.i=@keciat.com header.b=eWos+K2w
+Received: from jimapinternal-aol.imap.mail.g03.yahoodns.net [67.195.228.147]
+	by juliett.baddomain.com with IMAP (fetchmail-6.6.0)
+	for <mstowe@localhost> (single-drop); Tue, 04 Nov 2025 09:23:30 +0000 (UTC)
+Received: from 127.0.0.1
+ by atlas-production.v2-mail-prod1-bf1.omega.yahoo.com pod-id atlas--production-bf1-5484867568-rdkn4.bf1.yahoo.com with HTTP; Tue, 4 Nov 2025 09:20:48 +0000
+X-Originating-Ip: [216.73.153.28]
+Received-SPF: pass (domain of keciat.com designates 216.73.153.28 as permitted sender)
+Authentication-Results: atlas-production.v2-mail-prod1-bf1.omega.yahoo.com;
+ dkim=pass header.i=@keciat.com header.s=h1 arc_overridden_status=NOT_OVERRIDDEN;
+ spf=pass smtp.mailfrom=keciat.com arc_overridden_status=NOT_OVERRIDDEN;
+ dmarc=pass(p=QUARANTINE) header.from=keciat.com arc_overridden_status=NOT_OVERRIDDEN;
+X-Apparently-To: stowe@aol.com; Tue, 4 Nov 2025 09:20:49 +0000
+X-YMailISG: DhuqNJ8WLDtgrBXHTv2UVsTaCQ3WsYG8AROeKUtXp.KR6krA
+ ZJOn0ktUTxPF4k.caJl51hBFtleTWYqswsDAyneyUirs1RnRkPxUwRdN1b0w
+ 8sTlEhjcy9wMuvK9e2ncvvl9GfptYhkoJmQis4Jnc0wJ1_Ta_J5mjrC23IfX
+ SFG.GwQAW9KjhtXLV_w3SVe1wMnvAUrPrN0R98e_FGLtawC0cYvW3Qz44YfQ
+ NF6Xt_YuGoONMwzDwwPL1peXEnOHb.89aGszJjW5oVQUZQz65xRScCtOPPZh
+ .k9GWvk7sM280VVACXsbHnZ45KHexkQaKLXKMe7EgGzDlWs0c6AYf7CPn6JB
+ XexMiLo8OgUC7KD5mIHpcR0zKBiDaOu48C1PQ3jwsZDsL7r6FQb88WYp9gaA
+ ujGstrzMtZrKPAnBEYFMG9Y_z_tbWglnZrjN5G4R8jo5.itjOKe.uLogRcYr
+ IkaNDRFW9BUtgYp7OumFKDeDTsXxlLloPc1kaRhiMtBEXhGlmUymdWxCjYgJ
+ FbMenC6Zm9TFnJAgf4.GsStNsN2nyh1oD.RL8YKMZZzF9Yua7UHEHvhDf2JO
+ iN6QglpoNPwaoURQCHqUdbHxLt.j6hhEHZJxq9MFdUbVbJGu4ifn__Q0as92
+ vhKMll8jLxOtPnFc1p__1v5gqlAWhf3lI9mmzEVY5kBNd9k5uNzqzEu54O4n
+ LtXCsT.3lJDJMc3rNNavXHhozLDCyfh.SKXfMUR7sI_Gf3i1y.0RLWrQbS9g
+ 6kr2H9ZUdc73vAQrJxy89w1sVT0X_Ox2boWtDKo6m1IPGI6lIZK8NdrDmhmp
+ 0W6ryriCua9h02O119aTNF1wLKUt_Q.m7Sv0FFRndOPeIelTYyau0mqTjlZ9
+ G7wB6vh06WrJ.J9Fm0xQlsXfAA7SMU8VVleNoHmh7YcG6YEJkkodelL2dIWE
+ F6EtWc1q1n1Ugk0NbVxYePdrkeY8k6EmgRyO.CFwOhElKyLCSsRlcGNeCHoE
+ 5hFiaCV05Q5r0ezNMiwL7l8bBeaEkTFaRqi3Rw9wQ2zXDTuj3CAQNS6q7ccr
+ C0piTsVbRYOw3098E9vL3i3YHQ.6NzSCG1wZp9fg8juH5TsASUdGvkhzaq60
+ 7vF30L9UBDSRN2619tnLQl9w.0qMxwp8b2FsK3On0becCq6pvcd5d3H3VehX
+ XnHNz6Qu60m0CvJpzyo5etpw35bXRQ7c0xGY8A5ql9BWM2Tt9I.y4svzQhoi
+ GI55q4Q-
+Received: from 216.73.153.28 (EHLO keciat.com)
+ by 10.198.29.201 with SMTP;
+ Tue, 04 Nov 2025 09:20:48 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=h1; d=keciat.com;
+ h=Content-Type:Date:From:Mime-Version:Message-ID:Subject:Reply-To;
+ bh=2zF7IAtnjRAtKnO6MpRDh3GGYFuIezMvDQvfrXu6YgY=;
+ b=eWos+K2wOTh8lMbFUW5lPiwsechCp16r/v95L1bkDN0o9Jsg0HyvkyGiCFa0nK0KcykmDvo37GBn
+   CWDila8yES8sKcJAy15vSyOmioIZxNo/Lm7zUbLxrilWm7wUlkOKK9UT4vcBbuBNGJvEQKdwgZlX
+   GEN8lm/NR9Ebebbyo15l2+9muau6g9ywy78VPWIG7TTp3qtbvxNnK4NFe4mFVCecjJAxBPRSjVOl
+   kl0lHXpMB6Cb+aB5XkzoEhP+a97qiRFbBqlIcsQQPR8K6HYu4c2FFEe+9LFVsq9Nekk3xeN7E80k
+   rIIIpUG98gFcoi638Hxi8BqC9Wa9++GHCHK3jg==
+Content-Type: multipart/alternative; boundary=f54f6aa67b0d09b58dff9bbc0f6f863a2472c8fa1a2c50f63ac5022055da
+Date: Tue, 04 Nov 2025 14:50:27 +0530
+From:            =?UTF-8?B?8J2WpfCdl4LwnZeL8J2XjPCdl40g8J2Wr/Cdl4vwnZa+8J2XhvCdl4LwnZa+8J2XiyDwnZan8J2XiPCdl4bwnZa+IPCdlrbwnZa68J2Xi/Cdl4vwnZa68J2Xh/Cdl43wnZeSLi4u?=                                                        <socialentrepreneurshipprojectsencouragesustainableb
+Mime-Version: 1.0
+Message-ID:  <vqocmw1i-l1pa-opes-wwyb-jtqaw3dmr0xd@keciat.com>  
+Subject:             =?UTF-8?B?8J2Wo/Cdl4jwnZeH4oCZ8J2XjSDwnZav8J2WuvCdl5Ig8J2WpfCdl47wnZeF8J2XhSDwnZav8J2Xi/Cdl4LwnZa88J2WviDwnZa/8J2XiPCdl4sg8J2WsfCdlr7wnZeJ8J2WuvCdl4LwnZeL8J2XjCDigJQg8J2WpvCdlr7wnZeNIPCdlrog8J2WtvCdlrrwnZeL8J2Xi/CdlrrwnZeH8J2XjfCdl5Ig8J2WqPCdl4fwnZeM8J2XjfCdlr7wnZa68J2WvS4uLg==?=                    
+Reply-To:        =?UTF-8?B?8J2WpfCdl4LwnZeL8J2XjPCdl40g8J2Wr/Cdl4vwnZa+8J2XhvCdl4LwnZa+8J2XiyDwnZan8J2XiPCdl4bwnZa+IPCdlrbwnZa68J2Xi/Cdl4vwnZa68J2Xh/Cdl43wnZeSLi4u?=      <stowe@aol.com>
+To: undisclosed-recipients:;
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [0.0.0.0]); Tue, 04 Nov 2025 09:23:31 +0000 (UTC)
+X-FOFF-Rule-Matched: Advanced Security: Image-Only Emails (juliett.baddomain.com)
+X-FOFF-Score: 35 - foff-milter v0.6.6 (juliett.baddomain.com)
+
+
+--f54f6aa67b0d09b58dff9bbc0f6f863a2472c8fa1a2c50f63ac5022055da
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html; charset=utf-8
+
+
+<center>
+<a href="http://umlladefensefilms.com/SqJ2EvZoYfl9m9X/6Z/N6FQNsaszTn/rr7x757Bck/iR8Z6GQyZDM/e7/IVLSRwIvrd/x7_7rre/3u0lRTwGZdDO9/7dr_/uwZW7CuPcdxwJS/r7YxM/MRE5RNLy0i/7xMYr_/cJ30Hktw7o/" style="text-decoration: none;color:red; font-size:16px;"><h3>
+<br><br>
+<center><a href="http://umlladefensefilms.com/SqJ2EvZoYfl9m9X/6Z/N6FQNsaszTn/rr7x757Bck/iR8Z6GQyZDM/e7/IVLSRwIvrd/x7_7rre/3u0lRTwGZdDO9/7dr_/uwZW7CuPcdxwJS/r7YxM/MRE5RNLy0i/7xMYr_/cJ30Hktw7o/"><img src="http://umlladefensefilms.com/533781090281185.jpg" alt="image"/><br><br>
+
+<center><a href="http://umlladefensefilms.com/r4Wsqj27VDOnwt/n4/8R1d52NW1k8/rr7x757Bck/E4voipbADipA2Rc/e7/dv69cUc5LNR/x7_7rre/VMIpF3BMhAaIIq/7dr_/z89E9rx7rh/r7YxM/mSL2hwDOJ9Gb/7xMYr_/NBJl9XgxUeZS/"><img src="http://umlladefensefilms.com/0p4xLQ94cOcszsW.jpg" alt="image"/></a>
+<img src="http://umlladefensefilms.comm/2eoISTzHMAomv/UX/UelywWzrwK0czDW/rr7x757Bck/ILbVhSCEpe3Bq/e7/p9pyxMjW4Fv1FU/x7_7rre/pPZYPK6xcyKh/7dr_/0xCpwRLRrUBkqW/r7YxM/TEr0khXZPR/7xMYr_/QfSXtRiT5CBG/" alt="" width="1" height="1" style="display:none;">
+</center>
+
+
+--f54f6aa67b0d09b58dff9bbc0f6f863a2472c8fa1a2c50f63ac5022055da--

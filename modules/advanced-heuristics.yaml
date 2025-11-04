@@ -18,10 +18,12 @@ rules:
                 pattern: ".*@(amazon\\.com|.*\\.amazon\\.com|amazonses\\.com)$"
               - type: "SenderPattern"
                 pattern: ".*@(paypal\\.com|.*\\.paypal\\.com)$"
+              - type: "SenderPattern"
+                pattern: ".*@(wolfermans\\.com|.*wolfermans.*\\.com|.*filtersfast\\.com|.*\\.filtersfast\\.com|.*backerkit\\.com|.*\\.backerkit\\.com)$"
               - type: "HeaderPattern"
                 header: "List-Unsubscribe"
                 pattern: ".*"
-    score: 20
+    score: 10
     description: "High-probability spam words based on Bayesian analysis"
 
   - name: "Sender Reputation Scoring"

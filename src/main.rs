@@ -9,6 +9,29 @@ use std::process;
 use std::sync::Arc;
 use tokio::signal::unix::{signal, SignalKind};
 use tokio::sync::RwLock;
+use encoding_rs::{Encoding, UTF_8, WINDOWS_1252};
+use std::fs;
+
+/// Read email file with encoding fallback for malformed UTF-8
+fn read_email_with_encoding_fallback(file_path: &str) -> Result<String, Box<dyn std::error::Error>> {
+    // First try reading as bytes
+    let bytes = fs::read(file_path)?;
+    
+    // Try UTF-8 first
+    if let Ok(content) = String::from_utf8(bytes.clone()) {
+        return Ok(content);
+    }
+    
+    // Try Windows-1252 (common for malformed emails)
+    let (content, _, had_errors) = WINDOWS_1252.decode(&bytes);
+    if !had_errors {
+        return Ok(content.to_string());
+    }
+    
+    // Try Windows-1252 as fallback (covers most malformed cases)
+    let (content, _, _) = WINDOWS_1252.decode(&bytes);
+    Ok(content.to_string())
+}
 
 #[tokio::main]
 async fn main() {
@@ -843,8 +866,8 @@ async fn test_email_file(
     println!("🧪 Testing email file: {}", email_file);
     println!();
 
-    // Read the email file
-    let email_content = match fs::read_to_string(email_file) {
+    // Read the email file with robust encoding handling
+    let email_content = match read_email_with_encoding_fallback(email_file) {
         Ok(content) => content,
         Err(e) => {
             eprintln!("❌ Error reading email file: {}", e);

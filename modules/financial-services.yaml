@@ -37,3 +37,22 @@ rules:
           pattern: "(?i).*(adresse.*bancaire.*interac|question.*de.*sécurité|réponse.*de.*sécurité).*"
     score: 75
     description: "French rental payment redirect scam targeting tenants"
+
+  - name: "Fake investment collaboration scam"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "BodyPattern"
+              pattern: "(?i).*(asset.*management.*firm|investment.*collaboration|joint.*ventures|financial.*sector.*experience|Foundation.*Asset.*Management|potential.*collaboration).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(real.*estate.*construction|manufacturing.*infrastructure|clean.*energy.*technology|healthcare.*agriculture.*mining|government.*projects).*"
+        - type: "Or"
+          criteria:
+            - type: "SenderPattern"
+              pattern: ".*@.*(vumaq|temp|disposable|guerrillamail|10minutemail).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(Hong Kong|Singapore|Dubai|Switzerland).*"
+    score: 80
+    description: "Fake investment and asset management collaboration scams"

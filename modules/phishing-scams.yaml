@@ -24,3 +24,65 @@ rules:
             pattern: ".*@.*(google|legitimate-seo|established-marketing)\\.com$"
     score: 55
     description: "Detects unsolicited SEO and marketing services spam"
+
+  - name: "Portuguese document signature phishing"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(lembrete.*assinatura|documento.*pendente|assinatura.*pendente|revisão.*eletrônica).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(documento.*disponível|acessar.*documento|revisão.*eletrônica|validade.*registro|clicksign|assinatura.*digital).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(clicksign|docusign|adobe|microsoft|google).*"
+    score: 80
+    description: "Portuguese document signature phishing targeting Brazilian users"
+
+  - name: "Fake autopay threat scam"
+    criteria:
+      type: "SubjectPattern"
+      pattern: ".*(autopaid|auto.paid|auto-paid).*"
+    score: 80
+    description: "Detects fake autopay threat scams"
+
+  - name: "Google Calendar spoofing"
+    criteria:
+      type: "HeaderPattern"
+      header: "Sender"
+      pattern: "(?i).*calendar-notification@google\\.com.*"
+    score: 75
+    description: "Detects spoofed Google Calendar notifications"
+
+  - name: "Fake invoice and order receipt scam"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(order.*id.*receipt.*status.*approved|receipt.*status.*approved|invoice.*approved|payment.*confirmation.*\\$.*dispute|charge.*confirmation.*dispute).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(dispute.*this.*order|contact.*us.*immediately.*dispute|did.*not.*place.*this.*order|charge.*ending.*in.*\\d{4}.*dispute|payment.*method.*credit.*card.*ending.*in.*\\d{4}).*"
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "SenderPattern"
+                pattern: ".*@(lovepopcards\\.com|shopify\\.com|.*\\.shopify\\.com|amazon\\.com|.*\\.amazon\\.com|paypal\\.com|.*\\.paypal\\.com|stripe\\.com|.*\\.stripe\\.com|square\\.com|.*\\.square\\.com)$"
+              - type: "HeaderPattern"
+                header: "from"
+                pattern: ".*@(lovepopcards\\.com|shopify\\.com|.*\\.shopify\\.com|amazon\\.com|.*\\.amazon\\.com|paypal\\.com|.*\\.paypal\\.com|stripe\\.com|.*\\.stripe\\.com|square\\.com|.*\\.square\\.com).*"
+    score: 65
+    description: "Fake invoice, order receipt, and payment confirmation scams"
+
+  - name: "Urgent payment threat"
+    criteria:
+      type: "SubjectPattern"
+      pattern: ".*(will be.*paid|payment.*hours|charged.*hours).*"
+    score: 60
+    description: "Detects urgent payment threat language"

@@ -235,3 +235,68 @@ rules:
             pattern: ".*@.*(health|medical|clinic|hospital|doctor|physician|mayo|webmd|healthline).*"
     score: 60
     description: "Detects anti-aging and longevity health misinformation"
+
+  - name: "Cardiovascular health misinformation"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(removes.*plaque|clears.*arteries|unclogs.*arteries|heart.*healthiest|French protein|artery.*plaque).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(removes.*plaque|clears.*arteries|unclogs.*arteries|heart.*healthiest|French protein|artery.*plaque|cardiovascular.*miracle|heart.*disease.*cure|cholesterol.*breakthrough).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(health|medical|clinic|hospital|doctor|physician|mayo|webmd|healthline|heart|cardio).*"
+    score: 75
+    description: "Detects cardiovascular health misinformation and miracle cure claims"
+
+  - name: "Cognitive and brain health misinformation"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(brain.*power|3x.*brain|cognitive.*coffee|memory.*boost|focus.*enhancement|brain.*fog).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(brain.*power|cognitive.*enhancement|memory.*boost|focus.*improvement|mental.*clarity|brain.*fog.*cure|alzheimer.*prevention|dementia.*cure).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(health|medical|clinic|hospital|doctor|physician|mayo|webmd|healthline|neuro|brain).*"
+    score: 70
+    description: "Detects cognitive and brain health misinformation claims"
+
+  - name: "Prostate health misinformation"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(unclogs.*prostate|prostate.*overnight|prostate.*miracle|prostate.*cure|enlarged.*prostate).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(unclogs.*prostate|prostate.*overnight|prostate.*miracle|prostate.*cure|enlarged.*prostate|urinary.*problems|bathroom.*trips).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(health|medical|clinic|hospital|doctor|physician|mayo|webmd|healthline|urology).*"
+    score: 75
+    description: "Detects prostate health misinformation and miracle cure claims"
+
+  - name: "Teaspoon dosage health claims"
+    criteria:
+      type: "SubjectPattern"
+      pattern: "(?i).*(1\\s*tsp|one\\s*teaspoon|\\d+\\s*tsp).*"
+    score: 70
+    description: "Detects health spam with specific dosage claims"
+
+  - name: "Relief and energy health claims"
+    criteria:
+      type: "SubjectPattern"
+      pattern: "(?i).*(wake up.*relief|relief.*energized|feeling.*relief.*energized).*"
+    score: 65
+    description: "Detects health spam promising relief and energy"

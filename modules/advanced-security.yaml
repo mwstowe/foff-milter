@@ -143,3 +143,24 @@ rules:
               pattern: "(?i).*(taste|special|uid[0-9]+|restaurant|food|dining).*"
     score: 60
     description: "Compromised Microsoft accounts used for spam with authentication failures"
+
+  - name: "Unicode evasion techniques"
+    criteria:
+      type: "SubjectPattern"
+      pattern: ".*=\\?UTF-8\\?B\\?[A-Za-z0-9+/]{200,}.*"
+    score: 65
+    description: "Detects Unicode evasion techniques with extremely long base64 subjects"
+
+  - name: "Unicode mathematical script evasion"
+    criteria:
+      type: "SubjectPattern"
+      pattern: ".*[𝖠-𝗓𝗔-𝘇𝘈-𝘻𝙰-𝚉𝚊-𝚣].*"
+    score: 75
+    description: "Detects Unicode mathematical script characters used for evasion"
+
+  - name: "Suspicious base64 encoding"
+    criteria:
+      type: "SubjectPattern"
+      pattern: ".*=\\?UTF-8\\?B\\?.*"
+    score: 25
+    description: "Detects suspicious base64 encoded subjects"

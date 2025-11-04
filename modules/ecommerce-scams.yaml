@@ -67,3 +67,22 @@ rules:
               pattern: "(?i).*(\\$0\\.00[0-9]+.*per|detailed.*plan|special.*launch.*price|easier.*faster.*way|offer.*still.*available|owe.*it.*to.*yourself).*"
     score: 60
     description: "Detects product plan and blueprint scams with exaggerated claims and urgency tactics"
+
+  - name: "Warranty and repair service scam"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(warranty.*instead|repair.*warranty|extended.*warranty|home.*warranty|appliance.*warranty).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(warranty.*coverage|repair.*service|extended.*warranty|home.*warranty|appliance.*protection|service.*plan).*"
+        - type: "Or"
+          criteria:
+            - type: "SenderPattern"
+              pattern: ".*@.*(keciat|temp|disposable|guerrillamail|10minutemail).*"
+            - type: "SubjectPattern"
+              pattern: ".*=\\?UTF-8\\?B\\?.*"
+    score: 70
+    description: "Warranty and repair service scams with suspicious encoding"
