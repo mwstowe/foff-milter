@@ -1,0 +1,149 @@
+Return-Path: <3Tl4LaRIcAIcrt534tylnzxpl58HFIoltw9otlw3CK.zyxtn2z3zq4.nzx@maestro.bounces.google.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTPS id 5A5EPPhL001725
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <mstowe@baddomain.com>; Wed, 5 Nov 2025 14:25:25 GMT
+	(envelope-from 3Tl4LaRIcAIcrt534tylnzxpl58HFIoltw9otlw3CK.zyxtn2z3zq4.nzx@maestro.bounces.google.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (2048-bit key; unprotected) header.d=dailydials19-onmicrosoft-com.20230601.gappssmtp.com header.i=@dailydials19-onmicrosoft-com.20230601.gappssmtp.com header.b=K5OECLdM
+X-Authentication-Warning: juliett.baddomain.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.baddomain.com
+Received: from mail-yx1-f72.google.com (mail-yx1-f72.google.com [74.125.224.72])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 5A5EPNWg021693
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=OK)
+	for <mstowe@baddomain.com>; Wed, 5 Nov 2025 08:25:24 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 5A5EPNWg021693
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (2048-bit key, unprotected) header.d=dailydials19-onmicrosoft-com.20230601.gappssmtp.com header.i=@dailydials19-onmicrosoft-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=K5OECLdM
+Received: by mail-yx1-f72.google.com with SMTP id 956f58d0204a3-63e0da26ae3so8912732d50.0
+        for <mstowe@baddomain.com>; Wed, 05 Nov 2025 06:25:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dailydials19-onmicrosoft-com.20230601.gappssmtp.com; s=20230601; t=1762352718; x=1762957518; darn=baddomain.com;
+        h=to:from:subject:date:message-id:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=YlPAmBtD1JVkmMrCG8/DZT2+/k0ZUR9slzE3bXkk4q4=;
+        b=K5OECLdMrOkw6Fell1asi2SQ7RCUuupFrzwKtfWtw7S8DlqUOVU40jX5NIF5riBfHV
+         xEDHsFNED0pUfFSS8burPYamG0hGH3mfbgTD0r8qxFGSZWBLoEm/4h3E/lHH653aDICO
+         cD1sfH4tlaSoM0DrF72sYULOarMv7EJ4eKG97DmsP/qiQ3oGRTOHFubtpOv4PCXiEOtJ
+         ckZOkPrqd3LJoqnQCuq4IG1oDrSXV5A7w21MGkDBvHHzUH/9sPg+KCX2X1Fi7C1b+5Cz
+         57ZdJeTwj9eDSbd2XnZ/kp5T1XcaKdD81yFDPKXf1E6lsEh8hw+gmpG6kT26AbziNo2T
+         1jXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762352718; x=1762957518;
+        h=to:from:subject:date:message-id:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=YlPAmBtD1JVkmMrCG8/DZT2+/k0ZUR9slzE3bXkk4q4=;
+        b=PoVx80GKh1TRthgixU0xDFjbmdoqBZ9yZGkFiY2l5fCb271MnmfeqWSEge0KpfWtJn
+         Bcfsk/3vNOMqLwWnub3zNwsJOJ92w64al0mRUft9li5CRLKu14VljaQFYcBji/OIPShc
+         +H1UueUJr5/G5FvaSInQ1Cbr/6rugrWoXuBILAtiJjrLcTaQqP7WFeLlslKxYkp+g648
+         b5Ft6phbWltJ+6tePNI1rrNQnFia1j7TpXHKLyKl7YXEvqZVfmqRlulWDYYCXYnpktqz
+         vVOz88Chayb78/xV/b6UFmFhI6CtpAo2EH78EWJmQpKXKkSTdXbZ0hccUmLgbyPnGjxl
+         LcAQ==
+X-Gm-Message-State: AOJu0Yx6qxAaD2oZaWQiV1yZpdyrU9A0rWaPhHUEscpXLc8K0QGSxBj4
+	MhL4UroBlgpErC6TN5yJUTuGxw0WqzrovzWP8kYhraH0MxcTQOgNEf05SmoWWshL+PkMTMGDD2b
+	gWxLOcJbjqmDdWp6+/KjpUHDE0rFEcrN5/YdAX0TS7OVGKoUtibd27uEsw5IKqgpb82Mr8JQ35H
+	zyA0bN
+X-Google-Smtp-Source: AGHT+IFcJln9wq4lD+eOOETCwkbjH+WGqtvz+SGlDTv68dVTpF46FdFuo1h58CTFrwfAwwNSaNe2ZAVzBA==
+MIME-Version: 1.0
+X-Received: by 2002:a05:690e:c43:b0:63e:3099:fe7c with SMTP id
+ 956f58d0204a3-63fd34c50f5mr2706565d50.16.1762352718295; Wed, 05 Nov 2025
+ 06:25:18 -0800 (PST)
+Reply-To: noreply@dailydials19.onmicrosoft.com
+Message-ID: <autogen-java-08c6840c-c537-4ada-97b8-08cfb010c74d@google.com>
+Date: Wed, 05 Nov 2025 14:25:18 +0000
+Subject: =?UTF-8?B?QWxsLWNvbmZpcm1lZCBTdGFubGV5IFRvb2wgU2V0ICNNdEtvMkQ=?=
+From: "Harbor Freight Program Access #AweKiK" <noreply@dailydials19.onmicrosoft.com>
+To: mstowe@baddomain.com
+Content-Type: multipart/alternative; boundary="000000000000be45070642d9b759"
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Wed, 05 Nov 2025 14:25:25 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Wed, 05 Nov 2025 08:25:24 -0600 (CST)
+X-FOFF-Rule-Matched: Analytics: Generic Sender Names (juliett.baddomain.com)
+X-FOFF-Rule-Matched: Advanced Heuristics: Advanced Heuristic Scoring (juliett.baddomain.com)
+X-FOFF-Rule-Matched: Analytics: Generic Sender Names (hotel.baddomain.com)
+X-FOFF-Rule-Matched: Advanced Heuristics: Advanced Heuristic Scoring (hotel.baddomain.com)
+X-FOFF-Score: 35 - foff-milter v0.6.6 (juliett.baddomain.com)
+X-FOFF-Score: 35 - foff-milter v0.6.6 (hotel.baddomain.com)
+
+--000000000000be45070642d9b759
+Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
+Content-Transfer-Encoding: base64
+
+U3RhbmxleSBUb29sIFNldCDigJMgUmVhZHkgZm9yIERpc3BhdGNoDQoNCkhhcmJvciBGcmVpZ2h0
+IEV4Y2x1c2l2ZSBUb29scw0KDQoNCkhlYXZ5LUR1dHkgVG9vbHMgZm9yIEV2ZXJ5IFRhc2sNCg0K
+WW91ciBTdGFubGV5IDY1LVBpZWNlIFRvb2wgU2V0IGlzIGNvbmZpcm1lZCBhbmQgcmVhZHkgdG8g
+c2hpcC4gUHJvZmVzc2lvbmFsICANCnRvb2xzIHdpdGggZHVyYWJpbGl0eSB5b3UgY2FuIHRydXN0
+Lg0KDQoNCldoYXQncyBJbmNsdWRlZDoNCg0KDQpTdGFubGV5IDY1LVBpZWNlIFByb2Zlc3Npb25h
+bCBUb29sIFNldA0KU2NyZXdkcml2ZXJzLCBXcmVuY2hlcyAmIFNvY2tldCBTZXQNCkhlYXZ5LUR1
+dHkgQ2FycnkgQ2FzZQ0KDQpDbGFpbSBNeSBUb29scw0K4pqg77iPIExpbWl0ZWQgc3VwcGx5IGF2
+YWlsYWJsZQ0KDQoNClRoaXMgZW1haWwgcmVsYXRlcyB0byB5b3VyIEhhcmJvciBGcmVpZ2h0IFN0
+YW5sZXkgdG9vbCBvZmZlci4NCg0KVW5zdWJzY3JpYmUNCg0KDQo=
+--000000000000be45070642d9b759
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<center>
+<div style=3D"width:100%; background:#f3f4f6; padding:40px 0; font-family:'=
+Segoe UI', Arial, sans-serif;">
+
+<div style=3D"max-width:600px; background:#1f2937; margin:0 auto; border-ra=
+dius:12px; overflow:hidden; box-shadow:0 6px 14px rgba(0,0,0,0.15);">
+
+<!-- Header -->
+<div style=3D"background:#f97316; color:#ffffff; text-align:center; padding=
+:30px 20px;">
+<h2 style=3D"margin:0; font-size:24px;">Stanley Tool Set =E2=80=93 Ready fo=
+r Dispatch</h2>
+<p style=3D"margin-top:8px; font-size:15px;">Harbor Freight Exclusive Tools=
+</p>
+</div>
+
+<!-- Body -->
+<div style=3D"padding:30px 25px; color:#f9fafb; text-align:center;">
+<h3 style=3D"font-size:20px; margin:0 0 16px;">Heavy-Duty Tools for Every T=
+ask</h3>
+<p style=3D"font-size:15px; line-height:1.6;">
+Your <strong>Stanley 65-Piece Tool Set</strong> is confirmed and ready to s=
+hip.
+Professional tools with <strong style=3D"color:#f97316;">durability you can=
+ trust</strong>.
+</p>
+
+<!-- Reward Box -->
+<div style=3D"background:#374151; padding:18px; margin:25px 0; border-radiu=
+s:8px; text-align:left; border:1px solid #f97316;">
+<p style=3D"margin:0 0 8px; font-weight:600; color:#f97316;">What=E2=80=99s=
+ Included:</p>
+<ul style=3D"margin:0; padding-left:18px; font-size:14px; color:#d1d5db;">
+<li>Stanley 65-Piece Professional Tool Set</li>
+<li>Screwdrivers, Wrenches & Socket Set</li>
+<li>Heavy-Duty Carry Case</li>
+</ul>
+</div>
+
+<!-- CTA -->
+<a href=3D"https://fghfgjyr.pages.dev/#4xLZhY28755kbrq33ztytttdiva1367YFYQG=
+AAPBLMSUHP905788LUMW135644b6" style=3D"display:inline-block; background:#f9=
+7316; color:#111827; padding:14px 32px; font-size:15px; font-weight:bold; b=
+order-radius:30px; text-decoration:none; margin-top:10px;">
+Claim My Tools
+</a>
+
+<p style=3D"margin-top:16px; font-size:13px; color:#f87171;">=E2=9A=A0=EF=
+=B8=8F Limited supply available</p>
+</div>
+
+<!-- Footer -->
+<div style=3D"background:#1f2937; padding:18px 20px; text-align:center; fon=
+t-size:12px; color:#9ca3af;">
+<p style=3D"margin:0;">This email relates to your Harbor Freight Stanley to=
+ol offer.</p>
+<p style=3D"margin-top:6px;">
+<a href=3D"https://fghfgjyr.pages.dev/#5uvZxq28755mzBx33baknflmdmp1367OXDKV=
+NQLKFGQZCS905788SJAJ135644H6" style=3D"color:#f97316; text-decoration:none;=
+">Unsubscribe</a>
+</p>
+</div>
+
+</div>
+</div>
+</center>
+--000000000000be45070642d9b759--

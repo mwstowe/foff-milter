@@ -42,7 +42,7 @@ rules:
       type: "And"
       criteria:
         - type: "SubjectPattern"
-          pattern: "(?i).*(sweepstakes|you.*won|congratulations.*won|exclusive.*entry|qualify.*sweepstakes).*"
+          pattern: "(?i).*(sweepstakes|you.*won|congratulations.*won|exclusive.*entry|qualify.*sweepstakes|eligible.*reward|venmo.*reward|\\$\\d+.*reward|reward.*inside|\\$\\d+.*venmo).*"
         - type: "Not"
           criteria:
             type: "Or"
@@ -300,3 +300,25 @@ rules:
       pattern: "(?i).*(wake up.*relief|relief.*energized|feeling.*relief.*energized).*"
     score: 65
     description: "Detects health spam promising relief and energy"
+
+  - name: "A1C and diabetes quick fix misinformation"
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(a1c.*trick|a1c.*second|diabetes.*trick|diabetes.*second|lower.*a1c.*natural|a1c.*thousands).*"
+        - type: "BodyPattern"
+          pattern: "(?i).*(a1c.*trick|a1c.*second|diabetes.*trick|diabetes.*second|lower.*a1c.*natural|a1c.*thousands|diabetes.*natural.*trick).*"
+    score: 70
+    description: "Detects A1C and diabetes quick fix misinformation claims"
+
+  - name: "Prostate toxin and ancient fix misinformation"
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(prostate.*toxin|toxin.*prostate|ancient.*fix.*prostate|prostate.*ancient|hidden.*toxin.*bloating).*"
+        - type: "BodyPattern"
+          pattern: "(?i).*(prostate.*toxin|toxin.*prostate|ancient.*fix.*prostate|prostate.*ancient|hidden.*toxin.*bloating|flushes.*fast.*prostate).*"
+    score: 70
+    description: "Detects prostate toxin and ancient fix misinformation claims"

@@ -86,3 +86,20 @@ rules:
               pattern: ".*=\\?UTF-8\\?B\\?.*"
     score: 70
     description: "Warranty and repair service scams with suspicious encoding"
+
+  - name: "Fake repair and maintenance scheduling scam"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(repair.*scheduled|maintenance.*scheduled|service.*scheduled|repair.*appointment|maintenance.*appointment).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(repair.*scheduled|maintenance.*scheduled|service.*scheduled|repair.*appointment|maintenance.*appointment|technician.*visit).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(repair|maintenance|service|hvac|plumbing|electric|contractor|homeadvisor|angi|thumbtack).*\\.(com|net|org)$"
+    score: 75
+    description: "Detects fake repair and maintenance scheduling scams"
