@@ -1,0 +1,706 @@
+Return-Path: <bounce-10_HTML-39346081-4531097-1058860-10001@bounce.mail.fidelity.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTPS id 5A4IPJln061953
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <mstowe@baddomain.com>; Tue, 4 Nov 2025 18:25:20 GMT
+	(envelope-from bounce-10_HTML-39346081-4531097-1058860-10001@bounce.mail.fidelity.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (2048-bit key; unprotected) header.d=mail.fidelity.com header.i=Fidelity.Investments@mail.fidelity.com header.b=QnndaX1R;
+	dkim=pass (2048-bit key; unprotected) header.d=s4.y.mc.salesforce.com header.i=@s4.y.mc.salesforce.com header.b=fS6Q1uwk
+X-Authentication-Warning: juliett.baddomain.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.baddomain.com
+Received: from mta5.mail.fidelity.com (mta5.mail.fidelity.com [68.232.205.113])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 5A4IPIh6003179
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO)
+	for <mstowe@baddomain.com>; Tue, 4 Nov 2025 12:25:19 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 5A4IPIh6003179
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (2048-bit key, unprotected) header.d=mail.fidelity.com header.i=Fidelity.Investments@mail.fidelity.com header.a=rsa-sha256 header.s=fid48 header.b=QnndaX1R;
+	dkim=pass (2048-bit key, unprotected) header.d=s4.y.mc.salesforce.com header.i=@s4.y.mc.salesforce.com header.a=rsa-sha256 header.s=fbldkim4 header.b=fS6Q1uwk
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=fid48; d=mail.fidelity.com;
+ h=From:To:Subject:Date:List-Help:MIME-Version:Reply-To:Message-ID:Content-Type;
+ i=Fidelity.Investments@mail.fidelity.com;
+ bh=FhED34UpOWbzHmYHwpaDrCXQqNUuXajkp5BPwC+5OgQ=;
+ b=QnndaX1RK95y8qtvTV+zAUQ9/MKkGxiOvPPeaGaOpc7FYj55u+ErCAvMRrtr/iaVcx7LeWjUrtIO
+   5cObzxBLuBgaCnSdVjGjAU7JpSYPzzeL6CxKbqUJa7nQ8JGgIYkz0Ylh49+8/50kqK58G51L+otz
+   vlzD3QQUQmybkREomOLfeSTIWT95DV4mTrCvoAV00rxHtX931YkLIJZv8ZgOPBk3QmX17ry+1//6
+   yN4gr7Xjz38HSEAtVVH9xP6oKfAc6gYrUwVwa2XsNQgGVeJt/cXZfAbZXijhwGKVT6DqhrKuQedy
+   yDuM+sWyaJtcj/qfn14Y0lheq6Lt55zMHBSeEg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=fbldkim4; d=s4.y.mc.salesforce.com;
+ h=From:To:Subject:Date:List-Help:MIME-Version:Reply-To:Message-ID:Content-Type;
+ bh=FhED34UpOWbzHmYHwpaDrCXQqNUuXajkp5BPwC+5OgQ=;
+ b=fS6Q1uwkmW+OrW99bdHXZByqcSb9F8wquMgM6+TixGqvm60cazpzL8pb1x5hwXzJew3b5lP1auyI
+   uVc/uiNrhRYA40ylub8JNpolX0iXZFIzS6XPo8FEBK2jZYhbZ8GgJax6PFSZWCYPXXFYS8+RD5LL
+   R9ZHCS0shv52DgeeMEPrBZx2v/gylEvTApkxz20SshtKG/McG4RK09Aq5AP7Zk33qG1SmAgrLoQB
+   mvM3V3QbCKAS2K/doFGL/DL1qhnpbMExHiKAJkRXIYS31GcmCDFK6cJg83P12CcCs6EnXp4RWrdn
+   3TS66WnSTNW2nFCOVmRgJEOYnv7wn8tXuIvAiA==
+Received: by mta5.mail.fidelity.com id h192gu2fmd47 for <mstowe@baddomain.com>; Tue, 4 Nov 2025 18:25:18 +0000 (envelope-from <bounce-10_HTML-39346081-4531097-1058860-10001@bounce.mail.fidelity.com>)
+From: "Amazon Benefits at Fidelity" <Fidelity.Investments@mail.fidelity.com>
+To: <mstowe@baddomain.com>
+Subject: =?UTF-8?B?QW1hem9uIDQwMShrKSBQbGFuIEludmVzdG1lbnQgT3B0aW9uIENo?=
+ =?UTF-8?B?YW5nZXPigJRObyBBY3Rpb24gUmVxdWlyZWQ=?=
+Date: Tue, 04 Nov 2025 12:25:15 -0600
+List-Help: <https://click.fidelityinvestments.com/subscription_center.aspx?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtaWQiOiIxMDU4ODYwIiwicyI6IjM5MzQ2MDgxIiwibGlkIjoiMTAiLCJqIjoiNDUzMTA5NyIsImpiIjoiMTAwMDEiLCJkIjoiNDAxNDgifQ.POrhJVsujAcIVwkaYSBphe4O_Ewom-8C80B-p5NSOns>
+MIME-Version: 1.0
+Reply-To: "Fidelity Investments Unmonitored" <reply-fe9210757665047472-10_HTML-39346081-1058860-10001@mail.fidelity.com>
+X-SFMC-Stack: 4
+x-job: 1058860_4531097
+Message-ID: <5759cd47-3142-4a15-a4ef-19e3f79979c2@las1s04mta906.xt.local>
+Content-Type: multipart/alternative;
+	boundary="F6lbixPKzj7v=_?:"
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Tue, 04 Nov 2025 18:25:20 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Tue, 04 Nov 2025 12:25:19 -0600 (CST)
+X-Spam-Flag: YES
+X-FOFF-Rule-Matched: Integration: Legitimate Service Domain Mismatch (juliett.baddomain.com)
+X-FOFF-Rule-Matched: Advanced Heuristics: Weak Signal Aggregation (juliett.baddomain.com)
+X-FOFF-Rule-Matched: Advanced Heuristics: Urgency Pattern Recognition (juliett.baddomain.com)
+X-FOFF-Rule-Matched: Integration: Legitimate Service Domain Mismatch (hotel.baddomain.com)
+X-FOFF-Rule-Matched: Advanced Heuristics: Weak Signal Aggregation (hotel.baddomain.com)
+X-FOFF-Rule-Matched: Advanced Heuristics: Urgency Pattern Recognition (hotel.baddomain.com)
+X-FOFF-Score: 80 - foff-milter v0.6.6 (juliett.baddomain.com)
+X-FOFF-Score: 80 - foff-milter v0.6.6 (hotel.baddomain.com)
+
+This is a multi-part message in MIME format.
+
+--F6lbixPKzj7v=_?:
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+ 
+
+
+
+
+
+
+https://view.fidelityinvestments.com/?qs=386b981910698af0f26feea92e108d2683bce04747a7d1b03859f8d73b73ede0e61cd3207b0376322b7ff4e63a1c46edefe6c622ae252056063ba05830a0ae21f7861e4588fc191a34a03c8a3cc2f2e3 
+View in your browser 
+ 
+
+
+<img title="755923_34061" alt="755923_34061" src="https://image.fidelityinvestments.com/lib/fe921570706c0c7b74/m/21/39ddc138-0b3f-4914-835e-cf16763df461.gif" style="display: block;" border=0 thid="339505">
+
+ 
+
+
+MICHAEL W STOWE
+Amazon 401(k) Plan
+
+https://click.fidelityinvestments.com/u/?qs=75162b6fa1abddcd9dc614aa34cadf75e8f2535e0a529f3383fab0dea9f4a4a73030de798507673c1691afaac4c1a08c845caace19197ad8 
+Secure Login 
+
+Amazon 401(k) Plan Investment Option Changes&mdash;No Action Required
+Amazon is committed to periodically reviewing the Amazon 401(k) Plan (the “Plan”) to make sure it continues to help you meet your retirement and financial goals.
+
+We regularly review the Plan’s investment options with your best interests in mind, considering a wide variety of factors like fees, value, performance, risk and quality.
+
+After a recent plan review, we are enhancing the Plan’s investment lineup by adding a new fund, offering a new share class of an existing fund which has a lower expense ratio than the prior share class, and reducing a fee of another fund in the Plan.
+
+View the 
+https://click.fidelityinvestments.com/u/?qs=75162b6fa1abddcde41a699adb7bb5c7d7f65a5adffa2d47dbe224065f61b9588834112de93e5062306091d508f1b8f497a02b200c790a0a 
+Investment Option Changes Noticefor more details.
+
+You may also view the notice online at 
+https://click.fidelityinvestments.com/u/?qs=75162b6fa1abddcd99c913deb70320ea1109931ed5a66f00ffa2d3d4338303becce252b1220f74a04f9324ce4dde4ae95d9c9958e90c0dab 
+Fidelity NetBenefits (R). After you log in, scroll down to AMAZON 401(K) PLAN and click the Quick Links drop-down menu; then choose Plan Information and Documents. Click Investment Option Changes Notice &ndash; December 2025 under the Plan Changes section.
+
+Review and update your Amazon 401(k) Plan Account beneficiary information to ensure that your loved ones will receive the assets you want them to have. 
+https://click.fidelityinvestments.com/u/?qs=75162b6fa1abddcd1cbff141b8afa0197425b44e7b6d26f59bb9bc34798ac035fdfb3deacfa8c573ed1b700a57fbc1bb9ae28f8718df36f5 
+Update Your Beneficiary Now. 
+
+https://click.fidelityinvestments.com/u/?qs=75162b6fa1abddcd99c913deb70320ea1109931ed5a66f00ffa2d3d4338303becce252b1220f74a04f9324ce4dde4ae95d9c9958e90c0dab 
+Log in to NetBenefits>>
+
+https://click.fidelityinvestments.com/u/?qs=75162b6fa1abddcde221c8cac20681fd6f89b5d8d206d77d8ff409282b59ae42eebe408f3e2d0338bdfb05678722c200e35de9c43c6e3a67 
+Privacy Policy| 
+https://click.fidelityinvestments.com/u/?qs=75162b6fa1abddcd17b683e59d321b3d4d91390415dd96ee6c7fb87aaead8b8880aad6b2320ee687dbe5ba67a15a3eaf62fa9bcb01eaeb8c 
+Terms of Use 
+
+Investing involves risk, including risk of loss.
+
+If you wish to receive a printed copy of this document, free of charge, please call Fidelity at 1-800-835-5095.
+
+The information in this e-mail is intended solely for the attention and use of the named addressee. This message or any part thereof must not be disclosed, copied, distributed or retained by any person without authorization of the addressee.
+
+Please do not respond to this e-mail. This mailbox is not monitored, and you will not receive a response.
+
+Fidelity Brokerage Services LLC, Member NYSE, 
+https://click.fidelityinvestments.com/u/?qs=75162b6fa1abddcd09b19a06f8b2d8f499d1e9247dc1979ef26c7e7d7a43b3a540a7c1eca21ee682e28013daed2da64d01fadf027a5095ff 
+SIPC , 900 Salem Street, Smithfield, RI 02917
+
+(c) 2025 FMR LLC. All rights reserved.
+
+1026250.3.0 
+
+If you wish to opt-out of electronic delivery, free of charge, please visit <a href="netbenefits.fidelity.com/preferences">netbenefits.fidelity.com/preferences</a> or call 800-835-5095.  You may obtain a paper version of disclosures sent to you electronically, free of charge, by contacting Fidelity.  Required documents and disclosures accessed electronically will be available for one year or, if applicable, until a subsequent version becomes available.
+
+WRM_FUNDACT_157 
+
+
+  EMAIL REF#d7e2f028-9d80-4577-ba8c-b9aa0fe9c115.4531097
+
+
+
+
+--F6lbixPKzj7v=_?:
+Content-Type: text/html;
+	charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+ 
+
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN">
+<html xmlns="http://www.w3.org/TR/html1/DTD/xhtml1-transitional.dtd">
+<div data-type="slot" data-key="setupscript"></div>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title></title>
+<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet" type="text/css">
+<style type="text/css">
+/***** GENERAL EMAIL CLIENT FIXES *****/
+
+/* Forces Hotmail to display emails at full width */
+
+div.preheader {
+display: none !important;
+}
+.ReadMsgBody {
+width: 100%;
+}
+a:visited {
+color: #0f57c2;
+}
+/*Hotmail table centering fix*/ 
+.ExternalClass {
+width: 100%;
+}
+/* Forces Hotmail to display normal line spacing*/ 
+.ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div {
+line-height: 100%;
+}
+body, {
+width: 100% !important;
+-webkit-text;
+size-adjust: 100%;
+-ms-text-size-adjust: 100%;
+margin: 0;
+padding: 0;
+} /* Prevent Webkit and Windows Mobile platforms from changing default font sizes, while not breaking desktop design. */
+/*Yahoo paragraph fix*/
+p {
+margin: 1em 0;
+}
+/*This resolves the Outlook 07, 10, and Gmail td padding issue fix*/ 
+table td {
+border-collapse: collapse;
+!important;
+}
+/* Remove the borders that appear when linking images with "border:none" and "outline:none" */
+img, a img {
+border: 0;
+height: auto;
+outline: none;
+text-decoration: none;
+} /* Remove the borders that appear when linking images with "border:none" and "outline:none" */
+@-ms-viewport {
+width: device-width;
+}
+h1 {
+ font-size: 24px;
+ color: #068037;
+ font-weight: bold; 
+ margin: 20 0;
+ }
+
+h2 {
+ font-size: 18px;
+ color: #333333;
+ font-weight: bold;
+ margin: 20 0;
+ }
+
+h3, h4, h5, h6 {
+ font-size: 16px; 
+ font-weight: bold;
+ margin: 20 0;
+}
+
+linkfix a {
+color: #ffffff !important;
+text-decoration: none;
+}
+/* Fixes link colors on iPhones */
+.appleLinks a {
+color: #adadad;
+text-decoration: none;
+}
+.appleLinksOrange a {
+color: #ff9900;
+text-decoration: none;
+}
+.appleLinksGray a {
+color: #666666;
+text-decoration: none;
+}
+.appleLinksLightGray a {
+color: #979797;
+text-decoration: none;
+}
+/* Changes body styling */
+body {
+width: 100%;
+background-color: #ffffff;
+margin: 0 auto;
+padding: 0;
+-webkit-font-smoothing: antialiased;
+font-family: "Arial", Helvetica, sans-serif !important;
+}
+/** CLIENT-SPECIFIC STYLE **/
+img {
+-ms-interpolation-mode: bicubic;
+} /* Force IE to smoothly render resized images. */
+table {
+mso-table-lspace: 0pt;
+mso-table-rspace: 0pt;
+} /* Remove spacing between tables in Outlook 2007 and up. */
+.ReadMsgBody {
+width: 100%;
+}
+.ExternalClass {
+width: 100%;
+} /* Force Outlook.com to display emails at full width. */
+p, a, li, td, blockquote {
+mso-line-height-rule: exactly;
+} /* Force Outlook to render line heights as they're originally set. */
+a[href^="tel"], a[href^="sms"] {
+color: inherit;
+cursor: default;
+text-decoration: none;
+} /* Force mobile devices to inherit declared link styles. */
+p, a, li, td, body, table, blockquote {
+-ms-text-size-adjust: 100%;
+-webkit-text-size-adjust: 100%;
+} /* Prevent Windows- and Webkit-based mobile platforms from changing declared text sizes. */
+.ExternalClass, .ExternalClass p, .ExternalClass td, .ExternalClass div, .ExternalClass span, .ExternalClass font {
+line-height: 100%;
+} /* Force Outlook.com to display line heights normally. */
+/** STRUCTURAL STYLES **/
+
+/** CONTENT STYLES **/
+body {
+width: 100%;
+background-color: #ffffff;
+margin: 0 auto;
+padding: 0;
+-webkit-font-smoothing: antialiased;
+font-family: "Arial", sans-serif !important;
+}
+
+
+/* Media query triggers alternate styles when the file is displayed on a mobile device. The default max width setting for max-width should be 480px to trigger on mobile devices. 
+body[yahoo] fix needed in front of each style and yahoo="fix" added to the body tag*/
+
+/***** MOBILE STYLING RULES *****/
+@-ms-viewport {
+width: device-width;
+}
+
+/***** MOBILE STYLING RULES *****/
+@media only screen and (max-device-width: 480px), screen and (max-width: 480px) {
+/* CLIENT-SPECIFIC STYLES */
+/* Template Shell */
+body[yahoo] {
+width: 100% !important;
+min-width: 100% !important;
+margin: 0 !important;
+padding: 0 !important;
+} /* Force iOS Mail to render the email at full width & removes margins. */
+body[yahoo] .container {
+width: 100% !important;
+}
+/*** STRUCTURAL ***/
+
+body[yahoo] table .container {
+width: 100% !important;
+}
+body[yahoo] td .columnStack {
+width: 100% !important;
+display: block !important;
+}
+body[yahoo] .contentCenter, body[yahoo] .contentCenter img, body[yahoo] .contentCenter table {
+margin: 0 auto !important;
+}
+body[yahoo] .textCenter {
+text-align: center !important;
+}
+body[yahoo] .nullBorder {
+border: none !important;
+}
+body[yahoo] .mobile-show {
+display: block !important;
+margin: 0 !important;
+padding: 0 !important;
+overflow: visible !important;
+width: auto !important;
+max-height: inherit !important;
+}
+body[yahoo] .mobileshow {
+display: block !important;
+margin: 0 !important;
+padding: 0 !important;
+overflow: visible !important;
+width: auto !important;
+max-height: inherit !important;
+}
+body[yahoo] .mobileShow {
+display: block !important;
+margin: 0 !important;
+padding: 0 !important;
+overflow: visible !important;
+width: auto !important;
+max-height: inherit !important;
+}
+body[yahoo] .mobile-Show {
+display: block !important;
+margin: 0 !important;
+padding: 0 !important;
+overflow: visible !important;
+width: auto !important;
+max-height: inherit !important;
+}
+body[yahoo] .mobilehide {
+display: none !important;
+}
+body[yahoo] .mobile-hide {
+display: none !important;
+}
+body[yahoo] .mobileHide {
+display: none !important;
+}
+body[yahoo] .mobile-Hide {
+display: none !important;
+}
+body[yahoo] .body-text {
+font-size: 18px !important;
+}
+body[yahoo] .photo img {
+width: 100% !important;
+max-width: 100% !important;
+height: auto !important;
+}
+body[yahoo] .drop {
+display: block !important;
+float: left;
+clear: both;
+}
+body[yahoo] .stack {
+width: 90% !important;
+display: block !important;
+}
+body[yahoo] .no-padding {
+padding: 0px !important;
+}
+body[yahoo] .mobile-sidePadding {
+padding-right: 10px !important;
+padding-left: 10px !important;
+}
+body[yahoo] .mobile-center {
+margin-right: auto !important;
+margin-left: auto !important;
+}
+body[yahoo] .content-top {
+height: 11px !important;
+width: 100% !important;
+background: #4cac45 url("http://image.fidelityinvestments.com/lib/fe90157070640d7a7c/m/2/promo_temp_content_table_top.png") no-repeat center top;
+}
+body[yahoo] .content-bottom {
+height: 88px !important;
+width: 100% !important;
+background: #4cac45 url("http://image.fidelityinvestments.com/lib/fe8b1570706c0c787c/m/1/content_table_bottom_mobile.png") no-repeat right bottom;
+}
+body[yahoo] .callout-top {
+height: 11px !important;
+width: 100% !important;
+background: #4cac45 url("http://image.fidelityinvestments.com/lib/fe90157070640d7a7c/m/3/cp_1by_table_top.png") no-repeat center bottom;
+}
+body[yahoo] .callout-bottom {
+height: 11px !important;
+width: 100% !important;
+background: #4cac45 url("http://image.fidelityinvestments.com/lib/fe90157070640d7a7c/m/3/cp_1by_table_bottom.png") no-repeat center bottom;
+}
+/*** PADDING ***/
+
+body[yahoo] .nullPad {
+padding: 0px !important;
+}
+body[yahoo] .mobilePad {
+padding-right: 10px !important;
+padding-left: 30px !important;
+}
+body .mobileName {
+padding-right: 10px !important;
+padding-left: 30px !important;
+}
+body[yahoo] .bottomPad5 {
+padding-bottom: 5px !important;
+}
+body[yahoo] .topPad5 {
+padding-bottom: 5px !important;
+}
+body[yahoo] .topPad10 {
+padding-top: 10px !important;
+}
+body[yahoo] .bottomPad10 {
+padding-bottom: 10px !important;
+}
+body[yahoo] .topPad15 {
+padding-top: 15px !important;
+}
+body[yahoo] .bottomPad15 {
+padding-bottom: 15px !important;
+}
+body[yahoo] .topPad20 {
+padding-top: 20px !important;
+}
+body[yahoo] .bottomPad20 {
+padding-bottom: 20px !important;
+}
+body[yahoo] .topPad25 {
+padding-top: 25px !important;
+}
+body[yahoo] .bottomPad25 {
+padding-bottom: 25px !important;
+}
+body[yahoo] .mobileLoginPad {
+padding: 0px 30px 30px 10px !important;
+}
+body[yahoo] .rightPad30 {
+padding-right: 30px !important;
+}
+.full {
+display: block;
+width: 100%;
+}
+/* This sets elements to 100% width and fixes the height issues too */
+*[class="100p"] {
+width: 100%!important;
+height: auto!important;
+}
+}
+</style>
+
+<!--[if gte mso 9]>
+<xml>
+<o:OfficeDocumentSettings>
+<o:AllowPNG/>
+<o:PixelsPerInch>96</o:PixelsPerInch>
+</o:OfficeDocumentSettings>
+</xml>
+<![endif]-->
+<!--[if mso]>
+<style>
+body * {
+mso-hyphenate: none;
+}
+</style>
+<![endif]--> 
+ 
+</head>
+<body style="margin: 0px; -webkit-text-size-adjust:none;" yahoo="fix" bgcolor="">
+<!-- Start of: Banner -->
+<table cellpadding="0" cellspacing="0" border="0" width="100%" bgcolor="#FFFFFF">
+<tr>
+<td align="center" valign="top" bgcolor="#ffffff" style="padding: 0px 30px;"><!--preheader begins here -->
+
+ <div style="line-height:1px; font-size:0px; color:#ffffff; display:none;"></div>
+
+<!--preheader ends here -->
+
+ <table border="0" cellspacing="0" cellpadding="0" width="600" class="mobilehide" >
+  <tr>
+   <td align="left" valign="middle" style="font-family: Arial, sans-serif; font-size: 11px; padding: 5px 0px;"><a href="https://view.fidelityinvestments.com/?qs=386b981910698af0f26feea92e108d2683bce04747a7d1b03859f8d73b73ede0e61cd3207b0376322b7ff4e63a1c46edefe6c622ae252056063ba05830a0ae21f7861e4588fc191a34a03c8a3cc2f2e3"  target="_blank" style="color: #858585; text-decoration: underline;">View in your browser</a></td>
+  </tr>
+ </table>
+ 
+ <table border="0" cellspacing="0" cellpadding="0" width="600" >
+  <tr>
+   <td align="left" valign="middle" width="50%" style="padding: 20px 0px 20px 0px" ><img alt="Fidelity Logo" src="https://image.fidelityinvestments.com/lib/fe921570706c0c7b74/m/1/f09aca18-d0ab-4ffc-b534-a7cf03403ad2.gif" width="140" height="auto" border="0" style="display: block;"></td>
+   
+   <td align="right" valign="middle" width="50%" style="padding: 20px 0px 20px 0px; font-size: 10px;" > <table align="right" border="0" cellspacing="0" cellpadding="0">
+ <tr>
+  <td align="right" valign="bottom" style="padding: 10px 0px 10px 10px;">
+<table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- CONTENT BUILDER VERSION -->
+
+<img title="755923_34061" alt="755923_34061" src="https://image.fidelityinvestments.com/lib/fe921570706c0c7b74/m/21/39ddc138-0b3f-4914-835e-cf16763df461.gif" style="display: block;" border=0 thid="339505"></td></tr></table>
+  </td>
+ </tr>
+</table></td>
+  </tr>
+ </table>
+ </td>
+ </tr>
+</table>
+<!-- End of: Banner --> 
+
+<!-- START OF: BODY -->
+<table border="0" cellspacing="0" cellpadding="0" width="100%" bgcolor="#006E3B">
+<tbody bgcolor="">
+<tr>
+  <td align="center" style="padding: 0px 0px 0px 0px;"><table width="600" cellpadding="0" cellspacing="0" border="0" bgcolor="" >
+   <tbody bgcolor="">
+  <tr>
+    <td align="center" valign="middle" style="font-size: 100px;">
+<!-- START OF: Welcome and Login Area -->
+
+   <table width="100%" border="0" cellspacing="0" cellpadding="0" style="font-family: Arial, sans-serif; font-size: 14px; color: #333333;">
+     <tbody>
+    <tr>
+      <td align="left" valign="middle" width="50%"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+       <tbody>
+      <tr>
+      <td align="left" valign="middle" style="font-family: Arial, sans-serif; font-size: 14px; color: #ffffff; padding: 20px 0px 20px 0px " class="mobileName">
+      <b>MICHAEL W STOWE</b><br>
+      <strong>Amazon 401(k) Plan</strong></td>
+      </tr>
+       </tbody>
+     </table></td>
+      <td align="right" valign="middle" width="50%"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+       <tbody>
+      <tr>
+        <td align="right" valign="middle" style="font-family: Arial, sans-serif; font-size: 12px; 16px; color: #ffffff; padding: 10px 10px 10px 0px; mso-line-height-rule: exactly; line-height: 16px;"><a href="https://click.fidelityinvestments.com/u/?qs=75162b6fa1abddcdbef8768cbe0f5c1deafb4e2105a699a2c192119acaa087e1acd88e926124d7b3e5bd21061a13b20396931a3d9f32a820"  target="_blank" style="color: #ffffff;">Secure&nbsp;Login</a>&nbsp;&nbsp;<img align="top" alt="Lock" src="http://image.fidelityinvestments.com/lib/fe8b1570706c0c787c/m/1/WI-EDU-Stream_Login_Icon.png" width="10" height="12" border="0"></td>
+      </tr>
+       </tbody>
+     </table></td>
+    </tr>
+     </tbody>
+   </table>
+
+<!-- END OF: Welcome and Login Area --></td>
+  </tr>
+   </tbody>
+ </table></td>
+</tr>
+<tr>
+<td align="center" style="padding: 0px 0px 20px 0px;">
+<!-- START OF: BODY -->
+
+ <table width="600" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff">
+   <tbody bgcolor="#ffffff">
+  <tr>
+    <td align="center" valign="middle" style="">
+
+
+<!-- START OF: BODY COPY-->
+
+   <table border="0" cellspacing="0" cellpadding="0" width="100%" class="100p">
+     <tr>
+    <td class="100p" align="left" valign="top" width="" style="font-family: Arial, sans-serif; font-size: 14px; color: #333333; padding: 20px 30px 0px 30px; mso-hyphenate:none">
+     
+    <h1>Amazon 401(k) Plan Investment Option Changes&mdash;No Action Required</h1>  
+
+    <p>Amazon is committed to periodically reviewing the Amazon 401(k) Plan (the “Plan”) to make sure it continues to help you meet your retirement and financial goals.</p>
+     
+    <p>We regularly review the Plan’s investment options with your best interests in mind, considering a wide variety of factors like fees, value, performance, risk and quality.</p>
+     
+    <p>After a recent plan review, we are enhancing the Plan’s investment lineup by adding a new fund, offering a new share class of an existing fund which has a lower expense ratio than the prior share class, and reducing a fee of another fund in the Plan.</p>
+     
+    <p>View the <a href="https://click.fidelityinvestments.com/u/?qs=75162b6fa1abddcde41a699adb7bb5c7d7f65a5adffa2d47dbe224065f61b9588834112de93e5062306091d508f1b8f497a02b200c790a0a">Investment Option Changes Notice</a> for more details.</p>
+     
+    <p>You may also view the notice online at <a href="https://click.fidelityinvestments.com/u/?qs=75162b6fa1abddcd99c913deb70320ea1109931ed5a66f00ffa2d3d4338303becce252b1220f74a04f9324ce4dde4ae95d9c9958e90c0dab">Fidelity NetBenefits<sup style="line-height: 0; font-size: 75%">&reg;</sup></a>. After you log in, scroll down to <strong>AMAZON 401(K) PLAN</strong> and click the <em>Quick Links</em> drop-down menu; then choose <em><strong>Plan Information and Documents</strong>.</em> Click <strong><em>Investment Option Changes Notice &ndash; December 2025</em></strong> under the <strong><em>Plan Changes</em></strong> section.</p>
+     
+    <p>Review and update your Amazon 401(k) Plan Account beneficiary information to ensure that your loved ones will receive the assets you want them to have. <a href="https://click.fidelityinvestments.com/u/?qs=75162b6fa1abddcd1cbff141b8afa0197425b44e7b6d26f59bb9bc34798ac035fdfb3deacfa8c573ed1b700a57fbc1bb9ae28f8718df36f5">Update Your Beneficiary Now.</a></p>
+ 
+    </td>
+     </tr>
+   </table>
+
+<!-- END OF: BODY COPY --> 
+
+<!-- START OF: CTA Button BLOCK-->
+
+   <table class="100p" border="0" cellspacing="0" cellpadding="0" width="100%">
+     <tr>
+    <td class="100p" align="left" valign="top" width="" style="font-family: Arial, sans-serif; font-size: 14px; color: #333333; padding: 20px 30px 20px 30px; mso-hyphenate:none;">
+     <table border="0" cellspacing="0" cellpadding="0">
+       <tr>
+      <td align="left" bgcolor="#ff6a00" style="padding: 10px 10px 10px 10px;"><a aria-label="Go to NetBenefits" href="https://click.fidelityinvestments.com/u/?qs=75162b6fa1abddcd99c913deb70320ea1109931ed5a66f00ffa2d3d4338303becce252b1220f74a04f9324ce4dde4ae95d9c9958e90c0dab" target="_blank" style="font-size: 16px; font-family: Arial, sans-serif; color: #ffffff; text-decoration: none; display: inline-block;"> <b>Log in to NetBenefits&nbsp;&nbsp;&raquo;</b></a></td>
+       </tr>
+     </table> 
+      </td>
+     </tr>
+   </table>
+
+<!-- END OF: CTA Button BLOCK-->
+  
+<!-- Green Line start -->
+
+   <table width="100%" border="0" cellspacing="0" cellpadding="0" >
+     <tbody>
+    <tr>
+     <td class="100p" align="left" valign="top" width="100%" height="" style="padding: 20px 30px 20px 0px" >
+      <img alt="Fidelity Arrow" src="https://image.fidelityinvestments.com/lib/fe90157070640d7a7c/m/16/6d87d518-341f-46e7-9070-fadf21d5846c.png" class="100p" width="554" height="58" border="0" style="display: block;" />
+     </td>
+    </tr>
+     </tbody>
+   </table>
+
+<!-- Green Line end --></td>
+  </tr>
+   </tbody>
+ </table>
+
+<!-- END OF: BODY --></td>
+</tr>
+</tbody>
+</table>
+
+<!-- END OF: BODY --> 
+
+<!-- Start of: Footer Content -->
+<table border="0" cellspacing="0" cellpadding="0" width="100%" bgcolor="#e8e8e8" class="100p">
+ <tr>
+  <td align="center" style="padding: 0px 0px 20px 0px;"><table border="0" cellspacing="0" cellpadding="0" width="600" class="100p" ><tr>
+   <td align="left" valign="top" style="font-family: Arial, sans-serif; font-size: 10px; color: #666666; padding: 20px 30px 0px 30px; mso-hyphenate:none;">
+   <p style="font-size: 14px;">
+   <a style="color: #0f57c2; text-decoration:" href="https://click.fidelityinvestments.com/u/?qs=75162b6fa1abddcde221c8cac20681fd6f89b5d8d206d77d8ff409282b59ae42eebe408f3e2d0338bdfb05678722c200e35de9c43c6e3a67">Privacy Policy</a> | <a style="color: #0f57c2; text-decoration:" href="https://click.fidelityinvestments.com/u/?qs=75162b6fa1abddcd17b683e59d321b3d4d91390415dd96ee6c7fb87aaead8b8880aad6b2320ee687dbe5ba67a15a3eaf62fa9bcb01eaeb8c">Terms of Use</a></p>
+  
+   <p style="font-size: 14px;">Investing involves risk, including risk of loss.</p>
+    
+   <p>If you wish to receive a printed copy of this document, free of charge, please call Fidelity at 1-800-835-5095.</p> 
+  
+   <p>The information in this e-mail is intended solely for the attention and use of the named addressee. This message or any part thereof must not be disclosed, copied, distributed or retained by any person without authorization of the addressee.</p>  
+  
+   <p>Please do not respond to this e-mail. This mailbox is not monitored, and you will not receive a response.</p>  
+  
+   <p>Fidelity Brokerage Services LLC, Member NYSE, <a style="COLOR: #0f57c2; text-decoration:none" href="https://click.fidelityinvestments.com/u/?qs=75162b6fa1abddcd09b19a06f8b2d8f499d1e9247dc1979ef26c7e7d7a43b3a540a7c1eca21ee682e28013daed2da64d01fadf027a5095ff" target="_blank">SIPC</a>, 900 Salem Street, Smithfield, RI 02917</p>  
+  
+   <p>&copy; 2025 FMR LLC. All rights reserved.</p> 
+  
+   <p>1026250.3.0 </p>
+  
+   <p>If you wish to opt-out of electronic delivery, free of charge, please visit <a href="netbenefits.fidelity.com/preferences">netbenefits.fidelity.com/preferences</a> or call 800-835-5095.  You may obtain a paper version of disclosures sent to you electronically, free of charge, by contacting Fidelity.  Required documents and disclosures accessed electronically will be available for one year or, if applicable, until a subsequent version becomes available.</p>  
+  
+   <p>WRM_FUNDACT_157 </p> 
+    
+   <p>
+    EMAIL REF#d7e2f028-9d80-4577-ba8c-b9aa0fe9c115.4531097 </p> 
+  </td>
+ </tr>
+</table>
+</td>
+</tr>
+</table>
+<!-- End of: Footer Content -->
+</body>
+</html>
+
+
+<img src="https://click.fidelityinvestments.com/open.aspx?ffcb10-fe9210757665047472-fe5910727063027b7017-fe931570706c0c7b75-ff9e1570-fe5d17797660027d7d15-ff0d1570756405&d=40148&bmt=0" width="1" height="1" alt="">
+
+--F6lbixPKzj7v=_?:--
+
