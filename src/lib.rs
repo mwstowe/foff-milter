@@ -2,6 +2,7 @@ pub mod abuse_reporter;
 pub mod advanced_security;
 pub mod analytics;
 pub mod attachment_analyzer;
+pub mod invoice_analyzer;
 pub mod config;
 pub mod config_test;
 pub mod detection;

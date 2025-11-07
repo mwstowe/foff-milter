@@ -1,5 +1,6 @@
 use crate::abuse_reporter::AbuseReporter;
 use crate::attachment_analyzer::AttachmentAnalyzer;
+use crate::invoice_analyzer::{InvoiceAnalyzer, InvoiceAnalysis};
 use crate::domain_age::DomainAgeChecker;
 use crate::language::LanguageDetector;
 use crate::legacy_config::{load_modules, Action, Config, Criteria, Module};
@@ -163,6 +164,8 @@ pub struct FilterEngine {
     // Sender blocking patterns
     sender_blocking_patterns: Vec<Regex>,
     sender_blocking_action: Action,
+    // Invoice fraud analyzer
+    invoice_analyzer: InvoiceAnalyzer,
 }
 
 #[derive(Debug, Default, Clone)]
@@ -257,6 +260,7 @@ impl FilterEngine {
             sender_blocking_action: Action::Reject {
                 message: "Sender blocked by pattern".to_string(),
             },
+            invoice_analyzer: InvoiceAnalyzer::new(),
         };
 
         // Pre-compile all regex patterns for better performance
@@ -330,6 +334,15 @@ impl FilterEngine {
         }
 
         None
+    }
+
+    fn analyze_invoice_fraud(&self, context: &MailContext) -> InvoiceAnalysis {
+        let subject = context.subject.as_deref().unwrap_or("");
+        let body = context.body.as_deref().unwrap_or("");
+        let sender = context.sender.as_deref().unwrap_or("");
+        let from_header = context.from_header.as_deref().unwrap_or("");
+
+        self.invoice_analyzer.analyze(subject, body, sender, from_header)
     }
 
     fn is_blocklisted(&self, context: &MailContext) -> bool {
@@ -1083,6 +1096,23 @@ impl FilterEngine {
             total_score -= 200; // Strong negative score to override false positives
             scoring_rules
                 .push("Mailing List Detection: Legitimate mailing list (-200)".to_string());
+        }
+
+        // Advanced invoice fraud analysis
+        let invoice_analysis = self.analyze_invoice_fraud(&context_with_attachments);
+        if invoice_analysis.is_fake_invoice {
+            let invoice_score = (invoice_analysis.confidence_score * 100.0) as i32;
+            total_score += invoice_score;
+            scoring_rules.push(format!(
+                "Invoice Fraud Analysis: Fake invoice detected (confidence: {:.1}%, +{})",
+                invoice_analysis.confidence_score * 100.0,
+                invoice_score
+            ));
+            log::warn!(
+                "Fake invoice detected - confidence: {:.1}%, patterns: {:?}",
+                invoice_analysis.confidence_score * 100.0,
+                invoice_analysis.detected_patterns
+            );
         }
 
         // Process modules first if modular system is enabled
