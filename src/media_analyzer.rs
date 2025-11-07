@@ -24,15 +24,20 @@ impl MediaAnalyzer {
         Self {
             spam_patterns: vec![
                 // Adult content
-                Regex::new(r"(?i)(viagra|cialis|penis|enlargement|sexual|erection|adult|xxx)").unwrap(),
+                Regex::new(r"(?i)(viagra|cialis|penis|enlargement|sexual|erection|adult|xxx)")
+                    .unwrap(),
                 // Financial scams
-                Regex::new(r"(?i)(bitcoin|crypto|investment|profit|guaranteed|roi|trading)").unwrap(),
+                Regex::new(r"(?i)(bitcoin|crypto|investment|profit|guaranteed|roi|trading)")
+                    .unwrap(),
                 // Health scams
-                Regex::new(r"(?i)(miracle|cure|lose.*weight|doctor.*hate|breakthrough|supplement)").unwrap(),
+                Regex::new(r"(?i)(miracle|cure|lose.*weight|doctor.*hate|breakthrough|supplement)")
+                    .unwrap(),
                 // Urgency patterns
-                Regex::new(r"(?i)(act.*now|limited.*time|expires|urgent|immediate|offer.*ends)").unwrap(),
+                Regex::new(r"(?i)(act.*now|limited.*time|expires|urgent|immediate|offer.*ends)")
+                    .unwrap(),
                 // Brand impersonation
-                Regex::new(r"(?i)(norton|mcafee|microsoft|apple|amazon|paypal|invoice|overdue)").unwrap(),
+                Regex::new(r"(?i)(norton|mcafee|microsoft|apple|amazon|paypal|invoice|overdue)")
+                    .unwrap(),
             ],
         }
     }
@@ -61,7 +66,7 @@ impl MediaAnalyzer {
             Ok(image_data) => {
                 let extracted_text = self.analyze_image_metadata(&image_data);
                 let (spam_score, detected_patterns) = self.analyze_text(&extracted_text);
-                
+
                 MediaAnalysis {
                     extracted_text,
                     spam_score,
@@ -72,7 +77,7 @@ impl MediaAnalyzer {
                 extracted_text: String::new(),
                 spam_score: 0.0,
                 detected_patterns: vec![],
-            }
+            },
         }
     }
 
@@ -93,10 +98,10 @@ impl MediaAnalyzer {
         // Basic image analysis - check for suspicious patterns in metadata
         // This is a placeholder for future OCR integration
         let content_str = String::from_utf8_lossy(content);
-        
+
         // Look for text-like patterns in image metadata/EXIF data
         let mut extracted_text = String::new();
-        
+
         // Check for common spam keywords that might appear in image metadata
         for pattern in &self.spam_patterns {
             if pattern.is_match(&content_str) {
@@ -104,15 +109,18 @@ impl MediaAnalyzer {
                 break;
             }
         }
-        
+
         extracted_text
     }
 
     fn is_image_file(&self, filename: &str) -> bool {
         let lower = filename.to_lowercase();
-        lower.ends_with(".jpg") || lower.ends_with(".jpeg") || 
-        lower.ends_with(".png") || lower.ends_with(".gif") || 
-        lower.ends_with(".bmp") || lower.ends_with(".webp")
+        lower.ends_with(".jpg")
+            || lower.ends_with(".jpeg")
+            || lower.ends_with(".png")
+            || lower.ends_with(".gif")
+            || lower.ends_with(".bmp")
+            || lower.ends_with(".webp")
     }
 
     fn analyze_text(&self, text: &str) -> (f32, Vec<String>) {
@@ -126,7 +134,10 @@ impl MediaAnalyzer {
         for pattern in &self.spam_patterns {
             if pattern.is_match(text) {
                 score += 25.0;
-                patterns.push(format!("Spam pattern in media content: {}", pattern.as_str()));
+                patterns.push(format!(
+                    "Spam pattern in media content: {}",
+                    pattern.as_str()
+                ));
             }
         }
 

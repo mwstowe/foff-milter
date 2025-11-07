@@ -5139,15 +5139,16 @@ impl FilterEngine {
                                     "Found base64 content, length: {}",
                                     base64_content.len()
                                 );
-                                
+
                                 // Decode base64 for media analysis
-                                if let Ok(decoded_content) = BASE64_STANDARD.decode(&base64_content) {
+                                if let Ok(decoded_content) = BASE64_STANDARD.decode(&base64_content)
+                                {
                                     // Perform media analysis (OCR/PDF text extraction)
                                     let media_analysis = self.media_analyzer.analyze_attachment(
                                         &filename.clone().unwrap_or_else(|| "unknown".to_string()),
-                                        &decoded_content
+                                        &decoded_content,
                                     );
-                                    
+
                                     if media_analysis.spam_score > 0.0 {
                                         log::warn!(
                                             "Media content analysis detected spam: score={}, patterns={:?}",
@@ -5157,16 +5158,22 @@ impl FilterEngine {
                                         // Add media spam score to context for later evaluation
                                         // This will be picked up by the heuristic scoring system
                                     }
-                                    
+
                                     if !media_analysis.extracted_text.is_empty() {
                                         log::debug!(
                                             "Extracted text from media ({}): {}",
-                                            filename.clone().unwrap_or_else(|| "unknown".to_string()),
-                                            media_analysis.extracted_text.chars().take(100).collect::<String>()
+                                            filename
+                                                .clone()
+                                                .unwrap_or_else(|| "unknown".to_string()),
+                                            media_analysis
+                                                .extracted_text
+                                                .chars()
+                                                .take(100)
+                                                .collect::<String>()
                                         );
                                     }
                                 }
-                                
+
                                 // Analyze the attachment content for executables
                                 if let Ok(found_files) =
                                     AttachmentAnalyzer::analyze_attachment_content(
@@ -5202,7 +5209,7 @@ impl FilterEngine {
             "Attachment analysis complete, found {} attachments",
             context.attachments.len()
         );
-        
+
         // Also analyze embedded images in HTML content
         self.analyze_embedded_images(context);
     }
@@ -5212,11 +5219,13 @@ impl FilterEngine {
         if let Some(body) = &context.body {
             // Look for base64 encoded images in HTML (data:image/...)
             let img_regex = Regex::new(r"data:image/[^;]+;base64,([A-Za-z0-9+/=]+)").unwrap();
-            
+
             for cap in img_regex.captures_iter(body) {
                 if let Some(base64_data) = cap.get(1) {
-                    let media_analysis = self.media_analyzer.analyze_embedded_image(base64_data.as_str());
-                    
+                    let media_analysis = self
+                        .media_analyzer
+                        .analyze_embedded_image(base64_data.as_str());
+
                     if media_analysis.spam_score > 0.0 {
                         log::warn!(
                             "Embedded image analysis detected spam: score={}, patterns={:?}",
@@ -5224,11 +5233,15 @@ impl FilterEngine {
                             media_analysis.detected_patterns
                         );
                     }
-                    
+
                     if !media_analysis.extracted_text.is_empty() {
                         log::debug!(
                             "Extracted text from embedded image: {}",
-                            media_analysis.extracted_text.chars().take(100).collect::<String>()
+                            media_analysis
+                                .extracted_text
+                                .chars()
+                                .take(100)
+                                .collect::<String>()
                         );
                     }
                 }
