@@ -4,6 +4,7 @@ use crate::domain_age::DomainAgeChecker;
 use crate::invoice_analyzer::{InvoiceAnalysis, InvoiceAnalyzer};
 use crate::language::LanguageDetector;
 use crate::legacy_config::{load_modules, Action, Config, Criteria, Module};
+use crate::media_analyzer::MediaAnalyzer;
 use crate::milter::extract_email_from_header;
 use crate::toml_config::{BlocklistConfig, WhitelistConfig};
 
@@ -166,6 +167,8 @@ pub struct FilterEngine {
     sender_blocking_action: Action,
     // Invoice fraud analyzer
     invoice_analyzer: InvoiceAnalyzer,
+    // Media content analyzer
+    media_analyzer: MediaAnalyzer,
 }
 
 #[derive(Debug, Default, Clone)]
@@ -261,6 +264,7 @@ impl FilterEngine {
                 message: "Sender blocked by pattern".to_string(),
             },
             invoice_analyzer: InvoiceAnalyzer::new(),
+            media_analyzer: MediaAnalyzer::new(),
         };
 
         // Pre-compile all regex patterns for better performance
@@ -5135,7 +5139,35 @@ impl FilterEngine {
                                     "Found base64 content, length: {}",
                                     base64_content.len()
                                 );
-                                // Analyze the attachment content
+                                
+                                // Decode base64 for media analysis
+                                if let Ok(decoded_content) = BASE64_STANDARD.decode(&base64_content) {
+                                    // Perform media analysis (OCR/PDF text extraction)
+                                    let media_analysis = self.media_analyzer.analyze_attachment(
+                                        &filename.clone().unwrap_or_else(|| "unknown".to_string()),
+                                        &decoded_content
+                                    );
+                                    
+                                    if media_analysis.spam_score > 0.0 {
+                                        log::warn!(
+                                            "Media content analysis detected spam: score={}, patterns={:?}",
+                                            media_analysis.spam_score,
+                                            media_analysis.detected_patterns
+                                        );
+                                        // Add media spam score to context for later evaluation
+                                        // This will be picked up by the heuristic scoring system
+                                    }
+                                    
+                                    if !media_analysis.extracted_text.is_empty() {
+                                        log::debug!(
+                                            "Extracted text from media ({}): {}",
+                                            filename.clone().unwrap_or_else(|| "unknown".to_string()),
+                                            media_analysis.extracted_text.chars().take(100).collect::<String>()
+                                        );
+                                    }
+                                }
+                                
+                                // Analyze the attachment content for executables
                                 if let Ok(found_files) =
                                     AttachmentAnalyzer::analyze_attachment_content(
                                         &content_type,
@@ -5170,6 +5202,38 @@ impl FilterEngine {
             "Attachment analysis complete, found {} attachments",
             context.attachments.len()
         );
+        
+        // Also analyze embedded images in HTML content
+        self.analyze_embedded_images(context);
+    }
+
+    /// Analyze embedded images in HTML content using OCR
+    fn analyze_embedded_images(&self, context: &mut MailContext) {
+        if let Some(body) = &context.body {
+            // Look for base64 encoded images in HTML (data:image/...)
+            let img_regex = Regex::new(r"data:image/[^;]+;base64,([A-Za-z0-9+/=]+)").unwrap();
+            
+            for cap in img_regex.captures_iter(body) {
+                if let Some(base64_data) = cap.get(1) {
+                    let media_analysis = self.media_analyzer.analyze_embedded_image(base64_data.as_str());
+                    
+                    if media_analysis.spam_score > 0.0 {
+                        log::warn!(
+                            "Embedded image analysis detected spam: score={}, patterns={:?}",
+                            media_analysis.spam_score,
+                            media_analysis.detected_patterns
+                        );
+                    }
+                    
+                    if !media_analysis.extracted_text.is_empty() {
+                        log::debug!(
+                            "Extracted text from embedded image: {}",
+                            media_analysis.extracted_text.chars().take(100).collect::<String>()
+                        );
+                    }
+                }
+            }
+        }
     }
 
     fn extract_content_type(&self, line: &str) -> Option<String> {
@@ -5192,6 +5256,8 @@ impl FilterEngine {
             || ct.contains("application/zip")
             || ct.contains("application/x-zip")
             || ct.contains("application/octet-stream")
+            || ct.contains("application/pdf")
+            || ct.contains("image/")
     }
 
     fn extract_filename_from_headers(&self, lines: &[&str], start_idx: usize) -> Option<String> {
