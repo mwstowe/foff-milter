@@ -1,9 +1,16 @@
 use base64::Engine;
 use regex::Regex;
 
+#[cfg(feature = "ocr")]
+use image::ImageFormat;
+#[cfg(feature = "ocr")]
+use tesseract_rs::Tesseract;
+
 #[derive(Debug, Clone)]
 pub struct MediaAnalyzer {
     spam_patterns: Vec<Regex>,
+    #[cfg(feature = "ocr")]
+    tesseract: Option<Tesseract>,
 }
 
 #[derive(Debug, Clone)]
@@ -24,21 +31,32 @@ impl MediaAnalyzer {
         Self {
             spam_patterns: vec![
                 // Adult content
-                Regex::new(r"(?i)(viagra|cialis|penis|enlargement|sexual|erection|adult|xxx)")
-                    .unwrap(),
+                Regex::new(r"(?i)(viagra|cialis|penis|enlargement|sexual|erection|adult|xxx)").unwrap(),
                 // Financial scams
-                Regex::new(r"(?i)(bitcoin|crypto|investment|profit|guaranteed|roi|trading)")
-                    .unwrap(),
+                Regex::new(r"(?i)(bitcoin|crypto|investment|profit|guaranteed|roi|trading)").unwrap(),
                 // Health scams
-                Regex::new(r"(?i)(miracle|cure|lose.*weight|doctor.*hate|breakthrough|supplement)")
-                    .unwrap(),
+                Regex::new(r"(?i)(miracle|cure|lose.*weight|doctor.*hate|breakthrough|supplement)").unwrap(),
                 // Urgency patterns
-                Regex::new(r"(?i)(act.*now|limited.*time|expires|urgent|immediate|offer.*ends)")
-                    .unwrap(),
+                Regex::new(r"(?i)(act.*now|limited.*time|expires|urgent|immediate|offer.*ends)").unwrap(),
                 // Brand impersonation
-                Regex::new(r"(?i)(norton|mcafee|microsoft|apple|amazon|paypal|invoice|overdue)")
-                    .unwrap(),
+                Regex::new(r"(?i)(norton|mcafee|microsoft|apple|amazon|paypal|invoice|overdue)").unwrap(),
             ],
+            #[cfg(feature = "ocr")]
+            tesseract: Self::init_tesseract(),
+        }
+    }
+
+    #[cfg(feature = "ocr")]
+    fn init_tesseract() -> Option<Tesseract> {
+        match Tesseract::new(None, Some("eng")) {
+            Ok(tess) => {
+                log::info!("OCR capability enabled with tesseract-rs");
+                Some(tess)
+            }
+            Err(e) => {
+                log::warn!("Failed to initialize tesseract: {}. OCR disabled.", e);
+                None
+            }
         }
     }
 
@@ -46,8 +64,7 @@ impl MediaAnalyzer {
         let extracted_text = if filename.to_lowercase().ends_with(".pdf") {
             self.extract_pdf_text(content)
         } else if self.is_image_file(filename) {
-            // For now, just detect suspicious image patterns without OCR
-            self.analyze_image_metadata(content)
+            self.extract_image_text(content)
         } else {
             String::new()
         };
@@ -64,9 +81,9 @@ impl MediaAnalyzer {
     pub fn analyze_embedded_image(&self, base64_data: &str) -> MediaAnalysis {
         match base64::engine::general_purpose::STANDARD.decode(base64_data) {
             Ok(image_data) => {
-                let extracted_text = self.analyze_image_metadata(&image_data);
+                let extracted_text = self.extract_image_text(&image_data);
                 let (spam_score, detected_patterns) = self.analyze_text(&extracted_text);
-
+                
                 MediaAnalysis {
                     extracted_text,
                     spam_score,
@@ -77,7 +94,7 @@ impl MediaAnalyzer {
                 extracted_text: String::new(),
                 spam_score: 0.0,
                 detected_patterns: vec![],
-            },
+            }
         }
     }
 
@@ -94,14 +111,58 @@ impl MediaAnalyzer {
         }
     }
 
+    fn extract_image_text(&self, content: &[u8]) -> String {
+        #[cfg(feature = "ocr")]
+        {
+            if let Some(ref tesseract) = self.tesseract {
+                return self.extract_text_with_ocr(content, tesseract);
+            }
+        }
+        
+        // Fallback to metadata analysis when OCR is not available
+        self.analyze_image_metadata(content)
+    }
+
+    #[cfg(feature = "ocr")]
+    fn extract_text_with_ocr(&self, content: &[u8], tesseract: &Tesseract) -> String {
+        match image::load_from_memory(content) {
+            Ok(img) => {
+                let rgb_img = img.to_rgb8();
+                let (width, height) = rgb_img.dimensions();
+                
+                match tesseract.set_image(&rgb_img, width, height, 3, width * 3) {
+                    Ok(_) => {
+                        match tesseract.get_text() {
+                            Ok(text) => {
+                                log::debug!("OCR extracted {} chars from image", text.len());
+                                text
+                            }
+                            Err(e) => {
+                                log::debug!("OCR text extraction failed: {}", e);
+                                self.analyze_image_metadata(content)
+                            }
+                        }
+                    }
+                    Err(e) => {
+                        log::debug!("Failed to set image for OCR: {}", e);
+                        self.analyze_image_metadata(content)
+                    }
+                }
+            }
+            Err(e) => {
+                log::debug!("Failed to load image for OCR: {}", e);
+                self.analyze_image_metadata(content)
+            }
+        }
+    }
+
     fn analyze_image_metadata(&self, content: &[u8]) -> String {
         // Basic image analysis - check for suspicious patterns in metadata
-        // This is a placeholder for future OCR integration
         let content_str = String::from_utf8_lossy(content);
-
+        
         // Look for text-like patterns in image metadata/EXIF data
         let mut extracted_text = String::new();
-
+        
         // Check for common spam keywords that might appear in image metadata
         for pattern in &self.spam_patterns {
             if pattern.is_match(&content_str) {
@@ -109,18 +170,15 @@ impl MediaAnalyzer {
                 break;
             }
         }
-
+        
         extracted_text
     }
 
     fn is_image_file(&self, filename: &str) -> bool {
         let lower = filename.to_lowercase();
-        lower.ends_with(".jpg")
-            || lower.ends_with(".jpeg")
-            || lower.ends_with(".png")
-            || lower.ends_with(".gif")
-            || lower.ends_with(".bmp")
-            || lower.ends_with(".webp")
+        lower.ends_with(".jpg") || lower.ends_with(".jpeg") || 
+        lower.ends_with(".png") || lower.ends_with(".gif") || 
+        lower.ends_with(".bmp") || lower.ends_with(".webp")
     }
 
     fn analyze_text(&self, text: &str) -> (f32, Vec<String>) {
@@ -134,10 +192,7 @@ impl MediaAnalyzer {
         for pattern in &self.spam_patterns {
             if pattern.is_match(text) {
                 score += 25.0;
-                patterns.push(format!(
-                    "Spam pattern in media content: {}",
-                    pattern.as_str()
-                ));
+                patterns.push(format!("Spam pattern in media content: {}", pattern.as_str()));
             }
         }
 

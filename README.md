@@ -38,6 +38,41 @@ When a SIGHUP signal is received, FOFF Milter will:
 
 This allows for real-time updates to spam detection rules, configuration changes, and module modifications without service downtime.
 
+## Media Analysis & OCR
+
+FOFF Milter includes advanced media analysis capabilities for detecting spam in images and PDF attachments:
+
+### PDF Text Extraction
+- Automatically extracts text from PDF attachments
+- Analyzes extracted text for spam patterns
+- Detects invoice scams, cryptocurrency fraud, and other threats
+
+### Image Analysis
+- **Basic Mode (Default)**: Analyzes image metadata for suspicious patterns
+- **OCR Mode (Optional)**: Full text extraction from images using Tesseract
+
+### Enabling OCR
+To enable full OCR capabilities, install Tesseract and build with the OCR feature:
+
+```bash
+# Install Tesseract (Ubuntu/Debian)
+sudo apt-get install tesseract-ocr tesseract-ocr-eng libtesseract-dev
+
+# Install Tesseract (CentOS/RHEL)
+sudo yum install tesseract tesseract-devel tesseract-langpack-eng
+
+# Build with OCR support
+cargo build --release --features ocr
+```
+
+### Spam Detection in Media
+The media analyzer detects:
+- Adult content keywords
+- Financial scam patterns
+- Health misinformation
+- Urgency and pressure tactics
+- Brand impersonation attempts
+
 ## Configuration System
 
 ### Modern TOML Configuration
