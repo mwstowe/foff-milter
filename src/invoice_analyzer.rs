@@ -38,7 +38,7 @@ impl InvoiceAnalyzer {
                 Regex::new(r"(?i)(will be.*charged|auto.*renew|debited)").unwrap(),
             ],
             brand_impersonation: vec![
-                Regex::new(r"(?i)(norton|mcafee|microsoft|apple|amazon|paypal)").unwrap(),
+                Regex::new(r"(?i)(norton|mcafee|microsoft|apple)").unwrap(),
                 Regex::new(r"(?i)(antivirus|security|protection).*alert").unwrap(),
             ],
             suspicious_domains: vec![
@@ -67,6 +67,16 @@ impl InvoiceAnalyzer {
             };
         }
 
+        // Skip analysis for subscription services
+        if self.is_subscription_service(&combined_text, sender) {
+            return InvoiceAnalysis {
+                is_fake_invoice: false,
+                confidence_score: 0.0,
+                detected_patterns: vec!["Subscription service".to_string()],
+                risk_factors: vec![],
+            };
+        }
+
         // Check for monetary amounts (high weight)
         if self.has_suspicious_amounts(&combined_text) {
             score += 30.0;
@@ -80,11 +90,11 @@ impl InvoiceAnalyzer {
             patterns.push(format!("Invoice indicators ({})", invoice_matches));
         }
 
-        // Check urgency patterns
+        // Check urgency patterns (only if invoice indicators are present)
         let urgency_matches = self.count_pattern_matches(&self.urgency_patterns, &combined_text);
-        if urgency_matches > 0 {
+        if urgency_matches > 0 && invoice_matches > 0 {
             score += urgency_matches as f32 * 20.0;
-            patterns.push(format!("Urgency patterns ({})", urgency_matches));
+            patterns.push(format!("Urgency + invoice patterns ({})", urgency_matches));
         }
 
         // Check brand impersonation
@@ -147,6 +157,36 @@ impl InvoiceAnalyzer {
         for brand in &high_risk_brands {
             let brand_pattern = Regex::new(&format!("(?i){}", brand)).unwrap();
             if brand_pattern.is_match(text) {
+                // Exclude HTML namespace references and technical content (be specific)
+                let html_exclusions = [
+                    "schemas-microsoft-com", "x-apple-data-detectors", "xmlns:",
+                    "microsoft-com:office", "microsoft-com:vml", "appleLinks",
+                    "Apple-Mail-Boundary",
+                ];
+                
+                let mut is_html_reference = false;
+                for exclusion in &html_exclusions {
+                    if text.contains(exclusion) {
+                        is_html_reference = true;
+                        break;
+                    }
+                }
+                
+                // Additional check: if it contains HTML but also has scam indicators, don't exclude
+                if is_html_reference {
+                    let scam_indicators = ["overdue", "total amount", "invoice number", "24 hours"];
+                    let has_scam_language = scam_indicators.iter().any(|&indicator| 
+                        text.to_lowercase().contains(indicator)
+                    );
+                    if has_scam_language {
+                        is_html_reference = false; // Don't exclude if it has scam language
+                    }
+                }
+                
+                if is_html_reference {
+                    continue;
+                }
+                
                 let domain_pattern = Regex::new(&format!("(?i)@.*{}.*\\.", brand)).unwrap();
                 if !domain_pattern.is_match(sender) {
                     return true;
@@ -167,6 +207,36 @@ impl InvoiceAnalyzer {
         for brand in &invoice_scam_brands {
             let brand_pattern = Regex::new(&format!("(?i){}", brand)).unwrap();
             if brand_pattern.is_match(text) {
+                // Exclude HTML namespace references and technical content (be specific)
+                let html_exclusions = [
+                    "schemas-microsoft-com", "x-apple-data-detectors", "xmlns:",
+                    "microsoft-com:office", "microsoft-com:vml", "appleLinks",
+                    "Apple-Mail-Boundary",
+                ];
+                
+                let mut is_html_reference = false;
+                for exclusion in &html_exclusions {
+                    if text.contains(exclusion) {
+                        is_html_reference = true;
+                        break;
+                    }
+                }
+                
+                // Additional check: if it contains HTML but also has scam indicators, don't exclude
+                if is_html_reference {
+                    let scam_indicators = ["overdue", "total amount", "invoice number", "24 hours"];
+                    let has_scam_language = scam_indicators.iter().any(|&indicator| 
+                        text.to_lowercase().contains(indicator)
+                    );
+                    if has_scam_language {
+                        is_html_reference = false; // Don't exclude if it has scam language
+                    }
+                }
+                
+                if is_html_reference {
+                    continue;
+                }
+                
                 let domain_pattern = Regex::new(&format!("(?i)@.*{}.*\\.", brand)).unwrap();
                 if !domain_pattern.is_match(sender) {
                     return true;
@@ -182,7 +252,8 @@ impl InvoiceAnalyzer {
             "fidelity.com", "adapthealth.com", "bcdtravel.com", "backstage.com",
             "arrived.com", "seattle.gov", "netsuite.com", "salesforce.com",
             "quickbooks.com", "stripe.com", "square.com", "shopify.com",
-            "mailchimp.com", "constantcontact.com", "sendgrid.net"
+            "mailchimp.com", "constantcontact.com", "sendgrid.net",
+            "adapthealthmarketplace.com"
         ];
 
         for domain in &legitimate_domains {
@@ -208,5 +279,45 @@ impl InvoiceAnalyzer {
         }
 
         false
+    }
+
+    fn is_subscription_service(&self, text: &str, sender: &str) -> bool {
+        // Check for subscription service patterns
+        let subscription_patterns = [
+            "trial", "membership", "streaming", "monthly", 
+            "annual", "cancel anytime", "free trial", "premium"
+        ];
+        
+        let subscription_domains = [
+            "disneyplus", "netflix", "spotify", "hulu", "amazon", "apple",
+            "microsoft", "adobe", "zoom", "dropbox", "slack"
+        ];
+        
+        // If it's from a known subscription service
+        for domain in &subscription_domains {
+            if sender.contains(domain) {
+                return true;
+            }
+        }
+        
+        // If it contains subscription language but also scam indicators, don't exclude
+        let scam_indicators = ["overdue", "total amount", "invoice number", "24 hours", "will be charged"];
+        let has_scam_language = scam_indicators.iter().any(|&indicator| 
+            text.to_lowercase().contains(indicator)
+        );
+        
+        if has_scam_language {
+            return false; // Don't exclude scams even if they mention subscriptions
+        }
+        
+        // If it contains subscription language
+        let mut subscription_indicators = 0;
+        for pattern in &subscription_patterns {
+            if text.to_lowercase().contains(pattern) {
+                subscription_indicators += 1;
+            }
+        }
+        
+        subscription_indicators >= 2
     }
 }
