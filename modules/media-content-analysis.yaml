@@ -1,0 +1,34 @@
+name: "Media Content Analysis"
+enabled: true
+rules:
+  - name: "PDF Invoice Scam Detection"
+    enabled: true
+    criteria:
+      type: "MediaTextPattern"
+      pattern: "(?i).*(invoice.*overdue|urgent.*payment|bitcoin.*payment|cryptocurrency.*required).*"
+    score: 75
+    description: "Detect invoice scams and crypto payment demands in PDF attachments"
+
+  - name: "Adult Content in Images"
+    enabled: true
+    criteria:
+      type: "MediaTextPattern"
+      pattern: "(?i).*(viagra|cialis|sexual|adult|xxx|enlargement|erection).*"
+    score: 60
+    description: "Detect adult content keywords extracted from images"
+
+  - name: "Financial Scams in Media"
+    enabled: true
+    criteria:
+      type: "MediaTextPattern"
+      pattern: "(?i).*(guaranteed.*profit|investment.*opportunity|bitcoin.*trading|crypto.*mining).*"
+    score: 65
+    description: "Detect financial scam content in PDFs and images"
+
+  - name: "Health Misinformation in Media"
+    enabled: true
+    criteria:
+      type: "MediaTextPattern"
+      pattern: "(?i).*(miracle.*cure|doctors.*hate|lose.*weight.*fast|breakthrough.*supplement).*"
+    score: 55
+    description: "Detect health misinformation in media attachments"

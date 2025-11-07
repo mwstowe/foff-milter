@@ -166,6 +166,9 @@ pub enum Criteria {
     BodyPattern {
         pattern: String,
     },
+    MediaTextPattern {
+        pattern: String,
+    },
     HeaderPattern {
         header: String,
         pattern: String,

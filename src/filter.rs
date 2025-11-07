@@ -184,6 +184,7 @@ pub struct MailContext {
     pub body: Option<String>,
     pub last_header_name: Option<String>, // Track last header for continuation lines
     pub attachments: Vec<AttachmentInfo>, // New: attachment analysis
+    pub extracted_media_text: String,    // Text extracted from PDFs and images
 }
 
 #[derive(Debug, Clone)]
@@ -217,6 +218,7 @@ impl FilterEngine {
             attachments: context.attachments.clone(), // Attachments handled separately
             last_header_name: context.last_header_name.clone(),
             mailer: context.mailer.clone(),
+            extracted_media_text: context.extracted_media_text.clone(),
         }
     }
 
@@ -792,7 +794,8 @@ impl FilterEngine {
             | Criteria::SenderPattern { pattern }
             | Criteria::RecipientPattern { pattern }
             | Criteria::SubjectPattern { pattern }
-            | Criteria::BodyPattern { pattern } => {
+            | Criteria::BodyPattern { pattern }
+            | Criteria::MediaTextPattern { pattern } => {
                 if !self.compiled_patterns.contains_key(pattern) {
                     let regex = Regex::new(pattern).map_err(|e| {
                         anyhow::anyhow!("Invalid regex pattern '{}': {}", pattern, e)
@@ -2449,6 +2452,14 @@ impl FilterEngine {
                     if let Some(body) = &context.body {
                         if let Some(regex) = self.compiled_patterns.get(pattern) {
                             return regex.is_match(body);
+                        }
+                    }
+                    false
+                }
+                Criteria::MediaTextPattern { pattern } => {
+                    if !context.extracted_media_text.is_empty() {
+                        if let Some(regex) = self.compiled_patterns.get(pattern) {
+                            return regex.is_match(&context.extracted_media_text);
                         }
                     }
                     false
@@ -5171,6 +5182,12 @@ impl FilterEngine {
                                                 .take(100)
                                                 .collect::<String>()
                                         );
+                                        
+                                        // Add extracted text to context for other rules to use
+                                        if !context.extracted_media_text.is_empty() {
+                                            context.extracted_media_text.push_str("\n\n");
+                                        }
+                                        context.extracted_media_text.push_str(&media_analysis.extracted_text);
                                     }
                                 }
 
@@ -5243,6 +5260,12 @@ impl FilterEngine {
                                 .take(100)
                                 .collect::<String>()
                         );
+                        
+                        // Add extracted text to context for other rules to use
+                        if !context.extracted_media_text.is_empty() {
+                            context.extracted_media_text.push_str("\n\n");
+                        }
+                        context.extracted_media_text.push_str(&media_analysis.extracted_text);
                     }
                 }
             }
