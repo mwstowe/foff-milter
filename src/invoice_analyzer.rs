@@ -1,13 +1,10 @@
 use regex::Regex;
-use std::collections::HashMap;
 
 #[derive(Debug, Clone)]
 pub struct InvoiceAnalyzer {
     // Compiled patterns for performance
-    amount_patterns: Vec<Regex>,
     invoice_indicators: Vec<Regex>,
     urgency_patterns: Vec<Regex>,
-    brand_impersonation: Vec<Regex>,
     suspicious_domains: Vec<Regex>,
 }
 
@@ -19,14 +16,15 @@ pub struct InvoiceAnalysis {
     pub risk_factors: Vec<String>,
 }
 
+impl Default for InvoiceAnalyzer {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl InvoiceAnalyzer {
     pub fn new() -> Self {
         Self {
-            amount_patterns: vec![
-                Regex::new(r"(?i)\$\d{2,4}\.\d{2}").unwrap(),
-                Regex::new(r"(?i)(total|amount|charge|bill|due).*\$\d+").unwrap(),
-                Regex::new(r"(?i)\$\d+.*\d+.*hours").unwrap(),
-            ],
             invoice_indicators: vec![
                 Regex::new(r"(?i)(invoice|bill|receipt|charge|payment|overdue)").unwrap(),
                 Regex::new(r"(?i)(nota fiscal|documento|nfse|eletronica|disponivel)").unwrap(),
@@ -37,10 +35,6 @@ impl InvoiceAnalyzer {
                 Regex::new(r"(?i)(24 hours|expires|urgent|immediate|suspend|cancel)").unwrap(),
                 Regex::new(r"(?i)(will be.*charged|auto.*renew|debited)").unwrap(),
             ],
-            brand_impersonation: vec![
-                Regex::new(r"(?i)(norton|mcafee|microsoft|apple)").unwrap(),
-                Regex::new(r"(?i)(antivirus|security|protection).*alert").unwrap(),
-            ],
             suspicious_domains: vec![
                 Regex::new(r"@[^@]*\.(tk|ml|ga|cf|gq|top|click|delivery|shop)$").unwrap(),
                 Regex::new(r"documento\d+@").unwrap(),
@@ -50,7 +44,13 @@ impl InvoiceAnalyzer {
         }
     }
 
-    pub fn analyze(&self, subject: &str, body: &str, sender: &str, from_header: &str) -> InvoiceAnalysis {
+    pub fn analyze(
+        &self,
+        subject: &str,
+        body: &str,
+        sender: &str,
+        from_header: &str,
+    ) -> InvoiceAnalysis {
         let mut score = 0.0;
         let mut patterns = Vec::new();
         let mut risks = Vec::new();
@@ -120,7 +120,7 @@ impl InvoiceAnalyzer {
 
         // Normalize score to 0-100
         let confidence = (score / 100.0).min(1.0);
-        
+
         InvoiceAnalysis {
             is_fake_invoice: confidence > 0.4, // Balanced threshold
             confidence_score: confidence,
@@ -132,10 +132,13 @@ impl InvoiceAnalyzer {
     fn has_suspicious_amounts(&self, text: &str) -> bool {
         // Look for specific amount patterns that are common in scams
         let suspicious_amounts = [
-            r"\$295\.70", r"\$299\.99", r"\$399\.99", r"\$49\.99",
+            r"\$295\.70",
+            r"\$299\.99",
+            r"\$399\.99",
+            r"\$49\.99",
             r"\$\d{2,3}\.\d{2}.*24.*hours",
         ];
-        
+
         for pattern_str in &suspicious_amounts {
             if let Ok(pattern) = Regex::new(&format!("(?i){}", pattern_str)) {
                 if pattern.is_match(text) {
@@ -147,25 +150,38 @@ impl InvoiceAnalyzer {
     }
 
     fn count_pattern_matches(&self, patterns: &[Regex], text: &str) -> usize {
-        patterns.iter().map(|p| if p.is_match(text) { 1 } else { 0 }).sum()
+        patterns
+            .iter()
+            .map(|p| if p.is_match(text) { 1 } else { 0 })
+            .sum()
     }
 
     fn has_brand_impersonation(&self, text: &str, sender: &str) -> bool {
         // Only check for major tech/security brands that are commonly impersonated in invoice scams
         let high_risk_brands = ["norton", "mcafee", "microsoft", "apple"];
-        
+
         for brand in &high_risk_brands {
             let brand_pattern = Regex::new(&format!("(?i){}", brand)).unwrap();
             if brand_pattern.is_match(text) {
                 // Exclude legitimate Apple/Microsoft services and HTML references
                 let exclusions = [
-                    "schemas-microsoft-com", "x-apple-data-detectors", "xmlns:",
-                    "microsoft-com:office", "microsoft-com:vml", "appleLinks",
-                    "Apple-Mail-Boundary", "x-apple-disable-message-reformatting",
-                    "Apple Wallet", "Apple Pay", "Apple Watch", "Apple TV",
-                    "Microsoft Office", "Microsoft Teams", "Microsoft 365",
+                    "schemas-microsoft-com",
+                    "x-apple-data-detectors",
+                    "xmlns:",
+                    "microsoft-com:office",
+                    "microsoft-com:vml",
+                    "appleLinks",
+                    "Apple-Mail-Boundary",
+                    "x-apple-disable-message-reformatting",
+                    "Apple Wallet",
+                    "Apple Pay",
+                    "Apple Watch",
+                    "Apple TV",
+                    "Microsoft Office",
+                    "Microsoft Teams",
+                    "Microsoft 365",
                 ];
-                
+
                 let mut is_legitimate_reference = false;
                 for exclusion in &exclusions {
                     if text.contains(exclusion) {
@@ -173,22 +189,22 @@ impl InvoiceAnalyzer {
                         break;
                     }
                 }
-                
+
                 // Additional check: if it contains legitimate reference but also has scam indicators, don't exclude
                 if is_legitimate_reference {
                     let scam_indicators = ["overdue", "total amount", "invoice number", "24 hours"];
-                    let has_scam_language = scam_indicators.iter().any(|&indicator| 
-                        text.to_lowercase().contains(indicator)
-                    );
+                    let has_scam_language = scam_indicators
+                        .iter()
+                        .any(|&indicator| text.to_lowercase().contains(indicator));
                     if has_scam_language {
                         is_legitimate_reference = false; // Don't exclude if it has scam language
                     }
                 }
-                
+
                 if is_legitimate_reference {
                     continue;
                 }
-                
+
                 let domain_pattern = Regex::new(&format!("(?i)@.*{}.*\\.", brand)).unwrap();
                 if !domain_pattern.is_match(sender) {
                     return true;
@@ -205,19 +221,29 @@ impl InvoiceAnalyzer {
     fn has_sender_brand_mismatch(&self, text: &str, sender: &str) -> bool {
         // Only check for brands commonly used in invoice scams
         let invoice_scam_brands = ["norton", "mcafee", "microsoft", "apple"];
-        
+
         for brand in &invoice_scam_brands {
             let brand_pattern = Regex::new(&format!("(?i){}", brand)).unwrap();
             if brand_pattern.is_match(text) {
                 // Exclude legitimate Apple/Microsoft services and HTML references
                 let exclusions = [
-                    "schemas-microsoft-com", "x-apple-data-detectors", "xmlns:",
-                    "microsoft-com:office", "microsoft-com:vml", "appleLinks",
-                    "Apple-Mail-Boundary", "x-apple-disable-message-reformatting",
-                    "Apple Wallet", "Apple Pay", "Apple Watch", "Apple TV",
-                    "Microsoft Office", "Microsoft Teams", "Microsoft 365",
+                    "schemas-microsoft-com",
+                    "x-apple-data-detectors",
+                    "xmlns:",
+                    "microsoft-com:office",
+                    "microsoft-com:vml",
+                    "appleLinks",
+                    "Apple-Mail-Boundary",
+                    "x-apple-disable-message-reformatting",
+                    "Apple Wallet",
+                    "Apple Pay",
+                    "Apple Watch",
+                    "Apple TV",
+                    "Microsoft Office",
+                    "Microsoft Teams",
+                    "Microsoft 365",
                 ];
-                
+
                 let mut is_legitimate_reference = false;
                 for exclusion in &exclusions {
                     if text.contains(exclusion) {
@@ -225,22 +251,22 @@ impl InvoiceAnalyzer {
                         break;
                     }
                 }
-                
+
                 // Additional check: if it contains legitimate reference but also has scam indicators, don't exclude
                 if is_legitimate_reference {
                     let scam_indicators = ["overdue", "total amount", "invoice number", "24 hours"];
-                    let has_scam_language = scam_indicators.iter().any(|&indicator| 
-                        text.to_lowercase().contains(indicator)
-                    );
+                    let has_scam_language = scam_indicators
+                        .iter()
+                        .any(|&indicator| text.to_lowercase().contains(indicator));
                     if has_scam_language {
                         is_legitimate_reference = false; // Don't exclude if it has scam language
                     }
                 }
-                
+
                 if is_legitimate_reference {
                     continue;
                 }
-                
+
                 let domain_pattern = Regex::new(&format!("(?i)@.*{}.*\\.", brand)).unwrap();
                 if !domain_pattern.is_match(sender) {
                     return true;
@@ -252,12 +278,27 @@ impl InvoiceAnalyzer {
 
     fn is_legitimate_business(&self, sender: &str, from_header: &str) -> bool {
         let legitimate_domains = [
-            "amazon.com", "paypal.com", "microsoft.com", "apple.com", "google.com",
-            "fidelity.com", "adapthealth.com", "bcdtravel.com", "backstage.com",
-            "arrived.com", "seattle.gov", "netsuite.com", "salesforce.com",
-            "quickbooks.com", "stripe.com", "square.com", "shopify.com",
-            "mailchimp.com", "constantcontact.com", "sendgrid.net",
-            "adapthealthmarketplace.com"
+            "amazon.com",
+            "paypal.com",
+            "microsoft.com",
+            "apple.com",
+            "google.com",
+            "fidelity.com",
+            "adapthealth.com",
+            "bcdtravel.com",
+            "backstage.com",
+            "arrived.com",
+            "seattle.gov",
+            "netsuite.com",
+            "salesforce.com",
+            "quickbooks.com",
+            "stripe.com",
+            "square.com",
+            "shopify.com",
+            "mailchimp.com",
+            "constantcontact.com",
+            "sendgrid.net",
+            "adapthealthmarketplace.com",
         ];
 
         for domain in &legitimate_domains {
@@ -288,32 +329,54 @@ impl InvoiceAnalyzer {
     fn is_subscription_service(&self, text: &str, sender: &str) -> bool {
         // Check for subscription service patterns
         let subscription_patterns = [
-            "trial", "membership", "streaming", "monthly", 
-            "annual", "cancel anytime", "free trial", "premium"
+            "trial",
+            "membership",
+            "streaming",
+            "monthly",
+            "annual",
+            "cancel anytime",
+            "free trial",
+            "premium",
         ];
-        
+
         let subscription_domains = [
-            "disneyplus", "netflix", "spotify", "hulu", "amazon", "apple",
-            "microsoft", "adobe", "zoom", "dropbox", "slack", "sparkpostmail"
+            "disneyplus",
+            "netflix",
+            "spotify",
+            "hulu",
+            "amazon",
+            "apple",
+            "microsoft",
+            "adobe",
+            "zoom",
+            "dropbox",
+            "slack",
+            "sparkpostmail",
         ];
-        
+
         // If it's from a known subscription service
         for domain in &subscription_domains {
             if sender.contains(domain) {
                 return true;
             }
         }
-        
+
         // If it contains subscription language but also scam indicators, don't exclude
-        let scam_indicators = ["overdue", "total amount", "invoice number", "24 hours", "will be charged"];
-        let has_scam_language = scam_indicators.iter().any(|&indicator| 
-            text.to_lowercase().contains(indicator)
-        );
-        
+        let scam_indicators = [
+            "overdue",
+            "total amount",
+            "invoice number",
+            "24 hours",
+            "will be charged",
+        ];
+        let has_scam_language = scam_indicators
+            .iter()
+            .any(|&indicator| text.to_lowercase().contains(indicator));
+
         if has_scam_language {
             return false; // Don't exclude scams even if they mention subscriptions
         }
-        
+
         // If it contains subscription language
         let mut subscription_indicators = 0;
         for pattern in &subscription_patterns {
@@ -321,7 +384,7 @@ impl InvoiceAnalyzer {
                 subscription_indicators += 1;
             }
         }
-        
+
         subscription_indicators >= 2
     }
 }

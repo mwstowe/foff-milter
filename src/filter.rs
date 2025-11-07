@@ -1,7 +1,7 @@
 use crate::abuse_reporter::AbuseReporter;
 use crate::attachment_analyzer::AttachmentAnalyzer;
-use crate::invoice_analyzer::{InvoiceAnalyzer, InvoiceAnalysis};
 use crate::domain_age::DomainAgeChecker;
+use crate::invoice_analyzer::{InvoiceAnalysis, InvoiceAnalyzer};
 use crate::language::LanguageDetector;
 use crate::legacy_config::{load_modules, Action, Config, Criteria, Module};
 use crate::milter::extract_email_from_header;
@@ -280,14 +280,19 @@ impl FilterEngine {
         self.blocklist_config = blocklist_config;
     }
 
-    pub fn set_sender_blocking(&mut self, sender_blocking: Option<crate::toml_config::SenderBlockingConfig>) {
+    pub fn set_sender_blocking(
+        &mut self,
+        sender_blocking: Option<crate::toml_config::SenderBlockingConfig>,
+    ) {
         if let Some(config) = sender_blocking {
             if config.enabled {
                 let mut patterns = Vec::new();
                 for pattern_str in &config.block_patterns {
                     match Regex::new(pattern_str) {
                         Ok(regex) => patterns.push(regex),
-                        Err(e) => log::warn!("Invalid sender blocking pattern '{}': {}", pattern_str, e),
+                        Err(e) => {
+                            log::warn!("Invalid sender blocking pattern '{}': {}", pattern_str, e)
+                        }
                     }
                 }
                 self.sender_blocking_patterns = patterns;
@@ -303,7 +308,10 @@ impl FilterEngine {
                         message: "Sender blocked by pattern".to_string(),
                     },
                 };
-                log::info!("Loaded {} sender blocking patterns", self.sender_blocking_patterns.len());
+                log::info!(
+                    "Loaded {} sender blocking patterns",
+                    self.sender_blocking_patterns.len()
+                );
             }
         }
     }
@@ -342,7 +350,8 @@ impl FilterEngine {
         let sender = context.sender.as_deref().unwrap_or("");
         let from_header = context.from_header.as_deref().unwrap_or("");
 
-        self.invoice_analyzer.analyze(subject, body, sender, from_header)
+        self.invoice_analyzer
+            .analyze(subject, body, sender, from_header)
     }
 
     fn is_blocklisted(&self, context: &MailContext) -> bool {
@@ -1039,7 +1048,11 @@ impl FilterEngine {
                     get_hostname()
                 ),
             )];
-            return (self.sender_blocking_action.clone(), vec!["Sender Blocking".to_string()], headers);
+            return (
+                self.sender_blocking_action.clone(),
+                vec!["Sender Blocking".to_string()],
+                headers,
+            );
         }
 
         // Create mutable copy for attachment analysis
