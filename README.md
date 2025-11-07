@@ -1,12 +1,13 @@
-# FOFF Milter v0.6.6
+# FOFF Milter v0.6.7
 
-A comprehensive, enterprise-grade email security platform written in Rust featuring modular threat detection and clean TOML configuration.
+A comprehensive, enterprise-grade email security platform written in Rust featuring modular threat detection, explicit sender blocking, and clean TOML configuration.
 
 ## 🚀 Complete Email Security Platform
 
 FOFF Milter is a production-ready email security solution that provides:
 
 - **🛡️ Modular Threat Detection**: 17+ specialized detection modules covering all major threat vectors
+- **🚫 Explicit Sender Blocking**: Pattern-based sender blocking with immediate rejection or tagging
 - **🔧 Clean Configuration**: TOML-based configuration with separated module system
 - **🔍 Advanced Security**: Deep inspection of attachments, URLs, and content analysis
 - **📊 Enterprise Analytics**: Real-time monitoring, reporting, and statistics
@@ -58,6 +59,18 @@ config_dir = "/etc/foff-milter/modules"
 reject_threshold = 350  # High threshold - most emails tagged rather than rejected
 spam_threshold = 50     # Tag as spam at this score
 accept_threshold = 0    # Accept below spam threshold
+
+[sender_blocking]
+# Explicit sender pattern blocking - highest priority filtering
+enabled = true
+# Patterns that will immediately block emails (score: 1000)
+block_patterns = [
+    ".*@suspicious-domain\\.com$",
+    ".*spammer.*@.*",
+    ".*@.*\\.tk$"
+]
+# Action to take: "reject" or "tag"
+action = "reject"
 
 [legacy]
 enabled = false

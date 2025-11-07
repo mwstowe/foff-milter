@@ -21,7 +21,7 @@ rules:
         - type: "Not"
           criteria:
             type: "SenderPattern"
-            pattern: ".*@.*(google|legitimate-seo|established-marketing|secretlab)\\.(com|co)$"
+            pattern: ".*@.*(google|secretlab)\\.(com|co)$"
     score: 55
     description: "Detects unsolicited SEO and marketing services spam"
 
@@ -86,6 +86,58 @@ rules:
       pattern: ".*(will be.*paid|payment.*hours|charged.*hours).*"
     score: 60
     description: "Detects urgent payment threat language"
+
+  - name: "Fake payment confirmation and transaction scams"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(thank.*you.*payment|payment.*transaction|transaction.*complete|payment.*received|confirmation.*payment).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(thank.*you.*payment|payment.*transaction|transaction.*complete|payment.*received|confirmation.*payment).*"
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "SenderPattern"
+                pattern: ".*@.*(paypal|stripe|square|amazon|ebay|apple|google|microsoft)\\.(com|net|org)$"
+              - type: "SenderPattern"
+                pattern: ".*@.*(bank|financial|credit|visa|mastercard|amex)\\.(com|net|org)$"
+              - type: "SenderPattern"
+                pattern: ".*@.*(topgolf|entertainment|gaming|casino|sports|recreation)\\.(com|net|org)$"
+              - type: "SenderPattern"
+                pattern: ".*@.*williams-sonoma\\.(com|net|org)$"
+              - type: "SenderPattern"
+                pattern: ".*Williams Sonoma.*"
+              - type: "BodyPattern"
+                pattern: "(?i).*(no.*purchase.*payment.*necessary|no.*purchase.*or.*payment.*of.*any.*kind|sweepstakes.*rules|contest.*rules|official.*rules).*"
+              - type: "SubjectPattern"
+                pattern: "(?i).*(bonus.*play|promotion|contest|sweepstakes|giveaway).*"
+    score: 70
+    description: "Detects fake payment confirmation and transaction scams"
+
+  - name: "Advance fee fraud and business proposal scams"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(private|confidential|urgent|business.*proposal|mutual.*benefit|privileged.*information).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(business.*proposal|mutually.*beneficial|privileged.*information|confidential.*matter|urgent.*response|await.*your.*response|beneficial.*business).*"
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "SenderPattern"
+                pattern: ".*@.*(bank|government|official|legal|law|attorney|solicitor)\\.(com|gov|org)$"
+              - type: "SenderPattern"
+                pattern: ".*@.*(empower|fidelity|schwab|vanguard|financial|advisor|investment)\\.(com|net|org)$"
+    score: 75
+    description: "Detects advance fee fraud and suspicious business proposal scams"
 
   - name: "Fake product confirmation and tool set scams"
     criteria:

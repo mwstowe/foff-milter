@@ -17,6 +17,24 @@ rules:
     score: 40
     description: "Romance and dating scam patterns"
 
+  - name: "International romance and dating scams"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(want.*to.*be.*with.*you|ukrainian.*love|russian.*love|find.*love|beautiful.*women|lonely.*women|first.*name).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(want.*to.*be.*with.*you|ukrainian.*love|russian.*love|find.*love|beautiful.*women|lonely.*women|dating.*site).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(match|eharmony|bumble|tinder|dating)\\.(com|net|org)$"
+    score: 75
+    description: "Detects international romance and dating scams"
+
   - name: "Inappropriate Content"
     enabled: true
     criteria:

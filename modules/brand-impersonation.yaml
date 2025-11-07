@@ -42,7 +42,7 @@ rules:
         - type: "Not"
           criteria:
             type: "SenderPattern"
-            pattern: ".*@.*(bestbuy|geeksquad|asus|legitimate-tech)\\.com$"
+            pattern: ".*@.*(bestbuy|geeksquad|asus)\\.com$"
     score: 65
     description: "Geek Squad and tech support billing scam impersonation from non-legitimate domains"
 
@@ -63,6 +63,23 @@ rules:
         - "sbisec.co.jp"
     score: 65
     description: "Financial services and securities impersonation"
+
+  - name: "Government and Veterans Affairs impersonation"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(veteran.*affairs|usa.*today.*veteran|government.*benefit|va.*compensation|veterans.*administration).*"
+            - type: "SenderPattern"
+              pattern: "(?i).*veteran.*affairs.*|.*usa.*today.*veteran.*|.*government.*benefit.*|.*va.*compensation.*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(va\\.gov|usatoday\\.com|gannett\\.com|veterans\\.gov)$"
+    score: 75
+    description: "Detects impersonation of Veterans Affairs and government agencies"
 
   - name: "Automotive services impersonation"
     criteria:

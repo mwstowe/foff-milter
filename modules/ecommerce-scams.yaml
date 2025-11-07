@@ -99,7 +99,122 @@ rules:
               pattern: "(?i).*(repair.*scheduled|maintenance.*scheduled|service.*scheduled|repair.*appointment|maintenance.*appointment|technician.*visit).*"
         - type: "Not"
           criteria:
-            type: "SenderPattern"
-            pattern: ".*@.*(repair|maintenance|service|hvac|plumbing|electric|contractor|homeadvisor|angi|thumbtack).*\\.(com|net|org)$"
+            type: "Or"
+            criteria:
+              - type: "SenderPattern"
+                pattern: ".*@(repair|maintenance|service|hvac|plumbing|electric|contractor|homeadvisor|angi|thumbtack)\\.(com|net|org)$"
+              - type: "SenderPattern"
+                pattern: ".*@(medical|health|hospital|clinic|adapthealth|pulmonary|healthcare)\\.(com|net|org)$"
+              - type: "SenderPattern"
+                pattern: ".*AdaptHealth.*"
     score: 75
     description: "Detects fake repair and maintenance scheduling scams"
+
+  - name: "Black Friday and fake savings scams"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(black.*friday.*event|savings.*kit.*claims|get.*ready.*black.*friday|fake.*savings|limited.*time.*offer).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(black.*friday.*event|savings.*kit.*claims|get.*ready.*black.*friday|fake.*savings|limited.*time.*offer).*"
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "SenderPattern"
+                pattern: ".*@.*(amazon|walmart|target|bestbuy|macys|mcdonalds)\\.(com|net|org)$"
+              - type: "SenderPattern"
+                pattern: ".*@.*(becu|creditunion|bank|financial)\\.(com|net|org)$"
+              - type: "SenderPattern"
+                pattern: ".*@.*(disney|dominos|williams-sonoma|sparkpostmail)\\.(com|net|org)$"
+              - type: "SenderPattern"
+                pattern: ".*@e\\.williams-sonoma\\.com$"
+              - type: "SenderPattern"
+                pattern: ".*Williams Sonoma.*"
+              - type: "SenderPattern"
+                pattern: ".*McDonald.*|.*Think Vacuums.*"
+    score: 70
+    description: "Detects Black Friday and fake savings scams"
+
+  - name: "Air filter and HVAC product scams"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(air.*filter|custom.*made.*filters|perfect.*fit.*filters|hvac.*filters|stay.*safe.*filters).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(air.*filter|custom.*made.*filters|perfect.*fit.*filters|hvac.*filters|stay.*safe.*filters).*"
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "SenderPattern"
+                pattern: ".*@.*(homedepot|lowes|hvac|carrier|trane|lennox|filtersfast|filters-fast|think-vacuums|thinkvacuums|email\\.filtersfast|wayfair|williams-sonoma)\\.(com|net|org)$"
+              - type: "SenderPattern"
+                pattern: ".*Filters Fast.*|.*Think Vacuums.*|.*Think Vacuums Team.*"
+    score: 60
+    description: "Detects air filter and HVAC product scams"
+
+  - name: "Home improvement and gutter protection scams"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(gutter.*protection|leaf.*filter|fall.*into.*savings|home.*improvement|roofing.*deal).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(gutter.*protection|leaf.*filter|fall.*into.*savings|home.*improvement|roofing.*deal).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(homedepot|lowes|menards|homeimprovement|contractor|wayfair|williams-sonoma|pottery-barn|crateandbarrel)\\.(com|net|org)$"
+    score: 65
+    description: "Detects home improvement and gutter protection scams"
+
+  - name: "DIY woodworking and hobby scams"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(woodworking.*projects|16.*000.*plans|instant.*access.*plans|teds.*woodworking|diy.*projects).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(woodworking.*projects|16.*000.*plans|instant.*access.*plans|teds.*woodworking|diy.*projects).*"
+            - type: "SenderPattern"
+              pattern: "(?i).*teds.*woodworking.*|.*woodworking.*plans.*|.*diy.*projects.*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(homedepot|lowes|woodcraft|rockler|finewoodworking)\\.(com|net|org)$"
+    score: 60
+    description: "Detects DIY woodworking and hobby scams"
+
+  - name: "Suspicious clothing and merchandise scams"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(smart.*looks|professor.*tee|clothing.*sale|merchandise.*offer|tee.*shirt|apparel.*deal).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(smart.*looks|professor.*tee|clothing.*sale|merchandise.*offer|tee.*shirt|apparel.*deal).*"
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "SenderPattern"
+                pattern: ".*@.*(amazon|ebay|etsy|shopify|nike|adidas|wolfermans|bakery|gourmet|food)\\.(com|net|org)$"
+              - type: "SenderPattern"
+                pattern: ".*@.*wolfermans-email\\.com$"
+              - type: "SubjectPattern"
+                pattern: "(?i).*(bonus.*play|promotion|contest|sweepstakes|giveaway).*"
+    score: 60
+    description: "Detects suspicious clothing and merchandise scams"

@@ -1,0 +1,1694 @@
+Return-Path: <msprvs1=20405paXfzg5_=bounces-266693-1440@sparkpostmail.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTPS id 5A6NxGsO070290
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <mstowe@baddomain.com>; Thu, 6 Nov 2025 23:59:17 GMT
+	(envelope-from msprvs1=20405paXfzg5_=bounces-266693-1440@sparkpostmail.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messaging.disneyplus.com header.i=@messaging.disneyplus.com header.b=31ZUY9e5
+X-Authentication-Warning: juliett.baddomain.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.baddomain.com
+Received: from e9hbvqra.messaging.disneyplus.com (e9hbvqra.messaging.disneyplus.com [137.22.237.193])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 5A6NxERE001520
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK)
+	for <mstowe@baddomain.com>; Thu, 6 Nov 2025 17:59:15 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 5A6NxERE001520
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (2048-bit key, unprotected) header.d=messaging.disneyplus.com header.i=@messaging.disneyplus.com header.a=rsa-sha256 header.s=scph1024 header.b=31ZUY9e5
+X-MSFBL: FmuSiD94AGbsrGgDa7QSRrWthhQ4EGpy0J2zvuQVq+E=|eyJzdWJhY2NvdW50X2l
+	kIjoiMTQ0MCIsInRlbmFudF9pZCI6InNwYyIsInIiOiJtc3Rvd2VAYmFkZG9tYWl
+	uLmNvbSIsIm1lc3NhZ2VfaWQiOiI2OTA5NGQzNjBkNjkxMjQ1NTBmYSIsImN1c3R
+	vbWVyX2lkIjoiMjY2NjkzIn0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=messaging.disneyplus.com; s=scph1024; t=1762473549;
+	i=@messaging.disneyplus.com;
+	bh=1Uv/Jcm7fH+Y5VhvwXbUV6Bxc1s38mpeKsHwjKkxH88=;
+	h=List-Unsubscribe:Message-ID:Subject:List-Unsubscribe-Post:From:To:
+	 Date:Content-Type:From:To:Cc:Subject;
+	b=31ZUY9e5qoy6t5L2fFYlxwQgJtWUXETku6CZvFfBYcLv9OjGNts9JKBxy9eAudrS7
+	 NIJsSTgPRAIajEPpQNf8yUsAx4d2XSHKqEHdGOjNy4a+Sm70bxENpkIQOjKpbzGpXV
+	 nBXhZ6AxSKrnEAPeKYBWYhc2AFZ9op9w49AhlnfT+AD74501uBCsnHxS1UakQCH2VF
+	 HMW38F+ShOJFwsxtHnpURAX6chP9Z+FOYgy4XsNgnKsaGg9QcJ5ra/S4K3QkS3SD1C
+	 YPR9cLkMX4s4hjru4yypSaH7hLc0rnCT+QsDSGJeMkzPTDcmZoAA15PEplQK/F4c1t
+	 Nhym1v9K6HwQw==
+Received: from [10.90.38.17] ([10.90.38.17])
+	by i-09d1a42aa745c4723.mta1vrest.sd.prd.sparkpost (ecelerity 5.1.0.74659 r(msys-ecelerity:tags/5.1.0.17)) with REST
+	id AF/0D-41918-D463D096; Thu, 06 Nov 2025 23:59:09 +0000
+List-Unsubscribe: <https://03.emailinboundprocessing.com/enc_user/list_unsubscribe?d=%241%24a808xypcKdMfbu7KQasrNw%3D%3D%242%2FO876GNWZa8z1JpFd6nirjRLsPvlpudwYxvS0sGGKLcMUaIDlsp8%2BlGhfbQ%0Ae1fL3lIT9zDF%2B%2B2ophFOnpbVoV%2BsKw3o11cMfOy%2FIxnuEboCQk9Lbg%2FhdDgr%0A3yrunlOJDpaJhzRQ1TFhRMlLSdVxh8U6RcOdRBY9ey2xrWvcRaowfg9REW%2F4%0AO9mEjDYRLB0tih9oWScR5x5X8BpXOqg2v4UL0xF5FZ6GQkbETbprzVr559Ke%0A1TWSlOOJ1xhPJCILDZv0niz8EkgqRK8Fv0F0RJh11KkAvm79DvbAjuSOgikh%0A8yq%2Fsug2sxx30zdDgA%2BmJ5K4EUr89mpuOaaLwj39eB%2BmF6DDUbmi7bFJzUhL%0A43E%3D&1=1>
+Message-ID: <AF.0D.41918.D463D096@i-09d1a42aa745c4723.mta1vrest.sd.prd.sparkpost>
+Subject: =?utf-8?B?8J+GlSBQZXJrcyBqdXN0IGRyb3BwZWQhIA==?=
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+From: "Disney+" <disneyplus@sparkpostmail.com>
+To: mstowe@baddomain.com
+Date: Thu, 06 Nov 2025 23:59:09 +0000
+Content-Type: multipart/alternative; boundary="_----Vb9trJqIH/Kn3e2qixgLTQ===_7D/0D-41918-D463D096"
+MIME-Version: 1.0
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Thu, 06 Nov 2025 23:59:17 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Thu, 06 Nov 2025 17:59:15 -0600 (CST)
+X-Spam-Flag: YES
+X-FOFF-Rule-Matched: Ecommerce Scams: Black Friday and fake savings scams (hotel.baddomain.com)
+X-FOFF-Score: 0 - analyzed by foff-milter v0.6.6 on juliett.baddomain.com
+X-FOFF-Score: 70 - foff-milter v0.6.6 (hotel.baddomain.com)
+
+--_----Vb9trJqIH/Kn3e2qixgLTQ===_7D/0D-41918-D463D096
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="UTF-8"
+
+Walt Disney World savings + Unleash the Holidays prize pack +=0Amore =0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0Atd, a { font-family: Arial, sans-serif !important; }=0A.buttonLink=
+, .button2Link { background-color:transparent=0A!important; border: transpa=
+rent !important; }       96    =F0=9F=86=95 Perks=0Ajust dropped!  =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =
+=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C=0A=E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =
+=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C=0A=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C=
+ =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C=0A=E2=80=8C=
+ =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =
+=E2=80=8C =E2=80=8C =E2=80=8C=0A=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =
+=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C=0A=E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =
+=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C=0A=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =
+=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C=0A=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C=
+ =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C=0A=E2=80=8C =E2=80=8C =E2=80=8C=
+ =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =
+=E2=80=8C=0A=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =
+=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C=0A=E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C=0A=0A    Disney+ =0A( https://links.messa=
+ging.disneyplus.com/f/a/oIfk8cZiYHPJt0QnI9IJpg~~/AAQRxRA~/MhGHaYbc3kEGdnvye=
+sRk75mtdB2e9RHweJurAISCCP_oBsf3VZ-0tIiL3yMNgrljVCnihNymqB1Qrr0lilGKu4sPtk_o=
+RKkQ6OSAyN2JH73CwW0Wr_lGej9wEi5_7Wx2MGOs-gfYXMtuw1_eChq9iA~~ )=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A      Disney+ Perks: WDW Ticket=0AOf=
+fer =0A( https://links.messaging.disneyplus.com/f/a/-4bFac_2z6GGJTsuw4M8Hg~=
+~/AAQRxRA~/QpltOd1j3oDdV52Af0mTu6mq50YGYkwK4wZ34-dVNB37cQiZe4GOV2na21hOc_DK=
+Wm7GXcdaln9A-x43kudS16kNR7q45-d2O2hK-hTmnPElfci6EXmUW0hMOeol7WLHIbbAJ_fTsLJ=
+dUNTMzydiRBM3bUQAoTqxtuKxOPKUHsenGPP9AEJHfjANFrqhEeIKYTqzPjYZeoNol5SNO7ka5m=
+p75GPBK2sZFOoa9NlzgkGveIrjB-7ZRNiD0b83D7VfvqT2yMBYtK0_v2S7BygJ4k7t1W-OhYyhn=
+G-WZwRxUyM~ )=0A     Give the gift of a Walt Disney World=C2=AE Resort vaca=
+tion=0ASave on your next magical getaway with Disney+ Perks.1 Get a=0Aspeci=
+al 3=E2=80=91Day, 3=E2=80=91Park Ticket to select parks this spring,=0Astar=
+ting at $109 per day + tax! Total price from $325 + tax.2=0AUNLOCK PERK =0A=
+( https://links.messaging.disneyplus.com/f/a/KclDCHGgCUqbhpcL6iSoTw~~/AAQRx=
+RA~/QpltOd1j3oDdV52Af0mTu6mq50YGYkwK4wZ34-dVNB37cQiZe4GOV2na21hOc_DKWm7GXcd=
+aln9A-x43kudS16kNR7q45-d2O2hK-hTmnPElfci6EXmUW0hMOeol7WLHIbbAJ_fTsLJdUNTMzy=
+diRBM3bUQAoTqxtuKxOPKUHsenGPP9AEJHfjANFrqhEeIKsTSpvdOCaIgH_IfnNYL0y_AOQ32XL=
+lZcTXQls1lrX2DBdHRqAdmqSOHGpZs9EHN2U6QWYEWPpOnOdSqm8M5_2LimAGdQkZ4-CuGAUDjG=
+bps~ )=0A           =0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A      D=
+isney+ Perks: DCP Prize=0APack =0A( https://links.messaging.disneyplus.com/=
+f/a/C0VS69WZyWrLnCalfzq3fw~~/AAQRxRA~/QpltOd1j3oDdV52Af0mTu6mq50YGYkwK4wZ34=
+-dVNB37cQiZe4GOV2na21hOc_DKWm7GXcdaln9A-x43kudS16kNR7q45-d2O2hK-hTmnPElfci6=
+EXmUW0hMOeol7WLHIbbAJ_fTsLJdUNTMzydiRBM3bUQAoTqxtuKxOPKUHsenGPP9AEJHfjANFrq=
+hEeIKc5bQm5deQfDzb_7UihOjKY4J-fMuF0J0-qs1iUTRnsQDKv4SrZPz0_vMt8y7RbAvXTXBgM=
+cgHmbOw9hP0d2SPQLMBT1oc6M33XG1oXMWCSQ~ )=0A     Your chance to win an Unlea=
+sh the Holidays prize pack=0AGet ready to unwrap the ultimate prize pack of=
+ Disney, Pixar,=0AMarvel, and Star Wars=E2=84=A2 faves, worth over $4,000! =
+Enter for a=0Achance to win the LEGO Death Star, the Ultimate Stitch=0AAnim=
+atronic Plush from Just Play, and more epic surprises for the=0Awhole famil=
+y.3        UNLOCK PERK =0A( https://links.messaging.disneyplus.com/f/a/YAsi=
+SEGIBbjqX1eAaPPuNw~~/AAQRxRA~/QpltOd1j3oDdV52Af0mTu6mq50YGYkwK4wZ34-dVNB37c=
+QiZe4GOV2na21hOc_DKWm7GXcdaln9A-x43kudS16kNR7q45-d2O2hK-hTmnPElfci6EXmUW0hM=
+Oeol7WLHIbbAJ_fTsLJdUNTMzydiRBM3bUQAoTqxtuKxOPKUHsenGPP9AEJHfjANFrqhEeIKhIA=
+wUCpnQ_MZmYcKAX-QnbdEWULI2x_uiubHtINBiEqu6L9Lz9fncqFv6Ps2dwFQ0m6mS8lfHUNk1I=
+p2MUZc7kgikiPelzyBMTw1LlbevLg~ )=0A           =0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A      Disney+ Perks: Marvel=0ARivals =0A( https://link=
+s.messaging.disneyplus.com/f/a/zEnA0pTs2If_CY_LiwBqLg~~/AAQRxRA~/QpltOd1j3o=
+DdV52Af0mTu6mq50YGYkwK4wZ34-dVNB37cQiZe4GOV2na21hOc_DKWm7GXcdaln9A-x43kudS1=
+6kNR7q45-d2O2hK-hTmnPElfci6EXmUW0hMOeol7WLHIbbAJ_fTsLJdUNTMzydiRBM3bUQAoTqx=
+tuKxOPKUHsenGPP9AEJHfjANFrqhEeIKenduDNm1XAUT9sAgeViQN-_p3bLV9SMA2Tp43yIKuuA=
+pJgnzDulWupFa3mucEGHR3xIwNJ3cyxPh9k5ICku-0VSow9D4E_qXiQYCN8Rpc5w~ )=0A     =
+Suit up with a free Daredevil costume in Marvel Rivals=0ABattle as your fav=
+orite Super Heroes and Villains in unique=0Aworlds across the Marvel Multiv=
+erse! Get a timed=E2=80=91exclusive=0Acostume for the new Marvel Rivals cha=
+racter, Daredevil.4=0AUNLOCK PERK =0A( https://links.messaging.disneyplus.c=
+om/f/a/88wmkV7nTAaAMAlvr3tPig~~/AAQRxRA~/QpltOd1j3oDdV52Af0mTu6mq50YGYkwK4w=
+Z34-dVNB37cQiZe4GOV2na21hOc_DKWm7GXcdaln9A-x43kudS16kNR7q45-d2O2hK-hTmnPElf=
+ci6EXmUW0hMOeol7WLHIbbAJ_fTsLJdUNTMzydiRBM3bUQAoTqxtuKxOPKUHsenGPP9AEJHfjAN=
+FrqhEeIKCD2rzjgyPVhVRJrv48EbsK7VUXdP7_NEjDLrLhVJ555Qor7HNdtjeA38cQAyHqRTCEP=
+Jc1ics3KqZW3HuUAuGYLE_Kq1TTbd96sM4IZX0ag~ )=0A           =0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A      Disney+ Perks: Percy=0AJackson Sweeps =
+=0A( https://links.messaging.disneyplus.com/f/a/3OQqnAy300xMy3m6Yoz_LA~~/AA=
+QRxRA~/QpltOd1j3oDdV52Af0mTu6mq50YGYkwK4wZ34-dVNB37cQiZe4GOV2na21hOc_DKWm7G=
+Xcdaln9A-x43kudS16kNR7q45-d2O2hK-hTmnPElfci6EXmUW0hMOeol7WLHIbbAJ_fTsLJdUNT=
+MzydiRBM3bUQAoTqxtuKxOPKUHsenGPP9AEJHfjANFrqhEeIKMwbMj_e0HQI5AmFjPOZqfF1bft=
+khd0cSoxcizglX1WoWCXlxMOzqOtszEt195hrdtBLJcZXqQPNA1eIEikBOVD1ubbqB1yasH5bSa=
+GiYWz0~ )=0A     Your chance to embark on an epic quest     Ready to come=
+=0Asail away=3F Enter for a chance to attend the premiere of the=0Aall=E2=
+=80=91new season of Percy Jackson and the Olympians in Los Angeles.=0ATrave=
+l and lodging included. Season 2 arrives December=E2=80=8C 10, only=0Aon Di=
+sney+.5        UNLOCK PERK =0A( https://links.messaging.disneyplus.com/f/a/=
+JqBw4JY04dKQyszD-QEmcA~~/AAQRxRA~/QpltOd1j3oDdV52Af0mTu6mq50YGYkwK4wZ34-dVN=
+B37cQiZe4GOV2na21hOc_DKWm7GXcdaln9A-x43kudS16kNR7q45-d2O2hK-hTmnPElfci6EXmU=
+W0hMOeol7WLHIbbAJ_fTsLJdUNTMzydiRBM3bUQAoTqxtuKxOPKUHsenGPP9AEJHfjANFrqhEeI=
+KGZATFB74dvAkf1Jj7Wahgu0I4nqZr_b3KQmeVOJ3OGFdNG7kGANnXRdPxZfUD-ctXsobm5dZuV=
+3wZT0tgppGLzk4mMaTBqxXiURznYY0M_g~ )=0A           =0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A      Disney+ Perks: Santa=0AMonica Ice Skating Eve=
+nt =0A( https://links.messaging.disneyplus.com/f/a/5aIk9jRUWJCL71z_wM9bTg~~=
+/AAQRxRA~/QpltOd1j3oDdV52Af0mTu6mq50YGYkwK4wZ34-dVNB37cQiZe4GOV2na21hOc_DKW=
+m7GXcdaln9A-x43kudS16kNR7q45-d2O2hK-hTmnPElfci6EXmUW0hMOeol7WLHIbbAJ_fTsLJd=
+UNTMzydiRBM3bUQAoTqxtuKxOPKUHsenGPP9AEJHfjANFrqhEeIKFD4qWJWcByhbptMRua3in5w=
+y4isFbP-J11yMLQmCZWNkbCOGUg8S91y9gpsZolsW31_lzufOcPmUwH1wz3tU5be4Q7yuHDp_xk=
+pf0rwIwOo~ )=0A     Your chance to win an ice skating escape in Santa Monic=
+a=0ALace up and get ready to dazzle with a chance to win tickets to=0A"Ice =
+at Santa Monica," an exclusive private ice skating event=0Apresented by Dis=
+ney+ and Hulu.6        UNLOCK PERK =0A( https://links.messaging.disneyplus.=
+com/f/a/LiDFMaCKgnFF4RUxn_TaCw~~/AAQRxRA~/QpltOd1j3oDdV52Af0mTu6mq50YGYkwK4=
+wZ34-dVNB37cQiZe4GOV2na21hOc_DKWm7GXcdaln9A-x43kudS16kNR7q45-d2O2hK-hTmnPEl=
+fci6EXmUW0hMOeol7WLHIbbAJ_fTsLJdUNTMzydiRBM3bUQAoTqxtuKxOPKUHsenGPP9AEJHfjA=
+NFrqhEeIKAoDyzzL_f9CAZOg553QOrmOmZa-ZRH7xoIIIqK_kBVWsyIHWRiXLkNc9s_J2351PGR=
+avoXL2UNzPQtBIN-_z1yWoQVYddh-cbfgtKBCoSgk~ )=0A           =0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A      Disney+ Perks: Loungefly=0A=0A( http=
+s://links.messaging.disneyplus.com/f/a/sPcJ150y-YeVUyg7u0o6Rg~~/AAQRxRA~/Qp=
+ltOd1j3oDdV52Af0mTu6mq50YGYkwK4wZ34-dVNB37cQiZe4GOV2na21hOc_DKWm7GXcdaln9A-=
+x43kudS16kNR7q45-d2O2hK-hTmnPElfci6EXmUW0hMOeol7WLHIbbAJ_fTsLJdUNTMzydiRBM3=
+bUQAoTqxtuKxOPKUHsenGPP9AEJHfjANFrqhEeIK55q5rp1V_o4uohE_p6zoy1BEXEtRw0xb6W7=
+T9gGKkqOYctPAUhrpLxJHhegQdVHjaArDE5vl5HdnH52VGlB0G4wb07p4HM9LQvzBTQuByuI~ )=
+=0A     Save 20% off across Loungefly.=E2=80=8Ccom     Find the perfect=0Ag=
+ift for the Disney, Marvel, or Star Wars=E2=84=A2 fan in your life =E2=80=
+=94 or=0Atreat yourself =E2=80=94 with 20% off select Loungefly products. L=
+imited=0Atime only!7        UNLOCK PERK =0A( https://links.messaging.disney=
+plus.com/f/a/mpnnUr_pRvZKktCKvNnb8Q~~/AAQRxRA~/QpltOd1j3oDdV52Af0mTu6mq50YG=
+YkwK4wZ34-dVNB37cQiZe4GOV2na21hOc_DKWm7GXcdaln9A-x43kudS16kNR7q45-d2O2hK-hT=
+mnPElfci6EXmUW0hMOeol7WLHIbbAJ_fTsLJdUNTMzydiRBM3bUQAoTqxtuKxOPKUHsenGPP9AE=
+JHfjANFrqhEeIKqIq30vaCknpttD2bKVC4-CZ74iDW3HseQ7oba4mSRQr7QOK6Iqp6EjZBD_tCq=
+jRKy8r2Wk6lCJMxQU618wS5PtwwpU3jeTo5_9yieXh0LVI~ )=0A           =0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A      Disney+ Perks: Clear+ =0A( https:=
+//links.messaging.disneyplus.com/f/a/SAp4V8ij1e-u04lEN0kQlg~~/AAQRxRA~/Qplt=
+Od1j3oDdV52Af0mTu6mq50YGYkwK4wZ34-dVNB37cQiZe4GOV2na21hOc_DKWm7GXcdaln9A-x4=
+3kudS16kNR7q45-d2O2hK-hTmnPElfci6EXmUW0hMOeol7WLHIbbAJ_fTsLJdUNTMzydiRBM3bU=
+QAoTqxtuKxOPKUHsenGPP9AEJHfjANFrqhEeIKtUMzuOAkqgUhQkhD2rXLlPtryXLma84MRz3hl=
+1iPKvi8sVEXTSaqy-6GgbDHjiuxz3z8QWQOAcyeYe4wBUSlR2hAnn0z2gsr9JapHFiF4mE~ )=
+=0A     Enjoy a 3=E2=80=91month free trial=0Aof CLEAR+     Holiday travel w=
+ith less stress=3F Yes, please.=0ASpeed through security across CLEAR's nat=
+ionwide network with a=0A3=E2=80=91month free trial of CLEAR+.8        UNLO=
+CK PERK =0A( https://links.messaging.disneyplus.com/f/a/JBbmQCHiRnE1-xCrotO=
+DZw~~/AAQRxRA~/QpltOd1j3oDdV52Af0mTu6mq50YGYkwK4wZ34-dVNB37cQiZe4GOV2na21hO=
+c_DKWm7GXcdaln9A-x43kudS16kNR7q45-d2O2hK-hTmnPElfci6EXmUW0hMOeol7WLHIbbAJ_f=
+TsLJdUNTMzydiRBM3bUQAoTqxtuKxOPKUHsenGPP9AEJHfjANFrqhEeIKJ8Md-BD2BsCmUspOQ-=
+kFJyhg4_dsNfi0sTteI1yzf98f3Jk2tZFkgotjLnfEEnO94MheTbHtQwqIDSVmsll8lqty4mG1X=
+T5Zsf1O5_Wn8aY~ )=0A           =0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A      Disney+ Perks: D23 =0A( https://links.messaging.disneyplus.com/=
+f/a/GniCM-6aReK_6OFVPdi-PQ~~/AAQRxRA~/QpltOd1j3oDdV52Af0mTu6mq50YGYkwK4wZ34=
+-dVNB37cQiZe4GOV2na21hOc_DKWm7GXcdaln9A-x43kudS16kNR7q45-d2O2hK-hTmnPElfci6=
+EXmUW0hMOeol7WLHIbbAJ_fTsLJdUNTMzydiRBM3bUQAoTqxtuKxOPKUHsenGPP9AEJHfjANFrq=
+hEeIKUtVWdLxpndnYfD7NqqiUgTaotzwO8hjUJrYCrdzc_-klYR2sEz3343rrtQybh3cWFKR7jC=
+VTha9P_qhvodUC5Dn1gLQI6Gu-plcy3KfsSkE~ )=0A     Enjoy a complimentary=0AD23=
+ Gold Membership     Join the Official Disney Fan Club and=0Aunlock special=
+ events, discounts, and more with free access to=0Athe new D23 Monthly Gold=
+ Membership! Limited time only.9=0AUNLOCK PERK =0A( https://links.messaging=
+.disneyplus.com/f/a/I-Q4HElAFGxb-o_O4m_Pnw~~/AAQRxRA~/QpltOd1j3oDdV52Af0mT=
+u6mq50YGYkwK4wZ34-dVNB37cQiZe4GOV2na21hOc_DKWm7GXcdaln9A-x43kudS16kNR7q45-d=
+2O2hK-hTmnPElfci6EXmUW0hMOeol7WLHIbbAJ_fTsLJdUNTMzydiRBM3bUQAoTqxtuKxOPKUHs=
+enGPP9AEJHfjANFrqhEeIK_0ZRHf1yH1yGNK8JzUcgfxChDVlr0j7NLSj5cHjvse2Kk43L-MAcb=
+DnBaYVSmfSPykRufr8CbVr22YW_ALUJyf4PSuWytk1KmDjawnTCL3I~ )=0A               =
+      =0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0AFollow us=0A    Instagram (=0A=
+https://links.messaging.disneyplus.com/f/a/67Tj14Cf0_59HiFf_YAhDQ~~/AAQRxRA=
+~/WO5btniddr4OpVJiAHV6Skmo-eat9SzjBWIr7hN821apErkQubDUv3kQ_U6AwS3KgkTN_NLyA=
+83HoRb0-nM4v6VDburBBuM9lgL_rOfq6H03GHwZ5Jha1yla6xLnNjQuG0c8PU8mh9wPIID5-vNx=
+Pg~~ )   TikTok (=0Ahttps://links.messaging.disneyplus.com/f/a/JP7s6vjNJeD0=
+pN61tyFj_w~~/AAQRxRA~/8k9BieEmtVUrFTaG10sxDUwlsng290zy8v7srO_aZB_Pbr_HezQRF=
+T04bO9EFv_ULXrYbEoiBr_3Yi-baRK4od6T6_4gxF1M8chV_W00yXykD1GXksNOiUiWPSu2BC-i=
+T0ZTVfvzHK9XtG06nM3-sw~~ )   Facebook=0A( https://links.messaging.disneyplu=
+s.com/f/a/BWQU0pwJjwHu1-a8I8MeJg~~/AAQRxRA~/PfWsBhdsDgtK0v5Scd_oDCnnFgdinOq=
+ZnvOvabii0axiyiun7LRALvFhSuH8JLNlAX8sB3ECbPoWCqEgDdXxo1UyegJieTc7HK6h2kaXdm=
+gh3sy5-3r6t7r7ehAHoKqduYOWeYMO6c9T3Fk74J18Nw~~ )   Twitter=0A( https://link=
+s.messaging.disneyplus.com/f/a/ejM9BcWiP-uitGMc_6dTpg~~/AAQRxRA~/8k9BieEmtV=
+UrFTaG10sxDdVemBQ_X3fdx8YW6gK1hFdPhDOD2n089NltwKdIhEyHiJP5wCXCobAUyLWAYgnSR=
+_f4dYevjma5UIwnyDGynBITUFj_DTQ8eCs4veM5dmRHLaHEgxOVstixpI_0yShH-A~~ )=0A=0A=
+=0A=0A=0A=0A=0A=0A=0AFor more information, please visit ourHelp Center=0A( =
+https://links.messaging.disneyplus.com/f/a/-LP1flO4L9lYIxWJSqYXYA~~/AAQRxRA=
+~/mB1NpkiG-_ZhWhiavRujgEiZo_ecICqAHXKucaWYxAx0gW6zvtryYiS_psTKw-vVBA-kOh8PR=
+oJmtsq0NwX5g8NucubsdcTBDPHgsHYljnsYP0qozxztIy0MCdvNtnGPCyKNumGMr8zOY0Rib5Kg=
+sXkV7TJDkjhb7nH262EWMTz_YL56cifPu5cDM1MrsnxbIKf__rlX1-_2OnO6LYZZHNLgzHoA_SA=
+ewKAN1REfrVg~=0A)=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A   1. Disney+ Perks requires an=0Aactive Disney+ subscriptio=
+n and enrollment in the program; terms=0Aapply. See each promotion for appl=
+icable terms.=0A=0A2. Valid for admission to Disney=E2=80=99s Hollywood Stu=
+dios=C2=AE, Epcot=C2=AE=0Aand Disney=E2=80=99s Animal Kingdom=C2=AE Theme P=
+ark only. Not valid for=0Aadmission to Magic Kingdom=C2=AE Park. One admiss=
+ion per theme park.=0AOne theme park per day. Disney+ subscription required=
+. This is a=0Adate=E2=80=91based ticket with start dates from January=E2=
+=80=8C 12 through=0AMay=E2=80=8C 22,=E2=80=8C 2026. Ticket must be used wit=
+hin 5 days of selected=0Astart date.=0A=0A3. NO PURCHASE NECESSARY. Enter t=
+he Sweepstakes between=0A11/=E2=80=8C6/=E2=80=8C25 at 9:=E2=80=8C00=E2=80=
+=8C AM=E2=80=8C PT and 12/=E2=80=8C11/=E2=80=8C25 at 8:=E2=80=8C59 =E2=80=
+=8CAM =E2=80=8CPT. Open=0Ato legal residents of the 50 U.S./D.C.; 18+. Limi=
+t one (1) entry=0Aper person, per day. See Official Rules =0A( https://link=
+s.messaging.disneyplus.com/f/a/sUFHeicSfRv7qLCPNVhkYA~~/AAQRxRA~/iqDqX3E4PY=
+loUxSrPIlkd2vbIrhLJHXAuiKAot4orvudQPP74MSFa9hI8sDY1pqGjinsr-tJSJrGxHwKXfRZc=
+EWzveQYpj3M4010W--2q0uM0p5V1BSCzgUoc1vyYimUM1eGG5R67q0ELdeBmr-iwdYeZaxCtduq=
+jwDnqvTuLnwIAPRG3lAZMLBBQmebuJJRsffasR5lwKxQlku0NIpqhg~~ )=0A for full deta=
+ils on how to enter, free entry method,=0Aeligibility requirements, odds of=
+ winning, prize description and=0Alimitations. Void where prohibited. Spons=
+or: Disney Streaming=0AServices LLC, 7=E2=80=8C Hudson Square, 10th=E2=80=
+=8C Floor, New=0AYork,=E2=80=8C NY=E2=80=8C 10013.=0A=0A4. Marvel Rivals ma=
+y offer codes that can be redeemed for the=0Ain=E2=80=91game hero costume (=
+the =E2=80=9CCodes=E2=80=9D). Unless otherwise advertised,=0Athe Codes are =
+subject to the following terms, in addition to all=0Aother Terms and Condit=
+ions, including but without limitation to=0AMarvel Rivals=E2=80=99 Terms of=
+ Use =0A( https://links.messaging.disneyplus.com/f/a/kFMhjD1edK1wwqVfyGfWxg=
+~~/AAQRxRA~/FZOdvMoNFS7DosYn7TlSoXYwSIeM5XNqSa22e8qrw5m0dAR0DIP3x7G7L2CFVqj=
+LmhTzBCGwA0as82-4vkMupHZsIq3wgypROzkJVaRZQIERPEvmn8o-eIgsT9ZaBxso93B_7FST4U=
+HtYWAvJZfMDLSLDfttMY0jrtA6tkz7yE6sc2KaJaEFfPjH1uKMpCA_ )=0A and the Disney+=
+ Perks Loyalty Program Terms & Conditions =0A( https://links.messaging.disn=
+eyplus.com/f/a/LQxr3i9aVStHD9DUtFVahw~~/AAQRxRA~/70nWiRikbrz17Y1xXwWYOeAwG_=
+B3RfU-JXJ5DmacrHPggRxu2gdiw2J2C1SWnFVKPOh3-4a1xcKFluxPQWWq574ANmfLHVnjrpivC=
+BbZxELcp0rdhMnuRzdbt0GlzwpBYS3P_7vJebybsZRIXphjC7y__r9hcBIjJ9zBbN48yoU~ )=
+=0A. By using or redeeming a Code, the users ("You") accept and=0Aagree to =
+all applicable terms.=0ARedemption Code=0A1.1 The Codes can only be used to=
+ redeem the Daredevil costume=0Ain Marvel Rivals.=0A1.2 The Codes are subje=
+ct to in=E2=80=91game restrictions.=0AValidity Period=0A2.1 The Codes will =
+be valid as of October=E2=80=8C 10,=E2=80=8C 2025 till=0AJanuary=E2=80=8C 8=
+,=E2=80=8C 2026.=0A2.2 The Codes will expire after the validity period and =
+cannot=0Abe reissued or redeemed after that time.=0ACode Distribution=0A3.1=
+ The Codes may only be redeemed once by You.=0A3.2 The Codes are non=E2=80=
+=91transferable, non=E2=80=91saleable, and cannot be=0Aexchanged for cash o=
+r credit.=0A3.3 You agree not to sell, trade, or otherwise transfer the=0AC=
+odes to any third party.=0ALimitations and Restrictions=0A4.1 The Codes are=
+ only available for the users who have a=0ADisney+subscription and are enro=
+lled in the Disney+=0APerks Program.=0A4.2 The Codes are valid only for use=
+ by You and cannot be used=0Ain conjunction with any other promotions or di=
+scounts unless=0Aexpressly stated.=0A4.3 Marvel Rivals reserves the right t=
+o deny redemption if any=0Afraudulent activity is suspected or Your Disney+=
+ Perk membership=0Ais cancelled.=0ALimitation of Liability=0A5.1 Marvel Riv=
+als shall not be liable for any indirect,=0Aincidental, or consequential da=
+mages arising from the use or=0Ainability to use the Codes.=0A5.2 Your sole=
+ remedy for any dissatisfaction with the Codes is=0Ato stop using it.=0A=0A=
+=C2=A9 2025 MARVEL=0A=0A5. NO PURCHASE NECESSARY. Enter the Sweepstakes bet=
+ween=0A10/=E2=80=8C22/=E2=80=8C25 at 11:=E2=80=8C45=E2=80=8C AM=E2=80=8C PT=
+ and 11/=E2=80=8C13/=E2=80=8C25 at 8:=E2=80=8C59 =E2=80=8CAM=E2=80=8C PT.=
+=0AOpen to legal residents of the 50 U.S./D.C.; 18+. WINNER MUST=0ATRAVEL I=
+N EARLY DECEMBER 2025. Limit one (1) entry per person,=0Aper day. See Offic=
+ial Rules =0A( https://links.messaging.disneyplus.com/f/a/AujeBa4N-w3EWilaT=
+Fyv_Q~~/AAQRxRA~/DyaQ5My5geNprUeEjaLXQWs36M5CFWlx0CjarEM7cvDPEMiookWUkHOs5T=
+pVvEYVNTYtJqfMTnSlBSbvoO7OERZADRryU71ZYWqbZYxwBmDmZqukxQe8NL9EOerupcExbEdnj=
+ib0ff_ib9isem3Ya_aaScxnxK3ZqwQYLOYdCWyuZx8pQIXxRLyHvtyWjCiRp_bAPrX0QI1ZHJTK=
+RvjX5qN0fg4hHD9U5_o84oEEeZ-htamp1HMmM99jmcuei-Ds )=0A for full details on h=
+ow to enter, free entry method,=0Aeligibility requirements, odds of winning=
+, prize description and=0Alimitations. Void where prohibited. Sponsor: Disn=
+ey Streaming=0AServices LLC, 7=E2=80=8C Hudson Square, 10th=E2=80=8C Floor,=
+ New=0AYork,=E2=80=8C NY=E2=80=8C 10013.=0A=0A6. NO PURCHASE NECESSARY. Ent=
+er the Sweepstakes between=0A11/=E2=80=8C6/=E2=80=8C25 at 9:=E2=80=8C00 =E2=
+=80=8CAM =E2=80=8CPT and 11/=E2=80=8C13/=E2=80=8C25 at 8:=E2=80=8C59=E2=80=
+=8C AM=E2=80=8C PT. Open=0Ato legal residents of the 50 U.S./D.C.; 18+. PRI=
+ZE INCLUDES=0ATICKETS TO AN EVENT IN SANTA MONICA, CA, IN EARLY DECEMBER 20=
+25.=0ATRAVEL AND LODGING NOT INCLUDED. Limit one (1) entry per person,=0Ape=
+r day. See Official Rules =0A( https://links.messaging.disneyplus.com/f/a/S=
+Y3pPmwVRp7I0rAzxBqVaA~~/AAQRxRA~/xGb2urCx_H5imOG5OyF8FYszORMQBrNbiXsY5grJ9z=
+L8HaPHSkQkJs6q1Yu-ZEALRiSY6QGFvIwDAUXT7t0Qc9Mv9hAj9UgRqI5jofbJFoTKqaMVzmBLJ=
+crw8rjhmqp7KatUwnEx-i4fN3kFkp5nj7xOjOhZVO0zjJ4Q4SwSLqX5IebG9MCuofG9vHielDyu=
+tcIpz8NMizof19HMQKI_ymvzguR5_ZFBbmwDDEo35QD2nRYiXBHP9EP2VA6oWJ_l )=0A for f=
+ull details on how to enter, free entry method,=0Aeligibility requirements,=
+ odds of winning, prize description and=0Alimitations. Void where prohibite=
+d. Sponsor: Disney Streaming=0AServices LLC, 7=E2=80=8C Hudson Square, 10th=
+=E2=80=8C Floor, New=0AYork,=E2=80=8C NY=E2=80=8C 10013.=0A=0A7. Limited ti=
+me offer. This offer is open only to legal=0Aresidents of the 50 United Sta=
+tes and DC (excluding Puerto Rico),=0Aeighteen (18) or older during Promoti=
+on Period. This promotion is=0Avoid where prohibited. 20% off eligible item=
+s on=0Aht=E2=80=8Ctps://=E2=80=8Cwww=E2=80=8C.loungefly.=E2=80=8Ccom. for D=
+isney+ subscribers only. Must=0Ahave active Disney+ subscription during Pro=
+motion Period to=0Aredeem. Limit one unique, single=E2=80=91use code per el=
+igible Disney+=0Aaccount per transaction. Unused codes expire at the end of=
+ each=0Acalendar month if not redeemed. To receive discount, enter=0Aprovid=
+ed code at checkout and click =E2=80=9CApply=E2=80=9D. Discount will be=0Aa=
+pplied to qualifying items in customer=E2=80=99s cart at time of=0Acheckout=
+. Discount applies to full=E2=80=91priced items only; excludes=0Apresale a=
+nd markdown items. Cannot be combined with other=0Apromotions, offers or di=
+scounts. Non=E2=80=91transferable. No cash value.=0ANot valid on prior purc=
+hases, gift cards, shipping, or taxes.=0A=0A8. Your CLEAR membership will a=
+utomatically renew at the end of=0Ayour three (3)=E2=80=91month free trial =
+and automatically renews each=0Ayear for an additional 12 month period at C=
+LEAR's then=E2=80=91current=0Astandard rate (subject to change). We will no=
+tify you 30 days=0Abefore your card is charged.=0AUpon accepting CLEAR's te=
+rms and conditions, your card will be=0Acharged at the end of your trial, i=
+f applicable.=0AYou can cancel anytime before your trial ends to avoid char=
+ges.=0ADon't forget, in person verification is required at one of the=0AEnr=
+ollment Centers prior to using the CLEAR lanes at=0Aparticipating airports.=
+ Must have active Disney+ subscription=0Aduring Promotion Period to redeem.=
+=0ABy accepting CLEAR=E2=80=99s Terms and Conditions, you agree that your=
+=0Acard will be charged at the end of the trial, unless you=0Acancel before=
+hand.=0A=0A9. Offer for one (1) complimentary Disney+ Perks x D23 Gold=0AMe=
+mber Monthly Plan membership (=E2=80=9CD23 Gold Monthly Plan=E2=80=9D) must=
+ be=0Aredeemed by 12/=E2=80=8C31/=E2=80=8C25. D23 Gold Monthly Plan consist=
+s of: *=0ADigital Gold Member Card (accessible in the D23 app)=0A* Access t=
+o digital Disney twenty=E2=80=91three publication=0A* Access to D23 Gold Me=
+mber Events=0A* Access to D23 Gold Member Offers and Discounts=0A* FanFare =
+Newsletter=0A* Access to D23 General Events=0A* Sweepstakes=0AOffer only va=
+lid for persons aged 18 years or older who are=0Aactive Disney+ subscribers=
+ with an active Disney+ Perks=0Amembership, and who are not current D23 Gol=
+d Members. To redeem,=0Avisit your Disney+ Perks page and follow the redemp=
+tion=0Ainstructions. Then, log in or enroll for the D23 Gold Monthly=0APlan=
+ using the same email address as used for your Disney+=0Asubscription, and =
+follow the redemption instructions to sign up=0Afor D23 Gold Monthly Plan. =
+Limit of one (1) D23 Membership per=0Aperson. If you have a current paid an=
+nual D23 Gold Membership and=0Ayour renewal date is prior to 12/=E2=80=8C31=
+/=E2=80=8C25, you may elect to cancel=0Ayour current membership prior to re=
+newal and enroll in the D23=0AGold Monthly Plan at the time of renewal if y=
+ou are eligible to=0Ado so per these terms. The D23 Gold Monthly Plan shall=
+ renew on a=0Amonthly basis so long as you remain an active Disney+ subscri=
+ber=0Awith an active Disney+ Perks membership. For clarity, you must be=0Aa=
+n active Disney+ subscriber to enroll in the D23 Gold Monthly=0APlan and re=
+main an active Disney+ subscriber in order to access=0Athe D23 Gold Monthly=
+ Plan benefits. For example, all D23=0AMember=E2=80=91exclusive events are =
+only open to D23 Members in good=0Astanding at the time of event ticket pur=
+chase and also at the=0Atime of event attendance. You must show proof of yo=
+ur current D23=0AGold Monthly Plan Membership card (virtually in the D23 Fa=
+n App =0A( https://links.messaging.disneyplus.com/f/a/PBDQF3jCN-i4fqTtXFzBq=
+g~~/AAQRxRA~/ZFSJaDS7ivQQTZ6uR-gMWHF3CbUjTov9XJxpzOn7qKnAu_tnJY-PasYdHWI9ds=
+RrpuelFnppAXYdQGvvH0GIQDMMRGaFhZot1kXpZE5frxkprNajtfMoqZIN9MWNZe3xBf53F6-1o=
+UjydpU65IU_KA~~ )) and valid photo=0AID in order to attend a D23 event.=0A=
+=0AD23 Memberships are non=E2=80=91refundable and non=E2=80=91transferable,=
+ there=0Aare no credits or refunds for partial=E2=80=91year cancellations. =
+If you=0Aenroll in the D23 Gold Monthly Plan and elect to upgrade to a=0Apa=
+id D23 Gold Plan, prices for such Plans are in full as=0Aadvertised with no=
+ credits for the cancellation of the D23 Gold=0AMonthly Plan. All D23 Membe=
+rships are subject to D23 Membership=0ATerms at https://links.messaging.dis=
+neyplus.com/f/a/WyDZ_xPm4zTIk03HfG8SzA~~/AAQRxRA~/An7mCMnX4aRf8kIXTLlkdotXN=
+17OrglqycpA848x5dYjt2q6IyBzUKlbXM4Q2EReJsIrqKgL-P6mGSg0pKkDKOEjFbtXWvrLdjWZ=
+1XywTXQLUkIrvWQK_6MgN7lLle2e =0A( https://links.messaging.disneyplus.com/f/=
+a/VdrGq5KIAYDFTnTG8fPG1w~~/AAQRxRA~/__ZQdopEs1Q_CMgMKeTmkdWH8DLdQ_46qUF1cL4=
+YaS8-vsMrmHCC8QV7odPjdvvB3wmWv7xlO6qdYUP73ldKVPsxunmTH_oZT9tTyVkn8anDRqxunh=
+P0QrvtcIuIGsESo4QUudhGgYfAQRJfOXXUFA~~ )=0A=0AThis offer is for a limited t=
+ime only and D23 reserves the right=0Ato cancel, modify, suspend, or withdr=
+aw this offer and/or the D23=0AGold Monthly Plan at any time without notice=
+. If your Disney+=0Asubscription and/or your Disney+ Perks membership is c=
+ancelled,=0Ayour D23 Gold Monthly Membership will automatically be cancelle=
+d=0Aand your D23 membership will automatically be downgraded to the=0AD23 G=
+eneral Membership Plan. D23 reserves the right to prohibit=0Ausers from red=
+eeming the offer and the right to cancel the D23=0AGold Monthly Plan if eit=
+her D23 or Disney+ believe in their sole=0Adiscretion that the Member is or=
+ is attempting to act=0Afraudulently. The offer may not be auctioned, trade=
+d, copied,=0Atransferred, bartered, modified, sold, or redeemed for cash or=
+ a=0Acash equivalent.       =0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0AThis email was sent to: <a href=3D"#" style=
+=3D"text-decoration:none;color: #C0C0C0; cursor:text;word-break: break-word=
+; overflow-wrap: break-word;">mstowe@baddomain.com</a>. Please do not reply=
+ to this email as this address is not monitored. This email contains an adv=
+ertisement from: Disney Streaming Services, LLC, <a href=3D"#" style=3D"tex=
+t-decoration:none;color: #C0C0C0; cursor:text;">500 S. Buena Vista St., Bur=
+bank, CA 91521</a>.</td></tr><tr><td class=3D"appleLinksGray5UL" style=3D"f=
+ont-family:Inspire, InspireTWDC, 'Trebuchet MS', Arial, sans-serif;font-siz=
+e:11px;line-height:15px;mso-line-height-rule:exactly; color: #c0c0c0;paddin=
+g-top:24px;" align=3D"left">If you do not want to receive future marketing =
+email messages from Disney+, please =0A=0A=0A<a  href=3D"https://links.mess=
+aging.disneyplus.com/f/a/_BXJ_hPs_X7pfKXWhIii7g~~/AAQRxRA~/82SW-ul5YB_mr27k=
+dAIZyno3-uLIhmoTNECTK4J_ELAU5gsO1O2SLPdXIRcRm7PoCQgGDeybAL-TyLh_Y3eRjrE_UJ8=
+rgeE0FTk164LucAEAckXkqzdB0nmplD127zQlZ7wa7aWGhR6WDoHZ3xsB8EFw1KCJw5REgxhRcH=
+W_4SU42ueLSI9CQlz9UMd4ivLWda_HoyXRu1Vfxmol-GHaYxQPf6KSRTcHVqDX1waEXG-56PFax=
+VEM295EMBT4uEFwe600-IrrR-bNbTqIu6DrfDZfbYbBZDr5nAgRZcsRAmUUxZq5zA0vo2OiqNdo=
+gq_GoLfdyUsRX_g9x1JvDjpSJysh5IEizxgVzl_8mGYbVm7YKwhRgzq1rtZCAUl1x4RrPSZMAm7=
+hCRRZ96TPLqt_WcGi2c3jTZzw0Aa6bwQbOJ4KiOMXwuEvlzNCJ4-J1AQhpPmMwfSr1AfnVTpvBr=
+mz4e2QIJUWz4oW6Gtt5jJ3rNQ2wANP-avXCRNx7CvbH0WB alias=3D"optout" style=3D"te=
+xt-decoration:underline;color:#c0c0c0;"><strong>opt-out</strong></a>.</td><=
+/tr><tr><td class=3D"appleLinksGray5UL" style=3D"font-family:Inspire, Inspi=
+reTWDC, 'Trebuchet MS', Arial, sans-serif;font-size:11px;line-height:15px;m=
+so-line-height-rule:exactly; color: #c0c0c0;padding-top:24px;" align=3D"lef=
+t">&copy; 2025 Disney and its related entities. All Rights Reserved.=0ASRC:=
+690d24ed489d6fb933f65f52e3b4e2b2_EN_US=0A
+--_----Vb9trJqIH/Kn3e2qixgLTQ===_7D/0D-41918-D463D096
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html; charset="UTF-8"
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.=
+w3.org/TR/html4/loose.dtd">=0A<html>=0A<head>=0A<meta http-equiv=3D"Content=
+-Type" content=3D"text/html; charset=3DUTF-8">=0A<style>.ExternalClass {=0A=
+width: 100%;=0A}=0A.ExternalClass {=0Aline-height: 100%;=0A}=0Abody {=0Ahei=
+ght: 100% !important; margin: 0 auto !important; padding: 0; width: 100% !i=
+mportant;=0A}=0A@media only screen and (max-width: 480px) {=0A  #background=
+ {=0A    background-color: #ffffff !important;=0A  }=0A}=0A@media only scre=
+en and (max-width: 580px) {=0A  .module {=0A    margin-bottom: -1px !import=
+ant; border-width: 1px !important;=0A  }=0A}=0A@media (prefers-color-scheme=
+: dark) {=0A  td.appleLinksWhite {=0A    -webkit-text-fill-color: #ffffff !=
+important;=0A  }=0A  .module_1 {=0A    background-color: #202124 !important=
+; -webkit-text-fill-color: #ffffff !important;=0A  }=0A}=0A</style>=0A</hea=
+d>=0A<body style=3D"height: 100% !important; width: 100% !important; margin=
+: 0 auto; padding: 0;">=0A<div style=3D"display:none !important;visibility:=
+hidden;mso-hide:all;font-size:1px;color:#ffffff;line-height:1px;max-height:=
+0px;max-width:0px;opacity:0;overflow:hidden;">Walt Disney World savings + U=
+nleash the Holidays prize pack + more</div>=0A<div style=3D"display:none !i=
+mportant;visibility:hidden;mso-hide:all;font-size:1px;color:#ffffff;line-he=
+ight:1px;max-height:0px;max-width:0px;opacity:0;overflow:hidden;">=CD=8F =
+=E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=
+=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =
+=E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=
+=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=
+=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=
+=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=
+=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =
+=CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=
+=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =
+=C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=
+=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =
+=EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=
+=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =
+=E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=
+=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =
+=E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=
+=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=
+=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=
+=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=
+=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =
+=CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=
+=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =
+=C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=
+=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =
+=EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=
+=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =
+=E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=
+=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =
+=E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=
+=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=
+=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=
+=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=
+=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =
+=CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=
+=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =
+=C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=
+=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =
+=EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=
+=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =
+=E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=
+=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =
+=E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=
+=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=
+=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=
+=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=
+=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =
+=CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=
+=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =
+=C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=
+=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =
+=EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=
+=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =
+=E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=
+=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =
+=E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=
+=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=
+=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=
+=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=
+=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =
+</div>=0A<p style=3D"-webkit-font-smoothing: antialiased; margin: 0; paddin=
+g: 0;">=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0D=0A=0D=0A  =0D=0A=0D=0A=0D=0A=
+=0D=0A  =0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=
+=0D=0A=0D=0A=0D=0A=0D=0A=0A=0A=0A=0A=0A=0A=0A=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=
+=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=
+=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=
+=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0A=0A=0D=0A=0D=0A  =0D=0A=0D=
+=0A=0D=0A=0D=0A=0D=0A=0D=0A =0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=
+=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=
+=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=
+=0A=0D=0A=0D=0A=0D=0A=0A=0A=0A=0A    </p>=0A        <meta http-equiv=3D"Con=
+tent-Type" content=3D"text/html;" charset=3D"utf-8">=0A        <meta name=
+=3D"viewport" content=3D"width=3Ddevice-width, initial-scale=3D1.0">=0A    =
+    <!--[if !mso]><!-->=0A        <meta http-equiv=3D"X-UA-Compatible" cont=
+ent=3D"IE=3Dedge">=0A        <!--<![endif]-->=0A        <meta name=3D"color=
+-scheme" content=3D"light">=0A        <meta name=3D"supported-color-schemes=
+" content=3D"light">=0A        =0A        <!--[if mso]>=0A        <style>=
+=0A        td, a {=0A        font-family: Arial, sans-serif !important;=0A =
+       }=0A        .buttonLink, .button2Link {=0A        background-color:t=
+ransparent !important;=0A        border: transparent !important;=0A        =
+}=0A        </style>=0A        <![endif]-->=0A        <!--[if gte mso 9]>=
+=0A        <xml>=0A        <o:OfficeDocumentSettings>=0A        <o:AllowPNG=
+/>=0A        <o:PixelsPerInch>96</o:PixelsPerInch>=0A        </o:OfficeDocu=
+mentSettings>=0A        </xml>=0A        <![endif]-->=0A        <title>=F0=
+=9F=86=95 Perks just dropped!</title>=0A    =0A    =0A        <span class=
+=3D"preheader" style=3D"color: #eaeaea; display: none !important; font-size=
+: 1px; line-height: 1px; max-height: 0; max-width: 0; mso-hide: all !import=
+ant; opacity: 0; overflow: hidden; visibility: hidden; -webkit-font-smoothi=
+ng: antialiased;">&nbsp;</span>=0A        <!-- Insert &zwnj;&nbsp; hack aft=
+er hidden preview text -->=0A        <div style=3D"display: none; max-heigh=
+t: 0px; overflow: hidden;"> &nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&n=
+bsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+=0A            &nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=0A            =
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=0A            &nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C=0A            &nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C=0A            &nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+=0A            &nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=0A            =
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=0A            &nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C=0A            &nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C=0A            &nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+=0A            &nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=0A            =
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=0A            &nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C=0A            &nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C=0A            &nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+=0A            &nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=0A            =
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=0A            &nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C=0A            &nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C=0A            &nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+=0A        </div>=0A        <table id=3D"background" role=3D"presentation" =
+cellpadding=3D"0" cellspacing=3D"0" border=3D"0" align=3D"center" width=3D"=
+100%" bgcolor=3D"#eaeaea" style=3D"border-collapse: collapse;">=0A         =
+   <tr>=0A                <td style=3D"border-collapse: collapse; -webkit-f=
+ont-smoothing: antialiased;">=0A                    <table role=3D"presenta=
+tion" cellpadding=3D"0" cellspacing=3D"0" border=3D"0" align=3D"center" wid=
+th=3D"480" bgcolor=3D"#02172A" style=3D"width: 480px !important; border-col=
+lapse: collapse;">=0A                        <tr>=0A                       =
+     <td align=3D"center" style=3D"border-collapse: collapse; -webkit-font-=
+smoothing: antialiased;">=0A                                <table role=3D"=
+presentation" cellpadding=3D"0" cellspacing=3D"0" border=3D"0" width=3D"100=
+%" style=3D"border-collapse: collapse;">=0A                                =
+    <tr>=0A                                       <td style=3D"border-colla=
+pse: collapse; -webkit-font-smoothing: antialiased;">=0A<!-- START Header_A=
+1_null_null -->=0D=0A=0D=0A=0D=0A<table class=3D"module" role=3D"presentati=
+on" cellpadding=3D"0" cellspacing=3D"0" border=3D"0" width=3D"100%" align=
+=3D"center" bgcolor=3D"#02172A" style=3D"border-collapse: collapse; border-=
+spacing: 0; mso-table-lspace: 0pt; mso-table-rspace: 0pt; margin: 0; paddin=
+g: 0; border-style: none;">=0D=0A    <tr>=0D=0A        <td align=3D"center"=
+ style=3D"border-collapse: collapse; -webkit-font-smoothing: antialiased;">=
+=0D=0A           <a href=3D"https://links.messaging.disneyplus.com/f/open-i=
+n-app/Ccxx8E8AEeZ2I4FDj9XoxQ~~/AAQRxRA~/OJC-ZGyhNN10Je3T_5JWh24cQMqwtEoLqsv=
+AFjJtX-yXMbEFACH46KOsmI8jvTc16ta0aGRU7hANX97oafX7AeihCWJKyCWgTKqyNAXnIJkrSI=
+c856BdL2HSisGlXFr1_3X-PfEMmaN9EPbismIH8EY3QWXKH23mjcam8115Kq-hWQ9OCaWolDXZy=
+xxNDf17UGXe07swt2gXzY-f-BGMmiqtcUdRzioksPSrj3pa8ouMGp82Xb3ZxqrsE1K-nxkX_2k5=
+oeEgSyhZyip2beL5IJrgdAZflRICKciAqzXsbCYO16N7TV2xeoXScC1uwzVFRxIV32ib_GevoW6=
+sCpbsZTlDopckYtuibjYZ8r4sUG5MJaKLLizb8kueXxhKY5-Mgp6x9bSs49ptbKQt8p6q6856KI=
+3FoorVh-IwSaVbVuf-0lJGNlkB_KIgYKRWzEM7qvM0PWP7s3p5v3FiS5fhn_scePGWun2-I_Rrp=
+jkNRVZYRXqJLJ876uXLML14kyztxTFHsuuL8gb-210MqhOAU9kJVq7KJ_FJfYc_MeGfSvOIxEMH=
+34R-pSlIhL3rvien" style=3D"text-decoration: none; -webkit-font-smoothing: a=
+ntialiased;"><img src=3D"https://braze-images.com/appboy/communication/asse=
+ts/image_assets/images/6751c52d3e254d006601549c/original.png=3F1733412141" =
+alt=3D"Disney+" style=3D"display: block; height: auto; color: #ffffff; font=
+-family: Inspire, InspireTWDC, 'Trebuchet MS', Arial, sans-serif; font-size=
+: 16px; text-align: center; font-weight: normal; line-height: 22px;" width=
+=3D"480" border=3D"0"></a>=0D=0A        </td>=0D=0A    </tr>=0D=0A</table>=
+=0D=0A<!-- END Header_A1_null_null -->=0A</td> =0A                         =
+           </tr>=0A                                    <!-- =3D=3D=3D=3D=3D=
+=3D START Body Modules =3D=3D=3D=3D=3D=3D -->=0A<!-- START Hero_A1SH_Dusk -=
+->=0A=0A=0A=0D=0A=0D=0A  =0D=0A=0D=0A=0D=0A=0D=0A  =0D=0A=0D=0A=0D=0A=0D=0A=
+=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0A<tr>=
+=0A    <td align=3D"center" style=3D"border-collapse: collapse; -webkit-fon=
+t-smoothing: antialiased;">=0A        <table class=3D"module" role=3D"prese=
+ntation" cellpadding=3D"0" cellspacing=3D"0" border=3D"0" width=3D"100%" bg=
+color=3D"#054553" style=3D"border-bottom-width: 1px; border-bottom-color: #=
+054553; border-collapse: collapse; margin: 0; border-style: none;">=0A     =
+       <tr>=0A                <td align=3D"center" style=3D"border-collapse=
+: collapse; -webkit-font-smoothing: antialiased;">=0A                    <a=
+ href=3D"https://links.messaging.disneyplus.com/f/a/4SpCMJRv3BcEPaCzLKgMhQ~=
+~/AAQRxRA~/GKYp5gAEUNu4Dul8KD5zM3yV9FBk-SdsG6isYNQD6jXl4n2sGerMvA1kXF6rYSHt=
+sxLQykkEbK2eKWpnqfUlep0YTPYyQJsYzDTJ8B0LQk3nKuhM2zOdTnx8Cau4dDxZdtm0gbvnET2=
+OaxuDlo1d4Wxj5flhkRzNUAgzOIWm0--4T8CcG3G7qnWKNPk5paTDldtUxFd7eTi7cwYUAS0cow=
+EqZ8g5Kg1MiejQx1Muk5tnFLOLuTg9S9kp--u_6-mGNd2g0JVLmzT2PKRMnhcpPkyNcrlr7GGwa=
+neoACOMYxkk37OsXKoW4HjQWNj6oHZO1nUujA3pa51I9UHnSrMZdyM_DaKmPtS8qWJ3oDVOMLCl=
+YNVjxv9yGa3EMs0qkwtFW4qFds4K9yE8rxLKOK79d-3In2o_0it9zX6i0bTp64MSvkER4lBGG_q=
+jabqvrYAI6pKAqP1aVoS3fx2wB_NdGfRiyaKGM0yWgfByjARHr4s9SL0oc-ETSKW6qUVFGOo3ke=
+b9kJK9Snky7i1u1UlARi5bOBJsNGVl3nd5Gjk4BaXpTPy7p9mffe6kkYM21SIL0XOSKtWPpRNmP=
+Md1qu-hYCqaFRdup0uhcAQa3mcKQ5qrSOIy_It7Mil_nEJcFXMmQhqeHz3cckQIqaB595EZosL2=
+sCnnQuaDWjvndy1y1vyFU0FXCwD4pryw96Jn9NTF" target=3D"_blank" style=3D"text-d=
+ecoration: none; -webkit-font-smoothing: antialiased;"><img src=3D"https://=
+braze-images.com/appboy/communication/assets/image_assets/images/6904fa6c9b=
+9fc40063afa99b/original.jpg=3F1761933931" alt=3D"Disney+ Perks: WDW Ticket =
+Offer" border=3D"0" width=3D"480" style=3D"display: block; height: auto; co=
+lor: #ffffff; font-size: 16px; text-align: center; font-family: Inspire, In=
+spireTWDC, 'Trebuchet MS', Arial, sans-serif; font-weight: normal; line-hei=
+ght: 22px;"></a>=0A                </td>=0A            </tr>=0A            =
+<tr>=0A                <td align=3D"center" style=3D"font-size: 42px; font-=
+weight: 900; color: #ffffff; font-family: Inspire, InspireTWDC, 'Trebuchet =
+MS', Arial, sans-serif; letter-spacing: -1px; line-height: 50px; mso-line-h=
+eight-rule: exactly; text-transform: none; border-collapse: collapse; -webk=
+it-font-smoothing: antialiased; padding: 18px 40px 10px;">=0A=09=09=09=09=
+=09Give the gift of a <i>Walt Disney World</i><sup style=3D"line-height: 0;=
+ font-size: 21px;">=C2=AE</sup> Resort&nbsp;vacation=0A                </td=
+>=0A            </tr>=0A            <tr>=0A                <td align=3D"cen=
+ter" style=3D"font-size: 20px; color: #ffffff; font-family: Inspire, Inspir=
+eTWDC, 'Trebuchet MS', Arial, sans-serif; line-height: 26px; font-weight: n=
+ormal; mso-line-height-rule: exactly; border-collapse: collapse; -webkit-fo=
+nt-smoothing: antialiased; padding: 0 40px 24px;">=0A                    Sa=
+ve on your next magical getaway with Disney+ Perks.<sup style=3D"line-heigh=
+t: 0; font-size: 10px;">1</sup> Get a special 3=E2=80=91Day, 3=E2=80=91Park=
+ Ticket to select parks this spring, starting at $109 per day + tax! Total =
+price from $325&nbsp;+&nbsp;tax.<sup style=3D"line-height: 0; font-size: 10=
+px;">2</sup>=0A                </td>=0A            </tr>=0A            <tr>=
+=0A                <td align=3D"center" style=3D"padding-bottom: 48px; bord=
+er-collapse: collapse; -webkit-font-smoothing: antialiased;" class=3D"apple=
+LinksBlack">=0A                    <table border=3D"0" cellpadding=3D"0" ce=
+llspacing=3D"0" role=3D"presentation" style=3D"border-collapse: separate; l=
+ine-height: 100%;">=0A                        <tr>=0A                      =
+    <td align=3D"center" bgcolor=3D"#02D6E8" role=3D"presentation" style=3D=
+"border-radius: 4px; width: 375px; height: 50px; border-collapse: collapse;=
+ -webkit-font-smoothing: antialiased; border-style: none;" valign=3D"middle=
+">=0A                            <a href=3D"https://links.messaging.disneyp=
+lus.com/f/a/o-1d69xHwmlWuU-Z6hInag~~/AAQRxRA~/GKYp5gAEUNu4Dul8KD5zM3yV9FBk-=
+SdsG6isYNQD6jXl4n2sGerMvA1kXF6rYSHtsxLQykkEbK2eKWpnqfUlep0YTPYyQJsYzDTJ8B0L=
+Qk3nKuhM2zOdTnx8Cau4dDxZdtm0gbvnET2OaxuDlo1d4Wxj5flhkRzNUAgzOIWm0--4T8CcG3G=
+7qnWKNPk5paTDfKlQo26Pfkb11s_8w9uJWYuoEDeJpq1UbL8U8rAUJevo-BgFateD3KP0vz0i07=
+vBEoexcXUHR4BAPL92TEC3MqvG6zqhoIJxUToiH_eL4mmkYe-nCTI7bvXkDle8n8ncJ_CHS7JFJ=
+cirINoxjRQ3G8No_6A19U8kF4zN6yxCexkYPnIQmFI_ohA0eC5zHwWhCdngvTkFW-mIDNbQZX2_=
+r4HIcvN0XbL-czOeOHULPsCVfBzTZuhdhQoSlMvkE44163zCtQO4HXyj3rY-iWoaHI20JF38bQ0=
+tt2bf6KbOlpue5w4x--SAp4eeEolzJT7-lvIGJN_uPsMRYdYWI_N7dw40CziHA94QFSdgBsMptg=
+flVlzafeg9VxWYAhgOWWNQg1TJwKplhuDxOc_zs3QNnH0vCw1PN3YIGQl2SVKYDY79aEubQX_aw=
+Xg9xCjOrEX43gQKtLZHF4CMQfj6g9wmvCpqW8hC3ZlnPtrvjAS98oazVk2JteR55xCSNA9JwvfW=
+" class=3D"buttonLink" style=3D"background-color: #02D6E8; background-image=
+: linear-gradient(#02D6E8,#02D6E8) !important; box-shadow: inset 0px 50px #=
+02D6E8; border-radius: 4px; display: inline-block; color: #000000; font-fam=
+ily: Inspire, InspireTWDC, 'Trebuchet MS', Arial, sans-serif; font-size: 16=
+px; font-weight: bold; line-height: 50px; text-align: center; text-decorati=
+on: none; text-transform: uppercase; letter-spacing: 1.6px; width: 375px; h=
+eight: 50px; -webkit-text-size-adjust: none; mso-line-height-rule: exactly;=
+ -webkit-font-smoothing: antialiased;">=0A                            UNLOC=
+K PERK=0A                            </a>=0A                          </td>=
+=0A                        </tr>=0A                    </table>=0A         =
+       </td>=0A            </tr>=0A        </table>=0A    </td>=0A</tr>=0A<=
+!-- END Hero_A1SH_Dusk -->=0A=09=09=09=09=09=09=09=09=09<!-- START Content_=
+A1_1up_Dusk -->=0A=0A=0A=0D=0A=0D=0A  =0D=0A=0D=0A=0D=0A=0D=0A  =0D=0A=0D=
+=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=
+=0D=0A=0A<tr>=0A    <td align=3D"center" style=3D"border-collapse: collapse=
+; -webkit-font-smoothing: antialiased;">=0A        <table class=3D"module" =
+role=3D"presentation" cellpadding=3D"0" cellspacing=3D"0" border=3D"0" widt=
+h=3D"100%" align=3D"center" bgcolor=3D"#054553" style=3D"border-bottom-widt=
+h: 1px; border-bottom-color: #054553; border-collapse: collapse; margin: 0;=
+ border-style: none;">=0A            <tr>=0A                <td align=3D"ce=
+nter" style=3D"border-collapse: collapse; -webkit-font-smoothing: antialias=
+ed;">=0A                    <a href=3D"https://links.messaging.disneyplus.c=
+om/f/a/JHXJoBcYg7aEKFHavEzrmQ~~/AAQRxRA~/1cOUiqyTlWAXLS4tZxRiEgOprQjdgU0343=
+2ibumD2YLu5d-wHykxvZTuglj3fYStM38ELKJyicLY7BNiwEZeYgHFlvfH66sNGgpqlxD9b0d4L=
+yyjp-_JRTjhZPsKd25ncMEI3pLxBMhFWEb3u_JNKJCq_JrdFmiIS6CkcUFrW12bMvUhjif2TOlq=
+5X8xotBGeoPjEoHFBPxy8heEs6u2fbr1br9urhux8l9tsZkZb5i00t3hlBuoKKFdJD81e-KZ0Mq=
+Tsb-NixV3Q9Z2GT89-QI7CFWEdH5PjZV5i6MaczOXDGjOhqSpZ2mXweJTYFybriRokDybVVaQvM=
+h4eZZyGBU_NUV3M_78fTuQOsPlmFLw7SMtNJjgvvJk4rEqI8N_rA6ReU3PUN7HkUfcqXfA00rD1=
+9qlqa3JwOz1mg8jVHTUA3cu1wXlBBBUK8cJ857DVbug8O6vbHNDs1GBEHc-4M5Sed0ZkLKBHscH=
+jsbH7UCHOtcprd27xDo5zVdikj4u3DuW98EbMhwcKdHXNOqGBxl1SJK3IlrUeRzwskTkNLU57ng=
+_eCc16PqO7OU_mRMoarpvK8NS-odaaRwWxUrLpZBe55qhSG2Rcbt7wB3vr2lMPw-j6wU63jMp-F=
+O_dvD_Ax00dj7by0UtQMReAhWJZ5ZG1bVAL1qUEhdUtrGA8ukXgY8LWYsnwdsov83RYNyNYuiKX=
+lg7fkaK9od-9MLbnQ~~" target=3D"_blank" style=3D"text-decoration: none; -web=
+kit-font-smoothing: antialiased;"><img src=3D"https://braze-images.com/appb=
+oy/communication/assets/image_assets/images/6904fa6b45f0da00631efe57/origin=
+al.jpg=3F1761933931" alt=3D"Disney+ Perks: DCP Prize Pack" border=3D"0" wid=
+th=3D"480" style=3D"height: auto; display: block; color: #ffffff; font-size=
+: 16px; text-align: center; font-family: Inspire, InspireTWDC, 'Trebuchet M=
+S', Arial, sans-serif; font-weight: normal; line-height: 22px;"></a>=0A    =
+            </td>=0A            </tr>=0A            <tr>=0A                =
+<td align=3D"center" style=3D"font-size: 28px; font-weight: bold; color: #f=
+fffff; font-family: Inspire, InspireTWDC, 'Trebuchet MS', Arial, sans-serif=
+; line-height: 34px; letter-spacing: 0px; mso-line-height-rule: exactly; bo=
+rder-collapse: collapse; -webkit-font-smoothing: antialiased; padding: 48px=
+ 40px 10px;">=0A                    Your chance to win an Unleash the Holid=
+ays prize&nbsp;pack=0A                </td>=0A            </tr>=0A         =
+   <tr>=0A                <td align=3D"center" style=3D"padding-left: 40px;=
+ padding-right: 40px; padding-bottom: 24px; font-size: 20px; color: #ffffff=
+; font-family: Inspire, InspireTWDC, 'Trebuchet MS', Arial, sans-serif; lin=
+e-height: 26px; font-weight: normal; mso-line-height-rule: exactly; border-=
+collapse: collapse; -webkit-font-smoothing: antialiased;">=0A              =
+      Get ready to unwrap the ultimate prize pack of Disney, Pixar, Marvel,=
+ and <i>Star Wars</i><sup style=3D"line-height: 0; font-size: 10px;">=E2=84=
+=A2</sup> faves, worth over $4,000! Enter for a chance to win the LEGO Deat=
+h Star, the Ultimate Stitch Animatronic Plush from Just Play, and more epic=
+ surprises for the whole&nbsp;family.<sup style=3D"line-height: 0; font-siz=
+e: 10px;">3</sup>=0A                </td>=0A            </tr>=0A           =
+ <tr>=0A                <td align=3D"center" style=3D"padding-bottom: 48px;=
+ border-collapse: collapse; -webkit-font-smoothing: antialiased;" class=3D"=
+appleLinksBlack">=0A                    <table border=3D"0" cellpadding=3D"=
+0" cellspacing=3D"0" role=3D"presentation" style=3D"border-collapse: separa=
+te; line-height: 100%;">=0A                        <tr>=0A                 =
+         <td align=3D"center" bgcolor=3D"#02D6E8" role=3D"presentation" sty=
+le=3D"border-radius: 4px; width: 375px; height: 50px; border-collapse: coll=
+apse; -webkit-font-smoothing: antialiased; border-style: none;" valign=3D"m=
+iddle">=0A                            <a href=3D"https://links.messaging.di=
+sneyplus.com/f/a/I97juSCCLE-fzn5ScL6xig~~/AAQRxRA~/1cOUiqyTlWAXLS4tZxRiEgOp=
+rQjdgU03432ibumD2YLu5d-wHykxvZTuglj3fYStM38ELKJyicLY7BNiwEZeYgHFlvfH66sNGgp=
+qlxD9b0d4Lyyjp-_JRTjhZPsKd25ncMEI3pLxBMhFWEb3u_JNKJCq_JrdFmiIS6CkcUFrW12bMv=
+Uhjif2TOlq5X8xotBGRLiC8WVBH3T_Lwkpo-PkmFrB19XRDqsS56QPQHZ1sk9nYpC5UHumhVAWA=
+hhlSSjg1J0aLepWj5UnEPQcDEt6YuuZcOgdNXt9r9LGvOtnQPVzagxWFeblv6xAPkCPkNIzzLEI=
+y062nW_3IDDsbITAXaDfqcYFszHXkYmcv3MO_nzNBsU6WJkvGBUdJgZFxfK-SHwJo6dzrCPVe2D=
+F07rc0mpg5AGojo7vism9UfjuFkUymbkm7wvZBHJrupqcO0o7bNgW4UG7zFZYj_3J8tewfIiTJt=
+rFAd5bepp-E5nQFHuQ5EB8TDxeYz0aRb1llgFuqeM1NjHU2m5FT3DAzftfJkXVBNWqQ-XTwBchN=
+ECGYB8vtDPUoBh0Z9GPbQbI8mmR5Msrfmyv_ibPRDQQkn_PTy_La2uV_18ltPi8dowKl0w04anl=
+rMMaCX9B6t9gp1iKNfbwO2k6fZjcSxscWC6A2acQtgGduJCmfKWXQmwwMCFa2OdP9hHbTcAsYyZ=
+mNqufvbqe5lko0dHU1MFYKukuCw~~" class=3D"buttonLink" style=3D"background-col=
+or: #02D6E8; background-image: linear-gradient(#02D6E8,#02D6E8) !important;=
+ box-shadow: inset 0px 50px #02D6E8; border-radius: 4px; display: inline-bl=
+ock; color: #000000; font-family: Inspire, InspireTWDC, 'Trebuchet MS', Ari=
+al, sans-serif; font-size: 16px; font-weight: bold; line-height: 50px; text=
+-align: center; text-decoration: none; text-transform: uppercase; letter-sp=
+acing: 1.6px; width: 375px; height: 50px; -webkit-text-size-adjust: none; m=
+so-line-height-rule: exactly; -webkit-font-smoothing: antialiased;">=0A    =
+                        UNLOCK PERK=0A                            </a>=0A  =
+                        </td>=0A                        </tr>=0A           =
+         </table>=0A                </td>=0A            </tr>=0A        </t=
+able>=0A    </td>=0A</tr>=0A<!-- END Content_A1_1up_Dusk -->=0A=09=09=09=09=
+=09=09=09=09=09<!-- START Content_A1_1up_Dusk -->=0A=0A=0A=0D=0A=0D=0A  =0D=
+=0A=0D=0A=0D=0A=0D=0A  =0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=
+=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0A<tr>=0A    <td align=3D"center" s=
+tyle=3D"border-collapse: collapse; -webkit-font-smoothing: antialiased;">=
+=0A        <table class=3D"module" role=3D"presentation" cellpadding=3D"0" =
+cellspacing=3D"0" border=3D"0" width=3D"100%" align=3D"center" bgcolor=3D"#=
+054553" style=3D"border-bottom-width: 1px; border-bottom-color: #054553; bo=
+rder-collapse: collapse; margin: 0; border-style: none;">=0A            <tr=
+>=0A                <td align=3D"center" style=3D"border-collapse: collapse=
+; -webkit-font-smoothing: antialiased;">=0A                    <a href=3D"h=
+ttps://links.messaging.disneyplus.com/f/a/tqoEO-8mGcGuO8KEM23Y2w~~/AAQRxRA~=
+/1cOUiqyTlWAXLS4tZxRiEgOprQjdgU03432ibumD2YLu5d-wHykxvZTuglj3fYStM38ELKJyic=
+LY7BNiwEZeYgHFlvfH66sNGgpqlxD9b0d4Lyyjp-_JRTjhZPsKd25ncMEI3pLxBMhFWEb3u_JNK=
+JCq_JrdFmiIS6CkcUFrW12bMvUhjif2TOlq5X8xotBGFytktbxZMSZsaCLtp8WQegVFWuzvVcdG=
+0lrWf8GlB4aTany91O3lLS_qSX5O1JQ9w_W1vWDE7Xl6aghqnL_tkbqBqlOj2Z8CednU7nvEB6Y=
+IL7UpJWp5DWjAyObSUJpq39W7cRrBxXetN6-u2twey-ugoSRm5FxLs06czUjP_udunbnY_TAUr_=
+I3pSv0REXZJpODrunCsgot_5DH17crzPTG8B_8j54s_zGBj7rpBuqoTTVROhb3DfmXMeWkFOFtp=
+SJvENWph-tKivYfDZUu_s7Brq6tZk-Q3TGnVA2IcFAcemso2D1pFRF1uD1pkxLxtjD2Zd6MSz16=
+w5dQY6PAt2jlnnt7nDj_V0dm3BTBzHxh-RAQMsHpqmcUzcCoaEHRrUgVIu6AH6GYOD98ImD0y0y=
+_7m8Tt7ACpOpcRLYqU0yxca55tkM6VSyPbx6DBHL3UG7nGijCsr-NMWiXw5fXXIsp99h3LDx6cc=
+sYa8VJC-BOQ-kBYKS93_3cL5Jc9AqQXFWriiJkP6mqxYsDx24RpQ~~" target=3D"_blank" s=
+tyle=3D"text-decoration: none; -webkit-font-smoothing: antialiased;"><img s=
+rc=3D"https://braze-images.com/appboy/communication/assets/image_assets/ima=
+ges/6904fa6b49b6d200630f4ae9/original.jpg=3F1761933931" alt=3D"Disney+ Perk=
+s: Marvel Rivals" border=3D"0" width=3D"480" style=3D"height: auto; display=
+: block; color: #ffffff; font-size: 16px; text-align: center; font-family: =
+Inspire, InspireTWDC, 'Trebuchet MS', Arial, sans-serif; font-weight: norma=
+l; line-height: 22px;"></a>=0A                </td>=0A            </tr>=0A =
+           <tr>=0A                <td align=3D"center" style=3D"font-size: =
+28px; font-weight: bold; color: #ffffff; font-family: Inspire, InspireTWDC,=
+ 'Trebuchet MS', Arial, sans-serif; line-height: 34px; letter-spacing: 0px;=
+ mso-line-height-rule: exactly; border-collapse: collapse; -webkit-font-smo=
+othing: antialiased; padding: 48px 40px 10px;">=0A=09=09=09=09=09Suit up wi=
+th a free Daredevil costume in <i>Marvel&nbsp;Rivals</i>=0A                =
+</td>=0A            </tr>=0A            <tr>=0A                <td align=3D=
+"center" style=3D"padding-left: 40px; padding-right: 40px; padding-bottom: =
+24px; font-size: 20px; color: #ffffff; font-family: Inspire, InspireTWDC, '=
+Trebuchet MS', Arial, sans-serif; line-height: 26px; font-weight: normal; m=
+so-line-height-rule: exactly; border-collapse: collapse; -webkit-font-smoot=
+hing: antialiased;">=0A                    Battle as your favorite Super He=
+roes and Villains in unique worlds across the Marvel Multiverse! Get a time=
+d=E2=80=91exclusive costume for the new <i>Marvel Rivals</i> character,&nbs=
+p;Daredevil.<sup style=3D"line-height: 0; font-size: 10px;">4</sup>=0A     =
+           </td>=0A            </tr>=0A            <tr>=0A                <=
+td align=3D"center" style=3D"padding-bottom: 48px; border-collapse: collaps=
+e; -webkit-font-smoothing: antialiased;" class=3D"appleLinksBlack">=0A     =
+               <table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=
+=3D"presentation" style=3D"border-collapse: separate; line-height: 100%;">=
+=0A                        <tr>=0A                          <td align=3D"ce=
+nter" bgcolor=3D"#02D6E8" role=3D"presentation" style=3D"border-radius: 4px=
+; width: 375px; height: 50px; border-collapse: collapse; -webkit-font-smoot=
+hing: antialiased; border-style: none;" valign=3D"middle">=0A              =
+              <a href=3D"https://links.messaging.disneyplus.com/f/a/VL55WhB=
+wz8jTz8aiF0pULA~~/AAQRxRA~/1cOUiqyTlWAXLS4tZxRiEgOprQjdgU03432ibumD2YLu5d-w=
+HykxvZTuglj3fYStM38ELKJyicLY7BNiwEZeYgHFlvfH66sNGgpqlxD9b0d4Lyyjp-_JRTjhZPs=
+Kd25ncMEI3pLxBMhFWEb3u_JNKJCq_JrdFmiIS6CkcUFrW12bMvUhjif2TOlq5X8xotBGx9af5y=
+rlU6k4q5bLOTr4gLLSgY3yqwYGUW6eCEEPGXQI-VeSMC-1vGMmkkmpbZXGhn665haBXH1Qxo7to=
+rj7DS4ED9EC1b8u_PWIkQwpXJlg-wiST0-mfCk-TQbDMs4p8Z8oiVXv5PgpKM-qBL9FcElkgOEL=
+Bi0Aq6n09B2sbVPBu5I2XwpU2A6Ujt41QfVVmz5hzDD2XYYm9JQxUaXF2Tvq6__iNY1uAAW0eF7=
+NbC0El3GFC_l1X73usLJ_-_B8gUuUio2Jxsd78sZJJ2bMqAc1T35QTpf2E3BjRFShAg56lgxoKZ=
+u5tV46OsG1HZUfXVuKsEpcqLW1F4PRg9rifjR-hHyGPG_qXXAY1ZwyB0QMf_573Qxd1Bkw_OZxI=
+LaY4iC0bAx9F_RNsMzeQFCG2WLpniNnj8rZ7lw6WNxLUwr_wiUzL7WvhfN0raL6wTVKf4Tno8WU=
+ZB9Bhh5obe8dy15qgXI7ViAG_zhLe3xIzzD3bPdbxAp4hUxfBB0vT8MXTw9dBoorPHAadjg5J_P=
+8rQ~~" class=3D"buttonLink" style=3D"background-color: #02D6E8; background-=
+image: linear-gradient(#02D6E8,#02D6E8) !important; box-shadow: inset 0px 5=
+0px #02D6E8; border-radius: 4px; display: inline-block; color: #000000; fon=
+t-family: Inspire, InspireTWDC, 'Trebuchet MS', Arial, sans-serif; font-siz=
+e: 16px; font-weight: bold; line-height: 50px; text-align: center; text-dec=
+oration: none; text-transform: uppercase; letter-spacing: 1.6px; width: 375=
+px; height: 50px; -webkit-text-size-adjust: none; mso-line-height-rule: exa=
+ctly; -webkit-font-smoothing: antialiased;">=0A                            =
+UNLOCK PERK=0A                            </a>=0A                          =
+</td>=0A                        </tr>=0A                    </table>=0A    =
+            </td>=0A            </tr>=0A        </table>=0A    </td>=0A</tr=
+>=0A<!-- END Content_A1_1up_Dusk -->=0A=09=09=09=09=09=09=09=09=09<!-- STAR=
+T Content_A1_1up_Dusk -->=0A=0A=0A=0D=0A=0D=0A  =0D=0A=0D=0A=0D=0A=0D=0A  =
+=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=
+=0A=0D=0A=0D=0A=0A<tr>=0A    <td align=3D"center" style=3D"border-collapse:=
+ collapse; -webkit-font-smoothing: antialiased;">=0A        <table class=3D=
+"module" role=3D"presentation" cellpadding=3D"0" cellspacing=3D"0" border=
+=3D"0" width=3D"100%" align=3D"center" bgcolor=3D"#054553" style=3D"border-=
+bottom-width: 1px; border-bottom-color: #054553; border-collapse: collapse;=
+ margin: 0; border-style: none;">=0A            <tr>=0A                <td =
+align=3D"center" style=3D"border-collapse: collapse; -webkit-font-smoothing=
+: antialiased;">=0A                    <a href=3D"https://links.messaging.d=
+isneyplus.com/f/a/bRiBVfplS2Q2QXX9EbUM1w~~/AAQRxRA~/1cOUiqyTlWAXLS4tZxRiEgO=
+prQjdgU03432ibumD2YLu5d-wHykxvZTuglj3fYStM38ELKJyicLY7BNiwEZeYgHFlvfH66sNGg=
+pqlxD9b0d4Lyyjp-_JRTjhZPsKd25ncMEI3pLxBMhFWEb3u_JNKJCq_JrdFmiIS6CkcUFrW12bM=
+vUhjif2TOlq5X8xotBGAjnRW0sDSp6yQEblGGdvhKeCDpa5S78dQN1YpohCisOe4pnPxuxPKCQR=
+RyfaU8DakvVwlv2tpmvgYpYQiJ0hfEv4P_H0__glMag__omBBD1R7TsuLcIFmEKLl553RkxyMTn=
+SOzvlNRJqDsSJYtpJgl1SlGOxP8etGp12b3VjT-kk0cUS3aVSSPt-lrv0lwXKx3b0BnNPzkg1z0=
+5ZXCrCPrOAAQtvuMaXEhJ_tI5MZgeY74aMjNU5ZPzS7QzgbiSXw3-wN_ulZfx8j6jtpqTskKgNN=
+a5kz2u4t16G26lrawLRzBCIyUuaPbjNk8ZLwJdGcvQBfXJO9bYdUoefrhjOeQSEI00OilN86Bx4=
+FQa4vdh-g5oJqlq6QJiut-gN0MuHR3c64LRc9vohDjISULm68ClU8GlRaAdxRkJu7jifZyE2VTw=
+dcegyh9EqQFDWarHjAH8MjIabDAVyMM286pVpSJSu2ORTY_hIJQkrqm0uRH_-aCa024ckjNKbrW=
+ofbCPHWqTE05jhLcS6a5qCZ7iIEA~~" target=3D"_blank" style=3D"text-decoration:=
+ none; -webkit-font-smoothing: antialiased;"><img src=3D"https://braze-imag=
+es.com/appboy/communication/assets/image_assets/images/6904fa6b270d1200631c=
+f743/original.jpg=3F1761933931" alt=3D"Disney+ Perks: Percy Jackson Sweeps"=
+ border=3D"0" width=3D"480" style=3D"height: auto; display: block; color: #=
+ffffff; font-size: 16px; text-align: center; font-family: Inspire, InspireT=
+WDC, 'Trebuchet MS', Arial, sans-serif; font-weight: normal; line-height: 2=
+2px;"></a>=0A                </td>=0A            </tr>=0A            <tr>=
+=0A                <td align=3D"center" style=3D"font-size: 28px; font-weig=
+ht: bold; color: #ffffff; font-family: Inspire, InspireTWDC, 'Trebuchet MS'=
+, Arial, sans-serif; line-height: 34px; letter-spacing: 0px; mso-line-heigh=
+t-rule: exactly; border-collapse: collapse; -webkit-font-smoothing: antiali=
+ased; padding: 48px 40px 10px;">=0A                    Your chance to embar=
+k on an epic&nbsp;quest=0A                </td>=0A            </tr>=0A     =
+       <tr>=0A                <td align=3D"center" style=3D"padding-left: 4=
+0px; padding-right: 40px; padding-bottom: 24px; font-size: 20px; color: #ff=
+ffff; font-family: Inspire, InspireTWDC, 'Trebuchet MS', Arial, sans-serif;=
+ line-height: 26px; font-weight: normal; mso-line-height-rule: exactly; bor=
+der-collapse: collapse; -webkit-font-smoothing: antialiased;">=0A          =
+          Ready to come sail away=3F Enter for a chance to attend the premi=
+ere of the all=E2=80=91new season of <i>Percy Jackson and the Olympians</i>=
+ in Los Angeles. Travel and lodging included. Season 2 arrives December=E2=
+=80=8C&nbsp;10, only on&nbsp;Disney+.<sup style=3D"line-height: 0; font-siz=
+e: 10px;">5</sup>=0A                </td>=0A            </tr>=0A           =
+ <tr>=0A                <td align=3D"center" style=3D"padding-bottom: 48px;=
+ border-collapse: collapse; -webkit-font-smoothing: antialiased;" class=3D"=
+appleLinksBlack">=0A                    <table border=3D"0" cellpadding=3D"=
+0" cellspacing=3D"0" role=3D"presentation" style=3D"border-collapse: separa=
+te; line-height: 100%;">=0A                        <tr>=0A                 =
+         <td align=3D"center" bgcolor=3D"#02D6E8" role=3D"presentation" sty=
+le=3D"border-radius: 4px; width: 375px; height: 50px; border-collapse: coll=
+apse; -webkit-font-smoothing: antialiased; border-style: none;" valign=3D"m=
+iddle">=0A                            <a href=3D"https://links.messaging.di=
+sneyplus.com/f/a/6qNxT5CUefMRLyAwCYJBQg~~/AAQRxRA~/1cOUiqyTlWAXLS4tZxRiEgOp=
+rQjdgU03432ibumD2YLu5d-wHykxvZTuglj3fYStM38ELKJyicLY7BNiwEZeYgHFlvfH66sNGgp=
+qlxD9b0d4Lyyjp-_JRTjhZPsKd25ncMEI3pLxBMhFWEb3u_JNKJCq_JrdFmiIS6CkcUFrW12bMv=
+Uhjif2TOlq5X8xotBGcPEQz51DIS-nfbxrgEfhlaXqqAryvepNDJ7Fm7Ie2Av1Qd2tIIc3RO_Ey=
+cpsyZLw-XzcqUTQKvk4PLpbz2VylpKwdoxASaMfRE9_Gv-KtswkiRBPAp1IsAoXsjnli9yHTTSy=
+UJbIItcuEfMDvEpvr6yONnqOlt1eYW6Yg-epfQPNdY9x5FRCV5UmGf4I06UV3OjWKH5GMYaQRS5=
+zXRNqV7-R3SjXWogSPhrJPBQyLsHmrXSMYuWqZB3mdPjLghEo2YUA8QgdQoNbzq7zFtC486f9m2=
+FGdgsDfhoOl1CjC9UjE_qRfrjclwwFQOGrACMtyGJBtTYYqHP-8Eg4ZfTqUnS9StuGE8obu5_r6=
+-7PU8to5T-w_8ZqcTYhaQN-F0Rwp_xjycy5Gk--91j5lF7vtqgx6Ygc76X5bowowWDKf-C8r79X=
+zEbOWoFUvaGFvbgS2e2YX8X6u0LY_i2le9zARt9WKZ-5y8Ig8xCLcPmqWf964oWjH75vHKCQ_aZ=
+6po6QBogAyqk9J7RT6JCPfNYyrA~~" class=3D"buttonLink" style=3D"background-col=
+or: #02D6E8; background-image: linear-gradient(#02D6E8,#02D6E8) !important;=
+ box-shadow: inset 0px 50px #02D6E8; border-radius: 4px; display: inline-bl=
+ock; color: #000000; font-family: Inspire, InspireTWDC, 'Trebuchet MS', Ari=
+al, sans-serif; font-size: 16px; font-weight: bold; line-height: 50px; text=
+-align: center; text-decoration: none; text-transform: uppercase; letter-sp=
+acing: 1.6px; width: 375px; height: 50px; -webkit-text-size-adjust: none; m=
+so-line-height-rule: exactly; -webkit-font-smoothing: antialiased;">=0A    =
+                        UNLOCK PERK=0A                            </a>=0A  =
+                        </td>=0A                        </tr>=0A           =
+         </table>=0A                </td>=0A            </tr>=0A        </t=
+able>=0A    </td>=0A</tr>=0A<!-- END Content_A1_1up_Dusk -->=0A=09=09=09=09=
+=09=09=09=09=09<!-- START Content_A1_1up_Dusk -->=0A=0A=0A=0D=0A=0D=0A  =0D=
+=0A=0D=0A=0D=0A=0D=0A  =0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=
+=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0A<tr>=0A    <td align=3D"center" s=
+tyle=3D"border-collapse: collapse; -webkit-font-smoothing: antialiased;">=
+=0A        <table class=3D"module" role=3D"presentation" cellpadding=3D"0" =
+cellspacing=3D"0" border=3D"0" width=3D"100%" align=3D"center" bgcolor=3D"#=
+054553" style=3D"border-bottom-width: 1px; border-bottom-color: #054553; bo=
+rder-collapse: collapse; margin: 0; border-style: none;">=0A            <tr=
+>=0A                <td align=3D"center" style=3D"border-collapse: collapse=
+; -webkit-font-smoothing: antialiased;">=0A                    <a href=3D"h=
+ttps://links.messaging.disneyplus.com/f/a/g2RBHgxzORXWRABMjsvWxQ~~/AAQRxRA~=
+/1cOUiqyTlWAXLS4tZxRiEgOprQjdgU03432ibumD2YLu5d-wHykxvZTuglj3fYStM38ELKJyic=
+LY7BNiwEZeYgHFlvfH66sNGgpqlxD9b0d4Lyyjp-_JRTjhZPsKd25ncMEI3pLxBMhFWEb3u_JNK=
+JCq_JrdFmiIS6CkcUFrW12bMvUhjif2TOlq5X8xotBGoVgY7qRATnhHmUn_l-uwonIYviIW3nZh=
+r0XgFLqIyuWv8ETQkx9pv_hRgwLFSL_2L_dXO_0bMiTcvR7Kk9d1KO3pkvYgwzmvwvpvVX2TQ4k=
+qwTZMMpTmNws74ShU9OcRguPg-YboHy3gve_OkxjbsdI_8Oii2H-iKrO_1WmygNxF0uVUK5eWOt=
+K-XzRM-i4kSONX2YZquu87KOlKIcl-goDPFXiGvJo_hlwKti0B5FIuFa6wgFfVe3xdR_5f2jPfN=
+Vb_Gxk45_I7VINy0ydr2YOXHUzJDeMbXaq6H_V4rG3JCiG5aODcSWBy7dDzSBUAXwQl3fjnzwXr=
+Z9rwze6GMdscXjl90hTITLg7cWEPIltwz6ZMUKgwVcBxGJcFw6fDtt9P95PmM1dNYmpguRzdDb1=
+IEOSQNWt2uP18gvwp-_fU0L9s5gKPbkg_iYNmmlez_TrikhbY4NKkWHW-ztXu88u7SDRFhR68kY=
+N1IeuS2t8kBDNAhE-RqcAZw1YBbKCSR5E_DnznVzNBwkeBjBbNBQ~~" target=3D"_blank" s=
+tyle=3D"text-decoration: none; -webkit-font-smoothing: antialiased;"><img s=
+rc=3D"https://braze-images.com/appboy/communication/assets/image_assets/ima=
+ges/6904fa6c9a8f9400633d8117/original.jpg=3F1761933931" alt=3D"Disney+ Perk=
+s: Santa Monica Ice Skating Event" border=3D"0" width=3D"480" style=3D"heig=
+ht: auto; display: block; color: #ffffff; font-size: 16px; text-align: cent=
+er; font-family: Inspire, InspireTWDC, 'Trebuchet MS', Arial, sans-serif; f=
+ont-weight: normal; line-height: 22px;"></a>=0A                </td>=0A    =
+        </tr>=0A            <tr>=0A                <td align=3D"center" sty=
+le=3D"font-size: 28px; font-weight: bold; color: #ffffff; font-family: Insp=
+ire, InspireTWDC, 'Trebuchet MS', Arial, sans-serif; line-height: 34px; let=
+ter-spacing: 0px; mso-line-height-rule: exactly; border-collapse: collapse;=
+ -webkit-font-smoothing: antialiased; padding: 48px 40px 10px;">=0A        =
+            Your chance to win an ice skating escape in Santa&nbsp;Monica=
+=0A                </td>=0A            </tr>=0A            <tr>=0A         =
+       <td align=3D"center" style=3D"padding-left: 40px; padding-right: 40p=
+x; padding-bottom: 24px; font-size: 20px; color: #ffffff; font-family: Insp=
+ire, InspireTWDC, 'Trebuchet MS', Arial, sans-serif; line-height: 26px; fon=
+t-weight: normal; mso-line-height-rule: exactly; border-collapse: collapse;=
+ -webkit-font-smoothing: antialiased;">=0A                    Lace up and g=
+et ready to dazzle with a chance to win tickets to "Ice at Santa Monica," a=
+n exclusive private ice skating event presented by Disney+ and&nbsp;Hulu.<s=
+up style=3D"line-height: 0; font-size: 10px;">6</sup>=0A                </t=
+d>=0A            </tr>=0A            <tr>=0A                <td align=3D"ce=
+nter" style=3D"padding-bottom: 48px; border-collapse: collapse; -webkit-fon=
+t-smoothing: antialiased;" class=3D"appleLinksBlack">=0A                   =
+ <table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentati=
+on" style=3D"border-collapse: separate; line-height: 100%;">=0A            =
+            <tr>=0A                          <td align=3D"center" bgcolor=
+=3D"#02D6E8" role=3D"presentation" style=3D"border-radius: 4px; width: 375p=
+x; height: 50px; border-collapse: collapse; -webkit-font-smoothing: antiali=
+ased; border-style: none;" valign=3D"middle">=0A                           =
+ <a href=3D"https://links.messaging.disneyplus.com/f/a/lqzpkkqYCL4bnmw-HKLn=
+SA~~/AAQRxRA~/1cOUiqyTlWAXLS4tZxRiEgOprQjdgU03432ibumD2YLu5d-wHykxvZTuglj3f=
+YStM38ELKJyicLY7BNiwEZeYgHFlvfH66sNGgpqlxD9b0d4Lyyjp-_JRTjhZPsKd25ncMEI3pLx=
+BMhFWEb3u_JNKJCq_JrdFmiIS6CkcUFrW12bMvUhjif2TOlq5X8xotBGEC3wjxzXlUKGZTX837_=
+vGTp_yQHDgpd4AHaVMDfMs6chlprdinBcrcvLKUYjipy04u15NDdYbN_jjYVUGKbJC7jnTrro_p=
+8HfPs06N8Ngyp7QENoHuFKO3EMDH7sCsleHPLO3O7tceIYycTFb5Xm8shISKHVuSUjZVJPJymWD=
+pz2394SJF-3o3DSxFEp-L2g4q--E-PRwklyrSJJFhzyPhNJ0lyTwucbtcRw9iB4w9C_V0kHC-0n=
+TMSyWDQJ7socYwO9OQdZvP0rzSIRBzCeyi-EU2GaFB5eAGGdaaEJehOCZkDCvxJeeL_FBT1EJNZ=
+hAuZRizxOka1fsS9NYWefg-YiDqohzAQkNwQBmvMbRxi4qf4qvWOyVcrPO9qrl9C4ANPVb9aakJ=
+Y5uAwtJr-uui_uwVW289HOLOmqQucvDEwoZP-2LNaEimt00AFl1VyvMqr4gPQ0pk--0oW639AtC=
+dEAyXP3uF7LEGxezY4dWrFQWFVqv5r1ySrhwUmGDdep7xewsisCCoGUFhkq_RV26A~~" class=
+=3D"buttonLink" style=3D"background-color: #02D6E8; background-image: linea=
+r-gradient(#02D6E8,#02D6E8) !important; box-shadow: inset 0px 50px #02D6E8;=
+ border-radius: 4px; display: inline-block; color: #000000; font-family: In=
+spire, InspireTWDC, 'Trebuchet MS', Arial, sans-serif; font-size: 16px; fon=
+t-weight: bold; line-height: 50px; text-align: center; text-decoration: non=
+e; text-transform: uppercase; letter-spacing: 1.6px; width: 375px; height: =
+50px; -webkit-text-size-adjust: none; mso-line-height-rule: exactly; -webki=
+t-font-smoothing: antialiased;">=0A                            UNLOCK PERK=
+=0A                            </a>=0A                          </td>=0A   =
+                     </tr>=0A                    </table>=0A               =
+ </td>=0A            </tr>=0A        </table>=0A    </td>=0A</tr>=0A<!-- EN=
+D Content_A1_1up_Dusk -->=0A=09=09=09=09=09=09=09=09=09<!-- START Content_A=
+1_1up_Dusk -->=0A=0A=0A=0D=0A=0D=0A  =0D=0A=0D=0A=0D=0A=0D=0A  =0D=0A=0D=0A=
+=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=
+=0A=0A<tr>=0A    <td align=3D"center" style=3D"border-collapse: collapse; -=
+webkit-font-smoothing: antialiased;">=0A        <table class=3D"module" rol=
+e=3D"presentation" cellpadding=3D"0" cellspacing=3D"0" border=3D"0" width=
+=3D"100%" align=3D"center" bgcolor=3D"#054553" style=3D"border-bottom-width=
+: 1px; border-bottom-color: #054553; border-collapse: collapse; margin: 0; =
+border-style: none;">=0A            <tr>=0A                <td align=3D"cen=
+ter" style=3D"border-collapse: collapse; -webkit-font-smoothing: antialiase=
+d;">=0A                    <a href=3D"https://links.messaging.disneyplus.co=
+m/f/a/773MrcLzXXAvhE40PfFoKg~~/AAQRxRA~/1cOUiqyTlWAXLS4tZxRiEgOprQjdgU03432=
+ibumD2YLu5d-wHykxvZTuglj3fYStM38ELKJyicLY7BNiwEZeYgHFlvfH66sNGgpqlxD9b0d4Ly=
+yjp-_JRTjhZPsKd25ncMEI3pLxBMhFWEb3u_JNKJCq_JrdFmiIS6CkcUFrW12bMvUhjif2TOlq5=
+X8xotBGxF702-zdBBQrXrsaw3k0za8ak2JtfsJ_Ys89C9T_emytPcqeO62nGUFzcM0KHYcec65f=
+BGaCTPgXq8i5DdJRsVM4vMFMnkT1jLuK3e19XF9JXKOM4HrKuLJrKbXZ36h4i7_yZd8QAdSl-Dm=
+IWSyLKLl4LDtaWjNXUPKZoh5FExe-ip06YgsGjOeo2hbhLANw5UdQ4vyY_pFqmn2izMB1cScfW-=
+yjlfP_D39H3GgmSX4x63dwyG7d8tP8_XtCrWtLn24TGZsRae4GanVRZle1JP5fiDYgVSIBeDLk3=
+964pBZoOXnn_Pi-g339me_wN8buXTi8X2dB86L8hK3GhwwgIXA8hzrRBhtDA6UEPGy4UcSOEHvU=
+m_iJ2xsX2HWGKQgG7fWQGpyIVbriR7rEFexWyUSEW01NnL8TANWNf123OIvvTG4bms2rnumvG9M=
+WMRLfkh9m4g4cilhOKaXCGUgLp_XHkt1M8M-VC4IMpbk6Hf9XcfGGNNuDJ3XZ9EEiFLZ4N9oNtd=
+s8vlspnbsy2YgECQ~~" target=3D"_blank" style=3D"text-decoration: none; -webk=
+it-font-smoothing: antialiased;"><img src=3D"https://braze-images.com/appbo=
+y/communication/assets/image_assets/images/6904fa6b026b5e0063e8b222/origina=
+l.jpg=3F1761933931" alt=3D"Disney+ Perks: Loungefly " border=3D"0" width=3D=
+"480" style=3D"height: auto; display: block; color: #ffffff; font-size: 16p=
+x; text-align: center; font-family: Inspire, InspireTWDC, 'Trebuchet MS', A=
+rial, sans-serif; font-weight: normal; line-height: 22px;"></a>=0A         =
+       </td>=0A            </tr>=0A            <tr>=0A                <td a=
+lign=3D"center" style=3D"font-size: 28px; font-weight: bold; color: #ffffff=
+; font-family: Inspire, InspireTWDC, 'Trebuchet MS', Arial, sans-serif; lin=
+e-height: 34px; letter-spacing: 0px; mso-line-height-rule: exactly; border-=
+collapse: collapse; -webkit-font-smoothing: antialiased; padding: 48px 40px=
+ 10px;">=0A                    Save 20% off across&nbsp;Loungefly.=E2=80=8C=
+com=0A                </td>=0A            </tr>=0A            <tr>=0A      =
+          <td align=3D"center" style=3D"padding-left: 40px; padding-right: =
+40px; padding-bottom: 24px; font-size: 20px; color: #ffffff; font-family: I=
+nspire, InspireTWDC, 'Trebuchet MS', Arial, sans-serif; line-height: 26px; =
+font-weight: normal; mso-line-height-rule: exactly; border-collapse: collap=
+se; -webkit-font-smoothing: antialiased;">=0A=09=09=09=09=09Find the perfec=
+t gift for the Disney, Marvel, or <i>Star Wars</i><sup style=3D"line-height=
+: 0; font-size: 10px;">=E2=84=A2</sup> fan in your life =E2=80=94 or treat =
+yourself =E2=80=94 with 20% off select Loungefly products. Limited time&nbs=
+p;only!<sup style=3D"line-height: 0; font-size: 10px;">7</sup>=0A          =
+      </td>=0A            </tr>=0A            <tr>=0A                <td al=
+ign=3D"center" style=3D"padding-bottom: 48px; border-collapse: collapse; -w=
+ebkit-font-smoothing: antialiased;" class=3D"appleLinksBlack">=0A          =
+          <table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"p=
+resentation" style=3D"border-collapse: separate; line-height: 100%;">=0A   =
+                     <tr>=0A                          <td align=3D"center" =
+bgcolor=3D"#02D6E8" role=3D"presentation" style=3D"border-radius: 4px; widt=
+h: 375px; height: 50px; border-collapse: collapse; -webkit-font-smoothing: =
+antialiased; border-style: none;" valign=3D"middle">=0A                    =
+        <a href=3D"https://links.messaging.disneyplus.com/f/a/j3tli2WO4wFeS=
+lC3wUzP5g~~/AAQRxRA~/1cOUiqyTlWAXLS4tZxRiEgOprQjdgU03432ibumD2YLu5d-wHykxvZ=
+Tuglj3fYStM38ELKJyicLY7BNiwEZeYgHFlvfH66sNGgpqlxD9b0d4Lyyjp-_JRTjhZPsKd25nc=
+MEI3pLxBMhFWEb3u_JNKJCq_JrdFmiIS6CkcUFrW12bMvUhjif2TOlq5X8xotBGPJo5VIaowNRC=
+HNcVgI8KUR3MVWA3S6tjhfC6W3Z6gn0b9tqgWVtBEYefp6k_sLWFI3Nyi9CsX3jIzqkxJR1uJwS=
+ZwtK5DWfbsU2w1xTC6cAZWbMoPdfkOF7b1CQPk6Lr0ikfqQl2MnL_yT63Blg2Gy2d6d49B9MciM=
+XtrAuuQ8kWHBtqWfcmWy0p8NS4Z4PpdyiodcHXCKtsxseEzIeX2iAXQpYvOM9rvZHt12FqpTtX3=
+5WMmJ8kiukaHOIVUQyMoYGoCKJa-6GDvQFVT7TTPZTNQFI1E_VSE_5zdhrKrEVMahsHl0vt-4Yg=
+KTOxt9gf7Th8Oxz8yBIOTbpm9HmbzDlJlM_9Ckx2FRh1VHGiiiFylkr5TDrjL-vhudFjnTCHbXX=
+THvIdS6eZ82uxQM7LUFNti44zY37aUD4mnJeO8DxbmT7LBKN1939CZ3TN_eFEzu6oqXCYsrWxkY=
+hrZ_d0SdvnNWvE3aLgMZkU8hpIseA-F0WnwofAjiXZmkNLjaEXTCAkoOjUCqmnikJezZRq0g~~"=
+ class=3D"buttonLink" style=3D"background-color: #02D6E8; background-image:=
+ linear-gradient(#02D6E8,#02D6E8) !important; box-shadow: inset 0px 50px #0=
+2D6E8; border-radius: 4px; display: inline-block; color: #000000; font-fami=
+ly: Inspire, InspireTWDC, 'Trebuchet MS', Arial, sans-serif; font-size: 16p=
+x; font-weight: bold; line-height: 50px; text-align: center; text-decoratio=
+n: none; text-transform: uppercase; letter-spacing: 1.6px; width: 375px; he=
+ight: 50px; -webkit-text-size-adjust: none; mso-line-height-rule: exactly; =
+-webkit-font-smoothing: antialiased;">=0A                            UNLOCK=
+ PERK=0A                            </a>=0A                          </td>=
+=0A                        </tr>=0A                    </table>=0A         =
+       </td>=0A            </tr>=0A        </table>=0A    </td>=0A</tr>=0A<=
+!-- END Content_A1_1up_Dusk -->=0A=09=09=09=09=09=09=09=09=09<!-- START Con=
+tent_A1_1up_Dusk -->=0A=0A=0A=0D=0A=0D=0A  =0D=0A=0D=0A=0D=0A=0D=0A  =0D=0A=
+=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=
+=0A=0D=0A=0A<tr>=0A    <td align=3D"center" style=3D"border-collapse: colla=
+pse; -webkit-font-smoothing: antialiased;">=0A        <table class=3D"modul=
+e" role=3D"presentation" cellpadding=3D"0" cellspacing=3D"0" border=3D"0" w=
+idth=3D"100%" align=3D"center" bgcolor=3D"#054553" style=3D"border-bottom-w=
+idth: 1px; border-bottom-color: #054553; border-collapse: collapse; margin:=
+ 0; border-style: none;">=0A            <tr>=0A                <td align=3D=
+"center" style=3D"border-collapse: collapse; -webkit-font-smoothing: antial=
+iased;">=0A                    <a href=3D"https://links.messaging.disneyplu=
+s.com/f/a/9giC0As1b_nWFO3wvIBuKg~~/AAQRxRA~/1cOUiqyTlWAXLS4tZxRiEgOprQjdgU0=
+3432ibumD2YLu5d-wHykxvZTuglj3fYStM38ELKJyicLY7BNiwEZeYgHFlvfH66sNGgpqlxD9b0=
+d4Lyyjp-_JRTjhZPsKd25ncMEI3pLxBMhFWEb3u_JNKJCq_JrdFmiIS6CkcUFrW12bMvUhjif2T=
+Olq5X8xotBGFsU35Hm5XMD-hvVxOb8cH9-Acv_ZOXUlnR8jiJy0gU0fFsPvjXeGuWec__vuLHRy=
+bSPdzYSTj8yrreN-JL9VRuTORw25X0kZYob69M6aj-dDDUHiRJpiyUGWSoUubO-o5QOouDWw25t=
+PqQsfw5iZ7ZKo5RLp48rdvC5ajkRdLkRdprl-d7ZYazsrkGdRmf6-lsVdA9tsxWcj3U2JHhA7yU=
+cPOCeEzYdyWnvBtg5eYThM3W3M9eZwgm5UJE1BVR6Qltg3qBS4hHe3j6gmjy-iZ64jdwcnHpOTK=
+SX0Z-BDkBzLNgd2xKwzTS4mWRREzANarTVmm00FFUJheRqXlxuCZQcfC-YZ3X2LdcLLEv2LHUWd=
+8iS9RMi5AKwNEdsUn48UG6Bm0EuGFDmwe3Zys5jGn4TE811CWag50DDE5voogubAA44w433eRFW=
+ItAvVwS5JACAylMdMzLWgje7v49PmNo8gSmFKQwwAVfyFstvZRG0VL76bC_s-74VYDyIWv3BC_H=
+el88Wc2fL7cVlWwj_tmg~~" target=3D"_blank" style=3D"text-decoration: none; -=
+webkit-font-smoothing: antialiased;"><img src=3D"https://braze-images.com/a=
+ppboy/communication/assets/image_assets/images/6904fa6be8d4090065a62a0c/ori=
+ginal.jpg=3F1761933931" alt=3D"Disney+ Perks: Clear+ " border=3D"0" width=
+=3D"480" style=3D"height: auto; display: block; color: #ffffff; font-size: =
+16px; text-align: center; font-family: Inspire, InspireTWDC, 'Trebuchet MS'=
+, Arial, sans-serif; font-weight: normal; line-height: 22px;"></a>=0A      =
+          </td>=0A            </tr>=0A            <tr>=0A                <t=
+d align=3D"center" style=3D"font-size: 28px; font-weight: bold; color: #fff=
+fff; font-family: Inspire, InspireTWDC, 'Trebuchet MS', Arial, sans-serif; =
+line-height: 34px; letter-spacing: 0px; mso-line-height-rule: exactly; bord=
+er-collapse: collapse; -webkit-font-smoothing: antialiased; padding: 48px 4=
+0px 10px;">=0A                    Enjoy a 3=E2=80=91month free&nbsp;trial<b=
+r>=0Aof CLEAR+=0A                </td>=0A            </tr>=0A            <t=
+r>=0A                <td align=3D"center" style=3D"padding-left: 40px; padd=
+ing-right: 40px; padding-bottom: 24px; font-size: 20px; color: #ffffff; fon=
+t-family: Inspire, InspireTWDC, 'Trebuchet MS', Arial, sans-serif; line-hei=
+ght: 26px; font-weight: normal; mso-line-height-rule: exactly; border-colla=
+pse: collapse; -webkit-font-smoothing: antialiased;">=0A                   =
+ Holiday travel with less stress=3F Yes, please. Speed through security acr=
+oss CLEAR's nationwide network with a 3=E2=80=91month free trial of&nbsp;CL=
+EAR+.<sup style=3D"line-height: 0; font-size: 10px;">8</sup>=0A            =
+    </td>=0A            </tr>=0A            <tr>=0A                <td alig=
+n=3D"center" style=3D"padding-bottom: 48px; border-collapse: collapse; -web=
+kit-font-smoothing: antialiased;" class=3D"appleLinksBlack">=0A            =
+        <table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"pre=
+sentation" style=3D"border-collapse: separate; line-height: 100%;">=0A     =
+                   <tr>=0A                          <td align=3D"center" bg=
+color=3D"#02D6E8" role=3D"presentation" style=3D"border-radius: 4px; width:=
+ 375px; height: 50px; border-collapse: collapse; -webkit-font-smoothing: an=
+tialiased; border-style: none;" valign=3D"middle">=0A                      =
+      <a href=3D"https://links.messaging.disneyplus.com/f/a/03du9h7nrq4eUhe=
+C9YlBSQ~~/AAQRxRA~/1cOUiqyTlWAXLS4tZxRiEgOprQjdgU03432ibumD2YLu5d-wHykxvZTu=
+glj3fYStM38ELKJyicLY7BNiwEZeYgHFlvfH66sNGgpqlxD9b0d4Lyyjp-_JRTjhZPsKd25ncME=
+I3pLxBMhFWEb3u_JNKJCq_JrdFmiIS6CkcUFrW12bMvUhjif2TOlq5X8xotBGZ9p_incz1JOCCS=
+C6zBxZXqpzHO-y0u1jtIMgdbx23HKA0prOGBQlXJ5QNHCzHucTfNsr3GrdSuyzZ_k4CqF96JGZ_=
+KEctAO39uvUZFZ-FPBzAlm7JYlgrPdOL1XAtAYpCHP8x3jSYYr7VRONFV3Wq3Qx6QRb-3SRlqw3=
+-BiZLYg6wyaNjSu6BtmGsvT452TV3kXv21Tpbg1l2ynxhAmIJCOFciX7D-8sf2KTOzqSo4QJoQy=
+mHTkb8pjSoL77mrvXsxyMWNTzd7AAa4T9ON01J_qmejH-rC_DzkALIf8A3a9mAhuuaHe-UII8XU=
+KLp1J9tKYyCu_gkcCot66WfUJD4nztunhd5XQAre_KESOKeHYEy6LIMFtQXeOAwQtEn8NRM1be2=
+g5CdrwQfQsE4eOV2oOQA6CIoAcP6jUH0A_Gem3CV9_tTfOvxWA5bKNWz2fX8SoS3tzV7-lE2EvJ=
+NUlYZBzqHSHarM5ZTiQPJ4Xe_mbVQcxIBNgJJLsvU-BQZxQ2YAmkbruDyucMRSwa3m6xHA~~" c=
+lass=3D"buttonLink" style=3D"background-color: #02D6E8; background-image: l=
+inear-gradient(#02D6E8,#02D6E8) !important; box-shadow: inset 0px 50px #02D=
+6E8; border-radius: 4px; display: inline-block; color: #000000; font-family=
+: Inspire, InspireTWDC, 'Trebuchet MS', Arial, sans-serif; font-size: 16px;=
+ font-weight: bold; line-height: 50px; text-align: center; text-decoration:=
+ none; text-transform: uppercase; letter-spacing: 1.6px; width: 375px; heig=
+ht: 50px; -webkit-text-size-adjust: none; mso-line-height-rule: exactly; -w=
+ebkit-font-smoothing: antialiased;">=0A                            UNLOCK P=
+ERK=0A                            </a>=0A                          </td>=0A=
+                        </tr>=0A                    </table>=0A            =
+    </td>=0A            </tr>=0A        </table>=0A    </td>=0A</tr>=0A<!--=
+ END Content_A1_1up_Dusk -->=0A=09=09=09=09=09=09=09=09=09<!-- START Conten=
+t_A1_1up_Dusk -->=0A=0A=0A=0D=0A=0D=0A  =0D=0A=0D=0A=0D=0A=0D=0A  =0D=0A=0D=
+=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=
+=0D=0A=0A<tr>=0A    <td align=3D"center" style=3D"border-collapse: collapse=
+; -webkit-font-smoothing: antialiased;">=0A        <table class=3D"module" =
+role=3D"presentation" cellpadding=3D"0" cellspacing=3D"0" border=3D"0" widt=
+h=3D"100%" align=3D"center" bgcolor=3D"#054553" style=3D"border-bottom-widt=
+h: 1px; border-bottom-color: #054553; border-collapse: collapse; margin: 0;=
+ border-style: none;">=0A            <tr>=0A                <td align=3D"ce=
+nter" style=3D"border-collapse: collapse; -webkit-font-smoothing: antialias=
+ed;">=0A                    <a href=3D"https://links.messaging.disneyplus.c=
+om/f/a/TkWdVE2FcVVY2a1a3a98oA~~/AAQRxRA~/1cOUiqyTlWAXLS4tZxRiEgOprQjdgU0343=
+2ibumD2YLu5d-wHykxvZTuglj3fYStM38ELKJyicLY7BNiwEZeYgHFlvfH66sNGgpqlxD9b0d4L=
+yyjp-_JRTjhZPsKd25ncMEI3pLxBMhFWEb3u_JNKJCq_JrdFmiIS6CkcUFrW12bMvUhjif2TOlq=
+5X8xotBG0wbFt2z-mIr2k0JS_0TgM5yUDudN0NwTvOfMTn2Vr2G0jJPzg0H1QN0tTjPs91kMLUC=
+hW8a_kDvJeC71_bHGlE57Kkqokk7GEQp8ClM6qvaXkb3igmYCqXsPUIWvVhdUjDGeSwtqXgPHgG=
+Fa3MoNROf1r3OJHw7S0EbMdxuIm2zWvngcrSE-tH9XRCsm8v_aSb-q70RgTIgyRNMuoBMJYCMH-=
+qoLiCMmecZm-gYLi4243fh9n4GeJKle2ecbscijwSkEAXD8XEM8Xr6Nb9Qb9NC6Bn-pk7RI1OHH=
+CluPPnJeB18mCzqOtHzYndGRkhD3TyudYdivKthyTGPv5jfnx3BdOgBzmMDS8Z8VDvSBgdCMXGR=
+7M96r2UarS4xVE4zxBweZc7vI6Z-AZMVBqAkkEmmhUxUxd-nJvs_p6aRW7_wVQUVIEjsZxCrtz3=
+ta75Lno44vgT5dnfByC3itw0eMsalcVsJWH57VZgVIqj50_pxRE4aW63O_qCHWHUk-6Iuhf6G5d=
+HaQVMVleEaS9gWnLw~~" target=3D"_blank" style=3D"text-decoration: none; -web=
+kit-font-smoothing: antialiased;"><img src=3D"https://braze-images.com/appb=
+oy/communication/assets/image_assets/images/6904fa6b02f57f006349570c/origin=
+al.jpg=3F1761933931" alt=3D"Disney+ Perks: D23" border=3D"0" width=3D"480" =
+style=3D"height: auto; display: block; color: #ffffff; font-size: 16px; tex=
+t-align: center; font-family: Inspire, InspireTWDC, 'Trebuchet MS', Arial, =
+sans-serif; font-weight: normal; line-height: 22px;"></a>=0A               =
+ </td>=0A            </tr>=0A            <tr>=0A                <td align=
+=3D"center" style=3D"font-size: 28px; font-weight: bold; color: #ffffff; fo=
+nt-family: Inspire, InspireTWDC, 'Trebuchet MS', Arial, sans-serif; line-he=
+ight: 34px; letter-spacing: 0px; mso-line-height-rule: exactly; border-coll=
+apse: collapse; -webkit-font-smoothing: antialiased; padding: 48px 40px 10p=
+x;">=0A                    Enjoy a complimentary<br>=0AD23 Gold Membership=
+=0A                </td>=0A            </tr>=0A            <tr>=0A         =
+       <td align=3D"center" style=3D"padding-left: 40px; padding-right: 40p=
+x; padding-bottom: 24px; font-size: 20px; color: #ffffff; font-family: Insp=
+ire, InspireTWDC, 'Trebuchet MS', Arial, sans-serif; line-height: 26px; fon=
+t-weight: normal; mso-line-height-rule: exactly; border-collapse: collapse;=
+ -webkit-font-smoothing: antialiased;">=0A                    Join the Offi=
+cial Disney Fan Club and unlock special events, discounts, and more with fr=
+ee access to the new D23 Monthly Gold Membership! Limited time&nbsp;only.<s=
+up style=3D"line-height: 0; font-size: 10px;">9</sup>=0A                </t=
+d>=0A            </tr>=0A            <tr>=0A                <td align=3D"ce=
+nter" style=3D"padding-bottom: 48px; border-collapse: collapse; -webkit-fon=
+t-smoothing: antialiased;" class=3D"appleLinksBlack">=0A                   =
+ <table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentati=
+on" style=3D"border-collapse: separate; line-height: 100%;">=0A            =
+            <tr>=0A                          <td align=3D"center" bgcolor=
+=3D"#02D6E8" role=3D"presentation" style=3D"border-radius: 4px; width: 375p=
+x; height: 50px; border-collapse: collapse; -webkit-font-smoothing: antiali=
+ased; border-style: none;" valign=3D"middle">=0A                           =
+ <a href=3D"https://links.messaging.disneyplus.com/f/a/Dgbr_g0wfQVWvg79e8v6=
+XA~~/AAQRxRA~/1cOUiqyTlWAXLS4tZxRiEgOprQjdgU03432ibumD2YLu5d-wHykxvZTuglj3f=
+YStM38ELKJyicLY7BNiwEZeYgHFlvfH66sNGgpqlxD9b0d4Lyyjp-_JRTjhZPsKd25ncMEI3pLx=
+BMhFWEb3u_JNKJCq_JrdFmiIS6CkcUFrW12bMvUhjif2TOlq5X8xotBG1qfy_8mLRZo-GoerJTF=
+8pGVEGKBU4YZgtC6-_msgn3WGx8wYX9IdAffYNJ8jF4hOaPyojZDQd_a_jYEZj7bu6mJBzFxvQt=
+r-dQyt6d01Hi6nd15WZKbliQJPIUWvF1Oyr0SUidz2q_KqxFUI3ds0e0VCVPrivaab76e0i4gDq=
+vt7ge0NIZisWPWACY91jRmJtF14NPGB9iiapvrEdNQjTHQ5vNj3Chw-ESWbrAlbM00TMBMdF4bX=
+ULDTQo_bFJ-RhoYhK8TTkEzcvFoP8LGlVwwIc4V5B5TORiih0X5JkdkiFwvgBo4DKU2fflBf4Fm=
+Y96Aj3fHWEurOV93BQ1KQ4NspFYM3Sr7PPUw9uBgpz1-djJJA25gp_p3cBIQ2FoxuOJDkyYtLFs=
+ALcpKNogqtnkw-SBjFoarULlgkfOqalDRUbhA31GkAJxnH1ykNjLvRGgSIadg9RExjpuV83uODG=
+uKwJIkF5ERKqvsYr2wthTnkvH4j25QWPRNbWOmRXel8U1fPamm8WE5zLPzb7qpm9g~~" class=
+=3D"buttonLink" style=3D"background-color: #02D6E8; background-image: linea=
+r-gradient(#02D6E8,#02D6E8) !important; box-shadow: inset 0px 50px #02D6E8;=
+ border-radius: 4px; display: inline-block; color: #000000; font-family: In=
+spire, InspireTWDC, 'Trebuchet MS', Arial, sans-serif; font-size: 16px; fon=
+t-weight: bold; line-height: 50px; text-align: center; text-decoration: non=
+e; text-transform: uppercase; letter-spacing: 1.6px; width: 375px; height: =
+50px; -webkit-text-size-adjust: none; mso-line-height-rule: exactly; -webki=
+t-font-smoothing: antialiased;">=0A                            UNLOCK PERK=
+=0A                            </a>=0A                          </td>=0A   =
+                     </tr>=0A                    </table>=0A               =
+ </td>=0A            </tr>=0A        </table>=0A    </td>=0A</tr>=0A<!-- EN=
+D Content_A1_1up_Dusk -->=0A=0A                                    <!-- =3D=
+=3D=3D=3D=3D=3D END Body Modules =3D=3D=3D=3D=3D=3D=3D=3D -->=0A           =
+                     </table>=0A                            </td>=0A       =
+                 </tr>=0A                        <tr>=0A                   =
+         <td align=3D"center" style=3D"border-collapse: collapse; -webkit-f=
+ont-smoothing: antialiased;">=0A                                <table clas=
+s=3D"module" role=3D"presentation" cellpadding=3D"0" cellspacing=3D"0" bord=
+er=3D"0" width=3D"100%" bgcolor=3D"#02172A" style=3D"border-bottom-width: 1=
+px; border-bottom-color: #02172A; border-collapse: collapse; margin: 0; bor=
+der-style: none;">=0A                                    <tr>=0A           =
+                             <td style=3D"border-collapse: collapse; -webki=
+t-font-smoothing: antialiased;">=0A                                        =
+    <table role=3D"presentation" cellpadding=3D"0" cellspacing=3D"0" border=
+=3D"0" width=3D"100%" style=3D"border-collapse: collapse;">=0A             =
+                                   <tr>=0A                                 =
+                   <td align=3D"center" style=3D"border-collapse: collapse;=
+ -webkit-font-smoothing: antialiased;">=0D=0A=0D=0A  =0D=0A=0D=0A=0D=0A=0D=
+=0A  =0D=0A=0D=0A=0D=0A<!-- START FooterSocial_A1_null_Twilight -->=0D=0A=
+=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A  =0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A =0D=0A=
+=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=
+=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=
+=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A<ta=
+ble role=3D"presentation" width=3D"100%" cellspacing=3D"0" cellpadding=3D"0=
+" border=3D"0" style=3D"border-collapse: collapse;">=0D=0A=0D=0A=0D=0A=0D=
+=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A    =0D=0A   =0D=0A    <tr>=0D=
+=0A        <td style=3D"font-family: Inspire, InspireTWDC, 'Trebuchet MS', =
+Arial, sans-serif; font-size: 20px; font-weight: bold; line-height: 26px; c=
+olor: #ffffff; mso-line-height-rule: exactly; border-collapse: collapse; -w=
+ebkit-font-smoothing: antialiased; padding: 20px 40px;" align=3D"center">Fo=
+llow us=0D=0A        </td>=0D=0A    </tr>=0D=0A    <tr>=0D=0A        <td al=
+ign=3D"center" style=3D"border-collapse: collapse; -webkit-font-smoothing: =
+antialiased;">=0D=0A            =0D=0A            <table role=3D"presentati=
+on" cellspacing=3D"0" cellpadding=3D"0" border=3D"0" style=3D"border-collap=
+se: collapse;">=0D=0A                <tr>=0D=0A                    <td alig=
+n=3D"center" width=3D"35" style=3D"border-collapse: collapse; -webkit-font-=
+smoothing: antialiased;">=0D=0A                        <a href=3D"https://l=
+inks.messaging.disneyplus.com/f/a/NK4mIXx6yCUpsuLGZNCuNg~~/AAQRxRA~/_KjRCmp=
+7lkw9harJgwbLKWYEVsPtbsfHgtHMNblko08P31VifLs0TKhMjpnRGxbnPNtjQRD9CS467i0ZEQ=
+TOck0l0aV4nXyXPznN_IL9Mg2E1oWKfnwHdy8mWK6K9oKNtkThok7N3dBz0NUYsgAiznOsisyeQ=
+JcEqHutAyUFaNGrj07zXOXGPJnKpioMVmu-hn9ycROCUIf4i107WBPRitPSl8oZhmD0HIGiw2d0=
+YZvar1nyxGZdED22o_KO2tk5AvLIhJnrUzaaTVLg_p8f72-Rh6zb4l9EfnJOM244hmbV4fki_NT=
+Iui8LPGKQ21dxQ8LER6vnTkTgQJN-gZd_Pr8V6u9dFR1cWOorgfpmoTKXbQxkI8SIgUlWjoCCLG=
+2twxw2WtOYqijrA5jUa29Glv9JxACBk3FPcYAZAmuzjr6ckHVP8_JiuIDTcWGJoocxfQ3_bopeq=
+R59_VTm4LGyDVQwXRNrxP29rGnsOSI2eC4JhTVt6DPTIIvtCWpbmFvcpFgGxshLAp7HHUs2Gw7h=
+lUoTYqJtnBAbDW-0gxVHgOYD7RXlximRi3UXvkRLLcbWg14BxDRoeTptXEgcyVBL3g~~" targe=
+t=3D"_blank" alias=3D"Instagram_logo" style=3D"color: #ffffff; text-decorat=
+ion: none; -webkit-font-smoothing: antialiased;"><img src=3D"https://braze-=
+images.com/appboy/communication/assets/image_assets/images/6751c52e9daf3400=
+663f5a49/original.png=3F1733412141" alt=3D"Instagram" style=3D"display: blo=
+ck; height: auto; color: #ffffff; font-family: Inspire, InspireTWDC, 'Trebu=
+chet MS', Arial, sans-serif; font-size: 16px; text-align: center;" width=3D=
+"34" border=3D"0"></a>=0D=0A                    </td>=0D=0A                =
+    <td style=3D"padding-left: 40px; padding-right: 20px; border-collapse: =
+collapse; -webkit-font-smoothing: antialiased;" align=3D"center">=0D=0A    =
+                    <a href=3D"https://links.messaging.disneyplus.com/f/a/M=
+px2_T3nwbi0DbEh86559w~~/AAQRxRA~/AcOe9G95pN1nCw3cY46N1z29PD7ZgaxrbD54iDNbef=
+cABeR5QY-uNtn2d73-KAyuGm48G_fU2anOP_zcdYUSUfWjwCz7cca4TBaH6oOcZhUS-6H9WxhjN=
+0FUM72PJJ0wbQHcX-v1hfoRuSpsTzbH-S2IsyaiNa4j2vzeamxQzNBtwX1yn3qqt61uUqmcc1_D=
+uRIdPH37CET1JwJ5_nTZ1v-wohNCSYSYmQNUJuQufwV22791NXmMQEssETv0Wt8OvJN8wgdFFNk=
+QhZrl8VkPRF6Gb-YqEazLL0xaOPyRFpBtLDSY-filE7q-PfXhU3VvtGry3iISlyBfm7sAxIpot-=
+f9os9iFlbCG87HgvwIyKsGbTbGCHLV6b3Bz4YnP-UgFagvLk4zSAyl7zQvO3i2OUypveU3jCcAk=
+vxjqUT7JutSCgW-eKeoBnQ__3KKlEbrVc65h1WI_20-pxtBe0U6_sS7haVGGeGHVhdfMOu7B2YL=
+-Fclvd1nvT94FewJTaVn14LFSoGZoMuLbO6bTujQIu6qelRNentrK1pleLZglK9CeN-i8F7hriz=
+srZYX9fexL4LEN1bBRsYTxIf4kidZoQ~~" target=3D"_blank" alias=3D"TikTok_logo" =
+style=3D"color: #ffffff; text-decoration: none; -webkit-font-smoothing: ant=
+ialiased;"><img src=3D"https://braze-images.com/appboy/communication/assets=
+/image_assets/images/6751c52d9afe6f20b0ae4a94/original.png=3F1733412141" al=
+t=3D"TikTok" style=3D"display: block; height: auto; color: #ffffff; font-fa=
+mily: Inspire, InspireTWDC, 'Trebuchet MS', Arial, sans-serif; font-size: 1=
+6px; text-align: center;" width=3D"34" border=3D"0"></a>=0D=0A             =
+       </td>=0D=0A                    <td style=3D"padding-left: 20px; padd=
+ing-right: 40px; border-collapse: collapse; -webkit-font-smoothing: antiali=
+ased;" align=3D"center">=0D=0A                        <a href=3D"https://li=
+nks.messaging.disneyplus.com/f/a/9ESDuQDVzM099trmJ2lXXw~~/AAQRxRA~/rdO66FM-=
+WasqyhNqWLgwIKI4QjUibNq59mioxOUdlFtiadZIwB1OxjBLE-UnR9j_pQPJ5yMhfzn09B37CfX=
+DbTNocDdXdliDy8Yfzs34ZYFW3BxLR7bOYIO_1JDoRg0LXQNLbU-0TInmH48yJtFfGI10c7NUdz=
+7bmXSCUhVGkTg3HQviZJvrg9lURjZ1l-wCVDrc3k3UQCqgRCN6aGUAzmmwfseDhnxzTclCWjuoN=
+VeBADU7sRxVrYxwaimPsIL8lxKd4hiFZi_Wv5YzURAETRBj-87g3h6YpLA8OC1BT0SEKXDZWMDd=
+v20mExhxc3_TKCeUa-ESiXyyqs03hffu3AdEOyHwXLjXhdk12c9IOnT1HVmaprwMazJoqexZNLI=
+W3vRrBEpMr5I8wB2cQ3JArH1O4Vjd0Xd-TY_F_Fzp4MEzlL5BLW6H78Bk89GMZ0h67Rpf25UJVk=
+s5oFIx5OkbJw2Cu6jEqbd14U3KJIQmIpT5VnO_22s3NGtErGl5bA4I9dJLFPW565GEjs2Mx4CZj=
+GJYZOL3lGOAH4z6JJrL3t83WtKhG49V7qJkionXOfDo9ZMBSwDDTu9lC3UYuajq-g~~" target=
+=3D"_blank" alias=3D"Facebook_logo" style=3D"color: #ffffff; text-decoratio=
+n: none; -webkit-font-smoothing: antialiased;"><img src=3D"https://braze-im=
+ages.com/appboy/communication/assets/image_assets/images/6751c52d17256c0064=
+1404ad/original.png=3F1733412141" alt=3D"Facebook" style=3D"display: block;=
+ height: auto; color: #ffffff; font-family: Inspire, InspireTWDC, 'Trebuche=
+t MS', Arial, sans-serif; font-size: 16px; text-align: center;" width=3D"34=
+" border=3D"0"></a>=0D=0A                    </td>=0D=0A                   =
+ <td align=3D"center" width=3D"36" style=3D"border-collapse: collapse; -web=
+kit-font-smoothing: antialiased;">=0D=0A                        <a href=3D"=
+https://links.messaging.disneyplus.com/f/a/k9QZ4jxgXp10HNVMXPK1Cw~~/AAQRxRA=
+~/AcOe9G95pN1nCw3cY46N16-H_BtBqI7gjVNFdVGvM-hXcZLuohxlOptR9NclUe5mWA3H9WXso=
+tqs-qQdbr1Hbty6N-gB66wQqKCABh9zV60kaikTVDvT4GGiM5_GEv9F4Qc9ABf8eUh9DRfEb280=
+hZnjAb1eSDzc4Nf3fiku4EcyDH2olyoWueFbpF-djpxGiAbhQ4k0BOOigSWpHdG7NKNYLLWzqrk=
+21fZNjAsfqiKMcspUufe3mIQE9eYEFrFdPGQnm76wxghCmTVYkztF8nkNf4HlVL-tT_gghoPLNY=
+Cv-rZdPs7LolO6c8nudndg1kvUY1bEOtvtVqrUnQ0Mw0lESsfzw-_rgh3BKHrs6Tfjl2XZJX4ZB=
+AIhz1LGqSnUYzPQGxcNIDlw_lVQ3WbkEgufx5BNiVvtQQrVNAY6I7Rc3r16vE5otLLUnORoqLpV=
+XwJqH_xckuLVcVH78Q7F4TBQqizNh-NbS_mDFmR6DcFLvgBIykwM3d3qLE7W0Sb8dKhz6393O8o=
+JcjCP944Y28OBPqtGgGf48S9iGT7m8076mSk5QfMmu2Qjq6uT01JNuqFUASOUncGhM7CytAXreg=
+~~" target=3D"_blank" alias=3D"Twitter_logo" style=3D"color: #ffffff; text-=
+decoration: none; -webkit-font-smoothing: antialiased;"><img src=3D"https:/=
+/braze-images.com/appboy/communication/assets/image_assets/images/6751c52df=
+efb7a0075fb0d31/original.png=3F1733412141" alt=3D"Twitter" style=3D"display=
+: block; height: auto; color: #ffffff; font-family: Inspire, InspireTWDC, '=
+Trebuchet MS', Arial, sans-serif; font-size: 16px; text-align: center;" wid=
+th=3D"34" border=3D"0"></a>=0D=0A                    </td>=0D=0A           =
+     </tr>=0D=0A            </table>=0D=0A        </td>=0D=0A    </tr>=0D=
+=0A   =0D=0A    <tr>=0D=0A        <td style=3D"font-size: 0; border-collaps=
+e: collapse; -webkit-font-smoothing: antialiased;">=0D=0A            <img s=
+rc=3D"https://braze-images.com/appboy/communication/assets/image_assets/ima=
+ges/6751c595a89b670066c2dbf4/original.gif=3F1733412245" alt=3D"" width=3D"1=
+" height=3D"8" style=3D"display: block;" border=3D"0">=0D=0A        </td>=
+=0D=0A    </tr>=0D=0A</table>=0D=0A<!-- END FooterSocial_A1_null_Twilight -=
+->=0D=0A</td>=0A                                                </tr>=0A   =
+                                             <tr>=0A                       =
+                             <td align=3D"center" style=3D"border-collapse:=
+ collapse; -webkit-font-smoothing: antialiased;">=0D=0A=0D=0A  =0D=0A=0D=0A=
+=0D=0A<!-- START FooterHelp_A1_null_Twilight -->=0D=0A=0D=0A=0D=0A=0D=0A<ta=
+ble role=3D"presentation" width=3D"100%" cellspacing=3D"0" cellpadding=3D"0=
+" border=3D"0" style=3D"border-collapse: collapse;">=0D=0A<tr>=0D=0A<td ali=
+gn=3D"center" style=3D"font-family: Inspire, InspireTWDC, 'Trebuchet MS', A=
+rial, sans-serif; font-size: 16px; color: #ffffff; line-height: 22px; mso-l=
+ine-height-rule: exactly; max-width: 400px; border-collapse: collapse; -web=
+kit-font-smoothing: antialiased; padding: 24px 40px;">For more information,=
+ please visit our&nbsp;<a href=3D"https://links.messaging.disneyplus.com/f/=
+a/-LP1flO4L9lYIxWJSqYXYA~~/AAQRxRA~/mB1NpkiG-_ZhWhiavRujgEiZo_ecICqAHXKucaW=
+YxAx0gW6zvtryYiS_psTKw-vVBA-kOh8PRoJmtsq0NwX5g8NucubsdcTBDPHgsHYljnsYP0qozx=
+ztIy0MCdvNtnGPCyKNumGMr8zOY0Rib5KgsXkV7TJDkjhb7nH262EWMTz_YL56cifPu5cDM1Mrs=
+nxbIKf__rlX1-_2OnO6LYZZHNLgzHoA_SAewKAN1REfrVg~" target=3D"_blank" alias=3D=
+"Help_Center" class=3D"appleLinksWhite" style=3D"color: #ffffff; text-decor=
+ation: underline; white-space: nowrap; -webkit-font-smoothing: antialiased;=
+">Help Center</a>=0D=0A    </td>=0D=0A  </tr>=0D=0A</table>=0A</td>=0A     =
+                                           </tr>=0A                        =
+                        =0A                                                =
+<tr>=0A                                                    <td bgcolor=3D"#=
+757679" style=3D"font-size: 0; border-collapse: collapse; -webkit-font-smoo=
+thing: antialiased;">=0A                                                   =
+     <img src=3D"https://braze-images.com/appboy/communication/assets/image=
+_assets/images/6781931dbd4d0000634da106/original.gif" alt=3D"" width=3D"1" =
+height=3D"1" style=3D"display: block;" border=3D"0">=0A                    =
+                                </td>=0A                                   =
+             </tr>=0A                                                <tr>=
+=0A                                                    <td style=3D"border-=
+collapse: collapse; -webkit-font-smoothing: antialiased;">=0D=0A=0D=0A  =0D=
+=0A=0D=0A=0D=0A<!-- START Footer5b_A1_null_Twilight -->=0D=0A=0D=0A    =0D=
+=0A=0D=0A<table cellspacing=3D"0" cellpadding=3D"0" border=3D"0" align=3D"c=
+enter" style=3D"border-collapse: collapse;">=0D=0A    <tr>=0D=0A        <td=
+ align=3D"center" style=3D"border-collapse: collapse; -webkit-font-smoothin=
+g: antialiased;">=0D=0A            =0D=0A                <img src=3D"https:=
+//braze-images.com/appboy/communication/assets/image_assets/images/68a71f7b=
+4be2830064b91609/original.png=3F1755783035" alt=3D"" style=3D"display: bloc=
+k;" width=3D"480" height=3D"73" border=3D"0">=0D=0A            =0D=0A      =
+  </td>=0D=0A    </tr>=0D=0A</table>=0D=0A=0D=0A<!-- END Footer5b_A1_null_T=
+wilight -->=0A</td>=0A                                                </tr>=
+=0A                                                <!-- =3D=3D=3D=3D=3D=3D =
+Custom Footer text can be added here with FooterAdditional_A1 =3D=3D=3D=3D=
+=3D=3D=3D=3D -->=0A=09=09=09=09=09=09=09=09=09=09=09=09<!-- START FooterAdd=
+itionalA1_null_Twilight -->=0A=0A=0A=0D=0A=0D=0A  =0D=0A=0D=0A=0D=0A=0D=0A =
+ =0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=
+=0D=0A=0D=0A=0D=0A=0A<tr>=0A    <td class=3D"appleLinksGray5UL" style=3D"fo=
+nt-size: 11px; font-family: Inspire, InspireTWDC, 'Trebuchet MS', Arial, sa=
+ns-serif; line-height: 15px; color: #C0C0C0; mso-line-height-rule: exactly;=
+ border-collapse: collapse; -webkit-font-smoothing: antialiased; padding: 2=
+4px 40px 0;" align=3D"left">=0A        1. Disney+ Perks requires an active =
+Disney+ subscription and enrollment in the program; terms apply. See each p=
+romotion for applicable&nbsp;terms.=0A=09=09<br><br>=0A=09=092. Valid for a=
+dmission to Disney=E2=80=99s Hollywood Studios<sup style=3D"line-height: 0;=
+ font-size: 6px;">=C2=AE</sup>, Epcot<sup style=3D"line-height: 0; font-siz=
+e: 6px;">=C2=AE</sup> and Disney=E2=80=99s Animal Kingdom<sup style=3D"line=
+-height: 0; font-size: 6px;">=C2=AE</sup> Theme Park only. <b style=3D"-web=
+kit-font-smoothing: antialiased;">Not valid for admission to Magic Kingdom<=
+sup style=3D"line-height: 0; font-size: 6px;">=C2=AE</sup> Park</b>. One ad=
+mission per theme park.  One theme park per day. Disney+ subscription requi=
+red. This is a date=E2=80=91based ticket with start dates from January=E2=
+=80=8C&nbsp;12 through May=E2=80=8C&nbsp;22,=E2=80=8C&nbsp;2026. Ticket mus=
+t be used within 5 days of selected start&nbsp;date.=0A=09=09<br><br>=0A=09=
+=093. <b style=3D"-webkit-font-smoothing: antialiased;">NO PURCHASE NECESSA=
+RY.</b> Enter the Sweepstakes between 11/=E2=80=8C6/=E2=80=8C25 at 9:=E2=80=
+=8C00=E2=80=8C&nbsp;AM=E2=80=8C&nbsp;PT and 12/=E2=80=8C11/=E2=80=8C25 at 8=
+:=E2=80=8C59&nbsp;=E2=80=8CAM&nbsp;=E2=80=8CPT. Open to legal residents of =
+the 50 U.S./D.C.; 18+. Limit one (1) entry per person, per day. See <a href=
+=3D"https://links.messaging.disneyplus.com/f/a/OQ3JeLUP__KXOMVLBsADbg~~/AAQ=
+RxRA~/nWjMENthM3mNy6qgoN6acMqmwQxOysyfcHeQAj7vabvEg65pRhuTOgtQ5pXplZmZZy4Yl=
+_OzPAY9GtUWLtnoybADXvzj3D_7h-srvjf-KrZzuBp4BYNlzhi-TszGLD1JGIM6BKRCJZKA6Klk=
+63bjP9ZUBxtzqfebqCo2mkaHBhjZ9H19BVZhNLykygb88L4zPViw6Tzzzry0NP7PbdAR4jrhVdq=
+QZlMcyiBEcg2ZgJZL4-jkg7qGSzsAPBt4Kb9shQPH8vg0JNdMiI7htO36f1jcPbDUww-qn7C31B=
+KAyV2sEya0MA4t-7C6jZAFlTF9IOpdfsVfXk1j87pYdC3Ktu4YMY8XzVbcH9z9B0MTW874OF7zn=
+e1NqK-dUNLnzFz8sM0rpTExcPhw4cKvMV9-VI3WEj84F3u8GRjDwdWF-E4wBSbbThvTUEn2rTxo=
+3posTQ8Qe3Y1P-stD7VqMxJ_G4P1R5F4f-xGVbtqPVcrEmNJWa2wzLTKaoTdb_4d4zRS3XLwgLe=
+ruFWkPXiomckyfk0yWszMb8A4ex_vIxnHgg7BcFHALgf81YI3uubjRDLy5Fz36rFDEemEuWAzF3=
+ceuPUqmtSbsCi__9Zf8U48_cLawTFN1T8WNrbbEM5geoqUN1YZ3a5jQXK8Yl3Sg94sNA~~" sty=
+le=3D"text-decoration: underline; color: #C0C0C0; -webkit-font-smoothing: a=
+ntialiased;" target=3D"_blank">Official Rules</a> for full details on how t=
+o enter, free entry method, eligibility requirements, odds of winning, priz=
+e description and limitations. Void where prohibited. Sponsor: Disney Strea=
+ming Services LLC, 7=E2=80=8C&nbsp;Hudson Square, 10th=E2=80=8C&nbsp;Floor,=
+ New York,=E2=80=8C&nbsp;NY=E2=80=8C&nbsp;10013.=0A=09=09<br><br>=0A=09=094=
+. Marvel Rivals may offer codes that can be redeemed for the in=E2=80=91ga=
+me hero costume (the =E2=80=9CCodes=E2=80=9D). Unless otherwise advertised,=
+ the Codes are subject to the following terms, in addition to all other Ter=
+ms and Conditions, including but without limitation to Marvel Rivals=E2=80=
+=99 <a href=3D"https://links.messaging.disneyplus.com/f/a/g_00_sUuKNBLHQ-9Y=
+PaPzA~~/AAQRxRA~/HRQhLPhIZX9NrQg4rLB00LUe-YY6w1cxKeh_OIdoPZdem577aKOtNvbSiF=
+hix1ClUNEH2hgMg4xcCApZQJ7JDUHFOzZtpWDWt8QdCAUqWyzDnMx7y7ZT7DeJdtZ3NVrjP3LBZ=
+UMgLKg1pi4Z998mvPkjdgJ3JcfAjGtwnzIlb5HMIhIXCEeSa2rbb22a5vw2jXrjdL5RrOLh9Ngg=
+hMhut5dB46X8qCxAZaYmkPIep-ymJUrTHztGppzjijzZ_9cmBrPwrHAw9UIn1AUuwY7fHXj6gRG=
+CeRs_YZ7m98kd9jVTtofA1q85_n7pkcMFtZiraoyVRV3y5gAmhD6yxYJQyGvbBTWGzkzSofyB0E=
+8H67VZuWrSncmmwPK_ftL2GAIDaguSfoY2gFyxOUBglDL8GM-i2SqA6FT90KwpIvFzkWIH-pGmC=
+1BBCjATg30rQB6XBxBUzTXQkXmoMZxa0K3UcGdXME0XbOeH35ZlD8c_e0qGu6ehHxjrTp7XgrfI=
+2OBrKCNRoAg4jxNK9JjwTE-BbrFde5LyzXzA36IpFRi47Y2eENziTQQLUBz-F29W9o2PXNHBVp_=
+2ZrMIPm0OUyc2tirrsrMSAX9-MVsDvE772-SKZ4cUkyuFYPyk39h71tJE" style=3D"text-de=
+coration: underline; color: #C0C0C0; -webkit-font-smoothing: antialiased;" =
+target=3D"_blank">Terms of Use</a> and the <a href=3D"https://links.messagi=
+ng.disneyplus.com/f/a/gYTBaFjgP-4Og6OK43rZTQ~~/AAQRxRA~/m-yg3ubYeX41gTJDEjc=
+CIbkP3pSBnCeebeZM_TxqEcOf_cKb-FgHUaE5qtpmVNTb21injARjH4L8MZR4YS6ZzLMyN0IlNP=
+MZyKK-i8Gnbp9Rxc_OehDpexWiHodKdXBhN_2oeyQIizwWAECDC0km72eXNoKnqLl_WoaG3o9pK=
+MTzFuGMQmsE_vj_stwDOWJXmgMAtR2boNy5k390HClEVhK8mBE092u6kTIoIJWezw33YBPxD4la=
+LXmb6i9Yms45b9eQeepwjh-WyjPnEGVbNbpIZkZ0U1ivw6lwsRHFKulNdebcvuZ1wkaNgjICKR6=
+TixDAZT1jjuDUVO38yQSNpDFeefaPIzZXSBvPVfJGmyBR_IdA7HdnckXTtDfU0MNuZdpixzK4iv=
+fyBHVzLzZjp66lWrWUc71_SAVj080S1s26mwEnl94YZFycqMW0WfmfZUT3nX5XPE-LLkKv2whOw=
+mS7J4o24-BsNlXOybhyRRI0EqOj71aHE-C0vyr3R_jqOoHanGS8Z1k4ZoxfjVAjVrT0ENhZdoLe=
+oqyA_IKrpZN3OWrTjki2ih-agiLM-aqiTaOLjPvnPXbz8moCS6v7-qgo6AuNpSML-hO5lHJVtJ8=
+~" style=3D"text-decoration: underline; color: #C0C0C0; -webkit-font-smooth=
+ing: antialiased;" target=3D"_blank">Disney+ Perks Loyalty Program Terms &a=
+mp; Conditions</a>. By using or redeeming a Code, the users ("You") accept =
+and agree to all applicable&nbsp;terms.<br>=0A=09=09<b style=3D"-webkit-fon=
+t-smoothing: antialiased;">Redemption Code</b><br>=0A1.1 The Codes can only=
+ be used to redeem the Daredevil costume in Marvel&nbsp;Rivals.<br>=0A1.2 T=
+he Codes are subject to in=E2=80=91game restrictions.<br>=0A=09=09<b style=
+=3D"-webkit-font-smoothing: antialiased;">Validity Period</b><br>=0A2.1 The=
+ Codes will be valid as of October=E2=80=8C&nbsp;10,=E2=80=8C&nbsp;2025 til=
+l January=E2=80=8C&nbsp;8,=E2=80=8C&nbsp;2026.<br>=0A2.2 The Codes will exp=
+ire after the validity period and cannot be reissued or redeemed after that=
+ time.<br>=0A<b style=3D"-webkit-font-smoothing: antialiased;">Code Distrib=
+ution</b><br>=0A=09=093.1 The Codes may only be redeemed once by&nbsp;You.<=
+br>=0A3.2 The Codes are non=E2=80=91transferable, non=E2=80=91saleable, and=
+ cannot be exchanged for cash or&nbsp;credit.<br> =0A3.3 You agree not to s=
+ell, trade, or otherwise transfer the Codes to any third&nbsp;party.<br>=0A=
+=09=09<b style=3D"-webkit-font-smoothing: antialiased;">Limitations and Res=
+trictions</b><br>=0A4.1 The Codes are only available for the users who have=
+ a Disney+subscription and are enrolled in the Disney+ Perks&nbsp;Program. =
+<br>=0A4.2 The Codes are valid only for use by You and cannot be used in co=
+njunction with any other promotions or discounts unless expressly&nbsp;stat=
+ed. <br>=0A4.3 Marvel Rivals reserves the right to deny redemption if any f=
+raudulent activity is suspected or Your Disney+ Perk membership is&nbsp;can=
+celled.<br>=0A=09=09<b style=3D"-webkit-font-smoothing: antialiased;">Limit=
+ation of Liability</b><br>=0A5.1 Marvel Rivals shall not be liable for any =
+indirect, incidental, or consequential damages arising from the use or inab=
+ility to use the&nbsp;Codes.<br> =0A5.2 Your sole remedy for any dissatisfa=
+ction with the Codes is to stop using&nbsp;it.<br><br>=0A=0A=C2=A9&nbsp;202=
+5 MARVEL=0A<br><br>=0A=09=095. <b style=3D"-webkit-font-smoothing: antialia=
+sed;">NO PURCHASE NECESSARY.</b> Enter the Sweepstakes between 10/=E2=80=8C=
+22/=E2=80=8C25 at 11:=E2=80=8C45=E2=80=8C&nbsp;AM=E2=80=8C&nbsp;PT and 11/=
+=E2=80=8C13/=E2=80=8C25 at 8:=E2=80=8C59&nbsp;=E2=80=8CAM=E2=80=8C&nbsp;PT.=
+ Open to legal residents of the 50 U.S./D.C.; 18+. <b style=3D"-webkit-font=
+-smoothing: antialiased;">WINNER MUST TRAVEL IN EARLY DECEMBER 2025</b>. Li=
+mit one (1) entry per person, per day. See <a href=3D"https://links.messagi=
+ng.disneyplus.com/f/a/r0C4ql6GcwgpqNe5gQh17g~~/AAQRxRA~/r97F4814yb8wrGFwava=
+Go_RneWkio6q9WTyOgC6tzsfwQf-XjvfhtP6-X65KxKV1xCOSfL1P17oiIE7dzRJRCl_XUVO5q2=
+1qOix-x0ErNlR04Lu8yl2Eo8i8I0iWgDrsHv2LPdNz-xQCpPqlF3V1Rd8IyBaRW-HHCMTwg1_7J=
+WDKiM1Hs9_Rxb-JKTaOAApH1yScLDPq0KnBSTj-qf2J5H2N06MTIHF1kkrWiTC51LR-FXVgnVkY=
+q87CfCT1lOFmkenJuAU7JEMSE72AASxJ49Vdel6YohraBAAJs7xH4dm1_VIQotc0uxu8-XfYBht=
+IrAPW7c0jKDon90dU_z5vApuQAVcbXAavClGAVOrT3l8OAQPp1ay_cO4J7HGDv7XL_5PR1yLUDD=
+5XBVD5eHsRziCt1ApbqNsd7lpjbjdVcP0jgD011jsRYrg5s3DeLGn6DuVcWIURc1nJ_ieEgdv0d=
+knCs7X6xEEKyYh5g9HIp2TxsWhPsowHomqxHjgTbzaCJKTd8fURsf0Cs2Gc69j-sO6UsrN4vYVs=
+eeWJ99FkB6ve0UD4IFI8rl9ml_Uu2wGZGMNokppXJcMGJR7M7rzmPH6xZNcEvcVozvUP5u29gY8=
+CtcgUqazl9EoIB0FHLS8vNfAUeS7AGYHLxhaqBxicIg0qZBF2gvFBBlD5p25izPA2x77Og3vbkt=
+2cuan0LiCf" style=3D"text-decoration: underline; color: #C0C0C0; -webkit-fo=
+nt-smoothing: antialiased;" target=3D"_blank">Official Rules</a>  for full =
+details on how to enter, free entry method, eligibility requirements, odds =
+of winning, prize description and limitations. Void where prohibited. Spons=
+or: Disney Streaming Services LLC, 7=E2=80=8C&nbsp;Hudson Square, 10th=E2=
+=80=8C&nbsp;Floor, New York,=E2=80=8C&nbsp;NY=E2=80=8C&nbsp;10013.=0A=09=09=
+<br><br>=0A=09=096. <b style=3D"-webkit-font-smoothing: antialiased;">NO PU=
+RCHASE NECESSARY.</b> Enter the Sweepstakes between 11/=E2=80=8C6/=E2=80=8C=
+25 at 9:=E2=80=8C00&nbsp;=E2=80=8CAM&nbsp;=E2=80=8CPT and 11/=E2=80=8C13/=
+=E2=80=8C25 at 8:=E2=80=8C59=E2=80=8C&nbsp;AM=E2=80=8C&nbsp;PT. Open to leg=
+al residents of the 50 U.S./D.C.; 18+. <b style=3D"-webkit-font-smoothing: =
+antialiased;">PRIZE INCLUDES TICKETS TO AN EVENT IN SANTA MONICA, CA, IN EA=
+RLY DECEMBER 2025. TRAVEL AND LODGING NOT INCLUDED</b>. Limit one (1) entry=
+ per person, per day. See <a href=3D"https://links.messaging.disneyplus.com=
+/f/a/g2V46ARkYTbwHtX0K8X0Dg~~/AAQRxRA~/epA5wJJZu2l2aM1bXEJnE43GPAOLC-nTyHs0=
+8BodE6Ed3Ik0H0MIuE-yPFfrCmTjNUnui1PflH6i691yDSCUdcnGDlcdNYlC2VQYK0t3PdE07Lz=
+Sz0WauhDpgPhPcueAPfBB415jxll2n-YUCTMOelIlNltqbpn56DsNnpinp4s-nu1hPypCGyfg7R=
+Ee7EsNKcY3y9br1txs3h3ttWldkHNyzh1lbelG8nQCOg12z65Ld2iyVN0rdr67h2g9stxf8mN8r=
+m14jXkc2Avh-7RfI26J97SxGiIR0jLdSQB2uCLjRltb0HufEH0M2C-DCtXO0IDcz6g1yf1NZUsy=
+x2dAoEn-qrnEqG3qYU_47pdah5MZ9d7MHtVS2IkxjB2q4PvD7r4NZ15lGLW55DkoCLEpUnubWY6=
+ikhaiyNTThOe0CLjiXEuyiUKa3f3xaqJvAcsfeLf7q0QlFI8FDaoKl4fugc_v2oiOKhByENDdCa=
+nzhECLyFdZHHk7gePTZHfwXxY2qxhsKDTR896ecpZ3VGflg4Ng5XqQj_A6k3-NhyjJkpjbD44J6=
+TvydqjSVpweaSKtj9oZVq7nKJX9nrDpCNiwRoZV4RAGPH8Pas__9jC2o-FAKMHX_MZLJ-VUtQfE=
+iEdmvwY99F1k-1ZN-WNWiDFWL-JMSLhevJWTKXqZiRFi-KPdirsfn-mYFRkFBR1Km3JZ" style=
+=3D"text-decoration: underline; color: #C0C0C0; -webkit-font-smoothing: ant=
+ialiased;" target=3D"_blank">Official Rules</a> for full details on how to =
+enter, free entry method, eligibility requirements, odds of winning, prize =
+description and limitations. Void where prohibited. Sponsor: Disney Streami=
+ng Services LLC, 7=E2=80=8C&nbsp;Hudson Square, 10th=E2=80=8C&nbsp;Floor, N=
+ew York,=E2=80=8C&nbsp;NY=E2=80=8C&nbsp;10013.=0A=09=09<br><br>=0A=09=097. =
+Limited time offer. This offer is open only to legal residents of the 50 Un=
+ited States and DC (excluding Puerto Rico), eighteen (18) or older during P=
+romotion Period. This promotion is void where prohibited. 20% off eligible =
+items on ht=E2=80=8Ctps://=E2=80=8Cwww=E2=80=8C.loungefly.=E2=80=8Ccom. for=
+ Disney+ subscribers only. Must have active Disney+ subscription during Pro=
+motion Period to redeem. Limit one unique, single=E2=80=91use code per elig=
+ible Disney+ account per transaction. Unused codes expire at the end of eac=
+h calendar month if not redeemed. To receive discount, enter provided code =
+at checkout and click =E2=80=9CApply=E2=80=9D. Discount will be applied to =
+qualifying items in customer=E2=80=99s cart at time of checkout. Discount a=
+pplies to full=E2=80=91priced items only; excludes presale and markdown ite=
+ms. Cannot be combined with other promotions, offers or discounts. Non=E2=
+=80=91transferable. No cash value. Not valid on prior purchases, gift cards=
+, shipping, or&nbsp;taxes.=0A<br><br>=0A=09=098. Your CLEAR membership will=
+ automatically renew at the end of your three (3)=E2=80=91month free trial =
+and automatically renews each year for an additional 12 month period at CLE=
+AR's then=E2=80=91current standard rate (subject to change). We will notify=
+ you 30 days before your card is&nbsp;charged.<br>=0AUpon accepting CLEAR's=
+ terms and conditions, your card will be charged at the end of your trial, =
+if&nbsp;applicable.<br> =0AYou can cancel anytime before your trial ends to=
+ avoid&nbsp;charges.<br> =0ADon't forget, in person verification is require=
+d at one of the Enrollment Centers prior to using the CLEAR lanes at partic=
+ipating airports. Must have active Disney+ subscription during Promotion Pe=
+riod to&nbsp;redeem.<br>=0ABy accepting CLEAR=E2=80=99s Terms and Condition=
+s, you agree that your card will be charged at the end of the trial, unless=
+ you cancel&nbsp;beforehand. =0A<br><br>=0A=09=099. Offer for one (1) compl=
+imentary Disney+ Perks x D23 Gold Member Monthly Plan membership (=E2=80=9C=
+D23 Gold Monthly Plan=E2=80=9D) must be redeemed by 12/=E2=80=8C31/=E2=80=
+=8C25. D23 Gold Monthly Plan consists of:=0A=09=09<ul> =0A<li>Digital Gold =
+Member Card (accessible in the D23 app)</li>=0A<li>Access to digital Disney=
+ twenty=E2=80=91three publication</li>=0A<li>Access to D23 Gold Member Even=
+ts</li>=0A<li>Access to D23 Gold Member Offers and Discounts</li>=0A=09=09<=
+li>=0A<i>FanFare</i> Newsletter</li>=0A<li>Access to D23 General Events</li=
+>=0A<li>Sweepstakes</li> =0A=09=09=09</ul>=0AOffer only valid for persons a=
+ged 18 years or older who are active Disney+ subscribers with an active Dis=
+ney+ Perks membership, and who are not current D23 Gold Members. To redeem,=
+ visit your Disney+ Perks page and follow the redemption instructions.  The=
+n, log in or enroll for the D23 Gold Monthly Plan using the same email addr=
+ess as used for your Disney+ subscription,  and follow the redemption instr=
+uctions to sign up for D23 Gold Monthly Plan. Limit of one (1) D23 Membersh=
+ip per person.  If you have a current paid annual D23 Gold Membership and y=
+our renewal date is prior to 12/=E2=80=8C31/=E2=80=8C25, you may elect to c=
+ancel your current membership prior to renewal and enroll in the D23 Gold M=
+onthly Plan at the time of renewal if you are eligible to do so per these t=
+erms.  The D23 Gold Monthly Plan shall renew on a monthly basis so long as =
+you remain an active Disney+ subscriber with an active Disney+ Perks member=
+ship. For clarity, you must be an active Disney+ subscriber to enroll in th=
+e D23 Gold Monthly Plan and remain an active Disney+ subscriber in order to=
+ access the D23 Gold Monthly Plan benefits.  For example, all D23 Member=E2=
+=80=91exclusive events are only open to D23 Members in good standing at the=
+ time of event ticket purchase and also at the time of event attendance. Yo=
+u must show proof of your current D23 Gold Monthly Plan Membership card (vi=
+rtually in the=E2=80=AF<a href=3D"https://links.messaging.disneyplus.com/f/=
+a/V2TLfAybSR2X1dSgxK_FJw~~/AAQRxRA~/PGjnVIDgImeFFsr18W9Wxu6-sze9ltUyUgku3AV=
+GMplGMmqeZn5Glfck_pwvyuK4hmeL_X1xeRekbkEFM3DLTE-EQjU51brQKuHOu0KM_G33_OGjnW=
+4K0rV5B8TqULFVty-bMsaP3dO4G6tjhMzk_snjHKA9vxU60ljIKDwN4HkOy4XnII3HV56UpGFDY=
+4f1QczPVpGL1zatMyMUuQv86ojQrBwxNlHs0d3k4OSMNRSkMWrWt0Y_fl9Tucgw-b2_9mg_g3B0=
+RsPCxO1OWOlzxiMGkw00bmLHFQwHdFZYiDBFlxrkq31WVq8ZJuyI4WgQ7K-_w8UN9hNGixcALSr=
+FCG3sP-W9PlY58epzzIlSJpoX12jrRwAHVBhHw1XA5BhwtFR_I4SVvBYKIwqC_CqGQt7kJIJPFt=
+7nH5_ATz-NO-AD2QOMABDFYJgcVX6B9JAKNCvirse4WIw9RyrhFtm4wgGjz1BLnYCEeRFWPhfAa=
+0LsEX3JXg4XS_WGRDrz1OlNI8ajsu9dsG_7jJPJNeS-XFPqAqqj2dewXMwvAJ1LGKH_0Os3G_uU=
+pOqgkYvLL6D3cV-FrPnDiZlS2TTB9pEFjQ~~" style=3D"text-decoration: underline; =
+color: #C0C0C0; -webkit-font-smoothing: antialiased;" target=3D"_blank">D23=
+ Fan App</a>) and valid photo ID in order to attend a D23&nbsp;event.<br><b=
+r> =0AD23 Memberships are non=E2=80=91refundable and non=E2=80=91transferab=
+le, there are no credits or refunds for partial=E2=80=91year cancellations.=
+  If you enroll in the D23 Gold Monthly Plan and elect to upgrade to a paid=
+ D23 Gold Plan, prices for such Plans are in full as advertised with no cre=
+dits for the cancellation of the D23 Gold Monthly Plan.  All D23 Membership=
+s are subject to D23 Membership Terms at&nbsp;<a href=3D"https://links.mess=
+aging.disneyplus.com/f/a/-KCxSNISPLyxHxZ3pzTHjw~~/AAQRxRA~/TxRuNNqwBK_VP5TZ=
+eS5a_2bQvHn7kehZMHyidMbh1iA9hQEFPp0i2eHrY2Kdy3hozSEQx2ulpN1GQi2-bdAJ_q_Tivk=
+u9d403Uir1O51wzY035pRirpFRDs1YCnCZL4PZvXkjlHwuMFa4tUc_dnXxTGpcQYAFx-x2I_dFk=
+xSY4AJEq0zeZx_41z4li7RVz1dZjenL6dj1tyu1ulJKOp317zwrO-ZzGjmBBK9RTw5aKpy3xnSY=
+snWslwBh-ifwi0ITJqroWMqXV5XMK9eSxyldxWSrjLvt55_ROS0DaUUxhI3RMS3kfCqpv7RPx0C=
+3obvd90TH9WgnlXzOGjTjEphXjeJfWd0cws2i_ZHm8tbJo2x9bTmqcnTtUtaE6anorfZuwxWNCM=
+gvBiKDinnV4qjqIdoX6nCY39--PPaiKwB5SnSusuplR_-A2hxS_y0JsbhSEcxNcFdpqQ4EVXD08=
+ULtJx5doDnlAOMAxMdlJ_4CnbziPg4WU1u4uqki--c5PilFxt60x_Icm7wotED1AZoEi7uk5MnZ=
+t1IxFC4Hda4T-ag5VkB4tu3UA8GJNY3tlu0raojKsKfg1jkps3dMJEgVQ~~" style=3D"text-=
+decoration: underline; color: #C0C0C0; -webkit-font-smoothing: antialiased;=
+" target=3D"_blank">https://d23.com/d23-membership-terms/</a>  <br><br>=0AT=
+his offer is for a limited time only and D23 reserves the right to cancel, =
+modify, suspend, or withdraw this offer and/or the D23 Gold Monthly Plan at=
+ any time without notice. If your Disney+ subscription and/or your Disney+ =
+Perks membership is cancelled, your D23 Gold Monthly Membership will automa=
+tically be cancelled and your D23 membership will automatically be downgrad=
+ed to the D23 General Membership Plan. D23 reserves the right to prohibit u=
+sers from redeeming the offer and the right to cancel the D23 Gold Monthly =
+Plan if either D23 or Disney+ believe in their sole discretion that the Mem=
+ber is or is attempting to act fraudulently. The offer may not be auctioned=
+, traded, copied, transferred, bartered, modified, sold, or redeemed for ca=
+sh or a cash&nbsp;equivalent. =0A=0A=09=09=0A    </td>=0A</tr>=0A<!-- END F=
+ooterAdditionalA1_null_Twilight -->=0A                                     =
+           <tr>=0A                                                    <td s=
+tyle=3D"border-collapse: collapse; -webkit-font-smoothing: antialiased;">=
+=0A                                                        <!-- Assign vali=
+d region -->=0A                                                        =0A =
+                                                         =0D=0A=0D=0A  =0D=
+=0A=0D=0A=0D=0A=0D=0A  =0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A<!-- Assign unsu=
+blanguage from Catalog using language  -->=0D=0A=0D=0A=0D=0A=0D=0A<!-- Assi=
+gn variables from One_ID  -->=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A<!--=
+ Assign URLs -->=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A<!-- Assign Default lookup --=
+>=0D=0A=0D=0A=0D=0A =0D=0A=0D=0A=0D=0A=0D=0A=0D=0A<table role=3D"presentati=
+on" width=3D"100%" cellspacing=3D"0" cellpadding=3D"0" border=3D"0" style=
+=3D"border-collapse: collapse;">=0D=0A  <tr>=0D=0A    <td align=3D"left" st=
+yle=3D"border-collapse: collapse; -webkit-font-smoothing: antialiased; padd=
+ing: 24px 40px 39px;">=0A<table role=3D"presentation" width=3D"100%" cellsp=
+acing=3D"0" cellpadding=3D"0" border=3D"0" style=3D"border-collapse: collap=
+se;">=0D=0A        <tr>=0D=0A          <td style=3D"font-size: 11px; font-f=
+amily: Inspire, InspireTWDC, 'Trebuchet MS', Arial, sans-serif; line-height=
+: 15px; color: #C0C0C0; max-width: 400px; border-collapse: collapse; -webki=
+t-font-smoothing: antialiased;"> This email was sent to: <a href=3D"#" styl=
+e=3D"text-decoration:none;color: #C0C0C0; cursor:text;word-break: break-wor=
+d; overflow-wrap: break-word;">mstowe@baddomain.com</a>. Please do not repl=
+y to this email as this address is not monitored. This email contains an ad=
+vertisement from: Disney Streaming Services, LLC, <a href=3D"#" style=3D"te=
+xt-decoration:none;color: #C0C0C0; cursor:text;">500 S. Buena Vista St., Bu=
+rbank, CA 91521</a>.</td></tr><tr><td class=3D"appleLinksGray5UL" style=3D"=
+font-family:Inspire, InspireTWDC, 'Trebuchet MS', Arial, sans-serif;font-si=
+ze:11px;line-height:15px;mso-line-height-rule:exactly; color: #c0c0c0;paddi=
+ng-top:24px;" align=3D"left">If you do not want to receive future marketing=
+ email messages from Disney+, please =0A=0A=0A<a  href=3D"https://links.mes=
+saging.disneyplus.com/f/a/VMS7il3l3hALIPrShjsJkw~~/AAQRxRA~/nbEK0U3MYDA-u-O=
+w2Qg_xBiag1Lyv9Sa6sIqqC_Al1o5WlXKiQW0sWobfh0-OYjBxaZ7gzYoHcJUNKmQNsclvkiYdS=
+AetHYQ4gZ5wxJebOIl_SsVyAH7yfF3YUQVJ3m_gVJf2rvK9HAPx8fSHs9-pL54oQnmBVXRtWItB=
+KG19hj450BMYy26sQyivzAzECkihIPhYJ5dJbZNPUI8dz8rKpkVEqmkjF2vfTxgXNXe8Lwvkum2=
+gfLiWsWk-a1tQEoCgnTQbIua8Jq7GM6E2fKAw2SAt6URsNgvlLpkQYwuUEWiJE28iY5C-bT0iSq=
+ZckBGWFNb7kA403I8mxhECCuKMvstGxA5_2xoSukWPTQPnzazIa_CUFJ_PJMH9B2zT7DU0R74u5=
+cetopnFzq9FWxJhOHnTyM38Lw0k8JVM0HYR_jjpNiZaRDswiQaPqZ5yslVlvOxANYIAdTUYWkqx=
+rq_Le3PapFMO0JG5sQC-kdV2JP2ewcEO-G61bB9KVVmdBqg" alias=3D"optout" style=3D"=
+text-decoration:underline;color:#c0c0c0;"><strong>opt-out</strong></a>.</td=
+></tr><tr><td class=3D"appleLinksGray5UL" style=3D"font-family:Inspire, Ins=
+pireTWDC, 'Trebuchet MS', Arial, sans-serif;font-size:11px;line-height:15px=
+;mso-line-height-rule:exactly; color: #c0c0c0;padding-top:24px;" align=3D"l=
+eft">&copy; 2025 Disney and its related entities. All Rights Reserved.</td>=
+=0D=0A        </tr>=0D=0A        <!-- START SRC CODE -->=0D=0A        <tr>=
+=0D=0A          <td style=3D"padding-top: 24px; font-size: 11px; font-famil=
+y: Inspire, InspireTWDC, 'Trebuchet MS', Arial, sans-serif; line-height: 15=
+px; color: #C0C0C0; border-collapse: collapse; -webkit-font-smoothing: anti=
+aliased;" align=3D"left">SRC:690d24ed489d6fb933f65f52e3b4e2b2_EN_US</td>=0D=
+=0A        </tr>=0D=0A        <!-- END SRC CODE --> =0D=0A      </table>=0D=
+=0A    </td>=0D=0A  </tr>=0D=0A</table>=0A                                 =
+                       =0A                                                 =
+   </td>=0A                                                </tr>=0A        =
+                                    </table>=0A                            =
+            </td>=0A                                    </tr>=0A           =
+                         <tr>=0A                                        <td=
+ style=3D"padding-left: 240px; padding-right: 240px; border-collapse: colla=
+pse; -webkit-font-smoothing: antialiased;"></td>=0A                        =
+            </tr>=0A                                </table>=0A            =
+                </td>=0A                        </tr>=0A                   =
+ </table>=0A                </td>=0A            </tr>=0A        </table>=0A=
+    =0A=0D=0A<img border=3D"0" width=3D"1" height=3D"1" alt=3D"" src=3D"htt=
+ps://links.messaging.disneyplus.com/q/WazT8AEpLe76fYAfACgwng~~/AAQRxRA~/kL0=
+gV94_fSThoynJsKgD61Me3GDTGO5gBcQGJhaEmz2Vkz66cmfOgJ54MDABkejwB0b8bmcz9W50A9=
+Uhg3O6cQ~~">=0D=0A</body>=0A</html>
+--_----Vb9trJqIH/Kn3e2qixgLTQ===_7D/0D-41918-D463D096--
+

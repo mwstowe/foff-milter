@@ -1,0 +1,1755 @@
+Return-Path: <msprvs1=20404pvw2MR_H=bounces-266693-1440@sparkpostmail.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTPS id 5A5NNnrZ020354
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <mstowe@baddomain.com>; Wed, 5 Nov 2025 23:23:49 GMT
+	(envelope-from msprvs1=20404pvw2MR_H=bounces-266693-1440@sparkpostmail.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messaging.disneyplus.com header.i=@messaging.disneyplus.com header.b=rLvL/0J4
+X-Authentication-Warning: juliett.baddomain.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.baddomain.com
+Received: from oqyktrox.messaging.disneyplus.com (oqyktrox.messaging.disneyplus.com [137.22.232.57])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 5A5NNmjB034197
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK)
+	for <mstowe@baddomain.com>; Wed, 5 Nov 2025 17:23:48 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 5A5NNmjB034197
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (2048-bit key, unprotected) header.d=messaging.disneyplus.com header.i=@messaging.disneyplus.com header.a=rsa-sha256 header.s=scph1024 header.b=rLvL/0J4
+X-MSFBL: LnHaAzzGeNLH2g0+lz973NODWiyRqR6+3be2s9r0Nz8=|eyJtZXNzYWdlX2lkIjo
+	iNjkwOTdmZGMwYjY5MGZkMDQ3NTkiLCJzdWJhY2NvdW50X2lkIjoiMTQ0MCIsImN
+	1c3RvbWVyX2lkIjoiMjY2NjkzIiwidGVuYW50X2lkIjoic3BjIiwiciI6Im1zdG9
+	3ZUBiYWRkb21haW4uY29tIn0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=messaging.disneyplus.com; s=scph1024; t=1762385023;
+	i=@messaging.disneyplus.com;
+	bh=PmU0hjbC+jesoUpzK+x5O0hG9oiI5mqUY6EP9hi6LVk=;
+	h=To:Message-ID:Date:Content-Type:From:List-Unsubscribe-Post:
+	 Subject:List-Unsubscribe:From:To:Cc:Subject;
+	b=rLvL/0J4zKjsjcJZvq9Ds+oYcTvWWO7FTY+j3q5Tlr80dDSHm3To9CzfSzVeA6u4T
+	 81yM8AchTluiIlpSNh3Krur3ZytllhKIfJ2oNNkfBmLI9oz+RpJdtXlMj3mWT5aZ+j
+	 GlVdygue9yYgOCxr8Z9CNwsqr35eZOi2yygzYZoqMfyCnbAdZmT6v8sfIwfiNCYmzV
+	 ZawQKmRxC4Hec85vN8M2fYgfp0Oeh8ndrMQhuCwpuxEylbg+2Au6Y7lf+xeCmP4LvC
+	 16tBaWIaFItTw04mDFQfqRtflzaqrzSTZGP7qbjjC/SEF7ZcM4zVFioexMeb0S3uBE
+	 WcbQQ+O7MMnxA==
+Received: from [10.90.9.126] ([10.90.9.126])
+	by i-07374c767ad013089.mta1vrest.sd.prd.sparkpost (ecelerity 5.1.0.74659 r(msys-ecelerity:tags/5.1.0.17)) with REST
+	id 95/74-11341-F7CDB096; Wed, 05 Nov 2025 23:23:43 +0000
+To: mstowe@baddomain.com
+Message-ID: <95.74.11341.F7CDB096@i-07374c767ad013089.mta1vrest.sd.prd.sparkpost>
+Date: Wed, 05 Nov 2025 23:23:43 +0000
+Content-Type: multipart/alternative; boundary="_----5JTYcXvKNLyu9nZHwqEaZg===_15/74-11341-F7CDB096"
+MIME-Version: 1.0
+From: "Disney+" <disneyplus@sparkpostmail.com>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+Subject: =?utf-8?B?U3RyZWFtIE9uIHwgTWFydmVsIFN0dWRpb3PigJkgVGhlIEZhbnRh?=
+	=?utf-8?B?c3RpYyBGb3VyOiBGaXJzdCBTdGVwcw==?=
+List-Unsubscribe: <https://03.emailinboundprocessing.com/enc_user/list_unsubscribe?d=%241%24eQVlTfeKGJ4gclMeF7Uk4g%3D%3D%24PZ1qgyLfggQa6FOQeVULk6frOZhi%2BCm1IAoXiI1hnxKDdkMOduHa0ACSl4YP%0AgoM%2FRg1q%2FZZcLx0mTcdeWRzuuxNI4Famn47fWpp8v91stL99j0UpVq%2FOABhN%0AeJNK6%2BjxH%2B63nUIgcdY%2BG1UcCc4oW4Uj3O1rcBhFHPZrcm%2FRU09T0IbvgAvF%0AFgE63GefAdfZkQ17SMK0SyNwD%2BxjKsZylZlR9%2BYoOmkItRixdoSzpxcuTCp9%0Aix%2FVQ9XjBeX%2Fj5pk9UGvsVZ0sI18sYsLViib8Yq7C1NV6jAh80%2FuO8sfPM%2Bo%0A7e36eTiWLajfCmbyeczipODPUYt9P%2FKTLn9Rg2wUZZC89oNOjocg%2Fdgz0%2BmK%0AU7k%3D&1=1>
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Wed, 05 Nov 2025 23:23:49 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Wed, 05 Nov 2025 17:23:49 -0600 (CST)
+X-Spam-Flag: YES
+X-FOFF-Rule-Matched: Health Spam Detection: Anti-aging and longevity misinformation (juliett.baddomain.com)
+X-FOFF-Rule-Matched: Health Spam Detection: Anti-aging and longevity misinformation (hotel.baddomain.com)
+X-FOFF-Score: 60 - foff-milter v0.6.6 (juliett.baddomain.com)
+X-FOFF-Score: 60 - foff-milter v0.6.6 (hotel.baddomain.com)
+
+--_----5JTYcXvKNLyu9nZHwqEaZg===_15/74-11341-F7CDB096
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="UTF-8"
+
+Ryan Murphy=E2=80=99s All=E2=80=99s Fair + special look at Predator: Badlan=
+ds +=0Amore =0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0Atd, a { font-family: Arial, sans-serif !importan=
+t; }=0A.buttonLink, .button2Link { background-color:transparent=0A!importan=
+t; border: transparent !important; }       96    Stream=0AOn | Marvel Studi=
+os=E2=80=99 The Fantastic Four: First Steps=0A=E2=80=8C =E2=80=8C =E2=80=8C=
+ =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C=0A=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C=
+ =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C=
+=0A=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =
+=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C=0A=E2=80=8C =E2=80=8C =E2=80=8C=
+ =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =
+=E2=80=8C=0A=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =
+=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C=0A=E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =
+=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C=0A=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =
+=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C=0A=E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =
+=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C=0A=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C=
+ =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C=0A=E2=80=8C=
+ =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =
+=E2=80=8C =E2=80=8C =E2=80=8C=0A=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C=0A=0A    Disney+ =0A( https://links.messaging.disneyplus.com/=
+f/a/i9DVM1hhPSgpd250y__DEA~~/AAQRxRA~/pbak3lXlx9NdCxjEBC8tgHEsP8AYDew_cS_cK=
+CWu30lXA76g0p0qI4NsJlYl_XhBUyh4jdM-WnxvpXumpFLkBGt0jU05EpvXdc3Wfk5vEumc6bOV=
+uOjnuUHmUOR7pJ8r7ZSn5QGSfdNMSkBiSwZRiQ~~ )=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A      The Fantastic Four: First=0ASteps =0A( https://link=
+s.messaging.disneyplus.com/f/a/cecD7slHLpJzPrEYglZeJA~~/AAQRxRA~/Z_i_pm3-1P=
+A0FElzgWnpgk06V887DnpM74-xsIAf7KRFijVeEE3TyfPqLOAuQf3w7okaDv9kHyuJEGzPMdkY6=
+Ol8ntkgebNr60f64hgyKoUJ9_VLWY_qeUFfWB5qQ_fAVse38OFGgoh_vl3Xhj-z1zLYSu24FFFw=
+BHHIE6qct_qxBk0TmbIou8GnaFb4dEHHdufHVL2kRyLX_HABbUOcUA~~ )=0A     The Marve=
+l Studios hit everyone=E2=80=99s talking about     See=0AMarvel Studios=E2=
+=80=99 The Fantastic Four: First Steps like never=0Abefore, streaming in IM=
+AX Enhanced on Disney+. Feel every=0Aheart=E2=80=91pounding moment with IMA=
+X=E2=80=99s expanded aspect ratio and=0Aimmersive DTS sound =E2=80=94 bring=
+ing the filmmakers=E2=80=99 vision to life=0Aat home.*        Add to Watchl=
+ist =0A( https://links.messaging.disneyplus.com/f/a/Xz0RWOGqnlJEQ-AMEYpInw~=
+~/AAQRxRA~/Z_i_pm3-1PA0FElzgWnpgk06V887DnpM74-xsIAf7KRFijVeEE3TyfPqLOAuQf3w=
+7okaDv9kHyuJEGzPMdkY6Ol8ntkgebNr60f64hgyKoX5XnAf89fk67XxB75F1KmG27M4CjkatyY=
+fGGTV7ormJX4arIqBmXVbLVIHDga4WMHv7Lg5jzJ3hmgF7VFpptp6s1UerQdxeAsh9gBFGXP0Pg=
+~~ )=0A           =0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A      Hul=
+u on Disney+ =0A( https://links.messaging.disneyplus.com/f/a/0_UrCu0y3SD7cr=
+oBMjNiSA~~/AAQRxRA~/St5UkCxEH2WR4hG_NBqVNYoGvCzCbRRoelR2VlDfavp_L5C8U_k_YqQ=
+KcclFK8aUUXt8IDbiOhs29N6ODC-0npUQ9nNePs7m3eV-fyhXLqOYQktIJGOyBEbZaMIEODwwNT=
+F_oX-1SBTW-R12is7l_g~~ )    You=0Acan stream Hulu=E2=80=99s biggest series,=
+ movies, and Originals with the=0AHulu hub in your Disney+ app.**=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A      All's Fair =0A( https://lin=
+ks.messaging.disneyplus.com/f/a/PVj6ooJf67VBolUIYSZ74A~~/AAQRxRA~/Z_i_pm3-1=
+PA0FElzgWnpgk06V887DnpM74-xsIAf7KRFijVeEE3TyfPqLOAuQf3wRG40CnxTamqIZrnbnrE-=
+uu0DgA2LIS0zhT2ztsFqstV22X2YuW2csMWC1Zprh4lQ3Sxf2h7DkB5K-FLeFgRVxsjKg_5UUQb=
+mjr_fPyqlhXkRuqKNYMKG0yVBCk8sB3LvQrjVb9zhAiyQUyY05LHUEA~~ )=0A     Never se=
+ttle     Don=E2=80=99t miss Ryan Murphy=E2=80=99s All=E2=80=99s Fair,=0Asta=
+rring Kim Kardashian, where a team of female attorneys leave a=0Amale=E2=80=
+=91dominated firm to open their own practice.        Add to=0AWatchlist =0A=
+( https://links.messaging.disneyplus.com/f/a/97e8INFE05JrGzZXCoo-nw~~/AAQRx=
+RA~/Z_i_pm3-1PA0FElzgWnpgk06V887DnpM74-xsIAf7KRFijVeEE3TyfPqLOAuQf3wRG40Cnx=
+TamqIZrnbnrE-uu0DgA2LIS0zhT2ztsFqstUTGqocl5H9id-lk8nTTBtIxQjRCSFVEBlzX1oxT6=
+BlzCLjpoISk3mdnRjtHTD2TUuzm23SO48ubAyLY8tkiwYw2PNWndX5YgFLc7CKhSkLaQ~~ )=0A=
+           =0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A      Prepare fo=
+r=0APredator: Badlands           Predator =0A( https://links.messaging.disn=
+eyplus.com/f/a/GZO95g6CM_E1_7bWwDfqMg~~/AAQRxRA~/Z_i_pm3-1PA0FElzgWnpgk06V8=
+87DnpM74-xsIAf7KRFijVeEE3TyfPqLOAuQf3wk3-EanwruxjvdNgv_x9jgIOpoqDBldKz60xIL=
+FNyYLHH7cgYs4oHqFZ8YvwKpzUdcGQtxam39xMeWYOgSQYM4x2tqOmS4lxc-MneRoxWGMrFMX2-=
+4hqQQiYC2gJLq1h1A7bs9AbtoZE-4wRtxOeOew~~ )=0A                   Predator: K=
+iller of Killers =0A( https://links.messaging.disneyplus.com/f/a/j4E3Aa1K_z=
+r1X09ROpAfBA~~/AAQRxRA~/Z_i_pm3-1PA0FElzgWnpgk06V887DnpM74-xsIAf7KRFijVeEE3=
+TyfPqLOAuQf3wphIhy7uexiIpxykLZ2bj1Oj5UBr-BTaqTlPRVBRj1hMn3ztWrCo35tFAkyD1lM=
+lQjdGe-ttigC9dliWOYYqdqTdnYjGkXYS22zx1na7_9YSmEMJubigxXe83Ojo625fgTv92IcTxQ=
+kvq-B9xk1ut7Q~~ )=0A                   Prey =0A( https://links.messaging.di=
+sneyplus.com/f/a/MobHqfkxPqvMDrLmW5Eh1g~~/AAQRxRA~/Z_i_pm3-1PA0FElzgWnpgk06=
+V887DnpM74-xsIAf7KRFijVeEE3TyfPqLOAuQf3wqKifzqamQ3te7LP5Wmqe0pHyesvDdIonjGn=
+D1BaxFHUeP7-OyYfgGBCo1tNaOFpjO3mJEmJL6NUN9OWFMhQVgiNSr5rx0m7fkgbM-ns0LSSO-7=
+t8OWvqxup6OKum52TdeLblhBjm4qPwJIZ1WqaPDw~~ )=0A                        =0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A      Predator: Badlands =0A( =
+https://links.messaging.disneyplus.com/f/a/4opexaSYQY5GuXRnsDB2uQ~~/AAQRxRA=
+~/Z_i_pm3-1PA0FElzgWnpgk06V887DnpM74-xsIAf7KRFijVeEE3TyfPqLOAuQf3ws4DtgDYUg=
+hV0Uw3Z3m-_yTx7VGXv8QXrH-_V263kMtR0xYHQKM5P5x5HH9C2DPirh9oQ5T1jGGsSLprSe10d=
+vPD91amAO6HjN3-cuCp43SZHM7BXD06alCH7a6qagkGqZvl4VsLnhis-OAF6JOhzPg~~ )=0A  =
+   First hunt. Last chance.     A young Predator outcast finds=0Aan unlikel=
+y ally in Thia as he embarks on a treacherous journey=0Ain search of the ul=
+timate adversary. Watch this special look at=0APredator: Badlands, in theat=
+ers and IMAX this Fr=E2=80=8Ciday.=0AWatch Special Look =0A( https://links.=
+messaging.disneyplus.com/f/a/8mXjrltzl9nJIzoEL2b5ZQ~~/AAQRxRA~/Z_i_pm3-1PA0=
+FElzgWnpgk06V887DnpM74-xsIAf7KRFijVeEE3TyfPqLOAuQf3ws4DtgDYUghV0Uw3Z3m-_yTx=
+7VGXv8QXrH-_V263kMtQ2Fp8FCneF-4GHFVHboqIJAR24i9mLuqwD7EVDvzSv5IosJh9jREhYUW=
+hyenGscSZ3EV4gIohY6aaCFsVLpDpaF36aNU3kZGXnYntGK28vuQ~~ )=0A           =0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A      Freakier Friday =0A( htt=
+ps://links.messaging.disneyplus.com/f/a/v8dkZOcrBYazWUQpTV6Wnw~~/AAQRxRA~/Z=
+_i_pm3-1PA0FElzgWnpgk06V887DnpM74-xsIAf7KRFijVeEE3TyfPqLOAuQf3wZM2ubzDfwj_T=
+263aOS9Zj0TisVyo9jSVL1Zyyuvs5G4TOs3rX2mLxhBmeeN-645rKL5N3WwHMGM_F-VpjtCTNCD=
+MYRG85rAmp364cpx2zUQhkdur9VN8QAj-OFWtcx2gZBphNW34cEhYLeYWEnT2dg~~ )=0A     =
+Streaming on Disney+ next week     Switch up your plans and=0Astream the ul=
+timate laugh=E2=80=91out=E2=80=91loud FREAKquel, Disney's=0AFreakier Friday=
+.        Add to Watchlist =0A( https://links.messaging.disneyplus.com/f/a/=
+rDAdfEi_VdKIcf3Fy52lvA~~/AAQRxRA~/Z_i_pm3-1PA0FElzgWnpgk06V887DnpM74-xsIAf7=
+KRFijVeEE3TyfPqLOAuQf3wZM2ubzDfwj_T263aOS9Zj0TisVyo9jSVL1Zyyuvs5G6l9KWDmpjW=
+CvKVVCZDK8pe0yPD_AvGyP2olhnv13Nc-eTDbt90bQyl_EOZ9JpLxhhh9R5MwKpDZIyQghKvzPN=
+80ldkC3mJn1CXz_AEdRlxvQ~~ )=0A           =0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A      What=E2=80=99s new           Star=0AWars: Visions =0A(=
+ https://links.messaging.disneyplus.com/f/a/6Iyk4SHEvjDjYhpIpswR1Q~~/AAQRxR=
+A~/Z_i_pm3-1PA0FElzgWnpgk06V887DnpM74-xsIAf7KRFijVeEE3TyfPqLOAuQf3wppLxcgyO=
+JSYzComYezIcxKHXb2iaGXwV3MDB4PtYhfWgqz8NZ9yL6RnMlwAn0pqdZURp0Fp4yMxVPzZdF-0=
+5lOdLWU0gjKCFYWQ20hiJo7c7YTQlIG8ncSdpVzrOdOIFHD2JvqhXIpmoYV34yD9uOQ~~ )=0A =
+                  Twisted Wonderland: The Animation =0A( https://links.mess=
+aging.disneyplus.com/f/a/FNipiemZjlT6up2mc_cMuA~~/AAQRxRA~/Z_i_pm3-1PA0FElz=
+gWnpgk06V887DnpM74-xsIAf7KRFijVeEE3TyfPqLOAuQf3wPAtVVCDISBpp_tlOPLvn4b_68AH=
+8j8Ss3whDxRlZ2oA9IUzqpFFhdWTLUw6gbgC4uw9oyZAfi1dNqkddtMFaO93DcnBwgHWzsNQ3NA=
+a_8FjpFo8y_Os3gAdPzfIaXlJlUgh8wHxpSBY8a9R3cZpeMg~~ )=0A                   V=
+ampirina: Teenage Vampire =0A( https://links.messaging.disneyplus.com/f/a/8=
+gURmSM0u9sJ4LEjNObPtA~~/AAQRxRA~/Z_i_pm3-1PA0FElzgWnpgk06V887DnpM74-xsIAf7K=
+RFijVeEE3TyfPqLOAuQf3wFnq9Oe1eigEarH9Bpzo8XFJB1NJKAlmeWuTpjriUAjgA4XgF6szjl=
+frKKZcqzH1OcWEP675P5rG-tiGCkZrHfpqBVxnItSCAAeHHKhWpdicO2_k6X4Mc0ecwg4ya9ap-=
+8OvhJwgLr8d-7HXuaK12MA~~ )=0A                        =0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A      Disney+ Trivia =0A( https://links.messagin=
+g.disneyplus.com/f/a/Fw3kDS9sd0jGU2hL6FHPIw~~/AAQRxRA~/Z_i_pm3-1PA0FElzgWnp=
+gk06V887DnpM74-xsIAf7KRFijVeEE3TyfPqLOAuQf3waIPQdXzwZuSeIMZJTAGz49a_LUoOe8J=
+pjtlLc0hOH_3CrgiBKA4YdAcUO0ry9Y_2haY--3c5vdsmKF5zqqXB8yS9KiQD6E7mgAhbSPJIy7=
+2Cqlf6S5CCoAODGWJThNLJwc4Jluso1uC6WOkLwD_Cog~~ )=0A     Flashback to 2005  =
+   Which movie is celebrating its 20th=0Aanniversary next week=3F Hint: =E2=
+=80=9Cthe sky is falling!=E2=80=9D        Reveal=0A=0A( https://links.messa=
+ging.disneyplus.com/f/a/h5xlKa1HUlIH5yzGEWAc9w~~/AAQRxRA~/Z_i_pm3-1PA0FElzg=
+Wnpgk06V887DnpM74-xsIAf7KRFijVeEE3TyfPqLOAuQf3waIPQdXzwZuSeIMZJTAGz49a_LUoO=
+e8JpjtlLc0hOH_1DL-KkS2yYp-EFkWdMwrgnuzgbveZOQOIbc4cjJmcDOr1c0b8c-B4NRBnQOx4=
+0GoP5K9Pgj2F8UnUhQCvtn3B7nmMktfkj5M64fDgvo6c__g~~ )=0A          =0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0AAll of these and more now&nbsp;streaming=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A      Top brand=
+s. Iconic=0Astories. Just a tap away.        disneyplus =0A( https://links.=
+messaging.disneyplus.com/f/a/oa0MB8sLsdVG3cofq0cs9A~~/AAQRxRA~/3tjX4bzfFqh2=
+IQXyV8eT6Ws3HZdC4TbqRYJkYqyD3re2KPXF-Hw38UfFhjSRCJlAgF4ucP2fTLOGCCHQjqnuqtz=
+mdb5ChlnTL94dYj8hJxQ4L5RUBtf8CmZ3OinKkQc1JLgyTkFyfWqgEoiBOVYFnL_22p35NREmXu=
+peGwjG5sGFKM1wH7zhYVI_O-5kOt-5voAl7ztVY5J_OjYTfjbIyA~~ )=0A   Pixar =0A( ht=
+tps://links.messaging.disneyplus.com/f/a/Qu4KBSQDamBpLmPHOb8qjg~~/AAQRxRA~/=
+3tjX4bzfFqh2IQXyV8eT6Ws3HZdC4TbqRYJkYqyD3re2KPXF-Hw38UfFhjSRCJlAmM2Vt4AI0a3=
+XAOQptiWAb4qd2goX-iJHNmS_bddXD4jCBURIDOzcdCT4jREfZxvl3EEt0v5ycF3ZII3xnH68sd=
+eg2hXBUF-CXQTZlNnkAd62Y-InpSOwNRt67Vv6u1fFihbOWLEqhXZ88biFHOhIJQ~~ )=0A   M=
+arvel =0A( https://links.messaging.disneyplus.com/f/a/ngcN6ymKcV3kShMaOBbCh=
+A~~/AAQRxRA~/3tjX4bzfFqh2IQXyV8eT6Ws3HZdC4TbqRYJkYqyD3re2KPXF-Hw38UfFhjSRCJ=
+lAP0E8BkDn70j09uOMhaQJkYwaj83eRvqmcphwc7_CRtmXKeM8j9GWkR2_7O7CkqYYL8dy9uThC=
+MCst6z9BCwHHRbX8g1bdUw5_Zjlna3TQkOE5sCnhm_kCeENkRsRfI7cgEK-tTalhd8iMPTthpY9=
+Ag~~ )=0A   Star Wars =0A( https://links.messaging.disneyplus.com/f/a/19mab=
+DfLyxdMLdYHuitR_A~~/AAQRxRA~/3tjX4bzfFqh2IQXyV8eT6Ws3HZdC4TbqRYJkYqyD3re2KP=
+XF-Hw38UfFhjSRCJlAY85gkirwgiEO-qYPirEs12-Jiy--bNVvJFMRjzHS9EZOSpIODt0QL1d3N=
+28JlJ7QKFXtJDuFUKULraIdhhtTIYj18Vlb7QhnDvGhFlDChRTbYdl-d5t3yslwLpfvrtH2kHKY=
+Op0o8h-BEH1FQdAzKg~~ )=0A           National Geographic =0A( https://links.=
+messaging.disneyplus.com/f/a/RQGf_-HB4CaAgsAAuHze0g~~/AAQRxRA~/3tjX4bzfFqh2=
+IQXyV8eT6Ws3HZdC4TbqRYJkYqyD3re2KPXF-Hw38UfFhjSRCJlAeNpqhDVrpOfw_6m1Bq6LQST=
+zAm7rprsapwn5P12Z_3go92sBmIap7pC1Wn0zpeODUS1H10D8cpG4xWGJl51gunM0NBNX610RlB=
+LcEwvtCu_6JQ6OuUETPH5DqrKDk2obIdVFpr569tM4ZIdSoA-zEw~~ )=0A   Hulu =0A( htt=
+ps://links.messaging.disneyplus.com/f/a/wIfzceAq7e8BQAJv-fTbsQ~~/AAQRxRA~/Y=
+M0fl7Ti-iS8myfDE0f4P9W3bfYWcodhK2JfKbWw4KEplBlo26wSja-klW8BXmCnnDxY20v6HK2c=
+-Hp0df6AxqX9TKrk4tFVLByjtUAGldpGYZb0HuuWdbk_kjQXFhKOkQuvBUH3rSfngEZ_FzX-C9m=
+29j0FCro6QOiq5wEPq8U~ )=0AESPN =0A( https://links.messaging.disneyplus.com/=
+f/a/Zqd3y1gtkIjpox0X30fITQ~~/AAQRxRA~/YM0fl7Ti-iS8myfDE0f4P9W3bfYWcodhK2JfK=
+bWw4KEplBlo26wSja-klW8BXmCnUHthonM8CRRtwA-ehD4V5cLhIWfV4L-kUDP3k_644YDYg2eU=
+MMqJZjf6MATsCCwAG0VnoA5mdPNiSvp14j71i36Zd8u3XF5-eldI0vRnXAg~ )=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0AFollow us=0A    Instagram (=0Ahttps://links.m=
+essaging.disneyplus.com/f/a/aPJlqErj_ScpFH1G2Bn8HQ~~/AAQRxRA~/f_5p-TpBsjFN9=
+HILafr9EvJ5bsu-a_-pDoObm2-_ny3z08jkbxISIOWDA3YeCfzP-juUdyjidn-Y1vAwyKwTehf3=
+0YbTvHndwxU382uSEzhcywPk-__3AVIg2aU401LxPGqhn0637d9rF3NmreGn8g~~ )   TikTok=
+ (=0Ahttps://links.messaging.disneyplus.com/f/a/ReIDJe_9TkT06_460E-tJw~~/AA=
+QRxRA~/Y_LRa1Ny9vOITi29FfVXeNTwq1An1774_xCZ6ShwKBzdtpplGSyT2BQOaBLjGQ_U4lWE=
+4kC2ej4Fwy40WyNUNf-IvHnI-ZEJRiHReG-YLDbiKGhnPqubLz4YjJPHYpTp33SCld__kIsF29R=
+h4uqYVQ~~ )   Facebook=0A( https://links.messaging.disneyplus.com/f/a/RmIfI=
+ZHV5n6sNheq5ohTTQ~~/AAQRxRA~/xHhzVZe_8D6LWaWXjG62oKxy_ILi33v4H6--gGzBqSva61=
+K9LSGPpERwrXaqmezr2ap1M9JV-R75hl2O4ziqeV1ee4ZsakhSYLF3ZwEGj5Jy-uO84YALhD5-a=
+TqyEmW7jhbu7iTWwD5wXWPQBRMqdA~~ )   Twitter=0A( https://links.messaging.dis=
+neyplus.com/f/a/UdvluKiO96v6mX8QP6dTEg~~/AAQRxRA~/Y_LRa1Ny9vOITi29FfVXeLAO7=
+0LBrSTMD0-QCYcNtlDFbxhVo9lZB00xt4FkxEVl2skXJutsxDdmb5b_QRJQKdOjHEK-Kyl9sVVP=
+ymgHgx9vPXvoNvfPrU7hWsIe13FtfJA_rwZ58yC63ieYWUy5Lg~~ )=0A=0A=0A=0A=0A=0A=0A=
+=0A=0AFor more information, please visit ourHelp Center=0A( https://links.m=
+essaging.disneyplus.com/f/a/AxipYgJTgI3RRj57s0d3lA~~/AAQRxRA~/C8j1w4dGTwgwz=
+rz0zrqAdY1ViyHal5HTAF0ZC1T_yi5G34GUi2ooASD3oea97dSzV7kUwaULs__JNJ8wy0zqSmzM=
+Coe2H5S6diJ6-2oi93-qkdHTF3u83atkViJaG2agP-NS527pTHdDHY0FbEgtMEC2nEcR_tQMWhl=
+NbZpfnFhfqLAgWYpbAdaVLV70u5O8TUKhYOlFVLBs7tpeszAgg_4wrQKilypUzGOWInXtlg0~=
+=0A)=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A   *Disney+ subscrip=
+tion=0Arequired. Device and feature limitations apply for IMAX Enhanced=0As=
+ound; enhanced sound feature not available for all titles,=0Aterritories, d=
+evices, or languages.=0A=C2=A9 2025 Disney and its=0Arelated entities.=0A=
+=0A**Available for U.S. residents, 18+ only. Location data required=0Ato wa=
+tch certain content. Select Hulu content available via=0ADisney+; additiona=
+l content only available via Hulu app. Offer=0Avalid for eligible subscribe=
+rs only. Subject to Disney+, ESPN and=0AHulu Subscriber Agreement =0A( http=
+s://links.messaging.disneyplus.com/f/a/wWRme8djEjhqK-zTp5ZwHQ~~/AAQRxRA~/-x=
+48GF6Y78AWBQzm-tQTI7nIwMbLP0mrpFSRZviQr2RxZGp_8CX2P-dxZfWlw2jsJ8Yr67R0ei0lH=
+SSQVc-Mqc3JzbfH_nKulJCN31GuXzwtbqA1nBB5V5YJNHukyhMt9CTwUb7BQLcZ_N-7mG4lkxtC=
+rpt9Uhebpbsxn0whTSY~ )=0A. Additional terms, app feature and device restric=
+tions apply.=0AFor more information visit the Disney+ Help Center =0A( http=
+s://links.messaging.disneyplus.com/f/a/g-8TGDbSTMtGIEfhqFdSqw~~/AAQRxRA~/Bz=
+c0PvIpxACGIpf-ZUvzr9yUnoJwHnS5OfY_hjo2MjS_XzS4ZAlI0y3WNY1NTyPfPHLIDUsTGG-OI=
+zIO9Xsd_tQYhzm1Lkzxim-OJmf_byQV7EwiKQkO2-u-imRmUktz_zRQSZuEo_y7_yRwHxE-xA~~=
+ ).=0A=C2=A9 2025 Disney and its=0Arelated entities. =0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0AThis email was sen=
+t to: <a href=3D"#" style=3D"text-decoration:none;color: #C0C0C0; cursor:te=
+xt;word-break: break-word; overflow-wrap: break-word;">mstowe@baddomain.com=
+</a>. Please do not reply to this email as this address is not monitored. T=
+his email contains an advertisement from: Disney Streaming Services, LLC, <=
+a href=3D"#" style=3D"text-decoration:none;color: #C0C0C0; cursor:text;">50=
+0 S. Buena Vista St., Burbank, CA 91521</a>.</td></tr><tr><td class=3D"appl=
+eLinksGray5UL" style=3D"font-family:Inspire, InspireTWDC, 'Trebuchet MS', A=
+rial, sans-serif;font-size:11px;line-height:15px;mso-line-height-rule:exact=
+ly; color: #c0c0c0;padding-top:24px;" align=3D"left">If you do not want to =
+receive future marketing email messages from Disney+, please =0A=0A=0A<a  h=
+ref=3D"https://links.messaging.disneyplus.com/f/a/Vcu9HqBNUArmP8r89k3WJA~~/=
+AAQRxRA~/i7Se_F7DuMLca05d5UJsXU4cnGTpQ5Ez3AoHi2y8WKAMejbLnzqw5ixauolEwYL0-d=
+GVk8Wa2Xd1yzVPxWO1Vlj25yKQdUr7ChAxHRnSqGbjP248d-6gT2P-0OD0UV4QNZlYkYHvWS4Ex=
+eCSzLvvcS6ylQjWgI_Z3dEIPAE4yswzsSQE4yhmV3W7esfmE0HACaVkCA0kwvFQw9lussyKkteh=
+Mb2xqSNl0feIUX7fXvxljCb86q-OaG7HSZHpYEneUzi5gnQmtK_sIePFnE14V2vRrjX3hLd4_Ds=
+I9gb9t5iURz0kAY5_3rWxWtBXb3F9Tti-3rEwT9IBl9S2MqP5gIYwrK0XO6ZF0Gf4Gslsqi7bpr=
+HYN4BwBHG_QMVRX7596FqzV-h7yBAcqKOdrfty3rgX8SxHkUSPBn5k_f-z8rlxpXWB7Wq7wTNGD=
+BzBjbpxRTq3vj812J0EBIuIljsb16ShCHWAQ8WDwRN7TvMPu7tl0p-9AH2IfD_UPQaD5p6R ali=
+as=3D"optout" style=3D"text-decoration:underline;color:#c0c0c0;"><strong>op=
+t-out</strong></a>.</td></tr><tr><td class=3D"appleLinksGray5UL" style=3D"f=
+ont-family:Inspire, InspireTWDC, 'Trebuchet MS', Arial, sans-serif;font-siz=
+e:11px;line-height:15px;mso-line-height-rule:exactly; color: #c0c0c0;paddin=
+g-top:24px;" align=3D"left">&copy; 2025 Disney and its related entities. Al=
+l Rights Reserved.=0ASRC:690bd36e47f2636c66f92034944cd89e_EN_US
+--_----5JTYcXvKNLyu9nZHwqEaZg===_15/74-11341-F7CDB096
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html; charset="UTF-8"
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.=
+w3.org/TR/html4/loose.dtd">=0A<html>=0A<head>=0A<meta http-equiv=3D"Content=
+-Type" content=3D"text/html; charset=3DUTF-8">=0A<style>.ExternalClass {=0A=
+width: 100%;=0A}=0A.ExternalClass {=0Aline-height: 100%;=0A}=0Abody {=0Ahei=
+ght: 100% !important; margin: 0 auto !important; padding: 0; width: 100% !i=
+mportant;=0A}=0A@media only screen and (max-width: 480px) {=0A  #background=
+ {=0A    background-color: #ffffff !important;=0A  }=0A}=0A@media only scre=
+en and (max-width: 580px) {=0A  .module {=0A    margin-bottom: -1px !import=
+ant; border-width: 1px !important;=0A  }=0A}=0A@media (prefers-color-scheme=
+: dark) {=0A  td.appleLinksWhite {=0A    -webkit-text-fill-color: #ffffff !=
+important;=0A  }=0A  .module_1 {=0A    background-color: #202124 !important=
+; -webkit-text-fill-color: #ffffff !important;=0A  }=0A}=0A</style>=0A</hea=
+d>=0A<body style=3D"height: 100% !important; width: 100% !important; margin=
+: 0 auto; padding: 0;">=0A<div style=3D"display:none !important;visibility:=
+hidden;mso-hide:all;font-size:1px;color:#ffffff;line-height:1px;max-height:=
+0px;max-width:0px;opacity:0;overflow:hidden;">Ryan Murphy=E2=80=99s All=E2=
+=80=99s Fair + special look at Predator: Badlands + more</div>=0A<div style=
+=3D"display:none !important;visibility:hidden;mso-hide:all;font-size:1px;co=
+lor:#ffffff;line-height:1px;max-height:0px;max-width:0px;opacity:0;overflow=
+:hidden;">=CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=
+=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =
+=E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=
+=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =
+=E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=
+=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=
+=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=
+=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=
+=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =
+=CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=
+=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =
+=C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=
+=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =
+=EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=
+=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =
+=E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=
+=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =
+=E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=
+=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=
+=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=
+=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=
+=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =
+=CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=
+=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =
+=C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=
+=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =
+=EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=
+=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =
+=E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=
+=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =
+=E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=
+=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=
+=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=
+=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=
+=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =
+=CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=
+=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =
+=C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=
+=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =
+=EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=
+=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =
+=E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=
+=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =
+=E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=
+=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=
+=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=
+=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=
+=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =
+=CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=
+=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =
+=C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=
+=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =
+=EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=
+=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =
+=E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=
+=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =
+=E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=
+=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=
+=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=
+=80=87 =EF=BB=BF </div>=0A<p style=3D"-webkit-font-smoothing: antialiased; =
+margin: 0; padding: 0;">=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=
+=0A=0D=0A=0D=0A=0D=0A=0D=0A  =0D=0A=0D=0A=0D=0A=0D=0A  =0D=0A=0D=0A=0D=0A=
+=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=
+=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=
+=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=
+=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=
+=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A  =0D=0A=0D=0A=0D=0A=0D=0A=
+=0D=0A=0D=0A =0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=
+=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=
+=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=
+=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A    </p>=
+=0D=0A=0D=0A=0D=0A=0D=0A        <meta http-equiv=3D"Content-Type" content=
+=3D"text/html;" charset=3D"utf-8">=0D=0A=0D=0A=0D=0A=0D=0A        <meta nam=
+e=3D"viewport" content=3D"width=3Ddevice-width, initial-scale=3D1.0">=0D=0A=
+=0D=0A=0D=0A=0D=0A        <!--[if !mso]><!-->=0D=0A=0D=0A=0D=0A=0D=0A      =
+  <meta http-equiv=3D"X-UA-Compatible" content=3D"IE=3Dedge">=0D=0A=0D=0A=
+=0D=0A=0D=0A        <!--<![endif]-->=0D=0A=0D=0A=0D=0A=0D=0A        <meta n=
+ame=3D"color-scheme" content=3D"light">=0D=0A=0D=0A=0D=0A=0D=0A        <met=
+a name=3D"supported-color-schemes" content=3D"light">=0D=0A=0D=0A=0D=0A=0D=
+=0A        =0D=0A=0D=0A=0D=0A=0D=0A        <!--[if mso]>=0D=0A=0D=0A=0D=0A=
+=0D=0A        <style>=0D=0A=0D=0A=0D=0A=0D=0A        td, a {=0D=0A=0D=0A=0D=
+=0A=0D=0A        font-family: Arial, sans-serif !important;=0D=0A=0D=0A=0D=
+=0A=0D=0A        }=0D=0A=0D=0A=0D=0A=0D=0A        .buttonLink, .button2Link=
+ {=0D=0A=0D=0A=0D=0A=0D=0A        background-color:transparent !important;=
+=0D=0A=0D=0A=0D=0A=0D=0A        border: transparent !important;=0D=0A=0D=0A=
+=0D=0A=0D=0A        }=0D=0A=0D=0A=0D=0A=0D=0A        </style>=0D=0A=0D=0A=
+=0D=0A=0D=0A        <![endif]-->=0D=0A=0D=0A=0D=0A=0D=0A        <!--[if gte=
+ mso 9]>=0D=0A=0D=0A=0D=0A=0D=0A        <xml>=0D=0A=0D=0A=0D=0A=0D=0A      =
+  <o:OfficeDocumentSettings>=0D=0A=0D=0A=0D=0A=0D=0A        <o:AllowPNG/>=
+=0D=0A=0D=0A=0D=0A=0D=0A        <o:PixelsPerInch>96</o:PixelsPerInch>=0D=0A=
+=0D=0A=0D=0A=0D=0A        </o:OfficeDocumentSettings>=0D=0A=0D=0A=0D=0A=0D=
+=0A        </xml>=0D=0A=0D=0A=0D=0A=0D=0A        <![endif]-->=0D=0A=0D=0A=
+=0D=0A=0D=0A        <title>Stream On | Marvel Studios=E2=80=99 The Fantasti=
+c Four: First Steps</title>=0D=0A=0D=0A=0D=0A=0D=0A    =0D=0A=0D=0A=0D=0A=
+=0D=0A    =0D=0A=0D=0A=0D=0A=0D=0A        <span class=3D"preheader" style=
+=3D"color: #eaeaea; display: none !important; font-size: 1px; line-height: =
+1px; max-height: 0; max-width: 0; mso-hide: all !important; opacity: 0; ove=
+rflow: hidden; visibility: hidden; -webkit-font-smoothing: antialiased;">&n=
+bsp;</span>=0D=0A=0D=0A=0D=0A=0D=0A        <!-- Insert &zwnj;&nbsp; hack af=
+ter hidden preview text -->=0D=0A=0D=0A=0D=0A=0D=0A        <div style=3D"di=
+splay: none; max-height: 0px; overflow: hidden;"> &nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C=0D=0A=0D=0A=0D=0A=0D=0A            &nbsp;=E2=80=8C&nb=
+sp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nb=
+sp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nb=
+sp;=E2=80=8C&nbsp;=E2=80=8C=0D=0A=0D=0A=0D=0A=0D=0A            &nbsp;=E2=80=
+=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=
+=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=
+=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=0D=0A=0D=0A=0D=0A=0D=0A            &nbsp;=
+=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=
+=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=
+=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=0D=0A=0D=0A=0D=0A=0D=0A            =
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=0D=0A=0D=0A=0D=0A=0D=0A      =
+      &nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=0D=0A=0D=0A=0D=0A=0D=0A=
+            &nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nb=
+sp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nb=
+sp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=0D=0A=0D=0A=0D=0A=
+=0D=0A            &nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=
+=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=
+=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=0D=0A=0D=0A=
+=0D=0A=0D=0A            &nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=
+=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=
+=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=0D=0A=
+=0D=0A=0D=0A=0D=0A            &nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+=0D=0A=0D=0A=0D=0A=0D=0A            &nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C=0D=0A=0D=0A=0D=0A=0D=0A            &nbsp;=E2=80=8C&nbsp;=E2=80=8C&nb=
+sp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nb=
+sp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nb=
+sp;=E2=80=8C=0D=0A=0D=0A=0D=0A=0D=0A            &nbsp;=E2=80=8C&nbsp;=E2=80=
+=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=
+=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=
+=8C&nbsp;=E2=80=8C=0D=0A=0D=0A=0D=0A=0D=0A            &nbsp;=E2=80=8C&nbsp;=
+=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=
+=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=
+=E2=80=8C&nbsp;=E2=80=8C=0D=0A=0D=0A=0D=0A=0D=0A            &nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C=0D=0A=0D=0A=0D=0A=0D=0A            &nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=0D=0A=0D=0A=0D=0A=0D=0A            &nb=
+sp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nb=
+sp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nb=
+sp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=0D=0A=0D=0A=0D=0A=0D=0A         =
+   &nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=
+=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=
+=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=0D=0A=0D=0A=0D=0A=0D=0A   =
+         &nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=
+=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=
+=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=0D=0A=0D=0A=0D=0A=0D=
+=0A            &nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=0D=0A=0D=0A=0D=
+=0A=0D=0A            &nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=0D=0A=0D=
+=0A=0D=0A=0D=0A        </div>=0D=0A=0D=0A=0D=0A=0D=0A        <table id=3D"b=
+ackground" role=3D"presentation" cellpadding=3D"0" cellspacing=3D"0" border=
+=3D"0" align=3D"center" width=3D"100%" bgcolor=3D"#eaeaea" style=3D"border-=
+collapse: collapse;">=0D=0A=0D=0A=0D=0A=0D=0A            <tr>=0D=0A=0D=0A=
+=0D=0A=0D=0A                <td style=3D"border-collapse: collapse; -webkit=
+-font-smoothing: antialiased;">=0D=0A=0D=0A=0D=0A=0D=0A                    =
+<table role=3D"presentation" cellpadding=3D"0" cellspacing=3D"0" border=3D"=
+0" align=3D"center" width=3D"480" bgcolor=3D"#02172A" style=3D"width: 480px=
+ !important; border-collapse: collapse;">=0D=0A=0D=0A=0D=0A=0D=0A          =
+              <tr>=0D=0A=0D=0A=0D=0A=0D=0A                            <td a=
+lign=3D"center" style=3D"border-collapse: collapse; -webkit-font-smoothing:=
+ antialiased;">=0D=0A=0D=0A=0D=0A=0D=0A                                <tab=
+le role=3D"presentation" cellpadding=3D"0" cellspacing=3D"0" border=3D"0" w=
+idth=3D"100%" style=3D"border-collapse: collapse;">=0D=0A=0D=0A=0D=0A=0D=0A=
+                                    <tr>=0D=0A=0D=0A=0D=0A=0D=0A           =
+                            <td style=3D"border-collapse: collapse; -webkit=
+-font-smoothing: antialiased;">=0A<!-- START Header_A1_null_null -->=0D=0A=
+=0D=0A=0D=0A<table class=3D"module" role=3D"presentation" cellpadding=3D"0"=
+ cellspacing=3D"0" border=3D"0" width=3D"100%" align=3D"center" bgcolor=3D"=
+#02172A" style=3D"border-collapse: collapse; border-spacing: 0; mso-table-l=
+space: 0pt; mso-table-rspace: 0pt; margin: 0; padding: 0; border-style: non=
+e;">=0D=0A    <tr>=0D=0A        <td align=3D"center" style=3D"border-collap=
+se: collapse; -webkit-font-smoothing: antialiased;">=0D=0A           <a hre=
+f=3D"https://links.messaging.disneyplus.com/f/open-in-app/MjtXeQ4xi13L0Cvc9=
+Q1EHw~~/AAQRxRA~/gZ7ny2zIiyrXhKxuNdl8wSyutCw9U2GOiJpUoi98NMbjO8_by2WjAdWpG3=
+g3zXi5U7vQ7lZuOlxpVdl7jB2AerBBd-z-Ugnq_1keazMZjPpmrqd-08bdb1aObRJ1R6ezmD6En=
+HBZP1JWQ1B4nV6Xq6q8NWlFgNRmPdkykHUkIO8ROwftBJPjfRG1QKO0QoG9c37bhkYroqtep-JE=
+gU35Ncgd5olO6zgOMbIbIaqjyjWViC1J4sGRQzKh5fIvgSkvE-nm0ekcESkQqsL2Np3vWoiXFOB=
+z_fU7GduYwxCU3uQQ48VjJU8Boa-0X7xxMkh4ZaOASStbfV5NFzkkOHsKRFm8motT1EgXI75KSl=
+i4gJs9pZH36FBF5-wcCu9lphORL-flb4jSPfeMBMW_wMOeIf2G2AHhF9zIIjVP77Eck-pHeNqk3=
+rxqUjnV4RC78u-9gqocWXPp_YtMZ4ILOk2NoiuHaK6vKVFojQK-PiavR2Uo4Bf01bKoaYehfdiN=
+Up6kc1W_562gbcE796Gz4OY9JLloa_nrQtnRtxTJYSXQD2dcI_l7CE1cRVBy0HMtXKrs" style=
+=3D"text-decoration: none; -webkit-font-smoothing: antialiased;"><img src=
+=3D"https://braze-images.com/appboy/communication/assets/image_assets/image=
+s/6751c52d3e254d006601549c/original.png=3F1733412141" alt=3D"Disney+" style=
+=3D"display: block; height: auto; color: #ffffff; font-family: Inspire, Ins=
+pireTWDC, 'Trebuchet MS', Arial, sans-serif; font-size: 16px; text-align: c=
+enter; font-weight: normal; line-height: 22px;" width=3D"480" border=3D"0">=
+</a>=0D=0A        </td>=0D=0A    </tr>=0D=0A</table>=0D=0A<!-- END Header_A=
+1_null_null -->=0A</td> =0D=0A=0D=0A=0D=0A=0D=0A                           =
+         </tr>=0D=0A=0D=0A=0D=0A=0D=0A                                    <=
+!-- =3D=3D=3D=3D=3D=3D START Body Modules =3D=3D=3D=3D=3D=3D -->=0D=0A=0D=
+=0A=0D=0A=0D=0A<!-- START Hero_A1SH_Dusk -->=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=
+=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A  =0D=0A=0D=0A=0D=0A=
+=0D=0A  =0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=
+=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A<tr>=0D=0A=0D=0A=0D=0A=0D=
+=0A    <td align=3D"center" style=3D"border-collapse: collapse; -webkit-fon=
+t-smoothing: antialiased;">=0D=0A=0D=0A=0D=0A=0D=0A        <table class=3D"=
+module" role=3D"presentation" cellpadding=3D"0" cellspacing=3D"0" border=3D=
+"0" width=3D"100%" bgcolor=3D"#054553" style=3D"border-bottom-width: 1px; b=
+order-bottom-color: #054553; border-collapse: collapse; margin: 0; border-s=
+tyle: none;">=0D=0A=0D=0A=0D=0A=0D=0A            <tr>=0D=0A=0D=0A=0D=0A=0D=
+=0A                <td align=3D"center" style=3D"border-collapse: collapse;=
+ -webkit-font-smoothing: antialiased;">=0D=0A=0D=0A=0D=0A=0D=0A            =
+        <a href=3D"https://links.messaging.disneyplus.com/f/open-in-app/gLc=
+yltIXh2qHyQ9GIjB_Sg~~/AAQRxRA~/h1OrtJM21MmFwgHKK05YSv2tKog8j6_hVdaVHU2Z7T83=
+KbZvf3i1nk9y27ExbwvZvsDy7SsZ3stVa5EgBmjUTO8HvTp4whlr5U2rL_8PN0HNLbH86hppI2D=
+T0oueCvXdD7pfj6xQqhyDC3IVUCpi0weYNzHvLg3R1kL1P_GJ_kT-lON4u0eG-rkPU8rd_47Cin=
+0PsATWFpXNjO2xgEJTq3WV_U4tQ1jXhLW19ZE9lqUdZFW0jzPX1uvMzneTagl1QJr_-ROSd1MZg=
+cWzo-SP2a9BlsqHllAL7aq5DNv-8AOsmSAbrSQPu_P8-Zg6QUW_1d3Zrgel1IaQfFRS3mfEplDU=
+pr5KFl0wWPzllYTA3Yr1ga__IHgzBe4iIstaWzZCtrHxtpwNBSw5bryrD6eCFoA5cMUQVvOwexQ=
+0fcLi9VNyOwzj3YVdEZKhhlGNC_3ukbuvsMA9Dq2DAX4QAOj1D9bBIrsPk-CjrSDop_iZPsiVBi=
+vIV0FWdo1McGPHBcYFSlODH_kn-BTWMdyuXpu7vc_EfOtq-_9JtVeRYQtr4kTn79Ivt8wxPas-R=
+3ls0tFkKMRz525k9fZbM4EaoSgDvs_gMKui7Jui40fd8tumSaw~" target=3D"_blank" styl=
+e=3D"text-decoration: none; -webkit-font-smoothing: antialiased;"><img src=
+=3D"https://braze-images.com/appboy/communication/assets/image_assets/image=
+s/69013183cb9a8c00637faeed/original.jpg=3F1761685891" alt=3D"The Fantastic =
+Four: First Steps" border=3D"0" width=3D"480" style=3D"display: block; heig=
+ht: auto; color: #ffffff; font-size: 16px; text-align: center; font-family:=
+ Inspire, InspireTWDC, 'Trebuchet MS', Arial, sans-serif; font-weight: norm=
+al; line-height: 22px;"></a>=0D=0A=0D=0A=0D=0A=0D=0A                </td>=
+=0D=0A=0D=0A=0D=0A=0D=0A            </tr>=0D=0A=0D=0A=0D=0A=0D=0A          =
+  <tr>=0D=0A=0D=0A=0D=0A=0D=0A                <td align=3D"center" style=3D=
+"font-size: 42px; font-weight: 900; color: #ffffff; font-family: Inspire, I=
+nspireTWDC, 'Trebuchet MS', Arial, sans-serif; letter-spacing: -1px; line-h=
+eight: 50px; mso-line-height-rule: exactly; text-transform: none; border-co=
+llapse: collapse; -webkit-font-smoothing: antialiased; padding: 18px 40px 1=
+0px;">=0D=0A=0D=0A=0D=0A=0D=0A                    The Marvel Studios hit ev=
+eryone=E2=80=99s talking&nbsp;about=0D=0A=0D=0A=0D=0A=0D=0A                =
+</td>=0D=0A=0D=0A=0D=0A=0D=0A            </tr>=0D=0A=0D=0A=0D=0A=0D=0A     =
+       <tr>=0D=0A=0D=0A=0D=0A=0D=0A                <td align=3D"center" sty=
+le=3D"font-size: 20px; color: #ffffff; font-family: Inspire, InspireTWDC, '=
+Trebuchet MS', Arial, sans-serif; line-height: 26px; font-weight: normal; m=
+so-line-height-rule: exactly; border-collapse: collapse; -webkit-font-smoot=
+hing: antialiased; padding: 0 40px 24px;">=0D=0A=0D=0A=09=09=09=09=09=0D=0A=
+=0D=0A=09=09=09=09=09See Marvel Studios=E2=80=99 <em>The Fantastic Four: Fi=
+rst&nbsp;Steps</em> like never before, streaming in IMAX Enhanced on Disney=
++. Feel every heart=E2=80=91pounding moment with IMAX=E2=80=99s expanded as=
+pect ratio and immersive DTS&nbsp;sound =E2=80=94 bringing the filmmakers=
+=E2=80=99&nbsp;vision&nbsp;to life at&nbsp;home.<sup style=3D"line-height: =
+0; font-size: 10px;">*</sup>=0D=0A=0D=0A=09=09=09=09=09=0D=0A=0D=0A        =
+        </td>=0D=0A=0D=0A=0D=0A=0D=0A            </tr>=0D=0A=0D=0A=0D=0A=0D=
+=0A            <tr>=0D=0A=0D=0A=0D=0A=0D=0A                <td align=3D"cen=
+ter" style=3D"padding-bottom: 48px; border-collapse: collapse; -webkit-font=
+-smoothing: antialiased;" class=3D"appleLinksBlack">=0D=0A=0D=0A=0D=0A=0D=
+=0A                    <table border=3D"0" cellpadding=3D"0" cellspacing=3D=
+"0" role=3D"presentation" style=3D"border-collapse: separate; line-height: =
+100%;">=0D=0A=0D=0A=0D=0A=0D=0A                        <tr>=0D=0A=0D=0A=0D=
+=0A=0D=0A                          <td align=3D"center" bgcolor=3D"#02D6E8"=
+ role=3D"presentation" style=3D"border-radius: 4px; width: 375px; height: 5=
+0px; border-collapse: collapse; -webkit-font-smoothing: antialiased; border=
+-style: none;" valign=3D"middle">=0D=0A=0D=0A=0D=0A=0D=0A                  =
+          <a href=3D"https://links.messaging.disneyplus.com/f/open-in-app/j=
+8HORpbApYoqyTj2_wAdlA~~/AAQRxRA~/h1OrtJM21MmFwgHKK05YSv2tKog8j6_hVdaVHU2Z7T=
+83KbZvf3i1nk9y27ExbwvZvsDy7SsZ3stVa5EgBmjUTO8HvTp4whlr5U2rL_8PN0Hdu9-o1evFU=
+VvEufYFafmfUrRKcaxDN0RnqwUc1nQHO0fCVfrJ4pLA0dgGaVEk2WRGyb2x83_1mkb90Q3zNuDA=
+KTGyJF6cyrNXA7Ach_GHM_G3lkQozLTVliTnHD0V-NjdyzlRZPF3DrfDfsPb8dZM6B_mpuXP_mV=
+6TTOGsNYShbzvE4tq1ZPavqBFuMgcVRq_jv2Pn8yi8trXeOVXA8NR0TD5vKFC334Z_0_Th-wD8I=
+MHzRUHh82b4Uc17Yj1vyMgJvl92fc1oW3ebYxpcFeU6VcXLVetlNcqZyGULrVP0pymKgFU1JL-E=
+vDSCseyH4R-YAYuTKh8j5w1UcaNvocewqLLv19YT_VDZXUO72eKZXHwEgKBOKXxaMeQ0kF8TuB3=
+A5oDpfcKoZTnzNyHLlmDVFS-uHb6eRENEKgdTIdInWsgfhYyJHasnC9VAuTW1LjGavH52iKwj_I=
+WSszVGLK5yJeFRSJkV7kx_7qzjCGzmXG5bHXTKkaXSz6bM_xYH8o~" class=3D"buttonLink"=
+ style=3D"background-color: #02D6E8; background-image: linear-gradient(#02D=
+6E8,#02D6E8) !important; box-shadow: inset 0px 50px #02D6E8; border-radius:=
+ 4px; display: inline-block; color: #000000; font-family: Inspire, InspireT=
+WDC, 'Trebuchet MS', Arial, sans-serif; font-size: 16px; font-weight: bold;=
+ line-height: 50px; text-align: center; text-decoration: none; text-transfo=
+rm: uppercase; letter-spacing: 1.6px; width: 375px; height: 50px; -webkit-t=
+ext-size-adjust: none; mso-line-height-rule: exactly; -webkit-font-smoothin=
+g: antialiased;">=0D=0A=0D=0A=0D=0A=0D=0A                            Add to=
+ Watchlist=0D=0A=0D=0A=0D=0A=0D=0A                            </a>=0D=0A=0D=
+=0A=0D=0A=0D=0A                          </td>=0D=0A=0D=0A=0D=0A=0D=0A     =
+                   </tr>=0D=0A=0D=0A=0D=0A=0D=0A                    </table=
+>=0D=0A=0D=0A=0D=0A=0D=0A                </td>=0D=0A=0D=0A=0D=0A=0D=0A     =
+       </tr>=0D=0A=0D=0A=0D=0A=0D=0A        </table>=0D=0A=0D=0A=0D=0A=0D=
+=0A    </td>=0D=0A=0D=0A=0D=0A=0D=0A</tr>=0D=0A=0D=0A=0D=0A=0D=0A<!-- END H=
+ero_A1SH_Dusk -->=0D=0A=0D=0A=0D=0A=0D=0A=09=09=09=09=09=09=09=09=09=0D=0A=
+=0D=0A=0D=0A=0D=0A=09=09=09=09=09=09=09=09=09=0D=0A=0D=0A=0D=0A=0D=0A=09=09=
+=09=09=09=09=09=09=09<!-- START Title_F5_1up_Twilight -->=0D=0A=0D=0A=0D=0A=
+=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A   =0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A  =0D=
+=0A=0D=0A=0D=0A=0D=0A  =0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=
+=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A<tr>=0D=0A=
+=0D=0A=0D=0A=0D=0A    <td align=3D"center" style=3D"border-collapse: collap=
+se; -webkit-font-smoothing: antialiased;">=0D=0A=0D=0A=0D=0A=0D=0A        <=
+table class=3D"module" role=3D"presentation" cellpadding=3D"0" cellspacing=
+=3D"0" border=3D"0" width=3D"100%" bgcolor=3D"#02172A" style=3D"border-bott=
+om-width: 1px; border-bottom-color: #02172A; border-collapse: collapse; mar=
+gin: 0; border-style: none;">=0D=0A=0D=0A=0D=0A=0D=0A            <tr>=0D=0A=
+=0D=0A=0D=0A=0D=0A                <td align=3D"center" style=3D"border-coll=
+apse: collapse; -webkit-font-smoothing: antialiased;">=0D=0A=0D=0A=0D=0A=0D=
+=0A                    <a href=3D"https://links.messaging.disneyplus.com/f/=
+open-in-app/dJXak3EBuxTOf8ItcjwpEw~~/AAQRxRA~/mjEBXGcHLsMN-2Ye5lXjK-xvJtkQ3=
+5hgzrfrRaH5nM4ekw9LYdYktdwecHyBKTn4d-5W9JXwf9281bScyIx8nFEbKunrZ-iU7WeCQJY0=
+IbUk5ntSeDKe9w9kV8n_KASjFMC5O4F1nXjE3H9sSE1MYtpc1lAmiafcTp5OoiRPZ6NVkbSjw49=
+kWIyzhO5eNXWuu7MzW4xq43RwZWWXdMwUrr3Jtn7UuPjeb5wv2s7yiSJ_uHz1_1--5vwm8VN3Xa=
+TZ-8ZGyurtK7ojylmog_gXdu7yAcmJuWRC0KAtbl5hKPAPKQ3gHKS7VdXZL3XILion0tOQMeTsC=
+3zDmAUs_vdmvKQaWh__045j8NXuUzWpECxf1icPI7tcxPhvzO0Itzgp13C47FUA34ik6pTJ1qRx=
+GfxF3_04pLY3FBdbH8LkXC_dp2Hd3fJO3Zr3VTV62lKr-CV6C4WHSa6_zMUhImTzvlLG74X_dGV=
+GOV-cjoMs-0R06zEeSZ2Mo_z3Psa5v8lfG0m4qq9Yl4Z9F4sDirOcjQLKUO1vQR0UHSvVq50l35=
+tOGYhDUuflYeb2e4R3wvFz" target=3D"_blank" style=3D"text-decoration: none; -=
+webkit-font-smoothing: antialiased;"><img src=3D"https://braze-images.com/a=
+ppboy/communication/assets/image_assets/images/68f0e9823d953a0063490965/ori=
+ginal.png=3F1760618881" alt=3D"Hulu on Disney+" border=3D"0" width=3D"480" =
+style=3D"display: block; height: auto; color: #ffffff; font-size: 16px; tex=
+t-align: center; font-family: Inspire, InspireTWDC, 'Trebuchet MS', Arial, =
+sans-serif; font-weight: normal; line-height: 22px;"></a>=0D=0A=0D=0A=0D=0A=
+=0D=0A                </td>=0D=0A=0D=0A=0D=0A=0D=0A            </tr>=0D=0A=
+=0D=0A=0D=0A=0D=0A            <tr>=0D=0A=0D=0A=0D=0A=0D=0A                <=
+td style=3D"color: #ffffff; font-size: 20px; font-weight: normal; font-fami=
+ly: Inspire, InspireTWDC, 'Trebuchet MS', Arial, sans-serif; line-height: 2=
+6px; mso-line-height-rule: exactly; border-collapse: collapse; -webkit-font=
+-smoothing: antialiased; padding: 24px 40px 48px;" align=3D"center">You can=
+ stream Hulu=E2=80=99s biggest series, movies, and Originals with the Hulu =
+hub in your Disney+&nbsp;app.<sup style=3D"line-height: 0; font-size: 10px;=
+">**</sup>=0A</td>=0D=0A=0D=0A=0D=0A=0D=0A            </tr>=0D=0A=0D=0A=0D=
+=0A=0D=0A        </table>=0D=0A=0D=0A=0D=0A=0D=0A    </td>=0D=0A=0D=0A=0D=
+=0A=0D=0A</tr> =0D=0A=0D=0A=0D=0A=0D=0A<!-- END Title_F5_1up_Twilight -->=
+=0D=0A=0D=0A=0D=0A=0D=0A=09=09=09=09=09=09=09=09=09=0D=0A=0D=0A=0D=0A=0D=0A=
+=09=09=09=09=09=09=09=09=09<!-- START Content_A1_1up_Twilight -->=0D=0A=0D=
+=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=
+  =0D=0A=0D=0A=0D=0A=0D=0A  =0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=
+=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A<tr>=
+=0D=0A=0D=0A=0D=0A=0D=0A    <td align=3D"center" style=3D"border-collapse: =
+collapse; -webkit-font-smoothing: antialiased;">=0D=0A=0D=0A=0D=0A=0D=0A   =
+     <table class=3D"module" role=3D"presentation" cellpadding=3D"0" cellsp=
+acing=3D"0" border=3D"0" width=3D"100%" align=3D"center" bgcolor=3D"#02172A=
+" style=3D"border-bottom-width: 1px; border-bottom-color: #02172A; border-c=
+ollapse: collapse; margin: 0; border-style: none;">=0D=0A=0D=0A=0D=0A=0D=0A=
+            <tr>=0D=0A=0D=0A=0D=0A=0D=0A                <td align=3D"center=
+" style=3D"border-collapse: collapse; -webkit-font-smoothing: antialiased;"=
+>=0D=0A=0D=0A=0D=0A=0D=0A                    <a href=3D"https://links.messa=
+ging.disneyplus.com/f/open-in-app/FobYCSE4LVgO9Ggvgvnjmw~~/AAQRxRA~/afJSSQ_=
+9fr430KCr-YT8rfusudwV5Ya8d54aJgwED1FwJGEJ2oGWdb6fmTaiIgFqvYB8H2qM2ykRNXa1Or=
+Hnz2WOGBYuNWdUItWL-Uzlnfb6qypx8bdgFO1_nfPFYdgDkSUoTTNazBN_LV_mgxTecY2opTSL6=
+XaQuzH0EPRswnDqMlud53j9PeGAMrYuSUlSiFfXz16jTaQF8tkOtRaCrMCYRKTqDk5wblIi92R-=
+tWS1jkDGRfCA8zvD5VCe035Ki-Dt1TxBvNLrPi41sguONlvSAfH5x4Ql9zDr4eeFXATmR_4SPL0=
+EBfj4Quim5vHqjdGo2dFKsKH3xaDH3Ea1q8XqPv1PnpUmm3z1K5qDkC2GHgH0S4uE_pBMj762LU=
+huHmO1fnR1JOG2kJazbqf3EKjFVqKTJ-A0Yavbr00-KgXEeB1QvRJF1jYBQnTphxPgX-w592wCO=
+xBMZU0IyGh4ktVecVN7HFJKDWrOjWq7V67_j04198mj0Pj9ntP77RKX8SIzp-AMrdnaBawF5uYw=
+PMHxULuTmohorv6kI1g9vFKQWAfmA97YB5wOwtyEC0tYOwcCTq8FKwqIQJoMrfbrgW7iJLN-UM7=
+sIvDR5G8N_8cVkFK6GavieGAzeHYw19Y4" target=3D"_blank" style=3D"text-decorati=
+on: none; -webkit-font-smoothing: antialiased;"><img src=3D"https://braze-i=
+mages.com/appboy/communication/assets/image_assets/images/69013183b71f68006=
+39a6dd0/original.jpg=3F1761685891" alt=3D"All's Fair" border=3D"0" width=3D=
+"480" style=3D"height: auto; display: block; color: #ffffff; font-size: 16p=
+x; text-align: center; font-family: Inspire, InspireTWDC, 'Trebuchet MS', A=
+rial, sans-serif; font-weight: normal; line-height: 22px;"></a>=0D=0A=0D=0A=
+=0D=0A=0D=0A                </td>=0D=0A=0D=0A=0D=0A=0D=0A            </tr>=
+=0D=0A=0D=0A=0D=0A=0D=0A            <tr>=0D=0A=0D=0A=0D=0A=0D=0A           =
+     <td align=3D"center" style=3D"font-size: 28px; font-weight: bold; colo=
+r: #ffffff; font-family: Inspire, InspireTWDC, 'Trebuchet MS', Arial, sans-=
+serif; line-height: 34px; letter-spacing: 0px; mso-line-height-rule: exactl=
+y; border-collapse: collapse; -webkit-font-smoothing: antialiased; padding:=
+ 48px 40px 10px;">=0D=0A=0D=0A=0D=0A=0D=0A                    Never settle=
+=0D=0A=0D=0A=0D=0A=0D=0A                </td>=0D=0A=0D=0A=0D=0A=0D=0A      =
+      </tr>=0D=0A=0D=0A=0D=0A=0D=0A            <tr>=0D=0A=0D=0A=0D=0A=0D=0A=
+                <td align=3D"center" style=3D"padding-left: 40px; padding-r=
+ight: 40px; padding-bottom: 24px; font-size: 20px; color: #ffffff; font-fam=
+ily: Inspire, InspireTWDC, 'Trebuchet MS', Arial, sans-serif; line-height: =
+26px; font-weight: normal; mso-line-height-rule: exactly; border-collapse: =
+collapse; -webkit-font-smoothing: antialiased;">=0D=0A=0D=0A=0D=0A=0D=0A   =
+                 Don=E2=80=99t miss Ryan Murphy=E2=80=99s <em>All=E2=80=99s=
+&nbsp;Fair</em>, starring Kim Kardashian, where a team of female attorneys =
+leave a male=E2=80=91dominated firm to open their own&nbsp;practice.=0D=0A=
+=0D=0A=0D=0A=0D=0A                </td>=0D=0A=0D=0A=0D=0A=0D=0A            =
+</tr>=0D=0A=0D=0A=0D=0A=0D=0A            <tr>=0D=0A=0D=0A=0D=0A=0D=0A      =
+          <td align=3D"center" style=3D"padding-bottom: 48px; border-collap=
+se: collapse; -webkit-font-smoothing: antialiased;" class=3D"appleLinksBlac=
+k">=0D=0A=0D=0A=0D=0A=0D=0A                    <table border=3D"0" cellpadd=
+ing=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"border-collapse:=
+ separate; line-height: 100%;">=0D=0A=0D=0A=0D=0A=0D=0A                    =
+    <tr>=0D=0A=0D=0A=0D=0A=0D=0A                          <td align=3D"cent=
+er" bgcolor=3D"#02D6E8" role=3D"presentation" style=3D"border-radius: 4px; =
+width: 375px; height: 50px; border-collapse: collapse; -webkit-font-smoothi=
+ng: antialiased; border-style: none;" valign=3D"middle">=0D=0A=0D=0A=0D=0A=
+=0D=0A                            <a href=3D"https://links.messaging.disney=
+plus.com/f/open-in-app/Ya1Plt84qRwO7Eh-Qifbbg~~/AAQRxRA~/afJSSQ_9fr430KCr-Y=
+T8rfusudwV5Ya8d54aJgwED1FwJGEJ2oGWdb6fmTaiIgFqvYB8H2qM2ykRNXa1OrHnz2WOGBYuN=
+WdUItWL-Uzlnfb1_nDIDtLFF_as-pVAhkdH00Jyz-yuoCicq16j7mKjTT5bsT5FZkBRR5TAHUPb=
+DDYExc-Wb14r8GBdEW3Dqj_q6vPPdjfVttY5i46iKtIor98u-X267KCLAXxEygDMIJo6pJJvgQ0=
+TFVK81p8mxN34khHdXyV3RBB4cV9GSyEMsmilik3qCvPYJzklUNLVhlA9ptXoSf4lEUK03mslzt=
+JCZPbv52Uvz3GqEHB3FMmtkoVripnThN2uuf6atUpMWM03rGmoa9lXmQ4yRUFtHUFclHYeBnT1R=
+M-XDAdjfsbjqORG9P7702YYx-VnZzUKCKXryU5xiMzxcjyLs18ScuXqXlrNy2YrJ9wGIvbrd0qi=
+9w9_i2JogF2jboa3ESYmBOIUJ_lKrFsNtoOi-80VAGh-YfFYys9up2XrqoKItKiJaIhJFJ7LtFM=
+kF5RXIb7rozNeuUICpBPo7VEQSrnbQYmiKp4Nr1jSq-SCmh3E1dxAbhsdqrh5mIjCs3vLI-y1rn=
+eAGIpm6GA724xHllDQzygS" class=3D"buttonLink" style=3D"background-color: #02=
+D6E8; background-image: linear-gradient(#02D6E8,#02D6E8) !important; box-sh=
+adow: inset 0px 50px #02D6E8; border-radius: 4px; display: inline-block; co=
+lor: #000000; font-family: Inspire, InspireTWDC, 'Trebuchet MS', Arial, san=
+s-serif; font-size: 16px; font-weight: bold; line-height: 50px; text-align:=
+ center; text-decoration: none; text-transform: uppercase; letter-spacing: =
+1.6px; width: 375px; height: 50px; -webkit-text-size-adjust: none; mso-line=
+-height-rule: exactly; -webkit-font-smoothing: antialiased;">=0D=0A=0D=0A=
+=0D=0A=0D=0A                            Add to Watchlist=0D=0A=0D=0A=0D=0A=
+=0D=0A                            </a>=0D=0A=0D=0A=0D=0A=0D=0A             =
+             </td>=0D=0A=0D=0A=0D=0A=0D=0A                        </tr>=0D=
+=0A=0D=0A=0D=0A=0D=0A                    </table>=0D=0A=0D=0A=0D=0A=0D=0A  =
+              </td>=0D=0A=0D=0A=0D=0A=0D=0A            </tr>=0D=0A=0D=0A=0D=
+=0A=0D=0A        </table>=0D=0A=0D=0A=0D=0A=0D=0A    </td>=0D=0A=0D=0A=0D=
+=0A=0D=0A</tr>=0D=0A=0D=0A=0D=0A=0D=0A<!-- END Content_A1_1up_Twilight -->=
+=0D=0A=0D=0A=0D=0A=0D=0A=09=09=09=09=09=09=09=09=09<!-- START Title_A3_3up_=
+Twilight -->=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A  =0D=0A=0D=0A=
+=0D=0A=0D=0A=0D=0A=0D=0A  =0D=0A=0D=0A=0D=0A=0D=0A  =0D=0A=0D=0A=0D=0A=0D=
+=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=
+=0D=0A=0D=0A=0D=0A<tr>=0D=0A=0D=0A=0D=0A=0D=0A<td align=3D"center" style=3D=
+"border-collapse: collapse; -webkit-font-smoothing: antialiased;">=0D=0A=0D=
+=0A=0D=0A=0D=0A  <table class=3D"module" role=3D"presentation" cellpadding=
+=3D"0" cellspacing=3D"0" border=3D"0" width=3D"100%" align=3D"center" bgcol=
+or=3D"#02172A" style=3D"border-bottom-width: 1px; border-bottom-color: #021=
+72A; border-collapse: collapse; margin: 0; border-style: none;">=0D=0A=0D=
+=0A=0D=0A=0D=0A    <tr>=0D=0A=0D=0A=0D=0A=0D=0A      <td align=3D"center" s=
+tyle=3D"font-size: 28px; font-weight: bold; color: #ffffff; font-family: In=
+spire, InspireTWDC, 'Trebuchet MS', Arial, sans-serif; line-height: 34px; l=
+etter-spacing: 0px; mso-line-height-rule: exactly; border-collapse: collaps=
+e; -webkit-font-smoothing: antialiased; padding: 48px 40px 24px;">=0D=0A=0D=
+=0A=0D=0A=0D=0A       Prepare for <i>Predator:&nbsp;Badlands</i>=0D=0A=0D=
+=0A=0D=0A=0D=0A      </td>=0D=0A=0D=0A=0D=0A=0D=0A    </tr>=0D=0A=0D=0A=0D=
+=0A=0D=0A    <tr>=0D=0A=0D=0A=0D=0A=0D=0A      <td align=3D"center" style=
+=3D"border-collapse: collapse; -webkit-font-smoothing: antialiased; padding=
+: 0 40px 48px;" valign=3D"top">=0D=0A=0D=0A=0D=0A=0D=0A        <table role=
+=3D"presentation" cellpadding=3D"0" cellspacing=3D"0" border=3D"0" width=3D=
+"100%" align=3D"left" valign=3D"top" style=3D"border-collapse: collapse;">=
+=0D=0A=0D=0A=0D=0A=0D=0A          <tr>=0D=0A=0D=0A=0D=0A=0D=0A            <=
+td align=3D"left" style=3D"padding-bottom: 10px; border-collapse: collapse;=
+ -webkit-font-smoothing: antialiased;" valign=3D"top">=0D=0A=0D=0A=0D=0A=0D=
+=0A              <table role=3D"presentation" cellpadding=3D"0" cellspacing=
+=3D"0" border=3D"0" width=3D"127" align=3D"left" valign=3D"top" style=3D"bo=
+rder-collapse: collapse;">=0D=0A=0D=0A=0D=0A=0D=0A                <tr>=0D=
+=0A=0D=0A=0D=0A=0D=0A                  <td align=3D"center" valign=3D"top" =
+style=3D"border-collapse: collapse; -webkit-font-smoothing: antialiased;">=
+=0A<a href=3D"https://links.messaging.disneyplus.com/f/open-in-app/koCwjuLw=
+0eDO4iGRujWs_g~~/AAQRxRA~/QNPmGPYPzvtumgdkTSkOF7WmbDoIfkC7wIXlRzy4cuchXBwZF=
+75F04xQp88puYb5JsnijVTCJIl6qxWJS_EGev0LSq4_ATEn8BAUsqThEnUdKyoo10lkT8Wb8FWn=
+5zuDlQ779W6JQYSLH5CtaR8oJhy-wIuSrptZBNgdg5BIvSfTk3_f1z6dRpgZXXIVsYAOvGopAkK=
+47c8VPfi4gEYlkIzp8dI7ruE55fK3XmmGJywbgRoRfLqMOVFVu2Fpsrb-ZGUBpaPPbmhl5dboc0=
+y8dEpJ12ADlCndEEE4MGsefWmJY0MUghmp6B1i8KPu9gkuNQYMjiXnJijUukRowooeTobWP_C9e=
+XQNXoUgm80R5krZnCK6vMg75ku6DX9mqirxL6wCET--NMGVohQpvUBy2wqK-zED53_K0VmCFsNT=
+TOenZAetL1Ybr25EvVa5PNaWT8oVu4lAgrEl56HCpmP5aHQB1C26Agu8n-kgjKBLofRYQLZmdNx=
+j95EczMaW3Xe606IeklD-p2b9WlZtDmRGy2G2UFcYtEap8pz7mxBa_IHhbDTsu7jxJCQTdLooOu=
+haPUqNLbsutf5Gbz0W7oBCwGUebDmaz4eL5Dc6NcQ2_RJ5VTwJWrGNJV3djG8cCVrM" target=
+=3D"_blank" style=3D"text-decoration: none; -webkit-font-smoothing: antiali=
+ased;"><img src=3D"https://braze-images.com/appboy/communication/assets/ima=
+ge_assets/images/6901318365fd16006332f201/original.jpg=3F1761685891" alt=3D=
+"Predator" border=3D"0" width=3D"127" height=3D"178" style=3D"border-radius=
+: 4px; display: block; color: #ffffff; font-family: Inspire, InspireTWDC, '=
+Trebuchet MS', Arial, sans-serif; font-size: 16px; text-align: center; font=
+-weight: normal; line-height: 22px;"></a>=0D=0A=0D=0A=0D=0A=0D=0A          =
+        </td>=0D=0A=0D=0A=0D=0A=0D=0A                </tr>=0D=0A=0D=0A=0D=
+=0A=0D=0A                <tr>=0D=0A=0D=0A=0D=0A=0D=0A                  <td =
+align=3D"center" valign=3D"top" style=3D"border-collapse: collapse; -webkit=
+-font-smoothing: antialiased;">=0D=0A=0D=0A=0D=0A=0D=0A                    =
+<table cellpadding=3D"0" cellspacing=3D"0" border=3D"0" width=3D"120" role=
+=3D"presentation" valign=3D"top" style=3D"border-collapse: collapse;">=0D=
+=0A=0D=0A=0D=0A=0D=0A                      <tr>=0D=0A=0D=0A=0D=0A=0D=0A    =
+                    <td align=3D"center" style=3D"color: #ffffff; font-size=
+: 16px; font-weight: normal; font-family: Inspire, InspireTWDC, 'Trebuchet =
+MS', Arial, sans-serif; line-height: 22px; mso-line-height-rule: exactly; b=
+order-collapse: collapse; -webkit-font-smoothing: antialiased; padding: 10p=
+x 0px 0px;" valign=3D"top">=0D=0A=0D=0A=0D=0A=0D=0A                        =
+</td>=0D=0A=0D=0A=0D=0A=0D=0A                      </tr>=0D=0A=0D=0A=0D=0A=
+=0D=0A                    </table>=0D=0A=0D=0A=0D=0A=0D=0A                 =
+ </td>=0D=0A=0D=0A=0D=0A=0D=0A                </tr>=0D=0A=0D=0A=0D=0A=0D=0A=
+              </table>=0D=0A=0D=0A=0D=0A=0D=0A            </td>=0D=0A=0D=0A=
+=0D=0A=0D=0A            <td align=3D"center" style=3D"padding-bottom: 10px;=
+ border-collapse: collapse; -webkit-font-smoothing: antialiased;" valign=3D=
+"top">=0D=0A=0D=0A=0D=0A=0D=0A              <table role=3D"presentation" ce=
+llpadding=3D"0" cellspacing=3D"0" border=3D"0" width=3D"127" align=3D"cente=
+r" valign=3D"top" style=3D"border-collapse: collapse;">=0D=0A=0D=0A=0D=0A=
+=0D=0A                <tr>=0D=0A=0D=0A=0D=0A=0D=0A                  <td ali=
+gn=3D"center" valign=3D"top" style=3D"border-collapse: collapse; -webkit-fo=
+nt-smoothing: antialiased;">=0A<a href=3D"https://links.messaging.disneyplu=
+s.com/f/open-in-app/KHrDCj-tsfwh3KZkHiMEWQ~~/AAQRxRA~/QNPmGPYPzvtumgdkTSkOF=
+7WmbDoIfkC7wIXlRzy4cuchXBwZF75F04xQp88puYb5hNUnDDYmNYkGatS3OUnp-pnpnsNc3wLb=
+bdO3yuQSzjHbXr-SsiLBp5ykKSNw0DfqkeiGUJ12ZxEU0x8nAheoR9TLwiT3HnDSicfYfqUBruR=
+qV0DdkS3BKaEnI4Eyx5gujU6n3G-p9CRXJlu1IaHIOuuL9eCQVW3jGd8XCSyGq0FPNeauF9oWm6=
+gcz0XKchVh6QN3hZG4QnWggyMp38-gcBujsmpqQ21GMSeH5dkMRoieu9qnqIry3KJjli2AQjNHR=
+UhWb-t3cklKwIU3ixOC3k5_Tl-CxdUgq8A-QxOiXL8NPXdf8FxVt3q7XMsqi6FckqqAo-ru49kd=
+FBqFdm1WisXqCSxpWeDlw51yJsLS6xcZTmqHJJRcLUob1oKtO0TF_IIQPgc90K3rpErSvAfPhLw=
+WoBUaY8dEuE3KfSBstBcYU7QPUx_avJqBex4cNgZoa5hKfwNjT-3jcILRWi_Wzf9dTKRnVCmmui=
+OwNB1dPcUlMoUxP5ZJaU2GU9PxPHUCfFgBI5wbPUsgP2FoOXmCqTFuyVmKRRWlqKoJV8_yZww_N=
+z0ARX8nVojstyU_BamT" target=3D"_blank" style=3D"text-decoration: none; -web=
+kit-font-smoothing: antialiased;"><img src=3D"https://braze-images.com/appb=
+oy/communication/assets/image_assets/images/6901318351208000631c722d/origin=
+al.jpg=3F1761685891" alt=3D"Predator: Killer of Killers" border=3D"0" width=
+=3D"127" height=3D"178" style=3D"border-radius: 4px; display: block; color:=
+ #ffffff; font-family: Inspire, InspireTWDC, 'Trebuchet MS', Arial, sans-se=
+rif; font-size: 16px; text-align: center; font-weight: normal; line-height:=
+ 22px;"></a>=0D=0A=0D=0A=0D=0A=0D=0A                  </td>=0D=0A=0D=0A=0D=
+=0A=0D=0A                </tr>=0D=0A=0D=0A=0D=0A=0D=0A                <tr>=
+=0D=0A=0D=0A=0D=0A=0D=0A                  <td align=3D"center" valign=3D"to=
+p" style=3D"border-collapse: collapse; -webkit-font-smoothing: antialiased;=
+">=0D=0A=0D=0A=0D=0A=0D=0A                    <table cellpadding=3D"0" cell=
+spacing=3D"0" border=3D"0" width=3D"120" role=3D"presentation" valign=3D"to=
+p" style=3D"border-collapse: collapse;">=0D=0A=0D=0A=0D=0A=0D=0A           =
+           <tr>=0D=0A=0D=0A=0D=0A=0D=0A                        <td align=3D=
+"center" style=3D"color: #ffffff; font-size: 16px; font-weight: normal; fon=
+t-family: Inspire, InspireTWDC, 'Trebuchet MS', Arial, sans-serif; line-hei=
+ght: 22px; mso-line-height-rule: exactly; border-collapse: collapse; -webki=
+t-font-smoothing: antialiased; padding: 10px 0px 0px;" valign=3D"top">=0D=
+=0A=0D=0A=0D=0A=0D=0A                        </td>=0D=0A=0D=0A=0D=0A=0D=0A =
+                     </tr>=0D=0A=0D=0A=0D=0A=0D=0A                    </tab=
+le>=0D=0A=0D=0A=0D=0A=0D=0A                  </td>=0D=0A=0D=0A=0D=0A=0D=0A =
+               </tr>=0D=0A=0D=0A=0D=0A=0D=0A              </table>=0D=0A=0D=
+=0A=0D=0A=0D=0A            </td>=0D=0A=0D=0A=0D=0A=0D=0A            <td ali=
+gn=3D"right" style=3D"padding-bottom: 10px; border-collapse: collapse; -web=
+kit-font-smoothing: antialiased;" valign=3D"top">=0D=0A=0D=0A=0D=0A=0D=0A  =
+            <table role=3D"presentation" cellpadding=3D"0" cellspacing=3D"0=
+" border=3D"0" width=3D"126" align=3D"right" valign=3D"top" style=3D"border=
+-collapse: collapse;">=0D=0A=0D=0A=0D=0A=0D=0A                <tr>=0D=0A=0D=
+=0A=0D=0A=0D=0A                  <td align=3D"center" valign=3D"top" style=
+=3D"border-collapse: collapse; -webkit-font-smoothing: antialiased;">=0A<a =
+href=3D"https://links.messaging.disneyplus.com/f/open-in-app/ZYGJ4IrOpLSwyC=
+gqNw3qrA~~/AAQRxRA~/QNPmGPYPzvtumgdkTSkOF7WmbDoIfkC7wIXlRzy4cuchXBwZF75F04x=
+Qp88puYb5d0WT0cHHmFWH1mBteFXxVfppzqHcxIvGz_4C38edwzEQQ2wkMeVBSbkixr0oCB17F7=
+uByfCnvCuPNAFDKekdjM-HrYQPcyHzrjU8XmoQFhvUsYmc86cWxwVQTHnlhisbRGZz0CE2GG2NM=
+CiVutyvzcnPxeIJKQ_pI-dauuKHtTAyAtEHzirqxLte6r5zqzycrjh_hEjA07yImzscLD8H1pQF=
+07jf6qk9YGsfWgmltTgJ93M7gLJYqJ76UbtOv4KIip0hNsFsHTWlT9vHTCLxHTTp33lUhdiM4Xy=
+GP4owQwko7MTS5P4zIz1kLoyO9Ee88f8iErmqSMMxD0C2xzvFyGjWYXwmZ-t7Vg-2zZ1a9OYRQX=
+C7hYPx6HXJV06OD9_Gjqm153txaa3WFaAhIENOQEtj9KaFJapnLi_aMUXWmlBWDp3oxGchlVxbW=
+bz83-YLJy9eBEssf2FId7v4lPY1pCC9pZqPl75pUQ0Wszpj2eMU44hE4wXP6YguqS9JdAIgtK5k=
+A1a3oHxsDbuRk3Cir4j_D-myx7j2DhNcsgytR0br6n8whFN5HG8V5bZjJRx1" target=3D"_bl=
+ank" style=3D"text-decoration: none; -webkit-font-smoothing: antialiased;">=
+<img src=3D"https://braze-images.com/appboy/communication/assets/image_asse=
+ts/images/69013183fb118e00638e56e0/original.jpg=3F1761685891" alt=3D"Prey" =
+border=3D"0" width=3D"126" height=3D"178" style=3D"border-radius: 4px; disp=
+lay: block; color: #ffffff; font-family: Inspire, InspireTWDC, 'Trebuchet M=
+S', Arial, sans-serif; font-size: 16px; text-align: center; font-weight: no=
+rmal; line-height: 22px;"></a>=0D=0A=0D=0A=0D=0A=0D=0A                  </t=
+d>=0D=0A=0D=0A=0D=0A=0D=0A                </tr>=0D=0A=0D=0A=0D=0A=0D=0A    =
+            <tr>=0D=0A=0D=0A=0D=0A=0D=0A                  <td align=3D"cent=
+er" valign=3D"top" style=3D"border-collapse: collapse; -webkit-font-smoothi=
+ng: antialiased;">=0D=0A=0D=0A=0D=0A=0D=0A                    <table cellpa=
+dding=3D"0" cellspacing=3D"0" border=3D"0" width=3D"120" role=3D"presentati=
+on" valign=3D"top" style=3D"border-collapse: collapse;">=0D=0A=0D=0A=0D=0A=
+=0D=0A                      <tr>=0D=0A=0D=0A=0D=0A=0D=0A                   =
+     <td align=3D"center" style=3D"color: #ffffff; font-size: 16px; font-we=
+ight: normal; font-family: Inspire, InspireTWDC, 'Trebuchet MS', Arial, san=
+s-serif; line-height: 22px; mso-line-height-rule: exactly; border-collapse:=
+ collapse; -webkit-font-smoothing: antialiased; padding: 10px 0px 0px;" val=
+ign=3D"top">=0D=0A=0D=0A=0D=0A=0D=0A                        </td>=0D=0A=0D=
+=0A=0D=0A=0D=0A                      </tr>=0D=0A=0D=0A=0D=0A=0D=0A         =
+           </table>=0D=0A=0D=0A=0D=0A=0D=0A                  </td>=0D=0A=0D=
+=0A=0D=0A=0D=0A                </tr>=0D=0A=0D=0A=0D=0A=0D=0A              <=
+/table>=0D=0A=0D=0A=0D=0A=0D=0A            </td>=0D=0A=0D=0A=0D=0A=0D=0A   =
+       </tr>=0D=0A=0D=0A=0D=0A=0D=0A        </table>=0D=0A=0D=0A=0D=0A=0D=
+=0A      </td>=0D=0A=0D=0A=0D=0A=0D=0A    </tr>=0D=0A=0D=0A=0D=0A=0D=0A  </=
+table>=0D=0A=0D=0A=0D=0A=0D=0A</td>=0D=0A=0D=0A=0D=0A=0D=0A</tr>=0D=0A=0D=
+=0A=0D=0A=0D=0A<!-- END Title_A3_3up_Twilight -->=0D=0A=0D=0A=0D=0A=0D=0A=
+=09=09=09=09=09=09=09=09=09<!-- START Content_A1_1up_Dusk -->=0D=0A=0D=0A=
+=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A  =
+=0D=0A=0D=0A=0D=0A=0D=0A  =0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=
+=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A<tr>=0D=
+=0A=0D=0A=0D=0A=0D=0A    <td align=3D"center" style=3D"border-collapse: col=
+lapse; -webkit-font-smoothing: antialiased;">=0D=0A=0D=0A=0D=0A=0D=0A      =
+  <table class=3D"module" role=3D"presentation" cellpadding=3D"0" cellspaci=
+ng=3D"0" border=3D"0" width=3D"100%" align=3D"center" bgcolor=3D"#054553" s=
+tyle=3D"border-bottom-width: 1px; border-bottom-color: #054553; border-coll=
+apse: collapse; margin: 0; border-style: none;">=0D=0A=0D=0A=0D=0A=0D=0A   =
+         <tr>=0D=0A=0D=0A=0D=0A=0D=0A                <td align=3D"center" s=
+tyle=3D"border-collapse: collapse; -webkit-font-smoothing: antialiased;">=
+=0D=0A=0D=0A=0D=0A=0D=0A                    <a href=3D"https://links.messag=
+ing.disneyplus.com/f/open-in-app/RS_u7rJf02k6rdZnNoRaFg~~/AAQRxRA~/RmACQ8w2=
+tqTTLXOeA_78iyt8JtBb7PGfDg6GlDfo63oUhi-td_8_WTWicaIad4CNxdMHcRgBfwK00lHdIze=
+awTTHp6DkdJtU2zPWy04fRvPdWJSr-5bxDHVokZadT--fw_UaIhtxS3sdb3U_RUazfbt__XS15r=
+PVo5MyPs-JWolAUsbDw27M1HjtvLMINIEUnBygtEWMh4fFnXy9C-cP2fIXmdphBuzBWRu2EO2L7=
+vVeg5f5-LG9Xf1yNuMPlG7Lch7NGaBsCKciJvBaSiuvMP5XHVIvq3ZqQEl7s6i2dhpFkw1FVMGQ=
+oydi10L28Nq63GBySKxa5keaSFKHiotL_puoNAb6E8n-gHsJFUvUE68ZUdxdvOwX5tB3M95yAcg=
+UN9bFGsNNDvhUQartynMDknnK7ISWz_Tdo0eKpYaVLC--ViKSgNzx0XPyC-WbRX999qUlHYHdeH=
+TwhE2PiEq_kOs-_bz1mEDxJbgxTXrX5pBmf3Ar5EwPa1VY73dj3BDeaujyBDkC23BB-0ummyOxt=
+rlVMYOkhrh_tvuYlZFN7cha9w8GBAZDRotCxB8rmgXxJ-na-9CYiu44LdBXPt_NPu9L2CnwEXDD=
+faEi_uvgSyh3NO4V-IyYG1xdv7uK_eWX" target=3D"_blank" style=3D"text-decoratio=
+n: none; -webkit-font-smoothing: antialiased;"><img src=3D"https://braze-im=
+ages.com/appboy/communication/assets/image_assets/images/6901318382b3ff0063=
+91192c/original.jpg=3F1761685891" alt=3D"Predator: Badlands" border=3D"0" w=
+idth=3D"480" style=3D"height: auto; display: block; color: #ffffff; font-si=
+ze: 16px; text-align: center; font-family: Inspire, InspireTWDC, 'Trebuchet=
+ MS', Arial, sans-serif; font-weight: normal; line-height: 22px;"></a>=0D=
+=0A=0D=0A=0D=0A=0D=0A                </td>=0D=0A=0D=0A=0D=0A=0D=0A         =
+   </tr>=0D=0A=0D=0A=0D=0A=0D=0A            <tr>=0D=0A=0D=0A=0D=0A=0D=0A   =
+             <td align=3D"center" style=3D"font-size: 28px; font-weight: bo=
+ld; color: #ffffff; font-family: Inspire, InspireTWDC, 'Trebuchet MS', Aria=
+l, sans-serif; line-height: 34px; letter-spacing: 0px; mso-line-height-rule=
+: exactly; border-collapse: collapse; -webkit-font-smoothing: antialiased; =
+padding: 48px 40px 10px;">=0D=0A=0D=0A=0D=0A=0D=0A                    First=
+ hunt. Last&nbsp;chance.=0D=0A=0D=0A=0D=0A=0D=0A                </td>=0D=0A=
+=0D=0A=0D=0A=0D=0A            </tr>=0D=0A=0D=0A=0D=0A=0D=0A            <tr>=
+=0D=0A=0D=0A=0D=0A=0D=0A                <td align=3D"center" style=3D"paddi=
+ng-left: 40px; padding-right: 40px; padding-bottom: 24px; font-size: 20px; =
+color: #ffffff; font-family: Inspire, InspireTWDC, 'Trebuchet MS', Arial, s=
+ans-serif; line-height: 26px; font-weight: normal; mso-line-height-rule: ex=
+actly; border-collapse: collapse; -webkit-font-smoothing: antialiased;">=0D=
+=0A=0D=0A=0D=0A=0D=0A                    A young Predator outcast finds an =
+unlikely ally in Thia as he embarks on a treacherous journey in search of t=
+he ultimate adversary. Watch this special look at <em>Predator:&nbsp;Badlan=
+ds</em>, in theaters and IMAX this&nbsp;Fr=E2=80=8Ciday.=0D=0A=0D=0A=0D=0A=
+=0D=0A                </td>=0D=0A=0D=0A=0D=0A=0D=0A            </tr>=0D=0A=
+=0D=0A=0D=0A=0D=0A            <tr>=0D=0A=0D=0A=0D=0A=0D=0A                <=
+td align=3D"center" style=3D"padding-bottom: 48px; border-collapse: collaps=
+e; -webkit-font-smoothing: antialiased;" class=3D"appleLinksBlack">=0D=0A=
+=0D=0A=0D=0A=0D=0A                    <table border=3D"0" cellpadding=3D"0"=
+ cellspacing=3D"0" role=3D"presentation" style=3D"border-collapse: separate=
+; line-height: 100%;">=0D=0A=0D=0A=0D=0A=0D=0A                        <tr>=
+=0D=0A=0D=0A=0D=0A=0D=0A                          <td align=3D"center" bgco=
+lor=3D"#02D6E8" role=3D"presentation" style=3D"border-radius: 4px; width: 3=
+75px; height: 50px; border-collapse: collapse; -webkit-font-smoothing: anti=
+aliased; border-style: none;" valign=3D"middle">=0D=0A=0D=0A=0D=0A=0D=0A   =
+                         <a href=3D"https://links.messaging.disneyplus.com/=
+f/open-in-app/UsPGw2zKNs4Kp9oicNGHGw~~/AAQRxRA~/RmACQ8w2tqTTLXOeA_78iyt8JtB=
+b7PGfDg6GlDfo63oUhi-td_8_WTWicaIad4CNxdMHcRgBfwK00lHdIzeawTTHp6DkdJtU2zPWy0=
+4fRvNLNiG8CucfqB-EFQBIa6UQ7kBX5Rtj7BCXHXPoW-D73xcy-50g_Rl4MBkWUzz0NcjeKSgoN=
+ze6Y7Rjffcx93Du1lXorkzQmWN3_EPK2jB7moLPZuYfWi1yaFVVJG_v2OnlXvIY14dHqg42h6v1=
+6PZj3KFffv2qmkBJuHuBWicHNBYnJQhyazN9npXBDP6hSeDmCjkJBf7tfKWDLJioztmjihcznzy=
+ouBl8INDznaaZ_qeTCvc1n-cRyga8jgNvt4IvIYBrfywMOfvn9B1JAlxnZyq8mYlE0KsI5oVofw=
+ldEr8fZdG-7X6yfn3mh7eEEOF3rKor8Z3JvzVYCeB9XUqHAzRKo0qex8X_LdzsiLqSVgA1a5Y7R=
+D_axKV6jsHZMPDglRkzl2dfXgLtjzOIZD7LOgdCps6kO0OVtrNLyv2In2nXzhOguIG7kAZFY9LM=
+5xGzEt94Twv_AyJ6tK4BRbeTBRGy7DKFAdC3ozo5OVNNFrBlsuNtzTjhBUi_5zkAR_XzbT4Kxsy=
+RcyQ7fJkXoph5" class=3D"buttonLink" style=3D"background-color: #02D6E8; bac=
+kground-image: linear-gradient(#02D6E8,#02D6E8) !important; box-shadow: ins=
+et 0px 50px #02D6E8; border-radius: 4px; display: inline-block; color: #000=
+000; font-family: Inspire, InspireTWDC, 'Trebuchet MS', Arial, sans-serif; =
+font-size: 16px; font-weight: bold; line-height: 50px; text-align: center; =
+text-decoration: none; text-transform: uppercase; letter-spacing: 1.6px; wi=
+dth: 375px; height: 50px; -webkit-text-size-adjust: none; mso-line-height-r=
+ule: exactly; -webkit-font-smoothing: antialiased;">=0D=0A=0D=0A=0D=0A=0D=
+=0A                            Watch Special Look=0D=0A=0D=0A=0D=0A=0D=0A  =
+                          </a>=0D=0A=0D=0A=0D=0A=0D=0A                     =
+     </td>=0D=0A=0D=0A=0D=0A=0D=0A                        </tr>=0D=0A=0D=0A=
+=0D=0A=0D=0A                    </table>=0D=0A=0D=0A=0D=0A=0D=0A           =
+     </td>=0D=0A=0D=0A=0D=0A=0D=0A            </tr>=0D=0A=0D=0A=0D=0A=0D=0A=
+        </table>=0D=0A=0D=0A=0D=0A=0D=0A    </td>=0D=0A=0D=0A=0D=0A=0D=0A</=
+tr>=0D=0A=0D=0A=0D=0A=0D=0A<!-- END Content_A1_1up_Dusk -->=0D=0A=0D=0A=0D=
+=0A=0D=0A=09=09=09=09=09=09=09=09=09<!-- START Content_A1_1up_Twilight -->=
+=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=
+=0A=0D=0A  =0D=0A=0D=0A=0D=0A=0D=0A  =0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=
+=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=
+=0A<tr>=0D=0A=0D=0A=0D=0A=0D=0A    <td align=3D"center" style=3D"border-col=
+lapse: collapse; -webkit-font-smoothing: antialiased;">=0D=0A=0D=0A=0D=0A=
+=0D=0A        <table class=3D"module" role=3D"presentation" cellpadding=3D"=
+0" cellspacing=3D"0" border=3D"0" width=3D"100%" align=3D"center" bgcolor=
+=3D"#02172A" style=3D"border-bottom-width: 1px; border-bottom-color: #02172=
+A; border-collapse: collapse; margin: 0; border-style: none;">=0D=0A=0D=0A=
+=0D=0A=0D=0A            <tr>=0D=0A=0D=0A=0D=0A=0D=0A                <td ali=
+gn=3D"center" style=3D"border-collapse: collapse; -webkit-font-smoothing: a=
+ntialiased;">=0D=0A=0D=0A=0D=0A=0D=0A                    <a href=3D"https:/=
+/links.messaging.disneyplus.com/f/open-in-app/ZQE18jMzV32EBhenpfCpsg~~/AAQR=
+xRA~/afJSSQ_9fr430KCr-YT8rfusudwV5Ya8d54aJgwED1FwJGEJ2oGWdb6fmTaiIgFqg3rn7Q=
+8s3wE2WKL7A10nVhBwZR9c-74Q73rXHOuiFVJosTWnwKQQykRjz6jIZnexBn97xTAaaI6VFMfOB=
+yNZyBomGAVeoIJuYJGKneUoZnzbMp436xUzompppa_f0WrHn_DBRoo-QIOlLbTzwKFRnlMBI_5v=
+18lX4XqPSRq1MYvXKQSqGxta9iXtjWaJOBzzjAGfZITcE5mp-aehQJEkn9qhSWerUWKUfuJ_oib=
+T2qCe6d_xtAcEaAWdVThZxiowHXfR44AkQY5Wm2wcjsbNMqYPJK7kzET2l48ro_6TUUzsDYREI9=
+kjYrS1r4AxqXWGUSvMHsCzliE8w4QXPWsOU7YEQOrzwrGIkIUVpb7Jes2rmrF12LEZdJsPhyofm=
+0ET3htJPQL0wwPLk0YH3jjA54wLQiGnqABAo-lHUs9KyB_8ua7N3d_eyw14J9ltzVBdWhbk0DtF=
+6k8a3KjB55sZFcTn81AJ5iA1_8GyeGfFbe264lqVIvxhCeetxLUcHZZo9A-yZPB1y6nJ5xUfYLS=
+lWq8Oq9GuGqC15E2TA_armcHtpiwwpoeepvCGzs9NAbGR" target=3D"_blank" style=3D"t=
+ext-decoration: none; -webkit-font-smoothing: antialiased;"><img src=3D"htt=
+ps://braze-images.com/appboy/communication/assets/image_assets/images/69013=
+18336395a0063489d61/original.jpg=3F1761685891" alt=3D"Freakier Friday" bord=
+er=3D"0" width=3D"480" style=3D"height: auto; display: block; color: #fffff=
+f; font-size: 16px; text-align: center; font-family: Inspire, InspireTWDC, =
+'Trebuchet MS', Arial, sans-serif; font-weight: normal; line-height: 22px;"=
+></a>=0D=0A=0D=0A=0D=0A=0D=0A                </td>=0D=0A=0D=0A=0D=0A=0D=0A =
+           </tr>=0D=0A=0D=0A=0D=0A=0D=0A            <tr>=0D=0A=0D=0A=0D=0A=
+=0D=0A                <td align=3D"center" style=3D"font-size: 28px; font-w=
+eight: bold; color: #ffffff; font-family: Inspire, InspireTWDC, 'Trebuchet =
+MS', Arial, sans-serif; line-height: 34px; letter-spacing: 0px; mso-line-he=
+ight-rule: exactly; border-collapse: collapse; -webkit-font-smoothing: anti=
+aliased; padding: 48px 40px 10px;">=0D=0A=0D=0A=0D=0A=0D=0A                =
+    Streaming on Disney+ next&nbsp;week=0D=0A=0D=0A=0D=0A=0D=0A            =
+    </td>=0D=0A=0D=0A=0D=0A=0D=0A            </tr>=0D=0A=0D=0A=0D=0A=0D=0A =
+           <tr>=0D=0A=0D=0A=0D=0A=0D=0A                <td align=3D"center"=
+ style=3D"padding-left: 40px; padding-right: 40px; padding-bottom: 24px; fo=
+nt-size: 20px; color: #ffffff; font-family: Inspire, InspireTWDC, 'Trebuche=
+t MS', Arial, sans-serif; line-height: 26px; font-weight: normal; mso-line-=
+height-rule: exactly; border-collapse: collapse; -webkit-font-smoothing: an=
+tialiased;">=0D=0A=0D=0A=0D=0A=0D=0A                    Switch up your plan=
+s and stream the ultimate laugh=E2=80=91out=E2=80=91loud FREAKquel, Disney'=
+s <em>Freakier&nbsp;Friday</em>.=0D=0A=0D=0A=0D=0A=0D=0A                </t=
+d>=0D=0A=0D=0A=0D=0A=0D=0A            </tr>=0D=0A=0D=0A=0D=0A=0D=0A        =
+    <tr>=0D=0A=0D=0A=0D=0A=0D=0A                <td align=3D"center" style=
+=3D"padding-bottom: 48px; border-collapse: collapse; -webkit-font-smoothing=
+: antialiased;" class=3D"appleLinksBlack">=0D=0A=0D=0A=0D=0A=0D=0A         =
+           <table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"=
+presentation" style=3D"border-collapse: separate; line-height: 100%;">=0D=
+=0A=0D=0A=0D=0A=0D=0A                        <tr>=0D=0A=0D=0A=0D=0A=0D=0A  =
+                        <td align=3D"center" bgcolor=3D"#02D6E8" role=3D"pr=
+esentation" style=3D"border-radius: 4px; width: 375px; height: 50px; border=
+-collapse: collapse; -webkit-font-smoothing: antialiased; border-style: non=
+e;" valign=3D"middle">=0D=0A=0D=0A=0D=0A=0D=0A                            <=
+a href=3D"https://links.messaging.disneyplus.com/f/open-in-app/L5GxD6exwG41=
+MLqFHgA0og~~/AAQRxRA~/afJSSQ_9fr430KCr-YT8rfusudwV5Ya8d54aJgwED1FwJGEJ2oGWd=
+b6fmTaiIgFqg3rn7Q8s3wE2WKL7A10nVhBwZR9c-74Q73rXHOuiFVJKKeYruMsy4Dg5hQFFnwlh=
+JCF4_Ul051GasGqtS2_XDiuNz-EvzTL-fZKKFLBNs35wcW9TzQ9M45ZYVK-w4JdGDveKHY48Di1=
+Gy2Y8OaDUhDFbRbW_5Y4r2bNMB1huJge7mAz0f58IQ84lUJBnd0g-b1tI_lolDcwckb6sIOdmPt=
+DC-s-DWx8jTlMs_Xm1Oh0uLgqNh4SXq03cmDtkAzornMDja7uX20cnVo5r_bwFKYkrmbax95cLY=
+T-XLcxDhi677oN05OCzuFept_SKJIG0ofYNIi8YU4EA0_18tpR4HqqHbV5uNfyOhntUf73V3srp=
+5fwN4pH2VV3CJLmqpdB-_qgRj2EShovcU_4Ag7bnCDDK4BIC_XkSKxUV2QfFyRT-KHNavyEyZ0X=
+g1MZ2nb1ZoG-kHMoxuWSJY6lw2U15Ukl4UH4StkKuS6TZ13CLOyM36cYYif4yYIpvJe6kc-pa5b=
+PGOkpPMbcvzSOaqG3XRddtVUeCI5k2FyiacEmlcQaPW81DiJxgmKSc6Pm4wy-7" class=3D"bu=
+ttonLink" style=3D"background-color: #02D6E8; background-image: linear-grad=
+ient(#02D6E8,#02D6E8) !important; box-shadow: inset 0px 50px #02D6E8; borde=
+r-radius: 4px; display: inline-block; color: #000000; font-family: Inspire,=
+ InspireTWDC, 'Trebuchet MS', Arial, sans-serif; font-size: 16px; font-weig=
+ht: bold; line-height: 50px; text-align: center; text-decoration: none; tex=
+t-transform: uppercase; letter-spacing: 1.6px; width: 375px; height: 50px; =
+-webkit-text-size-adjust: none; mso-line-height-rule: exactly; -webkit-font=
+-smoothing: antialiased;">=0D=0A=0D=0A=0D=0A=0D=0A                         =
+   Add to Watchlist=0D=0A=0D=0A=0D=0A=0D=0A                            </a>=
+=0D=0A=0D=0A=0D=0A=0D=0A                          </td>=0D=0A=0D=0A=0D=0A=
+=0D=0A                        </tr>=0D=0A=0D=0A=0D=0A=0D=0A                =
+    </table>=0D=0A=0D=0A=0D=0A=0D=0A                </td>=0D=0A=0D=0A=0D=0A=
+=0D=0A            </tr>=0D=0A=0D=0A=0D=0A=0D=0A        </table>=0D=0A=0D=0A=
+=0D=0A=0D=0A    </td>=0D=0A=0D=0A=0D=0A=0D=0A</tr>=0D=0A=0D=0A=0D=0A=0D=0A<=
+!-- END Content_A1_1up_Twilight -->=0D=0A=0D=0A=0D=0A=0D=0A=09=09=09=09=09=
+=09=09=09=09<!-- START Title_A3_3up_Twilight -->=0D=0A=0D=0A=0D=0A=0D=0A=0D=
+=0A=0D=0A=0D=0A=0D=0A  =0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A  =0D=0A=0D=0A=
+=0D=0A=0D=0A  =0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=
+=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A<tr>=0D=0A=0D=0A=0D=
+=0A=0D=0A<td align=3D"center" style=3D"border-collapse: collapse; -webkit-f=
+ont-smoothing: antialiased;">=0D=0A=0D=0A=0D=0A=0D=0A  <table class=3D"modu=
+le" role=3D"presentation" cellpadding=3D"0" cellspacing=3D"0" border=3D"0" =
+width=3D"100%" align=3D"center" bgcolor=3D"#02172A" style=3D"border-bottom-=
+width: 1px; border-bottom-color: #02172A; border-collapse: collapse; margin=
+: 0; border-style: none;">=0D=0A=0D=0A=0D=0A=0D=0A    <tr>=0D=0A=0D=0A=0D=
+=0A=0D=0A      <td align=3D"center" style=3D"font-size: 28px; font-weight: =
+bold; color: #ffffff; font-family: Inspire, InspireTWDC, 'Trebuchet MS', Ar=
+ial, sans-serif; line-height: 34px; letter-spacing: 0px; mso-line-height-ru=
+le: exactly; border-collapse: collapse; -webkit-font-smoothing: antialiased=
+; padding: 48px 40px 24px;">=0D=0A=0D=0A=0D=0A=0D=0A        What=E2=80=99s =
+new=0D=0A=0D=0A=0D=0A=0D=0A      </td>=0D=0A=0D=0A=0D=0A=0D=0A    </tr>=0D=
+=0A=0D=0A=0D=0A=0D=0A    <tr>=0D=0A=0D=0A=0D=0A=0D=0A      <td align=3D"cen=
+ter" style=3D"border-collapse: collapse; -webkit-font-smoothing: antialiase=
+d; padding: 0 40px 48px;" valign=3D"top">=0D=0A=0D=0A=0D=0A=0D=0A        <t=
+able role=3D"presentation" cellpadding=3D"0" cellspacing=3D"0" border=3D"0"=
+ width=3D"100%" align=3D"left" valign=3D"top" style=3D"border-collapse: col=
+lapse;">=0D=0A=0D=0A=0D=0A=0D=0A          <tr>=0D=0A=0D=0A=0D=0A=0D=0A     =
+       <td align=3D"left" style=3D"padding-bottom: 10px; border-collapse: c=
+ollapse; -webkit-font-smoothing: antialiased;" valign=3D"top">=0D=0A=0D=0A=
+=0D=0A=0D=0A              <table role=3D"presentation" cellpadding=3D"0" ce=
+llspacing=3D"0" border=3D"0" width=3D"127" align=3D"left" valign=3D"top" st=
+yle=3D"border-collapse: collapse;">=0D=0A=0D=0A=0D=0A=0D=0A                =
+<tr>=0D=0A=0D=0A=0D=0A=0D=0A                  <td align=3D"center" valign=
+=3D"top" style=3D"border-collapse: collapse; -webkit-font-smoothing: antial=
+iased;">=0A<a href=3D"https://links.messaging.disneyplus.com/f/open-in-app/=
+ChjaDeLZ8WF_0xu5CX111A~~/AAQRxRA~/QNPmGPYPzvtumgdkTSkOF7WmbDoIfkC7wIXlRzy4c=
+uchXBwZF75F04xQp88puYb5haQJ699-a-C57X4N3Usk7bggnQeTci4BnIdFWt4DNhHlcjqVaC-K=
+WsdcohjvyEi-vR5jkCBkWUMxDBzcAr48m4tnr9zkT-CK86AufNPsTYX-puu572bBqcUQmzOyv4R=
+VI4vKX1nb7WF2NcbBjr1r5HGHa-9j4yFXrFI2E5TlEfupNArDpoZoVL-V8-c_QNWGxH5EN_2Wz7=
+fb0DfJfWNtdqjzc5UpUR3XXpvoPTnqOm3sm3T-KbM9MkE9KSu0Lm3qBDdRKOOtEq9VRN3j4J2su=
+308-KO0rRkiK7xJ19pbzCE8930MNmKoBfuj5oNmISq8CtmuXkuD7ze0Y5TRd0e-MTbERnkFNasv=
+L8hqTTXmXMEg8jrmmQmozWp3ZUkJH4rB24Xp1LSNAbG8J_pihZCg3MNpaUez-kN3D4ENTh23FA6=
+0dwAyHKARI2m7fXM_wCB3hI4GRqsplolFK52LqhqN9CiTk17w_y_WLZ2e4PLJktTacGGI_uMnxk=
+T737KViIYWmJ0ouBWKEhHp4btEWoRiKz2tyR8SW2C0iMxteRdTm6uyrGQ8fZmVXjXoQTc4cvsU"=
+ target=3D"_blank" style=3D"text-decoration: none; -webkit-font-smoothing: =
+antialiased;"><img src=3D"https://braze-images.com/appboy/communication/ass=
+ets/image_assets/images/690131832ff2710063e9f53f/original.jpg=3F1761685891"=
+ alt=3D"Star Wars: Visions" border=3D"0" width=3D"127" height=3D"178" style=
+=3D"border-radius: 4px; display: block; color: #ffffff; font-family: Inspir=
+e, InspireTWDC, 'Trebuchet MS', Arial, sans-serif; font-size: 16px; text-al=
+ign: center; font-weight: normal; line-height: 22px;"></a>=0D=0A=0D=0A=0D=
+=0A=0D=0A                  </td>=0D=0A=0D=0A=0D=0A=0D=0A                </t=
+r>=0D=0A=0D=0A=0D=0A=0D=0A                <tr>=0D=0A=0D=0A=0D=0A=0D=0A     =
+             <td align=3D"center" valign=3D"top" style=3D"border-collapse: =
+collapse; -webkit-font-smoothing: antialiased;">=0D=0A=0D=0A=0D=0A=0D=0A   =
+                 <table cellpadding=3D"0" cellspacing=3D"0" border=3D"0" wi=
+dth=3D"120" role=3D"presentation" valign=3D"top" style=3D"border-collapse: =
+collapse;">=0D=0A=0D=0A=0D=0A=0D=0A                      <tr>=0D=0A=0D=0A=
+=0D=0A=0D=0A                        <td align=3D"center" style=3D"color: #f=
+fffff; font-size: 16px; font-weight: normal; font-family: Inspire, InspireT=
+WDC, 'Trebuchet MS', Arial, sans-serif; line-height: 22px; mso-line-height-=
+rule: exactly; border-collapse: collapse; -webkit-font-smoothing: antialias=
+ed; padding: 10px 0px 0px;" valign=3D"top">=0D=0A=0D=0A=0D=0A=0D=0A        =
+                </td>=0D=0A=0D=0A=0D=0A=0D=0A                      </tr>=0D=
+=0A=0D=0A=0D=0A=0D=0A                    </table>=0D=0A=0D=0A=0D=0A=0D=0A  =
+                </td>=0D=0A=0D=0A=0D=0A=0D=0A                </tr>=0D=0A=0D=
+=0A=0D=0A=0D=0A              </table>=0D=0A=0D=0A=0D=0A=0D=0A            </=
+td>=0D=0A=0D=0A=0D=0A=0D=0A            <td align=3D"center" style=3D"paddin=
+g-bottom: 10px; border-collapse: collapse; -webkit-font-smoothing: antialia=
+sed;" valign=3D"top">=0D=0A=0D=0A=0D=0A=0D=0A              <table role=3D"p=
+resentation" cellpadding=3D"0" cellspacing=3D"0" border=3D"0" width=3D"127"=
+ align=3D"center" valign=3D"top" style=3D"border-collapse: collapse;">=0D=
+=0A=0D=0A=0D=0A=0D=0A                <tr>=0D=0A=0D=0A=0D=0A=0D=0A          =
+        <td align=3D"center" valign=3D"top" style=3D"border-collapse: colla=
+pse; -webkit-font-smoothing: antialiased;">=0A<a href=3D"https://links.mess=
+aging.disneyplus.com/f/open-in-app/y405MJ16P1xjA9XviG8t0g~~/AAQRxRA~/QNPmGP=
+YPzvtumgdkTSkOF7WmbDoIfkC7wIXlRzy4cuchXBwZF75F04xQp88puYb5aCzaVABlQJppAhWRd=
+_nLLnTq38rMF0boodvFsCDtgY4d0nZZyf6hVkfv8-vrvmCG9lBh45es1Z5Ala9aeuRruYuliS16=
+6y88t_3i1XHq6S2Pt8Y5R3wi7Ay0Mif8YlzB0Yi4VF-v5gozmTiRSUM5QEc0XnJTml2dhtp_g_w=
+MWTJaGov4m2I5PcC0iQHn91cJXJt4NwnBFAogG-T0l8kefECqTiiqmSqHubxd_GDMGnq6Qz37b2=
+-3zR_kYyjxTD8j6yjo2lvMhQsctprk0E9CJ33uj8kG_CKTZOfYIPc2Qip85S4DfNsVizz_B9MYe=
+2HDYbqXdwF-fDup6ynBahrnNT81yk43w9u4BnK7v6mF4N3J5wQrEpb5_80y5wSAYzUj-DhU2laW=
+gkCriXU-iX6qaQFsajAWUgIoqVpiSslf_FttZOhsoTXqXyo1LIHxDzfdzmG7B9ddGcUw8Fx3zu1=
+hNrUPALTXZRM0NCqX-rS73AhwQCeiAyTFBi_PfcwH2zrxze9PAj8836cEQB1dEHxKy4XQd0fbf8=
+Ao9585SA0ZhFuCOJ1HWaii0vMSGV7lP7JD" target=3D"_blank" style=3D"text-decorat=
+ion: none; -webkit-font-smoothing: antialiased;"><img src=3D"https://braze-=
+images.com/appboy/communication/assets/image_assets/images/69013183b7ba6200=
+63e8412f/original.jpg=3F1761685891" alt=3D"Twisted Wonderland: The Animatio=
+n" border=3D"0" width=3D"127" height=3D"178" style=3D"border-radius: 4px; d=
+isplay: block; color: #ffffff; font-family: Inspire, InspireTWDC, 'Trebuche=
+t MS', Arial, sans-serif; font-size: 16px; text-align: center; font-weight:=
+ normal; line-height: 22px;"></a>=0D=0A=0D=0A=0D=0A=0D=0A                  =
+</td>=0D=0A=0D=0A=0D=0A=0D=0A                </tr>=0D=0A=0D=0A=0D=0A=0D=0A =
+               <tr>=0D=0A=0D=0A=0D=0A=0D=0A                  <td align=3D"c=
+enter" valign=3D"top" style=3D"border-collapse: collapse; -webkit-font-smoo=
+thing: antialiased;">=0D=0A=0D=0A=0D=0A=0D=0A                    <table cel=
+lpadding=3D"0" cellspacing=3D"0" border=3D"0" width=3D"120" role=3D"present=
+ation" valign=3D"top" style=3D"border-collapse: collapse;">=0D=0A=0D=0A=0D=
+=0A=0D=0A                      <tr>=0D=0A=0D=0A=0D=0A=0D=0A                =
+        <td align=3D"center" style=3D"color: #ffffff; font-size: 16px; font=
+-weight: normal; font-family: Inspire, InspireTWDC, 'Trebuchet MS', Arial, =
+sans-serif; line-height: 22px; mso-line-height-rule: exactly; border-collap=
+se: collapse; -webkit-font-smoothing: antialiased; padding: 10px 0px 0px;" =
+valign=3D"top">=0D=0A=0D=0A=0D=0A=0D=0A                        </td>=0D=0A=
+=0D=0A=0D=0A=0D=0A                      </tr>=0D=0A=0D=0A=0D=0A=0D=0A      =
+              </table>=0D=0A=0D=0A=0D=0A=0D=0A                  </td>=0D=0A=
+=0D=0A=0D=0A=0D=0A                </tr>=0D=0A=0D=0A=0D=0A=0D=0A            =
+  </table>=0D=0A=0D=0A=0D=0A=0D=0A            </td>=0D=0A=0D=0A=0D=0A=0D=0A=
+            <td align=3D"right" style=3D"padding-bottom: 10px; border-colla=
+pse: collapse; -webkit-font-smoothing: antialiased;" valign=3D"top">=0D=0A=
+=0D=0A=0D=0A=0D=0A              <table role=3D"presentation" cellpadding=3D=
+"0" cellspacing=3D"0" border=3D"0" width=3D"126" align=3D"right" valign=3D"=
+top" style=3D"border-collapse: collapse;">=0D=0A=0D=0A=0D=0A=0D=0A         =
+       <tr>=0D=0A=0D=0A=0D=0A=0D=0A                  <td align=3D"center" v=
+align=3D"top" style=3D"border-collapse: collapse; -webkit-font-smoothing: a=
+ntialiased;">=0A<a href=3D"https://links.messaging.disneyplus.com/f/open-in=
+-app/VHojNzp3gcd5ItpU_rYIDw~~/AAQRxRA~/QNPmGPYPzvtumgdkTSkOF7WmbDoIfkC7wIXl=
+Rzy4cuchXBwZF75F04xQp88puYb5IsA_enjEDY7Urc6R2mCE7TAiMvkj6iqD7Zpq1yhUvn-N9-m=
+ilYtG69ANzRjeYAGFJWyNit3sZzNOahXCRzkbrGArj39kWkDPpMTh8oQAOVs1ocePc2RIslz5Wo=
+lRE6d2PHBfaDzwzxMV4SfGmG7YL8VUVggD13sn2w6mqsGKwy_XZxzOxH50nKA657B0asgzjhOKq=
+0iZI-oPmFHD9RLew_v0l2nRpOYzhp3KhSK_ndlwV1cRdXjzWtjTJyfoQb5qs-IHnxaulnUGGtHV=
+Ci6ma5VIw9G-Ig6TzpPA37zgamiXqPDxrfwyuqYm2VirKd3in9muPkFbe-_Bo3wgAE2p5n6-92k=
+KgWNARouK0z9IEWDx5V9fgwFpBzM9r79pqrOGclxRvmMGuyTx5v7UoABMqQ1N_vNftHi-QuwBaN=
+puVLgvVXGU781XPMjUQ2mg4IrkG9ifRYso2f9hnigH-4txWTIRlYMOxf39upKy_3VJgyNsyPYz6=
+UlPogWHxulZZgg-f0nvfLgQ8w8WVQaospfdz49-lGz_FQzcYmZzWBA9gUh6t4ID4Vvl9Xi3HzsZ=
+wcR0" target=3D"_blank" style=3D"text-decoration: none; -webkit-font-smooth=
+ing: antialiased;"><img src=3D"https://braze-images.com/appboy/communicatio=
+n/assets/image_assets/images/69013183acd5830063318ded/original.jpg=3F176168=
+5891" alt=3D"Vampirina: Teenage Vampire" border=3D"0" width=3D"126" height=
+=3D"178" style=3D"border-radius: 4px; display: block; color: #ffffff; font-=
+family: Inspire, InspireTWDC, 'Trebuchet MS', Arial, sans-serif; font-size:=
+ 16px; text-align: center; font-weight: normal; line-height: 22px;"></a>=0D=
+=0A=0D=0A=0D=0A=0D=0A                  </td>=0D=0A=0D=0A=0D=0A=0D=0A       =
+         </tr>=0D=0A=0D=0A=0D=0A=0D=0A                <tr>=0D=0A=0D=0A=0D=
+=0A=0D=0A                  <td align=3D"center" valign=3D"top" style=3D"bor=
+der-collapse: collapse; -webkit-font-smoothing: antialiased;">=0D=0A=0D=0A=
+=0D=0A=0D=0A                    <table cellpadding=3D"0" cellspacing=3D"0" =
+border=3D"0" width=3D"120" role=3D"presentation" valign=3D"top" style=3D"bo=
+rder-collapse: collapse;">=0D=0A=0D=0A=0D=0A=0D=0A                      <tr=
+>=0D=0A=0D=0A=0D=0A=0D=0A                        <td align=3D"center" style=
+=3D"color: #ffffff; font-size: 16px; font-weight: normal; font-family: Insp=
+ire, InspireTWDC, 'Trebuchet MS', Arial, sans-serif; line-height: 22px; mso=
+-line-height-rule: exactly; border-collapse: collapse; -webkit-font-smoothi=
+ng: antialiased; padding: 10px 0px 0px;" valign=3D"top">=0D=0A=0D=0A=0D=0A=
+=0D=0A                        </td>=0D=0A=0D=0A=0D=0A=0D=0A                =
+      </tr>=0D=0A=0D=0A=0D=0A=0D=0A                    </table>=0D=0A=0D=0A=
+=0D=0A=0D=0A                  </td>=0D=0A=0D=0A=0D=0A=0D=0A                =
+</tr>=0D=0A=0D=0A=0D=0A=0D=0A              </table>=0D=0A=0D=0A=0D=0A=0D=0A=
+            </td>=0D=0A=0D=0A=0D=0A=0D=0A          </tr>=0D=0A=0D=0A=0D=0A=
+=0D=0A        </table>=0D=0A=0D=0A=0D=0A=0D=0A      </td>=0D=0A=0D=0A=0D=0A=
+=0D=0A    </tr>=0D=0A=0D=0A=0D=0A=0D=0A  </table>=0D=0A=0D=0A=0D=0A=0D=0A</=
+td>=0D=0A=0D=0A=0D=0A=0D=0A</tr>=0D=0A=0D=0A=0D=0A=0D=0A<!-- END Title_A3_3=
+up_Twilight -->=0D=0A=0D=0A=0D=0A=0D=0A<!-- START Content_A1_1up_Dusk -->=
+=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=
+=0A=0D=0A  =0D=0A=0D=0A=0D=0A=0D=0A  =0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=
+=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=
+=0A<tr>=0D=0A=0D=0A=0D=0A=0D=0A    <td align=3D"center" style=3D"border-col=
+lapse: collapse; -webkit-font-smoothing: antialiased;">=0D=0A=0D=0A=0D=0A=
+=0D=0A        <table class=3D"module" role=3D"presentation" cellpadding=3D"=
+0" cellspacing=3D"0" border=3D"0" width=3D"100%" align=3D"center" bgcolor=
+=3D"#054553" style=3D"border-bottom-width: 1px; border-bottom-color: #05455=
+3; border-collapse: collapse; margin: 0; border-style: none;">=0D=0A=0D=0A=
+=0D=0A=0D=0A            <tr>=0D=0A=0D=0A=0D=0A=0D=0A                <td ali=
+gn=3D"center" style=3D"border-collapse: collapse; -webkit-font-smoothing: a=
+ntialiased;">=0D=0A=0D=0A=0D=0A=0D=0A                    <a href=3D"https:/=
+/links.messaging.disneyplus.com/f/open-in-app/jcCjnVJTtM-87W9-qSAqJA~~/AAQR=
+xRA~/RmACQ8w2tqTTLXOeA_78iyt8JtBb7PGfDg6GlDfo63oUhi-td_8_WTWicaIad4CNmKUut4=
+XL--jbYcHtKe-3aC7m6332M9u3ARMhnhOVZoCG9kEE1JUlZgJNPxLiurlNQt0uDE9JuL8i5rQ7x=
+pQxkxS4qwfZMPcsb_W5wxsztffiTwE-iQM0jaEFnNORAcnRdulm58WgMjlTpDtx8fdUTLi22I4t=
+djfj7AppSRK8d9WhrwoNdZf9Jsv2AwWsM6tEe4OHpp9NtZ03jPJZNRIVmefTbGK4SEaovdtHTTq=
+3634p50RGqXILKdOwozlqy1d2IRmT-MvHfMfgHMn67XXV3cTFZphiDBHaPAjEhhYN4_wUTufUzR=
+ZfZb3ARM0R5frfNoqBh0rI0-zV8_F_mMhI1bR0YxBI4Y-2Hgn6rDQpxv-EKS6ZM4AFJrTq4058_=
+G_YkknrC_MihEghEc716qqNH_CXuuh3jCUNjJ9pQwdfDrE-kVuWGbe-IK5l4XXph_zDQ69u-qcp=
+0n59Qd5cQcF8l_F1vLaFuqLUTZm_X76abvUnXq5UJh-YHvfM-nz0ljGitZYvcXCdCj4IQsl9gQi=
+9d8v8oyOijkY6YjIg4XsKWN2fRvQ4Kb3QIka_Gv3MRfP9" target=3D"_blank" style=3D"t=
+ext-decoration: none; -webkit-font-smoothing: antialiased;"><img src=3D"htt=
+ps://braze-images.com/appboy/communication/assets/image_assets/images/69013=
+1833be8c10063548b38/original.jpg=3F1761685891" alt=3D"Disney+ Trivia" borde=
+r=3D"0" width=3D"480" style=3D"height: auto; display: block; color: #ffffff=
+; font-size: 16px; text-align: center; font-family: Inspire, InspireTWDC, '=
+Trebuchet MS', Arial, sans-serif; font-weight: normal; line-height: 22px;">=
+</a>=0D=0A=0D=0A=0D=0A=0D=0A                </td>=0D=0A=0D=0A=0D=0A=0D=0A  =
+          </tr>=0D=0A=0D=0A=0D=0A=0D=0A            <tr>=0D=0A=0D=0A=0D=0A=
+=0D=0A                <td align=3D"center" style=3D"font-size: 28px; font-w=
+eight: bold; color: #ffffff; font-family: Inspire, InspireTWDC, 'Trebuchet =
+MS', Arial, sans-serif; line-height: 34px; letter-spacing: 0px; mso-line-he=
+ight-rule: exactly; border-collapse: collapse; -webkit-font-smoothing: anti=
+aliased; padding: 48px 40px 10px;">=0D=0A=0D=0A=0D=0A=0D=0A                =
+    Flashback to 2005=0D=0A=0D=0A=0D=0A=0D=0A                </td>=0D=0A=0D=
+=0A=0D=0A=0D=0A            </tr>=0D=0A=0D=0A=0D=0A=0D=0A            <tr>=0D=
+=0A=0D=0A=0D=0A=0D=0A                <td align=3D"center" style=3D"padding-=
+left: 40px; padding-right: 40px; padding-bottom: 24px; font-size: 20px; col=
+or: #ffffff; font-family: Inspire, InspireTWDC, 'Trebuchet MS', Arial, sans=
+-serif; line-height: 26px; font-weight: normal; mso-line-height-rule: exact=
+ly; border-collapse: collapse; -webkit-font-smoothing: antialiased;">=0D=0A=
+=0D=0A=0D=0A=0D=0A                    Which movie is celebrating its 20th a=
+nniversary next week=3F Hint: =E2=80=9Cthe&nbsp;sky&nbsp;is&nbsp;falling!=
+=E2=80=9D=0D=0A=0D=0A=0D=0A=0D=0A                </td>=0D=0A=0D=0A=0D=0A=0D=
+=0A            </tr>=0D=0A=0D=0A=0D=0A=0D=0A            <tr>=0D=0A=0D=0A=0D=
+=0A=0D=0A                <td align=3D"center" style=3D"padding-bottom: 48px=
+; border-collapse: collapse; -webkit-font-smoothing: antialiased;" class=3D=
+"appleLinksBlack">=0D=0A=0D=0A=0D=0A=0D=0A                    <table border=
+=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"b=
+order-collapse: separate; line-height: 100%;">=0D=0A=0D=0A=0D=0A=0D=0A     =
+                   <tr>=0D=0A=0D=0A=0D=0A=0D=0A                          <t=
+d align=3D"center" bgcolor=3D"#02D6E8" role=3D"presentation" style=3D"borde=
+r-radius: 4px; width: 375px; height: 50px; border-collapse: collapse; -webk=
+it-font-smoothing: antialiased; border-style: none;" valign=3D"middle">=0D=
+=0A=0D=0A=0D=0A=0D=0A                            <a href=3D"https://links.m=
+essaging.disneyplus.com/f/open-in-app/8VZYhClbN2lfitZ7ywLXTg~~/AAQRxRA~/RmA=
+CQ8w2tqTTLXOeA_78iyt8JtBb7PGfDg6GlDfo63oUhi-td_8_WTWicaIad4CNmKUut4XL--jbYc=
+HtKe-3aC7m6332M9u3ARMhnhOVZoDIir6uypqpDNp_5F2O_f8yq9IMbtiwDo43bHclRu-VJ_B5q=
+qgoCDyx0e6UvFY6V5dH5gvuHNllXi768vFFLRZB-LFKBg15fZ5gUC6uR0WX7nC9ujfbfjNkGbqq=
+LtWnwdthVMWKMYQPwgmtOi1DaQOnyldZefWusT07vo1CbBpnyzle9iqx8S7re-QkRnLB9PbzyDP=
+6Kj6oadt18x4LhvrqJ-zTNTmC7bzxyX-vc5Qbx9N3ZitI7FDR5m0JOK5tEnzTandI6wUo6HZJdl=
+HByZAA8100UeuVyU9Mw7ZQn9TrGtSnXlF7NnBM1x8BIGJen-mGpMTIVNdqRk9ou9-S6-2JVt-5M=
+Ddsa90juBbguTfO25hVh3iC7r0qrsUBcrYUXqEctpnV4BGmFS-ZyV5zh0f9JDqW9FC3VIe55Uc8=
+6-7r5bP7RlPbCDdopaD8vYkuByRNShKZhnlhwTXCqQuCh1iw48ukrFrPO267sIBDDv34R_QfTuh=
+D2GGlFemDEoOeKUXC-zDaj6HfXHzCOoutPwhg" class=3D"buttonLink" style=3D"backgr=
+ound-color: #02D6E8; background-image: linear-gradient(#02D6E8,#02D6E8) !im=
+portant; box-shadow: inset 0px 50px #02D6E8; border-radius: 4px; display: i=
+nline-block; color: #000000; font-family: Inspire, InspireTWDC, 'Trebuchet =
+MS', Arial, sans-serif; font-size: 16px; font-weight: bold; line-height: 50=
+px; text-align: center; text-decoration: none; text-transform: uppercase; l=
+etter-spacing: 1.6px; width: 375px; height: 50px; -webkit-text-size-adjust:=
+ none; mso-line-height-rule: exactly; -webkit-font-smoothing: antialiased;"=
+>=0D=0A=0D=0A=0D=0A=0D=0A                            Reveal=0D=0A=0D=0A=0D=
+=0A=0D=0A                            </a>=0D=0A=0D=0A=0D=0A=0D=0A          =
+                </td>=0D=0A=0D=0A=0D=0A=0D=0A                        </tr>=
+=0D=0A=0D=0A=0D=0A=0D=0A                    </table>=0D=0A=0D=0A=0D=0A=0D=
+=0A                </td>=0D=0A=0D=0A=0D=0A=0D=0A            </tr>=0D=0A=0D=
+=0A=0D=0A=0D=0A        </table>=0D=0A=0D=0A=0D=0A=0D=0A    </td>=0D=0A=0D=
+=0A=0D=0A=0D=0A</tr>=0D=0A=0D=0A=0D=0A=0D=0A<!-- END Content_A1_1up_Dusk --=
+>=0D=0A=0D=0A=0D=0A=0D=0A=09=09=09=09=09=09=09=09=09=0D=0A=0D=0A=0D=0A=0D=
+=0A=09=09=09=09=09=09=09=09=0D=0A=0D=0A=0D=0A=0D=0A=09=09=09=09=09=09=09=09=
+=09=0D=0A=0D=0A=0D=0A=0D=0A=09=09=09=09=09=09=09=09=09 <!-- START Banner_E1=
+_Streaming_null_Twilight -->=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=
+=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A  =0D=0A=0D=0A=0D=0A=0D=0A  =0D=0A=
+=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=
+=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A  =0D=0A=0D=0A=0D=0A=0D=0A=0D=
+=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=
+=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=
+=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=
+=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A<tr>=0D=0A=0D=0A=0D=0A=0D=
+=0A  <td align=3D"center" style=3D"border-collapse: collapse; -webkit-font-=
+smoothing: antialiased;">=0D=0A=0D=0A=0D=0A=0D=0A    <table class=3D"module=
+" role=3D"presentation" cellpadding=3D"0" cellspacing=3D"0" border=3D"0" wi=
+dth=3D"100%" bgcolor=3D"#02172A" style=3D"border-bottom-width: 1px; border-=
+bottom-color: #02172A; border-collapse: collapse; margin: 0; border-style: =
+none;">=0D=0A=0D=0A=0D=0A=0D=0A      <tr>=0D=0A=0D=0A=0D=0A=0D=0A        <t=
+d align=3D"center" style=3D"font-size: 20px; font-weight: 700; text-transfo=
+rm: none; color: #ffffff; font-family: Inspire, InspireTWDC, 'Trebuchet MS'=
+, Arial, sans-serif; letter-spacing: 0px; line-height: 26px; mso-line-heigh=
+t-rule: exactly; border-collapse: collapse; -webkit-font-smoothing: antiali=
+ased; padding: 24px 40px;">=0D=0A=0D=0A=0D=0A=0D=0A          All of these a=
+nd more now&nbsp;streaming=0D=0A=0D=0A=0D=0A=0D=0A        </td>=0D=0A=0D=0A=
+=0D=0A=0D=0A      </tr>=0D=0A=0D=0A=0D=0A=0D=0A    </table>=0D=0A=0D=0A=0D=
+=0A=0D=0A  </td>=0D=0A=0D=0A=0D=0A=0D=0A</tr>=0D=0A=0D=0A=0D=0A=0D=0A<!-- E=
+ND Banner_E1_Streaming_null_Twilight -->=0D=0A=0D=0A=0D=0A=0D=0A=09=09=09=
+=09=09=09=09=09=09<!-- START FooterBrand_Tiles_A1_null_Twilight -->=0D=0A=
+=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A    =0D=0A=0D=0A=0D=0A=0D=0A=0D=
+=0A=0D=0A  =0D=0A=0D=0A=0D=0A=0D=0A  =0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=
+=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=
+=0A=0D=0A=0D=0A  =0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=
+=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=
+=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=
+=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=
+=0D=0A=0D=0A=0D=0A    <tr>=0D=0A=0D=0A=0D=0A=0D=0A        <td align=3D"cent=
+er" style=3D"border-collapse: collapse; -webkit-font-smoothing: antialiased=
+;">=0D=0A=0D=0A=0D=0A=0D=0A            <table class=3D"module" role=3D"pres=
+entation" cellpadding=3D"0" cellspacing=3D"0" border=3D"0" width=3D"100%" b=
+gcolor=3D"#02172A" style=3D"border-bottom-width: 1px; border-bottom-color: =
+#02172A; border-collapse: collapse; margin: 0; border-style: none;">=0D=0A=
+=0D=0A=0D=0A=0D=0A                <tr>=0D=0A=0D=0A=0D=0A=0D=0A             =
+       <td align=3D"center" style=3D"font-size: 16px; font-weight: normal; =
+color: #ffffff; font-family: Inspire, InspireTWDC, 'Trebuchet MS', Arial, s=
+ans-serif; line-height: 22px; mso-line-height-rule: exactly; letter-spacing=
+: 0px; border-collapse: collapse; -webkit-font-smoothing: antialiased; padd=
+ing: 24px 40px;">=0D=0A=0D=0A=0D=0A=0D=0A                        Top brands=
+. Iconic stories. Just a tap&nbsp;away.=0D=0A=0D=0A=0D=0A=0D=0A           =
+         </td>=0D=0A=0D=0A=0D=0A=0D=0A                </tr>=0D=0A=0D=0A=0D=
+=0A=0D=0A                <tr>=0D=0A=0D=0A=0D=0A=0D=0A                    <t=
+d align=3D"center" style=3D"border-collapse: collapse; -webkit-font-smoothi=
+ng: antialiased; padding: 0px 40px 16px;">=0D=0A=0D=0A=0D=0A=0D=0A         =
+               <table role=3D"presentation" cellpadding=3D"0" cellspacing=
+=3D"0" border=3D"0" style=3D"border-collapse: collapse;">=0D=0A=0D=0A=0D=0A=
+=0D=0A                            <tr>=0D=0A=0D=0A=0D=0A=0D=0A             =
+                   <td align=3D"right" style=3D"border-collapse: collapse; =
+-webkit-font-smoothing: antialiased;">=0D=0A=0D=0A=0D=0A=0D=0A             =
+                       <a href=3D"https://links.messaging.disneyplus.com/f/=
+open-in-app/Mf8wzJZpEfPJJIynNbXrqw~~/AAQRxRA~/0I4CDHBK2Gm64G5zK4cauPo3mRLUK=
+_azc-7gXvn2JOTTrR6HEYBNpUjHOZlSyuFM14ix_VMsPfUdyKySPe4koScIof2uYEYSxqfg3uFC=
+mUf97STL_ghKL0rvinCgWkKaTCEprC_AH1RJ1znF9ULn54kgIVGZiaO5sawEhwWy4xNGAZmRnmT=
+8soLj7woK2pBfFNzBKdxP0krCQA2yHXOuXmIkM_QsqiDldcG-2NbHQ_tMc9BjsZs28e7mp6OR4e=
+Noq8ikgGr3z9MkIP1z01LnrPlTYO72nAflMrtWFTghl045FGzaqDwDk7cDjXW0F8HsifRQvZq1x=
+VI3GTeELYs0yvCRRn4MH76Nv19O302kS_kGQyCFMtgH2S7znl7T0R_HndpTEf1qPB3ECucULnOO=
+hbwBDn17b5nYjDx02FKsqTFJg6w0bmbM014WWRehilk4GSR4sQUFNC4HLKvUByQ0ajaWonA3Rs3=
+OiUA7BSOcU-asHwgvgADTlzM_V-SHVC93SQcsHpHVtGBBvL7aDtW_l-ZI-ejwUqBm1JrX3GA651=
+BlXyHLWhlF2skU-OqTzOMLEkb51f2Xg7xJiK8EMNpQrZNNPCGbp1dnGmPVqQRVWiBUojpMsVIec=
+cD5vUXnKF7KCQICE5kVRKN9m4tg8RnJrw~~" target=3D"_blank" style=3D"text-decora=
+tion: none; -webkit-font-smoothing: antialiased;"><img src=3D"https://braze=
+-images.com/appboy/communication/assets/image_assets/images/6889323483d5f50=
+07338928b/original.png=3F1753821748" alt=3D"disneyplus" border=3D"0" height=
+=3D"50" width=3D"100%" style=3D"width: auto; display: block; text-align: ce=
+nter; color: #ffffff; font-size: 16px; font-family: Inspire, InspireTWDC, '=
+Trebuchet MS', Arial, sans-serif; font-weight: normal;"></a>=0D=0A=0D=0A=0D=
+=0A=0D=0A                                </td>                         =0D=
+=0A=0D=0A=0D=0A=0D=0A                                <td align=3D"right" st=
+yle=3D"padding-left: 16px; border-collapse: collapse; -webkit-font-smoothin=
+g: antialiased;">=0D=0A=0D=0A=0D=0A=0D=0A                                  =
+  <a href=3D"https://links.messaging.disneyplus.com/f/open-in-app/_xndlgIQc=
+vzWRXf3SrBobg~~/AAQRxRA~/0I4CDHBK2Gm64G5zK4cauPo3mRLUK_azc-7gXvn2JOTTrR6HEY=
+BNpUjHOZlSyuFMcMf-ljBydwi0iar3seMwIohP9z03mmZX49ISsxglX7FQ2HyBbEj0AvDfglL6y=
+mzH-w-5oYv9Ahtx1nkpfuurvfjYCSP_Nq3nDPvvxmX9CA7_oUOI3BN07yibbiFRhqfJvNdBoyTP=
+5Qtn4rwtBIks2fdezE39yt2V6Qfm18mofhQ4DH7T61ROdNdGRyf5veQiMm02NIRscrymejzMjdu=
+xvoKu2Ov7yH4bTON0T3jDnylpuXUE-PFj5e40e5GjSrbvZUzOh269ij3VcI9pXqVtdhcYoS2nRv=
+3mOgcdju1Ir0XPcxC2l75u2vS0rJ3v4rJ8917g56D_k2Yi-Kvdu2NK2BNWt0soaUrOfN2zGv5ph=
+QfKI_r5kHn_FHwSosuDnOCl3glRwE4Qcny8CIenlU8re97SPSORnyIHdUXxeE_0ndC6PpaRtJXK=
+9Ufe1bBe6hLWGmFjLWY_iVI6F9EWGsMZyGLwhuGg3MCTZT1Dy_SvqUMix3eYwEbU4FFZyE22dMN=
+cCeRw05rePmFKv2UxlzYfAWl9bUlmW71LmMNv4KytJUaHaNA1GMXtEuXoCXawrFrjRcLR1G8C3_=
+vvESTh2W5gUw~~" target=3D"_blank" style=3D"text-decoration: none; -webkit-f=
+ont-smoothing: antialiased;"><img src=3D"https://braze-images.com/appboy/co=
+mmunication/assets/image_assets/images/688932343de4ca0067866836/original.pn=
+g=3F1753821748" alt=3D"Pixar" border=3D"0" height=3D"50" width=3D"100%" sty=
+le=3D"width: auto; display: block; text-align: center; color: #ffffff; font=
+-size: 16px; font-family: Inspire, InspireTWDC, 'Trebuchet MS', Arial, sans=
+-serif; font-weight: normal;"></a>=0D=0A=0D=0A=0D=0A=0D=0A                 =
+               </td>=0D=0A=0D=0A=0D=0A=0D=0A                               =
+ <td align=3D"right" style=3D"padding-left: 16px; border-collapse: collapse=
+; -webkit-font-smoothing: antialiased;">=0D=0A=0D=0A=0D=0A=0D=0A           =
+                         <a href=3D"https://links.messaging.disneyplus.com/=
+f/open-in-app/cpLwFKtDeX9o0xOs7kA1Mg~~/AAQRxRA~/0I4CDHBK2Gm64G5zK4cauPo3mRL=
+UK_azc-7gXvn2JOTTrR6HEYBNpUjHOZlSyuFMN7L-PIzbKf8GxfcdhqQ350_hTvf4QkY1GoBsOj=
+2eolRCc2_SrwMa7hv97IOjQ8jpnng5xuSQl77p1OEXy6oANi2guatN1PvWeJXq-0LnzuRfo4mqn=
+t8Q4VUaClkaZPxgom6ef42RpsyvTNsEq2_I6hZIA5kN3Kn31FzEYVmKX4F6y4JLdA1NAsFfqKV0=
+buf43k9iilZY80FxX368ygVj0ZmvA5wNTYRUY0h1OphyEpzpMKZPsdVxIiEcfccqVlZIFVZmJGb=
+NtQEgW6ndsgq3Z0iu8njwDfLJ0ruRwafeVzX8xPmnrLiI_UEPXeOo8JjGIA3vHaDtVYHseGANn-=
+dgn9-hVrSRviE_06U3baB_9Kvkg0oXQ9hnB-DM_TBMzl-0QqmNgE5SFYpWuSKhl6ClfL_hM6IvB=
+hSurEH8F55C63mF_SScbphdpq8BQgr7p3HVLwlfnk4J_t88HSGTgpk35p-bvTlBGQN1IHG59Izn=
+HVzAZ8sduQHCqNM0jZjZ57TVA5DvZ27KHbEF4WTgS2f2G7bY_P03wEeWnt7yj45pScrQp8iJfWa=
+7cAqLuINr9OzZOeBktbSlppoK-ZyjGLtB0A~~" target=3D"_blank" style=3D"text-deco=
+ration: none; -webkit-font-smoothing: antialiased;"><img src=3D"https://bra=
+ze-images.com/appboy/communication/assets/image_assets/images/68893234caac7=
+d0066a20e1a/original.png=3F1753821748" alt=3D"Marvel" border=3D"0" height=
+=3D"50" width=3D"100%" style=3D"width: auto; display: block; text-align: ce=
+nter; color: #ffffff; font-size: 16px; font-family: Inspire, InspireTWDC, '=
+Trebuchet MS', Arial, sans-serif; font-weight: normal;"></a>=0D=0A=0D=0A=0D=
+=0A=0D=0A                                </td>=0D=0A=0D=0A=0D=0A=0D=0A     =
+                           <td align=3D"right" style=3D"padding-left: 16px;=
+ border-collapse: collapse; -webkit-font-smoothing: antialiased;">=0D=0A=0D=
+=0A=0D=0A=0D=0A                                    <a href=3D"https://links=
+.messaging.disneyplus.com/f/open-in-app/tVvBvx_FLK4z15CCqQIwLQ~~/AAQRxRA~/=
+0I4CDHBK2Gm64G5zK4cauPo3mRLUK_azc-7gXvn2JOTTrR6HEYBNpUjHOZlSyuFMlzzaw1w4tqN=
+d3PDx1WYQKKJN1vW926iqG7_qpKgTBohJUxL7c4gxwMargMMKcUJIVVfq1DQ_Tss07-iV9gok6K=
+JbHTgd6olY7nYe44YZcIxY7kTHaBX3yO5q47aCl49E1gIQzeMvLJGy3rPEti4-K_ob2xJfsiDEQ=
+iZECE4UgMvoeEGQTeYtHsLwcUzrgVVWlbUr_B-iL6zkdBZprFwJY97gPqcqQgAo2d_aGJMTYtLQ=
+NjDg7PpuY1a7eam_qSzdngshXUvvf6Vtdsfp8ysLXOJRzXCYg3udtF97qYR4P1nKRnzwAVSjAiL=
+7ZAlyiaMcHkHH_sj82xZNYUJD2_kgcZv9aUp-vbNvhDsXL23tstHPDNEbu9KJdCH0PzOVPlEn0p=
+Vl5eElDB-JLgi9bIdkFxfUxTOmr1M_988knUnP593OKSEDidIJp38IYnuzKenqrvZyAFjZBs__o=
+ZnMONgh1NI6Bbd1KjqknkuznsQ9sAj8MJSyfX3Sx1DbKUCaLTXC2w6vv3y6skYlL3q-DVOi9Djs=
+MdLtDLZRNHgkVJBESV18umprHqm9s2xklWoBUmROzKhuCf63PsODJtjyHtCQ9g~~" target=3D=
+"_blank" style=3D"text-decoration: none; -webkit-font-smoothing: antialiase=
+d;"><img src=3D"https://braze-images.com/appboy/communication/assets/image_=
+assets/images/6889323496af9100641198dd/original.png=3F1753821748" alt=3D"St=
+ar Wars" border=3D"0" height=3D"50" width=3D"100%" style=3D"width: auto; di=
+splay: block; text-align: center; color: #ffffff; font-size: 16px; font-fam=
+ily: Inspire, InspireTWDC, 'Trebuchet MS', Arial, sans-serif; font-weight: =
+normal;"></a>=0D=0A=0D=0A=0D=0A=0D=0A                                </td>=
+=0D=0A=0D=0A=0D=0A=0D=0A                            </tr>=0D=0A=0D=0A=0D=0A=
+=0D=0A                        </table>=0D=0A=0D=0A=0D=0A=0D=0A             =
+       </td>=0D=0A=0D=0A=0D=0A=0D=0A                </tr>=0D=0A=0D=0A=0D=0A=
+=0D=0A                <tr>=0D=0A=0D=0A=0D=0A=0D=0A                    <td a=
+lign=3D"center" style=3D"border-collapse: collapse; -webkit-font-smoothing:=
+ antialiased; padding: 0px 40px 24px;">=0D=0A=0D=0A=0D=0A=0D=0A            =
+            <table role=3D"presentation" cellpadding=3D"0" cellspacing=3D"0=
+" border=3D"0" style=3D"border-collapse: collapse;">=0D=0A=0D=0A=0D=0A=0D=
+=0A                            <tr>=0D=0A=0D=0A=0D=0A=0D=0A                =
+                <td align=3D"right" style=3D"border-collapse: collapse; -we=
+bkit-font-smoothing: antialiased;">=0D=0A=0D=0A=0D=0A=0D=0A                =
+                    <a href=3D"https://links.messaging.disneyplus.com/f/ope=
+n-in-app/r9fd639Lj2QW_2Jxeca6gQ~~/AAQRxRA~/0I4CDHBK2Gm64G5zK4cauPo3mRLUK_az=
+c-7gXvn2JOTTrR6HEYBNpUjHOZlSyuFMJHzn9Be5gEg0oPoawcjhW0ZIQHssZuM1mxceIy6PZgf=
+U4p25cKidoVBrCD2PotLOziIOcNYMTjyfgBVlpEknzjUwk9avw-1LQnfE1YsNt-rpEvFJJQx7Ub=
+M5v6h2ORizjfnWThm-lhYGHHNp2uKdDCu_wFbDZfyqAa5R6SbM7STmOL9qOZPfDnfajXnJj-y9_=
+2qr2JDWd2nxHFVDm0Lkk6vfSXUv1BmK4qv9v_8W3u7EnCfq6Gg6gZKaYn1G3ftQC8BXxkXlOFLz=
+cyVqpld9gbyUP9ZwWLa9zBPJcuFQGHnnQkb0iDiYha4SQLwOq0zomVwCmhFliCo5UT70F4xYcte=
+0Cv-ezy7Jmz4GeoDd4LsrQitUHzo11sd2wNSDSFB1AjIADyPnNgYKVb5ck_6axgHpzeMjpFy975=
+0Sc9ouZcqyMh0ladujiuWz_AaKZ3Gx-8LMTD6DvJP1_qKXFP38gY6dkIlrJlBdYc51samu-U56x=
+G8x5w0lrwdflkV3U6o2tIcflwBpzw8vy4rCrHHLtrBSL0H2WsbmHQw5p0Yexa0L-_ebY8Zg7Ozw=
+FFiZyBsI83I6WafgVnRVxYrONpUFLA~~" target=3D"_blank" style=3D"text-decoratio=
+n: none; -webkit-font-smoothing: antialiased;"><img src=3D"https://braze-im=
+ages.com/appboy/communication/assets/image_assets/images/6889323483d5f50064=
+389297/original.png=3F1753821748" alt=3D"National Geographic" border=3D"0" =
+height=3D"50" width=3D"100%" style=3D"width: auto; display: block; text-ali=
+gn: center; color: #ffffff; font-size: 16px; font-family: Inspire, InspireT=
+WDC, 'Trebuchet MS', Arial, sans-serif; font-weight: normal;"></a>=0D=0A=0D=
+=0A=0D=0A=0D=0A                                </td>=0D=0A=0D=0A=0D=0A=0D=
+=0A                                <td align=3D"right" style=3D"padding-lef=
+t: 16px; border-collapse: collapse; -webkit-font-smoothing: antialiased;">=
+=0D=0A=0D=0A=0D=0A=0D=0A                                    <a href=3D"http=
+s://links.messaging.disneyplus.com/f/open-in-app/7Ubl3IecPr2NIHLyJUIkIA~~/A=
+AQRxRA~/nj5FTAWiVz8wPj_uw9e1iYwCP0lV_0MoGU7Xh_cJ7ltTiWdYIr3EccMVA_GZ4FTenK-=
+odl2w0Rm5bsWuxxF8zlGxHveO2vLtUf3as4tSlxNE3vcjIHEr3KUuzuMZ_fmSPf3AinzybTeVr8=
+FLVEvLYN7RiY3-sCsSGSzSRGvOYc8aQRQka2kLiwJ1cAuLbS3UNQXlar5jKrH6JNVr85ETXeonW=
+RfDEzVW6P-2PsX0mUok5aabPObCGdqNnvWPgYE2f9KgoVoZbSGm9xLuFeljUjBm27OrKkpqbLgb=
+popTOX5Mt7VAdFsapg-MvBOUzRdm4Uan5c9mTj0FbJlzYnKQZDmlg_ADCArJXRtbh99hMbp5twP=
+-4c2l7ztaXmuc8IoSSAQtSAILmeosrk3XcKDNYAPqE5C5O8HJAvwwyGkZRIyUa-lgy26NWntB3S=
+P6DwjjvifsmYOC9Lx1bujG4B03tXeQZyH5ZyVCqTR20NfMVWRicsKYbdFJVgPXjU6zbK5SMH9XV=
+D_eWUin4o0l3USRksCcfFiQwpp0EcU9vt0wbs6KW-ljDNFAuxgdQtf6C-vfWsAwE8VGgign3yyr=
+-jWTY7uy5G_uR8UiXQTA-JIqmwg~" target=3D"_blank" style=3D"text-decoration: n=
+one; -webkit-font-smoothing: antialiased;"><img src=3D"https://braze-images=
+.com/appboy/communication/assets/image_assets/images/68893234b8b438006536b=
+0d3/original.png=3F1753821748" alt=3D"Hulu" border=3D"0" height=3D"50" widt=
+h=3D"100%" style=3D"width: auto; display: block; color: #ffffff; font-size:=
+ 16px; text-align: center; font-family: Inspire, InspireTWDC, 'Trebuchet MS=
+', Arial, sans-serif; font-weight: normal;"></a>=0D=0A=0D=0A=0D=0A=0D=0A   =
+                             </td>      =0D=0A=0D=0A=0D=0A=0D=0A           =
+                     <td align=3D"right" style=3D"padding-left: 16px; borde=
+r-collapse: collapse; -webkit-font-smoothing: antialiased;">=0D=0A=0D=0A=0D=
+=0A=0D=0A                                    <a href=3D"https://links.messa=
+ging.disneyplus.com/f/open-in-app/YoqjPMZ6hEAteJ6MHXpKcg~~/AAQRxRA~/nj5FTAW=
+iVz8wPj_uw9e1iYwCP0lV_0MoGU7Xh_cJ7ltTiWdYIr3EccMVA_GZ4FTeC8SBHK2kvWilJaUgUm=
+lT54fe336iBN8Pao05vw5LXBHI9Bmk6kGibiYyc1Ay3E2WGQ0EEk0ZS-3cK-ua-4NQGC5Fg5jrw=
+k0MliYVsVHhgf3Qg-_aeJndA2EGo6uJTq61jU10Fe9H0cSuEhdxWJcXf12GnZPG87TNlF2Q7hO_=
+QbO8QdcdSJZcU8Q9jLJk0bgHmrADQqlzcqmmjzMW-GwyPQ8x1qM4dXY1teO5ZKOOvcq_2h3Ermc=
+EraGtBKkjS_2F978D8QYK7qeiZ5J_Okds1h0745vBJ7L5SwMpIy7ecMyPlh_d4iBOR0L8G6dI3i=
+ODeJ-kzFqKwu1NYSWnGXuabu9uhFy62yh5mdL-g68PmCNb-XkkgMh66_xN6vdRpzhNESr1dnC1q=
+R00-KAi-sp7uaii9n3V1gsKBQswYWFG7v22XyG8X2j3B3idnqsz0A3a192t8CGN7ouR3LDCNo-a=
+rtBCm1y_-2Rwhqe0OvzJ3ZTNO9axKFhVdU-UXIp_Hvew8ijIqnxA6m0ItEZAKDmh_lZlJr_N4qN=
+OijI3R1A3e70~" target=3D"_blank" style=3D"text-decoration: none; -webkit-fo=
+nt-smoothing: antialiased;"><img src=3D"https://braze-images.com/appboy/com=
+munication/assets/image_assets/images/688932341640ab0067551fa6/original.png=
+=3F1753821748" alt=3D"ESPN" border=3D"0" height=3D"50" width=3D"100%" style=
+=3D"width: auto; display: block; text-align: center; color: #ffffff; font-s=
+ize: 16px; font-family: Inspire, InspireTWDC, 'Trebuchet MS', Arial, sans-s=
+erif; font-weight: normal;"></a>=0D=0A=0D=0A=0D=0A=0D=0A                   =
+             </td>=0D=0A=0D=0A=0D=0A=0D=0A                            </tr>=
+=0D=0A=0D=0A=0D=0A=0D=0A                        </table>=0D=0A=0D=0A=0D=0A=
+=0D=0A                    </td>=0D=0A=0D=0A=0D=0A=0D=0A                </tr=
+>=0D=0A=0D=0A=0D=0A=0D=0A            </table>=0D=0A=0D=0A=0D=0A=0D=0A      =
+  </td>=0D=0A=0D=0A=0D=0A=0D=0A    </tr>=0D=0A=0D=0A=0D=0A=0D=0A<!-- END Fo=
+oterBrand_Tiles_A1_null_Twilight -->=0D=0A=0D=0A=0D=0A=0D=0A=09=09=09=09=09=
+=09=09=09=09=0D=0A=0D=0A=0D=0A=0D=0A                                    <!-=
+- =3D=3D=3D=3D=3D=3D END Body Modules =3D=3D=3D=3D=3D=3D=3D=3D -->=0D=0A=0D=
+=0A=0D=0A=0D=0A                                </table>=0D=0A=0D=0A=0D=0A=
+=0D=0A                            </td>=0D=0A=0D=0A=0D=0A=0D=0A            =
+            </tr>=0D=0A=0D=0A=0D=0A=0D=0A                        <tr>=0D=0A=
+=0D=0A=0D=0A=0D=0A                            <td align=3D"center" style=3D=
+"border-collapse: collapse; -webkit-font-smoothing: antialiased;">=0D=0A=0D=
+=0A=0D=0A=0D=0A                                <table class=3D"module" role=
+=3D"presentation" cellpadding=3D"0" cellspacing=3D"0" border=3D"0" width=3D=
+"100%" bgcolor=3D"#02172A" style=3D"border-bottom-width: 1px; border-bottom=
+-color: #02172A; border-collapse: collapse; margin: 0; border-style: none;"=
+>=0D=0A=0D=0A=0D=0A=0D=0A                                    <tr>=0D=0A=0D=
+=0A=0D=0A=0D=0A                                        <td style=3D"border-=
+collapse: collapse; -webkit-font-smoothing: antialiased;">=0D=0A=0D=0A=0D=
+=0A=0D=0A                                            <table role=3D"present=
+ation" cellpadding=3D"0" cellspacing=3D"0" border=3D"0" width=3D"100%" styl=
+e=3D"border-collapse: collapse;">=0D=0A=0D=0A=0D=0A=0D=0A                  =
+                              <tr>=0D=0A=0D=0A=0D=0A=0D=0A                 =
+                                   <td align=3D"center" style=3D"border-col=
+lapse: collapse; -webkit-font-smoothing: antialiased;">=0D=0A=0D=0A  =0D=0A=
+=0D=0A=0D=0A=0D=0A  =0D=0A=0D=0A=0D=0A<!-- START FooterSocial_A1_null_Twili=
+ght -->=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A  =0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=
+=0D=0A =0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=
+=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=
+=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=
+=0D=0A=0D=0A<table role=3D"presentation" width=3D"100%" cellspacing=3D"0" c=
+ellpadding=3D"0" border=3D"0" style=3D"border-collapse: collapse;">=0D=0A=
+=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A    =0D=0A   =
+=0D=0A    <tr>=0D=0A        <td style=3D"font-family: Inspire, InspireTWDC,=
+ 'Trebuchet MS', Arial, sans-serif; font-size: 20px; font-weight: bold; lin=
+e-height: 26px; color: #ffffff; mso-line-height-rule: exactly; border-colla=
+pse: collapse; -webkit-font-smoothing: antialiased; padding: 20px 40px;" al=
+ign=3D"center">Follow us=0D=0A        </td>=0D=0A    </tr>=0D=0A    <tr>=0D=
+=0A        <td align=3D"center" style=3D"border-collapse: collapse; -webkit=
+-font-smoothing: antialiased;">=0D=0A            =0D=0A            <table r=
+ole=3D"presentation" cellspacing=3D"0" cellpadding=3D"0" border=3D"0" style=
+=3D"border-collapse: collapse;">=0D=0A                <tr>=0D=0A           =
+         <td align=3D"center" width=3D"35" style=3D"border-collapse: collap=
+se; -webkit-font-smoothing: antialiased;">=0D=0A                        <a =
+href=3D"https://links.messaging.disneyplus.com/f/a/nOyUaZplZoS0NgQASGOIOw~~=
+/AAQRxRA~/6LKWAoS7z86TJtHl31VdVkqD2Awo5QsfLgmg7EKffwBmXe8t1qhjQYOVhIZR4E-4-=
+dl8LBTOXEBiWmS-oSC5HB3wXNfdwQ98XGaIx2nVRJ6maxGVn3VG8TAZmkb7bi5WW_ZJZ0_qz6dn=
+aUDl0sV_QHjAur2fR4mufeMq7AR_fPHiI8cvMsOHVJ80klfpm7AfAIO62S6gsnTNGJEmAuFICWN=
+UaU5d-4i7fKqP8w_ch1ovjzQ52qCgdsRa1TN4G1SYyeyi2xi92c33ZXVO0ThlUb2v3a3LAGS3r5=
+c1WyyPS9Ug-RrhyDcxvMrH6iBP5uqIVJEDf_2r5bVF9E0tt2HEzm-CWun5M7ZgEg0WemV04OCP1=
+duSaP3jNUqqBQpjkv5AboyovzJjUMJn6nv4TZG8cjeEs1K16B4qEYZd_0tHuKYoC9s1QweqoVW8=
+HoZ50hrlqSTiwioO5T9uqktMftmo6dPR2UWdAriXKLIGsFLaBB-yFv5jLnZfqJ3z-P5aBu0XNj1=
+KdlUgEGH-xzQBJ2aE7bJJRNW4o_kV1V9-dTSduRaC5ZS43sipqSBzOsbtBP8l4GdrTABjp95pgs=
+1uVcFBTA~~" target=3D"_blank" alias=3D"Instagram_logo" style=3D"color: #fff=
+fff; text-decoration: none; -webkit-font-smoothing: antialiased;"><img src=
+=3D"https://braze-images.com/appboy/communication/assets/image_assets/image=
+s/6751c52e9daf3400663f5a49/original.png=3F1733412141" alt=3D"Instagram" sty=
+le=3D"display: block; height: auto; color: #ffffff; font-family: Inspire, I=
+nspireTWDC, 'Trebuchet MS', Arial, sans-serif; font-size: 16px; text-align:=
+ center;" width=3D"34" border=3D"0"></a>=0D=0A                    </td>=0D=
+=0A                    <td style=3D"padding-left: 40px; padding-right: 20px=
+; border-collapse: collapse; -webkit-font-smoothing: antialiased;" align=3D=
+"center">=0D=0A                        <a href=3D"https://links.messaging.d=
+isneyplus.com/f/a/2o-Xy_5iTVYX4SqmUOGIvA~~/AAQRxRA~/g6lsc5SdSEd_x4a_WxOGPG8=
+DyMp7sLDsFBkV33JE5K31xUX-wQ_54-tgd8c9DLnk7dDwpnoCNylK3WeXcLSs4lFEugSJbZNCXk=
+geIcnWR1_pBJkKiAKLa9YQKgHqKRT7xaMHx6v1CfciA72DMrDODVE29Hih331RFJiDNL6J34w33=
+sRL2KoenKp65Pd7LEmJ949OZs60G1GLr1OMMOXLU5flijKhCydHGZGOtP2EyrKK3tlhC0lPy1J_=
+_nsohY8YctTgNDE2Kg6DrgReno60EdxGMENZG3ieZtgvWVP6MggVFQEbddM--VfBFqegxTrTBdw=
+9ZEFSOm72ER28qhS7Acga3UeZU4BfLJM8qly_zOiSYoP_t8_D4MNltz39OM0SZp8LyA8TVqb_nx=
+M3NK8EG7LssLO9_HuTQfsV-fOcj4qNJXjPNhSIaWmyKxH0OyOaA7LQtrqpMXeTBdfPt39nJpLCi=
+Jqfes2dhFepVIvJcezKgSlsj_CfMorm5mLOn-rFnXBmZOEklHge4Nr1TWjAfH1wmgNNaEIOhbIR=
+NjbTojwSL0QC_54Bj2_PWJudrWulm3Fl0E6PdZQKqUwkEdBoDg~~" target=3D"_blank" ali=
+as=3D"TikTok_logo" style=3D"color: #ffffff; text-decoration: none; -webkit-=
+font-smoothing: antialiased;"><img src=3D"https://braze-images.com/appboy/c=
+ommunication/assets/image_assets/images/6751c52d9afe6f20b0ae4a94/original.p=
+ng=3F1733412141" alt=3D"TikTok" style=3D"display: block; height: auto; colo=
+r: #ffffff; font-family: Inspire, InspireTWDC, 'Trebuchet MS', Arial, sans-=
+serif; font-size: 16px; text-align: center;" width=3D"34" border=3D"0"></a>=
+=0D=0A                    </td>=0D=0A                    <td style=3D"paddi=
+ng-left: 20px; padding-right: 40px; border-collapse: collapse; -webkit-font=
+-smoothing: antialiased;" align=3D"center">=0D=0A                        <a=
+ href=3D"https://links.messaging.disneyplus.com/f/a/h9O9GRkiBTxEha0JzqnlBw~=
+~/AAQRxRA~/2DXuUKxuhJEWzW0gYjIp2d93EcGy7Zp6PsppkqwAeFMmLbF-T5GaMtE22HcBy7Xw=
+M_XSNAhmAWEtzZMS3Rsq6HsuJUxDuqZkMZ22mZtxotvUoIMO6WBxQBN773im82SP1MOLRCcvRQu=
+bqeTIRiqSzFsrtu_DoM1x0x7c9cqwCtcJmmtd2kufDqq47N8q3AE55jHpGuAfC5hLpHT5s2tZWz=
+3BNur9lD3re54I0eDypEL-UBiUscwh0_NbZKuuUhCWc0j5HVeD6ys8yErvQur8cOr_2kQFuHawo=
+YcMMa_Efxge_4iqajpN7MnhXqH_DksrhJmx1ueC5BpJprLfSeqgtdldSWnWv7Q22dsJLXcLSlMS=
+EibI1NCnWQjWnciCKF7NABb30LRVWe_j4x0Re8A5EY4RynfnPBRgYIQdcYIazKqUwi914EE7UiO=
+PPGDmMy0SJk_t-aYF5Ioytf1CQ3xTnUmPhkJq77JcffcWymyXIA7Es9rkUqcKaTjCUtoB7JUPCO=
+sFOKvYqE_kyNeJxz2YDZLKwmD-vJserxtj8acyr3G0CRp6IfGMnm01EpQ_wVe4o924huRXsO5og=
+LYBsqLo7A~~" target=3D"_blank" alias=3D"Facebook_logo" style=3D"color: #fff=
+fff; text-decoration: none; -webkit-font-smoothing: antialiased;"><img src=
+=3D"https://braze-images.com/appboy/communication/assets/image_assets/image=
+s/6751c52d17256c00641404ad/original.png=3F1733412141" alt=3D"Facebook" styl=
+e=3D"display: block; height: auto; color: #ffffff; font-family: Inspire, In=
+spireTWDC, 'Trebuchet MS', Arial, sans-serif; font-size: 16px; text-align: =
+center;" width=3D"34" border=3D"0"></a>=0D=0A                    </td>=0D=
+=0A                    <td align=3D"center" width=3D"36" style=3D"border-co=
+llapse: collapse; -webkit-font-smoothing: antialiased;">=0D=0A             =
+           <a href=3D"https://links.messaging.disneyplus.com/f/a/-Xm_A_ZYkF=
+M7ghRf-LQoTw~~/AAQRxRA~/g6lsc5SdSEd_x4a_WxOGPNj4kNy-Zkk7GYjJbB0p0rVVyLHa5Yn=
+PMpQG2brkDX5p3uZ14prmgeLo6qvCvlazOV2ttaTEZrhwjUE6U63FYCEcKmWoTwgYzDYcylTlTJ=
+HwbJok2KJscVjlsD4578iBqbsTXHpQGBL1QD1-UfbG3_GWXSYcTToa_k-PF1AMPN6ceGA2I82Nr=
+oV_Y_OY2VpNTeU-8pymjK9QnCkdiRe-6H9AdBoEEVy7l83VTcKsG7ecUIFNj1qm8pqaA-6ecIvL=
+W1YlGJ2Lt6G2OogMENHyPkw9sPUiBb7addrHn07L7zO4_UroQhsIecENtlG6M8EBmrQU3o3nfZu=
+PFvFg8vHANy_d_slbpENQ-uAZGx3qHiy7lgVRdr7Sj9sxwk0GhAEj0pL_UgDibDAHpCDSH7dSVl=
+aZWia1IxFfYfzRkb_PQioHV3YbhxmzsIcrL9tSTS1dXV0VWD8M-jZWTDj2HABMDSWfIvELK5oJS=
+PfimsaRgQOTL702_IKjpmSIvRBNzQrowalWn_taMPYTdQf-SeiBVGbrIEh1OZ5qEa3WOw5_Tjjd=
+UzBHidcuWhVKkA-jHziR2A~~" target=3D"_blank" alias=3D"Twitter_logo" style=3D=
+"color: #ffffff; text-decoration: none; -webkit-font-smoothing: antialiased=
+;"><img src=3D"https://braze-images.com/appboy/communication/assets/image_a=
+ssets/images/6751c52dfefb7a0075fb0d31/original.png=3F1733412141" alt=3D"Twi=
+tter" style=3D"display: block; height: auto; color: #ffffff; font-family: I=
+nspire, InspireTWDC, 'Trebuchet MS', Arial, sans-serif; font-size: 16px; te=
+xt-align: center;" width=3D"34" border=3D"0"></a>=0D=0A                    =
+</td>=0D=0A                </tr>=0D=0A            </table>=0D=0A        </t=
+d>=0D=0A    </tr>=0D=0A   =0D=0A    <tr>=0D=0A        <td style=3D"font-siz=
+e: 0; border-collapse: collapse; -webkit-font-smoothing: antialiased;">=0D=
+=0A            <img src=3D"https://braze-images.com/appboy/communication/as=
+sets/image_assets/images/6751c595a89b670066c2dbf4/original.gif=3F1733412245=
+" alt=3D"" width=3D"1" height=3D"8" style=3D"display: block;" border=3D"0">=
+=0D=0A        </td>=0D=0A    </tr>=0D=0A</table>=0D=0A<!-- END FooterSocial=
+_A1_null_Twilight -->=0D=0A</td>=0D=0A=0D=0A=0D=0A=0D=0A                   =
+                             </tr>=0D=0A=0D=0A=0D=0A=0D=0A                 =
+                               <tr>=0D=0A=0D=0A=0D=0A=0D=0A                =
+                                    <td align=3D"center" style=3D"border-co=
+llapse: collapse; -webkit-font-smoothing: antialiased;">=0D=0A=0D=0A  =0D=
+=0A=0D=0A=0D=0A<!-- START FooterHelp_A1_null_Twilight -->=0D=0A=0D=0A=0D=0A=
+=0D=0A<table role=3D"presentation" width=3D"100%" cellspacing=3D"0" cellpad=
+ding=3D"0" border=3D"0" style=3D"border-collapse: collapse;">=0D=0A<tr>=0D=
+=0A<td align=3D"center" style=3D"font-family: Inspire, InspireTWDC, 'Trebuc=
+het MS', Arial, sans-serif; font-size: 16px; color: #ffffff; line-height: 2=
+2px; mso-line-height-rule: exactly; max-width: 400px; border-collapse: coll=
+apse; -webkit-font-smoothing: antialiased; padding: 24px 40px;">For more in=
+formation, please visit our&nbsp;<a href=3D"https://links.messaging.disneyp=
+lus.com/f/a/AxipYgJTgI3RRj57s0d3lA~~/AAQRxRA~/C8j1w4dGTwgwzrz0zrqAdY1ViyHal=
+5HTAF0ZC1T_yi5G34GUi2ooASD3oea97dSzV7kUwaULs__JNJ8wy0zqSmzMCoe2H5S6diJ6-2oi=
+93-qkdHTF3u83atkViJaG2agP-NS527pTHdDHY0FbEgtMEC2nEcR_tQMWhlNbZpfnFhfqLAgWYp=
+bAdaVLV70u5O8TUKhYOlFVLBs7tpeszAgg_4wrQKilypUzGOWInXtlg0~" target=3D"_blank=
+" alias=3D"Help_Center" class=3D"appleLinksWhite" style=3D"color: #ffffff; =
+text-decoration: underline; white-space: nowrap; -webkit-font-smoothing: an=
+tialiased;">Help Center</a>=0D=0A    </td>=0D=0A  </tr>=0D=0A</table>=0A</t=
+d>=0D=0A=0D=0A=0D=0A=0D=0A                                                <=
+/tr>=0D=0A=0D=0A=0D=0A=0D=0A                                               =
+ =0D=0A=0D=0A=0D=0A=0D=0A                                                <t=
+r>=0D=0A=0D=0A=0D=0A=0D=0A                                                 =
+   <td bgcolor=3D"#757679" style=3D"font-size: 0; border-collapse: collapse=
+; -webkit-font-smoothing: antialiased;">=0D=0A=0D=0A=0D=0A=0D=0A           =
+                                             <img src=3D"https://braze-imag=
+es.com/appboy/communication/assets/image_assets/images/6781931dbd4d0000634d=
+a106/original.gif" alt=3D"" width=3D"1" height=3D"1" style=3D"display: bloc=
+k;" border=3D"0">=0D=0A=0D=0A=0D=0A=0D=0A                                  =
+                  </td>=0D=0A=0D=0A=0D=0A=0D=0A                            =
+                    </tr>=0D=0A=0D=0A=0D=0A=0D=0A                          =
+                      =0D=0A=0D=0A=0D=0A=0D=0A                             =
+                   <!-- =3D=3D=3D=3D=3D=3D Custom Footer text can be added =
+here with FooterAdditional_A1 =3D=3D=3D=3D=3D=3D=3D=3D -->=0D=0A=0D=0A=0D=
+=0A=0D=0A=09=09=09=09=09=09=09=09=09=09=09=09<!-- START FooterAdditionalA1_=
+null_Twilight -->=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=
+=0A=0D=0A=0D=0A=0D=0A=0D=0A  =0D=0A=0D=0A=0D=0A=0D=0A  =0D=0A=0D=0A=0D=0A=
+=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=
+=0A=0D=0A=0D=0A=0D=0A<tr>=0D=0A=0D=0A=0D=0A=0D=0A    <td class=3D"appleLink=
+sGray5UL" style=3D"font-size: 11px; font-family: Inspire, InspireTWDC, 'Tre=
+buchet MS', Arial, sans-serif; line-height: 15px; color: #C0C0C0; mso-line-=
+height-rule: exactly; border-collapse: collapse; -webkit-font-smoothing: an=
+tialiased; padding: 24px 40px 0;" align=3D"left">=0D=0A=0D=0A=0D=0A=0D=0A  =
+     *Disney+ subscription required. Device and feature limitations apply f=
+or IMAX Enhanced sound; enhanced sound feature not available for all titles=
+, territories, devices, or languages. =C2=A9&nbsp;2025 Disney and its relat=
+ed&nbsp;entities.=0D=0A=0D=0A=0D=0A=0D=0A=09=09<br><br>=0D=0A=0D=0A=0D=0A=
+=0D=0A=09=09**Available for U.S. residents, 18+ only. Location data require=
+d to watch certain content. Select Hulu content available via Disney+; addi=
+tional content only available via Hulu app. Offer valid for eligible subscr=
+ibers only. Subject to <a href=3D"https://links.messaging.disneyplus.com/f/=
+a/ZKf_BXyokhAJEkdCyVC8Rg~~/AAQRxRA~/Zp6AJ0xzyYqtJsvgyIW28Pn2EqMh9B1nOGSOGak=
+0uJqHcMe7RpyeCHg2zVl9Pw9XEfTTJkVWhUzD68rxpsPI0B4cX3dlizKHToXxvmiuZgSt4xICJq=
+YT3OQid9nown0Mq4lw2nDNxzrOmTvwKqNRe_WHNrOf-I6o4wgUBB4klMHaPudxpkltqOBQ0-XkD=
+EckvDL7C0CXNjco-evuWEmI8ExClRMZSqIFcFE5GhD5haTxh5LVNG0XhsK8KX0zKG79xgYQ54Oo=
+WgLpkkxjeUNNBtfXAHrk8qyvcHc9cWwUvFvrUUFCAKR-Uo6EeMMVFuqWBiI8L8vlIAEYUsHh4-A=
+U3sq7bCQ4qxiGGu3v7SOyoGR-InHBtltjwnxqAuwO7tA8FiwM6RqT1DHS54qyKU5G1WvIEzP0M0=
+3LCqzykzFt-IkyqZdIh33Y3_v-cHFu5ejdTuV2Q9mYJLIkhieoDEzrOnb7537VptZ47LIcOT7yr=
+iH_MIQ5nB_NVRdbYPiRT1TPV4ToSuzoNGO-qNCLTNtmi2kUzv3HUbkF31sjgnm5xmfIx4LXRCsu=
+6xXhLKnzBVT8swdm-rG-IVmT7EXx1TDQ-HjMM0eh-U_0n4BHmabAlgY~" style=3D"text-dec=
+oration: underline; color: #C0C0C0; -webkit-font-smoothing: antialiased;" t=
+arget=3D"_blank">Disney+, ESPN and Hulu Subscriber Agreement</a>. Additiona=
+l terms, app feature and device restrictions apply. For more information vi=
+sit the <a href=3D"https://links.messaging.disneyplus.com/f/a/s_58F3mImm4kH=
+K-cjAwnqA~~/AAQRxRA~/FWABTxXtuyxpfo4xFB00O38Hyeaoci_g7m7TPtg7UYL9guPkBrcsoW=
+3oOngpCkt8D8x0R_ySt7EyaWGGqKjm5kkrc7wunYPsbD4xMmuwfH15g0iWLCwd8FTbl-v_Wavt0=
+8ojotJdMQFFeAdKaiD5qAK0VOEy6D733NK2IFezMDoLIj8rz8CPNqWPBHLT4S_zCKzUKQpR0wQu=
+XGAjL7UC3nT-fqFEMao8v9GeUU1mV3At5TKdcNEIKd1rs2OgYgeIEwROLiSUsECVQ0Fxnz9dghj=
+KvDXD8nNiX90OLHlsHbVSn4o3jH17f-aDR2D1RYH4u4bWNEYBNGpRgXZWHszlfzyCOo-YPu0pvC=
+1LW2pEvwxr9QB_Y_u-q3hVzC3VCCrtcfarXe2F0Jlhm4znCQDIuRwP5ZkmYUUr8Haw0JJ65kq3Y=
+-7WjvmPZERErlucAsJ0NcZMV-cHMxH_o1Wmh_XBixnJ0XULCgiFWSvPkEqp4nUDyq1UR3pfYNT7=
+M6I7Xx3WJlyp7cmoA5hAPBKutQ77kMCPU6nKBkyRZ4XSy44ThLzk9Hzg6PRFCSr6Yg3rDo-p" s=
+tyle=3D"text-decoration: underline; color: #C0C0C0; -webkit-font-smoothing:=
+ antialiased;" target=3D"_blank">Disney+ Help Center</a>. =C2=A9&nbsp;2025 =
+Disney and its related&nbsp;entities.=0D=0A=0D=0A=0D=0A=0D=0A=09=09=0D=0A=
+=0D=0A=0D=0A=0D=0A=09=09=0D=0A=0D=0A=0D=0A=0D=0A    </td>=0D=0A=0D=0A=0D=0A=
+=0D=0A</tr>=0D=0A=0D=0A=0D=0A=0D=0A<!-- END FooterAdditionalA1_null_Twiligh=
+t -->=0D=0A=0D=0A=0D=0A=0D=0A                                              =
+  <tr>=0D=0A=0D=0A=0D=0A=0D=0A                                             =
+       <td style=3D"border-collapse: collapse; -webkit-font-smoothing: anti=
+aliased;">=0D=0A=0D=0A=0D=0A=0D=0A                                         =
+               <!-- Assign valid region -->=0D=0A=0D=0A=0D=0A=0D=0A        =
+                                                =0D=0A=0D=0A=0D=0A=0D=0A   =
+                                                       =0D=0A=0D=0A  =0D=0A=
+=0D=0A=0D=0A=0D=0A  =0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A<!-- Assign unsubla=
+nguage from Catalog using language  -->=0D=0A=0D=0A=0D=0A=0D=0A<!-- Assign =
+variables from One_ID  -->=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A<!-- As=
+sign URLs -->=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A<!-- Assign Default lookup -->=
+=0D=0A=0D=0A=0D=0A =0D=0A=0D=0A=0D=0A=0D=0A=0D=0A<table role=3D"presentatio=
+n" width=3D"100%" cellspacing=3D"0" cellpadding=3D"0" border=3D"0" style=3D=
+"border-collapse: collapse;">=0D=0A  <tr>=0D=0A    <td align=3D"left" style=
+=3D"border-collapse: collapse; -webkit-font-smoothing: antialiased; padding=
+: 24px 40px 39px;">=0A<table role=3D"presentation" width=3D"100%" cellspaci=
+ng=3D"0" cellpadding=3D"0" border=3D"0" style=3D"border-collapse: collapse;=
+">=0D=0A        <tr>=0D=0A          <td style=3D"font-size: 11px; font-fami=
+ly: Inspire, InspireTWDC, 'Trebuchet MS', Arial, sans-serif; line-height: 1=
+5px; color: #C0C0C0; max-width: 400px; border-collapse: collapse; -webkit-f=
+ont-smoothing: antialiased;"> This email was sent to: <a href=3D"#" style=
+=3D"text-decoration:none;color: #C0C0C0; cursor:text;word-break: break-word=
+; overflow-wrap: break-word;">mstowe@baddomain.com</a>. Please do not reply=
+ to this email as this address is not monitored. This email contains an adv=
+ertisement from: Disney Streaming Services, LLC, <a href=3D"#" style=3D"tex=
+t-decoration:none;color: #C0C0C0; cursor:text;">500 S. Buena Vista St., Bur=
+bank, CA 91521</a>.</td></tr><tr><td class=3D"appleLinksGray5UL" style=3D"f=
+ont-family:Inspire, InspireTWDC, 'Trebuchet MS', Arial, sans-serif;font-siz=
+e:11px;line-height:15px;mso-line-height-rule:exactly; color: #c0c0c0;paddin=
+g-top:24px;" align=3D"left">If you do not want to receive future marketing =
+email messages from Disney+, please =0A=0A=0A<a  href=3D"https://links.mess=
+aging.disneyplus.com/f/a/dRL-pffURKcO0vbiIc_9iw~~/AAQRxRA~/SbcDfMR2r-tqUhXM=
+5VKXqHQDBgB6BPnioCP44lfvBemwjs1O1Nvitb7tAfj-6wWXRdH6qVxKqKEDkaLTHKuEZ0mfPjb=
+mQOW1ri9PLUOmT9isXPvBop2V2WWVDrF-FHZPDT83dekj4XLEWadrUU2ufNzxZkEvcaMNT5glUv=
+4z0ebRJVYqKRIOPYPpIuDIyDaDSHPV40-j3wJCeOsnl2POrdoKr7_CbGxix5VnIRFAr2ZXtJAur=
+sZ86YNkxLO35Sv7l6g1_0Vub3rgu0S_U2hokjQuIOqWkdTmkdFpGBZevO3ZKCoLjVQVlUSJJSyQ=
+YeoVFb3Ysgr434elqcu8VfU_6AQk3c-TwxDFhIdqMYBCasnxLb7PB-PJNib0UuDHoBaJy7McZTB=
+nuFoij7EeFClE0rkhsTqVSmdvrx2Y3u5kPnC8ocPzU7irmScPP1SbFScMC8wo2stwZk1vexLcMO=
+Cgzs1rBw68PR9aBn_aOPWQCQOAWIkcLJjWTzRh2f6DEpmE" alias=3D"optout" style=3D"t=
+ext-decoration:underline;color:#c0c0c0;"><strong>opt-out</strong></a>.</td>=
+</tr><tr><td class=3D"appleLinksGray5UL" style=3D"font-family:Inspire, Insp=
+ireTWDC, 'Trebuchet MS', Arial, sans-serif;font-size:11px;line-height:15px;=
+mso-line-height-rule:exactly; color: #c0c0c0;padding-top:24px;" align=3D"le=
+ft">&copy; 2025 Disney and its related entities. All Rights Reserved.</td>=
+=0D=0A        </tr>=0D=0A        <!-- START SRC CODE -->=0D=0A        <tr>=
+=0D=0A          <td style=3D"padding-top: 24px; font-size: 11px; font-famil=
+y: Inspire, InspireTWDC, 'Trebuchet MS', Arial, sans-serif; line-height: 15=
+px; color: #C0C0C0; border-collapse: collapse; -webkit-font-smoothing: anti=
+aliased;" align=3D"left">SRC:690bd36e47f2636c66f92034944cd89e_EN_US</td>=0D=
+=0A        </tr>=0D=0A        <!-- END SRC CODE --> =0D=0A      </table>=0D=
+=0A    </td>=0D=0A  </tr>=0D=0A</table>=0D=0A=0D=0A=0D=0A=0D=0A            =
+                                            =0D=0A=0D=0A=0D=0A=0D=0A       =
+                                             </td>=0D=0A=0D=0A=0D=0A=0D=0A =
+                                               </tr>=0D=0A=0D=0A=0D=0A=0D=
+=0A                                            </table>=0D=0A=0D=0A=0D=0A=
+=0D=0A                                        </td>=0D=0A=0D=0A=0D=0A=0D=0A=
+                                    </tr>=0D=0A=0D=0A=0D=0A=0D=0A          =
+                          <tr>=0D=0A=0D=0A=0D=0A=0D=0A                     =
+                   <td style=3D"padding-left: 240px; padding-right: 240px; =
+border-collapse: collapse; -webkit-font-smoothing: antialiased;"></td>=0D=
+=0A=0D=0A=0D=0A=0D=0A                                    </tr>=0D=0A=0D=0A=
+=0D=0A=0D=0A                                </table>=0D=0A=0D=0A=0D=0A=0D=
+=0A                            </td>=0D=0A=0D=0A=0D=0A=0D=0A               =
+         </tr>=0D=0A=0D=0A=0D=0A=0D=0A                    </table>=0D=0A=0D=
+=0A=0D=0A=0D=0A                </td>=0D=0A=0D=0A=0D=0A=0D=0A            </t=
+r>=0D=0A=0D=0A=0D=0A=0D=0A        </table>=0D=0A=0D=0A=0D=0A=0D=0A    =0D=
+=0A=0D=0A=0D=0A=0D=0A=0D=0A<img border=3D"0" width=3D"1" height=3D"1" alt=
+=3D"" src=3D"https://links.messaging.disneyplus.com/q/F1By7Fo83WWAE0nMLnV5S=
+A~~/AAQRxRA~/WpsXLYTAHFdrNhKduEvlQg6fNLNADBngkK9FxLWKjH_QuHSD-zJ72xhfA5rFYJ=
+yJuHrpfh-1R3vqfOH2-tMxLw~~">=0D=0A</body>=0A</html>
+--_----5JTYcXvKNLyu9nZHwqEaZg===_15/74-11341-F7CDB096--
+

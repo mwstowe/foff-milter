@@ -1,0 +1,133 @@
+Return-Path: <3EcQMaREbABw65AL936F67A6D5TbYD682DG776JK.GFEA4JGKG7L.4GE@maestro.bounces.google.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTPS id 5A6FpqAh053215
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <mstowe@baddomain.com>; Thu, 6 Nov 2025 15:51:53 GMT
+	(envelope-from 3EcQMaREbABw65AL936F67A6D5TbYD682DG776JK.GFEA4JGKG7L.4GE@maestro.bounces.google.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (2048-bit key; unprotected) header.d=legaloffers-onmicrosoft-com.20230601.gappssmtp.com header.i=@legaloffers-onmicrosoft-com.20230601.gappssmtp.com header.b=G6iB9oVS
+X-Authentication-Warning: juliett.baddomain.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.baddomain.com
+Received: from mail-yw1-f197.google.com (mail-yw1-f197.google.com [209.85.128.197])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 5A6FpphC049477
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=OK)
+	for <mstowe@baddomain.com>; Thu, 6 Nov 2025 09:51:52 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 5A6FpphC049477
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (2048-bit key, unprotected) header.d=legaloffers-onmicrosoft-com.20230601.gappssmtp.com header.i=@legaloffers-onmicrosoft-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=G6iB9oVS
+Received: by mail-yw1-f197.google.com with SMTP id 00721157ae682-78692e4e1faso10231647b3.1
+        for <mstowe@baddomain.com>; Thu, 06 Nov 2025 07:51:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=legaloffers-onmicrosoft-com.20230601.gappssmtp.com; s=20230601; t=1762444306; x=1763049106; darn=baddomain.com;
+        h=to:from:subject:date:message-id:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Be1zT3P4phUzHd+E1BEEhEz1CU7wqMPZRFcZp4DBn4k=;
+        b=G6iB9oVSPjJ55iHci/hSKKv/+x8HWp/3nOqBsrjmTjyUXXPyLG7UhJMOVKLSVAcb0f
+         6R7Gi6Z0z+qBDIJdmpYCee/TK43WDhCbOyE6qrhwE+LvwR/M6BtNOvoA/xZIlyfiqyYX
+         iD+vCgutfZNRYFCSKJQGm2Y17+PlCsJuduJxEjzlU2i6CCpPIoLh0oc1xZ8hnozAi6WA
+         KDEGUaG9ccVGcN6+ni9Qz2mJbmLW2caqUMiY2W1nMPHa1TQvS6lCZKDrzL4cRbDs2f7T
+         4x2OUJsr1hp0f4Ss/BTq+mJZJsbRqDMp4o119ZlxwRL38LnGvcwkuiwOoYNfUcJT8r1v
+         ovkg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762444306; x=1763049106;
+        h=to:from:subject:date:message-id:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Be1zT3P4phUzHd+E1BEEhEz1CU7wqMPZRFcZp4DBn4k=;
+        b=egwhypBQ6LSJwywCtpbKwk3uhiba3kptrnrKJ5A5I/bYw94OPXS61OgXimSApNAmLV
+         EkfNADjynGodtG0QEnrQzk/QGLV9vFBkeF9NdoLPADxlU/PsauzdrBAyDzYvsJgcHP7Z
+         IYF5NrJm1FEd/ZoMJu6BntLcIMOeDF3x2WQn70tejTA0GexoRxiiaPtL0FEUJz9DHK9G
+         +p291lVdhfW8V7brAmXOPruI4OkgTZv4vAFf84vo4fFEs8aLSi14/GwmQF09K9BuWJuk
+         dosbBeltiykPLvaIxM6RawkgiqWWse2J+nZUKCmCkROevQICTtP6YRJPtNOZZffDRebQ
+         N2aA==
+X-Gm-Message-State: AOJu0YyihIwxu+zQ822HHMd0aCrYsb4gBrylfoFMXJ4Dadx7pA7gLfEr
+	Z8vVhwqEBolGs/r4drly1A3zTUIbv3l78JZF3fPteOREH37xByMqXiY8GWLQJKM2vgPhug7w4Wr
+	fPapAqVP049yKVD+ga+vAh+hdIsbFBJ0sqhSALtUpolZU6+vUAMcKah4F9llArfB3n9fzYP/fIo
+	ykfgfF
+X-Google-Smtp-Source: AGHT+IHAJSa18acMlW0UeH7KFsh+WUYuxNQMXJwFuP7nhpxHQqW4hiUnMQ9WQ/4cZwiBukcswNcCTJIV5w==
+MIME-Version: 1.0
+X-Received: by 2002:a05:690e:251a:20b0:63f:af94:79d2 with SMTP id
+ 956f58d0204a3-640b54d16afmr2659645d50.34.1762444305872; Thu, 06 Nov 2025
+ 07:51:45 -0800 (PST)
+Reply-To: noreply@legaloffers.onmicrosoft.com
+Message-ID: <autogen-java-375265d2-9b5b-479f-ac94-4719c3cc6989@google.com>
+Date: Thu, 06 Nov 2025 15:51:45 +0000
+Subject: =?UTF-8?B?R2V0IFJlYWR5OiBPdXIgQmxhY2sgRnJpZGF5IEV2ZW50IGlzIENvbWluZyAjdVZTR3dD?=
+From: "Savings Kit Claims #sIfEM5" <noreply@legaloffers.onmicrosoft.com>
+To: mstowe@baddomain.com
+Content-Type: multipart/alternative; boundary="000000000000c9cb040642ef0a5a"
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Thu, 06 Nov 2025 15:51:53 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Thu, 06 Nov 2025 09:51:52 -0600 (CST)
+X-FOFF-Rule-Matched: Analytics: Generic Sender Names (juliett.baddomain.com)
+X-FOFF-Rule-Matched: Analytics: Generic Sender Names (hotel.baddomain.com)
+X-FOFF-Score: 5 - foff-milter v0.6.6 (juliett.baddomain.com)
+X-FOFF-Score: 5 - foff-milter v0.6.6 (hotel.baddomain.com)
+
+--000000000000c9cb040642ef0a5a
+Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
+Content-Transfer-Encoding: base64
+
+RGVlcGVzdCBtYXJrZG93bnMgb2YgdGhlIHNlYXNvbuKAlGNsZWFyYW5jZSBwcmljaW5nIHdoaWxl
+IHN1cHBsaWVzIGxhc3Qu4oCMIOKAjCDigIwNCg0KDQoNCg0KQmxhY2sgRnJpZGF5IENsZWFyYW5j
+ZSBFdmVudA0KDQpGaW5hbCBjaGFuY2UgZm9yIGxvd2VzdC1ldmVyIHByaWNlcy4gQ2xlYXJhbmNl
+IHN0b2NrIGlzIGxpbWl0ZWTigJRvbmNlIGl0J3MgIA0KZ29uZSwgaXQncyBnb25lLg0KU2hvcCBD
+bGVhcmFuY2UNCg0KVW5zdWJzY3JpYmUNCg0KDQoNCg==
+--000000000000c9cb040642ef0a5a
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE html>
+<html lang=3D"en">
+<head>
+<meta charset=3D"utf-8"/>
+<meta name=3D"viewport" content=3D"width=3Ddevice-width,initial-scale=3D1"/=
+>
+<title>Black Friday Clearance Event</title>
+</head>
+<body style=3D"margin:0;padding:0;background-color:#f1f5f9;font-family:Aria=
+l,sans-serif;">
+<!-- Preheader -->
+<div style=3D"display:none;font-size:1px;color:#f1f5f9;line-height:1px;max-=
+height:0;max-width:0;opacity:0;overflow:hidden;">
+Deepest markdowns of the season=E2=80=94clearance pricing while supplies la=
+st.&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
+</div>
+
+<table role=3D"presentation" width=3D"100%" cellpadding=3D"0" cellspacing=
+=3D"0" border=3D"0" style=3D"background-color:#f1f5f9;">
+<tr>
+<td align=3D"center" style=3D"padding:40px 20px;">
+<table role=3D"presentation" width=3D"100%" cellpadding=3D"0" cellspacing=
+=3D"0" border=3D"0"
+style=3D"max-width:600px;background-color:#ffffff;border:1px solid #e2e8f0;=
+border-radius:8px;">
+<tr>
+<td style=3D"padding:40px 30px;text-align:center;">
+<h2 style=3D"margin:0 0 15px;font-size:26px;color:#111827;">Black Friday Cl=
+earance Event</h2>
+<p style=3D"margin:0 0 30px;font-size:16px;color:#374151;line-height:1.6;">
+Final chance for lowest-ever prices. Clearance stock is limited=E2=80=94onc=
+e it=E2=80=99s gone, it=E2=80=99s gone.
+</p>
+<a href=3D"https://bnmxdfsefrwe.blob.core.windows.net/uyodt7oyi/esryutujfgh=
+vbn.html#4XCKxf29145BdQp29kruiimwaiz1367NLNGMIQRANUSRXI905788MKBW448271L9" =
+style=3D"display:inline-block;background-color:#111827;color:#ffffff;paddin=
+g:14px 32px;font-size:16px;font-weight:bold;text-decoration:none;border-rad=
+ius:8px;">
+Shop Clearance
+</a>
+</td>
+</tr>
+<tr>
+<td style=3D"padding:20px;text-align:center;border-top:1px solid #e2e8f0;">
+<a href=3D"https://bnmxdfsefrwe.blob.core.windows.net/uyodt7oyi/esryutujfgh=
+vbn.html#5sOdCl29145Bwel29pgaqbyprcw1367KJOEJWREJTKQUXQ905788SPCP448271q9" =
+style=3D"font-size:12px;color:#64748b;text-decoration:underline;">Unsubscri=
+be</a>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</body>
+</html>
+--000000000000c9cb040642ef0a5a--

@@ -1,0 +1,844 @@
+Return-Path: <bounce-17_HTML-5867478-35499-514011607-36004@bounce.e-offers.dominos.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTPS id 5A704X94070551
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <mstowe@baddomain.com>; Fri, 7 Nov 2025 00:04:34 GMT
+	(envelope-from bounce-17_HTML-5867478-35499-514011607-36004@bounce.e-offers.dominos.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (2048-bit key; unprotected) header.d=e-offers.dominos.com header.i=offers@e-offers.dominos.com header.b=NKYIrSZG;
+	dkim=pass (2048-bit key; unprotected) header.d=s11.y.mc.salesforce.com header.i=@s11.y.mc.salesforce.com header.b=XSWhKY0p
+X-Authentication-Warning: juliett.baddomain.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.baddomain.com
+Received: from mta2.e-offers.dominos.com (mta2.e-offers.dominos.com [13.111.205.102])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 5A704UP9001643
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO)
+	for <mstowe@baddomain.com>; Thu, 6 Nov 2025 18:04:32 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 5A704UP9001643
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (2048-bit key, unprotected) header.d=e-offers.dominos.com header.i=offers@e-offers.dominos.com header.a=rsa-sha256 header.s=11dkim1 header.b=NKYIrSZG;
+	dkim=pass (2048-bit key, unprotected) header.d=s11.y.mc.salesforce.com header.i=@s11.y.mc.salesforce.com header.a=rsa-sha256 header.s=fbldkim11 header.b=XSWhKY0p
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=11dkim1; d=e-offers.dominos.com;
+ h=From:To:Subject:Date:List-Unsubscribe:List-Unsubscribe-Post:MIME-Version:
+ Message-ID:Content-Type; i=offers@e-offers.dominos.com;
+ bh=oox9Imw/VDa1IXgN7wu4pKZ+3OARHybJAJoy94qELPU=;
+ b=NKYIrSZGMXRnqiY7G4o54iASEF3SjsmL/hPy0sEF6mzKxNQTXsYmgvbK8se4tZOWXbDYDSTRSYPa
+   S1xb8fw1Fs7Vtf9mTxSA10YP0P3SZ8YD9SkEcYe418yq0ZuMEJajrgnBUU66H/cIjwXOYU0TIcic
+   Z2ws2OWC5DlY0lmLc4dIg6fSTCc1Nq67v5rXLUYV54A24GbqyiKU/oauR054aOzyQucdA+TEIqKf
+   wBbQ792g9HT4xX5yVSz67u+ziXa0m0z6Y/Dl6ryoFH9qw2IsmXBo2mgXembsf2DEmVWB5FYZCj7H
+   OCXJdMgUAFvrhDSn1WDBaP+TQDkQCRfqnZVlGw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=fbldkim11; d=s11.y.mc.salesforce.com;
+ h=From:To:Subject:Date:List-Unsubscribe:MIME-Version:Message-ID:Content-Type;
+ bh=oox9Imw/VDa1IXgN7wu4pKZ+3OARHybJAJoy94qELPU=;
+ b=XSWhKY0pWvvs9E1ccJeZkAn6fJdkn1qTflc4ETAEoUOsDiCoQEdhnFYF3fQtUfS3W2QgDHEuTHb/
+   T41Y1T9eEwn6mv6DmPZjoeYLPa5pXKtbaZ3dWqkxT4iOtYz22Et113ka8SddUuGhhiRObOr6QUyG
+   aiSmpXU82upzwnA0ncNw0g7rBFkZU0+oJgzBhDoH0Zcw2KVnYrK1kdNbzTBmULNrQllnZbD58zqu
+   LHksqdd9ycmGt6zFVoNykWDuWwJu58I3kLklBmAbwtQiTiENlWMmQJ5CJNHwDq+cqlHiMPXjXI9l
+   R/Kq5nYDFRQQYmOoOyRdAt1KADGYjKf8r+svEg==
+Received: by mta2.e-offers.dominos.com id h1krp02fmd4k for <mstowe@baddomain.com>; Fri, 7 Nov 2025 00:04:30 +0000 (envelope-from <bounce-17_HTML-5867478-35499-514011607-36004@bounce.e-offers.dominos.com>)
+From: "Domino's Pizza" <offers@e-offers.dominos.com>
+To: <mstowe@baddomain.com>
+Subject: =?UTF-8?B?8J+NlSAyIG1lZGl1bSBwaXp6YXMuIDIgdG9wcGluZ3MgZWFjaC4g?=
+ =?UTF-8?B?MCByZWdyZXRzLiDwn5KB4oCN4pmA77iP?=
+Date: Thu, 06 Nov 2025 18:04:30 -0600
+List-Unsubscribe: <https://click.e-offers.dominos.com/subscription_center.aspx?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtaWQiOiI1MTQwMTE2MDciLCJzIjoiNTg2NzQ3OCIsImxpZCI6IjE3IiwiaiI6IjM1NDk5IiwiamIiOiIzNjAwNCIsImQiOiIxMTAwNTIifQ.854OFRh2eUzwknO1yZgGGGY-jAd4FjtIAOzkGIkjGuI>, <https://www.dominos.com/en/pages/content/opt-out/opt-out>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+MIME-Version: 1.0
+X-SFMC-Stack: 11
+x-job: 514011607_35499
+Message-ID: <263c1d04-79cb-4660-b8da-d33df4dcd95e@atl1s11mta624.xt.local>
+Content-Type: multipart/alternative;
+	boundary="NumAm5VPRqGo=_?:"
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Fri, 07 Nov 2025 00:04:34 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Thu, 06 Nov 2025 18:04:32 -0600 (CST)
+X-Spam-Flag: YES
+X-FOFF-Rule-Matched: Ecommerce Scams: Black Friday and fake savings scams (hotel.baddomain.com)
+X-FOFF-Score: 0 - analyzed by foff-milter v0.6.6 on juliett.baddomain.com
+X-FOFF-Score: 70 - foff-milter v0.6.6 (hotel.baddomain.com)
+
+This is a multi-part message in MIME format.
+
+--NumAm5VPRqGo=_?:
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+Domino's
+https://click.e-offers.dominos.com/u/?qs=67e3af0613f17aa0fbd991f4d277c7bde60f9b559e958a0a0233c9b3b2eb518c6cae720f1e131a51b665452e8f0689854abc6d35d25c41c7735ab39130922c6e
+
+-------------------------------------------------------------------------------
+
+To view the full email please click here
+https://view.e-offers.dominos.com/?qs=22fcbbd1056e49260991b425e78f23e2aabd583103402f1a861f7002f11baa2d38b95bc4c28533dc233aa58008ffbd18d134e52f73c57887bacf5e47a716ad8ffaaed88392495291
+
+-------------------------------------------------------------------------------
+
+Order Online
+https://click.e-offers.dominos.com/u/?qs=67e3af0613f17aa083eb99505742b18b34b8f6f993ed5b80f4caf7135edc01597302d4cb99792063fea28f24e03181aeb8050220ea937a11ff54989267f232c0
+
+Browse Menu
+https://click.e-offers.dominos.com/u/?qs=67e3af0613f17aa0a13fc6dde81f22f7ba180d9ff497a3929bc12bdaecc7544536a60e4b60b1b690d4ed08c949967c2acc740004ea6c0b85a35551fc4c910ee1
+
+Find Coupons
+https://click.e-offers.dominos.com/u/?qs=67e3af0613f17aa0c4d92384370ef548dcc9a4391e02fb98290794eea417769abd807d3b32567ceb4cce4ac1be23907d378d83cb0aac8d8303aa0d047b03bebe
+
+-------------------------------------------------------------------------------
+
+Outside the U.S. and would like to unsubscribe?
+https://click.e-offers.dominos.com/u/?qs=67e3af0613f17aa0b8ca02dc1499359d19fe11d8a6c60fc994d6e219d634c3114f34180a7b7f41187da1ecb2299bc277cba0ba55cfc708d5cfb19c81d9594b46
+
+To unsubscribe within the U.S., please click here
+https://click.e-offers.dominos.com/u/?qs=67e3af0613f17aa002e30219c7f4eaa3c0b8a9f55c9c93d76966e7675e942681b4dbbf010f6d796b3f6efde1822d5b5d6a55b1f5d7a4e539cffe983b7f1b7cf7
+
+This message was sent to
+mstowe@baddomain.com
+
+Questions? Contact Domino's Customer Service
+https://click.e-offers.dominos.com/u/?qs=67e3af0613f17aa0c4f9442ac6d6de6fe776889055e1e765aa282b03b36d0edd67fc06886d5bd05234662f1b345741d12253c7fafd3b443083b9142887abb4f9
+
+-------------------------------------------------------------------------------
+
+Domino's Pizza LLC
+30 Frank Lloyd Wright Dr.
+Ann Arbor, MI 48106
+
+
+--NumAm5VPRqGo=_?:
+Content-Type: text/html;
+	charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+
+<!--
+-->
+
+<!DOCTYPE HTML>
+<!--[if mso]> <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office"> <![endif]-->
+<!--[if !mso]> <!--> 
+<html> 
+  <!--<![endif]-->
+  <head> 
+    <!--YAHOO APP ANDROID WILL STRIP THIS--> 
+  </head>
+  <head>
+    
+<script type="application/ld+json">
+[
+   {
+      "@context":"https://schema.org/",
+      "@type":"DiscountOffer",
+      "description":"Mix & Match Deal",
+      "discountCode":"MIXANDMATCH",
+      "availabilityStarts":"",
+      "availabilityEnds":""
+   }
+]
+</script>
+
+    
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <meta http-equiv="Content-Type" content="text/html;" charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="x-apple-disable-message-reformatting">
+    <title>Domino's
+    </title>
+    <!---->
+    <style type="text/css">
+  @import url('https://fonts.googleapis.com/css?family=Montserrat:400,400i,500,500i,700,700i&display=swap');
+  .font-montserrat {
+    font-family:'Montserrat','Trebuchet MS', Arial, sans-serif;
+  }
+  .font-montserrat-italic {
+    font-family:'Montserrat','Trebuchet MS', Arial, sans-serif;
+    font-style: italic;
+  }
+</style>
+<style>
+  .body {
+    width: 100%;
+    height: 100%;
+    background-color: ;
+    background-image:url('');
+      }
+</style>
+<style type="text/css">
+  /* Reset Code */
+  body,table,td,a{
+    -webkit-text-size-adjust:100%;
+    -ms-text-size-adjust:100%;
+    margin: 0 !important;
+  }
+  table,td {mso-table-lspace: 0pt; mso-table-rspace: 0pt;}
+  img { border: 0; line-height: 100%; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic;}
+  table {border-collapse: collapse !important;}
+  body {height: 100% !important; margin: 0 !important; padding: 0 !important; width: 100% !important;}
+  sup {line-height:0; font-size:70%;}
+  a[x-apple-data-detectors], 
+   .x-gmail-data-detectors, 
+   .x-gmail-data-detectors *,
+   .aBn,
+   [data-outlook-cycle] [x-apple-data-detectors-type="calendar-event"] {
+     border-bottom: 0 !important;
+     cursor: default !important;
+     color: inherit !important;
+     text-decoration: none !important;
+     font-size: inherit !important;
+     font-family: inherit !important;
+     font-weight: inherit !important;
+     line-height: inherit !important;
+  }
+  @-ms-viewport {
+    width: device-width;
+  }
+  a img {text-decoration: none !important;}
+</style>
+<style type="text/css">
+  u + #body a {
+    color: inherit;
+    text-decoration: none;
+    font-size: inherit;
+    font-family: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+  }
+  .dpz_grey p {
+    font-family: 'OneDotCd', 'Trebuchet MS', Arial, sans-serif;
+    font-size: 12px;
+    line-height:16px;
+  }
+  
+  @media only screen and (max-width: 600px) {
+    .mobilePadding {
+      padding:0px 20px 5px 20px !important;
+    }
+  }
+  
+  @media only screen and (max-width: 480px),
+    screen and (max-width: 480px) {
+      .center_mobile {text-align: center!important;}
+      .center_mobile img {margin: auto!important;}
+      
+      /* Template Styling */
+      .container    {width: 100% !important;}
+      
+      .width--100pc {width: 100% !important;}
+      .width--85pc  {width: 85% !important;}
+      .width--80pc  {width: 80% !important;}
+      .width--70pc  {width: 70% !important;}
+      .width--50pc  {width: 50% !important;}
+      .width--35pc  {width: 35% !important;}
+      .width--25pc  {width: 25% !important;}
+      
+      .block--show {
+        display: block !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: visible !important;
+        width: auto !important;
+        max-height: inherit !important;
+      }
+      .block--text {display:block !important;}
+      .block--hide {display: none !important;}
+      
+      .image--scale  {width: 100% !important; height: auto !important;}
+      .image--scalew {width: 100% !important;}
+      .image--scaleh {height: 100% !important;}
+      .autoheight    {height:auto !important;}
+      .bgimg {background-size: cover; background-position: center center; background-repeat: no-repeat;}
+      
+      .display--block  {display: block !important; width: 100% !important;}
+      .display--header {display: table-header-group !important;}
+      .display--footer {display: table-footer-group !important;}
+      
+      /** Padding **/
+      .padding0 {padding:0px !important;}
+      .padding__all--5px  {padding:5px !important;}
+      .padding__all--10px {padding:10px !important;}
+      .padding__all--15px {padding:15px !important;}
+      .padding__all--25px {padding:25px !important;}
+      .padding_left_5pc {padding-left:5% !important;}
+      .padding_left_10pc {padding-left:10% !important;}
+      .padding_left_12pc {padding-left:12% !important;}
+      .padding__horizontal--0    {padding-left:0 !important;   padding-right:0 !important;}
+      .padding__horizontal--3px  {padding-left:3px !important; padding-right: 3px !important;}
+      .padding__horizontal--3pc  {padding-left:3% !important;  padding-right: 3% !important;}
+      .padding__horizontal--5pc  {padding-left:5% !important;  padding-right: 5% !important;}
+      .padding__horizontal--6pc  {padding-left:6% !important;  padding-right: 6% !important;}
+      .padding__horizontal--7pc  {padding-left:7% !important;  padding-right: 7% !important;}
+      .padding__horizontal--8pc  {padding-left:8% !important;  padding-right:8% !important;}
+      .padding__horizontal--10pc {padding-left:10% !important; padding-right:10% !important;}
+      .padding__horizontal--15pc {padding-left:15% !important; padding-right:15% !important;}
+      .padding__horizontal--20pc {padding-left:20% !important; padding-right:20% !important;}
+      .padding__horizontal_left--0px   {padding-left:0px !important;}
+      .padding__horizontal_left--10px  {padding-left:10px !important;}
+      .padding__horizontal_right--10px {padding-right:10px !important;}
+      .padding__horizontal_right--15px {padding-right:15px !important;}
+      .padding__horizontal_right--20px {padding-right:20px !important;}
+      .padding__horizontal_right--30px {padding-right:30px !important;}
+      .padding__vertical--0px  {padding-top:0px !important;  padding-bottom: 0px !important;}
+      .padding__vertical--2px  {padding-top:2px !important;  padding-bottom: 2px !important;}
+      .padding__vertical--10px {padding-top:10px !important; padding-bottom: 10px !important;}
+      .padding__vertical--15px {padding-top:15px !important; padding-bottom: 15px !important;}
+      .padding__vertical--20px {padding-top:20px !important; padding-bottom: 20px !important;}
+      .padding__vertical--30px {padding-top:30px !important; padding-bottom: 30px !important;}
+      .padding__vertical--50px {padding-top:50px !important; padding-bottom: 50px !important;}
+      .padding__vertical_top--0px  {padding-top:0px !important;}
+      .padding__vertical_top--3px  {padding-top:3px !important;}
+      .padding__vertical_top--5px  {padding-top:5px !important;}
+      .padding__vertical_top--10px {padding-top:10px !important;}
+      .padding__vertical_top--15px {padding-top:15px !important;}
+      .padding__vertical_top--18px {padding-top:18px !important;}
+      .padding__vertical_top--20px {padding-top:20px !important;}
+      .padding__vertical_top--30px {padding-top:30px !important;}
+      .padding__vertical_top--35px {padding-top:35px !important;}
+      .padding__vertical_top--40px {padding-top:40px !important;}
+      .padding__vertical_top--45px {padding-top:45px !important;}
+      .padding__vertical_bottom--0px  {padding-bottom:0px !important;}
+      .padding__vertical_bottom--10px {padding-bottom:10px !important;}
+      .padding__vertical_bottom--15px {padding-bottom:15px !important;}
+      .padding__vertical_bottom--16px {padding-bottom:16px !important;}
+      .padding__vertical_bottom--20px {padding-bottom:20px !important;}
+      .padding__vertical_bottom--30px {padding-bottom:30px !important;}
+      .padding__vertical_bottom--40px {padding-bottom:40px !important;}
+      .padLeft5    {padding-left:5px !important;}
+      .padLeft10   {padding-left:10px !important;}
+      .padRight5   {padding-right:5px !important;}
+      .padRight10  {padding-right:10px !important;}
+      .padTop10    {padding-top:10px !important;}
+      .padTop15    {padding-top:15px !important;}
+      .padTop30    {padding-top:30px !important;}
+      .padBtm40    {padding-bottom:40px !important;}
+      .padLeft5pc  {padding-left:5% !important;}
+      .padRight5pc {padding-right:5% !important;}
+      
+      /** Styling **/
+      .fontsize--8px {font-size: 8px!important; line-height: 10px!important;}
+      .align--center {text-align: center !important;}
+      .align--left   {text-align: left !important;}
+      .bgFFF {background-color:#FFFFFF !important; background-image:none !important;}
+      
+      /* Campaign Specific CSS */
+      .padding__footer {padding-top:30px !important; padding-bottom: 40px !important;}
+      .pe_background {
+        background-image:url('http://image.e-offers.dominos.com/lib/fe3611717164057c731477/m/1/eece4ad2-845f-460f-8de4-512eac85d1f4.jpg')!important;
+        background-size: 100% auto !important;
+        background-position: center bottom !important;
+      }
+      .backgroundCover {background-size: cover!important; background-position: left top!important;}
+      .height68   {height: 68px!important;}
+      .heightAuto {height: auto!important;}
+  }
+  /* iPhone 5 Override */
+  @media only screen and (max-width: 375px) {
+  }
+</style>
+<style>
+  @media only screen and (max-width: 480px), 
+    screen and (max-width: 480px) {
+    /* NPS Survey */
+    .Help_Text_Container {width:80% !important;}
+    .Help_Text {font-size:12px !important; line-height: 14px !important;}
+  }
+</style>
+<style>
+  @media only screen and (max-width: 480px), 
+    screen and (max-width: 480px) {
+    /* Order Confirmation */
+    .text1  {color: #000000 !important; font-size: 14px !important;}
+    .text2  {color: #000000 !important; font-size: 16px !important;}
+    .text3  {color: #0078ae !important; font-size: 14px !important;}
+    .text4  {color: #0078ae !important; font-size: 16px !important;}
+    .text5  {font-family: Arial, Helvetica, sans-serif !important; line-height: 18px !important; color: #000000 !important; font-size: 11px !important;}
+    .text6  {font-family: Arial, Helvetica, sans-serif !important; color: #ed232c !important; font-size: 11px !important;}
+    .text7  {font-family: Arial, Helvetica, sans-serif !important; color: #000000 !important; font-size: 12px !important;}
+    .text8  {font-family: Arial, Helvetica, sans-serif !important; line-height: 18px;}
+    .text9  {color: #000000 !important; font-size: 11px !important;}
+    .text10 {color: #ed232c !important; font-size: 18px !important;}
+    .text11 {font-family: Arial, Helvetica, sans-serif !important; font-weight: bold !important; color: #0064a1 !important; font-size: 8px !important; text-decoration:none;}
+    .text12 {font-family: Arial, Helvetica, sans-serif !important; color: #999999 !important; font-size: 11px !important;}
+    .text13 {font-family: Arial, Helvetica, sans-serif !important; color: #ed232c !important; font-size: 12px !important;}
+    .text14 {color: #000000 !important; font-size: 16px !important; font-style: italic !important;}
+    .text15 {font-size: 11px !important;}
+  }
+</style>
+<style type="text/css">
+  html,  body {margin: 0 auto !important; padding: 0 !important; height: 100% !important; width: 100% !important;}
+  div[style*="margin: 16px 0"] {margin: 0 !important;}
+  .preheader {display: none !important; visibility: hidden; opacity: 0; color: transparent; height: 0; width: 0;}
+  body {margin: 0 !important; padding: 0 !important; -webkit-text-size-adjust: 100% !important; -ms-text-size-adjust: 100% !important; -webkit-font-smoothing: antialiased !important;}
+  img {border: 0 !important; outline: none !important;}
+  table {border-collapse: collapse; mso-table-lspace: 0px; mso-table-rspace: 0px;}
+  td, a, span {border-collapse: collapse; mso-line-height-rule: exactly;}
+  .ExternalClass * {line-height: 100%;}
+  .dpz_defaultlink a {color: inherit !important; text-decoration: none !important;}
+  span.MsoHyperlink {mso-style-priority: 99; color: inherit;}
+  span.MsoHyperlinkFollowed {mso-style-priority: 99; color: inherit;}
+  .dpz_blue_u a {text-decoration: underline; color: #006491;}
+  .dpz_bluea {text-decoration: none; color: #006491;}
+  .dpz_white a, .date a {text-decoration: none; color: #ffffff;}
+  .address a {text-decoration: none; color: #888888!important;}
+  .store-address a {text-decoration: none; color: #006393!important;}
+  .whitelink a {color: #ffffff; text-decoration: none;}
+  
+  @media only screen and (min-width:481px) and (max-width:679px) {
+    .viewonlinepreheader {display: none !important;}
+    br[class=em_hide] {display: none !important;}
+    .dpz_main_table {width: 100% !important;}
+    .dpz_wrapper {width: 100% !important;}
+    .dpz_side {width: 10px !important;}
+    .dpz_hide {display: none !important;}
+    .dpz_img {width: 100% !important; height: auto !important;}
+    .dpz_left {text-align: left !important;}
+    .dpz_h5 {height: 5px !important;}
+    .dpz_h20 {height: 20px !important;}
+    .dpz_top {padding-top: 20px !important;}
+    .dpz_aside {padding: 0 10px !important;}
+    .dpz_footer {padding: 20px 12px 40px!important;}
+    .dpz_hide_desktop {
+      display: table !important;
+      float: none !important;
+      width: 100% !important;
+      overflow: visible !important;
+      height: auto !important;
+    }
+  }
+  
+  @media screen and (max-width: 480px) {
+    .font4   {font-size:4px !important;}
+    .font6   {font-size:6px !important;}
+    .font8   {font-size:8px !important;}
+    .font10  {font-size:10px !important;}
+    .font12  {font-size:12px !important;}
+    .font14  {font-size:14px !important;}
+    .font16  {font-size:16px !important;}
+    .font18  {font-size:18px !important;}
+    .font20  {font-size:20px !important;}
+    .font22  {font-size:22px !important;}
+    .font24  {font-size:24px !important;}
+    .font26  {font-size:26px !important;}
+    .font28  {font-size:28px !important;}
+    .font30  {font-size:30px !important;}
+    .lh5     {line-height:5x !important;}
+    .lh6     {line-height:6px !important;}
+    .lh8     {line-height:8px !important;}
+    .lh10    {line-height:10px !important;}
+    .lh12    {line-height:12px !important;}
+    .lh14    {line-height:16px !important;}
+    .lh16    {line-height:16px !important;}
+    .lh18    {line-height:18px !important;}
+    .lh20    {line-height:20px !important;}
+    .lh22    {line-height:22px !important;}
+    .lh24    {line-height:24px !important;}
+    .lh26    {line-height:26px !important;}
+    .lh28    {line-height:28px !important;}
+    .lh30    {line-height:30px !important;}
+    .lh32    {line-height:32px !important;}
+    .lh34    {line-height:34px !important;}
+    .mobileFont14 {font-size: 14px!important; line-height: 18px!important;}
+    .viewonlinepreheader {display: none !important;}
+    br[class=em_hide] {display: none !important;}
+    .dpz_main_table {width: 100% !important;}
+    .dpz_wrapper {width: 100% !important;}
+    .dpz_side {width: 10px !important;}
+    .dpz_hide {display: none !important;}
+    .dpz_img {width: 100% !important; height: auto !important;}
+    .dpz_left {text-align: left !important;}
+    .dpz_h5 {height: 5px !important;}
+    .dpz_h20 {height: 20px !important;}
+    .dpz_top {padding-top: 20px !important;}
+    .dpz_aside {padding: 0 10px !important;}
+    .dpz_footer {padding: 20px 12px 40px!important;}
+    u + .dpz_body .dpz_full_wrap {
+      width: 100% !important;
+      width: 100vw !important;
+    }
+    .dpz_hide_desktop {
+      display: table !important;
+      float: none !important;
+      width: 100% !important;
+      overflow: visible !important;
+      height: auto !important;
+    }
+    .dpz_font6 {font-size: 8px !important; line-height: 12px !important;}
+    .dpz_hide1 {display: none !important;}
+  }
+  #MessageViewBody, #MessageWebViewDiv {margin: 0px auto !important; padding: 0!important;}
+</style>
+<style>
+  .promocode span a {color: #ffffff; text-decoration: none;}
+  .emailAddress a {color: #555555; text-decoration: none; font-weight: normal;}
+</style>
+<style>
+  @media (max-width: 480px) {
+    .loyRibbon {width: auto!important;}
+    .reg {font-size: 4px!important;}
+    .topCell {padding-bottom:0!important;}
+    .loy_text2 {padding-top:0!important; height: auto!important;}
+    .imgCell {padding: 0 12px!important; vertical-align: top!important;}
+    .imgCell img {width:39px!important;}
+    .loy_text1 {padding-left: 0!important;}
+    .cgoStack {display: block!important; margin: auto!important;}
+    .cgoStackReward {display: table-cell!important; text-align: left!important;}
+    .text2Reward {padding: 0 20px 4px 10px!important;}
+    .imgCellReward img {width:39px!important;}
+    .buttonCell {padding: 10px 6px 10px!important;}
+    .imgTextTableCell {padding:10px 0 10px 6px!important;}
+    .cgoStackButton p {font-size: 14px!important;}
+    .cgoStackButton p .points {font-size: 18px!important;}
+    .mobile_width_auto {width: auto!important;}
+  }
+  @media (min-width: 481px) {
+    .imgTextTable {width: 100%!important;}
+  }
+  @media (max-width: 420px) {
+    .cgoStackReward {font-size:14px!important; padding-left: 0!important;}
+    .imgCellReward img {width:33px!important;}
+    .imgCellReward {vertical-align: middle!important;}
+    .text1Reward {padding-right: 0!important;}
+    .text2Reward {width: 111px; padding: 0 8px!important;}
+    .cgoStackButton {display: block!important; margin: auto!important;}
+    .imgTextTableCell {padding-top:6px!important;}
+    .red-button {width: 75%; font-size: 16px!important;}
+    .buttonCell {padding-top: 0!important;}
+    .buttonContainer {padding: 0 8px 4px!important; margin: auto!important; text-align: center;}
+    .imgTextTableButton {max-width: 81%!important;}
+    .pointsButton {font-size: 14px!important;}
+    .rewardsText {text-align: center!important;}
+    .imgCellButton img {width: 36px!important;}
+  }
+  @media (max-width: 390px) {
+    .imgCell {padding: 0 8px!important;}
+    .imgCell img {width:28px!important;}
+    .loy_text1, .loy_text2 {font-size: 14px!important; line-height: 16px!important;}
+    .points {font-size: 14px!important;}
+    .cgoStackReward {font-size: 12px!important;}
+    .imgCellReward {text-align: right!important;}
+    .imgCellReward img {width:20px!important;}
+    .text2Reward {padding: 6px 8px 4px 8px!important; width: 84px;}
+    .hide390 {display: none!important;}
+    .show390 {display: inline!important;}
+  }
+</style>
+<style>
+  @media (max-width: 480px) {
+    .font18 {font-size: 18px!important; line-height: 24px!important;}
+    .reg6 {font-size: 6px!important; vertical-align: 10px!important;}
+  }
+</style>
+<style>
+  .widgetDateContainer a {text-decoration: none; color: #006491;}
+  
+  @media (max-width: 480px) {
+    .widgetPointAmount  {font-size: 24px!important; line-height: 30px!important; margin: 8px auto!important;}
+    .widgetPointAmount2 {font-size: 24px!important; line-height: 30px!important; margin: 4px auto!important;}
+    .widgetCopy {padding-bottom: 16px!important;}
+    .widgetLogoContainer {padding: 4px 30px 8px 6px!important;}
+    .widgetDateContainer, .freePizzasAvailable {font-size: 12px!important; line-height: 14px!important;}
+    .freePizzasAvailable {margin: 18px 8px 10px!important;}
+    .widgetDateContainer, .paddingBottom10 {padding-bottom: 10px!important;}
+    .widgetCopy p, .greeting {font-size: 14px!important; line-height: 16px!important; margin-top: 0!important;}
+  }
+  @media (max-width: 400px) {
+    .widgetDateContainer, .freePizzasAvailable {font-size: 10px!important; line-height: 12px!important;}
+  }
+</style>
+<!--[if mso]>
+<style>
+body {font-family: 'Trebuchet MS', Arial, sans-serif !important;}
+table, td {
+border-collapse:collapse !important;
+mso-table-lspace:0pt !important;
+mso-table-rspace:0pt !important;
+font-family: 'Trebuchet MS', Arial, sans-serif !important;
+}
+.msoSans  {font-family: 'Trebuchet MS', Arial, sans-serif !important;}
+.msoSerif {font-family: Times,serif !important;}
+.font-montserrat {font-family:'Trebuchet MS', Arial, sans-serif !important;}
+.font-montserrat-italic {font-family:'Trebuchet MS', Arial, sans-serif !important;font-style: italic !important;}
+</style>
+<![endif]-->
+<!--[if gte mso 9]>
+<xml>
+<o:OfficeDocumentSettings>
+<o:AllowPNG/>
+<o:PixelsPerInch>96</o:PixelsPerInch>
+</o:OfficeDocumentSettings>
+</xml>
+<![endif]-->
+  </head>
+  <body style="margin: 0 auto; padding:0;-webkit-text-size-adjust:none;-ms-text-size-adjust: none;">
+    <div style="display: none; visibility: hidden; opacity: 0; color: transparent; height: 0; width: 0;font-size:0px;line-height:1px;">Domino's is always the right decision 🍕 ✅</div>
+    <div style="display: none; max-height: 0px; overflow: hidden;">
+&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;
+&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;
+&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;
+    </div>
+    
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" align="center">
+      <tr>
+        <td align="center">
+          <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" align="center" class="container">
+            <tr>
+              <td align="center">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" align="center">
+                  <tr>
+                    <td>
+                      <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" role="presentation">
+  <tr>
+    <td align="center" style="padding:20px 20px 20px 15px;" class="padding__horizontal--5pc padding__vertical--15px">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" align="center" role="presentation">
+        <tr>
+          <td align="left" width="65">
+            <a href="https://click.e-offers.dominos.com/u/?qs=e5538e27313070bbe2704cdc47b9216158133dc45c5ecf5399c31ac1f7f3522f6c59a14c28e7ed4d2834065286b283fbd2c26010673d0c3d47b8d909175738b65058849b786f2010"  target="_blank" ><img src="https://email.assets.dominos.com/us/email/NAT/dpz-icon-logo_130x130.png" width="65" height="65" border="0" class="dpz_img" style="display:block; max-width:65px; font-family:Arial, sans-serif; font-size:14px; line-height:65px; text-align:center; color:#e31837; font-weight:bold; text-decoration: none;" alt="Domino's"></a>
+          </td>
+          <td align="right" valign="middle" style="font-family:Arial, sans-serif; font-size: 14px; line-height: 65px; color: #e31837;">
+            <a href="https://click.e-offers.dominos.com/u/?qs=e5538e27313070bb13df9dc6457d80ed7963aa965bc09a4f97813c7d4b596891c4fdc6835d341bf691a97e2309b247d6b66613fd5b2fe22af9b77e69814bea61a0e2e952a6715534"  target="_blank"  style="text-decoration:none; font-weight:bold; color: #e31837;">ORDER ONLINE</a>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+                      <!--
+
+-->
+<!---->
+<table align="center" width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation" bgcolor="#006491" style="background:#006491;">
+  <tr>
+    <td align="center" valign="middle" style="padding: 6px 0 6px 0; vertical-align:middle;">
+      <table cellpadding="0" cellspacing="0" border="0" role="presentation">
+        <tr>
+          <td class="heightAuto padLeft5 padRight5" width="33%" height="63" align="center" valign="middle" style="padding:0 10px 0 10px;">
+            <a href="https://click.e-offers.dominos.com/u/?qs=e5538e27313070bbd846a748056258f4f127c97a6b229a6feafa7eda100fbf3386a6ad5e11ae60b8bb2653ee88e8973bd9e6676294141e1d8a53eb740914ee2c424a799b1e4f8202"  target="_blank"  style="color: #ffffff; text-decoration: underline;">
+              <img src="https://email.assets.dominos.com/us/email/LOY/LOY_HDR_RewardsLogo_2x_v2.png" width="178" border="0" style="display:block; max-width:178px;" class="dpz_img" alt="Domino's&reg; Rewards" />
+            </a>
+          </td>
+          <td class="padLeft5 padRight5" width="42%" align="center" valign="middle" style="padding:0 10px 0 10px; vertical-align:middle;">
+            <table cellpadding="0" cellspacing="0" border="0" role="presentation">
+              <tr>
+                <td class="font10 lh12" align="center" valign="bottom" style="font-family:arial,sans-serif; font-size:12px; line-height:14px; color:#ffffff; text-transform:uppercase; padding-top:4px;">
+                  <strong>HI Michael! YOU HAVE 150<span>&nbsp;</span>POINTS.</strong>
+                </td>
+              </tr>
+              <tr>
+                <td align="center" valign="top">
+                  <img src="https://email.assets.dominos.com/us/email/LOY/LOY_HDR_Thermometer_60_PtsPlus_2x.png" width="178" border="0" style="display:block; max-width:178px;" class="dpz_img" alt="" />
+                </td>
+              </tr>
+            </table>
+          </td>
+          <td class="padLeft5 padRight10" width="25%" align="center" valign="middle" style="padding:0 15px 0 10px;">
+            <a href="https://click.e-offers.dominos.com/u/?qs=e5538e27313070bbc1b9b84f7c69b644f9cc35e6b79e2befa1672f331a8e894eaa8d2c74be82db3c5682774d669ac7afeda764b623ea188307b13c34c5cb7434db45f8b281b6c493"  target="_blank"  style="color: #ffffff; text-decoration: underline;">
+              <img src="https://email.assets.dominos.com/us/email/LOY/LOY_HDR_CTA_Redeem_2x.png" width="123" border="0" style="display:block; max-width:123px;" class="dpz_img" alt="Redeem" />
+            </a>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!---->  
+                      
+                    </td>
+                  </tr>
+                  <tr>
+                    <td align="center">
+                      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" align="center">
+                        <tr>
+  <td align="center" valign="top" class="td_offer" style="padding-top:18px;">
+    <a href="https://click.e-offers.dominos.com/u/?qs=67e3af0613f17aa029d4446f05042d88e4fa125eeebe92d4c039c5b6e43eeef77972b3141daeb8b9e70f7fa88a1fd171b01ff4f858d7d2975f11373f59686b3deca8ae822bfd6a10"  style="text-decoration:none;" target="_blank" ><img src="https://email.assets.dominos.com/us/email/NAT/MNM_DM_Pick2_699_V5.jpg" width="600" border="0" class="dpz_img" style="display: block; font-family: Arial, Helvetica, sans-serif; color: #006491; font-weight:bold; font-size:18px;" alt="Pick 2 Pizzas $699 each - Order Now - Medium 2-Topping Pizzas. Prices higher for some locations. - 2 item minimum. Handmade Pan Pizza and Parmesan Stuffed Crust will cost extra. Prices, delivery area, and charges may vary by store. For details on pricing, contact your local store. Pricing for online orders available at checkout. Delivery orders are subject to each local store's delivery charge. Mix & Match offer details." /></a>
+  </td>
+</tr>
+    <tr>
+  <td align="center" valign="top" class="td_offer" style="padding-top: 18px;">
+    <a href="https://click.e-offers.dominos.com/u/?qs=67e3af0613f17aa032b46591b1c70832944e74d6acfd4be8b04d7668bef336ac173370391a107ee6ae051286b3a149c67556af9428123eb2a1c82b1c3a1e4ba8beeb69302e7b9e2c"  style="text-decoration:none;" target="_blank" ><img width="600" src="https://email.assets.dominos.com/us/email/NAT/BITES_SM_Bread_family.jpg" style="display: block; font-family: Arial, Helvetica, sans-serif; color: #006491; font-weight:bold; font-size:18px;" border="0" class="dpz_img" alt="DIP, DUNK and DEVOUR - New Garlic and New Cinnamon Bread Bites are here - Parmesan- New Cinnamon- New Garlic - Order Now - Any delivery charge is not a tip to your driver. Drivers carry less than $20. &copy;2025 Domino's IP Holder LLC, Domino's ,Domino's pizza and the modular logo are registered trademarks of Domino's IP Holder LLC." />
+    </a>
+  </td>
+</tr>  
+
+                        
+                        
+                        
+                      </table>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <table width="100%" cellpadding="0" cellspacing="0" border="0" align="center" role="presentation">
+  <tr>
+    <td align="center" valign="top" bgcolor="#f5f5f5" style="padding:36px 0px 30px 0px;" class="padding__vertical--20px">
+      <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" role="presentation">
+        <!-- Menu Nav Button -->
+        <tr>
+          <td align="center" valign="top" style="padding:0px 0px 20px 0px;">
+            <a href="https://click.e-offers.dominos.com/u/?qs=e5538e27313070bbe4ae7d4643b5dd42b1077e452f3a352a7c842cdc99fce733336101db5da044f6a7f9850a27cdcdd72b742bd1cb0f77bda2fb4f9c489fa694a85f34eae62d0748"  style="text-decoration:none;" title="Browse Our Menu" target="_blank" ><img width="600" height="88" alt=" Browse Menu" src="https://email.assets.dominos.com/us/email/NAT/browse-menu_600x88.png" style="font-family: Arial, Helvetica, sans-serif; color: #006491;font-weight:bold;font-size:18px;text-decoration: none;" border="0" class="image--scale" /></a>
+          </td>
+        </tr>
+        <!-- Coupons Nav Button -->
+        <tr>
+          <td align="center" valign="top" style="padding:0px 0px 0px 0px;">
+            <a href="https://click.e-offers.dominos.com/u/?qs=e5538e27313070bbdc204ea28e625b654dfe33d1e6b5937f28964e481e8b07b967190467bfd2d917ba8f3d6fc0204af0383d564295e4da7290b18d174bbb3d47d360eb1e3b861ffc"  style="text-decoration:none;" title="Find Coupons" target="_blank" ><img width="600" height="88" alt=" Find Coupons" src="https://email.assets.dominos.com/us/email/NAT/find-coupons_600x88.png" style="font-family: Arial, Helvetica, sans-serif; color: #006491;font-weight:bold;font-size:18px;text-decoration: none;" border="0" class="image--scale" /></a>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+                      
+                      <!---->
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" align="center">
+  <tr>
+    <td align="center" style="padding:0px 0px 20px 0px;" bgcolor="#f5f5f5">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" align="center">
+        <tr>
+          <td align="left">
+            <img src="https://email.assets.dominos.com/us/email/NAT/store-border-top.png" alt="" style="display:block;font-size:10px;line-height:12px;font-family: 'Trebuchet MS', Arial, sans-serif;color:#000000;" border="0" height="27" width="600" class="image--scale">
+          </td>
+        </tr>
+        <tr>
+          <td align="center">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" align="center" class="mobile_width_auto">
+              <tr>
+                <th valign="middle" width="274" align="center" class="display--block">
+                  <img src="https://email.assets.dominos.com/us/email/NAT/store-local.png" alt="Your local store" style="display:block;font-size:20px;line-height:119px;font-family: 'Trebuchet MS', Arial, sans-serif;color:#026391;text-decoration: none;" border="0" height="119" width="274" />
+                </th>
+                <th valign="middle" align="center" class="display--block padding__vertical_top--15px">
+                  <table width="100%" role="presentation" cellpadding="0" cellspacing="0" border="0" align="center">
+                    <tr>
+                      <td align="left" class="center_mobile" >
+                        <img src="https://email.assets.dominos.com/us/email/NAT/store-your-2.png" alt="Your Domino's Store:" style="display:block;font-size:18px;line-height:27px;font-family: 'Trebuchet MS', Arial, sans-serif;max-width: 216px;color:#E51030;font-weight:bold;text-decoration: none;" border="0" height="27" width="216" class="image--scale">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td align="left" class="center_mobile" style="font-family: Arial, Helvetica, sans-serif; font-size:16px; line-height:20px; text-decoration: none; color: #006393;font-weight:normal; padding: 5px 0 0;">
+                        <a rel="nofollow" style="text-decoration: none; color: #006393;font-weight:normal;">928 N 160th St<br>Shoreline, WA 98133</a>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td align="left" class="center_mobile" style="color: #000000; font-family: Arial, Helvetica, sans-serif; font-size:12px; line-height: 14px; font-style: italic; font-weight:normal;padding:15px 0px 0px 0px;">Not your store? Update your <a href="https://click.e-offers.dominos.com/u/?qs=67e3af0613f17aa090a5211f855dabc803e66b93235322a07d49e50ad8eeebd72526aaaf83aa43af082347d59c125a3d2ecfa36e7a60a9caff3b1d97184bda34"  style="color:#000000;" target="_blank">subscription&nbsp;address</a>.
+                      </td>
+                    </tr>
+                  </table>
+                </th>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td align="left">
+            <img src="https://email.assets.dominos.com/us/email/NAT/store-border-bottom.png" alt="" style="display:block;font-size:10px;line-height:12px;font-family: 'Trebuchet MS', Arial, sans-serif;color:#000000;" border="0" height="27" width="600" class="image--scale">
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!---->
+                      
+                      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" align="center" bgcolor="#e5e5e5">
+  <tr>
+    <td valign="middle" align="center" bgcolor="#e5e5e5" style="padding:25px 0;">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" width="156" style="width: 156px;" class="mobile_width_auto">
+        <tr>
+          <td valign="middle" align="center" style="padding: 0 0 0 6px;">
+            <a href="https://click.e-offers.dominos.com/u/?qs=e5538e27313070bbde7da9ebcfd606ecc96c615c380e779200bf9e1a994db1bb93f40195fe2e72489699e18d54ef742f21e8870a0897443c7151eb1fcdd699aa"  title="Facebook" target="_blank"><img src="https://email.assets.dominos.com/us/email/NAT/facebook_17x29.png" width="17" height="29" border="0" alt="Facebook" style="font-family: Arial, Helvetica, sans-serif; display:block; font-size:10px;color:#006491;font-weight:bold;text-decoration: none;"></a>
+          </td>
+          <td valign="middle" align="center" style="padding:0px 22px 0px 24px;">
+            <a href="https://click.e-offers.dominos.com/u/?qs=e5538e27313070bbef3b000dcb9ef2c4c5574f22bd37bc52241bb7c57146835d4146b39fb9e1f30673933f559ef38fff66022a0ad2d322868d5e2ebac97fa414"  title="Twitter" target="_blank"><img src="https://email.assets.dominos.com/us/email/NAT/twitter_35x32.png" width="35" height="32" border="0" alt="Twitter" style="font-family: Arial, Helvetica, sans-serif; display:block; font-size:10px;color:#006491;font-weight:bold;text-decoration: none;"></a>
+          </td>
+          <td valign="middle" align="center">
+            <a href="https://click.e-offers.dominos.com/u/?qs=e5538e27313070bb99ca44c2f38373c14d4df490d365f45a65efc0f1a19a08639b75c52516154f2a4d815375b5e28755184196a67593b55bb2def8cc04b6abf9"  title="Instagram" target="_blank"><img src="https://email.assets.dominos.com/us/email/NAT/instagram_33x33.png" width="33" height="33" border="0" alt="Instagram" style="font-family: Arial, Helvetica, sans-serif; display:block; font-size:10px;color:#006491;font-weight:bold;text-decoration: none;"></a>
+          </td>
+          <td valign="middle" align="center" style="padding:0px 6px 0px 18px;">
+            <a href="https://click.e-offers.dominos.com/u/?qs=e5538e27313070bb0f265e3021a7733d2e4fba340a25d13fe46cb441ad0c49293adb86edf8a3e8a277b0954afc0eea398f9d2936b3c652e85500a56cec2b5db9"  title="TikTok" target="_blank"><img src="https://email.assets.dominos.com/us/email/NAT/social-tiktok.png" width="29" height="29" border="0" alt="TikTok" style="font-family: Arial, Helvetica, sans-serif; display:block; font-size:10px;color:#006491;font-weight:bold;text-decoration: none;"></a>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+                      
+                      <!---->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" align="center" role="presentation">
+    <tr>
+      <td align="center" style="padding:50px 40px 40px 40px;" bgcolor="#f5f5f5" class="padding__footer padding__horizontal--5pc">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" align="center" role="presentation">
+          <tr>
+            <td align="left" style="font-family: 'OneDotCd', 'Trebuchet MS', Arial, sans-serif; font-size: 12px; line-height:16px; color: #888888; font-weight:normal;">
+              <span style="color:#006490;"><strong>Legal Stuff:</strong></span>&nbsp;
+              <!-- AOB Legal -->
+              
+              <!-- AOB Legal END -->
+              
+              <!-- Recruitment Legal -->
+              
+              <!-- Recruitment Legal End -->
+              
+              Domino's&reg; Rewards is open only to US residents 13+ with a Domino's Profile account who order from participating Domino's locations. Status as of 11/04/2025. Point redemption only valid online toward specific menu items at participating locations. Only one order of $5 or more excluding gratuities and donations per calendar day can earn points. For complete details visit <a href="https://www.dominos.com/rewards/?utm_source=Rewards&utm_medium=EMAIL&utm_campaign=NAT&utm_agy=HS2&utm_content=SF251106,MNM,RestOf,MixAndMatch,35499&storenumber=7147&fcode=F0593" target="_blank" alias="Footer_Loyalty Link" style="color:#959595">dominos.com/rewards</a>.
+              <br>
+              <br>
+              
+              <!-- Quikly Legal -->
+              
+              
+              <!-- Band Jumper Legal -->
+              
+              <!-- Band Jumper Legal End -->
+
+              
+              Any delivery charge is not a tip paid to your driver. Please reward your driver for awesomeness. Drivers carry less than $20. You must select this limited time offer. Minimum purchase required for delivery. Delivery charge and tax may apply. Prices, participation, delivery area and charges may vary. Prices and coupons may vary in Alaska, California, and Hawaii. Store hours may vary. Returned checks, along with the state's maximum allowable returned check fee, may be electronically presented to your bank. &copy;2025 Domino's IP Holder LLC. Domino's&reg;, Domino's Pizza&reg; and the modular logo are registered trademarks of Domino's IP Holder LLC.
+              
+              <br>
+              <br>
+              Domino's email coupons are linked directly to your nearest Domino's store. If you have moved or would like to receive email coupons from a different store, please visit our <a href="https://www.dominos.com/en/pages/content/opt-in/opt-in?utm_source=OptIn&utm_medium=EMAIL&utm_campaign=NAT&utm_agy=HS2&utm_content=SF251106,MNM,RestOf,MixAndMatch,35499&storenumber=7147&fcode=F0593" style="color:#959595" alias="Footer_Address Update" target="_blank">Email &amp; Text Offers page</a>. Simply enter the new street address and the same email address you used to subscribe to Domino's emails, then click&nbsp;'SIGN&nbsp;ME&nbsp;UP.'
+              <br>
+              <br>
+              Outside the U.S. and would like to unsubscribe? <a href="https://click.e-offers.dominos.com/u/?qs=e5538e27313070bbe4bb7343dfde72715cf931eda5fe8241ab443703363f908130707ce683612b2249b77d0d9bb4792a618580c5892059a17b475f2b59708d7b" style="color: #959595;"  target="_blank">click&nbsp;here</a>.
+              <br>
+              <br>
+              To unsubscribe within the U.S., please <a href="https://www.dominos.com/en/pages/content/opt-out/opt-out?utm_source=OptOut&utm_medium=EMAIL&utm_campaign=NAT&utm_agy=HS2&utm_content=SF251106,MNM,RestOf,MixAndMatch,35499&storenumber=7147&fcode=F0593" style="color: #959595;" alias="Footer_Unsub" target="_blank">click&nbsp;here</a>.
+              <br>
+              <br>
+              This message was sent to <a href="mailto:mstowe@baddomain.com" style="color:#888888;text-decoration:none;">mstowe@baddomain.com</a>
+              <br>
+              <br>
+              <a rel="nofollow" style="color:#888888; text-decoration:none;">
+                Domino's Pizza LLC<br>
+                30 Frank Lloyd Wright Dr.<br>
+                Ann Arbor, MI 48106
+              </a>
+              <br>
+              <br>
+              Questions? Contact Domino's <a style="color: #959595"  href="https://click.e-offers.dominos.com/u/?qs=67e3af0613f17aa0aa0ca237d2999f3fa71e7639fbf542b4c0df61f7aab0f439209bf8a7a57810d95d49a417a40e635c2d40b827ce4a47b2347c353675a71bc1">Customer Service</a>.
+              
+              <br>
+              <br>
+              <a href="https://view.e-offers.dominos.com/?qs=22fcbbd1056e49260991b425e78f23e2aabd583103402f1a861f7002f11baa2d38b95bc4c28533dc233aa58008ffbd18d134e52f73c578876ca9c269d9831fe4af74835d536ac592"  target="_blank" style="color: #959595;">View in browser</a>
+              
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+  
+                      
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+    
+    <div style="font-size:0px; line-height:0px;">
+      <img src="https://click.e-offers.dominos.com/open.aspx?ffcb10-fef11775716d0d-fe881c787265077571-fe3611717164057c731477-ff971577-fe8211787363007a7d-ff021776756400&d=110052&bmt=0" width="1" height="1" alt="">
+    </div>
+  </body>
+</html>
+
+--NumAm5VPRqGo=_?:--
+

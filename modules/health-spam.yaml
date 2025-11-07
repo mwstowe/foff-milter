@@ -96,6 +96,44 @@ rules:
     score: 45
     description: "Home improvement and septic tank product spam"
 
+  - name: "Breathing and lung health spam"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(breathing.*difficulties|lung.*health|respiratory.*problems|breathe.*better|oxygen.*levels).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(breathing.*difficulties|lung.*health|respiratory.*problems|breathe.*better|oxygen.*levels).*"
+            - type: "SenderPattern"
+              pattern: "(?i).*your.*lungs.*|.*breathe.*better.*|.*lung.*health.*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(mayo|webmd|healthline|medical|hospital|clinic|lung\\.org)\\.(com|org|edu)$"
+    score: 65
+    description: "Detects breathing and lung health spam"
+
+  - name: "Joint pain and digestive health spam"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(bone.*on.*bone|joint.*pain|knee.*pain|painful.*knees|digestive.*flush|belly.*flush|enema.*kit).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(bone.*on.*bone|joint.*pain|knee.*pain|painful.*knees|digestive.*flush|belly.*flush|enema.*kit).*"
+            - type: "SenderPattern"
+              pattern: "(?i).*painful.*knees.*|.*pain.*free.*|.*joint.*restore.*|.*belly.*flush.*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(mayo|webmd|healthline|medical|hospital|clinic)\\.(com|org|edu)$"
+    score: 70
+    description: "Detects joint pain and digestive health spam"
+
   - name: "Blood pressure and medical authority spam"
     criteria:
       type: "BodyPattern"
@@ -231,8 +269,16 @@ rules:
               pattern: "(?i).*(stop.*aging|anti.*aging|age.*reverse|look.*younger|italian.*formula|fountain.*youth|longevity.*secret|feel.*better|health.*benefits|too.*many.*benefits|perfected.*formula).*"
         - type: "Not"
           criteria:
-            type: "SenderPattern"
-            pattern: ".*@.*(health|medical|clinic|hospital|doctor|physician|mayo|webmd|healthline).*"
+            type: "Or"
+            criteria:
+              - type: "SenderPattern"
+                pattern: ".*@.*(health|medical|clinic|hospital|doctor|physician|mayo|webmd|healthline).*"
+              - type: "SenderPattern"
+                pattern: ".*@.*(disney|marvel|netflix|hulu|amazon|prime|streaming|entertainment|movie|film).*"
+              - type: "SenderPattern"
+                pattern: ".*disneyplus@.*"
+              - type: "SenderPattern"
+                pattern: ".*@.*sparkpostmail\\.com$"
     score: 60
     description: "Detects anti-aging and longevity health misinformation"
 
@@ -322,3 +368,54 @@ rules:
           pattern: "(?i).*(prostate.*toxin|toxin.*prostate|ancient.*fix.*prostate|prostate.*ancient|hidden.*toxin.*bloating|flushes.*fast.*prostate).*"
     score: 70
     description: "Detects prostate toxin and ancient fix misinformation claims"
+
+  - name: "Health tracking device and wearable scams"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(ring.*tracks.*health|health.*ring|titan.*ring|wearable.*health|device.*tracks|health.*risks|monitor.*health).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(ring.*tracks.*health|health.*ring|titan.*ring|wearable.*health|device.*tracks|health.*risks|monitor.*health).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(apple|fitbit|garmin|samsung|oura|withings)\\.(com|net|org)$"
+    score: 65
+    description: "Detects fake health tracking device and wearable scams"
+
+  - name: "Dementia and brain health misinformation"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(dementia.*risk|brain.*health|memory.*loss|alzheimer|cognitive.*decline|food.*triples.*dementia).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(dementia.*risk|brain.*health|memory.*loss|alzheimer|cognitive.*decline|food.*triples.*dementia|brain.*fog|mental.*clarity).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(health|medical|clinic|hospital|doctor|physician|mayo|webmd|healthline|alzheimer|dementia)\\.(com|net|org)$"
+    score: 70
+    description: "Detects dementia and brain health misinformation claims"
+
+  - name: "Sleep and stress relief product spam"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(restful.*nights|stress-free.*days|sleep.*better|neck.*shoulder.*relief|pillow.*relief).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(restful.*nights|stress-free.*days|sleep.*better|neck.*shoulder.*relief|pillow.*relief|derila|sleep.*solution).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(sleep|medical|health|clinic|hospital|doctor|physician|mayo|webmd|healthline).*\\.(com|net|org)$"
+    score: 65
+    description: "Detects sleep and stress relief product spam"

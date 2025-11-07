@@ -36,8 +36,14 @@ rules:
   - name: "Shipping/Delivery Scams"
     enabled: true
     criteria:
-      type: "SubjectPattern"
-      pattern: "(?i).*(package.*delivery|shipment.*notification|fedex.*delivery|ups.*package|dhl.*shipment|delivery.*failed|package.*held|customs.*fee).*"
+      type: "And"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(package.*delivery|shipment.*notification|fedex.*delivery|ups.*package|dhl.*shipment|delivery.*failed|package.*held|customs.*fee).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(ups\\.com|fedex\\.com|dhl\\.com|usps\\.com|amazon\\.com)$"
     score: 45
     description: "Fake shipping and delivery notifications"
 
@@ -54,12 +60,24 @@ rules:
     criteria:
       type: "And"
       criteria:
-        - type: "SubjectPattern"
-          pattern: "(?i).*(paypal|amazon|microsoft|google|apple|facebook|netflix|dropbox).*"
+        - type: "And"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(paypal|amazon|microsoft|google|apple|facebook|netflix|dropbox).*"
+            - type: "Not"
+              criteria:
+                type: "Or"
+                criteria:
+                  - type: "SubjectPattern"
+                    pattern: "(?i).*(discussion|question|ask|answer|digest|newsletter|news|article|update|offer\\?|did you|have you).*"
+                  - type: "SenderPattern"
+                    pattern: ".*@.*(quora|reddit|news|newsletter|digest)\\.(com|net|org)$"
         - type: "Not"
           criteria:
             type: "Or"
             criteria:
+              - type: "SenderPattern"
+                pattern: ".*@quora\\.com$"
               - type: "SenderPattern"
                 pattern: ".*@.*(paypal|amazon|microsoft|google|apple|facebook|netflix|dropbox)\\.(com|net|org)$"
               - type: "SenderPattern"
@@ -78,6 +96,8 @@ rules:
                 pattern: ".*@.*services\\.discover\\.com$"
               - type: "SenderPattern"
                 pattern: ".*@.*amazonmusic\\.com$"
+              - type: "SenderPattern"
+                pattern: ".*@.*quora\\.com$"
               - type: "SenderPattern"
                 pattern: ".*@.*thinkvacuums\\.com$"
               - type: "SenderPattern"

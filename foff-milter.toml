@@ -17,6 +17,19 @@ reject_threshold = 350  # High threshold - most emails tagged rather than reject
 spam_threshold = 50     # Tag as spam at this score
 accept_threshold = 0    # Accept below spam threshold
 
+[sender_blocking]
+# Explicit sender pattern blocking
+enabled = true
+# Patterns that will immediately reject emails (score: 1000)
+block_patterns = [
+    # Example patterns - add specific senders to block
+    # ".*@suspicious-domain\\.com$",
+    # ".*spammer.*@.*",
+    # ".*@.*\\.tk$"
+]
+# Action to take: "reject" or "tag"
+action = "reject"
+
 [whitelist]
 enabled = true
 # Exact email addresses to whitelist

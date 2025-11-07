@@ -1,0 +1,78 @@
+Return-Path: <admin@kksagawa.co.jp>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTPS id 5A62Ge8t026012
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <michael@baddomain.com>; Thu, 6 Nov 2025 02:16:41 GMT
+	(envelope-from admin@kksagawa.co.jp)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (1024-bit key; unprotected) header.d=kksagawa.co.jp header.i=@kksagawa.co.jp header.b=evotUXtF
+X-Authentication-Warning: juliett.baddomain.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.baddomain.com
+Received: from mwb-bld-mts-005c1.ocn.ad.jp (mwb-bld-mts-005c1.ocn.ad.jp [210.154.211.6])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 5A62Gckw037866
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO)
+	for <michael@baddomain.com>; Wed, 5 Nov 2025 20:16:40 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 5A62Gckw037866
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (1024-bit key, unprotected) header.d=kksagawa.co.jp header.i=@kksagawa.co.jp header.a=rsa-sha256 header.s=bizmw header.b=evotUXtF
+Received: from cmn-spm-mts-005c1.ocn.ad.jp (cmn-spm-mts-005c1.ocn.ad.jp [153.153.67.157])
+	by mwb-bld-mts-005c1.ocn.ad.jp (Postfix) with ESMTP id 5CBB8531;
+	Thu,  6 Nov 2025 11:16:32 +0900 (JST)
+Received: from mwb-vc-mts-008c1.ocn.ad.jp ([210.154.198.173])
+	by cmn-spm-mts-005c1.ocn.ad.jp with ESMTP
+	id GpWevbjhfxGKGGpY7vheJB; Thu, 06 Nov 2025 11:16:32 +0900
+X-BIZ-RELAY: yes
+Received: from mwb-sdgw-mts-005c1.ocn.ad.jp ([210.145.253.205])
+ by mwb-vc-mts-008c1 with ngmta
+ id a9118489-187549456c27e83e; Thu, 06 Nov 2025 11:16:31 +0900
+Received: from kksagawa.co.jp (kksagawa.co.jp [210.154.218.161])
+	by mwb-sdgw-mts-005c1.ocn.ad.jp (Postfix) with ESMTP id 6DC19140000A8;
+	Thu,  6 Nov 2025 11:16:27 +0900 (JST)
+Received: from User (unknown [69.164.241.232])
+	by kksagawa.co.jp (Postfix) with ESMTPA id 105C225875;
+	Thu,  6 Nov 2025 11:15:42 +0900 (JST)
+Authentication-Results: kksagawa.co.jp; arc=none smtp.remote-ip=69.164.241.232
+ARC-Seal: i=1; a=rsa-sha256; d=bizmw.com; s=default; t=1762395388; cv=none;
+	b=KrAW0zuL9vjbdz47hh2wYObWKvGTxgxBXAaPw3CuYZFWtgc5Wdwar3ObvUzhQ0AtkudAHnKhE9+5Kf4WuCJffecbYABTbV2KrDqryFOHG+pEkoLu5vNW95wDyd20DOSWcUUyZWaMLqoYLn3QkrU2igVFA2C9fcBzNUzMn5NbN4w=
+ARC-Message-Signature: i=1; a=rsa-sha256; d=bizmw.com; s=default;
+	t=1762395388; c=relaxed/relaxed;
+	bh=o+KfC9OzWvKDvEf/Gs7++G1uEh1Lhc1cV5Obr778toQ=;
+	h=DKIM-Signature:From:Subject:Date:MIME-Version; b=nu9bvBS3e0lHNM0ovLW0h9NJLANSn8L9crChWS1ykoLQyqXQg9dstOYBL8zjRt9A8eECbNvantrNokdpnXrsYNBJGJRkMhPX2q0MDLmux8++Gc8uVCLaF7sWHLuvZhrBOuJfRcJM8GaRcjznVLogQJ+tiGYzP2QKH+A3LMKDpH4=
+ARC-Authentication-Results: i=1; kksagawa.co.jp
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kksagawa.co.jp;
+	s=bizmw; t=1762395388;
+	bh=o+KfC9OzWvKDvEf/Gs7++G1uEh1Lhc1cV5Obr778toQ=;
+	h=Reply-To:From:Subject:Date:From;
+	b=evotUXtF3YPxyYL3aekGSqd1fowVtvTTsLwWJKpv3zOfx11oMvkFLP+PJSskQMh2L
+	 DWiJi8Zm9KbhF2Xil98lE3SUtPK8xn5frPuWbfSwMHUANX/UFPnr3JlO3Ks130nqfB
+	 OAwi7sX7gmhhzajrQ1xerDjrTB1H/frRJ+jJUk3s=
+Reply-To: <chimwaikin@pmtchains.com>
+From: "Chim Wai Kin"<admin@kksagawa.co.jp>
+Subject: PRIVATE......
+Date: Wed, 5 Nov 2025 18:16:25 -0800
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-Id: <20251106021627.6DC19140000A8@mwb-sdgw-mts-005c1.ocn.ad.jp>
+To: undisclosed-recipients:;
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Thu, 06 Nov 2025 02:16:42 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Wed, 05 Nov 2025 20:16:40 -0600 (CST)
+X-FOFF-Rule-Matched: Analytics: Generic Sender Names (juliett.baddomain.com)
+X-FOFF-Rule-Matched: Analytics: Generic Sender Names (hotel.baddomain.com)
+X-FOFF-Score: 5 - foff-milter v0.6.6 (juliett.baddomain.com)
+X-FOFF-Score: 5 - foff-milter v0.6.6 (hotel.baddomain.com)
+
+Hello,
+
+I have information that is privileged and I would like to appeal and appreciate it if it is handled as such. I have a mutually beneficial business proposal if you choose to participate.
+
+I await your response.
+ 
+Chim Wai Kin
+
+
+chimwaikin@pmtchains.com

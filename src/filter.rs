@@ -160,6 +160,9 @@ pub struct FilterEngine {
     whitelist_config: Option<WhitelistConfig>,
     // Blocklist configuration
     blocklist_config: Option<BlocklistConfig>,
+    // Sender blocking patterns
+    sender_blocking_patterns: Vec<Regex>,
+    sender_blocking_action: Action,
 }
 
 #[derive(Debug, Default, Clone)]
@@ -250,6 +253,10 @@ impl FilterEngine {
             },
             whitelist_config: None,
             blocklist_config: None,
+            sender_blocking_patterns: Vec::new(),
+            sender_blocking_action: Action::Reject {
+                message: "Sender blocked by pattern".to_string(),
+            },
         };
 
         // Pre-compile all regex patterns for better performance
@@ -267,6 +274,62 @@ impl FilterEngine {
 
     pub fn set_blocklist_config(&mut self, blocklist_config: Option<BlocklistConfig>) {
         self.blocklist_config = blocklist_config;
+    }
+
+    pub fn set_sender_blocking(&mut self, sender_blocking: Option<crate::toml_config::SenderBlockingConfig>) {
+        if let Some(config) = sender_blocking {
+            if config.enabled {
+                let mut patterns = Vec::new();
+                for pattern_str in &config.block_patterns {
+                    match Regex::new(pattern_str) {
+                        Ok(regex) => patterns.push(regex),
+                        Err(e) => log::warn!("Invalid sender blocking pattern '{}': {}", pattern_str, e),
+                    }
+                }
+                self.sender_blocking_patterns = patterns;
+                self.sender_blocking_action = match config.action.as_str() {
+                    "reject" => Action::Reject {
+                        message: "Sender blocked by pattern".to_string(),
+                    },
+                    "tag" => Action::TagAsSpam {
+                        header_name: "X-Spam-Flag".to_string(),
+                        header_value: "BLOCKED_SENDER".to_string(),
+                    },
+                    _ => Action::Reject {
+                        message: "Sender blocked by pattern".to_string(),
+                    },
+                };
+                log::info!("Loaded {} sender blocking patterns", self.sender_blocking_patterns.len());
+            }
+        }
+    }
+
+    fn check_sender_blocking(&self, context: &MailContext) -> Option<String> {
+        if self.sender_blocking_patterns.is_empty() {
+            return None;
+        }
+
+        // Check envelope sender
+        if let Some(sender) = &context.sender {
+            for pattern in &self.sender_blocking_patterns {
+                if pattern.is_match(sender) {
+                    return Some(sender.clone());
+                }
+            }
+        }
+
+        // Check From header
+        if let Some(from_header) = &context.from_header {
+            if let Some(email) = extract_email_from_header(from_header) {
+                for pattern in &self.sender_blocking_patterns {
+                    if pattern.is_match(&email) {
+                        return Some(email);
+                    }
+                }
+            }
+        }
+
+        None
     }
 
     fn is_blocklisted(&self, context: &MailContext) -> bool {
@@ -951,6 +1014,20 @@ impl FilterEngine {
     ) -> (Action, Vec<String>, Vec<(String, String)>) {
         // Normalize encoding in the context to handle malformed UTF-8 and encoding evasion
         let normalized_context = self.normalize_mail_context(context);
+
+        // Check sender blocking patterns first - highest priority
+        if let Some(blocked_sender) = self.check_sender_blocking(&normalized_context) {
+            log::warn!("Email blocked by sender pattern: {}", blocked_sender);
+            let headers = vec![(
+                "X-FOFF-Score".to_string(),
+                format!(
+                    "1000 - blocked sender by foff-milter v{} on {}",
+                    env!("CARGO_PKG_VERSION"),
+                    get_hostname()
+                ),
+            )];
+            return (self.sender_blocking_action.clone(), vec!["Sender Blocking".to_string()], headers);
+        }
 
         // Create mutable copy for attachment analysis
         let mut context_with_attachments = normalized_context.clone();
@@ -5161,9 +5238,26 @@ impl FilterEngine {
             "quick review",
         ];
 
+        // Clothing and merchandise scam patterns
+        let clothing_patterns = [
+            "smart looks",
+            "professor tee",
+            "clothing sale",
+            "merchandise offer",
+            "tee shirt",
+            "apparel deal",
+        ];
+
         for pattern in &seo_patterns {
             if subject.contains(pattern) || body.contains(pattern) {
                 log::debug!("Detected SEO spam pattern: {}", pattern);
+                return true;
+            }
+        }
+
+        for pattern in &clothing_patterns {
+            if subject.contains(pattern) || body.contains(pattern) {
+                log::debug!("Detected clothing spam pattern: {}", pattern);
                 return true;
             }
         }

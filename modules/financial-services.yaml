@@ -56,3 +56,44 @@ rules:
               pattern: "(?i).*(Hong Kong|Singapore|Dubai|Switzerland).*"
     score: 80
     description: "Fake investment and asset management collaboration scams"
+
+  - name: "W-8BEN tax compliance and residency scams"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(w-8ben|w8ben|tax.*residency|residency.*notice|form.*w-8|renewal.*required|official.*tax).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(w-8ben|w8ben|tax.*residency|residency.*notice|form.*w-8|renewal.*required|official.*tax).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(interactivebrokers|schwab|fidelity|vanguard|irs|treasury)\\.(com|gov)$"
+    score: 75
+    description: "Detects W-8BEN tax compliance and residency scams"
+
+  - name: "Portuguese financial card eligibility scam"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(elegibilidade.*cartão|cartão.*black|notificação.*oficial.*elegibilidade|protocolo.*\\d+).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(elegibilidade.*cartão|cartão.*black|notificação.*oficial.*elegibilidade|protocolo.*\\d+|bradesco.*amex|amex.*black).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(bradesco|amex|americanexpress)\\.(com|com\\.br)$"
+    score: 75
+    description: "Detects Portuguese financial card eligibility scams"
+
+  - name: "Estonian money transfer scam"
+    criteria:
+      type: "SubjectPattern"
+      pattern: "(?i).*raha.*kantud.*"
+    score: 75
+    description: "Detects Estonian and international money transfer scams"

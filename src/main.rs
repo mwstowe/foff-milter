@@ -208,6 +208,9 @@ async fn main() {
                     Ok(mut engine) => {
                         engine.set_whitelist_config(whitelist_config.clone());
                         engine.set_blocklist_config(blocklist_config.clone());
+                        if let Some(toml_cfg) = &toml_config {
+                            engine.set_sender_blocking(toml_cfg.sender_blocking.clone());
+                        }
                         println!("All regex patterns compiled successfully.");
                     }
                     Err(e) => {
@@ -980,6 +983,11 @@ async fn test_email_file(
 
     // Set blocklist configuration if available
     filter_engine.set_blocklist_config(blocklist_config.clone());
+
+    // Set sender blocking configuration if available
+    if let Some(toml_cfg) = &toml_config {
+        filter_engine.set_sender_blocking(toml_cfg.sender_blocking.clone());
+    }
 
     // Set TOML configuration
     if let Some(toml_cfg) = toml_config {

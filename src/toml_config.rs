@@ -9,6 +9,7 @@ pub struct TomlConfig {
     pub statistics: Option<StatisticsConfig>,
     pub modules: Option<ModulesConfig>,
     pub heuristics: Option<HeuristicsConfig>,
+    pub sender_blocking: Option<SenderBlockingConfig>,
     pub whitelist: Option<WhitelistConfig>,
     pub blocklist: Option<BlocklistConfig>,
     pub legacy: Option<LegacyConfigRef>,
@@ -42,6 +43,7 @@ impl Default for TomlConfig {
                 spam_threshold: 50,
                 accept_threshold: 0,
             }),
+            sender_blocking: None,
             whitelist: None,
             blocklist: None,
             legacy: None,
@@ -107,6 +109,13 @@ pub struct HeuristicsConfig {
     pub reject_threshold: i32,
     pub spam_threshold: i32,
     pub accept_threshold: i32,
+}
+
+#[derive(Debug, Deserialize, Serialize, Clone)]
+pub struct SenderBlockingConfig {
+    pub enabled: bool,
+    pub block_patterns: Vec<String>,
+    pub action: String, // "reject" or "tag"
 }
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
