@@ -2,15 +2,13 @@ use base64::Engine;
 use regex::Regex;
 
 #[cfg(feature = "ocr")]
-use image::ImageFormat;
-#[cfg(feature = "ocr")]
-use tesseract_rs::Tesseract;
+use tesseract_rs::TesseractAPI;
 
-#[derive(Debug, Clone)]
+#[derive(Clone)]
 pub struct MediaAnalyzer {
     spam_patterns: Vec<Regex>,
     #[cfg(feature = "ocr")]
-    tesseract: Option<Tesseract>,
+    tesseract: Option<TesseractAPI>,
 }
 
 #[derive(Debug, Clone)]
@@ -52,14 +50,15 @@ impl MediaAnalyzer {
     }
 
     #[cfg(feature = "ocr")]
-    fn init_tesseract() -> Option<Tesseract> {
-        match Tesseract::new(None, Some("eng")) {
-            Ok(tess) => {
-                log::info!("OCR capability enabled with tesseract-rs");
-                Some(tess)
+    fn init_tesseract() -> Option<TesseractAPI> {
+        let api = TesseractAPI::new();
+        match api.init_embedded("eng") {
+            Ok(_) => {
+                log::info!("OCR capability enabled with embedded English tessdata");
+                Some(api)
             }
             Err(e) => {
-                log::warn!("Failed to initialize tesseract: {}. OCR disabled.", e);
+                log::warn!("Failed to initialize tesseract with embedded data: {}. OCR disabled.", e);
                 None
             }
         }
@@ -129,14 +128,14 @@ impl MediaAnalyzer {
     }
 
     #[cfg(feature = "ocr")]
-    fn extract_text_with_ocr(&self, content: &[u8], tesseract: &Tesseract) -> String {
+    fn extract_text_with_ocr(&self, content: &[u8], tesseract: &TesseractAPI) -> String {
         match image::load_from_memory(content) {
             Ok(img) => {
                 let rgb_img = img.to_rgb8();
                 let (width, height) = rgb_img.dimensions();
 
-                match tesseract.set_image(&rgb_img, width, height, 3, width * 3) {
-                    Ok(_) => match tesseract.get_text() {
+                match tesseract.set_image(&rgb_img, width as i32, height as i32, 3, (width * 3) as i32) {
+                    Ok(_) => match tesseract.get_utf8_text() {
                         Ok(text) => {
                             log::debug!("OCR extracted {} chars from image", text.len());
                             text
