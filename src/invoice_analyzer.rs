@@ -299,6 +299,7 @@ impl InvoiceAnalyzer {
             "constantcontact.com",
             "sendgrid.net",
             "adapthealthmarketplace.com",
+            "medium.com",
         ];
 
         for domain in &legitimate_domains {
