@@ -1,4 +1,4 @@
-# FOFF Milter v0.6.7
+# FOFF Milter v0.6.9
 
 A comprehensive, enterprise-grade email security platform written in Rust featuring modular threat detection, explicit sender blocking, and clean TOML configuration.
 
@@ -159,8 +159,8 @@ Each detection module has its own configuration file:
 git clone https://github.com/mwjohnson/foff-milter.git
 cd foff-milter
 
-# Build the release binary
-cargo build --release
+# Build the release binary (with OCR support)
+cargo build --release --features ocr
 
 # Install system-wide (create your own install script)
 sudo cp target/release/foff-milter /usr/local/bin/
@@ -177,7 +177,7 @@ sudo cp modules/*.yaml /etc/foff-milter/modules/
 # Clone and build
 git clone https://github.com/mwjohnson/foff-milter.git
 cd foff-milter
-cargo build --release
+cargo build --release --features ocr
 ```
 
 #### 2. Create System User

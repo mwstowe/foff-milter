@@ -22,6 +22,11 @@ jobs:
       with:
         components: rustfmt, clippy
     
+    - name: Install Tesseract for OCR support
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y tesseract-ocr tesseract-ocr-eng libtesseract-dev
+    
     - name: Cache dependencies
       uses: actions/cache@v3
       with:
@@ -34,14 +39,14 @@ jobs:
     - name: Check formatting
       run: cargo fmt --all -- --check
     
-    - name: Run clippy
-      run: cargo clippy --all-targets --all-features -- -D warnings
+    - name: Run clippy (with OCR features)
+      run: cargo clippy --all-targets --features ocr -- -D warnings
     
     - name: Run unit tests
       run: cargo test --verbose
     
-    - name: Build release
-      run: cargo build --release --verbose
+    - name: Build release (with OCR support)
+      run: cargo build --release --features ocr --verbose
 
   email-tests:
     name: Email Detection Tests
@@ -54,6 +59,11 @@ jobs:
     - name: Install Rust
       uses: dtolnay/rust-toolchain@stable
     
+    - name: Install Tesseract for OCR support
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y tesseract-ocr tesseract-ocr-eng libtesseract-dev
+    
     - name: Cache dependencies
       uses: actions/cache@v3
       with:
@@ -63,8 +73,8 @@ jobs:
           target
         key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
     
-    - name: Build release binary
-      run: cargo build --release
+    - name: Build release binary (with OCR support)
+      run: cargo build --release --features ocr
     
     - name: Run email test suite
       run: |
