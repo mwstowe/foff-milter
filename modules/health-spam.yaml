@@ -419,3 +419,27 @@ rules:
             pattern: ".*@.*(sleep|medical|health|clinic|hospital|doctor|physician|mayo|webmd|healthline).*\\.(com|net|org)$"
     score: 65
     description: "Detects sleep and stress relief product spam"
+
+  - name: "GLP-1 weight loss patch scams"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(glp-1.*patch|lose.*weight.*without.*injection|weight.*loss.*patch|diet.*hack.*wear).*"
+        - type: "BodyPattern"
+          pattern: "(?i).*(glp-1.*patch|lose.*weight.*without.*injection|weight.*loss.*patch|diet.*hack.*you.*can.*wear|simple.*patch.*changing|revolutionary.*weight.*loss).*"
+    score: 75
+    description: "Detects GLP-1 patch and wearable weight loss device scams"
+
+  - name: "Brain enhancement and billionaire scams"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(billionaire.*bridge|brain.*billionaire|10pm.*tonight|brain.*opens|your.*brain.*billionaire).*"
+        - type: "BodyPattern"
+          pattern: "(?i).*(billionaire.*bridge|brain.*billionaire|10pm.*tonight|brain.*opens.*10pm|your.*brain.*billionaire|cognitive.*enhancement.*billionaire).*"
+    score: 70
+    description: "Detects brain enhancement and billionaire opportunity scams"

@@ -49,6 +49,23 @@ rules:
     score: 80
     description: "Detects fake autopay threat scams"
 
+  - name: "Generic business development spam"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(business.*development|business.*opportunity|investment.*opportunity).*"
+        - type: "Or"
+          criteria:
+            - type: "HeaderPattern"
+              header: "Authentication-Results"
+              pattern: ".*dkim=fail.*"
+            - type: "SenderPattern"
+              pattern: ".*@.*\\.(org|info|biz|tk|ml|ga|cf)$"
+    score: 60
+    description: "Detects generic business development spam with authentication failures or suspicious domains"
+
   - name: "Google Calendar spoofing"
     criteria:
       type: "HeaderPattern"
