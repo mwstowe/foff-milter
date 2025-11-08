@@ -58,7 +58,10 @@ impl MediaAnalyzer {
                 Some(api)
             }
             Err(e) => {
-                log::warn!("Failed to initialize tesseract with embedded data: {}. OCR disabled.", e);
+                log::warn!(
+                    "Failed to initialize tesseract with embedded data: {}. OCR disabled.",
+                    e
+                );
                 None
             }
         }
@@ -134,7 +137,13 @@ impl MediaAnalyzer {
                 let rgb_img = img.to_rgb8();
                 let (width, height) = rgb_img.dimensions();
 
-                match tesseract.set_image(&rgb_img, width as i32, height as i32, 3, (width * 3) as i32) {
+                match tesseract.set_image(
+                    &rgb_img,
+                    width as i32,
+                    height as i32,
+                    3,
+                    (width * 3) as i32,
+                ) {
                     Ok(_) => match tesseract.get_utf8_text() {
                         Ok(text) => {
                             log::debug!("OCR extracted {} chars from image", text.len());
