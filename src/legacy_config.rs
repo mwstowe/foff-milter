@@ -169,6 +169,9 @@ pub enum Criteria {
     MediaTextPattern {
         pattern: String,
     },
+    CombinedTextPattern {
+        pattern: String,
+    },
     HeaderPattern {
         header: String,
         pattern: String,

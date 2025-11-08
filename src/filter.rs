@@ -795,7 +795,8 @@ impl FilterEngine {
             | Criteria::RecipientPattern { pattern }
             | Criteria::SubjectPattern { pattern }
             | Criteria::BodyPattern { pattern }
-            | Criteria::MediaTextPattern { pattern } => {
+            | Criteria::MediaTextPattern { pattern }
+            | Criteria::CombinedTextPattern { pattern } => {
                 if !self.compiled_patterns.contains_key(pattern) {
                     let regex = Regex::new(pattern).map_err(|e| {
                         anyhow::anyhow!("Invalid regex pattern '{}': {}", pattern, e)
@@ -2460,6 +2461,23 @@ impl FilterEngine {
                     if !context.extracted_media_text.is_empty() {
                         if let Some(regex) = self.compiled_patterns.get(pattern) {
                             return regex.is_match(&context.extracted_media_text);
+                        }
+                    }
+                    false
+                }
+                Criteria::CombinedTextPattern { pattern } => {
+                    if let Some(regex) = self.compiled_patterns.get(pattern) {
+                        // Check body text
+                        if let Some(body) = &context.body {
+                            if regex.is_match(body) {
+                                return true;
+                            }
+                        }
+                        // Check extracted media text
+                        if !context.extracted_media_text.is_empty() {
+                            if regex.is_match(&context.extracted_media_text) {
+                                return true;
+                            }
                         }
                     }
                     false
