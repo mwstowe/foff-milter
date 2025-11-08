@@ -1,0 +1,487 @@
+Return-Path: <bounce+e5c0af.d91ade7-mstowe=baddomain.com@order111.ecoflow.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTPS id 5A8Ge12v036667
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <mstowe@baddomain.com>; Sat, 8 Nov 2025 16:40:02 GMT
+	(envelope-from bounce+e5c0af.d91ade7-mstowe=baddomain.com@order111.ecoflow.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (1024-bit key; unprotected) header.d=order111.ecoflow.com header.i=@order111.ecoflow.com header.b=gEOVxNnd
+X-Authentication-Warning: juliett.baddomain.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.baddomain.com
+Received: from m246-9.mailgun.net (m246-9.mailgun.net [159.112.246.9])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 5A8Ge0Sv041433
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO)
+	for <mstowe@baddomain.com>; Sat, 8 Nov 2025 10:40:01 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 5A8Ge0Sv041433
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (1024-bit key, unprotected) header.d=order111.ecoflow.com header.i=@order111.ecoflow.com header.a=rsa-sha256 header.s=smtp header.b=gEOVxNnd
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=order111.ecoflow.com; q=dns/txt; s=smtp; t=1762619989; x=1762627189;
+ h=Content-Transfer-Encoding: Content-Type: Message-Id: Reply-To: To: To: From: From: Subject: Subject: Mime-Version: Date: Sender: Sender: List-Unsubscribe: List-Unsubscribe-Post;
+ bh=vtblA9pdYdS+rwYZH+HMDccODz88HDIaWW80S+vaHzA=;
+ b=gEOVxNnd08BfUCgRzU/cRB92crp+9WKCfYmOe1NbXpT9NbMA8qaDMCKBZqiY8miKjwoydJ2XE/4Ki4/RADv0HvkWgn8ZJ68XMppA0bjEyoihNtu3bjKzfpheXV1Vq+A5yYwBXae2Cky5kOF48vbIb6SHl2fDrsRS1KN1R07B1xQ=
+X-Mailgun-Sid: WyI1YTNhMyIsIm1zdG93ZUBiYWRkb21haW4uY29tIiwiZDkxYWRlNyJd
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+List-Unsubscribe: <mailto:u+mq6wiojrmfsgknzgna6tayrzgnrdimrwgazgkztbgbswiyruge2wmzjrme4tezbuge4dkmzgne6tembsguytcmbyge3dgojuhexgim3emiytanzyg4ygembumuzgijjugbxxezdfoiytcmjomvrw6ztmn53s4y3pnutheplnon2g653feu2daytbmrsg63lbnfxc4y3pnuthipjfgjasm5r5gi@order111.ecoflow.com>,
+ <https://email.order111.ecoflow.com/u/eJwcyc0KwzAIAOCnaY5Fjf3JwcMeJVbDCsuErKyvP9j5M7GC1XxLTwEtWZlWIG8V3JRxaY61kDHuS06nENCCCDuuuXCZLZsibPsGCuxkE0MM84GIsx_RXnHPR_Q0pH-uuH1i0GoWvZ7vP1wy0SN9hX4BAAD__ygDJ7M>
+Received: by 53f903188c2ec2206f2ee194f2f2020943383c7d079b13102f1604d52ff26f1c with HTTP
+ id 690f7255f29310b4a8279d38; Sat, 08 Nov 2025 16:39:49 GMT
+X-Mailgun-Sending-Ip: 159.112.246.9
+Sender: order=ecoflow.com@order111.ecoflow.com
+Date: Sat, 08 Nov 2025 16:39:49 +0000
+Mime-Version: 1.0
+Subject: Your order is out for delivery.
+From: order@ecoflow.com
+To: mstowe@baddomain.com
+X-Mailgun-Tag: new_service
+Reply-To: order@ecoflow.com
+Message-Id: <20251108163949.d3db107870b04e2d@order111.ecoflow.com>
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Sat, 08 Nov 2025 16:40:02 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Sat, 08 Nov 2025 10:40:01 -0600 (CST)
+X-Spam-Flag: YES
+X-FOFF-Score: 75 - analyzed by foff-milter v0.6.9 on juliett.baddomain.com
+X-FOFF-Score: 75 - foff-milter v0.6.9 (juliett.baddomain.com)
+X-FOFF-Score: 75 - analyzed by foff-milter v0.6.9 on hotel.baddomain.com
+X-FOFF-Score: 75 - foff-milter v0.6.9 (hotel.baddomain.com)
+
+<body>
+ <title></title>
+ <style type=3D"text/css">
+     =20
+      @media only screen and (min-width: 620px) {
+        .u-row {
+          width: 600px !important;
+        }
+
+        .u-row .u-col {
+          vertical-align: top;
+        }
+
+       =20
+            .u-row .u-col-100 {
+              width: 600px !important;
+            }
+         =20
+      }
+
+      @media only screen and (max-width: 620px) {
+        .u-row-container {
+          max-width: 100% !important;
+          padding-left: 0px !important;
+          padding-right: 0px !important;
+        }
+
+        .u-row {
+          width: 100% !important;
+        }
+
+        .u-row .u-col {
+          display: block !important;
+          width: 100% !important;
+          min-width: 320px !important;
+          max-width: 100% !important;
+        }
+
+        .u-row .u-col > div {
+          margin: 0 auto;
+        }
+
+
+        .u-row .u-col img {
+          max-width: 100% !important;
+        }
+
+}
+   =20
+body table,td,tr p .ie-container table,.mso-container table * a[x-apple-dat=
+a-detectors=3Dtrue]=20
+
+
+table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: =
+underline; }
+    </style>
+ <table id=3D"u_body" style=3D"border-collapse: collapse;table-layout: fixe=
+d;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-al=
+ign: top;min-width: 320px;Margin: 0 auto;background-color: #f6f6f7;width:10=
+0%" cellpadding=3D"0" cellspacing=3D"0">
+  <tbody>
+   <tr style=3D"vertical-align: top">
+    <td style=3D"word-break: break-word;border-collapse: collapse !importan=
+t;vertical-align: top">
+     <div class=3D"u-row-container" style=3D"padding: 0px;background-color:=
+ transparent">
+      <div class=3D"u-row" style=3D"margin: 0 auto;min-width: 320px;max-wid=
+th: 600px;overflow-wrap: break-word;word-wrap: break-word;word-break: break=
+-word;background-color: transparent;">
+       <div style=3D"border-collapse: collapse;display: table;width: 100%;h=
+eight: 100%;background-color: transparent;">
+        <div class=3D"u-col u-col-100" style=3D"max-width: 320px;display: t=
+able-cell;vertical-align: top;">
+         <div style=3D"height: 100%;width: 100% !important;border-radius: 0=
+px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
+          <div style=3D"box-sizing: border-box; height: 100%; padding: 0px;=
+border-top: 0px solid transparent;border-left: 0px solid transparent;border=
+-right: 0px solid transparent;border-bottom: 0px solid transparent;border-r=
+adius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
+           <table style=3D"font-family:'Montserrat',sans-serif;" cellpaddin=
+g=3D"0" cellspacing=3D"0" width=3D"100%" border=3D"0">
+            <tbody>
+             <tr>
+              <td style=3D"overflow-wrap:break-word;word-break:break-word;p=
+adding:0px;font-family:'Montserrat',sans-serif;" align=3D"left">
+               <table width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" bo=
+rder=3D"0">
+                <tbody>
+                 <tr>
+                  <td style=3D"padding-right: 0px;padding-left: 0px;" align=
+=3D"center"><a href=3D"https://email.order111.ecoflow.com/c/eJxMyztuhEAMAND=
+TzJTINt75FC7ScI1owLYWadmJgMD1I6Xa-umpaMWmlqMJ5kQJay01PsWze_NE7DMjl-LEpETkD6=
+DmJcVVCOiBCAXTWLkOOuqMkEuGGdhIA0Pf1XZEHGzp_ur3sPQtvuR5nj9HGL8CTYGm3-OTA01xl=
+-04-22BYW6qfWvr-7-e8rb7-7D9WheLl9BfAAAA__8F7DmS" target=3D"_blank"> <img al=
+ign=3D"center" border=3D"0" src=3D"https://asset.17track.net/trackcenter/te=
+mplate/417796696635959223F/content/images/20230831-161448.jpg" alt=3D"" tit=
+le=3D"" style=3D"outline: none;text-decoration: none;-ms-interpolation-mode=
+: bicubic;clear: both;display: inline-block !important;border: none;height:=
+ auto;float: none;width: 100%;max-width: 600px;"> </a></td>
+                 </tr>
+                </tbody>
+               </table></td>
+             </tr>
+            </tbody>
+           </table>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class=3D"u-row-container" style=3D"padding: 0px;background-color:=
+ transparent">
+      <div class=3D"u-row" style=3D"margin: 0 auto;min-width: 320px;max-wid=
+th: 600px;overflow-wrap: break-word;word-wrap: break-word;word-break: break=
+-word;background-color: rgb(255,255,255);">
+       <div style=3D"border-collapse: collapse;display: table;width: 100%;h=
+eight: 100%;background-color: transparent;">
+        <div class=3D"u-col u-col-100" style=3D"max-width: 320px;display: t=
+able-cell;vertical-align: top;">
+         <div style=3D"height: 100%;width: 100% !important;border-radius: 0=
+px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
+          <div style=3D"box-sizing: border-box; height: 100%; padding: 20px=
+ 16px 16px;border-top: 0px solid transparent;border-left: 0px solid transpa=
+rent;border-right: 0px solid transparent;border-bottom: 0px solid transpare=
+nt;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;"=
+>
+           <table style=3D"font-family:'Montserrat',sans-serif;" cellpaddin=
+g=3D"0" cellspacing=3D"0" width=3D"100%" border=3D"0">
+            <tbody>
+             <tr>
+              <td style=3D"overflow-wrap:break-word;word-break:break-word;p=
+adding:20px 0px;font-family:'Montserrat',sans-serif;" align=3D"left">
+               <h1 style=3D"margin: 0px; line-height: 100%; text-align: cen=
+ter; word-wrap: break-word; font-family: arial,helvetica,sans-serif; font-s=
+ize: 18px; font-weight: 400;">
+                <div>
+                 <strong>=E2=9D=A4=EF=B8=8F Your order is out for delivery.=
+</strong>
+                </div></h1></td>
+             </tr>
+            </tbody>
+           </table>
+           <table style=3D"font-family:'Montserrat',sans-serif;" cellpaddin=
+g=3D"0" cellspacing=3D"0" width=3D"100%" border=3D"0">
+            <tbody>
+             <tr>
+              <td style=3D"overflow-wrap:break-word;word-break:break-word;p=
+adding:0px 0px 16px;font-family:'Montserrat',sans-serif;" align=3D"left">
+               <div style=3D"font-size: 14px; line-height: 150%; text-align=
+: left; word-wrap: break-word;">
+                <div style=3D"font-size: 14px; line-height: 150%; text-alig=
+n: center;">
+                 &nbsp;
+                </div>
+                <div style=3D"font-size: 14px; line-height: 150%; text-alig=
+n: center;">
+                 Hi Michael Stowe,
+                </div>
+                <div style=3D"font-size: 14px; line-height: 150%; text-alig=
+n: center;">
+                 Your order is scheduled to arrive soon. Please keep your c=
+ontact unblocked to avoid returned packages due to failed delivery.
+                </div>
+               </div></td>
+             </tr>
+            </tbody>
+           </table>
+           <table style=3D"font-family:'Montserrat',sans-serif;" cellpaddin=
+g=3D"0" cellspacing=3D"0" width=3D"100%" border=3D"0">
+            <tbody>
+             <tr>
+              <td style=3D"overflow-wrap:break-word;word-break:break-word;p=
+adding:10px;font-family:'Montserrat',sans-serif;" align=3D"left">
+               <div style=3D"font-size: 14px; line-height: 140%; text-align=
+: center; word-wrap: break-word;">
+                <div style=3D"line-height: 140%;">
+                 <strong>Note:</strong>
+                 <br>
+                 If your order contains multiple items, it may be shipped i=
+n separate packages due to inventory allocation or dispatch from different =
+warehouses. The remaining items will be sent out as soon as possible, and y=
+ou will receive a shipping notification once they are on the way. This help=
+s ensure faster and safer delivery of your items. We apologize for any inco=
+nvenience this may cause and thank you for your understanding!
+                </div>
+               </div></td>
+             </tr>
+            </tbody>
+           </table>
+           <table style=3D"font-family:'Montserrat',sans-serif;" cellpaddin=
+g=3D"0" cellspacing=3D"0" width=3D"100%" border=3D"0">
+            <tbody>
+             <tr>
+              <td style=3D"overflow-wrap:break-word;word-break:break-word;p=
+adding:16px 0px;font-family:'Montserrat',sans-serif;" align=3D"left">
+               <div align=3D"center"> <a href=3D"https://email.order111.eco=
+flow.com/c/eJxMzE1uwyAQQOHTwK4WM-ZvFiwqVVyjwsxEsRqbCkh8_UpZdf30Pk5MUFiClgTB=
+oweiSPqeqnO3UCAISuWyBQ5MRciSKxGtJ70nNOgATAS_kqWFV97AhBjMZqwgK2taZ-kAsEhtt0e=
+7ltoO_Uj3OX-HWj8VZoX5Of5nhbkozLOX-vPx_tWaz-cx1PoVowuePERrUPd0jNkuUdZshbkdZT=
+_f_kynXN9D-muvol8J_wIAAP__IL5E2w" target=3D"_blank" class=3D"v-button" styl=
+e=3D"box-sizing: border-box;display: inline-block;text-decoration: none;-we=
+bkit-text-size-adjust: none;text-align: center;color: #FFFFFF; background-c=
+olor: #000000; border-radius: 4px;-webkit-border-radius: 4px; -moz-border-r=
+adius: 4px; width:auto; max-width:100%; overflow-wrap: break-word; word-bre=
+ak: break-word; word-wrap:break-word; mso-border-alt: none;font-size: 14px;=
+"> <span style=3D"display:block;padding:12px 16px;line-height:150%;"><stron=
+g><span style=3D"font-size: 14px; line-height: 21px;">Track your order</spa=
+n></strong></span> </a>
+               </div></td>
+             </tr>
+            </tbody>
+           </table>
+           <table style=3D"font-family:'Montserrat',sans-serif;" cellpaddin=
+g=3D"0" cellspacing=3D"0" width=3D"100%" border=3D"0">
+            <tbody>
+             <tr>
+              <td style=3D"overflow-wrap:break-word;word-break:break-word;p=
+adding:0px;font-family:'Montserrat',sans-serif;" align=3D"left">
+               <div style=3D"font-size: 14px; line-height: 150%; text-align=
+: left; word-wrap: break-word;">
+                <div style=3D"font-size: 14px; line-height: 150%; text-alig=
+n: center;">
+                 &nbsp;
+                </div>
+                <div style=3D"font-size: 14px; line-height: 150%; text-alig=
+n: center;">
+                 Tracking number: 885769618402
+                </div>
+                <div style=3D"font-size: 14px; line-height: 150%; text-alig=
+n: center;">
+                 Carrier: FedEx
+                </div>
+                <div style=3D"font-size: 14px; line-height: 150%; text-alig=
+n: center;">
+                 Carrier phone: +1 800-463-3339
+                </div>
+                <div style=3D"font-size: 14px; line-height: 150%; text-alig=
+n: center;">
+                 &nbsp;
+                </div>
+               </div></td>
+             </tr>
+            </tbody>
+           </table>
+           <table style=3D"font-family:'Montserrat',sans-serif;" cellpaddin=
+g=3D"0" cellspacing=3D"0" width=3D"100%" border=3D"0">
+            <tbody>
+             <tr>
+              <td style=3D"overflow-wrap:break-word;word-break:break-word;p=
+adding:10px;font-family:'Montserrat',sans-serif;" align=3D"left">
+               <table width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" bo=
+rder=3D"0">
+                <tbody>
+                 <tr>
+                  <td style=3D"padding-right: 0px;padding-left: 0px;" align=
+=3D"center"><img align=3D"center" border=3D"0" src=3D"https://asset.17track=
+=2Enet/trackcenter/template/41779669663=
+5959223F/content/images/asset_f609d8b9=
+7d1541d88cdd2233e16c3cae.png" alt=3D"" title=3D"" style=3D"outline: none;te=
+xt-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: in=
+line-block !important;border: none;height: auto;float: none;width: 100%;max=
+-width: 550px;"></td>
+                 </tr>
+                </tbody>
+               </table></td>
+             </tr>
+            </tbody>
+           </table>
+           <table style=3D"font-family:'Montserrat',sans-serif;" cellpaddin=
+g=3D"0" cellspacing=3D"0" width=3D"100%" border=3D"0">
+            <tbody>
+             <tr>
+              <td style=3D"overflow-wrap:break-word;word-break:break-word;p=
+adding:10px;font-family:'Montserrat',sans-serif;" align=3D"left">
+               <div style=3D"font-size: 14px; line-height: 140%; text-align=
+: center; word-wrap: break-word;">
+                <div style=3D"line-height: 140%;">
+                 This email is an automatic email sent from a notification-=
+only email address. Please do not reply; For further assistance, please con=
+tact <a rel=3D"noopener" href=3D"mailto:order@ecoflow.com" target=3D"_blank=
+">order@ecoflow.com</a>
+                </div>
+               </div></td>
+             </tr>
+            </tbody>
+           </table>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class=3D"u-row-container" style=3D"padding: 0px;background-color:=
+ transparent">
+      <div class=3D"u-row" style=3D"margin: 0 auto;min-width: 320px;max-wid=
+th: 600px;overflow-wrap: break-word;word-wrap: break-word;word-break: break=
+-word;background-color: rgb(255,255,255);">
+       <div style=3D"border-collapse: collapse;display: table;width: 100%;h=
+eight: 100%;background-color: transparent;">
+        <div class=3D"u-col u-col-100" style=3D"max-width: 320px;display: t=
+able-cell;vertical-align: top;">
+         <div style=3D"height: 100%;width: 100% !important;border-radius: 0=
+px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
+          <div style=3D"box-sizing: border-box; height: 100%; padding: 0px;=
+border-top: 0px solid transparent;border-left: 0px solid transparent;border=
+-right: 0px solid transparent;border-bottom: 0px solid transparent;border-r=
+adius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
+           <table style=3D"font-family:'Montserrat',sans-serif;" cellpaddin=
+g=3D"0" cellspacing=3D"0" width=3D"100%" border=3D"0">
+            <tbody>
+             <tr>
+              <td style=3D"overflow-wrap:break-word;word-break:break-word;p=
+adding:0px 16px;font-family:'Montserrat',sans-serif;" align=3D"left">
+               <table height=3D"0px" align=3D"center" border=3D"0" cellpadd=
+ing=3D"0" cellspacing=3D"0" width=3D"100%" style=3D"border-collapse: collap=
+se;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rs=
+pace: 0pt;vertical-align: top;border-top: 1px solid #BBBBBB;-ms-text-size-a=
+djust: 100%;-webkit-text-size-adjust: 100%">
+                <tbody>
+                 <tr style=3D"vertical-align: top">
+                  <td style=3D"word-break: break-word;border-collapse: coll=
+apse !important;vertical-align: top;font-size: 0px;line-height: 0px;mso-lin=
+e-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust:=
+ 100%"><span>&nbsp;</span></td>
+                 </tr>
+                </tbody>
+               </table></td>
+             </tr>
+            </tbody>
+           </table>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class=3D"u-row-container" style=3D"padding: 0px;background-color:=
+ transparent">
+      <div class=3D"u-row" style=3D"margin: 0 auto;min-width: 320px;max-wid=
+th: 600px;overflow-wrap: break-word;word-wrap: break-word;word-break: break=
+-word;background-color: rgb(255,255,255);">
+       <div style=3D"border-collapse: collapse;display: table;width: 100%;h=
+eight: 100%;background-color: transparent;">
+        <div class=3D"u-col u-col-100" style=3D"max-width: 320px;display: t=
+able-cell;vertical-align: top;">
+         <div style=3D"height: 100%;width: 100% !important;border-radius: 0=
+px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
+          <div style=3D"box-sizing: border-box; height: 100%; padding: 20px=
+ 16px;border-top: 0px solid transparent;border-left: 0px solid transparent;=
+border-right: 0px solid transparent;border-bottom: 0px solid transparent;bo=
+rder-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0px;">
+           <table style=3D"font-family:'Montserrat',sans-serif;" cellpaddin=
+g=3D"0" cellspacing=3D"0" width=3D"100%" border=3D"0">
+            <tbody>
+             <tr>
+              <td style=3D"overflow-wrap:break-word;word-break:break-word;p=
+adding:0px 0px 4px;font-family:'Montserrat',sans-serif;" align=3D"left">
+               <div style=3D"font-size: 14px; line-height: 150%; text-align=
+: left; word-wrap: break-word;">
+                <div style=3D"font-size: 14px; line-height: 150%;">
+                 <strong>What's inside</strong>
+                </div>
+               </div></td>
+             </tr>
+            </tbody>
+           </table>
+           <table style=3D"font-family:'Montserrat',sans-serif;" cellpaddin=
+g=3D"0" cellspacing=3D"0" width=3D"100%" border=3D"0">
+            <tbody>
+             <tr>
+              <td style=3D"overflow-wrap:break-word;word-break:break-word;p=
+adding:4px 0px 0px;font-family:'Montserrat',sans-serif;" align=3D"left">
+               <div style=3D"font-size: 14px; line-height: 150%; text-align=
+: left; word-wrap: break-word;">
+                <table width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" b=
+order=3D"0">
+                 <tbody>
+                  <tr>
+                   <td width=3D"60" style=3D"padding:5px 0;" align=3D"left"=
+>
+                    <div style=3D"width: 40px; height: 40px; border: 1px so=
+lid #ccc; border-radius: 4px; overflow: hidden;margin:0;">
+                     <img align=3D"center" border=3D"0" src=3D"https://cdn.=
+shopify.com/s/files/1/1996/9707/files/ecoflow-ecoflow-delta-pro-ultra-x-who=
+le-home-backup-power-dpux-bundle-delta-pro-ultra-x-1-x-inverter-2-x-batteri=
+es-smart-home-panel-3-1195028166.png?v=3D1760427643" alt=3D"" title=3D"" st=
+yle=3D"outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;=
+clear: both;display: inline-block !important;border: none;height: auto;floa=
+t: none;width: 100%;max-width: 100px;" width=3D"100">
+                    </div></td>
+                   <td style=3D"overflow-wrap:break-word;word-break:break-w=
+ord;padding:5px 0;font-family:'Montserrat',sans-serif;" align=3D"left">
+                    <div style=3D"font-size: 14px; line-height: 20px;font-w=
+eight: 500;">
+                     EFSMARTHOMEPANEL3-32-US
+                    </div>
+                    <div style=3D"font-size: 14px; line-height: 20px;font-w=
+eight: 400;color: #4D4D4D;">
+                    </div></td>
+                   <td style=3D"overflow-wrap:break-word;word-break:break-w=
+ord;padding:5px 0;font-family:'Montserrat',sans-serif;" align=3D"left">
+                    <div style=3D"line-height: 140%; text-align: left; word=
+-wrap: break-word; min-width: 90px;">
+                     <div style=3D"font-size: 14px; line-height: 140%; text=
+-align: right;">
+                     </div>
+                    </div>
+                    <div style=3D"line-height: 140%; text-align: left; word=
+-wrap: break-word;">
+                     <div style=3D"font-size: 14px; line-height: 140%; text=
+-align: right;">
+                      =C3=971
+                     </div>
+                    </div></td>
+                  </tr>
+                 </tbody>
+                </table>
+               </div></td>
+             </tr>
+            </tbody>
+           </table>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div></td>
+   </tr>
+  </tbody>
+ </table>
+
+<br>
+<p><a href=3D"https://email.order111.ecoflow.com/u/eJwcyc0KwzAIAOCnaY5Fjf3J=
+wcMeJVbDCsuErKyvP9j5M7GC1XxLTwEtWZlWIG8V3JRxaY61kDHuS06nENCCCDuuuXCZLZsibPs=
+GCuxkE0MM84GIsx_RXnHPR_Q0pH-uuH1i0GoWvZ7vP1wy0SN9hX4BAAD__ygDJ7M">unsubscri=
+be</a></p>
+<img width=3D"1" height=3D"1" alt=3D"" src=3D"https://email.order111.ecoflo=
+w.com/o/eJwcyUGuhCAMANDTyNK0iEAXPcsPpSXfZJQEjVx_klk_ZSUsaskZY4o-IlEm98-NTEB=
+qDSah5V1KobRVaU3VdorZHezB74iQMW4UaNVNBSHlBALBvC4B-lAbiLha7e3T51r76Qaf99OnLQ=
+GkqPazHNcPHr5s_t023qOae9l_AwAA___rqTAI"></body>

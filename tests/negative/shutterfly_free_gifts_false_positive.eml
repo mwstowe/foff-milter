@@ -1,0 +1,480 @@
+Return-Path: <bounce-21_HTML-309705884-1195268-100009900-3215@bounce.em.shutterfly.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTPS id 5A8DDDSa029844
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <mstowe@baddomain.com>; Sat, 8 Nov 2025 13:13:13 GMT
+	(envelope-from bounce-21_HTML-309705884-1195268-100009900-3215@bounce.em.shutterfly.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (2048-bit key; unprotected) header.d=em.shutterfly.com header.i=Shutterfly@em.shutterfly.com header.b=Xx7KOQkJ;
+	dkim=pass (2048-bit key; unprotected) header.d=s10.y.mc.salesforce.com header.i=@s10.y.mc.salesforce.com header.b=ZC79WtUY
+X-Authentication-Warning: juliett.baddomain.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.baddomain.com
+Received: from mta12.em.shutterfly.com (mta12.em.shutterfly.com [13.111.104.211])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 5A8DDCjv038310
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO)
+	for <mstowe@baddomain.com>; Sat, 8 Nov 2025 07:13:13 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 5A8DDCjv038310
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (2048-bit key, unprotected) header.d=em.shutterfly.com header.i=Shutterfly@em.shutterfly.com header.a=rsa-sha256 header.s=10dkim1 header.b=Xx7KOQkJ;
+	dkim=pass (2048-bit key, unprotected) header.d=s10.y.mc.salesforce.com header.i=@s10.y.mc.salesforce.com header.a=rsa-sha256 header.s=fbldkim10 header.b=ZC79WtUY
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=10dkim1; d=em.shutterfly.com;
+ h=From:To:Subject:Date:List-Unsubscribe:List-Unsubscribe-Post:MIME-Version:
+ Reply-To:Message-ID:Content-Type:Content-Transfer-Encoding;
+ i=Shutterfly@em.shutterfly.com;
+ bh=j7DIDaaOM3Mv4Yty9gvBDIIAPWxB37IbGE27teB80Fs=;
+ b=Xx7KOQkJq0gqHhR0SkvDBdVkdTTTcfOr/FNsmtYn0AHHJusuqR3AElzkwDmxdzl99AMVcSeOTE1r
+   Wqa5AEhB8wWdpV/F6cWJAmFMoRGV8pJqLV8livTtStbffldZodg8gIfhNoHOtw8UdI3ukJzu4uK9
+   +u68EJejO0y+LPm4CMPnt0BI0drdtZVb3GvF4PbNialIrQTRbi4M9gYgkkVs1b0qiPlLBKLxAy2F
+   zfYvEc3XT9myMrNti4SGpbVqGi7CoafnHqi6Sglah2+i9y/opZrbLFEQIcLd8U00OOBr+U4zQOaO
+   MBVqBdLp0tK+xyvT8eYCjvRbK3LqjjJPJ6ZRjQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=fbldkim10; d=s10.y.mc.salesforce.com;
+ h=From:To:Subject:Date:List-Unsubscribe:MIME-Version:Reply-To:Message-ID:
+ Content-Type:Content-Transfer-Encoding;
+ bh=j7DIDaaOM3Mv4Yty9gvBDIIAPWxB37IbGE27teB80Fs=;
+ b=ZC79WtUYVbOo0X1Ly49JK0Z0hQQpEE/xv7+2m9l3GyHXpnLtwB4PaLSY1bWZXJl1U0BcINZqOGrL
+   IwAtW2lpjqoNBaJ+viG01g2/VmV6T/aj8EqeOSNMLpRcPjIKaFGoI7/TeUSF3iyjxQhgVNJu8ayd
+   kDZOqLH7EvoX0Ya8YyZ0o99pD/7X9Lx1vLZe79+ePb79nmfp5yhHByZ5ugdnU9+7wRz6u/tafgoK
+   pJQG6d0uZoqewu702Ql77PDhhECt494DHfMIiDqGiy+UtaN27hTmPz5dHkoFoP/gWtq8m5HHWkIQ
+   i1T7HWpAZJ5Hf4DuCqMHDE8+iarPuJb+MZgTJg==
+Received: by mta12.em.shutterfly.com id h1t0ui2fmd4j for <mstowe@baddomain.com>; Sat, 8 Nov 2025 13:13:11 +0000 (envelope-from <bounce-21_HTML-309705884-1195268-100009900-3215@bounce.em.shutterfly.com>)
+From: "Shutterfly" <Shutterfly@em.shutterfly.com>
+To: <mstowe@baddomain.com>
+Subject: =?UTF-8?B?NCBGUkVFIGdpZnRzIGFyZSB3YWl0aW5nIGZvciB5b3UuLi5jdXN0?=
+ =?UTF-8?B?b21pemUgdGhlbSBub3chIPCfjoHwn6eh?=
+Date: Sat, 08 Nov 2025 07:13:10 -0600
+List-Unsubscribe: <https://click.em.shutterfly.com/subscription_center.aspx?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtaWQiOiIxMDAwMDk5MDAiLCJzIjoiMzA5NzA1ODg0IiwibGlkIjoiMjEiLCJqIjoiMTE5NTI2OCIsImpiIjoiMzIxNSIsImQiOiIxMDAyMjAifQ.lkzSQYrAUVzC4uki6iPRgbMQcjzPnc6iDqq6NVnAcpU>, <mailto:leave-fd8816711a3c402029-fe2317707c6304787d1c74-fe8f15717c61067b7d-fe3c1570756404747c1470-ff3417727461@leave.em.shutterfly.com>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+MIME-Version: 1.0
+Reply-To: "Shutterfly" <reply-fe8f15717c61067b7d-21_HTML-309705884-100009900-3215@em.shutterfly.com>
+X-SFMC-Stack: 10
+x-job: 100009900_1195268
+Message-ID: <0659a2c7-baa8-4e2d-8841-c0a847709409@dfw1s10mta1333.xt.local>
+Content-Type: text/html;
+	charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Sat, 08 Nov 2025 13:13:14 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Sat, 08 Nov 2025 07:13:13 -0600 (CST)
+X-Spam-Flag: YES
+X-FOFF-Rule-Matched: Ecommerce Scams: Free product scams (juliett.baddomain.com)
+X-FOFF-Rule-Matched: Advanced Heuristics: Bayesian Spam Word Patterns (juliett.baddomain.com)
+X-FOFF-Rule-Matched: Ecommerce Scams: Free product scams (hotel.baddomain.com)
+X-FOFF-Rule-Matched: Advanced Heuristics: Bayesian Spam Word Patterns (hotel.baddomain.com)
+X-FOFF-Score: 65 - foff-milter v0.6.9 (juliett.baddomain.com)
+X-FOFF-Score: 65 - foff-milter v0.6.9 (hotel.baddomain.com)
+
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="UTF-8">
+  <meta name="HandheldFriendly" content="true">
+           
+  <meta name="viewport" content="width=device-width, initial-scale=0.666667, maximum-scale=0.666667, user-scalable=0">
+    
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <meta name="viewport" content="width=device-width">
+    
+  <meta name="format-detection" content="telephone=no,date=no,address=no,email=no"/>
+
+  <title></title>
+  <style media="all" type="text/css">
+    body {
+      /*height: 100% !important;*/
+      width: 100% !important;
+      margin: 0;
+      padding: 0;
+    }
+
+    table {
+      margin: 0 auto !important;
+      border-collapse: collapse;
+    }
+
+    .gmailfix {
+      display: none;
+      display: none !important;
+    }
+
+    button {
+      display: block !important
+    }
+
+    /*
+    div {
+      display: block !important
+    }
+    */
+
+    body,
+    div,
+    span,
+    p,
+    a,
+    li,
+    td {
+      -webkit-text-size-adjust: none;
+    }
+
+    .apple_link a {
+      text-decoration: none;
+      color: #181512;
+    }
+    
+    #unlinkDatesIOSWrapper #unlinkDatesIOS [x-apple-data-detectors-type="calendar-event"]{
+      color: inherit !important;
+      -webkit-text-decoration-color: inherit !important;
+      text-decoration: none !important;
+    } 
+
+    .cust_id_footer a {
+      text-decoration: none;
+      color: #ffffff;
+    }
+
+    .ExternalClass * {
+      line-height: 100%;
+    }
+  </style>
+
+  
+
+  </head>
+  
+  <body bgcolor="#FFFFFF" vlink=“#FFFFFF”>
+
+    <div style="font-size:0; line-height:0;">
+      <img src="https://click.em.shutterfly.com/open.aspx?ffcb10-fe8f15717c61067b7d-fe2b1070756003747c1671-fe3c1570756404747c1470-ff9c1671-fe2317707c6304787d1c74-ff3417727461&d=100220&bmt=0" width="1" height="1" alt="">
+
+    </div>
+
+    <table width="100%" border="0" cellpadding="0" cellspacing="0" align="center">
+      <tr>
+        <td align="center" valign="top">
+          
+        </td>
+      </tr>
+    </table>
+    
+    <!-- Subject auto injection -->
+    
+
+    <!-- BEGIN EMAIL CONTENT -->
+    <table width="500" border="0" cellpadding="0" cellspacing="0" align="center">
+      <tr>
+        <td>
+
+          <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- component version 1.0.64 --> <table align="center" width="500" cellpadding="0" cellspacing="0" border="0" data-testid="sflyHeader" style="width:500px;max-width:500px"><tr><td valign="top" align="center" colspan="5" style="padding-top:16px;padding-bottom:24px"><a style="font-family:HBHuev12-Light,HBHuev12-Regular,Sohne-Buch,Sohne-Buch-Kursiv,Sohne-Kraftig,Sohne-Kraftig-Kursiv,Sohne-Leicht,Sohne-Leicht-Kursiv, Verdana, Geneva, Tahoma, sans-serif;color:#000000;font-size:11px;text-decoration:none" href="https://click.em.shutterfly.com/?qs=ad5c5882b89a440024a3ee180955c94462394a4b3f5577524abd69015ca30191a3a75b87d9c4745aba0d4a55b89244a3d3c27b72aa7a792a6ce153ad39d6b012">
+<span id="CREATIVE_PREHEADER" data-testid="preHeaderField" style="font-family:Arial, sans-serif;font-size:12px;font-weight:normal;font-style:normal">Plus, snag 50% off your ENTIRE order! &gt;</span></a></td></tr><tr><td valign="top" width="144" align="center" height="auto" style="logo-url:sfly_main;promo-text-color:#2D3137;logo-width:140px;border-type:Top;position:relative"><a href="https://click.em.shutterfly.com/?qs=51eda73a6d55b377b162f7ad1dc335dba79f7e0b02bf091c03316e2f3c3d6274d4c73c716b5e3ae735ba0c3b1ad8b50e9965a458ebf0fb92e37e4c8eaf272379" data-testid="logoLink"><img style="width:140px;max-width:140px;padding-right:10px;padding-left:24px;display:block" src="https://shutterfly.widen.net/content/efsv5oiukb/jpeg/sfly_logo_navbar.jpeg" height="auto" width="140" border="0" alt="Shutterfly" data-testid="sflyLogoField"></a></td>
+<td valign="bottom" width="110" style="font-family:HBHuev12-Light,HBHuev12-Regular,Sohne-Buch,Sohne-Buch-Kursiv,Sohne-Kraftig,Sohne-Kraftig-Kursiv,Sohne-Leicht,Sohne-Leicht-Kursiv, Verdana, Geneva, Tahoma, sans-serif;left:undefinedpx;padding-bottom:4px;text-align:center;overflow:hidden;position:relative;text-decoration:none;text-wrap:nowrap;padding-left:8px;padding-right:8px"><a style="font-family:Arial, sans-serif;font-size:16px;font-weight:normal;font-style:normal;text-decoration:unset;color:#000000" href="https://click.em.shutterfly.com/?qs=ad5c5882b89a4400979648ec371532ad34cd7dd7a0205da9db8902a6c430f9285cb0659b90fd617156854cdb89f4bc13d946e26b57c2bffb29f8bb1483f0378c">Holiday Cards</a></td>
+<td valign="bottom" width="110" style="font-family:HBHuev12-Light,HBHuev12-Regular,Sohne-Buch,Sohne-Buch-Kursiv,Sohne-Kraftig,Sohne-Kraftig-Kursiv,Sohne-Leicht,Sohne-Leicht-Kursiv, Verdana, Geneva, Tahoma, sans-serif;left:undefinedpx;padding-bottom:4px;text-align:center;overflow:hidden;position:relative;text-decoration:none;text-wrap:nowrap;padding-left:8px;padding-right:8px"><a style="font-family:Arial, sans-serif;font-size:16px;font-weight:normal;font-style:normal;text-decoration:unset;color:#000000" href="https://click.em.shutterfly.com/?qs=ad5c5882b89a44003b1dff4496f455eecc263fa49ea71efa90e2bf5aa02c81a6a72425ec447fa368cd7e78ffe814b40c4c7cbc9edf02fd9996f504ea16bf5305">Photo Books</a></td>
+<td valign="bottom" width="110" style="font-family:HBHuev12-Light,HBHuev12-Regular,Sohne-Buch,Sohne-Buch-Kursiv,Sohne-Kraftig,Sohne-Kraftig-Kursiv,Sohne-Leicht,Sohne-Leicht-Kursiv, Verdana, Geneva, Tahoma, sans-serif;left:undefinedpx;padding-bottom:4px;text-align:center;overflow:hidden;position:relative;text-decoration:none;text-wrap:nowrap;padding-left:8px;padding-right:8px"><a style="font-family:Arial, sans-serif;font-size:16px;font-weight:normal;font-style:normal;text-decoration:unset;color:#000000" href="https://click.em.shutterfly.com/?qs=ad5c5882b89a440041987e8e5c6aa8b1eac486f074faadcd1480610efa4427d29224f90c7376476b8a58404640f608e41201ba8173b8cbd6453a69e9fc8346b1">Upload Photos</a></td>
+<td valign="bottom" width="90" style="font-family:HBHuev12-Light,HBHuev12-Regular,Sohne-Buch,Sohne-Buch-Kursiv,Sohne-Kraftig,Sohne-Kraftig-Kursiv,Sohne-Leicht,Sohne-Leicht-Kursiv, Verdana, Geneva, Tahoma, sans-serif;left:undefinedpx;padding-bottom:4px;text-align:center;overflow:hidden;position:relative;text-decoration:none;text-wrap:nowrap;padding-left:8px;padding-right:8px"><a style="font-family:Arial, sans-serif;font-size:16px;font-weight:normal;font-style:normal;text-decoration:unset;color:#000000" href="https://click.em.shutterfly.com/?qs=ad5c5882b89a4400a5d78e5935086193a0c663b973c91c9fd1497053121c873ad64d3401fe873a5ba31c03b4048a480d0d0ca7ae6cf9beab64ff6897400acf30">Deals</a></td></tr></table></td></tr></table>
+          <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"></td></tr></table>
+          <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner">
+<table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: transparent; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 0px; " class="stylingblock-content-wrapper camarker-inner"><table cellspacing="0" cellpadding="0" role="presentation" style="width: 100%;"><tr><td><table cellspacing="0" cellpadding="0" role="presentation" style="width: 100%;"><tr><td valign="top" class="responsive-td" style="width: 100%; padding-bottom: 0px;"><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- component version 1.0.34 --> <table align="center" width="500" cellpadding="0" cellspacing="0" border="0" style="background-color:#ffffff;width:500px;margin:0"><tr>
+<td valign="top" align="center" id="single-image-container" data-testid="content" style="padding-left:0px;padding-right:0px;padding-top:0px;padding-bottom:0px;width:500px"><img style="display:block" width="500" height="auto" border="0" src="https://shutterfly.widen.net/content/djup30uv5e/jpeg/Targeted_Eyebrow_2Days.jpeg" alt="" background="#ffffff"></td></tr></table></td></tr></table>
+
+
+</td></tr></table></td></tr><tr><td><table cellspacing="0" cellpadding="0" role="presentation" style="width: 100%;"><tr><td valign="top" class="responsive-td" style="width: 100%; padding-top: 0px;"></td></tr></table></td></tr></table></td></tr></table>
+
+</td></tr></table>
+<table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: transparent; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 0px 10px; " class="stylingblock-content-wrapper camarker-inner"><table cellspacing="0" cellpadding="0" role="presentation" style="width: 100%;"><tr><td><table cellspacing="0" cellpadding="0" role="presentation" style="width: 100%;"><tr><td valign="top" class="responsive-td" style="width: 100%; padding-bottom: 0px;"><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- component version 1.0.34 --> </td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner">
+<!-- component version 1.0.34 --> <table align="center" width="500" cellpadding="0" cellspacing="0" border="0" style="background-color:#ffffff;width:500px;margin:0"><tr>
+<td valign="top" align="center" id="single-image-container" data-testid="content" style="padding-left:0px;padding-right:0px;padding-top:0px;padding-bottom:0px;width:500px"><img style="display:block" width="100%" height="auto" border="0" src="https://shutterfly.widen.net/content/qs5kguezmp/jpeg/WF1174750_Freebies_PM.jpeg" alt="" background="#ffffff"></td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- component version 1.0.34 --> <!--[if (mso)|(mso 16)]>                     
+<style type="text/css">                     .text-26 a {text-decoration: none;}                     </style>                     <![endif]--><style>.text-26 { mso-line-height-rule: exactly; line-height: 26px; }</style><table align="center" width="500" cellpadding="0" cellspacing="0" border="0" style="background-color:#f7f3ec;width:500px;margin:0"><tr><td style="padding-left:0px;padding-right:0px;padding-top:0px;padding-bottom:0px;width:500px"><table align="center" width="500" cellpadding="0" cellspacing="0" border="0" style="display:block;overflow:hidden;background:#f7f3ec" data-testid="text-wrapper" id="unlinkDatesIOSWrapper"><tr>
+<td data-testid="text-content" bgcolor="#f7f3ec" width="500" class="text-26" style="font-family:HBHuev12-Light,HBHuev12-Regular,Sohne-Buch,Sohne-Buch-Kursiv,Sohne-Kraftig,Sohne-Kraftig-Kursiv,Sohne-Leicht,Sohne-Leicht-Kursiv, Verdana, Geneva, Tahoma, sans-serif;min-width:500px;height:40px;vertical-align:middle;line-height:26px;background-color:#f7f3ec;background:#f7f3ec" align="center"><table style="margin:0 !important" border="0" cellpadding="0" cellspacing="0"><tr><td colspan="3" height="25"></td></tr><tr><td width="0"></td><td align="center">
+<span id="unlinkDatesIOS" data-testid="lineSpanTest" style="line-height:26px;letter-spacing:0px;color:#000000;display:block;background-color:#f7f3ec;font-size:16px;font-weight:normal;margin-bottom:0px;padding-left:0px;padding-right:0px;padding-top:0px;padding-bottom:0px"><strong style="font-size:14px">Code: GOODIES |&nbsp;Ends Sun, Nov 9</strong><br></span></td><td width="0"></td></tr><tr><td colspan="3" height="50"></td></tr></table></td></tr></table></td></tr></table></td></tr></table></td></tr></table></td></tr><tr><td><table cellspacing="0" cellpadding="0" role="presentation" style="width: 100%;"><tr><td valign="top" class="responsive-td" style="width: 50%; padding-top: 0px; padding-right: 0px;"><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- component version 1.0.28 --> 
+<table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- component version 1.0.34 --> <table align="center" width="250" cellpadding="0" cellspacing="0" border="0" style="background-color:#ffffff;width:250;margin:0"><tr><td valign="top" align="center" id="single-image-container" data-testid="content" style="padding-left:0px;padding-right:0px;padding-top:0px;padding-bottom:0px;width:250"><a href="https://click.em.shutterfly.com/?qs=51eda73a6d55b3777f42d516724b3761559286dba6a817ab0e21ade0c4c7e613dd679f2f8f1613189f5d645e5d7fe2687ef38ccb9bff51ef19b93b2c7a6a7790" rilt="FLASH_ASSET_PZG_thumb">
+<img style="display:block" width="100%" height="auto" border="0" src="https://shutterfly.widen.net/content/yosbhheh9k/jpeg/WF1174750_SM18.jpeg" alt="One Metal Ornament" background="#ffffff"></a></td></tr></table></td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- component version 1.0.28 --> <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- component version 1.0.34 --> <table align="center" width="250" cellpadding="0" cellspacing="0" border="0" style="background-color:#ffffff;width:250;margin:0"><tr>
+<td valign="top" align="center" id="single-image-container" data-testid="content" style="padding-left:0px;padding-right:0px;padding-top:0px;padding-bottom:0px;width:250"><a href="https://click.em.shutterfly.com/?qs=51eda73a6d55b37789efdc8a22580d2bd8d393fb26f40c97361775ceac309bff1ec867f6686225e4791ff1ede00bfa4f039d631b3da26ec6c08debf964dd877a" rilt="FLASH_ASSET_PZG_thumb">
+<img style="display:block" width="100%" height="auto" border="0" src="https://shutterfly.widen.net/content/tdrsquc3jj/jpeg/WF1174750_SM8.jpeg" alt="One Cotton Tote Bag" background="#ffffff"></a></td></tr></table></td></tr></table></td></tr></table></td><td valign="top" class="responsive-td" style="width: 50%; padding-top: 0px; padding-left: 0px;"><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- component version 1.0.28 --> <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- component version 1.0.34 --> <table align="center" width="250" cellpadding="0" cellspacing="0" border="0" style="background-color:#ffffff;width:250;margin:0"><tr>
+<td valign="top" align="center" id="single-image-container" data-testid="content" style="padding-left:0px;padding-right:0px;padding-top:0px;padding-bottom:0px;width:250"><a href="https://click.em.shutterfly.com/?qs=51eda73a6d55b377233ced102a49c2220d77c66a641e12af4f02cddf1dd5cf7956ef9ea0286f35d0ef11a31d5262b6e86f6d304b740553f7bc72667180048e3e" rilt="FLASH_ASSET_PZG_thumb">
+<img style="display:block" width="100%" height="auto" border="0" src="https://shutterfly.widen.net/content/gkdfmwn6jm/jpeg/WF1174750_SM2.jpeg" alt="One 16x20 Print" background="#ffffff"></a></td></tr></table></td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- component version 1.0.28 --> <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- component version 1.0.64 --> <table align="center" width="250" cellpadding="0" cellspacing="0" border="0" style="background-color:#ffffff;width:250;margin:0"><tr>
+<td valign="top" align="center" id="single-image-container" data-testid="content" style="padding-left:0px;padding-right:0px;padding-top:0px;padding-bottom:0px;width:250"><a href="https://click.em.shutterfly.com/?qs=ad5c5882b89a4400a3ea421155a42a15718d56eff57fe676f23a559e30a846fbda410ffe9969ac18da08f2daa3b4a4a55cd52c56538af0536ae6181d63794f36"><img style="display:block" width="100%" height="auto" border="0" src="https://shutterfly.widen.net/content/mouuvf5izb/jpeg/WF1174750_SM25.jpeg" alt="One Wine Glass" background="#ffffff"></a></td></tr>
+</table></td></tr></table></td></tr></table></td></tr></table></td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- component version 1.0.64 --> <table align="center" width="500" cellpadding="0" cellspacing="0" border="0" style="background-color:#ffffff;width:500px;margin:0"><tr><td valign="top" align="center" id="single-image-container" data-testid="content" style="padding-left:0px;padding-right:0px;padding-top:0px;padding-bottom:0px;width:500px"><a href="https://click.em.shutterfly.com/?qs=ad5c5882b89a44003a1204a6bd0fe1f402c7e51e2f13ac700759e393ed11b760906e93ad72aab1513bb9b887822c656124441208cc92995b9267ea18cf5a74b0">
+<img style="display:block" width="100%" height="auto" border="0" src="https://shutterfly.widen.net/content/nhzwvwzlij/jpeg/SYCRM1027_RM5.jpeg" alt="4 Free Gifts" background="#ffffff"></a>
+</td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- component version 1.0.64 --> <table align="center" width="500" cellpadding="0" cellspacing="0" border="0" style="background-color:#ffffff;width:500px;margin:0"><tr><td valign="top" align="center" id="single-image-container" data-testid="content" style="padding-left:0px;padding-right:0px;padding-top:0px;padding-bottom:0px;width:500px"><a href="https://click.em.shutterfly.com/?qs=ad5c5882b89a4400282a7dcd698d130dfb3bd54cdc323a90869ff5031151c29548f6447f3ef10cd0983bdbd940e96f59a89c6fd6ae0ea26a4a3df6639199cbd7"><img style="display:block" width="100%" height="auto" border="0" src="https://shutterfly.widen.net/content/pvtnzuzpfz/jpeg/SYCRM1103_RM9-2-L.jpeg" alt="4 Free Gifts" background="#ffffff">
+</a></td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- component version 1.0.64 --> <table align="center" width="500" cellpadding="0" cellspacing="0" border="0" style="background-color:#ffffff;width:500px;margin:0"><tr><td valign="top" align="center" id="single-image-container" data-testid="content" style="padding-left:0px;padding-right:0px;padding-top:0px;padding-bottom:0px;width:500px"><a href="https://click.em.shutterfly.com/?qs=ad5c5882b89a44005a8c1121747ec39340b1339635cb299005a91d7ea0d679aa90ec1242ccb980c09e7f23a089b22d9d504f5d047c487d8a66e5bd405969807f"><img style="display:block" width="100%" height="auto" border="0" src="https://shutterfly.widen.net/content/vascuhb6ub/jpeg/SYCRM1103_RM10-1-R.jpeg" alt="4 Free Gifts" background="#ffffff">
+</a></td></tr></table></td></tr></table>
+          <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- Begin Full HTML Email Code with Fixed App Store / Google Play Section -->
+<table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: transparent; min-width: 100%;" class="stylingblock-content-wrapper">
+  <tr>
+    <td style="padding: 0px;" class="stylingblock-content-wrapper camarker-inner">
+      <table cellspacing="0" cellpadding="0" role="presentation" style="width: 100%;">
+        <tr>
+          <td>
+            <table cellspacing="0" cellpadding="0" role="presentation" style="width: 100%;">
+              <tr>
+                <td valign="top" class="responsive-td" style="width: 100%; padding-bottom: 0px;">
+                  <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%;" class="stylingblock-content-wrapper">
+                    <tr>
+                      <td class="stylingblock-content-wrapper camarker-inner">
+                        <table align="center" width="500" cellpadding="0" cellspacing="0" border="0" style="background-color:#ffffff;width:500px;margin:0 auto;">
+                          <tr>
+                            <td valign="top" align="center" id="single-image-container" style="padding:0;width:500px">
+                              <a href="https://click.em.shutterfly.com/?qs=51eda73a6d55b377f0ad2a28de5e643a06283e4d6fb1057bb5fa7ca636341b0423cd83f0f72b3ad652610e0e0e69c72cac17d4c42b8f3eb24f086c37853f7f17">
+                                <img style="display:block" width="100%" height="auto" border="0" src="https://shutterfly.widen.net/content/hcaqht7obu/jpeg/SF_EMF_01.jpeg" alt="">
+                              </a>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Fixed App Store / Google Play Section -->
+        <tr>
+          <td>
+            <table align="center" width="500" cellpadding="0" cellspacing="0" border="0" style="background-color:#ffffff; width:500px; margin:0 auto;">
+              <tr>
+                <td width="250" align="center" valign="top" style="padding: 0;">
+                  <a href="https://click.em.shutterfly.com/?qs=51eda73a6d55b37727157b337121d2915a179de25328af6f53356d3370610dd185b3bea2f447b563d3ff3cb234e5730f92399ab9160fe32985d721f92d272f0a">
+                    <img src="https://shutterfly.widen.net/content/bfuoicx2ut/jpeg/SF_EMF_02A.jpeg" width="250" style="display: block; border: 0;" alt="Download on the App Store">
+                  </a>
+                </td>
+                <td width="250" align="center" valign="top" style="padding: 0;">
+                  <a href="https://click.em.shutterfly.com/?qs=51eda73a6d55b3773b7c0060d35ac8d6c0f10d78fcc7ee57423bc17213465a99155d493ef8b5f0bd30f36fc95d73f6fbc189cd5738df285261d980d4b885af5b">
+                    <img src="https://shutterfly.widen.net/content/yv3gowxbf5/jpeg/SF_EMF_02B.jpeg" width="250" style="display: block; border: 0;" alt="Get it on Google Play">
+                  </a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Image: SF_EMF_03.jpeg -->
+        <tr>
+          <td>
+            <table align="center" width="500" cellpadding="0" cellspacing="0" border="0" style="background-color:#ffffff;width:500px;margin:0 auto;">
+              <tr>
+                <td valign="top" align="center" style="padding:0;width:500px">
+                  <a href="https://click.em.shutterfly.com/?qs=ad5c5882b89a440011ad94644a96fbd927d03ad61e6191bc49ccaca7f7f53653ccdf3fe0181bfb6719a38ffec2ba0b546b41031df08b15f4b5e23a19602ac5ec">
+                    <img style="display:block" width="100%" height="auto" border="0" src="https://shutterfly.widen.net/content/zyuovsmibc/jpeg/SF_EMF_03.jpeg" alt="">
+                  </a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Social Section -->
+        <tr>
+          <td>
+            <table align="center" width="500" cellpadding="0" cellspacing="0" border="0" style="table-layout: fixed; background-color:#ffffff;">
+              <tr>
+                <td style="padding: 0; margin: 0;" align="center">
+                  <table cellpadding="0" cellspacing="0" border="0" align="center">
+                    <tr>
+                      <td style="padding-right: 10px;">
+                        <a href="https://click.em.shutterfly.com/?qs=51eda73a6d55b3774ddd097b5706f7dd9c58185d919b2d6a48144b0136e88b3ce0e7d7cc882f73a5a0735bd3bf1b259452809514ea37065765c9fadb770ffcec">
+                          <img src="https://shutterfly.widen.net/content/rmyh0ix8ga/jpeg/SF_EMF_04A.jpeg" width="70" style="display: block; border: 0;" alt="Facebook">
+                        </a>
+                      </td>
+                      <td style="padding-right: 10px;">
+                        <a href="https://click.em.shutterfly.com/?qs=51eda73a6d55b37702b80495a3da4299d1cca4baea2f85e924350f0483e7d5dcf5372170613fc31e8be1ee260259d8f323a65278bc9007a9de6973439ad0abe6">
+                          <img src="https://shutterfly.widen.net/content/44kalfmcvk/jpeg/SF_EMF_04B.jpeg" width="70" style="display: block; border: 0;" alt="Instagram">
+                        </a>
+                      </td>
+                      <td style="padding-right: 10px;">
+                        <a href="https://click.em.shutterfly.com/?qs=51eda73a6d55b377ae5f90a56b26d13b1495c34806c96dbc4f3a467fbb60140bf91fab68a1dde1dc2c936b0c4288ac440cee3e71f3b7ebf4580cf24ca29314d3">
+                          <img src="https://shutterfly.widen.net/content/y9qkt0l9cn/jpeg/SF_EMF_04C.jpeg" width="70" style="display: block; border: 0;" alt="Pinterest">
+                        </a>
+                      </td>
+                      <td>
+                        <a href="https://click.em.shutterfly.com/?qs=51eda73a6d55b377aa7935a4dda85dda2f8d68be6aeb067c9e5cc66108eb3999d1faa861fb6de1881dea97d8de1dacc203f8f08413c82bc65b542ca56190f4df">
+                          <img src="https://shutterfly.widen.net/content/geybasojfo/jpeg/SF_EMF_04D.jpeg" width="70" style="display: block; border: 0;" alt="TikTok">
+                        </a>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Three Column Section -->
+        <tr>
+          <td>
+            <table align="center" width="500" cellpadding="0" cellspacing="0" border="0" style="background-color:#ffffff;">
+              <tr>
+                <td width="167" align="center" valign="top" style="padding: 0;">
+                  <a href="https://click.em.shutterfly.com/?qs=ad5c5882b89a4400998d9674d7d448dd566a8730d47777703e6d48c59e29afa6593eb7703189a7a06f249f9d0fc01a280f13355c47c7d69714d4c5503ae66ab9">
+                    <img src="https://shutterfly.widen.net/content/sqfjt1fpq7/jpeg/SF_EMF_05A.jpeg" width="167" style="display: block; border: 0;" alt="Photo Books">
+                  </a>
+                </td>
+                <td width="167" align="center" valign="top" style="padding: 0;">
+                  <a href="https://click.em.shutterfly.com/?qs=ad5c5882b89a44003b33ba766a9232f596b17df1406a840a70c71a19f55908fbcbcf0a0efaa15a404266d3858a73082815e984cb23ea7be5e56754a1756a44f9">
+                    <img src="https://shutterfly.widen.net/content/ruaihgw4po/jpeg/SF_EMF_05B.jpeg" width="167" style="display: block; border: 0;" alt="Cards">
+                  </a>
+                </td>
+                <td width="166" align="center" valign="top" style="padding: 0;">
+                  <a href="https://click.em.shutterfly.com/?qs=ad5c5882b89a44002404a79475e985c27e1780516da4ddfc66bc9476a8e95948df52772f8d02666ef71770682a75b7a28c43d0e7df59253aeab7279a1cd548cd">
+                    <img src="https://shutterfly.widen.net/content/6dpe0e6f0g/jpeg/SF_EMF_05C.jpeg" width="166" style="display: block; border: 0;" alt="Special Offers">
+                  </a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Another 2-column module -->
+        <tr>
+          <td>
+            <table align="center" width="500" cellpadding="0" cellspacing="0" border="0" style="background-color:#ffffff; width:500px; margin:0 auto;">
+              <tr>
+                <td width="250" align="center" valign="top" style="padding: 0;">
+                  <a href="https://click.em.shutterfly.com/?qs=ad5c5882b89a44001f4b103021321878f1169e083af903ba6f6bb04ec947fa62bab8b52714fc95d27fa78bfaa74e904829b1e5bdc3fc54511adc3d5c66c22285">
+                    <img src="https://shutterfly.widen.net/content/ydvceagb0c/jpeg/SF_EMF_06A.jpeg" width="250" style="display: block; border: 0;" alt="My Projects">
+                  </a>
+                </td>
+                <td width="250" align="center" valign="top" style="padding: 0;">
+                  <a href="https://click.em.shutterfly.com/?qs=51eda73a6d55b377e1cb5355720d36ba5cfd7a2464f09420cb2e7a3601ef11e98adab728e919cf565d8579063e26c54419826e186a7d9e264587a78a51e083dd">
+                    <img src="https://shutterfly.widen.net/content/mzni8l3uzp/jpeg/SF_EMF_06B.jpeg" width="250" style="display: block; border: 0;" alt="Contact Us">
+                  </a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Footer Image -->
+        <tr>
+          <td>
+            <table align="center" width="500" cellpadding="0" cellspacing="0" border="0" style="background-color:#ffffff;width:500px;margin:0 auto;">
+              <tr>
+                <td valign="top" align="center" style="padding:0;width:500px">
+                  <a href="https://click.em.shutterfly.com/?qs=ad5c5882b89a44008a0d6cd3a973a6c7557064a94b3d826025c0e3215a92e0a08e543f51e9a25476e3313cf4ed1ac7faf712b055b418965d6da47b43e2efb755">
+                    <img style="display:block" width="100%" height="auto" border="0" src="https://shutterfly.widen.net/content/fzq9eqbdn8/jpeg/SF_EMF_07.jpeg" alt="Shutterfly Footer">
+                  </a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- End Full HTML Email Code -->
+</td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- component version 1.0.34 --> <div><style data-testid="style">
+                    .disclaimer-text a, .disclaimer-text a:visited, .disclaimer-text a:hover, .disclaimer-text a:active, .disclaimer-text a:link {
+                        text-decoration: inherit;
+color: inherit;
+                    }
+                    </style><table align="center" width="486" cellpadding="0" cellspacing="0" border="0" id="unlinkDatesIOSWrapper"><tr><td style="text-align:justify;font-size:12px;font-family:HBHuev12-Light,HBHuev12-Regular,Sohne-Buch,Sohne-Buch-Kursiv,Sohne-Kraftig,Sohne-Kraftig-Kursiv,Sohne-Leicht,Sohne-Leicht-Kursiv, Verdana, Geneva, Tahoma, sans-serif;line-height:14.4px;letter-spacing:0px" id="unlinkDatesIOS" class="apple_link disclaimer-text" data-testid="content">*Please note that your use of the Shutterfly website and its suite of apps is also governed by other terms and conditions, including Shutterfly’s Terms of Use and our Privacy Policy as well as any other applicable terms, conditions, limitations, and requirements posted on the 
+<a href="https://click.em.shutterfly.com/?qs=51eda73a6d55b377251ea4152fa600bf01049a1dd84e10960e0f7e40eb0eba00ecf348bc62c452b470399da658099ad0016951a18d250db731c2abcad7e8a03d" style="text-decoration:none;color:black">Shutterfly.com</a> website from time to time.<br><br></td></tr></table></div></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: transparent; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 0px; " class="stylingblock-content-wrapper camarker-inner"><table cellspacing="0" cellpadding="0" role="presentation" style="width: 100%;"><tr><td><table cellspacing="0" cellpadding="0" role="presentation" style="width: 100%;"><tr><td valign="top" class="responsive-td" style="width: 100%; padding-bottom: 0px;">
+</td></tr></table></td></tr><tr><td><table cellspacing="0" cellpadding="0" role="presentation" style="width: 100%;"><tr><td valign="top" class="responsive-td" style="width: 100%; padding-top: 0px;"><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- component version 1.0.28 --> <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: transparent; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 0px; " class="stylingblock-content-wrapper camarker-inner"><table cellspacing="0" cellpadding="0" role="presentation" style="width: 100%;"><tr><td><table cellspacing="0" cellpadding="0" role="presentation" style="width: 100%;"><tr><td valign="top" class="responsive-td" style="width: 100%; padding-bottom: 0px;">
+<table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- component version 1.0.64 --> <div><style data-testid="style">
+                    .disclaimer-text a, .disclaimer-text a:visited, .disclaimer-text a:hover, .disclaimer-text a:active, .disclaimer-text a:link {
+                        text-decoration: inherit;
+color: inherit;
+                    }
+                    </style><table align="center" width="486" cellpadding="0" cellspacing="0" border="0" id="unlinkDatesIOSWrapper"><tr><td style="text-align:justify;font-size:12px;font-family:HBHuev12-Light,HBHuev12-Regular,Sohne-Buch,Sohne-Buch-Kursiv,Sohne-Kraftig,Sohne-Kraftig-Kursiv,Sohne-Leicht,Sohne-Leicht-Kursiv, Verdana, Geneva, Tahoma, sans-serif;line-height:14.4px;letter-spacing:0px" id="unlinkDatesIOS" class="apple_link disclaimer-text" data-testid="content"><strong>4 Free Gifts:</strong> Offer expires November 9, 2025 (11:59 P.M. PT).  Pick one, two, three, or four free products (products selected must be different) from the following choices: one etched wine glass; one cotton tote bag (limited quantities available); one free 16x20 print (matte) or one 16x20 collage poster; or one free square, circle, rectangular or gift-tag shaped metal ornament through 
+<a href="https://click.em.shutterfly.com/?qs=51eda73a6d55b3773d8ff980961f2241fb932b1e2e0f8c538693b857e6f96c2ef74bc41e5c8151482507a1abf2763ffc76c31927a8024dab497354a0e67c19a4" style="text-decoration:none;color:black">shutterfly.com
+</a> or the Shutterfly app. Free product offers cannot be combined with free shipping. Shipping will apply. Taxes may apply. Not valid on other metal ornament shapes, types or styles, other print sizes/finish, prepaid or annual savings plans, other products and prior purchases. Offer cannot be combined with other code-based $-off offers. Promo can only be redeemed once per account and/or billing address. Code can only be entered once. Offer cannot be redeemed for cash or cash equivalent. Cannot be combined with select offers or credits. Not valid for resale. Shutterfly may modify or replace any part of these terms and conditions without notice at any time. Shutterfly may refuse or cancel orders due to promo and pricing errors, fraud, misuse, or unauthorized use. Valid while supplies last.
+<br><br></td></tr></table></div></td></tr></table></td></tr></table></td></tr><tr><td><table cellspacing="0" cellpadding="0" role="presentation" style="width: 100%;"><tr><td valign="top" class="responsive-td" style="width: 100%; padding-top: 0px;"></td></tr></table></td></tr></table></td></tr></table></td></tr></table></td></tr></table></td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- component version 1.0.64 --> <div><style data-testid="style">
+                    .disclaimer-text a, .disclaimer-text a:visited, .disclaimer-text a:hover, .disclaimer-text a:active, .disclaimer-text a:link {
+                        text-decoration: inherit;
+color: inherit;
+                    }
+                    </style><table align="center" width="486" cellpadding="0" cellspacing="0" border="0" id="unlinkDatesIOSWrapper"><tr><td style="text-align:justify;font-size:12px;font-family:HBHuev12-Light,HBHuev12-Regular,Sohne-Buch,Sohne-Buch-Kursiv,Sohne-Kraftig,Sohne-Kraftig-Kursiv,Sohne-Leicht,Sohne-Leicht-Kursiv, Verdana, Geneva, Tahoma, sans-serif;line-height:14.4px;letter-spacing:0px" id="unlinkDatesIOS" class="apple_link disclaimer-text" data-testid="content"><strong>50% Off Your Entire Order:</strong> Offer expires November 9, 2025 (11:59 P.M. PT). Offer is good for 50% off regular-priced orders through <a href="https://click.em.shutterfly.com/?qs=51eda73a6d55b3773d8ff980961f2241fb932b1e2e0f8c538693b857e6f96c2ef74bc41e5c8151482507a1abf2763ffc76c31927a8024dab497354a0e67c19a4" style="text-decoration:none;color:black">shutterfly.com</a>, 
+<a href="https://click.em.shutterfly.com/?qs=51eda73a6d55b3773ed44334c4053aa41385ddeb3c61cd58a3cb1e32fe3eaacffe88f07a6514f71b04523fb540af5821bfc5f2e9d6fe0d1eec4e2c365a81438e" style="text-decoration:none;color:black">tinyprints.com
+</a> or the Shutterfly app. Not valid on sale prices, personalized storybooks, annual or prepaid plans, video plans, gift cards, cards sent using mailing services, designer review services, orders placed for in-store pick up, other products and prior purchases. Offer cannot be combined with other code-based %-off or $-off offers. Taxes and shipping may apply. Offer cannot be redeemed for cash or cash equivalent. Cannot be combined with select offers or credits. Shutterfly may modify or replace any part of these terms and conditions without notice at any time. Shutterfly may refuse or cancel orders due to promo and pricing errors, fraud, misuse, or unauthorized use. Valid while supplies last.<br><br><strong>Free Recipient Addressing:
+</strong> Offer expires November 9, 2025 (11:59 P.M. PT). Offer is good for free recipient printed addressing with select Shutterfly cards orders through <a href="https://click.em.shutterfly.com/?qs=51eda73a6d55b3773d8ff980961f2241fb932b1e2e0f8c538693b857e6f96c2ef74bc41e5c8151482507a1abf2763ffc76c31927a8024dab497354a0e67c19a4" style="text-decoration:none;color:black">shutterfly.com
+</a>, tinyprins.com or the Shutterfly app. Not valid on return addressing, prepaid or annual savings plans, cards sent using mailing services, orders placed for in-store pickup, other products and prior purchases. Offer cannot be combined with code-based $-off offers. Offer cannot be redeemed for cash or cash equivalent. Cannot be combined with select offers or credits. Shutterfly may modify or replace any part of these terms and conditions without notice at any time. Shutterfly may refuse or cancel orders due to promo and pricing errors, fraud, misuse, or unauthorized use.<br><br><strong>Unlimited Free Prints (App Exclusive):
+</strong> Offer is good for unlimited free 4x4 and/or 4x6 prints through the Shutterfly apps only. Taxes, shipping and handling will apply. Offer will automatically apply at checkout. Free offers cannot be combined with free shipping. Not valid on other sizes, other products, prepaid plans, prior purchases, orders placed for in-store pick up and orders made on <a href="https://click.em.shutterfly.com/?qs=51eda73a6d55b3773d8ff980961f2241fb932b1e2e0f8c538693b857e6f96c2ef74bc41e5c8151482507a1abf2763ffc76c31927a8024dab497354a0e67c19a4" style="text-decoration:none;color:black">shutterfly.com
+</a> and our mobile-friendly site. Each order can only contain a maximum of 200 photos. Please start a new order for adding more items. We reserve the right to refuse or cancel orders for any reason at our sole discretion, including, but not limited to: product availability, promo errors, price inaccuracies, fraudulent use or general misuse of offer codes and selecting more free gifts than set forth in your individual offer terms. Offer cannot be redeemed for cash or combined with select offers or credits. Not valid for resale. We reserve the right to modify or replace any part of these terms and conditions without notice, at our sole discretion. Offer valid while supplies last.<br><br></td></tr></table></div></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner">
+<table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner">
+
+<table width="500" cellpadding="0" cellspacing="0" border="0" align="center">   
+  <tr>
+    <td align="center" style="font-size: 10px; font-family: Arial, sans-serif; color: #666666; font-weight: bold; line-height: 13px;">This offer is exclusively for the account of 
+      <span class="apple_link_footer">mstowe@baddomain.com</span>.
+    </td>
+  </tr>
+  
+  <tr>
+    <td style="line-height: 10px;">
+      <img style="display: block;" src="https://cdn.staticsfly.com/i/e/z/sp.gif" width="500" height="10" border="0" alt="">
+    </td>
+  </tr>
+  
+  <tr>
+    <td align="center" style="font-size: 10px; font-family: Arial, sans-serif; color: #666666; line-height: 13px;">
+      <a rilt="Footer_Trms_" style="color: #6666CC;"  href="https://click.em.shutterfly.com/u/?qs=ad5c5882b89a44006c57cc89eb3fcfdffaa7e11705417bb5cf61e0fb84b176b9a0d27de5abfe0b0f5b3aa81a919a191b638d18e2e52e9227fc6db33a1fb850f2">Terms of Use</a> | 
+      <a rilt="Footer_Prvcy_" style="color: #6666CC;"  href="https://click.em.shutterfly.com/u/?qs=ad5c5882b89a4400dab724e735e46d2ef0d622358bae0e968ce02e53b0ac92c6d43a826b5636f2d721e4149414c230e3e1abd183c6118ab8d2c55b4127d4b51c">Privacy</a> | 
+      <a rilt="Footer_Help_" style="color: #6666CC;"  href="https://click.em.shutterfly.com/u/?qs=ad5c5882b89a44005ee268b18306e68a445ac2bd6a23d86c291c14e8dec19e8e04732acf9c4241f1bb8b40650e054b07da240275df617cf002c6e5201591f830">Help</a> | 
+      <a rilt="Footer_MyPref_" style="color: #6666CC;"  href="https://click.em.shutterfly.com/u/?qs=ad5c5882b89a44003d6b01d17df84c2ed6398a1f30d9b761db20bae838b306c3ca0d942b996b2d3d303210e184f66373e6bb51c8f46bcd8f73065b19769b39a6">My preferences</a> | 
+      <a rilt="Footer_Unsub_Salesforce" style="color: #6666CC;"  href="https://click.em.shutterfly.com/u/?qs=ad5c5882b89a44002b948056b3443807fe8d46b04b44f96ccf5242c6356b0d8a84d19a296b3babf7f45e3748b45137154ded7c7383a90d89ba06348c1d751bae" >Unsubscribe</a> | 
+      <a rilt="Footer_SafeLst_" style="color: #6666CC;"  href="https://click.em.shutterfly.com/u/?qs=ad5c5882b89a44008f9b22786570eac3b079ecc6454a1d62f7ae8b48b7e1f46f08d26879f061dc46f51cebddb1babae3e5801a80f4b9645e23933f760cce9ad1">Safelist us</a>
+                  | 
+      <a rilt="Footer_SafeLst_" style="color: #6666CC;"  href="https://view.em.shutterfly.com/?qs=401ac1cdfbffb819238b0d0ecc2433c1361df177817f5cb24815ca78649280f42cb88683db14ab876d02abbfb5898ed5c087f0b753c0557c35657889d16e7b1259b839cc0e8cef89d4454d0ac4da757b">View web version</a>
+    </td>    
+  </tr>
+  
+  <tr>
+    <td style="line-height: 10px;">
+      <img style="display: block;" src="https://cdn.staticsfly.com/i/e/z/sp.gif" width="1" height="10" border="0" alt="">
+    </td>
+  </tr>
+  
+  <tr>
+    <td align="center" width="500" style="font-size: 10px; font-family: Arial, sans-serif; color: #666666;">Shutterfly, LLC. is located at 
+      <span class="apple_link_footer">10 Almaden Blvd, Suite 900, San Jose, CA 95113</span>.
+      <br>&copy; 
+      <span class="apple_link_footer" style="color:#666666; text-decoration: none;">1999-2025</span> Shutterfly, LLC. All rights reserved. Shutterfly and the Shutterfly logo are service marks and trademarks of Shutterfly, LLC. Any rights not expressly granted herein are reserved.
+    </td>
+  </tr>
+  
+  <tr>
+    <td style="line-height: 10px;">
+      <img style="display: block;" src="https://cdn.staticsfly.com/i/e/z/sp.gif" width="500" height="10" border="0" alt="">
+    </td>
+  </tr>  
+</table>
+</td></tr></table>
+
+</td></tr></table>
+
+
+          <div class="gmailfix"                style="white-space:nowrap; font:15px courier; line-height:0;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+          </div>
+        </td>
+      </tr>
+    </table>
+    <!-- END EMAIL CONTENT -->
+
+    <!-- rptags: Shutterfly batch -->
+    
+    <table width="100%" border="0" cellpadding="0" cellspacing="0" align="center">
+      <tr>
+        <td valign="top">
+          
+        </td>
+      </tr>
+    </table>
+    
+    
+    <!-- RESPONSYS TRACKING - THIS SECTION OF CODE WAS PREVIOUSLY IN THE FOOTER. MOVED TO MASTER TEMPLATE -->
+    <table width="400" border="0" cellpadding="0" cellspacing="0" align="center">
+      <tr>
+        <td align="center" style="font-size: 9px; font-family: Arial, Helvetica, sans-serif; color:#ffffff;"><span class="cust_id_footer">027062615775 | NR_TARGETEDFLASH_20251106 | </span></td>
+      </tr>
+      <tr>
+        <td style="line-height: 10px;"><img src="https://cdn.staticsfly.com/i/e/z/sp.gif" width="400" height="10" border="0" /></td>
+      </tr>
+    </table>
+
+    
+    <!-- Mediaplex pixel for display team requested by Christine Cuu -->
+    <img src="https://adfarm.mediaplex.com/ad/bn/17585-124500-29133-0?mpt=" width="1" height="1" border="0">
+    <!-- End Mediaplex -->
+
+
+  </body>
+</html>

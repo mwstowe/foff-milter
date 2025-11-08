@@ -1,0 +1,871 @@
+Return-Path: <bounce-cr1-ZH_consumer_DNBAN11082025c1864642b1-h-1c6e7cbb42=2@response.email.consumerreports.org>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTPS id 5A8FWNKa034422
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <mstowe@baddomain.com>; Sat, 8 Nov 2025 15:32:23 GMT
+	(envelope-from bounce-cr1-ZH_consumer_DNBAN11082025c1864642b1-h-1c6e7cbb42=2@response.email.consumerreports.org)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (2048-bit key; unprotected) header.d=fbl.zetaglobal.net header.i=@fbl.zetaglobal.net header.b=Qq/Fyoky;
+	dkim=pass (2048-bit key; unprotected) header.d=email.consumerreports.org header.i=@email.consumerreports.org header.b=H5A8r4Mc
+X-Authentication-Warning: juliett.baddomain.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.baddomain.com
+Received: from consumer-121-2.bm16.maas.zetaglobal.net (consumer-121-2.bm16.maas.zetaglobal.net [96.47.27.128])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 5A8FWMdV040268
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO)
+	for <mstowe@baddomain.com>; Sat, 8 Nov 2025 09:32:22 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 5A8FWMdV040268
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (2048-bit key, unprotected) header.d=fbl.zetaglobal.net header.i=@fbl.zetaglobal.net header.a=rsa-sha256 header.s=v2 header.b=Qq/Fyoky;
+	dkim=pass (2048-bit key, unprotected) header.d=email.consumerreports.org header.i=@email.consumerreports.org header.a=rsa-sha256 header.s=v2 header.b=H5A8r4Mc
+DKIM-Signature: a=rsa-sha256; bh=q1uXGQlhBFKk1SAfnUxCRPn+EsZvRPrpn9zpvU6Vlkc=;
+ c=relaxed/relaxed; d=fbl.zetaglobal.net;
+ h=DKIM-Signature:X-Mailer-Info:X-Mailer-Info-Extra:Subject:From:To:Date:Received:Message-ID:Reply-to:List-Unsubscribe:Feedback-ID:X-rpcampaign:X-cid:X-messageuid:Precedence:List-Unsubscribe-Post:campaign_token:campaign_id:rcpt_domain:MIME-Version:Content-Type;
+ s=v2; t=1762615936; v=1;
+ b=Qq/FyokyIGaod8aiezRxmBCYM4V3+Nmtzjs++BBzGlEXmbYDC2eI4Hpr4mlpCr9hCpI6/ncQ
+ FL+quHv+EZ/U4feCMIBq3AlZR43cefkIz1ohf1DBOl3AvByn6HzzTCh51iE4FQ4D96RpIEEBJf0
+ EQJiJOKPMQ5eZ4A1jM4ul6HLPAEwhQFUZ5ka9C9ywuLiD8VoXV0nOdZvuCLsElrFmE8XTuB+9mN
+ VqdIQE0W+8SVCG5f489+QhmchanM2PAifU5VQZzVypJB3kg9qzwm/Gxc5ss7Zpd89vkIobSn+6j
+ KhSUZhiZsRA3+HdfFV64IzbtMDj3S3Rb0wMuVfDIOPy4w==
+DKIM-Signature: a=rsa-sha256; bh=q1uXGQlhBFKk1SAfnUxCRPn+EsZvRPrpn9zpvU6Vlkc=;
+ c=relaxed/relaxed; d=email.consumerreports.org;
+ h=X-Mailer-Info:X-Mailer-Info-Extra:Subject:From:To:Date:Received:Message-ID:Reply-to:List-Unsubscribe:Feedback-ID:X-rpcampaign:X-cid:X-messageuid:Precedence:List-Unsubscribe-Post:campaign_token:campaign_id:rcpt_domain:MIME-Version:Content-Type;
+ s=v2; t=1762615936; v=1;
+ b=H5A8r4MclL6SP8uNu2bJ8/qNLEkIZT20AGTDFPCltPTfZs8mwSm3qABlgTqDO0rbeLrGEIdV
+ 6h6hdaaTVlnFDL67xT7nR1/wMJRnpY4HZdwqpdYiH0f4TArN3hDsE8wFsmDGpk9gF5vlO4CwqIG
+ PE5v5qpClmwejrN4EBPuiKJcUFvMxrlG3j9l0k+XswNmyv3eIluqWhJZhquTn9+qWgptbkQyEzF
+ YjH2RpsTy37MjqmDblHFJT8eHvF8b1wJkqyxpgLPDReOVfw6QAivV22FCj+/Ok29zH6FTh24eTa
+ 0CV+7Gnfiu3mQyz2/zngjSXw3o4lhpwQ/J/ZKLglMzTBw==
+X-Mailer-Info: 10.jJXM.oHafN2buNXdtVmcfRmbiFmbxEDM4IDMyUzYxgjN0YDNyIWM.02c092
+ dlBkYhRGZv1WYp5mLj9Wb.snItlGZiojIxcjNyYTM2ETM0QTMxkTNzIWO5QTNlJDN5ICLiMGdioj
+ IjJXLj9WbtVnbpNWY0l2buNXLhJ2N1E2M2QWMzYDZ5UzM1EjZxkTZ3QmNjBjMyE2NlJWLxICLiIH
+ ZiojIiFGZk9WbhlmbuM2btJSf..xEDM4IDMyUzQxgjN0YDNyIUM..
+X-Mailer-Info-Extra: 1c6e7cbb42:0QMCJDN2QjN4EzQ1IDMygDMxEDApBQfi02bj5i
+ bpFWbvRGZhJmI6ICZyJCLiETLiV2NhJjMwMmNkdTZ5EjZxUzM1kDZ2MTMkZzMhVzNiFWL
+ z52bpRXYjlmb11WbvNWLyNmI6ICdjJCLikDNyUWN0kTOiNTN5ETM0QTMxYTM2IjN3EjI6
+ ICZp1mI7BwYA02bj5ibpFWbvRGZhJGQld3b0NXb++
+Subject: You're invited to take our Fall Survey
+From: Consumer Reports <annualsurveyteam@email.consumerreports.org>
+To: mstowe@baddomain.com
+Date: 08 Nov 2025 15:32:16 -0000
+Received: from 10.118.28.239 by 10.119.0.16 with http; 08 Nov 2025 15:32:16 +0000
+Message-ID: <mid-1762616114411953b9945e249@response.email.consumerreports.org>
+Reply-to: "Consumer Reports"<annualsurveyteam@response.email.consumerreports.org>
+List-Unsubscribe: <https://view.email.consumerreports.org/messages/1762616114411953b9945e249/unsubscribe>, <mailto:unsubscribe-1762616114411953b9945e249@response.email.consumerreports.org?subject=Unsubscribe>
+Feedback-ID: ab75a36d136d95351f19e7d6c022a7eb:cr-communications:broadcast:bme
+X-rpcampaign: crcommunications1864642_1
+X-cid: crcommunications1864642_1
+X-messageuid: 1762616114411953b9945e249
+Precedence: bulk
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+campaign_token: cr-communications-ab75a36d136d95351f19e7d6c022a7eb-1
+campaign_id: 1864642
+rcpt_domain: baddomain.com
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="==83af2728ebf8de9800a64e19f3f34838"
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Sat, 08 Nov 2025 15:32:23 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Sat, 08 Nov 2025 09:32:22 -0600 (CST)
+X-Spam-Flag: YES
+X-FOFF-Rule-Matched: Analytics: Generic Sender Names (juliett.baddomain.com)
+X-FOFF-Rule-Matched: Adult Content: International romance and dating scams (juliett.baddomain.com)
+X-FOFF-Rule-Matched: Analytics: Generic Sender Names (hotel.baddomain.com)
+X-FOFF-Rule-Matched: Adult Content: International romance and dating scams (hotel.baddomain.com)
+X-FOFF-Score: 80 - foff-milter v0.6.9 (juliett.baddomain.com)
+X-FOFF-Score: 80 - foff-milter v0.6.9 (hotel.baddomain.com)
+
+This is a multi-part message in MIME format.
+
+--==83af2728ebf8de9800a64e19f3f34838
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+It looks like your email client might not support HTML formatted email.
+
+Try opening this email in another email client.
+
+Or, open the following link to view this email in a browser:
+https://e.email.consumerreports.org/click?EbXN0b3dlQGJhZGRvbWFpbi5jb20/C=
+eyJtaWQiOiIxNzYyNjE2MTE0NDExOTUzYjk5NDVlMjQ5IiwiY3QiOiJjci1jb21tdW5pY2F0=
+aW9ucy1hYjc1YTM2ZDEzNmQ5NTM1MWYxOWU3ZDZjMDIyYTdlYi0xIiwicmQiOiJiYWRkb21h=
+aW4uY29tIn0/UaHR0cHM6Ly92aWV3LmVtYWlsLmNvbnN1bWVycmVwb3J0cy5vcmcvbWVzc2F=
+nZXMvMTc2MjYxNjExNDQxMTk1M2I5OTQ1ZTI0OS9yYXc/SWkhfY29uc3VtZXJfRE5CQU4xMT=
+A4MjAyNWMxODY0NjQyYjE/LY3Ix/qP2J0X2VlPXhqcGhFbDg0WFEzUEw5OU1oYmVxcUpHTlE=
+3eUM4dlkxUUoyOVdLYnZsQlA3TTNvMnlyYzF0MWJqejBSSDdoMnImYnRfdHM9MTc2MjYxNTg=
+4NzYzMA/gaQ9igA/JMTEwODIwMjVDMTg2NDY0MkIx/s2v21d69beb
+
+------------------------------------------------------------------------=
+-------
+
+We respect your privacy, if this e-mail has been sent to you by error or=
+ you no longer wish to receive email, open the following link in a brows=
+er to unsubscribe:
+https://e.email.consumerreports.org/click?EbXN0b3dlQGJhZGRvbWFpbi5jb20/C=
+eyJtaWQiOiIxNzYyNjE2MTE0NDExOTUzYjk5NDVlMjQ5IiwiY3QiOiJjci1jb21tdW5pY2F0=
+aW9ucy1hYjc1YTM2ZDEzNmQ5NTM1MWYxOWU3ZDZjMDIyYTdlYi0xIiwicmQiOiJiYWRkb21h=
+aW4uY29tIn0/UaHR0cHM6Ly92aWV3LmVtYWlsLmNvbnN1bWVycmVwb3J0cy5vcmcvbWVzc2F=
+nZXMvMTc2MjYxNjExNDQxMTk1M2I5OTQ1ZTI0OS91bnN1YnNjcmliZQ/SWkhfY29uc3VtZXJ=
+fRE5CQU4xMTA4MjAyNWMxODY0NjQyYjE/LY3Ix/qP2J0X2VlPXhqcGhFbDg0WFEzUEw5OU1o=
+YmVxcUpHTlE3eUM4dlkxUUoyOVdLYnZsQlA3TTNvMnlyYzF0MWJqejBSSDdoMnImYnRfdHM9=
+MTc2MjYxNTg4NzYzMA/gaQ9igA/JMTEwODIwMjVDMTg2NDY0MkIx/saq17d59d39
+
+--==83af2728ebf8de9800a64e19f3f34838
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://=
+www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns=3D"http://www.w3.org/1999/xhtml" lang=3D"en" xml:lang=3D"en"=
+ xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:o=3D"urn:schemas-micros=
+oft-com:office:office">
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3DUTF-8"=
+ charset=3D"utf-8">
+<meta name=3D"viewport" content=3D"width=3Ddevice-width, initial-scale=3D=
+1.0">
+<meta http-equiv=3D"X-UA-Compatible" content=3D"IE=3Dedge">
+<!--<meta name=3D"color-scheme" content=3D"light dark">
+         <meta name=3D"supported-color-schemes" content=3D"light dark">-=
+->=20
+<!--[if !mso]>
+      <style type=3D"text/css">table {font-size:1px;line-height:0;mso-ma=
+rgin-top-alt:1px;}*{line-height:116%!important;}</style>
+      <![endif]-->=20
+<!--[if gte mso 9]>
+      <xml>
+         <o:OfficeDocumentSettings>
+            <o:AllowPNG/>
+            <o:PixelsPerInch>96</o:PixelsPerInch>
+         </o:OfficeDocumentSettings>
+      </xml>
+      <![endif]-->
+<style type=3D"text/css">
+/*-----GLOBAL styleS------*/=20
+img {
+    border: 0;
+    height: auto;
+    line-height: 100%;
+    outline: none;
+    text-decoration: none;
+}
+table {
+    border-collapse: collapse!important;
+}
+body {
+    font: 14px Arial, sans-serif;
+    height: 100%!important;
+    margin: 0!important;
+    padding: 0!important;
+    width: 100%!important;
+}
+img {
+    font: 14px Arial, sans-serif;
+    line-height: 16px;
+}
+p, h1, h2, h3 {
+    margin: 0 auto;
+    font-family: Averta, Arial, Helvetica, sans-serif;
+}
+/*CLIENT SPECIFIC*/=20
+body, table, td, a {
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+}
+table, td {
+    mso-table-lspace: 0pt;
+    mso-table-rspace: 0pt;
+}
+img {
+    -ms-interpolation-mode: bicubic;
+}
+a[x-apple-data-detectors] {
+    color: inherit!important;
+    text-decoration: none!important;
+    font-size: inherit!important;
+    font-family: inherit!important;
+    font-weight: inherit!important;
+    line-height: inherit!important;
+}
+#MessageViewBody, #MessageWebViewDiv {
+    width: 100%!important;
+}
+.gmailfix {
+    display: none;
+    display: none!important;
+}
+.single_column_img {
+    width: 100% !important;
+    text-align: center!important;
+    height: auto!important;
+}
+td.single_column_td {
+    width: 100% !important;
+    text-align: center!important;
+}
+table.wrapper_table {
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    text-align: center!important;
+}
+
+@media only screen and (max-width: 640px) {
+.shrinkydink {
+    width: 50px!important;
+}
+.autobox {
+    padding-bottom: 0 !important;
+}
+.mobile {
+    width: 100%!important;
+    display: block!important;
+    padding: 0 !important;
+}
+.grayboxmiddle {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+    padding-bottom: 0 !important;
+    padding-top: 0px !important;
+}
+.hide_two {
+    display: none!important;
+    height: 0px!important;
+    width: 0px!important;
+}
+.unhide_two {
+    display: inline!important;
+}
+.grayboxtitle {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+}
+
+/*-----DARK MODE------*/   =20
+@media (prefers-color-scheme: dark) {
+}
+
+/*-----MOBILE------*/   =20
+@media screen and (max-width: 480px), screen and (max-device-width: 480p=
+x) {
+.grayboxtitle {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+.grayboxmiddle {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+    padding-bottom: 0 !important;
+    padding-top: 0px !important;
+}
+.runningboxtitle {
+    padding-bottom: 40px !important;
+    padding-top: 0px !important;
+    margin: 0 auto !important;
+    text-align: center !important;
+}
+.autobox {
+    padding-bottom: 0 !important;
+}
+.resizeBox {
+    width: 240px!important;
+    font-size: 20px!important;
+    line-height: 29px!important;
+}
+.resize340 {
+    width: 100%!important;
+    min-width: 100%!important;
+}
+.resize320 {
+    width: 320px!important;
+    min-width: 320px!important;
+}
+.resize300 {
+    width: 300px!important;
+    min-width: 300px!important;
+}
+.resize298 {
+    width: 299px!important;
+    min-width: 299px!important;
+    float: clear !important;
+}
+.resize280 {
+    width: 280px!important;
+    min-width: 280px!important;
+}
+.resize270 {
+    width: 270px!important;
+    min-width: 270px!important;
+}
+.resize270B {
+    width: 270px!important;
+    min-width: 270px!important;
+}
+.resize100 {
+    width: 90px!important;
+    min-width: 90px!important;
+    display: block!important;
+}
+.resize250 {
+    width: 250px!important;
+    min-width: 250px!important;
+}
+.padOnMobile {
+    display: block!important;
+    padding-bottom: 20px;
+}
+table.wrapper_table {
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    text-align: center!important;
+}
+.hideMobile {
+    display: none!important;
+}
+.showMobile {
+    display: block!important;
+}
+.stack {
+    display: table!important;
+    width: 100%!important;
+}
+.stack2 {
+    display: table!important;
+}
+.stack3 {
+    display: table!important;
+    width: 200px! important;
+    margin: 0 auto !important;
+}
+.headerCopy {
+    font-size: 24px!important;
+    line-height: 28px!important;
+}
+.bodyCopy {
+    font-size: 24px!important;
+    line-height: 26px!important;
+}
+.bodyCopy2 {
+    font-size: 14px!important;
+    line-height: 20px!important;
+}
+.bodyCopy3 {
+    font-size: 10px!important;
+    line-height: 18px!important;
+}
+.bodyCopy4 {
+    font-size: 18px!important;
+    line-height: 22px!important;
+}
+.ctext {
+    text-align: center!important;
+}
+.padlr20 {
+    padding-left: 20px!important;
+    padding-right: 20px!important;
+}
+.padlr10 {
+    padding-left: 10px!important;
+    padding-right: 10px!important;
+} =20
+.padlr30 {
+    padding-left: 30px!important;
+    padding-right: 30px!important;
+}
+.padlr40 {
+    padding-left: 40px!important;
+    padding-right: 40px!important;
+}
+.padlr0 {
+    padding-left: 0px!important;
+    padding-right: 0px!important;
+}
+.padl0 {
+    padding-left: 0px!important;
+}
+.padr0 {
+    padding-right: 0px!important;
+}
+.padl20 {
+    padding-left: 20px!important;
+    padding-right: 0px!important;
+}
+.padr30 {
+    padding-right: 30px!important;
+}
+.padr20 {
+    padding-right: 20px!important;
+}
+.padb0 {
+    padding-bottom: 0px!important;
+}
+.padt20 {
+    padding-top: 20px!important;
+}
+.padt10 {
+    padding-top: 10px!important;
+}
+.padb10 {
+    padding-bottom: 10px!important;
+}
+.htreset {
+    height: auto!important;
+}
+.mobile {
+    width: 100%!important;
+    display: block!important;
+    padding: 0 !important;
+}
+td.listBullet {
+    padding-left: 5px !important;
+}
+}
+</style>
+<title></title>
+</head>
+<body style=3D"-ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100=
+%; font: 14px Arial, sans-serif; height: 100% !important; margin: 0; pad=
+ding: 0; width: 100% !important;">
+ =20
+
+
+
+
+<!--PREVIEW--->
+<div style=3D"font-size: 1px; display: none!important; color:#FFFFFF; li=
+ne-height:0; max-height:0; max-width:0; opacity:0; overflow:hidden;">You=
+r participation is critical!=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C=
+ =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C=
+ =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C=
+ =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C=
+ =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C=
+ =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C=
+ =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C=
+ =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C=
+ =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C=
+ =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C=
+ =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C=
+</div>
+<!---/PREVIEW--->=20
+<!---BEGIN WRAPPER--->
+<table width=3D"640" cellspacing=3D"0" cellpadding=3D"0" border=3D"0" al=
+ign=3D"center" style=3D"max-width:640px; width:100%; padding-left: 0px; =
+padding-right: 0px;" bgcolor=3D"#FFFFFF">
+  <tr>
+    <td align=3D"center" valign=3D"top" style=3D"padding-left: 20px; pad=
+ding-right: 20px;"><table width=3D"600" cellspacing=3D"0" cellpadding=3D=
+"0" border=3D"0" align=3D"center" style=3D"max-width:600px; width:100%;"=
+>
+        <tr>
+          <td align=3D"center" style=3D"font-family:Arial, Helvetica, sa=
+ns-serif; font-size:10px; line-height: 15px; text-align:center; padding-=
+bottom: 0px; padding-top: 10px; color:#000000;" valign=3D"middle"><a sty=
+le=3D"text-decoration: none; color: #000000;" href=3D"https://e.email.co=
+nsumerreports.org/click?EbXN0b3dlQGJhZGRvbWFpbi5jb20/CeyJtaWQiOiIxNzYyNj=
+E2MTE0NDExOTUzYjk5NDVlMjQ5IiwiY3QiOiJjci1jb21tdW5pY2F0aW9ucy1hYjc1YTM2ZD=
+EzNmQ5NTM1MWYxOWU3ZDZjMDIyYTdlYi0xIiwicmQiOiJiYWRkb21haW4uY29tIn0/VaHR0c=
+HM6Ly92aWV3LmVtYWlsLmNvbnN1bWVycmVwb3J0cy5vcmcvbWVzc2FnZXMvMTc2MjYxNjExN=
+DQxMTk1M2I5OTQ1ZTI0OS9yYXc/SWkhfY29uc3VtZXJfRE5CQU4xMTA4MjAyNWMxODY0NjQy=
+YjE/LY3Ix/qP2J0X2VlPXhqcGhFbDg0WFEzUEw5OU1oYmVxcUpHTlE3eUM4dlkxUUoyOVdLY=
+nZsQlA3TTNvMnlyYzF0MWJqejBSSDdoMnImYnRfdHM9MTc2MjYxNTg4NzYzMA/gaQ9igA/JM=
+TEwODIwMjVDMTg2NDY0MkIx/sfp680933a4" data-location=3D"t1"><font style=3D=
+"text-decoration:none;color:#000000;">View Online</font></a></td>
+        </tr>
+      </table></td>
+  </tr>
+</table>
+<table role=3D"presentation" class=3D"resize340" cellspacing=3D"0" cellp=
+adding=3D"0" border=3D"0" width=3D"600" align=3D"center" style=3D"max-wi=
+dth:600px; width:600px; background-color:#ffffff; border-collapse:collap=
+se; table-layout: fixed; margin:0 auto;">
+  <tr>
+    <td align=3D"center">
+<!---HEADER--->=20
+      <!---BODY--->
+     =20
+      <table role=3D"presentation" class=3D"resize340" cellspacing=3D"0"=
+ cellpadding=3D"0" border=3D"0" width=3D"600" align=3D"center" style=3D"=
+max-width:600px; width:600px; background-color:#ffffff; border-collapse:=
+collapse; table-layout: fixed; margin:0 auto;">
+        <tr>
+          <td align=3D"center" style=3D"">
+<!---PUT MODULES HERE--->=20
+            <!---COPY BLOCK MODULES W/ IMAGE--->=20
+            <!-- SHOW/HIDE Hero/Image --->
+           =20
+            <table align=3D"center" border=3D"0" cellpadding=3D"0" cells=
+pacing=3D"0" class=3D"resize340" role=3D"presentation" style=3D"width:60=
+0px; border-collapse:collapse; table-layout: fixed; margin:0 auto;" widt=
+h=3D"600">
+              <tr>
+                <td align=3D"center" style=3D"padding-bottom: 0px; paddi=
+ng-top: 10px;"><a target=3D"_blank" data-reportingname=3D"Header-Image" =
+href=3D"https://e.email.consumerreports.org/click?EbXN0b3dlQGJhZGRvbWFpb=
+i5jb20/CeyJtaWQiOiIxNzYyNjE2MTE0NDExOTUzYjk5NDVlMjQ5IiwiY3QiOiJjci1jb21t=
+dW5pY2F0aW9ucy1hYjc1YTM2ZDEzNmQ5NTM1MWYxOWU3ZDZjMDIyYTdlYi0xIiwicmQiOiJi=
+YWRkb21haW4uY29tIn0/VaHR0cHM6Ly93d3cuY29uc3VtZXJyZXBvcnRzLm9yZy9jcm8vaW5=
+kZXguaHRt/SWkhfY29uc3VtZXJfRE5CQU4xMTA4MjAyNWMxODY0NjQyYjE/LY3Ix/qP3V0bV=
+9zb3VyY2U9YWN4aW9tJnV0bV9tZWRpdW09ZW1haWwmdXRtX2NhbXBhaWduPTIwMjUxMTA4X2=
+N1YXFiX3E0X2ZhbGwyMDI1X3JlbWluZGVyXzImYnRfZWU9eGpwaEVsODRYUTNQTDk5TWhiZX=
+FxSkdOUTd5Qzh2WTFRSjI5V0tidmxCUDdNM28yeXJjMXQxYmp6MFJIN2gyciZidF90cz0xNz=
+YyNjE1ODg3NjMw/gaQ9igA/JMTEwODIwMjVDMTg2NDY0MkIx/s7m592e65a8" style=3D"t=
+ext-decoration: none;" data-location=3D"t2"><img alt=3D"CR | QQ - Quarte=
+rly Questionnaire By Consumer Reports" border=3D"0" class=3D"hideMobile"=
+ src=3D"https://images.email.consumerreports.org/images/584be0a56f611024=
+2a417c6894c58cdb/QQ_Survey_2025/QQ-Surveys-Email-Final---Header_Desktop_=
+1.png" style=3D"border:0; padding:0; outline:0; display:block; width:100=
+%; margin:auto;" width=3D"600"><!--[if !mso]><!--><img alt=3D"CR | QQ - =
+Quarterly Questionnaire By Consumer Reports" border=3D"0" class=3D"showM=
+obile" src=3D"https://images.email.consumerreports.org/images/584be0a56f=
+6110242a417c6894c58cdb/QQ_Survey_2025/QQ-Surveys-Email-Final---Header_Mo=
+bile_1.png" style=3D"border:0; padding:0; outline:0; display:none; width=
+:100%; margin:auto;" width=3D"340"><!--<![endif]--></a></td>
+              </tr>
+            </table>
+            <!--			  Hero-->
+            <table align=3D"center" border=3D"0" cellpadding=3D"0" cells=
+pacing=3D"0" class=3D"resize340" role=3D"presentation" style=3D"width:60=
+0px; border-collapse:collapse; table-layout: fixed; margin:0 auto;" widt=
+h=3D"600">
+              <tr>
+                <td align=3D"center" style=3D"padding-bottom: 0px; paddi=
+ng-top: 0px;"><a target=3D"_blank" data-reportingname=3D"Header-Image" h=
+ref=3D"https://e.email.consumerreports.org/click?EbXN0b3dlQGJhZGRvbWFpbi=
+5jb20/CeyJtaWQiOiIxNzYyNjE2MTE0NDExOTUzYjk5NDVlMjQ5IiwiY3QiOiJjci1jb21td=
+W5pY2F0aW9ucy1hYjc1YTM2ZDEzNmQ5NTM1MWYxOWU3ZDZjMDIyYTdlYi0xIiwicmQiOiJiY=
+WRkb21haW4uY29tIn0/VaHR0cHM6Ly9zdXJ2ZXkuY29uc3VtZXJyZXBvcnRzLm9yZy93aXgv=
+cDY4NjUyNzI4OTY5NC5hc3B4/SWkhfY29uc3VtZXJfRE5CQU4xMTA4MjAyNWMxODY0NjQyYj=
+E/LY3Ix/qP19fc2lkX189amNEVmtjNXczbF9BUng2VDZfdlB5b2s2UUhBcjExNk9QcWI4a2d=
+naWtpal91NjJjOEd1a0tFeDdOLUZMR3ZtN0dzUjV1cUgtUER4cWNkMVJncEJnYlEyJmtjMj0=
+yNTQ0MUIyMDAyJnV0bV9zb3VyY2U9YWN4aW9tJnV0bV9tZWRpdW09ZW1haWwmdXRtX2NhbXB=
+haWduPTIwMjUxMTA4X2N1YXFiX3E0X2ZhbGwyMDI1X3JlbWluZGVyXzImYnRfZWU9eGpwaEV=
+sODRYUTNQTDk5TWhiZXFxSkdOUTd5Qzh2WTFRSjI5V0tidmxCUDdNM28yeXJjMXQxYmp6MFJ=
+IN2gyciZidF90cz0xNzYyNjE1ODg3NjMw/gaQ9igA/JMTEwODIwMjVDMTg2NDY0MkIx/s1o6=
+515ab31" style=3D"text-decoration: none;" data-location=3D"t3"><img alt=3D=
+"FALL 2025 | We want to hear from YOU! Our ratings are better with YOUR =
+help - take our survey today!" border=3D"0" class=3D"hideMobile" src=3D"=
+https://images.email.consumerreports.org/images/584be0a56f6110242a417c68=
+94c58cdb/QQ_Survey_2025/QQ-Surveys-Email-Final---Rollout_Fall_Desktop_1.=
+png" style=3D"border:0; padding:0; outline:0; display:block; width:100%;=
+ margin:auto;" width=3D"600">
+                  <!--[if !mso]><!-->
+                  <img alt=3D"FALL 2025 | We want to hear from YOU! Our =
+ratings are better with YOUR help - take our survey today!" border=3D"0"=
+ class=3D"showMobile" src=3D"https://images.email.consumerreports.org/im=
+ages/584be0a56f6110242a417c6894c58cdb/QQ_Survey_2025/QQ-Surveys-Email-Fi=
+nal---Rollout_Fall_Mobile_1.png" style=3D"border:0; padding:0; outline:0=
+; display:none; width:100%; margin:auto;" width=3D"340">
+                  <!--<![endif]-->
+                  </a></td>
+              </tr>
+            </table>
+            <!--			  Hero -->
+           =20
+            <!-- MAIN BODY -->=20
+            <!-- /MAIN BODY -->=20
+            <!-- MOD 1 -->
+           =20
+            <table role=3D"presentation" class=3D"resize340" cellspacing=
+=3D"0" cellpadding=3D"0" border=3D"0" width=3D"600" align=3D"center" sty=
+le=3D"width:600px; border-collapse:collapse; table-layout: fixed; margin=
+:0 auto; background-color: ;" bgcolor=3D"">
+              <tr>
+                <td class=3D"resize320" align=3D"center" style=3D"paddin=
+g-top: 40px; padding-bottom: 50px; padding-left: 2px; padding-right: 2px=
+; border-radius: 20px;"><table role=3D"presentation" class=3D"resize320"=
+ cellspacing=3D"0" cellpadding=3D"0" border=3D"0" width=3D"500" align=3D=
+"center" style=3D"width:500px; background-color:#ffffff; border-collapse=
+:collapse; table-layout: fixed; margin:0 auto; border-radius: 10px;" bgc=
+olor=3D"#ffffff">
+                    <tr>
+                      <td class=3D"resize300 bodyCopy4 padlr10" align=3D=
+"left" style=3D"font-size: 16px; line-height: 20px; font-family:Averta, =
+Arial, Helvetica, sans-serif; text-align: left; padding-top: 0px; paddin=
+g-bottom: 10px; width:500px;" width=3D"500">
+                          Michael,
+                          <br><br>
+						   Did you miss our earlier invitation to participate in our Fall =
+Survey?<br><br> This is a quick reminder to <a style=3D"color:#038643; t=
+ext-decoration:none;" href=3D"https://e.email.consumerreports.org/click?=
+EbXN0b3dlQGJhZGRvbWFpbi5jb20/CeyJtaWQiOiIxNzYyNjE2MTE0NDExOTUzYjk5NDVlMj=
+Q5IiwiY3QiOiJjci1jb21tdW5pY2F0aW9ucy1hYjc1YTM2ZDEzNmQ5NTM1MWYxOWU3ZDZjMD=
+IyYTdlYi0xIiwicmQiOiJiYWRkb21haW4uY29tIn0/VaHR0cHM6Ly9zdXJ2ZXkuY29uc3VtZ=
+XJyZXBvcnRzLm9yZy93aXgvcDY4NjUyNzI4OTY5NC5hc3B4/SWkhfY29uc3VtZXJfRE5CQU4=
+xMTA4MjAyNWMxODY0NjQyYjE/LY3Ix/qP19fc2lkX189amNEVmtjNXczbF9BUng2VDZfdlB5=
+b2s2UUhBcjExNk9QcWI4a2dnaWtpal91NjJjOEd1a0tFeDdOLUZMR3ZtN0dzUjV1cUgtUER4=
+cWNkMVJncEJnYlEyJmtjMj0yNTQ0MUIyMDAyJnV0bV9zb3VyY2U9YWN4aW9tJnV0bV9tZWRp=
+dW09ZW1haWwmdXRtX2NhbXBhaWduPTIwMjUxMTA4X2N1YXFiX3E0X2ZhbGwyMDI1X3JlbWlu=
+ZGVyXzImYnRfZWU9eGpwaEVsODRYUTNQTDk5TWhiZXFxSkdOUTd5Qzh2WTFRSjI5V0tidmxC=
+UDdNM28yeXJjMXQxYmp6MFJIN2gyciZidF90cz0xNzYyNjE1ODg3NjMw/gaQ9igA/JMTEwOD=
+IwMjVDMTg2NDY0MkIx/s1o6515ab31" data-location=3D"t4"><strong><u>take our=
+ survey</u></strong></a> so that your feedback can be used to create the=
+ ratings that you and millions of other consumers rely on for making sma=
+rt purchasing decisions.<br><br> Your opinion matters, so please take a =
+moment to complete the survey before it closes on 12/03/2025.<br><br>Tha=
+nks in advance!
+                        </td>
+                    </tr>
+                    <tr>
+                      <td class=3D"resize320 bodyCopy2 " align=3D"center=
+" style=3D"font-size: 12px; line-height: 16px; font-family:Arial, Helvet=
+ica, sans-serif; text-align: center; padding-top: 20px; padding-bottom: =
+30px; width:500px; padding-right: 0px; padding-left: 0px; color: #999999=
+;" width=3D"500"><strong>Start and stop the survey at your convenience.
+                          <br>You will not lose your progress.</strong><=
+/td>
+                    </tr>
+                    <tr>
+                      <td class=3D"resize300 padlr20" align=3D"center" s=
+tyle=3D"padding-top: 0px; padding-bottom: 0px;"><a target=3D"_blank" dat=
+a-reportingname=3D"Price-Button" href=3D"https://e.email.consumerreports=
+.org/click?EbXN0b3dlQGJhZGRvbWFpbi5jb20/CeyJtaWQiOiIxNzYyNjE2MTE0NDExOTU=
+zYjk5NDVlMjQ5IiwiY3QiOiJjci1jb21tdW5pY2F0aW9ucy1hYjc1YTM2ZDEzNmQ5NTM1MWY=
+xOWU3ZDZjMDIyYTdlYi0xIiwicmQiOiJiYWRkb21haW4uY29tIn0/VaHR0cHM6Ly9zdXJ2ZX=
+kuY29uc3VtZXJyZXBvcnRzLm9yZy93aXgvcDY4NjUyNzI4OTY5NC5hc3B4/SWkhfY29uc3Vt=
+ZXJfRE5CQU4xMTA4MjAyNWMxODY0NjQyYjE/LY3Ix/qP19fc2lkX189amNEVmtjNXczbF9BU=
+ng2VDZfdlB5b2s2UUhBcjExNk9QcWI4a2dnaWtpal91NjJjOEd1a0tFeDdOLUZMR3ZtN0dzU=
+jV1cUgtUER4cWNkMVJncEJnYlEyJmtjMj0yNTQ0MUIyMDAyJnV0bV9zb3VyY2U9YWN4aW9tJ=
+nV0bV9tZWRpdW09ZW1haWwmdXRtX2NhbXBhaWduPTIwMjUxMTA4X2N1YXFiX3E0X2ZhbGwyM=
+DI1X3JlbWluZGVyXzImYnRfZWU9eGpwaEVsODRYUTNQTDk5TWhiZXFxSkdOUTd5Qzh2WTFRS=
+jI5V0tidmxCUDdNM28yeXJjMXQxYmp6MFJIN2gyciZidF90cz0xNzYyNjE1ODg3NjMw/gaQ9=
+igA/JMTEwODIwMjVDMTg2NDY0MkIx/s1o6515ab31" style=3D"text-decoration: non=
+e;" data-location=3D"t5"><img class=3D"" alt=3D"Begin Survey" src=3D"htt=
+ps://images.email.consumerreports.org/images/584be0a56f6110242a417c6894c=
+58cdb/QQ_Survey_2025/QQ-Surveys-Email-Final---Begin_Survey_Button_210px.=
+png" border=3D"0" width=3D"120" style=3D"border:0; padding:0; outline:0;=
+ display:block; width:120px; margin:auto;"></a></td>
+                    </tr>
+                  </table></td>
+              </tr>
+            </table>
+           =20
+            <!-- SPACER -->
+           =20
+           =20
+           =20
+            <!--Blue-->=20
+            <!--Blue-->
+</td>
+        </tr>
+      </table>
+     =20
+      <!---FOOTER--->
+     =20
+      <table role=3D"presentation" class=3D"resize340" cellspacing=3D"0"=
+ cellpadding=3D"0" border=3D"0" width=3D"600" align=3D"center" bgcolor=3D=
+"#f0f0f0" style=3D"width:600px; background-color:#f0f0f0; border-collaps=
+e:collapse; table-layout: fixed; margin:0 auto;">
+        <tr>
+          <td bgcolor=3D"#f0f0f0" align=3D"center" valign=3D"top" style=3D=
+"padding-left: 20px; padding-right: 20px;padding-bottom: 20px; padding-t=
+op: 20px;"><table width=3D"540" cellspacing=3D"0" cellpadding=3D"0" bord=
+er=3D"0" align=3D"center" style=3D"max-width:540px; width:100%;">
+              <tr>
+                <td align=3D"left" bgcolor=3D"#f0f0f0" class=3D"padfix" =
+height=3D"65" style=3D"padding-right:30px; font-family:Arial, Helvetica,=
+ sans-serif; font-size:0px; color:#676767; line-height:0px;" valign=3D"m=
+iddle"><table border=3D"0" cellpadding=3D"0" cellspacing=3D"0">
+                    <tr>
+                      <td align=3D"left" valign=3D"middle"><a target=3D"=
+_blank" href=3D"https://e.email.consumerreports.org/click?EbXN0b3dlQGJhZ=
+GRvbWFpbi5jb20/CeyJtaWQiOiIxNzYyNjE2MTE0NDExOTUzYjk5NDVlMjQ5IiwiY3QiOiJj=
+ci1jb21tdW5pY2F0aW9ucy1hYjc1YTM2ZDEzNmQ5NTM1MWYxOWU3ZDZjMDIyYTdlYi0xIiwi=
+cmQiOiJiYWRkb21haW4uY29tIn0/VaHR0cHM6Ly93d3cuY29uc3VtZXJyZXBvcnRzLm9yZy9=
+jcm8vaW5kZXguaHRt/SWkhfY29uc3VtZXJfRE5CQU4xMTA4MjAyNWMxODY0NjQyYjE/LY3Ix=
+/qP3V0bV9zb3VyY2U9YWN4aW9tJnV0bV9tZWRpdW09ZW1haWwmdXRtX2NhbXBhaWduPTIwMj=
+UxMTA4X2N1YXFiX3E0X2ZhbGwyMDI1X3JlbWluZGVyXzImYnRfZWU9eGpwaEVsODRYUTNQTD=
+k5TWhiZXFxSkdOUTd5Qzh2WTFRSjI5V0tidmxCUDdNM28yeXJjMXQxYmp6MFJIN2gyciZidF=
+90cz0xNzYyNjE1ODg3NjMw/gaQ9igA/JMTEwODIwMjVDMTg2NDY0MkIx/s7m592e65a8" da=
+ta-location=3D"t6"><img alt=3D"Consumer Reports Logo" border=3D"0" hspac=
+e=3D"0" src=3D"https://images.email.consumerreports.org/images/584be0a56=
+f6110242a417c6894c58cdb/QQ_Survey_2025/QQ-Surveys-Email-Final---Footer_L=
+ogo.png" style=3D"width: 120px; border-left-width: 0; border-bottom-widt=
+h: 0; border-right-width: 0; border-top-width: 0; outline: none; text-de=
+coration: none; display: inline-block;" width=3D"120"></a></td>
+                    </tr>
+                  </table></td>
+              </tr>
+              <tr>
+                <td style=3D"font-family: Averta, Avenir, Gotham, Arial,=
+ Helvetica;padding-top:10px;padding-bottom:0px; color:#000000; font-size=
+:11px; line-height: 15px;"> This email was sent to you by Consumer Repor=
+ts. To ensure our emails are delivered directly to your inbox, please ad=
+d <a class=3D"mailtoTest" href=3D"mailto:annualsurveyteam@email.consumer=
+reports.org" style=3D"color:#000000; text-decoration:underline;" data-lo=
+cation=3D"t7">annualsurveyteam@email.consumerreports.org</a> to your add=
+ress book!</td>
+              </tr>
+              <tr>
+                <td align=3D"left" bgcolor=3D"#f0f0f0" style=3D"font-fam=
+ily: Averta, Avenir, Gotham, Arial, Helvetica; color:#000000; font-size:=
+11px; line-height: 35px; padding-top: 20px; padding-bottom: 10px;">
+<!--Social icons-->=20
+                  <a alt=3D"" href=3D"https://e.email.consumerreports.or=
+g/click?EbXN0b3dlQGJhZGRvbWFpbi5jb20/CeyJtaWQiOiIxNzYyNjE2MTE0NDExOTUzYj=
+k5NDVlMjQ5IiwiY3QiOiJjci1jb21tdW5pY2F0aW9ucy1hYjc1YTM2ZDEzNmQ5NTM1MWYxOW=
+U3ZDZjMDIyYTdlYi0xIiwicmQiOiJiYWRkb21haW4uY29tIn0/VaHR0cHM6Ly93d3cuZmFjZ=
+WJvb2suY29tL0NvbnN1bWVyUmVwb3J0cy8/SWkhfY29uc3VtZXJfRE5CQU4xMTA4MjAyNWMx=
+ODY0NjQyYjE/LY3Ix/gaQ9igA/JMTEwODIwMjVDMTg2NDY0MkIx/s1k2551f73b" data-lo=
+cation=3D"t8"><img alt=3D"Facebook" border=3D"0" src=3D"https://images.e=
+mail.consumerreports.org/images/584be0a56f6110242a417c6894c58cdb/social_=
+icons_cr/facebook.png" style=3D"display: inline-block; height: 22px; wid=
+th: 22px;" height=3D"22" width=3D"22"></a> <img height=3D"16" src=3D"htt=
+ps://images.email.consumerreports.org/nudges/cr-communications/content/d=
+677c8a710ba1f93d2ba3f9ecb4acdf3/3ebe431c/images/con_spacer.gif" style=3D=
+"display: inline-block;" width=3D"16"> <a alt=3D"" href=3D"https://e.ema=
+il.consumerreports.org/click?EbXN0b3dlQGJhZGRvbWFpbi5jb20/CeyJtaWQiOiIxN=
+zYyNjE2MTE0NDExOTUzYjk5NDVlMjQ5IiwiY3QiOiJjci1jb21tdW5pY2F0aW9ucy1hYjc1Y=
+TM2ZDEzNmQ5NTM1MWYxOWU3ZDZjMDIyYTdlYi0xIiwicmQiOiJiYWRkb21haW4uY29tIn0/V=
+aHR0cHM6Ly94LmNvbS9jb25zdW1lcnJlcG9ydHM/SWkhfY29uc3VtZXJfRE5CQU4xMTA4MjA=
+yNWMxODY0NjQyYjE/LY3Ix/gaQ9igA/JMTEwODIwMjVDMTg2NDY0MkIx/s9v279990cb" da=
+ta-location=3D"t9"><img alt=3D"X" border=3D"0" src=3D"https://images.ema=
+il.consumerreports.org/images/584be0a56f6110242a417c6894c58cdb/social_ic=
+ons_cr/x.png" style=3D"display: inline-block; height: 22px; width: 22px;=
+" height=3D"22" width=3D"22"></a> <img height=3D"16" src=3D"https://imag=
+es.email.consumerreports.org/nudges/cr-communications/content/d677c8a710=
+ba1f93d2ba3f9ecb4acdf3/3ebe431c/images/con_spacer.gif" style=3D"display:=
+ inline-block;" width=3D"16"> <a alt=3D"" href=3D"https://e.email.consum=
+erreports.org/click?EbXN0b3dlQGJhZGRvbWFpbi5jb20/CeyJtaWQiOiIxNzYyNjE2MT=
+E0NDExOTUzYjk5NDVlMjQ5IiwiY3QiOiJjci1jb21tdW5pY2F0aW9ucy1hYjc1YTM2ZDEzNm=
+Q5NTM1MWYxOWU3ZDZjMDIyYTdlYi0xIiwicmQiOiJiYWRkb21haW4uY29tIn0/VaHR0cHM6L=
+y93d3cuaW5zdGFncmFtLmNvbS9jb25zdW1lcnJlcG9ydHMv/SWkhfY29uc3VtZXJfRE5CQU4=
+xMTA4MjAyNWMxODY0NjQyYjE/LY3Ix/gaQ9igA/JMTEwODIwMjVDMTg2NDY0MkIx/s0ibbc3=
+d185" data-location=3D"t10"><img alt=3D"Instagram" border=3D"0" src=3D"h=
+ttps://images.email.consumerreports.org/images/584be0a56f6110242a417c689=
+4c58cdb/social_icons_cr/instagram_1.png" style=3D"display: inline-block;=
+ height: 22px; width: 22px;" height=3D"22" width=3D"22"></a> <img height=
+=3D"16" src=3D"https://images.email.consumerreports.org/nudges/cr-commun=
+ications/content/d677c8a710ba1f93d2ba3f9ecb4acdf3/3ebe431c/images/con_sp=
+acer.gif" style=3D"display: inline-block;" width=3D"16"> <a alt=3D"" hre=
+f=3D"https://e.email.consumerreports.org/click?EbXN0b3dlQGJhZGRvbWFpbi5j=
+b20/CeyJtaWQiOiIxNzYyNjE2MTE0NDExOTUzYjk5NDVlMjQ5IiwiY3QiOiJjci1jb21tdW5=
+pY2F0aW9ucy1hYjc1YTM2ZDEzNmQ5NTM1MWYxOWU3ZDZjMDIyYTdlYi0xIiwicmQiOiJiYWR=
+kb21haW4uY29tIn0/VaHR0cHM6Ly93d3cueW91dHViZS5jb20vdXNlci9jb25zdW1lcnJlcG=
+9ydHM/SWkhfY29uc3VtZXJfRE5CQU4xMTA4MjAyNWMxODY0NjQyYjE/LY3Ix/gaQ9igA/JMT=
+EwODIwMjVDMTg2NDY0MkIx/s2i9a5e9434" data-location=3D"t11"><img alt=3D"Yo=
+uTube" border=3D"0" src=3D"https://images.email.consumerreports.org/imag=
+es/584be0a56f6110242a417c6894c58cdb/social_icons_cr/youtube.png" style=3D=
+"display: inline-block; height: 22px; width: 22px;" height=3D"22" width=3D=
+"22"></a> <img height=3D"16" src=3D"https://images.email.consumerreports=
+.org/nudges/cr-communications/content/d677c8a710ba1f93d2ba3f9ecb4acdf3/3=
+ebe431c/images/con_spacer.gif" style=3D"display: inline-block;" width=3D=
+"16"> <a alt=3D"" href=3D"https://e.email.consumerreports.org/click?EbXN=
+0b3dlQGJhZGRvbWFpbi5jb20/CeyJtaWQiOiIxNzYyNjE2MTE0NDExOTUzYjk5NDVlMjQ5Ii=
+wiY3QiOiJjci1jb21tdW5pY2F0aW9ucy1hYjc1YTM2ZDEzNmQ5NTM1MWYxOWU3ZDZjMDIyYT=
+dlYi0xIiwicmQiOiJiYWRkb21haW4uY29tIn0/VaHR0cHM6Ly93d3cudGhyZWFkcy5uZXQvQ=
+GNvbnN1bWVycmVwb3J0cw/SWkhfY29uc3VtZXJfRE5CQU4xMTA4MjAyNWMxODY0NjQyYjE/L=
+Y3Ix/qP2hsPWVu/gaQ9igA/JMTEwODIwMjVDMTg2NDY0MkIx/sal87388549" data-locat=
+ion=3D"t12"><img alt=3D"Threads" border=3D"0" src=3D"https://images.emai=
+l.consumerreports.org/images/584be0a56f6110242a417c6894c58cdb/QQ_Survey_=
+2025/Icons_threads_trans.png" style=3D"display: inline-block; height: 22=
+px; width: 22px;" height=3D"22" width=3D"22"></a> <img height=3D"16" src=
+=3D"https://images.email.consumerreports.org/nudges/cr-communications/co=
+ntent/d677c8a710ba1f93d2ba3f9ecb4acdf3/3ebe431c/images/con_spacer.gif" s=
+tyle=3D"display: inline-block;" width=3D"16"> <a alt=3D"" href=3D"https:=
+//e.email.consumerreports.org/click?EbXN0b3dlQGJhZGRvbWFpbi5jb20/CeyJtaW=
+QiOiIxNzYyNjE2MTE0NDExOTUzYjk5NDVlMjQ5IiwiY3QiOiJjci1jb21tdW5pY2F0aW9ucy=
+1hYjc1YTM2ZDEzNmQ5NTM1MWYxOWU3ZDZjMDIyYTdlYi0xIiwicmQiOiJiYWRkb21haW4uY2=
+9tIn0/VaHR0cHM6Ly93d3cubGlua2VkaW4uY29tL2NvbXBhbnkvY29uc3VtZXItcmVwb3J0c=
+w/SWkhfY29uc3VtZXJfRE5CQU4xMTA4MjAyNWMxODY0NjQyYjE/LY3Ix/gaQ9igA/JMTEwOD=
+IwMjVDMTg2NDY0MkIx/s4s31d54b54" data-location=3D"t13"><img alt=3D"Linked=
+in" border=3D"0" src=3D"https://images.email.consumerreports.org/images/=
+584be0a56f6110242a417c6894c58cdb/QQ_Survey_2025/Icons_linkedin_trans.png=
+" style=3D"display: inline-block; height: 22px; width: 22px;" height=3D"=
+22" width=3D"22"></a> <img height=3D"16" src=3D"https://images.email.con=
+sumerreports.org/nudges/cr-communications/content/d677c8a710ba1f93d2ba3f=
+9ecb4acdf3/3ebe431c/images/con_spacer.gif" style=3D"display: inline-bloc=
+k;" width=3D"16"> <a alt=3D"" href=3D"https://e.email.consumerreports.or=
+g/click?EbXN0b3dlQGJhZGRvbWFpbi5jb20/CeyJtaWQiOiIxNzYyNjE2MTE0NDExOTUzYj=
+k5NDVlMjQ5IiwiY3QiOiJjci1jb21tdW5pY2F0aW9ucy1hYjc1YTM2ZDEzNmQ5NTM1MWYxOW=
+U3ZDZjMDIyYTdlYi0xIiwicmQiOiJiYWRkb21haW4uY29tIn0/VaHR0cHM6Ly93d3cudGlrd=
+G9rLmNvbS9AY29uc3VtZXJyZXBvcnRz/SWkhfY29uc3VtZXJfRE5CQU4xMTA4MjAyNWMxODY=
+0NjQyYjE/LY3Ix/gaQ9igA/JMTEwODIwMjVDMTg2NDY0MkIx/s0teaea1590" data-locat=
+ion=3D"t14"><img alt=3D"TikTok" border=3D"0" src=3D"https://images.email=
+.consumerreports.org/images/584be0a56f6110242a417c6894c58cdb/social_icon=
+s_cr/tiktok.png" style=3D"display: inline-block; height: 22px; width: 22=
+px;" height=3D"22" width=3D"22"></a>=20
+                  <!--Social icons ends here-->
+</td>
+              </tr>
+              <tr>
+                <td align=3D"left" bgcolor=3D"#f0f0f0" style=3D"font-fam=
+ily: Averta, Avenir, Gotham, Arial, Helvetica;padding-top:0px;padding-bo=
+ttom:20px; color:#000000; font-size:11px; line-height: 15px;"> This emai=
+l was intended for <a href=3D"mailto:mstowe@baddomain.com" style=3D"colo=
+r:#000000" data-location=3D"t15">mstowe@baddomain.com</a>.<br>
+                  <br>
+                  <a href=3D"https://e.email.consumerreports.org/click?E=
+bXN0b3dlQGJhZGRvbWFpbi5jb20/CeyJtaWQiOiIxNzYyNjE2MTE0NDExOTUzYjk5NDVlMjQ=
+5IiwiY3QiOiJjci1jb21tdW5pY2F0aW9ucy1hYjc1YTM2ZDEzNmQ5NTM1MWYxOWU3ZDZjMDI=
+yYTdlYi0xIiwicmQiOiJiYWRkb21haW4uY29tIn0/VaHR0cHM6Ly9wcmVmZXJlbmNlcy5lbW=
+FpbC5jb25zdW1lcnJlcG9ydHMub3JnL3Vuc3Vi/SWkhfY29uc3VtZXJfRE5CQU4xMTA4MjAy=
+NWMxODY0NjQyYjE/LY3Ix/qP2VuY2J1PU1UQXdNREl3TURBM01qSTNNRGN3TnpBMk1URTVaR=
+1JsT1RNMU56VTNOV1ZqWTJVeU9ETXhNV0pqWWpCak1Ea3lNdz09JmJ1PUFCUSZlbWw9YlhOM=
+GIzZGxRR0poWkdSdmJXRnBiaTVqYjIwPSZtZXNzYWdlX3VpZD0xNzYyNjE2MTE0NDExOTUzY=
+jk5NDVlMjQ5JmJ0X2VlPXhqcGhFbDg0WFEzUEw5OU1oYmVxcUpHTlE3eUM4dlkxUUoyOVdLY=
+nZsQlA3TTNvMnlyYzF0MWJqejBSSDdoMnImYnRfdHM9MTc2MjYxNTg4NzYzMA/gaQ9igA/JM=
+TEwODIwMjVDMTg2NDY0MkIx/s1ucc53a51d" data-location=3D"t16"><span style=3D=
+"color: #000000; text-decoration: underline;">Unsubscribe</span></a> | <=
+a style=3D"color: #000000; text-decoration: underline;" href=3D"https://=
+e.email.consumerreports.org/click?EbXN0b3dlQGJhZGRvbWFpbi5jb20/CeyJtaWQi=
+OiIxNzYyNjE2MTE0NDExOTUzYjk5NDVlMjQ5IiwiY3QiOiJjci1jb21tdW5pY2F0aW9ucy1h=
+Yjc1YTM2ZDEzNmQ5NTM1MWYxOWU3ZDZjMDIyYTdlYi0xIiwicmQiOiJiYWRkb21haW4uY29t=
+In0/VaHR0cHM6Ly93d3cuY29uc3VtZXJyZXBvcnRzLm9yZy9tZW1iZXItc3VwcG9ydC9lbWF=
+pbC1tZW1iZXItc3VwcG9ydC8/SWkhfY29uc3VtZXJfRE5CQU4xMTA4MjAyNWMxODY0NjQyYj=
+E/LY3Ix/qP3V0bV9zb3VyY2U9YWN4aW9tJnV0bV9tZWRpdW09ZW1haWwmdXRtX2NhbXBhaWd=
+uPTIwMjUxMTA4X2N1YXFiX3E0X2ZhbGwyMDI1X3JlbWluZGVyXzImYnRfZWU9eGpwaEVsODR=
+YUTNQTDk5TWhiZXFxSkdOUTd5Qzh2WTFRSjI5V0tidmxCUDdNM28yeXJjMXQxYmp6MFJIN2g=
+yciZidF90cz0xNzYyNjE1ODg3NjMw/gaQ9igA/JMTEwODIwMjVDMTg2NDY0MkIx/s9tfef01=
+8c1" data-location=3D"t17">Contact Us</a> | <a style=3D"color: #000000; =
+text-decoration: underline;" href=3D"https://e.email.consumerreports.org=
+/click?EbXN0b3dlQGJhZGRvbWFpbi5jb20/CeyJtaWQiOiIxNzYyNjE2MTE0NDExOTUzYjk=
+5NDVlMjQ5IiwiY3QiOiJjci1jb21tdW5pY2F0aW9ucy1hYjc1YTM2ZDEzNmQ5NTM1MWYxOWU=
+3ZDZjMDIyYTdlYi0xIiwicmQiOiJiYWRkb21haW4uY29tIn0/VaHR0cDovL3d3dy5jb25zdW=
+1lcnJlcG9ydHMub3JnL2Nyby9jdXN0b21lcnNlcnZpY2UvcHJpdmFjeS1wb2xpY3kvaGlnaG=
+xpZ2h0cy9pbmRleC5odG0/SWkhfY29uc3VtZXJfRE5CQU4xMTA4MjAyNWMxODY0NjQyYjE/L=
+Y3Ix/qP3V0bV9zb3VyY2U9YWN4aW9tJnV0bV9tZWRpdW09ZW1haWwmdXRtX2NhbXBhaWduPT=
+IwMjUxMTA4X2N1YXFiX3E0X2ZhbGwyMDI1X3JlbWluZGVyXzImYnRfZWU9eGpwaEVsODRYUT=
+NQTDk5TWhiZXFxSkdOUTd5Qzh2WTFRSjI5V0tidmxCUDdNM28yeXJjMXQxYmp6MFJIN2gyci=
+ZidF90cz0xNzYyNjE1ODg3NjMw/gaQ9igA/JMTEwODIwMjVDMTg2NDY0MkIx/sbqdd11b6f9=
+" data-location=3D"t18">Our Privacy Policy</a><br>
+                  <br>
+                  <span style=3D"font-size: 14px; line-height: 18px;">=C2=
+=A9</span> 2025 Consumer Reports, 101 Truman Avenue, Yonkers, NY 10703. =
+All=C2=A0rights=C2=A0reserved.</td>
+              </tr>
+            </table></td>
+        </tr>
+      </table>
+</td>
+  </tr>
+</table>
+<!---/END WRAPPER--->
+<img src=3D"https://e.email.consumerreports.org/open?EbXN0b3dlQGJhZGRvbW=
+Fpbi5jb20/CeyJtaWQiOiIxNzYyNjE2MTE0NDExOTUzYjk5NDVlMjQ5IiwiY3QiOiJjci1jb=
+21tdW5pY2F0aW9ucy1hYjc1YTM2ZDEzNmQ5NTM1MWYxOWU3ZDZjMDIyYTdlYi0xIiwicmQiO=
+iJiYWRkb21haW4uY29tIn0/V/SWkhfY29uc3VtZXJfRE5CQU4xMTA4MjAyNWMxODY0NjQyYj=
+E/LY3Ix/gaQ9igA/JMTEwODIwMjVDMTg2NDY0MkIx/s0p4988578c" height=3D"2" widt=
+h=3D"3" alt=3D""></body>
+</html>
+
+--==83af2728ebf8de9800a64e19f3f34838--
