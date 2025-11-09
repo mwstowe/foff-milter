@@ -13,7 +13,7 @@ rules:
     enabled: true
     criteria:
       type: "SubjectPattern"
-      pattern: "(?i).*(lonely.*woman|beautiful.*girl|meet.*singles|find.*love|romance.*scam|sugar.*daddy|sugar.*baby).*"
+      pattern: "(?i).*(lonely.*woman|beautiful.*girl|meet.*singles|find.*love|romance.*scam|sugar.*daddy|sugar.*baby|want.*to.*be.*with.*you|how.*about.*you).*"
     score: 40
     description: "Romance and dating scam patterns"
 
@@ -28,7 +28,11 @@ rules:
   - name: "International romance and dating scams"
     enabled: true
     criteria:
-      type: "SubjectPattern"
-      pattern: "(?i).*(ukrainian|russian|eastern.*european|slavic|date.*easy).*"
+      type: "Or"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(ukrainian|russian|eastern.*european|slavic|date.*easy).*"
+        - type: "SenderPattern"
+          pattern: "(?i).*ukrainian.*@.*"
     score: 70
     description: "Ukrainian and Eastern European dating spam"
