@@ -4,35 +4,31 @@ rules:
   - name: "Levi's official emails"
     enabled: true
     criteria:
-      type: "HeaderPattern"
-      header: "From"
-      pattern: "(?i).*@mail\\.levi\\.com.*"
+      type: "SenderPattern"
+      pattern: ".*@mail\\.levi\\.com.*"
     score: -500
     description: "Official Levi's emails from mail.levi.com"
 
   - name: "Gadget Flow newsletter"
     enabled: true
     criteria:
-      type: "HeaderPattern"
-      header: "From"
-      pattern: "(?i).*@mail\\.thegadgetflow\\.com.*"
+      type: "SenderPattern"
+      pattern: ".*@mail\\.thegadgetflow\\.com.*"
     score: -200
     description: "Gadget Flow newsletter from mail.thegadgetflow.com"
 
   - name: "Michaels Custom Framing"
     enabled: true
     criteria:
-      type: "HeaderPattern"
-      header: "From"
-      pattern: "(?i).*@em\\.michaelscustomframing\\.com.*"
+      type: "SenderPattern"
+      pattern: ".*@em\\.michaelscustomframing\\.com.*"
     score: -200
     description: "Michaels Custom Framing from em.michaelscustomframing.com"
 
   - name: "Duluth Trading Company"
     enabled: true
     criteria:
-      type: "HeaderPattern"
-      header: "From"
-      pattern: "(?i).*@mail\\.duluthtrading\\.com.*"
+      type: "SenderPattern"
+      pattern: ".*@mail\\.duluthtrading\\.com.*"
     score: -200
     description: "Duluth Trading Company from mail.duluthtrading.com"
