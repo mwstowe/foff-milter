@@ -32,27 +32,3 @@ rules:
       pattern: "(?i).*(ukrainian|russian|eastern.*european|slavic|date.*easy).*"
     score: 70
     description: "Ukrainian and Eastern European dating spam"
-    enabled: true
-    criteria:
-      type: "And"
-      criteria:
-        - type: "Or"
-          criteria:
-            - type: "SubjectPattern"
-              pattern: "(?i).*(i.*want.*to.*be.*with.*you|want.*to.*be.*with.*you.*how.*about|ukrainian.*love|russian.*love|find.*love.*online|beautiful.*women.*waiting|lonely.*women.*seeking|first.*name.*is.*maria).*"
-            - type: "BodyPattern"
-              pattern: "(?i).*(i.*want.*to.*be.*with.*you|want.*to.*marry.*you|ukrainian.*love|russian.*love|find.*love.*online|beautiful.*women.*waiting|lonely.*women.*seeking|dating.*site.*profile).*"
-        - type: "Not"
-          criteria:
-            type: "SenderPattern"
-            pattern: ".*@.*(match|eharmony|bumble|tinder|dating)\\.(com|net|org)$"
-    score: 75
-    description: "Detects international romance and dating scams"
-
-  - name: "Inappropriate Content"
-    enabled: true
-    criteria:
-      type: "SubjectPattern"
-      pattern: "(?i).*(explicit.*content|mature.*content|18\\+|adults.*only|nsfw|not.*safe.*work).*"
-    score: 35
-    description: "Inappropriate and explicit content detection"
