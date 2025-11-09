@@ -5398,6 +5398,7 @@ impl FilterEngine {
             "seo review",
             "traffic daily",
             "search ranking",
+            "rankings on google",
             "website optimization",
             "marketing services",
             "noticed gaps",
