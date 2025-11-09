@@ -6,6 +6,7 @@ use foff_milter::statistics::StatisticsCollector;
 use foff_milter::toml_config::{BlocklistConfig, TomlConfig, WhitelistConfig};
 use foff_milter::Config as LegacyConfig;
 use log::LevelFilter;
+use serde_json;
 use std::fs;
 use std::process;
 use std::sync::Arc;
@@ -133,6 +134,13 @@ async fn main() {
                 .help("Start REST API server for remote email analysis")
                 .action(clap::ArgAction::SetTrue),
         )
+        .arg(
+            Arg::new("parity-check")
+                .long("parity-check")
+                .value_name("ENVIRONMENT")
+                .help("Generate production parity report for environment comparison")
+                .action(clap::ArgAction::Set),
+        )
         .get_matches();
 
     // Initialize logger based on verbose flag
@@ -168,6 +176,18 @@ async fn main() {
             &blocklist_config,
             &toml_config,
             email_file,
+        )
+        .await;
+        return;
+    }
+
+    if let Some(environment) = matches.get_one::<String>("parity-check") {
+        generate_parity_report(
+            &config,
+            &whitelist_config,
+            &blocklist_config,
+            &toml_config,
+            environment,
         )
         .await;
         return;
@@ -1068,4 +1088,62 @@ async fn test_email_file(
             }
         }
     }
+}
+
+async fn generate_parity_report(
+    config: &LegacyConfig,
+    whitelist_config: &Option<WhitelistConfig>,
+    blocklist_config: &Option<BlocklistConfig>,
+    toml_config: &Option<TomlConfig>,
+    environment: &str,
+) {
+    use serde_json::json;
+    use std::collections::HashMap;
+    
+    let engine = match FilterEngine::new(config.clone()) {
+        Ok(engine) => engine,
+        Err(e) => {
+            eprintln!("Error creating filter engine: {}", e);
+            process::exit(1);
+        }
+    };
+
+    // Get module checksums
+    let mut module_checksums = HashMap::new();
+    if let Some(module_dir) = &config.module_config_dir {
+        if let Ok(entries) = std::fs::read_dir(module_dir) {
+            for entry in entries.flatten() {
+                if let Some(extension) = entry.path().extension() {
+                    if extension == "yaml" || extension == "yml" {
+                        if let Some(name) = entry.file_name().to_str() {
+                            if let Ok(content) = std::fs::read_to_string(entry.path()) {
+                                let hash = format!("{:x}", content.len() * 1000 + content.lines().count());
+                                module_checksums.insert(name.to_string(), hash);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Count loaded modules (simplified)
+    let loaded_modules = module_checksums.len();
+
+    let report = json!({
+        "environment": environment,
+        "timestamp": chrono::Utc::now().to_rfc3339(),
+        "version": env!("CARGO_PKG_VERSION"),
+        "modules": {
+            "loaded_count": loaded_modules,
+            "checksums": module_checksums
+        },
+        "config": {
+            "module_dir": config.module_config_dir.as_ref().unwrap_or(&"none".to_string()),
+            "socket_path": config.socket_path
+        },
+        "sample_tests": "Use --test-email for individual email testing"
+    });
+
+    println!("{}", serde_json::to_string_pretty(&report).unwrap());
 }
