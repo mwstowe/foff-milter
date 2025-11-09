@@ -1108,6 +1108,35 @@ async fn generate_parity_report(
         }
     };
 
+    // Test sender extraction with known problematic email
+    let test_headers = vec![
+        ("From".to_string(), "\"Your Schumacher Jump Starter Is Ready\" <O'ReillyPowerReward@velanta.za.com>".to_string()),
+        ("Return-Path".to_string(), "<101738-221316-298310-21729-mstowe=baddomain.com@mail.velanta.za.com>".to_string()),
+    ];
+
+    // Test sender extraction
+    let mut sender_tests = Vec::new();
+    for (header_name, header_value) in &test_headers {
+        sender_tests.push(json!({
+            "header": header_name,
+            "value": header_value,
+            "extracted_domain": extract_domain_from_header(header_value)
+        }));
+    }
+
+    // Test TLD pattern matching
+    let test_domains = ["velanta.za.com", "test.tk", "example.com"];
+    let mut tld_tests = Vec::new();
+    for domain in &test_domains {
+        let test_email = format!("test@{}", domain);
+        let matches_high_risk = test_email.contains(".za.com") || test_email.contains(".tk");
+        tld_tests.push(json!({
+            "domain": domain,
+            "email": test_email,
+            "matches_high_risk_tld": matches_high_risk
+        }));
+    }
+
     // Get module checksums
     let mut module_checksums = HashMap::new();
     if let Some(module_dir) = &config.module_config_dir {
@@ -1127,7 +1156,6 @@ async fn generate_parity_report(
         }
     }
 
-    // Count loaded modules (simplified)
     let loaded_modules = module_checksums.len();
 
     let report = json!({
@@ -1142,8 +1170,27 @@ async fn generate_parity_report(
             "module_dir": config.module_config_dir.as_ref().unwrap_or(&"none".to_string()),
             "socket_path": config.socket_path
         },
-        "sample_tests": "Use --test-email for individual email testing"
+        "sender_extraction_tests": sender_tests,
+        "tld_pattern_tests": tld_tests,
+        "debug_info": {
+            "regex_engine": "rust_regex",
+            "header_processing": "sequential"
+        }
     });
 
     println!("{}", serde_json::to_string_pretty(&report).unwrap());
+}
+
+fn extract_domain_from_header(header_value: &str) -> String {
+    // Simple domain extraction for testing
+    if let Some(start) = header_value.rfind('@') {
+        if let Some(end) = header_value[start..].find('>') {
+            return header_value[start+1..start+end].to_string();
+        }
+        if let Some(end) = header_value[start..].find(' ') {
+            return header_value[start+1..start+end].to_string();
+        }
+        return header_value[start+1..].to_string();
+    }
+    "no_domain_found".to_string()
 }
