@@ -17,7 +17,21 @@ rules:
     score: 40
     description: "Romance and dating scam patterns"
 
+  - name: "Ukrainian dating spam direct"
+    enabled: true
+    criteria:
+      type: "SubjectPattern"
+      pattern: "(?i).*ukrainian.*girl.*"
+    score: 75
+    description: "Direct Ukrainian dating spam detection"
+
   - name: "International romance and dating scams"
+    enabled: true
+    criteria:
+      type: "SubjectPattern"
+      pattern: "(?i).*(ukrainian|russian|eastern.*european|slavic|date.*easy).*"
+    score: 70
+    description: "Ukrainian and Eastern European dating spam"
     enabled: true
     criteria:
       type: "And"
