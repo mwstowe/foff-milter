@@ -4,33 +4,37 @@ rules:
   - name: "Duluth Trading Company"
     enabled: true
     criteria:
-      type: "SenderPattern"
-      pattern: "(?i).*@.*duluthtrading\\.com$"
-    score: -100
+      type: "HeaderPattern"
+      header: "From"
+      pattern: "(?i).*@.*duluthtrading\\.com.*"
+    score: -150
     description: "Legitimate Duluth Trading Company emails"
 
   - name: "Levi's brand"
     enabled: true
     criteria:
-      type: "SenderPattern"
-      pattern: "(?i).*@.*levi\\.com$"
-    score: -100
+      type: "HeaderPattern"
+      header: "From"
+      pattern: "(?i).*@.*levi\\.com.*"
+    score: -400
     description: "Legitimate Levi's brand emails"
 
   - name: "Michaels Custom Framing"
     enabled: true
     criteria:
-      type: "SenderPattern"
-      pattern: "(?i).*@.*michaelscustomframing\\.com$"
-    score: -100
+      type: "HeaderPattern"
+      header: "From"
+      pattern: "(?i).*@.*michaelscustomframing\\.com.*"
+    score: -150
     description: "Legitimate Michaels Custom Framing emails"
 
   - name: "The Gadget Flow"
     enabled: true
     criteria:
-      type: "SenderPattern"
-      pattern: "(?i).*@.*thegadgetflow\\.com$"
-    score: -75
+      type: "HeaderPattern"
+      header: "From"
+      pattern: "(?i).*@.*thegadgetflow\\.com.*"
+    score: -150
     description: "Legitimate Gadget Flow newsletter"
 
   - name: "Order confirmation emails"
