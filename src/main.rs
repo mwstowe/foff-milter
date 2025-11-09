@@ -6,7 +6,6 @@ use foff_milter::statistics::StatisticsCollector;
 use foff_milter::toml_config::{BlocklistConfig, TomlConfig, WhitelistConfig};
 use foff_milter::Config as LegacyConfig;
 use log::LevelFilter;
-use serde_json;
 use std::fs;
 use std::process;
 use std::sync::Arc;
@@ -1092,15 +1091,15 @@ async fn test_email_file(
 
 async fn generate_parity_report(
     config: &LegacyConfig,
-    whitelist_config: &Option<WhitelistConfig>,
-    blocklist_config: &Option<BlocklistConfig>,
-    toml_config: &Option<TomlConfig>,
+    _whitelist_config: &Option<WhitelistConfig>,
+    _blocklist_config: &Option<BlocklistConfig>,
+    _toml_config: &Option<TomlConfig>,
     environment: &str,
 ) {
     use serde_json::json;
     use std::collections::HashMap;
-    
-    let engine = match FilterEngine::new(config.clone()) {
+
+    let _engine = match FilterEngine::new(config.clone()) {
         Ok(engine) => engine,
         Err(e) => {
             eprintln!("Error creating filter engine: {}", e);
@@ -1110,8 +1109,15 @@ async fn generate_parity_report(
 
     // Test sender extraction with known problematic email
     let test_headers = vec![
-        ("From".to_string(), "\"Your Schumacher Jump Starter Is Ready\" <O'ReillyPowerReward@velanta.za.com>".to_string()),
-        ("Return-Path".to_string(), "<101738-221316-298310-21729-mstowe=baddomain.com@mail.velanta.za.com>".to_string()),
+        (
+            "From".to_string(),
+            "\"Your Schumacher Jump Starter Is Ready\" <O'ReillyPowerReward@velanta.za.com>"
+                .to_string(),
+        ),
+        (
+            "Return-Path".to_string(),
+            "<101738-221316-298310-21729-mstowe=baddomain.com@mail.velanta.za.com>".to_string(),
+        ),
     ];
 
     // Test sender extraction
@@ -1146,7 +1152,8 @@ async fn generate_parity_report(
                     if extension == "yaml" || extension == "yml" {
                         if let Some(name) = entry.file_name().to_str() {
                             if let Ok(content) = std::fs::read_to_string(entry.path()) {
-                                let hash = format!("{:x}", content.len() * 1000 + content.lines().count());
+                                let hash =
+                                    format!("{:x}", content.len() * 1000 + content.lines().count());
                                 module_checksums.insert(name.to_string(), hash);
                             }
                         }
@@ -1185,12 +1192,12 @@ fn extract_domain_from_header(header_value: &str) -> String {
     // Simple domain extraction for testing
     if let Some(start) = header_value.rfind('@') {
         if let Some(end) = header_value[start..].find('>') {
-            return header_value[start+1..start+end].to_string();
+            return header_value[start + 1..start + end].to_string();
         }
         if let Some(end) = header_value[start..].find(' ') {
-            return header_value[start+1..start+end].to_string();
+            return header_value[start + 1..start + end].to_string();
         }
-        return header_value[start+1..].to_string();
+        return header_value[start + 1..].to_string();
     }
     "no_domain_found".to_string()
 }
