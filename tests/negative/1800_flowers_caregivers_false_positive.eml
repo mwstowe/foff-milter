@@ -1,0 +1,1052 @@
+Return-Path: <bounce-67_HTML-66267260-1645665-520004153-28233@bounce.pulse.celebrations.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTPS id 5A9JIKrm092875
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <mstowe@baddomain.com>; Sun, 9 Nov 2025 19:18:20 GMT
+	(envelope-from bounce-67_HTML-66267260-1645665-520004153-28233@bounce.pulse.celebrations.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (1024-bit key; unprotected) header.d=pulse.celebrations.com header.i=emailservice@pulse.celebrations.com header.b=pAaXjwfC;
+	dkim=pass (2048-bit key; unprotected) header.d=s6.y.mc.salesforce.com header.i=@s6.y.mc.salesforce.com header.b=nqur7wGN
+X-Authentication-Warning: juliett.baddomain.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.baddomain.com
+Received: from mta2.pulse.celebrations.com (mta2.pulse.celebrations.com [128.17.65.223])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 5A9JIHsa070246
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO)
+	for <mstowe@baddomain.com>; Sun, 9 Nov 2025 13:18:18 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 5A9JIHsa070246
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (1024-bit key, unprotected) header.d=pulse.celebrations.com header.i=emailservice@pulse.celebrations.com header.a=rsa-sha256 header.s=200608 header.b=pAaXjwfC;
+	dkim=pass (2048-bit key, unprotected) header.d=s6.y.mc.salesforce.com header.i=@s6.y.mc.salesforce.com header.a=rsa-sha256 header.s=fbldkim6 header.b=nqur7wGN
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=200608; d=pulse.celebrations.com;
+ h=From:To:Subject:Date:List-Unsubscribe:List-Unsubscribe-Post:MIME-Version:
+ Reply-To:Message-ID:Content-Type; i=emailservice@pulse.celebrations.com;
+ bh=h9mGGQ7ViLjm8O40yt27viYjSsUGy+QI9o2gX75DXx4=;
+ b=pAaXjwfCjKhQ1xEOo4zfoo3RevbPp0Br33rKyurlK84IBw/8csdMe5rb8dbCh9eFKaRoKryk0WJm
+   yRryAR7cT8Xx0eZVt0IO0AQQnusoRi6OI+LD/e3hfSPTaD3T22mumoSrfqzL6WHRr28R5Hf6ygUQ
+   PoalgpSd2L1esCMOCJE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=fbldkim6; d=s6.y.mc.salesforce.com;
+ h=From:To:Subject:Date:List-Unsubscribe:MIME-Version:Reply-To:Message-ID:
+ Content-Type;
+ bh=h9mGGQ7ViLjm8O40yt27viYjSsUGy+QI9o2gX75DXx4=;
+ b=nqur7wGNFHSKBOVJ787QWYGeA7ylt436ez9/zTZ5V3ViX7wOz9NIvXkaTfqVu0coPXEFUAzV5oEm
+   oVlth0B4M8diwDQfm2YlOPnzeZVU28WVKsicY/dKANHHYJM+wNYu+/WHTyoFA60K1a4c69Y1bdHi
+   Z9WP/IbckgucpSuNdPinTwZ/ZgQnJxuMbAF9JHPt2mPOCY8CjLeUuFVa9RpedraGAwZo/2NwVJ3w
+   spYsCm+h6rffM6ZvXnz1BjLTWGBzYzuX5I9Llu4R1oG1yqyHkrBEXq2u9gSs+UVq3a8jYc32HmWO
+   HryAxxHz4MHYLgFiCVes7LjuFjhB97FzrmJPHw==
+Received: by mta2.pulse.celebrations.com id h23kfk2fmd4d for <mstowe@baddomain.com>; Sun, 9 Nov 2025 19:18:12 +0000 (envelope-from <bounce-67_HTML-66267260-1645665-520004153-28233@bounce.pulse.celebrations.com>)
+From: "Jim at 1-800-FLOWERS.COM" <emailservice@pulse.celebrations.com>
+To: <mstowe@baddomain.com>
+Subject: =?UTF-8?B?Q2FyZWdpdmVycyBEZXNlcnZlIENhcmUgVG9vIOKAlCBIZXJl4oCZ?=
+ =?UTF-8?B?cyBIb3cgdG8gSGVscA==?=
+Date: Sun, 09 Nov 2025 13:18:12 -0600
+List-Unsubscribe: <https://click.pulse.celebrations.com/subscription_center.aspx?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtaWQiOiI1MjAwMDQxNTMiLCJzIjoiNjYyNjcyNjAiLCJsaWQiOiI2NyIsImoiOiIxNjQ1NjY1IiwiamIiOiIyODIzMyIsImQiOiI2MDI1MSJ9.jZBq9rtF97QzKd0rBr5kLqWK3RCydXs2VblocE4T2rM>, <mailto:leave-fd7e12771a3c402029-fe5c12767762037f7314-fe8e15767161027b70-fe3b117275640479741173-fefd1678776707@leave.pulse.celebrations.com>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+MIME-Version: 1.0
+Reply-To: "Celebrations Pulse" <reply-fe8e15767161027b70-67_HTML-66267260-520004153-28233@pulse.celebrations.com>
+X-SFMC-Stack: 6
+x-job: 520004153_1645665
+Message-ID: <ddb6ce40-c953-42f3-9eac-6b83c403e5ad@ind1s06mta2232.xt.local>
+Content-Type: multipart/alternative;
+	boundary="kdD0xxqoImMg=_?:"
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Sun, 09 Nov 2025 19:18:20 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Sun, 09 Nov 2025 13:18:19 -0600 (CST)
+X-Spam-Flag: YES
+X-Spam-Flag: YES
+X-Spam-Flag: YES
+X-FOFF-Rule-Matched: Health Spam Detection: Dementia and brain health misinformation (juliett.baddomain.com)
+X-FOFF-Rule-Matched: Analytics: Generic Sender Names (juliett.baddomain.com)
+X-FOFF-Rule-Matched: Advanced Heuristics: Weak Signal Aggregation (juliett.baddomain.com)
+X-FOFF-Rule-Matched: Health Spam Detection: Dementia and brain health misinformation (hotel.baddomain.com)
+X-FOFF-Rule-Matched: Analytics: Generic Sender Names (hotel.baddomain.com)
+X-FOFF-Rule-Matched: Advanced Heuristics: Weak Signal Aggregation (hotel.baddomain.com)
+X-FOFF-Score: 162 - foff-milter v0.6.9 (juliett.baddomain.com)
+X-FOFF-Score: 162 - foff-milter v0.6.9 (hotel.baddomain.com)
+X-FOFF-Reject-Converted: WOULD-REJECT: Message rejected by heuristic analysis
+X-FOFF-Reject-Converted: WOULD-REJECT: Message rejected by heuristic analysis
+
+This is a multi-part message in MIME format.
+
+--kdD0xxqoImMg=_?:
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+
+
+&#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj;
+ &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; 
+
+
+https://click.pulse.celebrations.com/?qs=c6cef39bff559a9be2c422769848906845f032f38667c9fbf9be6cfad9e84c44b77381cb31ca1eb69dc00593d6f06a9daa80f3c07e6a4882dd49dc7ee10ad7de 
+Please Click Here to Manage Your Preferences or Unsubscribe 
+
+
+https://click.pulse.celebrations.com/?qs=c6cef39bff559a9b96620eadc8407428a07606401d23646cd02b52f4c54bf4aa6ceabbff813b0035b08d3f1c96a320f687ac4dbd2ea896494f2349c3f52426c5 
+
+
+
+
+
+
+
+It often starts small. You check in on your parents more often. Then you’re picking up prescriptions and scheduling doctors' appointments. Or maybe a neighbor recovering from surgery asks for a favor, and you’re dropping off meals and folding laundry each week. 
+ 
+
+
+Sometimes, the changes happen closer to home. Your spouse misplaces the car keys, then forgets names and appointments. At first, it seems like stress or aging, until the truth becomes harder to ignore. Without realizing it, you shift from sharing responsibilities to carrying them.
+ 
+
+
+In the beginning, it just feels like helping. But somewhere along the way, you’ve become something more — a 
+https://click.pulse.celebrations.com/?qs=c6cef39bff559a9b52f3c126aee9702506d3e77e085c5df1a4835f408cf9354d27bdeb7d1802ce3b9d0f2c5087a8197927503c096ab06fb36c41d9928640365e 
+caregiver .
+ 
+
+
+Without the tireless and often unseen work of caregivers, our healthcare system would struggle to function. Family members and friends 
+https://click.pulse.celebrations.com/?qs=c6cef39bff559a9b46155f6a30f82637269943bfd1ff73ecff4b715ad87c7a8ab22d78b281186a2f3a7da30f77a462e4a4fa41325d415e7176803f5a557a9bf0 
+are the backbone  of long-term care in this country, filling in the spaces that hospitals and professionals can’t reach.
+ 
+
+
+That’s why this month — 
+https://click.pulse.celebrations.com/?qs=c6cef39bff559a9b9a215172e955e0f341d27146e9d64de80c4cdb59ba5827e89f06ad80ef03120e7704c840abc762eab1df736b310b37c5f20e8e13c60bf208 
+National Family Caregivers Month  — is so important. It’s a moment to recognize and thank the millions of people who’ve stepped up to this role. They’re spouses, children, neighbors, and friends who simply saw a need and decided to show up.
+
+
+
+
+ 
+
+The hands that hold us up
+
+
+More than 
+https://click.pulse.celebrations.com/?qs=c6cef39bff559a9b5a40711dfaea67b21bb49e99929bfdf1bb55fc15e214419c4364c8d3fef83f3523a8ae44408745d0b8f0883abd2da4b10d5a8c19abe504f5 
+53 million Americans  care for family, friends, and neighbors, often quietly and without fanfare. Many have full-time jobs and are raising children of their own. And yet, they still show up day after day to care for someone else.
+ 
+
+
+What’s striking is how many people don’t even 
+https://click.pulse.celebrations.com/?qs=c6cef39bff559a9be998a0b65aae134574c700b74e0c9688eff2b267f362a4093f72aa0308bab8858bc81f3e10988c19a7985b20ab7ad13b93b0263d3d3f3a3b 
+realize they’re caregivers . To them, it just feels like helping. Others assume someone else will step in. Workplaces rarely talk about it. And as a society, we often turn away from the difficult conversations around aging, illness, and the loss of independence. 
+ 
+
+
+As a result, caregiving becomes invisible and caregivers often miss out on vital support. 
+ 
+
+
+The responsibilities can be overwhelming. Keeping track of medications, managing doctor visits, handling insurance claims, preparing meals, and helping with mobility is a full-time job layered on top of everything else. It often comes with very little training, no compensation, and very few breaks.
+ 
+
+
+Then there’s the emotional toll of watching someone you love struggle, decline, or change in ways you never imagined. There’s guilt when you feel like you’re not doing enough, and frustration when you feel like you’re doing it all alone. There’s the loneliness, the isolation, and the exhaustion that come from always being the one others depend on.
+ 
+
+
+Caregivers rarely ask for help. But they deserve it, along with our recognition, our gratitude, and our support.
+
+
+
+
+
+Caring for caregivers
+
+
+The average caregiving journey lasts about 4.5 years, but that can stretch to 15 or 20 years for those caring for loved ones with dementia or Alzheimer’s. Over time, the toll becomes more than physical. It drains energy, time, finances, and often a caregiver’s emotional well-being.
+ 
+
+
+That’s why it’s so important to remind caregivers of something they often forget: to care for themselves, too.
+ 
+
+
+Debbie Howard, a caregiving coach and author of 
+https://click.pulse.celebrations.com/?qs=c6cef39bff559a9b07b7ff451441eb4795d047ac42bb2d8fc601d0f17475bcb7bcffc716c4c8b4ce7b7a94ede952a0ff8f62b914667ec18668f6d801e35026d5 
+The Caregiving Journey, has helped countless families navigate this role. She emphasizes two key points: planning and self-care. “Those two elements can make the process smoother and allow you to create meaningful memories with your loved one,” she said.
+
+
+
+
+
+
+Most importantly, take time to celebrate and affirm caregivers. A handwritten note, a thoughtful card, or even a simple “What you’re doing matters” can go a long way. Caregiving is often invisible work. But that doesn’t mean it should go unnoticed.
+ 
+
+
+And as you reach out, do so with empathy. Caregivers are often juggling more than we realize. If they cancel plans, take longer to reply, or seem withdrawn, be flexible. If they’re open to it, gently share helpful resources, such as support groups, articles, or local programs. 
+
+
+
+
+
+The heart of caregiving
+
+
+As we mark National Family Caregivers Month, let’s move beyond words of thanks and take action. Use your power to reach out, lend a hand, and 
+https://click.pulse.celebrations.com/?qs=c6cef39bff559a9b6a276aa2609b8e8f12986e8f83a19d0e14735542fbeeca3db3ed393f5ef0733dc2f6a3138a7927804ec18f77e8d9a68e0e5c4d5b99383ac7 
+remind caregivers  that their work and sacrifices are seen and valued.
+ 
+
+
+To all the caregivers out there: You inspire us. You remind us that compassion isn’t always loud or visible. Sometimes, it’s found in the hidden moments of care, patience, and devotion.
+ 
+
+
+All the best,
+ 
+
+Jim
+
+
+
+
+https://click.pulse.celebrations.com/?qs=c6cef39bff559a9b12ee9827a6ac71c652e123db8b18f8528fc352dc4820264b09a4c3eaa765ae901cd34264679df291412ed2ce53244ef1761326b0b5223d39 
+
+https://click.pulse.celebrations.com/?qs=c6cef39bff559a9b27adf83ea2292145e92ff8ee721a268b495effe1ae269c818e1a0b1351e09971ded7e4357a28b32f54cff52520269ed826816fcab6f3d0f2 
+
+https://click.pulse.celebrations.com/?qs=c6cef39bff559a9bd886e2b9a9649382cf746128ed496d89162341d2a208f602f04b151f0c3872dafe9ac70e6540965f5fad4714d900fe4919f67fa584cd2b03 
+
+https://click.pulse.celebrations.com/?qs=c6cef39bff559a9b09327e69f0e3eec0c8c783e261ac63a24c8f7e75a0443a584186a458d34f6c02c889e14d63951ea31ff1707a3a0f91df11e7f7659bbc5db3 
+
+
+https://click.pulse.celebrations.com/?qs=c6cef39bff559a9b6367142ba0698d39cc8ff095dfe0734455423d46e1811d95041b7bb4a0dad9a4ed94d497a0988e75aceb2883da3a65e777ff3aee3293c820 
+
+
+https://click.pulse.celebrations.com/?qs=c6cef39bff559a9bf4da164583dcf9900bca5badf665ae7e80afaf7c0849085b027ba39b21b4fc6cbffe6cc3f7251da7ae42304c462592c1a81dde4e60140e2b 
+
+https://click.pulse.celebrations.com/?qs=c6cef39bff559a9b6f07aab563f17342f1914d32bbaf8c3ffb3de548f790458f6d46f772a31087cf61f0f81bb50cce441142406567733aca0f0e1985c7acf4ed 
+
+https://click.pulse.celebrations.com/?qs=c6cef39bff559a9bae971434a4d33ca59e4add437ed45ed53ef6e5626b66a9535b48d502061ad5acb0f98226dce399411a5a89edc9c4428110439ad6856e8587 
+
+
+Stories are how we make sense of life. They’re how we connect, teach, and remember. Whether it’s a tale passed around a dinner table or one shared in a business meeting, the right story can bridge generations and bring people closer together.
+ 
+
+
+In this week’s Celebrate Your Story, I sit down with 
+https://click.pulse.celebrations.com/?qs=c6cef39bff559a9b977caa660f6ce1e15f2444792a12867e5530c4a34d5d2acd345f9aa55efb5d658fd942631abb0163fb4fce99abd8a0b347c9deca4a7e2049 
+Kindra Hall , a bestselling author and expert in storytelling who’s helped thousands of people learn how to share their stories. Kindra believes that every person’s story has value, even the ones we might think are too ordinary or small.
+ 
+
+
+Our conversation reminded me that the best stories come from honesty. We talk about the importance of finding the heart in our experiences, how to match stories to the messages we want to share, and why self-deprecating moments often connect us most deeply to others.
+ 
+
+
+Take a moment to reflect on your own story and the lessons you’ve learned, the people who’ve shaped you, and the moments that have made you who you are. When we share those stories, we tell people who we are and remind them they’re not alone. 
+ 
+
+
+
+
+https://click.pulse.celebrations.com/?qs=c6cef39bff559a9be5173762154cda47fa3f0fddbc76efe0d8edde9c841072ebee1dcdb05aba3c5f3011eaed8bd37518053722c748cacdf417d9b75073cbfbe8 
+
+
+https://click.pulse.celebrations.com/?qs=c6cef39bff559a9b6ddd667d1c9df2260e54216c3c7cdbbdc54bcd2655727b734384535f905e710e4d415846c37fcf40eec5f9166f0a39e1f1a8fb65b80a9acd 
+
+
+https://click.pulse.celebrations.com/?qs=c6cef39bff559a9bc5575cc3cb5516ca09ba64a501b39f02a57b7047afe272a31348ad97a9c9a2a04673711cd08fc84626665ef89434cbd5b3b78c1046eecccf 
+
+
+https://click.pulse.celebrations.com/?qs=c6cef39bff559a9ba8387b2e0e952e1fe51dc7f8b3138cc672b8da3efcfdce21e4ae224807899a019a5204516b6a508c37df28d9c22079c81a6438c05d556588 
+
+https://click.pulse.celebrations.com/?qs=c6cef39bff559a9b3fe777ddc75d333b235af549b26d92d03b7dbe0d7c14de88482e50677ccd568f28bcb4191523f48f84afb3c8bb982e4f7f300cf5a56ed94f 
+
+https://click.pulse.celebrations.com/?qs=c6cef39bff559a9ba9a0c2200e5188f21b367895048ede8d5ad29c1cefa508cdd598a0086baedf0604067aba6d8d619723e259c96488f4a9b4631841a76f6ec2 
+
+What we’re doing for our caregivers
+
+
+Business can, and should, be a force for good, and it starts with how we care for one another.
+ 
+
+
+At 1-800-Flowers, that belief led to the creation of our Caregivers and Allies Responding with Empathy (CARE) 
+https://click.pulse.celebrations.com/?qs=c6cef39bff559a9b149a5ed0009d2ddfcb6274106e5d1ac06ed5d3022f425d979ff6aa3a41d640c9e8b9cb0367c7c2b908509b2e7281ca7d406788217ec57d5a 
+employee resource group . It was started a few years ago by Rhonda Klug and other team members at Harry & David and is now growing across our entire organization. 
+ 
+
+
+CARE’s mission is simple: 
+ 
+
+ • Offer practical tools and resources for employees navigating caregiving.
+ 
+
+
+• Create a safe space where people can share stories and connect.
+ 
+
+
+• Identify ways we can make the workplace more supportive for those balancing care with career.
+ 
+
+
+But what makes me most proud is how CARE doesn’t stop at our walls. Our team members have extended their empathy into the community by partnering with local nonprofits to support families far beyond our workplace.
+ 
+
+
+Every organization has employees who are also caregivers. What would it look like if every business offered support, community, and recognition to those employees? I believe the return in loyalty and humanity would far outweigh the cost.
+
+
+
+
+
+What are you grateful for?
+
+
+Tuesday marks 
+https://click.pulse.celebrations.com/?qs=c6cef39bff559a9b304a975aa2b77930d514a9e341bd9b508f0e421643d0cd3b542a539d783180f4a593c8d2f88b0acf703175e6160cb43ded5e3b327986879c 
+Veterans Day , which was established to honor peace and those who fought to secure it in World War I. Over time, it’s grown into a day to recognize every man and woman who has worn our nation’s uniform and the families who’ve stood beside them.
+ 
+
+
+Each year, I try to pause on 11/11 to remember the people behind the service. A simple “thank you” goes a long way, but sometimes the most meaningful gesture is to ask a veteran about their experience — what they saw, what they learned, and how it shaped their life.
+ 
+
+
+When we take the time to listen, we do more than honor their sacrifice. We carry their stories forward. We remind younger generations what freedom is built upon. And we deepen our own understanding of gratitude for those who served and for the country they helped protect.
+
+
+
+
+
+
+What are you grateful for?
+
+
+As the days grow shorter and the scent of pies and roasts begins to fill the air, 
+https://click.pulse.celebrations.com/?qs=c6cef39bff559a9bf03e564c09f2ac2dfdc4dbc072215672189f56840ad8604de98405000343413984ce5987356ad914078bf5fe37732d7fe58501628cdb461c 
+Thanksgiving  invites us to pause and express our gratitude.
+
+
+
+This year, I’d like to do something a little different. Instead of simply listing what we’re thankful for, let’s share the stories behind that gratitude: the moments that shaped us, the people who lifted us up, and the lessons that helped us grow.
+
+
+
+If you’d like to take part, send me a note about what gratitude looks like for you this Thanksgiving. I’ll feature a few of your reflections in a special holiday edition of Celebrations Pulse. It’ll be a collective reminder that the spirit of Thanksgiving is best shared together.
+
+
+
+
+
+
+
+
+mailto:celebrationspulse@1800flowers.com 
+
+Related articles that caught my eye
+
+
+https://click.pulse.celebrations.com/?qs=c6cef39bff559a9b7857671e2af7cdb877196b6111e7930bba6eca5173b8fb93d2afcda23af172eb8b37e676f9409b43b4b8b4edd7c6b3cf6556c8ff7ee01c68 
+
+
+https://click.pulse.celebrations.com/?qs=c6cef39bff559a9b66b4123f0d45c2dff42b181c48bd301ffd5bc6e47729fe77e6b184e75e0ca9ddb417f76cbdb052adce1ecbc54aee7adf4c491aa86eefe470 
+
+
+https://click.pulse.celebrations.com/?qs=c6cef39bff559a9b7a100419bb87f83aab268bcd90a4e01ee6cee7d402dac1c2f3354ed0dc482364d479731a8df4be13c205ac8bd756ac7fb9a26ebc6fb2101c 
+
+
+
+
+
+
+https://click.pulse.celebrations.com/?qs=c6cef39bff559a9b673732b9bea87330dc75de41b050635b9bfe63b8768cfa626a2137ffda0511d2e8a00caf61fe3ffa317c9b686e85f7c431376e96a2da5ed6 
+
+
+https://click.pulse.celebrations.com/?qs=c6cef39bff559a9b46bec0f89d783f13c9a97b917a6beffb292d440b0024f402af946e27885d88dbdb443f3218c370322306d53addddc550d90c83ff9b41b9f9 
+
+
+mailto:celebrationspulse@1800flowers.com 
+
+Written by our Founder and Chairman, our Celebrations Pulse letters aim to engage with our community. From sharing stories to welcoming your ideas, we want to help you to express, connect, and celebrate the important people in your life.
+
+
+https://view.pulse.celebrations.com/?qs=ad71750c957b73d4bbb0e84588abad82e22933222d196988c0aca58c98b13098e9d686a781b65d382092792f5c65f500ec58b2c24850dbaba7e0613c8c615f9725371611fa7f09439f8aa3af4ae398e9 
+View as webpage 
+
+This email was sent by: 1-800-FLOWERS.COM, Inc.
+Two Jericho Plaza Suite 200 Jericho, NY, 11753, USA
+
+https://click.pulse.celebrations.com/profile_center.aspx?qs=24ed0e2eb117d861268d298626c365211425c893843a7b78237d10714e2d847d0b15ef2342ac3f397e72c499b865c43aa1a31d45f8dd92530c61b10a01aa3355a2207aafa05d95da 
+Manage Email Preferences  | 
+https://click.pulse.celebrations.com/?qs=c6cef39bff559a9bdb0da314d7b3b6628b18653d328ae8da018a9d7e3e80f8eec334ab1bb532e32a7ca91faffb67cb7455466226e12af02f36188a69b5cfb2fa 
+Terms & Conditions  | 
+https://click.pulse.celebrations.com/?qs=c6cef39bff559a9b07116c835920abd01b2885dfadd527c112a679c02593ca31efc7e6924730fb0bfd07135b009b697330510dbb0815f28945be0bab85f3c448 
+Unsubscribe from Pulse Newsletter 
+
+
+
+
+
+--kdD0xxqoImMg=_?:
+Content-Type: text/html;
+	charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+ <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+ <style type="text/css">
+ body {
+ margin: 0px;
+ }
+ .ReadMsgBody {
+ width: 100%;
+ }
+ .ExternalClass {
+ width: 100%;
+ }
+ /* Hotmail symbol fix */
+ .symbolfix img {
+ width: 5px !important;
+ height: 5px !important;
+ }
+  th {font-weight:400;font-size:20px !important;padding:5px;text-align:center;color:#000000 !important;}
+  th a {color:#000000 !important;}
+   .navfreeship {color:#800080 !important;}
+  a.navfreeship:link {color:#800080 !important;}
+  table #logodesktop {margin:auto;text-align:center;}
+   .sharpen {
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -o-crisp-edges;
+    image-rendering: -webkit-optimize-contrast;
+    -ms-interpolation-mode: nearest-neighbor;
+}
+  
+@media only screen and (max-width: 500px) and (min-width: 320px) {
+  div #nav {font-size:12px !important;}
+  th {font-weight:400;font-size:12px !important;padding:5px;text-align:center;color:#000000 !important;background-color:#ffffff;}
+  table #navmenu {background-color:#ffffff;color:#000000 !important;font-size:12px !important;}
+  th a {color:#000000 !important;font-size:12px !important;display:inline;}
+  a.navfreeship:link {color:#800080 !important;}
+  .navfreeship {color:#800080 !important;}
+  .savingspass {font-size:13px !important;}
+  .promocodetable {width:75% !important;}
+   .tablemobilestacked {display:block !important;width:95% !important;max-width:500px !important;}
+   .tablemobilestackedd {display:block !important;width:95% !important;max-width:500px !important;}
+   
+   .bottomnavstacked {padding-bottom:8px !important;padding-right:5px !important;padding-left: 5px !important;padding-top:8px !important;}
+   .mobilebox {width:100% !important;max-width:95% !important;}
+   .mobileboxinner {width:100% !important;max-width:100% !important;}
+  .mobileboxtext {font-size:11px !important; font-weight:600 !important; font-family: Arial !important;}
+  
+  a.offertext1:link {font-size:22px !important;}
+  a.offertext2:link {font-size:14px !important;}
+  .mobilehide {display:none !important;visibility:hidden !important;width:0px;}
+  .passporttext1 {font-size:16px !important;}
+  .passporttext2 {font-size:18px !important;}
+  .boxborder {border:1px solid #000000 !important;}
+  .width100 {width:100% !important;}
+  .centered {text-align:center !important;margin-left:auto !important;margin-right:auto !important;}
+  .padding10 {padding:10px !important;}
+  .padding20 {padding:20px !important;}
+  .padding30 {padding:30px !important;}
+  .padding40 {padding:40px !important;}
+  .padding50 {padding:50px !important;}
+  }
+   
+@media only screen and (max-width: 600px) and (min-width: 500px) {
+    div #nav {font-size:12px !important;}
+  th {font-weight:400;font-size:12px !important;padding:5px;text-align:center;color:#000000 !important;background-color:#ffffff;}
+  table #navmenu {background-color:#ffffff;color:#000000 !important;font-size:12px !important;}
+  th a {color:#000000 !important;font-size:12px !important;display:inline;}
+  a.navfreeship:link {color:#800080 !important;}
+  .navfreeship {color:#800080 !important;}
+  .savingspass {font-size:13px !important;}
+  .promocodetable {width:75% !important;}
+   .tablemobilestacked {display:block !important;width:95% !important;max-width:500px !important;}
+   .tablemobilestackedd {display:block !important;width:95% !important;max-width:500px !important;}
+     
+   .bottomnavstacked {width:50% !important;max-width:50% !important; padding-bottom:8px !important;padding-top:8px !important;}
+   .mobilebox {width:100% !important;max-width:145px !important;}
+   .mobileboxinner {width:100% !important;max-width:100% !important;}
+  .mobileboxtext {font-size:10px !important;font-weight:600 !important;font-family: Arial !important;}
+  .bottomnavlesspadding {padding:10px !important;}
+  a.offertext1:link {font-size:22px !important;}
+  a.offertext2:link {font-size:14px !important;}
+  .mobilehide {display:none !important;visibility:hidden !important;width:0px;}
+  .passporttext1 {font-size:16px !important;}
+  .passporttext2 {font-size:17px !important;}
+  .boxborder {border:1px solid #000000 !important;}
+  .width100 {width:100% !important;}
+  .centered {text-align:center !important;margin-left:auto !important;margin-right:auto !important;}
+  .padding10 {padding:10px !important;}
+  .padding20 {padding:20px !important;}
+  .padding30 {padding:30px !important;}
+  .padding40 {padding:40px !important;}
+  .padding50 {padding:50px !important;}
+  
+  }
+   
+   
+@media only screen and (max-width: 320px) {
+  div #nav {font-size:12px !important;}
+  th {font-weight:400;font-size:12px !important;padding:5px;text-align:center;color:#000000 !important;background-color:#ffffff;}
+  table #navmenu {background-color:#ffffff;color:#000000 !important;font-size:12px !important;}
+  th a {color:#000000 !important;font-size:12px !important;;display:inline;}
+  a.navfreeship:link {color:#800080 !important;}
+  .navfreeship {color:#800080 !important;}
+  img.mobilelogo {max-width:50% !important;}
+  .mobilelogo {max-width:50% !important;}
+  .savingspass {font-size:13px !important;}
+  .promocodetable {width:75% !important;}
+   .tablemobilestacked {display:block !important;width:95% !important;max-width:500px !important;}
+   .tablemobilestackedd {display:block !important;width:95% !important;max-width:500px !important;}
+  
+   .bottomnavstacked {width:50% !important;max-width:50% !important; padding-bottom:8px !important;padding-top:8px !important;}
+   .mobilebox {width:100% !important;max-width:145px !important;}
+   .mobileboxinner {width:100% !important;max-width:100% !important;}
+  .mobileboxtext {font-size:10px !important;font-weight:600 !important; font-family: Arial !important;}
+  .bottomnavlesspadding {padding:10px !important;}
+  a.offertext1:link {font-size:22px !important;}
+  a.offertext2:link {font-size:14px !important;}
+  .mobilehide {display:none !important;visibility:hidden !important;width:0px;}
+  .passporttext1 {font-size:18px !important;}
+  .passporttext2 {font-size:22px !important;}
+  .boxborder {border:1px solid #000000 !important;}
+  .width100 {width:100% !important;}
+  .centered {text-align:center !important;margin-left:auto !important;margin-right:auto !important;}
+  .padding10 {padding:10px !important;}
+  .padding20 {padding:20px !important;}
+  .padding30 {padding:30px !important;}
+  .padding40 {padding:40px !important;}
+  .padding50 {padding:50px !important;}
+  }
+   
+
+</style>
+</head>
+<body style="margin: 0px; padding:0px; -webkit-text-size-adjust:none; -ms-text-size-adjust: none;" yahoo="fix"><style type="text/css">
+div.preheader 
+{ display: none !important; } 
+</style>
+<div class="preheader" style="font-size: 1px; display: none !important;">Sharing a Letter from our Founder & Chairman</div>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+ <tr>
+  <td align="center">
+  <div align="center">
+  <table border="0" cellspacing="0" cellpadding="0" class="container" style="max-width:640px;">
+   <tr>
+    <td align="left" valign="top">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+     <tr>
+      <td align="left" valign="top"><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- zero width space to hide unsub text -->
+<div style="display: none; max-height: 0px; overflow: hidden;">
+&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;
+&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;
+</div>
+</td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td align="center" style="padding-bottom:10px"><table border="0" cellspacing="0" cellpadding="0"><tr><td class="innertd buttonblock" bgcolor="#7F3FBF" style=" border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; background-color: #7F3FBF;">
+<a style=" font-size: 14px; font-family: Arial, helvetica, sans-serif; color: #000000; text-align: center; text-decoration: none; display: block; background-color:  #FFFFFF; border: 1px solid transparent; padding: 10px; border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px;" target="_blank" class="buttonstyles" href="https://click.pulse.celebrations.com/?qs=c6cef39bff559a9be2c422769848906845f032f38667c9fbf9be6cfad9e84c44b77381cb31ca1eb69dc00593d6f06a9daa80f3c07e6a4882dd49dc7ee10ad7de"  >Please Click Here to Manage Your Preferences or Unsubscribe</a></td></tr></table></td></tr></table>
+<!--/prefs-->
+</td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><div id="logo">
+  <table width="100%" align="center" id="logodesktop" style="max-width:640px;width:100%" border="0" cellspacing="0" cellpadding="10">
+        <tr>
+        <td align="center">
+          <a title="1-800-Flowers.com" href="https://click.pulse.celebrations.com/?qs=c6cef39bff559a9bff2c68f30c1d555c4745fe6d2945a63e87221b9f75f83fa79a5ec8572d6625a071520cddf657b6e41e9f133e77ce35e2d599f0f47a55f138" target="_blank"  ><img width="125" height="55" title="1-800-Flowers.com" id="logo" style="display:block;text-align:center;" alt="1-800-Flowers.com" src="https://assets.bounceexchange.com/assets/uploads/users/4034/1800f/logo-238x106-20200513.png" border="0"></a>
+    </td>
+      </tr>
+      </table>
+</div>
+
+<!--this tracks the clicks for Jim's podcast banners. do not remove, it's part of tracking-->
+
+</td></tr></table></td></tr></table></td>
+     </tr>
+    </table>
+    </td>
+   </tr>
+   <tr>
+    <td align="left" valign="top">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+     <tr>
+      <td align="left" valign="top" class="photo"><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><div id="hero">
+  <table width="640" align="center" style="max-width:640px;width:100%;" bgcolor="#ffffff" cellspacing="0" cellpadding="0">
+        <tr>
+      <td align="center" style="padding-bottom:0px;">
+
+        <img style="display:block;border:0;outline:0;padding:0;width:100%;max-width:640px;height:auto;" alt="celebrations pulse" src="https://image.em.1800flowersinc.com/lib/fe9712727466027c73/m/1/Hero_251109.jpg" border="0">
+    </td>
+      </tr>
+      </table>
+</div>
+
+</td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><div align="center" id="footer" width="640"> 
+  <table align="center" style="max-width:640px;" border="0" cellspacing="0" cellpadding="0">    
+   
+ 
+ 
+<tr>
+  <td width="640" align="center" valign="top" style="font-family: Calibri, Helvetica, San serif; line-height:1.4; font-size:17px; color:#000000; background-color:#ffffff; padding-left:40px;padding-right:40px;padding-top:5px;padding-bottom:5px;text-align:left;">It often starts small. You check in on your parents more often. Then you’re picking up prescriptions and scheduling doctors' appointments. Or maybe a neighbor recovering from surgery asks for a favor, and you’re dropping off meals and folding laundry each week. 
+    <br><br>
+Sometimes, the changes happen closer to home. Your spouse misplaces the car keys, then forgets names and appointments. At first, it seems like stress or aging, until the truth becomes harder to ignore. Without realizing it, you shift from sharing responsibilities to carrying them.
+    <br><br>
+In the beginning, it just feels like helping. But somewhere along the way, you’ve become something more — a <a  style="color:#000000;font-weight:bold;text-decoration:underline;margin:0 !important;padding:0 !important;line-height:100% !important;mso-line-height-rule:exactly !important;" href="https://click.pulse.celebrations.com/?qs=c6cef39bff559a9b3f6e680860a0850e938b338b2c1b74cd06e0d7297521c868a04b80188833ac24ff05235be133f595fd1059bb83066cbff313e10bf63ec4a0">caregiver</a>.
+    <br><br>
+Without the tireless and often unseen work of caregivers, our healthcare system would struggle to function. Family members and friends <a  style="color:#000000;font-weight:bold;text-decoration:underline;margin:0 !important;padding:0 !important;line-height:100% !important;mso-line-height-rule:exactly !important;" href="https://click.pulse.celebrations.com/?qs=c6cef39bff559a9baec1d84a20d94c73f43e5063a8e021979c268966f976382f529d8a2486239fd55d3632e8b95154b8d8c2fcaf6a30d26a48e0cf11603f74aa">are the backbone</a> of long-term care in this country, filling in the spaces that hospitals and professionals can’t reach.
+    <br><br>
+That’s why this month — <a  style="color:#000000;font-weight:bold;text-decoration:underline;margin:0 !important;padding:0 !important;line-height:100% !important;mso-line-height-rule:exactly !important;" href="https://click.pulse.celebrations.com/?qs=c6cef39bff559a9b354e8ef2e77379ed85b62219efbae777a77791bf3b09952417186c50a0727e1579dc6c53cddae2b7922410076e99b5482c4b00bb6a8d9675">National Family Caregivers Month</a> — is so important. It’s a moment to recognize and thank the millions of people who’ve stepped up to this role. They’re spouses, children, neighbors, and friends who simply saw a need and decided to show up.
+
+
+
+
+ </td></tr></table></div></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><div id="hero">
+  <table width="640" align="center" style="max-width:640px;width:100%;" bgcolor="#ffffff" cellspacing="0" cellpadding="0">
+        <tr>
+      <td align="center" style="padding-bottom:0px;">
+
+        <img style="display:block;border:0;outline:0;padding:0;width:100%;max-width:640px;height:auto;" alt="celebrations pulse" src="https://image.em.1800flowersinc.com/lib/fe9712727466027c73/m/1/Pic1_251109.jpg" border="0">
+    </td>
+      </tr>
+      </table>
+</div>
+
+</td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><div align="center" id="footer" width="640"> 
+  <table align="center" style="max-width:640px;" border="0" cellspacing="0" cellpadding="0">    
+    
+<tr>
+  <td width="640" align="center" valign="top" style="font-family: Calibri, Helvetica, San serif; line-height:1.4; font-size:17px; color:#000000; background-color:#ffffff; padding-left:40px;padding-right:40px;padding-top:0px;padding-bottom:25px;text-align:left;"><span style="line-height:28px;font-size:22px;color: #5c9a56;"><strong>The hands that hold us up</strong></span><br><br>
+More than <a  style="color:#000000;font-weight:bold;text-decoration:underline;margin:0 !important;padding:0 !important;line-height:100% !important;mso-line-height-rule:exactly !important;" href="https://click.pulse.celebrations.com/?qs=c6cef39bff559a9be3bd3c302ab4ef6f615a2138714258c3bfc54ff59325a84605f2dba77cc7db33d03d943bf7c2a446b1fdfe2bfff7b3e049882ae09698978e">53 million Americans</a> care for family, friends, and neighbors, often quietly and without fanfare. Many have full-time jobs and are raising children of their own. And yet, they still show up day after day to care for someone else.
+    <br><br>
+What’s striking is how many people don’t even <a  style="color:#000000;font-weight:bold;text-decoration:underline;margin:0 !important;padding:0 !important;line-height:100% !important;mso-line-height-rule:exactly !important;" href="https://click.pulse.celebrations.com/?qs=c6cef39bff559a9b6b0ff93490b9a4d2442981a5659fefe9e19546c60d2834fd785f2fff7145237931d66affd240af6e0137a905638248d609458d3301420868">realize they’re caregivers</a>. To them, it just feels like helping. Others assume someone else will step in. Workplaces rarely talk about it. And as a society, we often turn away from the difficult conversations around aging, illness, and the loss of independence. 
+    <br><br>
+As a result, caregiving becomes invisible and caregivers often miss out on vital support. 
+    <br><br>
+The responsibilities can be overwhelming. Keeping track of medications, managing doctor visits, handling insurance claims, preparing meals, and helping with mobility is a full-time job layered on top of everything else. It often comes with very little training, no compensation, and very few breaks.
+    <br><br>
+Then there’s the emotional toll of watching someone you love struggle, decline, or change in ways you never imagined. There’s guilt when you feel like you’re not doing enough, and frustration when you feel like you’re doing it all alone. There’s the loneliness, the isolation, and the exhaustion that come from always being the one others depend on.
+    <br><br>
+Caregivers rarely ask for help. But they deserve it, along with our recognition, our gratitude, and our support.
+
+
+
+</td></tr></table></div></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><div align="center" id="footer" width="640"> 
+  <table align="center" style="max-width:640px;" border="0" cellspacing="0" cellpadding="0">    
+    
+<tr>
+  <td width="640" align="center" valign="top" style="font-family: Calibri, Helvetica, San serif; line-height:1.4; font-size:17px; color:#000000; background-color:#ffffff; padding-left:40px;padding-right:40px;padding-top:0px;padding-bottom:0px;text-align:left;"><span style="line-height:28px;font-size:22px;color: #5c9a56;"><strong>Caring for caregivers</strong></span><br><br>
+The average caregiving journey lasts about 4.5 years, but that can stretch to 15 or 20 years for those caring for loved ones with dementia or Alzheimer’s. Over time, the toll becomes more than physical. It drains energy, time, finances, and often a caregiver’s emotional well-being.
+    <br><br>
+That’s why it’s so important to remind caregivers of something they often forget: to care for themselves, too.
+    <br><br>
+Debbie Howard, a caregiving coach and author of <a  style="color:#000000;font-weight:bold;text-decoration:underline;margin:0 !important;padding:0 !important;line-height:100% !important;mso-line-height-rule:exactly !important;" href="https://click.pulse.celebrations.com/?qs=c6cef39bff559a9b7b4ba86a891f657f822253d4495c9c1fe0f6b79f5b4e85ebf2660195244487ce5950d472550db53260b79e13a8e18aab50ecf3613dcd553d"><i>The Caregiving Journey</i></a>, has helped countless families navigate this role. She emphasizes two key points: planning and self-care. “Those two elements can make the process smoother and allow you to create meaningful memories with your loved one,” she said.
+
+
+
+</td></tr></table></div></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><div id="hero">
+  <table width="640" align="center" style="max-width:640px;width:100%;" bgcolor="#ffffff" cellspacing="0" cellpadding="0">
+        <tr>
+      <td align="center" style="padding-bottom:0px;">
+
+        <img style="display:block;border:0;outline:0;padding:0;width:100%;max-width:640px;height:auto;" alt="celebrations pulse" src="https://image.em.1800flowersinc.com/lib/fe9712727466027c73/m/1/Pic2_251109.gif" border="0">
+    </td>
+      </tr>
+      </table>
+</div>
+
+</td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><div align="center" id="footer" width="640"> 
+  <table align="center" style="max-width:640px;" border="0" cellspacing="0" cellpadding="0">    
+    
+<tr>
+  <td width="640" align="center" valign="top" style="font-family: Calibri, Helvetica, San serif; line-height:1.4; font-size:17px; color:#000000; background-color:#ffffff; padding-left:40px;padding-right:40px;padding-top:0px;padding-bottom:0px;text-align:left;">
+Most importantly, take time to celebrate and affirm caregivers. A handwritten note, a thoughtful card, or even a simple “What you’re doing matters” can go a long way. Caregiving is often invisible work. But that doesn’t mean it should go unnoticed.
+    <br><br>
+And as you reach out, do so with empathy. Caregivers are often juggling more than we realize. If they cancel plans, take longer to reply, or seem withdrawn, be flexible. If they’re open to it, gently share helpful resources, such as support groups, articles, or local programs. 
+
+
+
+</td></tr></table></div></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><div align="center" id="footer" width="640"> 
+  <table align="center" style="max-width:640px;" border="0" cellspacing="0" cellpadding="0">    
+    
+<tr>
+  <td width="640" align="center" valign="top" style="font-family: Calibri, Helvetica, San serif; line-height:1.4; font-size:17px; color:#000000; background-color:#ffffff; padding-left:40px;padding-right:40px;padding-top:25px;padding-bottom:5px;text-align:left;"><span style="line-height:28px;font-size:22px;color: #5c9a56;"><strong>The heart of caregiving</strong></span><br><br>
+As we mark National Family Caregivers Month, let’s move beyond words of thanks and take action. <i>Use your power</i> to reach out, lend a hand, and <a  style="color:#000000;font-weight:bold;text-decoration:underline;margin:0 !important;padding:0 !important;line-height:100% !important;mso-line-height-rule:exactly !important;" href="https://click.pulse.celebrations.com/?qs=c6cef39bff559a9b10a3c7486a5aa6dc28ab65a2a6733d76f997e979a45dbd2c852c62a72f7bb32cdd431011da8369837858e5fb795b69807981a51a572ee627">remind caregivers</a> that their work and sacrifices are seen and valued.
+    <br><br>
+To all the caregivers out there: You inspire us. You remind us that compassion isn’t always loud or visible. Sometimes, it’s found in the hidden moments of care, patience, and devotion.
+    <br><br>
+All the best,
+    <br>
+Jim
+
+</td></tr></table></div></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner">
+<div id="logo">
+  <table width="640" align="center" style="max-width:640px;width:100%;" bgcolor="#ffffff" cellspacing="0" cellpadding="0">
+        <tr>
+      <td align="left" style="padding-bottom:0px;">
+ <a title="Chris" href="https://click.pulse.celebrations.com/?qs=c6cef39bff559a9b6da32bc8d5ea5a72f9462b73c1b2f79a6cb4840b32355d26501f3e9eece6480ed37662117fda501541edadce5fae2221c589068350c69bb7" target="_blank"  ><img width="237" style="display:block;border:0;outline:0;padding:0;width:100%;max-width:237px;height:auto;" alt="Chris" src="https://image.em.1800flowersinc.com/lib/fe9712727466027c73/m/1/Jim250516.jpg" border="0"></a>
+          </td>
+         <td align="center" style="padding-bottom:0px;">
+         <a title="Jim" href="https://click.pulse.celebrations.com/?qs=c6cef39bff559a9b2f1f8a15042b65c6b4dab9cd61dd29b237cf52fbac217e308dc61b5c100b30ee1caa522e80304e4e0f557e20bcfe0359fca8f79a1c5257b4" target="_blank"  ><img width="75" style="display:block;border:0;outline:0;padding:0;width:100%;max-width:75px;height:auto;" alt="Jim" src="https://image.em.1800flowersinc.com/lib/fe9712727466027c73/m/1/Jim_LinkedIn250516.gif" border="0"></a>
+    </td>
+          <td align="center" style="padding-bottom:0px;">
+         <a title="Jim" href="https://click.pulse.celebrations.com/?qs=c6cef39bff559a9b5625d7fdeabd943293d2a452317b582735d1b4850a8dd4a0a9148df0a1218afd5328caedaa0afe0fbae7181699a49da2fcc2d5680a031aa0" target="_blank"  ><img width="75" style="display:block;border:0;outline:0;padding:0;width:100%;max-width:75px;height:auto;" alt="Jim" src="https://image.em.1800flowersinc.com/lib/fe9712727466027c73/m/1/Jim_X250516.gif" border="0"></a>
+    </td>
+          <td align="center" style="padding-bottom:0px;">
+         <a title="Jim" href="https://click.pulse.celebrations.com/?qs=c6cef39bff559a9beaf1fa8c26a42c4c9afa642cadbbd7ddd1b85af731e62b72589bca2c56d4975510cc5a28f034bde0a84690a7cb21accc0ff13b65996a10c3" target="_blank"  ><img width="253" style="display:block;border:0;outline:0;padding:0;width:100%;max-width:253px;height:auto;" alt="Jim" src="https://image.em.1800flowersinc.com/lib/fe9712727466027c73/m/1/Jim_Instagram250516.gif" border="0"></a>
+    </td>
+      </tr>
+    
+      </table>
+</div>
+
+</td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><div id="hero">
+  <table width="640" align="center" style="max-width:640px;width:100%;" bgcolor="#ddf3fa" cellspacing="0" cellpadding="0">
+        <tr>
+      <td align="center" style="padding-bottom:0px;">
+
+        <a  href="https://click.pulse.celebrations.com/?qs=c6cef39bff559a9b045db2e7a71065e23e26676642bf3224dd992176292e478cdbad7f7610d7858a47ea21ec89710583e95ea4fc0ca412ae8fefad0a59eb7603"><img style="display:block;border:0;outline:0;padding:0;width:100%;max-width:640px;height:auto;" alt="celebrations pulse" src="https://image.em.1800flowersinc.com/lib/fe9712727466027c73/m/1/CelebrateStory_251109.jpg" border="0"></a>
+    </td>
+      </tr>
+      </table>
+</div>
+
+</td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner">
+<table width="640" align="center" style="max-width:640px;width:100%;" bgcolor="#ebf3f5" cellspacing="0" cellpadding="0">
+      <!--products 8 9 10-->  
+    <tr>
+       <td align="left" style="padding-bottom:0px;">
+      <a href="https://click.pulse.celebrations.com/?qs=c6cef39bff559a9bf4da164583dcf9900bca5badf665ae7e80afaf7c0849085b027ba39b21b4fc6cbffe6cc3f7251da7ae42304c462592c1a81dde4e60140e2b" style="display: block"><img alt="Youtube" style="display:block;border:0;outline:0;padding:0;width:100%;max-width:640px;height:auto;" border="0" src="https://image.em.1800flowersinc.com/lib/fe9712727466027c73/m/1/YouTube_251109.gif"></a>
+
+      </td>
+      <td align="center" style="padding-bottom:0px;">
+
+ <a href="https://click.pulse.celebrations.com/?qs=c6cef39bff559a9b6f07aab563f17342f1914d32bbaf8c3ffb3de548f790458f6d46f772a31087cf61f0f81bb50cce441142406567733aca0f0e1985c7acf4ed" style="display: block"><img alt="Spotify" style="display:block;border:0;outline:0;padding:0;width:100%;max-width:640px;height:auto;" border="0" src="https://image.em.1800flowersinc.com/lib/fe9712727466027c73/m/1/Spotify_251109.gif"></a>
+       
+     
+      </td>
+      <td align="right" style="padding-bottom:0px;">
+        
+<a href="https://click.pulse.celebrations.com/?qs=c6cef39bff559a9bae971434a4d33ca59e4add437ed45ed53ef6e5626b66a9535b48d502061ad5acb0f98226dce399411a5a89edc9c4428110439ad6856e8587" style="display: block"><img alt="Apple Podcasts" style="display:block;border:0;outline:0;padding:0;width:100%;max-width:640px;height:auto;" border="0" src="https://image.em.1800flowersinc.com/lib/fe9712727466027c73/m/1/Apple_251109.gif"></a>
+
+     </td></tr>
+  </table>
+
+</td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><div align="center" id="footer" width="640"> 
+  <table align="center" style="max-width:640px" border="0" cellspacing="0" cellpadding="0" bgcolor="#e3edef">    
+    
+<tr>
+  <td width="640" align="center" valign="top" style="font-family: Calibri, Helvetica, San serif; line-height:1.4; font-size:17px; color:#000000;  padding-left:40px;padding-right:40px;padding-top:10px;padding-bottom:5px;text-align:left;">
+Stories are how we make sense of life. They’re how we connect, teach, and remember. Whether it’s a tale passed around a dinner table or one shared in a business meeting, the right story can bridge generations and bring people closer together.
+    <br><br>
+In this week’s <i>Celebrate Your Story</i>, I sit down with <a  style="color:#000000;font-weight:bold;text-decoration:underline;margin:0 !important;padding:0 !important;line-height:100% !important;mso-line-height-rule:exactly !important;" href="https://click.pulse.celebrations.com/?qs=c6cef39bff559a9b767c1d2165fa5475a35915dfe76da32acaa6f6d66182be65f6b09a0a748c6120a586dbdfbc60d5d3bc05017d6795875fe40a5ba254042837">Kindra Hall</a>, a bestselling author and expert in storytelling who’s helped thousands of people learn how to share their stories. Kindra believes that every person’s story has value, even the ones we might think are too ordinary or small.
+    <br><br>
+Our conversation reminded me that the best stories come from honesty. We talk about the importance of finding the heart in our experiences, how to match stories to the messages we want to share, and why self-deprecating moments often connect us most deeply to others.
+    <br><br>
+Take a moment to reflect on your own story and the lessons you’ve learned, the people who’ve shaped you, and the moments that have made you who you are. When we share those stories, we tell people who we are and remind them they’re not alone. 
+ 
+
+</td></tr></table></div></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><div id="hero">
+  <table width="640" align="center" style="max-width:640px;width:100%;padding-top:0px;padding:0px;" bgcolor="#ddf3fa" cellspacing="0" cellpadding="0">
+        <tr>
+      <td align="center" style="padding-top:0px;padding-bottom:0px;">
+     <a  href="https://click.pulse.celebrations.com/?qs=c6cef39bff559a9b36a4d1a0598d01804d5b19245bcd78a7695744dac9380b7bf1c0b99b29cb76da996b21b605a3ede1b9dc4cb6e1ae7fa4bfddb585a9e9a34e"><img style="display:block;border:0;outline:0;padding:0;width:100%;max-width:640px;height:auto;" alt="celebrations pulse" src="https://image.em.1800flowersinc.com/lib/fe9712727466027c73/m/1/PowerImpact_1_251109.jpg" border="0"></a>
+    </td>
+      </tr>
+      </table>
+</div>
+
+</td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><div id="hero">
+  <table width="640" align="center" style="max-width:640px;width:100%;padding-top:0px;padding:0px;" bgcolor="#ddf3fa" cellspacing="0" cellpadding="0">
+        <tr>
+      <td align="center" style="padding-top:0px;padding-bottom:0px;">
+     <a  href="https://click.pulse.celebrations.com/?qs=c6cef39bff559a9bacc058eaa09091c7ce0a12e9f128ce8f0fb870ae2da1ffe78621e8327116c0c1e59c8b804a13f69ce345d2b9880bf421c0a746c0c61da188"><img style="display:block;border:0;outline:0;padding:0;width:100%;max-width:640px;height:auto;" alt="celebrations pulse" src="https://image.em.1800flowersinc.com/lib/fe9712727466027c73/m/1/PowerImpact_2_251109.gif" border="0"></a>
+    </td>
+      </tr>
+      </table>
+</div>
+
+</td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><div id="hero">
+  <table width="640" align="center" style="max-width:640px;width:100%;padding-top:0px;padding:0px;" bgcolor="#ddf3fa" cellspacing="0" cellpadding="0">
+        <tr>
+      <td align="center" style="padding-top:0px;padding-bottom:0px;">
+     <a  href="https://click.pulse.celebrations.com/?qs=c6cef39bff559a9b1956b801fadfeaf704a5602841a41f6efc06646c85bba6b927b7b7a78c4879d40b9b9e34af8e229fc68db3115c8629e858d1be0743260584"><img style="display:block;border:0;outline:0;padding:0;width:100%;max-width:640px;height:auto;" alt="celebrations pulse" src="https://image.em.1800flowersinc.com/lib/fe9712727466027c73/m/1/PowerImpact_3_251109.gif" border="0"></a>
+    </td>
+      </tr>
+      </table>
+</div>
+
+</td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner">
+<table width="640" align="center" style="max-width:640px;width:100%;" bgcolor="#ebf3f5" cellspacing="0" cellpadding="0">
+      <!--products 8 9 10-->  
+    <tr>
+       <td align="left" style="padding-bottom:0px;">
+      <a href="https://click.pulse.celebrations.com/?qs=c6cef39bff559a9ba8387b2e0e952e1fe51dc7f8b3138cc672b8da3efcfdce21e4ae224807899a019a5204516b6a508c37df28d9c22079c81a6438c05d556588" style="display: block"><img alt="Youtube" style="display:block;border:0;outline:0;padding:0;width:100%;max-width:640px;height:auto;" border="0" src="https://image.em.1800flowersinc.com/lib/fe9712727466027c73/m/1/YouTube_PowerImpact_251109.gif"></a>
+
+      </td>
+      <td align="center" style="padding-bottom:0px;">
+
+ <a href="https://click.pulse.celebrations.com/?qs=c6cef39bff559a9b3fe777ddc75d333b235af549b26d92d03b7dbe0d7c14de88482e50677ccd568f28bcb4191523f48f84afb3c8bb982e4f7f300cf5a56ed94f" style="display: block"><img alt="Spotify" style="display:block;border:0;outline:0;padding:0;width:100%;max-width:640px;height:auto;" border="0" src="https://image.em.1800flowersinc.com/lib/fe9712727466027c73/m/1/Spotify_PowerImpact_251109.gif"></a>
+       
+     
+      </td>
+      <td align="right" style="padding-bottom:0px;">
+        
+<a href="https://click.pulse.celebrations.com/?qs=c6cef39bff559a9ba9a0c2200e5188f21b367895048ede8d5ad29c1cefa508cdd598a0086baedf0604067aba6d8d619723e259c96488f4a9b4631841a76f6ec2" style="display: block"><img alt="Apple Podcasts" style="display:block;border:0;outline:0;padding:0;width:100%;max-width:640px;height:auto;" border="0" src="https://image.em.1800flowersinc.com/lib/fe9712727466027c73/m/1/Apple_PowerImpact_251109.gif"></a>
+
+     </td></tr>
+  </table>
+
+</td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><div align="center" id="footer" width="640"> 
+  <table align="center" style="max-width:640px;  background-color:#e3edef;" border="0" cellspacing="0" cellpadding="0">    
+<tr>
+  <td width="640" align="center" valign="top" style="font-family: Calibri, Helvetica, San serif; line-height:1; font-size:17px; background-color:#e3edef; padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;text-align:left;">  
+<hr style="border-top: 1px solid #b6bebf; border-bottom:0px;">
+</td></tr></table></div></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><div id="hero">
+  <table width="640" align="center" style="max-width:640px;width:100%;" bgcolor="#ffffff" cellspacing="0" cellpadding="0">
+        <tr>
+      <td align="center" style="padding-bottom:0px;">
+
+        <img style="display:block;border:0;outline:0;padding:0;width:100%;max-width:640px;height:auto;" alt="celebrations pulse" src="https://image.em.1800flowersinc.com/lib/fe9712727466027c73/m/1/Caregivers.jpg" border="0">
+    </td>
+      </tr>
+      </table>
+</div>
+
+</td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><div align="center" id="footer" width="640"> 
+  <table align="center" style="max-width:640px;" border="0" cellspacing="0" cellpadding="0" bgcolor="#e3edef">    
+    
+<tr>
+  <td width="640" align="center" valign="top" style="font-family: Calibri, Helvetica, San serif; line-height:1.4; font-size:17px; color:#000000; padding-left:40px;padding-right:40px;padding-top:10px;padding-bottom:5px;text-align:left;"><span style="line-height:28px;font-size:22px;color: #5c9a56;"><strong>What we’re doing for our caregivers</strong></span><br><br>
+Business can, and should, be a force for good, and it starts with how we care for one another.
+    <br><br>
+At 1-800-Flowers, that belief led to the creation of our <i>Caregivers and Allies Responding with Empathy</i> (CARE) <a  style="color:#000000;font-weight:bold;text-decoration:underline;margin:0 !important;padding:0 !important;line-height:100% !important;mso-line-height-rule:exactly !important;" href="https://click.pulse.celebrations.com/?qs=c6cef39bff559a9bb9800bc4fc349763a933740d7c539599e6dde66637f9f3ef31d90d2dfa71cedf4807fc9cbd62fc5679c367b8736e065c1f07a8748bd368a4">employee resource group</a>. It was started a few years ago by Rhonda Klug and other team members at Harry & David and is now growing across our entire organization. 
+    <br><br>
+CARE’s mission is simple: 
+    <blockquote>
+  <strong>
+  <p>
+    <i>
+    • Offer practical tools and resources for employees navigating caregiving.
+      <br><br>
+• Create a safe space where people can share stories and connect.
+      <br><br>
+• Identify ways we can make the workplace more supportive for those balancing care with career.
+    </i>
+    </p>
+  </strong>
+    </blockquote>
+
+But what makes me most proud is how CARE doesn’t stop at our walls. Our team members have extended their empathy into the community by partnering with local nonprofits to support families far beyond our workplace.
+    <br><br>
+Every organization has employees who are also caregivers. What would it look like if every business offered support, community, and recognition to those employees? I believe the return in loyalty and humanity would far outweigh the cost.
+
+
+
+</td></tr></table></div></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><div align="center" id="footer" width="640"> 
+  <table align="center" style="max-width:640px;  background-color:#e3edef;" border="0" cellspacing="0" cellpadding="0">    
+<tr>
+  <td width="640" align="center" valign="top" style="font-family: Calibri, Helvetica, San serif; line-height:1; font-size:17px; background-color:#e3edef; padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;text-align:left;">  
+<hr style="border-top: 1px solid #b6bebf; border-bottom:0px;">
+</td></tr></table></div></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><div id="hero">
+  <table width="640" align="center" style="max-width:640px;width:100%;" bgcolor="#ffffff" cellspacing="0" cellpadding="0">
+        <tr>
+      <td align="center" style="padding-bottom:0px;">
+
+        <img style="display:block;border:0;outline:0;padding:0;width:100%;max-width:640px;height:auto;" alt="celebrations pulse" src="https://image.em.1800flowersinc.com/lib/fe9712727466027c73/m/1/Veterans.jpg" border="0">
+    </td>
+      </tr>
+      </table>
+</div>
+
+</td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><div align="center" id="footer" width="640"> 
+  <table align="center" style="max-width:640px;" border="0" cellspacing="0" cellpadding="0" bgcolor="#e3edef">    
+    
+<tr>
+  <td width="640" align="center" valign="top" style="font-family: Calibri, Helvetica, San serif; line-height:1.4; font-size:17px; color:#000000; padding-left:40px;padding-right:40px;padding-top:10px;padding-bottom:5px;text-align:left;"><span style="line-height:28px;font-size:22px;color: #5c9a56;"><strong>What are you grateful for?</strong></span><br><br>
+Tuesday marks <a  style="color:#000000;font-weight:bold;text-decoration:underline;margin:0 !important;padding:0 !important;line-height:100% !important;mso-line-height-rule:exactly !important;" href="https://click.pulse.celebrations.com/?qs=c6cef39bff559a9b53ef7ea106536115439b7218d547ea755c70258af7cb8e18ca1b4e8095a61adf5bf0a33233ca42ac754a94d71e03b3f87779867a952c06eb">Veterans Day</a>, which was established to honor peace and those who fought to secure it in World War I. Over time, it’s grown into a day to recognize every man and woman who has worn our nation’s uniform and the families who’ve stood beside them.
+    <br><br>
+Each year, I try to pause on 11/11 to remember the people behind the service. A simple “thank you” goes a long way, but sometimes the most meaningful gesture is to ask a veteran about their experience — what they saw, what they learned, and how it shaped their life.
+    <br><br>
+When we take the time to listen, we do more than honor their sacrifice. We carry their stories forward. We remind younger generations what freedom is built upon. And we deepen our own understanding of gratitude for those who served and for the country they helped protect.
+
+
+
+
+</td></tr></table></div></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><div align="center" id="footer" width="640"> 
+  <table align="center" style="max-width:640px;  background-color:#e3edef;" border="0" cellspacing="0" cellpadding="0">    
+<tr>
+  <td width="640" align="center" valign="top" style="font-family: Calibri, Helvetica, San serif; line-height:1; font-size:17px; background-color:#e3edef; padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;text-align:left;">  
+<hr style="border-top: 1px solid #b6bebf; border-bottom:0px;">
+</td></tr></table></div></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><div id="hero">
+  <table width="640" align="center" style="max-width:640px;width:100%;" bgcolor="#ffffff" cellspacing="0" cellpadding="0">
+        <tr>
+      <td align="center" style="padding-bottom:0px;">
+
+        <img style="display:block;border:0;outline:0;padding:0;width:100%;max-width:640px;height:auto;" alt="celebrations pulse" src="https://image.em.1800flowersinc.com/lib/fe9712727466027c73/m/1/Thanksgiving.jpg" border="0">
+    </td>
+      </tr>
+      </table>
+</div>
+
+</td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><div align="center" id="footer" width="640"> 
+  <table align="center" style="max-width:640px;" border="0" cellspacing="0" cellpadding="0" bgcolor="#e3edef">    
+    
+<tr>
+  <td width="640" align="center" valign="top" style="font-family: Calibri, Helvetica, San serif; line-height:1.4; font-size:17px; color:#000000; padding-left:40px;padding-right:40px;padding-top:10px;padding-bottom:5px;text-align:left;"><span style="line-height:28px;font-size:22px;color: #5c9a56;"><strong>What are you grateful for?</strong></span><br><br>
+As the days grow shorter and the scent of pies and roasts begins to fill the air, <a  style="color:#000000;font-weight:bold;text-decoration:underline;margin:0 !important;padding:0 !important;line-height:100% !important;mso-line-height-rule:exactly !important;" href="https://click.pulse.celebrations.com/?qs=c6cef39bff559a9b51e4951ccd2b96f83bf1275f2979c3bdaab6d977f775c2d332e6ff0988737319ca4758021dda8aae969a6608266d68ac5dd8c1d07bf4c7de">Thanksgiving</a> invites us to pause and express our gratitude.
+<br><br>
+This year, I’d like to do something a little different. Instead of simply listing what we’re thankful for, let’s share the stories behind that gratitude: the moments that shaped us, the people who lifted us up, and the lessons that helped us grow.
+<br><br>
+If you’d like to take part, send me a note about what gratitude looks like for you this Thanksgiving. I’ll feature a few of your reflections in a special holiday edition of <i>Celebrations Pulse</i>. It’ll be a collective reminder that the spirit of Thanksgiving is best shared together.
+
+
+
+
+
+</td></tr></table></div></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><div id="hero">
+  <table width="640" align="center" style="max-width:640px;width:100%;" bgcolor="#ddf3fa" cellspacing="0" cellpadding="0">
+        <tr>
+      <td align="center" style="padding-bottom:0px;">
+
+        <a alias="mom" href="mailto:celebrationspulse@1800flowers.com"><img style="display:block;border:0;outline:0;padding:0;width:100%;max-width:640px;height:auto;" alt="celebrations pulse" src="https://image.em.1800flowersinc.com/lib/fe9712727466027c73/m/1/CTA_ShareStory_251109.gif" border="0"></a>
+    </td>
+      </tr>
+      </table>
+</div>
+
+</td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><div align="center" id="footer" width="640"> 
+  <table align="center" style="max-width:640px;  background-color:#e3edef;" border="0" cellspacing="0" cellpadding="0">    
+<tr>
+  <td width="640" align="center" valign="top" style="font-family: Calibri, Helvetica, San serif; line-height:1; font-size:17px; background-color:#e3edef; padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;text-align:left;">  
+<hr style="border-top: 1px solid #b6bebf; border-bottom:0px;">
+</td></tr></table></div></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><div align="center" id="footer" width="640"> 
+  <table align="center" style="max-width:640px;" border="0" cellspacing="0" cellpadding="0" bgcolor="#e3edef">    
+    
+<tr>
+  <td width="640" align="center" valign="top" style="font-family: Calibri, Helvetica, San serif; line-height:1.4; font-size:17px; color:#000000; padding-left:40px;padding-right:40px;padding-top:10px;padding-bottom:5px;text-align:left;"><span style="line-height:28px;font-size:22px;color: #5c9a56;"><strong>Related articles that caught my eye</strong></span>
+</td></tr></table></div></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><div id="hero">
+  <table width="640" align="center" style="max-width:640px;width:100%;padding-top:0px;padding:0px;" bgcolor="#ddf3fa" cellspacing="0" cellpadding="0">
+        <tr>
+      <td align="center" style="padding-top:0px;padding-bottom:0px;">
+        <a href="https://click.pulse.celebrations.com/?qs=c6cef39bff559a9b8c0edba420f1168cd2f09fcc487d3db58f932c55bfd13374cf83e7a6a4b173072e7642bfdbcb7b5082fd15a081cb769277894f64af3a18e4" ><img style="display:block;border:0;outline:0;padding:0;width:100%;max-width:640px;height:auto;" alt="celebrations pulse" src="https://image.em.1800flowersinc.com/lib/fe9712727466027c73/m/1/Article1_251109.jpg" border="0"></a>
+    </td>
+      </tr>
+      </table>
+</div>
+
+</td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><div id="hero">
+  <table width="640" align="center" style="max-width:640px;width:100%;padding-top:0px;padding:0px;" bgcolor="#ddf3fa" cellspacing="0" cellpadding="0">
+        <tr>
+      <td align="center" style="padding-top:0px;padding-bottom:0px;">
+        <a href="https://click.pulse.celebrations.com/?qs=c6cef39bff559a9b31b5ab6557233e77dcfb7b85ca5c40ab8f65be45f7c4b5c48dff5115a6d6b7369dd7d16a7386b3fb581ba8784363fd585494cebed51954f0" ><img style="display:block;border:0;outline:0;padding:0;width:100%;max-width:640px;height:auto;" alt="celebrations pulse" src="https://image.em.1800flowersinc.com/lib/fe9712727466027c73/m/1/Article2_251109.jpg" border="0"></a>
+    </td>
+      </tr>
+      </table>
+</div>
+
+</td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><div id="hero">
+  <table width="640" align="center" style="max-width:640px;width:100%;padding-top:0px;padding:0px;" bgcolor="#ddf3fa" cellspacing="0" cellpadding="0">
+        <tr>
+      <td align="center" style="padding-top:0px;padding-bottom:0px;">
+        <a href="https://click.pulse.celebrations.com/?qs=c6cef39bff559a9b8c78c1e37e2d55b75f1ff214528fd8f81ba87d5062deea363c1a99d8d5091a0969d5ad8206193d4c60bceb308967498baac00f5b442148e2" ><img style="display:block;border:0;outline:0;padding:0;width:100%;max-width:640px;height:auto;" alt="celebrations pulse" src="https://image.em.1800flowersinc.com/lib/fe9712727466027c73/m/1/Article3_251109.jpg" border="0"></a>
+    </td>
+      </tr>
+      </table>
+</div>
+
+</td></tr></table></td>
+     </tr>
+    </table>
+    </td>
+   </tr>
+   <tr>
+    <td align="left" valign="top">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+     <tr>
+      <td align="left" valign="top" class="photo"></td>
+     </tr>
+    </table>
+    </td>
+   </tr>
+   <tr>
+    <td align="center" valign="top" width="640">
+    <table width="100%" align="center" border="0" cellspacing="0" cellpadding="0" class="container" style="max-width:640px;">
+     <tr>
+      <td align="center" valign="top" class="photo" width="640"><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner">
+
+<div id="hero">
+  <table width="640" align="center" style="max-width:640px;width:100%;" cellspacing="0" cellpadding="0">
+
+        
+    <tr>
+      <td align="center" style="padding-bottom:0px;">
+        <a style="display: block" href="https://click.pulse.celebrations.com/?qs=c6cef39bff559a9b6d6d59992ac809eae71c9e777c8b04720e6ba81ed29b2baec94850c6a4217c5987cc65b38b538bdba5e4f2d3258600af7326214e419bde77" ><img style="display:block;border:0;outline:0;padding:0;width:100%;max-width:640px;height:auto;" src="https://image.em.1800flowersinc.com/lib/fe9712727466027c73/m/1/Banner_SubsribeNow_251109.gif" border="0"></a>
+        
+        
+       
+      </td>
+     </tr>   
+  </table>
+</div>
+  </td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner">
+
+<div id="hero">
+  <table width="640" align="center" style="max-width:640px;width:100%;" cellspacing="0" cellpadding="0">
+
+        
+    <tr>
+      <td align="center" style="padding-bottom:0px;">
+        <a style="display: block" href="https://click.pulse.celebrations.com/?qs=c6cef39bff559a9b672ffdbcdbf7599dd4e44561b9028d2f4b9db474e7893111694e0fb077543fd8f6b6a4fcbe51b499a9777809c3f1b699d8631019e60c5725" ><img style="display:block;border:0;outline:0;padding:0;width:100%;max-width:640px;height:auto;" src="https://image.em.1800flowersinc.com/lib/fe9712727466027c73/m/1/Banner_ReferAFriend_251109.gif" border="0"></a>
+        
+        
+       
+      </td>
+     </tr>   
+  </table>
+</div>
+  </td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner">
+
+<div id="hero">
+  <table width="640" align="center" style="max-width:640px;width:100%;" cellspacing="0" cellpadding="0">
+
+        
+    <tr>
+      <td align="center" style="padding-bottom:0px;">
+        <a style="display: block" href="mailto:celebrationspulse@1800flowers.com" alias="ShareBnr_0904"><img style="display:block;border:0;outline:0;padding:0;width:100%;max-width:640px;height:auto;" src="https://image.em.1800flowersinc.com/lib/fe9712727466027c73/m/1/Banner_ContactJim_251109.gif" border="0"></a>
+        
+        
+       
+      </td>
+     </tr>   
+  </table>
+</div>
+  </td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner">
+<div align="center" id="footer" width="640"> 
+  <!--prefs footer-->
+ 
+  <!--/prefs footer-->
+  <table align="center" style="max-width:640px;" border="0" cellspacing="0" cellpadding="0">   
+      
+<tr>
+  <td width="640" align="center" valign="top" style="font-family: Calibri, Helvetica, San serif; line-height:1.4; font-size:15px; color:#000000;padding-left:40px;padding-right:40px;padding-top:10px;padding-bottom:40px;text-align:left;background-color:#ffffff;">
+<i>Written by our Founder and Chairman, our</i> Celebrations Pulse <i>letters aim to engage with our community. From sharing stories to welcoming your ideas, we want to help you to express, connect, and celebrate the important people in your life.</i>
+<br><br>
+</td></tr></table></div></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><div id="footer" align="center" width="640"> 
+  <!--prefs footer-->
+
+  <!--/prefs footer-->
+  <table align="center" style="max-width:640px;" border="0" cellpadding="0" cellspacing="0">    
+  <tr>
+    <td align="center" valign="top" style="font-family: Arial, Helvetica, sans-serif; line-height:16px; font-size:12px; color:#000000;padding-left:20px;padding-right:20px;padding-top:20px;padding-bottom:0px;">
+ <a style=" text-decoration:none; color:#000000;" href="https://view.pulse.celebrations.com/?qs=ad71750c957b73d4bbb0e84588abad82e22933222d196988c0aca58c98b13098e9d686a781b65d382092792f5c65f500ec58b2c24850dbaba7e0613c8c615f9725371611fa7f09439f8aa3af4ae398e9" target="_blank">View as webpage</a>
+      </td>
+    </tr></table><br><table align="a&quot;center&quot;" style="max-width:640px;" border="0" cellspacing="0" cellpadding="0"><tr><td align="center"><font face="verdana" size="1" color="#444444">This email was sent by: <b>1-800-FLOWERS.COM, Inc.</b><br>Two Jericho Plaza Suite 200 Jericho, NY, 11753, USA<br><br></font></td></tr><tr><td align="center"><a href="https://click.pulse.celebrations.com/profile_center.aspx?qs=24ed0e2eb117d861268d298626c365211425c893843a7b78237d10714e2d847d0b15ef2342ac3f397e72c499b865c43aa1a31d45f8dd9253b5c48626b13003153e96fde8f63084cb" >Manage Email Preferences</a> | <a href="https://click.pulse.celebrations.com/?qs=c6cef39bff559a9b32b00819b241a303dabcc1489f2e3df80dd98766e41fa48d2fa6f9d338b2616b196dd0a5b163579d1fd2d9d38944e17e9f90331eed24dae2" >Terms &amp; Conditions</a> | 
+<a href="https://click.pulse.celebrations.com/?qs=c6cef39bff559a9b51c21af9a09efbcf56a91b7e8dbdc4f8ddff5bd4e499937d2e9b00160a47738a0c809d5a077854492aaa3b5d5c9f93a33b0f924a126fa198"  title="Unsubscribe">Unsubscribe from Pulse Newsletter</a></td></tr></table></div></td></tr></table></td>
+     </tr>
+    </table>
+    </td>
+   </tr>
+  </table>
+  </div>
+  </td>
+ </tr>
+</table>
+  <img src="https://click.pulse.celebrations.com/open.aspx?ffcb10-fe8e15767161027b70-fe5c1375776404757212-fe3b117275640479741173-ff921277-fe5c12767762037f7314-fefd1678776707&d=60251&bmt=0" width="1" height="1" alt=""></custom>
+</body>
+</html>
+
+--kdD0xxqoImMg=_?:--
+

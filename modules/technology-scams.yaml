@@ -17,6 +17,18 @@ rules:
     score: 35
     description: "Illegal software and keygen scams"
 
+  - name: "Cloud backup and storage scams"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(cloud.*backup.*stopped|backup.*expired|storage.*full|account.*suspended|restore.*now|backup.*failed|sync.*error|data.*lost|files.*deleted|storage.*limit).*"
+        - type: "SubjectPattern"
+          pattern: ".*[⤦⤧⤨⤩⤪⤫⤬⤭⤮⤯⤰⤱⤲⤳⤴⤵⤶⤷⤸⤹⤺⤻⤼⤽⤾⤿⥀⥁⥂⥃⥄⥅⥆⥇⥈⥉⥊⥋⥌⥍⥎⥏⥐⥑⥒⥓⥔⥕⥖⥗⥘⥙⥚⥛⥜⥝⥞⥟⥠⥡⥢⥣⥤⥥⥦⥧⥨⥩⥪⥫⥬⥭⥮⥯⥰⥱⥲⥳⥴⥵⥶⥷⥸⥹⥺⥻⥼⥽⥾⥿].*"
+    score: 80
+    description: "Cloud backup and storage scam detection with Unicode abuse"
+
   - name: "Fake Security Alerts"
     enabled: true
     criteria:
