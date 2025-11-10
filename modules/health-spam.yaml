@@ -1,6 +1,20 @@
 name: "Health Spam Detection"
 enabled: true
 rules:
+  - name: "Fake Harvard health advice"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*\\[harvard\\].*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*harvard\\.edu.*"
+    score: 80
+    description: "Fake Harvard health advice from non-Harvard domains"
+
   - name: "Medical miracle cure spam"
     criteria:
       type: "SubjectPattern"
