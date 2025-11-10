@@ -57,6 +57,21 @@ rules:
     score: 80
     description: "Fake investment and asset management collaboration scams"
 
+  - name: "Timeshare exit and vacation scams"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(exit.*timeshare|timeshare.*exit|vacation.*ownership|travel.*wherever|holiday.*season.*travel|timeshare.*relief|get.*out.*timeshare|cancel.*timeshare|timeshare.*cancellation).*"
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: "(?i).*exit.*timeshare.*"
+        - type: "SenderPattern"
+          pattern: ".*@.*(hoboband|timeshareexit|vacationexit|travelscam)\\.com.*"
+    score: 75
+    description: "Timeshare exit and vacation rental scams"
+
   - name: "W-8BEN tax compliance and residency scams"
     criteria:
       type: "And"
