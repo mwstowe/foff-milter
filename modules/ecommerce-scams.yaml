@@ -1,6 +1,14 @@
 name: "Ecommerce Scams"
 enabled: true
 rules:
+  - name: "Fake brand surveys and contests"
+    enabled: true
+    criteria:
+      type: "SubjectPattern"
+      pattern: "(?i).*(survey.*chance.*win|complete.*survey.*win|feedback.*win|customer.*survey.*prize|survey.*gift|survey.*reward|survey.*car.*kit|survey.*emergency.*kit).*"
+    score: 65
+    description: "Fake brand surveys and contest scams"
+
   - name: "OneStopPlus customer service impersonation"
     criteria:
       type: "And"

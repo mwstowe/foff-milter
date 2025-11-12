@@ -7,6 +7,22 @@ rules:
       pattern: ".*@.*\\.(tk|ml|ga|cf|gq|top|click|download|stream|cfd|sa\\.com|ru\\.com|za\\.com)$"
     score: 50
     description: "Domains using high-risk TLDs commonly used for spam"
+  - name: "High-risk .shop domain scams"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@.*\\.shop$"
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(love.*piano|vision.*ritual|miracle.*cure|amazing.*results|incredible.*offer|limited.*time|act.*now|don't.*miss|exclusive.*deal).*"
+            - type: "SenderPattern"
+              pattern: ".*@.*(pianofoall|visisooth|healthscam|miraclecure|amazingdeal)\\.shop$"
+    score: 60
+    description: "High-risk .shop domain scams with suspicious content"
+
   - name: "Medium-risk TLD domains"
     criteria:
       type: "SenderPattern"

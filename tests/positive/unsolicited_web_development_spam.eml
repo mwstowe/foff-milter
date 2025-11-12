@@ -1,0 +1,293 @@
+Return-Path: <jolie@thenitroinfotech.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTPS id 5AC7Xh1c016501
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <michael@baddomain.com>; Wed, 12 Nov 2025 07:33:43 GMT
+	(envelope-from jolie@thenitroinfotech.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (2048-bit key; unprotected) header.d=thenitroinfotech.com header.i=@thenitroinfotech.com header.b=CuyY8xSD
+X-Authentication-Warning: juliett.baddomain.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.baddomain.com
+Received: from mail-pl1-f194.google.com (mail-pl1-f194.google.com [209.85.214.194])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 5AC7XgWG005342
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=OK)
+	for <michael@baddomain.com>; Wed, 12 Nov 2025 01:33:42 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 5AC7XgWG005342
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (2048-bit key, unprotected) header.d=thenitroinfotech.com header.i=@thenitroinfotech.com header.a=rsa-sha256 header.s=google header.b=CuyY8xSD
+Received: by mail-pl1-f194.google.com with SMTP id d9443c01a7336-29555b384acso5424925ad.1
+        for <michael@baddomain.com>; Tue, 11 Nov 2025 23:33:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=thenitroinfotech.com; s=google; t=1762932821; x=1763537621; darn=baddomain.com;
+        h=content-language:thread-index:mime-version:message-id:date:subject
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=wcfSadITiDrj7Dn26JazLESsDVy6H8QAFLu+wVi1V+8=;
+        b=CuyY8xSDn59vzPhmQl/fLUxF01JdcwboYBbphxRr269CYm4cRvcxfm73M7iK9qzu9H
+         c7dX+BE2QBwHIr6QtYSuGbL9EMjxVjiu4IVS6Cl56fMHgvO0Gm/BA2PMOj8YZZTbgoq3
+         z+SBLe7Z/FP2DQmbWEXZ8XBcBPhXJJKbGHX/U9dB5hXvvYC/E3+Vj7FxEf7nK4OcMtzE
+         1X5p7qz9msONqIDB9EJx17t4sooVJ3SLL8bDoNokxyqypbbF4xCGmT84/PnDb3NBMK6X
+         V4TytHqv19Ev4l9TfU63Rt+MH+JP2ifzwN1Tab/566TjlIOeXyihP3AKHdK7C95b9iCp
+         OTWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762932821; x=1763537621;
+        h=content-language:thread-index:mime-version:message-id:date:subject
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wcfSadITiDrj7Dn26JazLESsDVy6H8QAFLu+wVi1V+8=;
+        b=TgmbuxGi99ldl54B9VmI7oMImF7Vvj5SFHn/7EKwWYfBtghJdHguiIntaBo+X7hP7I
+         RCCig/1BNc4ANnX2JX9Won1sJW/xzfEyfpee8ZcGyY8niYiD4rRecxsF1kKn6vBAUJqL
+         P+z9vDO8yF/DRHfY4sHDy3IgsQbwlqi3nQP2Gy3FcykwIDgsB8mWX8zvkEasfI5QgFba
+         5SrBCKg8LSXAjHQJRa2asgSZR/LWVGrflhizMc4IQhd7w8pFcV2gD8J/hlrlp+AKQY5d
+         1KvnKUhKs7D15ZGFWzXHJlk6OUKqYICIq61DQ+lpWpvkBeJygVTs0F3KfQ+GCwh195oJ
+         FTPw==
+X-Gm-Message-State: AOJu0YyRCUXAyeKrSJc2aDJl6Se/aTVg7g/Ob+f/UbNc+BSIHCAvP1Tr
+	Hil2t552LTF2c6wUScrC2hslUXaSqB52bDvDiyayXMc/Iu+u+G9cjf6OAWD5WJhuFdWlxgxGeYh
+	8aB/LudMx
+X-Gm-Gg: ASbGncs/WR/0P2Y/MaKEv+gIimklT69Wjx9HT6STk7zmAKLdmfdGCBgzbVrI+QCFuUm
+	7KsUdyjCporSg5nWPg8SyzBfYhmKLiQ2qaRza7W691V7B7xzovz+nWj+JiSmJ4l+Valj16cX5EA
+	DkB4Z2VrpcM6wgznCY51ZmtSx9jaCfVbhKfRJ3h5JZtpIe/HYSOoNsKu3L8coOlB1qJou3IWWz+
+	CXwsK9paBIBddEkLrB/Bc2xAI+LD4DmOzUhRQRvz3eGiN15XHEYRnWfdxpUajgmiAnGnVMRqhWN
+	EqH6Fa2deq15ToyfUtK4txB2kkC9FJxvtMqAj/uPfOra/wnKMTLArUNleThdAL839rNBzMkNSuT
+	j6TK9xyInQ4gBV3nNgnwGswLXKKm2pxK8nQalhLxF8PjLNjDJUkhwUP+klPfhseSLBmAXyDzCPP
+	HqnaMkt8qCltl0k+VB5o1ec4FY
+X-Google-Smtp-Source: AGHT+IGD2OJlwo4hGwOiEafuMAArcUe+WTRHvaMPclBxo7xDx10Xt1ehzcWGa+sZjEZsnBWn67zI8g==
+X-Received: by 2002:a17:902:da88:b0:267:a1f1:9b23 with SMTP id d9443c01a7336-2984ed35520mr27195785ad.18.1762932821302;
+        Tue, 11 Nov 2025 23:33:41 -0800 (PST)
+Received: from DESKTOPMV2KPRA ([103.120.153.148])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29852391df0sm7220635ad.3.2025.11.11.23.33.36
+        for <michael@baddomain.com>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 11 Nov 2025 23:33:40 -0800 (PST)
+From: "Jolie" <jolie@thenitroinfotech.com>
+To: <michael@baddomain.com>
+Subject: Customize Website Design and Development
+Date: Wed, 12 Nov 2025 12:49:01 +0530
+Message-ID: <d31501dc53a6$a9bc78d0$fd356a70$@thenitroinfotech.com>
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_000_D327_01DC53D4.C45EEDC0"
+X-Mailer: Microsoft Outlook 16.0
+Thread-Index: AdxTnvhDlWJlAvlwQjWDVB906hbRhw==
+Content-Language: en-us
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Wed, 12 Nov 2025 07:33:43 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Wed, 12 Nov 2025 01:33:42 -0600 (CST)
+X-FOFF-Rule-Matched: Advanced Heuristics: Weak Signal Aggregation (juliett.baddomain.com)
+X-FOFF-Rule-Matched: Advanced Heuristics: Weak Signal Aggregation (hotel.baddomain.com)
+X-FOFF-Score: 12 - foff-milter v0.6.9 (juliett.baddomain.com)
+X-FOFF-Score: 12 - foff-milter v0.6.9 (hotel.baddomain.com)
+
+This is a multipart message in MIME format.
+
+------=_NextPart_000_D327_01DC53D4.C45EEDC0
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+
+Dear Sir/Mam,
+
+ I hope this message finds you well. My name is Jolie, and I represent a web
+development service provider with experience in delivering custom, scalable,
+and responsive websites for businesses across the globe.
+
+We specialize in:
+
+.         Custom website development (HTML, CSS, JavaScript, React,
+WordPress, etc.)
+
+.         E-commerce solutions (Shopify, Woo Commerce)
+
+.         Web app development and API integration
+
+.         UI/UX optimization for better engagement and conversion
+
+ We've successfully helped clients from USA, UK, Brazil, Denmark etc. to
+achieve a strong online presence and improved digital performance. If you're
+looking to redesign, build, or scale your web platform, we'd love to discuss
+how we can support your goals. Would you be open to a brief call this week
+to explore possible collaboration?
+
+ Looking forward to your response.
+
+Best regards,
+Jolie
+
+
+
+
+------=_NextPart_000_D327_01DC53D4.C45EEDC0
+Content-Type: text/html;
+	charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+<html xmlns:v=3D"urn:schemas-microsoft-com:vml" =
+xmlns:o=3D"urn:schemas-microsoft-com:office:office" =
+xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
+xmlns:m=3D"http://schemas.microsoft.com/office/2004/12/omml" =
+xmlns=3D"http://www.w3.org/TR/REC-html40"><head><META =
+HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Dus-ascii"><meta name=3DGenerator content=3D"Microsoft Word 15 =
+(filtered medium)"><style><!--
+/* Font Definitions */
+@font-face
+	{font-family:Wingdings;
+	panose-1:5 0 0 0 0 0 0 0 0 0;}
+@font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+/* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin-top:0in;
+	margin-right:0in;
+	margin-bottom:8.0pt;
+	margin-left:0in;
+	line-height:106%;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;}
+p
+	{mso-style-priority:99;
+	mso-margin-top-alt:auto;
+	margin-right:0in;
+	mso-margin-bottom-alt:auto;
+	margin-left:0in;
+	font-size:12.0pt;
+	font-family:"Times New Roman",serif;}
+.MsoChpDefault
+	{mso-style-type:export-only;
+	font-family:"Calibri",sans-serif;}
+.MsoPapDefault
+	{mso-style-type:export-only;
+	margin-bottom:8.0pt;
+	line-height:107%;}
+@page WordSection1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.0in 1.0in 1.0in;}
+div.WordSection1
+	{page:WordSection1;}
+/* List Definitions */
+@list l0
+	{mso-list-id:1662855253;
+	mso-list-type:hybrid;
+	mso-list-template-ids:-664522520 67698689 67698691 67698693 67698689 =
+67698691 67698693 67698689 67698691 67698693;}
+@list l0:level1
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	margin-left:42.0pt;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l0:level2
+	{mso-level-number-format:bullet;
+	mso-level-text:o;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	margin-left:78.0pt;
+	text-indent:-.25in;
+	font-family:"Courier New";}
+@list l0:level3
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	margin-left:114.0pt;
+	text-indent:-.25in;
+	font-family:Wingdings;}
+@list l0:level4
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	margin-left:150.0pt;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l0:level5
+	{mso-level-number-format:bullet;
+	mso-level-text:o;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	margin-left:186.0pt;
+	text-indent:-.25in;
+	font-family:"Courier New";}
+@list l0:level6
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	margin-left:222.0pt;
+	text-indent:-.25in;
+	font-family:Wingdings;}
+@list l0:level7
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0B7;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	margin-left:258.0pt;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l0:level8
+	{mso-level-number-format:bullet;
+	mso-level-text:o;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	margin-left:294.0pt;
+	text-indent:-.25in;
+	font-family:"Courier New";}
+@list l0:level9
+	{mso-level-number-format:bullet;
+	mso-level-text:\F0A7;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	margin-left:330.0pt;
+	text-indent:-.25in;
+	font-family:Wingdings;}
+ol
+	{margin-bottom:0in;}
+ul
+	{margin-bottom:0in;}
+--></style><!--[if gte mso 9]><xml>
+<o:shapedefaults v:ext=3D"edit" spidmax=3D"1026" />
+</xml><![endif]--><!--[if gte mso 9]><xml>
+<o:shapelayout v:ext=3D"edit">
+<o:idmap v:ext=3D"edit" data=3D"1" />
+</o:shapelayout></xml><![endif]--></head><body lang=3DEN-US><div =
+class=3DWordSection1><p>Dear Sir/Mam,</p><p>&nbsp;I hope this message =
+finds you well. My name is Jolie, and I represent a web development =
+service provider with experience in delivering custom, scalable, and =
+responsive websites for businesses across the globe.<br><br>We =
+specialize in:</p><p =
+style=3D'margin-left:42.0pt;text-indent:-.25in;mso-list:l0 level1 =
+lfo1'><![if !supportLists]><span style=3D'font-family:Symbol'><span =
+style=3D'mso-list:Ignore'>&middot;<span style=3D'font:7.0pt "Times New =
+Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+</span></span></span><![endif]>Custom website development (HTML, CSS, =
+JavaScript, React, WordPress, etc.)</p><p =
+style=3D'margin-left:42.0pt;text-indent:-.25in;mso-list:l0 level1 =
+lfo1'><![if !supportLists]><span style=3D'font-family:Symbol'><span =
+style=3D'mso-list:Ignore'>&middot;<span style=3D'font:7.0pt "Times New =
+Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+</span></span></span><![endif]>E-commerce solutions (Shopify, Woo =
+Commerce)</p><p =
+style=3D'margin-left:42.0pt;text-indent:-.25in;mso-list:l0 level1 =
+lfo1'><![if !supportLists]><span style=3D'font-family:Symbol'><span =
+style=3D'mso-list:Ignore'>&middot;<span style=3D'font:7.0pt "Times New =
+Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+</span></span></span><![endif]>Web app development and API =
+integration</p><p =
+style=3D'margin-left:42.0pt;text-indent:-.25in;mso-list:l0 level1 =
+lfo1'><![if !supportLists]><span style=3D'font-family:Symbol'><span =
+style=3D'mso-list:Ignore'>&middot;<span style=3D'font:7.0pt "Times New =
+Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+</span></span></span><![endif]>UI/UX optimization for better engagement =
+and conversion</p><p>&nbsp;We&#8217;ve successfully helped clients from =
+USA, UK, Brazil, Denmark etc. to achieve a strong online presence and =
+improved digital performance. If you're looking to redesign, build, or =
+scale your web platform, we&#8217;d love to discuss how we can support =
+your goals. Would you be open to a brief call this week to explore =
+possible collaboration?</p><p>&nbsp;Looking forward to your =
+response.</p><p class=3DMsoNormal>Best =
+regards,<br>Jolie<br><br></p></div></body></html>
+------=_NextPart_000_D327_01DC53D4.C45EEDC0--
+

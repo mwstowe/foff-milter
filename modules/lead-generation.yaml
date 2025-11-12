@@ -1,6 +1,18 @@
 name: "Lead Generation Spam"
 enabled: true
 rules:
+  - name: "Unsolicited web development services"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(customize.*website|website.*design.*development|web.*development.*services|professional.*website|website.*redesign|digital.*marketing.*services|seo.*services|online.*presence).*"
+        - type: "SubjectPattern"
+          pattern: "(?i)^(communication|hello|greetings|business.*proposal|partnership.*opportunity)$"
+    score: 55
+    description: "Unsolicited web development and business services spam"
+
   - name: "Website audit spam"
     criteria:
       type: "And"

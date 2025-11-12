@@ -25,6 +25,18 @@ rules:
     score: -200
     description: "Michaels Custom Framing from em.michaelscustomframing.com"
 
+  - name: "Birthday greetings"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(happy.*birthday|birthday.*wishes|birthday.*greetings).*"
+        - type: "SenderPattern"
+          pattern: ".*@(gmail|yahoo|hotmail|outlook|aol|icloud)\\.com.*"
+    score: -150
+    description: "Legitimate birthday greetings from personal email accounts"
+
   - name: "King Arthur Baking"
     enabled: true
     criteria:
