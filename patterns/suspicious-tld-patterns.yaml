@@ -1,0 +1,28 @@
+name: "Suspicious TLD Pattern Library"
+description: "Comprehensive patterns for suspicious and high-risk TLDs"
+
+patterns:
+  # Critical risk TLDs (free/abused)
+  critical_risk_tlds:
+    pattern: ".*@.*\\.(tk|ml|ga|cf|gq)$"
+    description: "Critical risk free TLDs with highest abuse rates"
+
+  # High risk TLDs (commonly abused)
+  high_risk_tlds:
+    pattern: ".*@.*\\.(top|click|download|stream|xyz|pw|cc|space|zip|review|science|work|faith|loan|win|racing|party|date|club)$"
+    description: "High risk TLDs commonly used for spam and scams"
+
+  # Medium risk commercial TLDs
+  medium_risk_tlds:
+    pattern: ".*@.*\\.(shop|online|site|website|store|biz|info|forum|news|blog|tech|app|digital|web|net\\.co|org\\.co)$"
+    description: "Medium risk commercial and generic TLDs"
+
+  # All suspicious TLDs combined
+  all_suspicious_tlds:
+    pattern: ".*@.*\\.(tk|ml|ga|cf|gq|top|click|download|stream|xyz|pw|cc|space|zip|review|science|work|faith|loan|win|racing|party|date|club|shop|online|site|website|store|biz|info|forum|news|blog|tech|app|digital|web)$"
+    description: "All suspicious TLD patterns combined"
+
+  # Brand impersonation risk multiplier patterns
+  brand_impersonation_risk:
+    pattern: ".*@.*(secure|verify|account|login|update|confirm|support|service|notification|alert|deal|offer|gift|reward|tech|mobile|store|shop).*\\.(tk|ml|ga|cf|gq|top|click|download|stream|xyz|pw|cc|space|shop|online|site|website|store|biz|info|forum)$"
+    description: "High-risk brand impersonation patterns on suspicious TLDs"
