@@ -1,0 +1,87 @@
+name: "Commerce Threats"
+enabled: true
+rules:
+  # Fake surveys and contests
+  - name: "Fake brand surveys and contests"
+    enabled: true
+    criteria:
+      type: "SubjectPattern"
+      pattern: "(?i).*(survey.*chance.*win|complete.*survey.*win|feedback.*win|customer.*survey.*prize|survey.*gift|survey.*reward|survey.*car.*kit|survey.*emergency.*kit).*"
+    score: 65
+    description: "Fake brand surveys and contest scams"
+
+  # Black Friday and fake sales
+  - name: "Black Friday and fake savings scams"
+    criteria:
+      type: "SubjectPattern"
+      pattern: "(?i).*(black.*friday|cyber.*monday|huge.*savings|massive.*discount|limited.*time.*offer|act.*now.*save|don't.*miss.*out|final.*hours|last.*chance.*save|up.*to.*\\d+%.*off|save.*up.*to.*\\$\\d+).*"
+    score: 70
+    description: "Black Friday and fake promotional scams"
+
+  # Beauty and cosmetic scams
+  - name: "Beauty and cosmetic product spam"
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "And"
+          criteria:
+            - type: "BodyPattern"
+              pattern: "(?i).*(no.*mascara.*trick|thick.*luscious.*lashes|fake.*lashes.*extensions|curly.*beautiful.*lashes|eyelash.*growth.*serum|miracle.*beauty.*secret).*"
+            - type: "SenderPattern"
+              pattern: ".*@.*\\.(shop|online|store)$"
+        - type: "SubjectPattern"
+          pattern: "(?i).*(beauty.*secret|lash.*trick|mascara.*alternative|eyelash.*growth|thick.*luscious.*lashes).*"
+    score: 50
+    description: "Beauty and cosmetic product promotion spam"
+
+  # Home improvement scams
+  - name: "Home improvement and gutter protection scams"
+    criteria:
+      type: "SubjectPattern"
+      pattern: "(?i).*(gutter.*protection|leaf.*guard|home.*improvement|roofing.*special|siding.*deal|window.*replacement|solar.*panels|energy.*savings).*"
+    score: 65
+    description: "Home improvement and gutter protection scams"
+
+  # Free product scams
+  - name: "Free product scams"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(free.*sample|free.*trial|free.*gift|no.*cost|complimentary|risk.*free).*"
+        - type: "SenderPattern"
+          pattern: ".*@.*\\.(tk|ml|ga|cf|gq|top|click|download|stream|xyz|info|biz|online|site|website|shop)$"
+    score: 60
+    description: "Free product scams from suspicious domains"
+
+  # Shopping and marketplace fraud
+  - name: "Shopping marketplace fraud"
+    criteria:
+      type: "SubjectPattern"
+      pattern: "(?i).*(amazing.*deal|incredible.*price|wholesale.*direct|factory.*outlet|liquidation.*sale|going.*out.*business|everything.*must.*go).*"
+    score: 55
+    description: "Shopping marketplace and liquidation fraud"
+
+  # Brand impersonation in commerce
+  - name: "OneStopPlus customer service impersonation"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*OneStopPlus.*"
+        - type: "SubjectPattern"
+          pattern: ".*Items.*never.*arrived.*"
+    score: 50
+    description: "OneStopPlus impersonation scam"
+
+  - name: "ZoomCare marketing impersonation"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*ZoomCare.*"
+        - type: "SubjectPattern"
+          pattern: ".*flu.*shot.*"
+    score: 30
+    description: "ZoomCare impersonation scam"

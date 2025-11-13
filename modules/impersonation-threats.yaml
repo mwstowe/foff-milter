@@ -1,0 +1,94 @@
+name: "Impersonation Threats"
+enabled: true
+rules:
+  # Document signing services
+  - name: "Document signing services impersonation"
+    criteria:
+      type: "BrandImpersonation"
+      brand_name: "document_signing"
+      subject_patterns:
+        - "(?i).*(docusign|document.*ready|signature.*required|sign.*document|review.*document|complete.*electronically).*"
+      sender_patterns:
+        - "(?i).*docusign.*"
+      legitimate_domains:
+        - "docusign.com"
+        - "docusign.net"
+    score: 50
+    description: "DocuSign and document signing service impersonation"
+
+  # Payment services
+  - name: "Payment services impersonation"
+    criteria:
+      type: "BrandImpersonation"
+      brand_name: "payment_services"
+      subject_patterns:
+        - "(?i).*(paypal|payment.*pending|account.*suspended|verify.*account|activation.*order|order.*activated|order.*for.*\\$).*"
+      sender_patterns:
+        - "(?i).*paypal.*"
+      legitimate_domains:
+        - "paypal.com"
+        - "paypal.co.uk"
+    score: 60
+    description: "PayPal and payment service impersonation"
+
+  # Healthcare and consumer brands
+  - name: "Healthcare and consumer brands impersonation"
+    criteria:
+      type: "BrandImpersonation"
+      brand_name: "healthcare_consumer"
+      subject_patterns:
+        - "(?i).*(cvs|walgreens|rite.*aid|pharmacy|prescription|medication|health.*insurance).*"
+      sender_patterns:
+        - "(?i).*(cvs|walgreens|rite.*aid).*"
+      legitimate_domains:
+        - "cvs.com"
+        - "walgreens.com"
+        - "riteaid.com"
+    score: 50
+    description: "Healthcare and consumer brand impersonation"
+
+  # Mailer daemon spoofing
+  - name: "Mailer daemon spoofing"
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*MAILER-DAEMON.*"
+    score: 60
+    description: "MAILER-DAEMON spoofing detection"
+
+  # Fake payment confirmations
+  - name: "Fake payment confirmation and transaction scams"
+    criteria:
+      type: "SubjectPattern"
+      pattern: "(?i).*(payment.*confirmation|transaction.*complete|order.*confirmation|receipt.*attached|invoice.*\\#\\d+|payment.*received|charge.*processed).*"
+    score: 70
+    description: "Fake payment confirmation and transaction scams"
+
+  # Romance and dating scams
+  - name: "Romance and dating scams"
+    criteria:
+      type: "SubjectPattern"
+      pattern: "(?i).*(lonely.*heart|seeking.*love|romantic.*connection|dating.*site|meet.*singles|find.*love|soulmate|relationship|marriage.*proposal).*"
+    score: 65
+    description: "Romance and dating scam detection"
+
+  # Social engineering and urgency
+  - name: "Social engineering and urgency scams"
+    criteria:
+      type: "SubjectPattern"
+      pattern: "(?i).*(urgent.*action.*required|immediate.*response|account.*will.*be.*closed|verify.*immediately|suspended.*account|security.*alert|unauthorized.*access).*"
+    score: 75
+    description: "Social engineering and urgency-based scams"
+
+  # Fake delivery notifications
+  - name: "Fake delivery and shipping notifications"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(delivery.*failed|package.*undelivered|shipping.*notification|ups.*delivery|fedex.*delivery|usps.*delivery|dhl.*delivery).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(ups|fedex|usps|dhl)\\.com.*"
+    score: 80
+    description: "Fake delivery and shipping notifications from non-legitimate domains"
