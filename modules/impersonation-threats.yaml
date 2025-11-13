@@ -93,6 +93,20 @@ rules:
     score: 100
     description: "Fake delivery and shipping notifications from non-legitimate domains"
 
+  # Telecom brand impersonation
+  - name: "Telecom brand impersonation"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SenderPattern"
+          pattern: "(?i).*(t-mobile|tmobile|verizon|att|at&t|sprint|boost|metro).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(t-mobile|tmobile|verizon|att|sprint|boost|metro)\\.com.*"
+    score: 95
+    description: "Telecom brand impersonation from non-legitimate domains"
+
   # Retail brand impersonation
   - name: "Retail brand impersonation"
     criteria:
