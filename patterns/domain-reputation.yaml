@@ -1,0 +1,90 @@
+name: "Domain Reputation Database"
+description: "Domain reputation patterns and risk categories"
+
+reputation_categories:
+  # Trusted domains (negative scores - whitelist)
+  trusted_financial:
+    domains: ["paypal.com", "stripe.com", "square.com", "visa.com", "mastercard.com", "americanexpress.com", "discover.com"]
+    score: -200
+    description: "Trusted financial service providers"
+
+  trusted_technology:
+    domains: ["microsoft.com", "google.com", "apple.com", "amazon.com", "facebook.com", "twitter.com", "linkedin.com"]
+    score: -200
+    description: "Trusted technology companies"
+
+  trusted_ecommerce:
+    domains: ["amazon.com", "ebay.com", "etsy.com", "shopify.com", "walmart.com", "target.com", "costco.com"]
+    score: -150
+    description: "Trusted e-commerce platforms"
+
+  # Suspicious patterns (positive scores)
+  suspicious_financial_mimics:
+    patterns: [".*paypal.*", ".*amazon.*", ".*microsoft.*", ".*apple.*", ".*google.*"]
+    exclude_domains: ["paypal.com", "amazon.com", "microsoft.com", "apple.com", "google.com"]
+    score: 90
+    description: "Domains mimicking trusted financial services"
+
+  suspicious_security_themes:
+    patterns: [".*secure.*", ".*verify.*", ".*account.*", ".*login.*", ".*update.*", ".*confirm.*"]
+    tld_restriction: [".tk", ".ml", ".ga", ".cf", ".gq", ".top", ".click", ".download", ".stream"]
+    score: 85
+    description: "Security-themed domains on suspicious TLDs"
+
+# TLD Risk Categories
+tld_risk_levels:
+  critical_risk:
+    tlds: [".tk", ".ml", ".ga", ".cf", ".gq"]
+    score: 100
+    description: "Critical risk TLDs with highest abuse rates"
+    
+  high_risk:
+    tlds: [".top", ".click", ".download", ".stream", ".xyz", ".pw", ".cc"]
+    score: 80
+    description: "High risk TLDs commonly used for spam"
+    
+  medium_risk:
+    tlds: [".shop", ".online", ".site", ".website", ".store", ".biz", ".info"]
+    score: 40
+    description: "Medium risk commercial TLDs"
+    
+  elevated_risk:
+    tlds: [".club", ".party", ".date", ".racing", ".review", ".science", ".work", ".faith", ".loan", ".win"]
+    score: 60
+    description: "TLDs with elevated spam activity"
+
+# Domain Pattern Analysis
+domain_patterns:
+  short_random:
+    pattern: "^[a-z0-9]{1,4}$"
+    tld_multiplier: 2.0
+    description: "Very short random domains (higher risk on suspicious TLDs)"
+    
+  long_random:
+    pattern: "^[a-z0-9]{15,}$"
+    tld_multiplier: 1.5
+    description: "Very long random domains"
+    
+  excessive_numbers:
+    pattern: ".*[0-9]{4,}.*"
+    tld_multiplier: 1.8
+    description: "Domains with excessive numbers"
+    
+  mixed_case_abuse:
+    pattern: ".*[A-Z].*[0-9].*[A-Z].*"
+    tld_multiplier: 1.3
+    description: "Suspicious mixed case and number patterns"
+
+# Newly Registered Domain Indicators
+new_domain_indicators:
+  suspicious_registration_patterns:
+    - "Domain registered within last 30 days"
+    - "Domain registered with privacy protection"
+    - "Domain registered in bulk with similar patterns"
+    - "Domain using temporary email for registration"
+  
+  risk_multipliers:
+    new_domain_base_score: 30
+    privacy_protection_multiplier: 1.2
+    bulk_registration_multiplier: 1.5
+    temp_email_multiplier: 2.0

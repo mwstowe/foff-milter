@@ -1,0 +1,113 @@
+name: "Domain Risk Assessment"
+enabled: true
+rules:
+  # Critical Risk Domains (100+ points)
+  - name: "Critical risk TLD domains"
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*\\.(tk|ml|ga|cf|gq)$"
+    score: 100
+    description: "Critical risk TLDs with highest spam rates"
+
+  - name: "Typosquatting major brands"
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*(payp4l|g00gle|micr0soft|amaz0n|fac3book|appl3|yah00|g0ogle|microsooft|amazoon|paypaI)\\.(com|net|org)$"
+    score: 120
+    description: "Typosquatting attempts on major brand domains"
+
+  - name: "Suspicious security-themed domains"
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*(secure-|security-|verify-|account-|login-|update-|confirm-|support-|service-|notification-|alert-).+\\.(tk|ml|ga|cf|gq|top|click|download|stream|xyz|info|biz|online|site|website|shop)$"
+    score: 110
+    description: "Security-themed subdomains on suspicious TLDs"
+
+  # High Risk Domains (70-99 points)
+  - name: "High risk TLD domains"
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*\\.(top|click|download|stream|xyz|pw|cc)$"
+    score: 90
+    description: "High risk TLDs commonly used for malicious activities"
+
+  - name: "Cryptocurrency scam domains"
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*(bitcoin|crypto|blockchain|ethereum|binance|coinbase|wallet|trading|forex|investment).+\\.(tk|ml|ga|cf|gq|top|click|download|stream|xyz|info|biz|online|site|website|shop)$"
+    score: 85
+    description: "Cryptocurrency-themed domains on suspicious TLDs"
+
+  - name: "Excessive numbers in domain"
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*[0-9]{4,}.*\\.(tk|ml|ga|cf|gq|top|click|download|stream|xyz|info|biz|online|site|website|shop)$"
+    score: 80
+    description: "Domains with excessive numbers on suspicious TLDs"
+
+  # Medium Risk Domains (40-69 points)
+  - name: "Medium risk commercial TLDs"
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*\\.(shop|online|site|website|store|biz|info)$"
+    score: 50
+    description: "Medium risk commercial TLDs"
+
+  - name: "Suspicious subdomain patterns"
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*(mail|email|smtp|send|newsletter|promo|offer|deal|sale|discount)\\d+\\..+\\.(com|net|org)$"
+    score: 60
+    description: "Suspicious numbered subdomain patterns"
+
+  - name: "Recently popular spam TLDs"
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*\\.(club|party|date|download|racing|review|science|work|faith|loan|win)$"
+    score: 55
+    description: "TLDs that have become popular for spam campaigns"
+
+  # Low Risk Indicators (15-39 points)
+  - name: "Uncommon but legitimate TLDs"
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*\\.(io|co|me|tv|fm|am|ly|be|it|us|ca|uk|de|fr|jp|au)$"
+    score: 20
+    description: "Uncommon but generally legitimate TLDs"
+
+  - name: "Free hosting service domains"
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.+\\.(blogspot|wordpress|wix|squarespace|weebly|godaddy|hostgator|bluehost)\\.com$"
+    score: 25
+    description: "Free hosting service domains with moderate risk"
+
+  # Domain Age and Registration Patterns
+  - name: "Suspicious domain length patterns"
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@[a-z0-9]{1,3}\\.(tk|ml|ga|cf|gq|top|click|download|stream|xyz|info|biz|online|site|website|shop)$"
+    score: 75
+    description: "Very short domain names on suspicious TLDs"
+
+  - name: "Random character domains"
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@[a-z0-9]{8,15}\\.(tk|ml|ga|cf|gq|top|click|download|stream|xyz|info|biz|online|site|website|shop)$"
+    score: 70
+    description: "Random character domains on suspicious TLDs"
+
+  # Legitimate Domain Overrides (negative scores)
+  - name: "Established business domains"
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.+\\.(edu|gov|mil)$"
+    score: -50
+    description: "Educational, government, and military domains"
+
+  - name: "Major corporation domains"
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*(amazon|google|microsoft|apple|facebook|twitter|linkedin|netflix|spotify|adobe|salesforce|oracle|ibm|intel|cisco|hp|dell|sony|samsung|lg|canon|nikon|toyota|honda|ford|bmw|mercedes|volkswagen|audi|nike|adidas|coca-cola|pepsi|mcdonalds|starbucks|walmart|target|costco|homedepot|lowes|bestbuy|ebay|paypal|visa|mastercard|americanexpress|discover|chase|bankofamerica|wellsfargo|citibank)\\.(com|net|org)$"
+    score: -100
+    description: "Major corporation legitimate domains"
