@@ -432,34 +432,9 @@ async fn main() {
         if let Some(module_dir) = config.module_config_dir.as_ref() {
             let modules = [
                 (
-                    "suspicious-domains.yaml",
-                    "Suspicious Domain Detection",
-                    "Domain reputation & TLD risk assessment",
-                ),
-                (
-                    "brand-impersonation.yaml",
-                    "Brand Impersonation Protection",
-                    "Major brand protection with authentication analysis",
-                ),
-                (
-                    "health-spam.yaml",
-                    "Health & Medical Spam",
-                    "Medical misinformation & pharmaceutical spam detection",
-                ),
-                (
-                    "phishing-scams.yaml",
-                    "Phishing & Scam Detection",
-                    "Comprehensive phishing & social engineering protection",
-                ),
-                (
                     "adult-content.yaml",
                     "Adult Content Filtering",
                     "Adult content & romance fraud detection",
-                ),
-                (
-                    "ecommerce-scams.yaml",
-                    "E-commerce Fraud",
-                    "Shopping scams & marketplace fraud detection",
                 ),
                 (
                     "financial-services.yaml",
@@ -719,28 +694,8 @@ fn generate_modular_configs(dir_path: &str) {
     // Embedded module configurations
     let modules = [
         (
-            "suspicious-domains.yaml",
-            include_str!("../modules/suspicious-domains.yaml"),
-        ),
-        (
-            "brand-impersonation.yaml",
-            include_str!("../modules/brand-impersonation.yaml"),
-        ),
-        (
-            "health-spam.yaml",
-            include_str!("../modules/health-spam.yaml"),
-        ),
-        (
-            "phishing-scams.yaml",
-            include_str!("../modules/phishing-scams.yaml"),
-        ),
-        (
             "adult-content.yaml",
             include_str!("../modules/adult-content.yaml"),
-        ),
-        (
-            "ecommerce-scams.yaml",
-            include_str!("../modules/ecommerce-scams.yaml"),
         ),
         (
             "financial-services.yaml",

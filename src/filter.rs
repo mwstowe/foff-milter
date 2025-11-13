@@ -1144,7 +1144,7 @@ impl FilterEngine {
             for module in &self.modules {
                 if module.name.to_lowercase().contains("whitelist") {
                     log::info!("Processing whitelist module: {}", module.name);
-                    
+
                     for (rule_index, rule) in module.rules.iter().enumerate() {
                         // Skip disabled rules
                         if !rule.enabled {
@@ -1200,61 +1200,61 @@ impl FilterEngine {
                 if !module.name.to_lowercase().contains("whitelist") {
                     log::info!("Processing module: {}", module.name);
 
-                for (rule_index, rule) in module.rules.iter().enumerate() {
-                    // Skip disabled rules
-                    if !rule.enabled {
-                        log::debug!(
-                            "Module '{}' Rule {} '{}' is disabled, skipping",
+                    for (rule_index, rule) in module.rules.iter().enumerate() {
+                        // Skip disabled rules
+                        if !rule.enabled {
+                            log::debug!(
+                                "Module '{}' Rule {} '{}' is disabled, skipping",
+                                module.name,
+                                rule_index + 1,
+                                rule.name
+                            );
+                            continue;
+                        }
+
+                        let matches = self
+                            .evaluate_criteria(&rule.criteria, &context_with_attachments)
+                            .await;
+                        log::info!(
+                            "Module '{}' Rule {} '{}' evaluation result: {}",
                             module.name,
                             rule_index + 1,
-                            rule.name
+                            rule.name,
+                            matches
                         );
-                        continue;
-                    }
 
-                    let matches = self
-                        .evaluate_criteria(&rule.criteria, &context_with_attachments)
-                        .await;
-                    log::info!(
-                        "Module '{}' Rule {} '{}' evaluation result: {}",
-                        module.name,
-                        rule_index + 1,
-                        rule.name,
-                        matches
-                    );
+                        if matches {
+                            matched_rules.push(format!("{}: {}", module.name, rule.name));
 
-                    if matches {
-                        matched_rules.push(format!("{}: {}", module.name, rule.name));
-
-                        // Accumulate score if present
-                        if let Some(score) = rule.score {
-                            total_score += score;
-                            scoring_rules
-                                .push(format!("{}: {} (+{})", module.name, rule.name, score));
-                            log::info!(
-                                "Module '{}' Rule '{}' matched, score: +{}, total: {}",
-                                module.name,
-                                rule.name,
-                                score,
-                                total_score
-                            );
-                        } else {
-                            // In the new architecture, individual module actions are ignored
-                            // All decision-making is handled by the heuristic system based on scores
-                            log::info!(
+                            // Accumulate score if present
+                            if let Some(score) = rule.score {
+                                total_score += score;
+                                scoring_rules
+                                    .push(format!("{}: {} (+{})", module.name, rule.name, score));
+                                log::info!(
+                                    "Module '{}' Rule '{}' matched, score: +{}, total: {}",
+                                    module.name,
+                                    rule.name,
+                                    score,
+                                    total_score
+                                );
+                            } else {
+                                // In the new architecture, individual module actions are ignored
+                                // All decision-making is handled by the heuristic system based on scores
+                                log::info!(
                                 "Module '{}' Rule '{}' matched, individual action ignored (heuristic system handles decisions)",
                                 module.name,
                                 rule.name
                             );
-                        }
+                            }
 
-                        // Add rule-specific header (consolidated format)
-                        headers_to_add.push((
-                            "X-FOFF-Rule-Matched".to_string(),
-                            format!("{}: {} ({})", module.name, rule.name, get_hostname()),
-                        ));
+                            // Add rule-specific header (consolidated format)
+                            headers_to_add.push((
+                                "X-FOFF-Rule-Matched".to_string(),
+                                format!("{}: {} ({})", module.name, rule.name, get_hostname()),
+                            ));
+                        }
                     }
-                }
                 }
             }
 
