@@ -1,0 +1,241 @@
+name: "Rule-Based Whitelists"
+enabled: true
+description: "Legitimate business and service whitelists separate from user configuration"
+rules:
+  # Retail and Commerce
+  - name: "Disney Services"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*(disney|disneystore|d23)\\.com.*"
+    score: -200
+    description: "Disney retail and entertainment services"
+
+  - name: "Duluth Trading Company"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*duluthtrading\\.com.*"
+    score: -200
+    description: "Duluth Trading Company legitimate retailer"
+
+  - name: "Levi's"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*levi\\.com.*"
+    score: -200
+    description: "Levi's brand legitimate emails"
+
+  - name: "Michaels"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*michaels.*\\.com.*"
+    score: -200
+    description: "Michaels craft store chain"
+
+  - name: "1-800-FLOWERS"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*celebrations\\.com.*"
+    score: -200
+    description: "1-800-FLOWERS legitimate retailer"
+
+  - name: "Filters Fast"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*filtersfast\\.com.*"
+    score: -200
+    description: "Filters Fast air filter retailer"
+
+  - name: "Monoprice"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*monoprice\\.com.*"
+    score: -200
+    description: "Monoprice electronics retailer"
+
+  - name: "King Arthur Baking"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*kingarthurbaking\\.com.*"
+    score: -200
+    description: "King Arthur Baking legitimate company"
+
+  - name: "EyeBuyDirect"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*eyebuydirect\\.com.*"
+    score: -200
+    description: "EyeBuyDirect eyewear retailer"
+
+  - name: "Walgreens"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*walgreens\\.com.*"
+    score: -200
+    description: "Walgreens pharmacy chain"
+
+  # Airlines and Travel
+  - name: "British Airways"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*ba\\.com.*"
+    score: -300
+    description: "British Airways legitimate airline"
+
+  # Technology and Electronics
+  - name: "ASUS"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*asus\\.com.*"
+    score: -200
+    description: "ASUS computer manufacturer"
+
+  # Medical and Healthcare
+  - name: "AceMed Medical Services"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*charmtracker\\.com.*"
+    score: -200
+    description: "AceMed medical appointment confirmations"
+
+  - name: "ResMed"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*resmed\\.com.*"
+    score: -200
+    description: "ResMed medical device company"
+
+  # Automotive
+  - name: "Seattle MINI"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*driveseattlemini\\.com.*"
+    score: -200
+    description: "Seattle MINI car dealership"
+
+  # Financial and Investment Services
+  - name: "Oxford Club"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*oxfordclub\\.com.*"
+    score: -200
+    description: "Oxford Club investment newsletters"
+
+  # Logistics and Tracking Services
+  - name: "Narvar Tracking Services"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*narvar\\.com.*"
+    score: -200
+    description: "Narvar order tracking service"
+
+  # Personal Communications
+  - name: "Birthday Greetings"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(happy.*birthday|birthday.*wishes|birthday.*greetings).*"
+        - type: "SenderPattern"
+          pattern: ".*@(gmail|yahoo|hotmail|outlook|aol|icloud)\\.com.*"
+    score: -150
+    description: "Legitimate birthday greetings from personal email accounts"
+  - name: "Amazon Services"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*(amazon|amazonses|aws)\\.com.*"
+    score: -300
+    description: "Amazon and AWS legitimate services"
+
+  - name: "Walmart"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*walmart\\.com.*"
+    score: -200
+    description: "Walmart retail chain"
+
+  - name: "Target"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*target\\.com.*"
+    score: -200
+    description: "Target retail chain"
+
+  # Technology Companies
+  - name: "Microsoft Services"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*(microsoft|outlook|hotmail|live|msn)\\.com.*"
+    score: -300
+    description: "Microsoft and related services"
+
+  - name: "Google Services"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*(google|gmail|googlemail|youtube)\\.com.*"
+    score: -300
+    description: "Google and related services"
+
+  - name: "Apple Services"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*(apple|icloud|me)\\.com.*"
+    score: -300
+    description: "Apple and related services"
+
+  # Social Media Platforms
+  - name: "Facebook"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*(facebook|facebookmail|instagram)\\.com.*"
+    score: -200
+    description: "Facebook and Instagram legitimate notifications"
+
+  - name: "Twitter/X"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*(twitter|x)\\.com.*"
+    score: -200
+    description: "Twitter/X social media platform"
+
+  # Financial Services
+  - name: "PayPal"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*paypal\\.com.*"
+    score: -300
+    description: "PayPal payment services"
+
+  - name: "Major Banks"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*(bankofamerica|chase|wellsfargo|citibank|usbank|pnc|capitalone|ally|discover|americanexpress)\\.com.*"
+    score: -300
+    description: "Major US banks and financial institutions"
