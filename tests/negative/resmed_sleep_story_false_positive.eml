@@ -1,0 +1,563 @@
+Return-Path: <bounce-186_HTML-176086290-449620-534003716-805@bounce.email.resmed.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTPS id 5ACF2C18030174
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <mstowe@baddomain.com>; Wed, 12 Nov 2025 15:02:12 GMT
+	(envelope-from bounce-186_HTML-176086290-449620-534003716-805@bounce.email.resmed.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (2048-bit key; unprotected) header.d=email.resmed.com header.i=myairsupport@email.resmed.com header.b=fHeSKFoj;
+	dkim=pass (2048-bit key; unprotected) header.d=s12.y.mc.salesforce.com header.i=@s12.y.mc.salesforce.com header.b=ZnC3WWRo
+X-Authentication-Warning: juliett.baddomain.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.baddomain.com
+Received: from mta.email.resmed.com (mta.email.resmed.com [13.110.224.23])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 5ACF2AJj011018
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO)
+	for <mstowe@baddomain.com>; Wed, 12 Nov 2025 09:02:11 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 5ACF2AJj011018
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (2048-bit key, unprotected) header.d=email.resmed.com header.i=myairsupport@email.resmed.com header.a=rsa-sha256 header.s=12dkim1 header.b=fHeSKFoj;
+	dkim=pass (2048-bit key, unprotected) header.d=s12.y.mc.salesforce.com header.i=@s12.y.mc.salesforce.com header.a=rsa-sha256 header.s=fbldkim12 header.b=ZnC3WWRo
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=12dkim1; d=email.resmed.com;
+ h=From:To:Subject:Date:List-Unsubscribe:List-Unsubscribe-Post:MIME-Version:
+ Reply-To:Message-ID:Content-Type; i=myairsupport@email.resmed.com;
+ bh=SpafCiCY8pUFaZys9GcC2epcQXYgsNnAM2CF5olwQQc=;
+ b=fHeSKFojCsJR76Yfm52Y/PugMCBpS6l9I3bD8UVxx1kmkh38v7REAqEv0JiTQbq4Qujr9TosO/k3
+   SBXkbmUoEA+aatk8O6omlfSyuc65ipQCSzrHE0w85ZUCJF+sXTbuomfgzTOpP7nDFklCRxwO3e+O
+   U7D+I1VCLpSoyeMserY3OCKXa3LoopEQuB7Tc/+IyLiwsA2HavLlJsDDWnpnYcsoBwL150m7fvSa
+   CYGvLtkoK/rlLESnfbBYhTW7o6fF+lzm5bj+wTsHdeeEkiiWhfjTLWRPkOnkSkFROb4kt3WIPYgg
+   4UBLAQt2RSor0sDtRFXzvzbox9j8JSMaZIjH9A==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=fbldkim12; d=s12.y.mc.salesforce.com;
+ h=From:To:Subject:Date:List-Unsubscribe:MIME-Version:Reply-To:Message-ID:
+ Content-Type;
+ bh=SpafCiCY8pUFaZys9GcC2epcQXYgsNnAM2CF5olwQQc=;
+ b=ZnC3WWRoUO3ITQWRYbHyQnCvs5yW5/b/XQ1d+dfK00xTihttp4sKCioR3qXYMAcmxFL32laflT0e
+   cE5qdsM0lHXnepqCcFCRD8T8RPyI17boalmKOMjSzxUp04cQIUocA1cWbThdB1LxhF/BGwe8mgXv
+   rbRCaG0t3tXtOHWuyCOL8xUQc9fUy64bhl0l3uD0AHdA/MoP/KRgPxo7eTneUhgtWlEdWnCjfPsW
+   CIfIq6AQANOUkf9Ubp7MpKmdcJy86g1sqGkXGE55Y6s6IaRoLx2Lny2geLBV9s/ZfWof2bp3VZ+q
+   ryNajBFMruuCszHop2iQlVCyIpO7ek/ShgGvJw==
+Received: by mta.email.resmed.com id h2ign62fmd4i for <mstowe@baddomain.com>; Wed, 12 Nov 2025 15:02:10 +0000 (envelope-from <bounce-186_HTML-176086290-449620-534003716-805@bounce.email.resmed.com>)
+From: "Resmed myAir Support" <myairsupport@email.resmed.com>
+To: <mstowe@baddomain.com>
+Subject: =?UTF-8?B?WW91ciAyMDI1IFNsZWVwIFN0b3J5IGlzIGluIHRoZSBtYWtpbmc=?=
+ =?UTF-8?B?4oCUdGhpcyBpcyB0aGUgZmluYWwgc3RyZXRjaCE=?=
+Date: Wed, 12 Nov 2025 09:02:10 -0600
+List-Unsubscribe: <https://click.email.resmed.com/subscription_center.aspx?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtaWQiOiI1MzQwMDM3MTYiLCJzIjoiMTc2MDg2MjkwIiwibGlkIjoiMTg2IiwiaiI6IjQ0OTYyMCIsImpiIjoiODA1IiwiZCI6IjEyMDAzMyJ9._tkswq80U83gu7ZbSzQEtP2y6MQN5POlwPZk_RlDSzk>, <mailto:leave-fd4c1578730b5c392848-fe28157773640c7b771d70-fec610747c62067d-fe3211737164047e721576-ff621c7070@leave.email.resmed.com>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+MIME-Version: 1.0
+Reply-To: "myAir Support" <reply-fec610747c62067d-186_HTML-176086290-534003716-805@email.resmed.com>
+X-SFMC-Stack: 12
+x-job: 534003716_449620
+Message-ID: <9b88e222-2fcc-40d0-bcce-a7f75c00a013@iad4s12mta371.xt.local>
+Content-Type: multipart/alternative;
+	boundary="n3qZNw5X4wi8=_?:"
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Wed, 12 Nov 2025 15:02:12 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Wed, 12 Nov 2025 09:02:12 -0600 (CST)
+X-Spam-Flag: YES
+X-FOFF-Rule-Matched: Link Analysis: Suspicious Link Patterns (External Only) (juliett.baddomain.com)
+X-FOFF-Rule-Matched: Health Spam Detection: Sleep and stress relief product spam (juliett.baddomain.com)
+X-FOFF-Rule-Matched: Analytics: Generic Sender Names (juliett.baddomain.com)
+X-FOFF-Rule-Matched: Link Analysis: Suspicious Link Patterns (External Only) (hotel.baddomain.com)
+X-FOFF-Rule-Matched: Health Spam Detection: Sleep and stress relief product spam (hotel.baddomain.com)
+X-FOFF-Rule-Matched: Analytics: Generic Sender Names (hotel.baddomain.com)
+X-FOFF-Score: 95 - foff-milter v0.6.9 (juliett.baddomain.com)
+X-FOFF-Score: 95 - foff-milter v0.6.9 (hotel.baddomain.com)
+
+This is a multi-part message in MIME format.
+
+--n3qZNw5X4wi8=_?:
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+ResMed
+ 
+
+ 
+https://click.email.resmed.com/?qs=ea9a90d1446d884d486e25c2965a0e6394011b6111654366922d255ba253f2b96d4a76ae81ef320737a19c51d939787c674c26ce6942cf008d81208c56ba71d7 
+
+
+ Your Best Sleep Story Starts (and Ends) with You
+
+ Every night counts. Every effort, every attempt, every bit of progress &ndash; it all matters.
+
+
+ In January, your 2025 Sleep Story will reveal your journey: your consistency, your dedication, and how you&rsquo;ve kept showing up for better rest and brighter mornings.
+
+
+https://click.email.resmed.com/?qs=ea9a90d1446d884d837ff851b14fbe329a1f442998c307522b7a0454664b8be954716d9c9727a289fe1efcf2cbfd51ad103bae1a8ced545e43caf0bad24622c2 
+Open myAir
+
+
+
+
+
+ This is your moment to finish strong.
+
+
+ Keep using your CPAP every night and track your progress in myAir.
+
+
+ Because every night of CPAP therapy is one step closer to the energy, focus, and vitality that fuel your days.
+
+
+ Let&rsquo;s make these last nights of 2025 your best yet.
+
+
+
+
+
+See how your dedication adds up.
+
+
+Your Sleep Story will reveal how far you&rsquo;ve come&mdash;and what&rsquo;s possible in 2026.
+
+
+https://click.email.resmed.com/?qs=ea9a90d1446d884d837ff851b14fbe329a1f442998c307522b7a0454664b8be954716d9c9727a289fe1efcf2cbfd51ad103bae1a8ced545e43caf0bad24622c2 
+Finish Strong in myAir
+
+
+https://click.email.resmed.com/?qs=8f6e885ad76647aa7c3291d0b6cf8b90e6037cc9b4205dd35d5aa6fa6a5aa269ecb29e30d49f61261bb4883720de5b1313dde1d45625ef00313541d081e15a46 
+
+https://click.email.resmed.com/?qs=8f6e885ad76647aacb03143978fa485ac2b636724f30a1fa1a38e1d46a7fb960b303a001eb22d3e9eb32c34d25b428520456331d04efa38d8ce5c007debc8e5a 
+
+
+
+Copyright (c) 2025 Resmed. All rights reserved.
+
+Resmed Corp
+
+9001 Spectrum Center Blvd.
+
+San Diego, CA, 92123, US
+
+(800) 424-0737 | 
+https://click.email.resmed.com/?qs=ea9a90d1446d884dd601bdb4a4aceb67e7aa9de1aac96607dfa900ec4a755961c95bb0f871a0eefb869dcd7f0537edaec2df205585287a9be7026885460d0a23 
+Resmed.com 
+
+https://click.email.resmed.com/?qs=8f6e885ad76647aa5a353a89eddbaafe181d63801fcae570fd23a1bc0d5bdd18f2bc4a7b9be5bee0632f787d235a3317ecd6434e5a2195bd6b20229fa99e34f1 
+You&rsquo;re receiving this email because you&rsquo;ve previously expressed an interest in receiving updates from Resmed.
+
+
+If you are having trouble viewing this email, 
+https://view.email.resmed.com/?qs=dd7bde22123d0bfbc597c8dd5d4d31392c4e18aa412d1e57cccbfdc1e635501f681da090c3697306812849a932db2c8eb30ed3644ca99330d30d02d33818d73aca104c8a133d25b5efd821b096897631 
+click here .
+
+If you would like to unsubscribe, 
+https://click.email.resmed.com/?qs=ea9a90d1446d884ddf2608cb2c8c8c3311d96a23835e0d5f702cd938d69c3cee3f9915ebc0e8baf597ec3ed6c8bbddd194715bf04a27860ae33abe4e14f822d1 
+click here .
+
+
+
+https://click.email.resmed.com/?qs=ea9a90d1446d884d4c056999b08f9219a5eda66e8908cff4dfeb0584187319bd2e857a248de3383ead717e1faa55aaf9d726269e2c2982f52de78e9528caf6d9 
+
+  
+https://click.email.resmed.com/?qs=ea9a90d1446d884d342e5ebca4394088fdf009c26893bfc980e5f0e652b9ef737c4b1e10489b90df0c76d6542e4a959abf5bab1d462eae613174682ab96835b9 
+
+  
+https://click.email.resmed.com/?qs=ea9a90d1446d884d02f1700571c8b3430e6542a54a4a2fd458b8aefdafc0f3a84931d2cf6f571885ddcccccbc7e622c7de3986c197a11c5eafe67e61fab2c8fe 
+
+  
+https://click.email.resmed.com/?qs=ea9a90d1446d884d215ea89131710b37b324ff4ea908098b7d6aaf70d16c735fefd69a25afdf1ccecd3aa67ad4f820b59d1e2c936c245ccc43f042b703a7b1f3 
+
+
+https://click.email.resmed.com/?qs=ea9a90d1446d884dbefcd53c819f347d5b02997819100bed3a4f36f33c62daeddd2443565a1c466ccb3afafcc7c1d9ffe17e77bc32404c9284c81b2cbf6f1770 
+Terms | 
+https://click.email.resmed.com/?qs=ea9a90d1446d884df96eea479d0bb33623af027f6d1767c29f17970b60da542b6282d950fa84f908e4c68c9389e434c01820561fc284cdc2e2022b17781c5b15 
+Privacy | 
+https://click.email.resmed.com/?qs=ea9a90d1446d884ddf2608cb2c8c8c3311d96a23835e0d5f702cd938d69c3cee3f9915ebc0e8baf597ec3ed6c8bbddd194715bf04a27860ae33abe4e14f822d1 
+Email Preferences
+
+
+
+ 
+ 
+
+
+
+--n3qZNw5X4wi8=_?:
+Content-Type: text/html;
+	charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!-- EXD CODE (add lang to html & to address DPI scaling for Outlook) -->
+<html lang="en"        xmlns="http://www.w3.org/1999/xhtml"        xmlns:v="urn:schemas-microsoft-com:vml"        xmlns:o="urn:schemas-microsoft-com:office:office">
+  <!-- END EXD CODE -->
+  <head>
+    <!-- EXD CODE (add Title to meta) -->
+    <title>ResMed
+    </title>
+    <!-- End EXD Code -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style type="text/css">
+      ReadMsgBody {
+        width: 100%;
+      }
+      .ExternalClass {
+        width: 100%;
+      }
+      .ExternalClass,
+      .ExternalClass p,
+      .ExternalClass span,
+      .ExternalClass font,
+      .ExternalClass td,
+      .ExternalClass div {
+        line-height: 100%;
+      }
+      body {
+        -webkit-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+        margin: 0 !important;
+      }
+      p {
+        margin: 1em 0;
+      }
+      table td {
+        border-collapse: collapse;
+      }
+      img {
+        outline: 0;
+      }
+      a img {
+        border: none;
+      }
+      @-ms-viewport {
+        width: device-width;
+      }
+    </style>
+    <style type="text/css">
+      @media only screen and (max-width: 480px) {
+        /* EXD Code (Banner image swap on mobile) */
+        .centerAlign {
+          text-align: center !important;
+        }
+        .mobSpacing {
+          padding-left: 20px !important;
+          padding-right: 20px !important;
+        }
+        .mobile-bottom-padding {
+          margin-bottom: 30px;
+        }
+        .desktop-image, .desktop-hide {
+          display: none !important;
+        }
+        .mobile-image {
+          display: block !important;
+        }
+        .mobile-show {
+          display: inline-block !important;
+        }
+        .mobile-no-bottom-padding {
+          margin-bottom: 0;
+        }
+        .mobile-no-top-padding {
+          margin-top: 0;
+        }
+        /* End EXD Code */
+        .container {
+          width: 100% !important;
+        }
+        .footer {
+          width: auto !important;
+          margin-left: 0;
+        }
+        .mobile-hidden {
+          display: none !important;
+        }
+        .logo {
+          display: block !important;
+          padding: 0 !important;
+        }
+        img {
+          max-width: 100% !important;
+          height: auto !important;
+          max-height: auto !important;
+        }
+        .header img {
+          max-width: 100% !important;
+          height: auto !important;
+          max-height: auto !important;
+        }
+        .photo img {
+          width: 100% !important;
+          max-width: 100% !important;
+          height: auto !important;
+        }
+        .drop {
+          display: block !important;
+          width: 100% !important;
+          float: left;
+          clear: both;
+        }
+        .footerlogo {
+          display: block !important;
+          width: 100% !important;
+          padding-top: 15px;
+          float: left;
+          clear: both;
+        }
+        .nav4,
+        .nav5,
+        .nav6 {
+          display: none !important;
+        }
+        .tableBlock {
+          width: 100% !important;
+        }
+        .responsive-td {
+          width: 100% !important;
+          display: block !important;
+          padding: 0 !important;
+        }
+        .fluid,
+        .fluid-centered {
+          width: 100% !important;
+          max-width: 100% !important;
+          height: auto !important;
+          margin-left: auto !important;
+          margin-right: auto !important;
+        }
+        .fluid-centered {
+          margin-left: auto !important;
+          margin-right: auto !important;
+        }
+        .desc-circle {
+          height: 20px !important;
+        }
+        /* CTA BUTTON TEXT GLOBAL STYLES - REMAIN AS WHITE */
+        a.cta:visited {
+          color: #adacac !important;
+        }
+        a {
+          color: #adacac;
+        }
+        /*Define the link color but don't include the !important tag and also define the inline styling
+        /* END CTA BUTTON TEXT GLOBAL STYLES - REMAIN AS WHITE */
+        /* MOBILE GLOBAL STYLES - DO NOT CHANGE */
+        body {
+          padding: 0px !important;
+          font-size: 16px !important;
+          line-height: 150% !important;
+        }
+        h1 {
+          font-size: 22px !important;
+          line-height: normal !important;
+        }
+        h2 {
+          font-size: 20px !important;
+          line-height: normal !important;
+        }
+        h3 {
+          font-size: 18px !important;
+          line-height: normal !important;
+        }
+        .buttonstyles {
+          font-family: arial, helvetica, sans-serif !important;
+          font-size: 16px !important;
+          color: #FFFFFF !important;
+          padding:8px  10px !important;
+        }
+        /* END OF MOBILE GLOBAL STYLES - DO NOT CHANGE */
+      }
+      @media only screen and (max-width: 640px) {
+        .container {
+          width: 100% !important;
+        }
+        .mobile-hidden {
+          display: none !important;
+        }
+        .logo {
+          display: block !important;
+          padding: 0 !important;
+        }
+        .photo img {
+          width: 100% !important;
+          height: auto !important;
+        }
+        .nav5,
+        .nav6 {
+          display: none !important;
+        }
+        .fluid,
+        .fluid-centered {
+          width: 100% !important;
+          max-width: 100% !important;
+          height: auto !important;
+          margin-left: auto !important;
+          margin-right: auto !important;
+        }
+        .fluid-centered {
+          margin-left: auto !important;
+          margin-right: auto !important;
+        }
+        .desc-circle {
+          height: 20px !important;
+        }
+      }
+    </style>
+    <!--[if mso]>   <style type="text/css">   /* Begin Outlook Font Fix */   body, table, td {     font-family: Arial, Helvetica, sans-serif ;     font-size:16px;     color:#000000;     line-height:1;   }   a.cta:visited {    color: #adacac !important;   }   /* End Outlook Font Fix */   </style>   <xml>   <o:OfficeDocumentSettings>   <o:AllowPNG/>   <o:PixelsPerInch>96</o:PixelsPerInch>   </o:OfficeDocumentSettings>   </xml>   <![endif]-->
+    <!--[if mso]>   <style type="text/css">   /* Begin Outlook Font Fix */   body, table, td {     font-family: Arial, Helvetica, sans-serif ;     font-size:16px;     color:#000000;     line-height:1;   }   /* End Outlook Font Fix */   </style>   <![endif]-->
+      <!--[if mso]>   <style type="text/css">   table {     border-collapse: collapse;     border-spacing: 0;     mso-table-lspace: 0pt !important;     mso-table-rspace: 0pt !important;   }   </style>   <![endif]-->
+    <!--[if mso]>   <style type="text/css">   table.x_tb_properties {     line-height: 100%;     border: 0;     border-collapse: collapse;     border-spacing: 0;     mso-table-lspace: 0pt !important;     mso-table-rspace: 0pt !important;   }  </style>  <![endif]-->
+    <!--[if gte mso 12]><br /> <![endif]-->
+    <!--[if (gte mso 9)|(IE)]>       <style type="text/css">       table {         border-collapse: collapse;         border-spacing: 0;        }       </style>  <![endif]-->
+  </head>
+  <body vlink="#adacac" bgcolor="#DDDDDD" text="#000000" style="-webkit-text-size-adjust:none;background-color : #DDDDDD; font-family : Arial, helvetica, sans-serif; line-height : 100%; font-size : 16px; color : #424243; padding : 0px; "><style type="text/css">
+div.preheader 
+{ display: none !important; } 
+</style>
+<div class="preheader" style="font-size: 1px; display: none !important;">Your year of better sleep is almost complete. Keep the momentum going in myAir.</div>
+    <div style="font-size:0; line-height:0;">
+      <img src="https://click.email.resmed.com/open.aspx?ffcb10-fec610747c62067d-fe29157175650c7b721c76-fe3211737164047e721576-ff60157873-fe28157773640c7b771d70-ff621c7070&d=120033&bmt=0" width="1" height="1" alt="">
+        
+        </div>
+      <table width="100%" border="0" cellpadding="0" cellspacing="0" align="center">
+        <tr>
+          <td align="center" valign="top">
+          </td>
+        </tr>
+        <tr>
+          <td align="center">
+            <table cellspacing="0" cellpadding="0" border="0" width="600" class="container" align="center">
+              <tr>
+                <td>
+                  <table class="tb_properties border_style" style="background-color : #FFFFFF; border : 0px solid transparent;font-size : 16px; font-family : Arial, helvetica, sans-serif; line-height : 100%; color : #424243; " cellspacing="0" cellpadding="0" width="100%">
+                    <tr>
+                      <td align="center" valign="top">
+                        <table align="left" border="0" cellpadding="0" cellspacing="0" width="100%">
+                          <tr>
+                            <!-- added padding here -->
+                            <td class="content_padding" style="padding : 0px; ">
+                              <!-- end of comment -->
+                              <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                <tr> 
+                                  <!-- top slot -->
+                                  <td align="center" class="header" valign="top">
+                                    <table align="left" border="0" cellpadding="0" cellspacing="0" width="100%">
+                                      <tbody>
+                                        <tr>
+                                          <td align="left" valign="top">
+                                            <table cellspacing="0" cellpadding="0" style="width:100%">
+                                              <tbody>
+                                                <tr>
+                                                  <td class="responsive-td" valign="top" style="width: 100%;">
+                                                    <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: #FFFFFF; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 0px; " class="stylingblock-content-wrapper camarker-inner"><style> @media print{ #_two50 { background-image:url('https://resmedna.everestengagement.com/ea/jk89I7Wbwa/?t=p&e=undefined'); } } blockquote #_two50, #mailContainerBody #_two50, div.OutlookMessageHeader, table.moz-email-headers-table { background-image:url('https://resmedna.everestengagement.com/ea/jk89I7Wbwa/?t=f&e=undefined'); } </style> <div id="_two50"></div> 
+<img id="_two50_img" src="https://resmedna.everestengagement.com/ea/jk89I7Wbwa/?e=undefined" width="1" height="1" style="margin:0 !important; padding:0 !important; border:0 !important; height:1px !important; width:1px !important;"></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: transparent; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 0px; " class="stylingblock-content-wrapper camarker-inner"><table width="100%" cellspacing="0" cellpadding="0" role="presentation"><tr><td align="center"><a href="https://click.email.resmed.com/?qs=8f6e885ad76647aac1b24dafaa67ea1645d3db92850e17cbb845fc202dd7ac14c1892dc3b7ccecee30cadab7b4562262d59724646b485265e688034baa5f9aab" title="ResMed logo"   data-linkto="https://">
+<img data-assetid="117641" src="https://image.email.resmed.com/lib/fe3a117371640479751673/m/1/resmed_header-white.png" alt="ResMed logo" height="92" width="600" style="display: block; padding: 0px; text-align: center; height: 92px; width: 600px; border: 0px;"></a></td></tr></table></td></tr>
+</table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: #D0E8FF; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 30px 40px 20px; " class="stylingblock-content-wrapper camarker-inner"><table cellspacing="0" cellpadding="0" role="presentation" style="width: 100%;"><tr><td><table cellspacing="0" cellpadding="0" role="presentation" style="width: 100%;"><tr><td valign="top" class="responsive-td" style="width: 70%; padding-right: 10px;"><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding-bottom: 10px; " class="stylingblock-content-wrapper camarker-inner"><h1 style="font-size: 32px; line-height: 36px; font-family: arial, sans-serif, helvetica; color: #0d0a15; margin: 0px; text-align: left; font-weight: 400;">
+ Your Best Sleep Story Starts <span style="white-space:nowrap;">(and&nbsp;Ends)</span> with&nbsp;You</h1><p style="font-size: 16px; line-height: 22px; font-family: arial, sans-serif, helvetica; color: #0d0a15; margin: 20px 0; text-align: left; font-weight: 400;">
+ Every night counts. Every effort, every attempt, every bit of progress&nbsp;&ndash; it all matters.<br>
+ <br>
+ In January, your 2025 Sleep Story will reveal your journey: your consistency, your dedication, and how you&rsquo;ve kept showing up for better rest and brighter mornings.</p></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: transparent; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 0px 0px 20px; " class="stylingblock-content-wrapper camarker-inner"><table border="0" cellpadding="0" cellspacing="0" style="width:100%;">
+ 
+  <tr>
+   <td class="responsive-td" style="padding: 0 0px;">
+    <table cellpadding="0" cellspacing="0" class="stylingblock-content-wrapper" role="presentation" style="background-color: transparent; min-width: 100%;" width="100%">
+     
+      <tr>
+       <td class="stylingblock-content-wrapper camarker-inner" style="padding: 0;">
+        <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+         
+          <tr>
+           <!-- changed from align="center" --><td align="left" style="text-align:left;">
+            <!-- also left-align the wrapper table --><table align="left" border="0" cellpadding="0" cellspacing="0" class="cta" role="presentation" style="margin-left:0; margin-right:auto;">
+             
+              <tr>
+               <td class="innertd buttonblock">
+                <!--[if mso]>                         <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word"                           href="https://myair.resmed.com/linkRouter?params=dashboard"                           style="height:50px; v-text-anchor:middle; width:300px;" arcsize="50%" stroke="f" fillcolor="#ffffff">                           <w:anchorlock/>                           <center style="color:#0d0a15; font-family:Arial, Helvetica, sans-serif; font-size:16px; font-weight:bold;">                             Open myAir                           </center>                         </v:roundrect>                         <![endif]--><!--[if !mso]><!-- -->
+<a  href="https://click.email.resmed.com/?qs=8f6e885ad76647aa2777973cdd81899fb967d14d6967a0a3cc45828fbb8aa2aeebf83870253332c4df3a62a5f5dfa6eed2489eed4ffb7d8e2f3a902bab3f348e" style="font-size:16px !important; font-family:Arial, helvetica, sans-serif; font-weight:bold; color:#0d0a15 !important; text-decoration:none; text-align:center;display:inline-block;background-color:#ffffff; border:none;padding:13px 20px !important; border-radius:22px;" target="_blank" title="Explore in myAir"><span style="color:#0d0a15;">Open myAir</span> </a> <!--<![endif]--></td></tr></table></td></tr></table></td></tr></table></td></tr></table></td></tr></table></td><td valign="top" class="responsive-td" style="width: 30%; padding-left: 10px;"><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: transparent; min-width: 100%; " class="stylingblock-content-wrapper"><tr>
+<td style="padding: 10px 0px; " class="stylingblock-content-wrapper camarker-inner"><table width="100%" cellspacing="0" cellpadding="0" role="presentation"><tr><td align="center"><img data-assetid="120012" src="https://image.email.resmed.com/lib/fe3211737164047e721576/m/1/40a5590f-ec0a-4176-ad11-7c90ebc4f6aa.png" alt="Sleep Story screenshot" height="300" width="150" style="display: block; padding: 0px; text-align: center; height: 300px; width: 150px; border: 0px;"></td></tr></table></td></tr></table></td></tr></table></td></tr></table></td></tr>
+</table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: #D0E8FF; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 0px; " class="stylingblock-content-wrapper camarker-inner"><table width="100%" cellspacing="0" cellpadding="0" role="presentation"><tr><td align="center"><img data-assetid="111504" src="https://image.email.resmed.com/lib/fe3211737164047e721576/m/1/23631a67-2287-42a2-9536-65011ec64bc0.png" alt="" height="123" width="600" style="display: block; padding: 0px; text-align: center; height: 123px; width: 600px; border: 0px;"></td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: transparent; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 30px; " class="stylingblock-content-wrapper camarker-inner">
+<table cellspacing="0" cellpadding="0" role="presentation" style="width: 100%;"><tr><td><table cellspacing="0" cellpadding="0" role="presentation" style="width: 100%;"><tr><td valign="top" class="responsive-td" style="width: 55%; padding-right: 5px;"><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding-bottom: 10px; " class="stylingblock-content-wrapper camarker-inner"><p style="font-size: 24px; line-height: 30px; font-family: arial, sans-serif, helvetica; color: #0d0a15; text-align: left; font-weight: 400; margin-top:0;">
+ This is your moment to finish strong.</p>
+<p style="font-size: 16px; line-height: 22px; font-family: arial, sans-serif, helvetica; color: #0d0a15; text-align: left; font-weight: 400;">
+  Keep using your CPAP every night and track your progress in myAir.</p>
+
+<p style="font-size: 16px; line-height: 22px; font-family: arial, sans-serif, helvetica; color: #0d0a15; text-align: left; font-weight: 400;">
+ Because every night of CPAP therapy is one step closer to the energy, focus, and vitality that fuel your days.</p><p style="font-size: 16px; line-height: 22px; font-family: arial, sans-serif, helvetica; color: #0d0a15; text-align: left; font-weight: 400;">
+ Let&rsquo;s make these last nights of 2025 your best yet.</p></td></tr></table></td><td valign="top" class="responsive-td" style="width: 45%; padding-left: 5px;"><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding-bottom: 10px; " class="stylingblock-content-wrapper camarker-inner"><table width="100%" cellspacing="0" cellpadding="0" role="presentation"><tr><td align="center"><img data-assetid="119844" src="https://image.email.resmed.com/lib/fe3211737164047e721576/m/1/23260f9d-e10e-4cc1-93a2-18aee4c04efc.png" alt="Streaks calendar view screen shot" height="300" width="150" style="display: block; padding: 0px; text-align: center; height: 300px; width: 150px; border: 0px;"></td></tr></table></td></tr></table></td></tr></table></td></tr></table></td></tr></table>
+<table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: #004BA6; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 40px 20px 20px; " class="stylingblock-content-wrapper camarker-inner"><table cellspacing="0" cellpadding="0" role="presentation" style="width: 100%;"><tr><td><table cellspacing="0" cellpadding="0" role="presentation" style="width: 100%;"><tr><td valign="top" class="responsive-td" style="width: 50%; padding-right: 3px;"><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><table width="100%" cellspacing="0" cellpadding="0" role="presentation"><tr><td align="center">
+<img data-assetid="111922" src="https://image.email.resmed.com/lib/fe3211737164047e721576/m/1/20cf06ea-36b5-487c-ab2b-ba8d1bcfa844.png" alt="Happy Couple with myAir App" height="280" width="255" style="display: block; padding: 0px 0px 20px; text-align: center; height: 280px; width: 255px; border: 0px;"></td></tr></table></td></tr></table></td>
+<td valign="top" class="responsive-td" style="width: 50%; padding-left: 3px;"><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: transparent; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 0px 10px; " class="stylingblock-content-wrapper camarker-inner"><p style="font-size: 24px; line-height: 30px; font-family: arial, sans-serif, helvetica; color: #fff; margin-top:0; ">
+	See how your dedication adds up.</p><p style="font-size: 16px; line-height: 20px; font-family: arial, sans-serif, helvetica; color: #fff; ">
+	Your Sleep Story will reveal how far you&rsquo;ve come&mdash;and what&rsquo;s possible in 2026.</p></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: transparent; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 10px; " class="stylingblock-content-wrapper camarker-inner"><table border="0" cellpadding="0" cellspacing="0" style="width:100%;">
+	
+		<tr>
+			<td class="responsive-td" style="padding: 0 0px">
+				<table cellpadding="0" cellspacing="0" class="stylingblock-content-wrapper" role="presentation" style="background-color: transparent; min-width: 100%; " width="100%">
+					
+						<tr>
+							<td class="stylingblock-content-wrapper camarker-inner" style="padding: 0px; ">
+								<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+									
+										<tr>
+											<td align="left">
+												<table border="0" cellpadding="0" cellspacing="0" class="cta" role="presentation">
+													
+														<tr>
+															<!-- EXD CODE (Pill button on Outlook) --><td class="innertd buttonblock">
+																<!--[if mso]>               <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="https://myair.resmed.com/linkRouter?params=dashboard" style="height:50px;v-text-anchor:middle;width:276px; background-color: #004ba6; border: 2px solid #fff;" arcsize="50%" stroke="f" fillcolor="#ffffff">               <w:anchorlock/>               <center style="color:#0d0a15;font-family:sans-serif;font-size:16px;font-weight:bold;">Finish Strong in myAir</center>               </v:roundrect>               <![endif]--><!--[if !mso]>                <!-- -->
+<a  class="buttonstyles"  data-linkto="" href="https://click.email.resmed.com/?qs=8f6e885ad76647aaf552138f4050f1011c77b20683e196fb579513c87c4fd287af501da3bbbd138a77793b232c4e0f1206548e6c537ad2c29317f14d842e50ef377df13bf843ca0c" style="font-size: 16px !important; font-family: Arial, helvetica, sans-serif; font-weight: bold; color: #fff !important; text-align: center; text-decoration: none; display: block; background-color: #004ba6; border: 2px solid #fff; padding: 13px 20px !important; border-radius: 22px; -moz-border-radius: 22px; -webkit-border-radius: 22px;" target="_blank" title=""><span style="color: #fff;">Finish Strong in myAir</span></a> <!--<![endif]--></td><!-- END EXD CODE --></tr></table></td></tr></table></td></tr></table></td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: transparent; min-width: 100%; " class="stylingblock-content-wrapper"><tr>
+<td style="padding: 20px 10px 0px; " class="stylingblock-content-wrapper camarker-inner"><table width="100%" cellspacing="0" cellpadding="0" role="presentation"><tr><td align="left"><a href="https://click.email.resmed.com/?qs=8f6e885ad76647aa7c3291d0b6cf8b90e6037cc9b4205dd35d5aa6fa6a5aa269ecb29e30d49f61261bb4883720de5b1313dde1d45625ef00313541d081e15a46" title=""   data-linkto="https://"><img data-assetid="87389" src="https://image.email.resmed.com/lib/fe3211737164047e721576/m/1/1be2b8db-70f8-47cf-a96b-7ac798f18f3f.png" alt="Apple store button" height="30" width="100" style="display: block; padding: 0px; text-align: left; height: 35px; width: 100px; border: 0px;"></a></td><td align="left">
+<a href="https://click.email.resmed.com/?qs=8f6e885ad76647aacb03143978fa485ac2b636724f30a1fa1a38e1d46a7fb960b303a001eb22d3e9eb32c34d25b428520456331d04efa38d8ce5c007debc8e5a" title=""   data-linkto="https://"><img data-assetid="87389" src="https://image.email.resmed.com/lib/fe3211737164047e721576/m/1/340ad746-5ca4-4e0e-8244-8abc66ae81b3.png" alt="google play button" height="35" width="120" style="display: block; padding: 0px; text-align: left; height: 35px; width: 120px; border: 0px;"></a></td></tr></table></td></tr></table></td></tr></table></td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: #0D0A15; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 10px; " class="stylingblock-content-wrapper camarker-inner"><table cellspacing="0" cellpadding="0" role="presentation" style="width: 100%;"><tr><td>
+<table cellspacing="0" cellpadding="0" role="presentation" style="width: 100%;"><tr><td valign="top" class="responsive-td" style="width: 60%; padding-right: 3px;"><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: transparent; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 20px 10px 10px; " class="stylingblock-content-wrapper camarker-inner"><div style="text-align: left; font-family: arial,sans-serif,helvetica;">
+	<span style="font-size:11px;"><span style="color:#fff;">Copyright &copy; 2025 Resmed. All rights reserved.<br>
+	<br>
+	<span style="line-height: 16px;">Resmed Corp<br>
+	9001 Spectrum Center Blvd.<br>
+	San Diego, CA, 92123, US<br>
+	(800) 424-0737 | <a   data-linkto="https://" href="https://click.email.resmed.com/?qs=8f6e885ad76647aa8414c4db737d504b4844243ba47edb4232ab43de76085d30f754773939dfefaefd0873879d81ccee5f8b03c35b0ccfdd6f632ea52b673491" style="color:#fff;text-decoration:none;" title="Resmed.com">Resmed.com</a><br>
+	<a href="https://click.email.resmed.com/?qs=8f6e885ad76647aa5a353a89eddbaafe181d63801fcae570fd23a1bc0d5bdd18f2bc4a7b9be5bee0632f787d235a3317ecd6434e5a2195bd6b20229fa99e34f1" style="outline: none;"><img src="https://image.email.resmed.com/lib/fe3a117371640479751673/m/1/27865401-6099-4b79-b2d8-ea7741a011bc.png"></a> </span> </span> </span></div><div style="text-align: left; font-family: arial,sans-serif,helvetica; color:#fff;">
+	<span style="font-size:11px;"><span style="line-height: 16px;">You&rsquo;re receiving this email because you&rsquo;ve previously expressed an interest in receiving updates from Resmed.<br>
+	<br>
+	If you are having trouble viewing this email, <a   data-linkto="other" href="https://view.email.resmed.com/?qs=dd7bde22123d0bfbc597c8dd5d4d31392c4e18aa412d1e57cccbfdc1e635501f681da090c3697306812849a932db2c8eb30ed3644ca99330d30d02d33818d73a427d184b770e9b0ffaef0c79bfd391b8" style="color:#d0e8ff;text-decoration:underline;" title="">click here</a>.<br>
+	If you would like to unsubscribe, <a   data-linkto="other" href="https://click.email.resmed.com/?qs=8f6e885ad76647aa4ba1733b6b221927935ae1f9ca592a0a64f6236322e6b59814ce269f9a9d67e7b4d59f1a4cf13aa91264e165851d6fe3b26d5b3e9517033a" style="color:#d0e8ff;text-decoration:underline;" title="">click here</a>.</span></span></div></td></tr></table></td><td valign="top" class="responsive-td" style="width: 40%; padding-left: 3px;"><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: transparent; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 20px 10px 10px; " class="stylingblock-content-wrapper camarker-inner"><table width="100%" cellspacing="0" cellpadding="0" role="presentation"><tr><td align="right">
+<img data-assetid="111309" src="https://image.email.resmed.com/lib/fe3211737164047e721576/m/1/ba4668fd-b5e0-488a-afbd-37cc8c56c3b0.png" alt="" height="31" width="150" style="display: block; padding: 0px; text-align: right; height: 31px; width: 150px; border: 0px;"></td></tr></table></td></tr></table></td></tr></table></td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: #0D0A15; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 10px; " class="stylingblock-content-wrapper camarker-inner"><table cellspacing="0" cellpadding="0" role="presentation" style="width: 100%;"><tr><td><table cellspacing="0" cellpadding="0" role="presentation" style="width: 100%;"><tr><td valign="top" class="responsive-td" style="width: 50%; padding-right: 3px;">
+<table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: transparent; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 10px; " class="stylingblock-content-wrapper camarker-inner"><div style="padding-top: 0px;">
+ <table align="left" border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse: collapse; border-spacing: 0; border: 0; width: 172px; margin: 0 auto;" width="172">
+  
+   <tr>
+    <td style="width: 22px;" width="22">
+     <a   data-linkto="https://" href="https://click.email.resmed.com/?qs=8f6e885ad76647aaeb26a6a76193eb015fd1a416d2870f7033685ab97d1068925c7abf4521ad917a5da0897ce65266b77111ed8f14bd70d2d266396ccfdb8525" style="text-decoration: none; outline: none;" target="_blank"><img alt="Facebook" border="0" constrain="true" imagepreview="false" src="https://image.email.resmed.com/lib/fe3211737164047e721576/m/1/1455efe8-6dfa-4a58-b9f7-f26fabf34f4c.png" width="22"></a></td><td style="width: 25px; line-height: 1px; font-size: 1px;" width="25">
+     &nbsp;</td><td style="width: 25px;" width="25">
+     <a   data-linkto="https://" href="https://click.email.resmed.com/?qs=8f6e885ad76647aacde7b336c037477ef03fded4c55b7ce68903db60d775486c745211a7a83fff41656c11ec5cabb1e6c8d0323663810fa5f2a462a33a97a4e1" style="text-decoration: none; outline: none;" target="_blank"><img alt="Twitter" border="0" constrain="true" imagepreview="false" src="https://image.email.resmed.com/lib/fe3211737164047e721576/m/1/44957c6d-db05-4a13-b7f8-2f46f08f763e.png" width="18"></a></td><td style="width: 25px; line-height: 1px; font-size: 1px;" width="25">
+     &nbsp;</td><td style="width: 22px;" width="22">
+     <a   data-linkto="https://" href="https://click.email.resmed.com/?qs=8f6e885ad76647aa3010fd4c82744af18d178feb9ffdabb9ec5eb6fefc59049c324c251792330a9f242ff25613f06a697e2e6dda91bfbfab3d166333a9db4b0b" style="text-decoration: none; outline: none;" target="_blank"><img alt="LinkedIn" border="0" constrain="true" imagepreview="false" src="https://image.email.resmed.com/lib/fe3211737164047e721576/m/1/28cece98-dd15-435a-b552-ba60a4c21afc.png" width="20"></a></td><td style="width: 25px; line-height: 1px; font-size: 1px;" width="25">
+     &nbsp;</td><td style="width: 28px;" width="28">
+     <a   data-linkto="https://" href="https://click.email.resmed.com/?qs=8f6e885ad76647aa555f48189fce5c156f016375f1d9831fb990d5a4b833e9ac9268b03476e69c0b4c4b3edfc678e4e486225eaa3d87fc32212fa4bf6920e79a" style="text-decoration: none; outline: none;" target="_blank"><img alt="Youtube" border="0" constrain="true" imagepreview="false" src="https://image.email.resmed.com/lib/fe3211737164047e721576/m/1/8d189eed-9843-474f-9c82-1648ba93ad4b.png" width="25"></a></td></tr></table></div></td></tr></table></td><td valign="top" class="responsive-td" style="width: 50%; padding-left: 3px;"><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: transparent; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 10px; " class="stylingblock-content-wrapper camarker-inner"><div style="text-align: right; font-family: arial,sans-serif,helvetica;">
+ <span style="font-size:12px;"><u><u><a   data-linkto="https://" href="https://click.email.resmed.com/?qs=8f6e885ad76647aa15e6e025ac37fc57689558c5f33de19d30ab2754f26a6e7facbef8dcabf7cae1bcf365f6cff900ee5b636c91925d8bf9715f3e252ab5e768" style="color:#6b6b6f;text-decoration:underline;" title="Terms"><span style="color:#ffffff;">Terms</span></a></u><span style="color:#ffffff;"> | </span><u><a   data-linkto="https://" href="https://click.email.resmed.com/?qs=8f6e885ad76647aa9f307110ad1401c5c37f83c8c4f5a882cda065fc2a748008f9c7ba4e5a82046f40103373f076864eb2ce2ee5f0bf6b128d75140493004515" style="color:#6b6b6f;text-decoration:underline;" title="Privacy"><span style="color:#ffffff;">Privacy</span></a></u><span style="color:#ffffff;"> | </span>
+
+   <u><a   data-linkto="other" href="https://click.email.resmed.com/?qs=8f6e885ad76647aa357fb5599976eb06eb620f155948982e32c5048f62074fb2996ea5869c3fda3fa9263fe8a298c38727acba3e12e246cd62161662019fb513" style="color:#6b6b6f;text-decoration:underline;" title="Email Preferences"><span style="color:#ffffff;">Email Preferences</span></a></u></u></span></div></td></tr></table></td></tr></table></td></tr></table></td></tr></table>
+                                                    
+                                                  </td>
+                                                </tr>
+                                              </tbody>
+                                            </table>
+                                          </td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                  </td>
+                                </tr>
+                              </table>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top">
+          </td>
+        </tr>
+      </table>
+      </body>
+    </html>
+
+--n3qZNw5X4wi8=_?:--
+

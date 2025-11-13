@@ -1,0 +1,212 @@
+Return-Path: <bounce-md_30873747.6914e828.v1-426a2ba53f7d4c709ad46f8493f0d7f5@mandrillapp.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTPS id 5ACK3xeP040176
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <mstowe@baddomain.com>; Wed, 12 Nov 2025 20:04:00 GMT
+	(envelope-from bounce-md_30873747.6914e828.v1-426a2ba53f7d4c709ad46f8493f0d7f5@mandrillapp.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (2048-bit key; unprotected) header.d=mandrillapp.com header.i=@mandrillapp.com header.b=GI/0upPf;
+	dkim=pass (2048-bit key; unprotected) header.d=driveseattlemini.com header.i=nick@driveseattlemini.com header.b=ECwh8F6C
+X-Authentication-Warning: juliett.baddomain.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.baddomain.com
+Received: from mail179-68.suw41.mandrillapp.com (mail179-68.suw41.mandrillapp.com [198.2.179.68])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 5ACK3wNI016798
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <mstowe@baddomain.com>; Wed, 12 Nov 2025 14:03:59 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 5ACK3wNI016798
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (2048-bit key, unprotected) header.d=mandrillapp.com header.i=@mandrillapp.com header.a=rsa-sha256 header.s=mte1 header.b=GI/0upPf;
+	dkim=pass (2048-bit key, unprotected) header.d=driveseattlemini.com header.i=nick@driveseattlemini.com header.a=rsa-sha256 header.s=mte1 header.b=ECwh8F6C
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandrillapp.com;
+	s=mte1; t=1762977832; x=1763247832;
+	bh=uWOPbzgsjsxtRjuGRSDs8AoxtbOYdajD7+7CwOD56Xk=;
+	h=From:Subject:Message-ID:References:To:Feedback-ID:Date:
+	 MIME-Version:Content-Type:CC:Date:Subject:From;
+	b=GI/0upPfae+OptawdZqzKumdW8Qg75Foailh5gP8MbLjMKjXl67ANsDcSMuvi9wNX
+	 2ajQHZfjbLRN0IMC+OGeV73DO5kTGXW1/qYKLl7C4qWpIFIqUp0YJRrp54m6OgB4Cg
+	 xQzNJUf1f47QQVzgSglpa3GX8KyqkjXrMLkYOJW9iKDF9r2qE6ZE44ECCb5tD9VVv1
+	 tDfObPjAPecYccBponiZO3qO7I4+/a3tdTjrZ6cd/RsEzBRN+3J/SsrPinEKtTZKzk
+	 N8Azx5agmgWVhN6hd2LP9JDEShAHqZ48tLbW5C0j3v53bUobq+np6Z0oc4h6ohz2TT
+	 v3ALmBfyC87Tg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=driveseattlemini.com; s=mte1; t=1762977832; x=1763238332;
+	i=nick@driveseattlemini.com;
+	bh=uWOPbzgsjsxtRjuGRSDs8AoxtbOYdajD7+7CwOD56Xk=;
+	h=From:Subject:Message-ID:References:To:Feedback-ID:Date:
+	 MIME-Version:Content-Type:CC:Date:Subject:From;
+	b=ECwh8F6COjRbqMwfytnUl8Og3ZQq3Zw0BqIIBeQpwzAFjUnQh+NbIT2I9mJGp7G42
+	 MH/ID4R9uuCQ2OBywtSsH+bTAUo9eBfNQkDIKEzt/3zZEthfMQ8NMiiXQipZ+HjZMy
+	 +MNP6QwBL8BBOfCfilHk5o6i/TeKGCQ2IFdfk+qi1DNVcOkmTiNrNriTP44kTh5X84
+	 fynlqYnUf6BOJJmP+4m/HO/TyGI0SLFC4mxEvxuHB4hsBd/B7PYC0tf14pk25ggaU4
+	 0fjQrw7tJqDsVPb02ahypMtlGCFX5aN382A10gVXukoDMq0U344iQgmdhaz52sFpfA
+	 FFvHLLtZr7xyw==
+Received: from pmta12.mandrill.prod.suw01.rsglab.com (localhost [127.0.0.1])
+	by mail179-68.suw41.mandrillapp.com (Mailchimp) with ESMTP id 4d6Dqr6dsDzlfqW0
+	for <mstowe@baddomain.com>; Wed, 12 Nov 2025 20:03:52 +0000 (GMT)
+From: "Nick Vellutini" <nick@driveseattlemini.com>
+Subject: =?utf-8?Q?Happy=20Birthday=20from=20Seattle=20MINI!?=
+Received: from [3.86.131.146] by mandrillapp.com id 426a2ba53f7d4c709ad46f8493f0d7f5; Wed, 12 Nov 2025 20:03:52 +0000
+Message-ID: <ea19ae68-16e4-4930-b1e3-a4b331c4598f@notice.drivevelocity.com>
+References: <2298dfae-c13a-49ec-8ab4-32d3eecd5fdd@notice.drivevelocity.com>
+To: mstowe@baddomain.com
+X-Native-Encoded: 1
+X-Report-Abuse: =?UTF-8?Q?Please=20forward=20a=20copy=20of=20this=20message,=20including=20all=20headers,=20to=20abuse@mandrill.com.=20You=20can=20also=20report=20abuse=20here:=20https://mandrillapp.com/contact/abuse=3Fid=3D30873747.426a2ba53f7d4c709ad46f8493f0d7f5?=
+X-Mandrill-User: md_30873747
+Feedback-ID: 30873747:30873747.20251112:md
+Date: Wed, 12 Nov 2025 20:03:52 +0000
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="_av-p-XKRi7tZHGKhTw-ybJAyQ"
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Wed, 12 Nov 2025 20:04:00 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Wed, 12 Nov 2025 14:03:59 -0600 (CST)
+X-Spam-Flag: YES
+X-FOFF-Score: 75 - analyzed by foff-milter v0.6.9 on juliett.baddomain.com
+X-FOFF-Score: 75 - foff-milter v0.6.9 (juliett.baddomain.com)
+X-FOFF-Score: 75 - analyzed by foff-milter v0.6.9 on hotel.baddomain.com
+X-FOFF-Score: 75 - foff-milter v0.6.9 (hotel.baddomain.com)
+
+--_av-p-XKRi7tZHGKhTw-ybJAyQ
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+
+Michael,Just wanted to quickly wish you a belated happy birthday! 
+
+I hope you got out and saw some curvy roads (without traffic) with your MINI 
+
+Feel free to send me any cool photos of your MINI and I will add them to my e-frame! I always love seeing where they go after they leave the dealership. 
+
+Cheers to you and your MINI, I hope you had a fantastic day!  
+
+Nick VellutiniMotoring Advisor206-588-4245 Wednesday, Thursday, & Friday: 10am-7pm Saturday: 9am-6pm Sunday: 11am-5pm OFF Monday & Tuesday
+--_av-p-XKRi7tZHGKhTw-ybJAyQ
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+<div>Michael,</div>
+<div></div>
+<div>Just wanted to quickly wish you a belated happy birthday! <br><br>I ho=
+pe you got out and saw some curvy roads (without traffic) with your MINI <b=
+r><br>Feel free to send me any cool photos of your MINI and I will add them=
+ to my e-frame! I always love seeing where they go after they leave the dea=
+lership. <br><br>Cheers to you and your MINI, I hope you had a fantastic da=
+y! &nbsp;<br><br></div>
+<div>
+<div><span style=3D"margin: 0px; padding: 0px; border: 0px; font-variant-nu=
+meric: inherit; font-variant-east-asian: inherit; font-stretch: inherit; fo=
+nt-size: 12pt; line-height: inherit; font-family: Calibri, Arial, Helvetica=
+, sans-serif; vertical-align: baseline;"><span style=3D"margin: 0px; paddin=
+g: 0px; border: 0px; font-style: inherit; font-variant-ligatures: no-common=
+-ligatures; font-variant-caps: inherit; font-variant-numeric: inherit; font=
+-variant-east-asian: inherit; font-weight: inherit; font-stretch: inherit; =
+font-size: 14pt; line-height: inherit; font-family: Verdana, Geneva, sans-s=
+erif; vertical-align: baseline; color: inherit; background-color: rgb(255, =
+255, 255);"><b>Nick Vellutini</b></span></span>
+<div style=3D"margin: 0px; padding: 0px; border: 0px; font-variant-numeric:=
+ inherit; font-variant-east-asian: inherit; font-stretch: inherit; line-hei=
+ght: inherit; font-family: Calibri, Arial, Helvetica, sans-serif; vertical-=
+align: baseline;"><span style=3D"margin: 0px; padding: 0px; border: 0px; fo=
+nt-style: inherit; font-variant-ligatures: no-common-ligatures; font-varian=
+t-caps: inherit; font-variant-numeric: inherit; font-variant-east-asian: in=
+herit; font-weight: inherit; font-stretch: inherit; font-size: 12pt; line-h=
+eight: inherit; font-family: Verdana, Geneva, sans-serif; vertical-align: b=
+aseline; color: inherit; background-color: rgb(255, 255, 255);">Motoring Ad=
+visor</span></div>
+<div style=3D"margin: 0px; padding: 0px; border: 0px; font-variant-numeric:=
+ inherit; font-variant-east-asian: inherit; font-stretch: inherit; line-hei=
+ght: inherit; font-family: Calibri, Arial, Helvetica, sans-serif; vertical-=
+align: baseline;"><span style=3D"margin: 0px; padding: 0px; border: 0px; fo=
+nt-style: inherit; font-variant-ligatures: no-common-ligatures; font-varian=
+t-caps: inherit; font-variant-numeric: inherit; font-variant-east-asian: in=
+herit; font-weight: inherit; font-stretch: inherit; font-size: 12pt; line-h=
+eight: inherit; font-family: Verdana, Geneva, sans-serif; vertical-align: b=
+aseline; color: inherit; background-color: rgb(255, 255, 255);">206-588-424=
+5</span></div>
+<div style=3D"margin: 0px; padding: 0px; border: 0px; font-variant-numeric:=
+ inherit; font-variant-east-asian: inherit; font-stretch: inherit; line-hei=
+ght: inherit; vertical-align: baseline;"><span style=3D"font-family: Verdan=
+a, Geneva, sans-serif; font-size: 14px; font-variant-ligatures: no-common-l=
+igatures;">&nbsp;</span></div>
+<div style=3D"margin: 0px; padding: 0px; border: 0px; font-variant-numeric:=
+ inherit; font-variant-east-asian: inherit; font-stretch: inherit; line-hei=
+ght: inherit; vertical-align: baseline;"><span style=3D"font-family: Verdan=
+a, Geneva, sans-serif; font-size: 14px; font-variant-ligatures: no-common-l=
+igatures;">Wednesday, Thursday, &amp; Friday: 10am-7pm&nbsp;</span></div>
+<div style=3D"margin: 0px; padding: 0px; border: 0px; font-variant-numeric:=
+ inherit; font-variant-east-asian: inherit; font-stretch: inherit; line-hei=
+ght: inherit; vertical-align: baseline;"><span style=3D"font-family: Verdan=
+a, Geneva, sans-serif; font-size: 14px; font-variant-ligatures: no-common-l=
+igatures;">Saturday: 9am-6pm&nbsp;</span></div>
+<div style=3D"margin: 0px; padding: 0px; border: 0px; font-variant-numeric:=
+ inherit; font-variant-east-asian: inherit; font-stretch: inherit; line-hei=
+ght: inherit; vertical-align: baseline;"><span style=3D"font-family: Verdan=
+a, Geneva, sans-serif; font-size: 14px; font-variant-ligatures: no-common-l=
+igatures;">Sunday: 11am-5pm&nbsp;</span></div>
+<div style=3D"margin: 0px; padding: 0px; border: 0px; font-variant-numeric:=
+ inherit; font-variant-east-asian: inherit; font-stretch: inherit; line-hei=
+ght: inherit; vertical-align: baseline;"><span style=3D"font-family: Verdan=
+a, Geneva, sans-serif; font-size: 14px; font-variant-ligatures: no-common-l=
+igatures;">OFF Monday &amp; Tuesday</span></div>
+<div style=3D"margin: 0px; padding: 0px; border: 0px; font-variant-numeric:=
+ inherit; font-variant-east-asian: inherit; font-stretch: inherit; line-hei=
+ght: inherit; vertical-align: baseline;"><span style=3D"font-family: Verdan=
+a, Geneva, sans-serif; font-size: 14px; font-variant-ligatures: no-common-l=
+igatures;">&nbsp;</span><a href=3D"https://click.drivecentric.com/?c=3D4f1f=
+fcc9-3b54-4d8d-8f88-ca678a699444&stre=3D3a61664e-fbc9-4519-a9b4-195de56cd24=
+4&rg=3Dea19ae68-16e4-4930-b1e3-a4b331c4598f&i=3Dhttps%3a%2f%2fwww.seattlemi=
+ni.com%2fused-inventory%2findex.htm&u=3Dhttps%3a%2f%2fwww.seattlemini.com%2=
+fused-inventory%2findex.htm" title=3D"https://www.seattlemini.com/used-inve=
+ntory/index.htm" style=3D"font: inherit; margin: 0px; padding: 0px; border:=
+ 0px; vertical-align: baseline;"><img src=3D"https://s3.amazonaws.com/dc-te=
+mplate-images/store-804/98ae2df2-335a-4a7d-adae-eb58e5d79766.png" style=3D"=
+margin: 0px; padding: 0px; border: 0px; font: inherit; vertical-align: base=
+line; color: inherit; width: initial; height: initial; max-width: 100%;"></=
+a><img alt=3D"" src=3D"https://www.eleadcrm.com/evo2/fresh/eLead-V45/elead_=
+track/Weblink/transparent.gif" style=3D"color: inherit; font: inherit; marg=
+in: 0px; padding: 0px; border: 0px; vertical-align: middle;"></div>
+</div>
+<div>
+<div style=3D"margin: 0px; padding: 0px; border: 0px; font-variant-numeric:=
+ inherit; font-variant-east-asian: inherit; font-stretch: inherit; font-siz=
+e: 14px; line-height: inherit; font-family: 'Segoe UI', 'Segoe UI Web (West=
+ European)', 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, 'Helvet=
+ica Neue', sans-serif; vertical-align: baseline;">
+<div style=3D"margin: 0px; padding: 0px; border: 0px; font-style: inherit; =
+font-variant: inherit; font-weight: inherit; font-stretch: inherit; font-si=
+ze: 12pt; line-height: inherit; font-family: Calibri, Arial, Helvetica, san=
+s-serif; vertical-align: baseline;"><img src=3D"https://attachments.office.=
+net/owa/nick%40seattlemini.com/service.svc/s/GetAttachmentThumbnail?id=3DAA=
+MkADNlNDczNTQyLTcxOTMtNDEyZi04Zjk2LTUyMmU4NTFkZDA4NgBGAAAAAADvUzxBvy3TQKQTm=
+bOFgAfKBwDWEn8DDf7pSI4okr0ktYKDAAAAAAEJAADWEn8DDf7pSI4okr0ktYKDAAIljT1LAAAB=
+EgAQABVncmI0xqdLlCKkTRgoca4%3D&amp;thumbnailType=3D2&amp;token=3DeyJhbGciOi=
+JSUzI1NiIsImtpZCI6IjczRkI5QkJFRjYzNjc4RDRGN0U4NEI0NDBCQUJCMTJBMzM5RDlGOTgiL=
+CJ0eXAiOiJKV1QiLCJ4NXQiOiJjX3VidnZZMmVOVDM2RXRFQzZ1eEtqT2RuNWcifQ.eyJvcmlna=
+W4iOiJodHRwczovL291dGxvb2sub2ZmaWNlLmNvbSIsInVjIjoiMDRmZGI0M2JhMjBjNGU4ZTky=
+N2Y3MTdkMWEzM2RhZjciLCJzaWduaW5fc3RhdGUiOiJbXCJrbXNpXCJdIiwidmVyIjoiRXhjaGF=
+uZ2UuQ2FsbGJhY2suVjEiLCJhcHBjdHhzZW5kZXIiOiJPd2FEb3dubG9hZEAxODBmZGI3OC05OD=
+RjLTRlZTktYjgxNy02ZGIzMWUwOGMxNTEiLCJpc3NyaW5nIjoiV1ciLCJhcHBjdHgiOiJ7XCJtc=
+2V4Y2hwcm90XCI6XCJvd2FcIixcInB1aWRcIjpcIjExNTM4MDExMTk0NTk1MzA4ODRcIixcInNj=
+b3BlXCI6XCJPd2FEb3dubG9hZFwiLFwib2lkXCI6XCJmNmZjN2U2MS1iYzZjLTQyNjUtYjI1Yi0=
+3NjUwMzM3NTJjNWZcIixcInByaW1hcnlzaWRcIjpcIlMtMS01LTIxLTI3NjUxMDgwMzUtNTY2Mj=
+E4NjM5LTE2MDAyMzQwMzYtODk1NDg2NlwifSIsIm5iZiI6MTY5NDY0NzIwOCwiZXhwIjoxNjk0N=
+jQ3ODA4LCJpc3MiOiIwMDAwMDAwMi0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDBAMTgwZmRi=
+NzgtOTg0Yy00ZWU5LWI4MTctNmRiMzFlMDhjMTUxIiwiYXVkIjoiMDAwMDAwMDItMDAwMC0wZmY=
+xLWNlMDAtMDAwMDAwMDAwMDAwL2F0dGFjaG1lbnRzLm9mZmljZS5uZXRAMTgwZmRiNzgtOTg0Yy=
+00ZWU5LWI4MTctNmRiMzFlMDhjMTUxIiwiaGFwcCI6Im93YSJ9.UFnNAoT0b7OrATo8qNDRmTXo=
+1SOYDzUY7scvgR51KDNEVB0mDivm-0GVErPdOnWVsMpBw2JQ_hDvpy-Zg15UTZ_nUzuTsa5uO2r=
+zUz_Ll64GZPAYGycw7p6LmZpJmwn0xqcXBKbtfldeIT_wlmbBEFw04SMeswPMksyXjLrzCh1pSh=
+Dd3qeO1yecy1aicDTZ4YovtLLjHlgvFww8e5sLEtJZAcO4WsARnIxMpFd3pXxGNBo60UU693D_I=
+ykjxolgOhlWvlEhAqW1OhZTxGKddjXHmN9KkBF8Qz2WoYogkr6YeyMNRkjx3yuzRYV4f6GX2KzP=
+Ta6bpm3-h55m094TZg&amp;X-OWA-CANARY=3DcFzImhpYDEiGOy183ON8FtAXkGOwtNsYfarWj=
+hrErQ6AHMNUIgBYHxZ54xEYuihI7pxFL5X7PJc.&amp;owa=3Doutlook.office.com&amp;sc=
+riptVer=3D20230907065.05&amp;animation=3Dtrue" alt=3D"Image preview" style=
+=3D"color: inherit; font-family: Verdana, Geneva, sans-serif; font-size: 14=
+.6667px; font-style: inherit; font-variant-caps: inherit; font-weight: inhe=
+rit; height: 180px;"></div>
+</div>
+</div>
+</div><img src=3D"https://click.drivecentric.com/Image.aspx?c=3D4f1ffcc9-3b=
+54-4d8d-8f88-ca678a699444&stre=3D3a61664e-fbc9-4519-a9b4-195de56cd244&direc=
+t=3D1&l=3D347&r=3D44039823&t=3D10&a=3D0" /><img src=3D"https://mandrillapp.=
+com/track/open.php?u=3D30873747&id=3D426a2ba53f7d4c709ad46f8493f0d7f5" heig=
+ht=3D"1" width=3D"1" alt=3D"">
+
+--_av-p-XKRi7tZHGKhTw-ybJAyQ--
+
