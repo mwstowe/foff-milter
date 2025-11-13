@@ -1,5 +1,9 @@
 name: "Health Threats"
 enabled: true
+# Pattern library references
+pattern_libraries:
+  - "patterns/common-patterns.yaml"
+  - "patterns/spam-keywords.yaml"
 rules:
   # Fake institutional health advice
   - name: "Fake Harvard health advice"
@@ -16,13 +20,29 @@ rules:
     score: 100
     description: "Fake Harvard health advice from non-Harvard domains"
 
-  # Medical misinformation and miracle cures
+  # Medical misinformation and miracle cures (using pattern library)
   - name: "Medical miracle cure spam"
     criteria:
       type: "SubjectPattern"
-      pattern: "(?i).*(miracle|doctors.*hate|chronic.*pain|overnight.*cure|health.*breakthrough|amazing.*health|revolutionary.*product|secret.*health|mistake.*makes.*worse|joint.*pain|knee.*pain|bad.*knees|stanford.*scientists|nerve.*damage|bedtime.*ritual).*"
+      pattern_ref: "health_miracle_claims"  # Reference to common-patterns.yaml
     score: 70
     description: "Medical misinformation and miracle cure claims"
+
+  # Vision and eye health scams (using pattern library)
+  - name: "Vision health misinformation"
+    criteria:
+      type: "SubjectPattern"
+      pattern_ref: "vision_health_scams"  # Reference to common-patterns.yaml
+    score: 80
+    description: "Vision and eye health misinformation"
+
+  # Weight loss scams (using pattern library)
+  - name: "Weight loss miracle claims"
+    criteria:
+      type: "SubjectPattern"
+      pattern_ref: "weight_loss_scams"  # Reference to common-patterns.yaml
+    score: 60
+    description: "Weight loss and diet miracle claims"
 
   # Healthcare brand impersonation
   - name: "CVS Medicare phishing from free email"
@@ -32,7 +52,15 @@ rules:
     score: 70
     description: "CVS Medicare phishing from free email providers"
 
-  # Tinnitus and hearing health scams
+  # Pharmaceutical spam (using pattern library)
+  - name: "Pharmaceutical spam"
+    criteria:
+      type: "SubjectPattern"
+      pattern_ref: "pharmaceutical_keywords"  # Reference to spam-keywords.yaml
+    score: 80
+    description: "Pharmaceutical and medication spam"
+
+  # Remaining rules with direct patterns for now
   - name: "Tinnitus spam from suspicious domains"
     criteria:
       type: "And"
@@ -45,15 +73,6 @@ rules:
     score: 90
     description: "Tinnitus and hearing health scams from suspicious domains"
 
-  # Vision and eye health scams
-  - name: "Vision health misinformation"
-    criteria:
-      type: "SubjectPattern"
-      pattern: "(?i).*(vision.*ritual|eye.*health.*secret|restore.*vision|perfect.*vision|glasses.*free|contact.*free|vision.*breakthrough).*"
-    score: 80
-    description: "Vision and eye health misinformation"
-
-  # Foot and ankle health scams
   - name: "Foot and ankle health misinformation"
     criteria:
       type: "SubjectPattern"
@@ -61,15 +80,6 @@ rules:
     score: 50
     description: "Foot and ankle health misinformation and scams"
 
-  # Weight loss and diet scams
-  - name: "Weight loss miracle claims"
-    criteria:
-      type: "SubjectPattern"
-      pattern: "(?i).*(lose.*weight.*fast|belly.*fat.*trick|metabolism.*boost|fat.*burning.*secret|diet.*breakthrough|weight.*loss.*miracle).*"
-    score: 60
-    description: "Weight loss and diet miracle claims"
-
-  # Health rewards and insurance spam
   - name: "Health rewards and insurance spam"
     enabled: true
     criteria:
@@ -82,7 +92,6 @@ rules:
     score: 50
     description: "Health insurance and reward spam"
 
-  # Breathing and lung health
   - name: "Breathing and lung health misinformation"
     criteria:
       type: "SubjectPattern"
@@ -90,7 +99,6 @@ rules:
     score: 60
     description: "Breathing and lung health misinformation"
 
-  # Cardiovascular health scams
   - name: "Cardiovascular health misinformation"
     criteria:
       type: "SubjectPattern"
@@ -98,7 +106,6 @@ rules:
     score: 60
     description: "Cardiovascular health misinformation and scams"
 
-  # Dental health scams
   - name: "Dental health misinformation"
     criteria:
       type: "SubjectPattern"

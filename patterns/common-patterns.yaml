@@ -1,0 +1,73 @@
+name: "Common Pattern Library"
+description: "Reusable regex patterns to eliminate duplication across modules"
+
+patterns:
+  # Urgency and pressure tactics
+  urgency_words:
+    pattern: "(?i).*(urgent|asap|immediate|emergency|critical|important|action.*required|respond.*now|expires.*today|act.*now|limited.*time|don't.*miss|final.*hours|last.*chance).*"
+    description: "Common urgency and pressure tactic words"
+
+  # Health misinformation keywords
+  health_miracle_claims:
+    pattern: "(?i).*(miracle|doctors.*hate|chronic.*pain|overnight.*cure|health.*breakthrough|amazing.*health|revolutionary.*product|secret.*health|mistake.*makes.*worse|bedtime.*ritual).*"
+    description: "Common health miracle cure and misinformation claims"
+
+  # Financial scam keywords
+  financial_urgency:
+    pattern: "(?i).*(payment.*pending|account.*suspended|verify.*account|urgent.*payment|invoice.*attached|wire.*transfer|transaction.*complete|payment.*received).*"
+    description: "Common financial scam and urgency patterns"
+
+  # Beauty and cosmetic scam patterns
+  beauty_scam_claims:
+    pattern: "(?i).*(no.*mascara.*trick|thick.*luscious.*lashes|fake.*lashes.*extensions|curly.*beautiful.*lashes|eyelash.*growth.*serum|miracle.*beauty.*secret|beauty.*secret|lash.*trick|mascara.*alternative|eyelash.*growth).*"
+    description: "Common beauty and cosmetic scam claims"
+
+  # Survey and contest scam patterns
+  fake_survey_patterns:
+    pattern: "(?i).*(survey.*chance.*win|complete.*survey.*win|feedback.*win|customer.*survey.*prize|survey.*gift|survey.*reward|survey.*car.*kit|survey.*emergency.*kit).*"
+    description: "Fake survey and contest scam patterns"
+
+  # Black Friday and promotional scam patterns
+  fake_promotion_patterns:
+    pattern: "(?i).*(black.*friday|cyber.*monday|huge.*savings|massive.*discount|limited.*time.*offer|act.*now.*save|don't.*miss.*out|final.*hours|last.*chance.*save|up.*to.*\\d+%.*off|save.*up.*to.*\\$\\d+).*"
+    description: "Fake Black Friday and promotional scam patterns"
+
+  # High-risk TLD domains
+  high_risk_tlds:
+    pattern: ".*@.*\\.(tk|ml|ga|cf|gq|top|click|download|stream|xyz|info|biz)$"
+    description: "High-risk top-level domains commonly used for spam"
+
+  # Medium-risk TLD domains
+  medium_risk_tlds:
+    pattern: ".*@.*\\.(shop|online|site|website|store)$"
+    description: "Medium-risk top-level domains used for commerce spam"
+
+  # Suspicious domain patterns
+  suspicious_domain_patterns:
+    pattern: ".*@.*(secure-|bank-|paypal-|amazon-|microsoft-|apple-|google-).*"
+    description: "Suspicious domain patterns mimicking legitimate services"
+
+  # Vision and eye health scam patterns
+  vision_health_scams:
+    pattern: "(?i).*(vision.*ritual|eye.*health.*secret|restore.*vision|perfect.*vision|glasses.*free|contact.*free|vision.*breakthrough).*"
+    description: "Vision and eye health scam patterns"
+
+  # Weight loss and diet scam patterns
+  weight_loss_scams:
+    pattern: "(?i).*(lose.*weight.*fast|belly.*fat.*trick|metabolism.*boost|fat.*burning.*secret|diet.*breakthrough|weight.*loss.*miracle).*"
+    description: "Weight loss and diet scam patterns"
+
+  # Romance and dating scam patterns
+  romance_scam_patterns:
+    pattern: "(?i).*(lonely.*heart|seeking.*love|romantic.*connection|dating.*site|meet.*singles|find.*love|soulmate|relationship|marriage.*proposal).*"
+    description: "Romance and dating scam patterns"
+
+  # Fake delivery notification patterns
+  fake_delivery_patterns:
+    pattern: "(?i).*(delivery.*failed|package.*undelivered|shipping.*notification|ups.*delivery|fedex.*delivery|usps.*delivery|dhl.*delivery).*"
+    description: "Fake delivery and shipping notification patterns"
+
+  # Social engineering patterns
+  social_engineering_patterns:
+    pattern: "(?i).*(urgent.*action.*required|immediate.*response|account.*will.*be.*closed|verify.*immediately|suspended.*account|security.*alert|unauthorized.*access).*"
+    description: "Social engineering and account threat patterns"
