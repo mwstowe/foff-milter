@@ -7,7 +7,7 @@ rules:
     criteria:
       type: "SubjectPattern"
       pattern: "(?i).*(survey.*chance.*win|complete.*survey.*win|feedback.*win|customer.*survey.*prize|survey.*gift|survey.*reward|survey.*car.*kit|survey.*emergency.*kit).*"
-    score: 65
+    score: 80
     description: "Fake brand surveys and contest scams"
 
   # Black Friday and fake sales
@@ -15,7 +15,7 @@ rules:
     criteria:
       type: "SubjectPattern"
       pattern: "(?i).*(black.*friday|cyber.*monday|huge.*savings|massive.*discount|limited.*time.*offer|act.*now.*save|don't.*miss.*out|final.*hours|last.*chance.*save|up.*to.*\\d+%.*off|save.*up.*to.*\\$\\d+).*"
-    score: 70
+    score: 90
     description: "Black Friday and fake promotional scams"
 
   # Beauty and cosmetic scams
@@ -31,7 +31,7 @@ rules:
               pattern: ".*@.*\\.(shop|online|store)$"
         - type: "SubjectPattern"
           pattern: "(?i).*(beauty.*secret|lash.*trick|mascara.*alternative|eyelash.*growth|thick.*luscious.*lashes).*"
-    score: 50
+    score: 60
     description: "Beauty and cosmetic product promotion spam"
 
   # Home improvement scams
@@ -39,7 +39,7 @@ rules:
     criteria:
       type: "SubjectPattern"
       pattern: "(?i).*(gutter.*protection|leaf.*guard|home.*improvement|roofing.*special|siding.*deal|window.*replacement|solar.*panels|energy.*savings).*"
-    score: 65
+    score: 80
     description: "Home improvement and gutter protection scams"
 
   # Free product scams
@@ -52,7 +52,7 @@ rules:
           pattern: "(?i).*(free.*sample|free.*trial|free.*gift|no.*cost|complimentary|risk.*free).*"
         - type: "SenderPattern"
           pattern: ".*@.*\\.(tk|ml|ga|cf|gq|top|click|download|stream|xyz|info|biz|online|site|website|shop)$"
-    score: 60
+    score: 70
     description: "Free product scams from suspicious domains"
 
   # Shopping and marketplace fraud
@@ -60,7 +60,7 @@ rules:
     criteria:
       type: "SubjectPattern"
       pattern: "(?i).*(amazing.*deal|incredible.*price|wholesale.*direct|factory.*outlet|liquidation.*sale|going.*out.*business|everything.*must.*go).*"
-    score: 55
+    score: 70
     description: "Shopping marketplace and liquidation fraud"
 
   # Brand impersonation in commerce
@@ -72,7 +72,7 @@ rules:
           pattern: ".*OneStopPlus.*"
         - type: "SubjectPattern"
           pattern: ".*Items.*never.*arrived.*"
-    score: 50
+    score: 60
     description: "OneStopPlus impersonation scam"
 
   - name: "ZoomCare marketing impersonation"
@@ -83,5 +83,5 @@ rules:
           pattern: ".*ZoomCare.*"
         - type: "SubjectPattern"
           pattern: ".*flu.*shot.*"
-    score: 30
+    score: 35
     description: "ZoomCare impersonation scam"

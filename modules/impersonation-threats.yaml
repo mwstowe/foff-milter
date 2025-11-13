@@ -13,7 +13,7 @@ rules:
       legitimate_domains:
         - "docusign.com"
         - "docusign.net"
-    score: 50
+    score: 60
     description: "DocuSign and document signing service impersonation"
 
   # Payment services
@@ -28,7 +28,7 @@ rules:
       legitimate_domains:
         - "paypal.com"
         - "paypal.co.uk"
-    score: 60
+    score: 80
     description: "PayPal and payment service impersonation"
 
   # Healthcare and consumer brands
@@ -44,7 +44,7 @@ rules:
         - "cvs.com"
         - "walgreens.com"
         - "riteaid.com"
-    score: 50
+    score: 60
     description: "Healthcare and consumer brand impersonation"
 
   # Mailer daemon spoofing
@@ -52,7 +52,7 @@ rules:
     criteria:
       type: "SenderPattern"
       pattern: ".*MAILER-DAEMON.*"
-    score: 60
+    score: 80
     description: "MAILER-DAEMON spoofing detection"
 
   # Fake payment confirmations
@@ -60,7 +60,7 @@ rules:
     criteria:
       type: "SubjectPattern"
       pattern: "(?i).*(payment.*confirmation|transaction.*complete|order.*confirmation|receipt.*attached|invoice.*\\#\\d+|payment.*received|charge.*processed).*"
-    score: 70
+    score: 90
     description: "Fake payment confirmation and transaction scams"
 
   # Romance and dating scams
@@ -68,7 +68,7 @@ rules:
     criteria:
       type: "SubjectPattern"
       pattern: "(?i).*(lonely.*heart|seeking.*love|romantic.*connection|dating.*site|meet.*singles|find.*love|soulmate|relationship|marriage.*proposal).*"
-    score: 65
+    score: 80
     description: "Romance and dating scam detection"
 
   # Social engineering and urgency
@@ -76,7 +76,7 @@ rules:
     criteria:
       type: "SubjectPattern"
       pattern: "(?i).*(urgent.*action.*required|immediate.*response|account.*will.*be.*closed|verify.*immediately|suspended.*account|security.*alert|unauthorized.*access).*"
-    score: 75
+    score: 100
     description: "Social engineering and urgency-based scams"
 
   # Fake delivery notifications
@@ -90,5 +90,5 @@ rules:
           criteria:
             type: "SenderPattern"
             pattern: ".*@.*(ups|fedex|usps|dhl)\\.com.*"
-    score: 80
+    score: 100
     description: "Fake delivery and shipping notifications from non-legitimate domains"

@@ -13,7 +13,7 @@ rules:
           criteria:
             type: "SenderPattern"
             pattern: ".*@.*harvard\\.edu.*"
-    score: 80
+    score: 100
     description: "Fake Harvard health advice from non-Harvard domains"
 
   # Medical misinformation and miracle cures
@@ -21,7 +21,7 @@ rules:
     criteria:
       type: "SubjectPattern"
       pattern: "(?i).*(miracle|doctors.*hate|chronic.*pain|overnight.*cure|health.*breakthrough|amazing.*health|revolutionary.*product|secret.*health|mistake.*makes.*worse|joint.*pain|knee.*pain|bad.*knees|stanford.*scientists|nerve.*damage|bedtime.*ritual).*"
-    score: 55
+    score: 70
     description: "Medical misinformation and miracle cure claims"
 
   # Healthcare brand impersonation
@@ -29,7 +29,7 @@ rules:
     criteria:
       type: "BodyPattern"
       pattern: "(?i).*cvs.*medicare.*"
-    score: 55
+    score: 70
     description: "CVS Medicare phishing from free email providers"
 
   # Tinnitus and hearing health scams
@@ -42,7 +42,7 @@ rules:
           pattern: ".*@.*\\.(tk|ml|ga|cf|gq|top|click|download|stream|xyz|info|biz|online|site|website)$"
         - type: "SubjectPattern"
           pattern: "(?i).*(tinnitus|ringing.*ears|hearing.*loss|ear.*ringing).*"
-    score: 70
+    score: 90
     description: "Tinnitus and hearing health scams from suspicious domains"
 
   # Vision and eye health scams
@@ -50,7 +50,7 @@ rules:
     criteria:
       type: "SubjectPattern"
       pattern: "(?i).*(vision.*ritual|eye.*health.*secret|restore.*vision|perfect.*vision|glasses.*free|contact.*free|vision.*breakthrough).*"
-    score: 60
+    score: 80
     description: "Vision and eye health misinformation"
 
   # Foot and ankle health scams
@@ -58,7 +58,7 @@ rules:
     criteria:
       type: "SubjectPattern"
       pattern: "(?i).*(foot.*pain|ankle.*pain|plantar.*fasciitis|foot.*stretch|heel.*pain|arch.*support|foot.*health).*"
-    score: 45
+    score: 50
     description: "Foot and ankle health misinformation and scams"
 
   # Weight loss and diet scams
@@ -66,7 +66,7 @@ rules:
     criteria:
       type: "SubjectPattern"
       pattern: "(?i).*(lose.*weight.*fast|belly.*fat.*trick|metabolism.*boost|fat.*burning.*secret|diet.*breakthrough|weight.*loss.*miracle).*"
-    score: 50
+    score: 60
     description: "Weight loss and diet miracle claims"
 
   # Health rewards and insurance spam
@@ -79,7 +79,7 @@ rules:
           pattern: "(?i).*(health.*reward|insurance.*reward|medicare.*reward|health.*benefit|insurance.*benefit|medicare.*benefit|health.*savings|insurance.*savings|medicare.*savings).*"
         - type: "BodyPattern"
           pattern: "(?i).*(health.*reward|insurance.*reward|medicare.*reward|health.*benefit|insurance.*benefit|medicare.*benefit|health.*savings|insurance.*savings|medicare.*savings).*"
-    score: 45
+    score: 50
     description: "Health insurance and reward spam"
 
   # Breathing and lung health
@@ -87,7 +87,7 @@ rules:
     criteria:
       type: "SubjectPattern"
       pattern: "(?i).*(breathing.*technique|lung.*health|respiratory.*health|oxygen.*levels|breathing.*exercise|lung.*capacity|asthma.*cure|copd.*treatment).*"
-    score: 50
+    score: 60
     description: "Breathing and lung health misinformation"
 
   # Cardiovascular health scams
@@ -95,7 +95,7 @@ rules:
     criteria:
       type: "SubjectPattern"
       pattern: "(?i).*(heart.*health|cardiovascular|circulation|blood.*flow|heart.*disease|stroke.*prevention|cardiac.*health|heart.*attack.*prevention).*"
-    score: 50
+    score: 60
     description: "Cardiovascular health misinformation and scams"
 
   # Dental health scams
@@ -103,5 +103,5 @@ rules:
     criteria:
       type: "SubjectPattern"
       pattern: "(?i).*(dental.*health|teeth.*whitening|gum.*disease|tooth.*decay|oral.*health|dental.*care|teeth.*cleaning|dental.*hygiene).*"
-    score: 45
+    score: 50
     description: "Dental health misinformation and scams"

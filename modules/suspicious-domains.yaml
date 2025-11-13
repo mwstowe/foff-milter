@@ -20,10 +20,18 @@ rules:
               pattern: "(?i).*(love.*piano|vision.*ritual|miracle.*cure|amazing.*results|incredible.*offer|limited.*time|act.*now|don't.*miss|exclusive.*deal).*"
             - type: "SenderPattern"
               pattern: ".*@.*(pianofoall|visisooth|healthscam|miraclecure|amazingdeal)\\.shop$"
-    score: 60
+    score: 80
     description: "High-risk .shop domain scams with suspicious content"
 
   - name: "Medium-risk TLD domains"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*\\.(shop|online|site|website|store|click|download|stream)$"
+    score: 30
+    description: "Medium-risk TLD domains commonly used for spam"
+
+  - name: "High-risk TLD domains"
     criteria:
       type: "SenderPattern"
       pattern: ".*@.*\\.(loan|racing|review|science|work|party|date|trade|bid|win|cricket|accountant|faith|men|cn|shop|bn|forum)$"
