@@ -65,6 +65,6 @@ rules:
   - name: "Legitimate brand domains override"
     criteria:
       type: "SenderPattern"
-      pattern: ".*@.*(amazon|apple|microsoft|google|facebook|paypal|ebay|walmart|target|costco|bestbuy|homedepot|lowes|tmobile|t-mobile|verizon|att|sprint|netflix|disney|samsung|sony|nike|adidas|mcdonalds|starbucks|fedex|ups|usps|dhl|visa|mastercard|chase|bankofamerica|wellsfargo|citi|americanexpress)\\.(com|net|org)$"
+      pattern: ".*@(amazon|apple|microsoft|google|facebook|paypal|ebay|walmart|target|costco|bestbuy|homedepot|lowes|tmobile|t-mobile|verizon|att|sprint|netflix|disney|samsung|sony|nike|adidas|mcdonalds|starbucks|fedex|ups|usps|dhl|visa|mastercard|chase|bankofamerica|wellsfargo|citi|americanexpress)\\.(com|net|org)$"
     score: -150
-    description: "Override for legitimate brand domains"
+    description: "Override for legitimate brand domains (excludes tenant domains)"

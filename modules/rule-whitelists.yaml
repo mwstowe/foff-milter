@@ -213,9 +213,9 @@ rules:
     enabled: true
     criteria:
       type: "SenderPattern"
-      pattern: ".*@.*(microsoft|outlook|hotmail|live|msn)\\.com.*"
+      pattern: ".*@(microsoft|outlook|hotmail|live|msn)\\.com.*"
     score: -300
-    description: "Microsoft and related services"
+    description: "Microsoft and related services (excludes tenant domains)"
 
   - name: "Google Services"
     enabled: true
