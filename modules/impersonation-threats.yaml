@@ -92,3 +92,17 @@ rules:
             pattern: ".*@.*(ups|fedex|usps|dhl)\\.com.*"
     score: 100
     description: "Fake delivery and shipping notifications from non-legitimate domains"
+
+  # Retail brand impersonation
+  - name: "Retail brand impersonation"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SenderPattern"
+          pattern: "(?i).*(sams.*club|walmart|costco|target|bestbuy|homedepot|lowes).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(samsclub|walmart|costco|target|bestbuy|homedepot|lowes)\\.com.*"
+    score: 90
+    description: "Retail brand impersonation from non-legitimate domains"

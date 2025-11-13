@@ -144,6 +144,24 @@ rules:
     score: -200
     description: "Narvar order tracking service"
 
+  # Media and Publishing
+  - name: "Medium Publishing Platform"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*medium\\.com.*"
+    score: -200
+    description: "Medium publishing platform legitimate emails"
+
+  # Internet Service Providers
+  - name: "Xfinity/Comcast"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*xfinity\\.com.*"
+    score: -200
+    description: "Xfinity/Comcast ISP legitimate emails"
+
   # Personal Communications
   - name: "Birthday Greetings"
     enabled: true
