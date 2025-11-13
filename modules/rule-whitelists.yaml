@@ -162,6 +162,16 @@ rules:
     score: -200
     description: "Xfinity/Comcast ISP legitimate emails"
 
+  # Multi-hop whitelist preservation
+  - name: "Previously whitelisted emails"
+    enabled: true
+    criteria:
+      type: "HeaderPattern"
+      header: "X-FOFF-Rule-Matched"
+      pattern: ".*Oxford Club.*"
+    score: -200
+    description: "Preserve whitelist status from previous FOFF processing"
+
   # Personal Communications
   - name: "Birthday Greetings"
     enabled: true
