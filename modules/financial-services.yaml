@@ -1,6 +1,26 @@
 name: "Financial Services"
 enabled: true
 rules:
+  # Loan and lending spam
+  - name: "Loan and lending spam"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "BodyPattern"
+              pattern: "(?i).*(loan.*options|financial.*goals|lending.*services|finance.*holdings|loan.*application|quick.*loan|easy.*loan|guaranteed.*loan).*"
+            - type: "SubjectPattern"
+              pattern: "(?i).*(loan|lending|finance|credit|funding).*"
+        - type: "Or"
+          criteria:
+            - type: "SenderPattern"
+              pattern: "(?i).*@.*(finance|loan|lending|credit|funding|capital).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(financial.*institution|loan.*provider|lending.*company|finance.*company).*"
+    score: 75
+    description: "Unsolicited loan and lending offers"
+
   - name: "Get rich quick scams"
     criteria:
       type: "Or"
