@@ -220,10 +220,16 @@ rules:
   - name: "Google Services"
     enabled: true
     criteria:
-      type: "SenderPattern"
-      pattern: ".*@.*(google|gmail|googlemail|youtube)\\.com.*"
+      type: "And"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@(google|gmail|googlemail|youtube)\\.com$"
+        - type: "Not"
+          criteria:
+            type: "ContentPattern"
+            pattern: "(?i).*(aaa|triple.?a|car.?emergency.?kit|medicare.?kit|cvs.?processing)"
     score: -300
-    description: "Google and related services"
+    description: "Google and related services from legitimate Google domains only"
 
   - name: "Apple Services"
     enabled: true
