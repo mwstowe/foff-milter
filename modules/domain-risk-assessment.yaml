@@ -55,10 +55,16 @@ rules:
 
   - name: "Suspicious subdomain patterns"
     criteria:
-      type: "SenderPattern"
-      pattern: ".*@.*(mail|email|smtp|send|newsletter|promo|offer|deal|sale|discount)\\d+\\..+\\.(com|net|org)$"
+      type: "And"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@.*(mail|email|smtp|send|newsletter|promo|offer|deal|sale|discount)\\d+\\..+\\.(com|net|org)$"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(think|vacuums|legitimate|netatmo|Thinkvacuums)\\.(com|net|org)$"
     score: 60
-    description: "Suspicious numbered subdomain patterns"
+    description: "Suspicious numbered subdomain patterns (excludes legitimate)"
 
   - name: "Recently popular spam TLDs"
     criteria:
