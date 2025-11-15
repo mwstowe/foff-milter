@@ -1,6 +1,15 @@
 name: "Email Infrastructure Detection"
 enabled: true
 rules:
+  # Microsoft tenant domain spam (standalone rule)
+  - name: "Microsoft tenant domain spam"
+    criteria:
+      type: "HeaderPattern"
+      header: "From"
+      pattern: ".*@.*\\.onmicrosoft\\.com.*"
+    score: 150
+    description: "Suspicious emails from Microsoft tenant domains (commonly abused for spam)"
+
   # Gmail forwarding abuse detection
   - name: "Suspicious forwarded emails"
     criteria:
