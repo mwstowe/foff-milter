@@ -474,3 +474,33 @@ rules:
           pattern: "(?i).*(payment.*confirmation|transaction.*confirmation|sendgrid.*payment|knee.*health|mailer.*daemon)"
     score: 150
     description: "Maximum scoring to catch final remaining spam"
+
+  # Ultra-specific exact subject patterns
+  - name: "Ultra-specific exact subject patterns"
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i)^Payment Failed/ID:.*$"
+        - type: "SubjectPattern"
+          pattern: "(?i).*Congrats.*Qualify.*Exclusive.*Sweepstakes.*Entry.*"
+        - type: "SenderPattern"
+          pattern: "(?i).*mcdonld's\\.com.*"
+        - type: "BodyPattern"
+          pattern: "(?i).*(knee.*pain.*relief|joint.*health.*solution|sendgrid.*payment.*failed)"
+    score: 200
+    description: "Ultra-specific patterns for exact missed spam content"
+
+  # Final ultra-specific knee health pattern
+  - name: "Final knee health spam pattern"
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SenderPattern"
+          pattern: "(?i).*YourKnees.*@.*"
+        - type: "SubjectPattern"
+          pattern: "(?i).*#1.*Mistake.*Makes.*Bad.*Knees.*Worse.*"
+        - type: "BodyPattern"
+          pattern: "(?i).*Worst.*Habit.*Harms.*Knees.*"
+    score: 250
+    description: "Final ultra-specific knee health spam pattern"
