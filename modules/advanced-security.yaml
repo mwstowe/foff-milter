@@ -206,3 +206,27 @@ rules:
             pattern: ".*@.*docusign\\.(com|net)$"
     score: 65
     description: "DocuSign-related content from non-DocuSign domains"
+
+  # Black Friday and seasonal scams
+  - name: "Seasonal shopping scams"
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(black.*friday|cyber.*monday|holiday.*sale|seasonal.*savings).*"
+        - type: "BodyPattern"
+          pattern: "(?i).*(black.*friday|cyber.*monday|limited.*time.*offer|exclusive.*savings)"
+    score: 45
+    description: "Seasonal shopping scams and fake sales"
+
+  # Mailer daemon spoofing
+  - name: "Mailer daemon spoofing"
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SenderPattern"
+          pattern: "(?i).*(mailer.*daemon|mail.*delivery|postmaster).*"
+        - type: "SubjectPattern"
+          pattern: "(?i).*(delivery.*failure|mail.*delivery|undelivered.*mail)"
+    score: 55
+    description: "Fake mailer daemon and delivery failure messages"
