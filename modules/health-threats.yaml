@@ -19,10 +19,16 @@ rules:
   # Medical misinformation and miracle cures (using pattern library)
   - name: "Medical miracle cure spam"
     criteria:
-      type: "SubjectPattern"
-      pattern: "(?i).*(miracle|cure|breakthrough|secret|doctors.*hate|big.*pharma|natural.*remedy)"
+      type: "And"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(miracle|cure|breakthrough|secret|doctors.*hate|big.*pharma|natural.*remedy)"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(secretlab|legitimate|disney|think|hsa|fsa)\\.(com|net)$"
     score: 70
-    description: "Medical misinformation and miracle cure claims"
+    description: "Medical misinformation and miracle cure claims (excludes legitimate)"
 
   # Vision and eye health scams (using pattern library)
   - name: "Vision health misinformation"
