@@ -164,3 +164,15 @@ rules:
       pattern: ".*=\\?UTF-8\\?B\\?.*"
     score: 25
     description: "Detects suspicious base64 encoded subjects"
+
+  # Fake invoice and payment scams
+  - name: "Fake invoice and payment scams"
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(invoice|receipt|payment|order|transaction|confirmation).*#[A-Z0-9]+"
+        - type: "BodyPattern"
+          pattern: "(?i).*(invoice|receipt|payment.*failed|order.*confirmation|transaction.*id)"
+    score: 55
+    description: "Fake invoice, receipt, and payment confirmation patterns"

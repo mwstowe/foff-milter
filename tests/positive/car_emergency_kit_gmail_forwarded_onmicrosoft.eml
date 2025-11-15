@@ -1,0 +1,156 @@
+Return-Path: <3c6sYaRIcAHwxmfwqjjsgwnhpjwBBDifnq3infqx6E.tsrnhwtxtky.htr@maestro.bounces.google.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTPS id 5AFGXvbe074814
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <mstowe@baddomain.com>; Sat, 15 Nov 2025 16:33:58 GMT
+	(envelope-from 3c6sYaRIcAHwxmfwqjjsgwnhpjwBBDifnq3infqx6E.tsrnhwtxtky.htr@maestro.bounces.google.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (2048-bit key; unprotected) header.d=dailydials19-onmicrosoft-com.20230601.gappssmtp.com header.i=@dailydials19-onmicrosoft-com.20230601.gappssmtp.com header.b=Qit9APy/
+X-Authentication-Warning: juliett.baddomain.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.baddomain.com
+Received: from mail-yx1-f69.google.com (mail-yx1-f69.google.com [74.125.224.69])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 5AFGXuP2062044
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=OK)
+	for <mstowe@baddomain.com>; Sat, 15 Nov 2025 10:33:57 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 5AFGXuP2062044
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (2048-bit key, unprotected) header.d=dailydials19-onmicrosoft-com.20230601.gappssmtp.com header.i=@dailydials19-onmicrosoft-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=Qit9APy/
+Received: by mail-yx1-f69.google.com with SMTP id 956f58d0204a3-63f9f128060so3740770d50.0
+        for <mstowe@baddomain.com>; Sat, 15 Nov 2025 08:33:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dailydials19-onmicrosoft-com.20230601.gappssmtp.com; s=20230601; t=1763224436; x=1763829236; darn=baddomain.com;
+        h=to:from:subject:date:message-id:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=p9SBV0uDDMQc09/hO1PHIj6jWhwI0iLkDIN3SAPe57Q=;
+        b=Qit9APy/KN75NA5BkvWoDC2bOI9cxOC30AF3rNk4heG/qWu1N82jO1QQD9tdE1ZOPq
+         NeemUeGrjtVi6VX7m78QZM98/frT4iF7kqiSjUX56YjzG60EBqEhXLILya2FefwUKH+F
+         WFF4Pw0kecdlbmNJHei3OPy/2ylC8b0QM/XSQLGwVk68uhHqjremmHlfBAHYKY6gJE9N
+         /r8Sfrerais7i9E8LX0KlLR+dpHWSceTvkcTMJBwB4VuG5bZD2UCu9OzpS26ml3UslUr
+         EbOnUAg2NccONOF+Eb2A9IBEfiwCnzWhWVsE5T4TyX69A1nxgVSXN66vn+jaqRcSbYkr
+         4q9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763224436; x=1763829236;
+        h=to:from:subject:date:message-id:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=p9SBV0uDDMQc09/hO1PHIj6jWhwI0iLkDIN3SAPe57Q=;
+        b=jF0KiJaVwnsSxVuw8Gzi9pX5naVlMXrS2T3+8O7HCUmfQfJfJ+qk7fasqd4JmxoTxL
+         A3XgYCI11rfajqyXN6S26B+sXBwpip32XVL7JQUyYVOVe1XhGPFruFbTgqqDoWRP6EVu
+         tugaIE1jUnf5mqYufkN9DK39pP5asTiIbBcU+0J+KxaGVUbSmdPozvpJrhS2DTVOHQUF
+         V82r6W2WPzZL9ngpqF+aimvHkQpmpaPgxbiokZZSa0W2lerOmdHjBaVOltQrKsOUmtRP
+         7NEmnGzKf8anX3zgx9bLZqE9yzibxlOje/9zqmoo/I2skXBLc6/b97oHSpY/nWChpG3y
+         dHdA==
+X-Gm-Message-State: AOJu0YwscBdRw5fKidWxuEYLcQ6vUhdJNP4rqdU4kZyTlr0jXA2b60XJ
+	CUWdwpoIS1iBuCr9f+AKP9WlZ905Wii2N1eoykJz5oMLZT+1mTT1SUl1c0I+dr4P2FRSi1f5gXm
+	bSVcwuK1vSYHT6mZ9kNjOjg0eyPRDlDLvHHd0ETCE742f0dYo8iiTWMyu2qo6Vgs2NGWMDvewAo
+	NpDcPf
+X-Google-Smtp-Source: AGHT+IHxXVnO/Z7BzoK8OKhCJgE0YRtMPlxTtZSldTwSV6EmuwAGjK+OmD0Av6yeZxRHWfzm9/f2/ticGw==
+MIME-Version: 1.0
+X-Received: by 2002:a53:acc9:0:20b0:63c:f5a7:3da with SMTP id
+ 956f58d0204a3-641e76546f7mr4968066d50.54.1763224435885; Sat, 15 Nov 2025
+ 08:33:55 -0800 (PST)
+Reply-To: noreply@dailydials19.onmicrosoft.com
+Message-ID: <autogen-java-a5a41bdf-6cf4-48e8-b50e-4549983d7e42@google.com>
+Date: Sat, 15 Nov 2025 16:33:55 +0000
+Subject: =?UTF-8?B?Q2FyIEVtZXJnZW5jeSBLaXQgc2VjdXJlZCBkaXNwYXRjaCBpbiAjb2h4RFFG?=
+From: "AAA Service Updates #NKrEKu" <noreply@dailydials19.onmicrosoft.com>
+To: mstowe@baddomain.com
+Content-Type: multipart/alternative; boundary="00000000000029189d0643a4ae8f"
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Sat, 15 Nov 2025 16:33:58 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Sat, 15 Nov 2025 10:33:57 -0600 (CST)
+X-FOFF-Rule-Matched: Ecommerce Scams: Free product scams (juliett.baddomain.com) [88d3e653]
+X-FOFF-Rule-Matched: Analytics: Generic Sender Names (juliett.baddomain.com) [29807466]
+X-FOFF-Rule-Matched: Advanced Heuristics: Urgency Pattern Recognition (juliett.baddomain.com) [7a49d7ab]
+X-FOFF-Rule-Matched: Rule-Based Whitelists: Google Services (juliett.baddomain.com) [6d2d35a4]
+X-FOFF-Rule-Matched: Ecommerce Scams: Free product scams (hotel.baddomain.com) [88d3e653]
+X-FOFF-Rule-Matched: Analytics: Generic Sender Names (hotel.baddomain.com) [29807466]
+X-FOFF-Rule-Matched: Advanced Heuristics: Urgency Pattern Recognition (hotel.baddomain.com) [7a49d7ab]
+X-FOFF-Rule-Matched: Rule-Based Whitelists: Google Services (hotel.baddomain.com) [6d2d35a4]
+X-FOFF-Score: -222 - foff-milter v0.6.11 (juliett.baddomain.com)
+X-FOFF-Score: -222 - foff-milter v0.6.11 (hotel.baddomain.com)
+
+--00000000000029189d0643a4ae8f
+Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
+Content-Transfer-Encoding: base64
+
+QUFBIENhciBFbWVyZ2VuY3kgS2l0DQoNCkVzc2VudGlhbCBUb29scyBmb3IgUm9hZHNpZGUgU2Fm
+ZXR5DQoNCg0KWW91ciBFbWVyZ2VuY3kgS2l0IEhhcyBCZWVuIENvbmZpcm1lZA0KDQpZb3VyIEFB
+QSBDYXIgRW1lcmdlbmN5IEtpdCBpcyByZWFkeSBmb3Igc2hpcG1lbnQuIEtlZXAgeW91ciB2ZWhp
+Y2xlICANCnByZXBhcmVkIHdpdGggcHJvZmVzc2lvbmFsLWdyYWRlIHJvYWRzaWRlIHNhZmV0eSB0
+b29scyDigJQgY29tcGxldGVseSBmcmVlLg0KDQoNCktpdCBJbmNsdWRlczoNCg0KDQpIZWF2eS1E
+dXR5IEp1bXBlciBDYWJsZXMNCkxFRCBGbGFzaGxpZ2h0ICsgQmF0dGVyaWVzDQpSZWZsZWN0aXZl
+IFNhZmV0eSBUcmlhbmdsZSAmIFZlc3QNCkNvbXBhY3QgRmlyc3QgQWlkIEtpdA0KRHVyYWJsZSBB
+QUEgQ2FycnlpbmcgQ2FzZQ0KDQpDb25maXJtIE15IEFBQSBLaXQNCuKaoO+4jyBMaW1pdGVkIGtp
+dHMgYXZhaWxhYmxlIOKAlCBjb25maXJtIG5vdw0KDQoNCkFBQSBSb2Fkc2lkZSBTYWZldHkgRGVw
+YXJ0bWVudA0KDQpVbnN1YnNjcmliZQ0KDQoNCg==
+--00000000000029189d0643a4ae8f
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<center>
+<div style=3D"width:100%; background:#f4f4f5; padding:45px 0; font-family:'=
+Segoe UI', Arial, sans-serif;">
+
+<!-- Main Container -->
+<div style=3D"max-width:600px; background:#ffffff; margin:0 auto; border-ra=
+dius:14px; overflow:hidden; box-shadow:0 8px 20px rgba(0,0,0,0.08);">
+
+<!-- Header -->
+<div style=3D"background:#f97316; color:#ffffff; text-align:center; padding=
+:38px 25px;">
+<h2 style=3D"margin:0; font-size:24px; font-weight:700;">AAA Car Emergency =
+Kit</h2>
+<p style=3D"margin-top:10px; font-size:15px; color:#fff7ed;">Essential Tool=
+s for Roadside Safety</p>
+</div>
+
+<!-- Body -->
+<div style=3D"padding:36px 28px; text-align:center; color:#1f2937;">
+<h3 style=3D"font-size:21px; margin:0 0 16px;">Your Emergency Kit Has Been =
+Confirmed</h3>
+<p style=3D"font-size:15px; line-height:1.7;">
+Your <strong>AAA Car Emergency Kit</strong> is ready for shipment.
+Keep your vehicle prepared with professional-grade roadside safety tools =
+=E2=80=94 <strong style=3D"color:#f97316;">completely free</strong>.
+</p>
+
+<!-- Kit Details -->
+<div style=3D"background:#fff7ed; padding:26px; margin:30px 0; border-radiu=
+s:12px; border-left:5px solid #f97316; text-align:left;">
+<p style=3D"margin:0 0 10px; font-weight:600; color:#f97316;">Kit Includes:=
+</p>
+<ul style=3D"margin:0; padding-left:20px; font-size:14px; color:#374151;">
+<li>Heavy-Duty Jumper Cables</li>
+<li>LED Flashlight + Batteries</li>
+<li>Reflective Safety Triangle & Vest</li>
+<li>Compact First Aid Kit</li>
+<li>Durable AAA Carrying Case</li>
+</ul>
+</div>
+
+<!-- CTA -->
+<a href=3D"https://dfhdfgrsh.blob.core.windows.net/sgsdgsdgq/index.html#4yb=
+gQy32193WpaB29vhklywkxuq1367NGWVVJAGJKSRVFN905788SDTE136431o6" style=3D"dis=
+play:inline-block; background:#f97316; color:#ffffff; padding:16px 44px; fo=
+nt-size:15px; font-weight:700; border-radius:35px; text-decoration:none; bo=
+x-shadow:0 6px 14px rgba(249,115,22,0.35); letter-spacing:0.3px;">
+Confirm My AAA Kit
+</a>
+
+<p style=3D"margin-top:22px; font-size:13px; color:#b45309;">=E2=9A=A0=EF=
+=B8=8F Limited kits available =E2=80=94 confirm now</p>
+</div>
+
+<!-- Footer -->
+<div style=3D"background:#f9fafb; text-align:center; padding:22px; font-siz=
+e:12px; color:#6b7280;">
+<p style=3D"margin:0;">AAA Roadside Safety Department</p>
+<p style=3D"margin-top:6px;">
+<a href=3D"https://dfhdfgrsh.blob.core.windows.net/sgsdgsdgq/index.html#5DO=
+ecY32193XmuS29hckfsncrfu1367IRRCSPZJCZGRFXR905788CFYY136431O6" style=3D"col=
+or:#f97316; text-decoration:none;">Unsubscribe</a>
+</p>
+</div>
+
+</div>
+</div>
+</center>
+--00000000000029189d0643a4ae8f--

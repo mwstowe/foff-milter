@@ -1,0 +1,163 @@
+Return-Path: <36IYYaQ8bAKcNHaLZMVYZaLYjlkSLNHSVMMLYZ.VUTPJYVZVMa.JVT@maestro.bounces.google.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTPS id 5AFDw2rp070018
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <mstowe@baddomain.com>; Sat, 15 Nov 2025 13:58:02 GMT
+	(envelope-from 36IYYaQ8bAKcNHaLZMVYZaLYjlkSLNHSVMMLYZ.VUTPJYVZVMa.JVT@maestro.bounces.google.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (2048-bit key; unprotected) header.d=legaloffers-onmicrosoft-com.20230601.gappssmtp.com header.i=@legaloffers-onmicrosoft-com.20230601.gappssmtp.com header.b=v/12OrT1
+X-Authentication-Warning: juliett.baddomain.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.baddomain.com
+Received: from mail-vs1-f70.google.com (mail-vs1-f70.google.com [209.85.217.70])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 5AFDw1Dc059658
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=OK)
+	for <mstowe@baddomain.com>; Sat, 15 Nov 2025 07:58:02 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 5AFDw1Dc059658
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (2048-bit key, unprotected) header.d=legaloffers-onmicrosoft-com.20230601.gappssmtp.com header.i=@legaloffers-onmicrosoft-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=v/12OrT1
+Received: by mail-vs1-f70.google.com with SMTP id ada2fe7eead31-5dfb12409acso2102772137.1
+        for <mstowe@baddomain.com>; Sat, 15 Nov 2025 05:58:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=legaloffers-onmicrosoft-com.20230601.gappssmtp.com; s=20230601; t=1763215080; x=1763819880; darn=baddomain.com;
+        h=to:from:subject:date:message-id:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=DhNlRjmUJiyGhQeklFs+WXlPetzekPeLGXL4plAiV3I=;
+        b=v/12OrT1BfIS6NsxsUu8oOXGyUITmJGUAw1VueZy7d26LAodjmgQ8NGwpciGSQlEqP
+         HzqMLYqguc1M54LSRDfm8iO+uvhRYRW7cMqyusPhIIRp3lSJczxT5Vdu9NXytOPizYa8
+         DuHu/2Asz1yvTE+sZkay8ct6vcpsv0AaKrPnkeqGvTIa8WjqgksesyGQP9g4gcQV0VTl
+         PmZOvj/qeSTzjmnaGT3wWqZ1138IpK+PeIdXXBPbG9HHxhRDr42OOYNrrgWvq7yyRvYk
+         Mx3rheHFcXdq6v0k/kCO9Z2vpkiS5gQde7/5DaTLUzTPkPv3h60gGf6KaLRkJ3Vw3m2d
+         A0kw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763215080; x=1763819880;
+        h=to:from:subject:date:message-id:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=DhNlRjmUJiyGhQeklFs+WXlPetzekPeLGXL4plAiV3I=;
+        b=qKzLULPejjsZ2TxA3kvuLPdvRnfQ9FpMd+2rUO4P1b56kDm0xZLr4Ji0WHnBYwJADd
+         2Bf3qgb28Tckxm6pno9e0FwzqMlBDrWHpl/9BqOYIBiK9WnbMIxnjTLInGJCbcXrh8UG
+         gtUdfvMNSweHVmQp1Zwv57sG2pDHewHSBlSVq1Ub2eq8whg28HKKlkVxriXqkgjgWzpm
+         01StvokDMfMBXBKtp2QDIbzFP21Q+rUPdKPkUY2RE8kVtZqxs75kGloyUtwTJj7F9TOa
+         GWz7gNTE3HaohJ/VWuAEIj6UjL0jD9GZEme83ZpVSqYhooR8+BUOK/0/erHYJz06yhkV
+         gvrw==
+X-Gm-Message-State: AOJu0YyF7PRWvgFhX8Z3YusUmX9+BpibuL3A8/dsiew6+Jgf4DvuoUmx
+	7x39Ml7dsyAeC9hSZAn6ynA56vxUMZ/6RRoUuGILUATgyadS3rZZ5stVNJ4hPE7wI28/fuhQdxO
+	qGzv9JojcKug0Fp/mrFPfJbQHUfG5/3oqO6QS44dFWx+xurZ7jhTIO8RPo43myDtVOI4hblvrqC
+	F+elh9
+X-Google-Smtp-Source: AGHT+IHjdGsm6f+w667v36dSNKZzrIG10pk4bBhVW5TtEtOk6VgyUK5/WEPQbGXbRq4JQuc8aIJsNcg8og==
+MIME-Version: 1.0
+X-Received: by 2002:a05:6102:689b:b0:5dd:f9c2:551c with SMTP id
+ ada2fe7eead31-5dfc5b70545mr2344405137.27.1763215080640; Sat, 15 Nov 2025
+ 05:58:00 -0800 (PST)
+Reply-To: noreply@legaloffers.onmicrosoft.com
+Message-ID: <autogen-java-5264a41d-67b3-4f72-b050-7f4db2ca7772@google.com>
+Date: Sat, 15 Nov 2025 13:58:00 +0000
+Subject: =?UTF-8?B?WW91ciBNZWRpY2FyZSBraXQgaXMgZ2V0dGluZyBmaW5hbGl6ZWQgI09PUzUx?=
+From: "CVS Processing Team #NyOOsA" <noreply@legaloffers.onmicrosoft.com>
+To: mstowe@baddomain.com
+Content-Type: multipart/alternative; boundary="0000000000008b632c0643a280a4"
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Sat, 15 Nov 2025 13:58:02 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Sat, 15 Nov 2025 07:58:02 -0600 (CST)
+X-FOFF-Rule-Matched: Health Spam Detection: CVS Medicare phishing from free email (juliett.baddomain.com) [82d8d215]
+X-FOFF-Rule-Matched: Analytics: Generic Sender Names (juliett.baddomain.com) [29807466]
+X-FOFF-Rule-Matched: Rule-Based Whitelists: Google Services (juliett.baddomain.com) [6d2d35a4]
+X-FOFF-Rule-Matched: Health Spam Detection: CVS Medicare phishing from free email (hotel.baddomain.com) [82d8d215]
+X-FOFF-Rule-Matched: Analytics: Generic Sender Names (hotel.baddomain.com) [29807466]
+X-FOFF-Rule-Matched: Rule-Based Whitelists: Google Services (hotel.baddomain.com) [6d2d35a4]
+X-FOFF-Score: -240 - foff-milter v0.6.11 (juliett.baddomain.com)
+X-FOFF-Score: -240 - foff-milter v0.6.11 (hotel.baddomain.com)
+
+--0000000000008b632c0643a280a4
+Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
+Content-Transfer-Encoding: base64
+
+Q1ZTIE1lZGljYXJlIEtpdCBSZWFkeQ0KDQpZb3VyIHBlcnNvbmFsaXplZCBNZWRpY2FyZSBLaXQg
+aXMgYXZhaWxhYmxlIG5vdw0KDQoNCllvdXIgTWVkaWNhcmUgSW5mb3JtYXRpb24gS2l0IGlzIFBy
+ZXBhcmVkDQoNCkNWUyBoYXMgY2FyZWZ1bGx5IHByZXBhcmVkIHlvdXIgTWVkaWNhcmUgS2l0IHdp
+dGggZGV0YWlsZWQgZ3VpZGFuY2Ugb24gIA0KY292ZXJhZ2UsIGJlbmVmaXRzLCBhbmQgZW5yb2xs
+bWVudCBvcHRpb25zLiBBY2Nlc3MgeW91ciBraXQgbm93IGZvciBlYXN5ICANCnJldmlldy4NCg0K
+UmV2aWV3aW5nIHlvdXIga2l0IHdpbGwgaGVscCB5b3UgbWFrZSBpbmZvcm1lZCBkZWNpc2lvbnMg
+YWJvdXQgeW91ciAgDQpNZWRpY2FyZSBjb3ZlcmFnZS4NCg0KDQpLaXQgSW5jbHVkZXM6DQoNCg0K
+Q29tcGxldGUgTWVkaWNhcmUgY292ZXJhZ2Ugb3ZlcnZpZXcNClN0ZXAtYnktc3RlcCBlbnJvbGxt
+ZW50IGd1aWRhbmNlDQpQbGFuIHR5cGVzIGFuZCBiZW5lZml0IGNvbXBhcmlzb25zDQpDVlMgc3Vw
+cG9ydCByZXNvdXJjZXMgYW5kIGNvbnRhY3RzDQoNCk9wZW4gTXkgTWVkaWNhcmUgS2l0DQpBY2Nl
+c3MgaXMgbGltaXRlZCDigJQgdmlldyB5b3VyIGtpdCB0b2RheS4NCg0KDQpDVlMgTWVtYmVyIFNl
+cnZpY2VzDQpVbnN1YnNjcmliZQ0KDQoNCg==
+--0000000000008b632c0643a280a4
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<center>
+<div style=3D"width:100%; background:#f0f4f8; padding:60px 0; font-family:'=
+Segoe UI', Arial, sans-serif;">
+
+<div style=3D"max-width:600px; background:#ffffff; margin:0 auto; border-ra=
+dius:20px; overflow:hidden; box-shadow:0 10px 28px rgba(0,0,0,0.12);">
+
+<!-- Header -->
+<div style=3D"background:#b71c1c; color:#ffffff; text-align:center; padding=
+:50px 30px;">
+<h2 style=3D"margin:0; font-size:24px; font-weight:700;">CVS Medicare Kit R=
+eady</h2>
+<p style=3D"margin-top:8px; font-size:14px; opacity:0.9;">Your personalized=
+ Medicare Kit is available now</p>
+</div>
+
+<!-- Body -->
+<div style=3D"padding:40px 32px; color:#1f2937; text-align:center;">
+
+<h3 style=3D"font-size:20px; margin:0 0 18px; font-weight:600;">
+Your Medicare Information Kit is Prepared
+</h3>
+
+<p style=3D"font-size:15px; line-height:1.7; margin:0 0 16px;">
+CVS has carefully prepared your Medicare Kit with detailed guidance on cove=
+rage, benefits, and enrollment options. Access your kit now for easy review=
+.
+</p>
+
+<p style=3D"font-size:15px; line-height:1.7; margin:0 0 28px;">
+Reviewing your kit will help you make informed decisions about your Medicar=
+e coverage.
+</p>
+
+<!-- Info Box -->
+<div style=3D"background:#ffeaea; padding:24px; margin:0 0 32px; border-rad=
+ius:12px; border-left:6px solid #b71c1c; text-align:left;">
+<p style=3D"margin:0 0 12px; font-weight:600; color:#b71c1c;">Kit Includes:=
+</p>
+<ul style=3D"margin:0; padding-left:22px; font-size:14px; color:#374151; li=
+ne-height:1.6;">
+<li>Complete Medicare coverage overview</li>
+<li>Step-by-step enrollment guidance</li>
+<li>Plan types and benefit comparisons</li>
+<li>CVS support resources and contacts</li>
+</ul>
+</div>
+
+<!-- CTA Button -->
+<a href=3D"https://vnvbnrdgherytj.blob.core.windows.net/iujkhtyghjnmb/yjtyr=
+ewsdf.html#4feAnP32103eUGy35fxdayrzekj1367MUVVIOIBGHCZDVP905788MQHD448868s9=
+" style=3D"display:inline-block; background:#b71c1c; color:#ffffff; padding=
+:16px 50px; font-size:15px; font-weight:700; border-radius:30px; text-decor=
+ation:none; box-shadow:0 6px 16px rgba(183,28,28,0.35);">
+Open My Medicare Kit
+</a>
+
+<p style=3D"margin-top:24px; font-size:12px; color:#6b7280;">
+Access is limited =E2=80=94 view your kit today.
+</p>
+</div>
+
+<!-- Footer -->
+<div style=3D"background:#f3f4f6; text-align:center; padding:26px; font-siz=
+e:12px; color:#6b7280;">
+CVS Member Services<br>
+<a href=3D"https://vnvbnrdgherytj.blob.core.windows.net/iujkhtyghjnmb/yjtyr=
+ewsdf.html#5Mqboj32103QuZD35julxdijuqv1367APNKHMJUKKTTDXM905788DYOU448868u9=
+" style=3D"color:#b71c1c; text-decoration:none; display:inline-block; margi=
+n-top:6px;">Unsubscribe</a>
+</div>
+
+</div>
+</div>
+</center>
+--0000000000008b632c0643a280a4--

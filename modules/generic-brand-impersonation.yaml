@@ -58,7 +58,7 @@ rules:
           criteria:
             type: "SenderPattern"
             pattern: ".*@.*(amazon|apple|microsoft|google|paypal|walmart|target|tmobile|verizon|netflix|disney|fedex|ups|visa|chase|aaa)\\.(com|net|org)$"
-    score: 100
+    score: 15
     description: "Major brand names from unrelated domains (even .com)"
 
   # Legitimate domain override (negative scoring)
@@ -66,5 +66,19 @@ rules:
     criteria:
       type: "SenderPattern"
       pattern: ".*@(amazon|apple|microsoft|google|facebook|paypal|ebay|walmart|target|costco|bestbuy|homedepot|lowes|tmobile|t-mobile|verizon|att|sprint|netflix|disney|samsung|sony|nike|adidas|mcdonalds|starbucks|fedex|ups|usps|dhl|visa|mastercard|chase|bankofamerica|wellsfargo|citi|americanexpress|twilio|sendgrid)\\.(com|net|org)$"
-    score: -150
+    score: -30
     description: "Override for legitimate brand domains (excludes tenant domains)"
+
+  # AAA brand impersonation (high-value target)
+  - name: "AAA brand impersonation"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SenderPattern"
+          pattern: "(?i).*aaa.*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*aaa\\.(com|net|org)$"
+    score: 40
+    description: "AAA brand impersonation from non-AAA domains"
