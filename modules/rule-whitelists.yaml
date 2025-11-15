@@ -226,10 +226,27 @@ rules:
           pattern: ".*@(google|gmail|googlemail|youtube)\\.com$"
         - type: "Not"
           criteria:
-            type: "ContentPattern"
-            pattern: "(?i).*(aaa|triple.?a|car.?emergency.?kit|medicare.?kit|cvs.?processing)"
+            type: "Or"
+            criteria:
+              # Exclude forwarded onmicrosoft emails
+              - type: "And"
+                criteria:
+                  - type: "HeaderPattern"
+                    header: "From"
+                    pattern: ".*@.*\\.onmicrosoft\\.com"
+                  - type: "HeaderPattern"
+                    header: "Received"
+                    pattern: ".*gmail\\.com.*"
+              # Exclude forwarded brand impersonation
+              - type: "And"
+                criteria:
+                  - type: "ContentPattern"
+                    pattern: "(?i).*(aaa|triple.?a|car.?emergency.?kit|medicare.?kit|cvs.?processing)"
+                  - type: "HeaderPattern"
+                    header: "Received"
+                    pattern: ".*gmail\\.com.*"
     score: -300
-    description: "Google and related services from legitimate Google domains only"
+    description: "Google services (excludes forwarded suspicious emails)"
 
   - name: "Apple Services"
     enabled: true

@@ -1111,6 +1111,12 @@ impl FilterEngine {
         let mut total_score = 0i32;
         let mut scoring_rules = Vec::new();
 
+        // Normalize forwarded emails before processing
+        let is_forwarded = self.normalize_forwarded_email(&mut context_with_attachments);
+        if is_forwarded {
+            log::info!("Processing forwarded email with normalized headers");
+        }
+
         // Check for legitimate mailing list infrastructure
         if self.is_legitimate_mailing_list(&context_with_attachments) {
             log::info!("Legitimate mailing list detected - applying negative score");
@@ -5108,6 +5114,55 @@ impl FilterEngine {
             }
         }
         None
+    }
+
+    /// Detects and normalizes forwarded emails by removing forwarding headers
+    fn normalize_forwarded_email(&self, context: &mut MailContext) -> bool {
+        let mut is_forwarded = false;
+        let mut has_google_routing = false;
+        let mut has_onmicrosoft_sender = false;
+        
+        // Check for Gmail routing in Received headers
+        for (header_name, header_value) in &context.headers {
+            if header_name.to_lowercase() == "received" {
+                if header_value.contains("google.com") || header_value.contains("gmail.com") {
+                    has_google_routing = true;
+                    log::debug!("Found Google routing: {}", header_value);
+                }
+            }
+            
+            // Check for onmicrosoft sender
+            if header_name.to_lowercase() == "from" {
+                if header_value.contains(".onmicrosoft.com") {
+                    has_onmicrosoft_sender = true;
+                    log::debug!("Found onmicrosoft sender: {}", header_value);
+                }
+            }
+        }
+        
+        // This is likely forwarded spam if we have Google routing + suspicious sender
+        if has_google_routing && has_onmicrosoft_sender {
+            is_forwarded = true;
+            log::info!("Detected forwarded spam: onmicrosoft sender via Google routing");
+            
+            // Remove Google routing headers to expose the real sender pattern
+            let mut filtered_headers = Vec::new();
+            for (header_name, header_value) in &context.headers {
+                let header_lower = header_name.to_lowercase();
+                
+                // Skip Google infrastructure headers
+                if !(header_lower == "received" && header_value.contains("google.com"))
+                    && !header_lower.starts_with("x-google")
+                    && !header_lower.starts_with("x-gm") {
+                    filtered_headers.push((header_name.clone(), header_value.clone()));
+                }
+            }
+            
+            context.headers = filtered_headers;
+            log::info!("Normalized forwarded email - removed Google routing headers");
+        }
+        
+        is_forwarded
     }
 
     /// Detects legitimate mailing list infrastructure

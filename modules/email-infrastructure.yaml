@@ -1,6 +1,42 @@
 name: "Email Infrastructure Detection"
 enabled: true
 rules:
+  # Gmail forwarding abuse detection
+  - name: "Suspicious forwarded emails"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "HeaderPattern"
+          header: "Received"
+          pattern: ".*gmail\\.com.*"
+        - type: "Or"
+          criteria:
+            - type: "SenderPattern"
+              pattern: ".*@.*\\\\.onmicrosoft\\\\.com$"
+            - type: "And"
+              criteria:
+                - type: "ContentPattern"
+                  pattern: "(?i).*(aaa|triple.?a|car.?emergency.?kit|medicare.?kit|cvs.?processing)"
+                - type: "Not"
+                  criteria:
+                    type: "SenderPattern"
+                    pattern: ".*@(aaa|cvs|medicare)\\\\.com$"
+    score: 100
+    description: "Suspicious emails forwarded through Gmail (prevents whitelist bypass)"
+
+  # Google-routed Microsoft tenant spam (sophisticated abuse)
+  - name: "Google-routed onmicrosoft spam"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@.*\\\\.onmicrosoft\\\\.com$"
+        - type: "HeaderPattern"
+          header: "Received"
+          pattern: ".*google\\.com.*"
+    score: 200
+    description: "OnMicrosoft senders routed through Google infrastructure (sophisticated spam)"
+
   # Microsoft tenant domain abuse (onmicrosoft.com spam)
   - name: "Microsoft tenant domain spam"
     criteria:
