@@ -1,4 +1,4 @@
-# FOFF Milter v0.6.9
+# FOFF Milter v0.6.11
 
 A comprehensive, enterprise-grade email security platform written in Rust featuring modular threat detection, explicit sender blocking, and clean TOML configuration.
 
@@ -13,6 +13,33 @@ FOFF Milter is a production-ready email security solution that provides:
 - **📊 Enterprise Analytics**: Real-time monitoring, reporting, and statistics
 - **⚡ Production Performance**: Optimized for high-volume processing with parallel execution
 - **🔄 Backward Compatible**: Optional legacy YAML rule support
+- **🔐 Module Integrity**: Cryptographic hashing for rule version tracking and consistency verification
+
+## Module Integrity & Version Tracking
+
+FOFF Milter v0.6.11 includes cryptographic hashing for module integrity verification:
+
+### Module Hash Generation
+- Each module is hashed when loaded using SHA-256 of the YAML content
+- Hash is truncated to 8 characters for readability
+- Hash changes when module rules are modified
+
+### Hash Integration
+- Module hashes are included in `X-FOFF-Rule-Matched` headers
+- Format: `Module: Rule (hostname) [hash]`
+- Example: `Analytics: Generic Sender Names (server1) [29807466]`
+
+### Production Comparison
+- Compare test environment hashes with production headers
+- Quickly identify module version mismatches
+- Ensure consistent rule deployment across environments
+
+```bash
+# Example header comparison
+Production: X-FOFF-Rule-Matched: Analytics: Generic Sender Names (prod) [29807466]
+Test:       X-FOFF-Rule-Matched: Analytics: Generic Sender Names (test) [29807466]
+Status:     ✅ Modules match - same rule version
+```
 
 ## Configuration Reload
 

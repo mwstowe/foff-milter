@@ -1188,7 +1188,7 @@ impl FilterEngine {
                             // Add rule-specific header (consolidated format)
                             headers_to_add.push((
                                 "X-FOFF-Rule-Matched".to_string(),
-                                format!("{}: {} ({})", module.name, rule.name, get_hostname()),
+                                format!("{}: {} ({}) [{}]", module.name, rule.name, get_hostname(), module.hash),
                             ));
                         }
                     }
@@ -1251,7 +1251,7 @@ impl FilterEngine {
                             // Add rule-specific header (consolidated format)
                             headers_to_add.push((
                                 "X-FOFF-Rule-Matched".to_string(),
-                                format!("{}: {} ({})", module.name, rule.name, get_hostname()),
+                                format!("{}: {} ({}) [{}]", module.name, rule.name, get_hostname(), module.hash),
                             ));
                         }
                     }
