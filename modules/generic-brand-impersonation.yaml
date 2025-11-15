@@ -94,7 +94,7 @@ rules:
           criteria:
             type: "SenderPattern"
             pattern: ".*@.*milwaukee.*\\.(com|net|org)$"
-    score: 45
+    score: 50
     description: "Milwaukee Tools brand impersonation from non-Milwaukee domains"
 
   # O'Reilly Auto Parts brand impersonation
@@ -110,3 +110,45 @@ rules:
             pattern: ".*@.*oreilly.*\\.(com|net|org)$"
     score: 45
     description: "O'Reilly Auto Parts brand impersonation"
+
+  # Stanley Tools brand impersonation
+  - name: "Stanley Tools brand impersonation"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SenderPattern"
+          pattern: "(?i).*stanley.*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*stanley.*\\.(com|net|org)$"
+    score: 50
+    description: "Stanley Tools brand impersonation"
+
+  # WeTransfer brand impersonation
+  - name: "WeTransfer brand impersonation"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SenderPattern"
+          pattern: "(?i).*wetransfer.*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*wetransfer\\.(com|net)$"
+    score: 55
+    description: "WeTransfer brand impersonation"
+
+  # Yeti brand impersonation
+  - name: "Yeti brand impersonation"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SenderPattern"
+          pattern: "(?i).*yeti.*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*yeti\\.(com|net)$"
+    score: 50
+    description: "Yeti brand impersonation"

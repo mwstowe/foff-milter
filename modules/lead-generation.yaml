@@ -142,3 +142,15 @@ rules:
           pattern: "(?i).*(business.*development|marketing.*proposal|seo.*services)"
     score: 50
     description: "Unsolicited business development and marketing proposals"
+
+  # Product and air filter spam
+  - name: "Product and air filter spam"
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "BodyPattern"
+          pattern: "(?i).*(air.*filter.*factory|product.*spam|factory.*direct|wholesale.*products)"
+        - type: "SubjectPattern"
+          pattern: "(?i).*(air.*filter|factory.*products|wholesale.*deal)"
+    score: 55
+    description: "Product spam and factory direct marketing"

@@ -180,14 +180,20 @@ rules:
   # Advance fee fraud and 419 scams
   - name: "Advance fee fraud patterns"
     criteria:
-      type: "Or"
+      type: "And"
       criteria:
-        - type: "BodyPattern"
-          pattern: "(?i).*(private.*proposal|business.*proposal|fund.*transfer|inheritance|beneficiary|next.*of.*kin)"
-        - type: "SubjectPattern"
-          pattern: "(?i).*(private.*proposal|business.*proposal|fund.*management|inheritance)"
+        - type: "Or"
+          criteria:
+            - type: "BodyPattern"
+              pattern: "(?i).*(private.*proposal|business.*proposal|fund.*transfer|inheritance|beneficiary|next.*of.*kin)"
+            - type: "SubjectPattern"
+              pattern: "(?i).*(private.*proposal|business.*proposal|fund.*management|inheritance)"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(fidelity|vanguard|schwab|etrade|tdameritrade|merrill|wellsfargo|chase|bankofamerica)\\.(com|net)$"
     score: 60
-    description: "Advance fee fraud and 419 scam patterns"
+    description: "Advance fee fraud and 419 scam patterns (excludes legitimate financial)"
 
   # DocuSign phishing from non-DocuSign domains
   - name: "DocuSign phishing detection"
@@ -230,3 +236,85 @@ rules:
           pattern: "(?i).*(delivery.*failure|mail.*delivery|undelivered.*mail)"
     score: 55
     description: "Fake mailer daemon and delivery failure messages"
+
+  # SendGrid payment failure scams
+  - name: "SendGrid payment failure scams"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(payment.*failed|sendgrid|billing.*issue)"
+            - type: "BodyPattern"
+              pattern: "(?i).*(payment.*failed|sendgrid|billing.*suspended)"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*sendgrid\\.(com|net)$"
+    score: 65
+    description: "Fake SendGrid payment failure notifications"
+
+  # Financial phishing (Schwab, SBI, etc)
+  - name: "Financial phishing"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SenderPattern"
+              pattern: "(?i).*(schwab|sbi|charles.*schwab).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(schwab|sbi|charles.*schwab|account.*suspended|verify.*account)"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(schwab|sbi)\\.(com|net|co\\.in)$"
+    score: 70
+    description: "Financial institution phishing attempts"
+
+  # ShareFile document phishing
+  - name: "ShareFile document phishing"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*sharefile.*"
+            - type: "BodyPattern"
+              pattern: "(?i).*sharefile.*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*sharefile\\.(com|net)$"
+    score: 65
+    description: "ShareFile document phishing from non-ShareFile domains"
+
+  # Political spam and suspicious domains
+  - name: "Political spam from suspicious domains"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "BodyPattern"
+              pattern: "(?i).*(political|election|vote|campaign|candidate)"
+            - type: "SubjectPattern"
+              pattern: "(?i).*(political|election|vote|campaign)"
+        - type: "SenderPattern"
+          pattern: ".*\\.(ru|tk|ml|ga|cf)\\.com$"
+    score: 60
+    description: "Political spam from suspicious country domains"
+
+  # Clothing and product scams
+  - name: "Clothing and product scams"
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "BodyPattern"
+          pattern: "(?i).*(professor.*tee|clothing.*scam|t-shirt.*deal|apparel.*sale)"
+        - type: "SubjectPattern"
+          pattern: "(?i).*(professor.*tee|clothing.*deal|t-shirt.*sale)"
+    score: 50
+    description: "Clothing and apparel scam patterns"
