@@ -404,3 +404,17 @@ rules:
           pattern: "(?i).*(black.*friday.*savings|invoice.*order.*receipt|order.*transaction.*confirmation|payment.*confirmation.*transaction|repair.*scheduled.*address|sendgrid.*payment.*failed|knee.*health|mailer.*daemon.*multi|stanley.*tools.*fake|trevor)"
     score: 75
     description: "Ultra-aggressive final spam patterns"
+
+  # Very specific content-based patterns
+  - name: "Specific content spam patterns"
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i)^Site Review Alert$"
+        - type: "BodyPattern"
+          pattern: "(?i).*(noticed.*errors.*on.*your.*website|reply.*OK.*SEND|greetings.*of.*the.*day)"
+        - type: "BodyPattern"
+          pattern: "(?i).*(knee.*pain.*relief|joint.*health.*solution|dental.*health.*kit)"
+    score: 80
+    description: "Very specific spam content patterns"
