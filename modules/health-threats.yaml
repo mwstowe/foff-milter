@@ -1,9 +1,5 @@
 name: "Health Threats"
 enabled: true
-# Pattern library references
-pattern_libraries:
-  - "patterns/common-patterns.yaml"
-  - "patterns/spam-keywords.yaml"
 rules:
   # Fake institutional health advice
   - name: "Fake Harvard health advice"
@@ -24,7 +20,7 @@ rules:
   - name: "Medical miracle cure spam"
     criteria:
       type: "SubjectPattern"
-      pattern_ref: "health_miracle_claims"  # Reference to common-patterns.yaml
+      pattern: "(?i).*(miracle|cure|breakthrough|secret|doctors.*hate|big.*pharma|natural.*remedy)"
     score: 70
     description: "Medical misinformation and miracle cure claims"
 
@@ -32,7 +28,7 @@ rules:
   - name: "Vision health misinformation"
     criteria:
       type: "SubjectPattern"
-      pattern_ref: "vision_health_scams"  # Reference to common-patterns.yaml
+      pattern: "(?i).*(vision.*restored|eyesight.*miracle|glasses.*free|20/20.*vision|eye.*doctor.*secret)"
     score: 80
     description: "Vision and eye health misinformation"
 
@@ -40,7 +36,7 @@ rules:
   - name: "Weight loss miracle claims"
     criteria:
       type: "SubjectPattern"
-      pattern_ref: "weight_loss_scams"  # Reference to common-patterns.yaml
+      pattern: "(?i).*(lose.*weight.*fast|belly.*fat.*trick|metabolism.*boost|fat.*burning.*secret)"
     score: 60
     description: "Weight loss and diet miracle claims"
 
@@ -56,7 +52,7 @@ rules:
   - name: "Pharmaceutical spam"
     criteria:
       type: "SubjectPattern"
-      pattern_ref: "pharmaceutical_keywords"  # Reference to spam-keywords.yaml
+      pattern: "(?i).*(viagra|cialis|pharmacy|prescription|medication|pills|drugs)"
     score: 80
     description: "Pharmaceutical and medication spam"
 

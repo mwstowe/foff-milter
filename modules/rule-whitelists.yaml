@@ -240,7 +240,7 @@ rules:
               # Exclude forwarded brand impersonation
               - type: "And"
                 criteria:
-                  - type: "ContentPattern"
+                  - type: "BodyPattern"
                     pattern: "(?i).*(aaa|triple.?a|car.?emergency.?kit|medicare.?kit|cvs.?processing)"
                   - type: "HeaderPattern"
                     header: "Received"
