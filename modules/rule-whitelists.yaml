@@ -217,6 +217,33 @@ rules:
     score: -100
     description: "Microsoft and related services (excludes tenant domains)"
 
+  # Netatmo IoT device alerts - From header override
+  - name: "Netatmo device alerts"
+    enabled: true
+    criteria:
+      type: "BodyPattern"
+      pattern: "(?i).*netatmo.*battery.*alert.*"
+    score: -300
+    description: "Netatmo IoT device battery and system alerts"
+
+  # Secretlab furniture company - From header override  
+  - name: "Secretlab furniture"
+    enabled: true
+    criteria:
+      type: "BodyPattern"
+      pattern: "(?i).*secretlab.*hsa.*fsa.*"
+    score: -300
+    description: "Secretlab gaming furniture company"
+
+  # Think Vacuums retail - From header override
+  - name: "Think Vacuums retail"
+    enabled: true
+    criteria:
+      type: "SubjectPattern"
+      pattern: "(?i).*Fall into Clean.*"
+    score: -300
+    description: "Think Vacuums retail company"
+
   - name: "Google Services"
     enabled: true
     criteria:

@@ -16,8 +16,9 @@ rules:
     score: 100
     description: "Fake Harvard health advice from non-Harvard domains"
 
-  # Medical misinformation and miracle cures (using pattern library)
+  # Medical misinformation and miracle cures (using pattern library) - DISABLED
   - name: "Medical miracle cure spam"
+    enabled: false
     criteria:
       type: "And"
       criteria:
@@ -28,7 +29,7 @@ rules:
             type: "SenderPattern"
             pattern: ".*@.*(secretlab|legitimate|disney|think|hsa|fsa|netatmo|battery|vacuums|fall|promotion)\\.(com|net|co)$"
     score: 70
-    description: "Medical misinformation and miracle cure claims (excludes legitimate)"
+    description: "Medical misinformation and miracle cure claims - DISABLED"
 
   # Vision and eye health scams (using pattern library)
   - name: "Vision health misinformation"
