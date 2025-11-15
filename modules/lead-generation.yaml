@@ -130,3 +130,15 @@ rules:
               pattern: "(?i).*(product.*demo|demo.*available|notification.*ready).*"
     score: 55
     description: "Suspicious domains used for product notification spam with generic subjects"
+
+  # Business development and lead generation spam
+  - name: "Business development spam"
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "BodyPattern"
+          pattern: "(?i).*(business.*development|lead.*generation|marketing.*services|seo.*services|web.*development)"
+        - type: "SubjectPattern"
+          pattern: "(?i).*(business.*development|marketing.*proposal|seo.*services)"
+    score: 50
+    description: "Unsolicited business development and marketing proposals"

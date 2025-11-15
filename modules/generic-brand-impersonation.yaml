@@ -82,3 +82,31 @@ rules:
             pattern: ".*@.*aaa\\.(com|net|org)$"
     score: 40
     description: "AAA brand impersonation from non-AAA domains"
+
+  # Milwaukee Tools brand impersonation
+  - name: "Milwaukee Tools brand impersonation"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SenderPattern"
+          pattern: "(?i).*milwaukee.*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*milwaukee.*\\.(com|net|org)$"
+    score: 45
+    description: "Milwaukee Tools brand impersonation from non-Milwaukee domains"
+
+  # O'Reilly Auto Parts brand impersonation
+  - name: "O'Reilly brand impersonation"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SenderPattern"
+          pattern: "(?i).*(oreilly|o'reilly).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*oreilly.*\\.(com|net|org)$"
+    score: 45
+    description: "O'Reilly Auto Parts brand impersonation"

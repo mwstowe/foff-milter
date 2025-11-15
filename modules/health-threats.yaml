@@ -56,6 +56,18 @@ rules:
     score: 80
     description: "Pharmaceutical and medication spam"
 
+  # Dental and knee health misinformation
+  - name: "Dental and joint health misinformation"
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "BodyPattern"
+          pattern: "(?i).*(dental.*health|tooth.*pain|gum.*disease|knee.*pain|joint.*pain|arthritis.*cure)"
+        - type: "SubjectPattern"
+          pattern: "(?i).*(dental.*health|tooth.*pain|knee.*pain|joint.*relief)"
+    score: 55
+    description: "Dental and joint health misinformation patterns"
+
   # Remaining rules with direct patterns for now
   - name: "Tinnitus spam from suspicious domains"
     criteria:
