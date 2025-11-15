@@ -1,9 +1,9 @@
 use chrono;
 use serde::{Deserialize, Serialize};
-use std::fs;
-use std::path::Path;
 use std::collections::hash_map::DefaultHasher;
+use std::fs;
 use std::hash::{Hash, Hasher};
+use std::path::Path;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -19,12 +19,12 @@ impl Module {
     pub fn load_from_file(path: &Path) -> Result<Self, Box<dyn std::error::Error>> {
         let content = fs::read_to_string(path)?;
         let mut module: Module = serde_yml::from_str(&content)?;
-        
+
         // Calculate hash of the module content
         let mut hasher = DefaultHasher::new();
         content.hash(&mut hasher);
         module.hash = format!("{:x}", hasher.finish())[..8].to_string();
-        
+
         Ok(module)
     }
 }
