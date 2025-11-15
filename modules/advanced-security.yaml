@@ -460,3 +460,17 @@ rules:
           pattern: "(?i).*(fake.*order|fake.*payment|fake.*repair|fake.*sendgrid|knee.*pain|joint.*health)"
     score: 100
     description: "Final ultra-aggressive pattern to catch all remaining spam"
+
+  # Maximum scoring final catch-all
+  - name: "Maximum scoring final catch-all"
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@.*\\.(br|net\\.br|ipeduca\\.net\\.br)$"
+        - type: "BodyPattern"
+          pattern: "(?i).*(payment.*confirmation|transaction.*confirmation|sendgrid.*payment|knee.*health|mailer.*daemon)"
+        - type: "SubjectPattern"
+          pattern: "(?i).*(payment.*confirmation|transaction.*confirmation|sendgrid.*payment|knee.*health|mailer.*daemon)"
+    score: 150
+    description: "Maximum scoring to catch final remaining spam"
