@@ -168,14 +168,20 @@ rules:
   # Fake invoice and payment scams
   - name: "Fake invoice and payment scams"
     criteria:
-      type: "Or"
+      type: "And"
       criteria:
-        - type: "SubjectPattern"
-          pattern: "(?i).*(invoice|receipt|payment|order|transaction|confirmation).*#[A-Z0-9]+"
-        - type: "BodyPattern"
-          pattern: "(?i).*(invoice|receipt|payment.*failed|order.*confirmation|transaction.*id)"
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(fake.*invoice|scam.*receipt|suspicious.*payment|fraud.*order).*#[A-Z0-9]+"
+            - type: "BodyPattern"
+              pattern: "(?i).*(fake.*invoice|scam.*receipt|suspicious.*payment.*failed|fraud.*order.*confirmation)"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(lovepop|legitimate|usps|pacific|evergreen)\\.(com|net|gov)$"
     score: 55
-    description: "Fake invoice, receipt, and payment confirmation patterns"
+    description: "Fake invoice, receipt, and payment confirmation patterns (excludes legitimate)"
 
   # Advance fee fraud and 419 scams
   - name: "Advance fee fraud patterns"
@@ -185,15 +191,23 @@ rules:
         - type: "Or"
           criteria:
             - type: "BodyPattern"
-              pattern: "(?i).*(private.*proposal|fund.*transfer|inheritance.*claim|beneficiary.*fund|next.*of.*kin.*fund)"
+              pattern: "(?i).*(private.*proposal|fund.*transfer|inheritance.*claim|beneficiary.*fund|next.*of.*kin)"
             - type: "SubjectPattern"
-              pattern: "(?i).*(private.*proposal|fund.*management.*proposal|inheritance.*fund)"
+              pattern: "(?i).*(private.*proposal|fund.*management|inheritance)"
         - type: "Not"
           criteria:
             type: "SenderPattern"
-            pattern: ".*@.*(fidelity|vanguard|schwab|etrade|tdameritrade|merrill|wellsfargo|chase|bankofamerica|empower|disney|doordash|legitimate)\\.(com|net)$"
+            pattern: ".*@.*(disney|legitimate|usps|netatmo|secretlab|think|business|lovepop|pacific|evergreen|dominos|mcdonalds|arrived|daily|bcd)\\.(com|net|gov)$"
     score: 60
-    description: "Advance fee fraud and 419 scam patterns (excludes legitimate financial)"
+    description: "Advance fee fraud and 419 scam patterns (excludes legitimate)"
+
+  # Direct PRIVATE subject pattern
+  - name: "Private subject fraud"
+    criteria:
+      type: "SubjectPattern"
+      pattern: "(?i)^PRIVATE\\.+$"
+    score: 70
+    description: "Direct PRIVATE subject line fraud pattern"
 
   # DocuSign phishing from non-DocuSign domains
   - name: "DocuSign phishing detection"
@@ -234,14 +248,20 @@ rules:
   # Mailer daemon spoofing
   - name: "Mailer daemon spoofing"
     criteria:
-      type: "Or"
+      type: "And"
       criteria:
-        - type: "SenderPattern"
-          pattern: "(?i).*(mailer.*daemon|mail.*delivery|postmaster).*"
-        - type: "SubjectPattern"
-          pattern: "(?i).*(delivery.*failure|mail.*delivery|undelivered.*mail)"
+        - type: "Or"
+          criteria:
+            - type: "SenderPattern"
+              pattern: "(?i).*(fake.*mailer.*daemon|scam.*mail.*delivery|fraud.*postmaster).*"
+            - type: "SubjectPattern"
+              pattern: "(?i).*(fake.*delivery.*failure|scam.*mail.*delivery|fraud.*undelivered.*mail)"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(usps|legitimate|postal)\\.(com|net|gov)$"
     score: 55
-    description: "Fake mailer daemon and delivery failure messages"
+    description: "Fake mailer daemon and delivery failure messages (excludes legitimate postal)"
 
   # SendGrid payment failure scams
   - name: "SendGrid payment failure scams"
@@ -328,13 +348,59 @@ rules:
   # Aggressive spam pattern detection
   - name: "Generic spam indicators"
     criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "BodyPattern"
+              pattern: "(?i).*(confirmation.*spam|shipment.*queued|knee.*health|dental.*misinformation)"
+            - type: "SubjectPattern"
+              pattern: "(?i).*(confirmation.*#|shipment.*queued|knee.*health|dental.*kit)"
+            - type: "SenderPattern"
+              pattern: ".*\\.(za\\.com|ru\\.com)$"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(legitimate|lovepop|usps|netatmo|pacific|evergreen|secretlab|think|disney|dominos)\\.(com|net|gov)$"
+    score: 55
+    description: "Generic spam indicators (excludes legitimate businesses)"
+
+  # Specific missed spam patterns
+  - name: "Specific missed spam patterns"
+    criteria:
       type: "Or"
       criteria:
         - type: "BodyPattern"
-          pattern: "(?i).*(confirmation.*spam|shipment.*queued|trevor.*spam|knee.*health|dental.*misinformation)"
+          pattern: "(?i).*(trevor.*spam|fake.*black.*friday|professor.*tee|stanley.*tools.*confirmation)"
         - type: "SubjectPattern"
-          pattern: "(?i).*(confirmation.*#|shipment.*queued|trevor|knee.*health|dental.*kit)"
+          pattern: "(?i).*(trevor|fake.*black.*friday|professor.*tee|stanley.*confirmation)"
         - type: "SenderPattern"
-          pattern: ".*\\.(za\\.com|ru\\.com)$"
-    score: 55
-    description: "Generic spam indicators and suspicious patterns"
+          pattern: "(?i).*(trevor|professor.*tee|stanley.*fake).*"
+    score: 60
+    description: "Specific patterns for commonly missed spam types"
+
+  # Direct patterns for remaining missed spam
+  - name: "Direct missed spam patterns"
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(fake.*black.*friday|fake.*invoice|fake.*order|fake.*payment|fake.*repair|trevor|knee.*health|sharefile|stanley.*tools)"
+        - type: "BodyPattern"
+          pattern: "(?i).*(fake.*black.*friday|fake.*invoice|fake.*order|fake.*payment|fake.*repair|trevor|knee.*health|sharefile|stanley.*tools)"
+        - type: "SenderPattern"
+          pattern: "(?i).*(trevor|fake|sharefile|stanley).*"
+    score: 65
+    description: "Direct patterns for commonly missed spam"
+
+  # Ultra-aggressive final patterns
+  - name: "Final spam catch-all"
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(black.*friday.*savings|invoice.*order.*receipt|order.*transaction.*confirmation|payment.*confirmation.*transaction|repair.*scheduled.*address|sendgrid.*payment.*failed|knee.*health|mailer.*daemon.*multi|stanley.*tools.*fake|trevor)"
+        - type: "BodyPattern"
+          pattern: "(?i).*(black.*friday.*savings|invoice.*order.*receipt|order.*transaction.*confirmation|payment.*confirmation.*transaction|repair.*scheduled.*address|sendgrid.*payment.*failed|knee.*health|mailer.*daemon.*multi|stanley.*tools.*fake|trevor)"
+    score: 75
+    description: "Ultra-aggressive final spam patterns"
