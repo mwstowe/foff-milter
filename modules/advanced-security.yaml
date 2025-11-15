@@ -185,13 +185,13 @@ rules:
         - type: "Or"
           criteria:
             - type: "BodyPattern"
-              pattern: "(?i).*(private.*proposal|business.*proposal|fund.*transfer|inheritance|beneficiary|next.*of.*kin)"
+              pattern: "(?i).*(private.*proposal|fund.*transfer|inheritance.*claim|beneficiary.*fund|next.*of.*kin.*fund)"
             - type: "SubjectPattern"
-              pattern: "(?i).*(private.*proposal|business.*proposal|fund.*management|inheritance)"
+              pattern: "(?i).*(private.*proposal|fund.*management.*proposal|inheritance.*fund)"
         - type: "Not"
           criteria:
             type: "SenderPattern"
-            pattern: ".*@.*(fidelity|vanguard|schwab|etrade|tdameritrade|merrill|wellsfargo|chase|bankofamerica)\\.(com|net)$"
+            pattern: ".*@.*(fidelity|vanguard|schwab|etrade|tdameritrade|merrill|wellsfargo|chase|bankofamerica|empower|disney|doordash|legitimate)\\.(com|net)$"
     score: 60
     description: "Advance fee fraud and 419 scam patterns (excludes legitimate financial)"
 
@@ -216,14 +216,20 @@ rules:
   # Black Friday and seasonal scams
   - name: "Seasonal shopping scams"
     criteria:
-      type: "Or"
+      type: "And"
       criteria:
-        - type: "SubjectPattern"
-          pattern: "(?i).*(black.*friday|cyber.*monday|holiday.*sale|seasonal.*savings).*"
-        - type: "BodyPattern"
-          pattern: "(?i).*(black.*friday|cyber.*monday|limited.*time.*offer|exclusive.*savings)"
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(fake.*black.*friday|scam.*cyber.*monday|suspicious.*holiday.*sale)"
+            - type: "BodyPattern"
+              pattern: "(?i).*(fake.*black.*friday|scam.*cyber.*monday|suspicious.*limited.*time)"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(disney|mcdonalds|dominos|tokyo|legitimate|secretlab|think)\\.(com|net)$"
     score: 45
-    description: "Seasonal shopping scams and fake sales"
+    description: "Seasonal shopping scams and fake sales (excludes legitimate retailers)"
 
   # Mailer daemon spoofing
   - name: "Mailer daemon spoofing"
@@ -240,14 +246,18 @@ rules:
   # SendGrid payment failure scams
   - name: "SendGrid payment failure scams"
     criteria:
-      type: "Or"
+      type: "And"
       criteria:
-        - type: "SubjectPattern"
-          pattern: "(?i).*(payment.*failed|sendgrid|billing.*issue|account.*suspended)"
-        - type: "BodyPattern"
-          pattern: "(?i).*(payment.*failed|sendgrid|billing.*suspended|account.*issue)"
-        - type: "SenderPattern"
-          pattern: "(?i).*sendgrid.*"
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(sendgrid.*payment.*failed|sendgrid.*billing.*issue|sendgrid.*account.*suspended)"
+            - type: "BodyPattern"
+              pattern: "(?i).*(sendgrid.*payment.*failed|sendgrid.*billing.*suspended|sendgrid.*account.*issue)"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(sendgrid|doordash|uber|legitimate)\\.(com|net)$"
     score: 65
     description: "Fake SendGrid payment failure notifications"
 
@@ -261,11 +271,11 @@ rules:
             - type: "SenderPattern"
               pattern: "(?i).*(schwab|sbi|charles.*schwab).*"
             - type: "BodyPattern"
-              pattern: "(?i).*(schwab|sbi|charles.*schwab|account.*suspended|verify.*account)"
+              pattern: "(?i).*(schwab.*account.*suspended|sbi.*verify.*account|fake.*schwab)"
         - type: "Not"
           criteria:
             type: "SenderPattern"
-            pattern: ".*@.*(schwab|sbi)\\.(com|net|co\\.in)$"
+            pattern: ".*@.*(schwab|sbi|disney|legitimate)\\.(com|net|co\\.in)$"
     score: 70
     description: "Financial institution phishing attempts"
 
