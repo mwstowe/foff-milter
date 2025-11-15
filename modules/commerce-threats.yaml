@@ -13,10 +13,14 @@ rules:
   # Black Friday and fake sales
   - name: "Black Friday and fake savings scams"
     criteria:
-      type: "SubjectPattern"
-      pattern: "(?i).*(black.*friday|cyber.*monday|huge.*savings|massive.*discount|limited.*time.*offer|act.*now.*save|don't.*miss.*out|final.*hours|last.*chance.*save|up.*to.*\\d+%.*off|save.*up.*to.*\\$\\d+).*"
+      type: "And"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(black.*friday|cyber.*monday|huge.*savings|massive.*discount|limited.*time.*offer|act.*now.*save|don't.*miss.*out|final.*hours|last.*chance.*save|up.*to.*\\d+%.*off|save.*up.*to.*\\$\\d+).*"
+        - type: "SenderPattern"
+          pattern: ".*@.*\\.(tk|ml|ga|cf|gq|top|click|download|stream|xyz|pw|cc|space|shop|online|site|website|store|biz|info|forum)$"
     score: 90
-    description: "Black Friday and fake promotional scams"
+    description: "Black Friday and fake promotional scams from suspicious domains"
 
   # Beauty and cosmetic scams
   - name: "Beauty and cosmetic product spam"
