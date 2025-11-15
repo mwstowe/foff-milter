@@ -1111,10 +1111,10 @@ impl FilterEngine {
         let mut total_score = 0i32;
         let mut scoring_rules = Vec::new();
 
-        // Normalize forwarded emails before processing
-        let is_forwarded = self.normalize_forwarded_email(&mut context_with_attachments);
-        if is_forwarded {
-            log::info!("Processing forwarded email with normalized headers");
+        // FIRST: Detect and strip Gmail forwarding headers before any rule processing
+        let is_gmail_forwarded = self.detect_and_strip_gmail_forwarding(&mut context_with_attachments);
+        if is_gmail_forwarded {
+            log::info!("Gmail forwarding detected and headers stripped - processing with original sender");
         }
 
         // Check for legitimate mailing list infrastructure
@@ -5116,53 +5116,93 @@ impl FilterEngine {
         None
     }
 
-    /// Detects and normalizes forwarded emails by removing forwarding headers
-    fn normalize_forwarded_email(&self, context: &mut MailContext) -> bool {
-        let mut is_forwarded = false;
-        let mut has_google_routing = false;
-        let mut has_onmicrosoft_sender = false;
+    /// Detects Gmail forwarding and strips forwarding headers to expose original sender
+    fn detect_and_strip_gmail_forwarding(&self, context: &mut MailContext) -> bool {
+        log::info!("Starting Gmail forwarding detection...");
         
-        // Check for Gmail routing in Received headers
+        let mut is_gmail_forwarded = false;
+        let mut has_google_received = false;
+        let mut has_suspicious_sender = false;
+        let mut original_sender = String::new();
+        
+        // First pass: detect Gmail forwarding pattern
         for (header_name, header_value) in &context.headers {
-            if header_name.to_lowercase() == "received" {
-                if header_value.contains("google.com") || header_value.contains("gmail.com") {
-                    has_google_routing = true;
-                    log::debug!("Found Google routing: {}", header_value);
-                }
+            let header_lower = header_name.to_lowercase();
+            
+            // Check for Google mail servers in Received headers
+            if header_lower == "received" && header_value.contains("google.com") {
+                has_google_received = true;
+                log::info!("Found Google received header");
             }
             
-            // Check for onmicrosoft sender
-            if header_name.to_lowercase() == "from" {
-                if header_value.contains(".onmicrosoft.com") {
-                    has_onmicrosoft_sender = true;
-                    log::debug!("Found onmicrosoft sender: {}", header_value);
+            // Extract and check the actual sender
+            if header_lower == "from" {
+                log::info!("Processing From header: {}", header_value);
+                
+                // Parse "Display Name" <email@domain> format
+                if let Some(start) = header_value.rfind('<') {
+                    if let Some(end) = header_value.rfind('>') {
+                        original_sender = header_value[start + 1..end].to_string();
+                    }
+                } else {
+                    original_sender = header_value.trim().to_string();
+                }
+                
+                log::info!("Extracted sender: {}", original_sender);
+                
+                // Check if sender is suspicious (onmicrosoft.com, etc.)
+                if original_sender.contains(".onmicrosoft.com") {
+                    has_suspicious_sender = true;
+                    log::info!("Detected suspicious onmicrosoft sender");
                 }
             }
         }
         
-        // This is likely forwarded spam if we have Google routing + suspicious sender
-        if has_google_routing && has_onmicrosoft_sender {
-            is_forwarded = true;
-            log::info!("Detected forwarded spam: onmicrosoft sender via Google routing");
+        log::info!("Gmail forwarding check: has_google_received={}, has_suspicious_sender={}", 
+                   has_google_received, has_suspicious_sender);
+        
+        // Determine if this is Gmail forwarding of suspicious content
+        is_gmail_forwarded = has_google_received && has_suspicious_sender;
+        
+        if is_gmail_forwarded {
+            log::info!("DETECTED Gmail forwarding of suspicious sender: {}", original_sender);
             
-            // Remove Google routing headers to expose the real sender pattern
-            let mut filtered_headers = Vec::new();
+            // Second pass: strip Gmail forwarding headers
+            let mut cleaned_headers = HashMap::new();
+            
             for (header_name, header_value) in &context.headers {
                 let header_lower = header_name.to_lowercase();
                 
-                // Skip Google infrastructure headers
-                if !(header_lower == "received" && header_value.contains("google.com"))
-                    && !header_lower.starts_with("x-google")
-                    && !header_lower.starts_with("x-gm") {
-                    filtered_headers.push((header_name.clone(), header_value.clone()));
+                // Keep essential headers, skip Gmail infrastructure
+                let should_keep = match header_lower.as_str() {
+                    // Keep core email headers
+                    "from" | "to" | "subject" | "date" | "message-id" => true,
+                    // Keep content headers
+                    "content-type" | "content-transfer-encoding" | "mime-version" => true,
+                    // Skip Gmail forwarding infrastructure
+                    "received" if header_value.contains("google.com") => false,
+                    "return-path" if header_value.contains("google.com") => false,
+                    // Skip Google-specific headers
+                    h if h.starts_with("x-google") => false,
+                    h if h.starts_with("x-gm") => false,
+                    // Keep everything else
+                    _ => true,
+                };
+                
+                if should_keep {
+                    cleaned_headers.insert(header_name.clone(), header_value.clone());
                 }
             }
             
-            context.headers = filtered_headers;
-            log::info!("Normalized forwarded email - removed Google routing headers");
+            // Replace headers with cleaned version
+            let removed_count = context.headers.len() - cleaned_headers.len();
+            context.headers = cleaned_headers;
+            
+            log::info!("STRIPPED {} Gmail forwarding headers, exposing original sender: {}", 
+                      removed_count, original_sender);
         }
         
-        is_forwarded
+        is_gmail_forwarded
     }
 
     /// Detects legitimate mailing list infrastructure
