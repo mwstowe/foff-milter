@@ -79,6 +79,14 @@ rules:
     score: 5
     description: "Generic sender addresses often used in bulk spam campaigns, excluding business systems"
 
+  # Random character sender detection
+  - name: "Random character senders"
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@[a-z0-9]{3,8}@.*|.*[0-9]{3,}[a-z]{1,3}@.*"
+    score: 50
+    description: "Senders with random character patterns (e.g., 2qo9o@, maju1@)"
+
   - name: "NetSuite Business System Recognition"
     enabled: true
     criteria:
