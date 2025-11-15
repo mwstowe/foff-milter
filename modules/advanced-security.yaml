@@ -240,18 +240,14 @@ rules:
   # SendGrid payment failure scams
   - name: "SendGrid payment failure scams"
     criteria:
-      type: "And"
+      type: "Or"
       criteria:
-        - type: "Or"
-          criteria:
-            - type: "SubjectPattern"
-              pattern: "(?i).*(payment.*failed|sendgrid|billing.*issue)"
-            - type: "BodyPattern"
-              pattern: "(?i).*(payment.*failed|sendgrid|billing.*suspended)"
-        - type: "Not"
-          criteria:
-            type: "SenderPattern"
-            pattern: ".*@.*sendgrid\\.(com|net)$"
+        - type: "SubjectPattern"
+          pattern: "(?i).*(payment.*failed|sendgrid|billing.*issue|account.*suspended)"
+        - type: "BodyPattern"
+          pattern: "(?i).*(payment.*failed|sendgrid|billing.*suspended|account.*issue)"
+        - type: "SenderPattern"
+          pattern: "(?i).*sendgrid.*"
     score: 65
     description: "Fake SendGrid payment failure notifications"
 
@@ -318,3 +314,17 @@ rules:
           pattern: "(?i).*(professor.*tee|clothing.*deal|t-shirt.*sale)"
     score: 50
     description: "Clothing and apparel scam patterns"
+
+  # Aggressive spam pattern detection
+  - name: "Generic spam indicators"
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "BodyPattern"
+          pattern: "(?i).*(confirmation.*spam|shipment.*queued|trevor.*spam|knee.*health|dental.*misinformation)"
+        - type: "SubjectPattern"
+          pattern: "(?i).*(confirmation.*#|shipment.*queued|trevor|knee.*health|dental.*kit)"
+        - type: "SenderPattern"
+          pattern: ".*\\.(za\\.com|ru\\.com)$"
+    score: 55
+    description: "Generic spam indicators and suspicious patterns"
