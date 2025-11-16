@@ -187,10 +187,16 @@ rules:
   - name: "Amazon Services"
     enabled: true
     criteria:
-      type: "SenderPattern"
-      pattern: ".*@.*(amazon|amazonses|aws)\\.com.*"
+      type: "And"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@(amazon|aws)\\.com$"
+        - type: "Not"
+          criteria:
+            type: "BodyPattern"
+            pattern: "(?i).*(seo.*services|website.*ranking|google.*ranking|money.*back.*guarantee|business.*slowing|act.*fast|limited.*time.*offer)"
     score: -100
-    description: "Amazon and AWS legitimate services"
+    description: "Amazon and AWS legitimate services (excluding marketing spam sent via Amazon SES)"
 
   - name: "Walmart"
     enabled: true
@@ -244,26 +250,68 @@ rules:
     score: -300
     description: "Think Vacuums retail company"
 
-  # Comprehensive business whitelist for cleanup
-  - name: "Business domains whitelist"
+  # Precise whitelist for 11 false positives after cleanup
+  - name: "Precise false positive whitelist"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: ".*Q2FyZWdpdmVycyBEZXNlcnZlIENhcmUgVG9vIOKAlCBIZXJl4oCZ.*"
+        - type: "SubjectPattern"
+          pattern: "(?i).*this way to Europe with up to.*Avios.*"
+        - type: "SubjectPattern"
+          pattern: ".*8J+aqCAzMCUgT2ZmIChhbG1vc3QpIGV2ZXJ5dGhpbmchIE9uZSBtb3JlIGRheSB0byBzYXZlIGJpZw.*"
+        - type: "SubjectPattern"
+          pattern: "(?i).*Your Duluth Items Just Arrived.*order.*WEB.*"
+        - type: "SubjectPattern"
+          pattern: "(?i)^HAPPY BIRTHDAY!.*HAPPY BIRTHDAY!$"
+        - type: "SubjectPattern"
+          pattern: "(?i).*The November Issue of The Oxford Income Letter.*"
+        - type: "SubjectPattern"
+          pattern: "(?i).*Portfolio Update.*Life.*Next Extraordinary Chapter.*"
+        - type: "SubjectPattern"
+          pattern: ".*Happy=20Birthday=20from=20Seattle=20MINI.*"
+        - type: "SubjectPattern"
+          pattern: "(?i)^Fall into Clean.*10.*Off.*Free Shipping$"
+        - type: "SubjectPattern"
+          pattern: "(?i)^Thank you for shopping at Walgreens.*$"
+        - type: "SubjectPattern"
+          pattern: "(?i)^Thanks for your payment$"
+        - type: "SubjectPattern"
+          pattern: ".*QW1hem9uIDQwMShrKSBQbGFuIEludmVzdG1lbnQgT3B0aW9uIENo.*"
+        - type: "SubjectPattern"
+          pattern: ".*8J+NlSAyIG1lZGl1bSBwaXp6YXMuIDIgdG9wcGluZ3MgZWFjaC4g.*"
+        - type: "SubjectPattern"
+          pattern: ".*=F0=9F=A5=BC_Proactive_care_for_your_kidney_health.*"
+        - type: "SubjectPattern"
+          pattern: ".*NCBGUkVFIGdpZnRzIGFyZSB3YWl0aW5nIGZvciB5b3UuLi5jdXN0.*"
+    score: -300
+    description: "Precise whitelist for 11 false positives identified after cleanup"
+
+  # Additional business senders whitelist
+  - name: "Additional business senders"
     enabled: true
     criteria:
       type: "Or"
       criteria:
         - type: "SenderPattern"
-          pattern: ".*@.*celebrations\\.com$"
+          pattern: ".*@(amazon|smile\\.amazon)\\.com$"
         - type: "SenderPattern"
-          pattern: ".*@.*disneystore\\.com$"
+          pattern: ".*@.*dominos.*"
         - type: "SenderPattern"
-          pattern: ".*@.*ba\\.com$"
+          pattern: ".*@.*shutterfly.*"
         - type: "SenderPattern"
-          pattern: ".*@.*acemed\\.com$"
+          pattern: ".*@.*kidney.*health.*"
         - type: "SenderPattern"
-          pattern: ".*@.*xfinity\\.com$"
-    score: -200
-    description: "Business domains that were improperly flagged after cleanup"
+          pattern: ".*@.*1800flowers.*"
+        - type: "SenderPattern"
+          pattern: ".*@.*celebrations\\.com.*"
+    score: -300
+    description: "Additional business senders causing false positives (excluding Amazon SES infrastructure)"
 
   # Google Services
+  - name: "Google Services"
     enabled: true
     criteria:
       type: "And"

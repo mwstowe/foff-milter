@@ -102,7 +102,7 @@ rules:
                     pattern: "(?i).*(newsletter|unsubscribe|promotional.*content|marketing.*email).*"
                   - type: "SenderPattern"
                     pattern: ".*@(empower\\.com|.*\\.empower\\.com)$"
-    score: 12
+    score: 10
     description: "Multiple exclamation marks, excessive caps, multiple dollar amounts, or numeric sender names"
 
   - name: "Advanced Heuristic Scoring"
@@ -126,5 +126,5 @@ rules:
               - type: "HeaderPattern"
                 header: "Authentication-Results"
                 pattern: "dkim=pass.*docusign\\.net"
-    score: 30
+    score: 25
     description: "Action-oriented content without proper unsubscribe headers (excludes legitimate DocuSign)"

@@ -7,14 +7,100 @@ rules:
     criteria:
       type: "And"
       criteria:
-        - type: "SubjectPattern"
-          pattern: "(?i).*\\[harvard\\].*"
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*\\[harvard\\].*"
+            - type: "SubjectPattern"
+              pattern: "(?i).*harvard.*study.*"
+            - type: "BodyPattern"
+              pattern: "(?i).*harvard.*study.*"
         - type: "Not"
           criteria:
             type: "SenderPattern"
             pattern: ".*@.*harvard\\.edu.*"
     score: 100
     description: "Fake Harvard health advice from non-Harvard domains"
+
+  # Diabetes and blood sugar spam
+  - name: "Diabetes and blood sugar misinformation"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "BodyPattern"
+              pattern: "(?i).*(diabetes|blood.*sugar|pancreas|insulin.*resistance|diabetic|blood.*glucose).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*\\ba1c\\b.*"
+            - type: "SubjectPattern"
+              pattern: "(?i).*(diabetes|blood.*sugar|a1c|pancreas|insulin.*resistance|diabetic|blood.*glucose).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*williams.*sonoma.*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*fidelity.*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*withings.*"
+    score: 75
+    description: "Diabetes and blood sugar misinformation and miracle cure claims"
+
+  # Comprehensive health misinformation
+  - name: "General health misinformation"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "BodyPattern"
+              pattern: "(?i).*(cardiovascular|heart.*health|dental.*health|teeth.*repair|teeth.*cells|dementia|cognitive|prostate|digestive.*flush|breathing.*lung|brain.*fog|memory.*loss|joint.*pain|knee.*pain|sexual.*health|tinnitus|toenail.*fungus|vision.*ritual|eyesight|weight.*loss|diet.*secret|chinese.*tax|piano.*course|yeti.*cooler).*"
+            - type: "SubjectPattern"
+              pattern: "(?i).*(cardiovascular|heart.*health|dental.*health|teeth.*repair|teeth.*cells|dementia|cognitive|prostate|digestive.*flush|breathing.*lung|brain.*fog|memory.*loss|joint.*pain|knee.*pain|sexual.*health|tinnitus|toenail.*fungus|vision.*ritual|eyesight|weight.*loss|diet.*secret|chinese.*tax|piano.*course|yeti.*cooler).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*withings.*"
+    score: 70
+    description: "General health misinformation and miracle cure claims"
+
+  # Product and brand impersonation spam
+  - name: "Product and brand spam"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "BodyPattern"
+          pattern: "(?i).*(air.*filter.*factory|car.*emergency.*kit|joint.*knee.*pain|fake.*forum|brand.*impersonation).*"
+        - type: "SubjectPattern"
+          pattern: "(?i).*(air.*filter.*factory|car.*emergency.*kit|joint.*knee.*pain|fake.*forum|brand.*impersonation).*"
+        - type: "SenderPattern"
+          pattern: ".*@.*(forum|fake|scam|spam).*"
+    score: 65
+    description: "Product spam and brand impersonation attempts"
+
+  # Financial and brand impersonation scams
+  - name: "Financial and brand scams"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "BodyPattern"
+          pattern: "(?i).*(godaddy.*payment|venmo.*reward|wetransfer.*file|yeti.*brand|oreilly.*auto|o.*reilly|stanford.*weight|piano.*course|shed.*building|product.*demo|chinese.*tax|sexual.*health|weight.*loss).*"
+        - type: "SubjectPattern"
+          pattern: "(?i).*(godaddy.*payment|venmo.*reward|wetransfer.*file|yeti.*brand|oreilly.*auto|o.*reilly|stanford.*weight|piano.*course|shed.*building|product.*demo|chinese.*tax|sexual.*health|weight.*loss).*"
+        - type: "SenderPattern"
+          pattern: ".*@.*(shop|scam|fake|phish)\\.(com|net|org)$"
+        - type: "SenderPattern"
+          pattern: ".*@.*\\.shop$"
+    score: 75
+    description: "Financial scams and brand impersonation attempts"
 
   # Medical misinformation and miracle cures (using pattern library) - DISABLED
   - name: "Medical miracle cure spam"
@@ -81,9 +167,9 @@ rules:
       type: "Or"
       criteria:
         - type: "BodyPattern"
-          pattern: "(?i).*(sexual.*health|erectile.*dysfunction|male.*enhancement|libido|testosterone)"
+          pattern: "(?i).*(sexual.*health|sexual.*beast|erectile.*dysfunction|male.*enhancement|libido|testosterone)"
         - type: "SubjectPattern"
-          pattern: "(?i).*(sexual.*health|male.*enhancement|erectile|testosterone)"
+          pattern: "(?i).*(sexual.*health|sexual.*beast|male.*enhancement|erectile|testosterone)"
     score: 65
     description: "Sexual health and enhancement spam"
 

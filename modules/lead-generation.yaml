@@ -81,6 +81,27 @@ rules:
     score: 40
     description: "Unsolicited SEO and digital marketing spam from free email providers"
 
+  - name: "Professional SEO marketing spam"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "BodyPattern"
+              pattern: "(?i).*(google.*business.*listing|seo.*company|website.*design.*seo|rankings.*on.*google|boost.*your.*google|money.*back.*guarantee.*seo).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(guaranteed.*visibility|google.*rankings|ranking.*#1.*on.*google|seo.*firm.*ranked|search.*engine.*optimization).*"
+            - type: "SubjectPattern"
+              pattern: "(?i).*(rankings.*on.*google|business.*slowing.*down|google.*business|seo.*services|website.*ranking).*"
+        - type: "Or"
+          criteria:
+            - type: "BodyPattern"
+              pattern: "(?i).*(money.*back.*guarantee|limited.*time.*offer|act.*fast|book.*your.*call|special.*offer).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(attention.*small.*business|dear.*michael|tailored.*strategies|local.*dominance).*"
+    score: 65
+    description: "Professional SEO and marketing spam with guarantee claims and urgency tactics"
+
   - name: "Business collaboration proposals"
     enabled: true
     criteria:

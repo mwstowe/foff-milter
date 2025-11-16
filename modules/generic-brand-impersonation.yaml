@@ -62,7 +62,7 @@ rules:
           criteria:
             type: "SenderPattern"
             pattern: ".*@.*(amazon|apple|microsoft|google|paypal|walmart|target|tmobile|verizon|netflix|disney|fedex|ups|visa|chase|aaa|secretlab|think|netatmo|business)\\.(com|net|org)$"
-    score: 15
+    score: 8
     description: "Major brand names from unrelated domains (even .com)"
 
   # Legitimate domain override (negative scoring)
@@ -85,7 +85,7 @@ rules:
           criteria:
             type: "SenderPattern"
             pattern: ".*@.*aaa\\.(com|net|org)$"
-    score: 40
+    score: 25
     description: "AAA brand impersonation from non-AAA domains"
 
   # Milwaukee Tools brand impersonation
