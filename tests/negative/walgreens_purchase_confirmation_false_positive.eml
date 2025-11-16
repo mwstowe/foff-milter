@@ -1,19 +1,19 @@
 Return-Path: <0100019a47fb5a6a-09d6ffb1-bd3b-442e-ba5f-a1c71a3797cd-000000@bounce.us.bazaarvoice-cgc.com>
-Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
-	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTPS id 5A34UrM4086463
+Received: from hotel.example.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.example.com (8.18.1/8.18.1) with ESMTPS id 5A34UrM4086463
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
-	for <marcy@baddomain.com>; Mon, 3 Nov 2025 04:30:53 GMT
+	for <marcy@example.com>; Mon, 3 Nov 2025 04:30:53 GMT
 	(envelope-from 0100019a47fb5a6a-09d6ffb1-bd3b-442e-ba5f-a1c71a3797cd-000000@bounce.us.bazaarvoice-cgc.com)
-Authentication-Results: juliett.baddomain.com;
+Authentication-Results: juliett.example.com;
 	dkim=pass (1024-bit key; unprotected) header.d=bazaarvoice-cgc.com header.i=@bazaarvoice-cgc.com header.b=hcdtw/xm;
 	dkim=pass (1024-bit key; unprotected) header.d=amazonses.com header.i=@amazonses.com header.b=BglhmKvU
-X-Authentication-Warning: juliett.baddomain.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.baddomain.com
+X-Authentication-Warning: juliett.example.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.example.com
 Received: from a48-172.smtp-out.amazonses.com (a48-172.smtp-out.amazonses.com [54.240.48.172])
-	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 5A34Up3P051831
+	by hotel.example.com (8.16.1/8.16.1) with ESMTPS id 5A34Up3P051831
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO)
-	for <marcy@baddomain.com>; Sun, 2 Nov 2025 22:30:52 -0600
-DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 5A34Up3P051831
-Authentication-Results: hotel.baddomain.com;
+	for <marcy@example.com>; Sun, 2 Nov 2025 22:30:52 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.example.com 5A34Up3P051831
+Authentication-Results: hotel.example.com;
 	dkim=pass (1024-bit key, unprotected) header.d=bazaarvoice-cgc.com header.i=@bazaarvoice-cgc.com header.a=rsa-sha256 header.s=larvwfirbbmslqnn3yxx5lciobqoqv7d header.b=hcdtw/xm;
 	dkim=pass (1024-bit key, unprotected) header.d=amazonses.com header.i=@amazonses.com header.a=rsa-sha256 header.s=6gbrjpgwjskckoa6a5zn6fwqkn67xbtw header.b=BglhmKvU
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
@@ -32,7 +32,7 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
 	ECFCNrT9iq/O20aBE+bggwvadZpBd63FxJKGNimFrrHiHKpytVzbChRssoy+/M0Lb2y
 	ROROJvWVxAGFisl3d5ZiH8Q8whWLdWJ8DuaevEp4=
 From: Walgreens <noreply-walgreens@bazaarvoice-cgc.com>
-To: marcy@baddomain.com
+To: marcy@example.com
 Subject: Thanks for your recent purchase!
 MIME-Version: 1.0
 Content-Type: text/html; charset=UTF-8
@@ -41,13 +41,13 @@ Message-ID: <0100019a47fb5a6a-09d6ffb1-bd3b-442e-ba5f-a1c71a3797cd-000000@email.
 Date: Mon, 3 Nov 2025 04:30:46 +0000
 Feedback-ID: ::1.us-east-1.sScSajI8pOVmt8tDtCH7ghocXEHtzel6rZ0IltgIxr8=:AmazonSES
 X-SES-Outgoing: 2025.11.03-54.240.48.172
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Mon, 03 Nov 2025 04:30:53 +0000 (UTC)
-X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Sun, 02 Nov 2025 22:30:52 -0600 (CST)
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.example.com [172.31.18.8]); Mon, 03 Nov 2025 04:30:53 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.example.com [23.95.222.152]); Sun, 02 Nov 2025 22:30:52 -0600 (CST)
 X-Spam-Flag: YES
-X-FOFF-Rule-Matched: Health Spam Detection: Diabetes and pancreas health misinformation (juliett.baddomain.com)
-X-FOFF-Rule-Matched: Health Spam Detection: Diabetes and pancreas health misinformation (hotel.baddomain.com)
-X-FOFF-Score: 65 - foff-milter v0.6.5 (juliett.baddomain.com)
-X-FOFF-Score: 65 - foff-milter v0.6.5 (hotel.baddomain.com)
+X-FOFF-Rule-Matched: Health Spam Detection: Diabetes and pancreas health misinformation (juliett.example.com)
+X-FOFF-Rule-Matched: Health Spam Detection: Diabetes and pancreas health misinformation (hotel.example.com)
+X-FOFF-Score: 65 - foff-milter v0.6.5 (juliett.example.com)
+X-FOFF-Score: 65 - foff-milter v0.6.5 (hotel.example.com)
 
 <!DOCTYPE html>
 <html>
@@ -93,31 +93,31 @@ form:invalid .k {background-color:#c2c2d1}
 input:checked + .m {background-image:url(https://network.bazaarvoice.com/a.=
 gif?cl=3DFeature&productId=3D300436571&client=3Dwalgreens&campaignId=3DBV_P=
 IE_FOLLOWUP_MPR&notificationId=3Dddee6773-b86d-11f0-b3ca-0affc418417b&messa=
-geType=3DPIE&recipientDomain=3Dbaddomain.com&source=3Dmpr-template&deployme=
+geType=3DPIE&recipientDomain=3Dexample.com&source=3Dmpr-template&deployme=
 ntZone=3Dsame_day_delivery&locale=3Den_US&type=3DUsed&name=3DEmailStarsFiel=
 d)}
 textarea:focus + .m {background-image:url(https://network.bazaarvoice.com/a=
 .gif?cl=3DFeature&productId=3D300436571&client=3Dwalgreens&campaignId=3DBV_=
 PIE_FOLLOWUP_MPR&notificationId=3Dddee6773-b86d-11f0-b3ca-0affc418417b&mess=
-ageType=3DPIE&recipientDomain=3Dbaddomain.com&source=3Dmpr-template&deploym=
+ageType=3DPIE&recipientDomain=3Dexample.com&source=3Dmpr-template&deploym=
 entZone=3Dsame_day_delivery&locale=3Den_US&type=3DUsed&name=3DEmailTextFiel=
 d)}
 .j input:focus + .m {background-image:url(https://network.bazaarvoice.com/a=
 .gif?cl=3DFeature&productId=3D300436571&client=3Dwalgreens&campaignId=3DBV_=
 PIE_FOLLOWUP_MPR&notificationId=3Dddee6773-b86d-11f0-b3ca-0affc418417b&mess=
-ageType=3DPIE&recipientDomain=3Dbaddomain.com&source=3Dmpr-template&deploym=
+ageType=3DPIE&recipientDomain=3Dexample.com&source=3Dmpr-template&deploym=
 entZone=3Dsame_day_delivery&locale=3Den_US&type=3DUsed&name=3DEmailTitleFie=
 ld)}
 button:active + .m {background-image:url(https://network.bazaarvoice.com/a.=
 gif?cl=3DFeature&productId=3D300436571&client=3Dwalgreens&campaignId=3DBV_P=
 IE_FOLLOWUP_MPR&notificationId=3Dddee6773-b86d-11f0-b3ca-0affc418417b&messa=
-geType=3DPIE&recipientDomain=3Dbaddomain.com&source=3Dmpr-template&deployme=
+geType=3DPIE&recipientDomain=3Dexample.com&source=3Dmpr-template&deployme=
 ntZone=3Dsame_day_delivery&locale=3Den_US&type=3DUsed&name=3DEmailSubmitBut=
 ton)}
 .b:hover {background-image:url(https://network.bazaarvoice.com/a.gif?cl=3DF=
 eature&productId=3D300436571&client=3Dwalgreens&campaignId=3DBV_PIE_FOLLOWU=
 P_MPR&notificationId=3Dddee6773-b86d-11f0-b3ca-0affc418417b&messageType=3DP=
-IE&recipientDomain=3Dbaddomain.com&source=3Dmpr-template&deploymentZone=3Ds=
+IE&recipientDomain=3Dexample.com&source=3Dmpr-template&deploymentZone=3Ds=
 ame_day_delivery&locale=3Den_US&type=3DUsed&name=3DEmailForm)}
 .n {text-align:justify;font-size:10px;line-height:18px}
 .o {text-align:center;font-size:1px;line-height:1px}

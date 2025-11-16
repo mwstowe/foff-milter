@@ -1,18 +1,18 @@
-Return-Path: <bounces+42967826-c8f2-mstowe=baddomain.com@u161779.wl030.sendgrid.net>
-Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
-	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTPS id 5AA0MHhp003339
+Return-Path: <bounces+42967826-c8f2-mstowe=example.com@u161779.wl030.sendgrid.net>
+Received: from hotel.example.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.example.com (8.18.1/8.18.1) with ESMTPS id 5AA0MHhp003339
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
-	for <mstowe@baddomain.com>; Mon, 10 Nov 2025 00:22:17 GMT
-	(envelope-from bounces+42967826-c8f2-mstowe=baddomain.com@u161779.wl030.sendgrid.net)
-Authentication-Results: juliett.baddomain.com;
+	for <user@example.com>; Mon, 10 Nov 2025 00:22:17 GMT
+	(envelope-from bounces+42967826-c8f2-mstowe=example.com@u161779.wl030.sendgrid.net)
+Authentication-Results: juliett.example.com;
 	dkim=pass (2048-bit key; unprotected) header.d=send.filtersfast.com header.i=@send.filtersfast.com header.b=t16h3We9
-X-Authentication-Warning: juliett.baddomain.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.baddomain.com
+X-Authentication-Warning: juliett.example.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.example.com
 Received: from o3956.m.filtersfast.com (o3956.m.filtersfast.com [167.89.91.128])
-	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 5AA0ME5K075861
+	by hotel.example.com (8.16.1/8.16.1) with ESMTPS id 5AA0ME5K075861
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO)
-	for <mstowe@baddomain.com>; Sun, 9 Nov 2025 18:22:16 -0600
-DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 5AA0ME5K075861
-Authentication-Results: hotel.baddomain.com;
+	for <user@example.com>; Sun, 9 Nov 2025 18:22:16 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.example.com 5AA0ME5K075861
+Authentication-Results: hotel.example.com;
 	dkim=pass (2048-bit key, unprotected) header.d=send.filtersfast.com header.i=@send.filtersfast.com header.a=rsa-sha256 header.s=s1 header.b=t16h3We9
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=send.filtersfast.com;
 	h=content-type:date:from:mime-version:subject:reply-to:list-unsubscribe:
@@ -66,17 +66,17 @@ X-SG-ID:
  =?us-ascii?Q?0htKFSsRB92K2RLlzLCIxD8o5zn=2FtQKMlS+DDkX?=
  =?us-ascii?Q?lrkzJ5scerOi4FuNUM3tcBsZ2SY3vw5Ua9cNowq?=
  =?us-ascii?Q?N3SvJI0yk0dK1W7ZQqo0f8QDGbCYwEOBwCTsQ=3D=3D?=
-To: Michael stowe <mstowe@baddomain.com>
+To: Michael stowe <user@example.com>
 X-Entity-ID: u001.8CxVr+UZSZgy/SnU8YgeTQ==
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Mon, 10 Nov 2025 00:22:17 +0000 (UTC)
-X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Sun, 09 Nov 2025 18:22:16 -0600 (CST)
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.example.com [172.31.18.8]); Mon, 10 Nov 2025 00:22:17 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.example.com [23.95.222.152]); Sun, 09 Nov 2025 18:22:16 -0600 (CST)
 X-Spam-Flag: YES
-X-FOFF-Rule-Matched: Link Analysis: Suspicious Link Patterns (External Only) (juliett.baddomain.com)
-X-FOFF-Rule-Matched: Ecommerce Scams: Free product scams (juliett.baddomain.com)
-X-FOFF-Rule-Matched: Link Analysis: Suspicious Link Patterns (External Only) (hotel.baddomain.com)
-X-FOFF-Rule-Matched: Ecommerce Scams: Free product scams (hotel.baddomain.com)
-X-FOFF-Score: 80 - foff-milter v0.6.9 (juliett.baddomain.com)
-X-FOFF-Score: 80 - foff-milter v0.6.9 (hotel.baddomain.com)
+X-FOFF-Rule-Matched: Link Analysis: Suspicious Link Patterns (External Only) (juliett.example.com)
+X-FOFF-Rule-Matched: Ecommerce Scams: Free product scams (juliett.example.com)
+X-FOFF-Rule-Matched: Link Analysis: Suspicious Link Patterns (External Only) (hotel.example.com)
+X-FOFF-Rule-Matched: Ecommerce Scams: Free product scams (hotel.example.com)
+X-FOFF-Score: 80 - foff-milter v0.6.9 (juliett.example.com)
+X-FOFF-Score: 80 - foff-milter v0.6.9 (hotel.example.com)
 
 --d1f67d6d40ba96f8f9b2fc3233f2c5581b73687f10d749c1ebdc07a9d22b
 Content-Transfer-Encoding: quoted-printable

@@ -1,18 +1,18 @@
 Return-Path: <Walgreens@ecs.walgreens.com>
-Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
-	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTPS id 5AD0lefA049060
+Received: from hotel.example.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.example.com (8.18.1/8.18.1) with ESMTPS id 5AD0lefA049060
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
-	for <mstowe@baddomain.com>; Thu, 13 Nov 2025 00:47:40 GMT
+	for <user@example.com>; Thu, 13 Nov 2025 00:47:40 GMT
 	(envelope-from Walgreens@ecs.walgreens.com)
-Authentication-Results: juliett.baddomain.com;
+Authentication-Results: juliett.example.com;
 	dkim=pass (1024-bit key; unprotected) header.d=ecs.walgreens.com header.i=Walgreens@ecs.walgreens.com header.b=cccPFlai
-X-Authentication-Warning: juliett.baddomain.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.baddomain.com
+X-Authentication-Warning: juliett.example.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.example.com
 Received: from p1-005249.rxorder.walgreens.com (p1-005249.rxorder.walgreens.com [173.213.5.249])
-	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 5AD0lcju020781
+	by hotel.example.com (8.16.1/8.16.1) with ESMTPS id 5AD0lcju020781
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
-	for <mstowe@baddomain.com>; Wed, 12 Nov 2025 18:47:39 -0600
-DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 5AD0lcju020781
-Authentication-Results: hotel.baddomain.com;
+	for <user@example.com>; Wed, 12 Nov 2025 18:47:39 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.example.com 5AD0lcju020781
+Authentication-Results: hotel.example.com;
 	dkim=pass (1024-bit key, unprotected) header.d=ecs.walgreens.com header.i=Walgreens@ecs.walgreens.com header.a=rsa-sha256 header.s=0 header.b=cccPFlai
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=0; d=ecs.walgreens.com;
  h=Message-ID:List-Unsubscribe-Post:List-Unsubscribe:MIME-Version:From:To:Date:
@@ -21,7 +21,7 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=0; d=ecs.walgreens.com;
  b=cccPFlaiyJdKNF/I/GY1MCk7497RGEV2+JIfkf1CVqjWj8CQI7hubCbUUbKsH6GpsO9j7KK8PBlf
    SNKAG2uPuL4bpiZ0SmTtbut3idRXr5t0oQG8LVhJaJ4HZJYGFuvSFuEjIWPVB+RS02GU/XxxkRAb
    Y4RWiulJsGZ7wdN+NCU=
-Received: from ny5pvaet02 (10.24.71.11) by p1-005249.rxorder.walgreens.com id h2klaa2o8ise for <mstowe@baddomain.com>; Wed, 12 Nov 2025 19:47:33 -0500 (envelope-from <Walgreens@ecs.walgreens.com>)
+Received: from ny5pvaet02 (10.24.71.11) by p1-005249.rxorder.walgreens.com id h2klaa2o8ise for <user@example.com>; Wed, 12 Nov 2025 19:47:33 -0500 (envelope-from <Walgreens@ecs.walgreens.com>)
 Errors-to: Walgreens@ecs.walgreens.com
 Message-ID: <1329.44332942.202511130047336413411.0001565863@ecs.walgreens.com>
 List-Unsubscribe-Post: List-Unsubscribe=One-Click
@@ -40,20 +40,20 @@ Feedback-ID: 1329.555:ChtahDgtlMsNA
 X-Xyz-inst: true
 MIME-Version: 1.0
 From: "Walgreens.com" <Walgreens@ecs.walgreens.com>
-To: "mstowe@baddomain.com" <mstowe@baddomain.com>
+To: "user@example.com" <user@example.com>
 Date: 13 Nov 2025 00:47:33 +0000
 Subject: Thank you for shopping at Walgreens.
 Content-Type: multipart/alternative;
  boundary=--boundary_940532_b3523ced-66fa-449f-b2f7-e0a858bfbd24
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Thu, 13 Nov 2025 00:47:40 +0000 (UTC)
-X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Wed, 12 Nov 2025 18:47:40 -0600 (CST)
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.example.com [172.31.18.8]); Thu, 13 Nov 2025 00:47:40 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.example.com [23.95.222.152]); Wed, 12 Nov 2025 18:47:40 -0600 (CST)
 X-Spam-Flag: YES
 X-Spam-Flag: YES
 X-Spam-Flag: YES
-X-FOFF-Score: 100 - analyzed by foff-milter v0.6.9 on juliett.baddomain.com
-X-FOFF-Score: 100 - foff-milter v0.6.9 (juliett.baddomain.com)
-X-FOFF-Score: 100 - analyzed by foff-milter v0.6.9 on hotel.baddomain.com
-X-FOFF-Score: 100 - foff-milter v0.6.9 (hotel.baddomain.com)
+X-FOFF-Score: 100 - analyzed by foff-milter v0.6.9 on juliett.example.com
+X-FOFF-Score: 100 - foff-milter v0.6.9 (juliett.example.com)
+X-FOFF-Score: 100 - analyzed by foff-milter v0.6.9 on hotel.example.com
+X-FOFF-Score: 100 - foff-milter v0.6.9 (hotel.example.com)
 X-FOFF-Reject-Converted: WOULD-REJECT: Message rejected by heuristic analysis
 X-FOFF-Reject-Converted: WOULD-REJECT: Message rejected by heuristic analysis
 

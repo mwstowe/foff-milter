@@ -179,7 +179,7 @@ rules:
         - type: "Not"
           criteria:
             type: "SenderPattern"
-            pattern: ".*@.*(lovepop|legitimate|usps|pacific|evergreen)\\.(com|net|gov)$"
+            pattern: ".*@.*(lovepop|1800flowers|disney|celebrations|disneystore|ba\\.com|usps|pacific|evergreen)\\.(com|net|gov)$"
     score: 55
     description: "Fake invoice, receipt, and payment confirmation patterns (excludes legitimate)"
 
@@ -197,7 +197,7 @@ rules:
         - type: "Not"
           criteria:
             type: "SenderPattern"
-            pattern: ".*@.*(disney|legitimate|usps|netatmo|secretlab|think|business|lovepop|pacific|evergreen|dominos|mcdonalds|arrived|daily|bcd|williams|wolfermans|xfinity|official|perks)\\.(com|net|gov)$"
+            pattern: ".*@.*(disney|1800flowers|celebrations|disneystore|ba\\.com|usps|netatmo|secretlab|think|business|lovepop|pacific|evergreen|dominos|mcdonalds|arrived|daily|bcd|williams|wolfermans|xfinity|official|perks)\\.(com|net|gov)$"
     score: 60
     description: "Very specific advance fee fraud patterns (excludes all legitimate)"
 
@@ -241,7 +241,7 @@ rules:
         - type: "Not"
           criteria:
             type: "SenderPattern"
-            pattern: ".*@.*(disney|mcdonalds|dominos|tokyo|legitimate|secretlab|think)\\.(com|net)$"
+            pattern: ".*@.*(disney|mcdonalds|dominos|tokyo|secretlab|think)\\.(com|net)$"
     score: 45
     description: "Seasonal shopping scams and fake sales (excludes legitimate retailers)"
 
@@ -259,7 +259,7 @@ rules:
         - type: "Not"
           criteria:
             type: "SenderPattern"
-            pattern: ".*@.*(usps|legitimate|postal)\\.(com|net|gov)$"
+            pattern: ".*@.*(usps|postal)\\.(com|net|gov)$"
     score: 55
     description: "Fake mailer daemon and delivery failure messages (excludes legitimate postal)"
 
@@ -277,7 +277,7 @@ rules:
         - type: "Not"
           criteria:
             type: "SenderPattern"
-            pattern: ".*@.*(sendgrid|doordash|uber|legitimate)\\.(com|net)$"
+            pattern: ".*@.*(sendgrid|doordash|uber)\\.(com|net)$"
     score: 65
     description: "Fake SendGrid payment failure notifications"
 
@@ -295,7 +295,7 @@ rules:
         - type: "Not"
           criteria:
             type: "SenderPattern"
-            pattern: ".*@.*(schwab|sbi|disney|legitimate)\\.(com|net|co\\.in)$"
+            pattern: ".*@.*(schwab|sbi|disney)\\.(com|net|co\\.in)$"
     score: 70
     description: "Financial institution phishing attempts"
 
@@ -361,7 +361,7 @@ rules:
         - type: "Not"
           criteria:
             type: "SenderPattern"
-            pattern: ".*@.*(legitimate|lovepop|usps|netatmo|pacific|evergreen|secretlab|think|disney|dominos|business|official|battery|hsa|fsa|vacuums|fall)\\.(com|net|gov)$"
+            pattern: ".*@.*(lovepop|usps|netatmo|pacific|evergreen|secretlab|think|disney|dominos|business|official|battery|hsa|fsa|vacuums|fall)\\.(com|net|gov)$"
     score: 55
     description: "Generic spam indicators (excludes legitimate businesses)"
 

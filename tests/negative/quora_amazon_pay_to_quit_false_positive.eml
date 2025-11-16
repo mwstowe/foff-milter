@@ -1,21 +1,21 @@
-Return-Path: <mstowe+caf_=mstowe=baddomain.com@gmail.com>
-Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
-	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTPS id 5A5LXxpB016563
+Return-Path: <mstowe+caf_=mstowe=example.com@gmail.com>
+Received: from hotel.example.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.example.com (8.18.1/8.18.1) with ESMTPS id 5A5LXxpB016563
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
-	for <mstowe@baddomain.com>; Wed, 5 Nov 2025 21:34:00 GMT
-	(envelope-from mstowe+caf_=mstowe=baddomain.com@gmail.com)
-Authentication-Results: juliett.baddomain.com;
+	for <user@example.com>; Wed, 5 Nov 2025 21:34:00 GMT
+	(envelope-from mstowe+caf_=mstowe=example.com@gmail.com)
+Authentication-Results: juliett.example.com;
 	dkim=pass (2048-bit key; unprotected) header.d=quora.com header.i=@quora.com header.b=bjKHKtJM
-X-Authentication-Warning: juliett.baddomain.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.baddomain.com
+X-Authentication-Warning: juliett.example.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.example.com
 Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 5A5LXvk4031536
+	by hotel.example.com (8.16.1/8.16.1) with ESMTPS id 5A5LXvk4031536
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=OK)
-	for <mstowe@baddomain.com>; Wed, 5 Nov 2025 15:33:58 -0600
-DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 5A5LXvk4031536
-Authentication-Results: hotel.baddomain.com;
+	for <user@example.com>; Wed, 5 Nov 2025 15:33:58 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.example.com 5A5LXvk4031536
+Authentication-Results: hotel.example.com;
 	dkim=pass (2048-bit key, unprotected) header.d=quora.com header.i=@quora.com header.a=rsa-sha256 header.s=pigeon header.b=bjKHKtJM
 Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-640c3940649so386761a12.1
-        for <mstowe@baddomain.com>; Wed, 05 Nov 2025 13:33:58 -0800 (PST)
+        for <user@example.com>; Wed, 05 Nov 2025 13:33:58 -0800 (PST)
 ARC-Seal: i=2; a=rsa-sha256; t=1762378431; cv=pass;
         d=google.com; s=arc-20240605;
         b=T+4BqROEi5QC7E0B8KRurxOVhDFf7UylN4FweR2wnpl4HHJ345y8XdPW/Np98szUzz
@@ -35,7 +35,7 @@ ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc
          iTNCaQbSWXmtev2I2F3W8F9W44kMPY8uufT+vPGHtxhLw5HwkWCAf82BNqfcwWY1PYq9
          lYP/4qlTNxGHpJjMSjDrTEoAtx/lmzRgAqEou8Z1yLEu9PyhQ8Hi15zcFxouJhLd/amP
          TO3w==;
-        darn=baddomain.com
+        darn=example.com
 ARC-Authentication-Results: i=2; mx.google.com;
        dkim=pass header.i=@quora.com header.s=pigeon header.b=bjKHKtJM;
        spf=pass (google.com: domain of noreply@quora.com designates 52.203.132.108 as permitted sender) smtp.mailfrom=noreply@quora.com;
@@ -52,15 +52,15 @@ X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
          UVOu/mlU1qgk22WelBKIzAbGlz8cSbi3vrRRXRUdro3bk90O+crXm1LBmBrInWGmpc8R
          0B5KkToDXkRTeHudpzBg+3Xyz4xsN+Yf684t66Ulr0jp9juddR/232NHvyISyFhJr6cJ
          mf0w==
-X-Forwarded-Encrypted: i=2; AJvYcCXQIAh5JTUYebB6szc6TuRMzZiJqTEK0fYHK3fgzJNYpSE2lDV2uusjH8//q0c+xEInvWor8V8=@baddomain.com
+X-Forwarded-Encrypted: i=2; AJvYcCXQIAh5JTUYebB6szc6TuRMzZiJqTEK0fYHK3fgzJNYpSE2lDV2uusjH8//q0c+xEInvWor8V8=@example.com
 X-Gm-Message-State: AOJu0YzP0msUmX2lskNjQb6xQAlgni6z1bjD5h6RpOwu5w1hsoZz6teg
 	Iwn1CIquAstz5gbliIrLd0XPAdojqMOKff2SE6PyA/BD11pOoGBGSOFUEcrOVT9+kkxKNFwVwP2
 	MsYyOOxgqf0JiSCDpEO5a9jOU9Pwl/EigTWyyVpPiS4Sda7+EWy5NYv0oADvdCg==
 X-Received: by 2002:a05:6402:350e:b0:640:c95c:be23 with SMTP id 4fb4d7f45d1cf-641058d5487mr4493963a12.16.1762378431361;
         Wed, 05 Nov 2025 13:33:51 -0800 (PST)
-X-Forwarded-To: mstowe@baddomain.com
-X-Forwarded-For: mstowe@gmail.com mstowe@baddomain.com
-Delivered-To: mstowe@gmail.com
+X-Forwarded-To: user@example.com
+X-Forwarded-For: user@gmail.com user@example.com
+Delivered-To: user@gmail.com
 Received: by 2002:a05:6400:20e:b0:2ba:4fd1:f273 with SMTP id hu14csp561401ecb;
         Wed, 5 Nov 2025 13:33:48 -0800 (PST)
 X-Google-Smtp-Source: AGHT+IGGljP6hmv6w90mqB76KcFX8xeDkDnetbv13zmBJaPRGFRbHG07tr1RjX1Xpd56QOshZYAq
@@ -92,7 +92,7 @@ ARC-Authentication-Results: i=1; mx.google.com;
        dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=quora.com
 Received: from o20.pigeon.quora.com (o20.pigeon.quora.com. [52.203.132.108])
         by mx.google.com with ESMTPS id af79cd13be357-8b235458f5asi23837185a.1044.2025.11.05.13.33.47
-        for <mstowe@gmail.com>
+        for <user@gmail.com>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Wed, 05 Nov 2025 13:33:47 -0800 (PST)
 Received-SPF: pass (google.com: domain of noreply@quora.com designates 52.203.132.108 as permitted sender) client-ip=52.203.132.108;
@@ -102,7 +102,7 @@ Authentication-Results: mx.google.com;
        dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=quora.com
 Received: 
 	by pigeon-at-10040 (OpenSMTPD) with ESMTP id 8d839fb3
-	for <mstowe@gmail.com>;
+	for <user@gmail.com>;
 	Wed, 5 Nov 2025 21:33:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quora.com; h=
 	content-type:mime-version:from:to:subject:list-unsubscribe:date
@@ -117,7 +117,7 @@ Content-Type: multipart/alternative;
  boundary="===============6851490560356429553=="
 MIME-Version: 1.0
 From: Quora Digest <english-personalized-digest@quora.com>
-To: mstowe@gmail.com
+To: user@gmail.com
 Subject: =?utf-8?q?Did_you_accept_Amazon=27s_=27pay_to_quit=27_offer=3F_If_not=2C_hav?=
  =?utf-8?q?e_you_ever_been_tempted=3F?=
 List-Unsubscribe: <https://www.quora.com/email_optout/qemail_unsubscribe?email_track_id=7989474e6c2c45ecb831ad6b9b81610d&ish=1&t=1762378426201090&token=dbddcbf7e664a241a19742856234a5474b459ed37ecb092eac03eca897ec8994a60beca35990e833580cce7ec976b831842d658e3ecd53cd98acaed7c606ddf9&type=2&uid=45660251>
@@ -154,13 +154,13 @@ X-QMSG: =?utf-8?q?-hdFIVO5-Ng5xqaboc8oDf1ROtk7UHow7eLvyvbAAk1g8SA38Axkl5QYS5SMqS
  =?utf-8?q?FTo3MjDOvqfxQ7ZPSI4apcDhX6FnNCIiQ5KJmIAobQ4BgwR2n3xFysNWJ0Y-n0BzO?=
  =?utf-8?q?0g45P3ispfvs4tZc4h=5FLG0c0BDviPrnDDzUD6oNmh4X4rPIBS=5Fj63HFf2S0Lv?=
  =?utf-8?q?9ExKBXHBUreWCTPU3wf9-JwaKxOtwm2wTTNS7ZUFX0q4fvpioGhtAAECAA=3D=3D?=
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Wed, 05 Nov 2025 21:34:00 +0000 (UTC)
-X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Wed, 05 Nov 2025 15:33:59 -0600 (CST)
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.example.com [172.31.18.8]); Wed, 05 Nov 2025 21:34:00 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.example.com [23.95.222.152]); Wed, 05 Nov 2025 15:33:59 -0600 (CST)
 X-Spam-Flag: YES
-X-FOFF-Rule-Matched: Integration: Legitimate Service Domain Mismatch (juliett.baddomain.com)
-X-FOFF-Rule-Matched: Integration: Legitimate Service Domain Mismatch (hotel.baddomain.com)
-X-FOFF-Score: 50 - foff-milter v0.6.6 (juliett.baddomain.com)
-X-FOFF-Score: 50 - foff-milter v0.6.6 (hotel.baddomain.com)
+X-FOFF-Rule-Matched: Integration: Legitimate Service Domain Mismatch (juliett.example.com)
+X-FOFF-Rule-Matched: Integration: Legitimate Service Domain Mismatch (hotel.example.com)
+X-FOFF-Score: 50 - foff-milter v0.6.6 (juliett.example.com)
+X-FOFF-Score: 50 - foff-milter v0.6.6 (hotel.example.com)
 
 --===============6851490560356429553==
 Content-Type: text/plain; charset="utf-8"

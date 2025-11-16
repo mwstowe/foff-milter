@@ -1,23 +1,23 @@
 Return-Path: <gabriel.vianna@aluno.ipeduca.net.br>
-Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
-	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTPS id 5A6CKvD0046567
+Received: from hotel.example.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.example.com (8.18.1/8.18.1) with ESMTPS id 5A6CKvD0046567
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
-	for <mstowe@baddomain.com>; Thu, 6 Nov 2025 12:20:59 GMT
+	for <user@example.com>; Thu, 6 Nov 2025 12:20:59 GMT
 	(envelope-from gabriel.vianna@aluno.ipeduca.net.br)
-Authentication-Results: juliett.baddomain.com;
+Authentication-Results: juliett.example.com;
 	dkim=pass (2048-bit key; unprotected) header.d=aluno-ipeduca-net-br.20230601.gappssmtp.com header.i=@aluno-ipeduca-net-br.20230601.gappssmtp.com header.b=a517ttzk
-X-Authentication-Warning: juliett.baddomain.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.baddomain.com
+X-Authentication-Warning: juliett.example.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.example.com
 Received: from mail-yx1-f43.google.com (mail-yx1-f43.google.com [74.125.224.43])
-	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 5A6CKsNr046489
+	by hotel.example.com (8.16.1/8.16.1) with ESMTPS id 5A6CKsNr046489
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=OK)
-	for <mstowe@baddomain.com>; Thu, 6 Nov 2025 06:20:56 -0600
-DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 5A6CKsNr046489
-Authentication-Results: hotel.baddomain.com;
+	for <user@example.com>; Thu, 6 Nov 2025 06:20:56 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.example.com 5A6CKsNr046489
+Authentication-Results: hotel.example.com;
 	dkim=pass (2048-bit key, unprotected) header.d=aluno-ipeduca-net-br.20230601.gappssmtp.com header.i=@aluno-ipeduca-net-br.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=a517ttzk
 Received: by mail-yx1-f43.google.com with SMTP id 956f58d0204a3-63e2cc1ac4aso866697d50.2
-        for <mstowe@baddomain.com>; Thu, 06 Nov 2025 04:20:55 -0800 (PST)
+        for <user@example.com>; Thu, 06 Nov 2025 04:20:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=aluno-ipeduca-net-br.20230601.gappssmtp.com; s=20230601; t=1762431649; x=1763036449; darn=baddomain.com;
+        d=aluno-ipeduca-net-br.20230601.gappssmtp.com; s=20230601; t=1762431649; x=1763036449; darn=example.com;
         h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
          :date:message-id:reply-to;
         bh=qavJeh1MJlTy41X30LijK0CCgcsEV50WY2V/Se/xuOQ=;
@@ -38,7 +38,7 @@ X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
          NnGPwAl2URveVqS23GNN3FzzOqPVVUWjOyPiCbRyJe1iwBmpk0aLH7R2spDRrf4fnL8Z
          8C0li6TrxuKWsgRueZG/fNPE9E2AEvChmUor49ebtDhFEMxmaTwiJITrzSkq9/CBw4Uh
          TvPg==
-X-Forwarded-Encrypted: i=1; AJvYcCU/d1eksux36J5sLYx68SMJ/kZfFr2ez7KMNgxThDgDHwOFUDc/sxH1uqngOJSwdgG0jtJtydw=@baddomain.com
+X-Forwarded-Encrypted: i=1; AJvYcCU/d1eksux36J5sLYx68SMJ/kZfFr2ez7KMNgxThDgDHwOFUDc/sxH1uqngOJSwdgG0jtJtydw=@example.com
 X-Gm-Message-State: AOJu0YwfZLDQTUoZIt+TIGV57hMkd2UEpGzK9X5Uqj/7VKycbubZIpOM
 	780zepX76k0IrjxG3a3WcJAyOt04gdfHB4luSouWupKFc489LrtWHDeylnxeLz5uqN7XSHkZGOF
 	uM/9ShfiDY3ag+gFxWr0jsZygQppwdICubEdsJR8jdw==
@@ -60,7 +60,7 @@ Subject: Thank you for your payment for Transaction
 To: mstorck@lippes.com, mstorer@ttoledo.com, mstork@recoverhealth.org,
         mstormberg@tectonicdesignbuild.com, mstorsve@me.com,
         mstory@npdodge.com, mstorz@manganinc.com, mstout@parkson.com,
-        mstoway@kc.rr.com, mstowe@baddomain.com, mstowell@me.com,
+        mstoway@kc.rr.com, user@example.com, mstowell@me.com,
         mstoyanoff@acci-us.com, mstr312@me.com, mstraat@neb.rr.com,
         mstrachan@floridianbank.com, mstracuzzi@mdsol.com,
         mstrain@symmunity.com, mstraka@solidtechah.com,
@@ -71,12 +71,12 @@ To: mstorck@lippes.com, mstorer@ttoledo.com, mstork@recoverhealth.org,
         mstraub@cfl.rr.com, mstrauss@emesandassociates.com,
         mstrauss@twcny.rr.com, mstreb@cfl.rr.com
 Content-Type: multipart/mixed; boundary="000000000000638dc00642ec1890"
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Thu, 06 Nov 2025 12:21:01 +0000 (UTC)
-X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Thu, 06 Nov 2025 06:20:57 -0600 (CST)
-X-FOFF-Rule-Matched: Advanced Heuristics: Weak Signal Aggregation (juliett.baddomain.com)
-X-FOFF-Rule-Matched: Advanced Heuristics: Weak Signal Aggregation (hotel.baddomain.com)
-X-FOFF-Score: 12 - foff-milter v0.6.6 (juliett.baddomain.com)
-X-FOFF-Score: 12 - foff-milter v0.6.6 (hotel.baddomain.com)
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.example.com [172.31.18.8]); Thu, 06 Nov 2025 12:21:01 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.example.com [23.95.222.152]); Thu, 06 Nov 2025 06:20:57 -0600 (CST)
+X-FOFF-Rule-Matched: Advanced Heuristics: Weak Signal Aggregation (juliett.example.com)
+X-FOFF-Rule-Matched: Advanced Heuristics: Weak Signal Aggregation (hotel.example.com)
+X-FOFF-Score: 12 - foff-milter v0.6.6 (juliett.example.com)
+X-FOFF-Score: 12 - foff-milter v0.6.6 (hotel.example.com)
 
 --000000000000638dc00642ec1890
 Content-Type: multipart/alternative; boundary="000000000000638dc00642ec188e"

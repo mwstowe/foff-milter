@@ -1,23 +1,23 @@
 Return-Path: <dmuligko31@kosd.org>
-Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
-	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTPS id 5A7Guk1J004056
+Received: from hotel.example.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.example.com (8.18.1/8.18.1) with ESMTPS id 5A7Guk1J004056
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
-	for <marcy@baddomain.com>; Fri, 7 Nov 2025 16:56:46 GMT
+	for <marcy@example.com>; Fri, 7 Nov 2025 16:56:46 GMT
 	(envelope-from dmuligko31@kosd.org)
-Authentication-Results: juliett.baddomain.com;
+Authentication-Results: juliett.example.com;
 	dkim=pass (2048-bit key; unprotected) header.d=kosd-org.20230601.gappssmtp.com header.i=@kosd-org.20230601.gappssmtp.com header.b=v0PV7GYT
-X-Authentication-Warning: juliett.baddomain.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.baddomain.com
+X-Authentication-Warning: juliett.example.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.example.com
 Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
-	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 5A7Guh7F017133
+	by hotel.example.com (8.16.1/8.16.1) with ESMTPS id 5A7Guh7F017133
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=OK)
-	for <marcy@baddomain.com>; Fri, 7 Nov 2025 10:56:45 -0600
-DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 5A7Guh7F017133
-Authentication-Results: hotel.baddomain.com;
+	for <marcy@example.com>; Fri, 7 Nov 2025 10:56:45 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.example.com 5A7Guh7F017133
+Authentication-Results: hotel.example.com;
 	dkim=pass (2048-bit key, unprotected) header.d=kosd-org.20230601.gappssmtp.com header.i=@kosd-org.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=v0PV7GYT
 Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-57bd482dfd2so856846e87.2
-        for <marcy@baddomain.com>; Fri, 07 Nov 2025 08:56:45 -0800 (PST)
+        for <marcy@example.com>; Fri, 07 Nov 2025 08:56:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kosd-org.20230601.gappssmtp.com; s=20230601; t=1762534598; x=1763139398; darn=baddomain.com;
+        d=kosd-org.20230601.gappssmtp.com; s=20230601; t=1762534598; x=1763139398; darn=example.com;
         h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
          :subject:date:message-id:reply-to;
         bh=LE2tkVQncgUua6a58se3r2KNAHNfMiHeIkz1kRuAN3c=;
@@ -38,7 +38,7 @@ X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
          gpeQxYMUjXihE183TCXH2yGLMQPJsmE7B40P474drNJPeS6BUdk15l65QzDa7ihnoDuZ
          qmICFBHHQluDld3nqKPJr3wjiyazkAYNXEO/+9Q8uW/uo66KrJCeH6BQU9MuDgiU4HST
          c2Ng==
-X-Forwarded-Encrypted: i=1; AJvYcCVJzsv+CpRT7d+DfsB8HWZ1HLP76Y6dTnFFO9894+tOQbg8npyZGK77pNQn5twZjwzi5VAUgQ==@baddomain.com
+X-Forwarded-Encrypted: i=1; AJvYcCVJzsv+CpRT7d+DfsB8HWZ1HLP76Y6dTnFFO9894+tOQbg8npyZGK77pNQn5twZjwzi5VAUgQ==@example.com
 X-Gm-Message-State: AOJu0Yyf8R7wGo8/qYixim84/qTKGyFsDczzpQrbNaxI86vo8g6oobhJ
 	XgXem5672P9VYGOFAJwlRqcFCr4pbLfMEtxO7I1Xi7HUQYcQ/5F77VGa1ADSSYvZwHC6HDMo+fM
 	kxtKTwQGB4KbhMGQke6K7TFFixcMZNi3VOWkk1g5h7KO6cJP7XjIShb+KuWrewNaPJUDUlpe/6N
@@ -61,10 +61,10 @@ Subject: Norton Alert: The total amount of your overdue charge is $295.70
 To: undisclosed-recipients:;
 Content-Type: multipart/alternative; boundary="00000000000090d0ff0643041084"
 X-Usertype: student
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Fri, 07 Nov 2025 16:56:46 +0000 (UTC)
-X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Fri, 07 Nov 2025 10:56:45 -0600 (CST)
-X-FOFF-Score: 0 - analyzed by foff-milter v0.6.6 on juliett.baddomain.com
-X-FOFF-Score: 0 - analyzed by foff-milter v0.6.6 on hotel.baddomain.com
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.example.com [172.31.18.8]); Fri, 07 Nov 2025 16:56:46 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.example.com [23.95.222.152]); Fri, 07 Nov 2025 10:56:45 -0600 (CST)
+X-FOFF-Score: 0 - analyzed by foff-milter v0.6.6 on juliett.example.com
+X-FOFF-Score: 0 - analyzed by foff-milter v0.6.6 on hotel.example.com
 
 --00000000000090d0ff0643041084
 Content-Type: text/plain; charset="UTF-8"

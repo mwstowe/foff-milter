@@ -1,21 +1,21 @@
-Return-Path: <mstowe+caf_=mstowe=baddomain.com@gmail.com>
-Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
-	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTPS id 5AB8wubW070544
+Return-Path: <mstowe+caf_=mstowe=example.com@gmail.com>
+Received: from hotel.example.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.example.com (8.18.1/8.18.1) with ESMTPS id 5AB8wubW070544
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
-	for <mstowe@baddomain.com>; Tue, 11 Nov 2025 08:58:56 GMT
-	(envelope-from mstowe+caf_=mstowe=baddomain.com@gmail.com)
-Authentication-Results: juliett.baddomain.com;
+	for <user@example.com>; Tue, 11 Nov 2025 08:58:56 GMT
+	(envelope-from mstowe+caf_=mstowe=example.com@gmail.com)
+Authentication-Results: juliett.example.com;
 	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b=i/eDaVKT
-X-Authentication-Warning: juliett.baddomain.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.baddomain.com
+X-Authentication-Warning: juliett.example.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.example.com
 Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 5AB8ws6S111577
+	by hotel.example.com (8.16.1/8.16.1) with ESMTPS id 5AB8ws6S111577
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=OK)
-	for <mstowe@baddomain.com>; Tue, 11 Nov 2025 02:58:55 -0600
-DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 5AB8ws6S111577
-Authentication-Results: hotel.baddomain.com;
+	for <user@example.com>; Tue, 11 Nov 2025 02:58:55 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.example.com 5AB8ws6S111577
+Authentication-Results: hotel.example.com;
 	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=i/eDaVKT
 Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-640a503fbe8so7067343a12.1
-        for <mstowe@baddomain.com>; Tue, 11 Nov 2025 00:58:55 -0800 (PST)
+        for <user@example.com>; Tue, 11 Nov 2025 00:58:55 -0800 (PST)
 ARC-Seal: i=2; a=rsa-sha256; t=1762851533; cv=pass;
         d=google.com; s=arc-20240605;
         b=IUFn97bZN6qjOuVsHBoIvNA6LRQqyAnSHdNYr8/vjgKZupS5Geyg1XJKs17QBbv+JL
@@ -35,7 +35,7 @@ ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc
          v1s5zevtX7WuRxopsmbB/nyOQRXwuVoan5avfYV3znq/Xnu8Ahq3/KRswJrBFBBrHmiw
          hQsNDl+B0R+lfhEmjikqJfbFZ7VUyw2FHXgtYurZyKXLTF0ba145VOmyme+MOxAslsa8
          dzYA==;
-        darn=baddomain.com
+        darn=example.com
 ARC-Authentication-Results: i=2; mx.google.com;
        dkim=pass header.i=@gmail.com header.s=20230601 header.b="i/eDaVKT";
        spf=pass (google.com: domain of gamaale234@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=gamaale234@gmail.com;
@@ -53,15 +53,15 @@ X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
          gFbCQhQyL5GAIwq8XmublDn57AD+/yD//q7T/UO9Z8/Y4Wq/Ho7oEQVf+I3+mbVo7Kq5
          fU/MvMCfPaZD+YHQlOlM4qZW3ZrdJVfOWQggfNLmMGH1wmDZer7e1vBsMrbp3elTNEU7
          wvrg==
-X-Forwarded-Encrypted: i=2; AJvYcCW0AFyvOfdAMfxvP1rUuDVPNWmOHNbvgU+vsgzYi0SW8s6NquH9GSTwICHs24D8MNytP66NOcw=@baddomain.com
+X-Forwarded-Encrypted: i=2; AJvYcCW0AFyvOfdAMfxvP1rUuDVPNWmOHNbvgU+vsgzYi0SW8s6NquH9GSTwICHs24D8MNytP66NOcw=@example.com
 X-Gm-Message-State: AOJu0Ywg1d9iIyu+U/osOh/ob7wyLGBD8TJ+dlN1k0FYCvANsjdkMPp8
 	MrMZk+ik0bMYgnYV/uXHtIA1QwjM+KHPD9MWECaMfj9fR1OUv9ZMctJP16ZcbS21hPqy0A5IZjW
 	v2MLYLEXSy4jWojjkb6SIje8T8SCVdVJ+h+/w0hS1/cnARSUK1Mr7S1HPD5CQBQ==
 X-Received: by 2002:a05:6402:3546:b0:63c:1066:8bec with SMTP id 4fb4d7f45d1cf-6415e81d8d1mr9081429a12.35.1762851533321;
         Tue, 11 Nov 2025 00:58:53 -0800 (PST)
-X-Forwarded-To: mstowe@baddomain.com
-X-Forwarded-For: mstowe@gmail.com mstowe@baddomain.com
-Delivered-To: mstowe@gmail.com
+X-Forwarded-To: user@example.com
+X-Forwarded-For: user@gmail.com user@example.com
+Delivered-To: user@gmail.com
 Received: by 2002:a54:2285:0:b0:2ba:7552:a66c with SMTP id b5csp1010325eco;
         Tue, 11 Nov 2025 00:58:51 -0800 (PST)
 X-Received: by 2002:a05:620a:4613:b0:7fd:50bd:193b with SMTP id af79cd13be357-8b257ef9521mr1391758785a.14.1762851531616;
@@ -92,7 +92,7 @@ ARC-Authentication-Results: i=1; mx.google.com;
        dara=pass header.i=@gmail.com
 Received: from mail-sor-f41.google.com (mail-sor-f41.google.com. [209.85.220.41])
         by mx.google.com with SMTPS id af79cd13be357-8b2364218acsor1015789485a.0.2025.11.11.00.58.51
-        for <mstowe@gmail.com>
+        for <user@gmail.com>
         (Google Transport Security);
         Tue, 11 Nov 2025 00:58:51 -0800 (PST)
 Received-SPF: pass (google.com: domain of gamaale234@gmail.com designates 209.85.220.41 as permitted sender) client-ip=209.85.220.41;
@@ -127,22 +127,22 @@ Received: from ?IPv6:2600:4040:2a81:a100:8576:659b:9199:9459? ([2600:4040:2a81:a
         by smtp.gmail.com with ESMTPSA id d75a77b69052e-4eda7116927sm60080281cf.13.2025.11.11.00.58.49
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
         Tue, 11 Nov 2025 00:58:50 -0800 (PST)
-From: Lynda Oertel <gamaale234@gmail.com>
+From: Personal Contact <personal@gmail.com>
 Content-Type: multipart/alternative;
 	boundary="Apple-Mail=_94B5AABE-458F-4A69-94CA-764464CD39CC"
 Mime-Version: 1.0 (Mac OS X Mail 13.4 \(3608.120.23.2.7\))
 Date: Tue, 11 Nov 2025 03:58:45 -0500
 Subject: HAPPY BIRTHDAY!  HAPPY BIRTHDAY!
 Message-Id: <9ECB7A3E-47A4-4A7D-9F7A-71F9EA2880A2@gmail.com>
-To: Michael Stowe <mstowe@gmail.com>
+To: Michael Stowe <user@gmail.com>
 X-Mailer: Apple Mail (2.3608.120.23.2.7)
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Tue, 11 Nov 2025 08:58:56 +0000 (UTC)
-X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Tue, 11 Nov 2025 02:58:55 -0600 (CST)
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.example.com [172.31.18.8]); Tue, 11 Nov 2025 08:58:56 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.example.com [23.95.222.152]); Tue, 11 Nov 2025 02:58:55 -0600 (CST)
 X-Spam-Flag: YES
-X-FOFF-Score: 75 - analyzed by foff-milter v0.6.9 on juliett.baddomain.com
-X-FOFF-Score: 75 - foff-milter v0.6.9 (juliett.baddomain.com)
-X-FOFF-Score: 75 - analyzed by foff-milter v0.6.9 on hotel.baddomain.com
-X-FOFF-Score: 75 - foff-milter v0.6.9 (hotel.baddomain.com)
+X-FOFF-Score: 75 - analyzed by foff-milter v0.6.9 on juliett.example.com
+X-FOFF-Score: 75 - foff-milter v0.6.9 (juliett.example.com)
+X-FOFF-Score: 75 - analyzed by foff-milter v0.6.9 on hotel.example.com
+X-FOFF-Score: 75 - foff-milter v0.6.9 (hotel.example.com)
 
 
 --Apple-Mail=_94B5AABE-458F-4A69-94CA-764464CD39CC

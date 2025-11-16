@@ -1,23 +1,23 @@
-Return-Path: <mstowe+caf_=mstowe=baddomain.com@gmail.com>
-Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
-	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTPS id 5A4FYqBW055914
+Return-Path: <mstowe+caf_=mstowe=example.com@gmail.com>
+Received: from hotel.example.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.example.com (8.18.1/8.18.1) with ESMTPS id 5A4FYqBW055914
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
-	for <mstowe@baddomain.com>; Tue, 4 Nov 2025 15:34:53 GMT
-	(envelope-from mstowe+caf_=mstowe=baddomain.com@gmail.com)
-Authentication-Results: juliett.baddomain.com;
+	for <user@example.com>; Tue, 4 Nov 2025 15:34:53 GMT
+	(envelope-from mstowe+caf_=mstowe=example.com@gmail.com)
+Authentication-Results: juliett.example.com;
 	dkim=pass (1024-bit key; unprotected) header.d=o.backerkit.com header.i=@o.backerkit.com header.b=NE8Xqq5g;
 	dkim=pass (1024-bit key; unprotected) header.d=mailgun.org header.i=@mailgun.org header.b=mA0sac+w
-X-Authentication-Warning: juliett.baddomain.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.baddomain.com
+X-Authentication-Warning: juliett.example.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.example.com
 Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 5A4FYosq089875
+	by hotel.example.com (8.16.1/8.16.1) with ESMTPS id 5A4FYosq089875
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=OK)
-	for <mstowe@baddomain.com>; Tue, 4 Nov 2025 09:34:52 -0600
-DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 5A4FYosq089875
-Authentication-Results: hotel.baddomain.com;
+	for <user@example.com>; Tue, 4 Nov 2025 09:34:52 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.example.com 5A4FYosq089875
+Authentication-Results: hotel.example.com;
 	dkim=pass (1024-bit key, unprotected) header.d=o.backerkit.com header.i=@o.backerkit.com header.a=rsa-sha256 header.s=smtp header.b=NE8Xqq5g;
 	dkim=pass (1024-bit key, unprotected) header.d=mailgun.org header.i=@mailgun.org header.a=rsa-sha256 header.s=mg header.b=mA0sac+w
 Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-640c3940649so3531715a12.1
-        for <mstowe@baddomain.com>; Tue, 04 Nov 2025 07:34:51 -0800 (PST)
+        for <user@example.com>; Tue, 04 Nov 2025 07:34:51 -0800 (PST)
 ARC-Seal: i=2; a=rsa-sha256; t=1762270485; cv=pass;
         d=google.com; s=arc-20240605;
         b=aGbrBR48a00G+KH3h1JrTnlULbu+J1gmPUYegRKYToyXI3lP6kFnkBU0xifWT5Y4vC
@@ -38,7 +38,7 @@ ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc
          gbonaASkrhf8ZjDcFbRJ9kBxDFvDWGOIbW2cM3YcPdX8/o2VN12uUTt2O4asxXJc9cKQ
          SZgMxqWcCJUu2E3JW0pU37wOaOZ3F0ZChlB6jXeecfKMaDz7k0V7tHCQOC2UDmFQbCXX
          frdg==;
-        darn=baddomain.com
+        darn=example.com
 ARC-Authentication-Results: i=2; mx.google.com;
        dkim=pass header.i=@o.backerkit.com header.s=smtp header.b=NE8Xqq5g;
        dkim=pass header.i=@mailgun.org header.s=mg header.b=mA0sac+w;
@@ -57,15 +57,15 @@ X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
          O6IQd3J1QV9lKuM21fTorTrTpduJw2yJYgGXCCr9HF7g+KcQbJm7AjQzXHIPA7iYdtw0
          iJRdpINGNLkROsoOHUtu1HY5MVHWPl2EsIifwHmA5/WtYO2yOw3cLPKmufGSPzEOXIYy
          H/sA==
-X-Forwarded-Encrypted: i=2; AJvYcCX1NWe/GcupT1N497g144PnJNwNtk2M6pxQ+bpese1lRwVvIsejlkQEH97/4LkC5kKNoivXQ8w=@baddomain.com
+X-Forwarded-Encrypted: i=2; AJvYcCX1NWe/GcupT1N497g144PnJNwNtk2M6pxQ+bpese1lRwVvIsejlkQEH97/4LkC5kKNoivXQ8w=@example.com
 X-Gm-Message-State: AOJu0YzGIp1eV+F6SFDUPV9ag+igBKlQggk6BxjnYotMTvBtEDr4Ci1Z
 	hoJghHqHw6Agf2DoaW52jwxmLKbdm6gID4fWEAc2I2ZW5EG4mAO6bK4oOP6bh05CNtAIgTF+nEo
 	NREQX29m2pvRzA5RlZUqIPVbtdEUIlj2C7gnHLqiC4gpck2AiRgCS4UNLHN0I+g==
 X-Received: by 2002:a05:6402:42d6:b0:63c:25fb:19ed with SMTP id 4fb4d7f45d1cf-64077068acamr14823878a12.24.1762270484651;
         Tue, 04 Nov 2025 07:34:44 -0800 (PST)
-X-Forwarded-To: mstowe@baddomain.com
-X-Forwarded-For: mstowe@gmail.com mstowe@baddomain.com
-Delivered-To: mstowe@gmail.com
+X-Forwarded-To: user@example.com
+X-Forwarded-For: user@gmail.com user@example.com
+Delivered-To: user@gmail.com
 Received: by 2002:a05:6400:a045:b0:2ba:4fd1:f273 with SMTP id d5csp283576ecd;
         Tue, 4 Nov 2025 07:34:42 -0800 (PST)
 X-Google-Smtp-Source: AGHT+IFw1BdRMqOXxMvrZF7LJjxZX6qLYnBNsfZz661wulTN1yHzWtmqL1pKUNEENqvcqiVrboCk
@@ -99,7 +99,7 @@ ARC-Authentication-Results: i=1; mx.google.com;
        dmarc=pass (p=REJECT sp=NONE dis=NONE) header.from=o.backerkit.com
 Received: from mail2-rdns.backerkit.com (mail2-rdns.backerkit.com. [69.72.45.71])
         by mx.google.com with UTF8SMTPS id 41be03b00d2f7-b93f1d8fe65si6730649a12.342.2025.11.04.07.34.42
-        for <mstowe@gmail.com>
+        for <user@gmail.com>
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
         Tue, 04 Nov 2025 07:34:42 -0800 (PST)
 Received-SPF: pass (google.com: domain of bounce+44228b.16b7e1-mstowe=gmail.com@o.backerkit.com designates 69.72.45.71 as permitted sender) client-ip=69.72.45.71;
@@ -125,7 +125,7 @@ Sender: creator+5696@o.backerkit.com
 Mime-Version: 1.0
 Subject: New Project Launched: Space Between/Cheeky Comics New York 2025 Exclusives
 From: Space Between Entertainment <creator+5696@o.backerkit.com>
-To: mstowe@gmail.com
+To: user@gmail.com
 X-Mailgun-Tag: organization:5696
 X-Mailgun-Tag: email_campaign:63129
 X-Mailgun-Tag: recipient_confidence:org_trackable
@@ -135,17 +135,17 @@ List-Unsubscribe-Post: List-Unsubscribe=One-Click
 Date: Tue, 04 Nov 2025 15:34:41 +0000
 Content-Type: text/html; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Tue, 04 Nov 2025 15:34:53 +0000 (UTC)
-X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Tue, 04 Nov 2025 09:34:52 -0600 (CST)
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.example.com [172.31.18.8]); Tue, 04 Nov 2025 15:34:53 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.example.com [23.95.222.152]); Tue, 04 Nov 2025 09:34:52 -0600 (CST)
 X-Spam-Flag: YES
-X-FOFF-Rule-Matched: Link Analysis: Suspicious Link Patterns (External Only) (juliett.baddomain.com)
-X-FOFF-Rule-Matched: Advanced Heuristics: Weak Signal Aggregation (juliett.baddomain.com)
-X-FOFF-Rule-Matched: Advanced Heuristics: Bayesian Spam Word Patterns (juliett.baddomain.com)
-X-FOFF-Rule-Matched: Link Analysis: Suspicious Link Patterns (External Only) (hotel.baddomain.com)
-X-FOFF-Rule-Matched: Advanced Heuristics: Weak Signal Aggregation (hotel.baddomain.com)
-X-FOFF-Rule-Matched: Advanced Heuristics: Bayesian Spam Word Patterns (hotel.baddomain.com)
-X-FOFF-Score: 57 - foff-milter v0.6.6 (juliett.baddomain.com)
-X-FOFF-Score: 57 - foff-milter v0.6.6 (hotel.baddomain.com)
+X-FOFF-Rule-Matched: Link Analysis: Suspicious Link Patterns (External Only) (juliett.example.com)
+X-FOFF-Rule-Matched: Advanced Heuristics: Weak Signal Aggregation (juliett.example.com)
+X-FOFF-Rule-Matched: Advanced Heuristics: Bayesian Spam Word Patterns (juliett.example.com)
+X-FOFF-Rule-Matched: Link Analysis: Suspicious Link Patterns (External Only) (hotel.example.com)
+X-FOFF-Rule-Matched: Advanced Heuristics: Weak Signal Aggregation (hotel.example.com)
+X-FOFF-Rule-Matched: Advanced Heuristics: Bayesian Spam Word Patterns (hotel.example.com)
+X-FOFF-Score: 57 - foff-milter v0.6.6 (juliett.example.com)
+X-FOFF-Score: 57 - foff-milter v0.6.6 (hotel.example.com)
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org=
 /TR/xhtml1/DTD/xhtml1-strict.dtd">

@@ -1,23 +1,23 @@
 Return-Path: <evan.uggen@indiannation.net>
-Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
-	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTPS id 5A5EabSf002041
+Received: from hotel.example.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.example.com (8.18.1/8.18.1) with ESMTPS id 5A5EabSf002041
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
-	for <mstowe@baddomain.com>; Wed, 5 Nov 2025 14:36:38 GMT
+	for <user@example.com>; Wed, 5 Nov 2025 14:36:38 GMT
 	(envelope-from evan.uggen@indiannation.net)
-Authentication-Results: juliett.baddomain.com;
+Authentication-Results: juliett.example.com;
 	dkim=pass (2048-bit key; unprotected) header.d=indiannation-net.20230601.gappssmtp.com header.i=@indiannation-net.20230601.gappssmtp.com header.b=u1g8IR9g
-X-Authentication-Warning: juliett.baddomain.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.baddomain.com
+X-Authentication-Warning: juliett.example.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.example.com
 Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 5A5EaanE021822
+	by hotel.example.com (8.16.1/8.16.1) with ESMTPS id 5A5EaanE021822
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=OK)
-	for <mstowe@baddomain.com>; Wed, 5 Nov 2025 08:36:37 -0600
-DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 5A5EaanE021822
-Authentication-Results: hotel.baddomain.com;
+	for <user@example.com>; Wed, 5 Nov 2025 08:36:37 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.example.com 5A5EaanE021822
+Authentication-Results: hotel.example.com;
 	dkim=pass (2048-bit key, unprotected) header.d=indiannation-net.20230601.gappssmtp.com header.i=@indiannation-net.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=u1g8IR9g
 Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-29470bc80ceso12484575ad.1
-        for <mstowe@baddomain.com>; Wed, 05 Nov 2025 06:36:37 -0800 (PST)
+        for <user@example.com>; Wed, 05 Nov 2025 06:36:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=indiannation-net.20230601.gappssmtp.com; s=20230601; t=1762353391; x=1762958191; darn=baddomain.com;
+        d=indiannation-net.20230601.gappssmtp.com; s=20230601; t=1762353391; x=1762958191; darn=example.com;
         h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
          :date:message-id:reply-to;
         bh=TebZ/J8mP0emIkjInHpXlUGml0WLSXzIRQQwk+YTpW4=;
@@ -38,7 +38,7 @@ X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
          +uQ+D00/9a2rG/l5YTxl+O42Bnm7GpPJHibHXfdNrAEAPy/AYtn14D4q1d6oYddx/LsE
          OxTYV7wAkwihq2ChnYxcXEp+0dJE8gk/PBc4TGfMCi75aa6T9N5aY+nn5SCYtu3B9w8/
          wxig==
-X-Forwarded-Encrypted: i=1; AJvYcCXyeImhLu4siZfAfbLWSza2LArIBmNY9DRKdAig9elY0Ck9WC/Gm1cCU/bftxxjRWFPwxYcpVg=@baddomain.com
+X-Forwarded-Encrypted: i=1; AJvYcCXyeImhLu4siZfAfbLWSza2LArIBmNY9DRKdAig9elY0Ck9WC/Gm1cCU/bftxxjRWFPwxYcpVg=@example.com
 X-Gm-Message-State: AOJu0YxHUpsadUpXxixkGq8YUMKohIGaMHszijTcKzUb23oFqymhMRdu
 	WdBdDMV5GPC2RAId41cSgCSyW4L1Y13dgFys9AlkdOHAGqbvO1gICqcvB0IA/uoywX1d1TPStQN
 	nd4LtGhC4jGFaWvQY46TAkgP4ennhOrAgnCow6lJUow==
@@ -64,21 +64,21 @@ To: mstonehouse@fehlmanlabarre.com, mstoneman@armstrongteasdale.com,
         mstorer@ttoledo.com, mstork@recoverhealth.org,
         mstormberg@tectonicdesignbuild.com, mstorsve@me.com,
         mstory@npdodge.com, mstorz@manganinc.com, mstout@parkson.com,
-        mstoway@kc.rr.com, mstowe@baddomain.com, mstowell@me.com,
+        mstoway@kc.rr.com, user@example.com, mstowell@me.com,
         mstoyanoff@acci-us.com, mstr312@me.com, mstraat@neb.rr.com,
         mstrachan@floridianbank.com, mstracuzzi@mdsol.com,
         mstrain@symmunity.com, mstraka@solidtechah.com,
         mstrandmo@brockperson.com, mstrang@bmi.net,
         mstrange@fryeburgacademy.org
 Content-Type: multipart/mixed; boundary="000000000000d412df0642d9df5b"
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Wed, 05 Nov 2025 14:36:39 +0000 (UTC)
-X-Greylist: ACL 173 matched, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Wed, 05 Nov 2025 08:36:37 -0600 (CST)
-X-FOFF-Rule-Matched: Advanced Heuristics: Advanced Heuristic Scoring (juliett.baddomain.com)
-X-FOFF-Rule-Matched: Advanced Heuristics: Weak Signal Aggregation (juliett.baddomain.com)
-X-FOFF-Rule-Matched: Advanced Heuristics: Advanced Heuristic Scoring (hotel.baddomain.com)
-X-FOFF-Rule-Matched: Advanced Heuristics: Weak Signal Aggregation (hotel.baddomain.com)
-X-FOFF-Score: 42 - foff-milter v0.6.6 (juliett.baddomain.com)
-X-FOFF-Score: 42 - foff-milter v0.6.6 (hotel.baddomain.com)
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.example.com [172.31.18.8]); Wed, 05 Nov 2025 14:36:39 +0000 (UTC)
+X-Greylist: ACL 173 matched, not delayed by milter-greylist-4.6.4 (hotel.example.com [23.95.222.152]); Wed, 05 Nov 2025 08:36:37 -0600 (CST)
+X-FOFF-Rule-Matched: Advanced Heuristics: Advanced Heuristic Scoring (juliett.example.com)
+X-FOFF-Rule-Matched: Advanced Heuristics: Weak Signal Aggregation (juliett.example.com)
+X-FOFF-Rule-Matched: Advanced Heuristics: Advanced Heuristic Scoring (hotel.example.com)
+X-FOFF-Rule-Matched: Advanced Heuristics: Weak Signal Aggregation (hotel.example.com)
+X-FOFF-Score: 42 - foff-milter v0.6.6 (juliett.example.com)
+X-FOFF-Score: 42 - foff-milter v0.6.6 (hotel.example.com)
 
 --000000000000d412df0642d9df5b
 Content-Type: multipart/alternative; boundary="000000000000d412de0642d9df59"

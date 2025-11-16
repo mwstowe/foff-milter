@@ -1,22 +1,22 @@
 Return-Path: <noreply@ups.com>
-Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
-	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTPS id 5A6JAnRu060941
+Received: from hotel.example.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.example.com (8.18.1/8.18.1) with ESMTPS id 5A6JAnRu060941
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
-	for <mstowe@baddomain.com>; Thu, 6 Nov 2025 19:10:50 GMT
+	for <user@example.com>; Thu, 6 Nov 2025 19:10:50 GMT
 	(envelope-from noreply@ups.com)
-Authentication-Results: juliett.baddomain.com;
+Authentication-Results: juliett.example.com;
 	dkim=pass (2048-bit key; unprotected) header.d=ups.com header.i=@ups.com header.b=o1yAMxVE
-X-Authentication-Warning: juliett.baddomain.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.baddomain.com
+X-Authentication-Warning: juliett.example.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.example.com
 Received: from mx0a-002b8002.pphosted.com (mx0a-002b8002.pphosted.com [148.163.135.252])
-	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 5A6JAmmK055508
+	by hotel.example.com (8.16.1/8.16.1) with ESMTPS id 5A6JAmmK055508
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO)
-	for <mstowe@baddomain.com>; Thu, 6 Nov 2025 13:10:49 -0600
-DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 5A6JAmmK055508
-Authentication-Results: hotel.baddomain.com;
+	for <user@example.com>; Thu, 6 Nov 2025 13:10:49 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.example.com 5A6JAmmK055508
+Authentication-Results: hotel.example.com;
 	dkim=pass (2048-bit key, unprotected) header.d=ups.com header.i=@ups.com header.a=rsa-sha256 header.s=nespps1 header.b=o1yAMxVE
 Received: from pps.filterd (m0425509.ppops.net [127.0.0.1])
 	by mx0a-002b8002.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5A6INABl023483
-	for <mstowe@baddomain.com>; Thu, 6 Nov 2025 14:10:48 -0500
+	for <user@example.com>; Thu, 6 Nov 2025 14:10:48 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ups.com; h=
 	content-type:date:from:message-id:mime-version:subject:to; s=
 	nespps1; bh=WnvVXFGENM7IJc0u7Q6E2SJaYmE10RDPrRQy2MQBw6Q=; b=o1yA
@@ -29,16 +29,16 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ups.com; h=
 Received: from gappsappsagent1.ups.com (gappsappsagent1.ups.com [153.2.235.17])
 	by mx0a-002b8002.pphosted.com (PPS) with ESMTPS id 4a619tvjuw-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <mstowe@baddomain.com>; Thu, 06 Nov 2025 14:10:48 -0500 (EST)
+	for <user@example.com>; Thu, 06 Nov 2025 14:10:48 -0500 (EST)
 Received: from pps.filterd (gappsappsagent1.ups.com [127.0.0.1])
 	by gappsappsagent1.ups.com (8.18.1.2/8.18.1.2) with ESMTP id 5A6IUuT8004631
-	for <mstowe@baddomain.com>; Thu, 6 Nov 2025 14:10:46 -0500
+	for <user@example.com>; Thu, 6 Nov 2025 14:10:46 -0500
 Received: from nscore-db88fd67d-d2vk6 (lsvrocpp40129.linux.us.ups.com [10.127.129.192])
 	by gappsappsagent1.ups.com (PPS) with ESMTPS id 4a5yd8babk-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <mstowe@baddomain.com>; Thu, 06 Nov 2025 14:10:46 -0500
+	for <user@example.com>; Thu, 06 Nov 2025 14:10:46 -0500
 From: "UPS" <mcinfo@ups.com>
-To: mstowe@baddomain.com
+To: user@example.com
 Subject: UPS Update: Package Scheduled for Delivery Tomorrow
 MIME-Version: 1.0
 Content-Type: multipart/alternative; boundary=----NextPart_1762456246475.0001262517
@@ -46,17 +46,17 @@ Date: Thu, 6 Nov 2025 14:10:46 -0500 (EST)
 Message-ID: <1493764726.2426243.1762456246511.JavaMail.1001@winsmtpappspp.ups.com>
 X-Proofpoint-Virus-Version: vendor=nai engine=6800 definitions=11604
  signatures=596818
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Thu, 06 Nov 2025 19:10:50 +0000 (UTC)
-X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Thu, 06 Nov 2025 13:10:49 -0600 (CST)
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.example.com [172.31.18.8]); Thu, 06 Nov 2025 19:10:50 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.example.com [23.95.222.152]); Thu, 06 Nov 2025 13:10:49 -0600 (CST)
 X-Spam-Flag: YES
-X-FOFF-Rule-Matched: Integration: Shipping/Delivery Scams (juliett.baddomain.com)
-X-FOFF-Rule-Matched: Analytics: Generic Sender Names (juliett.baddomain.com)
-X-FOFF-Rule-Matched: Advanced Heuristics: Advanced Heuristic Scoring (juliett.baddomain.com)
-X-FOFF-Rule-Matched: Integration: Shipping/Delivery Scams (hotel.baddomain.com)
-X-FOFF-Rule-Matched: Analytics: Generic Sender Names (hotel.baddomain.com)
-X-FOFF-Rule-Matched: Advanced Heuristics: Advanced Heuristic Scoring (hotel.baddomain.com)
-X-FOFF-Score: 80 - foff-milter v0.6.6 (juliett.baddomain.com)
-X-FOFF-Score: 80 - foff-milter v0.6.6 (hotel.baddomain.com)
+X-FOFF-Rule-Matched: Integration: Shipping/Delivery Scams (juliett.example.com)
+X-FOFF-Rule-Matched: Analytics: Generic Sender Names (juliett.example.com)
+X-FOFF-Rule-Matched: Advanced Heuristics: Advanced Heuristic Scoring (juliett.example.com)
+X-FOFF-Rule-Matched: Integration: Shipping/Delivery Scams (hotel.example.com)
+X-FOFF-Rule-Matched: Analytics: Generic Sender Names (hotel.example.com)
+X-FOFF-Rule-Matched: Advanced Heuristics: Advanced Heuristic Scoring (hotel.example.com)
+X-FOFF-Score: 80 - foff-milter v0.6.6 (juliett.example.com)
+X-FOFF-Score: 80 - foff-milter v0.6.6 (hotel.example.com)
 
 ------NextPart_1762456246475.0001262517
 Content-Type: text/html; charset=UTF-8

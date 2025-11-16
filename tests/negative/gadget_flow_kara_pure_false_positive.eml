@@ -1,23 +1,23 @@
-Return-Path: <mstowe+caf_=mstowe=baddomain.com@gmail.com>
-Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
-	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTPS id 5A9FVc1F084684
+Return-Path: <mstowe+caf_=mstowe=example.com@gmail.com>
+Received: from hotel.example.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.example.com (8.18.1/8.18.1) with ESMTPS id 5A9FVc1F084684
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
-	for <mstowe@baddomain.com>; Sun, 9 Nov 2025 15:31:38 GMT
-	(envelope-from mstowe+caf_=mstowe=baddomain.com@gmail.com)
-Authentication-Results: juliett.baddomain.com;
+	for <user@example.com>; Sun, 9 Nov 2025 15:31:38 GMT
+	(envelope-from mstowe+caf_=mstowe=example.com@gmail.com)
+Authentication-Results: juliett.example.com;
 	dkim=pass (1024-bit key; unprotected) header.d=mail.thegadgetflow.com header.i=hello@mail.thegadgetflow.com header.b=FgVROhGw;
 	dkim=pass (1024-bit key; unprotected) header.d=cmail2.com header.i=@cmail2.com header.b=Qs5qlBEL
-X-Authentication-Warning: juliett.baddomain.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.baddomain.com
+X-Authentication-Warning: juliett.example.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.example.com
 Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 5A9FVaRN065224
+	by hotel.example.com (8.16.1/8.16.1) with ESMTPS id 5A9FVaRN065224
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=OK)
-	for <mstowe@baddomain.com>; Sun, 9 Nov 2025 09:31:37 -0600
-DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 5A9FVaRN065224
-Authentication-Results: hotel.baddomain.com;
+	for <user@example.com>; Sun, 9 Nov 2025 09:31:37 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.example.com 5A9FVaRN065224
+Authentication-Results: hotel.example.com;
 	dkim=pass (1024-bit key, unprotected) header.d=mail.thegadgetflow.com header.i=hello@mail.thegadgetflow.com header.a=rsa-sha256 header.s=mail header.b=FgVROhGw;
 	dkim=pass (1024-bit key, unprotected) header.d=cmail2.com header.i=@cmail2.com header.a=rsa-sha256 header.s=cs2013 header.b=Qs5qlBEL
 Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-64149f78c0dso2619147a12.3
-        for <mstowe@baddomain.com>; Sun, 09 Nov 2025 07:31:37 -0800 (PST)
+        for <user@example.com>; Sun, 09 Nov 2025 07:31:37 -0800 (PST)
 ARC-Seal: i=2; a=rsa-sha256; t=1762702290; cv=pass;
         d=google.com; s=arc-20240605;
         b=DnA9BAL6MoUM9K8zy0OEEn06Z0/M7awNeQwk2bYDsGxpXvcDb99KfkeXejxhAEyFhZ
@@ -37,7 +37,7 @@ ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc
          2P5d8vD5sEyN/CwyhuWCOFLd3xJsDQZRj5w/DkPb5V/Urm/sPxW4VuElSwT5ETpd4jCi
          B0e7mpmGi85OejR8xqSRKg9ty79mO3LE9s0Beg8gPEnl+4i+KQliRHmxXnC0GBNVdlQV
          3EnQ==;
-        darn=baddomain.com
+        darn=example.com
 ARC-Authentication-Results: i=2; mx.google.com;
        dkim=pass header.i=@mail.thegadgetflow.com header.s=mail header.b=FgVROhGw;
        dkim=pass header.i=@cmail2.com header.s=cs2013 header.b=Qs5qlBEL;
@@ -56,15 +56,15 @@ X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
          ne3Dq4fjquG+qPF4Zz2S3p9qJNyYlFNILpRsZoG8t9G/s9x/bFexj82pUa//dpnNWGzj
          5IzeTMDboTfJXqdtesQ+tSgQlXTU3HHpdrnyFo4rry6QPh93xyROkE3gH7Iv4O9ihh37
          afXA==
-X-Forwarded-Encrypted: i=2; AJvYcCVthkPJzAksDzu8jP7qk8FR9pr0hDi1nYxyTTJsi+tbbV5aHa/r2rqz452HM2wgM1dgp4VhF7Y=@baddomain.com
+X-Forwarded-Encrypted: i=2; AJvYcCVthkPJzAksDzu8jP7qk8FR9pr0hDi1nYxyTTJsi+tbbV5aHa/r2rqz452HM2wgM1dgp4VhF7Y=@example.com
 X-Gm-Message-State: AOJu0Yxd7gPpUHAqvGycAj4YgQ61VQMYxynp5/O1E0EXdftMJAHSyNQo
 	OCQfm+w7JlBDMtuYyXtKqIoEZIcp7bdSyFLVkwB+USSzhykp2GWKic+t1r6CO9AP+KkNbVupRWX
 	vgzhos4dMWob9ACgu28QDSV0dDZMr3VEK4rggqoUbe6C+it8+2tXIpofDcThtJQ==
 X-Received: by 2002:a05:6402:1ec7:b0:640:9eb3:3685 with SMTP id 4fb4d7f45d1cf-6415e823380mr3992484a12.23.1762702290307;
         Sun, 09 Nov 2025 07:31:30 -0800 (PST)
-X-Forwarded-To: mstowe@baddomain.com
-X-Forwarded-For: mstowe@gmail.com mstowe@baddomain.com
-Delivered-To: mstowe@gmail.com
+X-Forwarded-To: user@example.com
+X-Forwarded-For: user@gmail.com user@example.com
+Delivered-To: user@gmail.com
 Received: by 2002:a05:6400:20e:b0:2ba:4fd1:f273 with SMTP id hu14csp2736845ecb;
         Sun, 9 Nov 2025 07:31:28 -0800 (PST)
 X-Google-Smtp-Source: AGHT+IGY1IDERolPx/csBb1LL1BmrN+JxGS26INgkaBrKpQr346mcPjqgBQ1ObaEQ7k/V4O2X8KV
@@ -97,7 +97,7 @@ ARC-Authentication-Results: i=1; mx.google.com;
        dmarc=pass (p=NONE sp=NONE dis=NONE) header.from=thegadgetflow.com
 Received: from mx209.h.outbound.createsend.com (mx209.h.outbound.createsend.com. [204.75.142.209])
         by mx.google.com with ESMTPS id d2e1a72fcca58-7b0cbf59ff1si4729151b3a.252.2025.11.09.07.31.27
-        for <mstowe@gmail.com>
+        for <user@gmail.com>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Sun, 09 Nov 2025 07:31:27 -0800 (PST)
 Received-SPF: pass (google.com: domain of gadgetflow-ydxedl1qyuouuq1j@bounce.mail.thegadgetflow.com designates 204.75.142.209 as permitted sender) client-ip=204.75.142.209;
@@ -123,7 +123,7 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=cs2013; d=cmail2.com;
 Subject: =?utf-8?Q?=f0=9f=92=a7Experience_Luxury_Hydration_?=
   =?utf-8?Q?=e2=80=94_Kara_Pure_2_Makes_Water_from_Air?=
 From: "Gadget Flow" <hello@mail.thegadgetflow.com>
-To: "Michael Stowe" <mstowe@gmail.com>
+To: "Michael Stowe" <user@gmail.com>
 Reply-To: support@thegadgetflow.com
 Date: Mon, 10 Nov 2025 02:31:07 +1100
 MIME-Version: 1.0
@@ -136,15 +136,15 @@ List-Unsubscribe: <https://unsub.cmail19.com/t/completeheader/j/ydxedl/qyuouuq/c
  <mailto:unsubscribe-ydxedl2qyuouuq2j-EB930461@cmail19.com?subject=Unsubscribe>
 List-Unsubscribe-Post: List-Unsubscribe=One-Click
 Message-ID: <cm.0231070791735.ydxedl.qyuouuq.j@cmail19.com>
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Sun, 09 Nov 2025 15:31:39 +0000 (UTC)
-X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Sun, 09 Nov 2025 09:31:38 -0600 (CST)
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.example.com [172.31.18.8]); Sun, 09 Nov 2025 15:31:39 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.example.com [23.95.222.152]); Sun, 09 Nov 2025 09:31:38 -0600 (CST)
 X-Spam-Flag: YES
-X-FOFF-Rule-Matched: Ecommerce Scams: Air filter and HVAC product scams (juliett.baddomain.com)
-X-FOFF-Rule-Matched: Advanced Heuristics: Weak Signal Aggregation (juliett.baddomain.com)
-X-FOFF-Rule-Matched: Ecommerce Scams: Air filter and HVAC product scams (hotel.baddomain.com)
-X-FOFF-Rule-Matched: Advanced Heuristics: Weak Signal Aggregation (hotel.baddomain.com)
-X-FOFF-Score: 72 - foff-milter v0.6.9 (juliett.baddomain.com)
-X-FOFF-Score: 72 - foff-milter v0.6.9 (hotel.baddomain.com)
+X-FOFF-Rule-Matched: Ecommerce Scams: Air filter and HVAC product scams (juliett.example.com)
+X-FOFF-Rule-Matched: Advanced Heuristics: Weak Signal Aggregation (juliett.example.com)
+X-FOFF-Rule-Matched: Ecommerce Scams: Air filter and HVAC product scams (hotel.example.com)
+X-FOFF-Rule-Matched: Advanced Heuristics: Weak Signal Aggregation (hotel.example.com)
+X-FOFF-Score: 72 - foff-milter v0.6.9 (juliett.example.com)
+X-FOFF-Score: 72 - foff-milter v0.6.9 (hotel.example.com)
 
 --_019053b3-47a0-4a0d-b51b-a9df6593bd70_
 Content-Type: text/plain; charset=utf-8

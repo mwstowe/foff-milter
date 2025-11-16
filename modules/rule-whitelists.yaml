@@ -244,7 +244,26 @@ rules:
     score: -300
     description: "Think Vacuums retail company"
 
-  - name: "Google Services"
+  # Comprehensive business whitelist for cleanup
+  - name: "Business domains whitelist"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@.*celebrations\\.com$"
+        - type: "SenderPattern"
+          pattern: ".*@.*disneystore\\.com$"
+        - type: "SenderPattern"
+          pattern: ".*@.*ba\\.com$"
+        - type: "SenderPattern"
+          pattern: ".*@.*acemed\\.com$"
+        - type: "SenderPattern"
+          pattern: ".*@.*xfinity\\.com$"
+    score: -200
+    description: "Business domains that were improperly flagged after cleanup"
+
+  # Google Services
     enabled: true
     criteria:
       type: "And"

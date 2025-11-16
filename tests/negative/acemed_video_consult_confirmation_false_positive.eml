@@ -1,18 +1,18 @@
 Return-Path: <bounces+3eeaa020-be6a-11f0-8d20-fae9afc80e45_vt1@mailerehr.charmtracker.com>
-Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
-	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTPS id 5AAJK8S7042719
+Received: from hotel.example.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.example.com (8.18.1/8.18.1) with ESMTPS id 5AAJK8S7042719
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
-	for <marcy@baddomain.com>; Mon, 10 Nov 2025 19:20:08 GMT
+	for <marcy@example.com>; Mon, 10 Nov 2025 19:20:08 GMT
 	(envelope-from bounces+3eeaa020-be6a-11f0-8d20-fae9afc80e45_vt1@mailerehr.charmtracker.com)
-Authentication-Results: juliett.baddomain.com;
+Authentication-Results: juliett.example.com;
 	dkim=pass (1024-bit key; unprotected) header.d=charmtracker.com header.i=@charmtracker.com header.b=AFIOnmDY
-X-Authentication-Warning: juliett.baddomain.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.baddomain.com
+X-Authentication-Warning: juliett.example.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.example.com
 Received: from system-95.transmail.net (system-95.transmail.net [135.84.80.95])
-	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 5AAJK7W4096814
+	by hotel.example.com (8.16.1/8.16.1) with ESMTPS id 5AAJK7W4096814
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
-	for <marcy@baddomain.com>; Mon, 10 Nov 2025 13:20:07 -0600
-DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 5AAJK7W4096814
-Authentication-Results: hotel.baddomain.com;
+	for <marcy@example.com>; Mon, 10 Nov 2025 13:20:07 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.example.com 5AAJK7W4096814
+Authentication-Results: hotel.example.com;
 	dkim=pass (1024-bit key, unprotected) header.d=charmtracker.com header.i=@charmtracker.com header.a=rsa-sha256 header.s=1522905413783 header.b=AFIOnmDY
 ARC-Seal: i=1; a=rsa-sha256; t=1762802401; cv=none; 
 	d=us.zohomail360.com; s=zohoarc; 
@@ -30,7 +30,7 @@ Received: by mx.zohomail.com with SMTPS id 1762802398917833.2159303742136;
 DKIM-Signature: a=rsa-sha256; b=AFIOnmDYCkvT+7SZng0wGuf2hQIBQ3H3PrxtDBSCMQAPUmcziKcGUb/tfF6KA3jAS8TfDme6rXlYxCl+T1+0oryqMzCJbpXzeYUHjJpxXZ+SqG0eEGxY7PqeijZiFQ/TgWrjLzkTGUhZzAQcuMrYvAhwv5naVpQRxlEMlZM7Qiw=; c=relaxed/relaxed; s=1522905413783; d=charmtracker.com; v=1; bh=0i11blvwap8UpRE4tPYjM/9MglWFdD+kd1Bkz64t7XE=; h=date:from:to:message-id:subject:mime-version:content-type:date:from:to:message-id:subject;
 Date: Mon, 10 Nov 2025 11:19:58 -0800 (PST)
 From: AceMed Seattle <noreply@charmtracker.com>
-To: marcy@baddomain.com
+To: marcy@example.com
 Message-ID: <2d6f.109cdde2b34f74ae.m1.3eeaa020-be6a-11f0-8d20-fae9afc80e45.19a6f35f322@mailerehr.charmtracker.com>
 Subject: Video Consult Confirmation
 MIME-Version: 1.0
@@ -45,21 +45,21 @@ X-Zoho-Virus-Status: 1
 X-Zoho-Virus-Status: 1
 X-Zoho-AV-Stamp: zmail-av-1.4.3/262.770.93
 X-ZohoMailClient: External
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Mon, 10 Nov 2025 19:20:08 +0000 (UTC)
-X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Mon, 10 Nov 2025 13:20:08 -0600 (CST)
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.example.com [172.31.18.8]); Mon, 10 Nov 2025 19:20:08 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.example.com [23.95.222.152]); Mon, 10 Nov 2025 13:20:08 -0600 (CST)
 X-Spam-Flag: YES
-X-FOFF-Rule-Matched: Analytics: Generic Sender Names (juliett.baddomain.com)
-X-FOFF-Rule-Matched: Analytics: High Volume Sender Detection (juliett.baddomain.com)
-X-FOFF-Rule-Matched: Advanced Security: Empty Content Emails (juliett.baddomain.com)
-X-FOFF-Rule-Matched: Advanced Heuristics: Advanced Heuristic Scoring (juliett.baddomain.com)
-X-FOFF-Rule-Matched: Advanced Heuristics: Weak Signal Aggregation (juliett.baddomain.com)
-X-FOFF-Rule-Matched: Analytics: Generic Sender Names (hotel.baddomain.com)
-X-FOFF-Rule-Matched: Analytics: High Volume Sender Detection (hotel.baddomain.com)
-X-FOFF-Rule-Matched: Advanced Security: Empty Content Emails (hotel.baddomain.com)
-X-FOFF-Rule-Matched: Advanced Heuristics: Advanced Heuristic Scoring (hotel.baddomain.com)
-X-FOFF-Rule-Matched: Advanced Heuristics: Weak Signal Aggregation (hotel.baddomain.com)
-X-FOFF-Score: 87 - foff-milter v0.6.9 (juliett.baddomain.com)
-X-FOFF-Score: 87 - foff-milter v0.6.9 (hotel.baddomain.com)
+X-FOFF-Rule-Matched: Analytics: Generic Sender Names (juliett.example.com)
+X-FOFF-Rule-Matched: Analytics: High Volume Sender Detection (juliett.example.com)
+X-FOFF-Rule-Matched: Advanced Security: Empty Content Emails (juliett.example.com)
+X-FOFF-Rule-Matched: Advanced Heuristics: Advanced Heuristic Scoring (juliett.example.com)
+X-FOFF-Rule-Matched: Advanced Heuristics: Weak Signal Aggregation (juliett.example.com)
+X-FOFF-Rule-Matched: Analytics: Generic Sender Names (hotel.example.com)
+X-FOFF-Rule-Matched: Analytics: High Volume Sender Detection (hotel.example.com)
+X-FOFF-Rule-Matched: Advanced Security: Empty Content Emails (hotel.example.com)
+X-FOFF-Rule-Matched: Advanced Heuristics: Advanced Heuristic Scoring (hotel.example.com)
+X-FOFF-Rule-Matched: Advanced Heuristics: Weak Signal Aggregation (hotel.example.com)
+X-FOFF-Score: 87 - foff-milter v0.6.9 (juliett.example.com)
+X-FOFF-Score: 87 - foff-milter v0.6.9 (hotel.example.com)
 
 ------=_Part_13692130_1395887885.1762802398862
 Content-Type: multipart/alternative; 
@@ -430,7 +430,7 @@ SUMMARY:Video Consult with Dr. Dayne Sullivan
 URL:https://chm.link/x8kFNc
 DESCRIPTION:We look forward to seeing you via Zoom! \nVideo Consult link : https://chm.link/x8kFNc
 LOCATION:https://chm.link/x8kFNc
-ORGANIZER;CN=Dr. Dayne Sullivan:MAILTO:marcy@baddomain.com
+ORGANIZER;CN=Dr. Dayne Sullivan:MAILTO:marcy@example.com
 END:VEVENT
 END:VCALENDAR
 

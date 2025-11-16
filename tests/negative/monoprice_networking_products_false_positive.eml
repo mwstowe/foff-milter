@@ -1,23 +1,23 @@
-Return-Path: <mstowe+caf_=mstowe=baddomain.com@gmail.com>
-Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
-	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTPS id 5AAI3CGc040389
+Return-Path: <mstowe+caf_=mstowe=example.com@gmail.com>
+Received: from hotel.example.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.example.com (8.18.1/8.18.1) with ESMTPS id 5AAI3CGc040389
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
-	for <mstowe@baddomain.com>; Mon, 10 Nov 2025 18:03:12 GMT
-	(envelope-from mstowe+caf_=mstowe=baddomain.com@gmail.com)
-Authentication-Results: juliett.baddomain.com;
+	for <user@example.com>; Mon, 10 Nov 2025 18:03:12 GMT
+	(envelope-from mstowe+caf_=mstowe=example.com@gmail.com)
+Authentication-Results: juliett.example.com;
 	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=emails.monoprice.com header.i=no-reply@emails.monoprice.com header.b=bSx0oAbA;
 	dkim=pass (1024-bit key; unprotected) header.d=esp1.co header.i=@esp1.co header.b=dXUbQVt7
-X-Authentication-Warning: juliett.baddomain.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.baddomain.com
+X-Authentication-Warning: juliett.example.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.example.com
 Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
-	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 5AAI39oh095662
+	by hotel.example.com (8.16.1/8.16.1) with ESMTPS id 5AAI39oh095662
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=OK)
-	for <mstowe@baddomain.com>; Mon, 10 Nov 2025 12:03:11 -0600
-DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 5AAI39oh095662
-Authentication-Results: hotel.baddomain.com;
+	for <user@example.com>; Mon, 10 Nov 2025 12:03:11 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.example.com 5AAI39oh095662
+Authentication-Results: hotel.example.com;
 	dkim=fail reason="signature verification failed" (2048-bit key, unprotected) header.d=emails.monoprice.com header.i=no-reply@emails.monoprice.com header.a=rsa-sha256 header.s=key1 header.b=bSx0oAbA;
 	dkim=pass (1024-bit key, unprotected) header.d=esp1.co header.i=@esp1.co header.a=rsa-sha256 header.s=app header.b=dXUbQVt7
 Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-640b0639dabso5721388a12.3
-        for <mstowe@baddomain.com>; Mon, 10 Nov 2025 10:03:11 -0800 (PST)
+        for <user@example.com>; Mon, 10 Nov 2025 10:03:11 -0800 (PST)
 ARC-Seal: i=2; a=rsa-sha256; t=1762797789; cv=pass;
         d=google.com; s=arc-20240605;
         b=hVWRgU7PYnYQCEQWbDmCHXxHhpf+eDH7Hx9Bb4O8k/yZjyq6VT0vQjiXsEbdMqpMqY
@@ -37,7 +37,7 @@ ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc
          25qu3Og1uivjDnGl63vS1Npu4xMT+5CaDDKDhDVMWvVRgJMRyEEQL1lTS5FebUQw1Jk4
          mIYGW82YZAxgM4jT8f1fkGePdG34CxaXMb1tPPjxY6o9NAlmgc2oepRPoeLGLVKMVcrf
          Ag5w==;
-        darn=baddomain.com
+        darn=example.com
 ARC-Authentication-Results: i=2; mx.google.com;
        dkim=fail header.i=@emails.monoprice.com header.s=key1 header.b=bSx0oAbA;
        dkim=pass header.i=@esp1.co header.s=app header.b=dXUbQVt7;
@@ -56,15 +56,15 @@ X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
          LjBBHvRw/iV5ufM+UOFQzQBvdkSczReoMM32NdNFbm6Z9Y07+uddusc/Yh7trboCE3Wc
          k5QTx1EpYQhlTyrB2/vDcXsaVrVp5tObLlkIBXvXGn7A7UAe2J/EjlR3ZQTjSTzw50j6
          i8Fw==
-X-Forwarded-Encrypted: i=2; AJvYcCWfppCjL9mxoNd8AP7ZP8x33uMODZOaDZgoFFzUeQKazKpxqD0q7HVpDp2vdE5U8hq0D9rOLEM=@baddomain.com
+X-Forwarded-Encrypted: i=2; AJvYcCWfppCjL9mxoNd8AP7ZP8x33uMODZOaDZgoFFzUeQKazKpxqD0q7HVpDp2vdE5U8hq0D9rOLEM=@example.com
 X-Gm-Message-State: AOJu0Yw2BclMdQutEeV49lMLY8gVQJdB68X61W1j/fGsM6DmjkNfYgzE
 	rbvVIm+HOIvRyf1mKFVWdZGMGrd6BEGeAHH2z69FO7CS4UgeVuma+bf5/Z5DeYg2q/FpnWoN7YG
 	dlFkOFQIPb7tzAYN+lcp0yvCf761l88K31SOQbjoju4fc2huDXhQyeamLr6KEkA==
 X-Received: by 2002:a05:6402:354b:b0:640:cdad:d2c0 with SMTP id 4fb4d7f45d1cf-6415e6f796dmr6798548a12.25.1762797789168;
         Mon, 10 Nov 2025 10:03:09 -0800 (PST)
-X-Forwarded-To: mstowe@baddomain.com
-X-Forwarded-For: mstowe@gmail.com mstowe@baddomain.com
-Delivered-To: mstowe@gmail.com
+X-Forwarded-To: user@example.com
+X-Forwarded-For: user@gmail.com user@example.com
+Delivered-To: user@gmail.com
 Received: by 2002:a54:2285:0:b0:2ba:7552:a66c with SMTP id b5csp628457eco;
         Mon, 10 Nov 2025 10:03:07 -0800 (PST)
 X-Google-Smtp-Source: AGHT+IFXi70VwTvkBdF0cNHrbDl1SsgcKLAdF3YCk7Enm2pslsqfvrFri8SA86d6IekblhwZykfp
@@ -97,7 +97,7 @@ ARC-Authentication-Results: i=1; mx.google.com;
        dmarc=pass (p=QUARANTINE sp=QUARANTINE dis=NONE) header.from=monoprice.com
 Received: from vmta187.84.lstrk.net (vmta187.84.lstrk.net. [142.0.84.187])
         by mx.google.com with ESMTPS id 6a1803df08f44-88238bdabb7si21749826d6.1259.2025.11.10.10.03.06
-        for <mstowe@gmail.com>
+        for <user@gmail.com>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Mon, 10 Nov 2025 10:03:07 -0800 (PST)
 Received-SPF: pass (google.com: domain of eoo0aahpkg0keehqkcahg70o0ne1h7huoqcunge9qo9@bounce.emails.monoprice.com designates 142.0.84.187 as permitted sender) client-ip=142.0.84.187;
@@ -119,36 +119,36 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=app; d=esp1.co;
  b=dXUbQVt7LZlc7IjpOOm/qB7TWCwRk6fpQsyA2JiBHYRm6YaWEsqNmny/E3DLnoZPEjc/bsY928+c
    C5Z7x1rvdBAEKZX5rhYVA8vYZcnCZ87knCJ5sA35Sni8AMAe0QlvpN+3VprRBgMbggQ5ZTH1PnKR
    1VFqXDo53DyAP8Tsglk=
-Received: by vmta187.84.lstrk.net id h28kdk38vuk8 for <mstowe@gmail.com>; Mon, 10 Nov 2025 12:53:38 -0500 (envelope-from <EOO0AAHPKG0KEEHQKCAHG70O0NE1H7HUOQCUNGE9QO9@bounce.emails.monoprice.com>)
+Received: by vmta187.84.lstrk.net id h28kdk38vuk8 for <user@gmail.com>; Mon, 10 Nov 2025 12:53:38 -0500 (envelope-from <EOO0AAHPKG0KEEHQKCAHG70O0NE1H7HUOQCUNGE9QO9@bounce.emails.monoprice.com>)
 X-Message-Reference: G70ACNOA6CVKF99V2JBK20CFA8
 X-RPCampaign: esp7155486567787965546786757057578650746675504867706556
 MIME-Version: 1.0
 Subject: Take 20% OFF Select Networking Products!
 From: "Monoprice" <no-reply@emails.monoprice.com>
 Date: 10 Nov 2025 12:53:39 -0500
-To: mstowe@gmail.com
+To: user@gmail.com
 X-Mailer-Reference: EOO0AAHPKG0KEEHQKCAHG70O0NE1H7HUOQCUNGE9QO9
 Errors-To: EOO0AAHPKG0KEEHQKCAHG70O0NE1H7HUOQCUNGE9QO9@bounce.emails.monoprice.com
 Content-Type: multipart/alternative;
  boundary=--boundary_08bc679e95ac4b3c9dfe706bad97b067
 Message-ID: <0.1.13.BE8.1DC526AF197414A.15B8C@vmta187.84.lstrk.net>
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Mon, 10 Nov 2025 18:03:13 +0000 (UTC)
-X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Mon, 10 Nov 2025 12:03:11 -0600 (CST)
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.example.com [172.31.18.8]); Mon, 10 Nov 2025 18:03:13 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.example.com [23.95.222.152]); Mon, 10 Nov 2025 12:03:11 -0600 (CST)
 X-Spam-Flag: YES
 X-Spam-Flag: YES
 X-Spam-Flag: YES
-X-FOFF-Rule-Matched: Ecommerce Scams: Home improvement and gutter protection scams (juliett.baddomain.com)
-X-FOFF-Rule-Matched: Ecommerce Scams: Black Friday and fake savings scams (juliett.baddomain.com)
-X-FOFF-Rule-Matched: Analytics: Generic Sender Names (juliett.baddomain.com)
-X-FOFF-Rule-Matched: Advanced Security: Empty Content Emails (juliett.baddomain.com)
-X-FOFF-Rule-Matched: Advanced Heuristics: Weak Signal Aggregation (juliett.baddomain.com)
-X-FOFF-Rule-Matched: Ecommerce Scams: Home improvement and gutter protection scams (hotel.baddomain.com)
-X-FOFF-Rule-Matched: Ecommerce Scams: Black Friday and fake savings scams (hotel.baddomain.com)
-X-FOFF-Rule-Matched: Analytics: Generic Sender Names (hotel.baddomain.com)
-X-FOFF-Rule-Matched: Advanced Security: Empty Content Emails (hotel.baddomain.com)
-X-FOFF-Rule-Matched: Advanced Heuristics: Weak Signal Aggregation (hotel.baddomain.com)
-X-FOFF-Score: 177 - foff-milter v0.6.9 (juliett.baddomain.com)
-X-FOFF-Score: 177 - foff-milter v0.6.9 (hotel.baddomain.com)
+X-FOFF-Rule-Matched: Ecommerce Scams: Home improvement and gutter protection scams (juliett.example.com)
+X-FOFF-Rule-Matched: Ecommerce Scams: Black Friday and fake savings scams (juliett.example.com)
+X-FOFF-Rule-Matched: Analytics: Generic Sender Names (juliett.example.com)
+X-FOFF-Rule-Matched: Advanced Security: Empty Content Emails (juliett.example.com)
+X-FOFF-Rule-Matched: Advanced Heuristics: Weak Signal Aggregation (juliett.example.com)
+X-FOFF-Rule-Matched: Ecommerce Scams: Home improvement and gutter protection scams (hotel.example.com)
+X-FOFF-Rule-Matched: Ecommerce Scams: Black Friday and fake savings scams (hotel.example.com)
+X-FOFF-Rule-Matched: Analytics: Generic Sender Names (hotel.example.com)
+X-FOFF-Rule-Matched: Advanced Security: Empty Content Emails (hotel.example.com)
+X-FOFF-Rule-Matched: Advanced Heuristics: Weak Signal Aggregation (hotel.example.com)
+X-FOFF-Score: 177 - foff-milter v0.6.9 (juliett.example.com)
+X-FOFF-Score: 177 - foff-milter v0.6.9 (hotel.example.com)
 X-FOFF-Reject-Converted: WOULD-REJECT: Message rejected by heuristic analysis
 X-FOFF-Reject-Converted: WOULD-REJECT: Message rejected by heuristic analysis
 

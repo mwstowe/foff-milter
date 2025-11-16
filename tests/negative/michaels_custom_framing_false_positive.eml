@@ -1,23 +1,23 @@
-Return-Path: <mstowe+caf_=mstowe=baddomain.com@gmail.com>
-Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
-	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTPS id 5A9HYJFV088768
+Return-Path: <mstowe+caf_=mstowe=example.com@gmail.com>
+Received: from hotel.example.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.example.com (8.18.1/8.18.1) with ESMTPS id 5A9HYJFV088768
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
-	for <mstowe@baddomain.com>; Sun, 9 Nov 2025 17:34:19 GMT
-	(envelope-from mstowe+caf_=mstowe=baddomain.com@gmail.com)
-Authentication-Results: juliett.baddomain.com;
+	for <user@example.com>; Sun, 9 Nov 2025 17:34:19 GMT
+	(envelope-from mstowe+caf_=mstowe=example.com@gmail.com)
+Authentication-Results: juliett.example.com;
 	dkim=pass (2048-bit key; unprotected) header.d=em.michaelscustomframing.com header.i=customframe@em.michaelscustomframing.com header.b=CntZY0sU;
 	dkim=pass (2048-bit key; unprotected) header.d=s10.y.mc.salesforce.com header.i=@s10.y.mc.salesforce.com header.b=eRr64jsv
-X-Authentication-Warning: juliett.baddomain.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.baddomain.com
+X-Authentication-Warning: juliett.example.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.example.com
 Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 5A9HYGYR067084
+	by hotel.example.com (8.16.1/8.16.1) with ESMTPS id 5A9HYGYR067084
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=OK)
-	for <mstowe@baddomain.com>; Sun, 9 Nov 2025 11:34:18 -0600
-DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 5A9HYGYR067084
-Authentication-Results: hotel.baddomain.com;
+	for <user@example.com>; Sun, 9 Nov 2025 11:34:18 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.example.com 5A9HYGYR067084
+Authentication-Results: hotel.example.com;
 	dkim=pass (2048-bit key, unprotected) header.d=em.michaelscustomframing.com header.i=customframe@em.michaelscustomframing.com header.a=rsa-sha256 header.s=10dkim1 header.b=CntZY0sU;
 	dkim=pass (2048-bit key, unprotected) header.d=s10.y.mc.salesforce.com header.i=@s10.y.mc.salesforce.com header.a=rsa-sha256 header.s=fbldkim10 header.b=eRr64jsv
 Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-6418b55f86dso366520a12.1
-        for <mstowe@baddomain.com>; Sun, 09 Nov 2025 09:34:18 -0800 (PST)
+        for <user@example.com>; Sun, 09 Nov 2025 09:34:18 -0800 (PST)
 ARC-Seal: i=2; a=rsa-sha256; t=1762709651; cv=pass;
         d=google.com; s=arc-20240605;
         b=PDZkW/Tk1vkb3KThgrDM+uO5uKvwc64rftDS7LpohyWBnl+tttWvTFIzdC4M7wv9dh
@@ -38,7 +38,7 @@ ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc
          YykguYilkfi30a0YedIQozXGvmqa6rW2qFkmLySlUGMlK2kIRKbGyBwx2yfe18YThRuy
          CCZ3I6xrUeIoO4NPZN5MnTbxgjzwKDpNCUUXxxqAUhY3KpYo/J4/SsdYFYc+YTpgmNuy
          yPMg==;
-        darn=baddomain.com
+        darn=example.com
 ARC-Authentication-Results: i=2; mx.google.com;
        dkim=pass header.i=@em.michaelscustomframing.com header.s=10dkim1 header.b=CntZY0sU;
        dkim=pass header.i=@s10.y.mc.salesforce.com header.s=fbldkim10 header.b=eRr64jsv;
@@ -58,15 +58,15 @@ X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
          9l+z+fJWJNfopNmcUJKZBrxNJSTCMHtekgijy3LQd5xI7zGrv88ZWa/1IJZTB0k/nZxN
          pJ44XVcv8B6P2DoGJ69Hyc1qX1Wm9zm2pv5ZGSRqtdrGGraZTkB/91GJWWW8Q2DWpsPB
          SERA==
-X-Forwarded-Encrypted: i=2; AJvYcCUoYOeJVH9s30r7l+wszT4E1MVTuY9kVjVSjSLLglwjXOOstup1WiZqYB2WPoUD6jDcgwfqScc=@baddomain.com
+X-Forwarded-Encrypted: i=2; AJvYcCUoYOeJVH9s30r7l+wszT4E1MVTuY9kVjVSjSLLglwjXOOstup1WiZqYB2WPoUD6jDcgwfqScc=@example.com
 X-Gm-Message-State: AOJu0YznStlAGE3WTRFJbt0rz+IdFal1KfffzfxQchZdISDyPDL0qcCb
 	b3eKAh1EjGN1Fzf929Y7phwsrZ38tcZ+vuqC1oE5TLV9IQzFPA1VU7LMrQSacrBOMFArVV7ZFfZ
 	IlvfPwOooWQcqjPxJo1sstu1HGmZVmKWpBWRhr3n8S82FnY6CehN8JSFT/Yh+wg==
 X-Received: by 2002:a05:6402:348a:b0:640:a9fb:3464 with SMTP id 4fb4d7f45d1cf-6415dc081ecmr4524386a12.7.1762709651040;
         Sun, 09 Nov 2025 09:34:11 -0800 (PST)
-X-Forwarded-To: mstowe@baddomain.com
-X-Forwarded-For: mstowe@gmail.com mstowe@baddomain.com
-Delivered-To: mstowe@gmail.com
+X-Forwarded-To: user@example.com
+X-Forwarded-For: user@gmail.com user@example.com
+Delivered-To: user@gmail.com
 Received: by 2002:a54:2285:0:b0:2ba:7552:a66c with SMTP id b5csp11627eco;
         Sun, 9 Nov 2025 09:34:09 -0800 (PST)
 X-Google-Smtp-Source: AGHT+IE4TBwNSwY5h1Wny84fqpYuRsCsckp1Vt8540kEd0ZEvwu5hPJQC5+qCB7o5MHvOPqk06nX
@@ -145,13 +145,13 @@ Feedback-ID: 100010554:351858:128.245.2.214:sfmktgcld
 Content-Type: text/html;
 	charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Sun, 09 Nov 2025 17:34:19 +0000 (UTC)
-X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Sun, 09 Nov 2025 11:34:18 -0600 (CST)
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.example.com [172.31.18.8]); Sun, 09 Nov 2025 17:34:19 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.example.com [23.95.222.152]); Sun, 09 Nov 2025 11:34:18 -0600 (CST)
 X-Spam-Flag: YES
-X-FOFF-Rule-Matched: Ecommerce Scams: Black Friday and fake savings scams (juliett.baddomain.com)
-X-FOFF-Rule-Matched: Ecommerce Scams: Black Friday and fake savings scams (hotel.baddomain.com)
-X-FOFF-Score: 70 - foff-milter v0.6.9 (juliett.baddomain.com)
-X-FOFF-Score: 70 - foff-milter v0.6.9 (hotel.baddomain.com)
+X-FOFF-Rule-Matched: Ecommerce Scams: Black Friday and fake savings scams (juliett.example.com)
+X-FOFF-Rule-Matched: Ecommerce Scams: Black Friday and fake savings scams (hotel.example.com)
+X-FOFF-Score: 70 - foff-milter v0.6.9 (juliett.example.com)
+X-FOFF-Score: 70 - foff-milter v0.6.9 (hotel.example.com)
 
 <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!--MASTER_Coremetrics_SLPH_Content-->
 </td></tr></table>
