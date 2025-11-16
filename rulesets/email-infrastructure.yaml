@@ -1,0 +1,182 @@
+name: "Email Infrastructure Detection"
+enabled: true
+rules:
+  # Microsoft tenant domain spam (standalone rule)
+  - name: "Microsoft tenant domain spam"
+    criteria:
+      type: "HeaderPattern"
+      header: "From"
+      pattern: "onmicrosoft\\.com"
+    score: 150
+    description: "Suspicious emails from Microsoft tenant domains (commonly abused for spam)"
+
+  # Gmail forwarding abuse detection
+  - name: "Suspicious forwarded emails"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "HeaderPattern"
+          header: "Received"
+          pattern: ".*gmail\\.com.*"
+        - type: "Or"
+          criteria:
+            - type: "SenderPattern"
+              pattern: ".*@.*\\\\.onmicrosoft\\\\.com$"
+            - type: "And"
+              criteria:
+                - type: "BodyPattern"
+                  pattern: "(?i).*(aaa|triple.?a|car.?emergency.?kit|medicare.?kit|cvs.?processing)"
+                - type: "Not"
+                  criteria:
+                    type: "SenderPattern"
+                    pattern: ".*@(aaa|cvs|medicare)\\\\.com$"
+    score: 100
+    description: "Suspicious emails forwarded through Gmail (prevents whitelist bypass)"
+
+  # Google-routed Microsoft tenant spam (sophisticated abuse)
+  - name: "Google-routed onmicrosoft spam"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@.*\\\\.onmicrosoft\\\\.com$"
+        - type: "HeaderPattern"
+          header: "Received"
+          pattern: ".*google\\.com.*"
+    score: 200
+    description: "OnMicrosoft senders routed through Google infrastructure (sophisticated spam)"
+
+  # Microsoft tenant domain abuse (onmicrosoft.com spam)
+  - name: "Microsoft tenant domain spam"
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*\\.onmicrosoft\\.com$"
+    score: 150
+    description: "Suspicious emails from Microsoft tenant domains (commonly abused for spam)"
+
+  - name: "Free email provider usage"
+    criteria:
+      type: "EmailInfrastructure"
+      infrastructure_type: "free_email"
+      domains:
+        - "gmail.com"
+        - "yahoo.com"
+        - "hotmail.com"
+        - "outlook.com"
+        - "aol.com"
+        - "icloud.com"
+        - "protonmail.com"
+        - "mail.com"
+      check_sender: true
+      check_reply_to: false
+      exclude_legitimate: true
+    score: 15
+    description: "Emails from free email providers"
+
+  - name: "Reply-to free email redirect"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Not"
+          criteria:
+            type: "EmailInfrastructure"
+            infrastructure_type: "free_email"
+            domains:
+              - "gmail.com"
+              - "yahoo.com"
+              - "hotmail.com"
+              - "outlook.com"
+            check_sender: true
+            check_reply_to: false
+        - type: "EmailInfrastructure"
+          infrastructure_type: "free_email"
+          domains:
+            - "gmail.com"
+            - "yahoo.com"
+            - "hotmail.com"
+            - "outlook.com"
+          check_sender: false
+          check_reply_to: true
+    score: 40
+    description: "Non-free sender redirecting replies to free email provider"
+
+  - name: "Geographic domain mismatch"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@.*\\.(cn|ru|tk|ml|ga|cf)$"
+        - type: "Or"
+          criteria:
+            - type: "BodyPattern"
+              pattern: "(?i).*(USA|United States|America|New York|California|Texas|Florida)"
+            - type: "SubjectPattern"
+              pattern: "(?i).*(USA|United States|America|New York|California|Texas|Florida)"
+    score: 35
+    description: "Foreign domain claiming US location or business"
+
+  - name: "Educational domain compromise"
+    criteria:
+      type: "EmailInfrastructure"
+      infrastructure_type: "educational"
+      tld_patterns:
+        - ".*@.*\\.edu\\.[a-z]{2}$"
+        - ".*@.*\\.edu$"
+      check_sender: true
+      check_reply_to: false
+      exclude_legitimate: false
+    score: 35
+    description: "Potentially compromised educational domains"
+
+  - name: "Microsoft tenant compromise"
+    criteria:
+      type: "EmailInfrastructure"
+      infrastructure_type: "compromised"
+      tld_patterns:
+        - ".*@.*\\.onmicrosoft\\.com$"
+      check_sender: true
+      check_reply_to: false
+      require_auth_failure: true
+      exclude_legitimate: false
+    score: 45
+    description: "Compromised Microsoft tenant accounts with authentication failures"
+
+  - name: "Business email compromise indicators"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "EmailInfrastructure"
+          infrastructure_type: "business"
+          tld_patterns:
+            - ".*@.*\\.(com|org|net)$"
+          check_sender: true
+          require_auth_failure: true
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(gov|government|public).*"
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(urgent.*payment|invoice.*attached|wire.*transfer|account.*suspended|verify.*account).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(urgent.*action|immediate.*payment|wire.*transfer|bank.*details|account.*verification).*"
+    score: 60
+    description: "Business email compromise with authentication failure and financial urgency"
+
+  - name: "Suspicious cloud service domains"
+    criteria:
+      type: "EmailInfrastructure"
+      infrastructure_type: "cloud_service"
+      domains:
+        - "googleusercontent.com"
+        - "amazonaws.com"
+        - "azurewebsites.net"
+        - "herokuapp.com"
+        - "netlify.app"
+        - "vercel.app"
+      check_sender: true
+      check_reply_to: true
+      exclude_legitimate: true
+    score: 25
+    description: "Emails from cloud service domains often used for temporary campaigns"

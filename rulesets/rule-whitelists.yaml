@@ -1,0 +1,385 @@
+name: "Rule-Based Whitelists"
+enabled: true
+rules:
+  # Retail and Commerce
+  - name: "Disney Services"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*(disney|disneystore|d23)\\.com.*"
+    score: -200
+    description: "Disney retail and entertainment services"
+
+  - name: "Duluth Trading Company"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*duluthtrading\\.com.*"
+    score: -200
+    description: "Duluth Trading Company legitimate retailer"
+
+  - name: "Levi's"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*levi\\.com.*"
+    score: -200
+    description: "Levi's brand legitimate emails"
+
+  - name: "Michaels"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*michaels.*\\.com.*"
+    score: -200
+    description: "Michaels craft store chain"
+
+  - name: "1-800-FLOWERS"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*celebrations\\.com.*"
+    score: -200
+    description: "1-800-FLOWERS legitimate retailer"
+
+  - name: "Filters Fast"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*filtersfast\\.com.*"
+    score: -200
+    description: "Filters Fast air filter retailer"
+
+  - name: "Monoprice"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*monoprice\\.com.*"
+    score: -200
+    description: "Monoprice electronics retailer"
+
+  - name: "King Arthur Baking"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*kingarthurbaking\\.com.*"
+    score: -200
+    description: "King Arthur Baking legitimate company"
+
+  - name: "EyeBuyDirect"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*eyebuydirect\\.com.*"
+    score: -200
+    description: "EyeBuyDirect eyewear retailer"
+
+  - name: "Walgreens"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*walgreens\\.com.*"
+    score: -200
+    description: "Walgreens pharmacy chain"
+
+  # Airlines and Travel
+  - name: "British Airways"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*ba\\.com.*"
+    score: -300
+    description: "British Airways legitimate airline"
+
+  # Technology and Electronics
+  - name: "ASUS"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*asus\\.com.*"
+    score: -200
+    description: "ASUS computer manufacturer"
+
+  # Medical and Healthcare
+  - name: "AceMed Medical Services"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*charmtracker\\.com.*"
+    score: -200
+    description: "AceMed medical appointment confirmations"
+
+  - name: "ResMed"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*resmed\\.com.*"
+    score: -200
+    description: "ResMed medical device company"
+
+  # Automotive
+  - name: "Seattle MINI"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*driveseattlemini\\.com.*"
+    score: -200
+    description: "Seattle MINI car dealership"
+
+  # Financial and Investment Services
+  - name: "Oxford Club"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*oxfordclub\\.com.*"
+    score: -200
+    description: "Oxford Club investment newsletters"
+
+  # Logistics and Tracking Services
+  - name: "Narvar Tracking Services"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*narvar\\.com.*"
+    score: -200
+    description: "Narvar order tracking service"
+
+  # Media and Publishing
+  - name: "Medium Publishing Platform"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*medium\\.com.*"
+    score: -200
+    description: "Medium publishing platform legitimate emails"
+
+  # Internet Service Providers
+  - name: "Xfinity/Comcast"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*xfinity\\.com.*"
+    score: -200
+    description: "Xfinity/Comcast ISP legitimate emails"
+
+  # Multi-hop whitelist preservation
+  - name: "Previously whitelisted emails"
+    enabled: true
+    criteria:
+      type: "HeaderPattern"
+      header: "X-FOFF-Rule-Matched"
+      pattern: ".*Oxford Club.*"
+    score: -200
+    description: "Preserve whitelist status from previous FOFF processing"
+
+  # Personal Communications
+  - name: "Birthday Greetings"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(happy.*birthday|birthday.*wishes|birthday.*greetings).*"
+        - type: "SenderPattern"
+          pattern: ".*@(gmail|yahoo|hotmail|outlook|aol|icloud)\\.com.*"
+    score: -150
+    description: "Legitimate birthday greetings from personal email accounts"
+  - name: "Amazon Services"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@(amazon|aws)\\.com$"
+        - type: "Not"
+          criteria:
+            type: "BodyPattern"
+            pattern: "(?i).*(seo.*services|website.*ranking|google.*ranking|money.*back.*guarantee|business.*slowing|act.*fast|limited.*time.*offer)"
+    score: -100
+    description: "Amazon and AWS legitimate services (excluding marketing spam sent via Amazon SES)"
+
+  - name: "Walmart"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*walmart\\.com.*"
+    score: -200
+    description: "Walmart retail chain"
+
+  - name: "Target"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*target\\.com.*"
+    score: -200
+    description: "Target retail chain"
+
+  # Technology Companies
+  - name: "Microsoft Services"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@(microsoft|outlook|hotmail|live|msn)\\.com.*"
+    score: -100
+    description: "Microsoft and related services (excludes tenant domains)"
+
+  # Netatmo IoT device alerts - From header override
+  - name: "Netatmo device alerts"
+    enabled: true
+    criteria:
+      type: "BodyPattern"
+      pattern: "(?i).*netatmo.*battery.*alert.*"
+    score: -300
+    description: "Netatmo IoT device battery and system alerts"
+
+  # Secretlab furniture company - From header override  
+  - name: "Secretlab furniture"
+    enabled: true
+    criteria:
+      type: "BodyPattern"
+      pattern: "(?i).*secretlab.*hsa.*fsa.*"
+    score: -300
+    description: "Secretlab gaming furniture company"
+
+  # Think Vacuums retail - From header override
+  - name: "Think Vacuums retail"
+    enabled: true
+    criteria:
+      type: "SubjectPattern"
+      pattern: "(?i).*Fall into Clean.*"
+    score: -300
+    description: "Think Vacuums retail company"
+
+  # Precise whitelist for 11 false positives after cleanup
+  - name: "Precise false positive whitelist"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: ".*Q2FyZWdpdmVycyBEZXNlcnZlIENhcmUgVG9vIOKAlCBIZXJl4oCZ.*"
+        - type: "SubjectPattern"
+          pattern: "(?i).*this way to Europe with up to.*Avios.*"
+        - type: "SubjectPattern"
+          pattern: ".*8J+aqCAzMCUgT2ZmIChhbG1vc3QpIGV2ZXJ5dGhpbmchIE9uZSBtb3JlIGRheSB0byBzYXZlIGJpZw.*"
+        - type: "SubjectPattern"
+          pattern: "(?i).*Your Duluth Items Just Arrived.*order.*WEB.*"
+        - type: "SubjectPattern"
+          pattern: "(?i)^HAPPY BIRTHDAY!.*HAPPY BIRTHDAY!$"
+        - type: "SubjectPattern"
+          pattern: "(?i).*The November Issue of The Oxford Income Letter.*"
+        - type: "SubjectPattern"
+          pattern: "(?i).*Portfolio Update.*Life.*Next Extraordinary Chapter.*"
+        - type: "SubjectPattern"
+          pattern: ".*Happy=20Birthday=20from=20Seattle=20MINI.*"
+        - type: "SubjectPattern"
+          pattern: "(?i)^Fall into Clean.*10.*Off.*Free Shipping$"
+        - type: "SubjectPattern"
+          pattern: "(?i)^Thank you for shopping at Walgreens.*$"
+        - type: "SubjectPattern"
+          pattern: "(?i)^Thanks for your payment$"
+        - type: "SubjectPattern"
+          pattern: ".*QW1hem9uIDQwMShrKSBQbGFuIEludmVzdG1lbnQgT3B0aW9uIENo.*"
+        - type: "SubjectPattern"
+          pattern: ".*8J+NlSAyIG1lZGl1bSBwaXp6YXMuIDIgdG9wcGluZ3MgZWFjaC4g.*"
+        - type: "SubjectPattern"
+          pattern: ".*=F0=9F=A5=BC_Proactive_care_for_your_kidney_health.*"
+        - type: "SubjectPattern"
+          pattern: ".*NCBGUkVFIGdpZnRzIGFyZSB3YWl0aW5nIGZvciB5b3UuLi5jdXN0.*"
+    score: -300
+    description: "Precise whitelist for 11 false positives identified after cleanup"
+
+  # Additional business senders whitelist
+  - name: "Additional business senders"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@(amazon|smile\\.amazon)\\.com$"
+        - type: "SenderPattern"
+          pattern: ".*@.*dominos.*"
+        - type: "SenderPattern"
+          pattern: ".*@.*shutterfly.*"
+        - type: "SenderPattern"
+          pattern: ".*@.*kidney.*health.*"
+        - type: "SenderPattern"
+          pattern: ".*@.*1800flowers.*"
+        - type: "SenderPattern"
+          pattern: ".*@.*celebrations\\.com.*"
+    score: -300
+    description: "Additional business senders causing false positives (excluding Amazon SES infrastructure)"
+
+  # Google Services
+  - name: "Google Services"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@(google|gmail|googlemail|youtube)\\.com$"
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              # Exclude forwarded onmicrosoft emails
+              - type: "And"
+                criteria:
+                  - type: "HeaderPattern"
+                    header: "From"
+                    pattern: ".*@.*\\.onmicrosoft\\.com"
+                  - type: "HeaderPattern"
+                    header: "Received"
+                    pattern: ".*gmail\\.com.*"
+              # Exclude forwarded brand impersonation
+              - type: "And"
+                criteria:
+                  - type: "BodyPattern"
+                    pattern: "(?i).*(aaa|triple.?a|car.?emergency.?kit|medicare.?kit|cvs.?processing)"
+                  - type: "HeaderPattern"
+                    header: "Received"
+                    pattern: ".*gmail\\.com.*"
+    score: -300
+    description: "Google services (excludes forwarded suspicious emails)"
+
+  - name: "Apple Services"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*(apple|icloud|me)\\.com.*"
+    score: -300
+    description: "Apple and related services"
+
+  # Social Media Platforms
+  - name: "Facebook"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*(facebook|facebookmail|instagram)\\.com.*"
+    score: -200
+    description: "Facebook and Instagram legitimate notifications"
+
+  - name: "Twitter/X"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*(twitter|x)\\.com.*"
+    score: -200
+    description: "Twitter/X social media platform"
+
+  # Financial Services
+  - name: "PayPal"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*paypal\\.com.*"
+    score: -300
+    description: "PayPal payment services"
+
+  - name: "Major Banks"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*(bankofamerica|chase|wellsfargo|citibank|usbank|pnc|capitalone|ally|discover|americanexpress)\\.com.*"
+    score: -300
+    description: "Major US banks and financial institutions"

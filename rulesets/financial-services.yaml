@@ -1,0 +1,134 @@
+name: "Financial Services"
+enabled: true
+rules:
+  # Loan and lending spam
+  - name: "Loan and lending spam"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "BodyPattern"
+              pattern: "(?i).*(loan.*options|financial.*goals|lending.*services|finance.*holdings|loan.*application|quick.*loan|easy.*loan|guaranteed.*loan).*"
+            - type: "SubjectPattern"
+              pattern: "(?i).*(loan|lending|finance|credit|funding).*"
+        - type: "Or"
+          criteria:
+            - type: "SenderPattern"
+              pattern: "(?i).*@.*(finance|loan|lending|credit|funding|capital).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(financial.*institution|loan.*provider|lending.*company|finance.*company).*"
+    score: 75
+    description: "Unsolicited loan and lending offers"
+
+  - name: "Get rich quick scams"
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(get.*rich.*quick|guaranteed.*income|make.*money.*fast|work.*from.*home.*opportunity|business.*opportunity!!).*"
+        - type: "BodyPattern"
+          pattern: "(?i).*(profit.*of.*\\$.*USD.*month|need.*your.*assistance.*supplying|raw.*material.*to.*our.*company|general.*business.*consultant|pharmaceutical.*company.*contacting|mutually.*beneficial.*to.*you|income.*generating.*business.*out.*of).*"
+    score: 50
+    description: "Business opportunity and get rich quick scam patterns (specific to scam language)"
+  - name: "Advance fee fraud (419 scam)"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "BodyPattern"
+          pattern: "(?i).*(fund.*management.*collaborator|deceased.*contractor|dormant.*account|unclaimed.*funds|business.*partner.*claim|inheritance.*claim|confidential.*business.*opportunity|west.*african.*bank|senior.*financial.*consultant|abandoned.*account|foreign.*contractor|government.*treasury|next.*of.*kin|reliable.*trustworthy.*partner|risk.*free.*legal|private.*email.*address|utmost.*confidentiality).*"
+        - type: "SubjectPattern"
+          pattern: "(?i).*(collaborator.*fund.*management|business.*opportunity|confidential.*proposal|urgent.*business|fund.*transfer|inheritance.*claim).*"
+    score: 60
+    description: "Classic advance fee fraud (419 scam) patterns"
+
+  - name: "French rental payment redirect scam"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(avis.*de.*rappel.*pour.*bail|paiement.*loyer|rappel.*bail).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(adresse.*interac.*pour.*le.*paiement.*des.*loyers|nouvelle.*adresse.*suivante|paiement.*à.*la.*nouvelle.*adresse).*"
+        - type: "BodyPattern"
+          pattern: "(?i).*(adresse.*bancaire.*interac|question.*de.*sécurité|réponse.*de.*sécurité).*"
+    score: 75
+    description: "French rental payment redirect scam targeting tenants"
+
+  - name: "Fake investment collaboration scam"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "BodyPattern"
+              pattern: "(?i).*(asset.*management.*firm|investment.*collaboration|joint.*ventures|financial.*sector.*experience|Foundation.*Asset.*Management|potential.*collaboration).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(real.*estate.*construction|manufacturing.*infrastructure|clean.*energy.*technology|healthcare.*agriculture.*mining|government.*projects).*"
+        - type: "Or"
+          criteria:
+            - type: "SenderPattern"
+              pattern: ".*@.*(vumaq|temp|disposable|guerrillamail|10minutemail).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(Hong Kong|Singapore|Dubai|Switzerland).*"
+    score: 80
+    description: "Fake investment and asset management collaboration scams"
+
+  - name: "Timeshare exit and vacation scams"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(exit.*timeshare|timeshare.*exit|vacation.*ownership|travel.*wherever|holiday.*season.*travel|timeshare.*relief|get.*out.*timeshare|cancel.*timeshare|timeshare.*cancellation).*"
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: "(?i).*exit.*timeshare.*"
+        - type: "SenderPattern"
+          pattern: ".*@.*(hoboband|timeshareexit|vacationexit|travelscam)\\.com.*"
+    score: 75
+    description: "Timeshare exit and vacation rental scams"
+
+  - name: "W-8BEN tax compliance and residency scams"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(w-8ben|w8ben|tax.*residency|residency.*notice|form.*w-8|renewal.*required|official.*tax).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(w-8ben|w8ben|tax.*residency|residency.*notice|form.*w-8|renewal.*required|official.*tax).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(interactivebrokers|schwab|fidelity|vanguard|irs|treasury)\\.(com|gov)$"
+    score: 75
+    description: "Detects W-8BEN tax compliance and residency scams"
+
+  - name: "Portuguese financial card eligibility scam"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(elegibilidade.*cartão|cartão.*black|notificação.*oficial.*elegibilidade|protocolo.*\\d+).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(elegibilidade.*cartão|cartão.*black|notificação.*oficial.*elegibilidade|protocolo.*\\d+|bradesco.*amex|amex.*black).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(bradesco|amex|americanexpress)\\.(com|com\\.br)$"
+    score: 75
+    description: "Detects Portuguese financial card eligibility scams"
+
+  - name: "Estonian money transfer scam"
+    criteria:
+      type: "SubjectPattern"
+      pattern: "(?i).*raha.*kantud.*"
+    score: 75
+    description: "Detects Estonian and international money transfer scams"

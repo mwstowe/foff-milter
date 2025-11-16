@@ -7,7 +7,8 @@ pub struct TomlConfig {
     pub system: SystemConfig,
     pub logging: Option<LoggingConfig>,
     pub statistics: Option<StatisticsConfig>,
-    pub modules: Option<ModulesConfig>,
+    pub rulesets: Option<RulesetsConfig>,
+    pub features: Option<FeaturesConfig>,
     pub heuristics: Option<HeuristicsConfig>,
     pub sender_blocking: Option<SenderBlockingConfig>,
     pub whitelist: Option<WhitelistConfig>,
@@ -34,9 +35,13 @@ impl Default for TomlConfig {
             },
             logging: None,
             statistics: None,
-            modules: Some(ModulesConfig {
+            rulesets: Some(RulesetsConfig {
                 enabled: true,
-                config_dir: "modules".to_string(),
+                config_dir: "rulesets".to_string(),
+            }),
+            features: Some(FeaturesConfig {
+                enabled: true,
+                config_dir: "features".to_string(),
             }),
             heuristics: Some(HeuristicsConfig {
                 reject_threshold: 350,
@@ -99,7 +104,13 @@ pub struct StatisticsConfig {
 }
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
-pub struct ModulesConfig {
+pub struct RulesetsConfig {
+    pub enabled: bool,
+    pub config_dir: String,
+}
+
+#[derive(Debug, Deserialize, Serialize, Clone)]
+pub struct FeaturesConfig {
     pub enabled: bool,
     pub config_dir: String,
 }
@@ -202,9 +213,9 @@ impl TomlConfig {
         }
 
         // Set module config directory
-        if let Some(modules) = &self.modules {
-            if modules.enabled {
-                legacy_config.module_config_dir = Some(modules.config_dir.clone());
+        if let Some(rulesets) = &self.rulesets {
+            if rulesets.enabled {
+                legacy_config.module_config_dir = Some(rulesets.config_dir.clone());
             }
         }
 

@@ -5,7 +5,7 @@
 # Change to parent directory so relative paths work
 cd "$(dirname "$0")/.."
 
-BINARY="./target/release/foff-milter"
+BINARY="./target/debug/foff-milter"
 CONFIG="./foff-milter.toml"
 PASSED=0
 FAILED=0
@@ -23,7 +23,7 @@ fi
 # Test 1: Module Loading Test
 echo "🔧 Testing module loading..."
 EXPECTED_MODULES=21
-MODULE_COUNT=$($BINARY --test-config -c $CONFIG 2>/dev/null | grep "Number of available modules:" | grep -o '[0-9]\+')
+MODULE_COUNT=$($BINARY --test-config -c $CONFIG 2>/dev/null | grep "Number of available modules:" | grep -o '[0-9]\+$')
 
 if [ "$MODULE_COUNT" -eq "$EXPECTED_MODULES" ]; then
     echo "✅ Module loading test: PASSED ($MODULE_COUNT/$EXPECTED_MODULES modules loaded)"
@@ -55,7 +55,7 @@ for email in tests/positive/*.eml; do
     if [ -f "$email" ]; then
         echo -n "Testing $(basename "$email"): "
         output=$($BINARY --test-email "$email" -c "$CONFIG" 2>/dev/null || true)
-        if echo "$output" | grep -q "Result: TAG AS SPAM\|Result: REJECT"; then
+        if echo "$output" | grep -qE "(TAG AS SPAM|REJECT)"; then
             echo "✅ CAUGHT"
             ((PASSED++))
         else

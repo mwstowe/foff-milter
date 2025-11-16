@@ -1,0 +1,227 @@
+name: "Health Threats"
+enabled: true
+rules:
+  # Fake institutional health advice
+  - name: "Fake Harvard health advice"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*\\[harvard\\].*"
+            - type: "SubjectPattern"
+              pattern: "(?i).*harvard.*study.*"
+            - type: "BodyPattern"
+              pattern: "(?i).*harvard.*study.*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*harvard\\.edu.*"
+    score: 100
+    description: "Fake Harvard health advice from non-Harvard domains"
+
+  # Diabetes and blood sugar spam
+  - name: "Diabetes and blood sugar misinformation"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "BodyPattern"
+              pattern: "(?i).*(diabetes|blood.*sugar|pancreas|insulin.*resistance|diabetic|blood.*glucose).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*\\ba1c\\b.*"
+            - type: "SubjectPattern"
+              pattern: "(?i).*(diabetes|blood.*sugar|a1c|pancreas|insulin.*resistance|diabetic|blood.*glucose).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*williams.*sonoma.*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*fidelity.*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*withings.*"
+    score: 75
+    description: "Diabetes and blood sugar misinformation and miracle cure claims"
+
+  # Comprehensive health misinformation
+  - name: "General health misinformation"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "BodyPattern"
+              pattern: "(?i).*(cardiovascular|heart.*health|dental.*health|teeth.*repair|teeth.*cells|dementia|cognitive|prostate|digestive.*flush|breathing.*lung|brain.*fog|memory.*loss|joint.*pain|knee.*pain|sexual.*health|tinnitus|toenail.*fungus|vision.*ritual|eyesight|weight.*loss|diet.*secret|chinese.*tax|piano.*course|yeti.*cooler).*"
+            - type: "SubjectPattern"
+              pattern: "(?i).*(cardiovascular|heart.*health|dental.*health|teeth.*repair|teeth.*cells|dementia|cognitive|prostate|digestive.*flush|breathing.*lung|brain.*fog|memory.*loss|joint.*pain|knee.*pain|sexual.*health|tinnitus|toenail.*fungus|vision.*ritual|eyesight|weight.*loss|diet.*secret|chinese.*tax|piano.*course|yeti.*cooler).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*withings.*"
+    score: 50
+    description: "General health misinformation and miracle cure claims"
+
+  # Product and brand impersonation spam
+  - name: "Product and brand spam"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "BodyPattern"
+          pattern: "(?i).*(air.*filter.*factory|car.*emergency.*kit|joint.*knee.*pain|fake.*forum|brand.*impersonation|health.*ring|tracks.*health|titan.*ring|imagine.*ring).*"
+        - type: "SubjectPattern"
+          pattern: "(?i).*(air.*filter.*factory|car.*emergency.*kit|joint.*knee.*pain|fake.*forum|brand.*impersonation|health.*ring|tracks.*health|titan.*ring|imagine.*ring).*"
+        - type: "SenderPattern"
+          pattern: ".*@.*(forum|fake|scam|spam).*"
+    score: 65
+    description: "Product spam and brand impersonation attempts"
+
+  # Financial and brand impersonation scams
+  - name: "Financial and brand scams"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "BodyPattern"
+          pattern: "(?i).*(godaddy.*payment|venmo.*reward|wetransfer.*file|yeti.*brand|oreilly.*auto|o.*reilly|stanford.*weight|piano.*course|shed.*building|product.*demo|chinese.*tax|sexual.*health|weight.*loss).*"
+        - type: "SubjectPattern"
+          pattern: "(?i).*(godaddy.*payment|venmo.*reward|wetransfer.*file|yeti.*brand|oreilly.*auto|o.*reilly|stanford.*weight|piano.*course|shed.*building|product.*demo|chinese.*tax|sexual.*health|weight.*loss).*"
+        - type: "SenderPattern"
+          pattern: ".*@.*(shop|scam|fake|phish)\\.(com|net|org)$"
+        - type: "SenderPattern"
+          pattern: ".*@.*\\.shop$"
+    score: 75
+    description: "Financial scams and brand impersonation attempts"
+
+  # Medical misinformation and miracle cures (using pattern library) - DISABLED
+  - name: "Medical miracle cure spam"
+    enabled: false
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(miracle|cure|breakthrough|secret|doctors.*hate|big.*pharma|natural.*remedy)"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(secretlab|disney|think|hsa|fsa|netatmo|battery|vacuums|fall|promotion)\\.(com|net|co)$"
+    score: 70
+    description: "Medical misinformation and miracle cure claims - DISABLED"
+
+  # Vision and eye health scams (using pattern library)
+  - name: "Vision health misinformation"
+    criteria:
+      type: "SubjectPattern"
+      pattern: "(?i).*(vision.*restored|eyesight.*miracle|glasses.*free|20/20.*vision|eye.*doctor.*secret)"
+    score: 80
+    description: "Vision and eye health misinformation"
+
+  # Weight loss scams (using pattern library)
+  - name: "Weight loss miracle claims"
+    criteria:
+      type: "SubjectPattern"
+      pattern: "(?i).*(lose.*weight.*fast|belly.*fat.*trick|metabolism.*boost|fat.*burning.*secret)"
+    score: 60
+    description: "Weight loss and diet miracle claims"
+
+  # Healthcare brand impersonation
+  - name: "CVS Medicare phishing from free email"
+    criteria:
+      type: "BodyPattern"
+      pattern: "(?i).*cvs.*medicare.*"
+    score: 70
+    description: "CVS Medicare phishing from free email providers"
+
+  # Pharmaceutical spam (using pattern library)
+  - name: "Pharmaceutical spam"
+    criteria:
+      type: "SubjectPattern"
+      pattern: "(?i).*(viagra|cialis|pharmacy|prescription|medication|pills|drugs)"
+    score: 80
+    description: "Pharmaceutical and medication spam"
+
+  # Dental and knee health misinformation
+  - name: "Dental and joint health misinformation"
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "BodyPattern"
+          pattern: "(?i).*(dental.*health|tooth.*pain|gum.*disease|knee.*pain|joint.*pain|arthritis.*cure|dental.*kit|tooth.*decay)"
+        - type: "SubjectPattern"
+          pattern: "(?i).*(dental.*health|tooth.*pain|knee.*pain|joint.*relief|dental.*kit|gum.*health)"
+    score: 60
+    description: "Dental and joint health misinformation patterns"
+
+  # Sexual health spam
+  - name: "Sexual health spam"
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "BodyPattern"
+          pattern: "(?i).*(sexual.*health|sexual.*beast|erectile.*dysfunction|male.*enhancement|libido|testosterone)"
+        - type: "SubjectPattern"
+          pattern: "(?i).*(sexual.*health|sexual.*beast|male.*enhancement|erectile|testosterone)"
+    score: 65
+    description: "Sexual health and enhancement spam"
+
+  # Remaining rules with direct patterns for now
+  - name: "Tinnitus spam from suspicious domains"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: ".*@.*\\.(tk|ml|ga|cf|gq|top|click|download|stream|xyz|info|biz|online|site|website)$"
+        - type: "SubjectPattern"
+          pattern: "(?i).*(tinnitus|ringing.*ears|hearing.*loss|ear.*ringing).*"
+    score: 90
+    description: "Tinnitus and hearing health scams from suspicious domains"
+
+  - name: "Foot and ankle health misinformation"
+    criteria:
+      type: "SubjectPattern"
+      pattern: "(?i).*(foot.*pain|ankle.*pain|plantar.*fasciitis|foot.*stretch|heel.*pain|arch.*support|foot.*health).*"
+    score: 50
+    description: "Foot and ankle health misinformation and scams"
+
+  - name: "Health rewards and insurance spam"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(health.*reward|insurance.*reward|medicare.*reward|health.*benefit|insurance.*benefit|medicare.*benefit|health.*savings|insurance.*savings|medicare.*savings).*"
+        - type: "BodyPattern"
+          pattern: "(?i).*(health.*reward|insurance.*reward|medicare.*reward|health.*benefit|insurance.*benefit|medicare.*benefit|health.*savings|insurance.*savings|medicare.*savings).*"
+    score: 50
+    description: "Health insurance and reward spam"
+
+  - name: "Breathing and lung health misinformation"
+    criteria:
+      type: "SubjectPattern"
+      pattern: "(?i).*(breathing.*technique|lung.*health|respiratory.*health|oxygen.*levels|breathing.*exercise|lung.*capacity|asthma.*cure|copd.*treatment).*"
+    score: 60
+    description: "Breathing and lung health misinformation"
+
+  - name: "Cardiovascular health misinformation"
+    criteria:
+      type: "SubjectPattern"
+      pattern: "(?i).*(heart.*health|cardiovascular|circulation|blood.*flow|heart.*disease|stroke.*prevention|cardiac.*health|heart.*attack.*prevention).*"
+    score: 60
+    description: "Cardiovascular health misinformation and scams"
+
+  - name: "Dental health misinformation"
+    criteria:
+      type: "SubjectPattern"
+      pattern: "(?i).*(dental.*health|teeth.*whitening|gum.*disease|tooth.*decay|oral.*health|dental.*care|teeth.*cleaning|dental.*hygiene).*"
+    score: 50
+    description: "Dental health misinformation and scams"

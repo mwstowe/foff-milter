@@ -268,7 +268,7 @@ impl Config {
     pub fn new_default() -> Self {
         Config {
             socket_path: "/var/run/foff-milter.sock".to_string(),
-            module_config_dir: Some("modules".to_string()),
+            module_config_dir: Some("rulesets".to_string()),
             default_action: Action::Accept,
             statistics: None,
             rules: Vec::new(),
@@ -283,7 +283,7 @@ impl Config {
     pub fn from_toml_config(toml_config: &TomlConfig) -> Self {
         Config {
             socket_path: toml_config.system.socket_path.clone(),
-            module_config_dir: toml_config.modules.as_ref().and_then(|m| {
+            module_config_dir: toml_config.rulesets.as_ref().and_then(|m| {
                 if m.enabled {
                     Some(m.config_dir.clone())
                 } else {

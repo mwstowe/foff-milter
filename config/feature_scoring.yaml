@@ -1,0 +1,89 @@
+feature_scoring:
+  link_analysis:
+    base_score: 10
+    confidence_threshold: 80.0
+    suspicious_patterns:
+      - "(?i).*(bit\\.ly|tinyurl|t\\.co|goo\\.gl|short\\.link).*"
+      - "(?i).*(click.*here|urgent.*link|verify.*account|update.*payment).*"
+      - "(?i).*(secure.*login|confirm.*identity|suspended.*account).*"
+
+  sender_alignment:
+    base_score: 60
+    confidence_threshold: 85.0
+    job_related_exclusion: true
+    job_indicators:
+      - "job"
+      - "jobs" 
+      - "role"
+      - "roles"
+      - "position"
+      - "positions"
+      - "career"
+      - "careers"
+      - "hiring"
+      - "employment"
+      - "opportunity"
+      - "opportunities"
+      - "recommendation"
+      - "recommendations"
+      - "available"
+      - "opening"
+      - "openings"
+      - "apply"
+      - "application"
+
+  context_analysis:
+    base_score: 5
+    confidence_threshold: 85.0
+    urgency_patterns:
+      - "urgent"
+      - "immediate"
+      - "act now"
+      - "limited time"
+      - "expires today"
+      - "don't miss"
+      - "hurry"
+      - "last chance"
+
+  invoice_analysis:
+    base_score: 90
+    confidence_threshold: 90.0
+    scam_indicators:
+      - "overdue"
+      - "total amount"
+      - "invoice number"
+      - "24 hours"
+      - "payment required"
+      - "account suspended"
+
+spam_thresholds:
+  accept: 0
+  tag_as_spam: 60
+  reject: 350
+
+rule_scoring:
+  analytics:
+    generic_sender_names: 1
+    suspicious_message_ids: 5
+    bulk_email_patterns: 10
+
+  advanced_heuristics:
+    weak_signal_aggregation: 5
+    artificial_urgency: 15
+    advanced_heuristic_scoring: 20
+
+  health_threats:
+    general_health_misinformation: 25
+    product_brand_impersonation: 50
+    medical_device_spam: 40
+
+  link_analysis:
+    suspicious_link_patterns: 10
+    ip_addresses: 50
+    url_shorteners: 30
+    suspicious_tlds: 25
+
+  advanced_security:
+    html_entity_obfuscation: 15
+    image_only_emails: 20
+    final_spam_catchall: 0  # disabled

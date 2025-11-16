@@ -1,6 +1,7 @@
 use crate::abuse_reporter::AbuseReporter;
 use crate::attachment_analyzer::AttachmentAnalyzer;
 use crate::domain_age::DomainAgeChecker;
+use crate::features::FeatureEngine;
 use crate::invoice_analyzer::{InvoiceAnalysis, InvoiceAnalyzer};
 use crate::language::LanguageDetector;
 use crate::legacy_config::{load_modules, Action, Config, Criteria, Module};
@@ -169,6 +170,8 @@ pub struct FilterEngine {
     invoice_analyzer: InvoiceAnalyzer,
     // Media content analyzer
     media_analyzer: MediaAnalyzer,
+    // Feature-based analysis engine
+    feature_engine: FeatureEngine,
 }
 
 #[derive(Debug, Default, Clone)]
@@ -267,6 +270,7 @@ impl FilterEngine {
             },
             invoice_analyzer: InvoiceAnalyzer::new(),
             media_analyzer: MediaAnalyzer::new(),
+            feature_engine: FeatureEngine::new(),
         };
 
         // Pre-compile all regex patterns for better performance
@@ -355,6 +359,29 @@ impl FilterEngine {
         let body = context.body.as_deref().unwrap_or("");
         let sender = context.sender.as_deref().unwrap_or("");
         let from_header = context.from_header.as_deref().unwrap_or("");
+
+        // Skip invoice fraud analysis for known legitimate financial institutions
+        let legitimate_financial = [
+            "citi.com",
+            "chase.com",
+            "wellsfargo.com",
+            "bankofamerica.com",
+            "paypal.com",
+            "discover.com",
+            "capitalone.com",
+            "usbank.com",
+        ];
+
+        for domain in &legitimate_financial {
+            if sender.contains(domain) || from_header.contains(domain) {
+                return InvoiceAnalysis {
+                    is_fake_invoice: false,
+                    confidence_score: 0.0,
+                    detected_patterns: vec![],
+                    risk_factors: vec![],
+                };
+            }
+        }
 
         self.invoice_analyzer
             .analyze(subject, body, sender, from_header)
@@ -1127,6 +1154,32 @@ impl FilterEngine {
             scoring_rules
                 .push("Mailing List Detection: Legitimate mailing list (-200)".to_string());
         }
+
+        // Advanced feature-based analysis
+        let feature_analysis = self.feature_engine.analyze(&context_with_attachments);
+        total_score += feature_analysis.total_score;
+        for feature_score in &feature_analysis.scores {
+            if feature_score.score != 0 {
+                scoring_rules.push(format!(
+                    "Feature Analysis: {} (+{}, confidence: {:.1}%)",
+                    feature_score.feature_name,
+                    feature_score.score,
+                    feature_score.confidence * 100.0
+                ));
+
+                // Add evidence as additional headers for debugging
+                for evidence in &feature_score.evidence {
+                    headers_to_add.push((
+                        "X-FOFF-Feature-Evidence".to_string(),
+                        format!("{}: {}", feature_score.feature_name, evidence),
+                    ));
+                }
+            }
+        }
+        log::info!(
+            "Feature analysis completed - total feature score: {}",
+            feature_analysis.total_score
+        );
 
         // Advanced invoice fraud analysis
         let invoice_analysis = self.analyze_invoice_fraud(&context_with_attachments);

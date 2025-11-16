@@ -1,0 +1,379 @@
+use super::{FeatureExtractor, FeatureScore};
+use crate::MailContext;
+use regex::Regex;
+use std::collections::HashMap;
+use url::Url;
+
+#[derive(Debug, Clone)]
+pub struct ExtractedLink {
+    pub url: String,
+    pub display_text: String,
+    pub context: LinkContext,
+    pub domain: String,
+    pub is_suspicious: bool,
+}
+
+#[derive(Debug, Clone)]
+pub enum LinkContext {
+    Body,
+    UnsubscribeHeader,
+    ListUnsubscribe,
+    Signature,
+}
+
+pub struct LinkAnalyzer {
+    link_regex: Regex,
+    action_patterns: HashMap<String, Vec<String>>,
+}
+
+impl Default for LinkAnalyzer {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
+impl LinkAnalyzer {
+    pub fn new() -> Self {
+        let mut action_patterns = HashMap::new();
+
+        // Login/Account actions should go to legitimate domains
+        action_patterns.insert(
+            "login".to_string(),
+            vec![r"(?i)(log\s*in|sign\s*in|access.*account|view.*account)".to_string()],
+        );
+
+        // Payment actions should go to legitimate payment domains
+        action_patterns.insert(
+            "payment".to_string(),
+            vec![r"(?i)(pay.*now|update.*payment|billing|invoice|payment.*method)".to_string()],
+        );
+
+        // Security actions should go to legitimate security domains
+        action_patterns.insert(
+            "security".to_string(),
+            vec![
+                r"(?i)(verify.*account|security.*alert|suspicious.*activity|confirm.*identity)"
+                    .to_string(),
+            ],
+        );
+
+        Self {
+            link_regex: Regex::new(r#"<a[^>]+href=["']([^"']+)["'][^>]*>([^<]+)</a>"#).unwrap(),
+            action_patterns,
+        }
+    }
+
+    pub fn extract_links(&self, context: &MailContext) -> Vec<ExtractedLink> {
+        let mut links = Vec::new();
+
+        // Extract from body
+        if let Some(body) = &context.body {
+            for cap in self.link_regex.captures_iter(body) {
+                if let (Some(url), Some(text)) = (cap.get(1), cap.get(2)) {
+                    links.push(self.analyze_link(
+                        url.as_str(),
+                        text.as_str(),
+                        LinkContext::Body,
+                        context,
+                    ));
+                }
+            }
+        }
+
+        // Extract from unsubscribe headers
+        for (header_name, header_value) in &context.headers {
+            if header_name.to_lowercase().contains("unsubscribe") {
+                if let Ok(url) = Url::parse(header_value) {
+                    links.push(self.analyze_link(
+                        url.as_str(),
+                        "unsubscribe",
+                        LinkContext::UnsubscribeHeader,
+                        context,
+                    ));
+                }
+            }
+        }
+
+        links
+    }
+
+    fn analyze_link(
+        &self,
+        url: &str,
+        display_text: &str,
+        context_type: LinkContext,
+        context: &MailContext,
+    ) -> ExtractedLink {
+        let domain = self.extract_domain(url);
+        let is_suspicious = self.is_link_suspicious(url, display_text, &domain, context);
+
+        ExtractedLink {
+            url: url.to_string(),
+            display_text: display_text.to_string(),
+            context: context_type,
+            domain,
+            is_suspicious,
+        }
+    }
+
+    fn extract_domain(&self, url: &str) -> String {
+        if let Ok(parsed) = Url::parse(url) {
+            if let Some(domain) = parsed.domain() {
+                return domain.to_string();
+            }
+        }
+        "unknown".to_string()
+    }
+
+    fn is_link_suspicious(
+        &self,
+        url: &str,
+        display_text: &str,
+        link_domain: &str,
+        context: &MailContext,
+    ) -> bool {
+        // Early return for legitimate payment processors
+        let payment_processors = [
+            "pestconnect.com",
+            "stripe.com",
+            "paypal.com",
+            "square.com",
+            "quickbooks.com",
+            "invoicecloud.com",
+            "billpay.com",
+            "autopay.com",
+            "paymi.com",
+            "epay.com",
+        ];
+
+        for processor in &payment_processors {
+            if link_domain.contains(processor) {
+                return false;
+            }
+        }
+
+        // Check if action matches expected domain
+        let sender_domain = self.extract_sender_domain(context);
+
+        // If display text suggests account action but domain doesn't match sender
+        for (action_type, patterns) in &self.action_patterns {
+            for pattern in patterns {
+                if let Ok(regex) = Regex::new(pattern) {
+                    if regex.is_match(display_text) {
+                        return self.check_domain_alignment(
+                            &sender_domain,
+                            link_domain,
+                            action_type,
+                        );
+                    }
+                }
+            }
+        }
+
+        // Check for URL shorteners with suspicious context
+        self.is_suspicious_shortener(link_domain, display_text)
+            || self.has_suspicious_parameters(url)
+            || self.domain_mismatch_suspicious(&sender_domain, link_domain, display_text)
+    }
+
+    fn extract_sender_domain(&self, context: &MailContext) -> String {
+        if let Some(from) = context.headers.get("From") {
+            if let Some(at_pos) = from.rfind('@') {
+                let domain_part = &from[at_pos + 1..];
+                if let Some(end) = domain_part.find('>') {
+                    return domain_part[..end].to_string();
+                }
+                return domain_part.to_string();
+            }
+        }
+        "unknown".to_string()
+    }
+
+    fn check_domain_alignment(
+        &self,
+        sender_domain: &str,
+        link_domain: &str,
+        action_type: &str,
+    ) -> bool {
+        // For login/payment actions, domains should align or be known legitimate redirects
+        match action_type {
+            "login" | "payment" | "security" => {
+                !sender_domain.contains(link_domain)
+                    && !link_domain.contains(sender_domain)
+                    && !self.is_legitimate_redirect(sender_domain, link_domain)
+            }
+            _ => false,
+        }
+    }
+
+    fn is_legitimate_redirect(&self, sender_domain: &str, link_domain: &str) -> bool {
+        // Known legitimate redirect patterns
+        let legitimate_redirects = [
+            ("amazon.com", "smile.amazon.com"),
+            ("paypal.com", "paypal.me"),
+            ("microsoft.com", "aka.ms"),
+            ("google.com", "goo.gl"),
+        ];
+
+        for (sender, redirect) in &legitimate_redirects {
+            if sender_domain.contains(sender) && link_domain.contains(redirect) {
+                return true;
+            }
+        }
+
+        // Legitimate payment processors - don't flag as suspicious redirects
+        let payment_processors = [
+            "pestconnect.com",
+            "stripe.com",
+            "paypal.com",
+            "square.com",
+            "quickbooks.com",
+            "invoicecloud.com",
+            "billpay.com",
+            "autopay.com",
+            "paymi.com",
+            "epay.com",
+        ];
+
+        for processor in &payment_processors {
+            if link_domain.contains(processor) {
+                return true;
+            }
+        }
+
+        false
+    }
+
+    fn is_suspicious_shortener(&self, domain: &str, display_text: &str) -> bool {
+        let shorteners = ["bit.ly", "tinyurl.com", "t.co", "short.link"];
+        let has_shortener = shorteners.iter().any(|s| domain.contains(s));
+
+        // Shorteners are suspicious if used for account/security actions
+        has_shortener
+            && (display_text.to_lowercase().contains("account")
+                || display_text.to_lowercase().contains("security")
+                || display_text.to_lowercase().contains("verify"))
+    }
+
+    fn has_suspicious_parameters(&self, url: &str) -> bool {
+        if let Ok(parsed) = Url::parse(url) {
+            if let Some(query) = parsed.query() {
+                // Check if this is from a legitimate domain that uses redirects
+                if let Some(host) = parsed.host_str() {
+                    let legitimate_redirect_domains = [
+                        "oculus.com",
+                        "meta.com",
+                        "facebook.com",
+                        "instagram.com",
+                        "amazon.com",
+                        "google.com",
+                        "microsoft.com",
+                        "apple.com",
+                        "paypal.com",
+                        "ebay.com",
+                        "shopify.com",
+                        "mailchimp.com",
+                        "constantcontact.com",
+                        "sendgrid.net",
+                    ];
+
+                    for domain in &legitimate_redirect_domains {
+                        if host.ends_with(domain) {
+                            // Allow redirect parameters from legitimate domains
+                            return query.len() > 500; // Only flag extremely long query strings
+                        }
+                    }
+                }
+
+                // Look for suspicious tracking or redirect parameters from unknown domains
+                return query.contains("redirect=") || query.contains("goto=") || query.len() > 200;
+                // Extremely long query strings
+            }
+        }
+        false
+    }
+
+    fn domain_mismatch_suspicious(
+        &self,
+        sender_domain: &str,
+        link_domain: &str,
+        display_text: &str,
+    ) -> bool {
+        // Don't flag legitimate payment processors as suspicious
+        let payment_processors = [
+            "pestconnect.com",
+            "stripe.com",
+            "paypal.com",
+            "square.com",
+            "quickbooks.com",
+            "invoicecloud.com",
+            "billpay.com",
+            "autopay.com",
+            "paymi.com",
+            "epay.com",
+        ];
+
+        for processor in &payment_processors {
+            if link_domain.contains(processor) {
+                return false;
+            }
+        }
+
+        // If display text mentions a brand but link goes elsewhere
+        let brand_mentions = [
+            "paypal",
+            "amazon",
+            "microsoft",
+            "google",
+            "apple",
+            "facebook",
+        ];
+
+        for brand in &brand_mentions {
+            if display_text.to_lowercase().contains(brand)
+                && !link_domain.contains(brand)
+                && !sender_domain.contains(brand)
+            {
+                return true;
+            }
+        }
+        false
+    }
+}
+
+impl FeatureExtractor for LinkAnalyzer {
+    fn extract(&self, context: &MailContext) -> FeatureScore {
+        let links = self.extract_links(context);
+        let suspicious_count = links.iter().filter(|l| l.is_suspicious).count();
+        let total_links = links.len();
+
+        let score = if total_links == 0 {
+            0
+        } else {
+            (suspicious_count * 50 / total_links.max(1)) as i32
+        };
+
+        let mut evidence = Vec::new();
+        for link in &links {
+            if link.is_suspicious {
+                evidence.push(format!(
+                    "Suspicious link: '{}' -> {}",
+                    link.display_text, link.domain
+                ));
+            }
+        }
+
+        let confidence = if total_links > 0 { 0.8 } else { 0.3 };
+
+        FeatureScore {
+            feature_name: "Link Analysis".to_string(),
+            score,
+            confidence,
+            evidence,
+        }
+    }
+
+    fn name(&self) -> &str {
+        "link_analyzer"
+    }
+}

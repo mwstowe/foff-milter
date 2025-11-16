@@ -1,0 +1,80 @@
+pub mod context_analyzer;
+pub mod link_analyzer;
+pub mod sender_alignment;
+
+use crate::MailContext;
+use serde::{Deserialize, Serialize};
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct FeatureScore {
+    pub feature_name: String,
+    pub score: i32,
+    pub confidence: f32,
+    pub evidence: Vec<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct FeatureAnalysis {
+    pub scores: Vec<FeatureScore>,
+    pub total_score: i32,
+    pub risk_level: RiskLevel,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub enum RiskLevel {
+    Low,
+    Medium,
+    High,
+    Critical,
+}
+
+pub trait FeatureExtractor: Send + Sync {
+    fn extract(&self, context: &MailContext) -> FeatureScore;
+    fn name(&self) -> &str;
+}
+
+pub struct FeatureEngine {
+    extractors: Vec<Box<dyn FeatureExtractor>>,
+}
+
+impl Default for FeatureEngine {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
+impl FeatureEngine {
+    pub fn new() -> Self {
+        Self {
+            extractors: vec![
+                Box::new(link_analyzer::LinkAnalyzer::new()),
+                Box::new(sender_alignment::SenderAlignmentAnalyzer::new()),
+                Box::new(context_analyzer::ContextAnalyzer::new()),
+            ],
+        }
+    }
+
+    pub fn analyze(&self, context: &MailContext) -> FeatureAnalysis {
+        let mut scores = Vec::new();
+        let mut total_score = 0;
+
+        for extractor in &self.extractors {
+            let score = extractor.extract(context);
+            total_score += score.score;
+            scores.push(score);
+        }
+
+        let risk_level = match total_score {
+            score if score >= 100 => RiskLevel::Critical,
+            score if score >= 50 => RiskLevel::High,
+            score if score >= 20 => RiskLevel::Medium,
+            _ => RiskLevel::Low,
+        };
+
+        FeatureAnalysis {
+            scores,
+            total_score,
+            risk_level,
+        }
+    }
+}

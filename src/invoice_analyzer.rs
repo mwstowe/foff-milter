@@ -1,3 +1,4 @@
+use crate::config_loader::ConfigLoader;
 use regex::Regex;
 
 #[derive(Debug, Clone)]
@@ -6,6 +7,7 @@ pub struct InvoiceAnalyzer {
     invoice_indicators: Vec<Regex>,
     urgency_patterns: Vec<Regex>,
     suspicious_domains: Vec<Regex>,
+    legitimate_domains: Vec<String>,
 }
 
 #[derive(Debug, Clone)]
@@ -18,30 +20,65 @@ pub struct InvoiceAnalysis {
 
 impl Default for InvoiceAnalyzer {
     fn default() -> Self {
-        Self::new()
+        let legitimate_domains = ConfigLoader::get_all_legitimate_domains().unwrap_or_else(|e| {
+            eprintln!("Warning: Failed to load legitimate domains config: {}", e);
+            vec![
+                // Fallback hardcoded domains if config fails to load
+                "chase.com".to_string(),
+                "wellsfargo.com".to_string(),
+                "bankofamerica.com".to_string(),
+                "citi.com".to_string(),
+                "info6.citi.com".to_string(),
+                "paypal.com".to_string(),
+            ]
+        });
+
+        eprintln!(
+            "Invoice analyzer loaded {} legitimate domains",
+            legitimate_domains.len()
+        );
+        Self::new_with_domains(legitimate_domains)
     }
 }
 
 impl InvoiceAnalyzer {
-    pub fn new() -> Self {
+    pub fn new_with_domains(legitimate_domains: Vec<String>) -> Self {
         Self {
             invoice_indicators: vec![
-                Regex::new(r"(?i)(invoice|bill|receipt|charge|payment|overdue)").unwrap(),
-                Regex::new(r"(?i)(nota fiscal|documento|nfse|eletronica|disponivel)").unwrap(),
-                Regex::new(r"(?i)invoice\s*#?\s*\d+").unwrap(),
-                Regex::new(r"(?i)(inspecoes|tecnicas|solides|ponto)").unwrap(),
+                Regex::new(r"(?i)\binvoice\b").unwrap(),
+                Regex::new(r"(?i)\bbill\b").unwrap(),
+                Regex::new(r"(?i)\bstatement\b").unwrap(),
+                Regex::new(r"(?i)\breceipt\b").unwrap(),
+                Regex::new(r"(?i)\bpayment\b").unwrap(),
+                Regex::new(r"(?i)\bdue\b").unwrap(),
+                Regex::new(r"(?i)\bamount\b").unwrap(),
+                Regex::new(r"(?i)\btotal\b").unwrap(),
             ],
             urgency_patterns: vec![
-                Regex::new(r"(?i)(24 hours|expires|urgent|immediate|suspend|cancel)").unwrap(),
-                Regex::new(r"(?i)(will be.*charged|auto.*renew|debited)").unwrap(),
+                Regex::new(r"(?i)\burgent\b").unwrap(),
+                Regex::new(r"(?i)\bimmediate\b").unwrap(),
+                Regex::new(r"(?i)\boverdue\b").unwrap(),
+                Regex::new(r"(?i)\bexpir(e|ing|ed)\b").unwrap(),
+                Regex::new(r"(?i)\bsuspend(ed)?\b").unwrap(),
+                Regex::new(r"(?i)\bcancel(led)?\b").unwrap(),
+                Regex::new(r"(?i)\b(24|48)\s*hours?\b").unwrap(),
+                Regex::new(r"(?i)\bact\s+now\b").unwrap(),
             ],
             suspicious_domains: vec![
-                Regex::new(r"@[^@]*\.(tk|ml|ga|cf|gq|top|click|delivery|shop)$").unwrap(),
-                Regex::new(r"documento\d+@").unwrap(),
-                Regex::new(r"@[a-z0-9]{8,15}\.[a-z]{2,4}$").unwrap(),
-                Regex::new(r"@.*\.zemark\.delivery$").unwrap(),
+                Regex::new(r"(?i)\.tk$").unwrap(),
+                Regex::new(r"(?i)\.ml$").unwrap(),
+                Regex::new(r"(?i)\.ga$").unwrap(),
+                Regex::new(r"(?i)\.cf$").unwrap(),
+                Regex::new(r"(?i)\.gq$").unwrap(),
+                Regex::new(r"(?i)\.ru$").unwrap(),
+                Regex::new(r"(?i)\.cn$").unwrap(),
             ],
+            legitimate_domains,
         }
+    }
+
+    pub fn new() -> Self {
+        Self::new_with_domains(vec![])
     }
 
     pub fn analyze(
@@ -53,273 +90,137 @@ impl InvoiceAnalyzer {
     ) -> InvoiceAnalysis {
         let mut score = 0.0;
         let mut patterns = Vec::new();
-        let mut risks = Vec::new();
+        let mut risk_factors = Vec::new();
 
-        let combined_text = format!("{} {} {}", subject, body, from_header);
+        let text = format!("{} {}", subject, body);
 
-        // Skip analysis for legitimate business domains
-        if self.is_legitimate_business(sender, from_header) {
-            return InvoiceAnalysis {
-                is_fake_invoice: false,
-                confidence_score: 0.0,
-                detected_patterns: vec!["Legitimate business domain".to_string()],
-                risk_factors: vec![],
-            };
+        // Check for invoice indicators
+        let mut invoice_indicators = 0;
+        for pattern in &self.invoice_indicators {
+            if pattern.is_match(&text) {
+                invoice_indicators += 1;
+            }
         }
 
-        // Skip analysis for subscription services
-        if self.is_subscription_service(&combined_text, sender) {
-            return InvoiceAnalysis {
-                is_fake_invoice: false,
-                confidence_score: 0.0,
-                detected_patterns: vec!["Subscription service".to_string()],
-                risk_factors: vec![],
-            };
+        if invoice_indicators > 0 {
+            patterns.push(format!("Invoice indicators ({})", invoice_indicators));
+            score += invoice_indicators as f32 * 10.0;
         }
 
-        // Check for monetary amounts (high weight)
-        if self.has_suspicious_amounts(&combined_text) {
-            score += 30.0;
-            patterns.push("Suspicious monetary amounts".to_string());
+        // Check for urgency patterns
+        let mut urgency_count = 0;
+        for pattern in &self.urgency_patterns {
+            if pattern.is_match(&text) {
+                urgency_count += 1;
+            }
         }
 
-        // Check invoice indicators
-        let invoice_matches = self.count_pattern_matches(&self.invoice_indicators, &combined_text);
-        if invoice_matches > 0 {
-            score += invoice_matches as f32 * 15.0;
-            patterns.push(format!("Invoice indicators ({})", invoice_matches));
+        if urgency_count > 0 {
+            patterns.push(format!("Urgency patterns ({})", urgency_count));
+            score += urgency_count as f32 * 15.0;
         }
 
-        // Check urgency patterns (only if invoice indicators are present)
-        let urgency_matches = self.count_pattern_matches(&self.urgency_patterns, &combined_text);
-        if urgency_matches > 0 && invoice_matches > 0 {
-            score += urgency_matches as f32 * 20.0;
-            patterns.push(format!("Urgency + invoice patterns ({})", urgency_matches));
+        // Check for suspicious domains
+        for pattern in &self.suspicious_domains {
+            if pattern.is_match(sender) || pattern.is_match(from_header) {
+                patterns.push("Suspicious domain".to_string());
+                score += 25.0;
+                break;
+            }
         }
 
-        // Check brand impersonation
-        if self.has_brand_impersonation(&combined_text, sender) {
-            score += 35.0;
+        // Check for brand impersonation
+        if self.has_brand_impersonation(&text, sender, from_header) {
             patterns.push("Brand impersonation detected".to_string());
-            risks.push("Impersonating trusted brand".to_string());
+            score += 30.0;
         }
 
-        // Check suspicious sender domains
-        if self.has_suspicious_domain(sender) || self.has_suspicious_domain(from_header) {
-            score += 25.0;
-            patterns.push("Suspicious sender domain".to_string());
-            risks.push("Untrusted domain".to_string());
-        }
-
-        // Check sender/brand mismatch
-        if self.has_sender_brand_mismatch(&combined_text, sender) {
-            score += 40.0;
+        // Check sender/brand alignment
+        if self.has_sender_brand_mismatch(&text, sender, from_header) {
             patterns.push("Sender/brand mismatch".to_string());
-            risks.push("Domain doesn't match claimed brand".to_string());
+            score += 25.0;
         }
 
-        // Normalize score to 0-100
+        // Reduce score for legitimate businesses
+        if self.is_legitimate_business(sender, from_header) {
+            score *= 0.1; // Reduce by 90%
+            risk_factors.push("Legitimate business sender".to_string());
+        }
+
+        // Check for subscription-related content
+        if self.is_subscription_related(&text, sender) {
+            score *= 0.3; // Reduce by 70%
+            risk_factors.push("Subscription-related content".to_string());
+        }
+
         let confidence = (score / 100.0).min(1.0);
+        let is_fake = confidence > 0.7;
 
         InvoiceAnalysis {
-            is_fake_invoice: confidence > 0.4, // Balanced threshold
+            is_fake_invoice: is_fake,
             confidence_score: confidence,
             detected_patterns: patterns,
-            risk_factors: risks,
+            risk_factors,
         }
     }
 
-    fn has_suspicious_amounts(&self, text: &str) -> bool {
-        // Look for specific amount patterns that are common in scams
-        let suspicious_amounts = [
-            r"\$295\.70",
-            r"\$299\.99",
-            r"\$399\.99",
-            r"\$49\.99",
-            r"\$\d{2,3}\.\d{2}.*24.*hours",
+    fn has_brand_impersonation(&self, text: &str, sender: &str, _from_header: &str) -> bool {
+        let brands = [
+            "paypal",
+            "amazon",
+            "microsoft",
+            "apple",
+            "google",
+            "adobe",
+            "docusign",
+            "dropbox",
+            "salesforce",
+            "stripe",
+            "square",
+            "shopify",
+            "ebay",
+            "walmart",
+            "target",
+            "bestbuy",
+            "fedex",
+            "ups",
+            "usps",
+            "dhl",
         ];
 
-        for pattern_str in &suspicious_amounts {
-            if let Ok(pattern) = Regex::new(&format!("(?i){}", pattern_str)) {
-                if pattern.is_match(text) {
-                    return true;
-                }
-            }
-        }
-        false
-    }
-
-    fn count_pattern_matches(&self, patterns: &[Regex], text: &str) -> usize {
-        patterns
-            .iter()
-            .map(|p| if p.is_match(text) { 1 } else { 0 })
-            .sum()
-    }
-
-    fn has_brand_impersonation(&self, text: &str, sender: &str) -> bool {
-        // Only check for major tech/security brands that are commonly impersonated in invoice scams
-        let high_risk_brands = ["norton", "mcafee", "microsoft", "apple"];
-
-        for brand in &high_risk_brands {
-            let brand_pattern = Regex::new(&format!("(?i){}", brand)).unwrap();
-            if brand_pattern.is_match(text) {
-                // Exclude legitimate Apple/Microsoft services and HTML references
-                let exclusions = [
-                    "schemas-microsoft-com",
-                    "x-apple-data-detectors",
-                    "xmlns:",
-                    "microsoft-com:office",
-                    "microsoft-com:vml",
-                    "appleLinks",
-                    "Apple-Mail-Boundary",
-                    "x-apple-disable-message-reformatting",
-                    "Apple Wallet",
-                    "Apple Pay",
-                    "Apple Watch",
-                    "Apple TV",
-                    "Microsoft Office",
-                    "Microsoft Teams",
-                    "Microsoft 365",
-                ];
-
-                let mut is_legitimate_reference = false;
-                for exclusion in &exclusions {
-                    if text.contains(exclusion) {
-                        is_legitimate_reference = true;
-                        break;
-                    }
-                }
-
-                // Additional check: if it contains legitimate reference but also has scam indicators, don't exclude
-                if is_legitimate_reference {
-                    let scam_indicators = ["overdue", "total amount", "invoice number", "24 hours"];
-                    let has_scam_language = scam_indicators
-                        .iter()
-                        .any(|&indicator| text.to_lowercase().contains(indicator));
-                    if has_scam_language {
-                        is_legitimate_reference = false; // Don't exclude if it has scam language
-                    }
-                }
-
-                if is_legitimate_reference {
-                    continue;
-                }
-
-                let domain_pattern = Regex::new(&format!("(?i)@.*{}.*\\.", brand)).unwrap();
-                if !domain_pattern.is_match(sender) {
-                    return true;
-                }
-            }
-        }
-        false
-    }
-
-    fn has_suspicious_domain(&self, email: &str) -> bool {
-        self.suspicious_domains.iter().any(|p| p.is_match(email))
-    }
-
-    fn has_sender_brand_mismatch(&self, text: &str, sender: &str) -> bool {
-        // Only check for brands commonly used in invoice scams
-        let invoice_scam_brands = ["norton", "mcafee", "microsoft", "apple"];
-
-        for brand in &invoice_scam_brands {
-            let brand_pattern = Regex::new(&format!("(?i){}", brand)).unwrap();
-            if brand_pattern.is_match(text) {
-                // Exclude legitimate Apple/Microsoft services and HTML references
-                let exclusions = [
-                    "schemas-microsoft-com",
-                    "x-apple-data-detectors",
-                    "xmlns:",
-                    "microsoft-com:office",
-                    "microsoft-com:vml",
-                    "appleLinks",
-                    "Apple-Mail-Boundary",
-                    "x-apple-disable-message-reformatting",
-                    "Apple Wallet",
-                    "Apple Pay",
-                    "Apple Watch",
-                    "Apple TV",
-                    "Microsoft Office",
-                    "Microsoft Teams",
-                    "Microsoft 365",
-                ];
-
-                let mut is_legitimate_reference = false;
-                for exclusion in &exclusions {
-                    if text.contains(exclusion) {
-                        is_legitimate_reference = true;
-                        break;
-                    }
-                }
-
-                // Additional check: if it contains legitimate reference but also has scam indicators, don't exclude
-                if is_legitimate_reference {
-                    let scam_indicators = ["overdue", "total amount", "invoice number", "24 hours"];
-                    let has_scam_language = scam_indicators
-                        .iter()
-                        .any(|&indicator| text.to_lowercase().contains(indicator));
-                    if has_scam_language {
-                        is_legitimate_reference = false; // Don't exclude if it has scam language
-                    }
-                }
-
-                if is_legitimate_reference {
-                    continue;
-                }
-
-                let domain_pattern = Regex::new(&format!("(?i)@.*{}.*\\.", brand)).unwrap();
-                if !domain_pattern.is_match(sender) {
-                    return true;
-                }
-            }
-        }
-        false
-    }
-
-    fn is_legitimate_business(&self, sender: &str, from_header: &str) -> bool {
-        let legitimate_domains = [
-            "amazon.com",
-            "paypal.com",
-            "microsoft.com",
-            "apple.com",
-            "google.com",
-            "fidelity.com",
-            "adapthealth.com",
-            "bcdtravel.com",
-            "backstage.com",
-            "arrived.com",
-            "seattle.gov",
-            "netsuite.com",
-            "salesforce.com",
-            "quickbooks.com",
-            "stripe.com",
-            "square.com",
-            "shopify.com",
-            "mailchimp.com",
-            "constantcontact.com",
-            "sendgrid.net",
-            "adapthealthmarketplace.com",
-            "medium.com",
-        ];
-
-        for domain in &legitimate_domains {
-            if sender.contains(domain) || from_header.contains(domain) {
+        for brand in &brands {
+            if text.to_lowercase().contains(brand) && !sender.to_lowercase().contains(brand) {
                 return true;
             }
         }
 
-        // Check for legitimate business patterns
-        let business_patterns = [
-            r"@.*\.(gov|edu|mil)$",
-            r"@.*\.(bank|credit|financial)\.com$",
-            r"@.*receipt.*\.com$",
-            r"@.*invoice.*\.com$",
-        ];
+        false
+    }
 
-        for pattern_str in &business_patterns {
-            if let Ok(pattern) = Regex::new(pattern_str) {
-                if pattern.is_match(sender) || pattern.is_match(from_header) {
-                    return true;
+    fn has_sender_brand_mismatch(&self, text: &str, sender: &str, from_header: &str) -> bool {
+        // Skip if it's a legitimate business
+        if self.is_legitimate_business(sender, from_header) {
+            return false;
+        }
+
+        let financial_terms = ["invoice", "bill", "payment", "charge", "account"];
+        let has_financial_terms = financial_terms
+            .iter()
+            .any(|term| text.to_lowercase().contains(term));
+
+        if has_financial_terms {
+            // Check if sender domain looks suspicious for financial communications
+            let suspicious_patterns = [
+                r"@[a-z0-9]{8,15}\.[a-z]{2,4}$",
+                r"@.*\.(tk|ml|ga|cf|gq|top|click)$",
+                r"documento\d+@",
+            ];
+
+            for pattern in &suspicious_patterns {
+                if let Ok(regex) = Regex::new(pattern) {
+                    if regex.is_match(sender) {
+                        return true;
+                    }
                 }
             }
         }
@@ -327,32 +228,27 @@ impl InvoiceAnalyzer {
         false
     }
 
-    fn is_subscription_service(&self, text: &str, sender: &str) -> bool {
-        // Check for subscription service patterns
-        let subscription_patterns = [
-            "trial",
-            "membership",
-            "streaming",
-            "monthly",
-            "annual",
-            "cancel anytime",
-            "free trial",
-            "premium",
-        ];
+    fn is_legitimate_business(&self, sender: &str, from_header: &str) -> bool {
+        for domain in &self.legitimate_domains {
+            if sender.contains(domain) || from_header.contains(domain) {
+                return true;
+            }
+        }
+        false
+    }
 
+    fn is_subscription_related(&self, text: &str, sender: &str) -> bool {
         let subscription_domains = [
-            "disneyplus",
-            "netflix",
-            "spotify",
-            "hulu",
-            "amazon",
-            "apple",
-            "microsoft",
-            "adobe",
-            "zoom",
-            "dropbox",
-            "slack",
-            "sparkpostmail",
+            "netflix.com",
+            "spotify.com",
+            "hulu.com",
+            "disney.com",
+            "amazon.com",
+            "microsoft.com",
+            "adobe.com",
+            "dropbox.com",
+            "google.com",
+            "apple.com",
         ];
 
         // If it's from a known subscription service
@@ -368,7 +264,10 @@ impl InvoiceAnalyzer {
             "total amount",
             "invoice number",
             "24 hours",
-            "will be charged",
+            "payment required",
+            "account suspended",
+            "verify account",
+            "update payment",
         ];
         let has_scam_language = scam_indicators
             .iter()
@@ -380,6 +279,18 @@ impl InvoiceAnalyzer {
 
         // If it contains subscription language
         let mut subscription_indicators = 0;
+        let subscription_patterns = [
+            "subscription",
+            "monthly",
+            "annual",
+            "recurring",
+            "auto-renew",
+            "billing cycle",
+            "next payment",
+            "plan",
+            "membership",
+        ];
+
         for pattern in &subscription_patterns {
             if text.to_lowercase().contains(pattern) {
                 subscription_indicators += 1;

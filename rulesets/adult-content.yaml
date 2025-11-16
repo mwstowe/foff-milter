@@ -1,0 +1,38 @@
+name: "Adult Content"
+enabled: true
+rules:
+  - name: "Adult Content Keywords"
+    enabled: true
+    criteria:
+      type: "SubjectPattern"
+      pattern: "(?i).*(adult.*content|xxx|porn|sex.*chat|dating.*site|hookup|escort|webcam.*girls|adult.*entertainment|raging.*hard|male.*enhancement|get.*hard|boost.*performance).*"
+    score: 50
+    description: "Adult content and dating scam detection"
+
+  - name: "Romance Scam Patterns"
+    enabled: true
+    criteria:
+      type: "SubjectPattern"
+      pattern: "(?i).*(lonely.*woman|beautiful.*girl|meet.*singles|find.*love|romance.*scam|sugar.*daddy|sugar.*baby|want.*to.*be.*with.*you|how.*about.*you).*"
+    score: 40
+    description: "Romance and dating scam patterns"
+
+  - name: "Ukrainian dating spam direct"
+    enabled: true
+    criteria:
+      type: "SubjectPattern"
+      pattern: "(?i).*ukrainian.*girl.*"
+    score: 75
+    description: "Direct Ukrainian dating spam detection"
+
+  - name: "International romance and dating scams"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(ukrainian|russian|eastern.*european|slavic|date.*easy).*"
+        - type: "SenderPattern"
+          pattern: "(?i).*ukrainian.*@.*"
+    score: 70
+    description: "Ukrainian and Eastern European dating spam"
