@@ -1112,9 +1112,12 @@ impl FilterEngine {
         let mut scoring_rules = Vec::new();
 
         // FIRST: Detect and strip Gmail forwarding headers before any rule processing
-        let is_gmail_forwarded = self.detect_and_strip_gmail_forwarding(&mut context_with_attachments);
+        let is_gmail_forwarded =
+            self.detect_and_strip_gmail_forwarding(&mut context_with_attachments);
         if is_gmail_forwarded {
-            log::info!("Gmail forwarding detected and headers stripped - processing with original sender");
+            log::info!(
+                "Gmail forwarding detected and headers stripped - processing with original sender"
+            );
         }
 
         // Check for legitimate mailing list infrastructure
@@ -5119,26 +5122,25 @@ impl FilterEngine {
     /// Detects Gmail forwarding and strips forwarding headers to expose original sender
     fn detect_and_strip_gmail_forwarding(&self, context: &mut MailContext) -> bool {
         log::info!("Starting Gmail forwarding detection...");
-        
-        let mut is_gmail_forwarded = false;
+
         let mut has_google_received = false;
         let mut has_suspicious_sender = false;
         let mut original_sender = String::new();
-        
+
         // First pass: detect Gmail forwarding pattern
         for (header_name, header_value) in &context.headers {
             let header_lower = header_name.to_lowercase();
-            
+
             // Check for Google mail servers in Received headers
             if header_lower == "received" && header_value.contains("google.com") {
                 has_google_received = true;
                 log::info!("Found Google received header");
             }
-            
+
             // Extract and check the actual sender
             if header_lower == "from" {
                 log::info!("Processing From header: {}", header_value);
-                
+
                 // Parse "Display Name" <email@domain> format
                 if let Some(start) = header_value.rfind('<') {
                     if let Some(end) = header_value.rfind('>') {
@@ -5147,9 +5149,9 @@ impl FilterEngine {
                 } else {
                     original_sender = header_value.trim().to_string();
                 }
-                
+
                 log::info!("Extracted sender: {}", original_sender);
-                
+
                 // Check if sender is suspicious (onmicrosoft.com, etc.)
                 if original_sender.contains(".onmicrosoft.com") {
                     has_suspicious_sender = true;
@@ -5157,22 +5159,28 @@ impl FilterEngine {
                 }
             }
         }
-        
-        log::info!("Gmail forwarding check: has_google_received={}, has_suspicious_sender={}", 
-                   has_google_received, has_suspicious_sender);
-        
+
+        log::info!(
+            "Gmail forwarding check: has_google_received={}, has_suspicious_sender={}",
+            has_google_received,
+            has_suspicious_sender
+        );
+
         // Determine if this is Gmail forwarding of suspicious content
-        is_gmail_forwarded = has_google_received && has_suspicious_sender;
-        
+        let is_gmail_forwarded = has_google_received && has_suspicious_sender;
+
         if is_gmail_forwarded {
-            log::info!("DETECTED Gmail forwarding of suspicious sender: {}", original_sender);
-            
+            log::info!(
+                "DETECTED Gmail forwarding of suspicious sender: {}",
+                original_sender
+            );
+
             // Second pass: strip Gmail forwarding headers
             let mut cleaned_headers = HashMap::new();
-            
+
             for (header_name, header_value) in &context.headers {
                 let header_lower = header_name.to_lowercase();
-                
+
                 // Keep essential headers, skip Gmail infrastructure
                 let should_keep = match header_lower.as_str() {
                     // Keep core email headers
@@ -5188,20 +5196,23 @@ impl FilterEngine {
                     // Keep everything else
                     _ => true,
                 };
-                
+
                 if should_keep {
                     cleaned_headers.insert(header_name.clone(), header_value.clone());
                 }
             }
-            
+
             // Replace headers with cleaned version
             let removed_count = context.headers.len() - cleaned_headers.len();
             context.headers = cleaned_headers;
-            
-            log::info!("STRIPPED {} Gmail forwarding headers, exposing original sender: {}", 
-                      removed_count, original_sender);
+
+            log::info!(
+                "STRIPPED {} Gmail forwarding headers, exposing original sender: {}",
+                removed_count,
+                original_sender
+            );
         }
-        
+
         is_gmail_forwarded
     }
 
