@@ -268,7 +268,7 @@ impl FilterEngine {
             sender_blocking_action: Action::Reject {
                 message: "Sender blocked by pattern".to_string(),
             },
-            invoice_analyzer: InvoiceAnalyzer::new(),
+            invoice_analyzer: InvoiceAnalyzer::default(), // Reload with fresh config data
             media_analyzer: MediaAnalyzer::new(),
             feature_engine: FeatureEngine::new(),
         };

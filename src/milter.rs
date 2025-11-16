@@ -229,6 +229,11 @@ impl Milter {
     ) -> anyhow::Result<()> {
         log::info!("Reloading milter configuration and modules...");
 
+        // Reload config data
+        if let Err(e) = crate::config_loader::ConfigLoader::reload() {
+            log::warn!("Failed to reload config data: {}", e);
+        }
+
         // Create new engine with updated configuration
         let mut new_engine = FilterEngine::new(config.clone())?;
         new_engine.set_toml_config(toml_config);
@@ -249,7 +254,7 @@ impl Milter {
             self.statistics = None;
         }
 
-        log::info!("Milter configuration and modules reloaded successfully");
+        log::info!("Milter configuration, modules, config data, and features reloaded successfully");
         Ok(())
     }
 

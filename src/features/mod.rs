@@ -45,6 +45,20 @@ impl Default for FeatureEngine {
 
 impl FeatureEngine {
     pub fn new() -> Self {
+        Self::from_config_dir("features").unwrap_or_else(|e| {
+            log::warn!("Failed to load feature config, using defaults: {}", e);
+            Self::default_config()
+        })
+    }
+
+    pub fn from_config_dir(_config_dir: &str) -> Result<Self, Box<dyn std::error::Error>> {
+        // Try to load feature configurations from TOML files
+        // For now, return default configuration
+        // TODO: Implement actual config loading when feature configs are defined
+        Ok(Self::default_config())
+    }
+
+    fn default_config() -> Self {
         Self {
             extractors: vec![
                 Box::new(link_analyzer::LinkAnalyzer::new()),
