@@ -195,11 +195,15 @@ pub struct PerformanceConfig {
 
 impl TomlConfig {
     pub fn load_from_file<P: AsRef<Path>>(path: P) -> anyhow::Result<Self> {
-        let content = std::fs::read_to_string(path)?;
+        let config_path = path.as_ref();
+        let content = std::fs::read_to_string(config_path)?;
         let mut config: TomlConfig = toml::from_str(&content)?;
 
-        // Merge with platform-specific defaults for missing sections
-        let defaults = TomlConfig::default();
+        // Get config file directory for relative paths
+        let config_dir = config_path.parent().unwrap_or(Path::new("."));
+
+        // Create defaults relative to config file location
+        let defaults = Self::default_relative_to(config_dir);
 
         if config.system.is_none() {
             config.system = defaults.system;
@@ -242,6 +246,73 @@ impl TomlConfig {
         }
 
         Ok(config)
+    }
+
+    fn default_relative_to(config_dir: &Path) -> Self {
+        // Platform-specific base directory for absolute paths
+        let base_dir = if cfg!(target_os = "freebsd") {
+            "/usr/local/etc"
+        } else {
+            "/etc"
+        };
+        
+        let foff_dir = format!("{}/foff-milter", base_dir);
+        
+        // Use relative paths from config directory, fallback to platform defaults
+        let rulesets_dir = config_dir.join("rulesets").to_string_lossy().to_string();
+        let features_dir = config_dir.join("features").to_string_lossy().to_string();
+
+        Self {
+            system: Some(SystemConfig {
+                socket_path: "/var/run/foff-milter.sock".to_string(),
+                reject_to_tag: true,
+            }),
+            logging: None,
+            statistics: Some(StatisticsConfig {
+                enabled: true,
+                database_path: "/var/lib/foff-milter/stats.db".to_string(),
+                flush_interval_seconds: 60,
+            }),
+            rulesets: Some(RulesetsConfig {
+                enabled: true,
+                config_dir: rulesets_dir,
+            }),
+            features: Some(FeaturesConfig {
+                enabled: true,
+                config_dir: features_dir,
+            }),
+            heuristics: Some(HeuristicsConfig {
+                reject_threshold: 350,
+                spam_threshold: 50,
+                accept_threshold: 0,
+            }),
+            sender_blocking: Some(SenderBlockingConfig {
+                enabled: true,
+                block_patterns: vec![],
+                action: "reject".to_string(),
+            }),
+            whitelist: Some(WhitelistConfig {
+                enabled: true,
+                addresses: vec![],
+                domains: vec![],
+                domain_patterns: vec![],
+            }),
+            blocklist: Some(BlocklistConfig {
+                enabled: true,
+                addresses: vec![],
+                domains: vec![],
+                domain_patterns: vec![],
+            }),
+            legacy: Some(LegacyConfigRef {
+                enabled: false,
+                config_file: format!("{}/legacy-rules.yaml", foff_dir),
+            }),
+            default_action: Some(DefaultActionConfig {
+                action_type: "Accept".to_string(),
+            }),
+            performance: None,
+            domain_classifications: None,
+        }
     }
 
     pub fn default_path() -> &'static str {
