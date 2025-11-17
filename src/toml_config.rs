@@ -34,9 +34,9 @@ impl Default for TomlConfig {
         } else {
             "/etc"
         };
-        
+
         let foff_dir = format!("{}/foff-milter", base_dir);
-        
+
         Self {
             system: SystemConfig {
                 socket_path: "/var/run/foff-milter.sock".to_string(),
@@ -176,18 +176,18 @@ impl TomlConfig {
     pub fn load_from_file<P: AsRef<Path>>(path: P) -> anyhow::Result<Self> {
         let content = std::fs::read_to_string(path)?;
         let mut config: TomlConfig = toml::from_str(&content)?;
-        
+
         // Merge with platform-specific defaults for missing sections
         let defaults = TomlConfig::default();
-        
+
         if config.rulesets.is_none() {
             config.rulesets = defaults.rulesets;
         }
-        
+
         if config.features.is_none() {
             config.features = defaults.features;
         }
-        
+
         Ok(config)
     }
 
