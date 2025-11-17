@@ -1,5 +1,5 @@
-# FOFF Milter v0.6.3 - Complete Configuration Example
-# This file demonstrates all available configuration options
+# FOFF Milter v0.7.0 - Configuration Example
+# This file shows default values with sample configurations commented out
 
 # =============================================================================
 # SYSTEM CONFIGURATION
@@ -9,16 +9,7 @@
 socket_path = "/var/run/foff-milter.sock"
 
 # Convert REJECT actions to TAG actions (default: true)
-# When enabled, emails that would be rejected are tagged with X-FOFF-Reject-Converted header instead
-# This allows for safer deployment and monitoring of what would have been rejected
 reject_to_tag = true
-
-# =============================================================================
-# LOGGING CONFIGURATION
-# =============================================================================
-[logging]
-# Log level: trace, debug, info, warn, error
-level = "info"
 
 # =============================================================================
 # MODULAR DETECTION SYSTEM
@@ -27,18 +18,43 @@ level = "info"
 # Enable modular detection system
 enabled = true
 # Directory containing module configuration files
-config_dir = "/etc/foff-milter/modules"
+config_dir = "rulesets"
+
+# =============================================================================
+# FEATURE ANALYSIS SYSTEM
+# =============================================================================
+[features]
+# Enable intelligent feature analysis
+enabled = true
+# Directory containing feature configuration files
+config_dir = "features"
 
 # =============================================================================
 # HEURISTIC SCORING SYSTEM
 # =============================================================================
 [heuristics]
 # Score threshold for REJECT action
-reject_threshold = 100
+reject_threshold = 350
 # Score threshold for TAG AS SPAM action
-spam_threshold = 50
+spam_threshold = 60
 # Score threshold for ACCEPT action (below this = accept)
 accept_threshold = 0
+
+# =============================================================================
+# SENDER BLOCKING (Pattern-based blocking)
+# =============================================================================
+[sender_blocking]
+# Enable explicit sender pattern blocking
+enabled = true
+# Patterns that will immediately block emails
+block_patterns = [
+    # Add specific patterns to block
+    # ".*@suspicious-domain\\.com$",
+    # ".*spammer.*@.*",
+    # ".*@.*\\.tk$"
+]
+# Action to take: "reject" or "tag"
+action = "reject"
 
 # =============================================================================
 # GLOBAL WHITELIST
@@ -49,64 +65,52 @@ enabled = true
 
 # Exact email addresses to whitelist
 addresses = [
-    "noreply@paypal.com",
-    "security@amazon.com",
-    "notifications@github.com",
-    "alerts@microsoft.com",
-    "no-reply@google.com"
+    # "noreply@paypal.com",
+    # "security@amazon.com",
+    # "notifications@github.com"
 ]
 
 # Exact domains to whitelist
 domains = [
-    "paypal.com",
-    "amazon.com", 
-    "github.com",
-    "microsoft.com",
-    "google.com",
-    "apple.com"
+    # "paypal.com",
+    # "amazon.com", 
+    # "github.com",
+    # "microsoft.com"
 ]
 
 # Domain patterns to whitelist (regex)
 domain_patterns = [
-    ".*\\.gov$",        # Government domains
-    ".*\\.edu$",        # Educational institutions
-    ".*\\.mil$",        # Military domains
-    ".*\\.bank$",       # Banking domains
-    ".*@.*\\.internal$" # Internal corporate domains
+    # ".*\\.gov$",        # Government domains
+    # ".*\\.edu$",        # Educational institutions
+    # ".*\\.mil$"         # Military domains
 ]
 
 # =============================================================================
 # GLOBAL BLOCKLIST
 # =============================================================================
 [blocklist]
-# Enable blocklist (second priority - blocks before rule evaluation)
+# Enable blocklist (blocks before rule evaluation)
 enabled = true
 
 # Exact email addresses to block
 addresses = [
-    "spam@badactor.com",
-    "phishing@scammer.net",
-    "malware@suspicious.tk"
+    # "spam@badactor.com",
+    # "phishing@scammer.net"
 ]
 
 # Exact domains to block
 domains = [
-    "badactor.com",
-    "scammer.net",
-    "malware.tk",
-    "phishing-site.ml"
+    # "badactor.com",
+    # "scammer.net",
+    # "malware.tk"
 ]
 
 # Domain patterns to block (regex)
 domain_patterns = [
-    ".*\\.tk$",         # Tokelau (free domain)
-    ".*\\.ml$",         # Mali (free domain)
-    ".*\\.ga$",         # Gabon (free domain)
-    ".*\\.cf$",         # Central African Republic (free domain)
-    ".*\\.pw$",         # Palau (commonly abused)
-    ".*\\.top$",        # Generic (commonly abused)
-    ".*-phishing.*",    # Obvious phishing patterns
-    ".*malware.*"       # Obvious malware patterns
+    # ".*\\.tk$",         # Tokelau (free domain)
+    # ".*\\.ml$",         # Mali (free domain)
+    # ".*\\.ga$",         # Gabon (free domain)
+    # ".*\\.cf$"          # Central African Republic (free domain)
 ]
 
 # =============================================================================
@@ -145,10 +149,56 @@ type = "Accept"
 # header_value = "YES"
 
 # =============================================================================
-# PERFORMANCE TUNING
+# DOMAIN CLASSIFICATIONS (Optional)
 # =============================================================================
-[performance]
-# Maximum number of concurrent emails to process
-max_concurrent_emails = 100
-# Timeout for email processing in seconds
-timeout_seconds = 30
+[domain_classifications]
+# Free email providers for classification
+free_email_providers = [
+    "gmail.com",
+    "outlook.com", 
+    "yahoo.com",
+    "hotmail.com",
+    "aol.com"
+    # "protonmail.com",
+    # "icloud.com"
+]
+
+# Email infrastructure providers
+email_infrastructure = [
+    "mailchimp.com",
+    "constantcontact.com", 
+    "sendgrid.net",
+    "mailgun.org",
+    "amazonses.com"
+    # "sparkpostmail.com",
+    # "ifttt.com"
+]
+
+# High risk TLDs for enhanced scrutiny
+high_risk_tlds = [
+    ".tk",
+    ".ml", 
+    ".ga",
+    ".cf"
+    # ".ru.com",
+    # ".pw",
+    # ".top"
+]
+
+# =============================================================================
+# PERFORMANCE TUNING (Optional)
+# =============================================================================
+# [performance]
+# # Maximum number of concurrent emails to process
+# max_concurrent_emails = 100
+# # Timeout for email processing in seconds
+# timeout_seconds = 30
+
+# =============================================================================
+# LOGGING CONFIGURATION (Optional)
+# =============================================================================
+# [logging]
+# # Log level: trace, debug, info, warn, error
+# level = "info"
+# # Log file path (if not specified, logs to stderr)
+# # file = "/var/log/foff-milter/foff-milter.log"
