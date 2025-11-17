@@ -79,8 +79,8 @@ impl Default for InvoiceAnalyzer {
         for path in &features_paths {
             if std::path::Path::new(&format!("{}/legitimate_domains.toml", path)).exists() {
                 // Silent loading for default - will be replaced by with_features_dir() later
-                let legitimate_domains = ConfigLoader::get_all_legitimate_domains(path)
-                    .unwrap_or_else(|_| vec![]);
+                let legitimate_domains =
+                    ConfigLoader::get_all_legitimate_domains(path).unwrap_or_else(|_| vec![]);
                 return Self::new_with_domains(legitimate_domains);
             }
         }

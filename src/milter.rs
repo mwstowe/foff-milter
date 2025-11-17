@@ -358,12 +358,14 @@ impl Milter {
                         // Update the most recent context (by highest session number)
                         match state.lock() {
                             Ok(mut guard) => {
-                                if let Some((_, mail_ctx)) = guard.iter_mut().max_by_key(|(k, _)| {
-                                    k.split('-')
-                                        .next_back()
-                                        .and_then(|s| s.parse::<u64>().ok())
-                                        .unwrap_or(0)
-                                }) {
+                                if let Some((_, mail_ctx)) =
+                                    guard.iter_mut().max_by_key(|(k, _)| {
+                                        k.split('-')
+                                            .next_back()
+                                            .and_then(|s| s.parse::<u64>().ok())
+                                            .unwrap_or(0)
+                                    })
+                                {
                                     mail_ctx.sender = Some(sender_str);
                                 }
                             }
@@ -391,12 +393,14 @@ impl Milter {
                         // Update the most recent context (by highest session number)
                         match state.lock() {
                             Ok(mut guard) => {
-                                if let Some((_, mail_ctx)) = guard.iter_mut().max_by_key(|(k, _)| {
-                                    k.split('-')
-                                        .next_back()
-                                        .and_then(|s| s.parse::<u64>().ok())
-                                        .unwrap_or(0)
-                                }) {
+                                if let Some((_, mail_ctx)) =
+                                    guard.iter_mut().max_by_key(|(k, _)| {
+                                        k.split('-')
+                                            .next_back()
+                                            .and_then(|s| s.parse::<u64>().ok())
+                                            .unwrap_or(0)
+                                    })
+                                {
                                     mail_ctx.recipients.push(recipient_str);
                                 }
                             }
@@ -427,57 +431,62 @@ impl Milter {
                         // Update the most recent context (by highest session number)
                         match state.lock() {
                             Ok(mut guard) => {
-                                if let Some((_, mail_ctx)) = guard.iter_mut().max_by_key(|(k, _)| {
-                                    k.split('-')
-                                        .next_back()
-                                        .and_then(|s| s.parse::<u64>().ok())
-                                        .unwrap_or(0)
-                                }) {
-                            // Store important headers
-                            match name_str.to_lowercase().as_str() {
-                                "subject" => {
-                                    // Decode MIME-encoded subject before storing
-                                    let decoded_subject = decode_mime_header(&value_str);
-                                    mail_ctx.subject = Some(decoded_subject);
-                                }
-                                "x-mailer" | "user-agent" => {
-                                    mail_ctx.mailer = Some(value_str.clone());
-                                }
-                                "from" => {
-                                    // Extract email address from From header
-                                    if let Some(email) = extract_email_from_header(&value_str) {
-                                        mail_ctx.from_header = Some(email);
+                                if let Some((_, mail_ctx)) =
+                                    guard.iter_mut().max_by_key(|(k, _)| {
+                                        k.split('-')
+                                            .next_back()
+                                            .and_then(|s| s.parse::<u64>().ok())
+                                            .unwrap_or(0)
+                                    })
+                                {
+                                    // Store important headers
+                                    match name_str.to_lowercase().as_str() {
+                                        "subject" => {
+                                            // Decode MIME-encoded subject before storing
+                                            let decoded_subject = decode_mime_header(&value_str);
+                                            mail_ctx.subject = Some(decoded_subject);
+                                        }
+                                        "x-mailer" | "user-agent" => {
+                                            mail_ctx.mailer = Some(value_str.clone());
+                                        }
+                                        "from" => {
+                                            // Extract email address from From header
+                                            if let Some(email) =
+                                                extract_email_from_header(&value_str)
+                                            {
+                                                mail_ctx.from_header = Some(email);
+                                            }
+                                        }
+                                        _ => {}
                                     }
-                                }
-                                _ => {}
-                            }
 
-                            // Handle header continuation lines properly (RFC 2822)
-                            if name_str.is_empty() {
-                                // This is a continuation line (starts with whitespace)
-                                if let Some(last_header) = &mail_ctx.last_header_name {
-                                    if let Some(existing_value) = mail_ctx.headers.get(last_header)
-                                    {
-                                        let combined_value =
-                                            format!("{}{}", existing_value, value_str);
-                                        log::debug!(
+                                    // Handle header continuation lines properly (RFC 2822)
+                                    if name_str.is_empty() {
+                                        // This is a continuation line (starts with whitespace)
+                                        if let Some(last_header) = &mail_ctx.last_header_name {
+                                            if let Some(existing_value) =
+                                                mail_ctx.headers.get(last_header)
+                                            {
+                                                let combined_value =
+                                                    format!("{}{}", existing_value, value_str);
+                                                log::debug!(
                                             "Header continuation: appending '{}' to '{}' = '{}'",
                                             value_str,
                                             existing_value,
                                             combined_value
                                         );
-                                        mail_ctx
-                                            .headers
-                                            .insert(last_header.clone(), combined_value);
+                                                mail_ctx
+                                                    .headers
+                                                    .insert(last_header.clone(), combined_value);
+                                            }
+                                        }
+                                    } else {
+                                        // Regular header
+                                        let header_key = name_str.to_lowercase();
+                                        log::debug!("Header: '{}': '{}'", header_key, value_str);
+                                        mail_ctx.headers.insert(header_key.clone(), value_str);
+                                        mail_ctx.last_header_name = Some(header_key);
                                     }
-                                }
-                            } else {
-                                // Regular header
-                                let header_key = name_str.to_lowercase();
-                                log::debug!("Header: '{}': '{}'", header_key, value_str);
-                                mail_ctx.headers.insert(header_key.clone(), value_str);
-                                mail_ctx.last_header_name = Some(header_key);
-                            }
                                 }
                             }
                             Err(e) => {
@@ -499,20 +508,22 @@ impl Milter {
                         // Update the most recent context (by highest session number)
                         match state.lock() {
                             Ok(mut guard) => {
-                                if let Some((_, mail_ctx)) = guard.iter_mut().max_by_key(|(k, _)| {
-                                    k.split('-')
-                                        .next_back()
-                                        .and_then(|s| s.parse::<u64>().ok())
-                                        .unwrap_or(0)
-                                }) {
-                            match &mut mail_ctx.body {
-                                Some(existing_body) => {
-                                    existing_body.push_str(&body_str);
-                                }
-                                None => {
-                                    mail_ctx.body = Some(body_str.to_string());
-                                }
-                            }
+                                if let Some((_, mail_ctx)) =
+                                    guard.iter_mut().max_by_key(|(k, _)| {
+                                        k.split('-')
+                                            .next_back()
+                                            .and_then(|s| s.parse::<u64>().ok())
+                                            .unwrap_or(0)
+                                    })
+                                {
+                                    match &mut mail_ctx.body {
+                                        Some(existing_body) => {
+                                            existing_body.push_str(&body_str);
+                                        }
+                                        None => {
+                                            mail_ctx.body = Some(body_str.to_string());
+                                        }
+                                    }
                                 }
                             }
                             Err(e) => {
