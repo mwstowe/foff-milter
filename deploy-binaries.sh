@@ -89,7 +89,7 @@ deploy_configs() {
         
         # Create remote directory structure
         echo "📁 Creating remote directory structure..."
-        ssh "$server" "sudo mkdir -p $remote_base_dir/rulesets $remote_base_dir/config $remote_base_dir/features"
+        ssh "$server" "sudo mkdir -p $remote_base_dir/rulesets $remote_base_dir/features"
         
         # Deploy rulesets (new modular YAML files)
         if [ -d "$LOCAL_RULESETS_DIR" ]; then
@@ -104,20 +104,10 @@ deploy_configs() {
             done
         fi
         
-            for config in $LOCAL_CONFIG_DIR/*.yaml; do
-                if [ -f "$config" ]; then
-                    config_name=$(basename "$config")
-                    echo "   → $config_name"
-                    scp "$config" "$server:/tmp/"
-                    ssh "$server" "sudo mv /tmp/$config_name $remote_base_dir/config/ && sudo chown root:daemon $remote_base_dir/config/$config_name && sudo chmod 644 $remote_base_dir/config/$config_name"
-                fi
-            done
-        fi
-        
-        # Deploy features (TOML feature configurations)
+        # Deploy features (TOML and YAML feature configurations)
         if [ -d "$LOCAL_FEATURES_DIR" ]; then
             echo "📦 Deploying feature configurations..."
-            for feature in $LOCAL_FEATURES_DIR/*.toml; do
+            for feature in $LOCAL_FEATURES_DIR/*; do
                 if [ -f "$feature" ]; then
                     feature_name=$(basename "$feature")
                     echo "   → $feature_name"
