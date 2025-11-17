@@ -36,3 +36,27 @@ rules:
       pattern: "(?i).*(security.*breach|account.*hacked|suspicious.*activity|login.*attempt|security.*warning|unauthorized.*access).*"
     score: 40
     description: "Fake security alerts and breach notifications"
+
+  - name: "Norton Fake Invoice Scams"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*norton.*(alert|invoice|charge|overdue|renewal|subscription).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*norton.*(life-lock|lifelock|security|subscription).*"
+        - type: "Or"
+          criteria:
+            - type: "BodyPattern"
+              pattern: "(?i).*(overdue.*charge|invoice.*number|total.*amount.*\\$|renewal.*date|customer.*id).*"
+            - type: "SubjectPattern"
+              pattern: "(?i).*(overdue.*charge|total.*amount.*\\$).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: "(?i).*(norton\\.com|nortonlifelock\\.com|symantec\\.com).*"
+    score: 95
+    description: "Detect fake Norton invoice and subscription renewal scams from non-Norton domains"
