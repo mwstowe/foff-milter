@@ -198,7 +198,9 @@ impl Milter {
 
         // Check if modules were loaded and warn if not
         if config.module_config_dir.is_none() {
-            log::error!("🚨 PRODUCTION WARNING: Milter started without module directory configured!");
+            log::error!(
+                "🚨 PRODUCTION WARNING: Milter started without module directory configured!"
+            );
             log::error!("🚨 Email security is severely compromised - only legacy rules active!");
             eprintln!("🚨 PRODUCTION WARNING: Milter started without module directory configured!");
             eprintln!("🚨 Email security is severely compromised - only legacy rules active!");
@@ -208,15 +210,22 @@ impl Milter {
                 let yaml_count = entries
                     .filter_map(|e| e.ok())
                     .filter(|e| {
-                        e.path().extension()
-                            .map_or(false, |ext| ext == "yaml" || ext == "yml")
+                        e.path()
+                            .extension()
+                            .is_some_and(|ext| ext == "yaml" || ext == "yml")
                     })
                     .count();
-                
+
                 if yaml_count == 0 {
-                    log::error!("🚨 PRODUCTION WARNING: Module directory '{}' contains no YAML files!", module_dir);
+                    log::error!(
+                        "🚨 PRODUCTION WARNING: Module directory '{}' contains no YAML files!",
+                        module_dir
+                    );
                     log::error!("🚨 Email security is severely compromised!");
-                    eprintln!("🚨 PRODUCTION WARNING: Module directory '{}' contains no YAML files!", module_dir);
+                    eprintln!(
+                        "🚨 PRODUCTION WARNING: Module directory '{}' contains no YAML files!",
+                        module_dir
+                    );
                     eprintln!("🚨 Email security is severely compromised!");
                 }
             }
@@ -280,7 +289,9 @@ impl Milter {
             self.statistics = None;
         }
 
-        log::info!("Milter configuration, modules, config data, and features reloaded successfully");
+        log::info!(
+            "Milter configuration, modules, config data, and features reloaded successfully"
+        );
         Ok(())
     }
 

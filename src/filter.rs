@@ -244,9 +244,16 @@ impl FilterEngine {
                 }
                 Err(e) => {
                     println!("DEBUG: Failed to load modules: {}", e);
-                    log::error!("❌ CRITICAL: Failed to load modules from {}: {}", module_dir, e);
+                    log::error!(
+                        "❌ CRITICAL: Failed to load modules from {}: {}",
+                        module_dir,
+                        e
+                    );
                     log::error!("❌ CRITICAL: Running with severely reduced email security!");
-                    eprintln!("❌ CRITICAL: Failed to load modules from {}: {}", module_dir, e);
+                    eprintln!(
+                        "❌ CRITICAL: Failed to load modules from {}: {}",
+                        module_dir, e
+                    );
                     eprintln!("❌ CRITICAL: Running with severely reduced email security!");
                     Vec::new()
                 }
