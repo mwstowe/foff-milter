@@ -28,7 +28,7 @@ for server_config in "${SERVERS[@]}"; do
     
     # Create remote directory structure
     echo "📁 Creating remote directory structure..."
-    ssh "$server" "sudo mkdir -p $remote_base_dir/rulesets $remote_base_dir/config $remote_base_dir/features"
+    ssh "$server" "sudo mkdir -p $remote_base_dir/rulesets $remote_base_dir/features"
     
     # Deploy rulesets (new modular YAML files)
     if [ -d "$LOCAL_RULESETS_DIR" ]; then
@@ -39,16 +39,6 @@ for server_config in "${SERVERS[@]}"; do
                 echo "   → $ruleset_name"
                 scp "$ruleset" "$server:/tmp/"
                 ssh "$server" "sudo mv /tmp/$ruleset_name $remote_base_dir/rulesets/ && sudo chown root:daemon $remote_base_dir/rulesets/$ruleset_name && sudo chmod 644 $remote_base_dir/rulesets/$ruleset_name"
-            fi
-        done
-    fi
-    
-        for config in $LOCAL_CONFIG_DIR/*.yaml; do
-            if [ -f "$config" ]; then
-                config_name=$(basename "$config")
-                echo "   → $config_name"
-                scp "$config" "$server:/tmp/"
-                ssh "$server" "sudo mv /tmp/$config_name $remote_base_dir/config/ && sudo chown root:daemon $remote_base_dir/config/$config_name && sudo chmod 644 $remote_base_dir/config/$config_name"
             fi
         done
     fi
@@ -92,8 +82,6 @@ for server_config in "${SERVERS[@]}"; do
     echo "✅ Verifying deployment on $server..."
     echo "   Rulesets:"
     ssh "$server" "ls -la $remote_base_dir/rulesets/ | head -5"
-    echo "   Config files:"
-    ssh "$server" "ls -la $remote_base_dir/config/ 2>/dev/null || echo '   (no config directory)'"
     echo "   Features:"
     ssh "$server" "ls -la $remote_base_dir/features/ 2>/dev/null || echo '   (no features directory)'"
     
@@ -117,4 +105,4 @@ done
 echo ""
 echo "ℹ️  Main config files (foff-milter.toml) are NOT overwritten - manage manually"
 echo "🔄 Using reload instead of restart maintains existing connections"
-echo "📁 Deployed: rulesets → rulesets/, config → config/, features → features/"
+echo "📁 Deployed: rulesets → rulesets/, features → features/"
