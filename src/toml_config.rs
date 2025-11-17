@@ -14,7 +14,6 @@ pub struct TomlConfig {
     pub sender_blocking: Option<SenderBlockingConfig>,
     pub whitelist: Option<WhitelistConfig>,
     pub blocklist: Option<BlocklistConfig>,
-    pub legacy: Option<LegacyConfigRef>,
     pub default_action: Option<DefaultActionConfig>,
     pub performance: Option<PerformanceConfig>,
     pub domain_classifications: Option<DomainClassifications>,
@@ -78,10 +77,6 @@ impl Default for TomlConfig {
                 addresses: vec![],
                 domains: vec![],
                 domain_patterns: vec![],
-            }),
-            legacy: Some(LegacyConfigRef {
-                enabled: false,
-                config_file: "/etc/foff-milter/legacy-rules.yaml".to_string(),
             }),
             default_action: Some(DefaultActionConfig {
                 action_type: "Accept".to_string(),
@@ -177,12 +172,6 @@ pub struct BlocklistConfig {
 }
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
-pub struct LegacyConfigRef {
-    pub enabled: bool,
-    pub config_file: String,
-}
-
-#[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct DefaultActionConfig {
     #[serde(rename = "type")]
     pub action_type: String,
@@ -238,10 +227,6 @@ impl TomlConfig {
             config.blocklist = defaults.blocklist;
         }
 
-        if config.legacy.is_none() {
-            config.legacy = defaults.legacy;
-        }
-
         if config.default_action.is_none() {
             config.default_action = defaults.default_action;
         }
@@ -254,10 +239,6 @@ impl TomlConfig {
         let foff_dir = config_dir.join("foff-milter");
         let rulesets_dir = foff_dir.join("rulesets").to_string_lossy().to_string();
         let features_dir = foff_dir.join("features").to_string_lossy().to_string();
-        let legacy_file = foff_dir
-            .join("legacy-rules.yaml")
-            .to_string_lossy()
-            .to_string();
 
         Self {
             system: Some(SystemConfig {
@@ -299,10 +280,6 @@ impl TomlConfig {
                 addresses: vec![],
                 domains: vec![],
                 domain_patterns: vec![],
-            }),
-            legacy: Some(LegacyConfigRef {
-                enabled: false,
-                config_file: legacy_file,
             }),
             default_action: Some(DefaultActionConfig {
                 action_type: "Accept".to_string(),
