@@ -150,12 +150,13 @@ impl InvoiceAnalyzer {
         body: &str,
         sender: &str,
         from_header: &str,
+        extracted_media_text: &str,
     ) -> InvoiceAnalysis {
         let mut score = 0.0;
         let mut patterns = Vec::new();
         let mut risk_factors = Vec::new();
 
-        let text = format!("{} {}", subject, body);
+        let text = format!("{} {} {}", subject, body, extracted_media_text);
 
         // Check for invoice indicators
         let mut invoice_indicators = 0;

@@ -407,8 +407,13 @@ impl FilterEngine {
             }
         }
 
-        self.invoice_analyzer
-            .analyze(subject, body, sender, from_header)
+        self.invoice_analyzer.analyze(
+            subject,
+            body,
+            sender,
+            from_header,
+            &context.extracted_media_text,
+        )
     }
 
     fn is_blocklisted(&self, context: &MailContext) -> bool {
