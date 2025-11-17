@@ -249,18 +249,11 @@ impl TomlConfig {
     }
 
     fn default_relative_to(config_dir: &Path) -> Self {
-        // Platform-specific base directory for absolute paths
-        let base_dir = if cfg!(target_os = "freebsd") {
-            "/usr/local/etc"
-        } else {
-            "/etc"
-        };
-        
-        let foff_dir = format!("{}/foff-milter", base_dir);
-        
-        // Use relative paths from config directory, fallback to platform defaults
-        let rulesets_dir = config_dir.join("rulesets").to_string_lossy().to_string();
-        let features_dir = config_dir.join("features").to_string_lossy().to_string();
+        // Create foff-milter subdirectory in the config file's directory
+        let foff_dir = config_dir.join("foff-milter");
+        let rulesets_dir = foff_dir.join("rulesets").to_string_lossy().to_string();
+        let features_dir = foff_dir.join("features").to_string_lossy().to_string();
+        let legacy_file = foff_dir.join("legacy-rules.yaml").to_string_lossy().to_string();
 
         Self {
             system: Some(SystemConfig {
@@ -305,7 +298,7 @@ impl TomlConfig {
             }),
             legacy: Some(LegacyConfigRef {
                 enabled: false,
-                config_file: format!("{}/legacy-rules.yaml", foff_dir),
+                config_file: legacy_file,
             }),
             default_action: Some(DefaultActionConfig {
                 action_type: "Accept".to_string(),
