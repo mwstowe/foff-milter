@@ -51,6 +51,15 @@ impl SenderAlignmentAnalyzer {
             ],
         );
 
+        brand_patterns.insert(
+            "norton".to_string(),
+            vec![
+                "norton.com".to_string(),
+                "nortonlifelock.com".to_string(),
+                "symantec.com".to_string(),
+            ],
+        );
+
         Self {
             brand_patterns,
             domain_regex: Regex::new(r"@([^>\s]+)").unwrap(),
