@@ -1,4 +1,5 @@
 pub mod context_analyzer;
+pub mod invoice_analyzer;
 pub mod link_analyzer;
 pub mod sender_alignment;
 
@@ -70,6 +71,7 @@ impl FeatureEngine {
                 Box::new(link_analyzer::LinkAnalyzer::from_config(&config.feature_scoring.link_analysis)),
                 Box::new(sender_alignment::SenderAlignmentAnalyzer::from_config(&config.feature_scoring.sender_alignment)),
                 Box::new(context_analyzer::ContextAnalyzer::from_config(&config.feature_scoring.context_analysis)),
+                Box::new(invoice_analyzer::InvoiceAnalyzer::from_config(&config.feature_scoring.invoice_analysis)),
             ],
         }
     }
@@ -80,6 +82,7 @@ impl FeatureEngine {
                 Box::new(link_analyzer::LinkAnalyzer::new()),
                 Box::new(sender_alignment::SenderAlignmentAnalyzer::new()),
                 Box::new(context_analyzer::ContextAnalyzer::new()),
+                Box::new(invoice_analyzer::InvoiceAnalyzer::new()),
             ],
         }
     }
