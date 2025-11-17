@@ -5,7 +5,18 @@
 # Change to parent directory so relative paths work
 cd "$(dirname "$0")/.."
 
-BINARY="./target/debug/foff-milter"
+# Determine which binary to use (prefer release, fallback to debug)
+if [ -f "./target/release/foff-milter" ]; then
+    BINARY="./target/release/foff-milter"
+elif [ -f "./target/debug/foff-milter" ]; then
+    BINARY="./target/debug/foff-milter"
+else
+    echo "❌ Binary not found: ./target/debug/foff-milter or ./target/release/foff-milter"
+    echo "Run: cargo build --release or cargo build"
+    exit 1
+fi
+
+echo "Using binary: $BINARY"
 CONFIG="./foff-milter.toml"
 PASSED=0
 FAILED=0
