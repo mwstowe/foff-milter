@@ -1,98 +1,30 @@
-[feature_scoring]
+# Feature Analysis Scoring Configuration
+# Controls how feature analysis scores are calculated and weighted
 
-[feature_scoring.link_analysis]
-base_score = 10
-confidence_threshold = 80.0
-suspicious_patterns = [
-    "(?i).*(bit\\.ly|tinyurl|t\\.co|goo\\.gl|short\\.link).*",
-    "(?i).*(click.*here|urgent.*link|verify.*account|update.*payment).*",
-    "(?i).*(secure.*login|confirm.*identity|suspended.*account).*"
-]
+[scoring]
+# Base scoring weights for different feature types
+link_analysis_weight = 1.0
+sender_alignment_weight = 1.2
+context_analysis_weight = 0.8
 
-[feature_scoring.sender_alignment]
-base_score = 60
-confidence_threshold = 85.0
-job_related_exclusion = true
-job_indicators = [
-    "job",
-    "jobs",
-    "role",
-    "roles",
-    "position",
-    "positions",
-    "career",
-    "careers",
-    "hiring",
-    "employment",
-    "opportunity",
-    "opportunities",
-    "recommendation",
-    "recommendations",
-    "available",
-    "opening",
-    "openings",
-    "apply",
-    "application"
-]
+# Confidence thresholds
+minimum_confidence = 0.3
+high_confidence_threshold = 0.8
 
-[feature_scoring.context_analysis]
-base_score = 5
-confidence_threshold = 85.0
-urgency_patterns = [
-    "urgent",
-    "immediate",
-    "act now",
-    "limited time",
-    "expires today",
-    "don't miss",
-    "hurry",
-    "last chance",
-    "overdue",
-    "today",
-    "24 hours"
-]
+# Score multipliers based on confidence
+low_confidence_multiplier = 0.5
+medium_confidence_multiplier = 1.0
+high_confidence_multiplier = 1.5
 
-[feature_scoring.invoice_analysis]
-base_score = 90
-confidence_threshold = 90.0
-scam_indicators = [
-    "overdue",
-    "total amount",
-    "invoice number",
-    "24 hours",
-    "payment required",
-    "account suspended"
-]
+[thresholds]
+# Feature-specific scoring thresholds
+suspicious_link_threshold = 25
+brand_mismatch_threshold = 30
+urgency_pattern_threshold = 20
+scam_combination_threshold = 40
 
-[spam_thresholds]
-accept = 0
-tag_as_spam = 60
-reject = 350
-
-[rule_scoring]
-
-[rule_scoring.analytics]
-generic_sender_names = 1
-suspicious_message_ids = 5
-bulk_email_patterns = 10
-
-[rule_scoring.advanced_heuristics]
-weak_signal_aggregation = 5
-artificial_urgency = 15
-advanced_heuristic_scoring = 20
-
-[rule_scoring.health_threats]
-general_health_misinformation = 25
-product_brand_impersonation = 50
-medical_device_spam = 40
-
-[rule_scoring.link_analysis]
-suspicious_link_patterns = 10
-ip_addresses = 50
-url_shorteners = 30
-suspicious_tlds = 25
-
-[rule_scoring.advanced_security]
-html_entity_obfuscation = 15
-image_only_emails = 20
-final_spam_catchall = 0  # disabled
+[adjustments]
+# Dynamic score adjustments
+multiple_features_bonus = 10
+single_feature_penalty = -5
+legitimate_sender_reduction = -20
