@@ -298,10 +298,11 @@ impl FilterEngine {
         // Update invoice analyzer with features directory if available
         if let Some(ref features_config) = toml_config.features {
             if features_config.enabled {
-                self.invoice_analyzer = InvoiceAnalyzer::with_features_dir(&features_config.config_dir);
+                self.invoice_analyzer =
+                    InvoiceAnalyzer::with_features_dir(&features_config.config_dir);
             }
         }
-        
+
         self.toml_config = Some(toml_config);
     }
 
