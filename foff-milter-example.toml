@@ -149,41 +149,26 @@ type = "Accept"
 # header_value = "YES"
 
 # =============================================================================
-# DOMAIN CLASSIFICATIONS (Optional)
+# DOMAIN CLASSIFICATIONS (Override YAML configs only)
 # =============================================================================
-[domain_classifications]
-# Free email providers for classification
-free_email_providers = [
-    # "gmail.com",
-    # "outlook.com", 
-    # "yahoo.com",
-    # "hotmail.com",
-    # "aol.com",
-    # "protonmail.com",
-    # "icloud.com"
-]
-
-# Email infrastructure providers
-email_infrastructure = [
-    # "mailchimp.com",
-    # "constantcontact.com", 
-    # "sendgrid.net",
-    # "mailgun.org",
-    # "amazonses.com",
-    # "sparkpostmail.com",
-    # "ifttt.com"
-]
-
-# High risk TLDs for enhanced scrutiny
-high_risk_tlds = [
-    # ".tk",
-    # ".ml", 
-    # ".ga",
-    # ".cf",
-    # ".ru.com",
-    # ".pw",
-    # ".top"
-]
+# [domain_classifications]
+# # Only specify these to OVERRIDE values from YAML configuration files
+# # Domain classifications are loaded from config/*.yaml by default
+# 
+# # Override free email providers
+# free_email_providers = [
+#     # "custom-provider.com"
+# ]
+# 
+# # Override email infrastructure providers  
+# email_infrastructure = [
+#     # "custom-infrastructure.com"
+# ]
+# 
+# # Override high risk TLDs
+# high_risk_tlds = [
+#     # ".custom-tld"
+# ]
 
 # =============================================================================
 # PERFORMANCE TUNING (Optional)
