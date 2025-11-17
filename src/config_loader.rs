@@ -75,24 +75,27 @@ impl ConfigLoader {
         Ok(())
     }
 
-    pub fn load_legitimate_domains() -> Result<LegitimateDomainsConfig, Box<dyn std::error::Error>>
+    pub fn load_legitimate_domains(features_dir: &str) -> Result<LegitimateDomainsConfig, Box<dyn std::error::Error>>
     {
-        let content = fs::read_to_string("features/legitimate_domains.yaml")?;
+        let path = format!("{}/legitimate_domains.yaml", features_dir);
+        let content = fs::read_to_string(&path)?;
         Ok(serde_yml::from_str(&content)?)
     }
 
-    pub fn load_feature_scoring() -> Result<FeatureScoringConfig, Box<dyn std::error::Error>> {
-        let content = fs::read_to_string("features/feature_scoring.yaml")?;
+    pub fn load_feature_scoring(features_dir: &str) -> Result<FeatureScoringConfig, Box<dyn std::error::Error>> {
+        let path = format!("{}/feature_scoring.yaml", features_dir);
+        let content = fs::read_to_string(&path)?;
         Ok(serde_yml::from_str(&content)?)
     }
 
-    pub fn load_brand_patterns() -> Result<BrandPatternsConfig, Box<dyn std::error::Error>> {
-        let content = fs::read_to_string("features/brand_patterns.yaml")?;
+    pub fn load_brand_patterns(features_dir: &str) -> Result<BrandPatternsConfig, Box<dyn std::error::Error>> {
+        let path = format!("{}/brand_patterns.yaml", features_dir);
+        let content = fs::read_to_string(&path)?;
         Ok(serde_yml::from_str(&content)?)
     }
 
-    pub fn get_all_legitimate_domains() -> Result<Vec<String>, Box<dyn std::error::Error>> {
-        let config = Self::load_legitimate_domains()?;
+    pub fn get_all_legitimate_domains(features_dir: &str) -> Result<Vec<String>, Box<dyn std::error::Error>> {
+        let config = Self::load_legitimate_domains(features_dir)?;
         let mut domains = Vec::new();
 
         for domain_list in config.legitimate_domains.values() {

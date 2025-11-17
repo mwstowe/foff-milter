@@ -18,10 +18,64 @@ pub struct InvoiceAnalysis {
     pub risk_factors: Vec<String>,
 }
 
+impl InvoiceAnalyzer {
+    pub fn with_features_dir(features_dir: &str) -> Self {
+        let legitimate_domains = ConfigLoader::get_all_legitimate_domains(features_dir).unwrap_or_else(|e| {
+            eprintln!("Warning: Failed to load legitimate domains config: {}", e);
+            vec![
+                // Fallback hardcoded domains if config fails to load
+                "chase.com".to_string(),
+                "wellsfargo.com".to_string(),
+                "bankofamerica.com".to_string(),
+                "citi.com".to_string(),
+                "info6.citi.com".to_string(),
+                "paypal.com".to_string(),
+            ]
+        });
+
+        println!("Invoice analyzer loaded {} legitimate domains", legitimate_domains.len());
+
+        Self {
+            legitimate_domains,
+            invoice_indicators: vec![
+                Regex::new(r"(?i)invoice").unwrap(),
+                Regex::new(r"(?i)bill").unwrap(),
+                Regex::new(r"(?i)payment").unwrap(),
+                Regex::new(r"(?i)due").unwrap(),
+                Regex::new(r"(?i)overdue").unwrap(),
+                Regex::new(r"(?i)receipt").unwrap(),
+                Regex::new(r"(?i)statement").unwrap(),
+            ],
+            suspicious_domains: vec![
+                Regex::new(r"(?i)bit\.ly").unwrap(),
+                Regex::new(r"(?i)tinyurl\.com").unwrap(),
+                Regex::new(r"(?i)t\.co").unwrap(),
+                Regex::new(r"(?i)goo\.gl").unwrap(),
+            ],
+            urgency_patterns: vec![
+                Regex::new(r"(?i)urgent").unwrap(),
+                Regex::new(r"(?i)immediate").unwrap(),
+                Regex::new(r"(?i)expires today").unwrap(),
+                Regex::new(r"(?i)act now").unwrap(),
+                Regex::new(r"(?i)limited time").unwrap(),
+            ],
+        }
+    }
+}
+
 impl Default for InvoiceAnalyzer {
     fn default() -> Self {
-        let legitimate_domains = ConfigLoader::get_all_legitimate_domains().unwrap_or_else(|e| {
-            eprintln!("Warning: Failed to load legitimate domains config: {}", e);
+        // Try common paths for features directory
+        let features_paths = ["features", "/etc/foff-milter/features", "/usr/local/etc/foff-milter/features"];
+        
+        for path in &features_paths {
+            if std::path::Path::new(&format!("{}/legitimate_domains.yaml", path)).exists() {
+                return Self::with_features_dir(path);
+            }
+        }
+        
+        // Fallback to hardcoded if no config found
+        let legitimate_domains = ConfigLoader::get_all_legitimate_domains("features").unwrap_or_else(|_| {
             vec![
                 // Fallback hardcoded domains if config fails to load
                 "chase.com".to_string(),

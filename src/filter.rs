@@ -284,7 +284,7 @@ impl FilterEngine {
             sender_blocking_action: Action::Reject {
                 message: "Sender blocked by pattern".to_string(),
             },
-            invoice_analyzer: InvoiceAnalyzer::default(), // Reload with fresh config data
+            invoice_analyzer: InvoiceAnalyzer::default(),
             media_analyzer: MediaAnalyzer::new(),
             feature_engine: FeatureEngine::new(),
         };
@@ -295,6 +295,13 @@ impl FilterEngine {
     }
 
     pub fn set_toml_config(&mut self, toml_config: crate::toml_config::TomlConfig) {
+        // Update invoice analyzer with features directory if available
+        if let Some(ref features_config) = toml_config.features {
+            if features_config.enabled {
+                self.invoice_analyzer = InvoiceAnalyzer::with_features_dir(&features_config.config_dir);
+            }
+        }
+        
         self.toml_config = Some(toml_config);
     }
 
