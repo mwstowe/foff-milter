@@ -253,7 +253,10 @@ impl TomlConfig {
         let foff_dir = config_dir.join("foff-milter");
         let rulesets_dir = foff_dir.join("rulesets").to_string_lossy().to_string();
         let features_dir = foff_dir.join("features").to_string_lossy().to_string();
-        let legacy_file = foff_dir.join("legacy-rules.yaml").to_string_lossy().to_string();
+        let legacy_file = foff_dir
+            .join("legacy-rules.yaml")
+            .to_string_lossy()
+            .to_string();
 
         Self {
             system: Some(SystemConfig {
@@ -336,7 +339,10 @@ impl TomlConfig {
         let default_action_config = DefaultActionConfig {
             action_type: "Accept".to_string(),
         };
-        let default_action = self.default_action.as_ref().unwrap_or(&default_action_config);
+        let default_action = self
+            .default_action
+            .as_ref()
+            .unwrap_or(&default_action_config);
         legacy_config.default_action = match default_action.action_type.as_str() {
             "Accept" => Action::Accept,
             "Reject" => Action::Reject {

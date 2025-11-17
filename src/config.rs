@@ -282,7 +282,9 @@ impl Config {
 
     pub fn from_toml_config(toml_config: &TomlConfig) -> Self {
         Config {
-            socket_path: toml_config.system.as_ref()
+            socket_path: toml_config
+                .system
+                .as_ref()
                 .map(|s| s.socket_path.clone())
                 .unwrap_or_else(|| "/var/run/foff-milter.sock".to_string()),
             module_config_dir: toml_config.rulesets.as_ref().and_then(|m| {
@@ -292,9 +294,12 @@ impl Config {
                     None
                 }
             }),
-            default_action: match toml_config.default_action.as_ref()
+            default_action: match toml_config
+                .default_action
+                .as_ref()
                 .map(|da| da.action_type.as_str())
-                .unwrap_or("Accept") {
+                .unwrap_or("Accept")
+            {
                 "Accept" => Action::Accept,
                 "Reject" => Action::Reject {
                     message: "Rejected by policy".to_string(),
