@@ -14,65 +14,64 @@ reject_to_tag = true
 # =============================================================================
 # MODULAR DETECTION SYSTEM
 # =============================================================================
-# [modules]
-# # Enable modular detection system (default: true)
-# enabled = true
-# # Directory containing module configuration files
-# # Default: /etc/foff-milter/rulesets (Linux) or /usr/local/etc/foff-milter/rulesets (FreeBSD)
-# config_dir = "/etc/foff-milter/rulesets"
+[modules]
+# Enable modular detection system (default: true)
+enabled = true
+# Directory containing module configuration files
+# Default: /etc/foff-milter/rulesets (Linux) or /usr/local/etc/foff-milter/rulesets (FreeBSD)
+config_dir = "/etc/foff-milter/rulesets"
 
 # =============================================================================
 # FEATURE ANALYSIS SYSTEM
 # =============================================================================
-# [features]
-# # Enable intelligent feature analysis (default: true)
-# enabled = true
-# # Directory containing feature configuration files  
-# # Default: /etc/foff-milter/features (Linux) or /usr/local/etc/foff-milter/features (FreeBSD)
-# config_dir = "/etc/foff-milter/features"
+[features]
+# Enable intelligent feature analysis (default: true)
+enabled = true
+# Directory containing feature configuration files  
+# Default: /etc/foff-milter/features (Linux) or /usr/local/etc/foff-milter/features (FreeBSD)
+config_dir = "/etc/foff-milter/features"
 
 # =============================================================================
 # HEURISTIC SCORING SYSTEM
 # =============================================================================
 [heuristics]
-# Score threshold for REJECT action
+# Score threshold for REJECT action (default: 350)
 reject_threshold = 350
-# Score threshold for TAG AS SPAM action
-spam_threshold = 60
-# Score threshold for ACCEPT action (below this = accept)
+# Score threshold for TAG AS SPAM action (default: 50)
+spam_threshold = 50
+# Score threshold for ACCEPT action (default: 0)
 accept_threshold = 0
 
 # =============================================================================
 # SENDER BLOCKING (Pattern-based blocking)
 # =============================================================================
 [sender_blocking]
-# Enable explicit sender pattern blocking
+# Enable explicit sender pattern blocking (default: true)
 enabled = true
-# Patterns that will immediately block emails
+# Patterns that will immediately block emails (default: empty)
 block_patterns = [
-    # Add specific patterns to block
     # ".*@suspicious-domain\\.com$",
     # ".*spammer.*@.*",
     # ".*@.*\\.tk$"
 ]
-# Action to take: "reject" or "tag"
+# Action to take: "reject" or "tag" (default: "reject")
 action = "reject"
 
 # =============================================================================
 # GLOBAL WHITELIST
 # =============================================================================
 [whitelist]
-# Enable whitelist (highest priority - bypasses all checks)
+# Enable whitelist - bypasses all checks (default: true)
 enabled = true
 
-# Exact email addresses to whitelist
+# Exact email addresses to whitelist (default: empty)
 addresses = [
     # "noreply@paypal.com",
     # "security@amazon.com",
     # "notifications@github.com"
 ]
 
-# Exact domains to whitelist
+# Exact domains to whitelist (default: empty)
 domains = [
     # "paypal.com",
     # "amazon.com", 
@@ -80,7 +79,7 @@ domains = [
     # "microsoft.com"
 ]
 
-# Domain patterns to whitelist (regex)
+# Domain patterns to whitelist - regex (default: empty)
 domain_patterns = [
     # ".*\\.gov$",        # Government domains
     # ".*\\.edu$",        # Educational institutions
@@ -91,23 +90,23 @@ domain_patterns = [
 # GLOBAL BLOCKLIST
 # =============================================================================
 [blocklist]
-# Enable blocklist (blocks before rule evaluation)
+# Enable blocklist - blocks before rule evaluation (default: true)
 enabled = true
 
-# Exact email addresses to block
+# Exact email addresses to block (default: empty)
 addresses = [
     # "spam@badactor.com",
     # "phishing@scammer.net"
 ]
 
-# Exact domains to block
+# Exact domains to block (default: empty)
 domains = [
     # "badactor.com",
     # "scammer.net",
     # "malware.tk"
 ]
 
-# Domain patterns to block (regex)
+# Domain patterns to block - regex (default: empty)
 domain_patterns = [
     # ".*\\.tk$",         # Tokelau (free domain)
     # ".*\\.ml$",         # Mali (free domain)
@@ -119,7 +118,7 @@ domain_patterns = [
 # LEGACY YAML SUPPORT
 # =============================================================================
 [legacy]
-# Enable legacy YAML rule support (for migration)
+# Enable legacy YAML rule support (default: false)
 enabled = false
 # Path to legacy YAML configuration file
 config_file = "/etc/foff-milter/legacy-rules.yaml"
@@ -128,18 +127,18 @@ config_file = "/etc/foff-milter/legacy-rules.yaml"
 # STATISTICS & ANALYTICS
 # =============================================================================
 [statistics]
-# Enable statistics collection
+# Enable statistics collection (default: true)
 enabled = true
 # SQLite database path for statistics
 database_path = "/var/lib/foff-milter/stats.db"
-# How often to flush statistics to database (seconds)
+# How often to flush statistics to database in seconds (default: 60)
 flush_interval_seconds = 60
 
 # =============================================================================
 # DEFAULT ACTION
 # =============================================================================
 [default_action]
-# Action to take when no rules match
+# Action to take when no rules match (default: "Accept")
 type = "Accept"
 
 # Alternative default actions:
@@ -153,39 +152,39 @@ type = "Accept"
 # =============================================================================
 # DOMAIN CLASSIFICATIONS (Override YAML configs only)
 # =============================================================================
+# Only specify these to OVERRIDE values from YAML configuration files
+# Domain classifications are loaded from config/*.yaml by default
+# 
 # [domain_classifications]
-# # Only specify these to OVERRIDE values from YAML configuration files
-# # Domain classifications are loaded from config/*.yaml by default
-# 
-# # Override free email providers
+# Override free email providers
 # free_email_providers = [
-#     # "custom-provider.com"
+#     "custom-provider.com"
 # ]
 # 
-# # Override email infrastructure providers  
+# Override email infrastructure providers  
 # email_infrastructure = [
-#     # "custom-infrastructure.com"
+#     "custom-infrastructure.com"
 # ]
 # 
-# # Override high risk TLDs
+# Override high risk TLDs
 # high_risk_tlds = [
-#     # ".custom-tld"
+#     ".custom-tld"
 # ]
 
 # =============================================================================
 # PERFORMANCE TUNING (Optional)
 # =============================================================================
 # [performance]
-# # Maximum number of concurrent emails to process
+# Maximum number of concurrent emails to process (default: 100)
 # max_concurrent_emails = 100
-# # Timeout for email processing in seconds
+# Timeout for email processing in seconds (default: 30)
 # timeout_seconds = 30
 
 # =============================================================================
 # LOGGING CONFIGURATION (Optional)
 # =============================================================================
 # [logging]
-# # Log level: trace, debug, info, warn, error
+# Log level: trace, debug, info, warn, error (default: "info")
 # level = "info"
-# # Log file path (if not specified, logs to stderr)
-# # file = "/var/log/foff-milter/foff-milter.log"
+# Log file path (if not specified, logs to stderr)
+# file = "/var/log/foff-milter/foff-milter.log"
