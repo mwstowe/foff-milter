@@ -128,7 +128,6 @@ FOFF Milter automatically configures itself based on the target platform:
 Configuration: /etc/foff-milter.toml
 Rulesets: /etc/foff-milter/rulesets/
 Features: /etc/foff-milter/features/
-Config Data: /etc/foff-milter/config/
 Statistics: /var/lib/foff-milter/stats.db
 Socket: /var/run/foff-milter.sock
 ```
@@ -138,7 +137,6 @@ Socket: /var/run/foff-milter.sock
 Configuration: /usr/local/etc/foff-milter.toml
 Rulesets: /usr/local/etc/foff-milter/rulesets/
 Features: /usr/local/etc/foff-milter/features/
-Config Data: /usr/local/etc/foff-milter/config/
 Statistics: /var/lib/foff-milter/stats.db
 Socket: /var/run/foff-milter.sock
 ```
@@ -244,7 +242,6 @@ sudo service foff_milter reload
 - ✅ Main TOML configuration (`foff-milter.toml`)
 - ✅ All ruleset modules (`rulesets/*.yaml`)
 - ✅ Feature configurations (`features/*.toml`)
-- ✅ Configuration data (`config/*.yaml`)
 - ✅ Statistics settings
 
 ## 📈 Statistics & Monitoring
@@ -292,10 +289,9 @@ cargo build --release --features ocr
 
 # Install system-wide
 sudo cp target/release/foff-milter /usr/local/bin/
-sudo mkdir -p /etc/foff-milter/{rulesets,features,config}
+sudo mkdir -p /etc/foff-milter/{rulesets,features}
 sudo cp rulesets/*.yaml /etc/foff-milter/rulesets/
 sudo cp features/*.toml /etc/foff-milter/features/
-sudo cp config/*.yaml /etc/foff-milter/config/
 
 # Create minimal config (or use empty file for all defaults)
 echo "# FOFF Milter - using all defaults" | sudo tee /etc/foff-milter.toml
