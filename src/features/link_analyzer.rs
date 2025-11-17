@@ -63,6 +63,10 @@ impl LinkAnalyzer {
         }
     }
 
+    pub fn from_config(_config: &crate::config_loader::LinkAnalysisConfig) -> Self {
+        Self::new()
+    }
+
     pub fn extract_links(&self, context: &MailContext) -> Vec<ExtractedLink> {
         let mut links = Vec::new();
 

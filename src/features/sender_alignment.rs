@@ -66,6 +66,10 @@ impl SenderAlignmentAnalyzer {
         }
     }
 
+    pub fn from_config(_config: &crate::config_loader::SenderAlignmentConfig) -> Self {
+        Self::new()
+    }
+
     fn extract_sender_info(&self, context: &MailContext) -> SenderInfo {
         let from_header = context.headers.get("From").cloned().unwrap_or_default();
         let sender_header = context.headers.get("Sender").cloned().unwrap_or_default();
@@ -331,4 +335,6 @@ impl SenderAlignmentAnalyzer {
             .iter()
             .any(|&indicator| combined_text.contains(indicator))
     }
+}
+impl SenderAlignmentAnalyzer {
 }
