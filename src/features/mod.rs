@@ -55,12 +55,15 @@ impl FeatureEngine {
     pub fn from_config_dir(config_dir: &str) -> Result<Self, Box<dyn std::error::Error>> {
         // Try to load feature configurations from TOML files
         let config_path = format!("{}/feature_scoring.toml", config_dir);
-        
+
         if std::path::Path::new(&config_path).exists() {
             let config = crate::config_loader::ConfigLoader::load_feature_scoring(config_dir)?;
             Ok(Self::from_config(config))
         } else {
-            log::warn!("Feature config file not found: {}, using defaults", config_path);
+            log::warn!(
+                "Feature config file not found: {}, using defaults",
+                config_path
+            );
             Ok(Self::default_config())
         }
     }
@@ -68,10 +71,18 @@ impl FeatureEngine {
     fn from_config(config: crate::config_loader::FeatureScoringConfig) -> Self {
         Self {
             extractors: vec![
-                Box::new(link_analyzer::LinkAnalyzer::from_config(&config.feature_scoring.link_analysis)),
-                Box::new(sender_alignment::SenderAlignmentAnalyzer::from_config(&config.feature_scoring.sender_alignment)),
-                Box::new(context_analyzer::ContextAnalyzer::from_config(&config.feature_scoring.context_analysis)),
-                Box::new(invoice_analyzer::InvoiceAnalyzer::from_config(&config.feature_scoring.invoice_analysis)),
+                Box::new(link_analyzer::LinkAnalyzer::from_config(
+                    &config.feature_scoring.link_analysis,
+                )),
+                Box::new(sender_alignment::SenderAlignmentAnalyzer::from_config(
+                    &config.feature_scoring.sender_alignment,
+                )),
+                Box::new(context_analyzer::ContextAnalyzer::from_config(
+                    &config.feature_scoring.context_analysis,
+                )),
+                Box::new(invoice_analyzer::InvoiceAnalyzer::from_config(
+                    &config.feature_scoring.invoice_analysis,
+                )),
             ],
         }
     }

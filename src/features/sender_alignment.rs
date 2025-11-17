@@ -336,5 +336,4 @@ impl SenderAlignmentAnalyzer {
             .any(|&indicator| combined_text.contains(indicator))
     }
 }
-impl SenderAlignmentAnalyzer {
-}
+impl SenderAlignmentAnalyzer {}

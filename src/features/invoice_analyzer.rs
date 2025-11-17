@@ -51,7 +51,10 @@ impl FeatureExtractor for InvoiceAnalyzer {
         for pattern in &self.scam_indicators {
             if pattern.is_match(&full_text) {
                 score += 30;
-                evidence.push(format!("Invoice scam pattern detected: {}", pattern.as_str()));
+                evidence.push(format!(
+                    "Invoice scam pattern detected: {}",
+                    pattern.as_str()
+                ));
             }
         }
 
