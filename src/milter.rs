@@ -196,6 +196,32 @@ impl Milter {
         engine.set_toml_config(toml_config);
         let engine = Arc::new(engine);
 
+        // Check if modules were loaded and warn if not
+        if config.module_config_dir.is_none() {
+            log::error!("🚨 PRODUCTION WARNING: Milter started without module directory configured!");
+            log::error!("🚨 Email security is severely compromised - only legacy rules active!");
+            eprintln!("🚨 PRODUCTION WARNING: Milter started without module directory configured!");
+            eprintln!("🚨 Email security is severely compromised - only legacy rules active!");
+        } else if let Some(module_dir) = &config.module_config_dir {
+            // Check if the directory exists and has modules
+            if let Ok(entries) = std::fs::read_dir(module_dir) {
+                let yaml_count = entries
+                    .filter_map(|e| e.ok())
+                    .filter(|e| {
+                        e.path().extension()
+                            .map_or(false, |ext| ext == "yaml" || ext == "yml")
+                    })
+                    .count();
+                
+                if yaml_count == 0 {
+                    log::error!("🚨 PRODUCTION WARNING: Module directory '{}' contains no YAML files!", module_dir);
+                    log::error!("🚨 Email security is severely compromised!");
+                    eprintln!("🚨 PRODUCTION WARNING: Module directory '{}' contains no YAML files!", module_dir);
+                    eprintln!("🚨 Email security is severely compromised!");
+                }
+            }
+        }
+
         // Create statistics collector if enabled
         let statistics = if let Some(stats_config) = &config.statistics {
             if stats_config.enabled {

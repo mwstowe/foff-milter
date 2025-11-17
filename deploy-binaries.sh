@@ -99,7 +99,7 @@ deploy_configs() {
                     ruleset_name=$(basename "$ruleset")
                     echo "   → $ruleset_name"
                     scp "$ruleset" "$server:/tmp/"
-                    ssh "$server" "sudo mv /tmp/$ruleset_name $remote_base_dir/modules/ && sudo chown root:root $remote_base_dir/modules/$ruleset_name && sudo chmod 644 $remote_base_dir/modules/$ruleset_name"
+                    ssh "$server" "sudo mv /tmp/$ruleset_name $remote_base_dir/modules/ && sudo chown root:daemon $remote_base_dir/modules/$ruleset_name && sudo chmod 644 $remote_base_dir/modules/$ruleset_name"
                 fi
             done
         fi
@@ -112,7 +112,7 @@ deploy_configs() {
                     config_name=$(basename "$config")
                     echo "   → $config_name"
                     scp "$config" "$server:/tmp/"
-                    ssh "$server" "sudo mv /tmp/$config_name $remote_base_dir/config/ && sudo chown root:root $remote_base_dir/config/$config_name && sudo chmod 644 $remote_base_dir/config/$config_name"
+                    ssh "$server" "sudo mv /tmp/$config_name $remote_base_dir/config/ && sudo chown root:daemon $remote_base_dir/config/$config_name && sudo chmod 644 $remote_base_dir/config/$config_name"
                 fi
             done
         fi
@@ -125,7 +125,7 @@ deploy_configs() {
                     feature_name=$(basename "$feature")
                     echo "   → $feature_name"
                     scp "$feature" "$server:/tmp/"
-                    ssh "$server" "sudo mv /tmp/$feature_name $remote_base_dir/features/ && sudo chown root:root $remote_base_dir/features/$feature_name && sudo chmod 644 $remote_base_dir/features/$feature_name"
+                    ssh "$server" "sudo mv /tmp/$feature_name $remote_base_dir/features/ && sudo chown root:daemon $remote_base_dir/features/$feature_name && sudo chmod 644 $remote_base_dir/features/$feature_name"
                 fi
             done
         fi

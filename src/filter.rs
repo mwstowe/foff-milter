@@ -236,16 +236,25 @@ impl FilterEngine {
                 Ok(modules) => {
                     println!("DEBUG: Successfully loaded {} modules", modules.len());
                     log::info!("Loaded {} modules from {}", modules.len(), module_dir);
+                    if modules.is_empty() {
+                        log::warn!("⚠️  WARNING: No modules loaded from {}! Email security severely reduced!", module_dir);
+                        eprintln!("⚠️  WARNING: No modules loaded from {}! Email security severely reduced!", module_dir);
+                    }
                     modules
                 }
                 Err(e) => {
                     println!("DEBUG: Failed to load modules: {}", e);
-                    log::warn!("Failed to load modules from {}: {}", module_dir, e);
+                    log::error!("❌ CRITICAL: Failed to load modules from {}: {}", module_dir, e);
+                    log::error!("❌ CRITICAL: Running with severely reduced email security!");
+                    eprintln!("❌ CRITICAL: Failed to load modules from {}: {}", module_dir, e);
+                    eprintln!("❌ CRITICAL: Running with severely reduced email security!");
                     Vec::new()
                 }
             }
         } else {
             println!("DEBUG: No module_config_dir configured, using legacy rules");
+            log::warn!("⚠️  WARNING: No module directory configured! Running in legacy mode with reduced security!");
+            eprintln!("⚠️  WARNING: No module directory configured! Running in legacy mode with reduced security!");
             Vec::new()
         };
 
