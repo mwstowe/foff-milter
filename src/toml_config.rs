@@ -3,6 +3,7 @@ use serde::{Deserialize, Serialize};
 use std::path::Path;
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
+#[serde(default)]
 pub struct TomlConfig {
     pub system: Option<SystemConfig>,
     pub logging: Option<LoggingConfig>,
