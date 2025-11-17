@@ -91,6 +91,21 @@ deploy_configs() {
         echo "📁 Creating remote directory structure..."
         ssh "$server" "sudo mkdir -p $remote_base_dir/rulesets $remote_base_dir/features"
         
+        # Clean up old files and directories
+        echo "🧹 Cleaning up old files and directories..."
+        ssh "$server" "
+            # Remove old config directory (merged into features)
+            sudo rm -rf $remote_base_dir/config
+            
+            # Clean up old YAML files in features directory
+            sudo rm -f $remote_base_dir/features/*.yaml
+            
+            # Clean up any old TOML files that might be outdated
+            sudo find $remote_base_dir/rulesets -name '*.toml' -delete 2>/dev/null || true
+            sudo find $remote_base_dir/features -name '*.old' -delete 2>/dev/null || true
+            sudo find $remote_base_dir -name '*.bak' -delete 2>/dev/null || true
+        "
+        
         # Deploy rulesets (new modular YAML files)
         if [ -d "$LOCAL_RULESETS_DIR" ]; then
             echo "📦 Deploying rulesets..."
