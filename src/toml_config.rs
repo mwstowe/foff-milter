@@ -46,7 +46,7 @@ impl Default for TomlConfig {
             statistics: None,
             rulesets: Some(RulesetsConfig {
                 enabled: true,
-                config_dir: format!("{}/modules", foff_dir),
+                config_dir: format!("{}/rulesets", foff_dir),
             }),
             features: Some(FeaturesConfig {
                 enabled: true,

@@ -89,7 +89,7 @@ deploy_configs() {
         
         # Create remote directory structure
         echo "📁 Creating remote directory structure..."
-        ssh "$server" "sudo mkdir -p $remote_base_dir/modules $remote_base_dir/config $remote_base_dir/features"
+        ssh "$server" "sudo mkdir -p $remote_base_dir/rulesets $remote_base_dir/config $remote_base_dir/features"
         
         # Deploy rulesets (new modular YAML files)
         if [ -d "$LOCAL_RULESETS_DIR" ]; then
@@ -99,7 +99,7 @@ deploy_configs() {
                     ruleset_name=$(basename "$ruleset")
                     echo "   → $ruleset_name"
                     scp "$ruleset" "$server:/tmp/"
-                    ssh "$server" "sudo mv /tmp/$ruleset_name $remote_base_dir/modules/ && sudo chown root:daemon $remote_base_dir/modules/$ruleset_name && sudo chmod 644 $remote_base_dir/modules/$ruleset_name"
+                    ssh "$server" "sudo mv /tmp/$ruleset_name $remote_base_dir/rulesets/ && sudo chown root:daemon $remote_base_dir/rulesets/$ruleset_name && sudo chmod 644 $remote_base_dir/rulesets/$ruleset_name"
                 fi
             done
         fi
