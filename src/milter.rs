@@ -140,7 +140,12 @@ pub fn extract_email_from_header(header_value: &str) -> Option<String> {
 
     let email = if let Some(start) = decoded.find('<') {
         if let Some(end) = decoded.find('>') {
-            decoded[start + 1..end].to_string()
+            if start < end {
+                decoded[start + 1..end].to_string()
+            } else {
+                // Malformed - < appears after >
+                return None;
+            }
         } else {
             // Malformed - no closing >
             return None;
@@ -325,7 +330,15 @@ impl Milter {
                             hostname: Some(hostname_str),
                             ..Default::default()
                         };
-                        state.lock().unwrap().insert(session_id, mail_ctx);
+                        match state.lock() {
+                            Ok(mut guard) => {
+                                guard.insert(session_id, mail_ctx);
+                            }
+                            Err(e) => {
+                                log::error!("Mutex poisoned in connect handler: {}", e);
+                                return Status::Tempfail;
+                            }
+                        }
                         Status::Continue
                     })
                 }
@@ -343,15 +356,21 @@ impl Milter {
                             .join(",");
                         log::debug!("Mail from: {sender_str}");
                         // Update the most recent context (by highest session number)
-                        if let Some((_, mail_ctx)) =
-                            state.lock().unwrap().iter_mut().max_by_key(|(k, _)| {
-                                k.split('-')
-                                    .next_back()
-                                    .and_then(|s| s.parse::<u64>().ok())
-                                    .unwrap_or(0)
-                            })
-                        {
-                            mail_ctx.sender = Some(sender_str);
+                        match state.lock() {
+                            Ok(mut guard) => {
+                                if let Some((_, mail_ctx)) = guard.iter_mut().max_by_key(|(k, _)| {
+                                    k.split('-')
+                                        .next_back()
+                                        .and_then(|s| s.parse::<u64>().ok())
+                                        .unwrap_or(0)
+                                }) {
+                                    mail_ctx.sender = Some(sender_str);
+                                }
+                            }
+                            Err(e) => {
+                                log::error!("Mutex poisoned in mail handler: {}", e);
+                                return Status::Tempfail;
+                            }
                         }
                         Status::Continue
                     })
@@ -370,15 +389,21 @@ impl Milter {
                             .join(",");
                         log::debug!("Rcpt to: {recipient_str}");
                         // Update the most recent context (by highest session number)
-                        if let Some((_, mail_ctx)) =
-                            state.lock().unwrap().iter_mut().max_by_key(|(k, _)| {
-                                k.split('-')
-                                    .next_back()
-                                    .and_then(|s| s.parse::<u64>().ok())
-                                    .unwrap_or(0)
-                            })
-                        {
-                            mail_ctx.recipients.push(recipient_str);
+                        match state.lock() {
+                            Ok(mut guard) => {
+                                if let Some((_, mail_ctx)) = guard.iter_mut().max_by_key(|(k, _)| {
+                                    k.split('-')
+                                        .next_back()
+                                        .and_then(|s| s.parse::<u64>().ok())
+                                        .unwrap_or(0)
+                                }) {
+                                    mail_ctx.recipients.push(recipient_str);
+                                }
+                            }
+                            Err(e) => {
+                                log::error!("Mutex poisoned in rcpt handler: {}", e);
+                                return Status::Tempfail;
+                            }
                         }
                         Status::Continue
                     })
@@ -400,14 +425,14 @@ impl Milter {
                         }
 
                         // Update the most recent context (by highest session number)
-                        if let Some((_, mail_ctx)) =
-                            state.lock().unwrap().iter_mut().max_by_key(|(k, _)| {
-                                k.split('-')
-                                    .next_back()
-                                    .and_then(|s| s.parse::<u64>().ok())
-                                    .unwrap_or(0)
-                            })
-                        {
+                        match state.lock() {
+                            Ok(mut guard) => {
+                                if let Some((_, mail_ctx)) = guard.iter_mut().max_by_key(|(k, _)| {
+                                    k.split('-')
+                                        .next_back()
+                                        .and_then(|s| s.parse::<u64>().ok())
+                                        .unwrap_or(0)
+                                }) {
                             // Store important headers
                             match name_str.to_lowercase().as_str() {
                                 "subject" => {
@@ -453,6 +478,12 @@ impl Milter {
                                 mail_ctx.headers.insert(header_key.clone(), value_str);
                                 mail_ctx.last_header_name = Some(header_key);
                             }
+                                }
+                            }
+                            Err(e) => {
+                                log::error!("Mutex poisoned in header handler: {}", e);
+                                return Status::Tempfail;
+                            }
                         }
                         Status::Continue
                     })
@@ -466,14 +497,14 @@ impl Milter {
                     Box::pin(async move {
                         let body_str = String::from_utf8_lossy(&body_chunk);
                         // Update the most recent context (by highest session number)
-                        if let Some((_, mail_ctx)) =
-                            state.lock().unwrap().iter_mut().max_by_key(|(k, _)| {
-                                k.split('-')
-                                    .next_back()
-                                    .and_then(|s| s.parse::<u64>().ok())
-                                    .unwrap_or(0)
-                            })
-                        {
+                        match state.lock() {
+                            Ok(mut guard) => {
+                                if let Some((_, mail_ctx)) = guard.iter_mut().max_by_key(|(k, _)| {
+                                    k.split('-')
+                                        .next_back()
+                                        .and_then(|s| s.parse::<u64>().ok())
+                                        .unwrap_or(0)
+                                }) {
                             match &mut mail_ctx.body {
                                 Some(existing_body) => {
                                     existing_body.push_str(&body_str);
@@ -481,6 +512,12 @@ impl Milter {
                                 None => {
                                     mail_ctx.body = Some(body_str.to_string());
                                 }
+                            }
+                                }
+                            }
+                            Err(e) => {
+                                log::error!("Mutex poisoned in body handler: {}", e);
+                                return Status::Tempfail;
                             }
                         }
                         Status::Continue
