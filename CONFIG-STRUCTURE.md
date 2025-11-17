@@ -28,11 +28,11 @@ type = "Accept"
 ```
 
 ## 2. Module Configuration Directory
-**Directory:** `/etc/foff-milter/modules/` (production) or `modules/` (development)
+**Directory:** `/etc/foff-milter/rulesets/` (production) or `modules/` (development)
 
 Each module has its own YAML file:
 
-### `/etc/foff-milter/modules/suspicious-domains.yaml`
+### `/etc/foff-milter/rulesets/suspicious-domains.yaml`
 ```yaml
 name: "Suspicious Domains"
 enabled: true
@@ -47,7 +47,7 @@ rules:
       header_value: "YES"
 ```
 
-### `/etc/foff-milter/modules/brand-impersonation.yaml`
+### `/etc/foff-milter/rulesets/brand-impersonation.yaml`
 ```yaml
 name: "Brand Impersonation Protection"
 enabled: true
@@ -104,7 +104,7 @@ default_action:
 ### Production
 ```
 /etc/foff-milter.toml              # Main config
-/etc/foff-milter/modules/          # Module directory
+/etc/foff-milter/rulesets/          # Module directory
 ├── suspicious-domains.yaml
 ├── brand-impersonation.yaml
 ├── health-spam.yaml

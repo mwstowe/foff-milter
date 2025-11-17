@@ -71,7 +71,7 @@ for server_config in "${SERVERS[@]}"; do
     
     # Clean up legacy files
     echo "🧹 Cleaning up legacy module files..."
-    ssh "$server" "sudo rm -f $remote_base_dir/modules/machine-learning.yaml" 2>/dev/null || true
+    ssh "$server" "sudo rm -f $remote_base_dir/rulesets/machine-learning.yaml" 2>/dev/null || true
     
     # Reload service to apply new modules
     echo "🔄 Reloading service to apply new configurations..."
@@ -94,7 +94,7 @@ for server_config in "${SERVERS[@]}"; do
     # Verify deployment
     echo "✅ Verifying deployment on $server..."
     echo "   Rulesets:"
-    ssh "$server" "ls -la $remote_base_dir/modules/ | head -5"
+    ssh "$server" "ls -la $remote_base_dir/rulesets/ | head -5"
     echo "   Config files:"
     ssh "$server" "ls -la $remote_base_dir/config/ 2>/dev/null || echo '   (no config directory)'"
     echo "   Features:"
@@ -120,4 +120,4 @@ done
 echo ""
 echo "ℹ️  Main config files (foff-milter.toml) are NOT overwritten - manage manually"
 echo "🔄 Using reload instead of restart maintains existing connections"
-echo "📁 Deployed: rulesets → modules/, config → config/, features → features/"
+echo "📁 Deployed: rulesets → rulesets/, config → config/, features → features/"

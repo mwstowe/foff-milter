@@ -151,7 +151,7 @@ type = "Accept"
 Each detection module has its own configuration file:
 
 ```
-/etc/foff-milter/modules/
+/etc/foff-milter/rulesets/
 ├── suspicious-domains.yaml      # TLD and domain reputation
 ├── brand-impersonation.yaml     # DocuSign, PayPal phishing
 ├── health-spam.yaml            # Medical misinformation
@@ -193,7 +193,7 @@ cargo build --release --features ocr
 sudo cp target/release/foff-milter /usr/local/bin/
 sudo cp foff-milter.toml /etc/
 sudo mkdir -p /etc/foff-milter/modules
-sudo cp modules/*.yaml /etc/foff-milter/modules/
+sudo cp modules/*.yaml /etc/foff-milter/rulesets/
 ```
 
 ### Manual Installation
@@ -240,9 +240,9 @@ sudo chmod 755 /usr/local/bin/foff-milter
 
 # Install configuration files
 sudo cp foff-milter.toml /etc/
-sudo cp modules/*.yaml /etc/foff-milter/modules/
+sudo cp modules/*.yaml /etc/foff-milter/rulesets/
 sudo chown -R root:foff-milter /etc/foff-milter
-sudo chmod 640 /etc/foff-milter/modules/*.yaml
+sudo chmod 640 /etc/foff-milter/rulesets/*.yaml
 ```
 
 #### 5. Create Systemd Service

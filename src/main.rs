@@ -695,36 +695,36 @@ fn generate_modular_configs(dir_path: &str) {
     let modules = [
         (
             "adult-content.yaml",
-            include_str!("../modules/adult-content.yaml"),
+            include_str!("../rulesets/adult-content.yaml"),
         ),
         (
             "financial-services.yaml",
-            include_str!("../modules/financial-services.yaml"),
+            include_str!("../rulesets/financial-services.yaml"),
         ),
         (
             "technology-scams.yaml",
-            include_str!("../modules/technology-scams.yaml"),
+            include_str!("../rulesets/technology-scams.yaml"),
         ),
         (
             "multi-language.yaml",
-            include_str!("../modules/multi-language.yaml"),
+            include_str!("../rulesets/multi-language.yaml"),
         ),
         (
             "performance.yaml",
-            include_str!("../modules/performance.yaml"),
+            include_str!("../rulesets/performance.yaml"),
         ),
-        ("analytics.yaml", include_str!("../modules/analytics.yaml")),
+        ("analytics.yaml", include_str!("../rulesets/analytics.yaml")),
         (
             "advanced-heuristics.yaml",
-            include_str!("../modules/advanced-heuristics.yaml"),
+            include_str!("../rulesets/advanced-heuristics.yaml"),
         ),
         (
             "integration.yaml",
-            include_str!("../modules/integration.yaml"),
+            include_str!("../rulesets/integration.yaml"),
         ),
         (
             "advanced-security.yaml",
-            include_str!("../modules/advanced-security.yaml"),
+            include_str!("../rulesets/advanced-security.yaml"),
         ),
     ];
 
