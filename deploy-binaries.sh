@@ -97,6 +97,9 @@ deploy_configs() {
             # Remove old config directory (merged into features)
             sudo rm -rf $remote_base_dir/config
             
+            # Remove old modules directory (renamed to rulesets)
+            sudo rm -rf $remote_base_dir/modules
+            
             # Clean up old YAML files in features directory
             sudo rm -f $remote_base_dir/features/*.yaml
             
