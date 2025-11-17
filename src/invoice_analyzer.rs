@@ -77,7 +77,7 @@ impl Default for InvoiceAnalyzer {
         ];
 
         for path in &features_paths {
-            if std::path::Path::new(&format!("{}/legitimate_domains.yaml", path)).exists() {
+            if std::path::Path::new(&format!("{}/legitimate_domains.toml", path)).exists() {
                 return Self::with_features_dir(path);
             }
         }
