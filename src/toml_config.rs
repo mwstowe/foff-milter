@@ -28,6 +28,15 @@ pub struct DomainClassifications {
 
 impl Default for TomlConfig {
     fn default() -> Self {
+        // Platform-specific base directory
+        let base_dir = if cfg!(target_os = "freebsd") {
+            "/usr/local/etc"
+        } else {
+            "/etc"
+        };
+        
+        let foff_dir = format!("{}/foff-milter", base_dir);
+        
         Self {
             system: SystemConfig {
                 socket_path: "/var/run/foff-milter.sock".to_string(),
@@ -37,11 +46,11 @@ impl Default for TomlConfig {
             statistics: None,
             rulesets: Some(RulesetsConfig {
                 enabled: true,
-                config_dir: "rulesets".to_string(),
+                config_dir: format!("{}/modules", foff_dir),
             }),
             features: Some(FeaturesConfig {
                 enabled: true,
-                config_dir: "features".to_string(),
+                config_dir: format!("{}/features", foff_dir),
             }),
             heuristics: Some(HeuristicsConfig {
                 reject_threshold: 350,
@@ -166,7 +175,19 @@ pub struct PerformanceConfig {
 impl TomlConfig {
     pub fn load_from_file<P: AsRef<Path>>(path: P) -> anyhow::Result<Self> {
         let content = std::fs::read_to_string(path)?;
-        let config: TomlConfig = toml::from_str(&content)?;
+        let mut config: TomlConfig = toml::from_str(&content)?;
+        
+        // Merge with platform-specific defaults for missing sections
+        let defaults = TomlConfig::default();
+        
+        if config.rulesets.is_none() {
+            config.rulesets = defaults.rulesets;
+        }
+        
+        if config.features.is_none() {
+            config.features = defaults.features;
+        }
+        
         Ok(config)
     }
 
@@ -212,11 +233,12 @@ impl TomlConfig {
             }
         }
 
-        // Set module config directory
-        if let Some(rulesets) = &self.rulesets {
-            if rulesets.enabled {
-                legacy_config.module_config_dir = Some(rulesets.config_dir.clone());
-            }
+        // Set module config directory with platform-specific defaults
+        let default_config = TomlConfig::default();
+        let default_rulesets = default_config.rulesets.as_ref().unwrap();
+        let rulesets = self.rulesets.as_ref().unwrap_or(default_rulesets);
+        if rulesets.enabled {
+            legacy_config.module_config_dir = Some(rulesets.config_dir.clone());
         }
 
         Ok(legacy_config)
