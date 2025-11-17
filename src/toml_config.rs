@@ -4,7 +4,7 @@ use std::path::Path;
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct TomlConfig {
-    pub system: SystemConfig,
+    pub system: Option<SystemConfig>,
     pub logging: Option<LoggingConfig>,
     pub statistics: Option<StatisticsConfig>,
     pub rulesets: Option<RulesetsConfig>,
@@ -14,7 +14,7 @@ pub struct TomlConfig {
     pub whitelist: Option<WhitelistConfig>,
     pub blocklist: Option<BlocklistConfig>,
     pub legacy: Option<LegacyConfigRef>,
-    pub default_action: DefaultActionConfig,
+    pub default_action: Option<DefaultActionConfig>,
     pub performance: Option<PerformanceConfig>,
     pub domain_classifications: Option<DomainClassifications>,
 }
@@ -38,12 +38,16 @@ impl Default for TomlConfig {
         let foff_dir = format!("{}/foff-milter", base_dir);
 
         Self {
-            system: SystemConfig {
+            system: Some(SystemConfig {
                 socket_path: "/var/run/foff-milter.sock".to_string(),
                 reject_to_tag: true,
-            },
+            }),
             logging: None,
-            statistics: None,
+            statistics: Some(StatisticsConfig {
+                enabled: true,
+                database_path: "/var/lib/foff-milter/stats.db".to_string(),
+                flush_interval_seconds: 60,
+            }),
             rulesets: Some(RulesetsConfig {
                 enabled: true,
                 config_dir: format!("{}/rulesets", foff_dir),
@@ -57,13 +61,30 @@ impl Default for TomlConfig {
                 spam_threshold: 50,
                 accept_threshold: 0,
             }),
-            sender_blocking: None,
-            whitelist: None,
-            blocklist: None,
-            legacy: None,
-            default_action: DefaultActionConfig {
+            sender_blocking: Some(SenderBlockingConfig {
+                enabled: true,
+                block_patterns: vec![],
+                action: "reject".to_string(),
+            }),
+            whitelist: Some(WhitelistConfig {
+                enabled: true,
+                addresses: vec![],
+                domains: vec![],
+                domain_patterns: vec![],
+            }),
+            blocklist: Some(BlocklistConfig {
+                enabled: true,
+                addresses: vec![],
+                domains: vec![],
+                domain_patterns: vec![],
+            }),
+            legacy: Some(LegacyConfigRef {
+                enabled: false,
+                config_file: "/etc/foff-milter/legacy-rules.yaml".to_string(),
+            }),
+            default_action: Some(DefaultActionConfig {
                 action_type: "Accept".to_string(),
-            },
+            }),
             performance: None,
             domain_classifications: Some(DomainClassifications {
                 free_email_providers: Some(vec![
@@ -180,12 +201,44 @@ impl TomlConfig {
         // Merge with platform-specific defaults for missing sections
         let defaults = TomlConfig::default();
 
+        if config.system.is_none() {
+            config.system = defaults.system;
+        }
+
+        if config.statistics.is_none() {
+            config.statistics = defaults.statistics;
+        }
+
         if config.rulesets.is_none() {
             config.rulesets = defaults.rulesets;
         }
 
         if config.features.is_none() {
             config.features = defaults.features;
+        }
+
+        if config.heuristics.is_none() {
+            config.heuristics = defaults.heuristics;
+        }
+
+        if config.sender_blocking.is_none() {
+            config.sender_blocking = defaults.sender_blocking;
+        }
+
+        if config.whitelist.is_none() {
+            config.whitelist = defaults.whitelist;
+        }
+
+        if config.blocklist.is_none() {
+            config.blocklist = defaults.blocklist;
+        }
+
+        if config.legacy.is_none() {
+            config.legacy = defaults.legacy;
+        }
+
+        if config.default_action.is_none() {
+            config.default_action = defaults.default_action;
         }
 
         Ok(config)
@@ -196,8 +249,14 @@ impl TomlConfig {
     }
 
     pub fn to_legacy_config(&self) -> anyhow::Result<LegacyConfig> {
+        let default_system = SystemConfig {
+            socket_path: "/var/run/foff-milter.sock".to_string(),
+            reject_to_tag: true,
+        };
+        let system = self.system.as_ref().unwrap_or(&default_system);
+
         let mut legacy_config = LegacyConfig {
-            socket_path: self.system.socket_path.clone(),
+            socket_path: system.socket_path.clone(),
             default_action: Action::Accept, // Will be updated below
             statistics: None,
             module_config_dir: None,
@@ -210,7 +269,11 @@ impl TomlConfig {
         };
 
         // Set default action
-        legacy_config.default_action = match self.default_action.action_type.as_str() {
+        let default_action_config = DefaultActionConfig {
+            action_type: "Accept".to_string(),
+        };
+        let default_action = self.default_action.as_ref().unwrap_or(&default_action_config);
+        legacy_config.default_action = match default_action.action_type.as_str() {
             "Accept" => Action::Accept,
             "Reject" => Action::Reject {
                 message: "Rejected by policy".to_string(),

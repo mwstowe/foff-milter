@@ -1,41 +1,13 @@
 # FOFF Milter Production Configuration
-# Minimal config - only essential customizations
-# modules and features use platform-specific defaults
+# All settings use sane platform-specific defaults
+# Only specify settings you want to override
 
-[system]
-socket_path = "/var/run/foff-milter.sock"
-reject_to_tag = true
+# Uncomment to override defaults:
+# [system]
+# socket_path = "/var/run/foff-milter.sock"
+# reject_to_tag = true
 
-[heuristics]
-reject_threshold = 350
-spam_threshold = 50
-accept_threshold = 0
-
-[sender_blocking]
-enabled = true
-block_patterns = []
-action = "reject"
-
-[whitelist]
-enabled = true
-addresses = []
-domains = []
-domain_patterns = []
-
-[blocklist]
-enabled = true
-addresses = []
-domains = []
-domain_patterns = []
-
-[legacy]
-enabled = false
-config_file = "/etc/foff-milter/legacy-rules.yaml"
-
-[statistics]
-enabled = true
-database_path = "/var/lib/foff-milter/stats.db"
-flush_interval_seconds = 60
-
-[default_action]
-type = "Accept"
+# [heuristics]
+# reject_threshold = 350
+# spam_threshold = 50
+# accept_threshold = 0

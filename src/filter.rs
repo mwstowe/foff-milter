@@ -1130,7 +1130,7 @@ impl FilterEngine {
         if self.is_blocklisted(&context_with_attachments) {
             log::info!("Email blocklisted, rejecting immediately");
             let (reject_action, headers) = if let Some(ref toml_config) = self.toml_config {
-                if toml_config.system.reject_to_tag {
+                if toml_config.system.as_ref().map_or(true, |s| s.reject_to_tag) {
                     let headers = vec![
                         (
                             "X-FOFF-Reject-Converted".to_string(),
@@ -1415,7 +1415,7 @@ impl FilterEngine {
                 // Convert REJECT to TAG if setting is enabled
                 let (converted_action, mut conversion_headers) =
                     if let Some(ref toml_config) = self.toml_config {
-                        if toml_config.system.reject_to_tag {
+                        if toml_config.system.as_ref().map_or(true, |s| s.reject_to_tag) {
                             if let Action::Reject { message } = final_action {
                                 let headers = vec![
                                     (
@@ -1525,7 +1525,7 @@ impl FilterEngine {
 
         // Convert REJECT to TAG if setting is enabled
         let (final_action, headers_to_add) = if let Some(ref toml_config) = self.toml_config {
-            if toml_config.system.reject_to_tag {
+            if toml_config.system.as_ref().map_or(true, |s| s.reject_to_tag) {
                 if let Action::Reject { message } = final_action {
                     // Add both the conversion header and the standard spam flag
                     let mut headers = headers_to_add;

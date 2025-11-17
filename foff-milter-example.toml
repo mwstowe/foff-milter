@@ -1,145 +1,139 @@
 # FOFF Milter v0.7.0 - Configuration Example
-# This file shows default values with sample configurations commented out
+# ALL SECTIONS ARE OPTIONAL - Sane defaults are provided for everything
+# Only specify sections you want to override from defaults
 
 # =============================================================================
-# SYSTEM CONFIGURATION
+# SYSTEM CONFIGURATION (Optional)
 # =============================================================================
-[system]
-# Unix socket path for milter communication
-socket_path = "/var/run/foff-milter.sock"
-
-# Convert REJECT actions to TAG actions (default: true)
-reject_to_tag = true
-
-# =============================================================================
-# MODULAR DETECTION SYSTEM
-# =============================================================================
-[modules]
-# Enable modular detection system (default: true)
-enabled = true
-# Directory containing module configuration files
-# Default: /etc/foff-milter/rulesets (Linux) or /usr/local/etc/foff-milter/rulesets (FreeBSD)
-config_dir = "/etc/foff-milter/rulesets"
+# [system]
+# # Unix socket path for milter communication (default: "/var/run/foff-milter.sock")
+# socket_path = "/var/run/foff-milter.sock"
+# # Convert REJECT actions to TAG actions (default: true)
+# reject_to_tag = true
 
 # =============================================================================
-# FEATURE ANALYSIS SYSTEM
+# MODULAR DETECTION SYSTEM (Optional)
 # =============================================================================
-[features]
-# Enable intelligent feature analysis (default: true)
-enabled = true
-# Directory containing feature configuration files  
-# Default: /etc/foff-milter/features (Linux) or /usr/local/etc/foff-milter/features (FreeBSD)
-config_dir = "/etc/foff-milter/features"
+# [modules]
+# # Enable modular detection system (default: true)
+# enabled = true
+# # Directory containing module configuration files
+# # Default: /etc/foff-milter/rulesets (Linux) or /usr/local/etc/foff-milter/rulesets (FreeBSD)
+# config_dir = "/etc/foff-milter/rulesets"
 
 # =============================================================================
-# HEURISTIC SCORING SYSTEM
+# FEATURE ANALYSIS SYSTEM (Optional)
 # =============================================================================
-[heuristics]
-# Score threshold for REJECT action (default: 350)
-reject_threshold = 350
-# Score threshold for TAG AS SPAM action (default: 50)
-spam_threshold = 50
-# Score threshold for ACCEPT action (default: 0)
-accept_threshold = 0
+# [features]
+# # Enable intelligent feature analysis (default: true)
+# enabled = true
+# # Directory containing feature configuration files  
+# # Default: /etc/foff-milter/features (Linux) or /usr/local/etc/foff-milter/features (FreeBSD)
+# config_dir = "/etc/foff-milter/features"
 
 # =============================================================================
-# SENDER BLOCKING (Pattern-based blocking)
+# HEURISTIC SCORING SYSTEM (Optional)
 # =============================================================================
-[sender_blocking]
-# Enable explicit sender pattern blocking (default: true)
-enabled = true
-# Patterns that will immediately block emails (default: empty)
-block_patterns = [
-    # ".*@suspicious-domain\\.com$",
-    # ".*spammer.*@.*",
-    # ".*@.*\\.tk$"
-]
-# Action to take: "reject" or "tag" (default: "reject")
-action = "reject"
+# [heuristics]
+# # Score threshold for REJECT action (default: 350)
+# reject_threshold = 350
+# # Score threshold for TAG AS SPAM action (default: 50)
+# spam_threshold = 50
+# # Score threshold for ACCEPT action (default: 0)
+# accept_threshold = 0
 
 # =============================================================================
-# GLOBAL WHITELIST
+# SENDER BLOCKING (Optional)
 # =============================================================================
-[whitelist]
-# Enable whitelist - bypasses all checks (default: true)
-enabled = true
-
-# Exact email addresses to whitelist (default: empty)
-addresses = [
-    # "noreply@paypal.com",
-    # "security@amazon.com",
-    # "notifications@github.com"
-]
-
-# Exact domains to whitelist (default: empty)
-domains = [
-    # "paypal.com",
-    # "amazon.com", 
-    # "github.com",
-    # "microsoft.com"
-]
-
-# Domain patterns to whitelist - regex (default: empty)
-domain_patterns = [
-    # ".*\\.gov$",        # Government domains
-    # ".*\\.edu$",        # Educational institutions
-    # ".*\\.mil$"         # Military domains
-]
+# [sender_blocking]
+# # Enable explicit sender pattern blocking (default: true)
+# enabled = true
+# # Patterns that will immediately block emails (default: empty)
+# block_patterns = [
+#     # ".*@suspicious-domain\\.com$",
+#     # ".*spammer.*@.*",
+#     # ".*@.*\\.tk$"
+# ]
+# # Action to take: "reject" or "tag" (default: "reject")
+# action = "reject"
 
 # =============================================================================
-# GLOBAL BLOCKLIST
+# GLOBAL WHITELIST (Optional)
 # =============================================================================
-[blocklist]
-# Enable blocklist - blocks before rule evaluation (default: true)
-enabled = true
-
-# Exact email addresses to block (default: empty)
-addresses = [
-    # "spam@badactor.com",
-    # "phishing@scammer.net"
-]
-
-# Exact domains to block (default: empty)
-domains = [
-    # "badactor.com",
-    # "scammer.net",
-    # "malware.tk"
-]
-
-# Domain patterns to block - regex (default: empty)
-domain_patterns = [
-    # ".*\\.tk$",         # Tokelau (free domain)
-    # ".*\\.ml$",         # Mali (free domain)
-    # ".*\\.ga$",         # Gabon (free domain)
-    # ".*\\.cf$"          # Central African Republic (free domain)
-]
+# [whitelist]
+# # Enable whitelist - bypasses all checks (default: true)
+# enabled = true
+# # Exact email addresses to whitelist (default: empty)
+# addresses = [
+#     # "noreply@paypal.com",
+#     # "security@amazon.com",
+#     # "notifications@github.com"
+# ]
+# # Exact domains to whitelist (default: empty)
+# domains = [
+#     # "paypal.com",
+#     # "amazon.com", 
+#     # "github.com",
+#     # "microsoft.com"
+# ]
+# # Domain patterns to whitelist - regex (default: empty)
+# domain_patterns = [
+#     # ".*\\.gov$",        # Government domains
+#     # ".*\\.edu$",        # Educational institutions
+#     # ".*\\.mil$"         # Military domains
+# ]
 
 # =============================================================================
-# LEGACY YAML SUPPORT
+# GLOBAL BLOCKLIST (Optional)
 # =============================================================================
-[legacy]
-# Enable legacy YAML rule support (default: false)
-enabled = false
-# Path to legacy YAML configuration file
-config_file = "/etc/foff-milter/legacy-rules.yaml"
+# [blocklist]
+# # Enable blocklist - blocks before rule evaluation (default: true)
+# enabled = true
+# # Exact email addresses to block (default: empty)
+# addresses = [
+#     # "spam@badactor.com",
+#     # "phishing@scammer.net"
+# ]
+# # Exact domains to block (default: empty)
+# domains = [
+#     # "badactor.com",
+#     # "scammer.net",
+#     # "malware.tk"
+# ]
+# # Domain patterns to block - regex (default: empty)
+# domain_patterns = [
+#     # ".*\\.tk$",         # Tokelau (free domain)
+#     # ".*\\.ml$",         # Mali (free domain)
+#     # ".*\\.ga$",         # Gabon (free domain)
+#     # ".*\\.cf$"          # Central African Republic (free domain)
+# ]
 
 # =============================================================================
-# STATISTICS & ANALYTICS
+# LEGACY YAML SUPPORT (Optional)
 # =============================================================================
-[statistics]
-# Enable statistics collection (default: true)
-enabled = true
-# SQLite database path for statistics
-database_path = "/var/lib/foff-milter/stats.db"
-# How often to flush statistics to database in seconds (default: 60)
-flush_interval_seconds = 60
+# [legacy]
+# # Enable legacy YAML rule support (default: false)
+# enabled = false
+# # Path to legacy YAML configuration file
+# config_file = "/etc/foff-milter/legacy-rules.yaml"
 
 # =============================================================================
-# DEFAULT ACTION
+# STATISTICS & ANALYTICS (Optional)
 # =============================================================================
-[default_action]
-# Action to take when no rules match (default: "Accept")
-type = "Accept"
+# [statistics]
+# # Enable statistics collection (default: true)
+# enabled = true
+# # SQLite database path for statistics
+# database_path = "/var/lib/foff-milter/stats.db"
+# # How often to flush statistics to database in seconds (default: 60)
+# flush_interval_seconds = 60
+
+# =============================================================================
+# DEFAULT ACTION (Optional)
+# =============================================================================
+# [default_action]
+# # Action to take when no rules match (default: "Accept")
+# type = "Accept"
 
 # Alternative default actions:
 # type = "Reject"
@@ -175,16 +169,16 @@ type = "Accept"
 # PERFORMANCE TUNING (Optional)
 # =============================================================================
 # [performance]
-# Maximum number of concurrent emails to process (default: 100)
+# # Maximum number of concurrent emails to process (default: 100)
 # max_concurrent_emails = 100
-# Timeout for email processing in seconds (default: 30)
+# # Timeout for email processing in seconds (default: 30)
 # timeout_seconds = 30
 
 # =============================================================================
 # LOGGING CONFIGURATION (Optional)
 # =============================================================================
 # [logging]
-# Log level: trace, debug, info, warn, error (default: "info")
+# # Log level: trace, debug, info, warn, error (default: "info")
 # level = "info"
-# Log file path (if not specified, logs to stderr)
+# # Log file path (if not specified, logs to stderr)
 # file = "/var/log/foff-milter/foff-milter.log"
