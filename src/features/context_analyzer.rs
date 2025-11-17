@@ -25,6 +25,7 @@ impl ContextAnalyzer {
     pub fn new() -> Self {
         let urgency_patterns = vec![
             Regex::new(r"(?i)(urgent|immediate|act now|limited time|expires today)").unwrap(),
+            Regex::new(r"(?i)(overdue|today|24 hours|don't miss|hurry|last chance)").unwrap(),
             Regex::new(r"(?i)(verify.*account.*immediately|suspend.*account)").unwrap(),
             Regex::new(r"(?i)(click.*here.*now|respond.*within.*hours)").unwrap(),
         ];
