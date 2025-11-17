@@ -1,13 +1,11 @@
-# FOFF Milter Main Configuration
-# Production configuration in TOML format
+# FOFF Milter Production Configuration
+# Minimal config - only essential customizations
 
 [system]
 socket_path = "/var/run/foff-milter.sock"
-# Convert REJECT actions to TAG actions (default: true)
-# When enabled, emails that would be rejected are tagged instead
 reject_to_tag = true
 
-[rulesets]
+[modules]
 enabled = true
 config_dir = "rulesets"
 
@@ -16,66 +14,26 @@ enabled = true
 config_dir = "features"
 
 [heuristics]
-# Score thresholds for actions
-reject_threshold = 350  # High threshold - most emails tagged rather than rejected
-spam_threshold = 60     # Tag as spam at this score
-accept_threshold = 0    # Accept below spam threshold
+reject_threshold = 350
+spam_threshold = 60
+accept_threshold = 0
 
 [sender_blocking]
-# Explicit sender pattern blocking
 enabled = true
-# Patterns that will immediately reject emails (score: 1000)
-block_patterns = [
-    # Example patterns - add specific senders to block
-    # ".*@suspicious-domain\\.com$",
-    # ".*spammer.*@.*",
-    # ".*@.*\\.tk$"
-]
-# Action to take: "reject" or "tag"
+block_patterns = []
 action = "reject"
 
 [whitelist]
 enabled = true
-# Exact email addresses to whitelist
-addresses = [
-    "noreply@paypal.com",
-    "security@amazon.com",
-    "notifications@github.com"
-]
-# Domains to whitelist (exact match)
-domains = [
-    "paypal.com",
-    "amazon.com", 
-    "github.com",
-    "microsoft.com"
-]
-# Domain patterns to whitelist (regex)
-domain_patterns = [
-    ".*\\.gov$",
-    ".*\\.edu$",
-    ".*\\.mil$"
-]
+addresses = []
+domains = []
+domain_patterns = []
 
 [blocklist]
 enabled = true
-# Exact email addresses to block
-addresses = [
-    "spam@badactor.com",
-    "phishing@scammer.net"
-]
-# Domains to block (exact match)
-domains = [
-    "badactor.com",
-    "scammer.net",
-    "malware.tk"
-]
-# Domain patterns to block (regex)
-domain_patterns = [
-    ".*\\.tk$",
-    ".*\\.ml$",
-    ".*\\.ga$",
-    ".*\\.cf$"
-]
+addresses = []
+domains = []
+domain_patterns = []
 
 [legacy]
 enabled = false
@@ -88,33 +46,3 @@ flush_interval_seconds = 60
 
 [default_action]
 type = "Accept"
-
-[domain_classifications]
-free_email_providers = [
-    "gmail.com",
-    "outlook.com", 
-    "yahoo.com",
-    "hotmail.com",
-    "aol.com",
-    "protonmail.com",
-    "icloud.com"
-]
-
-email_infrastructure = [
-    "mailchimp.com",
-    "constantcontact.com", 
-    "sendgrid.net",
-    "mailgun.org",
-    "amazonses.com",
-    "sparkpostmail.com",
-    "ifttt.com",
-    "filtersfast.com"
-]
-
-high_risk_tlds = [
-    ".tk",
-    ".ml", 
-    ".ga",
-    ".cf",
-    ".ru.com"
-]
