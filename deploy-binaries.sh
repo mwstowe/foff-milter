@@ -61,7 +61,7 @@ SERVERS=(
 
 # Local directories to deploy
 LOCAL_RULESETS_DIR="rulesets"
-LOCAL_CONFIG_DIR="config"
+# LOCAL_CONFIG_DIR="config" # Merged into features
 LOCAL_FEATURES_DIR="features"
 
 VBOX_USER="vbox"
@@ -104,9 +104,6 @@ deploy_configs() {
             done
         fi
         
-        # Deploy config files (feature configurations)
-        if [ -d "$LOCAL_CONFIG_DIR" ]; then
-            echo "📦 Deploying config files..."
             for config in $LOCAL_CONFIG_DIR/*.yaml; do
                 if [ -f "$config" ]; then
                     config_name=$(basename "$config")

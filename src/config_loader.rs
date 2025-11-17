@@ -77,17 +77,17 @@ impl ConfigLoader {
 
     pub fn load_legitimate_domains() -> Result<LegitimateDomainsConfig, Box<dyn std::error::Error>>
     {
-        let content = fs::read_to_string("config/legitimate_domains.yaml")?;
+        let content = fs::read_to_string("features/legitimate_domains.yaml")?;
         Ok(serde_yml::from_str(&content)?)
     }
 
     pub fn load_feature_scoring() -> Result<FeatureScoringConfig, Box<dyn std::error::Error>> {
-        let content = fs::read_to_string("config/feature_scoring.yaml")?;
+        let content = fs::read_to_string("features/feature_scoring.yaml")?;
         Ok(serde_yml::from_str(&content)?)
     }
 
     pub fn load_brand_patterns() -> Result<BrandPatternsConfig, Box<dyn std::error::Error>> {
-        let content = fs::read_to_string("config/brand_patterns.yaml")?;
+        let content = fs::read_to_string("features/brand_patterns.yaml")?;
         Ok(serde_yml::from_str(&content)?)
     }
 
