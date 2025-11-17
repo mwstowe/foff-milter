@@ -2,9 +2,9 @@ use crate::abuse_reporter::AbuseReporter;
 use crate::attachment_analyzer::AttachmentAnalyzer;
 use crate::domain_age::DomainAgeChecker;
 use crate::features::FeatureEngine;
+use crate::heuristic_config::{load_modules, Action, Config, Criteria, Module};
 use crate::invoice_analyzer::{InvoiceAnalysis, InvoiceAnalyzer};
 use crate::language::LanguageDetector;
-use crate::legacy_config::{load_modules, Action, Config, Criteria, Module};
 use crate::media_analyzer::MediaAnalyzer;
 use crate::milter::extract_email_from_header;
 use crate::toml_config::{BlocklistConfig, WhitelistConfig};
@@ -259,9 +259,9 @@ impl FilterEngine {
                 }
             }
         } else {
-            println!("DEBUG: No module_config_dir configured, using legacy rules");
-            log::warn!("⚠️  WARNING: No module directory configured! Running in legacy mode with reduced security!");
-            eprintln!("⚠️  WARNING: No module directory configured! Running in legacy mode with reduced security!");
+            println!("DEBUG: No module_config_dir configured, using heuristic rules");
+            log::warn!("⚠️  WARNING: No module directory configured! Running in heuristic mode with reduced security!");
+            eprintln!("⚠️  WARNING: No module directory configured! Running in heuristic mode with reduced security!");
             Vec::new()
         };
 
@@ -814,7 +814,7 @@ impl FilterEngine {
     }
 
     fn compile_patterns(&mut self) -> anyhow::Result<()> {
-        // Compile patterns from legacy rules
+        // Compile patterns from heuristic rules
         let rules = self.config.rules.clone();
         for rule in &rules {
             // Skip disabled rules during pattern compilation
@@ -1447,7 +1447,7 @@ impl FilterEngine {
             }
         }
 
-        // Process legacy rules if no modules or no module matches
+        // Process heuristic rules if no modules or no module matches
         for (rule_index, rule) in self.config.rules.iter().enumerate() {
             // Skip disabled rules
             if !rule.enabled {

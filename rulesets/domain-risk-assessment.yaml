@@ -9,6 +9,13 @@ rules:
     score: 100
     description: "Critical risk TLDs with highest spam rates"
 
+  - name: "SA.com subdomain spam"
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*\\.sa\\.com$"
+    score: 150
+    description: "All sa.com subdomains are spam"
+
   - name: "Typosquatting major brands"
     criteria:
       type: "SenderPattern"

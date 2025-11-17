@@ -1,4 +1,4 @@
-use crate::legacy_config::{Action, Config as LegacyConfig};
+use crate::heuristic_config::{Action, Config as HeuristicConfig};
 use serde::{Deserialize, Serialize};
 use std::path::Path;
 
@@ -293,14 +293,14 @@ impl TomlConfig {
         "/etc/foff-milter.toml"
     }
 
-    pub fn to_legacy_config(&self) -> anyhow::Result<LegacyConfig> {
+    pub fn to_heuristic_config(&self) -> anyhow::Result<HeuristicConfig> {
         let default_system = SystemConfig {
             socket_path: "/var/run/foff-milter.sock".to_string(),
             reject_to_tag: true,
         };
         let system = self.system.as_ref().unwrap_or(&default_system);
 
-        let mut legacy_config = LegacyConfig {
+        let mut heuristic_config = HeuristicConfig {
             socket_path: system.socket_path.clone(),
             default_action: Action::Accept, // Will be updated below
             statistics: None,
@@ -321,7 +321,7 @@ impl TomlConfig {
             .default_action
             .as_ref()
             .unwrap_or(&default_action_config);
-        legacy_config.default_action = match default_action.action_type.as_str() {
+        heuristic_config.default_action = match default_action.action_type.as_str() {
             "Accept" => Action::Accept,
             "Reject" => Action::Reject {
                 message: "Rejected by policy".to_string(),
@@ -336,7 +336,7 @@ impl TomlConfig {
         // Set statistics
         if let Some(stats) = &self.statistics {
             if stats.enabled {
-                legacy_config.statistics = Some(crate::legacy_config::StatisticsConfig {
+                heuristic_config.statistics = Some(crate::heuristic_config::StatisticsConfig {
                     enabled: true,
                     database_path: stats.database_path.clone(),
                     flush_interval_seconds: Some(stats.flush_interval_seconds),
@@ -349,9 +349,9 @@ impl TomlConfig {
         let default_rulesets = default_config.rulesets.as_ref().unwrap();
         let rulesets = self.rulesets.as_ref().unwrap_or(default_rulesets);
         if rulesets.enabled {
-            legacy_config.module_config_dir = Some(rulesets.config_dir.clone());
+            heuristic_config.module_config_dir = Some(rulesets.config_dir.clone());
         }
 
-        Ok(legacy_config)
+        Ok(heuristic_config)
     }
 }

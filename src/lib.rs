@@ -10,10 +10,10 @@ pub mod domain_age;
 pub mod features;
 pub mod filter;
 pub mod google_groups_unsubscriber;
+pub mod heuristic_config;
 pub mod integration;
 pub mod invoice_analyzer;
 pub mod language;
-pub mod legacy_config;
 pub mod machine_learning;
 pub mod media_analyzer;
 pub mod milter;
@@ -21,9 +21,9 @@ pub mod performance;
 pub mod statistics;
 pub mod toml_config;
 
-// Re-export legacy Config and related types for backward compatibility
+// Re-export Config and related types for backward compatibility
 pub use filter::{FilterEngine, MailContext};
+pub use heuristic_config::{Action, Config, Criteria, FilterRule};
 pub use language::LanguageDetector;
-pub use legacy_config::{Action, Config, Criteria, FilterRule};
 pub use milter::Milter;
 pub use statistics::{StatEvent, StatisticsCollector};

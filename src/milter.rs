@@ -1,5 +1,5 @@
 use crate::filter::{FilterEngine, MailContext};
-use crate::legacy_config::{Action, Config};
+use crate::heuristic_config::{Action, Config};
 use crate::statistics::{StatEvent, StatisticsCollector};
 use base64::Engine;
 use indymilter::{run, Actions, Callbacks, Config as IndyConfig, ContextActions, Status};
@@ -201,9 +201,9 @@ impl Milter {
             log::error!(
                 "🚨 PRODUCTION WARNING: Milter started without module directory configured!"
             );
-            log::error!("🚨 Email security is severely compromised - only legacy rules active!");
+            log::error!("🚨 Email security is severely compromised - only heuristic rules active!");
             eprintln!("🚨 PRODUCTION WARNING: Milter started without module directory configured!");
-            eprintln!("🚨 Email security is severely compromised - only legacy rules active!");
+            eprintln!("🚨 Email security is severely compromised - only heuristic rules active!");
         } else if let Some(module_dir) = &config.module_config_dir {
             // Check if the directory exists and has modules
             if let Ok(entries) = std::fs::read_dir(module_dir) {

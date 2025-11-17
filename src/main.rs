@@ -4,7 +4,7 @@ use foff_milter::filter::FilterEngine;
 use foff_milter::milter::Milter;
 use foff_milter::statistics::StatisticsCollector;
 use foff_milter::toml_config::{BlocklistConfig, TomlConfig, WhitelistConfig};
-use foff_milter::Config as LegacyConfig;
+use foff_milter::Config as HeuristicConfig;
 use log::LevelFilter;
 use std::fs;
 use std::process;
@@ -46,7 +46,7 @@ async fn main() {
                     • Machine learning integration with adaptive intelligence\n\
                     • Advanced security scanning with deep inspection capabilities\n\
                     • Enterprise analytics and real-time monitoring\n\
-                    • Backward compatibility with legacy rule-based configurations",
+                    • Backward compatibility with heuristic rule-based configurations",
         )
         .arg(
             Arg::new("config")
@@ -66,7 +66,7 @@ async fn main() {
         .arg(
             Arg::new("test-config")
                 .long("test-config")
-                .help("Test configuration validity (supports both legacy and modular systems)")
+                .help("Test configuration validity (supports both heuristic and modular systems)")
                 .action(clap::ArgAction::SetTrue),
         )
         .arg(
@@ -78,7 +78,7 @@ async fn main() {
         .arg(
             Arg::new("stats-unmatched")
                 .long("stats-unmatched")
-                .help("Show rules that have never matched (legacy system only)")
+                .help("Show rules that have never matched (heuristic system only)")
                 .action(clap::ArgAction::SetTrue),
         )
         .arg(
@@ -118,7 +118,7 @@ async fn main() {
             Arg::new("test-email")
                 .long("test-email")
                 .value_name("FILE")
-                .help("Test email file against detection system (supports modular and legacy)")
+                .help("Test email file against detection system (supports modular and heuristic)")
                 .action(clap::ArgAction::Set),
         )
         .arg(
@@ -196,7 +196,7 @@ async fn main() {
         println!("🔍 Testing configuration...");
         println!();
 
-        // Check if using modular system or legacy rules
+        // Check if using modular system or heuristic rules
         if let Some(module_dir) = config.module_config_dir.as_ref() {
             println!("Module configuration directory: {}", module_dir);
             println!("Using modular detection system");
@@ -216,12 +216,12 @@ async fn main() {
             println!("Number of available modules: {}", available_modules);
             println!("✅ Modular system configuration validated");
         } else {
-            println!("Number of legacy rules: {}", config.rules.len());
+            println!("Number of heuristic rules: {}", config.rules.len());
             for (i, rule) in config.rules.iter().enumerate() {
                 println!("  Rule {}: {}", i + 1, rule.name);
             }
 
-            // Still validate legacy rules if present
+            // Still validate heuristic rules if present
             if !config.rules.is_empty() {
                 match FilterEngine::new(config.clone()) {
                     Ok(mut engine) => {
@@ -630,7 +630,7 @@ async fn main() {
 fn load_config(
     path: &str,
 ) -> anyhow::Result<(
-    LegacyConfig,
+    HeuristicConfig,
     Option<WhitelistConfig>,
     Option<BlocklistConfig>,
     Option<TomlConfig>,
@@ -638,14 +638,14 @@ fn load_config(
     if std::path::Path::new(path).exists() {
         // Check file extension to determine format
         if path.ends_with(".toml") {
-            // Load TOML config and convert to legacy format
+            // Load TOML config and convert to heuristic format
             println!("✅ Loading modern TOML configuration: {}", path);
             let toml_config = TomlConfig::load_from_file(path)?;
-            let legacy_config = toml_config.to_legacy_config()?;
+            let heuristic_config = toml_config.to_heuristic_config()?;
             let whitelist_config = toml_config.whitelist.clone();
             let blocklist_config = toml_config.blocklist.clone();
             Ok((
-                legacy_config,
+                heuristic_config,
                 whitelist_config,
                 blocklist_config,
                 Some(toml_config),
@@ -672,7 +672,7 @@ fn load_config(
         }
     } else {
         log::warn!("Configuration file '{path}' not found, using default configuration");
-        Ok((LegacyConfig::default(), None, None, None))
+        Ok((HeuristicConfig::default(), None, None, None))
     }
 }
 
@@ -773,7 +773,7 @@ fn truncate_string(s: &str, max_len: usize) -> String {
 }
 
 async fn test_email_file(
-    config: &LegacyConfig,
+    config: &HeuristicConfig,
     whitelist_config: &Option<WhitelistConfig>,
     blocklist_config: &Option<BlocklistConfig>,
     toml_config: &Option<TomlConfig>,
@@ -943,7 +943,7 @@ async fn test_email_file(
     }
     println!();
 
-    // Use FilterEngine for both modular and legacy systems
+    // Use FilterEngine for both modular and heuristic systems
     let mut filter_engine = match FilterEngine::new(config.clone()) {
         Ok(engine) => engine,
         Err(e) => {
@@ -1045,7 +1045,7 @@ async fn test_email_file(
 }
 
 async fn generate_parity_report(
-    config: &LegacyConfig,
+    config: &HeuristicConfig,
     _whitelist_config: &Option<WhitelistConfig>,
     _blocklist_config: &Option<BlocklistConfig>,
     _toml_config: &Option<TomlConfig>,

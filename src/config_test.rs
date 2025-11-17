@@ -1,4 +1,4 @@
-use crate::legacy_config::{Config, Criteria, FilterRule};
+use crate::heuristic_config::{Config, Criteria, FilterRule};
 use regex::Regex;
 use std::time::Instant;
 
