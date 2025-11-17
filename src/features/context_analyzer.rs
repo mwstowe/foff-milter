@@ -66,6 +66,64 @@ impl ContextAnalyzer {
         }
     }
 
+    pub fn from_config(config: &crate::config_loader::ContextAnalysisConfig) -> Self {
+        let urgency_patterns: Vec<Regex> = config
+            .urgency_patterns
+            .iter()
+            .filter_map(|pattern| Regex::new(&format!("(?i){}", pattern)).ok())
+            .collect();
+
+        // Use default legitimacy indicators and scam combinations for now
+        let legitimacy_indicators = vec![
+            Regex::new(r"(?i)(unsubscribe|privacy policy|terms of service)").unwrap(),
+            Regex::new(r"(?i)(customer service|support team|help desk)").unwrap(),
+            Regex::new(r"(?i)(official|authorized|legitimate)").unwrap(),
+        ];
+
+        let scam_combinations = vec![
+            ScamPattern {
+                name: "Urgent Payment Scam".to_string(),
+                indicators: vec![
+                    "urgent".to_string(),
+                    "payment".to_string(),
+                    "suspend".to_string(),
+                    "verify".to_string(),
+                    "click here".to_string(),
+                ],
+                weight: 25,
+            },
+            ScamPattern {
+                name: "Account Security Scam".to_string(),
+                indicators: vec![
+                    "security".to_string(),
+                    "breach".to_string(),
+                    "unauthorized".to_string(),
+                    "verify account".to_string(),
+                    "immediate action".to_string(),
+                ],
+                weight: 30,
+            },
+            ScamPattern {
+                name: "Billing Update Scam".to_string(),
+                indicators: vec![
+                    "billing".to_string(),
+                    "expired".to_string(),
+                    "update payment".to_string(),
+                    "update billing".to_string(),
+                    "immediate action".to_string(),
+                    "account locked".to_string(),
+                ],
+                weight: 35,
+            },
+        ];
+
+        Self {
+            urgency_patterns,
+            legitimacy_indicators,
+            scam_combinations,
+        }
+    }
+
     fn analyze_urgency_vs_legitimacy(&self, context: &MailContext) -> (i32, Vec<String>) {
         let body = context.body.as_deref().unwrap_or("");
         let subject = context
