@@ -1,0 +1,1186 @@
+Return-Path: <bounce-kl_23349594963-kl_101101kabpxy7292bxre-h-b58b4ec793=2@32125.klaviyodns.com>
+Received: from mail.example.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by mx.example.com (8.18.1/8.18.1) with ESMTPS id 5AIFoAb4075998
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <user@example.com>; Tue, 18 Nov 2025 15:50:10 GMT
+	(envelope-from bounce-kl_23349594963-kl_101101kabpxy7292bxre-h-b58b4ec793=2@32125.klaviyodns.com)
+Authentication-Results: mx.example.com;
+	dkim=pass (1024-bit key; unprotected) header.d=shared.klaviyomail.com header.i=@shared.klaviyomail.com header.b=ofn4q9S/;
+	dkim=pass (1024-bit key; unprotected) header.d=send.bearaby.com header.i=@send.bearaby.com header.b=O/N/TwRJ
+X-Authentication-Warning: mx.example.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be mail.example.com
+Received: from kl-203-20-6.kmta.shared.klaviyomail.com (kl-203-20-6.kmta.shared.klaviyomail.com [170.203.20.6])
+	by mail.example.com (8.16.1/8.16.1) with ESMTPS id 5AIFo3jA016256
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO)
+	for <user@example.com>; Tue, 18 Nov 2025 09:50:09 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.example.com 5AIFo3jA016256
+Authentication-Results: mail.example.com;
+	dkim=pass (1024-bit key, unprotected) header.d=shared.klaviyomail.com header.i=@shared.klaviyomail.com header.a=rsa-sha256 header.s=def1 header.b=ofn4q9S/;
+	dkim=pass (1024-bit key, unprotected) header.d=send.bearaby.com header.i=@send.bearaby.com header.a=rsa-sha256 header.s=mtd1 header.b=O/N/TwRJ
+X-Mailer-Info: 10.sGbfJzMzQTO1kDN5YzM.sGbfFDMxEDMxsWYiBHe5djM5IjY4JXZ.02c092d
+ lBkYhRGZv1WYp5mLj9Wb.gsnIwEzSBJEVBdEMZVTORBjUIB1QIljTNZzUD5kI6snIjJiOiwUcnZW
+ RWJCLiMWYtJiOxwiIoRnI6EzN2MDN4ATO5MDLi0mI6ICMxsUQCBFWZdjM5IjQYJVRKFVQSF1V0kl
+ UaJCLiQnI6EzN2MDN4ATO5EDLiQXbiojIwEzSBJEVBdEMZVTORBjUIB1QIljTNZzUD5kIsICeioj
+ ItFmb1FGbi0Xf..EDMxEDMxsUQCBFWZdjM5IjQYJVR..
+X-Mailer-Info-Extra: b58b4ec793:0QRShlQykjM3kFWQJUQLFDMxEDMxAQaA0XfiwW
+ Y15WYtJiOignIsIiTDNlNN5UOINEUIJFMRlTNZBzRBRlQBtUMwIiOi0GdiwSM5kDM4QzM
+ 2cTM6ICdiwiIaJVW0cVUSFUUKVkUYJkM5IzNZhFUCF0SxAjI6ISbiwyM5kDM4QzM2cTM6
+ ICdoJCLxojItF2YiwiIWVkZnFHTiojIjJye6IiTDNlNN5UOINEUIJFMRlTNZBzRBRlQBt
+ UMwIyegAwYA02bj5ibpFWbvRGZhJGQld3b0NXb++
+Received: from unknown (HELO kmta-worker-prod-go-bbc5cd8f8-6qccl) (kmta-send@vmta.klaviyomail.com@10.6.92.17)
+  by kmta-mta-blue-0f65e1e96f99bc7ea.servers.clovesoftware.com with SMTP; 18 Nov 2025 15:49:57 -0000
+CFBL-Address: fbl@kmta.shared.klaviyomail.com; report=arf
+Date: Tue, 18 Nov 2025 15:49:53 +0000
+List-Unsubscribe:
+ <https://manage.kmail-lists.com/subscriptions/unsubscribe?a=LqgfEV&c=QJAHBn&k=51b34afbccfdb20b63e44d2330561608&m=01KABPXY7292BXREJQARQW4YRZ&r=01KABTAG0Y59Q0RHPCH9NM6SCN>,
+ <mailto:unsub1-QJAHBn-JRYWOZSFKY======@shared.klaviyomail.com?subject=request%20unsubscribe%20ME6UY4LHMZCVMJTDHVIUUQKIIJXCM2Z5GUYWEMZUMFTGEY3DMZSGEMRQMI3DGZJUGRSDEMZTGA2TMMJWGA4CM3J5GAYUWQKCKBMFSNZSHEZEEWCSIVFFCQKSKFLTIWKSLITHEPJQGFFUCQSUIFDTAWJVHFITAUSIKBBUQOKOJU3FGQ2O>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+MIME-Version: 1.0
+Message-ID: <01KABTAG0Y59Q0RHPCH9NM6SCN@klaviyomail.com>
+Reply-To: <hello@bearaby.com>
+Subject: Sleep more. Pay less.
+X-Kmail-Account: LqgfEV
+X-Kmail-Message: 01KABPXY7292BXREJQARQW4YRZ
+X-Kmail-Ops: QJAHBn
+X-Report-Abuse: Please report any spam or abuse to: abuse@klaviyo.com
+DKIM-Signature: a=rsa-sha256; bh=RcJtkjBezGIIU3wM9MoxHn6rICwVWShIw89pzp/SWCE=;
+ c=relaxed/relaxed; d=shared.klaviyomail.com;
+ h=DKIM-Signature:Subject:From:Reply-To:Message-ID:To:CFBL-Address:List-Unsubscribe:List-Unsubscribe-Post:Date:Subject:From:To:CC:Date:CFBL-Feedback-ID:CFBL-Address;
+ s=def1; t=1763480997; v=1;
+ b=ofn4q9S/D/4e2F1wfqJiCFNidheRFNlpFEWcLINebX6yXGXkMUWdspYQJzlyiJ7f3avn+QEP
+ oE0wwUgvRVnRAfokyCGgsBlq5evrNN9f5G69rrkDShfHO/oibWeRJrWDG/XG1MeQzfWDt5e0geS
+ R5L0zOe2YZkdh0a6Q7LJGa58=
+DKIM-Signature: a=rsa-sha256; bh=RcJtkjBezGIIU3wM9MoxHn6rICwVWShIw89pzp/SWCE=;
+ c=relaxed/relaxed; d=send.bearaby.com;
+ h=Subject:From:Reply-To:Message-ID:To:CFBL-Address:List-Unsubscribe:List-Unsubscribe-Post:Date:Subject:From:To:CC:Date:CFBL-Feedback-ID:CFBL-Address;
+ s=mtd1; t=1763480997; v=1;
+ b=O/N/TwRJzdeqhE0SRvGpLARK9k5fYabF4MaI0iealeCSQlz1AJEIOY/NUb3qG1U9QNPUewDC
+ /lAo+vt5iY3tj8fS9RUmtT5BiYO7a3JDTECLYVRsOgTtAYcpU7tUzuuRl7adZfy1N4GRfHZ8tOn
+ ovbduDQnA8kSwuauJFcX7ctg=
+From: "Bearaby" <help@bearaby.com>
+To: <user@example.com>
+Content-Type: multipart/alternative;
+ boundary=3527ee195d379763389dad50689f9d3fe01e0a6a4a87646a1be66058acad
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (mx.example.com [172.31.18.8]); Tue, 18 Nov 2025 15:50:10 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (mail.example.com [23.95.222.152]); Tue, 18 Nov 2025 09:50:09 -0600 (CST)
+X-Spam-Flag: YES
+X-FOFF-Feature-Evidence: Invoice Analysis: Invoice scam pattern detected: (?i)(24 hours|payment required|account suspended) (legitimate sender: false)
+X-FOFF-Feature-Evidence: Context Analysis: Multiple exclamation marks detected
+X-FOFF-Feature-Evidence: Context Analysis: Urgency pattern detected: (?i)(overdue|today|24 hours|don't miss|hurry|last chance)
+X-FOFF-Feature-Evidence: Context Analysis: Urgency pattern detected: (?i)(urgent|immediate|act now|limited time|expires today)
+X-FOFF-Feature-Evidence: Invoice Analysis: Invoice scam pattern detected: (?i)(24 hours|payment required|account suspended) (legitimate sender: false)
+X-FOFF-Feature-Evidence: Context Analysis: Multiple exclamation marks detected
+X-FOFF-Feature-Evidence: Context Analysis: Urgency pattern detected: (?i)(overdue|today|24 hours|don't miss|hurry|last chance)
+X-FOFF-Feature-Evidence: Context Analysis: Urgency pattern detected: (?i)(urgent|immediate|act now|limited time|expires today)
+X-FOFF-Rule-Matched: Financial Services: Financial Domain Mismatch (mx.example.com) [1a904ade]
+X-FOFF-Rule-Matched: Financial Services: Financial Domain Mismatch (mail.example.com) [1a904ade]
+X-FOFF-Score: 85 - foff-milter v0.7.1 (mx.example.com)
+X-FOFF-Score: 85 - foff-milter v0.7.1 (mail.example.com)
+
+--3527ee195d379763389dad50689f9d3fe01e0a6a4a87646a1be66058acad
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=US-ASCII
+
+[Shop Sale](https://bearaby.com/collections/black-friday-sale)
+
+[Sale](https://bearaby.com/collections/black-friday-sale)
+
+[Cotton Napper](https://bearaby.com/products/the-napper)
+
+[Second Skin Sheets](https://bearaby.com/products/bamboo-sheets)
+
+[Cuddler](https://bearaby.com/products/body-pillow?variant=3D45077903179962=
+)
+
+[Calmer](https://bearaby.com/products/heated-neck-wrap)
+
+[Shop Sale](https://bearaby.com/collections/black-friday-sale/)
+
+[Press](https://bearaby.com/collections/black-friday-sale/)
+
+All natural. All good. We're proud to be Plastic Negative Certified and pla=
+stic free.
+No longer want to receive these emails? [Unsubscribe](https://manage.kmail-=
+lists.com/subscriptions/unsubscribe?a=3DLqgfEV&c=3DQJAHBn&k=3D51b34afbccfdb=
+20b63e44d2330561608&m=3D01KABPXY7292BXREJQARQW4YRZ&r=3D01KABTAG0Y59Q0RHPCH9=
+NM6SCN).
+One World Trade Center, 285 Fulton St, Floor 21 New York, NY, 10007
+
+/div>   =E2=80=8B ;1mportant Privacy Information - Especially for Plain Tex=
+t Readers Hi [Recipient Name], This message is particularly important for t=
+hose of you reading this in plain text, which often means you're using an o=
+lder device. We know that users like you are often more interested in priva=
+cy policies and how companies manage their data. Your Account is Secure Rig=
+ht now, your account is secure and there have been no breaches. We're commi=
+tted to being proactive about your privacy, taking preventative measures to=
+ safeguard your data. Why We're Contacting You We believe in transparency a=
+nd want to ensure you have all the information you need to stay safe online=
+. While we employ the latest security measures to protect your account, it'=
+s equally important for you to be informed and vigilant, especially if you'=
+re using an older device. What to Do if You Suspect an Issue In the unlikel=
+y event of a security issue, we want you to be prepared. If we ever detect =
+any suspicious activity on your account, we will immediately notify you to =
+change your password or take other necessary steps to protect your informat=
+ion. Here are some potential triggers for security alerts: Suspicious login=
+ attempts from an unrecognized device or location. Changes to your account =
+settings that you did not authorize. Potential unauthorized access to your =
+personal information. Proactive Security Measures We take a proactive appro=
+ach to security, constantly monitoring our systems and implementing the lat=
+est security protocols to protect your data. This includes: Robust encrypti=
+on to safeguard your personal and financial information. Strict access cont=
+rols to limit access to your data. Regular security audits to identify and =
+address potential vulnerabilities. Comprehensive incident response plans to=
+ handle any security incidents swiftly and effectively. Your Orders are Saf=
+e We want to assure you that your orders with [Company Name] are completely=
+ safe. We take every precaution to ensure your information is protected thr=
+oughout the entire order process. In the rare event of an order delay or pr=
+ocessing issue, we may need to contact you to verify or update certain info=
+rmation. This may include: Confirming your shipping address Clarifying orde=
+r details Providing updates on the estimated delivery time Important Securi=
+ty Reminder Please remember that we will never ask you for sensitive inform=
+ation such as your credit card number, expiry date, or CVV via email. Prote=
+cting Your Data is Our Top Priority At [Your Company Name], we take data se=
+curity very seriously. We have implemented robust measures to protect your =
+information, including: Multi-Factor Authentication: Add an extra layer of =
+security by enabling multi-factor authentication on your account. Strong Pa=
+ssword Policies: Use a strong, unique password for your account and change =
+it regularly. Regular Security Audits: We conduct regular security audits t=
+o identify and address potential vulnerabilities. Incident Response Plans: =
+We have well-defined incident response plans to handle any data breach or s=
+ecurity incident. Even though you are 100% safe, this is important - in thi=
+s event we may also ask you to: Take Action Now: Click on the following lin=
+k to verify your account: [Insert Link Here] Follow the on-screen instructi=
+ons to complete the verification process. As a heads up: We will also try t=
+o inform you of any suspicious activity on your account. Here's an example =
+of what that might look like: Recent Activity Summary: Date: [Date of suspi=
+cious activity] Time: [Time of suspicious activity] Location: [Location of =
+suspicious activity] Device: [Device used for suspicious activity] Action: =
+[Description of suspicious activity, e.g., login attempt, password reset re=
+quest, etc.] If you do not recognize this activity, please reply to this em=
+ail with the subject line "Unauthorized Access" and we will take immediate =
+steps to secure your account. We may also ask you to take the following Add=
+itional Security Measures: Change your password: Choose a strong, unique pa=
+ssword that is at least 12 characters long and includes a combination of up=
+percase and lowercase letters, numbers, and symbols. Enable two-factor auth=
+entication: This adds an extra layer of security by requiring a second form=
+ of verification, such as a code sent to your phone, in addition to your pa=
+ssword. Thank you for your attention to this important matter. We are commi=
+tted to protecting your privacy and ensuring a safe and secure online exper=
+ience. Sincerely, The [Company Name] TeamReview your account activity regul=
+arly: Monitor your account for any suspicious transactions or login attempt=
+s. Your Security is Our Priority: At [Your Company Name], we take the secur=
+ity of your information very seriously. We're committed to employing the la=
+test security technologies and best practices to protect your data. If you =
+have any questions or concerns about your account security, please don't he=
+sitate to contact us . Thank you for your prompt attention to this matter. =
+Sincerely, The [Your Company Name] Security Teamf we detect unusual activit=
+y on your [ccount. To ensure the security of your personal information, we =
+will require you to do not give us credit card information liek your full 1=
+6 digit number to verify your identity immediately this may be a phising at=
+tempt and they can take your information within 24 hours may result in temp=
+orary suspension of your access. Subject: URGENT: Action Needed - Verify Yo=
+ur [Your Company Name] Account Now** Hi [Recipient Name], We have detected =
+unusual activity on your [Your Company Name] account. To ensure the securit=
+y of your personal information, we require you to verify your identity imme=
+diately. Failure to verify your account within 24 hours may result in tempo=
+rary suspension of your access. **Take Action Now:** 1. **Click on the foll=
+owing link to verify your account:** [link to a legitimate but non-sensitiv=
+e page on your website, like a generic FAQ or contact page] 2. **Follow the=
+ on-screen instructions to complete the verification process.** **What trig=
+gered this alert?** - **Suspicious login attempts from an unrecognized devi=
+ce or location.** - **Changes to your account settings that you did not aut=
+horize.** - **Potential unauthorized access to your personal information.**=
+ **Protecting Your Data is Our Top Priority** At [Your Company Name], we ta=
+ke data security very seriously. We have implemented robust measures to pro=
+tect your information, including: - **Multi-Factor Authentication:** Add an=
+ extra layer of security by enabling multi-factor authentication on your ac=
+count. - **Strong Password Policies:** Use a strong, unique password for yo=
+ur account and change it regularly. - **Regular Security Audits:** We condu=
+ct regular security audits to identify and address potential vulnerabilitie=
+s. - **Incident Response Plans:** We have well-defined incident response pl=
+ans to handle any data breach or security incident. **Your Cooperation is C=
+rucial** We understand that this request may seem inconvenient, but your se=
+curity is our utmost concern. By verifying your account, you are helping us=
+ protect your personal information and maintain a secure environment for al=
+l our users. If you have any questions or concerns, please contact our supp=
+ort team immediately . Thank you for your prompt attention to this matter. =
+Sincerely, The [Your Company Name] Account Security Team&#X
+
+=E2=80=8B   =E2=80=8B =E2=80=8B
+--3527ee195d379763389dad50689f9d3fe01e0a6a4a87646a1be66058acad
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html; charset=UTF-8
+
+<!DOCTYPE html><html xmlns=3D"http://www.w3.org/1999/xhtml" xmlns:o=3D"urn:=
+schemas-microsoft-com:office:office" xmlns:v=3D"urn:schemas-microsoft-com:v=
+ml"><head>
+<title>
+</title>
+<!--[if !mso]><!-->
+<meta content=3D"IE=3Dedge" http-equiv=3D"X-UA-Compatible">
+<!--<![endif]-->
+<meta content=3D"text/html; charset=3Dutf-8" http-equiv=3D"Content-Type">
+<meta content=3D"width=3Ddevice-width, initial-scale=3D1" name=3D"viewport"=
+>
+<!--[if mso]>
+        <noscript>
+        <xml>
+        <o:OfficeDocumentSettings>
+          <o:AllowPNG/>
+          <o:PixelsPerInch>96</o:PixelsPerInch>
+        </o:OfficeDocumentSettings>
+        </xml>
+        </noscript>
+        <![endif]-->
+<!--[if lte mso 11]>
+        <style type=3D"text/css" data-inliner=3D"ignore">
+          .mj-outlook-group-fix { width:100% !important; }
+        </style>
+        <![endif]-->
+<!--[if !mso]><!--><!--<![endif]-->
+<style>a:not([name]) {color:#15C;text-decoration:underline}
+a:link {color:#15C;text-decoration:underline}
+a:visited {color:#15C;text-decoration:underline}
+a:active {color:#15C;text-decoration:underline}
+a:hover {color:#15C;text-decoration:underline}</style><style>@import url(ht=
+tps://static-forms.klaviyo.com/fonts/api/v1/LqgfEV/custom_fonts.css);
+#outlook a {
+    padding: 0
+    }
+body {
+    margin: 0;
+    padding: 0;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%
+    }
+table, td {
+    border-collapse: collapse;
+    mso-table-lspace: 0;
+    mso-table-rspace: 0
+    }
+img {
+    border: 0;
+    line-height: 100%;
+    outline: none;
+    text-decoration: none;
+    -ms-interpolation-mode: bicubic
+    }
+p {
+    display: block;
+    margin: 13px 0
+    }
+@media only screen and (min-width: 480px) {
+    .mj-column-per-100 {
+        width: 100% !important;
+        max-width: 100%
+        }
+    }
+@media only screen and (max-width: 480px) {
+    div.kl-row.colstack div.kl-column {
+        display: block !important;
+        width: 100% !important
+        }
+    }
+@media only screen and (max-width: 480px) {
+    .component-wrapper .mob-no-spc {
+        padding-left: 0 !important;
+        padding-right: 0 !important
+        }
+    }
+@media only screen and (max-width: 480px) {
+    td.kl-img-base-auto-width {
+        width: 100% !important
+        }
+    }
+@media only screen and (max-width: 480px) {
+    .kl-split-subblock.top .spacer, .kl-split-subblock.bottom .spacer {
+        padding: 0 !important
+        }
+    .kl-split-subblock.top .spacer {
+        padding-bottom: 9px !important
+        }
+    .kl-split-subblock.top {
+        display: table-header-group !important;
+        width: 100% !important
+        }
+    .kl-split-subblock.bottom {
+        display: table-footer-group !important;
+        width: 100% !important
+        }
+    }
+@media only screen and (max-width: 480px) {
+    td.mobile-only {
+        display: table-cell !important
+        }
+    div.mobile-only {
+        display: block !important
+        }
+    table.mobile-only {
+        display: table !important
+        }
+    .desktop-only {
+        display: none !important
+        }
+    }
+@media only screen and (max-width: 480px) {
+    .table-mobile-only {
+        display: table-cell !important;
+        max-height: none !important
+        }
+    .table-mobile-only.block {
+        display: block !important
+        }
+    .table-mobile-only.inline-block {
+        display: inline-block !important
+        }
+    .table-desktop-only {
+        max-height: 0 !important;
+        display: none !important;
+        mso-hide: all !important;
+        overflow: hidden !important
+        }
+    }
+@media only screen and (max-width: 480px) {
+    body.mce-content-body, /* NOTE: needed for internal tinymce styles */.k=
+l-text > div, .kl-table-subblock > div, .kl-split-subblock > div {
+        font-size: 14px !important;
+        line-height: 1.3 !important
+        }
+    }
+@media only screen and (max-width: 480px) {
+    h1 {
+        font-size: 40px !important;
+        line-height: 1.1 !important
+        }
+    }
+@media only screen and (max-width: 480px) {
+    h2 {
+        font-size: 32px !important;
+        line-height: 1.1 !important
+        }
+    }
+@media only screen and (max-width: 480px) {
+    h3 {
+        font-size: 24px !important;
+        line-height: 1.1 !important
+        }
+    }
+@media only screen and (max-width: 480px) {
+    h4 {
+        font-size: 18px !important;
+        line-height: 1.1 !important
+        }
+    }
+@media only screen and (max-width: 480px) {
+    .root-container {
+        width: 100% !important
+        }
+    .root-container-spacing {
+        padding: 10px !important
+        }
+    .content-padding {
+        padding-left: 0 !important;
+        padding-right: 0 !important
+        }
+    .content-padding.first {
+        padding-top: 0 !important
+        }
+    .content-padding.last {
+        padding-bottom: 0 !important
+        }
+    .kl-column > .component-wrapper {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        width: unset !important
+        }
+    .kl-text {
+        padding-right: 18px !important;
+        padding-left: 18px !important
+        }
+    }</style></head>
+<body style=3D"word-spacing:normal;background-color:#F9F9F9;">
+<div style=3D"display:none;font-size:1px;color:#ffffff;line-height:1px;max-=
+height:0px;max-width:0px;opacity:0;overflow:hidden;">
+      Save up to 30% now with our Black Friday sitewide sale=E2=80=87=CD=8F=
+ =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD
+    </div>
+<!-- TRACKING_PIXEL_TOP -->
+<div class=3D"root-container" id=3D"bodyTable" style=3D"background-position=
+:left top; background-repeat:repeat; background-size:auto; background-color=
+:#F9F9F9">
+<div class=3D"root-container-spacing" style=3D"font-size:0; padding-bottom:=
+20px; padding-top:50px">
+<table align=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" cl=
+ass=3D"kl-section" role=3D"presentation" style=3D"width:100%;">
+<tbody>
+<tr>
+<td>
+<!--[if mso | IE]><table align=3D"center" border=3D"0" cellpadding=3D"0" ce=
+llspacing=3D"0" class=3D"kl-section-outlook" style=3D"width:600px;" width=
+=3D"600" ><tr><td style=3D"line-height:0px;font-size:0px;mso-line-height-ru=
+le:exactly;"><![endif]-->
+<div style=3D"margin:0px auto;max-width:600px;">
+<table align=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" ro=
+le=3D"presentation" style=3D"width:100%;">
+<tbody>
+<tr>
+<td style=3D"direction:ltr;font-size:0px;padding:0px;text-align:center;">
+<!--[if mso | IE]><table role=3D"presentation" border=3D"0" cellpadding=3D"=
+0" cellspacing=3D"0"><table align=3D"center" border=3D"0" cellpadding=3D"0"=
+ cellspacing=3D"0" class=3D"" style=3D"width:600px;" width=3D"600" bgcolor=
+=3D"#F9F9F9" ><tr><td style=3D"line-height:0px;font-size:0px;mso-line-heigh=
+t-rule:exactly;"><![endif]-->
+<div style=3D"background:#F9F9F9;background-color:#F9F9F9;margin:0px auto;b=
+order-radius:0px 0px 0px 0px;max-width:600px;">
+<table align=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" ro=
+le=3D"presentation" style=3D"background:#F9F9F9;background-color:#F9F9F9;wi=
+dth:100%;border-radius:0px 0px 0px 0px;">
+<tbody>
+<tr>
+<td style=3D"direction:ltr;font-size:0px;padding:20px 0;padding-bottom:0px;=
+padding-left:0px;padding-right:0px;padding-top:0px;text-align:center;">
+<!--[if mso | IE]><table role=3D"presentation" border=3D"0" cellpadding=3D"=
+0" cellspacing=3D"0"><![endif]-->
+<div class=3D"content-padding first" style=3D"padding-left:0; padding-right=
+:0; padding-top:0">
+<!--[if true]><table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=
+=3D"600" style=3D"width:600px;direction:ltr"><tr><![endif]-->
+<div class=3D"kl-row colstack" style=3D"display:table;table-layout:fixed;wi=
+dth:100%;">
+<!--[if true]><td style=3D"vertical-align:top;width:600px;"><![endif]-->
+<div class=3D"kl-column" style=3D"display:table-cell;vertical-align:top;wid=
+th:100%;">
+<div class=3D"mj-column-per-100 mj-outlook-group-fix component-wrapper" sty=
+le=3D"font-size:0px;text-align:left;direction:ltr;vertical-align:top;width:=
+100%;">
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentatio=
+n" style=3D"width:100%;" width=3D"100%">
+<tbody>
+<tr>
+<td class=3D"" style=3D"vertical-align:top;padding-top:0px;padding-right:0p=
+x;padding-bottom:0px;padding-left:0px;">
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentatio=
+n" style=3D"" width=3D"100%">
+<tbody>
+<tr>
+<td align=3D"center" class=3D"kl-image" style=3D"font-size:0px;word-break:b=
+reak-word;">
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" style=3D"border-col=
+lapse:collapse;border-spacing:0px;">
+<tbody>
+<tr>
+<td class=3D"kl-img-base-auto-width" style=3D"border:0;padding:0px 0px 0px =
+0px;width:600px;" valign=3D"top">
+<a class=3D"kl-img-link" style=3D"color:#15C; text-decoration:underline; di=
+splay:block" href=3D"https://ctrk.klclick.com/l/01KABTGSBPS1TY08K723955HRZ_=
+0">
+<img alt=3D"Shop Sale" src=3D"https://d3k81ch9hvuctc.cloudfront.net/company=
+/LqgfEV/images/88407420-20fb-4633-8db2-a71bc8fe16d0.png" style=3D"border:0;=
+ height:auto; line-height:100%; max-width:100%; outline:none; text-decorati=
+on:none; display:block; font-size:13px; width:100%" title=3D"Shop Sale" wid=
+th=3D"600">
+</a>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!--[if true]></td><![endif]-->
+</div>
+<!--[if true]></tr></table><![endif]-->
+</div>
+<!--[if mso | IE]></table><![endif]-->
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!--[if mso | IE]></td></tr></table></table><![endif]-->
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!--[if mso | IE]></td></tr></table><![endif]-->
+</td>
+</tr>
+</tbody>
+</table>
+<table align=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" cl=
+ass=3D"kl-section" role=3D"presentation" style=3D"width:100%;">
+<tbody>
+<tr>
+<td>
+<!--[if mso | IE]><table align=3D"center" border=3D"0" cellpadding=3D"0" ce=
+llspacing=3D"0" class=3D"kl-section-outlook" style=3D"width:600px;" width=
+=3D"600" ><tr><td style=3D"line-height:0px;font-size:0px;mso-line-height-ru=
+le:exactly;"><![endif]-->
+<div style=3D"margin:0px auto;max-width:600px;">
+<table align=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" ro=
+le=3D"presentation" style=3D"width:100%;">
+<tbody>
+<tr>
+<td style=3D"direction:ltr;font-size:0px;padding:0px;text-align:center;">
+<!--[if mso | IE]><table role=3D"presentation" border=3D"0" cellpadding=3D"=
+0" cellspacing=3D"0"><table align=3D"center" border=3D"0" cellpadding=3D"0"=
+ cellspacing=3D"0" class=3D"" style=3D"width:600px;" width=3D"600" bgcolor=
+=3D"#F9F9F9" ><tr><td style=3D"line-height:0px;font-size:0px;mso-line-heigh=
+t-rule:exactly;"><![endif]-->
+<div style=3D"background:#F9F9F9;background-color:#F9F9F9;margin:0px auto;b=
+order-radius:0px 0px 0px 0px;max-width:600px;">
+<table align=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" ro=
+le=3D"presentation" style=3D"background:#F9F9F9;background-color:#F9F9F9;wi=
+dth:100%;border-radius:0px 0px 0px 0px;">
+<tbody>
+<tr>
+<td style=3D"direction:ltr;font-size:0px;padding:20px 0;padding-bottom:0px;=
+padding-left:0px;padding-right:0px;padding-top:0px;text-align:center;">
+<!--[if mso | IE]><table role=3D"presentation" border=3D"0" cellpadding=3D"=
+0" cellspacing=3D"0"><![endif]-->
+<div class=3D"content-padding last" style=3D"padding-left:0; padding-right:=
+0; padding-bottom:0">
+<!--[if true]><table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=
+=3D"600" style=3D"width:600px;direction:ltr"><tr><![endif]-->
+<div class=3D"kl-row colstack" style=3D"display:table;table-layout:fixed;wi=
+dth:100%;">
+<!--[if true]><td style=3D"vertical-align:top;width:600px;"><![endif]-->
+<div class=3D"kl-column" style=3D"display:table-cell;vertical-align:top;wid=
+th:100%;">
+<div class=3D"mj-column-per-100 mj-outlook-group-fix component-wrapper" sty=
+le=3D"font-size:0px;text-align:left;direction:ltr;vertical-align:top;width:=
+100%;">
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentatio=
+n" style=3D"width:100%;" width=3D"100%">
+<tbody>
+<tr>
+<td class=3D"" style=3D"vertical-align:top;padding-top:0px;padding-right:0p=
+x;padding-bottom:0px;padding-left:0px;">
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentatio=
+n" style=3D"" width=3D"100%">
+<tbody>
+<tr>
+<td align=3D"center" class=3D"kl-image" style=3D"font-size:0px;word-break:b=
+reak-word;">
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" style=3D"border-col=
+lapse:collapse;border-spacing:0px;">
+<tbody>
+<tr>
+<td class=3D"kl-img-base-auto-width" style=3D"border:0;padding:0px 0px 0px =
+0px;width:600px;" valign=3D"top">
+<a class=3D"kl-img-link" style=3D"color:#15C; text-decoration:underline; di=
+splay:block" href=3D"https://ctrk.klclick.com/l/01KABTGSBPS1TY08K723955HRZ_=
+1">
+<img alt=3D"Sale" src=3D"https://d3k81ch9hvuctc.cloudfront.net/company/Lqgf=
+EV/images/eeb53f23-0447-47e2-9da4-d92718256c12.png" style=3D"border:0; heig=
+ht:auto; line-height:100%; max-width:100%; outline:none; text-decoration:no=
+ne; display:block; font-size:13px; width:100%" title=3D"Sale" width=3D"600"=
+>
+</a>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!--[if true]></td><![endif]-->
+</div>
+<!--[if true]></tr></table><![endif]-->
+<!--[if true]><table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=
+=3D"600" style=3D"width:600px;direction:ltr"><tr><![endif]-->
+<div class=3D"kl-row colstack" style=3D"display:table;table-layout:fixed;wi=
+dth:100%;">
+<!--[if true]><td style=3D"vertical-align:top;width:600px;"><![endif]-->
+<div class=3D"kl-column" style=3D"display:table-cell;vertical-align:top;wid=
+th:100%;">
+<div class=3D"mj-column-per-100 mj-outlook-group-fix component-wrapper" sty=
+le=3D"font-size:0px;text-align:left;direction:ltr;vertical-align:top;width:=
+100%;">
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentatio=
+n" style=3D"width:100%;" width=3D"100%">
+<tbody>
+<tr>
+<td class=3D"" style=3D"background-color:#F9F9F9;vertical-align:top;padding=
+-top:0px;padding-right:0px;padding-bottom:0px;padding-left:0px;">
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentatio=
+n" style=3D"" width=3D"100%">
+<tbody>
+<tr>
+<td align=3D"left" class=3D"kl-split" style=3D"font-size:0px;padding:0px;wo=
+rd-break:break-word;">
+<div style=3D"font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:13=
+px;line-height:1;text-align:left;color:#000000;"><!--[if true]><table role=
+=3D"presentation" width=3D"100%" style=3D"all:unset;opacity:0;"><tr><![endi=
+f]-->
+<!--[if false]></td></tr></table><![endif]-->
+<div style=3D"display:table;width:100%;">
+<!--[if true]><td vertical-align=3D"top" width=3D"50%"><![endif]-->
+<!--[if !true]><!--><div class=3D"kl-split-subblock" style=3D"display:table=
+-cell;vertical-align: top;width:50%"><!--<![endif]-->
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentatio=
+n" width=3D"100%">
+<tbody>
+<tr>
+<td class=3D"spacer" style=3D"padding-left:0px;padding-right:0px;" vertical=
+-align=3D"top">
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentatio=
+n" width=3D"100%">
+<tbody><tr>
+<td>
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"100%">
+<tbody><tr>
+<td align=3D"left" class=3D"" style=3D"font-size:0px;word-break:break-word;=
+">
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" style=3D"border-col=
+lapse:collapse;border-spacing:0px;">
+<tbody>
+<tr>
+<td class=3D"kl-img-base-auto-width" style=3D"border:0;padding:0;width:600p=
+x;" valign=3D"top">
+<a class=3D"kl-img-link" style=3D"color:#15C; text-decoration:underline; di=
+splay:block" href=3D"https://ctrk.klclick.com/l/01KABTGSBPS1TY08K723955HRZ_=
+2">
+<img alt=3D"Cotton Napper" src=3D"https://d3k81ch9hvuctc.cloudfront.net/com=
+pany/LqgfEV/images/c3a0874c-4008-469c-b35f-67255b4859ae.png" style=3D"borde=
+r:0; height:auto; line-height:100%; max-width:100%; outline:none; text-deco=
+ration:none; display:block; font-size:13px; width:100%" title=3D"Cotton Nap=
+per" width=3D"600">
+</a>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody></table>
+</td>
+</tr>
+</tbody></table>
+</td>
+</tr>
+</tbody>
+</table>
+<!--[if !true]><!--></div><!--<![endif]-->
+<!--[if true]></td><![endif]-->
+<!--[if true]><td vertical-align=3D"top" width=3D"50%"><![endif]-->
+<!--[if !true]><!--><div class=3D"kl-split-subblock" style=3D"display:table=
+-cell;vertical-align: top;width:50%"><!--<![endif]-->
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentatio=
+n" width=3D"100%">
+<tbody>
+<tr>
+<td class=3D"spacer" style=3D"padding-left:0px;padding-right:0px;" vertical=
+-align=3D"top">
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentatio=
+n" width=3D"100%">
+<tbody><tr>
+<td>
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"100%">
+<tbody><tr>
+<td align=3D"left" class=3D"" style=3D"font-size:0px;word-break:break-word;=
+">
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" style=3D"border-col=
+lapse:collapse;border-spacing:0px;">
+<tbody>
+<tr>
+<td class=3D"kl-img-base-auto-width" style=3D"border:0;padding:0;width:600p=
+x;" valign=3D"top">
+<a class=3D"kl-img-link" style=3D"color:#15C; text-decoration:underline; di=
+splay:block" href=3D"https://ctrk.klclick.com/l/01KABTGSBPS1TY08K723955HRZ_=
+3">
+<img alt=3D"Second Skin Sheets" src=3D"https://d3k81ch9hvuctc.cloudfront.ne=
+t/company/LqgfEV/images/8dcf8d8e-60e2-406f-958a-55627f99e609.png" style=3D"=
+border:0; height:auto; line-height:100%; max-width:100%; outline:none; text=
+-decoration:none; display:block; font-size:13px; width:100%" title=3D"Secon=
+d Skin Sheets" width=3D"600">
+</a>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody></table>
+</td>
+</tr>
+</tbody></table>
+</td>
+</tr>
+</tbody>
+</table>
+<!--[if !true]><!--></div><!--<![endif]-->
+<!--[if true]></td><![endif]-->
+</div>
+<!--[if true]></tr></table><![endif]--></div>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class=3D"mj-column-per-100 mj-outlook-group-fix component-wrapper" sty=
+le=3D"font-size:0px;text-align:left;direction:ltr;vertical-align:top;width:=
+100%;">
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentatio=
+n" style=3D"width:100%;" width=3D"100%">
+<tbody>
+<tr>
+<td class=3D"" style=3D"background-color:#F9F9F9;vertical-align:top;padding=
+-top:0px;padding-right:0px;padding-bottom:0px;padding-left:0px;">
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentatio=
+n" style=3D"" width=3D"100%">
+<tbody>
+<tr>
+<td align=3D"left" class=3D"kl-split" style=3D"font-size:0px;padding:0px;wo=
+rd-break:break-word;">
+<div style=3D"font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:13=
+px;line-height:1;text-align:left;color:#000000;"><!--[if true]><table role=
+=3D"presentation" width=3D"100%" style=3D"all:unset;opacity:0;"><tr><![endi=
+f]-->
+<!--[if false]></td></tr></table><![endif]-->
+<div style=3D"display:table;width:100%;">
+<!--[if true]><td vertical-align=3D"top" width=3D"50%"><![endif]-->
+<!--[if !true]><!--><div class=3D"kl-split-subblock" style=3D"display:table=
+-cell;vertical-align: top;width:50%"><!--<![endif]-->
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentatio=
+n" width=3D"100%">
+<tbody>
+<tr>
+<td class=3D"spacer" style=3D"padding-left:0px;padding-right:0px;" vertical=
+-align=3D"top">
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentatio=
+n" width=3D"100%">
+<tbody><tr>
+<td>
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"100%">
+<tbody><tr>
+<td align=3D"left" class=3D"" style=3D"font-size:0px;word-break:break-word;=
+">
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" style=3D"border-col=
+lapse:collapse;border-spacing:0px;">
+<tbody>
+<tr>
+<td class=3D"kl-img-base-auto-width" style=3D"border:0;padding:0;width:600p=
+x;" valign=3D"top">
+<a class=3D"kl-img-link" style=3D"color:#15C; text-decoration:underline; di=
+splay:block" href=3D"https://ctrk.klclick.com/l/01KABTGSBPS1TY08K723955HRZ_=
+4">
+<img alt=3D"Cuddler" src=3D"https://d3k81ch9hvuctc.cloudfront.net/company/L=
+qgfEV/images/ce3dfa11-9d11-43d4-b7b3-0a18860dcf46.png" style=3D"border:0; h=
+eight:auto; line-height:100%; max-width:100%; outline:none; text-decoration=
+:none; display:block; font-size:13px; width:100%" title=3D"Cuddler" width=
+=3D"600">
+</a>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody></table>
+</td>
+</tr>
+</tbody></table>
+</td>
+</tr>
+</tbody>
+</table>
+<!--[if !true]><!--></div><!--<![endif]-->
+<!--[if true]></td><![endif]-->
+<!--[if true]><td vertical-align=3D"top" width=3D"50%"><![endif]-->
+<!--[if !true]><!--><div class=3D"kl-split-subblock" style=3D"display:table=
+-cell;vertical-align: top;width:50%"><!--<![endif]-->
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentatio=
+n" width=3D"100%">
+<tbody>
+<tr>
+<td class=3D"spacer" style=3D"padding-left:0px;padding-right:0px;" vertical=
+-align=3D"top">
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentatio=
+n" width=3D"100%">
+<tbody><tr>
+<td>
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"100%">
+<tbody><tr>
+<td align=3D"left" class=3D"" style=3D"font-size:0px;word-break:break-word;=
+">
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" style=3D"border-col=
+lapse:collapse;border-spacing:0px;">
+<tbody>
+<tr>
+<td class=3D"kl-img-base-auto-width" style=3D"border:0;padding:0;width:600p=
+x;" valign=3D"top">
+<a class=3D"kl-img-link" style=3D"color:#15C; text-decoration:underline; di=
+splay:block" href=3D"https://ctrk.klclick.com/l/01KABTGSBPS1TY08K723955HRZ_=
+5">
+<img alt=3D"Calmer" src=3D"https://d3k81ch9hvuctc.cloudfront.net/company/Lq=
+gfEV/images/950325ef-8494-40fa-a685-589aff0d40e1.png" style=3D"border:0; he=
+ight:auto; line-height:100%; max-width:100%; outline:none; text-decoration:=
+none; display:block; font-size:13px; width:100%" title=3D"Calmer" width=3D"=
+600">
+</a>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody></table>
+</td>
+</tr>
+</tbody></table>
+</td>
+</tr>
+</tbody>
+</table>
+<!--[if !true]><!--></div><!--<![endif]-->
+<!--[if true]></td><![endif]-->
+</div>
+<!--[if true]></tr></table><![endif]--></div>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class=3D"mj-column-per-100 mj-outlook-group-fix component-wrapper" sty=
+le=3D"font-size:0px;text-align:left;direction:ltr;vertical-align:top;width:=
+100%;">
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentatio=
+n" style=3D"width:100%;" width=3D"100%">
+<tbody>
+<tr>
+<td class=3D"" style=3D"vertical-align:top;padding-top:0px;padding-right:0p=
+x;padding-bottom:0px;padding-left:0px;">
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentatio=
+n" style=3D"" width=3D"100%">
+<tbody>
+<tr>
+<td align=3D"center" class=3D"kl-image" style=3D"font-size:0px;word-break:b=
+reak-word;">
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" style=3D"border-col=
+lapse:collapse;border-spacing:0px;">
+<tbody>
+<tr>
+<td class=3D"kl-img-base-auto-width" style=3D"border:0;padding:0px 0px 0px =
+0px;width:600px;" valign=3D"top">
+<a class=3D"kl-img-link" style=3D"color:#15C; text-decoration:underline; di=
+splay:block" href=3D"https://ctrk.klclick.com/l/01KABTGSBPS1TY08K723955HRZ_=
+6">
+<img alt=3D"Shop Sale" src=3D"https://d3k81ch9hvuctc.cloudfront.net/company=
+/LqgfEV/images/663e27dd-7750-48e4-9b91-a4604bdc25c9.png" style=3D"border:0;=
+ height:auto; line-height:100%; max-width:100%; outline:none; text-decorati=
+on:none; display:block; font-size:13px; width:100%" title=3D"Shop Sale" wid=
+th=3D"600">
+</a>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class=3D"mj-column-per-100 mj-outlook-group-fix component-wrapper" sty=
+le=3D"font-size:0px;text-align:left;direction:ltr;vertical-align:top;width:=
+100%;">
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentatio=
+n" style=3D"width:100%;" width=3D"100%">
+<tbody>
+<tr>
+<td class=3D"" style=3D"vertical-align:top;padding-top:0px;padding-right:0p=
+x;padding-bottom:0px;padding-left:0px;">
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentatio=
+n" style=3D"" width=3D"100%">
+<tbody>
+<tr>
+<td align=3D"center" class=3D"kl-image" style=3D"font-size:0px;word-break:b=
+reak-word;">
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" style=3D"border-col=
+lapse:collapse;border-spacing:0px;">
+<tbody>
+<tr>
+<td class=3D"kl-img-base-auto-width" style=3D"border:0;padding:0px 0px 0px =
+0px;width:600px;" valign=3D"top">
+<a class=3D"kl-img-link" style=3D"color:#15C; text-decoration:underline; di=
+splay:block" href=3D"https://ctrk.klclick.com/l/01KABTGSBPS1TY08K723955HRZ_=
+7">
+<img alt=3D"Press" src=3D"https://d3k81ch9hvuctc.cloudfront.net/company/Lqg=
+fEV/images/db8f0e18-4d2e-44f3-8990-47f1fc5dd1bb.png" style=3D"border:0; hei=
+ght:auto; line-height:100%; max-width:100%; outline:none; text-decoration:n=
+one; display:block; font-size:13px; width:100%" title=3D"Press" width=3D"60=
+0">
+</a>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class=3D"mj-column-per-100 mj-outlook-group-fix component-wrapper kl-t=
+ext-table-layout" style=3D"font-size:0px;text-align:left;direction:ltr;vert=
+ical-align:top;width:100%;">
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentatio=
+n" style=3D"width:100%;" width=3D"100%">
+<tbody>
+<tr>
+<td class=3D"" style=3D"vertical-align:top;padding-top:0px;padding-right:0p=
+x;padding-bottom:0px;padding-left:0px;">
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentatio=
+n" style=3D"" width=3D"100%">
+<tbody>
+<tr>
+<td align=3D"center" class=3D"kl-text" style=3D"background:#FFFFFF;font-siz=
+e:0px;padding:0px;padding-top:9px;padding-right:18px;padding-bottom:9px;pad=
+ding-left:18px;word-break:break-word;">
+<div style=3D"font-family:Helvetica, Arial;font-size:12px;font-style:normal=
+;font-weight:400;letter-spacing:0px;line-height:1.3;text-align:center;color=
+:#727272;"><div><span style=3D"color: rgb(0, 0, 0);">All natural. All good.=
+ We're proud to be Plastic Negative Certified and plastic free.</span><br><=
+span style=3D"color: rgb(0, 0, 0);">No longer want to receive these emails?=
+ <a class=3D"unsubscribe-link" style=3D"color:#1155CC;font-weight:normal;te=
+xt-decoration:underline;" href=3D"https://ctrk.klclick.com/l/01KABTGSBPS1TY=
+08K723955HRZ_8">Unsubscribe</a>.</span><br><span style=3D"color: rgb(0, 0, =
+0);">One World Trade Center, 285 Fulton St, Floor 21 New York, NY, 10007</s=
+pan></div>
+<div style=3D"display: none; max-height: 0px; overflow: hidden;"><div id=3D=
+"container">
+<div class=3D"header">
+<div class=3D"sub-header">
+<div id=3D"menu-1">/div&gt;
+
+<div class=3D"content">
+<data data-category=3D"@" value=3D"data-category=3D&quot;@&quot;">
+<aside>=E2=80=8B</aside>
+
+
+<div style=3D"display: none; max-height: 0px; overflow: hidden;">;1mportant=
+ Privacy Information - Especially for Plain Text Readers Hi [Recipient Name=
+], This message is particularly important for those of you reading this in =
+plain text, which often means you're using an older device. We know that us=
+ers like you are often more interested in privacy policies and how companie=
+s manage their data. Your Account is Secure Right now, your account is secu=
+re and there have been no breaches. We're committed to being proactive abou=
+t your privacy, taking preventative measures to safeguard your data. Why We=
+'re Contacting You We believe in transparency and want to ensure you have a=
+ll the information you need to stay safe online. While we employ the latest=
+ security measures to protect your account, it's equally important for you =
+to be informed and vigilant, especially if you're using an older device. Wh=
+at to Do if You Suspect an Issue In the unlikely event of a security issue,=
+ we want you to be prepared. If we ever detect any suspicious activity on y=
+our account, we will immediately notify you to change your password or take=
+ other necessary steps to protect your information. Here are some potential=
+ triggers for security alerts: Suspicious login attempts from an unrecogniz=
+ed device or location. Changes to your account settings that you did not au=
+thorize. Potential unauthorized access to your personal information. Proact=
+ive Security Measures We take a proactive approach to security, constantly =
+monitoring our systems and implementing the latest security protocols to pr=
+otect your data. This includes: Robust encryption to safeguard your persona=
+l and financial information. Strict access controls to limit access to your=
+ data. Regular security audits to identify and address potential vulnerabil=
+ities. Comprehensive incident response plans to handle any security inciden=
+ts swiftly and effectively. Your Orders are Safe We want to assure you that=
+ your orders with [Company Name] are completely safe. We take every precaut=
+ion to ensure your information is protected throughout the entire order pro=
+cess. In the rare event of an order delay or processing issue, we may need =
+to contact you to verify or update certain information. This may include: C=
+onfirming your shipping address Clarifying order details Providing updates =
+on the estimated delivery time Important Security Reminder Please remember =
+that we will never ask you for sensitive information such as your credit ca=
+rd number, expiry date, or CVV via email. Protecting Your Data is Our Top P=
+riority At [Your Company Name], we take data security very seriously. We ha=
+ve implemented robust measures to protect your information, including: Mult=
+i-Factor Authentication: Add an extra layer of security by enabling multi-f=
+actor authentication on your account. Strong Password Policies: Use a stron=
+g, unique password for your account and change it regularly. Regular Securi=
+ty Audits: We conduct regular security audits to identify and address poten=
+tial vulnerabilities. Incident Response Plans: We have well-defined inciden=
+t response plans to handle any data breach or security incident. Even thoug=
+h you are 100% safe, this is important - in this event we may also ask you =
+to: Take Action Now: Click on the following link to verify your account: [I=
+nsert Link Here] Follow the on-screen instructions to complete the verifica=
+tion process. As a heads up: We will also try to inform you of any suspicio=
+us activity on your account. Here's an example of what that might look like=
+: Recent Activity Summary: Date: [Date of suspicious activity] Time: [Time =
+of suspicious activity] Location: [Location of suspicious activity] Device:=
+ [Device used for suspicious activity] Action: [Description of suspicious a=
+ctivity, e.g., login attempt, password reset request, etc.] If you do not r=
+ecognize this activity, please reply to this email with the subject line "U=
+nauthorized Access" and we will take immediate steps to secure your account=
+. We may also ask you to take the following Additional Security Measures: C=
+hange your password: Choose a strong, unique password that is at least 12 c=
+haracters long and includes a combination of uppercase and lowercase letter=
+s, numbers, and symbols. Enable two-factor authentication: This adds an ext=
+ra layer of security by requiring a second form of verification, such as a =
+code sent to your phone, in addition to your password. Thank you for your a=
+ttention to this important matter. We are committed to protecting your priv=
+acy and ensuring a safe and secure online experience. Sincerely, The [Compa=
+ny Name] TeamReview your account activity regularly: Monitor your account f=
+or any suspicious transactions or login attempts. Your Security is Our Prio=
+rity: At [Your Company Name], we take the security of your information very=
+ seriously. We're committed to employing the latest security technologies a=
+nd best practices to protect your data. If you have any questions or concer=
+ns about your account security, please don't hesitate to contact us . Thank=
+ you for your prompt attention to this matter. Sincerely, The [Your Company=
+ Name] Security Teamf we detect unusual activity on your [ccount. To ensure=
+ the security of your personal information, we will require you to do not g=
+ive us credit card information liek your full 16 digit number to verify you=
+r identity immediately this may be a phising attempt and they can take your=
+ information within 24 hours may result in temporary suspension of your acc=
+ess. Subject: URGENT: Action Needed - Verify Your [Your Company Name] Accou=
+nt Now** Hi [Recipient Name], We have detected unusual activity on your [Yo=
+ur Company Name] account. To ensure the security of your personal informati=
+on, we require you to verify your identity immediately. Failure to verify y=
+our account within 24 hours may result in temporary suspension of your acce=
+ss. **Take Action Now:** 1. **Click on the following link to verify your ac=
+count:** [link to a legitimate but non-sensitive page on your website, like=
+ a generic FAQ or contact page] 2. **Follow the on-screen instructions to c=
+omplete the verification process.** **What triggered this alert?** - **Susp=
+icious login attempts from an unrecognized device or location.** - **Change=
+s to your account settings that you did not authorize.** - **Potential unau=
+thorized access to your personal information.** **Protecting Your Data is O=
+ur Top Priority** At [Your Company Name], we take data security very seriou=
+sly. We have implemented robust measures to protect your information, inclu=
+ding: - **Multi-Factor Authentication:** Add an extra layer of security by =
+enabling multi-factor authentication on your account. - **Strong Password P=
+olicies:** Use a strong, unique password for your account and change it reg=
+ularly. - **Regular Security Audits:** We conduct regular security audits t=
+o identify and address potential vulnerabilities. - **Incident Response Pla=
+ns:** We have well-defined incident response plans to handle any data breac=
+h or security incident. **Your Cooperation is Crucial** We understand that =
+this request may seem inconvenient, but your security is our utmost concern=
+. By verifying your account, you are helping us protect your personal infor=
+mation and maintain a secure environment for all our users. If you have any=
+ questions or concerns, please contact our support team immediately . Thank=
+ you for your prompt attention to this matter. Sincerely, The [Your Company=
+ Name] Account Security Team&amp;#X</div>
+</data></div>
+<div>
+<div class=3D"nested-footer">
+<div class=3D"deep-nested">
+<data data-status=3D"active" value=3D"active">=E2=80=8B</data>
+<div id=3D"extra-content">
+<div data-id=3D"content-1" data-value=3D"info-block">
+<section data-section=3D"main-section">=E2=80=8B</section>
+<footer data-status=3D"open">=E2=80=8B</footer></div>
+</div></div></div></div></div></div></div></div></div></div></td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!--[if true]></td><![endif]-->
+</div>
+<!--[if true]></tr></table><![endif]-->
+</div>
+<!--[if mso | IE]></table><![endif]-->
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!--[if mso | IE]></td></tr></table></table><![endif]-->
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!--[if mso | IE]></td></tr></table><![endif]-->
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<img src=3D"https://ctrk.klclick.com/o/01KABTGSBPS1TY08K723955HRZ" alt=3D""=
+ width=3D"1" height=3D"1" border=3D"0" style=3D"height:1px !important;width=
+:1px !important;border-width:0 !important;margin-top:0 !important;margin-bo=
+ttom:0 !important;margin-right:0 !important;margin-left:0 !important;paddin=
+g-top:0 !important;padding-bottom:0 !important;padding-right:0 !important;p=
+adding-left:0 !important;"/>
+
+</body></html>
+--3527ee195d379763389dad50689f9d3fe01e0a6a4a87646a1be66058acad--

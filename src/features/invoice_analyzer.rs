@@ -85,7 +85,7 @@ impl FeatureExtractor for InvoiceAnalyzer {
 
         // Check for invoice scam indicators with context awareness
         let click_here_regex = Regex::new(r"(?i)\bclick\s+here\b").unwrap();
-        
+
         for pattern in &self.scam_indicators {
             if pattern.is_match(&full_text) {
                 // Additional check for click here pattern to avoid URL false positives

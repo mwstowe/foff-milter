@@ -1,0 +1,1327 @@
+Return-Path: <bounce-92934_HTML-946160615-17731668-1052936-22006@bounce.cdwemail.com>
+Received: from mail.example.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by mx.example.com (8.18.1/8.18.1) with ESMTPS id 5AIFYKD0075412
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <user@example.com>; Tue, 18 Nov 2025 15:34:20 GMT
+	(envelope-from bounce-92934_HTML-946160615-17731668-1052936-22006@bounce.cdwemail.com)
+Authentication-Results: mx.example.com;
+	dkim=pass (2048-bit key; unprotected) header.d=cdwemail.com header.i=subscriptions@cdwemail.com header.b=OTIEqPPx;
+	dkim=pass (2048-bit key; unprotected) header.d=s4.y.mc.salesforce.com header.i=@s4.y.mc.salesforce.com header.b=qr+kPQfI
+X-Authentication-Warning: mx.example.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be mail.example.com
+Received: from mta.cdwemail.com (mta.cdwemail.com [68.232.199.8])
+	by mail.example.com (8.16.1/8.16.1) with ESMTPS id 5AIFYJ29016003
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO)
+	for <user@example.com>; Tue, 18 Nov 2025 09:34:19 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.example.com 5AIFYJ29016003
+Authentication-Results: mail.example.com;
+	dkim=pass (2048-bit key, unprotected) header.d=cdwemail.com header.i=subscriptions@cdwemail.com header.a=rsa-sha256 header.s=mc48 header.b=OTIEqPPx;
+	dkim=pass (2048-bit key, unprotected) header.d=s4.y.mc.salesforce.com header.i=@s4.y.mc.salesforce.com header.a=rsa-sha256 header.s=fbldkim4 header.b=qr+kPQfI
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=mc48; d=cdwemail.com;
+ h=From:To:Subject:Date:List-Unsubscribe:MIME-Version:Reply-To:Message-ID:
+ Content-Type; i=subscriptions@cdwemail.com;
+ bh=fUJgto9Q7r9QPdHsUdUpUSU/f97d2y8EctuSId42nSw=;
+ b=OTIEqPPxKEfzCVmLontrhG8OK3v+vwjh1QbpzqQvFmzMiqs6HHtjIa/Z7YIR14EkjVsraAKq5AcW
+   lbV0F+t0a4IzpeiR51FIvPJnfI90KAmFTv28V8L5Awn0qmYOSWtrnhxmjSVfHvajVNjutgzJ/o9W
+   v34ZzMj4/7U1FypuTnwOJH0AHFB08nPqxRqlZlaYg3liTnEFON5rF+BBF0iLwgCqEmzat3gyMxct
+   orMbwkS+yua12L6n7/y8Rz9JXLXKefx5+znSPsycgmbMgQ2OUk5acq8cTTo/IavoWMRcRMzF5PAM
+   VoN/+4b50pXJBzDvJOPqOVJlnBewp4z+kR4O4A==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=fbldkim4; d=s4.y.mc.salesforce.com;
+ h=From:To:Subject:Date:List-Unsubscribe:MIME-Version:Reply-To:Message-ID:
+ Content-Type;
+ bh=fUJgto9Q7r9QPdHsUdUpUSU/f97d2y8EctuSId42nSw=;
+ b=qr+kPQfIcRLbTfPGRmba1WvN4YDNN7onfufyiI9UYc8vRzapH1aLh0plOkirv5M4rMLhgRpiQJSY
+   0pI8KPMZkzt0rw2cBBQDuKD8XnTobht5QzpniATACwgVJRbbZrOAF6Q6tsLkbMk3IsPjJvRGbzsU
+   AWG538XpawsRtZytmQizbMWPylDsJcfJqyYv4PZcoAPgjUPPSBm25i/J4taQ9SkneJC1ppZX/GrF
+   rETHxC/FS8SnrUHo3nULGeZiP5e/0o2pUOvcWN9rc07vit/8FSfTvL2ZzakguTJWG/iiFpjooJGr
+   XniPEvnw8RocoAJVAr3X2jaGH+n3w6b3ma0JRg==
+Received: by mta.cdwemail.com id h3i8vm2fmd4j for <user@example.com>; Tue, 18 Nov 2025 15:34:19 +0000 (envelope-from <bounce-92934_HTML-946160615-17731668-1052936-22006@bounce.cdwemail.com>)
+From: "CDW BizTech: Small Business" <subscriptions@cdwemail.com>
+To: <user@example.com>
+Subject: 3 Common Challenges to Personalizing Customer Relationships for SMBs
+Date: Tue, 18 Nov 2025 09:34:18 -0600
+List-Unsubscribe: <mailto:leave-fce01d727c6700122d502d29-fe291d747365027d731575-fe5815777267057b731c-fe95157070660d7e73-ff051672756402@leave.cdwemail.com>
+MIME-Version: 1.0
+Reply-To: "CDW" <reply-fe5815777267057b731c-92934_HTML-946160615-1052936-22006@cdwemail.com>
+X-SFMC-Stack: 4
+x-job: 1052936_17731668
+Message-ID: <fa0cb5eb-b25a-46a0-82c0-ac6b8096bbbd@las1s04mta1291.xt.local>
+Content-Type: multipart/alternative;
+	boundary="jBqm0oi7aQIc=_?:"
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (mx.example.com [172.31.18.8]); Tue, 18 Nov 2025 15:34:20 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (mail.example.com [23.95.222.152]); Tue, 18 Nov 2025 09:34:20 -0600 (CST)
+X-Spam-Flag: YES
+X-FOFF-Feature-Evidence: Context Analysis: Multiple exclamation marks detected
+X-FOFF-Feature-Evidence: Context Analysis: Multiple exclamation marks detected
+X-FOFF-Rule-Matched: Link Analysis: Suspicious Link Patterns (External Only) (mx.example.com) [47fa3850]
+X-FOFF-Rule-Matched: Financial Services: Financial Domain Mismatch (mx.example.com) [1a904ade]
+X-FOFF-Rule-Matched: Advanced Heuristics: Weak Signal Aggregation (mx.example.com) [e38b5e7e]
+X-FOFF-Rule-Matched: Link Analysis: Suspicious Link Patterns (External Only) (mail.example.com) [47fa3850]
+X-FOFF-Rule-Matched: Financial Services: Financial Domain Mismatch (mail.example.com) [1a904ade]
+X-FOFF-Rule-Matched: Advanced Heuristics: Weak Signal Aggregation (mail.example.com) [e38b5e7e]
+X-FOFF-Score: 90 - foff-milter v0.7.1 (mx.example.com)
+X-FOFF-Score: 90 - foff-milter v0.7.1 (mail.example.com)
+
+This is a multi-part message in MIME format.
+
+--jBqm0oi7aQIc=_?:
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+
+ 
+November 18, 2025  |  
+https://view.cdwemail.com/?qs=9cb45a720a6ee02939ac3d26fe0c91be0eba0246859c02dd6e5ac5baf49a42ecc6b8a07717d661bcaf08e45c14c4a6cb322d925842718645e2a64e234ba84107532f25cb6734f662ff66392d5fddfc9f1f3d5f54503e606a 
+VIEW IN BROWSER 
+
+https://click.cdwemail.com/?qs=9d13e014de348e0a5559b6b33befbad14c3ec45c1a030b0bd006b1b267f049f39026dbad225981764eb081a2fa34ce856232bf635be434ac33d339c9ce83971e 
+
+https://click.cdwemail.com/?qs=9d13e014de348e0a765af72fce5367136ba0e2c84863de01614b987ebfb897416202a922f6fa9186a64dc929c5d5813730df5d65871b836e5903f6b04b371c25 
+ 
+ 
+https://click.cdwemail.com/?qs=9d13e014de348e0a3cc774ecfaa19f1be5181787d2ae890951d390a798193a8cd8746cd91afc7030d649fc431a9163133d4be26e343633846022aca70e215be8 
+TOPICS     
+https://click.cdwemail.com/?qs=9d13e014de348e0ad6599e4d7f6e7b8fe7f934953a04535e92d80a3e21eb5c5c64719de12b72a97eb3856b1182c2c2a39419e575fac08454e7d43db08e0c4089 
+FEATURES     
+https://click.cdwemail.com/?qs=9d13e014de348e0a8e823f7e8f1152ff822cbb9a432e11bdd6e73a6e982e9489e2b18771674dab837f9359e3812f842582aa9f25118b39a03122d1933c068937 
+TIPS & TACTICS     
+https://click.cdwemail.com/?qs=9d13e014de348e0a0bafe6c6349090c09c34297dc1ba72f6aa2a9da36978f639f5aa461707d9f8c5423a9c5e2dcc990509a734b5e956f002f784b597d90e82f5 
+VIDEO     
+https://click.cdwemail.com/?qs=9d13e014de348e0a0f0cc1ef8543e42a36da2ab465533102130a4e1dad2cd8ca8dfc4e96cb63e20148151bbdec289944d6ddd6eaab2b0eaf956fc2a4fef1965b 
+AGILITY  
+ 
+
+https://click.cdwemail.com/?qs=9d13e014de348e0a765af72fce5367136ba0e2c84863de01614b987ebfb897416202a922f6fa9186a64dc929c5d5813730df5d65871b836e5903f6b04b371c25 
+
+https://click.cdwemail.com/?qs=9d13e014de348e0a3cc774ecfaa19f1be5181787d2ae890951d390a798193a8cd8746cd91afc7030d649fc431a9163133d4be26e343633846022aca70e215be8 
+TOPICS   |  
+https://click.cdwemail.com/?qs=9d13e014de348e0ad6599e4d7f6e7b8fe7f934953a04535e92d80a3e21eb5c5c64719de12b72a97eb3856b1182c2c2a39419e575fac08454e7d43db08e0c4089 
+FEATURES   |  
+https://click.cdwemail.com/?qs=9d13e014de348e0a8e823f7e8f1152ff822cbb9a432e11bdd6e73a6e982e9489e2b18771674dab837f9359e3812f842582aa9f25118b39a03122d1933c068937 
+TIPS & TACTICS 
+
+https://click.cdwemail.com/?qs=9d13e014de348e0a0bafe6c6349090c09c34297dc1ba72f6aa2a9da36978f639f5aa461707d9f8c5423a9c5e2dcc990509a734b5e956f002f784b597d90e82f5 
+VIDEO   |  
+https://click.cdwemail.com/?qs=9d13e014de348e0a0f0cc1ef8543e42a36da2ab465533102130a4e1dad2cd8ca8dfc4e96cb63e20148151bbdec289944d6ddd6eaab2b0eaf956fc2a4fef1965b 
+AGILITY   |  
+https://click.cdwemail.com/?qs=9d13e014de348e0a1beb7b62a75087630e3d3a2d4ae8fafc653ec4cdecdcdda6c79b25a51e74cb9bea66b69c37e8a5adbaa2f5bb756041c571a7030d77fa2792 
+REVIEWS 
+
+https://click.cdwemail.com/?qs=9d13e014de348e0a067be8611661a8916966c3ba2462efb0488c73f502a16d4ea449f88df676c21dde064cb1ae66fba597e27bc29cba097ede406f44e31c4761 
+
+
+ TOP STORIES
+ 
+
+https://click.cdwemail.com/?qs=9d13e014de348e0a0233b7052750c3880a9975f2dbdf5041bb13158cb00e0e365bd9963508d4c1385b94d8d1d4989234ff606116c58cd893d4911a8251d2bc7f 
+
+https://click.cdwemail.com/?qs=9d13e014de348e0a0233b7052750c3880a9975f2dbdf5041bb13158cb00e0e365bd9963508d4c1385b94d8d1d4989234ff606116c58cd893d4911a8251d2bc7f 
+Hardware Refreshes for Small Businesses: 5 Questions to Guide Your Strategy 
+
+https://click.cdwemail.com/?qs=9d13e014de348e0a0233b7052750c3880a9975f2dbdf5041bb13158cb00e0e365bd9963508d4c1385b94d8d1d4989234ff606116c58cd893d4911a8251d2bc7f 
+Read Now 
+
+ 
+ 
+
+
+https://click.cdwemail.com/?qs=9d13e014de348e0a0233b7052750c3880a9975f2dbdf5041bb13158cb00e0e365bd9963508d4c1385b94d8d1d4989234ff606116c58cd893d4911a8251d2bc7f 
+
+https://click.cdwemail.com/?qs=9d13e014de348e0a35c97156735643727d025785f94d7ca9537742926767082aa45f0a7cb6a21003799f7ffc93a5d106175ce3d28f4f0a985f5b265ff2766962 
+HARDWARE 
+
+https://click.cdwemail.com/?qs=9d13e014de348e0a0233b7052750c3880a9975f2dbdf5041bb13158cb00e0e365bd9963508d4c1385b94d8d1d4989234ff606116c58cd893d4911a8251d2bc7f 
+Hardware Refreshes for Small Businesses: 5 Questions to Guide Your Strategy 
+
+https://click.cdwemail.com/?qs=9d13e014de348e0a0233b7052750c3880a9975f2dbdf5041bb13158cb00e0e365bd9963508d4c1385b94d8d1d4989234ff606116c58cd893d4911a8251d2bc7f 
+Read Now 
+
+
+ SPONSORED BY
+ 
+
+https://click.cdwemail.com/?qs=9d13e014de348e0a86affa77d3623fa382d6e89ecb2b141aad391ce3db122f544a847370f924fd11a28ef7a28c451f98ccb9655ad227e93aa91097c79022c51b 
+
+
+ Power your productivity anywhere. Dell notebook accessories are seamless, sustainable and designed for effortless work.
+ 
+
+https://click.cdwemail.com/?qs=9d13e014de348e0a49633e56ec6f73382d84fde43dcf3daf58ec7dda6e0c42821faab1229c1ea8f0bcadf9f195b6ca8b24c620b00d0313b433456ddb0380ed8e 
+Learn More 
+
+ 
+
+https://click.cdwemail.com/?qs=9d13e014de348e0afde06a653eed64a2deeb86a8e66f2582014e712a6ae6e445c51b7fc0dee799811a1dbabd242dcbca50cd7ca16e42da5eb00363ec8f2b770b 
+
+
+ A new AI era begins. Bring next-generation productivity, efficiency and security to your business with Copilot+ PCs from Lenovo.
+ 
+
+https://click.cdwemail.com/?qs=9d13e014de348e0a6eaa58941d613c67402687f3aab004d12693da0ebd7794c559adffa4adab14f1bd97984139f8a8ff1d9e37fbcab84f525bbf12d1cc467e00 
+Learn More 
+
+ 
+
+https://click.cdwemail.com/?qs=9d13e014de348e0a9988b2c0f8c77a732ecf4a647da93c61ad3ff5e20c9ec88fa872af1ec4ef4f4088e6439b622a9d635f494de00c142057c2c67d18022bcb1e 
+
+
+ Experience seamless wireless connectivity with RUCKUS access points. Our solutions are designed to handle high-density environments and challenging outdoor locations.
+ 
+
+https://click.cdwemail.com/?qs=9d13e014de348e0a02917d2f39081018b936d509769486c0baa8dae64c5b64600df4ae6688ba768cc1d373f00299ee6911e3c8d7668b1be3390de4ac09adef18 
+Learn More 
+
+ 
+
+https://click.cdwemail.com/?qs=9d13e014de348e0a4e1855c8077f82aca7dd134ab3a68666ab721a9169b1923f888807068449a12f0ae806aa39eef54e38c36c0e2bd95c9e9dfc5cbda082b080 
+
+
+ Your security starts and ends with people, with 68% of breaches involving a human element.&sup1; Transform the way you address human risk.
+ 
+
+https://click.cdwemail.com/?qs=9d13e014de348e0a164eefc07a00433c6b69bebbb898f42af4688398906cbfeef8f8862c2ca1eae038b1309cc119712d035eebc79c17937e225880bd9ced318f 
+Learn More 
+
+ 
+
+
+https://click.cdwemail.com/?qs=9d13e014de348e0ae7d0710d729d2105fb091c4982336568235b3f3d164ff2170d8fbce1dd1bc5e934751c63531bee835737ae986eea621951b60e7df89f2ff3 
+Small Business, Big Challenges  |  Get Our Weekly Newsletter  |  Unlock Real Solutions
+
+
+
+
+
+
+https://click.cdwemail.com/?qs=9d13e014de348e0a8c16e05bb045b8415af8e8e9b97ee9220f431b3ebd97db0b3eb84278b74d5f857a073808b3049182960c6d5835938908dc6e07ff226ce477 
+^1 2024 Data Breach Investigations Report 
+
+
+ 
+
+https://click.cdwemail.com/?qs=9d13e014de348e0a765af72fce5367136ba0e2c84863de01614b987ebfb897416202a922f6fa9186a64dc929c5d5813730df5d65871b836e5903f6b04b371c25 
+ 
+https://click.cdwemail.com/?qs=9d13e014de348e0aa9e121705de56a0bd7177a22654e80e831c683f09be7ebe62a5a4c60815b507489c8c62721e7e9efd9b27d6a0eee14b4db1694c98e78f0f8 
+
+ 
+
+https://click.cdwemail.com/?qs=9d13e014de348e0aa9ff81078d377eb53b0a7fec7e369b8f4f500f33ca0cce0436834d318535bbb5fe46a3027f1cb50b522c831a2d77817806da83a694025bb7 
+Privacy Policy    |   
+ 
+https://click.cdwemail.com/?qs=9d13e014de348e0a0a327286500c3b9c09d13aeafc142c25cd9a737b7c4570d80c487eccf7693795327dab14af055c897f99c27d220b567a1ee0df8e684919ce 
+Terms and Conditions    |   
+ 
+https://click.cdwemail.com/?qs=9d13e014de348e0a58691100afdb1d7046c191dfc4dabedd9ae08ec7882f83eb156b8b333a5fe00be826e491f5f74f413c524a8185131cf725893a7a353c6e8c 
+Unsubscribe 
+This e-mail was sent by: CDW LLC. All information and offers are subject to CDW’s terms and conditions, and CDW policies. Please add 
+ 
+mailto:subscriptions@cdwemail.com 
+subscriptions@cdwemail.com  to your address book. This message was sent to 
+mailto:user@example.com 
+user@example.com. CDW(r) and CDW.G(r) and are registered trademarks of CDW LLC. All other trademarks and registered trademarks are the sole property of their respective owners. 
+ 
+
+https://click.cdwemail.com/?qs=9d13e014de348e0adaf09f348018a0d44798ca155ec9ee551f4b67c3cc9fe851bd43f1cb6e89fc511efce9694d4bbf2cf9141d81fd23ed1b 
+
+https://click.cdwemail.com/?qs=9d13e014de348e0a96cd9580feb89728fdea184268bec53b758a84937d01fbc1ab9ce213aef5bcb01612a52c66d4f6ca1a9b0d0ae9426fbc 
+
+https://click.cdwemail.com/?qs=9d13e014de348e0ad75c5b67ac340fae8b67161bb3ef0ba2958d3586a3b96fe8388b92e42d08be395b860811617d6f1729e998bb3308a4a4 
+
+https://click.cdwemail.com/?qs=9d13e014de348e0ac7467634cf2fad4eaf68b4aa2e479efad8ba7b36473fdf4fce58dba76eb070437e8a5ced88d350c09e4b1512bbaedb14 
+ 
+ 
+https://click.cdwemail.com/?qs=9d13e014de348e0ae0ef57f3a252373f8df2392b58937b4846bb09f42fcc13fd16f9cd8e27bd33312fbfa573f6b03e35ccaa8ef7500dfaee 
+ 
+ 
+https://click.cdwemail.com/?qs=9d13e014de348e0a831ffae0705217d32b331505bd6d454e5cba0c093557fd4681f621da18c742897e073aeff3d089200945dfe63598e97f 
+
+MKT89916 (c) 2025 | 200 N. Milwaukee Ave., Vernon Hills, IL, 60061, United States | 800.800.4239
+
+ 
+
+
+
+--jBqm0oi7aQIc=_?:
+Content-Type: text/html;
+	charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  xmlns:v="urn:schemas-microsoft-com:vml"  xmlns:o="urn:schemas-microsoft-com:office:office">
+  <head>
+    
+    <!-- AMPSCRIPT  -->
+    
+<!-- AMPSCRIPT END AMPSCRIPT -->
+
+<!--  -->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=no;" name="viewport">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    
+    <!--[if gte mso 9]><xml><o:OfficeDocumentSettings><o:AllowPNG/><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml><![endif]-->
+    
+    <style type="text/css">
+       {font-family: Arial, Verdana, sans-serif !important;
+      }
+      /* Outlook link fix */
+      #outlook a {
+        padding: 0;
+      }
+      body {
+        width: 100% !important;
+        -webkit-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      /* Prevent Webkit and Windows Mobile from changing default font sizes, while not breaking desktop design. */
+      .ExternalClass {
+        width: 100%;
+      }
+      /* Force Hotmail to display emails full width */
+      .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div {
+        line-height: 100%;
+      }
+      /* Force Hotmail to display normal line spacing */
+      #backgroundTable {
+        margin: 0;
+        padding: 0;
+        width: 100% !important;
+        line-height: 100% !important;
+      }
+      /* Apple link formatting */
+      a[x-apple-data-detectors] {
+          color: inherit !important;
+          text-decoration: none !important;
+          font-size: inherit !important;
+          font-family: inherit !important;
+          font-weight: inherit !important;
+          line-height: inherit !important;
+        }
+        .applelinkswhite a {color: #FFFFFF !important; text-decoration:none !important;}
+        .applelinksblack a {color: #150404 !important; text-decoration:none !important;}
+        .applelinksgray a,.applelinksgrey a  {color: #150404 !important; text-decoration:none !important;}
+        .applelinksblue a {color: #150404 !important; text-decoration:none !important;}
+
+      /* Image formatting */
+      img {
+        outline: none;
+        text-decoration: none;
+        -ms-interpolation-mode: bicubic;
+      }
+      a img {
+        border: none;
+      }
+    </style>
+    <style type="text/css">
+      @media screen and (-webkit-min-device-pixel-ratio: 0) {
+        .display {
+          display: block !important;
+        }
+      }
+      @media only screen and (max-device-width: 480px),
+        only screen and (max-width: 480px) {
+        body, table, td, span, a, li, blockquote {
+          font-family: Arial, sans-serif !important;
+          -webkit-text-size-adjust: none !important;
+        }
+        a[href^="tel"], a[href^="sms"] {
+          text-decoration: none;
+          color: #FFFFFF;
+          /* or whatever your want */
+          pointer-events: none;
+          cursor: default;
+        }
+        .mobile_link a[href^="tel"], .mobile_link a[href^="sms"] {
+          text-decoration: default;
+          color: #FFFFFF !important;
+          /* or whatever your want */
+          pointer-events: auto;
+          cursor: default;
+        }
+        .hide {
+          display: none !important;
+          max-height: 0px !important;
+          font-size: 0 !important;
+          line-height: 0 !important;
+        }
+        .body-pad {
+          padding: 0 15px !important;
+        }
+        .header-reveal {
+          width: 100% !important;
+          height: auto !important;
+          max-height: auto !important;
+          font-size: 14px !important;
+          line-height: 22px !important;
+          display: table !important;
+          margin: 0 auto !important;
+          padding: 0 !important;
+        }
+        img.header-reveal {
+          width: 100% !important;
+          height: auto !important;
+          max-height: auto !important;
+          display: block !important;
+          margin: 0 auto !important;
+          padding: 0 !important;
+        }
+        .no-border {
+          border: none !important;
+        }
+        .full {
+          width: 100% !important;
+        }
+        .full-pad-bottom {
+          width: 100% !important;
+          padding-bottom: 20px !important;
+        }
+        .table-footer {
+          padding-top: 10px !important;
+          margin: 0 auto !important;
+          float: none !important;
+        }
+        td.full {
+          width: 100% !important;
+          display: block !important;
+          float: left !important;
+          box-sizing: border-box !important;
+          padding-left: 0!important;
+          padding-right: 0!important;
+        }
+        .no-pad {
+          padding: 0!important;
+        }
+        .td-center {
+          text-align: center !important;
+          margin: 0 auto !important;
+        }
+        img.full {
+          width: 100% !important;
+          height: auto !important;
+          display: block !important;
+        }
+        .img-pad {
+          padding-top: 10px !important;
+        }
+        .heightreset{
+          height: auto !important
+        }
+        .resizeimg {
+          width: 100% !important;
+          height: auto !important;
+          display: block !important;
+          margin: auto;
+        }
+        .fluid {
+            width: 100% !important;
+            height: auto !important;
+            display: table !important;
+          }
+          .clear {
+            float: none !important;
+            clear: both;
+            text-align:center !important;
+          }
+          .mw100 {
+            width: 100% !important;
+            max-width: 100% !important;
+          }
+      }
+    </style>
+  </head>
+  <body bgcolor="#ffffff" style="margin: 0 auto; padding: 0; font-family:Arial, Verdana, sans-serif; "><style type="text/css">
+div.preheader 
+{ display: none !important; } 
+</style>
+<div class="preheader" style="font-size: 1px; display: none !important;">Plus news about digital workspace, security and more.</div>
+
+  
+    <table width="100%" bgcolor="#ffffff" border="0" cellspacing="0" cellpadding="0" style="font-family:Arial, Verdana, sans-serif; color:#54565B; font-size:11px; font-weight:normal;">
+      <tr>
+        <td valign="top" align="center" style="font-family:Arial, Verdana, sans-serif; color:#54565B; font-size:11px; font-weight:normal;" >
+          <table width="640" border="0" cellspacing="0" cellpadding="0" class="full">
+            <tr>
+              <td valign="top" style="padding: 10px 0px 15px 0px;">
+                <table border="0" cellspacing="0" cellpadding="0" align="right" class="full">
+                    <tr>
+                       <td class="td-center" width="100%" align="right" style="padding: 0px 5px 0px 5px; font-family: Arial, Verdana, sans-serif; font-size: 10px; color: #54565B; text-transform: uppercase; text-decoration: none;" >November 18, 2025&nbsp;&nbsp;|&nbsp;&nbsp;<a href="https://view.cdwemail.com/?qs=9cb45a720a6ee02939ac3d26fe0c91be0eba0246859c02dd6e5ac5baf49a42ecc6b8a07717d661bcaf08e45c14c4a6cb322d925842718645e2a64e234ba84107532f25cb6734f6622b1eb7301c60f5b02c091615fb0998a6" target="_blank" style="color: #54565B; text-decoration: none; text-transform:capitalize;" >VIEW IN BROWSER</a></td>
+                    </tr>
+                </table>
+              </td>
+            </tr>
+            
+      
+            
+            
+             <!-- BEGIN BANNER --> 
+            
+         <tr>
+              <td valign="top" align="center" >
+              <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td align="center" style="border-bottom: 0px; font-family:Arial, Verdana, sans-serif; font-size: 12px; font-weight: normal; color: #150404; line-height: 16px; text-decoration: none;">
+                    <table border="0" cellspacing="0" cellpadding="0" align="center">
+                      <tr>
+                        <td align="center" vertical-align="middle">
+                          <table border="0" cellspacing="0" cellpadding="0" align="center">
+                            <tr><td align="center"><a target="_blank" style="text-decoration:none;" href="https://click.cdwemail.com/?qs=3c67cec690e090dfbb67f0fce52a8c8382ff7803330e4f003ee68026054f9b9e06666b9fd807ab692e86f3336a4ad2aa707770ec8def4a773df8a2e2c454f12e" title=""   data-linkto="anchortotext"><img src="https://image.cdwemail.com/lib/fe95157070660d7e73/m/1/smb_banner.png" alt="Introducing BizTech: Small Business" width="640" style="display: block; padding: 0px; text-align: center; height: auto; width: 100%; border: 0px;" data-assetid=""></a></td></tr></table>
+                       
+                        </td> 
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                </table>
+              </td>
+            </tr>
+             <!-- END BANNER --> 
+            
+            
+            
+             <!-- START DESKTOP HEADER -->
+            <tr>
+              <td valign="top" align="center" class="hide" style="padding: 15px 0px;">
+                
+                <table width="640" align="center" border="0" cellspacing="0" cellpadding="0" class="hide" >
+                  <tr>
+                    <td height="46" align="left" >
+                      <a href="https://click.cdwemail.com/?qs=a52cb89b9d1383cec880b4cd43570bc242aafe019a70fedc21967dd72c484e841d079c9d43d2faed12f03fe45f37fedd8ed10b3621456ff3116a45e44c0a4a4b" target="_blank" ><img src="https://image.cdwemail.com/lib/fe95157070660d7e73/m/1/smb_2025.png" alt="BizTech: Small Business Magazine" title="BizTech: Small Business Magazine" width="auto" height="46" border="0" style="display: block; margin: 0; padding: 0; width:auto; height:46px;"></a>
+                    </td>
+                    <td align="center" width="20" border="0" style="width:20px; height:auto; font-size:0;" height="auto" >&nbsp;
+                    </td>
+                    <td width="470">
+                      <table align="center" width="100%" cellpadding="0" cellspacing="0" border="0">      
+                        <tr>      
+                          <td height="46" align="right" style="font-family: Arial, Verdana, sans-serif; font-weight:normal; text-transform:capitalize; letter-spacing:0px; font-size:9pt; line-height: 9pt; padding-top: 5px; padding-right: 5px;"><a href="https://click.cdwemail.com/?qs=a52cb89b9d1383ce29c23ee1b41cbab7c3c9dd2f742bbe9a89c47526018765ec8dee6ffb411776e2a2b5b0e4b82536f6391c773656e967e6e6160398773176b9" target="_blank" style="text-decoration:none; color:#150404;" >TOPICS</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://click.cdwemail.com/?qs=a52cb89b9d1383ce878fe37b6fbe678ea2fde2321690ddd7a81db78704ed26c1bb27706761b68faed14f34ae2d70df2b10f3df87b01f4e8ad5f18435d51df610" target="_blank" style="text-decoration:none; color:#150404;" >FEATURES</a>&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="https://click.cdwemail.com/?qs=a52cb89b9d1383ce0e31f7890e28537eee935de9a176a2009d24f649b77d737f2f3b88584b3734eb0a7bc0260f27f652fd1eab11bd401a8998640d6572dd7611" target="_blank" style="text-decoration:none; color:#150404;" >TIPS & TACTICS</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://click.cdwemail.com/?qs=a52cb89b9d1383ce295627055063e42de5fc717598e62aea61d5bbaf486e445eff36f62da0b816deef80719fc2300240060834d8a8ac1a3ec829e2bb2b076e46" target="_blank" style="text-decoration:none; color:#150404;" >VIDEO</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://click.cdwemail.com/?qs=a52cb89b9d1383ce4d71eddfa0cad3c72dbaf4a4e5b9fc3ce57a75286028eb2792df9db38728bed9119c024fa92c89ea45a35fa7612b511142099075ca9e9189" target="_blank" style="text-decoration:none; color:#150404;" >AGILITY</a>&nbsp;
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table> 
+              </td>
+            </tr> 
+            <!-- END DESKTOP HEADER --> 
+            
+        
+            
+            
+            <tr>
+              <td align="center" valign="top" style="display: none; mso-hide:all; max-height: 0px; font-size: 0; line-height: 0;" class="header-reveal">
+                <a href="https://click.cdwemail.com/?qs=a52cb89b9d1383cec880b4cd43570bc242aafe019a70fedc21967dd72c484e841d079c9d43d2faed12f03fe45f37fedd8ed10b3621456ff3116a45e44c0a4a4b" target="_blank" ><img src="https://image.cdwemail.com/lib/fe95157070660d7e73/m/1/smb_mobile_banner_2024.png" title="BizTech: Small Business" alt="BizTech: Small Business" width="0" height="0" border="0" style="display: none;" class="header-reveal"></a>
+              </td>
+            </tr>
+            <tr>
+              <td align="center" valign="top" style="display: none; mso-hide:all; max-height: 0px; font-size: 0; line-height: 0;" class="header-reveal">
+                <!--[if !mso]><!-->
+                <table align="center" width="100%" cellpadding="0" cellspacing="0" border="0" style="display: none; min-width: 100%; mso-hide:all;" class="header-reveal">
+                  <tr>
+                    <td align="center" bgcolor="#ffffff" style="padding:15px 0;">
+                      <table align="center" width="100%" cellpadding="0" cellspacing="0" border="0">
+                        <tr>
+                          <td align="center" bgcolor="#ffffff" width="100%">
+                           <a href="https://click.cdwemail.com/?qs=a52cb89b9d1383ce29c23ee1b41cbab7c3c9dd2f742bbe9a89c47526018765ec8dee6ffb411776e2a2b5b0e4b82536f6391c773656e967e6e6160398773176b9" target="_blank" style="text-decoration:none; font-size:14px; line-height: 22px; font-weight:normal; letter-spacing:0px; color:#150404; text-transform:capitalize;" >TOPICS</a><span style="color:#150404; font-size:14px;">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+                           <a href="https://click.cdwemail.com/?qs=a52cb89b9d1383ce878fe37b6fbe678ea2fde2321690ddd7a81db78704ed26c1bb27706761b68faed14f34ae2d70df2b10f3df87b01f4e8ad5f18435d51df610" target="_blank" style="text-decoration:none; font-size:14px; line-height: 22px; font-weight:normal; letter-spacing:0px; color:#150404; text-transform:capitalize;" >FEATURES</a><span style="color:#150404; font-size:14px;">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+                           <a href="https://click.cdwemail.com/?qs=a52cb89b9d1383ce0e31f7890e28537eee935de9a176a2009d24f649b77d737f2f3b88584b3734eb0a7bc0260f27f652fd1eab11bd401a8998640d6572dd7611" target="_blank" style="text-decoration:none; font-size:14px; line-height: 22px; font-weight:normal; letter-spacing:0px; color:#150404; text-transform:capitalize;" >TIPS & TACTICS</a><br>
+                           <a href="https://click.cdwemail.com/?qs=a52cb89b9d1383ce295627055063e42de5fc717598e62aea61d5bbaf486e445eff36f62da0b816deef80719fc2300240060834d8a8ac1a3ec829e2bb2b076e46" target="_blank" style="text-decoration:none; font-size:14px; line-height: 22px; font-weight:normal; letter-spacing:0px; color:#150404; text-transform:capitalize;" >VIDEO</a><span style="color:#150404; font-size:14px;">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+                           <a href="https://click.cdwemail.com/?qs=a52cb89b9d1383ce4d71eddfa0cad3c72dbaf4a4e5b9fc3ce57a75286028eb2792df9db38728bed9119c024fa92c89ea45a35fa7612b511142099075ca9e9189" target="_blank" style="text-decoration:none; font-size:14px; line-height: 22px; font-weight:normal; letter-spacing:0px; color:#150404; text-transform:capitalize;" >AGILITY</a><span style="color:#150404; font-size:14px;">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+                           <a href="https://click.cdwemail.com/?qs=a52cb89b9d1383ce6170aa884b34fcdbbb5c9394b346326179e09b1e72661e34461d1532f68fa6a2e2e4114e820e35cfb65bd077deb9316ab8304b4ac779f2c9" target="_blank" style="text-decoration:none; font-size:14px; line-height: 22px; font-weight:normal; letter-spacing:0px; color:#150404; text-transform:capitalize;" >REVIEWS</a>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+                <!--[endif]-->
+              </td>
+            </tr>
+            <tr>
+              <td align="center" valign="top" style="display: none; max-height: 0px; font-size: 0; line-height: 0;" class="header-reveal">
+                <table align="center" width="100%" cellpadding="0" cellspacing="0" border="0" style="display: none; min-width: 100%; mso-hide:all;" class="header-reveal">
+                  <tr>
+                    <td align="center" style="padding:15px 0;">
+                      <a href="https://click.cdwemail.com/?qs=a52cb89b9d1383ceaf46e189c3f836994841e61ae3540a3020c1a4c10d4e57eb5b5be6c0345ae220c38178e1892e845d6f6b6961277f4f218ace394530c38a24" target="_blank" ><img src="https://image.cdwemail.com/lib/fe95157070660d7e73/m/16/techmag-cdw-mobile.png" title="Brought to you by CDW" alt="Brought to you by CDW" width="0" height="0" border="0" style="display: none;" class="header-reveal"></a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+    <!-- END MOBILE HEADER -->
+    
+    <!-- START BODY -->
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="body-pad">
+      <tr>
+        <td valign="top" align="center">
+          <table width="640" border="0" cellspacing="0" cellpadding="0" class="full">
+            <tr>
+              <td align="center" valign="top">
+                <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- BEGIN MAIN ARTICLE  -->
+
+<table width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color:#f2f2f2;">
+  <tr>
+    <td width="100%" align="center" valign="middle" style="font-family:Arial, Verdana, sans-serif; font-size: 15px; line-height:18px; font-weight: normal; color: #150404; text-decoration: none; text-align:center; padding: 10px 0px;">TOP STORIES
+    </td>
+  </tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="0" border="0">
+  <tr>
+    <td style="padding: 0px 0px 0px 0px;" valign="top">
+      <table class="full" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
+        <tr>
+          <td align="center" valign="top" style="padding:0;">
+            <a href="https://click.cdwemail.com/?qs=3c67cec690e090dfe925fa972cd98abe9ef15d9e95a0040ad6e993095b7c26348d810bd28bb8ed9b53b49d60e419e77e1dca64c9ae1ea55b0beac39d89adefb4" target="_blank" style="font-family:Arial, Verdana, sans-serif; color:#150404; text-decoration: none;" ><img src="https://biztechmagazine.com/sites/biztechmagazine.com/files/styles/image_hero_620w_x_160h/public/articles/202511/Webby-CX-Personalize.jpg?itok=dXSmvhUp" alt="3 Common Challenges to Personalizing Customer Relationships for SMBs" class="full" style="display: block; width:100%; height:auto; max-width:640px;" width="640" height="165" border="0"> </a>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<table class="full" width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color:#f2f2f2;">
+  <tr>
+    <td align="center" valign="middle" style="padding: 15px 20px 15px 20px;">
+      <table align="center" width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td align="center" valign="middle">
+            <div style="display:inline-block; float:left; width:100%; max-width:460px;" class="fluid clear mw100">
+            <table width="460" border="0" cellspacing="0" cellpadding="0" align="left" class="full">
+              <tr>
+                <td align="center" valign="middle" height="50" style="font-family:Arial, Verdana, sans-serif; font-size: 16px; line-height: 22px; font-weight: normal; color: #150404; text-decoration: none; text-align:left; verticle-align:middle; padding: 0px 20px 0px 0px;">
+                  <a href="https://click.cdwemail.com/?qs=a52cb89b9d1383ced2fc234c773e979cbd7ec5a01f96327617612920bc6f4568306767ed5ef6dd9f01a492454bff0574454b7ad05a7c3c1ccf2be53dd30c887c" target="_blank" style="color: #150404; text-decoration: none;" >3 Common Challenges to Personalizing Customer Relationships for SMBs</a>
+                </td>
+              </tr>
+            </table>
+            </div>
+            <div style="display:inline-block; float:right; width:100%; max-width:120px;" class="fluid clear mw100">
+            <table align="right" valign="middle" class="full" border="0" cellspacing="0" cellpadding="0" style="padding:6px 0px;">
+              <tr>
+                <td align="left" valign="middle" class="td-center" style="">
+                  <table align="center" width="110" cellspacing="0" cellpadding="0" border="0">
+                    <tr>
+                      <td style="border-radius: 8px; background-color:#cc0000; font-weight:normal; font-family:Arial, Verdana, sans-serif; color:#ffffff; font-size:14px; line-height:14px; text-align:center; padding:12px 20px; " align="center">
+                        <a target="_blank" href="https://click.cdwemail.com/?qs=3c67cec690e090dfa8e2f1241220b93f3f8291d3ad059f19cfd14ae3f8c931cc7bdd150cb79c75e655674faf470caf01e89c8273a418174a8fc8d0ea5739890e" style="display:block; color:#ffffff; font-size:14px; font-weight:normal; font-family:Arial, Verdana, sans-serif; white-space:nowrap; word-break:keep-all; text-decoration:none;" >Read Now</a>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+            </div>
+          </td> 
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- END MAIN ARTICLE  -->
+
+<table bgcolor="ffffff" style="" width="100%" cellspacing="0" cellpadding="0" border="0" align="center">
+  <tr>
+    <td style="height:20px; font-size:0;" height="20" align="center">&nbsp;
+    </td>
+  </tr>
+</table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- START ARTICLES -->
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+  <tr>
+    <td style="padding-top: 0px;">
+      <table width="100%" cellspacing="0" cellpadding="0" border="0">
+        <!--  --> 
+        <!-- -->
+        <tr>
+          <td valign="top" style="">
+            <!--  -->
+            
+            <div style="display:inline-block; float:left; width:100%; max-width:310px;" class="fluid clear mw100">
+            <table class="full" width="310" cellspacing="0" cellpadding="0" border="0" align="left">
+              <tr>
+                <td align="left" style="padding-bottom:20px;">
+                  <table width="100%" bgcolor="#f2f2f2" style="background-color: #f2f2f2;" role="presentation" cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      <td align="center" style="padding:0;">
+                        <a href="https://click.cdwemail.com/?qs=a52cb89b9d1383ce7907694840d48df2bd4afd54ff7465bed7effa05a714c6000cfe7a24507550ba5cbfcf89b69ec548d07a8a7fe1eac12ea375d33411987391" target="_blank" style="font-family:Arial, Verdana, sans-serif; color:#150404; text-decoration: none;" ><img src="https://biztechmagazine.com/sites/biztechmagazine.com/files/styles/image_thumb_600w_x_250h/public/articles/202511/BTQ425_SmlBiz_Interview_Hero.jpg?itok=rl4wit2q" alt="How Is AI Changing the Way Small-Business Employees Do Their Jobs?" style="display: block;" class="resizeimg" width="310" height="129" border="0"></a>
+                      </td>
+                    </tr>
+     
+                    <tr>
+                      <td align="center" valign="middle" style="padding-left:20px; padding-right:20px;">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
+                          <tr>
+                            <td align="center" valign="middle">
+                              <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
+                                <tr>
+                                  <td class="heightreset" align="left" valign="middle" style="padding-top: 20px; font-family:Arial, Verdana, sans-serif; font-size: 13px; line-height: 18px; font-weight: normal; color:#54565B; text-decoration: none; text-align:left;">
+                                    <a href="https://click.cdwemail.com/?qs=a52cb89b9d1383cee337274e564aa199e14b3abd8b0e4db6d620d33c799eb4aa3edd42e74e200b0b59f4720b0565742f3efb8ad97d5739fcc5aeac0eb3dca5b0" target="_blank" style="color:#54565B; text-decoration: none;" >DIGITAL WORKSPACE</a>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td align="left" valign="top" height="90" class="heightreset" style="padding-top: 6px; font-family:Arial, Verdana, sans-serif; font-size: 16px; line-height: 22px; font-weight: normal; color:#150404; text-decoration: none; text-align:left; height:80px">
+                                    <a href="https://click.cdwemail.com/?qs=a52cb89b9d1383ce9dfd4da4b0bbed2bebf5c25cf592a516e09945e9908e23132ef221c193656eb0af35bf8236c75f3654320c717fb5811e3afa1f1c288c15f1" target="_blank" style="color:#150404; text-decoration: none;" >How Is AI Changing the Way Small-Business Employees Do Their Jobs?</a>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td align="left" valign="middle" style="padding:15px 0px 20px 0px;">
+                                    <table align="left" cellspacing="0" cellpadding="0" border="0">
+                                      <tr>
+                                        <td style="border-radius: 8px; background-color:#ffffff; font-weight:normal; font-family:Arial, Verdana, sans-serif; border:1px #150404 solid; color:#150404; font-size:14px; line-height:14px; text-align:center; padding:12px 20px; " align="center">
+                                          <a target="_blank" href="https://click.cdwemail.com/?qs=a52cb89b9d1383ce3b29b772573421a0eab1d6bdf396163e4a05697f737b114134b4b3bf117058f702827f69924cd17ed1f5867389c9023af8fc33251ce929e2" style="display:block; text-align:center; color:#150404; font-size:14px; font-weight:normal; font-family:Arial, Verdana, sans-serif; white-space:nowrap; word-break:keep-all; text-decoration:none;" >Read Now</a>
+                                        </td>
+                                      </tr>
+                                    </table>
+                                  </td>
+                                </tr>
+                              </table>
+                            </td> 
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+            </div>
+            <!--  -->
+        <!-- -->
+        <!-- --> 
+        <!--  -->
+            
+            <div style="display:inline-block; float:right; width:100%; max-width:310px;" class="fluid clear mw100">
+            <table class="full" width="310" cellspacing="0" cellpadding="0" border="0" align="right">
+              <tr>
+                <td align="left" style="padding-bottom:20px;">
+                  <table width="100%" bgcolor="#f2f2f2" style="background-color: #f2f2f2;" role="presentation" cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      <td align="center" style="padding:0;">
+                        <a href="https://click.cdwemail.com/?qs=a52cb89b9d1383ce7a8d3bc35eebbe52f5f3f1ef88766f3969c38b17d7f06295949145cefaab427e84ba19d01456ef106492eec567361bbb620efb5a7f3b36d0" target="_blank" style="font-family:Arial, Verdana, sans-serif; color:#150404; text-decoration: none;" ><img src="https://biztechmagazine.com/sites/biztechmagazine.com/files/styles/image_thumb_600w_x_250h/public/articles/202511/Supply%20Chain%20Hero%20Image.jpg?itok=EXEfvB8E" alt="4 Ways to Protect Your Small Business From Supply Chain Cyberthreats" style="display: block;" class="resizeimg" width="310" height="129" border="0"></a>
+                      </td>
+                    </tr>
+     
+                    <tr>
+                      <td align="center" valign="middle" style="padding-left:20px; padding-right:20px;">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
+                          <tr>
+                            <td align="center" valign="middle">
+                              <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
+                                <tr>
+                                  <td class="heightreset" align="left" valign="middle" style="padding-top: 20px; font-family:Arial, Verdana, sans-serif; font-size: 13px; line-height: 18px; font-weight: normal; color:#54565B; text-decoration: none; text-align:left;">
+                                    <a href="https://click.cdwemail.com/?qs=a52cb89b9d1383ce23c28b2ae5071221602a50de1672914a116479e61f31d1ff7e3d16bdfa230a67c78569403c694125dc78c42f6a314b871bb56b1964c0a2a0" target="_blank" style="color:#54565B; text-decoration: none;" >SECURITY</a>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td align="left" valign="top" height="90" class="heightreset" style="padding-top: 6px; font-family:Arial, Verdana, sans-serif; font-size: 16px; line-height: 22px; font-weight: normal; color:#150404; text-decoration: none; text-align:left; height:80px">
+                                    <a href="https://click.cdwemail.com/?qs=a52cb89b9d1383ce6ecf03415abdeaf9b8c08d05a024c873ca7652ac472b76322deca5b81beefc3daaad788d84122dabfd586329f14222db13c3c6dbce980466" target="_blank" style="color:#150404; text-decoration: none;" >4 Ways to Protect Your Small Business From Supply Chain Cyberthreats</a>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td align="left" valign="middle" style="padding:15px 0px 20px 0px;">
+                                    <table align="left" cellspacing="0" cellpadding="0" border="0">
+                                      <tr>
+                                        <td style="border-radius: 8px; background-color:#ffffff; font-weight:normal; font-family:Arial, Verdana, sans-serif; border:1px #150404 solid; color:#150404; font-size:14px; line-height:14px; text-align:center; padding:12px 20px; " align="center">
+                                          <a target="_blank" href="https://click.cdwemail.com/?qs=a52cb89b9d1383cebd047fddc284e98f952e7c75018929f4e0618076fb254e21cb648b462077422367eaef9bcc73bc2f5286936212803a7d7ad202c02bd3c64d" style="display:block; text-align:center; color:#150404; font-size:14px; font-weight:normal; font-family:Arial, Verdana, sans-serif; white-space:nowrap; word-break:keep-all; text-decoration:none;" >Read Now</a>
+                                        </td>
+                                      </tr>
+                                    </table>
+                                  </td>
+                                </tr>
+                              </table>
+                            </td> 
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+            </div>
+            <!-- -->
+          </td>
+        </tr>
+        <!--  -->
+        <!-- -->
+        <!-- --> 
+        <!-- -->
+        <tr>
+          <td valign="top" style="">
+            <!--  -->
+            
+            <div style="display:inline-block; float:left; width:100%; max-width:310px;" class="fluid clear mw100">
+            <table class="full" width="310" cellspacing="0" cellpadding="0" border="0" align="left">
+              <tr>
+                <td align="left" style="padding-bottom:20px;">
+                  <table width="100%" bgcolor="#f2f2f2" style="background-color: #f2f2f2;" role="presentation" cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      <td align="center" style="padding:0;">
+                        <a href="https://click.cdwemail.com/?qs=a52cb89b9d1383cea519c8aa49bd1385d970134a9dd3fb6c23c1f3c41ada813afdd3bac263cf9c5afe8a898292cea88552e0bd51644f72f83f37ef03a712348e" target="_blank" style="font-family:Arial, Verdana, sans-serif; color:#150404; text-decoration: none;" ><img src="https://biztechmagazine.com/sites/biztechmagazine.com/files/styles/image_thumb_600w_x_250h/public/articles/202505/GettyImages-1343554118-v2.jpg?itok=iz5HCyvp" alt="The Most Popular Services Helping SMBs Stay Competitive" style="display: block;" class="resizeimg" width="310" height="129" border="0"></a>
+                      </td>
+                    </tr>
+     
+                    <tr>
+                      <td align="center" valign="middle" style="padding-left:20px; padding-right:20px;">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
+                          <tr>
+                            <td align="center" valign="middle">
+                              <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
+                                <tr>
+                                  <td class="heightreset" align="left" valign="middle" style="padding-top: 20px; font-family:Arial, Verdana, sans-serif; font-size: 13px; line-height: 18px; font-weight: normal; color:#54565B; text-decoration: none; text-align:left;">
+                                    <a href="https://click.cdwemail.com/?qs=a52cb89b9d1383ce235bb950f1f995edca3e05f43501ed55763360f2ec2ca945fa91a477259ee3e6351dbe7ef34f826e2121a11acc43b2c648d26f8b988c00f5" target="_blank" style="color:#54565B; text-decoration: none;" >DIGITAL WORKSPACE</a>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td align="left" valign="top" height="90" class="heightreset" style="padding-top: 6px; font-family:Arial, Verdana, sans-serif; font-size: 16px; line-height: 22px; font-weight: normal; color:#150404; text-decoration: none; text-align:left; height:80px">
+                                    <a href="https://click.cdwemail.com/?qs=a52cb89b9d1383ce3619dd0868ec8c0dd71484924726f712f46f5525369d47721817960f66870959a18f94ff2c4902dcf91abb3b59d879779d993551d107f0e2" target="_blank" style="color:#150404; text-decoration: none;" >The Most Popular Services Helping SMBs Stay Competitive</a>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td align="left" valign="middle" style="padding:15px 0px 20px 0px;">
+                                    <table align="left" cellspacing="0" cellpadding="0" border="0">
+                                      <tr>
+                                        <td style="border-radius: 8px; background-color:#ffffff; font-weight:normal; font-family:Arial, Verdana, sans-serif; border:1px #150404 solid; color:#150404; font-size:14px; line-height:14px; text-align:center; padding:12px 20px; " align="center">
+                                          <a target="_blank" href="https://click.cdwemail.com/?qs=a52cb89b9d1383cef6aac4255cb015c52bc3d79edeadc43186556ce26e0ef6f021d173d4d67df436b2922b34df7856bc5e44f960c310fdc17c339a1b010d3c47" style="display:block; text-align:center; color:#150404; font-size:14px; font-weight:normal; font-family:Arial, Verdana, sans-serif; white-space:nowrap; word-break:keep-all; text-decoration:none;" >Read Now</a>
+                                        </td>
+                                      </tr>
+                                    </table>
+                                  </td>
+                                </tr>
+                              </table>
+                            </td> 
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+            </div>
+            <!--  -->
+        <!-- -->
+        <!-- --> 
+        <!--  -->
+            
+            <div style="display:inline-block; float:right; width:100%; max-width:310px;" class="fluid clear mw100">
+            <table class="full" width="310" cellspacing="0" cellpadding="0" border="0" align="right">
+              <tr>
+                <td align="left" style="padding-bottom:20px;">
+                  <table width="100%" bgcolor="#f2f2f2" style="background-color: #f2f2f2;" role="presentation" cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                      <td align="center" style="padding:0;">
+                        <a href="https://click.cdwemail.com/?qs=a52cb89b9d1383ce98da8ebf9c64f2e01cd767ef2dd30b7de39175fd0f793019ae7d0da63028ed2ca9c91066da7d1c580e76fbc09ffec8bdb7e363cbc23f511f" target="_blank" style="font-family:Arial, Verdana, sans-serif; color:#150404; text-decoration: none;" ><img src="https://biztechmagazine.com/sites/biztechmagazine.com/files/styles/image_thumb_600w_x_250h/public/articles/202510/GettyImages-2203914027.jpg?itok=c6s5Bf2X" alt="Hardware Refreshes for Small Businesses: 5 Questions to Guide Your Strategy" style="display: block;" class="resizeimg" width="310" height="129" border="0"></a>
+                      </td>
+                    </tr>
+     
+                    <tr>
+                      <td align="center" valign="middle" style="padding-left:20px; padding-right:20px;">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
+                          <tr>
+                            <td align="center" valign="middle">
+                              <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
+                                <tr>
+                                  <td class="heightreset" align="left" valign="middle" style="padding-top: 20px; font-family:Arial, Verdana, sans-serif; font-size: 13px; line-height: 18px; font-weight: normal; color:#54565B; text-decoration: none; text-align:left;">
+                                    <a href="https://click.cdwemail.com/?qs=a52cb89b9d1383ce466392af387532401652b2911eda646849701d6a1598f059ce448378fcfd8293e685f9dea464cea52a43b10385724d0a5bd9e7e6702b8e68" target="_blank" style="color:#54565B; text-decoration: none;" >HARDWARE</a>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td align="left" valign="top" height="90" class="heightreset" style="padding-top: 6px; font-family:Arial, Verdana, sans-serif; font-size: 16px; line-height: 22px; font-weight: normal; color:#150404; text-decoration: none; text-align:left; height:80px">
+                                    <a href="https://click.cdwemail.com/?qs=a52cb89b9d1383ce8a553b475ab959e7077a4a380360d469f807ec84cc2712690e8ca93c7981a45a76501e7930c57e7703cd20f6625ac1ee1d6fecbc129fdd23" target="_blank" style="color:#150404; text-decoration: none;" >Hardware Refreshes for Small Businesses: 5 Questions to Guide Your Strategy</a>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td align="left" valign="middle" style="padding:15px 0px 20px 0px;">
+                                    <table align="left" cellspacing="0" cellpadding="0" border="0">
+                                      <tr>
+                                        <td style="border-radius: 8px; background-color:#ffffff; font-weight:normal; font-family:Arial, Verdana, sans-serif; border:1px #150404 solid; color:#150404; font-size:14px; line-height:14px; text-align:center; padding:12px 20px; " align="center">
+                                          <a target="_blank" href="https://click.cdwemail.com/?qs=a52cb89b9d1383cea3e17b9b4778e3af3197a97b1b9f6c7f2fb46146fa9e1a2bb8b3df59322d6c0b602d093887a572ce9033d3cf97c0493cb209aaf00a77fe6d" style="display:block; text-align:center; color:#150404; font-size:14px; font-weight:normal; font-family:Arial, Verdana, sans-serif; white-space:nowrap; word-break:keep-all; text-decoration:none;" >Read Now</a>
+                                        </td>
+                                      </tr>
+                                    </table>
+                                  </td>
+                                </tr>
+                              </table>
+                            </td> 
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+            </div>
+            <!-- -->
+          </td>
+        </tr>
+        <!--  -->
+        <!-- -->
+        <!-- -->
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- END ARTICLES --> 
+</td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: transparent; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 0px; " class="stylingblock-content-wrapper camarker-inner"><!-- START ADVERTS  -->
+
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+  <tr>
+    <td style="padding-top: 10px;">
+      <table class="full" width="640" cellspacing="0" cellpadding="0" border="0">
+        <tr>
+          <td class="full" valign="top" align="center" style="padding: 0px 0px;">
+            <table width="100%" cellspacing="0" cellpadding="0" border="0">
+              <tr>
+                <td valign="top" align="left" style="font-family:Arial, Verdana, sans-serif; font-size: 15px; line-height: 20px; font-weight: normal; color: #150404; text-decoration: none; text-align:center; padding-bottom: 20px;">
+                  SPONSORED BY
+                </td> 
+              </tr>
+            </table>
+          </td> 
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+
+<!-- START PARTNER SPOTS -->
+
+<table bgcolor="#ffffff" role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+  <tr>
+    <td style="padding-bottom: 0px;">
+      <table class="full" width="640" cellspacing="0" cellpadding="0" border="0">
+        <tr>
+          <td valign="top" align="center">
+            <table width="100%" cellspacing="0" cellpadding="0" border="0">
+              <tr>
+                <td valign="top" style="">
+                  <div style="display:inline-block; float:left; width:100%; max-width:310px;" class="fluid clear mw100">
+                  <table class="full" width="310" cellspacing="0" cellpadding="0" border="0" align="left">
+                    <tr>
+                      <td align="center" style="border:#bcbcbc solid 1px;">
+                        <table width="100%" style="" role="presentation" cellpadding="0" cellspacing="0" border="0">
+                          <tr>
+                            <td align="center" height="30" valign="middle" style="padding-top:20px; height:30px;">
+                              <a href="https://click.cdwemail.com/?qs=3c67cec690e090df4aed1948f6a631ed5693c941d33843762ae00b03314c429e85f72eafc14c6d63b86426d2b09ff2b6fc4763815e0a02e3983fbf5d2f2abcfc" target="_blank" style="text-decoration:none;" ><img src="https://webobjects2.cdw.com/is/image/CDW/dell-blue-grey?$transparent$" alt="Dell Blue Grey Logo" title="Dell Blue Grey Logo" style="display: block; margin:auto; height:25px;" height="25" width="auto"></a>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td align="center" valign="middle" style="padding:20px 20px 0px 20px;">
+                              <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
+                                <tr>
+                                  <td align="center" valign="middle">
+                                    <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
+                                      <tr>
+                                        <td align="left" valign="top" height="110" class="heightreset" style="padding-top: 6px; font-family:Arial, Verdana, sans-serif; font-size: 14px; line-height: 20px; font-weight: normal; color: #150404; text-decoration: none; text-align:left; height:110px;">
+                                          Power your productivity anywhere. Dell notebook accessories are seamless, sustainable and designed for effortless work.
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td align="left" valign="middle" style="padding:15px 0px 20px 0px; font-family:Arial, Verdana, sans-serif; color: #150404;">
+                                          <table align="left" width="114" cellspacing="0" cellpadding="0" border="0">
+                                            <tr>
+                                              <td style="border-radius: 8px; background-color:#ffffff; font-weight:normal; font-family:Arial, Verdana, sans-serif; border:1px #150404 solid; color:#150404; font-size:14px; line-height:14px; text-align:center; padding:12px 20px;" align="center">
+                                                <a target="_blank" href="https://click.cdwemail.com/?qs=3c67cec690e090df8b41552acb65d73de94f6e44a8c51aa42e9e3de906e311a8d3765e08fd689bfad45d1e395cc05dda54bd9c528d4af1d850a129f02078e49c" style="display:block; text-align:center;  color:#150404; font-size:14px; font-weight:normal; font-family:Arial, Verdana, sans-serif; white-space:nowrap; word-break:keep-all; text-decoration:none;" >Learn More</a>
+                                              </td>
+                                            </tr>
+                                          </table>
+                                        </td>
+                                      </tr>
+                                    </table>
+                                  </td> 
+                                </tr>
+                              </table>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+     <!-- SPACER -->                
+                    <tr><td style="height:20px; font-size:0;" height="20" align="center">&nbsp;</td></tr> 
+    <!-- END SPACER --> 
+                  </table>
+                  </div>
+                  <div style="display:inline-block; float:right; width:100%; max-width:310px;" class="fluid clear mw100">
+                   <table class="full" width="310" cellspacing="0" cellpadding="0" border="0" align="right">
+                    <tr>
+                      <td align="center" style="border:#bcbcbc solid 1px;">
+                        <table width="100%" style="" role="presentation" cellpadding="0" cellspacing="0" border="0">
+                          <tr>
+                            <td align="center" height="30" valign="middle" style="padding-top:20px; height:30px;">
+                              <a href="https://click.cdwemail.com/?qs=3c67cec690e090dfecd51f8fbdd41e31043f2ddc4a9c18bac59051e51800118abecf93009cb754ffb8c119f0f97c3fd46f1f2c0c8005dd754f9fd92c3d5f5e17" target="_blank" style="text-decoration:none;" ><img src="https://webobjects2.cdw.com/is/image/CDW/lenovo?$transparent$" alt="Lenovo Logo" title="Lenovo Logo" style="display: block; margin:auto; height:30px;" height="30" width="auto"></a>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td align="center" valign="middle" style="padding:20px 20px 0px 20px;">
+                              <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
+                                <tr>
+                                  <td align="center" valign="middle">
+                                    <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
+                                      <tr>
+                                        <td align="left" valign="top" height="110" class="heightreset" style="padding-top: 6px; font-family:Arial, Verdana, sans-serif; font-size: 14px; line-height: 20px; font-weight: normal; color: #150404; text-decoration: none; text-align:left; height:110px;">
+                                          A new AI era begins. Bring next-generation productivity, efficiency and security to your business with Copilot+ PCs from Lenovo.
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td align="left" valign="middle" style="padding:15px 0px 20px 0px; font-family:Arial, Verdana, sans-serif; color: #150404;">
+                                          <table align="left" width="114" cellspacing="0" cellpadding="0" border="0">
+                                            <tr>
+                                              <td style="border-radius: 8px; background-color:#ffffff; font-weight:normal; font-family:Arial, Verdana, sans-serif; border:1px #150404 solid; color:#150404; font-size:14px; line-height:14px; text-align:center; padding:12px 20px;" align="center">
+                                                <a target="_blank" href="https://click.cdwemail.com/?qs=3c67cec690e090dffb5969ce40aeb3b13a8d5ba30a1f61ff1fd6a7f3cf5ba98605e059ff720462d3ec18c7bc1e45d574cb0171ed926a5b7ee7962085084f3ae3" style="display:block; text-align:center;  color:#150404; font-size:14px; font-weight:normal; font-family:Arial, Verdana, sans-serif; white-space:nowrap; word-break:keep-all; text-decoration:none;" >Learn More</a>
+                                              </td>
+                                            </tr>
+                                          </table>
+                                        </td>
+                                      </tr>
+                                    </table>
+                                  </td> 
+                                </tr>
+                              </table>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+     <!-- SPACER -->                
+                    <tr><td style="height:20px; font-size:0;" height="20" align="center">&nbsp;</td></tr> 
+    <!-- END SPACER --> 
+                  </table>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      <!-- -->
+        <tr>
+          <td valign="top" align="center">
+            <table width="100%" cellspacing="0" cellpadding="0" border="0">
+              <tr>
+                <td valign="top" style="">
+                  <div style="display:inline-block; float:left; width:100%; max-width:310px;" class="fluid clear mw100">
+                  <table class="full" width="310" cellspacing="0" cellpadding="0" border="0" align="left">
+                    <tr>
+                      <td align="center" style="border:#bcbcbc solid 1px;">
+                        <table width="100%" role="presentation" cellpadding="0" cellspacing="0" border="0">
+                          <tr>
+                            <td align="center" height="30" valign="middle" style="padding-top:20px; height:30px;">
+                              <a href="https://click.cdwemail.com/?qs=a52cb89b9d1383ce9e411b602dc145515ca8b4697e6bb1aabefc28aa9041d2cfe4592890c09f681a85c6dbb36044d57183bacc307925b502aab7838471be2be0" target="_blank" style="text-decoration:none;" ><img src="https://webobjects2.cdw.com/is/image/CDW/ruckus?$transparent$" alt="Ruckus Logo" title="Ruckus Logo" style="display: block; margin:auto; height:30px;" height="30" width="auto"></a>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td align="center" valign="middle" style="padding:20px 20px 0px 20px;">
+                              <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
+                                <tr>
+                                  <td align="center" valign="middle">
+                                    <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
+                                      <tr>
+                                        <td align="left" valign="top" height="110" class="heightreset" style="padding-top: 6px; font-family:Arial, Verdana, sans-serif; font-size: 14px; line-height: 20px; font-weight: normal; color: #150404; text-decoration: none; text-align:left; height:110px;">
+                                          Experience seamless wireless connectivity with RUCKUS access points. Our solutions are designed to handle high-density environments and challenging outdoor locations.
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td align="left" valign="middle" style="padding:15px 0px 20px 0px; font-family:Arial, Verdana, sans-serif; color: #150404;">
+                                          <table align="left" width="114" cellspacing="0" cellpadding="0" border="0">
+                                            <tr>
+                                              <td style="border-radius: 8px; background-color:#ffffff; font-weight:normal; font-family:Arial, Verdana, sans-serif; border:1px #150404 solid; color:#150404; font-size:14px; line-height:14px; text-align:center; padding:12px 20px;" align="center">
+                                                <a target="_blank" href="https://click.cdwemail.com/?qs=a52cb89b9d1383ceb0c626dec67049900bbb7ce373c5b0e801dfb754e99265ac457be9f1cf7f04a3a8243c0668ae71a04081feed1e9352db13b10cb1b7d5ea25" style="display:block; color:#150404; font-size:14px; line-height:14px; font-weight:normal; font-family:Arial, Verdana, sans-serif; white-space:nowrap; word-break:keep-all; text-decoration:none;" >Learn More</a>
+                                              </td>
+                                            </tr>
+                                          </table>
+                                        </td>
+                                      </tr>
+                                    </table>
+                                  </td> 
+                                </tr>
+                              </table>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                       <!-- SPACER -->                
+                    <tr><td style="height:20px; font-size:0;" height="20" align="center">&nbsp;</td></tr> 
+    <!-- END SPACER --> 
+                  </table>
+                  </div>
+                  <div style="display:inline-block; float:right; width:100%; max-width:310px;" class="fluid clear mw100">
+                   <table class="full" width="310" cellspacing="0" cellpadding="0" border="0" align="right">
+                    <tr>
+                      <td align="center" style="border:#bcbcbc solid 1px;">
+                        <table width="100%" role="presentation" cellpadding="0" cellspacing="0" border="0">
+                          <tr>
+                            <td align="center" height="30" valign="middle" style="padding-top:20px; height:30px;">
+                              <a href="https://click.cdwemail.com/?qs=a52cb89b9d1383ce3c0944a30fc6ae156a77c047f5f25f9d98a2e7c98d9c66582322890c0e2b4e4e46af11087ba2862765b9711c28ddeefb7ad3a5a23d5b96a6" target="_blank" style="text-decoration:none;" ><img src="https://webobjects2.cdw.com/is/image/CDW/mimecast-logo-new?$transparent$" alt="Mimecast Logo New Logo" title="Mimecast Logo New Logo" style="display: block; margin:auto; height:25px;" height="25" width="auto"></a>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td align="center" valign="middle" style="padding:20px 20px 0px 20px;">
+                              <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
+                                <tr>
+                                  <td align="center" valign="middle">
+                                    <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
+                                      <tr>
+                                        <td align="left" valign="top" height="110" class="heightreset" style="padding-top: 6px; font-family:Arial, Verdana, sans-serif; font-size: 14px; line-height: 20px; font-weight: normal; color: #150404; text-decoration: none; text-align:left; height:110px;">
+                                          Your security starts and ends with people, with 68% of breaches involving a human element.&sup1; Transform the way you address human risk.
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td align="left" valign="middle" style="padding:15px 0px 20px 0px; font-family:Arial, Verdana, sans-serif; color: #150404;">
+                                          <table align="left" width="114" cellspacing="0" cellpadding="0" border="0">
+                                            <tr>
+                                              <td style="border-radius: 8px; background-color:#ffffff; font-weight:normal; font-family:Arial, Verdana, sans-serif; border:1px #150404 solid; color:#150404; font-size:14px; line-height:14px; text-align:center; padding:12px 20px;" align="center">
+                                                <a target="_blank" href="https://click.cdwemail.com/?qs=a52cb89b9d1383ce0ef68cc343a58ba488d4b6439d7b6ee98637f29dbcf69d01dc2c638a1f12fb31f3daf3dad0bbb42748624ae6fc95644acfe4635b7d95ebd0" style="display:block; color:#150404; font-size:14px; line-height:14px; font-weight:normal; font-family:Arial, Verdana, sans-serif; white-space:nowrap; word-break:keep-all; text-decoration:none;" >Learn More</a>
+                                              </td>
+                                            </tr>
+                                          </table>
+                                        </td>
+                                      </tr>
+                                    </table>
+                                  </td> 
+                                </tr>
+                              </table>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                     
+                        <!-- SPACER -->                
+                    <tr><td style="height:20px; font-size:0;" height="20" align="center">&nbsp;</td></tr> 
+    <!-- END SPACER --> 
+                     
+                  </table>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <!--  -->
+      </table>
+    </td>
+  </tr>
+</table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: transparent; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 0px; " class="stylingblock-content-wrapper camarker-inner"><table cellspacing="0" cellpadding="0" role="presentation" style="width: 100%;"><tr><td><table cellspacing="0" cellpadding="0" role="presentation" style="width: 100%;"><tr><td valign="top" class="responsive-td" style="width: 100%; padding-bottom: 0px;"><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner">                <table bgcolor="#efefef" role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+  <tr>
+    <td style="padding-bottom: 0px;">
+      <table class="full" width="640" cellspacing="0" cellpadding="0" border="0">
+        <tr>
+           <td align="center" vertical-align="middle">    
+                    <table border="0" cellspacing="0" cellpadding="0" align="center">
+                      <tr>
+                        <td align="center" vertical-align="middle">
+                          <table border="0" cellspacing="0" cellpadding="0" align="center">
+                            <tr>
+                              <td align="center" style="padding: 12px 10px; font-family:Arial, Verdana, sans-serif; font-size: 14px; line-height: 18px; font-weight: normal; color: #150404; text-decoration: none;">
+                                <a target="_blank" href="https://click.cdwemail.com/?qs=3c67cec690e090dfa27a3ca8c29241334f20341cb588d43986be1dbbd94ade88ad7a0e85afe5754fcda901b91ddf7da5ead50d8857042b0a58aee51d4eff615f" title=""  style="font-family:Arial, Verdana, sans-serif; font-size: 14px; line-height: 18px; font-weight: normal; color: #150404; text-decoration: none;"><strong>Small Business, Big Challenges&nbsp;&nbsp;|&nbsp;&nbsp;<span style="color: #cc0000; text-decoration: none;">Get Our Weekly Newsletter</span>&nbsp;&nbsp;|&nbsp;&nbsp;Unlock Real Solutions</strong></a>  
+                            </td>
+                          </tr>
+                          </table>
+                        </td> 
+                      </tr>
+                    </table>
+                  
+                
+              
+       </td></tr></table></td></tr></table></td></tr></table></td></tr></table></td></tr><tr><td><table cellspacing="0" cellpadding="0" role="presentation" style="width: 100%;"><tr><td valign="top" class="responsive-td" style="width: 100%; padding-top: 0px;"><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><table style="" width="100%" cellspacing="0" cellpadding="0" border="0" align="center">
+  <tr>
+<td style="height:25px; font-size:0;" height="25" align="center">&nbsp;</td>
+</tr>
+</table></td></tr></table></td></tr></table></td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: transparent; border: 0px; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 0px 10px 0px 0px; " class="stylingblock-content-wrapper camarker-inner"><!-- Fine Print --><table align="center" border="0" cellpadding="0" cellspacing="0" width="90%">
+ 
+  <tr>
+   <td align="center" class="font10" style="font-size:10px; font-weight:normal; line-height:14px; font-family: Arial, Verdana, sans-serif; color:#150404; padding-top: 0px; padding-bottom: 30px;" width="100%">
+    <a  href="https://click.cdwemail.com/?qs=3c67cec690e090df1ee5a1ac28ebb1227103f9227ad4eb803e9eb83162bb1d5e206f5a6fdc1a2fa5fdf4809ee72d87092c19acbfdc6df3ce83d113b69c230f82" style="display:block; text-align:center;  color:#150404; font-size:10px; line-height:14px;font-weight:normal; font-family: Arial, Verdana, sans-serif; white-space:nowrap; word-break:keep-all; text-decoration:none;" target="_blank">&sup1; 2024 Data Breach Investigations Report</a></td></tr></table></td></tr></table>
+              </td>
+            </tr>
+          </table>
+              </td>
+      </tr>
+    </table>
+    <!-- END BODY -->
+ 
+    
+     
+
+           
+<!-- START Footer -->  
+    
+   <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td valign="middle" align="center">
+          <table width="640" bgcolor="#efefef" border="0" cellspacing="0" cellpadding="0" class="full">
+
+            
+            <!-- START SIGN UP BANNER                  <tr>                   <td bgcolor="#efefef" align="center" style="border-bottom: 0px; font-family:Arial, Verdana, sans-serif; font-size: 12px; font-weight: normal; color: #150404; line-height: 16px; text-decoration: none;">                     <table border="0" cellspacing="0" cellpadding="0" align="center">                       <tr>                         <td align="center" vertical-align="middle">                           <table border="0" cellspacing="0" cellpadding="0" align="center">                             <tr>                               
+<td align="center" style="padding: 12px 10px; font-family:Arial, Verdana, sans-serif; font-size: 14px; line-height: 18px; font-weight: normal; color: #150404; text-decoration: none;">                                 <a target="_blank" href="https://biztechmagazine.com/cdw_subscription_v3/register-web?cm_ven=Email&cm_cat=ET_Promotional&cm_pla=MKT89916adu0000P0000&etsi=17731668&etsu=%%SubscriberID%%&cm_ite=MKT89916_20251118_CAMP_TECHMAG_SMB_INDUSTRY_TM_0-Q4-0-0-ALL-0-Y-0-EG-CTRL-A" title="" alias="Small Business, Big Challenges Banner" style="font-family:Arial, Verdana, sans-serif; font-size: 14px; line-height: 18px; font-weight: normal; color: #150404; text-decoration: none;"><strong>Small Business, Big Challenges</strong>&nbsp;&nbsp;|&nbsp;&nbsp;<span style="color: #cc0000; text-decoration: none; font-weight: normal;">Get Our Weekly Newsletter</span>&nbsp;&nbsp;|&nbsp;&nbsp;<strong>Unlock Real Solutions</strong></a>                               
+</td>                           </tr>                           </table>                         </td>                        </tr>                     </table>                   </td>                 
+</tr>               <tr> <td bgcolor="#ffffff" style="height:25px; font-size:0;" height="25" align="center">&nbsp;</td> </tr>                END SIGN UP BANNER --> 
+            <tr>
+              <td valign="top" style="padding: 15px 15px 15px 15px; ">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                  <tr>
+                    <td valign="bottom" class="full" >
+                      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                          <td style="padding:0px;">
+                            <table border="0" cellspacing="0" cellpadding="0" align="left" class="full">
+                              
+                      <!-- START TM logo-->        
+        <tr>
+        <td align="center" style=" padding:0px 0px 15px 0px;">
+          <table align="left" cellpadding="0" cellspacing="0" border="0" style="width:100%;">
+            <tr>
+              <td  align="left"  border="0" class="colsplit" style="">
+                
+                <table align="left" valign="middle" class="clearmob" width="auto" cellpadding="0" cellspacing="0" border="0" style="display: block; float: center;">
+         
+         <tr>  
+   <td align="center" width="100"  height="auto" style="padding-left:0px; padding-right:0px; font-family:Arial, Verdana, sans-serif; font-size: 11px; font-style: normal;">
+                      <a href="https://click.cdwemail.com/?qs=a52cb89b9d1383cec880b4cd43570bc242aafe019a70fedc21967dd72c484e841d079c9d43d2faed12f03fe45f37fedd8ed10b3621456ff3116a45e44c0a4a4b" target="_blank" ><img src="https://image.cdwemail.com/lib/fe95157070660d7e73/m/1/smb_2025.png" alt="BizTech: Small Business Magazine" title="BizTech: Small Business Magazine" width="100" height="auto" border="0" style="display: block; margin: 0; padding: 0; width:90px; height:auto;"></a>
+                                      </td>
+           
+        <td align="center" width="15" border="0" style="width:15px; height:auto; font-size:0;" height="auto" >&nbsp;</td>
+  
+    <td align="center" width="20" height="20" style="padding-left:0px; padding-right:5px;"  >
+                      <a href="https://click.cdwemail.com/?qs=a52cb89b9d1383ce720f863267277e2622787d294e60eab77ca449fa45e796f140e5b8dc9bdfcaf457a96306c0a67e7f165a793b57a16e05d1d2f8877d3fc9f4" target="_blank" ><img src="https://image.cdwemail.com/lib/fe95157070660d7e73/m/1/24social-twitterX-54565B.png" alt="X Twitter" width="20" height="20" border="0" style="display: block; width: 20px; height: 20px;" /> </a>
+                                      </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>  
+                      </table>
+                    </td>
+                  </tr>                 
+                                
+     
+                        
+ <!-- LINE -->
+     
+ <tr>
+        <td align="center" style="">
+          <table align="center" cellpadding="0" cellspacing="0" border="0" style="width:100%;">
+            <tr>
+       
+              <td align="center" class="" border="0" valign="top" style="font-size:1px; line-height:1px; text-align:left; text-decoration:none;  border-top:1px solid #BCBCBC">&nbsp;</td>
+     </tr></table></td></tr>        
+         
+ <!-- Start CDW footer -->      
+            
+            <tr>
+              <td align="left" style="font-family:Arial, Verdana, sans-serif; font-size: 11px; color: #150404; text-decoration: none; line-height: 14px; padding-top: 15px;">
+                <a href="https://click.cdwemail.com/?qs=3c67cec690e090df64c63f1c4230523980beba34741fbeffe7e8ddec3d77f7a2d14a016bdab648568d1ebeec1addfcd8910c000d18970fa8c5d2e8e05316b68a" target="_blank" style="font-family:Arial, Verdana, sans-serif; font-size: 11px; line-height: 14px; color: #150404; text-decoration: none; white-space: nowrap;"  >Privacy Policy</a> &nbsp; | &nbsp; 
+                <a href="https://click.cdwemail.com/?qs=3c67cec690e090dfa2cee857161eebffd2d0c47e18f2f5526af04e44908919df469c8963eefe91dabc5b6ef388e644cfd0c62d9adc3a32a4f05df0ecb66bc27b" target="_blank" style="font-family:Arial, Verdana, sans-serif; font-size: 11px; line-height: 14px; color: #150404; text-decoration: none; white-space: nowrap;" >Terms and Conditions</a> &nbsp; | &nbsp; 
+                <a href="https://click.cdwemail.com/?qs=3c67cec690e090df621969de1e8970f4d318f77bb3f50da9e6da4bc980f27e418acc43702d60707c554aec3cc5906e1a78d36f24569219871c41bea4053f4d41" target="_blank" style="font-family:Arial, Verdana, sans-serif; font-size: 11px; line-height: 14px;color: #150404; text-decoration: none;" >Unsubscribe</a>
+              </td>
+            </tr>
+   
+   <tr>
+              <td align="left" valign="top" style="padding: 15px 0 0px 0; font-family:Arial, Verdana, sans-serif; font-size: 11px; font-style: normal; color: #150404; text-decoration: none; line-height: 14px;" class="appleLinksBlack" >This e-mail was sent by: <strong>CDW LLC</strong>. All information and offers are subject to CDW’s terms and conditions, and CDW policies. Please add 
+                  <a href="mailto:subscriptions@cdwemail.com" target="_blank" style="color: #150404; text-decoration:none; font-family:Arial, Verdana, sans-serif; font-size:11px;" alias="Add to Address Book">subscriptions@cdwemail.com</a> to your address book. This message was sent to <a href="mailto:user@example.com" target="_blank" style="color: #150404; text-decoration:none; font-family:Arial, Verdana, sans-serif; font-size:11px;" alias="Email Address"><span class="appleLinksBlack">user@example.com</span></a>. CDW&#174; and CDW&middot;G&#174; and are registered trademarks of CDW LLC. All other trademarks and registered trademarks are the sole property of their respective owners.  
+                </td></tr>
+                
+     
+    
+     
+        <!-- CDW Social Icons -->
+      <tr>
+        <td align="center" style=" padding:15px 0px;">
+          <table align="left" cellpadding="0" cellspacing="0" border="0" style="width:100%;">
+            <tr>
+              <td  align="left"  border="0" class="colsplit" style="width:260px; height:20px;">
+                
+                <table   align="left" valign="middle" class="clearmob" width="auto" cellpadding="0" cellspacing="0" border="0" style="display: block; float: center; width:260px;">
+         
+         <tr>
+                    <td align="center" width="20" style="padding-left:0px; padding-right:5px;"  >
+                      <a href="https://click.cdwemail.com/?qs=3c67cec690e090df35570b1dad6b2db07813b5af52dddf9a5c0577c1b6dbb8ecdf14689340c8bc86ad7608fbf3ca3cf1417a0098f6db782f" target="_blank" >
+                      <img src="https://image.cdwemail.com/lib/fe95157070660d7e73/m/1/24social-facebook-54565B.png" alt="FB" width="20" height="20" class="full" style="display: block; margin:0 auto; max-width:20px; max-height:auto;" border="0">
+                      </a>
+                    </td>
+                    <td align="center" width="20" style="padding-left:0px; padding-right:5px;" >
+                      <a href="https://click.cdwemail.com/?qs=9d13e014de348e0a07d1a07f23f2077ae9c3a5c3c71b3e1acf471b3244003aa9a50a9841dfc646c00ab10385e263604f1458cc75610a7df5" target="_blank" >
+                      <img src="https://image.cdwemail.com/lib/fe95157070660d7e73/m/1/24social-twitterX-54565B.png" alt="X" width="20" height="20" class="full" style="display: block; margin:0 auto; max-width:20px; max-height:auto;" border="0">
+                      </a>
+                    </td>
+
+                    <td align="center" width="20" style="padding-left:0px; padding-right:5px;">
+                      <a href="https://click.cdwemail.com/?qs=9d13e014de348e0acadfef4b709cc2176368f990226f091e3b57929d19f8376256e362e82c6c8136cdd11881db2c2a9ee12c644e63737694" target="_blank" >
+                      <img src="https://image.cdwemail.com/lib/fe95157070660d7e73/m/1/24social-linkedin-54565B.png" alt="IN" width="20" height="20" class="full" style="display: block; margin:0 auto; max-width:20px; max-height:auto;" border="0">
+                      </a>
+                    </td>
+                   
+                    <td align="center" width="20" style="padding-left:0px; padding-right:0px;">
+                      <a href="https://click.cdwemail.com/?qs=9d13e014de348e0a80e55ad65a1f360d6cf2880b0b046cb2623efb0aa3ccce547d8d2b4ea1381d1b76c2cfb21e2d9f412db259977db4eb01" target="_blank" >
+                      <img src="https://image.cdwemail.com/lib/fe95157070660d7e73/m/1/24social-youtube-icon-54565B.png" alt="YT" width="20" height="20" class="full" style="display: block; margin:0 auto; max-width:20px; max-height:auto;" border="0">
+                      </a>
+                    </td>
+    
+        <td bgcolor="#efefef"  align="center" width="35" border="0" style="width:35px; height:15px; font-size:0;" height="15" >&nbsp;
+        </td>
+      
+    
+    <td align="center" width="auto"  height="20" style="padding-left:0px; padding-right:0px;"  >
+                      <a href="https://click.cdwemail.com/?qs=9d13e014de348e0a2945ba1a1e803fc900bc823799bae0f7dd1a6f5c137b2cf064c83a04bc1fe3cbdf903d87d185503cfa5b92e2de3e80a1" target="_blank" >
+                      <img src="https://image.cdwemail.com/lib/fe95157070660d7e73/m/1/cdw-digital-apple-icon.png" alt="Footer: Apple App Store" width="auto" height="20" class="full" style="display: block; margin:0 auto; max-height:20px; " border="0" align="center">
+                      </a>
+                    </td>
+           
+        
+        <td bgcolor="#efefef"  align="center" width="10" border="0" style="width:10px; height:20px; font-size:0;" height="20" >&nbsp;
+        </td>
+      
+           
+                   <td align="center" width="auto"  height="20" style="padding-left:0px; padding-right:0px;"  >
+                      <a href="https://click.cdwemail.com/?qs=9d13e014de348e0ab45c7e001890757f7d99a9475427a53b55f75ac28990365eaaf3feb23568871db2f85f288200a22b3049f7779bac105c" target="_blank" >
+                      <img src="https://image.cdwemail.com/lib/fe95157070660d7e73/m/1/cdw-digital-google-icon.png" alt="Footer: Google App Store" width="auto" height="20" class="full" style="display: block; margin:0 auto; max-height:20px; " align="center" border="0">
+                      </a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>  
+     
+     
+    <tr>
+              <td align="left" valign="top" style="font-family:Arial, Verdana, sans-serif; font-size: 11px; font-style: normal; color: #150404; text-decoration: none; line-height: 14px;">MKT89916 &copy; 2025 | 200 N. Milwaukee Ave., Vernon Hills, IL, 60061, United States | 800.800.4239</td>
+            </tr>  
+         
+                      </table>
+                          </td>
+                        </tr>
+      
+                      </table>
+                  
+             </td>  </tr></table>
+     
+  
+        <!-- SPACER -->          
+                       
+   <table bgcolor="#ffffff" style="" width="100%" cellspacing="0" cellpadding="0" border="0" align="center">
+  <tr>
+<td style="height:15px; font-size:0;" height="15" align="center">&nbsp;</td>
+</tr>
+</table>
+   </td>  </tr> </table>      
+            
+  
+    
+         <img src="https://click.cdwemail.com/open.aspx?ffcb10-fe5815777267057b731c-fdf510707263047e731c7270-fe95157070660d7e73-fef41d727c6700-fe291d747365027d731575-ff051672756402&d=40151&bmt=0" width="1" height="1" alt="">
+    <!– X-250ok-CID: MKT89916_20251118_CAMP_TECHMAG_SMB_INDUSTRY_TM_0-Q4-0-0-ALL-0-Y-0-EG-CTRL-A–>
+<br />
+<style> @media print{ #_two50 { background-image:url('https://analyticsCDW.everestengagement.com/ea/ANnc0m1dGZ/?t=p&e=946160615&c=MKT89916_20251118_CAMP_TECHMAG_SMB_INDUSTRY_TM_0-Q4-0-0-ALL-0-Y-0-EG-CTRL-A&jobid=17731668'); } } blockquote #_two50, #mailContainerBody #_two50, div.OutlookMessageHeader, table.moz-email-headers-table { background-image:url('https://analyticsCDW.everestengagement.com/ea/ANnc0m1dGZ/?t=f&e=946160615&c=MKT89916_20251118_CAMP_TECHMAG_SMB_INDUSTRY_TM_0-Q4-0-0-ALL-0-Y-0-EG-CTRL-A&jobid=17731668'); } </style> <div id='_two50'></div> 
+<img id='_two50_img' src='https://analyticsCDW.everestengagement.com/ea/ANnc0m1dGZ/?e=946160615&c=MKT89916_20251118_CAMP_TECHMAG_SMB_INDUSTRY_TM_0-Q4-0-0-ALL-0-Y-0-EG-CTRL-A&jobid=17731668' width='1' height='1' style='margin:0 !important; padding:0 !important; border:0 !important; height:1px !important; width:1px !important;' />
+  </body>
+</html>
+
+--jBqm0oi7aQIc=_?:--
+

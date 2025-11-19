@@ -214,13 +214,19 @@ impl TomlConfig {
         // Resolve relative paths in existing config values
         if let Some(ref mut rulesets) = config.rulesets {
             if !Path::new(&rulesets.config_dir).is_absolute() {
-                rulesets.config_dir = config_dir.join(&rulesets.config_dir).to_string_lossy().to_string();
+                rulesets.config_dir = config_dir
+                    .join(&rulesets.config_dir)
+                    .to_string_lossy()
+                    .to_string();
             }
         }
 
         if let Some(ref mut features) = config.features {
             if !Path::new(&features.config_dir).is_absolute() {
-                features.config_dir = config_dir.join(&features.config_dir).to_string_lossy().to_string();
+                features.config_dir = config_dir
+                    .join(&features.config_dir)
+                    .to_string_lossy()
+                    .to_string();
             }
         }
 

@@ -3,7 +3,7 @@ enabled: true
 rules:
   # Retail and Commerce
   - name: "Disney Services"
-    enabled: true
+    enabled: false
     criteria:
       type: "SenderPattern"
       pattern: ".*@.*(disney|disneystore|d23)\\.com.*"
@@ -11,7 +11,7 @@ rules:
     description: "Disney retail and entertainment services"
 
   - name: "Duluth Trading Company"
-    enabled: true
+    enabled: false
     criteria:
       type: "SenderPattern"
       pattern: ".*@.*duluthtrading\\.com.*"
@@ -19,7 +19,7 @@ rules:
     description: "Duluth Trading Company legitimate retailer"
 
   - name: "Levi's"
-    enabled: true
+    enabled: false
     criteria:
       type: "SenderPattern"
       pattern: ".*@.*levi\\.com.*"
@@ -27,7 +27,7 @@ rules:
     description: "Levi's brand legitimate emails"
 
   - name: "Michaels"
-    enabled: true
+    enabled: false
     criteria:
       type: "SenderPattern"
       pattern: ".*@.*michaels.*\\.com.*"
@@ -51,7 +51,7 @@ rules:
     description: "Filters Fast air filter retailer"
 
   - name: "Monoprice"
-    enabled: true
+    enabled: false
     criteria:
       type: "SenderPattern"
       pattern: ".*@.*monoprice\\.com.*"
@@ -59,7 +59,7 @@ rules:
     description: "Monoprice electronics retailer"
 
   - name: "King Arthur Baking"
-    enabled: true
+    enabled: false
     criteria:
       type: "SenderPattern"
       pattern: ".*@.*kingarthurbaking\\.com.*"
@@ -67,7 +67,7 @@ rules:
     description: "King Arthur Baking legitimate company"
 
   - name: "EyeBuyDirect"
-    enabled: true
+    enabled: false
     criteria:
       type: "SenderPattern"
       pattern: ".*@.*eyebuydirect\\.com.*"
@@ -75,7 +75,7 @@ rules:
     description: "EyeBuyDirect eyewear retailer"
 
   - name: "Walgreens"
-    enabled: true
+    enabled: false
     criteria:
       type: "SenderPattern"
       pattern: ".*@.*walgreens\\.com.*"
@@ -84,7 +84,7 @@ rules:
 
   # Airlines and Travel
   - name: "British Airways"
-    enabled: true
+    enabled: false
     criteria:
       type: "SenderPattern"
       pattern: ".*@.*ba\\.com.*"
@@ -102,7 +102,7 @@ rules:
 
   # Medical and Healthcare
   - name: "AceMed Medical Services"
-    enabled: true
+    enabled: false
     criteria:
       type: "SenderPattern"
       pattern: ".*@.*charmtracker\\.com.*"
@@ -110,7 +110,7 @@ rules:
     description: "AceMed medical appointment confirmations"
 
   - name: "ResMed"
-    enabled: true
+    enabled: false
     criteria:
       type: "SenderPattern"
       pattern: ".*@.*resmed\\.com.*"
@@ -119,7 +119,7 @@ rules:
 
   # Automotive
   - name: "Seattle MINI"
-    enabled: true
+    enabled: false
     criteria:
       type: "SenderPattern"
       pattern: ".*@.*driveseattlemini\\.com.*"
@@ -128,7 +128,7 @@ rules:
 
   # Financial and Investment Services
   - name: "Oxford Club"
-    enabled: true
+    enabled: false
     criteria:
       type: "SenderPattern"
       pattern: ".*@.*oxfordclub\\.com.*"
@@ -137,7 +137,7 @@ rules:
 
   # Logistics and Tracking Services
   - name: "Narvar Tracking Services"
-    enabled: true
+    enabled: false
     criteria:
       type: "SenderPattern"
       pattern: ".*@.*narvar\\.com.*"
@@ -146,7 +146,7 @@ rules:
 
   # Media and Publishing
   - name: "Medium Publishing Platform"
-    enabled: true
+    enabled: false
     criteria:
       type: "SenderPattern"
       pattern: ".*@.*medium\\.com.*"
@@ -164,7 +164,7 @@ rules:
 
   # Multi-hop whitelist preservation
   - name: "Previously whitelisted emails"
-    enabled: true
+    enabled: false
     criteria:
       type: "HeaderPattern"
       header: "X-FOFF-Rule-Matched"
@@ -174,7 +174,7 @@ rules:
 
   # Personal Communications
   - name: "Birthday Greetings"
-    enabled: true
+    enabled: false
     criteria:
       type: "And"
       criteria:
@@ -185,7 +185,7 @@ rules:
     score: -150
     description: "Legitimate birthday greetings from personal email accounts"
   - name: "Amazon Services"
-    enabled: true
+    enabled: false
     criteria:
       type: "And"
       criteria:
@@ -199,7 +199,7 @@ rules:
     description: "Amazon and AWS legitimate services (excluding marketing spam sent via Amazon SES)"
 
   - name: "Walmart"
-    enabled: true
+    enabled: false
     criteria:
       type: "SenderPattern"
       pattern: ".*@.*walmart\\.com.*"
@@ -207,7 +207,7 @@ rules:
     description: "Walmart retail chain"
 
   - name: "Target"
-    enabled: true
+    enabled: false
     criteria:
       type: "SenderPattern"
       pattern: ".*@.*target\\.com.*"
@@ -216,7 +216,7 @@ rules:
 
   # Technology Companies
   - name: "Microsoft Services"
-    enabled: true
+    enabled: false
     criteria:
       type: "SenderPattern"
       pattern: ".*@(microsoft|outlook|hotmail|live|msn)\\.com.*"
@@ -225,7 +225,7 @@ rules:
 
   # Netatmo IoT device alerts - From header override
   - name: "Netatmo device alerts"
-    enabled: true
+    enabled: false
     criteria:
       type: "BodyPattern"
       pattern: "(?i).*netatmo.*battery.*alert.*"
@@ -234,7 +234,7 @@ rules:
 
   # Secretlab furniture company - From header override  
   - name: "Secretlab furniture"
-    enabled: true
+    enabled: false
     criteria:
       type: "BodyPattern"
       pattern: "(?i).*secretlab.*hsa.*fsa.*"
@@ -243,7 +243,7 @@ rules:
 
   # Think Vacuums retail - From header override
   - name: "Think Vacuums retail"
-    enabled: true
+    enabled: false
     criteria:
       type: "SubjectPattern"
       pattern: "(?i).*Fall into Clean.*"
@@ -252,7 +252,7 @@ rules:
 
   # Precise whitelist for 11 false positives after cleanup
   - name: "Precise false positive whitelist"
-    enabled: true
+    enabled: false
     criteria:
       type: "Or"
       criteria:
@@ -291,7 +291,7 @@ rules:
 
   # Additional business senders whitelist
   - name: "Additional business senders"
-    enabled: true
+    enabled: false
     criteria:
       type: "Or"
       criteria:
@@ -312,7 +312,7 @@ rules:
 
   # Google Services
   - name: "Google Services"
-    enabled: true
+    enabled: false
     criteria:
       type: "And"
       criteria:
@@ -343,7 +343,7 @@ rules:
     description: "Google services (excludes forwarded suspicious emails)"
 
   - name: "Apple Services"
-    enabled: true
+    enabled: false
     criteria:
       type: "SenderPattern"
       pattern: ".*@.*(apple|icloud|me)\\.com.*"
@@ -360,7 +360,7 @@ rules:
     description: "Facebook and Instagram legitimate notifications"
 
   - name: "Twitter/X"
-    enabled: true
+    enabled: false
     criteria:
       type: "SenderPattern"
       pattern: ".*@.*(twitter|x)\\.com.*"
@@ -369,7 +369,7 @@ rules:
 
   # Financial Services
   - name: "PayPal"
-    enabled: true
+    enabled: false
     criteria:
       type: "SenderPattern"
       pattern: ".*@.*paypal\\.com.*"
@@ -377,9 +377,182 @@ rules:
     description: "PayPal payment services"
 
   - name: "Major Banks"
-    enabled: true
+    enabled: false
     criteria:
       type: "SenderPattern"
       pattern: ".*@.*(bankofamerica|chase|wellsfargo|citibank|usbank|pnc|capitalone|ally|discover|americanexpress)\\.com.*"
     score: -300
     description: "Major US banks and financial institutions"
+
+  # Legitimate services causing false positives
+  - name: "BackerKit Platform"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*backerkit\\.com$"
+    score: -100
+    description: "BackerKit crowdfunding platform"
+
+  - name: "British Airways"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: "(?i).*@.*britishairways\\.com$"
+    score: -100
+    description: "British Airways airline communications"
+
+  - name: "Discover Card"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: "(?i).*@.*discover\\.com$"
+    score: -100
+    description: "Discover financial services"
+
+  - name: "EyeBuyDirect"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: "(?i).*@.*eyebuydirect\\.com$"
+    score: -100
+    description: "EyeBuyDirect eyewear retailer"
+
+  - name: "Facebook Notifications"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: "(?i).*@.*facebook\\.com$"
+    score: -100
+    description: "Facebook social media notifications"
+
+  - name: "Filters Fast"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: "(?i).*@.*filtersfast\\.com$"
+    score: -100
+    description: "Filters Fast retail communications"
+
+  - name: "Oxford Club"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: "(?i).*@.*oxfordclub\\.com$"
+    score: -100
+    description: "Oxford Club investment newsletter"
+
+  - name: "ResMed"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: "(?i).*@.*resmed\\.com$"
+    score: -100
+    description: "ResMed medical device company"
+
+  - name: "Think Vacuums"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: "(?i).*@.*thinkvacuums\\.com$"
+    score: -100
+    description: "Think Vacuums retail communications"
+
+  - name: "Xfinity/Comcast"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: "(?i).*@.*(xfinity|comcast)\\.com$"
+    score: -100
+    description: "Xfinity/Comcast service communications"
+
+  # Additional legitimate services
+  - name: "BackerKit Crowdfunding"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*backerkit\\.com$"
+    score: -150
+    description: "BackerKit crowdfunding platform"
+
+  - name: "British Airways Airlines"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*britishairways\\.com$"
+    score: -150
+    description: "British Airways airline"
+
+  - name: "Oxford Club Investment"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*oxfordclub\\.com$"
+    score: -150
+    description: "Oxford Club investment newsletter"
+
+  - name: "Think Vacuums Retail"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*thinkvacuums\\.com$"
+    score: -150
+    description: "Think Vacuums retail store"
+
+  # Simple working BackerKit whitelist
+  - name: "BackerKit Simple"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@(o|creator).*\\.backerkit\\.com.*"
+    score: -200
+    description: "BackerKit simple pattern (excludes s.backerkit.com)"
+
+  # Simple working patterns for remaining failures
+  - name: "British Airways Simple"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*britishairways\\.com.*"
+    score: -200
+    description: "British Airways simple pattern"
+
+  - name: "Oxford Club Simple"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*oxfordclub\\.com.*"
+    score: -200
+    description: "Oxford Club simple pattern"
+
+  - name: "Think Vacuums Simple"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*thinkvacuums\\.com.*"
+    score: -200
+    description: "Think Vacuums simple pattern"
+
+  - name: "UncommonGoods Simple"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*uncommongoods\\.com.*"
+    score: -200
+    description: "UncommonGoods simple pattern"
+
+  # Fix remaining patterns
+  - name: "British Airways BA Domain"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*\\.ba\\.com.*"
+    score: -200
+    description: "British Airways ba.com domain"
+
+  - name: "Think Vacuums Case Insensitive"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: "(?i).*thinkvacuums\\.com.*"
+    score: -200
+    description: "Think Vacuums case insensitive"
