@@ -87,6 +87,13 @@ impl SenderAlignmentAnalyzer {
         }
     }
 
+    fn extract_reply_to_email(&self, headers: &str) -> Option<String> {
+        let reply_to_regex = Regex::new(r"(?i)reply-to:.*?([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})").unwrap();
+        reply_to_regex.captures(headers)
+            .and_then(|caps| caps.get(1))
+            .map(|m| m.as_str().to_string())
+    }
+
     fn extract_domain(&self, header: &str) -> String {
         if let Some(cap) = self.domain_regex.captures(header) {
             if let Some(domain) = cap.get(1) {
@@ -274,6 +281,19 @@ impl FeatureExtractor for SenderAlignmentAnalyzer {
         let sender_info = self.extract_sender_info(context);
         let mut evidence = Vec::new();
         let mut score = 0;
+
+        // Check Reply-To mismatch
+        if let Some(raw_headers) = context.headers.get("raw") {
+            if let Some(reply_to_email) = self.extract_reply_to_email(raw_headers) {
+                let reply_to_domain = self.extract_domain(&reply_to_email);
+                if !reply_to_domain.is_empty() && !sender_info.from_domain.is_empty() 
+                   && reply_to_domain != sender_info.from_domain {
+                    score += 40;
+                    evidence.push(format!("Reply-To domain ({}) differs from From domain ({})", 
+                                        reply_to_domain, sender_info.from_domain));
+                }
+            }
+        }
 
         // Analyze brand impersonation
         let brand_issues = self.analyze_brand_impersonation(&sender_info, context);
