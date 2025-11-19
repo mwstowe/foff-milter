@@ -30,32 +30,6 @@ impl ContextAnalyzer {
             Regex::new(r"(?i)(click.*here.*now|respond.*within.*hours)").unwrap(),
         ];
 
-        let authority_patterns = vec![
-            Regex::new(r"(?i)\b(customs?|border (patrol|protection)|immigration|homeland security)\b").unwrap(),
-            Regex::new(r"(?i)\b(tax office|irs|internal revenue|fbi|police|court|legal department)\b").unwrap(),
-            Regex::new(r"(?i)\b(government|federal|official|authority|enforcement)\b").unwrap(),
-        ];
-
-        let delivery_scam_patterns = vec![
-            Regex::new(r"(?i)\b(package|shipment|delivery).{0,30}(arrived|pending|held|custody)\b").unwrap(),
-            Regex::new(r"(?i)\b(customs? clearance|delivery.{0,20}fee|shipping.{0,20}charge)\b").unwrap(),
-            Regex::new(r"(?i)\b(parcel|item).{0,20}(waiting|ready|available)\b").unwrap(),
-        ];
-
-        let info_harvesting_patterns = vec![
-            Regex::new(r"(?i)\bprovide.{0,20}(your|personal).{0,20}information\b").unwrap(),
-            Regex::new(r"(?i)\b(send|submit|enter).{0,20}(details|information|data)\b").unwrap(),
-            Regex::new(r"(?i)\b(confirm|verify|update).{0,20}(identity|account|information)\b").unwrap(),
-        ];
-
-        let government_domains = vec![
-            ".gov".to_string(),
-            ".mil".to_string(),
-            "irs.gov".to_string(),
-            "dhs.gov".to_string(),
-            "cbp.gov".to_string(),
-        ];
-
         let legitimacy_indicators = vec![
             Regex::new(r"(?i)(unsubscribe|privacy policy|terms of service)").unwrap(),
             Regex::new(r"(?i)(customer service|support team|help center)").unwrap(),
@@ -258,26 +232,109 @@ impl FeatureExtractor for ContextAnalyzer {
         let mut all_evidence = Vec::new();
 
         let body = context.body.as_deref().unwrap_or("");
-        let subject = context.headers.get("Subject").map(|s| s.as_str()).unwrap_or("");
+        let subject = context
+            .headers
+            .get("Subject")
+            .map(|s| s.as_str())
+            .unwrap_or("");
         let combined_text = format!("{} {}", subject, body);
-        let sender = context.headers.get("From").map(|s| s.as_str()).unwrap_or("");
+        let sender = context
+            .headers
+            .get("From")
+            .map(|s| s.as_str())
+            .unwrap_or("");
+
+        // Debug logging
+        log::debug!("Context analyzer - Subject: '{}'", subject);
+        log::debug!("Context analyzer - Sender: '{}'", sender);
+        log::debug!(
+            "Context analyzer - From header: '{:?}'",
+            context.from_header
+        );
+
+        // Subject pattern analysis
+        let subject_special_chars = Regex::new(r"[.?%#]{3,}").unwrap();
+        let subject_text = context.subject.as_deref().unwrap_or("");
+        if subject_special_chars.is_match(subject_text) {
+            total_score += 25;
+            all_evidence.push("Suspicious subject with excessive special characters".to_string());
+        }
+
+        // Social engineering detection
+        let social_eng_regex = Regex::new(
+            r"(?i)\b(screenshot of the error|would you like me to send|technical assistance)\b",
+        )
+        .unwrap();
+        if social_eng_regex.is_match(&combined_text) {
+            total_score += 40;
+            all_evidence.push("Social engineering pattern detected".to_string());
+        }
+
+        // Financial spam detection
+        let financial_regex = Regex::new(
+            r"(?i)\b(refinance|mortgage|lock in.{0,20}(savings|rates)|fha.{0,20}(rate|guide))\b",
+        )
+        .unwrap();
+        let subject_text = context.subject.as_deref().unwrap_or("");
+        let from_header = context.from_header.as_deref().unwrap_or("");
+        let financial_check_text = format!("{} {} {}", subject_text, body, from_header);
+        if financial_regex.is_match(&financial_check_text) {
+            total_score += 45;
+            all_evidence.push("Financial spam patterns detected".to_string());
+        }
+
+        // Content mismatch detection
+        if let Some(body) = &context.body {
+            let title_match = Regex::new(r"<title>([^<]+)</title>").unwrap();
+            if let Some(title_cap) = title_match.captures(body) {
+                let title = title_cap.get(1).unwrap().as_str().to_lowercase();
+                let sender_lower = sender.to_lowercase();
+                if (sender_lower.contains("keto") || sender_lower.contains("diet"))
+                    && !title.contains("keto")
+                    && !title.contains("diet")
+                {
+                    total_score += 50;
+                    all_evidence
+                        .push("Content mismatch: Health sender with unrelated content".to_string());
+                }
+            }
+        }
+
+        // Health spam detection
+        let health_regex =
+            Regex::new(r"(?i)\b(keto|diet.?miracle|weight.?loss|health.?supplement)\b").unwrap();
+        let from_header = context.from_header.as_deref().unwrap_or("");
+        let check_text = format!("{} {}", sender, from_header);
+        if health_regex.is_match(&check_text)
+            && !sender.contains("health")
+            && !sender.contains("nutrition")
+        {
+            total_score += 40;
+            all_evidence.push("Health spam from non-health domain".to_string());
+        }
 
         // Authority impersonation detection
         let authority_regex = Regex::new(r"(?i)\b(customs? (and )?protection|border (patrol|protection)|immigration (office|department)|homeland security|tax office|irs|internal revenue service|fbi|police department|court (order|notice)|legal department|government (agency|office)|federal (agency|office)|official (notice|communication)|enforcement (agency|division))\b").unwrap();
-        if authority_regex.is_match(&combined_text) && !sender.contains(".gov") && !sender.contains(".mil") {
+        if authority_regex.is_match(&combined_text)
+            && !sender.contains(".gov")
+            && !sender.contains(".mil")
+        {
             total_score += 60;
             all_evidence.push("Authority impersonation: Claims government/official status from non-government sender".to_string());
         }
 
         // Package delivery scam detection
-        let delivery_regex = Regex::new(r"(?i)\b(package|shipment|delivery).{0,30}(arrived|pending|held|custody)\b").unwrap();
+        let delivery_regex =
+            Regex::new(r"(?i)\b(package|shipment|delivery).{0,30}(arrived|pending|held|custody)\b")
+                .unwrap();
         if delivery_regex.is_match(&combined_text) {
             total_score += 45;
             all_evidence.push("Package delivery scam patterns detected".to_string());
         }
 
         // Information harvesting detection
-        let harvesting_regex = Regex::new(r"(?i)\bprovide.{0,20}(your|personal).{0,20}information\b").unwrap();
+        let harvesting_regex =
+            Regex::new(r"(?i)\bprovide.{0,20}(your|personal).{0,20}information\b").unwrap();
         if harvesting_regex.is_match(&combined_text) {
             total_score += 35;
             all_evidence.push("Information harvesting request detected".to_string());

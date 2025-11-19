@@ -1185,7 +1185,7 @@ impl FilterEngine {
         }
 
         // Advanced feature-based analysis
-        let feature_analysis = self.feature_engine.analyze(&context_with_attachments);
+        let feature_analysis = self.feature_engine.analyze(&normalized_context);
         total_score += feature_analysis.total_score;
         for feature_score in &feature_analysis.scores {
             if feature_score.score != 0 {
@@ -5648,6 +5648,11 @@ impl FilterEngine {
             .as_ref()
             .map(|b| b.to_lowercase())
             .unwrap_or_default();
+        let from_header = context
+            .from_header
+            .as_ref()
+            .map(|f| f.to_lowercase())
+            .unwrap_or_default();
 
         // SEO and marketing spam patterns
         let seo_patterns = [
@@ -5674,6 +5679,35 @@ impl FilterEngine {
             "apparel deal",
         ];
 
+        // Social engineering and technical scam patterns
+        let social_eng_patterns = [
+            "screenshot of the error",
+            "would you like me to send",
+            "technical assistance",
+        ];
+
+        // Financial spam patterns
+        let financial_patterns = [
+            "refinance rates",
+            "lock in your savings",
+            "mortgage rates",
+            "fha rate guide",
+        ];
+
+        // Health and diet spam patterns
+        let health_patterns = [
+            "dietmiracle",
+            "keto miracle",
+            "weight loss miracle",
+            "health supplement",
+        ];
+
+        // Check subject for suspicious special characters
+        if subject.matches(&['.', '?', '%', '#'][..]).count() >= 3 {
+            log::debug!("Detected suspicious subject with excessive special characters");
+            return true;
+        }
+
         for pattern in &seo_patterns {
             if subject.contains(pattern) || body.contains(pattern) {
                 log::debug!("Detected SEO spam pattern: {}", pattern);
@@ -5684,6 +5718,29 @@ impl FilterEngine {
         for pattern in &clothing_patterns {
             if subject.contains(pattern) || body.contains(pattern) {
                 log::debug!("Detected clothing spam pattern: {}", pattern);
+                return true;
+            }
+        }
+
+        for pattern in &social_eng_patterns {
+            if subject.contains(pattern) || body.contains(pattern) {
+                log::debug!("Detected social engineering pattern: {}", pattern);
+                return true;
+            }
+        }
+
+        for pattern in &financial_patterns {
+            if subject.contains(pattern) || body.contains(pattern) || from_header.contains(pattern)
+            {
+                log::debug!("Detected financial spam pattern: {}", pattern);
+                return true;
+            }
+        }
+
+        for pattern in &health_patterns {
+            if subject.contains(pattern) || body.contains(pattern) || from_header.contains(pattern)
+            {
+                log::debug!("Detected health spam pattern: {}", pattern);
                 return true;
             }
         }
