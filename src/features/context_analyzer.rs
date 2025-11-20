@@ -252,6 +252,67 @@ impl FeatureExtractor for ContextAnalyzer {
             context.from_header
         );
 
+        // Giveaway language patterns
+        let giveaway_language_regex = Regex::new(r"(?i)\b(your.*(prize|gift).*awaits|claim.*your.*(prize|gift)|congratulations.*winner|you.*have.*won)\b").unwrap();
+        if giveaway_language_regex.is_match(&combined_text) {
+            total_score += 35;
+            all_evidence.push("Giveaway language pattern detected".to_string());
+        }
+
+        // Prize notification subjects
+        if let Some(subject) = context.subject.as_deref() {
+            let prize_subject_regex = Regex::new(
+                r"(?i)\b(awaits|claim.*from|congratulations.*[a-z]+|winner.*notification)\b",
+            )
+            .unwrap();
+            if prize_subject_regex.is_match(subject) {
+                total_score += 25;
+                all_evidence.push("Prize notification subject pattern detected".to_string());
+            }
+        }
+
+        // Product prize scam detection (very specific to scam contexts)
+        let product_prize_regex = Regex::new(r"(?i)\b(yeti.*(rambler|tumbler).*awaits|your.*(prize|gift).*awaits|claim.*your.*(prize|gift).*from)\b").unwrap();
+        if product_prize_regex.is_match(&combined_text) {
+            total_score += 50;
+            all_evidence.push("Product prize scam pattern detected".to_string());
+        }
+
+        // Holiday/seasonal giveaway scams
+        let seasonal_giveaway_regex = Regex::new(r"(?i)\b(thanksgiving|christmas|holiday|black.*friday).*(claim.*from|giveaway.*from|gift.*from)\b").unwrap();
+        if seasonal_giveaway_regex.is_match(&combined_text) {
+            total_score += 45;
+            all_evidence.push("Seasonal giveaway scam pattern detected".to_string());
+        }
+
+        // Exclusive opportunity language detection (scam-specific contexts)
+        let exclusive_regex = Regex::new(r"(?i)\b(exclusive.*opportunity.*receive|you.*chosen.*exclusive|selected.*exclusive.*offer|exclusive.*collection.*unclaimed)\b").unwrap();
+        if exclusive_regex.is_match(&combined_text) {
+            total_score += 25;
+            all_evidence.push("Exclusive opportunity scam language detected".to_string());
+        }
+
+        // Congratulations/prize scam detection
+        let prize_scam_regex = Regex::new(r"(?i)\b(congratulations.*you.*chosen|you.*been.*selected|exclusive.*opportunity|winner.*notification)\b").unwrap();
+        if prize_scam_regex.is_match(&combined_text) {
+            total_score += 40;
+            all_evidence.push("Prize/congratulations scam pattern detected".to_string());
+        }
+
+        // Mystery box scam detection
+        let mystery_box_regex = Regex::new(r"(?i)\b(mystery box|lost items|unclaimed treasures|abandoned packages|undelivered packages)\b").unwrap();
+        if mystery_box_regex.is_match(&combined_text) {
+            total_score += 60;
+            all_evidence.push("Mystery box scam pattern detected".to_string());
+        }
+
+        // Survey scam detection
+        let survey_scam_regex = Regex::new(r"(?i)\b(complete.*survey.*unlock|survey.*special offer|quick survey.*unlock|survey.*exclusive)\b").unwrap();
+        if survey_scam_regex.is_match(&combined_text) {
+            total_score += 55;
+            all_evidence.push("Survey scam pattern detected".to_string());
+        }
+
         // Subject pattern analysis
         let subject_special_chars = Regex::new(r"[.?%#]{3,}").unwrap();
         let subject_text = context.subject.as_deref().unwrap_or("");
@@ -270,9 +331,9 @@ impl FeatureExtractor for ContextAnalyzer {
             all_evidence.push("Social engineering pattern detected".to_string());
         }
 
-        // Financial spam detection
+        // Financial spam detection (more specific patterns)
         let financial_regex = Regex::new(
-            r"(?i)\b(refinance|mortgage|lock in.{0,20}(savings|rates)|fha.{0,20}(rate|guide))\b",
+            r"(?i)\b(refinance rates|lower refinance rates|lock in.{0,20}(savings|rates)|fha.{0,20}(rate|guide)|mortgage rates are here)\b",
         )
         .unwrap();
         let subject_text = context.subject.as_deref().unwrap_or("");

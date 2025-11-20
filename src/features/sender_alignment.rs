@@ -285,6 +285,50 @@ impl FeatureExtractor for SenderAlignmentAnalyzer {
         let mut evidence = Vec::new();
         let mut score = 0;
 
+        // Check major brand impersonation (sender claiming to BE the brand)
+        let brand_patterns = [
+            ("ebay", vec!["ebay.com", "ebay.co.uk", "ebay.de"]),
+            ("fedex", vec!["fedex.com", "fedex.co.uk"]),
+            ("ups", vec!["ups.com"]),
+            ("dhl", vec!["dhl.com"]),
+            ("starbucks", vec!["starbucks.com"]),
+            ("costco", vec!["costco.com", "costco.ca"]),
+            ("walmart", vec!["walmart.com"]),
+            ("target", vec!["target.com"]),
+        ];
+
+        let from_header = context.from_header.as_deref().unwrap_or("");
+        let sender_domain = context.sender.as_deref().unwrap_or("");
+
+        for (brand, official_domains) in &brand_patterns {
+            // Only trigger if sender claims to BE the brand (not just mentioning it)
+            let brand_claim_patterns = [
+                format!("^{}", brand),     // Starts with brand name
+                format!("{} -", brand),    // "eBay -" format
+                format!("^\"{}\"", brand), // Quoted brand name
+            ];
+
+            let claims_brand = brand_claim_patterns.iter().any(|pattern| {
+                regex::Regex::new(&format!("(?i){}", pattern))
+                    .unwrap()
+                    .is_match(from_header)
+            });
+
+            if claims_brand {
+                let is_official = official_domains
+                    .iter()
+                    .any(|domain| sender_domain.contains(domain) || from_header.contains(domain));
+                if !is_official {
+                    score += 75;
+                    evidence.push(format!(
+                        "Brand impersonation: Claims {} from non-official domain",
+                        brand.to_uppercase()
+                    ));
+                    break;
+                }
+            }
+        }
+
         // Check sender mismatch (Gmail claiming business groups)
         if let Some(sender) = &context.sender {
             if sender.contains("@gmail.com") {
@@ -298,6 +342,92 @@ impl FeatureExtractor for SenderAlignmentAnalyzer {
                             .push("Gmail sender claiming business/group affiliation".to_string());
                     }
                 }
+            }
+        }
+
+        // Check suspicious sender patterns (Brand@Non-Brand-Domain format)
+        let suspicious_sender_patterns =
+            [r"^(starbucks|costco|walmart|target|amazon|apple|microsoft)@.*\.(com|net|org)$"];
+
+        for pattern in &suspicious_sender_patterns {
+            let regex = Regex::new(&format!("(?i){}", pattern)).unwrap();
+            if regex.is_match(from_header) {
+                // Check if it's NOT from official domain
+                let is_official = [
+                    "starbucks.com",
+                    "costco.com",
+                    "walmart.com",
+                    "target.com",
+                    "amazon.com",
+                    "apple.com",
+                    "microsoft.com",
+                ]
+                .iter()
+                .any(|domain| from_header.contains(domain));
+                if !is_official {
+                    score += 30;
+                    evidence.push("Suspicious sender format detected".to_string());
+                    break;
+                }
+            }
+        }
+
+        // Check suspicious domain patterns (avoid legitimate business subdomains)
+        let suspicious_domain_patterns = [
+            r"mystery\.box\.",
+            r"[a-z]+box[0-9]+@", // Only match in email addresses
+            r"dinisunnet\.com",  // Specific suspicious domain
+        ];
+
+        for pattern in &suspicious_domain_patterns {
+            let regex = Regex::new(&format!("(?i){}", pattern)).unwrap();
+            if regex.is_match(sender_domain) || regex.is_match(from_header) {
+                score += 20;
+                evidence.push("Suspicious domain pattern detected".to_string());
+                break;
+            }
+        }
+
+        // Check authentication failures combined with brand claims and giveaway language
+        if let Some(raw_headers) = context.headers.get("raw") {
+            let has_auth_failure =
+                raw_headers.contains("dkim=fail") || raw_headers.contains("spf=fail");
+            let claims_major_brand = [
+                "ebay",
+                "fedex",
+                "ups",
+                "dhl",
+                "amazon",
+                "paypal",
+                "microsoft",
+                "apple",
+                "starbucks",
+                "costco",
+                "walmart",
+                "target",
+            ]
+            .iter()
+            .any(|brand| from_header.to_lowercase().contains(brand));
+            let has_giveaway_language = ["giveaway", "claim", "prize", "winner", "gift", "contest"]
+                .iter()
+                .any(|word| {
+                    from_header.to_lowercase().contains(word)
+                        || context
+                            .subject
+                            .as_deref()
+                            .unwrap_or("")
+                            .to_lowercase()
+                            .contains(word)
+                });
+
+            if has_auth_failure && claims_major_brand && has_giveaway_language {
+                score += 40;
+                evidence.push(
+                    "Authentication failure with brand claim and giveaway language".to_string(),
+                );
+            } else if has_auth_failure && claims_major_brand {
+                score += 35;
+                evidence.push("Authentication failure combined with major brand claim".to_string());
             }
         }
 

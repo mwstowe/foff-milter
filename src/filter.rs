@@ -5686,12 +5686,13 @@ impl FilterEngine {
             "technical assistance",
         ];
 
-        // Financial spam patterns
+        // Financial spam patterns (more specific to avoid legitimate discussions)
         let financial_patterns = [
             "refinance rates",
             "lock in your savings",
-            "mortgage rates",
+            "mortgage rates are here",
             "fha rate guide",
+            "lower refinance rates",
         ];
 
         // Health and diet spam patterns

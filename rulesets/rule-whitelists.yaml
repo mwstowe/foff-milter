@@ -414,7 +414,7 @@ rules:
     criteria:
       type: "SenderPattern"
       pattern: "(?i).*@.*eyebuydirect\\.com$"
-    score: -100
+    score: -200
     description: "EyeBuyDirect eyewear retailer"
 
   - name: "Facebook Notifications"
@@ -566,11 +566,29 @@ rules:
     score: -200
     description: "DocuSign electronic signature service"
 
-  # Quora legitimate service
-  - name: "Quora Service"
+  # Backstage job platform
+  - name: "Backstage Jobs"
     enabled: true
     criteria:
       type: "SenderPattern"
-      pattern: ".*quora\\.com.*"
+      pattern: ".*backstage\\.com.*"
     score: -200
-    description: "Quora Q&A platform service"
+    description: "Backstage job platform service"
+
+  # Labcorp medical laboratory
+  - name: "Labcorp Medical"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*labcorp.*\\.com.*"
+    score: -200
+    description: "Labcorp medical laboratory service"
+
+  # AdaptHealth medical equipment
+  - name: "AdaptHealth Medical"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*adapthealth\\.com.*"
+    score: -200
+    description: "AdaptHealth medical equipment service"

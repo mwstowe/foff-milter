@@ -1,0 +1,680 @@
+Return-Path: <bounce-15430_HTML-635549174-2739066-100024080-11128@bounce.labcorpmessage.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTPS id 5AJJBj8J025752
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <testuser@example.com>; Wed, 19 Nov 2025 19:11:46 GMT
+	(envelope-from bounce-15430_HTML-635549174-2739066-100024080-11128@bounce.labcorpmessage.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (2048-bit key; unprotected) header.d=labcorpmessage.com header.i=labcorp@labcorpmessage.com header.b=qVJzqgIX;
+	dkim=pass (2048-bit key; unprotected) header.d=s10.y.mc.salesforce.com header.i=@s10.y.mc.salesforce.com header.b=XjkTIzUx
+X-Authentication-Warning: juliett.baddomain.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.baddomain.com
+Received: from mta3.labcorpmessage.com (mta3.labcorpmessage.com [128.245.2.245])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 5AJJBhYP046045
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO)
+	for <testuser@example.com>; Wed, 19 Nov 2025 13:11:45 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 5AJJBhYP046045
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (2048-bit key, unprotected) header.d=labcorpmessage.com header.i=labcorp@labcorpmessage.com header.a=rsa-sha256 header.s=10dkim1 header.b=qVJzqgIX;
+	dkim=pass (2048-bit key, unprotected) header.d=s10.y.mc.salesforce.com header.i=@s10.y.mc.salesforce.com header.a=rsa-sha256 header.s=fbldkim10 header.b=XjkTIzUx
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=10dkim1; d=labcorpmessage.com;
+ h=From:To:Subject:Date:List-Unsubscribe:List-Unsubscribe-Post:MIME-Version:
+ Message-ID:Content-Type; i=labcorp@labcorpmessage.com;
+ bh=lnODaocZkNobvuGLD+jl3b1tnbFM5ompAybFYbAFJEg=;
+ b=qVJzqgIX54+UjrdaesqnvNx+Y9SUQYxR0m+5BEefDw2yahPy96yksOBWJ8T47x3yscwb21YQavvb
+   ECzAozsUaNEZfVCPbtcEAjNBkODXwqB9Ag7Hfg6INHcYltRsrSayfJ9aBlYpf2Wd3z4s4b7xiczK
+   YUStm93w8OGhzsyWNleTW084GMdYDCley4WKMzq8XnUunQi9wLUjc3qd/dBXGRniEQCxSYMKVclG
+   OZg0bKHsYKfGVnHTTytrrBvhRDNUiRMaxAGTDv4lcjPmOehvkhrE76GGLVKul8L1y0P3JzB06Wp9
+   oUr1fh70mx2XI4vSh5703WKyMQlpJA6fbOT4ng==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=fbldkim10; d=s10.y.mc.salesforce.com;
+ h=From:To:Subject:Date:List-Unsubscribe:MIME-Version:Message-ID:Content-Type;
+ bh=lnODaocZkNobvuGLD+jl3b1tnbFM5ompAybFYbAFJEg=;
+ b=XjkTIzUxSMP8SnOeWd/+mPLwfplfB17tHTYBvnu7Me/8edb2s5sEMkqEq0EUNyYEvDDGI5LI3UMD
+   Y437v8CmhkIFSKT4Y58OfSNgPRQb0lLWMTgva84K6cszT+iEP9QfXgblzDmg0CvHin9HRzv6IIs0
+   O5V+wnA9rgltLNgFEHKc1AEzRQR21BtlapPTz4T1Nbobd78QMk/TwHpCtvZ097VuIskCR5PfLB6c
+   eJWnl1pxp+FgnO8NqqHddSjK+iqwSjEjK6A8vpUjf5tftF0iIbJiI0RSJg4dhq5pVOVY4RC/yU18
+   6AcJvSyAgydVO728TQtJ6Ag8ZGERT17XrzADXg==
+Received: by mta3.labcorpmessage.com id h3ob722fmd4m for <testuser@example.com>; Wed, 19 Nov 2025 19:11:38 +0000 (envelope-from <bounce-15430_HTML-635549174-2739066-100024080-11128@bounce.labcorpmessage.com>)
+From: "Labcorp" <labcorp@labcorpmessage.com>
+To: <testuser@example.com>
+Subject: Know your number: Prostate cancer screening saves lives
+Date: Wed, 19 Nov 2025 13:11:38 -0600
+List-Unsubscribe: <https://click.labcorpmessage.com/subscription_center.aspx?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtaWQiOiIxMDAwMjQwODAiLCJzIjoiNjM1NTQ5MTc0IiwibGlkIjoiMTU0MzAiLCJqIjoiMjczOTA2NiIsImpiIjoiMTExMjgiLCJkIjoiMTAwMjE5In0.mOjOHJawW1rqf1auRPDdJjQbk5Z20Q8Wr09GPReeYTk>, <mailto:leave-fcee1575716704122d502d29-fe23127370610074741374-fe8e1677766d047b73-fe40157075640679751c70-ff02157174660c@leave.labcorpmessage.com>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+MIME-Version: 1.0
+X-SFMC-Stack: 10
+x-job: 100024080_2739066
+Message-ID: <28673797-233e-4006-8261-e47f1e7e1f8b@dfw1s10mta1407.xt.local>
+Content-Type: multipart/alternative;
+	boundary="f1Ry72F69zzu=_?:"
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Wed, 19 Nov 2025 19:11:46 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Wed, 19 Nov 2025 13:11:45 -0600 (CST)
+X-Spam-Flag: YES
+X-FOFF-Feature-Evidence: Context Analysis: Multiple exclamation marks detected
+X-FOFF-Feature-Evidence: Context Analysis: Multiple exclamation marks detected
+X-FOFF-Rule-Matched: Health Threats: General health misinformation (juliett.baddomain.com) [c79bd26e]
+X-FOFF-Rule-Matched: Health Threats: General health misinformation (hotel.baddomain.com) [c79bd26e]
+X-FOFF-Score: 55 - foff-milter v0.7.1 (juliett.baddomain.com)
+X-FOFF-Score: 55 - foff-milter v0.7.1 (hotel.baddomain.com)
+
+This is a multi-part message in MIME format.
+
+--f1Ry72F69zzu=_?:
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+ &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj;  &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj;  &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj;  &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; &zwnj; 
+ 
+ 
+
+https://click.labcorpmessage.com/?qs=d8ba433b4209683320416a41b9421dcb31623c579675beac3aee53658f2b210fc1dd7bea634f5a5f12cc412d4f087903b202e4e8df375bfce22dd0846b3b59a2 
+
+
+
+
+ &ldquo;I didn&rsquo;t stop pushing for answers. Every test gave us more information. And that information saved my life.&rdquo;
+
+https://click.labcorpmessage.com/?qs=d8ba433b4209683365286c67c95bf5b6877df2d5e88c51c586a6ded866e979fad545553e2beea779a2a269bc6047b614a6ccef17d3db3138e7e3b2d4cb9bb25f 
+Read Don&rsquo;s Story 
+
+
+
+ 
+
+ 
+
+In the summer of 2023, Don began experiencing strange symptoms: fevers, fatigue, night sweats. While investigating his symptoms with his primary care physician, a prostate-specific antigen (PSA) test, a routine screening for prostate cancer, along with additional testing revealed a diagnosis of moderately aggressive prostate cancer.
+
+
+As Don and his primary care physician were navigating the prostate cancer diagnosis, a resurgence of his symptoms spurred additional testing and a biopsy that confirmed early stage lung cancer.
+
+
+&ldquo;I was stunned,&rdquo; Don said. &ldquo;We were already dealing with prostate cancer, and now this. But again, it was caught early&mdash;because we didn&rsquo;t ignore the symptoms.&rdquo;
+
+
+Don&rsquo;s incredible journey through a double cancer diagnosis highlights the importance of early detection and being an advocate for your own care.
+
+
+https://click.labcorpmessage.com/?qs=d8ba433b4209683365286c67c95bf5b6877df2d5e88c51c586a6ded866e979fad545553e2beea779a2a269bc6047b614a6ccef17d3db3138e7e3b2d4cb9bb25f 
+Read More 
+
+
+ 
+
+
+ 
+
+Take charge of your health: Consider getting a PSA screening
+
+
+More than 10% of men in the U.S. develop prostate cancer in their lifetime.^1
+
+
+
+Age is the most common risk factor&mdash;the older you are, the greater the chance is of having prostate cancer. Many men with prostate cancer don&rsquo;t show early symptoms and may not even know they have the disease.^2 Knowing your PSA number can help you and your healthcare provider figure out if further testing or treatment should be considered because an elevated PSA may be a sign of prostate cancer.
+
+Talk to your healthcare provider to discuss if the PSA screening test is right for you. 
+
+
+
+
+ 
+
+
+ 
+
+ Labcorp OnDemand puts your health in your hands.
+
+
+
+
+ Purchase 
+https://click.labcorpmessage.com/?qs=d8ba433b42096833765118fd587f8694767c056012c612c0a2fab7801385a38a986349a5c43ed2267629fe460375dbfe8ac42a5701274dc73b9f410290259813 
+lab tests  directly from Labcorp and get trusted, confidential results on key aspects of your health, including general wellness, allergy, fertility and more. 
+
+
+
+ 
+ 
+
+
+ 
+
+PSA Prostate Cancer Screening Test
+
+
+
+This PSA (prostate-specific antigen) test measures the level of prostate-specific antigen in your blood. Knowing your PSA number can help you and your healthcare provider figure out if further testing or treatment should be considered because an elevated PSA may be a sign of prostate cancer.
+
+
+https://click.labcorpmessage.com/?qs=d8ba433b42096833a2b67ff93ec5262315a2b18bdaf2ec2bd09fabd956e8d2204d8fce4f29f590f71763b40229df8fa83266524135f089bf22272dde8275f4e0 
+Learn More 
+
+
+
+
+ 
+
+
+ 
+Sources:
+
+
+1. 
+https://click.labcorpmessage.com/?qs=d8ba433b4209683335973199e11bca3e6f84206fb5d22e037d0e1e19e264397836362d50288d5c1623357499ffc0bad465e7f549f94c72936d1d8bcf235ff9c9 
+https://click.labcorpmessage.com/?qs=d8ba433b4209683335973199e11bca3e6f84206fb5d22e037d0e1e19e264397836362d50288d5c1623357499ffc0bad465e7f549f94c72936d1d8bcf235ff9c9 .
+
+2 
+https://click.labcorpmessage.com/?qs=d8ba433b420968338fdfd7bebb02376b889f9cebb12fee32af5057463eb9ce87cc28d9fe989c370a33f5bd267a187ef6e86f19769ef6ea41fce4bfadf36e4cbb 
+https://click.labcorpmessage.com/?qs=d8ba433b42096833724ca4de937ea40bda8018fa3aa35c05961979d806d20c6c189cad724d049c83ba29539fd54513b98910a571e1030325b2872587acfa21e8 uspstf/document/RecommendationStatementFinal/ prostate-cancer-screening .
+
+
+https://click.labcorpmessage.com/?qs=d8ba433b42096833fc9e0dd15c6bf4a897d1704fc913b4e7a59b386adff1a85ac3962e31a5db9ed476e8a61722777d7bb4ad76b246f2a564a09c8949d845f573 
+   >>  Login or create an account
+
+https://click.labcorpmessage.com/?qs=d8ba433b4209683379d80732dd63b685a66359da77bd076300678721271490e960cb782242ec62c2a40ebd1d2b8efb14b7bedb6668d8dcce9f7a5e59f8b07aff 
+   >>  Find a testing location or make an appointment
+
+https://click.labcorpmessage.com/?qs=d8ba433b42096833276b8f1379884b01e5475c848c9826900e6bbf2053f6e5c602151ae07a24068c08d62e8c3471cf58241195f78d258eeed30cd8ebe3a8cbd0 
+   >>  Learn about clinical trials
+
+
+
+
+https://click.labcorpmessage.com/?qs=d8ba433b42096833817f67b494dbda9dc674f999933802224e8c192c7e8e5e72ecec4e3c1ffa5e0e90816a170cdc9ab8c540ffa589f05280fbcdabcc9e12fd92 
+ 
+https://click.labcorpmessage.com/?qs=d8ba433b4209683346a0e34553a7ad2a0eb8e730c57e25e35899e1a717d9f8f4d62b6096bb2cfb9191fc85da7a8b665f68019544f1012c8ddad411563e4cfcf9 
+ 
+https://click.labcorpmessage.com/?qs=d8ba433b420968336c58c8a9e94289ee866769dcfe85ece0e255438fdfaf081d2fe35ff86f59de794ce042a61a59d2ea78143a60d5f01a71549b2174bb50db55 
+ 
+https://click.labcorpmessage.com/?qs=d8ba433b420968337ad735af8e9386a87b6f3933acc7b6a40a060552387342664384710b05b3ae7dd098501e486daf14c554a05727351ded649118798305fe45 
+ 
+https://click.labcorpmessage.com/?qs=d8ba433b42096833e7bd1a844693d6577751c42bfa414c4865d26e1dd5c5a33be1d03c61f0e2ebb01a45aca217d7f4ef0e1be9f8683a9f666e115a9e5fb8bad0 
+
+
+ This message was sent to testuser@example.com. Add labcorp@labcorpmessage.com to your address book to ensure our emails reach your inbox.
+
+
+
+https://click.labcorpmessage.com/?qs=d8ba433b420968334ac2509ef9ff423be770fe6d6ced04bc3da121ee1b8dec7b70cd39024af86d9fbd2bd8b8ea83094fff5b74274c7dae9c7c0e981817d63c21 
+Privacy Policy  | 
+https://click.labcorpmessage.com/?qs=d8ba433b420968336aa6604fca0b2fd6f3679bbcefc43f2e0b550281f17d3d8dc6c0ad167fa19ec67161de7a2e224a3defdd9a141bd75a8dc59c5667293c4495 
+Terms of Use  | 
+https://click.labcorpmessage.com/?qs=d8ba433b42096833d63c585ae91bf22954188ccc74a00c060dc5c80abdc5b9645dddedd41205995522d1d2801320ae34e3ac39d9d79b0e06b3dfcf547863e916 
+Non-discrimination Notice  | 
+https://view.labcorpmessage.com/?qs=f8a238fc2b5d3f964823e7f0eab28003d27a6bc7e6f29f25e512216562e4121c0d931d4b245b0bb6835c5f78a946b1f723d670ef5bad764f89b4681e3b377629747ef67c6a09907795e747ad7fc754e28fcee74236a55f0f 
+View in Browser  | 
+https://click.labcorpmessage.com/?qs=d8ba433b42096833c2d60c18262ff774592bb82888a9f812076aa42730f9bf3acf3961047bd9978105bb84e0fb1a2731f02c1df0c3386d70336199785e84d97e 
+Unsubscribe 
+
+
+
+
+
+ (c) 2025 Laboratory Corporation of America(R) Holdings. All Rights Reserved.
+
+ 531 S. Spring Street, Burlington, NC 27215 USA
+
+
+
+ 
+ 
+
+
+
+--f1Ry72F69zzu=_?:
+Content-Type: text/html;
+	charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">     
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+    <!--[if (gte mso 9)|(IE)]><!-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+<!--<![endif]-->
+
+      <!--[if (gte mso 9)|(IE)]><!-->
+  <style type="text/css">  @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap')
+} </style><!--<![endif]-->
+  
+<!--[if (gte mso 9)|(IE)]><!-->
+  <style type="text/css">
+  @font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 300 800;
+    font-stretch: 100%;}
+  font-display: swap;
+  mso-font-alt: 'Arial';
+  src: url(https://fonts.gstatic.com/s/opensans/v40/memvYaGs126MiZpBA-UvWbX2vVnXBbObj2OVTS-muw.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  @font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 300 800;
+    font-stretch: 100%;}
+  font-display: swap;
+  mso-font-alt: 'Arial';
+  src: url(https://fonts.gstatic.com/s/opensans/v40/memtYaGs126MiZpBA-UFUIcVXSCEkx2cmqvXlWqWuU6F.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    } </style> <!--<![endif]--> 
+
+  <style type="text/css">
+         sup { 
+    line-height: 1; 
+    font-size: 70%; 
+     vertical-align: top;}
+    mso-text-raise:13%;
+}
+    ReadMsgBody{ width: 100%;}
+      .ExternalClass {width: 100%;}
+      .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div {line-height: 100%;}
+      body {-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%;margin:0 !important;}
+      h1, h2, h3, h4, h5, h6 { margin: 0; }
+      p { margin: 1em 0;}
+      table td { border-collapse: collapse;}
+      img {outline:0;}
+      a img {border:none;}
+      @-ms-viewport{ width: device-width;}
+  </style>
+  
+    <style type="text/css">
+      @media only screen and (max-width: 480px) {
+         .container { width:100% !important; }
+        .footer { width:auto !important; margin-left:0; }
+        .msize {width: 70% !important; max-width: 70% !important; text-align: center !important; height: auto !important; padding-top: 20px !important; margin-left: auto !important; margin-right: auto !important;}
+        .mobile-hidden { display:none !important; }
+        .logo { display:block !important; padding:0 !important; }
+        img { max-width:100% !important; height:auto !important; max-height:auto !important;}
+        .header img{width:100% !important; max-width:175px !important; height:auto !important; max-height:auto !important;}
+        .photo img { width:100% !important; max-width:100% !important; height:auto !important;}
+        .drop { display:block !important; width: 100% !important; float:left; clear:both;}
+        .footerlogo { display:block !important; width: 100% !important; padding-top:15px; float:left; clear:both;}
+        .nav4, .nav5, .nav6 { display: none !important; }
+        .tableBlock {width:100% !important;}
+        .responsive-td {width:100% !important; display:block !important; padding:0 !important; }
+        .fluid, .fluid-centered {width: 100% !important; max-width: 100% !important; height: auto !important; margin-left: auto !important; margin-right: auto !important;}
+        .fluid-centered {margin-left: auto !important; margin-right: auto !important;}
+        /* MOBILE GLOBAL STYLES - DO NOT CHANGE */
+        body { padding: 0px !important; font-size: 16px !important; font-family:sans-serif !important; line-height: 150% !important;}
+        h1 { font-size: 22px !important; line-height: normal !important;}
+        h2 { font-size: 20px !important; line-height: normal !important;}
+        h3 { font-size: 18px !important; line-height: normal !important;}
+        .buttonstyles {font-family:Arial,helvetica,sans-serif !important; font-size: 16px !important; color: #FFFFFF !important;}
+        /* END OF MOBILE GLOBAL STYLES - DO NOT CHANGE */
+      }
+      @media only screen and (max-width: 640px) {
+                   .mobile-text-center {
+           text-align: center !important;}
+        .container { width:100% !important; }
+        .mobile-hidden { display:none !important; }
+        .logo { display:block !important; padding:0 !important; }
+        .photo img { width:100% !important; height:auto !important;}
+        .nav5, .nav6 { display: none !important;}
+        .fluid, .fluid-centered {width: 100% !important; max-width: 100% !important; height: auto !important; margin-left: auto !important; margin-right: auto !important;}
+        .fluid-centered {margin-left: auto !important; margin-right: auto !important;}
+      }
+    </style>
+  
+  <style type="text/css">
+      }
+      /* CLIENT-SPECIFIC STYLES */
+      body {
+         margin: 0;
+         padding: 0;
+         }
+       table {
+         border-collapse:collapse;}
+         mso-table-lspace:0;
+         mso-table-rspace:0; 
+         }
+       h1 {
+         margin:0.67em 0;
+         font-size:2em;
+         }
+       h2 {
+         margin:0.83em 0;
+         font-size:1.5em;
+         }
+       html[dir] h3, h3 {
+         margin:1em 0;
+         font-size:1.17em;
+         }
+
+    /* iOS BLUE LINKS */
+      
+          #root [x-apple-data-detectors=true],
+           a[x-apple-data-detectors=true]{
+             color: inherit !important;
+             text-decoration: inherit !important;
+           }
+       [x-apple-data-detectors-type="calendar-event"] {
+             color: inherit !important;
+             -webkit-text-decoration-color: inherit !important;
+       }
+       u + .body a {
+         color: inherit;
+         text-decoration: none;
+         font-size: inherit;
+         font-weight: inherit;
+         line-height: inherit;
+         }
+       .body {
+         word-wrap: normal;
+         word-spacing:normal;
+         }
+       div[style*="margin: 16px 0"] {
+         margin: 0!important;
+         }  
+      body, table, td, h1, h2, h3, h4, p, a, span, div, sup, li, ul { margin: 0; padding: 0; font-family:'Open Sans', Tahoma, Helvetica, sans-serif !important; }    
+    
+    .lAlign { text-align: left !important; }
+    }
+  </style>
+       <!--[if mso]>       <style type="text/css">           /* Begin Outlook Font Fix */               body, table, td {                  font-family : Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;                  line-height : 100%;                  font-size : 16px;                  color : #231F20;               }           /* End Outlook Font Fix */       </style>     <![endif]-->
+  </head>
+  <!-- added body global attributes here -->
+  <body text="#231f20" style="margin: 0px; -webkit-text-size-adjust:none;background-color : #D2F2F9; font-family : Calibri, Candara, Segoe, 'Segoe UI', Optima, Arial, sans-serif; line-height : 100%; font-size : 16px; color : #231F20; padding : 0px; "><style type="text/css">
+div.preheader 
+{ display: none !important; } 
+</style>
+<div class="preheader" style="font-size: 1px; display: none !important;">Early detection matters. Learn more about PSA screening.</div>
+    <div style="font-size:0; line-height:0;"><img src="https://click.labcorpmessage.com/open.aspx?ffcb10-fe8e1677766d047b73-fe2d1c7173600575741475-fe40157075640679751c70-ff021575716704-fe23127370610074741374-ff02157174660c&d=100219&bmt=0" width="1" height="1" alt="">
+<div style="font-size:1px; color:#fff; display:none; overflow:hidden;visibility:hidden;">&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
+</div>
+      
+    <!--[if mso]><style type="text/css">.background_main, table, table td, p, div, h1, h2, h3, h4, h5, h6 {         font-family:"Calibri, 'Open Sans', Tahoma, Arial, sans-serif !important;        }</style><![endif]-->
+      
+    <table width="100%" border="0" cellpadding="0" cellspacing="0" align="center">
+      <tr>
+               <td align="center">
+          <table cellspacing="0" cellpadding="0" border="0" width="500" bgcolor="#DFF5FA" style="background-color:#DFF5FA" class="container" align="center">
+                              <td align="center" valign="top">
+
+                                                     
+                                <!-- top slot 1 -->
+ <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                    <tbody>
+                                        <tr>
+                                            <td align="center" valign="top">
+                                              <table cellspacing="0" cellpadding="0"  width="100%" >
+                                              <tbody>
+                                              <tr>
+                                                <td class="responsive-td" valign="top">
+                                                  <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: #D2F2F9; border: 0px; min-width: 100%; " class="slot-styling"><tr><td style="padding: 20px 0px 0px; " class="slot-styling camarker-inner"><!-- How to use this
+Update the UTM value in line number 8 SET @UTM = ""
+Once you have updated this content block and added to your email. Update all links with this  to add URL parameter in links.
+https://www.labcorp.com/?
+-->
+<div style="display:none;">
+  
+</div><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: #FFFFFE; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 16px 5px 15px; " class="stylingblock-content-wrapper camarker-inner"><table width="100%" cellspacing="0" cellpadding="0" role="presentation"><tr><td class="mobile-text-center" align="left"><a href="https://click.labcorpmessage.com/?qs=d8ba433b4209683380b053fe0e4ca63da773b30a455e5bd671f83c544b2da3df12c82448e8b7489eaaef9f621b5b97a4dad4de7380beb4680d94e250971a719f" title="Logo Home"   data-linkto="https://"><img data-assetid="396305" src="https://image.labcorpmessage.com/lib/fe40157075640679751c70/m/1/LC_Horizontal_Color_RGB-WHTBack.png" alt="" height="50" width="180" style="padding: 0px; text-align: center; height: 50px; width: 180px; max-width: 60%; border: 0px;"></a></td></tr></table></td></tr>
+</table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: #3A5CE9; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 0px; " class="stylingblock-content-wrapper camarker-inner"><table cellspacing="0" cellpadding="0" role="presentation" width="100%" style="width: 100%;"><tr><td><table cellspacing="0" cellpadding="0" role="presentation" dir="rtl" style="width: 100%;"><tr><td valign="top" bgcolor="#ffffff" width="20" style="width: 20px; padding-left: 0px;" class="mobile-hidden">
+<table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: #FFFFFF; min-width: 100%; " class="stylingblock-content-wrapper mobile-hidden"><tr><td></td></tr></table></td><td valign="top" width="215" class="responsive-td" dir="ltr" style="width: 215px; padding-right: 0px; padding-left: 0px;"><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><table width="100%" cellspacing="0" cellpadding="0" role="presentation"><tr><td align="center" width="215" valign="top">
+<img class="msize" data-assetid="521671" src="https://image.labcorpmessage.com/lib/fe40157075640679751c70/m/1/DonnyV.png" alt="" height="" width="215" style="padding: 0px; text-align: center; height: auto; width: 100%; border: 0px;"></td></tr></table></td></tr></table></td><td valign="top" class="responsive-td" dir="ltr" width="265" style="width: 265px; padding-right: 0px;"><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: #3A5CE9; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 0px; " class="stylingblock-content-wrapper camarker-inner"><table width="100%" cellspacing="0" cellpadding="0" role="presentation"><tr><td class="mobile-hidden" valign="top" align="left" width="265" height="">
+<img data-assetid="521520" src="https://image.labcorpmessage.com/lib/fe40157075640679751c70/m/1/Frame_Top.png" alt="" height="" width="265" style="padding: 0px; text-align: center; height: auto; width: 100%; border: 0px;"></td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: #3A5CE9; min-width: 100%; " class="stylingblock-content-wrapper"><tr>
+  
+  <td width="265" height="225" valign="top" style="padding: 0px 0px; " class="stylingblock-content-wrapper camarker-inner"><table cellpadding="0" cellspacing="0" height="" role="presentation" align="center" width="100%"><tr><td valign="top" height="20"></td></tr>
+   
+<tr><td valign="top" width="20"></td>
+   <td width="245" height="" valign="top" align="center"><p style="margin:0pt;font-size:16px;line-height:24px;mso-line-height-rule:exactly;font-weight:normal; color:#ffffff">
+     &ldquo;I didn&rsquo;t stop pushing for answers. Every test gave us more information. And that information saved my life.&rdquo;</p></td><td width="20"></td></tr> <tr>
+    <td valign="top" height="25"></td></tr></table>
+  
+  <table cellpadding="0" cellspacing="0" role="presentation" width="100%">
+ 
+<tr>
+  <td width="265" height="" valign="top" align="center">
+   
+  
+  
+  <!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="https://www.labcorp.com/education-events/articles/patient-story-don-von-hagen-prostate-cancer-lung-cancer?utm_source=SFMC&utm_medium=email&utm_campaign=dx_pt_202511_PSA_Awareness" style="height:38pt;width:130pt;v-text-anchor:middle;" arcsize="55%" fillcolor="#3a5ce9" stroke="true" strokecolor="#ffffff" bgcolor="#3a5ce9"><w:anchorlock/><v:textbox inset="0,0,0,0"><center><![endif]-->
+<a  align="center" bgcolor="#3a5ce9"  data-hs-link-id="0" data-linkto="other" href="https://click.labcorpmessage.com/?qs=d8ba433b42096833a1c88863e15beefcdaae48ffe12f55612aa22aad91b6986e2f472580a525d4bbf1fb79bfc7230b44c75f690d80ce2b437c3e5d5ca3f4fd37" style="font-family: Open Sans, Helvetica, Tahoma, Calibri, 'Segoe UI', Arial, sans-serif; mso-font-size-alt:16px; mso-line-height-alt:23px; mso-line-height-rule:exactly;font-size: 16px; line-height: 23px; -webkit-text-size-adjust: none; text-decoration: none; display: inline-block;color: #FFFFFF; width: auto; padding-left:30px; padding-right:30px; padding-top: 13px; padding-bottom: 13px; font-weight:bold; text-align: center; mso-border-alt: none; word-break: break-word; letter-spacing: undefined; text-size-adjust: none; background-color: #3a5ce9; border: 1px solid #FFFFFF; border-radius: 35px; -moz-border-radius: 35px; -webkit-border-radius: 35px;"
+ target="_blank" title="Read Don’s Story">Read Don&rsquo;s Story</a><!--[if mso]></center></v:textbox></v:roundrect><![endif]-->
+  
+  </td></tr><tr>
+   <td height="30">
+   </td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: #3A5CE9; min-width: 100%;" class="stylingblock-content-wrapper"><tr><td style="padding: 0px; " class="stylingblock-content-wrapper camarker-inner"><table width="100%" cellspacing="0" cellpadding="0" role="presentation"><tr><td class="mobile-hidden" width="265" valign="top" align="left" height=""><img data-assetid="521519" src="https://image.labcorpmessage.com/lib/fe40157075640679751c70/m/1/Frame_Bottom.png" alt="" height="" width="265" style="padding: 0px; text-align: left; height: auto; width: 100%; border: 0px;"></td></tr></table></td></tr></table></td></tr></table></td></tr></table></td></tr></table></td></tr></table></td></tr>
+</table>
+                                                </td>
+                                              </tr>
+                                              </tbody>
+                                            </table>
+                                          </td>
+<tr> <!-- slot 2  -->
+                               <td align="center" valign="top">
+                                  <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                    <tbody>
+                                        <tr>
+                                            <td align="center" valign="top">
+                                              <table cellspacing="0" cellpadding="0"  width="100%" >
+                                              <tbody>
+                                              <tr>
+                                                <td class="responsive-td" valign="top">
+                                                  <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: #FFFFFF; border: 0px; min-width: 100%; " class="slot-styling"><tr><td style="padding: 5px 30px 0px; " class="slot-styling camarker-inner"><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: transparent; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 25px 20px 15px; " class="stylingblock-content-wrapper camarker-inner"><div align="center">
+	<p class="mobile-text-center" style="mso-line-height-rule:exactly; font-size:15px;line-height:20px; font-weight:normal; color: #231f20;">
+		In the summer of 2023, Don began experiencing strange symptoms: fevers, fatigue, night sweats. While investigating his symptoms with his primary care physician, a prostate-specific antigen (PSA) test, a routine screening for prostate cancer, along with additional testing revealed a diagnosis of moderately aggressive prostate cancer.<br>
+		<br>
+		As Don and his primary care physician were navigating the prostate cancer diagnosis, a resurgence of his symptoms spurred additional testing and a biopsy that confirmed early stage lung cancer.<br>
+		<br>
+		&ldquo;I was stunned,&rdquo; Don said. &ldquo;We were already dealing with prostate cancer, and now this. But again, it was caught early&mdash;because we didn&rsquo;t ignore the symptoms.&rdquo;<br>
+		<br>
+		Don&rsquo;s incredible journey through a double cancer diagnosis highlights the importance of early detection and being an advocate for your own care.</p></div></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: transparent; border: 0px; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 10px 0px 25px; " class="stylingblock-content-wrapper camarker-inner"><div align="center"><!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="https://www.labcorp.com/education-events/articles/patient-story-don-von-hagen-prostate-cancer-lung-cancer?utm_source=SFMC&utm_medium=email&utm_campaign=dx_pt_202511_PSA_Awareness" style="height:42pt;width:120pt;v-text-anchor:middle;" stroke="false" arcsize="48%" fillcolor="#3a5ce9"><w:anchorlock/><v:textbox inset="0,0,0,0"><center><![endif]-->
+<a  align="center" bgcolor="#3a5ce9;"  data-hs-link-id="0" data-linkto="other" href="https://click.labcorpmessage.com/?qs=d8ba433b4209683325876812d4bfcc2acd67f2b031e30201ffc2f609da3c811244d1ea38eb53186bab130ed10a5b7c1e69aea453d8aa74268d3e78ca0a11c6af" style="mso-line-height-rule:exactly;font-size: 16px; line-height: 20px; -webkit-text-size-adjust: none; text-decoration: none; display: inline-block;color: #FFFFFE; width: auto; padding-left:30px; padding-right:30px; padding-top: 16px; padding-bottom: 16px; font-weight:normal; text-align: center; mso-border-alt: none; word-break: break-word; letter-spacing: undefined; text-size-adjust: none; background-color: #3a5ce9; border: 1px solid  #3A5CE9; border-radius: 35px; -moz-border-radius: 35px; -webkit-border-radius: 35px;" target="_blank" title="Read more">Read More</a><!--[if mso]></center></v:textbox></v:roundrect><![endif]--></div></td></tr>
+</table></td></tr></table>
+                                                </td>
+                                              </tr>
+                                              </tbody>
+                                            </table>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+                              </tr><tr> <!-- slot 3  -->
+                                <td align="center" valign="top">
+                                  <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                    <tbody>
+                                        <tr>
+                                            <td align="center" valign="top">
+                                              <table cellspacing="0" cellpadding="0" style="width:100%">
+                                              <tbody>
+                                              <tr>
+                                                <td class="responsive-td" valign="top" style="width: 100%;">
+                                                  <table cellpadding="0" cellspacing="0" width="100%" role="presentation" class="slot-styling" style="min-width: 100%; "><tr><td class="stylingblock-content-margin-cell" style="padding: 20px 0px; "><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: #FFFFFF; min-width: 100%; " class="slot-styling"><tr><td style="padding: 0px 20px; " class="slot-styling camarker-inner"><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: #FFFFFE; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 25px 0px 5px; " class="stylingblock-content-wrapper camarker-inner"><div align="center">
+	<p style="margin:0pt;mso-font-size-alt:22px; mso-line-height-alt:26px; mso-line-height-rule:exactly;font-size:22px;line-height:26px; font-weight:bold; color:#1a2188">
+		Take charge of your health: Consider getting a PSA screening</p></div></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: #FFFFFE; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 10px 0px 15px; " class="stylingblock-content-wrapper camarker-inner"><div align="center">
+	<p class="mobile-text-center" style="margin:0pt; mso-line-height-rule:exactly; font-size:17px;line-height:15pt; font-weight:normal; color: #231f20;">
+		<b>More than 10% of men in the U.S. develop prostate cancer in their lifetime.&sup1;</b></p></div></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: transparent; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 0px 5px 30px; " class="stylingblock-content-wrapper camarker-inner"><div align="center">
+	<p class="mobile-text-center" style="mso-line-height-rule:exactly; font-size:15px;line-height:20px; font-weight:normal; color: #231f20;">
+		Age is the most common risk factor&mdash;the older you are, the greater the chance is of having prostate cancer. Many men with prostate cancer don&rsquo;t show early symptoms and may not even know they have the disease.&sup2; Knowing your PSA number can help you and your healthcare provider figure out if further testing or treatment should be considered because an elevated PSA may be a sign of prostate cancer.<br>
+		<br>
+		<b>Talk to your healthcare provider to discuss if the PSA screening test is right for you. </b></p></div></td></tr></table></td></tr></table></td></tr></table>
+                                                </td>
+                                              </tr>
+                                              </tbody>
+                                            </table>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+                              </tr><tr> <!-- slot 4  -->
+                                <td align="center" valign="top">
+                                  <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                    <tbody>
+                                        <tr>
+                                            <td align="center" valign="top">
+                                              <table cellspacing="0" cellpadding="0" style="width:100%">
+                                              <tbody>
+                                              <tr>
+                                                <td class="responsive-td" valign="top" style="width: 100%;">
+                                                  <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: #FFFFFF; border: 0px; min-width: 100%; " class="slot-styling"><tr><td style="padding: 0px; " class="slot-styling camarker-inner"><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: #1A2188; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 22px 20px 0px; " class="stylingblock-content-wrapper camarker-inner"><div align="center">
+ <p style="margin:0pt;mso-font-size-alt:22px; mso-line-height-alt:26px; mso-line-height-rule:exactly;font-size:22px;line-height:26px; font-weight:bold; color:#ffffff">
+  Labcorp OnDemand puts your health in your hands.</p></div></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: #1A2188; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 15px 15px 25px; " class="stylingblock-content-wrapper camarker-inner"><div align="center">
+ <p style="margin:0pt;mso-font-size-alt:22px; mso-line-height-alt:26px; mso-line-height-rule:exactly;font-size:22px;line-height:26px; font-weight:bold; color:#1a2188">
+ </p><p class="mobile-text-center" style="margin:0pt;mso-font-size-alt:15px; mso-line-height-alt:20px; mso-line-height-rule:exactly; font-size:15px;line-height:20px; font-weight:normal; color: #ffffff;">
+  Purchase <a   data-linkto="http://" href="https://click.labcorpmessage.com/?qs=d8ba433b420968333ffb45240f87fa97091b2f1d9787b3ef4fcb5e8374435c3ce64b7598a6bf5f143a95ccfdfe38ac8b512a5b117bd988c7faa29dc54dce31e4" style="color:#d2f2f9;font-weight:bold; text-decoration:underline;" title="lab tests">lab tests</a> directly from Labcorp and get trusted, confidential results on key aspects of your health, including general wellness, allergy, fertility and more. </p></div></td></tr></table></td></tr></table>
+              
+                                                </td>
+                                              </tr>
+                                              </tbody>
+                                            </table>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+                              </tr><tr> <!-- slot 5  -->
+                                <td align="center" valign="top">
+                                  <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                    <tbody>
+                                        <tr>
+                                            <td align="center" valign="top">
+                                              <table cellspacing="0" cellpadding="0" style="width:100%">
+                                              <tbody>
+                                              <tr>
+                                                <td class="responsive-td" valign="top" style="width: 100%;">
+                                                  <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: #FFFFFF; min-width: 100%; " class="slot-styling"><tr><td style="padding: 0px; " class="slot-styling camarker-inner"><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: #D2F2F9; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 0px; " class="stylingblock-content-wrapper camarker-inner"><table cellspacing="0" cellpadding="0" role="presentation" style="width: 100%;"><tr><td><table cellspacing="0" cellpadding="0" role="presentation" style="width: 100%;"><tr><td valign="top" class="responsive-td" style="width: 100%;"><table cellpadding="0" cellspacing="0" width="100%" role="presentation" class="stylingblock-content-wrapper" style="min-width: 100%; "><tr><td class="stylingblock-content-margin-cell" style="padding: 20px 0px 0px; ">
+<table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: #FFFFFF; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 25px 20px 10px; " class="stylingblock-content-wrapper camarker-inner"><div align="center">
+	<p style="margin:0pt;mso-font-size-alt:22px; mso-line-height-alt:26px; mso-line-height-rule:exactly;font-size:22px;line-height:26px; font-weight:bold; color:#1a2188">
+		PSA Prostate Cancer Screening Test</p></div></td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: #FFFFFF; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 18px; " class="stylingblock-content-wrapper camarker-inner"><table width="100%" cellspacing="0" cellpadding="0" role="presentation"><tr><td align="center"><img data-assetid="521410" src="https://image.labcorpmessage.com/lib/fe40157075640679751c70/m/1/PSA-Prostate-Cancer-Screening-Test-img01_new_2025.png" alt="PSA " width="463" style="display: block; padding: 0px; text-align: center; height: auto; width: 100%; border: 0px;"></td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: #FFFFFF; min-width: 100%; " class="stylingblock-content-wrapper"><tr>
+<td style="padding: 10px 15px 25px; " class="stylingblock-content-wrapper camarker-inner"><div align="center">
+	<p style="margin:0pt;mso-font-size-alt:15px; mso-line-height-alt:20px; mso-line-height-rule:exactly; font-size:15px;line-height:20px; font-weight:normal; color:#231f20">
+		This PSA (prostate-specific antigen) test measures the level of prostate-specific antigen in your blood. Knowing your PSA number can help you and your healthcare provider figure out if further testing or treatment should be considered because an elevated PSA may be a sign of prostate cancer.</p></div></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: #FFFFFF; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 0px 20px 30px; " class="stylingblock-content-wrapper camarker-inner"><div align="center" margin="0">
+	<!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="https://www.ondemand.labcorp.com/lab-tests/psa-prostate-cancer-screening-test?utm_source=SFMC&utm_medium=email&utm_campaign=dx_pt_202511_PSA_Awareness" style="height:42pt;width:120pt;v-text-anchor:middle;" arcsize="48%" fillcolor="#FFFFFE" stroke="true" strokecolor="#3a5ce9" bgcolor="#FFFFFE"><w:anchorlock/><v:textbox inset="0,0,0,0"><center><![endif]-->
+<a  align="center" bgcolor="#FFFFFE"  data-hs-link-id="0" data-linkto="other" href="https://click.labcorpmessage.com/?qs=d8ba433b420968334f60f75824e7d8a178ba32c4d02d0bbd0f0740b3cb2083f6322d5492fe83da96f7c6ac01ab153638a53547955a13d9458f4e02e4f8fd90f3" style="mso-line-height-rule:exactly;font-size: 16px; line-height: 20px; -webkit-text-size-adjust: none; text-decoration: none; display: inline-block;color: #3A5CE9; width: auto; padding-left:30px; padding-right:30px; padding-top: 16px; padding-bottom: 16px; font-weight:normal; text-align: center; mso-border-alt: none; word-break: break-word; letter-spacing: undefined; text-size-adjust: none; background-color: #FFFFFE; border: 1px solid #3A5CE9; border-radius: 35px; -moz-border-radius: 35px; -webkit-border-radius: 35px;" target="_blank" title="Learn more">Learn More</a><!--[if mso]></center></v:textbox></v:roundrect><![endif]--></div></td></tr>
+</table></td></tr></table></td></tr></table></td></tr></table></td></tr></table>
+                                                </td>
+                                              </tr>
+                                              </tbody>
+                                            </table>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+                              </tr>
+                              <tr> <!-- bottom slot -->
+                                <td align="center" valign="top">
+                                  <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                    <tbody>
+                                    <tr>
+                                      <td align="center" valign="top">
+                                        <table cellspacing="0" cellpadding="0" style="width:100%">
+                                          <tbody>
+                                          <tr>
+                                            <td class="responsive-td" valign="top" style="width: 100%;">
+                                              <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: transparent; min-width: 100%; " class="slot-styling"><tr><td style="padding: 0px; " class="slot-styling camarker-inner"><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: #D2F2F9; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 10px 5px 5px; " class="stylingblock-content-wrapper camarker-inner"><p style="margin:0pt;mso-font-size-alt:12px; mso-line-height-alt:15px; mso-line-height-rule:exactly;font-size:12px;line-height:15px; font-weight:normal; color:#231f20;">
+	<span style="font-weight:bold;">Sources:</span></p><p style="margin:0pt;mso-font-size-alt:12px; mso-line-height-alt:15px; mso-line-height-rule:exactly;font-size:12px;line-height:15px; font-weight:normal; color:#231f20;">
+	1. <a   data-linkto="http://" href="https://click.labcorpmessage.com/?qs=d8ba433b420968333ef2c823e24bc1402c9cef60d78a1652e2cdab1801e03fcd2b2eb0a0ea8815d8717eeee3c3787930bf0e0b997cfc6ce8f3d6d542771d9a52" style="color:#3a5ce9;text-decoration:underline;" title="risk-factors">https://www.cdc.gov/prostate-cancer/risk-factors</a>.<br>
+	2 <a   data-linkto="http://" href="https://click.labcorpmessage.com/?qs=d8ba433b42096833e36a501384fa34e72113e3aad9ab44f884f130d89251753340a5cbec7dfc4d307e7d1ddc39cf664117c31a626958acf4f13a850478bc15cc" style="color:#3a5ce9;text-decoration:underline;word-break:break-all" title="risk-factors">https://www.uspreventiveservicestaskforce.org/ uspstf/document/RecommendationStatementFinal/ prostate-cancer-screening</a>.</p></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: #D2F2F9; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 20px 3px 0px; " class="stylingblock-content-wrapper camarker-inner"><table cellspacing="0" cellpadding="0" role="presentation" style="width: 100%;"><tr><td><table cellspacing="0" cellpadding="0" role="presentation" style="width: 100%;"><tr><td valign="top" class="responsive-td" style="width: 100%; padding-bottom: 3px;">
+<table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: #D2F2F9; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 0px; " class="stylingblock-content-wrapper camarker-inner"><table align="center" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+  <tr>
+   <td align="center" style="padding: 0px 0px 15px 0px;">
+    <div align="center">
+     <!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="https://patient.labcorp.com/landing?utm_source=SFMC&utm_medium=email&utm_campaign=dx_pt_202511_PSA_Awareness" style="height:28pt;width:350pt;v-text-anchor:middle; arcsize="0%" stroke="true" fillcolor="#F0FFFF" strokecolor="#F0FFFF"><w:anchorlock/><v:textbox inset="0,0,0,0"><![endif]-->
+<a  align="left" bgcolor="#f0ffff" class="mobile-text-center"  data-hs-link-id="0" data-linkto="other" href="https://click.labcorpmessage.com/?qs=d8ba433b4209683359522624506e9e975c0644af82ed492d2081c192f30a7562b817825924e4d1301243ea987210721a50fe8063c832153dc030eb3f53858d33" style="auto;display: block; font-size:15px;line-height:20px;mso-line-height-rule:exactly;font-weight:normal; -webkit-text-size-adjust: none; text-align: left; text-decoration: none; padding-left:0px; padding-right:10px; padding-top: 10px; padding-bottom: 10px; mso-border-alt: none; border-radius: 10px; -moz-border-radius: 10px; -webkit-border-radius: 10px; mso-border-alt: none; word-break: break-word; letter-spacing: undefined; mso-line-height-alt: 12pt; text-size-adjust: none; background-color: #F0FFFF; border: 1px solid #F0FFFF;color: #3a5ce9;" target="_blank" title="Login or sign up">&nbsp;&nbsp;
+<span style="color:#3a5ce9">&raquo;</span>&nbsp;&nbsp;Login or create an account</a><!--[if mso]></v:textbox></v:roundrect><![endif]--></div></td></tr><tr>
+   <td align="center" style="padding: 0px 0px 15px 0px;">
+    <div align="center">
+     <!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="https://www.labcorp.com/patients/labs-and-appointments?utm_source=SFMC&utm_medium=email&utm_campaign=dx_pt_202511_PSA_Awareness" style="height:28pt;width:350pt;v-text-anchor:middle; arcsize="0%" stroke="true" fillcolor="#F0FFFF" strokecolor="#F0FFFF"><w:anchorlock/><v:textbox inset="0,0,0,0"><![endif]-->
+<a align="left" class="mobile-text-center"  data-hs-link-id="0" data-linkto="other" href="https://click.labcorpmessage.com/?qs=d8ba433b4209683379d80732dd63b685a66359da77bd076300678721271490e960cb782242ec62c2a40ebd1d2b8efb14b7bedb6668d8dcce9f7a5e59f8b07aff" style="width:auto;display: block; font-size:15px;line-height:20px;mso-line-height-rule:exactly;font-weight:normal; -webkit-text-size-adjust: none; text-align: left; text-decoration: none; padding-left:0px; padding-right:10px; padding-top: 10px; padding-bottom: 10px; mso-border-alt: none; border-radius: 10px; -moz-border-radius: 10px; -webkit-border-radius: 10px; mso-border-alt: none; word-break: break-word; letter-spacing: undefined; mso-line-height-alt: 12pt; text-size-adjust: none; background-color: #F0FFFF; border: 1px solid #F0FFFF;color: #3a5ce9;" target="_blank" title="Find a testing location">&nbsp;&nbsp;<span style="color:#3a5ce9">&raquo;
+</span>&nbsp;&nbsp;Find a testing location or make an appointment</a><!--[if mso]></v:textbox></v:roundrect><![endif]--></div></td></tr><tr>
+   <td align="center" style="padding: 0px 0px 15px 0px;">
+    <div align="center">
+     <!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="https://www.labcorp.com/patients/tests/trials?utm_source=SFMC&utm_medium=email&utm_campaign=dx_pt_202511_PSA_Awareness" style="height:28pt;width:350pt;v-text-anchor:middle; arcsize="0%" stroke="true" fillcolor="#F0FFFF" strokecolor="#F0FFFF"><w:anchorlock/><v:textbox inset="0,0,0,0"><![endif]-->
+<a align="left" bgcolor="#f0ffff" class="mobile-text-center"  data-hs-link-id="0" data-linkto="other" href="https://click.labcorpmessage.com/?qs=d8ba433b42096833276b8f1379884b01e5475c848c9826900e6bbf2053f6e5c602151ae07a24068c08d62e8c3471cf58241195f78d258eeed30cd8ebe3a8cbd0" style="width:auto;display: block; font-size:15px;line-height:20px; mso-line-height-rule:exactly;font-weight:normal; -webkit-text-size-adjust: none; text-align: left; text-decoration: none; padding-left:0px; padding-right:10px; padding-top: 10px; padding-bottom: 10px; mso-border-alt: none; border-radius: 10px; -moz-border-radius: 10px; -webkit-border-radius: 10px; mso-border-alt: none; word-break: break-word; letter-spacing: undefined; mso-line-height-alt: 12pt; text-size-adjust: none; background-color: #F0FFFF; border: 1px solid #F0FFFF;color: #3a5ce9;" target="_blank" title="clinical trials">&nbsp;&nbsp;
+<span style="color:#3a5ce9">&raquo;</span>&nbsp;&nbsp;Learn about clinical trials</a><!--[if mso]></v:textbox></v:roundrect><![endif]--></div></td></tr></table></td></tr></table></td></tr></table></td></tr><tr><td><table cellspacing="0" cellpadding="0" role="presentation" style="width: 100%;"><tr><td valign="top" class="responsive-td" style="width: 100%; padding-top: 3px;"><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="border-collapse:collapse; background-color: transparent; min-width: 100%; " class="stylingblock-content-wrapper">
+<tr>
+<td style="padding: 0px; " class="stylingblock-content-wrapper camarker-inner">
+<table cellspacing="0" cellpadding="0" role="presentation" style="width: 100%;">
+<tr>
+<td>
+<table cellspacing="0" cellpadding="0" role="presentation" dir="rtl" style="border-collapse:collapse; width: 100%;">
+<tr>
+<td width="45%" valign="top" class="responsive-td" dir="ltr" style="padding-left: 7.5px;">
+<table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: transparent; min-width: 100%; " class="stylingblock-content-wrapper">
+<tr>
+<td style="padding: 5px 0px 15px; " class="stylingblock-content-wrapper camarker-inner">
+<table width="100%" cellspacing="0" cellpadding="0" border="0" align="center">
+<tr>
+<td width="100%" style="padding:0px 0px 0px 0px;" valign="top" align="center">
+<table cellspacing="0" cellpadding="0" border="0" align="center">
+<tr>
+<td width="20" align="center"><a style="font-weight:normal;color:#231f20;text-decoration:underline;line-height:100%;" href="https://click.labcorpmessage.com/?qs=d8ba433b42096833817f67b494dbda9dc674f999933802224e8c192c7e8e5e72ecec4e3c1ffa5e0e90816a170cdc9ab8c540ffa589f05280fbcdabcc9e12fd92" name="Facebook" target="_blank" xt="SPCLICK"><img alt="Facebook" name="LC_Facebook" src="https://image.labcorpmessage.com/lib/fe3f157075640679751273/m/1/a44fecf8-974e-4b5b-8109-b6a9ac8c7802.png" style="display:block;" title="Facebook" width="20" height="20" border="0"></a></td>
+                        <td width="20">&nbsp;</td>
+                        <td width="20" align="center"><a style="font-weight:normal;color:#231F20;text-decoration:underline;line-height:100%;" href="https://click.labcorpmessage.com/?qs=d8ba433b4209683346a0e34553a7ad2a0eb8e730c57e25e35899e1a717d9f8f4d62b6096bb2cfb9191fc85da7a8b665f68019544f1012c8ddad411563e4cfcf9" name="Twitter" target="_blank" xt="SPCLICK"><img alt="Twitter" name="layouts_images_tw1.png" src="https://image.labcorpmessage.com/lib/fe40157075640679751c70/m/1/twitterx-3a5.png" style="display:block;" title="Twitter" width="20" height="20" border="0"></a></td>
+                        <td width="20">&nbsp;</td>
+                        <td width="20" align="center"><a style="font-weight:normal;color:#231F20;text-decoration:underline;line-height:100%;" href="https://click.labcorpmessage.com/?qs=d8ba433b420968336c58c8a9e94289ee866769dcfe85ece0e255438fdfaf081d2fe35ff86f59de794ce042a61a59d2ea78143a60d5f01a71549b2174bb50db55" name="Instagram" target="_blank" xt="SPCLICK"><img alt="Instagram" name="layouts_images_in1.png" src="https://image.labcorpmessage.com/lib/fe3f157075640679751273/m/1/5ce13726-b034-4959-809e-d90d03c4927a.png" style="display:block;" title="Instagram" width="20" height="20" border="0"></a></td>
+                        <td width="20">&nbsp;</td>
+                        <td width="20" align="center"><a style="font-weight:normal;color:#231F20;text-decoration:underline;line-height:100%;" href="https://click.labcorpmessage.com/?qs=d8ba433b420968337ad735af8e9386a87b6f3933acc7b6a40a060552387342664384710b05b3ae7dd098501e486daf14c554a05727351ded649118798305fe45" name="LinkedIn" target="_blank" xt="SPCLICK"><img alt="LinkedIn" name="layouts_images_google1.png" src="https://image.labcorpmessage.com/lib/fe3f157075640679751273/m/1/2dc318ec-a520-4e70-9ea9-7ffc9b7e4581.png" style="display:block;" title="LinkedIn" width="20" height="20" border="0"></a></td>
+                        <td width="20">&nbsp;</td>
+                        <td width="20" align="center"><a style="font-weight:normal;color:#231F20;text-decoration:underline;line-height:100%;" href="https://click.labcorpmessage.com/?qs=d8ba433b42096833e7bd1a844693d6577751c42bfa414c4865d26e1dd5c5a33be1d03c61f0e2ebb01a45aca217d7f4ef0e1be9f8683a9f666e115a9e5fb8bad0" name="YouTube" target="_blank" xt="SPCLICK"><img alt="YouTube" name="layouts_images_y_t.png" src="https://image.labcorpmessage.com/lib/fe3f157075640679751273/m/1/a71cebc1-f175-4437-b483-05a342940419.png" style="display:block;" title="YouTube" width="20" height="20" border="0"></a></td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</td>
+<td valign="top" class="responsive-td" dir="ltr" style="width: 55%;">
+<table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: transparent; min-width: 100%; " class="stylingblock-content-wrapper">
+<tr>
+<td style="padding: 0px; " class="stylingblock-content-wrapper camarker-inner">
+<table align="left" border="0" cellpadding="0" cellspacing="0" style="width:100%" width="100%">
+<tr>
+<td align="left" class="mobile-text-center" style="padding: 0px 0px 0px 0px; line-height:100%;">
+ <p style="margin:0pt;mso-font-size-alt:10px; mso-line-height-alt:12px; mso-line-height-rule:exactly;font-size:10px;line-height:12px; font-weight:normal; color:#231f20;">
+     This message was sent to testuser@example.com. Add labcorp@labcorpmessage.com to your address book to ensure our emails reach your inbox.</p>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: transparent; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 15px 0px 10px; " class="stylingblock-content-wrapper camarker-inner"><div align="center">
+<p class="mobile-text-center" style="margin:0pt; mso-line-height-rule:exactly;font-size:10px;line-height:13px; font-weight:normal; color:#231f20;">
+  <a   data-linkto="http://" href="https://click.labcorpmessage.com/?qs=d8ba433b42096833a8408764eb15fa176a627e25fb06358d1a0800940e4075d88046a4e34b672495b61231cc7f532e31a9cfbf90f25f9d8b2364451566352b84" style="color:#231f20;text-decoration:underline;display:inline-block;font-weight:normal;line-height:100%;" target="_blank" title="Privacy Policy">Privacy Policy</a>&nbsp;|&nbsp;<a   data-linkto="http://" href="https://click.labcorpmessage.com/?qs=d8ba433b42096833b3274bed7409e1e7b4a317c7f39fc863635bfc865e24462427a5375c8a1b23c1013ae70cdd5d16df8eb558f5a70a41b2800523c2bdb0c9c4" style="color:#231f20;text-decoration:underline;display:inline-block;" target="_blank" title="Terms of Use">Terms of Use</a>&nbsp;|&nbsp;
+<a   data-linkto="http://" href="https://click.labcorpmessage.com/?qs=d8ba433b42096833d63c585ae91bf22954188ccc74a00c060dc5c80abdc5b9645dddedd41205995522d1d2801320ae34e3ac39d9d79b0e06b3dfcf547863e916" style="color:#231f20;text-decoration:underline;display:inline-block;" target="_blank" title="Non-Discrimination Notice">Non-discrimination Notice</a>&nbsp;|&nbsp;
+<a   data-linkto="http://" href="https://view.labcorpmessage.com/?qs=f8a238fc2b5d3f964823e7f0eab28003d27a6bc7e6f29f25e512216562e4121c0d931d4b245b0bb6835c5f78a946b1f723d670ef5bad764f89b4681e3b377629747ef67c6a099077df99aac2f6d94de215e42f20dc2ba1ba" style="color:#231f20;text-decoration:underline;display:inline-block;" target="_blank" title="View in Browser">View in Browser</a>&nbsp;|&nbsp;<a   data-linkto="http://" href="https://click.labcorpmessage.com/?qs=d8ba433b42096833fbb92ce65063c568b1eec3dd86893fea026e9f4f59f18d98ad672383632fe6a6d13f68ab6466aea807dc27d7b966a70cd96613eec08b9986" style="color:#231f20;text-decoration:underline;display:inline-block;" target="_blank" title="Terms of Use">Unsubscribe</a>
+           
+          
+         </p></div></td></tr></table></td></tr></table></td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: #D2F2F9; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 5px 0px 15px; " class="stylingblock-content-wrapper camarker-inner"><div align="center">
+ <p style="mso-line-height-rule:exactly;font-size:8pt;line-height:9pt;font-weight:normal;color:#231f20;">
+  &copy; 2025 Laboratory Corporation of America&reg; Holdings. All Rights Reserved.<br>
+  531 S. Spring Street, Burlington, NC 27215 USA</p></div></td></tr></table></td></tr></table>
+             
+                                            </td>
+                                          </tr>
+                                          </tbody>
+                                        </table>
+                                      </td>
+                                    </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+                              </tr>
+                        
+     
+      </table>
+            </td></table></td></tr></table></custom></div></body></html>
+
+--f1Ry72F69zzu=_?:--
+

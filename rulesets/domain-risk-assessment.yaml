@@ -2,10 +2,17 @@ name: "Domain Risk Assessment"
 enabled: true
 rules:
   # Critical Risk Domains (100+ points)
+  - name: "Giveaway domain spam"
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*(giveaway|prize|winner|claim|gift|contest)\\.(com|net|org)$"
+    score: 65
+    description: "Domains using giveaway/prize terminology for scams"
+
   - name: "Critical risk TLD domains"
     criteria:
       type: "SenderPattern"
-      pattern: ".*@.*\\.(tk|ml|ga|cf|gq|help|pl)$"
+      pattern: ".*@.*\\.(tk|ml|ga|cf|gq|help|pl|cfd)$"
     score: 100
     description: "Critical risk TLDs with highest spam rates"
 
@@ -15,6 +22,20 @@ rules:
       pattern: ".*@.*\\.sa\\.com$"
     score: 150
     description: "All sa.com subdomains are spam"
+
+  - name: "ZA.com subdomain spam"
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*\\.za\\.com$"
+    score: 150
+    description: "All za.com subdomains are spam"
+
+  - name: "Compu21.de spam domain"
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*compu21\\.de$"
+    score: 150
+    description: "Compu21.de domain used for health spam campaigns"
 
   - name: "Typosquatting major brands"
     criteria:
