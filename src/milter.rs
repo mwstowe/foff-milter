@@ -36,7 +36,19 @@ fn is_legitimate_business_sender(context: &MailContext) -> bool {
             let domain = domain_part.trim_end_matches('>').trim();
             log::info!("Extracted domain: {}", domain);
             
-            let is_business = legitimate_businesses.iter().any(|business| domain.contains(business));
+            // Special exclusion for onmicrosoft.com (compromised tenant domains)
+            if domain.contains("onmicrosoft.com") {
+                log::info!("Excluded onmicrosoft.com domain");
+                return false;
+            }
+            
+            // Check for business match: exact, subdomain, or contains (for complex domains like Adobe Campaign)
+            let is_business = legitimate_businesses.iter().any(|business| {
+                domain == *business || 
+                domain.ends_with(&format!(".{}", business)) ||
+                domain.contains(business)
+            });
+            
             log::info!("Is legitimate business: {}", is_business);
             return is_business;
         }

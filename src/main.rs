@@ -37,7 +37,17 @@ fn is_legitimate_business_test(context: &foff_milter::filter::MailContext) -> bo
             let domain_part = &from_header[domain_start + 1..];
             let domain = domain_part.trim_end_matches('>').trim();
             
-            return legitimate_businesses.iter().any(|business| domain.contains(business));
+            // Special exclusion for onmicrosoft.com (compromised tenant domains)
+            if domain.contains("onmicrosoft.com") {
+                return false;
+            }
+            
+            // Check for business match: exact, subdomain, or contains (for complex domains like Adobe Campaign)
+            return legitimate_businesses.iter().any(|business| {
+                domain == *business || 
+                domain.ends_with(&format!(".{}", business)) ||
+                domain.contains(business)
+            });
         }
     }
     
