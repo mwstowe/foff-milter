@@ -101,29 +101,39 @@ impl SenderAlignmentAnalyzer {
         if domain.is_empty() || domain == "unknown" {
             return false;
         }
-        
+
         // Skip check for legitimate email services to avoid false positives
         if self.is_legitimate_email_service(domain) {
             return true;
         }
-        
+
         // Use std::net for synchronous DNS lookup
         use std::net::ToSocketAddrs;
-        
+
         // Try to resolve the domain
         match format!("{}:80", domain).to_socket_addrs() {
             Ok(mut addrs) => addrs.next().is_some(),
             Err(_) => {
                 // Check for obviously suspicious patterns
                 let suspicious_patterns = [
-                    "automated", "outreach", "pro", "bulk", "mass", "spam", 
-                    "marketing", "promo", "blast", "campaign", "mailer"
+                    "automated",
+                    "outreach",
+                    "pro",
+                    "bulk",
+                    "mass",
+                    "spam",
+                    "marketing",
+                    "promo",
+                    "blast",
+                    "campaign",
+                    "mailer",
                 ];
-                
+
                 let domain_lower = domain.to_lowercase();
-                let has_suspicious_pattern = suspicious_patterns.iter()
+                let has_suspicious_pattern = suspicious_patterns
+                    .iter()
                     .any(|pattern| domain_lower.contains(pattern));
-                
+
                 // Only flag as non-existent if it has suspicious patterns AND doesn't resolve
                 if has_suspicious_pattern {
                     false // Flag as non-existent
@@ -395,11 +405,14 @@ impl FeatureExtractor for SenderAlignmentAnalyzer {
             ));
         } else if !self.domain_exists(&sender_info.from_domain) {
             score += 110;
-            evidence.push(format!("From domain does not exist: {}", sender_info.from_domain));
+            evidence.push(format!(
+                "From domain does not exist: {}",
+                sender_info.from_domain
+            ));
         }
 
         // Return-Path should also have a valid domain (but less critical)
-        if !sender_info.return_path_domain.is_empty() 
+        if !sender_info.return_path_domain.is_empty()
             && sender_info.return_path_domain != "unknown"
             && !self.is_valid_domain_format(&sender_info.return_path_domain)
         {
