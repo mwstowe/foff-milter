@@ -374,12 +374,33 @@ impl FeatureExtractor for ContextAnalyzer {
             all_evidence.push("Health spam from non-health domain".to_string());
         }
 
-        // Authority impersonation detection
+        // Authority impersonation detection (improved to avoid false positives from domain names)
         let authority_regex = Regex::new(r"(?i)\b(customs? (and )?protection|border (patrol|protection)|immigration (office|department)|homeland security|tax office|irs|internal revenue service|fbi|police department|court (order|notice)|legal department|government (agency|office)|federal (agency|office)|official (notice|communication)|enforcement (agency|division))\b").unwrap();
-        if authority_regex.is_match(&combined_text)
-            && !sender.contains(".gov")
-            && !sender.contains(".mil")
-        {
+        
+        // Additional check: exclude matches that are part of domain names or URLs
+        let mut authority_match = false;
+        if let Some(captures) = authority_regex.captures(&combined_text) {
+            if let Some(matched) = captures.get(0) {
+                let match_str = matched.as_str();
+                let match_start = matched.start();
+                
+                // Check if this match is part of a domain name (has .com, .org, etc. nearby)
+                let context_start = match_start.saturating_sub(20);
+                let context_end = std::cmp::min(matched.end() + 20, combined_text.len());
+                let context = &combined_text[context_start..context_end];
+                
+                // Skip if it's part of a domain name or URL
+                if !context.contains(".com") && !context.contains(".org") && !context.contains(".net") 
+                   && !context.contains("://") && !context.contains("www.") {
+                    authority_match = true;
+                    log::info!("Authority impersonation detected - pattern: '{}', context: '{}'", match_str, context);
+                } else {
+                    log::info!("Authority pattern '{}' skipped - appears to be part of domain/URL: '{}'", match_str, context);
+                }
+            }
+        }
+        
+        if authority_match && !sender.contains(".gov") && !sender.contains(".mil") {
             total_score += 60;
             all_evidence.push("Authority impersonation: Claims government/official status from non-government sender".to_string());
         }
