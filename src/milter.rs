@@ -9,6 +9,38 @@ use std::sync::{Arc, Mutex};
 use std::time::Duration;
 use tokio::net::UnixListener;
 
+fn is_legitimate_business_sender(context: &MailContext) -> bool {
+    let legitimate_businesses = [
+        "costco.com",
+        "pitneybowes.com", 
+        "arrived.com",
+        "cults3d.com",
+        "amazon.com",
+        "microsoft.com",
+        "google.com",
+        "apple.com",
+        "walmart.com",
+        "target.com",
+        "homedepot.com",
+        "lowes.com",
+        "bestbuy.com",
+        "macys.com",
+        "nordstrom.com",
+    ];
+    
+    if let Some(from_header) = &context.from_header {
+        // Extract domain from From header
+        if let Some(domain_start) = from_header.rfind('@') {
+            let domain_part = &from_header[domain_start + 1..];
+            let domain = domain_part.trim_end_matches('>').trim();
+            
+            return legitimate_businesses.iter().any(|business| domain.contains(business));
+        }
+    }
+    
+    false
+}
+
 /// Guards against shutdown/reload during email processing
 #[derive(Clone)]
 pub struct ProcessingGuard {
@@ -617,7 +649,10 @@ impl Milter {
                             })
                             .map(|(_, ctx)| ctx.clone());
 
-                        if let Some(mail_ctx) = mail_ctx_clone {
+                        if let Some(mut mail_ctx) = mail_ctx_clone {
+                            // Add legitimate business detection
+                            mail_ctx.is_legitimate_business = is_legitimate_business_sender(&mail_ctx);
+                            
                             let sender = mail_ctx.sender.as_deref().unwrap_or("<unknown>");
                             let recipients = if mail_ctx.recipients.is_empty() {
                                 "<unknown>".to_string()

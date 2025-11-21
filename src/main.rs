@@ -986,6 +986,7 @@ async fn test_email_file(
         last_header_name: None,
         attachments: Vec::new(), // Will be populated by analyze_attachments
         extracted_media_text: String::new(), // Will be populated by media analysis
+        is_legitimate_business: false, // Will be set during evaluation
     };
 
     // Test the email

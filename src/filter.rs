@@ -188,6 +188,7 @@ pub struct MailContext {
     pub last_header_name: Option<String>, // Track last header for continuation lines
     pub attachments: Vec<AttachmentInfo>, // New: attachment analysis
     pub extracted_media_text: String,     // Text extracted from PDFs and images
+    pub is_legitimate_business: bool,      // Flag for legitimate business senders
 }
 
 #[derive(Debug, Clone)]
@@ -222,6 +223,7 @@ impl FilterEngine {
             last_header_name: context.last_header_name.clone(),
             mailer: context.mailer.clone(),
             extracted_media_text: context.extracted_media_text.clone(),
+            is_legitimate_business: context.is_legitimate_business,
         }
     }
 
@@ -1263,16 +1265,26 @@ impl FilterEngine {
                             matched_rules.push(format!("{}: {}", module.name, rule.name));
 
                             // Accumulate score if present
-                            if let Some(score) = rule.score {
+                            if let Some(mut score) = rule.score {
+                                // Apply legitimate business discount
+                                if context.is_legitimate_business {
+                                    score = (score as f32 * 0.3) as i32; // 70% reduction
+                                }
+                                
                                 total_score += score;
-                                scoring_rules
-                                    .push(format!("{}: {} (+{})", module.name, rule.name, score));
+                                let score_display = if context.is_legitimate_business {
+                                    format!("{}: {} (+{}, business discount)", module.name, rule.name, score)
+                                } else {
+                                    format!("{}: {} (+{})", module.name, rule.name, score)
+                                };
+                                scoring_rules.push(score_display);
                                 log::info!(
-                                    "Module '{}' Rule '{}' matched, score: +{}, total: {}",
+                                    "Module '{}' Rule '{}' matched, score: +{}, total: {}{}",
                                     module.name,
                                     rule.name,
                                     score,
-                                    total_score
+                                    total_score,
+                                    if context.is_legitimate_business { " (business discount applied)" } else { "" }
                                 );
                             }
 
@@ -1324,16 +1336,26 @@ impl FilterEngine {
                             matched_rules.push(format!("{}: {}", module.name, rule.name));
 
                             // Accumulate score if present
-                            if let Some(score) = rule.score {
+                            if let Some(mut score) = rule.score {
+                                // Apply legitimate business discount
+                                if context.is_legitimate_business {
+                                    score = (score as f32 * 0.3) as i32; // 70% reduction
+                                }
+                                
                                 total_score += score;
-                                scoring_rules
-                                    .push(format!("{}: {} (+{})", module.name, rule.name, score));
+                                let score_display = if context.is_legitimate_business {
+                                    format!("{}: {} (+{}, business discount)", module.name, rule.name, score)
+                                } else {
+                                    format!("{}: {} (+{})", module.name, rule.name, score)
+                                };
+                                scoring_rules.push(score_display);
                                 log::info!(
-                                    "Module '{}' Rule '{}' matched, score: +{}, total: {}",
+                                    "Module '{}' Rule '{}' matched, score: +{}, total: {}{}",
                                     module.name,
                                     rule.name,
                                     score,
-                                    total_score
+                                    total_score,
+                                    if context.is_legitimate_business { " (business discount applied)" } else { "" }
                                 );
                             } else {
                                 // In the new architecture, individual module actions are ignored
