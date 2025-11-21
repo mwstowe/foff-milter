@@ -107,6 +107,11 @@ impl SenderAlignmentAnalyzer {
             return true;
         }
 
+        // Handle complex CNAME-based domains (Adobe Campaign, etc.)
+        if self.is_complex_cname_domain(domain) {
+            return true; // Assume legitimate for complex marketing platforms
+        }
+
         // Use std::net for synchronous DNS lookup
         use std::net::ToSocketAddrs;
 
@@ -142,6 +147,23 @@ impl SenderAlignmentAnalyzer {
                 }
             }
         }
+    }
+
+    fn is_complex_cname_domain(&self, domain: &str) -> bool {
+        let cname_patterns = [
+            ".cname.campaign.adobe.com",
+            ".cname.cjm.adobe.com", 
+            ".campaign.adobe.com",
+            ".cjm.adobe.com",
+            ".exacttarget.com",
+            ".salesforce.com",
+            ".pardot.com",
+            ".hubspot.com",
+            ".marketo.com",
+            ".eloqua.com",
+        ];
+        
+        cname_patterns.iter().any(|pattern| domain.ends_with(pattern))
     }
 
     fn is_legitimate_email_service(&self, domain: &str) -> bool {
