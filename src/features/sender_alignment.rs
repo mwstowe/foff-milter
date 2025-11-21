@@ -184,6 +184,7 @@ impl SenderAlignmentAnalyzer {
             "sendinblue.com",
             "postmarkapp.com",
             "sparkpost.com",
+            "sparkpostmail.com",
             "mandrill.com",
             "mandrillapp.com",
             "mailjet.com",
@@ -193,6 +194,8 @@ impl SenderAlignmentAnalyzer {
             "tracking.domain-track.prod20.narvar.com",
             "spmailtechno.com",
             "gmail.com", // For forwarded emails
+            "emails.pitneybowes.com", // Pitney Bowes email service
+            "mail.arrived.com", // Arrived email service
         ];
 
         legitimate_services
