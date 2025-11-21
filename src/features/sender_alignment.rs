@@ -152,7 +152,7 @@ impl SenderAlignmentAnalyzer {
     fn is_complex_cname_domain(&self, domain: &str) -> bool {
         let cname_patterns = [
             ".cname.campaign.adobe.com",
-            ".cname.cjm.adobe.com", 
+            ".cname.cjm.adobe.com",
             ".campaign.adobe.com",
             ".cjm.adobe.com",
             ".exacttarget.com",
@@ -162,8 +162,10 @@ impl SenderAlignmentAnalyzer {
             ".marketo.com",
             ".eloqua.com",
         ];
-        
-        cname_patterns.iter().any(|pattern| domain.ends_with(pattern))
+
+        cname_patterns
+            .iter()
+            .any(|pattern| domain.ends_with(pattern))
     }
 
     fn is_legitimate_email_service(&self, domain: &str) -> bool {
@@ -193,9 +195,9 @@ impl SenderAlignmentAnalyzer {
             "narvar.com",
             "tracking.domain-track.prod20.narvar.com",
             "spmailtechno.com",
-            "gmail.com", // For forwarded emails
+            "gmail.com",              // For forwarded emails
             "emails.pitneybowes.com", // Pitney Bowes email service
-            "mail.arrived.com", // Arrived email service
+            "mail.arrived.com",       // Arrived email service
         ];
 
         legitimate_services
@@ -317,10 +319,10 @@ impl SenderAlignmentAnalyzer {
         if domain.is_empty() || domain == "unknown" {
             return domain.to_string();
         }
-        
+
         let parts: Vec<&str> = domain.split('.').collect();
         if parts.len() >= 2 {
-            format!("{}.{}", parts[parts.len()-2], parts[parts.len()-1])
+            format!("{}.{}", parts[parts.len() - 2], parts[parts.len() - 1])
         } else {
             domain.to_string()
         }
@@ -335,7 +337,7 @@ impl SenderAlignmentAnalyzer {
         // Extract root domains and compare (handles subdomains)
         let root1 = self.extract_root_domain(domain1);
         let root2 = self.extract_root_domain(domain2);
-        
+
         if root1 == root2 {
             return true;
         }
