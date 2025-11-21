@@ -97,6 +97,38 @@ impl SenderAlignmentAnalyzer {
             .map(|m| m.as_str().to_string())
     }
 
+    fn is_legitimate_email_service(&self, domain: &str) -> bool {
+        let legitimate_services = [
+            "sendgrid.net",
+            "mailgun.org", 
+            "amazonses.com",
+            "mailchimp.com",
+            "constantcontact.com",
+            "campaignmonitor.com",
+            "aweber.com",
+            "getresponse.com",
+            "convertkit.com",
+            "activecampaign.com",
+            "drip.com",
+            "klaviyo.com",
+            "klaviyodns.com",
+            "sendinblue.com",
+            "postmarkapp.com",
+            "sparkpost.com",
+            "mandrill.com",
+            "mandrillapp.com",
+            "mailjet.com",
+            "concurcompleat.com",
+            "bounce.concurcompleat.com",
+            "narvar.com",
+            "tracking.domain-track.prod20.narvar.com",
+            "spmailtechno.com",
+            "gmail.com", // For forwarded emails
+        ];
+        
+        legitimate_services.iter().any(|service| domain.contains(service))
+    }
+
     fn is_valid_domain_format(&self, domain: &str) -> bool {
         // Basic domain format validation
         if domain.is_empty() || domain == "unknown" {
@@ -181,10 +213,11 @@ impl SenderAlignmentAnalyzer {
     fn analyze_domain_consistency(&self, sender_info: &SenderInfo) -> Vec<String> {
         let mut issues = Vec::new();
 
-        // Check if From and Sender domains are consistent
+        // Check if From and Sender domains are consistent (allow legitimate email services)
         if !sender_info.sender_domain.is_empty()
             && sender_info.sender_domain != "unknown"
             && !self.domains_related(&sender_info.from_domain, &sender_info.sender_domain)
+            && !self.is_legitimate_email_service(&sender_info.sender_domain)
         {
             issues.push(format!(
                 "From domain '{}' doesn't match Sender domain '{}'",
