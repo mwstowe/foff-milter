@@ -315,6 +315,34 @@ impl SenderAlignmentAnalyzer {
         issues
     }
 
+    fn is_legitimate_business(&self, sender_info: &SenderInfo) -> bool {
+        let legitimate_businesses = [
+            "costco.com",
+            "pitneybowes.com", 
+            "arrived.com",
+            "cults3d.com",
+            "amazon.com",
+            "microsoft.com",
+            "google.com",
+            "apple.com",
+            "walmart.com",
+            "target.com",
+            "homedepot.com",
+            "lowes.com",
+            "bestbuy.com",
+            "macys.com",
+            "nordstrom.com",
+        ];
+        
+        // Check the full domain for business names (handles complex domains like Adobe Campaign)
+        let full_domain = &sender_info.from_domain;
+        let from_root = self.extract_root_domain(&sender_info.from_domain);
+        
+        legitimate_businesses.iter().any(|business| {
+            full_domain.contains(business) || from_root.contains(business)
+        })
+    }
+
     fn extract_root_domain(&self, domain: &str) -> String {
         if domain.is_empty() || domain == "unknown" {
             return domain.to_string();
@@ -653,6 +681,12 @@ impl FeatureExtractor for SenderAlignmentAnalyzer {
         evidence.extend(spoofing_issues);
 
         let confidence = if evidence.is_empty() { 0.9 } else { 0.85 };
+
+        // Apply legitimate business discount
+        if self.is_legitimate_business(&sender_info) {
+            score = (score as f32 * 0.3) as i32; // 70% reduction for legitimate businesses
+            evidence.push("Legitimate business sender - reduced scoring applied".to_string());
+        }
 
         FeatureScore {
             feature_name: "Sender Alignment".to_string(),
