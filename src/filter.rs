@@ -200,6 +200,19 @@ pub struct AttachmentInfo {
 }
 
 impl FilterEngine {
+    fn should_exempt_rule_for_business(&self, module_name: &str, rule_name: &str) -> bool {
+        let exempt_rules = [
+            ("Advanced Security", "Final ultra-aggressive spam detection"),
+            ("Media Content Analysis", "Financial Scams (All Text)"),
+            ("Advanced Security", "Final spam catch-all"),
+            ("Advanced Security", "Ultra-specific final spam patterns"),
+        ];
+        
+        exempt_rules.iter().any(|(mod_name, rule)| {
+            module_name == *mod_name && rule_name == *rule
+        })
+    }
+
     /// Normalize encoding in MailContext to handle malformed UTF-8 and encoding evasion
     fn normalize_mail_context(&self, context: &MailContext) -> MailContext {
         MailContext {
@@ -1250,6 +1263,16 @@ impl FilterEngine {
                             continue;
                         }
 
+                        // Skip certain rules for legitimate businesses
+                        if context.is_legitimate_business && self.should_exempt_rule_for_business(&module.name, &rule.name) {
+                            log::info!(
+                                "Module '{}' Rule '{}' skipped for legitimate business",
+                                module.name,
+                                rule.name
+                            );
+                            continue;
+                        }
+
                         let matches = self
                             .evaluate_criteria(&rule.criteria, &context_with_attachments)
                             .await;
@@ -1316,6 +1339,16 @@ impl FilterEngine {
                                 "Module '{}' Rule {} '{}' is disabled, skipping",
                                 module.name,
                                 rule_index + 1,
+                                rule.name
+                            );
+                            continue;
+                        }
+
+                        // Skip certain rules for legitimate businesses
+                        if context.is_legitimate_business && self.should_exempt_rule_for_business(&module.name, &rule.name) {
+                            log::info!(
+                                "Module '{}' Rule '{}' skipped for legitimate business",
+                                module.name,
                                 rule.name
                             );
                             continue;

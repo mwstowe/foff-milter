@@ -12,6 +12,38 @@ use std::sync::Arc;
 use tokio::signal::unix::{signal, SignalKind};
 use tokio::sync::RwLock;
 
+fn is_legitimate_business_test(context: &foff_milter::filter::MailContext) -> bool {
+    let legitimate_businesses = [
+        "costco.com",
+        "pitneybowes.com", 
+        "arrived.com",
+        "cults3d.com",
+        "amazon.com",
+        "microsoft.com",
+        "google.com",
+        "apple.com",
+        "walmart.com",
+        "target.com",
+        "homedepot.com",
+        "lowes.com",
+        "bestbuy.com",
+        "macys.com",
+        "nordstrom.com",
+    ];
+    
+    if let Some(from_header) = &context.from_header {
+        // Extract domain from From header
+        if let Some(domain_start) = from_header.rfind('@') {
+            let domain_part = &from_header[domain_start + 1..];
+            let domain = domain_part.trim_end_matches('>').trim();
+            
+            return legitimate_businesses.iter().any(|business| domain.contains(business));
+        }
+    }
+    
+    false
+}
+
 /// Read email file with encoding fallback for malformed UTF-8
 fn read_email_with_encoding_fallback(
     file_path: &str,
@@ -971,7 +1003,7 @@ async fn test_email_file(
     }
 
     // Create mail context
-    let context = MailContext {
+    let mut context = MailContext {
         sender: Some(sender.clone()),
         from_header: headers.get("from").cloned(),
         recipients: recipients.clone(),
@@ -986,8 +1018,14 @@ async fn test_email_file(
         last_header_name: None,
         attachments: Vec::new(), // Will be populated by analyze_attachments
         extracted_media_text: String::new(), // Will be populated by media analysis
-        is_legitimate_business: false, // Will be set during evaluation
+        is_legitimate_business: false, // Will be set below
     };
+
+    // Add legitimate business detection for test mode
+    context.is_legitimate_business = is_legitimate_business_test(&context);
+    if context.is_legitimate_business {
+        println!("🏢 Detected legitimate business sender");
+    }
 
     // Test the email
     println!("🔍 Testing against detection system...");
