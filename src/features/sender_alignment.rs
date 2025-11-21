@@ -100,7 +100,7 @@ impl SenderAlignmentAnalyzer {
     fn is_legitimate_email_service(&self, domain: &str) -> bool {
         let legitimate_services = [
             "sendgrid.net",
-            "mailgun.org", 
+            "mailgun.org",
             "amazonses.com",
             "mailchimp.com",
             "constantcontact.com",
@@ -125,8 +125,10 @@ impl SenderAlignmentAnalyzer {
             "spmailtechno.com",
             "gmail.com", // For forwarded emails
         ];
-        
-        legitimate_services.iter().any(|service| domain.contains(service))
+
+        legitimate_services
+            .iter()
+            .any(|service| domain.contains(service))
     }
 
     fn is_valid_domain_format(&self, domain: &str) -> bool {
@@ -134,7 +136,7 @@ impl SenderAlignmentAnalyzer {
         if domain.is_empty() || domain == "unknown" {
             return false;
         }
-        
+
         // Must contain at least one dot and valid TLD
         let domain_regex = Regex::new(r"^[a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?)*\.[a-zA-Z]{2,}$").unwrap();
         domain_regex.is_match(domain)
@@ -147,7 +149,7 @@ impl SenderAlignmentAnalyzer {
                 return domain.as_str().trim_end_matches('>').to_string();
             }
         }
-        
+
         // Fallback to general @ pattern
         if let Some(cap) = self.domain_regex.captures(header) {
             if let Some(domain) = cap.get(1) {
@@ -350,15 +352,22 @@ impl FeatureExtractor for SenderAlignmentAnalyzer {
             }
         } else if !self.is_valid_domain_format(&sender_info.from_domain) {
             score += 100;
-            evidence.push(format!("From header has malformed domain: {}", sender_info.from_domain));
+            evidence.push(format!(
+                "From header has malformed domain: {}",
+                sender_info.from_domain
+            ));
         }
-        
+
         // Return-Path should also have a valid domain (but less critical)
-        if !sender_info.return_path_domain.is_empty() && sender_info.return_path_domain != "unknown" {
-            if !self.is_valid_domain_format(&sender_info.return_path_domain) {
-                score += 80;
-                evidence.push(format!("Return-Path header has malformed domain: {}", sender_info.return_path_domain));
-            }
+        if !sender_info.return_path_domain.is_empty() 
+            && sender_info.return_path_domain != "unknown"
+            && !self.is_valid_domain_format(&sender_info.return_path_domain)
+        {
+            score += 80;
+            evidence.push(format!(
+                "Return-Path header has malformed domain: {}",
+                sender_info.return_path_domain
+            ));
         }
 
         // Check major brand impersonation (sender claiming to BE the brand)
