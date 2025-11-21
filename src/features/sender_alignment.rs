@@ -313,14 +313,30 @@ impl SenderAlignmentAnalyzer {
         issues
     }
 
+    fn extract_root_domain(&self, domain: &str) -> String {
+        if domain.is_empty() || domain == "unknown" {
+            return domain.to_string();
+        }
+        
+        let parts: Vec<&str> = domain.split('.').collect();
+        if parts.len() >= 2 {
+            format!("{}.{}", parts[parts.len()-2], parts[parts.len()-1])
+        } else {
+            domain.to_string()
+        }
+    }
+
     fn domains_related(&self, domain1: &str, domain2: &str) -> bool {
         // Same domain
         if domain1 == domain2 {
             return true;
         }
 
-        // Subdomain relationship
-        if domain1.ends_with(domain2) || domain2.ends_with(domain1) {
+        // Extract root domains and compare (handles subdomains)
+        let root1 = self.extract_root_domain(domain1);
+        let root2 = self.extract_root_domain(domain2);
+        
+        if root1 == root2 {
             return true;
         }
 
