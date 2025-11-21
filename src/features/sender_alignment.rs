@@ -71,8 +71,8 @@ impl SenderAlignmentAnalyzer {
     }
 
     fn extract_sender_info(&self, context: &MailContext) -> SenderInfo {
-        let from_header = context.headers.get("From").cloned().unwrap_or_default();
-        let sender_header = context.headers.get("Sender").cloned().unwrap_or_default();
+        let from_header = context.from_header.as_deref().unwrap_or_default();
+        let sender_header = context.sender.as_deref().unwrap_or_default();
         let return_path = context
             .headers
             .get("Return-Path")
@@ -80,10 +80,10 @@ impl SenderAlignmentAnalyzer {
             .unwrap_or_default();
 
         SenderInfo {
-            from_domain: self.extract_domain(&from_header),
-            sender_domain: self.extract_domain(&sender_header),
+            from_domain: self.extract_domain(from_header),
+            sender_domain: self.extract_domain(sender_header),
             return_path_domain: self.extract_domain(&return_path),
-            from_display_name: self.extract_display_name(&from_header),
+            from_display_name: self.extract_display_name(from_header),
         }
     }
 
@@ -97,10 +97,30 @@ impl SenderAlignmentAnalyzer {
             .map(|m| m.as_str().to_string())
     }
 
+    fn is_valid_domain_format(&self, domain: &str) -> bool {
+        // Basic domain format validation
+        if domain.is_empty() || domain == "unknown" {
+            return false;
+        }
+        
+        // Must contain at least one dot and valid TLD
+        let domain_regex = Regex::new(r"^[a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])?)*\.[a-zA-Z]{2,}$").unwrap();
+        domain_regex.is_match(domain)
+    }
+
     fn extract_domain(&self, header: &str) -> String {
+        // Try to extract from angle brackets first (most reliable)
+        if let Some(angle_match) = Regex::new(r"<[^<>]*@([^<>\s]+)>").unwrap().captures(header) {
+            if let Some(domain) = angle_match.get(1) {
+                return domain.as_str().trim_end_matches('>').to_string();
+            }
+        }
+        
+        // Fallback to general @ pattern
         if let Some(cap) = self.domain_regex.captures(header) {
             if let Some(domain) = cap.get(1) {
-                return domain.as_str().trim_end_matches('>').to_string();
+                let domain_str = domain.as_str().trim_end_matches('>').trim_end_matches(')');
+                return domain_str.to_string();
             }
         }
         "unknown".to_string()
@@ -284,6 +304,29 @@ impl FeatureExtractor for SenderAlignmentAnalyzer {
         let sender_info = self.extract_sender_info(context);
         let mut evidence = Vec::new();
         let mut score = 0;
+
+        // Check for invalid or missing domains (very high score) - only critical headers
+        // From header MUST have a valid domain
+        if sender_info.from_domain == "unknown" || sender_info.from_domain.is_empty() {
+            // Only flag if we actually have a from_header but failed to extract domain
+            if let Some(from_header) = context.from_header.as_deref() {
+                if !from_header.is_empty() {
+                    score += 120;
+                    evidence.push("From header has invalid or missing domain".to_string());
+                }
+            }
+        } else if !self.is_valid_domain_format(&sender_info.from_domain) {
+            score += 100;
+            evidence.push(format!("From header has malformed domain: {}", sender_info.from_domain));
+        }
+        
+        // Return-Path should also have a valid domain (but less critical)
+        if !sender_info.return_path_domain.is_empty() && sender_info.return_path_domain != "unknown" {
+            if !self.is_valid_domain_format(&sender_info.return_path_domain) {
+                score += 80;
+                evidence.push(format!("Return-Path header has malformed domain: {}", sender_info.return_path_domain));
+            }
+        }
 
         // Check major brand impersonation (sender claiming to BE the brand)
         let brand_patterns = [
