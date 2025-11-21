@@ -12,7 +12,7 @@ use tokio::net::UnixListener;
 fn is_legitimate_business_sender(context: &MailContext) -> bool {
     let legitimate_businesses = [
         "costco.com",
-        "pitneybowes.com", 
+        "pitneybowes.com",
         "arrived.com",
         "cults3d.com",
         "amazon.com",
@@ -27,33 +27,36 @@ fn is_legitimate_business_sender(context: &MailContext) -> bool {
         "macys.com",
         "nordstrom.com",
     ];
-    
+
     if let Some(from_header) = &context.from_header {
-        log::info!("Checking business detection for From header: {}", from_header);
+        log::info!(
+            "Checking business detection for From header: {}",
+            from_header
+        );
         // Extract domain from From header
         if let Some(domain_start) = from_header.rfind('@') {
             let domain_part = &from_header[domain_start + 1..];
             let domain = domain_part.trim_end_matches('>').trim();
             log::info!("Extracted domain: {}", domain);
-            
+
             // Special exclusion for onmicrosoft.com (compromised tenant domains)
             if domain.contains("onmicrosoft.com") {
                 log::info!("Excluded onmicrosoft.com domain");
                 return false;
             }
-            
+
             // Check for business match: exact, subdomain, or contains (for complex domains like Adobe Campaign)
             let is_business = legitimate_businesses.iter().any(|business| {
-                domain == *business || 
-                domain.ends_with(&format!(".{}", business)) ||
-                domain.contains(business)
+                domain == *business
+                    || domain.ends_with(&format!(".{}", business))
+                    || domain.contains(business)
             });
-            
+
             log::info!("Is legitimate business: {}", is_business);
             return is_business;
         }
     }
-    
+
     log::info!("No From header found or no @ in header");
     false
 }
@@ -668,9 +671,13 @@ impl Milter {
 
                         if let Some(mut mail_ctx) = mail_ctx_clone {
                             // Add legitimate business detection
-                            mail_ctx.is_legitimate_business = is_legitimate_business_sender(&mail_ctx);
-                            log::info!("Business detection result: {}", mail_ctx.is_legitimate_business);
-                            
+                            mail_ctx.is_legitimate_business =
+                                is_legitimate_business_sender(&mail_ctx);
+                            log::info!(
+                                "Business detection result: {}",
+                                mail_ctx.is_legitimate_business
+                            );
+
                             let sender = mail_ctx.sender.as_deref().unwrap_or("<unknown>");
                             let recipients = if mail_ctx.recipients.is_empty() {
                                 "<unknown>".to_string()

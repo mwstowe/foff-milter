@@ -322,6 +322,7 @@ mod tests {
             attachments: Vec::new(),
             mailer: None,
             last_header_name: None,
+            is_legitimate_business: false,
         };
 
         // Test SendGrid abuse reporting (will log since no SMTP configured)
@@ -365,6 +366,7 @@ mod tests {
             hostname: None,
             mailer: None,
             last_header_name: None,
+            is_legitimate_business: false,
         };
 
         let result = reporter

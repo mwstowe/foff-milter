@@ -188,7 +188,7 @@ pub struct MailContext {
     pub last_header_name: Option<String>, // Track last header for continuation lines
     pub attachments: Vec<AttachmentInfo>, // New: attachment analysis
     pub extracted_media_text: String,     // Text extracted from PDFs and images
-    pub is_legitimate_business: bool,      // Flag for legitimate business senders
+    pub is_legitimate_business: bool,     // Flag for legitimate business senders
 }
 
 #[derive(Debug, Clone)]
@@ -207,10 +207,10 @@ impl FilterEngine {
             ("Advanced Security", "Final spam catch-all"),
             ("Advanced Security", "Ultra-specific final spam patterns"),
         ];
-        
-        exempt_rules.iter().any(|(mod_name, rule)| {
-            module_name == *mod_name && rule_name == *rule
-        })
+
+        exempt_rules
+            .iter()
+            .any(|(mod_name, rule)| module_name == *mod_name && rule_name == *rule)
     }
 
     /// Normalize encoding in MailContext to handle malformed UTF-8 and encoding evasion
@@ -1264,7 +1264,9 @@ impl FilterEngine {
                         }
 
                         // Skip certain rules for legitimate businesses
-                        if context.is_legitimate_business && self.should_exempt_rule_for_business(&module.name, &rule.name) {
+                        if context.is_legitimate_business
+                            && self.should_exempt_rule_for_business(&module.name, &rule.name)
+                        {
                             log::info!(
                                 "Module '{}' Rule '{}' skipped for legitimate business",
                                 module.name,
@@ -1293,10 +1295,13 @@ impl FilterEngine {
                                 if context.is_legitimate_business {
                                     score = (score as f32 * 0.3) as i32; // 70% reduction
                                 }
-                                
+
                                 total_score += score;
                                 let score_display = if context.is_legitimate_business {
-                                    format!("{}: {} (+{}, business discount)", module.name, rule.name, score)
+                                    format!(
+                                        "{}: {} (+{}, business discount)",
+                                        module.name, rule.name, score
+                                    )
                                 } else {
                                     format!("{}: {} (+{})", module.name, rule.name, score)
                                 };
@@ -1307,7 +1312,11 @@ impl FilterEngine {
                                     rule.name,
                                     score,
                                     total_score,
-                                    if context.is_legitimate_business { " (business discount applied)" } else { "" }
+                                    if context.is_legitimate_business {
+                                        " (business discount applied)"
+                                    } else {
+                                        ""
+                                    }
                                 );
                             }
 
@@ -1345,7 +1354,9 @@ impl FilterEngine {
                         }
 
                         // Skip certain rules for legitimate businesses
-                        if context.is_legitimate_business && self.should_exempt_rule_for_business(&module.name, &rule.name) {
+                        if context.is_legitimate_business
+                            && self.should_exempt_rule_for_business(&module.name, &rule.name)
+                        {
                             log::info!(
                                 "Module '{}' Rule '{}' skipped for legitimate business",
                                 module.name,
@@ -1374,10 +1385,13 @@ impl FilterEngine {
                                 if context.is_legitimate_business {
                                     score = (score as f32 * 0.3) as i32; // 70% reduction
                                 }
-                                
+
                                 total_score += score;
                                 let score_display = if context.is_legitimate_business {
-                                    format!("{}: {} (+{}, business discount)", module.name, rule.name, score)
+                                    format!(
+                                        "{}: {} (+{}, business discount)",
+                                        module.name, rule.name, score
+                                    )
                                 } else {
                                     format!("{}: {} (+{})", module.name, rule.name, score)
                                 };
@@ -1388,7 +1402,11 @@ impl FilterEngine {
                                     rule.name,
                                     score,
                                     total_score,
-                                    if context.is_legitimate_business { " (business discount applied)" } else { "" }
+                                    if context.is_legitimate_business {
+                                        " (business discount applied)"
+                                    } else {
+                                        ""
+                                    }
                                 );
                             } else {
                                 // In the new architecture, individual module actions are ignored
