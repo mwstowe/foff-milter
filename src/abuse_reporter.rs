@@ -323,6 +323,8 @@ mod tests {
             mailer: None,
             last_header_name: None,
             is_legitimate_business: false,
+            is_first_hop: true,
+            forwarding_source: None,
         };
 
         // Test SendGrid abuse reporting (will log since no SMTP configured)
@@ -367,6 +369,8 @@ mod tests {
             mailer: None,
             last_header_name: None,
             is_legitimate_business: false,
+            is_first_hop: true,
+            forwarding_source: None,
         };
 
         let result = reporter

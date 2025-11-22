@@ -1029,6 +1029,8 @@ async fn test_email_file(
         attachments: Vec::new(), // Will be populated by analyze_attachments
         extracted_media_text: String::new(), // Will be populated by media analysis
         is_legitimate_business: false, // Will be set below
+        is_first_hop: true, // Test mode assumes first hop
+        forwarding_source: None, // Will be detected during evaluation
     };
 
     // Add legitimate business detection for test mode

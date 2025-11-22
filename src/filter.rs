@@ -174,7 +174,7 @@ pub struct FilterEngine {
     feature_engine: FeatureEngine,
 }
 
-#[derive(Debug, Default, Clone)]
+#[derive(Debug, Clone)]
 pub struct MailContext {
     pub sender: Option<String>,      // Envelope sender (MAIL FROM)
     pub from_header: Option<String>, // From header sender
@@ -189,6 +189,30 @@ pub struct MailContext {
     pub attachments: Vec<AttachmentInfo>, // New: attachment analysis
     pub extracted_media_text: String,     // Text extracted from PDFs and images
     pub is_legitimate_business: bool,     // Flag for legitimate business senders
+    pub is_first_hop: bool,               // True if this is the first mailer receiving the email
+    pub forwarding_source: Option<String>, // Source of forwarding (gmail.com, aol.com, etc.)
+}
+
+impl Default for MailContext {
+    fn default() -> Self {
+        Self {
+            sender: None,
+            from_header: None,
+            recipients: Vec::new(),
+            headers: HashMap::new(),
+            mailer: None,
+            subject: None,
+            hostname: None,
+            helo: None,
+            body: None,
+            last_header_name: None,
+            attachments: Vec::new(),
+            extracted_media_text: String::new(),
+            is_legitimate_business: false,
+            is_first_hop: true, // Default to first hop
+            forwarding_source: None,
+        }
+    }
 }
 
 #[derive(Debug, Clone)]
@@ -211,6 +235,38 @@ impl FilterEngine {
         exempt_rules
             .iter()
             .any(|(mod_name, rule)| module_name == *mod_name && rule_name == *rule)
+    }
+
+    fn detect_email_hop(&self, context: &MailContext) -> (bool, Option<String>) {
+        // Check Received headers to determine if this is first hop or forwarded
+        let received_headers: Vec<&String> = context.headers
+            .iter()
+            .filter(|(k, _)| k.to_lowercase() == "received")
+            .map(|(_, v)| v)
+            .collect();
+        
+        // If no Received headers, assume first hop
+        if received_headers.is_empty() {
+            return (true, None);
+        }
+        
+        // Check for forwarding services in Received headers
+        let forwarding_services = ["gmail.com", "aol.com", "yahoo.com", "outlook.com", "hotmail.com"];
+        
+        for header in &received_headers {
+            let header_lower = header.to_lowercase();
+            for service in &forwarding_services {
+                if header_lower.contains(service) {
+                    // Found forwarding service - this is not first hop
+                    return (false, Some(service.to_string()));
+                }
+            }
+        }
+        
+        // Check number of Received headers - more than 2 usually indicates forwarding
+        let is_first_hop = received_headers.len() <= 2;
+        
+        (is_first_hop, None)
     }
 
     /// Normalize encoding in MailContext to handle malformed UTF-8 and encoding evasion
@@ -237,6 +293,8 @@ impl FilterEngine {
             mailer: context.mailer.clone(),
             extracted_media_text: context.extracted_media_text.clone(),
             is_legitimate_business: context.is_legitimate_business,
+            is_first_hop: context.is_first_hop,
+            forwarding_source: context.forwarding_source.clone(),
         }
     }
 
@@ -1113,8 +1171,21 @@ impl FilterEngine {
         &self,
         context: &MailContext,
     ) -> (Action, Vec<String>, Vec<(String, String)>) {
+        // Clone context to modify hop detection fields
+        let mut context = context.clone();
+        
+        // Detect email hop status
+        let (is_first_hop, forwarding_source) = self.detect_email_hop(&context);
+        context.is_first_hop = is_first_hop;
+        context.forwarding_source = forwarding_source.clone();
+        
+        if let Some(source) = &forwarding_source {
+            log::info!("Email forwarded from: {}", source);
+        }
+        log::info!("First hop: {}", is_first_hop);
+        
         // Normalize encoding in the context to handle malformed UTF-8 and encoding evasion
-        let normalized_context = self.normalize_mail_context(context);
+        let normalized_context = self.normalize_mail_context(&context);
 
         // Check sender blocking patterns first - highest priority
         if let Some(blocked_sender) = self.check_sender_blocking(&normalized_context) {
@@ -1127,11 +1198,22 @@ impl FilterEngine {
                     get_hostname()
                 ),
             )];
-            return (
-                self.sender_blocking_action.clone(),
-                vec!["Sender Blocking".to_string()],
-                headers,
-            );
+            
+            // Apply selective reject based on hop detection
+            let action = if normalized_context.is_first_hop {
+                self.sender_blocking_action.clone()
+            } else {
+                // Convert reject to tag for forwarded emails
+                match &self.sender_blocking_action {
+                    Action::Reject { .. } => Action::TagAsSpam {
+                        header_name: "X-Spam-Flag".to_string(),
+                        header_value: "YES".to_string(),
+                    },
+                    other => other.clone(),
+                }
+            };
+            
+            return (action, vec!["Sender Blocking".to_string()], headers);
         }
 
         // Create mutable copy for attachment analysis
@@ -1537,7 +1619,7 @@ impl FilterEngine {
                 continue;
             }
 
-            let matches = self.evaluate_criteria(&rule.criteria, context).await;
+            let matches = self.evaluate_criteria(&rule.criteria, &context).await;
             log::info!(
                 "Rule {} '{}' evaluation result: {}",
                 rule_index + 1,
@@ -1609,15 +1691,24 @@ impl FilterEngine {
             }
         }
 
-        // Convert REJECT to TAG if setting is enabled
+        // Apply selective reject based on hop detection and configuration
         let (final_action, headers_to_add) = if let Some(ref toml_config) = self.toml_config {
-            if toml_config.system.as_ref().is_none_or(|s| s.reject_to_tag) {
+            // Check if reject_to_tag is enabled OR if this is not the first hop
+            let should_convert_reject = toml_config.system.as_ref().is_none_or(|s| s.reject_to_tag) 
+                || !normalized_context.is_first_hop;
+                
+            if should_convert_reject {
                 if let Action::Reject { message } = final_action {
                     // Add both the conversion header and the standard spam flag
                     let mut headers = headers_to_add;
+                    let reason = if !normalized_context.is_first_hop {
+                        "FORWARDED-EMAIL-REJECT-TO-TAG"
+                    } else {
+                        "WOULD-REJECT"
+                    };
                     headers.push((
                         "X-FOFF-Reject-Converted".to_string(),
-                        format!("WOULD-REJECT: {}", message),
+                        format!("{}: {}", reason, message),
                     ));
                     headers.push(("X-Spam-Flag".to_string(), "YES".to_string()));
                     (self.heuristic_spam.clone(), headers)
@@ -1628,7 +1719,22 @@ impl FilterEngine {
                 (final_action.clone(), headers_to_add)
             }
         } else {
-            (final_action.clone(), headers_to_add)
+            // No TOML config - apply hop-based logic
+            if !normalized_context.is_first_hop {
+                if let Action::Reject { message } = final_action {
+                    let mut headers = headers_to_add;
+                    headers.push((
+                        "X-FOFF-Reject-Converted".to_string(),
+                        format!("FORWARDED-EMAIL-REJECT-TO-TAG: {}", message),
+                    ));
+                    headers.push(("X-Spam-Flag".to_string(), "YES".to_string()));
+                    (self.heuristic_spam.clone(), headers)
+                } else {
+                    (final_action.clone(), headers_to_add)
+                }
+            } else {
+                (final_action.clone(), headers_to_add)
+            }
         };
 
         (final_action, matched_rules, headers_to_add)
@@ -1647,7 +1753,7 @@ impl FilterEngine {
                 continue;
             }
 
-            let matches = self.evaluate_criteria(&rule.criteria, context).await;
+            let matches = self.evaluate_criteria(&rule.criteria, &context).await;
             log::info!("Rule '{}' evaluation result: {}", rule.name, matches);
             if matches {
                 matched_rule_names.push(rule.name.as_str());
