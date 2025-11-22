@@ -1753,7 +1753,7 @@ impl FilterEngine {
                 continue;
             }
 
-            let matches = self.evaluate_criteria(&rule.criteria, &context).await;
+            let matches = self.evaluate_criteria(&rule.criteria, context).await;
             log::info!("Rule '{}' evaluation result: {}", rule.name, matches);
             if matches {
                 matched_rule_names.push(rule.name.as_str());
