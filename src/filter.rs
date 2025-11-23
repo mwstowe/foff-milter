@@ -239,20 +239,27 @@ impl FilterEngine {
 
     fn detect_email_hop(&self, context: &MailContext) -> (bool, Option<String>) {
         // Check Received headers to determine if this is first hop or forwarded
-        let received_headers: Vec<&String> = context.headers
+        let received_headers: Vec<&String> = context
+            .headers
             .iter()
             .filter(|(k, _)| k.to_lowercase() == "received")
             .map(|(_, v)| v)
             .collect();
-        
+
         // If no Received headers, assume first hop
         if received_headers.is_empty() {
             return (true, None);
         }
-        
+
         // Check for forwarding services in Received headers
-        let forwarding_services = ["gmail.com", "aol.com", "yahoo.com", "outlook.com", "hotmail.com"];
-        
+        let forwarding_services = [
+            "gmail.com",
+            "aol.com",
+            "yahoo.com",
+            "outlook.com",
+            "hotmail.com",
+        ];
+
         for header in &received_headers {
             let header_lower = header.to_lowercase();
             for service in &forwarding_services {
@@ -262,10 +269,10 @@ impl FilterEngine {
                 }
             }
         }
-        
+
         // Check number of Received headers - more than 2 usually indicates forwarding
         let is_first_hop = received_headers.len() <= 2;
-        
+
         (is_first_hop, None)
     }
 
@@ -1173,17 +1180,17 @@ impl FilterEngine {
     ) -> (Action, Vec<String>, Vec<(String, String)>) {
         // Clone context to modify hop detection fields
         let mut context = context.clone();
-        
+
         // Detect email hop status
         let (is_first_hop, forwarding_source) = self.detect_email_hop(&context);
         context.is_first_hop = is_first_hop;
         context.forwarding_source = forwarding_source.clone();
-        
+
         if let Some(source) = &forwarding_source {
             log::info!("Email forwarded from: {}", source);
         }
         log::info!("First hop: {}", is_first_hop);
-        
+
         // Normalize encoding in the context to handle malformed UTF-8 and encoding evasion
         let normalized_context = self.normalize_mail_context(&context);
 
@@ -1198,7 +1205,7 @@ impl FilterEngine {
                     get_hostname()
                 ),
             )];
-            
+
             // Apply selective reject based on hop detection
             let action = if normalized_context.is_first_hop {
                 self.sender_blocking_action.clone()
@@ -1212,7 +1219,7 @@ impl FilterEngine {
                     other => other.clone(),
                 }
             };
-            
+
             return (action, vec!["Sender Blocking".to_string()], headers);
         }
 
@@ -1694,9 +1701,9 @@ impl FilterEngine {
         // Apply selective reject based on hop detection and configuration
         let (final_action, headers_to_add) = if let Some(ref toml_config) = self.toml_config {
             // Check if reject_to_tag is enabled OR if this is not the first hop
-            let should_convert_reject = toml_config.system.as_ref().is_none_or(|s| s.reject_to_tag) 
+            let should_convert_reject = toml_config.system.as_ref().is_none_or(|s| s.reject_to_tag)
                 || !normalized_context.is_first_hop;
-                
+
             if should_convert_reject {
                 if let Action::Reject { message } = final_action {
                     // Add both the conversion header and the standard spam flag
