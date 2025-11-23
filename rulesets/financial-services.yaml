@@ -18,6 +18,10 @@ rules:
               pattern: "(?i).*@.*(finance|loan|lending|credit|funding|capital).*"
             - type: "BodyPattern"
               pattern: "(?i).*(financial.*institution|loan.*provider|lending.*company|finance.*company).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: "(?i).*@.*(creditkarma|experian|equifax|transunion)\\.(com|net|org)$"
     score: 75
     description: "Unsolicited loan and lending offers"
 

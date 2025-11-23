@@ -29,6 +29,10 @@ fn is_legitimate_business_test(context: &foff_milter::filter::MailContext) -> bo
         "bestbuy.com",
         "macys.com",
         "nordstrom.com",
+        "wolfermans.com",
+        "wolfermans-email.com",
+        "creditkarma.com",
+        "mail.creditkarma.com",
     ];
 
     if let Some(from_header) = &context.from_header {

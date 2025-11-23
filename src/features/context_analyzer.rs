@@ -278,11 +278,18 @@ impl FeatureExtractor for ContextAnalyzer {
             all_evidence.push("Product prize scam pattern detected".to_string());
         }
 
-        // Holiday/seasonal giveaway scams
-        let seasonal_giveaway_regex = Regex::new(r"(?i)\b(thanksgiving|christmas|holiday|black.*friday).*(claim.*from|giveaway.*from|gift.*from)\b").unwrap();
+        // Holiday/seasonal giveaway scams (more specific to actual scam patterns)
+        let seasonal_giveaway_regex = Regex::new(r"(?i)\b(thanksgiving|christmas|holiday|black.*friday).*(claim.*from|giveaway.*from|gift.*from|you.*won|congratulations.*selected|prize.*awaits)\b").unwrap();
         if seasonal_giveaway_regex.is_match(&combined_text) {
-            total_score += 45;
-            all_evidence.push("Seasonal giveaway scam pattern detected".to_string());
+            // Check if this is from a legitimate business (reduce false positives)
+            if context.is_legitimate_business {
+                // Legitimate businesses can have seasonal marketing - reduce penalty
+                total_score += 15;
+                all_evidence.push("Seasonal marketing from legitimate business".to_string());
+            } else {
+                total_score += 45;
+                all_evidence.push("Seasonal giveaway scam pattern detected".to_string());
+            }
         }
 
         // Exclusive opportunity language detection (scam-specific contexts)

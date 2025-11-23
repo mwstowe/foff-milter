@@ -1,6 +1,32 @@
 name: "Legitimate Business Detection"
 enabled: true
 rules:
+  - name: "Wolferman's Gourmet Bakery"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SenderPattern"
+          pattern: "(?i).*@.*wolfermans.*\\.com$"
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: "(?i).*@.*wolfermans.*\\.com.*"
+    score: -100
+    description: "Legitimate Wolferman's Gourmet Bakery emails"
+
+  - name: "Credit Karma"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SenderPattern"
+          pattern: "(?i).*@.*creditkarma\\.com$"
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: "(?i).*@.*creditkarma\\.com.*"
+    score: -200
+    description: "Legitimate Credit Karma financial service emails"
+
   - name: "Duluth Trading Company"
     enabled: true
     criteria:
