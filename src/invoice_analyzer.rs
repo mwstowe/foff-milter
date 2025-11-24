@@ -191,20 +191,24 @@ impl InvoiceAnalyzer {
             Regex::new(r"(?i)(paypal|amazon|ebay).*shipping.*notification").unwrap(),
         ];
 
-        let has_delivery_context = text.to_lowercase().contains("delivery") || 
-                                  text.to_lowercase().contains("shipping");
-        let has_financial_brand = text.to_lowercase().contains("paypal") ||
-                                 text.to_lowercase().contains("amazon") ||
-                                 text.to_lowercase().contains("ebay");
+        let has_delivery_context =
+            text.to_lowercase().contains("delivery") || text.to_lowercase().contains("shipping");
+        let has_financial_brand = text.to_lowercase().contains("paypal")
+            || text.to_lowercase().contains("amazon")
+            || text.to_lowercase().contains("ebay");
 
         // Only flag if delivery + brand from non-legitimate domain
-        if has_delivery_context && has_financial_brand && 
-           !self.is_legitimate_business(sender, from_header) {
+        if has_delivery_context
+            && has_financial_brand
+            && !self.is_legitimate_business(sender, from_header)
+        {
             for pattern in &delivery_phishing_patterns {
                 if pattern.is_match(&text) {
                     patterns.push("Delivery phishing detected".to_string());
                     score += 60.0;
-                    risk_factors.push("Financial brand in delivery context from suspicious domain".to_string());
+                    risk_factors.push(
+                        "Financial brand in delivery context from suspicious domain".to_string(),
+                    );
                     break;
                 }
             }
@@ -227,14 +231,16 @@ impl InvoiceAnalyzer {
         ];
 
         for pattern in &academic_patterns {
-            if (pattern.is_match(sender) || pattern.is_match(from_header)) && 
-               (text.to_lowercase().contains("paypal") || 
-                text.to_lowercase().contains("invoice") ||
-                text.to_lowercase().contains("delivery") ||
-                text.to_lowercase().contains("payment")) {
+            if (pattern.is_match(sender) || pattern.is_match(from_header))
+                && (text.to_lowercase().contains("paypal")
+                    || text.to_lowercase().contains("invoice")
+                    || text.to_lowercase().contains("delivery")
+                    || text.to_lowercase().contains("payment"))
+            {
                 patterns.push("Academic domain abuse".to_string());
                 score += 75.0;
-                risk_factors.push("Academic domain used for commercial/financial content".to_string());
+                risk_factors
+                    .push("Academic domain used for commercial/financial content".to_string());
                 break;
             }
         }
