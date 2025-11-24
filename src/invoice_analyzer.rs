@@ -49,6 +49,11 @@ impl InvoiceAnalyzer {
                 Regex::new(r"(?i)overdue").unwrap(),
                 Regex::new(r"(?i)receipt").unwrap(),
                 Regex::new(r"(?i)statement").unwrap(),
+                Regex::new(r"(?i)faturamento").unwrap(),
+                Regex::new(r"(?i)cobrança").unwrap(),
+                Regex::new(r"(?i)documento fiscal").unwrap(),
+                Regex::new(r"(?i)nota fiscal").unwrap(),
+                Regex::new(r"(?i)facturación").unwrap(),
             ],
             suspicious_domains: vec![
                 Regex::new(r"(?i)bit\.ly").unwrap(),
@@ -241,6 +246,23 @@ impl InvoiceAnalyzer {
                 score += 75.0;
                 risk_factors
                     .push("Academic domain used for commercial/financial content".to_string());
+                break;
+            }
+        }
+
+        // Check for transport/logistics scam patterns
+        let transport_scam_patterns = vec![
+            Regex::new(r"(?i)(conhecimento.*transporte|CT-e|DACTE)").unwrap(),
+            Regex::new(r"(?i)(transporte.*eletr[ôo]nico)").unwrap(),
+            Regex::new(r"(?i)(arquivo.*XML.*transporte)").unwrap(),
+            Regex::new(r"(?i)(documento.*autorizado.*SINIEF)").unwrap(),
+        ];
+
+        for pattern in &transport_scam_patterns {
+            if pattern.is_match(&text) && !self.is_legitimate_business(sender, from_header) {
+                patterns.push("Transport document scam".to_string());
+                score += 75.0;
+                risk_factors.push("Suspicious transport document references".to_string());
                 break;
             }
         }

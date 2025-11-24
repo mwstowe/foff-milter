@@ -9,6 +9,18 @@ rules:
     score: 65
     description: "Domains using giveaway/prize terminology for scams"
 
+  - name: "Suspicious Domain Structures"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SenderPattern"
+          pattern: "(?i).*\\.(faturamento|cobranca|fiscal)\\d+@.*"
+        - type: "SenderPattern"
+          pattern: "(?i).*@[a-z0-9]{8,15}\\.[a-z0-9]{8,15}\\.[a-z]{2,4}\\.[a-z]{2,4}$"
+    score: 50
+    description: "Suspicious financial patterns and complex random subdomain structures"
+
   - name: "Critical risk TLD domains"
     criteria:
       type: "SenderPattern"
