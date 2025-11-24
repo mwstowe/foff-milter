@@ -1,6 +1,30 @@
 name: "Legitimate Business Detection"
 enabled: true
 rules:
+  - name: "Suncadia Resort"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SenderPattern"
+          pattern: "(?i).*@suncadia\\.com$"
+        - type: "SenderPattern"
+          pattern: "reservations@suncadia.com"
+    score: -100
+    description: "Legitimate Suncadia Resort hospitality emails"
+
+  - name: "Nextdoor Social Platform"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SenderPattern"
+          pattern: "(?i).*@.*nextdoor\\.com$"
+        - type: "SenderPattern"
+          pattern: "reply@ss.email.nextdoor.com"
+    score: -80
+    description: "Legitimate Nextdoor social platform notifications"
+
   - name: "Wolferman's Gourmet Bakery"
     enabled: true
     criteria:

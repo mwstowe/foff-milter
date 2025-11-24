@@ -188,6 +188,8 @@ impl SenderAlignmentAnalyzer {
             "sparkpost.com",
             "sparkpostmail.com",
             "mandrill.com",
+            "cmd.emsend1.com",
+            "acems2.com",
             "mandrillapp.com",
             "mailjet.com",
             "concurcompleat.com",
