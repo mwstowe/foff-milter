@@ -183,11 +183,58 @@ impl InvoiceAnalyzer {
             score += urgency_count as f32 * 15.0;
         }
 
+        // Check for brand + delivery context combinations (phishing specific)
+        let delivery_phishing_patterns = vec![
+            Regex::new(r"(?i)delivery.*information.*paypal").unwrap(),
+            Regex::new(r"(?i)paypal.*delivery.*information").unwrap(),
+            Regex::new(r"(?i)shipping.*notification.*(paypal|amazon|ebay)").unwrap(),
+            Regex::new(r"(?i)(paypal|amazon|ebay).*shipping.*notification").unwrap(),
+        ];
+
+        let has_delivery_context = text.to_lowercase().contains("delivery") || 
+                                  text.to_lowercase().contains("shipping");
+        let has_financial_brand = text.to_lowercase().contains("paypal") ||
+                                 text.to_lowercase().contains("amazon") ||
+                                 text.to_lowercase().contains("ebay");
+
+        // Only flag if delivery + brand from non-legitimate domain
+        if has_delivery_context && has_financial_brand && 
+           !self.is_legitimate_business(sender, from_header) {
+            for pattern in &delivery_phishing_patterns {
+                if pattern.is_match(&text) {
+                    patterns.push("Delivery phishing detected".to_string());
+                    score += 60.0;
+                    risk_factors.push("Financial brand in delivery context from suspicious domain".to_string());
+                    break;
+                }
+            }
+        }
+
         // Check for suspicious domains
         for pattern in &self.suspicious_domains {
             if pattern.is_match(sender) || pattern.is_match(from_header) {
                 patterns.push("Suspicious domain".to_string());
                 score += 25.0;
+                break;
+            }
+        }
+
+        // Check for academic domain abuse
+        let academic_patterns = vec![
+            Regex::new(r"(?i)\.ac\.[a-z]{2}$").unwrap(),
+            Regex::new(r"(?i)\.edu$").unwrap(),
+            Regex::new(r"(?i)\.edu\.[a-z]{2}$").unwrap(),
+        ];
+
+        for pattern in &academic_patterns {
+            if (pattern.is_match(sender) || pattern.is_match(from_header)) && 
+               (text.to_lowercase().contains("paypal") || 
+                text.to_lowercase().contains("invoice") ||
+                text.to_lowercase().contains("delivery") ||
+                text.to_lowercase().contains("payment")) {
+                patterns.push("Academic domain abuse".to_string());
+                score += 75.0;
+                risk_factors.push("Academic domain used for commercial/financial content".to_string());
                 break;
             }
         }
