@@ -344,6 +344,15 @@ impl LinkAnalyzer {
         false
     }
 
+    fn is_medical_institution(&self, sender: &str) -> bool {
+        let medical_institutions = [
+            "labcorp.com", "quest.com", "mayo.org", "cleveland.org",
+            "kaiser.org", "johnshopkins.org", "mountsinai.org", "cedars-sinai.org"
+        ];
+        
+        medical_institutions.iter().any(|institution| sender.to_lowercase().contains(institution))
+    }
+
     fn is_legitimate_retailer(&self, sender: &str) -> bool {
         let major_retailers = [
             "levi.com",
@@ -380,6 +389,8 @@ impl FeatureExtractor for LinkAnalyzer {
         if let Some(sender) = context.headers.get("From") {
             if self.is_legitimate_retailer(sender) {
                 score = (score as f32 * 0.4) as i32; // 60% reduction
+            } else if self.is_medical_institution(sender) {
+                score = (score as f32 * 0.2) as i32; // 80% reduction for medical
             }
         }
 

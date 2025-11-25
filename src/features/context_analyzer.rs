@@ -157,6 +157,64 @@ impl ContextAnalyzer {
                 .any(|phrase| text_lower.contains(phrase))
     }
 
+    fn detect_service_alert_phishing(&self, text: &str, sender: &str) -> (i32, Vec<String>) {
+        let service_alert_patterns = [
+            r"(?i)service.*alert.*for.*[0-9]+.*suite.*[0-9]+",
+            r"(?i)utility.*notice.*[0-9]+.*[a-z]+.*[A-Z]{2}.*[0-9]{5}",
+            r"(?i)account.*alert.*[0-9]+.*address",
+            r"(?i)service.*notification.*[0-9]+.*[a-z]+.*suite",
+        ];
+
+        let legitimate_service_domains = [
+            "utility.com", "electric.com", "gas.com", "water.com",
+            "city.gov", "county.gov", "state.gov", "municipal.gov",
+        ];
+
+        // Check if matches service alert pattern
+        let matches_pattern = service_alert_patterns.iter().any(|pattern| {
+            Regex::new(pattern).map_or(false, |re| re.is_match(text))
+        });
+
+        // Check if sender is legitimate utility/service provider
+        let is_legitimate_sender = legitimate_service_domains.iter().any(|domain| 
+            sender.to_lowercase().contains(domain)
+        );
+
+        if matches_pattern && !is_legitimate_sender {
+            (100, vec!["Service alert phishing pattern detected".to_string()])
+        } else {
+            (0, vec![])
+        }
+    }
+
+    fn detect_academic_domain_abuse(&self, text: &str, sender: &str) -> (i32, Vec<String>) {
+        let academic_domain_patterns = [
+            r"\.edu$", r"\.ac\.[a-z]{2}$", r"\.edu\.[a-z]{2}$"
+        ];
+
+        let commercial_content_patterns = [
+            r"(?i)(service.*alert|billing.*alert|account.*notice|utility.*notice)",
+            r"(?i)(US.*address|american.*address|suite.*[0-9]+)",
+            r"(?i)(payment.*due|invoice|billing|account.*suspended)",
+        ];
+
+        // Check if sender is from academic domain
+        let is_academic_domain = academic_domain_patterns.iter().any(|pattern| {
+            Regex::new(pattern).map_or(false, |re| re.is_match(sender))
+        });
+
+        // Check if content is commercial/service-related
+        let has_commercial_content = commercial_content_patterns.iter().any(|pattern| {
+            Regex::new(pattern).map_or(false, |re| re.is_match(text))
+        });
+
+        if is_academic_domain && has_commercial_content {
+            (75, vec!["Academic domain sending commercial/service content".to_string()])
+        } else {
+            (0, vec![])
+        }
+    }
+
     fn analyze_urgency_vs_legitimacy(&self, context: &MailContext) -> (i32, Vec<String>) {
         let body = context.body.as_deref().unwrap_or("");
         let subject = context
@@ -342,6 +400,16 @@ impl FeatureExtractor for ContextAnalyzer {
             total_score += 25;
             all_evidence.push("Exclusive opportunity scam language detected".to_string());
         }
+
+        // Service alert phishing detection
+        let (service_alert_score, service_alert_evidence) = self.detect_service_alert_phishing(&combined_text, sender);
+        total_score += service_alert_score;
+        all_evidence.extend(service_alert_evidence);
+
+        // Academic domain abuse detection
+        let (academic_abuse_score, academic_abuse_evidence) = self.detect_academic_domain_abuse(&combined_text, sender);
+        total_score += academic_abuse_score;
+        all_evidence.extend(academic_abuse_evidence);
 
         // Congratulations/prize scam detection
         let prize_scam_regex = Regex::new(r"(?i)\b(congratulations.*you.*chosen|you.*been.*selected|exclusive.*opportunity|winner.*notification)\b").unwrap();

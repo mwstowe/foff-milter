@@ -273,6 +273,12 @@ impl InvoiceAnalyzer {
             risk_factors.push("Legitimate order confirmation detected".to_string());
         }
 
+        // Check for legitimate medical institution communications
+        if self.is_legitimate_medical_communication(subject, sender, &text) {
+            score *= 0.1; // Reduce by 90%
+            risk_factors.push("Legitimate medical institution communication detected".to_string());
+        }
+
         // Check for brand impersonation
         if self.has_brand_impersonation(&text, sender, from_header) {
             patterns.push("Brand impersonation detected".to_string());
@@ -424,6 +430,37 @@ impl InvoiceAnalyzer {
         }
 
         false
+    }
+
+    fn is_legitimate_medical_communication(&self, subject: &str, sender: &str, content: &str) -> bool {
+        let medical_institutions = [
+            "labcorp.com",
+            "quest.com", 
+            "mayo.org",
+            "cleveland.org",
+            "kaiser.org",
+            "johnshopkins.org",
+            "mountsinai.org",
+            "cedars-sinai.org",
+        ];
+
+        let medical_communication_patterns = [
+            r"(?i)(payment.*confirmation|lab.*results|test.*results|medical.*payment|healthcare.*payment)",
+            r"(?i)(patient.*portal|health.*record|appointment.*confirmation|prescription.*ready)",
+            r"(?i)(billing.*statement|insurance.*claim|copay.*due|balance.*due)",
+        ];
+
+        // Check if sender is medical institution
+        let is_medical_sender = medical_institutions.iter().any(|domain| 
+            sender.to_lowercase().contains(domain)
+        );
+
+        // Check if content matches medical communication patterns
+        let is_medical_content = medical_communication_patterns.iter().any(|pattern| {
+            Regex::new(pattern).map_or(false, |re| re.is_match(content) || re.is_match(subject))
+        });
+
+        is_medical_sender && is_medical_content
     }
 
     fn is_legitimate_order_confirmation(&self, subject: &str, sender: &str) -> bool {

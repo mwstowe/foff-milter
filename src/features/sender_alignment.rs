@@ -359,14 +359,18 @@ impl SenderAlignmentAnalyzer {
     }
 
     fn domains_related(&self, domain1: &str, domain2: &str) -> bool {
-        // Same domain
-        if domain1 == domain2 {
+        // Normalize domains for case-insensitive comparison
+        let domain1_lower = domain1.to_lowercase();
+        let domain2_lower = domain2.to_lowercase();
+        
+        // Same domain (case-insensitive)
+        if domain1_lower == domain2_lower {
             return true;
         }
 
         // Extract root domains and compare (handles subdomains)
-        let root1 = self.extract_root_domain(domain1);
-        let root2 = self.extract_root_domain(domain2);
+        let root1 = self.extract_root_domain(&domain1_lower);
+        let root2 = self.extract_root_domain(&domain2_lower);
 
         if root1 == root2 {
             return true;
