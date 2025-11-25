@@ -346,12 +346,21 @@ impl LinkAnalyzer {
 
     fn is_legitimate_retailer(&self, sender: &str) -> bool {
         let major_retailers = [
-            "levi.com", "gap.com", "nike.com", "adidas.com",
-            "oldnavy.com", "banana-republic.com", "macys.com",
-            "nordstrom.com", "target.com", "walmart.com"
+            "levi.com",
+            "gap.com",
+            "nike.com",
+            "adidas.com",
+            "oldnavy.com",
+            "banana-republic.com",
+            "macys.com",
+            "nordstrom.com",
+            "target.com",
+            "walmart.com",
         ];
-        
-        major_retailers.iter().any(|retailer| sender.contains(retailer))
+
+        major_retailers
+            .iter()
+            .any(|retailer| sender.contains(retailer))
     }
 }
 

@@ -126,7 +126,7 @@ impl ContextAnalyzer {
 
     fn is_legitimate_marketing_urgency(&self, text: &str, sender: &str) -> bool {
         let text_lower = text.to_lowercase();
-        
+
         // Legitimate marketing urgency patterns
         let marketing_urgency = [
             "limited time offer",
@@ -149,8 +149,12 @@ impl ContextAnalyzer {
         ];
 
         // If sender is legitimate business and urgency is marketing-related
-        legitimate_businesses.iter().any(|business| sender.contains(business)) &&
-        marketing_urgency.iter().any(|phrase| text_lower.contains(phrase))
+        legitimate_businesses
+            .iter()
+            .any(|business| sender.contains(business))
+            && marketing_urgency
+                .iter()
+                .any(|phrase| text_lower.contains(phrase))
     }
 
     fn analyze_urgency_vs_legitimacy(&self, context: &MailContext) -> (i32, Vec<String>) {

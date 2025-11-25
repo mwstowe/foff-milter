@@ -347,13 +347,18 @@ impl InvoiceAnalyzer {
 
     fn is_legitimate_service_integration(&self, text: &str, brand: &str, sender: &str) -> bool {
         let text_lower = text.to_lowercase();
-        
+
         // Check for legitimate service integration patterns
         let integrations = match brand {
-            "google" => vec!["google pay", "google maps", "google checkout", "google wallet"],
+            "google" => vec![
+                "google pay",
+                "google maps",
+                "google checkout",
+                "google wallet",
+            ],
             "apple" => vec!["apple pay", "apple wallet"],
             "paypal" => vec!["paypal checkout", "paypal payment"],
-            _ => vec![]
+            _ => vec![],
         };
 
         // If brand mention is in context of legitimate service integration
@@ -374,7 +379,7 @@ impl InvoiceAnalyzer {
             "myheritage.com",
             "webmd.com",
             "levi.com",
-            "gap.com", 
+            "gap.com",
             "nike.com",
             "adidas.com",
             "macys.com",
@@ -385,7 +390,9 @@ impl InvoiceAnalyzer {
             "banana-republic.com",
         ];
 
-        legitimate_businesses.iter().any(|business| sender.contains(business))
+        legitimate_businesses
+            .iter()
+            .any(|business| sender.contains(business))
     }
 
     fn has_sender_brand_mismatch(&self, text: &str, sender: &str, from_header: &str) -> bool {
@@ -429,7 +436,7 @@ impl InvoiceAnalyzer {
 
         let food_service_domains = [
             "pagliacci.com",
-            "dominos.com", 
+            "dominos.com",
             "pizzahut.com",
             "ubereats.com",
             "doordash.com",
@@ -438,9 +445,12 @@ impl InvoiceAnalyzer {
         ];
 
         // Check if subject matches order pattern and sender is legitimate food service
-        order_patterns.iter().any(|pattern| {
-            Regex::new(pattern).map_or(false, |re| re.is_match(subject))
-        }) && food_service_domains.iter().any(|domain| sender.contains(domain))
+        order_patterns
+            .iter()
+            .any(|pattern| Regex::new(pattern).is_ok_and(|re| re.is_match(subject)))
+            && food_service_domains
+                .iter()
+                .any(|domain| sender.contains(domain))
     }
 
     fn is_legitimate_business(&self, sender: &str, from_header: &str) -> bool {
