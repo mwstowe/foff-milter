@@ -166,31 +166,38 @@ impl ContextAnalyzer {
         ];
 
         let legitimate_service_domains = [
-            "utility.com", "electric.com", "gas.com", "water.com",
-            "city.gov", "county.gov", "state.gov", "municipal.gov",
+            "utility.com",
+            "electric.com",
+            "gas.com",
+            "water.com",
+            "city.gov",
+            "county.gov",
+            "state.gov",
+            "municipal.gov",
         ];
 
         // Check if matches service alert pattern
-        let matches_pattern = service_alert_patterns.iter().any(|pattern| {
-            Regex::new(pattern).map_or(false, |re| re.is_match(text))
-        });
+        let matches_pattern = service_alert_patterns
+            .iter()
+            .any(|pattern| Regex::new(pattern).is_ok_and(|re| re.is_match(text)));
 
         // Check if sender is legitimate utility/service provider
-        let is_legitimate_sender = legitimate_service_domains.iter().any(|domain| 
-            sender.to_lowercase().contains(domain)
-        );
+        let is_legitimate_sender = legitimate_service_domains
+            .iter()
+            .any(|domain| sender.to_lowercase().contains(domain));
 
         if matches_pattern && !is_legitimate_sender {
-            (100, vec!["Service alert phishing pattern detected".to_string()])
+            (
+                100,
+                vec!["Service alert phishing pattern detected".to_string()],
+            )
         } else {
             (0, vec![])
         }
     }
 
     fn detect_academic_domain_abuse(&self, text: &str, sender: &str) -> (i32, Vec<String>) {
-        let academic_domain_patterns = [
-            r"\.edu$", r"\.ac\.[a-z]{2}$", r"\.edu\.[a-z]{2}$"
-        ];
+        let academic_domain_patterns = [r"\.edu$", r"\.ac\.[a-z]{2}$", r"\.edu\.[a-z]{2}$"];
 
         let commercial_content_patterns = [
             r"(?i)(service.*alert|billing.*alert|account.*notice|utility.*notice)",
@@ -199,17 +206,20 @@ impl ContextAnalyzer {
         ];
 
         // Check if sender is from academic domain
-        let is_academic_domain = academic_domain_patterns.iter().any(|pattern| {
-            Regex::new(pattern).map_or(false, |re| re.is_match(sender))
-        });
+        let is_academic_domain = academic_domain_patterns
+            .iter()
+            .any(|pattern| Regex::new(pattern).is_ok_and(|re| re.is_match(sender)));
 
         // Check if content is commercial/service-related
-        let has_commercial_content = commercial_content_patterns.iter().any(|pattern| {
-            Regex::new(pattern).map_or(false, |re| re.is_match(text))
-        });
+        let has_commercial_content = commercial_content_patterns
+            .iter()
+            .any(|pattern| Regex::new(pattern).is_ok_and(|re| re.is_match(text)));
 
         if is_academic_domain && has_commercial_content {
-            (75, vec!["Academic domain sending commercial/service content".to_string()])
+            (
+                75,
+                vec!["Academic domain sending commercial/service content".to_string()],
+            )
         } else {
             (0, vec![])
         }
@@ -398,12 +408,14 @@ impl FeatureExtractor for ContextAnalyzer {
         }
 
         // Service alert phishing detection
-        let (service_alert_score, service_alert_evidence) = self.detect_service_alert_phishing(&combined_text, sender);
+        let (service_alert_score, service_alert_evidence) =
+            self.detect_service_alert_phishing(&combined_text, sender);
         total_score += service_alert_score;
         all_evidence.extend(service_alert_evidence);
 
-        // Academic domain abuse detection  
-        let (academic_abuse_score, academic_abuse_evidence) = self.detect_academic_domain_abuse(&combined_text, sender);
+        // Academic domain abuse detection
+        let (academic_abuse_score, academic_abuse_evidence) =
+            self.detect_academic_domain_abuse(&combined_text, sender);
         total_score += academic_abuse_score;
         all_evidence.extend(academic_abuse_evidence);
 

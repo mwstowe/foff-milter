@@ -362,7 +362,7 @@ impl SenderAlignmentAnalyzer {
         // Normalize domains for case-insensitive comparison
         let domain1_lower = domain1.to_lowercase();
         let domain2_lower = domain2.to_lowercase();
-        
+
         // Same domain (case-insensitive)
         if domain1_lower == domain2_lower {
             return true;

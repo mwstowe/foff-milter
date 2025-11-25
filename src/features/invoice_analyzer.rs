@@ -85,12 +85,18 @@ impl FeatureExtractor for InvoiceAnalyzer {
 
         // Check for medical institutions
         let medical_institutions = [
-            "labcorp.com", "quest.com", "mayo.org", "cleveland.org",
-            "kaiser.org", "johnshopkins.org", "mountsinai.org", "cedars-sinai.org"
+            "labcorp.com",
+            "quest.com",
+            "mayo.org",
+            "cleveland.org",
+            "kaiser.org",
+            "johnshopkins.org",
+            "mountsinai.org",
+            "cedars-sinai.org",
         ];
-        let is_medical = medical_institutions.iter().any(|domain| 
+        let is_medical = medical_institutions.iter().any(|domain| {
             sender.to_lowercase().contains(domain) || from_header.to_lowercase().contains(domain)
-        );
+        });
 
         // Treat medical institutions as legitimate
         let is_legitimate_or_medical = is_legitimate || is_medical;

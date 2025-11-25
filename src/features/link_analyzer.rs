@@ -346,11 +346,19 @@ impl LinkAnalyzer {
 
     fn is_medical_institution(&self, sender: &str) -> bool {
         let medical_institutions = [
-            "labcorp.com", "quest.com", "mayo.org", "cleveland.org",
-            "kaiser.org", "johnshopkins.org", "mountsinai.org", "cedars-sinai.org"
+            "labcorp.com",
+            "quest.com",
+            "mayo.org",
+            "cleveland.org",
+            "kaiser.org",
+            "johnshopkins.org",
+            "mountsinai.org",
+            "cedars-sinai.org",
         ];
-        
-        medical_institutions.iter().any(|institution| sender.to_lowercase().contains(institution))
+
+        medical_institutions
+            .iter()
+            .any(|institution| sender.to_lowercase().contains(institution))
     }
 
     fn is_legitimate_retailer(&self, sender: &str) -> bool {
