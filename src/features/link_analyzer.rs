@@ -343,6 +343,16 @@ impl LinkAnalyzer {
         }
         false
     }
+
+    fn is_legitimate_retailer(&self, sender: &str) -> bool {
+        let major_retailers = [
+            "levi.com", "gap.com", "nike.com", "adidas.com",
+            "oldnavy.com", "banana-republic.com", "macys.com",
+            "nordstrom.com", "target.com", "walmart.com"
+        ];
+        
+        major_retailers.iter().any(|retailer| sender.contains(retailer))
+    }
 }
 
 impl FeatureExtractor for LinkAnalyzer {
@@ -351,11 +361,18 @@ impl FeatureExtractor for LinkAnalyzer {
         let suspicious_count = links.iter().filter(|l| l.is_suspicious).count();
         let total_links = links.len();
 
-        let score = if total_links == 0 {
+        let mut score = if total_links == 0 {
             0
         } else {
             (suspicious_count * 50 / total_links.max(1)) as i32
         };
+
+        // Reduce penalties for legitimate retailers
+        if let Some(sender) = context.headers.get("From") {
+            if self.is_legitimate_retailer(sender) {
+                score = (score as f32 * 0.4) as i32; // 60% reduction
+            }
+        }
 
         let mut evidence = Vec::new();
         for link in &links {

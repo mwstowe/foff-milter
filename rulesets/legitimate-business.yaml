@@ -36,3 +36,31 @@ rules:
           pattern: ".*@.*(pagliacci|dominos|pizzahut|ubereats|doordash|grubhub)\\.com$"
     score: -50
     description: "Legitimate order confirmations from food services"
+
+  - name: "Major Clothing and Fashion Retailers"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*(levi|gap|oldnavy|banana-republic|nike|adidas|underarmour|hm|zara|uniqlo)\\.com$"
+    score: -100
+    description: "Major clothing, fashion, and lifestyle retailers"
+
+  - name: "Department Store Chains"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*(macys|nordstrom|bloomingdales|saks|dillards|kohls|jcpenney|target|walmart)\\.com$"
+    score: -75
+    description: "Major department store and retail chains"
+
+  - name: "Legitimate Tax and Shipping Disclaimers"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "BodyPattern"
+          pattern: "(?i).*(discount excludes taxes|shipping.*excludes.*tax|applicable.*taxes.*shipping|tax.*calculated.*checkout).*"
+        - type: "SenderPattern"
+          pattern: ".*@.*(levi|gap|nike|adidas|macys|nordstrom|target|walmart|amazon|ebay)\\.com$"
+    score: -50
+    description: "Legitimate tax and shipping disclaimers from major retailers"

@@ -373,6 +373,16 @@ impl InvoiceAnalyzer {
             "doordash.com",
             "myheritage.com",
             "webmd.com",
+            "levi.com",
+            "gap.com", 
+            "nike.com",
+            "adidas.com",
+            "macys.com",
+            "nordstrom.com",
+            "target.com",
+            "walmart.com",
+            "oldnavy.com",
+            "banana-republic.com",
         ];
 
         legitimate_businesses.iter().any(|business| sender.contains(business))
