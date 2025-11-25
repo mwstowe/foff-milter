@@ -1,0 +1,86 @@
+Return-Path: <bc3ljqef-kxy1-rcx7-le70-wond4bgtfhpg@toysandtreasure.com>
+Received: from juliett.example.com (localhost [127.0.0.1])
+	by juliett.example.com (8.18.1/8.18.1) with ESMTP id 5A65aB2G034559
+	for <user@localhost>; Thu, 6 Nov 2025 05:36:11 GMT
+	(envelope-from bc3ljqef-kxy1-rcx7-le70-wond4bgtfhpg@toysandtreasure.com)
+Authentication-Results: juliett.example.com;
+	dkim=pass (2048-bit key; unprotected) header.d=toysandtreasure.com header.i=@toysandtreasure.com header.b=azhUcWNJ
+Received: from jimapinternal-aol.imap.mail.g03.yahoodns.net [67.195.228.147]
+	by juliett.example.com with IMAP (fetchmail-6.6.0)
+	for <user@localhost> (single-drop); Thu, 06 Nov 2025 05:36:11 +0000 (UTC)
+Received: from 127.0.0.1
+ by atlas-production.v2-mail-prod1-gq1.omega.yahoo.com pod-id atlas--production-gq1-6868b6d58d-wgtjp.gq1.yahoo.com with HTTP; Thu, 6 Nov 2025 05:35:41 +0000
+X-Originating-Ip: [109.121.47.30]
+Received-SPF: fail (domain of toysandtreasure.com does not designate 109.121.47.30 as permitted sender)
+Authentication-Results: atlas-production.v2-mail-prod1-gq1.omega.yahoo.com;
+ dkim=pass header.i=@toysandtreasure.com header.s=h1 arc_overridden_status=NOT_OVERRIDDEN;
+ spf=fail smtp.mailfrom=toysandtreasure.com arc_overridden_status=NOT_OVERRIDDEN;
+ dmarc=pass(p=QUARANTINE) header.from=toysandtreasure.com arc_overridden_status=NOT_OVERRIDDEN;
+X-Apparently-To: stowe@aol.com; Thu, 6 Nov 2025 05:35:41 +0000
+X-YMailISG: _JJESnoWLDuvQmBOozDGRK6JcTl1B9f013yqTE9KwtwfSRLf
+ _B78uQTvma3xNF0J7YGt.8O.f3.uzQEsuK8uNhqF_1zGhaLM6wDZVbKrMS1R
+ Tpqx8PffBjfa4gmXOchoL8OyvlX5KWhT8UThMMJV4Z5hBrdzMHZkRqoUMMkn
+ x5TwlvEuy.zqrW1Q80g44wpdxDRFMnJCa64J.j3Y8sj8Wo0KXko8f5sqw7b1
+ 4QEwAGyhs1ZnCG4iwRRzHYH9zhWZpzaV7ZC0uW7mWHLS5Mvl9mSdBVOAuzqr
+ k_dKE1eaKmnrHZaRvL79OUzJr3zoemoBE_HHeC_Zw7hrLLg1k41KH4BIpRfx
+ Bd0DoUI8xm2pBOwpNQJANLCEHjOm62NKH9dT5YRG7UaPe2iDiwbcNA5ch4Mh
+ Zzhm.D4iBPOZIVW4om8hpvKTs7TlEFaO94ppcGY2OfHH_zymoU6PTpurIV33
+ rNZ5f22rlQpb_hE0ug.kytpf3WWIXDfZmB4mk86tNLhiH9zBdmdrFmat9MPT
+ lY4.tU07MF6WoFfpi_qHb.XTcryl5UV72Yzjm76TKW.glB_vvODySk..0mZg
+ IHhTa237tSL9ZCGafuomwCE.3_RWwOz0a1tjWOYxTxNDXlAhyDlxnrhRlOvX
+ q9EtpF5hIwZLdi0r7U9sCzyIKOJm.JtzjHcKeKACNMri7BCfXuf8aajvD1pK
+ wEBAQR2tU7Cm1AZt8IfKKWltYusYaOUcQJWnTtb6XGs6NOkqrBCpW0n.Q2zY
+ ZKnkDPtmyrRkMeGK9DkHpqOrZ5JOQE9a9oYbNE0W7PNErnm5_btalqjXNByp
+ TLurRSYTAZM6TrakQnCF3QAteBpQ9BngjWD1am520C8Xk1Gc.o1TlCYHfvqM
+ yyVkeeH.BxyLWLSTLOg937R56uOcCT3j2ij5eIihw5moJni0u6yQn9sdXED9
+ s7SzWspGTpa70r7vuxFf3qHD5os.DkdWcpc9NDkEPMDZKaBk2MvbK31y1Cq5
+ cGyWny1N3mIs3yelORbHeqlSJoWK388CjFLFOyI5PufQ.EowLJ.Uy2F44pEo
+ q34hTqXr.xokNNmJgS5uintjVoyCnc91KWbwnAaTLHVA.WFL0J9gr7O77MA7
+ sQMB3dluaBeFAT4GJ81W1Itql2EC2vAAGpQQvEJzVKl37Lg538BFKMljVCTF
+ bGYnA7.7Pi7K0KB3iO0ith1vUYMQdX8uQyam50xQPnPzxcfNZZ3tSEzvehYg
+ LV3h22ki9wQ_fx3PWEgk9Kw6SVTSmjT04SQqtPC.DUytFWjq27Hhb0cSTUDW
+ We6QNu8kanWM6QQ8X0QcfMko7DQ315ZANAJ25Fy1Ss5AcYaivQyskreHfE2Y
+ fqfsWcW_MGlFOpC6E3Bumso4bcUhVZrahmLVqJ0VKhxHfM3HkEQUaMbkjCE5
+ fWpcNLBF.CXiMgb3yQlUxZbn4XqvvQpCuIbm2f9MqsLBiKwXS7BEPJg8UfHm
+ 7B77FpAntn9ZOmCZ5FFoBeU_D9WmdMJFWXIefFtMS5h7K_woDWcAPSz8Rq_A
+ t8O_o2iVDm1Y4J.pXQ_DkWQBFjvZIZoIIzeUQ2yRUP6ZfAqWTHjEN3JdMQ0P
+ YP7Mvw--
+Received: from 109.121.47.30 (EHLO toysandtreasure.com)
+ by 10.215.137.200 with SMTP;
+ Thu, 06 Nov 2025 05:35:41 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=h1; d=toysandtreasure.com;
+ h=Content-Type:Date:From:Mime-Version:Message-ID:Subject:Reply-To;
+ bh=S1TERN1dVasWtEWqEIa0r6xycisP8MgA7tgSeFewGY8=;
+ b=azhUcWNJp9h5oCu82CLZPeGZG6Zfbh+ufYesUos7ciVAruXWEnVOaXhC1CjL/JQqdJ4ck+Pho/m0
+   wKf0xn05jRit6vBaXEeppRaOIb+ragbDG0UjpgYsGdLTzn9pqcoeifNkt446ceET5HwwD1+5Mf5w
+   cCgaWiKRETKTgK1TwIT+RCKVWDg4nE5SER8+OvGiCV+sWcN3jluyltjPoEbCLFt/xB9xh+Cikzkw
+   0iI9A91iVGYf4qvd6SQyJBE7w6HrNfXbTDdKfmxv/p/5uIQw2ILeblRcqPBIUkc+A5n9dQ70KjrJ
+   4iogu5TVz3OPPtWTohU5PoaIuTBK2BF2n3W3HA==
+Content-Type: multipart/alternative; boundary=f54f6aa67b0d09b58dff9bbc0f6f863a2472c8fa1a2c50f63ac5022055da
+Date: Thu, 06 Nov 2025 11:05:38 +0530
+From:       =?UTF-8?B?MjAyNSBMZWFmRmlsdGVyIFBhcnRuZXI=?=                         <climate-friendlyinnovationstransformindustriallandscapes@toysandtreasure.com>
+Mime-Version: 1.0
+Message-ID:  <zv2kzb1a-zs5v-jupe-ru1m-rifrzjasapcz@toysandtreasure.com>  
+Subject:       =?UTF-8?B?RmFsbCBJbnRvIFNhdmluZ3Mg4oCTIDE1JSBPZmYgKyAkMjUwIE9GRiBHdXR0ZXIgUHJvdGVjdGlvbiE=?=                    
+Reply-To:      LeafProtect Partner Offer     <stowe@aol.com>
+To: undisclosed-recipients:;
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (juliett.example.com [0.0.0.0]); Thu, 06 Nov 2025 05:36:12 +0000 (UTC)
+X-FOFF-Rule-Matched: Advanced Heuristics: Weak Signal Aggregation (juliett.example.com)
+X-FOFF-Score: 12 - foff-milter v0.6.6 (juliett.example.com)
+
+--f54f6aa67b0d09b58dff9bbc0f6f863a2472c8fa1a2c50f63ac5022055da
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html; charset=utf-8
+
+
+
+<center>
+<a href="http://dsinationwebinars.com/hUQsKfVctx/6Z/BBD6vizJAQpdpR/rredMxYBck/FiCP6JxL26RL9/rd/92zxusQBRpZy/x7_verx/1LlxhrZUkyhWnc/7dYv/Y9xUZUficVJTaw/r7YxM/CmPLHW3wEbSJX4/7xMYr_/mSIHAvrGDtr/" style="text-decoration: none;color:red; font-size:16px;"><h3>
+<div style="color:darkblue"><p>  <u> Protect Your Home Before Winter – Save 15% OFF your ENTIRE Order Now  </u>  </p></div></h3></a><br><br>
+<center><a href="http://dsinationwebinars.com/hUQsKfVctx/6Z/BBD6vizJAQpdpR/rredMxYBck/FiCP6JxL26RL9/rd/92zxusQBRpZy/x7_verx/1LlxhrZUkyhWnc/7dYv/Y9xUZUficVJTaw/r7YxM/CmPLHW3wEbSJX4/7xMYr_/mSIHAvrGDtr/"><img src="http://dsinationwebinars.com/697147688517676.png" alt="image"/><br><br><br><br><br><br>
+<center><a href="http://dsinationwebinars.com/aqweQGTsdDix6j/n4/E58dePJLd63Jwj/rredMxYBck/vidPkTm20pugN/rd/nQRgNUkqsUunK2/x7_verx/SO31RG9zSZy6j/7dYv/IwSpdY1V7hdQzo/r7YxM/oU84KVIgT8/7xMYr_/IwSPYqbEDc/"><img src="http://dsinationwebinars.com/307771923413610.png" alt="image"/></a>
+</center>
+
+
+
+--f54f6aa67b0d09b58dff9bbc0f6f863a2472c8fa1a2c50f63ac5022055da--

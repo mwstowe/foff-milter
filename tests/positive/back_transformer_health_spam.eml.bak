@@ -1,0 +1,1053 @@
+Return-Path: <mstowe+caf_=mstowe=baddomain.com@gmail.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTPS id 5AIIiaBD081724
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <user@example.com>; Tue, 18 Nov 2025 18:44:36 GMT
+	(envelope-from mstowe+caf_=mstowe=baddomain.com@gmail.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (1024-bit key; unprotected) header.d=s.backerkit.com header.i=@s.backerkit.com header.b=uuE6h8Bp;
+	dkim=pass (1024-bit key; unprotected) header.d=mailgun.org header.i=@mailgun.org header.b=CF5MpY86
+X-Authentication-Warning: juliett.baddomain.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.baddomain.com
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 5AIIiXJl019085
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=OK)
+	for <user@example.com>; Tue, 18 Nov 2025 12:44:35 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 5AIIiXJl019085
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (1024-bit key, unprotected) header.d=s.backerkit.com header.i=@s.backerkit.com header.a=rsa-sha256 header.s=k1 header.b=uuE6h8Bp;
+	dkim=pass (1024-bit key, unprotected) header.d=mailgun.org header.i=@mailgun.org header.a=rsa-sha256 header.s=mg header.b=CF5MpY86
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-640bd9039fbso9960125a12.2
+        for <user@example.com>; Tue, 18 Nov 2025 10:44:35 -0800 (PST)
+ARC-Seal: i=2; a=rsa-sha256; t=1763491473; cv=pass;
+        d=google.com; s=arc-20240605;
+        b=RthNJTbCWkxM9ql7epWsxyfwUr6NweHm6kTQg+hE4EXebIJM25WOlI50COkvg6wqsc
+         a7NL4H/DiZMvlPpTnZLpQeCz2L4QrvaGMnUGrtAGzkTFbrg/EDJbGjbGC9VWx53aN2fj
+         3ZTUsvMso92ttRo8JsIymVHA8mBQEKaoKYsEuls1jmTRv59TtrslTc+Zmv9CFICtvT1W
+         LDzRxsxTcZQb6d+SV2uec1EDF1YHyFC/v6jkk92DjlkEZyRQjV3jj1gZnkndHblyfOyh
+         dHBm/0gzpcM/lUXIX1Envwy9YqYHSXUo8TK8c3jnVXbeE/ecIEnRpqMHI0tIRcf6LzEG
+         R7bQ==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:list-unsubscribe:message-id:date
+         :list-unsubscribe-post:to:from:subject:mime-version:sender
+         :dkim-signature:dkim-signature:delivered-to;
+        bh=w2orMu2OHrjhlW5euwXO+GrssDurUe0B3In+HiPK/sg=;
+        fh=HS8NSC3wrbh9seaAnUUgKNnyMiQdnZQoza3RThM6ohQ=;
+        b=fsqDltr8DRJUfBVt1niBF0RRtlvhcty1tHVSbS23u3KCFMWCnTNVxv03h0fHDGFc9e
+         lWyQd4P5zCNUThYZ9bmE3QDjiHJakdXbHlWZ4lNJ1wmkTxfHGKfOIbmnZO4nSwA2hNUW
+         4a0eSktkYVXKblWnwHnkES5WHBIlXiMo/TgG4z2EXUVRZvoamdGguRCSpF15hapKN080
+         Py2ceBNeyw1U2GBYkU0SMAoMlS48eyx3l67eENb8C7AHAmmqTdlxV2dXdDMR4mBkuUsF
+         hb3R9aj7VpVsCyrLMVdQ1QoU/TF+iMSoMNkp096EG6mcWzbpiGyUI3fUzO84r8K181Ux
+         B7Eg==;
+        darn=baddomain.com
+ARC-Authentication-Results: i=2; mx.google.com;
+       dkim=pass header.i=@s.backerkit.com header.s=k1 header.b=uuE6h8Bp;
+       dkim=pass header.i=@mailgun.org header.s=mg header.b=CF5MpY86;
+       spf=pass (google.com: domain of bounce+349c15.74ae96-mstowe=gmail.com@s.backerkit.com designates 161.38.196.196 as permitted sender) smtp.mailfrom="bounce+349c15.74ae96-mstowe=gmail.com@s.backerkit.com";
+       dmarc=pass (p=REJECT sp=NONE dis=NONE) header.from=s.backerkit.com
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763491473; x=1764096273;
+        h=content-transfer-encoding:list-unsubscribe:message-id:date
+         :list-unsubscribe-post:to:from:subject:mime-version:sender
+         :dkim-signature:dkim-signature:delivered-to:x-forwarded-for
+         :x-forwarded-to:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=w2orMu2OHrjhlW5euwXO+GrssDurUe0B3In+HiPK/sg=;
+        b=UrNsboDIjRiujos1BnSJsHQO7YrHgMJ8zgJ/v2k9kJ5hHGoDLtF+pWGtDTcTOuKexV
+         /YveL8637CwmCYWNSixyeEByXFiwhgPQhOPEc9Dryj0RjjJTyiPk05bMZqaZIONF4cvj
+         hVuHhIgl02lL2CjbDBb7Pi99Ua+LZBCC8rPzq8zhRQ/0bj5si4ri5Ss1lbzggMsFotzV
+         dDMq5GN90idUEXojUi4MiSaGW9gfgPHscEhTZOr16eS0XebrndwfuUrxv7Zj0aTIliqp
+         FW8M9jYYc4t/XyHhNXj+UOwQiOYG4Zx8YkPzJzjdyPDgvcwN3nMGe6TpGuGLWlKVfCoT
+         IVGg==
+X-Forwarded-Encrypted: i=2; AJvYcCWJ7eyj0AssVwbVf0dlJp3gABAfYHdkAT32nDZ2C4TZX1phTX7BIRkfsX8y9W5SFEc5eMGSwto=@baddomain.com
+X-Gm-Message-State: AOJu0Yx4hnban6BZDtGeU3kQEx2eSjuc3xLbG7l+4SLEG9pQVAme1Pvy
+	xlalJ5Juz3MXJKHUnTPbmv8Po2yuI3QHxC+vPMSsSDyy/5RLvbpsvm6PBU7jbrHsf6Iy8Nw9Aiu
+	F/hs0F9r+N+tA1n9t+YMqfJAlRkYLQsc5ovbxB6usqY0DLPcj0Wm4+8zEAnCSFQ==
+X-Received: by 2002:a05:6402:1ed2:b0:640:952d:f61b with SMTP id 4fb4d7f45d1cf-64350e86a2cmr17024326a12.22.1763491473151;
+        Tue, 18 Nov 2025 10:44:33 -0800 (PST)
+X-Forwarded-To: user@example.com
+X-Forwarded-For: user@example.com user@example.com
+Delivered-To: user@example.com
+Received: by 2002:a05:6400:4221:b0:2ba:7552:a66c with SMTP id a33csp826820ecf;
+        Tue, 18 Nov 2025 10:44:31 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEQT2johKQLA2lmQmGc1qTUwscfDikFn7sQ0mOMXq3Ens9p86QEydAHboP/h3BDNMOS4CwV
+X-Received: by 2002:a17:90b:2f88:b0:340:c060:4d44 with SMTP id 98e67ed59e1d1-343f9eb4424mr19399746a91.14.1763491471126;
+        Tue, 18 Nov 2025 10:44:31 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1763491471; cv=none;
+        d=google.com; s=arc-20240605;
+        b=jEggK8feedRrFE/zyVM/npSeCYi5hJ6GcSkngo3vkeH2il5j9ay5ezJL7IhDFY650r
+         mOKp3cbdMgIyq+AARxMijgUc4icDbpZJiesvTiVlkcAXvyiuLd9DVZJJb6WyYEkMRGkR
+         QrvkfFBtjx2Lre0bCJMKRsAagW1b83CfZT973E8LQxDwImr/JuJDIyckAFc+onI/B0KA
+         FfFb3/e/N4kCtbTr9+zEzWmNYLph1D9ud80sGxHAeHPZDksnJaaBpmahlmDRYqZFHJ8g
+         1uTBinisS3e5dPaTO8Hjiasawfuqih2il5iu0MMlMk1auGU5SJPmSf3ylnjQR94yZb/3
+         R43w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:list-unsubscribe:message-id:date
+         :list-unsubscribe-post:to:from:subject:mime-version:sender
+         :dkim-signature:dkim-signature;
+        bh=w2orMu2OHrjhlW5euwXO+GrssDurUe0B3In+HiPK/sg=;
+        fh=mT0Hi1oeQuwKdVkoCKIRR+MEHYH9sEP9ymI/x2O5QRU=;
+        b=RbNRYJMflN/hqgsXDUnWfsmYPcVOLYGMXptbPF7won2qXMfqsgblPOEznFqsKarG1f
+         FX12eHckTkDRGkETDrU5lmP6J/ph5YF9I9kKC8izgOv1jCyEenYFXc0wB02FzquVUu7v
+         e/8v8PXA0AUL2c/xZcJU77bVFFqAzjEJVo3K3Xd2tzdYx1hQB3T2vgJbPfudbUohyCCl
+         i0FofA/bvTEZyzXghYyAuxV5nJV0WdZr0XCFWNe+TaJGjcg5BUVRzc3sxvRdNLoAVb0E
+         QJLPVH/9Juhzoqe1zs4YLgw/OUXNiARN5dbxhZVd0XsWuwWvck6WaBPg24AqiBR9J4l9
+         XVDQ==;
+        dara=google.com
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@s.backerkit.com header.s=k1 header.b=uuE6h8Bp;
+       dkim=pass header.i=@mailgun.org header.s=mg header.b=CF5MpY86;
+       spf=pass (google.com: domain of bounce+349c15.74ae96-mstowe=gmail.com@s.backerkit.com designates 161.38.196.196 as permitted sender) smtp.mailfrom="bounce+349c15.74ae96-mstowe=gmail.com@s.backerkit.com";
+       dmarc=pass (p=REJECT sp=NONE dis=NONE) header.from=s.backerkit.com
+Received: from mail1-rdns.backerkit.com (mail1-rdns.backerkit.com. [161.38.196.196])
+        by mx.google.com with UTF8SMTPS id 41be03b00d2f7-bc3839c4921si7726355a12.1310.2025.11.18.10.44.30
+        for <user@example.com>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 18 Nov 2025 10:44:31 -0800 (PST)
+Received-SPF: pass (google.com: domain of bounce+349c15.74ae96-mstowe=gmail.com@s.backerkit.com designates 161.38.196.196 as permitted sender) client-ip=161.38.196.196;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@s.backerkit.com header.s=k1 header.b=uuE6h8Bp;
+       dkim=pass header.i=@mailgun.org header.s=mg header.b=CF5MpY86;
+       spf=pass (google.com: domain of bounce+349c15.74ae96-mstowe=gmail.com@s.backerkit.com designates 161.38.196.196 as permitted sender) smtp.mailfrom="bounce+349c15.74ae96-mstowe=gmail.com@s.backerkit.com";
+       dmarc=pass (p=REJECT sp=NONE dis=NONE) header.from=s.backerkit.com
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=s.backerkit.com; q=dns/txt; s=k1; t=1763491470; x=1763498670;
+ h=Content-Transfer-Encoding: Content-Type: List-Unsubscribe: Message-Id: Date: List-Unsubscribe-Post: To: To: From: From: Subject: Subject: Mime-Version: Sender: Sender: X-Feedback-Id;
+ bh=w2orMu2OHrjhlW5euwXO+GrssDurUe0B3In+HiPK/sg=;
+ b=uuE6h8Bpux+F5ZRGSDcRdnJ31XUiKIKIi3OO3y+q596zpQJW2U0AZFDjXZQnd5qjpaWUynmZDCdrtUM21FI7IeEoyOe2oIjEOoVN0lAFcQt2O53IXHnLXzDiOS7A3G5oawD25Qho2jztqTqtr6qQ4vlsTPCfHF447YFhz7eI8WY=
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mailgun.org; q=dns/txt; s=mg; t=1763491470; x=1763498670;
+ h=Content-Transfer-Encoding: Content-Type: List-Unsubscribe: Message-Id: Date: List-Unsubscribe-Post: To: To: From: From: Subject: Subject: Mime-Version: Sender: Sender: X-Feedback-Id;
+ bh=w2orMu2OHrjhlW5euwXO+GrssDurUe0B3In+HiPK/sg=;
+ b=CF5MpY862s5GIL/o88ram4bL44DtLeM4LXK6icSginfetOfSfci+rNtCTBMw8F5mmW/BJ3uVDsrC/4oQs3MVwmf5wfWciD8MTjbIfhYAEmTuX8sEnMLIm4YZU9ZTcqVfWV0OoxsxA3r7YoO+As2sCJfSy9lUXYsYyOpH80GVlUU=
+X-Mailgun-Sid: WyJhNTE1ZiIsIm1zdG93ZUBnbWFpbC5jb20iLCI3NGFlOTYiXQ==
+X-Feedback-Id: no-reply@s.backerkit.com:source:org_prev_project_subscriber-project:10133-type:just_launched:54c691ccf3b9c4bd89776381:mailgun
+Received: by d9c4c009859d60f16935c8086a638976c39386fc543d9f33aeb0c9d9d61a7bd9 with HTTP
+ id 691cbe8e16969af010e14cd2; Tue, 18 Nov 2025 18:44:30 GMT
+X-Mailgun-Sending-Ip: 161.38.196.196
+Sender: no-reply@s.backerkit.com
+Mime-Version: 1.0
+Subject: Just Launched: Back Transformer - Powerful Posture Instantly
+From: PERFECTORE CORP <no-reply@s.backerkit.com>
+To: user@example.com
+X-Mailgun-Tag: source:org_prev_project_subscriber
+X-Mailgun-Tag: project:10133
+X-Mailgun-Tag: type:just_launched
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+Date: Tue, 18 Nov 2025 18:44:30 +0000
+Message-Id: <691cbe8e1a9f9_aa2b0d01587d9@5c321894-debc-43bc-a132-da40e765e8e4.mail>
+List-Unsubscribe: <https://www.backerkit.com/subscriptions/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJaVJuYVdRNkx5OWlZV05yWlhKcmFYUXZUV1Z0WW1WeUx6SXlOVEUyTkRrNUJqb0dSVlE9IiwiZXhwIjoiMjAyNS0xMi0xOFQxODo0NDoyOS45MDBaIiwicHVyIjoidW5zdWJzY3JpYmUifX0=--46d4d1b74dadc6ddac8816f45150a37ef42660b5/unsubscribe>
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Tue, 18 Nov 2025 18:44:36 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Tue, 18 Nov 2025 12:44:36 -0600 (CST)
+X-FOFF-Feature-Evidence: Context Analysis: Multiple exclamation marks detected
+X-FOFF-Feature-Evidence: Context Analysis: Multiple exclamation marks detected
+X-FOFF-Rule-Matched: Link Analysis: Suspicious Link Patterns (External Only) (juliett.baddomain.com) [47fa3850]
+X-FOFF-Rule-Matched: Analytics: Generic Sender Names (juliett.baddomain.com) [646bd584]
+X-FOFF-Rule-Matched: Advanced Heuristics: Weak Signal Aggregation (juliett.baddomain.com) [e38b5e7e]
+X-FOFF-Rule-Matched: Rule-Based Whitelists: BackerKit Platform (juliett.baddomain.com) [e73fce3f]
+X-FOFF-Rule-Matched: Link Analysis: Suspicious Link Patterns (External Only) (hotel.baddomain.com) [47fa3850]
+X-FOFF-Rule-Matched: Analytics: Generic Sender Names (hotel.baddomain.com) [646bd584]
+X-FOFF-Rule-Matched: Advanced Heuristics: Weak Signal Aggregation (hotel.baddomain.com) [e38b5e7e]
+X-FOFF-Rule-Matched: Rule-Based Whitelists: BackerKit Platform (hotel.baddomain.com) [e73fce3f]
+X-FOFF-Score: -58 - foff-milter v0.7.1 (juliett.baddomain.com)
+X-FOFF-Score: -58 - foff-milter v0.7.1 (hotel.baddomain.com)
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org=
+/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"min-height:100%;backg=
+round:#f3f3f3">
+<head>
+  <meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8">
+  <meta name=3D"viewport" content=3D"width=3Ddevice-width">
+ =20
+<style>@media (max-width: 768px) {
+trix-toolbar .trix-button-group:not(:first-child){margin-left:0}
+trix-toolbar .trix-button-group-spacer{display:none}
+trix-toolbar .trix-button{letter-spacing:-0.01em;padding:0 0.3em}
+trix-toolbar .trix-button--icon{height:2em;max-width:calc(0.8em + 3.5vw)}
+trix-toolbar .trix-button--icon::before{right:6%;left:6%}
+}
+trix-toolbar .trix-button:not(:disabled){cursor:pointer}
+trix-toolbar .trix-button:disabled{color:rgba(0, 0, 0, 0.125)}
+trix-toolbar .trix-button--icon::before{display:inline-block;position:absol=
+ute;top:0;right:0;bottom:0;left:0;opacity:0.6;content:"";background-positio=
+n:center;background-repeat:no-repeat;background-size:contain}
+trix-toolbar .trix-button--icon.trix-active::before{opacity:1}
+trix-toolbar .trix-button--icon:disabled::before{opacity:0.125}
+trix-toolbar .trix-button--icon-attach::before{background-image:url("data:i=
+mage/svg+xml,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22none=
+%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%2=
+2M10.5%2018V7.5c0-2.25%203-2.25%203%200V18c0%204.125-6%204.125-6%200V7.5c0-=
+6.375%209-6.375%209%200V18%22%20stroke%3D%22%23000%22%20stroke-width%3D%222=
+%22%20stroke-miterlimit%3D%2210%22%20stroke-linecap%3D%22round%22%20stroke-=
+linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E");top:8%;bottom:4%}
+trix-toolbar .trix-button--icon-bold::before{background-image:url("data:ima=
+ge/svg+xml,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22none%2=
+2%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20fill-rul=
+e%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M6.522%2019.242a.5.5=
+%200%200%201-.5-.5V5.35a.5.5%200%200%201%20.5-.5h5.783c1.347%200%202.46.345=
+%203.24.982.783.64%201.216%201.562%201.216%202.683%200%201.13-.587%202.129-=
+1.476%202.71a.35.35%200%200%200%20.049.613c1.259.56%202.101%201.742%202.101=
+%203.22%200%201.282-.483%202.334-1.363%203.063-.876.726-2.132%201.12-3.66%2=
+01.12h-5.89ZM9.27%207.347v3.362h1.97c.766%200%201.347-.17%201.733-.464.38-.=
+291.587-.716.587-1.27%200-.53-.183-.928-.513-1.198-.334-.273-.838-.43-1.505=
+-.43H9.27Zm0%205.606v3.791h2.389c.832%200%201.448-.177%201.853-.497.399-.31=
+5.614-.786.614-1.423%200-.62-.22-1.077-.63-1.385-.418-.313-1.053-.486-1.905=
+-.486H9.27Z%22%20fill%3D%22%23000%22%2F%3E%3C%2Fsvg%3E")}
+trix-toolbar .trix-button--icon-italic::before{background-image:url("data:i=
+mage/svg+xml,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22none=
+%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20fill-r=
+ule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M9%205h6.5v2h-2.23=
+l-2.31%2010H13v2H6v-2h2.461l2.306-10H9V5Z%22%20fill%3D%22%23000%22%2F%3E%3C=
+%2Fsvg%3E")}
+trix-toolbar .trix-button--icon-link::before{background-image:url("data:ima=
+ge/svg+xml,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22none%2=
+2%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20fill-rul=
+e%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M18.948%205.258a4.33=
+7%204.337%200%200%200-6.108%200L11.217%206.87a.993.993%200%200%200%200%201.=
+41c.392.39%201.027.39%201.418%200l1.623-1.613a2.323%202.323%200%200%201%203=
+=2E271%200%202.29%202.29%200%200%201%20=
+0%203.251l-2.393%202.38a3.021%203.021%=
+200%200%201-4.255%200l-.05-.049a1.007%201.007%200%200%200-1.418%200%20.993.=
+993%200%200%200%200%201.41l.05.049a5.036%205.036%200%200%200%207.091%200l2.=
+394-2.38a4.275%204.275%200%200%200%200-6.072Zm-13.683%2013.6a4.337%204.337%=
+200%200%200%206.108%200l1.262-1.255a.993.993%200%200%200%200-1.41%201.007%2=
+01.007%200%200%200-1.418%200L9.954%2017.45a2.323%202.323%200%200%201-3.27%2=
+00%202.29%202.29%200%200%201%200-3.251l2.344-2.331a2.579%202.579%200%200%20=
+1%203.631%200c.392.39%201.027.39%201.419%200a.993.993%200%200%200%200-1.41%=
+204.593%204.593%200%200%200-6.468%200l-2.345%202.33a4.275%204.275%200%200%2=
+00%200%206.072Z%22%20fill%3D%22%23000%22%2F%3E%3C%2Fsvg%3E")}
+trix-toolbar .trix-button--icon-strike::before{background-image:url("data:i=
+mage/svg+xml,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22none=
+%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20fill-r=
+ule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M6%2014.986c.088%2=
+02.647%202.246%204.258%205.635%204.258%203.496%200%205.713-1.728%205.713-4.=
+463%200-.275-.02-.536-.062-.781h-3.461c.398.293.573.654.573%201.123%200%201=
+=2E035-1.074%201.787-2.646%201.787-1.56=
+3%200-2.773-.762-2.91-1.924H6ZM6.432%2=
+010h3.763c-.632-.314-.914-.715-.914-1.273%200-1.045.977-1.739%202.432-1.739=
+%201.475%200%202.52.723%202.617%201.914h2.764c-.05-2.548-2.11-4.238-5.39-4.=
+238-3.145%200-5.392%201.719-5.392%204.316%200%20.363.04.703.12%201.02ZM4%20=
+11a1%201%200%201%200%200%202h15a1%201%200%201%200%200-2H4Z%22%20fill%3D%22%=
+23000%22%2F%3E%3C%2Fsvg%3E")}
+trix-toolbar .trix-button--icon-quote::before{background-image:url("data:im=
+age/svg+xml,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22none%=
+22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22=
+M4.581%208.471c.44-.5%201.056-.834%201.758-.995C8.074%207.17%209.201%207.82=
+2%2010%208.752c1.354%201.578%201.33%203.555.394%205.277-.941%201.731-2.788%=
+203.163-4.988%203.56a.622.622%200%200%201-.653-.317c-.113-.205-.121-.49.16-=
+=2E764.294-.286.567-.566.791-.835.222-.=
+266.413-.54.524-.815.113-.28.156-.597.=
+026-.908-.128-.303-.39-.524-.72-.69a3.02%203.02%200%200%201-1.674-2.7c0-.90=
+5.283-1.59.72-2.088Zm9.419%200c.44-.5%201.055-.834%201.758-.995%201.734-.30=
+6%202.862.346%203.66%201.276%201.355%201.578%201.33%203.555.395%205.277-.94=
+1%201.731-2.789%203.163-4.988%203.56a.622.622%200%200%201-.653-.317c-.113-.=
+205-.122-.49.16-.764.294-.286.567-.566.791-.835.222-.266.412-.54.523-.815.1=
+14-.28.157-.597.026-.908-.127-.303-.39-.524-.72-.69a3.02%203.02%200%200%201=
+-1.672-2.701c0-.905.283-1.59.72-2.088Z%22%20fill%3D%22%23000%22%2F%3E%3C%2F=
+svg%3E")}
+trix-toolbar .trix-button--icon-heading-1::before{background-image:url("dat=
+a:image/svg+xml,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22n=
+one%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20fil=
+l-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M21.5%207.5v-3h=
+-12v3H14v13h3v-13h4.5ZM9%2013.5h3.5v-3h-10v3H6v7h3v-7Z%22%20fill%3D%22%2300=
+0%22%2F%3E%3C%2Fsvg%3E")}
+trix-toolbar .trix-button--icon-code::before{background-image:url("data:ima=
+ge/svg+xml,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22none%2=
+2%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20fill-rul=
+e%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M3.293%2011.293a1%20=
+1%200%200%200%200%201.414l4%204a1%201%200%201%200%201.414-1.414L5.414%2012l=
+3.293-3.293a1%201%200%200%200-1.414-1.414l-4%204Zm13.414%205.414%204-4a1%20=
+1%200%200%200%200-1.414l-4-4a1%201%200%201%200-1.414%201.414L18.586%2012l-3=
+=2E293%203.293a1%201%200%200%200%201.41=
+4%201.414Z%22%20fill%3D%22%23000%22%2F=
+%3E%3C%2Fsvg%3E")}
+trix-toolbar .trix-button--icon-bullet-list::before{background-image:url("d=
+ata:image/svg+xml,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%2=
+2none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20f=
+ill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M5%207.5a1.5%=
+201.5%200%201%200%200-3%201.5%201.5%200%200%200%200%203ZM8%206a1%201%200%20=
+0%201%201-1h11a1%201%200%201%201%200%202H9a1%201%200%200%201-1-1Zm1%205a1%2=
+01%200%201%200%200%202h11a1%201%200%201%200%200-2H9Zm0%206a1%201%200%201%20=
+0%200%202h11a1%201%200%201%200%200-2H9Zm-2.5-5a1.5%201.5%200%201%201-3%200%=
+201.5%201.5%200%200%201%203%200ZM5%2019.5a1.5%201.5%200%201%200%200-3%201.5=
+%201.5%200%200%200%200%203Z%22%20fill%3D%22%23000%22%2F%3E%3C%2Fsvg%3E")}
+trix-toolbar .trix-button--icon-number-list::before{background-image:url("d=
+ata:image/svg+xml,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%2=
+2none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20f=
+ill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M3%204h2v4H4V=
+5H3V4Zm5%202a1%201%200%200%201%201-1h11a1%201%200%201%201%200%202H9a1%201%2=
+00%200%201-1-1Zm1%205a1%201%200%201%200%200%202h11a1%201%200%201%200%200-2H=
+9Zm0%206a1%201%200%201%200%200%202h11a1%201%200%201%200%200-2H9Zm-3.5-7H6v1=
+l-1.5%202H6v1H3v-1l1.667-2H3v-1h2.5ZM3%2017v-1h3v4H3v-1h2v-.5H4v-1h1V17H3Z%=
+22%20fill%3D%22%23000%22%2F%3E%3C%2Fsvg%3E")}
+trix-toolbar .trix-button--icon-undo::before{background-image:url("data:ima=
+ge/svg+xml,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22none%2=
+2%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20fill-rul=
+e%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M3%2014a1%201%200%20=
+0%200%201%201h6a1%201%200%201%200%200-2H6.257c2.247-2.764%205.151-3.668%207=
+=2E579-3.264%202.589.432%204.739%202.35=
+6%205.174%205.405a1%201%200%200%200%20=
+1.98-.283c-.564-3.95-3.415-6.526-6.825-7.095C11.084%207.25%207.63%208.377%2=
+05%2011.39V8a1%201%200%200%200-2%200v6Zm2-1Z%22%20fill%3D%22%23000%22%2F%3E=
+%3C%2Fsvg%3E")}
+trix-toolbar .trix-button--icon-redo::before{background-image:url("data:ima=
+ge/svg+xml,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22none%2=
+2%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20fill-rul=
+e%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M21%2014a1%201%200%2=
+00%201-1%201h-6a1%201%200%201%201%200-2h3.743c-2.247-2.764-5.151-3.668-7.57=
+9-3.264-2.589.432-4.739%202.356-5.174%205.405a1%201%200%200%201-1.98-.283c.=
+564-3.95%203.415-6.526%206.826-7.095%203.08-.513%206.534.614%209.164%203.62=
+6V8a1%201%200%201%201%202%200v6Zm-2-1Z%22%20fill%3D%22%23000%22%2F%3E%3C%2F=
+svg%3E")}
+trix-toolbar .trix-button--icon-decrease-nesting-level::before{background-i=
+mage:url("data:image/svg+xml,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%=
+20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E=
+%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M5=
+%206a1%201%200%200%201%201-1h12a1%201%200%201%201%200%202H6a1%201%200%200%2=
+01-1-1Zm4%205a1%201%200%201%200%200%202h9a1%201%200%201%200%200-2H9Zm-3%206=
+a1%201%200%201%200%200%202h12a1%201%200%201%200%200-2H6Zm-3.707-5.707a1%201=
+%200%200%200%200%201.414l2%202a1%201%200%201%200%201.414-1.414L4.414%2012l1=
+=2E293-1.293a1%201%200%200%200-1.414-1.=
+414l-2%202Z%22%20fill%3D%22%23000%22%2=
+F%3E%3C%2Fsvg%3E")}
+trix-toolbar .trix-button--icon-increase-nesting-level::before{background-i=
+mage:url("data:image/svg+xml,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%=
+20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E=
+%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M5=
+%206a1%201%200%200%201%201-1h12a1%201%200%201%201%200%202H6a1%201%200%200%2=
+01-1-1Zm4%205a1%201%200%201%200%200%202h9a1%201%200%201%200%200-2H9Zm-3%206=
+a1%201%200%201%200%200%202h12a1%201%200%201%200%200-2H6Zm-2.293-2.293%202-2=
+a1%201%200%200%200%200-1.414l-2-2a1%201%200%201%200-1.414%201.414L3.586%201=
+2l-1.293%201.293a1%201%200%201%200%201.414%201.414Z%22%20fill%3D%22%23000%2=
+2%2F%3E%3C%2Fsvg%3E")}
+trix-editor [data-trix-mutable] ::-moz-selection{background:none}
+trix-editor [data-trix-mutable]::-moz-selection{background:none}
+trix-editor [data-trix-cursor-target]::-moz-selection{background:none}
+trix-editor [data-trix-mutable] ::-moz-selection{background:none}
+trix-editor [data-trix-mutable]::-moz-selection{background:none}
+trix-editor [data-trix-cursor-target]::-moz-selection{background:none}
+trix-editor [data-trix-mutable] ::selection{background:none}
+trix-editor [data-trix-mutable]::selection{background:none}
+trix-editor [data-trix-cursor-target]::selection{background:none}
+trix-editor .attachment__caption-editor[data-trix-mutable]:focus::-moz-sele=
+ction{background:highlight}
+trix-editor .attachment__caption-editor[data-trix-mutable]:focus::-moz-sele=
+ction{background:highlight}
+trix-editor .attachment__caption-editor[data-trix-mutable]:focus::selection=
+{background:highlight}
+trix-editor .attachment:hover{cursor:default}
+trix-editor .attachment--preview .attachment__caption:hover{cursor:text}
+trix-editor .trix-button:not(:disabled){cursor:pointer}
+trix-editor .trix-button--remove::before{display:inline-block;position:abso=
+lute;top:0;right:0;bottom:0;left:0;opacity:0.7;content:"";background-image:=
+url("data:image/svg+xml,%3Csvg%20height%3D%2224%22%20width%3D%2224%22%20xml=
+ns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M19%206.=
+41%2017.59%205%2012%2010.59%206.41%205%205%206.41%2010.59%2012%205%2017.59%=
+206.41%2019%2012%2013.41%2017.59%2019%2019%2017.59%2013.41%2012z%22%2F%3E%3=
+Cpath%20d%3D%22M0%200h24v24H0z%22%20fill%3D%22none%22%2F%3E%3C%2Fsvg%3E");b=
+ackground-position:center;background-repeat:no-repeat;background-size:90%}
+trix-editor .trix-button--remove:hover{border-color:#333}
+trix-editor .trix-button--remove:hover::before{opacity:1}
+=2Etrix-content .attachment a:hover{color:inherit}
+=2Etrix-content .attachment a:visited:hover{color:inherit}
+=2Etrix-content .attachment__caption .a=
+ttachment__name + .attachment__size::b=
+efore{content:" =E2=80=A2"}
+trix-toolbar .trix-button--icon:before{background-size:1.4em}
+a:hover{color:#147dc2}
+a:active{color:#147dc2}
+a:visited{color:#2199e8}
+h1 a:visited{color:#2199e8}
+h2 a:visited{color:#2199e8}
+h3 a:visited{color:#2199e8}
+h4 a:visited{color:#2199e8}
+h5 a:visited{color:#2199e8}
+h6 a:visited{color:#2199e8}
+table.button:hover table tr td a{color:#fefefe}
+table.button:active table tr td a{color:#fefefe}
+table.button table tr td a:visited{color:#fefefe}
+table.button.tiny:hover table tr td a{color:#fefefe}
+table.button.tiny:active table tr td a{color:#fefefe}
+table.button.tiny table tr td a:visited{color:#fefefe}
+table.button.small:hover table tr td a{color:#fefefe}
+table.button.small:active table tr td a{color:#fefefe}
+table.button.small table tr td a:visited{color:#fefefe}
+table.button.large:hover table tr td a{color:#fefefe}
+table.button.large:active table tr td a{color:#fefefe}
+table.button.large table tr td a:visited{color:#fefefe}
+table.button:hover table td{background:#147dc2;color:#fefefe}
+table.button:visited table td{background:#147dc2;color:#fefefe}
+table.button:active table td{background:#147dc2;color:#fefefe}
+table.button:hover table a{border:0 solid #147dc2}
+table.button:visited table a{border:0 solid #147dc2}
+table.button:active table a{border:0 solid #147dc2}
+table.button.secondary:hover table td{background:#919191;color:#fefefe}
+table.button.secondary:hover table a{border:0 solid #919191}
+table.button.secondary:hover table td a{color:#fefefe}
+table.button.secondary:active table td a{color:#fefefe}
+table.button.secondary table td a:visited{color:#fefefe}
+table.button.success:hover table td{background:#23bf5d}
+table.button.success:hover table a{border:0 solid #23bf5d}
+table.button.alert:hover table td{background:#e23317}
+table.button.alert:hover table a{border:0 solid #e23317}
+table.button.warning:hover table td{background:#cc8b00}
+table.button.warning:hover table a{border:0px solid #cc8b00}
+=2Ethumbnail:hover{box-shadow:0 0 6px 1px rgba(33, 153, 232, 0.5)}
+=2Ethumbnail:focus{box-shadow:0 0 6px 1px rgba(33, 153, 232, 0.5)}
+=2Epoll-table :after{box-sizing:border-box;border:0 solid #e5e7eb}
+=2Epoll-table :before{box-sizing:border-box;border:0 solid #e5e7eb}
+@media only screen and (max-width: 600px) {
+=2Etrix-content .attachment-gallery{display:block}
+trix-toolbar .trix-button--icon:before{background-size:1.2em}
+trix-toolbar .trix-button--icon{padding:1.0em}
+}
+@media only screen and (max-width: 596px) {
+=2Esmall-float-center{margin:0 auto !im=
+portant;float:none !important;text-ali=
+gn:center !important}
+=2Esmall-text-center{text-align:center !important}
+=2Esmall-text-left{text-align:left !important}
+=2Esmall-text-right{text-align:right !important}
+=2Ehide-for-large{display:block !import=
+ant;width:auto !important;overflow:vis=
+ible !important;max-height:none !important;font-size:inherit !important;lin=
+e-height:inherit !important}
+table.body table.container .hide-for-large{display:table !important;width:1=
+00% !important}
+table.body table.container .row.hide-for-large{display:table !important;wid=
+th:100% !important}
+table.body table.container .callout-inner.hide-for-large{display:table-cell=
+ !important;width:100% !important}
+table.body table.container .show-for-large{display:none !important;width:0;=
+mso-hide:all;overflow:hidden}
+table.body img{width:auto;height:auto}
+table.body center{min-width:0 !important}
+table.body .container{width:95% !important}
+table.body .columns{height:auto !important;box-sizing:border-box;padding-le=
+ft:16px !important;padding-right:16px !important}
+table.body .column{height:auto !important;box-sizing:border-box;padding-lef=
+t:16px !important;padding-right:16px !important}
+table.body .columns .column{padding-left:0 !important;padding-right:0 !impo=
+rtant}
+table.body .columns .columns{padding-left:0 !important;padding-right:0 !imp=
+ortant}
+table.body .column .column{padding-left:0 !important;padding-right:0 !impor=
+tant}
+table.body .column .columns{padding-left:0 !important;padding-right:0 !impo=
+rtant}
+table.body .collapse .columns{padding-left:0 !important;padding-right:0 !im=
+portant}
+table.body .collapse .column{padding-left:0 !important;padding-right:0 !imp=
+ortant}
+td.small-1{display:inline-block !important;width:8.333333% !important}
+th.small-1{display:inline-block !important;width:8.333333% !important}
+td.small-2{display:inline-block !important;width:16.666666% !important}
+th.small-2{display:inline-block !important;width:16.666666% !important}
+td.small-3{display:inline-block !important;width:25% !important}
+th.small-3{display:inline-block !important;width:25% !important}
+td.small-4{display:inline-block !important;width:33.333333% !important}
+th.small-4{display:inline-block !important;width:33.333333% !important}
+td.small-5{display:inline-block !important;width:41.666666% !important}
+th.small-5{display:inline-block !important;width:41.666666% !important}
+td.small-6{display:inline-block !important;width:50% !important}
+th.small-6{display:inline-block !important;width:50% !important}
+td.small-7{display:inline-block !important;width:58.333333% !important}
+th.small-7{display:inline-block !important;width:58.333333% !important}
+td.small-8{display:inline-block !important;width:66.666666% !important}
+th.small-8{display:inline-block !important;width:66.666666% !important}
+td.small-9{display:inline-block !important;width:75% !important}
+th.small-9{display:inline-block !important;width:75% !important}
+td.small-10{display:inline-block !important;width:83.333333% !important}
+th.small-10{display:inline-block !important;width:83.333333% !important}
+td.small-11{display:inline-block !important;width:91.666666% !important}
+th.small-11{display:inline-block !important;width:91.666666% !important}
+td.small-12{display:inline-block !important;width:100% !important}
+th.small-12{display:inline-block !important;width:100% !important}
+=2Ecolumns td.small-12{display:block !important;width:100% !important}
+=2Ecolumn td.small-12{display:block !important;width:100% !important}
+=2Ecolumns th.small-12{display:block !important;width:100% !important}
+=2Ecolumn th.small-12{display:block !important;width:100% !important}
+table.body td.small-offset-1{margin-left:8.333333% !important}
+table.body th.small-offset-1{margin-left:8.333333% !important}
+table.body td.small-offset-2{margin-left:16.666666% !important}
+table.body th.small-offset-2{margin-left:16.666666% !important}
+table.body td.small-offset-3{margin-left:25% !important}
+table.body th.small-offset-3{margin-left:25% !important}
+table.body td.small-offset-4{margin-left:33.333333% !important}
+table.body th.small-offset-4{margin-left:33.333333% !important}
+table.body td.small-offset-5{margin-left:41.666666% !important}
+table.body th.small-offset-5{margin-left:41.666666% !important}
+table.body td.small-offset-6{margin-left:50% !important}
+table.body th.small-offset-6{margin-left:50% !important}
+table.body td.small-offset-7{margin-left:58.333333% !important}
+table.body th.small-offset-7{margin-left:58.333333% !important}
+table.body td.small-offset-8{margin-left:66.666666% !important}
+table.body th.small-offset-8{margin-left:66.666666% !important}
+table.body td.small-offset-9{margin-left:75% !important}
+table.body th.small-offset-9{margin-left:75% !important}
+table.body td.small-offset-10{margin-left:83.333333% !important}
+table.body th.small-offset-10{margin-left:83.333333% !important}
+table.body td.small-offset-11{margin-left:91.666666% !important}
+table.body th.small-offset-11{margin-left:91.666666% !important}
+table.body table.columns td.expander{display:none !important}
+table.body table.columns th.expander{display:none !important}
+table.body .right-text-pad{padding-left:10px !important}
+table.body .text-pad-right{padding-left:10px !important}
+table.body .left-text-pad{padding-right:10px !important}
+table.body .text-pad-left{padding-right:10px !important}
+table.menu{width:100% !important}
+table.menu td{width:auto !important;display:inline-block !important}
+table.menu th{width:auto !important;display:inline-block !important}
+table.menu.vertical td{display:block !important}
+table.menu.vertical th{display:block !important}
+table.menu.small-vertical td{display:block !important}
+table.menu.small-vertical th{display:block !important}
+table.menu[align=3D"center"]{width:auto !important}
+table.button.small-expand{width:100% !important}
+table.button.small-expanded{width:100% !important}
+table.button.small-expand table{width:100%}
+table.button.small-expanded table{width:100%}
+table.button.small-expand table a{text-align:center !important;width:100% !=
+important;padding-left:0 !important;padding-right:0 !important}
+table.button.small-expanded table a{text-align:center !important;width:100%=
+ !important;padding-left:0 !important;padding-right:0 !important}
+table.button.small-expand center{min-width:0}
+table.button.small-expanded center{min-width:0}
+}
+@media screen and (max-width: 596px) {
+=2Esmall-collapse th{padding-left:0 !im=
+portant;padding-right:0 !important}
+=2Einner-container{max-width:90% !important;width:90% !important}
+=2Einner-container.container{width:90% !important}
+=2Einner-container .container{width:90% !important}
+=2Epadding-sides{padding-left:16px !impo=
+rtant;padding-right:16px !important}
+}
+@media (min-width: 640px) {
+=2Econtainer{max-width:640px}
+=2Esm\:m-0{margin:0}
+=2Esm\:mx-0{margin-left:0;margin-right:0}
+=2Esm\:-mx-6{margin-left:-1.5rem;margin-right:-1.5rem}
+=2Esm\:my-12{margin-top:3rem;margin-bottom:3rem}
+=2Esm\:mx-auto{margin-left:auto;margin-right:auto}
+=2Esm\:mt-0{margin-top:0}
+=2Esm\:ml-6{margin-left:1.5rem}
+=2Esm\:mb-0{margin-bottom:0}
+=2Esm\:ml-4{margin-left:1rem}
+=2Esm\:mr-3{margin-right:.75rem}
+=2Esm\:ml-16{margin-left:4rem}
+=2Esm\:mt-5{margin-top:1.25rem}
+=2Esm\:mt-px{margin-top:1px}
+=2Esm\:block{display:block}
+=2Esm\:inline{display:inline}
+=2Esm\:flex{display:flex}
+=2Esm\:inline-flex{display:inline-flex}
+=2Esm\:table-cell{display:table-cell}
+=2Esm\:grid{display:grid}
+=2Esm\:hidden{display:none}
+=2Esm\:h-\[72px\]{height:72px}
+=2Esm\:h-16{height:4rem}
+=2Esm\:min-h-screen{min-height:100vh}
+=2Esm\:w-1\/4{width:25%}
+=2Esm\:w-1\/2{width:50%}
+=2Esm\:w-full{width:100%}
+=2Esm\:w-24{width:6rem}
+=2Esm\:w-\[128px\]{width:128px}
+=2Esm\:max-w-sm{max-width:24rem}
+=2Esm\:max-w-md{max-width:28rem}
+=2Esm\:flex-auto{flex:1 1 auto}
+=2Esm\:flex-none{flex:none}
+=2Esm\:scroll-mt-20{scroll-margin-top:5rem}
+=2Esm\:overflow-hidden{overflow:hidden}
+=2Esm\:rounded-md{border-radius:.375rem}
+=2Esm\:rounded-lg{border-radius:.5rem}
+=2Esm\:border-t{border-top-width:1px}
+=2Esm\:border-l{border-left-width:1px}
+=2Esm\:border-none{border-style:none}
+=2Esm\:border-transparent{border-color:#0000}
+=2Esm\:p-6{padding:1.5rem}
+=2Esm\:p-4{padding:1rem}
+=2Esm\:p-8{padding:2rem}
+=2Esm\:px-0{padding-left:0;padding-right:0}
+=2Esm\:py-8{padding-top:2rem;padding-bottom:2rem}
+=2Esm\:px-5{padding-left:1.25rem;padding-right:1.25rem}
+=2Esm\:py-10{padding-top:2.5rem;padding-bottom:2.5rem}
+=2Esm\:py-0{padding-top:0;padding-bottom:0}
+=2Esm\:py-4{padding-top:1rem;padding-bottom:1rem}
+=2Esm\:px-6{padding-left:1.5rem;padding-right:1.5rem}
+=2Esm\:py-3{padding-top:.75rem;padding-bottom:.75rem}
+=2Esm\:py-6{padding-top:1.5rem;padding-bottom:1.5rem}
+=2Esm\:px-4{padding-left:1rem;padding-right:1rem}
+=2Esm\:py-12{padding-top:3rem;padding-bottom:3rem}
+=2Esm\:px-10{padding-left:2.5rem;padding-right:2.5rem}
+=2Esm\:py-24{padding-top:6rem;padding-bottom:6rem}
+=2Esm\:pb-0{padding-bottom:0}
+=2Esm\:pl-6{padding-left:1.5rem}
+=2Esm\:pr-6{padding-right:1.5rem}
+=2Esm\:pt-5{padding-top:1.25rem}
+=2Esm\:pt-2{padding-top:.5rem}
+=2Esm\:pt-1{padding-top:.25rem}
+=2Esm\:text-left{text-align:left}
+=2Esm\:text-center{text-align:center}
+=2Esm\:text-sm{font-size:.875rem;line-height:1.25rem}
+=2Esm\:text-2xl{font-size:1.5rem;line-height:2rem}
+=2Esm\:text-5xl{font-size:3rem;line-height:1}
+}
+@media (min-width: 768px) {
+=2Econtainer{max-width:768px}
+=2Emd\:col-span-1{grid-column:span 1/span 1}
+=2Emd\:col-span-2{grid-column:span 2/span 2}
+=2Emd\:mx-0{margin-left:0;margin-right:0}
+=2Emd\:mr-12{margin-right:3rem}
+=2Emd\:mb-0{margin-bottom:0}
+=2Emd\:mt-0{margin-top:0}
+=2Emd\:block{display:block}
+=2Emd\:grid{display:grid}
+=2Emd\:h-\[96px\]{height:96px}
+=2Emd\:w-full{width:100%}
+=2Emd\:w-\[65\%\]{width:65%}
+=2Emd\:gap-4{gap:1rem}
+=2Emd\:gap-6{gap:1.5rem}
+=2Emd\:rounded-lg{border-radius:.5rem}
+=2Emd\:p-0{padding:0}
+=2Emd\:p-4{padding:1rem}
+=2Emd\:px-6{padding-left:1.5rem;padding-right:1.5rem}
+=2Emd\:pl-0{padding-left:0}
+}
+@media (min-width: 1024px) {
+=2Econtainer{max-width:1024px}
+=2Elg\:relative{position:relative}
+=2Elg\:my-8{margin-top:2rem;margin-bottom:2rem}
+=2Elg\:mx-4{margin-left:1rem;margin-right:1rem}
+=2Elg\:-mx-8{margin-left:-2rem;margin-right:-2rem}
+=2Elg\:mb-1{margin-bottom:.25rem}
+=2Elg\:mt-0{margin-top:0}
+=2Elg\:block{display:block}
+=2Elg\:inline-block{display:inline-block}
+=2Elg\:table-cell{display:table-cell}
+=2Elg\:grid{display:grid}
+=2Elg\:hidden{display:none}
+=2Elg\:h-\[72px\]{height:72px}
+=2Elg\:max-w-none{max-width:none}
+=2Elg\:border-0{border-width:0}
+=2Elg\:bg-transparent{background-color:initial}
+=2Elg\:p-4{padding:1rem}
+=2Elg\:p-6{padding:1.5rem}
+=2Elg\:p-8{padding:2rem}
+=2Elg\:px-0{padding-left:0;padding-right:0}
+=2Elg\:py-8{padding-top:2rem;padding-bottom:2rem}
+=2Elg\:px-2{padding-left:.5rem;padding-right:.5rem}
+=2Elg\:py-0{padding-top:0;padding-bottom:0}
+=2Elg\:px-7{padding-left:1.75rem;padding-right:1.75rem}
+=2Elg\:px-8{padding-left:2rem;padding-right:2rem}
+=2Elg\:px-6{padding-left:1.5rem;padding-right:1.5rem}
+=2Elg\:px-4{padding-left:1rem;padding-right:1rem}
+=2Elg\:px-16{padding-left:4rem;padding-right:4rem}
+=2Elg\:pb-16{padding-bottom:4rem}
+=2Elg\:text-left{text-align:left}
+}
+@media (min-width: 1280px) {
+=2Econtainer{max-width:1280px}
+=2Exl\:mx-auto{margin-left:auto;margin-right:auto}
+=2Exl\:text-3xl{font-size:1.875rem;line-height:2.25rem}
+}
+@media (min-width: 1536px) {
+=2Econtainer{max-width:1536px}
+}</style></head>
+<body style=3D"min-width:100%;-webkit-text-size-adjust:100%;-ms-text-size-a=
+djust:100%;box-sizing:border-box;color:#0a0a0a;font-family:Helvetica, Arial=
+, sans-serif;font-weight:normal;padding:0;margin:0;text-align:left;font-siz=
+e:16px;line-height:130%;width:100% !important">
+<div class=3D"superhide" style=3D"display:none;font-size:1px;color:#333333;=
+line-height:1px;max-height:0px;max-width:0px;opacity:0;overflow:hidden">
+    This project just launched. Back it now!
+
+</div>
+
+<table class=3D"spacer " style=3D"border-spacing:0;border-collapse:collapse=
+;padding:0;vertical-align:top;text-align:left;width:100%"><tbody><tr style=
+=3D"padding:0;vertical-align:top;text-align:left"><td height=3D"30" style=
+=3D"word-wrap:break-word;-webkit-hyphens:auto;hyphens:auto;vertical-align:t=
+op;color:#0a0a0a;font-family:Helvetica, Arial, sans-serif;font-weight:norma=
+l;padding:0;margin:0;text-align:left;font-size:16px;line-height:130%;mso-li=
+ne-height-rule:exactly;border-collapse:collapse !important;font-size:30px;l=
+ine-height:30px;">=C2=A0</td></tr></tbody></table>
+
+<table class=3D"wrapper" align=3D"center" style=3D"border-spacing:0;border-=
+collapse:collapse;padding:0;vertical-align:top;text-align:left;width:100%">=
+<tbody><tr style=3D"padding:0;vertical-align:top;text-align:left"><td class=
+=3D"wrapper-inner" style=3D"word-wrap:break-word;-webkit-hyphens:auto;hyphe=
+ns:auto;vertical-align:top;color:#0a0a0a;font-family:Helvetica, Arial, sans=
+-serif;font-weight:normal;padding:0;margin:0;text-align:left;font-size:16px=
+;line-height:130%;border-collapse:collapse !important">
+  <table class=3D"inner-container container" align=3D"center" style=3D"bord=
+er-spacing:0;border-collapse:collapse;padding:0;vertical-align:top;text-ali=
+gn:left;background:#fefefe;width:580px;margin:0 auto;text-align:inherit"><t=
+body><tr style=3D"padding:0;vertical-align:top;text-align:left"><td style=
+=3D"word-wrap:break-word;-webkit-hyphens:auto;hyphens:auto;vertical-align:t=
+op;color:#0a0a0a;font-family:Helvetica, Arial, sans-serif;font-weight:norma=
+l;padding:0;margin:0;text-align:left;font-size:16px;line-height:130%;border=
+-collapse:collapse !important">
+    <table bgcolor=3D"#FFFFFF" class=3D"block-shadow border-2-black-all wra=
+pper" align=3D"center" style=3D"border-spacing:0;border-collapse:collapse;p=
+adding:0;vertical-align:top;text-align:left;width:100%;border:2px solid #00=
+0000 !important;box-shadow:5px 5px 0px 0px #000000 !important"><tbody><tr s=
+tyle=3D"padding:0;vertical-align:top;text-align:left"><td class=3D"wrapper-=
+inner" style=3D"word-wrap:break-word;-webkit-hyphens:auto;hyphens:auto;vert=
+ical-align:top;color:#0a0a0a;font-family:Helvetica, Arial, sans-serif;font-=
+weight:normal;padding:0;margin:0;text-align:left;font-size:16px;line-height=
+:130%;border-collapse:collapse !important">
+      <div class=3D"text-center border-2-black-bottom" style=3D"text-align:=
+center;border-bottom:2px solid #000000 !important">
+  <table class=3D"spacer " style=3D"border-spacing:0;border-collapse:collap=
+se;padding:0;vertical-align:top;text-align:left;width:100%"><tbody><tr styl=
+e=3D"padding:0;vertical-align:top;text-align:left"><td height=3D"20" style=
+=3D"word-wrap:break-word;-webkit-hyphens:auto;hyphens:auto;vertical-align:t=
+op;color:#0a0a0a;font-family:Helvetica, Arial, sans-serif;font-weight:norma=
+l;padding:0;margin:0;text-align:left;font-size:16px;line-height:130%;mso-li=
+ne-height-rule:exactly;border-collapse:collapse !important;font-size:20px;l=
+ine-height:20px;">=C2=A0</td></tr></tbody></table>
+  <center style=3D"width:100%;min-width:580px;min-width:100% !important">
+    <img alt=3D"BackerKit" width=3D"140" style=3D"outline:none;text-decorat=
+ion:none;-ms-interpolation-mode:bicubic;width:auto;max-width:100%;clear:bot=
+h;display:block;margin:0 auto;float:none;text-align:center;display:block; m=
+argin:0 auto; width:140px !important; height:auto !important; outline:none;=
+ text-decoration:none; -ms-interpolation-mode:bicubic;" src=3D"https://asse=
+ts.backerkit.com/assets/logo/backerkit_logo-4652180ff2de6c0221cb73546ca27c7=
+de2d9bbb17214f4465ad5608ef2232229.png" align=3D"center" class=3D"float-cent=
+er">
+  </center>
+  <table class=3D"spacer " style=3D"border-spacing:0;border-collapse:collap=
+se;padding:0;vertical-align:top;text-align:left;width:100%"><tbody><tr styl=
+e=3D"padding:0;vertical-align:top;text-align:left"><td height=3D"20" style=
+=3D"word-wrap:break-word;-webkit-hyphens:auto;hyphens:auto;vertical-align:t=
+op;color:#0a0a0a;font-family:Helvetica, Arial, sans-serif;font-weight:norma=
+l;padding:0;margin:0;text-align:left;font-size:16px;line-height:130%;mso-li=
+ne-height-rule:exactly;border-collapse:collapse !important;font-size:20px;l=
+ine-height:20px;">=C2=A0</td></tr></tbody></table>
+</div>
+
+          <table class=3D"collapse row" style=3D"border-spacing:0;border-co=
+llapse:collapse;vertical-align:top;text-align:left;padding:0;width:100%;pos=
+ition:relative;display:table"><tbody><tr style=3D"padding:0;vertical-align:=
+top;text-align:left">
+      <th class=3D"small-12 large-12 columns first last" style=3D"color:#0a=
+0a0a;font-family:Helvetica, Arial, sans-serif;font-weight:normal;padding:0;=
+margin:0;text-align:left;font-size:16px;line-height:130%;margin:0 auto;padd=
+ing-bottom:16px;width:564px;padding-left:8px;padding-right:8px;padding-left=
+:16px;padding-right:16px;padding-right:0;padding-left:0;width:580px;width:5=
+88px"><table style=3D"border-spacing:0;border-collapse:collapse;padding:0;v=
+ertical-align:top;text-align:left;width:100%"><tbody><tr style=3D"padding:0=
+;vertical-align:top;text-align:left">
+<th style=3D"color:#0a0a0a;font-family:Helvetica, Arial, sans-serif;font-we=
+ight:normal;padding:0;margin:0;text-align:left;font-size:16px;line-height:1=
+30%">
+          <a href=3D"https://www.backerkit.com/c/projects/perfectore-corp/b=
+ack-transformer-powerful-posture-instantly?ref=3Dbk-noti-just-launched" sty=
+le=3D"color:#0a0a0a;font-family:Helvetica, Arial, sans-serif;font-weight:no=
+rmal;padding:0;margin:0;text-align:left;line-height:130%;color:#2199e8;text=
+-decoration:none;color:inherit;text-decoration:inherit">
+      <img onerror=3D"this.onerror=3Dnull; this.srcset=3D''; this.src=3D'ht=
+tps://assets.backerkit.com/assets/backers/welcome-default-cover-image-7a4f2=
+077c8ed778094fb948cddfd1317712a872a4eddb151abc71866b847e241.jpg';" srcset=
+=3D"https://images.backerkit.com/active_storage/backerkit_production/blob/0=
+5x02uz1ezp51757gwzz3ptrir2l?ixlib=3Drails-4.3.1&amp;auto=3Dcompress%2Cforma=
+t&amp;cs=3Dsrgb&amp;lossless=3Dtrue&amp;ar=3D16%3A9&amp;fit=3Dcrop&amp;w=3D=
+896&amp;dpr=3D1&amp;q=3D75 1x,
+https://images.backerkit.com/active_storage/backerkit_production/blob/05x02=
+uz1ezp51757gwzz3ptrir2l?ixlib=3Drails-4.3.1&amp;auto=3Dcompress%2Cformat&am=
+p;cs=3Dsrgb&amp;lossless=3Dtrue&amp;ar=3D16%3A9&amp;fit=3Dcrop&amp;w=3D896&=
+amp;dpr=3D2&amp;q=3D50 2x,
+https://images.backerkit.com/active_storage/backerkit_production/blob/05x02=
+uz1ezp51757gwzz3ptrir2l?ixlib=3Drails-4.3.1&amp;auto=3Dcompress%2Cformat&am=
+p;cs=3Dsrgb&amp;lossless=3Dtrue&amp;ar=3D16%3A9&amp;fit=3Dcrop&amp;w=3D896&=
+amp;dpr=3D3&amp;q=3D35 3x,
+https://images.backerkit.com/active_storage/backerkit_production/blob/05x02=
+uz1ezp51757gwzz3ptrir2l?ixlib=3Drails-4.3.1&amp;auto=3Dcompress%2Cformat&am=
+p;cs=3Dsrgb&amp;lossless=3Dtrue&amp;ar=3D16%3A9&amp;fit=3Dcrop&amp;w=3D896&=
+amp;dpr=3D4&amp;q=3D23 4x,
+https://images.backerkit.com/active_storage/backerkit_production/blob/05x02=
+uz1ezp51757gwzz3ptrir2l?ixlib=3Drails-4.3.1&amp;auto=3Dcompress%2Cformat&am=
+p;cs=3Dsrgb&amp;lossless=3Dtrue&amp;ar=3D16%3A9&amp;fit=3Dcrop&amp;w=3D896&=
+amp;dpr=3D5&amp;q=3D20 5x" sizes=3D"100vw" src=3D"https://images.backerkit.=
+com/active_storage/backerkit_production/blob/05x02uz1ezp51757gwzz3ptrir2l?i=
+xlib=3Drails-4.3.1&amp;auto=3Dcompress%2Cformat&amp;cs=3Dsrgb&amp;lossless=
+=3Dtrue&amp;ar=3D16%3A9&amp;fit=3Dcrop&amp;w=3D896" style=3D"outline:none;t=
+ext-decoration:none;-ms-interpolation-mode:bicubic;width:auto;max-width:100=
+%;clear:both;display:block;border:none">
+
+</a>
+      </th>
+<th class=3D"expander" style=3D"color:#0a0a0a;font-family:Helvetica, Arial,=
+ sans-serif;font-weight:normal;padding:0;margin:0;text-align:left;font-size=
+:16px;line-height:130%;visibility:hidden;width:0;padding:0 !important"></th=
+>
+</tr></tbody></table></th>
+    </tr></tbody></table>
+
+  <table class=3D"spacer " style=3D"border-spacing:0;border-collapse:collap=
+se;padding:0;vertical-align:top;text-align:left;width:100%"><tbody><tr styl=
+e=3D"padding:0;vertical-align:top;text-align:left"><td height=3D"30" style=
+=3D"word-wrap:break-word;-webkit-hyphens:auto;hyphens:auto;vertical-align:t=
+op;color:#0a0a0a;font-family:Helvetica, Arial, sans-serif;font-weight:norma=
+l;padding:0;margin:0;text-align:left;font-size:16px;line-height:130%;mso-li=
+ne-height-rule:exactly;border-collapse:collapse !important;font-size:30px;l=
+ine-height:30px;">=C2=A0</td></tr></tbody></table>
+
+  <table class=3D"collapse row" style=3D"border-spacing:0;border-collapse:c=
+ollapse;vertical-align:top;text-align:left;padding:0;width:100%;position:re=
+lative;display:table"><tbody><tr style=3D"padding:0;vertical-align:top;text=
+-align:left">
+    <th class=3D"small-12 large-12 columns first last" style=3D"color:#0a0a=
+0a;font-family:Helvetica, Arial, sans-serif;font-weight:normal;padding:0;ma=
+rgin:0;text-align:left;font-size:16px;line-height:130%;margin:0 auto;paddin=
+g-bottom:16px;width:564px;padding-left:8px;padding-right:8px;padding-left:1=
+6px;padding-right:16px;padding-right:0;padding-left:0;width:580px;width:588=
+px"><table style=3D"border-spacing:0;border-collapse:collapse;padding:0;ver=
+tical-align:top;text-align:left;width:100%"><tbody><tr style=3D"padding:0;v=
+ertical-align:top;text-align:left">
+<th style=3D"color:#0a0a0a;font-family:Helvetica, Arial, sans-serif;font-we=
+ight:normal;padding:0;margin:0;text-align:left;font-size:16px;line-height:1=
+30%">
+      <div class=3D"padding-sides" style=3D"padding-left:24px !important;pa=
+dding-right:24px !important">
+        <h1 class=3D"text-center" style=3D"color:#0a0a0a;padding:0;margin:0=
+;text-align:left;line-height:130%;color:inherit;word-wrap:normal;font-famil=
+y:Helvetica, Arial, sans-serif;font-weight:normal;margin-bottom:10px;font-s=
+ize:34px;font-size:1.25em;font-weight:bold;text-align:center">  <a href=3D"=
+https://www.backerkit.com/c/projects/perfectore-corp/back-transformer-power=
+ful-posture-instantly?ref=3Dbk-noti-just-launched" style=3D"color:#0a0a0a;f=
+ont-family:Helvetica, Arial, sans-serif;font-weight:normal;padding:0;margin=
+:0;text-align:left;line-height:130%;text-decoration:none;color:inherit;text=
+-decoration:inherit;color:#2199e8;text-decoration:underline !important;colo=
+r:#000000 !important">
+    <strong style=3D"font-weight:bolder">Back Transformer - Powerful Postur=
+e Instantly</strong>
+</a>  <br> by PERFECTORE CORP
+</h1>
+        <p class=3D"text-center" style=3D"color:#0a0a0a;font-family:Helveti=
+ca, Arial, sans-serif;font-weight:normal;padding:0;margin:0;text-align:left=
+;font-size:16px;line-height:130%;margin-bottom:10px;text-align:center">
+</p>
+      </div>
+    </th>
+<th class=3D"expander" style=3D"color:#0a0a0a;font-family:Helvetica, Arial,=
+ sans-serif;font-weight:normal;padding:0;margin:0;text-align:left;font-size=
+:16px;line-height:130%;visibility:hidden;width:0;padding:0 !important"></th=
+>
+</tr></tbody></table></th>
+  </tr></tbody></table>
+  <table class=3D"spacer " style=3D"border-spacing:0;border-collapse:collap=
+se;padding:0;vertical-align:top;text-align:left;width:100%"><tbody><tr styl=
+e=3D"padding:0;vertical-align:top;text-align:left"><td height=3D"20" style=
+=3D"word-wrap:break-word;-webkit-hyphens:auto;hyphens:auto;vertical-align:t=
+op;color:#0a0a0a;font-family:Helvetica, Arial, sans-serif;font-weight:norma=
+l;padding:0;margin:0;text-align:left;font-size:16px;line-height:130%;mso-li=
+ne-height-rule:exactly;border-collapse:collapse !important;font-size:20px;l=
+ine-height:20px;">=C2=A0</td></tr></tbody></table>
+
+
+  <table class=3D"collapse row" style=3D"border-spacing:0;border-collapse:c=
+ollapse;vertical-align:top;text-align:left;padding:0;width:100%;position:re=
+lative;display:table"><tbody><tr style=3D"padding:0;vertical-align:top;text=
+-align:left">
+    <th class=3D"small-12 large-12 columns first last" style=3D"color:#0a0a=
+0a;font-family:Helvetica, Arial, sans-serif;font-weight:normal;padding:0;ma=
+rgin:0;text-align:left;font-size:16px;line-height:130%;margin:0 auto;paddin=
+g-bottom:16px;width:564px;padding-left:8px;padding-right:8px;padding-left:1=
+6px;padding-right:16px;padding-right:0;padding-left:0;width:580px;width:588=
+px"><table style=3D"border-spacing:0;border-collapse:collapse;padding:0;ver=
+tical-align:top;text-align:left;width:100%"><tbody><tr style=3D"padding:0;v=
+ertical-align:top;text-align:left">
+<th style=3D"color:#0a0a0a;font-family:Helvetica, Arial, sans-serif;font-we=
+ight:normal;padding:0;margin:0;text-align:left;font-size:16px;line-height:1=
+30%">
+      <div class=3D"content padding-sides" style=3D"padding-left:24px !impo=
+rtant;padding-right:24px !important">
+          <p style=3D"color:#0a0a0a;font-family:Helvetica, Arial, sans-seri=
+f;font-weight:normal;padding:0;margin:0;text-align:left;font-size:16px;line=
+-height:130%;margin-bottom:10px;text-align:center;">
+    This project just launched on BackerKit. Help them have the best launch=
+ possible by backing the project right now!
+  </p>
+
+      </div>
+    </th>
+<th class=3D"expander" style=3D"color:#0a0a0a;font-family:Helvetica, Arial,=
+ sans-serif;font-weight:normal;padding:0;margin:0;text-align:left;font-size=
+:16px;line-height:130%;visibility:hidden;width:0;padding:0 !important"></th=
+>
+</tr></tbody></table></th>
+  </tr></tbody></table>
+
+    <table class=3D"spacer " style=3D"border-spacing:0;border-collapse:coll=
+apse;padding:0;vertical-align:top;text-align:left;width:100%"><tbody><tr st=
+yle=3D"padding:0;vertical-align:top;text-align:left"><td height=3D"20" styl=
+e=3D"word-wrap:break-word;-webkit-hyphens:auto;hyphens:auto;vertical-align:=
+top;color:#0a0a0a;font-family:Helvetica, Arial, sans-serif;font-weight:norm=
+al;padding:0;margin:0;text-align:left;font-size:16px;line-height:130%;mso-l=
+ine-height-rule:exactly;border-collapse:collapse !important;font-size:20px;=
+line-height:20px;">=C2=A0</td></tr></tbody></table>
+    <center style=3D"width:100%;min-width:580px;min-width:100% !important">
+      <table class=3D"button_cta button float-center" align=3D"center" styl=
+e=3D"border-spacing:0;border-collapse:collapse;padding:0;vertical-align:top=
+;text-align:left;margin:0 auto;float:none;text-align:center;width:auto;marg=
+in:0 0 16px 0;border:2px solid #000 !important;background-color:#FFFFFF !im=
+portant;color:#000000 !important;box-shadow:5px 5px 0px 0px #000000 !import=
+ant"><tbody><tr style=3D"padding:0;vertical-align:top;text-align:left"><td =
+style=3D"word-wrap:break-word;-webkit-hyphens:auto;hyphens:auto;vertical-al=
+ign:top;color:#0a0a0a;font-family:Helvetica, Arial, sans-serif;font-weight:=
+normal;padding:0;margin:0;text-align:left;font-size:16px;line-height:130%;b=
+order-collapse:collapse !important;vertical-align:center !important;border:=
+none !important;background-color:#FFFFFF !important;color:#000000 !importan=
+t"><table style=3D"border-spacing:0;border-collapse:collapse;padding:0;vert=
+ical-align:top;text-align:left"><tbody><tr style=3D"padding:0;vertical-alig=
+n:top;text-align:left"><td style=3D"word-wrap:break-word;-webkit-hyphens:au=
+to;hyphens:auto;vertical-align:top;color:#0a0a0a;font-family:Helvetica, Ari=
+al, sans-serif;font-weight:normal;padding:0;margin:0;font-size:16px;line-he=
+ight:130%;text-align:left;color:#fefefe;background:#2199e8;border:2px solid=
+ #2199e8;border-collapse:collapse !important;vertical-align:center !importa=
+nt;border:none !important;background-color:#FFFFFF !important;color:#000000=
+ !important"><a href=3D"https://www.backerkit.com/c/projects/perfectore-cor=
+p/back-transformer-powerful-posture-instantly?ref=3Dbk-noti-just-launched" =
+style=3D"color:#0a0a0a;font-weight:normal;padding:0;margin:0;text-align:lef=
+t;line-height:130%;color:#2199e8;color:inherit;text-decoration:inherit;font=
+-family:Helvetica, Arial, sans-serif;font-size:16px;font-weight:bold;color:=
+#fefefe;text-decoration:none;display:inline-block;padding:8px 16px 8px 16px=
+;border:0 solid #2199e8;border-radius:3px;text-align:center !important;line=
+-height:normal !important;padding-top:10px !important;padding-bottom:10px !=
+important;min-width:200px !important;background-color:#FFFFFF !important;co=
+lor:#000000 !important">  Back It
+</a></td></tr></tbody></table></td></tr></tbody></table>
+    </center>
+
+  <table class=3D"spacer " style=3D"border-spacing:0;border-collapse:collap=
+se;padding:0;vertical-align:top;text-align:left;width:100%"><tbody><tr styl=
+e=3D"padding:0;vertical-align:top;text-align:left"><td height=3D"30" style=
+=3D"word-wrap:break-word;-webkit-hyphens:auto;hyphens:auto;vertical-align:t=
+op;color:#0a0a0a;font-family:Helvetica, Arial, sans-serif;font-weight:norma=
+l;padding:0;margin:0;text-align:left;font-size:16px;line-height:130%;mso-li=
+ne-height-rule:exactly;border-collapse:collapse !important;font-size:30px;l=
+ine-height:30px;">=C2=A0</td></tr></tbody></table>
+
+    </td></tr></tbody></table>
+  </td></tr></tbody></table>
+
+  <div class=3D"footer padding-sides" style=3D"padding-left:24px !important=
+;padding-right:24px !important">
+      <table class=3D"spacer " style=3D"border-spacing:0;border-collapse:co=
+llapse;padding:0;vertical-align:top;text-align:left;width:100%"><tbody><tr =
+style=3D"padding:0;vertical-align:top;text-align:left"><td height=3D"20" st=
+yle=3D"word-wrap:break-word;-webkit-hyphens:auto;hyphens:auto;vertical-alig=
+n:top;color:#0a0a0a;font-family:Helvetica, Arial, sans-serif;font-weight:no=
+rmal;padding:0;margin:0;text-align:left;font-size:16px;line-height:130%;mso=
+-line-height-rule:exactly;border-collapse:collapse !important;font-size:20p=
+x;line-height:20px;">=C2=A0</td></tr></tbody></table>
+
+    <center style=3D"width:100%;min-width:580px;min-width:100% !important">
+      <small align=3D"center" class=3D"float-center" style=3D"font-size:80%=
+;color:#cacaca;color:#999999 !important">
+        Click this link if the above button is not working:
+        <br>
+        <a href=3D"https://www.backerkit.com/c/projects/perfectore-corp/bac=
+k-transformer-powerful-posture-instantly?ref=3Dbk-noti-just-launched" style=
+=3D"color:#0a0a0a;font-family:Helvetica, Arial, sans-serif;font-weight:norm=
+al;padding:0;margin:0;text-align:left;line-height:130%;color:#2199e8;text-d=
+ecoration:none;color:inherit;text-decoration:inherit;text-decoration:underl=
+ine !important;color:#999999 !important">https://www.backerkit.com/c/projec=
+ts/perfectore-corp/back-transformer-powerful-posture-instantly?ref=3Dbk-not=
+i-just-launched</a>
+      </small>
+    </center>
+    <table class=3D"spacer " style=3D"border-spacing:0;border-collapse:coll=
+apse;padding:0;vertical-align:top;text-align:left;width:100%"><tbody><tr st=
+yle=3D"padding:0;vertical-align:top;text-align:left"><td height=3D"20" styl=
+e=3D"word-wrap:break-word;-webkit-hyphens:auto;hyphens:auto;vertical-align:=
+top;color:#0a0a0a;font-family:Helvetica, Arial, sans-serif;font-weight:norm=
+al;padding:0;margin:0;text-align:left;font-size:16px;line-height:130%;mso-l=
+ine-height-rule:exactly;border-collapse:collapse !important;font-size:20px;=
+line-height:20px;">=C2=A0</td></tr></tbody></table>
+
+  <table class=3D"spacer " style=3D"border-spacing:0;border-collapse:collap=
+se;padding:0;vertical-align:top;text-align:left;width:100%"><tbody><tr styl=
+e=3D"padding:0;vertical-align:top;text-align:left"><td height=3D"20" style=
+=3D"word-wrap:break-word;-webkit-hyphens:auto;hyphens:auto;vertical-align:t=
+op;color:#0a0a0a;font-family:Helvetica, Arial, sans-serif;font-weight:norma=
+l;padding:0;margin:0;text-align:left;font-size:16px;line-height:130%;mso-li=
+ne-height-rule:exactly;border-collapse:collapse !important;font-size:20px;l=
+ine-height:20px;">=C2=A0</td></tr></tbody></table>
+
+    <center style=3D"width:100%;min-width:580px;min-width:100% !important">
+      <small align=3D"center" class=3D"float-center" style=3D"font-size:80%=
+;color:#cacaca;color:#999999 !important">
+          No longer want to receive these emails?<br>
+  <a href=3D"https://www.backerkit.com/subscriptions?ref=3Dbk-noti-just-lau=
+nched&amp;sgid=3DeyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJamRuYVdRNkx5OWlZV05yWl=
+hKcmFYUXZUV1Z0WW1WeVVISnZhbVZqZEZOMVluTmpjbWx3ZEdsdmJpOHhOamc0TkRZd09BWTZCa=
+1ZVIiwiZXhwIjoiMjAyNS0xMi0xOFQxODo0NDoyOS45MDBaIiwicHVyIjoidW5zdWJzY3JpYmUi=
+fX0%3D--6b2db04554d52d074d472b435509499a06ae3d34" style=3D"color:#0a0a0a;fo=
+nt-family:Helvetica, Arial, sans-serif;font-weight:normal;padding:0;margin:=
+0;text-align:left;line-height:130%;color:#2199e8;text-decoration:none;color=
+:inherit;text-decoration:inherit;text-decoration:underline !important;color=
+:#999999 !important">Unsubscribe from updates about Back Transformer - Powe=
+rful Posture Instantly</a>
+  <br>
+  or<br>
+  <a href=3D"https://www.backerkit.com/subscriptions?ref=3Dbk-noti-just-lau=
+nched&amp;sgid=3DeyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJaVJuYVdRNkx5OWlZV05yWl=
+hKcmFYUXZUV1Z0WW1WeUx6SXlOVEUyTkRrNUJqb0dSVlE9IiwiZXhwIjoiMjAyNS0xMi0xOFQxO=
+Do0NDoyOS45MDBaIiwicHVyIjoidW5zdWJzY3JpYmUifX0%3D--46d4d1b74dadc6ddac8816f4=
+5150a37ef42660b5" style=3D"color:#0a0a0a;font-family:Helvetica, Arial, sans=
+-serif;font-weight:normal;padding:0;margin:0;text-align:left;line-height:13=
+0%;color:#2199e8;text-decoration:none;color:inherit;text-decoration:inherit=
+;text-decoration:underline !important;color:#999999 !important">Unsubscribe=
+ from all updates from Perfectore Corp</a>
+
+      </small>
+    </center>
+    <table class=3D"spacer " style=3D"border-spacing:0;border-collapse:coll=
+apse;padding:0;vertical-align:top;text-align:left;width:100%"><tbody><tr st=
+yle=3D"padding:0;vertical-align:top;text-align:left"><td height=3D"20" styl=
+e=3D"word-wrap:break-word;-webkit-hyphens:auto;hyphens:auto;vertical-align:=
+top;color:#0a0a0a;font-family:Helvetica, Arial, sans-serif;font-weight:norm=
+al;padding:0;margin:0;text-align:left;font-size:16px;line-height:130%;mso-l=
+ine-height-rule:exactly;border-collapse:collapse !important;font-size:20px;=
+line-height:20px;">=C2=A0</td></tr></tbody></table>
+
+
+  <center style=3D"width:100%;min-width:580px;min-width:100% !important">
+    <small class=3D"text-center float-center" align=3D"center" style=3D"fon=
+t-size:80%;color:#cacaca;text-align:center;color:#999999 !important"><a hre=
+f=3D"https://backerkit.com" style=3D"color:#0a0a0a;font-family:Helvetica, A=
+rial, sans-serif;font-weight:normal;padding:0;margin:0;text-align:left;line=
+-height:130%;color:#2199e8;text-decoration:none;color:inherit;text-decorati=
+on:inherit;text-decoration:underline !important;color:#999999 !important">B=
+ackerKit</a></small>
+  </center>
+
+  <table class=3D"spacer " style=3D"border-spacing:0;border-collapse:collap=
+se;padding:0;vertical-align:top;text-align:left;width:100%"><tbody><tr styl=
+e=3D"padding:0;vertical-align:top;text-align:left"><td height=3D"20" style=
+=3D"word-wrap:break-word;-webkit-hyphens:auto;hyphens:auto;vertical-align:t=
+op;color:#0a0a0a;font-family:Helvetica, Arial, sans-serif;font-weight:norma=
+l;padding:0;margin:0;text-align:left;font-size:16px;line-height:130%;mso-li=
+ne-height-rule:exactly;border-collapse:collapse !important;font-size:20px;l=
+ine-height:20px;">=C2=A0</td></tr></tbody></table>
+
+  </div>
+</td></tr></tbody></table>
+
+<table class=3D"spacer " style=3D"border-spacing:0;border-collapse:collapse=
+;padding:0;vertical-align:top;text-align:left;width:100%"><tbody><tr style=
+=3D"padding:0;vertical-align:top;text-align:left"><td height=3D"30" style=
+=3D"word-wrap:break-word;-webkit-hyphens:auto;hyphens:auto;vertical-align:t=
+op;color:#0a0a0a;font-family:Helvetica, Arial, sans-serif;font-weight:norma=
+l;padding:0;margin:0;text-align:left;font-size:16px;line-height:130%;mso-li=
+ne-height-rule:exactly;border-collapse:collapse !important;font-size:30px;l=
+ine-height:30px;">=C2=A0</td></tr></tbody></table>
+<img width=3D"1" height=3D"1" alt=3D"" src=3D"http://email.s.backerkit.com/=
+o/eJwsy0GOwyAMAMDXhFsqjJ0QDhz6ksgYt03VLBGQrvb3q0q9jjQ5emINs9EIfkYKQN6aRwzsk=
+MROCPkmQpwUZjtxYmVPjsBscQ4gSRcFDrewMrtks4Vp8TkMZCdBB0ugMWuSkTDJyIBuzExW_Tzp=
+onTZeXuZGvfWy68OZO8fuEjZTY-tnFV0wGup9_Wo-l6PWp4qfW1nalK3pNX0-MUBr2AB0fTY_45=
+Pe56try8-f-Sh2byj-w8AAP__UwhJKQ"></body>
+</html>

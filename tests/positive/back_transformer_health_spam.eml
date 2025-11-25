@@ -1,9 +1,9 @@
-Return-Path: <mstowe+caf_=mstowe=baddomain.com@gmail.com>
+Return-Path: <user+caf_=user=baddomain.com@gmail.com>
 Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
 	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTPS id 5AIIiaBD081724
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
 	for <user@example.com>; Tue, 18 Nov 2025 18:44:36 GMT
-	(envelope-from mstowe+caf_=mstowe=baddomain.com@gmail.com)
+	(envelope-from user+caf_=user=baddomain.com@gmail.com)
 Authentication-Results: juliett.baddomain.com;
 	dkim=pass (1024-bit key; unprotected) header.d=s.backerkit.com header.i=@s.backerkit.com header.b=uuE6h8Bp;
 	dkim=pass (1024-bit key; unprotected) header.d=mailgun.org header.i=@mailgun.org header.b=CF5MpY86
@@ -42,7 +42,7 @@ ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc
 ARC-Authentication-Results: i=2; mx.google.com;
        dkim=pass header.i=@s.backerkit.com header.s=k1 header.b=uuE6h8Bp;
        dkim=pass header.i=@mailgun.org header.s=mg header.b=CF5MpY86;
-       spf=pass (google.com: domain of bounce+349c15.74ae96-mstowe=gmail.com@s.backerkit.com designates 161.38.196.196 as permitted sender) smtp.mailfrom="bounce+349c15.74ae96-mstowe=gmail.com@s.backerkit.com";
+       spf=pass (google.com: domain of bounce+349c15.74ae96-user=gmail.com@s.backerkit.com designates 161.38.196.196 as permitted sender) smtp.mailfrom="bounce+349c15.74ae96-user=gmail.com@s.backerkit.com";
        dmarc=pass (p=REJECT sp=NONE dis=NONE) header.from=s.backerkit.com
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20230601; t=1763491473; x=1764096273;
@@ -96,18 +96,18 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc
 ARC-Authentication-Results: i=1; mx.google.com;
        dkim=pass header.i=@s.backerkit.com header.s=k1 header.b=uuE6h8Bp;
        dkim=pass header.i=@mailgun.org header.s=mg header.b=CF5MpY86;
-       spf=pass (google.com: domain of bounce+349c15.74ae96-mstowe=gmail.com@s.backerkit.com designates 161.38.196.196 as permitted sender) smtp.mailfrom="bounce+349c15.74ae96-mstowe=gmail.com@s.backerkit.com";
+       spf=pass (google.com: domain of bounce+349c15.74ae96-user=gmail.com@s.backerkit.com designates 161.38.196.196 as permitted sender) smtp.mailfrom="bounce+349c15.74ae96-user=gmail.com@s.backerkit.com";
        dmarc=pass (p=REJECT sp=NONE dis=NONE) header.from=s.backerkit.com
 Received: from mail1-rdns.backerkit.com (mail1-rdns.backerkit.com. [161.38.196.196])
         by mx.google.com with UTF8SMTPS id 41be03b00d2f7-bc3839c4921si7726355a12.1310.2025.11.18.10.44.30
         for <user@example.com>
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
         Tue, 18 Nov 2025 10:44:31 -0800 (PST)
-Received-SPF: pass (google.com: domain of bounce+349c15.74ae96-mstowe=gmail.com@s.backerkit.com designates 161.38.196.196 as permitted sender) client-ip=161.38.196.196;
+Received-SPF: pass (google.com: domain of bounce+349c15.74ae96-user=gmail.com@s.backerkit.com designates 161.38.196.196 as permitted sender) client-ip=161.38.196.196;
 Authentication-Results: mx.google.com;
        dkim=pass header.i=@s.backerkit.com header.s=k1 header.b=uuE6h8Bp;
        dkim=pass header.i=@mailgun.org header.s=mg header.b=CF5MpY86;
-       spf=pass (google.com: domain of bounce+349c15.74ae96-mstowe=gmail.com@s.backerkit.com designates 161.38.196.196 as permitted sender) smtp.mailfrom="bounce+349c15.74ae96-mstowe=gmail.com@s.backerkit.com";
+       spf=pass (google.com: domain of bounce+349c15.74ae96-user=gmail.com@s.backerkit.com designates 161.38.196.196 as permitted sender) smtp.mailfrom="bounce+349c15.74ae96-user=gmail.com@s.backerkit.com";
        dmarc=pass (p=REJECT sp=NONE dis=NONE) header.from=s.backerkit.com
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=s.backerkit.com; q=dns/txt; s=k1; t=1763491470; x=1763498670;
  h=Content-Transfer-Encoding: Content-Type: List-Unsubscribe: Message-Id: Date: List-Unsubscribe-Post: To: To: From: From: Subject: Subject: Mime-Version: Sender: Sender: X-Feedback-Id;

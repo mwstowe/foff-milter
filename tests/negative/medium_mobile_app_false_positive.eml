@@ -1,9 +1,9 @@
-Return-Path: <mstowe+caf_=mstowe=example.com@gmail.com>
+Return-Path: <user+caf_=user=example.com@gmail.com>
 Received: from hotel.example.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
 	by juliett.example.com (8.18.1/8.18.1) with ESMTPS id 5ADDMRLJ074891
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
 	for <user@example.com>; Thu, 13 Nov 2025 13:22:27 GMT
-	(envelope-from mstowe+caf_=mstowe=example.com@gmail.com)
+	(envelope-from user+caf_=user=example.com@gmail.com)
 Authentication-Results: juliett.example.com;
 	dkim=pass (1024-bit key; unprotected) header.d=mail.medium.com header.i=@mail.medium.com header.b=NQBhJKVS;
 	dkim=pass (1024-bit key; unprotected) header.d=sendgrid.info header.i=@sendgrid.info header.b=lGCAQJq9
@@ -42,7 +42,7 @@ ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc
 ARC-Authentication-Results: i=2; mx.google.com;
        dkim=pass header.i=@mail.medium.com header.s=m1 header.b=NQBhJKVS;
        dkim=pass header.i=@sendgrid.info header.s=smtpapi header.b=lGCAQJq9;
-       spf=pass (google.com: domain of bounces+37114207-40f3-mstowe=gmail.com@em6362.mail.medium.com designates 159.183.145.91 as permitted sender) smtp.mailfrom="bounces+37114207-40f3-mstowe=gmail.com@em6362.mail.medium.com";
+       spf=pass (google.com: domain of bounces+37114207-40f3-user=gmail.com@em6362.mail.medium.com designates 159.183.145.91 as permitted sender) smtp.mailfrom="bounces+37114207-40f3-user=gmail.com@em6362.mail.medium.com";
        dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=medium.com
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20230601; t=1763040144; x=1763644944;
@@ -94,18 +94,18 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc
 ARC-Authentication-Results: i=1; mx.google.com;
        dkim=pass header.i=@mail.medium.com header.s=m1 header.b=NQBhJKVS;
        dkim=pass header.i=@sendgrid.info header.s=smtpapi header.b=lGCAQJq9;
-       spf=pass (google.com: domain of bounces+37114207-40f3-mstowe=gmail.com@em6362.mail.medium.com designates 159.183.145.91 as permitted sender) smtp.mailfrom="bounces+37114207-40f3-mstowe=gmail.com@em6362.mail.medium.com";
+       spf=pass (google.com: domain of bounces+37114207-40f3-user=gmail.com@em6362.mail.medium.com designates 159.183.145.91 as permitted sender) smtp.mailfrom="bounces+37114207-40f3-user=gmail.com@em6362.mail.medium.com";
        dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=medium.com
 Received: from o34.ptr6832.m0.mail.medium.com (o34.ptr6832.m0.mail.medium.com. [159.183.145.91])
         by mx.google.com with ESMTPS id 41be03b00d2f7-bc37a23de48si1140562a12.1521.2025.11.13.05.22.21
         for <user@gmail.com>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
         Thu, 13 Nov 2025 05:22:21 -0800 (PST)
-Received-SPF: pass (google.com: domain of bounces+37114207-40f3-mstowe=gmail.com@em6362.mail.medium.com designates 159.183.145.91 as permitted sender) client-ip=159.183.145.91;
+Received-SPF: pass (google.com: domain of bounces+37114207-40f3-user=gmail.com@em6362.mail.medium.com designates 159.183.145.91 as permitted sender) client-ip=159.183.145.91;
 Authentication-Results: mx.google.com;
        dkim=pass header.i=@mail.medium.com header.s=m1 header.b=NQBhJKVS;
        dkim=pass header.i=@sendgrid.info header.s=smtpapi header.b=lGCAQJq9;
-       spf=pass (google.com: domain of bounces+37114207-40f3-mstowe=gmail.com@em6362.mail.medium.com designates 159.183.145.91 as permitted sender) smtp.mailfrom="bounces+37114207-40f3-mstowe=gmail.com@em6362.mail.medium.com";
+       spf=pass (google.com: domain of bounces+37114207-40f3-user=gmail.com@em6362.mail.medium.com designates 159.183.145.91 as permitted sender) smtp.mailfrom="bounces+37114207-40f3-user=gmail.com@em6362.mail.medium.com";
        dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=medium.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mail.medium.com;
 	h=content-type:date:from:mime-version:subject:reply-to:list-unsubscribe:

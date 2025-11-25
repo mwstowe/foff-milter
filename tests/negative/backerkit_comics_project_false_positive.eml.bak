@@ -1,0 +1,725 @@
+Return-Path: <mstowe+caf_=mstowe=example.com@gmail.com>
+Received: from hotel.example.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.example.com (8.18.1/8.18.1) with ESMTPS id 5A4FYqBW055914
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <user@example.com>; Tue, 4 Nov 2025 15:34:53 GMT
+	(envelope-from mstowe+caf_=mstowe=example.com@gmail.com)
+Authentication-Results: juliett.example.com;
+	dkim=pass (1024-bit key; unprotected) header.d=o.backerkit.com header.i=@o.backerkit.com header.b=NE8Xqq5g;
+	dkim=pass (1024-bit key; unprotected) header.d=mailgun.org header.i=@mailgun.org header.b=mA0sac+w
+X-Authentication-Warning: juliett.example.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.example.com
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	by hotel.example.com (8.16.1/8.16.1) with ESMTPS id 5A4FYosq089875
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=OK)
+	for <user@example.com>; Tue, 4 Nov 2025 09:34:52 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.example.com 5A4FYosq089875
+Authentication-Results: hotel.example.com;
+	dkim=pass (1024-bit key, unprotected) header.d=o.backerkit.com header.i=@o.backerkit.com header.a=rsa-sha256 header.s=smtp header.b=NE8Xqq5g;
+	dkim=pass (1024-bit key, unprotected) header.d=mailgun.org header.i=@mailgun.org header.a=rsa-sha256 header.s=mg header.b=mA0sac+w
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-640c3940649so3531715a12.1
+        for <user@example.com>; Tue, 04 Nov 2025 07:34:51 -0800 (PST)
+ARC-Seal: i=2; a=rsa-sha256; t=1762270485; cv=pass;
+        d=google.com; s=arc-20240605;
+        b=aGbrBR48a00G+KH3h1JrTnlULbu+J1gmPUYegRKYToyXI3lP6kFnkBU0xifWT5Y4vC
+         xRVbeV55Q+f8iUDpBV5Q9ryIBdxLFyLjPwQwCy6+NBRaf1oEuynDBJRFPNOkafvxYoHG
+         UEnE19OJEoTcsPw2hGVIti7Hhb7mg7WuxM0a5I49IxtigiIJtXZv6E1NRFdg3ysJHgxp
+         9amxULRykUjFAWJrp5PgLoKU/s7pt0uaHaGgZJZDWfNcn2Tc10Fb53FWI8LHc+uGgnn/
+         6NZftrCTjwvRfbRWwVlLN866KJ0mFQGrh3t9T/oXKDWGm6M8JekhD/nlW81ZL7zd+Uof
+         Isiw==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:date:list-unsubscribe-post:message-id
+         :list-unsubscribe:to:from:subject:mime-version:sender:dkim-signature
+         :dkim-signature:delivered-to;
+        bh=ha8QZPaJnD2oO+2wEJvrtZ9frl1bQT+YPD+p5n60oBM=;
+        fh=z1DoOwCm+ZS6WubPeiGSGqTeMbNAyNfHhdaCWIQXcSI=;
+        b=lfDZVu5LKonfyoIrh+3L2ZVxnyGY/NpOADUDT6U54s2/ocyirFk/GJYUJd3dqjDMM/
+         xNdcc92JeEd4lcQHsNxy6G0f9GJbQf6VifNMCQv13c6QnF22NylakxOZ6RsWRlT/DPc8
+         AU3QcVTBHcKypSSANdbpJ93BizOra5wr80iAPxXXVr5Jcwrsp2NOc+O07RGY2LKe1XyJ
+         gbonaASkrhf8ZjDcFbRJ9kBxDFvDWGOIbW2cM3YcPdX8/o2VN12uUTt2O4asxXJc9cKQ
+         SZgMxqWcCJUu2E3JW0pU37wOaOZ3F0ZChlB6jXeecfKMaDz7k0V7tHCQOC2UDmFQbCXX
+         frdg==;
+        darn=example.com
+ARC-Authentication-Results: i=2; mx.google.com;
+       dkim=pass header.i=@o.backerkit.com header.s=smtp header.b=NE8Xqq5g;
+       dkim=pass header.i=@mailgun.org header.s=mg header.b=mA0sac+w;
+       spf=pass (google.com: domain of bounce+44228b.16b7e1-mstowe=gmail.com@o.backerkit.com designates 69.72.45.71 as permitted sender) smtp.mailfrom="bounce+44228b.16b7e1-mstowe=gmail.com@o.backerkit.com";
+       dmarc=pass (p=REJECT sp=NONE dis=NONE) header.from=o.backerkit.com
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762270485; x=1762875285;
+        h=content-transfer-encoding:date:list-unsubscribe-post:message-id
+         :list-unsubscribe:to:from:subject:mime-version:sender:dkim-signature
+         :dkim-signature:delivered-to:x-forwarded-for:x-forwarded-to
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ha8QZPaJnD2oO+2wEJvrtZ9frl1bQT+YPD+p5n60oBM=;
+        b=Lb+0RTOTPGWGNfBsl1hYq43edBCefrMibATYpePTlAUcjz9DNZN73WJQp3gwGjG4+S
+         fnqW3sfuOvZxoMHRZEgll2vjI4xnW1GlhQgq17QvvfTdW+IyDS+n9n5A7Ig2xBKT67UV
+         S0OOn5P03CGLuGVso/9InbrsC4EALe+bzht9sCdSMqu1b8YyoNhUOgRbFTBIj7Ype2lm
+         O6IQd3J1QV9lKuM21fTorTrTpduJw2yJYgGXCCr9HF7g+KcQbJm7AjQzXHIPA7iYdtw0
+         iJRdpINGNLkROsoOHUtu1HY5MVHWPl2EsIifwHmA5/WtYO2yOw3cLPKmufGSPzEOXIYy
+         H/sA==
+X-Forwarded-Encrypted: i=2; AJvYcCX1NWe/GcupT1N497g144PnJNwNtk2M6pxQ+bpese1lRwVvIsejlkQEH97/4LkC5kKNoivXQ8w=@example.com
+X-Gm-Message-State: AOJu0YzGIp1eV+F6SFDUPV9ag+igBKlQggk6BxjnYotMTvBtEDr4Ci1Z
+	hoJghHqHw6Agf2DoaW52jwxmLKbdm6gID4fWEAc2I2ZW5EG4mAO6bK4oOP6bh05CNtAIgTF+nEo
+	NREQX29m2pvRzA5RlZUqIPVbtdEUIlj2C7gnHLqiC4gpck2AiRgCS4UNLHN0I+g==
+X-Received: by 2002:a05:6402:42d6:b0:63c:25fb:19ed with SMTP id 4fb4d7f45d1cf-64077068acamr14823878a12.24.1762270484651;
+        Tue, 04 Nov 2025 07:34:44 -0800 (PST)
+X-Forwarded-To: user@example.com
+X-Forwarded-For: user@gmail.com user@example.com
+Delivered-To: user@gmail.com
+Received: by 2002:a05:6400:a045:b0:2ba:4fd1:f273 with SMTP id d5csp283576ecd;
+        Tue, 4 Nov 2025 07:34:42 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFw1BdRMqOXxMvrZF7LJjxZX6qLYnBNsfZz661wulTN1yHzWtmqL1pKUNEENqvcqiVrboCk
+X-Received: by 2002:a05:6a21:3a87:b0:34a:1635:312e with SMTP id adf61e73a8af0-34e27f02f1dmr5086257637.13.1762270482662;
+        Tue, 04 Nov 2025 07:34:42 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1762270482; cv=none;
+        d=google.com; s=arc-20240605;
+        b=lDML31t4s1hlz4y0YV91K0mUM2scBAajXPwxpf0WfXlVK0tal49DBSj8QKCZMHWbpO
+         vG0au834DkuH2TUvBqz7v91ZnLWWXbMvq/I8h5vJmaQrvPM6hU3iXGaKMXhFdnQmNWy1
+         QG6BpLV2f7O9W5KQOMI/TI8dI7x5gkZv/cb51Dnliy3J6rGNirZMMXA3Ej3sqgar7I/J
+         Zg/NBm/s4AncvofZIsVOURT6VlrM10fb5Kkb3XO5MMonEjKnD64hb4OwOS8vxjoBK67G
+         C/O9acIhedYb5P4gX6dW+BsV/L8YdgkT/fEOpjot1iBKZMOfVVdJmjEhSdn1gkKFd8dL
+         AvjA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:date:list-unsubscribe-post:message-id
+         :list-unsubscribe:to:from:subject:mime-version:sender:dkim-signature
+         :dkim-signature;
+        bh=ha8QZPaJnD2oO+2wEJvrtZ9frl1bQT+YPD+p5n60oBM=;
+        fh=mT0Hi1oeQuwKdVkoCKIRR+MEHYH9sEP9ymI/x2O5QRU=;
+        b=X5A2FdHidT3DxHof7/5p5l6SqWoFs4Zi+fgC0z6aPhkD3G2tPUJL0z1eb0sXzRHbql
+         OULTJ16nTTbcOueqRCz4dSwlGEo3pQtVfzVFRsDUAAurPDDlfqMW2irwW4IHL6T/K5jD
+         vTvUitXY3oVoGgwSnB5Ql8N9l8vPhltE8SoMTzytke7y+tMBcHuA1MGbMTbW3mnFTPnP
+         GSIqz+vaGP9wM9ie9FQedfoUHZlsOhJQsCV/ryCsdoySQfusZr/bfvSiHFUzL6eyr0+3
+         f/WzK6m/l63corF39tfDVH4Ke0YHT6JCNN5K6lxg32D59upDCgl8aduSxbiTXIucEv0O
+         9Z2w==;
+        dara=google.com
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@o.backerkit.com header.s=smtp header.b=NE8Xqq5g;
+       dkim=pass header.i=@mailgun.org header.s=mg header.b=mA0sac+w;
+       spf=pass (google.com: domain of bounce+44228b.16b7e1-mstowe=gmail.com@o.backerkit.com designates 69.72.45.71 as permitted sender) smtp.mailfrom="bounce+44228b.16b7e1-mstowe=gmail.com@o.backerkit.com";
+       dmarc=pass (p=REJECT sp=NONE dis=NONE) header.from=o.backerkit.com
+Received: from mail2-rdns.backerkit.com (mail2-rdns.backerkit.com. [69.72.45.71])
+        by mx.google.com with UTF8SMTPS id 41be03b00d2f7-b93f1d8fe65si6730649a12.342.2025.11.04.07.34.42
+        for <user@gmail.com>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 04 Nov 2025 07:34:42 -0800 (PST)
+Received-SPF: pass (google.com: domain of bounce+44228b.16b7e1-mstowe=gmail.com@o.backerkit.com designates 69.72.45.71 as permitted sender) client-ip=69.72.45.71;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@o.backerkit.com header.s=smtp header.b=NE8Xqq5g;
+       dkim=pass header.i=@mailgun.org header.s=mg header.b=mA0sac+w;
+       spf=pass (google.com: domain of bounce+44228b.16b7e1-mstowe=gmail.com@o.backerkit.com designates 69.72.45.71 as permitted sender) smtp.mailfrom="bounce+44228b.16b7e1-mstowe=gmail.com@o.backerkit.com";
+       dmarc=pass (p=REJECT sp=NONE dis=NONE) header.from=o.backerkit.com
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=o.backerkit.com; q=dns/txt; s=smtp; t=1762270482; x=1762277682;
+ h=Content-Transfer-Encoding: Content-Type: Date: List-Unsubscribe-Post: Message-Id: List-Unsubscribe: To: To: From: From: Subject: Subject: Mime-Version: Sender: Sender: X-Feedback-Id;
+ bh=ha8QZPaJnD2oO+2wEJvrtZ9frl1bQT+YPD+p5n60oBM=;
+ b=NE8Xqq5gXUfeNvpKUuiMKC0IvyXs0LWAsMGZ6pLFm5mdgTajMUwA0TmByMOpmS6wJO+muFiLCMLMOoZ3Q9JK1TZRfj5aNld+4ddVN62Ir8D6QLX1CUisHbd0hOfA+D1JebDxFjPit3A0zmfeXKbZrIqZ+SFD/mDspx2rGVqGznk=
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mailgun.org; q=dns/txt; s=mg; t=1762270482; x=1762277682;
+ h=Content-Transfer-Encoding: Content-Type: Date: List-Unsubscribe-Post: Message-Id: List-Unsubscribe: To: To: From: From: Subject: Subject: Mime-Version: Sender: Sender: X-Feedback-Id;
+ bh=ha8QZPaJnD2oO+2wEJvrtZ9frl1bQT+YPD+p5n60oBM=;
+ b=mA0sac+w4rUXK58ACAKka3sIXTrm+fvOHAQTWylocxVrSz66J7UB+wMs5ux8dt4MxkN9PzxgTRTXqYmT1+Gynio2xaGpplkck5q5NmaKtdhPsDlazzMDFgVR793voYxmDI4UyOMyJDcDSgKeegtU7y2TgggWnr2T6Rm3iHL1HtU=
+X-Mailgun-Sid: WyJkYzZmOCIsIm1zdG93ZUBnbWFpbC5jb20iLCIxNmI3ZTEiXQ==
+X-Feedback-Id: creator+5696@o.backerkit.com:organization:5696-email_campaign:63129-recipient_confidence:org_trackable:5c93cebeff8b9e0001d63825:mailgun
+Received: by c9c2bd71ecaee7d45b075a391e70d98f3b163221de17cdee08db7c41a9411d8c with HTTP
+ id 690a1d1285f9b8f47163eaff; Tue, 04 Nov 2025 15:34:42 GMT
+X-Mailgun-Sending-Ip: 69.72.45.71
+Sender: creator+5696@o.backerkit.com
+Mime-Version: 1.0
+Subject: New Project Launched: Space Between/Cheeky Comics New York 2025 Exclusives
+From: Space Between Entertainment <creator+5696@o.backerkit.com>
+To: user@gmail.com
+X-Mailgun-Tag: organization:5696
+X-Mailgun-Tag: email_campaign:63129
+X-Mailgun-Tag: recipient_confidence:org_trackable
+List-Unsubscribe: <https://www.backerkit.com/subscriptions/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJaVJuYVdRNkx5OWlZV05yWlhKcmFYUXZUV1Z0WW1WeUx6SXpNamN6TmpNNEJqb0dSVlE9IiwiZXhwIjoiMjAyNS0xMi0wNFQxNTozNDo0MC45NjhaIiwicHVyIjoidW5zdWJzY3JpYmUifX0=--31e9e20a95df47ecf879ba4bdf6c31a4acef29e4/unsubscribe>
+Message-Id: <690a1d11c135d_a82b0f81191630@014db8ba-b0e0-405d-b3f0-fa91412e0ea9.mail>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+Date: Tue, 04 Nov 2025 15:34:41 +0000
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.example.com [172.31.18.8]); Tue, 04 Nov 2025 15:34:53 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.example.com [23.95.222.152]); Tue, 04 Nov 2025 09:34:52 -0600 (CST)
+X-Spam-Flag: YES
+X-FOFF-Rule-Matched: Link Analysis: Suspicious Link Patterns (External Only) (juliett.example.com)
+X-FOFF-Rule-Matched: Advanced Heuristics: Weak Signal Aggregation (juliett.example.com)
+X-FOFF-Rule-Matched: Advanced Heuristics: Bayesian Spam Word Patterns (juliett.example.com)
+X-FOFF-Rule-Matched: Link Analysis: Suspicious Link Patterns (External Only) (hotel.example.com)
+X-FOFF-Rule-Matched: Advanced Heuristics: Weak Signal Aggregation (hotel.example.com)
+X-FOFF-Rule-Matched: Advanced Heuristics: Bayesian Spam Word Patterns (hotel.example.com)
+X-FOFF-Score: 57 - foff-milter v0.6.6 (juliett.example.com)
+X-FOFF-Score: 57 - foff-milter v0.6.6 (hotel.example.com)
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org=
+/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"min-height:100%;backg=
+round:#f3f3f3">
+<head>
+  <meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8">
+  <meta name=3D"viewport" content=3D"width=3Ddevice-width">
+ =20
+<style>@media (max-width: 768px) {
+trix-toolbar .trix-button-group:not(:first-child){margin-left:0}
+trix-toolbar .trix-button-group-spacer{display:none}
+trix-toolbar .trix-button{letter-spacing:-0.01em;padding:0 0.3em}
+trix-toolbar .trix-button--icon{height:2em;max-width:calc(0.8em + 3.5vw)}
+trix-toolbar .trix-button--icon::before{right:6%;left:6%}
+}
+trix-toolbar .trix-button:not(:disabled){cursor:pointer}
+trix-toolbar .trix-button:disabled{color:rgba(0, 0, 0, 0.125)}
+trix-toolbar .trix-button--icon::before{display:inline-block;position:absol=
+ute;top:0;right:0;bottom:0;left:0;opacity:0.6;content:"";background-positio=
+n:center;background-repeat:no-repeat;background-size:contain}
+trix-toolbar .trix-button--icon.trix-active::before{opacity:1}
+trix-toolbar .trix-button--icon:disabled::before{opacity:0.125}
+trix-toolbar .trix-button--icon-attach::before{background-image:url("data:i=
+mage/svg+xml,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22none=
+%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%2=
+2M10.5%2018V7.5c0-2.25%203-2.25%203%200V18c0%204.125-6%204.125-6%200V7.5c0-=
+6.375%209-6.375%209%200V18%22%20stroke%3D%22%23000%22%20stroke-width%3D%222=
+%22%20stroke-miterlimit%3D%2210%22%20stroke-linecap%3D%22round%22%20stroke-=
+linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E");top:8%;bottom:4%}
+trix-toolbar .trix-button--icon-bold::before{background-image:url("data:ima=
+ge/svg+xml,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22none%2=
+2%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20fill-rul=
+e%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M6.522%2019.242a.5.5=
+%200%200%201-.5-.5V5.35a.5.5%200%200%201%20.5-.5h5.783c1.347%200%202.46.345=
+%203.24.982.783.64%201.216%201.562%201.216%202.683%200%201.13-.587%202.129-=
+1.476%202.71a.35.35%200%200%200%20.049.613c1.259.56%202.101%201.742%202.101=
+%203.22%200%201.282-.483%202.334-1.363%203.063-.876.726-2.132%201.12-3.66%2=
+01.12h-5.89ZM9.27%207.347v3.362h1.97c.766%200%201.347-.17%201.733-.464.38-.=
+291.587-.716.587-1.27%200-.53-.183-.928-.513-1.198-.334-.273-.838-.43-1.505=
+-.43H9.27Zm0%205.606v3.791h2.389c.832%200%201.448-.177%201.853-.497.399-.31=
+5.614-.786.614-1.423%200-.62-.22-1.077-.63-1.385-.418-.313-1.053-.486-1.905=
+-.486H9.27Z%22%20fill%3D%22%23000%22%2F%3E%3C%2Fsvg%3E")}
+trix-toolbar .trix-button--icon-italic::before{background-image:url("data:i=
+mage/svg+xml,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22none=
+%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20fill-r=
+ule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M9%205h6.5v2h-2.23=
+l-2.31%2010H13v2H6v-2h2.461l2.306-10H9V5Z%22%20fill%3D%22%23000%22%2F%3E%3C=
+%2Fsvg%3E")}
+trix-toolbar .trix-button--icon-link::before{background-image:url("data:ima=
+ge/svg+xml,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22none%2=
+2%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20fill-rul=
+e%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M18.948%205.258a4.33=
+7%204.337%200%200%200-6.108%200L11.217%206.87a.993.993%200%200%200%200%201.=
+41c.392.39%201.027.39%201.418%200l1.623-1.613a2.323%202.323%200%200%201%203=
+=2E271%200%202.29%202.29%200%200%201%20=
+0%203.251l-2.393%202.38a3.021%203.021%=
+200%200%201-4.255%200l-.05-.049a1.007%201.007%200%200%200-1.418%200%20.993.=
+993%200%200%200%200%201.41l.05.049a5.036%205.036%200%200%200%207.091%200l2.=
+394-2.38a4.275%204.275%200%200%200%200-6.072Zm-13.683%2013.6a4.337%204.337%=
+200%200%200%206.108%200l1.262-1.255a.993.993%200%200%200%200-1.41%201.007%2=
+01.007%200%200%200-1.418%200L9.954%2017.45a2.323%202.323%200%200%201-3.27%2=
+00%202.29%202.29%200%200%201%200-3.251l2.344-2.331a2.579%202.579%200%200%20=
+1%203.631%200c.392.39%201.027.39%201.419%200a.993.993%200%200%200%200-1.41%=
+204.593%204.593%200%200%200-6.468%200l-2.345%202.33a4.275%204.275%200%200%2=
+00%200%206.072Z%22%20fill%3D%22%23000%22%2F%3E%3C%2Fsvg%3E")}
+trix-toolbar .trix-button--icon-strike::before{background-image:url("data:i=
+mage/svg+xml,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22none=
+%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20fill-r=
+ule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M6%2014.986c.088%2=
+02.647%202.246%204.258%205.635%204.258%203.496%200%205.713-1.728%205.713-4.=
+463%200-.275-.02-.536-.062-.781h-3.461c.398.293.573.654.573%201.123%200%201=
+=2E035-1.074%201.787-2.646%201.787-1.56=
+3%200-2.773-.762-2.91-1.924H6ZM6.432%2=
+010h3.763c-.632-.314-.914-.715-.914-1.273%200-1.045.977-1.739%202.432-1.739=
+%201.475%200%202.52.723%202.617%201.914h2.764c-.05-2.548-2.11-4.238-5.39-4.=
+238-3.145%200-5.392%201.719-5.392%204.316%200%20.363.04.703.12%201.02ZM4%20=
+11a1%201%200%201%200%200%202h15a1%201%200%201%200%200-2H4Z%22%20fill%3D%22%=
+23000%22%2F%3E%3C%2Fsvg%3E")}
+trix-toolbar .trix-button--icon-quote::before{background-image:url("data:im=
+age/svg+xml,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22none%=
+22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22=
+M4.581%208.471c.44-.5%201.056-.834%201.758-.995C8.074%207.17%209.201%207.82=
+2%2010%208.752c1.354%201.578%201.33%203.555.394%205.277-.941%201.731-2.788%=
+203.163-4.988%203.56a.622.622%200%200%201-.653-.317c-.113-.205-.121-.49.16-=
+=2E764.294-.286.567-.566.791-.835.222-.=
+266.413-.54.524-.815.113-.28.156-.597.=
+026-.908-.128-.303-.39-.524-.72-.69a3.02%203.02%200%200%201-1.674-2.7c0-.90=
+5.283-1.59.72-2.088Zm9.419%200c.44-.5%201.055-.834%201.758-.995%201.734-.30=
+6%202.862.346%203.66%201.276%201.355%201.578%201.33%203.555.395%205.277-.94=
+1%201.731-2.789%203.163-4.988%203.56a.622.622%200%200%201-.653-.317c-.113-.=
+205-.122-.49.16-.764.294-.286.567-.566.791-.835.222-.266.412-.54.523-.815.1=
+14-.28.157-.597.026-.908-.127-.303-.39-.524-.72-.69a3.02%203.02%200%200%201=
+-1.672-2.701c0-.905.283-1.59.72-2.088Z%22%20fill%3D%22%23000%22%2F%3E%3C%2F=
+svg%3E")}
+trix-toolbar .trix-button--icon-heading-1::before{background-image:url("dat=
+a:image/svg+xml,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22n=
+one%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20fil=
+l-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M21.5%207.5v-3h=
+-12v3H14v13h3v-13h4.5ZM9%2013.5h3.5v-3h-10v3H6v7h3v-7Z%22%20fill%3D%22%2300=
+0%22%2F%3E%3C%2Fsvg%3E")}
+trix-toolbar .trix-button--icon-code::before{background-image:url("data:ima=
+ge/svg+xml,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22none%2=
+2%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20fill-rul=
+e%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M3.293%2011.293a1%20=
+1%200%200%200%200%201.414l4%204a1%201%200%201%200%201.414-1.414L5.414%2012l=
+3.293-3.293a1%201%200%200%200-1.414-1.414l-4%204Zm13.414%205.414%204-4a1%20=
+1%200%200%200%200-1.414l-4-4a1%201%200%201%200-1.414%201.414L18.586%2012l-3=
+=2E293%203.293a1%201%200%200%200%201.41=
+4%201.414Z%22%20fill%3D%22%23000%22%2F=
+%3E%3C%2Fsvg%3E")}
+trix-toolbar .trix-button--icon-bullet-list::before{background-image:url("d=
+ata:image/svg+xml,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%2=
+2none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20f=
+ill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M5%207.5a1.5%=
+201.5%200%201%200%200-3%201.5%201.5%200%200%200%200%203ZM8%206a1%201%200%20=
+0%201%201-1h11a1%201%200%201%201%200%202H9a1%201%200%200%201-1-1Zm1%205a1%2=
+01%200%201%200%200%202h11a1%201%200%201%200%200-2H9Zm0%206a1%201%200%201%20=
+0%200%202h11a1%201%200%201%200%200-2H9Zm-2.5-5a1.5%201.5%200%201%201-3%200%=
+201.5%201.5%200%200%201%203%200ZM5%2019.5a1.5%201.5%200%201%200%200-3%201.5=
+%201.5%200%200%200%200%203Z%22%20fill%3D%22%23000%22%2F%3E%3C%2Fsvg%3E")}
+trix-toolbar .trix-button--icon-number-list::before{background-image:url("d=
+ata:image/svg+xml,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%2=
+2none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20f=
+ill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M3%204h2v4H4V=
+5H3V4Zm5%202a1%201%200%200%201%201-1h11a1%201%200%201%201%200%202H9a1%201%2=
+00%200%201-1-1Zm1%205a1%201%200%201%200%200%202h11a1%201%200%201%200%200-2H=
+9Zm0%206a1%201%200%201%200%200%202h11a1%201%200%201%200%200-2H9Zm-3.5-7H6v1=
+l-1.5%202H6v1H3v-1l1.667-2H3v-1h2.5ZM3%2017v-1h3v4H3v-1h2v-.5H4v-1h1V17H3Z%=
+22%20fill%3D%22%23000%22%2F%3E%3C%2Fsvg%3E")}
+trix-toolbar .trix-button--icon-undo::before{background-image:url("data:ima=
+ge/svg+xml,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22none%2=
+2%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20fill-rul=
+e%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M3%2014a1%201%200%20=
+0%200%201%201h6a1%201%200%201%200%200-2H6.257c2.247-2.764%205.151-3.668%207=
+=2E579-3.264%202.589.432%204.739%202.35=
+6%205.174%205.405a1%201%200%200%200%20=
+1.98-.283c-.564-3.95-3.415-6.526-6.825-7.095C11.084%207.25%207.63%208.377%2=
+05%2011.39V8a1%201%200%200%200-2%200v6Zm2-1Z%22%20fill%3D%22%23000%22%2F%3E=
+%3C%2Fsvg%3E")}
+trix-toolbar .trix-button--icon-redo::before{background-image:url("data:ima=
+ge/svg+xml,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20fill%3D%22none%2=
+2%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20fill-rul=
+e%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M21%2014a1%201%200%2=
+00%201-1%201h-6a1%201%200%201%201%200-2h3.743c-2.247-2.764-5.151-3.668-7.57=
+9-3.264-2.589.432-4.739%202.356-5.174%205.405a1%201%200%200%201-1.98-.283c.=
+564-3.95%203.415-6.526%206.826-7.095%203.08-.513%206.534.614%209.164%203.62=
+6V8a1%201%200%201%201%202%200v6Zm-2-1Z%22%20fill%3D%22%23000%22%2F%3E%3C%2F=
+svg%3E")}
+trix-toolbar .trix-button--icon-decrease-nesting-level::before{background-i=
+mage:url("data:image/svg+xml,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%=
+20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E=
+%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M5=
+%206a1%201%200%200%201%201-1h12a1%201%200%201%201%200%202H6a1%201%200%200%2=
+01-1-1Zm4%205a1%201%200%201%200%200%202h9a1%201%200%201%200%200-2H9Zm-3%206=
+a1%201%200%201%200%200%202h12a1%201%200%201%200%200-2H6Zm-3.707-5.707a1%201=
+%200%200%200%200%201.414l2%202a1%201%200%201%200%201.414-1.414L4.414%2012l1=
+=2E293-1.293a1%201%200%200%200-1.414-1.=
+414l-2%202Z%22%20fill%3D%22%23000%22%2=
+F%3E%3C%2Fsvg%3E")}
+trix-toolbar .trix-button--icon-increase-nesting-level::before{background-i=
+mage:url("data:image/svg+xml,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%=
+20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E=
+%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M5=
+%206a1%201%200%200%201%201-1h12a1%201%200%201%201%200%202H6a1%201%200%200%2=
+01-1-1Zm4%205a1%201%200%201%200%200%202h9a1%201%200%201%200%200-2H9Zm-3%206=
+a1%201%200%201%200%200%202h12a1%201%200%201%200%200-2H6Zm-2.293-2.293%202-2=
+a1%201%200%200%200%200-1.414l-2-2a1%201%200%201%200-1.414%201.414L3.586%201=
+2l-1.293%201.293a1%201%200%201%200%201.414%201.414Z%22%20fill%3D%22%23000%2=
+2%2F%3E%3C%2Fsvg%3E")}
+trix-editor [data-trix-mutable] ::-moz-selection{background:none}
+trix-editor [data-trix-mutable]::-moz-selection{background:none}
+trix-editor [data-trix-cursor-target]::-moz-selection{background:none}
+trix-editor [data-trix-mutable] ::-moz-selection{background:none}
+trix-editor [data-trix-mutable]::-moz-selection{background:none}
+trix-editor [data-trix-cursor-target]::-moz-selection{background:none}
+trix-editor [data-trix-mutable] ::selection{background:none}
+trix-editor [data-trix-mutable]::selection{background:none}
+trix-editor [data-trix-cursor-target]::selection{background:none}
+trix-editor .attachment__caption-editor[data-trix-mutable]:focus::-moz-sele=
+ction{background:highlight}
+trix-editor .attachment__caption-editor[data-trix-mutable]:focus::-moz-sele=
+ction{background:highlight}
+trix-editor .attachment__caption-editor[data-trix-mutable]:focus::selection=
+{background:highlight}
+trix-editor .attachment:hover{cursor:default}
+trix-editor .attachment--preview .attachment__caption:hover{cursor:text}
+trix-editor .trix-button:not(:disabled){cursor:pointer}
+trix-editor .trix-button--remove::before{display:inline-block;position:abso=
+lute;top:0;right:0;bottom:0;left:0;opacity:0.7;content:"";background-image:=
+url("data:image/svg+xml,%3Csvg%20height%3D%2224%22%20width%3D%2224%22%20xml=
+ns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M19%206.=
+41%2017.59%205%2012%2010.59%206.41%205%205%206.41%2010.59%2012%205%2017.59%=
+206.41%2019%2012%2013.41%2017.59%2019%2019%2017.59%2013.41%2012z%22%2F%3E%3=
+Cpath%20d%3D%22M0%200h24v24H0z%22%20fill%3D%22none%22%2F%3E%3C%2Fsvg%3E");b=
+ackground-position:center;background-repeat:no-repeat;background-size:90%}
+trix-editor .trix-button--remove:hover{border-color:#333}
+trix-editor .trix-button--remove:hover::before{opacity:1}
+=2Etrix-content .attachment a:hover{color:inherit}
+=2Etrix-content .attachment a:visited:hover{color:inherit}
+=2Etrix-content .attachment__caption .a=
+ttachment__name + .attachment__size::b=
+efore{content:" =E2=80=A2"}
+trix-toolbar .trix-button--icon:before{background-size:1.4em}
+a:hover{color:#147dc2}
+a:active{color:#147dc2}
+a:visited{color:#2199e8}
+h1 a:visited{color:#2199e8}
+h2 a:visited{color:#2199e8}
+h3 a:visited{color:#2199e8}
+h4 a:visited{color:#2199e8}
+h5 a:visited{color:#2199e8}
+h6 a:visited{color:#2199e8}
+table.button:hover table tr td a{color:#fefefe}
+table.button:active table tr td a{color:#fefefe}
+table.button table tr td a:visited{color:#fefefe}
+table.button.tiny:hover table tr td a{color:#fefefe}
+table.button.tiny:active table tr td a{color:#fefefe}
+table.button.tiny table tr td a:visited{color:#fefefe}
+table.button.small:hover table tr td a{color:#fefefe}
+table.button.small:active table tr td a{color:#fefefe}
+table.button.small table tr td a:visited{color:#fefefe}
+table.button.large:hover table tr td a{color:#fefefe}
+table.button.large:active table tr td a{color:#fefefe}
+table.button.large table tr td a:visited{color:#fefefe}
+table.button:hover table td{background:#147dc2;color:#fefefe}
+table.button:visited table td{background:#147dc2;color:#fefefe}
+table.button:active table td{background:#147dc2;color:#fefefe}
+table.button:hover table a{border:0 solid #147dc2}
+table.button:visited table a{border:0 solid #147dc2}
+table.button:active table a{border:0 solid #147dc2}
+table.button.secondary:hover table td{background:#919191;color:#fefefe}
+table.button.secondary:hover table a{border:0 solid #919191}
+table.button.secondary:hover table td a{color:#fefefe}
+table.button.secondary:active table td a{color:#fefefe}
+table.button.secondary table td a:visited{color:#fefefe}
+table.button.success:hover table td{background:#23bf5d}
+table.button.success:hover table a{border:0 solid #23bf5d}
+table.button.alert:hover table td{background:#e23317}
+table.button.alert:hover table a{border:0 solid #e23317}
+table.button.warning:hover table td{background:#cc8b00}
+table.button.warning:hover table a{border:0px solid #cc8b00}
+=2Ethumbnail:hover{box-shadow:0 0 6px 1px rgba(33, 153, 232, 0.5)}
+=2Ethumbnail:focus{box-shadow:0 0 6px 1px rgba(33, 153, 232, 0.5)}
+@media only screen and (max-width: 600px) {
+=2Etrix-content .attachment-gallery{display:block}
+trix-toolbar .trix-button--icon:before{background-size:1.2em}
+trix-toolbar .trix-button--icon{padding:1.0em}
+}
+@media only screen and (max-width: 596px) {
+=2Esmall-float-center{margin:0 auto !im=
+portant;float:none !important;text-ali=
+gn:center !important}
+=2Esmall-text-center{text-align:center !important}
+=2Esmall-text-left{text-align:left !important}
+=2Esmall-text-right{text-align:right !important}
+=2Ehide-for-large{display:block !import=
+ant;width:auto !important;overflow:vis=
+ible !important;max-height:none !important;font-size:inherit !important;lin=
+e-height:inherit !important}
+table.body table.container .hide-for-large{display:table !important;width:1=
+00% !important}
+table.body table.container .row.hide-for-large{display:table !important;wid=
+th:100% !important}
+table.body table.container .callout-inner.hide-for-large{display:table-cell=
+ !important;width:100% !important}
+table.body table.container .show-for-large{display:none !important;width:0;=
+mso-hide:all;overflow:hidden}
+table.body img{width:auto;height:auto}
+table.body center{min-width:0 !important}
+table.body .container{width:95% !important}
+table.body .columns{height:auto !important;box-sizing:border-box;padding-le=
+ft:16px !important;padding-right:16px !important}
+table.body .column{height:auto !important;box-sizing:border-box;padding-lef=
+t:16px !important;padding-right:16px !important}
+table.body .columns .column{padding-left:0 !important;padding-right:0 !impo=
+rtant}
+table.body .columns .columns{padding-left:0 !important;padding-right:0 !imp=
+ortant}
+table.body .column .column{padding-left:0 !important;padding-right:0 !impor=
+tant}
+table.body .column .columns{padding-left:0 !important;padding-right:0 !impo=
+rtant}
+table.body .collapse .columns{padding-left:0 !important;padding-right:0 !im=
+portant}
+table.body .collapse .column{padding-left:0 !important;padding-right:0 !imp=
+ortant}
+td.small-1{display:inline-block !important;width:8.333333% !important}
+th.small-1{display:inline-block !important;width:8.333333% !important}
+td.small-2{display:inline-block !important;width:16.666666% !important}
+th.small-2{display:inline-block !important;width:16.666666% !important}
+td.small-3{display:inline-block !important;width:25% !important}
+th.small-3{display:inline-block !important;width:25% !important}
+td.small-4{display:inline-block !important;width:33.333333% !important}
+th.small-4{display:inline-block !important;width:33.333333% !important}
+td.small-5{display:inline-block !important;width:41.666666% !important}
+th.small-5{display:inline-block !important;width:41.666666% !important}
+td.small-6{display:inline-block !important;width:50% !important}
+th.small-6{display:inline-block !important;width:50% !important}
+td.small-7{display:inline-block !important;width:58.333333% !important}
+th.small-7{display:inline-block !important;width:58.333333% !important}
+td.small-8{display:inline-block !important;width:66.666666% !important}
+th.small-8{display:inline-block !important;width:66.666666% !important}
+td.small-9{display:inline-block !important;width:75% !important}
+th.small-9{display:inline-block !important;width:75% !important}
+td.small-10{display:inline-block !important;width:83.333333% !important}
+th.small-10{display:inline-block !important;width:83.333333% !important}
+td.small-11{display:inline-block !important;width:91.666666% !important}
+th.small-11{display:inline-block !important;width:91.666666% !important}
+td.small-12{display:inline-block !important;width:100% !important}
+th.small-12{display:inline-block !important;width:100% !important}
+=2Ecolumns td.small-12{display:block !important;width:100% !important}
+=2Ecolumn td.small-12{display:block !important;width:100% !important}
+=2Ecolumns th.small-12{display:block !important;width:100% !important}
+=2Ecolumn th.small-12{display:block !important;width:100% !important}
+table.body td.small-offset-1{margin-left:8.333333% !important}
+table.body th.small-offset-1{margin-left:8.333333% !important}
+table.body td.small-offset-2{margin-left:16.666666% !important}
+table.body th.small-offset-2{margin-left:16.666666% !important}
+table.body td.small-offset-3{margin-left:25% !important}
+table.body th.small-offset-3{margin-left:25% !important}
+table.body td.small-offset-4{margin-left:33.333333% !important}
+table.body th.small-offset-4{margin-left:33.333333% !important}
+table.body td.small-offset-5{margin-left:41.666666% !important}
+table.body th.small-offset-5{margin-left:41.666666% !important}
+table.body td.small-offset-6{margin-left:50% !important}
+table.body th.small-offset-6{margin-left:50% !important}
+table.body td.small-offset-7{margin-left:58.333333% !important}
+table.body th.small-offset-7{margin-left:58.333333% !important}
+table.body td.small-offset-8{margin-left:66.666666% !important}
+table.body th.small-offset-8{margin-left:66.666666% !important}
+table.body td.small-offset-9{margin-left:75% !important}
+table.body th.small-offset-9{margin-left:75% !important}
+table.body td.small-offset-10{margin-left:83.333333% !important}
+table.body th.small-offset-10{margin-left:83.333333% !important}
+table.body td.small-offset-11{margin-left:91.666666% !important}
+table.body th.small-offset-11{margin-left:91.666666% !important}
+table.body table.columns td.expander{display:none !important}
+table.body table.columns th.expander{display:none !important}
+table.body .right-text-pad{padding-left:10px !important}
+table.body .text-pad-right{padding-left:10px !important}
+table.body .left-text-pad{padding-right:10px !important}
+table.body .text-pad-left{padding-right:10px !important}
+table.menu{width:100% !important}
+table.menu td{width:auto !important;display:inline-block !important}
+table.menu th{width:auto !important;display:inline-block !important}
+table.menu.vertical td{display:block !important}
+table.menu.vertical th{display:block !important}
+table.menu.small-vertical td{display:block !important}
+table.menu.small-vertical th{display:block !important}
+table.menu[align=3D"center"]{width:auto !important}
+table.button.small-expand{width:100% !important}
+table.button.small-expanded{width:100% !important}
+table.button.small-expand table{width:100%}
+table.button.small-expanded table{width:100%}
+table.button.small-expand table a{text-align:center !important;width:100% !=
+important;padding-left:0 !important;padding-right:0 !important}
+table.button.small-expanded table a{text-align:center !important;width:100%=
+ !important;padding-left:0 !important;padding-right:0 !important}
+table.button.small-expand center{min-width:0}
+table.button.small-expanded center{min-width:0}
+}
+@media screen and (max-width: 596px) {
+=2Einner-container{max-width:96% !important}
+=2Econtent{padding:15px !important}
+}</style>
+</head>
+<body style=3D"min-width:100%;-webkit-text-size-adjust:100%;-ms-text-size-a=
+djust:100%;box-sizing:border-box;color:#0a0a0a;font-family:Helvetica, Arial=
+, sans-serif;font-weight:normal;padding:0;margin:0;text-align:left;font-siz=
+e:16px;line-height:130%;width:100% !important">
+<div style=3D"display:none;font-size:1px;color:#333333;line-height:1px;max-=
+height:0px;max-width:0px;opacity:0;overflow:hidden;">
+
+</div>
+
+<table class=3D"spacer " style=3D"border-spacing:0;border-collapse:collapse=
+;padding:0;vertical-align:top;text-align:left;width:100%"><tbody><tr style=
+=3D"padding:0;vertical-align:top;text-align:left"><td height=3D"30" style=
+=3D"word-wrap:break-word;-webkit-hyphens:auto;hyphens:auto;vertical-align:t=
+op;color:#0a0a0a;font-family:Helvetica, Arial, sans-serif;font-weight:norma=
+l;padding:0;margin:0;text-align:left;font-size:16px;line-height:130%;mso-li=
+ne-height-rule:exactly;border-collapse:collapse !important;font-size:30px;l=
+ine-height:30px;">=C2=A0</td></tr></tbody></table>
+<table class=3D"outer-container wrapper" align=3D"center" style=3D"border-s=
+pacing:0;border-collapse:collapse;padding:0;vertical-align:top;text-align:l=
+eft;width:100%;max-width:600px"><tbody><tr style=3D"padding:0;vertical-alig=
+n:top;text-align:left"><td class=3D"wrapper-inner" style=3D"word-wrap:break=
+-word;-webkit-hyphens:auto;hyphens:auto;vertical-align:top;color:#0a0a0a;fo=
+nt-family:Helvetica, Arial, sans-serif;font-weight:normal;padding:0;margin:=
+0;text-align:left;font-size:16px;line-height:130%;border-collapse:collapse =
+!important">
+  <table bgcolor=3D"#FFFFFF" class=3D"inner-container wrapper" align=3D"cen=
+ter" style=3D"border-spacing:0;border-collapse:collapse;padding:0;vertical-=
+align:top;text-align:left;width:100%"><tbody><tr style=3D"padding:0;vertica=
+l-align:top;text-align:left"><td class=3D"wrapper-inner" style=3D"word-wrap=
+:break-word;-webkit-hyphens:auto;hyphens:auto;vertical-align:top;color:#0a0=
+a0a;font-family:Helvetica, Arial, sans-serif;font-weight:normal;padding:0;m=
+argin:0;text-align:left;font-size:16px;line-height:130%;border-collapse:col=
+lapse !important">
+    <table class=3D"row" style=3D"border-spacing:0;border-collapse:collapse=
+;vertical-align:top;text-align:left;padding:0;width:100%;position:relative"=
+><tbody><tr style=3D"padding:0;vertical-align:top;text-align:left">
+      <th class=3D"small-12 large-12 columns first last" style=3D"color:#0a=
+0a0a;font-family:Helvetica, Arial, sans-serif;font-weight:normal;padding:0;=
+margin:0;text-align:left;font-size:16px;line-height:130%;margin:0 auto;padd=
+ing-bottom:16px;width:564px;padding-left:8px;padding-right:8px;padding-left=
+:16px;padding-right:16px;padding:0 !important"><table style=3D"border-spaci=
+ng:0;border-collapse:collapse;padding:0;vertical-align:top;text-align:left;=
+width:100%"><tbody><tr style=3D"padding:0;vertical-align:top;text-align:lef=
+t">
+<th style=3D"color:#0a0a0a;font-family:Helvetica, Arial, sans-serif;font-we=
+ight:normal;padding:0;margin:0;text-align:left;font-size:16px;line-height:1=
+30%">
+        <div class=3D"content" style=3D"padding:30px !important">
+            <div class=3D"trix-content" style=3D"line-height:1.5;overflow-w=
+rap:break-word;word-break:break-word">
+  <div style=3D"box-sizing:border-box;margin:0;padding:0">Hi! <br style=3D"=
+box-sizing:border-box;margin:0;padding:0"><br style=3D"box-sizing:border-bo=
+x;margin:0;padding:0"><strong style=3D"box-sizing:border-box;margin:0;paddi=
+ng:0">Space Between/Cheeky Comics New York 2025 Exclusives</strong> is now =
+live! <br style=3D"box-sizing:border-box;margin:0;padding:0"><br style=3D"b=
+ox-sizing:border-box;margin:0;padding:0"><strong style=3D"box-sizing:border=
+-box;margin:0;padding:0"><a href=3D"https://www.backerkit.com/ahoy/messages=
+/h2am9ycdnjdehohk2rnjdigh8n301d2gag8qzxit73cz/click?signature=3Dac83bb5b6ca=
+0c7106b187acb857b7a17acffb400&amp;url=3Dhttps%3A%2F%2Fwww.backerkit.com%2Fc=
+all_to_action_email%2Fe72fd0f9-fbf9-44bb-b7a4-b3eafd1fc9de%2Fd1hiY0hVOE50cU=
+tucHM2djdoK1BGTEp4c2g0WldUMy9LQkp5b0tsVVVxYz0tLVBtd0h6RlFaLy9ucjdsS3JGOE4rM=
+EE9PQ%25253D%25253D--81cc7a82effdd258e7a7b361e87864aa991031af%3Fref%3D6fwum=
+o" style=3D"color:#0a0a0a;font-family:Helvetica, Arial, sans-serif;font-wei=
+ght:normal;text-align:left;line-height:130%;color:#2199e8;text-decoration:n=
+one;box-sizing:border-box;margin:0;padding:0;text-decoration:underline;text=
+-decoration:underline !important;color:#328896 !important">Click here to pl=
+edge now!</a></strong> <br style=3D"box-sizing:border-box;margin:0;padding:=
+0"><br style=3D"box-sizing:border-box;margin:0;padding:0">Missed us at conv=
+entions this year? You can now get our remaining=C2=A0 stock of exclusives =
+from NYCC, EXXXOTICA, and more from your favorite artists!<br style=3D"box-=
+sizing:border-box;margin:0;padding:0"><br style=3D"box-sizing:border-box;ma=
+rgin:0;padding:0">Featuring new covers on <em style=3D"box-sizing:border-bo=
+x;margin:0;padding:0">Private Dance, Nippy, The Escort, Amorini: Amateur Cu=
+pid, Give Em Hell, Countless Little Deaths</em>, and more by artists includ=
+ing...<br style=3D"box-sizing:border-box;margin:0;padding:0"><br style=3D"b=
+ox-sizing:border-box;margin:0;padding:0"><strong style=3D"box-sizing:border=
+-box;margin:0;padding:0">Leirix, Cedric Poulat, Sonia Matas &amp; Cocoaspen=
+, Kairunoburogu, Joe Pekar, Drax Gal, Keith Garvey, XongBros, </strong>and =
+more!<br style=3D"box-sizing:border-box;margin:0;padding:0"><br style=3D"bo=
+x-sizing:border-box;margin:0;padding:0"><action-text-attachment sgid=3D"eyJ=
+fcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJanBuYVdRNkx5OWlZV05yWlhKcmFYUXZRV04wYVhabF=
+UzUnZjbUZuWlRvNlFteHZZaTgxTURRM016TV9aWGh3YVhKbGMxOXBiZ1k2QmtWVSIsImV4cCI6b=
+nVsbCwicHVyIjoiYXR0YWNoYWJsZSJ9fQ=3D=3D--577de338aefa55b2fff1a17a58b5f6acdd=
+b6b205" content-type=3D"image/png" url=3D"https://www.backerkit.com/rails/a=
+ctive_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBNTJ6Qnc9PS=
+IsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ=3D=3D--9d08bd44af4e439ae0c7e13237f=
+0a226b8988fbb/Screenshot%202025-11-02%20at%2012.42.53%E2%80%AFAM.png" filen=
+ame=3D"Screenshot 2025-11-02 at 12.42.53=E2=80=AFAM.png" filesize=3D"292693=
+0" width=3D"1402" height=3D"2084" previewable=3D"true" presentation=3D"gall=
+ery" style=3D"box-sizing:border-box;margin:0;padding:0">
+<figure class=3D"attachment attachment--preview attachment--png" style=3D"b=
+ox-sizing:border-box;margin:0;padding:0;display:inline-block;position:relat=
+ive;max-width:100%;width:100%;text-align:center;padding:0 !important;max-wi=
+dth:100% !important">
+     =20
+  <img loading=3D"lazy" width=3D"1402" height=3D"2084" src=3D"https://image=
+s.backerkit.com/active_storage/backerkit_production/blob/pnapkssqmthqwlhnlr=
+jdihxatfhw?ixlib=3Drails-4.3.1&amp;auto=3Dcompress%2C%20format&amp;cs=3Dsrg=
+b&amp;q=3D80&amp;fit=3Dmax&amp;w=3D1402&amp;h=3D2084&amp;lossless=3Dtrue" s=
+tyle=3D"outline:none;text-decoration:none;-ms-interpolation-mode:bicubic;wi=
+dth:auto;clear:both;display:block;box-sizing:border-box;margin:0;padding:0;=
+max-width:100%;height:auto;margin:auto">
+
+
+
+</figure></action-text-attachment><br style=3D"box-sizing:border-box;margin=
+:0;padding:0"><br style=3D"box-sizing:border-box;margin:0;padding:0"><br st=
+yle=3D"box-sizing:border-box;margin:0;padding:0"><br style=3D"box-sizing:bo=
+rder-box;margin:0;padding:0">Thanks!=C2=A0<br style=3D"box-sizing:border-bo=
+x;margin:0;padding:0"><br style=3D"box-sizing:border-box;margin:0;padding:0=
+">Space Between Entertainment</div>
+</div>
+
+
+        </div>
+      </th>
+<th class=3D"expander" style=3D"color:#0a0a0a;font-family:Helvetica, Arial,=
+ sans-serif;font-weight:normal;padding:0;margin:0;text-align:left;font-size=
+:16px;line-height:130%;visibility:hidden;width:0;padding:0 !important"></th=
+>
+</tr></tbody></table></th>
+    </tr></tbody></table>
+  </td></tr></tbody></table>
+  <div class=3D"footer">
+    <table class=3D"spacer " style=3D"border-spacing:0;border-collapse:coll=
+apse;padding:0;vertical-align:top;text-align:left;width:100%"><tbody><tr st=
+yle=3D"padding:0;vertical-align:top;text-align:left"><td height=3D"20" styl=
+e=3D"word-wrap:break-word;-webkit-hyphens:auto;hyphens:auto;vertical-align:=
+top;color:#0a0a0a;font-family:Helvetica, Arial, sans-serif;font-weight:norm=
+al;padding:0;margin:0;text-align:left;font-size:16px;line-height:130%;mso-l=
+ine-height-rule:exactly;border-collapse:collapse !important;font-size:20px;=
+line-height:20px;">=C2=A0</td></tr></tbody></table>
+    <center style=3D"width:100%;min-width:580px;min-width:100% !important">
+      <small class=3D"text-center float-center" align=3D"center" style=3D"f=
+ont-size:80%;color:#cacaca;text-align:center;color:#999999 !important">  Yo=
+u are receiving this email because you backed CHEEKY - a NSFW graphic novel=
+=2E
+</small>
+    </center>
+    <table class=3D"spacer " style=3D"border-spacing:0;border-collapse:coll=
+apse;padding:0;vertical-align:top;text-align:left;width:100%"><tbody><tr st=
+yle=3D"padding:0;vertical-align:top;text-align:left"><td height=3D"20" styl=
+e=3D"word-wrap:break-word;-webkit-hyphens:auto;hyphens:auto;vertical-align:=
+top;color:#0a0a0a;font-family:Helvetica, Arial, sans-serif;font-weight:norm=
+al;padding:0;margin:0;text-align:left;font-size:16px;line-height:130%;mso-l=
+ine-height-rule:exactly;border-collapse:collapse !important;font-size:20px;=
+line-height:20px;">=C2=A0</td></tr></tbody></table>
+      <center style=3D"width:100%;min-width:580px;min-width:100% !important=
+">
+        <small class=3D"text-center float-center" align=3D"center" style=3D=
+"font-size:80%;color:#cacaca;text-align:center;color:#999999 !important">  =
+No longer want to receive these emails?<br>
+  <a href=3D"https://www.backerkit.com/ahoy/messages/h2am9ycdnjdehohk2rnjdi=
+gh8n301d2gag8qzxit73cz/click?signature=3De2017ec81ee23d32237e6359cea7b0173d=
+05fc08&amp;url=3Dhttps%3A%2F%2Fwww.backerkit.com%2Fsubscriptions%3Fsgid%3De=
+yJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaEpJaVJuYVdRNkx5OWlZV05yWlhKcmFYUXZUV1Z0WW1W=
+eUx6SXpNamN6TmpNNEJqb0dSVlE9IiwiZXhwIjoiMjAyNS0xMi0wNFQxNTozNDo0MC45NjhaIiw=
+icHVyIjoidW5zdWJzY3JpYmUifX0%253D--31e9e20a95df47ecf879ba4bdf6c31a4acef29e4=
+" style=3D"color:#0a0a0a;font-family:Helvetica, Arial, sans-serif;font-weig=
+ht:normal;padding:0;margin:0;text-align:left;line-height:130%;color:#2199e8=
+;text-decoration:none;text-decoration:underline !important;color:#999999 !i=
+mportant">Unsubscribe from all updates from Space Between Entertainment</a>
+</small>
+      </center>
+      <table class=3D"spacer " style=3D"border-spacing:0;border-collapse:co=
+llapse;padding:0;vertical-align:top;text-align:left;width:100%"><tbody><tr =
+style=3D"padding:0;vertical-align:top;text-align:left"><td height=3D"20" st=
+yle=3D"word-wrap:break-word;-webkit-hyphens:auto;hyphens:auto;vertical-alig=
+n:top;color:#0a0a0a;font-family:Helvetica, Arial, sans-serif;font-weight:no=
+rmal;padding:0;margin:0;text-align:left;font-size:16px;line-height:130%;mso=
+-line-height-rule:exactly;border-collapse:collapse !important;font-size:20p=
+x;line-height:20px;">=C2=A0</td></tr></tbody></table>
+    <center style=3D"width:100%;min-width:580px;min-width:100% !important">
+      <small class=3D"text-center float-center" align=3D"center" style=3D"f=
+ont-size:80%;color:#cacaca;text-align:center;color:#999999 !important"><a h=
+ref=3D"https://www.backerkit.com/ahoy/messages/h2am9ycdnjdehohk2rnjdigh8n30=
+1d2gag8qzxit73cz/click?signature=3D0c3c841f15c6123b9cba2e9bfc54330a432086ad=
+&amp;url=3Dhttps%3A%2F%2Fbackerkit.com" style=3D"color:#0a0a0a;font-family:=
+Helvetica, Arial, sans-serif;font-weight:normal;padding:0;margin:0;text-ali=
+gn:left;line-height:130%;color:#2199e8;text-decoration:none;text-decoration=
+:underline !important;color:#999999 !important">BackerKit</a></small>
+    </center>
+    <table class=3D"spacer " style=3D"border-spacing:0;border-collapse:coll=
+apse;padding:0;vertical-align:top;text-align:left;width:100%"><tbody><tr st=
+yle=3D"padding:0;vertical-align:top;text-align:left"><td height=3D"20" styl=
+e=3D"word-wrap:break-word;-webkit-hyphens:auto;hyphens:auto;vertical-align:=
+top;color:#0a0a0a;font-family:Helvetica, Arial, sans-serif;font-weight:norm=
+al;padding:0;margin:0;text-align:left;font-size:16px;line-height:130%;mso-l=
+ine-height-rule:exactly;border-collapse:collapse !important;font-size:20px;=
+line-height:20px;">=C2=A0</td></tr></tbody></table>
+  </div>
+</td></tr></tbody></table>
+<table class=3D"spacer " style=3D"border-spacing:0;border-collapse:collapse=
+;padding:0;vertical-align:top;text-align:left;width:100%"><tbody><tr style=
+=3D"padding:0;vertical-align:top;text-align:left"><td height=3D"30" style=
+=3D"word-wrap:break-word;-webkit-hyphens:auto;hyphens:auto;vertical-align:t=
+op;color:#0a0a0a;font-family:Helvetica, Arial, sans-serif;font-weight:norma=
+l;padding:0;margin:0;text-align:left;font-size:16px;line-height:130%;mso-li=
+ne-height-rule:exactly;border-collapse:collapse !important;font-size:30px;l=
+ine-height:30px;">=C2=A0</td></tr></tbody></table>
+
+<img alt=3D"" src=3D"https://www.backerkit.com/ahoy/messages/h2am9ycdnjdeho=
+hk2rnjdigh8n301d2gag8qzxit73cz/open.gif?member_id=3D23273638" width=3D"1" h=
+eight=3D"1">
+<img width=3D"1" height=3D"1" alt=3D"" src=3D"http://email.o.backerkit.com/=
+o/eJwUyktuhDAMANDTkB0j2_mQLLKYkyDHMTTqQEY0aqWefsT26dWMoSyKRjMugWgBF8l8ZYiUC=
+GSRGD1FL34hVd4kJY-OuJiWQwLGiihofV05UoEtIiYMFiYHgK6WWHguoDA78HUudoN544QOSUE5=
+PQ5uL3Pl42f0P50c7Dc8pB9m5H7tfLZ_Hq2fk336kIIZWe-xCh9vbvvtwSIlM_Kl0t5Nz7FKP7d=
+W9RSd7LNf-zoulm8uLzW_mT4BAAD__9wZSRk"></body>
+</html>

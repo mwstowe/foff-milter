@@ -1,0 +1,237 @@
+Return-Path: <mstowe+caf_=mstowe=example.com@gmail.com>
+Received: from hotel.example.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.example.com (8.18.1/8.18.1) with ESMTPS id 5AB8wubW070544
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <user@example.com>; Tue, 11 Nov 2025 08:58:56 GMT
+	(envelope-from mstowe+caf_=mstowe=example.com@gmail.com)
+Authentication-Results: juliett.example.com;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b=i/eDaVKT
+X-Authentication-Warning: juliett.example.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.example.com
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	by hotel.example.com (8.16.1/8.16.1) with ESMTPS id 5AB8ws6S111577
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=OK)
+	for <user@example.com>; Tue, 11 Nov 2025 02:58:55 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.example.com 5AB8ws6S111577
+Authentication-Results: hotel.example.com;
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=i/eDaVKT
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-640a503fbe8so7067343a12.1
+        for <user@example.com>; Tue, 11 Nov 2025 00:58:55 -0800 (PST)
+ARC-Seal: i=2; a=rsa-sha256; t=1762851533; cv=pass;
+        d=google.com; s=arc-20240605;
+        b=IUFn97bZN6qjOuVsHBoIvNA6LRQqyAnSHdNYr8/vjgKZupS5Geyg1XJKs17QBbv+JL
+         cSROMTdRwVsTf8vONmcVX1GLEJWykXBA+r2wB5klDO70D89SHosqLd81PWm0HDsJB5Q7
+         iR+yIfSlIiEaGGqeEmGral+YS6HLYsg7Dh6Qe6VQTAr3gc4n0eTF+QZ3n4AQ46hVBsOC
+         uOOY6PFwsdepdKb/CEqw2iFraf6s9oMwGoaygYwSYVW55+EV9XPKxjDtcb/h3MqYvBqS
+         cu6MbN6jUc6jYHgC3BuCB4FRKzyWp0fCmerJCqLkGfyDv4Xk2TdYkjLKki0HZumQe+X5
+         ZGpA==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=to:message-id:subject:date:mime-version:from:dkim-signature
+         :delivered-to;
+        bh=GxpMcWY+t06UsVg9OoHs8mdUIHu+lb2HRulsfGpv4vI=;
+        fh=/WETuILmOCTiA3CphYqOLW7sXUQzxXcxY+NThkkNz9g=;
+        b=fWKMoM78DO/MnD9g11ANdwbTg8sEJLGOFcSRUs8ehGQuL7G9uW6iCT/Jr1T2N9vF1V
+         OggsWgHNC/at2PEHC+4qQGr5I5k9amsRjDLyHtE1rg+KPj5efMusLDbtji1XG7UKhOEJ
+         VxqGGHl0eHtR52QldUSK6W7Uvd5a2cDgjc1yKSWeWrSKdtCQ5LStRsK3qiTwTbS1y0hb
+         v1s5zevtX7WuRxopsmbB/nyOQRXwuVoan5avfYV3znq/Xnu8Ahq3/KRswJrBFBBrHmiw
+         hQsNDl+B0R+lfhEmjikqJfbFZ7VUyw2FHXgtYurZyKXLTF0ba145VOmyme+MOxAslsa8
+         dzYA==;
+        darn=example.com
+ARC-Authentication-Results: i=2; mx.google.com;
+       dkim=pass header.i=@gmail.com header.s=20230601 header.b="i/eDaVKT";
+       spf=pass (google.com: domain of gamaale234@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=gamaale234@gmail.com;
+       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com;
+       dara=pass header.i=@gmail.com
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762851533; x=1763456333;
+        h=to:message-id:subject:date:mime-version:from:x-gm-gg:dkim-signature
+         :delivered-to:x-forwarded-for:x-forwarded-to:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=GxpMcWY+t06UsVg9OoHs8mdUIHu+lb2HRulsfGpv4vI=;
+        b=Gty6SJ+UA0mr9T7XH5nO3Hf113FFgIPjECxDSbQMVw9tK6P5AsAddmiVb7zZ+x+yRl
+         QB0UWBSvvv0uaApMPDYSgYLv11sq2I1p9GcY4Z94eTBjMv1oQxCEP/MZh0JoIN56qi/D
+         W6bWlogc18W+gfqJJ2gMqX3CNiWJuZjGWyZRpbmpAj1DhUYj4MF6Af8hzT6dWc6YkCXD
+         gFbCQhQyL5GAIwq8XmublDn57AD+/yD//q7T/UO9Z8/Y4Wq/Ho7oEQVf+I3+mbVo7Kq5
+         fU/MvMCfPaZD+YHQlOlM4qZW3ZrdJVfOWQggfNLmMGH1wmDZer7e1vBsMrbp3elTNEU7
+         wvrg==
+X-Forwarded-Encrypted: i=2; AJvYcCW0AFyvOfdAMfxvP1rUuDVPNWmOHNbvgU+vsgzYi0SW8s6NquH9GSTwICHs24D8MNytP66NOcw=@example.com
+X-Gm-Message-State: AOJu0Ywg1d9iIyu+U/osOh/ob7wyLGBD8TJ+dlN1k0FYCvANsjdkMPp8
+	MrMZk+ik0bMYgnYV/uXHtIA1QwjM+KHPD9MWECaMfj9fR1OUv9ZMctJP16ZcbS21hPqy0A5IZjW
+	v2MLYLEXSy4jWojjkb6SIje8T8SCVdVJ+h+/w0hS1/cnARSUK1Mr7S1HPD5CQBQ==
+X-Received: by 2002:a05:6402:3546:b0:63c:1066:8bec with SMTP id 4fb4d7f45d1cf-6415e81d8d1mr9081429a12.35.1762851533321;
+        Tue, 11 Nov 2025 00:58:53 -0800 (PST)
+X-Forwarded-To: user@example.com
+X-Forwarded-For: user@gmail.com user@example.com
+Delivered-To: user@gmail.com
+Received: by 2002:a54:2285:0:b0:2ba:7552:a66c with SMTP id b5csp1010325eco;
+        Tue, 11 Nov 2025 00:58:51 -0800 (PST)
+X-Received: by 2002:a05:620a:4613:b0:7fd:50bd:193b with SMTP id af79cd13be357-8b257ef9521mr1391758785a.14.1762851531616;
+        Tue, 11 Nov 2025 00:58:51 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1762851531; cv=none;
+        d=google.com; s=arc-20240605;
+        b=cm62BXUw+FNpBd9Kdh5/KYNsajy0oU4f9GcusqQ9aWXOoNTCv6vM2C3EZ6veprOVgh
+         +5SaxrpDjgZl7F+O8KYLiagNNJgl9HKmIxb6BGUAWoyZ7qpEGsVza2LBs726KkhBiFeB
+         LH5Dgv7riRqs+9oeiWDpZ4INKpi0uKdudMzkC2DisNVM+Gn5C5z6cmBkhi4xQjZUcuMA
+         0FrLx9wDSbc+YN+Stq1OVki9xyHbR6b652SiFVjWNffjhjcqtzs21Bj4H/Y8iFagXqgK
+         IrBMiumoF37sLolbB4EGcwd5cNY1QECy/o27U/LoQuWv5urcvzO0ANFcm47SKw9FFt8P
+         FI9Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=to:message-id:subject:date:mime-version:from:dkim-signature;
+        bh=GxpMcWY+t06UsVg9OoHs8mdUIHu+lb2HRulsfGpv4vI=;
+        fh=it+9Vp/RxCo1wGtdvV6o4twzKDDc2SebJ+F8mIwnJY0=;
+        b=TsLORnAOwTTe9exjPIoV3GlAePH6te8AXxlVBmZXE1TDY3whOihZFAOxqm+M1r81tu
+         qRK3bXHvfqkMNifoqaqjAF1u2JUiDPKTm1tMbjLCgW9D5GJevfmbC8aZ7DzGBUwSfBmw
+         fuzzjVA5uKtfLjU2bIrzENUnPFlO6Wi4XvxF8xd1BymyNM/4ancKfiB+wCjuBkAFr+Bf
+         cQv/TQ90j8TXYWc95F0sKLariOGPllcjTXSACTMHNXk13lX7EApMXFzYFGDWBI+MC7jA
+         w4JXl7+l6hE/GPWcoXCiZNbjx8qaw7baA0U3+e3wrRFBnjkXjCgsPvQWd1uJBZ2FHbbu
+         bHzw==;
+        dara=google.com
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@gmail.com header.s=20230601 header.b="i/eDaVKT";
+       spf=pass (google.com: domain of gamaale234@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=gamaale234@gmail.com;
+       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com;
+       dara=pass header.i=@gmail.com
+Received: from mail-sor-f41.google.com (mail-sor-f41.google.com. [209.85.220.41])
+        by mx.google.com with SMTPS id af79cd13be357-8b2364218acsor1015789485a.0.2025.11.11.00.58.51
+        for <user@gmail.com>
+        (Google Transport Security);
+        Tue, 11 Nov 2025 00:58:51 -0800 (PST)
+Received-SPF: pass (google.com: domain of gamaale234@gmail.com designates 209.85.220.41 as permitted sender) client-ip=209.85.220.41;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@gmail.com header.s=20230601 header.b="i/eDaVKT";
+       spf=pass (google.com: domain of gamaale234@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=gamaale234@gmail.com;
+       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com;
+       dara=pass header.i=@gmail.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762851530; x=1763456330; dara=google.com;
+        h=to:message-id:subject:date:mime-version:from:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=GxpMcWY+t06UsVg9OoHs8mdUIHu+lb2HRulsfGpv4vI=;
+        b=i/eDaVKTBy4TTK1bnNqiUe8qFdtSNcNR5YF2okDyszalVHmQJ1jSmP5bhVx5So5dy7
+         v0uZzvrIAiI2dMyQDBnsSsG74kSzkdQmrQiHgujgYiDFRR4d4QjegxBMpxSkM6yNAeX0
+         dpn1/Lw8WYit1KjlBVsmGe9GjpRaphMRJ2k4EPW2f8ddGTOK2s9jQ4e8csj8UU+O2auj
+         0cUxXjFHtz8VAB9TnvD6mYW8a1yx1vKgS3dn4oRgdYY4LIFwKfCurp6Tmqd3DKojQF34
+         CXbkalhcKi3xFR54hyO2w0WcpFFQSn1uf+iqThwvLmcWjh8cMG3FkBethrr4ctbfXSMr
+         KCCA==
+X-Gm-Gg: ASbGncsrTLcycsWoTmxS4dOEHBf+EJrWHU8dMn0+Ym61NNbEhv5FHdlf8onvEmQxkCh
+	8lmBTwlznoW2F/qPIFNsS4BJNKlrf7H/u2uvQqcTgSH0rXkZsR/GMe4QCsYcZCRVqQlmeIhzvYx
+	DOY7lKkSNZtqAxIVOtA0q0fsnCOcwlF6F22YYAdjpVYFBx23aV+fU3uRzyBBMGl24v3sJYPGQam
+	UX+DHDuWvNwIQiQareHolwTxginitnSHQyEqAlKtqKw0ZTiR/lr1oXIkizEajTb1dyg7hlm0CNG
+	0UlYzhzQBF1NRYOvK88c+o+ZGRxcIL8WSxGGNhqL7nr4oI1z89swI8wzy1c3SdqrfEXzZHOERrc
+	IssR+/fnzHBxsm0fq5MF+3/gWgQeY0tL1z80QFiu0OinnPfw04AH5mXkiD4OhDAvhHEu1V8TGby
+	TPSAuqycv1mMROGku9oRVk6vkuOe7m+/KPObU8rsAXwNfeeKD3VnCBMOabF+ysF3h6CieFSFC1N
+	+Q26VY=
+X-Google-Smtp-Source: AGHT+IE/ur8yhAA5bzx5ZDKaeDDkjbO3XO/UvXdXIw3PTO6iBI7UaXbtUPWvkfXlIPKRR5W3Q5SqTQ==
+X-Received: by 2002:a05:622a:180a:b0:4ec:f001:e18b with SMTP id d75a77b69052e-4eda4fd279fmr150071841cf.48.1762851530421;
+        Tue, 11 Nov 2025 00:58:50 -0800 (PST)
+Received: from ?IPv6:2600:4040:2a81:a100:8576:659b:9199:9459? ([2600:4040:2a81:a100:8576:659b:9199:9459])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4eda7116927sm60080281cf.13.2025.11.11.00.58.49
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 11 Nov 2025 00:58:50 -0800 (PST)
+From: Personal Contact <personal@gmail.com>
+Content-Type: multipart/alternative;
+	boundary="Apple-Mail=_94B5AABE-458F-4A69-94CA-764464CD39CC"
+Mime-Version: 1.0 (Mac OS X Mail 13.4 \(3608.120.23.2.7\))
+Date: Tue, 11 Nov 2025 03:58:45 -0500
+Subject: HAPPY BIRTHDAY!  HAPPY BIRTHDAY!
+Message-Id: <9ECB7A3E-47A4-4A7D-9F7A-71F9EA2880A2@gmail.com>
+To: Michael Stowe <user@gmail.com>
+X-Mailer: Apple Mail (2.3608.120.23.2.7)
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.example.com [172.31.18.8]); Tue, 11 Nov 2025 08:58:56 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.example.com [23.95.222.152]); Tue, 11 Nov 2025 02:58:55 -0600 (CST)
+X-Spam-Flag: YES
+X-FOFF-Score: 75 - analyzed by foff-milter v0.6.9 on juliett.example.com
+X-FOFF-Score: 75 - foff-milter v0.6.9 (juliett.example.com)
+X-FOFF-Score: 75 - analyzed by foff-milter v0.6.9 on hotel.example.com
+X-FOFF-Score: 75 - foff-milter v0.6.9 (hotel.example.com)
+
+
+--Apple-Mail=_94B5AABE-458F-4A69-94CA-764464CD39CC
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;
+	charset=utf-8
+
+Happy Birthday Michael.  You are a wonderful person and I love you.
+
+I vividly remember a night - over a half century ago - when I was =
+sweating in active labor as a blizzard roared outside.  At the car, your =
+father cleared a small circle on the driver=E2=80=99s side of the car =
+(only) and we got in, before the heat warmed the car up, and me, unable =
+to see through the snow on the passenger side for the entire trip.  I =
+shivered and gasped the whole agonizing trip.  The night was dark and =
+swirling with whirlwinds of snowflakes. And deadly quiet.
+
+We slid and rolled through an eerily white and silent landscape.  We =
+could hear ice slapping the windshield, but there was no traffic - and =
+no tracks from other cars to guide us.  Your father drove maddeningly =
+slowly and I was anxious and so afraid I would deliver my baby in the =
+car.  When we finally reached the hospital, I staggered into the =
+hospital and someone rushed me into a room and warmed me up.  At that =
+time, I assumed your father was parking the car, but I didn=E2=80=99t =
+see him again until the next day, November 11, 12 hours after you were =
+born.  The doctor said you were the biggest baby he had delivered in =
+long time. =20
+
+He delivered?  Well, he helped, but it was just you and me and I was =
+grateful when you arrived at exactly 8:00 am.
+
+Also, on November 11, I am reminded of your grandfather Martin, serving =
+in the Coast Guard, which was called up under the Navy in World War II.  =
+Martin was on a Navy ship sent to the Bikini atoll in the Marshall =
+Islands to document the effects of Atomic Bomb test explosions.  He had =
+an album of photographs showing the explosive clouds over the ocean and =
+views of the nearby islands.  In the archive of family photographs you =
+can see Martin and his buddy in swimsuits on the beach on Bikini with =
+palm trees waving in the background.  I believe that the fallout from =
+the Atomic Bomb, which at that time was unknown, affected granddaddy=E2=80=
+=99s health and shortened his life.  I salute him on this Veterans=E2=80=99=
+ Day.
+
+Love, Mom=
+
+--Apple-Mail=_94B5AABE-458F-4A69-94CA-764464CD39CC
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html;
+	charset=utf-8
+
+<html><head><meta http-equiv=3D"Content-Type" content=3D"text/html; =
+charset=3Dutf-8"></head><body style=3D"word-wrap: break-word; =
+-webkit-nbsp-mode: space; line-break: after-white-space;" class=3D""><div =
+dir=3D"auto" style=3D"word-wrap: break-word; -webkit-nbsp-mode: space; =
+line-break: after-white-space;" class=3D""><b class=3D"">Happy Birthday =
+Michael</b>. &nbsp;You are a wonderful person and I love you.<div =
+class=3D""><br class=3D""></div><div class=3D"">I vividly remember a =
+night - over a half century ago - when I was sweating in active labor as =
+a blizzard roared outside. &nbsp;At the car, your father cleared a small =
+circle on the driver=E2=80=99s side of the car (only) and we got in, =
+before the heat warmed the car up, and me, unable to see through the =
+snow on the passenger side for the entire trip. &nbsp;I shivered and =
+gasped the whole agonizing trip. &nbsp;The night was dark and swirling =
+with whirlwinds of snowflakes. And deadly quiet.</div><div class=3D""><br =
+class=3D""></div><div class=3D"">We slid and rolled through an eerily =
+white and silent landscape. &nbsp;We could hear ice slapping the =
+windshield, but there was no traffic - and no tracks from other cars to =
+guide us. &nbsp;Your father drove maddeningly slowly and I was anxious =
+and so afraid I would deliver my baby in the car. &nbsp;When we finally =
+reached the hospital, I staggered into the hospital and someone rushed =
+me into a room and warmed me up. &nbsp;At that time, I assumed your =
+father was parking the car, but I didn=E2=80=99t see him again until the =
+next day, November 11, 12 hours after you were born. &nbsp;The doctor =
+said you were the biggest baby he had delivered in long time. =
+&nbsp;</div><div class=3D""><b class=3D""><br class=3D""></b></div><div =
+class=3D""><b class=3D"">He</b> delivered? &nbsp;Well, he helped, but it =
+was just you and me and I was grateful when you arrived at exactly 8:00 =
+am.</div><div class=3D""><br class=3D""></div><div class=3D"">Also, on =
+November 11, I am reminded of your grandfather Martin, serving in the =
+Coast Guard, which was called up under the Navy in World War II. =
+&nbsp;Martin was on a Navy ship sent to the Bikini atoll in the Marshall =
+Islands to document the effects of Atomic Bomb test explosions. &nbsp;He =
+had an album of photographs showing the explosive clouds over the ocean =
+and views of the nearby islands. &nbsp;In the archive of family =
+photographs you can see Martin and his buddy in swimsuits on the beach =
+on Bikini with palm trees waving in the background. &nbsp;I believe that =
+the fallout from the Atomic Bomb, which at that time was unknown, =
+affected granddaddy=E2=80=99s health and shortened his life. &nbsp;I =
+salute him on this Veterans=E2=80=99 Day.</div><div class=3D""><br =
+class=3D""></div><div class=3D"">Love, Mom</div></div></body></html>=
+
+--Apple-Mail=_94B5AABE-458F-4A69-94CA-764464CD39CC--

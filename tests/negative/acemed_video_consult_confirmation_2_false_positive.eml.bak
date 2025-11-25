@@ -1,0 +1,456 @@
+Return-Path: <bounces+3f0b4780-be6a-11f0-86d4-963d1902c9da_vt1@mailerehr.charmtracker.com>
+Received: from hotel.example.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.example.com (8.18.1/8.18.1) with ESMTPS id 5AAJK6xM042705
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <marcy@example.com>; Mon, 10 Nov 2025 19:20:07 GMT
+	(envelope-from bounces+3f0b4780-be6a-11f0-86d4-963d1902c9da_vt1@mailerehr.charmtracker.com)
+Authentication-Results: juliett.example.com;
+	dkim=pass (1024-bit key; unprotected) header.d=charmtracker.com header.i=@charmtracker.com header.b=GrrrMdNk
+X-Authentication-Warning: juliett.example.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.example.com
+Received: from system-93.transmail.net (system-93.transmail.net [135.84.80.93])
+	by hotel.example.com (8.16.1/8.16.1) with ESMTPS id 5AAJK5M8096813
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <marcy@example.com>; Mon, 10 Nov 2025 13:20:06 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.example.com 5AAJK5M8096813
+Authentication-Results: hotel.example.com;
+	dkim=pass (1024-bit key, unprotected) header.d=charmtracker.com header.i=@charmtracker.com header.a=rsa-sha256 header.s=1522905413783 header.b=GrrrMdNk
+ARC-Seal: i=1; a=rsa-sha256; t=1762802400; cv=none; 
+	d=us.zohomail360.com; s=zohoarc; 
+	b=AVNDEFZMMQwe8Nf23w4UQSQGCIJjPUCx1jLZaSXEus0DMbTr2sdirQPut1FTwFV3WMPATEtiidd45SLTCs0UdwRX26LNRHR+e2ms4GBCe5ci5eUOcPoQlLMoSjl1k4wLljESv+O3YlXmw7Ua/kZQwgwA+pco9QPwCEr4hv0aK/s=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=us.zohomail360.com; s=zohoarc; 
+	t=1762802400; h=Content-Type:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To:Cc; 
+	bh=at6Qu0r+fsVQC0OicFWgA+IvhZW2TYoBoJsSkK68oOA=; 
+	b=H8g2MOm6y89+8m+HH/dSUTgjhJGaAJEkj5ICw1UvDX+UG1746aYn24RyFW+vE4pYkKkL35fFgrZ/IC4TZVQwXRx455KwG3NwRNMmu2EAANIVMSb8qOaPWwB5GwZ/7StCiq2guh73+xgu7gHWYq4uV/0Ez/+vEdJBGymCysynanA=
+ARC-Authentication-Results: i=1; mx.us.zohomail360.com;
+	dkim=pass  header.i=charmtracker.com;
+	spf=pass  smtp.mailfrom=bounces+3f0b4780-be6a-11f0-86d4-963d1902c9da_vt1@mailerehr.charmtracker.com;
+	dmarc=pass header.from=<noreply@charmtracker.com>
+Received: by mx.zohomail.com with SMTPS id 1762802398921388.60302161140976;
+	Mon, 10 Nov 2025 11:19:58 -0800 (PST)
+DKIM-Signature: a=rsa-sha256; b=GrrrMdNkAMyKqhv5as+TsZX5hNkADICBw8Wv4tYrCyAUFKK8mlogChVantEF8flk6ORiWXyILkKjSkGZpOxRNrwiSeC2XNDoRxFjg8Mxyo8XX8xDWhK1oCHQVC9Vsb28pYu1ixypvSDHYh23HxwHAYKbk66JG8TQgxX5xEaS9nc=; c=relaxed/relaxed; s=1522905413783; d=charmtracker.com; v=1; bh=at6Qu0r+fsVQC0OicFWgA+IvhZW2TYoBoJsSkK68oOA=; h=date:from:to:message-id:subject:mime-version:content-type:date:from:to:message-id:subject;
+Date: Mon, 10 Nov 2025 11:19:58 -0800 (PST)
+From: AceMed Seattle <noreply@charmtracker.com>
+To: marcy@example.com
+Message-ID: <2d6f.109cdde2b34f74ae.m1.3f0b4780-be6a-11f0-86d4-963d1902c9da.19a6f35f3f8@mailerehr.charmtracker.com>
+Subject: Video Consult Confirmation
+MIME-Version: 1.0
+Content-Type: multipart/mixed; 
+	boundary="----=_Part_13692128_2086959398.1762802398860"
+Original-Envelope-Id: 2d6f.109cdde2b34f74ae.m1.3f0b4780-be6a-11f0-86d4-963d1902c9da.19a6f35f3f8
+X-JID: 2d6f.109cdde2b34f74ae.m1.3f0b4780-be6a-11f0-86d4-963d1902c9da.19a6f35f3f8
+TM-MAIL-JID: 2d6f.109cdde2b34f74ae.m1.3f0b4780-be6a-11f0-86d4-963d1902c9da.19a6f35f3f8
+X-App-Message-ID: 2d6f.109cdde2b34f74ae.m1.3f0b4780-be6a-11f0-86d4-963d1902c9da.19a6f35f3f8
+X-Report-Abuse: <abuse+2d6f.109cdde2b34f74ae.m1.3f0b4780-be6a-11f0-86d4-963d1902c9da.19a6f35f3f8@zeptomail.com>
+X-Zoho-Virus-Status: 1
+X-Zoho-Virus-Status: 1
+X-Zoho-AV-Stamp: zmail-av-1.5.1/262.713.33
+X-ZohoMailClient: External
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.example.com [172.31.18.8]); Mon, 10 Nov 2025 19:20:07 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.example.com [23.95.222.152]); Mon, 10 Nov 2025 13:20:06 -0600 (CST)
+X-Spam-Flag: YES
+X-FOFF-Rule-Matched: Analytics: Generic Sender Names (juliett.example.com)
+X-FOFF-Rule-Matched: Analytics: High Volume Sender Detection (juliett.example.com)
+X-FOFF-Rule-Matched: Advanced Security: Empty Content Emails (juliett.example.com)
+X-FOFF-Rule-Matched: Advanced Heuristics: Advanced Heuristic Scoring (juliett.example.com)
+X-FOFF-Rule-Matched: Advanced Heuristics: Weak Signal Aggregation (juliett.example.com)
+X-FOFF-Rule-Matched: Analytics: Generic Sender Names (hotel.example.com)
+X-FOFF-Rule-Matched: Analytics: High Volume Sender Detection (hotel.example.com)
+X-FOFF-Rule-Matched: Advanced Security: Empty Content Emails (hotel.example.com)
+X-FOFF-Rule-Matched: Advanced Heuristics: Advanced Heuristic Scoring (hotel.example.com)
+X-FOFF-Rule-Matched: Advanced Heuristics: Weak Signal Aggregation (hotel.example.com)
+X-FOFF-Score: 87 - foff-milter v0.6.9 (juliett.example.com)
+X-FOFF-Score: 87 - foff-milter v0.6.9 (hotel.example.com)
+
+------=_Part_13692128_2086959398.1762802398860
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_13692129_1933375309.1762802398861"
+
+------=_Part_13692129_1933375309.1762802398861
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+
+------=_Part_13692129_1933375309.1762802398861
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<html><body><html>
+<head>
+=09<link href=3D"https://fonts.googleapis.com/css?family=3DLato:100,100i,30=
+0,300i,400,400i,700,700i,900,900i&amp;subset=3Dlatin-ext" rel=3D"stylesheet=
+">
+</head>
+<body>
+<table id=3D"body-table" style=3D"table-layout:fixed; color:#00000;line-hei=
+ght: 1.629rem; font-size:14px;font-family: 'Lato', sans-serif;" align=3D"ce=
+nter" bgcolor=3D"#fff" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" wid=
+th=3D"100%">
+  <tbody>
+    <tr>
+      <td align=3D"center" valign=3D"top"><table  align=3D"center" bgcolor=
+=3D"#ffffff" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"500"=
+>
+          <tbody>
+            <tr>
+              <td align=3D"center" bgcolor=3D"#ffffff"  style=3D"box-shadow=
+: 0 0 6px 0 rgba(0, 0, 0, 0.4);" valign=3D"top">=20
+               =20
+                <table class=3D"" border=3D"0" cellpadding=3D"0" cellspacin=
+g=3D"0" width=3D"100%">
+                  <tbody>
+                    <tr>
+                      <td height=3D"15">&nbsp;</td>
+                    </tr>
+                  </tbody>
+                </table>
+               =20
+                <table class=3D"-menu" align=3D"center" border=3D"0" cellpa=
+dding=3D"0" cellspacing=3D"0" width=3D"480">
+                  <tbody>
+                    <tr>
+                      <td height=3D"15" valign=3D"middle"><table class=3D""=
+ align=3D"left" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"2=
+11">
+                          <tbody>
+                            <tr>
+                              <td class=3D"center-stack" style=3D"font-size=
+: 18px;font-weight:bold;" align=3D"left" height=3D"30" valign=3D"middle"><i=
+mg alt=3D"logo" height=3D"50" width=3D"" style=3D"object-fit: contain;objec=
+t-position: left;" src=3D"https://ehr.charmtracker.com/publicCal.sas?method=
+=3DviewFacilityLogo&digest=3Dd1c1a0dc62345265fb1ffbf50038f44bfc436cd6d15eb7=
+ae98ee2e5ce9d5cc8ac81b440bc8a53a00"  ></td>
+                            </tr>
+                          </tbody>
+                        </table></td>
+                    </tr>
+                  </tbody>
+                </table>
+               =20
+                <table class=3D"" border=3D"0" cellpadding=3D"0" cellspacin=
+g=3D"0" width=3D"100%">
+                  <tbody>
+                    <tr>
+                      <td height=3D"15">&nbsp;</td>
+                    </tr>
+                  </tbody>
+                </table>
+               =20
+                <table  bgcolor=3D"#3cbda9" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" width=3D"100%">
+                  <tbody>
+                    <tr>
+                      <td  height=3D"50">&nbsp;</td>
+                    </tr>
+                    <tr style=3D"background-color:#63caba;">
+                      <td><table  align=3D"left" border=3D"0" cellpadding=
+=3D"0" cellspacing=3D"0" width=3D"20%">
+                          <tr>
+                            <td height=3D"100" align=3D"right" valign=3D"mi=
+ddle"><img src=3D"http://ehr.charmtracker.com/images/physician/email_templa=
+tes/app-confir.png" width=3D"54" height=3D"54" alt=3D"Appointment Confirmed=
+"/></td>
+                          </tr>
+                        </table>
+                        <table  align=3D"center" border=3D"0" cellpadding=
+=3D"0" cellspacing=3D"0" width=3D"75%">
+                          <tr>
+                            <td  height=3D"100"  style=3D" font-size: 26px;=
+mso-line-height-rule:exactly; line-height:60px; font-weight: 300; color: #f=
+fffff;" align=3D"left">Appointment Confirmed</td>
+                          </tr>
+                        </table></td>
+                    </tr>
+                    <tr>
+                      <td  height=3D"" style=3D""><table cellpadding=3D"0" =
+cellspacing=3D"0" height=3D"50" width=3D"100%">
+                          <tbody>
+                            <tr>
+                              <td width=3D"10%" align=3D"left">&nbsp;</td>
+<td valign=3D"bottom" align=3D"center" style=3D"border-color: #FFFFFF trans=
+parent;border-style: solid; border-width: 0 15px 15px;position:absolute;dis=
+play: block;height: 0;margin-top: 35px;width: 0; "></td>
+                            </tr>
+                          </tbody>
+                        </table></td>
+                    </tr>
+                  </tbody>
+                </table>
+               =20
+                <table class=3D"" border=3D"0" cellpadding=3D"0" cellspacin=
+g=3D"0" width=3D"100%">
+                  <tbody>
+                    <tr>
+                      <td height=3D"30">&nbsp;</td>
+                    </tr>
+                  </tbody>
+                </table>
+               =20
+                <table  align=3D"center" border=3D"0" cellpadding=3D"0" cel=
+lspacing=3D"0" width=3D"500">
+                  <tbody>
+                    <tr>
+                      <td align=3D"center"><table class=3D"" align=3D"cente=
+r" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"480">
+                          <tbody>
+                            <tr>
+                              <td align=3D"center"><table class=3D"" align=
+=3D"left" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"100%">
+                                  <tbody>
+                                    <tr>
+                                      <td style=3D"font-size:14px;" align=
+=3D"left">Dear Marcy Stowe,</td>
+                                    </tr>
+                                    <tr>
+                                      <td align=3D"left" height=3D"15"></td=
+>
+                                    </tr>
+                                    <tr>
+                                      <td style=3D" mso-line-height-rule:ex=
+actly; line-height:25px;  font-weight:normal; font-size:14px; " align=3D"le=
+ft">
+                                      =09Your video consultation with <b>Dr=
+. Dayne Sullivan</b> has been confirmed on <b>Wednesday Nov 12, 2025 at 11:=
+30 AM (US/Pacific) for 30 Minutes.</b>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        </td>
+                    </tr>
+                  </tbody>
+                </table>
+               =20
+                <table class=3D"" align=3D"center" border=3D"0" cellpadding=
+=3D"0" cellspacing=3D"0" width=3D"480">
+                  <tbody>
+                  =09<tr>
+                      <td height=3D"15">&nbsp;</td>
+                    </tr>
+                    <tr>
+                      <td height=3D"30" style=3D"font-size: 14px;">&nbsp;We=
+ look forward to seeing you via Zoom!</td>
+                    </tr>
+                    <tr>
+                      <td height=3D"15">&nbsp;</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <table class=3D"" align=3D"center" border=3D"0" cellpadding=
+=3D"0" cellspacing=3D"0" width=3D"480">
+                  <tbody>
+                    <tr>
+                       <td align=3D"center">
+                       <table class=3D"" align=3D"left" border=3D"0" cellpa=
+dding=3D"0" cellspacing=3D"0" width=3D"100%">
+                       =09<tbody>
+                            <tr>
+                              <td align=3D"center"><table class=3D"" align=
+=3D"left" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"100%">
+                                  <tbody>
+                                    <tr>
+                                      <td style=3D"font-size:14px; mso-line=
+-height-rule:exactly; line-height:25px;  font-weight:normal;  " align=3D"le=
+ft">Join the video session 30 minutes prior to appointment time, using the =
+link below. If clicking on the link doesn't work, copy and paste it into yo=
+ur browser.</td>
+                                    </tr>
+                                  </tbody>
+                                </table></td>
+                            </tr>
+                          </tbody>
+                       </table>
+                       </td>
+                    </tr>
+                  </tbody>
+                </table>
+               =20
+                <table class=3D"" align=3D"center" border=3D"0" cellpadding=
+=3D"0" cellspacing=3D"0" width=3D"480">
+                  <tbody>
+                  =09<tr>
+                      <td height=3D"15">&nbsp;</td>
+                    </tr>
+                    <tr>
+                      <td height=3D"30">&nbsp;https://chm.link/OycOkL</td>
+                    </tr>
+                    <tr>
+                      <td height=3D"15">&nbsp;</td>
+                    </tr>
+                  </tbody>
+                </table>
+               =20
+                <table class=3D"" align=3D"center" border=3D"0" cellpadding=
+=3D"0" cellspacing=3D"0" width=3D"480">
+                  <tbody>
+                    <tr>
+                      <td align=3D"center"><table class=3D"" align=3D"cente=
+r" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"100%">
+                          <tbody>
+                            <tr>
+                              <td style=3D"font-size:14px; line-height:20px=
+;  " align=3D"left"><br>Regards,<br />
+                                Administrator </td>
+                            </tr>
+                            <tr>
+                              <td style=3D"font-size:14px; line-height:20px=
+;" align=3D"left">AceMed Seattle</td>
+                            </tr>
+                            <tr>
+                              <td style=3D"font-size:14px; line-height:20px=
+;  " align=3D"left"> 123 2nd Ave S, Suite 230, Edmonds, WA 98020-8456</td>
+                            </tr>
+                          </tbody>
+                        </table></td>
+                    </tr>
+                  </tbody>
+                </table>
+               =20
+                <table width=3D"100%" cellspacing=3D"0" cellpadding=3D"0" b=
+order=3D"0" class=3D"">
+                  <tbody>
+                    <tr>
+                      <td height=3D"20">&nbsp;</td>
+                    </tr>
+                  </tbody>
+                </table>
+               =20
+               =20
+                <table  align=3D"center" bgcolor=3D"#ffc258" border=3D"0" c=
+ellpadding=3D"0" cellspacing=3D"0" width=3D"500">
+                  <tbody>
+                    <tr>
+                      <td align=3D"center"><table class=3D"" align=3D"cente=
+r" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"480">
+                          <tbody>
+                            <tr>
+                              <td><table cellpadding=3D"0" cellspacing=3D"0=
+" height=3D"10" width=3D"100%">
+                                  <tbody>
+                                    <tr>
+                                      <td width=3D"85%">&nbsp;</td>
+                                      <td valign=3D"bottom" align=3D"center=
+" style=3D"width: 0;height: 0;border-style: solid;border-width: 15px 15px 0=
+;border-color: #ffffff transparent transparent transparent;position:absolut=
+e;display: block;"></td>
+                                      <td width=3D""></td>
+                                    </tr>
+                                  </tbody>
+                                </table></td>
+                            </tr>
+                            <tr>
+                              <td  height=3D"45" align=3D"center"  valign=
+=3D"middle">
+                               =20
+                                <table class=3D"" align=3D"left" border=3D"=
+0" cellpadding=3D"0" cellspacing=3D"0"  style=3D"display:none !important;">
+                                  <tbody>
+                                    <tr>
+                                      <td><table class=3D"" align=3D"left" =
+border=3D"0" cellpadding=3D"0" cellspacing=3D"0"  >
+                                          <tbody>
+                                            <tr>
+                                              <td align=3D"center" valign=
+=3D"middle"><img src=3D"http://ehr.charmtracker.com/images/physician/email_=
+templates/map-icon.png" alt=3D"MapIcon" width=3D"20" height=3D"20" style=3D=
+"margin-right:10px;" /></td>
+                                              <td style=3D" color:#fff; fon=
+t-weight:300; font-size:13px;mso-line-height-rule:exactly;  color:#ffffff" =
+align=3D"center" valign=3D"bottom"></td>
+                                            </tr>
+                                          </tbody>
+                                        </table></td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                                <table class=3D"" align=3D"right" border=3D=
+"0" cellpadding=3D"0" cellspacing=3D"0" style=3D"display:block;">
+                                  <tbody>
+                                    <tr>
+                                      <td style=3D" font-weight:300; font-s=
+ize:20px;mso-line-height-rule:exactly; line-height:28px; color:#ffffff" ali=
+gn=3D"center" valign=3D"middle">CALL 206-681-1485</td>
+                                    </tr>
+                                  </tbody>
+                                </table></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                    </tr>
+                  </tbody>
+                </table>
+               =20
+               =20
+                <table class=3D"" bgcolor=3D"#3cbda9" border=3D"0" cellpadd=
+ing=3D"0" cellspacing=3D"0" width=3D"500">
+                  <tbody>
+                    <tr>
+                      <td  style=3D"font-size:11px; font-weight:normal; " a=
+lign=3D"left" height=3D"35"><table class=3D"" align=3D"center" border=3D"0"=
+ cellpadding=3D"0" cellspacing=3D"0" width=3D"480">
+                          <tbody>
+                            <tr>
+                              <td style=3D" color:#fff; font-size:12px;">Th=
+is is an automated email. PLEASE DO NOT REPLY.</td>
+                            </tr>
+                          </tbody>
+                        </table></td>
+                    </tr>
+                  </tbody>
+                </table>
+               =20
+            </tr>
+          </tbody>
+        </table></td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+</body></html>
+------=_Part_13692129_1933375309.1762802398861
+Content-Type: text/calendar;charset="UTF-8";method=REQUEST
+Content-Transfer-Encoding: 7bit
+Content-Class: urn:content-classes:calendarmessage
+Charset: UTF-8
+
+BEGIN:VCALENDAR
+PRODID:-//Charmhealth//ChARM Calendar-US//EN
+VERSION:2.0
+CALSCALE:GREGORIAN
+METHOD:REQUEST
+BEGIN:VEVENT
+UID:fc436cd6d15eb7aee18200fe84dccee14d1dd6689123ca93@charmhealth.com
+CLASS:PUBLIC
+TRANSP:TRANSPARENT
+DTSTART;TZID=US/Pacific:20251112T113000
+DTEND;TZID=US/Pacific:20251112T120000
+SUMMARY:Video Consult with Dr. Dayne Sullivan
+URL:https://chm.link/OycOkL
+DESCRIPTION:We look forward to seeing you via Zoom! \nVideo Consult link : https://chm.link/OycOkL
+LOCATION:https://chm.link/OycOkL
+ORGANIZER;CN=Dr. Dayne Sullivan:MAILTO:marcy@example.com
+END:VEVENT
+END:VCALENDAR
+
+------=_Part_13692129_1933375309.1762802398861--
+
+------=_Part_13692128_2086959398.1762802398860
+Content-Type: text/calendar; charset=UTF-8; name=appointment.ics
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename=appointment.ics
+
+QkVHSU46VkNBTEVOREFSDQpQUk9ESUQ6LS8vQ2hhcm1oZWFsdGgvL0NoQVJNIENhbGVuZGFyLVVT
+Ly9FTg0KVkVSU0lPTjoyLjANCkNBTFNDQUxFOkdSRUdPUklBTg0KTUVUSE9EOlJFUVVFU1QNCkJF
+R0lOOlZFVkVOVA0KVUlEOmZjNDM2Y2Q2ZDE1ZWI3YWVlMTgyMDBmZTg0ZGNjZWUxNGQxZGQ2Njg5
+MTIzY2E5M0BjaGFybWhlYWx0aC5jb20NCkNMQVNTOlBVQkxJQw0KVFJBTlNQOlRSQU5TUEFSRU5U
+DQpEVFNUQVJUO1RaSUQ9VVMvUGFjaWZpYzoyMDI1MTExMlQxMTMwMDANCkRURU5EO1RaSUQ9VVMv
+UGFjaWZpYzoyMDI1MTExMlQxMjAwMDANClNVTU1BUlk6VmlkZW8gQ29uc3VsdCB3aXRoIERyLiBE
+YXluZSBTdWxsaXZhbg0KVVJMOmh0dHBzOi8vY2htLmxpbmsvT3ljT2tMDQpERVNDUklQVElPTjpX
+ZSBsb29rIGZvcndhcmQgdG8gc2VlaW5nIHlvdSB2aWEgWm9vbSEgXG5WaWRlbyBDb25zdWx0IGxp
+bmsgOiBodHRwczovL2NobS5saW5rL095Y09rTA0KTE9DQVRJT046aHR0cHM6Ly9jaG0ubGluay9P
+eWNPa0wNCk9SR0FOSVpFUjtDTj1Eci4gRGF5bmUgU3VsbGl2YW46TUFJTFRPOm1hcmN5QGJhZGRv
+bWFpbi5jb20NCkVORDpWRVZFTlQNCkVORDpWQ0FMRU5EQVINCg==
+------=_Part_13692128_2086959398.1762802398860--

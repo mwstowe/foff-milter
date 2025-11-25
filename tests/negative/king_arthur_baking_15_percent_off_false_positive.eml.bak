@@ -1,0 +1,2373 @@
+Return-Path: <bounce+cc1b60.f0d23b-mstowe=example.com@em.kingarthurbaking.com>
+Received: from hotel.example.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.example.com (8.18.1/8.18.1) with ESMTPS id 5ABM60YH096209
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <user@example.com>; Tue, 11 Nov 2025 22:06:01 GMT
+	(envelope-from bounce+cc1b60.f0d23b-mstowe=example.com@em.kingarthurbaking.com)
+Authentication-Results: juliett.example.com;
+	dkim=pass (2048-bit key; unprotected) header.d=em.kingarthurbaking.com header.i=@em.kingarthurbaking.com header.b=Ajun/x75
+X-Authentication-Warning: juliett.example.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.example.com
+Received: from 23.static.em.kingarthurbaking.com (23.static.em.kingarthurbaking.com [204.220.186.23])
+	by hotel.example.com (8.16.1/8.16.1) with ESMTPS id 5ABM5xp3123786
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO)
+	for <user@example.com>; Tue, 11 Nov 2025 16:06:00 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.example.com 5ABM5xp3123786
+Authentication-Results: hotel.example.com;
+	dkim=pass (2048-bit key, unprotected) header.d=em.kingarthurbaking.com header.i=@em.kingarthurbaking.com header.a=rsa-sha256 header.s=mailo header.b=Ajun/x75
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=em.kingarthurbaking.com; q=dns/txt; s=mailo; t=1762898748; x=1762905948;
+ h=Message-Id: Reply-To: List-Unsubscribe: Sender: Sender: List-Unsubscribe-Post: To: To: From: From: Subject: Subject: Content-Type: Mime-Version: Date;
+ bh=9nhWcCXCDzwjlhh/N0lv5WN41vxnVH17/7XNLf9Tzxc=;
+ b=Ajun/x75FtlrncZfexqSs2FwWTPhKLcnKmzPfTILalepg+0nL8NzpDrvKc9xQ5NauoShOkJkuDgDJCfz6OEKxZUqOX2dr8pcU7dZOQHvnlZn+NHRTruhzMXAhyWVwR8xXTimEsBeXLxKGD/C69RQ2TWk35olBF7+ydbt7iAS891Wi2z2+9xcIdWTlwLOiFFiHS2Pzlll+jg27WoIHeFKM4LoErZoSjDrUsU9/2PN/xZuH3FVT3so3YBpdinNB+fCY8cJNdbFWYZBegxAd8inJX2Foo0fWx6Ybg4q/3dJEZVMG2O02wlznXhxyXgXyD1r7cVwTwJXtHkXof02Ey4Xfw==
+X-Mailgun-Sid: WyI1MzZhNiIsIm1zdG93ZUBiYWRkb21haW4uY29tIiwiZjBkMjNiIl0=
+Received: by 49c177a103b1e8038f926e22b9fe582afe826f962f32b940733ea70cee60e67b with HTTP
+ id 6913b33cc07a00a3eec34870; Tue, 11 Nov 2025 22:05:48 GMT
+X-Mailgun-Sending-Ip: 204.220.186.23
+Date: Tue, 11 Nov 2025 22:05:48 +0000
+Mime-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="e7320818e80bdf897c0d3af0e58248f0581b8acc9cc2a3313036569cd17c"
+Subject: =?UTF-8?q?Bake_More,_Spend_Less_=E2=80=94_15%_Off!?=
+From: King Arthur Baking <hello@em.kingarthurbaking.com>
+To: user@example.com
+X-Mailgun-Tag: us3:cb973830-3819-11f0-b80d-3697b8bbf344
+X-Mailgun-Tag: 46aca4ef-cb39-4da8-a631-704476187509
+X-Mailgun-Dkim: true
+X-Mailgun-Track-Opens: false
+X-Mailgun-Track: true
+X-Mailgun-Track-Clicks: false
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+Sender: King Arthur Baking <hello@em.kingarthurbaking.com>
+List-Unsubscribe: <https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production/unsub/CgxofmDopOTmPEsf930SIIT-pPC48Hecvn5X1WqkX8qHEJlXNOUPR9vioJerHc7J.DAMkkyAEaZoFVQ>,<mailto:unsubscribe-US3@us3-cdn.eng.bloomreach.com?subject=king-arthur-baking-production/unsub/CgxofmDopOTmPEsf930SIIT-pPC48Hecvn5X1WqkX8qHEJlXNOUPR9vioJerHc7J.DAMkkyAEaZoFVQ>
+Reply-To: noreply@em.kingarthurbaking.com
+X-Mailgun-Variables: {"Metadata":
+ "YToeYavMPRu57dYKEMuXODA4GRHwuA02l7i780QSDGh-YOik5OY8Sx_3fRoFZW1haWwylgEKDGkTXXDVwcpJyBj0zRIgMjUxMTExRVBfMTVwbzYwLUNTQ29va2llcy1yZXNlbmQYAyIgMjUxMTExRVBfMTVwbzYwLUNTQ29va2llcy1yZXNlbmQqI0Jha2UgTW9yZSwgU3BlbmQgTGVzcyDigJQgMTUlIE9mZiEgOcsw-c7sRNpBQhB1bmxpbWl0ZWQtcG9saWN5aAM6CGNhbXBhaWduQgxoXrRR7N-RVLyYPUk"}
+Message-Id: <20251111220548.5451cbc300b1d8ef@em.kingarthurbaking.com>
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.example.com [172.31.18.8]); Tue, 11 Nov 2025 22:06:01 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.example.com [23.95.222.152]); Tue, 11 Nov 2025 16:06:00 -0600 (CST)
+X-Spam-Flag: YES
+X-Spam-Flag: YES
+X-Spam-Flag: YES
+X-FOFF-Rule-Matched: Ecommerce Scams: Black Friday and fake savings scams (juliett.example.com)
+X-FOFF-Rule-Matched: Advanced Security: HTML Entity Obfuscation (juliett.example.com)
+X-FOFF-Rule-Matched: Ecommerce Scams: Black Friday and fake savings scams (hotel.example.com)
+X-FOFF-Rule-Matched: Advanced Security: HTML Entity Obfuscation (hotel.example.com)
+X-FOFF-Score: 100 - foff-milter v0.6.9 (juliett.example.com)
+X-FOFF-Score: 100 - foff-milter v0.6.9 (hotel.example.com)
+X-FOFF-Reject-Converted: WOULD-REJECT: Message rejected by heuristic analysis
+X-FOFF-Reject-Converted: WOULD-REJECT: Message rejected by heuristic analysis
+
+--e7320818e80bdf897c0d3af0e58248f0581b8acc9cc2a3313036569cd17c
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+
+[https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production/e/.eJwTUm=
+j5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klGJGSUlBsZW-fnFGfoFedmZeemJRS=
+UZpUVIiiK2XnJ9reNrg57k3LrccrQS4mEqLhbiScvLzc4tSE5MzwCLJQlypBUamhkCgm2jFDRTJ=
+FWJNzU3MzLFS4mIuTc4XkjY0Lcg3M9AtTs1LMdJNzs_Pzkwt1i1KBfGjQvX1k_JTKvVLEpNyUvV=
+LIOwi_ZIUiEi0YSymIDYRMDslswyME5PsLSzTTAwMjC1TzQ0NkhKNzWrATorPTLHKLS7JL091SE=
+pMSckHiuWBPFljYpiYkmRsYGpobmhpmGpkkcWTEbcl8M39iSF7Zth6NjAxAwA1O3i4.t4oEVRBm=
+BEi4Rg/click]
+
+[https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production/e/.eJwTUm=
+j5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klFJGSUlBsZW-fnFGfoFedmZeemJRS=
+UZpUVIiiK2XnJ-rb3ja4Oe5Ny63HK0EuJhKi4W4knLy83OLUhOTM8AiyUJcqQVGpoZAoJtoxQ0U=
+yRViTc1NzMyxUuJiLk3OF5I2NC3INzPQLU7NSzHSTc7Pz85MLdYtSgXxo0L19ZPyUyr1SxKTclL=
+1SyDsIv2SFIhItFEspiA2ETA7JbMMjBOT7C0s00wMDIwtU80NDZISjc1qwE6Kz0yxyi0uyS9PdU=
+hKTEnJB4rlgXxZY2KYmJJkbGBqaG5oaZhqZJHFkxG3JfDN_Ykhe2bYejYwMQMAh1d46Q.cKvFjb=
+QRzWH5Jg/click]
+
+# Cookie time!
+
+Everything you need to bake and share your favorite holiday treats.
+
+SHOP COOKIE ESSENTIALS [https://us3-cdn.eng.bloomreach.com/king-arthur-baki=
+ng-production/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klH1GSU=
+lBsZW-fnFGfoFedmZeemJRSUZpUVIiiK2XnJ-rn5yfk5OaXJKZn1cMZOdnZ6bqJhelJpZklmWWV=
+BqeNvh57o3LLUcrAS6m0mIhrqSc_PxcoHRyBlgkWYgrtcDI1BAIdBOtuIEiuUKsqbmJmTlWSlzM=
+pcn5QtKGpgX5Zga6xal5KUa6EAuKdYtSQfyoEH39pPyUSv2SxKScVP0SCLtIvyQFIhJtHIspiEM=
+ZmJuSWaafmGRvYZlmYmBgbJlqbmiQlGhsVgN2UXxmilVucUl-eapDUmJKSj5QLA8UAjUmhokpSc=
+YGpobmhpaGqUYWWTwZcVsC39yfGLJnhq1nAxMzAHUQhDg.6GfyRuOHU3bbbQ/click]
+
+[https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production/e/.eJwTUm=
+j5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klH1GSUlBsZW-fnFGfoFedmZeemJRS=
+UZpUVIiiK2XnJ-rn5yfk5OaXJKZn1cMZOdnZ6bqJhelJpZklmWWVBqeNvh57o3LLUcrAS6m0mIh=
+rqSc_PxcoHRyBlgkWYgrtcDI1BAIdBOtuIEiuUKsqbmJmTlWSlzMpcn5QtKGpgX5Zga6xal5KUa=
+6EAuKdYtSQfyoCH39pPyUSv2SxKScVP0SCLtIvyQFIhJtHIspiEWZSSyUm5JZBsaJSfYWlmkmBg=
+bGlqnmhgZJicZmNWBXxWemWOUWl-SXpzokJaak5APF8kChUGNimJiSZGxgamhuaGmYamSRxZMRt=
+yXwzf2JIXtm2Ho2MDEDAJKWha8.oLnjPG9-Kyv8tg/click]
+
+[https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production/e/.eJwTUm=
+j5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klHNGSUlBsZW-fnFGfoFedmZeemJRS=
+UZpUVIiiK2XnJ-rn1mSmlusnw7kphYlFaUmpugmJ2an6ibn52dnpurmZlYYnjb4ee6Nyy1HKwEu=
+ptJiIa6knPz8XKDK5AywSLIQV2qBkakhEOgmWnEDRXKFWFNzEzNzrJS4mEuT84WkDU0L8s0MdIt=
+T81KMoCYX6xalgvhR0fr6SfkplfoliUk5qfolEHaRfkkKRCTaJBZTEFkk2jAWqhLEAKtJySwD48=
+QkewvLNBMDA2PLVHNDg6REY7MasMPiM1OscotL8stTHZISU1LygWJ5oMCoMTFMTEkyNjA1NDe0N=
+Ew1ssjiyYjbEvjm_sSQPTNsPRuYmAHMjIeS.ekbU2XrLJAbm3w/click]
+
+### Gingerbread Cake & Cookie Mix [https://us3-cdn.eng.bloomreach.com/king-=
+arthur-baking-production/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8=
+te-6klHNGSUlBsZW-fnFGfoFedmZeemJRSUZpUVIiiK2XnJ-rn1mSmlusnw7kphYlFaUmpugmJ2=
+an6ibn52dnpurmZlYYnjb4ee6Nyy1HKwEuptJiIa6knPz8XKDK5AywSLIQV2qBkakhEOgmWnEDR=
+XKFWFNzEzNzrJS4mEuT84WkDU0L8s0MdItT81KMoCYX6xalgvhRYfr6SfkplfoliUk5qfolEHaR=
+fkkKRCTaJBZTEFkk2jAWqtIoFqomw1g_McnewjLNxMDA2DLV3NAgKdHYrAbspvjMFKvc4pL88lS=
+HpMSUlHygWB4oHGpMDBNTkowNTA3NDS0NU40ssngy4rYEvrk_MWTPDFvPBiZmAAbihXQ.xoEff3=
+knEYa8ZA/click]
+
+SHOP NOW [https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production/=
+e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klHNGSUlBsZW-fnFGfoFe=
+dmZeemJRSUZpUVIiiK2XnJ-rn1mSmlusnw7kphYlFaUmpugmJ2an6ibn52dnpurmZlYYnjb4ee6=
+Nyy1HKwEuptJiIa6knPz8XKDK5AywSLIQV2qBkakhEOgmWnEDRXKFWFNzEzNzrJS4mEuT84WkDU=
+0L8s0MdItT81KMoCYX6xalgvhR4fr6SfkplfoliUk5qfolEHaRfkkKRCTaJBZTEFkk2jAWqtI4F=
+qomJbNMPzHJ3sIyzcTAwNgy1dzQICnR2KwG7Kj4zBSr3OKS_PJUh6TElJR8oFgeKCBqTAwTU5KM=
+DUwNzQ0tDVONLLJ4MuK2BL65PzFkzwxbzwYmZgCojoYe.6Ei7LXqHbSd8Tw/click]
+
+[https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production/e/.eJwTUm=
+j5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klEVGSUlBsZW-fnFGfoFedmZeemJRS=
+UZpUVIiiK2XnJ-rn1mSmlusX1wKlNFNzs_PzkzVzc2sMDxt8PPcG5dbjlYCXEylxUJcSTn5-blF=
+qYnJGWCRZCGu1AIjU0Mg0E204gaK5AqxpuYmZuZYKXExlybnC0kbmhbkmxnoFqfmpRhBTS7WLUo=
+F8aOi9fWT8lMq9UsSk3JS9Usg7CL9khSISLRJLKYgski0USxUpWEsVE1KZhkYJybZW1immRgYGF=
+ummhsaJCUam9WAHRafmWKVW1ySX57qkJSYkpIPFMsDhUCNiWFiSpKxgamhuaGlYaqRRRZPRtyWw=
+Df3J4bsmWHr2cDEDACXJYNv.8c5ss1aWeg-BLg/click]
+
+### Sugar
+  Cookie Mix [https://us3-cdn.eng.bloomreach.com/king-arthur-baking-product=
+ion/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klEVGSUlBsZW-fnFG=
+foFedmZeemJRSUZpUVIiiK2XnJ-rn1mSmlusX1wKlNFNzs_PzkzVzc2sMDxt8PPcG5dbjlYCXEy=
+lxUJcSTn5-blFqYnJGWCRZCGu1AIjU0Mg0E204gaK5AqxpuYmZuZYKXExlybnC0kbmhbkmxnoFq=
+fmpRhBTS7WLUoF8aPC9PWT8lMq9UsSk3JS9Usg7CL9khSISLRJLKYgski0USxUJYgBVpNhrJ-YZ=
+G9hmWZiYGBsmWpuaJCUaGxWA3ZTfGaKVW5xSX55qkNSYkpKPlAsD-T5GhPDxJQkYwNTQ3NDS8NU=
+I4ssnoy4LYFv7k8M2TPD1rOBiRkA5huBUQ.GVQQ3IpxJtPPJg/click]
+
+SHOP NOW [https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production/=
+e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klEVGSUlBsZW-fnFGfoFe=
+dmZeemJRSUZpUVIiiK2XnJ-rn1mSmlusX1wKlNFNzs_PzkzVzc2sMDxt8PPcG5dbjlYCXEylxUJ=
+cSTn5-blFqYnJGWCRZCGu1AIjU0Mg0E204gaK5AqxpuYmZuZYKXExlybnC0kbmhbkmxnoFqfmpR=
+hBTS7WLUoF8aPC9fWT8lMq9UsSk3JS9Usg7CL9khSISLRJLKYgski0USxUpXEsVE1KZpl-YpK9h=
+WWaiYGBsWWquaFBUqKxWQ3YUfGZKVa5xSX55akOSYkpKflAsTyQ72tMDBNTkowNTA3NDS0NU40s=
+sngy4rYEvrk_MWTPDFvPBiZmAIOzgfs.lEln6MTc-bIBmw/click]
+
+[https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production/e/.eJwTUm=
+j5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klFVGSUlBsZW-fnFGfoFedmZeemJRS=
+UZpUVIiiK2XnJ-rn1mSmlusX5yXX56WmJOjW1xQlJmXnZNabHja4Oe5Ny63HK0EuJhKi4W4knLy=
+83OLUhOTM8AiyUJcqQVGpoZAoJtoxQ0UyRViTc1NzMyxUuJiLk3OF5I2NC3INzPQLU7NSzHSTc7=
+Pz85MLdYtSgXxo6L19ZPyUyr1SxKTclL1SyDsIv2SFIhItGkspiCySLRhLFQliAFWk5JZBsaJSf=
+YWlmkmBgbGlqnmhgZJicZmNWCHxWemWOUWl-SXpzokJaak5APF8kBhUGNimJiSZGxgamhuaGmYa=
+mSRxZMRtyXwzf2JIXtm2Ho2MDEDACkfhJs.GQxYmISop51Qvw/click]
+
+### Snowfall Sprinkles [https://us3-cdn.eng.bloomreach.com/king-arthur-baki=
+ng-production/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klFVGSU=
+lBsZW-fnFGfoFedmZeemJRSUZpUVIiiK2XnJ-rn1mSmlusX5yXX56WmJOjW1xQlJmXnZNabHja4=
+Oe5Ny63HK0EuJhKi4W4knLy83OLUhOTM8AiyUJcqQVGpoZAoJtoxQ0UyRViTc1NzMyxUuJiLk3O=
+F5I2NC3INzPQLU7NSzHSTc7Pz85MLdYtSgXxo8L09ZPyUyr1SxKTclL1SyDsIv2SFIhItGkspiC=
+ySLRhLFSlUSxUTYaxfmKSvYVlmomBgbFlqrmhQVKisVkN2E3xmSlWucUl-eWpDkmJKSn5QLE8kP=
+drTAwTU5KMDUwNzQ0tDVONLLJ4MuK2BL65PzFkzwxbzwYmZgByOYJ9.2aDXKo64X2kIgw/click=
+]
+
+SHOP NOW [https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production/=
+e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klFVGSUlBsZW-fnFGfoFe=
+dmZeemJRSUZpUVIiiK2XnJ-rn1mSmlusX5yXX56WmJOjW1xQlJmXnZNabHja4Oe5Ny63HK0EuJh=
+Ki4W4knLy83OLUhOTM8AiyUJcqQVGpoZAoJtoxQ0UyRViTc1NzMyxUuJiLk3OF5I2NC3INzPQLU=
+7NSzHSTc7Pz85MLdYtSgXxo8L19ZPyUyr1SxKTclL1SyDsIv2SFIhItGkspiCySLRhLFSlcSxUT=
+UpmmX5ikr2FZZqJgYGxZaq5oUFSorFZDdhR8ZkpVrnFJfnlqQ5JiSkp-UCxPJD_a0wME1OSjA1M=
+Dc0NLQ1TjSyyeDLitgS-uT8xZM8MW88GJmYAEP2DJw.t1payJ8ePTHiIg/click]
+
+[https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production/e/.eJwTUm=
+j5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klH1GSUlBsZW-fnFGfoFedmZeemJRS=
+UZpUVIiiK2XnJ-rn1mSmlusn5dYUlqUmKOblp-fopucn5NfVKxbnFpieNrg57k3LrccrQS4mEqL=
+hbiScvLzc4tSE5MzwCLJQlypBUamhkCgm2jFDRTJFWJNzU3MzLFS4mIuTc4XkjY0Lcg3MwAalpd=
+iBDQ5PzsztVi3KBXEj4rW10_KT6nUL0lMyknVL4Gwi_RLUiAi0aaxmILIItFGsVCVhrFQNSmZZW=
+CcmGRvYZlmYmBgbJlqbmiQlGhsVgN2WHxmilVucUl-eapDUmJKSj5QLA8UEDUmhokpScYGpobmh=
+paGqUYWWTwZcVsC39yfGLJnhq1nAxMzAK2ghjc.gMrEKuW0VYBxgw/click]
+
+### Natural Food Colors Set [https://us3-cdn.eng.bloomreach.com/king-arthur=
+-baking-production/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6kl=
+H1GSUlBsZW-fnFGfoFedmZeemJRSUZpUVIiiK2XnJ-rn1mSmlusn5dYUlqUmKOblp-fopucn5Nf=
+VKxbnFpieNrg57k3LrccrQS4mEqLhbiScvLzc4tSE5MzwCLJQlypBUamhkCgm2jFDRTJFWJNzU3=
+MzLFS4mIuTc4XkjY0Lcg3MwAalpdiBDQ5PzsztVi3KBXEj4rU10_KT6nUL0lMyknVL4Gwi_RLUi=
+Ai0aaxmILIItFGsVCVIAZYTYaxfmK0YWySvYVlmomBgbFlqrmhQVKisVkN2FnxmSlWucUl-eWpD=
+kmJKSn5QLE8UDDUmBgmpiQZG5gamhtaGqYaWWTxZMRtCXxzf2LInhm2ng1MzAB05YUF.hJVJvR2=
+IK2trRA/click] [https://us3-cdn.eng.bloomreach.com/king-arthur-baking-produ=
+ction/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klH9GSUlBsZW-fn=
+FGfoFedmZeemJRSUZpUVIiiK2XnJ-rn1mSmlusn5dYUlqUmKOblp-fopucn5NfVKxbnFqinFxaX=
+JKfm1oUlFqWmVpebHja4Oe5Ny63HK0EuJhKi4W4knLy83OLUhOTM8AiyUJcqQVGpoZAoJtoxQ0U=
+yRViTc1NzMyxUuJiLk3OF5I2NC3INzMAGp6XYgS0KT87M7VYtygVxI-K1NdPyk-p1C9JTMpJ1S-=
+BsIv0S1IgItGmsZiCyCLRRrFQlSAGWE2GsX4ikJdkb2GZZmJgYGyZam5okJRobFYDdlZ8ZopVLt=
+CL5akOSYkpKflAsTxQsNSYGCamJBkbmBqaG1oaphpZZPFkxG0JfHN_YsieGbaeDUzMADrpi5A.j=
+6ZZagnHz4_aww/click]
+
+SHOP NOW [https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production/=
+e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klH1GSUlBsZW-fnFGfoFe=
+dmZeemJRSUZpUVIiiK2XnJ-rn1mSmlusn5dYUlqUmKOblp-fopucn5NfVKxbnFpieNrg57k3Lrc=
+crQS4mEqLhbiScvLzc4tSE5MzwCLJQlypBUamhkCgm2jFDRTJFWJNzU3MzLFS4mIuTc4XkjY0Lc=
+g3MwAalpdiBDQ5PzsztVi3KBXEjwrX10_KT6nUL0lMyknVL4Gwi_RLUiAi0aaxmILIItFGsVCVx=
+rFQNSmZZfqJSfYWlmkmBgbGlqnmhgZJicZmNWBHxWemWOUWl-SXpzokJaak5APF8kCBUGNimJiS=
+ZGxgamhuaGmYamSRxZMRtyXwzf2JIXtm2Ho2MDEDAI8OhMM.2ZmsrSBffpuBdQ/click]
+
+[https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production/e/.eJwTUm=
+j5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klFdGSUlBsZW-fnFGfoFedmZeemJRS=
+UZpUVIiiK2XnJ-rn1mSmlusn5Gfk5mSWKlblpmTk5ieqluQX6CbX1qim1xaUpJapFucWmJ42uDn=
+uTcutxytBLiYSouFuJJy8vNzi1ITkzPAIslCXKkFRqaGQKCbaMUNFMkVYk3NTczMsVLiYi5Nzhe=
+SNjQtyDczABqWl2Kkm5yfn52ZWqxblAriR0Xr6yflp1TqlyQm5aTql0DYRfolKRCRaLNYTEFkkW=
+jDWKhKEAOsJiWzDIwTk-wtLNNMDAyMLVPNDQ2SEo3NasAOi89MscotLskvT3VISkxJyQeK5YHCp=
+MbEMDElydjA1NDc0NIw1cgiiycjbkvgm_sTQ_bMsPVsYGIGACAGinc.ZvgCc1LrEZvpcw/click=
+]
+
+### Holiday Village Pop-Out Cookie Cutters [https://us3-cdn.eng.bloomreach.=
+com/king-arthur-baking-production/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU3=
+73248WTF8te-6klFdGSUlBsZW-fnFGfoFedmZeemJRSUZpUVIiiK2XnJ-rn1mSmlusn5Gfk5mSW=
+KlblpmTk5ieqluQX6CbX1qim1xaUpJapFucWmJ42uDnuTcutxytBLiYSouFuJJy8vNzi1ITkzPA=
+IslCXKkFRqaGQKCbaMUNFMkVYk3NTczMsVLiYi5NzheSNjQtyDczABqWl2Kkm5yfn52ZWqxblAr=
+iR0Xq6yflp1TqlyQm5aTql0DYRfolKRCRaLNYTEFkkWjDWKhKo1iomgxj_USgcJK9hWWaiYGBsW=
+WquaFBUqKxWQ3YWfGZKVa5xSX55akOSYkpKflAsTxQiNSYGCamJBkbmBqaG1oaphpZZPFkxG0Jf=
+HN_YsieGbaeDUzMAN68iUU.UhZGb_87FOGIlw/click] [https://us3-cdn.eng.bloomreac=
+h.com/king-arthur-baking-production/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJ=
+U373248WTF8te-6kVFRGSUlBsZW-fnFGfoFedmZeemJRSUZpUVIiiK2XnJ-rn1mSmlusn5Gfk5m=
+SWKlblpmTk5ieqluQX6CbX1qim1xaUpJapFucWqKcXFpckp-bWhSUWpaZWl5seNrg57k3LrccrQ=
+S4mEqLhbiScvLzc4tSE5MzwCLJQlypBUamhkCgm2jFDRTJFWJNzU3MzLFS4mIuTc4XkjY0Lcg3M=
+wAanpdipJucn5-dmVqsW5QK4kdF6usn5adU6pckJuWk6pdA2EX6JSkQkWizWExBZJFow1ioSqNY=
+qJoMY_1EIC_J3sIyzcTAwNgy1dzQICnR2KwG7Kz4zBSrXKAXy1MdkhJTUvKBYnmgEKoxMUxMSTI=
+2MDU0N7Q0TDWyyOLJiNsS-Ob-xJA9M2w9G5iYAelwj9A.BC7__fvVToJPMw/click]
+
+SHOP NOW [https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production/=
+e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klFdGSUlBsZW-fnFGfoFe=
+dmZeemJRSUZpUVIiiK2XnJ-rn1mSmlusn5Gfk5mSWKlblpmTk5ieqluQX6CbX1qim1xaUpJapFu=
+cWmJ42uDnuTcutxytBLiYSouFuJJy8vNzi1ITkzPAIslCXKkFRqaGQKCbaMUNFMkVYk3NTczMsV=
+LiYi5NzheSNjQtyDczABqWl2Kkm5yfn52ZWqxblAriR4Xr6yflp1TqlyQm5aTql0DYRfolKRCRa=
+LNYTEFkkWjDWKhK41iompTMMv3EJHsLyzQTAwNjy1RzQ4OkRGOzGrCj4jNTrHKLS_LLUx2SElNS=
+8oFieaDwqDExTExJMjYwNTQ3tDRMNbLI4smI2xL45v7EkD0zbD0bmJgB8GWJAw.CO4kxgWMO-aX=
+rw/click]
+
+[https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production/e/.eJwTUm=
+j5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klHdGSUlBsZW-fnFGfoFedmZeemJRS=
+UZpUVIiiK2XnJ-rn1mSmlusX5aZV5KYnqqbX5SXmJuaV1Ksm5yfn52ZqptcWlKSWqRbnFpieNrg=
+57k3LrccrQS4mEqLhbiScvLzc4tSE5MzwCLJQlypBUamhkCgm2jFDRTJFWJNzU3MzLFS4mIuTc4=
+XkjY0Lcg3MwAalpdiBLWgWLcoFcSPitbXT8pPqdQvSUzKSdUvgbCL9EtSICLRZrGYgsgi0UaxUJ=
+WGsVA1KZllYJyYZG9hmWZiYGBsmWpuaJCUaGxWA3ZYfGaKVW5xSX55qkNSYkpKPlAsDxQoNSaGi=
+SlJxgamhuaGloapRhZZPBlxWwLf3J8YsmeGrWcDEzMA_DCLFg.UrBF5dqV07GT5g/click]
+
+### Vintage Ornaments Cookie Cutter Set
+
+SHOP NOW [https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production/=
+e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klHdGSUlBsZW-fnFGfoFe=
+dmZeemJRSUZpUVIiiK2XnJ-rn1mSmlusX5aZV5KYnqqbX5SXmJuaV1Ksm5yfn52ZqptcWlKSWqR=
+bnFpieNrg57k3LrccrQS4mEqLhbiScvLzc4tSE5MzwCLJQlypBUamhkCgm2jFDRTJFWJNzU3MzL=
+FS4mIuTc4XkjY0Lcg3MwAalpdiBLWgWLcoFcSPCtfXT8pPqdQvSUzKSdUvgbCL9EtSICLRZrGYg=
+sgi0UaxUJXGsVA1KZll-olJ9haWaSYGBsaWqeaGBkmJxmY1YEfFZ6ZY5RaX5JenOiQlpqTkA8Xy=
+QAFSY2KYmJJkbGBqaG5oaZhqZJHFkxG3JfDN_Ykhe2bYejYwMQMAyiKJog.EeLQaE59FAzNmA/c=
+lick]
+
+[https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production/e/.eJwTUm=
+j5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klGtGSUlBsZW-fnFGfoFedmZeemJRS=
+UZpUVIiiK2XnJ-rn5yTWFycWqyfnJ-fnZmqmwrk5JVkJuYU6-bn6aak5ibmpRieNvh57o3LLUcr=
+AS6m0mIhrqSc_PzcotTE5AywSLIQV2qBkakhEOgmWnEDRXKFWIE6M3OslLiYS5PzhaQNTQvyzQx=
+0gWanGOlCrCrWLUoF8aMi9PWT8lMq9UsSk3JS9Usg7CL9khSISLR5LKYgski0YSxMEKwgJbMMjB=
+OT7C0s00wMDIwtU80NDZISjc1qwK6Kz0yxyi0uyS9PdUhKTEnJB4rlgcKixsQwMSXJ2MDU0NzQ0=
+jDVyCKLJyNuS-Cb-xND9syw9WxgYgYAnayHnA.Es7VWz3idMfaoA/click]
+
+### ON-DEMAND CLASS
+
+# Cookie Decorating Essentials
+
+Learn the art of cookie decorating, from baking perfect sugar cookies to ma=
+stering royal icing techniques like outlining, flooding, and intricate desi=
+gns.
+
+SHOP NOW [https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production/=
+e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klGtGSUlBsZW-fnFGfoFe=
+dmZeemJRSUZpUVIiiK2XnJ-rn5yTWFycWqyfnJ-fnZmqmwrk5JVkJuYU6-bn6aak5ibmpRieNvh=
+57o3LLUcrAS6m0mIhrqSc_PzcotTE5AywSLIQV2qBkakhEOgmWnEDRXKFWIE6M3OslLiYS5Pzha=
+QNTQvyzQx0gWanGOlCrCrWLUoF8aPC9fWT8lMq9UsSk3JS9Usg7CL9khSISLR5LKYgski0USxUp=
+UksVE1KZpl-YpK9hWWaiYGBsWWquaFBUqKxWQ3YUfGZKVa5xSX55akOSYkpKflAsTxQUNSYGCam=
+JBkbmBqaG1oaphpZZPFkxG0JfHN_YsieGbaeDUzMAAVFhxY.agIGV3bZbWUr7w/click]
+
+## Must-try cookies
+
+### MADE FOR SHARING
+
+[https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production/e/.eJwTUm=
+j5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klHdGSUlBsZW-fnl5uV52Zl56YlFJR=
+mlRUiKIrZecn6tflJqcWZBarJ8OFEgtSipKTUzRTS7KzMvOSdVNzs_Pzkwt1oWoMTxt8PPcG5db=
+jlYCXEylxUJcSTn5-blADckZYJFkIa7UAiNTQyDQTbTiBorkCrGm5iZm5lgpcTGXJucLSRuaFuS=
+bGegWp-alGCGZDuJHxejrJ-WnVOqXJCblpOqXQNhF-iUpEJFoQ4NYTFFkkWjDWJjSWKialMwyME=
+5MsrewTDMxMDC2TDU3NEhKNDarAbssPjPFKre4JL881SEpMSUlHyiWBwqWGhPDxJQkYwNTQ3NDS=
+8NUI4ssnoy4LYFv7k8M2TPD1rOBiRkAWgeLLQ.1SK6-FeBNQ1nOg/click]
+
+### =E2=98=85=E2=98=85=E2=98=85=E2=98=85=E2=98=85
+
+Gingerbread Crinkle Cookies [https://us3-cdn.eng.bloomreach.com/king-arthur=
+-baking-production/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6kl=
+HdGSUlBsZW-fnl5uV52Zl56YlFJRmlRUiKIrZecn6tflJqcWZBarJ8OFEgtSipKTUzRTS7KzMvO=
+SdVNzs_Pzkwt1oWoMTxt8PPcG5dbjlYCXEylxUJcSTn5-blADckZYJFkIa7UAiNTQyDQTbTiBor=
+kCrGm5iZm5lgpcTGXJucLSRuaFuSbGegWp-alGCGZDuJHRenrJ-WnVOqXJCblpOqXQNhF-iUpEJ=
+FoQ4NYTFFkkWjDWKhS41iompTMMv0C_cQkewvLNBMDA2PLVHNDg6REY7MasLviM1OscotL8stTH=
+ZISU1LygWJ5oECpMTFMTEkyNjA1NDe0NEw1ssjiyYjbEvjm_sSQPTNsPRuYmAE33opa.54JQbqb=
+07_S23A/click]
+
+[https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production/e/.eJwTUm=
+j5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klFdGSUlBsZW-fnl5uV52Zl56YlFJR=
+mlRUiKIrZecn6tflJqcWZBarF-cn1aim1aUX1ySmqJbXApUqJucn5-dmVqsC1FieNrg57k3Lrcc=
+rQS4mEqLhbiScvLzc4tSE5MzwCLJQlypBUamhkCgm2jFDRTJFWJNzU3MzLFS4mIuTc4XkjY0Lcg=
+3M9AtTs1LMUIyHcSPitHXT8pPqdQvSUzKSdUvgbCL9EtSICLRhgaxmKLIItHGsTClsVA1KZllYJ=
+yYZG9hmWZiYGBsmWpuaJCUaGxWA3ZZfGaKVW5xSX55qkNSYkpKPlAsDxQqNSaGiSlJxgamhuaGl=
+oapRhZZPBlxWwLf3J8YsmeGrWcDEzMAw_yKzg.hFFqwyF-YFJIvw/click]
+
+### =E2=98=85=E2=98=85=E2=98=85=E2=98=85=E2=98=86
+
+Soft Frosted Sugar Cookies [https://us3-cdn.eng.bloomreach.com/king-arthur-=
+baking-production/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klF=
+dGSUlBsZW-fnl5uV52Zl56YlFJRmlRUiKIrZecn6tflJqcWZBarF-cn1aim1aUX1ySmqJbXApUq=
+Jucn5-dmVqsC1FieNrg57k3LrccrQS4mEqLhbiScvLzc4tSE5MzwCLJQlypBUamhkCgm2jFDRTJ=
+FWJNzU3MzLFS4mIuTc4XkjY0Lcg3M9AtTs1LMUIyHcSPitLXT8pPqdQvSUzKSdUvgbCL9EtSICL=
+RhgaxmKLIItHGsVClIAZYTUpmmX6BfmKSvYVlmomBgbFlqrmhQVKisVkN2F3xmSlWucUl-eWpDk=
+mJKSn5QLE8UJjUmBgmpiQZG5gamhtaGqYaWWTxZMRtCXxzf2LInhm2ng1MzACikYn7.CIgUVdqv=
+gDsc9A/click]
+
+[https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production/e/.eJwTUm=
+j5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klElGSUlBsZW-fnFGfoFedmZeemJRS=
+UZpUVIiiK2XnJ-rD6SLUlMyU_NKivWLS4HyxYanDX6ee-Nyy9FKgIuptFiIKyknPz-3KDUxOQMs=
+kizElVpgZGoIBLqJVtxAkVwh1tTcxMwcKyUu5tLkfCFpQ9OCfDMD3eLUvBQj3eT8_OzM1GLdolQ=
+QPypGXz8pP6VSvyQxKSdVvwTCLtIvSYGIRBsaxmKKIotEgxSAlRrFQtWkZJaBcWKSvYVlmomBgb=
+FlqrmhQVKisVkN2GXxmSlWucUl-eWpDkmJKSn5QLE8kPdrTAwTU5KMDUwNzQ0tDVONLLJ4MuK2B=
+L65PzFkzwxbzwYmZgAaHoJl.YIipOjGuiYeOaA/click]
+
+### Add a little sparkle
+
+Dress up your holiday cookies with decorations that dazzle
+
+SHOP NOW [https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production/=
+e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klElGSUlBsZW-fnFGfoFe=
+dmZeemJRSUZpUVIiiK2XnJ-rD6SLUlMyU_NKivWLS4HyxYanDX6ee-Nyy9FKgIuptFiIKyknPz-=
+3KDUxOQMskizElVpgZGoIBLqJVtxAkVwh1tTcxMwcKyUu5tLkfCFpQ9OCfDMD3eLUvBQj3eT8_O=
+zM1GLdolQQPypCXz8pP6VSvyQxKSdVvwTCLtIvSYGIRBsaxmKKIotEG8VClRrHQtWkZJbpJybZW=
+1immRgYGFummhsaJCUam9WAXRWfmWKVW1ySX57qkJSYkpIPFMsDeb3GxDAxJcnYwNTQ3NDSMNXI=
+IosnI25L4Jv7E0P2zLD1bGBiBgAK2YDx.HRgUChWHhGtMmQ/click]
+
+SAVE 15% ON ORDERS OVER $60 [https://us3-cdn.eng.bloomreach.com/king-arthur=
+-baking-production/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6kl=
+GJGSUlBsZW-fnFGfoFedmZeemJRSUZpUVIiiK2XnJ9reNrg57k3LrccrQS4mEqLhbiScvLzc4tS=
+E5MzwCLJQlypBUamhkCgm2jFDRTJFWJNzU3MzLFS4mIuTc4XkjY0Lcg3M9AtTs1LMdJNzs_Pzkw=
+t1i1KBfGjgvT1k_JTKvVLEpNyUvVLIOwi_ZIUiEi0oVEspig2ETA7JbNMPzHJ3sIyzcTAwNgy1d=
+zQICnR2KwG7J74zBSr3OKS_PJUh6TElJR8oFgeyIc1JoaJKUnGBqaG5oaWhqlGFlk8GXFbAt_cn=
+xiyZ4atZwMTMwCvsXd1.EAW-jc62vyePCA/click]
+
+[https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production/e/.eJwTUm=
+j5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klH9GSUlBsZW-fnFGfoFedmZeemJRS=
+UZpUVIiiK2XnJ-rn5yfk5OaXJKZn1esn5tYnJ-nm5xYnKGblliUW5lYlKKbm1kBVKqblF-eU6xv=
+eNrg57k3LrccrQS4mEqLhbiScvLzc4tSE5MzwCLJQlypBUamhkCgm2jFDRTJFWJNzU3MzLFS4mI=
+uTc4XkjY0Lcg3M9AtTs1LMdJNzs_Pzkwt1i1KBfGjYvT1k_JTKvVLEpNyUvVLIOwi_ZIUiEi0oX=
+EspiiySLRhLFSpUSxUTUpmGRgnJtlbWKaZGBgYW6aaGxokJRqb1YBdFp-ZYpVbXJJfnuqQlJiSk=
+g8UywOFTI2JYWJKkrGBqaG5oaVhqpFFFk9G3JbAN_cnhuyZYevZwMQMAJwejJk.AJsyp4DArUvp=
+mQ/click]
+
+### Mason Cash on sale
+
+30% off the exclusive Farmyard pattern mixing bowls
+
+GET MIXING [https://us3-cdn.eng.bloomreach.com/king-arthur-baking-productio=
+n/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klH9GSUlBsZW-fnFGfo=
+FedmZeemJRSUZpUVIiiK2XnJ-rn5yfk5OaXJKZn1esn5tYnJ-nm5xYnKGblliUW5lYlKKbm1kBV=
+KqblF-eU6xveNrg57k3LrccrQS4mEqLhbiScvLzc4tSE5MzwCLJQlypBUamhkCgm2jFDRTJFWJN=
+zU3MzLFS4mIuTc4XkjY0Lcg3M9AtTs1LMdJNzs_Pzkwt1i1KBfGjIvT1k_JTKvVLEpNyUvVLIOw=
+i_ZIUiEi0oXEspiiySLRhLFSpaSxUTUpmmX5ikr2FZZqJgYGxZaq5oUFSorFZDdhV8ZkpVrnFJf=
+nlqQ5JiSkp-UCxPFCo1JgYJqYkGRuYGpobWhqmGllk8WTEbQl8c39iyJ4Ztp4NTMwAZGCLJg.U9=
+MSjwsljIX_ag/click]
+
+[https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production/e/.eJwTUm=
+j5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klHpGSUlBsZW-fnFGfoFedmZeemJRS=
+UZpUVIiiK2XnJ-rn56ZVlJseNrg57k3LrccrQS4mEqLhbiScvLzc4tSE5MzwCLJQlypBUamhkCg=
+m2jFDRTJFWJNzU3MzLFS4mIuTc4XkjY0Lcg3M9AtTs1LMdJNzs_Pzkwt1i1KBfGjYvT1k_JTKvV=
+LEpNyUvVLIOwi_ZIUiEi0oXEspiiySDRIAVipUSxUTUpmGRgnJtlbWKaZGBgYW6aaGxokJRqb1Y=
+BdFp-ZYpVbXJJfnuqQlJiSkg8UywP5uMbEMDElydjA1NDc0NIw1cgiiycjbkvgm_sTQ_bMsPVsY=
+GIGAJzHfRk.yP1FjY8-DRXLng/click]
+
+### Holiday gifts
+
+Great gifts for all your favorite bakers
+
+GET GIFTING [https://us3-cdn.eng.bloomreach.com/king-arthur-baking-producti=
+on/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klHpGSUlBsZW-fnFGf=
+oFedmZeemJRSUZpUVIiiK2XnJ-rn56ZVlJseNrg57k3LrccrQS4mEqLhbiScvLzc4tSE5MzwCLJ=
+QlypBUamhkCgm2jFDRTJFWJNzU3MzLFS4mIuTc4XkjY0Lcg3M9AtTs1LMdJNzs_Pzkwt1i1KBfG=
+jIvT1k_JTKvVLEpNyUvVLIOwi_ZIUiEi0oXEspiiySDRIAVipaSxUTUpmmX5ikr2FZZqJgYGxZa=
+q5oUFSorFZDdhV8ZkpVrnFJfnlqQ5JiSkp-UCxPJBva0wME1OSjA1MDc0NLQ1TjSyyeDLitgS-u=
+T8xZM8MW88GJmYAowl7pg.k_-JHOylwhweKg/click]
+
+[https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production/e/.eJwTUm=
+j5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klGFGSUlBsZW-fnl5uV52Zl56YlFJR=
+mlRUiKIrZecn6tfnFtsn51aWZ5flGKblZ-ZZ3ja4Oe5Ny63HK0EuJhKi4W4knLy83OLUhOTM8Ai=
+yUJcqQVGpoZAoJtoxQ0UyRViTc1NzMyxUuJiLk3OF5I2NC3INzPQLU7NSzHSTc7Pz85MLdYtSgX=
+xo2L09ZPyUyr1SxKTclL1SyDsIv2SFIhItKFpLKYoski0YSxMaSxUTUpmGRgnJtlbWKaZGBgYW6=
+aaGxokJRqb1YBdFp-ZYpVbXJJfnuqQlJiSkg8UywN5vsbEMDElydjA1NDc0NIw1cgiiycjbkvgm=
+_sTQ_bMsPVsYGIGAGN-gTQ.PR9GgY0lEn5DiA/click]
+
+TEXT *JOIN* TO *27820* FOR UPDATES
+
+[https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production/e/.eJwTUm=
+j5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klFVGSUlBsZW-fnl5uV52Zl56YlFJR=
+mlRUiKIrZecn6ufXFpckp-bWqRbnFpUlpmcql-ckVlQAJQ1PG3w89wbl1uOVgJcTKXFQlxJOfn5=
+uUWpickZYJFkIa7UAiNTQyDQTbTiBorkCrGm5iZm5lgpcTGXJucLSRuaFuSbGQBNzksx0k3Oz8_=
+OTC3WLUoF8aNi9PWT8lMq9UsSk3JS9Usg7CL9khSISLShaSymKLJItFEsTGksVE1KZhkYJybZW1=
+immRgYGFummhsaJCUam9WAXRafmWKVC_RveapDUmJKSj5QLA8UCjUmhokpScYGpobmhpaGqUYWW=
+TwZcVsC39yfGLJnhq1nAxMzAKrvhNs.ygA3wbebaoXKxA/click]
+
+*FREE* SHIPPING ON *APPLIANCES* [https://us3-cdn.eng.bloomreach.com/king-ar=
+thur-baking-production/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te=
+-6klFVGSUlBsZW-fnl5uV52Zl56YlFJRmlRUiKIrZecn6ufXFpckp-bWqRbnFpUlpmcql-ckVlQ=
+AJQ1PG3w89wbl1uOVgJcTKXFQlxJOfn5uUWpickZYJFkIa7UAiNTQyDQTbTiBorkCrGm5iZm5lg=
+pcTGXJucLSRuaFuSbGQBNzksx0k3Oz8_OTC3WLUoF8aOi9PWT8lMq9UsSk3JS9Usg7CL9khSISL=
+ShaSymKLJItFEsVCmIAVaTklmmX6CfmGRvYZlmYmBgbJlqbmiQlGhsVgN2V3xmilUu0LflqQ5Ji=
+Skp-UCxPFAY1JgYJqYkGRuYGpobWhqmGllk8WTEbQl8c39iyJ4Ztp4NTMwAlQiEBw.eNIYbxg7j=
+qNrcQ/click]
+
+[https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production/e/.eJwTUm=
+j5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klH5GSUlBsZW-fnl5uV52Zl56YlFJR=
+mlRUiKIrZecn6sPZKYWFesWpZYnFqUUG542-HnujcstRysBLqbSYiGupJz8_Nyi1MTkDLBIshBX=
+aoGRqSEQ6CZacQNFcoVYU3MTM3OslLiYS5PzhaQNTQvyzQx0i1PzUox0k_PzszNTQcaD-FEx-vp=
+J-SmV-iWJSTmp-iUQdpF-SQpEJNrQNBZTFFkk2jgWpjQWqiYlswyME5PsLSzTTAwMjC1TzQ0Nkh=
+KNzWrALovPTLHKLS7JL091SEpMSckHiuWBvF5jYpiYkmRsYGpobmhpmGpkkcWTEbcl8M39iSF7Z=
+th6NjAxAwAgOoBN.R52GPP4gRiuWxw/click]
+
+JOIN *BAKER'S REWARDS* & EARN POINTS [https://us3-cdn.eng.bloomreach.com/ki=
+ng-arthur-baking-production/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248W=
+TF8te-6klH5GSUlBsZW-fnl5uV52Zl56YlFJRmlRUiKIrZecn6sPZKYWFesWpZYnFqUUG542-Hn=
+ujcstRysBLqbSYiGupJz8_Nyi1MTkDLBIshBXaoGRqSEQ6CZacQNFcoVYU3MTM3OslLiYS5Pzha=
+QNTQvyzQx0i1PzUox0k_PzszNTQcaD-FFR-vpJ-SmV-iWJSTmp-iUQdpF-SQpEJNrQNBZTFFkk2=
+jgWqtQoFqomJbNMv0A_McnewjLNxMDA2DLV3NAgKdHYrAbsrvjMFKvc4pL88lSHpMSUlHygWB7I=
+4zUmhokpScYGpobmhpaGqUYWWTwZcVsC39yfGLJnhq1nAxMzABNvf3k.mkd9Z9DueIa9xw/clic=
+k]
+
+SHOP =E2=80=BA [https://us3-cdn.eng.bloomreach.com/king-arthur-baking-produ=
+ction/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klFJGSUlBsZW-fn=
+FGfoFedmZeemJRSUZpUVIiiK2XnJ-rb3ja4Oe5Ny63HK0EuJhKi4W4knLy83OLUhOTM8AiyUJcq=
+QVGpoZAoJtoxQ0UyRViTc1NzMyxUuJiLk3OF5I2NC3INzPQLU7NSzHSTc7Pz85MLdYtSgXxo1L0=
+9ZPyUyr1SxKTclL1SyDsIv2SFIhItKFZLKYoski0YSxMEFkBmJ2SWaafCFSQZG9hmWZiYGBsmWp=
+uaJCUaGxWA3ZhfGaKVW5xSX55qkNSYkpKPlAsD-TpGhPDxJQkYwNTQ3NDS8NUI4ssnoy4LYFv7k=
+8M2TPD1rOBiRkArwF94A.VPNEqfP5M-XJ6A/click] RECIPES =E2=80=BA [https://us3-c=
+dn.eng.bloomreach.com/king-arthur-baking-production/e/.eJwTUmj5t-TDjg_lc_bV=
+hV_NWhJ_ql1gZrjJU373248WTF8te-6klEZGSUlBsZW-fnl5uV52Zl56YlFJRmlRUiKIrZecn6t=
+flJqcWZBabHja4Oe5Ny63HK0EuJhKi4W4knLy83OLUhOTM8AiyUJcqQVGpoZAoJtoxQ0UyRViTc=
+1NzMyxUuJiLk3OF5I2NC3INzPQLU7NSzHSTc7Pz85MLdYtSgXxo1L09ZPyUyr1SxKTclL1SyDsI=
+v2SFIhItKFZLKYoski0YSxMEFkBmJ2SWaafGG0Um2RvYZlmYmBgbJlqbmiQlGhsVgN2YXxmilVu=
+cUl-eapDUmJKSj5QLA_k9xoTw8SUJGMDU0NzQ0vDVCOLLJ6MuC2Bb-5PDNkzw9azgYkZAFFdgH0=
+=2ERAojisOFT4pSSQ/click] LEARN =E2=80=BA [=
+https://us3-cdn.eng.bloomreach.com/=
+king-arthur-baking-production/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU37324=
+8WTF8te-6klFpGSUlBsZW-fnl5uV52Zl56YlFJRmlRUiKIrZecn6ufk5pYlGd42uDnuTcutxytB=
+LiYSouFuJJy8vNzi1ITkzPAIslCXKkFRqaGQKCbaMUNFMkVYk3NTczMsVLiYi5NzheSNjQtyDcz=
+0C1OzUsx0k3Oz8_OTC3WLUoF8aNS9PWT8lMq9UsSk3JS9Usg7CL9khSISLShWSymKLJItGEsTBB=
+ZAZidklmmnxhtHJtkb2GZZmJgYGyZam5okJRobFYDdmF8ZopVbnFJfnmqQ1JiSko-UCwP5PMaE8=
+PElCRjA1NDc0NLw1QjiyyejLgtgW_uTwzZM8PWs4GJGQAeZX-j.ZfXkTndypYs5Nw/click] BL=
+OG =E2=80=BA [https://us3-cdn.eng.bloomreach.com/king-arthur-baking-product=
+ion/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klGpGSUlBsZW-fnl5=
+uV52Zl56YlFJRmlRUiKIrZecn6uflJOfbnja4Oe5Ny63HK0EuJhKi4W4gIL5uUWpickZYJFkIa7=
+UAiNTQyDQTbTiBorkCrGm5iZm5lgpcTGXJucLSRuaFuSbGegWp-alGOkm5-dnZ6YW6xalgvhRKf=
+r6SfkplfoliUk5qfolEHaRfkkKRCTa0CwWUxRZJNowFiaIrADMTsks00-MNolNsrewTDMxMDC2T=
+DU3NEhKNDarAbswPjPFKre4JL881SEpMSUlHyiWB_J4jYlhYkqSsYGpobmhpWGqkUUWT0bclsA3=
+9yeG7Jlh69nAxAwAhBV_NQ.qf2XEyNhsY-byA/click] REWARDS =E2=80=BA [https://us3=
+-cdn.eng.bloomreach.com/king-arthur-baking-production/e/.eJwTUmj5t-TDjg_lc_=
+bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klH5GSUlBsZW-fnl5uV52Zl56YlFJRmlRUiKIrZecn=
+6sPZKYWFesWpZYnFqUUG542-HnujcstRysBLqbSYiGupJz8_Nyi1MTkDLBIshBXaoGRqSEQ6CZa=
+cQNFcoVYU3MTM3OslLiYS5PzhaQNTQvyzQx0i1PzUox0k_PzszNTQcaD-FEp-vpJ-SmV-iWJSTm=
+p-iUQdpF-SQpEJNrQLBZTFFkk2jAWJoisAMxOySzTT4w2jU2yt7BMMzEwMLZMNTc0SEo0NqsBuz=
+A-M8Uqt7gkvzzVISkxJSUfKJYHCoIaE8PElCRjA1NDc0NLw1QjiyyejLgtgW_uTwzZM8PWs4GJG=
+QBFY4M5.n0LgmmpXeZMOkg/click]
+
+Connect with us
+
+[https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production/e/.eJwTUm=
+j5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klFZGSUlBsZW-fnl5uV5aYnJqUn5-t=
+l5yfq5-dmZeemJRSUZpUVIiiK1veNrg57k3LrccrQS4mEqLhbiScvLzc4tSE5MzwCLJQlypBUam=
+hkCgm2jFDRTJFWJNzU3MzLFS4mIuTc4XkjY0Lcg3M9AtTs1LMdJNBtqUmVqsW5QK4kel6-sn5ad=
+U6pckJuWk6pdA2EX6JSkQkWhDs1hMUWSRaKNYqFIQA6wmJbMMpg6swjBWPzHJ3sIyzcTAwNgy1d=
+zQICnR2KwG7Mj4zBSr3OKS_PJUh6TElJR8oFgeKCBqTAwTU5KMDUwNzQ0tDVONLLJ4MuK2BL65P=
+zFkzwxbzwYmZgCWqYHq.eg21q9uG22gxAA/click] [https://us3-cdn.eng.bloomreach.c=
+om/king-arthur-baking-production/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU37=
+3248WTF8te-6klH5GSUlBsZW-fnl5uV5JZnZJfrZecn6uvkN2Zl56YlFJRmlRUiKIDRQsSMyrND=
+xt8PPcG5dbjlYCXEylxUJcSTn5-blFqYnJGWCRZCGu1AIjU0Mg0E204gaK5AqxpuYmZuZYKXExl=
+ybnC0kbmhbkmxnoFqfmpRjpJufnZ2emFusWpYL4Uen6-kn5KZX6JYlJOan6JRB2kX5JCkQk2tAs=
+FlMUWSTaKBaqFMQAq0nJLIOpg6lITLK3sEwzMTAwtkw1NzRISjQ2qwE7Mj4zxSq3uCS_PNUhKTE=
+lJR8olgcKjxoTw8SUJGMDU0NzQ0vDVCOLLJ6MuC2Bb-5PDNkzw9azgYkZAPa6hFQ.v5sDS-mKM1=
+Ml6g/click] [https://us3-cdn.eng.bloomreach.com/king-arthur-baking-producti=
+on/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klHZGSUlBsZW-fnl5u=
+V5mXnFJYnpRYq5ecn6ufnZmXnpiUUlGaVFSIoitb3ja4Oe5Ny63HK0EuJhKi4W4knLy83OLUhOT=
+M8AiyUJcqQVGpoZAoJtoxQ0UyRViTc1NzMyxUuJiLk3OF5I2NC3INzPQLU7NSzHSTc7Pz85MLdY=
+tSgXxo9L19ZPyUyr1SxKTclL1SyDsIv2SFIhItKFZLKYoski0USxUKYgBVpOSWQZTB1ZhHKufmG=
+RvYZlmYmBgbJlqbmiQlGhsVgN2ZHxmilVucUl-eapDUmJKSj5QLA8UEDUmhokpScYGpobmhpaGq=
+UYWWTwZcVsC39yfGLJnhq1nAxMzAFqvgnk.9DmpgvFpFonwBw/click] [https://us3-cdn.e=
+ng.bloomreach.com/king-arthur-baking-production/e/.eJwTUmj5t-TDjg_lc_bVhV_N=
+WhJ_ql1gZrjJU373248WTF8te-6klGZGSUlBsZW-fnl5uV5JRlFqYkqxXl5qib5DdmZeemJRSUZ=
+pUVIiiG142uDnuTcutxytBLiYSouFuJJy8vNzgRqSM8AiyUJcqQVGpoZAoJtoxQ0UyRViTc1NzM=
+yxUuJiLk3OF5I2NC3INzPQLU7NSzHSTc7Pz85MLdYtSgXxo9L19ZPyUyr1SxKTclL1SyDsIv2SF=
+IhItKFZLKYoski0USxUKYgBVpOSWQZTB1ZhEqufmGRvYZlmYmBgbJlqbmiQlGhsVgN2ZHxmilVu=
+cUl-eapDUmJKSj5QLE8vOT-3xsQwMSXJ2MDU0NzQ0jDVyCKLJyNuS-Cb-xND9syw9WxgYgYAOFy=
+Btg.hTEPk7ziTE_a6A/click] [https://us3-cdn.eng.bloomreach.com/king-arthur-b=
+aking-production/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klHZ=
+GSUlBsZW-fnl5uV5BZl5JalFqcYlecn6ufnZmXnpiUUlGaVFSIoitb3ja4Oe5Ny63HK0EuJhKi4=
+W4knLy83OLUhOTM8AiyUJcqQVGpoZAoJtoxQ0UyRViTc1NzMyxUuJiLk3OF5I2NC3INzPQLU7NS=
+zHSTc7Pz85MLdYF2gjkR6Xr6yflp1TqlyQm5aTql0DYRfolKRCRaEOzWExRZJFoo1ioUhADrCYl=
+swymDqzCNFY_McnewjLNxMDA2DLV3NAgKdHYrAbsyPjMFKvc4pL88lSHpMSUlHygWB4oIGpMDBN=
+TkowNTA3NDS0NU40ssngy4rYEvrk_MWTPDFvPBiZmAHf7gpM.zEHVdcI-AbrBrA/click] [htt=
+ps://us3-cdn.eng.bloomreach.com/king-arthur-baking-production/e/.eJwTUmj5t-=
+TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klE5GSUlBsZW-fnl5uV5lfmlJaVKqXnJ-r=
+n5pcWqRfnZmXnpiUUlGaVFaTn5pkeFpg5_n3rjccrQS4GIqLRbiSsrJz88tSk1MzgCLJAtxpRYY=
+mRoCgW6iFTdQJFeINTU3MTPHSomLuTQ5X0ja0LQg38xAtzg1L8VINzk_PzsztVi3KBXEj0rX10_=
+KT6nUL0lMyknVL4Gwi_RLUiAi0YZmsZiiyCLRRrFQpSAGWE1KZhlMHVgF0IjEJHsLyzQTAwNjy1=
+RzQ4OkRGOzGrAj4zNTrHKLS_LLUx2SElNS8oFieaCwqDExTExJMjYwNTQ3tDRMNbLI4smI2xL45=
+v7EkD0zbD0bmJgBV06DPw.-hSzuizcfafoDg/click]
+
+customercare@kingarthurbaking.com [mailto:customercare@kingarthurbaking.com=
+]
+
+Call toll-free: 800.827.6836
+
+58 Billings Farm Road, White River Junction, VT 05001
+
+Receive 15% off your merchandise order over $60. Your merchandise total con=
+sists of the sum of the products you've placed in your shopping cart and do=
+es not include any sales tax or shipping. Offer cannot be sold, auctioned, =
+transferred, or combined with any other offer, and is void if altered or re=
+produced. Offer cannot be applied to previous or pending purchases. Not red=
+eemable for cash or credit. Offer valid online only. The following items ar=
+e excluded from offer: all appliances and their attachments/accessories, Sa=
+le products, Thermapen, Staub bakeware, Zwilling, Emile Henry bakeware, gif=
+t cards, King Arthur Baking School classes.=20
+
+*Offer valid through 11/17/25, 11:59 PM ET.*
+
+Receive 30% off selected Mason Cash items. Offer cannot be sold, auctioned,=
+ transferred, or combined with any other offer, and is void if altered or r=
+eproduced. Offer cannot be applied to previous or pending purchases. Not re=
+deemable for cash or credit. Not valid at the King Arthur Retail Store.
+
+*Limited time offer, while supplies last.*
+
+By subscribing to King Arthur text messaging, you consent to receive recurr=
+ing autodialed marketing text messages (e.g. cart reminders) to the mobile =
+number used at opt-in. Consent is not a condition of purchase. Message freq=
+uency may vary. Message & data rates may apply. Reply HELP for help or STOP=
+ to 27820 to opt out. See Terms [https://us3-cdn.eng.bloomreach.com/king-ar=
+thur-baking-production/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te=
+-6klFlGSUlBsZW-fnl5uV52Zl56YlFJRmlRUiKIrZecn6tfkJ-TmZyZWqxfklqUW6ybn6ZbWpxq=
+eNrg57k3LrccrQS4mEqLhbiScvLzc4tSE5MzwCLJQlypBUamhkCgm2jFDRTJFWJNzU3MzLFS4mI=
+uTc4XkjY0Lcg3M9AtTs1LMdJNzs_PBtqhW5QK4kdF6esn5adU6pckJuWk6pdA2EX6JSkQkWhDy1=
+hMUWzqYqHclMwy_QL9RKBAkr2FZZqJgYGxZaq5oUFSorFZDdhd8ZkpVrnFJfnlqQ5JiSkp-UCxP=
+JD_a0wME1OSjA1MDc0NLQ1TjSyyeDLitgS-uT8xZM8MW88GJmYA4TqCEg.f8ayKKKJnO4SAQ/cl=
+ick] & Privacy [https://us3-cdn.eng.bloomreach.com/king-arthur-baking-produ=
+ction/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klEVGSUlBsZW-fn=
+l5uV52Zl56YlFJRmlRUiKIrZecn6tfkJ-TmZyZWqxfUJRZlphcqQsWqDQ8bfDz3BuXW45WAlxMp=
+cVCXEk5-fm5RamJyRlgkWQhrtQCI1NDINBNtOIGiuQKsabmJmbmWClxMZcm5wtJG5oW5JsZ6Ban=
+5qUY6Sbn52cDbdEtSgXxo6L09ZPyUyr1SxKTclL1SyDsIv2SFIhItKFlLKYoNnWxUG5KZpl-gX5=
+itFFskr2FZZqJgYGxZaq5oUFSorFZDdhd8ZkpVrnFJfnlqQ5JiSkp-UCxPFAI1JgYJqYkGRuYGp=
+obWhqmGllk8WTEbQl8c39iyJ4Ztp4NTMwAWEKDKQ.3khOkizibZm57Q/click].=20
+
+You are receiving this because you signed up for King Arthur emails. This e=
+mail was sent to user@example.com. View this email as a web page [https=
+://us3-cdn.eng.bloomreach.com/king-arthur-baking-production/e/.eJwTUmj5t-TD=
+jg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6k1EbGjJKSgmIrff3SYmPd5JQ8vdS8dL2knPz=
+83KLUxOQMveT8XP3szLx03cSikozSIt2kRDCvoCg_pTS5JDM_Tz9V3zm9Ij8t1yW_wD8kN8C1OM=
+3S2CDY0zNEtyDA2cTCIzW5LM80wjC8MDvCotDD1Ssnws8_NCDIsiwz3yu1yCPZ3Ms3ubhcN9m8O=
+MivwCk5vaLA1dzX3Ne7Mrgq0S87PrdYL9eg0N_QtMTdw7BENynQ8LTBz3NvXG45WglwMZUWC3Eh=
+XAsWSRbiSi0wMjUEAt1EK26gSK4Qa2puYmaOlRIXc2lyvpC0oWlBvpmBbnFqXoqRbnJ-fnZmarF=
+uUSqIHxWpr5-Un1KpX5KYlJOqXwJhF-mXpEBEog0tYzFFsagzioVyUzLL9Av0S_UTk-wtLNNMDA=
+yMLVPNDQ2SEo3NasDOis9MscotLskvT3VISkxJyQeK5YHCvcbEMDElydjA1NDc0NIw1cgiiycjb=
+kvgm_sTQ_bMsPVsYGIGAPLsqy8.tmLzs6j43KI3YA/click].
+
+Preferences [https://us3-cdn.eng.bloomreach.com/king-arthur-baking-producti=
+on/e/.eJxl0T9oE1EYAHBs6RIFy42KIO4v714u18sdlKptaBLJn7aRBEsN718u1-Tde7n3LmlLE=
+QfB2akVHBy6de3gIO5a6OaigyC4dejqIqYpouA3fd-Pj4_v47Puvvh1dPHuYvzmw7PW5-2jzqeX=
+869b-R83V79-f3twfOfs463Taz1jlA4gTLUDKIuzPA6zZCClSDimvSyVAvajOAQ4Mb00AQRPK5V=
+IllITyRhyuBzuyK5YkareFI2i7vqOvVEuN4FqLOcLJU5HsdtGrWG_XRiWipVBu1Z_3Fj3R5Gs8K=
+REvUqV6jGgnl6vqYc03FFFr-pVH-1u7OFavyN0VtjDOnLNagkZQNYglbHmsVkSkvFFgWMc8o5Ke=
+FejU_vn2fnKlwfBfGYm1Vbm7x1ToVaGq5yLJgFwcH0iwprjAkeD4F5mNqXSuo1cJRdsMJnPcoBK=
+2Y-4Bgm_rJ-0ICSS7UKDyYBDc5Un0LAr2czZW__rv7KJtv7gtIFFI6ggJksFv5u3bcfnHrIJdhb=
+2p0t1IhYIbeSY3yeYMTmx-PIf-3mEGXFsF3nIRzxX2L7Re3qydv7tVfP94WL5-czsbyRztMw.V0=
+aY20w1rO0w2A/click]
+
+Unsubscribe [https://us3-cdn.eng.bloomreach.com/king-arthur-baking-producti=
+on/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6k1E7GjJKSgmIrff3SY=
+mPd5JQ8vdS8dL2knPz83KLUxOQMveT8XP3szLx03cSikozSIt2kRDCvoCg_pTS5JDM_Tz9V3zm9=
+Ij8t1yW_wD8kN8C1OM3S2CDY0zNEtyDA2cTCIzW5LM80wjC8MDvCotDD1Ssnws8_NCDIsiwz3yu=
+1yCPZ3Ms3ubhcN9m8OMivwCk5vaLA1dzX3Ne7Mrgq0S87PrdYL9eg0N_QtMTdw7BENylQPzk_rz=
+g1r8TwtMHPc29cbjlaCXAxlRYLcSFcDRZJFuJKLTAyNQQC3UQrbqBIrhBram5iZo6VEhdzaXK-k=
+LShaUG-mYEu0LQUI93k_PzszNRi3aJUED8qUl8_KT-lUr8kMSknVb8Ewi7SL0mBiEQbGcRiiiKL=
+RBvFwgTBClIyy_QL9Ev1E5PsLSzTTAwMjC1TzQ0NkhKNzWrAzorPTLHKLS7JL091SEpMSckHiuW=
+Bwr_GxDAxJcnYwNTQ3NDSMNXIIosnI25L4Jv7E0P2zLD1bGBiBgDgea5Y.EBTq0B3qejzjRQ/cl=
+ick]=20
+
+Privacy [https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production/e=
+/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klEVGSUlBsZW-fnl5uV52Z=
+l56YlFJRmlRUiKIrZecn6tfkJ-TmZyZWqxfUJRZlphcqQsWqDQ8bfDz3BuXW45WAlxMpcVCXEk5=
+-fm5RamJyRlgkWQhrtQCI1NDINBNtOIGiuQKsabmJmbmWClxMZcm5wtJG5oW5JsZ6Ban5qUY6Sb=
+n52cDbdEtSgXxo8L19ZPyUyr1SxKTclL1SyDsIv2SFIhItJFBLKYoski0cSxMEKwgJbNMv0A_Mc=
+newjLNxMDA2DLV3NAgKdHYrAbsqPjMFKvc4pL88lSHpMSUlHygWB7I-zUmhokpScYGpobmhpaGq=
+UYWWTwZcVsC39yfGLJnhq1nAxMzANKlgjY.Zrd75BwoxKADxA/click]
+--e7320818e80bdf897c0d3af0e58248f0581b8acc9cc2a3313036569cd17c
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html; charset=ascii
+
+<!DOCTYPE html>
+<html xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:o=3D"urn:schemas-micr=
+osoft-com:office:office" lang=3D"en"><head><title>Bake More, Spend Less &#8=
+212; 15% Off! </title><meta http-equiv=3D"Content-Type" content=3D"text/htm=
+l; charset=3Dutf-8"><meta name=3D"viewport" content=3D"width=3Ddevice-width=
+,initial-scale=3D1"><!--[if mso]>
+<xml><w:WordDocument xmlns:w=3D"urn:schemas-microsoft-com:office:word"><w:D=
+ontUseAdvancedTypographyReadingMail/></w:WordDocument>
+<o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch><o:AllowPNG/=
+></o:OfficeDocumentSettings></xml>
+<![endif]--><!--[if !mso]><!--><link href=3D"https://s3.amazonaws.com/kaf-e=
+mail.images/assets/fonts/ParaSupreme-RegularNormal.woff" rel=3D"stylesheet"=
+ type=3D"text/css"><!--<![endif]--><style>
+*{box-sizing:border-box}body{margin:0;padding:0}a[x-apple-data-detectors]{c=
+olor:inherit!important;text-decoration:inherit!important}#MessageViewBody a=
+{color:inherit;text-decoration:none}p{line-height:inherit}.desktop_hide,.de=
+sktop_hide table{mso-hide:all;display:none;max-height:0;overflow:hidden}.im=
+age_block img+div{display:none}sub,sup{font-size:75%;line-height:0}.menu_bl=
+ock.desktop_hide .menu-links span{mso-hide:all} @media (max-width:660px){.s=
+ocial_block.desktop_hide .social-table{display:inline-block!important}.imag=
+e_block div.fullWidth{max-width:100%!important}.mobile_hide{display:none}.r=
+ow-content{width:100%!important}.stack .column{width:100%;display:block}.mo=
+bile_hide{min-height:0;max-height:0;max-width:0;overflow:hidden;font-size:0=
+}.desktop_hide,.desktop_hide table{display:table!important;max-height:none!=
+important}.row-3 .column-1 .block-1.heading_block td.pad{padding:30px 30px =
+0!important}.row-3 .column-1 .block-1.heading_block h1{font-size:40px!impor=
+tant}.row-3 .column-1 .block-2.paragraph_block td.pad>div{font-size:17px!im=
+portant}.row-3 .column-1 .block-2.paragraph_block td.pad{padding:10px 20px!=
+important}.row-8 .column-1 .block-1.image_block td.pad{padding:20px 0 0!imp=
+ortant}.row-10 .column-1 .block-1.heading_block h2{font-size:34px!important=
+}.row-17 .column-1 .block-2.paragraph_block td.pad,.row-17 .column-2 .block=
+-2.paragraph_block td.pad{padding:0 10px!important}.row-17 .column-3 .block=
+-2.paragraph_block td.pad{padding:0 10px 10px!important}.row-18 .column-2 .=
+block-1.paragraph_block td.pad{padding:10px 0!important}.row-18 .column-1 .=
+block-1.menu_block .alignment{text-align:center!important}.row-13 .column-1=
+,.row-18 .column-1 .block-1.menu_block td.pad,.row-8 .column-1,.row-8 .colu=
+mn-2{padding:0!important}.row-23 .column-1 .block-1.image_block td.pad{padd=
+ing:28px 20px 20px!important}.row-10 .column-1{padding:30px 20px 20px!impor=
+tant}.row-11 .column-1,.row-12 .column-1{padding:0 20px 0 25px!important}.r=
+ow-11 .column-2,.row-12 .column-2{padding:0 20px 20px!important}.row-13 .co=
+lumn-2,.row-17 .column-3{padding:5px 0 20px!important}.row-14 .column-1{pad=
+ding:20px!important}.row-15 .column-1,.row-15 .column-2{padding:0 0 10px!im=
+portant}.row-21 .column-1{padding:5px 0!important}}
+</style><!--[if mso ]><style>sup, sub { font-size: 100% !important; } sup {=
+ mso-text-raise:10% } sub { mso-text-raise:-10% }</style> <![endif]--></hea=
+d><body class=3D"body" style=3D"background-color:#fff;margin:0;padding:0;-w=
+ebkit-text-size-adjust:none;text-size-adjust:none"><span style=3D"color: tr=
+ansparent; display: none !important; font-size: 0px; line-height: 0px; heig=
+ht: 0; max-height: 0; max-width: 0; opacity: 0; overflow: hidden; mso-hide:=
+ all; visibility: hidden; width: 0;">Stock up on cookie essentials &amp; ba=
+ke holiday favorites!</span><div style=3D"display: none; max-height: 0px; o=
+verflow: hidden;">&#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &=
+#8199;&#847; &#8199;&#847;
+&#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#819=
+9;&#847;
+&#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#819=
+9;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#8=
+47; &#8199;&#847;
+&#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#819=
+9;&#847;
+&#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#819=
+9;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#8=
+47; &#8199;&#847;
+&#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#819=
+9;&#847;
+&#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#819=
+9;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#8=
+47; &#8199;&#847;
+&#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#819=
+9;&#847;
+&#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#819=
+9;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#8=
+47; &#8199;&#847;
+&#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#819=
+9;&#847;
+&#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#819=
+9;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#8=
+47; &#8199;&#847;
+&#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#819=
+9;&#847;
+&#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#819=
+9;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#8=
+47; &#8199;&#847;
+&#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#819=
+9;&#847;
+&#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#819=
+9;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#8=
+47; &#8199;&#847;
+&#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#819=
+9;&#847;
+&shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &sh=
+y; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; =
+&shy; &shy; &shy; &shy; &shy;
+&shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &sh=
+y; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; =
+&shy; &shy; &shy; &shy; &shy;
+&shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &sh=
+y; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; =
+&shy; &shy; &shy; &shy; &shy;
+&shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &sh=
+y; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; =
+&shy; &shy; &shy; &shy; &shy;
+&shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &sh=
+y; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; =
+&shy; &shy; &shy; &shy; &shy;
+&shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &sh=
+y; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; =
+&shy; &shy; &shy; &shy; &shy;
+&shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &sh=
+y; &shy; &shy; &shy; &shy; &shy; &shy; &shy;
+&nbsp; </div><a href=3D"https://us3-cdn.eng.bloomreach.com/king-arthur-baki=
+ng-production/e/CgxofmDopOTmPEsf930SIIT-pPC48Hecvn5X1WqkX8qHEJlXNOUPR9vioJe=
+rHc7JMcsw-c7sRNpBagxoXrRR7N-RVLyYPUnIAQGAAgM.7H535sSkYg34NQ/click" xnpe-att=
+r=3D"notextnorew"><img width=3D"1" height=3D"1" alt=3D"" src=3D"https://us3=
+-cdn.eng.bloomreach.com/king-arthur-baking-production/e/CgxofmDopOTmPEsf930=
+SIIT-pPC48Hecvn5X1WqkX8qHEJlXNOUPR9vioJerHc7JMcsw-c7sRNpBagxoXrRR7N-RVLyYPU=
+mAAgM.hgxaQM6Ieyat0Q/open" style=3D"display: none;"></a><table class=3D"nl-=
+container" width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" =
+role=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0;backgr=
+ound-color:#fff"><tbody><tr><td><table class=3D"row row-1" align=3D"center"=
+ width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"pr=
+esentation" style=3D"mso-table-lspace:0;mso-table-rspace:0"><tbody><tr><td>=
+<table class=3D"row-content stack" align=3D"center" border=3D"0" cellpaddin=
+g=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0=
+;mso-table-rspace:0;border-radius:0;color:#000;width:640px;margin:0 auto" w=
+idth=3D"640"><tbody><tr><td class=3D"column column-1" width=3D"100%" style=
+=3D"mso-table-lspace:0;mso-table-rspace:0;font-weight:400;text-align:left;v=
+ertical-align:top"><table class=3D"image_block block-1" width=3D"100%" bord=
+er=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D=
+"mso-table-lspace:0;mso-table-rspace:0"><tr><td class=3D"pad" style=3D"padd=
+ing-bottom:20px;padding-top:20px;width:100%;padding-right:0;padding-left:0"=
+><div class=3D"alignment" align=3D"center"><div style=3D"max-width:128px">
+<a href=3D"https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production=
+/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klGJGSUlBsZW-fnFGfoF=
+edmZeemJRSUZpUVIiiK2XnJ9reNrg57k3LrccrQS4mEqLhbiScvLzc4tSE5MzwCLJQlypBUamhk=
+Cgm2jFDRTJFWJNzU3MzLFS4mIuTc4XkjY0Lcg3M9AtTs1LMdJNzs_Pzkwt1i1KBfGjQvX1k_JTK=
+vVLEpNyUvVLIOwi_ZIUiEi0YSymIDYRMDslswyME5PsLSzTTAwMjC1TzQ0NkhKNzWrATorPTLHK=
+LS7JL091SEpMSckHiuWBPFljYpiYkmRsYGpobmhpmGpkkcWTEbcl8M39iSF7Zth6NjAxAwA1O3i=
+4.t4oEVRBmBEi4Rg/click" target=3D"_blank"><img src=3D"https://email-media-a=
+ws.kingarthurflour.com/Bloomreach/Global/header/kabc_logo.png" style=3D"dis=
+play:block;height:auto;border:0;width:100%" width=3D"128" alt=3D"King Arthu=
+r Baking Company" title=3D"King Arthur Baking Company" height=3D"auto"></a>=
+</div></div></td></tr></table></td></tr></tbody></table></td></tr></tbody><=
+/table><table class=3D"row row-2" align=3D"center" width=3D"100%" border=3D=
+"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-=
+table-lspace:0;mso-table-rspace:0"><tbody><tr><td><table class=3D"row-conte=
+nt stack" align=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0"=
+ role=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0;borde=
+r-radius:0;color:#000;width:640px;margin:0 auto" width=3D"640"><tbody><tr><=
+td class=3D"column column-1" width=3D"100%" style=3D"mso-table-lspace:0;mso=
+-table-rspace:0;font-weight:400;text-align:left;padding-bottom:20px;vertica=
+l-align:top"><table class=3D"image_block block-1" width=3D"100%" border=3D"=
+0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-t=
+able-lspace:0;mso-table-rspace:0"><tr><td class=3D"pad" style=3D"width:100%=
+"><div class=3D"alignment" align=3D"center"><div style=3D"max-width:640px">=
+<a href=3D"https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production=
+/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klFJGSUlBsZW-fnFGfoF=
+edmZeemJRSUZpUVIiiK2XnJ-rb3ja4Oe5Ny63HK0EuJhKi4W4knLy83OLUhOTM8AiyUJcqQVGpo=
+ZAoJtoxQ0UyRViTc1NzMyxUuJiLk3OF5I2NC3INzPQLU7NSzHSTc7Pz85MLdYtSgXxo0L19ZPyU=
+yr1SxKTclL1SyDsIv2SFIhItFEspiA2ETA7JbMMjBOT7C0s00wMDIwtU80NDZISjc1qwE6Kz0yx=
+yi0uyS9PdUhKTEnJB4rlgXxZY2KYmJJkbGBqaG5oaZhqZJHFkxG3JfDN_Ykhe2bYejYwMQMAh1d=
+46Q.cKvFjbQRzWH5Jg/click" target=3D"_blank"><img src=3D"https://email-media=
+-aws.kingarthurflour.com/Bloomreach/Campaigns/2025/11_nov/15po60-nov-banner=
+=2Ejpg" style=3D"display:block;height:a=
+uto;border:0;width:100%" width=3D"640"=
+ alt=3D"15% off your $60+ order | Shop Now" title=3D"15% off your $60+ orde=
+r | Shop Now" height=3D"auto"></a></div></div></td></tr></table></td></tr><=
+/tbody></table></td></tr></tbody></table><table class=3D"row row-3" align=
+=3D"center" width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0"=
+ role=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0"><tbo=
+dy><tr><td><table class=3D"row-content stack" align=3D"center" border=3D"0"=
+ cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-tab=
+le-lspace:0;mso-table-rspace:0;background-color:#f8f5f1;border-radius:0;col=
+or:#000;width:640px;margin:0 auto" width=3D"640"><tbody><tr><td class=3D"co=
+lumn column-1" width=3D"100%" style=3D"mso-table-lspace:0;mso-table-rspace:=
+0;font-weight:400;text-align:left;vertical-align:top"><table class=3D"headi=
+ng_block block-1" width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=
+=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0=
+"><tr><td class=3D"pad" style=3D"padding-bottom:5px;padding-left:30px;paddi=
+ng-right:30px;padding-top:30px;text-align:center;width:100%"><h1 style=3D"m=
+argin:0;color:#000;direction:ltr;font-family:Para Supreme;font-size:60px;fo=
+nt-weight:400;letter-spacing:normal;line-height:1.2;text-align:center;margi=
+n-top:0;margin-bottom:0;mso-line-height-alt:72px"><span class=3D"tinyMce-pl=
+aceholder" style=3D"word-break: break-word;">Cookie time!</span></h1></td><=
+/tr></table><table class=3D"paragraph_block block-2" width=3D"100%" border=
+=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"m=
+so-table-lspace:0;mso-table-rspace:0;word-break:break-word"><tr><td class=
+=3D"pad" style=3D"padding-bottom:10px;padding-left:40px;padding-right:40px;=
+padding-top:5px"><div style=3D"color:#000;direction:ltr;font-family:Para Su=
+preme;font-size:20px;font-weight:400;letter-spacing:0;line-height:1.2;text-=
+align:center;mso-line-height-alt:24px"><p style=3D"margin:0">Everything you=
+ need to bake and share your favorite holiday&#160;treats.</p></div></td>
+</tr></table><table class=3D"button_block block-3" width=3D"100%" border=3D=
+"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-=
+table-lspace:0;mso-table-rspace:0"><tr><td class=3D"pad" style=3D"padding-b=
+ottom:30px;padding-left:5px;padding-right:5px;padding-top:10px;text-align:c=
+enter"><div class=3D"alignment" align=3D"center"><a href=3D"https://us3-cdn=
+=2Eeng.bloomreach.com/king-arthur-bakin=
+g-production/e/.eJwTUmj5t-TDjg_lc_bVhV=
+_NWhJ_ql1gZrjJU373248WTF8te-6klH1GSUlBsZW-fnFGfoFedmZeemJRSUZpUVIiiK2XnJ-rn=
+5yfk5OaXJKZn1cMZOdnZ6bqJhelJpZklmWWVBqeNvh57o3LLUcrAS6m0mIhrqSc_PxcoHRyBlgk=
+WYgrtcDI1BAIdBOtuIEiuUKsqbmJmTlWSlzMpcn5QtKGpgX5Zga6xal5KUa6EAuKdYtSQfyoEH3=
+9pPyUSv2SxKScVP0SCLtIvyQFIhJtHIspiEMZmJuSWaafmGRvYZlmYmBgbJlqbmiQlGhsVgN2UX=
+xmilVucUl-eapDUmJKSj5QLA8UAjUmhokpScYGpobmhpaGqUYWWTwZcVsC39yfGLJnhq1nAxMzA=
+HUQhDg.6GfyRuOHU3bbbQ/click" target=3D"_blank" style=3D"color:#ffffff;text-=
+decoration:none;"><!--[if mso]>
+<v:roundrect xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:w=3D"urn:schem=
+as-microsoft-com:office:word"  href=3D"https://us3-cdn.eng.bloomreach.com/k=
+ing-arthur-baking-production/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248=
+WTF8te-6klH1GSUlBsZW-fnFGfoFedmZeemJRSUZpUVIiiK2XnJ-rn5yfk5OaXJKZn1cMZOdnZ6=
+bqJhelJpZklmWWVBqeNvh57o3LLUcrAS6m0mIhrqSc_PxcoHRyBlgkWYgrtcDI1BAIdBOtuIEiu=
+UKsqbmJmTlWSlzMpcn5QtKGpgX5Zga6xal5KUa6EAuKdYtSQfwkewvLNBMDA2PLVHNDg6REY7Ma=
+sN74zBSr3OKS_PJUh6TElJR8oFgeyK01JoaJKUnGBqaG5oaWhqlGFlk8GXFbAt_cnxiyZ4atZwM=
+TMwC_iWVn.UXHsvGPx7Dme_w/click"  style=3D"height:41px;width:282px;v-text-an=
+chor:middle;" arcsize=3D"0%" fillcolor=3D"#da1a32">
+<v:stroke dashstyle=3D"Solid" weight=3D"0px" color=3D"#da1a32"/>
+<w:anchorlock/>
+<v:textbox inset=3D"0px,0px,0px,0px">
+<center dir=3D"false" style=3D"color:#ffffff;font-family:Tahoma, Verdana, s=
+ans-serif;font-size:16px">
+<![endif]-->
+<span class=3D"button" style=3D"background-color: #da1a32; mso-shading: tra=
+nsparent; border-bottom: 0px solid transparent; border-left: 0px solid tran=
+sparent; border-radius: 0px; border-right: 0px solid transparent; border-to=
+p: 0px solid transparent; color: #ffffff; display: inline-block; font-famil=
+y: 'Roboto', Tahoma, Verdana, Segoe, sans-serif; font-size: 16px; font-weig=
+ht: 400; mso-border-alt: none; padding-bottom: 13px; padding-top: 13px; pad=
+ding-left: 21px; padding-right: 21px; text-align: center; width: auto; word=
+-break: keep-all; letter-spacing: 2px;"><span style=3D"word-break: break-wo=
+rd; line-height: 16px;">SHOP COOKIE ESSENTIALS</span></span>
+<!--[if mso]></center></v:textbox></v:roundrect><![endif]--></a></div></td>=
+</tr></table><table class=3D"image_block block-4" width=3D"100%" border=3D"=
+0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-t=
+able-lspace:0;mso-table-rspace:0"><tr><td class=3D"pad" style=3D"width:100%=
+"><div class=3D"alignment" align=3D"center"><div style=3D"max-width:640px">=
+<a href=3D"https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production=
+/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klH1GSUlBsZW-fnFGfoF=
+edmZeemJRSUZpUVIiiK2XnJ-rn5yfk5OaXJKZn1cMZOdnZ6bqJhelJpZklmWWVBqeNvh57o3LLU=
+crAS6m0mIhrqSc_PxcoHRyBlgkWYgrtcDI1BAIdBOtuIEiuUKsqbmJmTlWSlzMpcn5QtKGpgX5Z=
+ga6xal5KUa6EAuKdYtSQfyoCH39pPyUSv2SxKScVP0SCLtIvyQFIhJtHIspiEWZSSyUm5JZBsaJ=
+SfYWlmkmBgbGlqnmhgZJicZmNWBXxWemWOUWl-SXpzokJaak5APF8kChUGNimJiSZGxgamhuaGm=
+YamSRxZMRtyXwzf2JIXtm2Ho2MDEDAJKWha8.oLnjPG9-Kyv8tg/click" target=3D"_blank=
+"><img src=3D"https://email-media-aws.kingarthurflour.com/Bloomreach/Campai=
+gns/2025/11_nov/1111_hero.jpg" style=3D"display:block;height:auto;border:0;=
+width:100%" width=3D"640" alt title height=3D"auto"></a></div></div></td></=
+tr></table></td></tr></tbody></table></td></tr></tbody></table><table class=
+=3D"row row-4" align=3D"center" width=3D"100%" border=3D"0" cellpadding=3D"=
+0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;mso-=
+table-rspace:0"><tbody><tr><td><table class=3D"row-content stack" align=3D"=
+center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentati=
+on" style=3D"mso-table-lspace:0;mso-table-rspace:0;border-radius:0;color:#0=
+00;width:640px;margin:0 auto" width=3D"640"><tbody><tr><td class=3D"column =
+column-1" width=3D"50%" style=3D"mso-table-lspace:0;mso-table-rspace:0;font=
+-weight:400;text-align:left;vertical-align:top"><table class=3D"image_block=
+ block-1" width=3D"100%" border=3D"0" cellpadding=3D"10" cellspacing=3D"0" =
+role=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0"><tr><=
+td class=3D"pad"><div class=3D"alignment" align=3D"center"><div style=3D"ma=
+x-width:272px"><a href=3D"https://us3-cdn.eng.bloomreach.com/king-arthur-ba=
+king-production/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klHNG=
+SUlBsZW-fnFGfoFedmZeemJRSUZpUVIiiK2XnJ-rn1mSmlusnw7kphYlFaUmpugmJ2an6ibn52d=
+npurmZlYYnjb4ee6Nyy1HKwEuptJiIa6knPz8XKDK5AywSLIQV2qBkakhEOgmWnEDRXKFWFNzEz=
+NzrJS4mEuT84WkDU0L8s0MdItT81KMoCYX6xalgvhR0fr6SfkplfoliUk5qfolEHaRfkkKRCTaJ=
+BZTEFkk2jAWqhLEAKtJySwD48QkewvLNBMDA2PLVHNDg6REY7MasMPiM1OscotL8stTHZISU1Ly=
+gWJ5oMCoMTFMTEkyNjA1NDe0NEw1ssjiyYjbEvjm_sSQPTNsPRuYmAHMjIeS.ekbU2XrLJAbm3w=
+/click" target=3D"_blank"><img src=3D"https://email-media-aws.kingarthurflo=
+ur.com/assets/SILOS/100313.jpg" style=3D"display:block;height:auto;border:0=
+;width:100%" width=3D"272" alt=3D"Gingerbread Cake &amp; Cookie Mix" title=
+=3D"Gingerbread Cake &amp; Cookie Mix" height=3D"auto"></a></div></div></td=
+></tr></table><table class=3D"heading_block block-2" width=3D"100%" border=
+=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"m=
+so-table-lspace:0;mso-table-rspace:0"><tr><td class=3D"pad" style=3D"paddin=
+g-bottom:10px;padding-left:20px;padding-right:20px;padding-top:10px;text-al=
+ign:center;width:100%"><h3 style=3D"margin:0;color:#000;direction:ltr;font-=
+family:Para Supreme;font-size:20px;font-weight:400;letter-spacing:normal;li=
+ne-height:1.2;text-align:center;margin-top:0;margin-bottom:0;mso-line-heigh=
+t-alt:24px">
+<a href=3D"https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production=
+/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klHNGSUlBsZW-fnFGfoF=
+edmZeemJRSUZpUVIiiK2XnJ-rn1mSmlusnw7kphYlFaUmpugmJ2an6ibn52dnpurmZlYYnjb4ee=
+6Nyy1HKwEuptJiIa6knPz8XKDK5AywSLIQV2qBkakhEOgmWnEDRXKFWFNzEzNzrJS4mEuT84WkD=
+U0L8s0MdItT81KMoCYX6xalgvhRYfr6SfkplfoliUk5qfolEHaRfkkKRCTaJBZTEFkk2jAWqtIo=
+Fqomw1g_McnewjLNxMDA2DLV3NAgKdHYrAbspvjMFKvc4pL88lSHpMSUlHygWB4oHGpMDBNTkow=
+NTA3NDS0NU40ssngy4rYEvrk_MWTPDFvPBiZmAAbihXQ.xoEff3knEYa8ZA/click" target=
+=3D"_blank" style=3D"text-decoration: none; color: #000000;" rel=3D"noopene=
+r">Gingerbread Cake &amp; Cookie&#160;Mix</a><br></h3></td></tr></table><ta=
+ble class=3D"button_block block-3" width=3D"100%" border=3D"0" cellpadding=
+=3D"10" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0=
+;mso-table-rspace:0"><tr><td class=3D"pad"><div class=3D"alignment" align=
+=3D"center">
+<a href=3D"https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production=
+/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klHNGSUlBsZW-fnFGfoF=
+edmZeemJRSUZpUVIiiK2XnJ-rn1mSmlusnw7kphYlFaUmpugmJ2an6ibn52dnpurmZlYYnjb4ee=
+6Nyy1HKwEuptJiIa6knPz8XKDK5AywSLIQV2qBkakhEOgmWnEDRXKFWFNzEzNzrJS4mEuT84WkD=
+U0L8s0MdItT81KMoCYX6xalgvhR4fr6SfkplfoliUk5qfolEHaRfkkKRCTaJBZTEFkk2jAWqtI4=
+FqomJbNMPzHJ3sIyzcTAwNgy1dzQICnR2KwG7Kj4zBSr3OKS_PJUh6TElJR8oFgeKCBqTAwTU5K=
+MDUwNzQ0tDVONLLJ4MuK2BL65PzFkzwxbzwYmZgCojoYe.6Ei7LXqHbSd8Tw/click" target=
+=3D"_blank" style=3D"color:#000000;text-decoration:none;"><!--[if mso]>
+<v:roundrect xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:w=3D"urn:schem=
+as-microsoft-com:office:word"  href=3D"https://us3-cdn.eng.bloomreach.com/k=
+ing-arthur-baking-production/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248=
+WTF8te-6klHNGSUlBsZW-fnFGfoFedmZeemJRSUZpUVIiiK2XnJ-rn1mSmlusnw7kphYlFaUmpu=
+gmJ2an6ibn52dnpurmZlYYnjb4ee6Nyy1HKwEuptJiIa6knPz8XKDK5AywSLIQV2qBkakhEOgmW=
+nEDRXKFWFNzEzNzrJS4mEuT84WkDU0L8s0MdItT81KMoCYX6xalgvhJ9haWaSYGBsaWqeaGBkmJ=
+xmY1YL3xmSlWucUl-eWpDkmJKSn5QLE8kHtrTAwTU5KMDUwNzQ0tDVONLLJ4MuK2BL65PzFkzwx=
+bzwYmZgAYEGZg.adk6I2kxoVEH6Q/click"  style=3D"height:39px;width:138px;v-tex=
+t-anchor:middle;" arcsize=3D"0%" fillcolor=3D"#ffffff">
+<v:stroke dashstyle=3D"Solid" weight=3D"1px" color=3D"#da1a32"/>
+<w:anchorlock/>
+<v:textbox inset=3D"0px,0px,0px,0px">
+<center dir=3D"false" style=3D"color:#000000;font-family:Tahoma, Verdana, s=
+ans-serif;font-size:16px">
+<![endif]-->
+<span class=3D"button" style=3D"background-color: #ffffff; mso-shading: tra=
+nsparent; border-bottom: 1px solid #da1a32; border-left: 1px solid #da1a32;=
+ border-radius: 0px; border-right: 1px solid #da1a32; border-top: 1px solid=
+ #da1a32; color: #000000; display: inline-block; font-family: 'Roboto', Tah=
+oma, Verdana, Segoe, sans-serif; font-size: 16px; font-weight: 400; mso-bor=
+der-alt: none; padding-bottom: 12px; padding-top: 12px; padding-left: 20px;=
+ padding-right: 20px; text-align: center; width: auto; word-break: keep-all=
+; letter-spacing: 2px;"><span style=3D"word-break: break-word; line-height:=
+ 16px;">SHOP NOW</span></span>
+<!--[if mso]></center></v:textbox></v:roundrect><![endif]--></a></div></td>=
+</tr></table></td><td class=3D"column column-2" width=3D"50%" style=3D"mso-=
+table-lspace:0;mso-table-rspace:0;font-weight:400;text-align:left;vertical-=
+align:top"><table class=3D"image_block block-1" width=3D"100%" border=3D"0"=
+ cellpadding=3D"10" cellspacing=3D"0" role=3D"presentation" style=3D"mso-ta=
+ble-lspace:0;mso-table-rspace:0"><tr><td class=3D"pad"><div class=3D"alignm=
+ent" align=3D"center"><div style=3D"max-width:272px">
+<a href=3D"https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production=
+/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klEVGSUlBsZW-fnFGfoF=
+edmZeemJRSUZpUVIiiK2XnJ-rn1mSmlusX1wKlNFNzs_PzkzVzc2sMDxt8PPcG5dbjlYCXEylxU=
+JcSTn5-blFqYnJGWCRZCGu1AIjU0Mg0E204gaK5AqxpuYmZuZYKXExlybnC0kbmhbkmxnoFqfmp=
+RhBTS7WLUoF8aOi9fWT8lMq9UsSk3JS9Usg7CL9khSISLRJLKYgski0USxUpWEsVE1KZhkYJybZ=
+W1immRgYGFummhsaJCUam9WAHRafmWKVW1ySX57qkJSYkpIPFMsDhUCNiWFiSpKxgamhuaGlYaq=
+RRRZPRtyWwDf3J4bsmWHr2cDEDACXJYNv.8c5ss1aWeg-BLg/click" target=3D"_blank"><=
+img src=3D"https://email-media-aws.kingarthurflour.com/assets/SILOS/100317.=
+jpg" style=3D"display:block;height:auto;border:0;width:100%" width=3D"272" =
+alt=3D"Sugar Cookie&#160;Mix" title=3D"Sugar Cookie&#160;Mix" height=3D"aut=
+o"></a></div></div></td></tr></table><table class=3D"heading_block block-2"=
+ width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"pr=
+esentation" style=3D"mso-table-lspace:0;mso-table-rspace:0"><tr><td class=
+=3D"pad" style=3D"padding-bottom:10px;padding-left:20px;padding-right:20px;=
+padding-top:10px;text-align:center;width:100%"><h3 style=3D"margin:0;color:=
+#000;direction:ltr;font-family:Para Supreme;font-size:20px;font-weight:400;=
+letter-spacing:normal;line-height:1.2;text-align:center;margin-top:0;margin=
+-bottom:0;mso-line-height-alt:24px"><a href=3D"https://us3-cdn.eng.bloomrea=
+ch.com/king-arthur-baking-production/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrj=
+JU373248WTF8te-6klEVGSUlBsZW-fnFGfoFedmZeemJRSUZpUVIiiK2XnJ-rn1mSmlusX1wKlN=
+FNzs_PzkzVzc2sMDxt8PPcG5dbjlYCXEylxUJcSTn5-blFqYnJGWCRZCGu1AIjU0Mg0E204gaK5=
+AqxpuYmZuZYKXExlybnC0kbmhbkmxnoFqfmpRhBTS7WLUoF8aPC9PWT8lMq9UsSk3JS9Usg7CL9=
+khSISLRJLKYgski0USxUJYgBVpNhrJ-YZG9hmWZiYGBsmWpuaJCUaGxWA3ZTfGaKVW5xSX55qkN=
+SYkpKPlAsD-T5GhPDxJQkYwNTQ3NDS8NUI4ssnoy4LYFv7k8M2TPD1rOBiRkA5huBUQ.GVQQ3Ip=
+xJtPPJg/click" target=3D"_blank" style=3D"text-decoration: none; color: #00=
+0000;" rel=3D"noopener">Sugar<br>Cookie&#160;Mix</a><br></h3></td></tr></ta=
+ble><table class=3D"button_block block-3" width=3D"100%" border=3D"0" cellp=
+adding=3D"10" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-ls=
+pace:0;mso-table-rspace:0"><tr><td class=3D"pad"><div class=3D"alignment" a=
+lign=3D"center"><a href=3D"https://us3-cdn.eng.bloomreach.com/king-arthur-b=
+aking-production/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klEV=
+GSUlBsZW-fnFGfoFedmZeemJRSUZpUVIiiK2XnJ-rn1mSmlusX1wKlNFNzs_PzkzVzc2sMDxt8P=
+PcG5dbjlYCXEylxUJcSTn5-blFqYnJGWCRZCGu1AIjU0Mg0E204gaK5AqxpuYmZuZYKXExlybnC=
+0kbmhbkmxnoFqfmpRhBTS7WLUoF8aPC9fWT8lMq9UsSk3JS9Usg7CL9khSISLRJLKYgski0USxU=
+pXEsVE1KZpl-YpK9hWWaiYGBsWWquaFBUqKxWQ3YUfGZKVa5xSX55akOSYkpKflAsTyQ72tMDBN=
+TkowNTA3NDS0NU40ssngy4rYEvrk_MWTPDFvPBiZmAIOzgfs.lEln6MTc-bIBmw/click" targ=
+et=3D"_blank" style=3D"color:#000000;text-decoration:none;"><!--[if mso]>
+<v:roundrect xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:w=3D"urn:schem=
+as-microsoft-com:office:word"  href=3D"https://us3-cdn.eng.bloomreach.com/k=
+ing-arthur-baking-production/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248=
+WTF8te-6klEVGSUlBsZW-fnFGfoFedmZeemJRSUZpUVIiiK2XnJ-rn1mSmlusX1wKlNFNzs_Pzk=
+zVzc2sMDxt8PPcG5dbjlYCXEylxUJcSTn5-blFqYnJGWCRZCGu1AIjU0Mg0E204gaK5AqxpuYmZ=
+uZYKXExlybnC0kbmhbkmxnoFqfmpRhBTS7WLUoF8ZPsLSzTTAwMjC1TzQ0NkhKNzWrAeuMzU6xy=
+i0vyy1MdkhJTUvKBYnkgR9aYGCamJBkbmBqaG1oaphpZZPFkxG0JfHN_YsieGbaeDUzMAGNfYjw=
+=2EvfH_S-_MNu0URQ/click"  style=3D"heigh=
+t:39px;width:138px;v-text-anchor:midd=
+le;" arcsize=3D"0%" fillcolor=3D"#ffffff">
+<v:stroke dashstyle=3D"Solid" weight=3D"1px" color=3D"#da1a32"/>
+<w:anchorlock/>
+<v:textbox inset=3D"0px,0px,0px,0px">
+<center dir=3D"false" style=3D"color:#000000;font-family:Tahoma, Verdana, s=
+ans-serif;font-size:16px">
+<![endif]-->
+<span class=3D"button" style=3D"background-color: #ffffff; mso-shading: tra=
+nsparent; border-bottom: 1px solid #da1a32; border-left: 1px solid #da1a32;=
+ border-radius: 0px; border-right: 1px solid #da1a32; border-top: 1px solid=
+ #da1a32; color: #000000; display: inline-block; font-family: 'Roboto', Tah=
+oma, Verdana, Segoe, sans-serif; font-size: 16px; font-weight: 400; mso-bor=
+der-alt: none; padding-bottom: 12px; padding-top: 12px; padding-left: 20px;=
+ padding-right: 20px; text-align: center; width: auto; word-break: keep-all=
+; letter-spacing: 2px;"><span style=3D"word-break: break-word; line-height:=
+ 16px;">SHOP NOW</span></span>
+<!--[if mso]></center></v:textbox></v:roundrect><![endif]--></a></div></td>=
+</tr></table></td></tr></tbody></table></td></tr></tbody></table><table cla=
+ss=3D"row row-6" align=3D"center" width=3D"100%" border=3D"0" cellpadding=
+=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;=
+mso-table-rspace:0"><tbody><tr><td><table class=3D"row-content stack" align=
+=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presen=
+tation" style=3D"mso-table-lspace:0;mso-table-rspace:0;border-radius:0;colo=
+r:#000;width:640px;margin:0 auto" width=3D"640"><tbody><tr><td class=3D"col=
+umn column-1" width=3D"50%" style=3D"mso-table-lspace:0;mso-table-rspace:0;=
+font-weight:400;text-align:left;padding-bottom:10px;vertical-align:top"><ta=
+ble class=3D"image_block block-1" width=3D"100%" border=3D"0" cellpadding=
+=3D"10" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0=
+;mso-table-rspace:0"><tr><td class=3D"pad"><div class=3D"alignment" align=
+=3D"center"><div style=3D"max-width:272px"><a href=3D"https://us3-cdn.eng.b=
+loomreach.com/king-arthur-baking-production/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_=
+ql1gZrjJU373248WTF8te-6klFVGSUlBsZW-fnFGfoFedmZeemJRSUZpUVIiiK2XnJ-rn1mSmlu=
+sX5yXX56WmJOjW1xQlJmXnZNabHja4Oe5Ny63HK0EuJhKi4W4knLy83OLUhOTM8AiyUJcqQVGpo=
+ZAoJtoxQ0UyRViTc1NzMyxUuJiLk3OF5I2NC3INzPQLU7NSzHSTc7Pz85MLdYtSgXxo6L19ZPyU=
+yr1SxKTclL1SyDsIv2SFIhItGkspiCySLRhLFQliAFWk5JZBsaJSfYWlmkmBgbGlqnmhgZJicZm=
+NWCHxWemWOUWl-SXpzokJaak5APF8kBhUGNimJiSZGxgamhuaGmYamSRxZMRtyXwzf2JIXtm2Ho=
+2MDEDACkfhJs.GQxYmISop51Qvw/click" target=3D"_blank"><img src=3D"https://em=
+ail-media-aws.kingarthurflour.com/assets/SILOS/213802.jpg" style=3D"display=
+:block;height:auto;border:0;width:100%" width=3D"272" alt=3D"Snowfall Sprin=
+kles" title=3D"Snowfall Sprinkles" height=3D"auto"></a></div></div></td></t=
+r></table><table class=3D"heading_block block-2" width=3D"100%" border=3D"0=
+" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-ta=
+ble-lspace:0;mso-table-rspace:0"><tr><td class=3D"pad" style=3D"padding-bot=
+tom:10px;padding-left:20px;padding-right:20px;padding-top:10px;text-align:c=
+enter;width:100%"><h3 style=3D"margin:0;color:#000;direction:ltr;font-famil=
+y:Para Supreme;font-size:20px;font-weight:400;letter-spacing:normal;line-he=
+ight:1.2;text-align:center;margin-top:0;margin-bottom:0;mso-line-height-alt=
+:24px">
+<a href=3D"https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production=
+/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klFVGSUlBsZW-fnFGfoF=
+edmZeemJRSUZpUVIiiK2XnJ-rn1mSmlusX5yXX56WmJOjW1xQlJmXnZNabHja4Oe5Ny63HK0EuJ=
+hKi4W4knLy83OLUhOTM8AiyUJcqQVGpoZAoJtoxQ0UyRViTc1NzMyxUuJiLk3OF5I2NC3INzPQL=
+U7NSzHSTc7Pz85MLdYtSgXxo8L09ZPyUyr1SxKTclL1SyDsIv2SFIhItGkspiCySLRhLFSlUSxU=
+TYaxfmKSvYVlmomBgbFlqrmhQVKisVkN2E3xmSlWucUl-eWpDkmJKSn5QLE8kPdrTAwTU5KMDUw=
+NzQ0tDVONLLJ4MuK2BL65PzFkzwxbzwYmZgByOYJ9.2aDXKo64X2kIgw/click" target=3D"_=
+blank" style=3D"text-decoration: none; color: #000000;" rel=3D"noopener"><s=
+pan class=3D"mce-content-body mce-edit-focus" style=3D"word-break: break-wo=
+rd; position: relative;" id=3D"1ad4a981-5a61-4553-9de7-0d2fa8ede82c" data-p=
+osition=3D"60-0-1" data-qa=3D"tinyeditor-root-element">Snowfall Sprinkles</=
+span></a></h3></td></tr></table><table class=3D"button_block block-3" width=
+=3D"100%" border=3D"0" cellpadding=3D"10" cellspacing=3D"0" role=3D"present=
+ation" style=3D"mso-table-lspace:0;mso-table-rspace:0"><tr><td class=3D"pad=
+"><div class=3D"alignment" align=3D"center"><a href=3D"https://us3-cdn.eng.=
+bloomreach.com/king-arthur-baking-production/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ=
+_ql1gZrjJU373248WTF8te-6klFVGSUlBsZW-fnFGfoFedmZeemJRSUZpUVIiiK2XnJ-rn1mSml=
+usX5yXX56WmJOjW1xQlJmXnZNabHja4Oe5Ny63HK0EuJhKi4W4knLy83OLUhOTM8AiyUJcqQVGp=
+oZAoJtoxQ0UyRViTc1NzMyxUuJiLk3OF5I2NC3INzPQLU7NSzHSTc7Pz85MLdYtSgXxo8L19ZPy=
+Uyr1SxKTclL1SyDsIv2SFIhItGkspiCySLRhLFSlcSxUTUpmmX5ikr2FZZqJgYGxZaq5oUFSorF=
+ZDdhR8ZkpVrnFJfnlqQ5JiSkp-UCxPJD_a0wME1OSjA1MDc0NLQ1TjSyyeDLitgS-uT8xZM8MW8=
+8GJmYAEP2DJw.t1payJ8ePTHiIg/click" target=3D"_blank" style=3D"color:#000000=
+;text-decoration:none;"><!--[if mso]>
+<v:roundrect xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:w=3D"urn:schem=
+as-microsoft-com:office:word"  href=3D"https://us3-cdn.eng.bloomreach.com/k=
+ing-arthur-baking-production/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248=
+WTF8te-6klFVGSUlBsZW-fnFGfoFedmZeemJRSUZpUVIiiK2XnJ-rn1mSmlusX5yXX56WmJOjW1=
+xQlJmXnZNabHja4Oe5Ny63HK0EuJhKi4W4knLy83OLUhOTM8AiyUJcqQVGpoZAoJtoxQ0UyRViT=
+c1NzMyxUuJiLk3OF5I2NC3INzPQLU7NSzHSTc7Pz85MLdYtSgXxk-wtLNNMDAyMLVPNDQ2SEo3N=
+asB64zNTrHKLS_LLUx2SElNS8oFieSBn1pgYJqYkGRuYGpobWhqmGllk8WTEbQl8c39iyJ4Ztp4=
+NTMwAiC1jaA.5o-bYAwYkD1k9w/click"  style=3D"height:39px;width:138px;v-text-=
+anchor:middle;" arcsize=3D"0%" fillcolor=3D"#ffffff">
+<v:stroke dashstyle=3D"Solid" weight=3D"1px" color=3D"#da1a32"/>
+<w:anchorlock/>
+<v:textbox inset=3D"0px,0px,0px,0px">
+<center dir=3D"false" style=3D"color:#000000;font-family:Tahoma, Verdana, s=
+ans-serif;font-size:16px">
+<![endif]-->
+<span class=3D"button" style=3D"background-color: #ffffff; mso-shading: tra=
+nsparent; border-bottom: 1px solid #da1a32; border-left: 1px solid #da1a32;=
+ border-radius: 0px; border-right: 1px solid #da1a32; border-top: 1px solid=
+ #da1a32; color: #000000; display: inline-block; font-family: 'Roboto', Tah=
+oma, Verdana, Segoe, sans-serif; font-size: 16px; font-weight: 400; mso-bor=
+der-alt: none; padding-bottom: 12px; padding-top: 12px; padding-left: 20px;=
+ padding-right: 20px; text-align: center; width: auto; word-break: keep-all=
+; letter-spacing: 2px;"><span style=3D"word-break: break-word; line-height:=
+ 16px;">SHOP NOW</span></span>
+<!--[if mso]></center></v:textbox></v:roundrect><![endif]--></a></div></td>=
+</tr></table></td><td class=3D"column column-2" width=3D"50%" style=3D"mso-=
+table-lspace:0;mso-table-rspace:0;font-weight:400;text-align:left;padding-b=
+ottom:10px;vertical-align:top"><table class=3D"image_block block-1" width=
+=3D"100%" border=3D"0" cellpadding=3D"10" cellspacing=3D"0" role=3D"present=
+ation" style=3D"mso-table-lspace:0;mso-table-rspace:0"><tr><td class=3D"pad=
+"><div class=3D"alignment" align=3D"center"><div style=3D"max-width:272px">
+<a href=3D"https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production=
+/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klH1GSUlBsZW-fnFGfoF=
+edmZeemJRSUZpUVIiiK2XnJ-rn1mSmlusn5dYUlqUmKOblp-fopucn5NfVKxbnFpieNrg57k3Lr=
+ccrQS4mEqLhbiScvLzc4tSE5MzwCLJQlypBUamhkCgm2jFDRTJFWJNzU3MzLFS4mIuTc4XkjY0L=
+cg3MwAalpdiBDQ5PzsztVi3KBXEj4rW10_KT6nUL0lMyknVL4Gwi_RLUiAi0aaxmILIItFGsVCV=
+hrFQNSmZZWCcmGRvYZlmYmBgbJlqbmiQlGhsVgN2WHxmilVucUl-eapDUmJKSj5QLA8UEDUmhok=
+pScYGpobmhpaGqUYWWTwZcVsC39yfGLJnhq1nAxMzAK2ghjc.gMrEKuW0VYBxgw/click" targ=
+et=3D"_blank"><img src=3D"https://email-media-aws.kingarthurflour.com/asset=
+s/SILOS/206277.jpg" style=3D"display:block;height:auto;border:0;width:100%"=
+ width=3D"272" alt title height=3D"auto"></a></div></div></td></tr></table>=
+<table class=3D"heading_block block-2" width=3D"100%" border=3D"0" cellpadd=
+ing=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-lspace=
+:0;mso-table-rspace:0"><tr><td class=3D"pad" style=3D"padding-bottom:10px;p=
+adding-left:20px;padding-right:20px;padding-top:10px;text-align:center;widt=
+h:100%"><h3 style=3D"margin:0;color:#000;direction:ltr;font-family:Para Sup=
+reme;font-size:20px;font-weight:400;letter-spacing:normal;line-height:1.2;t=
+ext-align:center;margin-top:0;margin-bottom:0;mso-line-height-alt:24px">
+<a href=3D"https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production=
+/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klH1GSUlBsZW-fnFGfoF=
+edmZeemJRSUZpUVIiiK2XnJ-rn1mSmlusn5dYUlqUmKOblp-fopucn5NfVKxbnFpieNrg57k3Lr=
+ccrQS4mEqLhbiScvLzc4tSE5MzwCLJQlypBUamhkCgm2jFDRTJFWJNzU3MzLFS4mIuTc4XkjY0L=
+cg3MwAalpdiBDQ5PzsztVi3KBXEj4rU10_KT6nUL0lMyknVL4Gwi_RLUiAi0aaxmILIItFGsVCV=
+IAZYTYaxfmK0YWySvYVlmomBgbFlqrmhQVKisVkN2FnxmSlWucUl-eWpDkmJKSn5QLE8UDDUmBg=
+mpiQZG5gamhtaGqYaWWTxZMRtCXxzf2LInhm2ng1MzAB05YUF.hJVJvR2IK2trRA/click" tar=
+get=3D"_blank" style=3D"text-decoration: none; color: #000000;" rel=3D"noop=
+ener">Natural Food Colors Set</a><a href=3D"https://us3-cdn.eng.bloomreach.=
+com/king-arthur-baking-production/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU3=
+73248WTF8te-6klH9GSUlBsZW-fnFGfoFedmZeemJRSUZpUVIiiK2XnJ-rn1mSmlusn5dYUlqUm=
+KOblp-fopucn5NfVKxbnFqinFxaXJKfm1oUlFqWmVpebHja4Oe5Ny63HK0EuJhKi4W4knLy83OL=
+UhOTM8AiyUJcqQVGpoZAoJtoxQ0UyRViTc1NzMyxUuJiLk3OF5I2NC3INzMAGp6XYgS0KT87M7V=
+YtygVxI-K1NdPyk-p1C9JTMpJ1S-BsIv0S1IgItGmsZiCyCLRRrFQlSAGWE2GsX4ikJdkb2GZZm=
+JgYGyZam5okJRobFYDdlZ8ZopVLtCL5akOSYkpKflAsTxQsNSYGCamJBkbmBqaG1oaphpZZPFkx=
+G0JfHN_YsieGbaeDUzMADrpi5A.j6ZZagnHz4_aww/click" title=3D"View product revi=
+ews" style=3D"text-decoration: underline; color: #000000;"></a></h3></td></=
+tr></table><table class=3D"button_block block-3" width=3D"100%" border=3D"0=
+" cellpadding=3D"10" cellspacing=3D"0" role=3D"presentation" style=3D"mso-t=
+able-lspace:0;mso-table-rspace:0"><tr><td class=3D"pad"><div class=3D"align=
+ment" align=3D"center"><a href=3D"https://us3-cdn.eng.bloomreach.com/king-a=
+rthur-baking-production/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8t=
+e-6klH1GSUlBsZW-fnFGfoFedmZeemJRSUZpUVIiiK2XnJ-rn1mSmlusn5dYUlqUmKOblp-fopu=
+cn5NfVKxbnFpieNrg57k3LrccrQS4mEqLhbiScvLzc4tSE5MzwCLJQlypBUamhkCgm2jFDRTJFW=
+JNzU3MzLFS4mIuTc4XkjY0Lcg3MwAalpdiBDQ5PzsztVi3KBXEjwrX10_KT6nUL0lMyknVL4Gwi=
+_RLUiAi0aaxmILIItFGsVCVxrFQNSmZZfqJSfYWlmkmBgbGlqnmhgZJicZmNWBHxWemWOUWl-SX=
+pzokJaak5APF8kCBUGNimJiSZGxgamhuaGmYamSRxZMRtyXwzf2JIXtm2Ho2MDEDAI8OhMM.2Zm=
+srSBffpuBdQ/click" target=3D"_blank" style=3D"color:#000000;text-decoration=
+:none;"><!--[if mso]>
+<v:roundrect xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:w=3D"urn:schem=
+as-microsoft-com:office:word"  href=3D"https://us3-cdn.eng.bloomreach.com/k=
+ing-arthur-baking-production/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248=
+WTF8te-6klH1GSUlBsZW-fnFGfoFedmZeemJRSUZpUVIiiK2XnJ-rn1mSmlusn5dYUlqUmKOblp=
+-fopucn5NfVKxbnFpieNrg57k3LrccrQS4mEqLhbiScvLzc4tSE5MzwCLJQlypBUamhkCgm2jFD=
+RTJFWJNzU3MzLFS4mIuTc4XkjY0Lcg3MwAalpdiBDQ5PzsztVi3KBXET7K3sEwzMTAwtkw1NzRI=
+SjQ2qwHrjc9MscotLskvT3VISkxJyQeK5YHcWmNimJiSZGxgamhuaGmYamSRxZMRtyXwzf2JIXt=
+m2Ho2MDEDAHbyZQM.mgryo8MnwK_RTQ/click"  style=3D"height:39px;width:138px;v-=
+text-anchor:middle;" arcsize=3D"0%" fillcolor=3D"#ffffff">
+<v:stroke dashstyle=3D"Solid" weight=3D"1px" color=3D"#da1a32"/>
+<w:anchorlock/>
+<v:textbox inset=3D"0px,0px,0px,0px">
+<center dir=3D"false" style=3D"color:#000000;font-family:Tahoma, Verdana, s=
+ans-serif;font-size:16px">
+<![endif]-->
+<span class=3D"button" style=3D"background-color: #ffffff; mso-shading: tra=
+nsparent; border-bottom: 1px solid #da1a32; border-left: 1px solid #da1a32;=
+ border-radius: 0px; border-right: 1px solid #da1a32; border-top: 1px solid=
+ #da1a32; color: #000000; display: inline-block; font-family: 'Roboto', Tah=
+oma, Verdana, Segoe, sans-serif; font-size: 16px; font-weight: 400; mso-bor=
+der-alt: none; padding-bottom: 12px; padding-top: 12px; padding-left: 20px;=
+ padding-right: 20px; text-align: center; width: auto; word-break: keep-all=
+; letter-spacing: 2px;"><span style=3D"word-break: break-word; line-height:=
+ 16px;">SHOP NOW</span></span>
+<!--[if mso]></center></v:textbox></v:roundrect><![endif]--></a></div></td>=
+</tr></table></td></tr></tbody></table></td></tr></tbody></table><table cla=
+ss=3D"row row-7" align=3D"center" width=3D"100%" border=3D"0" cellpadding=
+=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;=
+mso-table-rspace:0"><tbody><tr><td><table class=3D"row-content stack" align=
+=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presen=
+tation" style=3D"mso-table-lspace:0;mso-table-rspace:0;border-radius:0;colo=
+r:#000;width:640px;margin:0 auto" width=3D"640"><tbody><tr><td class=3D"col=
+umn column-1" width=3D"50%" style=3D"mso-table-lspace:0;mso-table-rspace:0;=
+font-weight:400;text-align:left;padding-bottom:30px;vertical-align:top"><ta=
+ble class=3D"image_block block-1" width=3D"100%" border=3D"0" cellpadding=
+=3D"10" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0=
+;mso-table-rspace:0"><tr><td class=3D"pad"><div class=3D"alignment" align=
+=3D"center"><div style=3D"max-width:272px"><a href=3D"https://us3-cdn.eng.b=
+loomreach.com/king-arthur-baking-production/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_=
+ql1gZrjJU373248WTF8te-6klFdGSUlBsZW-fnFGfoFedmZeemJRSUZpUVIiiK2XnJ-rn1mSmlu=
+sn5Gfk5mSWKlblpmTk5ieqluQX6CbX1qim1xaUpJapFucWmJ42uDnuTcutxytBLiYSouFuJJy8v=
+Nzi1ITkzPAIslCXKkFRqaGQKCbaMUNFMkVYk3NTczMsVLiYi5NzheSNjQtyDczABqWl2Kkm5yfn=
+52ZWqxblAriR0Xr6yflp1TqlyQm5aTql0DYRfolKRCRaLNYTEFkkWjDWKhKEAOsJiWzDIwTk-wt=
+LNNMDAyMLVPNDQ2SEo3NasAOi89MscotLskvT3VISkxJyQeK5YHCpMbEMDElydjA1NDc0NIw1cg=
+iiycjbkvgm_sTQ_bMsPVsYGIGACAGinc.ZvgCc1LrEZvpcw/click" target=3D"_blank"><i=
+mg src=3D"https://email-media-aws.kingarthurflour.com/assets/SILOS/213339.j=
+pg" style=3D"display:block;height:auto;border:0;width:100%" width=3D"272" a=
+lt=3D"Holiday Village Pop-Out Cookie Cutters" title=3D"Holiday Village Pop-=
+Out Cookie Cutters" height=3D"auto"></a></div></div></td></tr></table><tabl=
+e class=3D"heading_block block-2" width=3D"100%" border=3D"0" cellpadding=
+=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;=
+mso-table-rspace:0"><tr><td class=3D"pad" style=3D"padding-bottom:10px;padd=
+ing-left:30px;padding-right:30px;padding-top:10px;text-align:center;width:1=
+00%"><h3 style=3D"margin:0;color:#000;direction:ltr;font-family:Para Suprem=
+e;font-size:20px;font-weight:400;letter-spacing:normal;line-height:1.2;text=
+-align:center;margin-top:0;margin-bottom:0;mso-line-height-alt:24px">
+<a href=3D"https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production=
+/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klFdGSUlBsZW-fnFGfoF=
+edmZeemJRSUZpUVIiiK2XnJ-rn1mSmlusn5Gfk5mSWKlblpmTk5ieqluQX6CbX1qim1xaUpJapF=
+ucWmJ42uDnuTcutxytBLiYSouFuJJy8vNzi1ITkzPAIslCXKkFRqaGQKCbaMUNFMkVYk3NTczMs=
+VLiYi5NzheSNjQtyDczABqWl2Kkm5yfn52ZWqxblAriR0Xq6yflp1TqlyQm5aTql0DYRfolKRCR=
+aLNYTEFkkWjDWKhKo1iomgxj_USgcJK9hWWaiYGBsWWquaFBUqKxWQ3YWfGZKVa5xSX55akOSYk=
+pKflAsTxQiNSYGCamJBkbmBqaG1oaphpZZPFkxG0JfHN_YsieGbaeDUzMAN68iUU.UhZGb_87FO=
+GIlw/click" target=3D"_blank" style=3D"text-decoration: none; color: #00000=
+0;" rel=3D"noopener">Holiday Village Pop-Out Cookie Cutters</a><a href=3D"h=
+ttps://us3-cdn.eng.bloomreach.com/king-arthur-baking-production/e/.eJwTUmj5=
+t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6kVFRGSUlBsZW-fnFGfoFedmZeemJRSUZ=
+pUVIiiK2XnJ-rn1mSmlusn5Gfk5mSWKlblpmTk5ieqluQX6CbX1qim1xaUpJapFucWqKcXFpckp=
+-bWhSUWpaZWl5seNrg57k3LrccrQS4mEqLhbiScvLzc4tSE5MzwCLJQlypBUamhkCgm2jFDRTJF=
+WJNzU3MzLFS4mIuTc4XkjY0Lcg3MwAanpdipJucn5-dmVqsW5QK4kdF6usn5adU6pckJuWk6pdA=
+2EX6JSkQkWizWExBZJFow1ioSqNYqJoMY_1EIC_J3sIyzcTAwNgy1dzQICnR2KwG7Kz4zBSrXKA=
+Xy1MdkhJTUvKBYnmgEKoxMUxMSTI2MDU0N7Q0TDWyyOLJiNsS-Ob-xJA9M2w9G5iYAelwj9A.BC=
+7__fvVToJPMw/click" title=3D"View product reviews" style=3D"text-decoration=
+: underline; color: #000000;"></a></h3></td></tr></table><table class=3D"bu=
+tton_block block-3" width=3D"100%" border=3D"0" cellpadding=3D"10" cellspac=
+ing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspac=
+e:0"><tr><td class=3D"pad"><div class=3D"alignment" align=3D"center"><a hre=
+f=3D"https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production/e/.eJ=
+wTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klFdGSUlBsZW-fnFGfoFedmZee=
+mJRSUZpUVIiiK2XnJ-rn1mSmlusn5Gfk5mSWKlblpmTk5ieqluQX6CbX1qim1xaUpJapFucWmJ4=
+2uDnuTcutxytBLiYSouFuJJy8vNzi1ITkzPAIslCXKkFRqaGQKCbaMUNFMkVYk3NTczMsVLiYi5=
+NzheSNjQtyDczABqWl2Kkm5yfn52ZWqxblAriR4Xr6yflp1TqlyQm5aTql0DYRfolKRCRaLNYTE=
+FkkWjDWKhK41iompTMMv3EJHsLyzQTAwNjy1RzQ4OkRGOzGrCj4jNTrHKLS_LLUx2SElNS8oFie=
+aDwqDExTExJMjYwNTQ3tDRMNbLI4smI2xL45v7EkD0zbD0bmJgB8GWJAw.CO4kxgWMO-aXrw/cl=
+ick" target=3D"_blank" style=3D"color:#000000;text-decoration:none;"><!--[i=
+f mso]>
+<v:roundrect xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:w=3D"urn:schem=
+as-microsoft-com:office:word"  href=3D"https://us3-cdn.eng.bloomreach.com/k=
+ing-arthur-baking-production/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248=
+WTF8te-6klFdGSUlBsZW-fnFGfoFedmZeemJRSUZpUVIiiK2XnJ-rn1mSmlusn5Gfk5mSWKlblp=
+mTk5ieqluQX6CbX1qim1xaUpJapFucWmJ42uDnuTcutxytBLiYSouFuJJy8vNzi1ITkzPAIslCX=
+KkFRqaGQKCbaMUNFMkVYk3NTczMsVLiYi5NzheSNjQtyDczABqWl2Kkm5yfn52ZWqxblAriJ9lb=
+WKaZGBgYW6aaGxokJRqb1YD1xmemWOUWl-SXpzokJaak5APF8kDOrjExTExJMjYwNTQ3tDRMNbL=
+I4smI2xL45v7EkD0zbD0bmJgBXdlpQw.0jgXhGrgrZML5w/click"  style=3D"height:39px=
+;width:138px;v-text-anchor:middle;" arcsize=3D"0%" fillcolor=3D"#ffffff">
+<v:stroke dashstyle=3D"Solid" weight=3D"1px" color=3D"#da1a32"/>
+<w:anchorlock/>
+<v:textbox inset=3D"0px,0px,0px,0px">
+<center dir=3D"false" style=3D"color:#000000;font-family:Tahoma, Verdana, s=
+ans-serif;font-size:16px">
+<![endif]-->
+<span class=3D"button" style=3D"background-color: #ffffff; mso-shading: tra=
+nsparent; border-bottom: 1px solid #da1a32; border-left: 1px solid #da1a32;=
+ border-radius: 0px; border-right: 1px solid #da1a32; border-top: 1px solid=
+ #da1a32; color: #000000; display: inline-block; font-family: 'Roboto', Tah=
+oma, Verdana, Segoe, sans-serif; font-size: 16px; font-weight: 400; mso-bor=
+der-alt: none; padding-bottom: 12px; padding-top: 12px; padding-left: 20px;=
+ padding-right: 20px; text-align: center; width: auto; word-break: keep-all=
+; letter-spacing: 2px;"><span style=3D"word-break: break-word; line-height:=
+ 16px;">SHOP NOW</span></span>
+<!--[if mso]></center></v:textbox></v:roundrect><![endif]--></a></div></td>=
+</tr></table></td><td class=3D"column column-2" width=3D"50%" style=3D"mso-=
+table-lspace:0;mso-table-rspace:0;font-weight:400;text-align:left;padding-b=
+ottom:10px;vertical-align:top"><table class=3D"image_block block-1" width=
+=3D"100%" border=3D"0" cellpadding=3D"10" cellspacing=3D"0" role=3D"present=
+ation" style=3D"mso-table-lspace:0;mso-table-rspace:0"><tr><td class=3D"pad=
+"><div class=3D"alignment" align=3D"center"><div style=3D"max-width:272px">
+<a href=3D"https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production=
+/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klHdGSUlBsZW-fnFGfoF=
+edmZeemJRSUZpUVIiiK2XnJ-rn1mSmlusX5aZV5KYnqqbX5SXmJuaV1Ksm5yfn52ZqptcWlKSWq=
+RbnFpieNrg57k3LrccrQS4mEqLhbiScvLzc4tSE5MzwCLJQlypBUamhkCgm2jFDRTJFWJNzU3Mz=
+LFS4mIuTc4XkjY0Lcg3MwAalpdiBLWgWLcoFcSPitbXT8pPqdQvSUzKSdUvgbCL9EtSICLRZrGY=
+gsgi0UaxUJWGsVA1KZllYJyYZG9hmWZiYGBsmWpuaJCUaGxWA3ZYfGaKVW5xSX55qkNSYkpKPlA=
+sDxQoNSaGiSlJxgamhuaGloapRhZZPBlxWwLf3J8YsmeGrWcDEzMA_DCLFg.UrBF5dqV07GT5g/=
+click" target=3D"_blank"><img src=3D"https://email-media-aws.kingarthurflou=
+r.com/assets/SILOS/400025.jpg" style=3D"display:block;height:auto;border:0;=
+width:100%" width=3D"272" alt=3D"Vintage Ornaments Cookie Cutter Set" title=
+=3D"Vintage Ornaments Cookie Cutter Set" height=3D"auto"></a></div></div></=
+td></tr></table><table class=3D"heading_block block-2" width=3D"100%" borde=
+r=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"=
+mso-table-lspace:0;mso-table-rspace:0"><tr><td class=3D"pad" style=3D"paddi=
+ng-bottom:10px;padding-left:30px;padding-right:30px;padding-top:10px;text-a=
+lign:center;width:100%"><h3 style=3D"margin:0;color:#000;direction:ltr;font=
+-family:Para Supreme;font-size:20px;font-weight:400;letter-spacing:normal;l=
+ine-height:1.2;text-align:center;margin-top:0;margin-bottom:0;mso-line-heig=
+ht-alt:24px">Vintage Ornaments Cookie Cutter Set<br></h3></td></tr></table>=
+<table class=3D"button_block block-3" width=3D"100%" border=3D"0" cellpaddi=
+ng=3D"10" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-lspace=
+:0;mso-table-rspace:0"><tr><td class=3D"pad"><div class=3D"alignment" align=
+=3D"center"><a href=3D"https://us3-cdn.eng.bloomreach.com/king-arthur-bakin=
+g-production/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klHdGSUl=
+BsZW-fnFGfoFedmZeemJRSUZpUVIiiK2XnJ-rn1mSmlusX5aZV5KYnqqbX5SXmJuaV1Ksm5yfn5=
+2ZqptcWlKSWqRbnFpieNrg57k3LrccrQS4mEqLhbiScvLzc4tSE5MzwCLJQlypBUamhkCgm2jFD=
+RTJFWJNzU3MzLFS4mIuTc4XkjY0Lcg3MwAalpdiBLWgWLcoFcSPCtfXT8pPqdQvSUzKSdUvgbCL=
+9EtSICLRZrGYgsgi0UaxUJXGsVA1KZll-olJ9haWaSYGBsaWqeaGBkmJxmY1YEfFZ6ZY5RaX5Je=
+nOiQlpqTkA8XyQAFSY2KYmJJkbGBqaG5oaZhqZJHFkxG3JfDN_Ykhe2bYejYwMQMAyiKJog.EeL=
+QaE59FAzNmA/click" target=3D"_blank" style=3D"color:#000000;text-decoration=
+:none;"><!--[if mso]>
+<v:roundrect xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:w=3D"urn:schem=
+as-microsoft-com:office:word"  href=3D"https://us3-cdn.eng.bloomreach.com/k=
+ing-arthur-baking-production/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248=
+WTF8te-6klHdGSUlBsZW-fnFGfoFedmZeemJRSUZpUVIiiK2XnJ-rn1mSmlusX5aZV5KYnqqbX5=
+SXmJuaV1Ksm5yfn52ZqptcWlKSWqRbnFpieNrg57k3LrccrQS4mEqLhbiScvLzc4tSE5MzwCLJQ=
+lypBUamhkCgm2jFDRTJFWJNzU3MzLFS4mIuTc4XkjY0Lcg3MwAalpdiBLWgWLcoFcRPsrewTDMx=
+MDC2TDU3NEhKNDarAeuNz0yxyi0uyS9PdUhKTEnJB4rlgdxdY2KYmJJkbGBqaG5oaZhqZJHFkxG=
+3JfDN_Ykhe2bYejYwMQMAAD9p4Q.CWl3e3kqGQ1wBg/click"  style=3D"height:39px;wid=
+th:138px;v-text-anchor:middle;" arcsize=3D"0%" fillcolor=3D"#ffffff">
+<v:stroke dashstyle=3D"Solid" weight=3D"1px" color=3D"#da1a32"/>
+<w:anchorlock/>
+<v:textbox inset=3D"0px,0px,0px,0px">
+<center dir=3D"false" style=3D"color:#000000;font-family:Tahoma, Verdana, s=
+ans-serif;font-size:16px">
+<![endif]-->
+<span class=3D"button" style=3D"background-color: #ffffff; mso-shading: tra=
+nsparent; border-bottom: 1px solid #da1a32; border-left: 1px solid #da1a32;=
+ border-radius: 0px; border-right: 1px solid #da1a32; border-top: 1px solid=
+ #da1a32; color: #000000; display: inline-block; font-family: 'Roboto', Tah=
+oma, Verdana, Segoe, sans-serif; font-size: 16px; font-weight: 400; mso-bor=
+der-alt: none; padding-bottom: 12px; padding-top: 12px; padding-left: 20px;=
+ padding-right: 20px; text-align: center; width: auto; word-break: keep-all=
+; letter-spacing: 2px;"><span style=3D"word-break: break-word; line-height:=
+ 16px;">SHOP NOW</span></span>
+<!--[if mso]></center></v:textbox></v:roundrect><![endif]--></a></div></td>=
+</tr></table></td></tr></tbody></table></td></tr></tbody></table><table cla=
+ss=3D"row row-8" align=3D"center" width=3D"100%" border=3D"0" cellpadding=
+=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;=
+mso-table-rspace:0"><tbody><tr><td><table class=3D"row-content stack" align=
+=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presen=
+tation" style=3D"mso-table-lspace:0;mso-table-rspace:0;border-radius:0;colo=
+r:#000;width:640px;margin:0 auto" width=3D"640"><tbody><tr><td class=3D"col=
+umn column-1" width=3D"50%" style=3D"mso-table-lspace:0;mso-table-rspace:0;=
+font-weight:400;text-align:left;vertical-align:middle;border-radius:0"><tab=
+le class=3D"image_block block-1" width=3D"100%" border=3D"0" cellpadding=3D=
+"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;mso=
+-table-rspace:0"><tr><td class=3D"pad" style=3D"width:100%;padding-right:0;=
+padding-left:0"><div class=3D"alignment" align=3D"center"><div class=3D"ful=
+lWidth" style=3D"max-width:320px"><a href=3D"https://us3-cdn.eng.bloomreach=
+=2Ecom/king-arthur-baking-production/e/=
+=2EeJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU=
+373248WTF8te-6klGtGSUlBsZW-fnFGfoFedmZeemJRSUZpUVIiiK2XnJ-rn5yTWFycWqyfnJ-f=
+nZmqmwrk5JVkJuYU6-bn6aak5ibmpRieNvh57o3LLUcrAS6m0mIhrqSc_PzcotTE5AywSLIQV2q=
+BkakhEOgmWnEDRXKFWIE6M3OslLiYS5PzhaQNTQvyzQx0gWanGOlCrCrWLUoF8aMi9PWT8lMq9U=
+sSk3JS9Usg7CL9khSISLR5LKYgski0YSxMEKwgJbMMjBOT7C0s00wMDIwtU80NDZISjc1qwK6Kz=
+0yxyi0uyS9PdUhKTEnJB4rlgcKixsQwMSXJ2MDU0NzQ0jDVyCKLJyNuS-Cb-xND9syw9WxgYgYA=
+nayHnA.Es7VWz3idMfaoA/click" target=3D"_blank"><img src=3D"https://email-me=
+dia-aws.kingarthurflour.com/Bloomreach/Campaigns/2025/11_nov/1111_lifestyle=
+-214107.jpg" style=3D"display:block;height:auto;border:0;width:100%" width=
+=3D"320" alt=3D"Cookie Decorating Essentials" title=3D"Cookie Decorating Es=
+sentials" height=3D"auto"></a></div></div>
+</td></tr></table></td><td class=3D"column column-2" width=3D"50%" style=3D=
+"mso-table-lspace:0;mso-table-rspace:0;font-weight:400;text-align:left;back=
+ground-color:#466859;vertical-align:middle;border-radius:0"><table class=3D=
+"heading_block block-1" width=3D"100%" border=3D"0" cellpadding=3D"0" cells=
+pacing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rs=
+pace:0"><tr><td class=3D"pad" style=3D"padding-bottom:5px;padding-left:30px=
+;padding-right:30px;padding-top:40px;text-align:center;width:100%"><h3 styl=
+e=3D"margin:0;color:#fff;direction:ltr;font-family:Roboto,Tahoma,Verdana,Se=
+goe,sans-serif;font-size:16px;font-weight:700;letter-spacing:1px;line-heigh=
+t:1.2;text-align:center;margin-top:0;margin-bottom:0;mso-line-height-alt:19=
+px"><span class=3D"tinyMce-placeholder" style=3D"word-break: break-word;">O=
+N-DEMAND CLASS</span></h3></td></tr></table><table class=3D"heading_block b=
+lock-2" width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" rol=
+e=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0"><tr><td =
+class=3D"pad" style=3D"padding-bottom:10px;padding-left:30px;padding-right:=
+30px;padding-top:10px;text-align:center;width:100%"><h1 style=3D"margin:0;c=
+olor:#fff;direction:ltr;font-family:Para Supreme;font-size:26px;font-weight=
+:400;letter-spacing:normal;line-height:1.2;text-align:center;margin-top:0;m=
+argin-bottom:0;mso-line-height-alt:31px"><span class=3D"tinyMce-placeholder=
+" style=3D"word-break: break-word;">Cookie Decorating Essentials<br></span>=
+</h1>
+</td></tr></table><table class=3D"paragraph_block block-3" width=3D"100%" b=
+order=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=
+=3D"mso-table-lspace:0;mso-table-rspace:0;word-break:break-word"><tr><td cl=
+ass=3D"pad" style=3D"padding-bottom:5px;padding-left:30px;padding-right:30p=
+x;padding-top:5px"><div style=3D"color:#f8f5f1;direction:ltr;font-family:Ro=
+boto,Tahoma,Verdana,Segoe,sans-serif;font-size:18px;font-weight:400;letter-=
+spacing:0;line-height:1.2;text-align:center;mso-line-height-alt:22px">
+<p style=3D"margin:0">Learn the art of cookie decorating, from baking perfe=
+ct sugar cookies to mastering royal icing techniques like outlining, floodi=
+ng, and intricate designs.</p></div></td></tr></table><table class=3D"butto=
+n_block block-4" width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=
+=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0=
+"><tr><td class=3D"pad" style=3D"padding-bottom:40px;padding-left:10px;padd=
+ing-right:10px;padding-top:10px;text-align:center"><div class=3D"alignment"=
+ align=3D"center"><a href=3D"https://us3-cdn.eng.bloomreach.com/king-arthur=
+-baking-production/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6kl=
+GtGSUlBsZW-fnFGfoFedmZeemJRSUZpUVIiiK2XnJ-rn5yTWFycWqyfnJ-fnZmqmwrk5JVkJuYU=
+6-bn6aak5ibmpRieNvh57o3LLUcrAS6m0mIhrqSc_PzcotTE5AywSLIQV2qBkakhEOgmWnEDRXK=
+FWIE6M3OslLiYS5PzhaQNTQvyzQx0gWanGOlCrCrWLUoF8aPC9fWT8lMq9UsSk3JS9Usg7CL9kh=
+SISLR5LKYgski0USxUpUksVE1KZpl-YpK9hWWaiYGBsWWquaFBUqKxWQ3YUfGZKVa5xSX55akOS=
+YkpKflAsTxQUNSYGCamJBkbmBqaG1oaphpZZPFkxG0JfHN_YsieGbaeDUzMAAVFhxY.agIGV3bZ=
+bWUr7w/click" target=3D"_blank" style=3D"color:#000000;text-decoration:none=
+;"><!--[if mso]>
+<v:roundrect xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:w=3D"urn:schem=
+as-microsoft-com:office:word"  href=3D"https://us3-cdn.eng.bloomreach.com/k=
+ing-arthur-baking-production/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248=
+WTF8te-6klGtGSUlBsZW-fnFGfoFedmZeemJRSUZpUVIiiK2XnJ-rn5yTWFycWqyfnJ-fnZmqmw=
+rk5JVkJuYU6-bn6aak5ibmpRieNvh57o3LLUcrAS6m0mIhrqSc_PzcotTE5AywSLIQV2qBkakhE=
+OgmWnEDRXKFWIE6M3OslLiYS5PzhaQNTQvyzQx0gWanGOlCrCrWLUoF8ZPsLSzTTAwMjC1TzQ0N=
+khKNzWrAeuMzU6xyi0vyy1MdkhJTUvKBYnkgF9eYGCamJBkbmBqaG1oaphpZZPFkxG0JfHN_Ysi=
+eGbaeDUzMAB3WZ1M.bD1vPoDJx_omeg/click"  style=3D"height:39px;width:138px;v-=
+text-anchor:middle;" arcsize=3D"0%" fillcolor=3D"#ffffff">
+<v:stroke dashstyle=3D"Solid" weight=3D"1px" color=3D"#fff"/>
+<w:anchorlock/>
+<v:textbox inset=3D"0px,0px,0px,0px">
+<center dir=3D"false" style=3D"color:#000000;font-family:Tahoma, Verdana, s=
+ans-serif;font-size:16px">
+<![endif]-->
+<span class=3D"button" style=3D"background-color: #ffffff; mso-shading: tra=
+nsparent; border-bottom: 1px solid #fff; border-left: 1px solid #fff; borde=
+r-radius: 0px; border-right: 1px solid #fff; border-top: 1px solid #fff; co=
+lor: #000000; display: inline-block; font-family: 'Roboto', Tahoma, Verdana=
+, Segoe, sans-serif; font-size: 16px; font-weight: 400; mso-border-alt: non=
+e; padding-bottom: 12px; padding-top: 12px; padding-left: 20px; padding-rig=
+ht: 20px; text-align: center; width: auto; word-break: keep-all; letter-spa=
+cing: 2px;"><span style=3D"word-break: break-word; line-height: 16px;">SHOP=
+ NOW</span></span>
+<!--[if mso]></center></v:textbox></v:roundrect><![endif]--></a></div></td>=
+</tr></table></td></tr></tbody></table></td></tr></tbody></table><table cla=
+ss=3D"row row-9" align=3D"center" width=3D"100%" border=3D"0" cellpadding=
+=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;=
+mso-table-rspace:0"><tbody><tr><td><table class=3D"row-content stack" align=
+=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presen=
+tation" style=3D"mso-table-lspace:0;mso-table-rspace:0;border-radius:0;colo=
+r:#000;width:640px;margin:0 auto" width=3D"640"><tbody><tr><td class=3D"col=
+umn column-1" width=3D"100%" style=3D"mso-table-lspace:0;mso-table-rspace:0=
+;font-weight:400;text-align:left;padding-bottom:5px;padding-top:5px;vertica=
+l-align:top"><div class=3D"spacer_block block-1" style=3D"height:10px;line-=
+height:10px;font-size:1px">&#8202;</div></td></tr></tbody></table></td></tr=
+></tbody></table><table class=3D"row row-10" align=3D"center" width=3D"100%=
+" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" st=
+yle=3D"mso-table-lspace:0;mso-table-rspace:0"><tbody><tr><td><table class=
+=3D"row-content stack" align=3D"center" border=3D"0" cellpadding=3D"0" cell=
+spacing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;mso-table-r=
+space:0;color:#000;width:640px;margin:0 auto" width=3D"640"><tbody><tr><td =
+class=3D"column column-1" width=3D"100%" style=3D"mso-table-lspace:0;mso-ta=
+ble-rspace:0;font-weight:400;text-align:left;padding-left:20px;padding-righ=
+t:20px;padding-top:30px;vertical-align:top"><table class=3D"heading_block b=
+lock-1" width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" rol=
+e=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0"><tr><td =
+class=3D"pad" style=3D"text-align:center;width:100%"><h2 style=3D"margin:0;=
+color:#000;direction:ltr;font-family:Para Supreme;font-size:42px;font-weigh=
+t:400;letter-spacing:normal;line-height:1.1;text-align:center;margin-top:0;=
+margin-bottom:0;mso-line-height-alt:46px">Must-try cookies</h2></td></tr></=
+table><table class=3D"heading_block block-2" width=3D"100%" border=3D"0" ce=
+llpadding=3D"10" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table=
+-lspace:0;mso-table-rspace:0"><tr><td class=3D"pad"><h3 style=3D"margin:0;c=
+olor:#000;direction:ltr;font-family:Roboto,Tahoma,Verdana,Segoe,sans-serif;=
+font-size:16px;font-weight:700;letter-spacing:1px;line-height:1;text-align:=
+center;margin-top:0;margin-bottom:0;mso-line-height-alt:16px"><span class=
+=3D"tinyMce-placeholder" style=3D"word-break: break-word;">MADE FOR SHARING=
+</span></h3></td></tr></table><table class=3D"divider_block block-3" width=
+=3D"100%" border=3D"0" cellpadding=3D"10" cellspacing=3D"0" role=3D"present=
+ation" style=3D"mso-table-lspace:0;mso-table-rspace:0"><tr><td class=3D"pad=
+"><div class=3D"alignment" align=3D"center"><table border=3D"0" cellpadding=
+=3D"0" cellspacing=3D"0" role=3D"presentation" width=3D"7%" style=3D"mso-ta=
+ble-lspace:0;mso-table-rspace:0"><tr><td class=3D"divider_inner" style=3D"f=
+ont-size:1px;line-height:1px;border-top:2px solid #da1a32"><span style=3D"w=
+ord-break: break-word;">&#8202;</span></td></tr></table></div></td></tr></t=
+able></td></tr></tbody></table></td></tr></tbody></table><table class=3D"ro=
+w row-11" align=3D"center" width=3D"100%" border=3D"0" cellpadding=3D"0" ce=
+llspacing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;mso-table=
+-rspace:0"><tbody><tr><td><table class=3D"row-content stack" align=3D"cente=
+r" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" s=
+tyle=3D"mso-table-lspace:0;mso-table-rspace:0;border-radius:0;color:#000;wi=
+dth:640px;margin:0 auto" width=3D"640"><tbody><tr><td class=3D"column colum=
+n-1" width=3D"50%" style=3D"mso-table-lspace:0;mso-table-rspace:0;font-weig=
+ht:400;text-align:left;padding-bottom:10px;padding-top:20px;vertical-align:=
+top"><table class=3D"image_block block-1" width=3D"100%" border=3D"0" cellp=
+adding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-lsp=
+ace:0;mso-table-rspace:0"><tr><td class=3D"pad" style=3D"width:100%;padding=
+-right:0;padding-left:0"><div class=3D"alignment" align=3D"center"><div cla=
+ss=3D"fullWidth" style=3D"max-width:310px">
+<a href=3D"https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production=
+/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klHdGSUlBsZW-fnl5uV5=
+2Zl56YlFJRmlRUiKIrZecn6tflJqcWZBarJ8OFEgtSipKTUzRTS7KzMvOSdVNzs_Pzkwt1oWoMT=
+xt8PPcG5dbjlYCXEylxUJcSTn5-blADckZYJFkIa7UAiNTQyDQTbTiBorkCrGm5iZm5lgpcTGXJ=
+ucLSRuaFuSbGegWp-alGCGZDuJHxejrJ-WnVOqXJCblpOqXQNhF-iUpEJFoQ4NYTFFkkWjDWJjS=
+WKialMwyME5MsrewTDMxMDC2TDU3NEhKNDarAbssPjPFKre4JL881SEpMSUlHyiWBwqWGhPDxJQ=
+kYwNTQ3NDS8NUI4ssnoy4LYFv7k8M2TPD1rOBiRkAWgeLLQ.1SK6-FeBNQ1nOg/click" targe=
+t=3D"_blank"><img src=3D"https://www.kingarthurbaking.com/sites/default/fil=
+es/styles/featured_image_sm_2x/public/2024-11/Gingerbread-Crinkles_ProductH=
+OR_BIE_107.jpg?itok=3DoSCfOtU8" style=3D"display:block;height:auto;border:0=
+;width:100%" width=3D"310" alt=3D"Gingerbread Crinkle Cookies" title=3D"Gin=
+gerbread Crinkle Cookies" height=3D"auto"></a></div></div></td></tr></table=
+><table class=3D"heading_block block-2" width=3D"100%" border=3D"0" cellpad=
+ding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-lspac=
+e:0;mso-table-rspace:0"><tr><td class=3D"pad" style=3D"padding-bottom:5px;p=
+adding-top:10px;text-align:center;width:100%"><h3 style=3D"margin:0;color:#=
+da1a32;direction:ltr;font-family:Roboto,Tahoma,Verdana,Segoe,sans-serif;fon=
+t-size:20px;font-weight:400;letter-spacing:2px;line-height:1.2;text-align:l=
+eft;margin-top:0;margin-bottom:0;mso-line-height-alt:24px">
+<span class=3D"tinyMce-placeholder" style=3D"word-break: break-word;">&#973=
+3;&#9733;&#9733;&#9733;&#9733;</span></h3></td></tr></table><table class=3D=
+"paragraph_block block-3" width=3D"100%" border=3D"0" cellpadding=3D"0" cel=
+lspacing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;mso-table-=
+rspace:0;word-break:break-word"><tr><td class=3D"pad" style=3D"padding-bott=
+om:10px;padding-top:5px"><div style=3D"color:#000;direction:ltr;font-family=
+:Para Supreme;font-size:20px;font-weight:400;letter-spacing:0;line-height:1=
+=2E2;text-align:left;mso-line-height-a=
+lt:24px"><p style=3D"margin:0"><a href=
+=3D"https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production/e/.eJw=
+TUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klHdGSUlBsZW-fnl5uV52Zl56Yl=
+FJRmlRUiKIrZecn6tflJqcWZBarJ8OFEgtSipKTUzRTS7KzMvOSdVNzs_Pzkwt1oWoMTxt8PPcG=
+5dbjlYCXEylxUJcSTn5-blADckZYJFkIa7UAiNTQyDQTbTiBorkCrGm5iZm5lgpcTGXJucLSRua=
+FuSbGegWp-alGCGZDuJHRenrJ-WnVOqXJCblpOqXQNhF-iUpEJFoQ4NYTFFkkWjDWKhS41iompT=
+MMv0C_cQkewvLNBMDA2PLVHNDg6REY7MasLviM1OscotL8stTHZISU1LygWJ5oECpMTFMTEkyNj=
+A1NDe0NEw1ssjiyYjbEvjm_sSQPTNsPRuYmAE33opa.54JQbqb07_S23A/click" target=3D"=
+_blank" style=3D"text-decoration: none; color: #000000;" rel=3D"noopener">G=
+ingerbread Crinkle Cookies</a></p></div></td></tr></table></td><td class=3D=
+"column gap" style=3D"vertical-align:top;mso-table-lspace:0;mso-table-rspac=
+e:0;font-weight:400;text-align:left"><table style=3D"mso-table-lspace:0;mso=
+-table-rspace:0;width:20px;height:20px" width=3D"20" height=3D"20"></table>=
+</td><td class=3D"column column-2" width=3D"50%" style=3D"mso-table-lspace:=
+0;mso-table-rspace:0;font-weight:400;text-align:left;padding-bottom:10px;pa=
+dding-top:20px;vertical-align:top"><table class=3D"image_block block-1" wid=
+th=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presen=
+tation" style=3D"mso-table-lspace:0;mso-table-rspace:0"><tr><td class=3D"pa=
+d" style=3D"width:100%;padding-right:0;padding-left:0"><div class=3D"alignm=
+ent" align=3D"center"><div class=3D"fullWidth" style=3D"max-width:310px"><a=
+ href=3D"https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production/e=
+/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klFdGSUlBsZW-fnl5uV52Z=
+l56YlFJRmlRUiKIrZecn6tflJqcWZBarF-cn1aim1aUX1ySmqJbXApUqJucn5-dmVqsC1FieNrg=
+57k3LrccrQS4mEqLhbiScvLzc4tSE5MzwCLJQlypBUamhkCgm2jFDRTJFWJNzU3MzLFS4mIuTc4=
+XkjY0Lcg3M9AtTs1LMUIyHcSPitHXT8pPqdQvSUzKSdUvgbCL9EtSICLRhgaxmKLIItHGsTClsV=
+A1KZllYJyYZG9hmWZiYGBsmWpuaJCUaGxWA3ZZfGaKVW5xSX55qkNSYkpKPlAsDxQqNSaGiSlJx=
+gamhuaGloapRhZZPBlxWwLf3J8YsmeGrWcDEzMAw_yKzg.hFFqwyF-YFJIvw/click" target=
+=3D"_blank"><img src=3D"https://www.kingarthurbaking.com/sites/default/file=
+s/styles/featured_image_sm_2x/public/2024-11/Soft-Frosted-Sugar-Cookies_HOR=
+_BOTW_084.jpg?itok=3D4QvXdS0b" style=3D"display:block;height:auto;border:0;=
+width:100%" width=3D"310" alt title height=3D"auto"></a></div></div></td></=
+tr></table><table class=3D"heading_block block-2" width=3D"100%" border=3D"=
+0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-t=
+able-lspace:0;mso-table-rspace:0"><tr><td class=3D"pad" style=3D"padding-bo=
+ttom:5px;padding-top:10px;text-align:center;width:100%"><h3 style=3D"margin=
+:0;color:#da1a32;direction:ltr;font-family:Roboto,Tahoma,Verdana,Segoe,sans=
+-serif;font-size:20px;font-weight:400;letter-spacing:2px;line-height:1.2;te=
+xt-align:left;margin-top:0;margin-bottom:0;mso-line-height-alt:24px"><span =
+class=3D"tinyMce-placeholder" style=3D"word-break: break-word;">&#9733;&#97=
+33;&#9733;&#9733;&#9734;</span></h3></td></tr></table><table class=3D"parag=
+raph_block block-3" width=3D"100%" border=3D"0" cellpadding=3D"0" cellspaci=
+ng=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace=
+:0;word-break:break-word"><tr><td class=3D"pad" style=3D"padding-bottom:10p=
+x;padding-top:5px"><div style=3D"color:#000;direction:ltr;font-family:Para =
+Supreme;font-size:20px;font-weight:400;letter-spacing:0;line-height:1.2;tex=
+t-align:left;mso-line-height-alt:24px"><p style=3D"margin:0"><a href=3D"htt=
+ps://us3-cdn.eng.bloomreach.com/king-arthur-baking-production/e/.eJwTUmj5t-=
+TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klFdGSUlBsZW-fnl5uV52Zl56YlFJRmlRU=
+iKIrZecn6tflJqcWZBarF-cn1aim1aUX1ySmqJbXApUqJucn5-dmVqsC1FieNrg57k3LrccrQS4=
+mEqLhbiScvLzc4tSE5MzwCLJQlypBUamhkCgm2jFDRTJFWJNzU3MzLFS4mIuTc4XkjY0Lcg3M9A=
+tTs1LMUIyHcSPitLXT8pPqdQvSUzKSdUvgbCL9EtSICLRhgaxmKLIItHGsVClIAZYTUpmmX6Bfm=
+KSvYVlmomBgbFlqrmhQVKisVkN2F3xmSlWucUl-eWpDkmJKSn5QLE8UJjUmBgmpiQZG5gamhtaG=
+qYaWWTxZMRtCXxzf2LInhm2ng1MzACikYn7.CIgUVdqvgDsc9A/click" target=3D"_blank"=
+ style=3D"text-decoration: none; color: #000000;" rel=3D"noopener">Soft Fro=
+sted Sugar Cookies</a></p>
+</div></td></tr></table></td></tr></tbody></table></td></tr></tbody></table=
+><table class=3D"row row-13" align=3D"center" width=3D"100%" border=3D"0" c=
+ellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table=
+-lspace:0;mso-table-rspace:0"><tbody><tr><td><table class=3D"row-content st=
+ack" align=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=
+=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0;border-rad=
+ius:0;color:#000;width:640px;margin:0 auto" width=3D"640"><tbody><tr><td cl=
+ass=3D"column column-1" width=3D"50%" style=3D"mso-table-lspace:0;mso-table=
+-rspace:0;font-weight:400;text-align:left;background-color:#f8f5f1;vertical=
+-align:middle"><table class=3D"html_block block-1" width=3D"100%" border=3D=
+"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-=
+table-lspace:0;mso-table-rspace:0"><tr><td class=3D"pad"><div style=3D"font=
+-family:Arial,'Helvetica Neue',Helvetica,sans-serif;text-align:center" alig=
+n=3D"center"><div class=3D"our-class">
+</div></div></td>
+</tr></table><table class=3D"image_block block-2" width=3D"100%" border=3D"=
+0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-t=
+able-lspace:0;mso-table-rspace:0"><tr><td class=3D"pad" style=3D"width:100%=
+;padding-right:0;padding-left:0"><div class=3D"alignment" align=3D"center">=
+<div class=3D"fullWidth" style=3D"max-width:320px"><a href=3D"https://us3-c=
+dn.eng.bloomreach.com/king-arthur-baking-production/e/.eJwTUmj5t-TDjg_lc_bV=
+hV_NWhJ_ql1gZrjJU373248WTF8te-6klElGSUlBsZW-fnFGfoFedmZeemJRSUZpUVIiiK2XnJ-=
+rD6SLUlMyU_NKivWLS4HyxYanDX6ee-Nyy9FKgIuptFiIKyknPz-3KDUxOQMskizElVpgZGoIBL=
+qJVtxAkVwh1tTcxMwcKyUu5tLkfCFpQ9OCfDMD3eLUvBQj3eT8_OzM1GLdolQQPypGXz8pP6VSv=
+yQxKSdVvwTCLtIvSYGIRBsaxmKKIotEgxSAlRrFQtWkZJaBcWKSvYVlmomBgbFlqrmhQVKisVkN=
+2GXxmSlWucUl-eWpDkmJKSn5QLE8kPdrTAwTU5KMDUwNzQ0tDVONLLJ4MuK2BL65PzFkzwxbzwY=
+mZgAaHoJl.YIipOjGuiYeOaA/click" target=3D"_blank"><img src=3D"https://email=
+-media-aws.kingarthurflour.com/assets/banners/live/cookie-decorations.jpg" =
+style=3D"display:block;height:auto;border:0;width:100%" width=3D"320" alt t=
+itle height=3D"auto"></a></div></div></td></tr></table></td><td class=3D"co=
+lumn column-2" width=3D"50%" style=3D"mso-table-lspace:0;mso-table-rspace:0=
+;font-weight:400;text-align:left;background-color:#f8f5f1;vertical-align:mi=
+ddle"><table class=3D"heading_block block-1" width=3D"100%" border=3D"0" ce=
+llpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-=
+lspace:0;mso-table-rspace:0"><tr><td class=3D"pad" style=3D"padding-bottom:=
+10px;padding-left:10px;padding-right:10px;padding-top:20px;text-align:cente=
+r;width:100%"><h3 style=3D"margin:0;color:#000;direction:ltr;font-family:Pa=
+ra Supreme;font-size:26px;font-weight:400;letter-spacing:normal;line-height=
+:1.2;text-align:center;margin-top:0;margin-bottom:0;mso-line-height-alt:31p=
+x">Add a little sparkle</h3></td></tr></table><table class=3D"paragraph_blo=
+ck block-2" width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0"=
+ role=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0;word-=
+break:break-word"><tr><td class=3D"pad" style=3D"padding-bottom:15px;paddin=
+g-left:20px;padding-right:20px;padding-top:5px"><div style=3D"color:#000;di=
+rection:ltr;font-family:Roboto,Tahoma,Verdana,Segoe,sans-serif;font-size:18=
+px;font-weight:400;letter-spacing:0;line-height:1.2;text-align:center;mso-l=
+ine-height-alt:22px"><p style=3D"margin:0">Dress up your holiday cookies wi=
+th decorations that dazzle</p></div></td></tr></table><table class=3D"butto=
+n_block block-3" width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=
+=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0=
+"><tr><td class=3D"pad" style=3D"padding-bottom:15px;padding-left:10px;padd=
+ing-right:10px;padding-top:5px;text-align:center"><div class=3D"alignment" =
+align=3D"center"><a href=3D"https://us3-cdn.eng.bloomreach.com/king-arthur-=
+baking-production/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klE=
+lGSUlBsZW-fnFGfoFedmZeemJRSUZpUVIiiK2XnJ-rD6SLUlMyU_NKivWLS4HyxYanDX6ee-Nyy=
+9FKgIuptFiIKyknPz-3KDUxOQMskizElVpgZGoIBLqJVtxAkVwh1tTcxMwcKyUu5tLkfCFpQ9OC=
+fDMD3eLUvBQj3eT8_OzM1GLdolQQPypCXz8pP6VSvyQxKSdVvwTCLtIvSYGIRBsaxmKKIotEG8V=
+ClRrHQtWkZJbpJybZW1immRgYGFummhsaJCUam9WAXRWfmWKVW1ySX57qkJSYkpIPFMsDeb3GxD=
+AxJcnYwNTQ3NDSMNXIIosnI25L4Jv7E0P2zLD1bGBiBgAK2YDx.HRgUChWHhGtMmQ/click" ta=
+rget=3D"_blank" style=3D"color:#000000;text-decoration:none;"><!--[if mso]>
+<v:roundrect xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:w=3D"urn:schem=
+as-microsoft-com:office:word"  href=3D"https://us3-cdn.eng.bloomreach.com/k=
+ing-arthur-baking-production/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248=
+WTF8te-6klElGSUlBsZW-fnFGfoFedmZeemJRSUZpUVIiiK2XnJ-rD6SLUlMyU_NKivWLS4HyxY=
+anDX6ee-Nyy9FKgIuptFiIKyknPz-3KDUxOQMskizElVpgZGoIBLqJVtxAkVwh1tTcxMwcKyUu5=
+tLkfCFpQ9OCfDMD3eLUvBQj3eT8_OzM1GLdolQQP8newjLNxMDA2DLV3NAgKdHYrAasNz4zxSq3=
+uCS_PNUhKTElJR8olgdyYI2JYWJKkrGBqaG5oaVhqpFFFk9G3JbAN_cnhuyZYevZwMQMAOzhYQM=
+=2EMnFKeCg0Z0vU8Q/click"  style=3D"heigh=
+t:39px;width:270px;v-text-anchor:midd=
+le;" arcsize=3D"0%" fill=3D"false">
+<v:stroke dashstyle=3D"Solid" weight=3D"2px" color=3D"#da1a32"/>
+<w:anchorlock/>
+<v:textbox inset=3D"0px,0px,0px,0px">
+<center dir=3D"false" style=3D"color:#000000;font-family:Tahoma, Verdana, s=
+ans-serif;font-size:16px">
+<![endif]-->
+<span class=3D"button" style=3D"background-color: transparent; mso-shading:=
+ transparent; border-bottom: 2px solid #da1a32; border-left: 2px solid #da1=
+a32; border-radius: 0px; border-right: 2px solid #da1a32; border-top: 2px s=
+olid #da1a32; color: #000000; display: inline-block; font-family: 'Roboto',=
+ Tahoma, Verdana, Segoe, sans-serif; font-size: 16px; font-weight: 400; mso=
+-border-alt: none; padding-bottom: 12px; padding-top: 12px; padding-left: 2=
+0px; padding-right: 20px; text-align: center; width: auto; word-break: keep=
+-all; letter-spacing: 1px;"><span style=3D"word-break: break-word; line-hei=
+ght: 16px;">SHOP NOW</span></span>
+<!--[if mso]></center></v:textbox></v:roundrect><![endif]--></a></div></td>=
+</tr></table></td></tr></tbody></table></td></tr></tbody></table><table cla=
+ss=3D"row row-14" align=3D"center" width=3D"100%" border=3D"0" cellpadding=
+=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;=
+mso-table-rspace:0"><tbody><tr><td><table class=3D"row-content stack" align=
+=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presen=
+tation" style=3D"mso-table-lspace:0;mso-table-rspace:0;border-radius:0;colo=
+r:#000;width:640px;margin:0 auto" width=3D"640"><tbody><tr><td class=3D"col=
+umn column-1" width=3D"100%" style=3D"mso-table-lspace:0;mso-table-rspace:0=
+;font-weight:400;text-align:left;padding-bottom:20px;padding-top:20px;verti=
+cal-align:top"><table class=3D"button_block block-1" width=3D"100%" border=
+=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"m=
+so-table-lspace:0;mso-table-rspace:0"><tr><td class=3D"pad" style=3D"paddin=
+g-bottom:10px;padding-top:10px;text-align:center"><div class=3D"alignment" =
+align=3D"center"><a href=3D"https://us3-cdn.eng.bloomreach.com/king-arthur-=
+baking-production/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klG=
+JGSUlBsZW-fnFGfoFedmZeemJRSUZpUVIiiK2XnJ9reNrg57k3LrccrQS4mEqLhbiScvLzc4tSE=
+5MzwCLJQlypBUamhkCgm2jFDRTJFWJNzU3MzLFS4mIuTc4XkjY0Lcg3M9AtTs1LMdJNzs_Pzkwt=
+1i1KBfGjgvT1k_JTKvVLEpNyUvVLIOwi_ZIUiEi0oVEspig2ETA7JbNMPzHJ3sIyzcTAwNgy1dz=
+QICnR2KwG7J74zBSr3OKS_PJUh6TElJR8oFgeyIc1JoaJKUnGBqaG5oaWhqlGFlk8GXFbAt_cnx=
+iyZ4atZwMTMwCvsXd1.EAW-jc62vyePCA/click" target=3D"_blank" style=3D"color:#=
+ffffff;text-decoration:none;"><!--[if mso]>
+<v:roundrect xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:w=3D"urn:schem=
+as-microsoft-com:office:word"  href=3D"https://us3-cdn.eng.bloomreach.com/k=
+ing-arthur-baking-production/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248=
+WTF8te-6klGJGSUlBsZW-fnFGfoFedmZeemJRSUZpUVIiiK2XnJ9reNrg57k3LrccrQS4mEqLhb=
+iScvLzc4tSE5MzwCLJQlypBUamhkCgm2jFDRTJFWJNzU3MzLFS4mIuTc4XkjY0Lcg3M9AtTs1LM=
+dJNzs_Pzkwt1i1KBfGT7C0s00wMDIwtU80NDZISjc1qwHrjM1OscotL8stTHZISU1LygWJ5INfU=
+mBgmpiQZG5gamhtaGqYaWWTxZMRtCXxzf2LInhm2ng1MzAAAuVlh.thhUCzT7dcfmUg/click" =
+ style=3D"height:53px;width:638px;v-text-anchor:middle;" arcsize=3D"0%" fil=
+lcolor=3D"#da1a32">
+<v:stroke dashstyle=3D"Solid" weight=3D"1px" color=3D"#da1a32"/>
+<w:anchorlock/>
+<v:textbox inset=3D"0px,0px,0px,0px">
+<center dir=3D"false" style=3D"color:#ffffff;font-family:Tahoma, Verdana, s=
+ans-serif;font-size:18px">
+<![endif]-->
+<span class=3D"button" style=3D"background-color: #da1a32; mso-shading: tra=
+nsparent; border-bottom: 1px solid #da1a32; border-left: 1px solid #da1a32;=
+ border-radius: 0px; border-right: 1px solid #da1a32; border-top: 1px solid=
+ #da1a32; color: #ffffff; display: inline-block; font-family: 'Roboto', Tah=
+oma, Verdana, Segoe, sans-serif; font-size: 18px; font-weight: 400; mso-bor=
+der-alt: none; padding-bottom: 16px; padding-top: 16px; padding-left: 40px;=
+ padding-right: 40px; text-align: center; width: 100%; word-break: keep-all=
+; letter-spacing: 2px;"><span style=3D"word-break: break-word; line-height:=
+ 21.599999999999998px;">SAVE 15% ON ORDERS OVER $60</span></span>
+<!--[if mso]></center></v:textbox></v:roundrect><![endif]--></a></div></td>=
+</tr></table></td></tr></tbody></table></td></tr></tbody></table><table cla=
+ss=3D"row row-15" align=3D"center" width=3D"100%" border=3D"0" cellpadding=
+=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;=
+mso-table-rspace:0"><tbody><tr><td><table class=3D"row-content stack" align=
+=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presen=
+tation" style=3D"mso-table-lspace:0;mso-table-rspace:0;border-radius:0;colo=
+r:#000;width:640px;margin:0 auto" width=3D"640"><tbody><tr><td class=3D"col=
+umn column-1" width=3D"50%" style=3D"mso-table-lspace:0;mso-table-rspace:0;=
+font-weight:400;text-align:left;background-color:#f8f5f1;vertical-align:top=
+"><table class=3D"html_block block-1" width=3D"100%" border=3D"0" cellpaddi=
+ng=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:=
+0;mso-table-rspace:0"><tr><td class=3D"pad"><div style=3D"font-family:Arial=
+,'Helvetica Neue',Helvetica,sans-serif;text-align:center" align=3D"center">=
+<div class=3D"our-class">
+</div></div></td></tr></table><table class=3D"image_block block-2" width=3D=
+"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentatio=
+n" style=3D"mso-table-lspace:0;mso-table-rspace:0"><tr><td class=3D"pad" st=
+yle=3D"width:100%;padding-right:0;padding-left:0"><div class=3D"alignment" =
+align=3D"center"><div class=3D"fullWidth" style=3D"max-width:310px">
+<a href=3D"https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production=
+/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klH9GSUlBsZW-fnFGfoF=
+edmZeemJRSUZpUVIiiK2XnJ-rn5yfk5OaXJKZn1esn5tYnJ-nm5xYnKGblliUW5lYlKKbm1kBVK=
+qblF-eU6xveNrg57k3LrccrQS4mEqLhbiScvLzc4tSE5MzwCLJQlypBUamhkCgm2jFDRTJFWJNz=
+U3MzLFS4mIuTc4XkjY0Lcg3M9AtTs1LMdJNzs_Pzkwt1i1KBfGjYvT1k_JTKvVLEpNyUvVLIOwi=
+_ZIUiEi0oXEspiiySLRhLFSpUSxUTUpmGRgnJtlbWKaZGBgYW6aaGxokJRqb1YBdFp-ZYpVbXJJ=
+fnuqQlJiSkg8UywOFTI2JYWJKkrGBqaG5oaVhqpFFFk9G3JbAN_cnhuyZYevZwMQMAJwejJk.AJ=
+syp4DArUvpmQ/click" target=3D"_blank"><img src=3D"https://email-media-aws.k=
+ingarthurflour.com/assets/banners/live/30po-masoncash.jpg" style=3D"display=
+:block;height:auto;border:0;width:100%" width=3D"310" alt title height=3D"a=
+uto"></a></div></div></td></tr></table><table class=3D"heading_block block-=
+3" width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"=
+presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0"><tr><td class=
+=3D"pad" style=3D"padding-bottom:10px;padding-left:10px;padding-right:10px;=
+padding-top:20px;text-align:center;width:100%"><h3 style=3D"margin:0;color:=
+#000;direction:ltr;font-family:Para Supreme;font-size:26px;font-weight:400;=
+letter-spacing:normal;line-height:1.2;text-align:center;margin-top:0;margin=
+-bottom:0;mso-line-height-alt:31px"><span class=3D"tinyMce-placeholder" sty=
+le=3D"word-break: break-word;">Mason Cash on sale</span></h3></td></tr></ta=
+ble><table class=3D"paragraph_block block-4" width=3D"100%" border=3D"0" ce=
+llpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-=
+lspace:0;mso-table-rspace:0;word-break:break-word"><tr><td class=3D"pad" st=
+yle=3D"padding-bottom:15px;padding-left:20px;padding-right:20px;padding-top=
+:10px"><div style=3D"color:#000;direction:ltr;font-family:Roboto,Tahoma,Ver=
+dana,Segoe,sans-serif;font-size:18px;font-weight:400;letter-spacing:0;line-=
+height:1.2;text-align:center;mso-line-height-alt:22px"><p style=3D"margin:0=
+">30% off the exclusive Farmyard pattern mixing bowls</p></div></td></tr></=
+table><table class=3D"button_block block-5" width=3D"100%" border=3D"0" cel=
+lpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-l=
+space:0;mso-table-rspace:0"><tr><td class=3D"pad" style=3D"padding-bottom:2=
+0px;padding-left:10px;padding-right:10px;padding-top:10px;text-align:center=
+"><div class=3D"alignment" align=3D"center"><a href=3D"https://us3-cdn.eng.=
+bloomreach.com/king-arthur-baking-production/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ=
+_ql1gZrjJU373248WTF8te-6klH9GSUlBsZW-fnFGfoFedmZeemJRSUZpUVIiiK2XnJ-rn5yfk5=
+OaXJKZn1esn5tYnJ-nm5xYnKGblliUW5lYlKKbm1kBVKqblF-eU6xveNrg57k3LrccrQS4mEqLh=
+biScvLzc4tSE5MzwCLJQlypBUamhkCgm2jFDRTJFWJNzU3MzLFS4mIuTc4XkjY0Lcg3M9AtTs1L=
+MdJNzs_Pzkwt1i1KBfGjIvT1k_JTKvVLEpNyUvVLIOwi_ZIUiEi0oXEspiiySLRhLFSpaSxUTUp=
+mmX5ikr2FZZqJgYGxZaq5oUFSorFZDdhV8ZkpVrnFJfnlqQ5JiSkp-UCxPFCo1JgYJqYkGRuYGp=
+obWhqmGllk8WTEbQl8c39iyJ4Ztp4NTMwAZGCLJg.U9MSjwsljIX_ag/click" target=3D"_b=
+lank" style=3D"color:#000000;text-decoration:none;"><!--[if mso]>
+<v:roundrect xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:w=3D"urn:schem=
+as-microsoft-com:office:word"  href=3D"https://us3-cdn.eng.bloomreach.com/k=
+ing-arthur-baking-production/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248=
+WTF8te-6klH9GSUlBsZW-fnFGfoFedmZeemJRSUZpUVIiiK2XnJ-rn5yfk5OaXJKZn1esn5tYnJ=
+-nm5xYnKGblliUW5lYlKKbm1kBVKqblF-eU6xveNrg57k3LrccrQS4mEqLhbiScvLzc4tSE5Mzw=
+CLJQlypBUamhkCgm2jFDRTJFWJNzU3MzLFS4mIuTc4XkjY0Lcg3M9AtTs1LMdJNzs_Pzkwt1i1K=
+BfGT7C0s00wMDIwtU80NDZISjc1qwHrjM1OscotL8stTHZISU1LygWJ5ILfXmBgmpiQZG5gamht=
+aGqYaWWTxZMRtCXxzf2LInhm2ng1MzACvPGs1.JKYxgdjQ1BTUUg/click"  style=3D"heigh=
+t:39px;width:270px;v-text-anchor:middle;" arcsize=3D"0%" fill=3D"false">
+<v:stroke dashstyle=3D"Solid" weight=3D"2px" color=3D"#da1a32"/>
+<w:anchorlock/>
+<v:textbox inset=3D"0px,0px,0px,0px">
+<center dir=3D"false" style=3D"color:#000000;font-family:Tahoma, Verdana, s=
+ans-serif;font-size:16px">
+<![endif]-->
+<span class=3D"button" style=3D"background-color: transparent; mso-shading:=
+ transparent; border-bottom: 2px solid #da1a32; border-left: 2px solid #da1=
+a32; border-radius: 0px; border-right: 2px solid #da1a32; border-top: 2px s=
+olid #da1a32; color: #000000; display: inline-block; font-family: 'Roboto',=
+ Tahoma, Verdana, Segoe, sans-serif; font-size: 16px; font-weight: 400; mso=
+-border-alt: none; padding-bottom: 12px; padding-top: 12px; padding-left: 2=
+0px; padding-right: 20px; text-align: center; width: auto; word-break: keep=
+-all; letter-spacing: 1px;"><span style=3D"word-break: break-word; line-hei=
+ght: 16px;">GET MIXING</span></span>
+<!--[if mso]></center></v:textbox></v:roundrect><![endif]--></a></div></td>=
+</tr></table></td><td class=3D"column gap" style=3D"vertical-align:top;mso-=
+table-lspace:0;mso-table-rspace:0;font-weight:400;text-align:left"><table s=
+tyle=3D"mso-table-lspace:0;mso-table-rspace:0;width:20px;height:20px" width=
+=3D"20" height=3D"20"></table></td><td class=3D"column column-2" width=3D"5=
+0%" style=3D"mso-table-lspace:0;mso-table-rspace:0;font-weight:400;text-ali=
+gn:left;background-color:#f8f5f1;vertical-align:top"><table class=3D"html_b=
+lock block-1" width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"=
+0" role=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0"><t=
+r><td class=3D"pad"><div style=3D"font-family:Arial,'Helvetica Neue',Helvet=
+ica,sans-serif;text-align:center" align=3D"center"><div class=3D"our-class"=
+>
+</div></div></td></tr></table><table class=3D"image_block block-2" width=3D=
+"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentatio=
+n" style=3D"mso-table-lspace:0;mso-table-rspace:0"><tr><td class=3D"pad" st=
+yle=3D"width:100%;padding-right:0;padding-left:0"><div class=3D"alignment" =
+align=3D"center"><div class=3D"fullWidth" style=3D"max-width:310px"><a href=
+=3D"https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production/e/.eJw=
+TUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klHpGSUlBsZW-fnFGfoFedmZeem=
+JRSUZpUVIiiK2XnJ-rn56ZVlJseNrg57k3LrccrQS4mEqLhbiScvLzc4tSE5MzwCLJQlypBUamh=
+kCgm2jFDRTJFWJNzU3MzLFS4mIuTc4XkjY0Lcg3M9AtTs1LMdJNzs_Pzkwt1i1KBfGjYvT1k_JT=
+KvVLEpNyUvVLIOwi_ZIUiEi0oXEspiiySDRIAVipUSxUTUpmGRgnJtlbWKaZGBgYW6aaGxokJRq=
+b1YBdFp-ZYpVbXJJfnuqQlJiSkg8UywP5uMbEMDElydjA1NDc0NIw1cgiiycjbkvgm_sTQ_bMsP=
+VsYGIGAJzHfRk.yP1FjY8-DRXLng/click" target=3D"_blank"><img src=3D"https://e=
+mail-media-aws.kingarthurflour.com/assets/banners/live/holiday-gifts.jpg" s=
+tyle=3D"display:block;height:auto;border:0;width:100%" width=3D"310" alt ti=
+tle height=3D"auto"></a></div></div></td></tr></table><table class=3D"headi=
+ng_block block-3" width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=
+=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0=
+"><tr><td class=3D"pad" style=3D"padding-bottom:10px;padding-left:10px;padd=
+ing-right:10px;padding-top:20px;text-align:center;width:100%"><h3 style=3D"=
+margin:0;color:#000;direction:ltr;font-family:Para Supreme;font-size:26px;f=
+ont-weight:400;letter-spacing:normal;line-height:1.2;text-align:center;marg=
+in-top:0;margin-bottom:0;mso-line-height-alt:31px">Holiday gifts</h3></td><=
+/tr></table><table class=3D"paragraph_block block-4" width=3D"100%" border=
+=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"m=
+so-table-lspace:0;mso-table-rspace:0;word-break:break-word"><tr><td class=
+=3D"pad" style=3D"padding-bottom:15px;padding-left:20px;padding-right:20px;=
+padding-top:10px"><div style=3D"color:#000;direction:ltr;font-family:Roboto=
+,Tahoma,Verdana,Segoe,sans-serif;font-size:18px;font-weight:400;letter-spac=
+ing:0;line-height:1.2;text-align:center;mso-line-height-alt:22px"><p style=
+=3D"margin:0">Great gifts for all your favorite bakers</p></div></td></tr><=
+/table><table class=3D"button_block block-5" width=3D"100%" border=3D"0" ce=
+llpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-=
+lspace:0;mso-table-rspace:0"><tr><td class=3D"pad" style=3D"padding-bottom:=
+20px;padding-left:10px;padding-right:10px;padding-top:10px;text-align:cente=
+r"><div class=3D"alignment" align=3D"center"><a href=3D"https://us3-cdn.eng=
+=2Ebloomreach.com/king-arthur-baking-pr=
+oduction/e/.eJwTUmj5t-TDjg_lc_bVhV_NWh=
+J_ql1gZrjJU373248WTF8te-6klHpGSUlBsZW-fnFGfoFedmZeemJRSUZpUVIiiK2XnJ-rn56ZV=
+lJseNrg57k3LrccrQS4mEqLhbiScvLzc4tSE5MzwCLJQlypBUamhkCgm2jFDRTJFWJNzU3MzLFS=
+4mIuTc4XkjY0Lcg3M9AtTs1LMdJNzs_Pzkwt1i1KBfGjIvT1k_JTKvVLEpNyUvVLIOwi_ZIUiEi=
+0oXEspiiySDRIAVipaSxUTUpmmX5ikr2FZZqJgYGxZaq5oUFSorFZDdhV8ZkpVrnFJfnlqQ5JiS=
+kp-UCxPJBva0wME1OSjA1MDc0NLQ1TjSyyeDLitgS-uT8xZM8MW88GJmYAowl7pg.k_-JHOylwh=
+weKg/click" target=3D"_blank" style=3D"color:#000000;text-decoration:none;"=
+><!--[if mso]>
+<v:roundrect xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:w=3D"urn:schem=
+as-microsoft-com:office:word"  href=3D"https://us3-cdn.eng.bloomreach.com/k=
+ing-arthur-baking-production/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248=
+WTF8te-6klHpGSUlBsZW-fnFGfoFedmZeemJRSUZpUVIiiK2XnJ-rn56ZVlJseNrg57k3LrccrQ=
+S4mEqLhbiScvLzc4tSE5MzwCLJQlypBUamhkCgm2jFDRTJFWJNzU3MzLFS4mIuTc4XkjY0Lcg3M=
+9AtTs1LMdJNzs_Pzkwt1i1KBfGT7C0s00wMDIwtU80NDZISjc1qwHrjM1OscotL8stTHZISU1Ly=
+gWJ5IDfVmBgmpiQZG5gamhtaGqYaWWTxZMRtCXxzf2LInhm2ng1MzABhIVuz.PHMQ1XtfJ_QJyQ=
+/click"  style=3D"height:39px;width:270px;v-text-anchor:middle;" arcsize=3D=
+"0%" fill=3D"false">
+<v:stroke dashstyle=3D"Solid" weight=3D"2px" color=3D"#da1a32"/>
+<w:anchorlock/>
+<v:textbox inset=3D"0px,0px,0px,0px">
+<center dir=3D"false" style=3D"color:#000000;font-family:Tahoma, Verdana, s=
+ans-serif;font-size:16px">
+<![endif]-->
+<span class=3D"button" style=3D"background-color: transparent; mso-shading:=
+ transparent; border-bottom: 2px solid #da1a32; border-left: 2px solid #da1=
+a32; border-radius: 0px; border-right: 2px solid #da1a32; border-top: 2px s=
+olid #da1a32; color: #000000; display: inline-block; font-family: 'Roboto',=
+ Tahoma, Verdana, Segoe, sans-serif; font-size: 16px; font-weight: 400; mso=
+-border-alt: none; padding-bottom: 12px; padding-top: 12px; padding-left: 2=
+0px; padding-right: 20px; text-align: center; width: auto; word-break: keep=
+-all; letter-spacing: 1px;"><span style=3D"word-break: break-word; line-hei=
+ght: 16px;">GET GIFTING</span></span>
+<!--[if mso]></center></v:textbox></v:roundrect><![endif]--></a></div></td>=
+</tr></table></td></tr></tbody></table></td></tr></tbody></table><table cla=
+ss=3D"row row-16" align=3D"center" width=3D"100%" border=3D"0" cellpadding=
+=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;=
+mso-table-rspace:0"><tbody><tr><td><table class=3D"row-content stack" align=
+=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presen=
+tation" style=3D"mso-table-lspace:0;mso-table-rspace:0;border-radius:0;colo=
+r:#000;width:640px;margin:0 auto" width=3D"640"><tbody><tr><td class=3D"col=
+umn column-1" width=3D"100%" style=3D"mso-table-lspace:0;mso-table-rspace:0=
+;font-weight:400;text-align:left;padding-bottom:5px;padding-top:5px;vertica=
+l-align:top"><div class=3D"spacer_block block-1" style=3D"height:10px;line-=
+height:10px;font-size:1px">&#8202;</div></td></tr></tbody></table></td></tr=
+></tbody></table><table class=3D"row row-17" align=3D"center" width=3D"100%=
+" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" st=
+yle=3D"mso-table-lspace:0;mso-table-rspace:0"><tbody><tr><td><table class=
+=3D"row-content stack" align=3D"center" border=3D"0" cellpadding=3D"0" cell=
+spacing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;mso-table-r=
+space:0;border-radius:0;border-top:1px solid #e4e4e4;color:#000;width:640px=
+;margin:0 auto" width=3D"640"><tbody><tr><td class=3D"column column-1" widt=
+h=3D"33.333333333333336%" style=3D"mso-table-lspace:0;mso-table-rspace:0;fo=
+nt-weight:400;text-align:left;padding-bottom:5px;padding-top:5px;vertical-a=
+lign:top"><table class=3D"image_block block-1" width=3D"100%" border=3D"0" =
+cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-tabl=
+e-lspace:0;mso-table-rspace:0"><tr><td class=3D"pad" style=3D"padding-botto=
+m:15px;padding-left:10px;padding-right:10px;padding-top:20px;width:100%"><d=
+iv class=3D"alignment" align=3D"center"><div style=3D"max-width:81.067px">
+<a href=3D"https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production=
+/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klGFGSUlBsZW-fnl5uV5=
+2Zl56YlFJRmlRUiKIrZecn6tfnFtsn51aWZ5flGKblZ-ZZ3ja4Oe5Ny63HK0EuJhKi4W4knLy83=
+OLUhOTM8AiyUJcqQVGpoZAoJtoxQ0UyRViTc1NzMyxUuJiLk3OF5I2NC3INzPQLU7NSzHSTc7Pz=
+85MLdYtSgXxo2L09ZPyUyr1SxKTclL1SyDsIv2SFIhItKFpLKYoski0YSxMaSxUTUpmGRgnJtlb=
+WKaZGBgYW6aaGxokJRqb1YBdFp-ZYpVbXJJfnuqQlJiSkg8UywN5vsbEMDElydjA1NDc0NIw1cg=
+iiycjbkvgm_sTQ_bMsPVsYGIGAGN-gTQ.PR9GgY0lEn5DiA/click" target=3D"_blank"><i=
+mg src=3D"https://email-media-aws.kingarthurflour.com/assets/global/cake/sm=
+s.gif" style=3D"display:block;height:auto;border:0;width:100%" width=3D"81.=
+067" alt=3D"Join sms" title=3D"Join sms" height=3D"auto"></a></div></div></=
+td></tr></table><table class=3D"paragraph_block block-2" width=3D"100%" bor=
+der=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=
+=3D"mso-table-lspace:0;mso-table-rspace:0;word-break:break-word"><tr><td cl=
+ass=3D"pad" style=3D"padding-bottom:20px;padding-left:10px;padding-right:10=
+px"><div style=3D"color:#6d6e71;direction:ltr;font-family:Roboto,Tahoma,Ver=
+dana,Segoe,sans-serif;font-size:16px;font-weight:400;letter-spacing:0;line-=
+height:1.2;text-align:center;mso-line-height-alt:19px"><p style=3D"margin:0=
+">TEXT <strong>JOIN</strong> TO <strong>27820</strong> FOR UPDATES</p></div=
+></td></tr></table></td><td class=3D"column column-2" width=3D"33.333333333=
+333336%" style=3D"mso-table-lspace:0;mso-table-rspace:0;font-weight:400;tex=
+t-align:left;padding-bottom:5px;padding-top:5px;vertical-align:top"><table =
+class=3D"image_block block-1" width=3D"100%" border=3D"0" cellpadding=3D"0"=
+ cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;mso-ta=
+ble-rspace:0"><tr><td class=3D"pad" style=3D"padding-bottom:10px;padding-le=
+ft:10px;padding-right:10px;padding-top:20px;width:100%"><div class=3D"align=
+ment" align=3D"center"><div style=3D"max-width:81.067px">
+<a href=3D"https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production=
+/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klFVGSUlBsZW-fnl5uV5=
+2Zl56YlFJRmlRUiKIrZecn6ufXFpckp-bWqRbnFpUlpmcql-ckVlQAJQ1PG3w89wbl1uOVgJcTK=
+XFQlxJOfn5uUWpickZYJFkIa7UAiNTQyDQTbTiBorkCrGm5iZm5lgpcTGXJucLSRuaFuSbGQBNz=
+ksx0k3Oz8_OTC3WLUoF8aNi9PWT8lMq9UsSk3JS9Usg7CL9khSISLShaSymKLJItFEsTGksVE1K=
+ZhkYJybZW1immRgYGFummhsaJCUam9WAXRafmWKVC_RveapDUmJKSj5QLA8UCjUmhokpScYGpob=
+mhpaGqUYWWTwZcVsC39yfGLJnhq1nAxMzAKrvhNs.ygA3wbebaoXKxA/click" target=3D"_b=
+lank"><img src=3D"https://email-media-aws.kingarthurflour.com/assets/global=
+/cake/appliances.gif" style=3D"display:block;height:auto;border:0;width:100=
+%" width=3D"81.067" alt=3D"Join sms" title=3D"Join sms" height=3D"auto"></a=
+></div></div></td></tr></table><table class=3D"paragraph_block block-2" wid=
+th=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presen=
+tation" style=3D"mso-table-lspace:0;mso-table-rspace:0;word-break:break-wor=
+d"><tr><td class=3D"pad" style=3D"padding-bottom:20px;padding-left:10px;pad=
+ding-right:10px"><div style=3D"color:#6d6e71;direction:ltr;font-family:Robo=
+to,Tahoma,Verdana,Segoe,sans-serif;font-size:16px;font-weight:400;letter-sp=
+acing:0;line-height:1.2;text-align:center;mso-line-height-alt:19px"><p styl=
+e=3D"margin:0">
+<a href=3D"https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production=
+/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klFVGSUlBsZW-fnl5uV5=
+2Zl56YlFJRmlRUiKIrZecn6ufXFpckp-bWqRbnFpUlpmcql-ckVlQAJQ1PG3w89wbl1uOVgJcTK=
+XFQlxJOfn5uUWpickZYJFkIa7UAiNTQyDQTbTiBorkCrGm5iZm5lgpcTGXJucLSRuaFuSbGQBNz=
+ksx0k3Oz8_OTC3WLUoF8aOi9PWT8lMq9UsSk3JS9Usg7CL9khSISLShaSymKLJItFEsVCmIAVaT=
+klmmX6CfmGRvYZlmYmBgbJlqbmiQlGhsVgN2V3xmilUu0LflqQ5JiSkp-UCxPFAY1JgYJqYkGRu=
+YGpobWhqmGllk8WTEbQl8c39iyJ4Ztp4NTMwAlQiEBw.eNIYbxg7jqNrcQ/click" target=3D=
+"_blank" title=3D"Get Free Shipping on Appliances" style=3D"text-decoration=
+: none; color: #6d6e71;" rel=3D"noopener"><strong>FREE</strong> SHIPPING ON=
+ <strong>APPLIANCES</strong></a></p></div></td></tr></table></td><td class=
+=3D"column column-3" width=3D"33.333333333333336%" style=3D"mso-table-lspac=
+e:0;mso-table-rspace:0;font-weight:400;text-align:left;padding-bottom:5px;p=
+adding-top:5px;vertical-align:top"><table class=3D"image_block block-1" wid=
+th=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presen=
+tation" style=3D"mso-table-lspace:0;mso-table-rspace:0"><tr><td class=3D"pa=
+d" style=3D"padding-bottom:15px;padding-left:10px;padding-right:10px;paddin=
+g-top:20px;width:100%"><div class=3D"alignment" align=3D"center"><div style=
+=3D"max-width:81.067px"><a href=3D"https://us3-cdn.eng.bloomreach.com/king-=
+arthur-baking-production/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8=
+te-6klH5GSUlBsZW-fnl5uV52Zl56YlFJRmlRUiKIrZecn6sPZKYWFesWpZYnFqUUG542-Hnujc=
+stRysBLqbSYiGupJz8_Nyi1MTkDLBIshBXaoGRqSEQ6CZacQNFcoVYU3MTM3OslLiYS5PzhaQNT=
+QvyzQx0i1PzUox0k_PzszNTQcaD-FEx-vpJ-SmV-iWJSTmp-iUQdpF-SQpEJNrQNBZTFFkk2jgW=
+pjQWqiYlswyME5PsLSzTTAwMjC1TzQ0NkhKNzWrALovPTLHKLS7JL091SEpMSckHiuWBvF5jYpi=
+YkmRsYGpobmhpmGpkkcWTEbcl8M39iSF7Zth6NjAxAwAgOoBN.R52GPP4gRiuWxw/click" tar=
+get=3D"_blank"><img src=3D"https://email-media-aws.kingarthurflour.com/asse=
+ts/global/cake/loyalty.gif" style=3D"display:block;height:auto;border:0;wid=
+th:100%" width=3D"81.067" alt=3D"Bakers Rewards" title=3D"Bakers Rewards" h=
+eight=3D"auto"></a></div></div></td></tr></table><table class=3D"paragraph_=
+block block-2" width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D=
+"0" role=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0;wo=
+rd-break:break-word"><tr><td class=3D"pad" style=3D"padding-bottom:20px;pad=
+ding-left:10px;padding-right:10px"><div style=3D"color:#6d6e71;direction:lt=
+r;font-family:Roboto,Tahoma,Verdana,Segoe,sans-serif;font-size:16px;font-we=
+ight:400;letter-spacing:0;line-height:1.2;text-align:center;mso-line-height=
+-alt:19px"><p style=3D"margin:0"><a href=3D"https://us3-cdn.eng.bloomreach.=
+com/king-arthur-baking-production/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU3=
+73248WTF8te-6klH5GSUlBsZW-fnl5uV52Zl56YlFJRmlRUiKIrZecn6sPZKYWFesWpZYnFqUUG=
+542-HnujcstRysBLqbSYiGupJz8_Nyi1MTkDLBIshBXaoGRqSEQ6CZacQNFcoVYU3MTM3OslLiY=
+S5PzhaQNTQvyzQx0i1PzUox0k_PzszNTQcaD-FFR-vpJ-SmV-iWJSTmp-iUQdpF-SQpEJNrQNBZ=
+TFFkk2jgWqtQoFqomJbNMv0A_McnewjLNxMDA2DLV3NAgKdHYrAbsrvjMFKvc4pL88lSHpMSUlH=
+ygWB7I4zUmhokpScYGpobmhpaGqUYWWTwZcVsC39yfGLJnhq1nAxMzABNvf3k.mkd9Z9DueIa9x=
+w/click" target=3D"_blank" title=3D"Bakers Rewards" style=3D"text-decoratio=
+n: none; color: #6d6e71;" rel=3D"noopener">JOIN <strong>BAKER'S REWARDS</st=
+rong> &amp; EARN POINTS</a></p></div></td></tr></table></td></tr></tbody></=
+table></td></tr></tbody></table><table class=3D"row row-18" align=3D"center=
+" width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"p=
+resentation" style=3D"mso-table-lspace:0;mso-table-rspace:0"><tbody><tr><td=
+><table class=3D"row-content stack" align=3D"center" border=3D"0" cellpaddi=
+ng=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:=
+0;mso-table-rspace:0;border-radius:0;color:#000;width:640px;margin:0 auto" =
+width=3D"640"><tbody><tr><td class=3D"column column-1" width=3D"25%" style=
+=3D"mso-table-lspace:0;mso-table-rspace:0;font-weight:400;text-align:left;p=
+adding-bottom:20px;padding-top:25px;vertical-align:top"><table class=3D"men=
+u_block block-1" width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=
+=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0=
+"><tr><td class=3D"pad" style=3D"color:#6d6e71;font-family:Roboto,Tahoma,Ve=
+rdana,Segoe,sans-serif;font-size:16px;font-weight:400;padding-left:20px;tex=
+t-align:left"><table width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" bor=
+der=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspac=
+e:0"><tr><td class=3D"alignment" style=3D"text-align:left;font-size:0"><div=
+ class=3D"menu-links"><!--[if mso]><table role=3D"presentation" border=3D"0=
+" cellpadding=3D"0" cellspacing=3D"0" align=3D"left" style=3D""><tr style=
+=3D"text-align:left;"><![endif]--><!--[if mso]><td style=3D"padding-top:5px=
+;padding-right:5px;padding-bottom:5px;padding-left:5px"><![endif]-->
+<a href=3D"https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production=
+/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klFJGSUlBsZW-fnFGfoF=
+edmZeemJRSUZpUVIiiK2XnJ-rb3ja4Oe5Ny63HK0EuJhKi4W4knLy83OLUhOTM8AiyUJcqQVGpo=
+ZAoJtoxQ0UyRViTc1NzMyxUuJiLk3OF5I2NC3INzPQLU7NSzHSTc7Pz85MLdYtSgXxo1L09ZPyU=
+yr1SxKTclL1SyDsIv2SFIhItKFZLKYoski0YSxMEFkBmJ2SWaafCFSQZG9hmWZiYGBsmWpuaJCU=
+aGxWA3ZhfGaKVW5xSX55qkNSYkpKPlAsD-TpGhPDxJQkYwNTQ3NDS8NUI4ssnoy4LYFv7k8M2TP=
+D1rOBiRkArwF94A.VPNEqfP5M-XJ6A/click" target=3D"_self" title=3D"Shop" style=
+=3D"mso-hide:false;padding-top:5px;padding-bottom:5px;padding-left:5px;padd=
+ing-right:5px;display:block;color:#6d6e71;font-family:'Roboto', Tahoma, Ver=
+dana, Segoe, sans-serif;font-size:16px;font-weight:400;text-decoration:none=
+;letter-spacing:normal;">SHOP &#8250;</a><!--[if mso]></tr></td><![endif]--=
+>
+<!--[if mso]></tr><tr style=3D"text-align:left;"><td style=3D"padding-top:5=
+px;padding-right:5px;padding-bottom:5px;padding-left:5px"><![endif]-->
+<a href=3D"https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production=
+/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klEZGSUlBsZW-fnl5uV5=
+2Zl56YlFJRmlRUiKIrZecn6tflJqcWZBabHja4Oe5Ny63HK0EuJhKi4W4knLy83OLUhOTM8AiyU=
+JcqQVGpoZAoJtoxQ0UyRViTc1NzMyxUuJiLk3OF5I2NC3INzPQLU7NSzHSTc7Pz85MLdYtSgXxo=
+1L09ZPyUyr1SxKTclL1SyDsIv2SFIhItKFZLKYoski0YSxMEFkBmJ2SWaafGG0Um2RvYZlmYmBg=
+bJlqbmiQlGhsVgN2YXxmilVucUl-eapDUmJKSj5QLA_k9xoTw8SUJGMDU0NzQ0vDVCOLLJ6MuC2=
+Bb-5PDNkzw9azgYkZAFFdgH0.RAojisOFT4pSSQ/click" target=3D"_self" title=3D"Re=
+cipes" style=3D"mso-hide:false;padding-top:5px;padding-bottom:5px;padding-l=
+eft:5px;padding-right:5px;display:block;color:#6d6e71;font-family:'Roboto',=
+ Tahoma, Verdana, Segoe, sans-serif;font-size:16px;font-weight:400;text-dec=
+oration:none;letter-spacing:normal;">RECIPES &#8250;</a><!--[if mso]></tr><=
+/td><![endif]-->
+<!--[if mso]></tr><tr style=3D"text-align:left;"><td style=3D"padding-top:5=
+px;padding-right:5px;padding-bottom:5px;padding-left:5px"><![endif]--><a hr=
+ef=3D"https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production/e/.e=
+JwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klFpGSUlBsZW-fnl5uV52Zl56=
+YlFJRmlRUiKIrZecn6ufk5pYlGd42uDnuTcutxytBLiYSouFuJJy8vNzi1ITkzPAIslCXKkFRqa=
+GQKCbaMUNFMkVYk3NTczMsVLiYi5NzheSNjQtyDcz0C1OzUsx0k3Oz8_OTC3WLUoF8aNS9PWT8l=
+Mq9UsSk3JS9Usg7CL9khSISLShWSymKLJItGEsTBBZAZidklmmnxhtHJtkb2GZZmJgYGyZam5ok=
+JRobFYDdmF8ZopVbnFJfnmqQ1JiSko-UCwP5PMaE8PElCRjA1NDc0NLw1QjiyyejLgtgW_uTwzZ=
+M8PWs4GJGQAeZX-j.ZfXkTndypYs5Nw/click" target=3D"_self" title=3D"Learn" sty=
+le=3D"mso-hide:false;padding-top:5px;padding-bottom:5px;padding-left:5px;pa=
+dding-right:5px;display:block;color:#6d6e71;font-family:'Roboto', Tahoma, V=
+erdana, Segoe, sans-serif;font-size:16px;font-weight:400;text-decoration:no=
+ne;letter-spacing:normal;">LEARN &#8250;</a>
+<!--[if mso]></tr></td><![endif]--><!--[if mso]></tr><tr style=3D"text-alig=
+n:left;"><td style=3D"padding-top:5px;padding-right:5px;padding-bottom:5px;=
+padding-left:5px"><![endif]-->
+<a href=3D"https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production=
+/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klGpGSUlBsZW-fnl5uV5=
+2Zl56YlFJRmlRUiKIrZecn6uflJOfbnja4Oe5Ny63HK0EuJhKi4W4gIL5uUWpickZYJFkIa7UAi=
+NTQyDQTbTiBorkCrGm5iZm5lgpcTGXJucLSRuaFuSbGegWp-alGOkm5-dnZ6YW6xalgvhRKfr6S=
+fkplfoliUk5qfolEHaRfkkKRCTa0CwWUxRZJNowFiaIrADMTsks00-MNolNsrewTDMxMDC2TDU3=
+NEhKNDarAbswPjPFKre4JL881SEpMSUlHyiWB_J4jYlhYkqSsYGpobmhpWGqkUUWT0bclsA39ye=
+G7Jlh69nAxAwAhBV_NQ.qf2XEyNhsY-byA/click" target=3D"_self" title=3D"Blog" s=
+tyle=3D"mso-hide:false;padding-top:5px;padding-bottom:5px;padding-left:5px;=
+padding-right:5px;display:block;color:#6d6e71;font-family:'Roboto', Tahoma,=
+ Verdana, Segoe, sans-serif;font-size:16px;font-weight:400;text-decoration:=
+none;letter-spacing:normal;">BLOG &#8250;</a><!--[if mso]></tr></td><![endi=
+f]-->
+<!--[if mso]></tr><tr style=3D"text-align:left;"><td style=3D"padding-top:5=
+px;padding-right:5px;padding-bottom:5px;padding-left:5px"><![endif]-->
+<a href=3D"https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production=
+/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klH5GSUlBsZW-fnl5uV5=
+2Zl56YlFJRmlRUiKIrZecn6sPZKYWFesWpZYnFqUUG542-HnujcstRysBLqbSYiGupJz8_Nyi1M=
+TkDLBIshBXaoGRqSEQ6CZacQNFcoVYU3MTM3OslLiYS5PzhaQNTQvyzQx0i1PzUox0k_PzszNTQ=
+caD-FEp-vpJ-SmV-iWJSTmp-iUQdpF-SQpEJNrQLBZTFFkk2jAWJoisAMxOySzTT4w2jU2yt7BM=
+MzEwMLZMNTc0SEo0NqsBuzA-M8Uqt7gkvzzVISkxJSUfKJYHCoIaE8PElCRjA1NDc0NLw1Qjiyy=
+ejLgtgW_uTwzZM8PWs4GJGQBFY4M5.n0LgmmpXeZMOkg/click" target=3D"_self" title=
+=3D"Rewards" style=3D"mso-hide:false;padding-top:5px;padding-bottom:5px;pad=
+ding-left:5px;padding-right:5px;display:block;color:#6d6e71;font-family:'Ro=
+boto', Tahoma, Verdana, Segoe, sans-serif;font-size:16px;font-weight:400;te=
+xt-decoration:none;letter-spacing:normal;">REWARDS &#8250;</a><!--[if mso]>=
+</tr></td><![endif]--><!--[if mso]></tr></table><![endif]--></div></td></tr=
+></table></td></tr></table></td><td class=3D"column column-2" width=3D"75%"=
+ style=3D"mso-table-lspace:0;mso-table-rspace:0;font-weight:400;text-align:=
+left;padding-bottom:20px;padding-top:20px;vertical-align:top"><table class=
+=3D"paragraph_block block-1" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;mso-tab=
+le-rspace:0;word-break:break-word"><tr><td class=3D"pad" style=3D"padding-b=
+ottom:10px;padding-top:10px"><div style=3D"color:#6d6e71;direction:ltr;font=
+-family:Para Supreme;font-size:18px;font-weight:400;letter-spacing:0;line-h=
+eight:1.2;text-align:center;mso-line-height-alt:22px"><p style=3D"margin:0"=
+>Connect with us</p></div></td></tr></table><table class=3D"social_block bl=
+ock-2" width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=
+=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0"><tr><td c=
+lass=3D"pad" style=3D"padding-bottom:5px;padding-left:10px;padding-right:10=
+px;text-align:center"><div class=3D"alignment" align=3D"center"><table clas=
+s=3D"social-table" width=3D"276px" border=3D"0" cellpadding=3D"0" cellspaci=
+ng=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace=
+:0;display:inline-block"><tr><td style=3D"padding:0 7px 0 7px"><a href=3D"h=
+ttps://us3-cdn.eng.bloomreach.com/king-arthur-baking-production/e/.eJwTUmj5=
+t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klFZGSUlBsZW-fnl5uV5aYnJqUn5-tl5=
+yfq5-dmZeemJRSUZpUVIiiK1veNrg57k3LrccrQS4mEqLhbiScvLzc4tSE5MzwCLJQlypBUamhk=
+Cgm2jFDRTJFWJNzU3MzLFS4mIuTc4XkjY0Lcg3M9AtTs1LMdJNBtqUmVqsW5QK4kel6-sn5adU6=
+pckJuWk6pdA2EX6JSkQkWhDs1hMUWSRaKNYqFIQA6wmJbMMpg6swjBWPzHJ3sIyzcTAwNgy1dzQ=
+ICnR2KwG7Mj4zBSr3OKS_PJUh6TElJR8oFgeKCBqTAwTU5KMDUwNzQ0tDVONLLJ4MuK2BL65PzF=
+kzwxbzwYmZgCWqYHq.eg21q9uG22gxAA/click" target=3D"_blank"><img src=3D"https=
+://d15k2d11r6t6rl.cloudfront.net/public/users/Integrators/ae52a6e2-ca6a-4d8=
+e-8944-532f952aae85/04a52b46-381a-11f0-9494-82b2df0e4adf/Social%20Icons/soc=
+ial_facebook.gif" width=3D"32" height=3D"auto" alt=3D"Facebook" title=3D"ft=
+social_facebook" style=3D"display:block;height:auto;border:0"></a></td><td =
+style=3D"padding:0 7px 0 7px"><a href=3D"https://us3-cdn.eng.bloomreach.com=
+/king-arthur-baking-production/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU3732=
+48WTF8te-6klH5GSUlBsZW-fnl5uV5JZnZJfrZecn6uvkN2Zl56YlFJRmlRUiKIDRQsSMyrNDxt=
+8PPcG5dbjlYCXEylxUJcSTn5-blFqYnJGWCRZCGu1AIjU0Mg0E204gaK5AqxpuYmZuZYKXExlyb=
+nC0kbmhbkmxnoFqfmpRjpJufnZ2emFusWpYL4Uen6-kn5KZX6JYlJOan6JRB2kX5JCkQk2tAsFl=
+MUWSTaKBaqFMQAq0nJLIOpg6lITLK3sEwzMTAwtkw1NzRISjQ2qwE7Mj4zxSq3uCS_PNUhKTElJ=
+R8olgcKjxoTw8SUJGMDU0NzQ0vDVCOLLJ6MuC2Bb-5PDNkzw9azgYkZAPa6hFQ.v5sDS-mKM1Ml=
+6g/click" target=3D"_blank"><img src=3D"https://d15k2d11r6t6rl.cloudfront.n=
+et/public/users/Integrators/ae52a6e2-ca6a-4d8e-8944-532f952aae85/04a52b46-3=
+81a-11f0-9494-82b2df0e4adf/editor_images/8b1b806f-81eb-47b8-8bef-3a3d8ef9fa=
+22.gif" width=3D"32" height=3D"auto" alt=3D"TikTok" title=3D"ftsocial_tikto=
+k" style=3D"display:block;height:auto;border:0"></a></td><td style=3D"paddi=
+ng:0 7px 0 7px"><a href=3D"https://us3-cdn.eng.bloomreach.com/king-arthur-b=
+aking-production/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klHZ=
+GSUlBsZW-fnl5uV5mXnFJYnpRYq5ecn6ufnZmXnpiUUlGaVFSIoitb3ja4Oe5Ny63HK0EuJhKi4=
+W4knLy83OLUhOTM8AiyUJcqQVGpoZAoJtoxQ0UyRViTc1NzMyxUuJiLk3OF5I2NC3INzPQLU7NS=
+zHSTc7Pz85MLdYtSgXxo9L19ZPyUyr1SxKTclL1SyDsIv2SFIhItKFZLKYoski0USxUKYgBVpOS=
+WQZTB1ZhHKufmGRvYZlmYmBgbJlqbmiQlGhsVgN2ZHxmilVucUl-eapDUmJKSj5QLA8UEDUmhok=
+pScYGpobmhpaGqUYWWTwZcVsC39yfGLJnhq1nAxMzAFqvgnk.9DmpgvFpFonwBw/click" targ=
+et=3D"_blank"><img src=3D"https://d15k2d11r6t6rl.cloudfront.net/public/user=
+s/Integrators/ae52a6e2-ca6a-4d8e-8944-532f952aae85/04a52b46-381a-11f0-9494-=
+82b2df0e4adf/Social%20Icons/social_instagram.gif" width=3D"32" height=3D"au=
+to" alt=3D"Instagram" title=3D"ftsocial_instagram" style=3D"display:block;h=
+eight:auto;border:0"></a></td><td style=3D"padding:0 7px 0 7px"><a href=3D"=
+https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production/e/.eJwTUmj=
+5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klGZGSUlBsZW-fnl5uV5JRlFqYkqxXl=
+5qib5DdmZeemJRSUZpUVIiiG142uDnuTcutxytBLiYSouFuJJy8vNzgRqSM8AiyUJcqQVGpoZAo=
+JtoxQ0UyRViTc1NzMyxUuJiLk3OF5I2NC3INzPQLU7NSzHSTc7Pz85MLdYtSgXxo9L19ZPyUyr1=
+SxKTclL1SyDsIv2SFIhItKFZLKYoski0USxUKYgBVpOSWQZTB1ZhEqufmGRvYZlmYmBgbJlqbmi=
+QlGhsVgN2ZHxmilVucUl-eapDUmJKSj5QLE8vOT-3xsQwMSXJ2MDU0NzQ0jDVyCKLJyNuS-Cb-x=
+ND9syw9WxgYgYAOFyBtg.hTEPk7ziTE_a6A/click" target=3D"_blank"><img src=3D"ht=
+tps://d15k2d11r6t6rl.cloudfront.net/public/users/Integrators/ae52a6e2-ca6a-=
+4d8e-8944-532f952aae85/04a52b46-381a-11f0-9494-82b2df0e4adf/Social%20Icons/=
+social_threads.gif" width=3D"32" height=3D"auto" alt=3D"Threads" title=3D"f=
+tsocial_threads" style=3D"display:block;height:auto;border:0"></a></td><td =
+style=3D"padding:0 7px 0 7px"><a href=3D"https://us3-cdn.eng.bloomreach.com=
+/king-arthur-baking-production/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU3732=
+48WTF8te-6klHZGSUlBsZW-fnl5uV5BZl5JalFqcYlecn6ufnZmXnpiUUlGaVFSIoitb3ja4Oe5=
+Ny63HK0EuJhKi4W4knLy83OLUhOTM8AiyUJcqQVGpoZAoJtoxQ0UyRViTc1NzMyxUuJiLk3OF5I=
+2NC3INzPQLU7NSzHSTc7Pz85MLdYF2gjkR6Xr6yflp1TqlyQm5aTql0DYRfolKRCRaEOzWExRZJ=
+Foo1ioUhADrCYlswymDqzCNFY_McnewjLNxMDA2DLV3NAgKdHYrAbsyPjMFKvc4pL88lSHpMSUl=
+HygWB4oIGpMDBNTkowNTA3NDS0NU40ssngy4rYEvrk_MWTPDFvPBiZmAHf7gpM.zEHVdcI-AbrB=
+rA/click" target=3D"_blank"><img src=3D"https://d15k2d11r6t6rl.cloudfront.n=
+et/public/users/Integrators/ae52a6e2-ca6a-4d8e-8944-532f952aae85/04a52b46-3=
+81a-11f0-9494-82b2df0e4adf/Social%20Icons/social_pinterest.gif" width=3D"32=
+" height=3D"auto" alt=3D"Pinterest" title=3D"ftsocial_pinterest" style=3D"d=
+isplay:block;height:auto;border:0"></a></td><td style=3D"padding:0 7px 0 7p=
+x"><a href=3D"https://us3-cdn.eng.bloomreach.com/king-arthur-baking-product=
+ion/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klE5GSUlBsZW-fnl5=
+uV5lfmlJaVKqXnJ-rn5pcWqRfnZmXnpiUUlGaVFaTn5pkeFpg5_n3rjccrQS4GIqLRbiSsrJz88=
+tSk1MzgCLJAtxpRYYmRoCgW6iFTdQJFeINTU3MTPHSomLuTQ5X0ja0LQg38xAtzg1L8VINzk_Pz=
+sztVi3KBXEj0rX10_KT6nUL0lMyknVL4Gwi_RLUiAi0YZmsZiiyCLRRrFQpSAGWE1KZhlMHVgF0=
+IjEJHsLyzQTAwNjy1RzQ4OkRGOzGrAj4zNTrHKLS_LLUx2SElNS8oFieaCwqDExTExJMjYwNTQ3=
+tDRMNbLI4smI2xL45v7EkD0zbD0bmJgBV06DPw.-hSzuizcfafoDg/click" target=3D"_bla=
+nk"><img src=3D"https://d15k2d11r6t6rl.cloudfront.net/public/users/Integrat=
+ors/ae52a6e2-ca6a-4d8e-8944-532f952aae85/04a52b46-381a-11f0-9494-82b2df0e4a=
+df/Social%20Icons/social_youtube.gif" width=3D"32" height=3D"auto" alt=3D"Y=
+ouTube" title=3D"ftsocial_youtube" style=3D"display:block;height:auto;borde=
+r:0"></a></td></tr></table></div></td></tr></table><table class=3D"paragrap=
+h_block block-3" width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=
+=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0=
+;word-break:break-word"><tr><td class=3D"pad" style=3D"padding-bottom:5px;p=
+adding-left:5px;padding-right:5px;padding-top:10px"><div style=3D"color:#00=
+0;direction:ltr;font-family:Arial,'Helvetica Neue',Helvetica,sans-serif;fon=
+t-size:12px;font-weight:400;letter-spacing:0;line-height:1.2;text-align:cen=
+ter;mso-line-height-alt:14px"><p style=3D"margin:0">
+<a href=3D"mailto:customercare@kingarthurbaking.com" target=3D"_blank" titl=
+e=3D"customercare@kingarthurbaking.com" style=3D"text-decoration: underline=
+; color: #da1a32;" rel=3D"noopener">customercare@kingarthurbaking.com</a></=
+p></div></td></tr></table><table class=3D"paragraph_block block-4" width=3D=
+"100%" border=3D"0" cellpadding=3D"5" cellspacing=3D"0" role=3D"presentatio=
+n" style=3D"mso-table-lspace:0;mso-table-rspace:0;word-break:break-word"><t=
+r><td class=3D"pad"><div style=3D"color:#6d6e71;direction:ltr;font-family:R=
+oboto,Tahoma,Verdana,Segoe,sans-serif;font-size:12px;font-weight:400;letter=
+-spacing:0;line-height:1.2;text-align:center;mso-line-height-alt:14px"><p s=
+tyle=3D"margin:0">Call toll-free: 800.827.6836</p></div></td></tr></table><=
+table class=3D"paragraph_block block-5" width=3D"100%" border=3D"0" cellpad=
+ding=3D"5" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-lspac=
+e:0;mso-table-rspace:0;word-break:break-word"><tr><td class=3D"pad"><div st=
+yle=3D"color:#6d6e71;direction:ltr;font-family:Arial,'Helvetica Neue',Helve=
+tica,sans-serif;font-size:12px;font-weight:400;letter-spacing:0;line-height=
+:1.2;text-align:center;mso-line-height-alt:14px"><p style=3D"margin:0">58 B=
+illings Farm Road, White River Junction, VT 05001</p></div></td></tr></tabl=
+e></td></tr></tbody></table></td></tr></tbody></table><table class=3D"row r=
+ow-19" align=3D"center" width=3D"100%" border=3D"0" cellpadding=3D"0" cells=
+pacing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rs=
+pace:0"><tbody><tr><td><table class=3D"row-content stack" align=3D"center" =
+border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" styl=
+e=3D"mso-table-lspace:0;mso-table-rspace:0;border-radius:0;color:#000;width=
+:640px;margin:0 auto" width=3D"640"><tbody><tr><td class=3D"column column-1=
+" width=3D"100%" style=3D"mso-table-lspace:0;mso-table-rspace:0;font-weight=
+:400;text-align:left;vertical-align:top"><table class=3D"paragraph_block bl=
+ock-1" width=3D"100%" border=3D"0" cellpadding=3D"10" cellspacing=3D"0" rol=
+e=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0;word-brea=
+k:break-word"><tr><td class=3D"pad"><div style=3D"color:#6d6e71;direction:l=
+tr;font-family:Roboto,Tahoma,Verdana,Segoe,sans-serif;font-size:12px;font-w=
+eight:400;letter-spacing:0;line-height:1.2;text-align:left;mso-line-height-=
+alt:14px"><p style=3D"margin:0">
+Receive 15% off your merchandise order over $60. Your merchandise total con=
+sists of the sum of the products you've placed in your shopping cart and do=
+es not include any sales tax or shipping. Offer cannot be sold, auctioned, =
+transferred, or combined with any other offer, and is void if altered or re=
+produced. Offer cannot be applied to previous or pending purchases. Not red=
+eemable for cash or credit. Offer valid online only. The following items ar=
+e excluded from offer: all appliances and their attachments/accessories, Sa=
+le products, Thermapen, Staub bakeware, Zwilling, Emile Henry bakeware, gif=
+t cards, King Arthur Baking School classes.
+</p></div></td></tr></table><table class=3D"paragraph_block block-2" width=
+=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presenta=
+tion" style=3D"mso-table-lspace:0;mso-table-rspace:0;word-break:break-word"=
+><tr><td class=3D"pad" style=3D"padding-bottom:10px;padding-left:10px;paddi=
+ng-right:10px"><div style=3D"color:#6d6e71;direction:ltr;font-family:Roboto=
+,Tahoma,Verdana,Segoe,sans-serif;font-size:12px;font-weight:400;letter-spac=
+ing:0;line-height:1.2;text-align:left;mso-line-height-alt:14px"><p style=3D=
+"margin:0"><strong>Offer valid through 11/17/25, 11:59 PM ET.</strong></p><=
+/div></td></tr></table></td></tr></tbody></table></td></tr></tbody></table>=
+<table class=3D"row row-20" align=3D"center" width=3D"100%" border=3D"0" ce=
+llpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-=
+lspace:0;mso-table-rspace:0"><tbody><tr><td><table class=3D"row-content sta=
+ck" align=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=
+=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0;border-rad=
+ius:0;color:#000;width:640px;margin:0 auto" width=3D"640"><tbody><tr><td cl=
+ass=3D"column column-1" width=3D"100%" style=3D"mso-table-lspace:0;mso-tabl=
+e-rspace:0;font-weight:400;text-align:left;vertical-align:top"><table class=
+=3D"paragraph_block block-1" width=3D"100%" border=3D"0" cellpadding=3D"10"=
+ cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;mso-ta=
+ble-rspace:0;word-break:break-word"><tr><td class=3D"pad"><div style=3D"col=
+or:#6d6e71;direction:ltr;font-family:Roboto,Tahoma,Verdana,Segoe,sans-serif=
+;font-size:12px;font-weight:400;letter-spacing:0;line-height:1.2;text-align=
+:left;mso-line-height-alt:14px"><p style=3D"margin:0">
+Receive 30% off selected Mason Cash items. Offer cannot be sold, auctioned,=
+ transferred, or combined with any other offer, and is void if altered or r=
+eproduced. Offer cannot be applied to previous or pending purchases. Not re=
+deemable for cash or credit. Not valid at the King Arthur Retail Store.</p>=
+</div></td></tr></table><table class=3D"paragraph_block block-2" width=3D"1=
+00%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation"=
+ style=3D"mso-table-lspace:0;mso-table-rspace:0;word-break:break-word"><tr>=
+<td class=3D"pad" style=3D"padding-bottom:10px;padding-left:10px;padding-ri=
+ght:10px"><div style=3D"color:#6d6e71;direction:ltr;font-family:Roboto,Taho=
+ma,Verdana,Segoe,sans-serif;font-size:12px;font-weight:400;letter-spacing:0=
+;line-height:1.2;text-align:left;mso-line-height-alt:14px"><p style=3D"marg=
+in:0"><strong>Limited time offer, while supplies last.</strong></p></div></=
+td></tr></table></td></tr></tbody></table></td></tr></tbody></table><table =
+class=3D"row row-21" align=3D"center" width=3D"100%" border=3D"0" cellpaddi=
+ng=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-lspace:=
+0;mso-table-rspace:0"><tbody><tr><td><table class=3D"row-content stack" ali=
+gn=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"pres=
+entation" style=3D"mso-table-lspace:0;mso-table-rspace:0;border-radius:0;co=
+lor:#000;width:640px;margin:0 auto" width=3D"640"><tbody><tr><td class=3D"c=
+olumn column-1" width=3D"100%" style=3D"mso-table-lspace:0;mso-table-rspace=
+:0;font-weight:400;text-align:left;padding-bottom:5px;vertical-align:top;bo=
+rder-radius:0"><table class=3D"paragraph_block block-1" width=3D"100%" bord=
+er=3D"0" cellpadding=3D"10" cellspacing=3D"0" role=3D"presentation" style=
+=3D"mso-table-lspace:0;mso-table-rspace:0;word-break:break-word"><tr><td cl=
+ass=3D"pad"><div style=3D"color:#6d6e71;direction:ltr;font-family:Roboto,Ta=
+homa,Verdana,Segoe,sans-serif;font-size:12px;font-weight:400;letter-spacing=
+:0;line-height:1.2;text-align:left;mso-line-height-alt:14px"><p style=3D"ma=
+rgin:0">
+By subscribing to King Arthur text messaging, you consent to receive recurr=
+ing autodialed marketing text messages (e.g. cart reminders) to the mobile =
+number used at opt-in. Consent is not a condition of purchase. Message freq=
+uency may vary. Message &amp; data rates may apply. Reply HELP for help or =
+STOP to 27820 to opt out. See <a href=3D"https://us3-cdn.eng.bloomreach.com=
+/king-arthur-baking-production/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU3732=
+48WTF8te-6klFlGSUlBsZW-fnl5uV52Zl56YlFJRmlRUiKIrZecn6tfkJ-TmZyZWqxfklqUW6yb=
+n6ZbWpxqeNrg57k3LrccrQS4mEqLhbiScvLzc4tSE5MzwCLJQlypBUamhkCgm2jFDRTJFWJNzU3=
+MzLFS4mIuTc4XkjY0Lcg3M9AtTs1LMdJNzs_PBtqhW5QK4kdF6esn5adU6pckJuWk6pdA2EX6JS=
+kQkWhDy1hMUWzqYqHclMwy_QL9RKBAkr2FZZqJgYGxZaq5oUFSorFZDdhd8ZkpVrnFJfnlqQ5Ji=
+Skp-UCxPJD_a0wME1OSjA1MDc0NLQ1TjSyyeDLitgS-uT8xZM8MW88GJmYA4TqCEg.f8ayKKKJn=
+O4SAQ/click" target=3D"_blank" title=3D"Terms" style=3D"text-decoration: un=
+derline; color: #da1a32;" rel=3D"noopener">Terms</a> &amp; <a href=3D"https=
+://us3-cdn.eng.bloomreach.com/king-arthur-baking-production/e/.eJwTUmj5t-TD=
+jg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6klEVGSUlBsZW-fnl5uV52Zl56YlFJRmlRUiK=
+IrZecn6tfkJ-TmZyZWqxfUJRZlphcqQsWqDQ8bfDz3BuXW45WAlxMpcVCXEk5-fm5RamJyRlgkW=
+QhrtQCI1NDINBNtOIGiuQKsabmJmbmWClxMZcm5wtJG5oW5JsZ6Ban5qUY6Sbn52cDbdEtSgXxo=
+6L09ZPyUyr1SxKTclL1SyDsIv2SFIhItKFlLKYoNnWxUG5KZpl-gX5itFFskr2FZZqJgYGxZaq5=
+oUFSorFZDdhd8ZkpVrnFJfnlqQ5JiSkp-UCxPFAI1JgYJqYkGRuYGpobWhqmGllk8WTEbQl8c39=
+iyJ4Ztp4NTMwAWEKDKQ.3khOkizibZm57Q/click" target=3D"_blank" title=3D"Privac=
+y" style=3D"text-decoration: underline; color: #da1a32;" rel=3D"noopener">P=
+rivacy</a>.
+</p></div></td></tr></table><table class=3D"paragraph_block block-2" width=
+=3D"100%" border=3D"0" cellpadding=3D"10" cellspacing=3D"0" role=3D"present=
+ation" style=3D"mso-table-lspace:0;mso-table-rspace:0;word-break:break-word=
+"><tr><td class=3D"pad"><div style=3D"color:#6d6e71;direction:ltr;font-fami=
+ly:Roboto,Tahoma,Verdana,Segoe,sans-serif;font-size:12px;font-weight:400;le=
+tter-spacing:0;line-height:1.2;text-align:left;mso-line-height-alt:14px"><p=
+ style=3D"margin:0">
+You are receiving this because you signed up for King Arthur emails. This e=
+mail was sent to&#160;user@example.com. View this email as a <u><a href=
+=3D"https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production/e/.eJw=
+TUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6k1EbGjJKSgmIrff3SYmPd5JQ8vd=
+S8dL2knPz83KLUxOQMveT8XP3szLx03cSikozSIt2kRDCvoCg_pTS5JDM_Tz9V3zm9Ij8t1yW_w=
+D8kN8C1OM3S2CDY0zNEtyDA2cTCIzW5LM80wjC8MDvCotDD1Ssnws8_NCDIsiwz3yu1yCPZ3Ms3=
+ubhcN9m8OMivwCk5vaLA1dzX3Ne7Mrgq0S87PrdYL9eg0N_QtMTdw7BENynQ8LTBz3NvXG45Wgl=
+wMZUWC3EhXAsWSRbiSi0wMjUEAt1EK26gSK4Qa2puYmaOlRIXc2lyvpC0oWlBvpmBbnFqXoqRbn=
+J-fnZmarFuUSqIHxWpr5-Un1KpX5KYlJOqXwJhF-mXpEBEog0tYzFFsagzioVyUzLL9Av0S_UTk=
+-wtLNNMDAyMLVPNDQ2SEo3NasDOis9MscotLskvT3VISkxJyQeK5YHCvcbEMDElydjA1NDc0NIw=
+1cgiiycjbkvgm_sTQ_bMsPVsYGIGAPLsqy8.tmLzs6j43KI3YA/click" target=3D"_blank"=
+ style=3D"text-decoration: underline; color: #da1a32;" rel=3D"noopener">web=
+ page</a>.</u></p></div></td></tr></table></td></tr></tbody></table></td></=
+tr></tbody></table><table class=3D"row row-22" align=3D"center" width=3D"10=
+0%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" =
+style=3D"mso-table-lspace:0;mso-table-rspace:0"><tbody><tr><td><table class=
+=3D"row-content" align=3D"center" border=3D"0" cellpadding=3D"0" cellspacin=
+g=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:=
+0;border-radius:0;color:#000;width:640px;margin:0 auto" width=3D"640"><tbod=
+y><tr><td class=3D"column column-1" width=3D"33.333333333333336%" style=3D"=
+mso-table-lspace:0;mso-table-rspace:0;font-weight:400;text-align:left;paddi=
+ng-bottom:10px;padding-top:5px;vertical-align:top"><table class=3D"paragrap=
+h_block block-1" width=3D"100%" border=3D"0" cellpadding=3D"10" cellspacing=
+=3D"0" role=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0=
+;word-break:break-word"><tr><td class=3D"pad"><div style=3D"color:#6d6e71;d=
+irection:ltr;font-family:Roboto,Tahoma,Verdana,Segoe,sans-serif;font-size:1=
+4px;font-weight:400;letter-spacing:0;line-height:1.2;text-align:center;mso-=
+line-height-alt:17px"><p style=3D"margin:0">
+<a href=3D"https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production=
+/e/.eJxl0T9oE1EYAHBs6RIFy42KIO4v714u18sdlKptaBLJn7aRBEsN718u1-Tde7n3LmlLEQf=
+B2akVHBy6de3gIO5a6OaigyC4dejqIqYpouA3fd-Pj4_v47Puvvh1dPHuYvzmw7PW5-2jzqeX86=
+9b-R83V79-f3twfOfs463Taz1jlA4gTLUDKIuzPA6zZCClSDimvSyVAvajOAQ4Mb00AQRPK5VIl=
+lITyRhyuBzuyK5YkareFI2i7vqOvVEuN4FqLOcLJU5HsdtGrWG_XRiWipVBu1Z_3Fj3R5Gs8KRE=
+vUqV6jGgnl6vqYc03FFFr-pVH-1u7OFavyN0VtjDOnLNagkZQNYglbHmsVkSkvFFgWMc8o5KeFe=
+jU_vn2fnKlwfBfGYm1Vbm7x1ToVaGq5yLJgFwcH0iwprjAkeD4F5mNqXSuo1cJRdsMJnPcoBK2Y=
+-4Bgm_rJ-0ICSS7UKDyYBDc5Un0LAr2czZW__rv7KJtv7gtIFFI6ggJksFv5u3bcfnHrIJdhb2p=
+0t1IhYIbeSY3yeYMTmx-PIf-3mEGXFsF3nIRzxX2L7Re3qydv7tVfP94WL5-czsbyRztMw.V0aY=
+20w1rO0w2A/click" target=3D"_blank" title=3D"Email Preferences" style=3D"te=
+xt-decoration: underline; color: #6d6e71;" rel=3D"noopener">Preferences</a>=
+</p></div></td></tr></table></td><td class=3D"column column-2" width=3D"33.=
+333333333333336%" style=3D"mso-table-lspace:0;mso-table-rspace:0;font-weigh=
+t:400;text-align:left;padding-bottom:10px;padding-top:5px;vertical-align:to=
+p"><table class=3D"paragraph_block block-1" width=3D"100%" border=3D"0" cel=
+lpadding=3D"10" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table-=
+lspace:0;mso-table-rspace:0;word-break:break-word"><tr><td class=3D"pad"><d=
+iv style=3D"color:#6d6e71;direction:ltr;font-family:Roboto,Tahoma,Verdana,S=
+egoe,sans-serif;font-size:14px;font-weight:400;letter-spacing:0;line-height=
+:1.2;text-align:center;mso-line-height-alt:17px"><p style=3D"margin:0"><u><=
+a href=3D"https://us3-cdn.eng.bloomreach.com/king-arthur-baking-production/=
+e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZrjJU373248WTF8te-6k1E7GjJKSgmIrff3SYmPd=
+5JQ8vdS8dL2knPz83KLUxOQMveT8XP3szLx03cSikozSIt2kRDCvoCg_pTS5JDM_Tz9V3zm9Ij8=
+t1yW_wD8kN8C1OM3S2CDY0zNEtyDA2cTCIzW5LM80wjC8MDvCotDD1Ssnws8_NCDIsiwz3yu1yC=
+PZ3Ms3ubhcN9m8OMivwCk5vaLA1dzX3Ne7Mrgq0S87PrdYL9eg0N_QtMTdw7BENylQPzk_rzg1r=
+8TwtMHPc29cbjlaCXAxlRYLcSFcDRZJFuJKLTAyNQQC3UQrbqBIrhBram5iZo6VEhdzaXK-kLSh=
+aUG-mYEu0LQUI93k_PzszNRi3aJUED8qUl8_KT-lUr8kMSknVb8Ewi7SL0mBiEQbGcRiiiKLRBv=
+FwgTBClIyy_QL9Ev1E5PsLSzTTAwMjC1TzQ0NkhKNzWrAzorPTLHKLS7JL091SEpMSckHiuWBwr=
+_GxDAxJcnYwNTQ3NDSMNXIIosnI25L4Jv7E0P2zLD1bGBiBgDgea5Y.EBTq0B3qejzjRQ/click=
+" target=3D"_blank" style=3D"text-decoration: underline; color: #6d6e71;" r=
+el=3D"noopener">Unsubscribe</a></u>&#160;</p></div></td></tr></table></td><=
+td class=3D"column column-3" width=3D"33.333333333333336%" style=3D"mso-tab=
+le-lspace:0;mso-table-rspace:0;font-weight:400;text-align:left;padding-bott=
+om:10px;padding-top:5px;vertical-align:top"><table class=3D"paragraph_block=
+ block-1" width=3D"100%" border=3D"0" cellpadding=3D"10" cellspacing=3D"0" =
+role=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0;word-b=
+reak:break-word"><tr><td class=3D"pad"><div style=3D"color:#6d6e71;directio=
+n:ltr;font-family:Roboto,Tahoma,Verdana,Segoe,sans-serif;font-size:14px;fon=
+t-weight:400;letter-spacing:0;line-height:1.2;text-align:center;mso-line-he=
+ight-alt:17px"><p style=3D"margin:0"><a href=3D"https://us3-cdn.eng.bloomre=
+ach.com/king-arthur-baking-production/e/.eJwTUmj5t-TDjg_lc_bVhV_NWhJ_ql1gZr=
+jJU373248WTF8te-6klEVGSUlBsZW-fnl5uV52Zl56YlFJRmlRUiKIrZecn6tfkJ-TmZyZWqxfU=
+JRZlphcqQsWqDQ8bfDz3BuXW45WAlxMpcVCXEk5-fm5RamJyRlgkWQhrtQCI1NDINBNtOIGiuQK=
+sabmJmbmWClxMZcm5wtJG5oW5JsZ6Ban5qUY6Sbn52cDbdEtSgXxo8L19ZPyUyr1SxKTclL1SyD=
+sIv2SFIhItJFBLKYoski0cSxMEKwgJbNMv0A_McnewjLNxMDA2DLV3NAgKdHYrAbsqPjMFKvc4p=
+L88lSHpMSUlHygWB7I-zUmhokpScYGpobmhpaGqUYWWTwZcVsC39yfGLJnhq1nAxMzANKlgjY.Z=
+rd75BwoxKADxA/click" target=3D"_blank" title=3D"Privacy Policy" style=3D"te=
+xt-decoration: underline; color: #6d6e71;" rel=3D"noopener">Privacy</a></p>=
+</div></td></tr></table></td></tr></tbody></table></td></tr></tbody></table=
+><table class=3D"row row-23" align=3D"center" width=3D"100%" border=3D"0" c=
+ellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"mso-table=
+-lspace:0;mso-table-rspace:0"><tbody><tr><td><table class=3D"row-content" a=
+lign=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"pr=
+esentation" style=3D"mso-table-lspace:0;mso-table-rspace:0;background-color=
+:#545151;border-radius:0;color:#000;width:640px;margin:0 auto" width=3D"640=
+"><tbody><tr><td class=3D"column column-1" width=3D"25%" style=3D"mso-table=
+-lspace:0;mso-table-rspace:0;font-weight:400;text-align:left;padding-bottom=
+:5px;padding-top:5px;vertical-align:top"><table class=3D"image_block block-=
+1" width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"=
+presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0"><tr><td class=
+=3D"pad" style=3D"padding-bottom:20px;padding-left:20px;padding-right:20px;=
+padding-top:25px;width:100%"><div class=3D"alignment" align=3D"center"><div=
+ style=3D"max-width:110.4px"><img src=3D"https://email-media-aws.kingarthur=
+flour.com/Bloomreach/Global/footer/1percentForThePlanet.gif" style=3D"displ=
+ay:block;height:auto;border:0;width:100%" width=3D"110.4" alt=3D"1% for the=
+ Planet" title=3D"1% for the Planet" height=3D"auto"></div></div></td></tr>=
+</table></td><td class=3D"column column-2" width=3D"25%" style=3D"mso-table=
+-lspace:0;mso-table-rspace:0;font-weight:400;text-align:left;padding-bottom=
+:5px;padding-top:5px;vertical-align:top"><table class=3D"image_block block-=
+1" width=3D"100%" border=3D"0" cellpadding=3D"20" cellspacing=3D"0" role=3D=
+"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0"><tr><td clas=
+s=3D"pad"><div class=3D"alignment" align=3D"center"><div style=3D"max-width=
+:76.8px"><img src=3D"https://email-media-aws.kingarthurflour.com/Bloomreach=
+/Global/footer/100percentCommitedToQuality.gif" style=3D"display:block;heig=
+ht:auto;border:0;width:100%" width=3D"76.8" alt=3D"100% Committed to Qualit=
+y" title=3D"100% Committed to Quality" height=3D"auto"></div></div></td></t=
+r></table></td><td class=3D"column column-3" width=3D"25%" style=3D"mso-tab=
+le-lspace:0;mso-table-rspace:0;font-weight:400;text-align:left;padding-bott=
+om:5px;padding-top:5px;vertical-align:top"><table class=3D"image_block bloc=
+k-1" width=3D"100%" border=3D"0" cellpadding=3D"20" cellspacing=3D"0" role=
+=3D"presentation" style=3D"mso-table-lspace:0;mso-table-rspace:0"><tr><td c=
+lass=3D"pad"><div class=3D"alignment" align=3D"center"><div style=3D"max-wi=
+dth:76.8px"><img src=3D"https://email-media-aws.kingarthurflour.com/Bloomre=
+ach/Global/footer/100percentEmployeeOwned.gif" style=3D"display:block;heigh=
+t:auto;border:0;width:100%" width=3D"76.8" alt=3D"100% Employee-owned" titl=
+e=3D"100% Employee-owned" height=3D"auto"></div></div></td></tr></table></t=
+d><td class=3D"column column-4" width=3D"25%" style=3D"mso-table-lspace:0;m=
+so-table-rspace:0;font-weight:400;text-align:left;padding-bottom:5px;paddin=
+g-top:5px;vertical-align:top"><table class=3D"image_block block-1" width=3D=
+"100%" border=3D"0" cellpadding=3D"20" cellspacing=3D"0" role=3D"presentati=
+on" style=3D"mso-table-lspace:0;mso-table-rspace:0"><tr><td class=3D"pad"><=
+div class=3D"alignment" align=3D"center"><div style=3D"max-width:76.8px"><i=
+mg src=3D"https://email-media-aws.kingarthurflour.com/Bloomreach/Global/foo=
+ter/bcorp.gif" style=3D"display:block;height:auto;border:0;width:100%" widt=
+h=3D"76.8" alt=3D"Certified B Corporation" title=3D"Certified B Corporation=
+" height=3D"auto"></div></div></td></tr></table></td></tr></tbody></table><=
+/td></tr></tbody></table></td></tr></tbody></table><!-- End --></body></htm=
+l>
+--e7320818e80bdf897c0d3af0e58248f0581b8acc9cc2a3313036569cd17c--

@@ -1,0 +1,3953 @@
+Return-Path: <mstowe+caf_=mstowe=example.com@gmail.com>
+Received: from hotel.example.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.example.com (8.18.1/8.18.1) with ESMTPS id 5A3FLqoh006558
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <user@example.com>; Mon, 3 Nov 2025 15:21:53 GMT
+	(envelope-from mstowe+caf_=mstowe=example.com@gmail.com)
+Authentication-Results: juliett.example.com;
+	dkim=pass (2048-bit key; unprotected) header.d=kickstarter.com header.i=@kickstarter.com header.b=c3z1r7RV;
+	dkim=pass (1024-bit key; unprotected) header.d=sendgrid.info header.i=@sendgrid.info header.b=eJSnXZhc
+X-Authentication-Warning: juliett.example.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.example.com
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	by hotel.example.com (8.16.1/8.16.1) with ESMTPS id 5A3FLoUQ061303
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=OK)
+	for <user@example.com>; Mon, 3 Nov 2025 09:21:51 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.example.com 5A3FLoUQ061303
+Authentication-Results: hotel.example.com;
+	dkim=pass (2048-bit key, unprotected) header.d=kickstarter.com header.i=@kickstarter.com header.a=rsa-sha256 header.s=s1 header.b=c3z1r7RV;
+	dkim=pass (1024-bit key, unprotected) header.d=sendgrid.info header.i=@sendgrid.info header.a=rsa-sha256 header.s=smtpapi header.b=eJSnXZhc
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-640a3317b89so2178515a12.0
+        for <user@example.com>; Mon, 03 Nov 2025 07:21:51 -0800 (PST)
+ARC-Seal: i=2; a=rsa-sha256; t=1762183309; cv=pass;
+        d=google.com; s=arc-20240605;
+        b=S/UgOCmtFcA1g5oERM+shap3ZUtwdTNlgww0E9cvtoDJERPkpeIkJ21/Xn3nCS7Ea9
+         jtUwwQkYTTwmTFOO6kZT1mFDP8W1zndDpAu5WMvO407Yoh+6xoL1xKuLo0SLCdF3Gn3X
+         pf4+CbrzSkbNgb+zDYSLlk/NUINr/3Sk25UryTSti241NPNWXLRLK6gqyoVxLOqUI+Jg
+         Pa2tLe+PtpJz2pVsjvQn5BARIRYeAbYMNS5fiVcUkzF0sNkzPl82fPy9l3qdbi7xytXU
+         sM8qPDwdZGm2LXpXA+/LnK3GRRzDj9gTGtpuu4J6nqGVqDFxyUY3IxTqQK8NYtJGqm9n
+         OUaQ==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=to:reply-to:content-transfer-encoding:mime-version:subject
+         :message-id:from:date:dkim-signature:dkim-signature:delivered-to;
+        bh=bkMgbQhWPt6ePz6+K2DH8TSAjWR6zXySQ9lQS5CMwe8=;
+        fh=D5xEbNgSrteqZP1/HWuK5nMY0SFqfh9lURwssB+lA3o=;
+        b=XlQg3r/oPfilYiNAnIz1le5oQhcgypozcxKhh3QqVp2zXks4uqfzHQPt2PI6u3MU3d
+         m87SJptQyu+HCNzZw0/SF8M1bPFIf2SMVzLjJiakSrHEf0XZSLQ8ZdQFASnHCHl2b/q2
+         xXSOf9F2Xi5pQspGuWzmblskQ4MrhTpU8xxPr527jAMUT5RA4PaRGkbfUXxbTk8+DPfa
+         ArLWq1aCQkMdWSB1N5ldKfZIoN+MwPfK9rpKsBrtAaLBiOiKXwwZ78a0zCDkxWtSvoy2
+         LMIs9P2Tiav3GPEcfitCjsAXogDplTMJpOSMSj6A0+ZJOaOaKekpJiFSNToJ/bDXJxH6
+         Xt0A==;
+        darn=example.com
+ARC-Authentication-Results: i=2; mx.google.com;
+       dkim=pass header.i=@kickstarter.com header.s=s1 header.b=c3z1r7RV;
+       dkim=pass header.i=@sendgrid.info header.s=smtpapi header.b=eJSnXZhc;
+       spf=pass (google.com: domain of bounces+145129-18ec-mstowe=gmail.com@sg.kickstarter.com designates 167.89.20.251 as permitted sender) smtp.mailfrom="bounces+145129-18ec-mstowe=gmail.com@sg.kickstarter.com";
+       dmarc=pass (p=QUARANTINE sp=QUARANTINE dis=NONE) header.from=kickstarter.com
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762183309; x=1762788109;
+        h=to:reply-to:content-transfer-encoding:mime-version:subject
+         :message-id:from:date:dkim-signature:dkim-signature:delivered-to
+         :x-forwarded-for:x-forwarded-to:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=bkMgbQhWPt6ePz6+K2DH8TSAjWR6zXySQ9lQS5CMwe8=;
+        b=mGtxofMNYBVSH22eAkOY8E3j66btqru6c9pj82GwZ3mgb3ymiek7Xx/IsLUgBxyEtw
+         wEk2XsnadnnjWInau4JNA96ioDzgzdrpOs3H3OKQECPd/NcBclZlRl3W4FVuSB5bDItx
+         IUudoQk3JCoojr7wo1fw+uCh+byvYKh+bEqypYbc6jPLhC0kyW09Cg9rGOWKcaSDBKH6
+         tCIGOgjT0WnhcMVjN0OBkTXbphdAjE9jui7vtM4RWIGGFpgU305421j4Vkxi1UMAi2+2
+         hdDBtjIyAup/d3JpKywSIo0UAk9pUv4uSaQEnIqcxFWiU34z/zIheSmngt7osfvojbcJ
+         7ZGg==
+X-Forwarded-Encrypted: i=2; AJvYcCWk4/y35IfldH5EASWNVBArKLc2X/dR5/xp+nQ9e6Fd4HGEVr2j0CnLVn+X2MwekrvaFRI/XS4=@example.com
+X-Gm-Message-State: AOJu0YwAbCJST6qsDtVE+rgjMY5Ct2zNO13ZIN+7qCcb3E8swNsoTRYG
+	dUYPm03aGo7+IvPZMui1dCJypwBWJOHPqpwka+XedqG4nNVcB8Gf7Gr3z/usEAcKD43LY+T6VmH
+	7Co/KRxRCEe7eq/qohwRBvch6ovrpRukj0M/8aCpN3FP1/b4asUAfyE+Ynpuy2w==
+X-Received: by 2002:a05:6402:2344:b0:637:e2b8:605b with SMTP id 4fb4d7f45d1cf-64076f7cbcemr10560944a12.5.1762183309410;
+        Mon, 03 Nov 2025 07:21:49 -0800 (PST)
+X-Forwarded-To: user@example.com
+X-Forwarded-For: user@gmail.com user@example.com
+Delivered-To: user@gmail.com
+Received: by 2002:a05:6400:2126:b0:2ac:8275:2578 with SMTP id o38csp1586995ecx;
+        Mon, 3 Nov 2025 07:21:47 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGwBpz89eZkuU46ffZp1Ae2QT2ZrfAX4oW5gWN1n43WFh6hnJIjxMgk06Cc5QAMUNQVKZxo
+X-Received: by 2002:ad4:5d45:0:b0:880:4eac:8689 with SMTP id 6a1803df08f44-8804eac9381mr85225186d6.57.1762183307036;
+        Mon, 03 Nov 2025 07:21:47 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1762183307; cv=none;
+        d=google.com; s=arc-20240605;
+        b=khSss55tVCa9WrzxAyCk+AU9+tES3fohAY3yCJuG/po50NhzHO7q0oZwWAq09YUVWm
+         yIJc3R3fspY/ePwvwWatR5eWBjeI+oodnmDWyWTFU/ELv15NQKuvOIHqddIgGN0jGbS+
+         2dtxzZ5cfzJ1CkBBEA8sFDSDCCmVp7zPRm7pheRR8TDn/uxVvC/cNpLViw66jYROnszg
+         r6J9qdjKCybOTYk7MoGxJlvCC2FNT/agA59C2fZFic/vHdtFstBQXCHU0k/tLLjnBQNd
+         Dq0tMEFLAfr55oNkZqeo5hN20+T2jLg1bqZx/ZWXqDXWGNFzJg9x4wpLCDc2EtdPVfOM
+         ZusA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=to:reply-to:content-transfer-encoding:mime-version:subject
+         :message-id:from:date:dkim-signature:dkim-signature;
+        bh=bkMgbQhWPt6ePz6+K2DH8TSAjWR6zXySQ9lQS5CMwe8=;
+        fh=mT0Hi1oeQuwKdVkoCKIRR+MEHYH9sEP9ymI/x2O5QRU=;
+        b=O9U18m1MeDYm7zA/QhnvhobjzswZvoM5P2U7HnNUgpHCreDQMQlTmtHpAEbQWSsmXX
+         N4UVturksyPZ0NFJ85KQQLeZX7LcxZl33pFWhf1CFUDgQXy5vIztnMnhMjJ3zmaQQrrl
+         +Mdspx32/BcFE32cN2FtRlfNyW96dn6VRnXHo20dxt5CyXlZ+e31qnLhaOO4wlLPvH+f
+         V3olGch/0Oxg61oF5eOQMjaSOx0xSmE8ULxlkpwFZePPXpuhSkJw8r8qzpp4Madumtu/
+         rq+0oZA1xpGa1CwW036Mu1NqDDBD8jVy1V8Rmedpxkfc7CM1UKEmY2umRMzA5J7fyOaE
+         iDQQ==;
+        dara=google.com
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@kickstarter.com header.s=s1 header.b=c3z1r7RV;
+       dkim=pass header.i=@sendgrid.info header.s=smtpapi header.b=eJSnXZhc;
+       spf=pass (google.com: domain of bounces+145129-18ec-mstowe=gmail.com@sg.kickstarter.com designates 167.89.20.251 as permitted sender) smtp.mailfrom="bounces+145129-18ec-mstowe=gmail.com@sg.kickstarter.com";
+       dmarc=pass (p=QUARANTINE sp=QUARANTINE dis=NONE) header.from=kickstarter.com
+Received: from o3.email.kickstarter.com (o3.email.kickstarter.com. [167.89.20.251])
+        by mx.google.com with ESMTPS id 6a1803df08f44-880364e1ec9si31324746d6.1654.2025.11.03.07.21.46
+        for <user@gmail.com>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 03 Nov 2025 07:21:46 -0800 (PST)
+Received-SPF: pass (google.com: domain of bounces+145129-18ec-mstowe=gmail.com@sg.kickstarter.com designates 167.89.20.251 as permitted sender) client-ip=167.89.20.251;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@kickstarter.com header.s=s1 header.b=c3z1r7RV;
+       dkim=pass header.i=@sendgrid.info header.s=smtpapi header.b=eJSnXZhc;
+       spf=pass (google.com: domain of bounces+145129-18ec-mstowe=gmail.com@sg.kickstarter.com designates 167.89.20.251 as permitted sender) smtp.mailfrom="bounces+145129-18ec-mstowe=gmail.com@sg.kickstarter.com";
+       dmarc=pass (p=QUARANTINE sp=QUARANTINE dis=NONE) header.from=kickstarter.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kickstarter.com;
+	h=date:from:subject:mime-version:content-type:content-transfer-encoding:
+	reply-to:to:cc:content-type:date:feedback-id:from:subject:to;
+	s=s1; bh=bkMgbQhWPt6ePz6+K2DH8TSAjWR6zXySQ9lQS5CMwe8=;
+	b=c3z1r7RVRX6gDQYXLNt8JAHoEHfAgny17RZMuVmsd7jYUxhYQQM7MlwcbMiSfMqyIj/1
+	nwF6qzrE9+gGvf82Qvoez+31sEgbM5FbQMGdPrP/DULwl196CV7tbf0xeDRSiMLUUyxYTU
+	P2XtOzk9MwZHsU2rf1Quq2Y7wQ/C2twyJThKvmkYSZalU2yvAh8ZyRMCC2ZGU5t+KRxScW
+	FgZz644j8ZIHnBhs535M6R7nnqJUNlaHplEsu4mB66CVsbkCE2x9X/xKSJLTI6V+BEKQi/
+	5r5GYRwFf746uK6kTgjDG/VNfA+hGTW39ZbDN2DImYH0EEiL+IGRE9jWRqchriEg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sendgrid.info;
+	h=date:from:subject:mime-version:content-type:content-transfer-encoding:
+	reply-to:to:cc:content-type:date:feedback-id:from:subject:to;
+	s=smtpapi; bh=bkMgbQhWPt6ePz6+K2DH8TSAjWR6zXySQ9lQS5CMwe8=;
+	b=eJSnXZhcuuzNavzAuatrXT+5SzcODpjUWX1/9r/cD7KDHmlCPGmCXiSqQ3UHPKQ1LWSY
+	IpzRsj8x5joDEP0WBgRuDymdMdDFtLSdwENiZmqlaHk5x6FRsgJ/YpyqUnbjQrVkJ/SPe3
+	9s5iYHH19ay3tpucatbOxufj5RkvAxIr0=
+Date: Mon, 03 Nov 2025 15:21:46 +0000 (UTC)
+From: Kickstarter <no-reply@kickstarter.com>
+Message-ID: <f5a9bbf0-8480-46f4-8d37-6a581d832369@kickstarter.com>
+Subject: Project Update #18: Maker Pro : 17-in-1 Multipurpose Tool Set by
+ Magpie Tech
+Mime-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="--==_mimepart_6908c8822d9aa_13050988a0436591";
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-SIG: cd48dc187ad4e2f2d717cfe5a728ff1d250822b0
+Reply-To: No Reply <no-reply@kickstarter.com>
+X-SG-EID: 
+ =?us-ascii?Q?u001=2ES4ZFcoR0qiaR6m2MIbDuT7wr5Z+Llt2IXINfFkrC1r1Ddls05eQI6bpTH?=
+ =?us-ascii?Q?gbaGG7FgNL8WbdON24CFxMdQF62K2u84gllZCX3?=
+ =?us-ascii?Q?hIEeOyRRDMsZ63m1PI15vaZSzF7J9Jy8y3A0vE9?=
+ =?us-ascii?Q?Z3mRmubnZO=2FtgkDyEGXaqsEt9pLz+RQjTrZPd72?=
+ =?us-ascii?Q?G0oUC7X8nOzUZ=2F8JdW8wq4qRGTufCGtoIVcNEgb?=
+ =?us-ascii?Q?521Yy1=2FmNwQhpWM96fe5VNJAtHPgLWp9bfHwhX1?= =?us-ascii?Q?ObWP?=
+X-SG-ID: 
+ =?us-ascii?Q?u001=2ESdBcvi+Evd=2FbQef8eZF3BlHJtISQpJLQpoWIU+SWUFuK=2F2oQWsGAD+2Gm?=
+ =?us-ascii?Q?brHxLwLMxWPv1jCdMa6crluZoIj=2FBXvd=2FOL4OOX?=
+ =?us-ascii?Q?IiGC1FjkJvu5Douq7Pnj8vIT2J6Ac1tM85dTkLf?=
+ =?us-ascii?Q?VAxGKHnSgtJxOqhvkZJc6Pwpq+NjlB+uVF2yilX?=
+ =?us-ascii?Q?8sgn=2FGeNjMYOC=2FG2OoPWxyEWhny9AH1t+B1hLtq?=
+ =?us-ascii?Q?fz9aGMCbrfKiG6t4S=2FSx9nj8Nu5mZZ0VKxGjUZ1?=
+ =?us-ascii?Q?cHP1ATtTw0s7NVnxw3EqzXv7iOcjYRLOg3D9mXx?=
+ =?us-ascii?Q?WIaMAtIWPwYUhStSQP9R8M6BUbFyY38inYcjT69?=
+ =?us-ascii?Q?bmfbdDefKm8kTEDbPyaU7qBzPoGr49RjE52n2qz?=
+ =?us-ascii?Q?k5Brd6gf2NRlnuSvx8HcjvNAKSxLdtzLhQRhHlE?=
+ =?us-ascii?Q?82skmE9LQxtpjPxj7XEyCwfpu=2FoaTVy5l+FPIb8?=
+ =?us-ascii?Q?PMQBqWqrpaDJD55ixOLI2z3AOu1Xwv689WuqkKG?=
+ =?us-ascii?Q?C2uVNDinsehA03R9YwL0xNZhQoGOg9irfq8YIx0?=
+ =?us-ascii?Q?su9tGH1My87JgQmvaI+QEA0T6lyhEhsyk7BDITG?=
+ =?us-ascii?Q?m610kCM93sZxUV66KW41DXD1BvtXvwk++UblKhk?=
+ =?us-ascii?Q?hG1XscUTomoTfo4iXfoBxM9LE+Q+rCKTYZ+xuYS?=
+ =?us-ascii?Q?0EiPtoRpiKJ0fvlpGOUJGkehjWNsL2B8jG+gS31?=
+ =?us-ascii?Q?olxx2kwIGBwLUzYqmX8QWE1ixQSmnrIJEibrhhU?=
+ =?us-ascii?Q?35MGL2PylfuMSU26tfOUklBkQ8sN45=2FXyZxzq1x?=
+ =?us-ascii?Q?WHdxMKv9q3I7E62gR4qYwgMp=2FMVhZOghnENAciH?=
+ =?us-ascii?Q?HGVpJerlCobszeDAp4l76AGmxGwIVGEPIE?=
+To: user@gmail.com
+X-Entity-ID: u001.8WFXTVi1v91WxLUIpO/t4w==
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.example.com [172.31.18.8]); Mon, 03 Nov 2025 15:21:53 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.example.com [23.95.222.152]); Mon, 03 Nov 2025 09:21:52 -0600 (CST)
+X-Spam-Flag: YES
+X-Spam-Flag: YES
+X-Spam-Flag: YES
+X-FOFF-Rule-Matched: Health Spam Detection: Diabetes and pancreas health misinformation (juliett.example.com)
+X-FOFF-Rule-Matched: Analytics: Generic Sender Names (juliett.example.com)
+X-FOFF-Rule-Matched: Advanced Heuristics: Advanced Heuristic Scoring (juliett.example.com)
+X-FOFF-Rule-Matched: Advanced Heuristics: Weak Signal Aggregation (juliett.example.com)
+X-FOFF-Rule-Matched: Health Spam Detection: Diabetes and pancreas health misinformation (hotel.example.com)
+X-FOFF-Rule-Matched: Analytics: Generic Sender Names (hotel.example.com)
+X-FOFF-Rule-Matched: Advanced Heuristics: Advanced Heuristic Scoring (hotel.example.com)
+X-FOFF-Rule-Matched: Advanced Heuristics: Weak Signal Aggregation (hotel.example.com)
+X-FOFF-Score: 112 - foff-milter v0.6.5 (juliett.example.com)
+X-FOFF-Score: 112 - foff-milter v0.6.5 (hotel.example.com)
+X-FOFF-Reject-Converted: WOULD-REJECT: Message rejected by heuristic analysis
+X-FOFF-Reject-Converted: WOULD-REJECT: Message rejected by heuristic analysis
+
+
+----==_mimepart_6908c8822d9aa_13050988a0436591
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+[NOVA] For Our Magpie Family: Limited Launch Deal + Surprise Gift! ( https:=
+//www.kickstarter.com/projects/magpietech/maker-pro-17-in-1-multipurpose-to=
+ol-set/posts/4530815?ref=3Dksr_email_mktg_auto_backer_project_update_regist=
+ered_users )=0D
+ Posted by Magpie Tech=0D
+=0D
+Nov 3, 2025=0D
+View on Kickstarter ( https://www.kickstarter.com/projects/magpietech/maker=
+-pro-17-in-1-multipurpose-tool-set/posts/4530815?ref=3Dksr_email_mktg_auto_=
+backer_project_update_registered_users )=0D
+For backers only=0D
+----------------=0D
+=0D
+=0D
+=0D
+Hello Magpie Backers!=0D
+---------------------=0D
+=0D
+The new measuring tool from Magpie, the trusted name in laser measurement, =
+has finally launched! It brings back memories of when we first introduced o=
+ur dual-laser distance meter, VH-80, on Kickstarter 9 years ago.=F0=9F=98=
+=AD=E2=9C=A8=0D
+=0D
+Now, we=E2=80=99re proud to introduce our latest innovation.=0D
+NOVA: 4-IN-1 Laser Level, Distance, Digital Angle, and Bullseye.=0D
+It=E2=80=99s the world=E2=80=99s first multi-measuring tool that combines f=
+our essential instruments for your project: a Laser Level, Laser Distance M=
+eter, Angle Finder, and Level Finder-all in one.=0D
+=0D
+=F0=9F=8E=89 Magpie Backers First: 36% OFF + Surprise Gift Inside!=0D
+-------------------------------------------------------=0D
+=0D
+And most importantly, we=E2=80=99re excited to share that Magpie backers ge=
+t the first chance to grab the limited 36% OFF launch reward for the first =
+500 backers!=0D
+If you=E2=80=99re interested, don=E2=80=99t wait - secure your spot early!=0D
+=0D
+As always, we=E2=80=99ve prepared a special surprise gift exclusively for o=
+ur previous Magpie project supporters.=0D
+If you=E2=80=99ve backed us before, you=E2=80=99ll automatically receive th=
+e gift when your NOVA ships-no extra steps needed.=0D
+We hope you=E2=80=99ll show your support once again!=0D
+=0D
+Check out the campaign page below to see all the features in action, and do=
+n=E2=80=99t forget to secure your launch reward before it=E2=80=99s gone!=0D
+=0D
+=F0=9F=91=89 View NOVA on Kickstarter ( https://cutt.ly/7r584HPi )=0D
+-------------------------------------------------------=0D
+=0D
+If you have any questions or need assistance, feel free to reach out anytim=
+e at info@magpie-tech.com =E2=80=94 we=E2=80=99re always happy to help!=0D
+=0D
+With gratitude,=0D
+The Magpie Team =F0=9F=92=9A=0D
+=0D
+Show support and stay involved=E2=80=94let Magpie Tech know you read this u=
+pdate.=0D
+Like ---- ( https://www.kickstarter.com/projects/magpietech/maker-pro-17-in=
+-1-multipurpose-tool-set/posts/4530815/like?at=3DBAh7CDoMcG9zdF9pZGkDfyJFSS=
+IIdWlkBjoGRVRpA%2BPDOEkiC2V4cGlyeQY7BlRJIhgyMDI1LTEyLTAzIDE1OjEwOjE0BjsGVA%=
+3D%3D--0c1b1c43e2b085f08a953def1a6bca32e0eae781&amp;context=3Dupdate_email&=
+amp;ref=3Dksr_email_mktg_auto_backer_project_update_registered_users )=0D
+=0D
+or Comment ( https://www.kickstarter.com/projects/magpietech/maker-pro-17-i=
+n-1-multipurpose-tool-set/posts/4530815?context=3Dcomment_from_email&amp;re=
+f=3Dksr_email_mktg_auto_backer_project_update_registered_users#comments )=0D
+More from this creator=0D
+Update #17 Magpie=E2=80=99s Next Chapter Begins: Meet NOVA, the 4-in-1 Mult=
+i Measurer ( https://www.kickstarter.com/projects/magpietech/maker-pro-17-i=
+n-1-multipurpose-tool-set/posts/4529943?ref=3Dproject_update_registered_use=
+rs_tout_1 )=0D
+=0D
+Update #16 =E2=8F=B0 Last Call! Only 20 Hours Left to Grab ROAD MATE at the=
+ Lowest Price! ( https://www.kickstarter.com/projects/magpietech/maker-pro-=
+17-in-1-multipurpose-tool-set/posts/4516090?ref=3Dproject_update_registered=
+_users_tout_2 )=0D
+=0D
+=0D
+Recommended for you=0D
+Support another creative project today.=0D
+=0D
+HK$ 191,046=0D
+-----------=0D
+=0D
+pledged=0D
+-------=0D
+=0D
+238=0D
+---=0D
+=0D
+backers=0D
+-------=0D
+=0D
+40=0D
+--=0D
+=0D
+days left=0D
+---------=0D
+=0D
+World=E2=80=99s Smallest 100W Travel Adapter with Voltage Indicator ( https=
+://www.kickstarter.com/projects/arsmel/the-smallest-100w-global-travel-adap=
+ter-with-voltage-display?ref=3Dksr_email_mktg_auto_backer_project_update_re=
+gistered_users_discover_project_similar_1 )=0D
+---------------------------------------------------------------------------=
+---------------------------------------------------------------------------=
+---------------------------------------------------------------------------=
+---------------------------------=0D
+=0D
+Ultra-Sleek&amp;lightweight=E4=B8=A8100W GaN Fast Charge=E4=B8=A8Voltage In=
+dicator=E4=B8=A87 Devices Simultaneously=E4=B8=A8200+ Countries=E4=B8=A8Dua=
+l 10A Fuses=0D
+=0D
+by ARSMEL=0D
+=0D
+=0D
+=0D
+HK$ 6,596,012=0D
+-------------=0D
+=0D
+pledged=0D
+-------=0D
+=0D
+786=0D
+---=0D
+=0D
+backers=0D
+-------=0D
+=0D
+4=0D
+-=0D
+=0D
+days left=0D
+---------=0D
+=0D
+HiMill D1/D1S. High-performance, Smart, and Affordable CNC. ( https://www.k=
+ickstarter.com/projects/maxmake/himill-d1-d1s?ref=3Dksr_email_mktg_auto_bac=
+ker_project_update_registered_users_discover_project_similar_2 )=0D
+---------------------------------------------------------------------------=
+---------------------------------------------------------------------------=
+--------------------------------------------------------------=0D
+=0D
+Quick Tool Changer | 3D Probe | 280*200*80mm Working Area | 0.02mm High Pre=
+cision | Snap-on Laser Module | Use Right out of Box=0D
+=0D
+by Maxmake=0D
+=0D
+=0D
+=0D
+HK$ 150,201=0D
+-----------=0D
+=0D
+pledged=0D
+-------=0D
+=0D
+180=0D
+---=0D
+=0D
+backers=0D
+-------=0D
+=0D
+3=0D
+-=0D
+=0D
+days left=0D
+---------=0D
+=0D
+Summit Hub: 5-in-1 Modular Camp Cooking System ( https://www.kickstarter.co=
+m/projects/serotoninoutdoors/summit-hub-5-in-1-modular-camp-cooking-system?=
+ref=3Dksr_email_mktg_auto_backer_project_update_registered_users_discover_p=
+roject_similar_3 )=0D
+---------------------------------------------------------------------------=
+---------------------------------------------------------------------------=
+---------------------------------------------------------------------------=
+----------------=0D
+=0D
+One Hub, Endless Possibilities: Slide-in JetBurn &amp; TelePole | Nest Omni=
+Burn &amp; HexShield=0D
+=0D
+by SerotoninOutdoors=0D
+=0D
+=0D
+=0D
+$35,689=0D
+-------=0D
+=0D
+pledged=0D
+-------=0D
+=0D
+998=0D
+---=0D
+=0D
+backers=0D
+-------=0D
+=0D
+11=0D
+--=0D
+=0D
+days left=0D
+---------=0D
+=0D
+BitStack: Stackable Bit Holder Right on Your Drill ( https://www.kickstarte=
+r.com/projects/studio-blast/bitstack-stackable-bit-holder-right-on-your-dri=
+ll?ref=3Dksr_email_mktg_auto_backer_project_update_registered_users_discove=
+r_project_similar_4 )=0D
+---------------------------------------------------------------------------=
+---------------------------------------------------------------------------=
+---------------------------------------------------------------------------=
+-------------------=0D
+=0D
+Unlimited Stacking / 2 Types: Vertical&amp;Horizontal / Wide Compatibility =
+/ Quick&amp;Easy Mount / Bidirectional Fit(Left&amp;Right)=0D
+=0D
+by BLAST=0D
+=0D
+=0D
+View more ( https://www.kickstarter.com/recommendations?ref=3Dksr_email_mkt=
+g_auto_backer_project_update_registered_users_discover_project_similar_view=
+_more&amp;sticky_ref=3D1 )=0D
+Don't want to receive updates from this project? That's okay, you can unsub=
+scribe. ( https://www.kickstarter.com/unsubscribe/BAh7CDoMcG9zdF9pZGkDfyJFS=
+SIIdWlkBjoGRVRpA%2BPDOEkiC2V4cGlyeQY7BlRJIhgyMDI1LTEyLTAzIDE1OjEwOjE0BjsGVA=
+%3D%3D--0c1b1c43e2b085f08a953def1a6bca32e0eae781/926044465?ref=3Dksr_email_=
+mktg_auto_backer_project_update_registered_users )=0D
+=0D
+=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=
+=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=
+=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=
+=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=
+=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=0D
+Unsubscribe from this project's updates with one click:=0D
+https://www.kickstarter.com/unsubscribe/BAh7CDoMcG9zdF9pZGkDfyJFSSIIdWlkBjo=
+GRVRpA%2BPDOEkiC2V4cGlyeQY7BlRJIhgyMDI1LTEyLTAzIDE1OjEwOjE0BjsGVA%3D%3D--0c=
+1b1c43e2b085f08a953def1a6bca32e0eae781/926044465?ref=3Dksr_email_backer_rew=
+ard_full_failure=0D
+
+----==_mimepart_6908c8822d9aa_13050988a0436591
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE html>=0D
+<html>=0D
+<head>=0D
+<meta content=3D"text/html; charset=3Dutf-8" http-equiv=3D"Content-Type">=0D
+<meta content=3D"width=3Ddevice-width, initial-scale=3D1.0" name=3D"viewpor=
+t">=0D
+<title></title>=0D
+=0D
+<style>@font-face {=0D
+font-family: "Cooper Light"; font-weight: normal; font-style: normal; src: =
+url("https://d207bzo2lz83l1.cloudfront.net/cooper-light-webfont.woff2") for=
+mat("woff2"),url("https://d207bzo2lz83l1.cloudfront.net/cooper-light-webfon=
+t.woff") format("woff");=0D
+}=0D
+body {=0D
+width: 100% !important; min-width: 100%; background-color: #f0f0f0; margin:=
+ 0; padding: 0; word-break: break-word; font-family: "Helvetica Neue",Helve=
+tica,Arial,"Liberation Sans",FreeSans,sans-serif; font-size: 14px; line-hei=
+ght: 1.5; color: #282828; -webkit-text-size-adjust: 100%; -ms-text-size-adj=
+ust: 100%;=0D
+}=0D
+img {=0D
+border: 0; -ms-interpolation-mode: bicubic; outline: none; max-width: 100%;=0D
+}=0D
+.bttn-green:hover:not(:disabled) {=0D
+background-color: #037362; color: #fff;=0D
+}=0D
+.bttn-ksr10-green:hover:not(:disabled) {=0D
+background-color: #05ce78; color: #fff;=0D
+}=0D
+.link-blue:hover svg {=0D
+fill: currentColor !important;=0D
+}=0D
+.link-blue:hover {=0D
+color: #003bff;=0D
+}=0D
+.link-create-700:hover svg {=0D
+fill: currentColor !important;=0D
+}=0D
+.link-create-700:hover {=0D
+color: #05ce78;=0D
+}=0D
+.link-green:hover svg {=0D
+fill: currentColor !important;=0D
+}=0D
+.link-green:hover {=0D
+color: #282828;=0D
+}=0D
+.link-navy:hover svg {=0D
+fill: currentColor !important;=0D
+}=0D
+.link-navy:hover {=0D
+color: #007460;=0D
+}=0D
+.link-red:hover svg {=0D
+fill: currentColor !important;=0D
+}=0D
+.link-red:hover {=0D
+color: #ef0707;=0D
+}=0D
+.link-white:hover svg {=0D
+fill: currentColor !important;=0D
+}=0D
+.link-white:hover {=0D
+color: #05ce78;=0D
+}=0D
+.link-soft-black:hover {=0D
+color: #037362; fill: #037362; text-decoration: underline;=0D
+}=0D
+.link-dark-grey-500:hover {=0D
+color: #009e74; text-decoration: underline;=0D
+}=0D
+.link-ksr-green-700:hover {=0D
+color: #282828; text-decoration: underline;=0D
+}=0D
+.link-cobalt-500:hover {=0D
+color: #4c6cf8; text-decoration: underline;=0D
+}=0D
+.link-conferences-blue:hover {=0D
+color: #08207f; text-decoration: underline;=0D
+}=0D
+.link-black-blue:hover {=0D
+color: #2b60ff; fill: #2b60ff; text-decoration: underline;=0D
+}=0D
+.link-orange-500:hover {=0D
+color: #ff4f00; fill: #ff4f00; text-decoration: underline;=0D
+}=0D
+.link-trust-500:hover {=0D
+color: #55f; fill: #55f; text-decoration: underline;=0D
+}=0D
+.link-support-400:hover {=0D
+color: dimgray; fill: dimgray; text-decoration: underline;=0D
+}=0D
+@media all and (max-width: 540px) {=0D
+  .img-responsive {=0D
+    height: auto !important; max-width: 100%; width: 100% !important;=0D
+  }=0D
+  table[class*=3Dcontainer] {=0D
+    width: 320px !important;=0D
+  }=0D
+  .sm-col-1 {=0D
+    width: 3.6666666667% !important;=0D
+  }=0D
+  .sm-col-2 {=0D
+    width: 7.8333333333% !important;=0D
+  }=0D
+  .sm-col-3 {=0D
+    width: 12% !important;=0D
+  }=0D
+  .sm-col-4 {=0D
+    width: 16.1666666667% !important;=0D
+  }=0D
+  .sm-col-5 {=0D
+    width: 20.3333333333% !important;=0D
+  }=0D
+  .sm-col-6 {=0D
+    width: 24.5% !important;=0D
+  }=0D
+  .sm-col-7 {=0D
+    width: 28.6666666667% !important;=0D
+  }=0D
+  .sm-col-8 {=0D
+    width: 32.8333333333% !important;=0D
+  }=0D
+  .sm-col-9 {=0D
+    width: 37% !important;=0D
+  }=0D
+  .sm-col-10 {=0D
+    width: 41.1666666667% !important;=0D
+  }=0D
+  .sm-col-11 {=0D
+    width: 45.3333333333% !important;=0D
+  }=0D
+  .sm-col-12 {=0D
+    width: 49.5% !important;=0D
+  }=0D
+  .sm-col-13 {=0D
+    width: 53.6666666667% !important;=0D
+  }=0D
+  .sm-col-14 {=0D
+    width: 57.8333333333% !important;=0D
+  }=0D
+  .sm-col-15 {=0D
+    width: 62% !important;=0D
+  }=0D
+  .sm-col-16 {=0D
+    width: 66.1666666667% !important;=0D
+  }=0D
+  .sm-col-17 {=0D
+    width: 70.3333333333% !important;=0D
+  }=0D
+  .sm-col-18 {=0D
+    width: 74.5% !important;=0D
+  }=0D
+  .sm-col-19 {=0D
+    width: 78.6666666667% !important;=0D
+  }=0D
+  .sm-col-20 {=0D
+    width: 82.8333333333% !important;=0D
+  }=0D
+  .sm-col-21 {=0D
+    width: 87% !important;=0D
+  }=0D
+  .sm-col-22 {=0D
+    width: 91.1666666667% !important;=0D
+  }=0D
+  .sm-col-23 {=0D
+    width: 95.3333333333% !important;=0D
+  }=0D
+  .sm-col-0 {=0D
+    width: 0px !important;=0D
+  }=0D
+  .sm-col-24 {=0D
+    width: 100% !important;=0D
+  }=0D
+  .hide-sm {=0D
+    display: none !important;=0D
+  }=0D
+  table[class*=3Dnew-reply-email] {=0D
+    width: auto !important;=0D
+  }=0D
+  .new-reply-email__container {=0D
+    padding: 0 12px !important;=0D
+  }=0D
+  .new-reply-email__avatar {=0D
+    height: 36px !important; width: 36px !important;=0D
+  }=0D
+  .new-reply-email__replies-count {=0D
+    padding-left: 18px !important;=0D
+  }=0D
+  .new-reply-email__comment-reply {=0D
+    padding-left: 18px !important;=0D
+  }=0D
+}=0D
+@media (min-width: 600px) {=0D
+  .lh2-sm {=0D
+    line-height: 12px;=0D
+  }=0D
+  .lh3-sm {=0D
+    line-height: 18px;=0D
+  }=0D
+  .lh4-sm {=0D
+    line-height: 24px;=0D
+  }=0D
+  .lh5-sm {=0D
+    line-height: 30px;=0D
+  }=0D
+  .lh6-sm {=0D
+    line-height: 36px;=0D
+  }=0D
+  .lh7-sm {=0D
+    line-height: 42px;=0D
+  }=0D
+  .lh9-sm {=0D
+    line-height: 54px;=0D
+  }=0D
+  .lh11-sm {=0D
+    line-height: 66px;=0D
+  }=0D
+  .lh12-sm {=0D
+    line-height: 72px;=0D
+  }=0D
+  .lh22-sm {=0D
+    line-height: 132px;=0D
+  }=0D
+  .w0-sm {=0D
+    width: 0px;=0D
+  }=0D
+  .w1-sm {=0D
+    width: 6px;=0D
+  }=0D
+  .w2-sm {=0D
+    width: 12px;=0D
+  }=0D
+  .w3-sm {=0D
+    width: 18px;=0D
+  }=0D
+  .w4-sm {=0D
+    width: 24px;=0D
+  }=0D
+  .w5-sm {=0D
+    width: 30px;=0D
+  }=0D
+  .w6-sm {=0D
+    width: 36px;=0D
+  }=0D
+  .w7-sm {=0D
+    width: 42px;=0D
+  }=0D
+  .w8-sm {=0D
+    width: 48px;=0D
+  }=0D
+  .w9-sm {=0D
+    width: 54px;=0D
+  }=0D
+  .w10-sm {=0D
+    width: 60px;=0D
+  }=0D
+  .w11-sm {=0D
+    width: 66px;=0D
+  }=0D
+  .w12-sm {=0D
+    width: 72px;=0D
+  }=0D
+  .w13-sm {=0D
+    width: 78px;=0D
+  }=0D
+  .w14-sm {=0D
+    width: 84px;=0D
+  }=0D
+  .w15-sm {=0D
+    width: 90px;=0D
+  }=0D
+  .w16-sm {=0D
+    width: 96px;=0D
+  }=0D
+  .w17-sm {=0D
+    width: 102px;=0D
+  }=0D
+  .w18-sm {=0D
+    width: 108px;=0D
+  }=0D
+  .w19-sm {=0D
+    width: 114px;=0D
+  }=0D
+  .w20-sm {=0D
+    width: 120px;=0D
+  }=0D
+  .w25-sm {=0D
+    width: 150px;=0D
+  }=0D
+  .w30-sm {=0D
+    width: 180px;=0D
+  }=0D
+  .w37-sm {=0D
+    width: 222px;=0D
+  }=0D
+  .w45-sm {=0D
+    width: 270px;=0D
+  }=0D
+  .w50-sm {=0D
+    width: 300px;=0D
+  }=0D
+  .w100vw-sm {=0D
+    width: 100vw;=0D
+  }=0D
+  .w-stretch-sm {=0D
+    width: stretch;=0D
+  }=0D
+  .min-w4-sm {=0D
+    min-width: 24px;=0D
+  }=0D
+  .min-w6-sm {=0D
+    min-width: 36px;=0D
+  }=0D
+  .min-w20-sm {=0D
+    min-width: 120px;=0D
+  }=0D
+  .min-w28-sm {=0D
+    min-width: 168px;=0D
+  }=0D
+  .min-w30-sm {=0D
+    min-width: 180px;=0D
+  }=0D
+  .min-w35-sm {=0D
+    min-width: 210px;=0D
+  }=0D
+  .min-w46-sm {=0D
+    min-width: 276px;=0D
+  }=0D
+  .min-w50-sm {=0D
+    min-width: 300px;=0D
+  }=0D
+  .min-w10p-sm {=0D
+    min-width: 10%;=0D
+  }=0D
+  .min-w20p-sm {=0D
+    min-width: 20%;=0D
+  }=0D
+  .min-w25p-sm {=0D
+    min-width: 25%;=0D
+  }=0D
+  .min-w30p-sm {=0D
+    min-width: 30%;=0D
+  }=0D
+  .min-w33p-sm {=0D
+    min-width: 33%;=0D
+  }=0D
+  .min-w34p-sm {=0D
+    min-width: 34%;=0D
+  }=0D
+  .min-w35p-sm {=0D
+    min-width: 35%;=0D
+  }=0D
+  .min-w40p-sm {=0D
+    min-width: 40%;=0D
+  }=0D
+  .min-w50p-sm {=0D
+    min-width: 50%;=0D
+  }=0D
+  .min-w60p-sm {=0D
+    min-width: 60%;=0D
+  }=0D
+  .min-w66p-sm {=0D
+    min-width: 66%;=0D
+  }=0D
+  .min-w75p-sm {=0D
+    min-width: 75%;=0D
+  }=0D
+  .min-w80p-sm {=0D
+    min-width: 80%;=0D
+  }=0D
+  .min-w85p-sm {=0D
+    min-width: 85%;=0D
+  }=0D
+  .min-w90p-sm {=0D
+    min-width: 90%;=0D
+  }=0D
+  .min-w100p-sm {=0D
+    min-width: 100%;=0D
+  }=0D
+  .min-w-sm {=0D
+    min-width: stretch;=0D
+  }=0D
+  .max-w22-sm {=0D
+    max-width: 132px;=0D
+  }=0D
+  .max-w29-sm {=0D
+    max-width: 174px;=0D
+  }=0D
+  .max-w30-sm {=0D
+    max-width: 180px;=0D
+  }=0D
+  .max-w35-sm {=0D
+    max-width: 210px;=0D
+  }=0D
+  .max-w40-sm {=0D
+    max-width: 240px;=0D
+  }=0D
+  .max-w45-sm {=0D
+    max-width: 270px;=0D
+  }=0D
+  .max-w50-sm {=0D
+    max-width: 300px;=0D
+  }=0D
+  .max-w55-sm {=0D
+    max-width: 330px;=0D
+  }=0D
+  .max-w60-sm {=0D
+    max-width: 360px;=0D
+  }=0D
+  .max-w62-sm {=0D
+    max-width: 372px;=0D
+  }=0D
+  .max-w65-sm {=0D
+    max-width: 390px;=0D
+  }=0D
+  .max-w70-sm {=0D
+    max-width: 420px;=0D
+  }=0D
+  .max-w75-sm {=0D
+    max-width: 450px;=0D
+  }=0D
+  .max-w80-sm {=0D
+    max-width: 480px;=0D
+  }=0D
+  .max-w85-sm {=0D
+    max-width: 510px;=0D
+  }=0D
+  .max-w92-sm {=0D
+    max-width: 552px;=0D
+  }=0D
+  .max-w100-sm {=0D
+    max-width: 600px;=0D
+  }=0D
+  .max-w110-sm {=0D
+    max-width: 660px;=0D
+  }=0D
+  .max-w113-sm {=0D
+    max-width: 678px;=0D
+  }=0D
+  .max-w120-sm {=0D
+    max-width: 720px;=0D
+  }=0D
+  .max-w200-sm {=0D
+    max-width: 1200px;=0D
+  }=0D
+  .max-w230-sm {=0D
+    max-width: 1380px;=0D
+  }=0D
+  .max-w240-sm {=0D
+    max-width: 1440px;=0D
+  }=0D
+  .max-w-none-sm {=0D
+    max-width: none;=0D
+  }=0D
+  .w10p-sm {=0D
+    width: 10%;=0D
+  }=0D
+  .w20p-sm {=0D
+    width: 20%;=0D
+  }=0D
+  .w25p-sm {=0D
+    width: 25%;=0D
+  }=0D
+  .w30p-sm {=0D
+    width: 30%;=0D
+  }=0D
+  .w33p-sm {=0D
+    width: 33%;=0D
+  }=0D
+  .w34p-sm {=0D
+    width: 34%;=0D
+  }=0D
+  .w35p-sm {=0D
+    width: 35%;=0D
+  }=0D
+  .w40p-sm {=0D
+    width: 40%;=0D
+  }=0D
+  .w50p-sm {=0D
+    width: 50%;=0D
+  }=0D
+  .w60p-sm {=0D
+    width: 60%;=0D
+  }=0D
+  .w66p-sm {=0D
+    width: 66%;=0D
+  }=0D
+  .w75p-sm {=0D
+    width: 75%;=0D
+  }=0D
+  .w80p-sm {=0D
+    width: 80%;=0D
+  }=0D
+  .w85p-sm {=0D
+    width: 85%;=0D
+  }=0D
+  .w90p-sm {=0D
+    width: 90%;=0D
+  }=0D
+  .w100p-sm {=0D
+    width: 100%;=0D
+  }=0D
+  .max-w-sm {=0D
+    max-width: stretch;=0D
+  }=0D
+  .w-auto-sm {=0D
+    width: auto;=0D
+  }=0D
+  .h40px-sm {=0D
+    height: 40px;=0D
+  }=0D
+  .max-h40px-sm {=0D
+    max-height: 40px;=0D
+  }=0D
+  .min-h40px-sm {=0D
+    min-height: 40px;=0D
+  }=0D
+  .h55px-sm {=0D
+    height: 55px;=0D
+  }=0D
+  .max-h55px-sm {=0D
+    max-height: 55px;=0D
+  }=0D
+  .min-h55px-sm {=0D
+    min-height: 55px;=0D
+  }=0D
+  .h0-sm {=0D
+    height: 0px;=0D
+  }=0D
+  .h1-sm {=0D
+    height: 6px;=0D
+  }=0D
+  .h2-sm {=0D
+    height: 12px;=0D
+  }=0D
+  .h3-sm {=0D
+    height: 18px;=0D
+  }=0D
+  .h4-sm {=0D
+    height: 24px;=0D
+  }=0D
+  .h5-sm {=0D
+    height: 30px;=0D
+  }=0D
+  .h6-sm {=0D
+    height: 36px;=0D
+  }=0D
+  .h7-sm {=0D
+    height: 42px;=0D
+  }=0D
+  .h8-sm {=0D
+    height: 48px;=0D
+  }=0D
+  .h9-sm {=0D
+    height: 54px;=0D
+  }=0D
+  .h10-sm {=0D
+    height: 60px;=0D
+  }=0D
+  .h11-sm {=0D
+    height: 66px;=0D
+  }=0D
+  .h12-sm {=0D
+    height: 72px;=0D
+  }=0D
+  .h13-sm {=0D
+    height: 78px;=0D
+  }=0D
+  .h14-sm {=0D
+    height: 84px;=0D
+  }=0D
+  .h15-sm {=0D
+    height: 90px;=0D
+  }=0D
+  .h16-sm {=0D
+    height: 96px;=0D
+  }=0D
+  .h17-sm {=0D
+    height: 102px;=0D
+  }=0D
+  .h18-sm {=0D
+    height: 108px;=0D
+  }=0D
+  .h19-sm {=0D
+    height: 114px;=0D
+  }=0D
+  .h20-sm {=0D
+    height: 120px;=0D
+  }=0D
+  .h25-sm {=0D
+    height: 150px;=0D
+  }=0D
+  .h30-sm {=0D
+    height: 180px;=0D
+  }=0D
+  .h37-sm {=0D
+    height: 222px;=0D
+  }=0D
+  .h45-sm {=0D
+    height: 270px;=0D
+  }=0D
+  .h50-sm {=0D
+    height: 300px;=0D
+  }=0D
+  .h-sm {=0D
+    height: stretch;=0D
+  }=0D
+  .min-h4-sm {=0D
+    min-height: 24px;=0D
+  }=0D
+  .min-h6-sm {=0D
+    min-height: 36px;=0D
+  }=0D
+  .min-h10-sm {=0D
+    min-height: 60px;=0D
+  }=0D
+  .min-h11-sm {=0D
+    min-height: 66px;=0D
+  }=0D
+  .min-h12-sm {=0D
+    min-height: 72px;=0D
+  }=0D
+  .min-h14-sm {=0D
+    min-height: 84px;=0D
+  }=0D
+  .min-h16-sm {=0D
+    min-height: 96px;=0D
+  }=0D
+  .min-h17-sm {=0D
+    min-height: 102px;=0D
+  }=0D
+  .min-h20-sm {=0D
+    min-height: 120px;=0D
+  }=0D
+  .min-h25-sm {=0D
+    min-height: 150px;=0D
+  }=0D
+  .min-h30-sm {=0D
+    min-height: 180px;=0D
+  }=0D
+  .min-h35-sm {=0D
+    min-height: 210px;=0D
+  }=0D
+  .min-h40-sm {=0D
+    min-height: 240px;=0D
+  }=0D
+  .min-h60-sm {=0D
+    min-height: 360px;=0D
+  }=0D
+  .min-h80-sm {=0D
+    min-height: 480px;=0D
+  }=0D
+  .min-h100-sm {=0D
+    min-height: 600px;=0D
+  }=0D
+  .min-h-sm {=0D
+    min-height: stretch;=0D
+  }=0D
+  .max-h0-sm {=0D
+    max-height: 0px;=0D
+  }=0D
+  .max-h6-sm {=0D
+    max-height: 36px;=0D
+  }=0D
+  .max-h11-sm {=0D
+    max-height: 66px;=0D
+  }=0D
+  .max-h22-sm {=0D
+    max-height: 132px;=0D
+  }=0D
+  .max-h30-sm {=0D
+    max-height: 180px;=0D
+  }=0D
+  .max-h40-sm {=0D
+    max-height: 240px;=0D
+  }=0D
+  .max-h50-sm {=0D
+    max-height: 300px;=0D
+  }=0D
+  .max-h120-sm {=0D
+    max-height: 720px;=0D
+  }=0D
+  .max-h-sm {=0D
+    max-height: stretch;=0D
+  }=0D
+  .h-auto-sm {=0D
+    height: auto;=0D
+  }=0D
+  .h10p-sm {=0D
+    height: 10%;=0D
+  }=0D
+  .h20p-sm {=0D
+    height: 20%;=0D
+  }=0D
+  .h25p-sm {=0D
+    height: 25%;=0D
+  }=0D
+  .h30p-sm {=0D
+    height: 30%;=0D
+  }=0D
+  .h33p-sm {=0D
+    height: 33%;=0D
+  }=0D
+  .h34p-sm {=0D
+    height: 34%;=0D
+  }=0D
+  .h35p-sm {=0D
+    height: 35%;=0D
+  }=0D
+  .h40p-sm {=0D
+    height: 40%;=0D
+  }=0D
+  .h50p-sm {=0D
+    height: 50%;=0D
+  }=0D
+  .h60p-sm {=0D
+    height: 60%;=0D
+  }=0D
+  .h66p-sm {=0D
+    height: 66%;=0D
+  }=0D
+  .h75p-sm {=0D
+    height: 75%;=0D
+  }=0D
+  .h80p-sm {=0D
+    height: 80%;=0D
+  }=0D
+  .h85p-sm {=0D
+    height: 85%;=0D
+  }=0D
+  .h90p-sm {=0D
+    height: 90%;=0D
+  }=0D
+  .h100p-sm {=0D
+    height: 100%;=0D
+  }=0D
+  .h5vh-sm {=0D
+    height: 5vh;=0D
+  }=0D
+  .max-h5vh-sm {=0D
+    max-height: 5vh;=0D
+  }=0D
+  .min-h5vh-sm {=0D
+    min-height: 5vh;=0D
+  }=0D
+  .h12vh-sm {=0D
+    height: 12vh;=0D
+  }=0D
+  .max-h12vh-sm {=0D
+    max-height: 12vh;=0D
+  }=0D
+  .min-h12vh-sm {=0D
+    min-height: 12vh;=0D
+  }=0D
+  .h20vh-sm {=0D
+    height: 20vh;=0D
+  }=0D
+  .max-h20vh-sm {=0D
+    max-height: 20vh;=0D
+  }=0D
+  .min-h20vh-sm {=0D
+    min-height: 20vh;=0D
+  }=0D
+  .h30vh-sm {=0D
+    height: 30vh;=0D
+  }=0D
+  .max-h30vh-sm {=0D
+    max-height: 30vh;=0D
+  }=0D
+  .min-h30vh-sm {=0D
+    min-height: 30vh;=0D
+  }=0D
+  .h40vh-sm {=0D
+    height: 40vh;=0D
+  }=0D
+  .max-h40vh-sm {=0D
+    max-height: 40vh;=0D
+  }=0D
+  .min-h40vh-sm {=0D
+    min-height: 40vh;=0D
+  }=0D
+  .h50vh-sm {=0D
+    height: 50vh;=0D
+  }=0D
+  .max-h50vh-sm {=0D
+    max-height: 50vh;=0D
+  }=0D
+  .min-h50vh-sm {=0D
+    min-height: 50vh;=0D
+  }=0D
+  .h60vh-sm {=0D
+    height: 60vh;=0D
+  }=0D
+  .max-h60vh-sm {=0D
+    max-height: 60vh;=0D
+  }=0D
+  .min-h60vh-sm {=0D
+    min-height: 60vh;=0D
+  }=0D
+  .h65vh-sm {=0D
+    height: 65vh;=0D
+  }=0D
+  .max-h65vh-sm {=0D
+    max-height: 65vh;=0D
+  }=0D
+  .min-h65vh-sm {=0D
+    min-height: 65vh;=0D
+  }=0D
+  .h70vh-sm {=0D
+    height: 70vh;=0D
+  }=0D
+  .max-h70vh-sm {=0D
+    max-height: 70vh;=0D
+  }=0D
+  .min-h70vh-sm {=0D
+    min-height: 70vh;=0D
+  }=0D
+  .h75vh-sm {=0D
+    height: 75vh;=0D
+  }=0D
+  .max-h75vh-sm {=0D
+    max-height: 75vh;=0D
+  }=0D
+  .min-h75vh-sm {=0D
+    min-height: 75vh;=0D
+  }=0D
+  .h80vh-sm {=0D
+    height: 80vh;=0D
+  }=0D
+  .max-h80vh-sm {=0D
+    max-height: 80vh;=0D
+  }=0D
+  .min-h80vh-sm {=0D
+    min-height: 80vh;=0D
+  }=0D
+  .h85vh-sm {=0D
+    height: 85vh;=0D
+  }=0D
+  .max-h85vh-sm {=0D
+    max-height: 85vh;=0D
+  }=0D
+  .min-h85vh-sm {=0D
+    min-height: 85vh;=0D
+  }=0D
+  .h100vh-sm {=0D
+    height: 100vh;=0D
+  }=0D
+  .max-h100vh-sm {=0D
+    max-height: 100vh;=0D
+  }=0D
+  .min-h100vh-sm {=0D
+    min-height: 100vh;=0D
+  }=0D
+}=0D
+@media (min-width: 795px) {=0D
+  .lh2-md {=0D
+    line-height: 12px;=0D
+  }=0D
+  .lh3-md {=0D
+    line-height: 18px;=0D
+  }=0D
+  .lh4-md {=0D
+    line-height: 24px;=0D
+  }=0D
+  .lh5-md {=0D
+    line-height: 30px;=0D
+  }=0D
+  .lh6-md {=0D
+    line-height: 36px;=0D
+  }=0D
+  .lh7-md {=0D
+    line-height: 42px;=0D
+  }=0D
+  .lh9-md {=0D
+    line-height: 54px;=0D
+  }=0D
+  .lh11-md {=0D
+    line-height: 66px;=0D
+  }=0D
+  .lh12-md {=0D
+    line-height: 72px;=0D
+  }=0D
+  .lh22-md {=0D
+    line-height: 132px;=0D
+  }=0D
+  .w0-md {=0D
+    width: 0px;=0D
+  }=0D
+  .w1-md {=0D
+    width: 6px;=0D
+  }=0D
+  .w2-md {=0D
+    width: 12px;=0D
+  }=0D
+  .w3-md {=0D
+    width: 18px;=0D
+  }=0D
+  .w4-md {=0D
+    width: 24px;=0D
+  }=0D
+  .w5-md {=0D
+    width: 30px;=0D
+  }=0D
+  .w6-md {=0D
+    width: 36px;=0D
+  }=0D
+  .w7-md {=0D
+    width: 42px;=0D
+  }=0D
+  .w8-md {=0D
+    width: 48px;=0D
+  }=0D
+  .w9-md {=0D
+    width: 54px;=0D
+  }=0D
+  .w10-md {=0D
+    width: 60px;=0D
+  }=0D
+  .w11-md {=0D
+    width: 66px;=0D
+  }=0D
+  .w12-md {=0D
+    width: 72px;=0D
+  }=0D
+  .w13-md {=0D
+    width: 78px;=0D
+  }=0D
+  .w14-md {=0D
+    width: 84px;=0D
+  }=0D
+  .w15-md {=0D
+    width: 90px;=0D
+  }=0D
+  .w16-md {=0D
+    width: 96px;=0D
+  }=0D
+  .w17-md {=0D
+    width: 102px;=0D
+  }=0D
+  .w18-md {=0D
+    width: 108px;=0D
+  }=0D
+  .w19-md {=0D
+    width: 114px;=0D
+  }=0D
+  .w20-md {=0D
+    width: 120px;=0D
+  }=0D
+  .w25-md {=0D
+    width: 150px;=0D
+  }=0D
+  .w30-md {=0D
+    width: 180px;=0D
+  }=0D
+  .w37-md {=0D
+    width: 222px;=0D
+  }=0D
+  .w45-md {=0D
+    width: 270px;=0D
+  }=0D
+  .w50-md {=0D
+    width: 300px;=0D
+  }=0D
+  .w100vw-md {=0D
+    width: 100vw;=0D
+  }=0D
+  .w-stretch-md {=0D
+    width: stretch;=0D
+  }=0D
+  .min-w4-md {=0D
+    min-width: 24px;=0D
+  }=0D
+  .min-w6-md {=0D
+    min-width: 36px;=0D
+  }=0D
+  .min-w20-md {=0D
+    min-width: 120px;=0D
+  }=0D
+  .min-w28-md {=0D
+    min-width: 168px;=0D
+  }=0D
+  .min-w30-md {=0D
+    min-width: 180px;=0D
+  }=0D
+  .min-w35-md {=0D
+    min-width: 210px;=0D
+  }=0D
+  .min-w46-md {=0D
+    min-width: 276px;=0D
+  }=0D
+  .min-w50-md {=0D
+    min-width: 300px;=0D
+  }=0D
+  .min-w10p-md {=0D
+    min-width: 10%;=0D
+  }=0D
+  .min-w20p-md {=0D
+    min-width: 20%;=0D
+  }=0D
+  .min-w25p-md {=0D
+    min-width: 25%;=0D
+  }=0D
+  .min-w30p-md {=0D
+    min-width: 30%;=0D
+  }=0D
+  .min-w33p-md {=0D
+    min-width: 33%;=0D
+  }=0D
+  .min-w34p-md {=0D
+    min-width: 34%;=0D
+  }=0D
+  .min-w35p-md {=0D
+    min-width: 35%;=0D
+  }=0D
+  .min-w40p-md {=0D
+    min-width: 40%;=0D
+  }=0D
+  .min-w50p-md {=0D
+    min-width: 50%;=0D
+  }=0D
+  .min-w60p-md {=0D
+    min-width: 60%;=0D
+  }=0D
+  .min-w66p-md {=0D
+    min-width: 66%;=0D
+  }=0D
+  .min-w75p-md {=0D
+    min-width: 75%;=0D
+  }=0D
+  .min-w80p-md {=0D
+    min-width: 80%;=0D
+  }=0D
+  .min-w85p-md {=0D
+    min-width: 85%;=0D
+  }=0D
+  .min-w90p-md {=0D
+    min-width: 90%;=0D
+  }=0D
+  .min-w100p-md {=0D
+    min-width: 100%;=0D
+  }=0D
+  .min-w-md {=0D
+    min-width: stretch;=0D
+  }=0D
+  .max-w22-md {=0D
+    max-width: 132px;=0D
+  }=0D
+  .max-w29-md {=0D
+    max-width: 174px;=0D
+  }=0D
+  .max-w30-md {=0D
+    max-width: 180px;=0D
+  }=0D
+  .max-w35-md {=0D
+    max-width: 210px;=0D
+  }=0D
+  .max-w40-md {=0D
+    max-width: 240px;=0D
+  }=0D
+  .max-w45-md {=0D
+    max-width: 270px;=0D
+  }=0D
+  .max-w50-md {=0D
+    max-width: 300px;=0D
+  }=0D
+  .max-w55-md {=0D
+    max-width: 330px;=0D
+  }=0D
+  .max-w60-md {=0D
+    max-width: 360px;=0D
+  }=0D
+  .max-w62-md {=0D
+    max-width: 372px;=0D
+  }=0D
+  .max-w65-md {=0D
+    max-width: 390px;=0D
+  }=0D
+  .max-w70-md {=0D
+    max-width: 420px;=0D
+  }=0D
+  .max-w75-md {=0D
+    max-width: 450px;=0D
+  }=0D
+  .max-w80-md {=0D
+    max-width: 480px;=0D
+  }=0D
+  .max-w85-md {=0D
+    max-width: 510px;=0D
+  }=0D
+  .max-w92-md {=0D
+    max-width: 552px;=0D
+  }=0D
+  .max-w100-md {=0D
+    max-width: 600px;=0D
+  }=0D
+  .max-w110-md {=0D
+    max-width: 660px;=0D
+  }=0D
+  .max-w113-md {=0D
+    max-width: 678px;=0D
+  }=0D
+  .max-w120-md {=0D
+    max-width: 720px;=0D
+  }=0D
+  .max-w200-md {=0D
+    max-width: 1200px;=0D
+  }=0D
+  .max-w230-md {=0D
+    max-width: 1380px;=0D
+  }=0D
+  .max-w240-md {=0D
+    max-width: 1440px;=0D
+  }=0D
+  .max-w-none-md {=0D
+    max-width: none;=0D
+  }=0D
+  .w10p-md {=0D
+    width: 10%;=0D
+  }=0D
+  .w20p-md {=0D
+    width: 20%;=0D
+  }=0D
+  .w25p-md {=0D
+    width: 25%;=0D
+  }=0D
+  .w30p-md {=0D
+    width: 30%;=0D
+  }=0D
+  .w33p-md {=0D
+    width: 33%;=0D
+  }=0D
+  .w34p-md {=0D
+    width: 34%;=0D
+  }=0D
+  .w35p-md {=0D
+    width: 35%;=0D
+  }=0D
+  .w40p-md {=0D
+    width: 40%;=0D
+  }=0D
+  .w50p-md {=0D
+    width: 50%;=0D
+  }=0D
+  .w60p-md {=0D
+    width: 60%;=0D
+  }=0D
+  .w66p-md {=0D
+    width: 66%;=0D
+  }=0D
+  .w75p-md {=0D
+    width: 75%;=0D
+  }=0D
+  .w80p-md {=0D
+    width: 80%;=0D
+  }=0D
+  .w85p-md {=0D
+    width: 85%;=0D
+  }=0D
+  .w90p-md {=0D
+    width: 90%;=0D
+  }=0D
+  .w100p-md {=0D
+    width: 100%;=0D
+  }=0D
+  .max-w-md {=0D
+    max-width: stretch;=0D
+  }=0D
+  .w-auto-md {=0D
+    width: auto;=0D
+  }=0D
+  .h40px-md {=0D
+    height: 40px;=0D
+  }=0D
+  .max-h40px-md {=0D
+    max-height: 40px;=0D
+  }=0D
+  .min-h40px-md {=0D
+    min-height: 40px;=0D
+  }=0D
+  .h55px-md {=0D
+    height: 55px;=0D
+  }=0D
+  .max-h55px-md {=0D
+    max-height: 55px;=0D
+  }=0D
+  .min-h55px-md {=0D
+    min-height: 55px;=0D
+  }=0D
+  .h0-md {=0D
+    height: 0px;=0D
+  }=0D
+  .h1-md {=0D
+    height: 6px;=0D
+  }=0D
+  .h2-md {=0D
+    height: 12px;=0D
+  }=0D
+  .h3-md {=0D
+    height: 18px;=0D
+  }=0D
+  .h4-md {=0D
+    height: 24px;=0D
+  }=0D
+  .h5-md {=0D
+    height: 30px;=0D
+  }=0D
+  .h6-md {=0D
+    height: 36px;=0D
+  }=0D
+  .h7-md {=0D
+    height: 42px;=0D
+  }=0D
+  .h8-md {=0D
+    height: 48px;=0D
+  }=0D
+  .h9-md {=0D
+    height: 54px;=0D
+  }=0D
+  .h10-md {=0D
+    height: 60px;=0D
+  }=0D
+  .h11-md {=0D
+    height: 66px;=0D
+  }=0D
+  .h12-md {=0D
+    height: 72px;=0D
+  }=0D
+  .h13-md {=0D
+    height: 78px;=0D
+  }=0D
+  .h14-md {=0D
+    height: 84px;=0D
+  }=0D
+  .h15-md {=0D
+    height: 90px;=0D
+  }=0D
+  .h16-md {=0D
+    height: 96px;=0D
+  }=0D
+  .h17-md {=0D
+    height: 102px;=0D
+  }=0D
+  .h18-md {=0D
+    height: 108px;=0D
+  }=0D
+  .h19-md {=0D
+    height: 114px;=0D
+  }=0D
+  .h20-md {=0D
+    height: 120px;=0D
+  }=0D
+  .h25-md {=0D
+    height: 150px;=0D
+  }=0D
+  .h30-md {=0D
+    height: 180px;=0D
+  }=0D
+  .h37-md {=0D
+    height: 222px;=0D
+  }=0D
+  .h45-md {=0D
+    height: 270px;=0D
+  }=0D
+  .h50-md {=0D
+    height: 300px;=0D
+  }=0D
+  .h-md {=0D
+    height: stretch;=0D
+  }=0D
+  .min-h4-md {=0D
+    min-height: 24px;=0D
+  }=0D
+  .min-h6-md {=0D
+    min-height: 36px;=0D
+  }=0D
+  .min-h10-md {=0D
+    min-height: 60px;=0D
+  }=0D
+  .min-h11-md {=0D
+    min-height: 66px;=0D
+  }=0D
+  .min-h12-md {=0D
+    min-height: 72px;=0D
+  }=0D
+  .min-h14-md {=0D
+    min-height: 84px;=0D
+  }=0D
+  .min-h16-md {=0D
+    min-height: 96px;=0D
+  }=0D
+  .min-h17-md {=0D
+    min-height: 102px;=0D
+  }=0D
+  .min-h20-md {=0D
+    min-height: 120px;=0D
+  }=0D
+  .min-h25-md {=0D
+    min-height: 150px;=0D
+  }=0D
+  .min-h30-md {=0D
+    min-height: 180px;=0D
+  }=0D
+  .min-h35-md {=0D
+    min-height: 210px;=0D
+  }=0D
+  .min-h40-md {=0D
+    min-height: 240px;=0D
+  }=0D
+  .min-h60-md {=0D
+    min-height: 360px;=0D
+  }=0D
+  .min-h80-md {=0D
+    min-height: 480px;=0D
+  }=0D
+  .min-h100-md {=0D
+    min-height: 600px;=0D
+  }=0D
+  .min-h-md {=0D
+    min-height: stretch;=0D
+  }=0D
+  .max-h0-md {=0D
+    max-height: 0px;=0D
+  }=0D
+  .max-h6-md {=0D
+    max-height: 36px;=0D
+  }=0D
+  .max-h11-md {=0D
+    max-height: 66px;=0D
+  }=0D
+  .max-h22-md {=0D
+    max-height: 132px;=0D
+  }=0D
+  .max-h30-md {=0D
+    max-height: 180px;=0D
+  }=0D
+  .max-h40-md {=0D
+    max-height: 240px;=0D
+  }=0D
+  .max-h50-md {=0D
+    max-height: 300px;=0D
+  }=0D
+  .max-h120-md {=0D
+    max-height: 720px;=0D
+  }=0D
+  .max-h-md {=0D
+    max-height: stretch;=0D
+  }=0D
+  .h-auto-md {=0D
+    height: auto;=0D
+  }=0D
+  .h10p-md {=0D
+    height: 10%;=0D
+  }=0D
+  .h20p-md {=0D
+    height: 20%;=0D
+  }=0D
+  .h25p-md {=0D
+    height: 25%;=0D
+  }=0D
+  .h30p-md {=0D
+    height: 30%;=0D
+  }=0D
+  .h33p-md {=0D
+    height: 33%;=0D
+  }=0D
+  .h34p-md {=0D
+    height: 34%;=0D
+  }=0D
+  .h35p-md {=0D
+    height: 35%;=0D
+  }=0D
+  .h40p-md {=0D
+    height: 40%;=0D
+  }=0D
+  .h50p-md {=0D
+    height: 50%;=0D
+  }=0D
+  .h60p-md {=0D
+    height: 60%;=0D
+  }=0D
+  .h66p-md {=0D
+    height: 66%;=0D
+  }=0D
+  .h75p-md {=0D
+    height: 75%;=0D
+  }=0D
+  .h80p-md {=0D
+    height: 80%;=0D
+  }=0D
+  .h85p-md {=0D
+    height: 85%;=0D
+  }=0D
+  .h90p-md {=0D
+    height: 90%;=0D
+  }=0D
+  .h100p-md {=0D
+    height: 100%;=0D
+  }=0D
+  .h5vh-md {=0D
+    height: 5vh;=0D
+  }=0D
+  .max-h5vh-md {=0D
+    max-height: 5vh;=0D
+  }=0D
+  .min-h5vh-md {=0D
+    min-height: 5vh;=0D
+  }=0D
+  .h12vh-md {=0D
+    height: 12vh;=0D
+  }=0D
+  .max-h12vh-md {=0D
+    max-height: 12vh;=0D
+  }=0D
+  .min-h12vh-md {=0D
+    min-height: 12vh;=0D
+  }=0D
+  .h20vh-md {=0D
+    height: 20vh;=0D
+  }=0D
+  .max-h20vh-md {=0D
+    max-height: 20vh;=0D
+  }=0D
+  .min-h20vh-md {=0D
+    min-height: 20vh;=0D
+  }=0D
+  .h30vh-md {=0D
+    height: 30vh;=0D
+  }=0D
+  .max-h30vh-md {=0D
+    max-height: 30vh;=0D
+  }=0D
+  .min-h30vh-md {=0D
+    min-height: 30vh;=0D
+  }=0D
+  .h40vh-md {=0D
+    height: 40vh;=0D
+  }=0D
+  .max-h40vh-md {=0D
+    max-height: 40vh;=0D
+  }=0D
+  .min-h40vh-md {=0D
+    min-height: 40vh;=0D
+  }=0D
+  .h50vh-md {=0D
+    height: 50vh;=0D
+  }=0D
+  .max-h50vh-md {=0D
+    max-height: 50vh;=0D
+  }=0D
+  .min-h50vh-md {=0D
+    min-height: 50vh;=0D
+  }=0D
+  .h60vh-md {=0D
+    height: 60vh;=0D
+  }=0D
+  .max-h60vh-md {=0D
+    max-height: 60vh;=0D
+  }=0D
+  .min-h60vh-md {=0D
+    min-height: 60vh;=0D
+  }=0D
+  .h65vh-md {=0D
+    height: 65vh;=0D
+  }=0D
+  .max-h65vh-md {=0D
+    max-height: 65vh;=0D
+  }=0D
+  .min-h65vh-md {=0D
+    min-height: 65vh;=0D
+  }=0D
+  .h70vh-md {=0D
+    height: 70vh;=0D
+  }=0D
+  .max-h70vh-md {=0D
+    max-height: 70vh;=0D
+  }=0D
+  .min-h70vh-md {=0D
+    min-height: 70vh;=0D
+  }=0D
+  .h75vh-md {=0D
+    height: 75vh;=0D
+  }=0D
+  .max-h75vh-md {=0D
+    max-height: 75vh;=0D
+  }=0D
+  .min-h75vh-md {=0D
+    min-height: 75vh;=0D
+  }=0D
+  .h80vh-md {=0D
+    height: 80vh;=0D
+  }=0D
+  .max-h80vh-md {=0D
+    max-height: 80vh;=0D
+  }=0D
+  .min-h80vh-md {=0D
+    min-height: 80vh;=0D
+  }=0D
+  .h85vh-md {=0D
+    height: 85vh;=0D
+  }=0D
+  .max-h85vh-md {=0D
+    max-height: 85vh;=0D
+  }=0D
+  .min-h85vh-md {=0D
+    min-height: 85vh;=0D
+  }=0D
+  .h100vh-md {=0D
+    height: 100vh;=0D
+  }=0D
+  .max-h100vh-md {=0D
+    max-height: 100vh;=0D
+  }=0D
+  .min-h100vh-md {=0D
+    min-height: 100vh;=0D
+  }=0D
+}=0D
+@media (min-width: 1025px) {=0D
+  .lh2-lg {=0D
+    line-height: 12px;=0D
+  }=0D
+  .lh3-lg {=0D
+    line-height: 18px;=0D
+  }=0D
+  .lh4-lg {=0D
+    line-height: 24px;=0D
+  }=0D
+  .lh5-lg {=0D
+    line-height: 30px;=0D
+  }=0D
+  .lh6-lg {=0D
+    line-height: 36px;=0D
+  }=0D
+  .lh7-lg {=0D
+    line-height: 42px;=0D
+  }=0D
+  .lh9-lg {=0D
+    line-height: 54px;=0D
+  }=0D
+  .lh11-lg {=0D
+    line-height: 66px;=0D
+  }=0D
+  .lh12-lg {=0D
+    line-height: 72px;=0D
+  }=0D
+  .lh22-lg {=0D
+    line-height: 132px;=0D
+  }=0D
+  .w0-lg {=0D
+    width: 0px;=0D
+  }=0D
+  .w1-lg {=0D
+    width: 6px;=0D
+  }=0D
+  .w2-lg {=0D
+    width: 12px;=0D
+  }=0D
+  .w3-lg {=0D
+    width: 18px;=0D
+  }=0D
+  .w4-lg {=0D
+    width: 24px;=0D
+  }=0D
+  .w5-lg {=0D
+    width: 30px;=0D
+  }=0D
+  .w6-lg {=0D
+    width: 36px;=0D
+  }=0D
+  .w7-lg {=0D
+    width: 42px;=0D
+  }=0D
+  .w8-lg {=0D
+    width: 48px;=0D
+  }=0D
+  .w9-lg {=0D
+    width: 54px;=0D
+  }=0D
+  .w10-lg {=0D
+    width: 60px;=0D
+  }=0D
+  .w11-lg {=0D
+    width: 66px;=0D
+  }=0D
+  .w12-lg {=0D
+    width: 72px;=0D
+  }=0D
+  .w13-lg {=0D
+    width: 78px;=0D
+  }=0D
+  .w14-lg {=0D
+    width: 84px;=0D
+  }=0D
+  .w15-lg {=0D
+    width: 90px;=0D
+  }=0D
+  .w16-lg {=0D
+    width: 96px;=0D
+  }=0D
+  .w17-lg {=0D
+    width: 102px;=0D
+  }=0D
+  .w18-lg {=0D
+    width: 108px;=0D
+  }=0D
+  .w19-lg {=0D
+    width: 114px;=0D
+  }=0D
+  .w20-lg {=0D
+    width: 120px;=0D
+  }=0D
+  .w25-lg {=0D
+    width: 150px;=0D
+  }=0D
+  .w30-lg {=0D
+    width: 180px;=0D
+  }=0D
+  .w37-lg {=0D
+    width: 222px;=0D
+  }=0D
+  .w45-lg {=0D
+    width: 270px;=0D
+  }=0D
+  .w50-lg {=0D
+    width: 300px;=0D
+  }=0D
+  .w100vw-lg {=0D
+    width: 100vw;=0D
+  }=0D
+  .w-stretch-lg {=0D
+    width: stretch;=0D
+  }=0D
+  .min-w4-lg {=0D
+    min-width: 24px;=0D
+  }=0D
+  .min-w6-lg {=0D
+    min-width: 36px;=0D
+  }=0D
+  .min-w20-lg {=0D
+    min-width: 120px;=0D
+  }=0D
+  .min-w28-lg {=0D
+    min-width: 168px;=0D
+  }=0D
+  .min-w30-lg {=0D
+    min-width: 180px;=0D
+  }=0D
+  .min-w35-lg {=0D
+    min-width: 210px;=0D
+  }=0D
+  .min-w46-lg {=0D
+    min-width: 276px;=0D
+  }=0D
+  .min-w50-lg {=0D
+    min-width: 300px;=0D
+  }=0D
+  .min-w10p-lg {=0D
+    min-width: 10%;=0D
+  }=0D
+  .min-w20p-lg {=0D
+    min-width: 20%;=0D
+  }=0D
+  .min-w25p-lg {=0D
+    min-width: 25%;=0D
+  }=0D
+  .min-w30p-lg {=0D
+    min-width: 30%;=0D
+  }=0D
+  .min-w33p-lg {=0D
+    min-width: 33%;=0D
+  }=0D
+  .min-w34p-lg {=0D
+    min-width: 34%;=0D
+  }=0D
+  .min-w35p-lg {=0D
+    min-width: 35%;=0D
+  }=0D
+  .min-w40p-lg {=0D
+    min-width: 40%;=0D
+  }=0D
+  .min-w50p-lg {=0D
+    min-width: 50%;=0D
+  }=0D
+  .min-w60p-lg {=0D
+    min-width: 60%;=0D
+  }=0D
+  .min-w66p-lg {=0D
+    min-width: 66%;=0D
+  }=0D
+  .min-w75p-lg {=0D
+    min-width: 75%;=0D
+  }=0D
+  .min-w80p-lg {=0D
+    min-width: 80%;=0D
+  }=0D
+  .min-w85p-lg {=0D
+    min-width: 85%;=0D
+  }=0D
+  .min-w90p-lg {=0D
+    min-width: 90%;=0D
+  }=0D
+  .min-w100p-lg {=0D
+    min-width: 100%;=0D
+  }=0D
+  .min-w-lg {=0D
+    min-width: stretch;=0D
+  }=0D
+  .max-w22-lg {=0D
+    max-width: 132px;=0D
+  }=0D
+  .max-w29-lg {=0D
+    max-width: 174px;=0D
+  }=0D
+  .max-w30-lg {=0D
+    max-width: 180px;=0D
+  }=0D
+  .max-w35-lg {=0D
+    max-width: 210px;=0D
+  }=0D
+  .max-w40-lg {=0D
+    max-width: 240px;=0D
+  }=0D
+  .max-w45-lg {=0D
+    max-width: 270px;=0D
+  }=0D
+  .max-w50-lg {=0D
+    max-width: 300px;=0D
+  }=0D
+  .max-w55-lg {=0D
+    max-width: 330px;=0D
+  }=0D
+  .max-w60-lg {=0D
+    max-width: 360px;=0D
+  }=0D
+  .max-w62-lg {=0D
+    max-width: 372px;=0D
+  }=0D
+  .max-w65-lg {=0D
+    max-width: 390px;=0D
+  }=0D
+  .max-w70-lg {=0D
+    max-width: 420px;=0D
+  }=0D
+  .max-w75-lg {=0D
+    max-width: 450px;=0D
+  }=0D
+  .max-w80-lg {=0D
+    max-width: 480px;=0D
+  }=0D
+  .max-w85-lg {=0D
+    max-width: 510px;=0D
+  }=0D
+  .max-w92-lg {=0D
+    max-width: 552px;=0D
+  }=0D
+  .max-w100-lg {=0D
+    max-width: 600px;=0D
+  }=0D
+  .max-w110-lg {=0D
+    max-width: 660px;=0D
+  }=0D
+  .max-w113-lg {=0D
+    max-width: 678px;=0D
+  }=0D
+  .max-w120-lg {=0D
+    max-width: 720px;=0D
+  }=0D
+  .max-w200-lg {=0D
+    max-width: 1200px;=0D
+  }=0D
+  .max-w230-lg {=0D
+    max-width: 1380px;=0D
+  }=0D
+  .max-w240-lg {=0D
+    max-width: 1440px;=0D
+  }=0D
+  .max-w-none-lg {=0D
+    max-width: none;=0D
+  }=0D
+  .w10p-lg {=0D
+    width: 10%;=0D
+  }=0D
+  .w20p-lg {=0D
+    width: 20%;=0D
+  }=0D
+  .w25p-lg {=0D
+    width: 25%;=0D
+  }=0D
+  .w30p-lg {=0D
+    width: 30%;=0D
+  }=0D
+  .w33p-lg {=0D
+    width: 33%;=0D
+  }=0D
+  .w34p-lg {=0D
+    width: 34%;=0D
+  }=0D
+  .w35p-lg {=0D
+    width: 35%;=0D
+  }=0D
+  .w40p-lg {=0D
+    width: 40%;=0D
+  }=0D
+  .w50p-lg {=0D
+    width: 50%;=0D
+  }=0D
+  .w60p-lg {=0D
+    width: 60%;=0D
+  }=0D
+  .w66p-lg {=0D
+    width: 66%;=0D
+  }=0D
+  .w75p-lg {=0D
+    width: 75%;=0D
+  }=0D
+  .w80p-lg {=0D
+    width: 80%;=0D
+  }=0D
+  .w85p-lg {=0D
+    width: 85%;=0D
+  }=0D
+  .w90p-lg {=0D
+    width: 90%;=0D
+  }=0D
+  .w100p-lg {=0D
+    width: 100%;=0D
+  }=0D
+  .max-w-lg {=0D
+    max-width: stretch;=0D
+  }=0D
+  .w-auto-lg {=0D
+    width: auto;=0D
+  }=0D
+  .h40px-lg {=0D
+    height: 40px;=0D
+  }=0D
+  .max-h40px-lg {=0D
+    max-height: 40px;=0D
+  }=0D
+  .min-h40px-lg {=0D
+    min-height: 40px;=0D
+  }=0D
+  .h55px-lg {=0D
+    height: 55px;=0D
+  }=0D
+  .max-h55px-lg {=0D
+    max-height: 55px;=0D
+  }=0D
+  .min-h55px-lg {=0D
+    min-height: 55px;=0D
+  }=0D
+  .h0-lg {=0D
+    height: 0px;=0D
+  }=0D
+  .h1-lg {=0D
+    height: 6px;=0D
+  }=0D
+  .h2-lg {=0D
+    height: 12px;=0D
+  }=0D
+  .h3-lg {=0D
+    height: 18px;=0D
+  }=0D
+  .h4-lg {=0D
+    height: 24px;=0D
+  }=0D
+  .h5-lg {=0D
+    height: 30px;=0D
+  }=0D
+  .h6-lg {=0D
+    height: 36px;=0D
+  }=0D
+  .h7-lg {=0D
+    height: 42px;=0D
+  }=0D
+  .h8-lg {=0D
+    height: 48px;=0D
+  }=0D
+  .h9-lg {=0D
+    height: 54px;=0D
+  }=0D
+  .h10-lg {=0D
+    height: 60px;=0D
+  }=0D
+  .h11-lg {=0D
+    height: 66px;=0D
+  }=0D
+  .h12-lg {=0D
+    height: 72px;=0D
+  }=0D
+  .h13-lg {=0D
+    height: 78px;=0D
+  }=0D
+  .h14-lg {=0D
+    height: 84px;=0D
+  }=0D
+  .h15-lg {=0D
+    height: 90px;=0D
+  }=0D
+  .h16-lg {=0D
+    height: 96px;=0D
+  }=0D
+  .h17-lg {=0D
+    height: 102px;=0D
+  }=0D
+  .h18-lg {=0D
+    height: 108px;=0D
+  }=0D
+  .h19-lg {=0D
+    height: 114px;=0D
+  }=0D
+  .h20-lg {=0D
+    height: 120px;=0D
+  }=0D
+  .h25-lg {=0D
+    height: 150px;=0D
+  }=0D
+  .h30-lg {=0D
+    height: 180px;=0D
+  }=0D
+  .h37-lg {=0D
+    height: 222px;=0D
+  }=0D
+  .h45-lg {=0D
+    height: 270px;=0D
+  }=0D
+  .h50-lg {=0D
+    height: 300px;=0D
+  }=0D
+  .h-lg {=0D
+    height: stretch;=0D
+  }=0D
+  .min-h4-lg {=0D
+    min-height: 24px;=0D
+  }=0D
+  .min-h6-lg {=0D
+    min-height: 36px;=0D
+  }=0D
+  .min-h10-lg {=0D
+    min-height: 60px;=0D
+  }=0D
+  .min-h11-lg {=0D
+    min-height: 66px;=0D
+  }=0D
+  .min-h12-lg {=0D
+    min-height: 72px;=0D
+  }=0D
+  .min-h14-lg {=0D
+    min-height: 84px;=0D
+  }=0D
+  .min-h16-lg {=0D
+    min-height: 96px;=0D
+  }=0D
+  .min-h17-lg {=0D
+    min-height: 102px;=0D
+  }=0D
+  .min-h20-lg {=0D
+    min-height: 120px;=0D
+  }=0D
+  .min-h25-lg {=0D
+    min-height: 150px;=0D
+  }=0D
+  .min-h30-lg {=0D
+    min-height: 180px;=0D
+  }=0D
+  .min-h35-lg {=0D
+    min-height: 210px;=0D
+  }=0D
+  .min-h40-lg {=0D
+    min-height: 240px;=0D
+  }=0D
+  .min-h60-lg {=0D
+    min-height: 360px;=0D
+  }=0D
+  .min-h80-lg {=0D
+    min-height: 480px;=0D
+  }=0D
+  .min-h100-lg {=0D
+    min-height: 600px;=0D
+  }=0D
+  .min-h-lg {=0D
+    min-height: stretch;=0D
+  }=0D
+  .max-h0-lg {=0D
+    max-height: 0px;=0D
+  }=0D
+  .max-h6-lg {=0D
+    max-height: 36px;=0D
+  }=0D
+  .max-h11-lg {=0D
+    max-height: 66px;=0D
+  }=0D
+  .max-h22-lg {=0D
+    max-height: 132px;=0D
+  }=0D
+  .max-h30-lg {=0D
+    max-height: 180px;=0D
+  }=0D
+  .max-h40-lg {=0D
+    max-height: 240px;=0D
+  }=0D
+  .max-h50-lg {=0D
+    max-height: 300px;=0D
+  }=0D
+  .max-h120-lg {=0D
+    max-height: 720px;=0D
+  }=0D
+  .max-h-lg {=0D
+    max-height: stretch;=0D
+  }=0D
+  .h-auto-lg {=0D
+    height: auto;=0D
+  }=0D
+  .h10p-lg {=0D
+    height: 10%;=0D
+  }=0D
+  .h20p-lg {=0D
+    height: 20%;=0D
+  }=0D
+  .h25p-lg {=0D
+    height: 25%;=0D
+  }=0D
+  .h30p-lg {=0D
+    height: 30%;=0D
+  }=0D
+  .h33p-lg {=0D
+    height: 33%;=0D
+  }=0D
+  .h34p-lg {=0D
+    height: 34%;=0D
+  }=0D
+  .h35p-lg {=0D
+    height: 35%;=0D
+  }=0D
+  .h40p-lg {=0D
+    height: 40%;=0D
+  }=0D
+  .h50p-lg {=0D
+    height: 50%;=0D
+  }=0D
+  .h60p-lg {=0D
+    height: 60%;=0D
+  }=0D
+  .h66p-lg {=0D
+    height: 66%;=0D
+  }=0D
+  .h75p-lg {=0D
+    height: 75%;=0D
+  }=0D
+  .h80p-lg {=0D
+    height: 80%;=0D
+  }=0D
+  .h85p-lg {=0D
+    height: 85%;=0D
+  }=0D
+  .h90p-lg {=0D
+    height: 90%;=0D
+  }=0D
+  .h100p-lg {=0D
+    height: 100%;=0D
+  }=0D
+  .h5vh-lg {=0D
+    height: 5vh;=0D
+  }=0D
+  .max-h5vh-lg {=0D
+    max-height: 5vh;=0D
+  }=0D
+  .min-h5vh-lg {=0D
+    min-height: 5vh;=0D
+  }=0D
+  .h12vh-lg {=0D
+    height: 12vh;=0D
+  }=0D
+  .max-h12vh-lg {=0D
+    max-height: 12vh;=0D
+  }=0D
+  .min-h12vh-lg {=0D
+    min-height: 12vh;=0D
+  }=0D
+  .h20vh-lg {=0D
+    height: 20vh;=0D
+  }=0D
+  .max-h20vh-lg {=0D
+    max-height: 20vh;=0D
+  }=0D
+  .min-h20vh-lg {=0D
+    min-height: 20vh;=0D
+  }=0D
+  .h30vh-lg {=0D
+    height: 30vh;=0D
+  }=0D
+  .max-h30vh-lg {=0D
+    max-height: 30vh;=0D
+  }=0D
+  .min-h30vh-lg {=0D
+    min-height: 30vh;=0D
+  }=0D
+  .h40vh-lg {=0D
+    height: 40vh;=0D
+  }=0D
+  .max-h40vh-lg {=0D
+    max-height: 40vh;=0D
+  }=0D
+  .min-h40vh-lg {=0D
+    min-height: 40vh;=0D
+  }=0D
+  .h50vh-lg {=0D
+    height: 50vh;=0D
+  }=0D
+  .max-h50vh-lg {=0D
+    max-height: 50vh;=0D
+  }=0D
+  .min-h50vh-lg {=0D
+    min-height: 50vh;=0D
+  }=0D
+  .h60vh-lg {=0D
+    height: 60vh;=0D
+  }=0D
+  .max-h60vh-lg {=0D
+    max-height: 60vh;=0D
+  }=0D
+  .min-h60vh-lg {=0D
+    min-height: 60vh;=0D
+  }=0D
+  .h65vh-lg {=0D
+    height: 65vh;=0D
+  }=0D
+  .max-h65vh-lg {=0D
+    max-height: 65vh;=0D
+  }=0D
+  .min-h65vh-lg {=0D
+    min-height: 65vh;=0D
+  }=0D
+  .h70vh-lg {=0D
+    height: 70vh;=0D
+  }=0D
+  .max-h70vh-lg {=0D
+    max-height: 70vh;=0D
+  }=0D
+  .min-h70vh-lg {=0D
+    min-height: 70vh;=0D
+  }=0D
+  .h75vh-lg {=0D
+    height: 75vh;=0D
+  }=0D
+  .max-h75vh-lg {=0D
+    max-height: 75vh;=0D
+  }=0D
+  .min-h75vh-lg {=0D
+    min-height: 75vh;=0D
+  }=0D
+  .h80vh-lg {=0D
+    height: 80vh;=0D
+  }=0D
+  .max-h80vh-lg {=0D
+    max-height: 80vh;=0D
+  }=0D
+  .min-h80vh-lg {=0D
+    min-height: 80vh;=0D
+  }=0D
+  .h85vh-lg {=0D
+    height: 85vh;=0D
+  }=0D
+  .max-h85vh-lg {=0D
+    max-height: 85vh;=0D
+  }=0D
+  .min-h85vh-lg {=0D
+    min-height: 85vh;=0D
+  }=0D
+  .h100vh-lg {=0D
+    height: 100vh;=0D
+  }=0D
+  .max-h100vh-lg {=0D
+    max-height: 100vh;=0D
+  }=0D
+  .min-h100vh-lg {=0D
+    min-height: 100vh;=0D
+  }=0D
+}=0D
+@media (max-width: 599px) {=0D
+  .h-auto-xs {=0D
+    height: auto;=0D
+  }=0D
+}=0D
+@media all and (min-width: 540px) {=0D
+  .hide-lg {=0D
+    display: none !important;=0D
+  }=0D
+  .desktop-width {=0D
+    width: 47% !important; text-align: left !important;=0D
+  }=0D
+  .desktop-text-align {=0D
+    text-align: left !important;=0D
+  }=0D
+}=0D
+@media (max-width: 540px) {=0D
+  .welcome-header-title {=0D
+    font-size: 40px !important; line-height: 54px !important;=0D
+  }=0D
+  .welcome-header-image-padding {=0D
+    padding-left: 11px !important; padding-right: 11px !important;=0D
+  }=0D
+  .confirmation-number-box {=0D
+    padding-left: 12px !important; padding-right: 12px !important;=0D
+  }=0D
+  .confirmation-number-text {=0D
+    text-align: left !important;=0D
+  }=0D
+  .project-update-refresh-cta-table {=0D
+    text-align: center !important; width: 100% !important;=0D
+  }=0D
+  .project-update-refresh-cta-spacer {=0D
+    width: 100% !important;=0D
+  }=0D
+}=0D
+@media all and (max-width: 539px) {=0D
+  .mobile-width {=0D
+    width: 100% !important;=0D
+  }=0D
+  .mobile-text-align {=0D
+    text-align: center !important;=0D
+  }=0D
+}=0D
+</style>=0D
+</head>=0D
+<body style=3D'width: 100% !important; min-width: 100%; word-break: break-w=
+ord; font-family: "Helvetica Neue",Helvetica,Arial,"Liberation Sans",FreeSa=
+ns,sans-serif; font-size: 14px; line-height: 1.5; color: #282828; -webkit-t=
+ext-size-adjust: 100%; -ms-text-size-adjust: 100%; margin: 0; padding: 0;' =
+bgcolor=3D"#f0f0f0">=0D
+<div class=3D"preheader" style=3D"background-color: white; color: white; fo=
+nt-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; fon=
+t-size: 0px; height: 0px; line-height: 0px; overflow-y: hidden; margin: 0; =
+padding: 0; border-width: 0px;">=0D
+[NOVA] For Our Magpie Family: Limited Launch Deal + Surprise Gift! =E2=80=
+=93 Hello Magpie Backers!=0D
+---------------------=0D
+=0D
+The new measuring tool from Magpie, the trusted name in laser measurement, =
+has finally launched! It brings back memories of when we first introduced o=
+ur dual-laser distance meter, VH-80, on Kickstarter 9 years ago.=F0=9F=98=
+=AD=E2=9C=A8=0D
+=0D
+Now, we=E2=80=99re proud to introduce our latest innovation.=0D
+NOVA: 4-IN-1 Laser Level, Distance, Digital Angle, and Bullseye.=0D
+It=E2=80=99s the world=E2=80=99s first multi-measuring tool that combines f=
+our essential instruments for your project: a Laser Level, Laser Distance M=
+eter, Angle Finder, and Level Finder-all in one.=0D
+=0D
+=F0=9F=8E=89 Magpie Backers First: 36% OFF + Surprise Gift Inside!=0D
+-------------------------------------------------------=0D
+=0D
+And most importantly, we=E2=80=99re excited to share that Magpie backers ge=
+t the first chance to grab the limited 36% OFF launch reward for the first =
+500 backers!=0D
+If you=E2=80=99re interested, don=E2=80=99t wait - secure your spot early!=0D
+=0D
+As always, we=E2=80=99ve prepared a special surprise gift exclusively for o=
+ur previous Magpie project supporters.=0D
+If you=E2=80=99ve backed us before, you=E2=80=99ll automatically receive th=
+e gift when your NOVA ships-no extra steps needed.=0D
+We hope you=E2=80=99ll show your support once again!=0D
+=0D
+Check out the campaign page below to see all the features in action, and do=
+n=E2=80=99t forget to secure your launch reward before it=E2=80=99s gone!=0D
+=0D
+=F0=9F=91=89 View NOVA on Kickstarter ( https://cutt.ly/7r584HPi )=0D
+-------------------------------------------------------=0D
+=0D
+If you have any questions or need assistance, feel free to reach out anytim=
+e at info@magpie-tech.com =E2=80=94 we=E2=80=99re always happy to help!=0D
+=0D
+With gratitude,=0D
+The Magpie Team =F0=9F=92=9A=0D
+=0D
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=0D
+</div>=0D
+=0D
+<table class=3D"hide-sm bg-grey-300 w100p" style=3D"mso-table-lspace: 0pt; =
+mso-table-rspace: 0pt; border-collapse: collapse; border-spacing: 0; width:=
+ 100%;" bgcolor=3D"#f0f0f0" width=3D"100%" height=3D"auto" cellpadding=3D"0=
+" cellspacing=3D"0">=0D
+<tr>=0D
+<td class=3D"type-0 hide-sm" style=3D"min-width: 540px; font-size: 0px; lin=
+e-height: 0px;">=0D
+<img height=3D"1" style=3D"min-width: 540px; height: 1px; -ms-interpolation=
+-mode: bicubic; outline: none; max-width: 100%; border-width: 0;" src=3D"ht=
+tps://i.kickstarter.com/36ab/utility-spacer.png?origin=3Dstatic&amp;sig=3De=
+d9vTkpAVEClAlrHRYMp7coQffsLIlfWuUdmJqC2Bng%3D">=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+<table class=3D"bg-grey-300 w100p mw100p" style=3D"mso-table-lspace: 0pt; m=
+so-table-rspace: 0pt; border-collapse: collapse; border-spacing: 0; width: =
+100%; min-width: 100%;" bgcolor=3D"#f0f0f0" width=3D"100%" height=3D"auto" =
+cellpadding=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td class=3D"text-center pt9 pb7" style=3D"padding-top: 54px; padding-botto=
+m: 42px;" align=3D"center">=0D
+<a target=3D"_blank" href=3D"https://emails.kickstarter.com/ss/c/u001.rUIcn=
+pczY6e9uR91rg5kh39Uko7iqNv4FvSyXhek3iXacTPKcF0ri0KWen0uyW1IuCK89N00D8Owoeo0=
+53SVGaRW8k5LRakFIHIWPIjCjucWc-ba1_SCoi-QCak8Mlv07fXQyBI_XVwS8bDkkiIlsw/4la/=
+149D7FWJTAOdpQqP-fkuBg/h0/h001.iBSo6EGG4xHUG_tiLP8AVV5l9zb4XAYdPuw5dcZTD6o"=
+ style=3D"color: inherit; text-decoration: none;"><img alt=3D"Kickstarter" =
+width=3D"189" style=3D"width: 189px; -ms-interpolation-mode: bicubic; outli=
+ne: none; max-width: 100%; text-decoration: none; display: block; border-wi=
+dth: 0;" class=3D"block" src=3D"https://i.kickstarter.com/ksr_logo_superbac=
+ker043019_v1.png?origin=3Dstatic&amp;sig=3D5gE0P91CNQWUja15xYM%2B92FN%2BbrZ=
+auE093jWMJVpfpE%3D">=0D
+</a>=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+<table class=3D"mailer-body" style=3D'mso-table-lspace: 0pt; mso-table-rspa=
+ce: 0pt; width: 100% !important; min-width: 100%; word-break: break-word; f=
+ont-family: "Helvetica Neue",Helvetica,Arial,"Liberation Sans",FreeSans,san=
+s-serif; font-size: 14px; line-height: 1.5; color: #282828; -webkit-text-si=
+ze-adjust: 100%; -ms-text-size-adjust: 100%; border-collapse: collapse; bor=
+der-spacing: 0; margin: 0; padding: 0;' bgcolor=3D"#f0f0f0" width=3D"100%" =
+height=3D"auto" cellpadding=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td>=0D
+<center>=0D
+<table align=3D"center" class=3D"mx-auto" style=3D"max-width: 600px; mso-ta=
+ble-lspace: 0pt; mso-table-rspace: 0pt; border-collapse: collapse; border-s=
+pacing: 0; margin-right: auto; margin-left: auto;" width=3D"100%" height=3D=
+"auto" cellpadding=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td>=0D
+<table class=3D"bg-white w100p border border-dark-grey-500 border1px" style=
+=3D"mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collapse: collapse=
+; border-spacing: 0; width: 100%; border: 1px solid #dcdedd;" bgcolor=3D"#f=
+ff" width=3D"100%" height=3D"auto" cellpadding=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td class=3D"text-center pt5" style=3D"padding-top: 30px;" align=3D"center"=
+>=0D
+<div class=3D"mt2 soft-black" style=3D"color: #282828; margin-top: 12px;">=0D
+<table class=3D"col-20 sm-col-20 mx-auto" style=3D"mso-table-lspace: 0pt; m=
+so-table-rspace: 0pt; border-collapse: collapse; border-spacing: 0; table-l=
+ayout: fixed; width: 82.8333333333%; margin-right: auto; margin-left: auto;=
+" width=3D"100%" height=3D"auto" cellpadding=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td class=3D"type-28 medium pb2 soft-black" style=3D"font-size: 28px; line-=
+height: 36px; color: #282828; font-weight: 500; padding-bottom: 12px;">=0D
+<a class=3D"soft-black" href=3D"https://emails.kickstarter.com/ss/c/u001.rU=
+IcnpczY6e9uR91rg5kh39Uko7iqNv4FvSyXhek3iWSjSH4F8t19LEf1GFq84IOnGgCR_ZklcJ6d=
+X7U6GlqSQHIwPvxjTfIEh5QbxDdCiNbnhhRkBxBtRxa8DjHbO-hd4EKo0VsNEKuu-Ymj8MQ4x9T=
+tlWQaMRcK5N9zu3sjfK4kVbfOvMXOA1HKRidm5mkAfXJcpnkgWp4fKDShWHWgApQeZ0GNuSt_sW=
+yNa6frxU/4la/149D7FWJTAOdpQqP-fkuBg/h1/h001.JnoRsOjfNNDehZYSpxYkgqwZd8HIwct=
+sVqBb4siOZZM" style=3D"color: #282828; text-decoration: none;">[NOVA] For O=
+ur Magpie Family: Limited Launch Deal + Surprise Gift!</a>=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+<table class=3D"col-20 sm-col-20 mx-auto" style=3D"mso-table-lspace: 0pt; m=
+so-table-rspace: 0pt; border-collapse: collapse; border-spacing: 0; table-l=
+ayout: fixed; width: 82.8333333333%; margin-right: auto; margin-left: auto;=
+" width=3D"100%" height=3D"auto" cellpadding=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td class=3D"border-bottom py4 border1px" style=3D"border-bottom-width: 1px=
+; border-bottom-color: #dcdedd; border-bottom-style: solid; padding-top: 24=
+px; padding-bottom: 24px;">=0D
+<table align=3D"left" class=3D"col-12 sm-col-24" style=3D"mso-table-lspace:=
+ 0pt; mso-table-rspace: 0pt; border-collapse: collapse; border-spacing: 0; =
+table-layout: fixed; width: 49.5%;" width=3D"100%" height=3D"auto" cellpadd=
+ing=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td class=3D"type-12 soft-black" style=3D"font-size: 12px; line-height: 18p=
+x; color: #282828;">=0D
+<table style=3D"mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collap=
+se: collapse; border-spacing: 0;" width=3D"100%" height=3D"auto" cellpaddin=
+g=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td class=3D"w8" style=3D"width: 48px;">=0D
+<img class=3D"w8 h8" width=3D"48" src=3D"https://i.kickstarter.com/assets/0=
+46/867/196/c4314dff43621d8eecf0a65aa5d0ba32_original.png?anim=3Dfalse&amp;d=
+raw0%5Bfit%5D=3Dcover&amp;draw0%5Bheight%5D=3D140&amp;draw0%5Burl%5D=3Dhttp=
+s%3A%2F%2Fd3mlfyygrfdi2i.cloudfront.net%2Fcircular-mask.png&amp;draw0%5Bwid=
+th%5D=3D140&amp;draw=3D1&amp;fit=3Dcrop&amp;height=3D140&amp;origin=3Dugc&a=
+mp;q=3D92&amp;v=3D2025-11-03+10%3A02%3A45+-0500&amp;width=3D140&amp;sig=3Dg=
+R93cvt%2FDxdDEVfD7Z7ay%2FYSI2%2B9FrlRkJVpaqO3sCM%3D" style=3D"-ms-interpola=
+tion-mode: bicubic; outline: none; max-width: 100%; width: 48px; height: 48=
+px; border-width: 0;">=0D
+</td>=0D
+<td class=3D"type-14 medium pl2" style=3D"font-size: 14px; line-height: 21p=
+x; font-weight: 500; padding-left: 12px;">=0D
+<div class=3D"soft-black" style=3D"margin-bottom: 2px; color: #282828;">=0D
+Posted by Magpie Tech=0D
+</div>=0D
+<span class=3D"type-12 soft-black_50" style=3D"font-size: 12px; line-height=
+: 18px; color: rgba(40,40,40,.5);">=0D
+<time datetime=3D"2025-11-03T10:21:32-05:00" data-format=3D"ll" class=3D"in=
+visible-if-js js-adjust-time">Nov 3, 2025</time>=0D
+</span>=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+<table align=3D"left" class=3D"col-1 sm-col-24" style=3D"mso-table-lspace: =
+0pt; mso-table-rspace: 0pt; border-collapse: collapse; border-spacing: 0; t=
+able-layout: fixed; width: 3.6666666667%;" width=3D"100%" height=3D"auto" c=
+ellpadding=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td class=3D"pt4" style=3D"padding-top: 24px;"></td>=0D
+</tr>=0D
+</table>=0D
+<table align=3D"right" class=3D"col-11 sm-col-24" style=3D"mso-table-lspace=
+: 0pt; mso-table-rspace: 0pt; border-collapse: collapse; border-spacing: 0;=
+ table-layout: fixed; width: 45.3333333333%;" width=3D"100%" height=3D"auto=
+" cellpadding=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td class=3D"bg-white border medium py2 text-center" style=3D"font-weight: =
+500; padding-top: 12px; padding-bottom: 12px; border: 1px solid #dcdedd;" a=
+lign=3D"center" bgcolor=3D"#fff">=0D
+<table style=3D"mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collap=
+se: collapse; border-spacing: 0;" width=3D"100%" height=3D"auto" cellpaddin=
+g=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td></td>=0D
+<td class=3D"text-right" style=3D"width: 1%; white-space: nowrap; padding-t=
+op: 1px;" width=3D"13" align=3D"right">=0D
+<a class=3D"block soft-black" target=3D"_blank" href=3D"https://emails.kick=
+starter.com/ss/c/u001.rUIcnpczY6e9uR91rg5kh39Uko7iqNv4FvSyXhek3iWSjSH4F8t19=
+LEf1GFq84IOnGgCR_ZklcJ6dX7U6GlqSQHIwPvxjTfIEh5QbxDdCiNbnhhRkBxBtRxa8DjHbO-h=
+d4EKo0VsNEKuu-Ymj8MQ4x9TtlWQaMRcK5N9zu3sjfK4kVbfOvMXOA1HKRidm5mkAfXJcpnkgWp=
+4fKDShWHWgApQeZ0GNuSt_sWyNa6frxU/4la/149D7FWJTAOdpQqP-fkuBg/h2/h001.vYtIquK=
+Zbvot0fAgIcUG00vtRXpLS99upqIzkntLSD0" style=3D"color: #282828; text-decorat=
+ion: none; display: block;"><img width=3D"13" src=3D"https://i.kickstarter.=
+com/external_link.png?origin=3Dstatic&amp;sig=3DAtrCcDuBRk%2F%2B7GBNMZaen%2=
+FYpNzooRDd2AT8fOX9BUuA%3D" style=3D"-ms-interpolation-mode: bicubic; outlin=
+e: none; max-width: 100%; text-decoration: none; border-width: 0;">=0D
+</a>=0D
+</td>=0D
+<td class=3D"pl1" style=3D"width: 1%; white-space: nowrap; padding-left: 6p=
+x;">=0D
+<a class=3D"block soft-black type-14" target=3D"_blank" href=3D"https://ema=
+ils.kickstarter.com/ss/c/u001.rUIcnpczY6e9uR91rg5kh39Uko7iqNv4FvSyXhek3iWSj=
+SH4F8t19LEf1GFq84IOnGgCR_ZklcJ6dX7U6GlqSQHIwPvxjTfIEh5QbxDdCiNbnhhRkBxBtRxa=
+8DjHbO-hd4EKo0VsNEKuu-Ymj8MQ4x9TtlWQaMRcK5N9zu3sjfK4kVbfOvMXOA1HKRidm5mkAfX=
+JcpnkgWp4fKDShWHWgApQeZ0GNuSt_sWyNa6frxU/4la/149D7FWJTAOdpQqP-fkuBg/h3/h001=
+.PC7FcK2Xsfw9DhAfTMft5LeWyr3ONPViMdsDuZJka48" style=3D"color: #282828; text=
+-decoration: none; font-size: 14px; line-height: 21px; display: block;">Vie=
+w on Kickstarter=0D
+</a>=0D
+</td>=0D
+<td></td>=0D
+</tr>=0D
+</table>=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+</td>=0D
+</tr>=0D
+<tr>=0D
+<td style=3D"padding-top: 24px;">=0D
+<table style=3D"mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collap=
+se: collapse; border-spacing: 0;" width=3D"100%" height=3D"auto" cellpaddin=
+g=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td class=3D"pb4" style=3D"padding-bottom: 24px;">=0D
+<table style=3D"mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collap=
+se: collapse; border-spacing: 0;" width=3D"100%" height=3D"auto" cellpaddin=
+g=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td width=3D"18">=0D
+<img width=3D"18" src=3D"https://i.kickstarter.com/backer3x.png?origin=3Dst=
+atic&amp;sig=3DAgVYobYT81eAE6SwTSwrBXWX5ul9lTu%2FVjwSkHepnJE%3D" style=3D"-=
+ms-interpolation-mode: bicubic; outline: none; max-width: 100%; border-widt=
+h: 0;">=0D
+</td>=0D
+<td>=0D
+<h4 class=3D"f5 soft-black pl1 m0" style=3D"color: #282828; padding-left: 6=
+px; margin: 0px;">=0D
+For backers only=0D
+</h4>=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+</td>=0D
+</tr>=0D
+<tr>=0D
+<td>=0D
+<table class=3D"bg-white w100p post-body" style=3D"mso-table-lspace: 0pt; m=
+so-table-rspace: 0pt; border-collapse: collapse; border-spacing: 0; width: =
+100%;" bgcolor=3D"#fff" width=3D"100%" height=3D"auto" cellpadding=3D"0" ce=
+llspacing=3D"0">=0D
+<tr>=0D
+<td class=3D"pt1" style=3D"padding-top: 6px;">=0D
+<div class=3D"text-left soft-black" style=3D"color: #282828;" align=3D"left=
+">=0D
+<a href=3D"https://emails.kickstarter.com/ss/c/u001.XBitE3tCAkkiPs7tXQgzdG3=
+DoiDuIalHKOrW9WRwpYo/4la/149D7FWJTAOdpQqP-fkuBg/h4/h001.V41bUlZyPg3XnvcakUs=
+Adqn5AtG57n-RQ5SuqOSttN8" target=3D"_blank" rel=3D"noopener" style=3D"color=
+: inherit; text-decoration: underline;"><div class=3D"template asset">=0D
+<figure style=3D"text-align: center; margin: 0 0 20px;">=0D
+<img style=3D"vertical-align: bottom; max-width: 100%; width: 100%; height:=
+ auto; -ms-interpolation-mode: bicubic; outline: none; text-decoration: non=
+e; margin: 20px 0px; border-width: 0;" src=3D"https://i.kickstarter.com/ass=
+ets/051/516/789/8a4a521bcb70e66c7900a52141f8d3be_original.gif?fit=3Dscale-d=
+own&amp;origin=3Dugc&amp;q=3D92&amp;v=3D1762182710&amp;width=3D700&amp;sig=
+=3DzXNSahPlD3NKFcJ6uK57xKOthPDYtN9O%2F9rSaF%2FRYHw%3D">=0D
+</figure>=0D
+=0D
+</div>=0D
+</a><h4 id=3D"h:Hello-Magpie-Backers-" class=3D"page-anchor">Hello Magpie B=
+ackers!</h4>=0D
+<p style=3D"line-height: 1.5;">The new measuring tool from Magpie, the trus=
+ted name in laser measurement, has finally launched! It brings back memorie=
+s of when we first introduced our dual-laser distance meter, VH-80, on Kick=
+starter 9 years ago.=F0=9F=98=AD=E2=9C=A8</p>=0D
+<p style=3D"line-height: 1.5;">Now, we=E2=80=99re proud to introduce our la=
+test innovation.<br>NOVA: 4-IN-1 Laser Level, Distance, Digital Angle, and =
+Bullseye.<br>It=E2=80=99s the world=E2=80=99s first multi-measuring tool th=
+at combines four essential instruments for your project: a Laser Level, Las=
+er Distance Meter, Angle Finder, and Level Finder-all in one.</p>=0D
+<a href=3D"https://emails.kickstarter.com/ss/c/u001.XBitE3tCAkkiPs7tXQgzdG3=
+DoiDuIalHKOrW9WRwpYo/4la/149D7FWJTAOdpQqP-fkuBg/h5/h001.sNp1QcWCZY7xo3uf4OW=
+Z7qilvFNITXaNu4ibGh2DRF0" target=3D"_blank" rel=3D"noopener" style=3D"color=
+: inherit; text-decoration: underline;"><div class=3D"template asset">=0D
+<figure style=3D"text-align: center; margin: 0 0 20px;">=0D
+<img style=3D"vertical-align: bottom; max-width: 100%; width: 100%; height:=
+ auto; -ms-interpolation-mode: bicubic; outline: none; text-decoration: non=
+e; margin: 20px 0px; border-width: 0;" src=3D"https://i.kickstarter.com/ass=
+ets/051/516/794/431ad59a63e3282d3fb1bcf81f2d0743_original.gif?fit=3Dscale-d=
+own&amp;origin=3Dugc&amp;q=3D92&amp;v=3D1762182718&amp;width=3D700&amp;sig=
+=3Dx5OEtnisjxBRoF9WAm9fObBF%2FwsN%2F76uQYU3ksD7jxg%3D">=0D
+</figure>=0D
+=0D
+</div>=0D
+</a><h4 id=3D"h:-Magpie-Backers-First-36-OFF-Surprise-Gift-Inside-" class=
+=3D"page-anchor">=F0=9F=8E=89 Magpie Backers First: 36% OFF + Surprise Gift=
+ Inside!</h4>=0D
+<p style=3D"line-height: 1.5;">And most importantly, we=E2=80=99re excited =
+to share that Magpie backers get the first chance to grab the limited 36% O=
+FF launch reward for the first 500 backers!<br>If you=E2=80=99re interested=
+, don=E2=80=99t wait - secure your spot early!</p>=0D
+<p style=3D"line-height: 1.5;">As always, we=E2=80=99ve prepared a special =
+surprise gift exclusively for our previous Magpie project supporters.<br>If=
+ you=E2=80=99ve backed us before, you=E2=80=99ll automatically receive the =
+gift when your NOVA ships-no extra steps needed.<br>We hope you=E2=80=99ll =
+show your support once again!</p>=0D
+<a href=3D"https://emails.kickstarter.com/ss/c/u001.XBitE3tCAkkiPs7tXQgzdG3=
+DoiDuIalHKOrW9WRwpYo/4la/149D7FWJTAOdpQqP-fkuBg/h6/h001.i_tHOQeCzR3LIXHNmP4=
+uQo4IxMn0zxQS0X5fd5Z2Oc0" target=3D"_blank" rel=3D"noopener" style=3D"color=
+: inherit; text-decoration: underline;"><div class=3D"template asset">=0D
+<figure style=3D"text-align: center; margin: 0 0 20px;">=0D
+<img style=3D"vertical-align: bottom; max-width: 100%; width: 100%; height:=
+ auto; -ms-interpolation-mode: bicubic; outline: none; text-decoration: non=
+e; margin: 20px 0px; border-width: 0;" src=3D"https://i.kickstarter.com/ass=
+ets/051/516/815/0a43db0733a3e9257ca359c580bfd573_original.jpg?fit=3Dscale-d=
+own&amp;origin=3Dugc&amp;q=3D92&amp;v=3D1762182773&amp;width=3D700&amp;sig=
+=3DLqtnzSCDacwGJHD3zWUlJcBHxd2%2F1gD%2BxV3zjJPZlOU%3D">=0D
+</figure>=0D
+=0D
+</div>=0D
+</a><a href=3D"https://emails.kickstarter.com/ss/c/u001.XBitE3tCAkkiPs7tXQg=
+zdG3DoiDuIalHKOrW9WRwpYo/4la/149D7FWJTAOdpQqP-fkuBg/h7/h001.aGnpY-MLd0VWkBa=
+uXuE4uFqQoKNVUMIM2waf9TAYPvQ" target=3D"_blank" rel=3D"noopener" style=3D"c=
+olor: inherit; text-decoration: underline;"><div class=3D"template asset">=0D
+<figure style=3D"text-align: center; margin: 0 0 20px;">=0D
+<img style=3D"vertical-align: bottom; max-width: 100%; width: 100%; height:=
+ auto; -ms-interpolation-mode: bicubic; outline: none; text-decoration: non=
+e; margin: 20px 0px; border-width: 0;" src=3D"https://i.kickstarter.com/ass=
+ets/051/516/821/4ea1dab819c8f4a9f3da41024e062475_original.gif?fit=3Dscale-d=
+own&amp;origin=3Dugc&amp;q=3D92&amp;v=3D1762182776&amp;width=3D700&amp;sig=
+=3D9LNqhr3P0zBLUTk4M5XwNwRnkg8CDP65wj%2Fh6QfZ%2Fec%3D">=0D
+</figure>=0D
+=0D
+</div>=0D
+</a><a href=3D"https://emails.kickstarter.com/ss/c/u001.XBitE3tCAkkiPs7tXQg=
+zdG3DoiDuIalHKOrW9WRwpYo/4la/149D7FWJTAOdpQqP-fkuBg/h8/h001.yOWbpaYWjngRPf_=
+mO20rYO18ZnWiDq1BbTKCT3_fwmw" target=3D"_blank" rel=3D"noopener" style=3D"c=
+olor: inherit; text-decoration: underline;"><div class=3D"template asset">=0D
+<figure style=3D"text-align: center; margin: 0 0 20px;">=0D
+<img style=3D"vertical-align: bottom; max-width: 100%; width: 100%; height:=
+ auto; -ms-interpolation-mode: bicubic; outline: none; text-decoration: non=
+e; margin: 20px 0px; border-width: 0;" src=3D"https://i.kickstarter.com/ass=
+ets/051/516/822/5c5d3b92497192066546453dc7b82a51_original.gif?fit=3Dscale-d=
+own&amp;origin=3Dugc&amp;q=3D92&amp;v=3D1762182776&amp;width=3D700&amp;sig=
+=3DlpdRlH%2FvTUuGVMB7iq4kVmvlNnZBupmgT%2FSjeflC3ck%3D">=0D
+</figure>=0D
+=0D
+</div>=0D
+</a><a href=3D"https://emails.kickstarter.com/ss/c/u001.XBitE3tCAkkiPs7tXQg=
+zdG3DoiDuIalHKOrW9WRwpYo/4la/149D7FWJTAOdpQqP-fkuBg/h9/h001.hJej2Z8cBv-PI_t=
+F6Xu5c0b2sr1Im32Q0Qo-6CtISNk" target=3D"_blank" rel=3D"noopener" style=3D"c=
+olor: inherit; text-decoration: underline;"><div class=3D"template asset">=0D
+<figure style=3D"text-align: center; margin: 0 0 20px;">=0D
+<img style=3D"vertical-align: bottom; max-width: 100%; width: 100%; height:=
+ auto; -ms-interpolation-mode: bicubic; outline: none; text-decoration: non=
+e; margin: 20px 0px; border-width: 0;" src=3D"https://i.kickstarter.com/ass=
+ets/051/516/823/3b53e953e919bdecd8205376b420e109_original.gif?fit=3Dscale-d=
+own&amp;origin=3Dugc&amp;q=3D92&amp;v=3D1762182776&amp;width=3D700&amp;sig=
+=3DUG0rRaUSWXtKr9pdSo1l7uEU2ajkrlyMihcVq0OQBds%3D">=0D
+</figure>=0D
+=0D
+</div>=0D
+</a><a href=3D"https://emails.kickstarter.com/ss/c/u001.XBitE3tCAkkiPs7tXQg=
+zdG3DoiDuIalHKOrW9WRwpYo/4la/149D7FWJTAOdpQqP-fkuBg/h10/h001.cXFuZUC7KKJ3oU=
+hKz5F5rPqiETjeNayFAJfmAH5avok" target=3D"_blank" rel=3D"noopener" style=3D"=
+color: inherit; text-decoration: underline;"><div class=3D"template asset">=0D
+<figure style=3D"text-align: center; margin: 0 0 20px;">=0D
+<img style=3D"vertical-align: bottom; max-width: 100%; width: 100%; height:=
+ auto; -ms-interpolation-mode: bicubic; outline: none; text-decoration: non=
+e; margin: 20px 0px; border-width: 0;" src=3D"https://i.kickstarter.com/ass=
+ets/051/516/825/ddafebacd7c8b69287f728d1976f56f7_original.gif?fit=3Dscale-d=
+own&amp;origin=3Dugc&amp;q=3D92&amp;v=3D1762182778&amp;width=3D700&amp;sig=
+=3DuerijAuDIbgmWwdo7Qu%2Bn1VlJ%2FGzG2tS75RHL%2BHHcEE%3D">=0D
+</figure>=0D
+=0D
+</div>=0D
+</a><a href=3D"https://emails.kickstarter.com/ss/c/u001.XBitE3tCAkkiPs7tXQg=
+zdG3DoiDuIalHKOrW9WRwpYo/4la/149D7FWJTAOdpQqP-fkuBg/h11/h001.EvP34KLS_ekbFn=
+z3Q8AcOWKx1dFPukjV3oIZUt-ukFo" target=3D"_blank" rel=3D"noopener" style=3D"=
+color: inherit; text-decoration: underline;"><div class=3D"template asset">=0D
+<figure style=3D"text-align: center; margin: 0 0 20px;">=0D
+<img style=3D"vertical-align: bottom; max-width: 100%; width: 100%; height:=
+ auto; -ms-interpolation-mode: bicubic; outline: none; text-decoration: non=
+e; margin: 20px 0px; border-width: 0;" src=3D"https://i.kickstarter.com/ass=
+ets/051/516/819/7d21999e440721faaaf9e21c1fe59b93_original.jpg?fit=3Dscale-d=
+own&amp;origin=3Dugc&amp;q=3D92&amp;v=3D1762182774&amp;width=3D700&amp;sig=
+=3DyVQt%2BoR0QwtyftsGIRJ3svXQnoPpMDZlMAh8Rit1NdU%3D">=0D
+</figure>=0D
+=0D
+</div>=0D
+</a><a href=3D"https://emails.kickstarter.com/ss/c/u001.XBitE3tCAkkiPs7tXQg=
+zdG3DoiDuIalHKOrW9WRwpYo/4la/149D7FWJTAOdpQqP-fkuBg/h12/h001.5LmnRM4FJLzX6M=
+y90Zt16gEfWJExa_ztEhbiiXk15NI" target=3D"_blank" rel=3D"noopener" style=3D"=
+color: inherit; text-decoration: underline;"><div class=3D"template asset">=0D
+<figure style=3D"text-align: center; margin: 0 0 20px;">=0D
+<img style=3D"vertical-align: bottom; max-width: 100%; width: 100%; height:=
+ auto; -ms-interpolation-mode: bicubic; outline: none; text-decoration: non=
+e; margin: 20px 0px; border-width: 0;" src=3D"https://i.kickstarter.com/ass=
+ets/051/516/816/816f79667aadbb9b4aded2b7ae6848fa_original.jpg?fit=3Dscale-d=
+own&amp;origin=3Dugc&amp;q=3D92&amp;v=3D1762182774&amp;width=3D700&amp;sig=
+=3D9WBmr%2F%2BwLgcBg5qDf%2Fg6h2oEEU8i9Y1ESXsGUnSA7kI%3D">=0D
+</figure>=0D
+=0D
+</div>=0D
+</a><a href=3D"https://emails.kickstarter.com/ss/c/u001.XBitE3tCAkkiPs7tXQg=
+zdG3DoiDuIalHKOrW9WRwpYo/4la/149D7FWJTAOdpQqP-fkuBg/h13/h001.G3vAzPi8gFbYIg=
+5vem4q66W_VyZmFmNj3hE-x0pecAU" target=3D"_blank" rel=3D"noopener" style=3D"=
+color: inherit; text-decoration: underline;"><div class=3D"template asset">=0D
+<figure style=3D"text-align: center; margin: 0 0 20px;">=0D
+<img style=3D"vertical-align: bottom; max-width: 100%; width: 100%; height:=
+ auto; -ms-interpolation-mode: bicubic; outline: none; text-decoration: non=
+e; margin: 20px 0px; border-width: 0;" src=3D"https://i.kickstarter.com/ass=
+ets/051/516/824/f501960b35b338ba04e06a0249086419_original.gif?fit=3Dscale-d=
+own&amp;origin=3Dugc&amp;q=3D92&amp;v=3D1762182778&amp;width=3D700&amp;sig=
+=3DFK5cBl4VU6NdNjArRDPTo5JS9jbbt%2BaqFQBoDOiYdbk%3D">=0D
+</figure>=0D
+=0D
+</div>=0D
+</a><a href=3D"https://emails.kickstarter.com/ss/c/u001.XBitE3tCAkkiPs7tXQg=
+zdG3DoiDuIalHKOrW9WRwpYo/4la/149D7FWJTAOdpQqP-fkuBg/h14/h001.OSdWyPy01_v2w9=
+20YOgTSmGjzueSpSwrq1t3J47YL-Y" target=3D"_blank" rel=3D"noopener" style=3D"=
+color: inherit; text-decoration: underline;"><div class=3D"template asset">=0D
+<figure style=3D"text-align: center; margin: 0 0 20px;">=0D
+<img style=3D"vertical-align: bottom; max-width: 100%; width: 100%; height:=
+ auto; -ms-interpolation-mode: bicubic; outline: none; text-decoration: non=
+e; margin: 20px 0px; border-width: 0;" src=3D"https://i.kickstarter.com/ass=
+ets/051/516/817/3ce79530685219cfd570531ec640fbd6_original.gif?fit=3Dscale-d=
+own&amp;origin=3Dugc&amp;q=3D92&amp;v=3D1762182774&amp;width=3D700&amp;sig=
+=3D4CF4cAD4K4H%2BEtxpjvhSBlAMCUulNAyaI%2BwwJBmUMOY%3D">=0D
+</figure>=0D
+=0D
+</div>=0D
+</a><a href=3D"https://emails.kickstarter.com/ss/c/u001.XBitE3tCAkkiPs7tXQg=
+zdG3DoiDuIalHKOrW9WRwpYo/4la/149D7FWJTAOdpQqP-fkuBg/h15/h001.7CQg_yng6PgnYp=
+Yul4B37b8eiMdTWyFjMYjgU_By3kk" target=3D"_blank" rel=3D"noopener" style=3D"=
+color: inherit; text-decoration: underline;"><div class=3D"template asset">=0D
+<figure style=3D"text-align: center; margin: 0 0 20px;">=0D
+<img style=3D"vertical-align: bottom; max-width: 100%; width: 100%; height:=
+ auto; -ms-interpolation-mode: bicubic; outline: none; text-decoration: non=
+e; margin: 20px 0px; border-width: 0;" src=3D"https://i.kickstarter.com/ass=
+ets/051/516/820/6d0297b77530f0e1e91e3fee3cb97fca_original.gif?fit=3Dscale-d=
+own&amp;origin=3Dugc&amp;q=3D92&amp;v=3D1762182774&amp;width=3D700&amp;sig=
+=3DDk3BYFg%2FHdl%2F28mhb9ZH42v6OuSDT1ioK%2B7pxptNtJ0%3D">=0D
+</figure>=0D
+=0D
+</div>=0D
+</a><a href=3D"https://emails.kickstarter.com/ss/c/u001.XBitE3tCAkkiPs7tXQg=
+zdG3DoiDuIalHKOrW9WRwpYo/4la/149D7FWJTAOdpQqP-fkuBg/h16/h001.FaRrwIPxn9ofdT=
+dCrICNPLG2s86x49CT3p4J5bBy28o" target=3D"_blank" rel=3D"noopener" style=3D"=
+color: inherit; text-decoration: underline;"><div class=3D"template asset">=0D
+<figure style=3D"text-align: center; margin: 0 0 20px;">=0D
+<img style=3D"vertical-align: bottom; max-width: 100%; width: 100%; height:=
+ auto; -ms-interpolation-mode: bicubic; outline: none; text-decoration: non=
+e; margin: 20px 0px; border-width: 0;" src=3D"https://i.kickstarter.com/ass=
+ets/051/516/818/a3e96b07ba0b426ba14086399f19af2d_original.gif?fit=3Dscale-d=
+own&amp;origin=3Dugc&amp;q=3D92&amp;v=3D1762182774&amp;width=3D700&amp;sig=
+=3Dr%2FceYEybGGPHW4upAMlXk7ENYfrcUeZPIhTQ5xmh%2F9g%3D">=0D
+</figure>=0D
+=0D
+</div>=0D
+</a><p style=3D"line-height: 1.5;">Check out the campaign page below to see=
+ all the features in action, and don=E2=80=99t forget to secure your launch=
+ reward before it=E2=80=99s gone!</p>=0D
+<h4 id=3D"h:-View-NOVA-on-Kickstarter-" class=3D"page-anchor">=F0=9F=91=89 =
+<a href=3D"https://emails.kickstarter.com/ss/c/u001.XBitE3tCAkkiPs7tXQgzdG3=
+DoiDuIalHKOrW9WRwpYo/4la/149D7FWJTAOdpQqP-fkuBg/h17/h001.GkIs6meNr5KL7f8fxk=
+hDlP_1iAT-nYK-5vUjJLh7wnM" target=3D"_blank" rel=3D"noopener" style=3D"colo=
+r: inherit; text-decoration: underline;"><strong>View NOVA on Kickstarter</=
+strong></a>=0D
+</h4>=0D
+<p style=3D"line-height: 1.5;">If you have any questions or need assistance=
+, feel free to reach out anytime at <strong>info@magpie-tech.com</strong> =
+=E2=80=94 we=E2=80=99re always happy to help!</p>=0D
+<p style=3D"line-height: 1.5;">With gratitude,<br><strong>The Magpie Team</=
+strong> =F0=9F=92=9A</p>=0D
+</div>=0D
+=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+</td>=0D
+</tr>=0D
+<tr>=0D
+<td class=3D"dark-grey-500 text-center py4" style=3D"color: #656969; paddin=
+g-top: 24px; padding-bottom: 24px;" align=3D"center">=0D
+<table style=3D"mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collap=
+se: collapse; border-spacing: 0;" width=3D"100%" height=3D"auto" cellpaddin=
+g=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td class=3D"border-top text-center pt7 dark-grey-500" style=3D"font-size: =
+13px; border-top-width: 1px; border-top-color: #dcdedd; border-top-style: s=
+olid; color: #656969; padding-top: 42px;" align=3D"center">=0D
+Show support and stay involved=E2=80=94let Magpie Tech know you read this u=
+pdate.=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+</td>=0D
+</tr>=0D
+<tr>=0D
+<td class=3D"pb6" style=3D"padding-bottom: 36px;">=0D
+<table style=3D"mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collap=
+se: collapse; border-spacing: 0;" width=3D"100%" height=3D"auto" cellpaddin=
+g=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td>=0D
+<table align=3D"left" class=3D"project-update-refresh-cta-table" style=3D"m=
+so-table-lspace: 0pt; mso-table-rspace: 0pt; border-collapse: collapse; bor=
+der-spacing: 0; width: 48%;" width=3D"100%" height=3D"auto" cellpadding=3D"=
+0" cellspacing=3D"0">=0D
+<tr>=0D
+<td class=3D"text-right" style=3D"width: 1%; white-space: nowrap; padding-t=
+op: 1px;" align=3D"right">=0D
+<a class=3D"border inline-block soft-black sm-col-24 col-9 text-center" hre=
+f=3D"https://emails.kickstarter.com/ss/c/u001.rUIcnpczY6e9uR91rg5kh39Uko7iq=
+Nv4FvSyXhek3iWSjSH4F8t19LEf1GFq84IOnGgCR_ZklcJ6dX7U6GlqSQHIwPvxjTfIEh5QbxDd=
+CiNbnhhRkBxBtRxa8DjHbO-h3_RFrxKZYUxO6nGI-pu9f8hopDWt8x2Gs4yTEGRhcpyARrZrX3p=
+Fv1mftv6IIz5UEX9YNgBPsKno5UVXZE15ouqrpF1bM-BUnpCaqTl-50ImnriHAp_cE-ByLp66qA=
+xxVeOFUiIjDJUbqb5TuWXwrg_8K0zGfrF_Z0SUlawDk2mt9I1J5dohYB-KIZ8osukUG9mJQ1bjT=
+oLhRJwkbWlPpuzd-MSxYg94qA-PSUG7CYSlXv4lOKbQVLpRwd59fh_Nonfm5pEE2h0uuS2bGqKv=
+R-py1XrRxDR0jnJzkP3VbDcTS-u0hgTGGuTwC0-kBcBoJVTFchj_IGpALwlLgglf9A/4la/149D=
+7FWJTAOdpQqP-fkuBg/h18/h001.jyRQXGa13W6wAB5GuNp2tMuBI5Tg-9jHMZaSKDpuaVc" st=
+yle=3D"line-height: 43px; color: #282828; text-decoration: none; width: 37%=
+; display: inline-block; text-align: center; border: 1px solid #dcdedd;" ta=
+rget=3D"_blank">=0D
+<img width=3D"15" class=3D"inline-block valign-middle" src=3D"https://i.kic=
+kstarter.com/heart-red3x.png?origin=3Dstatic&amp;sig=3DXnYFGu5zxsw48XbqiL2t=
+0FlRvjPX2gdZ0YuJScohHWY%3D" style=3D"-ms-interpolation-mode: bicubic; outli=
+ne: none; max-width: 100%; text-decoration: none; vertical-align: middle; d=
+isplay: inline-block; border-width: 0;">=0D
+<h4 class=3D"f5 dark-grey-500 m0 type-14 medium inline-block valign-middle"=
+ style=3D"padding-left: 3px; font-size: 14px; line-height: 21px; vertical-a=
+lign: middle; color: #656969; display: inline-block; font-weight: 500; marg=
+in: 0px;">=0D
+Like=0D
+</h4>=0D
+</a>=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+<table align=3D"left" class=3D"project-update-refresh-cta-spacer" style=3D"=
+mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collapse: collapse; bo=
+rder-spacing: 0; width: 4%;" width=3D"100%" height=3D"auto" cellpadding=3D"=
+0" cellspacing=3D"0">=0D
+<tr>=0D
+<td class=3D"pt2" style=3D"padding-top: 12px;"></td>=0D
+</tr>=0D
+</table>=0D
+<table align=3D"right" class=3D"text-left project-update-refresh-cta-table"=
+ height=3D"50" style=3D"mso-table-lspace: 0pt; mso-table-rspace: 0pt; borde=
+r-collapse: collapse; border-spacing: 0; text-align: left; width: 48%;" wid=
+th=3D"100%" cellpadding=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td class=3D"type-14 soft-black_50" style=3D"font-size: 14px; line-height: =
+21px; color: rgba(40,40,40,.5);">=0D
+or=0D
+<a class=3D"pl1 dark-grey-500 medium type-14 text-underline" style=3D"line-=
+height: 1; color: #656969; text-decoration: underline; font-size: 14px; fon=
+t-weight: 500; padding-left: 6px;" target=3D"_blank" href=3D"https://emails=
+.kickstarter.com/ss/c/u001.rUIcnpczY6e9uR91rg5kh39Uko7iqNv4FvSyXhek3iWSjSH4=
+F8t19LEf1GFq84IOnGgCR_ZklcJ6dX7U6GlqSQHIwPvxjTfIEh5QbxDdCiNbnhhRkBxBtRxa8Dj=
+HbO-hqHAA4mmmz9NmNco6L-8xYzJaAj9NOGvecpJrfrfphCBmt-_KGIJr-6Rm_wjGYpXGYbGIhc=
+53YtQcrcso5N0s9E303T1NOzmPQ15S_GMHbGHHYuEIBWOWwoT-d7Sen_5XnFaWkZ-giP9ZO-9ft=
+gSAWA/4la/149D7FWJTAOdpQqP-fkuBg/h19/h001.hL2Yaw3YEi3UPj3jXlx_QOGWFQYix-Nkz=
+LNCsCdSFUk">Comment=0D
+</a>=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+</td>=0D
+</tr>=0D
+<tr class=3D"border-bottom" style=3D"border-bottom-color: #282828; border-b=
+ottom-width: 1px; border-bottom-style: solid;">=0D
+<td>=0D
+<table style=3D"mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collap=
+se: collapse; border-spacing: 0;" width=3D"100%" height=3D"auto" cellpaddin=
+g=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td class=3D"pt2 medium" style=3D"font-size: 18px; padding-bottom: 10px; fo=
+nt-weight: 500; padding-top: 12px;">=0D
+More from this creator=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+</td>=0D
+</tr>=0D
+<tr class=3D"border-top" style=3D"border-top-width: 1px; border-top-color: =
+#dcdedd; border-top-style: solid;">=0D
+<td class=3D"pt7" style=3D"padding-top: 42px;">=0D
+<table class=3D"col-24" style=3D"table-layout: auto; mso-table-lspace: 0pt;=
+ mso-table-rspace: 0pt; border-collapse: collapse; border-spacing: 0; width=
+: 100%;" width=3D"100%" height=3D"auto" cellpadding=3D"0" cellspacing=3D"0"=
+>=0D
+<tr>=0D
+<td class=3D"text-uppercase type-12 ksr-green-500 bold valign-top" style=3D=
+"line-height: 36px; white-space: nowrap; width: 1%; font-size: 12px; color:=
+ #009e74; font-weight: 700; text-transform: uppercase;" valign=3D"top">=0D
+Update #17=0D
+</td>=0D
+<td class=3D"medium valign-top pl4" style=3D"font-size: 24px; line-height: =
+36px; font-weight: 500; padding-left: 24px;" valign=3D"top">=0D
+<a class=3D"soft-black text-underline" href=3D"https://emails.kickstarter.c=
+om/ss/c/u001.rUIcnpczY6e9uR91rg5kh39Uko7iqNv4FvSyXhek3iWSjSH4F8t19LEf1GFq84=
+IOnGgCR_ZklcJ6dX7U6GlqSQHIwPvxjTfIEh5QbxDdCiNbnhhRkBxBtRxa8DjHbO-hhXZ6Qz_M6=
+rBUQgbVjrYJFJ5BPr7Zo6achpelQLHZMDqg66u9D_L3I4dTvFp0A5PXZcJ9jUC1hxlGKixTF7Cc=
+sQ/4la/149D7FWJTAOdpQqP-fkuBg/h20/h001.pAQu_ZvRY8eQgxiH3foh-A3EWhxBw42su91S=
+Yzx3nok" style=3D"color: #282828; text-decoration: underline;">Magpie=E2=80=
+=99s Next Chapter Begins: Meet NOVA, the 4-in-1 Multi Measurer</a>=0D
+</td>=0D
+</tr>=0D
+<tr style=3D"height: 40px;"></tr>=0D
+<tr>=0D
+<td class=3D"text-uppercase type-12 ksr-green-500 bold valign-top" style=3D=
+"line-height: 36px; white-space: nowrap; width: 1%; font-size: 12px; color:=
+ #009e74; font-weight: 700; text-transform: uppercase;" valign=3D"top">=0D
+Update #16=0D
+</td>=0D
+<td class=3D"medium valign-top pl4" style=3D"font-size: 24px; line-height: =
+36px; font-weight: 500; padding-left: 24px;" valign=3D"top">=0D
+<a class=3D"soft-black text-underline" href=3D"https://emails.kickstarter.c=
+om/ss/c/u001.rUIcnpczY6e9uR91rg5kh39Uko7iqNv4FvSyXhek3iWSjSH4F8t19LEf1GFq84=
+IOnGgCR_ZklcJ6dX7U6GlqSQHIwPvxjTfIEh5QbxDdCiNbnhhRkBxBtRxa8DjHbO-hHQ0UPNfTR=
+99kcOHtpWdq9iRgBfA6GXOVD80zauz1PAZR755MfkGHnKDBlBOBNHeWpmVP_uKHbNd2Xk90uvsz=
+CQ/4la/149D7FWJTAOdpQqP-fkuBg/h21/h001.-O4SeghvYDZVqAkfnJ-FLlyj2YFkQdv38_xa=
+f2cPfAM" style=3D"color: #282828; text-decoration: underline;">=E2=8F=B0 La=
+st Call! Only 20 Hours Left to Grab ROAD MATE at the Lowest Price!</a>=0D
+</td>=0D
+</tr>=0D
+<tr style=3D"height: 40px;"></tr>=0D
+</table>=0D
+</td>=0D
+</tr>=0D
+=0D
+</table>=0D
+=0D
+<table class=3D"h2" style=3D"mso-table-lspace: 0pt; mso-table-rspace: 0pt; =
+border-collapse: collapse; border-spacing: 0; height: 12px;" width=3D"100%"=
+ height=3D"auto" cellpadding=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td class=3D"h2 type-0" style=3D"font-size: 0px; line-height: 0px; height: =
+12px;">=0D
+<img height=3D"12" style=3D"height: 12px; -ms-interpolation-mode: bicubic; =
+outline: none; max-width: 100%; border-width: 0;" src=3D"https://i.kickstar=
+ter.com/36ab/utility-spacer.png?origin=3Dstatic&amp;sig=3Ded9vTkpAVEClAlrHR=
+YMp7coQffsLIlfWuUdmJqC2Bng%3D">=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+=0D
+</div>=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+<table class=3D"bg-white w100p mt2" style=3D"mso-table-lspace: 0pt; mso-tab=
+le-rspace: 0pt; border-collapse: collapse; border-spacing: 0; width: 100%; =
+margin-top: 12px;" bgcolor=3D"#fff" width=3D"100%" height=3D"auto" cellpadd=
+ing=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td>=0D
+<table class=3D"col-24 bg-white" style=3D"mso-table-lspace: 0pt; mso-table-=
+rspace: 0pt; border-collapse: collapse; border-spacing: 0; table-layout: fi=
+xed; width: 100%;" bgcolor=3D"#fff" width=3D"100%" height=3D"auto" cellpadd=
+ing=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td class=3D"col-2 sm-col-2" style=3D"width: 7.8333333333%;"></td>=0D
+<td class=3D"col-20 sm-col-20" style=3D"width: 82.8333333333%;">=0D
+<table class=3D"w100p mw100p" style=3D"mso-table-lspace: 0pt; mso-table-rsp=
+ace: 0pt; border-collapse: collapse; border-spacing: 0; width: 100%; min-wi=
+dth: 100%;" width=3D"100%" height=3D"auto" cellpadding=3D"0" cellspacing=3D=
+"0">=0D
+<tr>=0D
+<td class=3D"pt8 type-21 medium text-center" style=3D"font-size: 21px; line=
+-height: 30px; font-weight: 500; padding-top: 48px;" align=3D"center">=0D
+Recommended for you=0D
+</td>=0D
+</tr>=0D
+<tr>=0D
+<td class=3D"pb6 type-16 text-center" style=3D"font-size: 16px; line-height=
+: 24px; padding-bottom: 36px;" align=3D"center">=0D
+Support another creative project today.=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+</td>=0D
+</tr>=0D
+<tr>=0D
+<td class=3D"col-2 sm-col-2" style=3D"width: 7.8333333333%;"></td>=0D
+<td class=3D"col-20 sm-col-20" style=3D"width: 82.8333333333%;">=0D
+<table style=3D"mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collap=
+se: collapse; border-spacing: 0;" width=3D"100%" height=3D"auto" cellpaddin=
+g=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td>=0D
+<table style=3D"mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collap=
+se: collapse; border-spacing: 0;" width=3D"100%" height=3D"auto" cellpaddin=
+g=3D"0" cellspacing=3D"0">=0D
+=0D
+<tr>=0D
+<td>=0D
+<a href=3D"https://emails.kickstarter.com/ss/c/u001.rUIcnpczY6e9uR91rg5kh39=
+Uko7iqNv4FvSyXhek3iXt4g_FrlFcUxPe0IWk-rxnvP6V-OxN7JArGQc2ImfaCt2Sss5i4Ign4p=
+Jb992jgD4ZOx71ryZH4TLYU8O1gTyKbzZl1zHUfMLD-gSMmhyhKWA6j13rTxLBsDHQd4K3Ovjpy=
+31Eh7XusBzZVJq2oN3JAa5cZug9D0oaKFR5Lf-xX7RnENPfJGrzMtA4zrXRTOzPcrdkeV7-Q7G7=
+wYjP0Bg2YcYSM4gZLbIzTw2wUIV4CA/4la/149D7FWJTAOdpQqP-fkuBg/h22/h001.d74I5Xe0=
+otAvDAzFXS8ielyp_9IxFi9pMpKhijs1W0I" style=3D"color: inherit; text-decorati=
+on: none;"><img alt=3D"World=E2=80=99s Smallest 100W Travel Adapter with Vo=
+ltage Indicator" style=3D"height: auto; -ms-interpolation-mode: bicubic; ou=
+tline: none; max-width: 100%; text-decoration: none; width: 100%; display: =
+block; border-width: 0;" class=3D"w100p block" src=3D"https://i.kickstarter=
+.com/assets/051/492/560/09eee06978dee753b4b237d0e5cf8c3f_original.jpg?anim=
+=3Dfalse&amp;fit=3Dcover&amp;gravity=3Dauto&amp;height=3D288&amp;origin=3Du=
+gc&amp;q=3D92&amp;v=3D1761984434&amp;width=3D512&amp;sig=3DSFgPXATE9a4lmqqq=
+1pZTE0z6K8LTvcIzuava9kC0Xlc%3D" width=3D"512" height=3D"288"></a>=0D
+<table class=3D"mb2" style=3D"height: 8px; mso-table-lspace: 0pt; mso-table=
+-rspace: 0pt; border-collapse: collapse; border-spacing: 0; margin-bottom: =
+12px;" width=3D"100%" height=3D"auto" cellpadding=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td class=3D"bg-create-500 left" style=3D"width: 100%; height: 8px;" bgcolo=
+r=3D"#05ce78"></td>=0D
+<td class=3D"bg-support-100 left" style=3D"width: 0%; height: 8px;" bgcolor=
+=3D"#f3f3f3"></td>=0D
+</tr>=0D
+</table>=0D
+=0D
+</td>=0D
+</tr>=0D
+<tr>=0D
+<td>=0D
+<div class=3D"mb2" style=3D"margin-bottom: 12px;">=0D
+<div class=3D"inline-block mr3" style=3D"display: inline-block; margin-righ=
+t: 18px;">=0D
+<h4 class=3D"fz24px create-700 m0" style=3D"color: #028858; font-size: 24px=
+; margin: 0px;">HK$ 191,046</h4>=0D
+<h5 class=3D"type-14 support-400 normal m0" style=3D"font-size: 14px; line-=
+height: 21px; color: dimgray; font-weight: 400; margin: 0px;">pledged</h5>=0D
+</div>=0D
+<div class=3D"inline-block mr3" style=3D"display: inline-block; margin-righ=
+t: 18px;">=0D
+<h4 class=3D"fz24px m0" style=3D"font-size: 24px; margin: 0px;">238</h4>=0D
+<h5 class=3D"type-14 support-400 normal m0" style=3D"font-size: 14px; line-=
+height: 21px; color: dimgray; font-weight: 400; margin: 0px;">backers</h5>=0D
+</div>=0D
+<div class=3D"inline-block" style=3D"display: inline-block;">=0D
+<h4 class=3D"fz24px m0" style=3D"font-size: 24px; margin: 0px;">40</h4>=0D
+<h5 class=3D"type-14 support-400 normal m0" style=3D"font-size: 14px; line-=
+height: 21px; color: dimgray; font-weight: 400; margin: 0px;">days left</h5=
+>=0D
+</div>=0D
+</div>=0D
+</td>=0D
+</tr>=0D
+<tr>=0D
+<td>=0D
+<h2 class=3D"mb2" style=3D"margin-bottom: 12px;">=0D
+<a class=3D"fz20px normal" href=3D"https://emails.kickstarter.com/ss/c/u001=
+.rUIcnpczY6e9uR91rg5kh39Uko7iqNv4FvSyXhek3iXt4g_FrlFcUxPe0IWk-rxnvP6V-OxN7J=
+ArGQc2ImfaCt2Sss5i4Ign4pJb992jgD4ZOx71ryZH4TLYU8O1gTyKbzZl1zHUfMLD-gSMmhyhK=
+WA6j13rTxLBsDHQd4K3Ovjpy31Eh7XusBzZVJq2oN3JAa5cZug9D0oaKFR5Lf-xX7RnENPfJGrz=
+MtA4zrXRTOzPcrdkeV7-Q7G7wYjP0Bg2YcYSM4gZLbIzTw2wUIV4CA/4la/149D7FWJTAOdpQqP=
+-fkuBg/h23/h001.1HYOqUMCwvn8mknbPJRtdk64ig3pQbV7d1q6q8-JTFA" style=3D"color=
+: inherit; text-decoration: none; font-size: 20px; font-weight: 400;">World=
+=E2=80=99s Smallest 100W Travel Adapter with Voltage Indicator</a>=0D
+</h2>=0D
+<p class=3D"font-georgia mt0" style=3D'font-family: Georgia,"Times New Roma=
+n",Times,serif; margin-top: 0px;'>=0D
+Ultra-Sleek&amp;lightweight=E4=B8=A8100W GaN Fast Charge=E4=B8=A8Voltage In=
+dicator=E4=B8=A87 Devices Simultaneously=E4=B8=A8200+ Countries=E4=B8=A8Dua=
+l 10A Fuses=0D
+</p>=0D
+<p class=3D"type-12 support-400" style=3D"font-size: 12px; line-height: 18p=
+x; color: dimgray;">=0D
+by ARSMEL=0D
+</p>=0D
+</td>=0D
+</tr>=0D
+=0D
+</table>=0D
+<table style=3D"mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collap=
+se: collapse; border-spacing: 0;" width=3D"100%" height=3D"auto" cellpaddin=
+g=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td height=3D"60px"></td>=0D
+</tr>=0D
+</table>=0D
+<table style=3D"mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collap=
+se: collapse; border-spacing: 0;" width=3D"100%" height=3D"auto" cellpaddin=
+g=3D"0" cellspacing=3D"0">=0D
+=0D
+<tr>=0D
+<td>=0D
+<a href=3D"https://emails.kickstarter.com/ss/c/u001.rUIcnpczY6e9uR91rg5kh39=
+Uko7iqNv4FvSyXhek3iXpQP7OOE853slsgT1GXY6fBgGGktc-weWoneM_JBuQv4UfRF3-8gTobt=
+ttOHbgM6tUSY07L344ac-TQwbs2Qovyv4Zf569Tn9dyanYZS22orIRWOKwAqG_lub5FDRyNete7=
+yVpPprHNsn8MhwX2T3gBKB5I8uhW0zdRQjWluIhwQ/4la/149D7FWJTAOdpQqP-fkuBg/h24/h0=
+01.eMvlv7JOlV8I3lmwgoWDCAMz82y7yRjksxOa51lpW-k" style=3D"color: inherit; te=
+xt-decoration: none;"><img alt=3D"HiMill D1/D1S. High-performance, Smart, a=
+nd Affordable CNC." style=3D"height: auto; -ms-interpolation-mode: bicubic;=
+ outline: none; max-width: 100%; text-decoration: none; width: 100%; displa=
+y: block; border-width: 0;" class=3D"w100p block" src=3D"https://i.kickstar=
+ter.com/assets/051/239/537/77ca2a65f7102effe1343f630c4bb678_original.png?an=
+im=3Dfalse&amp;fit=3Dcover&amp;gravity=3Dauto&amp;height=3D288&amp;origin=
+=3Dugc&amp;q=3D92&amp;v=3D1760409359&amp;width=3D512&amp;sig=3D75O2tw%2FGOk=
+YqpuQMWTBtMriERpdj%2Fw%2B1OYKAlMNbH%2BE%3D" width=3D"512" height=3D"288"></=
+a>=0D
+<table class=3D"mb2" style=3D"height: 8px; mso-table-lspace: 0pt; mso-table=
+-rspace: 0pt; border-collapse: collapse; border-spacing: 0; margin-bottom: =
+12px;" width=3D"100%" height=3D"auto" cellpadding=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td class=3D"bg-create-500 left" style=3D"width: 100%; height: 8px;" bgcolo=
+r=3D"#05ce78"></td>=0D
+<td class=3D"bg-support-100 left" style=3D"width: 0%; height: 8px;" bgcolor=
+=3D"#f3f3f3"></td>=0D
+</tr>=0D
+</table>=0D
+=0D
+</td>=0D
+</tr>=0D
+<tr>=0D
+<td>=0D
+<div class=3D"mb2" style=3D"margin-bottom: 12px;">=0D
+<div class=3D"inline-block mr3" style=3D"display: inline-block; margin-righ=
+t: 18px;">=0D
+<h4 class=3D"fz24px create-700 m0" style=3D"color: #028858; font-size: 24px=
+; margin: 0px;">HK$ 6,596,012</h4>=0D
+<h5 class=3D"type-14 support-400 normal m0" style=3D"font-size: 14px; line-=
+height: 21px; color: dimgray; font-weight: 400; margin: 0px;">pledged</h5>=0D
+</div>=0D
+<div class=3D"inline-block mr3" style=3D"display: inline-block; margin-righ=
+t: 18px;">=0D
+<h4 class=3D"fz24px m0" style=3D"font-size: 24px; margin: 0px;">786</h4>=0D
+<h5 class=3D"type-14 support-400 normal m0" style=3D"font-size: 14px; line-=
+height: 21px; color: dimgray; font-weight: 400; margin: 0px;">backers</h5>=0D
+</div>=0D
+<div class=3D"inline-block" style=3D"display: inline-block;">=0D
+<h4 class=3D"fz24px m0" style=3D"font-size: 24px; margin: 0px;">4</h4>=0D
+<h5 class=3D"type-14 support-400 normal m0" style=3D"font-size: 14px; line-=
+height: 21px; color: dimgray; font-weight: 400; margin: 0px;">days left</h5=
+>=0D
+</div>=0D
+</div>=0D
+</td>=0D
+</tr>=0D
+<tr>=0D
+<td>=0D
+<h2 class=3D"mb2" style=3D"margin-bottom: 12px;">=0D
+<a class=3D"fz20px normal" href=3D"https://emails.kickstarter.com/ss/c/u001=
+.rUIcnpczY6e9uR91rg5kh39Uko7iqNv4FvSyXhek3iXpQP7OOE853slsgT1GXY6fBgGGktc-we=
+WoneM_JBuQv4UfRF3-8gTobtttOHbgM6tUSY07L344ac-TQwbs2Qovyv4Zf569Tn9dyanYZS22o=
+rIRWOKwAqG_lub5FDRyNete7yVpPprHNsn8MhwX2T3gBKB5I8uhW0zdRQjWluIhwQ/4la/149D7=
+FWJTAOdpQqP-fkuBg/h25/h001.agtn3tqJUSsfzxR8j4o-W53hQtOCUUP3_3vZKKNq69s" sty=
+le=3D"color: inherit; text-decoration: none; font-size: 20px; font-weight: =
+400;">HiMill D1/D1S. High-performance, Smart, and Affordable CNC.</a>=0D
+</h2>=0D
+<p class=3D"font-georgia mt0" style=3D'font-family: Georgia,"Times New Roma=
+n",Times,serif; margin-top: 0px;'>=0D
+Quick Tool Changer | 3D Probe | 280*200*80mm Working Area | 0.02mm High Pre=
+cision | Snap-on Laser Module | Use Right out of Box=0D
+</p>=0D
+<p class=3D"type-12 support-400" style=3D"font-size: 12px; line-height: 18p=
+x; color: dimgray;">=0D
+by Maxmake=0D
+</p>=0D
+</td>=0D
+</tr>=0D
+=0D
+</table>=0D
+<table style=3D"mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collap=
+se: collapse; border-spacing: 0;" width=3D"100%" height=3D"auto" cellpaddin=
+g=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td height=3D"60px"></td>=0D
+</tr>=0D
+</table>=0D
+<table style=3D"mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collap=
+se: collapse; border-spacing: 0;" width=3D"100%" height=3D"auto" cellpaddin=
+g=3D"0" cellspacing=3D"0">=0D
+=0D
+<tr>=0D
+<td>=0D
+<a href=3D"https://emails.kickstarter.com/ss/c/u001.rUIcnpczY6e9uR91rg5kh39=
+Uko7iqNv4FvSyXhek3iUECIAEZ60wQb8Rpj3TCykzHSbzs6blEarAchXPSKHOWUEBuGbrX4bUjy=
+0n390axTMl-mhj4JnHlGX8DiieFbibmbyDtSsf_C1FZfPolRTS96Q5OTVHXoleOkhYEG84fBUVq=
+ddSaQapNUzFSDXIhbEDFVpbMzp5gpuyrfplqYpgfftFZTFsZsjmfScH7elJap4S1ldPKRjobBrc=
+cV-oLtBInXI3f0O0AGPQDpSB3SgH3g/4la/149D7FWJTAOdpQqP-fkuBg/h26/h001.Jfn_TpSi=
+2uaysQYIC03_RkL1gODw-1lpYmwcoecD888" style=3D"color: inherit; text-decorati=
+on: none;"><img alt=3D"Summit Hub: 5-in-1 Modular Camp Cooking System" styl=
+e=3D"height: auto; -ms-interpolation-mode: bicubic; outline: none; max-widt=
+h: 100%; text-decoration: none; width: 100%; display: block; border-width: =
+0;" class=3D"w100p block" src=3D"https://i.kickstarter.com/assets/050/694/8=
+51/4a47a1c073fa9b4309f6a206fab6c20a_original.jpg?anim=3Dfalse&amp;fit=3Dcov=
+er&amp;gravity=3Dauto&amp;height=3D288&amp;origin=3Dugc&amp;q=3D92&amp;v=3D=
+1756964021&amp;width=3D512&amp;sig=3D20ha46eLgZvB5g4unCbYW5iMnFQVE3qiIgZt92=
+XkxfM%3D" width=3D"512" height=3D"288"></a>=0D
+<table class=3D"mb2" style=3D"height: 8px; mso-table-lspace: 0pt; mso-table=
+-rspace: 0pt; border-collapse: collapse; border-spacing: 0; margin-bottom: =
+12px;" width=3D"100%" height=3D"auto" cellpadding=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td class=3D"bg-create-500 left" style=3D"width: 100%; height: 8px;" bgcolo=
+r=3D"#05ce78"></td>=0D
+<td class=3D"bg-support-100 left" style=3D"width: 0%; height: 8px;" bgcolor=
+=3D"#f3f3f3"></td>=0D
+</tr>=0D
+</table>=0D
+=0D
+</td>=0D
+</tr>=0D
+<tr>=0D
+<td>=0D
+<div class=3D"mb2" style=3D"margin-bottom: 12px;">=0D
+<div class=3D"inline-block mr3" style=3D"display: inline-block; margin-righ=
+t: 18px;">=0D
+<h4 class=3D"fz24px create-700 m0" style=3D"color: #028858; font-size: 24px=
+; margin: 0px;">HK$ 150,201</h4>=0D
+<h5 class=3D"type-14 support-400 normal m0" style=3D"font-size: 14px; line-=
+height: 21px; color: dimgray; font-weight: 400; margin: 0px;">pledged</h5>=0D
+</div>=0D
+<div class=3D"inline-block mr3" style=3D"display: inline-block; margin-righ=
+t: 18px;">=0D
+<h4 class=3D"fz24px m0" style=3D"font-size: 24px; margin: 0px;">180</h4>=0D
+<h5 class=3D"type-14 support-400 normal m0" style=3D"font-size: 14px; line-=
+height: 21px; color: dimgray; font-weight: 400; margin: 0px;">backers</h5>=0D
+</div>=0D
+<div class=3D"inline-block" style=3D"display: inline-block;">=0D
+<h4 class=3D"fz24px m0" style=3D"font-size: 24px; margin: 0px;">3</h4>=0D
+<h5 class=3D"type-14 support-400 normal m0" style=3D"font-size: 14px; line-=
+height: 21px; color: dimgray; font-weight: 400; margin: 0px;">days left</h5=
+>=0D
+</div>=0D
+</div>=0D
+</td>=0D
+</tr>=0D
+<tr>=0D
+<td>=0D
+<h2 class=3D"mb2" style=3D"margin-bottom: 12px;">=0D
+<a class=3D"fz20px normal" href=3D"https://emails.kickstarter.com/ss/c/u001=
+.rUIcnpczY6e9uR91rg5kh39Uko7iqNv4FvSyXhek3iUECIAEZ60wQb8Rpj3TCykzHSbzs6blEa=
+rAchXPSKHOWUEBuGbrX4bUjy0n390axTMl-mhj4JnHlGX8DiieFbibmbyDtSsf_C1FZfPolRTS9=
+6Q5OTVHXoleOkhYEG84fBUVqddSaQapNUzFSDXIhbEDFVpbMzp5gpuyrfplqYpgfftFZTFsZsjm=
+fScH7elJap4S1ldPKRjobBrccV-oLtBInXI3f0O0AGPQDpSB3SgH3g/4la/149D7FWJTAOdpQqP=
+-fkuBg/h27/h001.kB95bhJyA1tSfVpVNIZsZDQAfHJFwJ-0UuP26sq0Nv4" style=3D"color=
+: inherit; text-decoration: none; font-size: 20px; font-weight: 400;">Summi=
+t Hub: 5-in-1 Modular Camp Cooking System</a>=0D
+</h2>=0D
+<p class=3D"font-georgia mt0" style=3D'font-family: Georgia,"Times New Roma=
+n",Times,serif; margin-top: 0px;'>=0D
+One Hub, Endless Possibilities: Slide-in JetBurn &amp; TelePole | Nest Omni=
+Burn &amp; HexShield=0D
+</p>=0D
+<p class=3D"type-12 support-400" style=3D"font-size: 12px; line-height: 18p=
+x; color: dimgray;">=0D
+by SerotoninOutdoors=0D
+</p>=0D
+</td>=0D
+</tr>=0D
+=0D
+</table>=0D
+<table style=3D"mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collap=
+se: collapse; border-spacing: 0;" width=3D"100%" height=3D"auto" cellpaddin=
+g=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td height=3D"60px"></td>=0D
+</tr>=0D
+</table>=0D
+<table style=3D"mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collap=
+se: collapse; border-spacing: 0;" width=3D"100%" height=3D"auto" cellpaddin=
+g=3D"0" cellspacing=3D"0">=0D
+=0D
+<tr>=0D
+<td>=0D
+<a href=3D"https://emails.kickstarter.com/ss/c/u001.rUIcnpczY6e9uR91rg5kh39=
+Uko7iqNv4FvSyXhek3iUOpzMC_e-nO8cEFm0ReByeaVppwo46cG0lmXLWDGnWeB1tgYeybnmBAu=
+WPymdfDmZW4NI8irjDU8uBeBx77kmsR56EStzoHwGipazyTzrfd5enMWOvY24gGxMTJEuwbv9tx=
+TVFVtUaRLLqO0zvcZMjNAd6fey5FeN6Up99DfsZcTE6LhR9OAij1IXPUqFHbsh4tE0SjgdX5T0R=
+5VKcECuEXyXAqySo5gV87udD0IOffQ/4la/149D7FWJTAOdpQqP-fkuBg/h28/h001.tkyEQmL3=
+qQCnnSnTCBrDotanM7QveG5-9lOUhVEcH3Q" style=3D"color: inherit; text-decorati=
+on: none;"><img alt=3D"BitStack: Stackable Bit Holder Right on Your Drill" =
+style=3D"height: auto; -ms-interpolation-mode: bicubic; outline: none; max-=
+width: 100%; text-decoration: none; width: 100%; display: block; border-wid=
+th: 0;" class=3D"w100p block" src=3D"https://i.kickstarter.com/assets/051/0=
+46/038/a2114932cb6a1d485cc726cf4e072a3f_original.jpg?anim=3Dfalse&amp;fit=
+=3Dcover&amp;gravity=3Dauto&amp;height=3D288&amp;origin=3Dugc&amp;q=3D92&am=
+p;v=3D1759219155&amp;width=3D512&amp;sig=3DWoKFKHfgFd%2BXv6JAJIyYBrbwumNTMj=
+TURL%2Bc6vR49r8%3D" width=3D"512" height=3D"288"></a>=0D
+<table class=3D"mb2" style=3D"height: 8px; mso-table-lspace: 0pt; mso-table=
+-rspace: 0pt; border-collapse: collapse; border-spacing: 0; margin-bottom: =
+12px;" width=3D"100%" height=3D"auto" cellpadding=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td class=3D"bg-create-500 left" style=3D"width: 100%; height: 8px;" bgcolo=
+r=3D"#05ce78"></td>=0D
+<td class=3D"bg-support-100 left" style=3D"width: 0%; height: 8px;" bgcolor=
+=3D"#f3f3f3"></td>=0D
+</tr>=0D
+</table>=0D
+=0D
+</td>=0D
+</tr>=0D
+<tr>=0D
+<td>=0D
+<div class=3D"mb2" style=3D"margin-bottom: 12px;">=0D
+<div class=3D"inline-block mr3" style=3D"display: inline-block; margin-righ=
+t: 18px;">=0D
+<h4 class=3D"fz24px create-700 m0" style=3D"color: #028858; font-size: 24px=
+; margin: 0px;">$35,689</h4>=0D
+<h5 class=3D"type-14 support-400 normal m0" style=3D"font-size: 14px; line-=
+height: 21px; color: dimgray; font-weight: 400; margin: 0px;">pledged</h5>=0D
+</div>=0D
+<div class=3D"inline-block mr3" style=3D"display: inline-block; margin-righ=
+t: 18px;">=0D
+<h4 class=3D"fz24px m0" style=3D"font-size: 24px; margin: 0px;">998</h4>=0D
+<h5 class=3D"type-14 support-400 normal m0" style=3D"font-size: 14px; line-=
+height: 21px; color: dimgray; font-weight: 400; margin: 0px;">backers</h5>=0D
+</div>=0D
+<div class=3D"inline-block" style=3D"display: inline-block;">=0D
+<h4 class=3D"fz24px m0" style=3D"font-size: 24px; margin: 0px;">11</h4>=0D
+<h5 class=3D"type-14 support-400 normal m0" style=3D"font-size: 14px; line-=
+height: 21px; color: dimgray; font-weight: 400; margin: 0px;">days left</h5=
+>=0D
+</div>=0D
+</div>=0D
+</td>=0D
+</tr>=0D
+<tr>=0D
+<td>=0D
+<h2 class=3D"mb2" style=3D"margin-bottom: 12px;">=0D
+<a class=3D"fz20px normal" href=3D"https://emails.kickstarter.com/ss/c/u001=
+.rUIcnpczY6e9uR91rg5kh39Uko7iqNv4FvSyXhek3iUOpzMC_e-nO8cEFm0ReByeaVppwo46cG=
+0lmXLWDGnWeB1tgYeybnmBAuWPymdfDmZW4NI8irjDU8uBeBx77kmsR56EStzoHwGipazyTzrfd=
+5enMWOvY24gGxMTJEuwbv9txTVFVtUaRLLqO0zvcZMjNAd6fey5FeN6Up99DfsZcTE6LhR9OAij=
+1IXPUqFHbsh4tE0SjgdX5T0R5VKcECuEXyXAqySo5gV87udD0IOffQ/4la/149D7FWJTAOdpQqP=
+-fkuBg/h29/h001.sEhuiI2rP4pJSHMRbzH8_lbQUlDJcVSPmbkW2tkS1M8" style=3D"color=
+: inherit; text-decoration: none; font-size: 20px; font-weight: 400;">BitSt=
+ack: Stackable Bit Holder Right on Your Drill</a>=0D
+</h2>=0D
+<p class=3D"font-georgia mt0" style=3D'font-family: Georgia,"Times New Roma=
+n",Times,serif; margin-top: 0px;'>=0D
+Unlimited Stacking / 2 Types: Vertical&amp;Horizontal / Wide Compatibility =
+/ Quick&amp;Easy Mount / Bidirectional Fit(Left&amp;Right)=0D
+</p>=0D
+<p class=3D"type-12 support-400" style=3D"font-size: 12px; line-height: 18p=
+x; color: dimgray;">=0D
+by BLAST=0D
+</p>=0D
+</td>=0D
+</tr>=0D
+=0D
+</table>=0D
+<table style=3D"mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collap=
+se: collapse; border-spacing: 0;" width=3D"100%" height=3D"auto" cellpaddin=
+g=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td height=3D"60px"></td>=0D
+</tr>=0D
+</table>=0D
+<table style=3D"mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collap=
+se: collapse; border-spacing: 0;" width=3D"100%" height=3D"auto" cellpaddin=
+g=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td class=3D"px1 pb12" style=3D"padding-bottom: 72px; padding-right: 6px; p=
+adding-left: 6px;">=0D
+<table align=3D"center" class=3D"col-12 sm-col-16 mx-auto" style=3D"mso-tab=
+le-lspace: 0pt; mso-table-rspace: 0pt; border-collapse: collapse; border-sp=
+acing: 0; table-layout: fixed; width: 49.5%; margin-right: auto; margin-lef=
+t: auto;" width=3D"100%" height=3D"auto" cellpadding=3D"0" cellspacing=3D"0=
+">=0D
+<tr>=0D
+<td class=3D"text-center" style=3D"" align=3D"center">=0D
+<a class=3D"bttn border border-support-300 support-500 pt3 pb3 pr3 pl3 pr12=
+-md pl12-md type-14" href=3D"https://emails.kickstarter.com/ss/c/u001.rUIcn=
+pczY6e9uR91rg5kh39Uko7iqNv4FvSyXhek3iUGFGh_PPFMOPeNqBHl7SFtvmZ43gklfYn9-9RY=
+kZrbr1Wh6TCIakd-bFGC5ECqPELJDcL4Rxli-9cQLWkVPAusOD3pXE7xytX6og6GiPwFKzLKkds=
+tjUtHChG-wHo1R57UiFr2NJCHLLkrmoq6aHNTzq1tGD_l-XMf2tQyi3VSa8vjcF-HFsKeuqWLLo=
+Qy99I/4la/149D7FWJTAOdpQqP-fkuBg/h30/h001.LnHugv_9IItoMWbcIpbqPMQPLXxm552lt=
+DmfDQtuxIk" style=3D"color: #464646; text-decoration: none; font-size: 14px=
+; line-height: 1; font-weight: 500; text-align: center; cursor: pointer; po=
+sition: relative; display: inline-block; -webkit-appearance: none; border-r=
+adius: 0; padding: 18px; border: 1px solid #dcdedd;">View more</a>=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+</td>=0D
+<td class=3D"col-2 sm-col-2" style=3D"width: 7.8333333333%;"></td>=0D
+</tr>=0D
+</table>=0D
+=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+<table class=3D"w100p" style=3D"mso-table-lspace: 0pt; mso-table-rspace: 0p=
+t; border-collapse: collapse; border-spacing: 0; width: 100%;" width=3D"100=
+%" height=3D"auto" cellpadding=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td class=3D"text-center pt5 pl5 pr5" style=3D"padding-top: 30px; padding-r=
+ight: 30px; padding-left: 30px;" align=3D"center">=0D
+<div class=3D"type-12 mt2 soft-black" style=3D"font-size: 12px; line-height=
+: 18px; color: #282828; margin-top: 12px;">=0D
+Don't want to receive updates from this project? That's okay, you can <a cl=
+ass=3D"ksr-green-800 text-underline" href=3D"https://emails.kickstarter.com=
+/ss/c/u001.rUIcnpczY6e9uR91rg5kh39Uko7iqNv4FvSyXhek3iX4OyVcsQAhVBJFM_ul8iwT=
+VumRlACcO0iAIjcH12T7one3Yx9xYTnG9Jt_BDDvaUtDcbQSCumWDbfAX4WClxE7giVMEfnNa9U=
+O__nnuu9P6-Fxw3UIPzNcKbAXtniq1JiSKRlBZz8-r6M4vYKlEWPFs5NkzL1iiRZQCIsFZNhAxw=
+Lt6NvUWak8fgQF8Gtps-mTYPtGOh1kaQKuEpEJKTMVcGcr73QoJCWqc6fpgYHFIuC6K2H_cheno=
+ZIeT8sJFkcNIFNWxG4X0js86BifccYHfHaGmNl-6QF2NyOM_U_dVQDMapO6Da8qSqkMmFPcvNw/=
+4la/149D7FWJTAOdpQqP-fkuBg/h31/h001.JNQOsbbaAJC-McoT3KBglhXorKvOT2f9eWMFkIY=
+52BI" style=3D"color: #034752; text-decoration: underline;">unsubscribe.</a=
+>=0D
+</div>=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+</center>=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+<table class=3D"w100p mw100p" style=3D"mso-table-lspace: 0pt; mso-table-rsp=
+ace: 0pt; border-collapse: collapse; border-spacing: 0; width: 100%; min-wi=
+dth: 100%;" bgcolor=3D"#F0F0F0" width=3D"100%" height=3D"auto" cellpadding=
+=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td class=3D"pt8" style=3D"padding-top: 48px;">=0D
+<table class=3D"w100p mw100p" style=3D"mso-table-lspace: 0pt; mso-table-rsp=
+ace: 0pt; border-collapse: collapse; border-spacing: 0; width: 100%; min-wi=
+dth: 100%;" width=3D"100%" height=3D"auto" cellpadding=3D"0" cellspacing=3D=
+"0">=0D
+<tr>=0D
+<td class=3D"text-center pt4 type-12 soft-black font-roboto normal" style=
+=3D"font-size: 12px; line-height: 18px; color: #282828; font-family: Roboto=
+,sans-serif; font-weight: 400; padding-top: 24px;" align=3D"center">=0D
+<a class=3D"soft-black text-underline" href=3D"https://emails.kickstarter.c=
+om/ss/c/u001.rUIcnpczY6e9uR91rg5kh39Uko7iqNv4FvSyXhek3iWt8qu7ZbBPvjG19PhxhX=
+-_-p1ZLGI_WUc3jHdyQ5Bgfp-UHRD0mTpeL0j3K7XWoNBq9hKBlLS7txfoZ2xBmOAWYCS5ZV-Fq=
+uXly7Mv9aZG6vYJHgqrhvDV4VgF9k88t_0/4la/149D7FWJTAOdpQqP-fkuBg/h32/h001.CYLK=
+KZkzYCsThcZ6lQn3GUxjFTKaZgcc9ZmnZR_3MLs" style=3D"color: #282828; text-deco=
+ration: underline;">Manage your notification settings</a>=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+</td>=0D
+</tr>=0D
+<tr>=0D
+<td class=3D"pt4 pb12 w100p" style=3D"width: 100%; padding-top: 24px; paddi=
+ng-bottom: 72px;" bgcolor=3D"#F0F0F0">=0D
+<table align=3D"center" class=3D"mx-auto" style=3D"width: 130px; mso-table-=
+lspace: 0pt; mso-table-rspace: 0pt; border-collapse: collapse; border-spaci=
+ng: 0; margin-right: auto; margin-left: auto;" width=3D"130" height=3D"auto=
+" cellpadding=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td align=3D"center" class=3D"text-center valign-middle" style=3D"" valign=
+=3D"middle">=0D
+<a href=3D"https://emails.kickstarter.com/ss/c/u001.rUIcnpczY6e9uR91rg5khzK=
+70toIUaMqVQIXa2stbA5uqJoABBTupnT30OFpHd4Q/4la/149D7FWJTAOdpQqP-fkuBg/h33/h0=
+01.NGTY92DMCYXRF3IksRARKrkuS8LYCLZdVeypsWWiC-4" style=3D"color: inherit; te=
+xt-decoration: none;"><img alt=3D"Instagram" height=3D"24" width=3D"24" sty=
+le=3D"height: 24px; width: 24px; -ms-interpolation-mode: bicubic; outline: =
+none; max-width: 100%; text-decoration: none; display: block; border-width:=
+ 0;" class=3D"block" src=3D"https://i.kickstarter.com/instagram-99e2a66.png=
+?fit=3Dscale-down&amp;origin=3Dstatic&amp;width=3D1000&amp;sig=3DxSeW6Tpj77=
+CACy9pV1Tbm4hgQwNwo18mJYO9l8OcJek%3D">=0D
+</a>=0D
+</td>=0D
+<td align=3D"center" class=3D"text-center valign-middle px2" style=3D"paddi=
+ng-right: 12px; padding-left: 12px;" valign=3D"middle">=0D
+<a href=3D"https://emails.kickstarter.com/ss/c/u001.rUIcnpczY6e9uR91rg5kh0l=
+mmfaxmsLFTaHQEAhpkudL4DZRBe7P4FZw0RmSQwey/4la/149D7FWJTAOdpQqP-fkuBg/h34/h0=
+01.TdWi1pgeWIdyx0DagjkR6BwJwwd2_O8y2E-TeIhdMlk" style=3D"color: inherit; te=
+xt-decoration: none;"><img alt=3D"Facebook" height=3D"24" width=3D"24" styl=
+e=3D"height: 24px; width: 24px; -ms-interpolation-mode: bicubic; outline: n=
+one; max-width: 100%; text-decoration: none; display: block; border-width: =
+0;" class=3D"block" src=3D"https://i.kickstarter.com/facebook-83b743e.png?f=
+it=3Dscale-down&amp;origin=3Dstatic&amp;width=3D1000&amp;sig=3D1ZPJxWbxhQ5a=
+FycbdCB6290j6ftHPz%2Bbfu9FzFKGsb0%3D">=0D
+</a>=0D
+</td>=0D
+<td align=3D"center" class=3D"text-center valign-middle" style=3D"" valign=
+=3D"middle">=0D
+<a href=3D"https://emails.kickstarter.com/ss/c/u001.rUIcnpczY6e9uR91rg5kh7a=
+ntf-kriiLnmWgok-X_1bwwiOPdCCz-7AcSu8A_e5z/4la/149D7FWJTAOdpQqP-fkuBg/h35/h0=
+01.x1tYvaTGeo5DenjChg5as44J2YuBX-TFWoT8wvL1-ow" style=3D"color: inherit; te=
+xt-decoration: none;"><img alt=3D"Twitter" height=3D"24" width=3D"24" style=
+=3D"height: 24px; width: 24px; -ms-interpolation-mode: bicubic; outline: no=
+ne; max-width: 100%; text-decoration: none; display: block; border-width: 0=
+;" class=3D"block" src=3D"https://i.kickstarter.com/twitter-f0bfd08.png?fit=
+=3Dscale-down&amp;origin=3Dstatic&amp;width=3D1000&amp;sig=3DWE3WPY8h5qeq1F=
+13snVxlYAaaYoieaLCu9Ijsz8gayY%3D">=0D
+</a>=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+=0D
+<table class=3D"w100p mw100p" style=3D"mso-table-lspace: 0pt; mso-table-rsp=
+ace: 0pt; border-collapse: collapse; border-spacing: 0; width: 100%; min-wi=
+dth: 100%;" width=3D"100%" height=3D"auto" cellpadding=3D"0" cellspacing=3D=
+"0">=0D
+<tr>=0D
+<td class=3D"text-center pt4 type-12 soft-black font-roboto normal" style=
+=3D"font-size: 12px; line-height: 18px; color: #282828; font-family: Roboto=
+,sans-serif; font-weight: 400; padding-top: 24px;" align=3D"center">=0D
+Kickstarter, PBC =C2=B7 228 Park Ave S PMB 59430, New York New York 10003-1=
+502=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+<table class=3D"w100p mw100p" style=3D"mso-table-lspace: 0pt; mso-table-rsp=
+ace: 0pt; border-collapse: collapse; border-spacing: 0; width: 100%; min-wi=
+dth: 100%;" width=3D"100%" height=3D"auto" cellpadding=3D"0" cellspacing=3D=
+"0">=0D
+<tr>=0D
+<td class=3D"text-center pt2 type-12 soft-black font-roboto normal" style=
+=3D"font-size: 12px; line-height: 18px; color: #282828; font-family: Roboto=
+,sans-serif; font-weight: 400; padding-top: 12px;" align=3D"center">=0D
+<a class=3D"soft-black text-underline" href=3D"https://emails.kickstarter.c=
+om/ss/c/u001.rUIcnpczY6e9uR91rg5kh39Uko7iqNv4FvSyXhek3iXyaKudnlqWvo7bS5psjR=
+9_nDCZ1gqonG0hsKHaoxCDLFDItk7n_-QRKjcJBzi6_OB4lMpjNYrBK624RTd8R65t46m2f5lqZ=
+S8tJfBrpeDuQQ/4la/149D7FWJTAOdpQqP-fkuBg/h36/h001.ZbH98ESgmjLDc2QjZ31pTSlBe=
+RbIB-DDlzxXP3KMjR0" style=3D"color: #282828; text-decoration: underline;">C=
+ontact us</a>=0D
+</td>=0D
+</tr>=0D
+<tr>=0D
+<td class=3D"text-center pt2 type-12 soft-black font-roboto normal" style=
+=3D"font-size: 12px; line-height: 18px; color: #282828; font-family: Roboto=
+,sans-serif; font-weight: 400; padding-top: 12px;" align=3D"center">=0D
+<a class=3D"soft-black text-underline" href=3D"https://emails.kickstarter.c=
+om/ss/c/u001.rUIcnpczY6e9uR91rg5kh39Uko7iqNv4FvSyXhek3iXXEtqw6hUSLTcd65GUXn=
+FmOkeBpytG8XiTkJLW2GhwIqxki397Oyrks30XaWWuyODfTJ_03RtQOXCaTywrJHqA65wECMliy=
+5avRIo7jkwcUQ/4la/149D7FWJTAOdpQqP-fkuBg/h37/h001.MWlo9vX2RQn_SH1DJ6eFvOVMR=
+dx60MJGW03glToO2sY" style=3D"color: #282828; text-decoration: underline;">K=
+ickstarter Terms of Use</a>=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+=0D
+<img src=3D"https://emails.kickstarter.com/ss/o/u001.N8QYkqVAh2ftpZnRzu9zRA=
+/4la/149D7FWJTAOdpQqP-fkuBg/ho.gif" alt=3D"" width=3D"1" height=3D"1" borde=
+r=3D"0" style=3D"height:1px !important;width:1px !important;border-width:0 =
+!important;margin-top:0 !important;margin-bottom:0 !important;margin-right:=
+0 !important;margin-left:0 !important;padding-top:0 !important;padding-bott=
+om:0 !important;padding-right:0 !important;padding-left:0 !important;"/></b=
+ody>=0D
+</html>=0D
+
+----==_mimepart_6908c8822d9aa_13050988a0436591--

@@ -1,9 +1,9 @@
-Return-Path: <mstowe+caf_=mstowe=example.com@gmail.com>
+Return-Path: <user+caf_=user=example.com@gmail.com>
 Received: from hotel.example.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
 	by juliett.example.com (8.18.1/8.18.1) with ESMTPS id 5A8EoDrw032952
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
 	for <user@example.com>; Sat, 8 Nov 2025 14:50:14 GMT
-	(envelope-from mstowe+caf_=mstowe=example.com@gmail.com)
+	(envelope-from user+caf_=user=example.com@gmail.com)
 Authentication-Results: juliett.example.com;
 	dkim=pass (1024-bit key; unprotected) header.d=medium.com header.i=@medium.com header.b=kLXyYkhD;
 	dkim=pass (1024-bit key; unprotected) header.d=sendgrid.info header.i=@sendgrid.info header.b=rCbPTNkX
@@ -42,7 +42,7 @@ ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc
 ARC-Authentication-Results: i=2; mx.google.com;
        dkim=pass header.i=@medium.com header.s=m1 header.b=kLXyYkhD;
        dkim=pass header.i=@sendgrid.info header.s=smtpapi header.b=rCbPTNkX;
-       spf=pass (google.com: domain of bounces+1823144-9a12-mstowe=gmail.com@email.medium.com designates 149.72.122.8 as permitted sender) smtp.mailfrom="bounces+1823144-9a12-mstowe=gmail.com@email.medium.com";
+       spf=pass (google.com: domain of bounces+1823144-9a12-user=gmail.com@email.medium.com designates 149.72.122.8 as permitted sender) smtp.mailfrom="bounces+1823144-9a12-user=gmail.com@email.medium.com";
        dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=medium.com
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20230601; t=1762613405; x=1763218205;
@@ -94,18 +94,18 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc
 ARC-Authentication-Results: i=1; mx.google.com;
        dkim=pass header.i=@medium.com header.s=m1 header.b=kLXyYkhD;
        dkim=pass header.i=@sendgrid.info header.s=smtpapi header.b=rCbPTNkX;
-       spf=pass (google.com: domain of bounces+1823144-9a12-mstowe=gmail.com@email.medium.com designates 149.72.122.8 as permitted sender) smtp.mailfrom="bounces+1823144-9a12-mstowe=gmail.com@email.medium.com";
+       spf=pass (google.com: domain of bounces+1823144-9a12-user=gmail.com@email.medium.com designates 149.72.122.8 as permitted sender) smtp.mailfrom="bounces+1823144-9a12-user=gmail.com@email.medium.com";
        dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=medium.com
 Received: from o18.email.medium.com (o18.email.medium.com. [149.72.122.8])
         by mx.google.com with ESMTPS id af79cd13be357-8b23520f60asi262802585a.223.2025.11.08.06.50.01
         for <user@gmail.com>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
         Sat, 08 Nov 2025 06:50:02 -0800 (PST)
-Received-SPF: pass (google.com: domain of bounces+1823144-9a12-mstowe=gmail.com@email.medium.com designates 149.72.122.8 as permitted sender) client-ip=149.72.122.8;
+Received-SPF: pass (google.com: domain of bounces+1823144-9a12-user=gmail.com@email.medium.com designates 149.72.122.8 as permitted sender) client-ip=149.72.122.8;
 Authentication-Results: mx.google.com;
        dkim=pass header.i=@medium.com header.s=m1 header.b=kLXyYkhD;
        dkim=pass header.i=@sendgrid.info header.s=smtpapi header.b=rCbPTNkX;
-       spf=pass (google.com: domain of bounces+1823144-9a12-mstowe=gmail.com@email.medium.com designates 149.72.122.8 as permitted sender) smtp.mailfrom="bounces+1823144-9a12-mstowe=gmail.com@email.medium.com";
+       spf=pass (google.com: domain of bounces+1823144-9a12-user=gmail.com@email.medium.com designates 149.72.122.8 as permitted sender) smtp.mailfrom="bounces+1823144-9a12-user=gmail.com@email.medium.com";
        dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=medium.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=medium.com;
 	h=content-type:date:from:mime-version:subject:reply-to:list-unsubscribe:
@@ -171,8 +171,8 @@ Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=utf-8
 Mime-Version: 1.0
 
-Stories for Michael Stowe
-@mstowe_1091 (https://medium.com/@mstowe_1091?source=3Demail-fe864b2d2328-1=
+Stories for John Doe
+@user_1091 (https://medium.com/@user_1091?source=3Demail-fe864b2d2328-1=
 762595646658-digest.reader-------------------------2e35457c_e1a4_4f8c_b6c0_=
 08e2edda035d)
 =C2=B7Become a member (https://medium.com/plans?source=3Demail-fe864b2d2328=
@@ -821,25 +821,25 @@ mp;source=3Demail-fe864b2d2328-1762595646658-digest.reader-----------------=
  t" style=3D"background-color: rgba(255, 255, 255, 1);"><div class=3D"u v w=
  x" style=3D"padding: 12px 16px 0 16px;"><div class=3D"y" style=3D"text-ali=
 gn: left;"><div class><div class=3D"z ab" style=3D"display: inline-block; v=
-ertical-align: middle;"><a href=3D"https://medium.com/@mstowe_1091?source=
+ertical-align: middle;"><a href=3D"https://medium.com/@user_1091?source=
 =3Demail-fe864b2d2328-1762595646658-digest.reader-------------------------2=
 e35457c_e1a4_4f8c_b6c0_08e2edda035d" style=3D"color: inherit; text-decorati=
-on: none;"><img alt=3D"Michael Stowe" class=3D"ac ae af ag" src=3D"https://=
+on: none;"><img alt=3D"John Doe" class=3D"ac ae af ag" src=3D"https://=
 miro.medium.com/fit/c/64/64/0*7fYuqYxz7DA1uGlg" width=3D"32" height=3D"32" =
 style=3D"display: block; border-radius: 50%; height: 32px; width: 32px;"></=
 a></div><div class=3D"z ah ab" style=3D"display: inline-block; vertical-ali=
 gn: middle; padding-left: 9px;"><div class=3D"ai aj ak al am an ao ap aq ar=
  as at" style=3D"font-weight: 400; color: rgba(41, 41, 41, 1);"><a href=3D"=
-https://medium.com/@mstowe_1091?source=3Demail-fe864b2d2328-1762595646658-d=
+https://medium.com/@user_1091?source=3Demail-fe864b2d2328-1762595646658-d=
 igest.reader-------------------------2e35457c_e1a4_4f8c_b6c0_08e2edda035d" =
 style=3D"color: inherit; text-decoration: none;">Stories for <span style=3D=
-"font-weight:700">Michael Stowe</span></a></div><div class=3D"ai aj ak al a=
+"font-weight:700">John Doe</span></a></div><div class=3D"ai aj ak al a=
 m an ao ap aq ar as at" style=3D"font-weight: 400; color: rgba(41, 41, 41, =
 1);"><span class=3D"ai aj ak al am an ao ap aq ar as au" style=3D"font-weig=
 ht: 400; color: rgba(117, 117, 117, 1);"><a href=3D"https://medium.com/@mst=
 owe_1091?source=3Demail-fe864b2d2328-1762595646658-digest.reader-----------=
 --------------2e35457c_e1a4_4f8c_b6c0_08e2edda035d" style=3D"color: inherit=
-; text-decoration: none;">@mstowe_1091</a></span><span class=3D"ai aj ak al=
+; text-decoration: none;">@user_1091</a></span><span class=3D"ai aj ak al=
  am an ao ap aq ar as av" style=3D"font-weight: 400; color: rgba(26, 137, 2=
 3, 1);"><span class=3D"aw ax" style=3D"padding-left: 4px; padding-right: 4p=
 x;">=C2=B7</span><a href=3D"https://medium.com/plans?source=3Demail-fe864b2=
