@@ -1,104 +1,38 @@
-name: "Legitimate Business Detection"
+name: "Legitimate Business Recognition"
 enabled: true
 rules:
-  - name: "Suncadia Resort"
+  - name: "Genetic Testing Companies"
     enabled: true
     criteria:
-      type: "Or"
-      criteria:
-        - type: "SenderPattern"
-          pattern: "(?i).*@suncadia\\.com$"
-        - type: "SenderPattern"
-          pattern: "reservations@suncadia.com"
+      type: "SenderPattern"
+      pattern: ".*@.*(23andme|ancestrydna|myheritage|familytreedna)\\.com$"
     score: -100
-    description: "Legitimate Suncadia Resort hospitality emails"
+    description: "Legitimate genetic testing and ancestry companies"
 
-  - name: "Nextdoor Social Platform"
+  - name: "Food Service Companies"
     enabled: true
     criteria:
-      type: "Or"
-      criteria:
-        - type: "SenderPattern"
-          pattern: "(?i).*@.*nextdoor\\.com$"
-        - type: "SenderPattern"
-          pattern: "reply@ss.email.nextdoor.com"
-    score: -80
-    description: "Legitimate Nextdoor social platform notifications"
+      type: "SenderPattern"
+      pattern: ".*@.*(pagliacci|dominos|pizzahut|ubereats|doordash|grubhub)\\.com$"
+    score: -75
+    description: "Legitimate restaurant and food delivery services"
 
-  - name: "Wolferman's Gourmet Bakery"
+  - name: "Health and Medical Companies"
     enabled: true
     criteria:
-      type: "Or"
-      criteria:
-        - type: "SenderPattern"
-          pattern: "(?i).*@.*wolfermans.*\\.com$"
-        - type: "HeaderPattern"
-          header: "From"
-          pattern: "(?i).*@.*wolfermans.*\\.com.*"
-    score: -100
-    description: "Legitimate Wolferman's Gourmet Bakery emails"
+      type: "SenderPattern"
+      pattern: ".*@.*(webmd|mayoclinic|healthline|medlineplus)\\.com$"
+    score: -50
+    description: "Legitimate health and medical information providers"
 
-  - name: "Credit Karma"
+  - name: "Order Confirmation Patterns"
     enabled: true
     criteria:
-      type: "Or"
+      type: "And"
       criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i)(your.*order|order.*confirmation|order.*receipt)"
         - type: "SenderPattern"
-          pattern: "(?i).*@.*creditkarma\\.com$"
-        - type: "HeaderPattern"
-          header: "From"
-          pattern: "(?i).*@.*creditkarma\\.com.*"
-    score: -200
-    description: "Legitimate Credit Karma financial service emails"
-
-  - name: "Duluth Trading Company"
-    enabled: true
-    criteria:
-      type: "Or"
-      criteria:
-        - type: "SenderPattern"
-          pattern: "(?i).*@.*duluthtrading\\.com$"
-        - type: "HeaderPattern"
-          header: "From"
-          pattern: "(?i).*@.*duluthtrading\\.com.*"
-    score: -150
-    description: "Legitimate Duluth Trading Company emails"
-
-  - name: "Levi's brand"
-    enabled: true
-    criteria:
-      type: "Or"
-      criteria:
-        - type: "SenderPattern"
-          pattern: "(?i).*@.*levi\\.com$"
-        - type: "HeaderPattern"
-          header: "From"
-          pattern: "(?i).*@.*levi\\.com.*"
-    score: -400
-    description: "Legitimate Levi's brand emails"
-
-  - name: "Michaels Custom Framing"
-    enabled: true
-    criteria:
-      type: "Or"
-      criteria:
-        - type: "SenderPattern"
-          pattern: "(?i).*@.*michaelscustomframing\\.com$"
-        - type: "HeaderPattern"
-          header: "From"
-          pattern: "(?i).*@.*michaelscustomframing\\.com.*"
-    score: -150
-    description: "Legitimate Michaels Custom Framing emails"
-
-  - name: "The Gadget Flow"
-    enabled: true
-    criteria:
-      type: "Or"
-      criteria:
-        - type: "SenderPattern"
-          pattern: "(?i).*@.*thegadgetflow\\.com$"
-        - type: "HeaderPattern"
-          header: "From"
-          pattern: "(?i).*@.*thegadgetflow\\.com.*"
-    score: -150
-    description: "Legitimate Gadget Flow newsletter"
+          pattern: ".*@.*(pagliacci|dominos|pizzahut|ubereats|doordash|grubhub)\\.com$"
+    score: -50
+    description: "Legitimate order confirmations from food services"

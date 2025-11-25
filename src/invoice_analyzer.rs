@@ -267,6 +267,12 @@ impl InvoiceAnalyzer {
             }
         }
 
+        // Check for legitimate order confirmations
+        if self.is_legitimate_order_confirmation(subject, sender) {
+            score *= 0.1; // Reduce by 90%
+            risk_factors.push("Legitimate order confirmation detected".to_string());
+        }
+
         // Check for brand impersonation
         if self.has_brand_impersonation(&text, sender, from_header) {
             patterns.push("Brand impersonation detected".to_string());
@@ -328,11 +334,48 @@ impl InvoiceAnalyzer {
 
         for brand in &brands {
             if text.to_lowercase().contains(brand) && !sender.to_lowercase().contains(brand) {
+                // Check if it's a legitimate service integration
+                if self.is_legitimate_service_integration(text, brand, sender) {
+                    continue; // Skip flagging legitimate service integrations
+                }
                 return true;
             }
         }
 
         false
+    }
+
+    fn is_legitimate_service_integration(&self, text: &str, brand: &str, sender: &str) -> bool {
+        let text_lower = text.to_lowercase();
+        
+        // Check for legitimate service integration patterns
+        let integrations = match brand {
+            "google" => vec!["google pay", "google maps", "google checkout", "google wallet"],
+            "apple" => vec!["apple pay", "apple wallet"],
+            "paypal" => vec!["paypal checkout", "paypal payment"],
+            _ => vec![]
+        };
+
+        // If brand mention is in context of legitimate service integration
+        integrations.iter().any(|integration| text_lower.contains(integration)) ||
+        // Or if sender is a known legitimate business that would use these services
+        self.is_known_legitimate_business(sender)
+    }
+
+    fn is_known_legitimate_business(&self, sender: &str) -> bool {
+        let legitimate_businesses = [
+            "pagliacci.com",
+            "dominos.com",
+            "pizzahut.com",
+            "23andme.com",
+            "ancestrydna.com",
+            "ubereats.com",
+            "doordash.com",
+            "myheritage.com",
+            "webmd.com",
+        ];
+
+        legitimate_businesses.iter().any(|business| sender.contains(business))
     }
 
     fn has_sender_brand_mismatch(&self, text: &str, sender: &str, from_header: &str) -> bool {
@@ -364,6 +407,30 @@ impl InvoiceAnalyzer {
         }
 
         false
+    }
+
+    fn is_legitimate_order_confirmation(&self, subject: &str, sender: &str) -> bool {
+        let order_patterns = [
+            r"(?i)your.*order",
+            r"(?i)order.*confirmation",
+            r"(?i)order.*receipt",
+            r"(?i)order.*summary",
+        ];
+
+        let food_service_domains = [
+            "pagliacci.com",
+            "dominos.com", 
+            "pizzahut.com",
+            "ubereats.com",
+            "doordash.com",
+            "grubhub.com",
+            "postmates.com",
+        ];
+
+        // Check if subject matches order pattern and sender is legitimate food service
+        order_patterns.iter().any(|pattern| {
+            Regex::new(pattern).map_or(false, |re| re.is_match(subject))
+        }) && food_service_domains.iter().any(|domain| sender.contains(domain))
     }
 
     fn is_legitimate_business(&self, sender: &str, from_header: &str) -> bool {

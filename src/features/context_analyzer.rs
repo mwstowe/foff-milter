@@ -124,11 +124,45 @@ impl ContextAnalyzer {
         }
     }
 
+    fn is_legitimate_marketing_urgency(&self, text: &str, sender: &str) -> bool {
+        let text_lower = text.to_lowercase();
+        
+        // Legitimate marketing urgency patterns
+        let marketing_urgency = [
+            "limited time offer",
+            "sale ends",
+            "while supplies last",
+            "today only",
+            "black friday",
+            "cyber monday",
+            "holiday sale",
+        ];
+
+        let legitimate_businesses = [
+            "23andme.com",
+            "ancestrydna.com",
+            "pagliacci.com",
+            "dominos.com",
+            "pizzahut.com",
+            "ubereats.com",
+            "doordash.com",
+        ];
+
+        // If sender is legitimate business and urgency is marketing-related
+        legitimate_businesses.iter().any(|business| sender.contains(business)) &&
+        marketing_urgency.iter().any(|phrase| text_lower.contains(phrase))
+    }
+
     fn analyze_urgency_vs_legitimacy(&self, context: &MailContext) -> (i32, Vec<String>) {
         let body = context.body.as_deref().unwrap_or("");
         let subject = context
             .headers
             .get("Subject")
+            .map(|s| s.as_str())
+            .unwrap_or("");
+        let sender = context
+            .headers
+            .get("From")
             .map(|s| s.as_str())
             .unwrap_or("");
         let full_text = format!("{} {}", subject, body);
@@ -140,8 +174,14 @@ impl ContextAnalyzer {
         // Count urgency indicators
         for pattern in &self.urgency_patterns {
             if pattern.is_match(&full_text) {
-                urgency_score += 10;
-                evidence.push(format!("Urgency pattern detected: {}", pattern.as_str()));
+                // Check if this is legitimate marketing urgency
+                if self.is_legitimate_marketing_urgency(&full_text, sender) {
+                    urgency_score += 2; // Reduced penalty for legitimate marketing
+                    evidence.push(format!("Marketing urgency detected: {}", pattern.as_str()));
+                } else {
+                    urgency_score += 10;
+                    evidence.push(format!("Urgency pattern detected: {}", pattern.as_str()));
+                }
             }
         }
 
