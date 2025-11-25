@@ -83,6 +83,24 @@ impl FeatureExtractor for InvoiceAnalyzer {
             .iter()
             .any(|domain| sender.contains(domain) || from_header.contains(domain));
 
+        // Check for medical institutions
+        let medical_institutions = [
+            "labcorp.com", "quest.com", "mayo.org", "cleveland.org",
+            "kaiser.org", "johnshopkins.org", "mountsinai.org", "cedars-sinai.org"
+        ];
+        let is_medical = medical_institutions.iter().any(|domain| 
+            sender.to_lowercase().contains(domain) || from_header.to_lowercase().contains(domain)
+        );
+
+        // Treat medical institutions as legitimate
+        let is_legitimate_or_medical = is_legitimate || is_medical;
+
+        // Apply strong medical institution protection
+        if is_medical {
+            score = (score as f32 * 0.1) as i32; // 90% reduction for medical institutions
+            evidence.push("Medical institution detected - score reduced".to_string());
+        }
+
         // Check for invoice scam indicators with context awareness
         let click_here_regex = Regex::new(r"(?i)\bclick\s+here\b").unwrap();
 
@@ -108,12 +126,12 @@ impl FeatureExtractor for InvoiceAnalyzer {
                     }
                 }
 
-                let base_score = if is_legitimate { 5 } else { 30 }; // Reduced score for legitimate senders
+                let base_score = if is_legitimate_or_medical { 5 } else { 30 }; // Reduced score for legitimate senders
                 score += base_score;
                 evidence.push(format!(
                     "Invoice scam pattern detected: {} (legitimate sender: {})",
                     pattern.as_str(),
-                    is_legitimate
+                    is_legitimate_or_medical
                 ));
             }
         }

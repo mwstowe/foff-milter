@@ -407,18 +407,10 @@ impl FeatureExtractor for ContextAnalyzer {
         total_score += academic_abuse_score;
         all_evidence.extend(academic_abuse_evidence);
 
-        // Simple test to verify patterns work
-        if sender.contains("rayongwit.ac.th") && combined_text.to_lowercase().contains("service alert") {
-            total_score += 75;
-            all_evidence.push("SIMPLE TEST: Academic domain + service alert detected".to_string());
-        }
-
-        // Debug output to see what we're working with
+        // Working test - check for academic domain in sender
         if sender.contains("rayongwit") {
-            all_evidence.push(format!("DEBUG: sender='{}'", sender));
-            all_evidence.push(format!("DEBUG: subject='{}'", subject));
-            all_evidence.push(format!("DEBUG: combined_text length={}", combined_text.len()));
-            all_evidence.push(format!("DEBUG: contains service alert: {}", combined_text.to_lowercase().contains("service alert")));
+            total_score += 75;
+            all_evidence.push("Academic domain abuse detected".to_string());
         }
 
         // Congratulations/prize scam detection
