@@ -275,8 +275,11 @@ impl InvoiceAnalyzer {
 
         // Check for legitimate medical institution communications
         if self.is_legitimate_medical_communication(subject, sender, &text) {
+            log::debug!("Medical institution detected: sender={}, subject={}", sender, subject);
             score *= 0.1; // Reduce by 90%
             risk_factors.push("Legitimate medical institution communication detected".to_string());
+        } else {
+            log::debug!("Medical institution check: sender={}, not recognized as medical", sender);
         }
 
         // Check for brand impersonation
