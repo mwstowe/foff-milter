@@ -387,16 +387,23 @@ rules:
   # Direct patterns for remaining missed spam
   - name: "Direct missed spam patterns"
     criteria:
-      type: "Or"
+      type: "And"
       criteria:
-        - type: "SubjectPattern"
-          pattern: "(?i).*(fake.*black.*friday|fake.*invoice|fake.*order|fake.*payment|fake.*repair|trevor|knee.*health|sharefile|stanley.*tools)"
-        - type: "BodyPattern"
-          pattern: "(?i).*(fake.*black.*friday|fake.*invoice|fake.*order|fake.*payment|fake.*repair|trevor|knee.*health|sharefile|stanley.*tools)"
-        - type: "SenderPattern"
-          pattern: "(?i).*(trevor|fake|sharefile|stanley).*"
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(fake.*black.*friday|fake.*invoice|fake.*order|fake.*payment|fake.*repair|trevor|knee.*health|sharefile|stanley.*tools)"
+            - type: "BodyPattern"
+              pattern: "(?i).*(fake.*black.*friday|fake.*invoice|fake.*order|fake.*payment|fake.*repair|trevor|knee.*health|sharefile|stanley.*tools)"
+            - type: "SenderPattern"
+              pattern: "(?i).*(trevor|fake|sharefile|stanley).*"
+        - type: "Not"
+          criteria:
+            type: "HeaderPattern"
+            header: "From"
+            pattern: ".*quora\\\\.com.*"
     score: 65
-    description: "Direct patterns for commonly missed spam"
+    description: "Direct patterns for commonly missed spam (excludes legitimate platforms)"
 
   # Ultra-aggressive final patterns
   - name: "Final spam catch-all"
@@ -414,9 +421,9 @@ rules:
           criteria:
             type: "HeaderPattern"
             header: "From"
-            pattern: ".*@(namemaker\\.com|backstage\\.com|kiwico\\.com|amazon\\.com|walmart\\.com|target\\.com|bestbuy\\.com).*"
+            pattern: ".*@(namemaker\\\\.com|backstage\\\\.com|kiwico\\\\.com|amazon\\\\.com|walmart\\\\.com|target\\\\.com|bestbuy\\\\.com).*|.*quora\\\\.com.*"
     score: 25
-    description: "Ultra-aggressive final spam patterns"
+    description: "Ultra-aggressive final spam patterns (excludes legitimate platforms)"
 
   # Very specific content-based patterns
   - name: "Specific content spam patterns"
