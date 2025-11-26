@@ -204,7 +204,9 @@ impl ContextAnalyzer {
         let sender_lower = sender.to_lowercase();
         MEDICAL_CREDENTIALS.iter().any(|cred| sender_lower.contains(cred))
     }
-        let employment_scam_patterns = [
+
+    fn detect_employment_scam(&self, text: &str, sender: &str) -> (i32, Vec<String>) {
+        const EMPLOYMENT_SCAM_PATTERNS: &[&str] = &[
             r"(?i)(work|live).*in.*(london|uk|canada|australia|usa|america)",
             r"(?i)hiring.*international.*workers",
             r"(?i)fresh start.*email.*cv",
@@ -221,7 +223,7 @@ impl ContextAnalyzer {
         let mut evidence = Vec::new();
 
         // Check for employment scam patterns
-        for pattern in &employment_scam_patterns {
+        for pattern in EMPLOYMENT_SCAM_PATTERNS {
             if let Ok(regex) = Regex::new(pattern) {
                 if regex.is_match(text) {
                     score += 40;
@@ -390,6 +392,7 @@ impl ContextAnalyzer {
 
         (score, evidence)
     }
+}
 
 impl FeatureExtractor for ContextAnalyzer {
     fn extract(&self, context: &MailContext) -> FeatureScore {

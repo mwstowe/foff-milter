@@ -761,7 +761,7 @@ impl FeatureExtractor for SenderAlignmentAnalyzer {
 
         let confidence = if evidence.is_empty() { 0.9 } else { 0.85 };
 
-        // Enhanced brand impersonation detection
+        // Always check for enhanced brand impersonation (even if no other issues)
         let (brand_impersonation_score, brand_impersonation_evidence) = 
             self.detect_suspicious_brand_impersonation(&sender_info.from_display_name, &sender_info.from_domain);
         score += brand_impersonation_score;
