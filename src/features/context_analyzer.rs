@@ -202,12 +202,12 @@ impl ContextAnalyzer {
             r"(?i)hiring.*international.*workers",
             r"(?i)fresh start.*email.*cv",
             r"(?i)we.*hiring.*workers.*live.*work",
-            r"(?i)interested.*fresh start.*kindly email"
+            r"(?i)interested.*fresh start.*kindly email",
         ];
 
         let generic_name_patterns = [
             r"(?i)mrs?\.\s+[a-z]+\s+[a-z]+",
-            r"(?i)mr?\.\s+[a-z]+\s+[a-z]+"
+            r"(?i)mr?\.\s+[a-z]+\s+[a-z]+",
         ];
 
         let mut score = 0;
@@ -225,7 +225,10 @@ impl ContextAnalyzer {
         }
 
         // Check for generic names from free email providers
-        if sender.contains("@gmail.com") || sender.contains("@yahoo.com") || sender.contains("@hotmail.com") {
+        if sender.contains("@gmail.com")
+            || sender.contains("@yahoo.com")
+            || sender.contains("@hotmail.com")
+        {
             for pattern in &generic_name_patterns {
                 if let Ok(regex) = Regex::new(pattern) {
                     if regex.is_match(sender) {
@@ -464,7 +467,8 @@ impl FeatureExtractor for ContextAnalyzer {
         all_evidence.extend(academic_abuse_evidence);
 
         // Employment scam detection
-        let (employment_scam_score, employment_scam_evidence) = self.detect_employment_scam(&combined_text, sender);
+        let (employment_scam_score, employment_scam_evidence) =
+            self.detect_employment_scam(&combined_text, sender);
         total_score += employment_scam_score;
         all_evidence.extend(employment_scam_evidence);
 
