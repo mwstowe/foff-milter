@@ -196,6 +196,50 @@ impl ContextAnalyzer {
         }
     }
 
+    fn detect_employment_scam(&self, text: &str, sender: &str) -> (i32, Vec<String>) {
+        let employment_scam_patterns = [
+            r"(?i)(work|live).*in.*(london|uk|canada|australia|usa|america)",
+            r"(?i)hiring.*international.*workers",
+            r"(?i)fresh start.*email.*cv",
+            r"(?i)we.*hiring.*workers.*live.*work",
+            r"(?i)interested.*fresh start.*kindly email"
+        ];
+
+        let generic_name_patterns = [
+            r"(?i)mrs?\.\s+[a-z]+\s+[a-z]+",
+            r"(?i)mr?\.\s+[a-z]+\s+[a-z]+"
+        ];
+
+        let mut score = 0;
+        let mut evidence = Vec::new();
+
+        // Check for employment scam patterns
+        for pattern in &employment_scam_patterns {
+            if let Ok(regex) = Regex::new(pattern) {
+                if regex.is_match(text) {
+                    score += 40;
+                    evidence.push("Employment scam pattern detected".to_string());
+                    break;
+                }
+            }
+        }
+
+        // Check for generic names from free email providers
+        if sender.contains("@gmail.com") || sender.contains("@yahoo.com") || sender.contains("@hotmail.com") {
+            for pattern in &generic_name_patterns {
+                if let Ok(regex) = Regex::new(pattern) {
+                    if regex.is_match(sender) {
+                        score += 25;
+                        evidence.push("Generic name from free email provider".to_string());
+                        break;
+                    }
+                }
+            }
+        }
+
+        (score, evidence)
+    }
+
     fn detect_academic_domain_abuse(&self, text: &str, sender: &str) -> (i32, Vec<String>) {
         let academic_domain_patterns = [r"\.edu$", r"\.ac\.[a-z]{2}$", r"\.edu\.[a-z]{2}$"];
 
@@ -418,6 +462,11 @@ impl FeatureExtractor for ContextAnalyzer {
             self.detect_academic_domain_abuse(&combined_text, sender);
         total_score += academic_abuse_score;
         all_evidence.extend(academic_abuse_evidence);
+
+        // Employment scam detection
+        let (employment_scam_score, employment_scam_evidence) = self.detect_employment_scam(&combined_text, sender);
+        total_score += employment_scam_score;
+        all_evidence.extend(employment_scam_evidence);
 
         // Working test - check for academic domain in sender
         if sender.contains("rayongwit") {
