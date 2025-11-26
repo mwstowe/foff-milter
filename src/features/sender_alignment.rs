@@ -451,75 +451,116 @@ impl SenderAlignmentAnalyzer {
 
     fn detect_professional_credentials(&self, sender: &str) -> bool {
         const MEDICAL_CREDENTIALS: &[&str] = &[
-            "dr.", "dr ", "md", "phd", "dds", "dvm", "pharmd", "rn", "np"
+            "dr.", "dr ", "md", "phd", "dds", "dvm", "pharmd", "rn", "np",
         ];
-        
+
         const MEDICAL_DOMAINS: &[&str] = &[
-            ".edu", "medical", "health", "clinic", "hospital", "research"
+            ".edu", "medical", "health", "clinic", "hospital", "research",
         ];
-        
+
         let sender_lower = sender.to_lowercase();
-        
+
         // Check for medical credentials in sender name
-        let has_credentials = MEDICAL_CREDENTIALS.iter()
+        let has_credentials = MEDICAL_CREDENTIALS
+            .iter()
             .any(|cred| sender_lower.contains(cred));
-            
+
         // Check for medical/research domains
-        let has_medical_domain = MEDICAL_DOMAINS.iter()
+        let has_medical_domain = MEDICAL_DOMAINS
+            .iter()
             .any(|domain| sender_lower.contains(domain));
-            
+
         has_credentials || has_medical_domain
     }
 
     fn detect_legitimate_organization(&self, domain: &str) -> bool {
         const NONPROFIT_ORGS: &[&str] = &[
-            "eff.org", "aclu.org", "amnesty.org", "redcross.org",
-            "unitedway.org", "goodwill.org", "salvation", "habitat.org"
+            "eff.org",
+            "aclu.org",
+            "amnesty.org",
+            "redcross.org",
+            "unitedway.org",
+            "goodwill.org",
+            "salvation",
+            "habitat.org",
         ];
-        
+
         const HEALTHCARE_PROVIDERS: &[&str] = &[
-            "zoomcare.com", "kaiser", "providence", "swedish.org",
-            "virginia", "mayo.edu", "cleveland", "johns"
+            "zoomcare.com",
+            "kaiser",
+            "providence",
+            "swedish.org",
+            "virginia",
+            "mayo.edu",
+            "cleveland",
+            "johns",
         ];
-        
+
         // Check for .org domains (general nonprofit indicator)
         if domain.ends_with(".org") {
             return true;
         }
-        
+
         // Check specific known organizations
-        NONPROFIT_ORGS.iter().any(|org| domain.contains(org)) ||
-        HEALTHCARE_PROVIDERS.iter().any(|provider| domain.contains(provider))
+        NONPROFIT_ORGS.iter().any(|org| domain.contains(org))
+            || HEALTHCARE_PROVIDERS
+                .iter()
+                .any(|provider| domain.contains(provider))
     }
 
-    fn detect_suspicious_brand_impersonation(&self, sender: &str, domain: &str) -> (i32, Vec<String>) {
-        const SUSPICIOUS_PATTERNS: &[&str] = &[
-            "no-replay", "no-repley", "noreplay", "no_reply", "norepy"
-        ];
-        
+    fn detect_suspicious_brand_impersonation(
+        &self,
+        sender: &str,
+        domain: &str,
+    ) -> (i32, Vec<String>) {
+        const SUSPICIOUS_PATTERNS: &[&str] =
+            &["no-replay", "no-repley", "noreplay", "no_reply", "norepy"];
+
         const MAJOR_BRANDS: &[&str] = &[
-            "walmart", "amazon", "apple", "microsoft", "google", "facebook",
-            "paypal", "ebay", "target", "costco", "bestbuy"
+            "walmart",
+            "amazon",
+            "apple",
+            "microsoft",
+            "google",
+            "facebook",
+            "paypal",
+            "ebay",
+            "target",
+            "costco",
+            "bestbuy",
         ];
-        
+
         let sender_lower = sender.to_lowercase();
         let domain_lower = domain.to_lowercase();
-        
-        log::debug!("Brand impersonation check - sender: '{}', domain: '{}'", sender, domain);
-        
+
+        log::debug!(
+            "Brand impersonation check - sender: '{}', domain: '{}'",
+            sender,
+            domain
+        );
+
         // Check for suspicious sender patterns
-        let has_suspicious_pattern = SUSPICIOUS_PATTERNS.iter()
+        let has_suspicious_pattern = SUSPICIOUS_PATTERNS
+            .iter()
             .any(|pattern| sender_lower.contains(pattern));
-            
+
         // Check if claiming to be major brand
-        let claims_major_brand = MAJOR_BRANDS.iter()
+        let claims_major_brand = MAJOR_BRANDS
+            .iter()
             .any(|brand| domain_lower.contains(brand));
-            
-        log::debug!("Suspicious pattern: {}, Major brand: {}", has_suspicious_pattern, claims_major_brand);
-            
+
+        log::debug!(
+            "Suspicious pattern: {}, Major brand: {}",
+            has_suspicious_pattern,
+            claims_major_brand
+        );
+
         if has_suspicious_pattern && claims_major_brand {
             log::info!("BRAND IMPERSONATION DETECTED: {} + {}", sender, domain);
-            (300, vec!["Suspicious brand impersonation pattern detected".to_string()])
+            (
+                300,
+                vec!["Suspicious brand impersonation pattern detected".to_string()],
+            )
         } else if has_suspicious_pattern {
             (150, vec!["Suspicious sender pattern detected".to_string()])
         } else {
@@ -766,7 +807,7 @@ impl FeatureExtractor for SenderAlignmentAnalyzer {
 
         // Always check for enhanced brand impersonation (even if no other issues)
         let full_from_header = context.from_header.as_deref().unwrap_or("");
-        let (brand_impersonation_score, brand_impersonation_evidence) = 
+        let (brand_impersonation_score, brand_impersonation_evidence) =
             self.detect_suspicious_brand_impersonation(full_from_header, &sender_info.from_domain);
         score += brand_impersonation_score;
         evidence.extend(brand_impersonation_evidence);
@@ -775,15 +816,19 @@ impl FeatureExtractor for SenderAlignmentAnalyzer {
         let confidence = if evidence.is_empty() { 0.9 } else { 0.85 };
 
         // Apply professional credential discount
-        if self.detect_professional_credentials(&context.from_header.as_deref().unwrap_or("")) {
+        if self.detect_professional_credentials(context.from_header.as_deref().unwrap_or("")) {
             score = (score as f32 * 0.3) as i32; // 70% reduction for medical professionals
-            evidence.push("Professional credentials detected - reduced scoring applied".to_string());
+            evidence
+                .push("Professional credentials detected - reduced scoring applied".to_string());
         }
 
         // Apply organization whitelist discount
         if self.detect_legitimate_organization(&sender_info.from_domain) {
             score = (score as f32 * 0.2) as i32; // 80% reduction for legitimate organizations
-            evidence.push("Legitimate organization detected - significant scoring reduction applied".to_string());
+            evidence.push(
+                "Legitimate organization detected - significant scoring reduction applied"
+                    .to_string(),
+            );
         }
 
         // Apply legitimate business discount
