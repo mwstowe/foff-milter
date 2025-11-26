@@ -196,7 +196,14 @@ impl ContextAnalyzer {
         }
     }
 
-    fn detect_employment_scam(&self, text: &str, sender: &str) -> (i32, Vec<String>) {
+    fn has_professional_credentials(&self, sender: &str) -> bool {
+        const MEDICAL_CREDENTIALS: &[&str] = &[
+            "dr.", "dr ", "md", "phd", "dds", "dvm", "pharmd", "rn", "np"
+        ];
+        
+        let sender_lower = sender.to_lowercase();
+        MEDICAL_CREDENTIALS.iter().any(|cred| sender_lower.contains(cred))
+    }
         let employment_scam_patterns = [
             r"(?i)(work|live).*in.*(london|uk|canada|australia|usa|america)",
             r"(?i)hiring.*international.*workers",
@@ -383,7 +390,6 @@ impl ContextAnalyzer {
 
         (score, evidence)
     }
-}
 
 impl FeatureExtractor for ContextAnalyzer {
     fn extract(&self, context: &MailContext) -> FeatureScore {
@@ -636,6 +642,12 @@ impl FeatureExtractor for ContextAnalyzer {
         all_evidence.append(&mut structure_evidence);
 
         let confidence = if all_evidence.is_empty() { 0.7 } else { 0.85 };
+
+        // Apply professional credential discount for health-related scoring
+        if self.has_professional_credentials(sender) {
+            total_score = (total_score as f32 * 0.3) as i32; // 70% reduction for medical professionals
+            all_evidence.push("Professional medical credentials detected - reduced health scoring applied".to_string());
+        }
 
         FeatureScore {
             feature_name: "Context Analysis".to_string(),
