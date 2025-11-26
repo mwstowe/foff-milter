@@ -448,61 +448,8 @@ impl SenderAlignmentAnalyzer {
         ];
         support_domains.iter().any(|d| domain.contains(d))
     }
+}
 
-    fn is_legitimate_platform(&self, domain: &str) -> bool {
-        const LEGITIMATE_PLATFORMS: &[&str] = &[
-            "quora.com", "reddit.com", "stackoverflow.com", "github.com",
-            "medium.com", "substack.com", "discord.com", "slack.com",
-            "notion.so", "atlassian.net", "zendesk.com", "intercom.io"
-        ];
-        
-        LEGITIMATE_PLATFORMS.iter().any(|platform| domain.contains(platform))
-    }
-
-    fn detect_reply_to_mismatch(&self, context: &MailContext) -> (i32, Vec<String>) {
-        let from_header = context.from_header.as_deref().unwrap_or("");
-        let reply_to = context.headers.get("Reply-To").map(|s| s.as_str()).unwrap_or("");
-        
-        if reply_to.is_empty() {
-            return (0, vec![]);
-        }
-
-        // Extract emails from headers
-        let from_email = self.extract_email_from_header(from_header);
-        let reply_to_email = self.extract_email_from_header(reply_to);
-
-        if from_email != reply_to_email {
-            // Check if both are from free email providers
-            let free_providers = ["gmail.com", "yahoo.com", "hotmail.com", "outlook.com"];
-            let from_is_free = free_providers.iter().any(|provider| from_email.contains(provider));
-            let reply_to_is_free = free_providers.iter().any(|provider| reply_to_email.contains(provider));
-
-            if from_is_free && reply_to_is_free {
-                return (50, vec![format!("Reply-To mismatch with free providers: {} vs {}", from_email, reply_to_email)]);
-            } else if from_email != reply_to_email {
-                return (25, vec![format!("Reply-To mismatch detected: {} vs {}", from_email, reply_to_email)]);
-            }
-        }
-
-        (0, vec![])
-    }
-
-    fn extract_email_from_header(&self, header: &str) -> String {
-        if let Some(start) = header.find('<') {
-            if let Some(end) = header.find('>') {
-                return header[start + 1..end].to_string();
-            }
-        }
-        
-        // If no angle brackets, try to extract email pattern
-        if let Ok(regex) = Regex::new(r"([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})") {
-            if let Some(captures) = regex.captures(header) {
-                return captures.get(1).unwrap().as_str().to_string();
-            }
-        }
-        
-        header.to_string()
-    }
 #[derive(Debug)]
 struct SenderInfo {
     from_domain: String,
@@ -741,21 +688,17 @@ impl FeatureExtractor for SenderAlignmentAnalyzer {
 
         let confidence = if evidence.is_empty() { 0.9 } else { 0.85 };
 
-        // Check for Reply-To mismatches
-        let (reply_to_score, reply_to_evidence) = self.detect_reply_to_mismatch(context);
-        score += reply_to_score;
-        evidence.extend(reply_to_evidence);
-
-        // Apply platform recognition discount
-        if self.is_legitimate_platform(&sender_info.from_domain) {
-            score = (score as f32 * 0.1) as i32; // 90% reduction for legitimate platforms
-            evidence.push("Legitimate platform detected - significant scoring reduction applied".to_string());
-        }
-
         // Apply legitimate business discount
         if self.is_legitimate_business(&sender_info) {
             score = (score as f32 * 0.3) as i32; // 70% reduction for legitimate businesses
             evidence.push("Legitimate business sender - reduced scoring applied".to_string());
+        }
+
+        // Apply platform recognition discount for known Q&A and development platforms
+        let platform_domains = ["quora.com", "reddit.com", "stackoverflow.com", "github.com"];
+        if platform_domains.iter().any(|domain| sender_info.from_domain.contains(domain)) {
+            score = (score as f32 * 0.1) as i32; // 90% reduction for legitimate platforms
+            evidence.push("Legitimate platform detected - significant scoring reduction applied".to_string());
         }
 
         FeatureScore {
@@ -802,4 +745,4 @@ impl SenderAlignmentAnalyzer {
             .any(|&indicator| combined_text.contains(indicator))
     }
 }
-
+impl SenderAlignmentAnalyzer {}
