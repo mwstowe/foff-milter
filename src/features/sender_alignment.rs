@@ -505,6 +505,8 @@ impl SenderAlignmentAnalyzer {
         let sender_lower = sender.to_lowercase();
         let domain_lower = domain.to_lowercase();
         
+        log::debug!("Brand impersonation check - sender: '{}', domain: '{}'", sender, domain);
+        
         // Check for suspicious sender patterns
         let has_suspicious_pattern = SUSPICIOUS_PATTERNS.iter()
             .any(|pattern| sender_lower.contains(pattern));
@@ -513,7 +515,10 @@ impl SenderAlignmentAnalyzer {
         let claims_major_brand = MAJOR_BRANDS.iter()
             .any(|brand| domain_lower.contains(brand));
             
+        log::debug!("Suspicious pattern: {}, Major brand: {}", has_suspicious_pattern, claims_major_brand);
+            
         if has_suspicious_pattern && claims_major_brand {
+            log::info!("BRAND IMPERSONATION DETECTED: {} + {}", sender, domain);
             (300, vec!["Suspicious brand impersonation pattern detected".to_string()])
         } else if has_suspicious_pattern {
             (150, vec!["Suspicious sender pattern detected".to_string()])
@@ -759,13 +764,15 @@ impl FeatureExtractor for SenderAlignmentAnalyzer {
         score += spoofing_issues.len() as i32 * 15;
         evidence.extend(spoofing_issues);
 
-        let confidence = if evidence.is_empty() { 0.9 } else { 0.85 };
-
         // Always check for enhanced brand impersonation (even if no other issues)
+        let full_from_header = context.from_header.as_deref().unwrap_or("");
         let (brand_impersonation_score, brand_impersonation_evidence) = 
-            self.detect_suspicious_brand_impersonation(&sender_info.from_display_name, &sender_info.from_domain);
+            self.detect_suspicious_brand_impersonation(full_from_header, &sender_info.from_domain);
         score += brand_impersonation_score;
         evidence.extend(brand_impersonation_evidence);
+
+        // Ensure we return a result if brand impersonation was detected, even if base score was 0
+        let confidence = if evidence.is_empty() { 0.9 } else { 0.85 };
 
         // Apply professional credential discount
         if self.detect_professional_credentials(&context.from_header.as_deref().unwrap_or("")) {
