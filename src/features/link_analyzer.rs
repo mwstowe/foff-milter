@@ -400,7 +400,8 @@ impl FeatureExtractor for LinkAnalyzer {
 
         // Reduce penalties for legitimate retailers
         if let Some(sender) = context.headers.get("From") {
-            if self.is_legitimate_retailer(sender) || sender.to_lowercase().contains("humblebundle") {
+            if self.is_legitimate_retailer(sender) || sender.to_lowercase().contains("humblebundle")
+            {
                 score = (score as f32 * 0.2) as i32; // 80% reduction for retailers and Humble Bundle
             } else if self.is_medical_institution(sender) {
                 score = (score as f32 * 0.2) as i32; // 80% reduction for medical
@@ -408,10 +409,14 @@ impl FeatureExtractor for LinkAnalyzer {
         }
 
         // Additional specific check for Humble Bundle to ensure it passes
-        if let Some(sender) = context.headers.get("from") { // Use lowercase 'from'
+        if let Some(sender) = context.headers.get("from") {
+            // Use lowercase 'from'
             eprintln!("DEBUG: Checking From header: {}", sender);
             if sender.to_lowercase().contains("humblebundle") {
-                eprintln!("DEBUG: Humble Bundle detected in From header, reducing score from {} to 10", score);
+                eprintln!(
+                    "DEBUG: Humble Bundle detected in From header, reducing score from {} to 10",
+                    score
+                );
                 score = score.min(10); // Cap at 10 points for Humble Bundle
             }
         } else {
