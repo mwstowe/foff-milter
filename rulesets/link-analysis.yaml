@@ -6,23 +6,29 @@ rules:
     criteria:
       type: "And"
       criteria:
-        - type: "PhishingSuspiciousLinks"
-          check_url_shorteners: true
-          check_suspicious_tlds: false
-          check_ip_addresses: false
-          allow_sender_domain: true
-          allow_email_infrastructure: true
-          email_infrastructure_domains:
-            - "mailchimp.com"
-            - "constantcontact.com"
-            - "sendgrid.net"
-            - "mailgun.org"
-            - "e.iheart.com"
-            - "click1.e.iheart.com"
-            - "click.e.iheart.com"
-            - "iheart.com"
-            - "amazonses.com"
-            - "backerkit.com"
+        - type: "And"
+          criteria:
+            - type: "PhishingSuspiciousLinks"
+              check_url_shorteners: true
+              check_suspicious_tlds: false
+              check_ip_addresses: false
+              allow_sender_domain: true
+              allow_email_infrastructure: true
+              email_infrastructure_domains:
+                - "mailchimp.com"
+                - "constantcontact.com"
+                - "sendgrid.net"
+                - "mailgun.org"
+                - "e.iheart.com"
+                - "click1.e.iheart.com"
+                - "click.e.iheart.com"
+                - "iheart.com"
+                - "amazonses.com"
+                - "backerkit.com"
+            - type: "Not"
+              criteria:
+                type: "SenderPattern"
+                pattern: "(?i).*@.*(ladyyum|humblebundle|mailer\\.humblebundle)\\.(com|net)$"
             - "outlook.com"
             - "gmail.com"
             - "1800flowersinc.com"

@@ -12,8 +12,20 @@ rules:
   - name: "Payment Service Abuse"
     enabled: true
     criteria:
-      type: "SubjectPattern"
-      pattern: "(?i).*(paypal.*payment|stripe.*payment|square.*payment|payment.*received|money.*sent|invoice.*paid|transaction.*complete|refund.*processed).*"
+      type: "And"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(paypal.*payment|stripe.*payment|square.*payment|payment.*received|money.*sent|invoice.*paid|transaction.*complete|refund.*processed).*"
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "SenderPattern"
+                pattern: "(?i).*@.*apple.*"
+              - type: "SenderPattern"
+                pattern: "(?i).*@.*paypal\\.(com|net)$"
+              - type: "SenderPattern"
+                pattern: "(?i).*@.*stripe\\.(com|net)$"
     score: 40
     description: "Fake payment service notifications"
 

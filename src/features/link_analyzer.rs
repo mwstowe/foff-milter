@@ -373,11 +373,14 @@ impl LinkAnalyzer {
             "nordstrom.com",
             "target.com",
             "walmart.com",
+            "humblebundle.com",
+            "mailer.humblebundle.com",
+            "ladyyum.com",
         ];
 
         major_retailers
             .iter()
-            .any(|retailer| sender.contains(retailer))
+            .any(|retailer| sender.to_lowercase().contains(retailer))
     }
 }
 

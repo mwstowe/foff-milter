@@ -341,6 +341,7 @@ impl SenderAlignmentAnalyzer {
             "ladyyum.com",
             "ikea.us",
             "capitalone.com",
+            "mailer.humblebundle.com",
         ];
 
         // Check the full domain for business names (handles complex domains like Adobe Campaign)
