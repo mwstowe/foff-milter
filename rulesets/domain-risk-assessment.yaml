@@ -120,8 +120,14 @@ rules:
   # Low Risk Indicators (15-39 points)
   - name: "Uncommon but legitimate TLDs"
     criteria:
-      type: "SenderPattern"
-      pattern: ".*@.*\\.(io|co|me|tv|fm|am|ly|be|it|us|ca|uk|de|fr|jp|au)$"
+      type: "And"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@.*\\.(io|co|me|tv|fm|am|ly|be|it|us|ca|uk|de|fr|jp|au)$"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(ikea|walmart|amazon|target|bestbuy|costco|homedepot|lowes|macys|nordstrom)\\.(us|co|uk|ca|au|de|fr|jp)$"
     score: 20
     description: "Uncommon but generally legitimate TLDs"
 
