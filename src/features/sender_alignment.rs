@@ -200,6 +200,8 @@ impl SenderAlignmentAnalyzer {
             "gmail.com",              // For forwarded emails
             "emails.pitneybowes.com", // Pitney Bowes email service
             "mail.arrived.com",       // Arrived email service
+            "mcdlv.net",              // MailChimp delivery network
+            "wdc02.mcdlv.net",        // MailChimp WDC02 delivery
         ];
 
         legitimate_services
@@ -334,6 +336,11 @@ impl SenderAlignmentAnalyzer {
             "bestbuy.com",
             "macys.com",
             "nordstrom.com",
+            "humblebundle.com",
+            "bedjet.com",
+            "ladyyum.com",
+            "ikea.us",
+            "capitalone.com",
         ];
 
         // Check the full domain for business names (handles complex domains like Adobe Campaign)
@@ -496,6 +503,17 @@ impl SenderAlignmentAnalyzer {
             "johns",
         ];
 
+        const MAJOR_BRANDS: &[&str] = &[
+            "apple.com",
+            "applecard.apple",
+            "notification.capitalone.com",
+            "ikea.us",
+            "bedjet.com",
+            "ladyyum.com",
+            "humblebundle.com",
+            "mailer.humblebundle.com",
+        ];
+
         // Check for .org domains (general nonprofit indicator)
         if domain.ends_with(".org") {
             return true;
@@ -506,6 +524,7 @@ impl SenderAlignmentAnalyzer {
             || HEALTHCARE_PROVIDERS
                 .iter()
                 .any(|provider| domain.contains(provider))
+            || MAJOR_BRANDS.iter().any(|brand| domain.contains(brand))
     }
 
     fn detect_suspicious_brand_impersonation(
@@ -532,6 +551,11 @@ impl SenderAlignmentAnalyzer {
 
         let sender_lower = sender.to_lowercase();
         let domain_lower = domain.to_lowercase();
+
+        // Exclude legitimate Apple domains from brand impersonation detection
+        if domain_lower.contains("apple.com") || domain_lower.contains("applecard.apple") {
+            return (0, vec![]);
+        }
 
         log::debug!(
             "Brand impersonation check - sender: '{}', domain: '{}'",

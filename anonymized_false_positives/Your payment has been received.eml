@@ -1,0 +1,340 @@
+Return-Path: <msprvs1=20429qpCQdQn0=bounces-224870-11@sparkpostmail.com>
+Received: from hotel.example.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.example.com (8.18.1/8.18.1) with ESMTPS id 5AUFXeJP088852
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <RECIPIENT@example.com>; Sun, 30 Nov 2025 15:33:40 GMT
+	(envelope-from msprvs1=20429qpCQdQn0=bounces-224870-11@sparkpostmail.com)
+Authentication-Results: juliett.example.com;
+	dkim=pass (1024-bit key; unprotected) header.d=post.applecard.apple header.i=@post.applecard.apple header.b=VB1MWTmi
+Received: from mta-217-8.sparkpostmail.com (mta-217-8.sparkpostmail.com [147.253.217.8])
+	by hotel.example.com (8.16.1/8.16.1) with ESMTPS id 5AUFXc1i104230
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK)
+	for <RECIPIENT@example.com>; Sun, 30 Nov 2025 09:33:39 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.example.com 5AUFXc1i104230
+Authentication-Results: hotel.example.com;
+	dkim=pass (1024-bit key, unprotected) header.d=post.applecard.apple header.i=@post.applecard.apple header.a=rsa-sha256 header.s=scph0319 header.b=VB1MWTmi
+X-MSFBL: bRgER+B+S03C0Fu1Udhs+KbKtKw3l/1aReNXB9eoCJ8=|eyJtZXNzYWdlX2lkIjo
+	iNjkyOGNkNjMyYzY5ODc4Njc4MmIiLCJ0ZW5hbnRfaWQiOiJzcGMiLCJyIjoibXN
+	0b3dlQGJhZGRvbWFpbi5jb20iLCJjdXN0b21lcl9pZCI6IjIyNDg3MCIsInN1YmF
+	jY291bnRfaWQiOiIxMSJ9
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=post.applecard.apple; s=scph0319; t=1764516813;
+	i=@post.applecard.apple;
+	bh=MnNnDfs5aRQbM8VTxL+Fulg3Qy2KlA+qRZQ7ttP8Y88=;
+	h=Content-Type:To:Message-ID:Date:From:Subject:From:To:Cc:Subject;
+	b=VB1MWTmitLXZO/sNusoquH3wTjmYS+zdP5sPuKChUymnkJvhl6piXFzGeR0z0ziPx
+	 Lly/xQY3JcSvp+SyUET2/1FV3YTRjMLUnIvoaQlT2qVP3s+x2eTnFc0mr0ba03HWuI
+	 iA1qNg5SpNyXPaBAEkV0sc0Ixdds6AugRFmRtsyM=
+Received: from [10.90.1.152] ([10.90.1.152])
+	by i-059339f02693bdca8.mta1vrest.sd.prd.sparkpost (ecelerity 5.1.0.74691 r(msys-ecelerity:tags/5.1.0.19)) with REST
+	id B2/87-04995-DC36C296; Sun, 30 Nov 2025 15:33:33 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html; charset="UTF-8"
+To: RECIPIENT@example.com
+Message-ID: <B2.87.04995.DC36C296@i-059339f02693bdca8.mta1vrest.sd.prd.sparkpost>
+Date: Sun, 30 Nov 2025 15:33:33 +0000
+MIME-Version: 1.0
+X-Archive-Request-ID: 476f1a02-3b75-40c9-b9c2-e835f9c13c01
+X-Tenant-ID: almond-prod
+From: "Apple Card Support" <no_reply@post.applecard.apple>
+X-Archive-Email-Correlation-ID: 1d4d03f3-8958-4be1-9269-9d4015316945
+Subject: Your payment has been received
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.example.com [172.31.18.8]); Sun, 30 Nov 2025 15:33:40 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.example.com [23.95.222.152]); Sun, 30 Nov 2025 09:33:39 -0600 (CST)
+X-Spam-Flag: YES
+X-Spam-Flag: YES
+X-Spam-Flag: YES
+X-FOFF-Feature-Evidence: Context Analysis: Multiple exclamation marks detected
+X-FOFF-Feature-Evidence: Sender Alignment: Suspicious brand impersonation pattern detected
+X-FOFF-Feature-Evidence: Context Analysis: Multiple exclamation marks detected
+X-FOFF-Feature-Evidence: Sender Alignment: Suspicious brand impersonation pattern detected
+X-FOFF-Rule-Matched: Integration: Payment Service Abuse (juliett.example.com) [cc9117ff]
+X-FOFF-Rule-Matched: Generic Brand Impersonation: Brand impersonation from unrelated domains (juliett.example.com) [492d784c]
+X-FOFF-Rule-Matched: Integration: Payment Service Abuse (hotel.example.com) [cc9117ff]
+X-FOFF-Rule-Matched: Generic Brand Impersonation: Brand impersonation from unrelated domains (hotel.example.com) [492d784c]
+X-FOFF-Score: 353 - foff-milter v0.7.5 (juliett.example.com)
+X-FOFF-Score: 353 - foff-milter v0.7.5 (hotel.example.com)
+X-FOFF-Reject-Converted: WOULD-REJECT: Message rejected by heuristic analysis
+X-FOFF-Reject-Converted: WOULD-REJECT: Message rejected by heuristic analysis
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">=0D=0A=0D=0A=
+<html>=0D=0A<head>=0D=0A<title>Your payment has been received</title>=0D=0A=
+<meta content=3D"width=3Ddevice-width, initial-scale=3D1.0" name=3D"viewpor=
+t"/>=0D=0A<meta content=3D"text/html;charset=3Dutf-8" http-equiv=3D"content=
+-type"/>=0D=0A<meta content=3D"date=3Dno" name=3D"format-detection"/>=0D=0A=
+<meta content=3D"address=3Dno" name=3D"format-detection"/>=0D=0A<meta conte=
+nt=3D"email=3Dno" name=3D"format-detection"/>=0D=0A<style type=3D"text/css"=
+>=0D=0A      .legend { width: 100%; }=0D=0A      .legend td { color: red; t=
+ext-align: center; font-weight: bold; }=0D=0A      /*CSS hbs*/=0D=0A      b=
+ody { width: 100% !important; background-color: #fff; padding: 0; margin: 0=
+; }=0D=0A      a, a:link { color: #0070c9; text-decoration: none; }=0D=0A  =
+    a:hover { color: #0070c9; text-decoration: underline !important; }=0D=
+=0A  =0D=0A      sup {line-height: normal; font-size: .65em !important; ver=
+tical-align:super; }=0D=0A      /* hack y g*/=0D=0A      b { font-weight: 6=
+00 !important; }=0D=0A  =0D=0A      body {=0D=0A          font-family: syst=
+em-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Hel=
+vetica, Arial, sans-serif;=0D=0A          font-weight: normal;=0D=0A       =
+   text-rendering: optimizelegibility;=0D=0A          -webkit-font-smoothin=
+g: antialiased;=0D=0A      }=0D=0A      td {color: #333333; font-size: 17px=
+; font-weight: normal; line-height: 25px; }=0D=0A      .type-body-d, .type-=
+body-m { font-size: 14px; line-height: 20px; }=0D=0A      .type-caption-d, =
+.type-caption-m { font-size: 12px; font-weight: normal; line-height: 16px;=
+ }=0D=0A      .type-marketing-headline-d, .type-marketing-headline-m { font=
+-size: 17px; line-height: 21px; color: #111111; font-weight: 600; }=0D=0A  =
+    .type-marketing-copy-d, .type-marketing-copy-m { font-size: 14px; line-=
+height: 20px; color: #333333; }=0D=0A      .type-marketing-caption-d, .type=
+-marketing-caption-m { font-size: 11px; line-height: 15px; color: #666666; =
+}=0D=0A=0D=0A      p, ul, ol { margin: 0 0 16px 0; padding: 0; }=0D=0A     =
+ ul li { list-style-type: disc; margin: 0 0 8px 20px; }=0D=0A      ul ul li=
+ { list-style-type: circle; margin: 0 0 8px 50px; }=0D=0A      ol li { marg=
+in: 0 0 8px 20px; list-style-position: outside; }=0D=0A  =0D=0A      .cta {=
+ margin-top: 13px; }=0D=0A=0D=0A      .f-complete { color: #888888; font-si=
+ze: 12px; line-height: 15px; }=0D=0A      .f-complete p { margin-bottom: 9p=
+x; }=0D=0A      .f-numbered { color: #888888; font-size: 12px; line-height:=
+ 15px; padding: 0 0 9px 0; }=0D=0A      .f-links-shop { border-bottom: 1px =
+solid #d6d6d6; color: #d6d6d6; font-size: 14px; line-height: 18px; padding:=
+ 18px 0 16px 0; text-align: center; }=0D=0A      .f-links-shop a, .f-links-=
+shop a:visited, .f-legal a, .f-legal a:visited, .f-complete a, .f-complete =
+a:visited { color: #555555; }=0D=0A      .f-links-legal { color: #d6d6d6; }=
+=0D=0A      .f-links-shop a:hover, .f-legal a:hover { text-decoration: unde=
+rline; }=0D=0A      .f-legal {padding: 0 0% 0 0%;}=0D=0A      .f-legal ol {=
+padding: 0 17px;}=0D=0A  =0D=0A      .preheader-hide { display: none !impor=
+tant; mso-hide: all !important; }=0D=0A=0D=0A      img.headline-image + div=
+, img.hero-image + div {=0D=0A        display: none;=0D=0A      }=0D=0A=0D=
+=0A      /* Path to Apple Card Styles */=0D=0A      .ptac-email p { color: =
+#86868B; }=0D=0A      .ptac-email p b { color: #030303; }=0D=0A      .ptac-=
+email .f-legal a, .ptac-email .f-legal a:visited { color: #0066CC !importan=
+t; }=0D=0A=0D=0A      /* ADD ANY DESKTOP STYLES HERE */=0D=0A=0D=0A      @m=
+edia only screen and (max-device-width: 568px) { =0D=0A        .desktop { d=
+isplay: none; }=0D=0A        .mobile { background: #ffffff; display: block =
+!important; color: #333333; font-size: 17px; font-weight: normal; line-heig=
+ht: 25px; margin: 0 auto; max-height: inherit !important; max-width: 414px;=
+ overflow: visible; width: 100% !important; }=0D=0A=0D=0A        .mobile .m=
+-aapl-logo img { margin: 0; }=0D=0A        .mobile .m-copy, .mobile .m-link=
+s { padding: 0 6.25%; }=0D=0A        .mobile .m-copy { padding-bottom: 9px;=
+ }=0D=0A        .mobile .keyline { border-color: #d6d6d6; border-top-style:=
+ solid; border-top-width: 1px; padding: 0; margin: 0 auto; text-align: cent=
+er; height: 0;}=0D=0A        .mobile ol li {   }=0D=0A        .blue-number =
+{ white-space: nowrap; } =0D=0A        sup { font-size: .55em; }=0D=0A     =
+   .m-gutter { margin: 0 6.25%; }=0D=0A        .m-divider { padding: 0px 0 =
+30px 0; border-top: solid 1px #d6d6d6; }=0D=0A        .f-legal { padding: 0=
+ 5% 0 6.25%; background:#f2f2f2 !important;}=0D=0A        .bold { font-weig=
+ht: 600; }=0D=0A        .hero-head-container { width:100%; overflow:hidden;=
+ position:relative; margin:0; height:126px; padding-bottom: 0; }=0D=0A     =
+   .header-bg { height: 126px; background-image: url('https://applecard.cdn=
+-apple.com/i/A8B6EDCF-3CE2-49F6-BF97-FE780346A4AA/hero_mobile_2x.png'); bac=
+kground-size: 414px 126px; background-position: top center; background-repe=
+at: no-repeat; }=0D=0A        .m-customer-info { overflow-wrap: break-word;=
+ }=0D=0A        .m-gutter .row { position: relative; width: 100%; display: =
+block; min-width: 320px; overflow: auto; margin-bottom: 10px;}=0D=0A       =
+ .m-gutter .row .column { display: inline-block; vertical-align: middle; }=
+=0D=0A        .m-gutter .row .column img { margin-right:12px; }=0D=0A      =
+  .m-max { max-width: 300px; background: #ffffff; margin:0 auto; padding-le=
+ft:10px; padding-right: 10px; }=0D=0A        .m-max.last { padding-bottom: =
+38px; }=0D=0A        .m-table { padding-bottom: 16px; }=0D=0A        .m-tab=
+le .m-table-head { border-bottom: 2px solid #000000; padding: 20px 0 14px 0=
+; }=0D=0A        .m-table .m-table-cell { border-bottom: 1px solid #000000;=
+ padding: 16px 0 12px 0; }=0D=0A        .m-table .m-table-footer { border-t=
+op: 2px solid #000000; padding: 20px 0 14px 0; }=0D=0A        .m-table.m-ta=
+ble-centered-narrow { text-align: center; width: 200px; margin-left: auto; =
+margin-right: auto; }=0D=0A        .m-table .m-table-cell.last { border-bot=
+tom: none; }=0D=0A        .m-table-with-border { border: 2px solid #000000;=
+ }=0D=0A        .m-table-with-border .m-table-head, =0D=0A        .m-table-=
+with-border .m-table-cell { padding-left: 10px; padding-right: 10px; }=0D=
+=0A        .m-table-with-border .m-table-head { background: #000000; color:=
+ #ffffff; }=0D=0A        .get-in-touch-m { padding-bottom: 30px; }=0D=0A   =
+     .marketing-m { margin: 10px 0 40px; padding: 25px 25px 14px 25px; back=
+ground: #f2f2f2; text-align: center; }=0D=0A        .marketing-with-caption=
+-m { margin: 10px 0 15px 0; }=0D=0A        .marketing-caption-m { margin: 0=
+px 40px 34px 40px; text-align: center; }=0D=0A        u + .body a.gmail-unl=
+ink { color:#333333 !important; }=0D=0A        .ptac-email p b, .ptac-email=
+ .ptac-module p { font-size: 12px; }=0D=0A        .m-chat { width: 200px; m=
+argin-top: 2px;}=0D=0A        /* ADD MOBILE STYLES HERE */=0D=0A        =0D=
+=0A        /* M-FOOT */=0D=0A        .m-width { padding:0 6.25%; margin:0 a=
+uto;box-sizing: border-box;}=0D=0A        .m-footer { background: #f2f2f2; =
+padding: 19px 0 28px; color: #888888;}=0D=0A        .m-footer p, .m-footer =
+li  { font-size: 12px; line-height: 16px; }=0D=0A        .m-footer ol {padd=
+ing: 0 17px; margin: 0; list-style-type: decimal; list-style-position: outs=
+ide;}=0D=0A        .m-footer ol li {list-style-type: decimal;}=0D=0A       =
+ ul.m-bnav { border-top: 1px solid #d6d6d6; color: #555555; margin: 0; padd=
+ing-top: 12px; padding-bottom: 1px; text-align: center; }=0D=0A        ul.m=
+-bnav li { border-bottom: 1px solid #d6d6d6; font-size: 12px; font-weight: =
+normal; line-height: 16px; margin: 0 0 11px 0; padding: 0 0 12px 0; }=0D=0A=
+        ul.m-bnav li a, ul.m-bnav li a:visited { color: #555555; }=0D=0A   =
+   }=0D=0A      =0D=0A    </style>=0D=0A<!--[if gte mso 9]>=0D=0A  <style t=
+ype=3D"text/css">=0D=0A  =0D=0A    sup=0D=0A    { font-size:100% !important=
+ }=0D=0A  =0D=0A  </style>=0D=0A  <![endif]--></head>=0D=0A<body class=3D"b=
+ody" style=3D"margin:0; padding:0;">=0D=0A<!-- MOBILE TOP-->=0D=0A<div clas=
+s=3D"mobile" style=3D"width: 0; max-height: 0; overflow: hidden; display: n=
+one;">=0D=0A<div class=3D"preheader-hide" style=3D"display:none !important;=
+position: absolute; font-size:0; line-height:1; max-height:0; max-width:0; =
+opacity:0; overflow:hidden; color: #333333">=0D=0A        &nbsp;=0D=0A    <=
+/div>=0D=0A<!-- mHero -->=0D=0A<div class=3D"m-hero-section">=0D=0A<div cla=
+ss=3D"m-content-hero">=0D=0A<div class=3D"m1 hero-head-container" style=3D"=
+padding:0;">=0D=0A<div class=3D"header-bg"></div>=0D=0A</div>=0D=0A</div>=
+=0D=0A</div>=0D=0A<div class=3D"m-max" style=3D"background:#ffffff;">=0D=0A=
+<div class=3D"m-gutter">=0D=0A<div class=3D"m-customer-info customer-info t=
+ype-body-m">=0D=0A<div class=3D"subinfo--bold"><b><span id=3D"CARD_NAME_HTM=
+L_CHARS" class=3D"gs_dynamic">Apple&nbsp;Card</span> Customer:</b></div>=0D=
+=0A<div class=3D"subinfo"><span id=3D"FIRST_NAME" class=3D"gs_dynamic">Mich=
+ael</span> <span id=3D"LAST_NAME" class=3D"gs_dynamic">Stowe</span><br/>=0D=
+=0A=09=09=09<span id=3D"EMAIL" class=3D"gs_dynamic">RECIPIENT@example.com</s=
+pan></div>=0D=0A</div>=0D=0A</div>=0D=0A</div>=0D=0A<div class=3D"m-max" st=
+yle=3D"background:#ffffff;">=0D=0A<div class=3D"m-gutter">=0D=0A<div class=
+=3D"m1" style=3D"padding: 20px 0 0 0;"><img alt=3D"Your Apple Card payment =
+was received." border=3D"0" height=3D"162" src=3D"https://applecard.cdn-app=
+le.com/i/28ED61EC-5020-4118-80C8-138218856839/headline-your-apple-card-paym=
+ent-was-received_mobile_2x.png" style=3D"" width=3D"260"/>=0D=0A</div>=0D=
+=0A</div>=0D=0A</div>=0D=0A<div class=3D"m-max" style=3D"background:#ffffff=
+;">=0D=0A<div class=3D"m-gutter">=0D=0A<p>We've received a payment of $<spa=
+n id=3D"PAYMENT_AMOUNT" class=3D"gs_dynamic">281.01</span> <span id=3D"isIn=
+itiator" value=3D"" class=3D"gs_dynamic">you made on <span id=3D"PAYMENT_DA=
+TE" class=3D"gs_dynamic">Nov 30, 2025</span>. This payment has been applied=
+ to your <span id=3D"hasMultipleUsers" value=3D"FALSE" class=3D"gs_dynamic"=
+> account already.</p>=0D=0A=09=09<span id=3D"IS_WEB_RECIPIENT" value=3D"FA=
+LSE" class=3D"gs_dynamic">    <p>You can view your payment details <a class=
+=3D"gmail-unlink" href=3D"wallet://setup/feature/ccs">from the Wallet app.<=
+/a></p>=0D=0A    =09=09=0D=0A=09</div>=0D=0A</div>=0D=0A<span id=3D"isMiniM=
+irandaZone" value=3D"FALSE" class=3D"gs_dynamic"><div class=3D"m-max" style=
+=3D"background:#ffffff;">=0D=0A<div class=3D"m-gutter">=0D=0A<div class=3D"=
+m-divider"></div>=0D=0A</div>=0D=0A</div>=0D=0A<div class=3D"m-max get-in-t=
+ouch-m" style=3D"background:#ffffff;">=0D=0A<div class=3D"m-gutter">=0D=0A<=
+p class=3D"m3 bold type-body-m">Get in touch with a Specialist. Available 2=
+4/7.=0D=0A=09=09=09</p>=0D=0A<div class=3D"row">=0D=0A<div class=3D"image c=
+olumn">=0D=0A<img alt=3D"" border=3D"0" class=3D"header-icons" height=3D"31=
+" src=3D"https://applecard.cdn-apple.com/i/A8B6EDCF-3CE2-49F6-BF97-FE780346=
+A4AA/icon_message_mobile_2x.png" style=3D"" width=3D"31"/>=0D=0A</div>=0D=
+=0A<div class=3D"m-text-column column type-body-m m-chat">=0D=0A=09=09=09=
+=09<span id=3D"IS_WEB_RECIPIENT" value=3D"FALSE" class=3D"gs_dynamic">=09=
+=09=09=09=09<a href=3D"https://email.post.applecard.apple/f/a/QULdG1EBoZ63O=
+AuREQDXUw~~/AANuZhA~/GmeQMAy_rc3O5dWUF3TxbFzQ8jfceSIW885-L3KSVrd6rzicQxQi4g=
+Lk95_wzWAyftLkodU-P4uuPZp07F6VKbJ6huA8ree5KDOuU-AM7vkYpKPlWdUtpJfBguSh3cqeS=
+54equ9SwFmo15nH9CX_9w7zJ0kSeEsFKmKTsz8-EBzzoyG_jXEq8I4JT3cTCSdpZ7LI6NTz8cm6=
+vO9pqaKE4N0yrJNe94eGR7ubTyIMx8c5vuwslBT3iDWoh5GwjIK5SnSNpQzsas97WskGAgej3cJ=
+TwfL4CZqsH9-b-j29wYPdYJHaIEFFWBeXQb5Ko4GydxZXayN1CL6x7t0NBwQcfNF6pOwDVfJpUb=
+SWYeruyKW4pFvMGUvD7Mzpw36GcSdP0fEAfOLfH01qCF8HW5r1aOxthf2NT9rw2CJ4qXiewZHfx=
+ylmAEKQro_YJeCnG9t3UcTMLubhgu0Hs9cZQN16Nx_36eUcUP5B3CIcfbW7ZTJYNZeVuTYxXLwu=
+hHQeMlH_jx97fyrCf4YqngBsTi3_vn6dF4D8ffrVvWRvALBuOpG76MKETVQBv7ABH0yN27ota5V=
+kbU94UJulMEYXUXLZr6WK1dusjG8Cd6S0VqUK860JK56j_ZlvGcpAOVb3zmiPDFOaKXxK0sWviU=
+Qp2oTkrHLppeNoeCbMqXx4SF7Q_NgAa3kthrD8GA0tE3COf94sjkC7kUvVRixlwcKC8lYc0ZyJE=
+6EeBqd6R80PefxDeXalvAJwx8sv6WaTsHWo9Q4HkG4b8gw8C6fEoY8Z1Lwe7WD4puEbamBzQNZs=
+hfpsnv2ZYY5jvhbVs60iNASpNnoFI4JDrsAZNPrZYadHSfCL6K0LS0wUTJ5H8LpAz5IEA8YWykF=
+mUSirwyDVxiTgijNOiYmIZRtSigsrbdFm3d5jolr9o6niFVlTgUVJx_kKNhY~" style=3D"bor=
+der: 0; outline: 0;">Chat now</a>=0D=0A=09=09=09=09=09=09=09=09</div>=0D=0A=
+</div>=0D=0A<div class=3D"row">=0D=0A<div class=3D"image column">=0D=0A<img=
+ alt=3D"" border=3D"0" class=3D"header-icons" height=3D"31" src=3D"https://=
+applecard.cdn-apple.com/i/A8B6EDCF-3CE2-49F6-BF97-FE780346A4AA/icon_call_mo=
+bile_2x.png" style=3D"" width=3D"31"/>=0D=0A</div>=0D=0A<div class=3D"m-tex=
+t-column column type-body-m">=0D=0A<a href=3D"tel:1-877-255-5923" style=3D"=
+border: 0; outline: 0;"><span id=3D"PHONE_NUMBER" class=3D"gs_dynamic">1-87=
+7-255-5923</span></a>=0D=0A</div>=0D=0A</div>=0D=0A</div>=0D=0A</div>=0D=0A=
+<div class=3D"m-max">=0D=0A<div class=3D"m-gutter marketing-m">=0D=0A</div>=
+=0D=0A</div>=0D=0A</div>=0D=0A<!-- MOBILE BOTTOM -->=0D=0A<div class=3D"mob=
+ile m-footer" style=3D"width:0; max-height:0; overflow:hidden; display:none=
+;">=0D=0A<div class=3D"f-legal m-max">=0D=0A<div class=3D"m-gutter">=0D=0A<=
+p><span id=3D"CARD_NAME_HTML_CHARS" class=3D"gs_dynamic">Apple&nbsp;Card</s=
+pan> is issued by <span id=3D"LEGAL_NAME" class=3D"gs_dynamic">Goldman Sach=
+s Bank USA, Salt Lake City Branch</span>.</p>=0D=0A<p>=0D=0A          Goldm=
+an Sachs Bank USA, Salt Lake City Branch, Lockbox 6112, P.O. Box 7247, Phil=
+adelphia, PA 19170-6112. </p>=0D=0A</div>=0D=0A</div>=0D=0A</div> <!-- DESK=
+TOP VERSION -->=0D=0A<table align=3D"center" border=3D"0" cellpadding=3D"0"=
+ cellspacing=3D"0" class=3D"desktop" role=3D"presentation" width=3D"100%">=
+=0D=0A<!-- dHero -->=0D=0A<tr>=0D=0A<td align=3D"center">=0D=0A<!-- Hero --=
+>=0D=0A<table align=3D"center" bgcolor=3D"#FFFFFF" border=3D"0" cellpadding=
+=3D"0" cellspacing=3D"0" outline=3D"0" role=3D"presentation" style=3D"backg=
+round-color: #FFFFFF;" width=3D"712">=0D=0A<tr>=0D=0A<td align=3D"center" c=
+lass=3D"d1" style=3D"padding: 0 0 0 0;">=0D=0A<picture>=0D=0A<source media=
+=3D"(min-device-width: 568px)" srcset=3D"https://applecard.cdn-apple.com/i/=
+A8B6EDCF-3CE2-49F6-BF97-FE780346A4AA/hero_desktop_2x.jpg"/><img alt=3D"Appl=
+e&nbsp;Card | Goldman Sachs" border=3D"0" class=3D"hero-image" height=3D"16=
+6" src=3D"https://applecard.cdn-apple.com/i/A8B6EDCF-3CE2-49F6-BF97-FE78034=
+6A4AA/hero_desktop_2x.jpg" style=3D"display: block;" width=3D"736"/></pictu=
+re>=0D=0A</td>=0D=0A</tr>=0D=0A</table>=0D=0A</td> </tr>=0D=0A<!-- dHero --=
+>=0D=0A<tr>=0D=0A<td align=3D"center">=0D=0A<table align=3D"center" bgcolor=
+=3D"#FFFFFF" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" outline=3D"0"=
+ role=3D"presentation" style=3D"background-color: #FFFFFF;" width=3D"550">=
+=0D=0A<tr>=0D=0A<td align=3D"left" style=3D"color: #333333; font-size: 14px=
+; line-height: 20px; padding: 0; max-width: 550px; overflow-wrap: break-wor=
+d;" valign=3D"top"><b><span id=3D"CARD_NAME_HTML_CHARS" class=3D"gs_dynamic=
+">Apple&nbsp;Card</span> Customer:</b><br/>=0D=0A            <span id=3D"FI=
+RST_NAME" class=3D"gs_dynamic">RECIPIENT</span> <span id=3D"LAST_NAME" class=
+=3D"gs_dynamic">Stowe</span>, <span id=3D"EMAIL" class=3D"gs_dynamic">mstow=
+e@example.com</span>=0D=0A          </td>=0D=0A</tr>=0D=0A</table>=0D=0A<=
+/td> </tr>=0D=0A<tr>=0D=0A<td align=3D"center">=0D=0A<table align=3D"center=
+" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" wi=
+dth=3D"550">=0D=0A<tr>=0D=0A<td align=3D"left" class=3D"d1" style=3D"paddin=
+g: 20px 0 0 0;">=0D=0A<img alt=3D"Your Apple Card payment was received." bo=
+rder=3D"0" class=3D"headline-image" height=3D"157" src=3D"https://applecard=
+.cdn-apple.com/i/28ED61EC-5020-4118-80C8-138218856839/headline-your-apple-=
+card-payment-was-received_desktop_2x.png" style=3D"" width=3D"550"/>=0D=0A<=
+/td>=0D=0A</tr>=0D=0A</table>=0D=0A</td> </tr>=0D=0A<tr>=0D=0A<td align=3D"=
+center">=0D=0A<table align=3D"center" border=3D"0" cellpadding=3D"0" cellsp=
+acing=3D"0" role=3D"presentation" width=3D"550">=0D=0A<tr>=0D=0A<td align=
+=3D"left" class=3D"d1" style=3D"padding: 0;" valign=3D"top">=0D=0A<p>We've =
+received a payment of $<span id=3D"PAYMENT_AMOUNT" class=3D"gs_dynamic">281=
+.01</span> <span id=3D"isInitiator" value=3D"" class=3D"gs_dynamic">you ma=
+de on <span id=3D"PAYMENT_DATE" class=3D"gs_dynamic">Nov 30, 2025</span>. T=
+his payment has been applied to your <span id=3D"hasMultipleUsers" value=3D=
+"FALSE" class=3D"gs_dynamic"> account already.</p>=0D=0A=09=09      <span i=
+d=3D"IS_WEB_RECIPIENT" value=3D"FALSE" class=3D"gs_dynamic">          <p>Yo=
+u can view the payment details from the Wallet app or manage your Apple Car=
+d account <a href=3D"https://email.post.applecard.apple/f/a/2Rg4ckSTfIueRsV=
+-oIHSUQ~~/AANuZhA~/vdh-Y59mrF3xxkgb8KX5nPvpNU5t52EC59fMXEnuAj9bCrQ-pj8xVgBm=
+pkRy3FrsoUmo-yHu6Qq2VuhIOixMxGlav56_5xIj1UOebzI4E9Y~">online.</a></p>=0D=0A=
+                    <span id=3D"isMiniMirandaZone" value=3D"FALSE" class=3D=
+"gs_dynamic">        </td>=0D=0A</tr>=0D=0A</table>=0D=0A</td>=0D=0A</tr>=
+=0D=0A<tr>=0D=0A<td align=3D"center">=0D=0A<table align=3D"center" border=
+=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" width=3D"5=
+50">=0D=0A<tr>=0D=0A<td align=3D"left" class=3D"d1" style=3D"padding: 0;" v=
+align=3D"top">=0D=0A=0D=0A          <span id=3D"isOutOfStatuteAccount" valu=
+e=3D"FALSE" class=3D"gs_dynamic">=0D=0A        </td>=0D=0A</tr>=0D=0A</tabl=
+e>=0D=0A</td>=0D=0A</tr>=0D=0A<tr>=0D=0A<td align=3D"center">=0D=0A<table a=
+lign=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"pr=
+esentation" width=3D"550">=0D=0A<tr><td style=3D"padding: 10px 0 0 0;" widt=
+h=3D"550">&nbsp;</td></tr>=0D=0A<tr>=0D=0A<td align=3D"center" style=3D"bor=
+der-color: #d6d6d6; border-top-style: solid; border-top-width: 1px; font-si=
+ze: 1px; line-height: 1px;" valign=3D"top" width=3D"550">&nbsp;</td>=0D=0A<=
+/tr>=0D=0A<tr><td style=3D"padding: 4px 0 0 0;" width=3D"550">&nbsp;</td></=
+tr>=0D=0A</table>=0D=0A</td>=0D=0A</tr>=0D=0A<tr>=0D=0A<td align=3D"center"=
+>=0D=0A<table align=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=
+=3D"0" role=3D"presentation" width=3D"550">=0D=0A<tr>=0D=0A<td align=3D"lef=
+t" class=3D"type-body-d" style=3D"padding: 3px 0 0 0;" valign=3D"top">=0D=
+=0A<b>Get in touch with an <span id=3D"CARD_NAME_HTML_CHARS" class=3D"gs_dy=
+namic">Apple&nbsp;Card</span> Specialist. Available 24/7.</b>=0D=0A</td>=0D=
+=0A</tr>=0D=0A<tr height=3D"4"></tr>=0D=0A</table>=0D=0A<table align=3D"cen=
+ter" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation"=
+ width=3D"550">=0D=0A<tr>=0D=0A<td align=3D"center" class=3D"get-in-touch-i=
+con" style=3D"width:31px; padding: 11px 0 0 0;" valign=3D"top" width=3D"31"=
+>=0D=0A<img alt=3D"" border=3D"0" class=3D"header-icons" height=3D"31" src=
+=3D"https://applecard.cdn-apple.com/i/A8B6EDCF-3CE2-49F6-BF97-FE780346A4AA/=
+icon_message_mobile_2x.png" style=3D"" width=3D"31"/>=0D=0A</td>=0D=0A<td w=
+idth=3D"11"></td>=0D=0A<td align=3D"left" class=3D"get-in-touch-copy type-b=
+ody-d" style=3D"padding: 16px 0 0 0;" valign=3D"top">=0D=0A            <spa=
+n id=3D"IS_WEB_RECIPIENT" value=3D"FALSE" class=3D"gs_dynamic">            =
+  Chat with a Specialist using the Wallet app=0D=0A                        =
+</td>=0D=0A</tr>=0D=0A<tr>=0D=0A<td align=3D"center" class=3D"get-in-touch-=
+icon" style=3D"width:31px; padding: 8px 0 0 0;" valign=3D"top" width=3D"31"=
+>=0D=0A<img alt=3D"" border=3D"0" class=3D"header-icons" height=3D"31" src=
+=3D"https://applecard.cdn-apple.com/i/A8B6EDCF-3CE2-49F6-BF97-FE780346A4AA/=
+icon_call_mobile_2x.png" style=3D"" width=3D"31"/>=0D=0A</td>=0D=0A<td widt=
+h=3D"11"></td>=0D=0A<td align=3D"left" class=3D"get-in-touch-copy type-body=
+-d" style=3D"padding: 12px 0 0 0;" valign=3D"top">=0D=0A              <span=
+ id=3D"PHONE_NUMBER" class=3D"gs_dynamic">1-877-255-5923</span>=0D=0A      =
+      </td>=0D=0A</tr>=0D=0A</table>=0D=0A</td>=0D=0A</tr>=0D=0A<tr>=0D=0A<=
+td align=3D"center">=0D=0A<tr>=0D=0A<td align=3D"center" style=3D"margin: 0=
+ auto; padding:0 20px 0 20px;">=0D=0A<table border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" class=3D"footer" role=3D"presentation" width=3D"662">=0D=
+=0A<tr>=0D=0A<td style=3D"padding: 19px 0 20px 0;">=0D=0A</td>=0D=0A</tr>=
+=0D=0A</table>=0D=0A</td>=0D=0A</tr>=0D=0A<!-- DESKTOP FOOTER -->=0D=0A<tr>=
+=0D=0A<td align=3D"center" bgcolor=3D"#f2f2f2" style=3D"margin: 0 auto;back=
+ground-color: #f2f2f2;padding:0 20px 0 20px;">=0D=0A<table border=3D"0" cel=
+lpadding=3D"0" cellspacing=3D"0" class=3D"footer" role=3D"presentation" wid=
+th=3D"662">=0D=0A<tr>=0D=0A<td align=3D"left" class=3D"f-complete" style=3D=
+"padding: 19px 0 20px 0;">=0D=0A<div class=3D"f-legal">=0D=0A<p><span id=3D=
+"CARD_NAME_HTML_CHARS" class=3D"gs_dynamic">Apple&nbsp;Card</span> is issue=
+d by <span id=3D"LEGAL_NAME" class=3D"gs_dynamic">Goldman Sachs Bank USA, S=
+alt Lake City Branch</span>.</p>=0D=0A<p>Goldman Sachs Bank USA, Salt Lake =
+City Branch, Lockbox 6112, P.O. Box 7247, Philadelphia, PA 19170-6112.     =
+            </p>=0D=0A</div>=0D=0A</td>=0D=0A</tr>=0D=0A</table>=0D=0A</td>=
+ </tr>=0D=0A<!-- end dFooter -->=0D=0A</td></tr></table></body></html>
+
