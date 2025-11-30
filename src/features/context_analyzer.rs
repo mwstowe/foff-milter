@@ -28,6 +28,15 @@ impl ContextAnalyzer {
             Regex::new(r"(?i)(overdue|today|24 hours|don't miss|hurry|last chance)").unwrap(),
             Regex::new(r"(?i)(verify.*account.*immediately|suspend.*account)").unwrap(),
             Regex::new(r"(?i)(click.*here.*now|respond.*within.*hours)").unwrap(),
+            // Enhanced service termination urgency patterns
+            Regex::new(
+                r"(?i)(access.*ending.*soon|premium.*expir|subscription.*end|service.*terminat)",
+            )
+            .unwrap(),
+            Regex::new(r"(?i)(account.*suspend|payment.*fail|billing.*issue|renew.*now)").unwrap(),
+            // Home service scam patterns
+            Regex::new(r"(?i)(never pay|free.*repair|home.*warranty|covered.*repair)").unwrap(),
+            Regex::new(r"(?i)(first.*months.*free|no.*cost.*repair|warranty.*cover)").unwrap(),
         ];
 
         let legitimacy_indicators = vec![
@@ -56,6 +65,28 @@ impl ContextAnalyzer {
                     "account locked".to_string(),
                 ],
                 weight: 35,
+            },
+            ScamPattern {
+                name: "Service Termination Scam".to_string(),
+                indicators: vec![
+                    "access ending".to_string(),
+                    "premium expir".to_string(),
+                    "subscription end".to_string(),
+                    "spotify".to_string(),
+                    "netflix".to_string(),
+                ],
+                weight: 50,
+            },
+            ScamPattern {
+                name: "Home Warranty Scam".to_string(),
+                indicators: vec![
+                    "never pay".to_string(),
+                    "home repair".to_string(),
+                    "warranty".to_string(),
+                    "first months free".to_string(),
+                    "limited time".to_string(),
+                ],
+                weight: 45,
             },
         ];
 

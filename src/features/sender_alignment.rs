@@ -264,6 +264,88 @@ impl SenderAlignmentAnalyzer {
             return issues;
         }
 
+        // Enhanced brand domain validation with stricter checking
+        let enhanced_brands = [
+            ("spotify", vec!["spotify.com", "spotifymail.com"]),
+            ("nhk", vec!["nhk.or.jp", "nhk.go.jp"]),
+            ("apple", vec!["apple.com", "icloud.com"]),
+            ("google", vec!["google.com", "gmail.com", "googlemail.com"]),
+            (
+                "microsoft",
+                vec!["microsoft.com", "outlook.com", "hotmail.com"],
+            ),
+            ("amazon", vec!["amazon.com", "amazonses.com"]),
+            ("paypal", vec!["paypal.com", "paypal.me"]),
+        ];
+
+        // Check enhanced brand patterns first (only in display name and subject for precision)
+        for (brand, valid_domains) in &enhanced_brands {
+            let brand_mentioned = sender_info.from_display_name.to_lowercase().contains(brand)
+                || subject.to_lowercase().contains(brand);
+
+            if brand_mentioned {
+                // Skip if this is a legitimate business domain containing the brand name
+                let is_legitimate_business = sender_info.from_domain.contains(brand)
+                    || sender_info.from_domain.contains(&format!("{}.", brand))
+                    || sender_info.from_domain.ends_with(&format!("{}.com", brand));
+
+                if !is_legitimate_business {
+                    let domain_valid = valid_domains.iter().any(|domain| {
+                        sender_info.from_domain.contains(domain)
+                            || sender_info.sender_domain.contains(domain)
+                            || sender_info.return_path_domain.contains(domain)
+                    });
+
+                    if !domain_valid {
+                        issues.push(format!(
+                            "Major brand impersonation: {} from invalid domain {}",
+                            brand, sender_info.from_domain
+                        ));
+                    }
+                }
+            }
+        }
+
+        // Special handling for Japanese brands (NHK detection)
+        if sender_info.from_display_name.to_lowercase().contains("nhk")
+            && !sender_info.from_domain.contains("nhk.or.jp")
+            && !sender_info.from_domain.contains("nhk.go.jp")
+        {
+            issues.push(format!(
+                "Japanese brand impersonation: NHK from non-Japanese domain {}",
+                sender_info.from_domain
+            ));
+        }
+
+        // Check for random sender IDs
+        if let Some(from_header) = context.headers.get("from") {
+            if let Some(email_part) = from_header.split('<').nth(1) {
+                if let Some(local_part) = email_part.split('@').next() {
+                    if local_part.len() >= 8
+                        && local_part.chars().any(|c| c.is_ascii_uppercase())
+                        && local_part.chars().any(|c| c.is_ascii_lowercase())
+                        && local_part.chars().any(|c| c.is_ascii_digit())
+                        && local_part.chars().all(|c| c.is_ascii_alphanumeric())
+                    {
+                        issues.push(format!("Random sender ID detected: {}", local_part));
+                    }
+                }
+            }
+        }
+
+        // Check for suspicious administrative domains
+        let admin_patterns = ["admin-", "support-", "service-", "account-", "billing-"];
+        if admin_patterns
+            .iter()
+            .any(|pattern| sender_info.from_domain.starts_with(pattern))
+        {
+            issues.push(format!(
+                "Suspicious administrative domain: {}",
+                sender_info.from_domain
+            ));
+        }
+
+        // Original brand pattern checking (for backward compatibility)
         for (brand, legitimate_domains) in &self.brand_patterns {
             // Check if brand is mentioned in display name, subject, or body
             let brand_mentioned = sender_info.from_display_name.to_lowercase().contains(brand)
