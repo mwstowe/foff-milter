@@ -419,9 +419,14 @@ rules:
               pattern: "(?i).*(black.*friday.*savings|invoice.*order.*receipt|order.*transaction.*confirmation|payment.*confirmation.*transaction|repair.*scheduled.*address|sendgrid.*payment.*failed|knee.*health|mailer.*daemon.*multi|stanley.*tools.*fake)"
         - type: "Not"
           criteria:
-            type: "HeaderPattern"
-            header: "From"
-            pattern: ".*@(namemaker\\\\.com|backstage\\\\.com|kiwico\\\\.com|amazon\\\\.com|walmart\\\\.com|target\\\\.com|bestbuy\\\\.com|bedjet\\\\.com|ikea\\\\.(us|com)|ladyyum\\\\.com|humblebundle\\\\.com|mailer\\\\.humblebundle\\\\.com).*|.*quora\\\\.com.*|.*bedjet\\\\.com.*"
+            type: "Or"
+            criteria:
+              - type: "HeaderPattern"
+                header: "From"
+                pattern: ".*@(namemaker\\\\.com|backstage\\\\.com|kiwico\\\\.com|amazon\\\\.com|walmart\\\\.com|target\\\\.com|bestbuy\\\\.com|bedjet\\\\.com|ikea\\\\.(us|com)|ladyyum\\\\.com).*|.*quora\\\\.com.*|.*bedjet\\\\.com.*"
+              - type: "HeaderPattern"
+                header: "From"
+                pattern: ".*humblebundle.*"
     score: 25
     description: "Ultra-aggressive final spam patterns (excludes legitimate platforms)"
 

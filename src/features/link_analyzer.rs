@@ -398,8 +398,8 @@ impl FeatureExtractor for LinkAnalyzer {
 
         // Reduce penalties for legitimate retailers
         if let Some(sender) = context.headers.get("From") {
-            if self.is_legitimate_retailer(sender) {
-                score = (score as f32 * 0.4) as i32; // 60% reduction
+            if self.is_legitimate_retailer(sender) || sender.to_lowercase().contains("humblebundle") {
+                score = (score as f32 * 0.2) as i32; // 80% reduction for retailers and Humble Bundle
             } else if self.is_medical_institution(sender) {
                 score = (score as f32 * 0.2) as i32; // 80% reduction for medical
             }
