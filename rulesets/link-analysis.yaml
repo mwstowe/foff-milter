@@ -23,22 +23,28 @@ rules:
             - "iheart.com"
             - "amazonses.com"
             - "backerkit.com"
+            - "e.mailer.humblebundle.com"
+            - "mailer.humblebundle.com"
         - type: "Not"
           criteria:
             type: "SenderPattern"
             pattern: "(?i).*@.*(ladyyum|humblebundle).*"
-            - "outlook.com"
-            - "gmail.com"
-            - "1800flowersinc.com"
-            - "em.1800flowers.com"
-            - "salesforce.com"
-            - "ifttt.com"
-            - "filtersfast.com"
-            - "exacttarget.com"
-            - "woot.com"
-            - "email.amazonses.com"
-            - "facebook.com"
-            - "instagram.com"
+    score: 25
+    description: "Suspicious link patterns from external domains (excludes legitimate retailers)"
+
+  - name: "Free Email Provider Abuse"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@(outlook\\.com|gmail\\.com|yahoo\\.com|hotmail\\.com|aol\\.com)$"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(1800flowersinc\\.com|em\\.1800flowers\\.com|salesforce\\.com|ifttt\\.com|filtersfast\\.com|exacttarget\\.com|woot\\.com).*"
+    score: 15
+    description: "Abuse of free email providers for suspicious activities"
             - "pinterest.com"
             - "twitter.com"
             - "linkedin.com"
