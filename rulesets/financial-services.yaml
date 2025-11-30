@@ -20,8 +20,12 @@ rules:
               pattern: "(?i).*(financial.*institution|loan.*provider|lending.*company|finance.*company).*"
         - type: "Not"
           criteria:
-            type: "SenderPattern"
-            pattern: "(?i).*@.*(creditkarma|experian|equifax|transunion)\\.(com|net|org)$"
+            type: "Or"
+            criteria:
+              - type: "SenderPattern"
+                pattern: "(?i).*@.*(creditkarma|experian|equifax|transunion)\\.(com|net|org)$"
+              - type: "SenderPattern"
+                pattern: "(?i).*@.*(capitalone|chase|bankofamerica|wellsfargo|citi|usbank|pnc|truist|ally|discover)\\.(com|net)$"
     score: 75
     description: "Unsolicited loan and lending offers"
 

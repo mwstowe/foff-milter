@@ -89,16 +89,22 @@ rules:
   - name: "Financial and brand scams"
     enabled: true
     criteria:
-      type: "Or"
+      type: "And"
       criteria:
-        - type: "BodyPattern"
-          pattern: "(?i).*(godaddy.*payment|venmo.*reward|wetransfer.*file|yeti.*brand|oreilly.*auto|o.*reilly|stanford.*weight|piano.*course|shed.*building|product.*demo|chinese.*tax|sexual.*health|weight.*loss).*"
-        - type: "SubjectPattern"
-          pattern: "(?i).*(godaddy.*payment|venmo.*reward|wetransfer.*file|yeti.*brand|oreilly.*auto|o.*reilly|stanford.*weight|piano.*course|shed.*building|product.*demo|chinese.*tax|sexual.*health|weight.*loss).*"
-        - type: "SenderPattern"
-          pattern: ".*@.*(shop|scam|fake|phish)\\.(com|net|org)$"
-        - type: "SenderPattern"
-          pattern: ".*@.*\\.shop$"
+        - type: "Or"
+          criteria:
+            - type: "BodyPattern"
+              pattern: "(?i).*(godaddy.*payment|venmo.*reward|wetransfer.*file|yeti.*brand|oreilly.*auto|o.*reilly|stanford.*weight|piano.*course|shed.*building|product.*demo|chinese.*tax|sexual.*health|weight.*loss).*"
+            - type: "SubjectPattern"
+              pattern: "(?i).*(godaddy.*payment|venmo.*reward|wetransfer.*file|yeti.*brand|oreilly.*auto|o.*reilly|stanford.*weight|piano.*course|shed.*building|product.*demo|chinese.*tax|sexual.*health|weight.*loss).*"
+            - type: "SenderPattern"
+              pattern: ".*@.*(shop|scam|fake|phish)\\.(com|net|org)$"
+            - type: "SenderPattern"
+              pattern: ".*@.*\\.shop$"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: "(?i).*@.*(humblebundle|steam|epic|gog|origin|uplay|blizzard|nintendo|sony|microsoft|xbox|playstation)\\.(com|net)$"
     score: 75
     description: "Financial scams and brand impersonation attempts"
 
