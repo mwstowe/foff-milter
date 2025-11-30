@@ -209,13 +209,26 @@ impl ContextAnalyzer {
 
     fn is_legitimate_retailer(&self, sender: &str) -> bool {
         const LEGITIMATE_RETAILERS: &[&str] = &[
-            "bedjet.com", "ikea.us", "ikea.com", "ladyyum.com", "humblebundle.com",
-            "amazon.com", "walmart.com", "target.com", "bestbuy.com", "costco.com",
-            "homedepot.com", "lowes.com", "macys.com", "nordstrom.com"
+            "bedjet.com",
+            "ikea.us",
+            "ikea.com",
+            "ladyyum.com",
+            "humblebundle.com",
+            "amazon.com",
+            "walmart.com",
+            "target.com",
+            "bestbuy.com",
+            "costco.com",
+            "homedepot.com",
+            "lowes.com",
+            "macys.com",
+            "nordstrom.com",
         ];
-        
+
         let sender_lower = sender.to_lowercase();
-        LEGITIMATE_RETAILERS.iter().any(|retailer| sender_lower.contains(retailer))
+        LEGITIMATE_RETAILERS
+            .iter()
+            .any(|retailer| sender_lower.contains(retailer))
     }
 
     fn detect_employment_scam(&self, text: &str, sender: &str) -> (i32, Vec<String>) {
@@ -392,7 +405,11 @@ impl ContextAnalyzer {
             let caps_count = body.chars().filter(|c| c.is_uppercase()).count();
             let total_chars = body.chars().filter(|c| c.is_alphabetic()).count();
             if total_chars > 0 && caps_count * 100 / total_chars > 50 {
-                let penalty = if self.is_legitimate_retailer(sender) { 5 } else { 10 }; // Reduced for retailers
+                let penalty = if self.is_legitimate_retailer(sender) {
+                    5
+                } else {
+                    10
+                }; // Reduced for retailers
                 score += penalty;
                 evidence.push("Excessive capitalization detected".to_string());
             }
@@ -400,7 +417,11 @@ impl ContextAnalyzer {
             // Multiple exclamation marks
             let exclamation_count = body.matches('!').count();
             if exclamation_count > 3 {
-                let penalty = if self.is_legitimate_retailer(sender) { 2 } else { 5 }; // Reduced for retailers
+                let penalty = if self.is_legitimate_retailer(sender) {
+                    2
+                } else {
+                    5
+                }; // Reduced for retailers
                 score += penalty;
                 evidence.push("Multiple exclamation marks detected".to_string());
             }
@@ -415,12 +436,12 @@ impl FeatureExtractor for ContextAnalyzer {
         let mut total_score = 0;
         let mut all_evidence = Vec::new();
 
-        let body = context.body.as_deref().unwrap_or("");
-        let subject = context.subject.as_deref().unwrap_or("");
+        let _body = context.body.as_deref().unwrap_or("");
+        let _subject = context.subject.as_deref().unwrap_or("");
         let sender = context.from_header.as_deref().unwrap_or("");
 
         // Check if this is from a legitimate retailer - reduce penalties
-        let is_legitimate_retailer = self.is_legitimate_retailer(sender);
+        let _is_legitimate_retailer = self.is_legitimate_retailer(sender);
 
         let body = context.body.as_deref().unwrap_or("");
         let subject = context
@@ -535,7 +556,11 @@ impl FeatureExtractor for ContextAnalyzer {
         let subject_special_chars = Regex::new(r"[.?%#]{3,}").unwrap();
         let subject_text = context.subject.as_deref().unwrap_or("");
         if subject_special_chars.is_match(subject_text) {
-            let penalty = if self.is_legitimate_retailer(sender) { 10 } else { 25 }; // Reduced for retailers
+            let penalty = if self.is_legitimate_retailer(sender) {
+                10
+            } else {
+                25
+            }; // Reduced for retailers
             total_score += penalty;
             all_evidence.push("Suspicious subject with excessive special characters".to_string());
         }
