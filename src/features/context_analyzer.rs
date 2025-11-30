@@ -378,6 +378,7 @@ impl ContextAnalyzer {
     fn analyze_content_structure(&self, context: &MailContext) -> (i32, Vec<String>) {
         let mut score = 0;
         let mut evidence = Vec::new();
+        let sender = context.from_header.as_deref().unwrap_or("");
 
         // Check for suspicious structure patterns
         if let Some(body) = &context.body {
