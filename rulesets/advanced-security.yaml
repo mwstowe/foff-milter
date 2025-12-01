@@ -21,8 +21,8 @@ rules:
               - type: "HeaderPattern"
                 header: "x-netsuite"
                 pattern: ".*"
-              - type: "SenderPattern"
-                pattern: ".*@.*netsuite\\.com$"
+              - type: "SenderDomain"
+                domains: ["netsuite.com"]
               - type: "HeaderPattern"
                 header: "from"
                 pattern: ".*@.*netsuite\\.com.*"
@@ -92,18 +92,18 @@ rules:
               - type: "HeaderPattern"
                 header: "x-netsuite"
                 pattern: ".*"
-              - type: "SenderPattern"
-                pattern: ".*@.*netsuite\\.com$"
+              - type: "SenderDomain"
+                domains: ["netsuite.com"]
               - type: "HeaderPattern"
                 header: "from"
                 pattern: ".*@.*netsuite\\.com.*"
-              - type: "SenderPattern"
-                pattern: ".*@.*becu\\.org$"
+              - type: "SenderDomain"
+                domains: ["becu.org"]
               - type: "HeaderPattern"
                 header: "from"
                 pattern: ".*@.*becu\\.org.*"
-              - type: "SenderPattern"
-                pattern: ".*@.*exterminators\\.com$"
+              - type: "SenderDomain"
+                domains: ["exterminators.com"]
               - type: "HeaderPattern"
                 header: "from"
                 pattern: ".*@.*exterminators\\.com.*"
@@ -183,8 +183,8 @@ rules:
               pattern: "(?i).*(fake.*invoice|scam.*receipt|suspicious.*payment.*failed|fraud.*order.*confirmation)"
         - type: "Not"
           criteria:
-            type: "SenderPattern"
-            pattern: ".*@.*(lovepop|1800flowers|disney|celebrations|disneystore|ba\\.com|usps|pacific|evergreen)\\.(com|net|gov)$"
+            type: "SenderDomain"
+            domains: ["lovepop.com", "1800flowers.com", "disney.com", "celebrations.com", "disneystore.com", "ba.com", "usps.com", "usps.gov", "pacific.com", "evergreen.com"]
     score: 55
     description: "Fake invoice, receipt, and payment confirmation patterns (excludes legitimate)"
 
@@ -201,8 +201,8 @@ rules:
               pattern: "(?i).*(private.*proposal.*fund|fund.*management.*inheritance|inheritance.*fund.*claim)"
         - type: "Not"
           criteria:
-            type: "SenderPattern"
-            pattern: ".*@.*(disney|1800flowers|celebrations|disneystore|ba\\.com|usps|netatmo|secretlab|think|business|lovepop|pacific|evergreen|dominos|mcdonalds|arrived|daily|bcd|williams|wolfermans|xfinity|official|perks)\\.(com|net|gov)$"
+            type: "SenderDomain"
+            domains: ["disney.com", "1800flowers.com", "celebrations.com", "disneystore.com", "ba.com", "usps.com", "usps.gov", "netatmo.com", "secretlab.com", "think.com", "business.com", "lovepop.com", "pacific.com", "evergreen.com", "dominos.com", "mcdonalds.com", "arrived.com", "daily.com", "bcd.com", "williams.com", "wolfermans.com", "xfinity.com", "official.com", "perks.com"]
     score: 60
     description: "Very specific advance fee fraud patterns (excludes all legitimate)"
 
@@ -227,8 +227,8 @@ rules:
               pattern: "(?i).*docusign.*"
         - type: "Not"
           criteria:
-            type: "SenderPattern"
-            pattern: ".*@.*docusign\\.(com|net)$"
+            type: "SenderDomain"
+            domains: ["docusign.com", "docusign.net"]
     score: 65
     description: "DocuSign-related content from non-DocuSign domains"
 
@@ -281,8 +281,8 @@ rules:
               pattern: "(?i).*(sendgrid.*payment.*failed|sendgrid.*billing.*suspended|sendgrid.*account.*issue)"
         - type: "Not"
           criteria:
-            type: "SenderPattern"
-            pattern: ".*@.*(sendgrid|doordash|uber)\\.(com|net)$"
+            type: "SenderDomain"
+            domains: ["sendgrid.com", "doordash.com", "uber.com"]
     score: 65
     description: "Fake SendGrid payment failure notifications"
 
@@ -299,8 +299,8 @@ rules:
               pattern: "(?i).*(schwab.*account.*suspended|sbi.*verify.*account|fake.*schwab)"
         - type: "Not"
           criteria:
-            type: "SenderPattern"
-            pattern: ".*@.*(schwab|sbi|disney)\\.(com|net|co\\.in)$"
+            type: "SenderDomain"
+            domains: ["schwab.com", "sbi.co.in", "disney.com"]
     score: 70
     description: "Financial institution phishing attempts"
 
@@ -317,8 +317,8 @@ rules:
               pattern: "(?i).*sharefile.*"
         - type: "Not"
           criteria:
-            type: "SenderPattern"
-            pattern: ".*@.*sharefile\\.(com|net)$"
+            type: "SenderDomain"
+            domains: ["sharefile.com", "sharefile.net"]
     score: 65
     description: "ShareFile document phishing from non-ShareFile domains"
 
