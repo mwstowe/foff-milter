@@ -111,16 +111,16 @@ impl LinkAnalyzer {
         context_type: LinkContext,
         context: &MailContext,
     ) -> ExtractedLink {
-        let mut final_url = url.to_string();
-        let mut domain = self.extract_domain(url);
-        
+        let final_url = url.to_string();
+        let domain = self.extract_domain(url);
+
         // For now, just detect shorteners but don't resolve them to avoid runtime issues
         // TODO: Implement async resolution in a separate context
         if self.url_resolver.is_shortener(url) {
             log::info!("Detected shortened URL (not resolved): {}", url);
             // Mark shorteners as suspicious for now
         }
-        
+
         let is_suspicious = self.is_link_suspicious(&final_url, display_text, &domain, context);
 
         ExtractedLink {

@@ -18,10 +18,10 @@ pub mod language;
 pub mod machine_learning;
 pub mod media_analyzer;
 pub mod milter;
-pub mod url_resolver;
 pub mod performance;
 pub mod statistics;
 pub mod toml_config;
+pub mod url_resolver;
 
 // Re-export Config and related types for backward compatibility
 pub use filter::{FilterEngine, MailContext};
