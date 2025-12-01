@@ -198,6 +198,15 @@ pub enum Criteria {
         check_dns: Option<bool>,
         check_http: Option<bool>,
     },
+    SenderDomain {
+        domains: Vec<String>,
+    },
+    FromDomain {
+        domains: Vec<String>,
+    },
+    ReplyToDomain {
+        domains: Vec<String>,
+    },
     UnsubscribeLinkPattern {
         pattern: String,
     },

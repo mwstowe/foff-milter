@@ -7,6 +7,7 @@ pub mod config_loader;
 pub mod config_test;
 pub mod detection;
 pub mod domain_age;
+pub mod domain_utils;
 pub mod features;
 pub mod filter;
 pub mod google_groups_unsubscriber;

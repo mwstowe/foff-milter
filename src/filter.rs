@@ -1,6 +1,7 @@
 use crate::abuse_reporter::AbuseReporter;
 use crate::attachment_analyzer::AttachmentAnalyzer;
 use crate::domain_age::DomainAgeChecker;
+use crate::domain_utils::DomainUtils;
 use crate::features::FeatureEngine;
 use crate::heuristic_config::{load_modules, Action, Config, Criteria, Module};
 use crate::invoice_analyzer::{InvoiceAnalysis, InvoiceAnalyzer};
@@ -1166,6 +1167,9 @@ impl FilterEngine {
                 for c in criteria {
                     self.compile_criteria_patterns(c)?;
                 }
+            }
+            Criteria::SenderDomain { .. } | Criteria::FromDomain { .. } | Criteria::ReplyToDomain { .. } => {
+                // No regex patterns to compile for domain criteria
             }
             Criteria::Not { criteria } => {
                 self.compile_criteria_patterns(criteria)?;
@@ -5331,6 +5335,34 @@ impl FilterEngine {
                     for c in criteria {
                         if self.evaluate_criteria(c, context).await {
                             return true;
+                        }
+                    }
+                    false
+                }
+                Criteria::SenderDomain { domains } => {
+                    if let Some(sender) = &context.sender {
+                        if let Some(domain) = DomainUtils::extract_domain(sender) {
+                            return DomainUtils::matches_domain_list(&domain, domains);
+                        }
+                    }
+                    false
+                }
+                Criteria::FromDomain { domains } => {
+                    if let Some(from_header) = &context.from_header {
+                        if let Some(from_email) = self.extract_email_from_header(from_header) {
+                            if let Some(domain) = DomainUtils::extract_domain(&from_email) {
+                                return DomainUtils::matches_domain_list(&domain, domains);
+                            }
+                        }
+                    }
+                    false
+                }
+                Criteria::ReplyToDomain { domains } => {
+                    if let Some(reply_to) = context.headers.get("reply-to") {
+                        if let Some(reply_email) = self.extract_email_from_header(reply_to) {
+                            if let Some(domain) = DomainUtils::extract_domain(&reply_email) {
+                                return DomainUtils::matches_domain_list(&domain, domains);
+                            }
                         }
                     }
                     false
