@@ -148,8 +148,9 @@ rules:
   - name: "Poshmark Marketplace Platform"
     enabled: true
     criteria:
-      type: "SenderPattern"
-      pattern: ".*@poshmark\\.com$"
+      type: "HeaderPattern"
+      header: "From"
+      pattern: ".*@poshmark\\.com.*"
     score: -100
     description: "Poshmark marketplace platform - legitimate e-commerce"
 
