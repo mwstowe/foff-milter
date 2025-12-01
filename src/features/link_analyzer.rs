@@ -149,6 +149,16 @@ impl LinkAnalyzer {
         link_domain: &str,
         context: &MailContext,
     ) -> bool {
+        // Check if sender is from legitimate marketplace
+        let sender = context.from_header.as_deref().unwrap_or("");
+        if self.is_legitimate_marketplace(sender) {
+            // For marketplaces, be very lenient - only flag obvious malicious patterns
+            return self.is_suspicious_shortener(link_domain, display_text);
+        }
+
+        // Continue with normal suspicious link detection for non-marketplaces
+        let sender_domain = self.extract_sender_domain(context);
+
         // Early return for legitimate payment processors
         let payment_processors = [
             "pestconnect.com",
@@ -398,6 +408,11 @@ impl LinkAnalyzer {
             .any(|retailer| sender.to_lowercase().contains(retailer))
     }
 
+    fn is_legitimate_marketplace(&self, sender: &str) -> bool {
+        let marketplace_domains = ["poshmark.com", "ebay.com", "etsy.com", "mercari.com", "amazon.com", "walmart.com"];
+        marketplace_domains.iter().any(|&domain| sender.contains(domain))
+    }
+
     fn is_legitimate_esp(&self, sender: &str) -> bool {
         if let Some(domain) = DomainUtils::extract_domain(sender) {
             let esp_domains = vec![
@@ -458,12 +473,14 @@ impl FeatureExtractor for LinkAnalyzer {
             (suspicious_count * 50 / total_links.max(1)) as i32
         };
 
-        // Reduce penalties for legitimate retailers and ESPs
+        // Reduce penalties for legitimate retailers, ESPs, and marketplaces
         if let Some(sender) = crate::features::get_header_case_insensitive(&context.headers, "From")
         {
             if self.is_legitimate_retailer(sender) || sender.to_lowercase().contains("humblebundle")
             {
                 score = (score as f32 * 0.2) as i32; // 80% reduction for retailers and Humble Bundle
+            } else if self.is_legitimate_marketplace(sender) {
+                score = (score as f32 * 0.2) as i32; // 80% reduction for legitimate marketplaces
             } else if self.is_legitimate_esp(sender) {
                 if let Some(brand) = self.extract_brand_from_sender(sender) {
                     // Check if links align with the brand
