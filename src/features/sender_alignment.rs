@@ -472,6 +472,13 @@ impl SenderAlignmentAnalyzer {
             "ikea.us",
             "capitalone.com",
             "mailer.humblebundle.com",
+            "poshmark.com",     // Marketplace platform
+            "ebay.com",
+            "etsy.com", 
+            "mercari.com",
+            "medium.com",       // Publishing platform
+            "substack.com",
+            "eflorist.com",     // Florist platform
         ];
 
         // Check the full domain for business names (handles complex domains like Adobe Campaign)
