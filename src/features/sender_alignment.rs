@@ -318,7 +318,7 @@ impl SenderAlignmentAnalyzer {
         }
 
         // Check for random sender IDs
-        if let Some(from_header) = context.headers.get("from") {
+        if let Some(from_header) = crate::features::get_header_case_insensitive(&context.headers, "from") {
             if let Some(email_part) = from_header.split('<').nth(1) {
                 if let Some(local_part) = email_part.split('@').next() {
                     if local_part.len() >= 8
@@ -773,7 +773,7 @@ impl FeatureExtractor for SenderAlignmentAnalyzer {
         // Check sender mismatch (Gmail claiming business groups)
         if let Some(sender) = &context.sender {
             if sender.contains("@gmail.com") {
-                if let Some(raw_headers) = context.headers.get("raw") {
+                if let Some(raw_headers) = crate::features::get_header_case_insensitive(&context.headers, "raw") {
                     if raw_headers.contains("@wntwhitelabelsolutions.com")
                         || raw_headers.contains("business")
                         || raw_headers.contains("group")
@@ -830,7 +830,7 @@ impl FeatureExtractor for SenderAlignmentAnalyzer {
         }
 
         // Check authentication failures combined with brand claims and giveaway language
-        if let Some(raw_headers) = context.headers.get("raw") {
+        if let Some(raw_headers) = crate::features::get_header_case_insensitive(&context.headers, "raw") {
             let has_auth_failure =
                 raw_headers.contains("dkim=fail") || raw_headers.contains("spf=fail");
             let claims_major_brand = [
@@ -873,7 +873,7 @@ impl FeatureExtractor for SenderAlignmentAnalyzer {
         }
 
         // Check authentication failures
-        if let Some(raw_headers) = context.headers.get("raw") {
+        if let Some(raw_headers) = crate::features::get_header_case_insensitive(&context.headers, "raw") {
             if raw_headers.contains("dkim=fail") && raw_headers.contains("spf=fail") {
                 score += 25;
                 evidence.push("Multiple authentication failures (DKIM + SPF)".to_string());
@@ -881,7 +881,7 @@ impl FeatureExtractor for SenderAlignmentAnalyzer {
         }
 
         // Check Reply-To mismatch
-        if let Some(raw_headers) = context.headers.get("raw") {
+        if let Some(raw_headers) = crate::features::get_header_case_insensitive(&context.headers, "raw") {
             if let Some(reply_to_email) = self.extract_reply_to_email(raw_headers) {
                 let reply_to_domain = self.extract_domain(&reply_to_email);
                 if !reply_to_domain.is_empty()

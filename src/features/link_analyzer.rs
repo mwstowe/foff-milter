@@ -181,7 +181,7 @@ impl LinkAnalyzer {
     }
 
     fn extract_sender_domain(&self, context: &MailContext) -> String {
-        if let Some(from) = context.headers.get("From") {
+        if let Some(from) = crate::features::get_header_case_insensitive(&context.headers, "From") {
             if let Some(at_pos) = from.rfind('@') {
                 let domain_part = &from[at_pos + 1..];
                 if let Some(end) = domain_part.find('>') {
@@ -399,7 +399,7 @@ impl FeatureExtractor for LinkAnalyzer {
         };
 
         // Reduce penalties for legitimate retailers
-        if let Some(sender) = context.headers.get("From") {
+        if let Some(sender) = crate::features::get_header_case_insensitive(&context.headers, "From") {
             if self.is_legitimate_retailer(sender) || sender.to_lowercase().contains("humblebundle")
             {
                 score = (score as f32 * 0.2) as i32; // 80% reduction for retailers and Humble Bundle
@@ -409,7 +409,7 @@ impl FeatureExtractor for LinkAnalyzer {
         }
 
         // Additional specific check for Humble Bundle to ensure it passes
-        if let Some(sender) = context.headers.get("from") {
+        if let Some(sender) = crate::features::get_header_case_insensitive(&context.headers, "from") {
             // Use lowercase 'from'
             eprintln!("DEBUG: Checking From header: {}", sender);
             if sender.to_lowercase().contains("humblebundle") {

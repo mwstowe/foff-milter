@@ -5,6 +5,15 @@ pub mod sender_alignment;
 
 use crate::MailContext;
 use serde::{Deserialize, Serialize};
+use std::collections::HashMap;
+
+/// Case-insensitive header lookup utility function
+pub fn get_header_case_insensitive<'a>(headers: &'a HashMap<String, String>, header_name: &str) -> Option<&'a String> {
+    let header_lower = header_name.to_lowercase();
+    headers.iter()
+        .find(|(k, _)| k.to_lowercase() == header_lower)
+        .map(|(_, v)| v)
+}
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FeatureScore {
