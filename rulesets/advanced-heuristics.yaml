@@ -73,8 +73,8 @@ rules:
     criteria:
       type: "SubjectPattern"
       pattern: "(?i).*(urgent|asap|immediate|emergency|critical|important|action.*required|respond.*now|expires.*today).*"
-    score: 18
-    description: "Artificial urgency patterns common in spam and phishing"
+    score: 5
+    description: "Artificial urgency patterns (reduced - relies on context analyzer for main detection)"
 
   - name: "Weak Signal Aggregation"
     enabled: true

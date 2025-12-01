@@ -202,64 +202,26 @@ rules:
   - name: "Professional Service Providers"
     enabled: true
     criteria:
-      type: "Or"
-      criteria:
-        - type: "And"
-          criteria:
-            - type: "SenderPattern"
-              pattern: ".*@.*eflorist\\.com$"
-            - type: "BodyPattern"
-              pattern: "(?i).*(floral|flower|arrangement|bouquet|delivery).*"
-        - type: "And"
-          criteria:
-            - type: "SenderPattern"
-              pattern: ".*@.*(1800flowers|ftd|teleflora)\\.com$"
-            - type: "BodyPattern"
-              pattern: "(?i).*(floral|flower|arrangement).*"
+      type: "SenderDomain"
+      domains: ["eflorist.com", "1800flowers.com", "ftd.com", "teleflora.com"]
     score: -100
-    description: "Professional service providers (florists, etc.)"
+    description: "Professional service providers (florists) - relies on context analyzer for industry detection"
 
   - name: "Marketplace Platforms"
     enabled: true
     criteria:
-      type: "Or"
-      criteria:
-        - type: "And"
-          criteria:
-            - type: "SenderPattern"
-              pattern: ".*@.*poshmark\\.com$"
-            - type: "BodyPattern"
-              pattern: "(?i).*(listing|offer|marketplace|poshmark).*"
-        - type: "And"
-          criteria:
-            - type: "SenderPattern"
-              pattern: ".*@.*(ebay|etsy|mercari)\\.com$"
-            - type: "BodyPattern"
-              pattern: "(?i).*(listing|auction|marketplace).*"
+      type: "SenderDomain"
+      domains: ["poshmark.com", "ebay.com", "etsy.com", "mercari.com"]
     score: -120
-    description: "Legitimate marketplace platforms"
+    description: "Legitimate marketplace platforms - relies on context analyzer for marketplace detection"
 
   - name: "Newsletter Platforms"
     enabled: true
     criteria:
-      type: "Or"
-      criteria:
-        - type: "And"
-          criteria:
-            - type: "SenderPattern"
-              pattern: ".*@.*medium\\.com$"
-            - type: "HeaderPattern"
-              header: "Subject"
-              pattern: "(?i).*(daily digest|digest for).*"
-        - type: "And"
-          criteria:
-            - type: "SenderPattern"
-              pattern: ".*@.*substack\\.com$"
-            - type: "HeaderPattern"
-              header: "Subject"
-              pattern: "(?i).*(newsletter|digest).*"
+      type: "SenderDomain"
+      domains: ["medium.com", "substack.com"]
     score: -150
-    description: "Legitimate newsletter platforms"
+    description: "Legitimate newsletter platforms - relies on context analyzer for newsletter detection"
 
   - name: "Medium Publishing Platform"
     enabled: false
