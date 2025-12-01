@@ -31,8 +31,12 @@ rules:
   - name: "Sender Reputation Scoring"
     enabled: true
     criteria:
-      type: "SenderPattern"
-      pattern: ".*@[a-z0-9]{8,15}\\.(tk|ml|ga|cf|gq|top|click|download|stream|xyz|info|biz|online|site|website)$"
+      type: "Or"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@[a-z0-9]{8,15}\\.(tk|ml|ga|cf|gq)$"
+        - type: "SenderPattern"
+          pattern: ".*@[a-z0-9]{8,15}\\.(top|click|download|stream)$"
     score: 35
     description: "Low reputation domains with random names on suspicious TLDs"
 

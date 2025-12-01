@@ -4,54 +4,24 @@ rules:
   - name: "Levi's brand domain validation"
     enabled: true
     criteria:
-      type: "And"
-      criteria:
-        - type: "Or"
-          criteria:
-            - type: "HeaderPattern"
-              header: "From"
-              pattern: "(?i).*levi.*"
-            - type: "SubjectPattern"
-              pattern: "(?i).*levi.*"
-        - type: "HeaderPattern"
-          header: "From"
-          pattern: "(?i).*@.*levi\\.com.*"
+      type: "SenderDomain"
+      domains: ["levi.com"]
     score: -400
     description: "Legitimate Levi's emails from levi.com domain"
 
   - name: "Duluth Trading brand domain validation"
     enabled: true
     criteria:
-      type: "And"
-      criteria:
-        - type: "Or"
-          criteria:
-            - type: "HeaderPattern"
-              header: "From"
-              pattern: "(?i).*duluth.*"
-            - type: "SubjectPattern"
-              pattern: "(?i).*duluth.*"
-        - type: "HeaderPattern"
-          header: "From"
-          pattern: "(?i).*@.*duluthtrading\\.com.*"
+      type: "SenderDomain"
+      domains: ["duluthtrading.com"]
     score: -200
     description: "Legitimate Duluth Trading emails from duluthtrading.com domain"
 
   - name: "Michaels brand domain validation"
     enabled: true
     criteria:
-      type: "And"
-      criteria:
-        - type: "Or"
-          criteria:
-            - type: "HeaderPattern"
-              header: "From"
-              pattern: "(?i).*michaels.*"
-            - type: "SubjectPattern"
-              pattern: "(?i).*michaels.*"
-        - type: "HeaderPattern"
-          header: "From"
-          pattern: "(?i).*@.*michaels.*\\.com.*"
+      type: "SenderDomain"
+      domains: ["michaels.com"]
     score: -200
     description: "Legitimate Michaels emails from michaels domain"
 
@@ -72,13 +42,7 @@ rules:
   - name: "Gadget Flow newsletter validation"
     enabled: true
     criteria:
-      type: "And"
-      criteria:
-        - type: "HeaderPattern"
-          header: "From"
-          pattern: "(?i).*gadget.*flow.*"
-        - type: "HeaderPattern"
-          header: "From"
-          pattern: "(?i).*@.*thegadgetflow\\.com.*"
+      type: "SenderDomain"
+      domains: ["thegadgetflow.com"]
     score: -200
     description: "Legitimate Gadget Flow newsletter"
