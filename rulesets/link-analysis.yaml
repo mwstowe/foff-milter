@@ -7,24 +7,11 @@ rules:
       type: "And"
       criteria:
         - type: "PhishingSuspiciousLinks"
-          check_url_shorteners: true
-          check_suspicious_tlds: false
           check_ip_addresses: false
+          check_url_shorteners: true
+          check_suspicious_tlds: true
           allow_sender_domain: true
           allow_email_infrastructure: true
-          email_infrastructure_domains:
-            - "mailchimp.com"
-            - "constantcontact.com"
-            - "sendgrid.net"
-            - "mailgun.org"
-            - "e.iheart.com"
-            - "click1.e.iheart.com"
-            - "click.e.iheart.com"
-            - "iheart.com"
-            - "amazonses.com"
-            - "backerkit.com"
-            - "e.mailer.humblebundle.com"
-            - "mailer.humblebundle.com"
         - type: "Not"
           criteria:
             type: "SenderPattern"
@@ -42,93 +29,9 @@ rules:
         - type: "Not"
           criteria:
             type: "SenderPattern"
-            pattern: ".*@.*(1800flowersinc\\.com|em\\.1800flowers\\.com|salesforce\\.com|ifttt\\.com|filtersfast\\.com|exacttarget\\.com|woot\\.com).*"
+            pattern: ".*@.*(salesforce\\.com|exacttarget\\.com|hubspot\\.com|mailchimp\\.com|constantcontact\\.com).*"
     score: 15
     description: "Abuse of free email providers for suspicious activities"
-            - "pinterest.com"
-            - "twitter.com"
-            - "linkedin.com"
-            - "youtube.com"
-            - "meta.com"
-            - "campaigns.meta.com"
-            - "bounces.woot.com"
-            - "google.com"
-            - "microsoft.com"
-            - "salesforce.com"
-            - "bmsend.com"
-            - "benchmarkemail.com"
-            - "hubspot.com"
-            - "marketo.com"
-            - "customer.io"
-            - "customeriomail.com"
-            - "lovepopcards.com"
-            - "lovepop.com"
-            - "shopify.com"
-            - "iterable.com"
-            - "asus.com"
-            - "pestconnect.com"
-            - "stripe.com"
-            - "paypal.com"
-            - "square.com"
-            - "quickbooks.com"
-            - "invoicecloud.com"
-            - "billpay.com"
-            - "autopay.com"
-            - "paymi.com"
-            - "epay.com"
-            - "klaviyomail.com"
-            - "sparkpostmail.com"
-            - "backstage.com"
-            - "kiwico.com"
-            - "namemaker.com"
-            - "nedm.asus.com"
-            - "omicard.asus.com"
-            - "neweredm.com"
-            - "nytimes.com"
-            - "*.nytimes.com"
-            - "nl.nytimes.com"
-            - "static01.nyt.com"
-            - "static.nytimes.com"
-            - "sparkpostmail.com"
-            - "sparkpost.com"
-            - "oxfordclub.com"
-            - "mp.oxfordclub.com"
-            - "14westmail.net"
-            - "mailjet.com"
-            - "static.mailjet.com"
-            - "bnc3.mailjet.com"
-            - "toast-restaurants.com"
-            - "empower.com"
-            - "pphosted.com"
-            - "snapchat.com"
-            - "facebook.com"
-            - "twitter.com"
-            - "instagram.com"
-            - "youtube.com"
-            - "linkedin.com"
-            - "meta.com"
-            - "facebook.com"
-            - "campaigns.meta.com"
-          suspicious_patterns:
-            - "(?i).*(bit\\.ly|tinyurl|t\\.co|goo\\.gl|short\\.link).*"
-            - "(?i).*(click.*here|urgent.*link|verify.*account|update.*payment).*"
-            - "(?i).*(secure.*login|confirm.*identity|suspended.*account).*"
-        - type: "Not"
-          criteria:
-            type: "And"
-            criteria:
-              - type: "HeaderPattern"
-                header: "Authentication-Results"
-                pattern: "dkim=pass.*dmarc=pass"
-              - type: "Or"
-                criteria:
-                  - type: "BodyPattern"
-                    pattern: "(?i).*(newsletter|unsubscribe|promotional.*content|marketing.*email).*"
-                  - type: "HeaderPattern"
-                    header: "List-Unsubscribe"
-                    pattern: ".*"
-    score: 25
-    description: "Detects suspicious patterns in links to external domains (excludes sender domain and email infrastructure)"
 
   - name: "Links Using IP Addresses"
     enabled: true
@@ -145,73 +48,35 @@ rules:
   - name: "Suspicious TLD Links (External Only)"
     enabled: true
     criteria:
-      type: "PhishingSuspiciousLinks"
-      check_suspicious_tlds: true
-      check_url_shorteners: false
-      check_ip_addresses: false
-      allow_sender_domain: true
-      allow_email_infrastructure: true
-      email_infrastructure_domains:
-        - "mailchimp.com"
-        - "constantcontact.com"
-        - "sendgrid.net"
-        - "mailgun.org"
-        - "e.iheart.com"
-        - "click1.e.iheart.com"
-        - "click.e.iheart.com"
-        - "iheart.com"
-        - "amazonses.com"
-        - "customer.io"
-        - "customeriomail.com"
-        - "lovepopcards.com"
-        - "lovepop.com"
-        - "shopify.com"
-        - "iterable.com"
-        - "asus.com"
-        - "nedm.asus.com"
-        - "omicard.asus.com"
-        - "neweredm.com"
-        - "nytimes.com"
-        - "*.nytimes.com"
-        - "nl.nytimes.com"
-        - "static01.nyt.com"
-        - "static.nytimes.com"
-        - "sparkpostmail.com"
-        - "sparkpost.com"
-        - "oxfordclub.com"
-        - "mp.oxfordclub.com"
-        - "14westmail.net"
-        - "mailjet.com"
-        - "static.mailjet.com"
-        - "bnc3.mailjet.com"
-        - "toast-restaurants.com"
-        - "empower.com"
-        - "pphosted.com"
-        - "snapchat.com"
-        - "facebook.com"
-        - "twitter.com"
-        - "instagram.com"
-        - "youtube.com"
-        - "linkedin.com"
-        - "meta.com"
-        - "campaigns.meta.com"
-      suspicious_patterns:
-        - "(?i).*\\.(tk|ml|ga|cf|pw|top|click|download)($|/)"
-    score: 20
-    description: "Links to suspicious TLDs from external domains (excludes sender domain and email infrastructure)"
+      type: "And"
+      criteria:
+        - type: "PhishingSuspiciousLinks"
+          check_ip_addresses: false
+          check_url_shorteners: false
+          check_suspicious_tlds: true
+          allow_sender_domain: true
+          allow_email_infrastructure: true
+        - type: "Or"
+          criteria:
+            - type: "BodyPattern"
+              pattern: "(?i).*(click.*here|verify.*account|urgent.*action|suspended.*account).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(limited.*time|expires.*today|act.*now|immediate.*action).*"
+    score: 30
+    description: "Suspicious TLD usage combined with urgency language"
 
   - name: "Phishing Link Text Patterns"
     enabled: true
     criteria:
-      type: "PhishingSuspiciousLinks"
-      check_url_shorteners: false
-      check_suspicious_tlds: false
-      check_ip_addresses: false
-      allow_sender_domain: false
-      allow_email_infrastructure: false
-      suspicious_patterns:
-        - "(?i).*(urgent.*action|account.*suspended|verify.*now|click.*immediately).*"
-        - "(?i).*(security.*alert|unusual.*activity|confirm.*payment|update.*billing).*"
-        - "(?i).*(limited.*time|act.*now|expires.*today|final.*notice).*"
-    score: 30
-    description: "Detects phishing-style link text regardless of destination domain"
+      type: "And"
+      criteria:
+        - type: "BodyPattern"
+          pattern: "(?i).*(click.*here|verify.*account|confirm.*identity|update.*payment).*"
+        - type: "PhishingSuspiciousLinks"
+          check_ip_addresses: true
+          check_url_shorteners: true
+          check_suspicious_tlds: true
+          allow_sender_domain: false
+          allow_email_infrastructure: false
+    score: 40
+    description: "Phishing-style link text combined with suspicious URLs"
