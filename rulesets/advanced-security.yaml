@@ -35,8 +35,18 @@ rules:
               - type: "HeaderPattern"
                 header: "precedence"
                 pattern: "list"
+              # Medical platform exclusions
+              - type: "HeaderPattern"
+                header: "from"
+                pattern: ".*@.*charmtracker\\.com.*"
+              - type: "HeaderPattern"
+                header: "from"
+                pattern: ".*@.*athenahealth\\.com.*"
+              - type: "HeaderPattern"
+                header: "from"
+                pattern: ".*@.*epic\\.com.*"
     score: 10
-    description: "Emails with no subject or body content, excluding NetSuite business systems and legitimate mailing lists"
+    description: "Emails with no subject or body content, excluding NetSuite business systems, medical platforms, and legitimate mailing lists"
 
   - name: "Image-Only Emails"
     enabled: true

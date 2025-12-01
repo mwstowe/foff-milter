@@ -479,6 +479,11 @@ impl SenderAlignmentAnalyzer {
             "medium.com",       // Publishing platform
             "substack.com",
             "eflorist.com",     // Florist platform
+            // Medical platforms
+            "charmtracker.com", // AceMed medical platform
+            "athenahealth.com",
+            "epic.com",
+            "cerner.com",
         ];
 
         // Check the full domain for business names (handles complex domains like Adobe Campaign)
@@ -488,6 +493,27 @@ impl SenderAlignmentAnalyzer {
         legitimate_businesses
             .iter()
             .any(|business| full_domain.contains(business) || from_root.contains(business))
+    }
+
+    fn is_corporate_partnership(&self, display_name: &str, sender_domain: &str) -> bool {
+        let display_lower = display_name.to_lowercase();
+        let domain_lower = sender_domain.to_lowercase();
+        
+        // Corporate benefits partnerships
+        let partnerships = [
+            ("amazon", vec!["fidelity.com", "vanguard.com"]),
+            ("microsoft", vec!["fidelity.com", "schwab.com"]),
+            ("google", vec!["fidelity.com", "vanguard.com"]),
+            ("apple", vec!["fidelity.com", "vanguard.com"]),
+        ];
+        
+        for (company, partners) in &partnerships {
+            if display_lower.contains(company) {
+                return partners.iter().any(|partner| domain_lower.contains(partner));
+            }
+        }
+        
+        false
     }
 
     fn extract_root_domain(&self, domain: &str) -> String {
@@ -1034,6 +1060,12 @@ impl FeatureExtractor for SenderAlignmentAnalyzer {
         if self.is_legitimate_business(&sender_info) {
             score = (score as f32 * 0.3) as i32; // 70% reduction for legitimate businesses
             evidence.push("Legitimate business sender - reduced scoring applied".to_string());
+        }
+
+        // Apply corporate partnership discount
+        if self.is_corporate_partnership(&sender_info.from_display_name, &sender_info.from_domain) {
+            score = (score as f32 * 0.1) as i32; // 90% reduction for legitimate partnerships
+            evidence.push("Corporate partnership detected - significant scoring reduction applied".to_string());
         }
 
         // Apply platform recognition discount for known Q&A and development platforms
