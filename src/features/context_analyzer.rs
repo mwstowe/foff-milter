@@ -594,10 +594,17 @@ impl FeatureExtractor for ContextAnalyzer {
             context.from_header
         );
 
-        // Giveaway language patterns
+        // Giveaway language patterns with industry awareness
         let giveaway_language_regex = Regex::new(r"(?i)\b(your.*(prize|gift).*awaits|claim.*your.*(prize|gift)|congratulations.*winner|you.*have.*won)\b").unwrap();
         if giveaway_language_regex.is_match(&combined_text) {
-            total_score += 35;
+            let base_score = 35;
+            let industry_multiplier = if let Some(industry) = &industry_context {
+                self.get_industry_urgency_multiplier(industry)
+            } else {
+                1.0
+            };
+            let adjusted_score = (base_score as f32 * industry_multiplier) as i32;
+            total_score += adjusted_score;
             all_evidence.push("Giveaway language pattern detected".to_string());
         }
 
@@ -634,10 +641,17 @@ impl FeatureExtractor for ContextAnalyzer {
             }
         }
 
-        // Exclusive opportunity language detection (scam-specific contexts)
+        // Exclusive opportunity language detection with industry awareness
         let exclusive_regex = Regex::new(r"(?i)\b(exclusive.*opportunity.*receive|you.*chosen.*exclusive|selected.*exclusive.*offer|exclusive.*collection.*unclaimed)\b").unwrap();
         if exclusive_regex.is_match(&combined_text) {
-            total_score += 25;
+            let base_score = 25;
+            let industry_multiplier = if let Some(industry) = &industry_context {
+                self.get_industry_urgency_multiplier(industry)
+            } else {
+                1.0
+            };
+            let adjusted_score = (base_score as f32 * industry_multiplier) as i32;
+            total_score += adjusted_score;
             all_evidence.push("Exclusive opportunity scam language detected".to_string());
         }
 
@@ -812,9 +826,15 @@ impl FeatureExtractor for ContextAnalyzer {
             all_evidence.push("Information harvesting request detected".to_string());
         }
 
-        // Analyze urgency vs legitimacy
-        let (urgency_score, mut urgency_evidence) = self.analyze_urgency_vs_legitimacy(context);
-        total_score += urgency_score;
+        // Analyze urgency vs legitimacy with industry awareness
+        let (base_urgency_score, mut urgency_evidence) = self.analyze_urgency_vs_legitimacy(context);
+        let industry_multiplier = if let Some(industry) = &industry_context {
+            self.get_industry_urgency_multiplier(industry)
+        } else {
+            1.0
+        };
+        let adjusted_urgency_score = (base_urgency_score as f32 * industry_multiplier) as i32;
+        total_score += adjusted_urgency_score;
         all_evidence.append(&mut urgency_evidence);
 
         // Analyze scam combinations
