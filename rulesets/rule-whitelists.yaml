@@ -181,6 +181,24 @@ rules:
     score: -20
     description: "Fidelity corporate benefits and 401k communications"
 
+  - name: "E-commerce Tracking Platforms"
+    enabled: true
+    criteria:
+      type: "HeaderPattern"
+      header: "From"
+      pattern: ".*@.*narvar\\.com.*"
+    score: -30
+    description: "Legitimate e-commerce order tracking platforms"
+
+  - name: "Health Device Platforms"
+    enabled: true
+    criteria:
+      type: "HeaderPattern"
+      header: "From"
+      pattern: ".*@.*withings\\.com.*"
+    score: -20
+    description: "Health and fitness device platforms"
+
   - name: "Professional Service Providers"
     enabled: true
     criteria:

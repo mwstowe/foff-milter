@@ -484,6 +484,21 @@ impl SenderAlignmentAnalyzer {
             "athenahealth.com",
             "epic.com",
             "cerner.com",
+            // E-commerce platforms
+            "narvar.com",       // Order tracking platform
+            "shipstation.com",  // Shipping platform
+            "aftership.com",    // Package tracking
+            "route.com",        // Delivery tracking
+            "trackingmore.com", // Multi-carrier tracking
+            // Health/fitness platforms
+            "withings.com",     // Health devices
+            "fitbit.com",       // Fitness tracking
+            "garmin.com",       // Sports/health devices
+            "oura.com",         // Health rings
+            "myfitnesspal.com", // Nutrition tracking
+            // Specific failing domains
+            "domain-track.prod20.narvar.com", // Duluth tracking
+            "email.withings.com", // Withings health
         ];
 
         // Check the full domain for business names (handles complex domains like Adobe Campaign)
