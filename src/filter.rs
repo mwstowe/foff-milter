@@ -863,6 +863,14 @@ impl FilterEngine {
             .and_then(|email| extract_email_from_header(email))
     }
 
+    /// Case-insensitive header lookup
+    fn get_header_case_insensitive<'a>(&self, headers: &'a std::collections::HashMap<String, String>, header_name: &str) -> Option<&'a String> {
+        let header_lower = header_name.to_lowercase();
+        headers.iter()
+            .find(|(k, _)| k.to_lowercase() == header_lower)
+            .map(|(_, v)| v)
+    }
+
     /// Extract email address from header value using the existing function
     fn extract_email_from_header(&self, header_value: &str) -> Option<String> {
         extract_email_from_header(header_value)
@@ -2841,7 +2849,7 @@ impl FilterEngine {
                         .any(|attachment| attachment.contains_executables)
                 }
                 Criteria::HeaderPattern { header, pattern } => {
-                    if let Some(header_value) = context.headers.get(header) {
+                    if let Some(header_value) = self.get_header_case_insensitive(&context.headers, header) {
                         // DEBUG: Log exact header value for authentication-results
                         if header == "authentication-results" {
                             log::info!(
@@ -2880,7 +2888,7 @@ impl FilterEngine {
                     false
                 }
                 Criteria::HeaderContainsLanguage { header, language } => {
-                    if let Some(header_value) = context.headers.get(header) {
+                    if let Some(header_value) = self.get_header_case_insensitive(&context.headers, header) {
                         // Decode MIME headers before language detection
                         let decoded_value = crate::milter::decode_mime_header(header_value);
                         return LanguageDetector::contains_language(&decoded_value, language);
@@ -5358,7 +5366,7 @@ impl FilterEngine {
                     false
                 }
                 Criteria::ReplyToDomain { domains } => {
-                    if let Some(reply_to) = context.headers.get("reply-to") {
+                    if let Some(reply_to) = self.get_header_case_insensitive(&context.headers, "reply-to") {
                         if let Some(reply_email) = self.extract_email_from_header(reply_to) {
                             if let Some(domain) = DomainUtils::extract_domain(&reply_email) {
                                 return DomainUtils::matches_domain_list(&domain, domains);
