@@ -254,12 +254,28 @@ impl ContextAnalyzer {
             "lowes.com",
             "macys.com",
             "nordstrom.com",
-            "delta.com", "united.com", "american.com", "southwest.com",
-            "partsexpress.com", "mouser.com", "digikey.com", "adafruit.com",
-            "eflorist.com", "1800flowers.com", "ftd.com", "teleflora.com",
-            "eyebuydirect.com", "warbyparker.com", "lenscrafters.com",
-            "secretlab.co", "herman-miller.com", "steelcase.com",
-            "snowjoe.com", "wayfair.com", "overstock.com", "newegg.com",
+            "delta.com",
+            "united.com",
+            "american.com",
+            "southwest.com",
+            "partsexpress.com",
+            "mouser.com",
+            "digikey.com",
+            "adafruit.com",
+            "eflorist.com",
+            "1800flowers.com",
+            "ftd.com",
+            "teleflora.com",
+            "eyebuydirect.com",
+            "warbyparker.com",
+            "lenscrafters.com",
+            "secretlab.co",
+            "herman-miller.com",
+            "steelcase.com",
+            "snowjoe.com",
+            "wayfair.com",
+            "overstock.com",
+            "newegg.com",
         ];
 
         let sender_lower = sender.to_lowercase();
@@ -470,24 +486,43 @@ impl ContextAnalyzer {
     /// Detect Unicode character obfuscation (lookalike characters)
     fn detect_unicode_obfuscation(&self, text: &str) -> (bool, f32) {
         let suspicious_chars = [
-            ('ɑ', 'a'), ('е', 'e'), ('о', 'o'), ('р', 'p'), ('с', 'c'),
-            ('х', 'x'), ('у', 'y'), ('і', 'i'), ('ј', 'j'), ('ѕ', 's'),
-            ('ᴀ', 'A'), ('ᴇ', 'E'), ('ᴏ', 'O'), ('ᴘ', 'P'), ('ᴄ', 'C'),
-            ('ᴛ', 'T'), ('ᴜ', 'U'), ('ᴠ', 'V'), ('ᴡ', 'W'), ('ᴢ', 'Z'),
+            ('ɑ', 'a'),
+            ('е', 'e'),
+            ('о', 'o'),
+            ('р', 'p'),
+            ('с', 'c'),
+            ('х', 'x'),
+            ('у', 'y'),
+            ('і', 'i'),
+            ('ј', 'j'),
+            ('ѕ', 's'),
+            ('ᴀ', 'A'),
+            ('ᴇ', 'E'),
+            ('ᴏ', 'O'),
+            ('ᴘ', 'P'),
+            ('ᴄ', 'C'),
+            ('ᴛ', 'T'),
+            ('ᴜ', 'U'),
+            ('ᴠ', 'V'),
+            ('ᴡ', 'W'),
+            ('ᴢ', 'Z'),
         ];
-        
+
         let mut obfuscation_count = 0;
         let mut total_chars = 0;
-        
+
         for ch in text.chars() {
             if ch.is_alphabetic() {
                 total_chars += 1;
-                if suspicious_chars.iter().any(|(suspicious, _)| *suspicious == ch) {
+                if suspicious_chars
+                    .iter()
+                    .any(|(suspicious, _)| *suspicious == ch)
+                {
                     obfuscation_count += 1;
                 }
             }
         }
-        
+
         if obfuscation_count > 0 && total_chars > 0 {
             let obfuscation_ratio = obfuscation_count as f32 / total_chars as f32;
             (true, obfuscation_ratio * 100.0) // Return percentage
@@ -499,47 +534,65 @@ impl ContextAnalyzer {
     fn detect_industry_context(&self, sender: &str, content: &str) -> Option<String> {
         let sender_lower = sender.to_lowercase();
         let content_lower = content.to_lowercase();
-        
+
         // Floral industry
-        if sender_lower.contains("floral") || sender_lower.contains("flower") || 
-           sender_lower.contains("eflorist") || sender_lower.contains("ftd") ||
-           content_lower.contains("arrangement") || content_lower.contains("bouquet") ||
-           content_lower.contains("delivery") || content_lower.contains("florist") {
+        if sender_lower.contains("floral")
+            || sender_lower.contains("flower")
+            || sender_lower.contains("eflorist")
+            || sender_lower.contains("ftd")
+            || content_lower.contains("arrangement")
+            || content_lower.contains("bouquet")
+            || content_lower.contains("delivery")
+            || content_lower.contains("florist")
+        {
             return Some("floral".to_string());
         }
-        
+
         // E-commerce/Marketplace
-        if sender_lower.contains("poshmark") || sender_lower.contains("ebay") ||
-           sender_lower.contains("etsy") || sender_lower.contains("mercari") ||
-           content_lower.contains("marketplace") || content_lower.contains("listing") {
+        if sender_lower.contains("poshmark")
+            || sender_lower.contains("ebay")
+            || sender_lower.contains("etsy")
+            || sender_lower.contains("mercari")
+            || content_lower.contains("marketplace")
+            || content_lower.contains("listing")
+        {
             return Some("marketplace".to_string());
         }
-        
+
         // Tech/Newsletter
-        if sender_lower.contains("medium") || sender_lower.contains("substack") ||
-           content_lower.contains("coding") || content_lower.contains("development") ||
-           content_lower.contains("technology") || content_lower.contains("ai") ||
-           content_lower.contains("daily digest") || content_lower.contains("newsletter") {
+        if sender_lower.contains("medium")
+            || sender_lower.contains("substack")
+            || content_lower.contains("coding")
+            || content_lower.contains("development")
+            || content_lower.contains("technology")
+            || content_lower.contains("ai")
+            || content_lower.contains("daily digest")
+            || content_lower.contains("newsletter")
+        {
             return Some("tech_newsletter".to_string());
         }
-        
+
         // Electronics/Parts
-        if sender_lower.contains("parts") || sender_lower.contains("electronic") ||
-           sender_lower.contains("component") || content_lower.contains("circuit") ||
-           content_lower.contains("resistor") || content_lower.contains("capacitor") {
+        if sender_lower.contains("parts")
+            || sender_lower.contains("electronic")
+            || sender_lower.contains("component")
+            || content_lower.contains("circuit")
+            || content_lower.contains("resistor")
+            || content_lower.contains("capacitor")
+        {
             return Some("electronics".to_string());
         }
-        
+
         None
     }
 
     fn get_industry_urgency_multiplier(&self, industry: &str) -> f32 {
         match industry {
-            "floral" => 0.4,        // 60% reduction for floral marketing
-            "marketplace" => 0.3,   // 70% reduction for marketplace offers
+            "floral" => 0.4,          // 60% reduction for floral marketing
+            "marketplace" => 0.3,     // 70% reduction for marketplace offers
             "tech_newsletter" => 0.2, // 80% reduction for newsletters
-            "electronics" => 0.5,   // 50% reduction for electronics retailers
-            _ => 1.0
+            "electronics" => 0.5,     // 50% reduction for electronics retailers
+            _ => 1.0,
         }
     }
 }
@@ -563,14 +616,20 @@ impl FeatureExtractor for ContextAnalyzer {
         if has_obfuscation {
             let obfuscation_score = (obfuscation_ratio * 0.4) as i32; // Scale appropriately
             total_score += obfuscation_score.max(40); // Minimum 40 points for any obfuscation
-            all_evidence.push(format!("Unicode obfuscation detected: {:.1}% suspicious characters", obfuscation_ratio));
+            all_evidence.push(format!(
+                "Unicode obfuscation detected: {:.1}% suspicious characters",
+                obfuscation_ratio
+            ));
         }
 
         // Industry-aware scoring adjustments
         if let Some(industry) = &industry_context {
             let multiplier = self.get_industry_urgency_multiplier(industry);
             if multiplier < 1.0 {
-                all_evidence.push(format!("Industry context detected: {} (reduced scoring)", industry));
+                all_evidence.push(format!(
+                    "Industry context detected: {} (reduced scoring)",
+                    industry
+                ));
             }
         }
 
@@ -827,7 +886,8 @@ impl FeatureExtractor for ContextAnalyzer {
         }
 
         // Analyze urgency vs legitimacy with industry awareness
-        let (base_urgency_score, mut urgency_evidence) = self.analyze_urgency_vs_legitimacy(context);
+        let (base_urgency_score, mut urgency_evidence) =
+            self.analyze_urgency_vs_legitimacy(context);
         let industry_multiplier = if let Some(industry) = &industry_context {
             self.get_industry_urgency_multiplier(industry)
         } else {

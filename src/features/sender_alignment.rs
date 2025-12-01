@@ -223,46 +223,57 @@ impl SenderAlignmentAnalyzer {
     fn analyze_display_name_consistency(&self, from_header: &str) -> (i32, Vec<String>) {
         let mut score = 0;
         let mut evidence = Vec::new();
-        
+
         // Extract display name and email parts
         if let Some(angle_start) = from_header.rfind('<') {
             let display_part = from_header[..angle_start].trim().trim_matches('"');
             let email_part = &from_header[angle_start + 1..].trim_end_matches('>');
-            
+
             // Check for suspicious display name patterns
             let suspicious_chars = ['@', '<', '>', '[', ']', '{', '}', '|', '\\'];
             if display_part.chars().any(|c| suspicious_chars.contains(&c)) {
                 score += 20;
                 evidence.push("Display name contains suspicious characters".to_string());
             }
-            
+
             // Check for excessive random characters
             let random_pattern = regex::Regex::new(r"[^a-zA-Z\s]{3,}").unwrap();
             if random_pattern.is_match(display_part) {
                 score += 15;
                 evidence.push("Display name contains excessive special characters".to_string());
             }
-            
+
             // Check for domain mismatch in display name
             if display_part.contains('@') && !display_part.contains(email_part) {
                 score += 25;
                 evidence.push("Display name contains different email domain".to_string());
             }
-            
+
             // Check for brand impersonation patterns
-            let brand_keywords = ["paypal", "amazon", "microsoft", "google", "apple", "facebook", "bank"];
+            let brand_keywords = [
+                "paypal",
+                "amazon",
+                "microsoft",
+                "google",
+                "apple",
+                "facebook",
+                "bank",
+            ];
             let display_lower = display_part.to_lowercase();
             let email_lower = email_part.to_lowercase();
-            
+
             for brand in &brand_keywords {
                 if display_lower.contains(brand) && !email_lower.contains(brand) {
                     score += 30;
-                    evidence.push(format!("Display name claims '{}' but email domain doesn't match", brand));
+                    evidence.push(format!(
+                        "Display name claims '{}' but email domain doesn't match",
+                        brand
+                    ));
                     break;
                 }
             }
         }
-        
+
         (score, evidence)
     }
 
@@ -402,8 +413,13 @@ impl SenderAlignmentAnalyzer {
 
             if brand_mentioned {
                 // Skip AWS infrastructure references (not actual brand impersonation)
-                if brand == "amazon" && self.is_aws_infrastructure_reference(body) 
-                    && !sender_info.from_display_name.to_lowercase().contains("amazon") {
+                if brand == "amazon"
+                    && self.is_aws_infrastructure_reference(body)
+                    && !sender_info
+                        .from_display_name
+                        .to_lowercase()
+                        .contains("amazon")
+                {
                     continue;
                 }
 
@@ -478,13 +494,13 @@ impl SenderAlignmentAnalyzer {
             "ikea.us",
             "capitalone.com",
             "mailer.humblebundle.com",
-            "poshmark.com",     // Marketplace platform
+            "poshmark.com", // Marketplace platform
             "ebay.com",
-            "etsy.com", 
+            "etsy.com",
             "mercari.com",
-            "medium.com",       // Publishing platform
+            "medium.com", // Publishing platform
             "substack.com",
-            "eflorist.com",     // Florist platform
+            "eflorist.com", // Florist platform
             // Medical platforms
             "charmtracker.com", // AceMed medical platform
             "athenahealth.com",
@@ -504,7 +520,7 @@ impl SenderAlignmentAnalyzer {
             "myfitnesspal.com", // Nutrition tracking
             // Specific failing domains
             "domain-track.prod20.narvar.com", // Duluth tracking
-            "email.withings.com", // Withings health
+            "email.withings.com",             // Withings health
         ];
 
         // Check the full domain for business names (handles complex domains like Adobe Campaign)
@@ -519,7 +535,7 @@ impl SenderAlignmentAnalyzer {
     fn is_corporate_partnership(&self, display_name: &str, sender_domain: &str) -> bool {
         let display_lower = display_name.to_lowercase();
         let domain_lower = sender_domain.to_lowercase();
-        
+
         // Corporate benefits partnerships
         let partnerships = [
             ("amazon", vec!["fidelity.com", "vanguard.com"]),
@@ -527,24 +543,21 @@ impl SenderAlignmentAnalyzer {
             ("google", vec!["fidelity.com", "vanguard.com"]),
             ("apple", vec!["fidelity.com", "vanguard.com"]),
         ];
-        
+
         for (company, partners) in &partnerships {
             if display_lower.contains(company) {
-                return partners.iter().any(|partner| domain_lower.contains(partner));
+                return partners
+                    .iter()
+                    .any(|partner| domain_lower.contains(partner));
             }
         }
-        
+
         false
     }
 
     fn is_aws_infrastructure_reference(&self, content: &str) -> bool {
-        let aws_patterns = [
-            "amazonaws.com",
-            "cloudfront.net", 
-            "s3.amazonaws.com",
-            "s3-",
-        ];
-        
+        let aws_patterns = ["amazonaws.com", "cloudfront.net", "s3.amazonaws.com", "s3-"];
+
         aws_patterns.iter().any(|pattern| content.contains(pattern))
     }
 
@@ -1002,7 +1015,7 @@ impl FeatureExtractor for SenderAlignmentAnalyzer {
         {
             let mut auth_failures = Vec::new();
             let mut auth_score = 0;
-            
+
             // Check individual authentication failures
             if raw_headers.contains("dkim=fail") {
                 auth_score += 15;
@@ -1016,15 +1029,18 @@ impl FeatureExtractor for SenderAlignmentAnalyzer {
                 auth_score += 25;
                 auth_failures.push("DMARC");
             }
-            
+
             // Bonus for multiple failures
             if auth_failures.len() > 1 {
                 auth_score += 15;
-                evidence.push(format!("Multiple authentication failures: {}", auth_failures.join(" + ")));
+                evidence.push(format!(
+                    "Multiple authentication failures: {}",
+                    auth_failures.join(" + ")
+                ));
             } else if !auth_failures.is_empty() {
                 evidence.push(format!("{} authentication failure", auth_failures[0]));
             }
-            
+
             score += auth_score;
         }
 
@@ -1097,7 +1113,10 @@ impl FeatureExtractor for SenderAlignmentAnalyzer {
         // Apply corporate partnership discount
         if self.is_corporate_partnership(&sender_info.from_display_name, &sender_info.from_domain) {
             score = (score as f32 * 0.1) as i32; // 90% reduction for legitimate partnerships
-            evidence.push("Corporate partnership detected - significant scoring reduction applied".to_string());
+            evidence.push(
+                "Corporate partnership detected - significant scoring reduction applied"
+                    .to_string(),
+            );
         }
 
         // Apply platform recognition discount for known Q&A and development platforms

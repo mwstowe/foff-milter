@@ -63,15 +63,24 @@ impl InvoiceAnalyzer {
 
     fn get_industry_multiplier(&self, sender: &str) -> f32 {
         let sender_lower = sender.to_lowercase();
-        
-        if sender_lower.contains("eflorist") || sender_lower.contains("floral") || 
-           sender_lower.contains("flower") || sender_lower.contains("ftd") {
+
+        if sender_lower.contains("eflorist")
+            || sender_lower.contains("floral")
+            || sender_lower.contains("flower")
+            || sender_lower.contains("ftd")
+        {
             0.3 // 70% reduction for floral industry
-        } else if sender_lower.contains("poshmark") || sender_lower.contains("ebay") ||
-                  sender_lower.contains("etsy") || sender_lower.contains("mercari") {
+        } else if sender_lower.contains("poshmark")
+            || sender_lower.contains("ebay")
+            || sender_lower.contains("etsy")
+            || sender_lower.contains("mercari")
+        {
             0.4 // 60% reduction for marketplace platforms
-        } else if sender_lower.contains("medium") || sender_lower.contains("digest") ||
-                  sender_lower.contains("newsletter") || sender_lower.contains("substack") {
+        } else if sender_lower.contains("medium")
+            || sender_lower.contains("digest")
+            || sender_lower.contains("newsletter")
+            || sender_lower.contains("substack")
+        {
             0.2 // 80% reduction for newsletters
         } else {
             1.0 // No reduction for unknown senders
@@ -152,7 +161,7 @@ impl FeatureExtractor for InvoiceAnalyzer {
                 let base_score = if is_legitimate_or_medical { 5 } else { 30 }; // Reduced score for legitimate senders
                 let industry_multiplier = self.get_industry_multiplier(from_header);
                 let adjusted_score = (base_score as f32 * industry_multiplier) as i32;
-                
+
                 score += adjusted_score;
                 evidence.push(format!(
                     "Invoice scam pattern detected: {} (legitimate sender: {})",

@@ -157,7 +157,7 @@ impl LinkAnalyzer {
         }
 
         // Continue with normal suspicious link detection for non-marketplaces
-        let sender_domain = self.extract_sender_domain(context);
+        let _sender_domain = self.extract_sender_domain(context);
 
         // Early return for legitimate payment processors
         let payment_processors = [
@@ -409,8 +409,17 @@ impl LinkAnalyzer {
     }
 
     fn is_legitimate_marketplace(&self, sender: &str) -> bool {
-        let marketplace_domains = ["poshmark.com", "ebay.com", "etsy.com", "mercari.com", "amazon.com", "walmart.com"];
-        marketplace_domains.iter().any(|&domain| sender.contains(domain))
+        let marketplace_domains = [
+            "poshmark.com",
+            "ebay.com",
+            "etsy.com",
+            "mercari.com",
+            "amazon.com",
+            "walmart.com",
+        ];
+        marketplace_domains
+            .iter()
+            .any(|&domain| sender.contains(domain))
     }
 
     fn is_legitimate_esp(&self, sender: &str) -> bool {
@@ -431,7 +440,7 @@ impl LinkAnalyzer {
                 "list-manage.com".to_string(),
                 "campaign-archive.com".to_string(),
             ];
-            
+
             DomainUtils::matches_domain_list(&domain, &esp_domains)
         } else {
             false
@@ -449,7 +458,7 @@ impl LinkAnalyzer {
                 .trim_start_matches("info")
                 .trim_start_matches("news")
                 .trim_start_matches("updates");
-            
+
             if !clean_brand.is_empty() && clean_brand.len() > 3 {
                 Some(clean_brand.to_lowercase())
             } else {
@@ -485,10 +494,10 @@ impl FeatureExtractor for LinkAnalyzer {
                 if let Some(brand) = self.extract_brand_from_sender(sender) {
                     // Check if links align with the brand
                     let brand_aligned = links.iter().any(|link| {
-                        link.url.to_lowercase().contains(&brand) || 
-                        link.display_text.to_lowercase().contains(&brand)
+                        link.url.to_lowercase().contains(&brand)
+                            || link.display_text.to_lowercase().contains(&brand)
                     });
-                    
+
                     if brand_aligned {
                         score = (score as f32 * 0.3) as i32; // 70% reduction for ESP with brand alignment
                     }

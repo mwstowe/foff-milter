@@ -30,8 +30,20 @@ impl DomainAnalyzer {
         ];
 
         let suspicious_tlds = vec![
-            "tk", "ml", "ga", "cf", "pw", "top", "click", "download", 
-            "stream", "science", "racing", "review", "faith", "accountant"
+            "tk",
+            "ml",
+            "ga",
+            "cf",
+            "pw",
+            "top",
+            "click",
+            "download",
+            "stream",
+            "science",
+            "racing",
+            "review",
+            "faith",
+            "accountant",
         ];
 
         Self {
@@ -59,7 +71,7 @@ impl DomainAnalyzer {
         // Check for legitimate ESP domains first using domain utilities
         let esp_domains = vec![
             "sendgrid.net".to_string(),
-            "mailgun.com".to_string(), 
+            "mailgun.com".to_string(),
             "mailchimp.com".to_string(),
             "constantcontact.com".to_string(),
             "sparkpost.com".to_string(),
@@ -70,35 +82,42 @@ impl DomainAnalyzer {
             "sendinblue.com".to_string(),
             "campaignmonitor.com".to_string(),
             "aweber.com".to_string(),
-            "list-manage.com".to_string(), // Mailchimp
+            "list-manage.com".to_string(),      // Mailchimp
             "campaign-archive.com".to_string(), // Mailchimp
         ];
 
         if DomainUtils::matches_domain_list(domain, &esp_domains) {
             score -= 30; // Reduce suspicion for legitimate ESP
-            evidence.push(format!("Legitimate Email Service Provider detected: {}", domain));
+            evidence.push(format!(
+                "Legitimate Email Service Provider detected: {}",
+                domain
+            ));
             return (score, evidence); // Early return for ESP domains
         }
 
         // Check for legitimate marketing subdomains first
         let legitimate_patterns = [
             r"marketing\..*\.(com|net|org)$",
-            r"mail\..*\.(com|net|org)$", 
+            r"mail\..*\.(com|net|org)$",
             r"email\..*\.(com|net|org)$",
             r"news\..*\.(com|net|org)$",
             r"newsletter\..*\.(com|net|org)$",
             r"updates\..*\.(com|net|org)$",
         ];
-        
+
         for pattern in &legitimate_patterns {
             if Regex::new(pattern).unwrap().is_match(domain) {
                 // Extract base domain to check if it's a known brand
                 let parts: Vec<&str> = domain.split('.').collect();
                 if parts.len() >= 3 {
-                    let base_domain = format!("{}.{}", parts[parts.len()-2], parts[parts.len()-1]);
+                    let base_domain =
+                        format!("{}.{}", parts[parts.len() - 2], parts[parts.len() - 1]);
                     if self.is_known_brand(&base_domain) {
                         score -= 20; // Reduce suspicion for legitimate marketing subdomains
-                        evidence.push(format!("Legitimate marketing subdomain detected: {}", domain));
+                        evidence.push(format!(
+                            "Legitimate marketing subdomain detected: {}",
+                            domain
+                        ));
                         return (score, evidence);
                     }
                 }
@@ -124,7 +143,7 @@ impl DomainAnalyzer {
         }
 
         // Check TLD reputation
-        if let Some(tld) = domain.split('.').last() {
+        if let Some(tld) = domain.split('.').next_back() {
             if self.suspicious_tlds.contains(&tld) {
                 score += 20;
                 evidence.push(format!("Suspicious TLD detected: .{}", tld));
@@ -150,14 +169,33 @@ impl DomainAnalyzer {
 
     fn is_known_brand(&self, domain: &str) -> bool {
         let known_brands = [
-            "lyft.com", "uber.com", "delta.com", "united.com", "american.com",
-            "southwest.com", "jetblue.com", "alaska.com", "spirit.com",
-            "medium.com", "substack.com", "mailchimp.com", "constantcontact.com",
-            "sendgrid.com", "mailgun.com", "sparkpost.com", "mandrill.com",
-            "poshmark.com", "ebay.com", "etsy.com", "mercari.com",
-            "usps.com", "fedex.com", "ups.com", "dhl.com",
+            "lyft.com",
+            "uber.com",
+            "delta.com",
+            "united.com",
+            "american.com",
+            "southwest.com",
+            "jetblue.com",
+            "alaska.com",
+            "spirit.com",
+            "medium.com",
+            "substack.com",
+            "mailchimp.com",
+            "constantcontact.com",
+            "sendgrid.com",
+            "mailgun.com",
+            "sparkpost.com",
+            "mandrill.com",
+            "poshmark.com",
+            "ebay.com",
+            "etsy.com",
+            "mercari.com",
+            "usps.com",
+            "fedex.com",
+            "ups.com",
+            "dhl.com",
         ];
-        
+
         known_brands.contains(&domain)
     }
 }
@@ -195,12 +233,12 @@ mod tests {
     #[test]
     fn test_suspicious_domain_detection() {
         let analyzer = DomainAnalyzer::new();
-        
+
         // Test parking domain
         let (score, evidence) = analyzer.analyze_domain_reputation("parkit4gacor.com");
         assert!(score > 0);
         assert!(!evidence.is_empty());
-        
+
         // Test legitimate domain
         let (score, _) = analyzer.analyze_domain_reputation("google.com");
         assert_eq!(score, 0);
@@ -209,7 +247,7 @@ mod tests {
     #[test]
     fn test_domain_extraction() {
         let analyzer = DomainAnalyzer::new();
-        
+
         assert_eq!(
             analyzer.extract_domain("test@example.com"),
             Some("example.com".to_string())
