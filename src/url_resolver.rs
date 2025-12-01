@@ -75,19 +75,33 @@ impl UrlResolver {
 
         // Exclude legitimate social media and major platforms
         let excluded_domains = [
-            "facebook.com", "instagram.com", "twitter.com", "linkedin.com",
-            "youtube.com", "snapchat.com", "tiktok.com", "pinterest.com",
-            "reddit.com", "discord.com", "telegram.org", "whatsapp.com"
+            "facebook.com",
+            "instagram.com",
+            "twitter.com",
+            "linkedin.com",
+            "youtube.com",
+            "snapchat.com",
+            "tiktok.com",
+            "pinterest.com",
+            "reddit.com",
+            "discord.com",
+            "telegram.org",
+            "whatsapp.com",
         ];
 
         if let Ok(parsed) = Url::parse(url) {
             if let Some(host) = parsed.host_str() {
                 // Check if it's an excluded domain first
-                if excluded_domains.iter().any(|&d| host == d || host.ends_with(&format!(".{}", d))) {
+                if excluded_domains
+                    .iter()
+                    .any(|&d| host == d || host.ends_with(&format!(".{}", d)))
+                {
                     return false;
                 }
                 // Exact domain match only for shorteners
-                return shorteners.iter().any(|&s| host == s || host.ends_with(&format!(".{}", s)));
+                return shorteners
+                    .iter()
+                    .any(|&s| host == s || host.ends_with(&format!(".{}", s)));
             }
         }
 
