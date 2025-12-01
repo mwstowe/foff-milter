@@ -6,12 +6,10 @@ rules:
     criteria:
       type: "And"
       criteria:
-        - type: "SenderPattern"
-          pattern: "(?i).*(amazon|apple|microsoft|google|facebook|paypal|ebay|walmart|target|costco|bestbuy|homedepot|lowes|tmobile|t-mobile|verizon|att|sprint|netflix|disney|samsung|sony|nike|adidas|mcdonalds|starbucks|fedex|ups|usps|dhl|visa|mastercard|chase|bankofamerica|wells.*fargo|citibank|american.*express|norton|aaa|twilio|sendgrid).*"
-        - type: "SenderPattern"
-          pattern: ".*@.*\\.(tk|ml|ga|cf|gq|top|click|download|stream|xyz|pw|cc|space|shop|online|site|website|store|biz|info|forum|club|party|date|racing|review|science|work|faith|loan|win)$"
-    score: 120
-    description: "Major brand names from high-risk or suspicious TLD domains"
+        type: "SenderPattern"
+        pattern: "(?i).*(amazon|apple|microsoft|google|facebook|paypal|ebay|walmart|target|costco|bestbuy|homedepot|lowes|tmobile|t-mobile|verizon|att|sprint|netflix|disney|samsung|sony|nike|adidas|mcdonalds|starbucks|fedex|ups|usps|dhl|visa|mastercard|chase|bankofamerica|wells.*fargo|citibank|american.*express|norton|aaa|twilio|sendgrid).*"
+    score: 95
+    description: "Major brand names in sender (relies on shared TLD detection for additional scoring)"
 
   # Brand + urgent/deal keywords from suspicious domains
   - name: "Brand with urgency from suspicious domain"
@@ -30,10 +28,8 @@ rules:
               pattern: "(?i).*(urgent|immediate|expires|limited.*time|act.*now|final.*notice|suspended|verify|update|confirm|security.*alert|unauthorized).*"
             - type: "SubjectPattern"
               pattern: "(?i).*(deal|offer|discount|save|free|gift|reward|winner|prize|congratulations).*"
-        - type: "SenderPattern"
-          pattern: ".*@.*\\.(tk|ml|ga|cf|gq|top|click|download|stream|xyz|pw|cc|space|shop|online|site|website|store|biz|info|forum)$"
-    score: 140
-    description: "Brand impersonation with urgency/deals from suspicious domains"
+    score: 115
+    description: "Brand impersonation with urgency/deals (relies on shared TLD detection)"
 
   # Generic suspicious brand-like patterns
   - name: "Suspicious brand-like patterns"
@@ -42,10 +38,8 @@ rules:
       criteria:
         - type: "SenderPattern"
           pattern: "(?i).*[a-z]+(deal|offer|gift|reward|tech|mobile|store|shop|service|support|account|security|update|verify|confirm).*@.*"
-        - type: "SenderPattern"
-          pattern: ".*@.*\\.(tk|ml|ga|cf|gq|top|click|download|stream|xyz|pw|cc|space|shop|online|site|website|store|biz|info|forum)$"
-    score: 80
-    description: "Generic brand-like patterns from suspicious domains"
+    score: 55
+    description: "Generic brand-like patterns (relies on shared TLD detection)"
 
   # Brand impersonation from unrelated .com domains
   - name: "Brand impersonation from unrelated domains"

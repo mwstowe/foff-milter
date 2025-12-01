@@ -13,14 +13,10 @@ rules:
   # Black Friday and fake sales
   - name: "Black Friday and fake savings scams"
     criteria:
-      type: "And"
-      criteria:
-        - type: "SubjectPattern"
-          pattern: "(?i).*(black.*friday|cyber.*monday|huge.*savings|massive.*discount|limited.*time.*offer|act.*now.*save|don't.*miss.*out|final.*hours|last.*chance.*save|up.*to.*\\d+%.*off|save.*up.*to.*\\$\\d+).*"
-        - type: "SenderPattern"
-          pattern: ".*@.*\\.(tk|ml|ga|cf|gq|top|click|download|stream|xyz|pw|cc|space|shop|online|site|website|store|biz|info|forum)$"
-    score: 90
-    description: "Black Friday and fake promotional scams from suspicious domains"
+      type: "SubjectPattern"
+      pattern: "(?i).*(black.*friday|cyber.*monday|huge.*savings|massive.*discount|limited.*time.*offer|act.*now.*save|don't.*miss.*out|final.*hours|last.*chance.*save|up.*to.*\\d+%.*off|save.*up.*to.*\\$\\d+).*"
+    score: 65
+    description: "Black Friday and fake promotional scams (relies on shared TLD detection)"
 
   # Beauty and cosmetic scams
   - name: "Beauty and cosmetic product spam"
@@ -67,14 +63,10 @@ rules:
   - name: "Free product scams"
     enabled: true
     criteria:
-      type: "And"
-      criteria:
-        - type: "SubjectPattern"
-          pattern: "(?i).*(free.*sample|free.*trial|free.*gift|no.*cost|complimentary|risk.*free).*"
-        - type: "SenderPattern"
-          pattern: ".*@.*\\.(tk|ml|ga|cf|gq|top|click|download|stream|xyz|info|biz|online|site|website|shop)$"
-    score: 70
-    description: "Free product scams from suspicious domains"
+      type: "SubjectPattern"
+      pattern: "(?i).*(free.*sample|free.*trial|free.*gift|no.*cost|complimentary|risk.*free).*"
+    score: 45
+    description: "Free product scams (relies on shared TLD detection)"
 
   # Shopping and marketplace fraud
   - name: "Shopping marketplace fraud"

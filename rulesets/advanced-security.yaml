@@ -55,19 +55,13 @@ rules:
     score: 35
     description: "Emails containing only images to bypass text filters"
 
-  - name: "HTML Entity Obfuscation"
+  - name: "HTML Entity Obfuscation with Malicious Indicators"
     enabled: true
     criteria:
       type: "And"
       criteria:
         - type: "BodyPattern"
-          pattern: "(?i).*&#[0-9]{2,3};.*&#[0-9]{2,3};.*&#[0-9]{2,3};.*"
-        - type: "Or"
-          criteria:
-            - type: "BodyPattern"
-              pattern: "(?i).*&#[0-9]{2,3};.*\\.(com|org|net|info|biz).*"
-            - type: "BodyPattern"
-              pattern: "(?i).*(click|download|verify|update|secure).*&#[0-9]{2,3};.*"
+          pattern: "(?i).*(click|download|verify|update|secure).*&#[0-9]{2,3};.*"
         - type: "Not"
           criteria:
             type: "Or"
@@ -77,11 +71,8 @@ rules:
                 pattern: ".*@(lovepopcards\\.com|shopify\\.com|.*\\.shopify\\.com|sendgrid\\.net|.*\\.sendgrid\\.net|nytimes\\.com|.*\\.nytimes\\.com|nytdirect@nytimes\\.com|meta\\.com|.*\\.meta\\.com|facebook\\.com|.*\\.facebook\\.com|campaigns\\.meta\\.com).*"
               - type: "BodyPattern"
                 pattern: "(?i).*(order.*confirmation|lovepop|pop-up.*card|thank.*you.*for.*placing|the.*new.*york.*times|nytimes\\.com|newsletter).*"
-              - type: "HeaderPattern"
-                header: "Content-Transfer-Encoding"
-                pattern: "quoted-printable"
-    score: 15
-    description: "Detects HTML entity encoding used to obfuscate malicious domains"
+    score: 10
+    description: "HTML entities with malicious action words (relies on context analyzer for base detection)"
 
   - name: "Suspicious Attachment Filenames"
     enabled: true
