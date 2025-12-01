@@ -2,6 +2,24 @@ name: "Financial Services"
 enabled: true
 rules:
   # Loan and lending spam
+  - name: "Refinance and mortgage spam"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(refinanc|mortgage|rate.*drop|lock.*in.*saving|fha.*rate).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(refinanc|mortgage|rate.*drop|lock.*in.*saving|fha.*rate).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(bankofamerica\\.com|chase\\.com|wellsfargo\\.com|quickenloans\\.com|rocketmortgage\\.com|lendingclub\\.com|quora\\.com|reddit\\.com|stackexchange\\.com).*"
+    score: 60
+    description: "Refinance and mortgage spam from suspicious domains (excludes legitimate platforms)"
+
   - name: "Loan and lending spam"
     criteria:
       type: "And"

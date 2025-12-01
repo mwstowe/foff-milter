@@ -45,11 +45,17 @@ rules:
   - name: "Burst Pattern Indicators"
     enabled: true
     criteria:
-      type: "HeaderPattern"
-      header: "Message-ID"
-      pattern: ".*[0-9]{10,}.*"
+      type: "And"
+      criteria:
+        - type: "HeaderPattern"
+          header: "Message-ID"
+          pattern: ".*[0-9]{10,}.*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(empower\\.com|iheart\\.com|wayfair\\.com|backerkit\\.com|spotify\\.com|pandora\\.com|netflix\\.com).*"
     score: 5
-    description: "Message IDs with long numeric sequences indicating automated sending"
+    description: "Message IDs with long numeric sequences indicating automated sending (excludes legitimate media/entertainment)"
 
   - name: "Generic Sender Names"
     enabled: true

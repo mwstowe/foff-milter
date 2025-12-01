@@ -466,6 +466,38 @@ rules:
     description: "Xfinity/Comcast service communications"
 
   # Additional legitimate services
+  - name: "Quora Q&A Platform"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*quora\\.com$"
+    score: -200
+    description: "Quora question and answer platform"
+
+  - name: "Empower Financial Services"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*empower\\.com$"
+    score: -200
+    description: "Empower financial advisory services"
+
+  - name: "iHeart Media Services"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*iheart\\.com$"
+    score: -200
+    description: "iHeart radio and media services"
+
+  - name: "Wayfair E-commerce"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*wayfair\\.com$"
+    score: -200
+    description: "Wayfair furniture and home goods retailer"
+
   - name: "BackerKit Crowdfunding"
     enabled: true
     criteria:
@@ -503,9 +535,9 @@ rules:
     enabled: true
     criteria:
       type: "SenderPattern"
-      pattern: ".*@(o|creator).*\\.backerkit\\.com.*"
+      pattern: ".*@.*\\.backerkit\\.com.*"
     score: -200
-    description: "BackerKit simple pattern (excludes s.backerkit.com)"
+    description: "BackerKit all subdomains including s.backerkit.com"
 
   # Simple working patterns for remaining failures
   - name: "British Airways Simple"

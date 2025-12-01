@@ -77,11 +77,26 @@ rules:
   - name: "Bulk Email Quick Detection"
     enabled: true
     criteria:
-      type: "HeaderPattern"
-      header: "List-Unsubscribe"
-      pattern: ".*"
-    score: -10
-    description: "Quick accept for emails with proper unsubscribe headers (likely legitimate bulk)"
+      type: "Or"
+      criteria:
+        - type: "And"
+          criteria:
+            - type: "HeaderPattern"
+              header: "List-Unsubscribe"
+              pattern: ".*"
+            - type: "SenderPattern"
+              pattern: ".*@.*(empower\\.com|iheart\\.com|wayfair\\.com|backerkit\\.com|salesforce\\.com|mailchimp\\.com|constantcontact\\.com|hubspot\\.com).*"
+        - type: "And"
+          criteria:
+            - type: "HeaderPattern"
+              header: "List-Unsubscribe"
+              pattern: ".*"
+            - type: "Not"
+              criteria:
+                type: "SenderPattern"
+                pattern: ".*@(gmail\\.com|yahoo\\.com|hotmail\\.com|outlook\\.com)$"
+    score: -15
+    description: "Enhanced accept for legitimate bulk emails with unsubscribe headers"
 
   - name: "Empty Content Quick Reject"
     enabled: true

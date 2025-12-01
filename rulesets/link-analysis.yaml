@@ -62,8 +62,12 @@ rules:
               pattern: "(?i).*(click.*here|verify.*account|urgent.*action|suspended.*account).*"
             - type: "BodyPattern"
               pattern: "(?i).*(limited.*time|expires.*today|act.*now|immediate.*action).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(empower\\.com|iheart\\.com|wayfair\\.com|backerkit\\.com|salesforce\\.com|hubspot\\.com|mailchimp\\.com).*"
     score: 30
-    description: "Suspicious TLD usage combined with urgency language"
+    description: "Suspicious TLD usage combined with urgency language (excludes legitimate businesses)"
 
   - name: "Phishing Link Text Patterns"
     enabled: true
@@ -78,5 +82,9 @@ rules:
           check_suspicious_tlds: true
           allow_sender_domain: false
           allow_email_infrastructure: false
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(empower\\.com|iheart\\.com|wayfair\\.com|backerkit\\.com|salesforce\\.com|hubspot\\.com|mailchimp\\.com).*"
     score: 40
-    description: "Phishing-style link text combined with suspicious URLs"
+    description: "Phishing-style link text combined with suspicious URLs (excludes legitimate businesses)"
