@@ -495,6 +495,53 @@ impl ContextAnalyzer {
             (false, 0.0)
         }
     }
+
+    fn detect_industry_context(&self, sender: &str, content: &str) -> Option<String> {
+        let sender_lower = sender.to_lowercase();
+        let content_lower = content.to_lowercase();
+        
+        // Floral industry
+        if sender_lower.contains("floral") || sender_lower.contains("flower") || 
+           sender_lower.contains("eflorist") || sender_lower.contains("ftd") ||
+           content_lower.contains("arrangement") || content_lower.contains("bouquet") ||
+           content_lower.contains("delivery") || content_lower.contains("florist") {
+            return Some("floral".to_string());
+        }
+        
+        // E-commerce/Marketplace
+        if sender_lower.contains("poshmark") || sender_lower.contains("ebay") ||
+           sender_lower.contains("etsy") || sender_lower.contains("mercari") ||
+           content_lower.contains("marketplace") || content_lower.contains("listing") {
+            return Some("marketplace".to_string());
+        }
+        
+        // Tech/Newsletter
+        if sender_lower.contains("medium") || sender_lower.contains("substack") ||
+           content_lower.contains("coding") || content_lower.contains("development") ||
+           content_lower.contains("technology") || content_lower.contains("ai") ||
+           content_lower.contains("daily digest") || content_lower.contains("newsletter") {
+            return Some("tech_newsletter".to_string());
+        }
+        
+        // Electronics/Parts
+        if sender_lower.contains("parts") || sender_lower.contains("electronic") ||
+           sender_lower.contains("component") || content_lower.contains("circuit") ||
+           content_lower.contains("resistor") || content_lower.contains("capacitor") {
+            return Some("electronics".to_string());
+        }
+        
+        None
+    }
+
+    fn get_industry_urgency_multiplier(&self, industry: &str) -> f32 {
+        match industry {
+            "floral" => 0.4,        // 60% reduction for floral marketing
+            "marketplace" => 0.3,   // 70% reduction for marketplace offers
+            "tech_newsletter" => 0.2, // 80% reduction for newsletters
+            "electronics" => 0.5,   // 50% reduction for electronics retailers
+            _ => 1.0
+        }
+    }
 }
 
 impl FeatureExtractor for ContextAnalyzer {
@@ -506,6 +553,10 @@ impl FeatureExtractor for ContextAnalyzer {
         let subject = context.subject.as_deref().unwrap_or("");
         let sender = context.from_header.as_deref().unwrap_or("");
 
+        // Detect industry context for appropriate scoring adjustments
+        let combined_content = format!("{} {}", subject, body);
+        let industry_context = self.detect_industry_context(sender, &combined_content);
+
         // Check for Unicode obfuscation in subject and body
         let combined_text = format!("{} {}", subject, body);
         let (has_obfuscation, obfuscation_ratio) = self.detect_unicode_obfuscation(&combined_text);
@@ -513,6 +564,14 @@ impl FeatureExtractor for ContextAnalyzer {
             let obfuscation_score = (obfuscation_ratio * 0.4) as i32; // Scale appropriately
             total_score += obfuscation_score.max(40); // Minimum 40 points for any obfuscation
             all_evidence.push(format!("Unicode obfuscation detected: {:.1}% suspicious characters", obfuscation_ratio));
+        }
+
+        // Industry-aware scoring adjustments
+        if let Some(industry) = &industry_context {
+            let multiplier = self.get_industry_urgency_multiplier(industry);
+            if multiplier < 1.0 {
+                all_evidence.push(format!("Industry context detected: {} (reduced scoring)", industry));
+            }
         }
 
         // Check if this is from a legitimate retailer - reduce penalties

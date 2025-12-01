@@ -1,4 +1,5 @@
 use super::{FeatureExtractor, FeatureScore};
+use crate::domain_utils::DomainUtils;
 use crate::MailContext;
 use regex::Regex;
 
@@ -54,6 +55,30 @@ impl DomainAnalyzer {
     fn analyze_domain_reputation(&self, domain: &str) -> (i32, Vec<String>) {
         let mut score = 0;
         let mut evidence = Vec::new();
+
+        // Check for legitimate ESP domains first using domain utilities
+        let esp_domains = vec![
+            "sendgrid.net".to_string(),
+            "mailgun.com".to_string(), 
+            "mailchimp.com".to_string(),
+            "constantcontact.com".to_string(),
+            "sparkpost.com".to_string(),
+            "mandrill.com".to_string(),
+            "amazonses.com".to_string(),
+            "postmarkapp.com".to_string(),
+            "mailjet.com".to_string(),
+            "sendinblue.com".to_string(),
+            "campaignmonitor.com".to_string(),
+            "aweber.com".to_string(),
+            "list-manage.com".to_string(), // Mailchimp
+            "campaign-archive.com".to_string(), // Mailchimp
+        ];
+
+        if DomainUtils::matches_domain_list(domain, &esp_domains) {
+            score -= 30; // Reduce suspicion for legitimate ESP
+            evidence.push(format!("Legitimate Email Service Provider detected: {}", domain));
+            return (score, evidence); // Early return for ESP domains
+        }
 
         // Check for legitimate marketing subdomains first
         let legitimate_patterns = [

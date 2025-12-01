@@ -1,4 +1,5 @@
 use super::{FeatureExtractor, FeatureScore};
+use crate::domain_utils::DomainUtils;
 use crate::url_resolver::UrlResolver;
 use crate::MailContext;
 use regex::Regex;
@@ -398,13 +399,28 @@ impl LinkAnalyzer {
     }
 
     fn is_legitimate_esp(&self, sender: &str) -> bool {
-        let esp_patterns = [
-            "sendgrid.net", "mailgun.com", "mailchimp.com", "constantcontact.com",
-            "sparkpost.com", "mandrill.com", "ses.amazonaws.com", "postmarkapp.com",
-            "mailjet.com", "sendinblue.com", "campaignmonitor.com", "aweber.com",
-        ];
-        
-        esp_patterns.iter().any(|&esp| sender.contains(esp))
+        if let Some(domain) = DomainUtils::extract_domain(sender) {
+            let esp_domains = vec![
+                "sendgrid.net".to_string(),
+                "mailgun.com".to_string(),
+                "mailchimp.com".to_string(),
+                "constantcontact.com".to_string(),
+                "sparkpost.com".to_string(),
+                "mandrill.com".to_string(),
+                "amazonses.com".to_string(),
+                "postmarkapp.com".to_string(),
+                "mailjet.com".to_string(),
+                "sendinblue.com".to_string(),
+                "campaignmonitor.com".to_string(),
+                "aweber.com".to_string(),
+                "list-manage.com".to_string(),
+                "campaign-archive.com".to_string(),
+            ];
+            
+            DomainUtils::matches_domain_list(&domain, &esp_domains)
+        } else {
+            false
+        }
     }
 
     fn extract_brand_from_sender(&self, sender: &str) -> Option<String> {
