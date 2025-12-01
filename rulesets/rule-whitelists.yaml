@@ -154,6 +154,24 @@ rules:
     score: -100
     description: "Poshmark marketplace platform - legitimate e-commerce"
 
+  - name: "Beloit Floral Network"
+    enabled: true
+    criteria:
+      type: "HeaderPattern"
+      header: "From"
+      pattern: ".*@mail\\.eflorist\\.com.*"
+    score: -100
+    description: "Beloit Floral via eFlorist network - legitimate florist"
+
+  - name: "Medium Publishing Platform"
+    enabled: true
+    criteria:
+      type: "HeaderPattern"
+      header: "From"
+      pattern: ".*@medium\\.com.*"
+    score: -100
+    description: "Medium publishing platform - legitimate newsletter"
+
   - name: "Professional Service Providers"
     enabled: true
     criteria:
