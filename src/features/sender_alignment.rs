@@ -401,6 +401,12 @@ impl SenderAlignmentAnalyzer {
                 || body.to_lowercase().contains(brand);
 
             if brand_mentioned {
+                // Skip AWS infrastructure references (not actual brand impersonation)
+                if brand == "amazon" && self.is_aws_infrastructure_reference(body) 
+                    && !sender_info.from_display_name.to_lowercase().contains("amazon") {
+                    continue;
+                }
+
                 // Check if sender domain is legitimate for this brand
                 let domain_legitimate = legitimate_domains.iter().any(|domain| {
                     sender_info.from_domain.contains(domain)
@@ -529,6 +535,17 @@ impl SenderAlignmentAnalyzer {
         }
         
         false
+    }
+
+    fn is_aws_infrastructure_reference(&self, content: &str) -> bool {
+        let aws_patterns = [
+            "amazonaws.com",
+            "cloudfront.net", 
+            "s3.amazonaws.com",
+            "s3-",
+        ];
+        
+        aws_patterns.iter().any(|pattern| content.contains(pattern))
     }
 
     fn extract_root_domain(&self, domain: &str) -> String {
