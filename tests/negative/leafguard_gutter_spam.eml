@@ -1,0 +1,82 @@
+Return-Path: <return@parkit4gacor.com>
+Received: from juliett.example.com (localhost [127.0.0.1])
+	by juliett.example.com (8.18.1/8.18.1) with ESMTP id 5B19vEKu027174
+	for <mstowe@localhost>; Mon, 1 Dec 2025 09:57:14 GMT
+	(envelope-from return@parkit4gacor.com)
+Authentication-Results: juliett.example.com;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=parkit4gacor.com header.i=@parkit4gacor.com header.b=pI5EIcJp
+Received: from jimapinternal-aol.imap.mail.g03.yahoodns.net [67.195.228.147]
+	by juliett.example.com with IMAP (fetchmail-6.6.1)
+	for <mstowe@localhost> (single-drop); Mon, 01 Dec 2025 09:57:14 +0000 (UTC)
+Received: from 10.226.14.165
+ by atlas105.aol.mail.ne1.yahoo.com pod-id NONE with HTTPS; Mon, 1 Dec 2025 09:51:01 +0000
+X-Originating-Ip: [52.33.177.198]
+Received-SPF: none (domain of parkit4gacor.com does not designate permitted sender hosts)
+Authentication-Results: atlas105.aol.mail.ne1.yahoo.com;
+ dkim=pass header.i=@parkit4gacor.com header.s=h1 arc_overridden_status=NOT_OVERRIDDEN;
+ spf=none smtp.mailfrom=parkit4gacor.com arc_overridden_status=NOT_OVERRIDDEN;
+ dmarc=pass(p=QUARANTINE) header.from=parkit4gacor.com arc_overridden_status=NOT_OVERRIDDEN;
+X-Apparently-To: stowe@aol.com; Mon, 1 Dec 2025 09:51:01 +0000
+X-YMailISG: ZAgkkaUWLDt2vJWI4cLg4Iq4FIMlCQLcpqunbLRVQDiNC_xh
+ fuTmaBzqfDcVsgR4XX2yEZ1zbZVWLmZYOHqowWGouIICDXXyxW4lIuRB8C7n
+ uupu7OmNh6y9q.bs_LTebhcNd26j1DoWH8ADWcpgs2ztvInQ7Rz0z3.ImoWP
+ GEpx9cbMUoPhQ33rQYVc8zZurXQUpwGFHvh2u1KJWam5RhbEX96x4fyPBNvl
+ oW1qje_jaQNFcX2yXLLuDnfD5hvACyt7Snjaz91iLasQE1gFp14xr29esNxg
+ OUUyWyMCXe9bMTshqBVKRnQDFuh10Ach5.0V.CfIpa_P8hQxFuPoR2w2Vv5O
+ .bv5b.akC0t.F7InTF2LkmdXYSiflwnLo8AsGtguta1t__4oCNlv_Px8wevu
+ eUCDfVribXCaooWAeZxxI8J4m8l1uh_LRyicesGDAxuMtJfxR5j4KGWKJZj0
+ .HZHt0u_pJLtQCwCNP8qaK6YqKDj2uia0mU8FiAjIjbXqwCi6PIDG8OmbcFj
+ z5hL0hi.NDU.JXrtn1O4KkdFMqEdfoDZdeyLFeMnmx3VFXpvYnGLGCcYfjKY
+ Z3V37.mQwaLz_6EofFdfO5KMRxxJa4wVQau.FyP93yZUo3OHXwQQWFqXd_zM
+ b1Iw5qHz4BcgRUR_UZ5JI4Bc45CxSQlYnUSy71OWAZqZ8Y63tJyyroQ.9h.I
+ DcMC6mZnpa0YXbe5S5WUn4jfUSAqeE81qeiHf7Skkwk5rysKVvN34ZJZDyrq
+ XuQ15J1GFU7HJ4EvaEphBVGsaEzUrrhABbfcEbuezvopFgC6BNfG9uMngwdI
+ f2g6FHuftB_p5pJQbcTCiHEXVEcnrX7WebqSnNHOyP1GQp0v7NcSyX5SfKK7
+ QsD5Iz.oAiHpVBEx3IzRizAc9K6BX71H5dMyuHUpO8r.YHJo_.z4OIrjAhjW
+ wYG..2VjUYXJ.T2NoZsiSvms3lZMxIlwXK4gUdkuIF4LTQ_wdNRyDbYHJapT
+ Eau0RbGVMwMTkXHAsVLBE6CuT.bO7rVUmgWTL4SouQulr5Ojoz5ptNuA66m3
+ xYLZN.Xecej9OHAsTQdjedwVUktWWyZgFXJgtTMGzZXWU9eZItUa7XZ5NyiK
+ q.dQ.NnxGN8g9PdWJwwjcdKuHqQafvptBDx5IAsem6kIcH3HBXfHt2mOieYi
+ Rizn2Ulpbc_JIJXE2uFS2ny7zu.bm49L5zvBkF2qsq_bei_zuQ--
+Received: from 52.33.177.198 (EHLO arthritis.officialrant.com)
+ by 10.226.14.165 with SMTPs
+ (version=TLS1_2 cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256);
+ Mon, 01 Dec 2025 09:51:01 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=h1; d=parkit4gacor.com;
+ h=From:Reply-To:To:Subject:MIME-Version:Date:Message-ID:Content-Type:
+ Content-Transfer-Encoding;
+ bh=OD+ugZU+4lx/3A/+1A2CFPNUbbi3256ZaZcQihW6oJc=;
+ b=pI5EIcJpSoaVVoMxuEQ+nTaAnaQ1jjNXotLrwim7k0CEQpZladRGNCIi5qTCkAgvvXn3xkOhFcc5
+   d1+XeoDr5F2krogBAByn6jCjG4hGzpgH7mlOYekki5Byow6cFihNdjg1HRxIBO6EfKpHp8kV3CZQ
+   2FQPtETaByS2X0euk838yf1TiU7D+p3jt0FHos0JV3EOrBSZGIUv+H4LtQMqlZ+aIU4ZMXqGaH8q
+   uarVuY6Jf/wSn0RDFF5UQvJyy7X/8zVbi/4nQjHkRbHCvUoLlS2Obw8gO8XB5KRh6qKEXKsMDcYx
+   /xkbhDX4hbxtSA8k39e4wDm5gEec8tm9imOyUw==
+From:     ^`^   #Leafguard Partner_      <postagestampbandguitar@parkit4gacor.com>
+Reply-To: parkit4gacor.com@jimapinternal-aol.imap.mail.g03.yahoodns.net
+To: stowe@aol.com
+Subject:              ^`^    =?UTF-8?B?T25lIEd1dHRlci4gWmVybyBNyZFpbnRlbsmRbmNlLiBUb3TJkWwgUGXJkWNlIG9mIE1pbmQ=?=          
+MIME-Version: 1.0
+Date: Mon, 01 Dec 2025 15:15:28 +0530
+Message-ID: <ajx46yamo6xf.2376770@parkit4gacor.com>
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (juliett.example.com [0.0.0.0]); Mon, 01 Dec 2025 09:57:15 +0000 (UTC)
+X-FOFF-Rule-Matched: Advanced Security: Image-Only Emails (juliett.example.com) [6695a7c6]
+X-FOFF-Rule-Matched: Advanced Security: Empty Content Emails (juliett.example.com) [6695a7c6]
+X-FOFF-Score: 45 - foff-milter v0.7.6 (juliett.example.com)
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head><div style="display:none; font-size:1px; color:#333333; line-height:1px; max-height:0px; max-width:0px; opacity:0; overflow:hidden;"></div></head>
+<body style="margin:0; padding:0;"><center><table align="center" width="600"><tr><td align="left"><a href="http://daydhtthings.com/4Eva2IubzS/6Z/7KsCRZagvz/rrxMv_dBck/4rW6R757OVA9V/rrd7/Edq4Uu1uKq0/xe7M_Yd/qfTN6K5PFJJ/rYMe/Fll4j5iN7wFQPt9/red5x/J8NZcuB65vKz6/YY7v5/Wys6sAYAbUVE/"><img src="http://daydhtthings.com/727997574086877.jpg"/></a></td></tr></table>
+<div style="height:60px;"></div>
+<area coords="0,0,2000,2000" href="http://daydhtthings.com/4Eva2IubzS/6Z/7KsCRZagvz/rrxMv_dBck/4rW6R757OVA9V/rrd7/Edq4Uu1uKq0/xe7M_Yd/qfTN6K5PFJJ/rYMe/Fll4j5iN7wFQPt9/red5x/J8NZcuB65vKz6/YY7v5/Wys6sAYAbUVE/" /><div style="height:0px;"></div>
+<a href="http://daydhtthings.com/AXwPutqkvIJqC5Y/n4/X4KmlDEJr3J0Nd/rrxMv_dBck/b2TPlc6tvC3J/rrd7/VvSIoqSyTk80dG9/xe7M_Yd/IuQzdvIeo3x/rYMe/S8JBqraFFQ4o/red5x/Yl5tkI2Cmo/YY7v5/HWFUM4AtY0Ue/"><img src="http://daydhtthings.com/2ZuKM2DfG52l7wd.jpg"></a></center>
+<img src="http://daydhtthings.com/5z4DkwG8ViKQgn9/UX/Mrl2AsJbUpWJbT/rrxMv_dBck/4g9wqv3lg9UVf8T/rrd7/J9eBxuayeniL/xe7M_Yd/ZRg6PDkatt/rYMe/sd1v0HoGGq84I6/red5x/Nhxmum4AfH2n/YY7v5/jHKzIyUH57eAm0r/" alt="" width="1" height="1" style="display:none;"></body>
+</html>
+
+
+

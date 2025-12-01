@@ -1,0 +1,327 @@
+Return-Path: <testuser+test=example.com@gmail.com>
+Received: from hotel.example.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.example.com (8.18.1/8.18.1) with ESMTPS id 5B1DgmY3034355
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <marcy@example.com>; Mon, 1 Dec 2025 13:42:48 GMT
+	(envelope-from testuser+test=example.com@gmail.com)
+Authentication-Results: juliett.example.com;
+	dkim=pass (2048-bit key; unprotected) header.d=poshmark.com header.i=@poshmark.com header.b=u+HSNHFe;
+	dkim=pass (1024-bit key; unprotected) header.d=sendgrid.info header.i=@sendgrid.info header.b=wmL/810e
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+	by hotel.example.com (8.16.1/8.16.1) with ESMTPS id 5B1DgjVe127859
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=OK)
+	for <marcy@example.com>; Mon, 1 Dec 2025 07:42:47 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.example.com 5B1DgjVe127859
+Authentication-Results: hotel.example.com;
+	dkim=pass (2048-bit key, unprotected) header.d=poshmark.com header.i=@poshmark.com header.a=rsa-sha256 header.s=sgc header.b=u+HSNHFe;
+	dkim=pass (1024-bit key, unprotected) header.d=sendgrid.info header.i=@sendgrid.info header.a=rsa-sha256 header.s=smtpapi header.b=wmL/810e
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-597c83bb5c2so975232e87.3
+        for <marcy@example.com>; Mon, 01 Dec 2025 05:42:47 -0800 (PST)
+ARC-Seal: i=2; a=rsa-sha256; t=1764596565; cv=pass;
+        d=google.com; s=arc-20240605;
+        b=Xja63t0NiI/zxRawWD1q0sePwcoIp7zhSci90l9rnL5ha+lt/gomCpVD2td2H3GH87
+         ErRZr7nVaaFlxA+Tcygko8atpJaoFU/gRLACnCjLp3E8SFw5VBX7H3WVU8NRRd22wWkU
+         PxoGfkTtsap87P2ayOqLV2x10xFHj5m6LoPZLgzCSU2PEjFqt3eGSBqfx0rdNi+v7ydH
+         3j247VjjiESBiQkHhog38Kv9FY8MLe8hW+5Gv8MO5N9f4MQNHhT6chrbbP+TtlkVIZFw
+         3TnsY1wH5+VtRXL2kP4UZI8H8Bzl5ON7aVbVUjtWkbFpcDhbmcCAJKnBYXpxI8yI/WJy
+         fHHw==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=to:message-id:subject:mime-version:list-unsubscribe-post
+         :list-unsubscribe:from:date:content-transfer-encoding:dkim-signature
+         :dkim-signature:delivered-to;
+        bh=sPVXViCoKPjGhJNpOt4aUuPtgA44Ac3UMw1PNTqpyKU=;
+        fh=LlpELejv4xHNjgQ1asuNOHyIHQTCirKfl6I4CfezS2I=;
+        b=EnyEARwoHqIZk0fPSTBuKuhxaJnK//tOnR78+EKht+77bt7FDLb4IFxFTMIipE2ZAw
+         GoSjOzK9MUBLKsT6OCX1H/CLCFYhhztQiIoQImiJXpDMcu5X5JDakHWhROwVyazlHLJS
+         kSxh4ffXey0NFhuyQyeXodbPpDcZkKUK3+wY7qNW12pjTV37rrg+DEDhz82dmNunssPw
+         xLlbR2Pf6CBljTbM0ST4xRLEOvdVuUMXBBvn1VA8twCIoB889RjHL9Q8rgVe56jkOegu
+         B3HGp5HAboLvfVe4DvmgftPSZmgaOUuzwpA5qlUrKTsOC+TETFPE1n/Qc3dMca7UNbqV
+         obkg==;
+        darn=example.com
+ARC-Authentication-Results: i=2; mx.google.com;
+       dkim=pass header.i=@poshmark.com header.s=sgc header.b=u+HSNHFe;
+       dkim=pass header.i=@sendgrid.info header.s=smtpapi header.b="wmL/810e";
+       spf=pass (google.com: domain of bounces+1595079-3224-testuser=gmail.com@commerce.poshmark.com designates 50.31.32.52 as permitted sender) smtp.mailfrom="bounces+1595079-3224-testuser=gmail.com@commerce.poshmark.com";
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=poshmark.com
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764596565; x=1765201365;
+        h=to:message-id:subject:mime-version:list-unsubscribe-post
+         :list-unsubscribe:from:date:content-transfer-encoding:dkim-signature
+         :dkim-signature:delivered-to:x-forwarded-for:x-forwarded-to
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=sPVXViCoKPjGhJNpOt4aUuPtgA44Ac3UMw1PNTqpyKU=;
+        b=WThi1e6t0mcpSEdHIepw7d7+ursbBLMHzAJNW/FZhTahp2Qebv+HWEVd3tvy7HS46w
+         AWp3S/4WItsR0XlA8M6A/XB4iUD97s1HLZC6wVX0/oDlvJrVgfnhkHBuCvoL67RpUA6z
+         lvqeyvOSy5Izxbvmln1U8RbYkUPme1YS/fnD9ABpeBKGq2azzXEwDRSgKkvBP7CwUneA
+         TzKg32V00Chvn2kvHjKEfRiPzbS1pc04YbV+CCcIVfUiBqv2wE8Y3K7c/jcJ5hlivyVD
+         AcwijYgl1/aQj5LDR/SzhlqhJMNrhGFQfNRr/GYNI0h5nhSoXBuUwUEOB5YHq9q9tFpO
+         GrFA==
+X-Forwarded-Encrypted: i=2; AJvYcCU/vPWrl8Xj4MzRuZQQ5pt9tkq6he0lg5V5hVWEmQcedXw4xF5aKxoxCN71PXp2r3JAAWWsPQ==@example.com
+X-Gm-Message-State: AOJu0YyAcd2wYbyji3jLoxBFpJ9qvWocHLVyvnWFv6KWSnkHOIGLudX7
+	kx4fJYqs+EJaTdxq93Bmtz1rY/abtOdhU6EogMxTqt6y3UQlwVpXahuuBlyB+j5T92k7/bah5S1
+	FE4o973DZ6JxNtzs0je2LONCKacZbLxxEqUD9w2d/kSETp4njGMA6mj9jIZ6vnQ==
+X-Received: by 2002:a05:6512:1596:b0:595:8200:9f8d with SMTP id 2adb3069b0e04-596a3e9ffbcmr14857219e87.8.1764596564679;
+        Mon, 01 Dec 2025 05:42:44 -0800 (PST)
+X-Forwarded-To: marcy@example.com
+X-Forwarded-For: testuser@gmail.com marcy@example.com
+Delivered-To: testuser@gmail.com
+Received: by 2002:ab3:5796:0:b0:2d3:473a:c0e4 with SMTP id e22csp5979651ltc;
+        Mon, 1 Dec 2025 05:42:42 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEc1JbuvSij9pxpcmDGX2RIgcc3+XtZ6gQMhT5lOB2t14yV2tJT25jTtzwXGvBg+pOZW/ip
+X-Received: by 2002:a05:6a00:1490:b0:7a2:7f1e:f2dd with SMTP id d2e1a72fcca58-7c58c7a69a5mr34847587b3a.11.1764596561860;
+        Mon, 01 Dec 2025 05:42:41 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1764596561; cv=none;
+        d=google.com; s=arc-20240605;
+        b=krzAPZaSs43mwsdkHKWJ9LBfLYlJVoXeFuTPPTV15GDJZkO42kp7JBGbjFWkV29vlP
+         9+xedkHK9mS8yEZxNw6X8T7D1DraZHmp4SafM/3IjBGd21+AAOtwBaA6D8HXdx+vxS2L
+         HQEQbKdvYVI43f+J63eqk32hLWZugEwJcvfMQnt3CrqvX0IeqC7xtf60LoJfDWITpGrE
+         j/UGpsKFaEZSWZP4HLw01gkVVk//EVdFN4VnESyzHYfRZFshbdOr/GtbejpH/imBobVk
+         7OanNtvOd7PJoy43Wjndq6Uj1oZin5DkB9mmpf1ussqmC46Fvf8fLUUJe8j5JlOdSIa5
+         rLjQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=to:message-id:subject:mime-version:list-unsubscribe-post
+         :list-unsubscribe:from:date:content-transfer-encoding:dkim-signature
+         :dkim-signature;
+        bh=sPVXViCoKPjGhJNpOt4aUuPtgA44Ac3UMw1PNTqpyKU=;
+        fh=i/NDHCFqo7YpJSybu3yhWslIjS9ysu9i075Iy5aJW8Y=;
+        b=E2ymvnv9hAWuMjDBSHiI+wct2+z9K5bBa7CjB/4AYqUtW9QMfSGf9vtlrSARGW2WYW
+         eeGUWr9vpWuM9Ehy9+Jy9+WXyEa8rFtyPiRYRZThHjR3UVXhZ8V8BdV5jY3Fn1RU5UtJ
+         2Q4jA9a6/SUZW+9JIqUwp3fw7L+YdSStorLr6dl9yUu1zcs4DCdOesN/uSKZh1JMAllm
+         cFYcD1bJr2qzXo0swHT0JAIuJujO3Bwk2Wc8Opa6KowuDTN2HPhuQVlCSNlpNB114COX
+         yPJULtq9CnOSKLt0Nlw+h6lY9X2fDza6/2yRdocoJ+/ROA201lxXZ2x3XFUa+yHnjIm7
+         9PIw==;
+        dara=google.com
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@poshmark.com header.s=sgc header.b=u+HSNHFe;
+       dkim=pass header.i=@sendgrid.info header.s=smtpapi header.b="wmL/810e";
+       spf=pass (google.com: domain of bounces+1595079-3224-testuser=gmail.com@commerce.poshmark.com designates 50.31.32.52 as permitted sender) smtp.mailfrom="bounces+1595079-3224-testuser=gmail.com@commerce.poshmark.com";
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=poshmark.com
+Received: from o14.orders.poshmark.com (o14.orders.poshmark.com. [50.31.32.52])
+        by mx.google.com with ESMTPS id d2e1a72fcca58-7d1601d46ebsi6923448b3a.340.2025.12.01.05.42.41
+        for <testuser@gmail.com>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 01 Dec 2025 05:42:41 -0800 (PST)
+Received-SPF: pass (google.com: domain of bounces+1595079-3224-testuser=gmail.com@commerce.poshmark.com designates 50.31.32.52 as permitted sender) client-ip=50.31.32.52;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@poshmark.com header.s=sgc header.b=u+HSNHFe;
+       dkim=pass header.i=@sendgrid.info header.s=smtpapi header.b="wmL/810e";
+       spf=pass (google.com: domain of bounces+1595079-3224-testuser=gmail.com@commerce.poshmark.com designates 50.31.32.52 as permitted sender) smtp.mailfrom="bounces+1595079-3224-testuser=gmail.com@commerce.poshmark.com";
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=poshmark.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=poshmark.com;
+	h=content-transfer-encoding:content-type:date:from:list-unsubscribe:
+	list-unsubscribe-post:mime-version:subject:to:cc:content-type:date:feedback-id:from:subject:
+	to;
+	s=sgc; bh=sPVXViCoKPjGhJNpOt4aUuPtgA44Ac3UMw1PNTqpyKU=;
+	b=u+HSNHFeBFIOCLYaXjjAp7gvUO2BTIkKDNtEP/TwC4torvzSufgABc3LyUua4Ld6HmZm
+	Y8nQuNHcZIPyBI3/wEx1PuQei1sKDiJ163APMZDCBYChmMN6VL6+MwOGZY6+UyZzY094dL
+	mDa9bV0yNlR+ThXqmh1+MNKKOwDiP8bchn0ueftke1Ar1T6kNIZwGCPO49TQr4NYScbLyj
+	zPTPZ5ftRQOHQFHXilQqiwmx54w458HUhbOlwGCO7TZcGzMd+TlnD15G4Qxzd+xdwMlrDM
+	f52jE/BeyZukEXu1A9+tZYiV7kPoVeNSN0Ei5VpeOHPaAh262X2dCp6lqx1zV3Yg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sendgrid.info;
+	h=content-transfer-encoding:content-type:date:from:list-unsubscribe:
+	list-unsubscribe-post:mime-version:subject:to:cc:content-type:date:feedback-id:from:subject:
+	to;
+	s=smtpapi; bh=sPVXViCoKPjGhJNpOt4aUuPtgA44Ac3UMw1PNTqpyKU=;
+	b=wmL/810eFQ3rqJ4U2gGd2cH/kb5Mjh7yMATIsPEf7uOKYBfbTSA6BGDxN66MeM5J4EYW
+	Ls9WhJP76l8Zm8Z8XsKBn4sl1ScMNRjTlyUetoiC6J9eTh6nKNvNbDG7xDI/K/AwvDkc9I
+	4srZq3LEafOsLdgEkRm5j5FoMD3XhxlKU=
+Received: by recvd-5967777f64-jmkzw with SMTP id recvd-5967777f64-jmkzw-1-692D9B50-23
+	2025-12-01 13:42:40.321976782 +0000 UTC m=+2385385.760633212
+Received: from MTU5NTA3OQ (unknown)
+	by geopod-ismtpd-11 (SG) with HTTP
+	id aCSulAWJSyWFm2LhObFiYw
+	for <testuser@gmail.com>;
+	Mon, 01 Dec 2025 13:42:40.314 +0000 (UTC)
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html; charset=us-ascii
+Date: Mon, 01 Dec 2025 13:42:40 +0000 (UTC)
+From: Poshmark <info@poshmark.com>
+List-Unsubscribe: 
+ =?us-ascii?Q?=3Chttps=3A=2F=2Fposhmark=2Ecom=2Fwa=5Frd=3Frd=5Furl=3D%2Femail=5Funsubscribe%3Fu%3D?=
+ =?us-ascii?Q?e2%3Aips9AO8C0gAkAIkAiAE0AcAD5wENAaABew?=
+ =?us-ascii?Q?NdArQA6QLlAv4CIQBPA5sBSgPFA6YDBQFwAGUDO?=
+ =?us-ascii?Q?gCkANoA2wJpAVQAPgGUAdcB1gPPAW8BcgIkA6EC?=
+ =?us-ascii?Q?=5FgDcAkkCAAMOALUD1gG6A8YDTAA8AQgAUgO5AKM?=
+ =?us-ascii?Q?AdgEWAg8BQQDlAYgBbAL9Az8CJgH1AnwDlQKeAC?=
+ =?us-ascii?Q?YDHALxA0sAmAO9AVYA-APmADsBtgBiA1sB2QAgA?=
+ =?us-ascii?Q?R4CoAFdAHYCuwEWAs4D0wIjAWQDmwItA5ppYQA%?=
+ =?us-ascii?Q?26type%3Doffer=5Fto=5Flikers&t=5Fmed=3Demail&t=5F?=
+ =?us-ascii?Q?tp=3Doffer=5Fseller=5Foffer=5Fto=5Fliker=5Finitiate?=
+ =?us-ascii?Q?=5Fnotify=5Fliker&data=3D%7B%22uid%22%3A%2265?=
+ =?us-ascii?Q?427a5b72f45f2677cfdab7%22%2C%22t=5Ftp%22%?=
+ =?us-ascii?Q?3A%22offer=5Fseller=5Foffer=5Fto=5Fliker=5Finitia?=
+ =?us-ascii?Q?te=5Fnotify=5Fliker%22%2C%22lt%22%3A%22un=5Fe?=
+ =?us-ascii?Q?h%22%7D&drt=5Fld=3D1=3E?=
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+Mime-Version: 1.0
+Subject: Exclusive offer on "18K Plated Chunky Gold Chain Bracelet" !
+Message-ID: <aCSulAWJSyWFm2LhObFiYw@geopod-ismtpd-11>
+X-SG-EID: 
+ =?us-ascii?Q?u001=2EWTh1bfrpuWaCV+kGmJTAMy51AplIi3Nr9Fohwr74earRNKKL7pxm3jyK6?=
+ =?us-ascii?Q?TFcPMIxp1aGAEVdmMC0t2YiMLYcy7MslNHXWmRy?=
+ =?us-ascii?Q?ziWtBSdviMknZUOz7QackxKOsPwxp63=2FYBPXU8m?=
+ =?us-ascii?Q?aBxJO11UNpCEvloDNTezteOe1okiYFvEmPpQISw?=
+ =?us-ascii?Q?iYlwJPz5WLf2CSKIZ8w=2Fc1Gxk285odrjQRVkfLN?=
+ =?us-ascii?Q?eJdKAG1b0Fi91HqCP8S7N4=3D?=
+X-SG-ID: 
+ =?us-ascii?Q?u001=2ESdBcvi+Evd=2FbQef8eZF3Br+QDc93lpW=2FUftcjcmynrlTYq9i3UxYilmeA?=
+ =?us-ascii?Q?Kme1rPWAT=2FUQFpM5XW=2Fb6FIDyJTcBKwXigZO6cB?=
+ =?us-ascii?Q?Nxhd7TKwJX6ZQyYpqqWKR7Nkj5+zDeSHuGmUk6U?=
+ =?us-ascii?Q?nYMdbsaWokrq5Adg4EaT72HKO+NfY6GaKvPCbX7?=
+ =?us-ascii?Q?GWw915z1kX0xYJz7r9uSLkDRR30=2FO+vCRADJ1b3?=
+ =?us-ascii?Q?g1t9JeBrfpBAcf9AT8DeMT6pB89cwo9rhpDmtmQ?=
+ =?us-ascii?Q?3RDFqyqi172R47Reseaa9jF5dyLDis3yv214Twg?=
+ =?us-ascii?Q?TG4HyHOYSNszS16tMFw1zmfcaWelEpz0Ek+iAxZ?=
+ =?us-ascii?Q?TEuQW2rUC7S00PvW+ZC2EiUIsXXik1xMUiTBsuv?=
+ =?us-ascii?Q?ecO0bNvJVWPWuWDRAOrfFGBZWwxpEX+j9yhqGi5?=
+ =?us-ascii?Q?mEK0p0lyUTFrj+gyo4s+s=2Ft3XVXF9uw6ekqD8nE?=
+ =?us-ascii?Q?kZsqtnFJ6Ph4FoQIhjWlRsg=3D=3D?=
+To: testuser@gmail.com
+X-Entity-ID: u001.Z7ct8AvE83Rw+g+j7xcfhw==
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.example.com [172.31.18.8]); Mon, 01 Dec 2025 13:42:48 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.example.com [23.95.222.152]); Mon, 01 Dec 2025 07:42:47 -0600 (CST)
+X-FOFF-Feature-Evidence: Invoice Analysis: Invoice scam pattern detected: (?i)(24 hours|payment required|account suspended) (legitimate sender: false)
+X-FOFF-Feature-Evidence: Context Analysis: Multiple exclamation marks detected
+X-FOFF-Feature-Evidence: Context Analysis: Urgency pattern detected: (?i)(overdue|today|24 hours|don't miss|hurry|last chance)
+X-FOFF-Feature-Evidence: Invoice Analysis: Invoice scam pattern detected: (?i)(24 hours|payment required|account suspended) (legitimate sender: false)
+X-FOFF-Feature-Evidence: Context Analysis: Multiple exclamation marks detected
+X-FOFF-Feature-Evidence: Context Analysis: Urgency pattern detected: (?i)(overdue|today|24 hours|don't miss|hurry|last chance)
+X-FOFF-Rule-Matched: Performance: Bulk Email Quick Detection (juliett.example.com) [3077984f]
+X-FOFF-Rule-Matched: Email Infrastructure Detection: Suspicious forwarded emails (juliett.example.com) [176071b8]
+X-FOFF-Rule-Matched: Analytics: Generic Sender Names (hotel.example.com) [6807af0f]
+X-FOFF-Rule-Matched: Advanced Heuristics: Bayesian Spam Word Patterns (hotel.example.com) [c203ad00]
+X-FOFF-Score: 125 - foff-milter v0.7.6 (juliett.example.com)
+X-FOFF-Score: 47 - foff-milter v0.7.6 (hotel.example.com)
+X-Spam-Flag: YES
+
+<!DOCTYPE html><html><head><meta content=3D"width=3Ddevice-width, minimum-s=
+cale=3D1.0, maximum-scale=3D1.0, user-scalable=3D0" name=3D"viewport" /><me=
+ta content=3D"text/html; charset=3DUTF-8" http-equiv=3D"Content-Type" /><me=
+ta content=3D"yes" name=3D"apple-mobile-web-app-capable" /><style type=3D"t=
+ext/css">.ReadMsgBody { width: 100%;}
+.ExternalClass {width: 100%;}
+body {width: 100%;}
+table {border-collapse: collapse;}
+
+@media only screen and (max-width: 480px) {
+  .body[pmyh] .device-width {
+    width:100%!important; padding:0;
+  }
+
+  .body[pmyh] .device-padding{
+    padding:0!important;
+  }
+
+  .body[pmyh] .device-center {
+    text-align: center!important;
+  }
+
+  .body[pmyh] table.header{
+    font-size:11px!important;
+  }
+
+}</style></head><body style=3D"padding:0;margin:0;width:100%;"><table borde=
+r=3D"0" cellpadding=3D"0" cellspacing=3D"0" class=3D"body" pmyh=3D"fix" sty=
+le=3D"background-color:#f2efeb;width:100%;margin:0;padding:0 0 40px 0;font-=
+size:15px;font-family:sans-serif,Helvetica,Arial;"><tr><td><item_table alig=
+n=3D"center" border=3D"0" class=3D"device-width" style=3D"width:600px;margi=
+n:0 auto;"><tr><td style=3D"padding: 20px 0; text-align:center;"><p style=
+=3D"padding:0;margin:0;font-size:11px;color:#9b9691;font-size:12px;font-fam=
+ily:Helvetica,Arial,sans-serif; overflow:hidden; text-overflow: ellipsis; w=
+hite-space: nowrap;">You have a new offer!</p></td></tr></item_table><table=
+ align=3D"center" class=3D"header device-width" style=3D"background:#ffffff=
+; border:none;border-top: 7px solid #602d35; border-bottom:1px solid #e6e2d=
+f; width:620px;margin:0 auto;font-size:12px;font-family:Helvetica,Arial,san=
+s-serif;"><tr><td style=3D"padding: 0 10px 10px;"><table align=3D"left" bor=
+der=3D"0" cellpadding=3D"0" cellspacing=3D"0" class=3D"device-width device-=
+center" width=3D"49%"><tr><td style=3D"padding-top: 10px;"><img alt=3D"Posh=
+mark" class=3D"logo" height=3D"35" src=3D"http://d2zlsagv0ouax1.cloudfront.=
+net/assets/logo-horizontal@2x.png" style=3D"display:block; border:0;" width=
+=3D"175" /></td></tr></table><table align=3D"right" border=3D"0" cellpaddin=
+g=3D"0" cellspacing=3D"0" class=3D"device-width device-center"><tr><td styl=
+e=3D"padding-top: 20px;font-size:14px;"></td></tr></table></td></tr></table=
+><table align=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" c=
+lass=3D"content device-width" style=3D"background:#ffffff; width:620px; mar=
+gin:0 auto; font-size:14px;font-family:Helvetica,Arial,sans-serif;"><tr><td=
+ class=3D"m-padding" style=3D"padding:20px 20px 10px;"><table align=3D"cent=
+er" border=3D"0" cellpadding=3D"0" cellspacing=3D"0"><tr><td><table align=
+=3D"left" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" class=3D"device-=
+width" style=3D"border-right: solid 1px black;"><tr style=3D"font-family:He=
+lvetica;font-size:12px;color:#000;font-weight:normal;"><td><table cellpaddi=
+ng=3D"5" cellspacing=3D"0" style=3D"display:inline-block;"><tr><td class=3D=
+"item" width=3D"100"><img height=3D"100" src=3D"https://di2ponv0v5otw.cloud=
+front.net/posts/2025/11/16/691a05657ac6295cdaffc745/m_691a056aa0dc2b7efff8f=
+b01.jpg" width=3D"100" /></td><td><table width=3D"190"><tr><td>18K Plated C=
+hunky Gold Chain Bracelet</td></tr><tr><td>Size: OS</td></tr></table></td><=
+/tr></table></td></tr></table><table align=3D"right" border=3D"0" cellpaddi=
+ng=3D"0" cellspacing=3D"0" class=3D"device-width" style=3D"width:230px;"><t=
+r><td><table align=3D"left" border=3D"0" cellpadding=3D"0" cellspacing=3D"0=
+" style=3D"margin: 0 20px;"><tr><td style=3D"padding-bottom: 10px;font-size=
+:14px;">Yay! You've received an exclusive offer for "18K Plated Chunky Gold=
+ Chain Bracelet". Accept the offer from @brandspanknused below.</td></tr><t=
+r><td style=3D"text-align:center; color:#2a2a2a; font-size:14px; font-famil=
+y:Helvetica,Arial,sans-serif;"><table align=3D"left" border=3D"0" cellpaddi=
+ng=3D"0" cellspacing=3D"0"><tr><td style=3D"text-align: left; padding-botto=
+m: 10px">Listing Price:</td><td style=3D"text-align: left; padding-left: 10=
+px; padding-bottom: 10px">$25</td></tr><tr><td style=3D"text-align: left; p=
+adding-bottom: 10px">New Offer:</td><td style=3D"text-align: left; padding-=
+left: 10px; padding-bottom: 10px">$12</td></tr><tr><td style=3D"text-align:=
+ left; padding-bottom: 10px">Discount:</td><td style=3D"text-align: left; p=
+adding-left: 10px; padding-bottom: 10px">52%</td></tr></table></td></tr><tr=
+><td style=3D"padding-bottom: 10px;font-size:14px;">This offer was sent to =
+7 Likers of this listing, and won't last long!</td></tr><tr><td style=3D"pa=
+dding-bottom: 10px;font-size:14px;"><p align=3D"left" style=3D"margin:0; wi=
+dth: 210px; padding:15px 0 0;"><a href=3D"https://poshmark.com/wa_rd?rd_url=
+=3D%2Fnews&t_med=3Demail&t_tp=3Doffer_seller_offer_to_liker_initiate_notify=
+_liker&data=3D%7B%22uid%22%3A%2265427a5b72f45f2677cfdab7%22%2C%22t_tp%22%3A=
+%22offer_seller_offer_to_liker_initiate_notify_liker%22%2C%22lt%22%3A%22un_=
+eh%22%7D&msk_em=3Dmarcys%2A%2A%2A%2A%40gmail.com&uid=3D65427a5b72f45f2677cf=
+dab7" style=3D"-webkit-border-radius: 3px;-moz-border-radius: 3px;border-ra=
+dius: 3px; color:#fff; background-color:#427fed;padding:9px 18px 9px; text-=
+decoration: none; display:inline-block; font-size:14px; font-family:Helveti=
+ca,Arial,sans-serif; " title=3D"18K Plated Chunky Gold Chain Bracelet">Resp=
+ond Now!</a></p></td></tr><tr><td style=3D"font-size:11px;"><p>All offers a=
+re binding and expire in 24 hours.</p></td></tr></table></td></tr></table><=
+/td></tr></table></td></tr></table></td></tr><tr><td><table align=3D"center=
+" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" class=3D"footer device-w=
+idth" style=3D"width:620px;margin:0 auto;padding:0;font-size:13px;font-fami=
+ly:Helvetica, sans-serif,Arial;"><tr><td class=3D"fine-print device-width" =
+style=3D"padding:20px 10px 30px;text-align:center;"><table align=3D"center"=
+ border=3D"0" cellpadding=3D"0" cellspacing=3D"0" class=3D"device-width"><t=
+r><td style=3D"text-align:center;"><p style=3D"padding:0 0 5px;margin:0px;f=
+ont-size:11px;color:#9b9691;font-family:Helvetica, sans-serif,Arial;">This =
+message was sent to <a href=3D"mailto:testuser@gmail.com" style=3D"color:=
+#427fed;text-decoration:none; font-family:Helvetica, sans-serif,Arial;">mar=
+cystowe@gmail.com </a>. If you no longer wish to receive these emails, <a h=
+ref=3D"https://poshmark.com/wa_rd?rd_url=3D%2Femail_unsubscribe%3Fu%3De2%3A=
+ips9AO8C0gAkAIkAiAE0AcAD5wENAaABewNdArQA6QLlAv4CIQBPA5sBSgPFA6YDBQFwAGUDOgC=
+kANoA2wJpAVQAPgGUAdcB1gPPAW8BcgIkA6EC_gDcAkkCAAMOALUD1gG6A8YDTAA8AQgAUgO5AK=
+MAdgEWAg8BQQDlAYgBbAL9Az8CJgH1AnwDlQKeACYDHALxA0sAmAO9AVYA-APmADsBtgBiA1sB2=
+QAgAR4CoAFdAHYCuwEWAs4D0wIjAWQDmwItA5ppYQA%26type%3Doffer_to_likers&t_med=
+=3Demail&t_tp=3Doffer_seller_offer_to_liker_initiate_notify_liker&data=3D%7=
+B%22uid%22%3A%2265427a5b72f45f2677cfdab7%22%2C%22t_tp%22%3A%22offer_seller_=
+offer_to_liker_initiate_notify_liker%22%2C%22lt%22%3A%22un_f%22%7D&drt_ld=
+=3D1" style=3D"color: #9b9691; font-family:Helvetica, sans-serif,Arial;" ta=
+rget=3D"_blank">unsubscribe</a>. </p><p class=3D"copyrights-info" style=3D"=
+padding:0 0 10px;margin:0px;font-size:11px;color:#9b9691; font-family: Helv=
+etica, sans-serif,Arial;">Copyright &copy; 2025 Poshmark, Inc. 203 Redwood =
+Shores Pkwy, 8th Floor, Redwood City, CA 94065</p><img alt=3D"" class=3D"tr=
+acking-pixel" height=3D"1" src=3D"http://tr.poshmark.com/callbacks/track/em=
+ail.gif?data=3D%7B%22uid%22%3A%2265427a5b72f45f2677cfdab7%22%2C%22t_tp%22%3=
+A%22offer_seller_offer_to_liker_initiate_notify_liker%22%7D" width=3D"1" />=
+</td></tr></table></td></tr></table></td></tr></table><img src=3D"http://or=
+ders.poshmark.com/wf/open?upn=3Du001.1c1QYr4sXYAFmAEkGLk0Hj9S9gkXDQG9l6SnYd=
+2Sn-2Fn2KvqPzLEx6pVhXWTnPuZardRl-2Br2fvFqgzsyNinwqXACd1gszyp-2Fu1UC-2Fxpoxh=
+iV-2FWGugDjMm23iZYngokbo3NpSjirmaTisU7qQta6nvzIwuG0sLKHLeAOWb-2FcRdPQqIeiiI=
+LwaAPq7EEBKIuy2MI4RvwT1pPoHCRkwL8vrJTVBry74SDupU6zJFhYaf42kngfvx8siq9kAJPof=
+My-2FN2nqHT6HdH-2B18cnz54v-2FJMUBLWnCrCsTM4Zbw3nrUbpLrXMG4X4RJha5SLA7m-2F3I=
+rqvDVlWR0ZfA15qRXp1h3veTBLedjgyEJ8t9jWRks11C-2BcT5lg0Gv8Luz9IFYO5QDgxUDjEu-=
+2F1mHx4m7kHaymbJrX7lsC7nb9l-2BxAPMTNZTu22MFq9sVnxUrMYSUzq4BqFhNzeCyEOFsZyw-=
+2F2Hiyp-2FBVvV2BDQV1b6D7a0fA2ILBv0XbQmgv313gXqwNzveAaZjaW4yFQXobjkFe93BERKq=
+IrdpD9QDCjWUjLM4BUxWS2Aag7WQrH4iCoH2-2B9WnQB1lvmUIw77jtx3eYk2mZ0JwgNZGiv-2B=
+bMNG3tYxh23jtqlCiuJco4tDCM6YFC0DKp2G2Wrc3-2BP8FVtvo3WAM3GS6g-3D-3D" alt=3D"=
+" width=3D"1" height=3D"1" border=3D"0" style=3D"height:1px !important;widt=
+h:1px !important;border-width:0 !important;margin-top:0 !important;margin-b=
+ottom:0 !important;margin-right:0 !important;margin-left:0 !important;paddi=
+ng-top:0 !important;padding-bottom:0 !important;padding-right:0 !important;=
+padding-left:0 !important;"/></body></html>
