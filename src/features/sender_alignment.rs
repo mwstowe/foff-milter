@@ -220,6 +220,52 @@ impl SenderAlignmentAnalyzer {
         domain_regex.is_match(domain)
     }
 
+    fn analyze_display_name_consistency(&self, from_header: &str) -> (i32, Vec<String>) {
+        let mut score = 0;
+        let mut evidence = Vec::new();
+        
+        // Extract display name and email parts
+        if let Some(angle_start) = from_header.rfind('<') {
+            let display_part = from_header[..angle_start].trim().trim_matches('"');
+            let email_part = &from_header[angle_start + 1..].trim_end_matches('>');
+            
+            // Check for suspicious display name patterns
+            let suspicious_chars = ['@', '<', '>', '[', ']', '{', '}', '|', '\\'];
+            if display_part.chars().any(|c| suspicious_chars.contains(&c)) {
+                score += 20;
+                evidence.push("Display name contains suspicious characters".to_string());
+            }
+            
+            // Check for excessive random characters
+            let random_pattern = regex::Regex::new(r"[^a-zA-Z\s]{3,}").unwrap();
+            if random_pattern.is_match(display_part) {
+                score += 15;
+                evidence.push("Display name contains excessive special characters".to_string());
+            }
+            
+            // Check for domain mismatch in display name
+            if display_part.contains('@') && !display_part.contains(email_part) {
+                score += 25;
+                evidence.push("Display name contains different email domain".to_string());
+            }
+            
+            // Check for brand impersonation patterns
+            let brand_keywords = ["paypal", "amazon", "microsoft", "google", "apple", "facebook", "bank"];
+            let display_lower = display_part.to_lowercase();
+            let email_lower = email_part.to_lowercase();
+            
+            for brand in &brand_keywords {
+                if display_lower.contains(brand) && !email_lower.contains(brand) {
+                    score += 30;
+                    evidence.push(format!("Display name claims '{}' but email domain doesn't match", brand));
+                    break;
+                }
+            }
+        }
+        
+        (score, evidence)
+    }
+
     fn extract_domain(&self, header: &str) -> String {
         // Try to extract from angle brackets first (most reliable)
         if let Some(angle_match) = Regex::new(r"<[^<>]*@([^<>\s]+)>").unwrap().captures(header) {
@@ -878,14 +924,43 @@ impl FeatureExtractor for SenderAlignmentAnalyzer {
             }
         }
 
-        // Check authentication failures
+        // Enhanced display name consistency analysis
+        if let Some(from_header) = &context.from_header {
+            let display_name_score = self.analyze_display_name_consistency(from_header);
+            score += display_name_score.0;
+            evidence.extend(display_name_score.1);
+        }
+
+        // Enhanced authentication failure detection
         if let Some(raw_headers) =
             crate::features::get_header_case_insensitive(&context.headers, "raw")
         {
-            if raw_headers.contains("dkim=fail") && raw_headers.contains("spf=fail") {
-                score += 25;
-                evidence.push("Multiple authentication failures (DKIM + SPF)".to_string());
+            let mut auth_failures = Vec::new();
+            let mut auth_score = 0;
+            
+            // Check individual authentication failures
+            if raw_headers.contains("dkim=fail") {
+                auth_score += 15;
+                auth_failures.push("DKIM");
             }
+            if raw_headers.contains("spf=fail") || raw_headers.contains("spf=none") {
+                auth_score += 20;
+                auth_failures.push("SPF");
+            }
+            if raw_headers.contains("dmarc=fail") {
+                auth_score += 25;
+                auth_failures.push("DMARC");
+            }
+            
+            // Bonus for multiple failures
+            if auth_failures.len() > 1 {
+                auth_score += 15;
+                evidence.push(format!("Multiple authentication failures: {}", auth_failures.join(" + ")));
+            } else if !auth_failures.is_empty() {
+                evidence.push(format!("{} authentication failure", auth_failures[0]));
+            }
+            
+            score += auth_score;
         }
 
         // Check Reply-To mismatch

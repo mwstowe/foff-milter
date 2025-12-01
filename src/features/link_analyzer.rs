@@ -396,6 +396,38 @@ impl LinkAnalyzer {
             .iter()
             .any(|retailer| sender.to_lowercase().contains(retailer))
     }
+
+    fn is_legitimate_esp(&self, sender: &str) -> bool {
+        let esp_patterns = [
+            "sendgrid.net", "mailgun.com", "mailchimp.com", "constantcontact.com",
+            "sparkpost.com", "mandrill.com", "ses.amazonaws.com", "postmarkapp.com",
+            "mailjet.com", "sendinblue.com", "campaignmonitor.com", "aweber.com",
+        ];
+        
+        esp_patterns.iter().any(|&esp| sender.contains(esp))
+    }
+
+    fn extract_brand_from_sender(&self, sender: &str) -> Option<String> {
+        // Extract brand name from sender address like "partsexpress@u161779.wl030.sendgrid.net"
+        if let Some(at_pos) = sender.find('@') {
+            let local_part = &sender[..at_pos];
+            // Remove common prefixes
+            let clean_brand = local_part
+                .trim_start_matches("no-reply")
+                .trim_start_matches("noreply")
+                .trim_start_matches("info")
+                .trim_start_matches("news")
+                .trim_start_matches("updates");
+            
+            if !clean_brand.is_empty() && clean_brand.len() > 3 {
+                Some(clean_brand.to_lowercase())
+            } else {
+                None
+            }
+        } else {
+            None
+        }
+    }
 }
 
 impl FeatureExtractor for LinkAnalyzer {
@@ -410,12 +442,24 @@ impl FeatureExtractor for LinkAnalyzer {
             (suspicious_count * 50 / total_links.max(1)) as i32
         };
 
-        // Reduce penalties for legitimate retailers
+        // Reduce penalties for legitimate retailers and ESPs
         if let Some(sender) = crate::features::get_header_case_insensitive(&context.headers, "From")
         {
             if self.is_legitimate_retailer(sender) || sender.to_lowercase().contains("humblebundle")
             {
                 score = (score as f32 * 0.2) as i32; // 80% reduction for retailers and Humble Bundle
+            } else if self.is_legitimate_esp(sender) {
+                if let Some(brand) = self.extract_brand_from_sender(sender) {
+                    // Check if links align with the brand
+                    let brand_aligned = links.iter().any(|link| {
+                        link.url.to_lowercase().contains(&brand) || 
+                        link.display_text.to_lowercase().contains(&brand)
+                    });
+                    
+                    if brand_aligned {
+                        score = (score as f32 * 0.3) as i32; // 70% reduction for ESP with brand alignment
+                    }
+                }
             } else if self.is_medical_institution(sender) {
                 score = (score as f32 * 0.2) as i32; // 80% reduction for medical
             }

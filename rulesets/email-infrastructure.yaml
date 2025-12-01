@@ -30,8 +30,12 @@ rules:
                   criteria:
                     type: "SenderPattern"
                     pattern: ".*@(aaa|cvs|medicare)\\\\.com$"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(medium\\.com|poshmark\\.com|substack\\.com|mailchimp\\.com).*"
     score: 100
-    description: "Suspicious emails forwarded through Gmail (prevents whitelist bypass)"
+    description: "Suspicious emails forwarded through Gmail (excludes legitimate platforms)"
 
   # Google-routed Microsoft tenant spam (sophisticated abuse)
   - name: "Google-routed onmicrosoft spam"

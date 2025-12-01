@@ -466,6 +466,66 @@ rules:
     description: "Xfinity/Comcast service communications"
 
   # Additional legitimate services
+  - name: "Delta Air Lines"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*delta\\.com$"
+    score: -200
+    description: "Delta Air Lines airline"
+
+  - name: "Parts Express Electronics"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@.*partsexpress\\.com$"
+        - type: "SenderPattern"
+          pattern: "partsexpress@.*sendgrid\\.net$"
+    score: -200
+    description: "Parts Express electronics retailer"
+
+  - name: "Medium Publishing Platform"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*medium\\.com$"
+    score: -200
+    description: "Medium publishing platform"
+
+  - name: "USPS Informed Delivery"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*usps\\.com$"
+    score: -200
+    description: "Official USPS services"
+
+  - name: "Lyft Rideshare"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*lyft.*\\.com$"
+    score: -200
+    description: "Lyft rideshare service"
+
+  - name: "eFlorist Network"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*eflorist\\.com$"
+    score: -200
+    description: "eFlorist network florists"
+
+  - name: "Poshmark Marketplace"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*poshmark\\.com$"
+    score: -200
+    description: "Poshmark marketplace platform"
+
   - name: "Quora Q&A Platform"
     enabled: true
     criteria:

@@ -254,6 +254,12 @@ impl ContextAnalyzer {
             "lowes.com",
             "macys.com",
             "nordstrom.com",
+            "delta.com", "united.com", "american.com", "southwest.com",
+            "partsexpress.com", "mouser.com", "digikey.com", "adafruit.com",
+            "eflorist.com", "1800flowers.com", "ftd.com", "teleflora.com",
+            "eyebuydirect.com", "warbyparker.com", "lenscrafters.com",
+            "secretlab.co", "herman-miller.com", "steelcase.com",
+            "snowjoe.com", "wayfair.com", "overstock.com", "newegg.com",
         ];
 
         let sender_lower = sender.to_lowercase();
@@ -460,6 +466,35 @@ impl ContextAnalyzer {
 
         (score, evidence)
     }
+
+    /// Detect Unicode character obfuscation (lookalike characters)
+    fn detect_unicode_obfuscation(&self, text: &str) -> (bool, f32) {
+        let suspicious_chars = [
+            ('ɑ', 'a'), ('е', 'e'), ('о', 'o'), ('р', 'p'), ('с', 'c'),
+            ('х', 'x'), ('у', 'y'), ('і', 'i'), ('ј', 'j'), ('ѕ', 's'),
+            ('ᴀ', 'A'), ('ᴇ', 'E'), ('ᴏ', 'O'), ('ᴘ', 'P'), ('ᴄ', 'C'),
+            ('ᴛ', 'T'), ('ᴜ', 'U'), ('ᴠ', 'V'), ('ᴡ', 'W'), ('ᴢ', 'Z'),
+        ];
+        
+        let mut obfuscation_count = 0;
+        let mut total_chars = 0;
+        
+        for ch in text.chars() {
+            if ch.is_alphabetic() {
+                total_chars += 1;
+                if suspicious_chars.iter().any(|(suspicious, _)| *suspicious == ch) {
+                    obfuscation_count += 1;
+                }
+            }
+        }
+        
+        if obfuscation_count > 0 && total_chars > 0 {
+            let obfuscation_ratio = obfuscation_count as f32 / total_chars as f32;
+            (true, obfuscation_ratio * 100.0) // Return percentage
+        } else {
+            (false, 0.0)
+        }
+    }
 }
 
 impl FeatureExtractor for ContextAnalyzer {
@@ -467,9 +502,18 @@ impl FeatureExtractor for ContextAnalyzer {
         let mut total_score = 0;
         let mut all_evidence = Vec::new();
 
-        let _body = context.body.as_deref().unwrap_or("");
-        let _subject = context.subject.as_deref().unwrap_or("");
+        let body = context.body.as_deref().unwrap_or("");
+        let subject = context.subject.as_deref().unwrap_or("");
         let sender = context.from_header.as_deref().unwrap_or("");
+
+        // Check for Unicode obfuscation in subject and body
+        let combined_text = format!("{} {}", subject, body);
+        let (has_obfuscation, obfuscation_ratio) = self.detect_unicode_obfuscation(&combined_text);
+        if has_obfuscation {
+            let obfuscation_score = (obfuscation_ratio * 0.4) as i32; // Scale appropriately
+            total_score += obfuscation_score.max(40); // Minimum 40 points for any obfuscation
+            all_evidence.push(format!("Unicode obfuscation detected: {:.1}% suspicious characters", obfuscation_ratio));
+        }
 
         // Check if this is from a legitimate retailer - reduce penalties
         let _is_legitimate_retailer = self.is_legitimate_retailer(sender);
