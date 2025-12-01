@@ -864,9 +864,14 @@ impl FilterEngine {
     }
 
     /// Case-insensitive header lookup
-    fn get_header_case_insensitive<'a>(&self, headers: &'a std::collections::HashMap<String, String>, header_name: &str) -> Option<&'a String> {
+    fn get_header_case_insensitive<'a>(
+        &self,
+        headers: &'a std::collections::HashMap<String, String>,
+        header_name: &str,
+    ) -> Option<&'a String> {
         let header_lower = header_name.to_lowercase();
-        headers.iter()
+        headers
+            .iter()
             .find(|(k, _)| k.to_lowercase() == header_lower)
             .map(|(_, v)| v)
     }
@@ -1176,7 +1181,9 @@ impl FilterEngine {
                     self.compile_criteria_patterns(c)?;
                 }
             }
-            Criteria::SenderDomain { .. } | Criteria::FromDomain { .. } | Criteria::ReplyToDomain { .. } => {
+            Criteria::SenderDomain { .. }
+            | Criteria::FromDomain { .. }
+            | Criteria::ReplyToDomain { .. } => {
                 // No regex patterns to compile for domain criteria
             }
             Criteria::Not { criteria } => {
@@ -2849,7 +2856,9 @@ impl FilterEngine {
                         .any(|attachment| attachment.contains_executables)
                 }
                 Criteria::HeaderPattern { header, pattern } => {
-                    if let Some(header_value) = self.get_header_case_insensitive(&context.headers, header) {
+                    if let Some(header_value) =
+                        self.get_header_case_insensitive(&context.headers, header)
+                    {
                         // DEBUG: Log exact header value for authentication-results
                         if header == "authentication-results" {
                             log::info!(
@@ -2888,7 +2897,9 @@ impl FilterEngine {
                     false
                 }
                 Criteria::HeaderContainsLanguage { header, language } => {
-                    if let Some(header_value) = self.get_header_case_insensitive(&context.headers, header) {
+                    if let Some(header_value) =
+                        self.get_header_case_insensitive(&context.headers, header)
+                    {
                         // Decode MIME headers before language detection
                         let decoded_value = crate::milter::decode_mime_header(header_value);
                         return LanguageDetector::contains_language(&decoded_value, language);
@@ -3057,7 +3068,8 @@ impl FilterEngine {
                     log::debug!("Checking for sender spoofing");
 
                     // Get the From header display name and actual sender email
-                    let from_header_raw = self.get_header_case_insensitive(&context.headers, "from");
+                    let from_header_raw =
+                        self.get_header_case_insensitive(&context.headers, "from");
                     let actual_sender = context.from_header.as_ref().or(context.sender.as_ref());
 
                     if let (Some(from_raw), Some(sender_email)) = (from_header_raw, actual_sender) {
@@ -3691,7 +3703,9 @@ impl FilterEngine {
                     if check_reply_to_flag {
                         let reply_to = self
                             .get_header_case_insensitive(&context.headers, "reply-to")
-                            .or_else(|| self.get_header_case_insensitive(&context.headers, "Reply-To"));
+                            .or_else(|| {
+                                self.get_header_case_insensitive(&context.headers, "Reply-To")
+                            });
 
                         if let Some(reply_to_raw) = reply_to {
                             if let Some(reply_to_email) = extract_email_from_header(reply_to_raw) {
@@ -3737,13 +3751,20 @@ impl FilterEngine {
                     // Check if List-Unsubscribe-Post exists
                     let has_unsubscribe_post = self
                         .get_header_case_insensitive(&context.headers, "list-unsubscribe-post")
-                        .or_else(|| self.get_header_case_insensitive(&context.headers, "List-Unsubscribe-Post"))
+                        .or_else(|| {
+                            self.get_header_case_insensitive(
+                                &context.headers,
+                                "List-Unsubscribe-Post",
+                            )
+                        })
                         .is_some();
 
                     // Check if List-Unsubscribe exists
                     let has_unsubscribe = self
                         .get_header_case_insensitive(&context.headers, "list-unsubscribe")
-                        .or_else(|| self.get_header_case_insensitive(&context.headers, "List-Unsubscribe"))
+                        .or_else(|| {
+                            self.get_header_case_insensitive(&context.headers, "List-Unsubscribe")
+                        })
                         .is_some();
 
                     // RFC violation: List-Unsubscribe-Post without List-Unsubscribe
@@ -3755,7 +3776,12 @@ impl FilterEngine {
                     // Also check for the specific spam pattern: List-Unsubscribe-Post: List-Unsubscribe=One-Click
                     if let Some(post_header) = self
                         .get_header_case_insensitive(&context.headers, "list-unsubscribe-post")
-                        .or_else(|| self.get_header_case_insensitive(&context.headers, "List-Unsubscribe-Post"))
+                        .or_else(|| {
+                            self.get_header_case_insensitive(
+                                &context.headers,
+                                "List-Unsubscribe-Post",
+                            )
+                        })
                     {
                         if post_header.contains("List-Unsubscribe=One-Click") && !has_unsubscribe {
                             log::info!("Spam pattern detected: One-Click unsubscribe claim without actual unsubscribe mechanism");
@@ -4031,7 +4057,9 @@ impl FilterEngine {
 
                     // Step 2: Check for brand impersonation in From header
                     if check_brand_imp {
-                        if let Some(from_header) = self.get_header_case_insensitive(&context.headers, "from") {
+                        if let Some(from_header) =
+                            self.get_header_case_insensitive(&context.headers, "from")
+                        {
                             let from_lower = from_header.to_lowercase();
                             for brand in &brands {
                                 // Check for exact brand name or "my" prefix (myeBay, myPayPal, etc.)
@@ -4050,7 +4078,9 @@ impl FilterEngine {
 
                     // Step 3: Check for reply-to mismatch with free email domains
                     if check_reply_mismatch {
-                        if let Some(reply_to) = self.get_header_case_insensitive(&context.headers, "reply-to") {
+                        if let Some(reply_to) =
+                            self.get_header_case_insensitive(&context.headers, "reply-to")
+                        {
                             let reply_lower = reply_to.to_lowercase();
                             for free_domain in &free_domains {
                                 if reply_lower.contains(free_domain) {
@@ -4297,7 +4327,9 @@ impl FilterEngine {
 
                     // Check for suspicious sender names
                     if check_suspicious_send {
-                        if let Some(from_header) = self.get_header_case_insensitive(&context.headers, "from") {
+                        if let Some(from_header) =
+                            self.get_header_case_insensitive(&context.headers, "from")
+                        {
                             let from_lower = from_header.to_lowercase();
                             for sender_pattern in &sender_names {
                                 if from_lower.contains(sender_pattern) {
@@ -4536,9 +4568,10 @@ impl FilterEngine {
 
                         // Also check From header against To header
                         if !recipient_match {
-                            if let (Some(from_header), Some(to_header)) =
-                                (self.get_header_case_insensitive(&context.headers, "from"), self.get_header_case_insensitive(&context.headers, "to"))
-                            {
+                            if let (Some(from_header), Some(to_header)) = (
+                                self.get_header_case_insensitive(&context.headers, "from"),
+                                self.get_header_case_insensitive(&context.headers, "to"),
+                            ) {
                                 let from_email = self.extract_email_from_header(from_header);
                                 let to_email = self.extract_email_from_header(to_header);
                                 if from_email.is_some() && from_email == to_email {
@@ -4641,7 +4674,9 @@ impl FilterEngine {
                         let mut missing_auth = false;
 
                         // Check authentication results
-                        if let Some(auth_results) = self.get_header_case_insensitive(&context.headers, "authentication-results") {
+                        if let Some(auth_results) = self
+                            .get_header_case_insensitive(&context.headers, "authentication-results")
+                        {
                             let auth_lower = auth_results.to_lowercase();
                             if auth_lower.contains("dkim=none")
                                 || auth_lower.contains("dkim=fail")
@@ -4750,7 +4785,9 @@ impl FilterEngine {
 
                     // Check for reply-to domain mismatch
                     if check_reply_mismatch {
-                        if let Some(reply_to) = self.get_header_case_insensitive(&context.headers, "reply-to") {
+                        if let Some(reply_to) =
+                            self.get_header_case_insensitive(&context.headers, "reply-to")
+                        {
                             log::debug!("Found reply-to header: {reply_to}");
                             let reply_email = self.extract_email_from_header(reply_to);
                             log::debug!("Extracted reply email: {reply_email:?}");
@@ -4823,7 +4860,9 @@ impl FilterEngine {
 
                     // Check for suspicious base64 encoding in From header
                     if check_encoding {
-                        if let Some(from_header) = self.get_header_case_insensitive(&context.headers, "from") {
+                        if let Some(from_header) =
+                            self.get_header_case_insensitive(&context.headers, "from")
+                        {
                             // Check for base64 encoded content with suspicious patterns
                             if from_header.contains("=?utf-8?B?") {
                                 // Decode and check for suspicious content
@@ -4905,7 +4944,9 @@ impl FilterEngine {
 
                     // Check for domain mismatch in DKIM signature
                     if check_mismatch && has_dkim_signature {
-                        if let Some(dkim_sig) = self.get_header_case_insensitive(&context.headers, "dkim-signature") {
+                        if let Some(dkim_sig) =
+                            self.get_header_case_insensitive(&context.headers, "dkim-signature")
+                        {
                             // Extract domain from DKIM signature (d= parameter)
                             if let Some(dkim_domain) = extract_dkim_domain(dkim_sig) {
                                 // Extract domain from sender
@@ -4925,7 +4966,9 @@ impl FilterEngine {
 
                     // Check for suspicious domains in DKIM signature
                     if has_dkim_signature {
-                        if let Some(dkim_sig) = self.get_header_case_insensitive(&context.headers, "dkim-signature") {
+                        if let Some(dkim_sig) =
+                            self.get_header_case_insensitive(&context.headers, "dkim-signature")
+                        {
                             if let Some(dkim_domain) = extract_dkim_domain(dkim_sig) {
                                 for suspicious in suspicious_list {
                                     if dkim_domain.contains(suspicious) {
@@ -5229,7 +5272,9 @@ impl FilterEngine {
 
                     // Check reply-to domain if enabled
                     if !infrastructure_detected && check_reply_to.unwrap_or(false) {
-                        if let Some(reply_to) = self.get_header_case_insensitive(&context.headers, "reply-to") {
+                        if let Some(reply_to) =
+                            self.get_header_case_insensitive(&context.headers, "reply-to")
+                        {
                             if let Some(reply_domain) = reply_to.split('@').nth(1) {
                                 // Check specific domains
                                 if let Some(domain_list) = domains {
@@ -5313,7 +5358,9 @@ impl FilterEngine {
 
                         // Check reply-to domain
                         if check_reply_to {
-                            if let Some(reply_to) = self.get_header_case_insensitive(&context.headers, "reply-to") {
+                            if let Some(reply_to) =
+                                self.get_header_case_insensitive(&context.headers, "reply-to")
+                            {
                                 if let Some(domain) = reply_to.split('@').nth(1) {
                                     if providers.iter().any(|p| domain.eq_ignore_ascii_case(p)) {
                                         return true;
@@ -5359,7 +5406,9 @@ impl FilterEngine {
                     false
                 }
                 Criteria::ReplyToDomain { domains } => {
-                    if let Some(reply_to) = self.get_header_case_insensitive(&context.headers, "reply-to") {
+                    if let Some(reply_to) =
+                        self.get_header_case_insensitive(&context.headers, "reply-to")
+                    {
                         if let Some(reply_email) = self.extract_email_from_header(reply_to) {
                             if let Some(domain) = DomainUtils::extract_domain(&reply_email) {
                                 return DomainUtils::matches_domain_list(&domain, domains);

@@ -399,7 +399,8 @@ impl FeatureExtractor for LinkAnalyzer {
         };
 
         // Reduce penalties for legitimate retailers
-        if let Some(sender) = crate::features::get_header_case_insensitive(&context.headers, "From") {
+        if let Some(sender) = crate::features::get_header_case_insensitive(&context.headers, "From")
+        {
             if self.is_legitimate_retailer(sender) || sender.to_lowercase().contains("humblebundle")
             {
                 score = (score as f32 * 0.2) as i32; // 80% reduction for retailers and Humble Bundle
@@ -409,7 +410,8 @@ impl FeatureExtractor for LinkAnalyzer {
         }
 
         // Additional specific check for Humble Bundle to ensure it passes
-        if let Some(sender) = crate::features::get_header_case_insensitive(&context.headers, "from") {
+        if let Some(sender) = crate::features::get_header_case_insensitive(&context.headers, "from")
+        {
             // Use lowercase 'from'
             eprintln!("DEBUG: Checking From header: {}", sender);
             if sender.to_lowercase().contains("humblebundle") {

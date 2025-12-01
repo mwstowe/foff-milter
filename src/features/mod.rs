@@ -8,9 +8,13 @@ use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
 /// Case-insensitive header lookup utility function
-pub fn get_header_case_insensitive<'a>(headers: &'a HashMap<String, String>, header_name: &str) -> Option<&'a String> {
+pub fn get_header_case_insensitive<'a>(
+    headers: &'a HashMap<String, String>,
+    header_name: &str,
+) -> Option<&'a String> {
     let header_lower = header_name.to_lowercase();
-    headers.iter()
+    headers
+        .iter()
         .find(|(k, _)| k.to_lowercase() == header_lower)
         .map(|(_, v)| v)
 }
