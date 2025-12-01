@@ -1,4 +1,5 @@
 use super::{FeatureExtractor, FeatureScore};
+use crate::url_resolver::UrlResolver;
 use crate::MailContext;
 use regex::Regex;
 use std::collections::HashMap;
@@ -24,6 +25,7 @@ pub enum LinkContext {
 pub struct LinkAnalyzer {
     link_regex: Regex,
     action_patterns: HashMap<String, Vec<String>>,
+    url_resolver: UrlResolver,
 }
 
 impl Default for LinkAnalyzer {
@@ -60,6 +62,7 @@ impl LinkAnalyzer {
         Self {
             link_regex: Regex::new(r#"<a[^>]+href=["']([^"']+)["'][^>]*>([^<]+)</a>"#).unwrap(),
             action_patterns,
+            url_resolver: UrlResolver::default(),
         }
     }
 
@@ -108,11 +111,20 @@ impl LinkAnalyzer {
         context_type: LinkContext,
         context: &MailContext,
     ) -> ExtractedLink {
-        let domain = self.extract_domain(url);
-        let is_suspicious = self.is_link_suspicious(url, display_text, &domain, context);
+        let mut final_url = url.to_string();
+        let mut domain = self.extract_domain(url);
+        
+        // For now, just detect shorteners but don't resolve them to avoid runtime issues
+        // TODO: Implement async resolution in a separate context
+        if self.url_resolver.is_shortener(url) {
+            log::info!("Detected shortened URL (not resolved): {}", url);
+            // Mark shorteners as suspicious for now
+        }
+        
+        let is_suspicious = self.is_link_suspicious(&final_url, display_text, &domain, context);
 
         ExtractedLink {
-            url: url.to_string(),
+            url: final_url,
             display_text: display_text.to_string(),
             context: context_type,
             domain,
