@@ -112,14 +112,23 @@ impl LinkAnalyzer {
         context_type: LinkContext,
         context: &MailContext,
     ) -> ExtractedLink {
-        let final_url = url.to_string();
-        let domain = self.extract_domain(url);
+        let mut final_url = url.to_string();
+        let mut domain = self.extract_domain(url);
 
-        // For now, just detect shorteners but don't resolve them to avoid runtime issues
-        // TODO: Implement async resolution in a separate context
+        // Hybrid shortener resolution
         if self.url_resolver.is_shortener(url) {
-            log::info!("Detected shortened URL (not resolved): {}", url);
-            // Mark shorteners as suspicious for now
+            log::debug!("Detected shortened URL: {}", url);
+            
+            // Try sync cache lookup first
+            if let Some(resolved) = self.url_resolver.try_resolve_sync(url) {
+                final_url = resolved;
+                domain = self.extract_domain(&final_url);
+                log::debug!("Resolved from cache: {} -> {}", url, final_url);
+            } else {
+                // Spawn background resolution for future requests
+                self.url_resolver.resolve_background(url.to_string());
+                log::debug!("Queued background resolution for: {}", url);
+            }
         }
 
         let is_suspicious = self.is_link_suspicious(&final_url, display_text, &domain, context);
@@ -274,8 +283,10 @@ impl LinkAnalyzer {
     }
 
     fn is_suspicious_shortener(&self, domain: &str, display_text: &str) -> bool {
-        let shorteners = ["bit.ly", "tinyurl.com", "t.co", "short.link"];
-        let has_shortener = shorteners.iter().any(|s| domain.contains(s));
+        // Use consolidated shortener list from UrlResolver
+        let has_shortener = crate::url_resolver::UrlResolver::get_shorteners()
+            .iter()
+            .any(|s| domain.contains(s));
 
         // Shorteners are suspicious if used for account/security actions
         has_shortener
