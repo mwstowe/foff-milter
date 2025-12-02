@@ -285,7 +285,7 @@ Example output:
 # Clone and build (with submodules)
 git clone --recursive https://github.com/mwstowe/foff-milter.git
 cd foff-milter
-cargo build --release --features ocr
+cargo build --release
 
 # If you already cloned without --recursive, initialize submodules:
 # git submodule update --init --recursive

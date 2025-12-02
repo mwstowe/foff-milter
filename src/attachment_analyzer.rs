@@ -64,7 +64,6 @@ impl AttachmentAnalyzer {
         let mut filenames = Vec::new();
 
         if let Ok(decoded) = BASE64_STANDARD.decode(base64_content) {
-            #[cfg(feature = "rar-analysis")]
             {
                 // Use real RAR parsing with our custom library
                 use std::fs::OpenOptions;
@@ -83,7 +82,7 @@ impl AttachmentAnalyzer {
                         if file.write_all(&decoded).is_ok() && file.flush().is_ok() {
                             drop(file); // Ensure file is closed before RAR analysis
 
-                            // Use our RAR library for in-memory parsing (no temp files)
+                            // Use our RAR library to parse the archive (don't extract files)
                             match rar::Archive::from_bytes(&decoded, "") {
                                 Ok(archive) => {
                                     log::info!(
@@ -126,7 +125,6 @@ impl AttachmentAnalyzer {
                 }
             }
 
-            #[cfg(not(feature = "rar-analysis"))]
             {
                 // Fallback to pattern matching when RAR feature is disabled
                 let content_str = String::from_utf8_lossy(&decoded);
