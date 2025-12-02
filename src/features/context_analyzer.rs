@@ -531,24 +531,6 @@ impl ContextAnalyzer {
         }
     }
 
-    /// Detect HTML entity obfuscation
-    fn detect_html_entity_obfuscation(&self, text: &str) -> (bool, f32) {
-        use regex::Regex;
-        
-        // Count HTML entities like &#123; or &amp;
-        let entity_regex = Regex::new(r"&#[0-9]{2,3};|&[a-zA-Z]{2,6};").unwrap();
-        let entity_count = entity_regex.find_iter(text).count();
-        
-        // Only trigger on high concentrations (5+ entities) to avoid false positives
-        if entity_count >= 5 {
-            // Calculate ratio of entities to total content length
-            let ratio = (entity_count as f32 / text.len() as f32) * 1000.0; // Scale up for visibility
-            (true, ratio.min(100.0)) // Cap at 100%
-        } else {
-            (false, 0.0)
-        }
-    }
-
     fn detect_industry_context(&self, sender: &str, content: &str) -> Option<String> {
         let sender_lower = sender.to_lowercase();
         let content_lower = content.to_lowercase();

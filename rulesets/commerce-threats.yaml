@@ -13,10 +13,20 @@ rules:
   # Black Friday and fake sales
   - name: "Black Friday and fake savings scams"
     criteria:
-      type: "SubjectPattern"
-      pattern: "(?i).*(black.*friday|cyber.*monday|huge.*savings|massive.*discount|limited.*time.*offer|act.*now.*save|don't.*miss.*out|final.*hours|last.*chance.*save|up.*to.*\\d+%.*off|save.*up.*to.*\\$\\d+).*"
+      type: "And"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(black.*friday|cyber.*monday|huge.*savings|massive.*discount|limited.*time.*offer|act.*now.*save|don't.*miss.*out|final.*hours|last.*chance.*save|up.*to.*\\d+%.*off|save.*up.*to.*\\$\\d+).*"
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "SenderDomain"
+                domains: ["williams-sonoma.com", "tokyo-tiger.com", "uncommongoods.com", "backerkit.com", "kickstarter.com", "bedjet.com", "humblebundle.com"]
+              - type: "SenderPattern"
+                pattern: ".*@(bedjet\\.com|tokyo-tiger\\.com|humblebundle\\.com).*"
     score: 65
-    description: "Black Friday and fake promotional scams (relies on shared TLD detection)"
+    description: "Black Friday and fake promotional scams (excludes legitimate retailers)"
 
   # Beauty and cosmetic scams
   - name: "Beauty and cosmetic product spam"
