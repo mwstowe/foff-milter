@@ -282,10 +282,13 @@ Example output:
 ### Quick Installation
 
 ```bash
-# Clone and build
-git clone https://github.com/mwstowe/foff-milter.git
+# Clone and build (with submodules)
+git clone --recursive https://github.com/mwstowe/foff-milter.git
 cd foff-milter
 cargo build --release --features ocr
+
+# If you already cloned without --recursive, initialize submodules:
+# git submodule update --init --recursive
 
 # Install system-wide
 sudo cp target/release/foff-milter /usr/local/bin/
