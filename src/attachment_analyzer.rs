@@ -83,8 +83,8 @@ impl AttachmentAnalyzer {
                         if file.write_all(&decoded).is_ok() && file.flush().is_ok() {
                             drop(file); // Ensure file is closed before RAR analysis
 
-                            // Use our RAR library to parse the archive (don't extract files)
-                            match rar::Archive::extract_all(&temp_file, "/tmp", "") {
+                            // Use our RAR library for in-memory parsing (no temp files)
+                            match rar::Archive::from_bytes(&decoded, "") {
                                 Ok(archive) => {
                                     log::info!(
                                         "Successfully parsed RAR archive with {} files",
