@@ -1325,8 +1325,11 @@ impl FilterEngine {
                     let mut hasher = std::collections::hash_map::DefaultHasher::new();
                     use std::hash::{Hash, Hasher};
                     format!("{}:{}", feature_score.feature_name, evidence).hash(&mut hasher);
-                    let evidence_hash = format!("{:x}", hasher.finish()).chars().take(8).collect::<String>();
-                    
+                    let evidence_hash = format!("{:x}", hasher.finish())
+                        .chars()
+                        .take(8)
+                        .collect::<String>();
+
                     headers_to_add.push((
                         "X-FOFF-Feature-Evidence".to_string(),
                         format!(
