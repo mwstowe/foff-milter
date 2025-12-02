@@ -67,26 +67,29 @@ impl AttachmentAnalyzer {
             #[cfg(feature = "rar-analysis")]
             {
                 // Use real RAR parsing with our custom library
-                use std::io::Write;
                 use std::fs::OpenOptions;
-                
+                use std::io::Write;
+
                 // Create a temporary file for RAR analysis in current directory
                 let temp_file = format!("./temp_rar_{}.rar", rand::random::<u32>());
-                
+
                 match OpenOptions::new()
                     .create(true)
                     .write(true)
                     .truncate(true)
-                    .open(&temp_file) 
+                    .open(&temp_file)
                 {
                     Ok(mut file) => {
                         if file.write_all(&decoded).is_ok() && file.flush().is_ok() {
                             drop(file); // Ensure file is closed before RAR analysis
-                            
+
                             // Use our RAR library to parse the archive (don't extract files)
                             match rar::Archive::extract_all(&temp_file, "/tmp", "") {
                                 Ok(archive) => {
-                                    log::info!("Successfully parsed RAR archive with {} files", archive.files.len());
+                                    log::info!(
+                                        "Successfully parsed RAR archive with {} files",
+                                        archive.files.len()
+                                    );
                                     for file_block in &archive.files {
                                         if !file_block.name.is_empty() {
                                             filenames.push(file_block.name.clone());
@@ -95,7 +98,10 @@ impl AttachmentAnalyzer {
                                     }
                                 }
                                 Err(e) => {
-                                    log::debug!("RAR parsing failed: {}, falling back to pattern matching", e);
+                                    log::debug!(
+                                        "RAR parsing failed: {}, falling back to pattern matching",
+                                        e
+                                    );
                                     let content_str = String::from_utf8_lossy(&decoded);
                                     Self::extract_filenames_from_text(&content_str, &mut filenames);
                                 }
@@ -105,18 +111,21 @@ impl AttachmentAnalyzer {
                             let content_str = String::from_utf8_lossy(&decoded);
                             Self::extract_filenames_from_text(&content_str, &mut filenames);
                         }
-                        
+
                         // Clean up temporary file
                         let _ = std::fs::remove_file(&temp_file);
                     }
                     Err(e) => {
-                        log::debug!("Failed to create temp file: {}, falling back to pattern matching", e);
+                        log::debug!(
+                            "Failed to create temp file: {}, falling back to pattern matching",
+                            e
+                        );
                         let content_str = String::from_utf8_lossy(&decoded);
                         Self::extract_filenames_from_text(&content_str, &mut filenames);
                     }
                 }
             }
-            
+
             #[cfg(not(feature = "rar-analysis"))]
             {
                 // Fallback to pattern matching when RAR feature is disabled
