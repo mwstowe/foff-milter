@@ -1321,9 +1321,21 @@ impl FilterEngine {
 
                 // Add evidence as additional headers for debugging
                 for evidence in &feature_score.evidence {
+                    // Generate hash for feature evidence (similar to module hash)
+                    let mut hasher = std::collections::hash_map::DefaultHasher::new();
+                    use std::hash::{Hash, Hasher};
+                    format!("{}:{}", feature_score.feature_name, evidence).hash(&mut hasher);
+                    let evidence_hash = format!("{:x}", hasher.finish()).chars().take(8).collect::<String>();
+                    
                     headers_to_add.push((
                         "X-FOFF-Feature-Evidence".to_string(),
-                        format!("{}: {}", feature_score.feature_name, evidence),
+                        format!(
+                            "{}: {} ({}) [{}]",
+                            feature_score.feature_name,
+                            evidence,
+                            get_hostname(),
+                            evidence_hash
+                        ),
                     ));
                 }
             }
