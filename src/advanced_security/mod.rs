@@ -750,26 +750,158 @@ impl AdvancedSecurityEngine {
         }
     }
 
-    fn extract_text_from_image(&self, _content: &[u8]) -> String {
-        // Simulate OCR text extraction
-        "Extracted text from image: URGENT! Click here to claim your prize!".to_string()
+    fn extract_text_from_image(&self, content: &[u8]) -> String {
+        #[cfg(feature = "ocr")]
+        {
+            // Try to load image and extract text with tesseract
+            match image::load_from_memory(content) {
+                Ok(img) => {
+                    // Convert to RGB format for tesseract
+                    let rgb_img = img.to_rgb8();
+                    let (width, height) = rgb_img.dimensions();
+                    
+                    // Initialize tesseract
+                    let tesseract = tesseract_rs::TesseractAPI::new();
+                    
+                    // Initialize with English language (use empty string for default datapath)
+                    if tesseract.init("", "eng").is_ok() {
+                        // Set image data
+                        let _ = tesseract.set_image(&rgb_img, width as i32, height as i32, 3, (width * 3) as i32);
+                        
+                        // Extract text
+                        match tesseract.get_utf8_text() {
+                            Ok(text) => {
+                                log::debug!("OCR extracted {} characters from image", text.len());
+                                text.trim().to_string()
+                            }
+                            Err(e) => {
+                                log::warn!("OCR text extraction failed: {}", e);
+                                String::new()
+                            }
+                        }
+                    } else {
+                        log::warn!("Failed to initialize tesseract with English language");
+                        String::new()
+                    }
+                }
+                Err(e) => {
+                    log::warn!("Failed to load image for OCR: {}", e);
+                    String::new()
+                }
+            }
+        }
+        
+        #[cfg(not(feature = "ocr"))]
+        {
+            let _ = content; // Suppress unused variable warning
+            log::debug!("OCR feature not enabled, skipping text extraction");
+            String::new()
+        }
     }
 
-    fn extract_qr_codes(&self, _content: &[u8]) -> Vec<String> {
-        // Simulate QR code extraction
-        vec!["https://suspicious-site.com/malware".to_string()]
+    fn extract_qr_codes(&self, content: &[u8]) -> Vec<String> {
+        #[cfg(feature = "ocr")]
+        {
+            // For now, use OCR to detect QR-like patterns in text
+            let extracted_text = self.extract_text_from_image(content);
+            let mut qr_codes = Vec::new();
+            
+            // Look for URL patterns that might be from QR codes
+            let url_patterns = [
+                r"https?://[^\s]+",
+                r"www\.[^\s]+",
+                r"[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}[^\s]*"
+            ];
+            
+            for pattern in &url_patterns {
+                if let Ok(regex) = regex::Regex::new(pattern) {
+                    for mat in regex.find_iter(&extracted_text) {
+                        let url = mat.as_str().to_string();
+                        if url.len() > 10 { // Filter out very short matches
+                            qr_codes.push(url);
+                        }
+                    }
+                }
+            }
+            
+            // Remove duplicates
+            qr_codes.sort();
+            qr_codes.dedup();
+            
+            if !qr_codes.is_empty() {
+                log::debug!("Detected {} potential QR code URLs in image", qr_codes.len());
+            }
+            
+            qr_codes
+        }
+        
+        #[cfg(not(feature = "ocr"))]
+        {
+            let _ = content; // Suppress unused variable warning
+            log::debug!("OCR feature not enabled, skipping QR code detection");
+            Vec::new()
+        }
     }
 
     fn analyze_extracted_text(&self, text: &str) -> Vec<String> {
         let mut threats = Vec::new();
-        let suspicious_keywords = ["urgent", "click here", "prize", "winner", "verify account"];
-
-        for keyword in suspicious_keywords {
-            if text.to_lowercase().contains(keyword) {
-                threats.push(format!("suspicious_keyword_{}", keyword.replace(' ', "_")));
+        
+        if text.is_empty() {
+            return threats;
+        }
+        
+        let text_lower = text.to_lowercase();
+        
+        // Urgency indicators
+        let urgency_keywords = [
+            "urgent", "asap", "immediate", "emergency", "critical", 
+            "act now", "limited time", "expires today", "final notice"
+        ];
+        
+        // Financial/security threats
+        let security_keywords = [
+            "verify account", "confirm identity", "update payment", 
+            "suspended account", "click here", "login now", "reset password"
+        ];
+        
+        // Scam indicators
+        let scam_keywords = [
+            "congratulations", "winner", "prize", "lottery", "inheritance",
+            "tax refund", "government grant", "free money", "claim now"
+        ];
+        
+        // Check for patterns
+        for keyword in urgency_keywords {
+            if text_lower.contains(keyword) {
+                threats.push(format!("urgency_indicator_{}", keyword.replace(' ', "_")));
             }
         }
-
+        
+        for keyword in security_keywords {
+            if text_lower.contains(keyword) {
+                threats.push(format!("security_threat_{}", keyword.replace(' ', "_")));
+            }
+        }
+        
+        for keyword in scam_keywords {
+            if text_lower.contains(keyword) {
+                threats.push(format!("scam_indicator_{}", keyword.replace(' ', "_")));
+            }
+        }
+        
+        // Check for suspicious patterns
+        if text_lower.contains("http") && (text_lower.contains("verify") || text_lower.contains("click")) {
+            threats.push("suspicious_link_with_action".to_string());
+        }
+        
+        // Check for phone numbers with urgency
+        if text.contains(char::is_numeric) && (text_lower.contains("call") || text_lower.contains("urgent")) {
+            threats.push("suspicious_phone_with_urgency".to_string());
+        }
+        
+        log::debug!("OCR text analysis found {} threat indicators in {} characters", 
+                   threats.len(), text.len());
+        
         threats
     }
 
