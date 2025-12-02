@@ -1,9 +1,9 @@
 use reqwest::Client;
-use std::time::Duration;
-use url::Url;
-use std::sync::Arc;
-use tokio::sync::RwLock;
 use std::collections::HashMap;
+use std::sync::Arc;
+use std::time::Duration;
+use tokio::sync::RwLock;
+use url::Url;
 
 pub struct UrlResolver {
     client: Client,
@@ -29,18 +29,39 @@ impl UrlResolver {
     /// Get consolidated list of known shorteners
     pub fn get_shorteners() -> &'static [&'static str] {
         &[
-            "bit.ly", "tinyurl.com", "t.co", "goo.gl", "ow.ly", 
-            "short.link", "is.gd", "v.gd", "tiny.cc", "rb.gy", 
-            "cutt.ly", "shorturl.at", "1url.com", "u.to", "tny.sh"
+            "bit.ly",
+            "tinyurl.com",
+            "t.co",
+            "goo.gl",
+            "ow.ly",
+            "short.link",
+            "is.gd",
+            "v.gd",
+            "tiny.cc",
+            "rb.gy",
+            "cutt.ly",
+            "shorturl.at",
+            "1url.com",
+            "u.to",
+            "tny.sh",
         ]
     }
 
     /// Get domains that should be excluded from shortener detection
     pub fn get_excluded_domains() -> &'static [&'static str] {
         &[
-            "facebook.com", "instagram.com", "twitter.com", "linkedin.com",
-            "youtube.com", "snapchat.com", "tiktok.com", "pinterest.com",
-            "reddit.com", "discord.com", "telegram.org", "whatsapp.com"
+            "facebook.com",
+            "instagram.com",
+            "twitter.com",
+            "linkedin.com",
+            "youtube.com",
+            "snapchat.com",
+            "tiktok.com",
+            "pinterest.com",
+            "reddit.com",
+            "discord.com",
+            "telegram.org",
+            "whatsapp.com",
         ]
     }
 
@@ -55,7 +76,7 @@ impl UrlResolver {
                 {
                     return false;
                 }
-                
+
                 // Check shortener domains
                 return Self::get_shorteners()
                     .iter()

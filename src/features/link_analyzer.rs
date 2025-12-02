@@ -118,7 +118,7 @@ impl LinkAnalyzer {
         // Hybrid shortener resolution
         if self.url_resolver.is_shortener(url) {
             log::debug!("Detected shortened URL: {}", url);
-            
+
             // Try sync cache lookup first
             if let Some(resolved) = self.url_resolver.try_resolve_sync(url) {
                 final_url = resolved;
