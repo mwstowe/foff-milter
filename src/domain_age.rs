@@ -340,7 +340,13 @@ impl DomainAgeChecker {
 
         // If we can't find a creation date, log some of the WHOIS response for debugging
         let preview = if text.len() > 500 {
-            format!("{}...", &text[..500])
+            // Use char_indices to avoid UTF-8 boundary issues
+            let truncate_pos = text
+                .char_indices()
+                .nth(500)
+                .map(|(i, _)| i)
+                .unwrap_or(text.len());
+            format!("{}...", &text[..truncate_pos])
         } else {
             text.to_string()
         };
