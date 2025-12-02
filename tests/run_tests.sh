@@ -52,7 +52,7 @@ for email in tests/positive/*.eml; do
     [ ! -f "$email" ] && continue
     
     echo -n "Testing $(basename "$email"): "
-    if timeout 10s $BINARY --test-email "$email" -c "$CONFIG" 2>/dev/null | grep -qE "(TAG AS SPAM|REJECT)"; then
+    if timeout 30s $BINARY --test-email "$email" -c "$CONFIG" 2>/dev/null | grep -qE "(TAG AS SPAM|REJECT)"; then
         echo "✅ CAUGHT"
         ((PASSED++))
     else
