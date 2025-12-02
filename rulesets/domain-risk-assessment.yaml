@@ -139,6 +139,30 @@ rules:
     description: "Free hosting service domains with moderate risk"
 
   # Domain Age and Registration Patterns
+  - name: "Very young domains (under 30 days)"
+    criteria:
+      type: "DomainAge"
+      max_age_days: 30
+      check_sender: true
+      check_reply_to: false
+      check_from_header: false
+      timeout_seconds: 10
+      use_mock_data: false
+    score: 50
+    description: "Sender domain registered less than 30 days ago"
+
+  - name: "Young domains (under 90 days)"
+    criteria:
+      type: "DomainAge"
+      max_age_days: 90
+      check_sender: true
+      check_reply_to: false
+      check_from_header: false
+      timeout_seconds: 10
+      use_mock_data: false
+    score: 25
+    description: "Sender domain registered less than 90 days ago"
+
   - name: "Suspicious domain length patterns"
     criteria:
       type: "SenderPattern"
