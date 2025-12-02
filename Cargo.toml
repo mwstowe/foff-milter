@@ -32,12 +32,13 @@ tokio = { version = "1.48", features = ["full"] }
 lazy_static = "1.5"
 rand = "0.8"
 rusqlite = { version = "0.37", features = ["bundled"] }
-rar = "0.4.0"
+rar = { path = "rar", optional = true }
 zip = "0.6"
 
 [features]
 default = []
 ocr = ["tesseract-rs", "image"]
+rar-analysis = ["rar"]
 
 [lib]
 name = "foff_milter"
