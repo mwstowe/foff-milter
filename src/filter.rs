@@ -465,46 +465,45 @@ impl FilterEngine {
     }
 
     fn check_upstream_trust(&self, context: &MailContext) -> Option<UpstreamTrustResult> {
-        // Check if email comes from upstream source (not first hop)
-        if context.is_first_hop {
-            return None;
-        }
-
-        // Look for existing FOFF-milter headers indicating upstream processing
-        let has_foff_headers = context.headers.keys().any(|key| {
-            let key_lower = key.to_lowercase();
-            key_lower.starts_with("x-foff-") || key_lower.starts_with("x-spam-")
+        // Look for existing FOFF-milter processing headers (regardless of hop status)
+        let has_foff_score = context.headers.keys().any(|key| {
+            key.to_lowercase().starts_with("x-foff-score")
         });
 
-        if !has_foff_headers {
-            return None;
-        }
-
-        // ONLY trust if upstream source already identified email as spam
-        let is_spam_tagged = context.headers.iter().any(|(key, value)| {
+        let has_foff_evidence = context.headers.keys().any(|key| {
             let key_lower = key.to_lowercase();
-            let value_lower = value.to_lowercase();
-
-            // Check for common spam indicators
-            (key_lower.contains("spam")
-                && (value_lower.contains("yes") || value_lower.contains("true")))
-                || (key_lower == "x-foff-action" && value_lower.contains("reject"))
-                || (key_lower.contains("x-foff-score") && value.parse::<i32>().unwrap_or(0) > 100)
+            key_lower.starts_with("x-foff-feature-evidence") || 
+            key_lower.starts_with("x-foff-rule-matched")
         });
 
-        // ONLY return trust result if email is tagged as spam
-        if is_spam_tagged {
-            Some(UpstreamTrustResult {
-                reason: format!(
-                    "Trusting upstream FOFF-milter spam classification from {}",
-                    context
-                        .forwarding_source
-                        .as_deref()
-                        .unwrap_or("upstream server")
-                ),
-            })
+        // If we have FOFF processing evidence, trust the existing analysis
+        if has_foff_score || has_foff_evidence {
+            let is_spam_tagged = context.headers.iter().any(|(key, value)| {
+                let key_lower = key.to_lowercase();
+                let value_lower = value.to_lowercase();
+
+                // Check for spam indicators
+                (key_lower == "x-spam-flag" && value_lower.contains("yes")) ||
+                (key_lower.starts_with("x-foff-score") && {
+                    // Extract score from "X-FOFF-Score: 75 - analyzed by foff-milter..."
+                    value.split_whitespace().next()
+                        .and_then(|s| s.parse::<i32>().ok())
+                        .unwrap_or(0) >= 50
+                })
+            });
+
+            if is_spam_tagged {
+                // Trust the upstream spam classification
+                Some(UpstreamTrustResult {
+                    reason: "Trusting upstream FOFF-milter spam classification".to_string(),
+                })
+            } else {
+                // Email already processed by FOFF but not spam - trust that analysis
+                Some(UpstreamTrustResult {
+                    reason: "Email already processed by upstream FOFF-milter as legitimate".to_string(),
+                })
+            }
         } else {
-            // Email has FOFF headers but not marked as spam - continue normal processing
             None
         }
     }
