@@ -474,6 +474,19 @@ rules:
     description: "Ultra-specific patterns for final missed spam"
 
   # Final ultra-aggressive catch-all for remaining spam
+  - name: "Authentication Failure with Commercial Content"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "HeaderPattern"
+          header: "Authentication-Results"
+          pattern: "(?i)none"
+        - type: "BodyPattern"
+          pattern: "(?i)(email.{0,10}list|bulk.{0,10}email|whatsapp|mass.{0,10}mail)"
+    score: 40
+    description: "Authentication failure combined with commercial spam content"
+
   - name: "Final ultra-aggressive spam detection"
     criteria:
       type: "Or"

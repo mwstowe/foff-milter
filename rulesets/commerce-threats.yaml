@@ -108,3 +108,39 @@ rules:
           pattern: ".*flu.*shot.*"
     score: 35
     description: "ZoomCare impersonation scam"
+
+  - name: "Email List Selling Spam"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i)(email.{0,10}list|email.{0,10}blast|mx.{0,10}test)"
+            - type: "BodyPattern"
+              pattern: "(?i)(email.{0,10}list|email.{0,10}blast|mx.{0,10}test)"
+        - type: "BodyPattern"
+          pattern: "(?i)(fresh.{0,10}email|updated.{0,10}email|replacement.{0,10}policy|100%.{0,10}(fresh|updated|mx.{0,10}test))"
+    score: 100
+    description: "Commercial email list selling and bulk email services"
+
+  - name: "Bulk Email Service Promotion"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i)(email.{0,10}list|bulk.{0,10}email|mass.{0,10}mail)"
+        - type: "BodyPattern"
+          pattern: "(?i)(talk.{0,10}us.{0,10}whatsapp|whatsapp.{0,10}contact)"
+    score: 75
+    description: "Bulk email service and WhatsApp contact spam"
+
+  - name: "Spam Infrastructure References"
+    enabled: true
+    criteria:
+      type: "BodyPattern"
+      pattern: "(?i)(smtp\\.[^:]+:\\d+|socks5?:\\d+|127\\.0\\.0\\.1:\\d+)"
+    score: 50
+    description: "References to spam infrastructure and proxy servers"

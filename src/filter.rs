@@ -262,42 +262,64 @@ impl FilterEngine {
         // Parse the most recent (first) Received header to find proximate mailer
         if let Some(first_received) = received_headers.first() {
             let header_lower = first_received.to_lowercase();
-            
+
             // Extract the "from" hostname from the Received header
             // Format: "Received: from hostname.domain.com (ip) by ..."
             if let Some(from_start) = header_lower.find("from ") {
                 let from_part = &header_lower[from_start + 5..];
                 if let Some(space_pos) = from_part.find(' ') {
                     let hostname = &from_part[..space_pos];
-                    
+
                     // Clean up hostname (remove brackets, parentheses)
                     let clean_hostname = hostname
                         .trim_matches(|c| c == '[' || c == ']' || c == '(' || c == ')')
                         .trim();
-                    
+
                     // Check if this is a known forwarding service
                     let forwarding_services = [
-                        ("gmail.com", vec!["gmail.com", "google.com", "googlemail.com"]),
+                        (
+                            "gmail.com",
+                            vec!["gmail.com", "google.com", "googlemail.com"],
+                        ),
                         ("aol.com", vec!["aol.com", "aim.com"]),
-                        ("yahoo.com", vec!["yahoo.com", "yahoomail.com"]), 
-                        ("outlook.com", vec!["outlook.com", "hotmail.com", "live.com", "microsoft.com"]),
-                        ("icloud.com", vec!["icloud.com", "me.com", "mac.com", "apple.com"])
+                        ("yahoo.com", vec!["yahoo.com", "yahoomail.com"]),
+                        (
+                            "outlook.com",
+                            vec!["outlook.com", "hotmail.com", "live.com", "microsoft.com"],
+                        ),
+                        (
+                            "icloud.com",
+                            vec!["icloud.com", "me.com", "mac.com", "apple.com"],
+                        ),
                     ];
-                    
-                    let forwarding_match = forwarding_services.iter()
-                        .find(|(_, domains)| domains.iter().any(|domain| clean_hostname.contains(domain)));
-                    
+
+                    let forwarding_match = forwarding_services.iter().find(|(_, domains)| {
+                        domains.iter().any(|domain| clean_hostname.contains(domain))
+                    });
+
                     if let Some((service_name, _)) = forwarding_match {
-                        log::info!("Proximate mailer: {} (forwarding service: {})", clean_hostname, service_name);
-                        return (false, Some(service_name.to_string()), Some(clean_hostname.to_string()));
+                        log::info!(
+                            "Proximate mailer: {} (forwarding service: {})",
+                            clean_hostname,
+                            service_name
+                        );
+                        return (
+                            false,
+                            Some(service_name.to_string()),
+                            Some(clean_hostname.to_string()),
+                        );
                     } else {
                         // Check if this looks like an internal mail server hop
                         let hop_count = received_headers.len();
                         let is_first_hop = hop_count <= 2;
-                        
-                        log::info!("Proximate mailer: {} (hop count: {}, first_hop: {})", 
-                                 clean_hostname, hop_count, is_first_hop);
-                        
+
+                        log::info!(
+                            "Proximate mailer: {} (hop count: {}, first_hop: {})",
+                            clean_hostname,
+                            hop_count,
+                            is_first_hop
+                        );
+
                         return (is_first_hop, None, Some(clean_hostname.to_string()));
                     }
                 }
@@ -306,9 +328,12 @@ impl FilterEngine {
 
         // Fallback: Check number of Received headers
         let is_first_hop = received_headers.len() <= 2;
-        log::info!("Fallback hop detection: {} headers, first_hop: {}", 
-                 received_headers.len(), is_first_hop);
-        
+        log::info!(
+            "Fallback hop detection: {} headers, first_hop: {}",
+            received_headers.len(),
+            is_first_hop
+        );
+
         (is_first_hop, None, None)
     }
 
