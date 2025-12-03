@@ -1038,6 +1038,7 @@ async fn test_email_file(
         is_legitimate_business: false, // Will be set below
         is_first_hop: true,      // Test mode assumes first hop
         forwarding_source: None, // Will be detected during evaluation
+        proximate_mailer: None,  // Will be detected during evaluation
     };
 
     // Add legitimate business detection for test mode

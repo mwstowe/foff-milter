@@ -192,6 +192,7 @@ pub struct MailContext {
     pub is_legitimate_business: bool,     // Flag for legitimate business senders
     pub is_first_hop: bool,               // True if this is the first mailer receiving the email
     pub forwarding_source: Option<String>, // Source of forwarding (gmail.com, aol.com, etc.)
+    pub proximate_mailer: Option<String>, // The immediate/proximate mailer hostname
 }
 
 impl Default for MailContext {
@@ -212,6 +213,7 @@ impl Default for MailContext {
             is_legitimate_business: false,
             is_first_hop: true, // Default to first hop
             forwarding_source: None,
+            proximate_mailer: None,
         }
     }
 }
@@ -243,8 +245,8 @@ impl FilterEngine {
             .any(|(mod_name, rule)| module_name == *mod_name && rule_name == *rule)
     }
 
-    fn detect_email_hop(&self, context: &MailContext) -> (bool, Option<String>) {
-        // Check Received headers to determine if this is first hop or forwarded
+    fn detect_email_hop(&self, context: &MailContext) -> (bool, Option<String>, Option<String>) {
+        // Check Received headers to determine proximate mailer and pass-through status
         let received_headers: Vec<&String> = context
             .headers
             .iter()
@@ -254,32 +256,60 @@ impl FilterEngine {
 
         // If no Received headers, assume first hop
         if received_headers.is_empty() {
-            return (true, None);
+            return (true, None, None);
         }
 
-        // Check for forwarding services in Received headers
-        let forwarding_services = [
-            "gmail.com",
-            "aol.com",
-            "yahoo.com",
-            "outlook.com",
-            "hotmail.com",
-        ];
-
-        for header in &received_headers {
-            let header_lower = header.to_lowercase();
-            for service in &forwarding_services {
-                if header_lower.contains(service) {
-                    // Found forwarding service - this is not first hop
-                    return (false, Some(service.to_string()));
+        // Parse the most recent (first) Received header to find proximate mailer
+        if let Some(first_received) = received_headers.first() {
+            let header_lower = first_received.to_lowercase();
+            
+            // Extract the "from" hostname from the Received header
+            // Format: "Received: from hostname.domain.com (ip) by ..."
+            if let Some(from_start) = header_lower.find("from ") {
+                let from_part = &header_lower[from_start + 5..];
+                if let Some(space_pos) = from_part.find(' ') {
+                    let hostname = &from_part[..space_pos];
+                    
+                    // Clean up hostname (remove brackets, parentheses)
+                    let clean_hostname = hostname
+                        .trim_matches(|c| c == '[' || c == ']' || c == '(' || c == ')')
+                        .trim();
+                    
+                    // Check if this is a known forwarding service
+                    let forwarding_services = [
+                        ("gmail.com", vec!["gmail.com", "google.com", "googlemail.com"]),
+                        ("aol.com", vec!["aol.com", "aim.com"]),
+                        ("yahoo.com", vec!["yahoo.com", "yahoomail.com"]), 
+                        ("outlook.com", vec!["outlook.com", "hotmail.com", "live.com", "microsoft.com"]),
+                        ("icloud.com", vec!["icloud.com", "me.com", "mac.com", "apple.com"])
+                    ];
+                    
+                    let forwarding_match = forwarding_services.iter()
+                        .find(|(_, domains)| domains.iter().any(|domain| clean_hostname.contains(domain)));
+                    
+                    if let Some((service_name, _)) = forwarding_match {
+                        log::info!("Proximate mailer: {} (forwarding service: {})", clean_hostname, service_name);
+                        return (false, Some(service_name.to_string()), Some(clean_hostname.to_string()));
+                    } else {
+                        // Check if this looks like an internal mail server hop
+                        let hop_count = received_headers.len();
+                        let is_first_hop = hop_count <= 2;
+                        
+                        log::info!("Proximate mailer: {} (hop count: {}, first_hop: {})", 
+                                 clean_hostname, hop_count, is_first_hop);
+                        
+                        return (is_first_hop, None, Some(clean_hostname.to_string()));
+                    }
                 }
             }
         }
 
-        // Check number of Received headers - more than 2 usually indicates forwarding
+        // Fallback: Check number of Received headers
         let is_first_hop = received_headers.len() <= 2;
-
-        (is_first_hop, None)
+        log::info!("Fallback hop detection: {} headers, first_hop: {}", 
+                 received_headers.len(), is_first_hop);
+        
+        (is_first_hop, None, None)
     }
 
     /// Normalize encoding in MailContext to handle malformed UTF-8 and encoding evasion
@@ -308,6 +338,7 @@ impl FilterEngine {
             is_legitimate_business: context.is_legitimate_business,
             is_first_hop: context.is_first_hop,
             forwarding_source: context.forwarding_source.clone(),
+            proximate_mailer: context.proximate_mailer.clone(),
         }
     }
 
@@ -1252,12 +1283,16 @@ impl FilterEngine {
         let mut context = context.clone();
 
         // Detect email hop status
-        let (is_first_hop, forwarding_source) = self.detect_email_hop(&context);
+        let (is_first_hop, forwarding_source, proximate_mailer) = self.detect_email_hop(&context);
         context.is_first_hop = is_first_hop;
         context.forwarding_source = forwarding_source.clone();
+        context.proximate_mailer = proximate_mailer.clone();
 
         if let Some(source) = &forwarding_source {
             log::info!("Email forwarded from: {}", source);
+        }
+        if let Some(mailer) = &proximate_mailer {
+            log::info!("Proximate mailer: {}", mailer);
         }
         log::info!("First hop: {}", is_first_hop);
 
