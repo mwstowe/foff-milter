@@ -465,7 +465,7 @@ impl FilterEngine {
     }
 
     fn check_upstream_trust(&self, context: &MailContext) -> Option<UpstreamTrustResult> {
-        // Look for existing FOFF-milter processing headers (regardless of hop status)
+        // Look for existing FOFF-milter processing headers
         let has_foff_score = context.headers.keys().any(|key| {
             key.to_lowercase().starts_with("x-foff-score")
         });
@@ -476,7 +476,7 @@ impl FilterEngine {
             key_lower.starts_with("x-foff-rule-matched")
         });
 
-        // If we have FOFF processing evidence, trust the existing analysis
+        // If we have FOFF processing evidence, check if it's marked as spam
         if has_foff_score || has_foff_evidence {
             let is_spam_tagged = context.headers.iter().any(|(key, value)| {
                 let key_lower = key.to_lowercase();
@@ -492,16 +492,14 @@ impl FilterEngine {
                 })
             });
 
+            // ONLY trust if upstream marked it as spam
             if is_spam_tagged {
-                // Trust the upstream spam classification
                 Some(UpstreamTrustResult {
                     reason: "Trusting upstream FOFF-milter spam classification".to_string(),
                 })
             } else {
-                // Email already processed by FOFF but not spam - trust that analysis
-                Some(UpstreamTrustResult {
-                    reason: "Email already processed by upstream FOFF-milter as legitimate".to_string(),
-                })
+                // Email processed upstream but not spam - continue normal processing
+                None
             }
         } else {
             None
