@@ -224,6 +224,11 @@ pub struct AttachmentInfo {
     pub executable_files: Vec<String>,
 }
 
+#[derive(Debug, Clone)]
+pub struct UpstreamTrustResult {
+    pub reason: String,
+}
+
 impl FilterEngine {
     fn should_exempt_rule_for_business(&self, module_name: &str, rule_name: &str) -> bool {
         let exempt_rules = [
@@ -457,6 +462,51 @@ impl FilterEngine {
         }
 
         None
+    }
+
+    fn check_upstream_trust(&self, context: &MailContext) -> Option<UpstreamTrustResult> {
+        // Check if email comes from upstream source (not first hop)
+        if context.is_first_hop {
+            return None;
+        }
+
+        // Look for existing FOFF-milter headers indicating upstream processing
+        let has_foff_headers = context.headers.keys().any(|key| {
+            let key_lower = key.to_lowercase();
+            key_lower.starts_with("x-foff-") || key_lower.starts_with("x-spam-")
+        });
+
+        if !has_foff_headers {
+            return None;
+        }
+
+        // ONLY trust if upstream source already identified email as spam
+        let is_spam_tagged = context.headers.iter().any(|(key, value)| {
+            let key_lower = key.to_lowercase();
+            let value_lower = value.to_lowercase();
+
+            // Check for common spam indicators
+            (key_lower.contains("spam")
+                && (value_lower.contains("yes") || value_lower.contains("true")))
+                || (key_lower == "x-foff-action" && value_lower.contains("reject"))
+                || (key_lower.contains("x-foff-score") && value.parse::<i32>().unwrap_or(0) > 100)
+        });
+
+        // ONLY return trust result if email is tagged as spam
+        if is_spam_tagged {
+            Some(UpstreamTrustResult {
+                reason: format!(
+                    "Trusting upstream FOFF-milter spam classification from {}",
+                    context
+                        .forwarding_source
+                        .as_deref()
+                        .unwrap_or("upstream server")
+                ),
+            })
+        } else {
+            // Email has FOFF headers but not marked as spam - continue normal processing
+            None
+        }
     }
 
     fn analyze_invoice_fraud(&self, context: &MailContext) -> InvoiceAnalysis {
@@ -1209,6 +1259,19 @@ impl FilterEngine {
             log::info!("Email forwarded from: {}", source);
         }
         log::info!("First hop: {}", is_first_hop);
+
+        // Check for upstream FOFF-milter processing and trust existing tags
+        if let Some(trust_result) = self.check_upstream_trust(&context) {
+            log::info!(
+                "Trusting upstream FOFF-milter processing: {}",
+                trust_result.reason
+            );
+            return (
+                Action::Accept,
+                vec![trust_result.reason.clone()],
+                vec![("X-FOFF-Upstream-Trust".to_string(), trust_result.reason)],
+            );
+        }
 
         // Normalize encoding in the context to handle malformed UTF-8 and encoding evasion
         let normalized_context = self.normalize_mail_context(&context);
