@@ -466,14 +466,15 @@ impl FilterEngine {
 
     fn check_upstream_trust(&self, context: &MailContext) -> Option<UpstreamTrustResult> {
         // Look for existing FOFF-milter processing headers
-        let has_foff_score = context.headers.keys().any(|key| {
-            key.to_lowercase().starts_with("x-foff-score")
-        });
+        let has_foff_score = context
+            .headers
+            .keys()
+            .any(|key| key.to_lowercase().starts_with("x-foff-score"));
 
         let has_foff_evidence = context.headers.keys().any(|key| {
             let key_lower = key.to_lowercase();
-            key_lower.starts_with("x-foff-feature-evidence") || 
-            key_lower.starts_with("x-foff-rule-matched")
+            key_lower.starts_with("x-foff-feature-evidence")
+                || key_lower.starts_with("x-foff-rule-matched")
         });
 
         // If we have FOFF processing evidence, check if it's marked as spam
@@ -483,13 +484,16 @@ impl FilterEngine {
                 let value_lower = value.to_lowercase();
 
                 // Check for spam indicators
-                (key_lower == "x-spam-flag" && value_lower.contains("yes")) ||
-                (key_lower.starts_with("x-foff-score") && {
-                    // Extract score from "X-FOFF-Score: 75 - analyzed by foff-milter..."
-                    value.split_whitespace().next()
-                        .and_then(|s| s.parse::<i32>().ok())
-                        .unwrap_or(0) >= 50
-                })
+                (key_lower == "x-spam-flag" && value_lower.contains("yes"))
+                    || (key_lower.starts_with("x-foff-score") && {
+                        // Extract score from "X-FOFF-Score: 75 - analyzed by foff-milter..."
+                        value
+                            .split_whitespace()
+                            .next()
+                            .and_then(|s| s.parse::<i32>().ok())
+                            .unwrap_or(0)
+                            >= 50
+                    })
             });
 
             // ONLY trust if upstream marked it as spam
