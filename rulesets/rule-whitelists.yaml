@@ -771,3 +771,61 @@ rules:
       domains: ["sense.com", "ops.sense.com"]
     score: -200
     description: "Sense home energy monitoring service"
+
+  # Major retailers and established businesses
+  - name: "Major Retail Chains"
+    enabled: true
+    criteria:
+      type: "SenderDomain"
+      domains: [
+        "amazon.com", "walmart.com", "target.com", "bestbuy.com", "homedepot.com",
+        "lowes.com", "costco.com", "samsclub.com", "macys.com", "nordstrom.com",
+        "kohls.com", "jcpenney.com", "overstock.com", "wayfair.com", "ikea.com",
+        "williams-sonoma.com", "crateandbarrel.com", "potterybarn.com", "westelm.com"
+      ]
+    score: -100
+    description: "Major established retail chains"
+
+  - name: "Technology Companies"
+    enabled: true
+    criteria:
+      type: "SenderDomain"
+      domains: [
+        "apple.com", "microsoft.com", "google.com", "amazon.com", "adobe.com",
+        "salesforce.com", "oracle.com", "ibm.com", "intel.com", "nvidia.com",
+        "dell.com", "hp.com", "lenovo.com", "cisco.com", "vmware.com"
+      ]
+    score: -100
+    description: "Major technology companies"
+
+  - name: "Financial Services"
+    enabled: true
+    criteria:
+      type: "SenderDomain"
+      domains: [
+        "chase.com", "bankofamerica.com", "wellsfargo.com", "citi.com", "usbank.com",
+        "capitalone.com", "discover.com", "americanexpress.com", "paypal.com",
+        "stripe.com", "square.com", "venmo.com", "zelle.com", "fidelity.com"
+      ]
+    score: -150
+    description: "Established financial services"
+
+  - name: "Legitimate Email Service Providers"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SenderDomain"
+          domains: [
+            "mailchimp.com", "constantcontact.com", "sendgrid.net", "mailgun.org",
+            "campaignmonitor.com", "aweber.com", "getresponse.com", "convertkit.com",
+            "activecampaign.com", "hubspot.com", "pardot.com", "marketo.com"
+          ]
+        - type: "HeaderPattern"
+          header: "Authentication-Results"
+          pattern: "(?i)spf=pass"
+        - type: "HeaderPattern"
+          header: "List-Unsubscribe"
+          pattern: ".*"
+    score: -50
+    description: "Legitimate email marketing service providers with authentication and unsubscribe"

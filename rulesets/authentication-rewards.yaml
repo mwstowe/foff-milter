@@ -1,0 +1,133 @@
+name: "Authentication Rewards"
+enabled: true
+rules:
+  # Strong authentication rewards
+  - name: "Triple Authentication Pass"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "HeaderPattern"
+          header: "Authentication-Results"
+          pattern: "(?i)dmarc=pass"
+        - type: "HeaderPattern"
+          header: "Authentication-Results"
+          pattern: "(?i)spf=pass"
+        - type: "HeaderPattern"
+          header: "Authentication-Results"
+          pattern: "(?i)dkim=pass"
+    score: -50
+    description: "Strong authentication with DMARC, SPF, and DKIM all passing"
+
+  - name: "DMARC and SPF Pass"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "HeaderPattern"
+          header: "Authentication-Results"
+          pattern: "(?i)dmarc=pass"
+        - type: "HeaderPattern"
+          header: "Authentication-Results"
+          pattern: "(?i)spf=pass"
+        - type: "Not"
+          criteria:
+            type: "HeaderPattern"
+            header: "Authentication-Results"
+            pattern: "(?i)dkim=pass"
+    score: -35
+    description: "Good authentication with DMARC and SPF passing"
+
+  - name: "Basic SPF Pass"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "HeaderPattern"
+          header: "Authentication-Results"
+          pattern: "(?i)spf=pass"
+        - type: "Not"
+          criteria:
+            type: "HeaderPattern"
+            header: "Authentication-Results"
+            pattern: "(?i)dmarc=pass"
+    score: -15
+    description: "Basic authentication with SPF passing"
+
+  # CAN-SPAM compliance rewards
+  - name: "Full CAN-SPAM Compliance"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "HeaderPattern"
+          header: "List-Unsubscribe"
+          pattern: ".*"
+        - type: "BodyPattern"
+          pattern: "(?i)(unsubscribe|opt.{0,5}out)"
+        - type: "BodyPattern"
+          pattern: "(?i)\\d+.*\\w+.*(street|ave|road|blvd|drive|way|lane|court|place|suite|floor).*\\w+.*\\d{5}"
+    score: -40
+    description: "Full CAN-SPAM compliance with unsubscribe header, link, and physical address"
+
+  - name: "Unsubscribe Header Present"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "HeaderPattern"
+          header: "List-Unsubscribe"
+          pattern: ".*"
+        - type: "BodyPattern"
+          pattern: "(?i)(unsubscribe|opt.{0,5}out)"
+    score: -25
+    description: "Proper unsubscribe mechanism with header and body link"
+
+  - name: "Basic Unsubscribe Link"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "BodyPattern"
+          pattern: "(?i)(unsubscribe|opt.{0,5}out)"
+        - type: "Not"
+          criteria:
+            type: "HeaderPattern"
+            header: "List-Unsubscribe"
+            pattern: ".*"
+    score: -10
+    description: "Basic unsubscribe link present in body"
+
+  # Domain reputation rewards
+  - name: "Established Domain Authentication"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "HeaderPattern"
+          header: "Authentication-Results"
+          pattern: "(?i)(spf=pass|dkim=pass)"
+        - type: "SenderDomain"
+          domains: [
+            "amazon.com", "walmart.com", "target.com", "bestbuy.com", "homedepot.com",
+            "lowes.com", "costco.com", "macys.com", "nordstrom.com", "kohls.com",
+            "jcpenney.com", "sears.com", "overstock.com", "wayfair.com", "etsy.com",
+            "ebay.com", "paypal.com", "stripe.com", "square.com", "shopify.com",
+            "mailchimp.com", "constantcontact.com", "sendgrid.com", "mailgun.com"
+          ]
+    score: -30
+    description: "Authenticated email from established business domain"
+
+  # Professional email service rewards
+  - name: "Legitimate Email Service Provider"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "HeaderPattern"
+          header: "Authentication-Results"
+          pattern: "(?i)spf=pass"
+        - type: "SenderPattern"
+          pattern: ".*@.*(mailchimp|constantcontact|sendgrid|mailgun|campaignmonitor|aweber|getresponse|convertkit|activecampaign)\\.(com|net|org).*"
+    score: -25
+    description: "Email from legitimate email service provider with authentication"
