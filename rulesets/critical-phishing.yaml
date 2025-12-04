@@ -1,0 +1,123 @@
+name: "Critical Phishing Detection"
+enabled: true
+rules:
+  # Phase 1: Critical Phishing Detection (Immediate)
+  
+  # Domain Impersonation in From Header - +90 points (highest priority)
+  - name: "From Header Domain Impersonation"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: "\"[^\"@]+\\.(com|org|net|gov|edu|mil)\"\\s*<[^@]+@[^>]+>"
+        - type: "Or"
+          criteria:
+            - type: "BodyPattern"
+              pattern: "(?i)(password|account|login|verify|confirm|suspend|expir|action.*required)"
+            - type: "SubjectPattern"
+              pattern: "(?i)(action.*required|urgent|expir|suspend|verify|password)"
+    score: 90
+    description: "From header displays domain name in quotes with different actual sender domain"
+
+  # Password Expiration Phishing - +80 points
+  - name: "Password Expiration Phishing"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i)(password|account).*(expir|suspend|lock|deactivat|clos)"
+            - type: "BodyPattern"
+              pattern: "(?i)(password|account).*(expir|suspend|lock|deactivat|clos).*(today|tomorrow|\\d+.*hours?|\\d+.*days?)"
+        - type: "Or"
+          criteria:
+            - type: "BodyPattern"
+              pattern: "(?i)(keep.*current.*password|update.*account|verify.*account|confirm.*identity)"
+            - type: "BodyPattern"
+              pattern: "(?i)(click.*below|follow.*below|action.*required|immediate.*action)"
+    score: 80
+    description: "Password expiration phishing with urgency and credential requests"
+
+  # IPFS Link + Credential Context - +70 points
+  - name: "IPFS Credential Phishing"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "BodyPattern"
+          pattern: "(?i)ipfs\\.io/ipfs/"
+        - type: "Or"
+          criteria:
+            - type: "BodyPattern"
+              pattern: "(?i)(password|login|sign.*in|account|verify|confirm)"
+            - type: "SubjectPattern"
+              pattern: "(?i)(password|account|login|verify|confirm|action.*required)"
+    score: 70
+    description: "IPFS hosting used for credential phishing"
+
+  # Authentication Fail + Phishing - +50 points
+  - name: "Authentication Failure with Phishing Content"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "HeaderPattern"
+              header: "Authentication-Results"
+              pattern: "(?i)dkim=fail"
+            - type: "HeaderPattern"
+              header: "Authentication-Results"
+              pattern: "(?i)spf=fail"
+        - type: "Or"
+          criteria:
+            - type: "BodyPattern"
+              pattern: "(?i)(password|account|login|verify|confirm|suspend|expir)"
+            - type: "SubjectPattern"
+              pattern: "(?i)(action.*required|urgent|expir|suspend|verify|password)"
+        - type: "BodyPattern"
+          pattern: "(?i)(click|link|button|follow|update|keep|maintain)"
+    score: 50
+    description: "Authentication failure combined with phishing content"
+
+  # User-Targeted Phishing - +35 points
+  - name: "Personalized Phishing Attack"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i)for\\s+[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}"
+            - type: "BodyPattern"
+              pattern: "(?i)(dear|hello)\\s*,?\\s*[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}"
+        - type: "Or"
+          criteria:
+            - type: "BodyPattern"
+              pattern: "(?i)(password|account|login|verify|confirm|suspend|expir)"
+            - type: "SubjectPattern"
+              pattern: "(?i)(action.*required|urgent|expir|suspend)"
+    score: 35
+    description: "Personalized phishing targeting specific email addresses"
+
+  # Soft Hyphen Abuse - +30 points
+  - name: "Soft Hyphen Evasion in Phishing"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "BodyPattern"
+          pattern: "&shy;"
+        - type: "Or"
+          criteria:
+            - type: "BodyPattern"
+              pattern: "(?i)(password|account|login|verify|confirm|suspend|expir)"
+            - type: "SubjectPattern"
+              pattern: "(?i)(action.*required|urgent|expir|suspend|verify)"
+    score: 30
+    description: "Soft hyphen character evasion in phishing content"
