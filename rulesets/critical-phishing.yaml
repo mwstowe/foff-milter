@@ -12,6 +12,22 @@ rules:
         - type: "HeaderPattern"
           header: "From"
           pattern: "\"[^\"@]+\\.(com|org|net|gov|edu|mil)\"\\s*<[^@]+@[^>]+>"
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "HeaderPattern"
+                header: "From"
+                pattern: "\"[^\"@]+\"\\s*<[^@]+@.*walgreens\\.(com|net)>"
+              - type: "HeaderPattern"
+                header: "From"
+                pattern: "\"[^\"@]+\"\\s*<[^@]+@.*doordash\\.(com|net)>"
+              - type: "HeaderPattern"
+                header: "From"
+                pattern: "\"[^\"@]+\"\\s*<[^@]+@.*amazon\\.(com|net)>"
+              - type: "HeaderPattern"
+                header: "From"
+                pattern: "\"[^\"@]+\"\\s*<[^@]+@.*microsoft\\.(com|net)>"
         - type: "Or"
           criteria:
             - type: "BodyPattern"
@@ -19,7 +35,7 @@ rules:
             - type: "SubjectPattern"
               pattern: "(?i)(action.*required|urgent|expir|suspend|verify|password)"
     score: 90
-    description: "From header displays domain name in quotes with different actual sender domain"
+    description: "From header displays domain name in quotes with completely different sender domain"
 
   # Password Expiration Phishing - +80 points
   - name: "Password Expiration Phishing"

@@ -829,3 +829,13 @@ rules:
           pattern: ".*"
     score: -50
     description: "Legitimate email marketing service providers with authentication and unsubscribe"
+
+  # DoorDash Order Confirmations
+  - name: "DoorDash Order Confirmations"
+    enabled: true
+    criteria:
+      type: "HeaderPattern"
+      header: "From"
+      pattern: ".*@doordash\\.com.*"
+    score: -50
+    description: "Legitimate DoorDash order confirmations and delivery updates"
