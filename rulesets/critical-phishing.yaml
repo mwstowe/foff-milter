@@ -137,3 +137,49 @@ rules:
               pattern: "(?i)(action.*required|urgent|expir|suspend|verify)"
     score: 30
     description: "Soft hyphen character evasion in phishing content"
+
+  # Google Groups Spam Abuse - +60 points
+  - name: "Google Groups Spam Abuse"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "HeaderPattern"
+              header: "List-Unsubscribe"
+              pattern: ".*googlegroups.*"
+            - type: "HeaderPattern"
+              header: "List-Archive"
+              pattern: ".*groups\\.google\\.com.*"
+        - type: "Or"
+          criteria:
+            - type: "BodyPattern"
+              pattern: "(?i)(screenshot|error|send|would you like)"
+            - type: "SubjectPattern"
+              pattern: "(?i)(screenshot|\\?\\?|##|\\.\\.)"
+    score: 60
+    description: "Spam sent through Google Groups with suspicious content"
+
+  # SEO Spam Detection - +40 points  
+  - name: "SEO Spam Detection"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "HeaderPattern"
+              header: "To"
+              pattern: "(?i).*seo.*"
+            - type: "HeaderPattern"
+              header: "From"
+              pattern: "(?i).*seo.*"
+        - type: "Or"
+          criteria:
+            - type: "BodyPattern"
+              pattern: "(?i)(screenshot|error|would you like|send me)"
+            - type: "SubjectPattern"
+              pattern: "(?i)(screenshot|\\?\\?|##)"
+    score: 40
+    description: "SEO-related spam with suspicious content patterns"
