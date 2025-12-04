@@ -21,6 +21,7 @@ pub mod milter;
 pub mod performance;
 pub mod statistics;
 pub mod toml_config;
+pub mod trust_analyzer;
 pub mod url_resolver;
 
 // Re-export Config and related types for backward compatibility

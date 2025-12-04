@@ -173,6 +173,8 @@ pub struct FilterEngine {
     media_analyzer: MediaAnalyzer,
     // Feature-based analysis engine
     feature_engine: FeatureEngine,
+    // Dynamic trust analyzer
+    trust_analyzer: crate::trust_analyzer::TrustAnalyzer,
 }
 
 #[derive(Debug, Clone)]
@@ -429,6 +431,7 @@ impl FilterEngine {
             invoice_analyzer: InvoiceAnalyzer::default(),
             media_analyzer: MediaAnalyzer::new(),
             feature_engine: FeatureEngine::new(),
+            trust_analyzer: crate::trust_analyzer::TrustAnalyzer::new(),
         };
 
         // Pre-compile all regex patterns for better performance
@@ -1321,6 +1324,22 @@ impl FilterEngine {
         }
         log::info!("First hop: {}", is_first_hop);
 
+        // Perform dynamic trust analysis
+        let trust_score = self.trust_analyzer.analyze_domain_trust(&context);
+        let trust_adjustment = self
+            .trust_analyzer
+            .get_trust_adjustment(trust_score.total_trust);
+
+        log::info!(
+            "Domain trust analysis: auth={}, infra={}, behavior={}, content={}, total={}, adjustment={}",
+            trust_score.authentication_score,
+            trust_score.infrastructure_score,
+            trust_score.behavioral_score,
+            trust_score.content_score,
+            trust_score.total_trust,
+            trust_adjustment
+        );
+
         // Check for upstream FOFF-milter processing and trust existing tags
         if let Some(trust_result) = self.check_upstream_trust(&context) {
             log::info!(
@@ -1683,6 +1702,15 @@ impl FilterEngine {
 
             // Apply heuristic scoring if we have scoring rules
             if !scoring_rules.is_empty() {
+                // Apply dynamic trust adjustment
+                total_score += trust_adjustment;
+                if trust_adjustment != 0 {
+                    scoring_rules.push(format!(
+                        "Dynamic Trust Analysis: Trust adjustment ({:+})",
+                        trust_adjustment
+                    ));
+                }
+
                 log::info!(
                     "Heuristic evaluation: total_score={}, rules: [{}]",
                     total_score,
@@ -1699,6 +1727,22 @@ impl FilterEngine {
                         get_hostname()
                     ),
                 ));
+
+                // Add trust analysis header for debugging
+                if trust_score.total_trust != 0 {
+                    headers_to_add.push((
+                        "X-FOFF-Trust-Analysis".to_string(),
+                        format!(
+                            "auth={}, infra={}, behavior={}, content={}, total={}, adj={}",
+                            trust_score.authentication_score,
+                            trust_score.infrastructure_score,
+                            trust_score.behavioral_score,
+                            trust_score.content_score,
+                            trust_score.total_trust,
+                            trust_adjustment
+                        ),
+                    ));
+                }
 
                 // Determine action based on thresholds
                 let reject_threshold = self
