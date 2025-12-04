@@ -175,6 +175,8 @@ pub struct FilterEngine {
     feature_engine: FeatureEngine,
     // Dynamic trust analyzer
     trust_analyzer: crate::trust_analyzer::TrustAnalyzer,
+    // Business context analyzer
+    business_analyzer: crate::business_context::BusinessContextAnalyzer,
 }
 
 #[derive(Debug, Clone)]
@@ -432,6 +434,7 @@ impl FilterEngine {
             media_analyzer: MediaAnalyzer::new(),
             feature_engine: FeatureEngine::new(),
             trust_analyzer: crate::trust_analyzer::TrustAnalyzer::new(),
+            business_analyzer: crate::business_context::BusinessContextAnalyzer::new(),
         };
 
         // Pre-compile all regex patterns for better performance
@@ -1340,6 +1343,22 @@ impl FilterEngine {
             trust_adjustment
         );
 
+        // Perform business context analysis
+        let business_score = self.business_analyzer.analyze_business_context(&context);
+        let business_adjustment = self
+            .business_analyzer
+            .get_business_adjustment(business_score.total_business_score);
+
+        log::info!(
+            "Business context analysis: comm={}, legit={}, industry={}, compliance={}, total={}, adjustment={}",
+            business_score.professional_communication,
+            business_score.business_legitimacy,
+            business_score.industry_recognition,
+            business_score.compliance_indicators,
+            business_score.total_business_score,
+            business_adjustment
+        );
+
         // Check for upstream FOFF-milter processing and trust existing tags
         if let Some(trust_result) = self.check_upstream_trust(&context) {
             log::info!(
@@ -1711,6 +1730,15 @@ impl FilterEngine {
                     ));
                 }
 
+                // Apply business context adjustment
+                total_score += business_adjustment;
+                if business_adjustment != 0 {
+                    scoring_rules.push(format!(
+                        "Business Context Analysis: Business adjustment ({:+})",
+                        business_adjustment
+                    ));
+                }
+
                 log::info!(
                     "Heuristic evaluation: total_score={}, rules: [{}]",
                     total_score,
@@ -1740,6 +1768,22 @@ impl FilterEngine {
                             trust_score.content_score,
                             trust_score.total_trust,
                             trust_adjustment
+                        ),
+                    ));
+                }
+
+                // Add business context analysis header for debugging
+                if business_score.total_business_score != 0 {
+                    headers_to_add.push((
+                        "X-FOFF-Business-Analysis".to_string(),
+                        format!(
+                            "comm={}, legit={}, industry={}, compliance={}, total={}, adj={}",
+                            business_score.professional_communication,
+                            business_score.business_legitimacy,
+                            business_score.industry_recognition,
+                            business_score.compliance_indicators,
+                            business_score.total_business_score,
+                            business_adjustment
                         ),
                     ));
                 }
