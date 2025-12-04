@@ -6297,8 +6297,8 @@ impl FilterEngine {
         let has_google_groups = context.headers.iter().any(|(name, value)| {
             let name_lower = name.to_lowercase();
             let value_lower = value.to_lowercase();
-            name_lower == "x-google-group-id" || 
-            (name_lower == "list-id" && value_lower.contains("googlegroups.com"))
+            name_lower == "x-google-group-id"
+                || (name_lower == "list-id" && value_lower.contains("googlegroups.com"))
         });
 
         if has_google_groups {
@@ -6307,9 +6307,12 @@ impl FilterEngine {
                 if let Some(at_pos) = from_header.rfind('@') {
                     let sender_domain = &from_header[at_pos + 1..].to_lowercase();
                     // If sender domain doesn't match the Google Groups domain, it's suspicious
-                    if !sender_domain.contains("googlegroups.com") && !sender_domain.contains("google.com") {
+                    if !sender_domain.contains("googlegroups.com")
+                        && !sender_domain.contains("google.com")
+                    {
                         // Check if it's a known SEO/marketing domain
-                        let suspicious_domains = ["seoagency", "digitalagency", "marketing", "webagency"];
+                        let suspicious_domains =
+                            ["seoagency", "digitalagency", "marketing", "webagency"];
                         for domain_pattern in &suspicious_domains {
                             if sender_domain.contains(domain_pattern) {
                                 log::debug!("Detected Google Groups sender domain mismatch with SEO domain: {}", sender_domain);
