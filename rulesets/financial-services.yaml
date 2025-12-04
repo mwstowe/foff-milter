@@ -5,14 +5,23 @@ rules:
   - name: "Unrealistic return promises"
     enabled: true
     criteria:
-      type: "Or"
+      type: "And"
       criteria:
-        - type: "SubjectPattern"
-          pattern: "(?i).*(earn|return|rate|yield|profit).*(\\d+\\.\\d+%|\\d+%|up to \\d+).*"
-        - type: "BodyPattern"
-          pattern: "(?i).*(earn|return|rate|yield|profit).*(\\d+\\.\\d+%|\\d+%|up to \\d+).*"
-        - type: "SubjectPattern"
-          pattern: "(?i).*(annuity|investment|savings).*(\\d+\\.\\d+%|\\d+%).*"
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(earn|return|rate|yield|profit|investment|annuity).*(\\d+\\.\\d+%|\\d+%|up to \\d+).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(earn|return|rate|yield|profit|investment|annuity).*(\\d+\\.\\d+%|\\d+%|up to \\d+).*"
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "SenderPattern"
+                pattern: ".*@.*(disney|marvel|netflix|hulu|amazon|apple|microsoft|google|duluth|narvar|secretlab|oxford|nextdoor|sendgrid)\\.(com|net|org)$"
+              - type: "HeaderPattern"
+                header: "From"
+                pattern: "(?i).*(disney|marvel|netflix|hulu|amazon|apple|microsoft|google|duluth|narvar|secretlab|oxford|nextdoor).*"
     score: 100
     description: "Unrealistic financial return promises"
 

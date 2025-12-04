@@ -33,7 +33,7 @@ fi
 
 # Test module loading
 MODULE_COUNT=$($BINARY --test-config -c "$CONFIG" 2>/dev/null | grep -o "Number of available modules: [0-9]*" | grep -o "[0-9]*")
-EXPECTED_MODULES=24
+EXPECTED_MODULES=27
 if [ "$MODULE_COUNT" = "$EXPECTED_MODULES" ]; then
     echo "✅ Module loading test: PASSED ($MODULE_COUNT/$EXPECTED_MODULES modules loaded)"
     ((PASSED++))
