@@ -1,6 +1,49 @@
 name: "Health Threats"
 enabled: true
 rules:
+  # Medical misinformation - cure claims
+  - name: "Unsubstantiated medical cure claims"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(reverse|cure|heal|eliminate|fix|solve).*(diabetes|cancer|vitiligo|arthritis|depression|anxiety|pain).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(reverse|cure|heal|eliminate|fix|solve).*(diabetes|cancer|vitiligo|arthritis|depression|anxiety|pain).*"
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*naturally.*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(naturally|without.*doctor|without.*prescription|secret.*method).*"
+    score: 120
+    description: "Unsubstantiated medical cure claims"
+
+  # Suspicious health domains
+  - name: "Suspicious health domains"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SenderPattern"
+              pattern: ".*\\.(icu|tk|ml|ga|cf)$"
+            - type: "HeaderPattern"
+              header: "Return-Path"
+              pattern: ".*\\.(icu|tk|ml|ga|cf)$"
+        - type: "Or"
+          criteria:
+            - type: "SenderPattern"
+              pattern: "(?i).*(health|medical|cure|heal|skin|vita|med|pharma).*"
+            - type: "SubjectPattern"
+              pattern: "(?i).*(health|medical|cure|heal|skin|treatment|remedy).*"
+    score: 80
+    description: "Health claims from suspicious TLD domains"
+rules:
   # Fake institutional health advice
   - name: "Fake Harvard health advice"
     enabled: true

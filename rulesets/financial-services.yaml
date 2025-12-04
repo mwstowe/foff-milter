@@ -1,6 +1,43 @@
 name: "Financial Services"
 enabled: true
 rules:
+  # High return investment scams
+  - name: "Unrealistic return promises"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(earn|return|rate|yield|profit).*(\\d+\\.\\d+%|\\d+%|up to \\d+).*"
+        - type: "BodyPattern"
+          pattern: "(?i).*(earn|return|rate|yield|profit).*(\\d+\\.\\d+%|\\d+%|up to \\d+).*"
+        - type: "SubjectPattern"
+          pattern: "(?i).*(annuity|investment|savings).*(\\d+\\.\\d+%|\\d+%).*"
+    score: 100
+    description: "Unrealistic financial return promises"
+
+  # Unicode evasion in financial content
+  - name: "Unicode evasion in financial offers"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "[𝐀-𝟿𝒜-𝓏𝔄-𝔷𝕬-𝖟𝗔-𝘡𝙰-𝚥]"
+            - type: "HeaderPattern"
+              header: "From"
+              pattern: "[𝐀-𝟿𝒜-𝓏𝔄-𝔷𝕬-𝖟𝗔-𝘡𝙰-𝚥]"
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(rate|earn|return|annuity|investment|financial|money).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(rate|earn|return|annuity|investment|financial|money).*"
+    score: 150
+    description: "Unicode evasion in financial scam content"
+rules:
   # Loan and lending spam
   - name: "Refinance and mortgage spam"
     enabled: true

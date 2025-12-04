@@ -1,5 +1,50 @@
 name: "Generic Brand Impersonation"
-enabled: false
+enabled: true
+rules:
+  # AARP brand impersonation - high value target
+  - name: "AARP brand impersonation"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SenderPattern"
+              pattern: "(?i).*aarp.*"
+            - type: "SubjectPattern"
+              pattern: "(?i).*aarp.*"
+            - type: "HeaderPattern"
+              header: "From"
+              pattern: "(?i).*aarp.*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*aarp\\.(org|com)$"
+    score: 150
+    description: "AARP brand impersonation from non-AARP domains"
+
+  # Authentication failure + brand claims
+  - name: "Brand claims with authentication failure"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "HeaderContains"
+              header: "Authentication-Results"
+              pattern: "dkim=fail"
+            - type: "HeaderContains"
+              header: "Authentication-Results"
+              pattern: "spf=fail"
+        - type: "Or"
+          criteria:
+            - type: "SenderPattern"
+              pattern: "(?i).*(amazon|apple|microsoft|google|facebook|paypal|aarp|walmart|target|netflix|disney|fedex|ups|visa|chase|bank).*"
+            - type: "SubjectPattern"
+              pattern: "(?i).*(membership|account|security|verify|update|suspended).*"
+    score: 75
+    description: "Brand claims with failed authentication"
 rules:
   # Generic brand impersonation - any known brand from suspicious domain
   - name: "Known brand from suspicious domain"
