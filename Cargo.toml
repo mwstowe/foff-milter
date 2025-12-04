@@ -1,9 +1,10 @@
 [package]
 name = "foff-milter"
-version = "0.7.13"
+version = "0.7.14"
 edition = "2021"
 
 [dependencies]
+chrono = { version = "0.4", features = ["serde"] }
 regex = "1.12"
 base64 = "0.22"
 encoding_rs = "0.8"
@@ -15,7 +16,6 @@ log = "0.4"
 env_logger = "0.11"
 clap = { version = "4.5", features = ["derive"] }
 anyhow = "1.0"
-chrono = { version = "0.4", features = ["serde"] }
 ctrlc = "3.5"
 libc = "0.2"
 reqwest = "0.12"

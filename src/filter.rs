@@ -177,6 +177,8 @@ pub struct FilterEngine {
     trust_analyzer: crate::trust_analyzer::TrustAnalyzer,
     // Business context analyzer
     business_analyzer: crate::business_context::BusinessContextAnalyzer,
+    // Seasonal and behavioral analyzer
+    seasonal_analyzer: crate::seasonal_behavioral::SeasonalBehavioralAnalyzer,
 }
 
 #[derive(Debug, Clone)]
@@ -435,6 +437,7 @@ impl FilterEngine {
             feature_engine: FeatureEngine::new(),
             trust_analyzer: crate::trust_analyzer::TrustAnalyzer::new(),
             business_analyzer: crate::business_context::BusinessContextAnalyzer::new(),
+            seasonal_analyzer: crate::seasonal_behavioral::SeasonalBehavioralAnalyzer::new(),
         };
 
         // Pre-compile all regex patterns for better performance
@@ -1359,6 +1362,22 @@ impl FilterEngine {
             business_adjustment
         );
 
+        // Perform seasonal and behavioral analysis
+        let seasonal_score = self.seasonal_analyzer.analyze_seasonal_behavioral(&context);
+        let seasonal_adjustment = self
+            .seasonal_analyzer
+            .get_seasonal_adjustment(seasonal_score.total_seasonal_score);
+
+        log::info!(
+            "Seasonal behavioral analysis: seasonal={}, consistency={}, patterns={}, timing={}, total={}, adjustment={}",
+            seasonal_score.seasonal_context,
+            seasonal_score.behavioral_consistency,
+            seasonal_score.sending_patterns,
+            seasonal_score.content_timing,
+            seasonal_score.total_seasonal_score,
+            seasonal_adjustment
+        );
+
         // Check for upstream FOFF-milter processing and trust existing tags
         if let Some(trust_result) = self.check_upstream_trust(&context) {
             log::info!(
@@ -1739,6 +1758,15 @@ impl FilterEngine {
                     ));
                 }
 
+                // Apply seasonal behavioral adjustment
+                total_score += seasonal_adjustment;
+                if seasonal_adjustment != 0 {
+                    scoring_rules.push(format!(
+                        "Seasonal Behavioral Analysis: Seasonal adjustment ({:+})",
+                        seasonal_adjustment
+                    ));
+                }
+
                 log::info!(
                     "Heuristic evaluation: total_score={}, rules: [{}]",
                     total_score,
@@ -1784,6 +1812,22 @@ impl FilterEngine {
                             business_score.compliance_indicators,
                             business_score.total_business_score,
                             business_adjustment
+                        ),
+                    ));
+                }
+
+                // Add seasonal behavioral analysis header for debugging
+                if seasonal_score.total_seasonal_score != 0 {
+                    headers_to_add.push((
+                        "X-FOFF-Seasonal-Analysis".to_string(),
+                        format!(
+                            "seasonal={}, consistency={}, patterns={}, timing={}, total={}, adj={}",
+                            seasonal_score.seasonal_context,
+                            seasonal_score.behavioral_consistency,
+                            seasonal_score.sending_patterns,
+                            seasonal_score.content_timing,
+                            seasonal_score.total_seasonal_score,
+                            seasonal_adjustment
                         ),
                     ));
                 }
