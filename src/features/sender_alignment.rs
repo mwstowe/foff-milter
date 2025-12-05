@@ -303,6 +303,136 @@ impl SenderAlignmentAnalyzer {
         }
     }
 
+    fn analyze_sender_name_spoofing(
+        &self,
+        _sender_info: &SenderInfo,
+        context: &MailContext,
+    ) -> Vec<String> {
+        let mut issues = Vec::new();
+
+        let from_header = context.from_header.as_deref().unwrap_or("");
+
+        // Extract the local part of the email (before @)
+        let email_local = if let Some(email_start) = from_header.rfind('<') {
+            let email_part = &from_header[email_start + 1..].trim_end_matches('>');
+            email_part.split('@').next().unwrap_or("").to_lowercase()
+        } else {
+            from_header.split('@').next().unwrap_or("").to_lowercase()
+        };
+
+        // Check for random keyword combinations (3+ unrelated words)
+        let random_keywords = [
+            "toyota", "mercury", "sedge", "red", "baseball", "homerun", "now", "apple", "banana",
+            "car", "house", "blue", "green", "fast", "slow", "big", "small", "hot", "cold", "new",
+            "old", "good", "bad",
+        ];
+
+        let mut keyword_count = 0;
+        for keyword in &random_keywords {
+            if email_local.contains(keyword) {
+                keyword_count += 1;
+            }
+        }
+
+        // If 3+ random keywords in sender name, it's likely spoofing
+        if keyword_count >= 3 {
+            issues.push(format!(
+                "Sender name contains {} random keywords: suspicious spoofing pattern",
+                keyword_count
+            ));
+        }
+
+        // Check for excessive length with mixed words (likely random generation)
+        if email_local.len() > 25 && keyword_count >= 2 {
+            issues.push("Excessively long sender name with mixed keywords".to_string());
+        }
+
+        issues
+    }
+
+    fn analyze_infrastructure_mismatch(
+        &self,
+        sender_info: &SenderInfo,
+        context: &MailContext,
+    ) -> Vec<String> {
+        let mut issues = Vec::new();
+
+        log::debug!(
+            "Infrastructure validation - checking sender: {}",
+            sender_info.from_domain
+        );
+
+        // Major brands that should have proper corporate infrastructure
+        const MAJOR_BRANDS: &[(&str, &[&str])] = &[
+            ("walmart", &["walmart.com", "wal-mart.com"]),
+            ("amazon", &["amazon.com", "amazonses.com", "amazon.co.uk"]),
+            ("target", &["target.com"]),
+            ("bestbuy", &["bestbuy.com"]),
+            ("costco", &["costco.com"]),
+            ("homedepot", &["homedepot.com"]),
+            ("apple", &["apple.com", "icloud.com"]),
+            ("microsoft", &["microsoft.com", "outlook.com"]),
+            ("google", &["google.com", "gmail.com"]),
+        ];
+
+        // Suspicious infrastructure patterns
+        const SUSPICIOUS_INFRASTRUCTURE: &[&str] = &[
+            r"cs-\d+-default\..*\.internal",
+            r".*-\d+-default\..*\.c\..*\.internal",
+            r"pod-id.*\.internal",
+            r"\.internal$",
+            r"userid 0",
+        ];
+
+        // Check if sender claims to be from a major brand
+        for (brand, expected_domains) in MAJOR_BRANDS {
+            let claims_brand = sender_info.from_domain.to_lowercase().contains(brand)
+                || sender_info.from_display_name.to_lowercase().contains(brand);
+
+            if claims_brand {
+                log::debug!("Found brand claim: {}", brand);
+
+                // Check if domain is actually legitimate for this brand
+                let is_legitimate_domain = expected_domains
+                    .iter()
+                    .any(|domain| sender_info.from_domain.to_lowercase().contains(domain));
+
+                if is_legitimate_domain {
+                    log::debug!(
+                        "Domain appears legitimate for {}, checking infrastructure",
+                        brand
+                    );
+
+                    // Check received headers for suspicious infrastructure
+                    for (header_name, header_value) in &context.headers {
+                        if header_name.to_lowercase() == "received" {
+                            log::debug!("Checking received header: {}", header_value);
+
+                            for pattern in SUSPICIOUS_INFRASTRUCTURE {
+                                if regex::Regex::new(pattern).unwrap().is_match(header_value) {
+                                    log::info!(
+                                        "INFRASTRUCTURE MISMATCH DETECTED: {} using {}",
+                                        brand.to_uppercase(),
+                                        pattern
+                                    );
+                                    issues.push(format!(
+                                        "Major brand {} using suspicious infrastructure: {}",
+                                        brand.to_uppercase(),
+                                        pattern
+                                    ));
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        log::debug!("Infrastructure validation found {} issues", issues.len());
+        issues
+    }
+
     fn analyze_brand_impersonation(
         &self,
         sender_info: &SenderInfo,
@@ -1062,6 +1192,16 @@ impl FeatureExtractor for SenderAlignmentAnalyzer {
                 }
             }
         }
+
+        // Check for sender name spoofing (random keywords)
+        let spoofing_issues = self.analyze_sender_name_spoofing(&sender_info, context);
+        score += spoofing_issues.len() as i32 * 40;
+        evidence.extend(spoofing_issues);
+
+        // Check for infrastructure-brand mismatch
+        let infrastructure_issues = self.analyze_infrastructure_mismatch(&sender_info, context);
+        score += infrastructure_issues.len() as i32 * 80;
+        evidence.extend(infrastructure_issues);
 
         // Analyze brand impersonation
         let brand_issues = self.analyze_brand_impersonation(&sender_info, context);

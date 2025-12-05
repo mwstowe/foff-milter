@@ -128,6 +128,20 @@ rules:
           header: "Authentication-Results"
           pattern: "(?i)spf=pass"
         - type: "SenderPattern"
-          pattern: ".*@.*(mailchimp|constantcontact|sendgrid|mailgun|campaignmonitor|aweber|getresponse|convertkit|activecampaign)\\.(com|net|org).*"
+          pattern: ".*@.*(mailchimp|constantcontact|sendgrid|mailgun|campaignmonitor|aweber|getresponse|convertkit|activecampaign|aliexpress|alibaba|shopify|bigcommerce|woocommerce|magento)\\.(com|net|org).*"
     score: -25
     description: "Email from legitimate email service provider with authentication"
+
+  # Major e-commerce platform authentication
+  - name: "Major E-commerce Platform Authentication"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "HeaderPattern"
+          header: "DKIM-Signature"
+          pattern: "(?i)d=(deals\\.)?(aliexpress|alibaba|shopify|bigcommerce|woocommerce|magento)\\.(com|net|org)"
+        - type: "SenderPattern"
+          pattern: ".*@.*(aliexpress|alibaba|shopify|bigcommerce|woocommerce|magento)\\.(com|net|org).*"
+    score: -40
+    description: "Authenticated email from major e-commerce platform"

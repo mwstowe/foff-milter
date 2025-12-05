@@ -508,27 +508,42 @@ impl ContextAnalyzer {
             ('ᴢ', 'Z'),
         ];
 
+        // Check for arrow characters used for evasion
+        let arrow_chars = [
+            '⤝', '⤞', '⤟', '⤠', '⤡', '⤢', '⤣', '⤤', '⤥', '⤦', '⤧', '⤨', '⤩', '⤪', '⤫', '⤬', '⤭',
+            '⤮', '⤯', '⤰', '⤱', '⤲', '⤳', '⤴', '⤵', '⤶', '⤷', '⤸', '⤹', '⤺', '⤻', '⤼', '⤽', '⤾',
+            '⤿',
+        ];
+
         let mut obfuscation_count = 0;
         let mut total_chars = 0;
+        let mut arrow_count = 0;
 
         for ch in text.chars() {
-            if ch.is_alphabetic() {
+            if ch.is_alphabetic() || arrow_chars.contains(&ch) {
                 total_chars += 1;
                 if suspicious_chars
                     .iter()
                     .any(|(suspicious, _)| *suspicious == ch)
                 {
                     obfuscation_count += 1;
+                } else if arrow_chars.contains(&ch) {
+                    arrow_count += 1;
+                    obfuscation_count += 1; // Count arrows as obfuscation
                 }
             }
         }
 
-        if obfuscation_count > 0 && total_chars > 0 {
-            let obfuscation_ratio = obfuscation_count as f32 / total_chars as f32;
-            (true, obfuscation_ratio * 100.0) // Return percentage
-        } else {
-            (false, 0.0)
+        if total_chars == 0 {
+            return (false, 0.0);
         }
+
+        let obfuscation_ratio = (obfuscation_count as f32 / total_chars as f32) * 100.0;
+
+        // Special case: if we have 3+ arrow characters, it's definitely evasion
+        let has_obfuscation = obfuscation_ratio > 5.0 || arrow_count >= 3;
+
+        (has_obfuscation, obfuscation_ratio)
     }
 
     fn detect_industry_context(&self, sender: &str, content: &str) -> Option<String> {
