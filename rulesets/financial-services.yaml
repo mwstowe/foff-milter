@@ -18,10 +18,15 @@ rules:
             type: "Or"
             criteria:
               - type: "SenderPattern"
-                pattern: ".*@.*(disney|marvel|netflix|hulu|amazon|apple|microsoft|google|duluth|narvar|secretlab|oxford|nextdoor|sendgrid)\\.(com|net|org)$"
+                pattern: ".*@.*(disney|marvel|netflix|hulu|amazon|apple|microsoft|google|duluth|narvar|secretlab|oxford|nextdoor|sendgrid|butcherbox)\\.(com|net|org)$"
               - type: "HeaderPattern"
                 header: "From"
-                pattern: "(?i).*(disney|marvel|netflix|hulu|amazon|apple|microsoft|google|duluth|narvar|secretlab|oxford|nextdoor).*"
+                pattern: "(?i).*(disney|marvel|netflix|hulu|amazon|apple|microsoft|google|duluth|narvar|secretlab|oxford|nextdoor|butcherbox).*"
+              - type: "HeaderPattern"
+                header: "DKIM-Signature"
+                pattern: ".*d=butcherbox\\.com.*"
+              - type: "SubjectPattern"
+                pattern: "(?i).*(order.*confirmation|receipt|invoice.*#)"
     score: 100
     description: "Unrealistic financial return promises"
 

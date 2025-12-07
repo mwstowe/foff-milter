@@ -318,9 +318,15 @@ rules:
 
   - name: "Unicode mathematical script evasion"
     criteria:
-      type: "SubjectPattern"
-      pattern: ".*[𝖠-𝗓𝗔-𝘇𝘈-𝘻𝙰-𝚉𝚊-𝚣].*"
-    score: 75
+      type: "Or"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: ".*[𝖠-𝗓𝗔-𝘇𝘈-𝘻𝙰-𝚉𝚊-𝚣].*"
+        - type: "SubjectPattern"
+          pattern: ".*[𝐀-𝟿].*"
+        - type: "BodyPattern"
+          pattern: ".*[𝐀-𝟿].*"
+    score: 150
     description: "Detects Unicode mathematical script characters used for evasion"
 
   - name: "Suspicious base64 encoding"

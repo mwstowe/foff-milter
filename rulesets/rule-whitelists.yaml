@@ -1,6 +1,25 @@
 name: "Rule-Based Whitelists"
 enabled: true
 rules:
+  # Veterinary and Pet Services
+  - name: "Veterinary and Pet Services"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: ".*@.*\\.vetcove\\.com.*"
+        - type: "HeaderPattern"
+          header: "DKIM-Signature"
+          pattern: ".*d=.*\\.vetcove\\.com.*"
+        - type: "BodyPattern"
+          pattern: "(?i).*(veterinary|pet.*hospital|animal.*clinic|veterinarian)"
+        - type: "SubjectPattern"
+          pattern: "(?i).*(appointment.*reminder|vaccination.*due|pet.*health)"
+    score: -200
+    description: "Whitelist legitimate veterinary and pet service communications"
+
   # Retail and Commerce
   - name: "Disney Services"
     enabled: false
