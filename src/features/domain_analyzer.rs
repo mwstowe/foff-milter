@@ -198,6 +198,62 @@ impl DomainAnalyzer {
 
         known_brands.contains(&domain)
     }
+
+    fn analyze_domain_age_healthcare(&self, context: &MailContext) -> Vec<String> {
+        let mut issues = Vec::new();
+
+        // Extract domain from sender
+        let from_header = context.from_header.as_deref().unwrap_or("");
+        let domain = if let Some(at_pos) = from_header.rfind('@') {
+            let after_at = &from_header[at_pos + 1..];
+            if let Some(gt_pos) = after_at.find('>') {
+                &after_at[..gt_pos]
+            } else {
+                after_at
+            }
+        } else {
+            return issues;
+        };
+
+        // Check for healthcare content
+        let body = context.body.as_deref().unwrap_or("");
+        let subject = context.subject.as_deref().unwrap_or("");
+
+        let has_healthcare_content = ["medicare", "health plan", "insurance", "ehealth", "aep"]
+            .iter()
+            .any(|keyword| {
+                subject.to_lowercase().contains(keyword) || body.to_lowercase().contains(keyword)
+            });
+
+        // Check for perfect authentication
+        let has_perfect_auth = context.headers.iter().any(|(name, value)| {
+            name.to_lowercase() == "authentication-results"
+                && value.contains("dkim=pass")
+                && value.contains("spf=pass")
+        });
+
+        // Flag suspicious combination: new domain + healthcare + perfect auth
+        if has_healthcare_content && has_perfect_auth {
+            // Simple heuristic: domains with random-looking names are likely new
+            let suspicious_domain_patterns = [
+                r"^[a-z]{6,12}\.org$", // Random letters .org
+                r"^[a-z]+empty\.org$", // *empty.org pattern
+                r"^[a-z]+voice\.com$", // *voice.com pattern
+            ];
+
+            for pattern in &suspicious_domain_patterns {
+                if regex::Regex::new(pattern).unwrap().is_match(domain) {
+                    issues.push(format!(
+                        "Suspicious domain pattern with healthcare claims: {}",
+                        domain
+                    ));
+                    break;
+                }
+            }
+        }
+
+        issues
+    }
 }
 
 impl FeatureExtractor for DomainAnalyzer {
@@ -216,6 +272,11 @@ impl FeatureExtractor for DomainAnalyzer {
             total_score += score;
             all_evidence.extend(evidence);
         }
+
+        // Check for new domains with healthcare claims
+        let domain_age_issues = self.analyze_domain_age_healthcare(context);
+        total_score += domain_age_issues.len() as i32 * 40;
+        all_evidence.extend(domain_age_issues);
 
         FeatureScore {
             score: total_score,

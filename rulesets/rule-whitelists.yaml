@@ -691,8 +691,25 @@ rules:
     criteria:
       type: "SenderPattern"
       pattern: ".*oxfordclub\\.com.*"
-    score: -200
-    description: "Oxford Club simple pattern"
+    score: -300
+    description: "Oxford Club simple pattern (enhanced)"
+
+  - name: "Legitimate Transaction Receipts"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(receipt|order.*confirmation|purchase.*confirmation|thank.*you.*order|shopping.*thank)"
+            - type: "BodyPattern"
+              pattern: "(?i).*(order.*number|transaction.*id|receipt.*number|purchase.*total)"
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: ".*@.*(walgreens|cvs|target|walmart|costco|amazon|bestbuy)\\.com.*"
+    score: -150
+    description: "Legitimate retail transaction receipts and confirmations"
 
   - name: "Think Vacuums Simple"
     enabled: true

@@ -184,3 +184,48 @@ rules:
       exclude_legitimate: true
     score: 25
     description: "Emails from cloud service domains often used for temporary campaigns"
+
+  # Professional Email Service Provider Recognition
+  - name: "Professional ESP Infrastructure"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: ".*@.*\\.adobe\\.com.*"
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: ".*@.*salesforce\\.com.*"
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: ".*@.*klaviyomail\\.com.*"
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: ".*@.*mailchimp\\.com.*"
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: ".*@.*constantcontact\\.com.*"
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: ".*@.*sendgrid\\.net.*"
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: ".*@.*sparkpostmail\\.com.*"
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: ".*@.*mailgun\\.org.*"
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: ".*@.*amazonses\\.com.*"
+        - type: "HeaderPattern"
+          header: "DKIM-Signature"
+          pattern: ".*d=.*\\.adobe\\.com.*"
+        - type: "HeaderPattern"
+          header: "DKIM-Signature"
+          pattern: ".*d=.*salesforce\\.com.*"
+        - type: "HeaderPattern"
+          header: "DKIM-Signature"
+          pattern: ".*d=.*klaviyomail\\.com.*"
+    score: -25
+    description: "Professional email service provider infrastructure"

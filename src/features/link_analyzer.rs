@@ -74,9 +74,10 @@ impl LinkAnalyzer {
     pub fn extract_links(&self, context: &MailContext) -> Vec<ExtractedLink> {
         let mut links = Vec::new();
 
-        // Extract from body
+        // Extract from body with HTML entity decoding
         if let Some(body) = &context.body {
-            for cap in self.link_regex.captures_iter(body) {
+            let decoded_body = self.decode_html_entities(body);
+            for cap in self.link_regex.captures_iter(&decoded_body) {
                 if let (Some(url), Some(text)) = (cap.get(1), cap.get(2)) {
                     links.push(self.analyze_link(
                         url.as_str(),
@@ -140,6 +141,34 @@ impl LinkAnalyzer {
             domain,
             is_suspicious,
         }
+    }
+
+    fn decode_html_entities(&self, text: &str) -> String {
+        // Common HTML entity patterns used in spam
+        let entities = [
+            ("&#108;", "l"),
+            ("&#97;", "a"),
+            ("&#115;", "s"),
+            ("&#101;", "e"),
+            ("&#114;", "r"),
+            ("&#102;", "f"),
+            ("&#122;", "z"),
+            ("&#118;", "v"),
+            ("&#112;", "p"),
+            ("&#46;", "."),
+            ("&#111;", "o"),
+            ("&#103;", "g"),
+            ("&lt;", "<"),
+            ("&gt;", ">"),
+            ("&amp;", "&"),
+            ("&quot;", "\""),
+        ];
+
+        let mut decoded = text.to_string();
+        for (entity, replacement) in &entities {
+            decoded = decoded.replace(entity, replacement);
+        }
+        decoded
     }
 
     fn extract_domain(&self, url: &str) -> String {

@@ -19,6 +19,26 @@ rules:
     score: -50
     description: "Strong authentication with DMARC, SPF, and DKIM all passing"
 
+  # Reduce authentication bonus for suspicious image-only healthcare content
+  - name: "Authentication Bonus Reduction for Suspicious Content"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "HeaderPattern"
+          header: "Authentication-Results"
+          pattern: "(?i)dkim=pass"
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(medicare|health.*plan|insurance.*plan|aep|enrollment)"
+            - type: "BodyPattern"
+              pattern: "(?i).*(medicare|health.*plan|insurance.*plan|ehealth|advantage.*plan)"
+        - type: "BodyPattern"
+          pattern: "(?i).*<img.*src.*"
+    score: 30
+    description: "Reduce authentication trust for image-only healthcare/Medicare content"
+
   - name: "DMARC and SPF Pass"
     enabled: true
     criteria:

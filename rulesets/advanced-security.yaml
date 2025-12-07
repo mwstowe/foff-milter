@@ -55,6 +55,165 @@ rules:
     score: 35
     description: "Emails containing only images to bypass text filters"
 
+  # Enhanced image-only scoring for healthcare/Medicare scams
+  - name: "Image-Only Healthcare Scam"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "ImageOnlyEmail"
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(medicare|health.*plan|insurance.*plan|aep|enrollment|ehealth)"
+            - type: "BodyPattern"
+              pattern: "(?i).*(medicare|health.*plan|insurance.*plan|ehealth|advantage.*plan)"
+    score: 40
+    description: "Image-only emails with healthcare/Medicare content (likely scam)"
+
+  # Image-only with external links
+  - name: "Image-Only with External Links"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "ImageOnlyEmail"
+        - type: "BodyPattern"
+          pattern: "https?://[^\\s<>\"']+"
+    score: 30
+    description: "Image-only emails with external links (suspicious)"
+
+  # Mailing list spoofing detection
+  - name: "Mailing List Spoofing"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "HeaderPattern"
+          header: "List-ID"
+          pattern: ".*"
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(turn your tv|smart tv|plug.*play|regain control|control.*finances|free test|water safe)"
+            - type: "BodyPattern"
+              pattern: "(?i).*(turn your tv|smart tv|plug.*play|regain control|control.*finances|free test|water safe)"
+    score: 200
+    description: "Mailing list infrastructure with promotional spam content"
+
+  # Unicode obfuscation in mailing lists
+  - name: "Unicode Obfuscation in Mailing Lists"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "HeaderPattern"
+          header: "List-ID"
+          pattern: ".*"
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: ".*[ㆅ✦«»ɑ].*"
+            - type: "HeaderPattern"
+              header: "From"
+              pattern: ".*[ㆅ✦«»ɑ].*"
+    score: 150
+    description: "Unicode obfuscation in mailing list headers"
+
+  # Promotional campaign domains
+  - name: "Promotional Campaign Domain"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: ".*@.*theabsolutionist\\.com.*"
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "HeaderPattern"
+                header: "From"
+                pattern: ".*@.*costco\\.com.*"
+              - type: "HeaderPattern"
+                header: "From"
+                pattern: ".*@.*williams-sonoma\\.com.*"
+              - type: "HeaderPattern"
+                header: "From"
+                pattern: ".*@.*esprovisions\\.com.*"
+              - type: "HeaderPattern"
+                header: "From"
+                pattern: ".*@.*amazon\\.com.*"
+              - type: "HeaderPattern"
+                header: "From"
+                pattern: ".*@.*walmart\\.com.*"
+              - type: "HeaderPattern"
+                header: "From"
+                pattern: ".*@.*target\\.com.*"
+    score: 100
+    description: "Known promotional campaign domain (excluding legitimate brands)"
+
+  # Recently registered domains with promotional content
+  - name: "New Domain Promotional Content"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "DomainAge"
+          max_age_days: 90
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(free.*test|smart.*tv|control.*finances|exclusive.*offer|limited.*time)"
+            - type: "BodyPattern"
+              pattern: "(?i).*(free.*test|smart.*tv|control.*finances|exclusive.*offer|limited.*time)"
+    score: 75
+    description: "Recently registered domain with promotional content"
+
+  # Basic spam content indicators
+  - name: "Basic Spam Indicators"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(urgent.*action|verify.*account|suspended.*account|account.*will.*be|click.*here.*verify)"
+            - type: "BodyPattern"
+              pattern: "(?i).*(urgent.*action|verify.*account|account.*will.*be.*closed|click.*here.*verify|immediate.*action.*required)"
+            - type: "SubjectPattern"
+              pattern: "(?i).*(document.*ready|document.*shared|invoice.*attached|payment.*failed)"
+            - type: "BodyPattern"
+              pattern: "(?i).*(document.*has.*been.*shared|invoice.*is.*attached|payment.*could.*not.*be.*processed)"
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "HeaderPattern"
+                header: "From"
+                pattern: ".*@.*klaviyomail\\.com.*"
+              - type: "HeaderPattern"
+                header: "DKIM-Signature"
+                pattern: ".*d=.*klaviyomail\\.com.*"
+              - type: "HeaderPattern"
+                header: "From"
+                pattern: ".*@.*salesforce\\.com.*"
+              - type: "HeaderPattern"
+                header: "DKIM-Signature"
+                pattern: ".*d=.*salesforce\\.com.*"
+              - type: "HeaderPattern"
+                header: "From"
+                pattern: ".*@.*mailchimp\\.com.*"
+              - type: "HeaderPattern"
+                header: "DKIM-Signature"
+                pattern: ".*d=.*mailchimp\\.com.*"
+              - type: "BodyPattern"
+                pattern: "(?i).*(security.*awareness|phishing.*example|scam.*example|this.*is.*an.*example)"
+    score: 150
+    description: "Basic spam and phishing content indicators (excluding legitimate ESPs)"
+
   - name: "HTML Entity Obfuscation with Malicious Indicators"
     enabled: true
     criteria:

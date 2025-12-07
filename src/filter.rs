@@ -238,6 +238,73 @@ pub struct UpstreamTrustResult {
 }
 
 impl FilterEngine {
+    /// Check if a domain exists using DNS lookup (optimized for performance)
+    fn domain_exists(&self, domain: &str) -> bool {
+        if domain.is_empty() || domain == "unknown" {
+            return false;
+        }
+
+        // Skip check for legitimate email services to avoid false positives
+        let legitimate_services = [
+            "gmail.com",
+            "outlook.com",
+            "yahoo.com",
+            "hotmail.com",
+            "aol.com",
+            "icloud.com",
+            "protonmail.com",
+            "sendgrid.net",
+            "mailchimp.com",
+            "klaviyomail.com",
+            "salesforce.com",
+            "amazonses.com",
+            "mailgun.org",
+        ];
+
+        if legitimate_services
+            .iter()
+            .any(|&service| domain.ends_with(service))
+        {
+            return true;
+        }
+
+        // Use std::net for synchronous DNS lookup
+        use std::net::ToSocketAddrs;
+
+        // Try to resolve the domain
+        match format!("{}:80", domain).to_socket_addrs() {
+            Ok(mut addrs) => addrs.next().is_some(),
+            Err(_) => {
+                // Check for obviously suspicious patterns
+                let suspicious_patterns = [
+                    "automated",
+                    "outreach",
+                    "pro",
+                    "bulk",
+                    "mass",
+                    "spam",
+                    "marketing",
+                    "promo",
+                    "blast",
+                    "campaign",
+                    "mailer",
+                ];
+
+                let domain_lower = domain.to_lowercase();
+                let has_suspicious_pattern = suspicious_patterns
+                    .iter()
+                    .any(|pattern| domain_lower.contains(pattern));
+
+                // Only flag as non-existent if it has suspicious patterns AND doesn't resolve
+                if has_suspicious_pattern {
+                    false // Flag as non-existent
+                } else {
+                    true // Assume exists for other domains to avoid false positives
+                }
+            }
+        }
+    }
+
     fn should_exempt_rule_for_business(&self, module_name: &str, rule_name: &str) -> bool {
         let exempt_rules = [
             ("Advanced Security", "Final ultra-aggressive spam detection"),
@@ -3993,6 +4060,14 @@ impl FilterEngine {
 
                     // Check each domain - return true if ANY domain is young
                     for (source, domain) in domains_to_check {
+                        // First check if domain exists to avoid expensive WHOIS lookups on non-existent domains
+                        if !self.domain_exists(&domain) {
+                            log::debug!(
+                                "Domain {domain} from {source} does not exist, skipping age check"
+                            );
+                            continue;
+                        }
+
                         match checker.is_domain_young(&domain, *max_age_days).await {
                             Ok(is_young) => {
                                 if is_young {
@@ -5922,11 +5997,15 @@ impl FilterEngine {
         // Check for obvious spam content that should not get mailing list override
         let has_spam_content = self.has_obvious_spam_content(context);
 
-        let is_legitimate = has_mailing_list_infrastructure && !has_spam_content;
+        // Check for Unicode obfuscation in mailing list context
+        let has_unicode_obfuscation = self.has_unicode_obfuscation_in_headers(context);
 
-        if has_mailing_list_infrastructure && has_spam_content {
+        let is_legitimate =
+            has_mailing_list_infrastructure && !has_spam_content && !has_unicode_obfuscation;
+
+        if has_mailing_list_infrastructure && (has_spam_content || has_unicode_obfuscation) {
             log::debug!(
-                "Mailing list infrastructure detected but contains obvious spam content - not applying override"
+                "Mailing list infrastructure detected but contains spam content or Unicode obfuscation - not applying override"
             );
         } else if is_legitimate {
             log::debug!(
@@ -5936,6 +6015,30 @@ impl FilterEngine {
         }
 
         is_legitimate
+    }
+
+    /// Check for Unicode obfuscation in headers (mailing list spoofing indicator)
+    fn has_unicode_obfuscation_in_headers(&self, context: &MailContext) -> bool {
+        let subject = context.subject.as_deref().unwrap_or("");
+        let from_header = context.from_header.as_deref().unwrap_or("");
+
+        // Unicode characters commonly used in mailing list spoofing
+        let suspicious_unicode = [
+            'ㆅ', // Hangul letter
+            '✦',  // Star symbol
+            '«',  // Left quotation mark
+            '»',  // Right quotation mark
+            'ɑ',  // Latin small letter alpha
+        ];
+
+        for ch in subject.chars().chain(from_header.chars()) {
+            if suspicious_unicode.contains(&ch) {
+                log::debug!("Detected Unicode obfuscation character in headers: {}", ch);
+                return true;
+            }
+        }
+
+        false
     }
 
     /// Analyze email attachments for malicious content
@@ -6193,6 +6296,23 @@ impl FilterEngine {
             .map(|f| f.to_lowercase())
             .unwrap_or_default();
 
+        // Check for legitimate brand domains (should not be flagged)
+        let legitimate_brands = [
+            "costco.com",
+            "williams-sonoma.com",
+            "esprovisions.com",
+            "amazon.com",
+            "walmart.com",
+            "target.com",
+            "adobe.com",
+            "salesforce.com",
+            "klaviyomail.com",
+        ];
+
+        let is_legitimate_brand = legitimate_brands
+            .iter()
+            .any(|brand| from_header.contains(brand));
+
         // SEO and marketing spam patterns
         let seo_patterns = [
             "seo gaps",
@@ -6250,6 +6370,21 @@ impl FilterEngine {
             "health supplement",
         ];
 
+        // Promotional/marketing spam patterns (common in mailing list spoofing)
+        let promotional_patterns = [
+            "turn your tv into",
+            "smart tv",
+            "plug & play",
+            "regain control",
+            "control of your finances",
+            "free test",
+            "15% off your entire purchase",
+            "water safe",
+            "get a free test",
+            "smart device",
+            "financial control",
+        ];
+
         // Check subject for suspicious special characters
         if subject.matches(&['.', '?', '%', '#'][..]).count() >= 3 {
             log::debug!("Detected suspicious subject with excessive special characters");
@@ -6293,6 +6428,44 @@ impl FilterEngine {
             }
         }
 
+        for pattern in &promotional_patterns {
+            if (subject.contains(pattern) || body.contains(pattern)) && !is_legitimate_brand {
+                log::debug!("Detected promotional spam pattern: {}", pattern);
+                return true;
+            }
+        }
+
+        // Check for known promotional campaign domains
+        let promotional_domains = [
+            "theabsolutionist.com", // Sends TV, finance, water safety campaigns
+        ];
+
+        // Check for legitimate brand domains (should not be flagged)
+        let legitimate_brands = [
+            "costco.com",
+            "williams-sonoma.com",
+            "esprovisions.com",
+            "amazon.com",
+            "walmart.com",
+            "target.com",
+            "adobe.com",
+            "salesforce.com",
+            "klaviyomail.com",
+        ];
+
+        let is_legitimate_brand = legitimate_brands
+            .iter()
+            .any(|brand| from_header.contains(brand));
+
+        if !is_legitimate_brand {
+            for domain in &promotional_domains {
+                if from_header.contains(domain) {
+                    log::debug!("Detected promotional campaign domain: {}", domain);
+                    return true;
+                }
+            }
+        }
+
         // Check for Google Groups sender domain mismatch (strong spam indicator)
         let has_google_groups = context.headers.iter().any(|(name, value)| {
             let name_lower = name.to_lowercase();
@@ -6318,6 +6491,47 @@ impl FilterEngine {
                                 log::debug!("Detected Google Groups sender domain mismatch with SEO domain: {}", sender_domain);
                                 return true;
                             }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Check for sender name inconsistency (mailing list spoofing indicator)
+        if let Some(from_header) = &context.from_header {
+            // Extract display name and email domain
+            if let Some(lt_pos) = from_header.find('<') {
+                let display_name = from_header[..lt_pos].trim().to_lowercase();
+                if let Some(at_pos) = from_header.rfind('@') {
+                    let domain_part = &from_header[at_pos + 1..].to_lowercase();
+
+                    // Flag suspicious sender name patterns
+                    let suspicious_senders = [
+                        ("flixy insider", "theabsolutionist.com"),
+                        ("ndr support", "theabsolutionist.com"),
+                        ("your clean water source", "theabsolutionist.com"),
+                    ];
+
+                    for (sender_name, domain) in &suspicious_senders {
+                        if display_name.contains(sender_name) && domain_part.contains(domain) {
+                            log::debug!(
+                                "Detected suspicious sender name/domain mismatch: {} from {}",
+                                sender_name,
+                                domain
+                            );
+                            return true;
+                        }
+                    }
+
+                    // Flag extremely long email addresses (often spam)
+                    if let Some(gt_pos) = from_header.rfind('>') {
+                        let email_part = &from_header[lt_pos + 1..gt_pos];
+                        if email_part.len() > 60 {
+                            log::debug!(
+                                "Detected suspiciously long email address: {} chars",
+                                email_part.len()
+                            );
+                            return true;
                         }
                     }
                 }

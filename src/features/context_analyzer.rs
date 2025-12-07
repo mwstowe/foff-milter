@@ -483,6 +483,64 @@ impl ContextAnalyzer {
         (score, evidence)
     }
 
+    fn analyze_medicare_scam_patterns(&self, context: &MailContext) -> Vec<String> {
+        let mut issues = Vec::new();
+
+        let body = context.body.as_deref().unwrap_or("");
+        let subject = context.subject.as_deref().unwrap_or("");
+        let from_header = context.from_header.as_deref().unwrap_or("");
+
+        // Medicare/healthcare keywords
+        let medicare_keywords = [
+            "medicare",
+            "medicareadvantage",
+            "health plan",
+            "insurance plan",
+            "ehealth",
+            "aep",
+            "enrollment period",
+            "advantage plan",
+        ];
+
+        // Check for Medicare content
+        let has_medicare_content = medicare_keywords.iter().any(|keyword| {
+            subject.to_lowercase().contains(keyword)
+                || body.to_lowercase().contains(keyword)
+                || from_header.to_lowercase().contains(keyword)
+        });
+
+        if has_medicare_content {
+            // Check for image-only content (suspicious for Medicare scams)
+            let has_images = body.contains("<img") || body.contains("src=");
+            let has_minimal_text = body.replace(['<', '>', '&', ';', '#'], "").trim().len() < 100;
+
+            if has_images && has_minimal_text {
+                issues.push(
+                    "Medicare/healthcare scam: Image-only content with health insurance claims"
+                        .to_string(),
+                );
+            }
+
+            // Check for external links with Medicare content
+            if has_medicare_content && (body.contains("http://") || body.contains("https://")) {
+                let external_links = body.matches("http").count();
+                if external_links > 0 {
+                    issues.push("Medicare/healthcare scam: External links with health insurance enrollment claims".to_string());
+                }
+            }
+
+            // Check for Base64 encoded suspicious terms
+            if subject.contains("=?UTF-8?B?") || from_header.contains("=?UTF-8?B?") {
+                issues.push(
+                    "Medicare/healthcare scam: Base64 encoded headers with health content"
+                        .to_string(),
+                );
+            }
+        }
+
+        issues
+    }
+
     /// Detect Unicode character obfuscation (lookalike characters)
     fn detect_unicode_obfuscation(&self, text: &str) -> (bool, f32) {
         let suspicious_chars = [
@@ -624,6 +682,11 @@ impl FeatureExtractor for ContextAnalyzer {
         // Detect industry context for appropriate scoring adjustments
         let combined_content = format!("{} {}", subject, body);
         let industry_context = self.detect_industry_context(sender, &combined_content);
+
+        // Check for Medicare/healthcare scam patterns
+        let medicare_issues = self.analyze_medicare_scam_patterns(context);
+        total_score += medicare_issues.len() as i32 * 60;
+        all_evidence.extend(medicare_issues);
 
         // Check for Unicode obfuscation in subject and body
         let combined_text = format!("{} {}", subject, body);
