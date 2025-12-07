@@ -309,6 +309,51 @@ rules:
     score: 60
     description: "Compromised Microsoft accounts used for spam with authentication failures"
 
+  # Encoding and obfuscation evasion detection
+  - name: "Excessive encoding layers"
+    criteria:
+      type: "EncodingLayers"
+      min_layers: 3
+    score: 150
+    description: "Multiple encoding layers indicate evasion attempt"
+
+  - name: "UUEncoded content"
+    criteria:
+      type: "EncodingTypeDetected"
+      encoding: "uuencoding"
+    score: 100
+    description: "UUEncoding rarely legitimate in email"
+
+  - name: "Unicode obfuscation techniques"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "ObfuscationDetected"
+          techniques: ["homoglyphs", "zero_width"]
+        - type: "NormalizedContentContains"
+          text: "urgent"
+    score: 200
+    description: "Unicode obfuscation combined with suspicious content"
+
+  - name: "High evasion score"
+    criteria:
+      type: "EvasionScore"
+      min_score: 100
+    score: 150
+    description: "High evasion score indicates sophisticated attack"
+
+  # Storage scam with normalized content detection
+  - name: "Storage upgrade scam (normalized)"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "NormalizedSubjectContains"
+          text: "storage space"
+        - type: "NormalizedBodyContains"
+          text: "upgrade"
+    score: 100
+    description: "Storage upgrade scam detected via normalized content"
+
   - name: "Unicode evasion techniques"
     criteria:
       type: "SubjectPattern"

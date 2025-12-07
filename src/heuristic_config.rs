@@ -439,6 +439,29 @@ pub enum Criteria {
         // Whether to use pattern matching fallback if archive parsing fails (default: true)
         use_pattern_fallback: Option<bool>,
     },
+    /// Normalized content criteria (work on decoded/normalized text)
+    NormalizedSubjectContains {
+        text: String,
+    },
+    NormalizedBodyContains {
+        text: String,
+    },
+    NormalizedContentContains {
+        text: String,
+    },
+    /// Encoding/obfuscation detection
+    EncodingLayers {
+        min_layers: u32,
+    },
+    EncodingTypeDetected {
+        encoding: String, // "base64", "uuencoding", "html_entities", etc.
+    },
+    ObfuscationDetected {
+        techniques: Vec<String>, // "homoglyphs", "zero_width", "bidi_override", etc.
+    },
+    EvasionScore {
+        min_score: i32,
+    },
     And {
         criteria: Vec<Criteria>,
     },

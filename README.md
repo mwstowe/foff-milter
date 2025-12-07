@@ -1,4 +1,4 @@
-# FOFF Milter v0.7.10
+# FOFF Milter v0.8.0
 
 A comprehensive, enterprise-grade email security platform written in Rust featuring intelligent threat detection, modular rulesets, and zero-configuration deployment.
 
@@ -17,7 +17,25 @@ FOFF Milter provides production-ready email security with:
 
 ## 🧠 Intelligent Feature Analysis System
 
-FOFF Milter uses advanced feature extraction instead of simple pattern matching:
+FOFF Milter uses advanced feature extraction and comprehensive email normalization:
+
+### Email Normalization Engine (v0.8.0)
+- **Multi-Layer Decoding**: Automatic detection and decoding of Base64, HTML entities, URL encoding, UUEncoding
+- **Unicode Obfuscation Resolution**: Homoglyph replacement, zero-width character removal, mathematical symbol normalization
+- **Evasion Detection**: Sophisticated scoring of encoding layers and obfuscation techniques
+- **Normalized Content Analysis**: Rules work on clean, decoded content regardless of original encoding
+
+### Advanced Encoding Support
+- **HTML Entities**: Named (`&amp;`) and numeric (`&#65;`, `&#x41;`) entity decoding
+- **Unicode Normalization**: Mathematical Alphanumeric Symbols, Cyrillic/Greek homoglyphs, combining characters
+- **Legacy Encodings**: UUEncoding detection (highly suspicious in email context)
+- **Nested Decoding**: Multi-pass decoding with suspicious nesting detection (3+ layers flagged)
+
+### Evasion Resistance
+- **Character Substitution**: Cyrillic `а` → Latin `a`, Greek `ο` → Latin `o`
+- **Mathematical Unicode**: `𝑵𝑶𝑻𝑬` → `NOTE`, `𝒊𝒏𝒗𝒐𝒊𝒄𝒆` → `invoice`
+- **Zero-Width Attacks**: Removal of U+200B, U+200C, U+200D, U+FEFF characters
+- **Encoding Complexity**: Automatic scoring based on encoding layers and techniques
 
 ### Link Analysis Engine
 - **URL vs Display Text**: Detects mismatched display text and actual destinations

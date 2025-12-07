@@ -8,6 +8,7 @@ use crate::invoice_analyzer::{InvoiceAnalysis, InvoiceAnalyzer};
 use crate::language::LanguageDetector;
 use crate::media_analyzer::MediaAnalyzer;
 use crate::milter::extract_email_from_header;
+use crate::normalization::{EmailNormalizer, NormalizedEmail, NormalizedText};
 use crate::toml_config::{BlocklistConfig, WhitelistConfig};
 
 use base64::{engine::general_purpose::STANDARD as BASE64_STANDARD, Engine as _};
@@ -179,6 +180,8 @@ pub struct FilterEngine {
     business_analyzer: crate::business_context::BusinessContextAnalyzer,
     // Seasonal and behavioral analyzer
     seasonal_analyzer: crate::seasonal_behavioral::SeasonalBehavioralAnalyzer,
+    // Email normalization engine
+    normalizer: EmailNormalizer,
 }
 
 #[derive(Debug, Clone)]
@@ -199,6 +202,7 @@ pub struct MailContext {
     pub is_first_hop: bool,               // True if this is the first mailer receiving the email
     pub forwarding_source: Option<String>, // Source of forwarding (gmail.com, aol.com, etc.)
     pub proximate_mailer: Option<String>, // The immediate/proximate mailer hostname
+    pub normalized: Option<NormalizedEmail>, // Normalized email content
 }
 
 impl Default for MailContext {
@@ -220,6 +224,7 @@ impl Default for MailContext {
             is_first_hop: true, // Default to first hop
             forwarding_source: None,
             proximate_mailer: None,
+            normalized: None,
         }
     }
 }
@@ -238,6 +243,61 @@ pub struct UpstreamTrustResult {
 }
 
 impl FilterEngine {
+    /// Normalize email content and add to context
+    pub fn normalize_email_content(&self, context: &mut MailContext, raw_email: &str) {
+        let normalized = self.normalizer.normalize_email(raw_email);
+        context.normalized = Some(normalized);
+    }
+
+    /// Reconstruct raw email from MailContext for normalization
+    fn reconstruct_raw_email(&self, context: &MailContext) -> String {
+        let mut raw_email = String::new();
+
+        // Add headers
+        for (key, value) in &context.headers {
+            raw_email.push_str(&format!("{}: {}\n", key, value));
+        }
+
+        // Add separator
+        raw_email.push('\n');
+
+        // Add body
+        if let Some(body) = &context.body {
+            raw_email.push_str(body);
+        }
+
+        raw_email
+    }
+
+    /// Get evasion score from normalized content
+    pub fn get_evasion_score(&self, context: &MailContext) -> i32 {
+        if let Some(normalized) = &context.normalized {
+            self.calculate_evasion_score(normalized)
+        } else {
+            0
+        }
+    }
+
+    /// Normalize email content for enhanced analysis
+    pub fn normalize_email(&self, raw_email: &str) -> NormalizedEmail {
+        self.normalizer.normalize_email(raw_email)
+    }
+
+    /// Calculate evasion score from normalized content
+    pub fn calculate_evasion_score(&self, normalized: &NormalizedEmail) -> i32 {
+        let mut total_score = 0;
+
+        // Score subject evasion
+        total_score += self.normalizer.calculate_evasion_score(&normalized.subject);
+
+        // Score body evasion
+        total_score += self
+            .normalizer
+            .calculate_evasion_score(&normalized.body_text);
+
+        total_score
+    }
+
     /// Check if a domain exists using DNS lookup (optimized for performance)
     fn domain_exists(&self, domain: &str) -> bool {
         if domain.is_empty() || domain == "unknown" {
@@ -437,6 +497,7 @@ impl FilterEngine {
             is_first_hop: context.is_first_hop,
             forwarding_source: context.forwarding_source.clone(),
             proximate_mailer: context.proximate_mailer.clone(),
+            normalized: context.normalized.clone(),
         }
     }
 
@@ -505,6 +566,7 @@ impl FilterEngine {
             trust_analyzer: crate::trust_analyzer::TrustAnalyzer::new(),
             business_analyzer: crate::business_context::BusinessContextAnalyzer::new(),
             seasonal_analyzer: crate::seasonal_behavioral::SeasonalBehavioralAnalyzer::new(),
+            normalizer: EmailNormalizer::new(),
         };
 
         // Pre-compile all regex patterns for better performance
@@ -1369,6 +1431,16 @@ impl FilterEngine {
             | Criteria::ReplyToDomain { .. } => {
                 // No regex patterns to compile for domain criteria
             }
+            // Normalized criteria don't need pattern compilation
+            Criteria::NormalizedSubjectContains { .. }
+            | Criteria::NormalizedBodyContains { .. }
+            | Criteria::NormalizedContentContains { .. }
+            | Criteria::EncodingLayers { .. }
+            | Criteria::EncodingTypeDetected { .. }
+            | Criteria::ObfuscationDetected { .. }
+            | Criteria::EvasionScore { .. } => {
+                // No regex patterns to compile for normalized criteria
+            }
             Criteria::Not { criteria } => {
                 self.compile_criteria_patterns(criteria)?;
             }
@@ -1382,6 +1454,13 @@ impl FilterEngine {
     ) -> (Action, Vec<String>, Vec<(String, String)>) {
         // Clone context to modify hop detection fields
         let mut context = context.clone();
+
+        // Normalize email content for enhanced analysis
+        if let Some(_body) = &context.body {
+            // Reconstruct raw email for normalization
+            let raw_email = self.reconstruct_raw_email(&context);
+            self.normalize_email_content(&mut context, &raw_email);
+        }
 
         // Detect email hop status
         let (is_first_hop, forwarding_source, proximate_mailer) = self.detect_email_hop(&context);
@@ -1553,6 +1632,17 @@ impl FilterEngine {
             total_score -= 200; // Strong negative score to override false positives
             scoring_rules
                 .push("Mailing List Detection: Legitimate mailing list (-200)".to_string());
+        }
+
+        // Encoding evasion analysis
+        let evasion_score = self.get_evasion_score(&context_with_attachments);
+        if evasion_score > 0 {
+            total_score += evasion_score;
+            scoring_rules.push(format!(
+                "Encoding Evasion Analysis: Evasion techniques detected (+{})",
+                evasion_score
+            ));
+            log::info!("Encoding evasion detected - score: +{}", evasion_score);
         }
 
         // Advanced feature-based analysis
@@ -5762,6 +5852,101 @@ impl FilterEngine {
                         }
                     }
                     false
+                }
+                // Normalized criteria evaluation
+                Criteria::NormalizedSubjectContains { text } => {
+                    if let Some(normalized) = &context.normalized {
+                        return normalized
+                            .subject
+                            .normalized
+                            .to_lowercase()
+                            .contains(&text.to_lowercase());
+                    }
+                    false
+                }
+                Criteria::NormalizedBodyContains { text } => {
+                    if let Some(normalized) = &context.normalized {
+                        return normalized
+                            .body_text
+                            .normalized
+                            .to_lowercase()
+                            .contains(&text.to_lowercase());
+                    }
+                    false
+                }
+                Criteria::NormalizedContentContains { text } => {
+                    if let Some(normalized) = &context.normalized {
+                        let combined_content = format!(
+                            "{} {}",
+                            normalized.subject.normalized, normalized.body_text.normalized
+                        );
+                        return combined_content
+                            .to_lowercase()
+                            .contains(&text.to_lowercase());
+                    }
+                    false
+                }
+                Criteria::EncodingLayers { min_layers } => {
+                    if let Some(normalized) = &context.normalized {
+                        let total_layers = normalized.subject.encoding_layers.len()
+                            + normalized.body_text.encoding_layers.len();
+                        return total_layers >= *min_layers as usize;
+                    }
+                    false
+                }
+                Criteria::EncodingTypeDetected { encoding } => {
+                    if let Some(normalized) = &context.normalized {
+                        let check_encoding = |text: &NormalizedText| {
+                            text.encoding_layers
+                                .iter()
+                                .any(|layer| match encoding.as_str() {
+                                    "base64" => matches!(
+                                        layer.encoding_type,
+                                        crate::normalization::EncodingType::Base64
+                                    ),
+                                    "uuencoding" => matches!(
+                                        layer.encoding_type,
+                                        crate::normalization::EncodingType::UuEncoding
+                                    ),
+                                    "html_entities" => matches!(
+                                        layer.encoding_type,
+                                        crate::normalization::EncodingType::HtmlEntities
+                                    ),
+                                    "url_encoding" => matches!(
+                                        layer.encoding_type,
+                                        crate::normalization::EncodingType::UrlEncoding
+                                    ),
+                                    _ => false,
+                                })
+                        };
+                        return check_encoding(&normalized.subject)
+                            || check_encoding(&normalized.body_text);
+                    }
+                    false
+                }
+                Criteria::ObfuscationDetected { techniques } => {
+                    if let Some(normalized) = &context.normalized {
+                        let check_obfuscation = |text: &NormalizedText| {
+                            techniques.iter().any(|technique| {
+                                text.obfuscation_indicators.iter().any(|indicator| {
+                                    match technique.as_str() {
+                                        "homoglyphs" => matches!(indicator, crate::normalization::ObfuscationTechnique::UnicodeHomoglyphs),
+                                        "zero_width" => matches!(indicator, crate::normalization::ObfuscationTechnique::ZeroWidthCharacters),
+                                        "bidi_override" => matches!(indicator, crate::normalization::ObfuscationTechnique::BidirectionalOverride),
+                                        "combining" => matches!(indicator, crate::normalization::ObfuscationTechnique::CombiningCharacters),
+                                        _ => false,
+                                    }
+                                })
+                            })
+                        };
+                        return check_obfuscation(&normalized.subject)
+                            || check_obfuscation(&normalized.body_text);
+                    }
+                    false
+                }
+                Criteria::EvasionScore { min_score } => {
+                    let evasion_score = self.get_evasion_score(context);
+                    evasion_score >= *min_score
                 }
                 Criteria::Not { criteria } => {
                     // Return the opposite of the nested criteria evaluation

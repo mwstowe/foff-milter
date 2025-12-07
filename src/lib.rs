@@ -19,6 +19,7 @@ pub mod language;
 pub mod machine_learning;
 pub mod media_analyzer;
 pub mod milter;
+pub mod normalization;
 pub mod performance;
 pub mod seasonal_behavioral;
 pub mod statistics;
