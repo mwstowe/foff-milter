@@ -1207,6 +1207,9 @@ impl FilterEngine {
                     self.compiled_patterns.insert(pattern.clone(), regex);
                 }
             }
+            Criteria::HeaderContains { .. } => {
+                // No pattern compilation needed for simple text matching
+            }
             Criteria::SubjectContainsLanguage { language } => {
                 // Validate that the language is supported
                 if !matches!(
@@ -3317,6 +3320,16 @@ impl FilterEngine {
                         );
                     }
                     false
+                }
+                Criteria::HeaderContains { header, text } => {
+                    if let Some(header_value) =
+                        self.get_header_case_insensitive(&context.headers, header)
+                    {
+                        let decoded_value = crate::milter::decode_mime_header(header_value);
+                        decoded_value.to_lowercase().contains(&text.to_lowercase())
+                    } else {
+                        false
+                    }
                 }
                 Criteria::SubjectContainsLanguage { language } => {
                     if let Some(subject) = &context.subject {

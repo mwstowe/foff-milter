@@ -186,6 +186,10 @@ pub enum Criteria {
         header: String,
         pattern: String,
     },
+    HeaderContains {
+        header: String,
+        text: String,
+    },
     SubjectContainsLanguage {
         language: String,
     },
