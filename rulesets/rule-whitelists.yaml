@@ -127,8 +127,13 @@ rules:
   - name: "Nextdoor"
     enabled: true
     criteria:
-      type: "SenderPattern"
-      pattern: ".*@.*sendgrid.*"
+      type: "And"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@.*sendgrid.*"
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: ".*neighbors.*"
     score: -100
     description: "Nextdoor neighborhood platform via SendGrid"
 
