@@ -209,7 +209,7 @@ impl EmailNormalizer {
             layers.push(EncodingLayer {
                 encoding_type: EncodingType::HtmlEntities,
                 confidence: 0.9,
-                suspicious: entity_count > 10,
+                suspicious: entity_count > 100, // Raised threshold - legitimate HTML emails have many entities
             });
         }
 
@@ -384,8 +384,25 @@ impl EmailNormalizer {
     pub fn calculate_evasion_score(&self, normalized: &NormalizedText) -> i32 {
         let mut score = 0;
 
-        // Score encoding layers
-        score += normalized.encoding_layers.len() as i32 * 25;
+        // Count HTML entity layers separately
+        let html_entity_layers = normalized.encoding_layers.iter()
+            .filter(|layer| matches!(layer.encoding_type, EncodingType::HtmlEntities))
+            .count();
+        
+        let non_html_layers = normalized.encoding_layers.len() - html_entity_layers;
+
+        // Score non-HTML encoding layers more heavily
+        score += non_html_layers as i32 * 25;
+        
+        // HTML entities are only suspicious if excessive (>100) or mixed with other encodings
+        if html_entity_layers > 0 {
+            if html_entity_layers > 100 {
+                score += html_entity_layers as i32 * 5; // Further reduced scoring
+            } else if non_html_layers > 0 {
+                score += html_entity_layers as i32 * 2; // Very low scoring when mixed with other encodings
+            }
+            // No scoring for normal HTML entity usage
+        }
 
         // Penalty for suspicious encodings
         for layer in &normalized.encoding_layers {
@@ -396,6 +413,7 @@ impl EmailNormalizer {
             score += match layer.encoding_type {
                 EncodingType::UuEncoding => 75,
                 EncodingType::Base64 if layer.suspicious => 40,
+                EncodingType::HtmlEntities => 0, // Already scored above with context
                 _ => 10,
             };
         }
