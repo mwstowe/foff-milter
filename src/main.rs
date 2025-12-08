@@ -1,5 +1,6 @@
 use clap::{Arg, Command};
 use encoding_rs::WINDOWS_1252;
+use foff_milter::anonymize::EmailAnonymizer;
 use foff_milter::filter::FilterEngine;
 use foff_milter::milter::Milter;
 use foff_milter::statistics::StatisticsCollector;
@@ -171,6 +172,13 @@ async fn main() {
                 .action(clap::ArgAction::Set),
         )
         .arg(
+            Arg::new("anonymize")
+                .long("anonymize")
+                .value_name("FILE")
+                .help("Anonymize email file by replacing personal info and domains")
+                .action(clap::ArgAction::Set),
+        )
+        .arg(
             Arg::new("list-modules")
                 .long("list-modules")
                 .help("List available detection modules and their status")
@@ -216,6 +224,11 @@ async fn main() {
             process::exit(1);
         }
     };
+
+    if let Some(email_file) = matches.get_one::<String>("anonymize") {
+        anonymize_email_file(email_file).await;
+        return;
+    }
 
     if let Some(email_file) = matches.get_one::<String>("test-email") {
         test_email_file(
@@ -819,6 +832,22 @@ fn truncate_string(s: &str, max_len: usize) -> String {
     } else {
         format!("{}...", &s[..max_len.saturating_sub(3)])
     }
+}
+
+async fn anonymize_email_file(email_file: &str) {
+    let content = match fs::read_to_string(email_file) {
+        Ok(content) => content,
+        Err(e) => {
+            eprintln!("❌ Error reading email file '{}': {}", email_file, e);
+            process::exit(1);
+        }
+    };
+
+    let mut anonymizer = EmailAnonymizer::new();
+    let anonymized = anonymizer.anonymize_email(&content);
+    
+    // Output to stdout so it can be redirected
+    println!("{}", anonymized);
 }
 
 async fn test_email_file(
