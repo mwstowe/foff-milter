@@ -399,14 +399,14 @@ impl EmailNormalizer {
         // Score non-HTML encoding layers more heavily
         score += non_html_layers as i32 * 25;
 
-        // HTML entities are only suspicious if excessive (>200) or mixed with other encodings
+        // HTML entities are only suspicious if extremely excessive (>300) or heavily mixed
         if html_entity_layers > 0 {
-            if html_entity_layers > 200 {
-                score += html_entity_layers as i32 * 3; // Further reduced scoring
-            } else if non_html_layers > 1 {
-                score += html_entity_layers as i32; // Minimal scoring when mixed with multiple other encodings
+            if html_entity_layers > 300 {
+                score += html_entity_layers as i32 * 2; // Very reduced scoring
+            } else if non_html_layers > 2 {
+                score += (html_entity_layers as i32) / 2; // Minimal scoring when heavily mixed
             }
-            // No scoring for normal HTML entity usage or single mixed encoding
+            // No scoring for normal HTML entity usage or light mixing
         }
 
         // Penalty for suspicious encodings

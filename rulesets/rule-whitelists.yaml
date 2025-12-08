@@ -66,7 +66,7 @@ rules:
     criteria:
       type: "SenderPattern"
       pattern: ".*@.*wolfermans.*"
-    score: -150
+    score: -300
     description: "Wolfermans gourmet bakery legitimate retailer"
 
   - name: "Disney"
@@ -76,10 +76,12 @@ rules:
       criteria:
         - type: "SenderPattern"
           pattern: ".*@.*disney.*"
+        - type: "SenderPattern"
+          pattern: ".*@.*d23.*"
         - type: "HeaderPattern"
           header: "DKIM-Signature"
           pattern: ".*d=.*disney.*"
-    score: -200
+    score: -400
     description: "Disney legitimate entertainment company"
 
   - name: "UPS"
@@ -113,6 +115,30 @@ rules:
       pattern: ".*@.*dominos.*"
     score: -150
     description: "Dominos Pizza legitimate restaurant chain"
+
+  - name: "IKEA"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*ikea.*"
+    score: -150
+    description: "IKEA legitimate furniture retailer"
+
+  - name: "Nextdoor"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*sendgrid.*"
+    score: -100
+    description: "Nextdoor neighborhood platform via SendGrid"
+
+  - name: "Seattle Mini"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*driveseattlemini.*"
+    score: -100
+    description: "Seattle Mini car dealership"
 
   - name: "Filters Fast"
     enabled: true
@@ -267,8 +293,8 @@ rules:
     criteria:
       type: "HeaderPattern"
       header: "From"
-      pattern: ".*@.*withings\\.com.*"
-    score: -20
+      pattern: ".*@.*withings.*"
+    score: -200
     description: "Health and fitness device platforms"
 
   - name: "Professional Service Providers"
@@ -563,8 +589,8 @@ rules:
     enabled: true
     criteria:
       type: "SenderPattern"
-      pattern: "(?i).*@.*eyebuydirect\\.com$"
-    score: -200
+      pattern: "(?i).*@.*eyebuydirect.*"
+    score: -300
     description: "EyeBuyDirect eyewear retailer"
 
   - name: "Facebook Notifications"
