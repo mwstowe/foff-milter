@@ -85,12 +85,14 @@ rules:
             pattern: ".*@.*williams.*sonoma.*"
         - type: "Not"
           criteria:
-            type: "SenderPattern"
-            pattern: ".*@.*fidelity.*"
-        - type: "Not"
-          criteria:
-            type: "SenderPattern"
-            pattern: ".*@.*withings.*"
+            type: "Or"
+            criteria:
+              - type: "SenderPattern"
+                pattern: ".*@.*fidelity.*"
+              - type: "SenderPattern"
+                pattern: ".*@.*withings.*"
+              - type: "SenderPattern"
+                pattern: ".*@.*(1800flowers|celebrations|wolfermans).*"
     score: 75
     description: "Diabetes and blood sugar misinformation and miracle cure claims"
 
@@ -108,8 +110,12 @@ rules:
               pattern: "(?i).*(cardiovascular|heart.*health|dental.*health|teeth.*repair|teeth.*cells|dementia|cognitive|prostate|digestive.*flush|breathing.*lung|brain.*fog|memory.*loss|joint.*pain|knee.*pain|sexual.*health|tinnitus|toenail.*fungus|vision.*ritual|eyesight|weight.*loss|diet.*secret|chinese.*tax|piano.*course|yeti.*cooler).*"
         - type: "Not"
           criteria:
-            type: "SenderPattern"
-            pattern: ".*@.*withings.*"
+            type: "Or"
+            criteria:
+              - type: "SenderPattern"
+                pattern: ".*@.*withings.*"
+              - type: "SenderPattern"
+                pattern: ".*@.*(1800flowers|celebrations|wolfermans).*"
     score: 50
     description: "General health misinformation and miracle cure claims"
 
