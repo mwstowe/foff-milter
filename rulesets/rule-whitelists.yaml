@@ -69,6 +69,51 @@ rules:
     score: -150
     description: "Wolfermans gourmet bakery legitimate retailer"
 
+  - name: "Disney"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@.*disney.*"
+        - type: "HeaderPattern"
+          header: "DKIM-Signature"
+          pattern: ".*d=.*disney.*"
+    score: -200
+    description: "Disney legitimate entertainment company"
+
+  - name: "UPS"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*ups.*"
+    score: -150
+    description: "UPS legitimate shipping company"
+
+  - name: "Williams Sonoma"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*williams.*sonoma.*"
+    score: -150
+    description: "Williams Sonoma legitimate retailer"
+
+  - name: "King Arthur Baking"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*kingarthur.*"
+    score: -150
+    description: "King Arthur Baking legitimate company"
+
+  - name: "Dominos"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*dominos.*"
+    score: -150
+    description: "Dominos Pizza legitimate restaurant chain"
+
   - name: "Filters Fast"
     enabled: true
     criteria:
