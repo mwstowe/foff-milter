@@ -3239,18 +3239,32 @@ impl FilterEngine {
                     false
                 }
                 Criteria::SubjectPattern { pattern } => {
-                    if let Some(subject) = &context.subject {
-                        if let Some(regex) = self.compiled_patterns.get(pattern) {
-                            return regex.is_match(subject);
-                        }
+                    // Use normalized subject if available, fallback to raw subject
+                    let subject_text = if let Some(normalized) = &context.normalized {
+                        &normalized.subject.normalized
+                    } else if let Some(subject) = &context.subject {
+                        subject
+                    } else {
+                        return false;
+                    };
+                    
+                    if let Some(regex) = self.compiled_patterns.get(pattern) {
+                        return regex.is_match(subject_text);
                     }
                     false
                 }
                 Criteria::BodyPattern { pattern } => {
-                    if let Some(body) = &context.body {
-                        if let Some(regex) = self.compiled_patterns.get(pattern) {
-                            return regex.is_match(body);
-                        }
+                    // Use normalized body if available, fallback to raw body
+                    let body_text = if let Some(normalized) = &context.normalized {
+                        &normalized.body_text.normalized
+                    } else if let Some(body) = &context.body {
+                        body
+                    } else {
+                        return false;
+                    };
+                    
+                    if let Some(regex) = self.compiled_patterns.get(pattern) {
+                        return regex.is_match(body_text);
                     }
                     false
                 }
@@ -3264,12 +3278,19 @@ impl FilterEngine {
                 }
                 Criteria::CombinedTextPattern { pattern } => {
                     if let Some(regex) = self.compiled_patterns.get(pattern) {
-                        // Check body text
-                        if let Some(body) = &context.body {
-                            if regex.is_match(body) {
-                                return true;
-                            }
+                        // Check normalized body text if available, fallback to raw body
+                        let body_text = if let Some(normalized) = &context.normalized {
+                            &normalized.body_text.normalized
+                        } else if let Some(body) = &context.body {
+                            body
+                        } else {
+                            ""
+                        };
+                        
+                        if regex.is_match(body_text) {
+                            return true;
                         }
+                        
                         // Check extracted media text
                         if !context.extracted_media_text.is_empty()
                             && regex.is_match(&context.extracted_media_text)
