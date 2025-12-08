@@ -301,16 +301,19 @@ impl EmailNormalizer {
                 // Skip zero-width characters
             }
             // Check for BIDI override characters
-            else if matches!(ch, '\u{202D}' | '\u{202E}' | '\u{2066}' | '\u{2067}' | '\u{2068}' | '\u{2069}') {
+            else if matches!(
+                ch,
+                '\u{202D}' | '\u{202E}' | '\u{2066}' | '\u{2067}' | '\u{2068}' | '\u{2069}'
+            ) {
                 found_bidi = true;
                 // Skip BIDI override characters
             }
             // Check for combining characters (diacritics) - Unicode ranges 0x0300-0x036F, 0x1AB0-0x1AFF, 0x1DC0-0x1DFF
-            else if matches!(ch as u32, 0x0300..=0x036F | 0x1AB0..=0x1AFF | 0x1DC0..=0x1DFF | 0x20D0..=0x20FF) {
+            else if matches!(ch as u32, 0x0300..=0x036F | 0x1AB0..=0x1AFF | 0x1DC0..=0x1DFF | 0x20D0..=0x20FF)
+            {
                 found_combining = true;
                 // Skip combining characters in suspicious contexts
-            }
-            else {
+            } else {
                 result.push(ch);
             }
         }
@@ -385,21 +388,23 @@ impl EmailNormalizer {
         let mut score = 0;
 
         // Count HTML entity layers separately
-        let html_entity_layers = normalized.encoding_layers.iter()
+        let html_entity_layers = normalized
+            .encoding_layers
+            .iter()
             .filter(|layer| matches!(layer.encoding_type, EncodingType::HtmlEntities))
             .count();
-        
+
         let non_html_layers = normalized.encoding_layers.len() - html_entity_layers;
 
         // Score non-HTML encoding layers more heavily
         score += non_html_layers as i32 * 25;
-        
+
         // HTML entities are only suspicious if excessive (>200) or mixed with other encodings
         if html_entity_layers > 0 {
             if html_entity_layers > 200 {
                 score += html_entity_layers as i32 * 3; // Further reduced scoring
             } else if non_html_layers > 1 {
-                score += html_entity_layers as i32 * 1; // Minimal scoring when mixed with multiple other encodings
+                score += html_entity_layers as i32; // Minimal scoring when mixed with multiple other encodings
             }
             // No scoring for normal HTML entity usage or single mixed encoding
         }

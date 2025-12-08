@@ -3247,7 +3247,7 @@ impl FilterEngine {
                     } else {
                         return false;
                     };
-                    
+
                     if let Some(regex) = self.compiled_patterns.get(pattern) {
                         return regex.is_match(subject_text);
                     }
@@ -3262,7 +3262,7 @@ impl FilterEngine {
                     } else {
                         return false;
                     };
-                    
+
                     if let Some(regex) = self.compiled_patterns.get(pattern) {
                         return regex.is_match(body_text);
                     }
@@ -3286,11 +3286,11 @@ impl FilterEngine {
                         } else {
                             ""
                         };
-                        
+
                         if regex.is_match(body_text) {
                             return true;
                         }
-                        
+
                         // Check extracted media text
                         if !context.extracted_media_text.is_empty()
                             && regex.is_match(&context.extracted_media_text)
