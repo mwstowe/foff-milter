@@ -845,7 +845,7 @@ async fn anonymize_email_file(email_file: &str) {
 
     let mut anonymizer = EmailAnonymizer::new();
     let anonymized = anonymizer.anonymize_email(&content);
-    
+
     // Output to stdout so it can be redirected
     println!("{}", anonymized);
 }
