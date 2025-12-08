@@ -286,6 +286,8 @@ impl EmailNormalizer {
         let mut techniques = Vec::new();
         let mut found_homoglyphs = false;
         let mut found_zero_width = false;
+        let mut found_bidi = false;
+        let mut found_combining = false;
 
         for ch in text.chars() {
             // Check for homoglyphs
@@ -297,7 +299,18 @@ impl EmailNormalizer {
             else if self.zero_width_chars.contains(&ch) {
                 found_zero_width = true;
                 // Skip zero-width characters
-            } else {
+            }
+            // Check for BIDI override characters
+            else if matches!(ch, '\u{202D}' | '\u{202E}' | '\u{2066}' | '\u{2067}' | '\u{2068}' | '\u{2069}') {
+                found_bidi = true;
+                // Skip BIDI override characters
+            }
+            // Check for combining characters (diacritics) - Unicode ranges 0x0300-0x036F, 0x1AB0-0x1AFF, 0x1DC0-0x1DFF
+            else if matches!(ch as u32, 0x0300..=0x036F | 0x1AB0..=0x1AFF | 0x1DC0..=0x1DFF | 0x20D0..=0x20FF) {
+                found_combining = true;
+                // Skip combining characters in suspicious contexts
+            }
+            else {
                 result.push(ch);
             }
         }
@@ -307,6 +320,12 @@ impl EmailNormalizer {
         }
         if found_zero_width {
             techniques.push(ObfuscationTechnique::ZeroWidthCharacters);
+        }
+        if found_bidi {
+            techniques.push(ObfuscationTechnique::BidirectionalOverride);
+        }
+        if found_combining {
+            techniques.push(ObfuscationTechnique::CombiningCharacters);
         }
 
         (result, techniques)
