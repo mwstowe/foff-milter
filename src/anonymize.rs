@@ -1,11 +1,9 @@
 use regex::Regex;
-use std::collections::HashMap;
 
 pub struct EmailAnonymizer {
-    domain_replacements: HashMap<String, String>,
-    username_replacements: HashMap<String, String>,
-    domain_counter: usize,
-    username_counter: usize,
+    recipient_email: Option<String>,
+    recipient_domain: Option<String>,
+    recipient_username: Option<String>,
 }
 
 impl Default for EmailAnonymizer {
@@ -17,25 +15,24 @@ impl Default for EmailAnonymizer {
 impl EmailAnonymizer {
     pub fn new() -> Self {
         Self {
-            domain_replacements: HashMap::new(),
-            username_replacements: HashMap::new(),
-            domain_counter: 1,
-            username_counter: 1,
+            recipient_email: None,
+            recipient_domain: None,
+            recipient_username: None,
         }
     }
 
     pub fn anonymize_email(&mut self, content: &str) -> String {
         let mut result = content.to_string();
-
+        
         // Remove X-FOFF headers
         result = self.remove_xfoff_headers(&result);
-
-        // Extract and anonymize email addresses
-        result = self.anonymize_email_addresses(&result);
-
-        // Anonymize common personal info patterns
-        result = self.anonymize_personal_info(&result);
-
+        
+        // Extract recipient info from To: header first
+        self.extract_recipient_info(&result);
+        
+        // Only anonymize recipient references
+        result = self.anonymize_recipient_references(&result);
+        
         result
     }
 
@@ -44,81 +41,81 @@ impl EmailAnonymizer {
         re.replace_all(content, "").to_string()
     }
 
-    fn anonymize_email_addresses(&mut self, content: &str) -> String {
-        let email_re =
-            Regex::new(r"\b([a-zA-Z0-9._%+-]+)@([a-zA-Z0-9.-]+\.[a-zA-Z]{2,})\b").unwrap();
-
-        email_re
-            .replace_all(content, |caps: &regex::Captures| {
-                let username = caps.get(1).unwrap().as_str();
-                let domain = caps.get(2).unwrap().as_str();
-
-                let anon_username = self.get_anonymous_username(username);
-                let anon_domain = self.get_anonymous_domain(domain);
-
-                format!("{}@{}", anon_username, anon_domain)
-            })
-            .to_string()
-    }
-
-    fn get_anonymous_username(&mut self, username: &str) -> String {
-        if let Some(replacement) = self.username_replacements.get(username) {
-            replacement.clone()
-        } else {
-            let replacement = format!("user{}", self.username_counter);
-            self.username_counter += 1;
-            self.username_replacements
-                .insert(username.to_string(), replacement.clone());
-            replacement
+    fn extract_recipient_info(&mut self, content: &str) {
+        // Extract from To: header
+        let to_re = Regex::new(r"(?m)^To:\s*.*?([a-zA-Z0-9._%+-]+)@([a-zA-Z0-9.-]+\.[a-zA-Z]{2,})").unwrap();
+        
+        if let Some(caps) = to_re.captures(content) {
+            let username = caps.get(1).unwrap().as_str();
+            let domain = caps.get(2).unwrap().as_str();
+            
+            self.recipient_username = Some(username.to_string());
+            self.recipient_domain = Some(domain.to_string());
+            self.recipient_email = Some(format!("{}@{}", username, domain));
         }
     }
 
-    fn get_anonymous_domain(&mut self, domain: &str) -> String {
-        // Always use example.com for recipient domains
-        if domain.contains("gmail.com")
-            || domain.contains("yahoo.com")
-            || domain.contains("hotmail.com")
-            || domain.contains("outlook.com")
-        {
-            return "example.com".to_string();
-        }
-
-        if let Some(replacement) = self.domain_replacements.get(domain) {
-            replacement.clone()
-        } else {
-            let replacement = if self.domain_counter == 1 {
-                "example.com".to_string()
-            } else {
-                format!("example{}.com", self.domain_counter)
-            };
-            self.domain_counter += 1;
-            self.domain_replacements
-                .insert(domain.to_string(), replacement.clone());
-            replacement
-        }
-    }
-
-    fn anonymize_personal_info(&self, content: &str) -> String {
+    fn anonymize_recipient_references(&self, content: &str) -> String {
         let mut result = content.to_string();
+        
+        if let (Some(recipient_email), Some(recipient_domain), Some(recipient_username)) = 
+            (&self.recipient_email, &self.recipient_domain, &self.recipient_username) {
+            
+            // Replace recipient email with user@example.com
+            result = result.replace(recipient_email, "user@example.com");
+            
+            // Replace recipient domain with example.com (but only when not part of sender info)
+            result = self.replace_recipient_domain_carefully(&result, recipient_domain);
+            
+            // Replace recipient username in email body text
+            result = self.anonymize_personal_references(&result, recipient_username);
+        }
+        
+        result
+    }
 
-        // Phone numbers
+    fn replace_recipient_domain_carefully(&self, content: &str, recipient_domain: &str) -> String {
+        let mut result = content.to_string();
+        
+        // Only replace in specific contexts where it's clearly the recipient
+        // Replace in To: header
+        let to_pattern = format!(r"(To:\s*[^@]+@){}", regex::escape(recipient_domain));
+        let to_re = Regex::new(&to_pattern).unwrap();
+        result = to_re.replace_all(&result, "${1}example.com").to_string();
+        
+        // Replace in envelope-to contexts
+        let envelope_pattern = format!(r"(envelope-to[^@]+@){}", regex::escape(recipient_domain));
+        let envelope_re = Regex::new(&envelope_pattern).unwrap();
+        result = envelope_re.replace_all(&result, "${1}example.com").to_string();
+        
+        // Replace in for <user@domain> contexts
+        let for_pattern = format!(r"(for\s+<[^@]+@){}", regex::escape(recipient_domain));
+        let for_re = Regex::new(&for_pattern).unwrap();
+        result = for_re.replace_all(&result, "${1}example.com").to_string();
+        
+        result
+    }
+
+    fn anonymize_personal_references(&self, content: &str, recipient_username: &str) -> String {
+        let mut result = content.to_string();
+        
+        // Replace names in greetings (Dear X, Hi X, etc.) - but only if it matches recipient username
+        let greeting_pattern = format!(r"(?i)\b(dear|hi|hello|hey)\s+{}\b", regex::escape(recipient_username));
+        let greeting_re = Regex::new(&greeting_pattern).unwrap();
+        result = greeting_re.replace_all(&result, "$1 John").to_string();
+        
+        // Replace phone numbers (generic anonymization)
         let phone_re = Regex::new(r"\b\d{3}[-.]?\d{3}[-.]?\d{4}\b").unwrap();
         result = phone_re.replace_all(&result, "555-123-4567").to_string();
-
-        // SSN patterns
+        
+        // Replace SSN patterns
         let ssn_re = Regex::new(r"\b\d{3}-\d{2}-\d{4}\b").unwrap();
         result = ssn_re.replace_all(&result, "123-45-6789").to_string();
-
-        // Credit card numbers (basic pattern)
+        
+        // Replace credit card numbers
         let cc_re = Regex::new(r"\b\d{4}[-\s]?\d{4}[-\s]?\d{4}[-\s]?\d{4}\b").unwrap();
-        result = cc_re
-            .replace_all(&result, "1234-5678-9012-3456")
-            .to_string();
-
-        // Names in common patterns (Dear X, Hi X, etc.)
-        let name_re = Regex::new(r"(?i)\b(dear|hi|hello|hey)\s+([A-Z][a-z]+)\b").unwrap();
-        result = name_re.replace_all(&result, "$1 John").to_string();
-
+        result = cc_re.replace_all(&result, "1234-5678-9012-3456").to_string();
+        
         result
     }
 }
