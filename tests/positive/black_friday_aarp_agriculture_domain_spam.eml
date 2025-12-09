@@ -1,0 +1,221 @@
+Return-Path: <wdg2yxld-mdyd-7drl-eluq-0chmyf6fnn10@msudairy.com>
+Received: from juliett.baddomain.com (localhost [127.0.0.1])
+	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTP id 5B8C2OEQ011429
+	for <mstowe@localhost>; Mon, 8 Dec 2025 12:02:24 GMT
+	(envelope-from wdg2yxld-mdyd-7drl-eluq-0chmyf6fnn10@msudairy.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (2048-bit key; unprotected) header.d=msudairy.com header.i=@msudairy.com header.b=WCwkOc8D
+Received: from jimapinternal-aol.imap.mail.g03.yahoodns.net [67.195.228.147]
+	by juliett.baddomain.com with IMAP (fetchmail-6.6.1)
+	for <mstowe@localhost> (single-drop); Mon, 08 Dec 2025 12:02:24 +0000 (UTC)
+Received: from 127.0.0.1
+ by atlas-production.v2-mail-prod1-bf1.omega.yahoo.com pod-id atlas--production-bf1-57c9588757-bndg7.bf1.yahoo.com with HTTP; Mon, 8 Dec 2025 11:52:58 +0000
+X-Originating-Ip: [95.170.19.59]
+Received-SPF: softfail (domain of transitioningmsudairy.com does not designate 95.170.19.59 as permitted sender)
+Authentication-Results: atlas-production.v2-mail-prod1-bf1.omega.yahoo.com;
+ dkim=pass header.i=@msudairy.com header.s=h1 arc_overridden_status=NOT_OVERRIDDEN;
+ spf=softfail smtp.mailfrom=msudairy.com arc_overridden_status=NOT_OVERRIDDEN;
+ dmarc=pass(p=REJECT) header.from=msudairy.com arc_overridden_status=NOT_OVERRIDDEN;
+X-Apparently-To: user@example.com; Mon, 8 Dec 2025 11:52:58 +0000
+X-YMailISG: QMZNi7AWLDs5tqeY5Ds1WqQG36nHgxqlRlafPf9ZPsTBAy6k
+ FQJeMxcF5c3InIwLaldFTOElKkRaXPw3ERxmyfFiksHktgHTIjPy6dTU.xq0
+ Cn2dUT2rxYj2FTcK46La7No6aKonMWxBwTAAvD3Uhcbnyw55o1sNH3xf8Vbt
+ 6q5yAb0tUs.Ke67leRKPV_ORkbKfP9ix3NQTs2oBr0NgMH2MZn3bPdH5zIyf
+ zIrNFnfLcC6s4SuK1pBXHSRkeCZbLHK1AkU1YSwt.Oy6n1zr2s387RI40v01
+ kFDg1IPmEeeC.iuAJLC0m17N.boZl7mv0ts4yn0.1oQIaF0YzM8_VU5pETOD
+ qMDhDsFxuHjVJsDnMqd8og5FVLRjXPRMfueqZK8FSNBcuB_rhDM4gZod9NAk
+ 8nSjSGbKqlSF3y26ksf4ieZopev.uQS1X1AsVeHE5OM.w.vQdr02Fra5ArJa
+ 8HcI1C0MPoBBaKrx8.uGiF3DubrVFzurNUSm.7b6z8QQpks9Rwnauk5L3hUt
+ sLSdE7Vw4xtX0yIWhWKSZW69KuUfnFISVZYcBXCV9GzRnv6kavTTe0SXLjZL
+ ebegFjGJK0x4XNlj8y2tzlr1vkw4e5jeG6tqKXt3PF7xdWjJGdhQkUbOKQkK
+ 7TEzH3OfaXswgTl0MQeBuLuJjiMx.oCaFzl_cYSoLEYnW2WjCzcQOs_crSKw
+ IQDLdf7GhnQ3T0sQn9FxGylQyyDxeSuDCU8B1K1.rmK9ukciEWe4Ad7dLeMN
+ mvvl65pD_Xv2ab0HDvtN9FXrsbGDmcwajhimhpQQ3q9NxX6L4A_ayVOCrVX2
+ P63YEZnovrnB.PZ4FV.VXsiCPm2U1qcwDlR6vIHLIAIZRSddZumkz3ZcASzS
+ QhC2kNFQc9ocZxoAcgQdTcZF.w434.BIan9jk1Oya24kudX_m.2nZ1d3kniz
+ ZlQyHULi_35EX._eCXTYfAjCsRmCBBi1.lFgA4iZBOogLTpZfzerb_Kx1FBw
+ ypRRP7hUYQNsgCceWW_LaRoYH3CMmNhOURPnIdNvOU_Vit6KJmUeXB7q8CIC
+ ZoXs5eBCx2NWr63zD3uF8UGhb6422UIFL3RDyJeUMtKv3I3QUf3lfehyLCE.
+ T_wPdtaln01adJAcsqjvSNVZq2WxjR.oaFBd9zLzbNaWVEA3hkSrTJa6HWOD
+ Ul0dhnF9uSrOYJpPhiXUu9uitvTnpcm3k_Sv26yhx6eeqxForzix0oYALr7A
+ 6RPvoMREumzhvuekOis4jjTf2OKDLympqyCJp85WpVH6o0twDyVU93JHsL_k
+ lhy0Bho6JpAn.uKOvlWwxvbQLpv_H8a6F3MJb1QYcXkBhZE3.osu4hwfBLSI
+ MRIWN_nomGQilzU-
+Received: from 95.170.19.59 (EHLO urostat.wireless-productivity.com)
+ by 10.196.217.15 with SMTP;
+ Mon, 08 Dec 2025 11:52:58 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=h1; d=msudairy.com;
+ h=MIME-Version:To:From:Content-Transfer-Encoding:List-Unsubscribe:Subject:
+ Content-Type:Date:Message-ID;
+ bh=ENn8IcNUdksf3KFHHmobCqnNZ2XcdKcL5SzZ45+WwKk=;
+ b=WCwkOc8DpnnikZRzYKK8l8Yyqeiq9P/G9Ed6QNy9kxQNt9j2GzT1mplLIj49SSqiz+kpxXXf+6br
+   wF4IG3FWI8igLp6WTbUdAUGkPVGW6TqsZNPyY2BKH0xjfK3UMuSkrGJy/7DZeE5yBhuNzd5lnwid
+   ewBqO6uK+SC6rsBHKE/pcHJD0153wnfGzz0+OZgIQuNp2x3xK0E4CQWXs7v4JGkvKy7y5eLzcooR
+   QCRgpwFi1FVnJ3TmP+o8fFafpDecmeW941t7f8ckEzzptpqv/Inye6wzZEHjWBQ0bRW0se5hWUg9
+   p7epT50JxT0EcO86KZlJzyuJu/LtReeA2c70Rg==
+MIME-Version: 1.0
+To: user@example.com
+From:               =?UTF-8?B?QUFSUCBNZW1iZXJzaGlwIE9mZmVy?=              _          <cinaViccobiabossJenkins@msudairy.com>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+Content-Transfer-Encoding: 7bit
+List-Unsubscribe: <mailto:JTU9XAWRHFYSKCAAYNJFATCYBKMYRZUZGEXBEJIKN7S@msudairy.com?subject=unsubscribe>, <https://u.msudairy.com/2k0CXhr1rlRpE/n4/Zz069E6bpvwekf/rr_r5deBck/21ecXGX4VNk7s/rd/yxmWxfUZaVetfg/xeee5dd/krt9ttWZeP/7ed_/RXE8i2vtNQ/r7YxM/vFxgIQjOiu5Aqn/7xMYr_/cbYPJDCczJ4U3Ey/>
+Subject:         =?UTF-8?B?QkxBQ0sgRlJJREFZIFNhbGUgSGFwcGVuaW5nIE5PVyE=?=                    _                  
+Content-Type: text/html; charset=UTF-8
+Date: Mon, 08 Dec 2025 17:22:56 +0530
+Message-ID: <X7RVU3TYSM1PD922QOJFUNQWQY3QLXG7TXQ.CN8A7JOLMNAB4PAW0LMTPAKDJ.63118352296725357088@genscan.familyandfriendsllc.com>
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [0.0.0.0]); Mon, 08 Dec 2025 12:02:25 +0000 (UTC)
+
+<!Doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+  <head>
+    <title></title>
+    <!--[if !mso]><!-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!--<!-->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type="text/css">
+      #outlook a { padding:0; }
+      body { margin:0;padding:0;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%; }
+      table, td { border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt; }
+      img { border:0;height:auto;line-height:100%; outline:none;text-decoration:none;-ms-interpolation-mode:bicubic; }
+      p { display:block;margin:13px 0; }
+    </style>
+    <!--[if mso]>
+    <noscript>
+    <xml>
+    <o:OfficeDocumentSettings>
+      <o:AllowPNG/>
+      <o:PixelsPerInch>96</o:PixelsPerInch>
+    </o:OfficeDocumentSettings>
+    </xml>
+    </noscript>
+    <!-->
+    <!--[if lte mso 11]>
+    <style type="text/css">
+      .mj-outlook-group-fix { width:100% !important; }
+    </style>
+    <!-->
+    
+    
+    <style type="text/css">
+      @media only screen and (min-width:480px) {
+	.mj-column-per-100 { width:100% !important; max-width: 100%; }
+      }
+    </style>
+    <style media="screen and (min-width:480px)">
+      .moz-text-html .mj-column-per-100 { width:100% !important; max-width: 100%; }
+    </style>
+    
+  
+    <style type="text/css">
+    
+    
+
+    @media only screen and (max-width:479px) {
+      table.mj-full-width-mobile { width: 100% !important; }
+      td.mj-full-width-mobile { width: auto !important; }
+    }
+  
+    </style>
+    <style type="text/css">
+    .hide_on_mobile { display: none !important;} 
+	@media only screen and (min-width: 480px) { .hide_on_mobile { display: block !important;} }
+	.hide_section_on_mobile { display: none !important;} 
+	@media only screen and (min-width: 480px) { 
+	    .hide_section_on_mobile { 
+		display: table !important;
+	    } 
+
+	    div.hide_section_on_mobile { 
+		display: block !important;
+	    }
+	}
+	.hide_on_desktop { display: block !important;} 
+	@media only screen and (min-width: 480px) { .hide_on_desktop { display: none !important;} }
+	.hide_section_on_desktop { 
+	    display: table !important;
+	    width: 100%;
+	} 
+	@media only screen and (min-width: 480px) { .hide_section_on_desktop { display: none !important;} }
+	
+	  p, h1, h2, h3 {
+	      margin: 0px;
+	  }
+
+	  ul, li, ol {
+	    font-size: 11px;
+	    font-family: Ubuntu, Helvetica, Arial;
+	  }
+
+	  a {
+	      text-decoration: none;
+	      color: inherit;
+	  }
+
+	@media only screen and (max-width:480px) {
+	    .mj-column-per-100 { width:100%!important; max-width:100%!important; }.mj-column-per-100 > .mj-column-per-100 { width:100%!important; max-width:100%!important; }
+	}
+
+	.mj-column-per-100 [class^="mj-column-per-"] {
+	    line-height: normal;
+	}
+
+	.mj-button-full a {
+	    display: block !important;
+	}
+    </style>
+    
+  </head>
+<body style="margin:0; padding:0; font-family: Arial, Helvetica, sans-serif; background-color:#f4f4f4;">
+    <center>
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#f4f4f4; padding:20px 0;">
+            <tr>
+                <td align="center">
+                    <table width="600" cellpadding="0" cellspacing="0" border="0" style="background-color:#ffffff; padding:20px; border-radius:8px;">
+                        <!-- Header / Title -->
+                        <tr>
+                            <td align="center" style="padding-bottom:20px;">
+                                <a href="https://www.ihateaailoveamerica.com/xwhfyumptwtbxnubeuiqbbcrejzgmejuqphnrazpjqjwcchgiqaracykcumijregk/aarp" style="text-decoration:none; color:#1a1a1a;">
+                                    <strong style="font-size:24px; font-family:Arial, Helvetica, sans-serif;">
+                                       AARP is doing amazing things to make life better.
+                                    </strong>
+                                </a>
+                            </td>
+                        </tr>
+                        <!-- Main Image -->
+                        <tr>
+                            <td align="center" style="padding-bottom:20px;">
+                                <a href="https://www.ihateaailoveamerica.com/xwhfyumptwtbxnubeuiqbbcrejzgmejuqphnrazpjqjwcchgiqaracykcumijregk/aarp">
+                                    <img src="https://res.cloudinary.com/drgomkrj0/image/upload/v1764937485/Screenshot_2025-12-05_at_17-54-24_w3gizs.png" 
+                                         alt="" width="100%" style="max-width:600px; height:auto; display:block; border:0;">
+                                </a>
+                            </td>
+                        </tr>
+
+                        <!-- CTA Button -->
+                        <tr>
+                            <td align="center" style="padding-bottom:20px;">
+                                <a href="https://www.ihateaailoveamerica.com/xwhfyumptwtbxnubeuiqbbcrejzgmejuqphnrazpjqjwcchgiqaracykcumijregk/aarp" 
+                                   style="font-weight: bold; font-family:Arial, Helvetica, sans-serif; font-size:20x; color:#ffffff; background-color:brown; padding:12px 24px; text-decoration:none; border-radius:5px; display:inline-block;">
+                                    Click Here
+                                </a>
+                            </td>
+                        </tr>
+
+                        <!-- Footer / Unsubscribe -->
+                        <tr>
+                            <td align="center" style="font-size:10px; color:#919191; line-height:1.4; padding-top:20px;">  <br><br><br><br><br><br>
+                                 If you wish to Unsubscribe from future mailings please 
+			       <a href="https://www.ihateaailoveamerica.com/vtdxhktjjnigtaxaamvfgxmvivucbgkmbfrhqpcetmbmvfrzrxbrprimkcjegudim/aarp" style="color:#919191; text-decoration:underline;"> Click Here
+                                </a> <br>  or write to:   2803 Philadelphia Pike Suite B #1226 Claymont, DE 19703.   <br> <br> This is an advertisement.    <br>  
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </center>
+</body>
+</html>
+

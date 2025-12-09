@@ -1,0 +1,181 @@
+Return-Path: <return@msudairy.com>
+Received: from juliett.baddomain.com (localhost [127.0.0.1])
+	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTP id 5B8BuFR5011192
+	for <mstowe@localhost>; Mon, 8 Dec 2025 11:56:15 GMT
+	(envelope-from return@msudairy.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=msudairy.com header.i=@msudairy.com header.b=IDo8Fzpw
+Received: from jimapinternal-aol.imap.mail.g03.yahoodns.net [67.195.228.147]
+	by juliett.baddomain.com with IMAP (fetchmail-6.6.1)
+	for <mstowe@localhost> (single-drop); Mon, 08 Dec 2025 11:56:15 +0000 (UTC)
+Received: from 127.0.0.1
+ by atlas-production.v2-mail-prod1-bf1.omega.yahoo.com pod-id atlas--production-bf1-57c9588757-9tkzm.bf1.yahoo.com with HTTP; Mon, 8 Dec 2025 11:52:33 +0000
+X-Originating-Ip: [34.212.161.109]
+Received-SPF: softfail (domain of transitioningmsudairy.com does not designate 34.212.161.109 as permitted sender)
+Authentication-Results: atlas-production.v2-mail-prod1-bf1.omega.yahoo.com;
+ dkim=pass header.i=@msudairy.com header.s=h1 arc_overridden_status=NOT_OVERRIDDEN;
+ spf=softfail smtp.mailfrom=msudairy.com arc_overridden_status=NOT_OVERRIDDEN;
+ dmarc=pass(p=REJECT) header.from=msudairy.com arc_overridden_status=NOT_OVERRIDDEN;
+X-Apparently-To: user@example.com; Mon, 8 Dec 2025 11:52:33 +0000
+X-YMailISG: d7TiEHwWLDsMFigUx_KnLiYyb10TxN31YHhA.cmKAjyglvAa
+ xQP_ksNGkUeLuYdUCiVhB8ttFSMeFbikTonhSXLiTkgn6c4HP6DbrD_44Rb5
+ 1OQrYlxVlYxVvfl61Z7FwfqO4t0lRcgCHg0sIxxxsPF4aswrmC_t5B3hyl_O
+ TX5TnHRR6FtGDHRg.pa_Bd7gj57bVwQjmb4BWzxhsJRHDBLH8YnOC8KiK95P
+ OgZF3tCdpPhOhp9VZQKXFIGjjFIx2jWDIVw5MBXA8EmZFv8QV8H.gRBSQIBc
+ m6lKBwzWmAxA_7dlqCE1MjHPoqm1ETWQJxeZvGTD9_3HvcVfUgVc0I8rJ27Z
+ iNiZBFDRfvPpM_btDW47.FjpahhxdNnwxJhwoGuHVWKaqUSacQF5u5u9Jyvb
+ vRZYyt_JJXGYOwWuaHubufG2_f8IQHs6MdKIAKSNrmncxcU74nCebx.FBhDU
+ Lu7JH5Q0FFsMIhxfMsJ03LfqICVxcbheWk9fgkY4Dvd6ZSwc.e5FegRzHB3y
+ 52fUp9W5bUkTtOXHPdO4v9IC.VP2ooJ7lFPMwZdXVJahf_7aX0hiZLXeeia3
+ pXwKvYKaRJ8VeMEtSXmkQZ.N04.hWKZtYsC38kL3ICLNrMyFBypuBm7XasMY
+ ig7llDi.7VhfoKLSyzJksQi4LUzPiPwp.Z8SWvLFWjsVK1vsfyio09namhdU
+ TRUuQFjOYn0LJrClBUI5b8EuoPqy5KgZH1XJJjKhUgI1fWb3x630z_HMrFw7
+ I8AvuLNtIm46P5.GsVDagMpWt7cWXU8BlS2WvXzwF.EXVJcQe5yWZncKNYGf
+ HbKQAXjMRsYC5l8QqqYqA0Gx62YWIZiDM3s6sD.Zo0YDFX_e.51GcyiFNQLZ
+ iZBJhKMEVp3baQQg1SJpOc98uz03SFk81NrnEiHRJKxLKJI4ww_HWDma7vvm
+ cGRWQlgLSdszhxRSPfYIk3zua_NSAs2GLg9sjfe06l.CDormAMqvhEwciSUY
+ OQ9Ap5svY48guamcySM9WOPuD9NN6aIBFYOJtdhYwaXZc0NJDjUmFL6FoJ_0
+ IBliCi2H8I8yUi.Zvn5AUOxkO4ayqqHP01HLg60f6MSDXBJTWY6tB04PQWdh
+ I_ogSUnvPe55laPe6Qi6s8U9WVKsVpXAnWnXf2wrNXSNVFoQIGjmFlpeLsxN
+ D2Mu220l1DxMoryJVAPTaOfJd_sOxrLxYLSUA4Xx6tQorkGYlRJpoPAAT.8v
+ J1VKFhrnwbFKbFS6frh6zMhuqHEjt9O7QpK2bPrkmsGJkXfRBzRVjSaeOR6y
+ sgA_loituDhNkfgTGwkadDTRoZ1NXK6XwGWVzOkpWstL0YqJYSleLKR_o99g
+ CwhVBbp32W.koOw_TQ1fUFZosTMlE2yvRybQDUwEDRMs0XMJBPpsPpQiD9o.
+ mLHHP.6mwhMABiBbHd_.DMb89NfqOqX_Ew--
+Received: from 34.212.161.109 (EHLO bioscience.officialrant.com)
+ by 10.197.42.204 with SMTPs
+ (version=TLS1_2 cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256);
+ Mon, 08 Dec 2025 11:52:33 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=h1; d=msudairy.com;
+ h=From:Reply-To:To:Subject:MIME-Version:Date:Message-ID:Content-Type:
+ Content-Transfer-Encoding:List-Unsubscribe:List-Id;
+ bh=62Bi4LR0SzgvfgCbRO5mYX/cs8NiWRnuo/YnEYlqgYQ=;
+ b=IDo8FzpwjGyvmhkuq52HPhhKzCBP5UXRPunqeJvvjAIApQygrj2AwB6EhgZk2scxow/DX3yIGsnb
+   f4CUNQDgVLtv0aYvIhTR8fXb8R4vXH5st90r2ZwyJ8cSy1HMKqA0qA8Mc9Ncu/MD+C2a0qZa9/WS
+   KUKJx50Vi5u4jPT1eYaPlDFBVYFvrpNeX7oVeQTHZgswv4RCrDaZ+129CYPK9VXoiSp6NUeXHAs6
+   AL72pIBYCKA+9OokYdfDK6nPDVa3SEO/REwhlZlK3ftSdO2LnHTUnAxBK5qrvPu/B9WomlYPHtEI
+   SdxFVfkJ5zb565QRe7o1kp29+5VX+eEAX6/HOA==
+From:      =?UTF-8?B?ICAgICAgICAgIOKep+Kep+Kepw==?==?UTF-8?B?8J2WoPCdlqDwnZax8J2WryDwnZas8J2WvvCdl4bwnZa78J2WvvCdl4vwnZeM8J2XgfCdl4LwnZeJIPCdlq7wnZa/8J2Wv/Cdlr7wnZeLXw==?=  <bexViccobiabossJenkins@msudairy.com>
+Reply-To: msudairy.com@jimapinternal-aol.imap.mail.g03.yahoodns.net
+To: user@example.com
+Subject:      =?UTF-8?B?ICAgICAgICAgIOKep+Kep+Kepw==?==?UTF-8?B?8J2WovCdl5LwnZa78J2WvvCdl4sg8J2WtvCdlr7wnZa+8J2XhDog8J2WoPCdlqDwnZax8J2WryDwnZas8J2WvvCdl4bwnZa78J2WvvCdl4vwnZeM8J2XgfCdl4LwnZeJIPCdlrLwnZa68J2XhfCdlr4gLSDwnZap8J2XjvCdl4zwnZeNICTwnZ+j8J2foyDwnZeJ8J2WvvCdl4sg8J2XkvCdlr7wnZa68J2XiyEg8J2WpfCdl4jwnZeLIPCdn6ct8J2XkvCdlr7wnZa68J2XiyDwnZeG8J2WvvCdl4bwnZa78J2WvvCdl4vwnZeM8J2XgfCdl4LwnZeJ?=       
+MIME-Version: 1.0
+Date: Mon, 08 Dec 2025 17:22:23 +0530
+Message-ID: <q0kukrtjmahf.0816643@msudairy.com>
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: 172.31.50.75
+List-Unsubscribe: <mailto:BKBJN54MCHNZNMZFMOXTONATAKP@manage.msudairy.com?subject=unsubscribe>, <http://msudairy.com/Osx3v5GdsrVym/n4/XQoNK5iNxhBkuxS/rr_rxexBck/xxAUnUPRX89Gt/rrd7/hgYwSyoY0J7z/xeevd_d/qUCyiXZ3aJFS/7erM/COYUZ6YNpGaDt/red5x/dpuUDfk3n8Rd7o/YY7v5/MG0quTdpGPFaN/>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+List-Id: <xziqkr.msudairy.com>
+Precedence: bulk
+Feedback-ID: bf2025:promotions.msudairy.com
+X-Complaints-To: abuse@msudairy.com
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [0.0.0.0]); Mon, 08 Dec 2025 11:56:16 +0000 (UTC)
+
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title></title>
+
+<meta name="x-campaign" content="debt-free-guide">
+<meta name="x-type" content="financial-education">
+<meta name="format-detection" content="telephone=no">
+<meta name="color-scheme" content="light dark">
+<meta name="supported-color-schemes" content="light dark">
+
+<!-- Gmail-safe empty preheader -->
+<span style="display:none!important;visibility:hidden!important;mso-hide:all!important;
+font-size:1px;line-height:1px;color:#fff;opacity:0;max-height:0;max-width:0;
+overflow:hidden;">&#8203;&#8203;&#8203;</span>
+
+<style type="text/css">
+  body { margin:0; padding:0; background:#f4f4f4; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; }
+  table { border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt; }
+  img { border:0; outline:none; text-decoration:none; display:block; -ms-interpolation-mode:bicubic; }
+  a { text-decoration:none; color:inherit; }
+  .container { width:640px; max-width:640px; background:#ffffff; margin:0 auto; }
+  .copy { font-family:Arial,Helvetica,sans-serif; font-size:16px; color:#111111; text-align:center; line-height:1.4; padding:10px 24px; }
+
+  .hidden,
+  [data-config],
+  [data-breakpoint],
+  [data-meta],
+  [data-ml],
+  [data-info],
+  [data-seq],
+  [data-debug],
+  [data-tier],
+  [data-flag],
+  [data-aux],
+  .offscreen,
+  .cfg {
+    display:none!important;
+    mso-hide:all!important;
+    font-size:0!important;
+    line-height:0!important;
+    max-height:0!important;
+    max-width:0!important;
+    overflow:hidden!important;
+    opacity:0!important;
+    visibility:hidden!important;
+  }
+</style>
+
+</head>
+<body style="margin:0; padding:0; background:#f4f4f4;">
+
+<!-- hidden padding block to scrub preheader bleed -->
+<div style="display:none!important;visibility:hidden!important;mso-hide:all!important;
+font-size:0;line-height:0;opacity:0;max-height:0;max-width:0;overflow:hidden;">
+&#8203;&#8203;&#8203;&#8203;&#8203;
+</div>
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f4f4f4;">
+  <tr>
+    <td align="center" style="padding:20px;">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" class="container" width="640">
+
+        <tr><td height="20" style="font-size:0;line-height:0;">&nbsp;</td></tr>
+
+
+        <tr>
+          <td align="center" style="padding:12px 16px 30px 16px;">
+            <a href="http://youdeseosperity.com/Osx3v5GdsrVym/n4/XQoNK5iNxhBkuxS/rr_rxexBck/xxAUnUPRX89Gt/rrd7/hgYwSyoY0J7z/xeevd_d/qUCyiXZ3aJFS/7erM/COYUZ6YNpGaDt/red5x/dpuUDfk3n8Rd7o/YY7v5/MG0quTdpGPFaN/" target="_blank" style="border:0;outline:none;">
+              <img src="http://youdeseosperity.com/Cs7hcj6JeurKmsy.jpg" alt="Unsubscribe" width="600" style="display:block;width:100%;max-width:600px;height:auto;border:0;outline:none;text-decoration:none;">
+            </a>
+          </td>
+        </tr>
+
+        <tr>
+          <td align="center" style="padding:0 16px;">
+            <a href="http://youdeseosperity.com/q1UyCHIQiWJL0P/6Z/NcSS4As1V6rg/rr_rxexBck/Ww4akNzMi6sqRZ/rrd7/QDUuDAau1rkMmzQ/xeevd_d/laTkkuJWCC/7erM/Qj3EXtohWOgg/red5x/xodJNTxXUg83/YY7v5/EN17PHdFb1Yn7IZ/" target="_blank">
+              <img src="http://youdeseosperity.com/406305040342762.jpg" alt="Offer Image" width="608" style="display:block;width:100%;max-width:608px;height:auto;border:0;outline:none;text-decoration:none;">
+            </a>
+          </td>
+        </tr>
+
+        <tr><td height="14" style="font-size:0;line-height:0;">&nbsp;</td></tr>
+
+        <tr>
+          <td class="copy" style="font-size:13px;color:#666;padding-bottom:12px;"></td>
+        </tr>
+
+        <tr>
+          <td align="center" style="padding:12px 16px 30px 16px;">
+            <a href="http://youdeseosperity.com/Osx3v5GdsrVym/n4/XQoNK5iNxhBkuxS/rr_rxexBck/xxAUnUPRX89Gt/rrd7/hgYwSyoY0J7z/xeevd_d/qUCyiXZ3aJFS/7erM/COYUZ6YNpGaDt/red5x/dpuUDfk3n8Rd7o/YY7v5/MG0quTdpGPFaN/" target="_blank" style="border:0;outline:none;">
+              <img src="http://youdeseosperity.com/pceN92ISniJALow.jpg" alt="Unsubscribe" width="600" style="display:block;width:100%;max-width:600px;height:auto;border:0;outline:none;text-decoration:none;">
+            </a>
+          </td>
+        </tr>
+
+      </table>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>
+
