@@ -6220,11 +6220,11 @@ impl FilterEngine {
         let has_unicode_obfuscation = self.has_unicode_obfuscation_in_headers(context);
 
         let is_legitimate =
-            has_mailing_list_infrastructure && !has_spam_content && !has_unicode_obfuscation;
+            has_mailing_list_infrastructure && !has_spam_content && !has_unicode_obfuscation && !self.has_suspicious_unsubscribe_links(context);
 
-        if has_mailing_list_infrastructure && (has_spam_content || has_unicode_obfuscation) {
+        if has_mailing_list_infrastructure && (has_spam_content || has_unicode_obfuscation || self.has_suspicious_unsubscribe_links(context)) {
             log::debug!(
-                "Mailing list infrastructure detected but contains spam content or Unicode obfuscation - not applying override"
+                "Mailing list infrastructure detected but contains spam content, Unicode obfuscation, or suspicious unsubscribe links - not applying override"
             );
         } else if is_legitimate {
             log::debug!(
@@ -6495,6 +6495,78 @@ impl FilterEngine {
         } else {
             None
         }
+    }
+
+    /// Detects suspicious unsubscribe links that indicate fake mailing lists
+    fn has_suspicious_unsubscribe_links(&self, context: &MailContext) -> bool {
+        // Check List-Unsubscribe header (case-insensitive)
+        log::debug!("Looking for List-Unsubscribe header in {} headers", context.headers.len());
+        let list_unsubscribe = self.get_header_case_insensitive(&context.headers, "List-Unsubscribe");
+        
+        if let Some(list_unsubscribe) = list_unsubscribe {
+            log::debug!("Analyzing unsubscribe header: {}", list_unsubscribe);
+            // Extract sender domain for comparison
+            let sender_domain = if let Some(from_header) = &context.from_header {
+                if let Some(at_pos) = from_header.rfind('@') {
+                    if let Some(end_pos) = from_header[at_pos..].find('>') {
+                        Some(from_header[at_pos + 1..at_pos + end_pos].to_lowercase())
+                    } else {
+                        Some(from_header[at_pos + 1..].trim().to_lowercase())
+                    }
+                } else {
+                    None
+                }
+            } else {
+                None
+            };
+
+            // Check for suspicious mailto addresses (30+ random characters)
+            if let Some(mailto_start) = list_unsubscribe.find("mailto:") {
+                if let Some(mailto_end) = list_unsubscribe[mailto_start..].find('@') {
+                    let username = &list_unsubscribe[mailto_start + 7..mailto_start + mailto_end];
+                    if username.len() > 30 && username.chars().all(|c| c.is_ascii_alphanumeric()) {
+                        log::debug!("Suspicious unsubscribe: long random mailto username ({})", username.len());
+                        return true;
+                    }
+                }
+            }
+
+            // Check for URLs with excessive path segments (>6 segments indicates obfuscation)
+            if let Some(http_start) = list_unsubscribe.find("http") {
+                if let Some(url_end) = list_unsubscribe[http_start..].find('>') {
+                    let url = &list_unsubscribe[http_start..http_start + url_end];
+                    let path_segments = url.matches('/').count();
+                    if path_segments > 6 {
+                        log::debug!("Suspicious unsubscribe: excessive path segments ({})", path_segments);
+                        return true;
+                    }
+
+                    // Check for domain mismatch (unsubscribe domain != sender domain)
+                    if let Some(sender_domain) = &sender_domain {
+                        if let Some(domain_start) = url.find("://") {
+                            if let Some(domain_end) = url[domain_start + 3..].find('/') {
+                                let unsubscribe_domain = &url[domain_start + 3..domain_start + 3 + domain_end];
+                                // Allow subdomains but flag completely different domains
+                                if !unsubscribe_domain.ends_with(sender_domain) && !sender_domain.ends_with(unsubscribe_domain) {
+                                    log::debug!("Suspicious unsubscribe: domain mismatch ({} vs {})", unsubscribe_domain, sender_domain);
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Check for image files in unsubscribe URLs (tracking pixels, not real unsubscribe)
+            if list_unsubscribe.contains(".jpg") || list_unsubscribe.contains(".png") || list_unsubscribe.contains(".gif") {
+                log::debug!("Suspicious unsubscribe: contains image file extensions");
+                return true;
+            }
+        } else {
+            log::debug!("List-Unsubscribe header not found");
+        }
+
+        false
     }
 
     /// Detects obvious spam content that should not get mailing list override
