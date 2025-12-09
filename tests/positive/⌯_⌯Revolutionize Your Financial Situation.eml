@@ -1,0 +1,172 @@
+Return-Path: <return@car-refurbished.com>
+Received: from juliett.baddomain.com (localhost [127.0.0.1])
+	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTP id 5B97vabO057846
+	for <mstowe@localhost>; Tue, 9 Dec 2025 07:57:36 GMT
+	(envelope-from return@car-refurbished.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=car-refurbished.com header.i=@car-refurbished.com header.b=De5t+xMU
+Received: from jimapinternal-aol.imap.mail.g03.yahoodns.net [67.195.228.147]
+	by juliett.baddomain.com with IMAP (fetchmail-6.6.1)
+	for <mstowe@localhost> (single-drop); Tue, 09 Dec 2025 07:57:36 +0000 (UTC)
+Received: from 127.0.0.1
+ by atlas-production.v2-mail-prod1-bf1.omega.yahoo.com pod-id atlas--production-bf1-6df489d4c-zn572.bf1.yahoo.com with HTTP; Tue, 9 Dec 2025 07:52:41 +0000
+X-Originating-Ip: [44.227.99.70]
+Received-SPF: softfail (domain of transitioningcar-refurbished.com does not designate 44.227.99.70 as permitted sender)
+Authentication-Results: atlas-production.v2-mail-prod1-bf1.omega.yahoo.com;
+ dkim=pass header.i=@car-refurbished.com header.s=h1 arc_overridden_status=NOT_OVERRIDDEN;
+ spf=softfail smtp.mailfrom=car-refurbished.com arc_overridden_status=NOT_OVERRIDDEN;
+ dmarc=pass(p=QUARANTINE) header.from=car-refurbished.com arc_overridden_status=NOT_OVERRIDDEN;
+X-Apparently-To: user@example.com; Tue, 9 Dec 2025 07:52:41 +0000
+X-YMailISG: ZuTRDa8WLDu4M3NV_gPowfddk0TecKOeYQEKrQeLtjdaKePw
+ q8Iq3yqNBmuHkGZ51i4fQMU1cCfNkCpdWmPcK9QW2HJ1KCPww2vIX4MjM8uB
+ 4EHgckJU61EAgQWbu5jRoArxnGmV7dnmXGeaSe0HIk6LUO688SpVr_xp5omY
+ iwMVu0G6aE01a5fw4Lm60ZdyZO0ugRL.Fh7viV7dDes7rZ7Y5WVcQ13JQJlG
+ Nrne1WC4zEzq8haHnXYrY.NZM2pVcTUTgGSssmHZ3otIKRoe6gmhWJ_8F9Zv
+ P_lCvv.RZQH508Q5Grvnniz8lJ6p5Z_JC35clR8M.GNU1K.ZMfK6RI3FrUHQ
+ t8Ad7DuSWKvd3iTUCdZQnWfnCh.rkqeFje4A_vO971eUGDwNzjnOXFrv1ukX
+ MJmCnQfo_NThBK7jUN8dYCSyz_wcu3NfvuCoLh_LPeEKehH_f8fRASpNIHX6
+ wkTTPAGQ0.JLq_ZCA_Z2V54C05gCWbOVcFmj8bD.cqgfaR8BRS1fhOhOpUwi
+ vKf0Ex2LIvMIsNZd_JkXoGmWF6BhyGTh7vOMtRvPkUqtvAf6M59Y_cvsdQiB
+ 9zFT64Tjo93IBNVwIWgAJEMml3RsIfwIGauRfvi4ENMaelvlDy1QjZLTcyHZ
+ A5EnOQTfMxDrtvfxs_zIZ5Qft22TjWKfu62XOdBCuysRx5RSGMFWhToP3UwS
+ 3Xt3xnMSzMHAr4zjJFphuhRWi1ijz8bgZRU1NCEybXoa1Yz_IWboFrPB__8I
+ C0dQnE40UgTZYa.HpbMZM2nkyxnR_KoxTVrpRcwiObN9IIlMFzQoPDP1OsQy
+ 9yBDqtQXCzpGPWTBuQmQDBGlmnU3y3WXrFNuoXEfjnQhDO0.6tr3kG_8F3Fb
+ icV9ybrmUtM1jWHOucpnxlUZYP4fa38vGmek1KOrr9JSGq9p2Ir3Vrr0Fjn8
+ sQRMHQb2YevOXGAfFKu5ip3zKNQGVF9vdiQYdtvJDmtQdD85mgYYDr6TLJDR
+ F9T01DXHSStBImiDn2fmdq8n5WYOla5k..IcFiqZnwWJUsznORAuQSO8o8c6
+ qY71esnUGSFz1sagU1MQhdhMliGH3GHsuZ.UwsgEp_Bctq6Y1_0Vc2WGajxN
+ QscWayKbrepRnJddnrVKzg7YZH.OO05q_V3pWBN8uE72k11HkbHvUDnb6Ho1
+ UbhMkfPM4EpDagi9UHexIMChJCgolxmiZBCV601ybXBog1pfTZSertr7eRJ5
+ acbU6gp7InIPStRPvMgI_efVUMuzWZkO8bAxFmM4r6jz6Zn7.Xmey_g3oXBS
+ Jbr.uXGBJqQsCBNu9_NcAGYJVbPVMg0R1fiJ0ad3pVFM0rH3NEH6SbC1y5sj
+ u6uNpZRZFAnC6Bn.G9P.1zUSgava_ZU1EXaqEIx3latcZWjOBUFZgr56bWZ_
+ OMB32Vj3rLiAsf_mOA--
+Received: from 44.227.99.70 (EHLO genaid.gl-finance.com)
+ by 10.197.42.204 with SMTPs
+ (version=TLS1_2 cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256);
+ Tue, 09 Dec 2025 07:52:41 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=h1; d=car-refurbished.com;
+ h=From:Reply-To:To:Subject:MIME-Version:Date:Message-ID:Content-Type:
+ Content-Transfer-Encoding:List-Unsubscribe:List-Id;
+ bh=OOpqnVjjTpLxXjtktcEtHC9Oye3vuvEC66aTr3+0PYA=;
+ b=De5t+xMUgu5Tr20Juf2zBuIuI3Ry5qg60ajM+ILwXzmEuzt/kTuJUq6L34yOyEYh8FSLrcy5hACM
+   fjJzt0ea+Kvzk/jscw7wvcmAnTsbMfIC2i0wDNAKpsEDoYu1kJFei3n6VcVQ4Xa1B3CUkL0OPIL4
+   x/uf/D8O2lZ+dUdjjh0ys7MWKqq+dyHb/o3+B3XGwBf5NI8jm2kDl0qDKN+u8KSzxI+wEqlAzNpt
+   lDhmz19yqFWNI31/aIWGQGJsI+ZXjk+JgNtGE6P00VMGL4BcHYZAW+Jyfa+xGsJzSjZtHMECH6B5
+   oB1qK3YrJyArcsSpUIgkNOHgmn4vSu7wa4yawQ==
+From:          =?UTF-8?B?4oyvfOKMrw==?=Debt Relief Experts  <BrowserPlantBatteryAntennaSweetsJewelers@car-refurbished.com>
+Reply-To: car-refurbished.com@jimapinternal-aol.imap.mail.g03.yahoodns.net
+To: user@example.com
+Subject:       =?UTF-8?B?4oyvfOKMrw==?=Revolutionize Your Financial Situation
+MIME-Version: 1.0
+Date: Tue, 09 Dec 2025 13:22:35 +0530
+Message-ID: <tn6lg4irz59i.5430864@car-refurbished.com>
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: 172.31.50.130
+List-Unsubscribe: <mailto:2JXJGD58TRFBKQ7WWX3BNW8TSD6@manage.car-refurbished.com?subject=unsubscribe>, <http://car-refurbished.com/EXSt3D3LU6/n4/97gOji1kYZ6Qx6o/rr_eY7dBck/IxhU13DjV7/rrd7/wO6qK2um9Cbjq1e/xevdved/n8jzGEGquzTCi/rx_e/BEpwSXlcaiC0pTZ/red5x/LbqSAUn6bFuS8Cu/YY7v5/5HTNv6NtbgsqX/>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+List-Id: <rehqha.car-refurbished.com>
+Precedence: bulk
+Feedback-ID: bf2025:promotions.car-refurbished.com
+X-Complaints-To: abuse@car-refurbished.com
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [0.0.0.0]); Tue, 09 Dec 2025 07:57:37 +0000 (UTC)
+
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title></title>
+
+<meta name="x-campaign" content="debt-free-guide">
+<meta name="x-type" content="financial-education">
+<meta name="format-detection" content="telephone=no">
+<meta name="color-scheme" content="light dark">
+<meta name="supported-color-schemes" content="light dark">
+
+<!-- Gmail-safe empty preheader -->
+<span style="display:none!important;visibility:hidden!important;mso-hide:all!important;
+font-size:1px;line-height:1px;color:#fff;opacity:0;max-height:0;max-width:0;
+overflow:hidden;">&#8203;&#8203;&#8203;</span>
+
+<style type="text/css">
+  body { margin:0; padding:0; background:#f4f4f4; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; }
+  table { border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt; }
+  img { border:0; outline:none; text-decoration:none; display:block; -ms-interpolation-mode:bicubic; }
+  a { text-decoration:none; color:inherit; }
+  .container { width:640px; max-width:640px; background:#ffffff; margin:0 auto; }
+  .copy { font-family:Arial,Helvetica,sans-serif; font-size:16px; color:#111111; text-align:center; line-height:1.4; padding:10px 24px; }
+
+  .hidden,
+  [data-config],
+  [data-breakpoint],
+  [data-meta],
+  [data-ml],
+  [data-info],
+  [data-seq],
+  [data-debug],
+  [data-tier],
+  [data-flag],
+  [data-aux],
+  .offscreen,
+  .cfg {
+    display:none!important;
+    mso-hide:all!important;
+    font-size:0!important;
+    line-height:0!important;
+    max-height:0!important;
+    max-width:0!important;
+    overflow:hidden!important;
+    opacity:0!important;
+    visibility:hidden!important;
+  }
+</style>
+
+</head>
+<body style="margin:0; padding:0; background:#f4f4f4;">
+
+<!-- hidden padding block to scrub preheader bleed -->
+<div style="display:none!important;visibility:hidden!important;mso-hide:all!important;
+font-size:0;line-height:0;opacity:0;max-height:0;max-width:0;overflow:hidden;">
+&#8203;&#8203;&#8203;&#8203;&#8203;
+</div>
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f4f4f4;">
+  <tr>
+    <td align="center" style="padding:20px;">
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" class="container" width="640">
+
+        <tr><td height="20" style="font-size:0;line-height:0;">&nbsp;</td></tr>
+
+        <tr>
+          <td align="center" style="padding:0 16px;">
+            <a href="http://mesingualirafia.com/CYopVCSbdWt6/6Z/8mbQwquBuR6CIv/rr_eY7dBck/o0fOXt3IVKIXw2/rrd7/9X38DmoXOIDJ0/xevdved/5Cn4H2OZTl/rx_e/sTvMKcLx5GZhU/red5x/VrduqcmQneod/YY7v5/bU2HcK4Nj4/" target="_blank">
+              <img src="http://mesingualirafia.com/906179907177457.jpg" alt="Offer Image" width="608" style="display:block;width:100%;max-width:608px;height:auto;border:0;outline:none;text-decoration:none;">
+            </a>
+          </td>
+        </tr>
+
+        <tr><td height="14" style="font-size:0;line-height:0;">&nbsp;</td></tr>
+
+        <tr>
+          <td class="copy" style="font-size:13px;color:#666;padding-bottom:12px;"></td>
+        </tr>
+
+        <tr>
+          <td align="center" style="padding:12px 16px 30px 16px;">
+            <a href="http://mesingualirafia.com/EXSt3D3LU6/n4/97gOji1kYZ6Qx6o/rr_eY7dBck/IxhU13DjV7/rrd7/wO6qK2um9Cbjq1e/xevdved/n8jzGEGquzTCi/rx_e/BEpwSXlcaiC0pTZ/red5x/LbqSAUn6bFuS8Cu/YY7v5/5HTNv6NtbgsqX/" target="_blank" style="border:0;outline:none;">
+              <img src="http://mesingualirafia.com/8QkrwyW0qF3yRgB.jpg" alt="Unsubscribe" width="600" style="display:block;width:100%;max-width:600px;height:auto;border:0;outline:none;text-decoration:none;">
+            </a>
+          </td>
+        </tr>
+
+      </table>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>
+

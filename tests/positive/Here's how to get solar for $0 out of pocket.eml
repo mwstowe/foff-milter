@@ -1,0 +1,271 @@
+Return-Path: <return@car-refurbished.com>
+Received: from juliett.baddomain.com (localhost [127.0.0.1])
+	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTP id 5B9E2aWH069667
+	for <mstowe@localhost>; Tue, 9 Dec 2025 14:02:36 GMT
+	(envelope-from return@car-refurbished.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (2048-bit key; unprotected) header.d=car-refurbished.com header.i=@car-refurbished.com header.b=Z4Zp3Cch
+Received: from jimapinternal-aol.imap.mail.g03.yahoodns.net [67.195.228.147]
+	by juliett.baddomain.com with IMAP (fetchmail-6.6.1)
+	for <mstowe@localhost> (single-drop); Tue, 09 Dec 2025 14:02:36 +0000 (UTC)
+Received: from 127.0.0.1
+ by atlas-production.v2-mail-prod1-gq1.omega.yahoo.com pod-id atlas--production-gq1-7f4cdfc669-fj9rh.gq1.yahoo.com with HTTP; Tue, 9 Dec 2025 13:56:53 +0000
+X-Originating-Ip: [35.162.169.84]
+Received-SPF: softfail (domain of transitioningcar-refurbished.com does not designate 35.162.169.84 as permitted sender)
+Authentication-Results: atlas-production.v2-mail-prod1-gq1.omega.yahoo.com;
+ dkim=pass header.i=@car-refurbished.com header.s=h1 arc_overridden_status=NOT_OVERRIDDEN;
+ spf=softfail smtp.mailfrom=car-refurbished.com arc_overridden_status=NOT_OVERRIDDEN;
+ dmarc=pass(p=QUARANTINE) header.from=car-refurbished.com arc_overridden_status=NOT_OVERRIDDEN;
+X-Apparently-To: user@example.com; Tue, 9 Dec 2025 13:56:53 +0000
+X-YMailISG: .X5jb60WLDvoMR1E7KWQgHVZgV58xwzkTECn7wyIwB3OSdqd
+ MKTIXOGFx43FSfLuewtkxRt_lSsE2S_LYKLwONBtslyze897MzR6rtLnaT8t
+ wPooUcxI5RmydJNG6fXtRBylN6nWLfqGeKfsv44zKpKvbakFXeFF3r4apfZI
+ mKX.A1x02ZZqccFw6sFYvGHDZz3TGrGce2QcZoW7IZ9_6HRENi7u9fuHi_Q1
+ htPDnuXiesOcPT1HLBRDAOo953tYpwQx.bXmslTrPy.uqNd4FDnAIWE1JF68
+ 2RsYV.jubcXq21Ew4V4aMirLMemhzwJjPyqVYxfh6hn726DV.Q9oJHVCwC.O
+ 566xREQnRPSbBpOVwsJ7kEvdQL2deoMC8FnlZyRwT97PGdauEvbm3rG78W5r
+ Y9XxrCcG_dzQ5dgkNbrDzDWVl2V.DXgyDDOydUqNQKZpJ_eB2i9a_93cWBu.
+ RnxuzuUrcgq__Rq7T_TDqjRpFVzSvhqLGj8nK.08K6NPBFRk2DI6DmEOQs71
+ rud.sMhAxlqMDV3CXmVSeWgYsiL5Hpru7jPlmZ.1To5GSCUPA6_QRuANi0.K
+ bCUjyuUASvrSDjM3_kWakm3Jke7x4_boxzm0Ch.MiU4epEWn0Y59Ps_yJPBt
+ P0Nkwrn7KTXiZPGW9Fu0FxyIo_ixOcSIlYcF22oWfTuoq8KgP8shJlwzLJ60
+ a2Z8Y9h7NdKF4rp_z55NrMYSmZQIpFWnoIA3PH6Sg4EbDwL47tyQqTMrqmUK
+ JXIS6yGzULzZtU.fAGZRNlNUMUt8nU2Zps0zvDmtfMuWXTgZ1._SWXHJoOHl
+ wwVLyFtg0f3HKC1FrWoPN4lJQLp0_urThU76oKsU3SrT4LvhrB31xtJ1VHHK
+ 4GuLs3obEmIEv06EzrW6e087auYw4K31ECrJSKp0n0cag4scgFmsLO29ggzF
+ BIK8dZisrGMENVi9LT5r9BqY.WVTI8ZeFxcAMc32DMeQcr4o5CzuTpOVjpEG
+ ivwdwTudY8a_SPNKYaZLpBs9gDZ6GAquYnabJbArKzggVe7tYAIBe7G_Z.HN
+ EiGh_dcywxLwNYk_1s9Al1F8DtMzPtyWjow3uIN20qBE6FQZp3TIoPklO1w4
+ 1Dm0iarS0mJ_DrDq_0qEFXP3mNgwXYOjsQZxihEMcu_clBkRplvflvidl325
+ TRQp2Mm8kYSI0.lLQ7BDn.hAXaoYAQK.JfDsTi78Jaf3Y4S3vr2c08MKAhQu
+ KxNFuAZwLbtDmgBap73uRtPlIKKNFHdpgmCNQyMqa5YvuXnw6_7lBdNoloAK
+ oV5zIdWGMlAlCBlwkAeVXNjMf7MnLa1QLQgzRR2cJ8gt6T4owdsUfq_dOUKY
+ pkK6mSRIDS6WmQ--
+Received: from 35.162.169.84 (EHLO renalstation.gartersofcharm.com)
+ by 10.215.138.9 with SMTPs
+ (version=TLS1_2 cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256);
+ Tue, 09 Dec 2025 13:56:53 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=h1; d=car-refurbished.com;
+ h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Transfer-Encoding:
+ Content-Type:List-Unsubscribe;
+ bh=5FR9FabOwVNdAsdLtyxuAoYmKtG7tzn96lcl2N+Rs3k=;
+ b=Z4Zp3CchUNmW0aLA+KFuevUUm4KREVCppLblgvszT9wjoKoI1COBbCN/Vkk4vNnLeW/KSMi+bRvD
+   mW30UKMis0lGW+mzKXGtgCfPL6JbC8ZLwkriKv48FhNre9aNzjs/+NzIZ+swdj1WkW9IY2ZzhT3+
+   48ZSKMMswUTAVVOsFyb1JXRPEAeC12Ro6jSdkmhQHr4/urJhVz236MdnE0bL0faU0kG6aNuZrWib
+   Jmtzs5SWF5f5FuzsISzijXaF/9o5x+izwHXdg5c0gfg2BKjSJCiF/iMBbcEJEgreF4n+89zPxZpt
+   nWvH7S9WmoJmVnHPXD0npAeDiJCXvBM3e6Zl6w==
+Date: Tue, 09 Dec 2025 19:26:48 +0530
+From:"EnergyBillCruncher.com Reduce Energy Bills"    <bikewearorganiccotton@car-refurbished.com>
+To:<user@example.com>
+Subject:Here's how to get solar for $0 out of pocket
+Message-ID: <@>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Type: text/html; charset="UTF-8"
+List-Unsubscribe: 
+<mailto:abuse-pro@car-refurbished.com?subject=MailStop&body=MxI53g5z-zVXO-zVXO-zVXO-ZGWH4s4pAd3Tf_6443979>,
+<https://car-refurbished.com/v4/unsubscribe?mid=MxI53g5z-zVXO-zVXO-zVXO-ZGWH4s4pAd3Tf&sid=6443979>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [0.0.0.0]); Tue, 09 Dec 2025 14:02:37 +0000 (UTC)
+
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+  <head>
+    <title> EnergyBillCruncher.com </title>
+    <!--[if !mso]><!-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!--<!-->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type="text/css">
+      #outlook a { padding:0; }
+      body { margin:0;padding:0;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%; }
+      table, td { border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt; }
+      <a href="http://mesingualirafia.com/S7J226YvSUJp/6Z/5mGKAx5NobHV1/rr_xr5MBck/3c4PUXnKPiw9YeH/rY7/MAnhaNC5qQ4WCUn/xevdv_d/Ue7F2jdGpzFb/7777/aeeAqlA2Nsgsm3/red5x/5d9Oh5h9dkDqH7/YY7v5/b5udvImTzXcFd/">img { border:0;height:auto;line-height:100%; outline:none;text-decoration:none;-ms-interpolation-mode:bicubic; }
+      p { display:block;margin:13px 0; }
+    </style>
+    <!--[if mso]>
+    <noscript>
+    <xml>
+    <o:OfficeDocumentSettings>
+      <o:AllowPNG/>
+      <o:PixelsPerInch>96</o:PixelsPerInch>
+    </o:OfficeDocumentSettings>
+    </xml>
+    </noscript>
+    <!-->
+    <!--[if lte mso 11]>
+    <style type="text/css">
+      .mj-outlook-group-fix { width:100% !important; }
+    </style>
+    <!-->
+    
+      <!--[if !mso]><!-->
+        <link href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Cabin:400,700" rel="stylesheet" type="text/css">
+        <style type="text/css">
+          @import url(https://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700);
+@import url(https://fonts.googleapis.com/css?family=Cabin:400,700);
+        </style>
+      <!--<!-->
+
+    
+    
+    <style type="text/css">
+      @media only screen and (min-width:480px) {
+        .mj-column-per-100 { width:100% !important; max-width: 100%; }
+      }
+    </style>
+    <style media="screen and (min-width:480px)">
+      .moz-text-html .mj-column-per-100 { width:100% !important; max-width: 100%; }
+    </style>
+    
+  
+    <style type="text/css">
+    
+    
+
+    @media only screen and (max-width:479px) {
+      table.mj-full-width-mobile { width: 100% !important; }
+      td.mj-full-width-mobile { width: auto !important; }
+    }
+  
+    </style>
+    <style type="text/css">
+    .hide_on_mobile { display: none !important;} 
+        @media only screen and (min-width: 480px) { .hide_on_mobile { display: block !important;} }
+        .hide_section_on_mobile { display: none !important;} 
+        @media only screen and (min-width: 480px) { 
+            .hide_section_on_mobile { 
+                display: table !important;
+            } 
+
+            div.hide_section_on_mobile { 
+                display: block !important;
+            }
+        }
+        .hide_on_desktop { display: block !important;} 
+        @media only screen and (min-width: 480px) { .hide_on_desktop { display: none !important;} }
+        .hide_section_on_desktop { 
+            display: table !important;
+            width: 100%;
+        } 
+        @media only screen and (min-width: 480px) { .hide_section_on_desktop { display: none !important;} }
+        
+          p, h1, h2, h3 {
+              margin: 0px;
+          }
+
+          ul, li, ol {
+            font-size: 11px;
+            font-family: Ubuntu, Helvetica, Arial;
+          }
+
+          a {
+              text-decoration: none;
+              color: inherit;
+          }
+
+        @media only screen and (max-width:480px) {
+            .mj-column-per-100 { width:100%!important; max-width:100%!important; }.mj-column-per-100 > .mj-column-per-100 { width:100%!important; max-width:100%!important; }
+        }
+
+        .mj-column-per-100 [class^="mj-column-per-"] {
+            line-height: normal;
+        }
+
+        .mj-button-full a {
+            display: block !important;
+        }
+    </style>
+    
+  </head>
+  <body style="word-spacing:normal;background-color:#FFFFFF;">
+    
+    
+      <div style="background-color:#FFFFFF;">
+        
+      
+      <!--[if mso | IE]><table align="center" border="0" cellpadding="0" cellspacing="0" class="" role="presentation" style="width:600px;" width="600" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><!-->
+    
+      
+      <div style="margin:0px auto;max-width:600px;">
+        
+        <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width:100%;">
+          <tbody>
+            <tr>
+              <td style="direction:ltr;font-size:0px;padding:9px 0px 9px 0px;text-align:center;">
+                <!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="" style="vertical-align:top;width:600px;" ><!-->
+            
+      <div class="mj-column-per-100 mj-outlook-group-fix" style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
+        
+      <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="vertical-align:top;" width="100%">
+        <tbody>
+          
+              <tr>
+                <td align="center" style="font-size:0px;padding:0px 0px 0px 0px;word-break:break-word;">
+                  
+      <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse:collapse;border-spacing:0px;">
+        <tbody>
+          <tr>
+            <td style="width:600px;">
+              
+      <a href="http://mesingualirafia.com/S7J226YvSUJp/6Z/5mGKAx5NobHV1/rr_xr5MBck/3c4PUXnKPiw9YeH/rY7/MAnhaNC5qQ4WCUn/xevdv_d/Ue7F2jdGpzFb/7777/aeeAqlA2Nsgsm3/red5x/5d9Oh5h9dkDqH7/YY7v5/b5udvImTzXcFd/"><img src="http://mesingualirafia.com/705614921641735.jpg" style="border:0;border-radius:0px 0px 0px 0px;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:13px;" width="600" height="auto">
+    
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    
+                </td>
+              </tr>
+            
+              <tr>
+                <td align="left" style="font-size:0px;padding:15px 15px 15px 15px;word-break:break-word;">
+                  
+                          <div style="font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:13px;line-height:1.5;text-align:left;color:#000000;"><p style="font-family: Helvetica, Arial, sans-serif; font-size: 11px; text-align: center;"><span style="font-size: 17px;"><strong><span style="color: rgb(224, 62, 45);">Claim these incentives before they expire 
+</span></strong></span></p></div>
+    
+                </td>
+              </tr>
+            
+              <tr>
+                <td align="center" style="font-size:0px;padding:0px 0px 0px 0px;word-break:break-word;">
+                  
+      <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse:collapse;border-spacing:0px;">
+        <tbody>
+          <tr>
+            <td style="width:600px;">
+              
+      <a href="http://mesingualirafia.com/xVeyUQFMYCQ745/n4/ZmDTEEccQWBDW/rr_xr5MBck/F7qqaP9OiLCK/rY7/xDh2qrs9VWaXAU/xevdv_d/2EgwywNwbJbkiB/7777/vYkDPAU6yGRx/red5x/hfC0IIv767t5Esc/YY7v5/TT7I4zlthh/"><img src="http://mesingualirafia.com/063407668975825.png" style="border:0;border-radius:0px 0px 0px 0px;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:13px;" width="600" height="auto">
+    
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    
+                </td>
+              </tr>
+            
+        </tbody>
+      </table>
+    
+      </div>
+    
+          <!--[if mso | IE]></td></tr></table><!-->
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        
+      </div>
+    
+      
+      <!--[if mso | IE]></td></tr></table><!-->
+    
+    
+      </div>
+    
+  </body>
+</html>
+
