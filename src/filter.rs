@@ -6820,13 +6820,16 @@ impl FilterEngine {
                             brand,
                             domain
                         );
-                        
+
                         // Higher score for insurance brand impersonation
-                        if brand.contains("liberty mutual") || brand.contains("geico") || 
-                           brand.contains("allstate") || brand.contains("progressive") {
+                        if brand.contains("liberty mutual")
+                            || brand.contains("geico")
+                            || brand.contains("allstate")
+                            || brand.contains("progressive")
+                        {
                             return 100; // Major insurance brand impersonation
                         }
-                        
+
                         return 75;
                     }
                 }
@@ -7041,38 +7044,61 @@ impl FilterEngine {
 
         false
     }
-    
+
     /// Detect insurance spam patterns
     fn get_insurance_spam_score(&self, context: &MailContext) -> i32 {
-        let domain = self.extract_sender_domain(context).unwrap_or_default().to_lowercase();
-        
+        let domain = self
+            .extract_sender_domain(context)
+            .unwrap_or_default()
+            .to_lowercase();
+
         // Skip insurance detection for legitimate financial institutions
         let legitimate_financial = [
-            "becu.org", "email-becu.org", "creditunion.org", "bank.com", "chase.com",
-            "wellsfargo.com", "bankofamerica.com", "usbank.com", "pnc.com"
+            "becu.org",
+            "email-becu.org",
+            "creditunion.org",
+            "bank.com",
+            "chase.com",
+            "wellsfargo.com",
+            "bankofamerica.com",
+            "usbank.com",
+            "pnc.com",
         ];
-        
+
         for legit_domain in legitimate_financial {
             if domain.contains(legit_domain) {
-                log::debug!("Skipping insurance spam detection for legitimate financial institution: {}", domain);
+                log::debug!(
+                    "Skipping insurance spam detection for legitimate financial institution: {}",
+                    domain
+                );
                 return 0;
             }
         }
-        
+
         let mut content = String::new();
-        if let Some(subject) = &context.subject { content.push_str(subject); }
-        if let Some(body) = &context.body { content.push_str(body); }
-        if let Some(from_header) = &context.from_header { content.push_str(from_header); }
-        
+        if let Some(subject) = &context.subject {
+            content.push_str(subject);
+        }
+        if let Some(body) = &context.body {
+            content.push_str(body);
+        }
+        if let Some(from_header) = &context.from_header {
+            content.push_str(from_header);
+        }
+
         let content_lower = content.to_lowercase();
         let mut score = 0;
-        
+
         // Auto insurance spam patterns
         let auto_insurance_patterns = [
-            "cheap auto insurance", "auto insurance quotes", "car insurance quotes",
-            "cheap car insurance", "insurance quotes", "auto insurance rates"
+            "cheap auto insurance",
+            "auto insurance quotes",
+            "car insurance quotes",
+            "cheap car insurance",
+            "insurance quotes",
+            "auto insurance rates",
         ];
-        
+
         for pattern in auto_insurance_patterns {
             if content_lower.contains(pattern) {
                 score += 60;
@@ -7080,13 +7106,17 @@ impl FilterEngine {
                 break;
             }
         }
-        
+
         // Life insurance spam patterns
         let life_insurance_patterns = [
-            "life insurance", "term life policy", "life policy quote",
-            "rapid decision", "instant approval", "rapiddecision"
+            "life insurance",
+            "term life policy",
+            "life policy quote",
+            "rapid decision",
+            "instant approval",
+            "rapiddecision",
         ];
-        
+
         for pattern in life_insurance_patterns {
             if content_lower.contains(pattern) {
                 score += 60;
@@ -7094,37 +7124,48 @@ impl FilterEngine {
                 break;
             }
         }
-        
+
         // Large dollar amount patterns (common in insurance spam)
-        if content_lower.contains("$") && (
-            content_lower.contains("million") || 
-            content_lower.contains("000,000") ||
-            content_lower.contains("2,000,000")
-        ) {
+        if content_lower.contains("$")
+            && (content_lower.contains("million")
+                || content_lower.contains("000,000")
+                || content_lower.contains("2,000,000"))
+        {
             score += 30;
             log::debug!("Large dollar amount detected in insurance context");
         }
-        
+
         score
     }
-    
+
     /// Detect solar/energy spam patterns
     fn get_solar_energy_spam_score(&self, context: &MailContext) -> i32 {
         let mut content = String::new();
-        if let Some(subject) = &context.subject { content.push_str(subject); }
-        if let Some(body) = &context.body { content.push_str(body); }
-        if let Some(from_header) = &context.from_header { content.push_str(from_header); }
-        
+        if let Some(subject) = &context.subject {
+            content.push_str(subject);
+        }
+        if let Some(body) = &context.body {
+            content.push_str(body);
+        }
+        if let Some(from_header) = &context.from_header {
+            content.push_str(from_header);
+        }
+
         let content_lower = content.to_lowercase();
         let mut score = 0;
-        
+
         // Solar spam patterns
         let solar_patterns = [
-            "solar for $0", "free solar", "no money down solar",
-            "reduce energy bills", "solar installation", "solar panels",
-            "energy bill", "solar savings"
+            "solar for $0",
+            "free solar",
+            "no money down solar",
+            "reduce energy bills",
+            "solar installation",
+            "solar panels",
+            "energy bill",
+            "solar savings",
         ];
-        
+
         for pattern in solar_patterns {
             if content_lower.contains(pattern) {
                 score += 50;
@@ -7132,58 +7173,76 @@ impl FilterEngine {
                 break;
             }
         }
-        
+
         // Energy company impersonation patterns
-        if content_lower.contains("energy") && (
-            content_lower.contains("bill") || 
-            content_lower.contains("cruncher") ||
-            content_lower.contains("reduce")
-        ) {
+        if content_lower.contains("energy")
+            && (content_lower.contains("bill")
+                || content_lower.contains("cruncher")
+                || content_lower.contains("reduce"))
+        {
             score += 40;
             log::debug!("Energy company impersonation detected");
         }
-        
+
         score
     }
-    
+
     /// Detect suspicious domain patterns
     fn get_suspicious_domain_score(&self, context: &MailContext) -> i32 {
-        let domain = self.extract_sender_domain(context).unwrap_or_default().to_lowercase();
-        
+        let domain = self
+            .extract_sender_domain(context)
+            .unwrap_or_default()
+            .to_lowercase();
+
         // Suspicious domain patterns
         let suspicious_patterns = [
             r".*-refurbished\.com$",
             r".*eventsandvenue\.com$",
             r".*\.digital$", // Physical products from .digital domains
         ];
-        
+
         for pattern in suspicious_patterns {
             if let Ok(regex) = regex::Regex::new(pattern) {
                 if regex.is_match(&domain) {
-                    log::debug!("Suspicious domain pattern detected: {} matches {}", domain, pattern);
+                    log::debug!(
+                        "Suspicious domain pattern detected: {} matches {}",
+                        domain,
+                        pattern
+                    );
                     return 75;
                 }
             }
         }
-        
+
         0
     }
-    
+
     /// Detect product sales spam
     fn get_product_sales_spam_score(&self, context: &MailContext) -> i32 {
         let mut content = String::new();
-        if let Some(subject) = &context.subject { content.push_str(subject); }
-        if let Some(body) = &context.body { content.push_str(body); }
-        
+        if let Some(subject) = &context.subject {
+            content.push_str(subject);
+        }
+        if let Some(body) = &context.body {
+            content.push_str(body);
+        }
+
         let content_lower = content.to_lowercase();
-        let domain = self.extract_sender_domain(context).unwrap_or_default().to_lowercase();
-        
+        let domain = self
+            .extract_sender_domain(context)
+            .unwrap_or_default()
+            .to_lowercase();
+
         // Product sales from suspicious domains
         let product_patterns = [
-            "christmas tree", "night light", "ceramic", "vintage-inspired",
-            "festive", "holiday decoration"
+            "christmas tree",
+            "night light",
+            "ceramic",
+            "vintage-inspired",
+            "festive",
+            "holiday decoration",
         ];
-        
+
         for pattern in product_patterns {
             if content_lower.contains(pattern) {
                 // Higher score if from suspicious domain
@@ -7194,7 +7253,7 @@ impl FilterEngine {
                 return 30;
             }
         }
-        
+
         0
     }
 
