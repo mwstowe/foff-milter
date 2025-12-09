@@ -6926,8 +6926,18 @@ impl FilterEngine {
         
         // Seasonal sales from legitimate retailers
         if self.is_legitimate_retailer(domain) {
-            let seasonal_terms = ["black friday", "cyber monday", "holiday sale", "seasonal sale"];
+            let seasonal_terms = ["black friday", "cyber monday", "holiday sale", "seasonal sale", "christmas", "holiday promotion"];
             for term in seasonal_terms {
+                if content_lower.contains(term) {
+                    return true;
+                }
+            }
+        }
+        
+        // Technology/security product promotions from legitimate companies
+        if domain.contains("reolink") || domain.contains("security") {
+            let tech_terms = ["security camera", "surveillance", "home security", "camera system"];
+            for term in tech_terms {
                 if content_lower.contains(term) {
                     return true;
                 }
@@ -6947,6 +6957,7 @@ impl FilterEngine {
             "silhouettedesignstore.co",
             "esprovisions.com",
             "adapthealth",
+            "adapthealthmarketplace.com",
             "duluth",
             "toast-restaurants.com",
             "quora.com",
@@ -6963,6 +6974,8 @@ impl FilterEngine {
             "walmart.com",
             "target.com",
             "bestbuy.com",
+            // Additional legitimate domains
+            "reolinksupport.com",
         ];
 
         // Use case-sensitive exact matching or subdomain matching for security
@@ -6984,6 +6997,7 @@ impl FilterEngine {
             "reolink",
             "silhouettedesignstore.co",
             "adapthealth",
+            "adapthealthmarketplace.com",
             "duluth",
             "toast-restaurants.com",
             "uncommongoods.com",
@@ -6997,6 +7011,8 @@ impl FilterEngine {
             "walmart.com",
             "target.com",
             "bestbuy.com",
+            // Additional legitimate retailers
+            "reolinksupport.com",
         ];
 
         // Use case-sensitive exact matching or subdomain matching for security
