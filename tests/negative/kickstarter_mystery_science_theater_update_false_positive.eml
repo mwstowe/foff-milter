@@ -1,0 +1,4177 @@
+Return-Path: <mstowe+caf_=mstowe=baddomain.com@gmail.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTPS id 5B8L6Wbr032222
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <mstowe@baddomain.com>; Mon, 8 Dec 2025 21:06:32 GMT
+	(envelope-from mstowe+caf_=mstowe=baddomain.com@gmail.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (2048-bit key; unprotected) header.d=kickstarter.com header.i=@kickstarter.com header.b=sKYOE1oJ;
+	dkim=pass (1024-bit key; unprotected) header.d=sendgrid.info header.i=@sendgrid.info header.b=rDxIrx0w
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 5B8L6SYq100040
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=OK)
+	for <mstowe@baddomain.com>; Mon, 8 Dec 2025 15:06:30 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 5B8L6SYq100040
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (2048-bit key, unprotected) header.d=kickstarter.com header.i=@kickstarter.com header.a=rsa-sha256 header.s=s1 header.b=sKYOE1oJ;
+	dkim=pass (1024-bit key, unprotected) header.d=sendgrid.info header.i=@sendgrid.info header.a=rsa-sha256 header.s=smtpapi header.b=rDxIrx0w
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-63c489f1e6cso7682614a12.1
+        for <mstowe@baddomain.com>; Mon, 08 Dec 2025 13:06:30 -0800 (PST)
+ARC-Seal: i=2; a=rsa-sha256; t=555-123-4567; cv=pass;
+        d=google.com; s=arc-20240605;
+        b=ezbPAa1TymujSmTE6Y+ZEwtx65zqLvXJbZTCs1wG+8jDe0hVOlnp9h8mJ9qRFPuzwF
+         fa7H1YlCl3Dl6T7MwVkyb+/z2GrcGOsyr1NWrUpccZSKUrwdRcU8ByawgxBeg+k92d+9
+         JKhs5MuJ1jdNiFR0vX2nTjSn/zsqStkfN5M0wB95pZj95MIecEBPgZeWvUbW7ZiBkm0c
+         ObRN6CZP6E/ycp2BbfreUCIZcKqin3zTfGl/vq1NNwdqCe2KNJ+qwST0sKIObJJkoyaq
+         aycGcLJkgI8oV4F+mBuud4AdhAOGm3DzjfLXSu42xT42YyH6OLTzcGzEvi1SbycHIldW
+         CHOg==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=to:reply-to:content-transfer-encoding:mime-version:subject
+         :message-id:from:date:dkim-signature:dkim-signature:delivered-to;
+        bh=exKA6YKrbV+QqITPV9Ruc3diEIHpG1TG6SNL47lxfi8=;
+        fh=bPWuE2cS5l7NASBRpUaLOKi11cy8HPNyFnqCjUQ5xkc=;
+        b=QNxoW6Cg0f++4hM1NhKpa2AawPCQ71uANMsg4bLO6U5QTD0ErWjknZncId0BLW6Ufs
+         JRcKT5Zuo+QKcXsQ8+/cN8kNpiwPwTVQnTgfP71poAdOd+rx1k1VwTyMeLHSI1RfVdPd
+         UQJ5VVE3mzfmCQ362RxVVTwkGTJhhiwBOJxualkBfj5dAFQTMEHPx9wVskfMGIaETeHK
+         v/HLRKe5xUjEbTNWF4tuISEMDi/z3UyieQfYiwJaN0k10dbZeCUC1pTvuBCWmvYPJpEM
+         KxcldxUIkc3Ky87tUC+UA8UU0TpXvKgdy0TvFtIb7v6LGsdS9XPjKsg853zMuD3pd1Rd
+         3kLA==;
+        darn=baddomain.com
+ARC-Authentication-Results: i=2; mx.google.com;
+       dkim=pass header.i=@kickstarter.com header.s=s1 header.b=sKYOE1oJ;
+       dkim=pass header.i=@sendgrid.info header.s=smtpapi header.b=rDxIrx0w;
+       spf=pass (google.com: domain of bounces+145129-18ec-mstowe=gmail.com@sg.kickstarter.com designates 167.89.20.251 as permitted sender) smtp.mailfrom="bounces+145129-18ec-mstowe=gmail.com@sg.kickstarter.com";
+       dmarc=pass (p=QUARANTINE sp=QUARANTINE dis=NONE) header.from=kickstarter.com
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=555-123-4567; x=555-123-4567;
+        h=to:reply-to:content-transfer-encoding:mime-version:subject
+         :message-id:from:date:dkim-signature:dkim-signature:delivered-to
+         :x-forwarded-for:x-forwarded-to:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=exKA6YKrbV+QqITPV9Ruc3diEIHpG1TG6SNL47lxfi8=;
+        b=l6EIsa31k4P25zENXCRoVYtjncKB1df/S9UuOJq4xp5Scpf+lb69HykEhmjD4C6iCi
+         LEHk29ZG7W8Xf003o4jTuw3KxHi+EAEln9LRvEhK9/rPnzLNhO9+K1Z2WkSRg/60OCdZ
+         yp6L4rm7K+OXLclqOalxMPqPH9cylq+pMOWrPIsym3bk8K3X4Oqm6KfXvLtJtcmZv0RT
+         SuXFVnGKo6bmGXlNjA+xfDj/CebI2OZ3xNRthoniBDa3VreGosBBuICP4fKnrr/fKCWb
+         l6sAHhdX4Zy1VOVMd5+8qbfkdDRvawIJS8CxDzE7he4wwafwK4ygesBfWUTjxM+yAGxv
+         Nyqw==
+X-Forwarded-Encrypted: i=2; AJvYcCXTy+VwV9Xddcy2wgMzKQT+az2+g/FEjkAjy4g2TTgEoiRWPV5Y6UyYCduIrRYCgCmN35Gg28s=@baddomain.com
+X-Gm-Message-State: AOJu0Yw8uBUPiS+RiUxsG4KY9wQa4jjet+kc3HsglGkhJNWqckk2JaZZ
+	cDFneHMJEpdaef1LKtzoBNmSOqQrQBitPLdE2eRUbv/kO1VQ8RQc5QBcf4mJU8Dv9zoA6Qm+ypg
+	JdcaFYxbO3hHlRY8TvqlxJKpzmst2PQAhJaF61Dn4V8u2T3YYJo/8FLh0X/XLvQ==
+X-Received: by 2002:a05:6402:210b:b0:649:1987:575a with SMTP id 4fb4d7f45d1cf-6495aac3520mr633874a12.3.1765227987987;
+        Mon, 08 Dec 2025 13:06:27 -0800 (PST)
+X-Forwarded-To: mstowe@baddomain.com
+X-Forwarded-For: user@example.com mstowe@baddomain.com
+Delivered-To: user@example.com
+Received: by 2002:a05:6400:a11b:b0:2bc:fd4a:89b5 with SMTP id k27csp9723766eck;
+        Mon, 8 Dec 2025 13:06:25 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHffCdk0s5ndtrIf0gQbgI3oYTA/v03DKHf7TrqS4d/zWrJJuZuLOUFCpDVf2nUdF6sL2x4
+X-Received: by 2002:a05:6214:260a:b0:7e9:2697:dc63 with SMTP id 6a1803df08f44-8883dc4aea1mr147304306d6.48.1765227982299;
+        Mon, 08 Dec 2025 13:06:22 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=555-123-4567; cv=none;
+        d=google.com; s=arc-20240605;
+        b=iudjg4GtOw/KMzRrUwSb4T/nzYI1V5FljxIEkPp8bh9UaMoV7Pl7euGsMx1ni3x7Rn
+         9JeKR5ut1HYnhoFMZo++47ntlAUQQgAHCgEF9PTviqfKtaPNEZmlFrjNtyzeXKUIfLU2
+         nxJsNZC9C/XLYpkL98vDBk9/ecqbMbYTiazdSz3tzX9Tqn4pTjjgiRyg6XCv9mqpTcIt
+         ccIcPyr6RQ/PGNLh9SR+Upu3SniHQMlNvTAySnXiLdBnqaImbuSl4wMsw+BiFWHk85HI
+         0Vc9ftgbAcHII+mP2gTxeZkb5OIB2Kff65OSK7cEmg4CmytvLYOSvn6ESCmiAM0JHCI/
+         mi5A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=to:reply-to:content-transfer-encoding:mime-version:subject
+         :message-id:from:date:dkim-signature:dkim-signature;
+        bh=exKA6YKrbV+QqITPV9Ruc3diEIHpG1TG6SNL47lxfi8=;
+        fh=mT0Hi1oeQuwKdVkoCKIRR+MEHYH9sEP9ymI/x2O5QRU=;
+        b=G7/FEFlw5pwcI5RUSURy9UwnYW+JxRd5azIrwLSfQrKtZBtUw0KPAStkpQf/2JjlOO
+         PDOLQlh8vpcZlaX/yPqHLwJ7rcgURXbTUdEtX/rxHsYq7bV4PbBaQXQmTQct05s8kssJ
+         WDTBAcf87LXQFbvgs8LdgUPB/zizIdggxsxFHI9CcxZp5eD35qHBo7Gem0INeCH4zdVH
+         Us1EMurKAtNZtO2hESeXnuBPmk233Uydm0+Snr5bvERpIf+jZfEbJlYf02d9IajmilxS
+         apv0ve7/Hm+pQjxW85oLYQddTdJO2qMdgFio8LIN0AMJDvG2K0413FXqv5sfqTJALJNx
+         gJow==;
+        dara=google.com
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@kickstarter.com header.s=s1 header.b=sKYOE1oJ;
+       dkim=pass header.i=@sendgrid.info header.s=smtpapi header.b=rDxIrx0w;
+       spf=pass (google.com: domain of bounces+145129-18ec-mstowe=gmail.com@sg.kickstarter.com designates 167.89.20.251 as permitted sender) smtp.mailfrom="bounces+145129-18ec-mstowe=gmail.com@sg.kickstarter.com";
+       dmarc=pass (p=QUARANTINE sp=QUARANTINE dis=NONE) header.from=kickstarter.com
+Received: from o3.email.kickstarter.com (o3.email.kickstarter.com. [167.89.20.251])
+        by mx.google.com with ESMTPS id 6a1803df08f44-88842302028si99045676d6.112.2025.12.08.13.06.21
+        for <user@example.com>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 08 Dec 2025 13:06:22 -0800 (PST)
+Received-SPF: pass (google.com: domain of bounces+145129-18ec-mstowe=gmail.com@sg.kickstarter.com designates 167.89.20.251 as permitted sender) client-ip=167.89.20.251;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@kickstarter.com header.s=s1 header.b=sKYOE1oJ;
+       dkim=pass header.i=@sendgrid.info header.s=smtpapi header.b=rDxIrx0w;
+       spf=pass (google.com: domain of bounces+145129-18ec-mstowe=gmail.com@sg.kickstarter.com designates 167.89.20.251 as permitted sender) smtp.mailfrom="bounces+145129-18ec-mstowe=gmail.com@sg.kickstarter.com";
+       dmarc=pass (p=QUARANTINE sp=QUARANTINE dis=NONE) header.from=kickstarter.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kickstarter.com;
+	h=date:from:subject:mime-version:content-type:content-transfer-encoding:
+	reply-to:to:cc:content-type:date:feedback-id:from:subject:to;
+	s=s1; bh=exKA6YKrbV+QqITPV9Ruc3diEIHpG1TG6SNL47lxfi8=;
+	b=sKYOE1oJfWmRcA30rvu29k6IrDTiUPNO7u5OHjv964Ehj41qIszgMk97NMDuUoRS9J1M
+	Sr05qi9aYnNCmFrHgJOJqkV6psMFx3tKwMqyM6RZ+8TlXB1JgaTjZSw9zElnHu1bMafb4j
+	VULG5tMKZiYgEuAEOMvRgybbC5oIALdWpeZCC9J8z23pdK2xfxZT9Td7f24N+t3QDI0Ih1
+	MemXo7w8xL++2Zt7naHoMnSs/qKRR5rsWmgoat7Opu4oIhltWE4wB9uLoRH4lkD2KknqTb
+	mCyIz2wFvsVmPew3JklBzKSkU2j9EyvibvS1025Qt74M7z3Vd/ZBja6F4VZyzj2w==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sendgrid.info;
+	h=date:from:subject:mime-version:content-type:content-transfer-encoding:
+	reply-to:to:cc:content-type:date:feedback-id:from:subject:to;
+	s=smtpapi; bh=exKA6YKrbV+QqITPV9Ruc3diEIHpG1TG6SNL47lxfi8=;
+	b=rDxIrx0whqYdjAsx5KsKD0Bb5kqMmALK+4VeEQ03Ws1ZlGeSAit6tjcE6r0X53gNRsev
+	8N6XvTBwOIU7tg1wFx60NTBFZgRtytBbLh+EQMyWoDJGJyTeO00/rfob5gfAOxTTJumKCu
+	xt2hhuyaFkun3jCtkOD1+q236nY8Qti0w=
+Date: Mon, 08 Dec 2025 21:06:20 +0000 (UTC)
+From: Kickstarter <no-reply@kickstarter.com>
+Message-ID: <cc99c6d6-eec0-4c73-8010-6660b09abfcd@kickstarter.com>
+Subject: Project Update #6: Mystery Science Theater 3000: The Game by
+ Cryptozoic Entertainment
+Mime-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="--==_mimepart_69373dc15341f_356dadea1dc453a5";
+ charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-SIG: 48445aa1e36408bc846265ead864f76a1b1e3f4b
+Reply-To: No Reply <no-reply@kickstarter.com>
+X-SG-EID: 
+ =?us-ascii?Q?u001=2ES4ZFcoR0qiaR6m2MIbDuT7wr5Z+Llt2IXINfFkrC1r1Ddls05eQI6bpTH?=
+ =?us-ascii?Q?gbaGG7FgNL8WbdON24CFxMdQF62K8Xp4yU8ognI?=
+ =?us-ascii?Q?rDDlrMM1jRizP6XrP8gTHVJ4yoVR7HhPRWE+K8=2F?=
+ =?us-ascii?Q?jReikom6qn1gRFA8XLe6veG4fh52HnZNipDPqvI?=
+ =?us-ascii?Q?tD5HBOJYKIrKW4kd=2FE8s8W4aFZYJNo9XvsHEMgn?=
+ =?us-ascii?Q?0=2FxhiQBbzvcShC0SOL1=2F7q+oh3HRtEgi66OVyfT?=
+ =?us-ascii?Q?2Bi1?=
+X-SG-ID: 
+ =?us-ascii?Q?u001=2ESdBcvi+Evd=2FbQef8eZF3BlHJtISQpJLQpoWIU+SWUFuK=2F2oQWsGAD+2Gm?=
+ =?us-ascii?Q?brHxLwLMxWPv1jCdMa6crluZoIj=2FBXvd=2FOL4OOX?=
+ =?us-ascii?Q?IiGC1FjkJvsggp+p7c37kcHaszkQ5Luq66I1w+I?=
+ =?us-ascii?Q?8qVDEU6PvUKmVXxW6Q+IYN=2FFIBND+sOD=2F5ypLDG?=
+ =?us-ascii?Q?H9fcPfIpE1bHpSrAyXLxKu4xcyGmuISyujhS1gf?=
+ =?us-ascii?Q?miQjDLh0NVhzu3uLT=2FQWn8KE44pteAb5K8EZBqR?=
+ =?us-ascii?Q?m+JIRX44JZgT+K46=2FnAUN02qPECTMvi=2FZjhuPTk?=
+ =?us-ascii?Q?suf9iw6iv7hDZPLlMvwYOUKrYLJp1Gwbgb+tT=2Fb?=
+ =?us-ascii?Q?Bd=2F3nIOrAF3yPQ6wJ5rDweVhdA9jNZc4hREhTHc?=
+ =?us-ascii?Q?QmrxqHqhdlw4F2KW78iz84gyb4WL+HoPFZeN+m=2F?=
+ =?us-ascii?Q?9yiD5AwMfRL2gIWdsc8iD3cAgCrKiA7e2Q7hDd+?=
+ =?us-ascii?Q?IHpuAivx7bNMavZnBqIa6Y27iAbK10Q8oqVCB=2Fo?=
+ =?us-ascii?Q?P+f+wyCU0VKagmZ1nlR0GGLYh8sxMXvWbns0CBk?=
+ =?us-ascii?Q?=2FBDOepabGrqFOYhUiSJj0lRHyptTGtF0B5iIjm3?=
+ =?us-ascii?Q?qYsb+FlTrjD3dT684Us0Pz90Xbvgv5cVMCq18q3?=
+ =?us-ascii?Q?uazhpFRJUnaKC+gBJRcmiB1FulxlrT8Rjn420i2?=
+ =?us-ascii?Q?KeS800Fi4w=2F54KMEz4nqzY82HZssVrK160e8GME?=
+ =?us-ascii?Q?2gXrCTPPTu54lMkk3o32mBsK69m5E9ZGdTUNZny?=
+ =?us-ascii?Q?MCCD16IKRuo7xu0G9kfgOYWbgBx=2F1+=2FjjCqlf35?=
+ =?us-ascii?Q?PO1x0GxJtp8e6yvun2d6zVFCz9lWnHMScgDR7vk?=
+ =?us-ascii?Q?vxvUyxXFHtQFU=3D?=
+To: user@example.com
+X-Entity-ID: u001.8WFXTVi1v91WxLUIpO/t4w==
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Mon, 08 Dec 2025 21:06:32 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Mon, 08 Dec 2025 15:06:31 -0600 (CST)
+X-Spam-Flag: YES
+
+
+----==_mimepart_69373dc15341f_356dadea1dc453a5
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+Riff Contest Finalists=E2=80=A6VOTE NOW! ( https://www.kickstarter.com/proj=
+ects/cze/mst3k-the-game/posts/4561886?ref=3Dksr_email_mktg_auto_backer_proj=
+ect_update_registered_users )=0D
+ Posted by Cryptozoic Entertainment=0D
+=0D
+Dec 8, 2025=0D
+View on Kickstarter ( https://www.kickstarter.com/projects/cze/mst3k-the-ga=
+me/posts/4561886?ref=3Dksr_email_mktg_auto_backer_project_update_registered=
+_users )=0D
+=0D
+MSTies,=0D
+=0D
+Salutations, you sailors of the star-filled seas! You=E2=80=99ve continued =
+to riff and stick it out with us this weekend and we have brought news from=
+ the shores of the contested lands=E2=80=A6we have an update on the Riff Co=
+ntest!=0D
+=0D
+TOP 5 RIFFS! Vote for the Winner!=0D
+---------------------------------=0D
+=0D
+You all submitted SO MANY good riffs, some directly from the show and other=
+s wholly original. Thank you! We somehow managed to narrow it down to our 5=
+ favorites below! Congratulations to the finalists!=0D
+=0D
+* =E2=80=9CI feel so relaxed right now. Like all my troubles are melting aw=
+ay.=E2=80=9D =C2=A0- Lauren=0D
+* =E2=80=9CI didn't say "Simon Says!"=E2=80=9D - Nick=0D
+* =E2=80=9CMale socialization activities are so weird!=E2=80=9D - Annabel=0D
+* =E2=80=9CSet lasers to dumb.=E2=80=9D - Justin=0D
+* =E2=80=9CStop! Stop! I promise I'll floss more regularly!=E2=80=9D - Jim=0D
+=0D
+Cast your vote at this link ( https://forms.gle/9GPddJT2oa2XNDsT9 ) so we c=
+an determine the winner! You have until tomorrow (12/9/25) at 9:00 AM PST t=
+o vote, and then we will announce the results and our winner in our daily u=
+pdate!=0D
+=0D
+UNLOCKED STRETCH GOALS=0D
+----------------------=0D
+=0D
+Three more stretch goals, just like that! Thanks for the amazing support.=0D
+=0D
+First, we invite you to uncover so many secrets with The Terror, a film whe=
+re a shipwrecked young French soldier bothers an old reclusive Baron, and g=
+ets into some Scooby-Doo shenanigans. 2 Movie Moment cards and 2 Riffs will=
+ be added for the movie to the Deluxe game. Enjoy the deals with the Devil,=
+ hauntings, and floating boulders!=0D
+=0D
+=0D
+=0D
+=0D
+=0D
+=0D
+=0D
+=0D
+=0D
+For our next experiment, we invite you to learn the perils of "the devil's =
+lettuce" with Reefer Madness, a film that could be considered the Requiem f=
+or a Dream for pot in the late 1930s. 2 Movie Moment cards and 2 Riffs will=
+ be added for the movie to the Deluxe game. Dig that crazy piano, grab your=
+ best gal, and chill out, man! You're about to see someone's whole life cru=
+mble around them in this sensationalist schlock.=C2=A0=0D
+=0D
+=0D
+=0D
+=0D
+=0D
+=0D
+=0D
+=0D
+=0D
+Last but not least, we invite you to get a whiff of Cyrano de Bergerac, an =
+award-winning film based on the play of the same name where a man with a bi=
+g nose is in love with the girl all the fellas are after. 2 Movie Moment ca=
+rds and 2 Riffs will be added for the movie to the Deluxe game. You've like=
+ly seen the iconic balcony scene adapted across a thousand iterations, so I=
+ thought we could educate you monkeys a little with some culture today by s=
+howing you the source.=0D
+=0D
+=0D
+=0D
+=0D
+=0D
+=0D
+=0D
+=0D
+=0D
+Spotlight: The Wasp Woman=0D
+-------------------------=0D
+=0D
+=0D
+=0D
+In this film, we have a precursor to what The Substance did by half a centu=
+ry and change. A businesswoman is being pushed out of her image-centric com=
+pany and abuses fringe medicine to shave off some years. The end result? We=
+ll, just look at the Movie Moment card above. The takeaway? I should be mor=
+e ok about my encroaching male pattern baldness.=0D
+=0D
+From the Toy-Cluttered Desk of Dan Stong=0D
+----------------------------------------=0D
+=0D
+When we last left off in our look at design, I was puzzling on how to make =
+the gameplay loop a little more dynamic than flip, read, and vote. I rememb=
+ered the line =E2=80=9Cand we=E2=80=99ll monitor his mind=E2=80=9D from the=
+ theme song and I had an idea to get the Mads back in play and also a way t=
+o round the scoring out a bit and get more of the show into the game.=0D
+=0D
+MST3K has such a visual element to the Host segments and the world surround=
+ing the movies and I had been feeling like we were losing that, so I was to=
+ying with ways to get more characters featured in the game. That could be t=
+hrough tokens, a scoreboard, or standees/trackers. It was hard to justify a=
+ scoreboard at first as most party games use cards to track points. It=E2=
+=80=99s a proven elegant system and avoids extra setup for a game you shoul=
+d be able to bust out quickly.=C2=A0=0D
+=0D
+But when I was thinking about the Mads (judges) having some higher stakes i=
+n their decisions, that line from the theme song came to me again. What if =
+players bet on themselves each round, and there was a way for the Mads to g=
+et some extra points out of it? Not any pure deduction but a light bonus if=
+ you felt the strength behind a choice someone made that lined up well. Thi=
+s would make every turn a chance for players to get points, so stakes would=
+ be raised and create a new decision point for the players and the Mads.=C2=
+=A0=0D
+=0D
+I played around with values, and 1,3, &amp; 5 seemed to be the most impactf=
+ul point values for betting without getting too swingy. We picked different=
+ colors and some symbols for each set as a second way for our colorblind fr=
+iends to distinguish them. We chose to limit the use of the chips (you only=
+ get to use each chip once until you=E2=80=99ve played all three, then get =
+them back), so players couldn=E2=80=99t just play 5 every time and give the=
+m another decision point on top of their riff choice. How strongly did you =
+feel about the card you just played? You wouldn=E2=80=99t lose any points o=
+n your =E2=80=9Cbet=E2=80=9D if it didn=E2=80=99t work out, but you=E2=80=
+=99d have a little evaluation on the strength of your play you could do to =
+net more.=0D
+=0D
+It seemed to work out. The chance to bet on yourself empowered testers even=
+ more to feel like they weren=E2=80=99t just tossing a card in and hoping t=
+o get a point, but it was now THE card that would score them 5 points! The =
+Mads could get a piece of the action through =E2=80=9Cdata points=E2=80=9D =
+they would secure by =E2=80=9Cmonitoring the minds=E2=80=9D of the players =
+when they selected the player who was revealed to have a larger payday on w=
+inning the hand. When a Riff felt extremely relevant to an image, the Mads =
+might be able to key into that and assume the players also bet higher. When=
+ a player bet 5, the Mads would get 2 points, and when a player bet 3, the =
+Mads would get 1 point. The change to non-static scoring helped open the pl=
+aying field up a bit by allowing for some more dynamic score spreads.=C2=A0=
+ The highs were higher and the lows were lower but rounds were still just a=
+s fast. Thematically, the test subjects were always putting out their best =
+and the Mads were conducting this experiment on their reactions to the film=
+ so it felt like a good mesh mechanically too.=C2=A0=0D
+=0D
+This variable point system also felt like the justification I needed for mo=
+re components. The scoreboard joined with standees and the betting tokens a=
+nd the whole thing started to look more like MST3K. But there were two more=
+ pieces we were still trying to see were viable before we felt this would b=
+e something fans would want.=0D
+=0D
+But more on that later=E2=80=A6=0D
+=0D
+-Dan=0D
+=0D
+ANYWAYS=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=0D
+-----------------=0D
+=0D
+We hope you get your voting in, shake off your case of the Mondays, and tac=
+kle this week head on. See you in the comments!=0D
+=0D
+Question of the day: Who is your all-time favorite MST3K character and why?=0D
+=0D
+=C2=A0=0D
+=0D
+Keep Circulating the URL!=0D
+=0D
+Cryptozoic Entertainment=0D
+=0D
+=C2=A0=0D
+=0D
+=C2=A0=0D
+=0D
+Show support and stay involved=E2=80=94let Cryptozoic Entertainment know yo=
+u read this update.=0D
+Like ---- ( https://www.kickstarter.com/projects/cze/mst3k-the-game/posts/4=
+561886/like?at=3DBAh7CDoMcG9zdF9pZGkD3ptFSSIIdWlkBjoGRVRpA%2BPDOEkiC2V4cGly=
+eQY7BlRJIhgyMDI2LTAxLTA4IDE5OjQ1OjI3BjsGVA%3D%3D--910a4f043547c46147a8e32db=
+f720f9bc6be45a5&amp;context=3Dupdate_email&amp;ref=3Dksr_email_mktg_auto_ba=
+cker_project_update_registered_users )=0D
+=0D
+or Comment ( https://www.kickstarter.com/projects/cze/mst3k-the-game/posts/=
+4561886?context=3Dcomment_from_email&amp;ref=3Dksr_email_mktg_auto_backer_p=
+roject_update_registered_users#comments )=0D
+More from this creator=0D
+Update #5 Riff Contest! ( https://www.kickstarter.com/projects/cze/mst3k-th=
+e-game/posts/4559880?ref=3Dproject_update_registered_users_tout_1 )=0D
+=0D
+Update #4 The Home Game! ( https://www.kickstarter.com/projects/cze/mst3k-t=
+he-game/posts/4559017?ref=3Dproject_update_registered_users_tout_2 )=0D
+=0D
+=0D
+Recommended for you=0D
+Support another creative project today.=0D
+=0D
+$30,945=0D
+-------=0D
+=0D
+pledged=0D
+-------=0D
+=0D
+392=0D
+---=0D
+=0D
+backers=0D
+-------=0D
+=0D
+19=0D
+--=0D
+=0D
+days left=0D
+---------=0D
+=0D
+The Making of THE FINAL SACRIFICE ( https://www.kickstarter.com/projects/re=
+alrowsdower/the-making-of-the-final-sacrifice?ref=3Dksr_email_mktg_auto_bac=
+ker_project_update_registered_users_discover_project_similar_1 )=0D
+---------------------------------------------------------------------------=
+---------------------------------------------------------------------------=
+--------------------------------------------------------------=0D
+=0D
+The Flying Dutchman Tells All: After years of wild rumors &amp; speculation=
+, the director of this MST3K classic comes clean!=0D
+=0D
+by Tjardus Greidanus=0D
+=0D
+=0D
+=0D
+AU$ 82,430=0D
+----------=0D
+=0D
+pledged=0D
+-------=0D
+=0D
+901=0D
+---=0D
+=0D
+backers=0D
+-------=0D
+=0D
+4=0D
+-=0D
+=0D
+days left=0D
+---------=0D
+=0D
+Danger Mouse: The Official Console Game ( https://www.kickstarter.com/proje=
+cts/dangermousegame/danger-mouse-the-official-console-game?ref=3Dksr_email_=
+mktg_auto_backer_project_update_registered_users_discover_project_similar_2=
+ )=0D
+---------------------------------------------------------------------------=
+---------------------------------------------------------------------------=
+---------------------------------------------------------------------------=0D
+=0D
+Celebrate the 45th Birthday of Danger Mouse! 15 side scrolling, arcade batt=
+le action, super danger filled levels for PC and consoles!=0D
+=0D
+by Art Of Play International=0D
+=0D
+=0D
+=0D
+$99,496=0D
+-------=0D
+=0D
+pledged=0D
+-------=0D
+=0D
+870=0D
+---=0D
+=0D
+backers=0D
+-------=0D
+=0D
+14=0D
+--=0D
+=0D
+days left=0D
+---------=0D
+=0D
+Elvira Mistress of the Dark Illustrated Tarot Card Set ( https://www.kickst=
+arter.com/projects/dynamiteent/elvira-mistress-of-the-dark-illustrated-taro=
+t-card-set?ref=3Dksr_email_mktg_auto_backer_project_update_registered_users=
+_discover_project_similar_3 )=0D
+---------------------------------------------------------------------------=
+---------------------------------------------------------------------------=
+---------------------------------------------------------------------------=
+---------------------------=0D
+=0D
+A Beautifully Creepy Complete Set of Tarot Cards Illustrated by Gris Grimly=
+ Based On The Mistress of the Macabre!=0D
+=0D
+by Dynamite Entertainment=0D
+=0D
+=0D
+=0D
+$59,292=0D
+-------=0D
+=0D
+pledged=0D
+-------=0D
+=0D
+1,467=0D
+-----=0D
+=0D
+backers=0D
+-------=0D
+=0D
+3=0D
+-=0D
+=0D
+days left=0D
+---------=0D
+=0D
+THE FEW AND CURSED #12 - Season Finale! =E2=98=A0=EF=B8=8F ( https://www.ki=
+ckstarter.com/projects/felipecagno/the-few-and-cursed-12-season-finale?ref=
+=3Dksr_email_mktg_auto_backer_project_update_registered_users_discover_proj=
+ect_similar_4 )=0D
+---------------------------------------------------------------------------=
+---------------------------------------------------------------------------=
+-----------------------------------------------------------------------=0D
+=0D
+Join Red for the epic conclusion of The Great Deluge in this supernatural w=
+estern! Past issues &amp; complete packages also available!=0D
+=0D
+by Felipe Cagno=0D
+=0D
+=0D
+View more ( https://www.kickstarter.com/recommendations?ref=3Dksr_email_mkt=
+g_auto_backer_project_update_registered_users_discover_project_similar_view=
+_more&amp;sticky_ref=3D1 )=0D
+Don't want to receive updates from this project? That's okay, you can unsub=
+scribe. ( https://www.kickstarter.com/unsubscribe/BAh7CDoMcG9zdF9pZGkD3ptFS=
+SIIdWlkBjoGRVRpA%2BPDOEkiC2V4cGlyeQY7BlRJIhgyMDI2LTAxLTA4IDE5OjQ1OjI3BjsGVA=
+%3D%3D--910a4f043547c46147a8e32dbf720f9bc6be45a5/995003181?ref=3Dksr_email_=
+mktg_auto_backer_project_update_registered_users )=0D
+=0D
+=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=
+=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=
+=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=
+=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=
+=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94=0D
+Unsubscribe from this project's updates with one click:=0D
+https://www.kickstarter.com/unsubscribe/BAh7CDoMcG9zdF9pZGkD3ptFSSIIdWlkBjo=
+GRVRpA%2BPDOEkiC2V4cGlyeQY7BlRJIhgyMDI2LTAxLTA4IDE5OjQ1OjI3BjsGVA%3D%3D--91=
+0a4f043547c46147a8e32dbf720f9bc6be45a5/995003181?ref=3Dksr_email_mktg_auto_=
+backer_project_update_registered_users=0D
+
+----==_mimepart_69373dc15341f_356dadea1dc453a5
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE html>=0D
+<html>=0D
+<head>=0D
+<meta content=3D"text/html; charset=3Dutf-8" http-equiv=3D"Content-Type">=0D
+<meta content=3D"width=3Ddevice-width, initial-scale=3D1.0" name=3D"viewpor=
+t">=0D
+<title></title>=0D
+=0D
+<style>@font-face {=0D
+font-family: "Cooper Light"; font-weight: normal; font-style: normal; src: =
+url("https://d207bzo2lz83l1.cloudfront.net/cooper-light-webfont.woff2") for=
+mat("woff2"),url("https://d207bzo2lz83l1.cloudfront.net/cooper-light-webfon=
+t.woff") format("woff");=0D
+}=0D
+body {=0D
+width: 100% !important; min-width: 100%; background-color: #f0f0f0; margin:=
+ 0; padding: 0; word-break: break-word; font-family: "Helvetica Neue",Helve=
+tica,Arial,"Liberation Sans",FreeSans,sans-serif; font-size: 14px; line-hei=
+ght: 1.5; color: #282828; -webkit-text-size-adjust: 100%; -ms-text-size-adj=
+ust: 100%;=0D
+}=0D
+img {=0D
+border: 0; -ms-interpolation-mode: bicubic; outline: none; max-width: 100%;=0D
+}=0D
+.bttn-green:hover:not(:disabled) {=0D
+background-color: #037362; color: #fff;=0D
+}=0D
+.bttn-ksr10-green:hover:not(:disabled) {=0D
+background-color: #05ce78; color: #fff;=0D
+}=0D
+.link-blue:hover svg {=0D
+fill: currentColor !important;=0D
+}=0D
+.link-blue:hover {=0D
+color: #003bff;=0D
+}=0D
+.link-create-700:hover svg {=0D
+fill: currentColor !important;=0D
+}=0D
+.link-create-700:hover {=0D
+color: #05ce78;=0D
+}=0D
+.link-green:hover svg {=0D
+fill: currentColor !important;=0D
+}=0D
+.link-green:hover {=0D
+color: #282828;=0D
+}=0D
+.link-navy:hover svg {=0D
+fill: currentColor !important;=0D
+}=0D
+.link-navy:hover {=0D
+color: #007460;=0D
+}=0D
+.link-red:hover svg {=0D
+fill: currentColor !important;=0D
+}=0D
+.link-red:hover {=0D
+color: #ef0707;=0D
+}=0D
+.link-white:hover svg {=0D
+fill: currentColor !important;=0D
+}=0D
+.link-white:hover {=0D
+color: #05ce78;=0D
+}=0D
+.link-soft-black:hover {=0D
+color: #037362; fill: #037362; text-decoration: underline;=0D
+}=0D
+.link-dark-grey-500:hover {=0D
+color: #009e74; text-decoration: underline;=0D
+}=0D
+.link-ksr-green-700:hover {=0D
+color: #282828; text-decoration: underline;=0D
+}=0D
+.link-cobalt-500:hover {=0D
+color: #4c6cf8; text-decoration: underline;=0D
+}=0D
+.link-conferences-blue:hover {=0D
+color: #08207f; text-decoration: underline;=0D
+}=0D
+.link-black-blue:hover {=0D
+color: #2b60ff; fill: #2b60ff; text-decoration: underline;=0D
+}=0D
+.link-orange-500:hover {=0D
+color: #ff4f00; fill: #ff4f00; text-decoration: underline;=0D
+}=0D
+.link-trust-500:hover {=0D
+color: #55f; fill: #55f; text-decoration: underline;=0D
+}=0D
+.link-support-400:hover {=0D
+color: dimgray; fill: dimgray; text-decoration: underline;=0D
+}=0D
+@media all and (max-width: 540px) {=0D
+  .img-responsive {=0D
+    height: auto !important; max-width: 100%; width: 100% !important;=0D
+  }=0D
+  table[class*=3Dcontainer] {=0D
+    width: 320px !important;=0D
+  }=0D
+  .sm-col-1 {=0D
+    width: 3.555-123-4567% !important;=0D
+  }=0D
+  .sm-col-2 {=0D
+    width: 7.555-123-4567% !important;=0D
+  }=0D
+  .sm-col-3 {=0D
+    width: 12% !important;=0D
+  }=0D
+  .sm-col-4 {=0D
+    width: 16.555-123-4567% !important;=0D
+  }=0D
+  .sm-col-5 {=0D
+    width: 20.555-123-4567% !important;=0D
+  }=0D
+  .sm-col-6 {=0D
+    width: 24.5% !important;=0D
+  }=0D
+  .sm-col-7 {=0D
+    width: 28.555-123-4567% !important;=0D
+  }=0D
+  .sm-col-8 {=0D
+    width: 32.555-123-4567% !important;=0D
+  }=0D
+  .sm-col-9 {=0D
+    width: 37% !important;=0D
+  }=0D
+  .sm-col-10 {=0D
+    width: 41.555-123-4567% !important;=0D
+  }=0D
+  .sm-col-11 {=0D
+    width: 45.555-123-4567% !important;=0D
+  }=0D
+  .sm-col-12 {=0D
+    width: 49.5% !important;=0D
+  }=0D
+  .sm-col-13 {=0D
+    width: 53.555-123-4567% !important;=0D
+  }=0D
+  .sm-col-14 {=0D
+    width: 57.555-123-4567% !important;=0D
+  }=0D
+  .sm-col-15 {=0D
+    width: 62% !important;=0D
+  }=0D
+  .sm-col-16 {=0D
+    width: 66.555-123-4567% !important;=0D
+  }=0D
+  .sm-col-17 {=0D
+    width: 70.555-123-4567% !important;=0D
+  }=0D
+  .sm-col-18 {=0D
+    width: 74.5% !important;=0D
+  }=0D
+  .sm-col-19 {=0D
+    width: 78.555-123-4567% !important;=0D
+  }=0D
+  .sm-col-20 {=0D
+    width: 82.555-123-4567% !important;=0D
+  }=0D
+  .sm-col-21 {=0D
+    width: 87% !important;=0D
+  }=0D
+  .sm-col-22 {=0D
+    width: 91.555-123-4567% !important;=0D
+  }=0D
+  .sm-col-23 {=0D
+    width: 95.555-123-4567% !important;=0D
+  }=0D
+  .sm-col-0 {=0D
+    width: 0px !important;=0D
+  }=0D
+  .sm-col-24 {=0D
+    width: 100% !important;=0D
+  }=0D
+  .hide-sm {=0D
+    display: none !important;=0D
+  }=0D
+  table[class*=3Dnew-reply-email] {=0D
+    width: auto !important;=0D
+  }=0D
+  .new-reply-email__container {=0D
+    padding: 0 12px !important;=0D
+  }=0D
+  .new-reply-email__avatar {=0D
+    height: 36px !important; width: 36px !important;=0D
+  }=0D
+  .new-reply-email__replies-count {=0D
+    padding-left: 18px !important;=0D
+  }=0D
+  .new-reply-email__comment-reply {=0D
+    padding-left: 18px !important;=0D
+  }=0D
+}=0D
+@media (min-width: 600px) {=0D
+  .lh2-sm {=0D
+    line-height: 12px;=0D
+  }=0D
+  .lh3-sm {=0D
+    line-height: 18px;=0D
+  }=0D
+  .lh4-sm {=0D
+    line-height: 24px;=0D
+  }=0D
+  .lh5-sm {=0D
+    line-height: 30px;=0D
+  }=0D
+  .lh6-sm {=0D
+    line-height: 36px;=0D
+  }=0D
+  .lh7-sm {=0D
+    line-height: 42px;=0D
+  }=0D
+  .lh9-sm {=0D
+    line-height: 54px;=0D
+  }=0D
+  .lh11-sm {=0D
+    line-height: 66px;=0D
+  }=0D
+  .lh12-sm {=0D
+    line-height: 72px;=0D
+  }=0D
+  .lh22-sm {=0D
+    line-height: 132px;=0D
+  }=0D
+  .w0-sm {=0D
+    width: 0px;=0D
+  }=0D
+  .w1-sm {=0D
+    width: 6px;=0D
+  }=0D
+  .w2-sm {=0D
+    width: 12px;=0D
+  }=0D
+  .w3-sm {=0D
+    width: 18px;=0D
+  }=0D
+  .w4-sm {=0D
+    width: 24px;=0D
+  }=0D
+  .w5-sm {=0D
+    width: 30px;=0D
+  }=0D
+  .w6-sm {=0D
+    width: 36px;=0D
+  }=0D
+  .w7-sm {=0D
+    width: 42px;=0D
+  }=0D
+  .w8-sm {=0D
+    width: 48px;=0D
+  }=0D
+  .w9-sm {=0D
+    width: 54px;=0D
+  }=0D
+  .w10-sm {=0D
+    width: 60px;=0D
+  }=0D
+  .w11-sm {=0D
+    width: 66px;=0D
+  }=0D
+  .w12-sm {=0D
+    width: 72px;=0D
+  }=0D
+  .w13-sm {=0D
+    width: 78px;=0D
+  }=0D
+  .w14-sm {=0D
+    width: 84px;=0D
+  }=0D
+  .w15-sm {=0D
+    width: 90px;=0D
+  }=0D
+  .w16-sm {=0D
+    width: 96px;=0D
+  }=0D
+  .w17-sm {=0D
+    width: 102px;=0D
+  }=0D
+  .w18-sm {=0D
+    width: 108px;=0D
+  }=0D
+  .w19-sm {=0D
+    width: 114px;=0D
+  }=0D
+  .w20-sm {=0D
+    width: 120px;=0D
+  }=0D
+  .w25-sm {=0D
+    width: 150px;=0D
+  }=0D
+  .w30-sm {=0D
+    width: 180px;=0D
+  }=0D
+  .w37-sm {=0D
+    width: 222px;=0D
+  }=0D
+  .w45-sm {=0D
+    width: 270px;=0D
+  }=0D
+  .w50-sm {=0D
+    width: 300px;=0D
+  }=0D
+  .w100vw-sm {=0D
+    width: 100vw;=0D
+  }=0D
+  .w-stretch-sm {=0D
+    width: stretch;=0D
+  }=0D
+  .min-w4-sm {=0D
+    min-width: 24px;=0D
+  }=0D
+  .min-w6-sm {=0D
+    min-width: 36px;=0D
+  }=0D
+  .min-w20-sm {=0D
+    min-width: 120px;=0D
+  }=0D
+  .min-w28-sm {=0D
+    min-width: 168px;=0D
+  }=0D
+  .min-w30-sm {=0D
+    min-width: 180px;=0D
+  }=0D
+  .min-w35-sm {=0D
+    min-width: 210px;=0D
+  }=0D
+  .min-w46-sm {=0D
+    min-width: 276px;=0D
+  }=0D
+  .min-w50-sm {=0D
+    min-width: 300px;=0D
+  }=0D
+  .min-w10p-sm {=0D
+    min-width: 10%;=0D
+  }=0D
+  .min-w20p-sm {=0D
+    min-width: 20%;=0D
+  }=0D
+  .min-w25p-sm {=0D
+    min-width: 25%;=0D
+  }=0D
+  .min-w30p-sm {=0D
+    min-width: 30%;=0D
+  }=0D
+  .min-w33p-sm {=0D
+    min-width: 33%;=0D
+  }=0D
+  .min-w34p-sm {=0D
+    min-width: 34%;=0D
+  }=0D
+  .min-w35p-sm {=0D
+    min-width: 35%;=0D
+  }=0D
+  .min-w40p-sm {=0D
+    min-width: 40%;=0D
+  }=0D
+  .min-w50p-sm {=0D
+    min-width: 50%;=0D
+  }=0D
+  .min-w60p-sm {=0D
+    min-width: 60%;=0D
+  }=0D
+  .min-w66p-sm {=0D
+    min-width: 66%;=0D
+  }=0D
+  .min-w75p-sm {=0D
+    min-width: 75%;=0D
+  }=0D
+  .min-w80p-sm {=0D
+    min-width: 80%;=0D
+  }=0D
+  .min-w85p-sm {=0D
+    min-width: 85%;=0D
+  }=0D
+  .min-w90p-sm {=0D
+    min-width: 90%;=0D
+  }=0D
+  .min-w100p-sm {=0D
+    min-width: 100%;=0D
+  }=0D
+  .min-w-sm {=0D
+    min-width: stretch;=0D
+  }=0D
+  .max-w22-sm {=0D
+    max-width: 132px;=0D
+  }=0D
+  .max-w29-sm {=0D
+    max-width: 174px;=0D
+  }=0D
+  .max-w30-sm {=0D
+    max-width: 180px;=0D
+  }=0D
+  .max-w35-sm {=0D
+    max-width: 210px;=0D
+  }=0D
+  .max-w40-sm {=0D
+    max-width: 240px;=0D
+  }=0D
+  .max-w45-sm {=0D
+    max-width: 270px;=0D
+  }=0D
+  .max-w50-sm {=0D
+    max-width: 300px;=0D
+  }=0D
+  .max-w55-sm {=0D
+    max-width: 330px;=0D
+  }=0D
+  .max-w60-sm {=0D
+    max-width: 360px;=0D
+  }=0D
+  .max-w62-sm {=0D
+    max-width: 372px;=0D
+  }=0D
+  .max-w65-sm {=0D
+    max-width: 390px;=0D
+  }=0D
+  .max-w70-sm {=0D
+    max-width: 420px;=0D
+  }=0D
+  .max-w75-sm {=0D
+    max-width: 450px;=0D
+  }=0D
+  .max-w80-sm {=0D
+    max-width: 480px;=0D
+  }=0D
+  .max-w85-sm {=0D
+    max-width: 510px;=0D
+  }=0D
+  .max-w92-sm {=0D
+    max-width: 552px;=0D
+  }=0D
+  .max-w100-sm {=0D
+    max-width: 600px;=0D
+  }=0D
+  .max-w110-sm {=0D
+    max-width: 660px;=0D
+  }=0D
+  .max-w113-sm {=0D
+    max-width: 678px;=0D
+  }=0D
+  .max-w120-sm {=0D
+    max-width: 720px;=0D
+  }=0D
+  .max-w200-sm {=0D
+    max-width: 1200px;=0D
+  }=0D
+  .max-w230-sm {=0D
+    max-width: 1380px;=0D
+  }=0D
+  .max-w240-sm {=0D
+    max-width: 1440px;=0D
+  }=0D
+  .max-w-none-sm {=0D
+    max-width: none;=0D
+  }=0D
+  .w10p-sm {=0D
+    width: 10%;=0D
+  }=0D
+  .w20p-sm {=0D
+    width: 20%;=0D
+  }=0D
+  .w25p-sm {=0D
+    width: 25%;=0D
+  }=0D
+  .w30p-sm {=0D
+    width: 30%;=0D
+  }=0D
+  .w33p-sm {=0D
+    width: 33%;=0D
+  }=0D
+  .w34p-sm {=0D
+    width: 34%;=0D
+  }=0D
+  .w35p-sm {=0D
+    width: 35%;=0D
+  }=0D
+  .w40p-sm {=0D
+    width: 40%;=0D
+  }=0D
+  .w50p-sm {=0D
+    width: 50%;=0D
+  }=0D
+  .w60p-sm {=0D
+    width: 60%;=0D
+  }=0D
+  .w66p-sm {=0D
+    width: 66%;=0D
+  }=0D
+  .w75p-sm {=0D
+    width: 75%;=0D
+  }=0D
+  .w80p-sm {=0D
+    width: 80%;=0D
+  }=0D
+  .w85p-sm {=0D
+    width: 85%;=0D
+  }=0D
+  .w90p-sm {=0D
+    width: 90%;=0D
+  }=0D
+  .w100p-sm {=0D
+    width: 100%;=0D
+  }=0D
+  .max-w-sm {=0D
+    max-width: stretch;=0D
+  }=0D
+  .w-auto-sm {=0D
+    width: auto;=0D
+  }=0D
+  .h40px-sm {=0D
+    height: 40px;=0D
+  }=0D
+  .max-h40px-sm {=0D
+    max-height: 40px;=0D
+  }=0D
+  .min-h40px-sm {=0D
+    min-height: 40px;=0D
+  }=0D
+  .h55px-sm {=0D
+    height: 55px;=0D
+  }=0D
+  .max-h55px-sm {=0D
+    max-height: 55px;=0D
+  }=0D
+  .min-h55px-sm {=0D
+    min-height: 55px;=0D
+  }=0D
+  .h0-sm {=0D
+    height: 0px;=0D
+  }=0D
+  .h1-sm {=0D
+    height: 6px;=0D
+  }=0D
+  .h2-sm {=0D
+    height: 12px;=0D
+  }=0D
+  .h3-sm {=0D
+    height: 18px;=0D
+  }=0D
+  .h4-sm {=0D
+    height: 24px;=0D
+  }=0D
+  .h5-sm {=0D
+    height: 30px;=0D
+  }=0D
+  .h6-sm {=0D
+    height: 36px;=0D
+  }=0D
+  .h7-sm {=0D
+    height: 42px;=0D
+  }=0D
+  .h8-sm {=0D
+    height: 48px;=0D
+  }=0D
+  .h9-sm {=0D
+    height: 54px;=0D
+  }=0D
+  .h10-sm {=0D
+    height: 60px;=0D
+  }=0D
+  .h11-sm {=0D
+    height: 66px;=0D
+  }=0D
+  .h12-sm {=0D
+    height: 72px;=0D
+  }=0D
+  .h13-sm {=0D
+    height: 78px;=0D
+  }=0D
+  .h14-sm {=0D
+    height: 84px;=0D
+  }=0D
+  .h15-sm {=0D
+    height: 90px;=0D
+  }=0D
+  .h16-sm {=0D
+    height: 96px;=0D
+  }=0D
+  .h17-sm {=0D
+    height: 102px;=0D
+  }=0D
+  .h18-sm {=0D
+    height: 108px;=0D
+  }=0D
+  .h19-sm {=0D
+    height: 114px;=0D
+  }=0D
+  .h20-sm {=0D
+    height: 120px;=0D
+  }=0D
+  .h25-sm {=0D
+    height: 150px;=0D
+  }=0D
+  .h30-sm {=0D
+    height: 180px;=0D
+  }=0D
+  .h37-sm {=0D
+    height: 222px;=0D
+  }=0D
+  .h45-sm {=0D
+    height: 270px;=0D
+  }=0D
+  .h50-sm {=0D
+    height: 300px;=0D
+  }=0D
+  .h-sm {=0D
+    height: stretch;=0D
+  }=0D
+  .min-h4-sm {=0D
+    min-height: 24px;=0D
+  }=0D
+  .min-h6-sm {=0D
+    min-height: 36px;=0D
+  }=0D
+  .min-h10-sm {=0D
+    min-height: 60px;=0D
+  }=0D
+  .min-h11-sm {=0D
+    min-height: 66px;=0D
+  }=0D
+  .min-h12-sm {=0D
+    min-height: 72px;=0D
+  }=0D
+  .min-h14-sm {=0D
+    min-height: 84px;=0D
+  }=0D
+  .min-h16-sm {=0D
+    min-height: 96px;=0D
+  }=0D
+  .min-h17-sm {=0D
+    min-height: 102px;=0D
+  }=0D
+  .min-h20-sm {=0D
+    min-height: 120px;=0D
+  }=0D
+  .min-h25-sm {=0D
+    min-height: 150px;=0D
+  }=0D
+  .min-h30-sm {=0D
+    min-height: 180px;=0D
+  }=0D
+  .min-h35-sm {=0D
+    min-height: 210px;=0D
+  }=0D
+  .min-h40-sm {=0D
+    min-height: 240px;=0D
+  }=0D
+  .min-h60-sm {=0D
+    min-height: 360px;=0D
+  }=0D
+  .min-h80-sm {=0D
+    min-height: 480px;=0D
+  }=0D
+  .min-h100-sm {=0D
+    min-height: 600px;=0D
+  }=0D
+  .min-h-sm {=0D
+    min-height: stretch;=0D
+  }=0D
+  .max-h0-sm {=0D
+    max-height: 0px;=0D
+  }=0D
+  .max-h6-sm {=0D
+    max-height: 36px;=0D
+  }=0D
+  .max-h11-sm {=0D
+    max-height: 66px;=0D
+  }=0D
+  .max-h22-sm {=0D
+    max-height: 132px;=0D
+  }=0D
+  .max-h30-sm {=0D
+    max-height: 180px;=0D
+  }=0D
+  .max-h40-sm {=0D
+    max-height: 240px;=0D
+  }=0D
+  .max-h50-sm {=0D
+    max-height: 300px;=0D
+  }=0D
+  .max-h120-sm {=0D
+    max-height: 720px;=0D
+  }=0D
+  .max-h-sm {=0D
+    max-height: stretch;=0D
+  }=0D
+  .h-auto-sm {=0D
+    height: auto;=0D
+  }=0D
+  .h10p-sm {=0D
+    height: 10%;=0D
+  }=0D
+  .h20p-sm {=0D
+    height: 20%;=0D
+  }=0D
+  .h25p-sm {=0D
+    height: 25%;=0D
+  }=0D
+  .h30p-sm {=0D
+    height: 30%;=0D
+  }=0D
+  .h33p-sm {=0D
+    height: 33%;=0D
+  }=0D
+  .h34p-sm {=0D
+    height: 34%;=0D
+  }=0D
+  .h35p-sm {=0D
+    height: 35%;=0D
+  }=0D
+  .h40p-sm {=0D
+    height: 40%;=0D
+  }=0D
+  .h50p-sm {=0D
+    height: 50%;=0D
+  }=0D
+  .h60p-sm {=0D
+    height: 60%;=0D
+  }=0D
+  .h66p-sm {=0D
+    height: 66%;=0D
+  }=0D
+  .h75p-sm {=0D
+    height: 75%;=0D
+  }=0D
+  .h80p-sm {=0D
+    height: 80%;=0D
+  }=0D
+  .h85p-sm {=0D
+    height: 85%;=0D
+  }=0D
+  .h90p-sm {=0D
+    height: 90%;=0D
+  }=0D
+  .h100p-sm {=0D
+    height: 100%;=0D
+  }=0D
+  .h5vh-sm {=0D
+    height: 5vh;=0D
+  }=0D
+  .max-h5vh-sm {=0D
+    max-height: 5vh;=0D
+  }=0D
+  .min-h5vh-sm {=0D
+    min-height: 5vh;=0D
+  }=0D
+  .h12vh-sm {=0D
+    height: 12vh;=0D
+  }=0D
+  .max-h12vh-sm {=0D
+    max-height: 12vh;=0D
+  }=0D
+  .min-h12vh-sm {=0D
+    min-height: 12vh;=0D
+  }=0D
+  .h20vh-sm {=0D
+    height: 20vh;=0D
+  }=0D
+  .max-h20vh-sm {=0D
+    max-height: 20vh;=0D
+  }=0D
+  .min-h20vh-sm {=0D
+    min-height: 20vh;=0D
+  }=0D
+  .h30vh-sm {=0D
+    height: 30vh;=0D
+  }=0D
+  .max-h30vh-sm {=0D
+    max-height: 30vh;=0D
+  }=0D
+  .min-h30vh-sm {=0D
+    min-height: 30vh;=0D
+  }=0D
+  .h40vh-sm {=0D
+    height: 40vh;=0D
+  }=0D
+  .max-h40vh-sm {=0D
+    max-height: 40vh;=0D
+  }=0D
+  .min-h40vh-sm {=0D
+    min-height: 40vh;=0D
+  }=0D
+  .h50vh-sm {=0D
+    height: 50vh;=0D
+  }=0D
+  .max-h50vh-sm {=0D
+    max-height: 50vh;=0D
+  }=0D
+  .min-h50vh-sm {=0D
+    min-height: 50vh;=0D
+  }=0D
+  .h60vh-sm {=0D
+    height: 60vh;=0D
+  }=0D
+  .max-h60vh-sm {=0D
+    max-height: 60vh;=0D
+  }=0D
+  .min-h60vh-sm {=0D
+    min-height: 60vh;=0D
+  }=0D
+  .h65vh-sm {=0D
+    height: 65vh;=0D
+  }=0D
+  .max-h65vh-sm {=0D
+    max-height: 65vh;=0D
+  }=0D
+  .min-h65vh-sm {=0D
+    min-height: 65vh;=0D
+  }=0D
+  .h70vh-sm {=0D
+    height: 70vh;=0D
+  }=0D
+  .max-h70vh-sm {=0D
+    max-height: 70vh;=0D
+  }=0D
+  .min-h70vh-sm {=0D
+    min-height: 70vh;=0D
+  }=0D
+  .h75vh-sm {=0D
+    height: 75vh;=0D
+  }=0D
+  .max-h75vh-sm {=0D
+    max-height: 75vh;=0D
+  }=0D
+  .min-h75vh-sm {=0D
+    min-height: 75vh;=0D
+  }=0D
+  .h80vh-sm {=0D
+    height: 80vh;=0D
+  }=0D
+  .max-h80vh-sm {=0D
+    max-height: 80vh;=0D
+  }=0D
+  .min-h80vh-sm {=0D
+    min-height: 80vh;=0D
+  }=0D
+  .h85vh-sm {=0D
+    height: 85vh;=0D
+  }=0D
+  .max-h85vh-sm {=0D
+    max-height: 85vh;=0D
+  }=0D
+  .min-h85vh-sm {=0D
+    min-height: 85vh;=0D
+  }=0D
+  .h100vh-sm {=0D
+    height: 100vh;=0D
+  }=0D
+  .max-h100vh-sm {=0D
+    max-height: 100vh;=0D
+  }=0D
+  .min-h100vh-sm {=0D
+    min-height: 100vh;=0D
+  }=0D
+}=0D
+@media (min-width: 795px) {=0D
+  .lh2-md {=0D
+    line-height: 12px;=0D
+  }=0D
+  .lh3-md {=0D
+    line-height: 18px;=0D
+  }=0D
+  .lh4-md {=0D
+    line-height: 24px;=0D
+  }=0D
+  .lh5-md {=0D
+    line-height: 30px;=0D
+  }=0D
+  .lh6-md {=0D
+    line-height: 36px;=0D
+  }=0D
+  .lh7-md {=0D
+    line-height: 42px;=0D
+  }=0D
+  .lh9-md {=0D
+    line-height: 54px;=0D
+  }=0D
+  .lh11-md {=0D
+    line-height: 66px;=0D
+  }=0D
+  .lh12-md {=0D
+    line-height: 72px;=0D
+  }=0D
+  .lh22-md {=0D
+    line-height: 132px;=0D
+  }=0D
+  .w0-md {=0D
+    width: 0px;=0D
+  }=0D
+  .w1-md {=0D
+    width: 6px;=0D
+  }=0D
+  .w2-md {=0D
+    width: 12px;=0D
+  }=0D
+  .w3-md {=0D
+    width: 18px;=0D
+  }=0D
+  .w4-md {=0D
+    width: 24px;=0D
+  }=0D
+  .w5-md {=0D
+    width: 30px;=0D
+  }=0D
+  .w6-md {=0D
+    width: 36px;=0D
+  }=0D
+  .w7-md {=0D
+    width: 42px;=0D
+  }=0D
+  .w8-md {=0D
+    width: 48px;=0D
+  }=0D
+  .w9-md {=0D
+    width: 54px;=0D
+  }=0D
+  .w10-md {=0D
+    width: 60px;=0D
+  }=0D
+  .w11-md {=0D
+    width: 66px;=0D
+  }=0D
+  .w12-md {=0D
+    width: 72px;=0D
+  }=0D
+  .w13-md {=0D
+    width: 78px;=0D
+  }=0D
+  .w14-md {=0D
+    width: 84px;=0D
+  }=0D
+  .w15-md {=0D
+    width: 90px;=0D
+  }=0D
+  .w16-md {=0D
+    width: 96px;=0D
+  }=0D
+  .w17-md {=0D
+    width: 102px;=0D
+  }=0D
+  .w18-md {=0D
+    width: 108px;=0D
+  }=0D
+  .w19-md {=0D
+    width: 114px;=0D
+  }=0D
+  .w20-md {=0D
+    width: 120px;=0D
+  }=0D
+  .w25-md {=0D
+    width: 150px;=0D
+  }=0D
+  .w30-md {=0D
+    width: 180px;=0D
+  }=0D
+  .w37-md {=0D
+    width: 222px;=0D
+  }=0D
+  .w45-md {=0D
+    width: 270px;=0D
+  }=0D
+  .w50-md {=0D
+    width: 300px;=0D
+  }=0D
+  .w100vw-md {=0D
+    width: 100vw;=0D
+  }=0D
+  .w-stretch-md {=0D
+    width: stretch;=0D
+  }=0D
+  .min-w4-md {=0D
+    min-width: 24px;=0D
+  }=0D
+  .min-w6-md {=0D
+    min-width: 36px;=0D
+  }=0D
+  .min-w20-md {=0D
+    min-width: 120px;=0D
+  }=0D
+  .min-w28-md {=0D
+    min-width: 168px;=0D
+  }=0D
+  .min-w30-md {=0D
+    min-width: 180px;=0D
+  }=0D
+  .min-w35-md {=0D
+    min-width: 210px;=0D
+  }=0D
+  .min-w46-md {=0D
+    min-width: 276px;=0D
+  }=0D
+  .min-w50-md {=0D
+    min-width: 300px;=0D
+  }=0D
+  .min-w10p-md {=0D
+    min-width: 10%;=0D
+  }=0D
+  .min-w20p-md {=0D
+    min-width: 20%;=0D
+  }=0D
+  .min-w25p-md {=0D
+    min-width: 25%;=0D
+  }=0D
+  .min-w30p-md {=0D
+    min-width: 30%;=0D
+  }=0D
+  .min-w33p-md {=0D
+    min-width: 33%;=0D
+  }=0D
+  .min-w34p-md {=0D
+    min-width: 34%;=0D
+  }=0D
+  .min-w35p-md {=0D
+    min-width: 35%;=0D
+  }=0D
+  .min-w40p-md {=0D
+    min-width: 40%;=0D
+  }=0D
+  .min-w50p-md {=0D
+    min-width: 50%;=0D
+  }=0D
+  .min-w60p-md {=0D
+    min-width: 60%;=0D
+  }=0D
+  .min-w66p-md {=0D
+    min-width: 66%;=0D
+  }=0D
+  .min-w75p-md {=0D
+    min-width: 75%;=0D
+  }=0D
+  .min-w80p-md {=0D
+    min-width: 80%;=0D
+  }=0D
+  .min-w85p-md {=0D
+    min-width: 85%;=0D
+  }=0D
+  .min-w90p-md {=0D
+    min-width: 90%;=0D
+  }=0D
+  .min-w100p-md {=0D
+    min-width: 100%;=0D
+  }=0D
+  .min-w-md {=0D
+    min-width: stretch;=0D
+  }=0D
+  .max-w22-md {=0D
+    max-width: 132px;=0D
+  }=0D
+  .max-w29-md {=0D
+    max-width: 174px;=0D
+  }=0D
+  .max-w30-md {=0D
+    max-width: 180px;=0D
+  }=0D
+  .max-w35-md {=0D
+    max-width: 210px;=0D
+  }=0D
+  .max-w40-md {=0D
+    max-width: 240px;=0D
+  }=0D
+  .max-w45-md {=0D
+    max-width: 270px;=0D
+  }=0D
+  .max-w50-md {=0D
+    max-width: 300px;=0D
+  }=0D
+  .max-w55-md {=0D
+    max-width: 330px;=0D
+  }=0D
+  .max-w60-md {=0D
+    max-width: 360px;=0D
+  }=0D
+  .max-w62-md {=0D
+    max-width: 372px;=0D
+  }=0D
+  .max-w65-md {=0D
+    max-width: 390px;=0D
+  }=0D
+  .max-w70-md {=0D
+    max-width: 420px;=0D
+  }=0D
+  .max-w75-md {=0D
+    max-width: 450px;=0D
+  }=0D
+  .max-w80-md {=0D
+    max-width: 480px;=0D
+  }=0D
+  .max-w85-md {=0D
+    max-width: 510px;=0D
+  }=0D
+  .max-w92-md {=0D
+    max-width: 552px;=0D
+  }=0D
+  .max-w100-md {=0D
+    max-width: 600px;=0D
+  }=0D
+  .max-w110-md {=0D
+    max-width: 660px;=0D
+  }=0D
+  .max-w113-md {=0D
+    max-width: 678px;=0D
+  }=0D
+  .max-w120-md {=0D
+    max-width: 720px;=0D
+  }=0D
+  .max-w200-md {=0D
+    max-width: 1200px;=0D
+  }=0D
+  .max-w230-md {=0D
+    max-width: 1380px;=0D
+  }=0D
+  .max-w240-md {=0D
+    max-width: 1440px;=0D
+  }=0D
+  .max-w-none-md {=0D
+    max-width: none;=0D
+  }=0D
+  .w10p-md {=0D
+    width: 10%;=0D
+  }=0D
+  .w20p-md {=0D
+    width: 20%;=0D
+  }=0D
+  .w25p-md {=0D
+    width: 25%;=0D
+  }=0D
+  .w30p-md {=0D
+    width: 30%;=0D
+  }=0D
+  .w33p-md {=0D
+    width: 33%;=0D
+  }=0D
+  .w34p-md {=0D
+    width: 34%;=0D
+  }=0D
+  .w35p-md {=0D
+    width: 35%;=0D
+  }=0D
+  .w40p-md {=0D
+    width: 40%;=0D
+  }=0D
+  .w50p-md {=0D
+    width: 50%;=0D
+  }=0D
+  .w60p-md {=0D
+    width: 60%;=0D
+  }=0D
+  .w66p-md {=0D
+    width: 66%;=0D
+  }=0D
+  .w75p-md {=0D
+    width: 75%;=0D
+  }=0D
+  .w80p-md {=0D
+    width: 80%;=0D
+  }=0D
+  .w85p-md {=0D
+    width: 85%;=0D
+  }=0D
+  .w90p-md {=0D
+    width: 90%;=0D
+  }=0D
+  .w100p-md {=0D
+    width: 100%;=0D
+  }=0D
+  .max-w-md {=0D
+    max-width: stretch;=0D
+  }=0D
+  .w-auto-md {=0D
+    width: auto;=0D
+  }=0D
+  .h40px-md {=0D
+    height: 40px;=0D
+  }=0D
+  .max-h40px-md {=0D
+    max-height: 40px;=0D
+  }=0D
+  .min-h40px-md {=0D
+    min-height: 40px;=0D
+  }=0D
+  .h55px-md {=0D
+    height: 55px;=0D
+  }=0D
+  .max-h55px-md {=0D
+    max-height: 55px;=0D
+  }=0D
+  .min-h55px-md {=0D
+    min-height: 55px;=0D
+  }=0D
+  .h0-md {=0D
+    height: 0px;=0D
+  }=0D
+  .h1-md {=0D
+    height: 6px;=0D
+  }=0D
+  .h2-md {=0D
+    height: 12px;=0D
+  }=0D
+  .h3-md {=0D
+    height: 18px;=0D
+  }=0D
+  .h4-md {=0D
+    height: 24px;=0D
+  }=0D
+  .h5-md {=0D
+    height: 30px;=0D
+  }=0D
+  .h6-md {=0D
+    height: 36px;=0D
+  }=0D
+  .h7-md {=0D
+    height: 42px;=0D
+  }=0D
+  .h8-md {=0D
+    height: 48px;=0D
+  }=0D
+  .h9-md {=0D
+    height: 54px;=0D
+  }=0D
+  .h10-md {=0D
+    height: 60px;=0D
+  }=0D
+  .h11-md {=0D
+    height: 66px;=0D
+  }=0D
+  .h12-md {=0D
+    height: 72px;=0D
+  }=0D
+  .h13-md {=0D
+    height: 78px;=0D
+  }=0D
+  .h14-md {=0D
+    height: 84px;=0D
+  }=0D
+  .h15-md {=0D
+    height: 90px;=0D
+  }=0D
+  .h16-md {=0D
+    height: 96px;=0D
+  }=0D
+  .h17-md {=0D
+    height: 102px;=0D
+  }=0D
+  .h18-md {=0D
+    height: 108px;=0D
+  }=0D
+  .h19-md {=0D
+    height: 114px;=0D
+  }=0D
+  .h20-md {=0D
+    height: 120px;=0D
+  }=0D
+  .h25-md {=0D
+    height: 150px;=0D
+  }=0D
+  .h30-md {=0D
+    height: 180px;=0D
+  }=0D
+  .h37-md {=0D
+    height: 222px;=0D
+  }=0D
+  .h45-md {=0D
+    height: 270px;=0D
+  }=0D
+  .h50-md {=0D
+    height: 300px;=0D
+  }=0D
+  .h-md {=0D
+    height: stretch;=0D
+  }=0D
+  .min-h4-md {=0D
+    min-height: 24px;=0D
+  }=0D
+  .min-h6-md {=0D
+    min-height: 36px;=0D
+  }=0D
+  .min-h10-md {=0D
+    min-height: 60px;=0D
+  }=0D
+  .min-h11-md {=0D
+    min-height: 66px;=0D
+  }=0D
+  .min-h12-md {=0D
+    min-height: 72px;=0D
+  }=0D
+  .min-h14-md {=0D
+    min-height: 84px;=0D
+  }=0D
+  .min-h16-md {=0D
+    min-height: 96px;=0D
+  }=0D
+  .min-h17-md {=0D
+    min-height: 102px;=0D
+  }=0D
+  .min-h20-md {=0D
+    min-height: 120px;=0D
+  }=0D
+  .min-h25-md {=0D
+    min-height: 150px;=0D
+  }=0D
+  .min-h30-md {=0D
+    min-height: 180px;=0D
+  }=0D
+  .min-h35-md {=0D
+    min-height: 210px;=0D
+  }=0D
+  .min-h40-md {=0D
+    min-height: 240px;=0D
+  }=0D
+  .min-h60-md {=0D
+    min-height: 360px;=0D
+  }=0D
+  .min-h80-md {=0D
+    min-height: 480px;=0D
+  }=0D
+  .min-h100-md {=0D
+    min-height: 600px;=0D
+  }=0D
+  .min-h-md {=0D
+    min-height: stretch;=0D
+  }=0D
+  .max-h0-md {=0D
+    max-height: 0px;=0D
+  }=0D
+  .max-h6-md {=0D
+    max-height: 36px;=0D
+  }=0D
+  .max-h11-md {=0D
+    max-height: 66px;=0D
+  }=0D
+  .max-h22-md {=0D
+    max-height: 132px;=0D
+  }=0D
+  .max-h30-md {=0D
+    max-height: 180px;=0D
+  }=0D
+  .max-h40-md {=0D
+    max-height: 240px;=0D
+  }=0D
+  .max-h50-md {=0D
+    max-height: 300px;=0D
+  }=0D
+  .max-h120-md {=0D
+    max-height: 720px;=0D
+  }=0D
+  .max-h-md {=0D
+    max-height: stretch;=0D
+  }=0D
+  .h-auto-md {=0D
+    height: auto;=0D
+  }=0D
+  .h10p-md {=0D
+    height: 10%;=0D
+  }=0D
+  .h20p-md {=0D
+    height: 20%;=0D
+  }=0D
+  .h25p-md {=0D
+    height: 25%;=0D
+  }=0D
+  .h30p-md {=0D
+    height: 30%;=0D
+  }=0D
+  .h33p-md {=0D
+    height: 33%;=0D
+  }=0D
+  .h34p-md {=0D
+    height: 34%;=0D
+  }=0D
+  .h35p-md {=0D
+    height: 35%;=0D
+  }=0D
+  .h40p-md {=0D
+    height: 40%;=0D
+  }=0D
+  .h50p-md {=0D
+    height: 50%;=0D
+  }=0D
+  .h60p-md {=0D
+    height: 60%;=0D
+  }=0D
+  .h66p-md {=0D
+    height: 66%;=0D
+  }=0D
+  .h75p-md {=0D
+    height: 75%;=0D
+  }=0D
+  .h80p-md {=0D
+    height: 80%;=0D
+  }=0D
+  .h85p-md {=0D
+    height: 85%;=0D
+  }=0D
+  .h90p-md {=0D
+    height: 90%;=0D
+  }=0D
+  .h100p-md {=0D
+    height: 100%;=0D
+  }=0D
+  .h5vh-md {=0D
+    height: 5vh;=0D
+  }=0D
+  .max-h5vh-md {=0D
+    max-height: 5vh;=0D
+  }=0D
+  .min-h5vh-md {=0D
+    min-height: 5vh;=0D
+  }=0D
+  .h12vh-md {=0D
+    height: 12vh;=0D
+  }=0D
+  .max-h12vh-md {=0D
+    max-height: 12vh;=0D
+  }=0D
+  .min-h12vh-md {=0D
+    min-height: 12vh;=0D
+  }=0D
+  .h20vh-md {=0D
+    height: 20vh;=0D
+  }=0D
+  .max-h20vh-md {=0D
+    max-height: 20vh;=0D
+  }=0D
+  .min-h20vh-md {=0D
+    min-height: 20vh;=0D
+  }=0D
+  .h30vh-md {=0D
+    height: 30vh;=0D
+  }=0D
+  .max-h30vh-md {=0D
+    max-height: 30vh;=0D
+  }=0D
+  .min-h30vh-md {=0D
+    min-height: 30vh;=0D
+  }=0D
+  .h40vh-md {=0D
+    height: 40vh;=0D
+  }=0D
+  .max-h40vh-md {=0D
+    max-height: 40vh;=0D
+  }=0D
+  .min-h40vh-md {=0D
+    min-height: 40vh;=0D
+  }=0D
+  .h50vh-md {=0D
+    height: 50vh;=0D
+  }=0D
+  .max-h50vh-md {=0D
+    max-height: 50vh;=0D
+  }=0D
+  .min-h50vh-md {=0D
+    min-height: 50vh;=0D
+  }=0D
+  .h60vh-md {=0D
+    height: 60vh;=0D
+  }=0D
+  .max-h60vh-md {=0D
+    max-height: 60vh;=0D
+  }=0D
+  .min-h60vh-md {=0D
+    min-height: 60vh;=0D
+  }=0D
+  .h65vh-md {=0D
+    height: 65vh;=0D
+  }=0D
+  .max-h65vh-md {=0D
+    max-height: 65vh;=0D
+  }=0D
+  .min-h65vh-md {=0D
+    min-height: 65vh;=0D
+  }=0D
+  .h70vh-md {=0D
+    height: 70vh;=0D
+  }=0D
+  .max-h70vh-md {=0D
+    max-height: 70vh;=0D
+  }=0D
+  .min-h70vh-md {=0D
+    min-height: 70vh;=0D
+  }=0D
+  .h75vh-md {=0D
+    height: 75vh;=0D
+  }=0D
+  .max-h75vh-md {=0D
+    max-height: 75vh;=0D
+  }=0D
+  .min-h75vh-md {=0D
+    min-height: 75vh;=0D
+  }=0D
+  .h80vh-md {=0D
+    height: 80vh;=0D
+  }=0D
+  .max-h80vh-md {=0D
+    max-height: 80vh;=0D
+  }=0D
+  .min-h80vh-md {=0D
+    min-height: 80vh;=0D
+  }=0D
+  .h85vh-md {=0D
+    height: 85vh;=0D
+  }=0D
+  .max-h85vh-md {=0D
+    max-height: 85vh;=0D
+  }=0D
+  .min-h85vh-md {=0D
+    min-height: 85vh;=0D
+  }=0D
+  .h100vh-md {=0D
+    height: 100vh;=0D
+  }=0D
+  .max-h100vh-md {=0D
+    max-height: 100vh;=0D
+  }=0D
+  .min-h100vh-md {=0D
+    min-height: 100vh;=0D
+  }=0D
+}=0D
+@media (min-width: 1025px) {=0D
+  .lh2-lg {=0D
+    line-height: 12px;=0D
+  }=0D
+  .lh3-lg {=0D
+    line-height: 18px;=0D
+  }=0D
+  .lh4-lg {=0D
+    line-height: 24px;=0D
+  }=0D
+  .lh5-lg {=0D
+    line-height: 30px;=0D
+  }=0D
+  .lh6-lg {=0D
+    line-height: 36px;=0D
+  }=0D
+  .lh7-lg {=0D
+    line-height: 42px;=0D
+  }=0D
+  .lh9-lg {=0D
+    line-height: 54px;=0D
+  }=0D
+  .lh11-lg {=0D
+    line-height: 66px;=0D
+  }=0D
+  .lh12-lg {=0D
+    line-height: 72px;=0D
+  }=0D
+  .lh22-lg {=0D
+    line-height: 132px;=0D
+  }=0D
+  .w0-lg {=0D
+    width: 0px;=0D
+  }=0D
+  .w1-lg {=0D
+    width: 6px;=0D
+  }=0D
+  .w2-lg {=0D
+    width: 12px;=0D
+  }=0D
+  .w3-lg {=0D
+    width: 18px;=0D
+  }=0D
+  .w4-lg {=0D
+    width: 24px;=0D
+  }=0D
+  .w5-lg {=0D
+    width: 30px;=0D
+  }=0D
+  .w6-lg {=0D
+    width: 36px;=0D
+  }=0D
+  .w7-lg {=0D
+    width: 42px;=0D
+  }=0D
+  .w8-lg {=0D
+    width: 48px;=0D
+  }=0D
+  .w9-lg {=0D
+    width: 54px;=0D
+  }=0D
+  .w10-lg {=0D
+    width: 60px;=0D
+  }=0D
+  .w11-lg {=0D
+    width: 66px;=0D
+  }=0D
+  .w12-lg {=0D
+    width: 72px;=0D
+  }=0D
+  .w13-lg {=0D
+    width: 78px;=0D
+  }=0D
+  .w14-lg {=0D
+    width: 84px;=0D
+  }=0D
+  .w15-lg {=0D
+    width: 90px;=0D
+  }=0D
+  .w16-lg {=0D
+    width: 96px;=0D
+  }=0D
+  .w17-lg {=0D
+    width: 102px;=0D
+  }=0D
+  .w18-lg {=0D
+    width: 108px;=0D
+  }=0D
+  .w19-lg {=0D
+    width: 114px;=0D
+  }=0D
+  .w20-lg {=0D
+    width: 120px;=0D
+  }=0D
+  .w25-lg {=0D
+    width: 150px;=0D
+  }=0D
+  .w30-lg {=0D
+    width: 180px;=0D
+  }=0D
+  .w37-lg {=0D
+    width: 222px;=0D
+  }=0D
+  .w45-lg {=0D
+    width: 270px;=0D
+  }=0D
+  .w50-lg {=0D
+    width: 300px;=0D
+  }=0D
+  .w100vw-lg {=0D
+    width: 100vw;=0D
+  }=0D
+  .w-stretch-lg {=0D
+    width: stretch;=0D
+  }=0D
+  .min-w4-lg {=0D
+    min-width: 24px;=0D
+  }=0D
+  .min-w6-lg {=0D
+    min-width: 36px;=0D
+  }=0D
+  .min-w20-lg {=0D
+    min-width: 120px;=0D
+  }=0D
+  .min-w28-lg {=0D
+    min-width: 168px;=0D
+  }=0D
+  .min-w30-lg {=0D
+    min-width: 180px;=0D
+  }=0D
+  .min-w35-lg {=0D
+    min-width: 210px;=0D
+  }=0D
+  .min-w46-lg {=0D
+    min-width: 276px;=0D
+  }=0D
+  .min-w50-lg {=0D
+    min-width: 300px;=0D
+  }=0D
+  .min-w10p-lg {=0D
+    min-width: 10%;=0D
+  }=0D
+  .min-w20p-lg {=0D
+    min-width: 20%;=0D
+  }=0D
+  .min-w25p-lg {=0D
+    min-width: 25%;=0D
+  }=0D
+  .min-w30p-lg {=0D
+    min-width: 30%;=0D
+  }=0D
+  .min-w33p-lg {=0D
+    min-width: 33%;=0D
+  }=0D
+  .min-w34p-lg {=0D
+    min-width: 34%;=0D
+  }=0D
+  .min-w35p-lg {=0D
+    min-width: 35%;=0D
+  }=0D
+  .min-w40p-lg {=0D
+    min-width: 40%;=0D
+  }=0D
+  .min-w50p-lg {=0D
+    min-width: 50%;=0D
+  }=0D
+  .min-w60p-lg {=0D
+    min-width: 60%;=0D
+  }=0D
+  .min-w66p-lg {=0D
+    min-width: 66%;=0D
+  }=0D
+  .min-w75p-lg {=0D
+    min-width: 75%;=0D
+  }=0D
+  .min-w80p-lg {=0D
+    min-width: 80%;=0D
+  }=0D
+  .min-w85p-lg {=0D
+    min-width: 85%;=0D
+  }=0D
+  .min-w90p-lg {=0D
+    min-width: 90%;=0D
+  }=0D
+  .min-w100p-lg {=0D
+    min-width: 100%;=0D
+  }=0D
+  .min-w-lg {=0D
+    min-width: stretch;=0D
+  }=0D
+  .max-w22-lg {=0D
+    max-width: 132px;=0D
+  }=0D
+  .max-w29-lg {=0D
+    max-width: 174px;=0D
+  }=0D
+  .max-w30-lg {=0D
+    max-width: 180px;=0D
+  }=0D
+  .max-w35-lg {=0D
+    max-width: 210px;=0D
+  }=0D
+  .max-w40-lg {=0D
+    max-width: 240px;=0D
+  }=0D
+  .max-w45-lg {=0D
+    max-width: 270px;=0D
+  }=0D
+  .max-w50-lg {=0D
+    max-width: 300px;=0D
+  }=0D
+  .max-w55-lg {=0D
+    max-width: 330px;=0D
+  }=0D
+  .max-w60-lg {=0D
+    max-width: 360px;=0D
+  }=0D
+  .max-w62-lg {=0D
+    max-width: 372px;=0D
+  }=0D
+  .max-w65-lg {=0D
+    max-width: 390px;=0D
+  }=0D
+  .max-w70-lg {=0D
+    max-width: 420px;=0D
+  }=0D
+  .max-w75-lg {=0D
+    max-width: 450px;=0D
+  }=0D
+  .max-w80-lg {=0D
+    max-width: 480px;=0D
+  }=0D
+  .max-w85-lg {=0D
+    max-width: 510px;=0D
+  }=0D
+  .max-w92-lg {=0D
+    max-width: 552px;=0D
+  }=0D
+  .max-w100-lg {=0D
+    max-width: 600px;=0D
+  }=0D
+  .max-w110-lg {=0D
+    max-width: 660px;=0D
+  }=0D
+  .max-w113-lg {=0D
+    max-width: 678px;=0D
+  }=0D
+  .max-w120-lg {=0D
+    max-width: 720px;=0D
+  }=0D
+  .max-w200-lg {=0D
+    max-width: 1200px;=0D
+  }=0D
+  .max-w230-lg {=0D
+    max-width: 1380px;=0D
+  }=0D
+  .max-w240-lg {=0D
+    max-width: 1440px;=0D
+  }=0D
+  .max-w-none-lg {=0D
+    max-width: none;=0D
+  }=0D
+  .w10p-lg {=0D
+    width: 10%;=0D
+  }=0D
+  .w20p-lg {=0D
+    width: 20%;=0D
+  }=0D
+  .w25p-lg {=0D
+    width: 25%;=0D
+  }=0D
+  .w30p-lg {=0D
+    width: 30%;=0D
+  }=0D
+  .w33p-lg {=0D
+    width: 33%;=0D
+  }=0D
+  .w34p-lg {=0D
+    width: 34%;=0D
+  }=0D
+  .w35p-lg {=0D
+    width: 35%;=0D
+  }=0D
+  .w40p-lg {=0D
+    width: 40%;=0D
+  }=0D
+  .w50p-lg {=0D
+    width: 50%;=0D
+  }=0D
+  .w60p-lg {=0D
+    width: 60%;=0D
+  }=0D
+  .w66p-lg {=0D
+    width: 66%;=0D
+  }=0D
+  .w75p-lg {=0D
+    width: 75%;=0D
+  }=0D
+  .w80p-lg {=0D
+    width: 80%;=0D
+  }=0D
+  .w85p-lg {=0D
+    width: 85%;=0D
+  }=0D
+  .w90p-lg {=0D
+    width: 90%;=0D
+  }=0D
+  .w100p-lg {=0D
+    width: 100%;=0D
+  }=0D
+  .max-w-lg {=0D
+    max-width: stretch;=0D
+  }=0D
+  .w-auto-lg {=0D
+    width: auto;=0D
+  }=0D
+  .h40px-lg {=0D
+    height: 40px;=0D
+  }=0D
+  .max-h40px-lg {=0D
+    max-height: 40px;=0D
+  }=0D
+  .min-h40px-lg {=0D
+    min-height: 40px;=0D
+  }=0D
+  .h55px-lg {=0D
+    height: 55px;=0D
+  }=0D
+  .max-h55px-lg {=0D
+    max-height: 55px;=0D
+  }=0D
+  .min-h55px-lg {=0D
+    min-height: 55px;=0D
+  }=0D
+  .h0-lg {=0D
+    height: 0px;=0D
+  }=0D
+  .h1-lg {=0D
+    height: 6px;=0D
+  }=0D
+  .h2-lg {=0D
+    height: 12px;=0D
+  }=0D
+  .h3-lg {=0D
+    height: 18px;=0D
+  }=0D
+  .h4-lg {=0D
+    height: 24px;=0D
+  }=0D
+  .h5-lg {=0D
+    height: 30px;=0D
+  }=0D
+  .h6-lg {=0D
+    height: 36px;=0D
+  }=0D
+  .h7-lg {=0D
+    height: 42px;=0D
+  }=0D
+  .h8-lg {=0D
+    height: 48px;=0D
+  }=0D
+  .h9-lg {=0D
+    height: 54px;=0D
+  }=0D
+  .h10-lg {=0D
+    height: 60px;=0D
+  }=0D
+  .h11-lg {=0D
+    height: 66px;=0D
+  }=0D
+  .h12-lg {=0D
+    height: 72px;=0D
+  }=0D
+  .h13-lg {=0D
+    height: 78px;=0D
+  }=0D
+  .h14-lg {=0D
+    height: 84px;=0D
+  }=0D
+  .h15-lg {=0D
+    height: 90px;=0D
+  }=0D
+  .h16-lg {=0D
+    height: 96px;=0D
+  }=0D
+  .h17-lg {=0D
+    height: 102px;=0D
+  }=0D
+  .h18-lg {=0D
+    height: 108px;=0D
+  }=0D
+  .h19-lg {=0D
+    height: 114px;=0D
+  }=0D
+  .h20-lg {=0D
+    height: 120px;=0D
+  }=0D
+  .h25-lg {=0D
+    height: 150px;=0D
+  }=0D
+  .h30-lg {=0D
+    height: 180px;=0D
+  }=0D
+  .h37-lg {=0D
+    height: 222px;=0D
+  }=0D
+  .h45-lg {=0D
+    height: 270px;=0D
+  }=0D
+  .h50-lg {=0D
+    height: 300px;=0D
+  }=0D
+  .h-lg {=0D
+    height: stretch;=0D
+  }=0D
+  .min-h4-lg {=0D
+    min-height: 24px;=0D
+  }=0D
+  .min-h6-lg {=0D
+    min-height: 36px;=0D
+  }=0D
+  .min-h10-lg {=0D
+    min-height: 60px;=0D
+  }=0D
+  .min-h11-lg {=0D
+    min-height: 66px;=0D
+  }=0D
+  .min-h12-lg {=0D
+    min-height: 72px;=0D
+  }=0D
+  .min-h14-lg {=0D
+    min-height: 84px;=0D
+  }=0D
+  .min-h16-lg {=0D
+    min-height: 96px;=0D
+  }=0D
+  .min-h17-lg {=0D
+    min-height: 102px;=0D
+  }=0D
+  .min-h20-lg {=0D
+    min-height: 120px;=0D
+  }=0D
+  .min-h25-lg {=0D
+    min-height: 150px;=0D
+  }=0D
+  .min-h30-lg {=0D
+    min-height: 180px;=0D
+  }=0D
+  .min-h35-lg {=0D
+    min-height: 210px;=0D
+  }=0D
+  .min-h40-lg {=0D
+    min-height: 240px;=0D
+  }=0D
+  .min-h60-lg {=0D
+    min-height: 360px;=0D
+  }=0D
+  .min-h80-lg {=0D
+    min-height: 480px;=0D
+  }=0D
+  .min-h100-lg {=0D
+    min-height: 600px;=0D
+  }=0D
+  .min-h-lg {=0D
+    min-height: stretch;=0D
+  }=0D
+  .max-h0-lg {=0D
+    max-height: 0px;=0D
+  }=0D
+  .max-h6-lg {=0D
+    max-height: 36px;=0D
+  }=0D
+  .max-h11-lg {=0D
+    max-height: 66px;=0D
+  }=0D
+  .max-h22-lg {=0D
+    max-height: 132px;=0D
+  }=0D
+  .max-h30-lg {=0D
+    max-height: 180px;=0D
+  }=0D
+  .max-h40-lg {=0D
+    max-height: 240px;=0D
+  }=0D
+  .max-h50-lg {=0D
+    max-height: 300px;=0D
+  }=0D
+  .max-h120-lg {=0D
+    max-height: 720px;=0D
+  }=0D
+  .max-h-lg {=0D
+    max-height: stretch;=0D
+  }=0D
+  .h-auto-lg {=0D
+    height: auto;=0D
+  }=0D
+  .h10p-lg {=0D
+    height: 10%;=0D
+  }=0D
+  .h20p-lg {=0D
+    height: 20%;=0D
+  }=0D
+  .h25p-lg {=0D
+    height: 25%;=0D
+  }=0D
+  .h30p-lg {=0D
+    height: 30%;=0D
+  }=0D
+  .h33p-lg {=0D
+    height: 33%;=0D
+  }=0D
+  .h34p-lg {=0D
+    height: 34%;=0D
+  }=0D
+  .h35p-lg {=0D
+    height: 35%;=0D
+  }=0D
+  .h40p-lg {=0D
+    height: 40%;=0D
+  }=0D
+  .h50p-lg {=0D
+    height: 50%;=0D
+  }=0D
+  .h60p-lg {=0D
+    height: 60%;=0D
+  }=0D
+  .h66p-lg {=0D
+    height: 66%;=0D
+  }=0D
+  .h75p-lg {=0D
+    height: 75%;=0D
+  }=0D
+  .h80p-lg {=0D
+    height: 80%;=0D
+  }=0D
+  .h85p-lg {=0D
+    height: 85%;=0D
+  }=0D
+  .h90p-lg {=0D
+    height: 90%;=0D
+  }=0D
+  .h100p-lg {=0D
+    height: 100%;=0D
+  }=0D
+  .h5vh-lg {=0D
+    height: 5vh;=0D
+  }=0D
+  .max-h5vh-lg {=0D
+    max-height: 5vh;=0D
+  }=0D
+  .min-h5vh-lg {=0D
+    min-height: 5vh;=0D
+  }=0D
+  .h12vh-lg {=0D
+    height: 12vh;=0D
+  }=0D
+  .max-h12vh-lg {=0D
+    max-height: 12vh;=0D
+  }=0D
+  .min-h12vh-lg {=0D
+    min-height: 12vh;=0D
+  }=0D
+  .h20vh-lg {=0D
+    height: 20vh;=0D
+  }=0D
+  .max-h20vh-lg {=0D
+    max-height: 20vh;=0D
+  }=0D
+  .min-h20vh-lg {=0D
+    min-height: 20vh;=0D
+  }=0D
+  .h30vh-lg {=0D
+    height: 30vh;=0D
+  }=0D
+  .max-h30vh-lg {=0D
+    max-height: 30vh;=0D
+  }=0D
+  .min-h30vh-lg {=0D
+    min-height: 30vh;=0D
+  }=0D
+  .h40vh-lg {=0D
+    height: 40vh;=0D
+  }=0D
+  .max-h40vh-lg {=0D
+    max-height: 40vh;=0D
+  }=0D
+  .min-h40vh-lg {=0D
+    min-height: 40vh;=0D
+  }=0D
+  .h50vh-lg {=0D
+    height: 50vh;=0D
+  }=0D
+  .max-h50vh-lg {=0D
+    max-height: 50vh;=0D
+  }=0D
+  .min-h50vh-lg {=0D
+    min-height: 50vh;=0D
+  }=0D
+  .h60vh-lg {=0D
+    height: 60vh;=0D
+  }=0D
+  .max-h60vh-lg {=0D
+    max-height: 60vh;=0D
+  }=0D
+  .min-h60vh-lg {=0D
+    min-height: 60vh;=0D
+  }=0D
+  .h65vh-lg {=0D
+    height: 65vh;=0D
+  }=0D
+  .max-h65vh-lg {=0D
+    max-height: 65vh;=0D
+  }=0D
+  .min-h65vh-lg {=0D
+    min-height: 65vh;=0D
+  }=0D
+  .h70vh-lg {=0D
+    height: 70vh;=0D
+  }=0D
+  .max-h70vh-lg {=0D
+    max-height: 70vh;=0D
+  }=0D
+  .min-h70vh-lg {=0D
+    min-height: 70vh;=0D
+  }=0D
+  .h75vh-lg {=0D
+    height: 75vh;=0D
+  }=0D
+  .max-h75vh-lg {=0D
+    max-height: 75vh;=0D
+  }=0D
+  .min-h75vh-lg {=0D
+    min-height: 75vh;=0D
+  }=0D
+  .h80vh-lg {=0D
+    height: 80vh;=0D
+  }=0D
+  .max-h80vh-lg {=0D
+    max-height: 80vh;=0D
+  }=0D
+  .min-h80vh-lg {=0D
+    min-height: 80vh;=0D
+  }=0D
+  .h85vh-lg {=0D
+    height: 85vh;=0D
+  }=0D
+  .max-h85vh-lg {=0D
+    max-height: 85vh;=0D
+  }=0D
+  .min-h85vh-lg {=0D
+    min-height: 85vh;=0D
+  }=0D
+  .h100vh-lg {=0D
+    height: 100vh;=0D
+  }=0D
+  .max-h100vh-lg {=0D
+    max-height: 100vh;=0D
+  }=0D
+  .min-h100vh-lg {=0D
+    min-height: 100vh;=0D
+  }=0D
+}=0D
+@media (max-width: 599px) {=0D
+  .h-auto-xs {=0D
+    height: auto;=0D
+  }=0D
+}=0D
+@media all and (min-width: 540px) {=0D
+  .hide-lg {=0D
+    display: none !important;=0D
+  }=0D
+  .desktop-width {=0D
+    width: 47% !important; text-align: left !important;=0D
+  }=0D
+  .desktop-text-align {=0D
+    text-align: left !important;=0D
+  }=0D
+}=0D
+@media (max-width: 540px) {=0D
+  .welcome-header-title {=0D
+    font-size: 40px !important; line-height: 54px !important;=0D
+  }=0D
+  .welcome-header-image-padding {=0D
+    padding-left: 11px !important; padding-right: 11px !important;=0D
+  }=0D
+  .confirmation-number-box {=0D
+    padding-left: 12px !important; padding-right: 12px !important;=0D
+  }=0D
+  .confirmation-number-text {=0D
+    text-align: left !important;=0D
+  }=0D
+  .project-update-refresh-cta-table {=0D
+    text-align: center !important; width: 100% !important;=0D
+  }=0D
+  .project-update-refresh-cta-spacer {=0D
+    width: 100% !important;=0D
+  }=0D
+}=0D
+@media all and (max-width: 539px) {=0D
+  .mobile-width {=0D
+    width: 100% !important;=0D
+  }=0D
+  .mobile-text-align {=0D
+    text-align: center !important;=0D
+  }=0D
+}=0D
+</style>=0D
+</head>=0D
+<body style=3D'width: 100% !important; min-width: 100%; word-break: break-w=
+ord; font-family: "Helvetica Neue",Helvetica,Arial,"Liberation Sans",FreeSa=
+ns,sans-serif; font-size: 14px; line-height: 1.5; color: #282828; -webkit-t=
+ext-size-adjust: 100%; -ms-text-size-adjust: 100%; margin: 0; padding: 0;' =
+bgcolor=3D"#f0f0f0">=0D
+<div class=3D"preheader" style=3D"background-color: white; color: white; fo=
+nt-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; fon=
+t-size: 0px; height: 0px; line-height: 0px; overflow-y: hidden; margin: 0; =
+padding: 0; border-width: 0px;">=0D
+Riff Contest Finalists=E2=80=A6VOTE NOW! =E2=80=93 MSTies,=0D
+=0D
+Salutations, you sailors of the star-filled seas! You=E2=80=99ve continued =
+to riff and stick it out with us this weekend and we have brought news from=
+ the shores of the contested lands=E2=80=A6we have an update on the Riff Co=
+ntest!=0D
+=0D
+TOP 5 RIFFS! Vote for the Winner!=0D
+---------------------------------=0D
+=0D
+You all submitted SO MANY good riffs, some directly from the show and other=
+s wholly original. Thank you! We somehow managed to narrow it down to our 5=
+ favorites below! Congratulations to the finalists!=0D
+=0D
+* *=E2=80=9CI feel so relaxed right now. Like all my troubles are melting a=
+way.=E2=80=9D - Lauren*=0D
+* =E2=80=9CI didn't say "Simon Says!"=E2=80=9D - Nick=0D
+* =E2=80=9CMale socialization activities are so weird!=E2=80=9D - Annabel=0D
+* =E2=80=9CSet lasers to dumb.=E2=80=9D - Justin=0D
+* =E2=80=9CStop! Stop! I promise I'll floss more regularly!=E2=80=9D - Jim=0D
+=0D
+Cast your vote at this link ( https://forms.gle/9GPddJT2oa2XNDsT9 ) so we c=
+an determine the winner! You have until tomorrow (12/9/25) at 9:00 AM PST t=
+o vote, and then we will announce the results and our winner in our daily u=
+pdate!=0D
+=0D
+UNLOCKED STRETCH GOALS=0D
+----------------------=0D
+=0D
+Three more stretch goals, just like that! Thanks for the amazing support.=0D
+=0D
+First, we invite you to uncover so many secrets with *The Terror*, a film w=
+here a shipwrecked young French soldier bothers an old reclusive Baron, and=
+ gets into some Scooby-Doo shenanigans. 2 Movie Moment cards and 2 Riffs wi=
+ll be added for the movie to the Deluxe game. Enjoy the deals with the Devi=
+l, hauntings, and floating boulders!=0D
+=0D
+For our next experiment, we invite you to learn the perils of "the devil's =
+lettuce" with *Reefer Madness*, a film that could be considered the *Requie=
+m for a Dream* for pot in the late 1930s. 2 Movie Moment cards and 2 Riffs =
+will be added for the movie to the Deluxe game. Dig that crazy piano, grab =
+your best gal, and chill out, man! You're about to see someone's whole life=
+ crumble around them in this sensationalist schlock.=0D
+=0D
+Last but not least, we invite you to get a whiff of *Cyrano de Bergerac*, a=
+n award-winning film based on the play of the same name where a man with a =
+big nose is in love with the girl all the fellas are after. 2 Movie Moment =
+cards and 2 Riffs will be added for the movie to the Deluxe game. You've li=
+kely seen the iconic balcony scene adapted across a thousand iterations, so=
+ I thought we could educate you monkeys a little with some culture today by=
+ showing you the source.=0D
+=0D
+Spotlight: *The Wasp Woman*=0D
+---------------------------=0D
+=0D
+In this film, we have a precursor to what *The Substance*did by half a cent=
+ury and change. A businesswoman is being pushed out of her image-centric co=
+mpany and abuses fringe medicine to shave off some years. The end result? W=
+ell, just look at the Movie Moment card above. The takeaway? I should be mo=
+re ok about my encroaching male pattern baldness.=0D
+=0D
+From the Toy-Cluttered Desk of Dan Stong=0D
+----------------------------------------=0D
+=0D
+When we last left off in our look at design, I was puzzling on how to make =
+the gameplay loop a little more dynamic than flip, read, and vote. I rememb=
+ered the line =E2=80=9Cand we=E2=80=99ll monitor his mind=E2=80=9D from the=
+ theme song and I had an idea to get the Mads back in play and also a way t=
+o round the scoring out a bit and get more of the show into the game.=0D
+=0D
+MST3K has such a visual element to the Host segments and the world surround=
+ing the movies and I had been feeling like we were losing that, so I was to=
+ying with ways to get more characters featured in the game. That could be t=
+hrough tokens, a scoreboard, or standees/trackers. It was hard to justify a=
+ scoreboard at first as most party games use cards to track points. It=E2=
+=80=99s a proven elegant system and avoids extra setup for a game you shoul=
+d be able to bust out quickly.=0D
+=0D
+But when I was thinking about the Mads (judges) having some higher stakes i=
+n their decisions, that line from the theme song came to me again. What if =
+players bet on themselves each round, and there was a way for the Mads to g=
+et some extra points out of it? Not any pure deduction but a light bonus if=
+ you felt the strength behind a choice someone made that lined up well. Thi=
+s would make every turn a chance for players to get points, so stakes would=
+ be raised and create a new decision point for the players and the Mads.=0D
+=0D
+I played around with values, and 1,3, &amp;amp; 5 seemed to be the most imp=
+actful point values for betting without getting too swingy. We picked diffe=
+rent colors and some symbols for each set as a second way for our colorblin=
+d friends to distinguish them. We chose to limit the use of the chips (you =
+only get to use each chip once until you=E2=80=99ve played all three, then =
+get them back), so players couldn=E2=80=99t just play 5 every time and give=
+ them another decision point on top of their riff choice. How strongly did =
+you feel about the card you just played? You wouldn=E2=80=99t lose any poin=
+ts on your =E2=80=9Cbet=E2=80=9D if it didn=E2=80=99t work out, but you=E2=
+=80=99d have a little evaluation on the strength of your play you could do =
+to net more.=0D
+=0D
+It seemed to work out. The chance to bet on yourself empowered testers even=
+ more to feel like they weren=E2=80=99t just tossing a card in and hoping t=
+o get a point, but it was now THE card that would score them 5 points! The =
+Mads could get a piece of the action through =E2=80=9Cdata points=E2=80=9D =
+they would secure by =E2=80=9Cmonitoring the minds=E2=80=9D of the players =
+when they selected the player who was revealed to have a larger payday on w=
+inning the hand. When a Riff felt extremely relevant to an image, the Mads =
+might be able to key into that and assume the players also bet higher. When=
+ a player bet 5, the Mads would get 2 points, and when a player bet 3, the =
+Mads would get 1 point. The change to non-static scoring helped open the pl=
+aying field up a bit by allowing for some more dynamic score spreads. The h=
+ighs were higher and the lows were lower but rounds were still just as fast=
+. Thematically, the test subjects were always putting out their best and th=
+e Mads were conducting this experiment on their reactions to the film so it=
+ felt like a good mesh mechanically too.=0D
+=0D
+This variable point system also felt like the justification I needed for mo=
+re components. The scoreboard joined with standees and the betting tokens a=
+nd the whole thing started to look more like MST3K. But there were two more=
+ pieces we were still trying to see were viable before we felt this would b=
+e something fans would want.=0D
+=0D
+But more on that later=E2=80=A6=0D
+=0D
+-Dan=0D
+=0D
+ANYWAYS=0D
+-------=0D
+=0D
+We hope you get your voting in, shake off your case of the Mondays, and tac=
+kle this week head on. See you in the comments!=0D
+=0D
+Question of the day: Who is your all-time favorite MST3K character and why?=0D
+=0D
+=0D
+=0D
+Keep Circulating the URL!=0D
+=0D
+Cryptozoic Entertainment=0D
+=0D
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=0D
+</div>=0D
+=0D
+<table class=3D"hide-sm bg-grey-300 w100p" style=3D"mso-table-lspace: 0pt; =
+mso-table-rspace: 0pt; border-collapse: collapse; border-spacing: 0; width:=
+ 100%;" bgcolor=3D"#f0f0f0" width=3D"100%" height=3D"auto" cellpadding=3D"0=
+" cellspacing=3D"0">=0D
+<tr>=0D
+<td class=3D"type-0 hide-sm" style=3D"min-width: 540px; font-size: 0px; lin=
+e-height: 0px;">=0D
+<img height=3D"1" style=3D"min-width: 540px; height: 1px; -ms-interpolation=
+-mode: bicubic; outline: none; max-width: 100%; border-width: 0;" src=3D"ht=
+tps://i.kickstarter.com/36ab/utility-spacer.png?origin=3Dstatic&amp;sig=3De=
+d9vTkpAVEClAlrHRYMp7coQffsLIlfWuUdmJqC2Bng%3D">=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+<table class=3D"bg-grey-300 w100p mw100p" style=3D"mso-table-lspace: 0pt; m=
+so-table-rspace: 0pt; border-collapse: collapse; border-spacing: 0; width: =
+100%; min-width: 100%;" bgcolor=3D"#f0f0f0" width=3D"100%" height=3D"auto" =
+cellpadding=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td class=3D"text-center pt9 pb7" style=3D"padding-top: 54px; padding-botto=
+m: 42px;" align=3D"center">=0D
+<a target=3D"_blank" href=3D"https://emails.kickstarter.com/ss/c/u001.rUIcn=
+pczY6e9uR91rg5kh39Uko7iqNv4FvSyXhek3iXacTPKcF0ri0KWen0uyW1IuCK89N00D8Owoeo0=
+53SVGaRW8k5LRakFIHIWPIjCjucWc-ba1_SCoi-QCak8Mlv07fXQyBI_XVwS8bDkkiIlsw/4m9/=
+xn_OreCzQMyg_FK3b1a8fg/h0/h001.RJvG_yuJrNg3gdJrr1DQ60fLYmymzQX8q-S47flvzc0"=
+ style=3D"color: inherit; text-decoration: none;"><img alt=3D"Kickstarter" =
+width=3D"189" style=3D"width: 189px; -ms-interpolation-mode: bicubic; outli=
+ne: none; max-width: 100%; text-decoration: none; display: block; border-wi=
+dth: 0;" class=3D"block" src=3D"https://i.kickstarter.com/ksr_logo_superbac=
+ker043019_v1.png?origin=3Dstatic&amp;sig=3D5gE0P91CNQWUja15xYM%2B92FN%2BbrZ=
+auE093jWMJVpfpE%3D">=0D
+</a>=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+<table class=3D"mailer-body" style=3D'mso-table-lspace: 0pt; mso-table-rspa=
+ce: 0pt; width: 100% !important; min-width: 100%; word-break: break-word; f=
+ont-family: "Helvetica Neue",Helvetica,Arial,"Liberation Sans",FreeSans,san=
+s-serif; font-size: 14px; line-height: 1.5; color: #282828; -webkit-text-si=
+ze-adjust: 100%; -ms-text-size-adjust: 100%; border-collapse: collapse; bor=
+der-spacing: 0; margin: 0; padding: 0;' bgcolor=3D"#f0f0f0" width=3D"100%" =
+height=3D"auto" cellpadding=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td>=0D
+<center>=0D
+<table align=3D"center" class=3D"mx-auto" style=3D"max-width: 600px; mso-ta=
+ble-lspace: 0pt; mso-table-rspace: 0pt; border-collapse: collapse; border-s=
+pacing: 0; margin-right: auto; margin-left: auto;" width=3D"100%" height=3D=
+"auto" cellpadding=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td>=0D
+<table class=3D"bg-white w100p border border-dark-grey-500 border1px" style=
+=3D"mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collapse: collapse=
+; border-spacing: 0; width: 100%; border: 1px solid #dcdedd;" bgcolor=3D"#f=
+ff" width=3D"100%" height=3D"auto" cellpadding=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td class=3D"text-center pt5" style=3D"padding-top: 30px;" align=3D"center"=
+>=0D
+<div class=3D"mt2 soft-black" style=3D"color: #282828; margin-top: 12px;">=0D
+<table class=3D"col-20 sm-col-20 mx-auto" style=3D"mso-table-lspace: 0pt; m=
+so-table-rspace: 0pt; border-collapse: collapse; border-spacing: 0; table-l=
+ayout: fixed; width: 82.555-123-4567%; margin-right: auto; margin-left: auto;=
+" width=3D"100%" height=3D"auto" cellpadding=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td class=3D"type-28 medium pb2 soft-black" style=3D"font-size: 28px; line-=
+height: 36px; color: #282828; font-weight: 500; padding-bottom: 12px;">=0D
+<a class=3D"soft-black" href=3D"https://emails.kickstarter.com/ss/c/u001.rU=
+IcnpczY6e9uR91rg5kh39Uko7iqNv4FvSyXhek3iUK1pYKLNashzpcosI2ZJ4m-ZdqWo_5XlLwE=
+KYZXoeQ-9L3ZNc0Y9qWNcGgpYneFictYotiVzqjvA3_zPIxXzeG19c0PyCHig49mIUSuVTSd_WD=
+3AebpXoDJWmkktSfKDe91u3-XBMy9pNlKXWVtBTL/4m9/xn_OreCzQMyg_FK3b1a8fg/h1/h001=
+.tJj97VdsM6xSKpJzNX_3YY5d_6zD5Zq59arAInwYf6Y" style=3D"color: #282828; text=
+-decoration: none;">Riff Contest Finalists=E2=80=A6VOTE NOW!</a>=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+<table class=3D"col-20 sm-col-20 mx-auto" style=3D"mso-table-lspace: 0pt; m=
+so-table-rspace: 0pt; border-collapse: collapse; border-spacing: 0; table-l=
+ayout: fixed; width: 82.555-123-4567%; margin-right: auto; margin-left: auto;=
+" width=3D"100%" height=3D"auto" cellpadding=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td class=3D"border-bottom py4 border1px" style=3D"border-bottom-width: 1px=
+; border-bottom-color: #dcdedd; border-bottom-style: solid; padding-top: 24=
+px; padding-bottom: 24px;">=0D
+<table align=3D"left" class=3D"col-12 sm-col-24" style=3D"mso-table-lspace:=
+ 0pt; mso-table-rspace: 0pt; border-collapse: collapse; border-spacing: 0; =
+table-layout: fixed; width: 49.5%;" width=3D"100%" height=3D"auto" cellpadd=
+ing=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td class=3D"type-12 soft-black" style=3D"font-size: 12px; line-height: 18p=
+x; color: #282828;">=0D
+<table style=3D"mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collap=
+se: collapse; border-spacing: 0;" width=3D"100%" height=3D"auto" cellpaddin=
+g=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td class=3D"w8" style=3D"width: 48px;">=0D
+<img class=3D"w8 h8" width=3D"48" src=3D"https://i.kickstarter.com/assets/0=
+07/197/741/efd03e1e8dd8a16fe01eb4330ab6218c_original.jpg?anim=3Dfalse&amp;d=
+raw0%5Bfit%5D=3Dcover&amp;draw0%5Bheight%5D=3D140&amp;draw0%5Burl%5D=3Dhttp=
+s%3A%2F%2Fd3mlfyygrfdi2i.cloudfront.net%2Fcircular-mask.png&amp;draw0%5Bwid=
+th%5D=3D140&amp;draw=3D1&amp;fit=3Dcrop&amp;height=3D140&amp;origin=3Dugc&a=
+mp;q=3D92&amp;v=3D2025-12-08+11%3A58%3A48+-0500&amp;width=3D140&amp;sig=3Dy=
+PHbv1NW8EzrOBTTi7NWd2C8NbYQR%2FyIoPc7QrmonkI%3D" style=3D"-ms-interpolation=
+-mode: bicubic; outline: none; max-width: 100%; width: 48px; height: 48px; =
+border-width: 0;">=0D
+</td>=0D
+<td class=3D"type-14 medium pl2" style=3D"font-size: 14px; line-height: 21p=
+x; font-weight: 500; padding-left: 12px;">=0D
+<div class=3D"soft-black" style=3D"margin-bottom: 2px; color: #282828;">=0D
+Posted by Cryptozoic Entertainment=0D
+</div>=0D
+<span class=3D"type-12 soft-black_50" style=3D"font-size: 12px; line-height=
+: 18px; color: rgba(40,40,40,.5);">=0D
+<time datetime=3D"2025-12-08T16:05:52-05:00" data-format=3D"ll" class=3D"in=
+visible-if-js js-adjust-time">Dec 8, 2025</time>=0D
+</span>=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+<table align=3D"left" class=3D"col-1 sm-col-24" style=3D"mso-table-lspace: =
+0pt; mso-table-rspace: 0pt; border-collapse: collapse; border-spacing: 0; t=
+able-layout: fixed; width: 3.555-123-4567%;" width=3D"100%" height=3D"auto" c=
+ellpadding=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td class=3D"pt4" style=3D"padding-top: 24px;"></td>=0D
+</tr>=0D
+</table>=0D
+<table align=3D"right" class=3D"col-11 sm-col-24" style=3D"mso-table-lspace=
+: 0pt; mso-table-rspace: 0pt; border-collapse: collapse; border-spacing: 0;=
+ table-layout: fixed; width: 45.555-123-4567%;" width=3D"100%" height=3D"auto=
+" cellpadding=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td class=3D"bg-white border medium py2 text-center" style=3D"font-weight: =
+500; padding-top: 12px; padding-bottom: 12px; border: 1px solid #dcdedd;" a=
+lign=3D"center" bgcolor=3D"#fff">=0D
+<table style=3D"mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collap=
+se: collapse; border-spacing: 0;" width=3D"100%" height=3D"auto" cellpaddin=
+g=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td></td>=0D
+<td class=3D"text-right" style=3D"width: 1%; white-space: nowrap; padding-t=
+op: 1px;" width=3D"13" align=3D"right">=0D
+<a class=3D"block soft-black" target=3D"_blank" href=3D"https://emails.kick=
+starter.com/ss/c/u001.rUIcnpczY6e9uR91rg5kh39Uko7iqNv4FvSyXhek3iUK1pYKLNash=
+zpcosI2ZJ4m-ZdqWo_5XlLwEKYZXoeQ-9L3ZNc0Y9qWNcGgpYneFictYotiVzqjvA3_zPIxXzeG=
+19c0PyCHig49mIUSuVTSd_WD3AebpXoDJWmkktSfKDe91u3-XBMy9pNlKXWVtBTL/4m9/xn_Ore=
+CzQMyg_FK3b1a8fg/h2/h001.QlVEcwrew2jhHcRolB8hRMiOt4Yg3h0aJEWLsAVCyTA" style=
+=3D"color: #282828; text-decoration: none; display: block;"><img width=3D"1=
+3" src=3D"https://i.kickstarter.com/external_link.png?origin=3Dstatic&amp;s=
+ig=3DAtrCcDuBRk%2F%2B7GBNMZaen%2FYpNzooRDd2AT8fOX9BUuA%3D" style=3D"-ms-int=
+erpolation-mode: bicubic; outline: none; max-width: 100%; text-decoration: =
+none; border-width: 0;">=0D
+</a>=0D
+</td>=0D
+<td class=3D"pl1" style=3D"width: 1%; white-space: nowrap; padding-left: 6p=
+x;">=0D
+<a class=3D"block soft-black type-14" target=3D"_blank" href=3D"https://ema=
+ils.kickstarter.com/ss/c/u001.rUIcnpczY6e9uR91rg5kh39Uko7iqNv4FvSyXhek3iUK1=
+pYKLNashzpcosI2ZJ4m-ZdqWo_5XlLwEKYZXoeQ-9L3ZNc0Y9qWNcGgpYneFictYotiVzqjvA3_=
+zPIxXzeG19c0PyCHig49mIUSuVTSd_WD3AebpXoDJWmkktSfKDe91u3-XBMy9pNlKXWVtBTL/4m=
+9/xn_OreCzQMyg_FK3b1a8fg/h3/h001.RgqdwK7n5e4Gu6At-ZN28KoukS5MvyX-ihjhj2q2II=
+0" style=3D"color: #282828; text-decoration: none; font-size: 14px; line-he=
+ight: 21px; display: block;">View on Kickstarter=0D
+</a>=0D
+</td>=0D
+<td></td>=0D
+</tr>=0D
+</table>=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+</td>=0D
+</tr>=0D
+<tr>=0D
+<td style=3D"padding-top: 24px;">=0D
+</td>=0D
+</tr>=0D
+<tr>=0D
+<td>=0D
+<table class=3D"bg-white w100p post-body" style=3D"mso-table-lspace: 0pt; m=
+so-table-rspace: 0pt; border-collapse: collapse; border-spacing: 0; width: =
+100%;" bgcolor=3D"#fff" width=3D"100%" height=3D"auto" cellpadding=3D"0" ce=
+llspacing=3D"0">=0D
+<tr>=0D
+<td class=3D"pt1" style=3D"padding-top: 6px;">=0D
+<div class=3D"text-left soft-black" style=3D"color: #282828;" align=3D"left=
+">=0D
+<p style=3D"line-height: 1.5;">MSTies,</p>=0D
+<p style=3D"line-height: 1.5;">Salutations, you sailors of the star-filled =
+seas! You=E2=80=99ve continued to riff and stick it out with us this weeken=
+d and we have brought news from the shores of the contested lands=E2=80=A6w=
+e have an update on the Riff Contest!</p>=0D
+<h4 id=3D"h:TOP-5-RIFFS-Vote-for-the-Winner-" class=3D"page-anchor"><strong=
+>TOP 5 RIFFS! Vote for the Winner!</strong></h4>=0D
+<p style=3D"line-height: 1.5;">You all submitted SO MANY good riffs, some d=
+irectly from the show and others wholly original. Thank you! We somehow man=
+aged to narrow it down to our 5 favorites below! Congratulations to the fin=
+alists!</p>=0D
+<ul>=0D
+<li><em>=E2=80=9CI feel so relaxed right now. Like all my troubles are melt=
+ing away.=E2=80=9D =C2=A0- Lauren</em></li>=0D
+<li>=E2=80=9CI didn't say "Simon Says!"=E2=80=9D - Nick</li>=0D
+<li>=E2=80=9CMale socialization activities are so weird!=E2=80=9D - Annabel=
+</li>=0D
+<li>=E2=80=9CSet lasers to dumb.=E2=80=9D - Justin</li>=0D
+<li>=E2=80=9CStop! Stop! I promise I'll floss more regularly!=E2=80=9D - Ji=
+m</li>=0D
+</ul>=0D
+<p style=3D"line-height: 1.5;"><br>Cast your vote at <a href=3D"https://ema=
+ils.kickstarter.com/ss/c/u001.ek8MWBFgg3bC3Wh18yvxyCQ5S7QxyO6eUqUu4mptD2C-O=
+y6pz9uO9bab-IQ8IlfN/4m9/xn_OreCzQMyg_FK3b1a8fg/h4/h001.5vqPR2UxMSGz1Vn4RX01=
+hhQ_TfFfsX_DIIEfrcaconc" target=3D"_blank" rel=3D"noopener" style=3D"color:=
+ inherit; text-decoration: underline;"><strong>this link</strong></a> so we=
+ can determine the winner! You have until <strong>tomorrow (12/9/25) at 9:0=
+0 AM PST </strong>to vote, and then we will announce the results and our wi=
+nner in our daily update!</p>=0D
+<h3 id=3D"h:UNLOCKED-STRETCH-GOALS" class=3D"page-anchor"><strong>UNLOCKED =
+STRETCH GOALS</strong></h3>=0D
+<p style=3D"line-height: 1.5;">Three more stretch goals, just like that! Th=
+anks for the amazing support.</p>=0D
+<p style=3D"line-height: 1.5;">First, we invite you to uncover so many secr=
+ets with <em><strong>The Terror</strong></em>, a film where a shipwrecked y=
+oung French soldier bothers an old reclusive Baron, and gets into some Scoo=
+by-Doo shenanigans. <strong>2 Movie Moment cards and 2 Riffs </strong>will =
+be added for the movie to the Deluxe game. Enjoy the deals with the Devil, =
+hauntings, and floating boulders!</p>=0D
+<div class=3D"template asset">=0D
+<figure style=3D"text-align: center; margin: 0 0 20px;">=0D
+<img style=3D"vertical-align: bottom; max-width: 100%; width: 100%; height:=
+ auto; -ms-interpolation-mode: bicubic; outline: none; margin: 20px 0px; bo=
+rder-width: 0;" src=3D"https://i.kickstarter.com/assets/051/899/776/34fe95a=
+d5e17d163eb3443a9d48792d4_original.png?fit=3Dscale-down&amp;origin=3Dugc&am=
+p;q=3D100&amp;v=3D1765226743&amp;width=3D700&amp;sig=3DBYkeqfvMysoth7larbuw=
+oKqv9tFIdlLgEwuaOfx8SPU%3D">=0D
+</figure>=0D
+=0D
+</div>=0D
+<div class=3D"template asset">=0D
+<figure style=3D"text-align: center; margin: 0 0 20px;">=0D
+<img style=3D"vertical-align: bottom; max-width: 100%; width: 100%; height:=
+ auto; -ms-interpolation-mode: bicubic; outline: none; margin: 20px 0px; bo=
+rder-width: 0;" src=3D"https://i.kickstarter.com/assets/051/899/778/2de3cc7=
+e5cbceace377a06a7cb0fdc4d_original.png?fit=3Dscale-down&amp;origin=3Dugc&am=
+p;q=3D100&amp;v=3D1765226753&amp;width=3D700&amp;sig=3DeZrLmnh4BSQmR%2BSe%2=
+Fr2NQWqS3Os6achjpUMqeIL92ro%3D">=0D
+</figure>=0D
+=0D
+</div>=0D
+<div class=3D"template asset">=0D
+<figure style=3D"text-align: center; margin: 0 0 20px;">=0D
+<img style=3D"vertical-align: bottom; max-width: 100%; width: 100%; height:=
+ auto; -ms-interpolation-mode: bicubic; outline: none; margin: 20px 0px; bo=
+rder-width: 0;" src=3D"https://i.kickstarter.com/assets/051/899/779/7a46531=
+e08340da3a5d6f8bb013384e5_original.png?fit=3Dscale-down&amp;origin=3Dugc&am=
+p;q=3D100&amp;v=3D1765226765&amp;width=3D700&amp;sig=3DP8S1FqzaK9fh%2BM9JTm=
+w3oRqKvoxj9qebH4D99S99yOg%3D">=0D
+</figure>=0D
+=0D
+</div>=0D
+<div class=3D"template asset">=0D
+<figure style=3D"text-align: center; margin: 0 0 20px;">=0D
+<img style=3D"vertical-align: bottom; max-width: 100%; width: 100%; height:=
+ auto; -ms-interpolation-mode: bicubic; outline: none; margin: 20px 0px; bo=
+rder-width: 0;" src=3D"https://i.kickstarter.com/assets/051/899/783/bf42f5c=
+a10d7c6cb5d9b9a035b1d11df_original.png?fit=3Dscale-down&amp;origin=3Dugc&am=
+p;q=3D100&amp;v=3D1765226793&amp;width=3D700&amp;sig=3DuNPuRdr9tMB4X4UiKiUo=
+04ML9PYTbFW3%2FExQquAQNE4%3D">=0D
+</figure>=0D
+=0D
+</div>=0D
+<p style=3D"line-height: 1.5;">For our next experiment, we invite you to le=
+arn the perils of "the devil's lettuce" with <em><strong>Reefer Madness</st=
+rong></em>, a film that could be considered the <em>Requiem for a Dream</em=
+> for pot in the late 1930s. <strong>2 Movie Moment cards and 2 Riffs </str=
+ong>will be added for the movie to the Deluxe game. Dig that crazy piano, g=
+rab your best gal, and chill out, man! You're about to see someone's whole =
+life crumble around them in this sensationalist schlock.=C2=A0</p>=0D
+<div class=3D"template asset">=0D
+<figure style=3D"text-align: center; margin: 0 0 20px;">=0D
+<img style=3D"vertical-align: bottom; max-width: 100%; width: 100%; height:=
+ auto; -ms-interpolation-mode: bicubic; outline: none; margin: 20px 0px; bo=
+rder-width: 0;" src=3D"https://i.kickstarter.com/assets/051/899/811/13fc44a=
+296d669b1d90ac27833a6a4b1_original.png?fit=3Dscale-down&amp;origin=3Dugc&am=
+p;q=3D100&amp;v=3D1765226974&amp;width=3D700&amp;sig=3DlcGh%2BlPVCLRaPoqflq=
+F8VYtyY2mgoj6pWn4bZzYZPRc%3D">=0D
+</figure>=0D
+=0D
+</div>=0D
+<div class=3D"template asset">=0D
+<figure style=3D"text-align: center; margin: 0 0 20px;">=0D
+<img style=3D"vertical-align: bottom; max-width: 100%; width: 100%; height:=
+ auto; -ms-interpolation-mode: bicubic; outline: none; margin: 20px 0px; bo=
+rder-width: 0;" src=3D"https://i.kickstarter.com/assets/051/899/812/5baff8f=
+d5992296baa5c9aad9254c978_original.png?fit=3Dscale-down&amp;origin=3Dugc&am=
+p;q=3D100&amp;v=3D1765226985&amp;width=3D700&amp;sig=3DRf95ojugcNN0r72DVGpy=
+Z%2BvbnqhGMakOupEjXwWfurU%3D">=0D
+</figure>=0D
+=0D
+</div>=0D
+<div class=3D"template asset">=0D
+<figure style=3D"text-align: center; margin: 0 0 20px;">=0D
+<img style=3D"vertical-align: bottom; max-width: 100%; width: 100%; height:=
+ auto; -ms-interpolation-mode: bicubic; outline: none; margin: 20px 0px; bo=
+rder-width: 0;" src=3D"https://i.kickstarter.com/assets/051/899/815/a8d418e=
+253024a63f3a4c0a2cb708f7d_original.png?fit=3Dscale-down&amp;origin=3Dugc&am=
+p;q=3D100&amp;v=3D1765227008&amp;width=3D700&amp;sig=3DjYaErNb%2FFi%2Bb9B54=
+l%2Fusa4ZnfXcrDDZWRi0TLZ8Ev%2FU%3D">=0D
+</figure>=0D
+=0D
+</div>=0D
+<div class=3D"template asset">=0D
+<figure style=3D"text-align: center; margin: 0 0 20px;">=0D
+<img style=3D"vertical-align: bottom; max-width: 100%; width: 100%; height:=
+ auto; -ms-interpolation-mode: bicubic; outline: none; margin: 20px 0px; bo=
+rder-width: 0;" src=3D"https://i.kickstarter.com/assets/051/899/817/5cebf04=
+0056b9c9bcf2195580b02f892_original.png?fit=3Dscale-down&amp;origin=3Dugc&am=
+p;q=3D100&amp;v=3D1765227039&amp;width=3D700&amp;sig=3D%2FA0oOzk7qEIOggz1Vt=
+RzUBHum0QlUozmdQYTrNyJ%2BFU%3D">=0D
+</figure>=0D
+=0D
+</div>=0D
+<p style=3D"line-height: 1.5;">Last but not least, we invite you to get a w=
+hiff of <em><strong>Cyrano de Bergerac</strong></em>, an award-winning film=
+ based on the play of the same name where a man with a big nose is in love =
+with the girl all the fellas are after. <strong>2 Movie Moment cards and 2 =
+Riffs </strong>will be added for the movie to the Deluxe game. You've likel=
+y seen the iconic balcony scene adapted across a thousand iterations, so I =
+thought we could educate you monkeys a little with some culture today by sh=
+owing you the source.</p>=0D
+<div class=3D"template asset">=0D
+<figure style=3D"text-align: center; margin: 0 0 20px;">=0D
+<img style=3D"vertical-align: bottom; max-width: 100%; width: 100%; height:=
+ auto; -ms-interpolation-mode: bicubic; outline: none; margin: 20px 0px; bo=
+rder-width: 0;" src=3D"https://i.kickstarter.com/assets/051/899/820/4c8f18c=
+b0f05c3ce36c91b1656dfd5d8_original.png?fit=3Dscale-down&amp;origin=3Dugc&am=
+p;q=3D100&amp;v=3D1765227052&amp;width=3D700&amp;sig=3DGlqzml7sWlqHDTOhn8TS=
+LMleNCb9bO%2B8m7KnMEIZkjM%3D">=0D
+</figure>=0D
+=0D
+</div>=0D
+<div class=3D"template asset">=0D
+<figure style=3D"text-align: center; margin: 0 0 20px;">=0D
+<img style=3D"vertical-align: bottom; max-width: 100%; width: 100%; height:=
+ auto; -ms-interpolation-mode: bicubic; outline: none; margin: 20px 0px; bo=
+rder-width: 0;" src=3D"https://i.kickstarter.com/assets/051/899/822/cd79069=
+3d1c0d9dbbc2103b4ba87528b_original.png?fit=3Dscale-down&amp;origin=3Dugc&am=
+p;q=3D100&amp;v=3D1765227059&amp;width=3D700&amp;sig=3DjnhxSvkhdEmNmvT0n2GN=
+rfym85DfNPikMQwi%2FqY3LBk%3D">=0D
+</figure>=0D
+=0D
+</div>=0D
+<div class=3D"template asset">=0D
+<figure style=3D"text-align: center; margin: 0 0 20px;">=0D
+<img style=3D"vertical-align: bottom; max-width: 100%; width: 100%; height:=
+ auto; -ms-interpolation-mode: bicubic; outline: none; margin: 20px 0px; bo=
+rder-width: 0;" src=3D"https://i.kickstarter.com/assets/051/899/828/da9ed9a=
+e3273a5ba77dcbb9fe9fbea72_original.png?fit=3Dscale-down&amp;origin=3Dugc&am=
+p;q=3D100&amp;v=3D1765227081&amp;width=3D700&amp;sig=3DRol3CJb8AHcQu4VLh2Uj=
+Rbagb%2FXzZBmT5%2BIvdFSGLDs%3D">=0D
+</figure>=0D
+=0D
+</div>=0D
+<div class=3D"template asset">=0D
+<figure style=3D"text-align: center; margin: 0 0 20px;">=0D
+<img style=3D"vertical-align: bottom; max-width: 100%; width: 100%; height:=
+ auto; -ms-interpolation-mode: bicubic; outline: none; margin: 20px 0px; bo=
+rder-width: 0;" src=3D"https://i.kickstarter.com/assets/051/899/833/af3e5d9=
+91a51dc0d81596c04dfdd193e_original.png?fit=3Dscale-down&amp;origin=3Dugc&am=
+p;q=3D100&amp;v=3D1765227115&amp;width=3D700&amp;sig=3DxAXwOs8tbx%2BLLlCaqm=
+4SYjnbvj0Ado2maZcZA3a6T9U%3D">=0D
+</figure>=0D
+=0D
+</div>=0D
+<h3 id=3D"h:-Spotlight-The-Wasp-Woman-" class=3D"page-anchor">=0D
+<strong>Spotlight: </strong><em><strong>The Wasp Woman</strong></em>=0D
+</h3>=0D
+<div class=3D"template asset">=0D
+<figure style=3D"text-align: center; margin: 0 0 20px;">=0D
+<img style=3D"vertical-align: bottom; max-width: 100%; width: 100%; height:=
+ auto; -ms-interpolation-mode: bicubic; outline: none; margin: 20px 0px; bo=
+rder-width: 0;" src=3D"https://i.kickstarter.com/assets/051/899/751/dce7e2f=
+349146e90463c68b545034f88_original.png?fit=3Dscale-down&amp;origin=3Dugc&am=
+p;q=3D100&amp;v=3D1765226565&amp;width=3D700&amp;sig=3DDc98qdbhALAdkWHw8q06=
+iHmTveJB1MwtdB7FBUJ5JTw%3D">=0D
+</figure>=0D
+=0D
+</div>=0D
+<p style=3D"line-height: 1.5;"><br>In this film, we have a precursor to wha=
+t <em>The Substance </em>did by half a century and change. A businesswoman =
+is being pushed out of her image-centric company and abuses fringe medicine=
+ to shave off some years. The end result? Well, just look at the Movie Mome=
+nt card above. The takeaway? I should be more ok about my encroaching male =
+pattern baldness.</p>=0D
+<h3 id=3D"h:From-the-Toy-Cluttered-Desk-of-Dan-Stong" class=3D"page-anchor"=
+><strong>From the Toy-Cluttered Desk of Dan Stong</strong></h3>=0D
+<p style=3D"line-height: 1.5;">When we last left off in our look at design,=
+ I was puzzling on how to make the gameplay loop a little more dynamic than=
+ flip, read, and vote. I remembered the line =E2=80=9Cand we=E2=80=99ll mon=
+itor his mind=E2=80=9D from the theme song and I had an idea to get the Mad=
+s back in play and also a way to round the scoring out a bit and get more o=
+f the show into the game.</p>=0D
+<p style=3D"line-height: 1.5;">MST3K has such a visual element to the Host =
+segments and the world surrounding the movies and I had been feeling like w=
+e were losing that, so I was toying with ways to get more characters featur=
+ed in the game. That could be through tokens, a scoreboard, or standees/tra=
+ckers. It was hard to justify a scoreboard at first as most party games use=
+ cards to track points. It=E2=80=99s a proven elegant system and avoids ext=
+ra setup for a game you should be able to bust out quickly.=C2=A0</p>=0D
+<p style=3D"line-height: 1.5;">But when I was thinking about the Mads (judg=
+es) having some higher stakes in their decisions, that line from the theme =
+song came to me again. What if players bet on themselves each round, and th=
+ere was a way for the Mads to get some extra points out of it? Not any pure=
+ deduction but a light bonus if you felt the strength behind a choice someo=
+ne made that lined up well. This would make every turn a chance for players=
+ to get points, so stakes would be raised and create a new decision point f=
+or the players and the Mads.=C2=A0</p>=0D
+<p style=3D"line-height: 1.5;">I played around with values, and 1,3, &amp; =
+5 seemed to be the most impactful point values for betting without getting =
+too swingy. We picked different colors and some symbols for each set as a s=
+econd way for our colorblind friends to distinguish them. We chose to limit=
+ the use of the chips (you only get to use each chip once until you=E2=80=
+=99ve played all three, then get them back), so players couldn=E2=80=99t ju=
+st play 5 every time and give them another decision point on top of their r=
+iff choice. How strongly did you feel about the card you just played? You w=
+ouldn=E2=80=99t lose any points on your =E2=80=9Cbet=E2=80=9D if it didn=E2=
+=80=99t work out, but you=E2=80=99d have a little evaluation on the strengt=
+h of your play you could do to net more.</p>=0D
+<p style=3D"line-height: 1.5;">It seemed to work out. The chance to bet on =
+yourself empowered testers even more to feel like they weren=E2=80=99t just=
+ tossing a card in and hoping to get a point, but it was now THE card that =
+would score them 5 points! The Mads could get a piece of the action through=
+ =E2=80=9Cdata points=E2=80=9D they would secure by =E2=80=9Cmonitoring the=
+ minds=E2=80=9D of the players when they selected the player who was reveal=
+ed to have a larger payday on winning the hand. When a Riff felt extremely =
+relevant to an image, the Mads might be able to key into that and assume th=
+e players also bet higher. When a player bet 5, the Mads would get 2 points=
+, and when a player bet 3, the Mads would get 1 point. The change to non-st=
+atic scoring helped open the playing field up a bit by allowing for some mo=
+re dynamic score spreads.=C2=A0 The highs were higher and the lows were low=
+er but rounds were still just as fast. Thematically, the test subjects were=
+ always putting out their best and the Mads were conducting this experiment=
+ on their reactions to the film so it felt like a good mesh mechanically to=
+o.=C2=A0</p>=0D
+<p style=3D"line-height: 1.5;">This variable point system also felt like th=
+e justification I needed for more components. The scoreboard joined with st=
+andees and the betting tokens and the whole thing started to look more like=
+ MST3K. But there were two more pieces we were still trying to see were via=
+ble before we felt this would be something fans would want.</p>=0D
+<p style=3D"line-height: 1.5;">But more on that later=E2=80=A6</p>=0D
+<p style=3D"line-height: 1.5;">-Dan</p>=0D
+<h3 id=3D"h:ANYWAYS-" class=3D"page-anchor"><strong>ANYWAYS=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0</strong></h3>=0D
+<p style=3D"line-height: 1.5;">We hope you get your voting in, shake off yo=
+ur case of the Mondays, and tackle this week head on. See you in the commen=
+ts!</p>=0D
+<p style=3D"line-height: 1.5;">Question of the day: <strong>Who is your all=
+-time favorite MST3K character and why?</strong></p>=0D
+<p style=3D"line-height: 1.5;"><br>=C2=A0</p>=0D
+<p style=3D"line-height: 1.5;">Keep Circulating the URL!</p>=0D
+<p style=3D"line-height: 1.5;">Cryptozoic Entertainment</p>=0D
+<p style=3D"line-height: 1.5;"><br>=C2=A0</p>=0D
+<p style=3D"line-height: 1.5;"><br>=C2=A0</p>=0D
+</div>=0D
+=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+</td>=0D
+</tr>=0D
+<tr>=0D
+<td class=3D"dark-grey-500 text-center py4" style=3D"color: #656969; paddin=
+g-top: 24px; padding-bottom: 24px;" align=3D"center">=0D
+<table style=3D"mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collap=
+se: collapse; border-spacing: 0;" width=3D"100%" height=3D"auto" cellpaddin=
+g=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td class=3D"border-top text-center pt7 dark-grey-500" style=3D"font-size: =
+13px; border-top-width: 1px; border-top-color: #dcdedd; border-top-style: s=
+olid; color: #656969; padding-top: 42px;" align=3D"center">=0D
+Show support and stay involved=E2=80=94let Cryptozoic Entertainment know yo=
+u read this update.=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+</td>=0D
+</tr>=0D
+<tr>=0D
+<td class=3D"pb6" style=3D"padding-bottom: 36px;">=0D
+<table style=3D"mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collap=
+se: collapse; border-spacing: 0;" width=3D"100%" height=3D"auto" cellpaddin=
+g=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td>=0D
+<table align=3D"left" class=3D"project-update-refresh-cta-table" style=3D"m=
+so-table-lspace: 0pt; mso-table-rspace: 0pt; border-collapse: collapse; bor=
+der-spacing: 0; width: 48%;" width=3D"100%" height=3D"auto" cellpadding=3D"=
+0" cellspacing=3D"0">=0D
+<tr>=0D
+<td class=3D"text-right" style=3D"width: 1%; white-space: nowrap; padding-t=
+op: 1px;" align=3D"right">=0D
+<a class=3D"border inline-block soft-black sm-col-24 col-9 text-center" hre=
+f=3D"https://emails.kickstarter.com/ss/c/u001.rUIcnpczY6e9uR91rg5kh39Uko7iq=
+Nv4FvSyXhek3iUK1pYKLNashzpcosI2ZJ4m-ZdqWo_5XlLwEKYZXoeQ-wzNvgAERqf7GxvnXO0r=
+OJzrN0JEFRZRFF4rkPxkVZfEFzCFpxsGUEx_kIrtMcIY3VdVqqRPrPvwDAcfvqUG2mfbFKtr_gp=
+J7Zu8ZuLNz6oyuGufv8RjZqk8P715HoQmEFJ6CMsX5dwJNnNfCNR2AyemA6A1FF29mbbT2Bi6Uh=
+ZSdnpCLvX5AiQVFmFx9_XjOySk8QOFdELSmnbAVhbOlPh26923JXDiP4C8odLZia4zbCVsyRuqG=
+1fsn9kDN945yz3BtWrP6VS6jWxzVy0q-HFD2LiPTMpigLGg_HYzjdC4lS2zivbFW3t-rgE_imP6=
+i6OjkOi4Q46cLO816t9GMOo/4m9/xn_OreCzQMyg_FK3b1a8fg/h5/h001.UTP5m8ofWVQshp5J=
+yPY0VC1dfUH3yRzSRA84V73GwSU" style=3D"line-height: 43px; color: #282828; te=
+xt-decoration: none; width: 37%; display: inline-block; text-align: center;=
+ border: 1px solid #dcdedd;" target=3D"_blank">=0D
+<img width=3D"15" class=3D"inline-block valign-middle" src=3D"https://i.kic=
+kstarter.com/heart-red3x.png?origin=3Dstatic&amp;sig=3DXnYFGu5zxsw48XbqiL2t=
+0FlRvjPX2gdZ0YuJScohHWY%3D" style=3D"-ms-interpolation-mode: bicubic; outli=
+ne: none; max-width: 100%; text-decoration: none; vertical-align: middle; d=
+isplay: inline-block; border-width: 0;">=0D
+<h4 class=3D"f5 dark-grey-500 m0 type-14 medium inline-block valign-middle"=
+ style=3D"padding-left: 3px; font-size: 14px; line-height: 21px; vertical-a=
+lign: middle; color: #656969; display: inline-block; font-weight: 500; marg=
+in: 0px;">=0D
+Like=0D
+</h4>=0D
+</a>=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+<table align=3D"left" class=3D"project-update-refresh-cta-spacer" style=3D"=
+mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collapse: collapse; bo=
+rder-spacing: 0; width: 4%;" width=3D"100%" height=3D"auto" cellpadding=3D"=
+0" cellspacing=3D"0">=0D
+<tr>=0D
+<td class=3D"pt2" style=3D"padding-top: 12px;"></td>=0D
+</tr>=0D
+</table>=0D
+<table align=3D"right" class=3D"text-left project-update-refresh-cta-table"=
+ height=3D"50" style=3D"mso-table-lspace: 0pt; mso-table-rspace: 0pt; borde=
+r-collapse: collapse; border-spacing: 0; text-align: left; width: 48%;" wid=
+th=3D"100%" cellpadding=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td class=3D"type-14 soft-black_50" style=3D"font-size: 14px; line-height: =
+21px; color: rgba(40,40,40,.5);">=0D
+or=0D
+<a class=3D"pl1 dark-grey-500 medium type-14 text-underline" style=3D"line-=
+height: 1; color: #656969; text-decoration: underline; font-size: 14px; fon=
+t-weight: 500; padding-left: 6px;" target=3D"_blank" href=3D"https://emails=
+.kickstarter.com/ss/c/u001.rUIcnpczY6e9uR91rg5kh39Uko7iqNv4FvSyXhek3iUK1pYK=
+LNashzpcosI2ZJ4m-ZdqWo_5XlLwEKYZXoeQ-3INMi990LnPIFlVs3Bf5Qdq7gNIYxy5WBeiPtx=
+H991sTucxPD2Y6NGppvD3KcQ7MEQcdvP_Wnjpatht2sNIBp5yUebvuwXgm33dlMbPilEuj_I1-q=
+FewKmD4bTHiwyC5xLSWK2Q4mc3pOIninL97OY/4m9/xn_OreCzQMyg_FK3b1a8fg/h6/h001.iV=
+m2e7QoGJYJG5nSh5Gc5fYPEzhAUHBmhnGn9L1spxQ">Comment=0D
+</a>=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+</td>=0D
+</tr>=0D
+<tr class=3D"border-bottom" style=3D"border-bottom-color: #282828; border-b=
+ottom-width: 1px; border-bottom-style: solid;">=0D
+<td>=0D
+<table style=3D"mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collap=
+se: collapse; border-spacing: 0;" width=3D"100%" height=3D"auto" cellpaddin=
+g=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td class=3D"pt2 medium" style=3D"font-size: 18px; padding-bottom: 10px; fo=
+nt-weight: 500; padding-top: 12px;">=0D
+More from this creator=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+</td>=0D
+</tr>=0D
+<tr class=3D"border-top" style=3D"border-top-width: 1px; border-top-color: =
+#dcdedd; border-top-style: solid;">=0D
+<td class=3D"pt7" style=3D"padding-top: 42px;">=0D
+<table class=3D"col-24" style=3D"table-layout: auto; mso-table-lspace: 0pt;=
+ mso-table-rspace: 0pt; border-collapse: collapse; border-spacing: 0; width=
+: 100%;" width=3D"100%" height=3D"auto" cellpadding=3D"0" cellspacing=3D"0"=
+>=0D
+<tr>=0D
+<td class=3D"text-uppercase type-12 ksr-green-500 bold valign-top" style=3D=
+"line-height: 36px; white-space: nowrap; width: 1%; font-size: 12px; color:=
+ #009e74; font-weight: 700; text-transform: uppercase;" valign=3D"top">=0D
+Update #5=0D
+</td>=0D
+<td class=3D"medium valign-top pl4" style=3D"font-size: 24px; line-height: =
+36px; font-weight: 500; padding-left: 24px;" valign=3D"top">=0D
+<a class=3D"soft-black text-underline" href=3D"https://emails.kickstarter.c=
+om/ss/c/u001.rUIcnpczY6e9uR91rg5kh39Uko7iqNv4FvSyXhek3iUK1pYKLNashzpcosI2ZJ=
+4m-ZdqWo_5XlLwEKYZXoeQ-6eTUrSO0_Qo34jO1px-L1XUA9NHLXfSYsjrgwLCekdfpXNWZPa4x=
+eLyATID_thqp1PXBmRz_pwmBQqKWxA0hJQ/4m9/xn_OreCzQMyg_FK3b1a8fg/h7/h001.hiUJ-=
+_l9vpEW1rPK_KEVGuiCGGhxQVTy3UGqHdWaabs" style=3D"color: #282828; text-decor=
+ation: underline;">Riff Contest!</a>=0D
+</td>=0D
+</tr>=0D
+<tr style=3D"height: 40px;"></tr>=0D
+<tr>=0D
+<td class=3D"text-uppercase type-12 ksr-green-500 bold valign-top" style=3D=
+"line-height: 36px; white-space: nowrap; width: 1%; font-size: 12px; color:=
+ #009e74; font-weight: 700; text-transform: uppercase;" valign=3D"top">=0D
+Update #4=0D
+</td>=0D
+<td class=3D"medium valign-top pl4" style=3D"font-size: 24px; line-height: =
+36px; font-weight: 500; padding-left: 24px;" valign=3D"top">=0D
+<a class=3D"soft-black text-underline" href=3D"https://emails.kickstarter.c=
+om/ss/c/u001.rUIcnpczY6e9uR91rg5kh39Uko7iqNv4FvSyXhek3iUK1pYKLNashzpcosI2ZJ=
+4m-ZdqWo_5XlLwEKYZXoeQ-9a8_zFCo_Dm9HBX4qhPViZVhtoKDfgQpFwtq0ZQm-E-C0VTPf_St=
+RNAyehFqXE0m4saJKKBOEy8Z5fpu5U6krc/4m9/xn_OreCzQMyg_FK3b1a8fg/h8/h001.YP5KZ=
+5eMi-2sJGf1mYZz5JCMn0tLV-_pb4Y8p0CBBNQ" style=3D"color: #282828; text-decor=
+ation: underline;">The Home Game!</a>=0D
+</td>=0D
+</tr>=0D
+<tr style=3D"height: 40px;"></tr>=0D
+</table>=0D
+</td>=0D
+</tr>=0D
+=0D
+</table>=0D
+=0D
+<table class=3D"h2" style=3D"mso-table-lspace: 0pt; mso-table-rspace: 0pt; =
+border-collapse: collapse; border-spacing: 0; height: 12px;" width=3D"100%"=
+ height=3D"auto" cellpadding=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td class=3D"h2 type-0" style=3D"font-size: 0px; line-height: 0px; height: =
+12px;">=0D
+<img height=3D"12" style=3D"height: 12px; -ms-interpolation-mode: bicubic; =
+outline: none; max-width: 100%; border-width: 0;" src=3D"https://i.kickstar=
+ter.com/36ab/utility-spacer.png?origin=3Dstatic&amp;sig=3Ded9vTkpAVEClAlrHR=
+YMp7coQffsLIlfWuUdmJqC2Bng%3D">=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+=0D
+</div>=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+<table class=3D"bg-white w100p mt2" style=3D"mso-table-lspace: 0pt; mso-tab=
+le-rspace: 0pt; border-collapse: collapse; border-spacing: 0; width: 100%; =
+margin-top: 12px;" bgcolor=3D"#fff" width=3D"100%" height=3D"auto" cellpadd=
+ing=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td>=0D
+<table class=3D"col-24 bg-white" style=3D"mso-table-lspace: 0pt; mso-table-=
+rspace: 0pt; border-collapse: collapse; border-spacing: 0; table-layout: fi=
+xed; width: 100%;" bgcolor=3D"#fff" width=3D"100%" height=3D"auto" cellpadd=
+ing=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td class=3D"col-2 sm-col-2" style=3D"width: 7.555-123-4567%;"></td>=0D
+<td class=3D"col-20 sm-col-20" style=3D"width: 82.555-123-4567%;">=0D
+<table class=3D"w100p mw100p" style=3D"mso-table-lspace: 0pt; mso-table-rsp=
+ace: 0pt; border-collapse: collapse; border-spacing: 0; width: 100%; min-wi=
+dth: 100%;" width=3D"100%" height=3D"auto" cellpadding=3D"0" cellspacing=3D=
+"0">=0D
+<tr>=0D
+<td class=3D"pt8 type-21 medium text-center" style=3D"font-size: 21px; line=
+-height: 30px; font-weight: 500; padding-top: 48px;" align=3D"center">=0D
+Recommended for you=0D
+</td>=0D
+</tr>=0D
+<tr>=0D
+<td class=3D"pb6 type-16 text-center" style=3D"font-size: 16px; line-height=
+: 24px; padding-bottom: 36px;" align=3D"center">=0D
+Support another creative project today.=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+</td>=0D
+</tr>=0D
+<tr>=0D
+<td class=3D"col-2 sm-col-2" style=3D"width: 7.555-123-4567%;"></td>=0D
+<td class=3D"col-20 sm-col-20" style=3D"width: 82.555-123-4567%;">=0D
+<table style=3D"mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collap=
+se: collapse; border-spacing: 0;" width=3D"100%" height=3D"auto" cellpaddin=
+g=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td>=0D
+<table style=3D"mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collap=
+se: collapse; border-spacing: 0;" width=3D"100%" height=3D"auto" cellpaddin=
+g=3D"0" cellspacing=3D"0">=0D
+=0D
+<tr>=0D
+<td>=0D
+<a href=3D"https://emails.kickstarter.com/ss/c/u001.rUIcnpczY6e9uR91rg5kh39=
+Uko7iqNv4FvSyXhek3iUnMuLQH8NECTuCo83cIP1k2Xx1R5R88q-gTsTLlIRlR6TT09HsxPeV_3=
+NCRRzLHfggjZvn_y6CRAg11gcjt-qD8Plulo6zDg4Y69iHGlUCiy3vD0pyi4r2ZKUCBPCAiGlBm=
+H77P2mvT4C0R3BeMMhyeMsBauCDQ9MiNVe89jWJqexYiR0FRGfV1-Wy9lkoZrOPlCMIFvEw9bwU=
+-LJCd1X-/4m9/xn_OreCzQMyg_FK3b1a8fg/h9/h001.FvYw9d9bKcvHJqBs68ZD5oKSEM3ncjd=
+wbUZSslSHaOA" style=3D"color: inherit; text-decoration: none;"><img alt=3D"=
+The Making of THE FINAL SACRIFICE" style=3D"height: auto; -ms-interpolation=
+-mode: bicubic; outline: none; max-width: 100%; text-decoration: none; widt=
+h: 100%; display: block; border-width: 0;" class=3D"w100p block" src=3D"htt=
+ps://i.kickstarter.com/assets/051/898/071/eb728a6e317260cc40965a53ebf15bf3_=
+original.jpg?anim=3Dfalse&amp;fit=3Dcover&amp;gravity=3Dauto&amp;height=3D2=
+88&amp;origin=3Dugc&amp;q=3D92&amp;v=3D1765214820&amp;width=3D512&amp;sig=
+=3DeCG1hzc6Lab%2FSXfHTXRLjPWoU26kpzVTzfVAV6VUcac%3D" width=3D"512" height=
+=3D"288"></a>=0D
+<table class=3D"mb2" style=3D"height: 8px; mso-table-lspace: 0pt; mso-table=
+-rspace: 0pt; border-collapse: collapse; border-spacing: 0; margin-bottom: =
+12px;" width=3D"100%" height=3D"auto" cellpadding=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td class=3D"bg-create-500 left" style=3D"width: 100%; height: 8px;" bgcolo=
+r=3D"#05ce78"></td>=0D
+<td class=3D"bg-support-100 left" style=3D"width: 0%; height: 8px;" bgcolor=
+=3D"#f3f3f3"></td>=0D
+</tr>=0D
+</table>=0D
+=0D
+</td>=0D
+</tr>=0D
+<tr>=0D
+<td>=0D
+<div class=3D"mb2" style=3D"margin-bottom: 12px;">=0D
+<div class=3D"inline-block mr3" style=3D"display: inline-block; margin-righ=
+t: 18px;">=0D
+<h4 class=3D"fz24px create-700 m0" style=3D"color: #028858; font-size: 24px=
+; margin: 0px;">$30,945</h4>=0D
+<h5 class=3D"type-14 support-400 normal m0" style=3D"font-size: 14px; line-=
+height: 21px; color: dimgray; font-weight: 400; margin: 0px;">pledged</h5>=0D
+</div>=0D
+<div class=3D"inline-block mr3" style=3D"display: inline-block; margin-righ=
+t: 18px;">=0D
+<h4 class=3D"fz24px m0" style=3D"font-size: 24px; margin: 0px;">392</h4>=0D
+<h5 class=3D"type-14 support-400 normal m0" style=3D"font-size: 14px; line-=
+height: 21px; color: dimgray; font-weight: 400; margin: 0px;">backers</h5>=0D
+</div>=0D
+<div class=3D"inline-block" style=3D"display: inline-block;">=0D
+<h4 class=3D"fz24px m0" style=3D"font-size: 24px; margin: 0px;">19</h4>=0D
+<h5 class=3D"type-14 support-400 normal m0" style=3D"font-size: 14px; line-=
+height: 21px; color: dimgray; font-weight: 400; margin: 0px;">days left</h5=
+>=0D
+</div>=0D
+</div>=0D
+</td>=0D
+</tr>=0D
+<tr>=0D
+<td>=0D
+<h2 class=3D"mb2" style=3D"margin-bottom: 12px;">=0D
+<a class=3D"fz20px normal" href=3D"https://emails.kickstarter.com/ss/c/u001=
+.rUIcnpczY6e9uR91rg5kh39Uko7iqNv4FvSyXhek3iUnMuLQH8NECTuCo83cIP1k2Xx1R5R88q=
+-gTsTLlIRlR6TT09HsxPeV_3NCRRzLHfggjZvn_y6CRAg11gcjt-qD8Plulo6zDg4Y69iHGlUCi=
+y3vD0pyi4r2ZKUCBPCAiGlBmH77P2mvT4C0R3BeMMhyeMsBauCDQ9MiNVe89jWJqexYiR0FRGfV=
+1-Wy9lkoZrOPlCMIFvEw9bwU-LJCd1X-/4m9/xn_OreCzQMyg_FK3b1a8fg/h10/h001.p1SQrP=
+ZkQXVlDLkk0SaWSpffhNtrzyn2MND2C53igfc" style=3D"color: inherit; text-decora=
+tion: none; font-size: 20px; font-weight: 400;">The Making of THE FINAL SAC=
+RIFICE</a>=0D
+</h2>=0D
+<p class=3D"font-georgia mt0" style=3D'font-family: Georgia,"Times New Roma=
+n",Times,serif; margin-top: 0px;'>=0D
+The Flying Dutchman Tells All: After years of wild rumors &amp; speculation=
+, the director of this MST3K classic comes clean!=0D
+</p>=0D
+<p class=3D"type-12 support-400" style=3D"font-size: 12px; line-height: 18p=
+x; color: dimgray;">=0D
+by Tjardus Greidanus=0D
+</p>=0D
+</td>=0D
+</tr>=0D
+=0D
+</table>=0D
+<table style=3D"mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collap=
+se: collapse; border-spacing: 0;" width=3D"100%" height=3D"auto" cellpaddin=
+g=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td height=3D"60px"></td>=0D
+</tr>=0D
+</table>=0D
+<table style=3D"mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collap=
+se: collapse; border-spacing: 0;" width=3D"100%" height=3D"auto" cellpaddin=
+g=3D"0" cellspacing=3D"0">=0D
+=0D
+<tr>=0D
+<td>=0D
+<a href=3D"https://emails.kickstarter.com/ss/c/u001.rUIcnpczY6e9uR91rg5kh39=
+Uko7iqNv4FvSyXhek3iXAteTa3q8iHFnwX_wBVV2aLgsDT7ZcvdgUC_Ink7-5YOx5di2ANf7Ejv=
+jP6fLWx46KDCywez4LKuhkgwVdAZuE2wO11WE-VqH9PZFqAR0K4wb1uJ5FDD2mzGeSgjVQMJYQN=
+tWvTlZftG--YM2T2iNHNWllfqIgifmemFXgAE1jijlY4iSJEi0LbPN0lzVsRJLnTqrQt0NrH8nh=
+mmnlWg6G/4m9/xn_OreCzQMyg_FK3b1a8fg/h11/h001.BrOv5YSlqKhP5GjxZy9HI6eBWvJjp4=
+4RHXIixEOw7C8" style=3D"color: inherit; text-decoration: none;"><img alt=3D=
+"Danger Mouse: The Official Console Game" style=3D"height: auto; -ms-interp=
+olation-mode: bicubic; outline: none; max-width: 100%; text-decoration: non=
+e; width: 100%; display: block; border-width: 0;" class=3D"w100p block" src=
+=3D"https://i.kickstarter.com/assets/051/619/420/f8519981fb4050d191a30e223e=
+61db7e_original.png?anim=3Dfalse&amp;fit=3Dcover&amp;gravity=3Dauto&amp;hei=
+ght=3D288&amp;origin=3Dugc&amp;q=3D92&amp;v=3D1762880017&amp;width=3D512&am=
+p;sig=3DAxF3k04ub3JRVb2av%2FyXPFjKA0IjWsLrSR4ivlxNDpQ%3D" width=3D"512" hei=
+ght=3D"288"></a>=0D
+<table class=3D"mb2" style=3D"height: 8px; mso-table-lspace: 0pt; mso-table=
+-rspace: 0pt; border-collapse: collapse; border-spacing: 0; margin-bottom: =
+12px;" width=3D"100%" height=3D"auto" cellpadding=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td class=3D"bg-create-500 left" style=3D"width: 100%; height: 8px;" bgcolo=
+r=3D"#05ce78"></td>=0D
+<td class=3D"bg-support-100 left" style=3D"width: 0%; height: 8px;" bgcolor=
+=3D"#f3f3f3"></td>=0D
+</tr>=0D
+</table>=0D
+=0D
+</td>=0D
+</tr>=0D
+<tr>=0D
+<td>=0D
+<div class=3D"mb2" style=3D"margin-bottom: 12px;">=0D
+<div class=3D"inline-block mr3" style=3D"display: inline-block; margin-righ=
+t: 18px;">=0D
+<h4 class=3D"fz24px create-700 m0" style=3D"color: #028858; font-size: 24px=
+; margin: 0px;">AU$ 82,430</h4>=0D
+<h5 class=3D"type-14 support-400 normal m0" style=3D"font-size: 14px; line-=
+height: 21px; color: dimgray; font-weight: 400; margin: 0px;">pledged</h5>=0D
+</div>=0D
+<div class=3D"inline-block mr3" style=3D"display: inline-block; margin-righ=
+t: 18px;">=0D
+<h4 class=3D"fz24px m0" style=3D"font-size: 24px; margin: 0px;">901</h4>=0D
+<h5 class=3D"type-14 support-400 normal m0" style=3D"font-size: 14px; line-=
+height: 21px; color: dimgray; font-weight: 400; margin: 0px;">backers</h5>=0D
+</div>=0D
+<div class=3D"inline-block" style=3D"display: inline-block;">=0D
+<h4 class=3D"fz24px m0" style=3D"font-size: 24px; margin: 0px;">4</h4>=0D
+<h5 class=3D"type-14 support-400 normal m0" style=3D"font-size: 14px; line-=
+height: 21px; color: dimgray; font-weight: 400; margin: 0px;">days left</h5=
+>=0D
+</div>=0D
+</div>=0D
+</td>=0D
+</tr>=0D
+<tr>=0D
+<td>=0D
+<h2 class=3D"mb2" style=3D"margin-bottom: 12px;">=0D
+<a class=3D"fz20px normal" href=3D"https://emails.kickstarter.com/ss/c/u001=
+.rUIcnpczY6e9uR91rg5kh39Uko7iqNv4FvSyXhek3iXAteTa3q8iHFnwX_wBVV2aLgsDT7Zcvd=
+gUC_Ink7-5YOx5di2ANf7EjvjP6fLWx46KDCywez4LKuhkgwVdAZuE2wO11WE-VqH9PZFqAR0K4=
+wb1uJ5FDD2mzGeSgjVQMJYQNtWvTlZftG--YM2T2iNHNWllfqIgifmemFXgAE1jijlY4iSJEi0L=
+bPN0lzVsRJLnTqrQt0NrH8nhmmnlWg6G/4m9/xn_OreCzQMyg_FK3b1a8fg/h12/h001.34VAFs=
+K-47Nk0LsCQT4qLBUNvbiQSxuWwewI29A1RaU" style=3D"color: inherit; text-decora=
+tion: none; font-size: 20px; font-weight: 400;">Danger Mouse: The Official =
+Console Game</a>=0D
+</h2>=0D
+<p class=3D"font-georgia mt0" style=3D'font-family: Georgia,"Times New Roma=
+n",Times,serif; margin-top: 0px;'>=0D
+Celebrate the 45th Birthday of Danger Mouse! 15 side scrolling, arcade batt=
+le action, super danger filled levels for PC and consoles!=0D
+</p>=0D
+<p class=3D"type-12 support-400" style=3D"font-size: 12px; line-height: 18p=
+x; color: dimgray;">=0D
+by Art Of Play International=0D
+</p>=0D
+</td>=0D
+</tr>=0D
+=0D
+</table>=0D
+<table style=3D"mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collap=
+se: collapse; border-spacing: 0;" width=3D"100%" height=3D"auto" cellpaddin=
+g=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td height=3D"60px"></td>=0D
+</tr>=0D
+</table>=0D
+<table style=3D"mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collap=
+se: collapse; border-spacing: 0;" width=3D"100%" height=3D"auto" cellpaddin=
+g=3D"0" cellspacing=3D"0">=0D
+=0D
+<tr>=0D
+<td>=0D
+<a href=3D"https://emails.kickstarter.com/ss/c/u001.rUIcnpczY6e9uR91rg5kh39=
+Uko7iqNv4FvSyXhek3iVUaIZcaUv8U6w07Cb2XbbB979G0shxt0sbE7s3Z3IC3rnPNSDLZmpMzJ=
+GMEaEaZB1kL6p_HJeG0FE-wlu5FgcmiFzhwARvPxSotdYavH5Gkx6BUKNJxbJvM8t8O9uL00wRU=
+e9IaabsJ0Uw6dv-2acTvgkt11jdQgI-SPw4cwlvvWn1hekp9km_7EgmAu08Rwq54Y1Dye-9p6mm=
+-B_ElO4hSrdR_mJ3FM5JxAyv_ttd1Q/4m9/xn_OreCzQMyg_FK3b1a8fg/h13/h001.31KUZsWU=
+l5BK7gPvzaXB0QuqMAyoItFlonUP-nIu23Y" style=3D"color: inherit; text-decorati=
+on: none;"><img alt=3D"Elvira Mistress of the Dark Illustrated Tarot Card S=
+et" style=3D"height: auto; -ms-interpolation-mode: bicubic; outline: none; =
+max-width: 100%; text-decoration: none; width: 100%; display: block; border=
+-width: 0;" class=3D"w100p block" src=3D"https://i.kickstarter.com/assets/0=
+51/701/068/1f040e1bcbf74c3403918862cae29528_original.jpg?anim=3Dfalse&amp;f=
+it=3Dcover&amp;gravity=3Dauto&amp;height=3D288&amp;origin=3Dugc&amp;q=3D92&=
+amp;v=3D1763494166&amp;width=3D512&amp;sig=3DioeIB5LfRPWzMIJjGVpaO46nor32TZ=
+JvVs5CTu%2BPH28%3D" width=3D"512" height=3D"288"></a>=0D
+<table class=3D"mb2" style=3D"height: 8px; mso-table-lspace: 0pt; mso-table=
+-rspace: 0pt; border-collapse: collapse; border-spacing: 0; margin-bottom: =
+12px;" width=3D"100%" height=3D"auto" cellpadding=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td class=3D"bg-create-500 left" style=3D"width: 100%; height: 8px;" bgcolo=
+r=3D"#05ce78"></td>=0D
+<td class=3D"bg-support-100 left" style=3D"width: 0%; height: 8px;" bgcolor=
+=3D"#f3f3f3"></td>=0D
+</tr>=0D
+</table>=0D
+=0D
+</td>=0D
+</tr>=0D
+<tr>=0D
+<td>=0D
+<div class=3D"mb2" style=3D"margin-bottom: 12px;">=0D
+<div class=3D"inline-block mr3" style=3D"display: inline-block; margin-righ=
+t: 18px;">=0D
+<h4 class=3D"fz24px create-700 m0" style=3D"color: #028858; font-size: 24px=
+; margin: 0px;">$99,496</h4>=0D
+<h5 class=3D"type-14 support-400 normal m0" style=3D"font-size: 14px; line-=
+height: 21px; color: dimgray; font-weight: 400; margin: 0px;">pledged</h5>=0D
+</div>=0D
+<div class=3D"inline-block mr3" style=3D"display: inline-block; margin-righ=
+t: 18px;">=0D
+<h4 class=3D"fz24px m0" style=3D"font-size: 24px; margin: 0px;">870</h4>=0D
+<h5 class=3D"type-14 support-400 normal m0" style=3D"font-size: 14px; line-=
+height: 21px; color: dimgray; font-weight: 400; margin: 0px;">backers</h5>=0D
+</div>=0D
+<div class=3D"inline-block" style=3D"display: inline-block;">=0D
+<h4 class=3D"fz24px m0" style=3D"font-size: 24px; margin: 0px;">14</h4>=0D
+<h5 class=3D"type-14 support-400 normal m0" style=3D"font-size: 14px; line-=
+height: 21px; color: dimgray; font-weight: 400; margin: 0px;">days left</h5=
+>=0D
+</div>=0D
+</div>=0D
+</td>=0D
+</tr>=0D
+<tr>=0D
+<td>=0D
+<h2 class=3D"mb2" style=3D"margin-bottom: 12px;">=0D
+<a class=3D"fz20px normal" href=3D"https://emails.kickstarter.com/ss/c/u001=
+.rUIcnpczY6e9uR91rg5kh39Uko7iqNv4FvSyXhek3iVUaIZcaUv8U6w07Cb2XbbB979G0shxt0=
+sbE7s3Z3IC3rnPNSDLZmpMzJGMEaEaZB1kL6p_HJeG0FE-wlu5FgcmiFzhwARvPxSotdYavH5Gk=
+x6BUKNJxbJvM8t8O9uL00wRUe9IaabsJ0Uw6dv-2acTvgkt11jdQgI-SPw4cwlvvWn1hekp9km_=
+7EgmAu08Rwq54Y1Dye-9p6mm-B_ElO4hSrdR_mJ3FM5JxAyv_ttd1Q/4m9/xn_OreCzQMyg_FK3=
+b1a8fg/h14/h001.sz--OaQUpjnpurLUEQK7BjVxnvLglscoBMYE93KlT9o" style=3D"color=
+: inherit; text-decoration: none; font-size: 20px; font-weight: 400;">Elvir=
+a Mistress of the Dark Illustrated Tarot Card Set</a>=0D
+</h2>=0D
+<p class=3D"font-georgia mt0" style=3D'font-family: Georgia,"Times New Roma=
+n",Times,serif; margin-top: 0px;'>=0D
+A Beautifully Creepy Complete Set of Tarot Cards Illustrated by Gris Grimly=
+ Based On The Mistress of the Macabre!=0D
+</p>=0D
+<p class=3D"type-12 support-400" style=3D"font-size: 12px; line-height: 18p=
+x; color: dimgray;">=0D
+by Dynamite Entertainment=0D
+</p>=0D
+</td>=0D
+</tr>=0D
+=0D
+</table>=0D
+<table style=3D"mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collap=
+se: collapse; border-spacing: 0;" width=3D"100%" height=3D"auto" cellpaddin=
+g=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td height=3D"60px"></td>=0D
+</tr>=0D
+</table>=0D
+<table style=3D"mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collap=
+se: collapse; border-spacing: 0;" width=3D"100%" height=3D"auto" cellpaddin=
+g=3D"0" cellspacing=3D"0">=0D
+=0D
+<tr>=0D
+<td>=0D
+<a href=3D"https://emails.kickstarter.com/ss/c/u001.rUIcnpczY6e9uR91rg5kh39=
+Uko7iqNv4FvSyXhek3iVrjzKwd1jLSQ5pFIzzgktsqlRPO4NzC1j2q3atMcGMYpz0Dwy4c4ayBO=
+OebITdsN4NinEmLfG2rcFfICxOmPS9vYK_d06BFLk3f2w8oDiyyZ6fEab_XPSEbzqzoYR8SwHZR=
+tzqTgq2ax1yUHd1iHUVDxXbZcSahHdU8swp5iHpliKl9Bd8kb_KBYEthsmnnz9YkUJV-OH2Hfue=
+HEVbXNiL/4m9/xn_OreCzQMyg_FK3b1a8fg/h15/h001.atFolKeJdNJgStIN9NiBhCn2z-QSnj=
+S2lwRoPK1gH6A" style=3D"color: inherit; text-decoration: none;"><img alt=3D=
+"THE FEW AND CURSED #12 - Season Finale! =E2=98=A0=EF=B8=8F" style=3D"heigh=
+t: auto; -ms-interpolation-mode: bicubic; outline: none; max-width: 100%; t=
+ext-decoration: none; width: 100%; display: block; border-width: 0;" class=
+=3D"w100p block" src=3D"https://i.kickstarter.com/assets/051/517/750/88a1f7=
+98da2461d8964d318e05db4536_original.jpg?anim=3Dfalse&amp;fit=3Dcover&amp;gr=
+avity=3Dauto&amp;height=3D288&amp;origin=3Dugc&amp;q=3D92&amp;v=3D176218696=
+9&amp;width=3D512&amp;sig=3Dov41ciigSiMVWM4Wr6CFgzebmwNxXmDpF8V5%2F7Jbkhw%3=
+D" width=3D"512" height=3D"288"></a>=0D
+<table class=3D"mb2" style=3D"height: 8px; mso-table-lspace: 0pt; mso-table=
+-rspace: 0pt; border-collapse: collapse; border-spacing: 0; margin-bottom: =
+12px;" width=3D"100%" height=3D"auto" cellpadding=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td class=3D"bg-create-500 left" style=3D"width: 100%; height: 8px;" bgcolo=
+r=3D"#05ce78"></td>=0D
+<td class=3D"bg-support-100 left" style=3D"width: 0%; height: 8px;" bgcolor=
+=3D"#f3f3f3"></td>=0D
+</tr>=0D
+</table>=0D
+=0D
+</td>=0D
+</tr>=0D
+<tr>=0D
+<td>=0D
+<div class=3D"mb2" style=3D"margin-bottom: 12px;">=0D
+<div class=3D"inline-block mr3" style=3D"display: inline-block; margin-righ=
+t: 18px;">=0D
+<h4 class=3D"fz24px create-700 m0" style=3D"color: #028858; font-size: 24px=
+; margin: 0px;">$59,292</h4>=0D
+<h5 class=3D"type-14 support-400 normal m0" style=3D"font-size: 14px; line-=
+height: 21px; color: dimgray; font-weight: 400; margin: 0px;">pledged</h5>=0D
+</div>=0D
+<div class=3D"inline-block mr3" style=3D"display: inline-block; margin-righ=
+t: 18px;">=0D
+<h4 class=3D"fz24px m0" style=3D"font-size: 24px; margin: 0px;">1,467</h4>=0D
+<h5 class=3D"type-14 support-400 normal m0" style=3D"font-size: 14px; line-=
+height: 21px; color: dimgray; font-weight: 400; margin: 0px;">backers</h5>=0D
+</div>=0D
+<div class=3D"inline-block" style=3D"display: inline-block;">=0D
+<h4 class=3D"fz24px m0" style=3D"font-size: 24px; margin: 0px;">3</h4>=0D
+<h5 class=3D"type-14 support-400 normal m0" style=3D"font-size: 14px; line-=
+height: 21px; color: dimgray; font-weight: 400; margin: 0px;">days left</h5=
+>=0D
+</div>=0D
+</div>=0D
+</td>=0D
+</tr>=0D
+<tr>=0D
+<td>=0D
+<h2 class=3D"mb2" style=3D"margin-bottom: 12px;">=0D
+<a class=3D"fz20px normal" href=3D"https://emails.kickstarter.com/ss/c/u001=
+.rUIcnpczY6e9uR91rg5kh39Uko7iqNv4FvSyXhek3iVrjzKwd1jLSQ5pFIzzgktsqlRPO4NzC1=
+j2q3atMcGMYpz0Dwy4c4ayBOOebITdsN4NinEmLfG2rcFfICxOmPS9vYK_d06BFLk3f2w8oDiyy=
+Z6fEab_XPSEbzqzoYR8SwHZRtzqTgq2ax1yUHd1iHUVDxXbZcSahHdU8swp5iHpliKl9Bd8kb_K=
+BYEthsmnnz9YkUJV-OH2HfueHEVbXNiL/4m9/xn_OreCzQMyg_FK3b1a8fg/h16/h001.ak2aFO=
+3AgqvGUjFy-LtzpAhv0fUn2OnMq74FPGbOuD8" style=3D"color: inherit; text-decora=
+tion: none; font-size: 20px; font-weight: 400;">THE FEW AND CURSED #12 - Se=
+ason Finale! =E2=98=A0=EF=B8=8F</a>=0D
+</h2>=0D
+<p class=3D"font-georgia mt0" style=3D'font-family: Georgia,"Times New Roma=
+n",Times,serif; margin-top: 0px;'>=0D
+Join Red for the epic conclusion of The Great Deluge in this supernatural w=
+estern! Past issues &amp; complete packages also available!=0D
+</p>=0D
+<p class=3D"type-12 support-400" style=3D"font-size: 12px; line-height: 18p=
+x; color: dimgray;">=0D
+by Felipe Cagno=0D
+</p>=0D
+</td>=0D
+</tr>=0D
+=0D
+</table>=0D
+<table style=3D"mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collap=
+se: collapse; border-spacing: 0;" width=3D"100%" height=3D"auto" cellpaddin=
+g=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td height=3D"60px"></td>=0D
+</tr>=0D
+</table>=0D
+<table style=3D"mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collap=
+se: collapse; border-spacing: 0;" width=3D"100%" height=3D"auto" cellpaddin=
+g=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td class=3D"px1 pb12" style=3D"padding-bottom: 72px; padding-right: 6px; p=
+adding-left: 6px;">=0D
+<table align=3D"center" class=3D"col-12 sm-col-16 mx-auto" style=3D"mso-tab=
+le-lspace: 0pt; mso-table-rspace: 0pt; border-collapse: collapse; border-sp=
+acing: 0; table-layout: fixed; width: 49.5%; margin-right: auto; margin-lef=
+t: auto;" width=3D"100%" height=3D"auto" cellpadding=3D"0" cellspacing=3D"0=
+">=0D
+<tr>=0D
+<td class=3D"text-center" style=3D"" align=3D"center">=0D
+<a class=3D"bttn border border-support-300 support-500 pt3 pb3 pr3 pl3 pr12=
+-md pl12-md type-14" href=3D"https://emails.kickstarter.com/ss/c/u001.rUIcn=
+pczY6e9uR91rg5kh39Uko7iqNv4FvSyXhek3iUGFGh_PPFMOPeNqBHl7SFtvmZ43gklfYn9-9RY=
+kZrbr1Wh6TCIakd-bFGC5ECqPELJDcL4Rxli-9cQLWkVPAusOD3pXE7xytX6og6GiPwFKzLKkds=
+tjUtHChG-wHo1R57UiFr2NJCHLLkrmoq6aHNTzq1tGD_l-XMf2tQyi3VSa8vjcF-HFsKeuqWLLo=
+Qy99I/4m9/xn_OreCzQMyg_FK3b1a8fg/h17/h001.dv8eRYhb1-57jZOhKohalrAeuXlxfna1g=
+OD02CJme54" style=3D"color: #464646; text-decoration: none; font-size: 14px=
+; line-height: 1; font-weight: 500; text-align: center; cursor: pointer; po=
+sition: relative; display: inline-block; -webkit-appearance: none; border-r=
+adius: 0; padding: 18px; border: 1px solid #dcdedd;">View more</a>=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+</td>=0D
+<td class=3D"col-2 sm-col-2" style=3D"width: 7.555-123-4567%;"></td>=0D
+</tr>=0D
+</table>=0D
+=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+<table class=3D"w100p" style=3D"mso-table-lspace: 0pt; mso-table-rspace: 0p=
+t; border-collapse: collapse; border-spacing: 0; width: 100%;" width=3D"100=
+%" height=3D"auto" cellpadding=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td class=3D"text-center pt5 pl5 pr5" style=3D"padding-top: 30px; padding-r=
+ight: 30px; padding-left: 30px;" align=3D"center">=0D
+<div class=3D"type-12 mt2 soft-black" style=3D"font-size: 12px; line-height=
+: 18px; color: #282828; margin-top: 12px;">=0D
+Don't want to receive updates from this project? That's okay, you can <a cl=
+ass=3D"ksr-green-800 text-underline" href=3D"https://emails.kickstarter.com=
+/ss/c/u001.rUIcnpczY6e9uR91rg5kh39Uko7iqNv4FvSyXhek3iX4OyVcsQAhVBJFM_ul8iwT=
+VumRlACcO0iAIjcH12T7opnAwWY-A8myNLPJ3R1rZ1efoygE_GwS6tJajGyG2rtxPFWHEmhFCTj=
+ak5ZXich-vK_tRZyLai8h9FVSefg1EAN9g9btlykYdqMUWudkXfldn3EuV4-tCu8SyEdO62JbP_=
+aTbdCv2ca7CiVmGjGQ4rx3bRu7o9mjYXjxqeAqoo3L-ap1OECIvEfAzvw_X-gTRY3jHRf4A7pQu=
+EuM0_gaDpT0J_Psn_wuUwfYOmEwl4ciYV6YD0CvaMSaBVQw5eZoftikLyFA8UrcnACEbWEoRzk/=
+4m9/xn_OreCzQMyg_FK3b1a8fg/h18/h001.E3ImOF9HCRnQoxjKbJG7R3iQGtKBDg8UGpa1eZ9=
+Nj4g" style=3D"color: #034752; text-decoration: underline;">unsubscribe.</a=
+>=0D
+</div>=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+</center>=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+<table class=3D"w100p mw100p" style=3D"mso-table-lspace: 0pt; mso-table-rsp=
+ace: 0pt; border-collapse: collapse; border-spacing: 0; width: 100%; min-wi=
+dth: 100%;" bgcolor=3D"#F0F0F0" width=3D"100%" height=3D"auto" cellpadding=
+=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td class=3D"pt8" style=3D"padding-top: 48px;">=0D
+<table class=3D"w100p mw100p" style=3D"mso-table-lspace: 0pt; mso-table-rsp=
+ace: 0pt; border-collapse: collapse; border-spacing: 0; width: 100%; min-wi=
+dth: 100%;" width=3D"100%" height=3D"auto" cellpadding=3D"0" cellspacing=3D=
+"0">=0D
+<tr>=0D
+<td class=3D"text-center pt4 type-12 soft-black font-roboto normal" style=
+=3D"font-size: 12px; line-height: 18px; color: #282828; font-family: Roboto=
+,sans-serif; font-weight: 400; padding-top: 24px;" align=3D"center">=0D
+<a class=3D"soft-black text-underline" href=3D"https://emails.kickstarter.c=
+om/ss/c/u001.rUIcnpczY6e9uR91rg5kh39Uko7iqNv4FvSyXhek3iWt8qu7ZbBPvjG19PhxhX=
+-_-p1ZLGI_WUc3jHdyQ5Bgfp-UHRD0mTpeL0j3K7XWoNBq9hKBlLS7txfoZ2xBmOAWYCS5ZV-Fq=
+uXly7Mv9aZG6vYJHgqrhvDV4VgF9k88t_0/4m9/xn_OreCzQMyg_FK3b1a8fg/h19/h001.KEsK=
+UdaWpX5yfgRAsNdBDRCovzFWVcMi1CG2_xAFEZE" style=3D"color: #282828; text-deco=
+ration: underline;">Manage your notification settings</a>=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+</td>=0D
+</tr>=0D
+<tr>=0D
+<td class=3D"pt4 pb12 w100p" style=3D"width: 100%; padding-top: 24px; paddi=
+ng-bottom: 72px;" bgcolor=3D"#F0F0F0">=0D
+<table align=3D"center" class=3D"mx-auto" style=3D"width: 130px; mso-table-=
+lspace: 0pt; mso-table-rspace: 0pt; border-collapse: collapse; border-spaci=
+ng: 0; margin-right: auto; margin-left: auto;" width=3D"130" height=3D"auto=
+" cellpadding=3D"0" cellspacing=3D"0">=0D
+<tr>=0D
+<td align=3D"center" class=3D"text-center valign-middle" style=3D"" valign=
+=3D"middle">=0D
+<a href=3D"https://emails.kickstarter.com/ss/c/u001.rUIcnpczY6e9uR91rg5khzK=
+70toIUaMqVQIXa2stbA5uqJoABBTupnT30OFpHd4Q/4m9/xn_OreCzQMyg_FK3b1a8fg/h20/h0=
+01.20u8GRuyhUvQIhd97Qa_QbSaSn7ttaApzlHbI61fynU" style=3D"color: inherit; te=
+xt-decoration: none;"><img alt=3D"Instagram" height=3D"24" width=3D"24" sty=
+le=3D"height: 24px; width: 24px; -ms-interpolation-mode: bicubic; outline: =
+none; max-width: 100%; text-decoration: none; display: block; border-width:=
+ 0;" class=3D"block" src=3D"https://i.kickstarter.com/instagram-99e2a66.png=
+?fit=3Dscale-down&amp;origin=3Dstatic&amp;width=3D1000&amp;sig=3DxSeW6Tpj77=
+CACy9pV1Tbm4hgQwNwo18mJYO9l8OcJek%3D">=0D
+</a>=0D
+</td>=0D
+<td align=3D"center" class=3D"text-center valign-middle px2" style=3D"paddi=
+ng-right: 12px; padding-left: 12px;" valign=3D"middle">=0D
+<a href=3D"https://emails.kickstarter.com/ss/c/u001.rUIcnpczY6e9uR91rg5kh0l=
+mmfaxmsLFTaHQEAhpkudL4DZRBe7P4FZw0RmSQwey/4m9/xn_OreCzQMyg_FK3b1a8fg/h21/h0=
+01.7T2ucW80l9Lz5uHL-CfGug9YEzVQlgS-ImfV1oyx5js" style=3D"color: inherit; te=
+xt-decoration: none;"><img alt=3D"Facebook" height=3D"24" width=3D"24" styl=
+e=3D"height: 24px; width: 24px; -ms-interpolation-mode: bicubic; outline: n=
+one; max-width: 100%; text-decoration: none; display: block; border-width: =
+0;" class=3D"block" src=3D"https://i.kickstarter.com/facebook-83b743e.png?f=
+it=3Dscale-down&amp;origin=3Dstatic&amp;width=3D1000&amp;sig=3D1ZPJxWbxhQ5a=
+FycbdCB6290j6ftHPz%2Bbfu9FzFKGsb0%3D">=0D
+</a>=0D
+</td>=0D
+<td align=3D"center" class=3D"text-center valign-middle" style=3D"" valign=
+=3D"middle">=0D
+<a href=3D"https://emails.kickstarter.com/ss/c/u001.rUIcnpczY6e9uR91rg5kh7a=
+ntf-kriiLnmWgok-X_1bwwiOPdCCz-7AcSu8A_e5z/4m9/xn_OreCzQMyg_FK3b1a8fg/h22/h0=
+01.KmYH4x2c5KSM_ZnrA3rYipZtCi3R8C8e4vZo_aCnvGg" style=3D"color: inherit; te=
+xt-decoration: none;"><img alt=3D"Twitter" height=3D"24" width=3D"24" style=
+=3D"height: 24px; width: 24px; -ms-interpolation-mode: bicubic; outline: no=
+ne; max-width: 100%; text-decoration: none; display: block; border-width: 0=
+;" class=3D"block" src=3D"https://i.kickstarter.com/twitter-f0bfd08.png?fit=
+=3Dscale-down&amp;origin=3Dstatic&amp;width=3D1000&amp;sig=3DWE3WPY8h5qeq1F=
+13snVxlYAaaYoieaLCu9Ijsz8gayY%3D">=0D
+</a>=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+=0D
+<table class=3D"w100p mw100p" style=3D"mso-table-lspace: 0pt; mso-table-rsp=
+ace: 0pt; border-collapse: collapse; border-spacing: 0; width: 100%; min-wi=
+dth: 100%;" width=3D"100%" height=3D"auto" cellpadding=3D"0" cellspacing=3D=
+"0">=0D
+<tr>=0D
+<td class=3D"text-center pt4 type-12 soft-black font-roboto normal" style=
+=3D"font-size: 12px; line-height: 18px; color: #282828; font-family: Roboto=
+,sans-serif; font-weight: 400; padding-top: 24px;" align=3D"center">=0D
+Kickstarter, PBC =C2=B7 228 Park Ave S PMB 59430, New York New York 10003-1=
+502=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+<table class=3D"w100p mw100p" style=3D"mso-table-lspace: 0pt; mso-table-rsp=
+ace: 0pt; border-collapse: collapse; border-spacing: 0; width: 100%; min-wi=
+dth: 100%;" width=3D"100%" height=3D"auto" cellpadding=3D"0" cellspacing=3D=
+"0">=0D
+<tr>=0D
+<td class=3D"text-center pt2 type-12 soft-black font-roboto normal" style=
+=3D"font-size: 12px; line-height: 18px; color: #282828; font-family: Roboto=
+,sans-serif; font-weight: 400; padding-top: 12px;" align=3D"center">=0D
+<a class=3D"soft-black text-underline" href=3D"https://emails.kickstarter.c=
+om/ss/c/u001.rUIcnpczY6e9uR91rg5kh39Uko7iqNv4FvSyXhek3iXyaKudnlqWvo7bS5psjR=
+9_nDCZ1gqonG0hsKHaoxCDLFDItk7n_-QRKjcJBzi6_OB4lMpjNYrBK624RTd8R65t46m2f5lqZ=
+S8tJfBrpeDuQQ/4m9/xn_OreCzQMyg_FK3b1a8fg/h23/h001.tY78dqFzldyKN1xoGEQfiQ3ei=
+ROqM1Go_KEQyCemNZg" style=3D"color: #282828; text-decoration: underline;">C=
+ontact us</a>=0D
+</td>=0D
+</tr>=0D
+<tr>=0D
+<td class=3D"text-center pt2 type-12 soft-black font-roboto normal" style=
+=3D"font-size: 12px; line-height: 18px; color: #282828; font-family: Roboto=
+,sans-serif; font-weight: 400; padding-top: 12px;" align=3D"center">=0D
+<a class=3D"soft-black text-underline" href=3D"https://emails.kickstarter.c=
+om/ss/c/u001.rUIcnpczY6e9uR91rg5kh39Uko7iqNv4FvSyXhek3iXXEtqw6hUSLTcd65GUXn=
+FmOkeBpytG8XiTkJLW2GhwIqxki397Oyrks30XaWWuyODfTJ_03RtQOXCaTywrJHqA65wECMliy=
+5avRIo7jkwcUQ/4m9/xn_OreCzQMyg_FK3b1a8fg/h24/h001.M9vZBkfRlHPkGfwk3X4bPsEkX=
+ZLfXCz3r1n9oAWBua4" style=3D"color: #282828; text-decoration: underline;">K=
+ickstarter Terms of Use</a>=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+</td>=0D
+</tr>=0D
+</table>=0D
+=0D
+<img src=3D"https://emails.kickstarter.com/ss/o/u001.N8QYkqVAh2ftpZnRzu9zRA=
+/4m9/xn_OreCzQMyg_FK3b1a8fg/ho.gif" alt=3D"" width=3D"1" height=3D"1" borde=
+r=3D"0" style=3D"height:1px !important;width:1px !important;border-width:0 =
+!important;margin-top:0 !important;margin-bottom:0 !important;margin-right:=
+0 !important;margin-left:0 !important;padding-top:0 !important;padding-bott=
+om:0 !important;padding-right:0 !important;padding-left:0 !important;"/></b=
+ody>=0D
+</html>=0D
+
+----==_mimepart_69373dc15341f_356dadea1dc453a5--
+

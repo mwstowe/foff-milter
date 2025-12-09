@@ -1,0 +1,1231 @@
+Return-Path: <bounce-91_HTML-50105827-238582-514023555-6239@bounce.e.williams-sonoma.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTPS id 5B8M9kJV034567
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <user@example.com>; Mon, 8 Dec 2025 22:09:46 GMT
+	(envelope-from bounce-91_HTML-50105827-238582-514023555-6239@bounce.e.williams-sonoma.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (2048-bit key; unprotected) header.d=e.williams-sonoma.com header.i=WilliamsSonoma@e.williams-sonoma.com header.b=oV6FNDvz;
+	dkim=pass (2048-bit key; unprotected) header.d=s11.y.mc.salesforce.com header.i=@s11.y.mc.salesforce.com header.b=hdgev+Jz
+Received: from mta2.e.williams-sonoma.com (mta2.e.williams-sonoma.com [128.245.66.192])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 5B8M9i94101264
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO)
+	for <user@example.com>; Mon, 8 Dec 2025 16:09:45 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 5B8M9i94101264
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (2048-bit key, unprotected) header.d=e.williams-sonoma.com header.i=WilliamsSonoma@e.williams-sonoma.com header.a=rsa-sha256 header.s=11dkim1 header.b=oV6FNDvz;
+	dkim=pass (2048-bit key, unprotected) header.d=s11.y.mc.salesforce.com header.i=@s11.y.mc.salesforce.com header.a=rsa-sha256 header.s=fbldkim11 header.b=hdgev+Jz
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=11dkim1; d=e.williams-sonoma.com;
+ h=From:To:Subject:Date:List-Unsubscribe:List-Unsubscribe-Post:MIME-Version:
+ Reply-To:Message-ID:Content-Type; i=WilliamsSonoma@e.williams-sonoma.com;
+ bh=dFMBS1gSMa0dqu6Zou4ajmN/E11GgzxAXn+prDovSQY=;
+ b=oV6FNDvzSQdE4Icb1GCYxJWywwS7egrHNAZfnTNOZ9raoCbpQVg038JAyNm/c3jRGY+cNFE+a0KA
+   yxEfcqy5d50CESg/VyRK2YOGJQj0WZT28QYZG0rNnxICggiWBOwCAodXJUBGBHq4r2kUMo7KApmB
+   RC+Ck1Oo244vQyjs3ZLGtt+t3ALfHLngZIszbZbHUJ/IX2HW2+usgw8hnlkoVltjy+PLpRAiCfdd
+   ZHRd/Q9Pd4uk4G8MdX9o0/EMqGo09UQyBHXlunHHJxEmxQB0CEtDiuTGy6UnkwRMQDAmA9SRDDU8
+   kzvgxclYd8pnAPGqd8BEul9HWHRRIlByzw9R1Q==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=fbldkim11; d=s11.y.mc.salesforce.com;
+ h=From:To:Subject:Date:List-Unsubscribe:MIME-Version:Reply-To:Message-ID:
+ Content-Type;
+ bh=dFMBS1gSMa0dqu6Zou4ajmN/E11GgzxAXn+prDovSQY=;
+ b=hdgev+Jz+F/qcToQxoF+ia5bAbNIsMm9AgzliEhRMvI60cVvQGzQSNJaFdzZLRtiGbMav/sPk4Br
+   jpNXQcvGJrpgdot9pj929kJUBm1WJe0r4B+TOndMfImc1lgyYugDTjgg3Vd0AFROkROJKCNn7pDj
+   0K+KqgVEQLweMaqL7s/XNyMuGZI0oBZ/9O9s8xOBb4wNwEd6odFPyDK7sdnX9C+WRUzUCPvkqbYH
+   RM29887L8S3FY6f9OIdMS1d8+ZfoMz5va8duutDpJ4WQzg9rjnY1DM/r+gYPbTJOvGwq7QOjXDML
+   7WqTijPT6b8YsIwH557KypjNzJJjnANAnTI+bw==
+Received: by mta2.e.williams-sonoma.com id h6t6ai2fmd46 for <user@example.com>; Mon, 8 Dec 2025 22:09:38 +0000 (envelope-from <bounce-91_HTML-50105827-238582-514023555-6239@bounce.e.williams-sonoma.com>)
+From: "Williams Sonoma" <WilliamsSonoma@e.williams-sonoma.com>
+To: <user@example.com>
+Subject: =?UTF-8?B?RG9u4oCZdCBtaXNzIHRvZGF54oCZcyBmZWF0dXJlZCBnaWZ0IGRl?=
+ =?UTF-8?B?YWwg8J+OgQ==?=
+Date: Mon, 08 Dec 2025 16:09:38 -0600
+List-Unsubscribe: <https://click.e.williams-sonoma.com/subscription_center.aspx?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtaWQiOiI1MTQwMjM1NTUiLCJzIjoiNTAxMDU4MjciLCJsaWQiOiI5MSIsImoiOiIyMzg1ODIiLCJqYiI6IjYyMzkiLCJkIjoiMTEwMDUyIn0.lZcYdZm751PmWqRA0qSmfFVGGiqfj6JbDjlSRv02fns>, <mailto:leave-fd811d711a3c402029-fe631170746401757713-fec316737d610c7f-fe3111717164067e701175-ff2b1272766d@leave.e.williams-sonoma.com>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+MIME-Version: 1.0
+Reply-To: "Williams Sonoma" <reply-fec316737d610c7f-91_HTML-50105827-514023555-6239@e.williams-sonoma.com>
+X-SFMC-Stack: 11
+x-job: 514023555_238582
+Message-ID: <50239718-1d63-46c5-9852-b0e079258a86@atl1s11mta1150.xt.local>
+Content-Type: multipart/alternative;
+	boundary="z5LbgtySEgNZ=_?:"
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Mon, 08 Dec 2025 22:09:46 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Mon, 08 Dec 2025 16:09:45 -0600 (CST)
+X-Spam-Flag: YES
+
+This is a multi-part message in MIME format.
+
+--z5LbgtySEgNZ=_?:
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+Williams-Sonoma
+ 
+ Plus, more great deals on kitchen must-haves.
+  ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌
+  ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌
+  ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌
+  ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌
+  ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌
+  ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌
+  ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌
+  ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌
+  ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌
+  ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌
+  ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌
+  ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌
+  ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌
+  ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌
+  ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌
+  ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌
+  ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌
+ 
+
+
+ 
+ 
+
+ 
+ 
+
+ 
+https://click.e.williams-sonoma.com/?qs=8b1bf774149286d0c958e0f88a449029e25094fbed9b8267b0874d994d4e1c2ee0834196f9f4067893a924c443c0a511393b67477b773fd28e8f2fd7311ddc01 
+
+
+
+ 
+ 
+
+https://click.e.williams-sonoma.com/?qs=8b1bf774149286d01d114df30ab520efa3f701b47f73b2138b1f98f3575ca83df1f7d03ca1b28220720f08c73ccaa291ebaa3f7419721ba07ebeb103a6f9cc6e 
+
+https://click.e.williams-sonoma.com/?qs=8b1bf774149286d0a6fedcf785872136f5a3bae256834f222b96e9a445ba2f6db9170fa043b4c1258a168df5a98fce0fa3a2b341980e243692816a4dc9e5061d 
+
+https://click.e.williams-sonoma.com/?qs=8b1bf774149286d06900f952e95cb175853429be9cd23ccca6e2fd0ad8ac3b23b05509d04f2e02075e5c3947cf212674cf4fa02a495a46796a606ac5b354fbdd 
+
+
+
+ 
+ 
+ 
+ 
+
+
+
+
+
+
+
+
+ 
+https://click.e.williams-sonoma.com/?qs=8b1bf774149286d09e20aedbc28f9cd98127e2db4a087f2d75cbd296e0205181e8f19e2e73003aa150584f3fcaa03c1f869d697510e0c436e5ac9aa35a51bbb5 
+
+ You Have  $0 in Key RewardsS
+ 
+https://click.e.williams-sonoma.com/?qs=8b1bf774149286d09e20aedbc28f9cd98127e2db4a087f2d75cbd296e0205181e8f19e2e73003aa150584f3fcaa03c1f869d697510e0c436e5ac9aa35a51bbb5 
+View Rewards
+
+
+ 
+ 
+
+
+
+
+
+
+https://click.e.williams-sonoma.com/?qs=8b1bf774149286d0fc57aeba7e914774a02d2f84ba057783c96e941be1520be5c49a6c31a064cba9d9f7821cd601dfbd58e8f5f2388a337956b86f314f4ed96c 
+
+
+
+ 
+ 
+  
+ 
+
+ 
+https://click.e.williams-sonoma.com/?qs=8b1bf774149286d050385b40a26c92a053a193ddd9ae9b4115d5efd6c8d92c22cf9142a4b85ed1b9f364bf1066a1ffe98091adb21484a7536ae0be7c7919eee4 
+
+
+
+ 
+ 
+  
+ 
+
+ 
+https://click.e.williams-sonoma.com/?qs=8b1bf774149286d0316b584690d7a91b1ed8e85ac196c282e1c67622407465a3544d86b0f894aad4de287d2ca3025f8c733bca9cafc12ce1b1b4d78943c59acc 
+
+
+ 
+https://click.e.williams-sonoma.com/?qs=8b1bf774149286d0e8d0da81cf744559461119e9d9a27719c8de1c3e0d12a7390664229b625fda61efaf254186c86a9cc2e558f79e4d5305753438e5db7dff14 
+
+
+ 
+https://click.e.williams-sonoma.com/?qs=8b1bf774149286d00361575be75257c5b267733f354131a0d5b672fb22ec25a43f2de1085928b930eaf96b248a030f49e3e46ccfea24bc151d4df23267675d03 
+
+
+ 
+https://click.e.williams-sonoma.com/?qs=8b1bf774149286d0b7ce9a3496b80165d56dc4c8226eedac26773947bde78a296ea13de45036b10702cb8686818a2e52f4741bf7b68098a44fadfc9c6f8db450 
+
+
+ 
+https://click.e.williams-sonoma.com/?qs=8b1bf774149286d036273938af7d7981d211521a398e31b531621899e1f4bf42937502cb805382defe177390b5194c5a09ffae1ea494933a170ad7591e80e41a 
+
+
+
+ 
+ 
+ 
+ 
+
+
+
+
+
+
+
+
+
+
+
+ 
+ 
+
+
+
+https://click.e.williams-sonoma.com/?qs=23dd740702281c8050c70687f473e417b983b8b59fee1dbdf1727c5f177e8e3e994197881315ee871b6474363ffda00d81617a15f470a4836d2d81b8e2ffbcf9 
+
+https://click.e.williams-sonoma.com/?qs=23dd740702281c807c611d3f6aaf4dcfef4b5a6056fbc41c12d3fde28b1939d77618b855b7cedcb482f27cd7d98e2e0784f1e6e57d7ac6c8ffb6bc8f8fe80575 
+
+https://click.e.williams-sonoma.com/?qs=23dd740702281c807c611d3f6aaf4dcfef4b5a6056fbc41c12d3fde28b1939d77618b855b7cedcb482f27cd7d98e2e0784f1e6e57d7ac6c8ffb6bc8f8fe80575 
+Twas the Night Before Christmas Musical Snow Globe 
+
+https://click.e.williams-sonoma.com/?qs=23dd740702281c806569bcbff3f2dde4ee0a264336ecef5feddb7f0ba9fa882c96d5c82deb0ce15884db0c6346af51f04e58388db001992e89f4edd66290095e 
+
+https://click.e.williams-sonoma.com/?qs=23dd740702281c806569bcbff3f2dde4ee0a264336ecef5feddb7f0ba9fa882c96d5c82deb0ce15884db0c6346af51f04e58388db001992e89f4edd66290095e 
+Spider Beverage Dispenser Base 
+
+https://click.e.williams-sonoma.com/?qs=a025277ebae3c8afa6df77f7f4e6ef75373ea5899f672d4cfc9e43532dd93d345b67bbacd1fe2afa6890645f5a689862b07cb16741d0c9690bb0782bc9af0f6a 
+
+https://click.e.williams-sonoma.com/?qs=a025277ebae3c8afa6df77f7f4e6ef75373ea5899f672d4cfc9e43532dd93d345b67bbacd1fe2afa6890645f5a689862b07cb16741d0c9690bb0782bc9af0f6a 
+Heirloom Name Card Holders, Set of 4 
+
+https://click.e.williams-sonoma.com/?qs=a025277ebae3c8af215954a2d6fb8103573feb39f48d04b6dce06fa3f270eb7c55d8c14dae14930a76c23712664c2640dd552dfc1729782493235343e4ff270b 
+
+https://click.e.williams-sonoma.com/?qs=a025277ebae3c8af215954a2d6fb8103573feb39f48d04b6dce06fa3f270eb7c55d8c14dae14930a76c23712664c2640dd552dfc1729782493235343e4ff270b 
+Stoneware Rooster Name Card Holders, Set of 4 
+
+
+ 
+ 
+https://click.e.williams-sonoma.com/?qs=a025277ebae3c8af055d4538155fd89b2d3ec77545600cc58226a4855da63d09de1821504cf81467878e4a71d0d4221572986f30071938b086e511d552a28dec 
+
+https://click.e.williams-sonoma.com/?qs=a025277ebae3c8af055d4538155fd89b2d3ec77545600cc58226a4855da63d09de1821504cf81467878e4a71d0d4221572986f30071938b086e511d552a28dec 
+Heirloom Name Card Holders, Set of 4 
+
+https://click.e.williams-sonoma.com/?qs=a025277ebae3c8af680bdb40b6a55be190ec195e646ced37630db9167e7f394b67d945506b6e8d77e8390f7334a341b899134d3eda299496c3a596b770ff50bb 
+
+https://click.e.williams-sonoma.com/?qs=a025277ebae3c8af680bdb40b6a55be190ec195e646ced37630db9167e7f394b67d945506b6e8d77e8390f7334a341b899134d3eda299496c3a596b770ff50bb 
+Williams Sonoma Midnight Magic Cocktail Rimming Sugar 
+
+
+ 
+ 
+ 
+ 
+
+
+
+
+ 
+ 
+
+
+
+https://click.e.williams-sonoma.com/?qs=8b1bf774149286d0fa9861e4098150725d07834be994206d70a4eba1acc32e0433208c18aee24394c536fe202f27d18e3ced83b684d9914cf58d10cc692b594b 
+
+https://click.e.williams-sonoma.com/?qs=8b1bf774149286d0028ee442e20ea9a8daf43e39706a0e94c6316870fe175910bc1dc1bc4c0075a3ddb2aa488c6da538ea80bc5d58b5e71104ab5dcace71249c 
+
+
+
+
+
+ 
+ 
+
+
+ 
+ 
+https://click.e.williams-sonoma.com/?qs=8b1bf774149286d09b339d4dc78958e397b8ef7cda568a08cdc1bcffc565bbd1a8608f9fdba94acc779fc453917d1356842648bcf1e281dd780dfe2579514f73 
+
+ 
+https://click.e.williams-sonoma.com/?qs=8b1bf774149286d07cba4f6d708656451854945c9bf691357e0c9fab7f121d3766ed08923aa302d0ac871aa01c48c7e40662449c08de5e09dda5c7c2041d62f5 
+
+
+ 
+https://click.e.williams-sonoma.com/?qs=8b1bf774149286d04cbefafd0df2ce9cd1b4cda585b6419df4a815471a474edabef9d64e67526eb7b3a6548ab36344dd505282850e3642bf2dd5ce31bdda4779 
+
+ 
+https://click.e.williams-sonoma.com/?qs=8b1bf774149286d09a81aca137b57dab342bda04094b6c881cba96114705976a524ef5876ff1716dbcb204a56e78aa205dae9360c5c45a8fed462091ae4263e3 
+
+
+ 
+https://click.e.williams-sonoma.com/?qs=8b1bf774149286d0d563169919f551dc5501df4c7ce989140c56df88995c3f822997de67a82cc8f88b265187e39e96c4045f415f733e226438e0ed483ad310a4 
+
+
+ 
+https://click.e.williams-sonoma.com/?qs=8b1bf774149286d038f2e73bedcf15f12e1adb7b130a726ec5305a1cc0d6d1495f0b833c87d83541cf4b1d2cdf965ca3e8a2f4f5528dab3481e885fecb08ef4a 
+
+
+ 
+https://click.e.williams-sonoma.com/?qs=8b1bf774149286d062b7cf317e9f2ca83598a71ad8015214b286686071dc4a22852aa05a9aa034ac5f3830c608861512035c56aea9422b1e2eb13c1c8f56b0ff 
+
+ 
+https://click.e.williams-sonoma.com/?qs=8b1bf774149286d00b39863f8fd26a98f5a5ecc820b876d8d8413546444fe33b2be4540639473a248c6f1237fb668fddca90e27790321eeebf4c7c3f6afa80fa 
+
+ 
+https://click.e.williams-sonoma.com/?qs=8b1bf774149286d0c9c7a967dd157f45db8f01c507a0c691cfbfc297f1e2d346bf367edb794e3fd84586372f50193764d0785d11458e619ed290db7cd33431e6 
+
+ 
+https://click.e.williams-sonoma.com/?qs=8b1bf774149286d02ed0d397d006f00a25c8e3bc84f3b3a7cd4c1e4bf48ecccf24b191ad64920e1ef856f8d1a4b6ceadc1819230acd5ca9d8c04e5013c6e82a5 
+
+
+ 
+https://click.e.williams-sonoma.com/?qs=8b1bf774149286d04a9bf8441be1cf9f2c44ec91c87261826ba7527eea492a0ef66d531cc158671e217e388e2b39dd8b4569fefa5d63b37864f620b60e399946 
+
+ 
+https://click.e.williams-sonoma.com/?qs=8b1bf774149286d0db07e32c3b5620ca2ef77daae99e45293b5b6274633ce97ba6e078d97fdf2e387a4acc6c501c78cad05be5053621a812998125fe5cb7886a 
+
+ 
+https://click.e.williams-sonoma.com/?qs=8b1bf774149286d030fed0cfe0a9408edac12a7bece88378e618b71b10f77e1c1c58c4fd78edf45282e508d37d35565303b20f015cfae149394fe5817f0456bf 
+
+ 
+https://click.e.williams-sonoma.com/?qs=8b1bf774149286d023b874d3fc61fa924ee87761211066ba1d9cf58ebbbde4166dbd549fba35020980c808df72263b425433ddec70b0f74c16fa2646ccf95343 
+
+ 
+https://click.e.williams-sonoma.com/?qs=8b1bf774149286d0dcb688f22f45deb07c8c3d714c7a5977c13bcf75a875452420d5dce062f07a1ced27a446da319f13995df5159bbde32195f5134a9afb2d98 
+
+
+ 
+https://click.e.williams-sonoma.com/?qs=8b1bf774149286d0887a59366aa7794a65d921daf8453d1dbf048ff52833cf22920574c1c0dbb9a8f065e8581d91104f5fd53111260f854a5b7e97ccd334ac2a 
+
+ 
+https://click.e.williams-sonoma.com/?qs=8b1bf774149286d07ca62ea5a72fcc9f31aba8eab4c5f9c1f37e54890e535069a334639c7f135ad0aee1d06806f4637fd6a368168d6e4e0379fe9270b6a8153c 
+
+ 
+https://click.e.williams-sonoma.com/?qs=8b1bf774149286d09c0cef51fdca27d01d3493b99ab3dabec1e9dc2a3727ee313ecd305e0b504fe236845f19c22e36ff31c2c4d89e147c413145c127d81c8f2f 
+
+ 
+https://click.e.williams-sonoma.com/?qs=8b1bf774149286d0a622e9794238fab41a44932c33296bde2b872979f22ad3e169f719e76cdf20da5d695abca1644037a1b13e8c438ef98aeb2cf273728b6bdf 
+
+ 
+https://click.e.williams-sonoma.com/?qs=8b1bf774149286d0a814a9f0854c542658032cfcdb8ab4448f5c5891aa0172327a3f0f4fdcee65413046e36fbb90d35326facc3f8c41d5318e3e954bf06766c9 
+
+ 
+https://click.e.williams-sonoma.com/?qs=8b1bf774149286d010302ee27619c568e3ab9ce3f3b80ef644d6d30871905299824bc341202f1614df0a9568eed85f0e056407bcfee4f635951a33c80a7d3564 
+
+
+
+ 
+ 
+ 
+ 
+
+
+ 
+ *Quantities are limited and exclusions may apply. See site for 
+https://click.e.williams-sonoma.com/?qs=8b1bf774149286d0f68e1d29a4e06dbe7eb8c6528d77227bc2c589be53bd73c753b8a6e0bd578c76d392b117e39ff6ca5841517e5f8f155a907e67c6c8045aab 
+details . Offer valid on in-stock items only and cannot be applied to prior purchases. Offer may not be combined with any other coupons, discounts, offers, or promotions. Offer is non-transferable and cannot be sold or otherwise bartered. Offer not valid on special orders, gift cards, monogramming, gift wrap, taxes, and wine gift purchases. Offer not valid on purchases made at Williams Sonoma Outlet stores. Offer not valid for international orders. Associates are not eligible for this offer.
+ 
+ 
+
+
+ 
+
+
+ 
+ EARNING REWARDS & USING YOUR CARD
+1New cardmembers earn 10% back in rewards for Net Eligible purchases made at Williams Sonoma, Williams Sonoma Home, Pottery Barn, Pottery Barn Kids, Pottery Barn Teen, West Elm, Rejuvenation and Mark & Graham (excludes GreenRow) during the first 30 days from account opening, 5% thereafter. Some approved customers will not be eligible to make same-day purchases, for example, if they do not timely complete any required authentication process and/or their applications present fraud concerns. Customers who are not eligible for a virtual card will not be able to make a purchase until their card arrives in the mail.
+
+2Any purchase of $0.01 or more made with a Key Rewards Visa in-store or online at a participating Williams-Sonoma, Inc. brand qualifies for free standard shipping within the contiguous 48 states. For the avoidance of doubt, free shipping is not available if you use your Rewards to purchase your entire order. Please note that free shipping is only offered where you pay directly with your Key Rewards Visa as the initial payment method in the transaction. Free shipping is not available if payment is made using digital wallets, such as Apple Pay, Google Wallet, or Samsung Pay, or if payment is made through third party payment solutions, such as PayPal. 
+
+
+ The Williams Sonoma, West Elm, Pottery Barn, and Key Rewards Visa and services are offered by Capital One, N.A., pursuant to a license from Visa, Inc. 
+
+
+ 
+ Credit card offers are subject to credit approval 
+
+
+ 
+ Visa is a registered trademark of Visa International Service Association.
+ 
+
+ If you prefer not to receive promotional email messages from us, please 
+https://click.e.williams-sonoma.com/?qs=8b1bf774149286d0a2b5039571745ca7d97cf78ce888cd0fcdade4d18c49341262bd6248c8822d5a5fcfc64ae47509dacff2b51faceeed20cabd767d7eedf567 
+click here.
+ 
+
+
+ (c) 2025 Williams-Sonoma, Inc., Direct Marketing Dept., 3250 Van Ness Ave., San Francisco, CA 94109.
+
+
+ All Rights Reserved. Read about our 
+https://click.e.williams-sonoma.com/?qs=8b1bf774149286d07c0fd516584bc99e2df84f250186d02d30975d35e1db95978f6e7b86da67d983974f2cfa64cb5503e78df53f2483c718370c2b41f4e527aa 
+privacy policy.
+ 
+
+
+ This message was sent to user@example.com.
+
+https://view.e.williams-sonoma.com/?qs=80e1cb31a57b47953650b40f2ee22570d84738b843df3a4394694536846b0eea40c5a1ea5ebd9eec39f53e993f9ca06c2d1afba40047de00b62a3ea1205404d5929a0438cfa93ed6c7279eb8a10aefd9 
+View email with images 
+
+
+ 
+ 
+
+
+ 
+
+ 
+
+--z5LbgtySEgNZ=_?:
+Content-Type: text/html;
+	charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+<!--  -->
+<!---->
+
+<!-- begin dynamic ampScript slot -->
+<!--  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Williams-Sonoma</title>
+        <meta http-equiv="Content-Type" content="text/html;" charset="utf-8" />
+        <meta name="viewport" content="initial-scale=1,width=device-width" />
+        <meta name="x-apple-disable-message-reformatting">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <style>
+            @media only screen and (max-width: 340px) {
+                .width-small {
+                 width: 320px !important;
+                }
+                .width-small-indent {
+                 width: 300px !important;
+                }
+                .social-border p {
+                 width: 300px !important;
+                }
+            }
+        
+            @media only screen and (max-width: 375px) and (min-width: 340px) {
+                .width-small {
+                 width: 340px !important;
+                }
+                .width-small-indent {
+                 width: 320px !important;
+                }
+                .social-border p {
+                 width: 320px !important;
+                }
+            }
+            
+            @media only screen and (max-width: 414px) and (min-width: 375px) {
+                .width-small {
+                 width: 375px !important;
+                }
+                .width-small-indent {
+                 width: 355px !important;
+                }
+                .social-border p {
+                 width: 355px !important;
+                }
+            }
+            
+            @media only screen and (max-width: 650px) and (min-width: 414px) {
+                .width-small {
+                 width: 414px !important;
+                }
+                .width-small-indent {
+                 width: 394px !important;
+                }
+                .social-border p {
+                 width: 394px !important;
+                }
+            }
+            
+            @media only screen and (device-width: 360px) {
+                .width-small {
+                 width: 320px !important;
+                }
+                .width-small-indent {
+                 width: 300px !important;
+                }
+                .social-border p {
+                 width: 300px !important;
+                }
+            }
+            </style>
+            
+            <style>
+            @media only screen and (min-width: 768px) {
+                /* For desktop: */
+                img {max-width: 640px}
+              }
+            @media only screen and (min-width: 640px) {
+                /* For desktop: */
+                img {max-width: 640px}
+              }
+ </style>
+ 
+            <style type="text/css">
+                    /* Use element[class="className"] instead of .className */
+                    @media only screen and (max-width: 480px) {
+               table[class="wrapper"] {width: 320px !important;}
+               img[class="photo"] {width: 100% !important; height: auto !important;}
+              }
+        </style>
+        <meta name="x-apple-disable-message-reformatting">
+        <meta name="viewport" content="initial-scale=1,width=device-width" />
+    </head>
+
+    <body>
+
+        <table cellspacing="0" cellpadding="0" bgcolor="#ffffff" width="100%" align="center">
+            <tbody>
+                <tr>
+                    <td align="center">
+                        <table border="0" cellpadding="0" cellspacing="0" width="640">
+                            <tr>
+                                <td align="center" valign="top">
+                                    
+                                    <!---->
+
+<!--Preheader start v2-->
+<table cellspacing="0" cellpadding="0" width="640" align="center" border="0" class="contenttable" role="presentation">
+    <tr>
+        <td width="640" align="center" valign="top">
+            <div style="font-family:helvetica, arial,verdana,sans-serif; font-size:14px; color:#555555; line-height:21px; display:none !important; mso-hide:all;">
+                <div style="margin-bottom:1px;">Plus, more great deals on kitchen must-haves.</div>
+                <!-- Header_PreheaderHiddenText -->
+                <div style="display:none;font-size:1px;line-height:1px;max-height:0px;max-width:0px;opacity:0;overflow:hidden;mso-hide:all;">
+                    &nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌
+                    &nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌
+                    &nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌
+                    &nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌
+                    &nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌
+                    &nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌
+                    &nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌
+                    &nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌
+                    &nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌
+                    &nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌
+                    &nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌
+                    &nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌
+                    &nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌
+                    &nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌
+                    &nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌
+                    &nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌
+                    &nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌&nbsp;‌
+                </div>
+                <!-- end Header_PreheaderHiddenText -->
+            </div>
+        </td>
+    </tr>
+</table>
+<!--/Preheader end v1-->
+
+                                    
+                                    
+
+                                    
+                                    
+<!-- Start Logo -->
+<table cellspacing="0" cellpadding="0" width="100%" align="center">
+<tr>
+  <td>
+   <table cellspacing="5" cellpadding="0" align="center" width="640"> 
+        <tbody>
+            <tr> 
+                <td align="center" style="padding: 0 0 15px 0;">
+                    <a    href="https://click.e.williams-sonoma.com/u/?qs=8b1bf774149286d0e545fa14cdacaca40bbd28e0e8bfe08fa8f2ac9da4b69f77061539a238a21229186b67a143fc387f2802bcf7a0a26152c15d3452ac79f73d">
+                    <img src="https://edm.williams-sonoma.com/ws/2023/0000_WSK_Header_Footer/wsk-logo-main.png" width="450" border="0" alt="WILLIAMS SONOMA - CALIFORNIA" style="display:block;">
+                    </a> 
+                </td> 
+            </tr> 
+        </tbody>
+    </table> 
+  </td>
+</tr>
+</table>
+<!-- End Logo-->
+
+                                    
+                                    
+<!-- Start Nav -->
+<table cellspacing="0" cellpadding="0" width="100%" align="center">
+<tr>
+  <td align="center" width="640">
+   <table cellspacing="0" cellpadding="0" width="305" align="center">
+    <tbody>
+     <tr>
+       <td><a    href="https://click.e.williams-sonoma.com/u/?qs=8b1bf774149286d07de819e1434424cf7b2c9fea54a2af0a9db95d74debc4a167b8f2e429e6a52c91e31d2b0fcabcf998cbe17792d4752f7784c870af0a8bcf7"><img src="https://edm.williams-sonoma.com/ws/2023/0000_WSK_Header_Footer/nav_01.png" width="76" border="0" alt="SHOP" style="display:block;"></a></td>
+       <td><a    href="https://click.e.williams-sonoma.com/u/?qs=8b1bf774149286d00e09762a324f109804f34be7b26bbc150a09d29fb5275d052f79e61338dcc0a9e704535462911a0a15c94dea0089bd18b88b45de2ab59863"><img src="https://edm.williams-sonoma.com/ws/2023/0000_WSK_Header_Footer/nav_02.png" width="89" border="0" alt="SALE" style="display:block;"></a></td>
+       <td><a    href="https://click.e.williams-sonoma.com/u/?qs=8b1bf774149286d0ee9e021e5b0cd458d39acb9f5160242c5c5aca006bc73820f2f0d6fb34f37d46297a6c70123622d673b26a01a26cdf41e360074380435a29"><img src="https://edm.williams-sonoma.com/ws/2023/0000_WSK_Header_Footer/nav_03.png" width="140" border="0" alt="FIND A STORE" style="display:block;"></a></td>
+     </tr>
+   </tbody>
+  </table>
+ </td>
+</tr>
+</table>
+<!-- End Nav -->
+
+                                    
+                                    <!-- Start Divider -->
+<table cellspacing="0" cellpadding="0" width="100%" align="center">
+    <tr>
+    	<td align="center" style="padding: 10px 0 0 0;">
+    		<img src="https://edm.williams-sonoma.com/ws/2016/1220_New_Header/header_keyline.gif" width="640"  border="0" style="display:block;" />
+    	</td>
+    </tr>
+
+</table>
+<!-- End divider -->
+                                    
+                                    <!--WS KeyCC_Banner_Certs start 0325-->
+
+
+
+<!-- ↑ William Sonoma Pixels ↑ -->
+
+
+
+<!--  -->
+<!--WS KeyCC_Banner_Certs end 0325-->
+                                    
+                                    
+
+
+
+
+
+<!-- Non Cardmember Banner Starts -->
+<table cellpadding="0" cellspacing="0">
+          
+            <tr>
+              <td width="640" height="20" style="line-height:0px; "><img src="http://edm.williams-sonoma.com/ws/spr_gif_dont_move/spacer.gif" width="1" height="1" style="display:block; border:0;"></td>
+            </tr>
+          
+        </table>
+<table width="640" border="0" cellspacing="0" cellpadding="0" align="center">
+    <tr>
+        <td valign="top" style="line-height:0px; font-size:0px; mso-line-height-rule:exaclty;"><a href="https://click.e.williams-sonoma.com/?qs=8b1bf774149286d0d5a1951133606e4ba5ef62cec33ad4a6a2fafc796afb21dafd5e6d93b47ff721a3cae2209daa30b493e4ac962d10039362bba523b8bc9663" target="_blank"><img src="http://edm.potterybarn.com/pb/thekey/CC_Banner/WS/Head_NonMem_WS.jpg" alt="" width="640" style="display:block" border="0" /></a></td>
+    </tr>
+</table>
+<!-- Non Cardmember Banner Ends -->
+
+                                    
+                                    <!-- Body Hero Layout v2 -->
+<table align="center" width="640" border="0" cellpadding="0" cellspacing="0" >
+    <tr>
+      <td height="15" style="font-size: 15px; line-height: 15px">
+        &nbsp;
+      </td>
+    </tr>
+    <tr>
+        <td>
+            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                
+                    <tr>
+                        <td> 
+                            <table border="0" cellpadding="0" cellspacing="0" width="640">
+                                <tr>
+                                    <td>
+                                            <a style="display: block"   href="https://click.e.williams-sonoma.com/u/?qs=8b1bf774149286d0fb902936c07ddcaee67e17e58830b24c61ce58204ccc38f16c6655f00e5f8c198bba72d64c6b8e8d7a7087048f3a85b80189f22d22f90922">
+                                                <img alt="Display images to show real-time content" width="100%" style="border: 0; display: block;" border="0" src="https://image.e.williams-sonoma.com/lib/fe3111717164067e701175/m/1/djoyk1vk6z_1121-1125.jpg" class="photo">
+                                            </a>
+                                        </td>
+                                    </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+        </td>
+    </tr>
+</table>
+<!-- Body Hero Layout v2 End -->
+
+                                    
+                                    <!-- Body Hero Layout v3 -->
+<table align="center" width="640" border="0" cellpadding="0" cellspacing="0" >
+    <tr>
+      <td height="15" style="vertical-align: top; font-size: 15px; line-height: 15px;">
+        &nbsp;
+      </td>
+    </tr>
+    <tr>
+        <td style="vertical-align: top">
+            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                
+                    <tr>
+                        <td style="vertical-align: top"> 
+                            <table border="0" cellpadding="0" cellspacing="0" width="640">
+                                <tr>
+                                    <td style="vertical-align: top">
+                                            <a style="display: block"   href="https://click.e.williams-sonoma.com/u/?qs=8b1bf774149286d06309dd2f223f0b6cc6279a6b01036beed02ef603c7cf263b97dd7e55b78b02c2dc9d50c15b2b76bc0187ca8e072263adf5f67b4c13d7e499">
+                                                <img width="100%" style="border: 0; display: block;" border="0" src="https://image.e.williams-sonoma.com/lib/fe3111717164067e701175/m/1/760nl9wyjg_Hero.gif" class="photo" alt="gift of the day - reveal now">
+                                            </a>
+                                        </td>
+                                    </tr>
+                            </table>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td style="vertical-align: top"> 
+                            <table border="0" cellpadding="0" cellspacing="0" width="640">
+                                <tr>
+                                    <td style="vertical-align: top">
+                                            <a style="display: block"   href="https://click.e.williams-sonoma.com/u/?qs=8b1bf774149286d0e0085a1d5a57a2bc3226ff5636c56473de0d93dece5ba078e6d71d762ce02ff5bbb993a425f22d76ed0912d59a2f72960a7521678b5afc01">
+                                                <img width="100%" style="border: 0; display: block;" border="0" src="https://image.e.williams-sonoma.com/lib/fe3111717164067e701175/m/1/ejgkp12e6x_slice_01.jpg" class="photo" alt="more great Gift deals">
+                                            </a>
+                                        </td>
+                                    </tr>
+                            </table>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td style="vertical-align: top"> 
+                            <table border="0" cellpadding="0" cellspacing="0" width="640">
+                                <tr>
+                                    <td style="vertical-align: top">
+                                            <a style="display: block"   href="https://click.e.williams-sonoma.com/u/?qs=8b1bf774149286d07be5294d3af62bc226ce2b43d166dc96db1496b5178826247411ac21f1a8719a1417762f155f9350f54ff6097085964c1a6db94860eb50a6">
+                                                <img width="100%" style="border: 0; display: block;" border="0" src="https://image.e.williams-sonoma.com/lib/fe3111717164067e701175/m/1/5j9w5g17qe_slice_02.jpg" class="photo" alt="All-Clad NS Pro™ Nonstick Cookware 20% Off + FREE SHIPPING">
+                                            </a>
+                                        </td>
+                                    </tr>
+                            </table>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td style="vertical-align: top"> 
+                            <table border="0" cellpadding="0" cellspacing="0" width="640">
+                                <tr>
+                                    <td style="vertical-align: top">
+                                            <a style="display: block"   href="https://click.e.williams-sonoma.com/u/?qs=8b1bf774149286d02c5ab3fa2ba8ce2c9a6a91eed31217b17a9a9fac908067b0748ff9a60830d4969bd581ddcd55aef379ea73328f4bc5664c00659b1bcd0126">
+                                                <img width="100%" style="border: 0; display: block;" border="0" src="https://image.e.williams-sonoma.com/lib/fe3111717164067e701175/m/1/oq7vpgr1q4_slice_03.jpg" class="photo" alt="Select KitchenAid® Electrics Up to 30% Off + FREE SHIPPING">
+                                            </a>
+                                        </td>
+                                    </tr>
+                            </table>
+                        </td>
+                    </tr>
+                
+                    <tr>
+                        <td style="vertical-align: top"> 
+                            <table border="0" cellpadding="0" cellspacing="0" width="640">
+                                <tr>
+                                    <td style="vertical-align: top">
+                                            <a style="display: block"   href="https://click.e.williams-sonoma.com/u/?qs=8b1bf774149286d01176d2d19d13e6075dcb74a733cb6f34297f566f27da940ede2ffd9b1e9a95f7587cc8abb1e5308e333be6a5ddacefde8c5588a176100cea">
+                                                <img width="100%" style="border: 0; display: block;" border="0" src="https://image.e.williams-sonoma.com/lib/fe3111717164067e701175/m/1/d6n4ogpoje_slice_04.jpg" class="photo" alt="up to 75% off* clearance - shop in stores & online">
+                                            </a>
+                                        </td>
+                                    </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+        </td>
+    </tr>
+    </table>
+<!-- Body Hero Layout v3 End -->
+
+                                    
+                                    
+                                    
+                                    <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner">
+
+<!-- /* PB */ -->
+
+
+
+
+<!--  /* MG */ -->
+
+
+</td></tr></table>
+                                    
+                                    
+
+
+<table align="center" bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0" width="640">
+  <tbody>
+    <tr>
+      <!--
+<td style="font-size: 0px; line-height: 1px; padding: 0px;" width="35">
+<img height="10" src="https://edm.westelm.com/we/2020/042220_dynamic_trigger/blank.gif" width="35" />
+</td>
+-->
+      <td align="center">
+        <!-- start: RR title -->
+        <table width="640" border="0" bgcolor="#ffffff" cellspacing="0" cellpadding="0" align="center">
+          <tr>
+            <td>
+              <a href="https://click.e.williams-sonoma.com/?qs=a025277ebae3c8af63f7e7682b1aa85dd323f660a7137cba036c6f8f140bc951303e058516ca44a8cdaeb62fdb141bcb66225de57eeb4808d24729546983f68c" target="_blank" >
+                <img src="https://edm.williams-sonoma.com/ws/B&B_Banners/Dynamic_2.0_Banners/YouMayAlsoLike/YMAL_6_Grid_Headline.jpg" alt=""  style="display: block; line-height: 0;" border="0" width="640" align="top"></a>
+            </td>
+          </tr>
+        </table>
+        <table align="center" cellpadding="0" cellspacing="0" border="0" bgcolor="#FFFFFF">
+          <tr>
+            <td height="20">
+              <img src="https://edm.westelm.com/we/evergreen/spacer_0.gif" width="1" height="20" border="0" alt="" />
+            </td>
+          </tr>
+        </table>
+        <table align="center" cellpadding="0" cellspacing="0" width="640" bgcolor="#ffffff">
+          <tbody>
+            <tr>
+              <td valign="top">
+                <table cellspacing="0" cellpadding="0" width="305" align="center" bgcolor="#ffffff">
+                  <tr>
+                    <td align="center" valign="top" width="305" style="width:305px; padding: 0 0 0 0;">
+                      <a href="https://click.e.williams-sonoma.com/?qs=23dd740702281c80e796d97e08cd39f2e4edca9b0f60b8cb2a9ac959c43539fd8d6939e98fc33fd16d369602b97c852c573b2a4adc6e748d5cdde303044960eb" target="_blank" >
+                        <img width="305" src="https://www.williams-sonoma.com/wsimgs/ab/images/dp/wcm/202547/0509/img1l.jpg" style="display:block;"></a>
+                    </td>
+                  </tr> 
+                    <tr>
+<td valign="top" style="font-size: 0px; line-height: 1px; padding: 0px;" height="15"><img src="https://edm.westelm.com/we/2020/042220_dynamic_trigger/blank.gif" height="15"  style="display:block;"/></td>
+</tr>
+                  <tr>
+                    <td width="305" height="38" bgcolor="#ffffff" align="center" valign="middle" style="width: 305px; height: 20px; font-family:Arial, Helvetica, sans-serif;">
+                      <p style="font-family:'Helvetica Neue', Arial, 'sans-serif'; font-size: 18px; color: #212121; line-height: 26px; letter-spacing:1px; font-weight: normal; text-decoration:none; text-size-adjust: none; -moz-text-size-adjust: none; -ms-text-size-adjust: none; -webkit-text-size-adjust: none;">
+                        <a href="https://click.e.williams-sonoma.com/?qs=23dd740702281c80e796d97e08cd39f2e4edca9b0f60b8cb2a9ac959c43539fd8d6939e98fc33fd16d369602b97c852c573b2a4adc6e748d5cdde303044960eb" style="font-family: 'Montserrat', Helvetica, Arial, Verdana, sans-serif; font-size: 16px; line-height: 18px; color: #000000; text-decoration: none;" target="_blank" >Twas the Night Before Christmas Musical Snow Globe<br/><br/></a>
+                      </p>
+                    </td>
+                  </tr>  
+                </table>
+              </td>
+              <td width="30">
+                <img width="10" src="https://edm.westelm.com/we/2020/042220_dynamic_trigger/blank.gif">
+              </td>
+              <td valign="top">
+                <table cellspacing="0" cellpadding="0" width="305" align="center" bgcolor="#ffffff">
+                  <tr>
+                    <td align="center" valign="top" width="305" style="width:305px; padding: 0 0 0 0;">
+                      <a href="https://click.e.williams-sonoma.com/?qs=b923909d580ca9ad21850b890f4e11047ebc776ee04ec1a2692ab8fa3ba6d90378ff851170ff2987cf145fe53c8ede3d7fe00d32763b02de8e5580ec81d8a0df" target="_blank" >
+                        <img width="305" src="https://www.williams-sonoma.com/wsimgs/ab/images/dp/wcm/202525/0148/img63l.jpg" style="display:block;"></a>
+                    </td>
+                  </tr> 
+                    <tr>
+<td valign="top" style="font-size: 0px; line-height: 1px; padding: 0px;" height="15"><img src="https://edm.westelm.com/we/2020/042220_dynamic_trigger/blank.gif" height="15"  style="display:block;"/></td>
+</tr>
+                  <tr>
+                    <td width="305" height="20" bgcolor="#ffffff" align="center" valign="middle" style="width: 305px; height: 20px; font-family:Arial, Helvetica, sans-serif;">
+                      <p style="font-family:'Helvetica Neue', Arial, 'sans-serif'; font-size: 18px; color: #212121; line-height: 26px; letter-spacing:1px; font-weight: normal; text-decoration:none; text-size-adjust: none; -moz-text-size-adjust: none; -ms-text-size-adjust: none; -webkit-text-size-adjust: none;">
+                        <a href="https://click.e.williams-sonoma.com/?qs=b923909d580ca9ad21850b890f4e11047ebc776ee04ec1a2692ab8fa3ba6d90378ff851170ff2987cf145fe53c8ede3d7fe00d32763b02de8e5580ec81d8a0df" style="font-family: 'Montserrat', Helvetica, Arial, Verdana, sans-serif; font-size: 16px; line-height: 18px; color: #000000; text-decoration: none;" target="_blank" >Spider Beverage Dispenser Base<br/><br/></a>
+                      </p>
+                    </td>
+                  </tr>  
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <table cellspacing="0" cellpadding="0" width="305" align="center" bgcolor="#ffffff">
+                  <tr>
+                    <td align="center" valign="top" width="305" style="width:305px; padding: 0 0 0 0;">
+                      <a href="https://click.e.williams-sonoma.com/?qs=23dd740702281c80efffd8e5632c8bce43b0ac26a4f66222eb0f0693a92c5402c5eb29220905b8ceea232a4211736d258ae6b9a69daf55e6284889c4b8215d8a" target="_blank" >
+                        <img width="305" src="https://www.williams-sonoma.com/wsimgs/ab/images/dp/wcm/202531/0074/img393l.jpg" style="display:block;"></a>
+                    </td>
+                  </tr> 
+                    <tr>
+<td valign="top" style="font-size: 0px; line-height: 1px; padding: 0px;" height="15"><img src="https://edm.westelm.com/we/2020/042220_dynamic_trigger/blank.gif" height="15"  style="display:block;"/></td>
+</tr>
+                  <tr>
+                    <td width="305" height="20" bgcolor="#ffffff" align="center" valign="middle" style="width: 305px; height: 20px; font-family:Arial, Helvetica, sans-serif;">
+                      <p style="font-family:'Helvetica Neue', Arial, 'sans-serif'; font-size: 18px; color: #212121; line-height: 26px; letter-spacing:1px; font-weight: normal; text-decoration:none; text-size-adjust: none; -moz-text-size-adjust: none; -ms-text-size-adjust: none; -webkit-text-size-adjust: none;">
+                        <a href="https://click.e.williams-sonoma.com/?qs=23dd740702281c80efffd8e5632c8bce43b0ac26a4f66222eb0f0693a92c5402c5eb29220905b8ceea232a4211736d258ae6b9a69daf55e6284889c4b8215d8a" style="font-family: 'Montserrat', Helvetica, Arial, Verdana, sans-serif; font-size: 16px; line-height: 18px; color: #000000; text-decoration: none;" target="_blank" >Heirloom Name Card Holders, Set of 4<br/><br/></a>
+                      </p>
+                    </td>
+                  </tr>  
+                </table>
+              </td>
+              <td width="30">
+                <img width="10" src="https://edm.westelm.com/we/2020/042220_dynamic_trigger/blank.gif">
+              </td>
+              <td valign="top">
+                <table cellspacing="0" cellpadding="0" width="305" align="center" bgcolor="#ffffff">
+                  <tr>
+                    <td align="center" valign="top" width="305" style="width:305px; padding: 0 0 0 0;">
+                      <a href="https://click.e.williams-sonoma.com/?qs=23dd740702281c80674d9dbf0545c2e21f3b3d0cb1587b408a14f3b942fd3a0ffcade4b3a153737fcba3f310992954f4d1cf0cb79924fba27da8c0d5195ee65c" target="_blank" >
+                        <img width="305" src="https://www.williams-sonoma.com/wsimgs/ab/images/dp/wcm/202547/0241/img24l.jpg" style="display:block;"></a>
+                    </td>
+                  </tr> 
+                    <tr>
+<td valign="top" style="font-size: 0px; line-height: 1px; padding: 0px;" height="15"><img src="https://edm.westelm.com/we/2020/042220_dynamic_trigger/blank.gif" height="15"  style="display:block;"/></td>
+</tr>
+                  <tr>
+                    <td width="305" height="20" bgcolor="#ffffff" align="center" valign="middle" style="width: 305px; height: 20px; font-family:Arial, Helvetica, sans-serif;">
+                      <p style="font-family:'Helvetica Neue', Arial, 'sans-serif'; font-size: 18px; color: #212121; line-height: 26px; letter-spacing:1px; font-weight: normal; text-decoration:none; text-size-adjust: none; -moz-text-size-adjust: none; -ms-text-size-adjust: none; -webkit-text-size-adjust: none;">
+                        <a href="https://click.e.williams-sonoma.com/?qs=23dd740702281c80674d9dbf0545c2e21f3b3d0cb1587b408a14f3b942fd3a0ffcade4b3a153737fcba3f310992954f4d1cf0cb79924fba27da8c0d5195ee65c" style="font-family: 'Montserrat', Helvetica, Arial, Verdana, sans-serif; font-size: 16px; line-height: 18px; color: #000000; text-decoration: none;" target="_blank" >Stoneware Rooster Name Card Holders, Set of 4<br/><br/></a>
+                      </p>
+                    </td>
+                  </tr>  
+                </table>
+              </td>
+            </tr>
+            
+            <tr>
+              <td valign="top">
+                <table cellspacing="0" cellpadding="0" width="305" align="center" bgcolor="#ffffff">
+                  <tr>
+                    <td align="center" valign="top" width="305" style="width:305px; padding: 0 0 0 0;">
+                      <a href="https://click.e.williams-sonoma.com/?qs=23dd740702281c8036ba760430aa3a36a99688cf6c888baa4fa1fc36bd500399708f6e19279cd984795020811fc7fac018ad0bbb9dc3501121546114873d103d" target="_blank" >
+                        <img width="305" src="https://www.williams-sonoma.com/wsimgs/ab/images/dp/wcm/202531/0074/img175l.jpg" style="display:block;"></a>
+                    </td>
+                  </tr> 
+                    <tr>
+<td valign="top" style="font-size: 0px; line-height: 1px; padding: 0px;" height="15"><img src="https://edm.westelm.com/we/2020/042220_dynamic_trigger/blank.gif" height="15"  style="display:block;"/></td>
+</tr>
+                  <tr>
+                    <td width="305" height="20" bgcolor="#ffffff" align="center" valign="middle" style="width: 305px; height: 20px; font-family:Arial, Helvetica, sans-serif;">
+                      <p style="font-family:'Helvetica Neue', Arial, 'sans-serif'; font-size: 18px; color: #212121; line-height: 26px; letter-spacing:1px; font-weight: normal; text-decoration:none; text-size-adjust: none; -moz-text-size-adjust: none; -ms-text-size-adjust: none; -webkit-text-size-adjust: none;">
+                        <a href="https://click.e.williams-sonoma.com/?qs=23dd740702281c8036ba760430aa3a36a99688cf6c888baa4fa1fc36bd500399708f6e19279cd984795020811fc7fac018ad0bbb9dc3501121546114873d103d" style="font-family: 'Montserrat', Helvetica, Arial, Verdana, sans-serif; font-size: 16px; line-height: 18px; color: #000000; text-decoration: none;" target="_blank" >Heirloom Name Card Holders, Set of 4<br/><br/></a>
+                      </p>
+                    </td>
+                  </tr>  
+                </table>
+              </td>
+              <td width="30">
+                <img width="10" src="https://edm.westelm.com/we/2020/042220_dynamic_trigger/blank.gif">
+              </td>
+              <td valign="top">
+                <table cellspacing="0" cellpadding="0" width="305" align="center" bgcolor="#ffffff">
+                  <tr>
+                    <td align="center" valign="top" width="305" style="width:305px; padding: 0 0 0 0;">
+                      <a href="https://click.e.williams-sonoma.com/?qs=23dd740702281c8076e2daede769809f7ba4a068b932a999f9ec0d6ebe8b84c33de5398ba6a7c46e79825edeead71630d1a83c47a77dec32f3269925222087d3" target="_blank" >
+                        <img width="305" src="https://www.williams-sonoma.com/wsimgs/ab/images/dp/wcm/202525/0008/img1l.jpg" style="display:block;"></a>
+                    </td>
+                  </tr> 
+                    <tr>
+<td valign="top" style="font-size: 0px; line-height: 1px; padding: 0px;" height="15"><img src="https://edm.westelm.com/we/2020/042220_dynamic_trigger/blank.gif" height="15"  style="display:block;"/></td>
+</tr>
+                  <tr>
+                    <td width="305" height="20" bgcolor="#ffffff" align="center" valign="middle" style="width: 305px; height: 20px; font-family:Arial, Helvetica, sans-serif;">
+                      <p style="font-family:'Helvetica Neue', Arial, 'sans-serif'; font-size: 18px; color: #212121; line-height: 26px; letter-spacing:1px; font-weight: normal; text-decoration:none; text-size-adjust: none; -moz-text-size-adjust: none; -ms-text-size-adjust: none; -webkit-text-size-adjust: none;">
+                        <a href="https://click.e.williams-sonoma.com/?qs=23dd740702281c8076e2daede769809f7ba4a068b932a999f9ec0d6ebe8b84c33de5398ba6a7c46e79825edeead71630d1a83c47a77dec32f3269925222087d3" style="font-family: 'Montserrat', Helvetica, Arial, Verdana, sans-serif; font-size: 16px; line-height: 18px; color: #000000; text-decoration: none;" target="_blank" >Williams Sonoma Midnight Magic Cocktail Rimming Sugar<br/><br/></a>
+                      </p>
+                    </td>
+                  </tr>  
+                </table>
+              </td>
+            </tr>
+            
+          </tbody>
+        </table>
+        
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+                                    
+                                    <!--CCard banner start-->
+
+
+<!-- Non Cardmember Banner Starts -->
+<table cellspacing="0" cellpadding="0" bgcolor="#ffffff" width="100%" align="center">
+<tr>
+<td align="center">
+<table width="640" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td valign="top" style="line-height:0px; font-size:0px; mso-line-height-rule:exaclty;"><a href="https://click.e.williams-sonoma.com/?qs=8b1bf774149286d0a6eb1082595f2d8b35c6c0f5acc532912bed861fd5675ba2ad9ccd32b775c8130ba18c7d6ba386313f8b9c1002655f1c57feeaccae289d3c" target="_blank"><img src="http://edm.potterybarn.com/pb/thekey/CC_Banner/WS/Foot_NonMem_WS.jpg" alt="" width="640" style="display:block" border="0" /></a></td>
+</tr>
+</table>
+<table width="640" border="0" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td valign="top" style="line-height:0px; font-size:0px; mso-line-height-rule:exaclty;">
+<a href="https://click.e.williams-sonoma.com/?qs=8b1bf774149286d016b6974f67311b6810bb04a70421e67a202670740ddd84619dd24a2d0d8fcbf849e348eb5ad38205ba15e494efa02762ff6817f11474f2dd" target="_blank" ><img src="http://edm.potterybarn.com/pb/2022/0311_Key_CC_Email_BrandBanner/slices_02.jpg" alt="" width="640" style="display:block" border="0" /></a>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</table>
+<!-- Non Cardmember Banner Ends -->
+
+
+<!--CCard banner end-->
+                                    
+                                    
+
+
+    <!--MiscBanners v2 start-->
+    <table cellspacing="0" cellpadding="0" width="640" style="min-width:640px" align="center">
+        <tr>
+            <td>
+                <a    href="https://click.e.williams-sonoma.com/?qs=8b1bf774149286d043836252ac95b14dcf1ac0a8133a1e2e9e4b783143442b69f6eaf053f4ac6914d06a7cd7f48129765c6adf2891b1791515438eff73435584">
+                    <img src="https://edm.williams-sonoma.com/ws/2023/0000_WSO_Header_Footer/option_01.png" width="320" border="0" alt="THE KEY REWARDS - JOIN NOW" style="display:block;" />
+                </a>
+            </td>
+            <td>
+                <a    href="https://click.e.williams-sonoma.com/?qs=8b1bf774149286d08e529cfc110939aef125a1d06bf7b7f6eab28db8ac17d5c83594598047f76b7cb1efb85d0f1361c0f6c5ec2b697ede8f741a75351cc7a13c">
+                    <img src="https://edm.williams-sonoma.com/ws/2023/0000_WSO_Header_Footer/option_02.png" width="320" border="0" alt="RECIPES - VIEW NOW" style="display:block;" />
+                </a>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>
+                <a    href="https://click.e.williams-sonoma.com/?qs=8b1bf774149286d024ff50f3ed6a934dd77bcec6afb79530f39c21c3e1f045eae27c5241d1f721d615c23ecaa430cfb2dc5f557cb9843e439064647cf092227f">
+                    <img src="https://edm.williams-sonoma.com/ws/2023/0000_WSO_Header_Footer/option_03.png" width="320" border="0" alt="WEDDING REGISTRY - REGISTER TODAY" style="display:block;" />
+                </a>
+            </td>
+            <td>
+                <a    href="https://click.e.williams-sonoma.com/?qs=8b1bf774149286d0b06ba033f3775e81084fa531ab2a63eb11475de65cff961ea8360069f2979103bd052b93d5cccb56b802416e7538eb832b103a418ec6f58a">
+                    <img src="https://edm.williams-sonoma.com/ws/2023/0000_WSO_Header_Footer/option_04.png" width="320" border="0" alt="FREE DESIGN SERVICES - REQUEST AN APPOINTMENT" style="display:block;" />
+                </a>
+            </td>
+       </tr>
+    </table>
+    
+    <table cellspacing="0" cellpadding="0" width="640" style="min-width:640px" align="center">
+        <tr>
+            <td>
+                <a    href="https://click.e.williams-sonoma.com/?qs=8b1bf774149286d0e72734984db526478739cbfa0d22a1939474ad29cd84cff5e6108e8ea0098f9df52a836266d9bea89080d80293cabe04f47d12f0d964803d">
+                    <img src="https://edm.williams-sonoma.com/ws/2023/0000_WS_Trade_Header_Footer/local-store.png" width="640" border="0" alt="FIND YOUR LOCAL STORE" style="display:block;" />
+                </a>
+            </td>
+       </tr>
+    </table>
+    <table cellspacing="0" cellpadding="0" width="640" style="min-width:640px" align="center">
+          <tr>
+                <td>
+                      <a    href="https://click.e.williams-sonoma.com/?qs=8b1bf774149286d0e8a2faaec55626783441ad35f0fff0aa8c343c443b0344a4451318310725e33b2b446a669a6e471453ae2c0b58ae3e9cf20b825556dd1416"><img                                   src="https://edm.williams-sonoma.com/ws/2023/05_Footer_Updates/brand-title.png" width="640"                                   border="0" alt="DISCOVER EVEN MORE TO LOVE ACROSS OUR FAMILY OF BRANDS"                                   style="display:block;" /></a>
+                </td>
+          </tr>
+    </table>
+    <table cellspacing="0" cellpadding="0" width="640" style="min-width:640px" align="center">
+        <tr>
+            <td>
+                <a    href="https://click.e.williams-sonoma.com/?qs=8b1bf774149286d09e2e44de3b5a9438e770822fb72d56234042d948b0a5bb2fef173a4a35da2945d25474238c8b5f85559b466a15e802fdc658d7d3234e02bb">
+                    <img src="https://edm.williams-sonoma.com/ws/2023/05_Footer_Updates/pb.png" width="190" border="0" alt="POTTERY BARN" style="display:block;" />
+                </a>
+            </td>
+            <td>
+                <a    href="https://click.e.williams-sonoma.com/?qs=8b1bf774149286d00ebf2479966a71d301b465140d44ad7b6d69d193881f66a73a579d066cc035f40fd353a1dc7eda5f29946653a51a56162b75db64fe6944f6">
+                    <img src="https://edm.williams-sonoma.com/ws/2023/05_Footer_Updates/pbk.png" width="138" border="0" alt="pottery barn kids" style="display:block;">
+                </a>
+            </td>
+            <td>
+                <a    href="https://click.e.williams-sonoma.com/?qs=8b1bf774149286d0bc97b1a9b07fa69528983e4194a4ee09ab9d12b6b5f14a20c16b24c4dd7f20c2de8d761014290bb57dcf152a1fc609ac777fff24f2c47814">
+                    <img src="https://edm.williams-sonoma.com/ws/2023/05_Footer_Updates/pbt.png" width="164" border="0" alt="POTTERY BARN teen" style="display:block;">
+                </a>
+            </td>
+            <td>
+                <a    href="https://click.e.williams-sonoma.com/?qs=8b1bf774149286d0cbb293b910d43ceb53169aed015afe29d1d26018bb0a6a8685831cd31c41e03c571978a14797b7b28a086c71f77ecdb1e499f41d984b7c94">
+                    <img src="https://edm.williams-sonoma.com/ws/2023/05_Footer_Updates/we.png" width="148" border="0" alt="WEST ELM" style="display:block;">
+                </a>
+            </td>
+       </tr>
+    </table>
+    
+    <table cellspacing="0" cellpadding="0" width="640" style="min-width:640px" align="center">
+        <tr>
+            <td>
+                <a    href="https://click.e.williams-sonoma.com/?qs=8b1bf774149286d01534607a60f827ee5103eb503f4184b33704aa02160589682eba154d66aaaebdcc859a4dd54df639a04e1f0cb69526dd39ea2d1402bdd25e">
+                    <img src="https://edm.williams-sonoma.com/ws/2023/05_Footer_Updates/ws.png" width="145" border="0" alt="WILLIAMS SONOMA" style="display:block;">
+                </a>
+            </td>
+            <td>
+                <a    href="https://click.e.williams-sonoma.com/?qs=8b1bf774149286d0ef6516b6baa45454d022e2585a2c3bd492fcfd98c2fa00b2f477b1099ad3878d531416b39a5f69bab65232d9cdf7fbf35150acba5d50fd06">
+                    <img src="https://edm.williams-sonoma.com/ws/2023/05_Footer_Updates/wsh.png" width="175" border="0" alt="WILLIAMS SONOMA HOME" style="display:block;">
+                </a>
+            </td>
+            <td>
+                <a    href="https://click.e.williams-sonoma.com/?qs=8b1bf774149286d0727501729bdf9129c4191f4796db90f5c2f3382b654256260cf32406ec1ef073abf73642b0b26e01efdd191e626803f615e82188320e5b59">
+                    <img src="https://edm.williams-sonoma.com/ws/2023/05_Footer_Updates/mg.png" width="124" border="0" alt="MARK &amp; GRAHAM" style="display:block;">
+                </a>
+            </td>
+            <td>
+                <a    href="https://click.e.williams-sonoma.com/?qs=8b1bf774149286d066f7efeb75b1c34ff8dd2b62a8baafa46c9f8cd007b4df7ec7bad9c8f02f9cfba03244d1772da8f6880ce047d40667dee8eb4f96d739b211">
+                    <img src="https://edm.williams-sonoma.com/ws/2023/05_Footer_Updates/rj.png" width="104" border="0" alt="REJUVENATION" style="display:block;">
+                </a>
+            </td>
+            <td>
+                <a    href="https://click.e.williams-sonoma.com/?qs=8b1bf774149286d04a6baf28d647662b3145b5223bd8079b20e62d9f42e00b88153915fcdd609df1c658a23fbe7d3595b24967c09ebcbcaa92d8c505d27d2efa">
+                    <img src="https://edm.williams-sonoma.com/ws/2023/05_Footer_Updates/gr.png" width="92" border="0" alt="GREEN ROW" style="display:block;">
+                </a>
+            </td>
+        </tr>
+    </table>
+    
+    <table cellspacing="0" cellpadding="0" width="640" style="min-width:640px" align="center" bgcolor="#000000">
+        <tr>
+            <td valign="top" align="left">
+                <table cellspacing="0" cellpadding="0" width="640" style="min-width:640px" align="center">
+                    <tr>
+                        <td valign="top" align="left">
+                            <img src="https://edm.williams-sonoma.com/ws/2023/0000_WSO_Header_Footer/tag-us.jpg" width="640" border="0" alt="TAG US @WILLIAMSSONOMA" style="display:block;" />
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td valign="top" align="left">
+                <table cellspacing="0" cellpadding="0" width="640" style="min-width:640px" align="center">
+                    <tr>
+                        <td valign="top" align="left">
+                            <a    href="https://click.e.williams-sonoma.com/?qs=8b1bf774149286d04ef80df7273213dfe6542f23110e1ad0149407b7c787341a4a4c25245e006d785ac3c2e8a2e3a6ae65fab8f7afca0b9d1fc4d7e22fe2d774">
+                                <img src="https://edm.williams-sonoma.com/ws/2023/0000_WS_Trade_Header_Footer/social-1.png" width="194" border="0" alt="Facebook" style="display:block;" />
+                            </a>
+                        </td>
+                        <td valign="top" align="left">
+                            <a    href="https://click.e.williams-sonoma.com/?qs=8b1bf774149286d0a23211fe4e860b5160318319b9c3d00caa813391020693ad7c41cdbfde9856322d21b23bb6b497031b9a5b24d071ee5ccc9ee0112fc0cc67">
+                                <img src="https://edm.williams-sonoma.com/ws/2023/0000_WS_Trade_Header_Footer/social-2.png" width="66" border="0" alt="Twitter" style="display:block;" />
+                            </a>
+                        </td>
+                        <td valign="top" align="left">
+                            <a    href="https://click.e.williams-sonoma.com/?qs=8b1bf774149286d0e0068c3f5355fb522dd73f3e68c38bd11cdb108624e34e9ef55aad80970d5de4d7861c53d24fb5669ad439d156d5875031d0f4305e891201">
+                                <img src="https://edm.williams-sonoma.com/ws/2023/0000_WS_Trade_Header_Footer/social-3.png" width="60" border="0" alt="Instagram" style="display:block;" />
+                            </a>
+                        </td>
+                        <td valign="top" align="left">
+                            <a    href="https://click.e.williams-sonoma.com/?qs=8b1bf774149286d0cd02dd3a6223207ff240c38bf95e903b6a747db49afbc58df728dcce5de0ddc14dfa16baa8149bc0c8e38e5bba5242f054a8fbf9d138803e">
+                                <img src="https://edm.williams-sonoma.com/ws/2023/0000_WS_Trade_Header_Footer/social-4.png" width="55" border="0" alt="Tik Tok" style="display:block;" />
+                            </a>
+                        </td>
+                        <td valign="top" align="left">
+                            <a    href="https://click.e.williams-sonoma.com/?qs=8b1bf774149286d07dcd8d8a2580e546ed03b6be7d3c285e8d42971d41096a83f22f1410723823b6e98cf4e28de6217a011fadd9a240ce45a43fc2d3fc969eec">
+                                <img src="https://edm.williams-sonoma.com/ws/2023/0000_WS_Trade_Header_Footer/social-5.png" width="73" border="0" alt="YouTube" style="display:block;" />
+                            </a>
+                        </td>
+                        <td valign="top" align="left">
+                            <a    href="https://click.e.williams-sonoma.com/?qs=8b1bf774149286d0c76f665505024335991bf49433b79445d5eb129765388e6fc3e702e7f409116da3d04644f03f9ed9d1fe5d5d41fcb5545bccc7e3bb087749">
+                                <img src="https://edm.williams-sonoma.com/ws/2023/0000_WS_Trade_Header_Footer/social-6.png" width="192" border="0" alt="Pinterest" style="display:block;" />
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    
+    <table cellpadding="0" cellspacing="0">
+        <tr>
+            <td width="640" height="30" style="line-height:0px; background-image: linear-gradient(#ffffff,#ffffff)">
+                <img src="https://edm.williams-sonoma.com/ws/spr_gif_dont_move/spacer.gif" width="1" height="1" style="display:block; border:0;" />
+            </td>
+        </tr>
+    </table>
+    <!--MiscBanners v2 start-->
+
+                                    
+                                    <table cellpadding="0" cellspacing="0">
+    <tr>
+        <td height="10" style="line-height:0px; ">
+            <img src="https://edm.williams-sonoma.com/ws/spr_gif_dont_move/spacer.gif" width="1" height="5" style="display:block; border:0;" />
+        </td>
+    </tr>
+</table>
+                                    
+                                    <!-- Start Legal -->
+
+<table width="640" cellpadding="0" cellspacing="0">    
+    <tr>
+      <td width="10" ></td>
+        <td align="center" width="650" valign="top" >
+          <!-- start extra dynamic legal goes here -->
+          <p style="font-family:Arial, Helvetica, Verdana sans-serif; font-size:12px; color:#2d2d2d; line-height:14px;">
+            
+          </p>
+          <!-- end extra dynamic legal goes here -->
+          <div align="center" style="font-family:verdana,arial; font-size:9px; color:#bcbbbb; line-height:12px; text-decoration:none; letter-spacing:1px;  text-size-adjust: none; -moz-text-size-adjust: none; -ms-text-size-adjust: none; -webkit-text-size-adjust: none;">
+  
+              *Quantities are limited and exclusions may apply. See site for <a style="color:#999999; text-decoration:underline;"    href="https://click.e.williams-sonoma.com/?qs=8b1bf774149286d0c588a100746acbc2eee60b06c06bf123664d82d6e019f66ee91bf449d8e9f598600d1814426f5b68eff8ed8b37eb8822f80eac3ae5006cc0">details
+</a>. Offer valid on in-stock items only and cannot be applied to prior purchases. Offer may not be combined with any other coupons, discounts, offers, or promotions. Offer is non-transferable and cannot be sold or otherwise bartered. Offer not valid on special orders, gift cards, monogramming, gift wrap, taxes, and wine gift purchases. Offer not valid on purchases made at Williams Sonoma Outlet stores. Offer not valid for international orders. Associates are not eligible for this offer.
+          
+            <br /><br />
+            
+            <div>
+              
+
+
+                  
+                      <strong>EARNING REWARDS & USING YOUR CARD</strong><br />
+              <sup>1</sup>New cardmembers earn 10% back in rewards for Net Eligible purchases made at Williams Sonoma, Williams Sonoma Home, Pottery Barn, Pottery Barn Kids, Pottery Barn Teen, West Elm, Rejuvenation and Mark & Graham (excludes GreenRow) during the first 30 days from account opening, 5% thereafter. Some approved customers will not be eligible to make same-day purchases, for example, if they do not timely complete any required authentication process and/or their applications present fraud concerns. Customers who are not eligible for a virtual card will not be able to make a purchase until their card arrives in the mail.<br /><br />
+              <sup>2</sup>Any purchase of $0.01 or more made with a Key Rewards Visa in-store or online at a participating Williams-Sonoma, Inc. brand qualifies for free standard shipping within the contiguous 48 states. For the avoidance of doubt, free shipping is not available if you use your Rewards to purchase your entire order. Please note that free shipping is only offered where you pay directly with your Key Rewards Visa as the initial payment method in the transaction. Free shipping is not available if payment is made using digital wallets, such as Apple Pay, Google Wallet, or Samsung Pay, or if payment is made through third party payment solutions, such as PayPal. <br /><br />
+              The Williams Sonoma, West Elm, Pottery Barn, and Key Rewards Visa and services are offered by Capital One, N.A., pursuant to a license from Visa, Inc. <br /><br />
+              
+              Credit card offers are subject to credit approval <br /><br />
+              
+              Visa is a registered trademark of Visa International Service Association.
+            </div>
+            
+              <br>
+              
+              <table width="650" cellpadding="0" cellspacing="0" align="center">
+                <tr>
+                  <td align="center" width="650" valign="top">
+                    <div align="center">
+                      If you prefer not to receive promotional email messages from us, please <a href="https://click.e.williams-sonoma.com/?qs=8b1bf774149286d02fa640145a2c4488b97df4a60fdcb5ac0aa07ccb1e87a85bbc545ce6465c4bb87046371fc477da9f8ff0d1e515d782a517b80814c426d7bb" target="_blank" style="color:#999999; text-decoration:underline;"><span style="color:#383838;">click here</span></a>.
+                      <br style="line-height:100%;" /><br style="line-height:100%;" />
+                      &copy; 2025 Williams-Sonoma, Inc., Direct Marketing Dept., 3250 Van Ness Ave., San Francisco, CA 94109.<br style="line-height:100%;" /><br />
+                      All Rights Reserved. Read about our <a style="color:#999999; text-decoration:underline;"    href="https://click.e.williams-sonoma.com/?qs=8b1bf774149286d02a2fb7f3e6f3b85033b4deb3f1c25fc73b462f7d4ad4c3d950169d9afeb9b31879206064d7650d232125be0af96a8b742563c1c94947e75f"><span style="color:#383838;">privacy policy</span></a>.
+                      <br style="line-height:100%;" /><br style="line-height:100%;" />
+                      This message was sent to user@example.com.<br style="line-height:100%;" /><br style="line-height:100%;" />
+                      <br /><br />
+                      <a href="https://view.e.williams-sonoma.com/?qs=80e1cb31a57b47953650b40f2ee22570d84738b843df3a4394694536846b0eea40c5a1ea5ebd9eec39f53e993f9ca06c2d1afba40047de00b62a3ea1205404d5284653a9f9355bb9dbc20c655d96005b" style="color:#555555; ">View email with images</a>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+              
+            <br  />
+          </div>
+          <table cellspacing="0" cellpadding="0"><tr><td height="12" style="line-height:0px; "><img src="http://edm.williams-sonoma.com/ws/spr_gif_dont_move/spacer.gif" width="1" height="1" style="display:block; border:0;" /></td></tr></table>
+        </td>
+      <td width="10" ></td>
+    </tr>
+  </table>
+  
+  <!-- End Legal -->
+                                    
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- William Sonoma Pixels -->
+        <table width="1" height="1" cellpadding="0" cellspacing="0" border="0" style="font-size:0px; line-height:0px;display:none; overflow:hidden">
+          <tr> <td style="font-size:0px; line-height:0px;display:none; overflow:hidden"> <img src="https://mi.williams-sonoma.com/p/up/366c59bb35e22fd4/o.gif?mi_u=50105827&mi_ecmp=238582" width="1" height="1" alt="" aria-hidden="true" /> </td></tr>
+        </table>
+        <img src="https://www.westelm.com/customer-service/coreemail.html?email=user@example.com" width="1" height="1" border="0">
+        <img src="https://d.turn.com/r/dd/id/L21rdC84NjEvY2lkLzE3NDc3OTAyNjkvdC8y/cat/1" width="1" height="1" border="0" />
+        <img src="http://svopn.westelm.com/?sv_cid=0053_00601&sv_emopen=true&sv_sveme=user@example.com" height="1" width="1" />
+        <!-- rpcampaign: WE{(meta:External_Campaign_ID)} -->
+        <!-- CP/DV Open Pixel -->
+        <img src="https://clickcp.williams-sonoma.com/o/9168e247-f48b-4755-8c4d-3eb1b1dc76b1?cp_tp=v3.eJx9kD9Iw0AYxb0ktq_pv89rJLFdQkAoQpAqiHRwcHDoplAQEQxOboKjozq42g4ORcHFRUEQFKwgCLZQcBBELNjWilNRhE7qIl6rQg3ocjzu99597ztVwhgHnpq3JQ_J0SBesz7uRSNMAQOWjq38nLj24OqtUvJYP2BgXcHd8U1tdSN7NCniRx8RYsLflHF5XT5eO9g-OWG8By9WXE4pYMSm2icfRMUiZrK4NCqNA-_FgDFrLqbUFox-GTv0AuN9qFokxVnnK9MZOBkIVLNIdqG65NQlrqOikeJCfscvwG4vdbtA2knzCPZj5PkNeAJFnbzfbVXUz4JGjpk59k_fYTxoBONrRSZCFyJ0HjLPQ3-G5nk_Cjr5vud0_WUU5csaqa7yESciyjc18rvK69iLUcDlHnFGxL_dWxR0gYbtNGyRedQo5EK2Y4sJdY3CcaUTGBfdZkEaAg7DloyViaQXbxIp0a6kiqoshIx1CP1st_XO0gyQT3AZmWWhTltqc_kTl9NtNg==&cp_cid=d715bd6626dce266" width="1" height="1">
+
+
+        <!-- SFMC Open Pixel -->
+        <img src="https://click.e.williams-sonoma.com/open.aspx?ffcb10-fec316737d610c7f-fe2816787265007b761173-fe3111717164067e701175-ff951d71-fe631170746401757713-ff2b1272766d&d=110052&bmt=0" width="1" height="1" alt=""></custom>
+    </body>
+</html>
+
+--z5LbgtySEgNZ=_?:--
+
+
