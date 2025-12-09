@@ -6810,9 +6810,14 @@ impl FilterEngine {
     fn get_business_context_adjustment(&self, context: &MailContext) -> i32 {
         let domain = self
             .extract_sender_domain(context)
-            .unwrap_or_default()
-            .to_lowercase();
+            .unwrap_or_default();
+        // Don't convert to lowercase here - let individual functions handle case sensitivity
         let mut adjustment = 0;
+
+        // Check for major e-commerce platforms (strongest adjustment)
+        if self.is_major_ecommerce_platform(&domain) {
+            adjustment -= 150; // Strong reduction for major platforms
+        }
 
         // Check if this is a legitimate business domain
         if self.is_established_business_domain(&domain) {
@@ -6823,6 +6828,11 @@ impl FilterEngine {
         if self.has_legitimate_promotional_content(context) && self.is_legitimate_retailer(&domain)
         {
             adjustment -= 100; // Cancel out "unrealistic returns" false positives
+        }
+
+        // Check for legitimate business activities
+        if self.is_legitimate_business_activity(context, &domain) {
+            adjustment -= 100; // Strong reduction for legitimate activities
         }
 
         // Check for legitimate email service providers
@@ -6836,6 +6846,72 @@ impl FilterEngine {
         }
 
         adjustment
+    }
+
+    /// Check if domain is a major e-commerce platform
+    fn is_major_ecommerce_platform(&self, domain: &str) -> bool {
+        let ecommerce_patterns = [
+            "amazon.com", "aliexpress.com", "temu.com", "temuemail.com",
+            "ebay.com", "walmart.com", "target.com", "bestbuy.com",
+            "shopify.com", "etsy.com", "mercari.com", "poshmark.com",
+            "alibaba.com", "wish.com", "overstock.com", "wayfair.com",
+        ];
+        
+        // Use exact matching or subdomain matching, but be case-sensitive for security
+        let domain_lower = domain.to_lowercase();
+        for pattern in ecommerce_patterns {
+            if self.is_subdomain_of(&domain_lower, pattern) || domain_lower == pattern {
+                return true;
+            }
+        }
+        
+        false
+    }
+    
+    /// Check for legitimate business activities
+    fn is_legitimate_business_activity(&self, context: &MailContext, domain: &str) -> bool {
+        let mut content = String::new();
+        if let Some(subject) = &context.subject { content.push_str(subject); }
+        if let Some(body) = &context.body { 
+            let truncated = if body.len() > 1000 {
+                body.chars().take(1000).collect::<String>()
+            } else {
+                body.clone()
+            };
+            content.push_str(&truncated);
+        }
+        
+        let content_lower = content.to_lowercase();
+        
+        // Delivery notifications from e-commerce platforms
+        if self.is_major_ecommerce_platform(domain) {
+            let delivery_terms = ["delivery update", "package", "shipment", "tracking", "shipped", "delivered"];
+            for term in delivery_terms {
+                if content_lower.contains(term) {
+                    return true;
+                }
+            }
+            
+            // Payment notifications from legitimate platforms
+            let payment_terms = ["payment", "refund", "return", "order", "purchase", "transaction"];
+            for term in payment_terms {
+                if content_lower.contains(term) {
+                    return true;
+                }
+            }
+        }
+        
+        // Seasonal sales from legitimate retailers
+        if self.is_legitimate_retailer(domain) {
+            let seasonal_terms = ["black friday", "cyber monday", "holiday sale", "seasonal sale"];
+            for term in seasonal_terms {
+                if content_lower.contains(term) {
+                    return true;
+                }
+            }
+        }
+        
+        false
     }
 
     /// Check if domain is an established business
@@ -6854,17 +6930,26 @@ impl FilterEngine {
             "uncommongoods.com",
             "narvar.com",
             "capitalone.com",
+            "thesmartesthouse.com",
+            // Major e-commerce platforms (case-sensitive)
+            "amazon.com",
+            "aliexpress.com",
+            "temu.com",
+            "temuemail.com",
+            "ebay.com",
+            "walmart.com",
+            "target.com",
+            "bestbuy.com",
         ];
 
+        // Use case-sensitive exact matching or subdomain matching for security
+        let domain_lower = domain.to_lowercase();
         for pattern in established_patterns {
-            if self.is_subdomain_of(domain, pattern)
-                || domain == pattern
-                || domain.contains(pattern)
-            {
+            if self.is_subdomain_of(&domain_lower, pattern) || domain_lower == pattern {
                 return true;
             }
         }
-
+        
         false
     }
 
@@ -6879,17 +6964,26 @@ impl FilterEngine {
             "duluth",
             "toast-restaurants.com",
             "uncommongoods.com",
+            "thesmartesthouse.com",
+            // Major e-commerce platforms (case-sensitive)
+            "amazon.com",
+            "aliexpress.com",
+            "temu.com",
+            "temuemail.com",
+            "ebay.com",
+            "walmart.com",
+            "target.com",
+            "bestbuy.com",
         ];
 
+        // Use case-sensitive exact matching or subdomain matching for security
+        let domain_lower = domain.to_lowercase();
         for pattern in retailer_patterns {
-            if self.is_subdomain_of(domain, pattern)
-                || domain == pattern
-                || domain.contains(pattern)
-            {
+            if self.is_subdomain_of(&domain_lower, pattern) || domain_lower == pattern {
                 return true;
             }
         }
-
+        
         false
     }
 
