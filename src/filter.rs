@@ -1637,6 +1637,16 @@ impl FilterEngine {
                 .push("Mailing List Detection: Legitimate mailing list (-200)".to_string());
         }
 
+        // Check for domain-content semantic mismatch
+        let mismatch_score = self.get_domain_content_mismatch_score(&context_with_attachments);
+        if mismatch_score > 0 {
+            total_score += mismatch_score;
+            scoring_rules.push(format!(
+                "Domain-Content Mismatch: Semantic mismatch detected (+{})",
+                mismatch_score
+            ));
+        }
+
         // Encoding evasion analysis
         let evasion_score = self.get_evasion_score(&context_with_attachments);
         if evasion_score > 0 {
@@ -6494,6 +6504,138 @@ impl FilterEngine {
             Some(content)
         } else {
             None
+        }
+    }
+
+    /// Detects semantic mismatches between domain and email content
+    fn get_domain_content_mismatch_score(&self, context: &MailContext) -> i32 {
+        // Extract domain category
+        let domain_category = self.classify_domain_semantics(context);
+        
+        // Extract content category  
+        let content_category = self.classify_content_semantics(context);
+        
+        // Check for mismatch
+        if let (Some(domain_cat), Some(content_cat)) = (domain_category, content_category) {
+            if domain_cat != content_cat && self.is_high_confidence_mismatch(&domain_cat, &content_cat) {
+                log::debug!("Domain-content mismatch: {} domain sending {} content", domain_cat, content_cat);
+                return 100; // Strong mismatch indicator
+            }
+        }
+        
+        0
+    }
+    
+    /// Classify domain based on semantic analysis of domain name
+    fn classify_domain_semantics(&self, context: &MailContext) -> Option<String> {
+        if let Some(from_header) = &context.from_header {
+            if let Some(at_pos) = from_header.rfind('@') {
+                let domain = if let Some(end_pos) = from_header[at_pos..].find('>') {
+                    &from_header[at_pos + 1..at_pos + end_pos]
+                } else {
+                    from_header[at_pos + 1..].trim()
+                };
+                
+                let domain_lower = domain.to_lowercase();
+                
+                // Medical/Health keywords
+                if domain_lower.contains("medical") || domain_lower.contains("health") || 
+                   domain_lower.contains("doctor") || domain_lower.contains("gastric") ||
+                   domain_lower.contains("surgery") || domain_lower.contains("clinic") {
+                    return Some("medical".to_string());
+                }
+                
+                // Agriculture/Food keywords  
+                if domain_lower.contains("dairy") || domain_lower.contains("farm") ||
+                   domain_lower.contains("agriculture") || domain_lower.contains("food") {
+                    return Some("agriculture".to_string());
+                }
+                
+                // Technology keywords
+                if domain_lower.contains("tech") || domain_lower.contains("software") ||
+                   domain_lower.contains("app") || domain_lower.contains("digital") {
+                    return Some("technology".to_string());
+                }
+                
+                // Generic business domains (suspicious when used for specific industries)
+                if domain_lower.contains("business") || domain_lower.contains("services") ||
+                   domain_lower.contains("solutions") || domain_lower.contains("group") {
+                    return Some("generic".to_string());
+                }
+            }
+        }
+        
+        None
+    }
+    
+    /// Classify email content based on semantic keyword analysis
+    fn classify_content_semantics(&self, context: &MailContext) -> Option<String> {
+        let mut content = String::new();
+        
+        // Combine subject and body for analysis
+        if let Some(subject) = &context.subject {
+            content.push_str(subject);
+            content.push(' ');
+        }
+        if let Some(body) = &context.body {
+            content.push_str(&body[..std::cmp::min(500, body.len())]); // First 500 chars
+        }
+        
+        let content_lower = content.to_lowercase();
+        
+        // Financial/Debt keywords
+        let financial_keywords = ["debt", "credit", "loan", "rates", "payment", "financial", 
+                                 "money", "aarp", "membership", "insurance", "relief"];
+        let financial_count = financial_keywords.iter()
+            .filter(|&keyword| content_lower.contains(keyword))
+            .count();
+            
+        // Retail/Commerce keywords
+        let retail_keywords = ["order", "shipping", "product", "sale", "buy", "purchase",
+                              "confirmation", "delivery", "item", "price"];
+        let retail_count = retail_keywords.iter()
+            .filter(|&keyword| content_lower.contains(keyword))
+            .count();
+            
+        // Technology keywords
+        let tech_keywords = ["software", "app", "device", "upgrade", "download", "install",
+                            "system", "computer", "tech", "digital"];
+        let tech_count = tech_keywords.iter()
+            .filter(|&keyword| content_lower.contains(keyword))
+            .count();
+            
+        // Health/Medical keywords
+        let health_keywords = ["health", "medical", "doctor", "treatment", "medicine", "care",
+                              "wellness", "therapy", "clinic", "hospital"];
+        let health_count = health_keywords.iter()
+            .filter(|&keyword| content_lower.contains(keyword))
+            .count();
+        
+        // Return category with highest confidence (minimum 2 keywords)
+        let counts = [financial_count, retail_count, tech_count, health_count];
+        let max_count = *counts.iter().max().unwrap();
+        
+        if max_count >= 2 {
+            if financial_count == max_count { return Some("financial".to_string()); }
+            if retail_count == max_count { return Some("retail".to_string()); }
+            if tech_count == max_count { return Some("technology".to_string()); }
+            if health_count == max_count { return Some("medical".to_string()); }
+        }
+        
+        None
+    }
+    
+    /// Determine if domain-content mismatch is high confidence
+    fn is_high_confidence_mismatch(&self, domain_category: &str, content_category: &str) -> bool {
+        match (domain_category, content_category) {
+            // High confidence mismatches
+            ("agriculture", "financial") => true,  // Dairy domain sending debt relief
+            ("agriculture", "technology") => true, // Farm domain sending tech offers  
+            ("medical", "financial") => true,      // Medical domain sending AARP offers
+            ("medical", "retail") => true,         // Medical domain sending products
+            ("generic", "financial") => true,     // Generic domain claiming financial services
+            ("generic", "medical") => true,       // Generic domain claiming medical services
+            _ => false,
         }
     }
 
