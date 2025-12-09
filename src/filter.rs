@@ -6811,6 +6811,13 @@ impl FilterEngine {
         let domain = self
             .extract_sender_domain(context)
             .unwrap_or_default();
+        
+        // Check for infrastructure validation issues first
+        if self.has_infrastructure_validation_issues(context) {
+            log::debug!("Infrastructure validation issues detected - blocking business context adjustments");
+            return 0; // Don't apply any business adjustments if infrastructure is suspicious
+        }
+        
         // Don't convert to lowercase here - let individual functions handle case sensitivity
         let mut adjustment = 0;
 
@@ -6846,6 +6853,22 @@ impl FilterEngine {
         }
 
         adjustment
+    }
+    
+    /// Check if there are infrastructure validation issues that should block business adjustments
+    fn has_infrastructure_validation_issues(&self, context: &MailContext) -> bool {
+        // Use the feature engine to run analysis and check for sender alignment issues
+        let feature_analysis = self.feature_engine.analyze(context);
+        
+        // Look for sender alignment issues in the feature scores
+        for feature_score in &feature_analysis.scores {
+            if feature_score.feature_name == "Sender Alignment" && feature_score.score > 0 {
+                log::debug!("Sender alignment issues detected (score: {}), blocking business adjustments", feature_score.score);
+                return true;
+            }
+        }
+        
+        false
     }
 
     /// Check if domain is a major e-commerce platform
