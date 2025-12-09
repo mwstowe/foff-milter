@@ -1648,7 +1648,8 @@ impl FilterEngine {
         }
 
         // Check for brand impersonation
-        let brand_impersonation_score = self.get_brand_impersonation_score(&context_with_attachments);
+        let brand_impersonation_score =
+            self.get_brand_impersonation_score(&context_with_attachments);
         if brand_impersonation_score > 0 {
             total_score += brand_impersonation_score;
             scoring_rules.push(format!(
@@ -1673,7 +1674,11 @@ impl FilterEngine {
             total_score += business_adjustment;
             scoring_rules.push(format!(
                 "Business Context Adjustment: Legitimate business patterns ({})",
-                if business_adjustment > 0 { format!("+{}", business_adjustment) } else { business_adjustment.to_string() }
+                if business_adjustment > 0 {
+                    format!("+{}", business_adjustment)
+                } else {
+                    business_adjustment.to_string()
+                }
             ));
         }
 
@@ -6259,10 +6264,16 @@ impl FilterEngine {
         // Check for Unicode obfuscation in mailing list context
         let has_unicode_obfuscation = self.has_unicode_obfuscation_in_headers(context);
 
-        let is_legitimate =
-            has_mailing_list_infrastructure && !has_spam_content && !has_unicode_obfuscation && !self.has_suspicious_unsubscribe_links(context);
+        let is_legitimate = has_mailing_list_infrastructure
+            && !has_spam_content
+            && !has_unicode_obfuscation
+            && !self.has_suspicious_unsubscribe_links(context);
 
-        if has_mailing_list_infrastructure && (has_spam_content || has_unicode_obfuscation || self.has_suspicious_unsubscribe_links(context)) {
+        if has_mailing_list_infrastructure
+            && (has_spam_content
+                || has_unicode_obfuscation
+                || self.has_suspicious_unsubscribe_links(context))
+        {
             log::debug!(
                 "Mailing list infrastructure detected but contains spam content, Unicode obfuscation, or suspicious unsubscribe links - not applying override"
             );
@@ -6541,21 +6552,27 @@ impl FilterEngine {
     fn get_domain_content_mismatch_score(&self, context: &MailContext) -> i32 {
         // Extract domain category
         let domain_category = self.classify_domain_semantics(context);
-        
-        // Extract content category  
+
+        // Extract content category
         let content_category = self.classify_content_semantics(context);
-        
+
         // Check for mismatch
         if let (Some(domain_cat), Some(content_cat)) = (domain_category, content_category) {
-            if domain_cat != content_cat && self.is_high_confidence_mismatch(&domain_cat, &content_cat) {
-                log::debug!("Domain-content mismatch: {} domain sending {} content", domain_cat, content_cat);
+            if domain_cat != content_cat
+                && self.is_high_confidence_mismatch(&domain_cat, &content_cat)
+            {
+                log::debug!(
+                    "Domain-content mismatch: {} domain sending {} content",
+                    domain_cat,
+                    content_cat
+                );
                 return 100; // Strong mismatch indicator
             }
         }
-        
+
         0
     }
-    
+
     /// Classify domain based on semantic analysis of domain name
     fn classify_domain_semantics(&self, context: &MailContext) -> Option<String> {
         if let Some(from_header) = &context.from_header {
@@ -6565,43 +6582,56 @@ impl FilterEngine {
                 } else {
                     from_header[at_pos + 1..].trim()
                 };
-                
+
                 let domain_lower = domain.to_lowercase();
-                
+
                 // Medical/Health keywords
-                if domain_lower.contains("medical") || domain_lower.contains("health") || 
-                   domain_lower.contains("doctor") || domain_lower.contains("gastric") ||
-                   domain_lower.contains("surgery") || domain_lower.contains("clinic") {
+                if domain_lower.contains("medical")
+                    || domain_lower.contains("health")
+                    || domain_lower.contains("doctor")
+                    || domain_lower.contains("gastric")
+                    || domain_lower.contains("surgery")
+                    || domain_lower.contains("clinic")
+                {
                     return Some("medical".to_string());
                 }
-                
-                // Agriculture/Food keywords  
-                if domain_lower.contains("dairy") || domain_lower.contains("farm") ||
-                   domain_lower.contains("agriculture") || domain_lower.contains("food") {
+
+                // Agriculture/Food keywords
+                if domain_lower.contains("dairy")
+                    || domain_lower.contains("farm")
+                    || domain_lower.contains("agriculture")
+                    || domain_lower.contains("food")
+                {
                     return Some("agriculture".to_string());
                 }
-                
+
                 // Technology keywords
-                if domain_lower.contains("tech") || domain_lower.contains("software") ||
-                   domain_lower.contains("app") || domain_lower.contains("digital") {
+                if domain_lower.contains("tech")
+                    || domain_lower.contains("software")
+                    || domain_lower.contains("app")
+                    || domain_lower.contains("digital")
+                {
                     return Some("technology".to_string());
                 }
-                
+
                 // Generic business domains (suspicious when used for specific industries)
-                if domain_lower.contains("business") || domain_lower.contains("services") ||
-                   domain_lower.contains("solutions") || domain_lower.contains("group") {
+                if domain_lower.contains("business")
+                    || domain_lower.contains("services")
+                    || domain_lower.contains("solutions")
+                    || domain_lower.contains("group")
+                {
                     return Some("generic".to_string());
                 }
             }
         }
-        
+
         None
     }
-    
+
     /// Classify email content based on semantic keyword analysis
     fn classify_content_semantics(&self, context: &MailContext) -> Option<String> {
         let mut content = String::new();
-        
+
         // Combine subject and body for analysis
         if let Some(subject) = &context.subject {
             content.push_str(subject);
@@ -6616,58 +6646,110 @@ impl FilterEngine {
             };
             content.push_str(&truncated);
         }
-        
+
         let content_lower = content.to_lowercase();
-        
+
         // Financial/Debt keywords
-        let financial_keywords = ["debt", "credit", "loan", "rates", "payment", "financial", 
-                                 "money", "aarp", "membership", "insurance", "relief"];
-        let financial_count = financial_keywords.iter()
+        let financial_keywords = [
+            "debt",
+            "credit",
+            "loan",
+            "rates",
+            "payment",
+            "financial",
+            "money",
+            "aarp",
+            "membership",
+            "insurance",
+            "relief",
+        ];
+        let financial_count = financial_keywords
+            .iter()
             .filter(|&keyword| content_lower.contains(keyword))
             .count();
-            
+
         // Retail/Commerce keywords
-        let retail_keywords = ["order", "shipping", "product", "sale", "buy", "purchase",
-                              "confirmation", "delivery", "item", "price"];
-        let retail_count = retail_keywords.iter()
+        let retail_keywords = [
+            "order",
+            "shipping",
+            "product",
+            "sale",
+            "buy",
+            "purchase",
+            "confirmation",
+            "delivery",
+            "item",
+            "price",
+        ];
+        let retail_count = retail_keywords
+            .iter()
             .filter(|&keyword| content_lower.contains(keyword))
             .count();
-            
+
         // Technology keywords
-        let tech_keywords = ["software", "app", "device", "upgrade", "download", "install",
-                            "system", "computer", "tech", "digital"];
-        let tech_count = tech_keywords.iter()
+        let tech_keywords = [
+            "software", "app", "device", "upgrade", "download", "install", "system", "computer",
+            "tech", "digital",
+        ];
+        let tech_count = tech_keywords
+            .iter()
             .filter(|&keyword| content_lower.contains(keyword))
             .count();
-            
+
         // Health/Medical keywords
-        let health_keywords = ["health", "medical", "doctor", "treatment", "medicine", "care",
-                              "wellness", "therapy", "clinic", "hospital"];
-        let health_count = health_keywords.iter()
+        let health_keywords = [
+            "health",
+            "medical",
+            "doctor",
+            "treatment",
+            "medicine",
+            "care",
+            "wellness",
+            "therapy",
+            "clinic",
+            "hospital",
+        ];
+        let health_count = health_keywords
+            .iter()
             .filter(|&keyword| content_lower.contains(keyword))
             .count();
-        
+
         // Return category with highest confidence (minimum 1 keyword for high-confidence terms)
         let counts = [financial_count, retail_count, tech_count, health_count];
         let max_count = *counts.iter().max().unwrap();
-        
+
         // Lower threshold for financial terms (credit card, debt, etc.)
-        let min_threshold = if financial_count > 0 && content_lower.contains("credit") { 1 } else { 2 };
-        
+        let min_threshold = if financial_count > 0 && content_lower.contains("credit") {
+            1
+        } else {
+            2
+        };
+
         if max_count >= min_threshold {
-            if financial_count == max_count { return Some("financial".to_string()); }
-            if retail_count == max_count { return Some("retail".to_string()); }
-            if tech_count == max_count { return Some("technology".to_string()); }
-            if health_count == max_count { return Some("medical".to_string()); }
+            if financial_count == max_count {
+                return Some("financial".to_string());
+            }
+            if retail_count == max_count {
+                return Some("retail".to_string());
+            }
+            if tech_count == max_count {
+                return Some("technology".to_string());
+            }
+            if health_count == max_count {
+                return Some("medical".to_string());
+            }
         }
-        
+
         None
     }
-    
+
     /// Detect brand impersonation (major brands on unrelated domains)
     fn get_brand_impersonation_score(&self, context: &MailContext) -> i32 {
-        let domain = self.extract_sender_domain(context).unwrap_or_default().to_lowercase();
-        
+        let domain = self
+            .extract_sender_domain(context)
+            .unwrap_or_default()
+            .to_lowercase();
+
         // Major brand patterns with legitimate domains
         let brands = [
             ("state farm", "statefarm.com"),
@@ -6676,111 +6758,148 @@ impl FilterEngine {
             ("paypal", "paypal.com"),
             ("microsoft", "microsoft.com"),
         ];
-        
+
         // Check FROM header for brand claims (not just content mentions)
         if let Some(from_header) = &context.from_header {
             let from_lower = from_header.to_lowercase();
-            
+
             for (brand, legitimate_domain) in brands {
                 if from_lower.contains(brand) {
                     // Check if sender domain is legitimate for this brand
-                    if !self.is_subdomain_of(&domain, legitimate_domain) && 
-                       domain != legitimate_domain &&
-                       !self.is_known_legitimate_partner(&domain, brand) {
-                        log::debug!("Brand impersonation detected: {} claimed by {}", brand, domain);
+                    if !self.is_subdomain_of(&domain, legitimate_domain)
+                        && domain != legitimate_domain
+                        && !self.is_known_legitimate_partner(&domain, brand)
+                    {
+                        log::debug!(
+                            "Brand impersonation detected: {} claimed by {}",
+                            brand,
+                            domain
+                        );
                         return 75;
                     }
                 }
             }
         }
-        
+
         // Check subject for brand claims only if sender domain is suspicious
         if let Some(subject) = &context.subject {
             let subject_lower = subject.to_lowercase();
-            
+
             for (brand, legitimate_domain) in brands {
-                if subject_lower.contains(brand) && self.is_suspicious_domain_for_brand(&domain, brand) {
-                    if !self.is_subdomain_of(&domain, legitimate_domain) && 
-                       domain != legitimate_domain &&
-                       !self.is_known_legitimate_partner(&domain, brand) &&
-                       !self.is_discussion_platform(&domain) {
-                        log::debug!("Brand impersonation detected: {} claimed by {}", brand, domain);
-                        return 75;
-                    }
+                if subject_lower.contains(brand)
+                    && self.is_suspicious_domain_for_brand(&domain, brand)
+                    && !self.is_subdomain_of(&domain, legitimate_domain)
+                    && domain != legitimate_domain
+                    && !self.is_known_legitimate_partner(&domain, brand)
+                    && !self.is_discussion_platform(&domain)
+                {
+                    log::debug!(
+                        "Brand impersonation detected: {} claimed by {}",
+                        brand,
+                        domain
+                    );
+                    return 75;
                 }
             }
         }
-        
+
         0
     }
-    
+
     /// Apply business context adjustments to reduce false positives
     fn get_business_context_adjustment(&self, context: &MailContext) -> i32 {
-        let domain = self.extract_sender_domain(context).unwrap_or_default().to_lowercase();
+        let domain = self
+            .extract_sender_domain(context)
+            .unwrap_or_default()
+            .to_lowercase();
         let mut adjustment = 0;
-        
+
         // Check if this is a legitimate business domain
         if self.is_established_business_domain(&domain) {
             adjustment -= 50; // Significant reduction for established businesses
         }
-        
+
         // Check for legitimate retail promotional language
-        if self.has_legitimate_promotional_content(context) && self.is_legitimate_retailer(&domain) {
+        if self.has_legitimate_promotional_content(context) && self.is_legitimate_retailer(&domain)
+        {
             adjustment -= 100; // Cancel out "unrealistic returns" false positives
         }
-        
+
         // Check for legitimate email service providers
         if self.is_legitimate_email_service_provider(&domain) {
             adjustment -= 75; // Reduce encoding evasion penalties
         }
-        
+
         // Check for established financial services (stronger adjustment)
         if self.is_established_financial_service(&domain) {
             adjustment -= 200; // Strong reduction for legitimate financial services
         }
-        
+
         adjustment
     }
-    
+
     /// Check if domain is an established business
     fn is_established_business_domain(&self, domain: &str) -> bool {
         let established_patterns = [
-            "williams-sonoma.com", "creditkarma.com", "joinhoney.com", "reolink",
-            "silhouettedesignstore.co", "esprovisions.com", "adapthealth",
-            "duluth", "toast-restaurants.com", "quora.com", "uncommongoods.com",
-            "narvar.com", "capitalone.com",
+            "williams-sonoma.com",
+            "creditkarma.com",
+            "joinhoney.com",
+            "reolink",
+            "silhouettedesignstore.co",
+            "esprovisions.com",
+            "adapthealth",
+            "duluth",
+            "toast-restaurants.com",
+            "quora.com",
+            "uncommongoods.com",
+            "narvar.com",
+            "capitalone.com",
         ];
-        
+
         for pattern in established_patterns {
-            if self.is_subdomain_of(domain, pattern) || domain == pattern || domain.contains(pattern) {
+            if self.is_subdomain_of(domain, pattern)
+                || domain == pattern
+                || domain.contains(pattern)
+            {
                 return true;
             }
         }
-        
+
         false
     }
-    
+
     /// Check if domain is a legitimate retailer
     fn is_legitimate_retailer(&self, domain: &str) -> bool {
         let retailer_patterns = [
-            "williams-sonoma.com", "esprovisions.com", "reolink", "silhouettedesignstore.co",
-            "adapthealth", "duluth", "toast-restaurants.com", "uncommongoods.com",
+            "williams-sonoma.com",
+            "esprovisions.com",
+            "reolink",
+            "silhouettedesignstore.co",
+            "adapthealth",
+            "duluth",
+            "toast-restaurants.com",
+            "uncommongoods.com",
         ];
-        
+
         for pattern in retailer_patterns {
-            if self.is_subdomain_of(domain, pattern) || domain == pattern || domain.contains(pattern) {
+            if self.is_subdomain_of(domain, pattern)
+                || domain == pattern
+                || domain.contains(pattern)
+            {
                 return true;
             }
         }
-        
+
         false
     }
-    
+
     /// Check for legitimate promotional content
     fn has_legitimate_promotional_content(&self, context: &MailContext) -> bool {
         let mut content = String::new();
-        if let Some(subject) = &context.subject { content.push_str(subject); }
-        if let Some(body) = &context.body { 
+        if let Some(subject) = &context.subject {
+            content.push_str(subject);
+        }
+        if let Some(body) = &context.body {
             let truncated = if body.len() > 1000 {
                 body.chars().take(1000).collect::<String>()
             } else {
@@ -6788,52 +6907,74 @@ impl FilterEngine {
             };
             content.push_str(&truncated);
         }
-        
+
         let content_lower = content.to_lowercase();
-        
+
         // Legitimate retail promotional patterns
         let retail_patterns = [
-            "save up to", "% off", "holiday sale", "gift", "deal", "offer",
-            "promotion", "discount", "free shipping", "limited time",
+            "save up to",
+            "% off",
+            "holiday sale",
+            "gift",
+            "deal",
+            "offer",
+            "promotion",
+            "discount",
+            "free shipping",
+            "limited time",
         ];
-        
+
         for pattern in retail_patterns {
             if content_lower.contains(pattern) {
                 return true;
             }
         }
-        
+
         false
     }
-    
+
     /// Check if domain is a legitimate email service provider
     fn is_legitimate_email_service_provider(&self, domain: &str) -> bool {
         let esp_patterns = [
-            "klaviyodns.com", "constantcontact.com", "sendgrid.net", "mailchimp.com",
-            "campaignmonitor.com", "aweber.com", "narvar.com",
+            "klaviyodns.com",
+            "constantcontact.com",
+            "sendgrid.net",
+            "mailchimp.com",
+            "campaignmonitor.com",
+            "aweber.com",
+            "narvar.com",
         ];
-        
+
         for pattern in esp_patterns {
-            if self.is_subdomain_of(domain, pattern) || domain == pattern || domain.contains(pattern) {
+            if self.is_subdomain_of(domain, pattern)
+                || domain == pattern
+                || domain.contains(pattern)
+            {
                 return true;
             }
         }
-        
+
         false
     }
-    
+
     /// Check if domain is an established financial service
     fn is_established_financial_service(&self, domain: &str) -> bool {
         let financial_patterns = [
-            "creditkarma.com", "joinhoney.com", "paypal.com", "capitalone.com",
+            "creditkarma.com",
+            "joinhoney.com",
+            "paypal.com",
+            "capitalone.com",
         ];
-        
+
         for pattern in financial_patterns {
-            if self.is_subdomain_of(domain, pattern) || domain == pattern || domain.contains(pattern) {
+            if self.is_subdomain_of(domain, pattern)
+                || domain == pattern
+                || domain.contains(pattern)
+            {
                 return true;
             }
         }
-        
+
         false
     }
 
@@ -6843,92 +6984,117 @@ impl FilterEngine {
             "paypal" => {
                 // Honey is owned by PayPal
                 domain.contains("joinhoney.com") || self.is_subdomain_of(domain, "joinhoney.com")
-            },
+            }
             "amazon" => {
                 // Corporate travel and business services
                 domain.contains("bcdtravel.com") || self.is_subdomain_of(domain, "bcdtravel.com")
-            },
+            }
             _ => false,
         }
     }
-    
+
     /// Check if domain is a discussion/content platform that can mention brands
     fn is_discussion_platform(&self, domain: &str) -> bool {
         let discussion_patterns = [
             "sendgrid.net",
-            "quora.com", 
+            "quora.com",
             "reddit.com",
             "nextdoor.com",
             "medium.com",
         ];
-        
+
         for pattern in discussion_patterns {
             if self.is_subdomain_of(domain, pattern) || domain == pattern {
                 return true;
             }
         }
-        
+
         false
     }
-    
+
     /// Check if domain is suspicious enough to warrant brand mention scrutiny
     fn is_suspicious_domain_for_brand(&self, domain: &str, _brand: &str) -> bool {
         // Only scrutinize brand mentions from obviously unrelated domains
         // Skip legitimate business domains, discussion platforms, etc.
-        
+
         if self.is_discussion_platform(domain) {
             return false;
         }
-        
+
         // Skip domains that look like legitimate businesses
         let legitimate_patterns = [
-            ".gov", ".edu", ".org",
-            "support.com", "mail.", "email.", "newsletter.",
+            ".gov",
+            ".edu",
+            ".org",
+            "support.com",
+            "mail.",
+            "email.",
+            "newsletter.",
         ];
-        
+
         for pattern in legitimate_patterns {
             if domain.contains(pattern) {
                 return false;
             }
         }
-        
+
         // Only flag obviously suspicious domains
         true
     }
-    
+
     /// Detect personal domains making business claims
     fn get_personal_domain_score(&self, context: &MailContext) -> i32 {
-        let domain = self.extract_sender_domain(context).unwrap_or_default().to_lowercase();
-        
+        let domain = self
+            .extract_sender_domain(context)
+            .unwrap_or_default()
+            .to_lowercase();
+
         // Check if domain looks like firstname+lastname pattern
         let domain_parts: Vec<&str> = domain.split('.').collect();
         if let Some(main_part) = domain_parts.first() {
             // Simple heuristic: 6-15 chars, no obvious business keywords
-            if main_part.len() >= 6 && main_part.len() <= 15 && 
-               !main_part.contains("business") && !main_part.contains("corp") &&
-               !main_part.contains("inc") && !main_part.contains("llc") {
-                
+            if main_part.len() >= 6
+                && main_part.len() <= 15
+                && !main_part.contains("business")
+                && !main_part.contains("corp")
+                && !main_part.contains("inc")
+                && !main_part.contains("llc")
+            {
                 // Check if making business claims
                 let mut content = String::new();
-                if let Some(subject) = &context.subject { content.push_str(subject); }
-                if let Some(from_header) = &context.from_header { content.push_str(from_header); }
-                
+                if let Some(subject) = &context.subject {
+                    content.push_str(subject);
+                }
+                if let Some(from_header) = &context.from_header {
+                    content.push_str(from_header);
+                }
+
                 let content_lower = content.to_lowercase();
-                let business_terms = ["customer service", "support team", "emergency kit", 
-                                    "official", "department", "resolution team"];
-                
+                let business_terms = [
+                    "customer service",
+                    "support team",
+                    "emergency kit",
+                    "official",
+                    "department",
+                    "resolution team",
+                ];
+
                 for term in business_terms {
                     if content_lower.contains(term) {
-                        log::debug!("Personal domain business claim: {} claiming {}", domain, term);
+                        log::debug!(
+                            "Personal domain business claim: {} claiming {}",
+                            domain,
+                            term
+                        );
                         return 25;
                     }
                 }
             }
         }
-        
+
         0
     }
-    
+
     /// Extract sender domain from context
     fn extract_sender_domain(&self, context: &MailContext) -> Option<String> {
         if let Some(from_header) = &context.from_header {
@@ -6945,17 +7111,17 @@ impl FilterEngine {
             None
         }
     }
-    
+
     /// Determine if domain-content mismatch is high confidence
     fn is_high_confidence_mismatch(&self, domain_category: &str, content_category: &str) -> bool {
         match (domain_category, content_category) {
             // High confidence mismatches
-            ("agriculture", "financial") => true,  // Dairy domain sending debt relief
+            ("agriculture", "financial") => true, // Dairy domain sending debt relief
             ("agriculture", "technology") => true, // Farm domain sending tech offers
-            ("agriculture", "retail") => true,     // Farm domain sending products  
-            ("medical", "financial") => true,      // Medical domain sending AARP offers
-            ("medical", "retail") => true,         // Medical domain sending Christmas lights
-            ("medical", "technology") => true,     // Medical domain sending tech offers
+            ("agriculture", "retail") => true,    // Farm domain sending products
+            ("medical", "financial") => true,     // Medical domain sending AARP offers
+            ("medical", "retail") => true,        // Medical domain sending Christmas lights
+            ("medical", "technology") => true,    // Medical domain sending tech offers
             ("generic", "financial") => true,     // Generic domain claiming financial services
             ("generic", "medical") => true,       // Generic domain claiming medical services
             _ => false,
@@ -6965,9 +7131,13 @@ impl FilterEngine {
     /// Detects suspicious unsubscribe links that indicate fake mailing lists
     fn has_suspicious_unsubscribe_links(&self, context: &MailContext) -> bool {
         // Check List-Unsubscribe header (case-insensitive)
-        log::debug!("Looking for List-Unsubscribe header in {} headers", context.headers.len());
-        let list_unsubscribe = self.get_header_case_insensitive(&context.headers, "List-Unsubscribe");
-        
+        log::debug!(
+            "Looking for List-Unsubscribe header in {} headers",
+            context.headers.len()
+        );
+        let list_unsubscribe =
+            self.get_header_case_insensitive(&context.headers, "List-Unsubscribe");
+
         if let Some(list_unsubscribe) = list_unsubscribe {
             log::debug!("Analyzing unsubscribe header: {}", list_unsubscribe);
             // Extract sender domain for comparison
@@ -6990,7 +7160,10 @@ impl FilterEngine {
                 if let Some(mailto_end) = list_unsubscribe[mailto_start..].find('@') {
                     let username = &list_unsubscribe[mailto_start + 7..mailto_start + mailto_end];
                     if username.len() > 30 && username.chars().all(|c| c.is_ascii_alphanumeric()) {
-                        log::debug!("Suspicious unsubscribe: long random mailto username ({})", username.len());
+                        log::debug!(
+                            "Suspicious unsubscribe: long random mailto username ({})",
+                            username.len()
+                        );
                         return true;
                     }
                 }
@@ -7002,7 +7175,10 @@ impl FilterEngine {
                     let url = &list_unsubscribe[http_start..http_start + url_end];
                     let path_segments = url.matches('/').count();
                     if path_segments > 6 {
-                        log::debug!("Suspicious unsubscribe: excessive path segments ({})", path_segments);
+                        log::debug!(
+                            "Suspicious unsubscribe: excessive path segments ({})",
+                            path_segments
+                        );
                         return true;
                     }
 
@@ -7010,10 +7186,17 @@ impl FilterEngine {
                     if let Some(sender_domain) = &sender_domain {
                         if let Some(domain_start) = url.find("://") {
                             if let Some(domain_end) = url[domain_start + 3..].find('/') {
-                                let unsubscribe_domain = &url[domain_start + 3..domain_start + 3 + domain_end];
+                                let unsubscribe_domain =
+                                    &url[domain_start + 3..domain_start + 3 + domain_end];
                                 // Allow subdomains but flag completely different domains
-                                if !unsubscribe_domain.ends_with(sender_domain) && !sender_domain.ends_with(unsubscribe_domain) {
-                                    log::debug!("Suspicious unsubscribe: domain mismatch ({} vs {})", unsubscribe_domain, sender_domain);
+                                if !unsubscribe_domain.ends_with(sender_domain)
+                                    && !sender_domain.ends_with(unsubscribe_domain)
+                                {
+                                    log::debug!(
+                                        "Suspicious unsubscribe: domain mismatch ({} vs {})",
+                                        unsubscribe_domain,
+                                        sender_domain
+                                    );
                                     return true;
                                 }
                             }
@@ -7023,7 +7206,10 @@ impl FilterEngine {
             }
 
             // Check for image files in unsubscribe URLs (tracking pixels, not real unsubscribe)
-            if list_unsubscribe.contains(".jpg") || list_unsubscribe.contains(".png") || list_unsubscribe.contains(".gif") {
+            if list_unsubscribe.contains(".jpg")
+                || list_unsubscribe.contains(".png")
+                || list_unsubscribe.contains(".gif")
+            {
                 log::debug!("Suspicious unsubscribe: contains image file extensions");
                 return true;
             }
