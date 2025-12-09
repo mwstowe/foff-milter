@@ -22,9 +22,11 @@ rules:
             type: "Or"
             criteria:
               - type: "SenderDomain"
-                domains: ["williams-sonoma.com", "tokyo-tiger.com", "uncommongoods.com", "backerkit.com", "kickstarter.com", "bedjet.com", "humblebundle.com"]
+                domains: ["williams-sonoma.com", "tokyo-tiger.com", "uncommongoods.com", "backerkit.com", "kickstarter.com", "bedjet.com", "humblebundle.com", "wolfermans.com", "wolfermans-email.com", "eff.org", "gog.com", "email3.gog.com"]
               - type: "SenderPattern"
-                pattern: ".*@(bedjet\\.com|tokyo-tiger\\.com|humblebundle\\.com).*"
+                pattern: ".*@(bedjet\\.com|tokyo-tiger\\.com|humblebundle\\.com|wolfermans.*\\.com|eff\\.org|.*gog\\.com).*"
+              - type: "BodyPattern"
+                pattern: "(?i).*(national.*pastry.*day|celebrate.*national.*day|established.*bakery|gourmet.*bakery|artisan.*baked)"
     score: 65
     description: "Black Friday and fake promotional scams (excludes legitimate retailers)"
 

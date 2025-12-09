@@ -269,10 +269,39 @@ impl FilterEngine {
         raw_email
     }
 
-    /// Get evasion score from normalized content
+    /// Get evasion score from normalized content with legitimate sender exclusions
     pub fn get_evasion_score(&self, context: &MailContext) -> i32 {
         if let Some(normalized) = &context.normalized {
-            self.calculate_evasion_score(normalized)
+            let base_score = self.calculate_evasion_score(normalized);
+            
+            if base_score > 0 {
+                let domain = self.extract_sender_domain(context).unwrap_or_default().to_lowercase();
+                
+                // Legitimate senders that use complex encoding for legitimate purposes
+                let legitimate_encoding_senders = [
+                    "gog.com", "steam.com", "epicgames.com", // Gaming platforms
+                    "kickstarter.com", "indiegogo.com", // Crowdfunding
+                    "sendgrid.net", "mailchimp.com", "constantcontact.com", // ESPs
+                    "eff.org", "aclu.org", "amnesty.org", // Non-profits
+                    "wolfermans.com", "williams-sonoma.com", // Established retailers
+                    "email3.gog.com", "wl043.sendgrid.net", // Specific ESP subdomains
+                ];
+                
+                // Check if sender is from legitimate encoding-heavy domain
+                let is_legitimate_sender = legitimate_encoding_senders.iter().any(|legit_domain| {
+                    domain.contains(legit_domain) || self.is_subdomain_of(&domain, legit_domain)
+                });
+                
+                if is_legitimate_sender {
+                    // Reduce encoding penalties for legitimate senders
+                    let reduced_score = base_score / 3; // Reduce by 67%
+                    log::debug!("Reducing encoding evasion score for legitimate sender {} from {} to {}", 
+                               domain, base_score, reduced_score);
+                    return reduced_score;
+                }
+            }
+            
+            base_score
         } else {
             0
         }
@@ -7386,6 +7415,8 @@ impl FilterEngine {
             "campaignmonitor.com",
             "aweber.com",
             "narvar.com",
+            // Political and civic organizations
+            "imcivicaction.org",
         ];
 
         for pattern in esp_patterns {
@@ -7395,6 +7426,11 @@ impl FilterEngine {
             {
                 return true;
             }
+        }
+
+        // Special handling for SendGrid bounce addresses
+        if domain.contains("sendgrid.net") {
+            return true;
         }
 
         false

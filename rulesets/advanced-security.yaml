@@ -289,8 +289,19 @@ rules:
   # Encoding and obfuscation evasion detection
   - name: "Excessive encoding layers"
     criteria:
-      type: "EncodingLayers"
-      min_layers: 5
+      type: "And"
+      criteria:
+        - type: "EncodingLayers"
+          min_layers: 5
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "SenderPattern"
+                pattern: ".*@.*(gog\\.com|steam\\.com|epicgames\\.com|kickstarter\\.com|indiegogo\\.com).*"
+              - type: "HeaderPattern"
+                header: "From"
+                pattern: "(?i).*(gog\\.com|steam|epic|kickstarter|indiegogo).*"
     score: 150
     description: "Multiple encoding layers indicate evasion attempt"
 
