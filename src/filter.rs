@@ -1647,6 +1647,26 @@ impl FilterEngine {
             ));
         }
 
+        // Check for brand impersonation
+        let brand_impersonation_score = self.get_brand_impersonation_score(&context_with_attachments);
+        if brand_impersonation_score > 0 {
+            total_score += brand_impersonation_score;
+            scoring_rules.push(format!(
+                "Brand Impersonation: Major brand claimed by unrelated domain (+{})",
+                brand_impersonation_score
+            ));
+        }
+
+        // Check for personal domain business claims
+        let personal_domain_score = self.get_personal_domain_score(&context_with_attachments);
+        if personal_domain_score > 0 {
+            total_score += personal_domain_score;
+            scoring_rules.push(format!(
+                "Personal Domain Suspicion: Personal domain making business claims (+{})",
+                personal_domain_score
+            ));
+        }
+
         // Encoding evasion analysis
         let evasion_score = self.get_evasion_score(&context_with_attachments);
         if evasion_score > 0 {
@@ -6611,11 +6631,14 @@ impl FilterEngine {
             .filter(|&keyword| content_lower.contains(keyword))
             .count();
         
-        // Return category with highest confidence (minimum 2 keywords)
+        // Return category with highest confidence (minimum 1 keyword for high-confidence terms)
         let counts = [financial_count, retail_count, tech_count, health_count];
         let max_count = *counts.iter().max().unwrap();
         
-        if max_count >= 2 {
+        // Lower threshold for financial terms (credit card, debt, etc.)
+        let min_threshold = if financial_count > 0 && content_lower.contains("credit") { 1 } else { 2 };
+        
+        if max_count >= min_threshold {
             if financial_count == max_count { return Some("financial".to_string()); }
             if retail_count == max_count { return Some("retail".to_string()); }
             if tech_count == max_count { return Some("technology".to_string()); }
@@ -6625,14 +6648,94 @@ impl FilterEngine {
         None
     }
     
+    /// Detect brand impersonation (major brands on unrelated domains)
+    fn get_brand_impersonation_score(&self, context: &MailContext) -> i32 {
+        let mut content = String::new();
+        if let Some(subject) = &context.subject { content.push_str(subject); }
+        if let Some(from_header) = &context.from_header { content.push_str(from_header); }
+        
+        let content_lower = content.to_lowercase();
+        let domain = self.extract_sender_domain(context).unwrap_or_default().to_lowercase();
+        
+        // Major brand patterns
+        let brands = [
+            ("state farm", "statefarm.com"),
+            ("aarp", "aarp.org"),
+            ("amazon", "amazon.com"),
+            ("paypal", "paypal.com"),
+            ("microsoft", "microsoft.com"),
+        ];
+        
+        for (brand, legitimate_domain) in brands {
+            if content_lower.contains(brand) && !domain.contains(legitimate_domain.split('.').next().unwrap()) {
+                log::debug!("Brand impersonation detected: {} claimed by {}", brand, domain);
+                return 75;
+            }
+        }
+        
+        0
+    }
+    
+    /// Detect personal domains making business claims
+    fn get_personal_domain_score(&self, context: &MailContext) -> i32 {
+        let domain = self.extract_sender_domain(context).unwrap_or_default().to_lowercase();
+        
+        // Check if domain looks like firstname+lastname pattern
+        let domain_parts: Vec<&str> = domain.split('.').collect();
+        if let Some(main_part) = domain_parts.first() {
+            // Simple heuristic: 6-15 chars, no obvious business keywords
+            if main_part.len() >= 6 && main_part.len() <= 15 && 
+               !main_part.contains("business") && !main_part.contains("corp") &&
+               !main_part.contains("inc") && !main_part.contains("llc") {
+                
+                // Check if making business claims
+                let mut content = String::new();
+                if let Some(subject) = &context.subject { content.push_str(subject); }
+                if let Some(from_header) = &context.from_header { content.push_str(from_header); }
+                
+                let content_lower = content.to_lowercase();
+                let business_terms = ["customer service", "support team", "emergency kit", 
+                                    "official", "department", "resolution team"];
+                
+                for term in business_terms {
+                    if content_lower.contains(term) {
+                        log::debug!("Personal domain business claim: {} claiming {}", domain, term);
+                        return 25;
+                    }
+                }
+            }
+        }
+        
+        0
+    }
+    
+    /// Extract sender domain from context
+    fn extract_sender_domain(&self, context: &MailContext) -> Option<String> {
+        if let Some(from_header) = &context.from_header {
+            if let Some(at_pos) = from_header.rfind('@') {
+                if let Some(end_pos) = from_header[at_pos..].find('>') {
+                    Some(from_header[at_pos + 1..at_pos + end_pos].to_string())
+                } else {
+                    Some(from_header[at_pos + 1..].trim().to_string())
+                }
+            } else {
+                None
+            }
+        } else {
+            None
+        }
+    }
+    
     /// Determine if domain-content mismatch is high confidence
     fn is_high_confidence_mismatch(&self, domain_category: &str, content_category: &str) -> bool {
         match (domain_category, content_category) {
             // High confidence mismatches
             ("agriculture", "financial") => true,  // Dairy domain sending debt relief
-            ("agriculture", "technology") => true, // Farm domain sending tech offers  
+            ("agriculture", "technology") => true, // Farm domain sending tech offers
+            ("agriculture", "retail") => true,     // Farm domain sending products  
             ("medical", "financial") => true,      // Medical domain sending AARP offers
-            ("medical", "retail") => true,         // Medical domain sending products
+            ("medical", "retail") => true,         // Medical domain sending Christmas lights
+            ("medical", "technology") => true,     // Medical domain sending tech offers
             ("generic", "financial") => true,     // Generic domain claiming financial services
             ("generic", "medical") => true,       // Generic domain claiming medical services
             _ => false,
