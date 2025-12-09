@@ -1667,6 +1667,16 @@ impl FilterEngine {
             ));
         }
 
+        // Apply business context adjustments to reduce false positives
+        let business_adjustment = self.get_business_context_adjustment(&context_with_attachments);
+        if business_adjustment != 0 {
+            total_score += business_adjustment;
+            scoring_rules.push(format!(
+                "Business Context Adjustment: Legitimate business patterns ({})",
+                if business_adjustment > 0 { format!("+{}", business_adjustment) } else { business_adjustment.to_string() }
+            ));
+        }
+
         // Encoding evasion analysis
         let evasion_score = self.get_evasion_score(&context_with_attachments);
         if evasion_score > 0 {
@@ -6704,6 +6714,128 @@ impl FilterEngine {
         0
     }
     
+    /// Apply business context adjustments to reduce false positives
+    fn get_business_context_adjustment(&self, context: &MailContext) -> i32 {
+        let domain = self.extract_sender_domain(context).unwrap_or_default().to_lowercase();
+        let mut adjustment = 0;
+        
+        // Check if this is a legitimate business domain
+        if self.is_established_business_domain(&domain) {
+            adjustment -= 50; // Significant reduction for established businesses
+        }
+        
+        // Check for legitimate retail promotional language
+        if self.has_legitimate_promotional_content(context) && self.is_legitimate_retailer(&domain) {
+            adjustment -= 100; // Cancel out "unrealistic returns" false positives
+        }
+        
+        // Check for legitimate email service providers
+        if self.is_legitimate_email_service_provider(&domain) {
+            adjustment -= 75; // Reduce encoding evasion penalties
+        }
+        
+        // Check for established financial services (stronger adjustment)
+        if self.is_established_financial_service(&domain) {
+            adjustment -= 200; // Strong reduction for legitimate financial services
+        }
+        
+        adjustment
+    }
+    
+    /// Check if domain is an established business
+    fn is_established_business_domain(&self, domain: &str) -> bool {
+        let established_patterns = [
+            "williams-sonoma.com", "creditkarma.com", "joinhoney.com", "reolink",
+            "silhouettedesignstore.co", "esprovisions.com", "adapthealth.com",
+            "duluth", "toast-restaurants.com", "quora.com", "uncommongoods.com",
+        ];
+        
+        for pattern in established_patterns {
+            if self.is_subdomain_of(domain, pattern) || domain == pattern || domain.contains(pattern) {
+                return true;
+            }
+        }
+        
+        false
+    }
+    
+    /// Check if domain is a legitimate retailer
+    fn is_legitimate_retailer(&self, domain: &str) -> bool {
+        let retailer_patterns = [
+            "williams-sonoma.com", "esprovisions.com", "reolink", "silhouettedesignstore.co",
+            "adapthealth.com", "duluth", "toast-restaurants.com", "uncommongoods.com",
+        ];
+        
+        for pattern in retailer_patterns {
+            if self.is_subdomain_of(domain, pattern) || domain == pattern || domain.contains(pattern) {
+                return true;
+            }
+        }
+        
+        false
+    }
+    
+    /// Check for legitimate promotional content
+    fn has_legitimate_promotional_content(&self, context: &MailContext) -> bool {
+        let mut content = String::new();
+        if let Some(subject) = &context.subject { content.push_str(subject); }
+        if let Some(body) = &context.body { 
+            let truncated = if body.len() > 1000 {
+                body.chars().take(1000).collect::<String>()
+            } else {
+                body.clone()
+            };
+            content.push_str(&truncated);
+        }
+        
+        let content_lower = content.to_lowercase();
+        
+        // Legitimate retail promotional patterns
+        let retail_patterns = [
+            "save up to", "% off", "holiday sale", "gift", "deal", "offer",
+            "promotion", "discount", "free shipping", "limited time",
+        ];
+        
+        for pattern in retail_patterns {
+            if content_lower.contains(pattern) {
+                return true;
+            }
+        }
+        
+        false
+    }
+    
+    /// Check if domain is a legitimate email service provider
+    fn is_legitimate_email_service_provider(&self, domain: &str) -> bool {
+        let esp_patterns = [
+            "klaviyodns.com", "constantcontact.com", "sendgrid.net", "mailchimp.com",
+            "campaignmonitor.com", "aweber.com",
+        ];
+        
+        for pattern in esp_patterns {
+            if self.is_subdomain_of(domain, pattern) || domain == pattern || domain.contains(pattern) {
+                return true;
+            }
+        }
+        
+        false
+    }
+    
+    /// Check if domain is an established financial service
+    fn is_established_financial_service(&self, domain: &str) -> bool {
+        let financial_patterns = [
+            "creditkarma.com", "joinhoney.com", "paypal.com",
+        ];
+        
+        for pattern in financial_patterns {
+            if self.is_subdomain_of(domain, pattern) || domain == pattern || domain.contains(pattern) {
+                return true;
+            }
+        }
+        
+        false
+    }
+
     /// Check if domain is a known legitimate partner for a brand
     fn is_known_legitimate_partner(&self, domain: &str, brand: &str) -> bool {
         match brand {
