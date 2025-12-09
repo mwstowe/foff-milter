@@ -6746,8 +6746,9 @@ impl FilterEngine {
     fn is_established_business_domain(&self, domain: &str) -> bool {
         let established_patterns = [
             "williams-sonoma.com", "creditkarma.com", "joinhoney.com", "reolink",
-            "silhouettedesignstore.co", "esprovisions.com", "adapthealth.com",
+            "silhouettedesignstore.co", "esprovisions.com", "adapthealth",
             "duluth", "toast-restaurants.com", "quora.com", "uncommongoods.com",
+            "narvar.com", "capitalone.com",
         ];
         
         for pattern in established_patterns {
@@ -6763,7 +6764,7 @@ impl FilterEngine {
     fn is_legitimate_retailer(&self, domain: &str) -> bool {
         let retailer_patterns = [
             "williams-sonoma.com", "esprovisions.com", "reolink", "silhouettedesignstore.co",
-            "adapthealth.com", "duluth", "toast-restaurants.com", "uncommongoods.com",
+            "adapthealth", "duluth", "toast-restaurants.com", "uncommongoods.com",
         ];
         
         for pattern in retailer_patterns {
@@ -6809,7 +6810,7 @@ impl FilterEngine {
     fn is_legitimate_email_service_provider(&self, domain: &str) -> bool {
         let esp_patterns = [
             "klaviyodns.com", "constantcontact.com", "sendgrid.net", "mailchimp.com",
-            "campaignmonitor.com", "aweber.com",
+            "campaignmonitor.com", "aweber.com", "narvar.com",
         ];
         
         for pattern in esp_patterns {
@@ -6824,7 +6825,7 @@ impl FilterEngine {
     /// Check if domain is an established financial service
     fn is_established_financial_service(&self, domain: &str) -> bool {
         let financial_patterns = [
-            "creditkarma.com", "joinhoney.com", "paypal.com",
+            "creditkarma.com", "joinhoney.com", "paypal.com", "capitalone.com",
         ];
         
         for pattern in financial_patterns {
