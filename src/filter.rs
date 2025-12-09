@@ -6808,16 +6808,16 @@ impl FilterEngine {
 
     /// Apply business context adjustments to reduce false positives
     fn get_business_context_adjustment(&self, context: &MailContext) -> i32 {
-        let domain = self
-            .extract_sender_domain(context)
-            .unwrap_or_default();
-        
+        let domain = self.extract_sender_domain(context).unwrap_or_default();
+
         // Check for infrastructure validation issues first
         if self.has_infrastructure_validation_issues(context) {
-            log::debug!("Infrastructure validation issues detected - blocking business context adjustments");
+            log::debug!(
+                "Infrastructure validation issues detected - blocking business context adjustments"
+            );
             return 0; // Don't apply any business adjustments if infrastructure is suspicious
         }
-        
+
         // Don't convert to lowercase here - let individual functions handle case sensitivity
         let mut adjustment = 0;
 
@@ -6854,32 +6854,47 @@ impl FilterEngine {
 
         adjustment
     }
-    
+
     /// Check if there are infrastructure validation issues that should block business adjustments
     fn has_infrastructure_validation_issues(&self, context: &MailContext) -> bool {
         // Use the feature engine to run analysis and check for sender alignment issues
         let feature_analysis = self.feature_engine.analyze(context);
-        
+
         // Look for sender alignment issues in the feature scores
         for feature_score in &feature_analysis.scores {
             if feature_score.feature_name == "Sender Alignment" && feature_score.score > 0 {
-                log::debug!("Sender alignment issues detected (score: {}), blocking business adjustments", feature_score.score);
+                log::debug!(
+                    "Sender alignment issues detected (score: {}), blocking business adjustments",
+                    feature_score.score
+                );
                 return true;
             }
         }
-        
+
         false
     }
 
     /// Check if domain is a major e-commerce platform
     fn is_major_ecommerce_platform(&self, domain: &str) -> bool {
         let ecommerce_patterns = [
-            "amazon.com", "aliexpress.com", "temu.com", "temuemail.com",
-            "ebay.com", "walmart.com", "target.com", "bestbuy.com",
-            "shopify.com", "etsy.com", "mercari.com", "poshmark.com",
-            "alibaba.com", "wish.com", "overstock.com", "wayfair.com",
+            "amazon.com",
+            "aliexpress.com",
+            "temu.com",
+            "temuemail.com",
+            "ebay.com",
+            "walmart.com",
+            "target.com",
+            "bestbuy.com",
+            "shopify.com",
+            "etsy.com",
+            "mercari.com",
+            "poshmark.com",
+            "alibaba.com",
+            "wish.com",
+            "overstock.com",
+            "wayfair.com",
         ];
-        
+
         // Use exact matching or subdomain matching, but be case-sensitive for security
         let domain_lower = domain.to_lowercase();
         for pattern in ecommerce_patterns {
@@ -6887,15 +6902,17 @@ impl FilterEngine {
                 return true;
             }
         }
-        
+
         false
     }
-    
+
     /// Check for legitimate business activities
     fn is_legitimate_business_activity(&self, context: &MailContext, domain: &str) -> bool {
         let mut content = String::new();
-        if let Some(subject) = &context.subject { content.push_str(subject); }
-        if let Some(body) = &context.body { 
+        if let Some(subject) = &context.subject {
+            content.push_str(subject);
+        }
+        if let Some(body) = &context.body {
             let truncated = if body.len() > 1000 {
                 body.chars().take(1000).collect::<String>()
             } else {
@@ -6903,47 +6920,73 @@ impl FilterEngine {
             };
             content.push_str(&truncated);
         }
-        
+
         let content_lower = content.to_lowercase();
-        
+
         // Delivery notifications from e-commerce platforms
         if self.is_major_ecommerce_platform(domain) {
-            let delivery_terms = ["delivery update", "package", "shipment", "tracking", "shipped", "delivered"];
+            let delivery_terms = [
+                "delivery update",
+                "package",
+                "shipment",
+                "tracking",
+                "shipped",
+                "delivered",
+            ];
             for term in delivery_terms {
                 if content_lower.contains(term) {
                     return true;
                 }
             }
-            
+
             // Payment notifications from legitimate platforms
-            let payment_terms = ["payment", "refund", "return", "order", "purchase", "transaction"];
+            let payment_terms = [
+                "payment",
+                "refund",
+                "return",
+                "order",
+                "purchase",
+                "transaction",
+            ];
             for term in payment_terms {
                 if content_lower.contains(term) {
                     return true;
                 }
             }
         }
-        
+
         // Seasonal sales from legitimate retailers
         if self.is_legitimate_retailer(domain) {
-            let seasonal_terms = ["black friday", "cyber monday", "holiday sale", "seasonal sale", "christmas", "holiday promotion"];
+            let seasonal_terms = [
+                "black friday",
+                "cyber monday",
+                "holiday sale",
+                "seasonal sale",
+                "christmas",
+                "holiday promotion",
+            ];
             for term in seasonal_terms {
                 if content_lower.contains(term) {
                     return true;
                 }
             }
         }
-        
+
         // Technology/security product promotions from legitimate companies
         if domain.contains("reolink") || domain.contains("security") {
-            let tech_terms = ["security camera", "surveillance", "home security", "camera system"];
+            let tech_terms = [
+                "security camera",
+                "surveillance",
+                "home security",
+                "camera system",
+            ];
             for term in tech_terms {
                 if content_lower.contains(term) {
                     return true;
                 }
             }
         }
-        
+
         false
     }
 
@@ -6985,7 +7028,7 @@ impl FilterEngine {
                 return true;
             }
         }
-        
+
         false
     }
 
@@ -7022,7 +7065,7 @@ impl FilterEngine {
                 return true;
             }
         }
-        
+
         false
     }
 
