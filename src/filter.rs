@@ -6598,7 +6598,13 @@ impl FilterEngine {
             content.push(' ');
         }
         if let Some(body) = &context.body {
-            content.push_str(&body[..std::cmp::min(500, body.len())]); // First 500 chars
+            // Safely truncate at character boundary, not byte boundary
+            let truncated = if body.len() > 500 {
+                body.chars().take(500).collect::<String>()
+            } else {
+                body.clone()
+            };
+            content.push_str(&truncated);
         }
         
         let content_lower = content.to_lowercase();
@@ -6650,14 +6656,9 @@ impl FilterEngine {
     
     /// Detect brand impersonation (major brands on unrelated domains)
     fn get_brand_impersonation_score(&self, context: &MailContext) -> i32 {
-        let mut content = String::new();
-        if let Some(subject) = &context.subject { content.push_str(subject); }
-        if let Some(from_header) = &context.from_header { content.push_str(from_header); }
-        
-        let content_lower = content.to_lowercase();
         let domain = self.extract_sender_domain(context).unwrap_or_default().to_lowercase();
         
-        // Major brand patterns
+        // Major brand patterns with legitimate domains
         let brands = [
             ("state farm", "statefarm.com"),
             ("aarp", "aarp.org"),
@@ -6666,14 +6667,100 @@ impl FilterEngine {
             ("microsoft", "microsoft.com"),
         ];
         
-        for (brand, legitimate_domain) in brands {
-            if content_lower.contains(brand) && !domain.contains(legitimate_domain.split('.').next().unwrap()) {
-                log::debug!("Brand impersonation detected: {} claimed by {}", brand, domain);
-                return 75;
+        // Check FROM header for brand claims (not just content mentions)
+        if let Some(from_header) = &context.from_header {
+            let from_lower = from_header.to_lowercase();
+            
+            for (brand, legitimate_domain) in brands {
+                if from_lower.contains(brand) {
+                    // Check if sender domain is legitimate for this brand
+                    if !self.is_subdomain_of(&domain, legitimate_domain) && 
+                       domain != legitimate_domain &&
+                       !self.is_known_legitimate_partner(&domain, brand) {
+                        log::debug!("Brand impersonation detected: {} claimed by {}", brand, domain);
+                        return 75;
+                    }
+                }
+            }
+        }
+        
+        // Check subject for brand claims only if sender domain is suspicious
+        if let Some(subject) = &context.subject {
+            let subject_lower = subject.to_lowercase();
+            
+            for (brand, legitimate_domain) in brands {
+                if subject_lower.contains(brand) && self.is_suspicious_domain_for_brand(&domain, brand) {
+                    if !self.is_subdomain_of(&domain, legitimate_domain) && 
+                       domain != legitimate_domain &&
+                       !self.is_known_legitimate_partner(&domain, brand) &&
+                       !self.is_discussion_platform(&domain) {
+                        log::debug!("Brand impersonation detected: {} claimed by {}", brand, domain);
+                        return 75;
+                    }
+                }
             }
         }
         
         0
+    }
+    
+    /// Check if domain is a known legitimate partner for a brand
+    fn is_known_legitimate_partner(&self, domain: &str, brand: &str) -> bool {
+        match brand {
+            "paypal" => {
+                // Honey is owned by PayPal
+                domain.contains("joinhoney.com") || self.is_subdomain_of(domain, "joinhoney.com")
+            },
+            "amazon" => {
+                // Corporate travel and business services
+                domain.contains("bcdtravel.com") || self.is_subdomain_of(domain, "bcdtravel.com")
+            },
+            _ => false,
+        }
+    }
+    
+    /// Check if domain is a discussion/content platform that can mention brands
+    fn is_discussion_platform(&self, domain: &str) -> bool {
+        let discussion_patterns = [
+            "sendgrid.net",
+            "quora.com", 
+            "reddit.com",
+            "nextdoor.com",
+            "medium.com",
+        ];
+        
+        for pattern in discussion_patterns {
+            if self.is_subdomain_of(domain, pattern) || domain == pattern {
+                return true;
+            }
+        }
+        
+        false
+    }
+    
+    /// Check if domain is suspicious enough to warrant brand mention scrutiny
+    fn is_suspicious_domain_for_brand(&self, domain: &str, _brand: &str) -> bool {
+        // Only scrutinize brand mentions from obviously unrelated domains
+        // Skip legitimate business domains, discussion platforms, etc.
+        
+        if self.is_discussion_platform(domain) {
+            return false;
+        }
+        
+        // Skip domains that look like legitimate businesses
+        let legitimate_patterns = [
+            ".gov", ".edu", ".org",
+            "support.com", "mail.", "email.", "newsletter.",
+        ];
+        
+        for pattern in legitimate_patterns {
+            if domain.contains(pattern) {
+                return false;
+            }
+        }
+        
+        // Only flag obviously suspicious domains
+        true
     }
     
     /// Detect personal domains making business claims
