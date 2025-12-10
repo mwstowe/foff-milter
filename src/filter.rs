@@ -521,7 +521,7 @@ impl FilterEngine {
             // Use the proper Unicode-normalized content
             MailContext {
                 sender: context.sender.clone(),
-                from_header: context.from_header.clone(),
+                from_header: context.from_header.as_ref().map(|h| normalize_encoding(h)), // Ensure MIME decoding
                 recipients: context.recipients.clone(),
                 headers: context.headers.clone(),
                 mailer: context.mailer.clone(),
