@@ -1827,6 +1827,46 @@ impl FilterEngine {
             feature_analysis.total_score
         );
 
+        // Skip most spam analysis for legitimate order confirmations from established businesses
+        if self.is_legitimate_order_confirmation(&context_with_attachments) {
+            log::info!("Legitimate order confirmation detected - applying minimal scoring");
+            
+            // Apply strong negative score for legitimate order confirmations
+            total_score -= 100;
+            scoring_rules.push("Order Confirmation: Legitimate business order confirmation (-100)".to_string());
+            
+            log::info!(
+                "Order confirmation scoring complete - total: {}, rules: {:?}",
+                total_score,
+                scoring_rules
+            );
+            
+            // Get thresholds from TOML config or use defaults
+            let reject_threshold = self
+                .toml_config
+                .as_ref()
+                .and_then(|c| c.heuristics.as_ref())
+                .map(|h| h.reject_threshold)
+                .unwrap_or(350);
+            let spam_threshold = self
+                .toml_config
+                .as_ref()
+                .and_then(|c| c.heuristics.as_ref())
+                .map(|h| h.spam_threshold)
+                .unwrap_or(50);
+            
+            // Determine final action based on adjusted score
+            let final_action = if total_score >= reject_threshold {
+                self.heuristic_reject.clone()
+            } else if total_score >= spam_threshold {
+                self.heuristic_spam.clone()
+            } else {
+                Action::Accept
+            };
+            
+            return (final_action, scoring_rules, headers_to_add);
+        }
+
         // Advanced invoice fraud analysis
         let invoice_analysis = self.analyze_invoice_fraud(&context_with_attachments);
         if invoice_analysis.is_fake_invoice {
@@ -7314,6 +7354,44 @@ impl FilterEngine {
         }
 
         0
+    }
+
+    /// Check if this is a legitimate order confirmation from an established business
+    fn is_legitimate_order_confirmation(&self, context: &MailContext) -> bool {
+        let domain = self.extract_sender_domain(context).unwrap_or_default().to_lowercase();
+        
+        // Must be from an established business domain
+        if !self.is_established_business_domain(&domain) {
+            return false;
+        }
+        
+        // Check for order confirmation patterns in subject and body
+        let mut content = String::new();
+        if let Some(subject) = &context.subject {
+            content.push_str(subject);
+        }
+        if let Some(body) = &context.body {
+            content.push_str(" ");
+            content.push_str(body);
+        }
+        
+        let content_lower = content.to_lowercase();
+        
+        // Order confirmation patterns
+        let order_patterns = [
+            "order confirmation", "order receipt", "purchase confirmation",
+            "your order", "order #", "confirmation #", "receipt #",
+            "order id", "order number", "purchase receipt", "transaction confirmation"
+        ];
+        
+        for pattern in &order_patterns {
+            if content_lower.contains(pattern) {
+                log::debug!("Order confirmation pattern detected: {} from established business: {}", pattern, domain);
+                return true;
+            }
+        }
+        
+        false
     }
 
     /// Check if domain is an established business
