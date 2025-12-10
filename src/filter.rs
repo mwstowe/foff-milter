@@ -273,34 +273,50 @@ impl FilterEngine {
     pub fn get_evasion_score(&self, context: &MailContext) -> i32 {
         if let Some(normalized) = &context.normalized {
             let base_score = self.calculate_evasion_score(normalized);
-            
+
             if base_score > 0 {
-                let domain = self.extract_sender_domain(context).unwrap_or_default().to_lowercase();
-                
+                let domain = self
+                    .extract_sender_domain(context)
+                    .unwrap_or_default()
+                    .to_lowercase();
+
                 // Legitimate senders that use complex encoding for legitimate purposes
                 let legitimate_encoding_senders = [
-                    "gog.com", "steam.com", "epicgames.com", // Gaming platforms
-                    "kickstarter.com", "indiegogo.com", // Crowdfunding
-                    "sendgrid.net", "mailchimp.com", "constantcontact.com", // ESPs
-                    "eff.org", "aclu.org", "amnesty.org", // Non-profits
-                    "wolfermans.com", "williams-sonoma.com", // Established retailers
-                    "email3.gog.com", "wl043.sendgrid.net", // Specific ESP subdomains
+                    "gog.com",
+                    "steam.com",
+                    "epicgames.com", // Gaming platforms
+                    "kickstarter.com",
+                    "indiegogo.com", // Crowdfunding
+                    "sendgrid.net",
+                    "mailchimp.com",
+                    "constantcontact.com", // ESPs
+                    "eff.org",
+                    "aclu.org",
+                    "amnesty.org", // Non-profits
+                    "wolfermans.com",
+                    "williams-sonoma.com", // Established retailers
+                    "email3.gog.com",
+                    "wl043.sendgrid.net", // Specific ESP subdomains
                 ];
-                
+
                 // Check if sender is from legitimate encoding-heavy domain
                 let is_legitimate_sender = legitimate_encoding_senders.iter().any(|legit_domain| {
                     domain.contains(legit_domain) || self.is_subdomain_of(&domain, legit_domain)
                 });
-                
+
                 if is_legitimate_sender {
                     // Reduce encoding penalties for legitimate senders
                     let reduced_score = base_score / 3; // Reduce by 67%
-                    log::debug!("Reducing encoding evasion score for legitimate sender {} from {} to {}", 
-                               domain, base_score, reduced_score);
+                    log::debug!(
+                        "Reducing encoding evasion score for legitimate sender {} from {} to {}",
+                        domain,
+                        base_score,
+                        reduced_score
+                    );
                     return reduced_score;
                 }
             }
-            
+
             base_score
         } else {
             0
@@ -740,7 +756,10 @@ impl FilterEngine {
         let from_header = context.from_header.as_deref().unwrap_or("");
 
         // Extract domain for business recognition
-        let domain = self.extract_sender_domain(context).unwrap_or_default().to_lowercase();
+        let domain = self
+            .extract_sender_domain(context)
+            .unwrap_or_default()
+            .to_lowercase();
 
         // Skip invoice fraud analysis for known legitimate financial institutions
         let legitimate_financial = [
@@ -769,10 +788,15 @@ impl FilterEngine {
         if self.is_established_business_domain(&domain) {
             // Check if this looks like a legitimate order confirmation
             let order_confirmation_patterns = [
-                "order confirmation", "order receipt", "purchase confirmation",
-                "your order", "order #", "confirmation #", "receipt #"
+                "order confirmation",
+                "order receipt",
+                "purchase confirmation",
+                "your order",
+                "order #",
+                "confirmation #",
+                "receipt #",
             ];
-            
+
             let content_lower = format!("{} {}", subject, body).to_lowercase();
             for pattern in &order_confirmation_patterns {
                 if content_lower.contains(pattern) {
@@ -1830,17 +1854,19 @@ impl FilterEngine {
         // Skip most spam analysis for legitimate order confirmations from established businesses
         if self.is_legitimate_order_confirmation(&context_with_attachments) {
             log::info!("Legitimate order confirmation detected - applying minimal scoring");
-            
+
             // Apply strong negative score for legitimate order confirmations
             total_score -= 100;
-            scoring_rules.push("Order Confirmation: Legitimate business order confirmation (-100)".to_string());
-            
+            scoring_rules.push(
+                "Order Confirmation: Legitimate business order confirmation (-100)".to_string(),
+            );
+
             log::info!(
                 "Order confirmation scoring complete - total: {}, rules: {:?}",
                 total_score,
                 scoring_rules
             );
-            
+
             // Get thresholds from TOML config or use defaults
             let reject_threshold = self
                 .toml_config
@@ -1854,7 +1880,7 @@ impl FilterEngine {
                 .and_then(|c| c.heuristics.as_ref())
                 .map(|h| h.spam_threshold)
                 .unwrap_or(50);
-            
+
             // Determine final action based on adjusted score
             let final_action = if total_score >= reject_threshold {
                 self.heuristic_reject.clone()
@@ -1863,7 +1889,7 @@ impl FilterEngine {
             } else {
                 Action::Accept
             };
-            
+
             return (final_action, scoring_rules, headers_to_add);
         }
 
@@ -7358,39 +7384,54 @@ impl FilterEngine {
 
     /// Check if this is a legitimate order confirmation from an established business
     fn is_legitimate_order_confirmation(&self, context: &MailContext) -> bool {
-        let domain = self.extract_sender_domain(context).unwrap_or_default().to_lowercase();
-        
+        let domain = self
+            .extract_sender_domain(context)
+            .unwrap_or_default()
+            .to_lowercase();
+
         // Must be from an established business domain
         if !self.is_established_business_domain(&domain) {
             return false;
         }
-        
+
         // Check for order confirmation patterns in subject and body
         let mut content = String::new();
         if let Some(subject) = &context.subject {
             content.push_str(subject);
         }
         if let Some(body) = &context.body {
-            content.push_str(" ");
+            content.push(' ');
             content.push_str(body);
         }
-        
+
         let content_lower = content.to_lowercase();
-        
+
         // Order confirmation patterns
         let order_patterns = [
-            "order confirmation", "order receipt", "purchase confirmation",
-            "your order", "order #", "confirmation #", "receipt #",
-            "order id", "order number", "purchase receipt", "transaction confirmation"
+            "order confirmation",
+            "order receipt",
+            "purchase confirmation",
+            "your order",
+            "order #",
+            "confirmation #",
+            "receipt #",
+            "order id",
+            "order number",
+            "purchase receipt",
+            "transaction confirmation",
         ];
-        
+
         for pattern in &order_patterns {
             if content_lower.contains(pattern) {
-                log::debug!("Order confirmation pattern detected: {} from established business: {}", pattern, domain);
+                log::debug!(
+                    "Order confirmation pattern detected: {} from established business: {}",
+                    pattern,
+                    domain
+                );
                 return true;
             }
         }
-        
+
         false
     }
 
