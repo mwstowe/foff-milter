@@ -7248,6 +7248,16 @@ impl FilterEngine {
 
     /// Detect product sales spam
     fn get_product_sales_spam_score(&self, context: &MailContext) -> i32 {
+        let domain = self
+            .extract_sender_domain(context)
+            .unwrap_or_default()
+            .to_lowercase();
+
+        // Use existing established business domain function instead of hardcoding
+        if self.is_established_business_domain(&domain) {
+            return 0;
+        }
+
         let mut content = String::new();
         if let Some(subject) = &context.subject {
             content.push_str(subject);
@@ -7257,10 +7267,6 @@ impl FilterEngine {
         }
 
         let content_lower = content.to_lowercase();
-        let domain = self
-            .extract_sender_domain(context)
-            .unwrap_or_default()
-            .to_lowercase();
 
         // Product sales from suspicious domains
         let product_patterns = [
@@ -7313,6 +7319,13 @@ impl FilterEngine {
             "walmart.com",
             "target.com",
             "bestbuy.com",
+            // Major department stores and retailers
+            "macys.com",
+            "nordstrom.com",
+            "bloomingdales.com",
+            "saks.com",
+            "aransweatermarket.com",
+            "nextdoor.com",
             // Additional legitimate domains
             "reolinksupport.com",
         ];
@@ -7426,11 +7439,6 @@ impl FilterEngine {
             {
                 return true;
             }
-        }
-
-        // Special handling for SendGrid bounce addresses
-        if domain.contains("sendgrid.net") {
-            return true;
         }
 
         false
