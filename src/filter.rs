@@ -739,6 +739,9 @@ impl FilterEngine {
         let sender = context.sender.as_deref().unwrap_or("");
         let from_header = context.from_header.as_deref().unwrap_or("");
 
+        // Extract domain for business recognition
+        let domain = self.extract_sender_domain(context).unwrap_or_default().to_lowercase();
+
         // Skip invoice fraud analysis for known legitimate financial institutions
         let legitimate_financial = [
             "citi.com",
@@ -751,14 +754,35 @@ impl FilterEngine {
             "usbank.com",
         ];
 
-        for domain in &legitimate_financial {
-            if sender.contains(domain) || from_header.contains(domain) {
+        for financial_domain in &legitimate_financial {
+            if sender.contains(financial_domain) || from_header.contains(financial_domain) {
                 return InvoiceAnalysis {
                     is_fake_invoice: false,
                     confidence_score: 0.0,
                     detected_patterns: vec![],
                     risk_factors: vec![],
                 };
+            }
+        }
+
+        // Skip invoice fraud analysis for established businesses with order confirmations
+        if self.is_established_business_domain(&domain) {
+            // Check if this looks like a legitimate order confirmation
+            let order_confirmation_patterns = [
+                "order confirmation", "order receipt", "purchase confirmation",
+                "your order", "order #", "confirmation #", "receipt #"
+            ];
+            
+            let content_lower = format!("{} {}", subject, body).to_lowercase();
+            for pattern in &order_confirmation_patterns {
+                if content_lower.contains(pattern) {
+                    return InvoiceAnalysis {
+                        is_fake_invoice: false,
+                        confidence_score: 0.0,
+                        detected_patterns: vec![],
+                        risk_factors: vec![],
+                    };
+                }
             }
         }
 
