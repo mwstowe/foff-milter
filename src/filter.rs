@@ -515,6 +515,35 @@ impl FilterEngine {
         (is_first_hop, None, None)
     }
 
+    /// Get properly normalized context for rule evaluation using Unicode normalization
+    fn get_normalized_context_for_rules(&self, context: &MailContext) -> MailContext {
+        if let Some(normalized) = &context.normalized {
+            // Use the proper Unicode-normalized content
+            MailContext {
+                sender: context.sender.clone(),
+                from_header: context.from_header.clone(),
+                recipients: context.recipients.clone(),
+                headers: context.headers.clone(),
+                mailer: context.mailer.clone(),
+                subject: Some(normalized.subject.normalized.clone()),
+                hostname: context.hostname.clone(),
+                helo: context.helo.clone(),
+                body: Some(normalized.body_text.normalized.clone()),
+                last_header_name: context.last_header_name.clone(),
+                attachments: context.attachments.clone(),
+                extracted_media_text: context.extracted_media_text.clone(),
+                is_legitimate_business: context.is_legitimate_business,
+                is_first_hop: context.is_first_hop,
+                forwarding_source: context.forwarding_source.clone(),
+                proximate_mailer: context.proximate_mailer.clone(),
+                normalized: context.normalized.clone(),
+            }
+        } else {
+            // Fallback to simple normalization if proper normalization not available
+            self.normalize_mail_context(context)
+        }
+    }
+
     /// Normalize encoding in MailContext to handle malformed UTF-8 and encoding evasion
     fn normalize_mail_context(&self, context: &MailContext) -> MailContext {
         MailContext {
@@ -1673,7 +1702,8 @@ impl FilterEngine {
         }
 
         // Create mutable copy for attachment analysis
-        let mut context_with_attachments = normalized_context.clone();
+        // Use proper Unicode normalization for rule evaluation
+        let mut context_with_attachments = self.get_normalized_context_for_rules(&context);
 
         // Analyze attachments for malicious content
         self.analyze_attachments(&mut context_with_attachments);
@@ -1834,7 +1864,10 @@ impl FilterEngine {
         }
 
         // Advanced feature-based analysis
-        let feature_analysis = self.feature_engine.analyze(&normalized_context);
+        // Feature analysis using properly normalized content
+        let feature_analysis = self
+            .feature_engine
+            .analyze(&self.get_normalized_context_for_rules(&context));
         total_score += feature_analysis.total_score;
         for feature_score in &feature_analysis.scores {
             if feature_score.score != 0 {

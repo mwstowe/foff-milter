@@ -100,8 +100,14 @@ rules:
           pattern: ".*"
         - type: "BodyPattern"
           pattern: "(?i)(unsubscribe|opt.{0,5}out)"
+        - type: "Not"
+          criteria:
+            type: "UnsubscribeLinkValidation"
+            timeout_seconds: 3
+            check_dns: true
+            check_http: false
     score: -25
-    description: "Proper unsubscribe mechanism with header and body link"
+    description: "Proper unsubscribe mechanism with validated header and body link"
 
   - name: "Basic Unsubscribe Link"
     enabled: true

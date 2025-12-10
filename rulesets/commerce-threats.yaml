@@ -16,13 +16,13 @@ rules:
       type: "And"
       criteria:
         - type: "SubjectPattern"
-          pattern: "(?i).*(black.*friday|cyber.*monday|huge.*savings|massive.*discount|limited.*time.*offer|act.*now.*save|don't.*miss.*out|final.*hours|last.*chance.*save|up.*to.*\\d+%.*off|save.*up.*to.*\\$\\d+).*"
+          pattern: "(?i).*(black.*friday|cyber.*monday|huge.*savings|massive.*discount|limited.*time.*offer|act.*now.*save|don't.*miss.*out|final.*hours|last.*chance|up.*to.*\\d+%.*off|\\d+%.*off|save.*up.*to.*\\$\\d+|get.*\\d+%.*off).*"
         - type: "Not"
           criteria:
             type: "Or"
             criteria:
               - type: "SenderDomain"
-                domains: ["williams-sonoma.com", "tokyo-tiger.com", "uncommongoods.com", "backerkit.com", "kickstarter.com", "bedjet.com", "humblebundle.com", "wolfermans.com", "wolfermans-email.com", "eff.org", "gog.com", "email3.gog.com"]
+                domains: ["williams-sonoma.com", "tokyo-tiger.com", "uncommongoods.com", "backerkit.com", "kickstarter.com", "bedjet.com", "humblebundle.com", "wolfermans.com", "wolfermans-email.com", "eff.org", "gog.com", "email3.gog.com", "nedm.asus.com", "asus.com"]
               - type: "SenderPattern"
                 pattern: ".*@(bedjet\\.com|tokyo-tiger\\.com|humblebundle\\.com|wolfermans.*\\.com|eff\\.org|.*gog\\.com).*"
               - type: "BodyPattern"
@@ -70,6 +70,40 @@ rules:
           pattern: ".*@.*\\.(sa\\.com|ninja.*\\.(com|net)|service\\.(com|net)|mail\\.(com|net|org))$"
     score: 65
     description: "General product spam with suspicious domains"
+
+  # Specific product sales spam
+  - name: "Heated vest and winter gear spam"
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(heated.*vest|warming.*vest|winter.*essential|stay.*warm.*style|heated.*jacket|thermal.*vest).*"
+        - type: "BodyPattern"
+          pattern: "(?i).*(heated.*vest|warming.*vest|winter.*essential|stay.*warm.*style|heated.*jacket|thermal.*vest).*"
+    score: 85
+    description: "Heated vest and winter gear product spam"
+
+  - name: "Sleep and bedding product spam"
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(better.*sleep|miracle.*sleep|sleep.*better|gift.*sleep|sleep.*solution|bedding.*sale).*"
+        - type: "BodyPattern"
+          pattern: "(?i).*(better.*sleep|miracle.*sleep|sleep.*better|gift.*sleep|sleep.*solution|bedding.*sale).*"
+    score: 85
+    description: "Sleep and bedding product spam"
+
+  - name: "Flooring and home upgrade spam"
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(upgrade.*floors|flooring.*sale|floor.*upgrade|home.*flooring|new.*floors).*"
+        - type: "BodyPattern"
+          pattern: "(?i).*(upgrade.*floors|flooring.*sale|floor.*upgrade|home.*flooring|new.*floors).*"
+    score: 85
+    description: "Flooring and home upgrade product spam"
 
   # Free product scams
   - name: "Free product scams"

@@ -86,6 +86,12 @@ rules:
               pattern: ".*"
             - type: "SenderPattern"
               pattern: ".*@.*(empower\\.com|iheart\\.com|wayfair\\.com|backerkit\\.com|salesforce\\.com|mailchimp\\.com|constantcontact\\.com|hubspot\\.com).*"
+            - type: "Not"
+              criteria:
+                type: "UnsubscribeLinkValidation"
+                timeout_seconds: 3
+                check_dns: true
+                check_http: false
         - type: "And"
           criteria:
             - type: "HeaderPattern"
@@ -95,8 +101,14 @@ rules:
               criteria:
                 type: "SenderPattern"
                 pattern: ".*@(gmail\\.com|yahoo\\.com|hotmail\\.com|outlook\\.com)$"
+            - type: "Not"
+              criteria:
+                type: "UnsubscribeLinkValidation"
+                timeout_seconds: 3
+                check_dns: true
+                check_http: false
     score: -15
-    description: "Enhanced accept for legitimate bulk emails with unsubscribe headers"
+    description: "Enhanced accept for legitimate bulk emails with validated unsubscribe headers"
 
   - name: "Empty Content Quick Reject"
     enabled: true

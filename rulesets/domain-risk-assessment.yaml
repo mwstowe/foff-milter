@@ -2,6 +2,13 @@ name: "Domain Risk Assessment"
 enabled: true
 rules:
   # Critical Risk Domains (100+ points)
+  - name: "M-atr.com spam domain"
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*m-atr\\.com$"
+    score: 200
+    description: "M-atr.com domain used for multiple spam campaigns"
+
   - name: "Giveaway domain spam"
     criteria:
       type: "SenderPattern"

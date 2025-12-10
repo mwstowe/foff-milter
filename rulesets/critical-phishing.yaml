@@ -183,3 +183,17 @@ rules:
               pattern: "(?i)(screenshot|\\?\\?|##)"
     score: 40
     description: "SEO-related spam with suspicious content patterns"
+
+  # Fake Antivirus Protection Phishing - Simple Pattern
+  - name: "Fake Antivirus Protection Phishing"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i)(payment.*method.*declined|payment.*declined|payment.*failed)"
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: "(?i)(antivirus|security|protection)"
+    score: 80
+    description: "Fake antivirus services with payment phishing"
