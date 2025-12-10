@@ -1604,6 +1604,29 @@ impl FilterEngine {
             seasonal_adjustment
         );
 
+        // Check if this is from the same server - skip analysis and remove X-FOFF headers
+        if self.is_same_server_email(&context) {
+            log::info!("Same server email detected - removing X-FOFF headers and accepting");
+
+            // Remove any existing X-FOFF headers
+            let mut headers_to_remove = Vec::new();
+            for name in context.headers.keys() {
+                if name.to_lowercase().starts_with("x-foff") || name.to_lowercase() == "x-spam-flag"
+                {
+                    headers_to_remove.push(name.clone());
+                }
+            }
+
+            return (
+                Action::Accept,
+                vec!["Same server email - X-FOFF headers removed".to_string()],
+                headers_to_remove
+                    .into_iter()
+                    .map(|name| (name, String::new()))
+                    .collect(),
+            );
+        }
+
         // Check for upstream FOFF-milter processing and trust existing tags
         if let Some(trust_result) = self.check_upstream_trust(&context) {
             log::info!(
@@ -7380,6 +7403,92 @@ impl FilterEngine {
         }
 
         0
+    }
+
+    /// Check if this email is from the same server (internal forwarding)
+    fn is_same_server_email(&self, context: &MailContext) -> bool {
+        // Extract sender and recipient domains
+        let sender_domain = self
+            .extract_sender_domain(context)
+            .unwrap_or_default()
+            .to_lowercase();
+
+        // Get recipient domain from headers or context
+        let recipient_domain = if let Some(to_header) = context
+            .headers
+            .get("To")
+            .or_else(|| context.headers.get("to"))
+        {
+            // Extract domain from To header
+            if let Some(at_pos) = to_header.rfind('@') {
+                let domain_part = &to_header[at_pos + 1..];
+                // Remove any trailing > or whitespace
+                domain_part.trim_end_matches('>').trim().to_lowercase()
+            } else {
+                String::new()
+            }
+        } else {
+            String::new()
+        };
+
+        // Check if both domains are the same and non-empty
+        if !sender_domain.is_empty()
+            && !recipient_domain.is_empty()
+            && sender_domain == recipient_domain
+        {
+            log::debug!(
+                "Same server email detected: {} -> {}",
+                sender_domain,
+                recipient_domain
+            );
+            return true;
+        }
+
+        // Also check Received headers for internal routing patterns
+        for (name, value) in &context.headers {
+            if name.to_lowercase() == "received" {
+                // Look for patterns like "from domain.com ... by domain.com"
+                if let Some(from_start) = value.find("from ") {
+                    if let Some(by_start) = value.find(" by ") {
+                        let from_part = &value[from_start + 5..by_start];
+                        let by_part = &value[by_start + 4..];
+
+                        // Extract domains from both parts
+                        if let (Some(from_domain), Some(by_domain)) = (
+                            self.extract_domain_from_received(from_part),
+                            self.extract_domain_from_received(by_part),
+                        ) {
+                            if from_domain == by_domain && from_domain == sender_domain {
+                                log::debug!(
+                                    "Internal routing detected in Received header: {}",
+                                    from_domain
+                                );
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        false
+    }
+
+    /// Extract domain from Received header part
+    fn extract_domain_from_received(&self, text: &str) -> Option<String> {
+        // Look for domain patterns in Received header text
+        let words: Vec<&str> = text.split_whitespace().collect();
+        for word in words {
+            if word.contains('.') && !word.starts_with('[') {
+                // Clean up the domain (remove parentheses, etc.)
+                let clean_domain =
+                    word.trim_matches(|c: char| !c.is_alphanumeric() && c != '.' && c != '-');
+                if clean_domain.contains('.') && !clean_domain.is_empty() {
+                    return Some(clean_domain.to_lowercase());
+                }
+            }
+        }
+        None
     }
 
     /// Check if this is a legitimate order confirmation from an established business
