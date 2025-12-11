@@ -871,7 +871,7 @@ fn strip_xfoff_headers(email_content: &str) -> String {
     let mut result = String::new();
     let mut in_headers = true;
     let mut skip_line = false;
-    
+
     for line in email_content.lines() {
         if in_headers {
             if line.trim().is_empty() {
@@ -880,26 +880,26 @@ fn strip_xfoff_headers(email_content: &str) -> String {
                 result.push('\n');
                 continue;
             }
-            
+
             // Check if this line starts an X-FOFF header
             if line.starts_with("X-FOFF") {
                 skip_line = true;
                 continue;
             }
-            
+
             // Check if this is a continuation line (starts with space/tab)
             if (line.starts_with(' ') || line.starts_with('\t')) && skip_line {
                 continue;
             }
-            
+
             // Reset skip flag for new headers
             skip_line = false;
         }
-        
+
         result.push_str(line);
         result.push('\n');
     }
-    
+
     result
 }
 

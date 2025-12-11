@@ -429,13 +429,46 @@ impl EmailNormalizer {
                 ObfuscationTechnique::UnicodeHomoglyphs => {
                     // Check if this is likely decorative emojis vs malicious homoglyphs
                     let has_decorative_emojis = normalized.original.chars().any(|c| {
-                        matches!(c, 
-                            '✨' | '🌸' | '🌺' | '🌻' | '🌷' | '🌹' | '🌿' | '🍀' | '🌱' | '🌳' | '🌲' |
-                            '💖' | '💕' | '💗' | '💓' | '💝' | '🎉' | '🎊' | '🎈' | '🎁' | '⭐' | '🌟' |
-                            '🔥' | '💯' | '👍' | '💙' | '💚' | '💛' | '💜' | '🧡' | '🤍' | '🖤'
+                        matches!(
+                            c,
+                            '✨' | '🌸'
+                                | '🌺'
+                                | '🌻'
+                                | '🌷'
+                                | '🌹'
+                                | '🌿'
+                                | '🍀'
+                                | '🌱'
+                                | '🌳'
+                                | '🌲'
+                                | '💖'
+                                | '💕'
+                                | '💗'
+                                | '💓'
+                                | '💝'
+                                | '🎉'
+                                | '🎊'
+                                | '🎈'
+                                | '🎁'
+                                | '⭐'
+                                | '🌟'
+                                | '🔥'
+                                | '💯'
+                                | '👍'
+                                | '💙'
+                                | '💚'
+                                | '💛'
+                                | '💜'
+                                | '🧡'
+                                | '🤍'
+                                | '🖤'
                         ) || c == '❤' // Handle ❤️ as separate character
                     });
-                    if has_decorative_emojis { 5 } else { 25 } // Much lower penalty for decorative emojis
+                    if has_decorative_emojis {
+                        5
+                    } else {
+                        25
+                    } // Much lower penalty for decorative emojis
                 }
                 ObfuscationTechnique::ZeroWidthCharacters => 75,
                 ObfuscationTechnique::BidirectionalOverride => 60,

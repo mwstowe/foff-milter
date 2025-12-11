@@ -7526,8 +7526,11 @@ impl FilterEngine {
         let content_lower = content.to_lowercase();
 
         // Exclude legitimate botanical/garden content
-        if content_lower.contains("botanical") || content_lower.contains("garden") || 
-           content_lower.contains("bloom") || content_lower.contains("plant") {
+        if content_lower.contains("botanical")
+            || content_lower.contains("garden")
+            || content_lower.contains("bloom")
+            || content_lower.contains("plant")
+        {
             return 0;
         }
 
