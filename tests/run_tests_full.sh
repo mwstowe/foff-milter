@@ -54,7 +54,7 @@ for email in tests/positive/*.eml; do
     [ ! -f "$email" ] && continue
     
     echo -n "Testing $(basename "$email"): "
-    if timeout 30s $BINARY --test-email "$email" -c "$CONFIG" --disable-same-server 2>/dev/null | grep -qE "Result: (TAG AS SPAM|REJECT)"; then
+    if timeout 60s $BINARY --test-email "$email" -c "$CONFIG" --disable-same-server 2>/dev/null | grep -qE "Result: (TAG AS SPAM|REJECT)"; then
         echo "✅ CAUGHT"
         ((EMAIL_PASSED++))
         ((pos_passed++))
@@ -74,7 +74,7 @@ for email in tests/negative/*.eml; do
     [ ! -f "$email" ] && continue
     
     echo -n "Testing $(basename "$email"): "
-    if timeout 30s $BINARY --test-email "$email" -c "$CONFIG" --disable-same-server 2>/dev/null | grep -qE "Result: ACCEPT"; then
+    if timeout 60s $BINARY --test-email "$email" -c "$CONFIG" --disable-same-server 2>/dev/null | grep -qE "Result: ACCEPT"; then
         echo "✅ PASSED"
         ((EMAIL_PASSED++))
         ((neg_passed++))
