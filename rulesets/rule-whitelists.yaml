@@ -658,17 +658,25 @@ rules:
   - name: "Costco Wholesale"
     enabled: true
     criteria:
-      type: "Or"
+      type: "And"
       criteria:
-        - type: "SenderPattern"
-          pattern: ".*@.*costco\\.com.*"
-        - type: "SenderPattern"
-          pattern: ".*@.*digital\\.costco\\.com.*"
-        - type: "HeaderPattern"
-          header: "From"
-          pattern: "(?i).*Costco.*"
-    score: -300  # Increased to overcome encoding penalties
-    description: "Costco wholesale retailer"
+        - type: "Or"
+          criteria:
+            - type: "SenderPattern"
+              pattern: ".*@.*costco\\.com.*"
+            - type: "SenderPattern"
+              pattern: ".*@.*digital\\.costco\\.com.*"
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "HeaderPattern"
+                header: "From"
+                pattern: "(?i).*(giveaway|free.*gift|prize|winner|congratulations).*"
+              - type: "SubjectPattern"
+                pattern: "(?i).*(giveaway|free.*gift|prize|winner|congratulations).*"
+    score: -300
+    description: "Costco wholesale retailer (excluding giveaway scams)"
 
   - name: "BIQU/BIGTREETECH"
     enabled: true
