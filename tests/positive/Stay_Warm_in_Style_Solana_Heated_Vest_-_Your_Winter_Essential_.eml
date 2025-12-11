@@ -1,0 +1,227 @@
+Return-Path: <return@m-atr.com>
+Received: from juliett.baddomain.com (localhost [127.0.0.1])
+	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTP id 5BABxnTY018200
+	for <mstowe@localhost>; Wed, 10 Dec 2025 11:59:49 GMT
+	(envelope-from return@m-atr.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (2048-bit key; unprotected) header.d=m-atr.com header.i=@m-atr.com header.b=AWT6rCZj
+Received: from jimapinternal-aol.imap.mail.g03.yahoodns.net [67.195.228.147]
+	by juliett.baddomain.com with IMAP (fetchmail-6.6.1)
+	for <mstowe@localhost> (single-drop); Wed, 10 Dec 2025 11:59:49 +0000 (UTC)
+Received: from 10.226.14.116
+ by atlas209.aol.mail.ne1.yahoo.com pod-id NONE with HTTPS; Wed, 10 Dec 2025 11:58:37 +0000
+X-Originating-Ip: [54.190.242.242]
+Received-SPF: fail (domain of m-atr.com does not designate 54.190.242.242 as permitted sender)
+Authentication-Results: atlas209.aol.mail.ne1.yahoo.com;
+ dkim=pass header.i=@m-atr.com header.s=h1 arc_overridden_status=NOT_OVERRIDDEN;
+ spf=fail smtp.mailfrom=m-atr.com arc_overridden_status=NOT_OVERRIDDEN;
+ dmarc=pass(p=NONE) header.from=m-atr.com arc_overridden_status=NOT_OVERRIDDEN;
+X-Apparently-To: user@example.com; Wed, 10 Dec 2025 11:58:37 +0000
+X-YMailISG: SUgzBR8WLDu.luJIdAP_b8GNnugeOoaWEYpj7KSbtO5dIx79
+ Fg.EtafdgqUDaQ52hpU2ei06ZsqLK7ZluOOjgy9vWBmbXSSbhxpUH06PFBY4
+ 8tZymauNyPlxyv0sJ.SrVph6tczyA6ZRvMAo0nN1CEEjYgwy4jBlYwQo0Bwx
+ us23LzQMSPlsn_96q2FkRWBafuz67RX7K6R91PJ.KZ9bdM6PRMOGDisOFnL0
+ SH0c19xLWM9BHBS3LOlE3QxvaGSuzGskUcNkvxR8KLp2OPqJnapgr1iz_QFX
+ gUnQ4ENHfCEbCGD7Uaw1brAZROLc8FlRGH0qaExarCf5NikU0a9bL_KC_JZn
+ ZE2iEZ_WyvnChDXWB95thexuakr5gfvv4qLp3PRF6NrtVDjr9HG_zbXLFOT7
+ P87pUxRyByNe3jrG3HLt6TchH4OImdxFnJIvxvKHi34wP_QyIx6QY2Ibqkf9
+ d2kTHwQN9gZd8IYoZfYZoYoREqyme18HUAtEbh673jPFZH_sDbDAKSeHr6fU
+ pLY21FgSLoGRtrqy4KaR8qMN6ty97hmQ6IiYsCmCqWjyKk.zKQQ1QdB5f7NW
+ G_NFhUn0ah1MzzQZ58vhGAn2HiIo10K22zi.xaClFX9Uj54thv0r_J90n8FH
+ U7xi8ha2XqLWNf.WkeSFILDMvjOqLAPkam4FUninEFHJ81Pj851mwgLXPW2Z
+ MdWkLIFQlYF9l9OARA5U2JnIeJfjFsXHSZkjsnOd92SuJhoo3QIab6xJtobd
+ sC5bBPJWXGhn8ivlemkAQAxOm5HqwIGrFi5caWRU5F_rhAgBWm0T3zYnATsp
+ 3yyM8tDNBnR4MsDjrjefkzyCzc76DVJ4FzCGxYjAR2Olbj33KUCvYrpuhQby
+ yaKnwE7_Smeh60u1k3oGuXMve2YMtqtfSvcJTTDCWS2HZD.KU5hLiqQowIJV
+ gTxcjrWCheAlsFk5A5H8c6dWWtSSfm3pOXVrAHzi3BwIFYTPi59Z2Q4AuM7_
+ YOl.K8w0RNZTCJNzhspe8SMp0GBXaL.wk3A3rU13b_ZPoZDwtMo6f93rC8VX
+ KYcxZ4MFHS.ZWccldxF71wtfZ09ksz1HA_CB5cijocsYpmurlKbzxRU3bDiu
+ tCcbsBxKD1s1iEkkv88X4DYnbvdqSIdfy9j7TvttUIaNSn3YwoaxTyhEk.WE
+ Au0_z0vZjYkuTOrr8lSJacJzPJyhytLkOWaUhMAj_3zoV0tRdwSa4FIaIaPa
+ siwsLVeJ3aBEuIyJ2JA4FRnUkqdkqrRaIltMyc8iFGMgO8CY5RygPcmocZvB
+ HGWcSCnuw42icsDGKG0JFyQU5yKcNFSk2ydHvJhkfyvfruZ_Kcun4tWra2zC
+ VIEA1HdJvMgibUSEL1v1HqCMl8s-
+Received: from 54.190.242.242 (EHLO immunodata.twomenandatruckstlouis.com)
+ by 10.226.14.116 with SMTPs
+ (version=TLS1_2 cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256);
+ Wed, 10 Dec 2025 11:58:37 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=h1; d=m-atr.com;
+ h=Content-Transfer-Encoding:Content-Type:Message-ID:To:Date:MIME-Version:
+ Subject:From:List-Unsubscribe;
+ bh=P0Cjsq2G4l3CTCeXS5fPr5SRD/FwSa6OqQSLjMgH5WY=;
+ b=AWT6rCZj/8BRRd9RDXY7k1UcauvgfFfXvDCoCi/5R81pY1pBOJJZ3ncZ2st4GZ7Nvh6oWeccc929
+   wsHFuAuCCOFCLuLlrqO3NXgfrYQIBrUsMnDUDl+WWwcIBffWxDn6Be/h7zJg1FEbaujSx1kMFdRP
+   XsgE42Natcafbh0Ulahwb1DDFpDdzjUSSXlDMT/URRzhD4qln+qldTkGuNKl50evP0VzJ8N+oJ1O
+   MFkr3H/Ebn9JOnZUytSa0tUyYcVeGhKYlnYWP+HbBe56ifgTgJy6Fks6gzilIN5weSITcxotqhNV
+   AdhvXTWAiLMDv2qP00CPs9aheVy1AIFSopYvRA==
+Content-Transfer-Encoding: 7bit
+Content-Type: text/html; charset="UTF-8"
+Message-ID: <555-123-4567.GWcY3qN8SD8Q.3461498467977@m-atr.com>
+To: user@example.com
+Date: Wed, 10 Dec 2025 17:28:29 +0530
+MIME-Version: 1.0
+Subject:   =?UTF-8?B?4p6g4p6g4p6g?=            Stay Warm in Style: Solana Heated Vest - Your Winter Essential! 
+From:  =?UTF-8?B?4p6g4p6g4p6g?=        Solana Gear Customer Care  <FusionFusionInfinityNexusPulse@m-atr.com>
+Feedback-ID: 5113540:SMTPCOM
+X-SMTPCOM-Sender-ID: 5113540
+X-SMTPCOM-Tracking-Number: KQrC53xL-694b-2127-WBxpnrp1vleub
+X-SMTPCOM-Message-ID: KQrC53xL-SXJw-SXJw-SXJw-WBxpnrp1vleub
+X-SMTPCOM-Payload: 
+ 0G-c0o5wZnOgP4zoclNxz2NO-R7YToXzbxVbw-a6RXhv3Wnr9pAKKXzl_DbUW7Cd6jpSoRntX_CHmEkms-F6EdHt8vlQzkx6u
+List-Unsubscribe: 
+ <mailto:abuse-pro@new.m-atr.com?subject=MailStop&body=KQrC53xL-SXJw-SXJw-SXJw-WBxpnrp1vleub_5113540>,
+ <https://new.m-atr.com/v4/unsubscribe?mid=KQrC53xL-SXJw-SXJw-SXJw-WBxpnrp1vleub&sid=5113540>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [0.0.0.0]); Wed, 10 Dec 2025 11:59:50 +0000 (UTC)
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html dir="ltr" xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office" lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <meta name="x-apple-disable-message-reformatting">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta content="telephone=no" name="format-detection">
+  <title>Solena</title><!--[if (mso 16)]>
+    <style type="text/css">
+    a {text-decoration: none;}
+    </style>
+    <!--><!--[if gte mso 9]><style>sup { font-size: 100% !important; }</style><!--><!--[if gte mso 9]>
+<noscript>
+         <xml>
+           <o:OfficeDocumentSettings>
+           <o:AllowPNG></o:AllowPNG>
+           <o:PixelsPerInch>96</o:PixelsPerInch>
+           </o:OfficeDocumentSettings>
+         </xml>
+      </noscript>
+<!--><!--[if mso]><xml>
+    <w:WordDocument xmlns:w="urn:schemas-microsoft-com:office:word">
+      <w:DontUseAdvancedTypographyReadingMail/>
+    </w:WordDocument>
+    </xml><!-->
+  <style type="text/css">
+rollover:hover .rollover-first {
+  max-height:0px!important;
+  display:none!important;
+}
+rollover:hover .rollover-second {
+  max-height:none!important;
+  display:block!important;
+}
+rollover span {
+  font-size:0px;
+}
+u + .body img ~ div div {
+  display:none;
+}
+#outlook a {
+  padding:0;
+}
+span.MsoHyperlink,
+span.MsoHyperlinkFollowed {
+  color:inherit;
+  mso-style-priority:99;
+}
+a.es-button {
+  mso-style-priority:100!important;
+  text-decoration:none!important;
+}
+a[x-apple-data-detectors],
+#MessageViewBody a {
+  color:inherit!important;
+  text-decoration:none!important;
+  font-size:inherit!important;
+  font-family:inherit!important;
+  font-weight:inherit!important;
+  line-height:inherit!important;
+}
+es-desk-hidden {
+  display:none;
+  float:left;
+  overflow:hidden;
+  width:0;
+  max-height:0;
+  line-height:0;
+  mso-hide:all;
+}
+@media only screen and (max-width:600px) {.es-m-p20b { padding-bottom:20px!important } .es-p-default { } *[class="gmail-fix"] { display:none!important } p, a { line-height:150%!important } h1, h1 a { line-height:120%!important } h2, h2 a { line-height:120%!important } h3, h3 a { line-height:120%!important } h4, h4 a { line-height:120%!important } h5, h5 a { line-height:120%!important } h6, h6 a { line-height:120%!important } .es-header-body p { } .es-content-body p { } .es-footer-body p { } .es-infoblock p { } h1 { font-size:40px!important; text-align:left } h2 { font-size:32px!important; text-align:left } h3 { font-size:28px!important; text-align:left } h4 { font-size:24px!important; text-align:left } h5 { font-size:20px!important; text-align:left } h6 { font-size:16px!important; text-align:left } .es-header-body h1 a, .es-content-body h1 a, .es-footer-body h1 a { font-size:40px!important } .es-header-body h2 a, .es-content-body h2 a, .es-footer-body h2 a { font-size:32px!important } .es-header-body h3 a, .es-content-body h3 a, .es-footer-body h3 a { font-size:28px!important } .es-header-body h4 a, .es-content-body h4 a, .es-footer-body h4 a { font-size:24px!important } .es-header-body h5 a, .es-content-body h5 a, .es-footer-body h5 a { font-size:20px!important } .es-header-body h6 a, .es-content-body h6 a, .es-footer-body h6 a { font-size:16px!important } .es-menu td a { font-size:14px!important } .es-header-body p, .es-header-body a { font-size:14px!important } .es-content-body p, .es-content-body a { font-size:14px!important } .es-footer-body p, .es-footer-body a { font-size:14px!important } .es-infoblock p, .es-infoblock a { font-size:12px!important } .es-m-txt-c, .es-m-txt-c h1, .es-m-txt-c h2, .es-m-txt-c h3, .es-m-txt-c h4, .es-m-txt-c h5, .es-m-txt-c h6 { text-align:center!important } .es-m-txt-r, .es-m-txt-r h1, .es-m-txt-r h2, .es-m-txt-r h3, .es-m-txt-r h4, .es-m-txt-r h5, .es-m-txt-r h6 { text-align:right!important } .es-m-txt-j, .es-m-txt-j h1, .es-m-txt-j h2, .es-m-txt-j h3, .es-m-txt-j h4, .es-m-txt-j h5, .es-m-txt-j h6 { text-align:justify!important } .es-m-txt-l, .es-m-txt-l h1, .es-m-txt-l h2, .es-m-txt-l h3, .es-m-txt-l h4, .es-m-txt-l h5, .es-m-txt-l h6 { text-align:left!important } .es-m-txt-r img, .es-m-txt-c img, .es-m-txt-l img { display:inline!important } .es-m-txt-r .rollover:hover .rollover-second, .es-m-txt-c .rollover:hover .rollover-second, .es-m-txt-l .rollover:hover .rollover-second { display:inline!important } .es-m-txt-r .rollover span, .es-m-txt-c .rollover span, .es-m-txt-l .rollover span { line-height:0!important; font-size:0!important; display:block } .es-spacer { display:inline-table } a.es-button, button.es-button { font-size:14px!important; padding:10px 20px 10px 20px!important; line-height:120%!important } a.es-button, button.es-button, .es-button-border { display:inline-block!important } .es-m-fw, .es-m-fw.es-fw, .es-m-fw .es-button { display:block!important } .es-m-il, .es-m-il .es-button, .es-social, .es-social td, .es-menu.es-table-not-adapt { display:inline-block!important } .es-adaptive table, .es-left, .es-right { width:100%!important } .es-content table, .es-header table, .es-footer table, .es-content, .es-footer, .es-header { width:100%!important; max-width:600px!important } .adapt-img { width:100%!important; height:auto!important } .es-adapt-td { display:block!important; width:100%!important } .es-mobile-hidden, .es-hidden { display:none!important } .es-container-hidden { display:none!important } .es-desk-hidden { width:auto!important; overflow:visible!important; float:none!important; max-height:inherit!important; line-height:inherit!important } tr.es-desk-hidden { display:table-row!important } table.es-desk-hidden { display:table!important } td.es-desk-menu-hidden { display:table-cell!important } .es-menu td { width:1%!important } table.es-table-not-adapt, .esd-block-html table { width:auto!important } .h-auto { height:auto!important } }
+@media screen and (max-width:384px) {.mail-message-content { width:414px!important } }
+</style>
+ </head>
+ <body class="body" style="width:100%;height:100%;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;padding:0;Margin:0">
+  <div dir="ltr" class="es-wrapper-color" lang="en" style="background-color:#FFFFFF"><!--[if gte mso 9]>
+			<v:background xmlns:v="urn:schemas-microsoft-com:vml" fill="t">
+				<v:fill type="tile" color="#FFFFFF"></v:fill>
+			</v:background>
+		<!-->
+   <table width="100%" cellspacing="0" cellpadding="0" class="es-wrapper" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-spacing:0px;padding:0;Margin:0;width:100%;height:100%;background-color:#FFFFFF">
+     <tr>
+      <td valign="top" style="padding:0;Margin:0">
+       
+       <table cellspacing="0" cellpadding="0" align="center" class="es-content" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-spacing:0px;width:100%;table-layout:fixed !important">
+         <tr>
+          <td align="center" style="padding:0;Margin:0">
+           <table cellspacing="0" cellpadding="0" bgcolor="#ffffff" align="center" class="es-content-body" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-spacing:0px;background-color:#FFFFFF;width:600px">
+             <tr>
+              <td align="left" style="padding:0;Margin:0;padding-top:20px;padding-right:20px;padding-left:20px">
+               <table cellpadding="0" width="100%" cellspacing="0" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-spacing:0px">
+                 <tr>
+                  <td valign="top" align="center" style="padding:0;Margin:0;width:560px">
+                   <table cellpadding="0" width="100%" cellspacing="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-spacing:0px">
+                     <tr>
+                      <td align="center" style="padding:0;Margin:0;font-size:0"><a href="http://heathypvechoices.com/ObDFLfOEo8z6/6Z/uf5GI9aWo6qw/rr_YveeBck/hRS1Iu30XD/er/A8rxvncNq5j/xevrM_M/1iIdbWzY4h/77Md/UNZKNNdOd0/red5x/ysgy6wsdihlPkk/YY7v5/H0tMEdqrL25M/"><img src="http://heathypvechoices.com/253685302768031.png" alt="image"/></a></td>
+                     </tr>
+                   </table></td>
+                 </tr>
+               </table></td>
+             </tr>
+           </table></td>
+         </tr>
+       </table><br>
+       <table cellspacing="0" cellpadding="0" align="center" class="es-content" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-spacing:0px;width:100%;table-layout:fixed !important">
+         <tr>
+          <td align="center" style="padding:0;Margin:0">
+           <table cellspacing="0" cellpadding="0" bgcolor="#ffffff" align="center" class="es-content-body" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-spacing:0px;background-color:#FFFFFF;width:630px">
+             <tr>
+              <td align="left" style="padding:0;Margin:0;padding-top:20px;padding-right:20px;padding-left:20px">
+               <table width="100%" cellspacing="0" cellpadding="0" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-spacing:0px">
+                 <tr>
+                  <td valign="top" align="center" style="padding:0;Margin:0;width:560px">
+                   <table width="100%" cellspacing="0" cellpadding="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-spacing:0px">
+                     <tr>
+                      <td align="center" style="padding:0;Margin:0"><h4 style="Margin:0;font-family:arial, 'helvetica neue', helvetica, sans-serif;mso-line-height-rule:exactly;letter-spacing:0;font-size:15px;font-style:normal;font-weight:normal;line-height:28.8px;color:#333333"><span style="color:#6aa84f"><a href="http://heathypvechoices.com/ObDFLfOEo8z6/6Z/uf5GI9aWo6qw/rr_YveeBck/hRS1Iu30XD/er/A8rxvncNq5j/xevrM_M/1iIdbWzY4h/77Md/UNZKNNdOd0/red5x/ysgy6wsdihlPkk/YY7v5/H0tMEdqrL25M/"><h3>Cold Weather, Warm Solution: Solana Heated Vest - Embrace Comfort!</span></h3> </a></h4></td>
+                     </tr>
+                   </table></td>
+                 </tr>
+               </table></td>
+             </tr>
+           </table></td>
+         </tr>
+       </table>
+       <table cellspacing="0" cellpadding="0" align="center" class="es-footer" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-spacing:0px;width:100%;table-layout:fixed !important;background-color:transparent">
+         <tr>
+          <td align="center" style="padding:0;Margin:0">
+           <table cellspacing="0" cellpadding="0" bgcolor="#ffffff" align="center" class="es-footer-body" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-spacing:0px;background-color:#FFFFFF;width:600px">
+             <tr>
+              <td align="left" style="Margin:0;padding-top:20px;padding-right:20px;padding-left:20px;padding-bottom:20px">
+               <table cellspacing="0" cellpadding="0" align="left" class="es-left" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-spacing:0px;float:left">
+                 <tr>
+                  <td align="left" class="es-m-p20b" style="padding:0;Margin:0;width:560px">
+                   <table width="100%" cellspacing="0" cellpadding="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-spacing:0px">
+                     <tr>
+                      <td align="center" style="padding:0;Margin:0;font-size:0"><a href="http://heathypvechoices.com/6Lyu2FSXZ0Y7g8/n4/ohaTetwGuKY6BQ/rr_YveeBck/5Mhs70VMUJLG/er/PDe2IcLNw8h/xevrM_M/H6M7Mi1mpggm/77Md/S7xuA1843ZA5A/red5x/qxi63cHYONM/YY7v5/3Q5fGM045A/"><img src="http://heathypvechoices.com/818104600825505.png" alt="image"/></a></td>
+                     </tr>
+                   </table></td>
+                 </tr>
+               </table></td>
+             </tr>
+           </table></td>
+         </tr>
+       </table></td>
+     </tr>
+     
+   </table>
+  </div>
+ </body>
+</html>

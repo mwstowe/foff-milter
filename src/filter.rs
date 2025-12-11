@@ -168,6 +168,8 @@ pub struct FilterEngine {
     // Sender blocking patterns
     sender_blocking_patterns: Vec<Regex>,
     sender_blocking_action: Action,
+    // Same server detection (can be disabled for testing)
+    same_server_detection_enabled: bool,
     // Invoice fraud analyzer
     invoice_analyzer: InvoiceAnalyzer,
     // Media content analyzer
@@ -297,6 +299,12 @@ impl FilterEngine {
                     "williams-sonoma.com", // Established retailers
                     "email3.gog.com",
                     "wl043.sendgrid.net", // Specific ESP subdomains
+                    "wholefoodsmarket.com",
+                    "rejuvenation.com",
+                    "wolfermans-email.com",
+                    "tokyo-tiger.com",
+                    "coinbase.com",
+                    "mail.coinbase.com", // False positive domains
                 ];
 
                 // Check if sender is from legitimate encoding-heavy domain
@@ -305,11 +313,23 @@ impl FilterEngine {
                 });
 
                 if is_legitimate_sender {
-                    // Reduce encoding penalties for legitimate senders
-                    let reduced_score = base_score / 3; // Reduce by 67%
+                    // Check if sender has DKIM authentication for additional reduction
+                    let has_dkim = context.headers.iter().any(|(key, value)| {
+                        key.to_lowercase() == "dkim-signature"
+                            || (key.to_lowercase() == "authentication-results"
+                                && value.contains("dkim=pass"))
+                    });
+
+                    let reduced_score = if has_dkim {
+                        base_score / 10 // Reduce by 90% for DKIM-authenticated legitimate senders
+                    } else {
+                        base_score / 3 // Reduce by 67% for other legitimate senders
+                    };
+
                     log::debug!(
-                        "Reducing encoding evasion score for legitimate sender {} from {} to {}",
+                        "Reducing encoding evasion score for legitimate sender {} (DKIM: {}) from {} to {}",
                         domain,
+                        has_dkim,
                         base_score,
                         reduced_score
                     );
@@ -634,6 +654,7 @@ impl FilterEngine {
             sender_blocking_action: Action::Reject {
                 message: "Sender blocked by pattern".to_string(),
             },
+            same_server_detection_enabled: true,
             invoice_analyzer: InvoiceAnalyzer::default(),
             media_analyzer: MediaAnalyzer::new(),
             feature_engine: FeatureEngine::new(),
@@ -666,6 +687,10 @@ impl FilterEngine {
 
     pub fn set_blocklist_config(&mut self, blocklist_config: Option<BlocklistConfig>) {
         self.blocklist_config = blocklist_config;
+    }
+
+    pub fn set_same_server_detection(&mut self, enabled: bool) {
+        self.same_server_detection_enabled = enabled;
     }
 
     pub fn set_sender_blocking(
@@ -7440,6 +7465,11 @@ impl FilterEngine {
 
     /// Check if this email is from the same server (internal forwarding)
     fn is_same_server_email(&self, context: &MailContext) -> bool {
+        // Check if same-server detection is enabled
+        if !self.same_server_detection_enabled {
+            return false;
+        }
+
         // Extract sender and recipient domains
         let sender_domain = self
             .extract_sender_domain(context)

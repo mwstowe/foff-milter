@@ -1,0 +1,212 @@
+Return-Path: <return@m-atr.com>
+Received: from juliett.baddomain.com (localhost [127.0.0.1])
+	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTP id 5BADVD0A021328
+	for <mstowe@localhost>; Wed, 10 Dec 2025 13:31:13 GMT
+	(envelope-from return@m-atr.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (2048-bit key; unprotected) header.d=m-atr.com header.i=@m-atr.com header.b=bdyUKDq4
+Received: from jimapinternal-aol.imap.mail.g03.yahoodns.net [67.195.228.147]
+	by juliett.baddomain.com with IMAP (fetchmail-6.6.1)
+	for <mstowe@localhost> (single-drop); Wed, 10 Dec 2025 13:31:13 +0000 (UTC)
+Received: from 127.0.0.1
+ by atlas-production.v2-mail-prod1-bf1.omega.yahoo.com pod-id atlas--production-bf1-548fcfdbc7-z5dg9.bf1.yahoo.com with HTTP; Wed, 10 Dec 2025 13:24:51 +0000
+X-Originating-Ip: [34.218.26.148]
+Received-SPF: fail (domain of m-atr.com does not designate 34.218.26.148 as permitted sender)
+Authentication-Results: atlas-production.v2-mail-prod1-bf1.omega.yahoo.com;
+ dkim=pass header.i=@m-atr.com header.s=h1 arc_overridden_status=NOT_OVERRIDDEN;
+ spf=fail smtp.mailfrom=m-atr.com arc_overridden_status=NOT_OVERRIDDEN;
+ dmarc=pass(p=NONE) header.from=m-atr.com arc_overridden_status=NOT_OVERRIDDEN;
+X-Apparently-To: user@example.com; Wed, 10 Dec 2025 13:24:51 +0000
+X-YMailISG: eK.a.lUWLDuH3J_RilQugUxyrsbJf_dlGq.Q7E816y6ZRc72
+ k8iHZUvDELUJNwE6Bx3ZcRQGD_1GoEH72Z9lel9XbZv.5Zjm_CgXT1oa.C0w
+ urqjLvuk9bixopnM_n.DZaRNH9bs2IXZ.UVc.D.ue6teb8VrGRLgIZ9dkHhG
+ aIDTtSPVe.pYYrlz_UE6JkiwaSi6vGTpAG4n15bCSp9D4Gfb5XP8W9FY6rSB
+ HvFpCFne.pSSsw2n.5UBYVcBSJHCY4T3JlGfPtHYZPX4Vvd_FcdVG7idMqs9
+ 7ycJRfWD4v_u5W20udTucKXdGBcV1zZAWsQKnQRJLS_HrjGum6qBaKHOh7lp
+ chzZopatbGYSFrj3MuwO43SrtZPODqZ21HjcSlvjZahTJwEYgrjA0d7nRu_0
+ ohWCI_1MNZ6yyWQb7bXRBNsFoRTP65P506zQiRXPXFfjLCdm5b2_eKCZnLSW
+ cAP0cFvQWCKNmcH8avYtkO9fvVwUYu.__L5WoNe6OLSQ9.Sf2ol3jlJD5uis
+ C3UPF90kRU21w7fPbuaZFUhBjvkarSYSUXwdtiQHz_ho_BJT2Z6WH0fdcnrU
+ eoaqR9EfOmg.WoSHA1gyruc6VAp.tNVAcPAlyhI3g2ToXcZO1DIqr_YBVBdL
+ uD2dsoGHeJWS.UufIaXkJFidRFSnzKY9U.B4s6MOpXPNVfJUNtJmICKthwHj
+ eC9UlU1ug515YaFhYHbQ1ytULfX3b8VtIM3E4.kaIH3aWweG4IAolzvoKjBP
+ IqbIwPDcNYAZo31B63rtP2YX83c8S0DnV6nW4.KOucXKcx6_rYTwGU6ErB.X
+ k4tWkMkueBzqbA_.8agy_Z.e2ey4OhnSzWXlS4dTD9R04zg1NtKpiKLigRir
+ b4M9eWwo9cwkTLZM8.SWXk7ohFIXYARi.1UQryhynZbfUakZQMEe8la6rqMV
+ YjAuWi0RHdJE95vW3MZYnYSOxHikmHRNFqzXBKOB1_wiAnyhkeZD4_t5XpJe
+ G6_ABxUiNhtNBSM1uMZcqZiDo8H_4PKGdeeYxpzOUFce9XdOMxLKxOwv0nzR
+ _1kM84dIAxqRo3ejao7Edeapmj3ZXsD_zvqrFO28Qzf3c3Ls2aH_I4XygQde
+ ec.9H4piW.5LZEl6pgQ2yurA6IEo8QBlSNeaY6QTjJKZUPqMmXVQuKwKnaoq
+ gKW_gFOW.W9IQ_iJQiuQWUJXSIH_38mjhcGPNS7XWCte3mHqQxdorgV3AWkd
+ hevaQNzqMglVz5yuovd8qPqThGjyCORHH0BSflo6NEjTlNonQ0Ar6LxkjHnb
+ mW3cbO9n_TZUj177ygRZbflM0yu_csYrthbITtfcNPNKWX2_FuWFUonJoaLl
+ jb7Q5R3_GNBl2k2sbNoV8G8e.A_t8FpF8QP06vyTgrE7RQQzYpxg41fDRFKi
+ zvtjdAaDM0eCQGRCWw--
+Received: from 34.218.26.148 (EHLO nutridata.b-glaw.com)
+ by 10.194.240.114 with SMTPs
+ (version=TLS1_2 cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256);
+ Wed, 10 Dec 2025 13:24:51 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=h1; d=m-atr.com;
+ h=To:From:Reply-To:Subject:Date:Message-ID:MIME-Version:Content-Type:
+ Content-Transfer-Encoding:List-Unsubscribe;
+ bh=O6HaTgKgKcxW3v8EhLKPkys6aYFnjTIYFqokQSZHAqo=;
+ b=bdyUKDq4rGZUn7uJEnwVZuGTpG44M+0299tdjo8pO8ZwYvcQuCGZtwfOnbPdhX1QL4b3qzHLBZ8E
+   8Oc+miB+r/QdnW+m6JOF6tGUKkmx0dNGD5B7xPSWUje/fQQzWwO/U643Q5ukAXSvAlaux/ooGpzB
+   PVTL3Fx7x0V/c7fcUbjfUYJwQhkQbdUd+Kg0ZM4z1U/UVLrRs4gMgmKLLQn4DAt109gQArldDOye
+   zCcQqwjIYDHmhWSI3I4o1eAsex+t1XAHgxm/d8RsmYYCznisykPLxFclI95ojRm3TU9czBw30QWf
+   t8EDJtDkl2A6pgHCieIJsIT7Y5MJjp8FGJDbZg==
+To: user@example.com
+From: =?UTF-8?B?4p6y4p6y4p6y?= =?UTF-8?B?8J2Xm/CdmIbwnZex8J2Xv/Cdl7zwnZem8J2XvPCdl7zwnZiB8J2XtfCdl7Jf8J2Xo/Cdl67wnZe/8J2YgfCdl7vwnZey8J2Xvw==?=    <HorizonGuardianRadiantShadowStra@m-atr.com>
+Reply-To: support@m-atr.com
+Subject: =?UTF-8?B?4p6y4p6y4p6y?= =?UTF-8?B?8J2Xn/Cdl67wnZiA8J2YgV/wnZew8J2XtfCdl67wnZe78J2XsPCdl7I6X/Cdl5rwnZey8J2YgV/wnZ+x8J2frCVf8J2XovCdl5nwnZeZX/CdmIHwnZe88J2XsfCdl67wnZiG4rWR?=
+Date: Wed, 10 Dec 2025 18:54:43 +0530
+Message-ID: <589875.215455042@m-atr.com>
+MIME-Version: 1.0
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+List-Unsubscribe: <mailto:unsubscribe@m-atr.com?subject=unsubscribe>, <https://m-atr.com/TgFP4oRsAscFrQa/n4/Yll3mMMx85ZGM/rr_Yx_MBck/Lvfe07sOoQ5rl/7e/6kmTvxKH8m35/xevreMY/SARR0bWdaQ/775Y/O5bJjnSfv5WQrw/red5x/mHbgMTEtyDukGs/YY7v5/Z8TZE1cm6v/>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [0.0.0.0]); Wed, 10 Dec 2025 13:31:14 +0000 (UTC)
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:v="urn:schemas-microsoft-com:vml"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>
+      BU72LHNJHZ g3s1 qey8jk BVFLRQBSA76ZR 1r1xc9c2evh6 LMRGT B7C5HTJJJJF
+    </title>
+
+    <style type="text/css">
+      body {
+        margin: 0;
+        padding: 0;
+        background: #f4f4f4;
+        font-family: Arial, Helvetica, sans-serif;
+        -webkit-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+      }
+      img {
+        display: block;
+        border: 0;
+        outline: none;
+        text-decoration: none;
+        -ms-interpolation-mode: bicubic;
+      }
+      table {
+        border-collapse: collapse;
+      }
+      .preheader {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        height: 0;
+        width: 0;
+        overflow: hidden;
+        mso-hide: all;
+      }
+    </style>
+  </head>
+
+  <body style="margin: 0; padding: 0; background: #f4f4f4">
+    <!-- Hidden Preheader -->
+    <div class="preheader">&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;</div>
+
+    <!-- Outer Wrapper -->
+    <table
+      role="presentation"
+      width="100%"
+      cellpadding="0"
+      cellspacing="0"
+      bgcolor="#f4f4f4"
+    >
+      <tr>
+        <td align="center" style="padding: 20px 10px">
+          <!-- 640px Container -->
+          <table
+            role="presentation"
+            width="640"
+            cellpadding="0"
+            cellspacing="0"
+            bgcolor="#ffffff"
+            style="max-width: 640px; width: 100%"
+          >
+            <!-- MAIN IMAGE -->
+            <tr>
+              <td align="center">
+                <a
+                  href="http://fugioverystore.com/wz8eG9Zsa2thkS/6Z/3S4raVYKARFiWgF/rr_Yx_MBck/C3LHwJuMJj6O/7e/N9ku3zuLn305xf/xevreMY/DIu5A7zWDTzb/775Y/uNk7KsoARI/red5x/5A9XVcBmKUgbQFV/YY7v5/mkgdDUlxuEJUl/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style="text-decoration: none; border: 0"
+                >
+                  <img
+                    src="http://fugioverystore.com/270799400834398.jpg"
+                    alt="View details"
+                    width="640"
+                    style="width: 100%; max-width: 640px; height: auto"
+                  />
+                </a>
+              </td>
+            </tr>
+
+            <!-- Spacer -->
+            <tr>
+              <td style="height: 18px; line-height: 18px; font-size: 18px">
+                &nbsp;
+              </td>
+            </tr>
+
+            <!-- UNSUBSCRIBE IMAGE + TEXT -->
+            <tr>
+              <td align="center" style="padding-bottom: 20px">
+                <a
+                  href="http://fugioverystore.com/TgFP4oRsAscFrQa/n4/Yll3mMMx85ZGM/rr_Yx_MBck/Lvfe07sOoQ5rl/7e/6kmTvxKH8m35/xevreMY/SARR0bWdaQ/775Y/O5bJjnSfv5WQrw/red5x/mHbgMTEtyDukGs/YY7v5/Z8TZE1cm6v/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style="text-decoration: none; border: 0"
+                >
+                  <img
+                    src="http://fugioverystore.com/401181008874925.png"
+                    alt="Unsubscribe"
+                    style="
+                      display: inline-block;
+                      max-width: 640px;
+                      height: auto;
+                      border: 0;
+                    "
+                  />
+                </a>
+
+                <div style="font-size: 12px; color: #666; margin-top: 8px">
+                  If you prefer not to receive these emails,
+                  <a
+                    href="http://fugioverystore.com/TgFP4oRsAscFrQa/n4/Yll3mMMx85ZGM/rr_Yx_MBck/Lvfe07sOoQ5rl/7e/6kmTvxKH8m35/xevreMY/SARR0bWdaQ/775Y/O5bJjnSfv5WQrw/red5x/mHbgMTEtyDukGs/YY7v5/Z8TZE1cm6v/"
+                    style="color: #666; text-decoration: underline"
+                  >
+                    unsubscribe here </a
+                  >.
+                </div>
+              </td>
+            </tr>
+          </table>
+          <!-- End Container -->
+        </td>
+      </tr>
+    </table>
+
+    <!-- Tracking Pixel -->
+    <img
+      src="http://fugioverystore.com/yZjuKUjSQnx1U/UX/H9SXcKgwM0/rr_Yx_MBck/gjitkvP0C0/7e/mio1tLQeyma/xevreMY/0aPfusdqwkyNuR/775Y/skq1wxelQP2Uc/red5x/UhaUWeechvzpRcJ/YY7v5/t2JKR48TeNx/"
+      width="1"
+      height="1"
+      alt=""
+      style="display: block; visibility: hidden"
+    />
+  </body>
+</html>

@@ -1,0 +1,226 @@
+Return-Path: <return@m-atr.com>
+Received: from juliett.baddomain.com (localhost [127.0.0.1])
+	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTP id 5BA71WQb008536
+	for <mstowe@localhost>; Wed, 10 Dec 2025 07:01:33 GMT
+	(envelope-from return@m-atr.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=m-atr.com header.i=@m-atr.com header.b=z7A0xdVq
+Received: from jimapinternal-aol.imap.mail.g03.yahoodns.net [67.195.228.147]
+	by juliett.baddomain.com with IMAP (fetchmail-6.6.1)
+	for <mstowe@localhost> (single-drop); Wed, 10 Dec 2025 07:01:33 +0000 (UTC)
+Received: from 10.226.14.165
+ by atlas208.aol.mail.ne1.yahoo.com pod-id NONE with HTTPS; Wed, 10 Dec 2025 06:59:38 +0000
+X-Originating-Ip: [54.212.226.19]
+Received-SPF: fail (domain of m-atr.com does not designate 54.212.226.19 as permitted sender)
+Authentication-Results: atlas208.aol.mail.ne1.yahoo.com;
+ dkim=pass header.i=@m-atr.com header.s=h1 arc_overridden_status=NOT_OVERRIDDEN;
+ spf=fail smtp.mailfrom=m-atr.com arc_overridden_status=NOT_OVERRIDDEN;
+ dmarc=pass(p=NONE) header.from=m-atr.com arc_overridden_status=NOT_OVERRIDDEN;
+X-Apparently-To: user@example.com; Wed, 10 Dec 2025 06:59:38 +0000
+X-YMailISG: gWPS_HEWLDtmsIkac1VEZ458wWs2VRjPs9.oC_eiQllSvgM4
+ arMZapRpdbeykjycoEFUh4WlFxzcoOFBPb1JmjIKNnZfZvxsWHrCRrjBNaou
+ C43xE.K8gu7TxR9yz90lr_r_mefx36EtOdWzoXX6xJQz8THTf2c1Atgx6BgP
+ _TxLrQGsEHteJja7ID0LGVtLvOLuWlpXomsUFRHmoMtTfiCWGBPrFmXCB6eZ
+ i9M_9mCbGoxcZ22qKeyauAbfTJFs4sQkjbVq2X1iUPDIZGAj.xCo1WY9i05L
+ nF_xczy.EMOyU7Nr03g0DOhGBDR8y.IHzCspjxWVPzc9IjtwAIM9YERoUNQt
+ 5YRKm7VHLv3RKjNwji64780JpCXs8u.IspZvnEFssn3DZWbkXzwf6JgCYZ_C
+ OTnBiYZZRZ0ec8znQY_YvZshK6dWIc7Sms37qRxTcS_niml_neS8OSL9z02u
+ L3r56VYBpgV9LGaggqMEOZkYTlRVchZR.KvJA0APENNJzWQL9GVdBdq487vZ
+ m4fKWaT6tR.n0yuhMVZ_madvZ6JkejndTAtXH3GgkErKHX1fNGOA8c3ZB5F3
+ j1GQZjDmuAzLq7_XZva70L0GggMC5O2qmk3XonD.4ORPIsyj.JXr85Dom5nz
+ x2H.fSiPP5maUcw4jRem4ofFIdkMysS6wcvMUuQ4gmLjYfX6fgPbsoCApUOv
+ J4ipSolJosLYObzQVzzCYlEUCGyFO2AAjJSWORO1ajLxekB1LRb_RfDJZcE1
+ yuFE3hYFrFjd7wx4h9SnMiOeWpW_WST0657Fb9Nx0GEL3B_GkYrOlqbZPhIw
+ vt1B_5V0MLGliOQYOAVWQ9q3GC2vHwSCx.NjE9RJBKk1r5wJT5DamHNADcHP
+ 70FfrITuzLbnvgb8xnYfcj_1f6FVUT710Y7Gbwwg5L2zE1NjD7c7F3BhVDgp
+ GQJB4zkw.6Q0sCZ44jMehdx2btZQ1m0fjWkHZVV_fZ7vRQli4RIZxjmlTAnl
+ A1vFcOfOAj11E9GYn3MTUpTL4Q1doVU_9zirlhN_HLJQ_ixs0e0GJBTgP4OH
+ RbHzsmkjA..jdVjEYh9X1rJNJXUDvIG3uEtRlIwZ8CHQsPwBih8nUXH.6PJX
+ e9c70IUtbt1vrxkgY2k8clyUtp2COGN6wAqGTm8bEGKFUzvKp.pcwBQmpgcU
+ DtGl.1Th.fxJ_pz90vxxhnQG3Pe0STUOb93XZVRkPgLbeZN1oOlqR5wp4ebW
+ lPOND9muOrHbbTR9ZItr.z1JhZNSBigaK2rmKKoWYxpVRvta6Jk2p7BX5.bK
+ 3IhZgwxUGUJJvkYAywUV.c_F2g5Y0BlxjonlvJ9VfBbBXShNFWn3F9M2TYFI
+ 3sajdGK8FguRVQb19cSVkv5Crnft2Q--
+Received: from 54.212.226.19 (EHLO cardiocenter.dekirukoto.com)
+ by 10.226.14.165 with SMTPs
+ (version=TLS1_2 cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256);
+ Wed, 10 Dec 2025 06:59:38 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=h1; d=m-atr.com;
+ h=Content-Transfer-Encoding:Content-Type:Message-ID:To:Date:MIME-Version:
+ Subject:From:List-Unsubscribe;
+ bh=Wxrabtni1enMLGz0mNUs4D175+FnIqDLALILV2SA7iw=;
+ b=z7A0xdVqX76njztkV1SBCr727wyyo4tqbZU6dBdZvj+SsKc9osBAclCer58FzAQF2tUHjHCyaDXr
+   YTLSbqWI+FzYCQ9OYg81UGgq9qoqEtJ+zQCXFOf3k836psraTPG6DdjGHu9Rk/JUx7EAfyG3TE6B
+   yeNzK8cnYtp6I+S0tBM8qjLP5h0WFob4AKLwXTNWcbcDMd/rmtcEwLYs2r98YsAjMp2A6h30Eb+A
+   1oV/ev8DWYYPkoqfOsbaTOIe0q9s0zhCb7sQFbttMU2R3YAQGPNBp9HOvV0qmtMTF5RdZNr+Pwtt
+   y2n9o87bJ9E3FccH1p3UnZkxdSR+Zhae1aD0hg==
+Content-Transfer-Encoding: 7bit
+Content-Type: text/html; charset="UTF-8"
+Message-ID: <555-123-4567.e0ktAg6ZrLS7.5047155331560@m-atr.com>
+To: user@example.com
+Date: Wed, 10 Dec 2025 12:29:33 +0530
+MIME-Version: 1.0
+Subject:  =?UTF-8?B?4oen4oen4oen?=       Still Time to Gift Better Sleep b Holiday Shipping Ends Soon
+From:  =?UTF-8?B?4oen4oen4oen?=      Miracle Brand Affiliate            <HyperFireflyGalaxyWhisperingArd@m-atr.com>
+Feedback-ID: 7615095:SMTPCOM
+X-SMTPCOM-Sender-ID: 7615095
+X-SMTPCOM-Tracking-Number: m3RM0NBq-723w-1894-X6diDSfjkc6Ep
+X-SMTPCOM-Message-ID: m3RM0NBq-P3BH-P3BH-P3BH-X6diDSfjkc6Ep
+X-SMTPCOM-Payload: 
+ 0G-JdEkDVwK4cp8xuUsx1Vd7-3n9XRoCJN9hR-CpklMSfM6c0pUrNLbQ_DbUW7Cd6jpSoRntX_CHmEkms-F6EdHt8vlQzkx6u
+List-Unsubscribe: 
+ <mailto:abuse-pro@new.m-atr.com?subject=MailStop&body=m3RM0NBq-P3BH-P3BH-P3BH-X6diDSfjkc6Ep_7615095>,
+ <https://new.m-atr.com/v4/unsubscribe?mid=m3RM0NBq-P3BH-P3BH-P3BH-X6diDSfjkc6Ep&sid=7615095>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [0.0.0.0]); Wed, 10 Dec 2025 07:01:33 +0000 (UTC)
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html dir="ltr" xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office" lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <meta name="x-apple-disable-message-reformatting">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta content="telephone=no" name="format-detection">
+  <title>Miracle Sheet</title><!--[if (mso 16)]>
+    <style type="text/css">
+    a {text-decoration: none;}
+    </style>
+    <!--><!--[if gte mso 9]><style>sup { font-size: 100% !important; }</style><!--><!--[if gte mso 9]>
+<noscript>
+         <xml>
+           <o:OfficeDocumentSettings>
+           <o:AllowPNG></o:AllowPNG>
+           <o:PixelsPerInch>96</o:PixelsPerInch>
+           </o:OfficeDocumentSettings>
+         </xml>
+      </noscript>
+<!--><!--[if mso]><xml>
+    <w:WordDocument xmlns:w="urn:schemas-microsoft-com:office:word">
+      <w:DontUseAdvancedTypographyReadingMail/>
+    </w:WordDocument>
+    </xml><!-->
+  <style type="text/css">
+rollover:hover .rollover-first {
+  max-height:0px!important;
+  display:none!important;
+}
+rollover:hover .rollover-second {
+  max-height:none!important;
+  display:block!important;
+}
+rollover span {
+  font-size:0px;
+}
+u + .body img ~ div div {
+  display:none;
+}
+#outlook a {
+  padding:0;
+}
+span.MsoHyperlink,
+span.MsoHyperlinkFollowed {
+  color:inherit;
+  mso-style-priority:99;
+}
+a.es-button {
+  mso-style-priority:100!important;
+  text-decoration:none!important;
+}
+a[x-apple-data-detectors],
+#MessageViewBody a {
+  color:inherit!important;
+  text-decoration:none!important;
+  font-size:inherit!important;
+  font-family:inherit!important;
+  font-weight:inherit!important;
+  line-height:inherit!important;
+}
+es-desk-hidden {
+  display:none;
+  float:left;
+  overflow:hidden;
+  width:0;
+  max-height:0;
+  line-height:0;
+  mso-hide:all;
+}
+@media only screen and (max-width:600px) {.es-m-p20b { padding-bottom:20px!important } .es-p-default { } *[class="gmail-fix"] { display:none!important } p, a { line-height:150%!important } h1, h1 a { line-height:120%!important } h2, h2 a { line-height:120%!important } h3, h3 a { line-height:120%!important } h4, h4 a { line-height:120%!important } h5, h5 a { line-height:120%!important } h6, h6 a { line-height:120%!important } .es-header-body p { } .es-content-body p { } .es-footer-body p { } .es-infoblock p { } h1 { font-size:40px!important; text-align:left } h2 { font-size:32px!important; text-align:left } h3 { font-size:28px!important; text-align:left } h4 { font-size:24px!important; text-align:left } h5 { font-size:20px!important; text-align:left } h6 { font-size:16px!important; text-align:left } .es-header-body h1 a, .es-content-body h1 a, .es-footer-body h1 a { font-size:40px!important } .es-header-body h2 a, .es-content-body h2 a, .es-footer-body h2 a { font-size:32px!important } .es-header-body h3 a, .es-content-body h3 a, .es-footer-body h3 a { font-size:28px!important } .es-header-body h4 a, .es-content-body h4 a, .es-footer-body h4 a { font-size:24px!important } .es-header-body h5 a, .es-content-body h5 a, .es-footer-body h5 a { font-size:20px!important } .es-header-body h6 a, .es-content-body h6 a, .es-footer-body h6 a { font-size:16px!important } .es-menu td a { font-size:14px!important } .es-header-body p, .es-header-body a { font-size:14px!important } .es-content-body p, .es-content-body a { font-size:14px!important } .es-footer-body p, .es-footer-body a { font-size:14px!important } .es-infoblock p, .es-infoblock a { font-size:12px!important } .es-m-txt-c, .es-m-txt-c h1, .es-m-txt-c h2, .es-m-txt-c h3, .es-m-txt-c h4, .es-m-txt-c h5, .es-m-txt-c h6 { text-align:center!important } .es-m-txt-r, .es-m-txt-r h1, .es-m-txt-r h2, .es-m-txt-r h3, .es-m-txt-r h4, .es-m-txt-r h5, .es-m-txt-r h6 { text-align:right!important } .es-m-txt-j, .es-m-txt-j h1, .es-m-txt-j h2, .es-m-txt-j h3, .es-m-txt-j h4, .es-m-txt-j h5, .es-m-txt-j h6 { text-align:justify!important } .es-m-txt-l, .es-m-txt-l h1, .es-m-txt-l h2, .es-m-txt-l h3, .es-m-txt-l h4, .es-m-txt-l h5, .es-m-txt-l h6 { text-align:left!important } .es-m-txt-r img, .es-m-txt-c img, .es-m-txt-l img { display:inline!important } .es-m-txt-r .rollover:hover .rollover-second, .es-m-txt-c .rollover:hover .rollover-second, .es-m-txt-l .rollover:hover .rollover-second { display:inline!important } .es-m-txt-r .rollover span, .es-m-txt-c .rollover span, .es-m-txt-l .rollover span { line-height:0!important; font-size:0!important; display:block } .es-spacer { display:inline-table } a.es-button, button.es-button { font-size:14px!important; padding:10px 20px 10px 20px!important; line-height:120%!important } a.es-button, button.es-button, .es-button-border { display:inline-block!important } .es-m-fw, .es-m-fw.es-fw, .es-m-fw .es-button { display:block!important } .es-m-il, .es-m-il .es-button, .es-social, .es-social td, .es-menu.es-table-not-adapt { display:inline-block!important } .es-adaptive table, .es-left, .es-right { width:100%!important } .es-content table, .es-header table, .es-footer table, .es-content, .es-footer, .es-header { width:100%!important; max-width:600px!important } .adapt-img { width:100%!important; height:auto!important } .es-adapt-td { display:block!important; width:100%!important } .es-mobile-hidden, .es-hidden { display:none!important } .es-container-hidden { display:none!important } .es-desk-hidden { width:auto!important; overflow:visible!important; float:none!important; max-height:inherit!important; line-height:inherit!important } tr.es-desk-hidden { display:table-row!important } table.es-desk-hidden { display:table!important } td.es-desk-menu-hidden { display:table-cell!important } .es-menu td { width:1%!important } table.es-table-not-adapt, .esd-block-html table { width:auto!important } .h-auto { height:auto!important } }
+@media screen and (max-width:384px) {.mail-message-content { width:414px!important } }
+</style>
+ </head>
+ <body class="body" style="width:100%;height:100%;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;padding:0;Margin:0">
+  <div dir="ltr" class="es-wrapper-color" lang="en" style="background-color:#FFFFFF"><!--[if gte mso 9]>
+			<v:background xmlns:v="urn:schemas-microsoft-com:vml" fill="t">
+				<v:fill type="tile" color="#FFFFFF"></v:fill>
+			</v:background>
+		<!-->
+   <table width="100%" cellspacing="0" cellpadding="0" class="es-wrapper" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-spacing:0px;padding:0;Margin:0;width:100%;height:100%;background-color:#FFFFFF">
+     <tr>
+      <td valign="top" style="padding:0;Margin:0">
+       <table cellspacing="0" cellpadding="0" align="center" class="es-content" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-spacing:0px;width:100%;table-layout:fixed !important">
+         <tr>
+          <td align="center" style="padding:0;Margin:0">
+           <table cellspacing="0" cellpadding="0" bgcolor="#ffffff" align="center" class="es-content-body" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-spacing:0px;background-color:#FFFFFF;width:800px">
+             <tr>
+              <td align="left" style="padding:0;Margin:0;padding-top:20px;padding-right:20px;padding-left:20px">
+               <table width="100%" cellspacing="0" cellpadding="0" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-spacing:0px">
+                 <tr>
+                  <td valign="top" align="center" style="padding:0;Margin:0;width:560px">
+                   <table width="100%" cellspacing="0" cellpadding="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-spacing:0px">
+                     <tr>
+                      <td align="center" style="padding:0;Margin:0"><h4 style="Margin:0;font-family:arial, 'helvetica neue', helvetica, sans-serif;mso-line-height-rule:exactly;letter-spacing:0;font-size:15px;font-style:normal;font-weight:normal;line-height:28.8px;color:#333333"><span style="color:#6aa84f"><a href="http://wilehpointers.com/ZtCwvFQ4lJuoJH/6Z/Xju5JSOZF0oVP/rr_5er5Bck/rWQIoa4TPV3ofh/er/NVHWdBtUdip/xevrMed/vbQlqC2YO1P/7evx/FAmRGrDhca4dz/red5x/XDrbBMahYqHN/YY7v5/jDPF7gPOK7fR7e/"><h3>Still Time to Gift Better Sleep b Holiday Shipping Ends Soon.</h3></span> </a></h4></td>
+                     </tr>
+                   </table></td>
+                 </tr>
+               </table></td>
+             </tr>
+           </table></td>
+         </tr>
+       </table>
+       <table cellspacing="0" cellpadding="0" align="center" class="es-content" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-spacing:0px;width:100%;table-layout:fixed !important">
+         <tr>
+          <td align="center" style="padding:0;Margin:0">
+           <table cellspacing="0" cellpadding="0" bgcolor="#ffffff" align="center" class="es-content-body" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-spacing:0px;background-color:#FFFFFF;width:600px">
+             <tr>
+              <td align="left" style="padding:0;Margin:0;padding-top:20px;padding-right:20px;padding-left:20px">
+               <table cellpadding="0" width="100%" cellspacing="0" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-spacing:0px">
+                 <tr>
+                  <td valign="top" align="center" style="padding:0;Margin:0;width:560px">
+                   <table cellpadding="0" width="100%" cellspacing="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-spacing:0px">
+                     <tr>
+                      <td align="center" style="padding:0;Margin:0;font-size:0"><a href="http://wilehpointers.com/ZtCwvFQ4lJuoJH/6Z/Xju5JSOZF0oVP/rr_5er5Bck/rWQIoa4TPV3ofh/er/NVHWdBtUdip/xevrMed/vbQlqC2YO1P/7evx/FAmRGrDhca4dz/red5x/XDrbBMahYqHN/YY7v5/jDPF7gPOK7fR7e/"><img src="http://wilehpointers.com/647430626877719.jpg" alt="image"/></a></td>
+                     </tr>
+                   </table></td>
+                 </tr>
+               </table></td>
+             </tr>
+           </table></td>
+         </tr>
+       </table><br><br>
+       <table cellspacing="0" cellpadding="0" align="center" class="es-footer" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-spacing:0px;width:100%;table-layout:fixed !important;background-color:transparent">
+         <tr>
+          <td align="center" style="padding:0;Margin:0">
+           <table cellspacing="0" cellpadding="0" bgcolor="#ffffff" align="center" class="es-footer-body" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-spacing:0px;background-color:#FFFFFF;width:600px">
+             <tr>
+              <td align="center" style="Margin:0;padding-top:20px;padding-right:20px;padding-left:20px;padding-bottom:20px">
+               <table cellspacing="0" cellpadding="0" align="center" class="es-left" role="none" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-spacing:0px;float:left">
+                 <tr>
+                  <td align="center" class="es-m-p20b" style="padding:0;Margin:0;width:560px">
+                   <table width="100%" cellspacing="0" cellpadding="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-spacing:0px">
+                     <tr>
+                      <td align="center" style="padding:0;Margin:0;font-size:0"><a href="http://wilehpointers.com/0DRX50WwJWBxa8/n4/agCPJzVobt/rr_5er5Bck/g9ekFeMmZE/er/LYVvqgvlftpG9Z/xevrMed/Sb5bkaaojFqTRfn/7evx/OcK0qOsBULOoID/red5x/qFbrN0p2iSi/YY7v5/yldp1fXXtBeSjPw/"><img src="http://wilehpointers.com/387635555267892.png" alt="Unsubscribe"/></a></td>
+                     </tr>
+                   </table></td>
+                 </tr>
+               </table></td>
+             </tr>
+           </table></td>
+         </tr>
+       </table></td>
+     </tr>
+     
+   </table>
+  </div>
+ </body>
+</html>

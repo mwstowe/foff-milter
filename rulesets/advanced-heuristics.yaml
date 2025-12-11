@@ -71,10 +71,18 @@ rules:
   - name: "Urgency Pattern Recognition"
     enabled: true
     criteria:
-      type: "SubjectPattern"
-      pattern: "(?i).*(urgent|asap|immediate|emergency|critical|important|action.*required|respond.*now|expires.*today).*"
-    score: 5
-    description: "Artificial urgency patterns (reduced - relies on context analyzer for main detection)"
+      type: "Or"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(urgent|asap|immediate|emergency|critical|important|action.*required|respond.*now|expires.*today).*"
+        - type: "HeaderPattern"
+          header: "Priority"
+          pattern: "(?i)urgent"
+        - type: "HeaderPattern"
+          header: "X-Priority"
+          pattern: "^1"
+    score: 30
+    description: "Artificial urgency patterns in subject or priority headers"
 
   - name: "Weak Signal Aggregation"
     enabled: true

@@ -1271,6 +1271,17 @@ impl FeatureExtractor for SenderAlignmentAnalyzer {
             );
         }
 
+        // Check for domain-content mismatch
+        let domain_content_score =
+            self.check_domain_content_mismatch(context, &sender_info.from_domain);
+        score += domain_content_score.0;
+        evidence.extend(domain_content_score.1);
+
+        // Check for excessive sender length
+        let sender_length_score = self.check_sender_length(context);
+        score += sender_length_score.0;
+        evidence.extend(sender_length_score.1);
+
         FeatureScore {
             feature_name: "Sender Alignment".to_string(),
             score,
@@ -1313,6 +1324,81 @@ impl SenderAlignmentAnalyzer {
         job_indicators
             .iter()
             .any(|&indicator| combined_text.contains(indicator))
+    }
+
+    fn check_domain_content_mismatch(
+        &self,
+        context: &MailContext,
+        domain: &str,
+    ) -> (i32, Vec<String>) {
+        let mut score = 0;
+        let mut evidence = Vec::new();
+
+        // Get email content
+        let subject = context.subject.as_deref().unwrap_or("");
+        let body = context.body.as_deref().unwrap_or("");
+        let combined_content = format!("{} {}", subject, body).to_lowercase();
+
+        // Define domain categories and their expected content
+        let medical_domains = ["gastricbypass", "weightloss", "diet", "supplement"];
+        let financial_domains = ["bank", "credit", "finance", "loan", "investment", "trading"];
+
+        // Check for medical domain with non-medical content (only for suspicious medical domains)
+        if medical_domains.iter().any(|&med| domain.contains(med)) {
+            // Only flag if it's clearly financial scam content, not legitimate medical billing
+            if (combined_content.contains("creditcard") || combined_content.contains("credit card"))
+                && (combined_content.contains("bill") || combined_content.contains("resolution"))
+                && !combined_content.contains("medical")
+                && !combined_content.contains("health")
+            {
+                score += 40;
+                evidence.push("Medical domain sending credit card billing content".to_string());
+            }
+        }
+
+        // Check for financial domain with non-financial content
+        if financial_domains.iter().any(|&fin| domain.contains(fin))
+            && (combined_content.contains("medical")
+                || combined_content.contains("health")
+                || combined_content.contains("doctor")
+                || combined_content.contains("treatment"))
+        {
+            score += 35;
+            evidence.push("Financial domain sending medical content".to_string());
+        }
+
+        (score, evidence)
+    }
+
+    fn check_sender_length(&self, context: &MailContext) -> (i32, Vec<String>) {
+        let mut score = 0;
+        let mut evidence = Vec::new();
+
+        if let Some(from_header) = &context.from_header {
+            // Extract email address from From header
+            if let Some(email_start) = from_header.rfind('<') {
+                if let Some(email_end) = from_header.rfind('>') {
+                    let email = &from_header[email_start + 1..email_end];
+                    let email_length = email.len();
+
+                    if email_length > 60 {
+                        score += 25;
+                        evidence.push(format!(
+                            "Excessively long sender email address ({} characters)",
+                            email_length
+                        ));
+                    } else if email_length > 45 {
+                        score += 15;
+                        evidence.push(format!(
+                            "Very long sender email address ({} characters)",
+                            email_length
+                        ));
+                    }
+                }
+            }
+        }
+
+        (score, evidence)
     }
 }
 impl SenderAlignmentAnalyzer {}

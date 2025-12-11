@@ -179,6 +179,12 @@ async fn main() {
                 .action(clap::ArgAction::Set),
         )
         .arg(
+            Arg::new("disable-same-server")
+                .long("disable-same-server")
+                .help("Disable same-server email detection (useful for testing)")
+                .action(clap::ArgAction::SetTrue),
+        )
+        .arg(
             Arg::new("list-modules")
                 .long("list-modules")
                 .help("List available detection modules and their status")
@@ -231,12 +237,14 @@ async fn main() {
     }
 
     if let Some(email_file) = matches.get_one::<String>("test-email") {
+        let disable_same_server = matches.get_flag("disable-same-server");
         test_email_file(
             &config,
             &whitelist_config,
             &blocklist_config,
             &toml_config,
             email_file,
+            disable_same_server,
         )
         .await;
         return;
@@ -856,6 +864,7 @@ async fn test_email_file(
     blocklist_config: &Option<BlocklistConfig>,
     toml_config: &Option<TomlConfig>,
     email_file: &str,
+    disable_same_server: bool,
 ) {
     use foff_milter::filter::MailContext;
     use foff_milter::Action;
@@ -1035,6 +1044,9 @@ async fn test_email_file(
 
     // Set blocklist configuration if available
     filter_engine.set_blocklist_config(blocklist_config.clone());
+
+    // Set same-server detection based on flag
+    filter_engine.set_same_server_detection(!disable_same_server);
 
     // Set sender blocking configuration if available
     if let Some(toml_cfg) = &toml_config {

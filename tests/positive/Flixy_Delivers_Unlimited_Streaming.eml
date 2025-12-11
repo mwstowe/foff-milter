@@ -1,0 +1,202 @@
+Return-Path: <return@m-atr.com>
+Received: from juliett.baddomain.com (localhost [127.0.0.1])
+	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTP id 5BA8WoJt011544
+	for <mstowe@localhost>; Wed, 10 Dec 2025 08:32:50 GMT
+	(envelope-from return@m-atr.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=m-atr.com header.i=@m-atr.com header.b=LP69A1y2
+Received: from jimapinternal-aol.imap.mail.g03.yahoodns.net [67.195.228.147]
+	by juliett.baddomain.com with IMAP (fetchmail-6.6.1)
+	for <mstowe@localhost> (single-drop); Wed, 10 Dec 2025 08:32:50 +0000 (UTC)
+Received: from 127.0.0.1
+ by atlas-production.v2-mail-prod1-bf1.omega.yahoo.com pod-id atlas--production-bf1-548fcfdbc7-dmrwk.bf1.yahoo.com with HTTP; Wed, 10 Dec 2025 08:31:56 +0000
+X-Originating-Ip: [44.254.83.87]
+Received-SPF: fail (domain of m-atr.com does not designate 44.254.83.87 as permitted sender)
+Authentication-Results: atlas-production.v2-mail-prod1-bf1.omega.yahoo.com;
+ dkim=pass header.i=@m-atr.com header.s=h1 arc_overridden_status=NOT_OVERRIDDEN;
+ spf=fail smtp.mailfrom=m-atr.com arc_overridden_status=NOT_OVERRIDDEN;
+ dmarc=pass(p=NONE) header.from=m-atr.com arc_overridden_status=NOT_OVERRIDDEN;
+X-Apparently-To: user@example.com; Wed, 10 Dec 2025 08:31:56 +0000
+X-YMailISG: .QjG0cAWLDvkWvf8su9PmA.7szvjtfcTJuZj_3DApCY5J6UT
+ qiJGiGa2XowjrDTiTiVV_Fi4G7XJ9LpBEZocaVZVnh1Qg141mkkaiwo8LFQg
+ fII2rsLr.TN1WVl3uy0KT9eMKAkG3K8_xNfvmuMmDUFGdxI6pCoAGFVrh_PO
+ uL0Ku.kd6OKAo15SvfHT_jmArMb4G2lyNaErvoQd5Vq3L9ddY_k1Xw0Mc_Ol
+ NpxOYyy1xOqHBgCRMq_lRLqcZyV1oPARs80fiXENH78rcaElsMQk00nnHV4g
+ x9cvcyQd_sJEDdWy39mdtP3CKeL2M.NFXT5Xk2_4HY4y5AWvLc.BBzuACQmN
+ Mpnkc6YvAFDl4PhP4GAigCaTHrao0mM0FjnXGXpYsci2iO_CQZaIbblOxzuQ
+ Ea7.PT.x0dELzNBV4ElyI1uHow9DgOlOiZLmaP6O8LlD9n9wNyoGhcshyKcu
+ 9zt8PGwVwb9jz3UC44Wdetco05mvj0uVe1xhYmlWJsFXQWmZoJz0tzQk1JCQ
+ PqnTeUcf8fdLMeFvkiHIc.ZkZzdJq32i9AnRRDEgnO0tjPL19LmJ7cuEXiss
+ TyQ_lCHOmAeQfgH9purK6poxkE9YciAPKSwR4x9QTaSPBO.rQLgGqQwawaAO
+ Vp1eyQv4aCAVqNOYNDH9jHCD0SWJozE3QSEFT1aPhProq.p6YkMwzY4OaXSq
+ SMuAGgUcNa8qFht8l6hI9jhp13EYwnHdy47LF6ZiCkJYuA5lmq6QTAJ7fhSZ
+ jl1bEOAldAPh3ID1JAKW9pntWogmR4ow6ggJax4ugW8DaW1N4sFnP4rRpEdA
+ WD0lOeZ3nnM0qya.qw8Vh9pIEp2nz0AESWeKiMrvFXBBm3_KhbjHXeSg4age
+ oY0yodHrMOXw0GgYKT1LZitTO64bQBrClxrV8o.l9dDcgEN3yDBc51.KGaoH
+ lgWQei3E3wU6ey1SrlqEIWw83hxl30zyW_Nqdagarn7_zduY5TxJhQeWgDV6
+ XQFNWkpCVi0H7W7vD_qy98EXU1QSd7LbgjdYP7p9cg0OjgcT92.9EWGtXsD4
+ lRRrG.ZcpBQgkxBhEFAjlaVRw.bvKJChRnRtm_NBlqRtQw_ScK1SrRIqZ85G
+ s82RSBOdJseTdVQdlBsDLClEJIWZkaShXzwTOgokH51P6V07MdczdNz9LUzK
+ H4mGYOVUrZbUBSA55zHtGqdDppVCXPde2KCozLgeFsTZAtK4O1GHz7ScoR7N
+ GmeUn8m70THOZ1v1hu_WmXm4UdrziY9sFIvwwanIsHMBIAwcrbGCpyFtHGh_
+ MvBeOhxuHroiazmwT0gBH1ThKH3rZ8mzHNlLNy94C2FTJpHuWtPaGM9deQt.
+ JHmn9iq0bdxxM1Xk4_JCoh2mZlon4MZhgDlc5DMOYhlEgnohYLlAr8DDAna3
+ iEjVfkoBu9Ip2ZoDvEZN_jI7Bl9dEf8-
+Received: from 44.254.83.87 (EHLO cellindex.nicosgenuine.com)
+ by 10.196.217.15 with SMTPs
+ (version=TLS1_2 cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256);
+ Wed, 10 Dec 2025 08:31:56 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=h1; d=m-atr.com;
+ h=From:Reply-To:To:Subject:MIME-Version:Date:Message-ID:Content-Type:
+ Content-Transfer-Encoding:List-Unsubscribe:List-Id;
+ bh=9NKmtLWR5NhPf3JrTurgjtQFPp9tVvT/8QRjxdkfoxY=;
+ b=LP69A1y2DD9iswGSSrRNJ8Tlxyizv5x2oXiF8g7oppLTuOGhgRDv3grXCN8Bmf0CHQni1uXDZW4H
+   c73oTRR3oZIP5/JUJkCakikxM919AvpMCde5DXt6xh1IFET4RmWpEUX/AyMDn5dwDy8NBKVvUKE4
+   Ay//Btk8O4PEEgmroKjqtCjmj137sG5xGDsZZEptDqSu1g0gMOX5ETKRapdXF6y9UIjNKx3Vaped
+   qHZTEnxp6z//RJilzO2cKFn2Olb5DiAPU7Ahui+XhRhe7il8epikPaF2LJGTTgqdHaFIn9nD4MrM
+   XxpdeUIHYSDoFofiMlfr3PJwIkN/J3W2MmQARQ==
+From:  =?UTF-8?B?4oCiIOKcpQ==?=TechTrends_Flixy<HalcyonShadowSolsticeFluxSpectrum@m-atr.com>
+Reply-To: m-atr.com@jimapinternal-aol.imap.mail.g03.yahoodns.net
+To: user@example.com
+Subject:     =?UTF-8?B?4oCiIOKcpQ==?=Flixy Delivers Unlimited Streaming    
+MIME-Version: 1.0
+Date: Wed, 10 Dec 2025 14:01:42 +0530
+Message-ID: <ppc3j1pt6typ.8946520@m-atr.com>
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: 172.31.60.223
+List-Unsubscribe: <mailto:IKXDFUSBCUBH8EJ1NYDUTXT7SFN@manage.m-atr.com?subject=unsubscribe>, <http://m-atr.com/WLpiR0PvJI/n4/tMLUeHN4KEfTT1F/rr_55M_Bck/DxfXhQapv04QG/rrd7/VXawGe3j6CLaj/xevrx5_/2P7sc0eiPev/77x7/coOIMywMU1/red5x/K0JaKHk6wZ/YY7v5/PZYR8BVtzVFcs/>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+List-Id: <rlkqrg.m-atr.com>
+Precedence: bulk
+Feedback-ID: bf2025:promotions.m-atr.com
+X-Complaints-To: abuse@m-atr.com
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [0.0.0.0]); Wed, 10 Dec 2025 08:32:51 +0000 (UTC)
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:v="urn:schemas-microsoft-com:vml"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>
+      LWJGCK7W0C sd0i pxb0qw QLFMYOXTNHNY2 xsuvnevpwyos DCUBQ GRRJ2EWPX0U
+    </title>
+
+    <style type="text/css">
+      body {
+        margin: 0;
+        padding: 0;
+        background: #f4f4f4;
+        font-family: Arial, Helvetica, sans-serif;
+        -webkit-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+      }
+      img {
+        display: block;
+        border: 0;
+        outline: none;
+        text-decoration: none;
+        -ms-interpolation-mode: bicubic;
+      }
+      table {
+        border-collapse: collapse;
+      }
+      .preheader {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        height: 0;
+        width: 0;
+        overflow: hidden;
+        mso-hide: all;
+      }
+    </style>
+  </head>
+
+  <body style="margin: 0; padding: 0; background: #f4f4f4">
+    <!-- Hidden Preheader -->
+    <div class="preheader">&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;</div>
+
+    <!-- Outer Wrapper -->
+    <table
+      role="presentation"
+      width="100%"
+      cellpadding="0"
+      cellspacing="0"
+      bgcolor="#f4f4f4"
+    >
+      <tr>
+        <td align="center" style="padding: 20px 10px">
+          <!-- 640px Container -->
+          <table
+            role="presentation"
+            width="640"
+            cellpadding="0"
+            cellspacing="0"
+            bgcolor="#ffffff"
+            style="max-width: 640px; width: 100%"
+          >
+            <!-- MAIN IMAGE -->
+            <tr>
+              <td align="center">
+                <a
+                  href="http://wilehpointers.com/G6rPprz7mRfWmt9/6Z/GUg94NwyvSKNRJd/rr_55M_Bck/Eu2TJoOV7TG/rrd7/bClHnrDe41Co/xevrx5_/bZlK3xfknWTzADv/77x7/8zjzKOM1gOT/red5x/h6ygUHQM4VUeG/YY7v5/D75Ze2olrXY2N3G/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style="text-decoration: none; border: 0"
+                >
+                  <img
+                    src="http://wilehpointers.com/510981800153438.jpg"
+                    alt="View details"
+                    width="640"
+                    style="width: 100%; max-width: 640px; height: auto"
+                  />
+                </a>
+              </td>
+            </tr>
+
+            <!-- Spacer -->
+            <tr>
+              <td style="height: 18px; line-height: 18px; font-size: 18px">
+                &nbsp;
+              </td>
+            </tr>
+
+            <!-- UNSUBSCRIBE IMAGE + TEXT -->
+            <tr>
+              <td align="center" style="padding-bottom: 20px">
+                <a
+                  href="http://wilehpointers.com/WLpiR0PvJI/n4/tMLUeHN4KEfTT1F/rr_55M_Bck/DxfXhQapv04QG/rrd7/VXawGe3j6CLaj/xevrx5_/2P7sc0eiPev/77x7/coOIMywMU1/red5x/K0JaKHk6wZ/YY7v5/PZYR8BVtzVFcs/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style="text-decoration: none; border: 0"
+                >
+                  <img
+                    src="http://wilehpointers.com/x7cMIOjYO8lo8kn.jpg"
+                    alt="Unsubscribe"
+                    style="
+                      display: inline-block;
+                      max-width: 640px;
+                      height: auto;
+                      border: 0;
+                    "
+                  />
+                </a>
+
+               
+              </td>
+            </tr>
+          </table>
+          <!-- End Container -->
+        </td>
+      </tr>
+    </table>
+
+    
+  </body>
+</html>

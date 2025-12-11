@@ -1,0 +1,202 @@
+Return-Path: <return@m-atr.com>
+Received: from juliett.baddomain.com (localhost [127.0.0.1])
+	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTP id 5BADCpHs020769
+	for <mstowe@localhost>; Wed, 10 Dec 2025 13:12:52 GMT
+	(envelope-from return@m-atr.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=m-atr.com header.i=@m-atr.com header.b=qAYyelqN
+Received: from jimapinternal-aol.imap.mail.g03.yahoodns.net [67.195.228.147]
+	by juliett.baddomain.com with IMAP (fetchmail-6.6.1)
+	for <mstowe@localhost> (single-drop); Wed, 10 Dec 2025 13:12:52 +0000 (UTC)
+Received: from 10.222.142.151
+ by atlas108.aol.mail.ne1.yahoo.com pod-id NONE with HTTPS; Wed, 10 Dec 2025 13:08:18 +0000
+X-Originating-Ip: [34.217.185.50]
+Received-SPF: fail (domain of m-atr.com does not designate 34.217.185.50 as permitted sender)
+Authentication-Results: atlas108.aol.mail.ne1.yahoo.com;
+ dkim=pass header.i=@m-atr.com header.s=h1 arc_overridden_status=NOT_OVERRIDDEN;
+ spf=fail smtp.mailfrom=m-atr.com arc_overridden_status=NOT_OVERRIDDEN;
+ dmarc=pass(p=NONE) header.from=m-atr.com arc_overridden_status=NOT_OVERRIDDEN;
+X-Apparently-To: user@example.com; Wed, 10 Dec 2025 13:08:18 +0000
+X-YMailISG: iN2tqygWLDv4IAPR7j18idwT8EgkFoWegUuxz9V6Z0CuqxOY
+ BnXGnYguxncDbSOvQoUwSPSDJ.zA5XRFhXmH4KgYnvPJqQq.m7bSbiX6Ejfp
+ 1EKJqMIMMVLUhIY0.F7vX1gryeg7CY4RcPXDG4FoBX5_PKa98g2kU2sOWRYb
+ lgk7PrsQp6B6TqscnEy7YxjAP6xa.2q7qLlSCcGUOGZVtaQ2jHQsC64lLwdp
+ qt_CKRlMf3fWiy3GIBSIVralUnKxYMcKJu0eiV8uQR4lBKWB9Uj9eAScbQ20
+ z8dkAcT0BGL_zluV9fUotBFzLXnMriVOeAdcGZGWN0aZqfTlGmbbPUWnozoi
+ 0YWgES1tkfqI8LxQMN4ZiAFLC34.eL93eBmF8k6GLrLU_bd8xYuDlwAo.ECf
+ aWvjV3XrM0zzBrVDAiB5KTbR7cmFqN1diurnUhRZYTIve7zM00ZvzhkW99hO
+ henoy94eXkuK3MbiO7iMFhSJkCQZZTFAW0gmEMq9LLsjg7lkhD2XacrJrf8H
+ sRAdYgZUglgUQvaE8ErZxUl6ASTSd1bpXaNITZ.K1zJEcpdPFSSDJH4Tu2Z4
+ .5OeKUsaoaRoESS4WPcBMC67dJkoMC6HFnZ4pikmc7usEHnSC.gADKEyLt5c
+ AvicazMv02CyYbQnTjktnr6IuOjJlL4G1EJtuSN.qWbpk0IotJuUQmXyvUab
+ RHJfWQSxEWc7i105SVk18sPcdDvEqYQXPpr6mUZyHeNbmAsC4d7teAetLKyN
+ .hkGTAdAe5T15d.Q2Z5ZrYuCnHP1D6JZeCigCpMayXPs2yl34.DElwslbpTe
+ oV4K1_NUHgmxV9uzOLIqfzS2NCIeBNI7HskpzxjgMUckeVsQXg.1Ua1v3gtx
+ juIWY3PGLgoSB83uqr.kyelypcGS9cKIsCl4uWXuLQBb.PH0Ciq07k8ur5BQ
+ wtDapWIkZSrWzNEY4G8C5dam86YbCygHmFiAuwQ2Zh8l5J3K5SSR1Xj5Opo2
+ n429FJ2Qvs6sr_rPooaArdiuKMs61REY5094c7Me6E5Eh_U80_evaKaKHbXp
+ ._.q.AfrXxNjV0H7D8.f5QxCQQuIcCxujTn7LrCWlTmG5gQEzZwkNHdHhc3D
+ Qy0pOmDohfUkCNV4eJ9.xc8Lat6b4CWkN.EKrjIxHwC9MSjyAEhMXlvvJ8_b
+ 0YSXVrlrcbp6rioRdyR9c6IyQBSHup3fwRLrt0pDEukoy0XcQWDE8VIQpLNp
+ eXDVzWmZ6P_8dy9RHNR_ZcJgdpsiZtm67NxFFO7wNbceXnmr7eMPMy6R4Hw0
+ z0UL3SvKraKJBDd2NZ65iFiaDaTa81EXtj1VS_NnFJbB1GVHUHzAkuToW6Yd
+ xtpYRdNZenULKaH09sqPHiuDIT28x7ivehsAZtgXIWWEdlq8nLskC8AjaKxo
+ .Z5H9M.caJxgcNcr_e3hrtZsGczCPRNTX.U-
+Received: from 34.217.185.50 (EHLO theragraphy.gl-finance.com)
+ by 10.222.142.151 with SMTPs
+ (version=TLS1_2 cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256);
+ Wed, 10 Dec 2025 13:08:18 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=h1; d=m-atr.com;
+ h=From:Reply-To:To:Subject:MIME-Version:Date:Message-ID:Content-Type:
+ Content-Transfer-Encoding:List-Unsubscribe:List-Id;
+ bh=liwi2jqLEuYpLBqjuy9etekdFnCSJuDI62R5DWIXxJ0=;
+ b=qAYyelqNXMlKTAOz1DHsPuqV8WBYVLHSKOqIFaqnQn830MrxTyXBuy9qozRlWFf7Nsw27LBodwzc
+   mslBhfavDCnJTsTUUja0Heqg4IYYS0iQJcZhqlBpd0DHQe/AQlbl1LOs4+XLumjwkhYT/Exp07d7
+   EU+0bWJwkqewkbSmvY/8t82e+WJJYrBjPBiSUoXeQsUU4zBBtsi8FOLzR5UR5FZddVl/2HrgUdk/
+   5pG/hXBrs5GmJHg8U2g35VZLvbLl2wrb/WcnRQJ0stIOCzVj9d5od04cPCexs18m6JByjofgXVss
+   +W1yMJVMUMOGaRIO+LlFtavLb8w97dk6hvcHIw==
+From:    =?UTF-8?B?4pqL?=NDR Debt_Relief  <MatrixQuantumStellarRadiantAurora@m-atr.com>
+Reply-To: m-atr.com@jimapinternal-aol.imap.mail.g03.yahoodns.net
+To: user@example.com
+Subject:         =?UTF-8?B?4pqL?=Reduce Your  Debt  with  Our  Expert_Debt_Relief  Solutions 
+MIME-Version: 1.0
+Date: Wed, 10 Dec 2025 18:38:06 +0530
+Message-ID: <okwkfblinjcp.1625273@m-atr.com>
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: 172.31.60.37
+List-Unsubscribe: <mailto:QQ5GNTQRDWRC92WG5VPA9YDNUIY@manage.m-atr.com?subject=unsubscribe>, <http://m-atr.com/1QMvMKe5UWsQPNa/n4/qPYFuodyhheDCbG/rr_Yx5rBck/SjLuTPmCzFicigx/rrd7/Tl2bz6zEaB/xevrxYY/CDASjJrBr5NT/rx_e/gZum7RIN1APntc/red5x/tEMU6cCeKSD2MeI/YY7v5/lvovp454TsI7LKM/>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+List-Id: <oyrqmb.m-atr.com>
+Precedence: bulk
+Feedback-ID: bf2025:promotions.m-atr.com
+X-Complaints-To: abuse@m-atr.com
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [0.0.0.0]); Wed, 10 Dec 2025 13:12:53 +0000 (UTC)
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:v="urn:schemas-microsoft-com:vml"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>
+      TMXADEENTE ljqp dbu50h VK227GV2UBBBO ycpag3iabroq IP9AM FTW6LSZEIRG
+    </title>
+
+    <style type="text/css">
+      body {
+        margin: 0;
+        padding: 0;
+        background: #f4f4f4;
+        font-family: Arial, Helvetica, sans-serif;
+        -webkit-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+      }
+      img {
+        display: block;
+        border: 0;
+        outline: none;
+        text-decoration: none;
+        -ms-interpolation-mode: bicubic;
+      }
+      table {
+        border-collapse: collapse;
+      }
+      .preheader {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        height: 0;
+        width: 0;
+        overflow: hidden;
+        mso-hide: all;
+      }
+    </style>
+  </head>
+
+  <body style="margin: 0; padding: 0; background: #f4f4f4">
+    <!-- Hidden Preheader -->
+    <div class="preheader">&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;</div>
+
+    <!-- Outer Wrapper -->
+    <table
+      role="presentation"
+      width="100%"
+      cellpadding="0"
+      cellspacing="0"
+      bgcolor="#f4f4f4"
+    >
+      <tr>
+        <td align="center" style="padding: 20px 10px">
+          <!-- 640px Container -->
+          <table
+            role="presentation"
+            width="640"
+            cellpadding="0"
+            cellspacing="0"
+            bgcolor="#ffffff"
+            style="max-width: 640px; width: 100%"
+          >
+            <!-- MAIN IMAGE -->
+            <tr>
+              <td align="center">
+                <a
+                  href="http://youdeseosperity.com/EIULmhtDuzc/6Z/nuUuLYLHEgAWU3X/rr_Yx5rBck/mmZRSIs4PMu/rrd7/0wQmQBFrngWRkl/xevrxYY/6doyqzo8fWn9z/rx_e/svWOc8sBCIMGstQ/red5x/TJH69VumSy74w/YY7v5/TNPDrPAIg3eSyw0/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style="text-decoration: none; border: 0"
+                >
+                  <img
+                    src="http://youdeseosperity.com/805005639281022.jpg"
+                    alt="View details"
+                    width="640"
+                    style="width: 100%; max-width: 640px; height: auto"
+                  />
+                </a>
+              </td>
+            </tr>
+
+            <!-- Spacer -->
+            <tr>
+              <td style="height: 18px; line-height: 18px; font-size: 18px">
+                &nbsp;
+              </td>
+            </tr>
+
+            <!-- UNSUBSCRIBE IMAGE + TEXT -->
+            <tr>
+              <td align="center" style="padding-bottom: 20px">
+                <a
+                  href="http://youdeseosperity.com/1QMvMKe5UWsQPNa/n4/qPYFuodyhheDCbG/rr_Yx5rBck/SjLuTPmCzFicigx/rrd7/Tl2bz6zEaB/xevrxYY/CDASjJrBr5NT/rx_e/gZum7RIN1APntc/red5x/tEMU6cCeKSD2MeI/YY7v5/lvovp454TsI7LKM/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style="text-decoration: none; border: 0"
+                >
+                  <img
+                    src="http://youdeseosperity.com/3oQYypa2GP0kpAv.jpg"
+                    alt="Unsubscribe"
+                    style="
+                      display: inline-block;
+                      max-width: 640px;
+                      height: auto;
+                      border: 0;
+                    "
+                  />
+                </a>
+
+               
+              </td>
+            </tr>
+          </table>
+          <!-- End Container -->
+        </td>
+      </tr>
+    </table>
+
+    
+  </body>
+</html>

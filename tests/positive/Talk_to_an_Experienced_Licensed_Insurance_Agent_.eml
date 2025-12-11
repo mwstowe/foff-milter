@@ -1,0 +1,265 @@
+Return-Path: <return@m-atr.com>
+Received: from juliett.baddomain.com (localhost [127.0.0.1])
+	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTP id 5BA5UQGo005673
+	for <mstowe@localhost>; Wed, 10 Dec 2025 05:30:26 GMT
+	(envelope-from return@m-atr.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=m-atr.com header.i=@m-atr.com header.b=1xYlSTpF
+Received: from jimapinternal-aol.imap.mail.g03.yahoodns.net [67.195.228.147]
+	by juliett.baddomain.com with IMAP (fetchmail-6.6.1)
+	for <mstowe@localhost> (single-drop); Wed, 10 Dec 2025 05:30:26 +0000 (UTC)
+Received: from 127.0.0.1
+ by atlas-production.v2-mail-prod1-gq1.omega.yahoo.com pod-id atlas--production-gq1-7f4cdfc669-vxscp.gq1.yahoo.com with HTTP; Wed, 10 Dec 2025 05:25:19 +0000
+X-Originating-Ip: [34.210.96.206]
+Received-SPF: fail (domain of m-atr.com does not designate 34.210.96.206 as permitted sender)
+Authentication-Results: atlas-production.v2-mail-prod1-gq1.omega.yahoo.com;
+ dkim=pass header.i=@m-atr.com header.s=h1 arc_overridden_status=NOT_OVERRIDDEN;
+ spf=fail smtp.mailfrom=m-atr.com arc_overridden_status=NOT_OVERRIDDEN;
+ dmarc=pass(p=NONE) header.from=m-atr.com arc_overridden_status=NOT_OVERRIDDEN;
+X-Apparently-To: user@example.com; Wed, 10 Dec 2025 05:25:20 +0000
+X-YMailISG: AZTvuyUWLDvBYbV2iXy_gsqOrt2gFsuqNFwaF4esDrtXHFqX
+ Fm.HTNAsRkOnzCv_QDdR9yw3bLHMY4ao65eVB79dt2QcWZd90_Hq0Rb0knMy
+ in34XbltgiFzab6ohwiQ9vf1BI_cky8nTfGYj5PvJ0i27_JXdg9bNdfidtkY
+ 2haB4UUsyOt4uijOo8r7xcMMLWRUqiT1Ht08iSuAPLtRRiA.q_3q6blb_sn7
+ L5KM3K_KqmemZr3Z5AmjcXCv8K5DGS3iKCsl9_b6yljptTJq3fBo7oV9hT8K
+ r4P1mCAO2SmPa.nJMX0Ogz075yOozez8cOHjMyLSe4tVl7TA0r2PLx3yWZVt
+ JEUvps27oDIF3STEX9EXlma5JFlns.j74jkcnRMRPqVDnJoDzu1wXptu.iDV
+ JLRiJoh_AagGUz3XT5PDFk8Ig2lh34G4HcqRMrxBIm07cQapiamkReh.T5Na
+ zXFGSnjpOxt5V9H6aui9v.4NpBsycIyriG_0eyZNztUBaLoa7N_drYTvo9ql
+ 4vAzVyrnYIGejQFmx5rukml2vxbjBHSIgUFkxhpl8X0BV67D7hn.9zVk9sh9
+ QrO2b7brGkihDIBzgwOo7TwLkyaskovNm6OHQzxKJEcM5tcBpT14PE8DX1cs
+ AYYHkTvsDaMhiHTas4_5AEokom5f6qWXdEB0qiq82FxXS7fOhcedGgNHsFMK
+ IdEaj.ekXisX.P.GWz6YwTqUjhU0y2QT5IF_VryVouq4PdEE7cuiWX6q8awi
+ 7tYC5aC70_hQaj84RcbZcLGVcfIbXkq2gZjMdPkiECZjzLR.oSd0frqgAvfz
+ NhxTdqPCyGcDOD2pe8njtaKKDrWvd2Q3XcOP_UxsBXinUcrxmOXIrM4sp_Wa
+ X9W.iI3CSwasDIWNn_h.nDBwUgZF__b0nTwqVR9fA8GsDSEK5jGvRqS8rozQ
+ Mih9CIu7Q9CjLtXdkoNycRH4Fv0TbAL3DscPnbVlM7Rw3Oy5yBSez22Ye6sK
+ Nz2sfHYwoAQMbtuinnEy.UxUQGMUANZsZXNkWNEDcl.4eLZlifny2.Lx26Op
+ FnrGB_VyuDosThjdsvg5nP2oj3UAc22O1lL5iYmdIMdLWHKzYSCt1XgGTw7Z
+ VGaHK56lihHfgrl3sDdvcYwwN99C.0BKQ_7Gl.vccZL6g4Js4F48QWnTtlA4
+ DYWiUPR5N9Ps8QKGXH7b9cyLUHyPDV8FSCX3jKghQ4A-
+Received: from 34.210.96.206 (EHLO medicscope.bymorons.com)
+ by 10.215.172.81 with SMTPs
+ (version=TLS1_2 cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256);
+ Wed, 10 Dec 2025 05:25:19 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=h1; d=m-atr.com;
+ h=Date:From:Reply-To:To:Message-ID:Subject:MIME-Version:
+ Content-Transfer-Encoding:Content-Type;
+ bh=iYpg5p1zQz4XCICeGlvrRawTU1EY/bCeFiQ6/m/Rx/4=;
+ b=1xYlSTpFzY5cyfnPwj/OpK5zSO4jm33+7xRfS4sLAmTRkg/k2s2ztHpkag+l7ZtPazWviRvZTIMa
+   ujmA/MNU8qY/7TuzF/pMJzhNNs8W2hz1Ho/U5Az9COXLBvyRa/vvwO2YmAXLdq4+UQ0nVznh+lEl
+   ha1GHXSpWcGpuV5CWcO15ICFCyxtS2ejZbtCXxbcSrhydhZJrczb6F+eBWt+pNixIn0u3b5ZHbMt
+   XzrvW5DtGft6MF+eWH9HjYbx5LHZn6zefLF9rOJLLs2pD9vPJ1MkdkI3Crhhox/pj/sbCU3Lv17N
+   XmoIYmc42VxLoPWQn43ktExHLzGzQs69Zdwk5g==
+Date: Wed, 10 Dec 2025 10:55:01 +0530
+From:     =?UTF-8?B?4oar4oar4oar?=             The Medicare Helpline      <SignalDreamerTwilightHalcyonNexus@m-atr.com>
+Reply-To: FXW78RTAWTDOKK8 <SignalDreamerTwilightHalcyonNexus@jimapinternal-aol.imap.mail.g03.yahoodns.net>
+To: user@example.com
+Message-ID: <42325401779491.84610747.68968@m-atr.com>
+Subject:     =?UTF-8?B?4oar4oar4oar?=      Talk to an Experienced Licensed Insurance Agent           =?UTF-8?B?4oar4oar4oar?=
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Type: text/html; charset="UTF-8"
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [0.0.0.0]); Wed, 10 Dec 2025 05:30:28 +0000 (UTC)
+
+<!DOCTYPE html>
+<html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" lang="en-US">
+
+<head>
+	<title></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"><!--[if mso]>
+<xml><w:WordDocument xmlns:w="urn:schemas-microsoft-com:office:word"><w:DontUseAdvancedTypographyReadingMail/></w:WordDocument>
+<o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch><o:AllowPNG/></o:OfficeDocumentSettings></xml>
+<!--><!--[if !mso]><!--><!--<!-->
+	<style>
+		* {
+			box-sizing: border-box;
+		}
+
+		body {
+			margin: 0;
+			padding: 0;
+		}
+
+		a[x-apple-data-detectors] {
+			color: inherit !important;
+			text-decoration: inherit !important;
+		}
+
+		#MessageViewBody a {
+			color: inherit;
+			text-decoration: none;
+		}
+
+		p {
+			line-height: inherit
+		}
+
+		.desktop_hide,
+		.desktop_hide table {
+			mso-hide: all;
+			display: none;
+			max-height: 0px;
+			overflow: hidden;
+		}
+
+		.image_block img+div {
+			display: none;
+		}
+
+		sup,
+		sub {
+			font-size: 75%;
+			line-height: 0;
+		}
+
+		@media (max-width:720px) {
+			.desktop_hide table.icons-inner {
+				display: inline-block !important;
+			}
+
+			.icons-inner {
+				text-align: center;
+			}
+
+			.icons-inner td {
+				margin: 0 auto;
+			}
+
+			.mobile_hide {
+				display: none;
+			}
+
+			.row-content {
+				width: 100% !important;
+			}
+
+			.stack .column {
+				width: 100%;
+				display: block;
+			}
+
+			.mobile_hide {
+				min-height: 0;
+				max-height: 0;
+				max-width: 0;
+				overflow: hidden;
+				font-size: 0px;
+			}
+
+			.desktop_hide,
+			.desktop_hide table {
+				display: table !important;
+				max-height: none !important;
+			}
+
+			.row-1 .column-1 .block-2.spacer_block {
+				height: 10px !important;
+			}
+
+			.row-2 .column-1 .block-3.spacer_block {
+				height: 20px !important;
+			}
+		}
+	</style><!--[if mso ]><style>sup, sub { font-size: 100% !important; } sup { mso-text-raise:10% } sub { mso-text-raise:-10% }</style> <!-->
+</head>
+
+<body class="body" style="margin: 0; background-color: #ffffff; padding: 0; -webkit-text-size-adjust: none; text-size-adjust: none;">
+	<table class="nl-container" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #ffffff; background-image: none; background-position: top left; background-size: auto; background-repeat: no-repeat;">
+		<tbody>
+			<tr>
+				<td>
+					<table class="row row-1" align="center" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+						<tbody>
+							<tr>
+								<td>
+									<table class="row-content stack" align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-radius: 0; color: #000000; width: 700px; margin: 0 auto;" width="700">
+										<tbody>
+											<tr>
+												<td class="column column-1" width="100%" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top;">
+													<table class="heading_block block-1" width="100%" border="0" cellpadding="10" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+														<tr>
+															<td class="pad">
+																<h1 style="margin: 0; color: #7747FF; direction: ltr; font-family: Arial, Helvetica, sans-serif; font-size: 25px; font-weight: 700; letter-spacing: normal; line-height: 1.2; text-align: center; margin-top: 0; margin-bottom: 0; mso-line-height-alt: 30px;"><br></h1>
+															</td>
+														</tr>
+													</table>
+													<div class="spacer_block block-2" style="height:15px;line-height:15px;font-size:1px;">&#8202;</div>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<table class="row row-2" align="center" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #ffffff;">
+						<tbody>
+							<tr>
+								<td>
+									<table class="row-content stack" align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-radius: 0; color: #000000; width: 700px; margin: 0 auto;" width="700">
+										<tbody>
+											<tr>
+												<td class="column column-1" width="100%" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; vertical-align: top;">
+													<table class="image_block block-1" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+														<tr>
+															<td class="pad" style="width:100%;">
+																<div class="alignment" align="center">
+																	<div style="max-width: 596px;"><a href="http://youdeseosperity.com/63oiejL3q9z/6Z/xaoZ63jUoAWJ/rr_xeveBck/NbZMa9H1mQ5u/7v/UKljMJh1ydQ/xevred5/V37HAaiB1UzYp/7rdx/06hti34u0D2hr/red5x/i8S2ZMwnNEPDme/YY7v5/zsovzHDpyVp/"><img src="http://youdeseosperity.com/445791978678631.png" alt="image"/></a></div>
+																</div>
+															</td>
+														</tr>
+													</table>
+													<table class="image_block block-2" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+														<tr>
+															<td class="pad" style="width:100%;">
+																<div class="alignment" align="center">
+																	<div style="max-width: 600px;"><a href="http://youdeseosperity.com/MugZCbItZkNcXf/n4/orUEQaQ0zoBNK/rr_xeveBck/1CXkIMMIk4xtEzg/7v/ht1ZXEZDCm/xevred5/2ZqbPQYZmBzUJ/7rdx/h3UH8tMqhBbKq/red5x/cCi4qw56cT/YY7v5/mig8RxcKfHHx/"><img src="http://youdeseosperity.com/5SRANTN6yPbzd2h.png" alt="image"/></a></div>
+																</div>
+															</td>
+														</tr>
+													</table>
+													<div class="spacer_block block-3" style="height:30px;line-height:30px;font-size:1px;">&#8202;</div>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<table class="row row-3" align="center" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #ffffff;">
+						<tbody>
+							<tr>
+								<td>
+									<table class="row-content stack" align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #ffffff; color: #000000; width: 700px; margin: 0 auto;" width="700">
+										<tbody>
+											<tr>
+												<td class="column column-1" width="100%" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; padding-bottom: 5px; padding-top: 5px; vertical-align: top;">
+													<table class="icons_block block-1" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; text-align: center; line-height: 0;">
+														<tr>
+															<td class="pad" style="vertical-align: middle; color: #1e0e4b; font-family: 'Inter', sans-serif; font-size: 15px; padding-bottom: 5px; padding-top: 5px; text-align: center;"><!--[if vml]><table align="center" cellpadding="0" cellspacing="0" role="presentation" style="display:inline-block;padding-left:0px;padding-right:0px;mso-table-lspace: 0pt;mso-table-rspace: 0pt;"><!-->
+																<!--[if !vml]><!-->
+																<table class="icons-inner" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; display: inline-block; padding-left: 0px; padding-right: 0px;" cellpadding="0" cellspacing="0" role="presentation"><!--<!-->
+																	
+																</table>
+															</td>
+														</tr>
+													</table>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+			</tr>
+		</tbody>
+	</table><!-- End -->
+</body>
+
+</html>
+

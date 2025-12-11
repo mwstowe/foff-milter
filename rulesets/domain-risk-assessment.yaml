@@ -114,8 +114,10 @@ rules:
                 pattern: ".*@.*(think|vacuums|netatmo|Thinkvacuums|ladyyum|mcdlv)\\.(com|net|org)$"
               - type: "SenderPattern"
                 pattern: ".*@.*creditkarma\\.(com|net|org)$"
+              - type: "SenderPattern"
+                pattern: ".*@.*\\.(rsgsv|sendgrid|mailchimp|constantcontact|mailgun|amazonses|sparkpost)\\.(net|com)$"
     score: 60
-    description: "Suspicious numbered subdomain patterns (excludes legitimate)"
+    description: "Suspicious numbered subdomain patterns (excludes legitimate ESPs)"
 
   - name: "Recently popular spam TLDs"
     criteria:

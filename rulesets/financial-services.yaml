@@ -10,26 +10,32 @@ rules:
         - type: "Or"
           criteria:
             - type: "SubjectPattern"
-              pattern: "(?i).*(earn|return|rate|yield|profit|investment|annuity).*(\\d+\\.\\d+%|\\d+%|up to \\d+).*"
+              pattern: "(?i).*(earn|return|rate|yield|profit|investment|annuity|guaranteed.*income).*(\\d+\\.\\d+%|\\d+%|up to \\d+|\\$\\d+|\\d+.*USD|\\d+.*dollars?).*"
             - type: "BodyPattern"
-              pattern: "(?i).*(earn|return|rate|yield|profit|investment|annuity).*(\\d+\\.\\d+%|\\d+%|up to \\d+).*"
+              pattern: "(?i).*(earn|return|rate|yield|profit|investment|annuity|guaranteed.*income).*(\\d+\\.\\d+%|\\d+%|up to \\d+|\\$\\d+|\\d+.*USD|\\d+.*dollars?).*"
         - type: "Not"
           criteria:
             type: "Or"
             criteria:
-              - type: "SenderPattern"
-                pattern: ".*@.*(disney|marvel|netflix|hulu|amazon|apple|microsoft|google|duluth|narvar|secretlab|oxford|nextdoor|sendgrid|butcherbox|becu|1800flowers|celebrations|eff|aclu|amnesty|greenpeace|redcross|unicef|oxfam|savethechildren)\\.(com|net|org)$"
+              - type: "And"
+                criteria:
+                  - type: "SenderPattern"
+                    pattern: ".*@.*(disney|marvel|netflix|hulu|amazon|apple|microsoft|google|duluth|narvar|secretlab|oxford|nextdoor|sendgrid|butcherbox|becu|1800flowers|celebrations|eff|aclu|amnesty|greenpeace|redcross|unicef|oxfam|savethechildren|rejuvenation|rifftrax|bethesda|ecobee|wolfermans|wholefoodsmarket|coinbase|ally|walgreens)\\.(com|net|org)$"
+                  - type: "Or"
+                    criteria:
+                      - type: "SubjectPattern"
+                        pattern: "(?i).*(order.*confirmation|receipt|invoice.*#|off|discount|sale|clearance)"
+                      - type: "BodyPattern"
+                        pattern: "(?i).*(retail|store|shop|product|merchandise|bakery|home.*improvement|gaming|energy.*saving)"
               - type: "HeaderPattern"
                 header: "From"
-                pattern: "(?i).*(disney|marvel|netflix|hulu|amazon|apple|microsoft|google|duluth|narvar|secretlab|oxford|nextdoor|butcherbox|becu|1800flowers|celebrations|eff|aclu|amnesty|greenpeace|redcross|unicef|oxfam|savethechildren).*"
+                pattern: "(?i).*(disney|marvel|netflix|hulu|amazon|apple|microsoft|google|duluth|narvar|secretlab|oxford|nextdoor|butcherbox|becu|1800flowers|celebrations|eff|aclu|amnesty|greenpeace|redcross|unicef|oxfam|savethechildren|rejuvenation|rifftrax|bethesda|ecobee|wolfermans|wholefoodsmarket|coinbase|ally|walgreens).*"
               - type: "HeaderPattern"
                 header: "DKIM-Signature"
                 pattern: ".*d=butcherbox\\.com.*"
-              - type: "SubjectPattern"
-                pattern: "(?i).*(order.*confirmation|receipt|invoice.*#)"
               - type: "BodyPattern"
                 pattern: "(?i).*(double.*impact|charitable.*donation|non.*profit|501\\(c\\)\\(3\\)|tax.*deductible|donate.*now)"
-    score: 100
+    score: 120
     description: "Unrealistic financial return promises"
 
   # Loan and lending spam
