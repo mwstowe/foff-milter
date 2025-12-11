@@ -12,7 +12,10 @@ pub enum DkimAuthStatus {
 #[derive(Debug, Clone)]
 pub enum DomainAlignment {
     Aligned,
-    Misaligned { dkim_domain: String, sender_domain: String },
+    Misaligned {
+        dkim_domain: String,
+        sender_domain: String,
+    },
     Unknown,
 }
 
@@ -44,39 +47,42 @@ impl Default for DkimVerificationResult {
 pub struct DkimVerifier;
 
 impl DkimVerifier {
-    pub fn verify(headers: &HashMap<String, String>, sender_domain: Option<&str>) -> DkimVerificationResult {
+    pub fn verify(
+        headers: &HashMap<String, String>,
+        sender_domain: Option<&str>,
+    ) -> DkimVerificationResult {
         let mut result = DkimVerificationResult::default();
-        
+
         // Find DKIM signatures (case-insensitive)
         let dkim_signatures: Vec<String> = headers
             .iter()
             .filter(|(key, _)| key.to_lowercase() == "dkim-signature")
             .map(|(_, value)| value.clone())
             .collect();
-        
+
         result.has_signature = !dkim_signatures.is_empty();
         result.signature_count = dkim_signatures.len();
         result.raw_signatures = dkim_signatures.clone();
-        
+
         // Extract domains from DKIM signatures
         for signature in &dkim_signatures {
             if let Some(domain) = Self::extract_dkim_domain(signature) {
                 result.domains.push(domain);
             }
         }
-        
+
         // Parse Authentication-Results for DKIM status
         result.auth_status = Self::parse_auth_results(headers);
         result.signature_valid = matches!(result.auth_status, DkimAuthStatus::Pass);
-        
+
         // Check domain alignment
         if let Some(sender) = sender_domain {
             result.domain_alignment = Self::check_domain_alignment(&result.domains, sender);
         }
-        
+
         result
     }
-    
+
     fn extract_dkim_domain(dkim_sig: &str) -> Option<String> {
         for part in dkim_sig.split(';') {
             let part = part.trim();
@@ -86,7 +92,7 @@ impl DkimVerifier {
         }
         None
     }
-    
+
     fn parse_auth_results(headers: &HashMap<String, String>) -> DkimAuthStatus {
         for (key, value) in headers {
             if key.to_lowercase() == "authentication-results" {
@@ -112,20 +118,16 @@ impl DkimVerifier {
                 }
             }
         }
-        
+
         // If no Authentication-Results but has DKIM signature, status is unknown
-        if headers.iter().any(|(key, _)| key.to_lowercase() == "dkim-signature") {
-            DkimAuthStatus::None
-        } else {
-            DkimAuthStatus::None
-        }
+        DkimAuthStatus::None
     }
-    
+
     fn check_domain_alignment(dkim_domains: &[String], sender_domain: &str) -> DomainAlignment {
         if dkim_domains.is_empty() {
             return DomainAlignment::Unknown;
         }
-        
+
         let sender_lower = sender_domain.to_lowercase();
         for dkim_domain in dkim_domains {
             let dkim_lower = dkim_domain.to_lowercase();
@@ -133,7 +135,7 @@ impl DkimVerifier {
                 return DomainAlignment::Aligned;
             }
         }
-        
+
         // Return first mismatch for reporting
         if let Some(first_domain) = dkim_domains.first() {
             DomainAlignment::Misaligned {
@@ -149,22 +151,28 @@ impl DkimVerifier {
 #[cfg(test)]
 mod tests {
     use super::*;
-    
+
     #[test]
     fn test_dkim_domain_extraction() {
         let sig = "v=1; a=rsa-sha256; d=example.com; s=selector; h=from:to:subject";
-        assert_eq!(DkimVerifier::extract_dkim_domain(sig), Some("example.com".to_string()));
+        assert_eq!(
+            DkimVerifier::extract_dkim_domain(sig),
+            Some("example.com".to_string())
+        );
     }
-    
+
     #[test]
     fn test_auth_results_parsing() {
         let mut headers = HashMap::new();
-        headers.insert("Authentication-Results".to_string(), "example.com; dkim=pass".to_string());
-        
+        headers.insert(
+            "Authentication-Results".to_string(),
+            "example.com; dkim=pass".to_string(),
+        );
+
         let status = DkimVerifier::parse_auth_results(&headers);
         assert_eq!(status, DkimAuthStatus::Pass);
     }
-    
+
     #[test]
     fn test_domain_alignment() {
         let dkim_domains = vec!["example.com".to_string()];

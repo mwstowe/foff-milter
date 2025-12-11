@@ -227,10 +227,12 @@ impl DomainAnalyzer {
 
         // Check for perfect authentication
         let dkim = context.dkim_verification_readonly();
-        let has_perfect_auth = matches!(dkim.auth_status, crate::dkim_verification::DkimAuthStatus::Pass)
-            && context.headers.iter().any(|(name, value)| {
-                name.to_lowercase() == "authentication-results" && value.contains("spf=pass")
-            });
+        let has_perfect_auth = matches!(
+            dkim.auth_status,
+            crate::dkim_verification::DkimAuthStatus::Pass
+        ) && context.headers.iter().any(|(name, value)| {
+            name.to_lowercase() == "authentication-results" && value.contains("spf=pass")
+        });
 
         // Flag suspicious combination: new domain + healthcare + perfect auth
         if has_healthcare_content && has_perfect_auth {

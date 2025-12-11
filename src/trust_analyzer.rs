@@ -89,7 +89,7 @@ impl TrustAnalyzer {
         match dkim.auth_status {
             crate::dkim_verification::DkimAuthStatus::Pass => {
                 auth_score += 20;
-                
+
                 // Multiple DKIM signatures indicate better infrastructure
                 if dkim.signature_count > 1 {
                     auth_score += 10;
