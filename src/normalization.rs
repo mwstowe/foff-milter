@@ -426,10 +426,20 @@ impl EmailNormalizer {
         // Penalty for obfuscation techniques
         for technique in &normalized.obfuscation_indicators {
             score += match technique {
-                ObfuscationTechnique::UnicodeHomoglyphs => 25, // Reduced from 50 for legitimate Unicode
+                ObfuscationTechnique::UnicodeHomoglyphs => {
+                    // Check if this is likely decorative emojis vs malicious homoglyphs
+                    let has_decorative_emojis = normalized.original.chars().any(|c| {
+                        matches!(c, 
+                            '✨' | '🌸' | '🌺' | '🌻' | '🌷' | '🌹' | '🌿' | '🍀' | '🌱' | '🌳' | '🌲' |
+                            '💖' | '💕' | '💗' | '💓' | '💝' | '🎉' | '🎊' | '🎈' | '🎁' | '⭐' | '🌟' |
+                            '🔥' | '💯' | '👍' | '💙' | '💚' | '💛' | '💜' | '🧡' | '🤍' | '🖤'
+                        ) || c == '❤' // Handle ❤️ as separate character
+                    });
+                    if has_decorative_emojis { 5 } else { 25 } // Much lower penalty for decorative emojis
+                }
                 ObfuscationTechnique::ZeroWidthCharacters => 75,
                 ObfuscationTechnique::BidirectionalOverride => 60,
-                ObfuscationTechnique::CombiningCharacters => 15, // Reduced from 30 for legitimate formatting
+                ObfuscationTechnique::CombiningCharacters => 15,
             };
         }
 

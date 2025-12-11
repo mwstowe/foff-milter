@@ -698,6 +698,21 @@ rules:
     score: -200
     description: "Legitimate retailer"
 
+  - name: "Botanical Gardens and Plant Organizations"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@.*garden.*\\.(org|com)$"
+        - type: "SenderPattern"
+          pattern: ".*@.*botanical.*\\.(org|com)$"
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: "(?i).*(botanical|garden|nursery|arboretum).*"
+    score: -150
+    description: "Botanical gardens and plant organizations"
+
   - name: "Parts Express Electronics"
     enabled: true
     criteria:

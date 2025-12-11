@@ -331,6 +331,8 @@ impl FilterEngine {
                     "klaviyo.com",
                     "klaviyomail.com",
                     "klaviyodns.com", // Email service providers
+                    "rsgsv.net",
+                    "suw13.rsgsv.net", // Marketing platforms
                 ];
 
                 // Check if sender is from legitimate encoding-heavy domain
@@ -7508,6 +7510,11 @@ impl FilterEngine {
             return 0;
         }
 
+        // Exclude botanical gardens and plant organizations
+        if domain.contains("garden") || domain.contains("botanical") || domain.contains("nursery") {
+            return 0;
+        }
+
         let mut content = String::new();
         if let Some(subject) = &context.subject {
             content.push_str(subject);
@@ -7517,6 +7524,12 @@ impl FilterEngine {
         }
 
         let content_lower = content.to_lowercase();
+
+        // Exclude legitimate botanical/garden content
+        if content_lower.contains("botanical") || content_lower.contains("garden") || 
+           content_lower.contains("bloom") || content_lower.contains("plant") {
+            return 0;
+        }
 
         // Product sales from suspicious domains
         let product_patterns = [
