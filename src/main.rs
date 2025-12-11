@@ -185,6 +185,12 @@ async fn main() {
                 .action(clap::ArgAction::SetTrue),
         )
         .arg(
+            Arg::new("keep-xfoff-headers")
+                .long("keep-xfoff-headers")
+                .help("Keep existing X-FOFF headers in email analysis (default: strip them)")
+                .action(clap::ArgAction::SetTrue),
+        )
+        .arg(
             Arg::new("list-modules")
                 .long("list-modules")
                 .help("List available detection modules and their status")
@@ -238,6 +244,7 @@ async fn main() {
 
     if let Some(email_file) = matches.get_one::<String>("test-email") {
         let disable_same_server = matches.get_flag("disable-same-server");
+        let keep_xfoff_headers = matches.get_flag("keep-xfoff-headers");
         test_email_file(
             &config,
             &whitelist_config,
@@ -245,6 +252,7 @@ async fn main() {
             &toml_config,
             email_file,
             disable_same_server,
+            keep_xfoff_headers,
         )
         .await;
         return;
@@ -858,6 +866,43 @@ async fn anonymize_email_file(email_file: &str) {
     println!("{}", anonymized);
 }
 
+/// Strip X-FOFF headers from email content for clean analysis
+fn strip_xfoff_headers(email_content: &str) -> String {
+    let mut result = String::new();
+    let mut in_headers = true;
+    let mut skip_line = false;
+    
+    for line in email_content.lines() {
+        if in_headers {
+            if line.trim().is_empty() {
+                in_headers = false;
+                result.push_str(line);
+                result.push('\n');
+                continue;
+            }
+            
+            // Check if this line starts an X-FOFF header
+            if line.starts_with("X-FOFF") {
+                skip_line = true;
+                continue;
+            }
+            
+            // Check if this is a continuation line (starts with space/tab)
+            if (line.starts_with(' ') || line.starts_with('\t')) && skip_line {
+                continue;
+            }
+            
+            // Reset skip flag for new headers
+            skip_line = false;
+        }
+        
+        result.push_str(line);
+        result.push('\n');
+    }
+    
+    result
+}
+
 async fn test_email_file(
     config: &HeuristicConfig,
     whitelist_config: &Option<WhitelistConfig>,
@@ -865,6 +910,7 @@ async fn test_email_file(
     toml_config: &Option<TomlConfig>,
     email_file: &str,
     disable_same_server: bool,
+    keep_xfoff_headers: bool,
 ) {
     use foff_milter::filter::MailContext;
     use foff_milter::Action;
@@ -932,12 +978,19 @@ async fn test_email_file(
     println!();
 
     // Read the email file with robust encoding handling
-    let email_content = match read_email_with_encoding_fallback(email_file) {
+    let raw_email_content = match read_email_with_encoding_fallback(email_file) {
         Ok(content) => content,
         Err(e) => {
             eprintln!("❌ Error reading email file: {}", e);
             process::exit(1);
         }
+    };
+
+    // Strip any existing X-FOFF headers for clean analysis (unless explicitly kept)
+    let email_content = if keep_xfoff_headers {
+        raw_email_content
+    } else {
+        strip_xfoff_headers(&raw_email_content)
     };
 
     // Parse email content with proper MIME decoding
