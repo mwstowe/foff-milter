@@ -1,5 +1,6 @@
 use crate::abuse_reporter::AbuseReporter;
 use crate::attachment_analyzer::AttachmentAnalyzer;
+use crate::dkim_verification::{DkimVerificationResult, DkimVerifier};
 use crate::domain_age::DomainAgeChecker;
 use crate::domain_utils::DomainUtils;
 use crate::features::FeatureEngine;
@@ -109,17 +110,6 @@ fn get_hostname() -> String {
         .unwrap_or_else(|_| "unknown".to_string())
 }
 
-fn extract_dkim_domain(dkim_sig: &str) -> Option<String> {
-    // Extract d= parameter from DKIM signature
-    for part in dkim_sig.split(';') {
-        let part = part.trim();
-        if let Some(stripped) = part.strip_prefix("d=") {
-            return Some(stripped.to_string());
-        }
-    }
-    None
-}
-
 fn extract_sender_domain(context: &MailContext) -> Option<String> {
     if let Some(from) = &context.from_header {
         if let Some(email) = extract_email_from_header(from) {
@@ -205,6 +195,7 @@ pub struct MailContext {
     pub forwarding_source: Option<String>, // Source of forwarding (gmail.com, aol.com, etc.)
     pub proximate_mailer: Option<String>, // The immediate/proximate mailer hostname
     pub normalized: Option<NormalizedEmail>, // Normalized email content
+    pub dkim_verification: Option<DkimVerificationResult>, // Cached DKIM verification result
 }
 
 impl Default for MailContext {
@@ -227,7 +218,29 @@ impl Default for MailContext {
             forwarding_source: None,
             proximate_mailer: None,
             normalized: None,
+            dkim_verification: None,
         }
+    }
+}
+
+impl MailContext {
+    /// Get DKIM verification result (lazy evaluation with caching)
+    pub fn dkim_verification(&mut self) -> &DkimVerificationResult {
+        if self.dkim_verification.is_none() {
+            let sender_domain = self.sender
+                .as_ref()
+                .or(self.from_header.as_ref())
+                .and_then(|email| email.split('@').nth(1));
+            
+            self.dkim_verification = Some(DkimVerifier::verify(&self.headers, sender_domain));
+        }
+        
+        self.dkim_verification.as_ref().unwrap()
+    }
+    
+    /// Get DKIM verification result without mutable access (returns default if not cached)
+    pub fn dkim_verification_readonly(&self) -> DkimVerificationResult {
+        self.dkim_verification.clone().unwrap_or_default()
     }
 }
 
@@ -313,12 +326,9 @@ impl FilterEngine {
                 });
 
                 if is_legitimate_sender {
-                    // Check if sender has DKIM authentication for additional reduction
-                    let has_dkim = context.headers.iter().any(|(key, value)| {
-                        key.to_lowercase() == "dkim-signature"
-                            || (key.to_lowercase() == "authentication-results"
-                                && value.contains("dkim=pass"))
-                    });
+                    // Check if sender has DKIM authentication for additional reduction using unified API
+                    let dkim = context.dkim_verification_readonly();
+                    let has_dkim = dkim.has_signature && matches!(dkim.auth_status, crate::dkim_verification::DkimAuthStatus::Pass);
 
                     let reduced_score = if has_dkim {
                         base_score / 10 // Reduce by 90% for DKIM-authenticated legitimate senders
@@ -557,6 +567,7 @@ impl FilterEngine {
                 forwarding_source: context.forwarding_source.clone(),
                 proximate_mailer: context.proximate_mailer.clone(),
                 normalized: context.normalized.clone(),
+                dkim_verification: context.dkim_verification.clone(),
             }
         } else {
             // Fallback to simple normalization if proper normalization not available
@@ -592,6 +603,7 @@ impl FilterEngine {
             forwarding_source: context.forwarding_source.clone(),
             proximate_mailer: context.proximate_mailer.clone(),
             normalized: context.normalized.clone(),
+            dkim_verification: context.dkim_verification.clone(),
         }
     }
 
@@ -1562,8 +1574,10 @@ impl FilterEngine {
             }
             Criteria::SenderDomain { .. }
             | Criteria::FromDomain { .. }
-            | Criteria::ReplyToDomain { .. } => {
-                // No regex patterns to compile for domain criteria
+            | Criteria::ReplyToDomain { .. }
+            | Criteria::DkimStatus { .. }
+            | Criteria::DkimAlignment { .. } => {
+                // No regex patterns to compile for domain/DKIM criteria
             }
             // Normalized criteria don't need pattern compilation
             Criteria::NormalizedSubjectContains { .. }
@@ -5424,34 +5438,22 @@ impl FilterEngine {
                         }
                     }
 
-                    // Check for missing or failed DKIM authentication
+                    // Check for missing or failed DKIM authentication using unified API
                     if check_auth {
-                        let mut missing_auth = false;
 
                         // Check authentication results
-                        if let Some(auth_results) = self
-                            .get_header_case_insensitive(&context.headers, "authentication-results")
-                        {
-                            let auth_lower = auth_results.to_lowercase();
-                            if auth_lower.contains("dkim=none")
-                                || auth_lower.contains("dkim=fail")
-                                || auth_lower.contains("dkim=temperror")
-                                || auth_lower.contains("dkim=permerror")
-                            {
-                                missing_auth = true;
-                                log::debug!("Missing/failed DKIM authentication detected");
+                        // Check for missing or failed DKIM authentication using unified API
+                        let dkim = context.dkim_verification_readonly();
+                        let missing_auth = match dkim.auth_status {
+                            crate::dkim_verification::DkimAuthStatus::Pass => false,
+                            crate::dkim_verification::DkimAuthStatus::Fail(_) |
+                            crate::dkim_verification::DkimAuthStatus::TempError |
+                            crate::dkim_verification::DkimAuthStatus::PermError |
+                            crate::dkim_verification::DkimAuthStatus::None => {
+                                log::debug!("Missing/failed DKIM authentication detected: {:?}", dkim.auth_status);
+                                true
                             }
-                        } else {
-                            // No authentication results header at all
-                            missing_auth = true;
-                            log::debug!("No authentication results header found");
-                        }
-
-                        // Also check if there's no DKIM signature at all
-                        if !missing_auth && !context.headers.contains_key("dkim-signature") {
-                            missing_auth = true;
-                            log::debug!("No DKIM signature found");
-                        }
+                        };
 
                         if missing_auth {
                             extortion_indicators += 1;
@@ -5686,54 +5688,39 @@ impl FilterEngine {
                         .unwrap_or(&[]);
 
                     let mut auth_failure_indicators = 0;
+                    let dkim = context.dkim_verification_readonly();
 
-                    // Check for DKIM signature presence
-                    let has_dkim_signature = context.headers.contains_key("dkim-signature");
-                    let has_domainkey_signature =
-                        context.headers.contains_key("domainkey-signature");
+                    // Check for DKIM signature presence using unified API
+                    let has_domainkey_signature = context.headers.contains_key("domainkey-signature");
 
-                    if require_sig && !has_dkim_signature && !has_domainkey_signature {
+                    if require_sig && !dkim.has_signature && !has_domainkey_signature {
                         auth_failure_indicators += 1;
                         log::debug!("No DKIM or DomainKey signatures found");
                     }
 
-                    // Check for domain mismatch in DKIM signature
-                    if check_mismatch && has_dkim_signature {
-                        if let Some(dkim_sig) =
-                            self.get_header_case_insensitive(&context.headers, "dkim-signature")
-                        {
-                            // Extract domain from DKIM signature (d= parameter)
-                            if let Some(dkim_domain) = extract_dkim_domain(dkim_sig) {
-                                // Extract domain from sender
-                                if let Some(sender_domain) = extract_sender_domain(context) {
-                                    if dkim_domain != sender_domain {
-                                        auth_failure_indicators += 1;
-                                        log::debug!(
-                                            "DKIM domain mismatch: signature={}, sender={}",
-                                            dkim_domain,
-                                            sender_domain
-                                        );
-                                    }
-                                }
-                            }
+                    // Check for domain mismatch in DKIM signature using unified API
+                    if check_mismatch && dkim.has_signature {
+                        if let crate::dkim_verification::DomainAlignment::Misaligned { dkim_domain, sender_domain } = &dkim.domain_alignment {
+                            auth_failure_indicators += 1;
+                            log::debug!(
+                                "DKIM domain mismatch: signature={}, sender={}",
+                                dkim_domain,
+                                sender_domain
+                            );
                         }
                     }
 
-                    // Check for suspicious domains in DKIM signature
-                    if has_dkim_signature {
-                        if let Some(dkim_sig) =
-                            self.get_header_case_insensitive(&context.headers, "dkim-signature")
-                        {
-                            if let Some(dkim_domain) = extract_dkim_domain(dkim_sig) {
-                                for suspicious in suspicious_list {
-                                    if dkim_domain.contains(suspicious) {
-                                        auth_failure_indicators += 1;
-                                        log::debug!(
-                                            "Suspicious domain in DKIM signature: {}",
-                                            dkim_domain
-                                        );
-                                        break;
-                                    }
+                    // Check for suspicious domains in DKIM signature using unified API
+                    if !dkim.domains.is_empty() {
+                        for dkim_domain in &dkim.domains {
+                            for suspicious in suspicious_list {
+                                if dkim_domain.contains(suspicious) {
+                                    auth_failure_indicators += 1;
+                                    log::debug!(
+                                        "Suspicious domain in DKIM signature: {}",
+                                        dkim_domain
+                                    );
+                                    break;
                                 }
                             }
                         }
@@ -6171,6 +6158,50 @@ impl FilterEngine {
                         }
                     }
                     false
+                }
+                Criteria::DkimStatus { required_status, check_alignment, min_signatures } => {
+                    let dkim = context.dkim_verification_readonly();
+                    
+                    // Check required status
+                    let status_matches = match required_status.to_lowercase().as_str() {
+                        "pass" => matches!(dkim.auth_status, crate::dkim_verification::DkimAuthStatus::Pass),
+                        "fail" => matches!(dkim.auth_status, crate::dkim_verification::DkimAuthStatus::Fail(_)),
+                        "none" => matches!(dkim.auth_status, crate::dkim_verification::DkimAuthStatus::None),
+                        "temperror" => matches!(dkim.auth_status, crate::dkim_verification::DkimAuthStatus::TempError),
+                        "permerror" => matches!(dkim.auth_status, crate::dkim_verification::DkimAuthStatus::PermError),
+                        _ => false,
+                    };
+                    
+                    if !status_matches {
+                        return false;
+                    }
+                    
+                    // Check minimum signatures
+                    if let Some(min_sigs) = min_signatures {
+                        if dkim.signature_count < *min_sigs {
+                            return false;
+                        }
+                    }
+                    
+                    // Check alignment if requested
+                    if check_alignment.unwrap_or(false) {
+                        match dkim.domain_alignment {
+                            crate::dkim_verification::DomainAlignment::Aligned => true,
+                            _ => false,
+                        }
+                    } else {
+                        true
+                    }
+                }
+                Criteria::DkimAlignment { require_alignment, allow_subdomains: _ } => {
+                    let dkim = context.dkim_verification_readonly();
+                    let require_align = require_alignment.unwrap_or(true);
+                    
+                    match dkim.domain_alignment {
+                        crate::dkim_verification::DomainAlignment::Aligned => !require_align,
+                        crate::dkim_verification::DomainAlignment::Misaligned { .. } => require_align,
+                        crate::dkim_verification::DomainAlignment::Unknown => false,
+                    }
                 }
                 // Normalized criteria evaluation
                 Criteria::NormalizedSubjectContains { text } => {

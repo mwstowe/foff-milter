@@ -1091,8 +1091,9 @@ impl FeatureExtractor for SenderAlignmentAnalyzer {
         if let Some(raw_headers) =
             crate::features::get_header_case_insensitive(&context.headers, "raw")
         {
-            let has_auth_failure =
-                raw_headers.contains("dkim=fail") || raw_headers.contains("spf=fail");
+            let dkim = context.dkim_verification_readonly();
+            let has_auth_failure = matches!(dkim.auth_status, crate::dkim_verification::DkimAuthStatus::Fail(_))
+                || raw_headers.contains("spf=fail");
             let claims_major_brand = [
                 "ebay",
                 "fedex",
@@ -1146,8 +1147,9 @@ impl FeatureExtractor for SenderAlignmentAnalyzer {
             let mut auth_failures = Vec::new();
             let mut auth_score = 0;
 
-            // Check individual authentication failures
-            if raw_headers.contains("dkim=fail") {
+            // Check individual authentication failures using unified API
+            let dkim = context.dkim_verification_readonly();
+            if matches!(dkim.auth_status, crate::dkim_verification::DkimAuthStatus::Fail(_)) {
                 auth_score += 15;
                 auth_failures.push("DKIM");
             }

@@ -8,6 +8,7 @@ pub mod config;
 pub mod config_loader;
 pub mod config_test;
 pub mod detection;
+pub mod dkim_verification;
 pub mod domain_age;
 pub mod domain_utils;
 pub mod features;

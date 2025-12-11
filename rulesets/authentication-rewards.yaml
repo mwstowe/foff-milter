@@ -37,6 +37,33 @@ rules:
     score: 25
     description: "SPF record indicates no designated sender hosts for non-free email"
 
+  # Enhanced DKIM verification using unified API
+  - name: "Multiple DKIM signatures with alignment"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "DkimStatus"
+          required_status: "pass"
+          min_signatures: 2
+          check_alignment: true
+        - type: "DkimAlignment"
+          require_alignment: false  # Reward aligned domains
+    score: -30
+    description: "Multiple DKIM signatures with proper domain alignment"
+
+  - name: "DKIM domain misalignment penalty"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "DkimStatus"
+          required_status: "pass"
+        - type: "DkimAlignment"
+          require_alignment: true  # Penalize misaligned domains
+    score: 25
+    description: "DKIM signature present but domain misaligned"
+
   # Strong authentication rewards
   - name: "Triple Authentication Pass"
     enabled: true

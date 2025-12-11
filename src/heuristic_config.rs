@@ -211,6 +211,22 @@ pub enum Criteria {
     ReplyToDomain {
         domains: Vec<String>,
     },
+    /// Unified DKIM verification criteria using centralized DKIM analysis
+    DkimStatus {
+        // Required DKIM status (pass, fail, none, temperror, permerror)
+        required_status: String,
+        // Whether to check for domain alignment (default: false)
+        check_alignment: Option<bool>,
+        // Minimum number of DKIM signatures required (default: 1)
+        min_signatures: Option<usize>,
+    },
+    /// DKIM domain alignment verification
+    DkimAlignment {
+        // Whether misalignment should trigger (default: true)
+        require_alignment: Option<bool>,
+        // Whether to allow subdomain alignment (default: true)
+        allow_subdomains: Option<bool>,
+    },
     UnsubscribeLinkPattern {
         pattern: String,
     },

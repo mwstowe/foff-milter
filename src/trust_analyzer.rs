@@ -84,17 +84,21 @@ impl TrustAnalyzer {
             auth_score -= 5;
         }
 
-        // DKIM analysis
-        if auth_content.contains("dkim=pass") {
-            auth_score += 20;
-
-            // Multiple DKIM signatures indicate better infrastructure
-            let dkim_count = auth_content.matches("dkim=pass").count();
-            if dkim_count > 1 {
-                auth_score += 10;
+        // DKIM analysis using unified verification
+        let dkim = context.dkim_verification_readonly();
+        match dkim.auth_status {
+            crate::dkim_verification::DkimAuthStatus::Pass => {
+                auth_score += 20;
+                
+                // Multiple DKIM signatures indicate better infrastructure
+                if dkim.signature_count > 1 {
+                    auth_score += 10;
+                }
             }
-        } else if auth_content.contains("dkim=fail") {
-            auth_score -= 10;
+            crate::dkim_verification::DkimAuthStatus::Fail(_) => {
+                auth_score -= 10;
+            }
+            _ => {} // No change for None, TempError, PermError
         }
 
         // ARC (Authenticated Received Chain) support
@@ -102,8 +106,8 @@ impl TrustAnalyzer {
             auth_score += 15;
         }
 
-        // Check for additional authentication headers
-        if context.headers.contains_key("DKIM-Signature") {
+        // Check for additional authentication headers using unified DKIM verification
+        if dkim.has_signature {
             auth_score += 10;
         }
 

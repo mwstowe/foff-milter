@@ -1081,6 +1081,7 @@ async fn test_email_file(
         forwarding_source: None, // Will be detected during evaluation
         proximate_mailer: None,  // Will be detected during evaluation
         normalized: None,        // Will be populated during evaluation
+        dkim_verification: None, // Will be populated on first access
     };
 
     // Add legitimate business detection for test mode
