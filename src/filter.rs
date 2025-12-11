@@ -312,13 +312,25 @@ impl FilterEngine {
                     "wolfermans.com",
                     "williams-sonoma.com", // Established retailers
                     "email3.gog.com",
-                    "wl043.sendgrid.net", // Specific ESP subdomains
+                    "wl043.sendgrid.net",
+                    "wl044.sendgrid.net", // Specific ESP subdomains
                     "wholefoodsmarket.com",
                     "rejuvenation.com",
                     "wolfermans-email.com",
                     "tokyo-tiger.com",
                     "coinbase.com",
                     "mail.coinbase.com", // False positive domains
+                    "biqu.equipment",
+                    "bigtreetech.com", // 3D printing equipment
+                    "delta.com",
+                    "o.delta.com", // Airlines
+                    "costco.com",
+                    "digital.costco.com", // Major retailers
+                    "adobe.com",
+                    "cjm.adobe.com", // Marketing platforms
+                    "klaviyo.com",
+                    "klaviyomail.com",
+                    "klaviyodns.com", // Email service providers
                 ];
 
                 // Check if sender is from legitimate encoding-heavy domain
@@ -327,7 +339,7 @@ impl FilterEngine {
                 });
 
                 if is_legitimate_sender {
-                    // Check if sender has DKIM authentication for additional reduction using unified API
+                    // Check DKIM for additional reduction
                     let dkim = context.dkim_verification_readonly();
                     let has_dkim = dkim.has_signature
                         && matches!(
@@ -338,7 +350,7 @@ impl FilterEngine {
                     let reduced_score = if has_dkim {
                         base_score / 10 // Reduce by 90% for DKIM-authenticated legitimate senders
                     } else {
-                        base_score / 3 // Reduce by 67% for other legitimate senders
+                        base_score / 4 // Reduce by 75% for other legitimate senders
                     };
 
                     log::debug!(

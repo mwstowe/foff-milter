@@ -652,8 +652,43 @@ rules:
     criteria:
       type: "SenderPattern"
       pattern: ".*@.*delta\\.com$"
-    score: -200
+    score: -300  # Increased from -200
     description: "Delta Air Lines airline"
+
+  - name: "Costco Wholesale"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@.*costco\\.com.*"
+        - type: "SenderPattern"
+          pattern: ".*@.*digital\\.costco\\.com.*"
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: "(?i).*Costco.*"
+    score: -300  # Increased to overcome encoding penalties
+    description: "Costco wholesale retailer"
+
+  - name: "BIQU/BIGTREETECH"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@.*biqu\\.equipment$"
+        - type: "SenderPattern"
+          pattern: ".*@.*bigtreetech\\.com$"
+    score: -200
+    description: "3D printing equipment manufacturer"
+
+  - name: "Tokyo Tiger"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*tokyo-tiger\\.com$"
+    score: -200
+    description: "Legitimate retailer"
 
   - name: "Parts Express Electronics"
     enabled: true

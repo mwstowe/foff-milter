@@ -659,6 +659,37 @@ impl ContextAnalyzer {
         None
     }
 
+    fn is_legitimate_promotional_content(&self, sender: &str, content: &str) -> bool {
+        let sender_lower = sender.to_lowercase();
+        let content_lower = content.to_lowercase();
+        
+        // Established retailers and brands
+        let legitimate_retailers = [
+            "tokyo-tiger.com", "biqu.equipment", "bigtreetech.com",
+            "delta.com", "costco.com", "sendgrid.net", "klaviyo",
+            "adobe.com", "mailchimp.com"
+        ];
+        
+        let is_legitimate_sender = legitimate_retailers.iter()
+            .any(|domain| sender_lower.contains(domain));
+            
+        // Legitimate promotional patterns
+        let has_unsubscribe = content_lower.contains("unsubscribe");
+        let has_privacy_policy = content_lower.contains("privacy policy");
+        let has_legitimate_structure = has_unsubscribe || has_privacy_policy;
+        
+        // Standard promotional language (not scam indicators)
+        let promotional_patterns = [
+            "up to", "% off", "sale", "offer", "discount", "deal",
+            "limited time", "shop now", "free shipping"
+        ];
+        
+        let has_standard_promo = promotional_patterns.iter()
+            .any(|pattern| content_lower.contains(pattern));
+            
+        is_legitimate_sender && has_legitimate_structure && has_standard_promo
+    }
+
     fn get_industry_urgency_multiplier(&self, industry: &str) -> f32 {
         match industry {
             "floral" => 0.4,          // 60% reduction for floral marketing
@@ -682,6 +713,10 @@ impl FeatureExtractor for ContextAnalyzer {
         // Detect industry context for appropriate scoring adjustments
         let combined_content = format!("{} {}", subject, body);
         let industry_context = self.detect_industry_context(sender, &combined_content);
+        
+        // Check for legitimate promotional content patterns
+        let is_legitimate_promo = self.is_legitimate_promotional_content(sender, &combined_content);
+        let promo_discount = if is_legitimate_promo { 0.4 } else { 1.0 }; // 60% reduction for legitimate promos
 
         // Check for Medicare/healthcare scam patterns
         let medicare_issues = self.analyze_medicare_scam_patterns(context);
@@ -1009,7 +1044,7 @@ impl FeatureExtractor for ContextAnalyzer {
 
         FeatureScore {
             feature_name: "Context Analysis".to_string(),
-            score: total_score,
+            score: (total_score as f32 * promo_discount) as i32,
             confidence,
             evidence: all_evidence,
         }

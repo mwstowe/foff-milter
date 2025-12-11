@@ -426,10 +426,10 @@ impl EmailNormalizer {
         // Penalty for obfuscation techniques
         for technique in &normalized.obfuscation_indicators {
             score += match technique {
-                ObfuscationTechnique::UnicodeHomoglyphs => 50,
+                ObfuscationTechnique::UnicodeHomoglyphs => 25, // Reduced from 50 for legitimate Unicode
                 ObfuscationTechnique::ZeroWidthCharacters => 75,
                 ObfuscationTechnique::BidirectionalOverride => 60,
-                ObfuscationTechnique::CombiningCharacters => 30,
+                ObfuscationTechnique::CombiningCharacters => 15, // Reduced from 30 for legitimate formatting
             };
         }
 

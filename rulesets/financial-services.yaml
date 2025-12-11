@@ -20,7 +20,7 @@ rules:
               - type: "And"
                 criteria:
                   - type: "SenderPattern"
-                    pattern: ".*@.*(disney|marvel|netflix|hulu|amazon|apple|microsoft|google|duluth|narvar|secretlab|oxford|nextdoor|sendgrid|butcherbox|becu|1800flowers|celebrations|eff|aclu|amnesty|greenpeace|redcross|unicef|oxfam|savethechildren|rejuvenation|rifftrax|bethesda|ecobee|wolfermans|wholefoodsmarket|coinbase|ally|walgreens)\\.(com|net|org)$"
+                    pattern: ".*@.*(disney|marvel|netflix|hulu|amazon|apple|microsoft|google|duluth|narvar|secretlab|oxford|nextdoor|sendgrid|butcherbox|becu|1800flowers|celebrations|eff|aclu|amnesty|greenpeace|redcross|unicef|oxfam|savethechildren|rejuvenation|rifftrax|bethesda|ecobee|wolfermans|wholefoodsmarket|coinbase|ally|walgreens|delta|united|american|southwest|jetblue)\\.(com|net|org)$"
                   - type: "Or"
                     criteria:
                       - type: "SubjectPattern"
@@ -29,12 +29,18 @@ rules:
                         pattern: "(?i).*(retail|store|shop|product|merchandise|bakery|home.*improvement|gaming|energy.*saving)"
               - type: "HeaderPattern"
                 header: "From"
-                pattern: "(?i).*(disney|marvel|netflix|hulu|amazon|apple|microsoft|google|duluth|narvar|secretlab|oxford|nextdoor|butcherbox|becu|1800flowers|celebrations|eff|aclu|amnesty|greenpeace|redcross|unicef|oxfam|savethechildren|rejuvenation|rifftrax|bethesda|ecobee|wolfermans|wholefoodsmarket|coinbase|ally|walgreens).*"
+                pattern: "(?i).*(disney|marvel|netflix|hulu|amazon|apple|microsoft|google|duluth|narvar|secretlab|oxford|nextdoor|butcherbox|becu|1800flowers|celebrations|eff|aclu|amnesty|greenpeace|redcross|unicef|oxfam|savethechildren|rejuvenation|rifftrax|bethesda|ecobee|wolfermans|wholefoodsmarket|coinbase|ally|walgreens|delta|united|american|southwest|jetblue).*"
               - type: "HeaderPattern"
                 header: "DKIM-Signature"
                 pattern: ".*d=butcherbox\\.com.*"
               - type: "BodyPattern"
                 pattern: "(?i).*(double.*impact|charitable.*donation|non.*profit|501\\(c\\)\\(3\\)|tax.*deductible|donate.*now)"
+              - type: "Or"
+                criteria:
+                  - type: "SubjectPattern"
+                    pattern: "(?i).*(miles|points|rewards|credit.*card|bonus.*miles|airline.*miles)"
+                  - type: "BodyPattern"
+                    pattern: "(?i).*(miles|points|rewards|credit.*card|bonus.*miles|airline.*miles|frequent.*flyer)"
     score: 120
     description: "Unrealistic financial return promises"
 
