@@ -1,6 +1,22 @@
 name: "Commerce Threats"
 enabled: true
 rules:
+  # Brand-domain mismatch detection
+  - name: "Product brand domain mismatch"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: "(?i).*(knife|chef|kitchen|cooking|culinary|cutlery|blade|steel|ceramic|santoku|cleaver).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(kitchen|chef|culinary|cooking|knife|cutlery|blade|steel|wusthof|henckels|global|shun|victorinox)\\.(com|net|org)$"
+    score: 40
+    description: "Kitchen/cooking product from non-culinary domain"
+
   # Fake surveys and contests
   - name: "Fake brand surveys and contests"
     enabled: true

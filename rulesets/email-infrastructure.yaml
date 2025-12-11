@@ -64,7 +64,9 @@ rules:
       infrastructure_type: "free_email"
       domains:
         - "gmail.com"
+        - "googlemail.com"
         - "yahoo.com"
+        - "yahoodns.net"
         - "hotmail.com"
         - "outlook.com"
         - "aol.com"
@@ -77,6 +79,21 @@ rules:
     score: 5
     description: "Emails from free email providers"
 
+  - name: "Yahoo infrastructure reply-to redirect"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*yahoo.*\\.(com|net)$"
+        - type: "HeaderPattern"
+          header: "Reply-To"
+          pattern: ".*@.*yahoodns\\.net$"
+    score: 40
+    description: "Non-Yahoo sender redirecting replies to Yahoo infrastructure"
+
   - name: "Reply-to free email redirect"
     criteria:
       type: "And"
@@ -87,18 +104,24 @@ rules:
             infrastructure_type: "free_email"
             domains:
               - "gmail.com"
+              - "googlemail.com"
               - "yahoo.com"
+              - "yahoodns.net"
               - "hotmail.com"
               - "outlook.com"
+              - "aol.com"
             check_sender: true
             check_reply_to: false
         - type: "EmailInfrastructure"
           infrastructure_type: "free_email"
           domains:
             - "gmail.com"
+            - "googlemail.com"
             - "yahoo.com"
+            - "yahoodns.net"
             - "hotmail.com"
             - "outlook.com"
+            - "aol.com"
           check_sender: false
           check_reply_to: true
     score: 40

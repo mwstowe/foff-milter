@@ -1,0 +1,210 @@
+Return-Path: <return@texayentertainment.com>
+Received: from juliett.baddomain.com (localhost [127.0.0.1])
+	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTP id 5BB55CrU055669
+	for <mstowe@localhost>; Thu, 11 Dec 2025 05:05:13 GMT
+	(envelope-from return@texayentertainment.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=texayentertainment.com header.i=@texayentertainment.com header.b=piqk6H4D
+Received: from jimapinternal-aol.imap.mail.g03.yahoodns.net [67.195.228.147]
+	by juliett.baddomain.com with IMAP (fetchmail-6.6.1)
+	for <mstowe@localhost> (single-drop); Thu, 11 Dec 2025 05:05:13 +0000 (UTC)
+Received: from 10.223.248.109
+ by atlas110.aol.mail.ne1.yahoo.com pod-id NONE with HTTPS; Thu, 11 Dec 2025 04:59:08 +0000
+X-Originating-Ip: [52.36.90.55]
+Received-SPF: none (domain of texayentertainment.com does not designate permitted sender hosts)
+Authentication-Results: atlas110.aol.mail.ne1.yahoo.com;
+ dkim=pass header.i=@texayentertainment.com header.s=h1 arc_overridden_status=NOT_OVERRIDDEN;
+ spf=none smtp.mailfrom=texayentertainment.com arc_overridden_status=NOT_OVERRIDDEN;
+ dmarc=pass(p=REJECT) header.from=texayentertainment.com arc_overridden_status=NOT_OVERRIDDEN;
+X-Apparently-To: stowe@aol.com; Thu, 11 Dec 2025 04:59:08 +0000
+X-YMailISG: eayczjsWLDuiFy2hjv55TyT0.TCUBgUbCuL8d25ZKVwjHeJX
+ oPJQ95F0Sp2WyY9fTX86BfLj4cOFnPbKG9LNq8IzX5YKz1wm.vAvvhnVlPM9
+ cpQvf52OzlGJxQNRzbZqFiaj5DF_7U7BzR4DUf7jcrrxtK9Z1xVMUf4X19p5
+ PLQYgqtKecpJmd4d33Eyet7qVBswG6BnG5T67f1nVr7MqKujn1APC9am5Qm0
+ 0rqKsQC5Moyy0W8Au3AzvVqem4Wjymj_42Y1njIDwqpyEgl957C4e6eC78_e
+ uW8Hgr5k_HyLA2yd4JDMVsJO3tgqz55CWhQX57DvHTQ.Y7xC7IjyHTIvKwQY
+ Z5evJuWWMRibLV.JN_6nEm_WvlmZsXvIzB6Nf4uPoXW.awge4E89X4TmsFU4
+ 7p1Bg1vXnpmCOLW3_rJaqRtWjl9G9Ce34bmmoS36DzJkoPSZx35f4qJ8.m8.
+ HnGv8AVwezuJUJh6hcSlNUW3fCWw2kab_yZt.xTkX9Pv6j0.QkTIbRq6jWG4
+ pgsspxYHQgeLHXYFj1IF1S1cmTWJbNpa5DDX5CgEadEbdnLYlXG8JWsgijcC
+ pnkEnTskoc2wT2FMFpxg9RKmJX9LlXyD36eI.Ge8Ez9KnULgVZrhKA6rNHJU
+ KzBcWm6Jva6AZltF4AJcEbC1rxVKeHVU2Q5fqkJSXSePbpGxJ32zH7zw_Rmu
+ ku8mZMKUx1B3YT4HqQjwGQKoCrliFH_oEwVvSASOqQ2BEaQcv2VaAxTvFlHY
+ stMkeuojnMmrrwEbG6clp.vIZ7aGLz3nauUYgA3Ss4p7sh2VT.i.rR7zvmC1
+ u34Rds7MZNaIHg4w5OhVLA6bPS1xn2frIDmb3G2fYtHNaOobjlp.RRm8.H91
+ 0JbHJstbp_6w6uo22DJ85V2y3eq2ZFQVDe6tO2oqQGJ1SW8WVIhs6WiUR4f_
+ cd7tv2dsthbuKwH0VBjdDrffITpbP_zAYfbNDxch.4cFl3dupUSOq4JKmppr
+ kMc9CoG.vxgHGf3ZhslXB3LBJbdKWBKcJV78U_Wbv42IXfjSzWg2hWOk3EQl
+ 3fzY9ZYjxp8stOV.QUCy3pEb8frVWHgbUYWZQRAdpPZ9rqaRbOIp6pgWUxPQ
+ X2lwGNDgDvk6MZS9aiNyutZhN5AwaqQywKIjmElPzveszIsuNvCsIfs70jJx
+ DFmTmrPXxeSEA46vazlHJe.dJTIq_9Es8a8_.6N84Vzlq5KJfIv83kXr7FxB
+ njIAyVuvb.b8b4e5InuMqj0EAeP0NypbmTmeOhfowP6XlafECZAQdNenXz5L
+ GeEXrFYTw0vn26_RTIns7iZq0eu3Jh50nklmgCEJk9sQp_fLZcDN5FkXE84O
+ jY4XXXV85ERpeCVVA0xr8aZ5ODEZtlQRvtWab1NUGVyCBcsDIRlXnhC0Vz20
+ 1z7ibiPQ4RuWDY_BTWm7HRUb
+Received: from 52.36.90.55 (EHLO pharmaportal.nicosgenuine.com)
+ by 10.223.248.109 with SMTPs
+ (version=TLS1_2 cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256);
+ Thu, 11 Dec 2025 04:59:08 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=h1; d=texayentertainment.com;
+ h=From:Reply-To:To:Subject:MIME-Version:Date:Message-ID:Content-Type:
+ Content-Transfer-Encoding:List-Unsubscribe:List-Id;
+ bh=pzgqaqP6bT1A4hLkMImF2bo6VhSXC0O6DZAo/G44yhw=;
+ b=piqk6H4DSmekI02sm0ZAZ7HJj2MxMvhBtADvuXgpGMd2NwhrAAcsG43RKImQDQqDyAShUXpnk05c
+   i9XJShWvFITJgZrGkULKLIcf1CZEJnyGH71LrtvGaPX3cW/txrG24EpqYgBnL/r4uez6LmzhwqMu
+   xcbaDCCNGIwsZfaVMM2JJmgPV6qv5xbsowVclT97ggNRuqNtILw4ukdbBKs7PQlLDTsTuX1fTRIp
+   bZg1HNkPhNZOkTHRgaDxKMu42BYWK8GFZwyt0fzRfR2OD4W3k8dGxLi4/zZs34aMcb9evtSokrC0
+   PJaWG+2IR86CfHF377sRJVVtnqAh4Dmz9aJbIQ==
+From:     =?UTF-8?B?4p6n?=Matsato Chef Knife<FusionLinkAresLynxVibe@texayentertainment.com>
+Reply-To: texayentertainment.com@jimapinternal-aol.imap.mail.g03.yahoodns.net
+To: stowe@aol.com
+Subject:   =?UTF-8?B?4p6n?=Last day to Grab this BIG Promo!    
+MIME-Version: 1.0
+Date: Thu, 11 Dec 2025 04:59:02 +0000
+Message-ID: <hraaqvltiahc.5739886@texayentertainment.com>
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: 172.31.52.235
+List-Unsubscribe: <mailto:G3VOMQB6OI3SSHMJIQMRHNDWDUQ@manage.texayentertainment.com?subject=unsubscribe>, <http://texayentertainment.com/Gf9HIadakVZ4E63NxwHbGk7/n4/h0vKjrILbhhif2HGm0YJ/rrYddxxBck/hB4ZDTWmxJVgR9EUosjiH2/rrd7/zqHQ2k2jgKrfqiw1lUDPZ/xevMvrY/9Tg5Kc9mlXWT2bYU7GVr4Pm/7eM_/iLpf0vOG8xGmrG3YvTcFo/red5x/iA02a1Xz0nVqGL3OYqfgO/YY7v5/Dwk7gRyjGfB3fZoCojhhPZw/>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+List-Id: <ymrxim.texayentertainment.com>
+Precedence: bulk
+Feedback-ID: bf2025:promotions.texayentertainment.com
+X-Complaints-To: abuse@texayentertainment.com
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [0.0.0.0]); Thu, 11 Dec 2025 05:05:13 +0000 (UTC)
+X-FOFF-Feature-Evidence: Domain Reputation: Suspicious domain pattern detected: texayentertainment.com (juliett.baddomain.com) [a8aec098]
+X-FOFF-Feature-Evidence: Context Analysis: Multiple exclamation marks detected (juliett.baddomain.com) [8c765852]
+X-FOFF-Feature-Evidence: Context Analysis: Industry context detected: tech_newsletter (reduced scoring) (juliett.baddomain.com) [80e1dd3b]
+X-FOFF-Rule-Matched: Analytics: Suspicious Timing Patterns (juliett.baddomain.com) [b1960f71]
+X-FOFF-Score: 20 - foff-milter v0.8.0 (juliett.baddomain.com)
+X-FOFF-Trust-Analysis: auth=95, infra=10, behavior=-10, content=10, total=50, adj=-10
+X-FOFF-Business-Analysis: comm=15, legit=15, industry=10, compliance=10, total=13, adj=0
+X-FOFF-Seasonal-Analysis: seasonal=0, consistency=5, patterns=0, timing=0, total=2, adj=0
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:v="urn:schemas-microsoft-com:vml"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>
+      RVW7JTGGAQ ehap krzhhm PC1ND2P09MTV5 barfv5rdpaaf ULDUS 7YGAP8OHWBG
+    </title>
+
+    <style type="text/css">
+      body {
+        margin: 0;
+        padding: 0;
+        background: #f4f4f4;
+        font-family: Arial, Helvetica, sans-serif;
+        -webkit-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+      }
+      img {
+        display: block;
+        border: 0;
+        outline: none;
+        text-decoration: none;
+        -ms-interpolation-mode: bicubic;
+      }
+      table {
+        border-collapse: collapse;
+      }
+      .preheader {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        height: 0;
+        width: 0;
+        overflow: hidden;
+        mso-hide: all;
+      }
+    </style>
+  </head>
+
+  <body style="margin: 0; padding: 0; background: #f4f4f4">
+    <!-- Hidden Preheader -->
+    <div class="preheader">&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;</div>
+
+    <!-- Outer Wrapper -->
+    <table
+      role="presentation"
+      width="100%"
+      cellpadding="0"
+      cellspacing="0"
+      bgcolor="#f4f4f4"
+    >
+      <tr>
+        <td align="center" style="padding: 20px 10px">
+          <!-- 640px Container -->
+          <table
+            role="presentation"
+            width="640"
+            cellpadding="0"
+            cellspacing="0"
+            bgcolor="#ffffff"
+            style="max-width: 640px; width: 100%"
+          >
+            <!-- MAIN IMAGE -->
+            <tr>
+              <td align="center">
+                <a
+                  href="http://youdeseosperity.com/cHSUh7uI8xljf22pqEwNw4Wz/6Z/qhLscihk3VwaolGhzG3X3g8h/rrYddxxBck/LL5zKXEBeo1LhrYzJsdI/rrd7/ECBWzlKEi4Bhl09JlzoxMQO/xevMvrY/3iaUUqWs69lJrBBpA60SLp8g9/7eM_/AjhFbs3cRFvvqVe3T641NRwY/red5x/yuhgT5ShL8lzx6st3pEpryc/YY7v5/OOysTRAmypEZf5ODqReU9cj/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style="text-decoration: none; border: 0"
+                >
+                  <img
+                    src="http://youdeseosperity.com/387138190403170.jpg"
+                    alt="View details"
+                    width="640"
+                    style="width: 100%; max-width: 640px; height: auto"
+                  />
+                </a>
+              </td>
+            </tr>
+
+            <!-- Spacer -->
+            <tr>
+              <td style="height: 18px; line-height: 18px; font-size: 18px">
+                &nbsp;
+              </td>
+            </tr>
+
+            <!-- UNSUBSCRIBE IMAGE + TEXT -->
+            <tr>
+              <td align="center" style="padding-bottom: 20px">
+                <a
+                  href="http://youdeseosperity.com/Gf9HIadakVZ4E63NxwHbGk7/n4/h0vKjrILbhhif2HGm0YJ/rrYddxxBck/hB4ZDTWmxJVgR9EUosjiH2/rrd7/zqHQ2k2jgKrfqiw1lUDPZ/xevMvrY/9Tg5Kc9mlXWT2bYU7GVr4Pm/7eM_/iLpf0vOG8xGmrG3YvTcFo/red5x/iA02a1Xz0nVqGL3OYqfgO/YY7v5/Dwk7gRyjGfB3fZoCojhhPZw/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style="text-decoration: none; border: 0"
+                >
+                  <img
+                    src="http://youdeseosperity.com/uqvvA29Kg2nRPBX.jpg"
+                    alt="Unsubscribe"
+                    style="
+                      display: inline-block;
+                      max-width: 640px;
+                      height: auto;
+                      border: 0;
+                    "
+                  />
+                </a>
+
+               
+              </td>
+            </tr>
+          </table>
+          <!-- End Container -->
+        </td>
+      </tr>
+    </table>
+
+    
+  </body>
+</html>

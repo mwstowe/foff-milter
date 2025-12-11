@@ -1,6 +1,42 @@
 name: "Authentication Rewards"
 enabled: true
 rules:
+  # Authentication failure penalties
+  - name: "DKIM signature verification failed"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "HeaderPattern"
+          header: "Authentication-Results"
+          pattern: "(?i)dkim=fail.*signature verification failed"
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "SenderPattern"
+                pattern: ".*@.*(gmail|yahoo|hotmail|outlook|aol|icloud)\\.(com|net)$"
+              - type: "HeaderPattern"
+                header: "Authentication-Results"
+                pattern: "(?i)spf=pass"
+    score: 30
+    description: "DKIM signature verification failed for non-free email domains"
+
+  - name: "SPF no designated sender hosts"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "HeaderPattern"
+          header: "Received-SPF"
+          pattern: "(?i)none.*does not designate permitted sender hosts"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(gmail|yahoo|hotmail|outlook|aol|icloud)\\.(com|net)$"
+    score: 25
+    description: "SPF record indicates no designated sender hosts for non-free email"
+
   # Strong authentication rewards
   - name: "Triple Authentication Pass"
     enabled: true
