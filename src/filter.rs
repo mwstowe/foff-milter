@@ -324,11 +324,11 @@ impl FilterEngine {
                     "nationalgeographic.com",
                     "email.nationalgeographic.com", // Publishing/media
                     "ecoflow.com",
-                    "info.ecoflow.com", // Emergency preparedness
+                    "info.ecoflow.com",    // Emergency preparedness
                     "fiestatableware.com", // Home goods
-                    "pmpress.org", // Independent publishers
+                    "pmpress.org",         // Independent publishers
                     "quickbooks.com",
-                    "intuit.com", // Payment processors
+                    "intuit.com",       // Payment processors
                     "charmtracker.com", // Medical services
                     "email3.gog.com",
                     "wl043.sendgrid.net",

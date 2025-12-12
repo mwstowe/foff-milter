@@ -89,11 +89,22 @@ rules:
   - name: "Financial service name misspellings"
     enabled: true
     criteria:
-      type: "HeaderPattern"
-      header: "From"
-      pattern: "(?i).*(loanz|financ[e3]|cr[e3]dit|fundin[g9]|ban[k|<]|mortgag[e3]|insuranc[e3]|investm[e3]nt|paym[e3]nt|santa.*loan|holiday.*cash|christmas.*fund).*"
+      type: "And"
+      criteria:
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: "(?i).*(loanz|financ[e3]|cr[e3]dit|fundin[g9]|mortgag[e3]|insuranc[e3]|investm[e3]nt|paym[e3]nt|santa.*loan|holiday.*cash|christmas.*fund).*"
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "SenderPattern"
+                pattern: ".*@.*(ally|bankofamerica|chase|wellsfargo|citi|usbank|pnc|capitalone|discover|americanexpress|marcus|sofi|schwab|fidelity|vanguard|tdameritrade|etrade)\\.(com|net)$"
+              - type: "HeaderPattern"
+                header: "From"
+                pattern: "(?i).*(Ally Bank|Bank of America|Chase|Wells Fargo|Citibank|US Bank|PNC Bank|Capital One|Discover|American Express|Marcus|SoFi|Schwab|Fidelity|Vanguard).*"
     score: 35
-    description: "Misspelled financial service names commonly used in scams"
+    description: "Misspelled financial service names commonly used in scams (excluding legitimate institutions)"
 
   # Random character sender detection
   - name: "Random character senders"
