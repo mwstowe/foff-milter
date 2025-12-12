@@ -197,6 +197,11 @@ rules:
               - type: "HeaderPattern"
                 header: "DKIM-Signature"
                 pattern: ".*d=.*klaviyomail\\.com.*"
+              - type: "SenderPattern"
+                pattern: ".*@.*(charmtracker|quickbooks|intuit|paypal|stripe|square|medical|healthcare)\\.(com|net|org)$"
+              - type: "HeaderPattern"
+                header: "From"
+                pattern: "(?i).*(AceMed|QuickBooks|Intuit|Medical|Healthcare|Clinic|Payment).*"
               - type: "HeaderPattern"
                 header: "From"
                 pattern: ".*@.*salesforce\\.com.*"
@@ -666,28 +671,50 @@ rules:
 
   - name: "Final ultra-aggressive spam detection"
     criteria:
-      type: "Or"
+      type: "And"
       criteria:
-        - type: "BodyPattern"
-          pattern: "(?i).*(order.*transaction.*confirmation|payment.*confirmation.*transaction|repair.*scheduled.*address|sendgrid.*payment.*failed|knee.*health.*spam|mailer.*daemon.*multi)"
-        - type: "SubjectPattern"
-          pattern: "(?i).*(order.*transaction|payment.*confirmation|repair.*scheduled|sendgrid.*payment|knee.*health|mailer.*daemon)"
-        - type: "BodyPattern"
-          pattern: "(?i).*(fake.*order|fake.*payment|fake.*repair|fake.*sendgrid|knee.*pain|joint.*health)"
+        - type: "Or"
+          criteria:
+            - type: "BodyPattern"
+              pattern: "(?i).*(order.*transaction.*confirmation|payment.*confirmation.*transaction|repair.*scheduled.*address|sendgrid.*payment.*failed|knee.*health.*spam|mailer.*daemon.*multi)"
+            - type: "SubjectPattern"
+              pattern: "(?i).*(order.*transaction|payment.*confirmation|repair.*scheduled|sendgrid.*payment|knee.*health|mailer.*daemon)"
+            - type: "BodyPattern"
+              pattern: "(?i).*(fake.*order|fake.*payment|fake.*repair|fake.*sendgrid|knee.*pain|joint.*health)"
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "SenderPattern"
+                pattern: ".*@.*(quickbooks|intuit|paypal|stripe|square|charmtracker)\\.(com|net)$"
+              - type: "HeaderPattern"
+                header: "From"
+                pattern: "(?i).*(QuickBooks|Intuit|PayPal|Stripe|Square|AceMed|Medical).*"
     score: 100
-    description: "Final ultra-aggressive pattern to catch all remaining spam"
+    description: "Final ultra-aggressive pattern to catch all remaining spam (excluding legitimate payment processors)"
 
   # Maximum scoring final catch-all
   - name: "Maximum scoring final catch-all"
     criteria:
-      type: "Or"
+      type: "And"
       criteria:
-        - type: "SenderPattern"
-          pattern: ".*@.*\\.(br|net\\.br|ipeduca\\.net\\.br)$"
-        - type: "BodyPattern"
-          pattern: "(?i).*(payment.*confirmation|transaction.*confirmation|sendgrid.*payment|knee.*health|mailer.*daemon)"
-        - type: "SubjectPattern"
-          pattern: "(?i).*(payment.*confirmation|transaction.*confirmation|sendgrid.*payment|knee.*health|mailer.*daemon)"
+        - type: "Or"
+          criteria:
+            - type: "SenderPattern"
+              pattern: ".*@.*\\.(br|net\\.br|ipeduca\\.net\\.br)$"
+            - type: "BodyPattern"
+              pattern: "(?i).*(payment.*confirmation|transaction.*confirmation|sendgrid.*payment|knee.*health|mailer.*daemon)"
+            - type: "SubjectPattern"
+              pattern: "(?i).*(payment.*confirmation|transaction.*confirmation|sendgrid.*payment|knee.*health|mailer.*daemon)"
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "SenderPattern"
+                pattern: ".*@.*(quickbooks|intuit|paypal|stripe|square|charmtracker)\\.(com|net)$"
+              - type: "HeaderPattern"
+                header: "From"
+                pattern: "(?i).*(QuickBooks|Intuit|PayPal|Stripe|Square|AceMed|Medical).*"
     score: 150
     description: "Maximum scoring to catch final remaining spam"
 

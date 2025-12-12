@@ -152,8 +152,13 @@ rules:
               pattern: ".*@.*\\.shop$"
         - type: "Not"
           criteria:
-            type: "SenderPattern"
-            pattern: "(?i).*@.*(humblebundle|steam|epic|gog|origin|uplay|blizzard|nintendo|sony|microsoft|xbox|playstation)\\.(com|net)$"
+            type: "Or"
+            criteria:
+              - type: "SenderPattern"
+                pattern: "(?i).*@.*(humblebundle|steam|epic|gog|origin|uplay|blizzard|nintendo|sony|microsoft|xbox|playstation|pmpress|quickbooks|intuit|charmtracker)\\.(com|net|org)$"
+              - type: "HeaderPattern"
+                header: "From"
+                pattern: "(?i).*(PM Press|QuickBooks|AceMed|Independent Publisher|Medical|Healthcare).*"
     score: 75
     description: "Financial scams and brand impersonation attempts"
 

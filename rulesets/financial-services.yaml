@@ -58,8 +58,13 @@ rules:
               pattern: "(?i).*(refinanc|mortgage|rate.*drop|lock.*in.*saving|fha.*rate).*"
         - type: "Not"
           criteria:
-            type: "SenderPattern"
-            pattern: ".*@.*(bankofamerica\\.com|chase\\.com|wellsfargo\\.com|quickenloans\\.com|rocketmortgage\\.com|lendingclub\\.com|quora\\.com|reddit\\.com|stackexchange\\.com).*"
+            type: "Or"
+            criteria:
+              - type: "SenderPattern"
+                pattern: ".*@.*(bankofamerica\\.com|chase\\.com|wellsfargo\\.com|quickenloans\\.com|rocketmortgage\\.com|lendingclub\\.com|quora\\.com|reddit\\.com|stackexchange\\.com|pmpress\\.org|quickbooks\\.com|intuit\\.com).*"
+              - type: "HeaderPattern"
+                header: "From"
+                pattern: "(?i).*(PM Press|QuickBooks|Independent Publisher).*"
     score: 60
     description: "Refinance and mortgage spam from suspicious domains (excludes legitimate platforms)"
 

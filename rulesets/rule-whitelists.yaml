@@ -824,6 +824,72 @@ rules:
     score: -150
     description: "Established tableware and home goods companies"
 
+  - name: "Independent Publishers and Non-Profit Organizations"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@.*pmpress\\.org$"
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: "(?i).*(PM Press|Independent Publisher).*"
+        - type: "And"
+          criteria:
+            - type: "SenderPattern"
+              pattern: ".*@gmail\\.com$"
+            - type: "HeaderPattern"
+              header: "From"
+              pattern: ".*@.*\\.org>$"
+    score: -200
+    description: "Independent publishers and non-profit organizations"
+
+  - name: "Payment Processors and Business Services"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@.*quickbooks.*\\.(com|net)$"
+        - type: "SenderPattern"
+          pattern: ".*@.*intuit\\.(com|net)$"
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: "(?i).*(QuickBooks|Intuit|Payment).*"
+    score: -200
+    description: "Payment processors and business services"
+
+  - name: "Medical and Healthcare Services"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@.*charmtracker\\.com$"
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: "(?i).*(AceMed|Medical|Healthcare|Clinic).*"
+    score: -150
+    description: "Medical and healthcare services"
+
+  - name: "Small Business Professional Services"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "And"
+          criteria:
+            - type: "SenderPattern"
+              pattern: ".*@gmail\\.com$"
+            - type: "HeaderPattern"
+              header: "From"
+              pattern: "(?i).*(LLC|Inc|Corp|Solutions|Services|Roofing|Construction|Contractor).*"
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: "(?i).*(G&I Roofing|Professional Services).*"
+    score: -100
+    description: "Small business professional services using Gmail"
+
   - name: "Parts Express Electronics"
     enabled: true
     criteria:

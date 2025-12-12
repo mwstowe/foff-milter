@@ -32,8 +32,13 @@ rules:
                     pattern: ".*@(aaa|cvs|medicare)\\\\.com$"
         - type: "Not"
           criteria:
-            type: "SenderPattern"
-            pattern: ".*@.*(medium\\.com|poshmark\\.com|substack\\.com|mailchimp\\.com).*"
+            type: "Or"
+            criteria:
+              - type: "SenderPattern"
+                pattern: ".*@.*(medium\\.com|poshmark\\.com|substack\\.com|mailchimp\\.com).*"
+              - type: "HeaderPattern"
+                header: "From"
+                pattern: "(?i).*(LLC|Inc|Corp|Solutions|Services|Roofing|Construction|Contractor|G&I Roofing).*"
     score: 100
     description: "Suspicious emails forwarded through Gmail (excludes legitimate platforms)"
 

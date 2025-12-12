@@ -4,10 +4,21 @@ rules:
   - name: "Cloud Storage Phishing"
     enabled: true
     criteria:
-      type: "SubjectPattern"
-      pattern: "(?i).*(dropbox.*shared|google.*drive.*shared|onedrive.*shared|file.*shared.*you|document.*shared|shared.*folder|download.*file|view.*document).*"
+      type: "And"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(dropbox.*shared|google.*drive.*shared|onedrive.*shared|file.*shared.*you|document.*shared|shared.*folder|download.*file|view.*document).*"
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "SenderPattern"
+                pattern: ".*@.*(charmtracker|medical|healthcare|clinic|hospital|ehr)\\.(com|net|org)$"
+              - type: "HeaderPattern"
+                header: "From"
+                pattern: "(?i).*(AceMed|Medical|Healthcare|Clinic|Hospital|EHR|Patient Portal).*"
     score: 35
-    description: "Fake cloud storage sharing notifications"
+    description: "Fake cloud storage sharing notifications (excluding legitimate medical services)"
 
   - name: "Payment Service Abuse"
     enabled: true

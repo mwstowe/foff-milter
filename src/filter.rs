@@ -326,6 +326,10 @@ impl FilterEngine {
                     "ecoflow.com",
                     "info.ecoflow.com", // Emergency preparedness
                     "fiestatableware.com", // Home goods
+                    "pmpress.org", // Independent publishers
+                    "quickbooks.com",
+                    "intuit.com", // Payment processors
+                    "charmtracker.com", // Medical services
                     "email3.gog.com",
                     "wl043.sendgrid.net",
                     "wl044.sendgrid.net", // Specific ESP subdomains
