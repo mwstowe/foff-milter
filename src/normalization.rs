@@ -471,7 +471,8 @@ impl EmailNormalizer {
                                 | '🦃'
                                 | '🍂'
                                 | '🍁'
-                        ) || c == '❤' || c == '❄' // Handle emojis with combining marks separately
+                        ) || c == '❤'
+                            || c == '❄' // Handle emojis with combining marks separately
                     });
                     if has_decorative_emojis {
                         5
