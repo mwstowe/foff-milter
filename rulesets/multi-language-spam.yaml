@@ -16,14 +16,24 @@ rules:
   - name: "Brazilian Transport Document Scams"
     enabled: true
     criteria:
-      type: "Or"
+      type: "And"
       criteria:
-        - type: "SubjectPattern"
-          pattern: "(?i).*(conhecimento.*transporte|transporte.*eletr[ôo]nico|CT-e|DACTE).*"
-        - type: "BodyPattern"
-          pattern: "(?i).*(conhecimento.*transporte|transporte.*eletr[ôo]nico|CT-e|DACTE).*"
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(conhecimento.*transporte|transporte.*eletrônico|transporte.*eletronico|CT-e|DACTE).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(conhecimento.*transporte|transporte.*eletrônico|transporte.*eletronico|CT-e|DACTE).*"
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "SenderPattern"
+                pattern: ".*@.*(capitalone|chase|citi|wellsfargo|bankofamerica|paypal).*"
+              - type: "BodyPattern"
+                pattern: "(?i).*react-email.*"
     score: 75
-    description: "Brazilian electronic transport document scam patterns"
+    description: "Brazilian electronic transport document scam patterns (excluding legitimate businesses)"
 
   - name: "Portuguese Document Scam Keywords"
     enabled: true

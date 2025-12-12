@@ -713,6 +713,38 @@ rules:
     score: -150
     description: "Botanical gardens and plant organizations"
 
+  - name: "Capital One Financial Services"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@.*capitalone.*\\.(com|net)$"
+        - type: "SenderPattern"
+          pattern: ".*@.*accounts\\.capitaloneshopping\\.com$"
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: "(?i).*Capital One.*"
+    score: -200
+    description: "Capital One financial services and shopping platform"
+
+  - name: "Established Retail and Service Businesses"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@.*kiwico\\.com$"
+        - type: "SenderPattern"
+          pattern: ".*@.*suncadia\\.com$"
+        - type: "SenderPattern"
+          pattern: ".*@.*ctagifts\\.com$"
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: "(?i).*(KiwiCo|Suncadia|CTAGifts).*"
+    score: -200
+    description: "Established retail and service businesses"
+
   - name: "Parts Express Electronics"
     enabled: true
     criteria:

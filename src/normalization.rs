@@ -462,7 +462,16 @@ impl EmailNormalizer {
                                 | '🧡'
                                 | '🤍'
                                 | '🖤'
-                        ) || c == '❤' // Handle ❤️ as separate character
+                                | '⛄' // Winter/seasonal emojis
+                                | '🎄'
+                                | '🎅'
+                                | '🤶'
+                                | '☃' // Snowman without combining mark
+                                | '🎃'
+                                | '🦃'
+                                | '🍂'
+                                | '🍁'
+                        ) || c == '❤' || c == '❄' // Handle emojis with combining marks separately
                     });
                     if has_decorative_emojis {
                         5

@@ -311,6 +311,9 @@ impl FilterEngine {
                     "amnesty.org", // Non-profits
                     "wolfermans.com",
                     "williams-sonoma.com", // Established retailers
+                    "suncadia.com",
+                    "kiwico.com",
+                    "ctagifts.com", // Additional established businesses
                     "email3.gog.com",
                     "wl043.sendgrid.net",
                     "wl044.sendgrid.net", // Specific ESP subdomains
@@ -333,6 +336,9 @@ impl FilterEngine {
                     "klaviyodns.com", // Email service providers
                     "rsgsv.net",
                     "suw13.rsgsv.net", // Marketing platforms
+                    "emsend1.com",
+                    "cmd.emsend1.com",
+                    "spmailtechnolo.com", // Additional marketing platforms
                 ];
 
                 // Check if sender is from legitimate encoding-heavy domain
@@ -855,6 +861,8 @@ impl FilterEngine {
             "paypal.com",
             "discover.com",
             "capitalone.com",
+            "capitaloneshopping.com",
+            "accounts.capitaloneshopping.com",
             "usbank.com",
         ];
 
@@ -7515,6 +7523,11 @@ impl FilterEngine {
             return 0;
         }
 
+        // Exclude resorts and hospitality businesses
+        if domain.contains("resort") || domain.contains("hotel") || domain.contains("suncadia") {
+            return 0;
+        }
+
         let mut content = String::new();
         if let Some(subject) = &context.subject {
             content.push_str(subject);
@@ -7530,6 +7543,15 @@ impl FilterEngine {
             || content_lower.contains("garden")
             || content_lower.contains("bloom")
             || content_lower.contains("plant")
+        {
+            return 0;
+        }
+
+        // Exclude legitimate hospitality content
+        if content_lower.contains("resort")
+            || content_lower.contains("hotel")
+            || content_lower.contains("booking")
+            || content_lower.contains("reservation")
         {
             return 0;
         }
