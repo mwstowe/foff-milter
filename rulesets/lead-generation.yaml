@@ -167,11 +167,17 @@ rules:
   # Product and air filter spam
   - name: "Product and air filter spam"
     criteria:
-      type: "Or"
+      type: "And"
       criteria:
-        - type: "BodyPattern"
-          pattern: "(?i).*(air.*filter.*factory|product.*spam|factory.*direct|wholesale.*products)"
-        - type: "SubjectPattern"
-          pattern: "(?i).*(air.*filter|factory.*products|wholesale.*deal)"
+        - type: "Or"
+          criteria:
+            - type: "BodyPattern"
+              pattern: "(?i).*(air.*filter.*factory|product.*spam|factory.*direct|wholesale.*products)"
+            - type: "SubjectPattern"
+              pattern: "(?i).*(air.*filter|factory.*products|wholesale.*deal)"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(fiestatableware|kitchenaid|whirlpool|williams-sonoma|uncommongoods|crate.*barrel|potterybarn|westelm)\\.(com|net)$"
     score: 55
-    description: "Product spam and factory direct marketing"
+    description: "Product spam and factory direct marketing (excluding legitimate retailers)"

@@ -71,18 +71,29 @@ rules:
   - name: "Urgency Pattern Recognition"
     enabled: true
     criteria:
-      type: "Or"
+      type: "And"
       criteria:
-        - type: "SubjectPattern"
-          pattern: "(?i).*(urgent|asap|immediate|emergency|critical|important|action.*required|respond.*now|expires.*today).*"
-        - type: "HeaderPattern"
-          header: "Priority"
-          pattern: "(?i)urgent"
-        - type: "HeaderPattern"
-          header: "X-Priority"
-          pattern: "^1"
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(urgent|asap|immediate|emergency|critical|important|action.*required|respond.*now|expires.*today).*"
+            - type: "HeaderPattern"
+              header: "Priority"
+              pattern: "(?i)urgent"
+            - type: "HeaderPattern"
+              header: "X-Priority"
+              pattern: "^1"
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "SenderPattern"
+                pattern: ".*@.*(ecoflow|generac|goal.*zero|jackery|bluetti|emergency|preparedness|safety)\\.(com|net|org)$"
+              - type: "HeaderPattern"
+                header: "From"
+                pattern: "(?i).*(EcoFlow|Emergency|Preparedness|Safety|Generator|Power.*Station).*"
     score: 30
-    description: "Artificial urgency patterns in subject or priority headers"
+    description: "Artificial urgency patterns in subject or priority headers (excluding legitimate emergency/safety companies)"
 
   - name: "Weak Signal Aggregation"
     enabled: true

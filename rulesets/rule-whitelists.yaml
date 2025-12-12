@@ -745,6 +745,85 @@ rules:
     score: -200
     description: "Established retail and service businesses"
 
+  - name: "Major Restaurant Chains"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@.*arbys\\.com$"
+        - type: "SenderPattern"
+          pattern: ".*@.*emails\\.arbys\\.com$"
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: "(?i).*(Arby's|Arbys).*"
+    score: -200
+    description: "Major restaurant chains"
+
+  - name: "Home Appliance and Kitchen Brands"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@.*kitchenaid\\.com$"
+        - type: "SenderPattern"
+          pattern: ".*@.*whirlpool\\.com$"
+        - type: "SenderPattern"
+          pattern: ".*@.*dm\\.kitchenaid\\.com$"
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: "(?i).*(KitchenAid|Whirlpool).*"
+    score: -200
+    description: "Home appliance and kitchen brands"
+
+  - name: "Publishing and Media Companies"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@.*condenast\\.com$"
+        - type: "SenderPattern"
+          pattern: ".*@.*eml\\.condenast\\.com$"
+        - type: "SenderPattern"
+          pattern: ".*@.*nationalgeographic\\.com$"
+        - type: "SenderPattern"
+          pattern: ".*@.*email\\.nationalgeographic\\.com$"
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: "(?i).*(Vogue|National Geographic|Nat Geo).*"
+    score: -200
+    description: "Publishing and media companies"
+
+  - name: "Emergency Preparedness and Safety Companies"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@.*ecoflow\\.com$"
+        - type: "SenderPattern"
+          pattern: ".*@.*info\\.ecoflow\\.com$"
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: "(?i).*EcoFlow.*"
+    score: -150
+    description: "Emergency preparedness and safety companies"
+
+  - name: "Established Tableware and Home Goods"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@.*fiestatableware\\.com$"
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: "(?i).*Fiesta Dinnerware.*"
+    score: -150
+    description: "Established tableware and home goods companies"
+
   - name: "Parts Express Electronics"
     enabled: true
     criteria:

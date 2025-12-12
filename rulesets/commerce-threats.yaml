@@ -13,7 +13,7 @@ rules:
         - type: "Not"
           criteria:
             type: "SenderPattern"
-            pattern: ".*@.*(kitchen|chef|culinary|cooking|knife|cutlery|blade|steel|wusthof|henckels|global|shun|victorinox)\\.(com|net|org)$"
+            pattern: ".*@.*(kitchen|chef|culinary|cooking|knife|cutlery|blade|steel|wusthof|henckels|global|shun|victorinox|kitchenaid|whirlpool)\\.(com|net|org)$"
     score: 40
     description: "Kitchen/cooking product from non-culinary domain"
 
@@ -38,9 +38,9 @@ rules:
             type: "Or"
             criteria:
               - type: "SenderDomain"
-                domains: ["williams-sonoma.com", "tokyo-tiger.com", "uncommongoods.com", "backerkit.com", "kickstarter.com", "bedjet.com", "humblebundle.com", "wolfermans.com", "wolfermans-email.com", "eff.org", "gog.com", "email3.gog.com", "nedm.asus.com", "asus.com"]
+                domains: ["williams-sonoma.com", "tokyo-tiger.com", "uncommongoods.com", "backerkit.com", "kickstarter.com", "bedjet.com", "humblebundle.com", "wolfermans.com", "wolfermans-email.com", "eff.org", "gog.com", "email3.gog.com", "nedm.asus.com", "asus.com", "kitchenaid.com", "dm.kitchenaid.com", "whirlpool.com", "arbys.com", "emails.arbys.com", "condenast.com", "eml.condenast.com", "nationalgeographic.com", "email.nationalgeographic.com"]
               - type: "SenderPattern"
-                pattern: ".*@(bedjet\\.com|tokyo-tiger\\.com|humblebundle\\.com|wolfermans.*\\.com|eff\\.org|.*gog\\.com|biqu\\.equipment|bigtreetech\\.com|.*costco\\.com.*|.*delta\\.com.*|.*sendgrid\\.net.*|.*klaviyo.*\\.com.*).*"
+                pattern: ".*@(bedjet\\.com|tokyo-tiger\\.com|humblebundle\\.com|wolfermans.*\\.com|eff\\.org|.*gog\\.com|biqu\\.equipment|bigtreetech\\.com|.*costco\\.com.*|.*delta\\.com.*|.*sendgrid\\.net.*|.*klaviyo.*\\.com.*|.*kitchenaid\\.com.*|.*whirlpool\\.com.*|.*arbys\\.com.*|.*condenast\\.com.*|.*nationalgeographic\\.com.*).*"
               - type: "BodyPattern"
                 pattern: "(?i).*(national.*pastry.*day|celebrate.*national.*day|established.*bakery|gourmet.*bakery|artisan.*baked)"
     score: 65

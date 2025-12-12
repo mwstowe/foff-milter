@@ -471,6 +471,14 @@ impl EmailNormalizer {
                                 | '🦃'
                                 | '🍂'
                                 | '🍁'
+                                | '🥣' // Food/dining emojis
+                                | '🍽' // Plate without combining mark
+                                | '🍴'
+                                | '🥄'
+                                | '🍕'
+                                | '🍔'
+                                | '🌮'
+                                | '🥪'
                         ) || c == '❤'
                             || c == '❄' // Handle emojis with combining marks separately
                     });

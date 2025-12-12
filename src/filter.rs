@@ -314,6 +314,18 @@ impl FilterEngine {
                     "suncadia.com",
                     "kiwico.com",
                     "ctagifts.com", // Additional established businesses
+                    "arbys.com",
+                    "emails.arbys.com", // Restaurant chains
+                    "kitchenaid.com",
+                    "dm.kitchenaid.com",
+                    "whirlpool.com", // Home appliance brands
+                    "condenast.com",
+                    "eml.condenast.com",
+                    "nationalgeographic.com",
+                    "email.nationalgeographic.com", // Publishing/media
+                    "ecoflow.com",
+                    "info.ecoflow.com", // Emergency preparedness
+                    "fiestatableware.com", // Home goods
                     "email3.gog.com",
                     "wl043.sendgrid.net",
                     "wl044.sendgrid.net", // Specific ESP subdomains
