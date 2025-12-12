@@ -1,0 +1,363 @@
+Return-Path: <bounces+a5865560-d6be-11f0-899d-525400d4bb1c_vt1@mailerehr.charmtracker.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTPS id 5BBIOjoB084331
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <user@example.com>; Thu, 11 Dec 2025 18:24:46 GMT
+	(envelope-from bounces+a5865560-d6be-11f0-899d-525400d4bb1c_vt1@mailerehr.charmtracker.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (1024-bit key; unprotected) header.d=charmtracker.com header.i=@charmtracker.com header.b=iBhc8aHH
+Received: from system-94.transmail.net (system-94.transmail.net [135.84.80.94])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 5BBIOieu194974
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <user@example.com>; Thu, 11 Dec 2025 12:24:45 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 5BBIOieu194974
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (1024-bit key, unprotected) header.d=charmtracker.com header.i=@charmtracker.com header.a=rsa-sha256 header.s=1522905413783 header.b=iBhc8aHH
+ARC-Seal: i=1; a=rsa-sha256; t=555-123-4567; cv=none; 
+	d=us.zohomail360.com; s=zohoarc; 
+	b=qKpqx7AynNwk+iBWrBnT3DEddwqeqCXcNvjiGvH3ERdBs/BmCWcxhh+ywANELE0tZS2txOhTGn8+KZ8rHIvu5VSW30r+5I9COu0NUxCiKaaPgonMRuVgM2eTnxSwjugnxQKiAMuZ0wcY1UWTNjux6aKURahswlmtOwyeGbT2J7o=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=us.zohomail360.com; s=zohoarc; 
+	t=555-123-4567; h=Content-Type:Content-Transfer-Encoding:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To:Cc; 
+	bh=u2roEH3E0Ku0xx+U8Bx9ue668CzB98rPE+fC4oARrVI=; 
+	b=fKQ5OfBbkBhRCHK0KhmwXEkEGW3W1rlwqnQHi7nhM41KG6oenX8cgRcfqRxgnfDmKeDEbLemHi9Q6L5ome/1G184viYcEY734YpYbR5JiHsfX8f8YqQmABrgqx79rFg70a4F2lmLJDPTFTFTAu810K38zSAXTRM3niqYVyQnRrQ=
+ARC-Authentication-Results: i=1; mx.us.zohomail360.com;
+	dkim=pass  header.i=charmtracker.com;
+	spf=pass  smtp.mailfrom=bounces+a5865560-d6be-11f0-899d-525400d4bb1c_vt1@mailerehr.charmtracker.com;
+	dmarc=pass header.from=<noreply@charmtracker.com>
+Received: by mx.zohomail.com with SMTPS id 1234-5678-9012-3456.5008491238806;
+	Thu, 11 Dec 2025 10:24:37 -0800 (PST)
+DKIM-Signature: a=rsa-sha256; b=iBhc8aHH5hU35Z3No7WwEyJdF8OLhPCi3PNOckGQiAVX55WHcwuqg8eEJ09FV6ZLCoV6QbYU5IOxOowCZkGvtfEnIGP9cRVgIFuPbzOzNe4nWEWu/mAs8X0YiPOA50BfIeur23wfjpzDf/tCAo8jZScs0s14zlQpO1LtBUk1Ujc=; c=relaxed/relaxed; s=1522905413783; d=charmtracker.com; v=1; bh=u2roEH3E0Ku0xx+U8Bx9ue668CzB98rPE+fC4oARrVI=; h=date:from:to:message-id:subject:mime-version:content-type:content-transfer-encoding:date:from:to:message-id:subject;
+Date: Thu, 11 Dec 2025 10:24:37 -0800 (PST)
+From: AceMed Seattle <noreply@charmtracker.com>
+To: user@example.com
+Message-ID: <2d6f.109cdde2b34f74ae.m1.a5865560-d6be-11f0-899d-525400d4bb1c.19b0ea865b6@mailerehr.charmtracker.com>
+Subject: Documents Shared
+MIME-Version: 1.0
+Content-Type: text/html;charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Original-Envelope-Id: 2d6f.109cdde2b34f74ae.m1.a5865560-d6be-11f0-899d-525400d4bb1c.19b0ea865b6
+X-JID: 2d6f.109cdde2b34f74ae.m1.a5865560-d6be-11f0-899d-525400d4bb1c.19b0ea865b6
+TM-MAIL-JID: 2d6f.109cdde2b34f74ae.m1.a5865560-d6be-11f0-899d-525400d4bb1c.19b0ea865b6
+X-App-Message-ID: 2d6f.109cdde2b34f74ae.m1.a5865560-d6be-11f0-899d-525400d4bb1c.19b0ea865b6
+X-Report-Abuse: <abuse+2d6f.109cdde2b34f74ae.m1.a5865560-d6be-11f0-899d-525400d4bb1c.19b0ea865b6@zeptomail.com>
+X-ZohoMailClient: External
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Thu, 11 Dec 2025 18:24:46 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Thu, 11 Dec 2025 12:24:45 -0600 (CST)
+X-Spam-Flag: YES
+
+<html><body><html>
+<body>
+<table id=3D"body-table" style=3D"table-layout:fixed; color:#00000; font-si=
+ze:12px;font-family: Open Sans, sans-serif;" align=3D"center" bgcolor=3D"#f=
+ff" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"100%">
+  <tbody>
+    <tr>
+      <td align=3D"center" valign=3D"top"><table  align=3D"center" bgcolor=
+=3D"#ffffff" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"500"=
+>
+          <tbody>
+            <tr>
+              <td align=3D"center" bgcolor=3D"#ffffff"  style=3D"box-shadow=
+: 0 0 6px 0 rgba(0, 0, 0, 0.4);" valign=3D"top">
+               =20
+                <table class=3D"" border=3D"0" cellpadding=3D"0" cellspacin=
+g=3D"0" width=3D"100%">
+                  <tbody>
+                    <tr>
+                      <td height=3D"15">&nbsp;</td>
+                    </tr>
+                  </tbody>
+                </table>
+               =20
+                <table class=3D"-menu" align=3D"center" border=3D"0" cellpa=
+dding=3D"0" cellspacing=3D"0" width=3D"480">
+                  <tbody>
+                    <tr>
+                      <td height=3D"15" valign=3D"middle"><table class=3D""=
+ align=3D"left" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"2=
+11">
+                          <tbody>
+                            <tr>
+                              <td class=3D"center-stack" style=3D"font-size=
+: 18px;font-weight:bold;" align=3D"left" height=3D"30" valign=3D"middle"><i=
+mg alt=3D"logo" height=3D"50" width=3D"" style=3D"object-fit: contain;objec=
+t-position: left;" src=3D"https://ehr.charmtracker.com/publicCal.sas?method=
+=3DviewFacilityLogo&digest=3Dd1c1a0dc62345265fb1ffbf50038f44bfc436cd6d15eb7=
+ae98ee2e5ce9d5cc8ac81b440bc8a53a00"  ></td>
+                            </tr>
+                          </tbody>
+                        </table></td>
+                    </tr>
+                  </tbody>
+                </table>
+               =20
+                <table class=3D"" border=3D"0" cellpadding=3D"0" cellspacin=
+g=3D"0" width=3D"100%"  >
+                  <tbody>
+                    <tr>
+                      <td height=3D"15">&nbsp;</td>
+                    </tr>
+                  </tbody>
+                </table>
+               =20
+               =20
+                <table  bgcolor=3D"#3cbda9" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" width=3D"100%">
+                  <tbody>
+                    <tr>
+                      <td  height=3D"50">&nbsp;</td>
+                    </tr>
+                    <tr style=3D"background-color:#63caba;">
+                      <td><table  align=3D"left" border=3D"0" cellpadding=
+=3D"0" cellspacing=3D"0" width=3D"20%">
+                          <tr>
+                            <td height=3D"100" align=3D"right" valign=3D"mi=
+ddle"><img src=3D"http://ehr.charmtracker.com/images/physician/email_templa=
+tes/documents-shared.png" alt=3D"Documents Shared" width=3D"54" height=3D"5=
+4"/></td>
+                          </tr>
+                        </table>
+                        <table  align=3D"center" border=3D"0" cellpadding=
+=3D"0" cellspacing=3D"0" width=3D"75%">
+                          <tr>
+                            <td  height=3D"100"  style=3D" font-size: 26px;=
+mso-line-height-rule:exactly; line-height:60px; font-weight: 300; color: #f=
+fffff;" align=3D"left">Documents Shared</td>
+                          </tr>
+                        </table></td>
+                    </tr>
+                    <tr>
+                      <td  height=3D"" style=3D""><table cellpadding=3D"0" =
+cellspacing=3D"0" height=3D"50" width=3D"100%">
+                          <tbody>
+                            <tr>
+                              <td width=3D"10%" align=3D"left">&nbsp;</td>
+<td valign=3D"bottom" align=3D"center" style=3D"border-color: #FFFFFF trans=
+parent;border-style: solid; border-width: 0 15px 15px;position:absolute;dis=
+play: block;height: 0;margin-top: 35px;width: 0; "></td>
+                            </tr>
+                          </tbody>
+                        </table></td>
+                    </tr>
+                  </tbody>
+                </table>
+               =20
+               =20
+                <table class=3D"" border=3D"0" cellpadding=3D"0" cellspacin=
+g=3D"0" width=3D"100%">
+                  <tbody>
+                    <tr>
+                      <td height=3D"30">&nbsp;</td>
+                    </tr>
+                  </tbody>
+                </table>
+               =20
+               =20
+                <table  align=3D"center" border=3D"0" cellpadding=3D"0" cel=
+lspacing=3D"0" width=3D"500">
+                  <tbody>
+                    <tr>
+                      <td align=3D"center"><table class=3D"" align=3D"cente=
+r" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"480">
+                          <tbody>
+                            <tr>
+                              <td align=3D"center"><table class=3D"" align=
+=3D"left" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"100%">
+                                  <tbody>
+                                    <tr>
+                                      <td style=3D"font-size:13px;" align=
+=3D"left">Dear John Stowe,</td>
+                                    </tr>
+                                    <tr>
+                                      <td align=3D"left"  height=3D"10"></t=
+d>
+                                    </tr>
+                                    <tr>
+                                      <td style=3D"font-size:13px; line-hei=
+ght:25px;padding-bottom:10px; font-weight:normal;  " align=3D"left">We have=
+ shared some document(s) to your Patient Portal account.</td>
+                                    </tr>
+                                  </tbody>
+                                </table></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                    </tr>
+                  </tbody>
+                </table>
+               =20
+                <table class=3D"" align=3D"center" border=3D"0" cellpadding=
+=3D"0" cellspacing=3D"0" width=3D"480">
+                  <tbody>
+                    <tr>
+                      <td align=3D"center"><table class=3D"" align=3D"left"=
+ border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"100%">
+                          <tbody>
+                            <tr>
+                              <td style=3D"font-size:13px; line-height:25px=
+;padding-bottom:10px; font-weight:normal;  " align=3D"left">Follow the step=
+s below to access them</td>
+                            </tr>
+                            <tr>
+                              <td style=3D"font-size:13px; line-height:25px=
+;padding-bottom:10px; font-weight:normal;  " align=3D"left"><ul style=3D"ma=
+rgin: 0px;color: #ffc258;">
+                                  <li><span style=3D"color:#000">Login to t=
+he</span> <a style=3D"color:#0088CC; cursor:pointer;text-decoration:underli=
+ne " href=3D"https://phr.charmtracker.com/login.sas?FACILITY_ID=3Dd1c1a0dc6=
+2345265fb1ffbf50038f44bfc436cd6d15eb7ae98ee2e5ce9d5cc8ac81b440bc8a53a00">Pa=
+tient Portal</a></li>
+                                  <li><span style=3D"color:#000">Go to the =
+<span style=3D"color: #ffc258;">Documents</span> section</span></li>
+                                  <li><span style=3D"color:#000">Click on t=
+he file to view the content </span></li>
+                                </ul></td>
+                            </tr>
+                            <tr>
+                              <td style=3D"font-size:13px; line-height:25px=
+;padding-bottom:10px; font-weight:normal;  " align=3D"left">You can also do=
+wnload the documents by using Action Download menu.</td>
+                            </tr>
+                          </tbody>
+                        </table></td>
+                    </tr>
+                  </tbody>
+                </table>
+               =20
+                <table class=3D"" align=3D"center" border=3D"0" cellpadding=
+=3D"0" cellspacing=3D"0" width=3D"480">
+                  <tbody>
+                    <tr>
+                      <td height=3D"10">&nbsp;</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+               =20
+                <table class=3D"" align=3D"center" border=3D"0" cellpadding=
+=3D"0" cellspacing=3D"0" width=3D"480">
+                  <tbody>
+                    <tr>
+                      <td align=3D"center"><table class=3D"" align=3D"cente=
+r" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"100%">
+                          <tbody>
+                            <tr>
+                              <td style=3D"font-size:13px; line-height:20px=
+;  " align=3D"left">Regards,<br />
+                                Administrator </td>
+                            </tr>
+                            <tr>
+                              <td style=3D"font-size:13px; line-height:20px=
+; color:#3cbda9;  " align=3D"left"> AceMed Seattle </td>
+                            </tr>
+                            <tr>
+                              <td style=3D"font-size:13px; line-height:20px=
+;  " align=3D"left"> 123 2nd Ave S, Suite 230, Edmonds, WA 98020-8456</td>
+                            </tr>
+                          </tbody>
+                        </table></td>
+                    </tr>
+                  </tbody>
+                </table>
+               =20
+                <table width=3D"100%" cellspacing=3D"0" cellpadding=3D"0" b=
+order=3D"0" class=3D"">
+                  <tbody>
+                    <tr>
+                      <td height=3D"20">&nbsp;</td>
+                    </tr>
+                  </tbody>
+                </table>
+               =20
+                <table  align=3D"center" bgcolor=3D"#ffc258" border=3D"0" c=
+ellpadding=3D"0" cellspacing=3D"0" width=3D"500">
+                  <tbody>
+                    <tr>
+                      <td align=3D"center"><table class=3D"" align=3D"cente=
+r" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"480">
+                          <tbody>
+                            <tr>
+                              <td><table cellpadding=3D"0" cellspacing=3D"0=
+" height=3D"10" width=3D"100%">
+                                  <tbody>
+                                    <tr>
+                                      <td width=3D"85%">&nbsp;</td>
+                                      <td valign=3D"bottom" align=3D"center=
+" style=3D"width: 0;height: 0;border-style: solid;border-width: 15px 15px 0=
+;border-color: #ffffff transparent transparent transparent;position:absolut=
+e;display: block;"></td>
+                                      <td width=3D""></td>
+                                    </tr>
+                                  </tbody>
+                                </table></td>
+                            </tr>
+                            <tr>
+                              <td  height=3D"45" align=3D"center"  valign=
+=3D"middle">
+                               =20
+                                <table class=3D"" align=3D"left" border=3D"=
+0" cellpadding=3D"0" cellspacing=3D"0"  style=3D"display:none !important;">
+                                  <tbody>
+                                    <tr>
+                                      <td><table class=3D"" align=3D"left" =
+border=3D"0" cellpadding=3D"0" cellspacing=3D"0"  >
+                                          <tbody>
+                                            <tr>
+                                              <td align=3D"center" valign=
+=3D"middle"><img src=3D"http://ehr.charmtracker.com/images/physician/email_=
+templates/map-icon.png" alt=3D"Map Icon" width=3D"20" height=3D"20" style=
+=3D"margin-right:10px;" /></td>
+                                              <td style=3D" color:#fff; fon=
+t-weight:300; font-size:13px;mso-line-height-rule:exactly;  color:#ffffff" =
+align=3D"center" valign=3D"bottom"></td>
+                                            </tr>
+                                          </tbody>
+                                        </table></td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                                <table class=3D"" align=3D"right" border=3D=
+"0" cellpadding=3D"0" cellspacing=3D"0" style=3D"display:block;">
+                                  <tbody>
+                                    <tr>
+                                      <td style=3D" font-weight:300; font-s=
+ize:20px;mso-line-height-rule:exactly; line-height:28px; color:#ffffff" ali=
+gn=3D"center" valign=3D"middle">CALL 555-123-4567</td>
+                                    </tr>
+                                  </tbody>
+                                </table></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                    </tr>
+                  </tbody>
+                </table>
+               =20
+                <table class=3D"" bgcolor=3D"#3cbda9" border=3D"0" cellpadd=
+ing=3D"0" cellspacing=3D"0" width=3D"500">
+                  <tbody>
+                    <tr>
+                      <td  style=3D"font-size:11px; font-weight:normal; " a=
+lign=3D"left" height=3D"35"><table class=3D"" align=3D"center" border=3D"0"=
+ cellpadding=3D"0" cellspacing=3D"0" width=3D"480">
+                          <tbody>
+                            <tr>
+                              <td style=3D" color:#fff; font-size:12px;">Th=
+is is an automated email. PLEASE DO NOT REPLY.</td>
+                            </tr>
+                          </tbody>
+                        </table></td>
+                    </tr>
+                  </tbody>
+                </table>
+               =20
+            </tr>
+          </tbody>
+        </table></td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
+</body></html>
+

@@ -1,0 +1,2138 @@
+Return-Path: <suite58@bounces.emarsys.net>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTPS id 5BCG1E7u033752
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <user@example.com>; Fri, 12 Dec 2025 16:01:14 GMT
+	(envelope-from suite58@bounces.emarsys.net)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (2048-bit key; unprotected) header.d=info.ecoflow.com header.i=hello@info.ecoflow.com header.b=Y7wgpiFn;
+	dkim=pass (2048-bit key; unprotected) header.d=emarsys.net header.i=@emarsys.net header.b=P0vupogP
+Received: from mta-2d57c408.ip4.emsmtp.us (mta-2d57c408.ip4.emsmtp.us [45.87.196.8])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 5BCG1ATv223725
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <user@example.com>; Fri, 12 Dec 2025 10:01:12 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 5BCG1ATv223725
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (2048-bit key, unprotected) header.d=info.ecoflow.com header.i=hello@info.ecoflow.com header.a=rsa-sha256 header.s=key6 header.b=Y7wgpiFn;
+	dkim=pass (2048-bit key, unprotected) header.d=emarsys.net header.i=@emarsys.net header.a=rsa-sha256 header.s=emarsys-2048a header.b=P0vupogP
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=key6; d=info.ecoflow.com;
+ h=To:Subject:From:MIME-Version:List-Id:List-Unsubscribe:List-Unsubscribe-Post:
+ Content-Type:Message-ID:Date; i=hello@info.ecoflow.com;
+ bh=nUyWKXIIwxHrwQnCb0PcqnrjsHyGJn6iGx+QN+qTvTA=;
+ b=Y7wgpiFneYrEk1Qgqh1svNqIIaTdAmeFQ492AydkhMiwy0klD8Gdi2W25dX13pDqpNAwZtZnTk3l
+   39C1jRiP08SzepUs3fSpL+jLz9+Csn+IhQRSXdcMgRLYRt8OWLlYA+f0SGg4k6TIOw22iJSA8YWu
+   pyE8x4DUhvkQ92tcUZS0SKWtbyT06vNOAW4U3rfKimnEOmP52mHGUmUxDMLmNRsH6V2bzQ+LmH1T
+   5D/OxwDD2I4Unv54fwnmEiEKUVzr2c89begECIcUGJpqAsdWLBa+2L/rLgGSpR2PHYK2onQlLfWi
+   K6bv0POyUPKC3+64VJaa6m5dgnORjxr84JinZg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=emarsys-2048a; d=emarsys.net;
+ h=To:Subject:From:MIME-Version:List-Id:List-Unsubscribe:List-Unsubscribe-Post:
+ Content-Type:Message-ID:Date;
+ bh=nUyWKXIIwxHrwQnCb0PcqnrjsHyGJn6iGx+QN+qTvTA=;
+ b=P0vupogP9oXjsPK68Jh68KGE6NxA7rwRdW/C2uAQWuKU6vTFAJ6DtS8E/Kb0MZCRnSQ0cALMUaKl
+   BznVp02keLb42cWrtrsKd187OmliDbKpFAMltlvY3xj9q6iBdm3tnYWaI86OUHpDmyMt83t4zlqR
+   NH+MpIG8T1VqkttYoLFwNxCB34ZJGmI4tWtpv8SwRsyICYJ59Mq3RO3iNUsU10Di3baCAaTm93KL
+   wFweZu3IhK20mOadztPzsCFkBFlSxCA1ulDSMt6NO3ibgDg4mKPKXHexYs0DCVPatjRasBEYcG+Q
+   N0FfqSQF//qF0vsspLJP0W8s/u/BSLrnTD0mug==
+To: user@example.com
+Subject: Be Ready Before the Next Emergency Hits
+X-Mailer: class SMTPMail
+From: "EcoFlow" <hello@info.ecoflow.com>
+MIME-Version: 1.0
+List-Id: 555-123-4567 <EcoFlow>
+X-EMarSys-Identify: 1049983726_2784479_17289
+X-EMarSys-Environment: suite58
+X-Report-Abuse: Please report abuse here: abuse-report@emarsys.com
+List-Unsubscribe: <https://list-unsubscribe.eservice.emarsys.net/api/unsubscribe/1049983726_2784479_17289_kRpE0rENPs>, <mailto:list-unsubscribe+1049983726_2784479_17289_kRpE0rENPs@emarsys.net>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+Content-Type: multipart/alternative;
+ boundary="--=_---NextPart--=_-n8eorcu6p6"
+Message-ID: <0.0.3F.CEB.1DC6B8084BE9422.0@mta-2d57c408.ip4.emsmtp.us>
+Date: Fri, 12 Dec 2025 17:01:04 +0100
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Fri, 12 Dec 2025 16:01:15 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Fri, 12 Dec 2025 10:01:13 -0600 (CST)
+X-Spam-Flag: YES
+
+
+----=_---NextPart--=_-n8eorcu6p6
+Content-Type: text/plain; charset=utf-8
+Content-transfer-encoding: quoted-printable
+
+Prep now to stay safe, comfortable, and powered up=E2=80=94no matter what l=
+ies
+ahead.
+
+Stay Safe.
+Stay Powered.
+Stay Supported.
+
+https://media.ecoflow.com/u/nrd.php?p=3DkRpE0rENPs_17289_2784479_1_2&ems_l=
+=3D3814265&i=3D1&d=3DMTcxNjkwMzUw%7Ca1JwRTByRU5Qcw%3D%3D%7CYzA3YjJlMjE1ODJj=
+OGUxYzE%3D%7C&_esuh=3D_11_4d8487ad55394e5ae125decae27876b7b30499eee0c0a7752=
+070b977656184d9
+
+
+Extreme weather can happen fast. And even for those not directly
+affected by
+flooding, winter storms, and more, power outages in surrounding areas
+can last
+for days.
+Get prepared now=E2=80=94your safety and comfort depend on it.
+
+Download Checklist
+https://media.ecoflow.com/u/nrd.php?p=3DkRpE0rENPs_17289_2784479_1_4&ems_l=
+=3D3814265&i=3D1&d=3DMTcxNjkwMzUy%7Ca1JwRTByRU5Qcw%3D%3D%7CYzA3YjJlMjE1ODJj=
+OGUxYzE%3D%7C&_esuh=3D_11_4e189e0815d7f8a58038b75bd9ea98994bb761fa35991106a=
+c16a800cad2477a
+
+
+6 Things
+You Can Do Right Now
+
+1 - Stay Informed
+
+Find out if you're in a flood or evacuation zone=E2=80=94even inland. Sign =
+up
+for FEMA
+and local emergency alerts.
+
+Download FEMA app
+https://media.ecoflow.com/u/nrd.php?p=3DkRpE0rENPs_17289_2784479_1_6&ems_l=
+=3D3814265&i=3D1&d=3DMTcxNjkwMzU0%7Ca1JwRTByRU5Qcw%3D%3D%7CYzA3YjJlMjE1ODJj=
+OGUxYzE%3D%7C&_esuh=3D_11_96677d71f5e8802822109eecb2181f595f552912b8494c21f=
+d956c4233cc1387
+>>
+
+2 - Secure
+Your Home
+
+Clear gutters, secure outdoor items, and
+reinforce windows.
+
+3 -=C2=A0Develop an Emergency Plan
+
+Plan routes, pack a go-bag, and decide where your family and pets will
+stay.
+
+4 -=C2=A0Get Backup Power Ready
+
+Keep your home running during blackouts with
+reliable backup power.
+
+[Need help choosing a power solution? Use our calculator>>
+https://media.ecoflow.com/u/nrd.php?p=3DkRpE0rENPs_17289_2784479_1_8&ems_l=
+=3D3814265&i=3D1&d=3DMTcxNjkwMzU2%7Ca1JwRTByRU5Qcw%3D%3D%7CYzA3YjJlMjE1ODJj=
+OGUxYzE%3D%7C&_esuh=3D_11_6f62c4f9989d93d0d51b374ae4e818edbfcf0ba38f2e6cbb8=
+287c123a9f39a94
+
+
+5 -=C2=A0Charge Your Tech
+
+Charge your phones and get portable battery backups ready.
+
+6 -=C2=A0Stock Emergency Supplies
+
+Gather food, water, medications, and pet supplies for several days.
+
+=C2=A0 Your Emergency-Ready Power Partner
+
+solar
+
+Fast charging & solar compatible
+
+Compact
+
+Compact & portable design
+
+whole family
+
+Reliable Outage Backup=E2=80=94from days to a full Week
+
+https://media.ecoflow.com/u/nrd.php?p=3DkRpE0rENPs_17289_2784479_1_10&ems_l=
+=3D3814265&i=3D1&d=3DMTcxNjkwMzU4%7Ca1JwRTByRU5Qcw%3D%3D%7CYzA3YjJlMjE1ODJj=
+OGUxYzE%3D%7C&_esuh=3D_11_c26d05e764adf48a99cdff00fe9ae6f53abd1be486beaf65b=
+fd72ea1097ec017
+
+
+DELTA Pro Ultra X
+
+Whole-home backup that can be installed within just 7 days.*
+
+Learn More
+https://media.ecoflow.com/u/nrd.php?p=3DkRpE0rENPs_17289_2784479_1_12&ems_l=
+=3D3814265&i=3D1&d=3DMTcxNjkwMzYw%7Ca1JwRTByRU5Qcw%3D%3D%7CYzA3YjJlMjE1ODJj=
+OGUxYzE%3D%7C&_esuh=3D_11_82c0a57038a9f69671da51ff6bc37f50ad7b7b2299cfb4df0=
+f1c09b698a38bdb
+
+
+* EcoFlow=E2=80=99s 7=E2=80=91Day Installation Service is calculated in bus=
+iness
+days, applies
+only in major metropolitan areas=E2=80=94including Atlanta, Baltimore,
+Chicago, Dallas,
+Denver, Detroit, Houston, Las Vegas, Los Angeles, Miami, Minneapolis,
+New York
+City, Orlando, Philadelphia, Phoenix, Portland, Salt Lake City, San
+Diego, San
+Francisco, San Jose, Seattle, Tampa, and Washington, D.C.=E2=80=94and cover=
+s
+the period
+starting after (i) the installation service has been purchased and (ii)
+the
+later of the product delivery date or the date all required
+permits/approvals
+have been obtained, until the completion of the product=E2=80=99s on=E2=80=
+=91site
+installation.
+The 7=E2=80=91day period does not include delays beyond EcoFlow=E2=80=99s c=
+ontrol,
+including but
+not limited to: The customer=E2=80=99s failure to confirm the installation
+date within 2
+business days; Customer=E2=80=91requested rescheduling; Non=E2=80=91complia=
+nt or
+unsafe wiring
+conditions on site; Weather conditions; Additional permitting processes
+or
+inspections; Force majeure events.
+
+Icon1
+https://media.ecoflow.com/u/nrd.php?p=3DkRpE0rENPs_17289_2784479_1_14&ems_l=
+=3D3814265&i=3D1&d=3DMTcxNjkwMzYy%7Ca1JwRTByRU5Qcw%3D%3D%7CYzA3YjJlMjE1ODJj=
+OGUxYzE%3D%7C&_esuh=3D_11_84a36ea170ef4b5b261b502869907c36c3276cbd848b587b2=
+683e735fc52ea03
+
+
+Icon2
+https://media.ecoflow.com/u/nrd.php?p=3DkRpE0rENPs_17289_2784479_1_16&ems_l=
+=3D3814265&i=3D1&d=3DMTcxNjkwMzY0%7Ca1JwRTByRU5Qcw%3D%3D%7CYzA3YjJlMjE1ODJj=
+OGUxYzE%3D%7C&_esuh=3D_11_151477e4b11f3a8eebfd07b2ea5f215a63301966f72b71806=
+d00c2bebc67a43c
+
+
+Icon3
+https://media.ecoflow.com/u/nrd.php?p=3DkRpE0rENPs_17289_2784479_1_18&ems_l=
+=3D3814265&i=3D1&d=3DMTcxNjkwMzY2%7Ca1JwRTByRU5Qcw%3D%3D%7CYzA3YjJlMjE1ODJj=
+OGUxYzE%3D%7C&_esuh=3D_11_c47869c19d78b47a7cb334f13e1ac1deb2a4c559ff4bdbfc2=
+12e930fe9db3b0b
+
+
+Icon4
+https://media.ecoflow.com/u/nrd.php?p=3DkRpE0rENPs_17289_2784479_1_20&ems_l=
+=3D3814265&i=3D1&d=3DMTcxNjkwMzY4%7Ca1JwRTByRU5Qcw%3D%3D%7CYzA3YjJlMjE1ODJj=
+OGUxYzE%3D%7C&_esuh=3D_11_a9f2999ce305b6a01514377fe640a6b8c642b13ac297ff2fd=
+0c4b6d64fa82e76
+
+
+Icon5
+https://media.ecoflow.com/u/nrd.php?p=3DkRpE0rENPs_17289_2784479_1_22&ems_l=
+=3D3814265&i=3D1&d=3DMTcxNjkwMzcw%7Ca1JwRTByRU5Qcw%3D%3D%7CYzA3YjJlMjE1ODJj=
+OGUxYzE%3D%7C&_esuh=3D_11_25721f9faf8844fe479ee26e88c25bc4603e28071ffa22199=
+79ce5bec4301349
+
+
+Join our Facebook community
+https://media.ecoflow.com/u/nrd.php?p=3DkRpE0rENPs_17289_2784479_1_24&ems_l=
+=3D3814265&i=3D1&d=3DMTcxNjkwMzcy%7Ca1JwRTByRU5Qcw%3D%3D%7CYzA3YjJlMjE1ODJj=
+OGUxYzE%3D%7C&_esuh=3D_11_13be30f7b20f617aea045c381bcd9eb6c77cf1fe370018eb0=
+423ded5be3b16aa
+
+
+for insider access to product updates and technical tips.
+
+No longer want to receive these emails?
+
+Unsubscribe
+https://media.ecoflow.com/u/un.php?par=3DkRpE0rENPs_2784479_17289_$sid$&_es=
+uh=3D_11_3b4966eb7d526a5352669aa2768f5fc42a42ff345acaafa10ec1f76619b94624
+
+
+EcoFlow 200 CONTINENTAL DRIVE SUITE 401,
+OFFICE 434 NEWARK, Delaware 19713
+
+
+----=_---NextPart--=_-n8eorcu6p6
+Content-Type: text/html; charset=utf-8
+Content-transfer-encoding: quoted-printable
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.=
+w3.org/TR/html4/loose.dtd"><html xmlns=3D"http://www.w3.org/1999/xhtml" xml=
+ns:v=3D"urn:schemas-microsoft-com:vml" xmlns:o=3D"urn:schemas-microsoft-com=
+:office:office" e-locale=3D"en-US" e-is-multilanguage=3D"false">
+<head>
+<title></title>
+<meta charset=3D"UTF-8">
+<meta name=3D"viewport" content=3D"initial-scale=3D1, user-scalable=3Dyes">
+<!--[if !mso]><!--><meta http-equiv=3D"X-UA-Compatible" content=3D"IE=3Dedg=
+e"><!--<![endif]-->
+<!--[if (gte mso 9)]>
+<style type=3D"text/css">
+body {margin:0; padding:0; background:#f8f8f8;}
+table {border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt=
+; border:0;}
+table td, table th {border-collapse:collapse; font-size:1px; line-height:1p=
+x;}
+.inpl-not-mailing table {border-collapse:separate;}
+.lh {line-height:100% !important;}
+.lh13p {line-height:108% !important;}
+.lh14p {line-height:117% !important;}
+.lh15p {line-height:125% !important;}
+.lh16p {line-height:133% !important;}
+.lh17p {line-height:142% !important;}
+.lh18p {line-height:150% !important;}
+.lh19p {line-height:158% !important;}
+.lh20p {line-height:167% !important;}
+.inpl-not-mailing .lh, .inpl-not-mailing .lh font {line-height:1.2 !importa=
+nt;}
+.inpl-not-mailing .lh13p, .inpl-not-mailing .lh13p font {line-height:1.3 !i=
+mportant;}
+.inpl-not-mailing .lh14p, .inpl-not-mailing .lh14p font {line-height:1.4 !i=
+mportant;}
+.inpl-not-mailing .lh15p, .inpl-not-mailing .lh15p font {line-height:1.5 !i=
+mportant;}
+.inpl-not-mailing .lh16p, .inpl-not-mailing .lh16p font {line-height:1.6 !i=
+mportant;}
+.inpl-not-mailing .lh17p, .inpl-not-mailing .lh17p font {line-height:1.7 !i=
+mportant;}
+.inpl-not-mailing .lh18p, .inpl-not-mailing .lh18p font {line-height:1.8 !i=
+mportant;}
+.inpl-not-mailing .lh19p, .inpl-not-mailing .lh19p font {line-height:1.9 !i=
+mportant;}
+.inpl-not-mailing .lh20p, .inpl-not-mailing .lh20p font {line-height:2 !imp=
+ortant;}
+</style>
+<![endif]-->
+<!--[if (gte mso 9)|(IE)]>
+<style type=3D"text/css">
+.ol600 {width:600px;}
+.ol610 {width:610px;}
+.cta1a {padding:0 !important;}
+.lhp1 {line-height:100% !important;}
+.inpl-not-mailing .lhp1 {line-height:1.2 !important; padding:0 !important;}
+.inpl-not-mailing .cta1a {padding:5px !important;}
+.cta-loy {line-height:100% !important;}
+.inpl-not-mailing .cta-loy {line-height:1.2 !important;}
+</style>
+<xml>
+<o:OfficeDocumentSettings>
+<o:AllowPNG/>
+<o:PixelsPerInch>96</o:PixelsPerInch>
+</o:OfficeDocumentSettings>
+</xml>
+<![endif]-->
+<style>
+@font-face {
+font-family:'HelveticaNeue';
+font-weight: normal;
+font-style: normal;
+font-display: swap;
+src:url(https://cdn.shopify.com/s/files/1/0431/3789/2516/files/HelveticaNeu=
+e.woff2) format('woff2');
+}
+@font-face {
+font-family:'HelveticaNeue-Medium';
+font-weight: bold;
+font-style: normal;
+font-display: swap;
+src:url(https://cdn.shopify.com/s/files/1/0431/3789/2516/files/HelveticaNeu=
+e-Medium.woff2) format('woff2');
+}
+@font-face {
+font-family:'HelveticaNeue-Light';
+font-weight: 100;
+font-style: normal;
+font-display: swap;
+src:url(https://cdn.shopify.com/s/files/1/0431/3789/2516/files/HelveticaNeu=
+e-Light.woff2) format('woff2');
+}
+@font-face {
+font-family:'HelveticaNeue-Extended';
+font-style: normal;
+font-display: swap;
+src:url(https://cdn.shopify.com/s/files/1/0431/3789/2516/files/HelveticaNeu=
+e-Extended.woff2) format('woff2');
+}
+@font-face {
+font-family:'HelveticaNeue-Medium-Extended';
+font-style: normal;
+font-display: swap;
+src:url(https://cdn.shopify.com/s/files/1/0431/3789/2516/files/HelveticaNeu=
+e-Medium-Extended.woff2) format('woff2');
+}
+@font-face {
+font-family:'HelveticaNeue-Light-Extended';
+font-style: normal;
+font-display: swap;
+src:url(https://cdn.shopify.com/s/files/1/0431/3789/2516/files/HelveticaNeu=
+e-Light-Extended.woff2) format('woff2');
+}
+@font-face {
+font-family:'Arabia-Normal';
+font-weight: normal;
+font-style: normal;
+font-display: swap;
+src:url(https://cdn.shopify.com/s/files/1/0431/3789/2516/files/Arabia-Norma=
+l.ttf) format('truetype');
+}
+@font-face {
+font-family:'Arabia-Medium';
+font-weight: bold;
+font-style: normal;
+font-display: swap;
+src:url(https://cdn.shopify.com/s/files/1/0431/3789/2516/files/Arabia-Mediu=
+m.ttf) format('truetype');
+}
+@font-face {
+font-family:'Arabia-Light';
+font-weight: 100;
+font-style: normal;
+font-display: swap;
+src:url(https://cdn.shopify.com/s/files/1/0431/3789/2516/files/Arabia-Light=
+.ttf) format('truetype');
+}
+@font-face {
+font-family:'ANE';
+font-style: normal;
+font-display: swap;
+src:url(https://cdn.shopify.com/s/files/1/0431/3789/2516/files/ANE.ttf) for=
+mat('truetype');
+}
+@font-face {
+font-family:'AME';
+font-style: normal;
+font-display: swap;
+src:url(https://cdn.shopify.com/s/files/1/0431/3789/2516/files/AME.ttf) for=
+mat('truetype');
+}
+@font-face {
+font-family:'ALE';
+font-style: normal;
+font-display: swap;
+src:url(https://cdn.shopify.com/s/files/1/0431/3789/2516/files/ALE.ttf) for=
+mat('truetype');
+}
+@font-face {
+font-family:'Noto';
+font-weight: normal;
+font-style: normal;
+font-display: swap;
+src:url(https://cdn.shopify.com/s/files/1/0412/3459/6001/files/NotoSansJP-R=
+egular.ttf);
+}
+@font-face {
+font-family:'Noto-Medium';
+font-style: normal;
+font-display: swap;
+src:url(https://cdn.shopify.com/s/files/1/0412/3459/6001/files/NotoSansJP-M=
+edium.ttf);
+}
+@font-face {
+font-family:'Noto-Light';
+font-weight: 100;
+font-style: normal;
+font-display: swap;
+src:url(https://cdn.shopify.com/s/files/1/0412/3459/6001/files/NotoSansJP-L=
+ight.ttf);
+}
+@font-face {
+font-family:'Noto-Bold';
+font-weight: bold;
+font-style: normal;
+font-display: swap;
+src:url(https://cdn.shopify.com/s/files/1/0412/3459/6001/files/NotoSansJP-B=
+old.ttf);
+}
+@font-face {
+font-family:'Noto-KR';
+font-weight: normal;
+font-style: normal;
+font-display: swap;
+src:url(https://cdn.shopify.com/s/files/1/0611/8024/8233/files/NotoSansKR-R=
+egular.woff2);
+}
+@font-face {
+font-family:'Noto-KR-Medium';
+font-style: normal;
+font-display: swap;
+src:url(https://cdn.shopify.com/s/files/1/0611/8024/8233/files/NotoSansKR-M=
+edium.woff2);
+}
+@font-face {
+font-family:'Noto-KR-Light';
+font-weight: 100;
+font-style: normal;
+font-display: swap;
+src:url(https://cdn.shopify.com/s/files/1/0611/8024/8233/files/NotoSansKR-L=
+ight.woff2);
+}
+@font-face {
+font-family:'Noto-KR-Bold';
+font-weight: bold;
+font-style: normal;
+font-display: swap;
+src:url(https://cdn.shopify.com/s/files/1/0611/8024/8233/files/NotoSansKR-B=
+old.woff2);
+}
+.grey-color {
+background-color: #F5F5F5;
+}
+tr, th, td {
+background-position: center;
+background-size: contain;
+background-repeat: no-repeat;
+}
+ul {
+padding: 0 20px 0 40px;
+list-style: disc;
+}
+ul li {
+display: list-item;
+font-size: 24px;
+margin-bottom: 5px;
+color: #717171;
+}
+a.tlink, font a {
+text-decoration: none;
+border-bottom: 1px solid;
+}
+font.grey {
+color: #717171;
+}
+.crossed-price {
+text-decoration: line-through;
+}
+.product-flag {
+display: inline-block;
+padding: 10px 15px; border-radius: 10px 0;
+}
+.three-col a font {
+color: gray;
+}
+.four-blocks {
+width: 50%;
+max-width: 50%;
+padding: 6px;
+}
+.fourblocks-img {
+width: 64px;
+}
+.four-blocks table {
+border-radius: 10px;
+}
+.cta {
+color: white;
+font-size: 25px;
+padding: 15px 30px;
+display: block;
+}
+.cta-table {
+border-radius: 6px;
+}
+table.footer-table .tlink {
+color: #2755CC;
+border-color: #2755CC;
+}
+div.predict-div {
+background-size: 60%;
+background-repeat: no-repeat;
+background-position: bottom;
+}
+div.predict-div a {
+display: block;
+width: 100%;
+height: 100%;
+padding-bottom: 90px;
+}
+.ff {font-family:Arial, Helvetica, sans-serif;}
+*/
+@media only screen and (max-width:414px) {
+.fl {display:block !important; width:100% !important;}
+.fw {width:100% !important; min-width:0 !important;}
+.sec {width:100% !important; float:none !important;}
+.mh {display:none !important;}
+.image {width:100% !important; height:auto !important;}
+.image1 {width:auto !important; height:auto !important; max-width:100% !imp=
+ortant;}
+.mwn img {max-width:none !important;}
+.comt {margin:0 auto !important;}
+.break {display:block !important;}
+.usom {display:inline-block !important; float:left !important;}
+.rh10, .rh10 div {height:10px !important;}
+.rhflexih {height:25px !important;}
+.rhflexcol {height:30px !important;}
+.rhflexbcta {height:25px !important;}
+.ctaf-loy {font-size:16px !important;}
+.mbr1 {border-right:1px solid #ffffff !important;}
+.rw2p {width:2% !important;}
+.rw32p {width:32% !important;}
+.rw40p {width:40% !important;}
+.rw50p {width:50% !important;}
+.rw60p {width:60% !important;}
+.pl5 {padding-left:5px !important;}
+.pr5 {padding-right:5px !important;}
+.mvab {vertical-align:bottom !important;}
+.com {text-align:center !important;}
+.lom {text-align:left !important;}
+.rom {text-align:right !important;}
+.mvat {vertical-align:top !important;}
+.h1, .h1 span {font-size:24px !important;}
+.h2, .h2 span {font-size:22px !important;}
+.h3, .h3 span {font-size:20px !important;}
+.h4, .h4 span {font-size:18px !important;}
+.gf, .gf span {font-size:16px !important;}
+.small, .small span, .small a {font-size:14px !important;}
+.xsmall, .xsmall span {font-size:12px !important;}
+.xxsmall, .xxsmall span {font-size:10px !important;}
+.rwom {width:auto !important;}
+.rhom {height:auto !important;}
+.rw5 {width:5px !important;}
+.rw10 {width:10px !important;}
+.rw15 {width:15px !important;}
+.rw20 {width:20px !important;}
+.rw25 {width:25px !important;}
+.rw100 {width:100px !important;}
+.rw50 {width:50px !important;}
+.clear {clear:both;}
+.mtop5 {margin-top:5px !important;}
+.mtop10 {margin-top:10px !important;}
+.ptop20 {padding-top:20px !important;}
+.plr2 {padding:0 2px !important;}
+.plr5 {padding:0 5px !important;}
+.plr10 {padding:0 10px !important;}
+.ptb10 {padding:10px 0 !important;}
+.pl10 {padding-left:10px !important;}
+.pr10 {padding-right:10px !important;}
+.pl5 {padding-left:5px !important;}
+.pr5 {padding-right:5px !important;}
+.p10 {padding:10px 10px !important;}
+.mdir {direction:ltr !important;}
+.cntbg {background-size: cover !important;}
+.s1, .s1 div {height:30px !important;}
+.s2, .s2 div {height:20px !important;}
+.s3, .s3 div {height:15px !important;}
+.sm1 {margin-bottom:10px !important;}
+.sm4 {margin-bottom:40px !important;}
+.il {font-size:0; display:inline;}
+.ilb {width:50%; font-size:0; display:inline-block;}
+.bgm {background-size:cover; background-position:center center;}
+.nobg {background-color:transparent !important; background-image:none !impo=
+rtant;}
+}
+@media only screen and (width:320px), screen and (width:392px) {.iph {paddi=
+ng:0 4px !important;}}
+@media only screen and (width:360px) {.iph {padding:0 6px !important;}}
+@media only screen and (width:375px), screen and (width:411px) {.iph {paddi=
+ng:0 8px 0 7px !important;}}
+@media only screen and (width:393px) {.iph {padding:0 5px 0 4px !important;=
+}}
+@media only screen and (width:412px) {.iph {padding:0 8px !important;}}
+@media only screen and (width:414px) {.iph {padding:0 3px !important;}}
+@media only screen {body {margin:0; padding:0; background:#f8f8f8;}}
+a, a:active, a:visited, .yshortcuts, .yshortcuts span a {text-decoration:no=
+ne; font-weight:normal; color:#000000;}
+a[x-apple-data-detectors] {color: inherit !important; text-decoration: none=
+ !important; font-size: inherit !important; font-family: inherit !important=
+; font-weight: inherit !important; line-height: inherit !important;}
+[office365] td div, [office365] button {display:block !important;}
+table th {padding:0; Margin:0; border:0; font-weight:normal; vertical-align=
+:top;}
+th a, th a:link, th a:visited {background:transparent; padding:0;}
+noinput {display:block !important; max-height:none !important; visibility:v=
+isible !important;}</style>
+<style type=3D"text/css">
+[class~=3D"x_olf"] td, [class~=3D"x_olf"] th {font-size:1px;}
+</style>
+<style type=3D"text/css">
+@media only screen and (max-width: 414px) {
+.h1, .h1 span {font-size:6.66vw !important;}
+.h2, .h2 span {font-size:6.11vw !important;}
+.h3, .h3 span {font-size:5.55vw !important;}
+.h4, .h4 span{font-size:5vw !important;}
+.gf, .gf span {font-size:4.44vw !important;}
+.small, .small span {font-size:3.88vw !important;}
+.xsmall, .xsmall span {font-size:3.33vw !important;}
+.xxsmall, .xxsmall span {font-size:2.77vw !important;}
+u + .body .gwfw {width:100% !important; width:100vw !important;}
+}
+</style>
+</head>
+<body class=3D"body"><div ems:preheader style=3D"display:none!important;fon=
+t-size:1px;color:#333333;line-height:1px;max-height:0px;max-width:0px;opaci=
+ty:0;overflow:hidden;mso-hide:all">Prep now to stay safe, comfortable, and =
+powered up=E2=80=94no matter what lies ahead.</div>
+<table cellspacing=3D"0" cellpadding=3D"0" width=3D"100%" height=3D"100%" s=
+tyle=3D"min-width:100%;" bgcolor=3D"#f8f8f8" class=3D"gwfw olf">
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td width=3D"100%" align=3D"center" style=3D"background-position: center; b=
+ackground-size: contain; background-repeat: no-repeat; vertical-align: top;=
+" valign=3D"top">
+<table cellspacing=3D"0" cellpadding=3D"0" width=3D"610" class=3D"ol610 fw"=
+>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat; padding: 0 5px;" class=3D"iph">
+<table cellspacing=3D"0" cellpadding=3D"0" width=3D"600" bgcolor=3D"#ffffff=
+" class=3D"ol600 fw">
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td height=3D"20" style=3D"background-position: center; background-size: co=
+ntain; background-repeat: no-repeat;"></td>
+</tr>
+<tr bgcolor=3D"#334876" height=3D"633" e-block-id=3D"64b4aaea227aeb95490000=
+0c" style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td width=3D"600" height=3D"633" style=3D"background-position: center; back=
+ground-size: contain; background-repeat: no-repeat; vertical-align: top; mi=
+n-width: 600px;" background=3D"https://media.ecoflow.com/custloads/10499837=
+26/md_447648.png" valign=3D"top">
+<a href=3D"https://media.ecoflow.com/u/nrd.php?p=3DkRpE0rENPs_17289_2784479=
+_1_1&ems_l=3D3814265&i=3D1&d=3DMTcxNjkwMzQ5%7Ca1JwRTByRU5Qcw%3D%3D%7CYzA3Yj=
+JlMjE1ODJjOGUxYzE%3D%7C&_esuh=3D_11_d4b6a64fdbe3296d85d8e845c20989125658712=
+0cceb9d45289de5724844f5e0" target=3D"_blank" style=3D"text-decoration: none=
+; font-weight: normal; color: #000000;">
+<table cellspacing=3D"0" cellpadding=3D"0" width=3D"100%">
+<tr height=3D"30" style=3D"background-position: center; background-size: co=
+ntain; background-repeat: no-repeat;">
+<td style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;"></td>
+<td style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;"></td>
+<td style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;"></td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td width=3D"30" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+<td height=3D"100" style=3D"background-position: center; background-size: c=
+ontain; background-repeat: no-repeat;"></td>
+<td width=3D"30" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td width=3D"30" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+<td align=3D"center" style=3D"background-position: center; background-size:=
+ contain; background-repeat: no-repeat;">
+<font e-editable=3D"textB_2" style=3D"font-family: 'HelveticaNeue-Medium-Ex=
+tended', Arial, Tahoma, serif; color: #000000; font-size: 48px; line-height=
+: 1;"><strong><span style=3D"color: #ffffff; font-size: 45px;">Stay Safe.<b=
+r> Stay Powered. <br>Stay Supported.</span></strong></font>
+</td>
+<td width=3D"30" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td width=3D"30" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+<td height=3D"5" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+<td width=3D"30" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td width=3D"30" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+<td align=3D"center" style=3D"background-position: center; background-size:=
+ contain; background-repeat: no-repeat;">
+<font e-editable=3D"textB_4" style=3D"font-family: 'HelveticaNeue-Medium-Ex=
+tended', Arial, Tahoma, serif; color: #ff9800; font-size: 54px; line-height=
+: 1;"><br><br><br><br><br><br><br><span style=3D"color: #ffffff; font-size:=
+ 23px; font-family: HelveticaNeue;"><br></span><br></font>
+</td>
+<td width=3D"30" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td width=3D"30" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+<td height=3D"5" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+<td width=3D"30" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+</tr>
+</table>
+</a>
+</td>
+</tr>
+<tr e-repeatable-item e-block-id=3D"684c0c7d53c3958647000004" style=3D"back=
+ground-position: center; background-size: contain; background-repeat: no-re=
+peat;">
+<td bgcolor=3D"#334876" style=3D"background-position: center; background-si=
+ze: contain; background-repeat: no-repeat;">
+<table cellspacing=3D"0" cellpadding=3D"0" width=3D"100%">
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td height=3D"0" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%">
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td width=3D"30" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+<td style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%">
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td align=3D"center" style=3D"background-position: center; background-size:=
+ contain; background-repeat: no-repeat;">
+<font e-editable=3D"textB_1" style=3D"font-family: 'HelveticaNeue', Arial, =
+Tahoma, serif; font-size: 25px; line-height: 1.25; text-align: center;"><sp=
+an style=3D"color: #ffffff; font-size: 24px;">Extreme weather can happen fa=
+st. And even for those not directly affected by flooding, winter storms, an=
+d more, power outages in surrounding areas can last for days.<br>Get prepar=
+ed now=E2=80=94your safety and comfort depend on it.</span><br></font>
+</td>
+</tr>
+</table>
+</td>
+<td width=3D"30" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td height=3D"0" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+</tr>
+</table>
+</td>
+</tr><tr e-block-id=3D"684c0d0f53c3958647000005" style=3D"background-positi=
+on: center; background-size: contain; background-repeat: no-repeat;">
+<td bgcolor=3D"#334876" style=3D"background-position: center; background-si=
+ze: contain; background-repeat: no-repeat;">
+<table cellspacing=3D"0" cellpadding=3D"0" width=3D"100%">
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td height=3D"30" style=3D"background-position: center; background-size: co=
+ntain; background-repeat: no-repeat;"></td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%">
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td width=3D"25" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+<td align=3D"center" style=3D"background-position: center; background-size:=
+ contain; background-repeat: no-repeat;">
+<table cellpadding=3D"0" cellspacing=3D"0" bgcolor=3D"#3f68e0" class=3D"cta=
+-table" style=3D"border-radius: 6px;">
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<a class=3D"cta-link" href=3D"https://media.ecoflow.com/u/nrd.php?p=3DkRpE0=
+rENPs_17289_2784479_1_3&ems_l=3D3814265&i=3D1&d=3DMTcxNjkwMzUx%7Ca1JwRTByRU=
+5Qcw%3D%3D%7CYzA3YjJlMjE1ODJjOGUxYzE%3D%7C&_esuh=3D_11_15327ad866ca3d51699a=
+2f4f07d619e04ec106f85efde0152eec8f108b71997c" e-editable=3D"urlA_1" target=
+=3D"_blank" title style=3D"text-decoration: none; font-weight: normal; colo=
+r: #000000;">
+<font e-editable=3D"link_textA_1" class=3D"cta" style=3D"font-size: 25px; p=
+adding: 15px 30px; display: block; font-family: 'HelveticaNeue-Medium', Ari=
+al, Tahoma, serif; color: #ffffff;">Download Checklist</font>
+</a>
+</td>
+</tr>
+</table>
+</td>
+<td width=3D"25" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td height=3D"30" style=3D"background-position: center; background-size: co=
+ntain; background-repeat: no-repeat;"></td>
+</tr>
+</table>
+</td>
+</tr><tr e-block-id=3D"684bdcb5d0634a8f4a000004" style=3D"background-positi=
+on: center; background-size: contain; background-repeat: no-repeat;">
+<td bgcolor=3D"#595865" style=3D"background-position: center; background-si=
+ze: contain; background-repeat: no-repeat;">
+<table cellspacing=3D"0" cellpadding=3D"0" width=3D"100%">
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td height=3D"30" style=3D"background-position: center; background-size: co=
+ntain; background-repeat: no-repeat;"></td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%">
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td width=3D"30" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+<td style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%">
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td align=3D"center" style=3D"background-position: center; background-size:=
+ contain; background-repeat: no-repeat;">
+<font e-editable=3D"textB_1" style=3D"font-family: 'HelveticaNeue-Medium-Ex=
+tended', Arial, Tahoma, serif; font-size: 32px; line-height: 1.25;"><strong=
+><span style=3D"color: #ffffff;"><span style=3D"font-size: 64px;">6</span> =
+Things</span></strong><br><strong><span style=3D"color: #ffffff;"> You Can =
+Do Right Now</span></strong></font>
+</td>
+</tr>
+</table>
+</td>
+<td width=3D"30" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td height=3D"30" style=3D"background-position: center; background-size: co=
+ntain; background-repeat: no-repeat;"></td>
+</tr>
+</table>
+</td>
+</tr><tr e-repeatable-item e-block-id=3D"684bdcffd0634a8f4a000005" style=3D=
+"background-position: center; background-size: contain; background-repeat: =
+no-repeat;">
+<td bgcolor=3D"#cddaed" style=3D"background-position: center; background-si=
+ze: contain; background-repeat: no-repeat;">
+<table cellspacing=3D"0" cellpadding=3D"0" width=3D"100%">
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%">
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td width=3D"25" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+<td style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<table height=3D"100%" bgcolor=3D"#cddaed" style=3D"border-radius: 10px; ov=
+erflow: hidden;" cellpadding=3D"0" cellspacing=3D"0" width=3D"100%">
+<tr height=3D"100%" style=3D"background-position: center; background-size: =
+contain; background-repeat: no-repeat;">
+<td width=3D"250" height=3D"100%" align=3D"left" class=3D"vat fl" backgroun=
+d=3D"https://media.ecoflow.com/custloads/555-123-4567/md_341532.png" style=3D=
+"background-size: contain; background-repeat: no-repeat; background-positio=
+n: center center;">
+<a href e-editable=3D"urlA_1" target=3D"_blank" style=3D"text-decoration: n=
+one; font-weight: normal; color: #000000; display: block; width: 100%; heig=
+ht: 100%;">
+</a>
+</td>
+<td width=3D"15" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+<td height=3D"100%" align=3D"left" class=3D"vam fl" style=3D"background-pos=
+ition: center; background-size: contain; background-repeat: no-repeat;">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" height=3D"100%">
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td height=3D"30" style=3D"background-position: center; background-size: co=
+ntain; background-repeat: no-repeat;"></td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td align=3D"center" style=3D"background-position: center; background-size:=
+ contain; background-repeat: no-repeat;">
+<font e-editable=3D"textA_3" style=3D"font-family: 'HelveticaNeue-Medium', =
+Arial, Tahoma, serif; font-size: 24px; line-height: 1.1;"><strong><span sty=
+le=3D"font-family: HelveticaNeue; font-size: 26px;"><span style=3D"color: #=
+3366ff; font-family: HelveticaNeue-Medium;">1</span><span style=3D"font-fam=
+ily: HelveticaNeue-Medium;"> - Stay Informed</span></span></strong></font>
+</td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td height=3D"6" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td align=3D"center" style=3D"background-position: center; background-size:=
+ contain; background-repeat: no-repeat;">
+<font e-editable=3D"textA_4" class=3D"grey" style=3D"color: #717171; font-f=
+amily: 'HelveticaNeue', Arial, Tahoma, serif; font-size: 20px;"><span style=
+=3D"font-size: 22px; color: #000000; font-family: HelveticaNeue;">Find out =
+if you're in a flood or evacuation zone=E2=80=94even inland. Sign up for FE=
+MA and local emergency alerts.</span></font>
+</td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td height=3D"30" style=3D"background-position: center; background-size: co=
+ntain; background-repeat: no-repeat;"></td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td align=3D"center" style=3D"background-position: center; background-size:=
+ contain; background-repeat: no-repeat;">
+<font e-editable=3D"textB_1" style=3D"font-family: 'HelveticaNeue-Medium', =
+Arial, Tahoma, serif; font-size: 33px; margin-right: 5px;"><span style=3D"f=
+ont-size: 23px;"><a href=3D"https://media.ecoflow.com/u/nrd.php?p=3DkRpE0rE=
+NPs_17289_2784479_1_5&ems_l=3D3814265&i=3D1&d=3DMTcxNjkwMzUz%7Ca1JwRTByRU5Q=
+cw%3D%3D%7CYzA3YjJlMjE1ODJjOGUxYzE%3D%7C&_esuh=3D_11_9b8089f8ac5fc086992b19=
+16cbd1ee837d9d7324e3477cf6830084204b87dfd8" style=3D"font-weight: normal; c=
+olor: #000000; text-decoration: none; border-bottom: 1px solid;" target=3D"=
+_blank"><span style=3D"color: #3366ff;">Download FEMA app</span></a><span s=
+tyle=3D"color: #3366ff;">&gt;&gt;</span></span></font>
+<font e-editable=3D"textB_2" class=3D"grey crossed-price" style=3D"text-dec=
+oration: line-through; color: #717171; font-family: 'HelveticaNeue', Arial,=
+ Tahoma, serif; font-size: 21px;"></font>
+</td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td height=3D"15" style=3D"background-position: center; background-size: co=
+ntain; background-repeat: no-repeat;"></td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td height=3D"30" style=3D"background-position: center; background-size: co=
+ntain; background-repeat: no-repeat;"></td>
+</tr>
+</table>
+</td>
+<td width=3D"15" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+</tr>
+</table>
+</td>
+<td width=3D"25" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td height=3D"12" style=3D"background-position: center; background-size: co=
+ntain; background-repeat: no-repeat;"></td>
+</tr>
+</table>
+</td>
+</tr><tr e-repeatable-item e-block-id=3D"684be0e9d0634a8f4a000006" style=3D=
+"background-position: center; background-size: contain; background-repeat: =
+no-repeat;">
+<td bgcolor=3D"#cddaed" style=3D"background-position: center; background-si=
+ze: contain; background-repeat: no-repeat;">
+<table cellspacing=3D"0" cellpadding=3D"0" width=3D"100%">
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%">
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td width=3D"25" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+<td style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<table height=3D"100%" bgcolor=3D"#cddaed" style=3D"border-radius: 10px; ov=
+erflow: hidden;" cellpadding=3D"0" cellspacing=3D"0" width=3D"100%">
+<tr height=3D"100%" style=3D"background-position: center; background-size: =
+contain; background-repeat: no-repeat;">
+<td width=3D"250" height=3D"100%" align=3D"left" class=3D"vat fl" backgroun=
+d=3D"https://media.ecoflow.com/custloads/555-123-4567/md_341212.jpg" style=3D=
+"background-size: contain; background-repeat: no-repeat; background-positio=
+n: center center;">
+<a href e-editable=3D"urlA_1" target=3D"_blank" style=3D"text-decoration: n=
+one; font-weight: normal; color: #000000; display: block; width: 100%; heig=
+ht: 100%;">
+</a>
+</td>
+<td width=3D"15" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+<td height=3D"100%" align=3D"left" class=3D"vam fl" style=3D"background-pos=
+ition: center; background-size: contain; background-repeat: no-repeat;">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" height=3D"100%">
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td height=3D"30" style=3D"background-position: center; background-size: co=
+ntain; background-repeat: no-repeat;"></td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td align=3D"center" style=3D"background-position: center; background-size:=
+ contain; background-repeat: no-repeat;">
+<font e-editable=3D"textA_3" style=3D"font-family: 'HelveticaNeue-Medium', =
+Arial, Tahoma, serif; font-size: 24px; line-height: 1.1;"><strong><span sty=
+le=3D"font-family: HelveticaNeue; font-size: 26px;"><span style=3D"color: #=
+3366ff; font-family: HelveticaNeue-Medium;">2</span><span style=3D"font-fam=
+ily: HelveticaNeue-Medium;"> - Secure <br>Your Home</span></span></strong><=
+/font>
+</td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td height=3D"6" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td align=3D"center" style=3D"background-position: center; background-size:=
+ contain; background-repeat: no-repeat;">
+<font e-editable=3D"textA_4" class=3D"grey" style=3D"color: #717171; font-f=
+amily: 'HelveticaNeue', Arial, Tahoma, serif; font-size: 20px;"><span style=
+=3D"font-size: 22px; color: #000000; font-family: HelveticaNeue;">Clear gut=
+ters, secure outdoor items, and <br>reinforce windows.</span></font>
+</td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td height=3D"30" style=3D"background-position: center; background-size: co=
+ntain; background-repeat: no-repeat;"></td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td height=3D"15" style=3D"background-position: center; background-size: co=
+ntain; background-repeat: no-repeat;"></td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td height=3D"30" style=3D"background-position: center; background-size: co=
+ntain; background-repeat: no-repeat;"></td>
+</tr>
+</table>
+</td>
+<td width=3D"15" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+</tr>
+</table>
+</td>
+<td width=3D"25" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td height=3D"12" style=3D"background-position: center; background-size: co=
+ntain; background-repeat: no-repeat;"></td>
+</tr>
+</table>
+</td>
+</tr><tr e-repeatable-item e-block-id=3D"684be15fd0634a8f4a000007" style=3D=
+"background-position: center; background-size: contain; background-repeat: =
+no-repeat;">
+<td bgcolor=3D"#cddaed" style=3D"background-position: center; background-si=
+ze: contain; background-repeat: no-repeat;">
+<table cellspacing=3D"0" cellpadding=3D"0" width=3D"100%">
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%">
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td width=3D"25" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+<td style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<table height=3D"100%" bgcolor=3D"#cddaed" style=3D"border-radius: 10px; ov=
+erflow: hidden;" cellpadding=3D"0" cellspacing=3D"0" width=3D"100%">
+<tr height=3D"100%" style=3D"background-position: center; background-size: =
+contain; background-repeat: no-repeat;">
+<td width=3D"250" height=3D"100%" align=3D"left" class=3D"vat fl" backgroun=
+d=3D"https://media.ecoflow.com/custloads/555-123-4567/md_341211.jpg" style=3D=
+"background-size: contain; background-repeat: no-repeat; background-positio=
+n: center center;">
+<a href e-editable=3D"urlA_1" target=3D"_blank" style=3D"text-decoration: n=
+one; font-weight: normal; color: #000000; display: block; width: 100%; heig=
+ht: 100%;">
+</a>
+</td>
+<td width=3D"15" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+<td height=3D"100%" align=3D"left" class=3D"vam fl" style=3D"background-pos=
+ition: center; background-size: contain; background-repeat: no-repeat;">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" height=3D"100%">
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td height=3D"30" style=3D"background-position: center; background-size: co=
+ntain; background-repeat: no-repeat;"></td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td align=3D"center" style=3D"background-position: center; background-size:=
+ contain; background-repeat: no-repeat;">
+<font e-editable=3D"textA_3" style=3D"font-family: 'HelveticaNeue-Medium', =
+Arial, Tahoma, serif; font-size: 24px; line-height: 1.1;"><strong><span sty=
+le=3D"font-family: HelveticaNeue; font-size: 26px;"><span style=3D"font-fam=
+ily: HelveticaNeue-Medium;"><span color=3D"#3366ff" style=3D"color: #3366ff=
+;">3</span> -&nbsp;Develop an Emergency Plan</span></span></strong></font>
+</td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td height=3D"6" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td align=3D"center" style=3D"background-position: center; background-size:=
+ contain; background-repeat: no-repeat;">
+<font e-editable=3D"textA_4" class=3D"grey" style=3D"color: #717171; font-f=
+amily: 'HelveticaNeue', Arial, Tahoma, serif; font-size: 20px;"><span style=
+=3D"font-size: 20px; color: #000000; font-family: HelveticaNeue;"><span sty=
+le=3D"font-size: 21px;">Plan routes, pack a go-bag, and decide where your f=
+amily and pets will stay.</span></span></font>
+</td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td height=3D"30" style=3D"background-position: center; background-size: co=
+ntain; background-repeat: no-repeat;"></td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td height=3D"15" style=3D"background-position: center; background-size: co=
+ntain; background-repeat: no-repeat;"></td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td height=3D"30" style=3D"background-position: center; background-size: co=
+ntain; background-repeat: no-repeat;"></td>
+</tr>
+</table>
+</td>
+<td width=3D"15" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+</tr>
+</table>
+</td>
+<td width=3D"25" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td height=3D"12" style=3D"background-position: center; background-size: co=
+ntain; background-repeat: no-repeat;"></td>
+</tr>
+</table>
+</td>
+</tr><tr e-repeatable-item e-block-id=3D"684be1d8d0634a8f4a000008" style=3D=
+"background-position: center; background-size: contain; background-repeat: =
+no-repeat;">
+<td bgcolor=3D"#cddaed" style=3D"background-position: center; background-si=
+ze: contain; background-repeat: no-repeat;">
+<table cellspacing=3D"0" cellpadding=3D"0" width=3D"100%">
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%">
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td width=3D"25" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+<td style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<table height=3D"100%" bgcolor=3D"#cddaed" style=3D"border-radius: 10px; ov=
+erflow: hidden;" cellpadding=3D"0" cellspacing=3D"0" width=3D"100%">
+<tr height=3D"100%" style=3D"background-position: center; background-size: =
+contain; background-repeat: no-repeat;">
+<td width=3D"250" height=3D"100%" align=3D"left" class=3D"vat fl" backgroun=
+d=3D"https://media.ecoflow.com/custloads/555-123-4567/md_341510.jpg" style=3D=
+"background-size: contain; background-repeat: no-repeat; background-positio=
+n: center center;">
+<a href e-editable=3D"urlA_1" target=3D"_blank" style=3D"text-decoration: n=
+one; font-weight: normal; color: #000000; display: block; width: 100%; heig=
+ht: 100%;">
+</a>
+</td>
+<td width=3D"15" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+<td height=3D"100%" align=3D"left" class=3D"vam fl" style=3D"background-pos=
+ition: center; background-size: contain; background-repeat: no-repeat;">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" height=3D"100%">
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td height=3D"30" style=3D"background-position: center; background-size: co=
+ntain; background-repeat: no-repeat;"></td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td align=3D"center" style=3D"background-position: center; background-size:=
+ contain; background-repeat: no-repeat;">
+<font e-editable=3D"textA_3" style=3D"font-family: 'HelveticaNeue-Medium', =
+Arial, Tahoma, serif; font-size: 24px; line-height: 1.1;"><strong><span sty=
+le=3D"font-family: HelveticaNeue; font-size: 26px;"><span style=3D"font-fam=
+ily: HelveticaNeue-Medium;"><span color=3D"#3366ff" style=3D"color: #3366ff=
+;">4</span> -&nbsp;Get Backup Power Ready</span></span></strong></font>
+</td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td height=3D"6" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td align=3D"center" style=3D"background-position: center; background-size:=
+ contain; background-repeat: no-repeat;">
+<font e-editable=3D"textA_4" class=3D"grey" style=3D"color: #717171; font-f=
+amily: 'HelveticaNeue', Arial, Tahoma, serif; font-size: 20px;"><span style=
+=3D"font-size: 22px; color: #000000; font-family: HelveticaNeue;">Keep your=
+ home running during blackouts with <br>reliable backup power.<br></span></=
+font>
+</td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td height=3D"30" style=3D"background-position: center; background-size: co=
+ntain; background-repeat: no-repeat;"></td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td align=3D"center" style=3D"background-position: center; background-size:=
+ contain; background-repeat: no-repeat;">
+<font e-editable=3D"textB_1" style=3D"font-family: 'HelveticaNeue-Medium', =
+Arial, Tahoma, serif; font-size: 33px; margin-right: 5px;"><span style=3D"c=
+olor: #3366ff;"><a href=3D"https://media.ecoflow.com/u/nrd.php?p=3DkRpE0rEN=
+Ps_17289_2784479_1_7&ems_l=3D3814265&i=3D1&d=3DMTcxNjkwMzU1%7Ca1JwRTByRU5Qc=
+w%3D%3D%7CYzA3YjJlMjE1ODJjOGUxYzE%3D%7C&_esuh=3D_11_ec15bbfc8825da87526722d=
+dee4f81b07437e248301f699a67f782538f43a5e2" style=3D"font-weight: normal; te=
+xt-decoration: none; border-bottom: 1px solid; color: #3366ff;" target=3D"_=
+blank" rel=3D"noopener"><strong><span style=3D"font-size: 20px; font-family=
+: HelveticaNeue;">[Need help choosing a power solution? Use our calculator&=
+gt;&gt;</span></strong></a></span></font>
+<font e-editable=3D"textB_2" class=3D"grey crossed-price" style=3D"text-dec=
+oration: line-through; color: #717171; font-family: 'HelveticaNeue', Arial,=
+ Tahoma, serif; font-size: 21px;"></font>
+</td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td height=3D"15" style=3D"background-position: center; background-size: co=
+ntain; background-repeat: no-repeat;"></td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td height=3D"30" style=3D"background-position: center; background-size: co=
+ntain; background-repeat: no-repeat;"></td>
+</tr>
+</table>
+</td>
+<td width=3D"15" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+</tr>
+</table>
+</td>
+<td width=3D"25" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td height=3D"12" style=3D"background-position: center; background-size: co=
+ntain; background-repeat: no-repeat;"></td>
+</tr>
+</table>
+</td>
+</tr><tr e-repeatable-item e-block-id=3D"684be295d0634a8f4a000009" style=3D=
+"background-position: center; background-size: contain; background-repeat: =
+no-repeat;">
+<td bgcolor=3D"#cddaed" style=3D"background-position: center; background-si=
+ze: contain; background-repeat: no-repeat;">
+<table cellspacing=3D"0" cellpadding=3D"0" width=3D"100%">
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%">
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td width=3D"25" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+<td style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<table height=3D"100%" bgcolor=3D"#cddaed" style=3D"border-radius: 10px; ov=
+erflow: hidden;" cellpadding=3D"0" cellspacing=3D"0" width=3D"100%">
+<tr height=3D"100%" style=3D"background-position: center; background-size: =
+contain; background-repeat: no-repeat;">
+<td width=3D"250" height=3D"100%" align=3D"left" class=3D"vat fl" backgroun=
+d=3D"https://media.ecoflow.com/custloads/555-123-4567/md_341209.jpg" style=3D=
+"background-size: contain; background-repeat: no-repeat; background-positio=
+n: center center;">
+<a href e-editable=3D"urlA_1" target=3D"_blank" style=3D"text-decoration: n=
+one; font-weight: normal; color: #000000; display: block; width: 100%; heig=
+ht: 100%;">
+</a>
+</td>
+<td width=3D"15" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+<td height=3D"100%" align=3D"left" class=3D"vam fl" style=3D"background-pos=
+ition: center; background-size: contain; background-repeat: no-repeat;">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" height=3D"100%">
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td height=3D"30" style=3D"background-position: center; background-size: co=
+ntain; background-repeat: no-repeat;"></td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td align=3D"center" style=3D"background-position: center; background-size:=
+ contain; background-repeat: no-repeat;">
+<font e-editable=3D"textA_3" style=3D"font-family: 'HelveticaNeue-Medium', =
+Arial, Tahoma, serif; font-size: 24px; line-height: 1.1;"><strong><span sty=
+le=3D"font-family: HelveticaNeue; font-size: 26px;"><span style=3D"font-fam=
+ily: HelveticaNeue-Medium;"><span color=3D"#3366ff" style=3D"color: #3366ff=
+;">5</span> -&nbsp;Charge Your Tech</span></span></strong></font>
+</td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td height=3D"6" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td align=3D"center" style=3D"background-position: center; background-size:=
+ contain; background-repeat: no-repeat;">
+<font e-editable=3D"textA_4" class=3D"grey" style=3D"color: #717171; font-f=
+amily: 'HelveticaNeue', Arial, Tahoma, serif; font-size: 20px;"><span style=
+=3D"font-size: 22px; color: #000000; font-family: HelveticaNeue;"><br>Charg=
+e your phones and get portable battery backups ready.</span></font>
+</td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td height=3D"30" style=3D"background-position: center; background-size: co=
+ntain; background-repeat: no-repeat;"></td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td height=3D"15" style=3D"background-position: center; background-size: co=
+ntain; background-repeat: no-repeat;"></td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td height=3D"30" style=3D"background-position: center; background-size: co=
+ntain; background-repeat: no-repeat;"></td>
+</tr>
+</table>
+</td>
+<td width=3D"15" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+</tr>
+</table>
+</td>
+<td width=3D"25" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td height=3D"12" style=3D"background-position: center; background-size: co=
+ntain; background-repeat: no-repeat;"></td>
+</tr>
+</table>
+</td>
+</tr><tr e-repeatable-item e-block-id=3D"684be2efd0634a8f4a00000a" style=3D=
+"background-position: center; background-size: contain; background-repeat: =
+no-repeat;">
+<td bgcolor=3D"#cddaed" style=3D"background-position: center; background-si=
+ze: contain; background-repeat: no-repeat;">
+<table cellspacing=3D"0" cellpadding=3D"0" width=3D"100%">
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%">
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td width=3D"25" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+<td style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<table height=3D"100%" bgcolor=3D"#cddaed" style=3D"border-radius: 10px; ov=
+erflow: hidden;" cellpadding=3D"0" cellspacing=3D"0" width=3D"100%">
+<tr height=3D"100%" style=3D"background-position: center; background-size: =
+contain; background-repeat: no-repeat;">
+<td width=3D"250" height=3D"100%" align=3D"left" class=3D"vat fl" backgroun=
+d=3D"https://media.ecoflow.com/custloads/555-123-4567/md_341208.jpg" style=3D=
+"background-size: contain; background-repeat: no-repeat; background-positio=
+n: center center;">
+<a href e-editable=3D"urlA_1" target=3D"_blank" style=3D"text-decoration: n=
+one; font-weight: normal; color: #000000; display: block; width: 100%; heig=
+ht: 100%;">
+</a>
+</td>
+<td width=3D"15" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+<td height=3D"100%" align=3D"left" class=3D"vam fl" style=3D"background-pos=
+ition: center; background-size: contain; background-repeat: no-repeat;">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" height=3D"100%">
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td height=3D"30" style=3D"background-position: center; background-size: co=
+ntain; background-repeat: no-repeat;"></td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td align=3D"center" style=3D"background-position: center; background-size:=
+ contain; background-repeat: no-repeat;">
+<font e-editable=3D"textA_3" style=3D"font-family: 'HelveticaNeue-Medium', =
+Arial, Tahoma, serif; font-size: 24px; line-height: 1.1;"><strong><span sty=
+le=3D"font-family: HelveticaNeue; font-size: 26px;"><span style=3D"font-fam=
+ily: HelveticaNeue-Medium;"><span color=3D"#3366ff" style=3D"color: #3366ff=
+;">6</span> -&nbsp;Stock Emergency Supplies<br><br></span></span></strong><=
+/font>
+</td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td height=3D"6" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td align=3D"center" style=3D"background-position: center; background-size:=
+ contain; background-repeat: no-repeat;">
+<font e-editable=3D"textA_4" class=3D"grey" style=3D"color: #717171; font-f=
+amily: 'HelveticaNeue', Arial, Tahoma, serif; font-size: 20px;"><span style=
+=3D"font-size: 22px; font-family: HelveticaNeue; color: #000000;">Gather fo=
+od, water, medications, and pet supplies for several days.</span></font>
+</td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td height=3D"30" style=3D"background-position: center; background-size: co=
+ntain; background-repeat: no-repeat;"></td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td height=3D"15" style=3D"background-position: center; background-size: co=
+ntain; background-repeat: no-repeat;"></td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td height=3D"30" style=3D"background-position: center; background-size: co=
+ntain; background-repeat: no-repeat;"></td>
+</tr>
+</table>
+</td>
+<td width=3D"15" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+</tr>
+</table>
+</td>
+<td width=3D"25" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td height=3D"12" style=3D"background-position: center; background-size: co=
+ntain; background-repeat: no-repeat;"></td>
+</tr>
+</table>
+</td>
+</tr><tr e-block-id=3D"684be360d0634a8f4a00000c" style=3D"background-positi=
+on: center; background-size: contain; background-repeat: no-repeat;">
+<td bgcolor=3D"#202b45" style=3D"background-position: center; background-si=
+ze: contain; background-repeat: no-repeat;">
+<table cellspacing=3D"0" cellpadding=3D"0" width=3D"100%">
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td height=3D"30" style=3D"background-position: center; background-size: co=
+ntain; background-repeat: no-repeat;"></td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%">
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td width=3D"30" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+<td style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%">
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td align=3D"center" style=3D"background-position: center; background-size:=
+ contain; background-repeat: no-repeat;">
+<font e-editable=3D"textB_1" style=3D"font-family: 'HelveticaNeue-Medium-Ex=
+tended', Arial, Tahoma, serif; font-size: 32px; line-height: 1.25;"><span s=
+tyle=3D"font-size: 25px; color: #ffffff;">&#x26a1;&nbsp; Your Emergency-Rea=
+dy Power Partner</span></font>
+</td>
+</tr>
+</table>
+</td>
+<td width=3D"30" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td height=3D"30" style=3D"background-position: center; background-size: co=
+ntain; background-repeat: no-repeat;"></td>
+</tr>
+</table>
+</td>
+</tr><tr e-repeatable-item e-block-id=3D"684be60dd0634a8f4a00000d" style=3D=
+"background-position: center; background-size: contain; background-repeat: =
+no-repeat;">
+<td bgcolor=3D"#202b45" style=3D"background-position: center; background-si=
+ze: contain; background-repeat: no-repeat;">
+<table class=3D"icon-text-table" cellspacing=3D"0" cellpadding=3D"0" width=
+=3D"100%">
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat; padding: 0 25px 12px 25px;">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" bgcolor=3D"#21325=
+7" style=3D"border-radius: 10px; overflow: hidden;">
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%">
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td width=3D"120px" class=3D"vat" style=3D"background-position: center; bac=
+kground-size: contain; background-repeat: no-repeat;"><img e-editable=3D"im=
+ageA_1" src=3D"https://media.ecoflow.com/custloads/555-123-4567/md_341207.png=
+" width=3D"77" border=3D"0" style=3D"display: block; margin: auto; width: 7=
+7px; height: 77px;" class=3D"image" height=3D"77" alt=3D"solar"></td>
+<td align=3D"left" class=3D"vam" style=3D"background-position: center; back=
+ground-size: contain; background-repeat: no-repeat;">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%">
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td align=3D"left" style=3D"background-position: center; background-size: c=
+ontain; background-repeat: no-repeat; padding-top: 20px; padding-bottom: 5p=
+x;">
+<font e-editable=3D"textA_2" class=3D"column-title" style=3D"font-family: '=
+HelveticaNeue-Medium', Arial, Tahoma, serif; font-size: 24px; line-height: =
+1.1;"><span style=3D"color: #ffffff; font-family: HelveticaNeue; font-size:=
+ 25px;">Fast charging &amp; solar compatible</span></font>
+</td>
+</tr>
+</table>=09</td>
+</tr>
+</table>
+</td>
+<td width=3D"30" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</td>
+</tr><tr e-repeatable-item e-block-id=3D"684be66ad0634a8f4a00000f" style=3D=
+"background-position: center; background-size: contain; background-repeat: =
+no-repeat;">
+<td bgcolor=3D"#202b45" style=3D"background-position: center; background-si=
+ze: contain; background-repeat: no-repeat;">
+<table class=3D"icon-text-table" cellspacing=3D"0" cellpadding=3D"0" width=
+=3D"100%">
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat; padding: 0 25px 12px 25px;">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" bgcolor=3D"#21325=
+7" style=3D"border-radius: 10px; overflow: hidden;">
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%">
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td width=3D"120px" class=3D"vat" style=3D"background-position: center; bac=
+kground-size: contain; background-repeat: no-repeat;"><img e-editable=3D"im=
+ageA_1" src=3D"https://media.ecoflow.com/custloads/555-123-4567/md_341206.png=
+" width=3D"77" border=3D"0" style=3D"display: block; margin: auto; width: 7=
+7px; height: 77px;" class=3D"image" height=3D"77" alt=3D"Compact"></td>
+<td align=3D"left" class=3D"vam" style=3D"background-position: center; back=
+ground-size: contain; background-repeat: no-repeat;">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%">
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td align=3D"left" style=3D"background-position: center; background-size: c=
+ontain; background-repeat: no-repeat; padding-top: 20px; padding-bottom: 5p=
+x;">
+<font e-editable=3D"textA_2" class=3D"column-title" style=3D"font-family: '=
+HelveticaNeue-Medium', Arial, Tahoma, serif; font-size: 24px; line-height: =
+1.1;"><span style=3D"color: #ffffff; font-family: HelveticaNeue; font-size:=
+ 25px;">Compact &amp; portable design</span></font>
+</td>
+</tr>
+</table>=09</td>
+</tr>
+</table>
+</td>
+<td width=3D"30" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</td>
+</tr><tr e-repeatable-item e-block-id=3D"684be668d0634a8f4a00000e" style=3D=
+"background-position: center; background-size: contain; background-repeat: =
+no-repeat;">
+<td bgcolor=3D"#202b45" style=3D"background-position: center; background-si=
+ze: contain; background-repeat: no-repeat;">
+<table class=3D"icon-text-table" cellspacing=3D"0" cellpadding=3D"0" width=
+=3D"100%">
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat; padding: 0 25px 12px 25px;">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" bgcolor=3D"#21325=
+7" style=3D"border-radius: 10px; overflow: hidden;">
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%">
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td width=3D"120px" class=3D"vat" style=3D"background-position: center; bac=
+kground-size: contain; background-repeat: no-repeat;"><img e-editable=3D"im=
+ageA_1" src=3D"https://media.ecoflow.com/custloads/555-123-4567/md_341205.png=
+" width=3D"77" border=3D"0" style=3D"display: block; margin: auto; width: 7=
+7px; height: 77px;" class=3D"image" height=3D"77" alt=3D"whole family"></td=
+>
+<td align=3D"left" class=3D"vam" style=3D"background-position: center; back=
+ground-size: contain; background-repeat: no-repeat;">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%">
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td align=3D"left" style=3D"background-position: center; background-size: c=
+ontain; background-repeat: no-repeat; padding-top: 20px; padding-bottom: 5p=
+x;">
+<font e-editable=3D"textA_2" class=3D"column-title" style=3D"font-family: '=
+HelveticaNeue-Medium', Arial, Tahoma, serif; font-size: 24px; line-height: =
+1.1;"><span style=3D"color: #ffffff; font-family: HelveticaNeue; font-size:=
+ 25px;">Reliable Outage Backup=E2=80=94from days to a full Week</span></fon=
+t>
+</td>
+</tr>
+</table>=09</td>
+</tr>
+</table>
+</td>
+<td width=3D"30" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</td>
+</tr><tr e-block-id=3D"684bea9bd0634a8f4a000012" style=3D"background-positi=
+on: center; background-size: contain; background-repeat: no-repeat;">
+<td bgcolor=3D"#202b45" style=3D"background-position: center; background-si=
+ze: contain; background-repeat: no-repeat;">
+<table cellspacing=3D"0" cellpadding=3D"0" width=3D"100%">
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td height=3D"30" style=3D"background-position: center; background-size: co=
+ntain; background-repeat: no-repeat;"></td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%">
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td width=3D"30" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+<td style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%">
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td align=3D"center" style=3D"background-position: center; background-size:=
+ contain; background-repeat: no-repeat;">
+<font e-editable=3D"textB_1" style=3D"font-family: 'HelveticaNeue-Medium-Ex=
+tended', Arial, Tahoma, serif; font-size: 32px; line-height: 1.25;"></font>
+</td>
+</tr>
+</table>
+</td>
+<td width=3D"30" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td height=3D"30" style=3D"background-position: center; background-size: co=
+ntain; background-repeat: no-repeat;"></td>
+</tr>
+</table>
+</td>
+</tr><tr e-repeatable-item e-block-id=3D"693bec69ff36e3034f000004" style=3D=
+"background-position: center; background-size: contain; background-repeat: =
+no-repeat;">
+<td bgcolor=3D"#202b45" style=3D"background-position: center; background-si=
+ze: contain; background-repeat: no-repeat;">
+<table cellspacing=3D"0" cellpadding=3D"0" width=3D"100%">
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" height=3D"200">
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td width=3D"25" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+<td style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<table height=3D"100%" bgcolor=3D"#eaf1ff" style=3D"border-radius: 10px; ov=
+erflow: hidden;" cellpadding=3D"0" cellspacing=3D"0" width=3D"100%">
+<tr height=3D"100%" style=3D"background-position: center; background-size: =
+contain; background-repeat: no-repeat;">
+<td width=3D"250" height=3D"100%" align=3D"left" class=3D"vat fl" backgroun=
+d=3D"https://media.ecoflow.com/custloads/555-123-4567/md_452329.png" style=3D=
+"background-size: contain; background-repeat: no-repeat; background-positio=
+n: center center;">
+<a href=3D"https://media.ecoflow.com/u/nrd.php?p=3DkRpE0rENPs_17289_2784479=
+_1_9&ems_l=3D3814265&i=3D1&d=3DMTcxNjkwMzU3%7Ca1JwRTByRU5Qcw%3D%3D%7CYzA3Yj=
+JlMjE1ODJjOGUxYzE%3D%7C&_esuh=3D_11_7b938238ce813e78d880502af1db4e231c8eefd=
+50ad680d9e7c52496437f695b" e-editable=3D"urlA_1" target=3D"_blank" style=3D=
+"text-decoration: none; font-weight: normal; color: #000000; display: block=
+; width: 100%; height: 100%;" title>
+</a>
+</td>
+<td width=3D"15" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+<td height=3D"100%" align=3D"left" class=3D"vam fl" style=3D"background-pos=
+ition: center; background-size: contain; background-repeat: no-repeat;">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" height=3D"100%">
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td height=3D"30" style=3D"background-position: center; background-size: co=
+ntain; background-repeat: no-repeat;"></td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td align=3D"center" style=3D"background-position: center; background-size:=
+ contain; background-repeat: no-repeat;">
+<font e-editable=3D"textA_3" style=3D"font-family: 'HelveticaNeue-Medium', =
+Arial, Tahoma, serif; font-size: 24px; line-height: 1.1;">DELTA Pro Ultra X=
+</font>
+<br><br>
+<font e-editable=3D"textA_4" class=3D"grey" style=3D"color: #717171; font-f=
+amily: 'HelveticaNeue', Arial, Tahoma, serif; font-size: 20px;">Whole-home =
+backup that can be installed within just 7 days.*</font>
+</td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td height=3D"15" style=3D"background-position: center; background-size: co=
+ntain; background-repeat: no-repeat;"></td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td align=3D"center" style=3D"background-position: center; background-size:=
+ contain; background-repeat: no-repeat; vertical-align: bottom;" valign=3D"=
+bottom">
+<table cellpadding=3D"0" cellspacing=3D"0" bgcolor=3D"#3f68e0" class=3D"cta=
+-table" style=3D"border-radius: 6px;">
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td height=3D"60" align=3D"center" style=3D"background-position: center; ba=
+ckground-size: contain; background-repeat: no-repeat;">
+<a href=3D"https://media.ecoflow.com/u/nrd.php?p=3DkRpE0rENPs_17289_2784479=
+_1_11&ems_l=3D3814265&i=3D1&d=3DMTcxNjkwMzU5%7Ca1JwRTByRU5Qcw%3D%3D%7CYzA3Y=
+jJlMjE1ODJjOGUxYzE%3D%7C&_esuh=3D_11_6c796683f7ea72a0381dd9be0d3606d4a1c405=
+b703ff7a149e47338fd1e8747e" e-editable=3D"urlA_1" target=3D"_blank" title s=
+tyle=3D"text-decoration: none; font-weight: normal; color: #000000;">
+<font e-editable=3D"link_textA_1" class=3D"cta" style=3D"font-size: 25px; p=
+adding: 15px 30px; display: block; font-family: 'HelveticaNeue-Medium', Ari=
+al, Tahoma, serif; white-space: nowrap; color: #ffffff;">Learn More</font>
+</a>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td height=3D"30" style=3D"background-position: center; background-size: co=
+ntain; background-repeat: no-repeat;"></td>
+</tr>
+</table>
+</td>
+<td width=3D"15" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+</tr>
+</table>
+</td>
+<td width=3D"25" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td height=3D"12" style=3D"background-position: center; background-size: co=
+ntain; background-repeat: no-repeat;"></td>
+</tr>
+</table>
+</td>
+</tr><tr e-repeatable-item e-block-id=3D"64c8cc6961e408166f000001" style=3D=
+"background-position: center; background-size: contain; background-repeat: =
+no-repeat;">
+<td bgcolor=3D"#202b45" style=3D"background-position: center; background-si=
+ze: contain; background-repeat: no-repeat;">
+<table cellspacing=3D"0" cellpadding=3D"0" width=3D"100%">
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td height=3D"30" style=3D"background-position: center; background-size: co=
+ntain; background-repeat: no-repeat;"></td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%">
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td width=3D"30" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+<td style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<table cellpadding=3D"0" cellspacing=3D"0" width=3D"100%">
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td align=3D"left" style=3D"background-position: center; background-size: c=
+ontain; background-repeat: no-repeat;">
+<font e-editable=3D"textB_1" style=3D"font-family: 'HelveticaNeue', Arial, =
+Tahoma, serif; font-size: 25px; line-height: 1.25; text-align: left;"><span=
+ style=3D"color: #ffffff; font-size: 21px;">* EcoFlow=E2=80=99s 7=E2=80=91D=
+ay Installation Service is calculated in business days, applies only in maj=
+or metropolitan areas=E2=80=94including Atlanta, Baltimore, Chicago, Dallas=
+, Denver, Detroit, Houston, Las Vegas, Los Angeles, Miami, Minneapolis, New=
+ York City, Orlando, Philadelphia, Phoenix, Portland, Salt Lake City, San D=
+iego, San Francisco, San Jose, Seattle, Tampa, and Washington, D.C.=E2=80=
+=94and covers the period starting after (i) the installation service has be=
+en purchased and (ii) the later of the product delivery date or the date al=
+l required permits/approvals have been obtained, until the completion of th=
+e product=E2=80=99s on=E2=80=91site installation. The 7=E2=80=91day period =
+does not include delays beyond EcoFlow=E2=80=99s control, including but not=
+ limited to: The customer=E2=80=99s failure to confirm the installation dat=
+e within 2 business days; Customer=E2=80=91requested rescheduling; Non=E2=
+=80=91compliant or unsafe wiring conditions on site; Weather conditions; Ad=
+ditional permitting processes or inspections; Force majeure events.</span><=
+/font>
+</td>
+</tr>
+</table>
+</td>
+<td width=3D"30" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+</tr>
+</table>
+</td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td height=3D"30" style=3D"background-position: center; background-size: co=
+ntain; background-repeat: no-repeat;"></td>
+</tr>
+</table>
+</td>
+</tr> <tr e-block-id=3D"64c8d17a61e408166f000012" style=3D"background-posit=
+ion: center; background-size: contain; background-repeat: no-repeat;">
+<td bgcolor=3D"#202b45" align=3D"center" style=3D"background-position: cent=
+er; background-size: contain; background-repeat: no-repeat;">
+<table cellspacing=3D"0" cellpadding=3D"0" class=3D"comt">
+<tr height=3D"30" style=3D"background-position: center; background-size: co=
+ntain; background-repeat: no-repeat;"><td style=3D"background-position: cen=
+ter; background-size: contain; background-repeat: no-repeat;"></td></tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td width=3D"40" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+<td class=3D"mwn vam" style=3D"background-position: center; background-size=
+: contain; background-repeat: no-repeat;"><a href=3D"https://media.ecoflow.=
+com/u/nrd.php?p=3DkRpE0rENPs_17289_2784479_1_13&ems_l=3D3814265&i=3D1&d=3DM=
+TcxNjkwMzYx%7Ca1JwRTByRU5Qcw%3D%3D%7CYzA3YjJlMjE1ODJjOGUxYzE%3D%7C&_esuh=3D=
+_11_f5af06f47afeea11c8b282812df599dbd417466d7b04f82058755d77e9db04d0" targe=
+t=3D"_blank" style=3D"text-decoration: none; font-weight: normal; color: #0=
+00000;"><img src=3D"https://media.ecoflow.com/custloads/555-123-4567/md_30729=
+.png" height=3D"30" border=3D"0" style=3D"display:block;" alt=3D"Icon1"></a=
+></td>
+<td width=3D"40" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+<td class=3D"mwn vam" style=3D"background-position: center; background-size=
+: contain; background-repeat: no-repeat;"><a href=3D"https://media.ecoflow.=
+com/u/nrd.php?p=3DkRpE0rENPs_17289_2784479_1_15&ems_l=3D3814265&i=3D1&d=3DM=
+TcxNjkwMzYz%7Ca1JwRTByRU5Qcw%3D%3D%7CYzA3YjJlMjE1ODJjOGUxYzE%3D%7C&_esuh=3D=
+_11_3987b781742078ee64213ce5eae224f4c2ec04a1922a3c305f801d5fd5a4aee2" targe=
+t=3D"_blank" style=3D"text-decoration: none; font-weight: normal; color: #0=
+00000;"><img src=3D"https://media.ecoflow.com/custloads/555-123-4567/md_30735=
+.png" height=3D"30" border=3D"0" style=3D"display:block;" alt=3D"Icon2"></a=
+></td>
+<td width=3D"40" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+<td class=3D"mwn vam" style=3D"background-position: center; background-size=
+: contain; background-repeat: no-repeat;"><a href=3D"https://media.ecoflow.=
+com/u/nrd.php?p=3DkRpE0rENPs_17289_2784479_1_17&ems_l=3D3814265&i=3D1&d=3DM=
+TcxNjkwMzY1%7Ca1JwRTByRU5Qcw%3D%3D%7CYzA3YjJlMjE1ODJjOGUxYzE%3D%7C&_esuh=3D=
+_11_2dfaa6460ccc05cfe8102caf910c3162433c9b2c0b2b4d92c1cbbb5de427d5d4" targe=
+t=3D"_blank" style=3D"text-decoration: none; font-weight: normal; color: #0=
+00000;"><img src=3D"https://media.ecoflow.com/custloads/555-123-4567/md_30734=
+.png" height=3D"30" border=3D"0" style=3D"display:block;" alt=3D"Icon3"></a=
+></td>
+<td width=3D"40" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+<td class=3D"mwn vam" style=3D"background-position: center; background-size=
+: contain; background-repeat: no-repeat;"><a href=3D"https://media.ecoflow.=
+com/u/nrd.php?p=3DkRpE0rENPs_17289_2784479_1_19&ems_l=3D3814265&i=3D1&d=3DM=
+TcxNjkwMzY3%7Ca1JwRTByRU5Qcw%3D%3D%7CYzA3YjJlMjE1ODJjOGUxYzE%3D%7C&_esuh=3D=
+_11_e54533a65cbf116585a3aad365525a5a6e97f4028e8770c69a2f9761b20ecd5e" targe=
+t=3D"_blank" style=3D"text-decoration: none; font-weight: normal; color: #0=
+00000;"><img src=3D"https://media.ecoflow.com/custloads/555-123-4567/md_30733=
+.png" height=3D"30" border=3D"0" style=3D"display:block;" alt=3D"Icon4"></a=
+></td>
+<td width=3D"40" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+<td class=3D"mwn vam" style=3D"background-position: center; background-size=
+: contain; background-repeat: no-repeat;"><a href=3D"https://media.ecoflow.=
+com/u/nrd.php?p=3DkRpE0rENPs_17289_2784479_1_21&ems_l=3D3814265&i=3D1&d=3DM=
+TcxNjkwMzY5%7Ca1JwRTByRU5Qcw%3D%3D%7CYzA3YjJlMjE1ODJjOGUxYzE%3D%7C&_esuh=3D=
+_11_7cc4b48a9a3ef73f182f9354c2836121cef1adb69686b28b350a8e8181f9b7ce" targe=
+t=3D"_blank" style=3D"text-decoration: none; font-weight: normal; color: #0=
+00000;"><img src=3D"https://media.ecoflow.com/custloads/555-123-4567/md_30732=
+.png" height=3D"30" border=3D"0" style=3D"display:block;" alt=3D"Icon5"></a=
+></td>
+<td width=3D"40" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+</tr>
+<tr height=3D"30" style=3D"background-position: center; background-size: co=
+ntain; background-repeat: no-repeat;"><td style=3D"background-position: cen=
+ter; background-size: contain; background-repeat: no-repeat;"></td></tr>
+</table>
+</td>
+</tr> <tr e-block-id=3D"64c8d18c61e408166f000013" style=3D"background-posit=
+ion: center; background-size: contain; background-repeat: no-repeat;">
+<td bgcolor=3D"#202b45" style=3D"background-position: center; background-si=
+ze: contain; background-repeat: no-repeat; min-width: 600px;">
+<table class=3D"footer-table" cellspacing=3D"0" cellpadding=3D"0" width=3D"=
+100%">
+<tr height=3D"30" style=3D"background-position: center; background-size: co=
+ntain; background-repeat: no-repeat;">
+<td style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;"></td>
+<td style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;"></td>
+<td style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;"></td>
+</tr>
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td width=3D"25" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+<td style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<table cellspacing=3D"0" cellpadding=3D"0" width=3D"100%">
+<tr style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;">
+<td align=3D"center" class style=3D"background-position: center; background=
+-size: contain; background-repeat: no-repeat;">
+<font class=3D"footer grey" style=3D"color: #717171; font-family: 'Helvetic=
+aNeue', Arial, Tahoma, serif; font-size: 16px;">
+<a e-editable=3D"community_link" href=3D"https://media.ecoflow.com/u/nrd.ph=
+p?p=3DkRpE0rENPs_17289_2784479_1_23&ems_l=3D3814265&i=3D1&d=3DMTcxNjkwMzcx%=
+7Ca1JwRTByRU5Qcw%3D%3D%7CYzA3YjJlMjE1ODJjOGUxYzE%3D%7C&_esuh=3D_11_7f3c4279=
+9c2ea3e5b6e3b9d9e6fbf9bc1f7dcb7edb8363f8704f4297547229d0" target=3D"_blank"=
+ class=3D"tlink footer-link" style=3D"font-weight: normal; text-decoration:=
+ none; border-bottom: 1px solid; color: #2755CC; border-color: #2755CC; fon=
+t-family: 'HelveticaNeue', Arial, Tahoma, serif;">Join our Facebook communi=
+ty</a><br>
+for insider access to product updates and technical tips.<br><br>
+No longer want to receive these emails?<br>
+<a href=3D"https://media.ecoflow.com/u/un.php?par=3DkRpE0rENPs_2784479_1728=
+9_$sid$&_esuh=3D_11_3b4966eb7d526a5352669aa2768f5fc42a42ff345acaafa10ec1f76=
+619b94624" target=3D"_blank" class=3D"tlink footer-link" style=3D"font-weig=
+ht: normal; text-decoration: none; border-bottom: 1px solid; color: #2755CC=
+; border-color: #2755CC; font-family: 'HelveticaNeue', Arial, Tahoma, serif=
+;">Unsubscribe</a><br>
+EcoFlow 200 CONTINENTAL DRIVE SUITE 401,
+OFFICE 434 NEWARK, Delaware 19713
+</font>
+</td>
+</tr>
+</table>
+</td>
+<td width=3D"25" style=3D"background-position: center; background-size: con=
+tain; background-repeat: no-repeat;"></td>
+</tr>
+<tr height=3D"30" style=3D"background-position: center; background-size: co=
+ntain; background-repeat: no-repeat;">
+<td style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;"></td>
+<td style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;"></td>
+<td style=3D"background-position: center; background-size: contain; backgro=
+und-repeat: no-repeat;"></td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+<div style=3D"display:none; white-space:nowrap; font:15px courier; line-hei=
+ght:0;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbs=
+p; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &n=
+bsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</div>
+<img src=3D"https://media.ecoflow.com/mo/kRpE0rENPs_1049983726_2784479_1728=
+9_3814265.gif" height=3D"2" width=3D"2" border=3D"0" alt=3D"" aria-hidden=
+=3D"true"></body>
+</html>
+----=_---NextPart--=_-n8eorcu6p6--
+

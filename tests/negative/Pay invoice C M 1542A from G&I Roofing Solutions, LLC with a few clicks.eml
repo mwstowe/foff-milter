@@ -1,0 +1,341 @@
+Return-Path: <gandiroofingsolutions@gmail.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTPS id 5BC1Hxnx099655
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <user@example.com>; Fri, 12 Dec 2025 01:17:59 GMT
+	(envelope-from gandiroofingsolutions@gmail.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b=SYD4lMSX
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 5BC1Hwe0207085
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=OK)
+	for <user@example.com>; Thu, 11 Dec 2025 19:17:58 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 5BC1Hwe0207085
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=SYD4lMSX
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-298145fe27eso10368375ad.1
+        for <user@example.com>; Thu, 11 Dec 2025 17:17:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=555-123-4567; x=555-123-4567; darn=baddomain.com;
+        h=to:subject:message-id:date:mime-version:from:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=SF8oNNQLmhI+KXXROroENAs6DbO1LplkhPky3mMFo/Q=;
+        b=SYD4lMSXq3z4Th/KeltjyXPfc3CVoi9s/Xg1sWAUIeIrf68G2ouimV/Xod3ZM5c6KL
+         jUzfXyKyxw8CCFowRnnAZZYG9TBzBUhATdpKxOHwAdRxyQMMwVg4db0euHPS60VwK7gO
+         wcTe4pCkzrLJ7LU+eJaNWb8XQ/9YcK3XkkO3CJuNGMiKRwe8LdTyX4Xkp5qAbWoJUy5c
+         gLTNPBu3ZPQZ58H8echAGm0MYpxqrSQDEy6EHXcHNGx5BzQOkzgpjKAwVPJDqIWhM4pr
+         KzGvdpjTi9vjDFIf0woggzQLnYwz1J268ZH8s5Dr9z+XTDry/Lst4jl96CFxKODTjF3x
+         hbcA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=555-123-4567; x=555-123-4567;
+        h=to:subject:message-id:date:mime-version:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SF8oNNQLmhI+KXXROroENAs6DbO1LplkhPky3mMFo/Q=;
+        b=DwwuTF7/zOTJx/pdHDDwHT6DuXaf53NSy3J4VDu3S6xG0xsspoLRA39CfBTtzJCQ3S
+         DUXpabDb8U5KVkIXsK1NdhxS9IGpsAjGpnj9UhyFQAzHlAdUQyNrnXgGWiIrCQtS5/3p
+         RXt77xD6mhsBYGCCSFf6M0a27Fxs1bbpCZStmaVJI9TwvO1iAaFyvv050XNtPW4uTgi/
+         KrjK7C0IMo5CexgePL43kDQ7Nxr4AiFidqxNg8NbVYVUMelUZTpdDlJrFdxDgCmzq/vS
+         vvX6Tsdl5K2tKiHW9DJiyDI7i9B5KfjIx4ncFXR3LaAenSnDXxIxZXJKq5DPBCgtjyn2
+         fKzw==
+X-Gm-Message-State: AOJu0Yzjvt8UlkyqKnb3h88eZcjrBdPqVN5knAESB4yG6BZVfSHIoc3k
+	dPi01Up0VeuPXBv7rqe/hVlIr7wqOwrdauuY3IvfkDaSeR6s779gPBCbI0TYoZjr3ZFBE/cO7zM
+	AhsVOxAXKS7vPHB/h7e03d2snkDSOUC9htg==
+X-Gm-Gg: AY/fxX6u/pIFdI1FtroXL+FbCfMhVx797CDERUzYbdSWnaSSHTc6tCzgIFcQpsQVNZd
+	WisjsdxjfWOvqF1fZnluKIlNZQKiXxYEo4yqmmkOZtO3hh/n3d/yDVYaiSxZ/Fg4i73VnBN/jhe
+	MVO+MJIczV3diVl6IAeIu8v1D6f17N+269MpGBqoCj2aHQ0bhzpJ+CYq1sQFCagUYclmw5I1I4P
+	YxKH5AXwlkPgDxW5cX89+6Ez7kAV/eMj+/NjiGUn9JAgZdpAxiulQsQZ2xKRxWpEE4PN1U=
+X-Google-Smtp-Source: AGHT+IGxj0yYjGVM0QjISKvGaRAOrCa+vasRaaQgGAe5JlLelZRt5imB8Ko7MXQ5d05tAKQNf9COsZmF0/BSD3BRvLQ=
+X-Received: by 2002:a17:902:cec8:b0:295:592f:94a3 with SMTP id
+ d9443c01a7336-29f23cc5430mr5077905ad.48.1765502277385; Thu, 11 Dec 2025
+ 17:17:57 -0800 (PST)
+Received: from 625164676082 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 11 Dec 2025 19:17:57 -0600
+Received: from 625164676082 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 11 Dec 2025 19:17:57 -0600
+From: "G&I Roofing Solutions, LLC" <gandiroofingsolutions@gmail.com>
+MIME-Version: 1.0
+Date: Thu, 11 Dec 2025 19:17:57 -0600
+X-Gm-Features: AQt7F2p-ampvT596b81Up8usKOfdupzTw3ywRm0Phl2wsdhX9UG0G0wPromaD04
+Message-ID: <CAD4s-T09v9PW2qx+25zRgX1ax2YEC5E+0cOiJBjSqVsbnBnoGA@mail.gmail.com>
+Subject: Pay invoice C M 1542A from G&I Roofing Solutions, LLC with a few clicks
+To: user@example.com
+Content-Type: multipart/alternative; boundary="0000000000001802630645b708c5"
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Fri, 12 Dec 2025 01:18:00 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Thu, 11 Dec 2025 19:17:58 -0600 (CST)
+X-Spam-Flag: YES
+
+--0000000000001802630645b708c5
+Content-Type: text/plain; charset="UTF-8"
+
+ QuickBooks
+
+
+Your invoice is ready!
+BALANCE DUE$549.79
+View and pay
+<https://connect.intuit.com/portal/app/CommerceNetwork/view/scs-v1-72aaac9e691b48469a04c04e243c402bc825539c3ea84cfba67e0113269c69a1cf8dcf0ab88e416f90214a381b0eec38?cta=viewinvoicenow&locale=en_US&grw=email_pay_button_t2>
+
+Thank you for your business! We take Credit cards, Bank transfers, Venmo,
+Apple Pay, and checks can be mailed to 421 105th st SW Everett WA 98204 We
+appreciate your business and look forward to helping you again.
+------------------------------
+
+Dear John Stowe,
+
+Here's your invoice! We appreciate your prompt payment.
+
+Thanks for your business!
+G&I Roofing Solutions Llc
+G&I Roofing Solutions, LLC
+Everett, WA 98204
++14252806287
+gandiroofingsolutions@gmail.com
+www.gandiroofingsolutions.com
+If you receive an email that seems fraudulent, please check with the
+business owner before paying.
+<https://search2.quickbooksonline.com/try-quickbooks?cid=tmail_us_qbp_snt-inv-footer>
+Intuit, Inc. All rights reserved.
+Privacy <https://security.intuit.com/privacy/> | Security
+<http://security.intuit.com> | Terms of Service
+<https://connect.intuit.com/payor-terms-of-service/en_US>
+
+--0000000000001802630645b708c5
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+
+<html>
+    <head>
+        <meta charset=3D"UTF-8">
+        <meta name=3D"viewport" content=3D"width=3Ddevice-width, initial-sc=
+ale=3D1.0">
+        <meta http-equiv=3D"X-UA-Compatible" content=3D"ie=3Dedge">
+        <title>QuickBooks</title>
+        <style media=3D"print">body {-webkit-print-color-adjust: exact; col=
+or-adjust: exact} </style>
+       =20
+       =20
+        <style>
+            /** for iPhone */
+            @media only screen and (min-device-width : 320px) and (max-devi=
+ce-width: 767px) {
+                .rfc-container .billToSection .billToHeader, .rfc-container=
+ .billToSection .billToContent {
+                    width: 100% !important;
+                    display: inline-block !important;
+                }
+                .rfc-container .billToSection .billToHeader > div, .rfc-con=
+tainer .billToSection .billToContent > div {
+                    width: 100% !important;
+                }
+                .rfc-container .shippingSection .shippingHeader, .rfc-conta=
+iner .shippingSection .shippingContent {
+                    width: 100% !important;
+                    display: inline-block !important;
+                }
+                .rfc-container .shippingSection .shippingHeader > div, .rrf=
+c-container .shippingSection .shippingContent > div {
+                    width: 100% !important;
+                }
+                .rfc-container .custom-fields-container .customFieldTitle, =
+.rfc-container .custom-fields-container .customFieldText {
+                    width: 100% !important;
+                    display: inline-block !important;
+                }
+                .rfc-container .custom-fields-container .customFieldTitle >=
+ div, .rfc-container .custom-fields-container .customFieldText > div {
+                    width: 100% !important;
+                }
+                .rfc-container .custom-fields-container .customFieldText {
+                    padding: 0px 0px !important;
+                }
+                .rfc-container .custom-fields-container .customFieldTitle {
+                    padding: 20px 0px 5px 0px !important;
+                }
+                .rfc-container .custom-fields-container .customSection:firs=
+t-child .customFieldTitle{
+                    padding: 10px 0px 5px 0px !important;
+                }
+                .rfc-container .billToSection .billToContent {
+                    padding: 0px 0px !important;
+                }
+                .rfc-container .billToSection .billToHeader {
+                    padding: 10px 0px 5px 0px !important;
+                }
+                .rfc-container .shippingSection .shippingContent {
+                    padding: 0px 0px !important;
+                }
+                .rfc-container .shippingSection .shippingHeader {
+                    padding: 10px 0px 5px 0px !important;
+                }
+                .shippingAndCustomLayout .outerWrapper {
+                    padding: 10px 0px !important;
+                }
+                .rfc-container .shippingSection .outerWrapper {
+                    padding: 10px 0px 20px 0px !important;
+                }
+                .rfc-container .subTotalContainer {
+                    padding: 30px 20px 20px 20px !important;
+                }
+                .rfc-container .totalSummaryLeft{
+                    padding: 0px 20px 10px 0px !important;
+                }
+                .rfc-container .totalSummaryRight{
+                    padding: 0px 0px 10px 0px !important;
+                }
+                .rfc-container .subTotalContainer .subTotalSection {
+                    width: 100% !important;
+                }
+                .rfc-container .messageSection, .rfc-container .footerSecti=
+on, .rfc-container .companyAddrSection{
+                    padding: 20px 20px !important;
+                }
+                .rfc-container .detail-section-container {
+                    padding: 30px 20px !important;
+                }
+                .rfc-container .detail-section-container .title-and-amount =
+.itemTitleTd {
+                    width: 50% !important;
+                }
+                .rfc-container .acctSummaryContainer {
+                    padding: 30px 20px 20px 20px !important;=20
+                }
+                .rfc-container .estimateSummryContainer{
+                    padding: 10px 20px 20px 20px !important;=20
+                }
+                .rfc-container .billToSection,.rfc-container .shippingSecti=
+on {
+                    padding: 10px 20px 10px 20px !important;
+                }
+                .rfc-container .customFieldsSection {
+                    padding: 10px 20px 20px 20px !important;
+                }
+                .rfc-container .contentLeft, .rfc-container .contentRight {
+                    display: none !important;
+                }
+                .rfc-container .contentCenterTd {
+                    width: 100% !important;
+                }
+                .rfc-container .detailSection .itemDetails td{
+                    padding: 0px 10px 0px 0px !important;
+                }
+            }
+            /** for iPad */
+            /* @media only screen and (min-device-width : 768px){
+               =20
+            } */
+        </style>       =20
+    </head>
+    <body id=3D"mainContainer">
+        <div id=3D"main">
+            <div><div id=3D"mainContainer" class=3D"rfc-container rfc-email=
+-flow" style=3D"font-family:ArialMT,Arial,Helvetica,Times New Roman;color:#=
+393a3d;padding-top:20px"><table class=3D"ltr" width=3D"100%" cellpadding=3D=
+"0" cellspacing=3D"0" border=3D"0" style=3D"font-family:ArialMT,Arial,Helve=
+tica,Times New Roman;color:#393a3d"><tbody><tr><td class=3D"contentLeft" st=
+yle=3D"font-size:0px">=C2=A0</td><td width=3D"768" align=3D"center" class=
+=3D"contentCenterTd"><table class=3D"width100 mainContentTable" cellpadding=
+=3D"0" cellspacing=3D"0" border=3D"0" style=3D"font-family:ArialMT,Arial,He=
+lvetica,Times New Roman;color:#393a3d;width:100%;table-layout:fixed"><tbody=
+><tr><td><div class=3D"logo-section content-section" style=3D"max-height:15=
+0px;margin-left:auto;margin-right:auto;text-align:center"><img class=3D"log=
+oImage" src=3D"https://ips-logos-cdn.ips.sbg.a.intuit.com/48af126e-b2f0-440=
+f-8bb6-b043fbea305c_template.jpeg" style=3D"display: block; margin-left: au=
+to; margin-right: auto; max-height: 150px; max-width: 320px; padding-top: 1=
+0px;"></div><div class=3D"condensedHeaderSection" style=3D"margin-top:1.333=
+333333em;font-size:1.5em;font-weight:bold;font-style:normal;line-height:2em=
+;text-align:center;background-color:#ccd9e3;width:100%"><p style=3D"color:#=
+393a3d;margin-bottom:0em;padding-top:30px">Your invoice is ready!</p></div>=
+<div style=3D"background-color:#ccd9e3;width:100%;padding-top:24px"><div cl=
+ass=3D"depositSection" style=3D"padding-top:20px;text-align:center;padding-=
+bottom:30px"><span class=3D"depositDueLabel" style=3D"display:block;font-si=
+ze:12px;text-align:center;margin-bottom:6px">BALANCE DUE</span><span class=
+=3D"depositDueValue payable" style=3D"display:block;font-size:36px;text-ali=
+gn:center;color:#393a3d;padding-bottom:6px">$549.79</span></div></div><tabl=
+e class=3D"pay-button-section content-section isEmail payable" style=3D"fon=
+t-family:ArialMT,Arial,Helvetica,Times New Roman;color:#393a3d;margin-right=
+:20px;margin-top:47px;text-align:center;margin-bottom:20px;margin:auto;widt=
+h:100%;padding:10px 0;background-color:transparent;border-bottom:0;padding-=
+bottom:20px;padding-top:24px"><tbody><tr><td><a href=3D"https://connect.int=
+uit.com/portal/app/CommerceNetwork/view/scs-v1-72aaac9e691b48469a04c04e243c=
+402bc825539c3ea84cfba67e0113269c69a1cf8dcf0ab88e416f90214a381b0eec38?cta=3D=
+viewinvoicenow&amp;locale=3Den_US&amp;grw=3Demail_pay_button_t2" class=3D"p=
+ayBtn" style=3D"text-align:center;width:217px;height:48px;border-radius:48p=
+x;font-size:16px;line-height:44px;display:inline-block;background-color:#00=
+892e;color:#ffffff;font-weight:bold;text-decoration:none" target=3D"_blank"=
+>View and pay</a></td></tr></tbody></table><div class=3D"pay-section conten=
+t-section payable" style=3D"text-align:center;margin-right:0;margin-bottom:=
+0;padding-bottom:19px;padding-right:10px;padding-left:10px"><div class=3D"i=
+mages" style=3D"display:inline-flex;height:30px"><div class=3D"with-separat=
+or" style=3D"border-right:1px solid #e3e5e8;padding-right:3px;margin-right:=
+3px"><img src=3D"https://static.cns-icn-prod.a.intuit.com/payment_methods/a=
+pple_pay.png" style=3D"height: 30px; padding: 0 2px;"><img src=3D"https://s=
+tatic.cns-icn-prod.a.intuit.com/payment_methods/visa.png" style=3D"height: =
+30px; padding: 0 2px;"><img src=3D"https://static.cns-icn-prod.a.intuit.com=
+/payment_methods/mc.png" style=3D"height: 30px; padding: 0 2px;"><img src=
+=3D"https://static.cns-icn-prod.a.intuit.com/payment_methods/discover.png" =
+style=3D"height: 30px; padding: 0 2px;"><img src=3D"https://static.cns-icn-=
+prod.a.intuit.com/payment_methods/amex.png" style=3D"height: 30px; padding:=
+ 0 2px;"></div><img class src=3D"https://static.cns-icn-prod.a.intuit.com/p=
+ayment_methods/bank.png" style=3D"height: 30px; padding: 0 2px;"></div><p c=
+lass=3D"payment-message" style=3D"line-height:1.5em;font-size:16px;display:=
+block;clear:both;padding-top:24px;padding-bottom:30px;margin:0px;white-spac=
+e:pre-line">Thank you for your business!
+We take Credit cards, Bank transfers, Venmo, Apple Pay, and checks can be m=
+ailed to=20
+421 105th st SW Everett WA 98204
+We appreciate your business and look forward to helping you again.</p><hr s=
+tyle=3D"border:none;border-top:1px solid #babec5;margin:10px 0"></div><div =
+id=3D"emailContainer" class=3D"emailContainer" style=3D"font-size:18px;line=
+-height:1.5;text-align:left;margin-left:20px;padding-left:20px;padding-righ=
+t:20px;padding-bottom:24px"><p>Dear John Stowe,<br><br>Here&#39;s your inv=
+oice! We appreciate your prompt payment.<br><br>Thanks for your business!<b=
+r>G&amp;I Roofing Solutions Llc</p></div><table class=3D"companyAddrSection=
+ width100" cellpadding=3D"0" cellspacing=3D"0" border=3D"0" style=3D"font-f=
+amily:ArialMT,Arial,Helvetica,Times New Roman;color:#393a3d;width:100%;padd=
+ing:10px 40px 25px 40px;border-top:none;background-color:#ccd9e3"><tbody><t=
+r><td><div><div class=3D"companyDetails" style=3D"font-size:15px;text-align=
+:center;color:#6b6c72;margin-top:15px">G&amp;I Roofing Solutions, LLC</div>=
+<div><div class=3D"companyDetails" style=3D"font-size:15px;text-align:cente=
+r;color:#6b6c72;margin-top:15px">Everett, WA  98204</div></div><div class=
+=3D"additionalDetailsContainer" style=3D"text-align:center"><div class=3D"c=
+ompanyDetails additionalDetails" style=3D"font-size:15px;text-align:center;=
+color:#6b6c72;margin-top:15px;display:inline-block;margin-left:10px;margin-=
+right:10px">+14252806287</div><div class=3D"companyDetails additionalDetail=
+s" style=3D"font-size:15px;text-align:center;color:#6b6c72;margin-top:15px;=
+display:inline-block;margin-left:10px;margin-right:10px"><a href=3D"mailto:=
+gandiroofingsolutions@gmail.com">gandiroofingsolutions@gmail.com</a></div><=
+div class=3D"companyDetails additionalDetails" style=3D"font-size:15px;text=
+-align:center;color:#6b6c72;margin-top:15px;display:inline-block;margin-lef=
+t:10px;margin-right:10px"><a href=3D"http://www.gandiroofingsolutions.com">=
+www.gandiroofingsolutions.com</a></div></div></div></td></tr></tbody></tabl=
+e><table class=3D"spoofMsgContainer" style=3D"font-family:ArialMT,Arial,Hel=
+vetica,Times New Roman;color:#393a3d;border-top:none"><tbody><tr><td class=
+=3D"spoofMsg" style=3D"padding:27px 0px 5px 0px;font-size:15px;color:#6b6c7=
+2;text-decoration:none"><div><span>If you receive an email that seems fraud=
+ulent, please check with the business owner before paying.</span></div></td=
+></tr></tbody></table><div><div class=3D"qbLogoSection" style=3D"width:100%=
+;text-align:center;padding-top:30px;padding-bottom:20px;display:block;borde=
+r:0"><a href=3D"https://search2.quickbooksonline.com/try-quickbooks?cid=3Dt=
+mail_us_qbp_snt-inv-footer" target=3D"_blank"><img width=3D"147" height=3D"=
+40" style=3D"height:40px;max-height:40px;max-width:147px" src=3D"https://pl=
+ugin-qbo.intuit.com/brand/1.1.9/product-specific-brand/assets/quickbooks-pa=
+yments/logos/qbeinvoiceemail.png"></a></div><div style=3D"height:10px"></di=
+v><div class=3D"tosSection-container" style=3D"text-align:center"><div clas=
+s=3D"tosSection" style=3D"font-size:15px;text-align:center;color:#6b6c72;di=
+splay:inline-block;margin:10px">Intuit, Inc. All rights reserved.</div><div=
+ class=3D"tosSection" style=3D"font-size:15px;text-align:center;color:#6b6c=
+72;display:inline-block;margin:10px"><a href=3D"https://security.intuit.com=
+/privacy/">Privacy</a> | <a href=3D"http://security.intuit.com">Security</a=
+> | <a href=3D"https://connect.intuit.com/payor-terms-of-service/en_US">Ter=
+ms of Service</a></div></div></div></td></tr></tbody></table></td><td class=
+=3D"contentRight" style=3D"font-size:0px">=C2=A0</td></tr></tbody></table><=
+img height=3D"1" width=3D"1" class=3D"pixel-img" src=3D"https://connect.int=
+uit.com/icnportal-server/rest/invoice/viewed/scs-v1-72aaac9e691b48469a04c04=
+e243c402bc825539c3ea84cfba67e0113269c69a1cf8dcf0ab88e416f90214a381b0eec38" =
+alt style=3D"display:none;visibility:hidden"></div></div>        </div>
+    </body>
+</html>
+
+--0000000000001802630645b708c5--
+

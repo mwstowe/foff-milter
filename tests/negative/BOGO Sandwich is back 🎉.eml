@@ -1,0 +1,1006 @@
+Return-Path: <bounce-26_HTML-195821343-116134-100039504-22129@bounce.emails.arbys.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTPS id 5BCGDSML034283
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <user@example.com>; Fri, 12 Dec 2025 16:13:28 GMT
+	(envelope-from bounce-26_HTML-195821343-116134-100039504-22129@bounce.emails.arbys.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (2048-bit key; unprotected) header.d=emails.arbys.com header.i=arbys@emails.arbys.com header.b=TQgJ+RHe;
+	dkim=pass (2048-bit key; unprotected) header.d=s10.y.mc.salesforce.com header.i=@s10.y.mc.salesforce.com header.b=RmApmvLC
+Received: from mta.emails.arbys.com (mta.emails.arbys.com [13.111.143.43])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 5BCGDQ0p224080
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO)
+	for <user@example.com>; Fri, 12 Dec 2025 10:13:27 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 5BCGDQ0p224080
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (2048-bit key, unprotected) header.d=emails.arbys.com header.i=arbys@emails.arbys.com header.a=rsa-sha256 header.s=10dkim1 header.b=TQgJ+RHe;
+	dkim=pass (2048-bit key, unprotected) header.d=s10.y.mc.salesforce.com header.i=@s10.y.mc.salesforce.com header.a=rsa-sha256 header.s=fbldkim10 header.b=RmApmvLC
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=10dkim1; d=emails.arbys.com;
+ h=From:To:Subject:Date:List-Unsubscribe:List-Unsubscribe-Post:MIME-Version:
+ Reply-To:Message-ID:Content-Type:Content-Transfer-Encoding;
+ i=arbys@emails.arbys.com;
+ bh=B0eUq4hFgUWJqrQruHFj0p3y5MTW5pPyVyalYEHP3Uw=;
+ b=TQgJ+RHezWnlIg+zME6eSIDTOtdY1GJV0288m/jqKuz2ueuLuFT4Lq3rcJ/dslBLNxpZzxRkD0aW
+   YBJBO513ott0l7+3EBq0xtZLqWiztaxY6o+xojFNgPkOnrnzevw5AuNRKwmLoF9BwhiKluP3gvwQ
+   0lKjBASDhGmerPwIljol7BCoGJGgrNIftBFpU6hWv9F0sBQ+QPbWGvWhbYjeKsjXC2mdOEWg4uuj
+   bxMygVIRgGocSqzi0XKqPYRA5DopkiyaWOw7M80F8ICup3tcbF1XnLnEZu3gbbjYd47/sRu5QibG
+   BDV84lwSppYzwVQaBrs/g0Fp85359iPz0HOWWQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=fbldkim10; d=s10.y.mc.salesforce.com;
+ h=From:To:Subject:Date:List-Unsubscribe:MIME-Version:Reply-To:Message-ID:
+ Content-Type:Content-Transfer-Encoding;
+ bh=B0eUq4hFgUWJqrQruHFj0p3y5MTW5pPyVyalYEHP3Uw=;
+ b=RmApmvLC5xJ859TnjqrhZqSurZDupZyZSOvO8odXsgBhSx1F02u4LsKC9s+Kilv8iXTc6TCt2cwk
+   N0f/QQnUmKRvjdPeucsankIXDL6SV9O4xJi+ft4C/anvalqCv2o05PYOEHqVqNWAM9pZmsfpLJO1
+   DcomHvoIo7qajGVOyioobcy5B9WrIDJ927L7UFIaehVvL18RkpoyzrhA6SDYtRpS+0safriSUrwJ
+   df71G0pd/N/YODT9kAyH86rlxuUdYxHPgQNR2XTsmCHJOCbxVJBbAoSqc3O2Xd4IkqUrrIMXHASq
+   pwz8i5v9cwGQl3YrV+nSHS0iyceli52A6ElpHg==
+Received: by mta.emails.arbys.com id h7gvie2fmd4n for <user@example.com>; Fri, 12 Dec 2025 16:13:26 +0000 (envelope-from <bounce-26_HTML-195821343-116134-100039504-22129@bounce.emails.arbys.com>)
+From: =?UTF-8?B?QXJieeKAmXM=?=
+ <arbys@emails.arbys.com>
+To: <user@example.com>
+Subject: =?UTF-8?B?Qk9HTyBTYW5kd2ljaCBpcyBiYWNrIPCfjok=?=
+Date: Fri, 12 Dec 2025 10:13:26 -0600
+List-Unsubscribe: <https://click.emails.arbys.com/subscription_center.aspx?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtaWQiOiIxMDAwMzk1MDQiLCJzIjoiMTk1ODIxMzQzIiwibGlkIjoiMjYiLCJqIjoiMTE2MTM0IiwiamIiOiIyMjEyOSIsImQiOiIxMDAyMTgifQ.StQXBlP_9RDG5499qkDqxIrTJfp3ExdLSP3IxL5l7IY>, <mailto:leave-fd8316761a3c402029-fe2b1579706c067c761073-fecf157173650779-fe39157075640774701474-feff167274660d@leave.emails.arbys.com>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+MIME-Version: 1.0
+Reply-To: "Arby's" <reply-fecf157173650779-26_HTML-195821343-100039504-22129@emails.arbys.com>
+X-SFMC-Stack: 10
+x-job: 100039504_116134
+Message-ID: <b37acd9f-185e-495f-b888-8f0dba6e75c6@dfw1s10mta935.xt.local>
+Content-Type: text/html;
+	charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Fri, 12 Dec 2025 16:13:29 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Fri, 12 Dec 2025 10:13:27 -0600 (CST)
+X-Spam-Flag: YES
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="x-apple-disable-message-reformatting">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+  <base target="new">
+  <!--[if !mso]><!-->
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <!--<![endif]-->
+  <style type="text/css">
+    @font-face {
+      font-family: "LeagueGothic";
+      src: url("https://order.arbys.com/fonts/league-gothic.ttf") format("opentype");
+      font-weight: normal;
+      font-style: normal;
+      mso-font-alt: 'Helvetica';
+    }
+    
+    @font-face {
+    font-family: 'Arbys Sirloin';
+    src: url('https://cfarbys.qa.irb.digital/brands/arbys/fonts/ArbysSirloin-Regular.otf');
+    src: url('https://cfarbys.qa.irb.digital/brands/arbys/fonts/ArbysSirloin-Regular.ttf');
+    src: url('https://cfarbys.qa.irb.digital/brands/arbys/fonts/ArbysSirloin-Regular.woff2');
+    src: url('https://cfarbys.qa.irb.digital/brands/arbys/fonts/ArbysSirloin-Regular.woff');  
+    mso-font-alt: Arial, sans-serif;
+    mso-generic-font-family: swiss;
+}
+  
+  @font-face {
+    font-family: 'Arbys Smoked Bold';
+    src: url('https://cfarbys.qa.irb.digital/brands/arbys/fonts/ArbysSmoked-Bold.otf');
+    src: url('https://cfarbys.qa.irb.digital/brands/arbys/fonts/ArbysSmoked-Bold.ttf');
+    src: url('https://cfarbys.qa.irb.digital/brands/arbys/fonts/ArbysSmoked-Bold.woff2');
+    src: url('https://cfarbys.qa.irb.digital/brands/arbys/fonts/ArbysSmoked-Bold.woff');  
+    mso-font-alt: Arial, sans-serif;
+    mso-generic-font-family: swiss;
+}
+
+ @font-face {
+    font-family: 'Arbys Smoked';
+    src: url('https://cfarbys.qa.irb.digital/brands/arbys/fonts/ArbysSmoked-Regular.otf');
+    src: url('https://cfarbys.qa.irb.digital/brands/arbys/fonts/ArbysSmoked-Regular.ttf');
+    src: url('https://cfarbys.qa.irb.digital/brands/arbys/fonts/ArbysSmoked-Regular.woff2');
+    src: url('https://cfarbys.qa.irb.digital/brands/arbys/fonts/ArbysSmoked-Regular.woff');  
+    mso-font-alt: Arial, sans-serif;
+    mso-generic-font-family: swiss;
+}
+
+
+
+    @supports (-webkit-overflow-scrolling:touch) and (color:#ffff) {}
+
+    .ExternalClass * {
+      line-height: 112%;
+    }
+
+    .ExternalClass p,
+    .ExternalClass span,
+    .ExternalClass font,
+    .ExternalClass td {
+      line-height: 112%;
+    }
+
+    a {
+      text-decoration: underline;
+    }
+
+    table,
+    td {
+      border-collapse: collapse;
+      padding: 0px;
+      margin: 0px;
+      mso-table-lspace: 0pt;
+      mso-table-rspace: 0pt;
+    }
+
+    sup,
+    td {
+      -webkit-text-size-adjust: none;
+    }
+
+    /* Yahoo overrides */
+
+    em {
+      font-style: italic;
+    }
+
+    strong {
+      font-weight: bold;
+    }
+
+    .link {
+      color: inherit !important;
+      text-decoration: inherit !important;
+    }
+
+    th {
+      font-weight: normal
+    }
+
+    .show {
+      display: none !important;
+    }
+
+    .hideDesktop {
+      display: none !important;
+    }
+
+    /* What is does: Fix for gmail line height issue */
+    u+.body .gmlh {
+      line-height: 100% !important;
+    }
+
+    _:-webkit-full-screen,
+    _::-webkit-full-page-media,
+    _:future,
+    :root .headline {
+      font-family: LeagueGothic !important;
+      font-size: 60px !important;
+    }
+
+    _:-webkit-full-screen,
+    _::-webkit-full-page-media,
+    _:future,
+    :root .legal {
+      font-family: Roboto !important;
+      font-size: 8px !important;
+    }
+
+    _:-webkit-full-screen,
+    _::-webkit-full-page-media,
+    _:future,
+    :root .navFont {
+      font-family: LeagueGothic !important;
+      font-size: 40px !important;
+    }
+
+    _:-webkit-full-screen,
+    _::-webkit-full-page-media,
+    _:future,
+    :root .navLinks {
+      font-family: Roboto !important;
+      font-size: 17px !important;
+    }
+
+    _:-webkit-full-screen,
+    _::-webkit-full-page-media,
+    _:future,
+    :root .canspam {
+      font-family: Roboto !important;
+      font-size: 15px !important;
+    }
+
+    _:-webkit-full-screen,
+    _::-webkit-full-page-media,
+    _:future,
+    :root .CTA {
+      font-family: LeagueGothic !important;
+      font-size: 62px !important;
+      line-height: 74px !important;
+      padding: 9px 39px 9px 39px !important;
+    }
+
+    _:-webkit-full-screen,
+    _::-webkit-full-page-media,
+    _:future,
+    :root .mCTABorder {
+      font-family: LeagueGothic !important;
+      font-size: 56px !important;
+      line-height: 67px !important;
+      padding: 7px 39px 7px 39px !important;
+    }
+
+    _:-webkit-full-screen,
+    _::-webkit-full-page-media,
+    _:future,
+    :root .mCTABorderWhite {
+      font-family: LeagueGothic !important;
+      font-size: 56px !important;
+      line-height: 67px !important;
+      padding: 7px 39px 7px 39px !important;
+    }
+
+    _:-webkit-full-screen,
+    _::-webkit-full-page-media,
+    _:future,
+    :root .CMheaderText {
+      font-family: LeagueGothic !important;
+      font-size: 62px !important;
+      line-height: 74px !important;
+    }
+
+    _:-webkit-full-screen,
+    _::-webkit-full-page-media,
+    _:future,
+    :root .CMbodyText {
+      font-family: Roboto !important;
+      font-size: 24px !important;
+      line-height: 28px !important;
+      padding: 15px 83px 0 83px !important;
+    }
+
+    _:-webkit-full-screen,
+    _::-webkit-full-page-media,
+    _:future,
+    :root .FFMHeadline {
+      font-family: LeagueGothic !important;
+      font-size: 55px !important;
+      line-height: 57px !important;
+      padding: 38px 0px 0 0px !important;
+    }
+
+    _:-webkit-full-screen,
+    _::-webkit-full-page-media,
+    _:future,
+    :root .QRHeadline {
+      font-family: LeagueGothic !important;
+    }
+
+    _:-webkit-full-screen,
+    _::-webkit-full-page-media,
+    _:future,
+    :root .cardItemTitle {
+      font-family: LeagueGothic !important;
+      font-size: 35px !important;
+      line-height: 33px !important;
+    }
+
+    _:-webkit-full-screen,
+    _::-webkit-full-page-media,
+    _:future,
+    :root .cardItemLink {
+      font-family: Roboto !important;
+      font-size: 17px !important;
+      line-height: 20px !important;
+    }
+
+    _:-webkit-full-screen,
+    _::-webkit-full-page-media,
+    _:future,
+    :root .LIMHeadline {
+      font-family: LeagueGothic !important;
+      font-size: 67px !important;
+      line-height: 61px !important;
+    }
+
+    _:-webkit-full-screen,
+    _::-webkit-full-page-media,
+    _:future,
+    :root .LIMBodyText {
+      font-family: Roboto !important;
+      font-size: 24px !important;
+      line-height: 28px !important;
+    }
+
+    _:-webkit-full-screen,
+    _::-webkit-full-page-media,
+    _:future,
+    :root .LIMTextTitle {
+      font-family: LeagueGothic !important;
+      font-size: 62px !important;
+      line-height: 74px !important;
+    }
+
+    _:-webkit-full-screen,
+    _::-webkit-full-page-media,
+    _:future,
+    :root .LIMTextBody {
+      font-family: Roboto !important;
+      font-size: 24px !important;
+      line-height: 28px !important;
+    }
+
+    _:-webkit-full-screen,
+    _::-webkit-full-page-media,
+    _:future,
+    :root .terms {
+      font-family: Roboto !important;
+    }
+
+    @media only screen and (max-width: 600px) {
+
+
+      .full {
+
+        display: block;
+
+        width: 100%;
+
+      }
+
+      .center {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 50%;
+      }
+
+      .show {
+        display: block !important;
+        height: auto !important;
+        width: auto !important;
+        max-height: inherit !important;
+        max-width: inherit !important;
+        overflow: visible !important;
+        border: none !important;
+        visibility: visible !important;
+      }
+
+      .drop {
+        display: block !important;
+      }
+
+      .dropCTA {
+        display: block !important;
+        padding-right: 0px !important;
+        padding-bottom: 19px !important;
+      }
+
+      .image {
+        width: 100% !important;
+        height: auto !important;
+      }
+
+      .fullgmail {
+        width: 100% !important;
+        min-width: 100% !important;
+      }
+
+      .logo {
+        width: 38px !important;
+      }
+
+      .textCenter {
+        text-align: center !important;
+      }
+
+      .appTable {
+        padding: 15px 0 0 0 !important;
+      }
+
+      .font32 {
+        font-size: 32px !important;
+      }
+      .font22 {
+        font-size: 22px !important;
+      }
+
+      .padTop20 {
+        padding-top: 20px !important;
+      }
+
+      .pdT29 {
+        padding-top: 29px !important;
+      }
+
+      .pdR19 {
+        padding-right: 19px !important;
+      }
+
+      .pdB22 {
+        padding-bottom: 22px !important;
+      }
+
+      .pdT22 {
+        padding-top: 22px !important;
+      }
+
+      .paddingReset {
+        padding: 0 0 0 0 !important;
+      }
+
+      .pdT11 {
+        padding-top: 11px !important;
+      }
+
+      .pdB11 {
+        padding-bottom: 11px !important;
+      }
+
+      .fullWidth {
+        width: 100% !important;
+      }
+
+      .width150 {
+        width: 150px !important;
+      }
+
+      .mCTAPadding {
+        padding: 12px 15px 12px 15px !important;
+      }
+
+      .font16 {
+        font-size: 16px !important;
+      }
+
+      .headline {
+        font-size: 18px !important;
+        padding: 21px 0 0 0 !important;
+      }
+
+      .CTA {
+        padding: 12px 13px 11px 13px !important;
+        font-size: 18px !important;
+        line-height: 22px !important;
+      }
+
+      .mCTABorder {
+        padding: 9px 10px 8px 10px !important;
+        border: 3px solid #D22730 !important;
+        font-size: 18px !important;
+        line-height: 22px !important;
+      }
+
+      .mCTABorderWhite {
+        padding: 9px 10px 8px 10px !important;
+        border: 3px solid #ffffff !important;
+        font-size: 18px !important;
+        line-height: 22px !important;
+      }
+
+      .CMheaderText {
+        font-size: 17px !important;
+        line-height: 21px !important;
+        padding: 25px 19px 0 19px !important;
+      }
+
+      .CMbodyText {
+        font-size: 12px !important;
+        line-height: 14px !important;
+      }
+
+      .FFMHeadline {
+        font-size: 27px !important;
+        line-height: 28px !important;
+        padding: 22px 0px 0px 0px;
+      }
+
+      .cardItemTitle {
+        font-size: 15px !important;
+      }
+
+      .cardItemLink {
+        font-size: 15px !important;
+      }
+
+      .cardImage {
+        padding: 18px 12px 13px 12px !important;
+      }
+
+      .cardWidth {
+        width: 126px !important;
+      }
+
+      .LIMHeadline {
+        font-size: 27px !important;
+        line-height: 30px !important;
+        padding: 24px 0 0 0 !important;
+      }
+
+      .LIMBodyText {
+        font-size: 12px !important;
+        line-height: 14px !important;
+      }
+
+      .LIMOutterPad {
+        padding: 20px 0 0 19px !important;
+      }
+
+      .LIMInnerPad {
+        padding: 21px 0 21px 0 !important;
+      }
+
+      .LIMImagePad {
+        padding: 0px 0 0 19px !important;
+      }
+
+      .LIMImage {
+        width: 44px !important;
+      }
+
+      .LIMTextPad {
+        padding: 0 19px 0 11px !important;
+      }
+
+      .LIMTextWidth {
+        width: 189px !important;
+      }
+
+      .LIMTextTitle {
+        font-size: 20px !important;
+        line-height: 24px !important;
+      }
+
+      .LIMTextBody {
+        font-size: 12px !important;
+        line-height: 14px !important;
+      }
+
+      .mBrandBar {
+        width: 34px !important;
+        height: 12px !important;
+      }
+
+      .mPadding {
+        padding: 25px 0px 17px 0px !important;
+      }
+
+      .legal {
+        font-size: 8px !important;
+        padding: 15px 33px 15px 33px !important;
+      }
+
+      .FlogoPadding {
+        padding: 19px 0 16px 0 !important;
+      }
+
+      .Flogo {
+        width: 54px !important;
+      }
+
+      .navFont {
+        font-size: 14px !important;
+      }
+
+      .slogoPadding {
+        padding: 19px 0 17px 0 !important;
+      }
+
+      .socialImages {
+        width: 29px !important;
+      }
+
+      .terms {
+        padding: 10px 15px 15px 15px !important;
+      }
+
+      .navLinks {
+        font-size: 9px !important;
+      }
+
+      .canspam {
+        font-size: 10px !important;
+        padding: 7px 0 0 0 !important;
+      }
+
+      .pdB24 {
+        padding-bottom: 24px !important;
+      }
+
+      _:-webkit-full-screen,
+      _::-webkit-full-page-media,
+      _:future,
+      :root .headline {
+        font-family: LeagueGothic !important;
+        font-size: 30px !important;
+        padding: 21px 0 0 0 !important;
+      }
+
+      _:-webkit-full-screen,
+      _::-webkit-full-page-media,
+      _:future,
+      :root .legal {
+        font-family: Roboto !important;
+        font-size: 8px !important;
+        padding: 15px 33px 15px 33px !important;
+      }
+
+      _:-webkit-full-screen,
+      _::-webkit-full-page-media,
+      _:future,
+      :root .navFont {
+        font-family: LeagueGothic !important;
+        font-size: 20px !important;
+      }
+
+      _:-webkit-full-screen,
+      _::-webkit-full-page-media,
+      _:future,
+      :root .navLinks {
+        font-family: Roboto !important;
+        font-size: 9px !important;
+      }
+
+      _:-webkit-full-screen,
+      _::-webkit-full-page-media,
+      _:future,
+      :root .canspam {
+        font-family: Roboto !important;
+        font-size: 8px !important;
+        padding: 7px 0 0 0 !important;
+      }
+
+      _:-webkit-full-screen,
+      _::-webkit-full-page-media,
+      _:future,
+      :root .CTA {
+        font-family: LeagueGothic !important;
+        font-size: 31px !important;
+        line-height: 37px !important;
+        padding: 4px 19px 4px 19px !important;
+      }
+
+      _:-webkit-full-screen,
+      _::-webkit-full-page-media,
+      _:future,
+      :root .mCTABorder {
+        font-family: LeagueGothic !important;
+        font-size: 28px !important;
+        line-height: 34px !important;
+        padding: 3px 19px 3px 19px !important;
+        border: 3px solid #D22730 !important;
+      }
+
+      _:-webkit-full-screen,
+      _::-webkit-full-page-media,
+      _:future,
+      :root .mCTABorderWhite {
+        font-family: LeagueGothic !important;
+        font-size: 28px !important;
+        line-height: 34px !important;
+        padding: 3px 19px 3px 19px !important;
+        border: 3px solid #ffffff !important;
+      }
+
+      _:-webkit-full-screen,
+      _::-webkit-full-page-media,
+      _:future,
+      :root .CMheaderText {
+        font-family: LeagueGothic !important;
+        font-size: 31px !important;
+        line-height: 37px !important;
+        padding: 25px 19px 0 19px !important;
+      }
+
+      _:-webkit-full-screen,
+      _::-webkit-full-page-media,
+      _:future,
+      :root .CMbodyText {
+        font-family: Roboto !important;
+        font-size: 12px !important;
+        line-height: 14px !important;
+        padding: 7px 41px 0 41px !important;
+      }
+
+      _:-webkit-full-screen,
+      _::-webkit-full-page-media,
+      _:future,
+      :root .FFMHeadline {
+        font-family: LeagueGothic !important;
+        font-size: 35px !important;
+        line-height: 34px !important;
+        padding: 19px 0px 0 0px !important;
+      }
+
+      _:-webkit-full-screen,
+      _::-webkit-full-page-media,
+      _:future,
+      :root .cardItemTitle {
+        font-family: LeagueGothic !important;
+        font-size: 25px !important;
+        line-height: 23px !important;
+      }
+
+      _:-webkit-full-screen,
+      _::-webkit-full-page-media,
+      _:future,
+      :root .cardItemLink {
+        font-family: Roboto !important;
+        font-size: 17px !important;
+        line-height: 20px !important;
+      }
+
+      _:-webkit-full-screen,
+      _::-webkit-full-page-media,
+      _:future,
+      :root .LIMHeadline {
+        font-family: LeagueGothic !important;
+        font-size: 33px !important;
+        line-height: 30px !important;
+        padding: 24px 0 0 0 !important;
+      }
+
+      _:-webkit-full-screen,
+      _::-webkit-full-page-media,
+      _:future,
+      :root .LIMBodyText {
+        font-family: Roboto !important;
+        font-size: 12px !important;
+        line-height: 14px !important;
+      }
+
+      _:-webkit-full-screen,
+      _::-webkit-full-page-media,
+      _:future,
+      :root .LIMTextTitle {
+        font-family: LeagueGothic !important;
+        font-size: 31px !important;
+        line-height: 37px !important;
+      }
+
+      _:-webkit-full-screen,
+      _::-webkit-full-page-media,
+      _:future,
+      :root .LIMTextBody {
+        font-family: Roboto !important;
+        font-size: 12px !important;
+        line-height: 14px !important;
+      }
+
+      _:-webkit-full-screen,
+      _::-webkit-full-page-media,
+      _:future,
+      :root .terms {
+        font-family: Roboto !important;
+        padding: 10px 15px 15px 15px !important;
+      }
+
+    }
+  </style>
+
+  <!--[if mso | ie]> <style> .sup { vertical-align: 1px !important;  font-size: 90% !important; } </style> <![endif]-->
+  <!--[if ie]> <style> .sup { vertical-align: 7px !important;  font-size: 70% !important; } </style> <![endif]-->
+  <!--[if gte mso 9]><xml>         <o:OfficeDocumentSettings>         <o:AllowPNG/>         <o:PixelsPerInch>96</o:PixelsPerInch>         </o:OfficeDocumentSettings> </xml><![endif]-->
+
+
+  <title>Arby's</title>
+</head>
+<custom type="content" name="Custom_Script" />
+<table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: transparent; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 0px; " class="stylingblock-content-wrapper camarker-inner"><table cellspacing="0" cellpadding="0" role="presentation" style="width: 100%;"><tr><td><table cellspacing="0" cellpadding="0" role="presentation" style="width: 100%;"><tr><td valign="top" class="responsive-td" style="width: 100%; padding-bottom: 0px;"><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><center>
+ 
+
+</center></td></tr></table></td></tr></table></td></tr><tr><td><table cellspacing="0" cellpadding="0" role="presentation" style="width: 100%;"><tr><td valign="top" class="responsive-td" style="width: 100%; padding-top: 0px;"></td></tr></table></td></tr></table></td></tr></table>
+
+
+<body class="body" style="margin: 0px; padding: 0px; background-color: #ffffff;"><style type="text/css">
+div.preheader 
+{ display: none !important; } 
+</style>
+<div class="preheader" style="font-size: 1px; display: none !important;">Another BOGO weekend deal is here</div>
+  <!--[if !mso]><!-->
+  <div style="width:0; overflow:hidden; float:left; display:none; max-height: 0; line-height: 0;">
+    <table width="100%" border="0" cellpadding="0" cellspacing="0">
+      <tr>
+        
+<td align="left" valign="top" style="color:#7d7d7d;font-family:Helvetica,sans-serif;font-size:12px;padding:0px 0px 0px
+ 0px;vertical-align:top;">&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
+&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;
+&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj; </td>
+      </tr>
+    </table>
+  </div>
+  <!--<![endif]-->
+  <!--Tracking Pixels-->
+  <div style="width:0; overflow:hidden; float:left; display:none; max-height: 0; line-height: 0;">
+    <img src="https://click.emails.arbys.com/open.aspx?ffcb10-fecf157173650779-fe2b16717d64067b731d72-fe39157075640774701474-ff971676-fe2b1579706c067c761073-feff167274660d&d=100218&bmt=0" width="1" height="1" alt="">
+  </div>
+  <!--[if mso]> <style type="text/css"> body, table, td, a {font-family: Helvetica, sans-serif !important;}  </style> <![endif]-->
+  <!-- Yahoo Wrapper -->
+  <!--MI Tracking Pixel-->
+  <table width="1" height="1" cellpadding="0" cellspacing="0" border="0">
+  <tr><td style="font-size:0px; line-height:0px;">
+    <img src="http://mi.arbys.com/p/up/9556f56b818764b7/o.gif?mi_u=4cb7bf5d-ee91-4d6d-90e8-3de42f1c4b2b&mi_ecmp=116134&19886" width="1" height="1" alt="" aria-hidden="true">
+  </td></tr>
+</table>
+  <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+    <tr>
+      <td align="center" style="background-color: #E3E1DB; padding:0px 0px 0px 0px;vertical-align:top;">
+        <!-- Gmail Wrapper -->
+        <table width="600" border="0" align="center" cellpadding="0" cellspacing="0" style="min-width:600px;" class="fullgmail" bgcolor="#FFFFFF">
+          <tr>
+            <td align="center" style="vertical-align: top; padding: 0px 0px 0px 0px;min-width:600px;" class="fullgmail">
+              <!-- Padding -->
+              <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td align="center" valign="top" style="padding:0px 0px 0px 0px;vertical-align:top;">
+                    <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: #E3E1DB; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 12px; " class="stylingblock-content-wrapper camarker-inner"><div style="text-align: center;">
+	<span style="font-size:10px;"><span style="font-family:Arial,Helvetica,sans-serif;">To view this email as a web page, click <a href="https://view.emails.arbys.com/?qs=035dd2661e845d5bd11f6e559dd501c68dba75e1f702eabdb6740047871f26903ad25ce94db5a9635b665f190e2ee995ad08eb2e004cc58bb786d4fc7dab84910d4152784ef4249b3d83ca1cfcf67e6c">here.</a></span></span></div></td></tr></table>
+                    <!-- Header Logo -->
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#D50032">
+                      <tr>
+                        <td align="center" valign="top" style="padding:0px 0 0px 0;">
+                          <table border="0" cellspacing="0" cellpadding="0" bgcolor="#D50032" width="100%">
+                            <tr>
+                              <td class="center" align="center" valign="middle" style="padding: 12px 0 13px 0px;">
+                                <a href="https://click.emails.arbys.com/?qs=e8908753196a7739a9cb7d49177b1f92d31133ffd4c2113b38b7af01e079753644c50299248cb081a4498b859abd993d9b397cdabf59fdace84b697ea01b99cd" target="_blank" ><img src="https://image.emails.arbys.com/lib/fe39157075640774701474/m/1/03ab153a-f0cf-4491-bbe8-166d3788a24c.png" border="0" width="102" class="logo" alt="Arbys" style="display:block;" /></a>
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    <!-- / Header Logo -->
+                    <!-- Start Main Body -->
+                    <!--DESKTOP - MOBILE-->
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                      <tr>
+                        <td align="center" valign="top">
+                         <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><table width="100%" cellspacing="0" cellpadding="0" role="presentation">
+<tr>
+  <td align="center">
+    <a href="https://click.emails.arbys.com/?qs=e8908753196a7739e109ab71b69c08049ea028318b495906458c5b75071aebac8ad1c2fedefa9f237d73a3302030ba78f6431b681076c0f551d0af82d88f3b0a">
+      <img style="display: block; padding: 0px; text-align: center; height: auto; width: 100%; border: 0px;" width="640" border="0" src="https://thevault.inspirebrands.com/transform/acba9716-e638-478a-bc83-04f59c85ceae/25_ARB_1967250_OD_October-Deal-Drop_MoEngage"></a>
+  </td>
+  </tr>
+</table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><table width="100%" cellspacing="0" cellpadding="0" role="presentation">
+<tr>
+  <td align="center">
+    <a href="https://click.emails.arbys.com/?qs=e8908753196a7739e109ab71b69c08049ea028318b495906458c5b75071aebac8ad1c2fedefa9f237d73a3302030ba78f6431b681076c0f551d0af82d88f3b0a">
+      <img style="display: block; padding: 0px; text-align: center; height: auto; width: 100%; border: 0px;" width="640" border="0" src="https://thevault.inspirebrands.com/transform/60c60715-c3b2-4fbd-a340-cebe5cd87aff/25_ARB_1967250_OD_October-Deal-Drop_Email_Body_2"></a>
+  </td>
+  </tr>
+</table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><table width="100%" cellspacing="0" cellpadding="0" role="presentation">
+<tr>
+  <td align="center">
+    <a href="https://click.emails.arbys.com/?qs=e8908753196a7739e109ab71b69c08049ea028318b495906458c5b75071aebac8ad1c2fedefa9f237d73a3302030ba78f6431b681076c0f551d0af82d88f3b0a">
+      <img style="display: block; padding: 0px; text-align: center; height: auto; width: 100%; border: 0px;" width="640" border="0" src="https://thevault.inspirebrands.com/transform/db77d9af-8991-4b64-8002-4ad884d69e93/25_ARB_1976950_OD_On-Prem-Redemption-Education_Email_Secondary"></a>
+  </td>
+  </tr>
+</table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner">
+<!--  <table width="100%" cellspacing="0" cellpadding="0" role="presentation"> <tr><td align="center"><a href="https://arbys.app.link/i4XTgnomMKb" style="display: block"><img alt="Arby's Birthday" style="display: block; padding: 0px; text-align: center; height: auto; width: 100%; border: 0px;" width="640" border="0" src="https://thevault.inspirebrands.com/transform/006d73a9-3c0f-4ecf-b6a6-6dfab2ce6b0e/SFMC_Arbys_60thBirthday_LaunchSecondary"></a></td></tr></table> --></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><center>
+
+</center></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: transparent; min-width: 100%; " class="stylingblock-content-wrapper"><tr><td style="padding: 0px; " class="stylingblock-content-wrapper camarker-inner"><table cellspacing="0" cellpadding="0" role="presentation" style="width: 100%;"><tr><td><table cellspacing="0" cellpadding="0" role="presentation" style="width: 100%;"><tr><td valign="top" class="responsive-td" style="width: 100%; padding-bottom: 0px;"><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><center>
+  
+</center></td></tr></table></td></tr></table></td></tr><tr><td><table cellspacing="0" cellpadding="0" role="presentation" style="width: 100%;"><tr><td valign="top" class="responsive-td" style="width: 100%; padding-top: 0px;"><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><center>
+
+</center></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><center>
+
+</center></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><center>
+
+</center></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><center>
+
+</center></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><center>
+
+</center></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><center>
+</center></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><center>
+
+</center></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><center>
+
+</center></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><center>
+
+</center></td></tr></table></td></tr></table></td></tr></table></td></tr></table>
+                          
+                        </td>
+                      </tr>
+                    </table>
+                    <!--/DESKTOP - MOBILE-->
+                    <!-- / Main Body -->
+                    <!-- Footer -->
+                    <table cellspacing="0" cellpadding="0" border="0" width="100%" role="presentation" bgcolor="#000000" style="border-top: 5px solid #981B32;">
+                      <!-- T&C -->
+                      <tr>
+                        <td class="terms" align="center" style="padding: 30px 30px 0px 30px;">
+                          <table cellspacing="0" cellpadding="0" border="0" width="100%" role="presentation">
+                            <tr>
+                              <td align="center" style="font-size: 11px; font-family: Helvetica, sans-serif; color: #ffffff;"><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><center><i>
+Offer expires 12/14 at participating U.S. locations for in-store/drive-thru ordering & pick-up only. Must have an active Arby's Rewards account to redeem. Tax & fees extra. Excludes modifiers. Not valid for delivery orders. May not combine with any other coupon or offer. Limit 1.&trade; &amp; &copy; 2025 Arby's IP Holder, LLC.
+</i>
+</center>
+
+</td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><center></center>
+</td></tr></table>
+                                
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                      <!-- /T&C -->
+                      <tr>
+                        <td class="FlogoPadding" align="center" style="padding: 39px 0 33px 0;">
+                          <table cellspacing="0" cellpadding="0" border="0" role="presentation">
+                            <tr>
+                              <td align="center" style="padding: 0px 0 0px 0px;"><a href="https://click.emails.arbys.com/?qs=e8908753196a7739adb406ea53fa4463cea47aa11f746cb52a07452858e8164329364f159b6dfbdd1bd5ec3e07eee3b0552a4339feb484c8eec070135dddd65b" target="_blank" ><img class="Flogo" src="https://image.emails.arbys.com/lib/fe39157075640774701474/m/1/03ab153a-f0cf-4491-bbe8-166d3788a24c.png" border="0" width="102" alt="Arbys" style="display:block;" /></a></td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align="center" style="padding: 0px 0px 0 0px;">
+                          <table cellspacing="0" cellpadding="0" border="0" role="presentation">
+                            <tr>
+                              <td class="font16" align="right" style="padding: 0 0 0 0px; color: #FFFFFF; line-height: 34px; font-size: 21px; font-family: Helvetica, sans-serif;">
+                                <a href="https://click.emails.arbys.com/?qs=e8908753196a7739006d054c0f52e97dd9185a0f1012e824514e070e76d900fb1e35c7570ca647642f82fc054e0496057c2b157c167c4d0c7893d961b34c6ab3" target="_blank"  style="color: #ffffff; text-decoration: none; display: inline-block; "><strong style="font-weight: no;">MENU</strong></a>
+                              </td>
+                              <td class="font16" align="center" style="padding: 0 0 0 20px; color: #FFFFFF; line-height: 34px; font-size: 21px; font-family: Helvetica, sans-serif;">
+                                <a href="https://click.emails.arbys.com/?qs=e8908753196a773901a6931f7bb85318943f97477dc734bcee842cbdbb48d51415e4c30bd72e526cdd9f57e3b519771dcbcd4d4513ad4097838151058392f33d" target="_blank"  style="color: #ffffff; text-decoration: none; display: inline-block;"><strong style="font-weight: bold;">CONTACT</strong></a>
+                              </td>
+                              <td class="font16" align="left" style="padding: 0 0 0 20px; color: #FFFFFF; line-height: 34px; font-size: 21px; font-family: Helvetica, sans-serif;">
+                                <a href="https://click.emails.arbys.com/?qs=e8908753196a7739cd7438f85a1da2c29bb9baf534fd287bfaf297bd242e8612d7204b9ddab4d8928abc54baa73ddc10de44ecb0db66840f89794a3bf0a1947e" target="_blank"  style="color: #ffffff; text-decoration: none; display: inline-block;"><strong style="font-weight: bold;">ABOUT</strong></a>
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="slogoPadding" align="center" style="padding: 38px 0 34px 0px;">
+                          <table cellspacing="0" cellpadding="0" border="0" role="presentation">
+                            <tr>
+                              <td align="center" style="padding: 0px 0px 0px 0px;"><a href="https://click.emails.arbys.com/?qs=e8908753196a7739484db228255987bf5edff33d80f1733a21a88818c7ad078dcd01bd2f74da5b999a569f3aedd076fc942e3db5046aafd889570a9226ade0fd" target="_blank" ><img src="http://image.emails.arbys.com/lib/fe39157075640774701474/m/1/75a8ed9b-0918-4cb4-baaa-f70715e0e15c.png" border="0" width="58" alt="Facebook" style="display:block;" class="socialImages" /></a></td>
+                              <td align="center" style="padding: 0px 0px 0px 17px;"><a href="https://click.emails.arbys.com/?qs=e8908753196a7739dc0a62ccd4789a859533ad28b1104ab6de7da9a21938468ffcbadd456f4fa84d2f8b0431bb668aea246890e209e71ebe7fc2b60be5381cdb" target="_blank" ><img src="https://image.emails.arbys.com/lib/fe39157075640774701474/m/1/627ad0cb-5fc8-437d-a101-b61d024b8c3b.png" border="0" width="42" alt="Twitter" style="display:block;" class="socialImages" /></a></td>
+                              <td align="center" style="padding: 0px 0px 0px 17px;"><a href="https://click.emails.arbys.com/?qs=e8908753196a7739f9de464e4f24a240e8a4027200dff7465bc31836d5953df289877d1c5117feae88492eca251ea14bd108017f5956b7791787a46db8777beb" target="_blank" ><img src="http://image.emails.arbys.com/lib/fe39157075640774701474/m/1/8ee01c57-b8ec-4029-a566-38bdd67cecce.png" border="0" width="58" alt="Instagram" style="display:block;" class="socialImages" /></a></td>
+                              <td align="center" style="padding: 0px 0px 0px 17px;"><a href="https://click.emails.arbys.com/?qs=e8908753196a7739b02a95690a9b321691e0ab40b396d39c499b252bdfabaef66391a84ccab86238caa9c78de1b0aa513a178ce7bc3af312fa3bade859b7b872" target="_blank" ><img src="http://image.emails.arbys.com/lib/fe39157075640774701474/m/1/c4f957b6-d8b5-4da5-aa4e-5d49ea8e13d3.png" border="0" width="58" alt="tiktok" style="display:block;" class="socialImages" /></a></td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align="center" style="padding: 0px 0px 0 0px;">
+                          <table cellspacing="0" cellpadding="0" border="0" role="presentation">
+                            <tr>
+                              <td class="navLinks" align="center" style="padding: 0 0 0 0px; color: #FFFFFF; line-height: 20px; font-size: 17px; font-family: Arial;">
+                                <a href="https://click.emails.arbys.com/?qs=e8908753196a7739dc9b9c88c395a7e5846949abfe45a513c74ed868189f5b53f59c89b69e3b76d796904fae449f0ce4ecb6e1b7f500268baeed7b9bd738aa38" target="_blank"  style="color: #ffffff; text-decoration: none; display: inline-block;">Locations</a> | <a href="https://click.emails.arbys.com/profile_center.aspx?qs=6efd412c3798f19bf8a3c7ba2a33afb3cba8f14b3753422fff94597a399436b157d4bd71f55d3210487fe614d9677d26682d88f6bc2ee1b175047e92bb546bd9249a6063e68bfe7f" target="_blank"  style="color: #ffffff; text-decoration: none; display: inline-block;">Update Preferences</a> | <a href="https://click.emails.arbys.com/subscription_center.aspx?qs=6efd412c3798f19ba798ad31855e54050aac0684e392f30152293efb44e28893d84079e7b8f2cc9b1a6f08fd4ad560eb696e7f38f6dc4fe7cc3ab607d4315f50596527cbbfcbd410" target="_blank"  style="color: #ffffff; text-decoration: none; display: inline-block;">Unsubscribe</a>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="canspam" align="center" style="padding: 15px 0 0 0px; color: #FFFFFF; line-height: 20px; font-size: 12px; font-family: Arial;">
+                                Arby's Restaurant Group, Inc <br class="hideDesktop show" /> Three Glenlake Parkway NE <br class="hideDesktop show" /> Atlanta, GA, 30328, US
+                              </td>
+                            </tr>
+                          </table>
+                          <br>
+                         
+                        </td>
+                      </tr>
+                    </table>
+                    <!-- / Footer -->
+                  </td>
+                </tr>
+              </table>
+             
+              <!-- /Padding -->
+            </td>
+          </tr>
+        </table>
+         <br>
+        <!-- /Gmail Wrapper -->
+      </td>
+    </tr>
+  </table>
+  <!-- Yahoo Wrapper -->
+ <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><style> @media print{ #_two50 { background-image:url('https://Arbys.everestengagement.com/ea/PCv1YXnLTc/?t=p&e=user@example.com&c=20251212_BOGO_Sandwich_Weekend_12964'); } } blockquote #_two50, #mailContainerBody #_two50, div.OutlookMessageHeader, table.moz-email-headers-table { background-image:url('https://Arbys.everestengagement.com/ea/PCv1YXnLTc/?t=f&e=user@example.com&c=20251212_BOGO_Sandwich_Weekend_12964'); } </style> <div id="_two50"></div> 
+<img id="_two50_img" src="https://Arbys.everestengagement.com/ea/PCv1YXnLTc/?e=user@example.com&c=20251212_BOGO_Sandwich_Weekend_12964" width="1" height="1" style="margin:0 !important; padding:0 !important; border:0 !important; height:1px !important; width:1px !important;"></td></tr></table>
+</body>
+
+</html>
+
