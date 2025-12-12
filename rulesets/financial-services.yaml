@@ -75,9 +75,12 @@ rules:
         - type: "Or"
           criteria:
             - type: "BodyPattern"
-              pattern: "(?i).*(loan.*options|financial.*goals|lending.*services|finance.*holdings|loan.*application|quick.*loan|easy.*loan|guaranteed.*loan).*"
+              pattern: "(?i).*(loan.*options|financial.*goals|lending.*services|finance.*holdings|loan.*application|quick.*loan|easy.*loan|guaranteed.*loan|online.*loans.*up.*to|loans.*up.*to.*\\$|instant.*loan|cash.*advance|payday.*loan|personal.*loan.*up.*to).*"
             - type: "SubjectPattern"
-              pattern: "(?i).*(loan|lending|finance|credit|funding).*"
+              pattern: "(?i).*(loan|lending|finance|credit|funding|online.*loans.*up.*to|loans.*up.*to.*\\$|instant.*loan|cash.*advance|payday.*loan|personal.*loan.*up.*to).*"
+            - type: "HeaderPattern"
+              header: "From"
+              pattern: "(?i).*(loan|lending|finance|funding|cash|credit).*"
         - type: "Or"
           criteria:
             - type: "SenderPattern"
@@ -89,11 +92,31 @@ rules:
             type: "Or"
             criteria:
               - type: "SenderPattern"
-                pattern: "(?i).*@.*(creditkarma|experian|equifax|transunion)\\.(com|net|org)$"
+                pattern: ".*@.*(bankofamerica|chase|wellsfargo|citi|usbank|pnc|capitalone|discover|americanexpress|ally|marcus|sofi|lendingclub|prosper|upstart|rocket|quicken)\\.(com|net)$"
               - type: "SenderPattern"
-                pattern: "(?i).*@.*(capitalone|chase|bankofamerica|wellsfargo|citi|usbank|pnc|truist|ally|discover)\\.(com|net)$"
-    score: 75
-    description: "Unsolicited loan and lending offers"
+                pattern: "(?i).*@.*(creditkarma|experian|equifax|transunion)\\.(com|net|org)$"
+    score: 85
+    description: "Unsolicited loan and lending offers (enhanced detection)"
+
+  - name: "Seasonal loan scams"
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "BodyPattern"
+              pattern: "(?i).*(christmas.*loan|holiday.*loan|santa.*loan|winter.*loan|seasonal.*loan|holiday.*cash|christmas.*cash|santa.*funding|holiday.*funding).*"
+            - type: "SubjectPattern"
+              pattern: "(?i).*(christmas.*loan|holiday.*loan|santa.*loan|winter.*loan|seasonal.*loan|holiday.*cash|christmas.*cash|santa.*funding|holiday.*funding).*"
+            - type: "HeaderPattern"
+              header: "From"
+              pattern: "(?i).*(santa.*loan|holiday.*loan|christmas.*loan|seasonal.*funding).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(bankofamerica|chase|wellsfargo|citi|usbank|pnc|capitalone|discover|americanexpress|ally|marcus|sofi)\\.(com|net)$"
+    score: 120
+    description: "Seasonal loan scams targeting holiday financial needs"
 
   - name: "Get rich quick scams"
     criteria:

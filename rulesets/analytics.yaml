@@ -85,6 +85,16 @@ rules:
     score: 2
     description: "Generic sender addresses often used in bulk spam campaigns, excluding business systems"
 
+  # Financial service name misspellings
+  - name: "Financial service name misspellings"
+    enabled: true
+    criteria:
+      type: "HeaderPattern"
+      header: "From"
+      pattern: "(?i).*(loanz|financ[e3]|cr[e3]dit|fundin[g9]|ban[k|<]|mortgag[e3]|insuranc[e3]|investm[e3]nt|paym[e3]nt|santa.*loan|holiday.*cash|christmas.*fund).*"
+    score: 35
+    description: "Misspelled financial service names commonly used in scams"
+
   # Random character sender detection
   - name: "Random character senders"
     criteria:
