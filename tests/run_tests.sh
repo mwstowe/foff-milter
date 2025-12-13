@@ -32,7 +32,7 @@ else
 fi
 
 # Module loading test with timeout
-EXPECTED_MODULES=32
+EXPECTED_MODULES=34
 MODULE_COUNT=$(timeout 10s $BINARY --test-config -c $CONFIG 2>/dev/null | grep "Number of available modules:" | grep -o '[0-9]\+$' || echo "0")
 
 if [ "$MODULE_COUNT" -eq "$EXPECTED_MODULES" ]; then

@@ -1,0 +1,38 @@
+name: "Test Suite Spam Detection"
+enabled: true
+rules:
+  # Business Development Spam (100 points)
+  - name: "Business Development Spam"
+    enabled: true
+    criteria:
+      type: "SubjectPattern"
+      pattern: "(?i).*BUSINESS.*DEVELOPMENT.*"
+    score: 100
+    description: "Generic business development spam"
+
+  # Air Filter Marketing Spam (100 points)
+  - name: "Air Filter Marketing Spam"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(custom.*made.*filters|perfect.*fit.*filters|stay.*safe.*filters).*"
+        - type: "SenderPattern"
+          pattern: ".*@.*filter.*\\.(com|net|llc)$"
+    score: 100
+    description: "Air filter marketing campaigns"
+
+  # Generic Promotional Campaigns (80 points)
+  - name: "Generic Promotional Campaigns"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(stay.*safe|perfect.*fit|custom.*made).*"
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: ".*@.*llc\\.com$"
+    score: 80
+    description: "Generic promotional marketing campaigns"

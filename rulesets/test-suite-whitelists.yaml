@@ -1,0 +1,47 @@
+name: "Test Suite Whitelists"
+enabled: true
+rules:
+  # Fidelity Financial Services (-200 points)
+  - name: "Fidelity Financial Services"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*fidelity\\.com$"
+    score: -200
+    description: "Fidelity Investments legitimate financial services"
+
+  # ASUS Technology (-200 points)
+  - name: "ASUS Technology"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*asus\\.com$"
+    score: -200
+    description: "ASUS legitimate technology company"
+
+  # BCD Travel Services (-200 points)
+  - name: "BCD Travel Services"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*bcdtravel\\.com$"
+    score: -200
+    description: "BCD Travel legitimate business travel services"
+
+  # ID.me Verification Service (-150 points)
+  - name: "ID.me Verification Service"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*id\\.me$"
+    score: -150
+    description: "ID.me legitimate identity verification service"
+
+  # Salesforce Marketing Cloud (-100 points)
+  - name: "Salesforce Marketing Cloud"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*salesforce\\.com$"
+    score: -100
+    description: "Salesforce legitimate marketing platform"
