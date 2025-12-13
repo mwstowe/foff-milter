@@ -77,37 +77,30 @@ rules:
   - name: "Bulk Email Quick Detection"
     enabled: true
     criteria:
-      type: "Or"
+      type: "And"
       criteria:
-        - type: "And"
+        - type: "HeaderPattern"
+          header: "List-Unsubscribe"
+          pattern: ".*"
+        - type: "Or"
           criteria:
-            - type: "HeaderPattern"
-              header: "List-Unsubscribe"
-              pattern: ".*"
             - type: "SenderPattern"
-              pattern: ".*@.*(empower\\.com|iheart\\.com|wayfair\\.com|backerkit\\.com|salesforce\\.com|mailchimp\\.com|constantcontact\\.com|hubspot\\.com).*"
-            - type: "Not"
-              criteria:
-                type: "UnsubscribeLinkValidation"
-                timeout_seconds: 3
-                check_dns: true
-                check_http: false
-        - type: "And"
-          criteria:
+              pattern: ".*@.*(empower\\.com|iheart\\.com|wayfair\\.com|backerkit\\.com|salesforce\\.com|mailchimp\\.com|constantcontact\\.com|hubspot\\.com|netflix\\.com|mcdonalds\\.com|beehiiv\\.com|make\\.co|amazonses\\.com|sendgrid\\.net|sparkpostmail\\.com).*"
             - type: "HeaderPattern"
-              header: "List-Unsubscribe"
+              header: "From"
+              pattern: "(?i).*(newsletter|digest|update|notification|automated|system|marketing).*"
+            - type: "HeaderPattern"
+              header: "List-Unsubscribe-Post"
               pattern: ".*"
-            - type: "Not"
-              criteria:
-                type: "SenderPattern"
-                pattern: ".*@(gmail\\.com|yahoo\\.com|hotmail\\.com|outlook\\.com)$"
-            - type: "Not"
-              criteria:
-                type: "UnsubscribeLinkValidation"
-                timeout_seconds: 3
-                check_dns: true
-                check_http: false
-    score: -15
+            - type: "HeaderPattern"
+              header: "Precedence"
+              pattern: "(?i)bulk"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@(gmail\\.com|yahoo\\.com|hotmail\\.com|outlook\\.com)$"
+    score: -35
+    description: "Enhanced accept for legitimate bulk emails with unsubscribe headers"
     description: "Enhanced accept for legitimate bulk emails with validated unsubscribe headers"
 
   - name: "Empty Content Quick Reject"

@@ -132,11 +132,20 @@ rules:
         - type: "Or"
           criteria:
             - type: "BodyPattern"
-              pattern: "(?i)(password|account|login|verify|confirm|suspend|expir)"
+              pattern: "(?i)(password|account|login|verify|confirm|suspend|expir|urgent|click.*here|act.*now)"
             - type: "SubjectPattern"
-              pattern: "(?i)(action.*required|urgent|expir|suspend|verify)"
+              pattern: "(?i)(action.*required|urgent|expir|suspend|verify|security.*alert)"
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "SenderPattern"
+                pattern: ".*@.*(netflix|amazon|microsoft|google|apple|mcdonalds|members\\.netflix)\\.(com|net|org)$"
+              - type: "HeaderPattern"
+                header: "From"
+                pattern: "(?i).*(newsletter|digest|update|notification).*"
     score: 30
-    description: "Soft hyphen character evasion in phishing content"
+    description: "Soft hyphen character evasion in phishing content (excluding legitimate brands)"
 
   # Google Groups Spam Abuse - +60 points
   - name: "Google Groups Spam Abuse"

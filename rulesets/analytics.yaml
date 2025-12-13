@@ -28,11 +28,25 @@ rules:
   - name: "Suspicious Timing Patterns"
     enabled: true
     criteria:
-      type: "HeaderPattern"
-      header: "Date"
-      pattern: ".*(0[0-4]:[0-5][0-9]:[0-5][0-9]|2[3-4]:[0-5][0-9]:[0-5][0-9]).*"
+      type: "And"
+      criteria:
+        - type: "HeaderPattern"
+          header: "Date"
+          pattern: ".*(0[0-3]:[0-5][0-9]:[0-5][0-9]).*"
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "SenderPattern"
+                pattern: ".*@.*(netflix|amazon|microsoft|google|apple|mcdonalds|newsletter|digest|beehiiv|make\\.co)\\.(com|net|org)$"
+              - type: "HeaderPattern"
+                header: "From"
+                pattern: "(?i).*(newsletter|digest|update|notification|automated|system).*"
+              - type: "HeaderPattern"
+                header: "List-Unsubscribe"
+                pattern: ".*"
     score: 10
-    description: "Emails sent during suspicious hours (midnight to 5am, 11pm-midnight)"
+    description: "Emails sent during very suspicious hours (midnight to 4am) excluding legitimate services"
 
   - name: "Sequential Email Pattern"
     enabled: true
@@ -49,13 +63,21 @@ rules:
       criteria:
         - type: "HeaderPattern"
           header: "Message-ID"
-          pattern: ".*[0-9]{10,}.*"
+          pattern: ".*[0-9]{12,}.*"
         - type: "Not"
           criteria:
-            type: "SenderPattern"
-            pattern: ".*@.*(empower\\.com|iheart\\.com|wayfair\\.com|backerkit\\.com|spotify\\.com|pandora\\.com|netflix\\.com).*"
+            type: "Or"
+            criteria:
+              - type: "SenderPattern"
+                pattern: ".*@.*(empower\\.com|iheart\\.com|wayfair\\.com|backerkit\\.com|spotify\\.com|pandora\\.com|netflix\\.com|mcdonalds\\.com|beehiiv\\.com|make\\.co|amazonses\\.com|sendgrid\\.net|sparkpostmail\\.com).*"
+              - type: "HeaderPattern"
+                header: "From"
+                pattern: "(?i).*(newsletter|digest|update|notification|automated|system|marketing).*"
+              - type: "HeaderPattern"
+                header: "List-Unsubscribe"
+                pattern: ".*"
     score: 5
-    description: "Message IDs with long numeric sequences indicating automated sending (excludes legitimate media/entertainment)"
+    description: "Message IDs with very long numeric sequences (12+ digits) indicating suspicious automated sending"
 
   - name: "Generic Sender Names"
     enabled: true

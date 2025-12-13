@@ -1194,3 +1194,49 @@ rules:
       pattern: ".*@doordash\\.com.*"
     score: -50
     description: "Legitimate DoorDash order confirmations and delivery updates"
+
+  # Major Brand Marketing Infrastructure
+  - name: "McDonald's Marketing Infrastructure"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@.*mcdonalds\\.(com|net)$"
+        - type: "SenderPattern"
+          pattern: ".*@.*m\\.mcdonalds\\.com$"
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: "(?i).*mcdonald.*"
+    score: -50
+    description: "McDonald's legitimate marketing emails"
+
+  - name: "Netflix Marketing Infrastructure"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@.*netflix\\.(com|net)$"
+        - type: "SenderPattern"
+          pattern: ".*@.*members\\.netflix\\.com$"
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: "(?i).*netflix.*"
+    score: -50
+    description: "Netflix legitimate marketing emails"
+
+  - name: "Newsletter Platforms"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@.*beehiiv\\.(com|net)$"
+        - type: "SenderPattern"
+          pattern: ".*@.*make\\.co$"
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: "(?i).*(newsletter|digest|update).*"
+    score: -30
+    description: "Legitimate newsletter platforms"

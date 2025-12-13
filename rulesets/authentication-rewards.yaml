@@ -15,12 +15,12 @@ rules:
             type: "Or"
             criteria:
               - type: "SenderPattern"
-                pattern: ".*@.*(gmail|yahoo|hotmail|outlook|aol|icloud)\\.(com|net)$"
+                pattern: ".*@.*(gmail|yahoo|hotmail|outlook|aol|icloud|mcdonalds|netflix|amazon|microsoft|google|apple)\\.(com|net)$"
               - type: "HeaderPattern"
                 header: "Authentication-Results"
                 pattern: "(?i)spf=pass"
-    score: 30
-    description: "DKIM signature verification failed for non-free email domains"
+    score: 15
+    description: "DKIM signature verification failed (reduced penalty for major brands)"
 
   - name: "SPF no designated sender hosts"
     enabled: true
