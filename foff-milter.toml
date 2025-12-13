@@ -1,5 +1,13 @@
-# FOFF Milter Testing Configuration
-# Overrides defaults to use local development directories
+# FOFF Milter v0.8.2 Configuration
+# Phishing-first detection with centralized infrastructure intelligence
+
+[infrastructure]
+config_file = "infrastructure.toml"
+
+[phishing_detection]
+config_file = "phishing-detection.toml"
+enabled = true
+priority = 1  # Run before spam detection
 
 [rulesets]
 enabled = true
@@ -10,6 +18,16 @@ enabled = true
 config_dir = "features"
 
 [heuristics]
+# Phishing-first thresholds
 reject_threshold = 350
+phishing_threshold = 100  # Lower threshold for phishing
 spam_threshold = 120
 accept_threshold = 0
+
+[scoring]
+# Simplified 5-tier system
+critical = 300
+high = 200  
+moderate = 150
+low = 100
+minimal = 50

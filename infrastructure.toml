@@ -1,0 +1,121 @@
+# FOFF Milter Infrastructure Intelligence
+# Centralized registry for brands, ESPs, and domain patterns
+
+[legitimate_esps]
+# Major email service providers
+major = [
+    "amazonses.com", "sendgrid.net", "mailgun.org", "postmarkapp.com",
+    "sparkpostmail.com", "mailchimp.com", "constantcontact.com"
+]
+
+# Marketing-focused ESPs
+marketing = [
+    "klaviyomail.com", "campaignmonitor.com", "aweber.com", "getresponse.com",
+    "convertkit.com", "activecampaign.com", "drip.com"
+]
+
+# Transactional email services
+transactional = [
+    "postmarkapp.com", "mandrill.com", "ses.amazonaws.com", "sendpulse.com"
+]
+
+# Newsletter platforms
+newsletter = [
+    "substack.com", "beehiiv.com", "make.co", "medium.com", "ghost.io"
+]
+
+[brand_registry]
+# Financial institutions and payment processors
+financial = [
+    "chase", "visa", "mastercard", "paypal", "americanexpress", "discover",
+    "wellsfargo", "bankofamerica", "citibank", "usbank", "capitalone"
+]
+
+# Major retail brands
+retail = [
+    "amazon", "walmart", "target", "costco", "homedepot", "lowes",
+    "bestbuy", "macys", "nordstrom", "kohls"
+]
+
+# Technology companies
+technology = [
+    "microsoft", "google", "apple", "adobe", "salesforce", "oracle",
+    "ibm", "cisco", "vmware", "atlassian"
+]
+
+# Social media and entertainment
+social_media = [
+    "facebook", "instagram", "twitter", "linkedin", "youtube", "tiktok",
+    "netflix", "disney", "hulu", "spotify"
+]
+
+# Food and restaurant chains
+food_service = [
+    "mcdonalds", "starbucks", "subway", "dominos", "pizzahut", "kfc",
+    "tacobell", "chipotle", "panera"
+]
+
+# Healthcare and insurance
+healthcare = [
+    "aarp", "humana", "anthem", "aetna", "cigna", "bluecross",
+    "kaiser", "unitedhealth"
+]
+
+[domain_patterns]
+# Suspicious top-level domains
+suspicious_tlds = [".tk", ".ml", ".ga", ".cf", ".pw", ".top"]
+
+# Government and educational (high trust)
+government = [".*\\.gov$", ".*\\.mil$", ".*\\.edu$"]
+
+# Common phishing patterns
+phishing_patterns = [
+    ".*-[a-z0-9]{10,}\\.", ".*[0-9]{8,}\\.", ".*-secure-.*",
+    ".*-verification-.*", ".*-update-.*"
+]
+
+[scoring_tiers]
+# Standardized scoring system
+critical_phishing = 300    # Immediate reject
+high_phishing = 200       # High confidence threat
+moderate_phishing = 150   # Moderate confidence
+suspicious = 100          # Requires investigation
+bulk_marketing = 50       # Unwanted but legitimate
+legitimate = 0            # Clean email
+
+# Negative scores (whitelisting)
+trusted_sender = -200     # Known good sender
+verified_esp = -100       # Legitimate ESP
+newsletter_platform = -50 # Newsletter service
+
+[phishing_indicators]
+# Core phishing detection scores
+domain_mismatch = 200
+auth_failure_with_brand = 175
+brand_impersonation = 150
+credential_harvesting = 200
+financial_fraud = 250
+urgent_action_required = 100
+
+[content_patterns]
+# High-risk content indicators
+urgency_keywords = [
+    "urgent", "immediate", "expires today", "act now", "limited time",
+    "final notice", "last chance", "expires soon"
+]
+
+financial_keywords = [
+    "invoice", "payment", "refund", "billing", "account suspended",
+    "verify payment", "update billing", "payment failed"
+]
+
+credential_keywords = [
+    "verify account", "update password", "confirm identity", "security alert",
+    "suspicious activity", "account locked", "verify now"
+]
+
+# Business email compromise patterns
+bec_keywords = [
+    "hr document", "salary review", "incentive overview", "payroll update",
+    "w-2 form", "tax document", "employee handbook"
+]
