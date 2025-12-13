@@ -62,3 +62,21 @@ rules:
               pattern: "spf=pass"
     score: -100
     description: "Major retailers with valid authentication"
+
+  # Healthcare Marketing (-150 points)
+  - name: "Healthcare Marketing"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@.*(zoomcare|healthcare|medical|clinic).*\\.(com|net)$"
+        - type: "Or"
+          criteria:
+            - type: "HeaderPattern"
+              header: "Authentication-Results"
+              pattern: "dkim=pass"
+            - type: "SubjectPattern"
+              pattern: "(?i).*(flu.*shot|vaccination|health.*visit|medical).*"
+    score: -150
+    description: "Legitimate healthcare marketing communications"
