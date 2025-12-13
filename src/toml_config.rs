@@ -1,6 +1,7 @@
 use crate::heuristic_config::{Action, Config as HeuristicConfig};
 use serde::{Deserialize, Serialize};
 use std::path::Path;
+use std::collections::HashMap;
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
 #[serde(default)]
@@ -17,6 +18,73 @@ pub struct TomlConfig {
     pub default_action: Option<DefaultActionConfig>,
     pub performance: Option<PerformanceConfig>,
     pub domain_classifications: Option<DomainClassifications>,
+    pub infrastructure: Option<InfrastructureConfig>,
+    pub phishing_detection: Option<PhishingDetectionConfig>,
+    pub scoring: Option<ScoringConfig>,
+}
+
+#[derive(Debug, Deserialize, Serialize, Clone)]
+pub struct InfrastructureConfig {
+    pub config_file: Option<String>,
+}
+
+#[derive(Debug, Deserialize, Serialize, Clone)]
+pub struct PhishingDetectionConfig {
+    pub config_file: Option<String>,
+    pub enabled: Option<bool>,
+    pub priority: Option<u8>,
+}
+
+#[derive(Debug, Deserialize, Serialize, Clone)]
+pub struct ScoringConfig {
+    pub critical: Option<i32>,
+    pub high: Option<i32>,
+    pub moderate: Option<i32>,
+    pub low: Option<i32>,
+    pub minimal: Option<i32>,
+}
+
+#[derive(Debug, Deserialize, Serialize, Clone)]
+pub struct InfrastructureData {
+    pub legitimate_esps: Option<EspConfig>,
+    pub brand_registry: Option<BrandRegistry>,
+    pub domain_patterns: Option<DomainPatterns>,
+    pub scoring_tiers: Option<HashMap<String, i32>>,
+    pub phishing_indicators: Option<HashMap<String, i32>>,
+    pub content_patterns: Option<ContentPatterns>,
+}
+
+#[derive(Debug, Deserialize, Serialize, Clone)]
+pub struct EspConfig {
+    pub major: Option<Vec<String>>,
+    pub marketing: Option<Vec<String>>,
+    pub transactional: Option<Vec<String>>,
+    pub newsletter: Option<Vec<String>>,
+}
+
+#[derive(Debug, Deserialize, Serialize, Clone)]
+pub struct BrandRegistry {
+    pub financial: Option<Vec<String>>,
+    pub retail: Option<Vec<String>>,
+    pub technology: Option<Vec<String>>,
+    pub social_media: Option<Vec<String>>,
+    pub food_service: Option<Vec<String>>,
+    pub healthcare: Option<Vec<String>>,
+}
+
+#[derive(Debug, Deserialize, Serialize, Clone)]
+pub struct DomainPatterns {
+    pub suspicious_tlds: Option<Vec<String>>,
+    pub government: Option<Vec<String>>,
+    pub phishing_patterns: Option<Vec<String>>,
+}
+
+#[derive(Debug, Deserialize, Serialize, Clone)]
+pub struct ContentPatterns {
+    pub urgency_keywords: Option<Vec<String>>,
+    pub financial_keywords: Option<Vec<String>>,
+    pub credential_keywords: Option<Vec<String>>,
+    pub bec_keywords: Option<Vec<String>>,
 }
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
@@ -372,5 +440,35 @@ impl TomlConfig {
         }
 
         Ok(heuristic_config)
+    }
+
+    /// Load infrastructure configuration from separate TOML file
+    pub fn load_infrastructure(&self, base_path: &str) -> Result<Option<InfrastructureData>, Box<dyn std::error::Error>> {
+        if let Some(infra_config) = &self.infrastructure {
+            if let Some(config_file) = &infra_config.config_file {
+                let full_path = if config_file.starts_with('/') {
+                    config_file.clone()
+                } else {
+                    format!("{}/{}", base_path, config_file)
+                };
+                
+                if std::path::Path::new(&full_path).exists() {
+                    let content = std::fs::read_to_string(&full_path)?;
+                    let infrastructure: InfrastructureData = toml::from_str(&content)?;
+                    return Ok(Some(infrastructure));
+                }
+            }
+        }
+        Ok(None)
+    }
+
+    /// Generate brand pattern from registry
+    pub fn generate_brand_pattern(brands: &[String]) -> String {
+        format!("(?i).*({})", brands.join("|"))
+    }
+
+    /// Generate ESP exclusion pattern
+    pub fn generate_esp_pattern(esps: &[String]) -> String {
+        format!(".*@.*({})\\.(com|net|org)$", esps.join("|"))
     }
 }

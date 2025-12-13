@@ -1,0 +1,102 @@
+name: "Refined ESP Whitelist"
+enabled: true
+rules:
+  # Major ESPs (-100 points)
+  - name: "Major ESP Infrastructure"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*(amazonses|sendgrid|mailgun|postmarkapp|sparkpostmail)\\.(com|net|org)$"
+    score: -100
+    description: "Major email service providers"
+
+  # Newsletter Platforms (-75 points)
+  - name: "Newsletter Platforms"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*(substack|beehiiv|make\\.co|medium|ghost)\\.(com|io)$"
+    score: -75
+    description: "Newsletter and content platforms"
+
+  # Marketing ESPs (-50 points)
+  - name: "Marketing ESP Infrastructure"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*(mailchimp|constantcontact|klaviyomail|campaignmonitor|aweber)\\.(com|net)$"
+    score: -50
+    description: "Marketing email service providers"
+
+  # Government/Educational Domains (-200 points)
+  - name: "Government and Educational"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*\\.(gov|mil|edu)$"
+    score: -200
+    description: "Government and educational institutions"
+
+  # Established Brand Domains with Authentication (-150 points)
+  - name: "Established Brand Domains"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@.*(amazon|google|microsoft|apple|netflix|walmart|target)\\.(com|org)$"
+        - type: "Or"
+          criteria:
+            - type: "HeaderPattern"
+              header: "Authentication-Results"
+              pattern: "dkim=pass"
+            - type: "HeaderPattern"
+              header: "Authentication-Results"
+              pattern: "spf=pass"
+    score: -150
+    description: "Established brands with valid authentication"
+
+  # Make.co Newsletter Specific (-100 points)
+  - name: "Make.co Newsletter Whitelist"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@.*make\\.co$"
+        - type: "Or"
+          criteria:
+            - type: "HeaderPattern"
+              header: "List-Unsubscribe"
+              pattern: ".*"
+            - type: "SubjectPattern"
+              pattern: "(?i).*(newsletter|digest|update|weekly).*"
+    score: -100
+    description: "Make.co newsletter platform specific whitelist"
+
+  # Media and Entertainment Companies (-75 points)
+  - name: "Media and Entertainment"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@.*(iheart|spotify|pandora|youtube|vimeo)\\.(com|net)$"
+        - type: "HeaderPattern"
+          header: "List-Unsubscribe"
+          pattern: ".*"
+    score: -75
+    description: "Legitimate media and entertainment companies"
+
+  # Withings Health Platform (-150 points)
+  - name: "Withings Health Platform"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@.*withings.*\\.(com|net)$"
+        - type: "SenderPattern"
+          pattern: ".*@email\\.withings\\.com$"
+    score: -150
+    description: "Withings health and fitness platform"
