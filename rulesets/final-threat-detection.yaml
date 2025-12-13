@@ -98,3 +98,24 @@ rules:
           pattern: ".*@m-atr\\.com$"
     score: 60
     description: "Aggressive catch-all for remaining missed threats"
+
+  # Unsolicited Marketing Services (100 points)
+  - name: "Unsolicited Marketing Services"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "BodyPattern"
+              pattern: "(?i).*(my.*name.*is.*nick|would.*like.*to.*be.*your.*programmer|my.*rate.*is.*\\$75|dedicated.*server.*\\$100).*"
+            - type: "SubjectPattern"
+              pattern: "(?i).*(communication|programming.*services|web.*development).*"
+        - type: "Or"
+          criteria:
+            - type: "SenderPattern"
+              pattern: ".*@.*nickspages\\.com$"
+            - type: "BodyPattern"
+              pattern: "(?i).*(nickspages|hire.*nick|switch.*now|call.*nick).*"
+    score: 100
+    description: "Unsolicited marketing and programming services spam"
