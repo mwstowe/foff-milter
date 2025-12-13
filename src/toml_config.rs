@@ -1,7 +1,7 @@
 use crate::heuristic_config::{Action, Config as HeuristicConfig};
 use serde::{Deserialize, Serialize};
-use std::path::Path;
 use std::collections::HashMap;
+use std::path::Path;
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
 #[serde(default)]
@@ -170,6 +170,9 @@ impl Default for TomlConfig {
                     ".cf".to_string(),
                 ]),
             }),
+            infrastructure: None,
+            phishing_detection: None,
+            scoring: None,
         }
     }
 }
@@ -373,6 +376,9 @@ impl TomlConfig {
             }),
             performance: None,
             domain_classifications: None,
+            infrastructure: None,
+            phishing_detection: None,
+            scoring: None,
         }
     }
 
@@ -443,7 +449,10 @@ impl TomlConfig {
     }
 
     /// Load infrastructure configuration from separate TOML file
-    pub fn load_infrastructure(&self, base_path: &str) -> Result<Option<InfrastructureData>, Box<dyn std::error::Error>> {
+    pub fn load_infrastructure(
+        &self,
+        base_path: &str,
+    ) -> Result<Option<InfrastructureData>, Box<dyn std::error::Error>> {
         if let Some(infra_config) = &self.infrastructure {
             if let Some(config_file) = &infra_config.config_file {
                 let full_path = if config_file.starts_with('/') {
@@ -451,7 +460,7 @@ impl TomlConfig {
                 } else {
                     format!("{}/{}", base_path, config_file)
                 };
-                
+
                 if std::path::Path::new(&full_path).exists() {
                     let content = std::fs::read_to_string(&full_path)?;
                     let infrastructure: InfrastructureData = toml::from_str(&content)?;
