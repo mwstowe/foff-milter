@@ -80,3 +80,24 @@ rules:
               pattern: "(?i).*(flu.*shot|vaccination|health.*visit|medical).*"
     score: -150
     description: "Legitimate healthcare marketing communications"
+
+  # Major Legitimate Business Services (-200 points)
+  - name: "Major Legitimate Business Services"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@pulse\\.celebrations\\.com$"
+        - type: "SenderPattern"
+          pattern: ".*@mail\\.fidelity\\.com$"
+        - type: "SenderPattern"
+          pattern: ".*@nedm\\.asus\\.com$"
+        - type: "SenderPattern"
+          pattern: ".*@media\\.silhouetteamerica\\.com$"
+        - type: "SenderPattern"
+          pattern: ".*@toast-restaurants\\.com$"
+        - type: "SenderPattern"
+          pattern: ".*@email\\.withings\\.com$"
+    score: -200
+    description: "Major legitimate business services and platforms"

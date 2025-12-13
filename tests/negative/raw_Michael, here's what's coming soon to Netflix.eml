@@ -1,0 +1,1578 @@
+Return-Path: <010f019b15b85d31-4a918d35-2e00-477f-96bd-21be89004534-000000@mailer.members.netflix.com>
+Received: from hotel.example.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.example.com (8.18.1/8.18.1) with ESMTPS id 5BD3JUcg062518
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <user@example.com>; Sat, 13 Dec 2025 03:19:30 GMT
+	(envelope-from 010f019b15b85d31-4a918d35-2e00-477f-96bd-21be89004534-000000@mailer.members.netflix.com)
+Authentication-Results: juliett.example.com;
+	dkim=pass (1024-bit key; unprotected) header.d=members.netflix.com header.i=@members.netflix.com header.b=c+kHQ0Yx;
+	dkim=pass (1024-bit key; unprotected) header.d=amazonses.com header.i=@amazonses.com header.b=EopKBfcD
+Received: from a114-106.smtp-out.us-east-2.amazonses.com (a114-106.smtp-out.us-east-2.amazonses.com [54.240.114.106])
+	by hotel.example.com (8.16.1/8.16.1) with ESMTPS id 5BD3JSAs238143
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO)
+	for <user@example.com>; Fri, 12 Dec 2025 21:19:29 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.example.com 5BD3JSAs238143
+Authentication-Results: hotel.example.com;
+	dkim=pass (1024-bit key, unprotected) header.d=members.netflix.com header.i=@members.netflix.com header.a=rsa-sha256 header.s=22seek5htn6zhuvy5jwo2o764amigf2d header.b=c+kHQ0Yx;
+	dkim=pass (1024-bit key, unprotected) header.d=amazonses.com header.i=@amazonses.com header.a=rsa-sha256 header.s=ndjes4mrtuzus6qxu3frw3ubo3gpjndv header.b=EopKBfcD
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=22seek5htn6zhuvy5jwo2o764amigf2d; d=members.netflix.com;
+	t=1765595962;
+	h=Date:From:To:Message-ID:Subject:MIME-Version:Content-Type:List-Unsubscribe-Post:List-Unsubscribe;
+	bh=NvoWmGs+rQshtUexoDoIW9+Ncp1vosVdMLlv6ucWIDY=;
+	b=c+kHQ0Yxq75fSc4SXc0OqQf+oCNePHqw41H2JCpaoi/wIMTWKV5jIdiPnvvwDxKh
+	APgqoLUW0+MSKz23X65mAnbDl948t81fKF2d9w239hxrL2m3fFyg+LSg3UjI3IgnCZY
+	6azZQoCwP+SRSMNiBPIl/LNngXCCWOrjPQyx4BHY=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=ndjes4mrtuzus6qxu3frw3ubo3gpjndv; d=amazonses.com; t=1765595962;
+	h=Date:From:To:Message-ID:Subject:MIME-Version:Content-Type:List-Unsubscribe-Post:List-Unsubscribe:Feedback-ID;
+	bh=NvoWmGs+rQshtUexoDoIW9+Ncp1vosVdMLlv6ucWIDY=;
+	b=EopKBfcDOFvwlcKL0OtivXtYTUnWUF3tgL+SNRY+qISJOCIYEqeplsVEGHtAv0DF
+	aex4CB5q/mZY8kUpFs2rlaCI+hVwW611s1mk+6ynQdzRw9MpSimLtnJsF7IYis1Ckf4
+	DI5SgL+ADK3F7sCniCBbInghyHxYZkGCWNEglw/o=
+Date: Sat, 13 Dec 2025 03:19:22 +0000
+From: Netflix <info@members.netflix.com>
+To: user@example.com
+Message-ID: <010f019b15b85d31-4a918d35-2e00-477f-96bd-21be89004534-000000@us-east-2.amazonses.com>
+Subject: Michael, here's what's coming soon to Netflix
+MIME-Version: 1.0
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_8541854_1720811427.1765595962235"
+X-TrackingUuid: 0701de60-2038-4eef-8e26-b4ca302b9964
+X-AppInfo: emailservice::us-east-2::engagement::emailservice-1b445a03-2454-400e-b201-978ca272f15c::prod
+X-MessageGuid: b2cfa07e-3905-4bb1-a3b0-ca7bafa77ca5
+X-localeCountry: en-US::US
+X-SourceAppName: MSG_ORCHESTRATOR
+X-ProcEnc: BgjzsevcAxIYOU5ECjiZlzIjI7avczZo5L+Q3nOmh/QFGAYiDgoM+TsWDegWD8JX9wpv
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+X-WorkflowId: 62844AD0
+X-MsgArtifactId: 
+List-Unsubscribe: <mailto:U1ozQkRIWktVNUIzUktSVUFOQk9LWExHNE1BRTY5@unsubscribe.netflix.com>, <https://www.netflix.com/notificationsettings/email?id=BgiLsuvcAxKEAfyzhprbiIuujxMTijB96kyxOV7LtNZqCmTD%2FZHD%2BI9RnEcsEj1Lk1WDUBNC3ICEgY3ToubUtUgbYqbcoUAaSlrjCzNcun3WHwtRSRBFj2cjV5I2AHBvwdDqkMNV5DUoHk4KNFrUTaih01VJCv6j%2F6OsczFOuHK5g8aNLy8cykss8mYMhhgGIg4KDPodYpGBPv7GMwA7iA%3D%3D&lnktrk=EVO&g=b2cfa07e-3905-4bb1-a3b0-ca7bafa77ca5&lkid=unsubscribe_link&mid=none>
+X-To: user@example.com
+X-TaskUuid: 009436ed-f156-49ae-8dfa-26ca7f9e758a
+X-EventGuid: 0701de60-2038-4eef-8e26-b4ca302b9964
+X-MsgVariantId: 
+Feedback-ID: ::1.us-east-2.bpb3O11JVXyMCLNaoAPZ/8WaKtQXBL2zP9Kh9w0pjrM=:AmazonSES
+X-SES-Outgoing: 2025.12.13-54.240.114.106
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.example.com [172.31.18.8]); Sat, 13 Dec 2025 03:19:31 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.example.com [23.95.222.152]); Fri, 12 Dec 2025 21:19:29 -0600 (CST)
+X-Spam-Flag: YES
+X-FOFF-Feature-Evidence: Context Analysis: Multiple exclamation marks detected (hotel.example.com) [8c765852]
+X-FOFF-Feature-Evidence: Context Analysis: Industry context detected: tech_newsletter (reduced scoring) (hotel.example.com) [80e1dd3b]
+X-FOFF-Rule-Matched: Performance: Bulk Email Quick Detection (hotel.example.com) [951de85e]
+X-FOFF-Rule-Matched: Link Analysis: Suspicious Link Patterns (External Only) (hotel.example.com) [aaba9dd1]
+X-FOFF-Rule-Matched: Critical Phishing Detection: Soft Hyphen Evasion in Phishing (hotel.example.com) [a943206e]
+X-FOFF-Rule-Matched: Authentication Rewards: Unsubscribe Header Present (hotel.example.com) [12005c74]
+X-FOFF-Rule-Matched: Authentication Rewards: Full CAN-SPAM Compliance (hotel.example.com) [12005c74]
+X-FOFF-Rule-Matched: Analytics: Suspicious Timing Patterns (hotel.example.com) [15b9db47]
+X-FOFF-Score: 140 - foff-milter v0.8.1 (hotel.example.com)
+X-FOFF-Trust-Analysis: auth=0, infra=0, behavior=-10, content=20, total=1, adj=0
+X-FOFF-Business-Analysis: comm=25, legit=45, industry=20, compliance=10, total=28, adj=0
+X-FOFF-Seasonal-Analysis: seasonal=0, consistency=10, patterns=0, timing=10, total=5, adj=0
+X-FOFF-Upstream-Trust: Trusting upstream FOFF-milter spam classification
+
+------=_Part_8541854_1720811427.1765595962235
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+Say hello to new titles we think you'll love.
+
+=C2=A0
+
+Dec 12 - Dec 26
+
+Your Netflix lookahead
+
+Coming soon=E2=80=94new stories, old favorites, and more you won=E2=80=99t
+want to miss.
+
+View All Coming Soon
+[https://www.netflix.com/browse/coming-soon?g=3Db2cfa07e-3905-4bb1-a3b0-ca7=
+bafa77ca5&lkid=3DURL_TEXT_ONLY_HERO_CTA_COMING_SOON&lnktrk=3DEVO&trkid=3D13=
+710079&MSG_TITLE=3D]
+
+New Episodes December 25 at 5=C2=A0PM PT
+
+=C2=A0
+
+https://www.netflix.com/title/80057281?g=3Db2cfa07e-3905-4bb1-a3b0-ca7bafa7=
+7ca5&lkid=3DURL_TITLE_CARD_IMAGE_HERO_COMING_SOON_0&lnktrk=3DEVO&trkid=3D13=
+710079&MSG_TITLE=3D80057281
+
+=C2=A0
+
+Stranger Things
+
+With Hawkins' children ensnared by Vecna, the party faces
+unimaginable peril as they fight to bring them home. More
+Info
+[https://www.netflix.com/title/80057281?g=3Db2cfa07e-3905-4bb1-a3b0-ca7bafa=
+77ca5&lkid=3DURL_TITLECARD_CTA_TEXT_MORE_INFO_0&lnktrk=3DEVO&trkid=3D137100=
+79&MSG_TITLE=3D80057281]
+
+Remind Me                                                                  =
+                                                                           =
+                                                                           =
+                                                                           =
+                                                                           =
+                                                                           =
+                                                                           =
+                                          =C2=A0   Play Trailer
+[https://www.netflix.com/remind-me/80057281?g=3Db2cfa07e-3905-4bb1-a3b0-ca7=
+bafa77ca5&lkid=3DURL_TITLE_CARD_CTA_COMING_SOON_REMINDME_0&lnktrk=3DEVO&trk=
+id=3D13710079&MSG_TITLE=3D80057281&msg_token=3DEQEAmQABAYEAJIQ%2F3wcRyqYanO=
+oZhs2AwTiwPDYGEso2fCTR2CtGb1IUONSafRG6wuJfXxNnqwxTEE1clNEOSQZ1YxHD6ymG2kR0Z=
+yWmzyczlgc693UBF4g%2Fw5I2gUECAHcY4rlhc8ACLfhCHbjGKczjuNtFN5Lohi%2BkgVKYY3Wc=
+rqGHex4AK9piz0GB4%2BR7InACmofeKpv4Tydh7D7x2RskWFHsFKV%2FA2MlOL00R5jPyut8WfY=
+stW0W%2BWLdC9bDTkv2oNO%2BpUSogzvhj62LxwEOTRYsoI08FZ2Awc9Z0pLU7OKdIMAITHV4MK=
+0UTW%2BpfTwqhlM3W0bA7twlxuvK8QAdVLpK9TM8czwaTLA%3D]       [https://www.netf=
+lix.com/watch/82182579?g=3Db2cfa07e-3905-4bb1-a3b0-ca7bafa77ca5&lkid=3DURL_=
+TITLE_CARD_CTA_COMING_SOON_TRAILER_0&lnktrk=3DEVO&trkid=3D13710079&MSG_TITL=
+E=3D82182579]
+
+=C2=A0
+
+=C2=A0
+
+=C2=A0
+
+Coming Monday
+
+=C2=A0
+
+https://www.netflix.com/title/70295183?g=3Db2cfa07e-3905-4bb1-a3b0-ca7bafa7=
+7ca5&lkid=3DURL_TITLE_CARD_IMAGE_HERO_COMING_SOON_1&lnktrk=3DEVO&trkid=3D13=
+710079&MSG_TITLE=3D70295183
+
+=C2=A0
+
+Dragon Ball Z: Battle of Gods
+
+When Beerus, the God of Destruction, arrives on Earth to
+pick a fight with a worthy opponent, the gang invokes a
+powerful Super Saiyan God to stop him. More Info
+[https://www.netflix.com/title/70295183?g=3Db2cfa07e-3905-4bb1-a3b0-ca7bafa=
+77ca5&lkid=3DURL_TITLECARD_CTA_TEXT_MORE_INFO_1&lnktrk=3DEVO&trkid=3D137100=
+79&MSG_TITLE=3D70295183]
+
+Remind Me                                                                  =
+                                                                           =
+                                                                           =
+                                                                           =
+                                                                           =
+                                                                           =
+                                                                           =
+                                              =C2=A0   Play Trailer
+[https://www.netflix.com/remind-me/70295183?g=3Db2cfa07e-3905-4bb1-a3b0-ca7=
+bafa77ca5&lkid=3DURL_TITLE_CARD_CTA_COMING_SOON_REMINDME_1&lnktrk=3DEVO&trk=
+id=3D13710079&MSG_TITLE=3D70295183&msg_token=3DEQEAmQABAYEAGek%2FkYsB1FBB84=
+Ko1Sli0rm2iNXuca5LnUeQTD983YMhrJUHZsZoQDUpPSmG8m4pdOU4EpoNk%2Fv9RWXHr6Lth1C=
+jO8%2FP5ZPwT1oM4QOo9gY3Acq1pMznFTUDzNWSr2TsSz0O87QgrO3rigqrjY3GJ0KOGeB0TxLP=
+lFgpBgnqroowe%2B4EOJ1zf%2FEZVmi0KmgJrXUPxeALs%2BW6V931ccCWEYoBz7MV5BAs4Npx6=
+7JXm4AfT5nrJcIoOUB3a2%2FnSEQNR5jZPHbZJZzGxaZ%2FLE5lXmZ2Xtu4%2F1XcRdPfszklp1=
+n51BFEmJBSDignW2KNzqT%2BDCGQEIVQ9L1S2S6cEkVcq4CJqy4%3D]       [https://www.=
+netflix.com/watch/81076664?g=3Db2cfa07e-3905-4bb1-a3b0-ca7bafa77ca5&lkid=3D=
+URL_TITLE_CARD_CTA_COMING_SOON_TRAILER_1&lnktrk=3DEVO&trkid=3D13710079&MSG_=
+TITLE=3D81076664]
+
+=C2=A0
+
+=C2=A0
+
+=C2=A0
+
+Seasons Coming Tuesday
+
+=C2=A0
+
+https://www.netflix.com/title/81036944?g=3Db2cfa07e-3905-4bb1-a3b0-ca7bafa7=
+7ca5&lkid=3DURL_TITLE_CARD_IMAGE_HERO_COMING_SOON_2&lnktrk=3DEVO&trkid=3D13=
+710079&MSG_TITLE=3D81036944
+
+=C2=A0
+
+Castle Rock
+
+Based on the works of Stephen King, this horror series
+weaves together his characters and stories set in the
+fictional town of Castle Rock, Maine. More Info
+[https://www.netflix.com/title/81036944?g=3Db2cfa07e-3905-4bb1-a3b0-ca7bafa=
+77ca5&lkid=3DURL_TITLECARD_CTA_TEXT_MORE_INFO_2&lnktrk=3DEVO&trkid=3D137100=
+79&MSG_TITLE=3D81036944]
+
+Remind Me                                                                  =
+                                                                           =
+                                                                           =
+                                                                           =
+                                                                           =
+                                                                           =
+                                                                           =
+                                            =C2=A0   More=C2=A0Info
+[https://www.netflix.com/remind-me/81036944?g=3Db2cfa07e-3905-4bb1-a3b0-ca7=
+bafa77ca5&lkid=3DURL_TITLE_CARD_CTA_COMING_SOON_REMINDME_2&lnktrk=3DEVO&trk=
+id=3D13710079&MSG_TITLE=3D81036944&msg_token=3DEQEAmQABAYEAD87WJwdRevJBGQVw=
+bz%2BDslMqKc3UatiEvg08DQqyMR1rv1pQrSw7W7OP6nAs19vElZSNHzH35auaNeoF%2BzMzY6%=
+2FonvHsoOWT5SoE%2FTdgWVTxXfiGE3anH4LaSIrMaiaFir7JkwmDRotmHI1RecS30EbEFMRapw=
+JTLPoj%2BSMt5mZK5F%2BJwm5bLUTkqoFwVVXVm4o5tJ0BZihNqn%2Bj0bGyDGu4lpLO0RjyqVB=
+kFpseSiwDW1dk%2FXpGFQHJ1hAnAAJzp7sN0rBTkjHM6GnJK%2Fc67PaGoBkCAythHxXUDJBnv2=
+Vjz7Iyk7AOsgt6Dk4rjeDHaZcuVEuAdwgvUcCqeee0VY3rlfI%3D]       [https://www.ne=
+tflix.com/title/81036944?g=3Db2cfa07e-3905-4bb1-a3b0-ca7bafa77ca5&lkid=3DUR=
+L_TITLE_CARD_CTA_COMING_SOON_MORE_INFO_2&lnktrk=3DEVO&trkid=3D13710079&MSG_=
+TITLE=3D81036944]
+
+=C2=A0
+
+=C2=A0
+
+=C2=A0
+
+Live Event Coming December 19 at 5=C2=A0PM PT
+
+=C2=A0
+
+https://www.netflix.com/title/82122635?g=3Db2cfa07e-3905-4bb1-a3b0-ca7bafa7=
+7ca5&lkid=3DURL_TITLE_CARD_IMAGE_HERO_COMING_SOON_3&lnktrk=3DEVO&trkid=3D13=
+710079&MSG_TITLE=3D82122635
+
+=C2=A0
+
+Jake Paul vs. Anthony Joshua
+
+Boxing disruptor Jake Paul challenges heavyweight powerhouse
+Anthony Joshua live in a career-defining super fight from
+Most Valuable Promotions. More Info
+[https://www.netflix.com/title/82122635?g=3Db2cfa07e-3905-4bb1-a3b0-ca7bafa=
+77ca5&lkid=3DURL_TITLECARD_CTA_TEXT_MORE_INFO_3&lnktrk=3DEVO&trkid=3D137100=
+79&MSG_TITLE=3D82122635]
+
+Remind Me                                                                  =
+                                                                           =
+                                                                           =
+                                                                           =
+                                                                           =
+                                                                           =
+                                                                           =
+                                          =C2=A0   Play Trailer
+[https://www.netflix.com/remind-me/82122635?g=3Db2cfa07e-3905-4bb1-a3b0-ca7=
+bafa77ca5&lkid=3DURL_TITLE_CARD_CTA_COMING_SOON_REMINDME_3&lnktrk=3DEVO&trk=
+id=3D13710079&MSG_TITLE=3D82122635&msg_token=3DEQEAmQABAYEAd9qki25gPZ1hF1Hn=
+5O4P5Js8%2Besg99yH2jlzWx2Wk5WxdbefEJbgR3FwcJ49K7bGCNj2dUQcwAYvhMkgrcWn24DNF=
+Q9WAwXtnznnpcWhl3QECmRvkeckYYtMMl5D5XQYU62UVsEPFyYdQLYutCi5FyrC7BF8hwR4KtNv=
+vYMvijuz81xafxEUm644HrTjWazCDZ4MFctzAF8%2Fa1ncYGGjRaBhzIuasYQlc%2FDwbC51sb3=
+8Wote0gKrvMRTrpTrqWKGlqlJGb0jLply6M%2F1X%2BxHqa%2BPNPWZ183cL4lLg6BDp4yVC%2B=
+p7DipFX%2BJSHlvCktxuU7XVyM2md8rmzXkbz80ViE3iQO4%3D]       [https://www.netf=
+lix.com/watch/82645226?g=3Db2cfa07e-3905-4bb1-a3b0-ca7bafa77ca5&lkid=3DURL_=
+TITLE_CARD_CTA_COMING_SOON_TRAILER_3&lnktrk=3DEVO&trkid=3D13710079&MSG_TITL=
+E=3D82645226]
+
+=C2=A0
+
+=C2=A0
+
+=C2=A0
+
+Seasons Coming December 22
+
+=C2=A0
+
+https://www.netflix.com/title/70155602?g=3Db2cfa07e-3905-4bb1-a3b0-ca7bafa7=
+7ca5&lkid=3DURL_TITLE_CARD_IMAGE_HERO_COMING_SOON_4&lnktrk=3DEVO&trkid=3D13=
+710079&MSG_TITLE=3D70155602
+
+=C2=A0
+
+The Closer
+
+A CIA-trained deputy police chief shakes up the LAPD's elite
+homicide unit with her unique blend of southern charm and
+ruthless interrogation skills. More Info
+[https://www.netflix.com/title/70155602?g=3Db2cfa07e-3905-4bb1-a3b0-ca7bafa=
+77ca5&lkid=3DURL_TITLECARD_CTA_TEXT_MORE_INFO_4&lnktrk=3DEVO&trkid=3D137100=
+79&MSG_TITLE=3D70155602]
+
+Remind Me                                                                  =
+                                                                           =
+                                                                           =
+                                                                           =
+                                                                           =
+                                                                           =
+                                                                           =
+                                              =C2=A0   Play Trailer
+[https://www.netflix.com/remind-me/70155602?g=3Db2cfa07e-3905-4bb1-a3b0-ca7=
+bafa77ca5&lkid=3DURL_TITLE_CARD_CTA_COMING_SOON_REMINDME_4&lnktrk=3DEVO&trk=
+id=3D13710079&MSG_TITLE=3D70155602&msg_token=3DEQEAmQABAYEAHNDJGqaM1o5ZEEVm=
+KbMBq9SpHvJBa5M8ZAvUinHfpgWspTDZhQOm7VyF4j6iOOVBHZPjU%2FPYSlN9Od9dN%2FjVPR0=
+CTVW%2Bs82%2BSkzcDY5IiEdvou8oJY5rYx0rxB0ynYBdMgJQ92bNIVYxg4KyzqL%2FPZZpj%2B=
+c36CGwYNR9BrADSLN3iS1U6MNN2sKvOWN27vaAGTXJ60P7iu3zyZyYdvLLuJs4pHUUSNiu1LtcE=
+kRvp38J5UUrouPF8YrIe%2BVwV0rmhn7SRjZPctQ72U7aktUfl52jK1514w7vbev29jxZv8f2qs=
+azqB1lpX%2Fp9W3IIA3HgIu8Ovy5SlC0P%2B%2BTduUlMFhMWeI%3D]       [https://www.=
+netflix.com/watch/82173550?g=3Db2cfa07e-3905-4bb1-a3b0-ca7bafa77ca5&lkid=3D=
+URL_TITLE_CARD_CTA_COMING_SOON_TRAILER_4&lnktrk=3DEVO&trkid=3D13710079&MSG_=
+TITLE=3D82173550]
+
+=C2=A0
+
+View All Shows & Movies
+[https://www.netflix.com/browse?g=3Db2cfa07e-3905-4bb1-a3b0-ca7bafa77ca5&lk=
+id=3DURL_ESCAPE_HATCH_CTA_VIEW_ALL&lnktrk=3DEVO]
+=C2=A0
+
+   Questions? Call 1-866-952-4456
+  =20
+   121 Albright Way, Los Gatos, CA 95032, U.S.A.
+   [https://help.netflix.com/legal/corpinfo?g=3Db2cfa07e-3905-4bb1-a3b0-ca7=
+bafa77ca5&lkid=3DURL_CORP_INFO&lnktrk=3DEVO]
+  =20
+   Unsubscribe
+   [https://www.netflix.com/notificationsettings/email?id=3DBgiLsuvcAxKEAfy=
+zhprbiIuujxMTijB96kyxOV7LtNZqCmTD%2FZHD%2BI9RnEcsEj1Lk1WDUBNC3ICEgY3ToubUtU=
+gbYqbcoUAaSlrjCzNcun3WHwtRSRBFj2cjV5I2AHBvwdDqkMNV5DUoHk4KNFrUTaih01VJCv6j%=
+2F6OsczFOuHK5g8aNLy8cykss8mYMhhgGIg4KDPodYpGBPv7GMwA7iA%3D%3D&g=3Db2cfa07e-=
+3905-4bb1-a3b0-ca7bafa77ca5&mid=3D2&lkid=3DURL_UNSUB&lnktrk=3DEVO]
+   Terms of Use
+   [https://www.netflix.com/TermsOfUse?g=3Db2cfa07e-3905-4bb1-a3b0-ca7bafa7=
+7ca5&lkid=3DURL_TERMS&lnktrk=3DEVO]
+   Privacy
+   [https://www.netflix.com/PrivacyPolicy?g=3Db2cfa07e-3905-4bb1-a3b0-ca7ba=
+fa77ca5&lkid=3DURL_PRIVACY&lnktrk=3DEVO]
+   Help Center
+   [https://help.netflix.com/help?g=3Db2cfa07e-3905-4bb1-a3b0-ca7bafa77ca5&=
+lkid=3DURL_HELP&lnktrk=3DEVO]
+  =20
+   This message was mailed to [user@example.com]
+   [https://www.netflix.com/browse?g=3Db2cfa07e-3905-4bb1-a3b0-ca7bafa77ca5=
+&lkid=3DURL_EMAIL&lnktrk=3DEVO]
+   by Netflix as part of your Netflix=C2=A0membership.
+   SRC: 62844AD0_b2cfa07e-3905-4bb1-a3b0-ca7bafa77ca5_en_US_EVO
+   [https://www.netflix.com/browse?g=3Db2cfa07e-3905-4bb1-a3b0-ca7bafa77ca5=
+&lkid=3DURL_SRC&lnktrk=3DEVO]
+------=_Part_8541854_1720811427.1765595962235
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http:/=
+/www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    <html xmlns=3D"http://www.w3.org/1999/xhtml" xmlns:o=3D"urn:schemas-mic=
+rosoft-com:office:office" style=3D"background-color: #e5e5e5; margin-top: 0=
+; padding: 0; margin: 0;">
+    <head>
+      <meta http-equiv=3D"Content-Type" content=3D"text/html charset=3DUTF-=
+8">
+      <meta name=3D"viewport" content=3D"width=3Ddevice-width, initial-scal=
+e=3D1">
+      <meta http-equiv=3D"X-UA-Compatible" content=3D"IE=3Dedge">
+      <meta name=3D"format-detection" content=3D"telephone=3Dno">
+      <style type=3D"text/css">
+@media (max-width: 499px) {
+  u + .body .inbox-fix,
+u + .body .content-shell-table,
+u + .body .footer-shell-table,
+u + .body .footer {
+    min-width: 91.5vw !important;
+  }
+
+  .mobile-hide,
+.ios-hide {
+    display: none !important;
+  }
+
+  .desktop-hide,
+.desktop-hide img {
+    display: initial !important;
+  }
+
+  table.desktop-hide {
+    display: table !important;
+  }
+
+  .mobile-100w {
+    width: 100% !important;
+  }
+
+  .mobile-block {
+    display: block !important;
+  }
+
+  .mobile-center {
+    margin: 0 auto;
+    text-align: center !important;
+  }
+
+  .inner-padding {
+    padding-left: 6% !important;
+    padding-right: 6% !important;
+  }
+
+  .outside-padding {
+    padding-left: 12% !important;
+    padding-right: 12% !important;
+  }
+
+  .content-padding {
+    padding-left: 5.6% !important;
+    padding-right: 5.6% !important;
+  }
+
+  .desktop-hide-max,
+.desktop-hide-max img {
+    display: initial !important;
+  }
+}
+@media screen and (-webkit-min-device-pixel-ratio: 0) and (max-width: 499px=
+) {
+  .container.main-border {
+    padding: 0 !important;
+  }
+
+  .content-shell {
+    border: none !important;
+  }
+}
+@media yahoo {
+  table {
+    border-collapse: collapse;
+    table-layout: fixed;
+  }
+
+  table table {
+    table-layout: auto;
+  }
+}
+.hide-link a,
+.iosnonlink a,
+.hide-link {
+  text-decoration: none !important;
+  cursor: text;
+}
+@media (max-width: 499px) {
+  .evergreen-revamp .content-padding {
+    padding-left: 3.2% !important;
+    padding-right: 3.2% !important;
+  }
+}
+@media screen {
+  @font-face {
+    font-family: "Netflix Sans";
+    src: url("https://assets.nflxext.com/us/email/fonts/v2/NetflixSans_Lt.w=
+off");
+    font-weight: 300;
+  }
+
+  @font-face {
+    font-family: "Netflix Sans";
+    src: url("https://assets.nflxext.com/us/email/fonts/v2/NetflixSans_Rg.w=
+off");
+    font-weight: 400;
+  }
+
+  @font-face {
+    font-family: "Netflix Sans";
+    src: url("https://assets.nflxext.com/us/email/fonts/v2/NetflixSans_Md.w=
+off");
+    font-weight: 500;
+  }
+
+  @font-face {
+    font-family: "Netflix Sans";
+    src: url("https://assets.nflxext.com/us/email/fonts/v2/NetflixSans_Bd.w=
+off");
+    font-weight: 700;
+  }
+}
+@media screen {
+  @font-face {
+    font-family: "Netflix Sans";
+    src: url("https://assets.nflxext.com/us/email/fonts/v2/NetflixSans_Lt.w=
+off");
+    font-weight: 300;
+  }
+
+  @font-face {
+    font-family: "Netflix Sans";
+    src: url("https://assets.nflxext.com/us/email/fonts/v2/NetflixSans_Rg.w=
+off");
+    font-weight: 400;
+  }
+
+  @font-face {
+    font-family: "Netflix Sans";
+    src: url("https://assets.nflxext.com/us/email/fonts/v2/NetflixSans_Md.w=
+off");
+    font-weight: 500;
+  }
+
+  @font-face {
+    font-family: "Netflix Sans";
+    src: url("https://assets.nflxext.com/us/email/fonts/v2/NetflixSans_Bd.w=
+off");
+    font-weight: 700;
+  }
+}
+@media (max-width: 499px) {
+  .color-wrapper {
+    width: 100% !important;
+  }
+}
+@media (max-width: 499px) {
+  .bullet .indent.true {
+    width: 8% !important;
+  }
+
+  .bullet .indent.true {
+    padding-left: 3% !important;
+  }
+
+  .envelope.rtl .bullet .indent.true {
+    padding-right: 3% !important;
+  }
+}
+@media (max-width: 499px) {
+  .bullet-point {
+    line-height: 22px !important;
+  }
+}
+@media (max-width: 768px) {
+  .icon {
+    padding-top: 4px !important;
+  }
+}
+@media (max-width: 499px) {
+  .image .default-image-width img {
+    width: 100%;
+  }
+}
+@media (max-width: 499px) {
+  .mobile-hide-max,
+.ios-hide-max {
+    display: none !important;
+  }
+
+  .inbox-fix {
+    display: none;
+  }
+
+  .desktop-hide-max,
+.desktop-hide-max img {
+    display: initial !important;
+  }
+
+  table.content-shell-table,
+table.footer-shell-table,
+.footer {
+    width: 100% !important;
+  }
+
+  .content {
+    width: 100% !important;
+  }
+}
+.footer-shell .footer-link {
+  line-height: 20px;
+}
+@media (max-width: 499px) {
+  u + .body .gmail-screen {
+    background: #000;
+    mix-blend-mode: screen;
+  }
+
+  u + .body .gmail-difference {
+    background: #000;
+    mix-blend-mode: difference;
+  }
+}
+@media (max-width: 500px) {
+  .button-copy a {
+    padding: 13px 0px !important;
+    width: 100% !important;
+  }
+}
+@media (min-width: 501px) {
+  .button-copy a {
+    padding: 13px 40px;
+  }
+}
+@media (max-width: 499px) {
+  .image .default-image-width img {
+    width: 100%;
+  }
+
+  .artwork img {
+    width: 100% !important;
+  }
+
+  .number img {
+    width: 100% !important;
+  }
+}
+@media (max-width: 499px) {
+  .episode-content-cell {
+    width: 40% !important;
+  }
+
+  .episode-content-cell-image {
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  .episode-content-cell-progress-bar {
+    width: 100% !important;
+    height: auto !important;
+  }
+}
+@media (max-width: 499px) {
+  .exp-img-1 img {
+    width: 70% !important;
+  }
+
+  .exp-img-2 {
+    padding-left: 20px !important;
+  }
+
+  .exp-img-2 img {
+    width: 85% !important;
+  }
+
+  .exp-img-3 img {
+    width: 85% !important;
+  }
+
+  .exp-img-4 img {
+    width: 85% !important;
+  }
+
+  .calendar img {
+    width: 85% !important;
+    height: auto !important;
+  }
+}
+@media (max-width: 499px) {
+  .logo-with-horizontal-date-logo-image-cell {
+    width: 60% !important;
+  }
+}
+@media (max-width: 499px) {
+  .thumbs-button-image-width {
+    width: 80% !important;
+  }
+
+  .thumbs-button-cell-spacer {
+    width: 6% !important;
+  }
+}
+@media only screen and (max-width: 500px) {
+  .module-kar-hero-inner-body-cell {
+    width: 88% !important;
+  }
+}
+@media only screen and (max-width: 500px) {
+  .module-kar-hero-inner-body-cell {
+    width: 88% !important;
+  }
+}
+@media only screen and (max-width: 500px) {
+  .module-kar-themed-category-spacer-td {
+    height: 12px !important;
+  }
+}
+@media only screen and (max-width: 500px) {
+  .right-pencil-image img {
+    width: 75% !important;
+    height: auto !important;
+  }
+
+  .left-pencil-image img {
+    width: 85% !important;
+    height: auto !important;
+  }
+
+  .left-pencil-cell {
+    width: 30% !important;
+  }
+
+  .right-pencil-cell {
+    width: 30% !important;
+  }
+
+  .color-page-cell {
+    width: 40% !important;
+  }
+
+  .printable-logo-image img {
+    width: 40% !important;
+    height: auto !important;
+  }
+}
+@media only screen and (max-width: 500px) {
+  .module-kar-theme-bars-images img {
+    width: 100% !important;
+    height: auto !important;
+  }
+}
+@media (max-width: 499px) {
+  .evidence-cards-component-image-cell {
+    width: 12% !important;
+  }
+}
+@media (max-width: 499px) {
+  .evidence-images img {
+    width: 100% !important;
+    height: auto !important;
+  }
+}
+@media (max-width: 499px) {
+  .marker {
+    padding: 5px 7px 5px 7px !important;
+  }
+}
+@media (max-width: 499px) {
+  .evidence-trailer-component-image-cell {
+    width: 12% !important;
+  }
+}
+@media only screen and (max-width: 500px) {
+  .main-header-icon-cell {
+    width: 12% !important;
+  }
+
+  .header-copy-cell {
+    width: 85% !important;
+  }
+
+  .header-copy-cell-with-profile-icon {
+    width: 78% !important;
+  }
+
+  .netflix-logo-cell {
+    width: 10% !important;
+  }
+}
+@media (max-width: 500px) {
+  .mosaic-module .middle {
+    width: 46% !important;
+    padding-right: 4% !important;
+    padding-left: 4% !important;
+  }
+
+  .mosaic-module .left,
+.mosaic-module .right {
+    width: 24.8% !important;
+  }
+
+  .mosaic-module .component-image.cell,
+.mosaic-module .single-button .content-padding {
+    padding-top: 15px !important;
+  }
+}
+@media (max-width: 499px) {
+  .circle-icons-row .circle {
+    width: 27.5vw !important;
+    height: 27.5vw !important;
+  }
+
+  ._1 {
+    padding-right: "8px";
+  }
+
+  .envelope.rtl ._1 {
+    padding-left: "8px";
+  }
+
+  ._3 {
+    padding-left: "8px";
+  }
+
+  .envelope.rtl ._3 {
+    padding-right: "8px";
+  }
+}
+@media (max-width: 499px) {
+  .sidepadding-88 {
+    padding-left: 23% !important;
+    padding-right: 23% !important;
+  }
+}
+@media (max-width: 499px) {
+  .nfl2024 .hero + .spacer-table .spacer {
+    height: 44vw !important;
+  }
+}
+@media (min-width: 500px) {
+  .lewis-content-treatment .content {
+    background-size: contain;
+  }
+}
+</style>
+    </head>
+    <body class=3D"body" style=3D"background-color: #e5e5e5; margin-top: 0;=
+ padding: 0; margin: 0;">
+      <div class=3D"hide" data-testid=3D"preview-text" style=3D"display: no=
+ne; width: 0; height: 0; max-height: 0; line-height: 0; mso-hide: all; over=
+flow: hidden; visibility: hidden;">Say hello to new titles we think you&#x2=
+7;ll love.<br><div class=3D"hide disabled-plaintext" style=3D"display: none=
+; width: 0; height: 0; max-height: 0; line-height: 0; mso-hide: all; overfl=
+ow: hidden; visibility: hidden;">&#8199;&#847; &#8199;&#847; &#8199;&#847; =
+&#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#819=
+9;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#8=
+47; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &=
+#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199=
+;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#84=
+7; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#=
+8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;=
+&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847=
+; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8=
+199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&=
+#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847;=
+ &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#81=
+99;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#=
+847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; =
+&#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#819=
+9;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#8=
+47; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &=
+#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199=
+;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#84=
+7; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#=
+8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;=
+&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847=
+; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8=
+199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&=
+#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847;=
+ &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#81=
+99;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#=
+847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; =
+&#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#819=
+9;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#8=
+47; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &=
+#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199=
+;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#84=
+7; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#8199;&#847; &#=
+8199;&#847; &#8199;&#847; &#8199;&#847; &shy; &shy; &shy; &shy; &shy; &shy;=
+ &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &s=
+hy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy;=
+ &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &s=
+hy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy;=
+ &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &s=
+hy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy;=
+ &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &s=
+hy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy;=
+ &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &s=
+hy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy;=
+ &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &s=
+hy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy;=
+ &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &s=
+hy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy;=
+ &shy; &shy; &shy; &shy; &shy; &shy; &shy; &nbsp;</div></div><table width=
+=3D"100%" border=3D"0" class=3D"envelope account  evergreen-revamp dark-the=
+me" data-testid=3D"envelope" cellpadding=3D"0" cellspacing=3D"0" style=3D"b=
+ackground-color: #e5e5e5;" bgcolor=3D"#e5e5e5"><tbody><tr><td align=3D"cent=
+er" class=3D"container" style=3D"margin-top: 0; background-color: rgb(15, 1=
+5, 15);" bgcolor=3D"rgb(15, 15, 15)"><table align=3D"center" border=3D"0" c=
+lass=3D"content" style=3D"width: 500px; background-color: rgb(0, 0, 0); bac=
+kground: radial-gradient(150.2% 110.12% at -22.93% -12.82%, rgba(193, 77, 2=
+8, 0.40) 15.82%,rgba(0,0,0,0.0) 86.42%),radial-gradient(237.19% 237.19% at =
+100% 0%, rgba(44, 66, 156, 0.15) 13.83%,rgba(0,0,0,0.0) 100%);" cellpadding=
+=3D"0" cellspacing=3D"0" width=3D"500" bgcolor=3D"rgb(0, 0, 0)"><tbody><tr =
+class=3D"tracking-pixel"><td><table class=3D"tracking-pixel disabled-plaint=
+ext image" width=3D"100%" data-testid=3D"image" cellpadding=3D"0" cellspaci=
+ng=3D"0"><tbody><tr><td class=3D"cell tracking-pixel disabled-plaintext con=
+tent-padding" align=3D"center" style=3D"padding-left: 36px; padding-right: =
+36px; padding-top: 0;"><img src=3D"https://beaconimages.netflix.net/img/BAQ=
+gCEAIa5gIGCNGy69wDEsoCaMyTbjNH-dH0bQczDIB98G2nQy3Kxynvjcl36RtcOxIPgp9xcgpqW=
+sHYwj2G3aIspXdTGsn6ezQMRVGuDohoSr9H-SSge7fN77wk-jxOd_WkT1bQFpN_0kny6tmHFpPc=
+o7WpfyafLdo6FeK70-LKMF_j4cl5pFphCIXPz7zv9VplAU9cZdCZga-h4VEcclzjvyRuybz_I6N=
+xvC17IXjW9fF3Ng9Gh8EBxH7uZIS-gDZLBq8e-3SoDfQO-ta0nJNnVE10BZ_vUQlJpBOF_lQPfT=
+-1_S72QqbjVUjzpdoC9nY1pm4nbvriqhsWCSnR5g_M7TepWmNQWvTUFkZ5H9D39sW8de81YzE2k=
+qpezudjJ2J8jA-TTeywlOaLmwJejA-8UQthmR_TBUc9qdHIEsOpfB8uhzphgZp57kn06IKHpppq=
+JRB1nezIqf02GAYiDgoMKETPWubXXKQYL40b" alt width=3D"0" border=3D"0" class=3D=
+"undefined " style=3D"-ms-interpolation-mode: bicubic; border: none; outlin=
+e: none; border-collapse: collapse; display: block;"></td></tr></tbody></ta=
+ble></td></tr><tr><td align=3D"center" class=3D"shell"><table width=3D"100%=
+" id=3D"hero-text-only" cellpadding=3D"0" cellspacing=3D"0"><tbody><tr><td =
+class=3D"content-padding" style=3D"padding-left: 36px; padding-right: 36px;=
+"><a href=3D"https://www.netflix.com/browse?g=3Db2cfa07e-3905-4bb1-a3b0-ca7=
+bafa77ca5&amp;lkid=3DURL_LOGO&amp;lnktrk=3DEVO" class=3D"disabled-plaintext=
+" data-testid=3D"logo" style=3D"color: inherit;"><table class=3D"logo image=
+" width=3D"100%" data-testid=3D"image" cellpadding=3D"0" cellspacing=3D"0">=
+<tbody><tr><td class=3D"cell logo content-padding" align=3D"center" style=
+=3D"padding-left: 36px; padding-right: 36px; padding-top: 20px;"><img src=
+=3D"https://assets.nflxext.com/us/email/gem/nflx.png" alt=3D"Netflix" width=
+=3D"27" border=3D"0" class=3D"undefined " style=3D"-ms-interpolation-mode: =
+bicubic; border: none; outline: none; border-collapse: collapse; display: b=
+lock; border-style: none;"></td></tr></tbody></table></a><table width=3D"10=
+0%" class=3D"spacer-table" data-testid=3D"spacer" cellpadding=3D"0" cellspa=
+cing=3D"0"><tbody><tr><td class=3D"spacer" style=3D"font-size: 0; line-heig=
+ht: 0; height: 44px;" height=3D"44">=C2=A0</td></tr></tbody></table><table =
+align=3D"left" width=3D"100%" class=3D"copy-table " data-testid=3D"copy" ce=
+llpadding=3D"0" cellspacing=3D"0"><tbody><tr><td align=3D"left" class=3D"co=
+py body-standard-heavy none" style=3D"font-family: 'Netflix Sans', 'Helveti=
+ca Neue', Roboto, Segoe UI, sans-serif; font-weight: 500; font-size: 16px; =
+line-height: 24px; padding-top: 4px; color: rgb(255,255,255);">Dec 12 - Dec=
+ 26</td></tr></tbody></table><table align=3D"left" width=3D"100%" class=3D"=
+copy-table " data-testid=3D"copy" cellpadding=3D"0" cellspacing=3D"0"><tbod=
+y><tr><td align=3D"left" class=3D"copy subheader-large none" style=3D"font-=
+family: 'Netflix Sans', 'Helvetica Neue', Roboto, Segoe UI, sans-serif; fon=
+t-weight: 700; font-size: 32px; line-height: 40px; padding-top: 4px; color:=
+ rgb(255,255,255);">Your Netflix lookahead</td></tr></tbody></table><table =
+align=3D"left" width=3D"100%" class=3D"copy-table " data-testid=3D"copy" ce=
+llpadding=3D"0" cellspacing=3D"0"><tbody><tr><td align=3D"left" class=3D"co=
+py subtitle none" style=3D"font-family: 'Netflix Sans', 'Helvetica Neue', R=
+oboto, Segoe UI, sans-serif; font-weight: 400; font-size: 18px; line-height=
+: 27px; padding-top: 4px; color: rgba(255,255,255,0.7);">Coming soon=E2=80=
+=94new stories, old favorites, and more you won=E2=80=99t want to miss.</td=
+></tr></tbody></table><table class=3D"single-button mobile-100w " align=3D"=
+center" width=3D"100%" data-testid=3D"single-button" cellpadding=3D"0" cell=
+spacing=3D"0"><tbody><tr><td class=3D"none" style=3D"padding-top:16px" alig=
+n=3D"center"><table class=3D"inner-button border-true" style=3D"border-styl=
+e: solid; border-radius: 32px; border-color: rgba(128,128,128,0.6); backgro=
+und-color: transparent; border-width: 2px; width: 100%;" cellpadding=3D"0" =
+cellspacing=3D"0" width=3D"100%" bgcolor=3D"transparent"><tbody><tr><td cla=
+ss=3D"body-standard-heavy button-td" style=3D"font-family: 'Netflix Sans', =
+'Helvetica Neue', Roboto, Segoe UI, sans-serif; font-weight: 500; font-size=
+: 16px; line-height: 24px; padding: 12px; color: rgb(255,255,255);" align=
+=3D"center"><a class=3D"body-standard-heavy" href=3D"https://www.netflix.co=
+m/browse/coming-soon?g=3Db2cfa07e-3905-4bb1-a3b0-ca7bafa77ca5&amp;lkid=3DUR=
+L_TEXT_ONLY_HERO_CTA_COMING_SOON&amp;lnktrk=3DEVO&amp;trkid=3D13710079&amp;=
+MSG_TITLE=3D" style=3D"font-family: 'Netflix Sans', 'Helvetica Neue', Robot=
+o, Segoe UI, sans-serif; font-weight: 500; font-size: 16px; line-height: 24=
+px; text-align: center; text-decoration: none; display: block; color: rgb(2=
+55,255,255);">View All Coming Soon</a></td></tr></tbody></table></td></tr><=
+/tbody></table></td></tr></tbody></table><table width=3D"100%" data-testid=
+=3D"background-wrapper" cellpadding=3D"0" cellspacing=3D"0"><tbody><tr><td =
+class=3D"background-shell content-padding" style=3D"padding-left: 36px; pad=
+ding-right: 36px; padding-top: 40px;"><table class=3D"background-table mobi=
+le-100w" cellpadding=3D"0" cellspacing=3D"0"><tbody><tr><td class=3D"backgr=
+ound-content" style=3D"background-size:cover;background-repeat:no-repeat;ba=
+ckground-color:rgb(15,15,15);border-radius:24px;border:1px solid rgba(255,2=
+55,255,0.1)"><table align=3D"left" width=3D"100%" class=3D"copy-table " dat=
+a-testid=3D"copy" cellpadding=3D"0" cellspacing=3D"0"><tbody><tr><td align=
+=3D"left" class=3D"copy body-standard-heavy sidepadding-12" style=3D"paddin=
+g-left: 12px; padding-right: 12px; font-family: 'Netflix Sans', 'Helvetica =
+Neue', Roboto, Segoe UI, sans-serif; font-weight: 500; font-size: 16px; lin=
+e-height: 24px; padding-top: 12px; color: rgb(255,255,255);">New Episodes D=
+ecember 25 at 5=C2=A0PM PT</td></tr></tbody></table><table width=3D"100%" c=
+lass=3D"spacer-table" data-testid=3D"spacer" cellpadding=3D"0" cellspacing=
+=3D"0"><tbody><tr><td class=3D"spacer" style=3D"font-size: 0; line-height: =
+0; height: 12px;" height=3D"12">=C2=A0</td></tr></tbody></table><table clas=
+s=3D"title-asset sidepadding-12" align=3D"center" cellpadding=3D"0" cellspa=
+cing=3D"0" style=3D"padding-left: 12px; padding-right: 12px;"><tbody><tr><t=
+d align=3D"center" class=3D"marquee-cell"><table style=3D"overflow:hidden;b=
+order-radius:16px" cellpadding=3D"0" cellspacing=3D"0"><tbody><tr><td><tabl=
+e class=3D"component-image image" width=3D"100%" data-testid=3D"image" cell=
+padding=3D"0" cellspacing=3D"0"><tbody><tr><td class=3D"cell component-imag=
+e none" align=3D"center" style=3D"padding-top: 0;"><a href=3D"https://www.n=
+etflix.com/title/80057281?g=3Db2cfa07e-3905-4bb1-a3b0-ca7bafa77ca5&amp;lkid=
+=3DURL_TITLE_CARD_IMAGE_HERO_COMING_SOON_0&amp;lnktrk=3DEVO&amp;trkid=3D137=
+10079&amp;MSG_TITLE=3D80057281" target=3D"_blank" style=3D"color: inherit;"=
+><img src=3D"https://dnm.nflximg.net/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAA=
+ABUU7GlePprR-Uj1rSBeWv-qiy31CZ4hSr2_a81qw1lcafQYtBYk7oS1DiGXAtxpTRk2MVW60d5=
+CLuEHtNjjHV8fsEpxAA67muK_X.jpg?r=3D711" alt=3D"Stranger Things" width=3D"40=
+2" border=3D"0" class=3D"undefined mobile-100w" style=3D"-ms-interpolation-=
+mode: bicubic; border: none; outline: none; border-collapse: collapse; disp=
+lay: block; border-style: none;"></a></td></tr></tbody></table></td></tr></=
+tbody></table></td></tr></tbody></table><table width=3D"100%" class=3D"spac=
+er-table" data-testid=3D"spacer" cellpadding=3D"0" cellspacing=3D"0"><tbody=
+><tr><td class=3D"spacer" style=3D"font-size: 0; line-height: 0; height: 12=
+px;" height=3D"12">=C2=A0</td></tr></tbody></table><table align=3D"left" wi=
+dth=3D"100%" class=3D"copy-table " data-testid=3D"copy" cellpadding=3D"0" c=
+ellspacing=3D"0"><tbody><tr><td align=3D"left" class=3D"copy subheader-stan=
+dard-heavy sidepadding-12" style=3D"padding-left: 12px; padding-right: 12px=
+; font-family: 'Netflix Sans', 'Helvetica Neue', Roboto, Segoe UI, sans-ser=
+if; font-weight: 500; font-size: 24px; line-height: 30px; padding-top: 0; c=
+olor: rgb(255,255,255);">Stranger Things</td></tr></tbody></table><table al=
+ign=3D"left" width=3D"100%" class=3D"copy-table " data-testid=3D"copy" cell=
+padding=3D"0" cellspacing=3D"0"><tbody><tr><td align=3D"left" class=3D"copy=
+ subtitle sidepadding-12" style=3D"padding-left: 12px; padding-right: 12px;=
+ font-family: 'Netflix Sans', 'Helvetica Neue', Roboto, Segoe UI, sans-seri=
+f; font-weight: 400; font-size: 18px; line-height: 27px; padding-top: 0; co=
+lor: rgba(255,255,255,0.7);">With Hawkins&#x27; children ensnared by Vecna,=
+ the party faces unimaginable peril as they fight to bring them home. <a st=
+yle=3D"color: inherit; text-decoration: underline; white-space: nowrap;" hr=
+ef=3D"https://www.netflix.com/title/80057281?g=3Db2cfa07e-3905-4bb1-a3b0-ca=
+7bafa77ca5&amp;lkid=3DURL_TITLECARD_CTA_TEXT_MORE_INFO_0&amp;lnktrk=3DEVO&a=
+mp;trkid=3D13710079&amp;MSG_TITLE=3D80057281">More Info</a></td></tr></tbod=
+y></table><table width=3D"100%" class=3D"revamp-dual-buttons" cellpadding=
+=3D"0" cellspacing=3D"0"><tbody><tr><td style=3D"padding-left: 12px; paddin=
+g-right: 12px; padding-top: 16px;" class=3D"sidepadding-12"><table width=3D=
+"100%" cellpadding=3D"0" cellspacing=3D"0"><tbody><tr><td width=3D"49%"><ta=
+ble class=3D"single-button mobile-100w " align=3D"center" width=3D"100%" da=
+ta-testid=3D"single-button" cellpadding=3D"0" cellspacing=3D"0"><tbody><tr>=
+<td class=3D"none" style=3D"padding-top:0" align=3D"center"><table class=3D=
+"inner-button border-true" style=3D"border-style: solid; border-radius: 32p=
+x; border-color: rgb(229,9,20); background-color: rgb(229,9,20); border-wid=
+th: 2px; width: 100%;" cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" b=
+gcolor=3D"rgb(229,9,20)"><tbody><tr><td class=3D"body-standard-heavy button=
+-td" style=3D"font-family: 'Netflix Sans', 'Helvetica Neue', Roboto, Segoe =
+UI, sans-serif; font-weight: 500; font-size: 16px; line-height: 24px; paddi=
+ng: 12px; padding-left: 4px; padding-right: 4px; color: rgb(255,255,255);" =
+align=3D"center"><a class=3D"body-standard-heavy" href=3D"https://www.netfl=
+ix.com/remind-me/80057281?g=3Db2cfa07e-3905-4bb1-a3b0-ca7bafa77ca5&amp;lkid=
+=3DURL_TITLE_CARD_CTA_COMING_SOON_REMINDME_0&amp;lnktrk=3DEVO&amp;trkid=3D1=
+3710079&amp;MSG_TITLE=3D80057281&amp;msg_token=3DEQEAmQABAYEAJIQ%2F3wcRyqYa=
+nOoZhs2AwTiwPDYGEso2fCTR2CtGb1IUONSafRG6wuJfXxNnqwxTEE1clNEOSQZ1YxHD6ymG2kR=
+0ZyWmzyczlgc693UBF4g%2Fw5I2gUECAHcY4rlhc8ACLfhCHbjGKczjuNtFN5Lohi%2BkgVKYY3=
+WcrqGHex4AK9piz0GB4%2BR7InACmofeKpv4Tydh7D7x2RskWFHsFKV%2FA2MlOL00R5jPyut8W=
+fYstW0W%2BWLdC9bDTkv2oNO%2BpUSogzvhj62LxwEOTRYsoI08FZ2Awc9Z0pLU7OKdIMAITHV4=
+MK0UTW%2BpfTwqhlM3W0bA7twlxuvK8QAdVLpK9TM8czwaTLA%3D" style=3D"font-family:=
+ 'Netflix Sans', 'Helvetica Neue', Roboto, Segoe UI, sans-serif; font-weigh=
+t: 500; font-size: 16px; line-height: 24px; text-align: center; text-decora=
+tion: none; display: block; color: rgb(255,255,255);">Remind Me</a></td></t=
+r></tbody></table></td></tr></tbody></table></td><td class=3D"spacer" width=
+=3D"2%" style=3D"font-size: 0; line-height: 0; height: 20px;" height=3D"20"=
+>=C2=A0</td><td width=3D"49%"><table class=3D"single-button mobile-100w " a=
+lign=3D"center" width=3D"100%" data-testid=3D"single-button" cellpadding=3D=
+"0" cellspacing=3D"0"><tbody><tr><td class=3D"none" style=3D"padding-top:0"=
+ align=3D"center"><table class=3D"inner-button border-true" style=3D"border=
+-style: solid; border-radius: 32px; border-color: rgba(128,128,128,0.6); ba=
+ckground-color: transparent; border-width: 2px; width: 100%;" cellpadding=
+=3D"0" cellspacing=3D"0" width=3D"100%" bgcolor=3D"transparent"><tbody><tr>=
+<td class=3D"body-standard-heavy button-td" style=3D"font-family: 'Netflix =
+Sans', 'Helvetica Neue', Roboto, Segoe UI, sans-serif; font-weight: 500; fo=
+nt-size: 16px; line-height: 24px; padding: 12px; padding-left: 4px; padding=
+-right: 4px; color: rgb(255,255,255);" align=3D"center"><a class=3D"body-st=
+andard-heavy" href=3D"https://www.netflix.com/watch/82182579?g=3Db2cfa07e-3=
+905-4bb1-a3b0-ca7bafa77ca5&amp;lkid=3DURL_TITLE_CARD_CTA_COMING_SOON_TRAILE=
+R_0&amp;lnktrk=3DEVO&amp;trkid=3D13710079&amp;MSG_TITLE=3D82182579" style=
+=3D"font-family: 'Netflix Sans', 'Helvetica Neue', Roboto, Segoe UI, sans-s=
+erif; font-weight: 500; font-size: 16px; line-height: 24px; text-align: cen=
+ter; text-decoration: none; display: block; color: rgb(255,255,255);">Play =
+Trailer</a></td></tr></tbody></table></td></tr></tbody></table></td></tr></=
+tbody></table></td></tr></tbody></table><table width=3D"100%" class=3D"spac=
+er-table" data-testid=3D"spacer" cellpadding=3D"0" cellspacing=3D"0"><tbody=
+><tr><td class=3D"spacer" style=3D"font-size: 0; line-height: 0; height: 12=
+px;" height=3D"12">=C2=A0</td></tr></tbody></table><table width=3D"100%" da=
+ta-testid=3D"divider" cellpadding=3D"0" cellspacing=3D"0"><tbody><tr><td cl=
+ass=3D"divider sidepadding-12" style=3D"padding-left: 12px; padding-right: =
+12px; padding-top: 12px;"><table align=3D"center" width=3D"100%" cellpaddin=
+g=3D"0" cellspacing=3D"0"><tbody><tr><td class=3D"empty divider-border" sty=
+le=3D"font-size: 0; line-height: 0; border-style: solid; border-bottom-widt=
+h: 0; border-color: #221F1F; border-top-width: 1px;">=C2=A0</td></tr></tbod=
+y></table></td></tr></tbody></table><table width=3D"100%" class=3D"spacer-t=
+able" data-testid=3D"spacer" cellpadding=3D"0" cellspacing=3D"0"><tbody><tr=
+><td class=3D"spacer" style=3D"font-size: 0; line-height: 0; height: 12px;"=
+ height=3D"12">=C2=A0</td></tr></tbody></table><table align=3D"left" width=
+=3D"100%" class=3D"copy-table " data-testid=3D"copy" cellpadding=3D"0" cell=
+spacing=3D"0"><tbody><tr><td align=3D"left" class=3D"copy body-standard-hea=
+vy sidepadding-12" style=3D"padding-left: 12px; padding-right: 12px; font-f=
+amily: 'Netflix Sans', 'Helvetica Neue', Roboto, Segoe UI, sans-serif; font=
+-weight: 500; font-size: 16px; line-height: 24px; padding-top: 12px; color:=
+ rgb(255,255,255);">Coming Monday</td></tr></tbody></table><table width=3D"=
+100%" class=3D"spacer-table" data-testid=3D"spacer" cellpadding=3D"0" cells=
+pacing=3D"0"><tbody><tr><td class=3D"spacer" style=3D"font-size: 0; line-he=
+ight: 0; height: 12px;" height=3D"12">=C2=A0</td></tr></tbody></table><tabl=
+e class=3D"title-asset sidepadding-12" align=3D"center" cellpadding=3D"0" c=
+ellspacing=3D"0" style=3D"padding-left: 12px; padding-right: 12px;"><tbody>=
+<tr><td align=3D"center" class=3D"marquee-cell"><table style=3D"overflow:hi=
+dden;border-radius:16px" cellpadding=3D"0" cellspacing=3D"0"><tbody><tr><td=
+><table class=3D"component-image image" width=3D"100%" data-testid=3D"image=
+" cellpadding=3D"0" cellspacing=3D"0"><tbody><tr><td class=3D"cell componen=
+t-image none" align=3D"center" style=3D"padding-top: 0;"><a href=3D"https:/=
+/www.netflix.com/title/70295183?g=3Db2cfa07e-3905-4bb1-a3b0-ca7bafa77ca5&am=
+p;lkid=3DURL_TITLE_CARD_IMAGE_HERO_COMING_SOON_1&amp;lnktrk=3DEVO&amp;trkid=
+=3D13710079&amp;MSG_TITLE=3D70295183" target=3D"_blank" style=3D"color: inh=
+erit;"><img src=3D"https://dnm.nflximg.net/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1k=
+pE/AAAABdIrne-ZMbDs4Qodi-OdwIrInH00ucyArSt8nUX4Nn3C62_SPEcqPkZV2XdRhSootz8e=
+FJWk3ahLfYSO-Fsdz9P_HmQa35xyAFfk.jpg?r=3D156" alt=3D"Dragon Ball Z: Battle =
+of Gods" width=3D"402" border=3D"0" class=3D"undefined mobile-100w" style=
+=3D"-ms-interpolation-mode: bicubic; border: none; outline: none; border-co=
+llapse: collapse; display: block; border-style: none;"></a></td></tr></tbod=
+y></table></td></tr></tbody></table></td></tr></tbody></table><table width=
+=3D"100%" class=3D"spacer-table" data-testid=3D"spacer" cellpadding=3D"0" c=
+ellspacing=3D"0"><tbody><tr><td class=3D"spacer" style=3D"font-size: 0; lin=
+e-height: 0; height: 12px;" height=3D"12">=C2=A0</td></tr></tbody></table><=
+table align=3D"left" width=3D"100%" class=3D"copy-table " data-testid=3D"co=
+py" cellpadding=3D"0" cellspacing=3D"0"><tbody><tr><td align=3D"left" class=
+=3D"copy subheader-standard-heavy sidepadding-12" style=3D"padding-left: 12=
+px; padding-right: 12px; font-family: 'Netflix Sans', 'Helvetica Neue', Rob=
+oto, Segoe UI, sans-serif; font-weight: 500; font-size: 24px; line-height: =
+30px; padding-top: 0; color: rgb(255,255,255);">Dragon Ball Z: Battle of Go=
+ds</td></tr></tbody></table><table align=3D"left" width=3D"100%" class=3D"c=
+opy-table " data-testid=3D"copy" cellpadding=3D"0" cellspacing=3D"0"><tbody=
+><tr><td align=3D"left" class=3D"copy subtitle sidepadding-12" style=3D"pad=
+ding-left: 12px; padding-right: 12px; font-family: 'Netflix Sans', 'Helveti=
+ca Neue', Roboto, Segoe UI, sans-serif; font-weight: 400; font-size: 18px; =
+line-height: 27px; padding-top: 0; color: rgba(255,255,255,0.7);">When Beer=
+us, the God of Destruction, arrives on Earth to pick a fight with a worthy =
+opponent, the gang invokes a powerful Super Saiyan God to stop him. <a styl=
+e=3D"color: inherit; text-decoration: underline; white-space: nowrap;" href=
+=3D"https://www.netflix.com/title/70295183?g=3Db2cfa07e-3905-4bb1-a3b0-ca7b=
+afa77ca5&amp;lkid=3DURL_TITLECARD_CTA_TEXT_MORE_INFO_1&amp;lnktrk=3DEVO&amp=
+;trkid=3D13710079&amp;MSG_TITLE=3D70295183">More Info</a></td></tr></tbody>=
+</table><table width=3D"100%" class=3D"revamp-dual-buttons" cellpadding=3D"=
+0" cellspacing=3D"0"><tbody><tr><td style=3D"padding-left: 12px; padding-ri=
+ght: 12px; padding-top: 16px;" class=3D"sidepadding-12"><table width=3D"100=
+%" cellpadding=3D"0" cellspacing=3D"0"><tbody><tr><td width=3D"49%"><table =
+class=3D"single-button mobile-100w " align=3D"center" width=3D"100%" data-t=
+estid=3D"single-button" cellpadding=3D"0" cellspacing=3D"0"><tbody><tr><td =
+class=3D"none" style=3D"padding-top:0" align=3D"center"><table class=3D"inn=
+er-button border-true" style=3D"border-style: solid; border-radius: 32px; b=
+order-color: rgb(229,9,20); background-color: rgb(229,9,20); border-width: =
+2px; width: 100%;" cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" bgcol=
+or=3D"rgb(229,9,20)"><tbody><tr><td class=3D"body-standard-heavy button-td"=
+ style=3D"font-family: 'Netflix Sans', 'Helvetica Neue', Roboto, Segoe UI, =
+sans-serif; font-weight: 500; font-size: 16px; line-height: 24px; padding: =
+12px; padding-left: 4px; padding-right: 4px; color: rgb(255,255,255);" alig=
+n=3D"center"><a class=3D"body-standard-heavy" href=3D"https://www.netflix.c=
+om/remind-me/70295183?g=3Db2cfa07e-3905-4bb1-a3b0-ca7bafa77ca5&amp;lkid=3DU=
+RL_TITLE_CARD_CTA_COMING_SOON_REMINDME_1&amp;lnktrk=3DEVO&amp;trkid=3D13710=
+079&amp;MSG_TITLE=3D70295183&amp;msg_token=3DEQEAmQABAYEAGek%2FkYsB1FBB84Ko=
+1Sli0rm2iNXuca5LnUeQTD983YMhrJUHZsZoQDUpPSmG8m4pdOU4EpoNk%2Fv9RWXHr6Lth1CjO=
+8%2FP5ZPwT1oM4QOo9gY3Acq1pMznFTUDzNWSr2TsSz0O87QgrO3rigqrjY3GJ0KOGeB0TxLPlF=
+gpBgnqroowe%2B4EOJ1zf%2FEZVmi0KmgJrXUPxeALs%2BW6V931ccCWEYoBz7MV5BAs4Npx67J=
+Xm4AfT5nrJcIoOUB3a2%2FnSEQNR5jZPHbZJZzGxaZ%2FLE5lXmZ2Xtu4%2F1XcRdPfszklp1n5=
+1BFEmJBSDignW2KNzqT%2BDCGQEIVQ9L1S2S6cEkVcq4CJqy4%3D" style=3D"font-family:=
+ 'Netflix Sans', 'Helvetica Neue', Roboto, Segoe UI, sans-serif; font-weigh=
+t: 500; font-size: 16px; line-height: 24px; text-align: center; text-decora=
+tion: none; display: block; color: rgb(255,255,255);">Remind Me</a></td></t=
+r></tbody></table></td></tr></tbody></table></td><td class=3D"spacer" width=
+=3D"2%" style=3D"font-size: 0; line-height: 0; height: 20px;" height=3D"20"=
+>=C2=A0</td><td width=3D"49%"><table class=3D"single-button mobile-100w " a=
+lign=3D"center" width=3D"100%" data-testid=3D"single-button" cellpadding=3D=
+"0" cellspacing=3D"0"><tbody><tr><td class=3D"none" style=3D"padding-top:0"=
+ align=3D"center"><table class=3D"inner-button border-true" style=3D"border=
+-style: solid; border-radius: 32px; border-color: rgba(128,128,128,0.6); ba=
+ckground-color: transparent; border-width: 2px; width: 100%;" cellpadding=
+=3D"0" cellspacing=3D"0" width=3D"100%" bgcolor=3D"transparent"><tbody><tr>=
+<td class=3D"body-standard-heavy button-td" style=3D"font-family: 'Netflix =
+Sans', 'Helvetica Neue', Roboto, Segoe UI, sans-serif; font-weight: 500; fo=
+nt-size: 16px; line-height: 24px; padding: 12px; padding-left: 4px; padding=
+-right: 4px; color: rgb(255,255,255);" align=3D"center"><a class=3D"body-st=
+andard-heavy" href=3D"https://www.netflix.com/watch/81076664?g=3Db2cfa07e-3=
+905-4bb1-a3b0-ca7bafa77ca5&amp;lkid=3DURL_TITLE_CARD_CTA_COMING_SOON_TRAILE=
+R_1&amp;lnktrk=3DEVO&amp;trkid=3D13710079&amp;MSG_TITLE=3D81076664" style=
+=3D"font-family: 'Netflix Sans', 'Helvetica Neue', Roboto, Segoe UI, sans-s=
+erif; font-weight: 500; font-size: 16px; line-height: 24px; text-align: cen=
+ter; text-decoration: none; display: block; color: rgb(255,255,255);">Play =
+Trailer</a></td></tr></tbody></table></td></tr></tbody></table></td></tr></=
+tbody></table></td></tr></tbody></table><table width=3D"100%" class=3D"spac=
+er-table" data-testid=3D"spacer" cellpadding=3D"0" cellspacing=3D"0"><tbody=
+><tr><td class=3D"spacer" style=3D"font-size: 0; line-height: 0; height: 12=
+px;" height=3D"12">=C2=A0</td></tr></tbody></table><table width=3D"100%" da=
+ta-testid=3D"divider" cellpadding=3D"0" cellspacing=3D"0"><tbody><tr><td cl=
+ass=3D"divider sidepadding-12" style=3D"padding-left: 12px; padding-right: =
+12px; padding-top: 12px;"><table align=3D"center" width=3D"100%" cellpaddin=
+g=3D"0" cellspacing=3D"0"><tbody><tr><td class=3D"empty divider-border" sty=
+le=3D"font-size: 0; line-height: 0; border-style: solid; border-bottom-widt=
+h: 0; border-color: #221F1F; border-top-width: 1px;">=C2=A0</td></tr></tbod=
+y></table></td></tr></tbody></table><table width=3D"100%" class=3D"spacer-t=
+able" data-testid=3D"spacer" cellpadding=3D"0" cellspacing=3D"0"><tbody><tr=
+><td class=3D"spacer" style=3D"font-size: 0; line-height: 0; height: 12px;"=
+ height=3D"12">=C2=A0</td></tr></tbody></table><table align=3D"left" width=
+=3D"100%" class=3D"copy-table " data-testid=3D"copy" cellpadding=3D"0" cell=
+spacing=3D"0"><tbody><tr><td align=3D"left" class=3D"copy body-standard-hea=
+vy sidepadding-12" style=3D"padding-left: 12px; padding-right: 12px; font-f=
+amily: 'Netflix Sans', 'Helvetica Neue', Roboto, Segoe UI, sans-serif; font=
+-weight: 500; font-size: 16px; line-height: 24px; padding-top: 12px; color:=
+ rgb(255,255,255);">Seasons Coming Tuesday</td></tr></tbody></table><table =
+width=3D"100%" class=3D"spacer-table" data-testid=3D"spacer" cellpadding=3D=
+"0" cellspacing=3D"0"><tbody><tr><td class=3D"spacer" style=3D"font-size: 0=
+; line-height: 0; height: 12px;" height=3D"12">=C2=A0</td></tr></tbody></ta=
+ble><table class=3D"title-asset sidepadding-12" align=3D"center" cellpaddin=
+g=3D"0" cellspacing=3D"0" style=3D"padding-left: 12px; padding-right: 12px;=
+"><tbody><tr><td align=3D"center" class=3D"marquee-cell"><table style=3D"ov=
+erflow:hidden;border-radius:16px" cellpadding=3D"0" cellspacing=3D"0"><tbod=
+y><tr><td><table class=3D"component-image image" width=3D"100%" data-testid=
+=3D"image" cellpadding=3D"0" cellspacing=3D"0"><tbody><tr><td class=3D"cell=
+ component-image none" align=3D"center" style=3D"padding-top: 0;"><a href=
+=3D"https://www.netflix.com/title/81036944?g=3Db2cfa07e-3905-4bb1-a3b0-ca7b=
+afa77ca5&amp;lkid=3DURL_TITLE_CARD_IMAGE_HERO_COMING_SOON_2&amp;lnktrk=3DEV=
+O&amp;trkid=3D13710079&amp;MSG_TITLE=3D81036944" target=3D"_blank" style=3D=
+"color: inherit;"><img src=3D"https://dnm.nflximg.net/api/v6/Qs00mKCpRvrkl3=
+HZAN5KwEL1kpE/AAAABZ3eZpJgabQqfS6nhivrqrb1LGNCevunNWSSUKiOxvzh8yabmWFLcuxbx=
+T9VlVvEsuZ8a0jh-AHQf-lIBd4pG3xDu2KcSvoFT8pG.jpg?r=3Dd07" alt=3D"Castle Rock=
+" width=3D"402" border=3D"0" class=3D"undefined mobile-100w" style=3D"-ms-i=
+nterpolation-mode: bicubic; border: none; outline: none; border-collapse: c=
+ollapse; display: block; border-style: none;"></a></td></tr></tbody></table=
+></td></tr></tbody></table></td></tr></tbody></table><table width=3D"100%" =
+class=3D"spacer-table" data-testid=3D"spacer" cellpadding=3D"0" cellspacing=
+=3D"0"><tbody><tr><td class=3D"spacer" style=3D"font-size: 0; line-height: =
+0; height: 12px;" height=3D"12">=C2=A0</td></tr></tbody></table><table alig=
+n=3D"left" width=3D"100%" class=3D"copy-table " data-testid=3D"copy" cellpa=
+dding=3D"0" cellspacing=3D"0"><tbody><tr><td align=3D"left" class=3D"copy s=
+ubheader-standard-heavy sidepadding-12" style=3D"padding-left: 12px; paddin=
+g-right: 12px; font-family: 'Netflix Sans', 'Helvetica Neue', Roboto, Segoe=
+ UI, sans-serif; font-weight: 500; font-size: 24px; line-height: 30px; padd=
+ing-top: 0; color: rgb(255,255,255);">Castle Rock</td></tr></tbody></table>=
+<table align=3D"left" width=3D"100%" class=3D"copy-table " data-testid=3D"c=
+opy" cellpadding=3D"0" cellspacing=3D"0"><tbody><tr><td align=3D"left" clas=
+s=3D"copy subtitle sidepadding-12" style=3D"padding-left: 12px; padding-rig=
+ht: 12px; font-family: 'Netflix Sans', 'Helvetica Neue', Roboto, Segoe UI, =
+sans-serif; font-weight: 400; font-size: 18px; line-height: 27px; padding-t=
+op: 0; color: rgba(255,255,255,0.7);">Based on the works of Stephen King, t=
+his horror series weaves together his characters and stories set in the fic=
+tional town of Castle Rock, Maine. <a style=3D"color: inherit; text-decorat=
+ion: underline; white-space: nowrap;" href=3D"https://www.netflix.com/title=
+/81036944?g=3Db2cfa07e-3905-4bb1-a3b0-ca7bafa77ca5&amp;lkid=3DURL_TITLECARD=
+_CTA_TEXT_MORE_INFO_2&amp;lnktrk=3DEVO&amp;trkid=3D13710079&amp;MSG_TITLE=
+=3D81036944">More Info</a></td></tr></tbody></table><table width=3D"100%" c=
+lass=3D"revamp-dual-buttons" cellpadding=3D"0" cellspacing=3D"0"><tbody><tr=
+><td style=3D"padding-left: 12px; padding-right: 12px; padding-top: 16px;" =
+class=3D"sidepadding-12"><table width=3D"100%" cellpadding=3D"0" cellspacin=
+g=3D"0"><tbody><tr><td width=3D"49%"><table class=3D"single-button mobile-1=
+00w " align=3D"center" width=3D"100%" data-testid=3D"single-button" cellpad=
+ding=3D"0" cellspacing=3D"0"><tbody><tr><td class=3D"none" style=3D"padding=
+-top:0" align=3D"center"><table class=3D"inner-button border-true" style=3D=
+"border-style: solid; border-radius: 32px; border-color: rgb(229,9,20); bac=
+kground-color: rgb(229,9,20); border-width: 2px; width: 100%;" cellpadding=
+=3D"0" cellspacing=3D"0" width=3D"100%" bgcolor=3D"rgb(229,9,20)"><tbody><t=
+r><td class=3D"body-standard-heavy button-td" style=3D"font-family: 'Netfli=
+x Sans', 'Helvetica Neue', Roboto, Segoe UI, sans-serif; font-weight: 500; =
+font-size: 16px; line-height: 24px; padding: 12px; padding-left: 4px; paddi=
+ng-right: 4px; color: rgb(255,255,255);" align=3D"center"><a class=3D"body-=
+standard-heavy" href=3D"https://www.netflix.com/remind-me/81036944?g=3Db2cf=
+a07e-3905-4bb1-a3b0-ca7bafa77ca5&amp;lkid=3DURL_TITLE_CARD_CTA_COMING_SOON_=
+REMINDME_2&amp;lnktrk=3DEVO&amp;trkid=3D13710079&amp;MSG_TITLE=3D81036944&a=
+mp;msg_token=3DEQEAmQABAYEAD87WJwdRevJBGQVwbz%2BDslMqKc3UatiEvg08DQqyMR1rv1=
+pQrSw7W7OP6nAs19vElZSNHzH35auaNeoF%2BzMzY6%2FonvHsoOWT5SoE%2FTdgWVTxXfiGE3a=
+nH4LaSIrMaiaFir7JkwmDRotmHI1RecS30EbEFMRapwJTLPoj%2BSMt5mZK5F%2BJwm5bLUTkqo=
+FwVVXVm4o5tJ0BZihNqn%2Bj0bGyDGu4lpLO0RjyqVBkFpseSiwDW1dk%2FXpGFQHJ1hAnAAJzp=
+7sN0rBTkjHM6GnJK%2Fc67PaGoBkCAythHxXUDJBnv2Vjz7Iyk7AOsgt6Dk4rjeDHaZcuVEuAdw=
+gvUcCqeee0VY3rlfI%3D" style=3D"font-family: 'Netflix Sans', 'Helvetica Neue=
+', Roboto, Segoe UI, sans-serif; font-weight: 500; font-size: 16px; line-he=
+ight: 24px; text-align: center; text-decoration: none; display: block; colo=
+r: rgb(255,255,255);">Remind Me</a></td></tr></tbody></table></td></tr></tb=
+ody></table></td><td class=3D"spacer" width=3D"2%" style=3D"font-size: 0; l=
+ine-height: 0; height: 20px;" height=3D"20">=C2=A0</td><td width=3D"49%"><t=
+able class=3D"single-button mobile-100w " align=3D"center" width=3D"100%" d=
+ata-testid=3D"single-button" cellpadding=3D"0" cellspacing=3D"0"><tbody><tr=
+><td class=3D"none" style=3D"padding-top:0" align=3D"center"><table class=
+=3D"inner-button border-true" style=3D"border-style: solid; border-radius: =
+32px; border-color: rgba(128,128,128,0.6); background-color: transparent; b=
+order-width: 2px; width: 100%;" cellpadding=3D"0" cellspacing=3D"0" width=
+=3D"100%" bgcolor=3D"transparent"><tbody><tr><td class=3D"body-standard-hea=
+vy button-td" style=3D"font-family: 'Netflix Sans', 'Helvetica Neue', Robot=
+o, Segoe UI, sans-serif; font-weight: 500; font-size: 16px; line-height: 24=
+px; padding: 12px; padding-left: 4px; padding-right: 4px; color: rgb(255,25=
+5,255);" align=3D"center"><a class=3D"body-standard-heavy" href=3D"https://=
+www.netflix.com/title/81036944?g=3Db2cfa07e-3905-4bb1-a3b0-ca7bafa77ca5&amp=
+;lkid=3DURL_TITLE_CARD_CTA_COMING_SOON_MORE_INFO_2&amp;lnktrk=3DEVO&amp;trk=
+id=3D13710079&amp;MSG_TITLE=3D81036944" style=3D"font-family: 'Netflix Sans=
+', 'Helvetica Neue', Roboto, Segoe UI, sans-serif; font-weight: 500; font-s=
+ize: 16px; line-height: 24px; text-align: center; text-decoration: none; di=
+splay: block; color: rgb(255,255,255);">More=C2=A0Info</a></td></tr></tbody=
+></table></td></tr></tbody></table></td></tr></tbody></table></td></tr></tb=
+ody></table><table width=3D"100%" class=3D"spacer-table" data-testid=3D"spa=
+cer" cellpadding=3D"0" cellspacing=3D"0"><tbody><tr><td class=3D"spacer" st=
+yle=3D"font-size: 0; line-height: 0; height: 12px;" height=3D"12">=C2=A0</t=
+d></tr></tbody></table><table width=3D"100%" data-testid=3D"divider" cellpa=
+dding=3D"0" cellspacing=3D"0"><tbody><tr><td class=3D"divider sidepadding-1=
+2" style=3D"padding-left: 12px; padding-right: 12px; padding-top: 12px;"><t=
+able align=3D"center" width=3D"100%" cellpadding=3D"0" cellspacing=3D"0"><t=
+body><tr><td class=3D"empty divider-border" style=3D"font-size: 0; line-hei=
+ght: 0; border-style: solid; border-bottom-width: 0; border-color: #221F1F;=
+ border-top-width: 1px;">=C2=A0</td></tr></tbody></table></td></tr></tbody>=
+</table><table width=3D"100%" class=3D"spacer-table" data-testid=3D"spacer"=
+ cellpadding=3D"0" cellspacing=3D"0"><tbody><tr><td class=3D"spacer" style=
+=3D"font-size: 0; line-height: 0; height: 12px;" height=3D"12">=C2=A0</td><=
+/tr></tbody></table><table align=3D"left" width=3D"100%" class=3D"copy-tabl=
+e " data-testid=3D"copy" cellpadding=3D"0" cellspacing=3D"0"><tbody><tr><td=
+ align=3D"left" class=3D"copy body-standard-heavy sidepadding-12" style=3D"=
+padding-left: 12px; padding-right: 12px; font-family: 'Netflix Sans', 'Helv=
+etica Neue', Roboto, Segoe UI, sans-serif; font-weight: 500; font-size: 16p=
+x; line-height: 24px; padding-top: 12px; color: rgb(255,255,255);">Live Eve=
+nt Coming December 19 at 5=C2=A0PM PT</td></tr></tbody></table><table width=
+=3D"100%" class=3D"spacer-table" data-testid=3D"spacer" cellpadding=3D"0" c=
+ellspacing=3D"0"><tbody><tr><td class=3D"spacer" style=3D"font-size: 0; lin=
+e-height: 0; height: 12px;" height=3D"12">=C2=A0</td></tr></tbody></table><=
+table class=3D"title-asset sidepadding-12" align=3D"center" cellpadding=3D"=
+0" cellspacing=3D"0" style=3D"padding-left: 12px; padding-right: 12px;"><tb=
+ody><tr><td align=3D"center" class=3D"marquee-cell"><table style=3D"overflo=
+w:hidden;border-radius:16px" cellpadding=3D"0" cellspacing=3D"0"><tbody><tr=
+><td><table class=3D"component-image image" width=3D"100%" data-testid=3D"i=
+mage" cellpadding=3D"0" cellspacing=3D"0"><tbody><tr><td class=3D"cell comp=
+onent-image none" align=3D"center" style=3D"padding-top: 0;"><a href=3D"htt=
+ps://www.netflix.com/title/82122635?g=3Db2cfa07e-3905-4bb1-a3b0-ca7bafa77ca=
+5&amp;lkid=3DURL_TITLE_CARD_IMAGE_HERO_COMING_SOON_3&amp;lnktrk=3DEVO&amp;t=
+rkid=3D13710079&amp;MSG_TITLE=3D82122635" target=3D"_blank" style=3D"color:=
+ inherit;"><img src=3D"https://dnm.nflximg.net/api/v6/Qs00mKCpRvrkl3HZAN5Kw=
+EL1kpE/AAAABe_7MXUsOm0_g-7vf_x9kVHw6X9MZsjpAau2D1W4LYL2DBoAd1kEn6Q0xu9DDWRw=
+yfQOhkLfFkgOpjkZ8DaKfsw8D_ua1TsYn-taidWuEi4GsY1-o3yzLJCtBNZEFeDE-Cz457j6388=
+XahExQsL3sWRKviYO5vHgQ6goLoMKhBNx7gj96SEaKw263c5REqev_ugOnxQ094kJKn_aFsrqzN=
+qQnflhvj5E_VBNXcnbeUTh1V2dundQXVu7IIzfPZEd_xdj4QYUAvOLb_2eenbfM5nZPOmvi6CmV=
+dYEodZGMWm8YBQ.jpg?r=3Db55" alt=3D"Jake Paul vs. Anthony Joshua" width=3D"4=
+02" border=3D"0" class=3D"undefined mobile-100w" style=3D"-ms-interpolation=
+-mode: bicubic; border: none; outline: none; border-collapse: collapse; dis=
+play: block; border-style: none;"></a></td></tr></tbody></table></td></tr><=
+/tbody></table></td></tr></tbody></table><table width=3D"100%" class=3D"spa=
+cer-table" data-testid=3D"spacer" cellpadding=3D"0" cellspacing=3D"0"><tbod=
+y><tr><td class=3D"spacer" style=3D"font-size: 0; line-height: 0; height: 1=
+2px;" height=3D"12">=C2=A0</td></tr></tbody></table><table align=3D"left" w=
+idth=3D"100%" class=3D"copy-table " data-testid=3D"copy" cellpadding=3D"0" =
+cellspacing=3D"0"><tbody><tr><td align=3D"left" class=3D"copy subheader-sta=
+ndard-heavy sidepadding-12" style=3D"padding-left: 12px; padding-right: 12p=
+x; font-family: 'Netflix Sans', 'Helvetica Neue', Roboto, Segoe UI, sans-se=
+rif; font-weight: 500; font-size: 24px; line-height: 30px; padding-top: 0; =
+color: rgb(255,255,255);">Jake Paul vs. Anthony Joshua</td></tr></tbody></t=
+able><table align=3D"left" width=3D"100%" class=3D"copy-table " data-testid=
+=3D"copy" cellpadding=3D"0" cellspacing=3D"0"><tbody><tr><td align=3D"left"=
+ class=3D"copy subtitle sidepadding-12" style=3D"padding-left: 12px; paddin=
+g-right: 12px; font-family: 'Netflix Sans', 'Helvetica Neue', Roboto, Segoe=
+ UI, sans-serif; font-weight: 400; font-size: 18px; line-height: 27px; padd=
+ing-top: 0; color: rgba(255,255,255,0.7);">Boxing disruptor Jake Paul chall=
+enges heavyweight powerhouse Anthony Joshua live in a career-defining super=
+ fight from Most Valuable Promotions. <a style=3D"color: inherit; text-deco=
+ration: underline; white-space: nowrap;" href=3D"https://www.netflix.com/ti=
+tle/82122635?g=3Db2cfa07e-3905-4bb1-a3b0-ca7bafa77ca5&amp;lkid=3DURL_TITLEC=
+ARD_CTA_TEXT_MORE_INFO_3&amp;lnktrk=3DEVO&amp;trkid=3D13710079&amp;MSG_TITL=
+E=3D82122635">More Info</a></td></tr></tbody></table><table width=3D"100%" =
+class=3D"revamp-dual-buttons" cellpadding=3D"0" cellspacing=3D"0"><tbody><t=
+r><td style=3D"padding-left: 12px; padding-right: 12px; padding-top: 16px;"=
+ class=3D"sidepadding-12"><table width=3D"100%" cellpadding=3D"0" cellspaci=
+ng=3D"0"><tbody><tr><td width=3D"49%"><table class=3D"single-button mobile-=
+100w " align=3D"center" width=3D"100%" data-testid=3D"single-button" cellpa=
+dding=3D"0" cellspacing=3D"0"><tbody><tr><td class=3D"none" style=3D"paddin=
+g-top:0" align=3D"center"><table class=3D"inner-button border-true" style=
+=3D"border-style: solid; border-radius: 32px; border-color: rgb(229,9,20); =
+background-color: rgb(229,9,20); border-width: 2px; width: 100%;" cellpaddi=
+ng=3D"0" cellspacing=3D"0" width=3D"100%" bgcolor=3D"rgb(229,9,20)"><tbody>=
+<tr><td class=3D"body-standard-heavy button-td" style=3D"font-family: 'Netf=
+lix Sans', 'Helvetica Neue', Roboto, Segoe UI, sans-serif; font-weight: 500=
+; font-size: 16px; line-height: 24px; padding: 12px; padding-left: 4px; pad=
+ding-right: 4px; color: rgb(255,255,255);" align=3D"center"><a class=3D"bod=
+y-standard-heavy" href=3D"https://www.netflix.com/remind-me/82122635?g=3Db2=
+cfa07e-3905-4bb1-a3b0-ca7bafa77ca5&amp;lkid=3DURL_TITLE_CARD_CTA_COMING_SOO=
+N_REMINDME_3&amp;lnktrk=3DEVO&amp;trkid=3D13710079&amp;MSG_TITLE=3D82122635=
+&amp;msg_token=3DEQEAmQABAYEAd9qki25gPZ1hF1Hn5O4P5Js8%2Besg99yH2jlzWx2Wk5Wx=
+dbefEJbgR3FwcJ49K7bGCNj2dUQcwAYvhMkgrcWn24DNFQ9WAwXtnznnpcWhl3QECmRvkeckYYt=
+MMl5D5XQYU62UVsEPFyYdQLYutCi5FyrC7BF8hwR4KtNvvYMvijuz81xafxEUm644HrTjWazCDZ=
+4MFctzAF8%2Fa1ncYGGjRaBhzIuasYQlc%2FDwbC51sb38Wote0gKrvMRTrpTrqWKGlqlJGb0jL=
+ply6M%2F1X%2BxHqa%2BPNPWZ183cL4lLg6BDp4yVC%2Bp7DipFX%2BJSHlvCktxuU7XVyM2md8=
+rmzXkbz80ViE3iQO4%3D" style=3D"font-family: 'Netflix Sans', 'Helvetica Neue=
+', Roboto, Segoe UI, sans-serif; font-weight: 500; font-size: 16px; line-he=
+ight: 24px; text-align: center; text-decoration: none; display: block; colo=
+r: rgb(255,255,255);">Remind Me</a></td></tr></tbody></table></td></tr></tb=
+ody></table></td><td class=3D"spacer" width=3D"2%" style=3D"font-size: 0; l=
+ine-height: 0; height: 20px;" height=3D"20">=C2=A0</td><td width=3D"49%"><t=
+able class=3D"single-button mobile-100w " align=3D"center" width=3D"100%" d=
+ata-testid=3D"single-button" cellpadding=3D"0" cellspacing=3D"0"><tbody><tr=
+><td class=3D"none" style=3D"padding-top:0" align=3D"center"><table class=
+=3D"inner-button border-true" style=3D"border-style: solid; border-radius: =
+32px; border-color: rgba(128,128,128,0.6); background-color: transparent; b=
+order-width: 2px; width: 100%;" cellpadding=3D"0" cellspacing=3D"0" width=
+=3D"100%" bgcolor=3D"transparent"><tbody><tr><td class=3D"body-standard-hea=
+vy button-td" style=3D"font-family: 'Netflix Sans', 'Helvetica Neue', Robot=
+o, Segoe UI, sans-serif; font-weight: 500; font-size: 16px; line-height: 24=
+px; padding: 12px; padding-left: 4px; padding-right: 4px; color: rgb(255,25=
+5,255);" align=3D"center"><a class=3D"body-standard-heavy" href=3D"https://=
+www.netflix.com/watch/82645226?g=3Db2cfa07e-3905-4bb1-a3b0-ca7bafa77ca5&amp=
+;lkid=3DURL_TITLE_CARD_CTA_COMING_SOON_TRAILER_3&amp;lnktrk=3DEVO&amp;trkid=
+=3D13710079&amp;MSG_TITLE=3D82645226" style=3D"font-family: 'Netflix Sans',=
+ 'Helvetica Neue', Roboto, Segoe UI, sans-serif; font-weight: 500; font-siz=
+e: 16px; line-height: 24px; text-align: center; text-decoration: none; disp=
+lay: block; color: rgb(255,255,255);">Play Trailer</a></td></tr></tbody></t=
+able></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody>=
+</table><table width=3D"100%" class=3D"spacer-table" data-testid=3D"spacer"=
+ cellpadding=3D"0" cellspacing=3D"0"><tbody><tr><td class=3D"spacer" style=
+=3D"font-size: 0; line-height: 0; height: 12px;" height=3D"12">=C2=A0</td><=
+/tr></tbody></table><table width=3D"100%" data-testid=3D"divider" cellpaddi=
+ng=3D"0" cellspacing=3D"0"><tbody><tr><td class=3D"divider sidepadding-12" =
+style=3D"padding-left: 12px; padding-right: 12px; padding-top: 12px;"><tabl=
+e align=3D"center" width=3D"100%" cellpadding=3D"0" cellspacing=3D"0"><tbod=
+y><tr><td class=3D"empty divider-border" style=3D"font-size: 0; line-height=
+: 0; border-style: solid; border-bottom-width: 0; border-color: #221F1F; bo=
+rder-top-width: 1px;">=C2=A0</td></tr></tbody></table></td></tr></tbody></t=
+able><table width=3D"100%" class=3D"spacer-table" data-testid=3D"spacer" ce=
+llpadding=3D"0" cellspacing=3D"0"><tbody><tr><td class=3D"spacer" style=3D"=
+font-size: 0; line-height: 0; height: 12px;" height=3D"12">=C2=A0</td></tr>=
+</tbody></table><table align=3D"left" width=3D"100%" class=3D"copy-table " =
+data-testid=3D"copy" cellpadding=3D"0" cellspacing=3D"0"><tbody><tr><td ali=
+gn=3D"left" class=3D"copy body-standard-heavy sidepadding-12" style=3D"padd=
+ing-left: 12px; padding-right: 12px; font-family: 'Netflix Sans', 'Helvetic=
+a Neue', Roboto, Segoe UI, sans-serif; font-weight: 500; font-size: 16px; l=
+ine-height: 24px; padding-top: 12px; color: rgb(255,255,255);">Seasons Comi=
+ng December 22</td></tr></tbody></table><table width=3D"100%" class=3D"spac=
+er-table" data-testid=3D"spacer" cellpadding=3D"0" cellspacing=3D"0"><tbody=
+><tr><td class=3D"spacer" style=3D"font-size: 0; line-height: 0; height: 12=
+px;" height=3D"12">=C2=A0</td></tr></tbody></table><table class=3D"title-as=
+set sidepadding-12" align=3D"center" cellpadding=3D"0" cellspacing=3D"0" st=
+yle=3D"padding-left: 12px; padding-right: 12px;"><tbody><tr><td align=3D"ce=
+nter" class=3D"marquee-cell"><table style=3D"overflow:hidden;border-radius:=
+16px" cellpadding=3D"0" cellspacing=3D"0"><tbody><tr><td><table class=3D"co=
+mponent-image image" width=3D"100%" data-testid=3D"image" cellpadding=3D"0"=
+ cellspacing=3D"0"><tbody><tr><td class=3D"cell component-image none" align=
+=3D"center" style=3D"padding-top: 0;"><a href=3D"https://www.netflix.com/ti=
+tle/70155602?g=3Db2cfa07e-3905-4bb1-a3b0-ca7bafa77ca5&amp;lkid=3DURL_TITLE_=
+CARD_IMAGE_HERO_COMING_SOON_4&amp;lnktrk=3DEVO&amp;trkid=3D13710079&amp;MSG=
+_TITLE=3D70155602" target=3D"_blank" style=3D"color: inherit;"><img src=3D"=
+https://dnm.nflximg.net/api/v6/Qs00mKCpRvrkl3HZAN5KwEL1kpE/AAAABc_I0KX9OGDt=
+PszZLIr7OQHeeRTPhz1dJiVUjSYLVaos1OIHZ-rUSc-gHcRGO7zTJNf3Y56fiF6l3P7OB-1njkw=
+XqMvJpYfNiUqC.jpg?r=3D752" alt=3D"The Closer" width=3D"402" border=3D"0" cl=
+ass=3D"undefined mobile-100w" style=3D"-ms-interpolation-mode: bicubic; bor=
+der: none; outline: none; border-collapse: collapse; display: block; border=
+-style: none;"></a></td></tr></tbody></table></td></tr></tbody></table></td=
+></tr></tbody></table><table width=3D"100%" class=3D"spacer-table" data-tes=
+tid=3D"spacer" cellpadding=3D"0" cellspacing=3D"0"><tbody><tr><td class=3D"=
+spacer" style=3D"font-size: 0; line-height: 0; height: 12px;" height=3D"12"=
+>=C2=A0</td></tr></tbody></table><table align=3D"left" width=3D"100%" class=
+=3D"copy-table " data-testid=3D"copy" cellpadding=3D"0" cellspacing=3D"0"><=
+tbody><tr><td align=3D"left" class=3D"copy subheader-standard-heavy sidepad=
+ding-12" style=3D"padding-left: 12px; padding-right: 12px; font-family: 'Ne=
+tflix Sans', 'Helvetica Neue', Roboto, Segoe UI, sans-serif; font-weight: 5=
+00; font-size: 24px; line-height: 30px; padding-top: 0; color: rgb(255,255,=
+255);">The Closer</td></tr></tbody></table><table align=3D"left" width=3D"1=
+00%" class=3D"copy-table " data-testid=3D"copy" cellpadding=3D"0" cellspaci=
+ng=3D"0"><tbody><tr><td align=3D"left" class=3D"copy subtitle sidepadding-1=
+2" style=3D"padding-left: 12px; padding-right: 12px; font-family: 'Netflix =
+Sans', 'Helvetica Neue', Roboto, Segoe UI, sans-serif; font-weight: 400; fo=
+nt-size: 18px; line-height: 27px; padding-top: 0; color: rgba(255,255,255,0=
+.7);">A CIA-trained deputy police chief shakes up the LAPD&#x27;s elite hom=
+icide unit with her unique blend of southern charm and ruthless interrogati=
+on skills. <a style=3D"color: inherit; text-decoration: underline; white-sp=
+ace: nowrap;" href=3D"https://www.netflix.com/title/70155602?g=3Db2cfa07e-3=
+905-4bb1-a3b0-ca7bafa77ca5&amp;lkid=3DURL_TITLECARD_CTA_TEXT_MORE_INFO_4&am=
+p;lnktrk=3DEVO&amp;trkid=3D13710079&amp;MSG_TITLE=3D70155602">More Info</a>=
+</td></tr></tbody></table><table width=3D"100%" class=3D"revamp-dual-button=
+s" cellpadding=3D"0" cellspacing=3D"0"><tbody><tr><td style=3D"padding-left=
+: 12px; padding-right: 12px; padding-top: 16px;" class=3D"sidepadding-12"><=
+table width=3D"100%" cellpadding=3D"0" cellspacing=3D"0"><tbody><tr><td wid=
+th=3D"49%"><table class=3D"single-button mobile-100w " align=3D"center" wid=
+th=3D"100%" data-testid=3D"single-button" cellpadding=3D"0" cellspacing=3D"=
+0"><tbody><tr><td class=3D"none" style=3D"padding-top:0" align=3D"center"><=
+table class=3D"inner-button border-true" style=3D"border-style: solid; bord=
+er-radius: 32px; border-color: rgb(229,9,20); background-color: rgb(229,9,2=
+0); border-width: 2px; width: 100%;" cellpadding=3D"0" cellspacing=3D"0" wi=
+dth=3D"100%" bgcolor=3D"rgb(229,9,20)"><tbody><tr><td class=3D"body-standar=
+d-heavy button-td" style=3D"font-family: 'Netflix Sans', 'Helvetica Neue', =
+Roboto, Segoe UI, sans-serif; font-weight: 500; font-size: 16px; line-heigh=
+t: 24px; padding: 12px; padding-left: 4px; padding-right: 4px; color: rgb(2=
+55,255,255);" align=3D"center"><a class=3D"body-standard-heavy" href=3D"htt=
+ps://www.netflix.com/remind-me/70155602?g=3Db2cfa07e-3905-4bb1-a3b0-ca7bafa=
+77ca5&amp;lkid=3DURL_TITLE_CARD_CTA_COMING_SOON_REMINDME_4&amp;lnktrk=3DEVO=
+&amp;trkid=3D13710079&amp;MSG_TITLE=3D70155602&amp;msg_token=3DEQEAmQABAYEA=
+HNDJGqaM1o5ZEEVmKbMBq9SpHvJBa5M8ZAvUinHfpgWspTDZhQOm7VyF4j6iOOVBHZPjU%2FPYS=
+lN9Od9dN%2FjVPR0CTVW%2Bs82%2BSkzcDY5IiEdvou8oJY5rYx0rxB0ynYBdMgJQ92bNIVYxg4=
+KyzqL%2FPZZpj%2Bc36CGwYNR9BrADSLN3iS1U6MNN2sKvOWN27vaAGTXJ60P7iu3zyZyYdvLLu=
+Js4pHUUSNiu1LtcEkRvp38J5UUrouPF8YrIe%2BVwV0rmhn7SRjZPctQ72U7aktUfl52jK1514w=
+7vbev29jxZv8f2qsazqB1lpX%2Fp9W3IIA3HgIu8Ovy5SlC0P%2B%2BTduUlMFhMWeI%3D" sty=
+le=3D"font-family: 'Netflix Sans', 'Helvetica Neue', Roboto, Segoe UI, sans=
+-serif; font-weight: 500; font-size: 16px; line-height: 24px; text-align: c=
+enter; text-decoration: none; display: block; color: rgb(255,255,255);">Rem=
+ind Me</a></td></tr></tbody></table></td></tr></tbody></table></td><td clas=
+s=3D"spacer" width=3D"2%" style=3D"font-size: 0; line-height: 0; height: 20=
+px;" height=3D"20">=C2=A0</td><td width=3D"49%"><table class=3D"single-butt=
+on mobile-100w " align=3D"center" width=3D"100%" data-testid=3D"single-butt=
+on" cellpadding=3D"0" cellspacing=3D"0"><tbody><tr><td class=3D"none" style=
+=3D"padding-top:0" align=3D"center"><table class=3D"inner-button border-tru=
+e" style=3D"border-style: solid; border-radius: 32px; border-color: rgba(12=
+8,128,128,0.6); background-color: transparent; border-width: 2px; width: 10=
+0%;" cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" bgcolor=3D"transpar=
+ent"><tbody><tr><td class=3D"body-standard-heavy button-td" style=3D"font-f=
+amily: 'Netflix Sans', 'Helvetica Neue', Roboto, Segoe UI, sans-serif; font=
+-weight: 500; font-size: 16px; line-height: 24px; padding: 12px; padding-le=
+ft: 4px; padding-right: 4px; color: rgb(255,255,255);" align=3D"center"><a =
+class=3D"body-standard-heavy" href=3D"https://www.netflix.com/watch/8217355=
+0?g=3Db2cfa07e-3905-4bb1-a3b0-ca7bafa77ca5&amp;lkid=3DURL_TITLE_CARD_CTA_CO=
+MING_SOON_TRAILER_4&amp;lnktrk=3DEVO&amp;trkid=3D13710079&amp;MSG_TITLE=3D8=
+2173550" style=3D"font-family: 'Netflix Sans', 'Helvetica Neue', Roboto, Se=
+goe UI, sans-serif; font-weight: 500; font-size: 16px; line-height: 24px; t=
+ext-align: center; text-decoration: none; display: block; color: rgb(255,25=
+5,255);">Play Trailer</a></td></tr></tbody></table></td></tr></tbody></tabl=
+e></td></tr></tbody></table></td></tr></tbody></table><table width=3D"100%"=
+ class=3D"spacer-table" data-testid=3D"spacer" cellpadding=3D"0" cellspacin=
+g=3D"0"><tbody><tr><td class=3D"spacer" style=3D"font-size: 0; line-height:=
+ 0; height: 12px;" height=3D"12">=C2=A0</td></tr></tbody></table></td></tr>=
+</tbody></table></td></tr></tbody></table><table class=3D"single-button mob=
+ile-100w " align=3D"center" width=3D"100%" data-testid=3D"single-button" ce=
+llpadding=3D"0" cellspacing=3D"0"><tbody><tr><td class=3D"content-padding" =
+style=3D"padding-left: 36px; padding-right: 36px; padding-top: 24px;" align=
+=3D"center"><table class=3D"inner-button border-true" style=3D"border-style=
+: solid; border-radius: 32px; border-color: rgb(229,9,20); background-color=
+: rgb(229,9,20); border-width: 2px; width: 100%;" cellpadding=3D"0" cellspa=
+cing=3D"0" width=3D"100%" bgcolor=3D"rgb(229,9,20)"><tbody><tr><td class=3D=
+"body-standard-heavy button-td" style=3D"font-family: 'Netflix Sans', 'Helv=
+etica Neue', Roboto, Segoe UI, sans-serif; font-weight: 500; font-size: 16p=
+x; line-height: 24px; padding: 12px; color: rgb(255,255,255);" align=3D"cen=
+ter"><a class=3D"body-standard-heavy" href=3D"https://www.netflix.com/brows=
+e?g=3Db2cfa07e-3905-4bb1-a3b0-ca7bafa77ca5&amp;lkid=3DURL_ESCAPE_HATCH_CTA_=
+VIEW_ALL&amp;lnktrk=3DEVO" style=3D"font-family: 'Netflix Sans', 'Helvetica=
+ Neue', Roboto, Segoe UI, sans-serif; font-weight: 500; font-size: 16px; li=
+ne-height: 24px; text-align: center; text-decoration: none; display: block;=
+ color: rgb(255,255,255);">View All Shows &amp; Movies</a></td></tr></tbody=
+></table></td></tr></tbody></table></td></tr><tr><td align=3D"center" class=
+=3D"footer-shell" style=3D"background-color: transparent;" bgcolor=3D"trans=
+parent"><table class=3D"footer" width=3D"100%" border=3D"0" data-testid=3D"=
+footer" cellpadding=3D"0" cellspacing=3D"0"><tbody><tr><td align=3D"center"=
+ valign=3D"top" class=3D"footer-shell content-padding" style=3D"padding-lef=
+t: 36px; padding-right: 36px; background-color: transparent;" bgcolor=3D"tr=
+ansparent"><table width=3D"100%" class=3D"spacer-table" data-testid=3D"spac=
+er" cellpadding=3D"0" cellspacing=3D"0"><tbody><tr><td class=3D"spacer" sty=
+le=3D"font-size: 0; line-height: 0; height: 40px;" height=3D"40">=C2=A0</td=
+></tr></tbody></table><table width=3D"100%" class=3D"outer-footer-table" ce=
+llpadding=3D"0" cellspacing=3D"0"><tbody><tr><td valign=3D"top" class=3D"fo=
+oter-icon-wrapper" style=3D"padding: 0 20px 0 0;"><table class=3D"component=
+-image image" width=3D"100%" data-testid=3D"image" cellpadding=3D"0" cellsp=
+acing=3D"0"><tbody><tr><td class=3D"cell component-image none" align=3D"cen=
+ter" style=3D"padding-top: 0;"><img src=3D"https://assets.nflxext.com/us/em=
+ail/gem/nflx.png" alt width=3D"24" border=3D"0" class=3D"undefined " style=
+=3D"-ms-interpolation-mode: bicubic; border: none; outline: none; border-co=
+llapse: collapse; display: block;"></td></tr></tbody></table></td><td valig=
+n=3D"top" class=3D"footer-copy-wrapper"><table class=3D"footer-table" width=
+=3D"100%" valign=3D"top" cellpadding=3D"0" cellspacing=3D"0"><tbody><tr><td=
+ class=3D"footer-copy-shell"><table align=3D"left" width=3D"100%" class=3D"=
+copy-table footer-copy phone-number" data-testid=3D"copy" cellpadding=3D"0"=
+ cellspacing=3D"0"><tbody><tr><td align=3D"left" class=3D"copy p1 none" sty=
+le=3D"font-family: 'Netflix Sans', 'Helvetica Neue', Roboto, Segoe UI, sans=
+-serif; font-weight: 400; font-size: 14px; line-height: 18px; letter-spacin=
+g: -0.25px; color: #a4a4a4; padding-top: 0;"><span class=3D"ignore-diff" da=
+ta-testid=3D"phone-number">Questions? Call 1-866-952-4456</span></td></tr><=
+/tbody></table><table align=3D"left" width=3D"100%" class=3D"copy-table foo=
+ter-copy address" data-testid=3D"copy" cellpadding=3D"0" cellspacing=3D"0">=
+<tbody><tr><td align=3D"left" class=3D"copy legal none" style=3D"font-famil=
+y: 'Netflix Sans', 'Helvetica Neue', Roboto, Segoe UI, sans-serif; font-wei=
+ght: 400; font-size: 11px; line-height: 14px; letter-spacing: -0.1px; color=
+: #a4a4a4; padding-top: 0;"><span class=3D"hide-link" style=3D"cursor: text=
+; text-decoration: none;"><a href=3D"https://help.netflix.com/legal/corpinf=
+o?g=3Db2cfa07e-3905-4bb1-a3b0-ca7bafa77ca5&amp;lkid=3DURL_CORP_INFO&amp;lnk=
+trk=3DEVO" style=3D"cursor: text; color: #a4a4a4; text-decoration: none;"><=
+span data-testid=3D"address">121 Albright Way, Los Gatos, CA 95032, U.S.A.<=
+/span></a></span></td></tr></tbody></table><table align=3D"left" width=3D"1=
+00%" class=3D"copy-table legal-links" data-testid=3D"copy" cellpadding=3D"0=
+" cellspacing=3D"0"><tbody><tr><td align=3D"left" class=3D"copy p2 none" st=
+yle=3D"font-family: 'Netflix Sans', 'Helvetica Neue', Roboto, Segoe UI, san=
+s-serif; font-weight: 400; font-size: 12px; line-height: 15px; letter-spaci=
+ng: -0.12px; padding-top: 20px; color: #a9a6a6;"><span data-testid=3D"foote=
+r-legal-links"><a class=3D"footer-link unsub" href=3D"https://www.netflix.c=
+om/notificationsettings/email?id=3DBgiLsuvcAxKEAfyzhprbiIuujxMTijB96kyxOV7L=
+tNZqCmTD%2FZHD%2BI9RnEcsEj1Lk1WDUBNC3ICEgY3ToubUtUgbYqbcoUAaSlrjCzNcun3WHwt=
+RSRBFj2cjV5I2AHBvwdDqkMNV5DUoHk4KNFrUTaih01VJCv6j%2F6OsczFOuHK5g8aNLy8cykss=
+8mYMhhgGIg4KDPodYpGBPv7GMwA7iA%3D%3D&amp;g=3Db2cfa07e-3905-4bb1-a3b0-ca7baf=
+a77ca5&amp;mid=3D2&amp;lkid=3DURL_UNSUB&amp;lnktrk=3DEVO" style=3D"text-dec=
+oration: underline; line-height: 20px; color: #a4a4a4;">Unsubscribe</a><br>=
+<a class=3D"footer-link tou" href=3D"https://www.netflix.com/TermsOfUse?g=
+=3Db2cfa07e-3905-4bb1-a3b0-ca7bafa77ca5&amp;lkid=3DURL_TERMS&amp;lnktrk=3DE=
+VO" style=3D"text-decoration: underline; line-height: 20px; color: #a4a4a4;=
+">Terms of Use</a><br><a class=3D"footer-link privacy" href=3D"https://www.=
+netflix.com/PrivacyPolicy?g=3Db2cfa07e-3905-4bb1-a3b0-ca7bafa77ca5&amp;lkid=
+=3DURL_PRIVACY&amp;lnktrk=3DEVO" style=3D"text-decoration: underline; line-=
+height: 20px; color: #a4a4a4;">Privacy</a><br><a class=3D"footer-link help-=
+center" href=3D"https://help.netflix.com/help?g=3Db2cfa07e-3905-4bb1-a3b0-c=
+a7bafa77ca5&amp;lkid=3DURL_HELP&amp;lnktrk=3DEVO" style=3D"text-decoration:=
+ underline; line-height: 20px; color: #a4a4a4;">Help Center</a></span></td>=
+</tr></tbody></table><table align=3D"left" width=3D"100%" class=3D"copy-tab=
+le footer-copy disclaimer" data-testid=3D"copy" cellpadding=3D"0" cellspaci=
+ng=3D"0"><tbody><tr><td align=3D"left" class=3D"copy legal none" style=3D"f=
+ont-family: 'Netflix Sans', 'Helvetica Neue', Roboto, Segoe UI, sans-serif;=
+ font-weight: 400; font-size: 11px; line-height: 14px; letter-spacing: -0.1=
+px; color: #a4a4a4; padding-top: 20px;"><span data-testid=3D"footer-disclai=
+mer">This message was mailed to <a href=3D"https://www.netflix.com/browse?g=
+=3Db2cfa07e-3905-4bb1-a3b0-ca7bafa77ca5&amp;lkid=3DURL_EMAIL&amp;lnktrk=3DE=
+VO" class=3D"hide-link ignore-diff" style=3D"cursor: text; color: #a4a4a4; =
+text-decoration: none;">[user@example.com]</a> by Netflix as part of yo=
+ur Netflix=C2=A0membership.</span><br>SRC: <a href=3D"https://www.netflix.c=
+om/browse?g=3Db2cfa07e-3905-4bb1-a3b0-ca7bafa77ca5&amp;lkid=3DURL_SRC&amp;l=
+nktrk=3DEVO" class=3D"hide-link ignore-diff" style=3D"cursor: text; color: =
+#a4a4a4; text-decoration: none;">62844AD0_b2cfa07e-3905-4bb1-a3b0-ca7bafa77=
+ca5_en_US_EVO</a></td></tr></tbody></table><table width=3D"100%" class=3D"s=
+pacer-table" data-testid=3D"spacer" cellpadding=3D"0" cellspacing=3D"0"><tb=
+ody><tr><td class=3D"spacer" style=3D"font-size: 0; line-height: 0; height:=
+ 40px;" height=3D"40">=C2=A0</td></tr></tbody></table></td></tr></tbody></t=
+able></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody>=
+</table></td></tr></tbody></table><div class=3D"mobile-hide-max gmail-fix-n=
+o-inline" data-testid=3D"gmail-fix" style=3D"white-space: 'nowrap'; font: '=
+15px courier'; line-height: 0;">=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0</div>
+    </body>
+    </html>
+ =20
+------=_Part_8541854_1720811427.1765595962235--

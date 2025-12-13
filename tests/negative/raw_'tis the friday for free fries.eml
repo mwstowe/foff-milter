@@ -1,0 +1,789 @@
+Return-Path: <msprvs1=20441cdUX27Sj=bounces-266693-179@sparkpostmail.com>
+Received: from hotel.example.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.example.com (8.18.1/8.18.1) with ESMTPS id 5BCKEdDf045236
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <user@example.com>; Fri, 12 Dec 2025 20:14:39 GMT
+	(envelope-from msprvs1=20441cdUX27Sj=bounces-266693-179@sparkpostmail.com)
+Authentication-Results: juliett.example.com;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=m.mcdonalds.com header.i=@m.mcdonalds.com header.b=un7StqTA
+Received: from bz1518.m.mcdonalds.com (bz1518.m.mcdonalds.com [223.165.117.204])
+	by hotel.example.com (8.16.1/8.16.1) with ESMTPS id 5BCKEbYZ231039
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK)
+	for <user@example.com>; Fri, 12 Dec 2025 14:14:38 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.example.com 5BCKEbYZ231039
+Authentication-Results: hotel.example.com;
+	dkim=pass (1024-bit key, unprotected) header.d=m.mcdonalds.com header.i=@m.mcdonalds.com header.a=rsa-sha256 header.s=scph0421 header.b=un7StqTA
+X-MSFBL: Raih24vaEIlSkpwd505dksQZrYnTgNF/5MTOcLxcC70=|eyJ0ZW5hbnRfaWQiOiJ
+	zcGMiLCJjdXN0b21lcl9pZCI6IjI2NjY5MyIsInN1YmFjY291bnRfaWQiOiIxNzk
+	iLCJtZXNzYWdlX2lkIjoiNjkzYWE3NzczYzY5ZDA4NTMxNzIiLCJyIjoibXN0b3d
+	lQGJhZGRvbWFpbi5jb20ifQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=m.mcdonalds.com;
+	s=scph0421; t=1765570471; i=@m.mcdonalds.com;
+	bh=S8VwwSditTtZwVpr4DvQKEwhWf7mzLLULvTchGbRL3Q=;
+	h=From:Message-ID:List-Unsubscribe:List-Unsubscribe-Post:To:Date:
+	 Content-Type:Subject:From:To:Cc:Subject;
+	b=un7StqTAB+uydVGkwIi5/HfjoxPhCTrLuJBKznqfZNvyXTfiQFc+Uj4xR4E5t0VSO
+	 8J/wTQ6sBFvwxrH57tUtVESgJNsq2+F0vLwCGeDriA8ex1HohOy6QsgMuvu8fwY3LG
+	 qnM18LRf90SMonpgV2YsiMxTvym1S6yGzlRbPBfY=
+Received: from [10.90.23.194] ([10.90.23.194])
+	by i-0e03dc7d7ed057cf1.mta1vrest.sd.prd.sparkpost (ecelerity 5.1.0.74719 r(msys-ecelerity:tags/5.1.0.22)) with REST
+	id 27/13-29455-7A77C396; Fri, 12 Dec 2025 20:14:31 +0000
+From: "McDonald's" <McDonalds@sparkpostmail.com>
+Message-ID: <27.13.29455.7A77C396@i-0e03dc7d7ed057cf1.mta1vrest.sd.prd.sparkpost>
+List-Unsubscribe: <https://06.emailinboundprocessing.com/enc_user/list_unsubscribe?d=%241%24ULvFOZaxTHS7B0LaP7UZcg%3D%3D%24HaZyWx%2Bv9kwPt2Oi2jXo3va6qMyn4DOsYuDOBxa%2FGe7HpL0WVjFKQN5EqL8x%0AwGnffnOz6fB99912ZjnluyFJhi7A6R42yfPsT3uhiudeL3CTmjUsgE3SI7C%2F%0A7g1ZcoGRUkfNLTSems6QKuxvRBiXOLqmBetyiu6lDhiiZe683o%2FYNEjQENB6%0ANwtp7RJcEc1C5lyzS%2F1g5J2nc9P%2FsmeYARntlu%2FeNS8NuWlam61hDkbSH0Nn%0A2przPnc2lp0821V0bOQnq4RQupZRPWqHExQ23CzfASVGtuRWHbgU%2BujnJUSW%0A6WyDxz1VBM8b1SkM8%2BkSxyty0E4kDDYBEsjGdL3KpVFtOGTkwSadWyo%2FIgit%0ASmkE7DypsuN28Svu4wSPIJ1j&1=1>,<mailto:4_oi3wqqisu12fqq6606i2gz1s0ao6j4vt8o2inl728jm2i9845q3hfn@unsubscribe-06.emailinboundprocessing.com?subject=Unsubscribe%20pnrcgsqcs9hhsfyg9rqvmc3i43to8tzbnqky25nwovcfd&body=DO_NOT_DELETE-b7ohre225j8zan8uhv5yax8kif8ns3daqhlk77wobjr4h4cheoxdhza58dktoznwuen4ua1cex8xebswqmlbh-DO_NOT_DELETE>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+To: user@example.com
+Date: Fri, 12 Dec 2025 20:14:31 +0000
+Content-Type: multipart/alternative; boundary="_----9LqA1mI7CXyYE1idnw/L2w===_D5/13-29455-7A77C396"
+MIME-Version: 1.0
+Subject: 'tis the friday for free fries
+Reply-To: No_Reply@sparkpostmail.com
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.example.com [172.31.18.8]); Fri, 12 Dec 2025 20:14:39 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.example.com [23.95.222.152]); Fri, 12 Dec 2025 14:14:38 -0600 (CST)
+X-Spam-Flag: YES
+X-FOFF-Feature-Evidence: Context Analysis: Multiple exclamation marks detected (hotel.example.com) [8c765852]
+X-FOFF-Feature-Evidence: Context Analysis: Industry context detected: floral (reduced scoring) (hotel.example.com) [306d3d25]
+X-FOFF-Rule-Matched: Performance: Bulk Email Quick Detection (hotel.example.com) [951de85e]
+X-FOFF-Rule-Matched: Authentication Rewards: Unsubscribe Header Present (hotel.example.com) [12005c74]
+X-FOFF-Rule-Matched: Authentication Rewards: Full CAN-SPAM Compliance (hotel.example.com) [12005c74]
+X-FOFF-Score: 60 - foff-milter v0.8.1 (hotel.example.com)
+X-FOFF-Trust-Analysis: auth=0, infra=10, behavior=15, content=20, total=7, adj=0
+X-FOFF-Business-Analysis: comm=30, legit=30, industry=10, compliance=10, total=23, adj=0
+X-FOFF-Seasonal-Analysis: seasonal=0, consistency=10, patterns=0, timing=0, total=4, adj=0
+X-FOFF-Upstream-Trust: Trusting upstream FOFF-milter spam classification
+
+--_----9LqA1mI7CXyYE1idnw/L2w===_D5/13-29455-7A77C396
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="UTF-8"
+
+me letting you know is my gift to you.=0A=E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =
+=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =
+=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C=0A=E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =
+=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =
+=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C=0A=E2=80=8C =E2=80=8C=
+ =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =
+=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C=0A=0AVisit McDonald's home. =0A( https://link.m.mcdonalds.com/f/a/ZfsAX=
+suImDSjJYMmSFqZXQ~~/AAQRxRA~/PhXQsEWQlgY17p_mD22wgjN7q4hZBFUqG6p8wnBCwZm45G=
+eO5hQmvOeE27uNpuKXMl82P8QnJbEWWXilhSkWd5qDsQtHbw-jVay2u5nqTWm4hZ0LcFMJ15pmc=
+idR1qhOfqeb_vQ0ADTMiwl-QrlyCw~~ )=0A=0AGet free medium fries with a $1 mini=
+mum purchase in the app. =0A( https://link.m.mcdonalds.com/f/a/HjsRUG_wQqIA=
+krqiyXiFCQ~~/AAQRxRA~/56ltT4ULvR53NenxXWNg44_tzxUUUTHpIaI5matITVcfGVoNuwcMR=
+3JlpxAvDOrzJ_Xy6mMPppCK2ZFujB1ZUPqja-sO5MdlJ0IEnMFFoWkt4pPVGxgBA9Ka_B0hua7x=
+aZXC1GaZqC5hUr5yULn51FDon0GwkAa1hRoYsP8qVWTUBA88SVPlry9Eq3PBIK0L0DW-_Ib3wrm=
+ZU23ayL5TmQ~~ )=0A=0A=0A*********************************=0ABefore you star=
+t your shopping...=0A*********************************=0A=0A---------------=
+-----------------------=0AGift yourself free fries this=E2=80=8C =E2=80=8Cf=
+riday=0A--------------------------------------=0A=0AGet free medium fries w=
+ith McValue=C2=AE with any $1+ order in the=0Aapp* and start the holidays w=
+ith something nice and crispy.=0A=0AGet Free Fries =0A( https://link.m.mcdo=
+nalds.com/f/a/Jj1guVS_doKnfINtJV7Ugw~~/AAQRxRA~/56ltT4ULvR53NenxXWNg44_tzxU=
+UUTHpIaI5matITVcfGVoNuwcMR3JlpxAvDOrzJ_Xy6mMPppCK2ZFujB1ZUPqja-sO5MdlJ0IEnM=
+FFoWmmLun9sUIcwCj4eLITzt0VLbUQS-zFZKigdkym0G20Dz8CbCX4vVJowLwmdKbtpRP7nHLTe=
+zBaLYPcLAUT8qacCCaa-NZGKgyZddneyibKdA~~ )=0A            Get Free Fries in t=
+he App =0A( https://link.m.mcdonalds.com/f/a/WcOG-3ApewL8RAEyVEVyBw~~/AAQRx=
+RA~/56ltT4ULvR53NenxXWNg44_tzxUUUTHpIaI5matITVcfGVoNuwcMR3JlpxAvDOrzJ_Xy6mM=
+PppCK2ZFujB1ZUPqja-sO5MdlJ0IEnMFFoWnSV4ZbGem4noMfMMv9d6wl-X0h23NEQLMXwtKmux=
+R0aWSJ3nLuhxVT1eEFfwnmnjbcSiQz3gxGT53NhseSyEvFBtYHA5HDZvy4c8bhpfpDmg~~ )=0A=
+=0A=0ARound-up in the McD's app to help families stay in their=0Achild's fi=
+ght!=0A-----------------------------------------------------------------=0A=
+=0AMake a difference for Ronald McDonald House=C2=AE families by=0Arounding=
+ up to the nearest dollar when you order in the app.=0A=0ALearn More =0A( h=
+ttps://link.m.mcdonalds.com/f/a/fq1f3CSC1uOnvQRNHPj2wA~~/AAQRxRA~/XT0FeSue6=
+YebpBDA4on_VXSkIcC2fTw8O7BLeUKssyVKuLrS6hjIy39JIUJFQLFPV89zvMDx71fovOh3AJW-=
+OOSQVm5bR3ITPbHrWEKZwQauHLUexHnBNcvC1fSF3QbBCCrV9A95g3S-Du12FHffa_AEnkkb155=
+vZyWtd_MDu5z4PPbDJnk_Wf-7NpMxyn0d66Xd45fptE2KcfeR_rODvg~~ )=0A=0A=0ADonate =
+in the App =0A( https://link.m.mcdonalds.com/f/a/JcDa3VBJciJ_BjZLScvt-w~~/A=
+AQRxRA~/XT0FeSue6YebpBDA4on_VXSkIcC2fTw8O7BLeUKssyVKuLrS6hjIy39JIUJFQLFPV89=
+zvMDx71fovOh3AJW-OOSQVm5bR3ITPbHrWEKZwQYui5AnxLFMWkU2dgnSj53joAoRAc0UFta_k6=
+xC7WBM_qQ4Yprk6SLqtEzDEs_eIGbamxT1B8l5Sk_gcjYKQgdnDMYpdhdAU_veXRnP9wDXQQ~~ =
+)=0A=0A=0AMcDonalds.com =0A( https://link.m.mcdonalds.com/f/a/WJ_Wm1DcMHBlM=
+xiQjYzm6A~~/AAQRxRA~/PhXQsEWQlgY17p_mD22wgjN7q4hZBFUqG6p8wnBCwZm45GeO5hQmvO=
+eE27uNpuKXjG4DMEkrnw19o3Vcb55PctpfLayl92N0y6VTciU9HzdlhNEERWVVTsyc7GKc1fQ0Q=
+S8Aw1Kv5Ki-0a4DkEdU-Q~~ )=0A=0ALike on Facebook. =0A( https://link.m.mcdona=
+lds.com/f/a/Rh1kZTSn7-x0gVew9Br80g~~/AAQRxRA~/ipHcKcIADGwzV5YWx1zEdn9j9foIO=
+GvAxg3i-I66WWR8Hn3D6IxZP_9v3VSE1ZJNQbLsiSC0b3CRjZephIIpv0006e84fIWjvWy8U2U1=
+iSg0lpbRpwfnOhHgS_Gv7zGluLIoH3qAzDuGhwIY1Qqi3w~~ ) Follow on=0AX. ( https:/=
+/link.m.mcdonalds.com/f/a/3ied_bziS8W0zsay2-gXvg~~/AAQRxRA~/g2hc_jEaHYRJF51=
+w1l2xNPSGcs2Jt5PMPdXi_DFGW4VIM7dcrl7DxX0sYsAvbQpHRgGFum4R-YVjVWAzW2cm-qAe7X=
+Hx4hv3wAH5s-3ASSLDbzXuCtyo9IAoqQ3qrbzh ) Follow on=0AInstagram. =0A( https:=
+//link.m.mcdonalds.com/f/a/issa6u7kHBsDL2Oji5-RHg~~/AAQRxRA~/odE0zH2kehJ8vp=
+Xs1K9iCanbySwtgDF6gTh9duGgunXpA0dFvsp3G4ypR5kQ3Uf-kay1vP8ojRprAnqdIZViDakM6=
+9_UiUroMyTp7Yv9V5KrreFQV1OMywycE-4A4eeD-AIzH55E21hhN-rYIQiCTA~~ ) Subscribe=
+=0Aon YouTube. =0A( https://link.m.mcdonalds.com/f/a/KDp3TXFkNPagMAFnkIsS2Q=
+~~/AAQRxRA~/jYv3jeVJ7uQFKTZXLU7vPXDbhuxG-1vlttU6yBK-W2SP7d27AA8pIWIY7rt7i9w=
+Z2TQDuT-IoM3kXbJEhD9Eg58dhHhmhIMXlF4qjLhk1U6J3-5yzpoq7AwZrnq8cUj9tey__DPFdE=
+1DMkuqYWSYpw~~ )=0A=0ACorporate =0A( https://link.m.mcdonalds.com/f/a/a2hxW=
+0SjS-x0RsHmf_dJUg~~/AAQRxRA~/JBzAfyeZWbX-JHKOnBq5F1MrZmm7mEpwMjuKCz2HBD5frX=
+PragoC-ed4me9BJr-UcldK0fdjaQ9xnGrCtMzJYXss1hAFqcmNuOUZoTsPrqJ42Ov0h0Jihxclm=
+uA8S6tJlASZrU5a8ynuUxrOYJDL-CyaXiq84W5dx5DFzarzpzQ~ )=0A=0A=0APrivacy =0A( =
+https://link.m.mcdonalds.com/f/a/ZIC1mXFeBjmaXRU0fOgFzg~~/AAQRxRA~/vef7yYlQ=
+hqwcZ51nmMoQcdSppklRTqeYsmp_GOmc0V1b0mAUSG3gjgx8yVF4ChwR8AhfAoxJ9Fh8DlcJ8Hu=
+zOLHjCSq5vhqpekGinjuIXWQM2Odz1kFk7OUJC56IKAGyrAKrUTZJ05a-fuEKYOK9I1BblVm6HV=
+CPNMZgZ4-41yQ~ )=0A=0A=0ATerms & Conditions =0A( https://link.m.mcdonalds.c=
+om/f/a/4dODz5XBvZoOW55XsdlyPg~~/AAQRxRA~/QftO3FleAW3TsvsDX0DNYRh06Z4NXcpugB=
+fae-VKcF8zlH2NykL0LriEYIVoltdufDqBp4yJWE_j5H0oGoEgV8KhxhLX0p5uBj6A-pzvz6xJn=
+RR-g3XbTjpMLs6LOGBhKmPSChD-H0L5qMl7TnnBhxPE7N9qXKU942pUpeWxwcN7ZI0vENSl8ry9=
+4Hr9Tk6C )=0A=0A=0AUnsubscribe =0A( https://link.m.mcdonalds.com/f/a/WJTpgU=
+UxMOfdPqie-V3oSA~~/AAQRxRA~/BUTegY5DisvWCj8Y5KcKxM6Y3q767rK-81qd_v9y_CWXjpc=
+9RhEvaegf-2XK0NLDBo2mQUm7EoUI72ZMZC2Y__2dBCAJ2e8Pmp0sYH0TrHJLZUlp3HYF0KV4lw=
+pdmn67g3MPaBPcbbLyN8b8Ptm-9vXIasJ4GOQcxYZDW_OKaP9my4vQKa8sgk2P67A9pkzb )=0A=
+=0A=0A=C2=A92025 McDonald's. All Rights Reserved. =E2=80=8C110=E2=80=8C N C=
+arpenter Street,=0AChicago, IL=E2=80=8C =E2=80=8C60607=E2=80=8C=0A=0A*Valid=
+ 1x on Fridays through 12=E2=80=8C/=E2=80=8C31/=E2=80=8C2025 at participati=
+ng=0AMcDonald's. Excludes tax. Must opt in to Rewards.=0A=0AYou are receivi=
+ng this email as you have downloaded and=0Aregistered for the McDonald's mo=
+bile app. Was this email=0Aforwarded to you=3F To receive these types of em=
+ails, download and=0Aregister for the McDonald's mobile app =0A( https://li=
+nk.m.mcdonalds.com/f/a/1cSj46KMMT_qvvjCv9ycag~~/AAQRxRA~/ecE159PodLZotl-1QF=
+iyUbv_GEx9taJMOj5mFxiAehfp-Sh8xMBHwX1YCKcTAGzs9q0gnDLaIHTLhqELw2Tc0VPdMhNUf=
+O4cLifTP8miXeNoWppX9fSk5pUtnSElMTc75wqdhkQujXtA83ZgkVSBY-hQI67VDcW06j2kKbMJ=
+aIgtGlwPFXSG02FDQ65H9nukuXbRVQrsiqLUreLV3j33cQ~~ )=0A.=0A=0ATo ensure deliv=
+ery to your inbox, please add=0AMcDonalds@m.mcdonalds.com to your safe send=
+er list or address=0Abook.=0A=0AHave questions=3F Contact us =0A( https://l=
+ink.m.mcdonalds.com/f/a/Xh22wZOq9PBkJ0KObcGNUA~~/AAQRxRA~/VMsPpclGKSIFL7Qac=
+fTkokT-ma96adU5sAVKGfw8tKYw4EK_SbxJNXC-pJY17Zs12qp41gh9h-_V2JDCx_mxKJHmWTJR=
+jgCXFCJSRxcxNg-F6KxZW07lom3Mjp2IBSGHsGCmWCBqoTrnpPvX8Utr9C2sg7FbZeH38_2D0LF=
+2U9Q~ )=0A online.
+--_----9LqA1mI7CXyYE1idnw/L2w===_D5/13-29455-7A77C396
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html; charset="UTF-8"
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.=
+w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">=0D=0A<!-- saved from url=3D(=
+0104)file:///C:/Users/biss/OneDrive%20-%20Publicis%20Groupe/Documents/McD/E=
+mail%20campaigns/FFF-1212/GMA.html -->=0D=0A<html xmlns=3D"http://www.w3.or=
+g/1999/xhtml" xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:o=3D"urn:sche=
+mas-microsoft-com:office:office" lang=3D"en"><head><meta http-equiv=3D"Cont=
+ent-Type" content=3D"text/html; charset=3DUTF-8">=0D=0A=0D=0A<meta http-equ=
+iv=3D"X-UA-Compatible" content=3D"IE=3Dedge">=0D=0A<meta name=3D"viewport" =
+content=3D"width=3Ddevice-width, initial scale=3D1.0">=0D=0A<meta name=3D"r=
+obots" content=3D"no index">=0D=0A<meta name=3D"format-detection" content=
+=3D"telephone=3Dno">=0D=0A<meta name=3D"format-detection" content=3D"addres=
+s=3Dno">=0D=0A<link rel=3D"Shortcut Icon" type=3D"image/x-icon" href=3D"htt=
+ps://www.mcdonalds.com/content/dam/usa/nfl/icons/favicon.ico">=0D=0A<!-- CU=
+STOM OR GOOGLE FONTS -->=0D=0A=0D=0A<style>=0D=0A/*Custom Speedee Font*/=0D=
+=0A=0D=0A@media screen {=0D=0A@font-face {=0D=0A font-family: 'Speedee-Ligh=
+t';=0D=0A src: url('https://epidm.epsilon.com/CMS/Coding/McDonalds/fonts/Sp=
+eedee-Light.woff2') format('woff2'), url('https://epidm.epsilon.com/CMS/Cod=
+ing/McDonalds/fonts/Speedee-Light.woff') format('woff'), url('https://epidm=
+.epsilon.com/CMS/Coding/McDonalds/fonts/Speedee-Light.ttf') format('truety=
+pe'), url('https://epidm.epsilon.com/CMS/Coding/McDonalds/fonts/Speedee-Lig=
+ht.eot=3F#iefix') format('embedded-opentype'), url('https://epidm.epsilon.c=
+om/CMS/Coding/McDonalds/fonts/Speedee-Light.svg#svgSpeedee-Light') format('=
+svg');=0D=0A font-style: normal;=0D=0A font-weight: normal;=0D=0A}=0D=0A@fo=
+nt-face {=0D=0A font-family: 'Speedee-Regular';=0D=0A src: url('https://epi=
+dm.epsilon.com/CMS/Coding/McDonalds/fonts/Speedee-Regular.woff2') format('w=
+off2'), url('https://epidm.epsilon.com/CMS/Coding/McDonalds/fonts/Speedee-R=
+egular.woff') format('woff'), url('https://epidm.epsilon.com/CMS/Coding/McD=
+onalds/fonts/Speedee-Regular.ttf') format('truetype'), url('https://epidm.e=
+psilon.com/CMS/Coding/McDonalds/fonts/Speedee-Regular.eot=3F#iefix') format=
+('embedded-opentype'), url('https://epidm.epsilon.com/CMS/Coding/McDonalds/=
+fonts/Speedee-Regular.svg#svgSpeedee-Regular') format('svg');=0D=0A font-st=
+yle: normal;=0D=0A font-weight: normal;=0D=0A}=0D=0A@font-face {=0D=0A font=
+-family: 'Speedee-Bold';=0D=0A src: url('https://epidm.epsilon.com/CMS/Codi=
+ng/McDonalds/fonts/Speedee-Bold.woff2') format('woff2'), url('https://epidm=
+.epsilon.com/CMS/Coding/McDonalds/fonts/Speedee-Bold.woff') format('woff')=
+, url('https://epidm.epsilon.com/CMS/Coding/McDonalds/fonts/Speedee-Bold.tt=
+f') format('truetype'), url('https://epidm.epsilon.com/CMS/Coding/McDonalds=
+/fonts/Speedee-Bold.eot=3F#iefix') format('embedded-opentype'), url('https:=
+//epidm.epsilon.com/CMS/Coding/McDonalds/fonts/Speedee-Bold.svg#svgSpeedee-=
+Bold') format('svg');=0D=0A font-style: normal;=0D=0A font-weight: normal;=
+=0D=0A}=0D=0A}=0D=0A</style>=0D=0A<title>'tis the friday for free fries</ti=
+tle>=0D=0A<style type=3D"text/css">=0D=0A.ReadMsgBody {=0D=0A width: 100%;=
+=0D=0A}=0D=0A.ExternalClass {=0D=0A width: 100%;=0D=0A}=0D=0A.ExternalClass=
+, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClas=
+s td, .ExternalClass div {=0D=0A line-height: 100%;=0D=0A}=0D=0Abody {=0D=
+=0A -webkit-text-size-adjust: none;=0D=0A -ms-text-size-adjust: none;=0D=0A=
+ margin: 0 auto !important;=0D=0A padding: 0;=0D=0A min-width: 100% !import=
+ant;=0D=0A}=0D=0Atable {=0D=0A border-spacing: 0;=0D=0A overflow-wrap: brea=
+k-word;=0D=0A word-wrap: break-word;=0D=0A -ms-word-break: break-all;=0D=0A=
+ word-break: break-word;=0D=0A}=0D=0Atd {=0D=0A mso-line-height-rule: exact=
+ly;=0D=0A mso-table-lspace: 0pt;=0D=0A mso-table-rspace: 0pt;=0D=0A}=0D=0Ai=
+mg {=0D=0A margin: 0 !important;=0D=0A}=0D=0A/* Forces Outlook to honor lin=
+e-height */=0D=0Adiv, p, a, li, td, span {=0D=0A -webkit-text-size-adjust: =
+none;=0D=0A}=0D=0A/* Hides preheader on Outlook */=0D=0A.set_outlook_hidden=
+ {=0D=0A display: none !important;=0D=0A}=0D=0A/* Overrides blue links */=
+=0D=0Aa[x-apple-data-detectors] {=0D=0A color: inherit !important;=0D=0A te=
+xt-decoration: none !important;=0D=0A font-size: inherit !important;=0D=0A =
+font-family: inherit !important;=0D=0A font-weight: inherit !important;=0D=
+=0A line-height: inherit !important;=0D=0A}=0D=0A/* Default superscript cod=
+e */=0D=0A.sup {=0D=0A -webkit-text-size-adjust: none;=0D=0A vertical-align=
+: text-top .6em;=0D=0A line-height: .6em;=0D=0A font-size: 60%;=0D=0A}=0D=
+=0A.yshortcuts a {=0D=0A border-bottom: none !important;=0D=0A}=0D=0A/* Ren=
+ders TH on yahoo */=0D=0A.undoreset th {=0D=0A padding: 1px !important;=0D=
+=0A}=0D=0Ah1, h2, h3, h4, p, span, div, ul, li, a {=0D=0A margin: 0px;=0D=
+=0A padding: 0px;=0D=0A mso-hyphenate: none !important;=0D=0A}=0D=0A=0D=0A/=
+* STYLES FOR ROUNDED BORDER BUTTONS */=0D=0A@media screen and (max-device-w=
+idth: 600px), screen and (max-width: 600px) {=0D=0A.wrapto100pc {=0D=0A wid=
+th: 100% !important;=0D=0A height: auto !important;=0D=0A}=0D=0A.nomob_roun=
+ded {=0D=0A display: none !important;=0D=0A width: 0px !important;=0D=0A he=
+ight: 0px !important;=0D=0A}=0D=0A}=0D=0Au + #body a {=0D=0A color: inherit=
+;=0D=0A text-decoration: none;=0D=0A font-size: inherit;=0D=0A font-family:=
+ inherit;=0D=0A font-weight: inherit;=0D=0A line-height: inherit;=0D=0A}=0D=
+=0Au + #body .nomob_rounded {=0D=0A display: none!important;=0D=0A width: 0=
+px!important;=0D=0A height: 0px!important;=0D=0A}=0D=0Au + #body .gmailbutt=
+on {=0D=0A width: 100% !important;=0D=0A}=0D=0A=0D=0A/* STYLES FOR MOBILE *=
+/=0D=0A@media only screen and (max-width: 480px) {=0D=0A/* Targets Gmail */=
+=0D=0Au ~ div .full-wrap {=0D=0A min-width: 100vw;=0D=0A}=0D=0A/* Targets G=
+mail on Android */=0D=0Adiv > u ~ div .full-wrap {=0D=0A min-width: 100%;=
+=0D=0A}=0D=0A/* SHOW ON MOBILE */=0D=0A.mobile_show {=0D=0A display: block =
+!important;=0D=0A width: auto !important;=0D=0A overflow: visible !importan=
+t;=0D=0A float: none !important;=0D=0A max-height: none !important;=0D=0A l=
+ine-height: normal !important;=0D=0A height: auto !important;=0D=0A}=0D=0A/=
+* HIDE ON MOBILE */=0D=0A.nomob, .hide {=0D=0A display: none !important;=0D=
+=0A}=0D=0A.drop {=0D=0A float: inherit!important;=0D=0A width: 100% !import=
+ant;=0D=0A display: block !important;=0D=0A padding: 0 !important;=0D=0A te=
+xt-align: inherit !important;=0D=0A}=0D=0A/* MOBILE BACKGROUND IMAGE */=0D=
+=0A.heroimage {=0D=0A background-image: url('https://braze-images.com/appbo=
+y/communication/assets/image_assets/images/6926ece316b148006367d60d/origina=
+l.png=3F1764158691')!important;=0D=0A background-repeat: no-repeat!importan=
+t;=0D=0A background-position: top center!important;=0D=0A background-size: =
+100% 100% !important;=0D=0A height: auto !important;=0D=0A}=0D=0A.hide_bgim=
+age {=0D=0A background-image: none !important;=0D=0A height: auto !importan=
+t;=0D=0A width: 100% !important;=0D=0A}=0D=0A.bgAdjust {=0D=0A background-p=
+osition: top center;=0D=0A}=0D=0A/* ALIGNS OBJECTS ON MOBILE */=0D=0A.cente=
+r {=0D=0A text-align: center !important;=0D=0A}=0D=0A.left {=0D=0A text-ali=
+gn: left !important;=0D=0A}=0D=0A.right {=0D=0A text-align: right !importan=
+t;=0D=0A}=0D=0A.mx-auto {=0D=0A margin: 0 auto !important;=0D=0A}=0D=0A/* W=
+RAP & RESIZE ON MOBILE */=0D=0A.wrap {=0D=0A width: 100% !important;=0D=0A =
+height: auto !important;=0D=0A min-width: 100% !important;=0D=0A}=0D=0A.res=
+ize280 {=0D=0A width: 280px !important;=0D=0A height: auto !important;=0D=
+=0A}=0D=0A.resize30 {=0D=0A width: 30px !important;=0D=0A height: auto !imp=
+ortant;=0D=0A}=0D=0A/* SPLIT COLUMNS ON MOBILE */=0D=0A.colsplit {=0D=0A wi=
+dth: 100% !important;=0D=0A float: inherit !important;=0D=0A display: block=
+ !important;=0D=0A background-position: top center !important;=0D=0A}=0D=0A=
+/* STACK IMAGE TOP OR BOTTOM ON MOBILE */=0D=0Ath.topstack {=0D=0A display:=
+ table-header-group!important;=0D=0A}=0D=0Ath.botstack {=0D=0A display: tab=
+le-footer-group!important;=0D=0A}=0D=0A/* MOBILE PADDING STYLES - 0 or 20 *=
+/=0D=0A.pad0 {=0D=0A padding: 0px !important;=0D=0A}=0D=0A.pad0t {=0D=0A pa=
+dding-top: 0px !important;=0D=0A}=0D=0A.pad0r {=0D=0A padding-right: 0px !i=
+mportant;=0D=0A}=0D=0A.pad0b {=0D=0A padding-bottom: 0px !important;=0D=0A}=
+=0D=0A.pad16b {=0D=0A padding-bottom: 16px !important;=0D=0A}=0D=0A.pad0l {=
+=0D=0A padding-left: 0px !important;=0D=0A}=0D=0A.pad76t {=0D=0A padding-to=
+p: 30px !important;=0D=0A}=0D=0A.pad0rl {=0D=0A padding-right: 0px !importa=
+nt;=0D=0A padding-left: 0px !important;=0D=0A}=0D=0A.pad0tb {=0D=0A padding=
+-top: 0px !important;=0D=0A padding-bottom: 0px !important;=0D=0A}=0D=0A.pa=
+d20 {=0D=0A padding: 20px !important;=0D=0A}=0D=0A.pad5t {=0D=0A padding-to=
+p: 5px !important;=0D=0A}=0D=0A.pad10t {=0D=0A padding-top: 10px !important=
+;=0D=0A}=0D=0A.pad20t {=0D=0A padding-top: 20px !important;=0D=0A}=0D=0A.pa=
+d20r {=0D=0A padding-right: 42px !important;=0D=0A}=0D=0A.pad10b {=0D=0A pa=
+dding-bottom: 10px !important;=0D=0A}=0D=0A.pad20b {=0D=0A padding-bottom: =
+20px !important;=0D=0A}=0D=0A.pad5b {=0D=0A padding-bottom: 5px !important;=
+=0D=0A}=0D=0A.pad20l {=0D=0A padding-left: 25px !important;=0D=0A padding-r=
+ight: 5px !important;=0D=0A}=0D=0A.pad20rl {=0D=0A padding-right: 20px !imp=
+ortant;=0D=0A padding-left: 20px !important;=0D=0A}=0D=0A.pad30rl {=0D=0A p=
+adding-right: 30px !important;=0D=0A padding-left: 30px !important;=0D=0A}=
+=0D=0A.padr25l30 {=0D=0A padding-right: 25px !important;=0D=0A padding-left=
+: 30px !important;=0D=0A}=0D=0A.pad40rl {=0D=0A padding-right: 40px !import=
+ant;=0D=0A padding-left: 40px !important;=0D=0A}=0D=0A.pad20tb {=0D=0A padd=
+ing-top: 20px !important;=0D=0A padding-bottom: 20px !important;=0D=0A}=0D=
+=0A/* MOBILE FONT STYLES */=0D=0A.wid220 {=0D=0A width: 220px !important;=
+=0D=0A min-width: 220px !important;=0D=0A}=0D=0A/* ADD CUSTOM CSS STYLES */=
+=0D=0A=0D=0A.pad5t {=0D=0A padding-top: 5px !important;=0D=0A}=0D=0A.pad14t=
+ {=0D=0A padding-top: 14px !important;=0D=0A}=0D=0A.pad22t {=0D=0A padding-=
+top: 22px !important;=0D=0A}=0D=0A.pad25b {=0D=0A padding-bottom: 25px !imp=
+ortant;=0D=0A}=0D=0A.pad30b {=0D=0A padding-bottom: 30px !important;=0D=0A}=
+=0D=0A.pad30ab {=0D=0A padding-bottom: 30px !important;=0D=0A}=0D=0A.padTp1=
+5 {=0D=0A padding-top: 15px !important;=0D=0A}=0D=0A.padRt10 {=0D=0A paddin=
+g-right: 10px !important;=0D=0A}=0D=0A.padBtm15 {=0D=0A padding-bottom: 15p=
+x !important;=0D=0A}=0D=0A.padBtm10 {=0D=0A padding-bottom: 10px !important=
+;=0D=0A}=0D=0A.padBtm45 {=0D=0A padding-bottom: 45px !important;=0D=0A}=0D=
+=0A.padTp12 {=0D=0A padding-top: 25px !important;=0D=0A}=0D=0A.padTP24 {=0D=
+=0A padding-top: 16px !important;=0D=0A}=0D=0A.padTP22 {=0D=0A padding-top:=
+ 22px !important;=0D=0A}=0D=0A.padTp35 {=0D=0A padding-top: 45px !important=
+;=0D=0A}=0D=0A.wid285 {=0D=0A width: 285px !important;=0D=0A min-width: 285=
+px !important;=0D=0A}=0D=0A.borderbottomradius {=0D=0A border-top-right-rad=
+ius: 0px !important;=0D=0A border-bottom-left-radius: 10px;=0D=0A border-bo=
+ttom-right-radius: 10px !important;=0D=0A}=0D=0A.fonth1 {=0D=0A font-size: =
+22px !important;=0D=0A line-height: 26px !important;=0D=0A}=0D=0A.fonth2 {=
+=0D=0A font-size: 42px !important;=0D=0A line-height: 50px !important;=0D=
+=0A}=0D=0A.fontp {=0D=0A font-size: 18px !important;=0D=0A line-height: 22p=
+x !important;=0D=0A}=0D=0A}=0D=0A=0D=0A/* REMOVES RIGHT GUTTER IN GMAIL IOS=
+ APP */=0D=0A@media only screen and (min-device-width: 320px) and (max-devi=
+ce-width: 374px) {=0D=0A/* iPhone 5 and 5S */=0D=0A.email-container {=0D=0A=
+ min-width: 320px !important;=0D=0A}=0D=0A.pad40rl {=0D=0A padding-right: 2=
+0px !important;=0D=0A padding-left: 20px !important;=0D=0A}=0D=0A.fonth2 {=
+=0D=0A font-size: 34px !important;=0D=0A line-height: 40px !important;=0D=
+=0A}=0D=0A}=0D=0A=0D=0A@media only screen and (min-device-width: 375px) and=
+ (max-device-width: 413px) {=0D=0A/* iPhone 6 and 6+ */=0D=0A.email-contain=
+er {=0D=0A min-width: 375px !important;=0D=0A}=0D=0A.pad40rl {=0D=0A paddin=
+g-right: 20px !important;=0D=0A padding-left: 20px !important;=0D=0A}=0D=0A=
+.fonth2 {=0D=0A font-size: 36px !important;=0D=0A line-height: 40px !impor=
+tant;=0D=0A}=0D=0A}=0D=0A=0D=0A@media only screen and (min-device-width: 41=
+4px) and (max-device-width: 460px) {=0D=0A.email-container {=0D=0A min-widt=
+h: 414px !important;=0D=0A}=0D=0A.pad40rl {=0D=0A padding-right: 20px !impo=
+rtant;=0D=0A padding-left: 20px !important;=0D=0A}=0D=0A.fonth2 {=0D=0A fon=
+t-size: 40px !important;=0D=0A line-height: 46px !important;=0D=0A}=0D=0A}=
+=0D=0A</style>=0D=0A=0D=0A<!--Gmail promo tab annotations starts here--> =
+=0D=0A<script type=3D"application/ld+json">=0D=0A[=0D=0A{=0D=0A"@context": =
+"http://schema.org/",=0D=0A"@type": "Organization",=0D=0A"logo": "https://b=
+raze-images.com/appboy/communication/assets/image_assets/images/66ac6b2d79f=
+a000059ee72ec/original.png=3F1722575661"=0D=0A},=0D=0A{=0D=0A"@context": "h=
+ttp://schema.org/",=0D=0A"@type": "EmailMessage",=0D=0A"subjectLine": "'tis=
+ the friday for free fries"=0D=0A}=0D=0A]=0D=0A</script> =0D=0A<!--Gmail pr=
+omo tab annotations ends here--> =0D=0A=0D=0A<!--[if mso | ie]>=0D=0A<style=
+>=0D=0A.sup {=0D=0Avertical-align: 1px !important;=0D=0Afont-size: 100% !im=
+portant;=0D=0A}=0D=0A</style>=0D=0A<![endif]--> =0D=0A=0D=0A<!--[if ie]>=0D=
+=0A<style>=0D=0A.sup {=0D=0Avertical-align: 5px !important;=0D=0Afont-size:=
+ 77% !important;=0D=0A}=0D=0A</style>=0D=0A<![endif]--> =0D=0A=0D=0A<!--[if=
+ gt mso 15]>=0D=0A<style type=3D"text/css" media=3D"all">=0D=0A/* Outlook 2=
+016 Height Fix */=0D=0Atable, tr, th, td {border-collapse: collapse;}=0D=0A=
+tr { font-size:0px; line-height:0px; border-collapse: collapse; }=0D=0A</st=
+yle>=0D=0A<![endif]--> =0D=0A=0D=0A<!--[if gte mso 9]><xml>=0D=0A<o:OfficeD=
+ocumentSettings>=0D=0A<o:AllowPNG/>=0D=0A<o:PixelsPerInch>96</o:PixelsPerIn=
+ch>=0D=0A</o:OfficeDocumentSettings>=0D=0A</xml><![endif]--> =0D=0A=0D=0A<!=
+--[if mso]> =0D=0A<style type=3D"text/css">=0D=0Abody, table, td, span, a, =
+strong, tr, font, sup, p, h1, h2, h3, h4, h5, h6 {=0D=0Afont-family: Arial,=
+ serif !important;=0D=0A}=0D=0A</style>=0D=0A<![endif]-->=0D=0A=0D=0A</head=
+>=0D=0A=0D=0A<body id=3D"body" style=3D"margin: 0 !important; padding: 0 !i=
+mportant; width: 100% !important; background-color: #FFFFFF" class=3D"body"=
+>=0D=0A=0D=0A<!-- START Hidden Preheader -->=0D=0A<div class=3D"set_outlook=
+_hidden" style=3D"display:none !important; visibility:hidden; mso-hide:all;=
+ color:#ffffff; line-height:0px; max-height:0px; max-width:0px; opacity:0; =
+overflow:hidden;">me letting you know is my gift to you.</div>=0D=0A<!-- EN=
+D Hidden Preheader --> =0D=0A<!-- Insert &zwnj;&nbsp; hack after hidden pre=
+view text -->=0D=0A<div style=3D"display: none; max-height: 0px; overflow: =
+hidden;">&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=
+=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=
+=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nb=
+sp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nb=
+sp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=0D=0A &nbsp=
+;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp=
+;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp=
+;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;&nbsp;=E2=80=8C&nbsp;=E2=80=
+=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=
+=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=
+=8C&nbsp;=E2=80=8C&nbsp;&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=
+=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=
+=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=
+&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=0D=0A &nbsp;=E2=80=8C&n=
+bsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&n=
+bsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&n=
+bsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nb=
+sp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nb=
+sp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp; </div>=0D=
+=0A=0D=0A<!-- START -- Page Overflow Color Table -->=0D=0A=0D=0A<table role=
+=3D"presentation" height=3D"100%" width=3D"100%" cellpadding=3D"0" cellspac=
+ing=3D"0" border=3D"0" align=3D"center" class=3D"email-container" style=3D"=
+table-layout: fixed;" bgcolor=3D"#FFFFFF">=0D=0A <tbody><tr>=0D=0A  <td ali=
+gn=3D"center" valign=3D"top"><!-- START -- Email Background Color Table  --=
+>=0D=0A   =0D=0A   <table role=3D"presentation" bgcolor=3D"#FFFFFF" width=
+=3D"640" border=3D"0" align=3D"center" cellpadding=3D"0" cellspacing=3D"0" =
+style=3D"min-width:640px;" class=3D"wrap">=0D=0A    <tbody><tr>=0D=0A     <=
+td align=3D"center" valign=3D"top" style=3D"vertical-align: top;"><!--Body =
+content start here-->=0D=0A      =0D=0A      <table width=3D"100%" border=
+=3D"0" cellspacing=3D"0" cellpadding=3D"0" role=3D"presentation" bgcolor=3D=
+"#ffffff">=0D=0A       <tbody><tr>=0D=0A        <td align=3D"left" valign=
+=3D"top" style=3D"padding: 14px 40px 14px 40px;" class=3D"pad40rl"><table r=
+ole=3D"presentation" width=3D"100%" border=3D"0" cellpadding=3D"0" cellspac=
+ing=3D"0" class=3D"wrap">=0D=0A          <tbody><tr>=0D=0A           <td al=
+ign=3D"left" valign=3D"middle"><table width=3D"100%" border=3D"0" cellspaci=
+ng=3D"0" cellpadding=3D"0" role=3D"presentation">=0D=0A             <tbody>=
+<tr>=0D=0A              <td width=3D"10%" align=3D"left" valign=3D"middle">=
+<table role=3D"presentation" width=3D"100%" border=3D"0" cellspacing=3D"0" =
+cellpadding=3D"0" class=3D"wauto">=0D=0A                <tbody><tr>=0D=0A  =
+               <td align=3D"left" style=3D"padding: 0px 20px 0px 0px; width=
+: 54px; min-width: 54px;" width=3D"54"><a href=3D"https://link.m.mcdonalds.=
+com/f/a/ZfsAXsuImDSjJYMmSFqZXQ~~/AAQRxRA~/PhXQsEWQlgY17p_mD22wgjN7q4hZBFUqG=
+6p8wnBCwZm45GeO5hQmvOeE27uNpuKXMl82P8QnJbEWWXilhSkWd5qDsQtHbw-jVay2u5nqTWm4=
+hZ0LcFMJ15pmcidR1qhOfqeb_vQ0ADTMiwl-QrlyCw~~" target=3D"_blank" style=3D"te=
+xt-decoration: none; outline: none"><img src=3D"https://braze-images.com/ap=
+pboy/communication/assets/image_assets/images/6926e7879c030300636a96a8/orig=
+inal.png=3F1764157319" alt=3D"Visit McDonald&#39;s home." width=3D"54" heig=
+ht=3D"auto" border=3D"0"></a></td>=0D=0A                </tr>=0D=0A        =
+       </tbody></table></td>=0D=0A             </tr>=0D=0A            </tbo=
+dy></table></td>=0D=0A          </tr>=0D=0A         </tbody></table></td>=
+=0D=0A       </tr>=0D=0A      </tbody></table>=0D=0A      <table cellpaddin=
+g=3D"0" cellspacing=3D"0" border=3D"0" width=3D"100%" role=3D"presentation"=
+>=0D=0A       <tbody><tr>=0D=0A        <td align=3D"center" valign=3D"top">=
+<table cellpadding=3D"0" cellspacing=3D"0" border=3D"0" width=3D"100%" role=
+=3D"presentation">=0D=0A          <tbody><tr>=0D=0A           <td align=3D"=
+center" valign=3D"top"><table width=3D"100%" border=3D"0" cellspacing=3D"0"=
+ cellpadding=3D"0" class=3D"wrap" role=3D"presentation">=0D=0A             =
+<tbody><tr>=0D=0A              <td align=3D"center" style=3D"vertical-align=
+:top;"><table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=3D"=
+0" role=3D"presentation">=0D=0A                <tbody><tr>=0D=0A           =
+      <td align=3D"left" valign=3D"top" style=3D"padding: 0px 0px 0px 0px;"=
+><a href=3D"https://link.m.mcdonalds.com/f/a/HjsRUG_wQqIAkrqiyXiFCQ~~/AAQRx=
+RA~/56ltT4ULvR53NenxXWNg44_tzxUUUTHpIaI5matITVcfGVoNuwcMR3JlpxAvDOrzJ_Xy6mM=
+PppCK2ZFujB1ZUPqja-sO5MdlJ0IEnMFFoWkt4pPVGxgBA9Ka_B0hua7xaZXC1GaZqC5hUr5yUL=
+n51FDon0GwkAa1hRoYsP8qVWTUBA88SVPlry9Eq3PBIK0L0DW-_Ib3wrmZU23ayL5TmQ~~" tar=
+get=3D"_blank" style=3D"text-decoration: none; outline: none"><img src=3D"h=
+ttps://braze-images.com/appboy/communication/assets/image_assets/images/692=
+6e788fe6b550063d80043/original.gif=3F1764157320" alt=3D"Get free medium fri=
+es with a $1 minimum purchase in the app." width=3D"640" height=3D"auto" bo=
+rder=3D"0" class=3D"wrap" style=3D"display: block;"> </a></td>=0D=0A       =
+         </tr>=0D=0A               </tbody></table></td>=0D=0A             =
+</tr>=0D=0A            </tbody></table></td>=0D=0A          </tr>=0D=0A    =
+     </tbody></table></td>=0D=0A       </tr>=0D=0A      </tbody></table>=0D=
+=0A      <table role=3D"presentation" width=3D"100%" border=3D"0" cellspaci=
+ng=3D"0" cellpadding=3D"0" class=3D"wrap" bgcolor=3D"#ffffff">=0D=0A       =
+<tbody><tr>=0D=0A        <td align=3D"center" valign=3D"top" style=3D"paddi=
+ng: 0px 0px 0px 0px;"><table width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation">=0D=0A          <tbody><tr>=0D=0A  =
+         <td style=3D"padding: 14px 40px 14px 40px;" class=3D"pad40rl"><tab=
+le width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=3D"0" class=3D=
+"wrap" role=3D"presentation">=0D=0A             <tbody><tr>=0D=0A          =
+    <td align=3D"left" style=3D"padding: 0px 0px 0px 0px;"><h1 style=3D"mar=
+gin: 0px; color: #D90007; font-size: 30px; font-family: &#39;Speedee-Bold&#=
+39;, Arial, Helvetica, sans-serif; line-height: 34px; font-weight: 700;" cl=
+ass=3D"fonth1">Before you start your shopping...</h1></td>=0D=0A           =
+  </tr>=0D=0A             <tr>=0D=0A              <td align=3D"left" style=
+=3D"padding: 0px 0px 0px 0px;"><h2 style=3D"margin: 0px; color: #292929; fo=
+nt-size: 46px; font-family: &#39;Speedee-Bold&#39;, Arial, Helvetica, sans-=
+serif; line-height: 50px; font-weight: 700;" class=3D"fonth2">Gift yourself=
+ free fries this=E2=80=8C =E2=80=8Cfriday</h2></td>=0D=0A             </tr>=
+=0D=0A            </tbody></table>=0D=0A            <table width=3D"100%" b=
+order=3D"0" cellspacing=3D"0" cellpadding=3D"0" class=3D"wrap" role=3D"pres=
+entation">=0D=0A             <tbody><tr>=0D=0A              <td align=3D"le=
+ft" style=3D"padding: 18px 30px 0px 0px;"><p style=3D"margin: 0px; color: #=
+292929; font-size: 22px; font-family: &#39;Speedee-Regular&#39;, Arial, Hel=
+vetica, sans-serif; line-height: 26px; margin-bottom: 0px; font-weight: 400=
+;" class=3D"fontp"><span style=3D"font-family: &#39;Speedee-Bold&#39;, Aria=
+l, Helvetica, sans-serif; font-weight: 700;">Get free medium fries with McV=
+alue<sup class=3D"sup" style=3D"vertical-align: text-top .6em; line-height:=
+ .6em; font-size: 60%;">=C2=AE</sup> with any $1+ order in the app</span>* =
+and start the holidays with something nice and crispy.</p></td>=0D=0A      =
+       </tr>=0D=0A             <tr>=0D=0A              <td align=3D"left"><=
+table width=3D"220" cellspacing=3D"0" cellpadding=3D"0" border=3D"0" role=
+=3D"presentation">=0D=0A                =0D=0A                <tbody><tr>=
+=0D=0A                 <td align=3D"center" style=3D"padding: 16px 0px 0 0p=
+x;" class=3D"pad20t"><table width=3D"252" cellspacing=3D"0" cellpadding=3D"=
+0" border=3D"0" role=3D"presentation" align=3D"left" class=3D"wid220">=0D=
+=0A                   <tbody><tr>=0D=0A                    <td align=3D"cen=
+ter" valign=3D"top"><div class=3D"mobile_show" style=3D"display:none;width:=
+0px;max-height:0px;overflow:hidden;float:left;"> =0D=0A                    =
+  <!--[if mso]>=0D=0A<v:roundrect xmlns:v=3D"urn:schemas-microsoft-com:vml"=
+ xmlns:w=3D"urn:schemas-microsoft-com:office:word" href=3D"https://mcdonald=
+s.smart.link/zxheq9560=3Fsite_id=3DGETFREEFRIES&creative_id=3DGMA&lid=3Dcfh=
+3leb0yby4" style=3D"height:51px;v-text-anchor:middle;width:220px; font-fami=
+ly: 'Speedee-Bold', Arial, Helvetica, sans-serif;font-size: 18px;" arcsize=
+=3D"4%" stroke=3D"f" fillcolor=3D"#FFBC0D">=0D=0A<w:anchorlock/>=0D=0A<cent=
+er>=0D=0A<![endif]--> =0D=0A                      <a href=3D"https://link.m=
+.mcdonalds.com/f/a/Jj1guVS_doKnfINtJV7Ugw~~/AAQRxRA~/56ltT4ULvR53NenxXWNg4=
+4_tzxUUUTHpIaI5matITVcfGVoNuwcMR3JlpxAvDOrzJ_Xy6mMPppCK2ZFujB1ZUPqja-sO5Mdl=
+J0IEnMFFoWmmLun9sUIcwCj4eLITzt0VLbUQS-zFZKigdkym0G20Dz8CbCX4vVJowLwmdKbtpRP=
+7nHLTezBaLYPcLAUT8qacCCaa-NZGKgyZddneyibKdA~~" target=3D"_blank" style=3D"b=
+ackground-color:#FFBC0D;font-weight:bold;border-radius:3px;color:#000000;di=
+splay:inline-block;font-family:&#39;Speedee-Bold&#39;, Arial, Helvetica, sa=
+ns-serif;font-size:18px;line-height:51px;text-align:center;text-decoration:=
+none;width:100%;min-width:220px;-webkit-text-size-adjust:none;">Get Free Fr=
+ies</a> =0D=0A                      <!--[if mso]>=0D=0A</center>=0D=0A</v:r=
+oundrect>=0D=0A<![endif]--> =0D=0A                     </div>=0D=0A        =
+             <div class=3D"hide"> =0D=0A                      <!--[if mso]>=
+=0D=0A<v:roundrect xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:w=3D"urn=
+:schemas-microsoft-com:office:word" href=3D"https://mcdonalds.smart.link/zx=
+heq9560=3Fsite_id=3DGETFREEFRIES&creative_id=3DGMA&lid=3Dgkaje77116sf" styl=
+e=3D"height:50px;v-text-anchor:middle;width:252px; font-family: 'Speedee-Bo=
+ld', Arial, Helvetica, sans-serif;font-size: 18px;" arcsize=3D"5%" stroke=
+=3D"f" fillcolor=3D"#FFBC0D">=0D=0A<w:anchorlock/>=0D=0A<center>=0D=0A<![en=
+dif]--> =0D=0A                      <a href=3D"https://link.m.mcdonalds.com=
+/f/a/WcOG-3ApewL8RAEyVEVyBw~~/AAQRxRA~/56ltT4ULvR53NenxXWNg44_tzxUUUTHpIaI5=
+matITVcfGVoNuwcMR3JlpxAvDOrzJ_Xy6mMPppCK2ZFujB1ZUPqja-sO5MdlJ0IEnMFFoWnSV4Z=
+bGem4noMfMMv9d6wl-X0h23NEQLMXwtKmuxR0aWSJ3nLuhxVT1eEFfwnmnjbcSiQz3gxGT53Nhs=
+eSyEvFBtYHA5HDZvy4c8bhpfpDmg~~" target=3D"_blank" style=3D"background-color=
+:#FFBC0D;font-weight:bold;border-radius:3px;color:#000000;display:inline-bl=
+ock;font-family:&#39;Speedee-Bold&#39;, Arial, Helvetica, sans-serif;font-s=
+ize:18px;line-height:50px;text-align:center;text-decoration:none;width:100%=
+;-webkit-text-size-adjust:none;">Get Free Fries in the App</a> =0D=0A      =
+                <!--[if mso]>=0D=0A</center>=0D=0A</v:roundrect>=0D=0A<![en=
+dif]--> =0D=0A                     </div></td>=0D=0A                   </tr=
+>=0D=0A                  </tbody></table></td>=0D=0A                </tr>=
+=0D=0A               </tbody></table></td>=0D=0A             </tr>=0D=0A   =
+         </tbody></table></td>=0D=0A          </tr>=0D=0A         </tbody><=
+/table></td>=0D=0A       </tr>=0D=0A      </tbody></table>=0D=0A      <tabl=
+e role=3D"presentation" width=3D"100%" border=3D"0" cellspacing=3D"0" cellp=
+adding=3D"0" class=3D"wrap">=0D=0A       <tbody><tr>=0D=0A        <td align=
+=3D"center" valign=3D"top" style=3D"padding:40px 40px 48px 40px;" class=3D"=
+pad7t pad30b pad20rl"><table width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation">=0D=0A          <tbody><tr>=0D=0A  =
+         <td align=3D"right" style=3D"vertical-align:top;"><table width=3D"=
+100%" border=3D"0" cellspacing=3D"0" cellpadding=3D"0" role=3D"presentation=
+">=0D=0A             <tbody><tr>=0D=0A              <td class=3D"heroimage"=
+ background=3D"./&#39;tis the friday for free friesGMA_files/Secondary_BK_6=
+40.png" style=3D"vertical-align: top; background: url(&#39;https://braze-im=
+ages.com/appboy/communication/assets/image_assets/images/6926e7893481610063=
+5d7a2a/original.png=3F1764157320&#39;); background-repeat: no-repeat; backg=
+round-size: 100%; background-color: #ffffff; background-position: top cente=
+r; width:560px; height: 368px;" width=3D"560" height=3D"368" valign=3D"top"=
+><!--[if gte mso 9]>=0D=0A<v:image xmlns:v=3D"urn:schemas-microsoft-com:vml=
+" stroke=3D"false" style=3D"behavior: url(#default#VML); border: 0;display:=
+ inline-block; width: 560px; height: 368px;" src=3D"https://braze-images.co=
+m/appboy/communication/assets/image_assets/images/6926e78934816100635d7a2a/=
+original.png=3F1764157320" class=3D"heroimage" />=0D=0A<v:rect xmlns:v=3D"u=
+rn:schemas-microsoft-com:vml" stroke=3D"false" style=3D" border: 0;display:=
+ inline-block;position: absolute; width: 560px; height: 368px;" class=3D"he=
+roimage"> =0D=0A<v:fill  opacity=3D"0%" color=3D"#ffffff"  />=0D=0A<v:textb=
+ox inset=3D"0,0,0,0">=0D=0A<![endif]-->=0D=0A               =0D=0A         =
+      <div align=3D"center">=0D=0A                <table role=3D"presentati=
+on" width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=3D"0" class=
+=3D"wrap">=0D=0A                 <tbody><tr>=0D=0A                  <td ali=
+gn=3D"center" valign=3D"top"><table width=3D"100%" border=3D"0" cellspacing=
+=3D"0" cellpadding=3D"0" role=3D"presentation">=0D=0A                    <t=
+body><tr>=0D=0A                     <th class=3D"drop botstack" align=3D"ce=
+nter" valign=3D"bottom" width=3D"45%"><table width=3D"100%" border=3D"0" ce=
+llspacing=3D"0" cellpadding=3D"0" role=3D"presentation">=0D=0A             =
+          <tbody><tr>=0D=0A                        <td align=3D"center" val=
+ign=3D"bottom"><table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpad=
+ding=3D"0" role=3D"presentation">=0D=0A                          <tbody><tr=
+>=0D=0A                           <td align=3D"center" valign=3D"bottom" st=
+yle=3D"padding-top: 0px;"><a href=3D"https://link.m.mcdonalds.com/f/a/6fJzX=
+hzRWo4Wv7AGWYJNvA~~/AAQRxRA~/XT0FeSue6YebpBDA4on_VXSkIcC2fTw8O7BLeUKssyVKuL=
+rS6hjIy39JIUJFQLFPV89zvMDx71fovOh3AJW-OOSQVm5bR3ITPbHrWEKZwQZ58UbGlKswpN3HG=
+RhSWVr5F9Tq_fIpYGJ7JBSVEQk4q0ujkjr8djc_tY6zb-7LaMyK3H43QWv1vsNSfRGsuAyZ82A0=
+YM7nwW_sHoZ2Sxx7OQ~~" target=3D"_blank"><img src=3D"https://braze-images.co=
+m/appboy/communication/assets/image_assets/images/6926e7891605610063bdf99e/=
+original.png=3F1764157320" alt=3D"" width=3D"228" height=3D"auto" border=3D=
+"0" style=3D"display: block;"></a></td>=0D=0A                          </tr=
+>=0D=0A                         </tbody></table></td>=0D=0A                =
+       </tr>=0D=0A                      </tbody></table></th>=0D=0A        =
+             <th class=3D"drop topstack" align=3D"left" valign=3D"middle" w=
+idth=3D"50%"><table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpaddi=
+ng=3D"0" role=3D"presentation">=0D=0A                       <tbody><tr>=0D=
+=0A                        <td align=3D"left" valign=3D"middle" style=3D"pa=
+dding-top: 0px; padding-right: 10px;" class=3D"pad20rl pad5t"><table width=
+=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=3D"0" role=3D"presenta=
+tion">=0D=0A                          <tbody><tr>=0D=0A                    =
+       <td align=3D"left" valign=3D"middle" style=3D"padding: 32px 0px 0px =
+0px;" class=3D""><h3 style=3D"margin: 0px; color: #292929; font-size: 28px;=
+ font-family: &#39;Speedee-Bold&#39;,Arial, Helvetica, sans-serif; line-hei=
+ght: 32px; font-weight: 700;" class=3D"fonth3">Round-up in the McD's app to=
+ help families stay in their child's&nbsp;fight!</h3></td>=0D=0A           =
+               </tr>=0D=0A                          <tr>=0D=0A             =
+              <td align=3D"left" valign=3D"middle" style=3D"padding: 6px 0p=
+x 0px 0px;" class=3D""><p style=3D"margin: 0px; color: #292929; font-size: =
+18px; font-family: &#39;Speedee-Regular&#39;,Arial, Helvetica, sans-serif; =
+line-height: 22px; font-weight: 400; mso-hyphenate: none;" class=3D"FS16"><=
+span style=3D"font-family: &#39;Speedee-Bold&#39;, Arial, Helvetica, sans-s=
+erif; font-weight: 700;">Make a difference for Ronald McDonald House<sup cl=
+ass=3D"sup" style=3D"vertical-align: text-top .6em; line-height: .6em; font=
+-size: 60%;">=C2=AE</sup> families</span> by rounding up to the nearest dol=
+lar when you order in&nbsp;the&nbsp;app.</p></td>=0D=0A                    =
+      </tr>=0D=0A                          <tr>=0D=0A                      =
+     <td align=3D"left" valign=3D"middle" class=3D"pad5b"><table role=3D"pr=
+esentation" width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=3D"0"=
+ class=3D"wrap ">=0D=0A                             <tbody><tr>=0D=0A      =
+                        <td align=3D"left" valign=3D"top" style=3D"padding:=
+30px 0px 34px 0px;" class=3D"pad30b"><table border=3D"0" cellspacing=3D"0" =
+cellpadding=3D"0" role=3D"presentation" width=3D"220" class=3D"hide">=0D=0A=
+                                <tbody><tr>=0D=0A                          =
+       <td height=3D"50" align=3D"center" valign=3D"middle" style=3D"height=
+: 51px; border-radius:4px;" bgcolor=3D"#D90007"><a href=3D"https://link.m.m=
+cdonalds.com/f/a/fq1f3CSC1uOnvQRNHPj2wA~~/AAQRxRA~/XT0FeSue6YebpBDA4on_VXSk=
+IcC2fTw8O7BLeUKssyVKuLrS6hjIy39JIUJFQLFPV89zvMDx71fovOh3AJW-OOSQVm5bR3ITPbH=
+rWEKZwQauHLUexHnBNcvC1fSF3QbBCCrV9A95g3S-Du12FHffa_AEnkkb155vZyWtd_MDu5z4PP=
+bDJnk_Wf-7NpMxyn0d66Xd45fptE2KcfeR_rODvg~~" target=3D"_blank" style=3D"back=
+ground-color:#D90007;font-weight: 700;border-radius:4px; color:#FFFDE9; dis=
+play:inline-block; font-family: &#39;Speedee-Bold&#39;, Arial, Helvetica, s=
+ans-serif; font-size:18px; line-height:23px; text-align:center; text-decora=
+tion:none; width:100%; -webkit-text-size-adjust:none;">Learn More</a></td>=
+=0D=0A                                </tr>=0D=0A                          =
+     </tbody></table>=0D=0A                               =0D=0A           =
+                    <!--[if !mso]><!-->=0D=0A                              =
+ =0D=0A                               <div class=3D"mobile_show" style=3D"d=
+isplay:none; width:0px; max-height:0px; overflow:hidden;">=0D=0A           =
+                     <table style=3D"border-collapse:collapse; padding:0;" =
+border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"220" role=3D"pres=
+entation" class=3D"">=0D=0A                                 <tbody><tr>=0D=
+=0A                                  <td valign=3D"top" align=3D"left"><a h=
+ref=3D"https://link.m.mcdonalds.com/f/a/JcDa3VBJciJ_BjZLScvt-w~~/AAQRxRA~/X=
+T0FeSue6YebpBDA4on_VXSkIcC2fTw8O7BLeUKssyVKuLrS6hjIy39JIUJFQLFPV89zvMDx71fo=
+vOh3AJW-OOSQVm5bR3ITPbHrWEKZwQYui5AnxLFMWkU2dgnSj53joAoRAc0UFta_k6xC7WBM_qQ=
+4Yprk6SLqtEzDEs_eIGbamxT1B8l5Sk_gcjYKQgdnDMYpdhdAU_veXRnP9wDXQQ~~" target=
+=3D"_blank" style=3D"background-color:#D90007;font-weight: 700;border-radiu=
+s:4px; color:#FFFDE9; display:inline-block; font-family: &#39;Speedee-Bold&=
+#39;, Arial, Helvetica, sans-serif; font-size:18px; line-height:51px; text-=
+align:center; text-decoration:none; width:220px; min-width: 220px; -webkit-=
+text-size-adjust:none;">Donate in the App</a></td>=0D=0A                   =
+              </tr>=0D=0A                                </tbody></table>=
+=0D=0A                               </div>=0D=0A                          =
+     =0D=0A                               <!--<![endif]--></td>=0D=0A      =
+                       </tr>=0D=0A                            </tbody></tab=
+le></td>=0D=0A                          </tr>=0D=0A                        =
+ </tbody></table></td>=0D=0A                       </tr>=0D=0A             =
+         </tbody></table></th>=0D=0A                    </tr>=0D=0A        =
+           </tbody></table></td>=0D=0A                 </tr>=0D=0A         =
+       </tbody></table>=0D=0A               </div>=0D=0A               =0D=
+=0A               <!--[if gte mso 9]>=0D=0A</v:textbox>=0D=0A</v:fill>=0D=
+=0A</v:rect>=0D=0A</v:image>=0D=0A<![endif]--></td>=0D=0A             </tr>=
+=0D=0A            </tbody></table></td>=0D=0A          </tr>=0D=0A         =
+</tbody></table></td>=0D=0A       </tr>=0D=0A      </tbody></table>=0D=0A  =
+    =0D=0A      <!--Footer_Social_starts_here-->=0D=0A      =0D=0A      <ta=
+ble width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" border=3D"0" role=3D=
+"presentation" bgcolor=3D"#ffffff">=0D=0A       <tbody><tr>=0D=0A        <t=
+d align=3D"left" valign=3D"top" style=3D"padding: 25px 22px 24px 40px;" cla=
+ss=3D"padTp35 pad40rl pad25b"><table width=3D"100%" border=3D"0" cellspacin=
+g=3D"0" cellpadding=3D"0" role=3D"presentation">=0D=0A          <tbody><tr =
+style=3D"display: table; width: 100%;">=0D=0A           <th align=3D"left" =
+valign=3D"middle" class=3D"colsplit botstack"><table width=3D"100%" border=
+=3D"0" cellspacing=3D"0" cellpadding=3D"0" role=3D"presentation">=0D=0A    =
+         <tbody><tr>=0D=0A              <td valign=3D"middle" align=3D"left=
+" class=3D"center pad20t"><p style=3D"font-family:&#39;Speedee-bold&#39;, A=
+rial, Helvetica, sans-serif; font-size: 17px; line-height: 21px; font-weigh=
+t: bold; color: #db0006; margin: 0; padding: 0;"><a href=3D"https://link.m.=
+mcdonalds.com/f/a/WJ_Wm1DcMHBlMxiQjYzm6A~~/AAQRxRA~/PhXQsEWQlgY17p_mD22wgjN=
+7q4hZBFUqG6p8wnBCwZm45GeO5hQmvOeE27uNpuKXjG4DMEkrnw19o3Vcb55PctpfLayl92N0y6=
+VTciU9HzdlhNEERWVVTsyc7GKc1fQ0QS8Aw1Kv5Ki-0a4DkEdU-Q~~" target=3D"_blank" s=
+tyle=3D"color: #db0006; text-decoration: underline;">McDonalds.com</a></p><=
+/td>=0D=0A             </tr>=0D=0A            </tbody></table>=0D=0A       =
+    </th>=0D=0A           <th align=3D"right" valign=3D"middle" class=3D"co=
+lsplit topstack"><table width=3D"278" cellpadding=3D"0" cellspacing=3D"0" b=
+order=3D"0" role=3D"presentation" class=3D"mx-auto">=0D=0A             <!--=
+ DESKTOP LOGO -->=0D=0A             =0D=0A             <tbody><tr>=0D=0A   =
+           <td style=3D"padding: 0px 0px 0px 0px" align=3D"center" valign=
+=3D"middle"><a href=3D"https://link.m.mcdonalds.com/f/a/Rh1kZTSn7-x0gVew9Br=
+80g~~/AAQRxRA~/ipHcKcIADGwzV5YWx1zEdn9j9foIOGvAxg3i-I66WWR8Hn3D6IxZP_9v3VSE=
+1ZJNQbLsiSC0b3CRjZephIIpv0006e84fIWjvWy8U2U1iSg0lpbRpwfnOhHgS_Gv7zGluLIoH3q=
+AzDuGhwIY1Qqi3w~~" target=3D"_blank"> <img src=3D"https://braze-images.com/=
+appboy/communication/assets/image_assets/images/6926e7881605610063bdf99d/or=
+iginal.png=3F1764157319" width=3D"30" height=3D"auto" alt=3D"Like on Facebo=
+ok." border=3D"0" style=3D"display: block;"></a></td>=0D=0A              <t=
+d style=3D"padding: 0px 0px 0px 0px" align=3D"center" valign=3D"middle"><a =
+href=3D"https://link.m.mcdonalds.com/f/a/3ied_bziS8W0zsay2-gXvg~~/AAQRxRA~/=
+g2hc_jEaHYRJF51w1l2xNPSGcs2Jt5PMPdXi_DFGW4VIM7dcrl7DxX0sYsAvbQpHRgGFum4R-YV=
+jVWAzW2cm-qAe7XHx4hv3wAH5s-3ASSLDbzXuCtyo9IAoqQ3qrbzh" target=3D"_blank"> <=
+img src=3D"https://braze-images.com/appboy/communication/assets/image_asset=
+s/images/6926e788ab5a00006305bd92/original.png=3F1764157319" width=3D"30" h=
+eight=3D"auto" alt=3D"Follow on X." border=3D"0" style=3D"display: block;">=
+</a></td>=0D=0A              <td style=3D"padding: 0px 0px 0px 0px" align=
+=3D"center" valign=3D"middle"><a href=3D"https://link.m.mcdonalds.com/f/a/i=
+ssa6u7kHBsDL2Oji5-RHg~~/AAQRxRA~/odE0zH2kehJ8vpXs1K9iCanbySwtgDF6gTh9duGgun=
+XpA0dFvsp3G4ypR5kQ3Uf-kay1vP8ojRprAnqdIZViDakM69_UiUroMyTp7Yv9V5KrreFQV1OMy=
+wycE-4A4eeD-AIzH55E21hhN-rYIQiCTA~~" target=3D"_blank"> <img src=3D"https:/=
+/braze-images.com/appboy/communication/assets/image_assets/images/6926e7887=
+faba0006330838e/original.png=3F1764157319" width=3D"30" height=3D"auto" alt=
+=3D"Follow on Instagram." border=3D"0" style=3D"display: block;"></a></td>=
+=0D=0A              <td align=3D"center" style=3D"padding: 0px 0px 0px 0px"=
+ valign=3D"middle"><a href=3D"https://link.m.mcdonalds.com/f/a/KDp3TXFkNPag=
+MAFnkIsS2Q~~/AAQRxRA~/jYv3jeVJ7uQFKTZXLU7vPXDbhuxG-1vlttU6yBK-W2SP7d27AA8pI=
+WIY7rt7i9wZ2TQDuT-IoM3kXbJEhD9Eg58dhHhmhIMXlF4qjLhk1U6J3-5yzpoq7AwZrnq8cUj9=
+tey__DPFdE1DMkuqYWSYpw~~" target=3D"_blank"> <img src=3D"https://braze-imag=
+es.com/appboy/communication/assets/image_assets/images/6926e788ab5a00007005=
+27dc/original.png=3F1764157319" width=3D"30" height=3D"auto" alt=3D"Subscri=
+be on YouTube." border=3D"0" style=3D"display: block;"></a></td>=0D=0A     =
+        </tr>=0D=0A            </tbody></table></th>=0D=0A          </tr>=
+=0D=0A         </tbody></table></td>=0D=0A       </tr>=0D=0A      </tbody><=
+/table>=0D=0A      =0D=0A      <!--Footer_Social_ends_here--> =0D=0A      =
+=0D=0A      <!--Footer_Quick_Links_starts_here-->=0D=0A      =0D=0A      <t=
+able width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" border=3D"0" role=
+=3D"presentation" bgcolor=3D"#ffffff">=0D=0A       <tbody><tr>=0D=0A       =
+ <td align=3D"center" style=3D"padding:22px 40px 20px 40px;" class=3D"pad25=
+t pad0rl pad20b"><!-- DESKTOP NAV FOOTER -->=0D=0A         =0D=0A         <=
+table width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" border=3D"0" role=
+=3D"presentation">=0D=0A          <tbody><tr>=0D=0A           <td align=3D"=
+center" valign=3D"middle" class=3D"pad16t"><table width=3D"100%" cellpaddin=
+g=3D"0" cellspacing=3D"0" border=3D"0" role=3D"presentation" class=3D"wid28=
+5">=0D=0A             <tbody><tr>=0D=0A              <th align=3D"center" v=
+align=3D"middle" width=3D"46%" class=3D"colsplit"><table width=3D"100%" bor=
+der=3D"0" cellspacing=3D"0" cellpadding=3D"0" role=3D"presentation">=0D=0A =
+               <tbody><tr>=0D=0A                 <td align=3D"left" valign=
+=3D"middle" width=3D"54%" class=3D"center"><p style=3D"font-family:&#39;Spe=
+edee-Bold&#39;, Arial, Helvetica, sans-serif;font-size:14px; line-height: 1=
+8px; word-break: keep-all; font-weight: bold; margin: 0; padding: 0;"> <a h=
+ref=3D"https://link.m.mcdonalds.com/f/a/a2hxW0SjS-x0RsHmf_dJUg~~/AAQRxRA~/J=
+BzAfyeZWbX-JHKOnBq5F1MrZmm7mEpwMjuKCz2HBD5frXPragoC-ed4me9BJr-UcldK0fdjaQ9x=
+nGrCtMzJYXss1hAFqcmNuOUZoTsPrqJ42Ov0h0JihxclmuA8S6tJlASZrU5a8ynuUxrOYJDL-Cy=
+aXiq84W5dx5DFzarzpzQ~" target=3D"_blank" style=3D"color:#6F6F6F;text-decora=
+tion:underline;">Corporate</a> </p></td>=0D=0A                 <td align=3D=
+"left" valign=3D"middle" width=3D"50%" class=3D"center"><p style=3D"font-fa=
+mily:&#39;Speedee-Bold&#39;, Arial, Helvetica, sans-serif;font-size:14px; l=
+ine-height: 18px; word-break: keep-all; font-weight: bold; margin: 0; paddi=
+ng: 0;"> <a href=3D"https://link.m.mcdonalds.com/f/a/ZIC1mXFeBjmaXRU0fOgFzg=
+~~/AAQRxRA~/vef7yYlQhqwcZ51nmMoQcdSppklRTqeYsmp_GOmc0V1b0mAUSG3gjgx8yVF4Chw=
+R8AhfAoxJ9Fh8DlcJ8HuzOLHjCSq5vhqpekGinjuIXWQM2Odz1kFk7OUJC56IKAGyrAKrUTZJ05=
+a-fuEKYOK9I1BblVm6HVCPNMZgZ4-41yQ~" target=3D"_blank" style=3D"color:#6F6F6=
+F;text-decoration:underline;">Privacy</a> </p></td>=0D=0A                </=
+tr>=0D=0A               </tbody></table>=0D=0A              </th>=0D=0A    =
+          <th align=3D"center" valign=3D"middle" width=3D"50%" class=3D"col=
+split pad20t"><table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadd=
+ing=3D"0" role=3D"presentation">=0D=0A                <tbody><tr>=0D=0A    =
+             <td align=3D"left" valign=3D"middle" width=3D"52%" class=3D"ri=
+ght"><p style=3D"font-family:&#39;Speedee-Bold&#39;, Arial, Helvetica, sans=
+-serif;font-size:14px; line-height: 18px; word-break: keep-all; font-weight=
+: bold; margin: 0; padding: 0;"> <a href=3D"https://link.m.mcdonalds.com/f/=
+a/4dODz5XBvZoOW55XsdlyPg~~/AAQRxRA~/QftO3FleAW3TsvsDX0DNYRh06Z4NXcpugBfae-V=
+KcF8zlH2NykL0LriEYIVoltdufDqBp4yJWE_j5H0oGoEgV8KhxhLX0p5uBj6A-pzvz6xJnRR-g3=
+XbTjpMLs6LOGBhKmPSChD-H0L5qMl7TnnBhxPE7N9qXKU942pUpeWxwcN7ZI0vENSl8ry94Hr9T=
+k6C" target=3D"_blank" style=3D"color:#6F6F6F;text-decoration:underline;">T=
+erms&nbsp;&amp;&nbsp;Conditions</a> </p></td>=0D=0A                 <td ali=
+gn=3D"right" valign=3D"middle" width=3D"48%" class=3D"center"><p style=3D"f=
+ont-family:&#39;Speedee-Bold&#39;, Arial, Helvetica, sans-serif;font-size:1=
+4px; line-height: 18px; word-break: keep-all; font-weight: bold; margin: 0;=
+ padding: 0;"> <a href=3D"https://link.m.mcdonalds.com/f/a/WJTpgUUxMOfdPqie=
+-V3oSA~~/AAQRxRA~/BUTegY5DisvWCj8Y5KcKxM6Y3q767rK-81qd_v9y_CWXjpc9RhEvaegf-=
+2XK0NLDBo2mQUm7EoUI72ZMZC2Y__2dBCAJ2e8Pmp0sYH0TrHJLZUlp3HYF0KV4lwpdmn67g3MP=
+aBPcbbLyN8b8Ptm-9vXIasJ4GOQcxYZDW_OKaP9my4vQKa8sgk2P67A9pkzb" target=3D"_bl=
+ank" style=3D"color:#6F6F6F;text-decoration:underline;">Unsubscribe</a> </p=
+></td>=0D=0A                </tr>=0D=0A               </tbody></table>=0D=
+=0A              </th>=0D=0A             </tr>=0D=0A            </tbody></t=
+able></td>=0D=0A          </tr>=0D=0A          <!-- MOBILE NAV FOOTER -->=
+=0D=0A          =0D=0A         </tbody></table></td>=0D=0A       </tr>=0D=
+=0A      </tbody></table>=0D=0A      =0D=0A      <!--Footer_Quick_Links_end=
+s_here--> =0D=0A      =0D=0A      <!--Footer Legal GMA starts-->=0D=0A     =
+ =0D=0A      <table role=3D"presentation" width=3D"100%" border=3D"0" cells=
+pacing=3D"0" cellpadding=3D"0" class=3D"wrap" bgcolor=3D"#ffffff">=0D=0A   =
+    <tbody><tr>=0D=0A        <td align=3D"left" valign=3D"top"><table role=
+=3D"presentation" width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=
+=3D"0" class=3D"wrap">=0D=0A          <tbody><tr>=0D=0A           <td align=
+=3D"left" style=3D"padding: 10px 40px 40px 40px;" class=3D"pad40rl"><p styl=
+e=3D"margin: 0px; color: #6F6F6F; font-size: 14px; font-family: Arial, Helv=
+etica, sans-serif; line-height:  128%; font-weight: normal; mso-hyphenate: =
+none;"><span class=3D"link">=C2=A92025 McDonald's. All Rights Reserved. =E2=
+=80=8C110=E2=80=8C N Carpenter Street, Chicago, IL=E2=80=8C =E2=80=8C60607=
+=E2=80=8C</span><br>=0D=0A             <br>=0D=0A             *Valid 1x on =
+Fridays through 12=E2=80=8C/=E2=80=8C31/=E2=80=8C2025 at participating McDo=
+nald's. Excludes tax. Must opt in to&nbsp;Rewards. <br>=0D=0A             <=
+br>=0D=0A             You are receiving this email as you have downloaded a=
+nd registered for the McDonald's mobile app. Was this email forwarded to yo=
+u=3F To receive these types of emails, download and register for the <a hre=
+f=3D"https://link.m.mcdonalds.com/f/a/1cSj46KMMT_qvvjCv9ycag~~/AAQRxRA~/ecE=
+159PodLZotl-1QFiyUbv_GEx9taJMOj5mFxiAehfp-Sh8xMBHwX1YCKcTAGzs9q0gnDLaIHTLhq=
+ELw2Tc0VPdMhNUfO4cLifTP8miXeNoWppX9fSk5pUtnSElMTc75wqdhkQujXtA83ZgkVSBY-hQI=
+67VDcW06j2kKbMJaIgtGlwPFXSG02FDQ65H9nukuXbRVQrsiqLUreLV3j33cQ~~" target=3D"=
+_blank" style=3D"text-decoration:underline; color:#6F6F6F; font-weight:bold=
+; font-family: Arial, Helvetica, sans-serif;">McDonald's mobile app</a>.<br=
+>=0D=0A             <br>=0D=0A             To ensure delivery to your inbox=
+, please add <a href=3D"mailto:McDonalds@m.mcdonalds.com" target=3D"_blank"=
+ style=3D"text-decoration:underline; color:#6F6F6F; font-weight:bold; font-=
+family: Arial, Helvetica, sans-serif;">McDonalds@m.mcdonalds.com</a> to you=
+r safe sender list or address book.<br>=0D=0A             <br>=0D=0A       =
+      Have questions=3F <a href=3D"https://link.m.mcdonalds.com/f/a/Xh22wZO=
+q9PBkJ0KObcGNUA~~/AAQRxRA~/VMsPpclGKSIFL7QacfTkokT-ma96adU5sAVKGfw8tKYw4EK_=
+SbxJNXC-pJY17Zs12qp41gh9h-_V2JDCx_mxKJHmWTJRjgCXFCJSRxcxNg-F6KxZW07lom3Mjp2=
+IBSGHsGCmWCBqoTrnpPvX8Utr9C2sg7FbZeH38_2D0LF2U9Q~" target=3D"_blank" style=
+=3D"text-decoration: underline; color: #6F6F6F; font-weight:bold; font-fami=
+ly:  Arial, Helvetica, sans-serif;">Contact us</a> online.</p></td>=0D=0A  =
+        </tr>=0D=0A         </tbody></table></td>=0D=0A       </tr>=0D=0A  =
+    </tbody></table>=0D=0A      =0D=0A      <!--Footer Legal GMA ends--></t=
+d>=0D=0A    </tr>=0D=0A   </tbody></table></td>=0D=0A </tr>=0D=0A</tbody></=
+table>=0D=0A=0D=0A=0D=0A<img border=3D"0" width=3D"1" height=3D"1" alt=3D""=
+ src=3D"https://link.m.mcdonalds.com/q/7fQ3OsAAwk9lrtC8wdeWRw~~/AAQRxRA~/FI=
+T_htQaGtHzGBmcYpz7OGo4qd_T8bnCRTUOod9E0-jBRJQsMuHnbVBCJKDfztPQeRdWqbzcnOY07=
+wXQA9WtSA~~">=0D=0A</body></html>
+--_----9LqA1mI7CXyYE1idnw/L2w===_D5/13-29455-7A77C396--
+

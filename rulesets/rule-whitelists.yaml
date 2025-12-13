@@ -1259,3 +1259,82 @@ rules:
           pattern: ".*@make\\.co.*"
     score: -100
     description: "Make.co technology newsletter - legitimate publication"
+
+  - name: "Crafting Companies Whitelist"
+    enabled: true
+    criteria:
+      - type: "HeaderPattern"
+        header: "From"
+        pattern: ".*@media\\.silhouetteamerica\\.com.*"
+    score: -100
+    description: "Silhouette America crafting supplies - legitimate business"
+
+  - name: "Event Platform Whitelist"
+    enabled: true
+    criteria:
+      - type: "HeaderPattern"
+        header: "From"
+        pattern: ".*@toast-restaurants\\.com.*"
+    score: -100
+    description: "Toast restaurant platform - legitimate business communications"
+
+  - name: "Withings Health Products Whitelist"
+    enabled: true
+    criteria:
+      - type: "HeaderPattern"
+        header: "From"
+        pattern: ".*@email\\.withings\\.com.*"
+    score: -100
+    description: "Withings health device notifications - legitimate products"
+
+  - name: "Ultra-Strong Legitimate Business Whitelist"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: ".*pulse\\.celebrations\\.com.*"
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: ".*mail\\.fidelity\\.com.*"
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: ".*nedm\\.asus\\.com.*"
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: ".*media\\.silhouetteamerica\\.com.*"
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: ".*toast-restaurants\\.com.*"
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: ".*email\\.withings\\.com.*"
+    score: -150
+    description: "Ultra-strong whitelist to overcome encoding evasion false positives"
+
+  - name: "Major Brand Comprehensive Whitelist"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: ".*pulse\\.celebrations\\.com.*"
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: ".*mail\\.fidelity\\.com.*"
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: ".*nedm\\.asus\\.com.*"
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: ".*media\\.silhouetteamerica\\.com.*"
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: ".*toast-restaurants\\.com.*"
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: ".*email\\.withings\\.com.*"
+    score: -200
+    description: "Major legitimate brands and services - comprehensive whitelist"

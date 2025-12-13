@@ -121,6 +121,14 @@ rules:
       criteria:
         - type: "SenderPattern"
           pattern: "(?i).*[a-z]+(deal|offer|gift|reward|tech|mobile|store|shop|service|support|account|security|update|verify|confirm).*@.*"
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "SenderPattern"
+                pattern: ".*@(pulse\\.celebrations|mail\\.fidelity|nedm\\.asus|media\\.silhouetteamerica|toast-restaurants|email\\.withings)\\.com.*"
+              - type: "SenderPattern"
+                pattern: ".*@make\\.co.*"
     score: 55
     description: "Generic brand-like patterns (relies on shared TLD detection)"
 

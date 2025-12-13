@@ -1,0 +1,613 @@
+Return-Path: <mstowe+caf_=mstowe=example.com@gmail.com>
+Received: from hotel.example.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.example.com (8.18.1/8.18.1) with ESMTPS id 5BD0ow3L056458
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <user@example.com>; Sat, 13 Dec 2025 00:50:58 GMT
+	(envelope-from mstowe+caf_=mstowe=example.com@gmail.com)
+Authentication-Results: juliett.example.com;
+	dkim=pass (1024-bit key; unprotected) header.d=toast-restaurants.com header.i=no-reply+1b042826@toast-restaurants.com header.b=BYjbB5dI;
+	dkim=pass (1024-bit key; unprotected) header.d=bnc3.mailjet.com header.i=@bnc3.mailjet.com header.b=Npu/1tyf
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	by hotel.example.com (8.16.1/8.16.1) with ESMTPS id 5BD0osAW235775
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=OK)
+	for <user@example.com>; Fri, 12 Dec 2025 18:50:56 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.example.com 5BD0osAW235775
+Authentication-Results: hotel.example.com;
+	dkim=pass (1024-bit key, unprotected) header.d=toast-restaurants.com header.i=no-reply+1b042826@toast-restaurants.com header.a=rsa-sha256 header.s=mailjet header.b=BYjbB5dI;
+	dkim=pass (1024-bit key, unprotected) header.d=bnc3.mailjet.com header.i=@bnc3.mailjet.com header.a=rsa-sha256 header.s=mailjet2 header.b=Npu/1tyf
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-64175dfc338so1130798a12.0
+        for <user@example.com>; Fri, 12 Dec 2025 16:50:56 -0800 (PST)
+ARC-Seal: i=2; a=rsa-sha256; t=1765587054; cv=pass;
+        d=google.com; s=arc-20240605;
+        b=H19jUDCqhulhmosOh1CqWlEXkolZFt+frJfWXV/Tn9bDSPuqkMdbUfNCzG12KWluPC
+         reweEWmxTKRmnWM/b+2MyOoWCxpWXcO5ZgwqO9iI84PaWYqNlxdl+NRHgMVgN5rxun+Y
+         a4Flp3KYzV8Ppwsiym1ghka5y5kPPCW+KLnwZFTBGk8FKsDlLE7b48KVB2wQq+1hg2+v
+         lE9ayyqa323KhSefR/BszB4Kof0D9a9+QvdYyaWxLh41g4rrbjh/xx3F2zI4mmTC/lv1
+         FEf1BBWQCLzmsW5T2YPqlzlg2lncCyay6XqnvAso8rLmpwjBGj/q+j0fKmOHE80u/D71
+         gU2A==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:precedence:feedback-id:list-unsubscribe
+         :list-unsubscribe-post:list-id:date:subject:to:reply-to:from
+         :mime-version:message-id:dkim-signature:dkim-signature:delivered-to;
+        bh=XpGyCZ0TS4Pcygj+8E/dJaSPL5DEoUruIhkgouPa0Ng=;
+        fh=6RWLVXrNWvl+SLk1Hffh8zcnvx/tk85kPwhyMzzr5+o=;
+        b=ZQuh8INtIyLjC0AH2BA7QcHukwYxHUKQ5s+t9l9rr17NGThZdZGVO1qsr44ViifNPd
+         AAPyyD9BBxboZoa16+dQwbBOjzdPSgTBqzrIoHldPxHuH51AzyFCtRjI/5CpUlysqlXm
+         IELJseqhhib7S/FlHrmZ40Bnep35BOb9FESN74bXVMpZM6tE2ROVaCEz4jvnuoPo8yhs
+         aPbXyv6ah8PxzF7zNL4LPL9cdFRDhY5ivW0Dn5ZayH5sErWSwMPwdeSPYWmmAViiqvE+
+         BcrS2PR3m5gkOfOqaFrNYeWnTOHAxIS1yX8xE41Z61ngyyaLfU+BwSAEn+KcvmA1ns4K
+         RGnQ==;
+        darn=example.com
+ARC-Authentication-Results: i=2; mx.google.com;
+       dkim=pass header.i=@toast-restaurants.com header.s=mailjet header.b=BYjbB5dI;
+       dkim=pass header.i=@bnc3.mailjet.com header.s=mailjet2 header.b="Npu/1tyf";
+       spf=pass (google.com: domain of 6e456865.avkaaiz18xaaaaaqfqwaamebkrwaaaabsqwaacyhacdcyqbpplhs@a2573001.bnc3.mailjet.com designates 185.250.237.65 as permitted sender) smtp.mailfrom=6e456865.AVkAAIZ18XAAAAAqfqwAAMEBkRwAAAABsQwAAcYhACdCyQBpPLhs@a2573001.bnc3.mailjet.com;
+       dmarc=pass (p=NONE sp=NONE dis=NONE) header.from=toast-restaurants.com
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765587054; x=1766191854;
+        h=content-transfer-encoding:precedence:feedback-id:list-unsubscribe
+         :list-unsubscribe-post:list-id:date:subject:to:reply-to:from
+         :mime-version:message-id:dkim-signature:dkim-signature:delivered-to
+         :x-forwarded-for:x-forwarded-to:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=XpGyCZ0TS4Pcygj+8E/dJaSPL5DEoUruIhkgouPa0Ng=;
+        b=rfrUHJkQCeAZmRt8KcjkpwFFKAOJkbJOmUn9URPTWqr+PwTWEIE6j8SNn8ibj+4RiN
+         JvCmr/WAEfpXmS615LEUhoBumb5VUnXaltki8gVZwDUM2jV5MIh5PKh/fptqD5OOaXje
+         k3xIfcQY8q3R6tLQJK0NH1fJe8xKAcyJaftOeunDCNpJ9rdo95ps1MRVUwEtZNMzJX7f
+         rWQneuqo7sc1GSBhliu2QDpe2SsLY02f1jusjBCRHFvKnHlCwFyU1X8fyYiqrQp9pu9h
+         YTAlhla4yvo7hs+TUcj+oRlVLHoLx6awBmPC1N+bpOu6SzXEIcYRzSMM9RO+lLryH8Mm
+         zNDQ==
+X-Forwarded-Encrypted: i=2; AJvYcCV00oXONRxP0EYHvXPTnUBl/+8eshzlmhkNCLX3FW0jLDs6ZIh+yOp8sU9F5pTHGxL6jxpfmig=@example.com
+X-Gm-Message-State: AOJu0Yw5FRIjpnpGU8GsWd3ct43t8K0jpPWaIn/0sgYW0b+5LLyg/7Ih
+	AR9/KsmoLtwAA5Ih+cTWO6J2+UGWjhyL0yx+mtG/6BbAQ3Kjx5KsaE2aNoGBbTS/11ZMTQfPsh7
+	jLgjHE6I/Us2JmVD+yngYTV/qEpFT8Ikbr57QxZ2+L3LviH6Fy7aHeOQq/zyrgA==
+X-Received: by 2002:a05:6402:847:b0:649:77ef:d95c with SMTP id 4fb4d7f45d1cf-6499b31df22mr3587953a12.28.1765587054148;
+        Fri, 12 Dec 2025 16:50:54 -0800 (PST)
+X-Forwarded-To: user@example.com
+X-Forwarded-For: user@gmail.com user@example.com
+Delivered-To: user@gmail.com
+Received: by 2002:a54:28c6:0:b0:2bc:fd4a:89b5 with SMTP id d6csp514201ecr;
+        Fri, 12 Dec 2025 16:50:53 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFaWiht1YrY2AeQtqttA5CiyI1VgP213Je8cxExXLbwktQd7LzR3ydlsQdRZj+SYEQ9tnzU
+X-Received: by 2002:a5d:5c89:0:b0:42b:39fb:e88f with SMTP id ffacd0b85a97d-42fb44e42admr4241247f8f.23.1765587052927;
+        Fri, 12 Dec 2025 16:50:52 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1765587052; cv=none;
+        d=google.com; s=arc-20240605;
+        b=AIyvy/CVvBakjU35JYDwOVu6G2k+kQUddh6jx4wgahodOGuzBdN2oFfKfYKhizBHAT
+         rwYJu4OLyQ7t6RxORwBpG3NI0QY7YO6AWQetbm16PIGU18Kq7K/AIehdoDFlSIYaeAq0
+         Mt6RTC0PrXzGmhKoFKV2JS6oQ1g26KDh7y55d0kP4bWn9xLHUYHm02V+WwIE9H94lyBn
+         //HA1v8toUl8HsTitGQWg+TMdismmVvH2m4pz+HI0xiyyTJsWkU7VZ/O9GZjrnVkUzmf
+         3uJam8YCmKlRheVmDOWctgHLidIogvhanecxJYsHKf0Wq4tjAdC/0Q7q3fctu3c4EARA
+         m0sg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:precedence:feedback-id:list-unsubscribe
+         :list-unsubscribe-post:list-id:date:subject:to:reply-to:from
+         :mime-version:message-id:dkim-signature:dkim-signature;
+        bh=XpGyCZ0TS4Pcygj+8E/dJaSPL5DEoUruIhkgouPa0Ng=;
+        fh=mT0Hi1oeQuwKdVkoCKIRR+MEHYH9sEP9ymI/x2O5QRU=;
+        b=VbWYcqaQaTLczjgAxdGIN10bC7LcEsQnnV0yF1dV2j1D+qSNs+njxBf32eUoHLSb8i
+         8NV+WZjoueJkKPjmM2kSmrylNSiBuCrKOb4vDLeFujftw7Zm4AH07TCtzhC5Yqkq9kLL
+         9UuJNs9cvo8Kv3qdyczuAYcrGXCb1XvejxRhZ5IsSTVFNllFO077IqJH/FhgxobGUWQ3
+         cawCvWR11TbgwHXTLGn6L9EniAyZFMCRcyJaCIezOvyjMJlxWeVCsepqGX0UV0lqxgIf
+         HzEcT1p8sPMXKAeqxcP10SCumuj3weqNam4vne7VdaKKHM4wYPffMAS3/7rp4Q6lCxNT
+         TDsA==;
+        dara=google.com
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@toast-restaurants.com header.s=mailjet header.b=BYjbB5dI;
+       dkim=pass header.i=@bnc3.mailjet.com header.s=mailjet2 header.b="Npu/1tyf";
+       spf=pass (google.com: domain of 6e456865.avkaaiz18xaaaaaqfqwaamebkrwaaaabsqwaacyhacdcyqbpplhs@a2573001.bnc3.mailjet.com designates 185.250.237.65 as permitted sender) smtp.mailfrom=6e456865.AVkAAIZ18XAAAAAqfqwAAMEBkRwAAAABsQwAAcYhACdCyQBpPLhs@a2573001.bnc3.mailjet.com;
+       dmarc=pass (p=NONE sp=NONE dis=NONE) header.from=toast-restaurants.com
+Received: from o65.p38.mailjet.com (o65.p38.mailjet.com. [185.250.237.65])
+        by mx.google.com with UTF8SMTPS id ffacd0b85a97d-42fae9e11bbsi7686277f8f.513.2025.12.12.16.50.52
+        for <user@gmail.com>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 12 Dec 2025 16:50:52 -0800 (PST)
+Received-SPF: pass (google.com: domain of 6e456865.avkaaiz18xaaaaaqfqwaamebkrwaaaabsqwaacyhacdcyqbpplhs@a2573001.bnc3.mailjet.com designates 185.250.237.65 as permitted sender) client-ip=185.250.237.65;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@toast-restaurants.com header.s=mailjet header.b=BYjbB5dI;
+       dkim=pass header.i=@bnc3.mailjet.com header.s=mailjet2 header.b="Npu/1tyf";
+       spf=pass (google.com: domain of 6e456865.avkaaiz18xaaaaaqfqwaamebkrwaaaabsqwaacyhacdcyqbpplhs@a2573001.bnc3.mailjet.com designates 185.250.237.65 as permitted sender) smtp.mailfrom=6e456865.AVkAAIZ18XAAAAAqfqwAAMEBkRwAAAABsQwAAcYhACdCyQBpPLhs@a2573001.bnc3.mailjet.com;
+       dmarc=pass (p=NONE sp=NONE dis=NONE) header.from=toast-restaurants.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; q=dns/txt;
+  d=toast-restaurants.com; i=no-reply+1b042826@toast-restaurants.com; s=mailjet; x=1765594252;
+  h=message-id:mime-version:from:from:reply-to:to:to:subject:subject:date:date:list-id:list-unsubscribe-post:
+  list-unsubscribe:feedback-id:precedence:x-campaignid:x-csa-complaints:
+  x-mj-mid:x-mj-smtpguid:x-report-abuse-to:content-type:content-transfer-encoding;
+  bh=cjgoar09tq/38SYuZngOh2hAZscZOpljjLsMgZR+AK8=;
+  b=BYjbB5dI8pb709Pu5f9StSAZMU8g0SEJWnJKJK5awAE1cdphc94y+HBkm
+ VPy7CqMPV7THRNhHehd+HsW1j0NxIBmDc02lHKvjBxQw/Cp1Apk8zw5K1ZRB
+ rUbOwjpHgly8qMjn7B43jZpLvUsOiqI1cbPaWIveYQqgBvGUUC7pVs=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; q=dns/txt;
+  d=bnc3.mailjet.com; s=mailjet2; x=1765594252;
+  h=message-id:mime-version:from:from:reply-to:to:to:subject:subject:date:date:list-id:list-unsubscribe-post:
+  list-unsubscribe:feedback-id:precedence:x-campaignid:x-csa-complaints:
+  x-mj-mid:x-mj-smtpguid:x-report-abuse-to:content-type:content-transfer-encoding;
+  bh=cjgoar09tq/38SYuZngOh2hAZscZOpljjLsMgZR+AK8=;
+  b=Npu/1tyf/PXP7U47EIkyXfkKoMhCk7LRmvNOP1KP/dJvyiuWarG3tTSTA
+ BoUM+5xI6NW+BgKjzdaQ+TMH7u9G+C66E/HT2gaTuC6SdyklXYSF12Nwx5Lz
+ +FsG33OJyHXEApyZWiyjaev+XGq2mlwrbakYfamNvrVzRjQpTu53B8=
+Message-Id: <6e456865.AVkAAIZ18XAAAAAqfqwAAMEBkRwAAAABsQwAAcYhACdCyQBpPLhs@mailjet.com>
+MIME-Version: 1.0
+From: "Zaika (Modern Indian Cuisine)"
+	<no-reply+1b042826@toast-restaurants.com>
+Reply-To: zaikaseattle@gmail.com
+To: user@gmail.com
+Subject: Save your seat for our special event
+Date: Sat, 13 Dec 2025 00:50:52 +0000 (UTC)
+List-Id: <no-reply.1b042826.toast-restaurants.com.slp7j-13l2.mj>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+List-Unsubscribe:
+	<mailto:unsub-6e456865.slp7j.lzuh2t5lz8v1@bnc3.mailjet.com>,
+	<https://slp7j.mjt.lu/unsub2?m=AVkAAIZ18XAAAAAqfqwAAMEBkRwAAAABsQwAAcYhACdCyQBpPLhsYtLLI6NeRmie8hGvCKqSGAAhoZ4&b=6e456865&e=d14cb347&x=ruN6Sx0EAA39aa6aQPHPXg>
+Feedback-Id: 42.2573001.2204062:MJ
+Precedence: bulk
+X-CampaignID: 2784940
+X-CSA-Complaints: csa-complaints@eco.de
+X-MJ-Mid:
+	AVkAAIZ18XAAAAAqfqwAAMEBkRwAAAABsQwAAcYhACdCyQBpPLhsYtLLI6NeRmie8hGvCKqSGAAhoZ4
+X-MJ-SMTPGUID: 62d2cb23-a35e-4668-9ef2-11af08aa9218
+X-REPORT-ABUSE-TO: Message sent by Mailjet please report to
+	abuse@mailjet.com with a copy of the message
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.example.com [172.31.18.8]); Sat, 13 Dec 2025 00:50:58 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.example.com [23.95.222.152]); Fri, 12 Dec 2025 18:50:56 -0600 (CST)
+X-Spam-Flag: YES
+X-FOFF-Feature-Evidence: Context Analysis: Multiple exclamation marks detected (hotel.example.com) [8c765852]
+X-FOFF-Feature-Evidence: Context Analysis: Industry context detected: tech_newsletter (reduced scoring) (hotel.example.com) [80e1dd3b]
+X-FOFF-Rule-Matched: Performance: Bulk Email Quick Detection (hotel.example.com) [951de85e]
+X-FOFF-Rule-Matched: Financial Services: Unrealistic return promises (hotel.example.com) [46bb67f8]
+X-FOFF-Rule-Matched: Email Infrastructure Detection: Reply-to free email redirect (hotel.example.com) [5955a0f7]
+X-FOFF-Rule-Matched: Email Infrastructure Detection: Suspicious forwarded emails (hotel.example.com) [5955a0f7]
+X-FOFF-Rule-Matched: Context Adjustments: Customer Account Communications (hotel.example.com) [d54fda90]
+X-FOFF-Rule-Matched: Authentication Rewards: Unsubscribe Header Present (hotel.example.com) [12005c74]
+X-FOFF-Rule-Matched: Authentication Rewards: Triple Authentication Pass (hotel.example.com) [12005c74]
+X-FOFF-Rule-Matched: Analytics: Suspicious Timing Patterns (hotel.example.com) [15b9db47]
+X-FOFF-Score: 105 - foff-milter v0.8.1 (hotel.example.com)
+X-FOFF-Trust-Analysis: auth=85, infra=10, behavior=-10, content=20, total=46, adj=-10
+X-FOFF-Business-Analysis: comm=55, legit=5, industry=10, compliance=35, total=28, adj=-50
+X-FOFF-Seasonal-Analysis: seasonal=0, consistency=10, patterns=0, timing=0, total=4, adj=0
+X-FOFF-Upstream-Trust: Trusting upstream FOFF-milter spam classification
+
+<!doctype html><html lang=3D"und" dir=3D"auto" xmlns=3D"http://www.w3.org/1=
+999/xhtml" xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:o=3D"urn:schemas=
+-microsoft-com:office:office">  <head>    <title></title>    <!--[if !mso]>=
+<!-->    <meta http-equiv=3D"X-UA-Compatible" content=3D"IE=3Dedge">    <!-=
+-<![endif]-->    <meta http-equiv=3D"Content-Type" content=3D"text/html; ch=
+arset=3DUTF-8">    <meta name=3D"viewport" content=3D"width=3Ddevice-width,=
+ initial-scale=3D1">    <style type=3D"text/css">      #outlook a { padding=
+:0; }      body { margin:0;padding:0;-webkit-text-size-adjust:100%;-ms-text=
+-size-adjust:100%; }      table, td { border-collapse:collapse;mso-table-ls=
+pace:0pt;mso-table-rspace:0pt; }      img { border:0;height:auto;line-heigh=
+t:100%; outline:none;text-decoration:none;-ms-interpolation-mode:bicubic; }=
+      p { display:block;margin:13px 0; }    </style>    <!--[if mso]>    <n=
+oscript>    <xml>    <o:OfficeDocumentSettings>      <o:AllowPNG/>      <o:=
+PixelsPerInch>96</o:PixelsPerInch>    </o:OfficeDocumentSettings>    </xml>=
+    </noscript>    <![endif]-->    <!--[if lte mso 11]>    <style type=3D"t=
+ext/css">      .mj-outlook-group-fix { width:100% !important; }    </style>=
+    <![endif]-->          <!--[if !mso]><!-->        <link href=3D"https://=
+fonts.googleapis.com/css?family=3DUbuntu:300,400,500,700" rel=3D"stylesheet=
+" type=3D"text/css">        <style type=3D"text/css">          @import url(=
+https://fonts.googleapis.com/css?family=3DUbuntu:300,400,500,700);        <=
+/style>      <!--<![endif]-->            <style type=3D"text/css">      @me=
+dia only screen and (min-width:480px) {        .mj-column-per-100 { width:1=
+00% !important; max-width: 100%; }.mj-column-per-34 { width:34% !important;=
+ max-width: 34%; }      }    </style>    <style media=3D"screen and (min-wi=
+dth:480px)">      .moz-text-html .mj-column-per-100 { width:100% !important=
+; max-width: 100%; }.moz-text-html .mj-column-per-34 { width:34% !important=
+; max-width: 34%; }    </style>                  <style type=3D"text/css"> =
+   @media only screen and (max-width:479px) {      table.mj-full-width-mobi=
+le { width: 100% !important; }      td.mj-full-width-mobile { width: auto !=
+important; }    }      </style>         <style type=3D"text/css">.mjml-dash=
+ed-border { border: 3px dashed #00000014;} table p:first-child { margin: 0;=
+ }    </style>      </head>  <body style=3D"word-spacing:normal;background-=
+color:#f8f6f4;">        <div style=3D"display:none;font-size:1px;color:#fff=
+fff;line-height:1px;max-height:0px;max-width:0px;opacity:0;overflow:hidden;=
+">We appreciate your visit. Do come again.</div>            <div         st=
+yle=3D"background-color:#f8f6f4;" lang=3D"und" dir=3D"auto"      >         =
+           <!--[if mso | IE]><table align=3D"center" border=3D"0" cellpaddi=
+ng=3D"0" cellspacing=3D"0" class=3D"" role=3D"presentation" style=3D"width:=
+600px;" width=3D"600" ><tr><td style=3D"line-height:0px;font-size:0px;mso-l=
+ine-height-rule:exactly;"><![endif]-->                <div  style=3D"margin=
+:0px auto;max-width:600px;">                <table           align=3D"cente=
+r" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" s=
+tyle=3D"width:100%;"        >          <tbody>            <tr>             =
+ <td                 style=3D"direction:ltr;font-size:0px;padding:5px 0px 5=
+px 0px;padding-bottom:5px;padding-left:0px;padding-right:0px;padding-top:5p=
+x;text-align:center;"              >                <!--[if mso | IE]><tabl=
+e role=3D"presentation" border=3D"0" cellpadding=3D"0" cellspacing=3D"0"><t=
+r><td class=3D"" style=3D"vertical-align:middle;width:600px;" ><![endif]-->=
+                  <div         class=3D"mj-column-per-100 mj-outlook-group-=
+fix" style=3D"font-size:0px;text-align:left;direction:ltr;display:inline-bl=
+ock;vertical-align:middle;width:100%;"      >              <table         b=
+order=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=
+=3D"vertical-align:middle;" width=3D"100%"      >        <tbody>           =
+             <tr>                <td                   align=3D"right" styl=
+e=3D"font-size:0px;padding:0px 15px 0px 0px;padding-top:0px;padding-right:1=
+5px;padding-bottom:0px;word-break:break-word;"                >            =
+            <div         style=3D"font-family:Arial, sans-serif;font-size:1=
+2px;line-height:22px;text-align:right;color:#9399a1;"      ><p style=3D"tex=
+t-align: right; margin: 10px 0; margin-top: 10px; margin-bottom: 10px;"><a =
+target=3D"_blank" href=3D"https://slp7j.mjt.lu/nl3/anxXyEeB8Gi9_jMwihGjkQ?m=
+=3DAVkAAIZ18XAAAAAqfqwAAMEBkRwAAAABsQwAAcYhACdCyQBpPLhsYtLLI6NeRmie8hGvCKqS=
+GAAhoZ4&amp;b=3D6e456865&amp;e=3Dd14cb347&amp;x=3DruN6Sx0EAA39aa6aQPHPXg"><=
+span style=3D"color:#707070;font-size:12px;line-height:24px;font-family:Ari=
+al;">View online version</span></a></p></div>                    </td>     =
+         </tr>                    </tbody>      </table>          </div>   =
+           <!--[if mso | IE]></td></tr></table><![endif]-->              </=
+td>            </tr>          </tbody>        </table>              </div> =
+               <!--[if mso | IE]></td></tr></table><table align=3D"center" =
+border=3D"0" cellpadding=3D"0" cellspacing=3D"0" class=3D"" role=3D"present=
+ation" style=3D"width:600px;" width=3D"600" bgcolor=3D"#ffffff" ><tr><td st=
+yle=3D"line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endi=
+f]-->                <div  style=3D"background:#ffffff;background-color:#ff=
+ffff;margin:0px auto;max-width:600px;">                <table           ali=
+gn=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"pres=
+entation" style=3D"background:#ffffff;background-color:#ffffff;width:100%;"=
+        >          <tbody>            <tr>              <td                =
+ style=3D"direction:ltr;font-size:0px;padding:16px 50px 16px 50px;padding-b=
+ottom:0px;padding-left:0px;padding-right:0px;padding-top:0px;text-align:cen=
+ter;"              >                <!--[if mso | IE]><table role=3D"presen=
+tation" border=3D"0" cellpadding=3D"0" cellspacing=3D"0"><tr><td align=3D"c=
+enter" class=3D"" style=3D"vertical-align:middle;width:204px;" ><![endif]--=
+>                  <div         class=3D"mj-column-per-34 mj-outlook-group-=
+fix" style=3D"font-size:0px;text-align:left;direction:ltr;display:inline-bl=
+ock;vertical-align:middle;width:100%;"      >              <table         b=
+order=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=
+=3D"vertical-align:middle;" width=3D"100%"      >        <tbody>           =
+             <tr>                <td                   align=3D"center" sty=
+le=3D"font-size:0px;padding:0px 25px 0px 25px;padding-top:0px;padding-right=
+:0px;padding-bottom:0px;padding-left:0px;word-break:break-word;"           =
+     >                        <table         border=3D"0" cellpadding=3D"0"=
+ cellspacing=3D"0" role=3D"presentation" style=3D"border-collapse:collapse;=
+border-spacing:0px;"      >        <tbody>          <tr>            <td  st=
+yle=3D"width:100px;">                    <img         alt=3D"logo" src=3D"h=
+ttps://d28f3w0x9i80nq.cloudfront.net/restaurantImages/8b01febd-1b47-454a-b3=
+09-d29fec27b539/logo_0915.png" style=3D"border:none;border-radius:0;display=
+:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:1=
+3px;" title=3D"" width=3D"100" height=3D"auto"      />                </td>=
+          </tr>        </tbody>      </table>                    </td>     =
+         </tr>                    </tbody>      </table>          </div>   =
+           <!--[if mso | IE]></td></tr></table><![endif]-->              </=
+td>            </tr>          </tbody>        </table>              </div> =
+               <!--[if mso | IE]></td></tr></table><table align=3D"center" =
+border=3D"0" cellpadding=3D"0" cellspacing=3D"0" class=3D"" role=3D"present=
+ation" style=3D"width:600px;" width=3D"600" bgcolor=3D"#ffffff" ><tr><td st=
+yle=3D"line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endi=
+f]-->                <div  style=3D"background:#ffffff;background-color:#ff=
+ffff;margin:0px auto;max-width:600px;">                <table           ali=
+gn=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"pres=
+entation" style=3D"background:#ffffff;background-color:#ffffff;width:100%;"=
+        >          <tbody>            <tr>              <td                =
+ style=3D"direction:ltr;font-size:0px;padding:0px 0px 0px 0px;padding-botto=
+m:0px;padding-left:0px;padding-right:0px;padding-top:0px;text-align:center;=
+"              >                <!--[if mso | IE]><table role=3D"presentati=
+on" border=3D"0" cellpadding=3D"0" cellspacing=3D"0"><tr><td class=3D"" sty=
+le=3D"vertical-align:top;width:600px;" ><![endif]-->                  <div =
+        class=3D"mj-column-per-100 mj-outlook-group-fix" style=3D"font-size=
+:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;=
+width:100%;"      >              <table         border=3D"0" cellpadding=3D=
+"0" cellspacing=3D"0" role=3D"presentation" style=3D"vertical-align:top;" w=
+idth=3D"100%"      >        <tbody>                        <tr>            =
+    <td                   align=3D"center" style=3D"font-size:0px;padding:0=
+px;padding-top:24px;padding-right:0px;padding-bottom:24px;padding-left:0px;=
+word-break:break-word;"                >                        <table     =
+    border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" =
+style=3D"border-collapse:collapse;border-spacing:0px;" class=3D"mj-full-wid=
+th-mobile"      >        <tbody>          <tr>            <td  style=3D"wid=
+th:600px;" class=3D"mj-full-width-mobile">                    <img         =
+alt=3D"" src=3D"https://d28f3w0x9i80nq.cloudfront.net/restaurantImages/8b01=
+febd-1b47-454a-b309-d29fec27b539/4-8.png" style=3D"border:0;border-radius:8=
+px;display:block;outline:none;text-decoration:none;height:auto;width:100%;f=
+ont-size:13px;" title=3D"" width=3D"600" height=3D"auto"      />           =
+     </td>          </tr>        </tbody>      </table>                    =
+</td>              </tr>                    </tbody>      </table>         =
+ </div>              <!--[if mso | IE]></td></tr></table><![endif]-->      =
+        </td>            </tr>          </tbody>        </table>           =
+   </div>                <!--[if mso | IE]></td></tr></table><table align=
+=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" class=3D"" rol=
+e=3D"presentation" style=3D"width:600px;" width=3D"600" bgcolor=3D"#ffffff"=
+ ><tr><td style=3D"line-height:0px;font-size:0px;mso-line-height-rule:exact=
+ly;"><![endif]-->                <div  style=3D"background:#ffffff;backgrou=
+nd-color:#ffffff;margin:0px auto;max-width:600px;">                <table  =
+         align=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" =
+role=3D"presentation" style=3D"background:#ffffff;background-color:#ffffff;=
+width:100%;"        >          <tbody>            <tr>              <td    =
+             style=3D"border:none;direction:ltr;font-size:0px;padding:20px =
+0;padding-bottom:0px;padding-left:40px;padding-right:40px;padding-top:0px;t=
+ext-align:center;"              >                <!--[if mso | IE]><table r=
+ole=3D"presentation" border=3D"0" cellpadding=3D"0" cellspacing=3D"0"><tr><=
+td class=3D"" style=3D"vertical-align:top;width:520px;" ><![endif]-->      =
+            <div         class=3D"mj-column-per-100 mj-outlook-group-fix" s=
+tyle=3D"font-size:0px;text-align:left;direction:ltr;display:inline-block;ve=
+rtical-align:top;width:100%;"      >              <table         border=3D"=
+0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" width=3D"100%"=
+      >        <tbody>          <tr>            <td  style=3D"vertical-alig=
+n:top;padding:12px;">                    <table         border=3D"0" cellpa=
+dding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"" width=3D"100=
+%"      >        <tbody>                        <tr>                <td    =
+               align=3D"left" style=3D"font-size:0px;padding:0px;padding-to=
+p:32px;padding-right:0px;padding-bottom:8px;padding-left:0px;word-break:bre=
+ak-word;"                >                        <div         style=3D"fon=
+t-family:Trebuchet MS, Verdana, Helvetica, sans-serif;font-size:13px;line-h=
+eight:1.2;text-align:left;color:#202020;"      ><h1 style=3D"margin: 0px; t=
+ext-align: center;"><span style=3D"font-family: &quot;Trebuchet MS&quot;, V=
+erdana, Helvetica, sans-serif; color: rgb(32, 32, 32); font-size: 36px;"><s=
+trong style=3D"font-weight: 700;">Join us for </strong></span><span style=
+=3D"font-family: &quot;Arial Black&quot;, sans-serif; font-size: 36px;"><st=
+rong style=3D"font-weight: 700;">Zaika           Grill &amp; Biryani Festiv=
+al</strong></span></h1></div>                    </td>              </tr>  =
+                        <tr>                <td                   align=3D"=
+left" style=3D"font-size:0px;padding:10px 25px;padding-top:4px;padding-righ=
+t:0px;padding-bottom:4px;padding-left:0px;word-break:break-word;"          =
+      >                        <div         style=3D"font-family:Verdana, G=
+eneva, sans-serif;font-size:13px;line-height:1;text-align:left;color:#20202=
+0;"      ><p style=3D"margin: 0px; text-align: center;"><span style=3D"font=
+-family: Verdana, Geneva, sans-serif; color: rgb(32, 32, 32);">We=E2=80=99r=
+e hosting something special at Zaika =E2=80=94 and you=E2=80=99re invited! =
+Bring your friends, enjoy seasonal dishes, handcrafted drinks, and the warm=
+ atmosphere that makes every visit memorable.<br><br>Whether you=E2=80=99re=
+ celebrating something big or just want a reason to get together, this is t=
+he perfect night to do it.</span></p></div>                    </td>       =
+       </tr>                          <tr>                <td              =
+     align=3D"center" style=3D"font-size:0px;padding:0px;padding-top:20px;p=
+adding-right:0px;padding-bottom:20px;padding-left:0px;word-break:break-word=
+;"                >                        <table         border=3D"0" cell=
+padding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"border-colla=
+pse:separate;line-height:100%;"      >        <tbody>          <tr>        =
+    <td               align=3D"center" bgcolor=3D"#3b1b4a" role=3D"presenta=
+tion" style=3D"border:none;border-radius:4px;cursor:auto;mso-padding-alt:16=
+px 25px;background:#3b1b4a;" valign=3D"middle"            >              <a=
+                 href=3D"https://slp7j.mjt.lu/lnk/AVkAAIZ18XAAAAAqfqwAAMEBk=
+RwAAAABsQwAAcYhACdCyQBpPLhsYtLLI6NeRmie8hGvCKqSGAAhoZ4/1/S4hq80iWXP5dsG_Moq=
+WXOA/aHR0cHM6Ly93d3cuemFpa2FzZWF0dGxlLmNvbS9kaW5lLWluLW1lbnUuaHRtbA" style=
+=3D"display:inline-block;background:#3b1b4a;color:#ffffff;font-family:Arial=
+, sans-serif;font-size:16px;font-weight:400;line-height:8px;letter-spacing:=
+0.2px;margin:0;text-decoration:none;text-transform:none;padding:16px 25px;m=
+so-padding-alt:0px;border-radius:4px;" target=3D"_blank"              >    =
+            Zaika menu              </a>            </td>          </tr>   =
+     </tbody>      </table>                    </td>              </tr>    =
+                </tbody>      </table>                </td>          </tr> =
+       </tbody>      </table>          </div>              <!--[if mso | IE=
+]></td></tr></table><![endif]-->              </td>            </tr>       =
+   </tbody>        </table>              </div>                <!--[if mso =
+| IE]></td></tr></table><table align=3D"center" border=3D"0" cellpadding=3D=
+"0" cellspacing=3D"0" class=3D"" role=3D"presentation" style=3D"width:600px=
+;" width=3D"600" bgcolor=3D"#ffffff" ><tr><td style=3D"line-height:0px;font=
+-size:0px;mso-line-height-rule:exactly;"><![endif]-->                <div  =
+style=3D"background:#ffffff;background-color:#ffffff;margin:0px auto;max-wi=
+dth:600px;">                <table           align=3D"center" border=3D"0" =
+cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"backgrou=
+nd:#ffffff;background-color:#ffffff;width:100%;"        >          <tbody> =
+           <tr>              <td                 style=3D"border:none;direc=
+tion:ltr;font-size:0px;padding:20px 0;padding-bottom:0px;padding-left:40px;=
+padding-right:40px;padding-top:0px;text-align:center;"              >      =
+          <!--[if mso | IE]><table role=3D"presentation" border=3D"0" cellp=
+adding=3D"0" cellspacing=3D"0"><tr></tr></table><![endif]-->              <=
+/td>            </tr>          </tbody>        </table>              </div>=
+                <!--[if mso | IE]></td></tr></table><table align=3D"center"=
+ border=3D"0" cellpadding=3D"0" cellspacing=3D"0" class=3D"" role=3D"presen=
+tation" style=3D"width:600px;" width=3D"600" bgcolor=3D"#ffffff" ><tr><td s=
+tyle=3D"line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![end=
+if]-->                <div  style=3D"background:#ffffff;background-color:#f=
+fffff;margin:0px auto;max-width:600px;">                <table           al=
+ign=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"pre=
+sentation" style=3D"background:#ffffff;background-color:#ffffff;width:100%;=
+"        >          <tbody>            <tr>              <td               =
+  style=3D"direction:ltr;font-size:0px;padding:0px 0px 0px 0px;padding-bott=
+om:0px;padding-left:0px;padding-right:0px;padding-top:0px;text-align:center=
+;"              >                <!--[if mso | IE]><table role=3D"presentat=
+ion" border=3D"0" cellpadding=3D"0" cellspacing=3D"0"><tr><td class=3D"" st=
+yle=3D"vertical-align:top;width:600px;" ><![endif]-->                  <div=
+         class=3D"mj-column-per-100 mj-outlook-group-fix" style=3D"font-siz=
+e:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top=
+;width:100%;"      >              <table         border=3D"0" cellpadding=
+=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"vertical-align:top;=
+" width=3D"100%"      >        <tbody>                        <tr>         =
+       <td                   align=3D"center" style=3D"background:transpare=
+nt;font-size:0px;padding:0px 0px 0px 0px;padding-top:0px;padding-right:0px;=
+padding-bottom:0px;padding-left:0px;word-break:break-word;"                =
+>                        <table         border=3D"0" cellpadding=3D"0" cell=
+spacing=3D"0" role=3D"presentation" style=3D"border-collapse:collapse;borde=
+r-spacing:0px;"      >        <tbody>          <tr>            <td  style=
+=3D"width:600px;">                    <img         alt=3D"Banner" src=3D"ht=
+tps://d1knuqod36pnys.cloudfront.net/restaurantImages/ba27a9bf-4f28-4ff4-866=
+8-5aba38ee9d3e/Banners.png" style=3D"border:none;display:block;outline:none=
+;text-decoration:none;height:auto;width:100%;font-size:13px;" title=3D"" wi=
+dth=3D"600" height=3D"auto"      />                </td>          </tr>    =
+    </tbody>      </table>                    </td>              </tr>     =
+               </tbody>      </table>          </div>              <!--[if =
+mso | IE]></td></tr></table><![endif]-->              </td>            </tr=
+>          </tbody>        </table>              </div>                <!--=
+[if mso | IE]></td></tr></table><table align=3D"center" border=3D"0" cellpa=
+dding=3D"0" cellspacing=3D"0" class=3D"" role=3D"presentation" style=3D"wid=
+th:600px;" width=3D"600" bgcolor=3D"#ffffff" ><tr><td style=3D"line-height:=
+0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->              =
+  <div  style=3D"background:#ffffff;background-color:#ffffff;margin:0px aut=
+o;max-width:600px;">                <table           align=3D"center" borde=
+r=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"=
+background:#ffffff;background-color:#ffffff;width:100%;"        >          =
+<tbody>            <tr>              <td                 style=3D"direction=
+:ltr;font-size:0px;padding:0px;padding-bottom:0px;padding-left:40px;padding=
+-right:40px;padding-top:0px;text-align:center;"              >             =
+   <!--[if mso | IE]><table role=3D"presentation" border=3D"0" cellpadding=
+=3D"0" cellspacing=3D"0"><tr><td class=3D"" style=3D"vertical-align:top;wid=
+th:520px;" ><![endif]-->                  <div         class=3D"mj-column-p=
+er-100 mj-outlook-group-fix" style=3D"font-size:0px;text-align:left;directi=
+on:ltr;display:inline-block;vertical-align:top;width:100%;"      >         =
+     <table         border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=
+=3D"presentation" style=3D"vertical-align:top;" width=3D"100%"      >      =
+  <tbody>                        <tr>                <td                   =
+align=3D"center" style=3D"font-size:0px;padding:0px;padding-top:16px;paddin=
+g-right:8px;padding-bottom:16px;padding-left:8px;word-break:break-word;"   =
+             >                             <!--[if mso | IE]><table align=
+=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presen=
+tation" ><tr><td><![endif]-->              <table                 align=3D"=
+center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentati=
+on" style=3D"float:none;display:inline-table;"              >              =
+  <tbody>                        <tr              >        <td  style=3D"pa=
+dding:0px;padding-top:0px;padding-right:8px;padding-bottom:0px;padding-left=
+:8px;vertical-align:middle;">          <table             border=3D"0" cell=
+padding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"border-radiu=
+s:3px;width:16px;"          >            <tbody>              <tr>         =
+       <td  style=3D"font-size:0;height:16px;vertical-align:middle;width:16=
+px;">                  <a  href=3D"https://slp7j.mjt.lu/lnk/AVkAAIZ18XAAAAA=
+qfqwAAMEBkRwAAAABsQwAAcYhACdCyQBpPLhsYtLLI6NeRmie8hGvCKqSGAAhoZ4/2/UXvGSgoJ=
+2qHMMQa30u1FxA/aHR0cHM6Ly93d3cuZmFjZWJvb2suY29tL3phaWthc2VhdHRsZS8" target=
+=3D"_blank">                    <img                       alt=3D"Facebook =
+Social Media Link" height=3D"16" src=3D"https://cdn.toasttab.com/static/cfd=
+5ea144165ef15dcc0599ba9e695e0430b2b7e/images/ecomm/email/activation/faceboo=
+k.png" style=3D"border-radius:3px;display:block;" width=3D"16"             =
+       />                  </a>                </td>              </tr>    =
+        </tbody>          </table>        </td>              </tr>         =
+           </tbody>              </table>            <!--[if mso | IE]></td=
+><td><![endif]-->              <table                 align=3D"center" bord=
+er=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D=
+"float:none;display:inline-table;"              >                <tbody>   =
+                     <tr              >        <td  style=3D"padding:0px;pa=
+dding-top:0px;padding-right:8px;padding-bottom:0px;padding-left:8px;vertica=
+l-align:middle;">          <table             border=3D"0" cellpadding=3D"0=
+" cellspacing=3D"0" role=3D"presentation" style=3D"border-radius:3px;width:=
+16px;"          >            <tbody>              <tr>                <td  =
+style=3D"font-size:0;height:16px;vertical-align:middle;width:16px;">       =
+           <a  href=3D"https://slp7j.mjt.lu/lnk/AVkAAIZ18XAAAAAqfqwAAMEBkRw=
+AAAABsQwAAcYhACdCyQBpPLhsYtLLI6NeRmie8hGvCKqSGAAhoZ4/3/Tv9HK2J2w_zCvFNJrXoI=
+zQ/aHR0cHM6Ly93d3cuaW5zdGFncmFtLmNvbS96YWlrYXNlYXR0bGUv" target=3D"_blank">=
+                    <img                       alt=3D"Instagram Social Medi=
+a Link" height=3D"16" src=3D"https://cdn.toasttab.com/static/cfd5ea144165ef=
+15dcc0599ba9e695e0430b2b7e/images/ecomm/email/activation/instagram.png" sty=
+le=3D"border-radius:3px;display:block;" width=3D"16"                    /> =
+                 </a>                </td>              </tr>            </=
+tbody>          </table>        </td>              </tr>                   =
+ </tbody>              </table>            <!--[if mso | IE]></td><td><![en=
+dif]-->              <table                 align=3D"center" border=3D"0" c=
+ellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"float:non=
+e;display:inline-table;"              >                <tbody>             =
+           <tr              >        <td  style=3D"padding:0px;padding-top:=
+0px;padding-right:8px;padding-bottom:0px;padding-left:8px;vertical-align:mi=
+ddle;">          <table             border=3D"0" cellpadding=3D"0" cellspac=
+ing=3D"0" role=3D"presentation" style=3D"border-radius:3px;width:16px;"    =
+      >            <tbody>              <tr>                <td  style=3D"f=
+ont-size:0;height:16px;vertical-align:middle;width:16px;">                 =
+ <a  href=3D"https://slp7j.mjt.lu/lnk/AVkAAIZ18XAAAAAqfqwAAMEBkRwAAAABsQwAA=
+cYhACdCyQBpPLhsYtLLI6NeRmie8hGvCKqSGAAhoZ4/4/UwNjfX9L8EdfsNr9Qr_wpA/aHR0cHM=
+6Ly90d2l0dGVyLmNvbS96YWlrYXNlYXR0bGU" target=3D"_blank">                   =
+ <img                       alt=3D"Twitter Social Media Link" height=3D"16"=
+ src=3D"https://cdn.toasttab.com/static/536c92210acb93473060820498758c133e3=
+75cec/images/ecomm/email/activation/x_logo.png" style=3D"border-radius:3px;=
+display:block;" width=3D"16"                    />                  </a>   =
+             </td>              </tr>            </tbody>          </table>=
+        </td>              </tr>                    </tbody>              <=
+/table>            <!--[if mso | IE]></td></tr></table><![endif]-->        =
+                </td>              </tr>                          <tr>     =
+           <td                   align=3D"center" style=3D"font-size:0px;pa=
+dding:0px;padding-top:8px;padding-right:8px;padding-bottom:8px;padding-left=
+:8px;word-break:break-word;"                >                        <div  =
+       style=3D"font-family:Verdana, Geneva, sans-serif;font-size:16px;line=
+-height:1;text-align:center;color:#202020;"      ><p style=3D"text-align: c=
+enter; margin: 0px; font-family: Verdana, Geneva, sans-serif; color: rgb(32=
+, 32, 32);"><span style=3D"color: rgb(32, 32, 32); font-family: Verdana, Ge=
+neva, sans-serif; font-size: 16px;"><b style=3D"font-family: Verdana, Genev=
+a, sans-serif; color: rgb(32, 32, 32);">Zaika (Modern Indian Cuisine)</b></=
+span></p></div>                    </td>              </tr>                =
+          <tr>                <td                   align=3D"center" style=
+=3D"font-size:0px;padding:0px;padding-top:8px;padding-right:8px;padding-bot=
+tom:8px;padding-left:8px;word-break:break-word;"                >          =
+              <div         style=3D"font-family:Verdana, Geneva, sans-serif=
+;font-size:16px;line-height:1;text-align:center;color:#202020;"      ><p st=
+yle=3D"text-align: center; margin: 0px; font-family: Verdana, Geneva, sans-=
+serif; color: rgb(32, 32, 32);"><span style=3D"color: rgb(32, 32, 32); font=
+-family: Verdana, Geneva, sans-serif; font-size: 16px;">1100 Pike Street, S=
+eattle, WA 98101</span></p></div>                    </td>              </t=
+r>                          <tr>                <td                   align=
+=3D"left" style=3D"background:transparent;font-size:0px;padding:0px;padding=
+-top:8px;padding-right:8px;padding-bottom:8px;padding-left:8px;word-break:b=
+reak-word;"                >                        <div         style=3D"f=
+ont-family:Verdana, Geneva, sans-serif;font-size:12px;line-height:1;text-al=
+ign:left;color:#202020;"      ><p style=3D"text-align: center; margin: 0px;=
+ font-family: Verdana, Geneva, sans-serif; color: rgb(32, 32, 32);"><span s=
+tyle=3D"color: rgb(32, 32, 32); font-size: 12px; font-family: Verdana, Gene=
+va, sans-serif;">You are receiving this email because you are signed up for=
+ marketing communications.<br style=3D"font-family: Verdana, Geneva, sans-s=
+erif; color: rgb(32, 32, 32);">Want to opt out? </span><a target=3D"_blank"=
+ href=3D"https://slp7j.mjt.lu/unsub2?m=3DAVkAAIZ18XAAAAAqfqwAAMEBkRwAAAABsQ=
+wAAcYhACdCyQBpPLhsYtLLI6NeRmie8hGvCKqSGAAhoZ4&amp;b=3D6e456865&amp;e=3Dd14c=
+b347&amp;x=3DruN6Sx0EAA39aa6aQPHPXg&amp;hl=3Den" style=3D"font-family: Verd=
+ana, Geneva, sans-serif; color: rgb(32, 32, 32);"><span style=3D"color: rgb=
+(32, 32, 32); font-size: 12px; font-family: Verdana, Geneva, sans-serif;"><=
+u style=3D"font-family: Verdana, Geneva, sans-serif; color: rgb(32, 32, 32)=
+;">Unsubscribe here</u></span></a><span style=3D"color: rgb(32, 32, 32); fo=
+nt-size: 12px; font-family: Verdana, Geneva, sans-serif;"> anytime!</span><=
+/p></div>                    </td>              </tr>                    </=
+tbody>      </table>          </div>              <!--[if mso | IE]></td></=
+tr></table><![endif]-->              </td>            </tr>          </tbod=
+y>        </table>              </div>                <!--[if mso | IE]></t=
+d></tr></table><table align=3D"center" border=3D"0" cellpadding=3D"0" cells=
+pacing=3D"0" class=3D"" role=3D"presentation" style=3D"width:600px;" width=
+=3D"600" bgcolor=3D"rgba(0,0,0,0.04)" ><tr><td style=3D"line-height:0px;fon=
+t-size:0px;mso-line-height-rule:exactly;"><![endif]-->                <div =
+ style=3D"background:rgba(0,0,0,0.04);background-color:rgba(0,0,0,0.04);mar=
+gin:0px auto;max-width:600px;">                <table           align=3D"ce=
+nter" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation=
+" style=3D"background:rgba(0,0,0,0.04);background-color:rgba(0,0,0,0.04);wi=
+dth:100%;"        >          <tbody>            <tr>              <td      =
+           style=3D"direction:ltr;font-size:0px;padding:16px;padding-bottom=
+:16px;padding-left:16px;padding-right:16px;padding-top:16px;text-align:cent=
+er;"              >                <!--[if mso | IE]><table role=3D"present=
+ation" border=3D"0" cellpadding=3D"0" cellspacing=3D"0"><tr><td class=3D"" =
+style=3D"vertical-align:top;width:568px;" ><![endif]-->                  <d=
+iv         class=3D"mj-column-per-100 mj-outlook-group-fix" style=3D"font-s=
+ize:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:t=
+op;width:100%;"      >              <table         border=3D"0" cellpadding=
+=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"vertical-align:top;=
+" width=3D"100%"      >        <tbody>                        <tr>         =
+       <td                   align=3D"center" style=3D"font-size:0px;paddin=
+g:0px;word-break:break-word;"                >                        <tabl=
+e         border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presenta=
+tion" style=3D"border-collapse:collapse;border-spacing:0px;"      >        =
+<tbody>          <tr>            <td  style=3D"width:150px;">              =
+        <a           href=3D"https://slp7j.mjt.lu/lnk/AVkAAIZ18XAAAAAqfqwAA=
+MEBkRwAAAABsQwAAcYhACdCyQBpPLhsYtLLI6NeRmie8hGvCKqSGAAhoZ4/5/FyUImdN8LGuf01=
+gnKDH8vA/aHR0cHM6Ly90b2FzdHRhYi5jb20v" target=3D"_blank" title=3D""        =
+>                <img         alt=3D"" src=3D"https://cdn.toasttab.com/stat=
+ic/130893c4274735a294945896980ea4181cdaf37e/images/powered_by_toast_logo_gr=
+ay.png" style=3D"border:none;display:block;outline:none;text-decoration:non=
+e;height:auto;width:100%;font-size:13px;" title=3D"" width=3D"150" height=
+=3D"auto"      />            </a>                  </td>          </tr>    =
+    </tbody>      </table>                    </td>              </tr>     =
+                     <tr>                <td                   align=3D"cen=
+ter" style=3D"font-size:0px;padding:20px 15px 0px 15px;padding-top:20px;pad=
+ding-right:15px;padding-bottom:0px;padding-left:15px;word-break:break-word;=
+"                >                        <div         style=3D"font-family=
+:Ubuntu, Helvetica, Arial, sans-serif;font-size:12px;font-weight:400;letter=
+-spacing:0.4px;line-height:16px;text-align:center;color:#000000;"      ><p =
+style=3D"text-align: center; margin: 0px;"><a target=3D"_blank" href=3D"htt=
+ps://slp7j.mjt.lu/lnk/AVkAAIZ18XAAAAAqfqwAAMEBkRwAAAABsQwAAcYhACdCyQBpPLhsY=
+tLLI6NeRmie8hGvCKqSGAAhoZ4/6/xMirwTjDzQTQ7lKKGSDRAA/aHR0cHM6Ly9wb3MudG9hc3R=
+0YWIuY29tL3Rlcm1zLW9mLXNlcnZpY2U" style=3D"text-decoration: none;"><span st=
+yle=3D"color: #707070; font-family: Arial; font-size: 12px; vertical-align:=
+ middle; text-decoration: underline; letter-spacing: 0.4px;">Guest Terms of=
+ Service</span></a> <span style=3D"color: #707070; vertical-align: middle;"=
+> | </span> <a target=3D"_blank" href=3D"https://slp7j.mjt.lu/lnk/AVkAAIZ18=
+XAAAAAqfqwAAMEBkRwAAAABsQwAAcYhACdCyQBpPLhsYtLLI6NeRmie8hGvCKqSGAAhoZ4/7/Zm=
+h_KRnlGxyRY1tp-QiXEg/aHR0cHM6Ly9wb3MudG9hc3R0YWIuY29tL3ByaXZhY3k" style=3D"=
+text-decoration: none;"><span style=3D"color: #707070; font-family: Arial; =
+font-size: 12px; vertical-align: middle; text-decoration: underline; letter=
+-spacing: 0.4px;">Toast Privacy Policy</span></a></p></div>                =
+    </td>              </tr>                    </tbody>      </table>     =
+     </div>              <!--[if mso | IE]></td></tr></table><![endif]-->  =
+            </td>            </tr>          </tbody>        </table>       =
+       </div>                <!--[if mso | IE]></td></tr></table><![endif]-=
+->              </div>      <br/><a style=3D"font-family: Arial, sans-serif=
+;" href=3D"https://slp7j.mjt.lu/lnk/AVkAAIZ18XAAAAAqfqwAAMEBkRwAAAABsQwAAcY=
+hACdCyQBpPLhsYtLLI6NeRmie8hGvCKqSGAAhoZ4/0/2CMIDru_AlsV8HfAEgJaFQ/aHR0cHM6L=
+y93d3cuemFpa2FzZWF0dGxlLmNvbS9kaW5lLWluLW1lbnUuaHRtbA?b=3D1">&#8203;</a><a =
+style=3D"text-decoration: none; display: inline-block;" href=3D"https://slp=
+7j.mjt.lu/lnk/AVkAAIZ18XAAAAAqfqwAAMEBkRwAAAABsQwAAcYhACdCyQBpPLhsYtLLI6NeR=
+mie8hGvCKqSGAAhoZ4/0/2CMIDru_AlsV8HfAEgJaFQ/aHR0cHM6Ly93d3cuemFpa2FzZWF0dGx=
+lLmNvbS9kaW5lLWluLW1lbnUuaHRtbA?b=3D3">
+<img src=3D"https://slp7j.mjt.lu/oo/AVkAAIZ18XAAAAAqfqwAAMEBkRwAAAABsQwAAcY=
+hACdCyQBpPLhsYtLLI6NeRmie8hGvCKqSGAAhoZ4/f4f42649/e.gif" height=3D"1" width=
+=3D"1" alt=3D"" border=3D"0" style=3D"height:1px;width:1px;border:0;"/>
+</a></body></html> =20
+=
