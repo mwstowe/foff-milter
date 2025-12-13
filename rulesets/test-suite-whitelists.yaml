@@ -10,14 +10,28 @@ rules:
     score: -200
     description: "Fidelity Investments legitimate financial services"
 
-  # ASUS Technology (-200 points)
+  # ASUS Technology (-300 points)
   - name: "ASUS Technology"
     enabled: true
     criteria:
-      type: "SenderPattern"
-      pattern: ".*@.*asus\\.com$"
-    score: -200
-    description: "ASUS legitimate technology company"
+      type: "Or"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@.*asus\\.(com|net)$"
+        - type: "SenderPattern"
+          pattern: ".*@.*\\.asus\\.(com|net)$"
+        - type: "SenderPattern"
+          pattern: ".*@nedm\\.asus\\.com$"
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: ".*asus.*"
+        - type: "HeaderPattern"
+          header: "Return-Path"
+          pattern: ".*asus.*"
+        - type: "SubjectPattern"
+          pattern: "(?i).*asus.*"
+    score: -300
+    description: "ASUS legitimate technology company including subdomains"
 
   # BCD Travel Services (-200 points)
   - name: "BCD Travel Services"

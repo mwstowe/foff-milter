@@ -65,7 +65,7 @@ rules:
     score: 80
     description: "ShareFile document sharing phishing"
 
-  # Generic Health/Medicare Spam (60 points)
+  # Generic Health Medicare Spam (60 points)
   - name: "Generic Health Medicare Spam"
     enabled: true
     criteria:
@@ -77,3 +77,35 @@ rules:
           pattern: "(?i).*(medicare.*plan|health.*insurance|compare.*providers|auto.*insurance.*providers).*"
     score: 60
     description: "Generic health and insurance spam"
+
+  # Health Miracle Cure Spam (100 points)
+  - name: "Health Miracle Cure Spam"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(miracle.*cure|doctors.*hate|chronic.*pain|breakthrough.*cure).*"
+        - type: "BodyPattern"
+          pattern: "(?i).*(miracle.*cure|doctors.*hate|chronic.*pain|breakthrough.*cure).*"
+    score: 100
+    description: "Health miracle cure and medical misinformation spam"
+
+  # Mailer Daemon Spoofing (150 points)
+  - name: "Mailer Daemon Spoofing"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "HeaderPattern"
+          header: "Return-Path"
+          pattern: ".*MAILER-DAEMON.*"
+        - type: "Or"
+          criteria:
+            - type: "HeaderPattern"
+              header: "Authentication-Results"
+              pattern: "dkim=fail"
+            - type: "SubjectPattern"
+              pattern: ".*=\\?UTF-8\\?B\\?.*"
+    score: 150
+    description: "Spoofed mailer daemon messages with authentication failures"
