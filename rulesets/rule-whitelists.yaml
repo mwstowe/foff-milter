@@ -1243,3 +1243,19 @@ rules:
           pattern: "(?i).*(newsletter|digest|weekly|monthly).*"
     score: -50
     description: "Legitimate newsletter platforms and publications"
+
+  - name: "Make.co Newsletter"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@make\\.co$"
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: ".*make@make\\.co.*"
+        - type: "HeaderPattern"
+          header: "Reply-To"
+          pattern: ".*@make\\.co.*"
+    score: -100
+    description: "Make.co technology newsletter - legitimate publication"
