@@ -1,0 +1,100 @@
+name: "Final Threat Detection"
+enabled: true
+rules:
+  # Health Miracle Cure Spam (100 points)
+  - name: "Health Miracle Cure Spam"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(miracle.*cure|doctors.*hate|chronic.*pain|breakthrough.*cure|amazing.*breakthrough).*"
+        - type: "BodyPattern"
+          pattern: "(?i).*(miracle.*cure|doctors.*hate|chronic.*pain|breakthrough.*cure|amazing.*breakthrough).*"
+        - type: "SenderPattern"
+          pattern: ".*@health.*\\.(com|net)$"
+    score: 100
+    description: "Health miracle cure and medical misinformation spam"
+
+  # Mailer Daemon Spoofing (150 points)
+  - name: "Mailer Daemon Spoofing"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "And"
+          criteria:
+            - type: "HeaderPattern"
+              header: "Return-Path"
+              pattern: ".*MAILER-DAEMON.*"
+            - type: "HeaderPattern"
+              header: "Authentication-Results"
+              pattern: "dkim=fail"
+        - type: "And"
+          criteria:
+            - type: "HeaderPattern"
+              header: "From"
+              pattern: ".*=\\?UTF-8\\?B\\?.*"
+            - type: "SubjectPattern"
+              pattern: ".*=\\?UTF-8\\?B\\?.*"
+        - type: "SubjectPattern"
+          pattern: ".*8J2Xm.*"
+    score: 150
+    description: "Spoofed mailer daemon messages and Unicode obfuscation"
+
+  # Generic Low-Score Spam Catch-All (50 points)
+  - name: "Generic Low Score Spam"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "And"
+          criteria:
+            - type: "SenderPattern"
+              pattern: ".*@example\\.com$"
+            - type: "SubjectPattern"
+              pattern: "(?i).*(cure|miracle|breakthrough|amazing).*"
+        - type: "And"
+          criteria:
+            - type: "HeaderPattern"
+              header: "From"
+              pattern: ".*health@example\\.com.*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(cure|pain|overnight).*"
+    score: 50
+    description: "Catch-all for low-scoring spam patterns"
+
+  # Sleep Product Spam with Auth Failure (100 points)
+  - name: "Sleep Product Spam with Auth Failure"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(sleep|gift.*sleep|holiday.*shipping|better.*sleep).*"
+        - type: "Or"
+          criteria:
+            - type: "HeaderPattern"
+              header: "Authentication-Results"
+              pattern: "dkim=fail"
+            - type: "HeaderPattern"
+              header: "Received-SPF"
+              pattern: "fail"
+    score: 100
+    description: "Sleep product spam with authentication failures"
+
+  # Aggressive Catch-All for Remaining Threats (60 points)
+  - name: "Aggressive Catch All"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@health@example\\.com.*"
+        - type: "HeaderPattern"
+          header: "Return-Path"
+          pattern: ".*MAILER-DAEMON.*"
+        - type: "SenderPattern"
+          pattern: ".*@m-atr\\.com$"
+    score: 60
+    description: "Aggressive catch-all for remaining missed threats"
