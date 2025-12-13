@@ -5367,7 +5367,9 @@ impl FilterEngine {
                         for recipient in &context.recipients {
                             let recipient_email =
                                 self.extract_email_address(&Some(recipient.clone()));
-                            if let (Some(sender), Some(recipient)) = (&sender_email, &recipient_email) {
+                            if let (Some(sender), Some(recipient)) =
+                                (&sender_email, &recipient_email)
+                            {
                                 if sender == recipient {
                                     recipient_match = true;
                                     log::debug!(
