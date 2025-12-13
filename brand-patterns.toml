@@ -1,0 +1,49 @@
+# Brand Pattern Generator
+# Replaces hardcoded brand lists in YAML rules with dynamic patterns
+
+[major_brands_pattern]
+# Generates: (?i).*(amazon|apple|microsoft|google|facebook|paypal|aarp|walmart|target|netflix|disney|fedex|ups|visa|chase|bank|mcdonalds).*
+brands = [
+    "amazon", "apple", "microsoft", "google", "facebook", "paypal", 
+    "aarp", "walmart", "target", "netflix", "disney", "fedex", "ups", 
+    "visa", "chase", "bank", "mcdonalds"
+]
+pattern_template = "(?i).*({brands}).*"
+
+[esp_exclusion_pattern]
+# Generates ESP exclusion patterns for legitimate senders
+esps = [
+    "sparkpostmail", "sendgrid", "mailchimp", "constantcontact", 
+    "amazonses", "mailgun", "klaviyomail", "campaignmonitor"
+]
+pattern_template = ".*@.*({esps})\\.(com|net|org)$"
+
+[legitimate_services_pattern]
+# HR and document sharing services
+hr_services = [
+    "hr", "payroll", "benefits", "workday", "adp", "bamboohr", 
+    "docusign", "sharepoint", "onedrive", "dropbox"
+]
+pattern_template = ".*@.*({services})\\.(com|net|org)$"
+
+[financial_brands_pattern]
+# Financial institutions
+financial = [
+    "chase", "visa", "mastercard", "paypal", "americanexpress", 
+    "wellsfargo", "bankofamerica", "citibank"
+]
+pattern_template = "(?i).*({brands}).*"
+
+[retail_brands_pattern] 
+# Major retailers
+retail = [
+    "amazon", "walmart", "target", "costco", "homedepot", "bestbuy"
+]
+pattern_template = "(?i).*({brands}).*"
+
+[technology_brands_pattern]
+# Technology companies
+technology = [
+    "microsoft", "google", "apple", "adobe", "salesforce", "oracle"
+]
+pattern_template = "(?i).*({brands}).*"

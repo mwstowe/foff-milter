@@ -1,0 +1,57 @@
+name: "Simplified ESP Whitelist"
+enabled: true
+rules:
+  # Major ESPs (-100 points)
+  - name: "Major ESP Infrastructure"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*(amazonses|sendgrid|mailgun|postmarkapp|sparkpostmail|mailchimp|constantcontact)\\.(com|net|org)$"
+    score: -100
+    description: "Legitimate major email service providers"
+
+  # Newsletter Platforms (-75 points)
+  - name: "Newsletter Platforms"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*(substack|beehiiv|make\\.co|medium|ghost)\\.(com|io)$"
+    score: -75
+    description: "Legitimate newsletter and content platforms"
+
+  # Marketing ESPs (-50 points)
+  - name: "Marketing ESP Infrastructure"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*(klaviyomail|campaignmonitor|aweber|getresponse|convertkit|activecampaign)\\.(com|net)$"
+    score: -50
+    description: "Legitimate marketing email service providers"
+
+  # Government/Educational Domains (-200 points)
+  - name: "Government and Educational"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*\\.(gov|mil|edu)$"
+    score: -200
+    description: "Government and educational institutions"
+
+  # Established Brands (-150 points)
+  - name: "Established Brand Domains"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@.*(amazon|google|microsoft|apple|netflix|mcdonalds|walmart|target)\\.(com|org)$"
+        - type: "Or"
+          criteria:
+            - type: "HeaderPattern"
+              header: "Authentication-Results"
+              pattern: "dkim=pass"
+            - type: "HeaderPattern"
+              header: "Authentication-Results"
+              pattern: "spf=pass"
+    score: -150
+    description: "Established brands with valid authentication"
