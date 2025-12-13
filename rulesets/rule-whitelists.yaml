@@ -1238,5 +1238,8 @@ rules:
         - type: "HeaderPattern"
           header: "From"
           pattern: "(?i).*(newsletter|digest|update).*"
-    score: -30
-    description: "Legitimate newsletter platforms"
+        - type: "HeaderPattern"
+          header: "Subject"
+          pattern: "(?i).*(newsletter|digest|weekly|monthly).*"
+    score: -50
+    description: "Legitimate newsletter platforms and publications"

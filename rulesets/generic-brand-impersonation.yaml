@@ -40,11 +40,20 @@ rules:
         - type: "Or"
           criteria:
             - type: "SenderPattern"
-              pattern: "(?i).*(amazon|apple|microsoft|google|facebook|paypal|aarp|walmart|target|netflix|disney|fedex|ups|visa|chase|bank).*"
+              pattern: "(?i).*(amazon|apple|microsoft|google|facebook|paypal|aarp|walmart|target|netflix|disney|fedex|ups|visa|chase|bank|mcdonalds).*"
             - type: "SubjectPattern"
               pattern: "(?i).*(membership|account|security|verify|update|suspended).*"
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "SenderPattern"
+                pattern: ".*@.*(sparkpostmail|sendgrid|mailchimp|constantcontact|amazonses|mailgun)\\.(com|net|org)$"
+              - type: "HeaderPattern"
+                header: "From"
+                pattern: "(?i).*(newsletter|digest|marketing|promotional).*"
     score: 75
-    description: "Brand claims with failed authentication"
+    description: "Brand claims with failed authentication (excluding legitimate ESPs)"
 
   # HR Document Sharing Phishing - Critical BEC Pattern
   - name: "HR Document Sharing Phishing"
@@ -81,7 +90,7 @@ rules:
         - type: "Not"
           criteria:
             type: "SenderPattern"
-            pattern: ".*@.*(amazon|apple|microsoft|google|facebook|paypal|ebay|walmart|target|costco|bestbuy|homedepot|lowes|tmobile|verizon|att|sprint|netflix|disney|samsung|sony|nike|adidas|mcdonalds|starbucks|fedex|ups|usps|dhl|visa|mastercard|chase|bankofamerica|wellsfargo|citibank|americanexpress|norton|aaa|twilio|sendgrid)\\.(com|net|org)$"
+            pattern: ".*@.*(amazon|apple|microsoft|google|facebook|paypal|ebay|walmart|target|costco|bestbuy|homedepot|lowes|tmobile|verizon|att|sprint|netflix|disney|samsung|sony|nike|adidas|mcdonalds|starbucks|fedex|ups|usps|dhl|visa|mastercard|chase|bankofamerica|wellsfargo|citibank|americanexpress|norton|aaa|twilio|sendgrid|sparkpostmail|mailchimp|constantcontact|amazonses)\\.(com|net|org)$"
     score: 75
     description: "Brand name in sender but not from official domain"
 
