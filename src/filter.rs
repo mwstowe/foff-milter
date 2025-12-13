@@ -5367,14 +5367,16 @@ impl FilterEngine {
                         for recipient in &context.recipients {
                             let recipient_email =
                                 self.extract_email_address(&Some(recipient.clone()));
-                            if sender_email.is_some() && sender_email == recipient_email {
-                                recipient_match = true;
-                                log::debug!(
-                                    "Sender-recipient match detected: {} -> {}",
-                                    sender_email.as_ref().unwrap(),
-                                    recipient_email.as_ref().unwrap()
-                                );
-                                break;
+                            if let (Some(sender), Some(recipient)) = (&sender_email, &recipient_email) {
+                                if sender == recipient {
+                                    recipient_match = true;
+                                    log::debug!(
+                                        "Sender-recipient match detected: {} -> {}",
+                                        sender,
+                                        recipient
+                                    );
+                                    break;
+                                }
                             }
                         }
 
@@ -5386,13 +5388,15 @@ impl FilterEngine {
                             ) {
                                 let from_email = self.extract_email_from_header(from_header);
                                 let to_email = self.extract_email_from_header(to_header);
-                                if from_email.is_some() && from_email == to_email {
-                                    recipient_match = true;
-                                    log::debug!(
-                                        "From-To header match detected: {} -> {}",
-                                        from_email.as_ref().unwrap(),
-                                        to_email.as_ref().unwrap()
-                                    );
+                                if let (Some(from), Some(to)) = (&from_email, &to_email) {
+                                    if from == to {
+                                        recipient_match = true;
+                                        log::debug!(
+                                            "From-To header match detected: {} -> {}",
+                                            from,
+                                            to
+                                        );
+                                    }
                                 }
                             }
                         }
