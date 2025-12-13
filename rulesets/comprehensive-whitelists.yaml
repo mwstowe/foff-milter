@@ -1,0 +1,64 @@
+name: "Comprehensive Whitelists"
+enabled: true
+rules:
+  # Disney Store (-150 points)
+  - name: "Disney Store"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*(disney|disneystore)\\.(com|net)$"
+    score: -150
+    description: "Disney Store legitimate retailer"
+
+  # Netatmo IoT Devices (-200 points)
+  - name: "Netatmo IoT Devices"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@.*netatmo\\.(com|net)$"
+        - type: "SenderPattern"
+          pattern: ".*@netatmo\\.com$"
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: ".*netatmo.*"
+    score: -200
+    description: "Netatmo legitimate IoT device notifications"
+
+  # Sleep and Health Products (-200 points)
+  - name: "Sleep and Health Products"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@.*(sleep|health|wellness).*\\.(com|net)$"
+        - type: "And"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(sleep|mattress|pillow|wellness).*"
+            - type: "HeaderPattern"
+              header: "List-Unsubscribe"
+              pattern: ".*"
+    score: -200
+    description: "Legitimate sleep and health product companies"
+
+  # Major Retailers with Authentication (-100 points)
+  - name: "Major Retailers with Authentication"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@.*(target|walmart|costco|homedepot|lowes|bestbuy)\\.(com|net)$"
+        - type: "Or"
+          criteria:
+            - type: "HeaderPattern"
+              header: "Authentication-Results"
+              pattern: "dkim=pass"
+            - type: "HeaderPattern"
+              header: "Authentication-Results"
+              pattern: "spf=pass"
+    score: -100
+    description: "Major retailers with valid authentication"
