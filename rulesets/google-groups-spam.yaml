@@ -11,13 +11,13 @@ rules:
           criteria:
             - type: "HeaderContains"
               header: "List-ID"
-              pattern: "googlegroups.com"
+              text: "googlegroups.com"
             - type: "HeaderContains"
               header: "List-ID"
-              pattern: "wildnetdigitalagency.com"
+              text: "wildnetdigitalagency.com"
             - type: "HeaderContains"
               header: "X-Google-Group-Id"
-              pattern: "\\d+"
+              text: "\\d+"
         - type: "Or"
           criteria:
             - type: "SubjectPattern"
@@ -35,7 +35,7 @@ rules:
       criteria:
         - type: "HeaderContains"
           header: "Precedence"
-          pattern: "list"
+          text: "list"
         - type: "Or"
           criteria:
             - type: "SubjectPattern"

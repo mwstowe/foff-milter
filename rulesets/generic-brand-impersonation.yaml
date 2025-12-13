@@ -31,10 +31,10 @@ rules:
       criteria:
         - type: "Or"
           criteria:
-            - type: "HeaderContains"
+            - type: "HeaderPattern"
               header: "Authentication-Results"
               pattern: "dkim=fail"
-            - type: "HeaderContains"
+            - type: "HeaderPattern"
               header: "Authentication-Results"
               pattern: "spf=fail"
         - type: "Or"
@@ -45,7 +45,31 @@ rules:
               pattern: "(?i).*(membership|account|security|verify|update|suspended).*"
     score: 75
     description: "Brand claims with failed authentication"
-rules:
+
+  # HR Document Sharing Phishing - Critical BEC Pattern
+  - name: "HR Document Sharing Phishing"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(\\w+\\.com\\s+hr.*shared|\\w+\\.com\\s+hr.*document|salary.*review.*document|incentive.*overview.*document|payroll.*document.*shared).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(\\w+\\.com\\s+hr.*shared|salary.*review.*document|incentive.*overview.*document|payroll.*document.*shared).*"
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "SenderPattern"
+                pattern: ".*@.*(hr|payroll|benefits|workday|adp|bamboohr|docusign|sharepoint|onedrive|dropbox)\\.(com|net|org)$"
+              - type: "HeaderPattern"
+                header: "From"
+                pattern: "(?i).*(docusign|sharepoint|onedrive|dropbox|google drive).*"
+    score: 200
+    description: "Specific HR document sharing phishing with domain claims"
+
   # Generic brand impersonation - any known brand from suspicious domain
   - name: "Known brand from suspicious domain"
     enabled: true

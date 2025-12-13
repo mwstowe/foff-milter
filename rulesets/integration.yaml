@@ -135,3 +135,21 @@ rules:
                 pattern: ".*@.*ally\\.com$"
     score: 50
     description: "Subject mentions legitimate service but sender domain doesn't match (excludes legitimate resellers and third-party services)"
+
+  - name: "Organization Impersonation"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*baddomain\\.com\\s+(hr|it|admin|support|team).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*baddomain\\.com\\s+(hr|it|admin|support|team).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@baddomain\\.com$"
+    score: 150
+    description: "Claims to be from baddomain.com but sender domain doesn't match"
