@@ -196,3 +196,31 @@ rules:
       pattern: "(?i)(smtp\\.[^:]+:\\d+|socks5?:\\d+|127\\.0\\.0\\.1:\\d+)"
     score: 50
     description: "References to spam infrastructure and proxy servers"
+
+  # Product spam patterns
+  - name: "Product Spam Patterns"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "BodyPattern"
+          pattern: "(?i).*(thermivest|heating.*vest|energy.*saving.*device|miracle.*heater).*"
+        - type: "SubjectPattern"
+          pattern: "(?i).*(thermivest|heating.*vest|energy.*saving.*device|miracle.*heater).*"
+        - type: "SenderPattern"
+          pattern: "(?i).*thermivest.*"
+    score: 50
+    description: "Product spam and miracle device promotions"
+
+  # Energy/heating scam detection
+  - name: "Energy Scam Patterns"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "BodyPattern"
+          pattern: "(?i).*(stop.*wasting.*money.*heating|revolutionary.*heating|energy.*bills|heating.*costs|save.*money.*heating).*"
+        - type: "SubjectPattern"
+          pattern: "(?i).*(stop.*wasting.*money.*heating|revolutionary.*heating|energy.*bills|heating.*costs|save.*money.*heating).*"
+    score: 40
+    description: "Energy and heating cost scam patterns"

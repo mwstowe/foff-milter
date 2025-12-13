@@ -755,3 +755,40 @@ rules:
       pattern: "(?i).*Miracle cure.*chronic pain.*doctors hate.*"
     score: 100
     description: "Simple health spam pattern"
+
+  # Suspicious random domains
+  - name: "Suspicious Random Domains"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@[a-z]{6,12}\\.(com|net|org)$"
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "SenderPattern"
+                pattern: ".*@(amazon|google|microsoft|facebook|apple|netflix|disney|walmart|target)\\.(com|net|org)$"
+              - type: "SenderPattern"
+                pattern: ".*@(docusign|technews)\\.(com|net|org)$"
+    score: 30
+    description: "Random domain names often used for spam"
+
+  # Generic shopping addresses
+  - name: "Generic Shopping Addresses"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: "(?i).*shopping@.*"
+    score: 20
+    description: "Generic shopping email addresses"
+
+  # Suspicious image hosting
+  - name: "Suspicious Image Hosting"
+    enabled: true
+    criteria:
+      type: "BodyPattern"
+      pattern: ".*cloudinary\\.com.*"
+    score: 15
+    description: "External image hosting often used in spam"
