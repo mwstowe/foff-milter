@@ -162,9 +162,9 @@ rules:
         - type: "Or"
           criteria:
             - type: "BodyPattern"
-              pattern: "(?i).*(asset.*management.*firm|investment.*collaboration|joint.*ventures|financial.*sector.*experience|Foundation.*Asset.*Management|potential.*collaboration).*"
+              pattern: "(?i)(asset.{0,30}management.{0,30}firm|investment.{0,20}collaboration|joint.{0,20}ventures|financial.{0,20}sector.{0,20}experience|Foundation.{0,20}Asset.{0,20}Management|potential.{0,20}collaboration)"
             - type: "BodyPattern"
-              pattern: "(?i).*(real.*estate.*construction|manufacturing.*infrastructure|clean.*energy.*technology|healthcare.*agriculture.*mining|government.*projects).*"
+              pattern: "(?i)(real.{0,20}estate.{0,20}construction|manufacturing.{0,20}infrastructure|clean.{0,20}energy.{0,20}technology|healthcare.{0,20}agriculture.{0,20}mining|government.{0,20}projects)"
         - type: "Or"
           criteria:
             - type: "SenderPattern"

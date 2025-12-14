@@ -65,9 +65,9 @@ rules:
         - type: "Or"
           criteria:
             - type: "SubjectPattern"
-              pattern: "(?i).*(medicare|health.*plan|insurance.*plan|aep|enrollment|ehealth)"
+              pattern: "(?i)(medicare|health.{0,20}plan|insurance.{0,20}plan|aep|enrollment|ehealth)"
             - type: "BodyPattern"
-              pattern: "(?i).*(medicare|health.*plan|insurance.*plan|ehealth|advantage.*plan)"
+              pattern: "(?i)(medicare|health.{0,20}plan|insurance.{0,20}plan|ehealth|advantage.{0,20}plan)"
     score: 40
     description: "Image-only emails with healthcare/Medicare content (likely scam)"
 
@@ -95,9 +95,9 @@ rules:
         - type: "Or"
           criteria:
             - type: "SubjectPattern"
-              pattern: "(?i).*(turn your tv|smart tv|plug.*play|regain control|control.*finances|free test|water safe)"
+              pattern: "(?i)(turn your tv|smart tv|plug.{0,10}play|regain control|control.{0,20}finances|free test|water safe)"
             - type: "BodyPattern"
-              pattern: "(?i).*(turn your tv|smart tv|plug.*play|regain control|control.*finances|free test|water safe)"
+              pattern: "(?i)(turn your tv|smart tv|plug.{0,10}play|regain control|control.{0,20}finances|free test|water safe)"
     score: 200
     description: "Mailing list infrastructure with promotional spam content"
 
@@ -165,9 +165,9 @@ rules:
         - type: "Or"
           criteria:
             - type: "SubjectPattern"
-              pattern: "(?i).*(free.*test|smart.*tv|control.*finances|exclusive.*offer|limited.*time)"
+              pattern: "(?i)(free.{0,10}test|smart.{0,10}tv|control.{0,20}finances|exclusive.{0,20}offer|limited.{0,20}time)"
             - type: "BodyPattern"
-              pattern: "(?i).*(free.*test|smart.*tv|control.*finances|exclusive.*offer|limited.*time)"
+              pattern: "(?i)(free.{0,10}test|smart.{0,10}tv|control.{0,20}finances|exclusive.{0,20}offer|limited.{0,20}time)"
     score: 75
     description: "Recently registered domain with promotional content"
 
@@ -180,13 +180,13 @@ rules:
         - type: "Or"
           criteria:
             - type: "SubjectPattern"
-              pattern: "(?i).*(urgent.*action|verify.*account|suspended.*account|account.*will.*be|click.*here.*verify)"
+              pattern: "(?i)(urgent.{0,20}action|verify.{0,20}account|suspended.{0,20}account|account.{0,20}will.{0,20}be|click.{0,20}here.{0,20}verify)"
             - type: "BodyPattern"
-              pattern: "(?i).*(urgent.*action|verify.*account|account.*will.*be.*closed|click.*here.*verify|immediate.*action.*required)"
+              pattern: "(?i)(urgent.{0,20}action|verify.{0,20}account|account.{0,20}will.{0,20}be.{0,20}closed|click.{0,20}here.{0,20}verify|immediate.{0,20}action.{0,20}required)"
             - type: "SubjectPattern"
-              pattern: "(?i).*(document.*ready|document.*shared|invoice.*attached|payment.*failed)"
+              pattern: "(?i)(document.{0,20}ready|document.{0,20}shared|invoice.{0,20}attached|payment.{0,20}failed)"
             - type: "BodyPattern"
-              pattern: "(?i).*(document.*has.*been.*shared|invoice.*is.*attached|payment.*could.*not.*be.*processed)"
+              pattern: "(?i)(document.{0,20}has.{0,20}been.{0,20}shared|invoice.{0,20}is.{0,20}attached|payment.{0,20}could.{0,20}not.{0,20}be.{0,20}processed)"
         - type: "Not"
           criteria:
             type: "Or"
@@ -676,11 +676,11 @@ rules:
         - type: "Or"
           criteria:
             - type: "BodyPattern"
-              pattern: "(?i).*(order.*transaction.*confirmation|payment.*confirmation.*transaction|repair.*scheduled.*address|sendgrid.*payment.*failed|knee.*health.*spam|mailer.*daemon.*multi)"
+              pattern: "(?i)(order.{0,20}transaction.{0,20}confirmation|payment.{0,20}confirmation.{0,20}transaction|repair.{0,20}scheduled.{0,20}address|sendgrid.{0,20}payment.{0,20}failed|knee.{0,20}health.{0,20}spam|mailer.{0,20}daemon.{0,20}multi)"
             - type: "SubjectPattern"
-              pattern: "(?i).*(order.*transaction|payment.*confirmation|repair.*scheduled|sendgrid.*payment|knee.*health|mailer.*daemon)"
+              pattern: "(?i)(order.{0,20}transaction|payment.{0,20}confirmation|repair.{0,20}scheduled|sendgrid.{0,20}payment|knee.{0,20}health|mailer.{0,20}daemon)"
             - type: "BodyPattern"
-              pattern: "(?i).*(fake.*order|fake.*payment|fake.*repair|fake.*sendgrid|knee.*pain|joint.*health)"
+              pattern: "(?i)(fake.{0,20}order|fake.{0,20}payment|fake.{0,20}repair|fake.{0,20}sendgrid|knee.{0,20}pain|joint.{0,20}health)"
         - type: "Not"
           criteria:
             type: "Or"
