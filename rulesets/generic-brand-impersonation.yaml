@@ -152,6 +152,46 @@ rules:
     score: 100
     description: "OmahaSteaks brand impersonation from non-legitimate domains"
 
+  # Insurance brand impersonation
+  - name: "Insurance Brand Impersonation"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "HeaderPattern"
+              header: "From"
+              pattern: "(?i).*(insurify|geico|progressive|allstate|state.*farm).*"
+            - type: "SenderPattern"
+              pattern: "(?i).*(insurify|geico|progressive|allstate|statefarm).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(insurify|geico|progressive|allstate|statefarm)\\.(com|net)$"
+    score: 75
+    description: "Insurance brand impersonation from non-legitimate domains"
+
+  # Financial services brand impersonation
+  - name: "Financial Services Brand Impersonation"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "HeaderPattern"
+              header: "From"
+              pattern: "(?i).*(interactive.*brokers|charles.*schwab|td.*ameritrade|e.*trade|fidelity).*"
+            - type: "SenderPattern"
+              pattern: "(?i).*(interactivebrokers|schwab|tdameritrade|etrade|fidelity).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(interactivebrokers|schwab|tdameritrade|etrade|fidelity)\\.(com|net)$"
+    score: 100
+    description: "Financial services brand impersonation from non-legitimate domains"
+
   # Brand impersonation from unrelated .com domains
   - name: "Brand impersonation from unrelated domains"
     criteria:
