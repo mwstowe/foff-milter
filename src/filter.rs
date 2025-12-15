@@ -1859,6 +1859,17 @@ impl FilterEngine {
             ));
         }
 
+        // Check for domain impersonation (critical security threat)
+        let domain_impersonation_score =
+            self.get_domain_impersonation_score(&context_with_attachments);
+        if domain_impersonation_score > 0 {
+            total_score += domain_impersonation_score;
+            scoring_rules.push(format!(
+                "CRITICAL SECURITY THREAT: Domain Impersonation Attack (+{})",
+                domain_impersonation_score
+            ));
+        }
+
         // Check for brand impersonation
         let brand_impersonation_score =
             self.get_brand_impersonation_score(&context_with_attachments);
@@ -7609,11 +7620,22 @@ impl FilterEngine {
             return false;
         }
 
-        // Extract sender and recipient domains
-        let sender_domain = self
-            .extract_sender_domain(context)
-            .unwrap_or_default()
-            .to_lowercase();
+        // Use Return-Path (envelope sender) for actual sender verification, not spoofable From header
+        let actual_sender_domain = if let Some(return_path) = context.headers.get("Return-Path") {
+            // Extract domain from Return-Path: <user@domain.com>
+            if let Some(at_pos) = return_path.rfind('@') {
+                let after_at = &return_path[at_pos + 1..];
+                if let Some(end_pos) = after_at.find('>') {
+                    after_at[..end_pos].trim().to_lowercase()
+                } else {
+                    after_at.trim().to_lowercase()
+                }
+            } else {
+                String::new()
+            }
+        } else {
+            String::new()
+        };
 
         // Get recipient domain from headers or context
         let recipient_domain = if let Some(to_header) = context
@@ -7633,64 +7655,99 @@ impl FilterEngine {
             String::new()
         };
 
-        // Check if both domains are the same and non-empty
-        if !sender_domain.is_empty()
+        // Only accept as same server if Return-Path domain matches recipient domain
+        if !actual_sender_domain.is_empty()
             && !recipient_domain.is_empty()
-            && sender_domain == recipient_domain
+            && actual_sender_domain == recipient_domain
         {
-            log::debug!(
-                "Same server email detected: {} -> {}",
-                sender_domain,
-                recipient_domain
-            );
-            return true;
-        }
-
-        // Also check Received headers for internal routing patterns
-        for (name, value) in &context.headers {
-            if name.to_lowercase() == "received" {
-                // Look for patterns like "from domain.com ... by domain.com"
-                if let Some(from_start) = value.find("from ") {
-                    if let Some(by_start) = value.find(" by ") {
-                        let from_part = &value[from_start + 5..by_start];
-                        let by_part = &value[by_start + 4..];
-
-                        // Extract domains from both parts
-                        if let (Some(from_domain), Some(by_domain)) = (
-                            self.extract_domain_from_received(from_part),
-                            self.extract_domain_from_received(by_part),
-                        ) {
-                            if from_domain == by_domain && from_domain == sender_domain {
-                                log::debug!(
-                                    "Internal routing detected in Received header: {}",
-                                    from_domain
-                                );
-                                return true;
-                            }
-                        }
-                    }
-                }
+            // Additional validation: check if this is actually from our server infrastructure
+            let legitimate_server_domains = ["baddomain.com"];
+            if legitimate_server_domains.contains(&actual_sender_domain.as_str()) {
+                log::debug!(
+                    "Legitimate same server email detected: {} -> {}",
+                    actual_sender_domain,
+                    recipient_domain
+                );
+                return true;
             }
         }
 
         false
     }
 
-    /// Extract domain from Received header part
-    fn extract_domain_from_received(&self, text: &str) -> Option<String> {
-        // Look for domain patterns in Received header text
-        let words: Vec<&str> = text.split_whitespace().collect();
-        for word in words {
-            if word.contains('.') && !word.starts_with('[') {
-                // Clean up the domain (remove parentheses, etc.)
-                let clean_domain =
-                    word.trim_matches(|c: char| !c.is_alphanumeric() && c != '.' && c != '-');
-                if clean_domain.contains('.') && !clean_domain.is_empty() {
-                    return Some(clean_domain.to_lowercase());
+    /// Detect domain impersonation attacks (high-priority security threat)
+    fn get_domain_impersonation_score(&self, context: &MailContext) -> i32 {
+        // Get actual sender domain from Return-Path
+        let actual_sender_domain = if let Some(return_path) = context.headers.get("Return-Path") {
+            if let Some(at_pos) = return_path.rfind('@') {
+                let after_at = &return_path[at_pos + 1..];
+                if let Some(end_pos) = after_at.find('>') {
+                    after_at[..end_pos].trim().to_lowercase()
+                } else {
+                    after_at.trim().to_lowercase()
                 }
+            } else {
+                String::new()
+            }
+        } else {
+            String::new()
+        };
+
+        // Get claimed sender domain from From header
+        let claimed_sender_domain = self
+            .extract_sender_domain(context)
+            .unwrap_or_default()
+            .to_lowercase();
+
+        // Protected domains that should never be impersonated
+        let protected_domains = [
+            "baddomain.com",
+            "gmail.com",
+            "outlook.com",
+            "hotmail.com",
+            "yahoo.com",
+            "paypal.com",
+            "amazon.com",
+            "microsoft.com",
+            "apple.com",
+            "google.com",
+        ];
+
+        let mut score = 0;
+
+        // Check for domain impersonation
+        for protected_domain in &protected_domains {
+            // If From header claims to be from protected domain but Return-Path is different
+            if claimed_sender_domain.contains(protected_domain)
+                && !actual_sender_domain.contains(protected_domain)
+                && !actual_sender_domain.is_empty()
+            {
+                log::warn!(
+                    "CRITICAL: Domain impersonation detected! From: {} (claims {}), Return-Path: {}",
+                    claimed_sender_domain, protected_domain, actual_sender_domain
+                );
+
+                // Very high score for domain impersonation
+                score += 400;
+                break;
             }
         }
-        None
+
+        // Additional check: suspicious external domains claiming to be internal
+        if claimed_sender_domain.contains("baddomain.com")
+            && !actual_sender_domain.contains("baddomain.com")
+            && !actual_sender_domain.is_empty()
+        {
+            log::warn!(
+                "CRITICAL: Internal domain impersonation! Claimed: {}, Actual: {}",
+                claimed_sender_domain,
+                actual_sender_domain
+            );
+
+            score += 500; // Even higher for internal domain impersonation
+        }
+
+        score
     }
 
     /// Check if this is a legitimate order confirmation from an established business
