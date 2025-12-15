@@ -15,8 +15,14 @@ rules:
           pattern: ".*"
         - type: "BodyPattern"
           pattern: "(?i)(sale|discount|offer|deal|promotion|limited.*time)"
+        - type: "SenderPattern"
+          pattern: ".*@.*(amazon|ebay|etsy|shopify|target|walmart|bestbuy|homedepot|lowes|macys|nordstrom|kohls|disney|kickstarter|eyebuydirect)\\.(com|net|org)$"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(yournconcierge|cardiovascular|internetdisaster|familyandfriendsllc|ybokjraxqz|solecomfort)\\.(com|net|org|top|lat)$"
     score: -30
-    description: "Reduce commercial scoring for authenticated senders with unsubscribe"
+    description: "Reduce commercial scoring ONLY for authenticated emails from known legitimate retailers"
 
   # Seasonal content allowances
   - name: "Seasonal Sales from Established Domains"

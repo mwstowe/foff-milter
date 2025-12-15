@@ -235,7 +235,7 @@ rules:
     score: -40
     description: "Authenticated email from major e-commerce platform"
 
-  # Authenticated email encoding adjustment
+  # Authenticated email encoding adjustment - ONLY for legitimate domains
   - name: "Authenticated Email Encoding Adjustment"
     enabled: true
     criteria:
@@ -244,12 +244,11 @@ rules:
         - type: "HeaderPattern"
           header: "Authentication-Results"
           pattern: "dkim=pass"
-        - type: "Or"
+        - type: "SenderPattern"
+          pattern: ".*@.*(plex|netflix|disney|costco|amazon|google|microsoft|apple|paypal|ebay|etsy|shopify|mailchimp|constantcontact|sendgrid|kickstarter|eyebuydirect|sparkpostmail|gmail)\\.(tv|com|net|org)$"
+        - type: "Not"
           criteria:
-            - type: "SenderPattern"
-              pattern: ".*@.*(plex|netflix|disney|costco|amazon|google|microsoft|apple)\\.(tv|com|net)$"
-            - type: "HeaderPattern"
-              header: "List-Unsubscribe"
-              pattern: ".*"
+            type: "SenderPattern"
+            pattern: ".*@.*(yournconcierge|cardiovascular|internetdisaster|familyandfriendsllc|ybokjraxqz|solecomfort)\\.(com|net|org|top|lat)$"
     score: -100
-    description: "Reduce encoding penalties for authenticated legitimate emails"
+    description: "Reduce encoding penalties ONLY for authenticated emails from known legitimate domains"
