@@ -234,3 +234,22 @@ rules:
           pattern: ".*@.*(aliexpress|alibaba|shopify|bigcommerce|woocommerce|magento)\\.(com|net|org).*"
     score: -40
     description: "Authenticated email from major e-commerce platform"
+
+  # Authenticated email encoding adjustment
+  - name: "Authenticated Email Encoding Adjustment"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "HeaderPattern"
+          header: "Authentication-Results"
+          pattern: "dkim=pass"
+        - type: "Or"
+          criteria:
+            - type: "SenderPattern"
+              pattern: ".*@.*(plex|netflix|disney|costco|amazon|google|microsoft|apple)\\.(tv|com|net)$"
+            - type: "HeaderPattern"
+              header: "List-Unsubscribe"
+              pattern: ".*"
+    score: -100
+    description: "Reduce encoding penalties for authenticated legitimate emails"
