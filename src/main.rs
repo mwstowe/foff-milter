@@ -318,6 +318,59 @@ async fn main() {
                 }
             }
         }
+
+        // Test feature analysis system
+        println!();
+        println!("🧠 Testing feature analysis system...");
+
+        if let Some(toml_cfg) = &toml_config {
+            if let Some(features_config) = &toml_cfg.features {
+                if features_config.enabled {
+                    println!("Feature analysis: ✅ ENABLED");
+                    println!("Feature config directory: {}", features_config.config_dir);
+
+                    // Check if feature config files exist
+                    let feature_files = [
+                        "feature_scoring.toml",
+                        "brands.toml",
+                        "legitimate_domains.toml",
+                        "brand_patterns.toml",
+                        "bulk_email_services.toml",
+                        "payment_processors.toml",
+                        "scoring.toml",
+                    ];
+
+                    let mut found_files = 0;
+                    for file in &feature_files {
+                        let path = format!("{}/{}", features_config.config_dir, file);
+                        if std::path::Path::new(&path).exists() {
+                            found_files += 1;
+                            println!("  ✅ {}", file);
+                        } else {
+                            println!("  ⚠️  {} (missing, using defaults)", file);
+                        }
+                    }
+
+                    if found_files > 0 {
+                        println!(
+                            "✅ Feature analysis system validated ({}/{} config files found)",
+                            found_files,
+                            feature_files.len()
+                        );
+                    } else {
+                        println!("⚠️  Feature analysis using defaults (no config files found)");
+                    }
+                } else {
+                    println!("Feature analysis: ❌ DISABLED");
+                }
+            } else {
+                println!("Feature analysis: ✅ ENABLED (using defaults)");
+                println!("Feature config directory: /usr/local/etc/foff-milter/features (FreeBSD) or /etc/foff-milter/features (Linux)");
+            }
+        } else {
+            println!("Feature analysis: ✅ ENABLED (using defaults)");
+            println!("Feature config directory: /usr/local/etc/foff-milter/features (FreeBSD) or /etc/foff-milter/features (Linux)");
+        }
         return;
     }
 

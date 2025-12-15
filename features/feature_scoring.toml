@@ -1,0 +1,40 @@
+# Feature Analysis Scoring Configuration
+# This file configures the scoring weights for various feature analysis components
+
+[encoding_evasion]
+# Scoring for encoding evasion detection
+base_score = 35
+unicode_obfuscation_multiplier = 1.5
+excessive_encoding_threshold = 3
+
+[sender_alignment]
+# Scoring for sender alignment analysis
+base_score = 45
+confidence_threshold = 0.8
+domain_mismatch_penalty = 20
+
+[context_analysis]
+# Scoring for context analysis
+base_score = 5
+urgency_multiplier = 2.0
+scam_pattern_bonus = 15
+
+[domain_reputation]
+# Scoring for domain reputation analysis
+base_score = 30
+suspicious_pattern_bonus = 10
+age_penalty_threshold = 90
+
+[link_analysis]
+# Scoring for link analysis
+suspicious_link_score = 25
+url_mismatch_penalty = 15
+shortener_penalty = 10
+
+[trust_analysis]
+# Dynamic trust scoring adjustments
+max_adjustment = 50
+auth_weight = 0.4
+infra_weight = 0.2
+behavior_weight = 0.3
+content_weight = 0.1
