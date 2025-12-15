@@ -275,3 +275,23 @@ rules:
       pattern: ".*@.*\\.cjm\\.adobe\\.com$"
     score: -50
     description: "Adobe Campaign Manager - legitimate ESP for major brands"
+
+  # ARC-validated legitimate forwarding (overrides suspicious forwarding detection)
+  - name: "ARC Validated Legitimate Forwarding"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "HeaderPattern"
+          header: "ARC-Seal"
+          pattern: "cv=pass"
+        - type: "Or"
+          criteria:
+            - type: "HeaderPattern"
+              header: "Authentication-Results"
+              pattern: "dkim=pass.*(nytimes|washingtonpost|cnn|reuters|wsj|ap)\\.com"
+            - type: "HeaderPattern"
+              header: "DKIM-Signature"
+              pattern: "d=(nytimes|washingtonpost|cnn|reuters|wsj|ap)\\.com"
+    score: -300
+    description: "ARC-validated forwarding from legitimate news organizations"
