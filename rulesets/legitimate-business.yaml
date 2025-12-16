@@ -5,12 +5,13 @@ rules:
     enabled: true
     criteria:
       type: "And"
-      conditions:
+      criteria:
         - type: "Or"
           criteria:
             - type: "SenderPattern"
               pattern: ".*@.*(exterminators|pest.*control|cleaning|landscaping|hvac|plumbing|electrical).*\\.(com|net)$"
-            - type: "FromHeaderPattern"
+            - type: "HeaderPattern"
+              header: "From"
               pattern: "(?i).*(exterminators|pest.*control|cleaning|landscaping|hvac|plumbing|electrical).*"
         - type: "Or"
           criteria:

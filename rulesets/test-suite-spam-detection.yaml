@@ -1,13 +1,30 @@
 name: "Test Suite Spam Detection"
 enabled: true
 rules:
+  - name: "SendGrid impersonation from skytronreveal"
+    criteria:
+      type: "HeaderPattern"
+      header: "From"
+      pattern: ".*@skytronreveal\\.com.*"
+    score: 100
+    description: "SendGrid brand impersonation from unrelated domain"
+
+  - name: "Microsoft tenant Stanley Tools impersonation"
+    criteria:
+      type: "HeaderPattern"
+      header: "From"
+      pattern: ".*@dailydials19\\.onmicrosoft\\.com.*"
+    score: 100
+    description: "Brand impersonation from Microsoft tenant"
+
   - name: "Nordic Museum whitelist"
     criteria:
       type: "Or"
       criteria:
         - type: "SenderPattern"
           pattern: ".*@nordicmuseum\\.org$"
-        - type: "FromHeaderPattern"
+        - type: "HeaderPattern"
+          header: "From"
           pattern: ".*@nordicmuseum\\.org.*"
     score: -200
     description: "Nordic Museum legitimate cultural institution"
