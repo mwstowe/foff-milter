@@ -331,8 +331,8 @@ impl FilterEngine {
                     "1800flowers.com",
                     "em.1800flowers.com",
                     "1800flowersinc.com", // 1-800-FLOWERS
-                    "intuit.com",       // Payment processors
-                    "charmtracker.com", // Medical services
+                    "intuit.com",         // Payment processors
+                    "charmtracker.com",   // Medical services
                     "email3.gog.com",
                     "wl043.sendgrid.net",
                     "wl044.sendgrid.net", // Specific ESP subdomains
