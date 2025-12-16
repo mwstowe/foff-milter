@@ -34,10 +34,21 @@ rules:
           header: "List-Unsubscribe"
           pattern: ".*"
         - type: "HeaderPattern"
+          header: "Authentication-Results"
+          pattern: "dkim=pass"
+        - type: "HeaderPattern"
           header: "From"
           pattern: "(?i).*@.*(mail\\.|em\\.|email\\.|newsletter\\.|marketing\\.|send\\.|delivery\\.|campaign\\.|broadcast\\.).*\\.(com|net|org).*"
-    score: -100
-    description: "Emails from known mailing service providers with unsubscribe"
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "SubjectPattern"
+                pattern: "(?i).*(invoice|payment|receipt|order|shipment|tool|filter|health|mistake)"
+              - type: "SenderPattern"
+                pattern: ".*@.*(airfilterllc|skytronreveal|magazine1|dailydials19)\\.(com|co\\.uk)$"
+    score: -50
+    description: "Authenticated emails from legitimate mailing infrastructure (excluding suspicious content)"
 
   - name: "Gadget Flow newsletter validation"
     enabled: true
