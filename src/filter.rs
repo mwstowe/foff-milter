@@ -328,6 +328,9 @@ impl FilterEngine {
                     "fiestatableware.com", // Home goods
                     "pmpress.org",         // Independent publishers
                     "quickbooks.com",
+                    "1800flowers.com",
+                    "em.1800flowers.com",
+                    "1800flowersinc.com", // 1-800-FLOWERS
                     "intuit.com",       // Payment processors
                     "charmtracker.com", // Medical services
                     "email3.gog.com",

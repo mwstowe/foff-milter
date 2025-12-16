@@ -396,6 +396,7 @@ impl EmailNormalizer {
 
         let non_html_layers = normalized.encoding_layers.len() - html_entity_layers;
 
+        // Score non-HTML encoding layers, but be much more lenient for legitimate MIME encoding
         // Score non-HTML encoding layers more heavily
         score += non_html_layers as i32 * 25;
 

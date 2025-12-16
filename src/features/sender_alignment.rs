@@ -236,12 +236,15 @@ impl SenderAlignmentAnalyzer {
                 evidence.push("Display name contains suspicious characters".to_string());
             }
 
-            // Check for excessive random characters
-            let random_pattern = regex::Regex::new(r"[^a-zA-Z\s]{3,}").unwrap();
-            if random_pattern.is_match(display_part) {
+            // Disabled: overly broad detection that flags legitimate business names
+            // TODO: Replace with more specific suspicious pattern detection
+            /*
+            let suspicious_pattern = regex::Regex::new(r"[!@#$%^&*()_+={}|\[\]\\:;\"'<>?,./]{5,}|[0-9]{8,}").unwrap();
+            if suspicious_pattern.is_match(display_part) {
                 score += 15;
                 evidence.push("Display name contains excessive special characters".to_string());
             }
+            */
 
             // Check for domain mismatch in display name
             if display_part.contains('@') && !display_part.contains(email_part) {

@@ -328,10 +328,25 @@ rules:
     score: 200
     description: "Unicode obfuscation combined with suspicious content"
 
+  - name: "Fake invoice from educational domains"
+    criteria:
+      type: "And"
+      conditions:
+        - type: "SenderPattern"
+          pattern: ".*@ihec\\.ucar\\.tn$"
+        - type: "SubjectPattern"
+          pattern: "(?i).*(order.*receipt|receipt.*status|invoice|payment).*"
+    score: 100
+    description: "Fake invoice spam from compromised educational accounts"
+
   - name: "High evasion score"
     criteria:
-      type: "EvasionScore"
-      min_score: 200
+      type: "And"
+      conditions:
+        - type: "EvasionScore"
+          min_score: 200
+        - type: "NotSenderDomain"
+          domains: ["1800flowers.com", "em.1800flowers.com", "1800flowersinc.com"]
     score: 150
     description: "High evasion score indicates sophisticated attack"
 
