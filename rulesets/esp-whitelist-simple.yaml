@@ -44,7 +44,11 @@ rules:
       type: "And"
       criteria:
         - type: "SenderPattern"
-          pattern: ".*@.*(amazon|google|microsoft|apple|netflix|mcdonalds|walmart|target)\\.(com|org)$"
+          pattern: ".*@.*(amazon|google|apple|netflix|mcdonalds|walmart|target)\\.(com|org)$"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*onmicrosoft\\.com$"
         - type: "Or"
           criteria:
             - type: "HeaderPattern"
@@ -54,4 +58,4 @@ rules:
               header: "Authentication-Results"
               pattern: "spf=pass"
     score: -150
-    description: "Established brands with valid authentication"
+    description: "Established brands with valid authentication (excluding tenant domains)"
