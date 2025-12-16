@@ -725,6 +725,10 @@ impl SenderAlignmentAnalyzer {
         // Known legitimate relationships
         let legitimate_pairs = [
             ("amazon.com", "amazonses.com"),
+            ("amazon.com", "bounces.amazon.com"),
+            ("primevideo.com", "amazon.com"),
+            ("primevideo.com", "bounces.amazon.com"),
+            ("primevideo.com", "amazonses.com"),
             ("microsoft.com", "outlook.com"),
             ("google.com", "gmail.com"),
         ];
