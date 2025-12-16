@@ -1,6 +1,24 @@
 name: "Test Suite Spam Detection"
 enabled: true
 rules:
+  - name: "Nordic Museum whitelist"
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@nordicmuseum\\.org$"
+        - type: "FromHeaderPattern"
+          pattern: ".*@nordicmuseum\\.org.*"
+    score: -200
+    description: "Nordic Museum legitimate cultural institution"
+
+  - name: "Eastside Exterminators service business"
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@eastsideexterminators\\.com$"
+    score: -100
+    description: "Eastside Exterminators legitimate service business"
+
   - name: "Air filter factory spam"
     criteria:
       type: "SenderPattern"

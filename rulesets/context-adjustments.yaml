@@ -82,6 +82,18 @@ rules:
     description: "Legitimate customer account communications"
 
   # Government and educational institution rewards
+  - name: "Cultural and Educational Institutions"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@.*(museum|library|cultural|arts|symphony|orchestra|theater|theatre).*\\.(org|edu)$"
+        - type: "SenderPattern"
+          pattern: ".*@nordicmuseum\\.org$"
+    score: -75
+    description: "Museums, libraries, and cultural institutions"
+
   - name: "Government and Educational Institutions"
     enabled: true
     criteria:

@@ -1,6 +1,26 @@
 name: "Legitimate Business Recognition"
 enabled: true
 rules:
+  - name: "Service Business Recognition"
+    enabled: true
+    criteria:
+      type: "And"
+      conditions:
+        - type: "Or"
+          criteria:
+            - type: "SenderPattern"
+              pattern: ".*@.*(exterminators|pest.*control|cleaning|landscaping|hvac|plumbing|electrical).*\\.(com|net)$"
+            - type: "FromHeaderPattern"
+              pattern: "(?i).*(exterminators|pest.*control|cleaning|landscaping|hvac|plumbing|electrical).*"
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(invoice|receipt|service|appointment|estimate).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(service.*provided|invoice.*attached|payment.*due|thank.*you.*for.*choosing).*"
+    score: -50
+    description: "Legitimate service businesses (pest control, cleaning, etc.)"
+
   - name: "Genetic Testing Companies"
     enabled: true
     criteria:
