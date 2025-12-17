@@ -1,5 +1,5 @@
 //! Early Decision Engine Component
-//! 
+//!
 //! Consolidates all early exit logic into a single component with clear precedence.
 //! Handles: Same-server → Upstream → Sender-blocking → Whitelist → Blocklist
 
@@ -100,9 +100,10 @@ impl EarlyDecisionEngine {
 
     fn is_same_server_email(&self, context: &MailContext) -> bool {
         // Check for X-FOFF headers indicating same server processing
-        context.headers.keys().any(|key| {
-            key.to_lowercase().starts_with("x-foff")
-        })
+        context
+            .headers
+            .keys()
+            .any(|key| key.to_lowercase().starts_with("x-foff"))
     }
 
     fn has_upstream_trust(&self, context: &MailContext) -> bool {
@@ -116,7 +117,7 @@ impl EarlyDecisionEngine {
 
     fn check_sender_blocking(&self, context: &MailContext) -> Option<String> {
         let sender = context.sender.as_ref()?;
-        
+
         // Check against blocking patterns
         for pattern in &self.sender_blocking_patterns {
             if pattern.is_match(sender) {
@@ -180,37 +181,33 @@ impl EarlyDecisionEngine {
 impl AnalysisComponent for EarlyDecisionEngine {
     fn analyze(&self, context: &MailContext) -> ComponentResult {
         let decision = self.make_early_decision(context);
-        
+
         let (action, score, evidence) = match &decision {
             EarlyDecision::SameServer => (
                 ComponentAction::Accept,
                 -1000, // Strong negative score
-                vec!["Same server email detected".to_string()]
+                vec!["Same server email detected".to_string()],
             ),
             EarlyDecision::UpstreamTrust => (
                 ComponentAction::Accept,
                 -500,
-                vec!["Upstream FOFF-milter trust".to_string()]
+                vec!["Upstream FOFF-milter trust".to_string()],
             ),
             EarlyDecision::SenderBlocked(reason) => (
                 ComponentAction::Reject,
                 1000, // Strong positive score
-                vec![reason.clone()]
+                vec![reason.clone()],
             ),
-            EarlyDecision::Whitelisted(reason) => (
-                ComponentAction::Accept,
-                -200,
-                vec![reason.clone()]
-            ),
-            EarlyDecision::Blocklisted(reason) => (
-                ComponentAction::Reject,
-                500,
-                vec![reason.clone()]
-            ),
+            EarlyDecision::Whitelisted(reason) => {
+                (ComponentAction::Accept, -200, vec![reason.clone()])
+            }
+            EarlyDecision::Blocklisted(reason) => {
+                (ComponentAction::Reject, 500, vec![reason.clone()])
+            }
             EarlyDecision::Continue => (
                 ComponentAction::Continue,
                 0,
-                vec!["No early decision - continue analysis".to_string()]
+                vec!["No early decision - continue analysis".to_string()],
             ),
         };
 

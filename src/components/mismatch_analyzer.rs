@@ -1,5 +1,5 @@
 //! Mismatch Analyzer Component
-//! 
+//!
 //! Consolidates all sender/domain/link/content alignment checks into
 //! a single component for comprehensive mismatch detection.
 
@@ -113,17 +113,22 @@ impl MismatchAnalyzer {
         let mut mismatches = Vec::new();
 
         // Check envelope sender vs From header
-        if let (Some(envelope_sender), Some(from_header)) = 
-            (&context.sender, context.headers.get("From")) {
-            
+        if let (Some(envelope_sender), Some(from_header)) =
+            (&context.sender, context.headers.get("From"))
+        {
             let envelope_domain = envelope_sender.split('@').nth(1).unwrap_or("");
-            
+
             // Extract domain from From header
             if let Some(from_domain) = self.extract_domain_from_header(from_header) {
-                if envelope_domain != from_domain && !self.is_legitimate_forwarding(envelope_domain, &from_domain) {
+                if envelope_domain != from_domain
+                    && !self.is_legitimate_forwarding(envelope_domain, &from_domain)
+                {
                     mismatches.push(SenderMismatch {
                         mismatch_type: "Envelope-From Domain Mismatch".to_string(),
-                        description: format!("Envelope: {} vs From: {}", envelope_domain, from_domain),
+                        description: format!(
+                            "Envelope: {} vs From: {}",
+                            envelope_domain, from_domain
+                        ),
                         severity: 50,
                     });
                 }
@@ -131,13 +136,16 @@ impl MismatchAnalyzer {
         }
 
         // Check Reply-To vs From alignment
-        if let (Some(from_header), Some(reply_to)) = 
-            (context.headers.get("From"), context.headers.get("Reply-To")) {
-            
-            if let (Some(from_domain), Some(reply_domain)) = 
-                (self.extract_domain_from_header(from_header), self.extract_domain_from_header(reply_to)) {
-                
-                if from_domain != reply_domain && !self.is_legitimate_forwarding(&from_domain, &reply_domain) {
+        if let (Some(from_header), Some(reply_to)) =
+            (context.headers.get("From"), context.headers.get("Reply-To"))
+        {
+            if let (Some(from_domain), Some(reply_domain)) = (
+                self.extract_domain_from_header(from_header),
+                self.extract_domain_from_header(reply_to),
+            ) {
+                if from_domain != reply_domain
+                    && !self.is_legitimate_forwarding(&from_domain, &reply_domain)
+                {
                     mismatches.push(SenderMismatch {
                         mismatch_type: "From-ReplyTo Domain Mismatch".to_string(),
                         description: format!("From: {} vs Reply-To: {}", from_domain, reply_domain),
@@ -208,7 +216,7 @@ impl MismatchAnalyzer {
         // Check for organization claims vs sender domain
         if let (Some(subject), Some(sender)) = (context.headers.get("Subject"), &context.sender) {
             let sender_domain = sender.split('@').nth(1).unwrap_or("");
-            
+
             // Look for organization claims in subject
             for brand_pattern in &self.brand_patterns {
                 if brand_pattern.is_match(subject) {
@@ -228,11 +236,12 @@ impl MismatchAnalyzer {
         mismatches
     }
 
-    fn calculate_total_score(&self, 
+    fn calculate_total_score(
+        &self,
         sender: &[SenderMismatch],
-        domain: &[DomainMismatch], 
+        domain: &[DomainMismatch],
         link: &[LinkMismatch],
-        content: &[ContentMismatch]
+        content: &[ContentMismatch],
     ) -> i32 {
         let sender_score: i32 = sender.iter().map(|m| m.severity).sum();
         let domain_score: i32 = domain.iter().map(|m| m.severity).sum();
@@ -261,12 +270,12 @@ impl MismatchAnalyzer {
                 return email.split('@').nth(1).map(|s| s.to_string());
             }
         }
-        
+
         // Try direct email extraction
         if header.contains('@') {
             return header.split('@').nth(1).map(|s| s.trim().to_string());
         }
-        
+
         None
     }
 
@@ -279,8 +288,8 @@ impl MismatchAnalyzer {
         ];
 
         forwarding_pairs.iter().any(|(d1, d2)| {
-            (domain1.contains(d1) && domain2.contains(d2)) ||
-            (domain1.contains(d2) && domain2.contains(d1))
+            (domain1.contains(d1) && domain2.contains(d2))
+                || (domain1.contains(d2) && domain2.contains(d1))
         })
     }
 }
@@ -288,7 +297,7 @@ impl MismatchAnalyzer {
 impl AnalysisComponent for MismatchAnalyzer {
     fn analyze(&self, context: &MailContext) -> ComponentResult {
         let analysis = self.analyze_mismatches(context);
-        
+
         let action = match analysis.risk_level {
             MismatchRiskLevel::None => ComponentAction::Continue,
             MismatchRiskLevel::Low => ComponentAction::Continue,
@@ -298,12 +307,30 @@ impl AnalysisComponent for MismatchAnalyzer {
         };
 
         let mut evidence = Vec::new();
-        evidence.extend(analysis.sender_mismatches.iter().map(|m| m.description.clone()));
-        evidence.extend(analysis.domain_mismatches.iter().map(|m| 
-            format!("{}: {} vs {}", m.mismatch_type, m.claimed_domain, m.actual_domain)
-        ));
-        evidence.extend(analysis.link_mismatches.iter().map(|m| m.mismatch_type.clone()));
-        evidence.extend(analysis.content_mismatches.iter().map(|m| m.mismatch_type.clone()));
+        evidence.extend(
+            analysis
+                .sender_mismatches
+                .iter()
+                .map(|m| m.description.clone()),
+        );
+        evidence.extend(analysis.domain_mismatches.iter().map(|m| {
+            format!(
+                "{}: {} vs {}",
+                m.mismatch_type, m.claimed_domain, m.actual_domain
+            )
+        }));
+        evidence.extend(
+            analysis
+                .link_mismatches
+                .iter()
+                .map(|m| m.mismatch_type.clone()),
+        );
+        evidence.extend(
+            analysis
+                .content_mismatches
+                .iter()
+                .map(|m| m.mismatch_type.clone()),
+        );
 
         if evidence.is_empty() {
             evidence.push("No mismatches detected".to_string());

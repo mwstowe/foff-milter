@@ -1,10 +1,9 @@
 //! Authentication Analyzer Component
-//! 
+//!
 //! Consolidates all DKIM, SPF, and DMARC validation into a single component
 //! that runs before content analysis.
 
 use crate::components::{AnalysisComponent, ComponentAction, ComponentResult};
-use crate::dkim_verification::DkimVerifier;
 use crate::MailContext;
 use serde::{Deserialize, Serialize};
 
@@ -43,10 +42,10 @@ pub enum DmarcStatus {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum AuthTrustLevel {
-    High,    // All auth passes
-    Medium,  // Some auth passes
-    Low,     // Minimal auth
-    None,    // No auth
+    High,   // All auth passes
+    Medium, // Some auth passes
+    Low,    // Minimal auth
+    None,   // No auth
 }
 
 pub struct AuthenticationAnalyzer {
@@ -89,7 +88,7 @@ impl AuthenticationAnalyzer {
                     return DkimStatus::Fail;
                 }
             }
-            
+
             // If we have signature but no clear result, consider it invalid
             DkimStatus::Invalid
         } else {
@@ -159,12 +158,20 @@ impl AuthenticationAnalyzer {
         score
     }
 
-    fn determine_trust_level(&self, dkim: &DkimStatus, spf: &SpfStatus, dmarc: &DmarcStatus) -> AuthTrustLevel {
+    fn determine_trust_level(
+        &self,
+        dkim: &DkimStatus,
+        spf: &SpfStatus,
+        dmarc: &DmarcStatus,
+    ) -> AuthTrustLevel {
         let passes = [
             matches!(dkim, DkimStatus::Pass),
             matches!(spf, SpfStatus::Pass),
             matches!(dmarc, DmarcStatus::Pass),
-        ].iter().filter(|&&x| x).count();
+        ]
+        .iter()
+        .filter(|&&x| x)
+        .count();
 
         match passes {
             3 => AuthTrustLevel::High,
@@ -172,9 +179,10 @@ impl AuthenticationAnalyzer {
             1 => AuthTrustLevel::Medium,
             0 => {
                 // Check if we have any auth at all
-                if matches!(dkim, DkimStatus::None) && 
-                   matches!(spf, SpfStatus::None) && 
-                   matches!(dmarc, DmarcStatus::None) {
+                if matches!(dkim, DkimStatus::None)
+                    && matches!(spf, SpfStatus::None)
+                    && matches!(dmarc, DmarcStatus::None)
+                {
                     AuthTrustLevel::None
                 } else {
                     AuthTrustLevel::Low
@@ -188,7 +196,7 @@ impl AuthenticationAnalyzer {
 impl AnalysisComponent for AuthenticationAnalyzer {
     fn analyze(&self, context: &MailContext) -> ComponentResult {
         let auth_results = self.analyze_authentication(context);
-        
+
         let action = match auth_results.trust_level {
             AuthTrustLevel::High => ComponentAction::Continue,
             AuthTrustLevel::Medium => ComponentAction::Continue,

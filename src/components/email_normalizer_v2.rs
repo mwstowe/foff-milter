@@ -1,5 +1,5 @@
 //! Simplified Email Normalizer v2
-//! 
+//!
 //! Single entry point for all email normalization, consolidating scattered
 //! normalization logic into one component.
 
@@ -24,7 +24,7 @@ impl EmailNormalizerV2 {
     pub fn normalize_complete_email(&self, context: &MailContext) -> NormalizedEmail {
         // Reconstruct raw email from context
         let raw_email = self.reconstruct_raw_email(context);
-        
+
         // Perform complete normalization
         self.inner_normalizer.normalize_email(&raw_email)
     }
@@ -42,8 +42,12 @@ impl EmailNormalizerV2 {
     pub fn has_suspicious_encoding(&self, text: &str) -> bool {
         let fake_email = format!("Subject: test\r\n\r\n{}", text);
         let normalized = self.inner_normalizer.normalize_email(&fake_email);
-        normalized.body_text.encoding_layers.len() >= 3 || 
-        normalized.body_text.encoding_layers.iter().any(|layer| layer.suspicious)
+        normalized.body_text.encoding_layers.len() >= 3
+            || normalized
+                .body_text
+                .encoding_layers
+                .iter()
+                .any(|layer| layer.suspicious)
     }
 
     /// Get encoding evasion score
@@ -108,10 +112,10 @@ mod tests {
     #[test]
     fn test_evasion_scoring() {
         let normalizer = EmailNormalizerV2::new();
-        
+
         // Simple text should have low score
         assert_eq!(normalizer.get_evasion_score("hello world"), 0);
-        
+
         // Base64 encoded text should have higher score
         // Note: The current implementation may not detect simple base64 as suspicious
         // This is expected behavior - only complex evasion patterns are flagged

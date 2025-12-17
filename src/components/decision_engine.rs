@@ -1,5 +1,5 @@
 //! Decision Engine Component
-//! 
+//!
 //! Handles threshold evaluation and final action determination based on
 //! accumulated scores and component recommendations.
 
@@ -77,8 +77,9 @@ impl DecisionEngine {
                                 action: Action::Accept,
                                 total_score: result.score,
                                 confidence: result.confidence,
-                                reasoning: format!("Early accept by {}: {}", 
-                                    result.component_name, 
+                                reasoning: format!(
+                                    "Early accept by {}: {}",
+                                    result.component_name,
                                     result.evidence.join("; ")
                                 ),
                                 contributing_components: vec![result.component_name.clone()],
@@ -102,8 +103,9 @@ impl DecisionEngine {
                                 action,
                                 total_score: result.score,
                                 confidence: result.confidence,
-                                reasoning: format!("Early reject by {}: {}", 
-                                    result.component_name, 
+                                reasoning: format!(
+                                    "Early reject by {}: {}",
+                                    result.component_name,
                                     result.evidence.join("; ")
                                 ),
                                 contributing_components: vec![result.component_name.clone()],
@@ -121,7 +123,7 @@ impl DecisionEngine {
     /// Calculate total score and weighted confidence
     fn calculate_scores(&self, results: &[ComponentResult]) -> (i32, f32) {
         let total_score: i32 = results.iter().map(|r| r.score).sum();
-        
+
         // Calculate weighted confidence based on contributing components
         let mut total_weight = 0.0;
         let mut weighted_sum = 0.0;
@@ -167,7 +169,12 @@ impl DecisionEngine {
     }
 
     /// Build human-readable reasoning for the decision
-    fn build_reasoning(&self, total_score: i32, action: &Action, results: &[ComponentResult]) -> String {
+    fn build_reasoning(
+        &self,
+        total_score: i32,
+        action: &Action,
+        results: &[ComponentResult],
+    ) -> String {
         let action_str = match action {
             Action::Accept => "ACCEPT",
             Action::TagAsSpam { .. } => "TAG AS SPAM",
@@ -177,12 +184,18 @@ impl DecisionEngine {
         };
 
         let threshold_info = match total_score {
-            score if score >= self.config.reject_threshold => 
-                format!("Score {} >= reject threshold {}", score, self.config.reject_threshold),
-            score if score >= self.config.spam_threshold => 
-                format!("Score {} >= spam threshold {}", score, self.config.spam_threshold),
-            score => 
-                format!("Score {} < spam threshold {}", score, self.config.spam_threshold),
+            score if score >= self.config.reject_threshold => format!(
+                "Score {} >= reject threshold {}",
+                score, self.config.reject_threshold
+            ),
+            score if score >= self.config.spam_threshold => format!(
+                "Score {} >= spam threshold {}",
+                score, self.config.spam_threshold
+            ),
+            score => format!(
+                "Score {} < spam threshold {}",
+                score, self.config.spam_threshold
+            ),
         };
 
         let top_contributors: Vec<String> = results
@@ -192,11 +205,15 @@ impl DecisionEngine {
             .collect();
 
         if top_contributors.is_empty() {
-            format!("{}: {} - No significant threats detected", action_str, threshold_info)
+            format!(
+                "{}: {} - No significant threats detected",
+                action_str, threshold_info
+            )
         } else {
-            format!("{}: {} - Key factors: {}", 
-                action_str, 
-                threshold_info, 
+            format!(
+                "{}: {} - Key factors: {}",
+                action_str,
+                threshold_info,
                 top_contributors.join(", ")
             )
         }
@@ -232,7 +249,7 @@ mod tests {
     #[test]
     fn test_decision_thresholds() {
         let engine = DecisionEngine::default();
-        
+
         // Test accept decision
         let low_score_result = ComponentResult {
             component_name: "Test".to_string(),
@@ -241,10 +258,10 @@ mod tests {
             evidence: vec!["Low threat".to_string()],
             action_recommended: Some(ComponentAction::Continue),
         };
-        
+
         let decision = engine.make_decision(&[low_score_result]);
         assert!(matches!(decision.action, Action::Accept));
-        
+
         // Test spam decision
         let medium_score_result = ComponentResult {
             component_name: "Test".to_string(),
@@ -253,7 +270,7 @@ mod tests {
             evidence: vec!["Medium threat".to_string()],
             action_recommended: Some(ComponentAction::Continue),
         };
-        
+
         let decision = engine.make_decision(&[medium_score_result]);
         assert!(matches!(decision.action, Action::TagAsSpam { .. }));
     }
@@ -261,7 +278,7 @@ mod tests {
     #[test]
     fn test_early_decisions() {
         let engine = DecisionEngine::default();
-        
+
         let early_reject_result = ComponentResult {
             component_name: "EarlyDecision".to_string(),
             score: 500,
@@ -269,7 +286,7 @@ mod tests {
             evidence: vec!["Definitive threat".to_string()],
             action_recommended: Some(ComponentAction::Reject),
         };
-        
+
         let decision = engine.make_decision(&[early_reject_result]);
         assert!(matches!(decision.action, Action::TagAsSpam { .. })); // Due to reject_to_tag
         assert_eq!(decision.contributing_components.len(), 1);

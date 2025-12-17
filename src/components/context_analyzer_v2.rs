@@ -1,5 +1,5 @@
 //! Context Analyzer v2 Component
-//! 
+//!
 //! Consolidates trust_analyzer, business_analyzer, and seasonal_analyzer
 //! into a single unified component with simplified scoring.
 
@@ -73,7 +73,7 @@ impl ContextAnalyzerV2 {
                 if self.is_established_domain(domain) {
                     score -= 30;
                 }
-                
+
                 // Free email providers are neutral
                 if self.is_free_email_provider(domain) {
                     score += 5;
@@ -140,16 +140,23 @@ impl ContextAnalyzerV2 {
 
     // Helper methods (simplified implementations)
     fn is_established_domain(&self, domain: &str) -> bool {
-        matches!(domain, 
-            "amazon.com" | "google.com" | "microsoft.com" | "apple.com" |
-            "netflix.com" | "walmart.com" | "target.com" | "paypal.com"
+        matches!(
+            domain,
+            "amazon.com"
+                | "google.com"
+                | "microsoft.com"
+                | "apple.com"
+                | "netflix.com"
+                | "walmart.com"
+                | "target.com"
+                | "paypal.com"
         )
     }
 
     fn is_free_email_provider(&self, domain: &str) -> bool {
-        matches!(domain,
-            "gmail.com" | "yahoo.com" | "hotmail.com" | "outlook.com" |
-            "aol.com" | "icloud.com"
+        matches!(
+            domain,
+            "gmail.com" | "yahoo.com" | "hotmail.com" | "outlook.com" | "aol.com" | "icloud.com"
         )
     }
 
@@ -157,17 +164,19 @@ impl ContextAnalyzerV2 {
         // Check for professional language patterns
         if let Some(subject) = context.headers.get("Subject") {
             let professional_terms = ["invoice", "receipt", "statement", "notification", "update"];
-            return professional_terms.iter().any(|term| 
-                subject.to_lowercase().contains(term)
-            );
+            return professional_terms
+                .iter()
+                .any(|term| subject.to_lowercase().contains(term));
         }
         false
     }
 
     fn has_business_domain_pattern(&self, sender: &str) -> bool {
         // Simple business domain pattern check
-        sender.contains("noreply") || sender.contains("no-reply") || 
-        sender.contains("support") || sender.contains("info")
+        sender.contains("noreply")
+            || sender.contains("no-reply")
+            || sender.contains("support")
+            || sender.contains("info")
     }
 
     fn has_suspicious_timing(&self, _date_header: &str) -> bool {
@@ -185,7 +194,7 @@ impl ContextAnalyzerV2 {
 impl AnalysisComponent for ContextAnalyzerV2 {
     fn analyze(&self, context: &MailContext) -> ComponentResult {
         let analysis = self.analyze_context(context);
-        
+
         let action = match analysis.context_level {
             ContextLevel::Trusted => ComponentAction::Continue, // Strong positive signal
             ContextLevel::Neutral => ComponentAction::Continue,

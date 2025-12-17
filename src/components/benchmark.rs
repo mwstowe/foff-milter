@@ -1,5 +1,5 @@
 //! Performance Benchmark
-//! 
+//!
 //! Compares performance between original and simplified architectures
 
 use crate::components::hybrid_filter_engine::HybridFilterEngine;
@@ -30,11 +30,11 @@ impl PerformanceBenchmark {
 
         // Create engines for both architectures
         let mut hybrid_engine = HybridFilterEngine::new(config.clone(), None)?;
-        
+
         // Benchmark original architecture
         let start = Instant::now();
         let mut original_results = Vec::new();
-        
+
         hybrid_engine.switch_architecture(false);
         for email in &test_emails {
             let result = hybrid_engine.evaluate(email).await;
@@ -45,7 +45,7 @@ impl PerformanceBenchmark {
         // Benchmark simplified architecture
         let start = Instant::now();
         let mut simplified_results = Vec::new();
-        
+
         hybrid_engine.switch_architecture(true);
         for email in &test_emails {
             let result = hybrid_engine.evaluate(email).await;
@@ -61,7 +61,7 @@ impl PerformanceBenchmark {
 
         // Estimate memory usage (simplified)
         let memory_usage_original = 38 * 1024; // Rough estimate: 38 modules * 1KB each
-        let memory_usage_simplified = 6 * 512;  // 6 components * 512B each
+        let memory_usage_simplified = 6 * 512; // 6 components * 512B each
 
         Ok(BenchmarkResults {
             original_time,
@@ -75,8 +75,16 @@ impl PerformanceBenchmark {
 
     /// Compare accuracy between architectures (simplified)
     fn compare_accuracy(
-        original: &[(crate::heuristic_config::Action, Vec<String>, Vec<(String, String)>)],
-        simplified: &[(crate::heuristic_config::Action, Vec<String>, Vec<(String, String)>)],
+        original: &[(
+            crate::heuristic_config::Action,
+            Vec<String>,
+            Vec<(String, String)>,
+        )],
+        simplified: &[(
+            crate::heuristic_config::Action,
+            Vec<String>,
+            Vec<(String, String)>,
+        )],
     ) -> bool {
         if original.len() != simplified.len() {
             return false;
@@ -98,7 +106,7 @@ impl PerformanceBenchmark {
         action2: &crate::heuristic_config::Action,
     ) -> bool {
         use crate::heuristic_config::Action;
-        
+
         match (action1, action2) {
             (Action::Accept, Action::Accept) => true,
             (Action::TagAsSpam { .. }, Action::TagAsSpam { .. }) => true,
@@ -111,20 +119,26 @@ impl PerformanceBenchmark {
     /// Create test email contexts for benchmarking
     pub fn create_test_emails(count: usize) -> Vec<MailContext> {
         let mut emails = Vec::new();
-        
+
         for i in 0..count {
             let mut headers = HashMap::new();
             headers.insert("From".to_string(), format!("test{}@example.com", i));
             headers.insert("Subject".to_string(), format!("Test Email {}", i));
-            
+
             if i % 3 == 0 {
                 // Add some authentication headers
-                headers.insert("Authentication-Results".to_string(), "dkim=pass spf=pass".to_string());
+                headers.insert(
+                    "Authentication-Results".to_string(),
+                    "dkim=pass spf=pass".to_string(),
+                );
             }
-            
+
             if i % 5 == 0 {
                 // Add some suspicious content
-                headers.insert("Subject".to_string(), "URGENT: Verify Your Account Now!".to_string());
+                headers.insert(
+                    "Subject".to_string(),
+                    "URGENT: Verify Your Account Now!".to_string(),
+                );
             }
 
             emails.push(MailContext {
@@ -148,7 +162,7 @@ impl PerformanceBenchmark {
                 dkim_verification: None,
             });
         }
-        
+
         emails
     }
 }
@@ -160,16 +174,30 @@ impl BenchmarkResults {
         println!("Original Architecture Time: {:?}", self.original_time);
         println!("Simplified Architecture Time: {:?}", self.simplified_time);
         println!("Speedup Factor: {:.2}x", self.speedup_factor);
-        println!("Memory Usage - Original: {} bytes", self.memory_usage_original);
-        println!("Memory Usage - Simplified: {} bytes", self.memory_usage_simplified);
-        println!("Memory Reduction: {:.1}%", 
-            (1.0 - self.memory_usage_simplified as f64 / self.memory_usage_original as f64) * 100.0);
+        println!(
+            "Memory Usage - Original: {} bytes",
+            self.memory_usage_original
+        );
+        println!(
+            "Memory Usage - Simplified: {} bytes",
+            self.memory_usage_simplified
+        );
+        println!(
+            "Memory Reduction: {:.1}%",
+            (1.0 - self.memory_usage_simplified as f64 / self.memory_usage_original as f64) * 100.0
+        );
         println!("Accuracy Maintained: {}", self.accuracy_maintained);
-        
+
         if self.speedup_factor > 1.0 {
-            println!("✅ Simplified architecture is {:.1}% faster", (self.speedup_factor - 1.0) * 100.0);
+            println!(
+                "✅ Simplified architecture is {:.1}% faster",
+                (self.speedup_factor - 1.0) * 100.0
+            );
         } else {
-            println!("⚠️  Simplified architecture is {:.1}% slower", (1.0 - self.speedup_factor) * 100.0);
+            println!(
+                "⚠️  Simplified architecture is {:.1}% slower",
+                (1.0 - self.speedup_factor) * 100.0
+            );
         }
     }
 }
@@ -182,10 +210,10 @@ mod tests {
     async fn test_benchmark_small_dataset() {
         let test_emails = PerformanceBenchmark::create_test_emails(10);
         let results = PerformanceBenchmark::run_benchmark(test_emails).await;
-        
+
         if let Ok(results) = results {
             results.print_results();
-            
+
             // Basic sanity checks
             assert!(results.original_time > Duration::from_nanos(0));
             assert!(results.simplified_time > Duration::from_nanos(0));
@@ -197,7 +225,7 @@ mod tests {
     fn test_create_test_emails() {
         let emails = PerformanceBenchmark::create_test_emails(5);
         assert_eq!(emails.len(), 5);
-        
+
         // Check variety in test data
         assert!(emails.iter().any(|e| e.is_legitimate_business));
         assert!(emails.iter().any(|e| !e.is_legitimate_business));

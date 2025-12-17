@@ -1,5 +1,5 @@
 //! Hybrid Filter Engine
-//! 
+//!
 //! Supports both original and simplified architectures with feature flag control.
 //! Allows gradual rollout and A/B testing of the new component system.
 
@@ -19,7 +19,7 @@ impl HybridFilterEngine {
     pub fn new(config: Config, toml_config: Option<TomlConfig>) -> anyhow::Result<Self> {
         // Always create the original engine
         let original_engine = FilterEngine::new(config)?;
-        
+
         // Check if simplified architecture is enabled
         let use_simplified = toml_config
             .as_ref()
@@ -34,8 +34,14 @@ impl HybridFilterEngine {
             None
         };
 
-        log::info!("HybridFilterEngine initialized - using {} architecture", 
-            if use_simplified { "simplified" } else { "original" });
+        log::info!(
+            "HybridFilterEngine initialized - using {} architecture",
+            if use_simplified {
+                "simplified"
+            } else {
+                "original"
+            }
+        );
 
         Ok(Self {
             original_engine,
@@ -54,7 +60,9 @@ impl HybridFilterEngine {
                 log::debug!("Using simplified architecture for evaluation");
                 simplified_engine.evaluate_v2(context).await
             } else {
-                log::warn!("Simplified architecture requested but not available, falling back to original");
+                log::warn!(
+                    "Simplified architecture requested but not available, falling back to original"
+                );
                 self.original_engine.evaluate(context).await
             }
         } else {
@@ -78,8 +86,14 @@ impl HybridFilterEngine {
             self.simplified_engine = Some(FilterEngineV2::new());
         }
         self.use_simplified = use_simplified;
-        log::info!("Switched to {} architecture", 
-            if use_simplified { "simplified" } else { "original" });
+        log::info!(
+            "Switched to {} architecture",
+            if use_simplified {
+                "simplified"
+            } else {
+                "original"
+            }
+        );
     }
 
     /// Get performance metrics for comparison
@@ -140,11 +154,14 @@ mod tests {
         let config = create_test_config();
         let engine = HybridFilterEngine::new(config, None).unwrap();
         let context = create_test_context();
-        
+
         let (_action, _rules, headers) = engine.evaluate(&context).await;
-        
+
         // Should use original architecture
-        assert_eq!(engine.get_architecture_info(), "Original Monolithic Architecture");
+        assert_eq!(
+            engine.get_architecture_info(),
+            "Original Monolithic Architecture"
+        );
         assert!(!headers.iter().any(|(name, _)| name == "X-FOFF-Score-V2"));
     }
 
@@ -157,14 +174,17 @@ mod tests {
             reject_to_tag: true,
             use_simplified_architecture: true,
         });
-        
+
         let engine = HybridFilterEngine::new(config, Some(toml_config)).unwrap();
         let context = create_test_context();
-        
+
         let (_action, _rules, headers) = engine.evaluate(&context).await;
-        
+
         // Should use simplified architecture
-        assert_eq!(engine.get_architecture_info(), "Simplified Component Architecture");
+        assert_eq!(
+            engine.get_architecture_info(),
+            "Simplified Component Architecture"
+        );
         assert!(headers.iter().any(|(name, _)| name == "X-FOFF-Score-V2"));
     }
 
@@ -172,16 +192,25 @@ mod tests {
     fn test_architecture_switching() {
         let config = create_test_config();
         let mut engine = HybridFilterEngine::new(config, None).unwrap();
-        
+
         // Start with original
-        assert_eq!(engine.get_architecture_info(), "Original Monolithic Architecture");
-        
+        assert_eq!(
+            engine.get_architecture_info(),
+            "Original Monolithic Architecture"
+        );
+
         // Switch to simplified
         engine.switch_architecture(true);
-        assert_eq!(engine.get_architecture_info(), "Simplified Component Architecture");
-        
+        assert_eq!(
+            engine.get_architecture_info(),
+            "Simplified Component Architecture"
+        );
+
         // Switch back to original
         engine.switch_architecture(false);
-        assert_eq!(engine.get_architecture_info(), "Original Monolithic Architecture");
+        assert_eq!(
+            engine.get_architecture_info(),
+            "Original Monolithic Architecture"
+        );
     }
 }

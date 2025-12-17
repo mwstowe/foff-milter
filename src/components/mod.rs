@@ -1,5 +1,5 @@
 //! Simplified architectural components for FOFF Milter
-//! 
+//!
 //! This module contains the new simplified architecture components that will
 //! eventually replace the scattered logic in the current system.
 

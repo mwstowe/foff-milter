@@ -1,5 +1,5 @@
 //! Migration Validation Tests
-//! 
+//!
 //! Tests to ensure new components maintain compatibility with existing functionality
 
 use crate::components::filter_engine_v2::FilterEngineV2;
@@ -11,12 +11,12 @@ use std::collections::HashMap;
 async fn test_basic_email_processing() {
     let engine = FilterEngineV2::new();
     let context = create_legitimate_email_context();
-    
+
     let (action, _rules, headers) = engine.evaluate_v2(&context).await;
-    
+
     // Should accept legitimate email
     assert!(matches!(action, crate::heuristic_config::Action::Accept));
-    
+
     // Should have analysis headers
     assert!(headers.iter().any(|(name, _)| name == "X-FOFF-Score-V2"));
 }
@@ -26,14 +26,14 @@ async fn test_basic_email_processing() {
 async fn test_spam_detection() {
     let engine = FilterEngineV2::new();
     let context = create_spam_email_context();
-    
+
     let (action, _rules, _headers) = engine.evaluate_v2(&context).await;
-    
+
     // Should tag or reject spam
     assert!(matches!(
-        action, 
-        crate::heuristic_config::Action::TagAsSpam { .. } | 
-        crate::heuristic_config::Action::Reject { .. }
+        action,
+        crate::heuristic_config::Action::TagAsSpam { .. }
+            | crate::heuristic_config::Action::Reject { .. }
     ));
 }
 
@@ -42,11 +42,13 @@ async fn test_spam_detection() {
 async fn test_authentication_analysis() {
     let engine = FilterEngineV2::new();
     let context = create_authenticated_email_context();
-    
+
     let (action, rules, _headers) = engine.evaluate_v2(&context).await;
-    
+
     // Should have authentication analysis
-    assert!(rules.iter().any(|rule| rule.contains("AuthenticationAnalyzer")));
+    assert!(rules
+        .iter()
+        .any(|rule| rule.contains("AuthenticationAnalyzer")));
 }
 
 /// Test mismatch detection
@@ -54,9 +56,9 @@ async fn test_authentication_analysis() {
 async fn test_mismatch_detection() {
     let engine = FilterEngineV2::new();
     let context = create_mismatch_email_context();
-    
+
     let (action, rules, _headers) = engine.evaluate_v2(&context).await;
-    
+
     // Should detect mismatches
     assert!(rules.iter().any(|rule| rule.contains("MismatchAnalyzer")));
 }
@@ -67,8 +69,14 @@ fn create_legitimate_email_context() -> MailContext {
     let mut headers = HashMap::new();
     headers.insert("From".to_string(), "newsletter@amazon.com".to_string());
     headers.insert("Subject".to_string(), "Your Order Update".to_string());
-    headers.insert("Authentication-Results".to_string(), "dkim=pass spf=pass".to_string());
-    headers.insert("List-Unsubscribe".to_string(), "<mailto:unsubscribe@amazon.com>".to_string());
+    headers.insert(
+        "Authentication-Results".to_string(),
+        "dkim=pass spf=pass".to_string(),
+    );
+    headers.insert(
+        "List-Unsubscribe".to_string(),
+        "<mailto:unsubscribe@amazon.com>".to_string(),
+    );
 
     MailContext {
         sender: Some("newsletter@amazon.com".to_string()),
@@ -94,8 +102,14 @@ fn create_legitimate_email_context() -> MailContext {
 
 fn create_spam_email_context() -> MailContext {
     let mut headers = HashMap::new();
-    headers.insert("From".to_string(), "PayPal Security <noreply@suspicious-domain.com>".to_string());
-    headers.insert("Subject".to_string(), "URGENT: Verify Your Account Now!".to_string());
+    headers.insert(
+        "From".to_string(),
+        "PayPal Security <noreply@suspicious-domain.com>".to_string(),
+    );
+    headers.insert(
+        "Subject".to_string(),
+        "URGENT: Verify Your Account Now!".to_string(),
+    );
 
     MailContext {
         sender: Some("noreply@suspicious-domain.com".to_string()),
@@ -106,7 +120,10 @@ fn create_spam_email_context() -> MailContext {
         subject: Some("URGENT: Verify Your Account Now!".to_string()),
         hostname: None,
         helo: None,
-        body: Some("Click here to verify your PayPal account immediately or it will be suspended!".to_string()),
+        body: Some(
+            "Click here to verify your PayPal account immediately or it will be suspended!"
+                .to_string(),
+        ),
         last_header_name: None,
         attachments: Vec::new(),
         extracted_media_text: String::new(),
@@ -123,8 +140,14 @@ fn create_authenticated_email_context() -> MailContext {
     let mut headers = HashMap::new();
     headers.insert("From".to_string(), "support@paypal.com".to_string());
     headers.insert("Subject".to_string(), "Payment Receipt".to_string());
-    headers.insert("Authentication-Results".to_string(), "dkim=pass spf=pass dmarc=pass".to_string());
-    headers.insert("DKIM-Signature".to_string(), "v=1; a=rsa-sha256; d=paypal.com; s=selector1".to_string());
+    headers.insert(
+        "Authentication-Results".to_string(),
+        "dkim=pass spf=pass dmarc=pass".to_string(),
+    );
+    headers.insert(
+        "DKIM-Signature".to_string(),
+        "v=1; a=rsa-sha256; d=paypal.com; s=selector1".to_string(),
+    );
 
     MailContext {
         sender: Some("support@paypal.com".to_string()),
@@ -150,8 +173,14 @@ fn create_authenticated_email_context() -> MailContext {
 
 fn create_mismatch_email_context() -> MailContext {
     let mut headers = HashMap::new();
-    headers.insert("From".to_string(), "Amazon Security <noreply@fake-amazon.com>".to_string());
-    headers.insert("Subject".to_string(), "Amazon Account Verification Required".to_string());
+    headers.insert(
+        "From".to_string(),
+        "Amazon Security <noreply@fake-amazon.com>".to_string(),
+    );
+    headers.insert(
+        "Subject".to_string(),
+        "Amazon Account Verification Required".to_string(),
+    );
 
     MailContext {
         sender: Some("noreply@fake-amazon.com".to_string()),
