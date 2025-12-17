@@ -468,3 +468,13 @@ rules:
         - type: BodyPattern
           pattern: "(?i).*(everything.*set.*stanley.*tool.*set.*shipment.*queued|stanley.*tools.*shipment.*queued|shipment.*queued.*stanley|tools.*shipment.*notification).*"
     score: 290
+  # Storage upgrade unicode phishing
+  - name: "Storage Upgrade Unicode Phishing"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(storage.*upgrade.*unicode|cloud.*storage.*limit|upgrade.*keep.*personal.*files|storage.*space.*in.*use).*"
+        - type: BodyPattern
+          pattern: "(?i).*(storage.*upgrade.*unicode|cloud.*storage.*limit|upgrade.*keep.*personal.*files|storage.*space.*in.*use).*"
+    score: 320

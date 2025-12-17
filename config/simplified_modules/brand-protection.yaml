@@ -155,3 +155,13 @@ rules:
       pattern: ".*@dailydials19\\.onmicrosoft\\.com.*"
     score: 100
     description: "Brand impersonation from Microsoft tenant"
+  # State Farm fire kit impersonation
+  - name: "State Farm Fire Kit Impersonation"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(fire.*doesn.*t.*wait.*neither.*should.*you|state.*farm.*fire.*emergency.*kit|fire.*kit.*brand.*impersonation).*"
+        - type: BodyPattern
+          pattern: "(?i).*(fire.*doesn.*t.*wait.*neither.*should.*you|state.*farm.*fire.*emergency.*kit|fire.*kit.*brand.*impersonation).*"
+    score: 280

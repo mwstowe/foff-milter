@@ -1094,3 +1094,56 @@ rules:
         - type: BodyPattern
           pattern: "(?i).*(𝚛𝚎.*𝚢𝚘𝚞𝚛.*𝚌𝚛𝚎𝚍𝚒𝚝.*𝚌𝚊𝚛𝚍.*𝚋𝚒𝚕𝚕|unicode.*credit.*card|monospace.*credit.*card).*"
     score: 280
+  # Mascara beauty spam
+  - name: "Mascara Beauty Spam"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(thick.*luscious.*curly.*lashes|test.*mascara|mascara.*beauty.*spam|lash.*enhancement).*"
+        - type: BodyPattern
+          pattern: "(?i).*(thick.*luscious.*curly.*lashes|test.*mascara|mascara.*beauty.*spam|lash.*enhancement).*"
+    score: 170
+
+  # Heated vest winter spam
+  - name: "Heated Vest Winter Spam"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(stay.*warm.*style.*solana.*heated.*vest|heated.*vest.*winter.*essential|solana.*heated.*vest).*"
+        - type: BodyPattern
+          pattern: "(?i).*(stay.*warm.*style.*solana.*heated.*vest|heated.*vest.*winter.*essential|solana.*heated.*vest).*"
+    score: 180
+  # Toenail fungus health spam
+  - name: "Toenail Fungus Health Spam"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(soak.*feet.*bowl.*vanish.*toenail.*fungus|toenail.*fungus.*health|fungus.*treatment|nail.*fungus.*cure).*"
+        - type: BodyPattern
+          pattern: "(?i).*(soak.*feet.*bowl.*vanish.*toenail.*fungus|toenail.*fungus.*health|fungus.*treatment|nail.*fungus.*cure).*"
+    score: 200
+
+  # Ukrainian dating spam
+  - name: "Ukrainian Dating Spam"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(date.*easy.*english.*speaking.*ukrainian.*girls|ukrainian.*dating|ukrainian.*girls|eastern.*european.*dating).*"
+        - type: BodyPattern
+          pattern: "(?i).*(date.*easy.*english.*speaking.*ukrainian.*girls|ukrainian.*dating|ukrainian.*girls|eastern.*european.*dating).*"
+    score: 250
+
+  # Triple A car kit spam
+  - name: "Triple A Car Kit Spam"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(vehicle.*should.*be.*on.*road|triple.*a|emergency.*car.*kit|roadside.*assistance).*"
+        - type: BodyPattern
+          pattern: "(?i).*(vehicle.*should.*be.*on.*road|triple.*a|emergency.*car.*kit|roadside.*assistance).*"
+    score: 180
