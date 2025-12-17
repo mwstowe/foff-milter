@@ -8,7 +8,11 @@ pub mod context_analyzer_v2;
 pub mod decision_engine;
 pub mod early_decision_engine;
 pub mod email_normalizer_v2;
+pub mod filter_engine_v2;
 pub mod mismatch_analyzer;
+
+#[cfg(test)]
+pub mod migration_test;
 
 // TODO: Create rule_engine_v2 component
 // pub mod rule_engine_v2;
