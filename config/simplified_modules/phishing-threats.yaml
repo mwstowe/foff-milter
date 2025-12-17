@@ -195,3 +195,56 @@ rules:
             pattern: ".*@.*(paypal|stripe|square|quickbooks|intuit)\\.(com|net)$"
     score: 75
     description: "Fake payment service notifications"
+
+  # From Header Domain Impersonation
+  - name: "From Header Domain Impersonation"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: "\"[^\"@]+\\.(com|org|net|gov|edu|mil)\"\\s*<[^@]+@[^>]+>"
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "HeaderPattern"
+                header: "From"
+                pattern: "\"[^\"@]+\"\\s*<[^@]+@.*walgreens\\.(com|net)>"
+              - type: "HeaderPattern"
+                header: "From"
+                pattern: "\"[^\"@]+\"\\s*<[^@]+@.*doordash\\.(com|net)>"
+              - type: "HeaderPattern"
+                header: "From"
+                pattern: "\"[^\"@]+\"\\s*<[^@]+@.*amazon\\.(com|net)>"
+              - type: "HeaderPattern"
+                header: "From"
+                pattern: "\"[^\"@]+\"\\s*<[^@]+@.*microsoft\\.(com|net)>"
+        - type: "Or"
+          criteria:
+            - type: "BodyPattern"
+              pattern: "(?i)(password|account|login|verify|confirm|suspend|expir|action.*required)"
+            - type: "SubjectPattern"
+              pattern: "(?i)(action.*required|urgent|expir|suspend|verify|password)"
+    score: 90
+    description: "From header displays domain name in quotes with completely different sender domain"
+
+  # Password Expiration Phishing
+  - name: "Password Expiration Phishing"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(password.*expir|password.*reset|account.*expir|login.*expir|access.*expir).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(password.*expir|password.*reset|account.*expir|login.*expir|access.*expir).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(microsoft|google|apple|amazon|paypal|adobe|salesforce|zoom|slack|dropbox)\\.(com|org)$"
+    score: 80
+    description: "Password expiration phishing attempts"

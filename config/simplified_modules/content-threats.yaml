@@ -418,3 +418,51 @@ rules:
               pattern: "(?i).*(seo.*services|website.*optimization|digital.*marketing|web.*development|online.*marketing).*"
     score: 85
     description: "SEO spam via Google Groups should override mailing list trust"
+
+  # Attachment-Only Emails
+  - name: "Attachment-Only Emails"
+    enabled: true
+    criteria:
+      type: "AttachmentOnlyEmail"
+    score: 15
+    description: "Emails with only attachments and no meaningful content"
+
+  # Empty Content Emails
+  - name: "Empty Content Emails"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "EmptyContentEmail"
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "HeaderPattern"
+                header: "x-netsuite"
+                pattern: ".*"
+              - type: "SenderDomain"
+                domains: ["netsuite.com"]
+              - type: "HeaderPattern"
+                header: "from"
+                pattern: ".*@.*netsuite\\.com.*"
+              - type: "HeaderPattern"
+                header: "list-id"
+                pattern: ".*"
+              - type: "HeaderPattern"
+                header: "mailing-list"
+                pattern: ".*"
+              - type: "HeaderPattern"
+                header: "precedence"
+                pattern: "list"
+              - type: "HeaderPattern"
+                header: "from"
+                pattern: ".*@.*charmtracker\\.com.*"
+              - type: "HeaderPattern"
+                header: "from"
+                pattern: ".*@.*athenahealth\\.com.*"
+              - type: "HeaderPattern"
+                header: "from"
+                pattern: ".*@.*epic\\.com.*"
+    score: 10
+    description: "Emails with no subject or body content, excluding NetSuite business systems, medical platforms, and legitimate mailing lists"

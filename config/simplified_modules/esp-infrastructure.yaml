@@ -259,3 +259,42 @@ rules:
       pattern: ".*@.*(klaviyomail|campaignmonitor|aweber|getresponse|convertkit|activecampaign|drip|mailerlite|flodesk)\\.(com|net|email)$"
     score: -60
     description: "Enhanced legitimate marketing email service providers"
+
+  # Authenticated Commercial Content Adjustment
+  - name: "Authenticated Commercial Content Adjustment"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "HeaderPattern"
+          header: "Authentication-Results"
+          pattern: "(?i)(dmarc=pass|spf=pass)"
+        - type: "HeaderPattern"
+          header: "List-Unsubscribe"
+          pattern: ".*"
+        - type: "BodyPattern"
+          pattern: "(?i)(sale|discount|offer|deal|promotion|limited.*time)"
+        - type: "SenderPattern"
+          pattern: ".*@.*(amazon|ebay|etsy|shopify|target|walmart|bestbuy|homedepot|lowes|macys|nordstrom|kohls|disney|kickstarter|eyebuydirect|torrid)\\.(com|net|org)$"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(yournconcierge|cardiovascular|internetdisaster|familyandfriendsllc|ybokjraxqz|solecomfort)\\.(com|net|org|top|lat)$"
+    score: -30
+    description: "Reduce commercial scoring ONLY for authenticated emails from known legitimate retailers"
+
+  # Cultural and Educational Institutions
+  - name: "Cultural and Educational Institutions"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@nordicmuseum\\.org$"
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: ".*@nordicmuseum\\.org.*"
+        - type: "SenderPattern"
+          pattern: ".*@.*(museum|cultural|arts|library|university|college)\\.(org|edu)$"
+    score: -200
+    description: "Cultural institutions, museums, and educational organizations"
