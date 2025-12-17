@@ -958,3 +958,55 @@ rules:
         - type: BodyPattern
           pattern: "(?i).*(mistake.*makes.*bad.*knees.*worse|knee.*health.*mistake|bad.*knees.*worse).*"
     score: 190
+  # Debt relief solutions spam
+  - name: "Debt Relief Solutions Spam"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(reduce.*debt.*expert.*debt.*relief|debt.*relief.*solutions|expert.*debt.*relief).*"
+        - type: BodyPattern
+          pattern: "(?i).*(reduce.*debt.*expert.*debt.*relief|debt.*relief.*solutions|expert.*debt.*relief).*"
+    score: 200
+  # Enhanced product demo spam
+  - name: "Enhanced Product Demo Spam"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i)^demo$|product.*demo.*notification|demo.*request|free.*demo"
+        - type: BodyPattern
+          pattern: "(?i)^demo$|product.*demo.*notification|demo.*request|free.*demo"
+    score: 200
+
+  # Unicode shipping ID spam
+  - name: "Unicode Shipping ID Spam"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(𝗦𝗵𝗶𝗽𝗽𝗶𝗻𝗴.*𝗜𝗗|shipping.*id.*unicode|bold.*unicode.*shipping).*"
+        - type: BodyPattern
+          pattern: "(?i).*(𝗦𝗵𝗶𝗽𝗽𝗶𝗻𝗴.*𝗜𝗗|shipping.*id.*unicode|bold.*unicode.*shipping).*"
+    score: 280
+  # Screenshot spam
+  - name: "Screenshot Spam"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(screenshot.*\\?\\?%%##|screenshot.*spam|suspicious.*screenshot).*"
+        - type: BodyPattern
+          pattern: "(?i).*(screenshot.*\\?\\?%%##|screenshot.*spam|suspicious.*screenshot).*"
+    score: 200
+
+  # VPN offer spam
+  - name: "VPN Offer Spam"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(secure.*my.*connection|vpn.*offer|connection.*security|vpn.*protection|unlocator.*vpn).*"
+        - type: BodyPattern
+          pattern: "(?i).*(secure.*my.*connection|vpn.*offer|connection.*security|vpn.*protection|unlocator.*vpn).*"
+    score: 180

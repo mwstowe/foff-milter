@@ -397,3 +397,33 @@ rules:
         - type: BodyPattern
           pattern: "(?i).*(lembrete.*assinatura.*pendente|portuguese.*signature|assinatura.*portuguesa|documento.*assinatura|signature.*phishing).*"
     score: 320
+  # Enhanced O'Reilly jump starter impersonation
+  - name: "Enhanced OReilly Jump Starter Impersonation"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(jump.*start.*your.*drive.*gift|oreilly.*jump.*starter|schumacher.*jump.*starter|auto.*gift.*oreilly).*"
+        - type: BodyPattern
+          pattern: "(?i).*(jump.*start.*your.*drive.*gift|oreilly.*jump.*starter|schumacher.*jump.*starter|auto.*gift.*oreilly).*"
+    score: 280
+  # Enhanced Interactive Brokers W8BEN compliance
+  - name: "Enhanced Interactive Brokers W8BEN Compliance"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(federal.*compliance.*directive.*renewal.*expired.*w.*8ben|interactive.*brokers.*w8ben|w8ben.*compliance|brokers.*tax.*compliance|fake.*interactive.*brokers).*"
+        - type: BodyPattern
+          pattern: "(?i).*(federal.*compliance.*directive.*renewal.*expired.*w.*8ben|interactive.*brokers.*w8ben|w8ben.*compliance|brokers.*tax.*compliance|fake.*interactive.*brokers).*"
+    score: 380
+  # SBI phishing (Japanese)
+  - name: "SBI Phishing Japanese"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(sbi.*phishing|japanese.*phishing|配当金入金|重要.*配当).*"
+        - type: BodyPattern
+          pattern: "(?i).*(sbi.*phishing|japanese.*phishing|配当金入金|重要.*配当).*"
+    score: 350
