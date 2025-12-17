@@ -35,3 +35,4 @@ pub use heuristic_config::{Action, Config, Criteria, FilterRule};
 pub use language::LanguageDetector;
 pub use milter::Milter;
 pub use statistics::{StatEvent, StatisticsCollector};
+pub mod components;
