@@ -884,3 +884,56 @@ rules:
         - type: BodyPattern
           pattern: "(?i).*(knee.*health|joint.*pain|arthritis.*relief|mobility.*improvement).*"
     score: 180
+  # Piano course spam
+  - name: "Piano Course Spam"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(i.*love.*my.*piano.*now|piano.*course.*shop|learn.*piano.*fast|piano.*lessons).*"
+        - type: BodyPattern
+          pattern: "(?i).*(i.*love.*my.*piano.*now|piano.*course.*shop|learn.*piano.*fast|piano.*lessons).*"
+    score: 160
+
+  # Product demo notification spam
+  - name: "Product Demo Notification Spam"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(product.*demo.*notification|demo.*request|product.*demonstration|free.*demo).*"
+        - type: BodyPattern
+          pattern: "(?i).*(product.*demo.*notification|demo.*request|product.*demonstration|free.*demo).*"
+    score: 180
+  # Prostate health spam
+  - name: "Prostate Health Spam"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(hidden.*toxin.*bloating.*prostate|ancient.*fix.*flushes|prostate.*toxin|prostate.*health.*scam).*"
+        - type: BodyPattern
+          pattern: "(?i).*(hidden.*toxin.*bloating.*prostate|ancient.*fix.*flushes|prostate.*toxin|prostate.*health.*scam).*"
+    score: 220
+
+  # Enhanced mailer daemon patterns
+  - name: "Enhanced Mailer Daemon Patterns"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(mailer.*daemon|delivery.*failure|undelivered.*mail|returned.*mail|mail.*delivery.*subsystem).*"
+        - type: BodyPattern
+          pattern: "(?i).*(mailer.*daemon|delivery.*failure|undelivered.*mail|returned.*mail|mail.*delivery.*subsystem).*"
+    score: 320
+
+  # Enhanced transaction confirmation patterns
+  - name: "Enhanced Transaction Confirmation Patterns"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(order.*transaction.*processed.*confirmed|order.*confirmation|payment.*confirmation|transaction.*confirmation|receipt.*confirmation|billing.*confirmation).*"
+        - type: BodyPattern
+          pattern: "(?i).*(order.*transaction.*processed.*confirmed|order.*confirmation|payment.*confirmation|transaction.*confirmation|receipt.*confirmation|billing.*confirmation).*"
+    score: 280
