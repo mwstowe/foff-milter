@@ -667,9 +667,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(estonian.*money.*transfer|estonia.*inheritance|baltic.*funds).*"
+          pattern: "(?i).*(raha|estonian|estonia|baltic.*funds).*"
         - type: BodyPattern
-          pattern: "(?i).*(estonian.*money.*transfer|estonia.*inheritance|baltic.*funds).*"
+          pattern: "(?i).*(raha|estonian|estonia|baltic.*funds).*"
     score: 350
   # Email list selling spam
   - name: "Email List Selling Enhanced"
@@ -821,3 +821,66 @@ rules:
         - type: BodyPattern
           pattern: "(?i).*(𝗟𝗮𝘀𝘁.*𝗰𝗵𝗮𝗻𝗰𝗲|𝗚𝗲𝘁.*𝟱𝟬.*𝗢𝗙𝗙|unicode.*discount|special.*characters.*offer).*"
     score: 250
+  # Enhanced immune system misinformation
+  - name: "Enhanced Immune System Misinformation"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(hidden.*truth.*immune.*system|immune.*system.*misinformation|al.*sears.*md|immune.*system.*secret).*"
+        - type: BodyPattern
+          pattern: "(?i).*(hidden.*truth.*immune.*system|immune.*system.*misinformation|al.*sears.*md|immune.*system.*secret).*"
+    score: 220
+
+  # Malware attachment patterns
+  - name: "Malware Attachment Spam"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(new.*enquiry|malware.*rar.*attachment|suspicious.*attachment|urgent.*document).*"
+        - type: BodyPattern
+          pattern: "(?i).*(new.*enquiry|malware.*rar.*attachment|suspicious.*attachment|urgent.*document).*"
+    score: 350
+
+  # Enhanced knee health spam
+  - name: "Enhanced Knee Health Spam"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(knee.*health.*spam|knee.*pain.*relief|joint.*restoration|arthritis.*cure).*"
+        - type: BodyPattern
+          pattern: "(?i).*(knee.*health.*spam|knee.*pain.*relief|joint.*restoration|arthritis.*cure).*"
+    score: 190
+  # Enhanced leafguard gutter spam
+  - name: "Enhanced Leafguard Gutter Spam"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(gutter.*zero.*maintenance|leafguard|gutter.*peace.*mind).*"
+        - type: BodyPattern
+          pattern: "(?i).*(gutter.*zero.*maintenance|leafguard|gutter.*peace.*mind).*"
+    score: 170
+  # Chef knife and kitchen product spam
+  - name: "Chef Knife Kitchen Product Spam"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(last.*day.*grab.*big.*promo|matsato.*chef.*knife|kitchen.*knife.*promo|chef.*knife.*sale).*"
+        - type: BodyPattern
+          pattern: "(?i).*(last.*day.*grab.*big.*promo|matsato.*chef.*knife|kitchen.*knife.*promo|chef.*knife.*sale).*"
+    score: 160
+
+  # Enhanced knee health patterns
+  - name: "Knee Health Enhanced Patterns"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(knee.*health|joint.*pain|arthritis.*relief|mobility.*improvement).*"
+        - type: BodyPattern
+          pattern: "(?i).*(knee.*health|joint.*pain|arthritis.*relief|mobility.*improvement).*"
+    score: 180

@@ -334,3 +334,24 @@ rules:
         - type: BodyPattern
           pattern: "(?i).*(fake.*order.*transaction|fake.*payment.*confirmation|order.*confirmation|transaction.*confirmation|payment.*receipt).*"
     score: 300
+  # Enhanced mailer daemon spoofing
+  - name: "Enhanced Mailer Daemon Spoofing"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(mailer.*daemon|delivery.*failure|undelivered.*mail|mail.*delivery.*subsystem).*"
+        - type: BodyPattern
+          pattern: "(?i).*(mailer.*daemon|delivery.*failure|undelivered.*mail|mail.*delivery.*subsystem).*"
+    score: 300
+
+  # Credit card bill phishing
+  - name: "Credit Card Bill Phishing"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(creditcard.*bill|credit.*card.*statement|billing.*statement|account.*statement).*"
+        - type: BodyPattern
+          pattern: "(?i).*(creditcard.*bill|credit.*card.*statement|billing.*statement|account.*statement).*"
+    score: 280
