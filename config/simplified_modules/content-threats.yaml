@@ -1084,3 +1084,13 @@ rules:
         - type: BodyPattern
           pattern: "(?i).*(synoshi.*cleaning|cleaning.*help.*domain|synoshi.*product).*"
     score: 160
+  # Unicode credit card bill
+  - name: "Unicode Credit Card Bill"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(𝚛𝚎.*𝚢𝚘𝚞𝚛.*𝚌𝚛𝚎𝚍𝚒𝚝.*𝚌𝚊𝚛𝚍.*𝚋𝚒𝚕𝚕|unicode.*credit.*card|monospace.*credit.*card).*"
+        - type: BodyPattern
+          pattern: "(?i).*(𝚛𝚎.*𝚢𝚘𝚞𝚛.*𝚌𝚛𝚎𝚍𝚒𝚝.*𝚌𝚊𝚛𝚍.*𝚋𝚒𝚕𝚕|unicode.*credit.*card|monospace.*credit.*card).*"
+    score: 280

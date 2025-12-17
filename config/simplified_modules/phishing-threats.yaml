@@ -447,3 +447,24 @@ rules:
         - type: BodyPattern
           pattern: "(?i).*(received.*new.*document.*approval|sharefile.*document.*phishing|document.*approval.*phishing).*"
     score: 320
+  # Stanley Tools fake confirmation
+  - name: "Stanley Tools Fake Confirmation"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(all.*confirmed.*stanley.*tool.*set|stanley.*tools.*fake.*confirmation|harbor.*freight.*program.*access).*"
+        - type: BodyPattern
+          pattern: "(?i).*(all.*confirmed.*stanley.*tool.*set|stanley.*tools.*fake.*confirmation|harbor.*freight.*program.*access).*"
+    score: 300
+
+  # Stanley Tools shipment queued
+  - name: "Stanley Tools Shipment Queued"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(everything.*set.*stanley.*tool.*set.*shipment.*queued|stanley.*tools.*shipment.*queued|shipment.*queued.*stanley|tools.*shipment.*notification).*"
+        - type: BodyPattern
+          pattern: "(?i).*(everything.*set.*stanley.*tool.*set.*shipment.*queued|stanley.*tools.*shipment.*queued|shipment.*queued.*stanley|tools.*shipment.*notification).*"
+    score: 290
