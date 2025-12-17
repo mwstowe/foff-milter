@@ -1,0 +1,156 @@
+name: "Content Threats"
+enabled: true
+rules:
+  # Adult Content and Romance Scams (+150 points)
+  - name: "Adult Content Romance Scams"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(lonely.*woman|beautiful.*girl|seeking.*relationship|adult.*dating|hookup.*tonight).*"
+        - type: "TextPattern"
+          pattern: "(?i).*(view.*my.*photos|meet.*local.*singles|adult.*entertainment|explicit.*content|romance.*scam).*"
+        - type: "TextPattern"
+          pattern: "(?i).*(sugar.*daddy|sugar.*baby|escort.*service|adult.*webcam|intimate.*photos).*"
+    score: 150
+    description: "Adult content and romance scam detection"
+
+  # Health and Medical Threats (+125 points)
+  - name: "Health Medical Threats"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(lose.*weight.*fast|miracle.*cure|doctor.*approved|fda.*approved|clinical.*trial).*"
+        - type: "TextPattern"
+          pattern: "(?i).*(viagra|cialis|weight.*loss.*pill|male.*enhancement|anti.*aging|testosterone).*"
+        - type: "TextPattern"
+          pattern: "(?i).*(cure.*cancer|cure.*diabetes|miracle.*drug|secret.*formula|breakthrough.*treatment).*"
+    score: 125
+    description: "Health misinformation and pharmaceutical spam"
+
+  # Cryptocurrency and Investment Scams (+200 points)
+  - name: "Cryptocurrency Investment Scams"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(bitcoin.*investment|crypto.*trading|guaranteed.*returns|double.*your.*money).*"
+        - type: "TextPattern"
+          pattern: "(?i).*(cryptocurrency.*opportunity|trading.*bot|forex.*signals|investment.*scheme).*"
+        - type: "TextPattern"
+          pattern: "(?i).*(get.*rich.*quick|passive.*income|financial.*freedom|make.*money.*online).*"
+    score: 200
+    description: "Cryptocurrency and investment fraud detection"
+
+  # Lottery and Prize Scams (+175 points)
+  - name: "Lottery Prize Scams"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(you.*have.*won|lottery.*winner|prize.*notification|congratulations.*winner).*"
+        - type: "TextPattern"
+          pattern: "(?i).*(claim.*your.*prize|lottery.*commission|winning.*notification|prize.*money).*"
+        - type: "TextPattern"
+          pattern: "(?i).*(million.*dollars|cash.*prize|sweepstakes.*winner|jackpot.*winner).*"
+    score: 175
+    description: "Lottery and prize scam detection"
+
+  # Advance Fee Fraud (+200 points)
+  - name: "Advance Fee Fraud"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(inheritance.*fund|beneficiary|next.*of.*kin|deceased.*relative).*"
+        - type: "TextPattern"
+          pattern: "(?i).*(transfer.*funds|processing.*fee|legal.*fee|bank.*charges|wire.*transfer).*"
+        - type: "TextPattern"
+          pattern: "(?i).*(nigerian.*prince|widow|diplomat|attorney|executor).*"
+    score: 200
+    description: "Advance fee fraud and inheritance scams"
+
+  # Malware and Attachment Threats (+250 points)
+  - name: "Malware Attachment Threats"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "AttachmentPattern"
+          pattern: ".*\\.(exe|scr|bat|cmd|pif|com|jar|zip|rar)$"
+        - type: "TextPattern"
+          pattern: "(?i).*(download.*attachment|open.*file|install.*software|run.*program|execute.*file).*"
+        - type: "TextPattern"
+          pattern: "(?i).*(antivirus.*update|security.*patch|system.*update|driver.*update).*"
+    score: 250
+    description: "Malware distribution and suspicious attachments"
+
+  # Fake News and Misinformation (+75 points)
+  - name: "Fake News Misinformation"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(breaking.*news|shocking.*truth|media.*won't.*tell|government.*cover.*up).*"
+        - type: "TextPattern"
+          pattern: "(?i).*(conspiracy|secret.*agenda|hidden.*truth|mainstream.*media|fake.*news).*"
+        - type: "TextPattern"
+          pattern: "(?i).*(share.*before.*deleted|censored.*information|banned.*content|suppressed.*truth).*"
+    score: 75
+    description: "Fake news and misinformation content"
+
+  # Charity and Donation Scams (+100 points)
+  - name: "Charity Donation Scams"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(urgent.*donation|help.*children|disaster.*relief|charity.*appeal).*"
+            - type: "TextPattern"
+              pattern: "(?i).*(donate.*now|emergency.*fund|humanitarian.*aid|save.*lives).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(redcross|unicef|salvation.*army|united.*way|goodwill)\\.(org|com)$"
+    score: 100
+    description: "Fake charity and donation scam detection"
+
+  # Multi-Language Threats (+50 points)
+  - name: "Multi Language Threats"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "TextPattern"
+          pattern: "[\\u4e00-\\u9fff]+.*(?i)(money|dollar|payment|bank)"
+        - type: "TextPattern"
+          pattern: "[\\u0400-\\u04ff]+.*(?i)(bitcoin|crypto|investment)"
+        - type: "TextPattern"
+          pattern: "[\\u0590-\\u05ff]+.*(?i)(urgent|immediate|verify)"
+    score: 50
+    description: "Multi-language threat content detection"
+
+  # Suspicious Link Patterns (+100 points)
+  - name: "Suspicious Link Patterns"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "TextPattern"
+          pattern: "https?://[^\\s]*\\.(tk|ml|ga|cf|gq)/"
+        - type: "TextPattern"
+          pattern: "https?://[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}/"
+        - type: "TextPattern"
+          pattern: "(?i)bit\\.ly|tinyurl|t\\.co|short\\.link|tiny\\.cc"
+    score: 100
+    description: "Suspicious domains and URL shorteners"

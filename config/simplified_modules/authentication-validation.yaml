@@ -1,0 +1,191 @@
+name: "Authentication Validation"
+enabled: true
+rules:
+  # Critical Authentication Failure (+100 points)
+  - name: "Critical Authentication Failure"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "HeaderPattern"
+              header: "Authentication-Results"
+              pattern: "dkim=fail"
+            - type: "HeaderPattern"
+              header: "Authentication-Results"
+              pattern: "spf=fail"
+        - type: "Or"
+          criteria:
+            - type: "HeaderPattern"
+              header: "From"
+              pattern: "(?i).*(paypal|amazon|microsoft|google|apple|bank).*"
+            - type: "SubjectPattern"
+              pattern: "(?i).*(urgent|verify|suspended|security|payment).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(amazonses|sendgrid|mailchimp|sparkpostmail)\\.(com|net)$"
+    score: 100
+    description: "Authentication failure for critical brands or urgent content"
+
+  # DKIM Failure Penalty (+30 points)
+  - name: "DKIM Failure Penalty"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "HeaderPattern"
+          header: "Authentication-Results"
+          pattern: "dkim=fail"
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "SenderPattern"
+                pattern: ".*@.*(gov|edu|mil)$"
+              - type: "SenderPattern"
+                pattern: ".*@.*(amazonses|sendgrid|mailchimp|sparkpostmail)\\.(com|net)$"
+    score: 30
+    description: "DKIM signature validation failure"
+
+  # SPF Failure Penalty (+25 points)
+  - name: "SPF Failure Penalty"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "HeaderPattern"
+          header: "Authentication-Results"
+          pattern: "spf=fail"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(gov|edu|mil)$"
+    score: 25
+    description: "SPF policy validation failure"
+
+  # Domain Mismatch Detection (+75 points)
+  - name: "Domain Mismatch Detection"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: "(?i).*(company|organization|business|enterprise).*"
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "SenderPattern"
+                pattern: ".*@.*\\.(com|org|net|edu|gov)$"
+              - type: "HeaderPattern"
+                header: "Authentication-Results"
+                pattern: "dkim=pass.*spf=pass"
+    score: 75
+    description: "Sender domain mismatch with claimed organization"
+
+  # Suspicious Sender Patterns (+50 points)
+  - name: "Suspicious Sender Patterns"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}$"
+        - type: "SenderPattern"
+          pattern: ".*@.*\\.(tk|ml|ga|cf|gq)$"
+        - type: "SenderPattern"
+          pattern: ".*[0-9]{8,}@.*"
+    score: 50
+    description: "Suspicious sender domain or address patterns"
+
+  # Missing Authentication Headers (+40 points)
+  - name: "Missing Authentication Headers"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Not"
+          criteria:
+            type: "HeaderPattern"
+            header: "Authentication-Results"
+            pattern: "dkim=.*"
+        - type: "Not"
+          criteria:
+            type: "HeaderPattern"
+            header: "Authentication-Results"
+            pattern: "spf=.*"
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(urgent|verify|suspended|security|payment).*"
+            - type: "HeaderPattern"
+              header: "From"
+              pattern: "(?i).*(official|support|security|billing).*"
+    score: 40
+    description: "Missing authentication headers for suspicious content"
+
+  # Forged Sender Headers (+60 points)
+  - name: "Forged Sender Headers"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: "(?i).*(no.*reply|do.*not.*reply|automated|system).*"
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(click.*here|verify.*now|urgent.*action|immediate).*"
+            - type: "TextPattern"
+              pattern: "(?i).*(reply.*to.*this|contact.*us|customer.*service).*"
+    score: 60
+    description: "Forged no-reply headers with interactive content"
+
+  # Legitimate Authentication Rewards (negative scores)
+  - name: "Perfect Authentication"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "HeaderPattern"
+          header: "Authentication-Results"
+          pattern: "dkim=pass"
+        - type: "HeaderPattern"
+          header: "Authentication-Results"
+          pattern: "spf=pass"
+        - type: "HeaderPattern"
+          header: "Authentication-Results"
+          pattern: "dmarc=pass"
+    score: -30
+    description: "Perfect authentication (DKIM, SPF, DMARC all pass)"
+
+  # Government and Educational Domains (-50 points)
+  - name: "Government Educational Domains"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*\\.(gov|edu|mil)$"
+    score: -50
+    description: "Government, educational, and military domains"
+
+  # Established Domain Authentication (-20 points)
+  - name: "Established Domain Authentication"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "HeaderPattern"
+          header: "Authentication-Results"
+          pattern: "dkim=pass"
+        - type: "SenderPattern"
+          pattern: ".*@.*(com|org|net)$"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@[^.]*\\.(tk|ml|ga|cf|gq)$"
+    score: -20
+    description: "Established domains with valid DKIM signatures"

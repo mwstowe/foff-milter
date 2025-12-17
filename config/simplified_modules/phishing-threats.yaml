@@ -1,0 +1,51 @@
+name: "Phishing Threats"
+enabled: true
+rules:
+  # HR/BEC Document Sharing (+200 points)
+  - name: "HR Document Sharing Phishing"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(hr.*shared|hr.*document|salary.*review|incentive.*overview|payroll.*update|employee.*handbook).*"
+            - type: "CombinedTextPattern"
+              pattern: "(?i).*(hr.*department.*shared|view.*salary.*document|access.*payroll.*information|employee.*benefits.*update).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(company\\.com|organization\\.org|legitimate\\.edu)$"
+    score: 200
+    description: "Business Email Compromise targeting HR/payroll documents"
+
+  # Critical Phishing Patterns (+300 points)
+  - name: "Critical Phishing Patterns"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(urgent.*action.*required|account.*will.*be.*closed|verify.*immediately|suspended.*account|click.*here.*now).*"
+        - type: "CombinedTextPattern"
+          pattern: "(?i).*(verify.*your.*account.*now|click.*here.*to.*verify|account.*has.*been.*suspended|immediate.*action.*required).*"
+        - type: "CombinedTextPattern"
+          pattern: "(?i).*(congratulations.*you.*have.*won|claim.*your.*prize.*now|limited.*time.*offer.*expires|act.*now.*or.*lose).*"
+    score: 300
+    description: "High-urgency phishing language patterns"
+
+  # Financial Phishing (+250 points)
+  - name: "Financial Phishing"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(payment.*failed|card.*declined|account.*overdrawn|suspicious.*activity|fraud.*alert).*"
+        - type: "CombinedTextPattern"
+          pattern: "(?i).*(update.*payment.*method|verify.*card.*information|confirm.*bank.*details|resolve.*payment.*issue).*"
+        - type: "CombinedTextPattern"
+          pattern: "(?i).*(refund.*pending|tax.*refund.*available|stimulus.*payment|government.*benefit).*"
+    score: 250
+    description: "Financial fraud and payment scam detection"

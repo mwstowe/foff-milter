@@ -1,0 +1,163 @@
+name: "Brand Protection"
+enabled: true
+rules:
+  # Critical Brand Impersonation (+200 points)
+  - name: "Critical Brand Impersonation"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "HeaderPattern"
+              header: "From"
+              pattern: "(?i).*(paypal|amazon|microsoft|google|apple|netflix|walmart|target|chase|bank.*america|wells.*fargo).*"
+            - type: "SubjectPattern"
+              pattern: "(?i).*(paypal|amazon|microsoft|google|apple|netflix|walmart|target|chase|bank.*america|wells.*fargo).*"
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "SenderPattern"
+                pattern: ".*@.*(paypal|amazon|microsoft|google|apple|netflix|walmart|target|chase|bankofamerica|wellsfargo)\\.(com|org)$"
+              - type: "SenderPattern"
+                pattern: ".*@.*(amazonses|sendgrid|mailchimp|sparkpostmail)\\.(com|net)$"
+    score: 200
+    description: "Major brand claimed by unrelated domain"
+
+  # Financial Services Impersonation (+150 points)
+  - name: "Financial Services Impersonation"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "HeaderPattern"
+              header: "From"
+              pattern: "(?i).*(bank|credit.*union|financial|investment|trading|crypto|bitcoin).*"
+            - type: "SubjectPattern"
+              pattern: "(?i).*(account.*suspended|verify.*account|payment.*failed|security.*alert).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(chase|bankofamerica|wellsfargo|citi|usbank|capitalone|discover|fidelity|schwab|etrade)\\.(com|org)$"
+    score: 150
+    description: "Financial services impersonation from suspicious domains"
+
+  # Technology Brand Impersonation (+125 points)
+  - name: "Technology Brand Impersonation"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "HeaderPattern"
+              header: "From"
+              pattern: "(?i).*(microsoft|google|apple|adobe|oracle|salesforce|zoom|slack).*"
+            - type: "SubjectPattern"
+              pattern: "(?i).*(office.*365|gmail|icloud|creative.*cloud|teams|workspace).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(microsoft|google|apple|adobe|oracle|salesforce|zoom|slack)\\.(com|org)$"
+    score: 125
+    description: "Technology brand impersonation detection"
+
+  # E-commerce Brand Impersonation (+100 points)
+  - name: "E-commerce Brand Impersonation"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "HeaderPattern"
+              header: "From"
+              pattern: "(?i).*(amazon|walmart|target|bestbuy|costco|ebay|etsy|shopify).*"
+            - type: "SubjectPattern"
+              pattern: "(?i).*(order.*confirmation|shipping.*notification|delivery.*update|return.*policy).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(amazon|walmart|target|bestbuy|costco|ebay|etsy|shopify)\\.(com|org)$"
+    score: 100
+    description: "E-commerce brand impersonation from unrelated domains"
+
+  # Social Media Impersonation (+75 points)
+  - name: "Social Media Impersonation"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: "(?i).*(facebook|twitter|linkedin|instagram|youtube|tiktok|snapchat).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(facebook|twitter|linkedin|instagram|youtube|tiktok|snapchat)\\.(com|org)$"
+    score: 75
+    description: "Social media platform impersonation"
+
+  # Shipping and Logistics Impersonation (+100 points)
+  - name: "Shipping and Logistics Impersonation"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "HeaderPattern"
+              header: "From"
+              pattern: "(?i).*(ups|fedex|usps|dhl|postal.*service).*"
+            - type: "SubjectPattern"
+              pattern: "(?i).*(package.*delivery|shipping.*notification|delivery.*attempt|customs.*notice).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(ups|fedex|usps|dhl)\\.(com|org|gov)$"
+    score: 100
+    description: "Shipping and logistics brand impersonation"
+
+  # Healthcare Brand Impersonation (+125 points)
+  - name: "Healthcare Brand Impersonation"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: "(?i).*(medicare|medicaid|health.*insurance|cvs|walgreens|rite.*aid).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(medicare|cvs|walgreens|riteaid|aetna|anthem|humana)\\.(com|org|gov)$"
+    score: 125
+    description: "Healthcare and insurance brand impersonation"
+
+  # Generic Brand Claims (+50 points)
+  - name: "Generic Brand Claims"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "HeaderPattern"
+              header: "From"
+              pattern: "(?i).*(official|customer.*service|support.*team|security.*team|billing.*department).*"
+            - type: "SubjectPattern"
+              pattern: "(?i).*(official.*notice|customer.*service|account.*verification|security.*alert).*"
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "HeaderPattern"
+                header: "Authentication-Results"
+                pattern: "dkim=pass.*spf=pass"
+              - type: "SenderPattern"
+                pattern: ".*@.*(gov|edu|mil)$"
+    score: 50
+    description: "Generic brand claims without proper authentication"
