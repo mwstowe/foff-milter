@@ -724,3 +724,100 @@ rules:
         - type: BodyPattern
           pattern: "(?i).*(sams.*club.*forum|fake.*forum.*domain|club.*membership.*scam).*"
     score: 200
+  # Free tools and software scams
+  - name: "Free Tools Software Scam"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(tools.*built.*for.*pros.*yours.*free|free.*professional.*tools|microsoft.*compromise.*tools).*"
+        - type: BodyPattern
+          pattern: "(?i).*(tools.*built.*for.*pros.*yours.*free|free.*professional.*tools|microsoft.*compromise.*tools).*"
+    score: 240
+
+  # French rental payment scams
+  - name: "French Rental Payment Scam"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(avis.*de.*rappel.*pour.*bail|french.*rental.*payment|bail.*novembre|rental.*reminder).*"
+        - type: BodyPattern
+          pattern: "(?i).*(avis.*de.*rappel.*pour.*bail|french.*rental.*payment|bail.*novembre|rental.*reminder).*"
+    score: 300
+
+  # Health and immune system spam
+  - name: "Health Immune System Spam"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(miracle.*cure.*chronic.*pain|doctors.*hate.*this|immune.*system.*health.*misinformation|health.*spam|boost.*immune.*system|immune.*support).*"
+        - type: BodyPattern
+          pattern: "(?i).*(miracle.*cure.*chronic.*pain|doctors.*hate.*this|immune.*system.*health.*misinformation|health.*spam|boost.*immune.*system|immune.*support).*"
+    score: 190
+
+  # Heater and appliance spam
+  - name: "Heater Appliance Spam"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(heatwell.*heater|miracle.*heater|energy.*saving.*heater|portable.*heater.*scam).*"
+        - type: BodyPattern
+          pattern: "(?i).*(heatwell.*heater|miracle.*heater|energy.*saving.*heater|portable.*heater.*scam).*"
+    score: 180
+  # Joint and knee pain spam
+  - name: "Joint Knee Pain Spam"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(bone.*on.*bone|joint.*knee.*pain|knee.*health.*spam|painful.*knees|joint.*pain.*relief).*"
+        - type: BodyPattern
+          pattern: "(?i).*(bone.*on.*bone|joint.*knee.*pain|knee.*health.*spam|painful.*knees|joint.*pain.*relief).*"
+    score: 200
+
+  # Keto diet spam
+  - name: "Keto Diet Spam"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(truth.*about.*keto|keto.*diet.*secret|keto.*weight.*loss|ketogenic.*scam).*"
+        - type: BodyPattern
+          pattern: "(?i).*(truth.*about.*keto|keto.*diet.*secret|keto.*weight.*loss|ketogenic.*scam).*"
+    score: 180
+
+  # Gutter protection spam
+  - name: "Gutter Protection Spam"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(fall.*into.*savings.*gutter.*protection|leaffilter.*gutter.*protection|leafguard.*gutter|gutter.*protection.*spam|home.*improvement.*scam).*"
+        - type: BodyPattern
+          pattern: "(?i).*(fall.*into.*savings.*gutter.*protection|leaffilter.*gutter.*protection|leafguard.*gutter|gutter.*protection.*spam|home.*improvement.*scam).*"
+    score: 160
+
+  # Mailer daemon spoofing
+  - name: "Mailer Daemon Spoofing"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(mailer.*daemon.*spoofing|fake.*mailer.*daemon|delivery.*failure.*scam).*"
+        - type: BodyPattern
+          pattern: "(?i).*(mailer.*daemon.*spoofing|fake.*mailer.*daemon|delivery.*failure.*scam).*"
+    score: 300
+
+  # Unicode discount offers
+  - name: "Unicode Discount Offers"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(𝗟𝗮𝘀𝘁.*𝗰𝗵𝗮𝗻𝗰𝗲|𝗚𝗲𝘁.*𝟱𝟬.*𝗢𝗙𝗙|unicode.*discount|special.*characters.*offer).*"
+        - type: BodyPattern
+          pattern: "(?i).*(𝗟𝗮𝘀𝘁.*𝗰𝗵𝗮𝗻𝗰𝗲|𝗚𝗲𝘁.*𝟱𝟬.*𝗢𝗙𝗙|unicode.*discount|special.*characters.*offer).*"
+    score: 250
