@@ -9,8 +9,11 @@ pub mod decision_engine;
 pub mod early_decision_engine;
 pub mod email_normalizer_v2;
 pub mod filter_engine_v2;
+pub mod hybrid_filter_engine;
 pub mod mismatch_analyzer;
 
+#[cfg(test)]
+pub mod benchmark;
 #[cfg(test)]
 pub mod migration_test;
 

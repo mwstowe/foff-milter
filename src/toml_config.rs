@@ -109,6 +109,7 @@ impl Default for TomlConfig {
             system: Some(SystemConfig {
                 socket_path: "/var/run/foff-milter.sock".to_string(),
                 reject_to_tag: true,
+                use_simplified_architecture: false,
             }),
             logging: None,
             statistics: Some(StatisticsConfig {
@@ -182,10 +183,16 @@ pub struct SystemConfig {
     pub socket_path: String,
     #[serde(default = "default_reject_to_tag")]
     pub reject_to_tag: bool,
+    #[serde(default = "default_use_simplified_architecture")]
+    pub use_simplified_architecture: bool,
 }
 
 fn default_reject_to_tag() -> bool {
     true
+}
+
+fn default_use_simplified_architecture() -> bool {
+    false // Default to existing architecture for safety
 }
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
@@ -334,6 +341,7 @@ impl TomlConfig {
             system: Some(SystemConfig {
                 socket_path: "/var/run/foff-milter.sock".to_string(),
                 reject_to_tag: true,
+                use_simplified_architecture: false,
             }),
             logging: None,
             statistics: Some(StatisticsConfig {
@@ -390,6 +398,7 @@ impl TomlConfig {
         let default_system = SystemConfig {
             socket_path: "/var/run/foff-milter.sock".to_string(),
             reject_to_tag: true,
+            use_simplified_architecture: false,
         };
         let system = self.system.as_ref().unwrap_or(&default_system);
 
