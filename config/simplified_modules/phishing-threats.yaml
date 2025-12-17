@@ -427,3 +427,13 @@ rules:
         - type: BodyPattern
           pattern: "(?i).*(sbi.*phishing|japanese.*phishing|配当金入金|重要.*配当).*"
     score: 350
+  # W8BEN tax residency scam
+  - name: "W8BEN Tax Residency Scam"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(official.*tax.*residency.*notice.*renewal.*form.*w.*8ben|tax.*residency.*notice|w.*8ben.*required).*"
+        - type: BodyPattern
+          pattern: "(?i).*(official.*tax.*residency.*notice.*renewal.*form.*w.*8ben|tax.*residency.*notice|w.*8ben.*required).*"
+    score: 390
