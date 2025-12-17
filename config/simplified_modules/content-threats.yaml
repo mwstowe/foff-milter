@@ -54,15 +54,17 @@ rules:
       type: "Or"
       criteria:
         - type: "SubjectPattern"
-          pattern: "(?i).*(lonely.*woman|beautiful.*girl|seeking.*relationship|adult.*dating|hookup.*tonight).*"
+          pattern: "(?i).*(adult.*content|xxx|porn|sex.*chat|dating.*site|hookup|escort|webcam.*girls|adult.*entertainment|raging.*hard|male.*enhancement|get.*hard|boost.*performance).*"
+        - type: "SubjectPattern"
+          pattern: "(?i).*(lonely.*woman|beautiful.*girl|meet.*singles|find.*love|romance.*scam|sugar.*daddy|sugar.*baby|want.*to.*be.*with.*you|how.*about.*you).*"
+        - type: "SubjectPattern"
+          pattern: "(?i).*raging.*"
         - type: "CombinedTextPattern"
           pattern: "(?i).*(view.*my.*photos|meet.*local.*singles|adult.*entertainment|explicit.*content|romance.*scam).*"
         - type: "CombinedTextPattern"
           pattern: "(?i).*(sugar.*daddy|sugar.*baby|escort.*service|adult.*webcam|intimate.*photos).*"
         - type: "CombinedTextPattern"
           pattern: "(?i).*(ukrainian.*dating|russian.*bride|eastern.*european|dating.*site).*"
-        - type: "SubjectPattern"
-          pattern: "(?i).*(adult.*content|xxx|porn|sex.*chat|dating.*site|hookup|escort|webcam.*girls|adult.*entertainment|raging.*hard|male.*enhancement|get.*hard|boost.*performance).*"
         - type: "CombinedTextPattern"
           pattern: "(?i).*(sexual.*health|sexual.*beast|erectile.*dysfunction|male.*enhancement|libido|testosterone).*"
     score: 150
@@ -245,4 +247,30 @@ rules:
         - type: "SubjectPattern"
           pattern: "(?i).*breathing.*difficulties.*"
     score: 125
-    description: "Specific health scam subject patterns"
+  # Advanced Heuristics Spam Patterns (+10 points)
+  - name: "Advanced Heuristics Spam Patterns"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(free|win|winner|congratulations|urgent|act.*now|limited.*time|exclusive|special.*offer|guaranteed|amazing|incredible|revolutionary).*"
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "SenderPattern"
+                pattern: ".*@(dominos\\.com|e-offers\\.dominos\\.com|.*\\.dominos\\.com)$"
+              - type: "SenderPattern"
+                pattern: ".*@(amazon\\.com|.*\\.amazon\\.com|amazonses\\.com)$"
+              - type: "SenderPattern"
+                pattern: ".*@(paypal\\.com|.*\\.paypal\\.com)$"
+              - type: "SenderPattern"
+                pattern: ".*@(wolfermans\\.com|.*wolfermans.*\\.com|.*filtersfast\\.com|.*\\.filtersfast\\.com|.*backerkit\\.com|.*\\.backerkit\\.com)$"
+              - type: "SenderPattern"
+                pattern: ".*@(.*nextdoor\\.com|suncadia\\.com)$"
+              - type: "HeaderPattern"
+                header: "List-Unsubscribe"
+                pattern: ".*"
+    score: 10
+    description: "High-probability spam words based on Bayesian analysis"
