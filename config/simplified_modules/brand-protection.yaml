@@ -152,20 +152,40 @@ rules:
     score: 150
     description: "AAA and insurance company emergency kit scams"
 
-  # Microsoft OnMicrosoft Compromise (+100 points)
-  - name: "Microsoft OnMicrosoft Compromise"
+  # Retail and Outdoor Brand Impersonation (+125 points)
+  - name: "Retail Outdoor Brand Impersonation"
     enabled: true
     criteria:
       type: "And"
       criteria:
-        - type: "SenderPattern"
-          pattern: ".*@.*\\.onmicrosoft\\.com$"
         - type: "Or"
           criteria:
-            - type: "HeaderPattern"
-              header: "Authentication-Results"
-              pattern: "dkim=fail"
             - type: "SubjectPattern"
-              pattern: "(?i).*(taste|special|uid[0-9]+|restaurant|food|dining).*"
+              pattern: "(?i).*(yeti.*outdoor.*bundle|car.*upgrade.*ready|oreilly|o.*reilly).*"
+            - type: "CombinedTextPattern"
+              pattern: "(?i).*(yeti.*cooler|outdoor.*gear|auto.*parts|car.*accessories).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(yeti|oreilly|oreillyauto)\\.(com|net)$"
+    score: 125
+    description: "Retail and outdoor brand impersonation"
+
+  # Media and News Brand Impersonation (+100 points)
+  - name: "Media News Brand Impersonation"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(usa.*today|automotive.*aftermarket|special.*edition|news.*update).*"
+            - type: "CombinedTextPattern"
+              pattern: "(?i).*(breaking.*news|exclusive.*report|media.*update|press.*release).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(usatoday|gannett|news)\\.(com|net|org)$"
     score: 100
-    description: "Compromised Microsoft tenant domains"
+    description: "Media and news organization impersonation"

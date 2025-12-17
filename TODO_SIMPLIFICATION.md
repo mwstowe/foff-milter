@@ -70,11 +70,20 @@ Simplify and reorganize FOFF Milter architecture while maintaining 100% test sui
 - **Basic threat detection**: ✅ HR phishing caught
 - **Performance improvement**: ✅ 5.88x faster
 - **False positive prevention**: ✅ Legitimate emails accepted
-- **Module expansion**: 🔄 IN PROGRESS
+- **Module expansion**: 🔄 WAVE 2 COMPLETE
+  - Detection rate: 36% (18/50 emails) - **9% improvement**
   - Phishing threats: 9 comprehensive rules
-  - Content threats: 10 expanded rules  
+  - Content threats: 14 expanded rules (added 4 new)
   - ESP infrastructure: 11 whitelist rules
-  - Detection rate: ~10% (needs more patterns)
+  - Brand protection: 10 rules (added AAA/Microsoft patterns)
+  - Authentication validation: 9 rules
+
+### Systematic Expansion Waves
+- **Wave 1**: 33% detection rate (AAA, Microsoft, health patterns)
+- **Wave 2**: 36% detection rate (advance fee fraud, financial scams, bulk email)
+- **Wave 3**: Target 45%+ (product scams, more brand impersonation)
+- **Wave 4**: Target 60%+ (specialized threat patterns)
+- **Final**: Target 90%+ (edge cases and refinements)
 
 ### Documentation Updates
 - [ ] Update README.md with consolidated module information
