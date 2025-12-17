@@ -1219,3 +1219,77 @@ rules:
         - type: BodyPattern
           pattern: "(?i).*(want.*to.*be.*with.*you.*how.*about.*you|ukrainian.*romance.*scam|find.*ukrainian.*love|ukrainian.*love).*"
     score: 300
+  # Unsolicited web development spam
+  - name: "Unsolicited Web Development Spam"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(customize.*website.*design.*development|unsolicited.*web.*development|website.*development.*spam|web.*design.*services).*"
+        - type: BodyPattern
+          pattern: "(?i).*(customize.*website.*design.*development|unsolicited.*web.*development|website.*development.*spam|web.*design.*services).*"
+    score: 200
+
+  # T-Mobile tech upgrade enhanced
+  - name: "TMobile Tech Upgrade Enhanced"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(your.*tech.*upgrade.*is.*ready|tmobile.*tech.*upgrade|tech.*gift.*from.*t.*mobile|free.*hp.*laptop).*"
+        - type: BodyPattern
+          pattern: "(?i).*(your.*tech.*upgrade.*is.*ready|tmobile.*tech.*upgrade|tech.*gift.*from.*t.*mobile|free.*hp.*laptop).*"
+    score: 250
+  # Vision ritual health spam
+  - name: "Vision Ritual Health Spam"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(morning.*vision.*ritual|vision.*ritual.*health|vision.*research.*group|eye.*health.*ritual).*"
+        - type: BodyPattern
+          pattern: "(?i).*(morning.*vision.*ritual|vision.*ritual.*health|vision.*research.*group|eye.*health.*ritual).*"
+    score: 200
+
+  # Woodworking plans spam
+  - name: "Woodworking Plans Spam"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(woodworking.*plans.*spam|diy.*woodworking|wood.*project.*plans|carpentry.*plans).*"
+        - type: BodyPattern
+          pattern: "(?i).*(woodworking.*plans.*spam|diy.*woodworking|wood.*project.*plans|carpentry.*plans).*"
+    score: 160
+
+  # Yelsen finance loan spam
+  - name: "Yelsen Finance Loan Spam"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(yelsen.*finance.*loan|personal.*loan.*offer|quick.*loan.*approval|finance.*loan.*spam).*"
+        - type: BodyPattern
+          pattern: "(?i).*(yelsen.*finance.*loan|personal.*loan.*offer|quick.*loan.*approval|finance.*loan.*spam).*"
+    score: 220
+  # Enhanced woodworking plans
+  - name: "Enhanced Woodworking Plans"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(woodworking.*plans|wood.*project|diy.*carpentry|furniture.*plans).*"
+        - type: BodyPattern
+          pattern: "(?i).*(woodworking.*plans|wood.*project|diy.*carpentry|furniture.*plans).*"
+    score: 160
+
+  # Enhanced finance loan patterns
+  - name: "Enhanced Finance Loan Patterns"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(yelsen.*finance|personal.*loan|quick.*approval|loan.*offer).*"
+        - type: BodyPattern
+          pattern: "(?i).*(yelsen.*finance|personal.*loan|quick.*approval|loan.*offer).*"
+    score: 220

@@ -165,3 +165,23 @@ rules:
         - type: BodyPattern
           pattern: "(?i).*(fire.*doesn.*t.*wait.*neither.*should.*you|state.*farm.*fire.*emergency.*kit|fire.*kit.*brand.*impersonation).*"
     score: 280
+  # WeTransfer brand impersonation
+  - name: "WeTransfer Brand Impersonation"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(transfer.*you.*received.*expired.*can.*still.*recover|wetransfer.*brand.*impersonation|fake.*wetransfer).*"
+        - type: BodyPattern
+          pattern: "(?i).*(transfer.*you.*received.*expired.*can.*still.*recover|wetransfer.*brand.*impersonation|fake.*wetransfer).*"
+    score: 300
+  # YETI brand impersonation Google Workspace
+  - name: "YETI Brand Impersonation Google Workspace"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(yeti.*outdoor.*bundle.*final.*shipping.*stage|yeti.*brand.*impersonation|fake.*yeti.*shipping).*"
+        - type: BodyPattern
+          pattern: "(?i).*(yeti.*outdoor.*bundle.*final.*shipping.*stage|yeti.*brand.*impersonation|fake.*yeti.*shipping).*"
+    score: 290

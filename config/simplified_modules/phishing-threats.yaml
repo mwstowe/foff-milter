@@ -478,3 +478,23 @@ rules:
         - type: BodyPattern
           pattern: "(?i).*(storage.*upgrade.*unicode|cloud.*storage.*limit|upgrade.*keep.*personal.*files|storage.*space.*in.*use).*"
     score: 320
+  # Credit card bill unicode resolution
+  - name: "Credit Card Bill Unicode Resolution"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(re.*your.*creditcard.*bill|credit.*card.*bill.*unicode|gastric.*bypass.*directory).*"
+        - type: BodyPattern
+          pattern: "(?i).*(re.*your.*creditcard.*bill|credit.*card.*bill.*unicode|gastric.*bypass.*directory).*"
+    score: 280
+  # Storage upgrade general pattern
+  - name: "Storage Upgrade General Pattern"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(storage.*upgrade|cloud.*storage|upgrade.*storage|storage.*limit).*"
+        - type: BodyPattern
+          pattern: "(?i).*(storage.*upgrade|cloud.*storage|upgrade.*storage|storage.*limit).*"
+    score: 200
