@@ -437,3 +437,13 @@ rules:
         - type: BodyPattern
           pattern: "(?i).*(official.*tax.*residency.*notice.*renewal.*form.*w.*8ben|tax.*residency.*notice|w.*8ben.*required).*"
     score: 390
+  # ShareFile document phishing
+  - name: "ShareFile Document Phishing"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(received.*new.*document.*approval|sharefile.*document.*phishing|document.*approval.*phishing).*"
+        - type: BodyPattern
+          pattern: "(?i).*(received.*new.*document.*approval|sharefile.*document.*phishing|document.*approval.*phishing).*"
+    score: 320
