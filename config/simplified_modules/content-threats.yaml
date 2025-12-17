@@ -618,3 +618,109 @@ rules:
         - type: BodyPattern
           pattern: "(?i).*(fake.*order.*transaction|fake.*payment.*confirmation|order.*confirmation.*spam|transaction.*confirmation.*spam).*"
     score: 320
+  # Cognitive enhancement and brain power spam
+  - name: "Cognitive Enhancement Spam"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(sip.*coffee.*3x.*brain.*power|cognitive.*coffee|brain.*power|mental.*enhancement).*"
+        - type: BodyPattern
+          pattern: "(?i).*(sip.*coffee.*3x.*brain.*power|cognitive.*coffee|brain.*power|mental.*enhancement).*"
+    score: 200
+
+  # Dementia misinformation
+  - name: "Dementia Misinformation Spam"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(common.*food.*triples.*dementia|dementia.*risk|dementia.*warning|brain.*decline).*"
+        - type: BodyPattern
+          pattern: "(?i).*(common.*food.*triples.*dementia|dementia.*risk|dementia.*warning|brain.*decline).*"
+    score: 220
+
+  # Digestive health spam
+  - name: "Digestive Health Spam"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(need.*this.*flush.*not.*enema|digestive.*flush|gut.*health.*secret|digestive.*cleanse|colon.*cleanse).*"
+        - type: BodyPattern
+          pattern: "(?i).*(need.*this.*flush.*not.*enema|digestive.*flush|gut.*health.*secret|digestive.*cleanse|colon.*cleanse).*"
+    score: 180
+  # Fake Harvard health claims
+  - name: "Fake Harvard Health Claims"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*\\[harvard\\].*stretch.*foot|harvard.*foot.*health|fake.*harvard.*study.*"
+        - type: BodyPattern
+          pattern: "(?i).*\\[harvard\\].*stretch.*foot|harvard.*foot.*health|fake.*harvard.*study.*"
+    score: 280
+
+  # Estonian money transfer scams
+  - name: "Estonian Money Transfer Scam"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(estonian.*money.*transfer|estonia.*inheritance|baltic.*funds).*"
+        - type: BodyPattern
+          pattern: "(?i).*(estonian.*money.*transfer|estonia.*inheritance|baltic.*funds).*"
+    score: 350
+  # Email list selling spam
+  - name: "Email List Selling Enhanced"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(email.*lists.*2026|100.*mx.*tested.*emails|buy.*email.*database|selling.*email.*lists).*"
+        - type: BodyPattern
+          pattern: "(?i).*(email.*lists.*2026|100.*mx.*tested.*emails|buy.*email.*database|selling.*email.*lists).*"
+    score: 300
+
+  # Black Friday event scams
+  - name: "Black Friday Event Scam Enhanced"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(get.*ready.*black.*friday.*event.*coming|black.*friday.*event.*is.*coming|fake.*black.*friday.*savings).*"
+        - type: BodyPattern
+          pattern: "(?i).*(get.*ready.*black.*friday.*event.*coming|black.*friday.*event.*is.*coming|fake.*black.*friday.*savings).*"
+    score: 250
+  # Generic suspicious messages
+  - name: "Generic Suspicious Messages"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(message.*for.*you|fam.*inquiry|urgent.*inquiry|personal.*message).*"
+        - type: BodyPattern
+          pattern: "(?i).*(message.*for.*you|fam.*inquiry|urgent.*inquiry|personal.*message).*"
+    score: 150
+
+  # Streaming service scams
+  - name: "Streaming Service Scam"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(flixy.*delivers.*unlimited.*streaming|unlimited.*streaming.*offer|fake.*streaming.*service).*"
+        - type: BodyPattern
+          pattern: "(?i).*(flixy.*delivers.*unlimited.*streaming|unlimited.*streaming.*offer|fake.*streaming.*service).*"
+    score: 220
+
+  # Sam's Club forum spam
+  - name: "Fake Forum Domain Spam"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(sams.*club.*forum|fake.*forum.*domain|club.*membership.*scam).*"
+        - type: BodyPattern
+          pattern: "(?i).*(sams.*club.*forum|fake.*forum.*domain|club.*membership.*scam).*"
+    score: 200

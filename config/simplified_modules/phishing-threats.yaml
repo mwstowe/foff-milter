@@ -313,3 +313,24 @@ rules:
         - type: BodyPattern
           pattern: "(?i).*(portuguese.*signature|sbi.*phishing|international.*bank).*"
     score: 280
+  # Enhanced Interactive Brokers scams
+  - name: "Interactive Brokers Enhanced Scam"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(interactive.*brokers.*w8ben|w8ben.*compliance|w8ben.*tax|brokers.*compliance|fake.*interactive.*brokers).*"
+        - type: BodyPattern
+          pattern: "(?i).*(interactive.*brokers.*w8ben|w8ben.*compliance|w8ben.*tax|brokers.*compliance|fake.*interactive.*brokers).*"
+    score: 350
+
+  # Enhanced transaction confirmation scams
+  - name: "Transaction Confirmation Enhanced"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(fake.*order.*transaction|fake.*payment.*confirmation|order.*confirmation|transaction.*confirmation|payment.*receipt).*"
+        - type: BodyPattern
+          pattern: "(?i).*(fake.*order.*transaction|fake.*payment.*confirmation|order.*confirmation|transaction.*confirmation|payment.*receipt).*"
+    score: 300
