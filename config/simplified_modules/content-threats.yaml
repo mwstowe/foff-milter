@@ -1,254 +1,87 @@
 name: "Content Threats"
 enabled: true
 rules:
-  # Health and Medical Threats (+125 points)
-  - name: "Health Medical Threats"
+  # Medical misinformation - cure claims
+  - name: "Unsubstantiated medical cure claims"
     enabled: true
     criteria:
-      type: "Or"
+      type: "And"
       criteria:
-        - type: "SubjectPattern"
-          pattern: "(?i).*(lose.*weight.*fast|miracle.*cure|doctor.*approved|fda.*approved|clinical.*trial).*"
-        - type: "BodyPattern"
-          pattern: "(?i).*(viagra|cialis|weight.*loss.*pill|male.*enhancement|anti.*aging|testosterone).*"
-        - type: "BodyPattern"
-          pattern: "(?i).*(cure.*cancer|cure.*diabetes|miracle.*drug|secret.*formula|breakthrough.*treatment).*"
-        - type: "BodyPattern"
-          pattern: "(?i).*(blood.*pressure|neuropathy|prostate|tinnitus|joint.*pain|knee.*pain).*"
-        - type: "BodyPattern"
-          pattern: "(?i).*(harvard.*study|stanford.*research|ancient.*remedy|toxin.*flush|immune.*system).*"
-        - type: "SubjectPattern"
-          pattern: "(?i).*(reverse|cure|heal|eliminate|fix|solve).*(diabetes|cancer|vitiligo|arthritis|depression|anxiety|pain).*"
-        - type: "BodyPattern"
-          pattern: "(?i).*(diabetes|blood.*sugar|pancreas|insulin.*resistance|diabetic|blood.*glucose).*"
-        - type: "SubjectPattern"
-          pattern: "(?i).*(blood.*herb|herb.*destroys|destroys.*pressure|blood.*pressure).*"
-        - type: "SubjectPattern"
-          pattern: "(?i).*a1c.*"
-        - type: "SubjectPattern"
-          pattern: "(?i).*blood.*herb.*"
-        - type: "SubjectPattern"
-          pattern: "(?i).*destroys.*pressure.*"
-    score: 125
-    description: "Health misinformation and pharmaceutical spam"
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(reverse|cure|heal|eliminate|fix|solve).*(diabetes|cancer|vitiligo|arthritis|depression|anxiety|pain).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(reverse|cure|heal|eliminate|fix|solve).*(diabetes|cancer|vitiligo|arthritis|depression|anxiety|pain).*"
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*naturally.*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(naturally|without.*doctor|without.*prescription|secret.*method).*"
+    score: 120
+    description: "Unsubstantiated medical cure claims"
 
-  # Cryptocurrency and Investment Scams (+200 points)
-  - name: "Cryptocurrency Investment Scams"
+  # Diabetes and blood sugar spam
+  - name: "Diabetes and blood sugar misinformation"
     enabled: true
     criteria:
-      type: "Or"
+      type: "And"
       criteria:
-        - type: "SubjectPattern"
-          pattern: "(?i).*(bitcoin.*investment|crypto.*trading|guaranteed.*returns|double.*your.*money).*"
-        - type: "CombinedTextPattern"
-          pattern: "(?i).*(cryptocurrency.*opportunity|trading.*bot|forex.*signals|investment.*scheme).*"
-        - type: "CombinedTextPattern"
-          pattern: "(?i).*(get.*rich.*quick|passive.*income|financial.*freedom|make.*money.*online).*"
-    score: 200
-    description: "Cryptocurrency and investment fraud detection"
-
-  # Adult Content and Romance Scams (+150 points)
-  - name: "Adult Content Romance Scams"
-    enabled: true
-    criteria:
-      type: "Or"
-      criteria:
-        - type: "SubjectPattern"
-          pattern: "(?i).*(adult.*content|xxx|porn|sex.*chat|dating.*site|hookup|escort|webcam.*girls|adult.*entertainment|raging.*hard|male.*enhancement|get.*hard|boost.*performance).*"
-        - type: "SubjectPattern"
-          pattern: "(?i).*(lonely.*woman|beautiful.*girl|meet.*singles|find.*love|romance.*scam|sugar.*daddy|sugar.*baby|want.*to.*be.*with.*you|how.*about.*you).*"
-        - type: "SubjectPattern"
-          pattern: "(?i).*raging.*"
-        - type: "CombinedTextPattern"
-          pattern: "(?i).*(view.*my.*photos|meet.*local.*singles|adult.*entertainment|explicit.*content|romance.*scam).*"
-        - type: "CombinedTextPattern"
-          pattern: "(?i).*(sugar.*daddy|sugar.*baby|escort.*service|adult.*webcam|intimate.*photos).*"
-        - type: "CombinedTextPattern"
-          pattern: "(?i).*(ukrainian.*dating|russian.*bride|eastern.*european|dating.*site).*"
-        - type: "CombinedTextPattern"
-          pattern: "(?i).*(sexual.*health|sexual.*beast|erectile.*dysfunction|male.*enhancement|libido|testosterone).*"
-    score: 150
-    description: "Adult content and romance scam detection"
-
-  # Lottery and Prize Scams (+175 points)
-  - name: "Lottery Prize Scams"
-    enabled: true
-    criteria:
-      type: "Or"
-      criteria:
-        - type: "SubjectPattern"
-          pattern: "(?i).*(you.*have.*won|lottery.*winner|prize.*notification|congratulations.*winner).*"
-        - type: "CombinedTextPattern"
-          pattern: "(?i).*(claim.*your.*prize|lottery.*commission|winning.*notification|prize.*money).*"
-        - type: "CombinedTextPattern"
-          pattern: "(?i).*(million.*dollars|cash.*prize|sweepstakes.*winner|jackpot.*winner).*"
-        - type: "SubjectPattern"
-          pattern: "(?i).*(eligible.*reward|venmo.*reward|750.*reward|black.*friday.*event).*"
-        - type: "CombinedTextPattern"
-          pattern: "(?i).*(reward.*inside|cash.*back|gift.*card.*winner|survey.*reward).*"
-    score: 175
-    description: "Lottery and prize scam detection"
-
-  # Advance Fee Fraud (+200 points)
-  - name: "Advance Fee Fraud"
-    enabled: true
-    criteria:
-      type: "Or"
-      criteria:
-        - type: "SubjectPattern"
-          pattern: "(?i).*(inheritance.*fund|beneficiary|next.*of.*kin|deceased.*relative).*"
-        - type: "CombinedTextPattern"
-          pattern: "(?i).*(transfer.*funds|processing.*fee|legal.*fee|bank.*charges|wire.*transfer).*"
-        - type: "CombinedTextPattern"
-          pattern: "(?i).*(nigerian.*prince|widow|diplomat|attorney|executor).*"
-        - type: "SubjectPattern"
-          pattern: "(?i).*(fund.*management|collaborator.*fund|business.*proposal|investment.*proposal|search.*collaborator|private.*proposal).*"
-        - type: "CombinedTextPattern"
-          pattern: "(?i).*(confidential.*business|urgent.*business|private.*proposal|fund.*transfer).*"
-    score: 200
-    description: "Advance fee fraud and inheritance scams"
-
-  # Product and Service Scams (+100 points)
-  - name: "Product Service Scams"
-    enabled: true
-    criteria:
-      type: "Or"
-      criteria:
-        - type: "SubjectPattern"
-          pattern: "(?i).*(free.*kit|emergency.*kit|survival.*kit|safety.*kit|car.*kit).*"
-        - type: "CombinedTextPattern"
-          pattern: "(?i).*(aaa.*kit|triple.*a|state.*farm|emergency.*supplies|disaster.*preparedness).*"
-        - type: "CombinedTextPattern"
-          pattern: "(?i).*(leaf.*filter|gutter.*protection|home.*security|solar.*panels|roof.*repair).*"
-        - type: "CombinedTextPattern"
-          pattern: "(?i).*(heated.*vest|security.*camera|backup.*generator|water.*filter).*"
-        - type: "SubjectPattern"
-          pattern: "(?i).*(gutter.*protection|ultra.*security|must.*have.*homeowners|heatwell.*heater).*"
-        - type: "SubjectPattern"
-          pattern: "(?i).*(chef.*knife.*promo|big.*promo|clean.*less.*live.*more|light.*socket.*security).*"
-        - type: "CombinedTextPattern"
-          pattern: "(?i).*(powerful.*heater|heats.*up.*space|minutes|cleaning.*device|kitchen.*knife).*"
-    score: 100
-    description: "Product scams and fake offers"
-
-  # Business and Lead Generation Spam (+75 points)
-  - name: "Business Lead Generation Spam"
-    enabled: true
-    criteria:
-      type: "Or"
-      criteria:
-        - type: "SubjectPattern"
-          pattern: "(?i).*(business.*opportunity|work.*from.*home|make.*money|extra.*income).*"
-        - type: "CombinedTextPattern"
-          pattern: "(?i).*(seo.*services|web.*development|marketing.*services|lead.*generation).*"
-        - type: "CombinedTextPattern"
-          pattern: "(?i).*(google.*rankings|website.*traffic|social.*media.*marketing|email.*marketing).*"
+        - type: "Or"
+          criteria:
+            - type: "BodyPattern"
+              pattern: "(?i).*(diabetes|blood.*sugar|pancreas|insulin.*resistance|diabetic|blood.*glucose).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*\\ba1c\\b.*"
+            - type: "SubjectPattern"
+              pattern: "(?i).*(diabetes|blood.*sugar|a1c|pancreas|insulin.*resistance|diabetic|blood.*glucose).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*williams.*sonoma.*"
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "SenderPattern"
+                pattern: ".*@.*fidelity.*"
+              - type: "SenderPattern"
+                pattern: ".*@.*withings.*"
+              - type: "SenderPattern"
+                pattern: ".*@.*(1800flowers|celebrations|wolfermans).*"
     score: 75
-    description: "Unsolicited business and marketing spam"
+    description: "Diabetes and blood sugar misinformation and miracle cure claims"
 
-  # Malware and Attachment Threats (+250 points)
-  - name: "Malware Attachment Threats"
+  # Adult Content Keywords
+  - name: "Adult Content Keywords"
     enabled: true
     criteria:
-      type: "Or"
-      criteria:
-        - type: "MaliciousAttachment"
-        - type: "CombinedTextPattern"
-          pattern: "(?i).*(download.*attachment|open.*file|install.*software|run.*program|execute.*file).*"
-        - type: "CombinedTextPattern"
-          pattern: "(?i).*(antivirus.*update|security.*patch|system.*update|driver.*update).*"
-        - type: "SubjectPattern"
-          pattern: "(?i).*(new.*enquiry|document.*attached|file.*attached|urgent.*document).*"
-        - type: "CombinedTextPattern"
-          pattern: "(?i).*(rar.*file|zip.*archive|compressed.*file|extract.*files).*"
-    score: 250
-    description: "Malware distribution and suspicious attachments"
+      type: "SubjectPattern"
+      pattern: "(?i).*(adult.*content|xxx|porn|sex.*chat|dating.*site|hookup|escort|webcam.*girls|adult.*entertainment|raging.*hard|male.*enhancement|get.*hard|boost.*performance).*"
+    score: 50
+    description: "Adult content and dating scam detection"
 
-  # Unicode and Obfuscation Attacks (+150 points)
-  - name: "Unicode Obfuscation Attacks"
+  # Romance Scam Patterns
+  - name: "Romance Scam Patterns"
     enabled: true
     criteria:
-      type: "Or"
-      criteria:
-        - type: "ObfuscationDetected"
-        - type: "MixedScriptDetection"
-        - type: "EvasionScore"
-          threshold: 50
-        - type: "SubjectPattern"
-          pattern: ".*[\\u{1D400}-\\u{1D7FF}].*"
-        - type: "SubjectPattern"
-          pattern: ".*[\\u{1F100}-\\u{1F1FF}].*"
-        - type: "CombinedTextPattern"
-          pattern: "(?i).*(credit.*card.*bill|mathematical.*symbols|unicode.*characters).*"
-    score: 150
-    description: "Unicode obfuscation and evasion techniques"
+      type: "SubjectPattern"
+      pattern: "(?i).*(lonely.*woman|beautiful.*girl|meet.*singles|find.*love|romance.*scam|sugar.*daddy|sugar.*baby|want.*to.*be.*with.*you|how.*about.*you).*"
+    score: 40
+    description: "Romance and dating scam patterns"
 
-  # Financial Get-Rich-Quick Scams (+175 points)
-  - name: "Financial Get Rich Quick Scams"
+  # Ukrainian dating spam direct
+  - name: "Ukrainian dating spam direct"
     enabled: true
     criteria:
-      type: "Or"
-      criteria:
-        - type: "SubjectPattern"
-          pattern: "(?i).*rich.*quick.*"
-        - type: "CombinedTextPattern"
-          pattern: "(?i).*(work.*from.*home|easy.*money|no.*experience.*required|guaranteed.*returns).*"
-        - type: "SubjectPattern"
-          pattern: "(?i).*(business.*opportunity|business.*development|pharmaceutical.*scam|billionaire.*bridge).*"
-        - type: "SubjectPattern"
-          pattern: "(?i).*(brain.*opens|10pm.*tonight|private.*proposal|custom.*made.*filters).*"
-    score: 175
-    description: "Get-rich-quick and financial opportunity scams"
+      type: "SubjectPattern"
+      pattern: "(?i).*ukrainian.*girl.*"
+    score: 75
+    description: "Ukrainian dating spam"
 
-  # Bulk Email Advertising Spam (+100 points)
-  - name: "Bulk Email Advertising Spam"
-    enabled: true
-    criteria:
-      type: "Or"
-      criteria:
-        - type: "SubjectPattern"
-          pattern: "(?i).*(advertise.*up.*to.*million|200.*million.*emails|bulk.*email.*service|email.*marketing.*blast).*"
-        - type: "CombinedTextPattern"
-          pattern: "(?i).*(million.*emails|bulk.*advertising|email.*blast|mass.*mailing).*"
-        - type: "CombinedTextPattern"
-          pattern: "(?i).*(targeted.*email.*list|fresh.*email.*database|opt.*in.*emails).*"
-    score: 100
-    description: "Bulk email advertising and spam services"
-
-  # Fake Invoice and Receipt Scams (+150 points)
-  - name: "Fake Invoice Receipt Scams Enhanced"
-    enabled: true
-    criteria:
-      type: "Or"
-      criteria:
-        - type: "SubjectPattern"
-          pattern: "(?i).*(order.*id.*receipt|receipt.*status|invoice.*approved|payment.*confirmation).*"
-        - type: "CombinedTextPattern"
-          pattern: "(?i).*(order.*has.*been.*approved|payment.*processed|transaction.*completed).*"
-        - type: "CombinedTextPattern"
-          pattern: "(?i).*(click.*to.*view.*invoice|download.*receipt|verify.*payment).*"
-    score: 150
-    description: "Enhanced fake invoice and receipt phishing scams"
-
-  # Specific Health Scam Patterns (+125 points)
-  - name: "Specific Health Scam Patterns"
-    enabled: true
-    criteria:
-      type: "Or"
-      criteria:
-        - type: "SubjectPattern"
-          pattern: "(?i).*a1c.*"
-        - type: "SubjectPattern"
-          pattern: "(?i).*blood.*herb.*"
-        - type: "SubjectPattern"
-          pattern: "(?i).*destroys.*pressure.*"
-        - type: "SubjectPattern"
-          pattern: "(?i).*raging.*hard.*"
-        - type: "SubjectPattern"
-          pattern: "(?i).*breathing.*difficulties.*"
-    score: 125
-  # Advanced Heuristics Spam Patterns (+10 points)
-  - name: "Advanced Heuristics Spam Patterns"
+  # Bayesian Spam Word Patterns
+  - name: "Bayesian Spam Word Patterns"
     enabled: true
     criteria:
       type: "And"
@@ -274,3 +107,115 @@ rules:
                 pattern: ".*"
     score: 10
     description: "High-probability spam words based on Bayesian analysis"
+
+  # Commerce threats - fake brand surveys
+  - name: "Fake brand surveys and contest scams"
+    enabled: true
+    criteria:
+      type: "SubjectPattern"
+      pattern: "(?i).*(survey.*chance.*win|complete.*survey.*win|feedback.*win|customer.*survey.*prize|survey.*gift|survey.*reward|survey.*car.*kit|survey.*emergency.*kit).*"
+    score: 80
+    description: "Fake brand surveys and contest scams"
+
+  # Financial spam patterns
+  - name: "Financial opportunity spam"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(get.*rich.*quick|make.*money.*fast|financial.*freedom|guaranteed.*income|work.*from.*home).*"
+        - type: "SubjectPattern"
+          pattern: "(?i).*(business.*opportunity|investment.*opportunity|passive.*income|residual.*income).*"
+    score: 85
+    description: "Financial opportunity and get-rich-quick schemes"
+
+  # Advance fee fraud
+  - name: "Advance fee fraud patterns"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(inheritance.*fund|beneficiary|next.*of.*kin|deceased.*relative|fund.*management|collaborator.*fund).*"
+        - type: "BodyPattern"
+          pattern: "(?i).*(transfer.*funds|processing.*fee|legal.*fee|bank.*charges|wire.*transfer|confidential.*business).*"
+    score: 150
+    description: "Advance fee fraud and inheritance scams"
+
+  # Lottery and prize scams
+  - name: "Lottery and prize scams"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(you.*have.*won|lottery.*winner|prize.*notification|congratulations.*winner|eligible.*reward).*"
+        - type: "BodyPattern"
+          pattern: "(?i).*(claim.*your.*prize|lottery.*commission|winning.*notification|prize.*money|million.*dollars).*"
+    score: 120
+    description: "Lottery and prize scam detection"
+
+  # Product spam and brand impersonation attempts
+  - name: "Product spam and brand impersonation attempts"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "BodyPattern"
+          pattern: "(?i).*(air.*filter.*factory|car.*emergency.*kit|joint.*knee.*pain|fake.*forum|brand.*impersonation|health.*ring|tracks.*health|titan.*ring|imagine.*ring).*"
+        - type: "SubjectPattern"
+          pattern: "(?i).*(air.*filter.*factory|car.*emergency.*kit|joint.*knee.*pain|fake.*forum|brand.*impersonation|health.*ring|tracks.*health|titan.*ring|imagine.*ring).*"
+        - type: "SenderPattern"
+          pattern: ".*@.*(forum|fake|scam|spam).*"
+    score: 65
+    description: "Product spam and brand impersonation attempts"
+
+  # Suspicious health domains
+  - name: "Suspicious health domains"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SenderPattern"
+              pattern: ".*\\.(icu|tk|ml|ga|cf)$"
+            - type: "HeaderPattern"
+              header: "Return-Path"
+              pattern: ".*\\.(icu|tk|ml|ga|cf)$"
+        - type: "Or"
+          criteria:
+            - type: "SenderPattern"
+              pattern: "(?i).*(health|medical|cure|heal|skin|vita|med|pharma).*"
+            - type: "SubjectPattern"
+              pattern: "(?i).*(health|medical|cure|heal|skin|treatment|remedy).*"
+    score: 80
+    description: "Health claims from suspicious TLD domains"
+
+  # Comprehensive health misinformation
+  - name: "Comprehensive health misinformation"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "BodyPattern"
+              pattern: "(?i).*(sexual.*health|sexual.*beast|erectile.*dysfunction|male.*enhancement|libido|testosterone).*"
+            - type: "SubjectPattern"
+              pattern: "(?i).*(sexual.*health|sexual.*beast|male.*enhancement|erectile|testosterone).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(blood.*pressure|neuropathy|prostate|tinnitus|joint.*pain|knee.*pain|breathing.*difficulties).*"
+            - type: "SubjectPattern"
+              pattern: "(?i).*(blood.*pressure|neuropathy|prostate|tinnitus|joint.*pain|knee.*pain|breathing.*difficulties).*"
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "SenderPattern"
+                pattern: ".*@.*withings.*"
+              - type: "SenderPattern"
+                pattern: ".*@.*1800flowers.*"
+    score: 85
+    description: "Comprehensive health misinformation and enhancement scams"

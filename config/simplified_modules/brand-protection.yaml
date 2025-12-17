@@ -1,8 +1,8 @@
 name: "Brand Protection"
 enabled: true
 rules:
-  # Critical Brand Impersonation (+200 points)
-  - name: "Critical Brand Impersonation"
+  # Generic brand impersonation
+  - name: "Generic brand impersonation"
     enabled: true
     criteria:
       type: "And"
@@ -25,8 +25,8 @@ rules:
     score: 200
     description: "Major brand claimed by unrelated domain"
 
-  # Financial Services Impersonation (+150 points)
-  - name: "Financial Services Impersonation"
+  # Known brand from suspicious domain
+  - name: "Known brand from suspicious domain"
     enabled: true
     criteria:
       type: "And"
@@ -35,109 +35,24 @@ rules:
           criteria:
             - type: "HeaderPattern"
               header: "From"
-              pattern: "(?i).*(bank|credit.*union|financial|investment|trading|crypto|bitcoin).*"
+              pattern: "(?i).*(McDonald's|Netflix|Disney|Starbucks|Walmart|Amazon|Target|Best Buy|Home Depot|Lowe's|CVS|Walgreens|Chase|Bank of America|Wells Fargo|Citi|Capital One|American Express|Discover|PayPal|Venmo|Cash App|Zelle|Apple|Microsoft|Google|Facebook|Instagram|Twitter|LinkedIn|YouTube|TikTok|Snapchat|WhatsApp|Telegram|Zoom|Skype|Slack|Teams|Dropbox|OneDrive|iCloud|Gmail|Yahoo|Outlook|Hotmail|AOL|Comcast|Verizon|AT&T|T-Mobile|Sprint|UPS|FedEx|USPS|DHL|Uber|Lyft|Airbnb|Booking|Expedia|Priceline|Hotels|Marriott|Hilton|Hyatt|IHG|Choice|Wyndham|Radisson|Accor|Four Seasons|Ritz Carlton|Sheraton|Westin|Doubletree|Hampton|Holiday Inn|Courtyard|Residence Inn|SpringHill|Fairfield|TownePlace|Aloft|Element|Moxy|AC Hotels|Autograph|Tribute|Design Hotels|Luxury Collection|St. Regis|W Hotels|Edition|Le Meridien|Renaissance|Delta|Gaylord|Omni|Loews|Kimpton|Joie de Vivre|Thompson|Tommie|Unbound|Tapestry|Curio|DoubleTree|Embassy Suites|Homewood Suites|Home2 Suites|Tru|Canopy|Signia|LXR|Conrad|Waldorf Astoria|Tempo|Graduate|Even|Avid|WoodSpring|MainStay|Candlewood|Staybridge|Extended Stay|Red Roof|Motel 6|Super 8|Days Inn|Ramada|Howard Johnson|Travelodge|Knights Inn|Econo Lodge|Quality Inn|Comfort Inn|Comfort Suites|Sleep Inn|Clarion|Cambria|Ascend|Suburban|WoodSpring|MainStay|Candlewood|Staybridge|Extended Stay|Red Roof|Motel 6|Super 8|Days Inn|Ramada|Howard Johnson|Travelodge|Knights Inn|Econo Lodge|Quality Inn|Comfort Inn|Comfort Suites|Sleep Inn|Clarion|Cambria|Ascend|Suburban).*"
             - type: "SubjectPattern"
-              pattern: "(?i).*(account.*suspended|verify.*account|payment.*failed|security.*alert).*"
+              pattern: "(?i).*(McDonald's|Netflix|Disney|Starbucks|major.*brand|official.*notification|customer.*service|account.*verification|security.*alert).*"
         - type: "Not"
           criteria:
-            type: "SenderPattern"
-            pattern: ".*@.*(chase|bankofamerica|wellsfargo|citi|usbank|capitalone|discover|fidelity|schwab|etrade)\\.(com|org)$"
+            type: "Or"
+            criteria:
+              - type: "SenderPattern"
+                pattern: ".*@.*(mcdonalds|netflix|disney|starbucks|walmart|amazon|target|bestbuy|homedepot|lowes|cvs|walgreens|chase|bankofamerica|wellsfargo|citi|capitalone|americanexpress|discover|paypal|venmo|apple|microsoft|google|facebook|instagram|twitter|linkedin|youtube|tiktok|snapchat|whatsapp|telegram|zoom|skype|slack|teams|dropbox|onedrive|icloud|gmail|yahoo|outlook|hotmail|aol|comcast|verizon|att|tmobile|sprint|ups|fedex|usps|dhl|uber|lyft|airbnb|booking|expedia|priceline|hotels|marriott|hilton|hyatt|ihg|choice|wyndham|radisson|accor)\\.(com|org|net)$"
+              - type: "SenderPattern"
+                pattern: ".*@.*(sparkpostmail|sendgrid|mailchimp|amazonses|constantcontact|mailgun)\\.(com|net)$"
+              - type: "HeaderPattern"
+                header: "Authentication-Results"
+                pattern: "dkim=pass"
     score: 150
-    description: "Financial services impersonation from suspicious domains"
+    description: "Known brand claims from suspicious or unrelated domains"
 
-  # Technology Brand Impersonation (+125 points)
-  - name: "Technology Brand Impersonation"
-    enabled: true
-    criteria:
-      type: "And"
-      criteria:
-        - type: "Or"
-          criteria:
-            - type: "HeaderPattern"
-              header: "From"
-              pattern: "(?i).*(microsoft|google|apple|adobe|oracle|salesforce|zoom|slack).*"
-            - type: "SubjectPattern"
-              pattern: "(?i).*(office.*365|gmail|icloud|creative.*cloud|teams|workspace).*"
-        - type: "Not"
-          criteria:
-            type: "SenderPattern"
-            pattern: ".*@.*(microsoft|google|apple|adobe|oracle|salesforce|zoom|slack)\\.(com|org)$"
-    score: 125
-    description: "Technology brand impersonation detection"
-
-  # E-commerce Brand Impersonation (+100 points)
-  - name: "E-commerce Brand Impersonation"
-    enabled: true
-    criteria:
-      type: "And"
-      criteria:
-        - type: "Or"
-          criteria:
-            - type: "HeaderPattern"
-              header: "From"
-              pattern: "(?i).*(amazon|walmart|target|bestbuy|costco|ebay|etsy|shopify).*"
-            - type: "SubjectPattern"
-              pattern: "(?i).*(order.*confirmation|shipping.*notification|delivery.*update|return.*policy).*"
-        - type: "Not"
-          criteria:
-            type: "SenderPattern"
-            pattern: ".*@.*(amazon|walmart|target|bestbuy|costco|ebay|etsy|shopify)\\.(com|org)$"
-    score: 100
-    description: "E-commerce brand impersonation from unrelated domains"
-
-  # Social Media Impersonation (+75 points)
-  - name: "Social Media Impersonation"
-    enabled: true
-    criteria:
-      type: "And"
-      criteria:
-        - type: "HeaderPattern"
-          header: "From"
-          pattern: "(?i).*(facebook|twitter|linkedin|instagram|youtube|tiktok|snapchat).*"
-        - type: "Not"
-          criteria:
-            type: "SenderPattern"
-            pattern: ".*@.*(facebook|twitter|linkedin|instagram|youtube|tiktok|snapchat)\\.(com|org)$"
-    score: 75
-    description: "Social media platform impersonation"
-
-  # Shipping and Logistics Impersonation (+100 points)
-  - name: "Shipping and Logistics Impersonation"
-    enabled: true
-    criteria:
-      type: "And"
-      criteria:
-        - type: "Or"
-          criteria:
-            - type: "HeaderPattern"
-              header: "From"
-              pattern: "(?i).*(ups|fedex|usps|dhl|postal.*service).*"
-            - type: "SubjectPattern"
-              pattern: "(?i).*(package.*delivery|shipping.*notification|delivery.*attempt|customs.*notice).*"
-        - type: "Not"
-          criteria:
-            type: "SenderPattern"
-            pattern: ".*@.*(ups|fedex|usps|dhl)\\.(com|org|gov)$"
-    score: 100
-    description: "Shipping and logistics brand impersonation"
-
-  # Healthcare Brand Impersonation (+125 points)
-  - name: "Healthcare Brand Impersonation"
-    enabled: true
-    criteria:
-      type: "And"
-      criteria:
-        - type: "HeaderPattern"
-          header: "From"
-          pattern: "(?i).*(medicare|medicaid|health.*insurance|cvs|walgreens|rite.*aid).*"
-        - type: "Not"
-          criteria:
-            type: "SenderPattern"
-            pattern: ".*@.*(medicare|cvs|walgreens|riteaid|aetna|anthem|humana)\\.(com|org|gov)$"
-    score: 125
-    description: "Healthcare and insurance brand impersonation"
-
-  # AAA and Emergency Kit Scams (+150 points)
+  # AAA Emergency Kit Scams
   - name: "AAA Emergency Kit Scams"
     enabled: true
     criteria:
@@ -145,33 +60,32 @@ rules:
       criteria:
         - type: "SubjectPattern"
           pattern: "(?i).*(aaa.*emergency.*kit|triple.*a.*kit|car.*emergency.*kit|safety.*kit|survival.*kit).*"
-        - type: "CombinedTextPattern"
+        - type: "BodyPattern"
           pattern: "(?i).*(aaa.*member|triple.*a.*member|emergency.*roadside|car.*breakdown|roadside.*assistance).*"
-        - type: "CombinedTextPattern"
+        - type: "BodyPattern"
           pattern: "(?i).*(state.*farm.*kit|allstate.*kit|geico.*kit|progressive.*kit).*"
     score: 150
     description: "AAA and insurance company emergency kit scams"
 
-  # Retail and Outdoor Brand Impersonation (+125 points)
-  - name: "Retail Outdoor Brand Impersonation"
+  # Microsoft OnMicrosoft Compromise
+  - name: "Microsoft OnMicrosoft Compromise"
     enabled: true
     criteria:
       type: "And"
       criteria:
+        - type: "SenderPattern"
+          pattern: ".*@.*\\.onmicrosoft\\.com$"
         - type: "Or"
           criteria:
+            - type: "HeaderPattern"
+              header: "Authentication-Results"
+              pattern: "dkim=fail"
             - type: "SubjectPattern"
-              pattern: "(?i).*(yeti.*outdoor.*bundle|car.*upgrade.*ready|oreilly|o.*reilly).*"
-            - type: "CombinedTextPattern"
-              pattern: "(?i).*(yeti.*cooler|outdoor.*gear|auto.*parts|car.*accessories).*"
-        - type: "Not"
-          criteria:
-            type: "SenderPattern"
-            pattern: ".*@.*(yeti|oreilly|oreillyauto)\\.(com|net)$"
-    score: 125
-    description: "Retail and outdoor brand impersonation"
+              pattern: "(?i).*(taste|special|uid[0-9]+|restaurant|food|dining).*"
+    score: 100
+    description: "Compromised Microsoft tenant domains"
 
-  # Healthcare and Government Impersonation (+175 points)
+  # Healthcare and Government Impersonation
   - name: "Healthcare Government Impersonation"
     enabled: true
     criteria:
@@ -181,7 +95,7 @@ rules:
           criteria:
             - type: "SubjectPattern"
               pattern: "(?i).*(medicare|medicaid|unitedhealthcare|benefits.*center|veteran.*affairs).*"
-            - type: "CombinedTextPattern"
+            - type: "BodyPattern"
               pattern: "(?i).*(health.*insurance|medicare.*advantage|benefits.*enrollment|va.*benefits).*"
             - type: "SubjectPattern"
               pattern: "(?i).*(cvs.*order|pharmacy.*confirmation|prescription.*ready|health.*plan).*"
