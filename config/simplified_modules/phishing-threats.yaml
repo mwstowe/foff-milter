@@ -160,3 +160,38 @@ rules:
           pattern: "(?i).*(nota.*fiscal|invoice.*eletronica|black.*friday.*sale|happening.*now).*"
     score: 200
     description: "Domain spoofing and system service impersonation"
+
+  # Cloud Storage Phishing
+  - name: "Cloud Storage Phishing"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(dropbox.*shared|google.*drive.*shared|onedrive.*shared|file.*shared.*you|document.*shared|shared.*folder|download.*file|view.*document).*"
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "SenderPattern"
+                pattern: ".*@.*(charmtracker|medical|healthcare|clinic|hospital|ehr)\\.(com|net|org)$"
+              - type: "HeaderPattern"
+                header: "From"
+                pattern: "(?i).*(AceMed|Medical|Healthcare|Clinic|Hospital|EHR|Patient Portal).*"
+    score: 35
+    description: "Fake cloud storage sharing notifications (excluding legitimate medical services)"
+
+  # Payment Service Abuse
+  - name: "Payment Service Abuse"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(paypal.*payment|stripe.*payment|square.*payment|payment.*received|money.*sent|invoice.*paid|transaction.*complete|refund.*processed).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(paypal|stripe|square|quickbooks|intuit)\\.(com|net)$"
+    score: 75
+    description: "Fake payment service notifications"

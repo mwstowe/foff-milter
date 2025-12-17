@@ -193,3 +193,44 @@ rules:
             pattern: ".*@[^.]*\\.(tk|ml|ga|cf|gq)$"
     score: -20
     description: "Established domains with valid DKIM signatures"
+
+  # Known spam domains
+  - name: "Known spam domains"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@.*sfcondoteam\\.com$"
+        - type: "HeaderPattern"
+          header: "Return-Path"
+          pattern: ".*@.*sfcondoteam\\.com$"
+        - type: "SenderPattern"
+          pattern: ".*@.*skinviti\\.icu$"
+        - type: "HeaderPattern"
+          header: "Return-Path"
+          pattern: ".*@.*skinviti\\.icu$"
+    score: 200
+    description: "Known repeat spam domains"
+
+  # Suspicious domains with brand claims
+  - name: "Suspicious domains with brand claims"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SenderPattern"
+              pattern: ".*\\.(icu|tk|ml|ga|cf|top|click|download)$"
+            - type: "HeaderPattern"
+              header: "Return-Path"
+              pattern: ".*\\.(icu|tk|ml|ga|cf|top|click|download)$"
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(amazon|apple|microsoft|google|facebook|paypal|aarp|walmart|target|netflix|disney|fedex|ups|visa|chase|bank).*"
+            - type: "SenderPattern"
+              pattern: "(?i).*(amazon|apple|microsoft|google|facebook|paypal|aarp|walmart|target|netflix|disney|fedex|ups|visa|chase|bank).*"
+    score: 120
+    description: "Suspicious TLD domains claiming to be major brands"

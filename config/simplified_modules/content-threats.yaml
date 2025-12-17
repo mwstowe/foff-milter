@@ -219,3 +219,71 @@ rules:
                 pattern: ".*@.*1800flowers.*"
     score: 85
     description: "Comprehensive health misinformation and enhancement scams"
+
+  # Unrealistic return promises
+  - name: "Unrealistic return promises"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(earn|return|rate|yield|profit|investment|annuity|guaranteed.*income).*(\\d+\\.\\d+%|\\d+%|up to \\d+|\\$\\d+|\\d+.*USD|\\d+.*dollars?).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(earn|return|rate|yield|profit|investment|annuity|guaranteed.*income).*(\\d+\\.\\d+%|\\d+%|up to \\d+|\\$\\d+|\\d+.*USD|\\d+.*dollars?).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(disney|marvel|netflix|hulu|amazon|apple|microsoft|google|duluth|narvar|secretlab|oxford|nextdoor|sendgrid|butcherbox|becu|1800flowers|celebrations|eff|aclu|amnesty|greenpeace|redcross|unicef|oxfam|savethechildren|rejuvenation|rifftrax|bethesda|ecobee|wolfermans|wholefoodsmarket|coinbase|ally|walgreens|delta|united|american|southwest|jetblue|fiestatableware|kitchenaid|whirlpool|arbys|condenast|nationalgeographic|ecoflow|nordicmuseum|museum|cultural|arts)\\.(com|net|org)$"
+    score: 90
+    description: "Unrealistic financial return promises and investment scams"
+
+  # Bulk email advertising spam
+  - name: "Bulk email advertising spam"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(advertise.*up.*to.*million|200.*million.*emails|bulk.*email.*service|email.*marketing.*blast).*"
+        - type: "BodyPattern"
+          pattern: "(?i).*(million.*emails|bulk.*advertising|email.*blast|mass.*mailing|targeted.*email.*list|fresh.*email.*database).*"
+    score: 100
+    description: "Bulk email advertising and spam services"
+
+  # Invoice Scam Detection (All Text)
+  - name: "Invoice Scam Detection (All Text)"
+    enabled: true
+    criteria:
+      type: "CombinedTextPattern"
+      pattern: "(?i).*(invoice.*overdue|urgent.*payment|bitcoin.*payment|cryptocurrency.*required|nota fiscal|fatura|documento.*fiscal).*"
+    score: 75
+    description: "Detect invoice scams and crypto payment demands in email body or media attachments"
+
+  # Adult Content Detection (All Text)
+  - name: "Adult Content Detection (All Text)"
+    enabled: true
+    criteria:
+      type: "CombinedTextPattern"
+      pattern: "(?i).*(\\bviagra\\b|\\bcialis\\b|\\badult.*content|\\bxxx\\s|penis.*enlargement|male.*enhancement|\\berection.*pills).*"
+    score: 60
+    description: "Detect adult content keywords in email body or extracted from images/PDFs"
+
+  # Financial Scams (All Text)
+  - name: "Financial Scams (All Text)"
+    enabled: true
+    criteria:
+      type: "CombinedTextPattern"
+      pattern: "(?i).*(guaranteed.*profit|investment.*opportunity|bitcoin.*trading|crypto.*mining).*"
+    score: 65
+    description: "Detect financial scam content in email body or media attachments"
+
+  # Health Misinformation (All Text)
+  - name: "Health Misinformation (All Text)"
+    enabled: true
+    criteria:
+      type: "CombinedTextPattern"
+      pattern: "(?i).*(miracle.*cure|secret.*remedy|doctors.*hate|pharmaceutical.*conspiracy|natural.*healing).*"
+    score: 70
+    description: "Detect health misinformation in email body or media attachments"
