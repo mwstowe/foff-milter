@@ -516,9 +516,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(air.*filter.*factory|billionaire.*bridge.*brain|cognitive.*coffee|digestive.*flush|endurance.*auto.*protection).*"
+          pattern: "(?i).*(air.*filter.*factory|billionaire.*bridge|cognitive.*coffee|digestive.*flush|endurance.*auto.*protection).*"
         - type: BodyPattern
-          pattern: "(?i).*(air.*filter.*factory|billionaire.*bridge.*brain|cognitive.*coffee|digestive.*flush|endurance.*auto.*protection).*"
+          pattern: "(?i).*(air.*filter.*factory|billionaire.*bridge|cognitive.*coffee|digestive.*flush|endurance.*auto.*protection).*"
     score: 180
 
   # Medical spam patterns
@@ -527,9 +527,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(breathing.*lung|french.*protein.*removes|artery.*plaque|dementia.*food|ed.*medical|fake.*harvard.*foot).*"
+          pattern: "(?i).*(root.*cause.*breathing|breathing.*difficulties|french.*protein.*removes|artery.*plaque|dementia.*food|ed.*medical|fake.*harvard.*foot).*"
         - type: BodyPattern
-          pattern: "(?i).*(breathing.*lung|french.*protein.*removes|artery.*plaque|dementia.*food|ed.*medical|fake.*harvard.*foot).*"
+          pattern: "(?i).*(root.*cause.*breathing|breathing.*difficulties|french.*protein.*removes|artery.*plaque|dementia.*food|ed.*medical|fake.*harvard.*foot).*"
     score: 200
 
   # Financial scam patterns
@@ -564,3 +564,57 @@ rules:
         - type: BodyPattern
           pattern: "(?i).*(email.*list.*selling|selling.*email.*list|buy.*email.*list).*"
     score: 250
+  # Credit card and financial resolution spam
+  - name: "Credit Card Resolution Spam"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(creditcard.*bill|credit.*card.*resolution|unicode.*medical|dementia.*food.*misinformation|digestive.*flush).*"
+        - type: BodyPattern
+          pattern: "(?i).*(creditcard.*bill|credit.*card.*resolution|unicode.*medical|dementia.*food.*misinformation|digestive.*flush).*"
+    score: 250
+
+  # ED and medical enhancement spam
+  - name: "ED Medical Enhancement Spam"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(two.*finger.*massage.*revives.*ed|ed.*medical|erectile.*dysfunction|male.*enhancement|performance.*enhancement).*"
+        - type: BodyPattern
+          pattern: "(?i).*(two.*finger.*massage.*revives.*ed|ed.*medical|erectile.*dysfunction|male.*enhancement|performance.*enhancement).*"
+    score: 280
+
+  # Fake savings and Black Friday scams
+  - name: "Fake Savings Scam Detection"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(fake.*black.*friday.*savings|fake.*savings.*scam|too.*good.*to.*be.*true).*"
+        - type: BodyPattern
+          pattern: "(?i).*(fake.*black.*friday.*savings|fake.*savings.*scam|too.*good.*to.*be.*true).*"
+    score: 240
+
+  # Interactive Brokers tax scams
+  - name: "Interactive Brokers Tax Scam"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(interactive.*brokers.*w8ben|w8ben.*compliance|w8ben.*tax.*scam|fake.*interactive.*brokers).*"
+        - type: BodyPattern
+          pattern: "(?i).*(interactive.*brokers.*w8ben|w8ben.*compliance|w8ben.*tax.*scam|fake.*interactive.*brokers).*"
+    score: 350
+
+  # Fake order and transaction confirmations
+  - name: "Fake Transaction Confirmation Spam"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(fake.*order.*transaction|fake.*payment.*confirmation|order.*confirmation.*spam|transaction.*confirmation.*spam).*"
+        - type: BodyPattern
+          pattern: "(?i).*(fake.*order.*transaction|fake.*payment.*confirmation|order.*confirmation.*spam|transaction.*confirmation.*spam).*"
+    score: 320
