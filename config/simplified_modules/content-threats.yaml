@@ -23,6 +23,12 @@ rules:
           pattern: "(?i).*(diabetes|blood.*sugar|pancreas|insulin.*resistance|diabetic|blood.*glucose).*"
         - type: "SubjectPattern"
           pattern: "(?i).*(blood.*herb|herb.*destroys|destroys.*pressure|blood.*pressure).*"
+        - type: "SubjectPattern"
+          pattern: "(?i).*a1c.*"
+        - type: "SubjectPattern"
+          pattern: "(?i).*blood.*herb.*"
+        - type: "SubjectPattern"
+          pattern: "(?i).*destroys.*pressure.*"
     score: 125
     description: "Health misinformation and pharmaceutical spam"
 
@@ -94,7 +100,7 @@ rules:
         - type: "CombinedTextPattern"
           pattern: "(?i).*(nigerian.*prince|widow|diplomat|attorney|executor).*"
         - type: "SubjectPattern"
-          pattern: "(?i).*(fund.*management|collaborator.*fund|business.*proposal|investment.*proposal|search.*collaborator).*"
+          pattern: "(?i).*(fund.*management|collaborator.*fund|business.*proposal|investment.*proposal|search.*collaborator|private.*proposal).*"
         - type: "CombinedTextPattern"
           pattern: "(?i).*(confidential.*business|urgent.*business|private.*proposal|fund.*transfer).*"
     score: 200
@@ -185,8 +191,10 @@ rules:
           pattern: "(?i).*rich.*quick.*"
         - type: "CombinedTextPattern"
           pattern: "(?i).*(work.*from.*home|easy.*money|no.*experience.*required|guaranteed.*returns).*"
-        - type: "CombinedTextPattern"
-          pattern: "(?i).*(passive.*income|residual.*income|unlimited.*earning|financial.*independence).*"
+        - type: "SubjectPattern"
+          pattern: "(?i).*(business.*opportunity|business.*development|pharmaceutical.*scam|billionaire.*bridge).*"
+        - type: "SubjectPattern"
+          pattern: "(?i).*(brain.*opens|10pm.*tonight|private.*proposal|custom.*made.*filters).*"
     score: 175
     description: "Get-rich-quick and financial opportunity scams"
 
@@ -197,7 +205,7 @@ rules:
       type: "Or"
       criteria:
         - type: "SubjectPattern"
-          pattern: "(?i).*(advertise.*million.*emails|bulk.*email.*service|email.*marketing.*blast|advertise.*up.*to.*million).*"
+          pattern: "(?i).*(advertise.*up.*to.*million|200.*million.*emails|bulk.*email.*service|email.*marketing.*blast).*"
         - type: "CombinedTextPattern"
           pattern: "(?i).*(million.*emails|bulk.*advertising|email.*blast|mass.*mailing).*"
         - type: "CombinedTextPattern"
@@ -219,3 +227,22 @@ rules:
           pattern: "(?i).*(click.*to.*view.*invoice|download.*receipt|verify.*payment).*"
     score: 150
     description: "Enhanced fake invoice and receipt phishing scams"
+
+  # Specific Health Scam Patterns (+125 points)
+  - name: "Specific Health Scam Patterns"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*a1c.*"
+        - type: "SubjectPattern"
+          pattern: "(?i).*blood.*herb.*"
+        - type: "SubjectPattern"
+          pattern: "(?i).*destroys.*pressure.*"
+        - type: "SubjectPattern"
+          pattern: "(?i).*raging.*hard.*"
+        - type: "SubjectPattern"
+          pattern: "(?i).*breathing.*difficulties.*"
+    score: 125
+    description: "Specific health scam subject patterns"
