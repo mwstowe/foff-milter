@@ -937,3 +937,24 @@ rules:
         - type: BodyPattern
           pattern: "(?i).*(order.*transaction.*processed.*confirmed|order.*confirmation|payment.*confirmation|transaction.*confirmation|receipt.*confirmation|billing.*confirmation).*"
     score: 280
+  # Payment transaction thank you spam
+  - name: "Payment Transaction Thank You Spam"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(thank.*you.*payment.*transaction|payment.*confirmation.*transaction|transaction.*payment.*thank).*"
+        - type: BodyPattern
+          pattern: "(?i).*(thank.*you.*payment.*transaction|payment.*confirmation.*transaction|transaction.*payment.*thank).*"
+    score: 300
+
+  # Knee mistake health spam
+  - name: "Knee Mistake Health Spam"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(mistake.*makes.*bad.*knees.*worse|knee.*health.*mistake|bad.*knees.*worse).*"
+        - type: BodyPattern
+          pattern: "(?i).*(mistake.*makes.*bad.*knees.*worse|knee.*health.*mistake|bad.*knees.*worse).*"
+    score: 190
