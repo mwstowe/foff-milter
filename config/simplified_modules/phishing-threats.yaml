@@ -142,17 +142,19 @@ rules:
     score: 125
     description: "Fake WeTransfer file sharing phishing"
 
-  # Credential Harvesting (+200 points)
-  - name: "Credential Harvesting"
+  # Domain Spoofing and System Impersonation (+200 points)
+  - name: "Domain Spoofing System Impersonation"
     enabled: true
     criteria:
       type: "Or"
       criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(removal.*request.*server|server.*accepted|domain.*removal|unsubscribe.*request).*"
+        - type: "SubjectPattern"
+          pattern: "(?i).*(mailer.*daemon|delivery.*failure|bounce.*message|system.*administrator).*"
         - type: "CombinedTextPattern"
-          pattern: "(?i).*(enter.*your.*password|confirm.*your.*login|verify.*credentials|update.*password).*"
-        - type: "CombinedTextPattern"
-          pattern: "(?i).*(sign.*in.*to.*verify|login.*to.*continue|authenticate.*your.*account|password.*expires).*"
-        - type: "CombinedTextPattern"
-          pattern: "(?i).*(two.*factor.*authentication|2fa.*required|security.*code.*needed|verification.*code).*"
+          pattern: "(?i).*(server.*maintenance|system.*notification|automated.*message|no.*reply).*"
+        - type: "SubjectPattern"
+          pattern: "(?i).*(screenshot|urgent.*screenshot|image.*attached|photo.*attached).*"
     score: 200
-    description: "Direct credential harvesting attempts"
+    description: "Domain spoofing and system service impersonation"

@@ -171,8 +171,8 @@ rules:
     score: 125
     description: "Retail and outdoor brand impersonation"
 
-  # Media and News Brand Impersonation (+100 points)
-  - name: "Media News Brand Impersonation"
+  # Healthcare and Government Impersonation (+175 points)
+  - name: "Healthcare Government Impersonation"
     enabled: true
     criteria:
       type: "And"
@@ -180,12 +180,14 @@ rules:
         - type: "Or"
           criteria:
             - type: "SubjectPattern"
-              pattern: "(?i).*(usa.*today|automotive.*aftermarket|special.*edition|news.*update).*"
+              pattern: "(?i).*(medicare|medicaid|unitedhealthcare|benefits.*center|veteran.*affairs).*"
             - type: "CombinedTextPattern"
-              pattern: "(?i).*(breaking.*news|exclusive.*report|media.*update|press.*release).*"
+              pattern: "(?i).*(health.*insurance|medicare.*advantage|benefits.*enrollment|va.*benefits).*"
+            - type: "SubjectPattern"
+              pattern: "(?i).*(cvs.*order|pharmacy.*confirmation|prescription.*ready|health.*plan).*"
         - type: "Not"
           criteria:
             type: "SenderPattern"
-            pattern: ".*@.*(usatoday|gannett|news)\\.(com|net|org)$"
-    score: 100
-    description: "Media and news organization impersonation"
+            pattern: ".*@.*(cvs|unitedhealthcare|medicare|va|veterans)\\.(com|org|gov)$"
+    score: 175
+    description: "Healthcare and government service impersonation"

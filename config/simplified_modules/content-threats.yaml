@@ -74,6 +74,10 @@ rules:
           pattern: "(?i).*(claim.*your.*prize|lottery.*commission|winning.*notification|prize.*money).*"
         - type: "CombinedTextPattern"
           pattern: "(?i).*(million.*dollars|cash.*prize|sweepstakes.*winner|jackpot.*winner).*"
+        - type: "SubjectPattern"
+          pattern: "(?i).*(eligible.*reward|venmo.*reward|750.*reward|black.*friday.*event).*"
+        - type: "CombinedTextPattern"
+          pattern: "(?i).*(reward.*inside|cash.*back|gift.*card.*winner|survey.*reward).*"
     score: 175
     description: "Lottery and prize scam detection"
 
@@ -145,6 +149,10 @@ rules:
           pattern: "(?i).*(download.*attachment|open.*file|install.*software|run.*program|execute.*file).*"
         - type: "CombinedTextPattern"
           pattern: "(?i).*(antivirus.*update|security.*patch|system.*update|driver.*update).*"
+        - type: "SubjectPattern"
+          pattern: "(?i).*(new.*enquiry|document.*attached|file.*attached|urgent.*document).*"
+        - type: "CombinedTextPattern"
+          pattern: "(?i).*(rar.*file|zip.*archive|compressed.*file|extract.*files).*"
     score: 250
     description: "Malware distribution and suspicious attachments"
 
@@ -158,6 +166,12 @@ rules:
         - type: "MixedScriptDetection"
         - type: "EvasionScore"
           threshold: 50
+        - type: "SubjectPattern"
+          pattern: ".*[\\u{1D400}-\\u{1D7FF}].*"
+        - type: "SubjectPattern"
+          pattern: ".*[\\u{1F100}-\\u{1F1FF}].*"
+        - type: "CombinedTextPattern"
+          pattern: "(?i).*(credit.*card.*bill|mathematical.*symbols|unicode.*characters).*"
     score: 150
     description: "Unicode obfuscation and evasion techniques"
 
