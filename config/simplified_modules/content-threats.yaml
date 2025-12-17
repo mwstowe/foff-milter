@@ -1080,9 +1080,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(synoshi.*cleaning|cleaning.*help.*domain|synoshi.*product).*"
+          pattern: "(?i).*(clean.*less.*live.*more|synoshi.*cleaning|cleaning.*help.*domain|synoshi.*product|cleaning.*scrubber).*"
         - type: BodyPattern
-          pattern: "(?i).*(synoshi.*cleaning|cleaning.*help.*domain|synoshi.*product).*"
+          pattern: "(?i).*(clean.*less.*live.*more|synoshi.*cleaning|cleaning.*help.*domain|synoshi.*product|cleaning.*scrubber).*"
     score: 160
   # Unicode credit card bill
   - name: "Unicode Credit Card Bill"
@@ -1147,3 +1147,65 @@ rules:
         - type: BodyPattern
           pattern: "(?i).*(vehicle.*should.*be.*on.*road|triple.*a|emergency.*car.*kit|roadside.*assistance).*"
     score: 180
+  # Septic tank spam
+  - name: "Septic Tank Spam"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(septic.*tank.*smell.*eliminates.*smell.*3.*days|septic.*tank.*smell|septic.*system.*maintenance).*"
+        - type: BodyPattern
+          pattern: "(?i).*(septic.*tank.*smell.*eliminates.*smell.*3.*days|septic.*tank.*smell|septic.*system.*maintenance).*"
+    score: 180
+
+  # Timeshare exit travel scam
+  - name: "Timeshare Exit Travel Scam"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(travel.*wherever.*you.*like.*holiday.*season|timeshare.*exit.*travel|exit.*my.*timeshare).*"
+        - type: BodyPattern
+          pattern: "(?i).*(travel.*wherever.*you.*like.*holiday.*season|timeshare.*exit.*travel|exit.*my.*timeshare).*"
+    score: 250
+
+  # T-Mobile tech upgrade spam
+  - name: "TMobile Tech Upgrade Spam"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(tmobile.*tech.*upgrade|t.*mobile.*upgrade|mobile.*tech.*upgrade|phone.*upgrade.*offer).*"
+        - type: BodyPattern
+          pattern: "(?i).*(tmobile.*tech.*upgrade|t.*mobile.*upgrade|mobile.*tech.*upgrade|phone.*upgrade.*offer).*"
+    score: 200
+  # Credit card resolution medical spam
+  - name: "Credit Card Resolution Medical Spam"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(credit.*card.*resolution.*unicode.*medical|credit.*card.*medical|billing.*medical.*resolution).*"
+        - type: BodyPattern
+          pattern: "(?i).*(credit.*card.*resolution.*unicode.*medical|credit.*card.*medical|billing.*medical.*resolution).*"
+    score: 200
+  # Enhanced leafguard final pattern
+  - name: "Enhanced Leafguard Final Pattern"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(leafguard|leaf.*guard|gutter.*protection|gutter.*maintenance).*"
+        - type: BodyPattern
+          pattern: "(?i).*(leafguard|leaf.*guard|gutter.*protection|gutter.*maintenance).*"
+    score: 150
+  # Gutter maintenance zero pattern
+  - name: "Gutter Maintenance Zero Pattern"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(one.*gutter.*zero.*maintenance|gutter.*zero.*maintenance|total.*peace.*mind.*gutter).*"
+        - type: BodyPattern
+          pattern: "(?i).*(one.*gutter.*zero.*maintenance|gutter.*zero.*maintenance|total.*peace.*mind.*gutter).*"
+    score: 170
