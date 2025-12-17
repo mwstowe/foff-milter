@@ -137,27 +137,35 @@ rules:
     score: 125
     description: "Healthcare and insurance brand impersonation"
 
-  # Generic Brand Claims (+50 points)
-  - name: "Generic Brand Claims"
+  # AAA and Emergency Kit Scams (+150 points)
+  - name: "AAA Emergency Kit Scams"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(aaa.*emergency.*kit|triple.*a.*kit|car.*emergency.*kit|safety.*kit|survival.*kit).*"
+        - type: "CombinedTextPattern"
+          pattern: "(?i).*(aaa.*member|triple.*a.*member|emergency.*roadside|car.*breakdown|roadside.*assistance).*"
+        - type: "CombinedTextPattern"
+          pattern: "(?i).*(state.*farm.*kit|allstate.*kit|geico.*kit|progressive.*kit).*"
+    score: 150
+    description: "AAA and insurance company emergency kit scams"
+
+  # Microsoft OnMicrosoft Compromise (+100 points)
+  - name: "Microsoft OnMicrosoft Compromise"
     enabled: true
     criteria:
       type: "And"
       criteria:
+        - type: "SenderPattern"
+          pattern: ".*@.*\\.onmicrosoft\\.com$"
         - type: "Or"
           criteria:
             - type: "HeaderPattern"
-              header: "From"
-              pattern: "(?i).*(official|customer.*service|support.*team|security.*team|billing.*department).*"
+              header: "Authentication-Results"
+              pattern: "dkim=fail"
             - type: "SubjectPattern"
-              pattern: "(?i).*(official.*notice|customer.*service|account.*verification|security.*alert).*"
-        - type: "Not"
-          criteria:
-            type: "Or"
-            criteria:
-              - type: "HeaderPattern"
-                header: "Authentication-Results"
-                pattern: "dkim=pass.*spf=pass"
-              - type: "SenderPattern"
-                pattern: ".*@.*(gov|edu|mil)$"
-    score: 50
-    description: "Generic brand claims without proper authentication"
+              pattern: "(?i).*(taste|special|uid[0-9]+|restaurant|food|dining).*"
+    score: 100
+    description: "Compromised Microsoft tenant domains"

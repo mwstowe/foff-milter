@@ -70,6 +70,11 @@ Simplify and reorganize FOFF Milter architecture while maintaining 100% test sui
 - **Basic threat detection**: ✅ HR phishing caught
 - **Performance improvement**: ✅ 5.88x faster
 - **False positive prevention**: ✅ Legitimate emails accepted
+- **Module expansion**: 🔄 IN PROGRESS
+  - Phishing threats: 9 comprehensive rules
+  - Content threats: 10 expanded rules  
+  - ESP infrastructure: 11 whitelist rules
+  - Detection rate: ~10% (needs more patterns)
 
 ### Documentation Updates
 - [ ] Update README.md with consolidated module information

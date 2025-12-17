@@ -9,14 +9,20 @@ rules:
       criteria:
         - type: "SubjectPattern"
           pattern: "(?i).*(lose.*weight.*fast|miracle.*cure|doctor.*approved|fda.*approved|clinical.*trial).*"
-        - type: "CombinedTextPattern"
+        - type: "BodyPattern"
           pattern: "(?i).*(viagra|cialis|weight.*loss.*pill|male.*enhancement|anti.*aging|testosterone).*"
-        - type: "CombinedTextPattern"
+        - type: "BodyPattern"
           pattern: "(?i).*(cure.*cancer|cure.*diabetes|miracle.*drug|secret.*formula|breakthrough.*treatment).*"
-        - type: "CombinedTextPattern"
+        - type: "BodyPattern"
           pattern: "(?i).*(blood.*pressure|neuropathy|prostate|tinnitus|joint.*pain|knee.*pain).*"
-        - type: "CombinedTextPattern"
+        - type: "BodyPattern"
           pattern: "(?i).*(harvard.*study|stanford.*research|ancient.*remedy|toxin.*flush|immune.*system).*"
+        - type: "SubjectPattern"
+          pattern: "(?i).*(reverse|cure|heal|eliminate|fix|solve).*(diabetes|cancer|vitiligo|arthritis|depression|anxiety|pain).*"
+        - type: "BodyPattern"
+          pattern: "(?i).*(diabetes|blood.*sugar|pancreas|insulin.*resistance|diabetic|blood.*glucose).*"
+        - type: "SubjectPattern"
+          pattern: "(?i).*(blood.*herb|herb.*destroys|destroys.*pressure|blood.*pressure).*"
     score: 125
     description: "Health misinformation and pharmaceutical spam"
 
@@ -49,6 +55,10 @@ rules:
           pattern: "(?i).*(sugar.*daddy|sugar.*baby|escort.*service|adult.*webcam|intimate.*photos).*"
         - type: "CombinedTextPattern"
           pattern: "(?i).*(ukrainian.*dating|russian.*bride|eastern.*european|dating.*site).*"
+        - type: "SubjectPattern"
+          pattern: "(?i).*(adult.*content|xxx|porn|sex.*chat|dating.*site|hookup|escort|webcam.*girls|adult.*entertainment|raging.*hard|male.*enhancement|get.*hard|boost.*performance).*"
+        - type: "CombinedTextPattern"
+          pattern: "(?i).*(sexual.*health|sexual.*beast|erectile.*dysfunction|male.*enhancement|libido|testosterone).*"
     score: 150
     description: "Adult content and romance scam detection"
 
