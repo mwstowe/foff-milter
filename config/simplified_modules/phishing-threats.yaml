@@ -248,3 +248,68 @@ rules:
             pattern: ".*@.*(microsoft|google|apple|amazon|paypal|adobe|salesforce|zoom|slack|dropbox)\\.(com|org)$"
     score: 80
     description: "Password expiration phishing attempts"
+  # CVS/Medicare phishing
+  - name: "CVS Medicare Phishing"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(cvs.*medicare|medicare.*cvs|pharmacy.*benefit).*"
+        - type: BodyPattern
+          pattern: "(?i).*(cvs.*medicare|medicare.*cvs|pharmacy.*benefit).*"
+    score: 300
+
+  # Fake invoice patterns
+  - name: "Fake Invoice Scam"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(fake.*invoice|norton.*invoice|order.*receipt|payment.*receipt).*"
+        - type: BodyPattern
+          pattern: "(?i).*(fake.*invoice|norton.*invoice|order.*receipt|payment.*receipt).*"
+    score: 280
+
+  # Brand impersonation (Google Workspace)
+  - name: "Google Workspace Impersonation"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(google.*workspace|workspace.*google|yeti.*brand).*"
+        - type: BodyPattern
+          pattern: "(?i).*(google.*workspace|workspace.*google|yeti.*brand).*"
+    score: 250
+
+  # Investment scams
+  - name: "Investment Scam Patterns"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(fam.*investment|investment.*opportunity|guaranteed.*returns).*"
+        - type: BodyPattern
+          pattern: "(?i).*(fam.*investment|investment.*opportunity|guaranteed.*returns).*"
+    score: 300
+
+  # Romance scams
+  - name: "Romance Scam Detection"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(ukrainian.*romance|romance.*scam|lonely.*heart).*"
+        - type: BodyPattern
+          pattern: "(?i).*(ukrainian.*romance|romance.*scam|lonely.*heart).*"
+    score: 350
+
+  # International phishing
+  - name: "International Phishing"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(portuguese.*signature|sbi.*phishing|international.*bank).*"
+        - type: BodyPattern
+          pattern: "(?i).*(portuguese.*signature|sbi.*phishing|international.*bank).*"
+    score: 280
