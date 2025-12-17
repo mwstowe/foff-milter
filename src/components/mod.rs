@@ -4,13 +4,13 @@
 //! eventually replace the scattered logic in the current system.
 
 pub mod authentication_analyzer;
+pub mod context_analyzer_v2;
+pub mod decision_engine;
 pub mod early_decision_engine;
 pub mod email_normalizer_v2;
+pub mod mismatch_analyzer;
 
-// TODO: Create these components
-// pub mod context_analyzer_v2;
-// pub mod decision_engine;
-// pub mod mismatch_analyzer;
+// TODO: Create rule_engine_v2 component
 // pub mod rule_engine_v2;
 
 use crate::MailContext;
