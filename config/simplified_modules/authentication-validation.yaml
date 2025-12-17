@@ -234,3 +234,40 @@ rules:
               pattern: "(?i).*(amazon|apple|microsoft|google|facebook|paypal|aarp|walmart|target|netflix|disney|fedex|ups|visa|chase|bank).*"
     score: 120
     description: "Suspicious TLD domains claiming to be major brands"
+
+  # DKIM signature verification failed
+  - name: "DKIM signature verification failed"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "HeaderPattern"
+          header: "Authentication-Results"
+          pattern: "(?i)dkim=fail.*signature verification failed"
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "SenderPattern"
+                pattern: ".*@.*(gmail|yahoo|hotmail|outlook|aol|icloud|mcdonalds|netflix|amazon|microsoft|google|apple)\\.(com|net)$"
+              - type: "HeaderPattern"
+                header: "Authentication-Results"
+                pattern: "(?i)spf=pass"
+    score: 15
+    description: "DKIM signature verification failed (reduced penalty for major brands)"
+
+  # SPF no designated sender hosts
+  - name: "SPF no designated sender hosts"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "HeaderPattern"
+          header: "Authentication-Results"
+          pattern: "(?i)spf=none.*no designated sender hosts"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(gov|edu|mil)$"
+    score: 10
+    description: "SPF policy not configured (excluding government domains)"

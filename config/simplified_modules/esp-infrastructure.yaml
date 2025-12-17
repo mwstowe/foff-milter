@@ -195,3 +195,67 @@ rules:
           pattern: ".*netatmo.*"
     score: -200
     description: "Netatmo legitimate IoT device notifications"
+
+  # Veterinary and Pet Services
+  - name: "Veterinary and Pet Services"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: ".*@.*\\.vetcove\\.com.*"
+        - type: "HeaderPattern"
+          header: "DKIM-Signature"
+          pattern: ".*d=.*\\.vetcove\\.com.*"
+        - type: "BodyPattern"
+          pattern: "(?i).*(veterinary|pet.*hospital|animal.*clinic|veterinarian)"
+        - type: "SubjectPattern"
+          pattern: "(?i).*(appointment.*reminder|vaccination.*due|pet.*health)"
+    score: -200
+    description: "Whitelist legitimate veterinary and pet service communications"
+
+  # Retail and Commerce Brands
+  - name: "Retail and Commerce Brands"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*(duluthtrading|levi|michaels|kingarthurbaking|eyebuydirect|fiestatableware|kitchenaid|whirlpool|arbys|condenast|nationalgeographic)\\.(com|net)$"
+    score: -150
+    description: "Legitimate retail and commerce brand communications"
+
+  # Brand Domain Validation
+  - name: "Brand Domain Validation"
+    enabled: true
+    criteria:
+      type: "SenderDomain"
+      domains: ["levi.com", "duluthtrading.com", "michaels.com", "kingarthurbaking.com", "eyebuydirect.com"]
+    score: -300
+    description: "Legitimate brand emails from verified domains"
+
+  # Known legitimate mailing service providers
+  - name: "Known legitimate mailing service providers"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "HeaderPattern"
+          header: "List-Unsubscribe"
+          pattern: ".*"
+        - type: "HeaderPattern"
+          header: "Authentication-Results"
+          pattern: "dkim=pass"
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: "(?i).*(newsletter|marketing|promo|updates|news).*"
+    score: -100
+    description: "Legitimate mailing services with proper authentication and unsubscribe"
+
+  # Enhanced Marketing ESP Infrastructure
+  - name: "Enhanced Marketing ESP Infrastructure"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*(klaviyomail|campaignmonitor|aweber|getresponse|convertkit|activecampaign|drip|mailerlite|flodesk)\\.(com|net|email)$"
+    score: -60
+    description: "Enhanced legitimate marketing email service providers"

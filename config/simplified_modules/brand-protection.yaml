@@ -105,3 +105,33 @@ rules:
             pattern: ".*@.*(cvs|unitedhealthcare|medicare|va|veterans)\\.(com|org|gov)$"
     score: 175
     description: "Healthcare and government service impersonation"
+
+  # Critical Brand Impersonation
+  - name: "Critical Brand Impersonation"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SenderPattern"
+          pattern: "(?i).*(amazon|apple|microsoft|google|facebook|paypal|aarp|walmart|target|netflix|disney|fedex|ups|visa|chase|bank).*"
+        - type: "Or"
+          criteria:
+            - type: "HeaderPattern"
+              header: "Authentication-Results"
+              pattern: "dkim=fail"
+            - type: "HeaderPattern"
+              header: "Authentication-Results"
+              pattern: "spf=fail"
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "SenderPattern"
+                pattern: ".*@.*(sparkpostmail|sendgrid|mailchimp|constantcontact|amazonses|mailgun|klaviyomail|campaignmonitor|aweber)\\.(com|net|org)$"
+              - type: "SenderPattern"
+                pattern: ".*@.*(amazon|google|microsoft|apple|netflix|walmart|target|disney|fedex|ups|visa|chase)\\.(com|org)$"
+              - type: "HeaderPattern"
+                header: "From"
+                pattern: "(?i).*(newsletter|digest|marketing|promotional|noreply|no-reply).*"
+    score: 300
+    description: "Critical: Major brand + authentication failure + domain mismatch"

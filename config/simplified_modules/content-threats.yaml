@@ -392,3 +392,29 @@ rules:
       description: "Korean characters from non-Korean domain"
     score: 45
     description: "Korean text from non-Korean domain - potential spam"
+
+  # SEO spam via Google Groups
+  - name: "SEO spam via Google Groups"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "HeaderPattern"
+              header: "List-ID"
+              pattern: ".*googlegroups\\.com.*"
+            - type: "HeaderPattern"
+              header: "List-ID"
+              pattern: ".*wildnetdigitalagency\\.com.*"
+            - type: "HeaderPattern"
+              header: "X-Google-Group-Id"
+              pattern: "\\d+"
+        - type: "Or"
+          criteria:
+            - type: "BodyPattern"
+              pattern: "(?i).*(seo.*services|website.*optimization|digital.*marketing|web.*development|online.*marketing).*"
+            - type: "SubjectPattern"
+              pattern: "(?i).*(seo.*services|website.*optimization|digital.*marketing|web.*development|online.*marketing).*"
+    score: 85
+    description: "SEO spam via Google Groups should override mailing list trust"
