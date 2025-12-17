@@ -49,3 +49,110 @@ rules:
           pattern: "(?i).*(refund.*pending|tax.*refund.*available|stimulus.*payment|government.*benefit).*"
     score: 250
     description: "Financial fraud and payment scam detection"
+
+  # Security Alert Phishing (+200 points)
+  - name: "Security Alert Phishing"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(security.*alert|suspicious.*login|unauthorized.*access|breach.*detected|virus.*found).*"
+        - type: "CombinedTextPattern"
+          pattern: "(?i).*(your.*computer.*infected|malware.*detected|security.*scan.*required|update.*antivirus).*"
+        - type: "CombinedTextPattern"
+          pattern: "(?i).*(microsoft.*security|windows.*defender|apple.*security|google.*security).*"
+    score: 200
+    description: "Fake security alerts and tech support scams"
+
+  # Invoice/Receipt Phishing (+150 points)
+  - name: "Invoice Receipt Phishing"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(invoice.*attached|receipt.*confirmation|payment.*due|billing.*statement).*"
+            - type: "CombinedTextPattern"
+              pattern: "(?i).*(view.*invoice|download.*receipt|payment.*overdue|billing.*inquiry).*"
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "SenderPattern"
+                pattern: ".*@.*(paypal|stripe|square|quickbooks|freshbooks)\\.(com|org)$"
+              - type: "HeaderPattern"
+                header: "Authentication-Results"
+                pattern: "dkim=pass.*spf=pass"
+    score: 150
+    description: "Fake invoice and receipt phishing attempts"
+
+  # Cloud Storage Phishing (+100 points)
+  - name: "Cloud Storage Phishing"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(document.*shared|file.*shared|folder.*shared|shared.*with.*you).*"
+        - type: "CombinedTextPattern"
+          pattern: "(?i).*(view.*document|access.*file|download.*shared|dropbox.*shared|google.*drive.*shared).*"
+        - type: "CombinedTextPattern"
+          pattern: "(?i).*(onedrive.*shared|icloud.*shared|box\\.com.*shared|shared.*folder).*"
+    score: 100
+    description: "Fake cloud storage sharing notifications"
+
+  # DocuSign Phishing (+175 points)
+  - name: "DocuSign Phishing"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(docusign|document.*signature|sign.*document|electronic.*signature).*"
+            - type: "CombinedTextPattern"
+              pattern: "(?i).*(please.*sign|review.*and.*sign|signature.*required|document.*awaiting).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*docusign\\.(com|net)$"
+    score: 175
+    description: "Fake DocuSign and document signing phishing"
+
+  # WeTransfer Phishing (+125 points)
+  - name: "WeTransfer Phishing"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(wetransfer|file.*transfer|download.*files|transfer.*expires).*"
+            - type: "CombinedTextPattern"
+              pattern: "(?i).*(files.*ready.*download|transfer.*link|download.*before.*expires).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*wetransfer\\.(com|net)$"
+    score: 125
+    description: "Fake WeTransfer file sharing phishing"
+
+  # Credential Harvesting (+200 points)
+  - name: "Credential Harvesting"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "CombinedTextPattern"
+          pattern: "(?i).*(enter.*your.*password|confirm.*your.*login|verify.*credentials|update.*password).*"
+        - type: "CombinedTextPattern"
+          pattern: "(?i).*(sign.*in.*to.*verify|login.*to.*continue|authenticate.*your.*account|password.*expires).*"
+        - type: "CombinedTextPattern"
+          pattern: "(?i).*(two.*factor.*authentication|2fa.*required|security.*code.*needed|verification.*code).*"
+    score: 200
+    description: "Direct credential harvesting attempts"
