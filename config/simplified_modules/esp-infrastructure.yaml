@@ -135,3 +135,63 @@ rules:
       pattern: ".*@.*(salesforce|hubspot|zendesk|freshdesk|intercom|drift|calendly)\\.(com|net)$"
     score: -50
     description: "Customer relationship management and business tools"
+
+  # Business System Fast Path
+  - name: "Business System Fast Path"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "HeaderPattern"
+          header: "x-netsuite"
+          pattern: ".*"
+        - type: "SenderPattern"
+          pattern: ".*@.*(netsuite\\.com|oracleemaildelivery\\.com)$"
+        - type: "SenderPattern"
+          pattern: ".*@.*salesforce\\.com$"
+        - type: "SenderPattern"
+          pattern: ".*@.*quickbooks\\.com$"
+        - type: "HeaderPattern"
+          header: "X-Mailer"
+          pattern: ".*NetSuite.*"
+    score: -50
+    description: "Fast path for legitimate business systems like NetSuite, Salesforce, QuickBooks"
+
+  # Trusted Domain Fast Path
+  - name: "Trusted Domain Fast Path"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@(amazon\\.com|microsoft\\.com|apple\\.com|google\\.com|paypal\\.com|ebay\\.com|linkedin\\.com|twitter\\.com|facebook\\.com)$"
+        - type: "HeaderPattern"
+          header: "Authentication-Results"
+          pattern: "dkim=pass"
+    score: -75
+    description: "Trusted major domains with valid authentication"
+
+  # Disney Store
+  - name: "Disney Store"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*(disney|disneystore)\\.(com|net)$"
+    score: -150
+    description: "Disney Store legitimate retailer"
+
+  # Netatmo IoT Devices
+  - name: "Netatmo IoT Devices"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@.*netatmo\\.(com|net)$"
+        - type: "SenderPattern"
+          pattern: ".*@netatmo\\.com$"
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: ".*netatmo.*"
+    score: -200
+    description: "Netatmo legitimate IoT device notifications"

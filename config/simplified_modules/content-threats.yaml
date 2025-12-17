@@ -287,3 +287,108 @@ rules:
       pattern: "(?i).*(miracle.*cure|secret.*remedy|doctors.*hate|pharmaceutical.*conspiracy|natural.*healing).*"
     score: 70
     description: "Detect health misinformation in email body or media attachments"
+
+  # Tech Support Scam Patterns
+  - name: "Tech Support Scam Patterns"
+    enabled: true
+    criteria:
+      type: "SubjectPattern"
+      pattern: "(?i).*(computer.*virus|system.*infected|microsoft.*support|windows.*security|tech.*support|computer.*problem|virus.*detected|security.*alert|system.*compromised).*"
+    score: 45
+    description: "Fake tech support and virus alert scams"
+
+  # Software Scam Offers
+  - name: "Software Scam Offers"
+    enabled: true
+    criteria:
+      type: "SubjectPattern"
+      pattern: "(?i).*(free.*software|cracked.*software|keygen|serial.*number|activation.*key|license.*key.*free|pirated.*software).*"
+    score: 35
+    description: "Illegal software and keygen scams"
+
+  # Cloud backup and storage scams
+  - name: "Cloud backup and storage scams"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(cloud.*backup.*stopped|backup.*expired|storage.*full|account.*suspended|restore.*now|backup.*failed|sync.*error|data.*lost|files.*deleted|storage.*limit).*"
+        - type: "SubjectPattern"
+          pattern: ".*[⤦⤧⤨⤩⤪⤫⤬⤭⤮⤯⤰⤱⤲⤳⤴⤵⤶⤷⤸⤹⤺⤻⤼⤽⤾⤿⥀⥁⥂⥃⥄⥅⥆⥇⥈⥉⥊⥋⥌⥍⥎⥏⥐⥑⥒⥓⥔⥕⥖⥗⥘⥙⥚⥛⥜⥝⥞⥟⥠⥡⥢⥣⥤⥥⥦⥧⥨⥩⥪⥫⥬⥭⥮⥯⥰⥱⥲⥳⥴⥵⥶⥷⥸⥹⥺⥻⥼⥽⥾⥿].*"
+    score: 80
+    description: "Cloud backup and storage scam detection with Unicode abuse"
+
+  # Fake Security Alerts
+  - name: "Fake Security Alerts"
+    enabled: true
+    criteria:
+      type: "SubjectPattern"
+      pattern: "(?i).*(security.*breach|account.*hacked|suspicious.*activity|login.*attempt|security.*warning|unauthorized.*access).*"
+    score: 40
+    description: "Fake security alerts and breach notifications"
+
+  # Unsolicited web development services
+  - name: "Unsolicited web development services"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(customize.*website|website.*design.*development|web.*development.*services|professional.*website|website.*redesign|digital.*marketing.*services|seo.*services|online.*presence).*"
+        - type: "SubjectPattern"
+          pattern: "(?i)^(communication|hello|greetings|business.*proposal|partnership.*opportunity)$"
+    score: 70
+    description: "Unsolicited web development and business services spam"
+
+  # Website audit spam
+  - name: "Website audit spam"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "BodyPattern"
+              pattern: "(?i).*(errors on your website|website audit|website issues|site review|website problems|noticed.*errors).*"
+            - type: "SubjectPattern"
+              pattern: "(?i).*(site review|website audit|website errors|site issues).*"
+        - type: "Or"
+          criteria:
+            - type: "BodyPattern"
+              pattern: "(?i).*(screenshot|send over|reply.*ok|simply reply|would you like me to).*"
+    score: 65
+    description: "Website audit and SEO spam"
+
+  # Japanese Text from Chinese Domain
+  - name: "Japanese Text from Chinese Domain"
+    enabled: true
+    criteria:
+      type: "LanguageGeographyMismatch"
+      domain_pattern: "(?i).*\\.cn$"
+      content_pattern: "(?i).*[\\u3040-\\u309F\\u30A0-\\u30FF\\u4E00-\\u9FAF].*"
+      description: "Japanese characters from .cn domain"
+    score: 65
+    description: "Japanese text from Chinese (.cn) domain - common spam pattern"
+
+  # Chinese Text from Japanese Domain
+  - name: "Chinese Text from Japanese Domain"
+    enabled: true
+    criteria:
+      type: "LanguageGeographyMismatch"
+      domain_pattern: "(?i).*\\.jp$"
+      content_pattern: "(?i).*[\\u4E00-\\u9FAF].*"
+      description: "Chinese characters from .jp domain"
+    score: 35
+    description: "Chinese text from Japanese (.jp) domain - potential spam"
+
+  # Korean Text from Non-Korean Domain
+  - name: "Korean Text from Non-Korean Domain"
+    enabled: true
+    criteria:
+      type: "LanguageGeographyMismatch"
+      domain_pattern: "(?i).*\\.(cn|jp|ru|tk|ml|ga)$"
+      content_pattern: "(?i).*[\\uAC00-\\uD7AF\\u1100-\\u11FF\\u3130-\\u318F].*"
+      description: "Korean characters from non-Korean domain"
+    score: 45
+    description: "Korean text from non-Korean domain - potential spam"
