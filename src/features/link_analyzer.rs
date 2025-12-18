@@ -391,7 +391,7 @@ impl LinkAnalyzer {
         // If display text mentions a brand but link goes elsewhere
         let brand_mentions = [
             "paypal",
-            "amazon",
+            "amazon", 
             "microsoft",
             "google",
             "apple",
@@ -403,6 +403,26 @@ impl LinkAnalyzer {
                 && !link_domain.contains(brand)
                 && !sender_domain.contains(brand)
             {
+                // Check for legitimate business partnerships
+                if *brand == "apple" && display_text.to_lowercase().contains("apple pay") {
+                    // Apple Pay integrations are legitimate for financial institutions
+                    let financial_institutions = [
+                        "discover.com",
+                        "chase.com", 
+                        "citi.com",
+                        "wellsfargo.com",
+                        "bankofamerica.com",
+                        "capitalone.com",
+                        "amex.com",
+                    ];
+                    
+                    for institution in &financial_institutions {
+                        if link_domain.contains(institution) || sender_domain.contains(institution) {
+                            return false; // Not suspicious - legitimate Apple Pay integration
+                        }
+                    }
+                }
+                
                 return true;
             }
         }
