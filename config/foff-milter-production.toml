@@ -1,0 +1,24 @@
+# FOFF Milter v0.8.4 Production Configuration
+# Simplified modular architecture with zero false positives
+
+[system]
+socket_path = "/var/run/foff-milter.sock"
+reject_to_tag = true
+
+[rulesets]
+enabled = true
+config_dir = "rulesets"
+
+[features]
+enabled = true
+config_dir = "features"
+
+[heuristics]
+reject_threshold = 350
+spam_threshold = 75
+accept_threshold = 0
+
+[statistics]
+enabled = true
+database_path = "/var/lib/foff-milter/stats.db"
+flush_interval_seconds = 60
