@@ -1,6 +1,44 @@
 name: "Brand Protection"
 enabled: true
 rules:
+  # HR Document Sharing Phishing (BEC)
+  - name: "HR Document Sharing Phishing"
+    enabled: true
+    criteria:
+      type: And
+      criteria:
+        - type: Or
+          criteria:
+            - type: SubjectPattern
+              pattern: "(?i).*(hr.*shared|hr.*document|salary.*review|incentive.*overview|payroll.*document|employee.*handbook).*"
+            - type: BodyPattern
+              pattern: "(?i).*(hr.*department|human.*resources|salary.*information|payroll.*details|employee.*benefits).*"
+        - type: Not
+          criteria:
+            type: SenderPattern
+            pattern: ".*@.*(company\\.com|organization\\.org|legitimate\\.edu)$"
+    score: 200
+    description: "Business Email Compromise targeting HR/payroll themes"
+
+  # Organization Impersonation
+  - name: "Organization Impersonation"
+    enabled: true
+    criteria:
+      type: And
+      criteria:
+        - type: Or
+          criteria:
+            - type: SubjectPattern
+              pattern: "(?i).*baddomain\\.com\\s+(hr|it|admin|support|team).*"
+            - type: BodyPattern
+              pattern: "(?i).*baddomain\\.com.*(department|team|staff|employee).*"
+        - type: Not
+          criteria:
+            type: SenderPattern
+            pattern: ".*@baddomain\\.com$"
+    score: 150
+    description: "Domain mismatch impersonation detection"
+
   # Generic brand impersonation
   - name: "Generic brand impersonation"
     enabled: true

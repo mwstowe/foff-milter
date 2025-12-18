@@ -101,17 +101,30 @@ rules:
                 pattern: "dkim=pass.*adapthealth\\.com"
     score: 150
     description: "Fake invoice and receipt phishing attempts"
-        - type: "Not"
+
+  # Financial Phishing
+  - name: "Financial Phishing"
+    enabled: true
+    criteria:
+      type: And
+      criteria:
+        - type: Or
           criteria:
-            type: "Or"
+            - type: SubjectPattern
+              pattern: "(?i).*(payment.*failed|account.*suspended|verify.*account|update.*payment|billing.*issue).*"
+            - type: BodyPattern
+              pattern: "(?i).*(click.*here.*verify|update.*billing|payment.*method|account.*locked).*"
+        - type: Not
+          criteria:
+            type: Or
             criteria:
-              - type: "SenderPattern"
+              - type: SenderPattern
                 pattern: ".*@.*(paypal|stripe|square|quickbooks|freshbooks)\\.(com|org)$"
-              - type: "HeaderPattern"
+              - type: HeaderPattern
                 header: "Authentication-Results"
                 pattern: "dkim=pass.*spf=pass"
     score: 150
-    description: "Fake invoice and receipt phishing attempts"
+    description: "Financial phishing attempts"
 
   # Cloud Storage Phishing (+100 points)
   - name: "Cloud Storage Phishing"
@@ -381,14 +394,32 @@ rules:
 
   # Credit card bill phishing
   - name: "Credit Card Bill Phishing"
+    enabled: true
     criteria:
-      type: Or
+      type: And
       criteria:
-        - type: SubjectPattern
-          pattern: "(?i).*(creditcard.*bill|credit.*card.*statement|billing.*statement|account.*statement).*"
-        - type: BodyPattern
-          pattern: "(?i).*(creditcard.*bill|credit.*card.*statement|billing.*statement|account.*statement).*"
+        - type: Or
+          criteria:
+            - type: SubjectPattern
+              pattern: "(?i).*(creditcard.*bill|credit.*card.*statement|billing.*statement|account.*statement).*"
+            - type: BodyPattern
+              pattern: "(?i).*(creditcard.*bill|credit.*card.*statement|billing.*statement|account.*statement).*"
+        - type: Or
+          criteria:
+            - type: BodyPattern
+              pattern: "(?i).*(click.*here.*view|download.*statement|verify.*account|update.*payment|account.*suspended).*"
+            - type: BodyPattern
+              pattern: "(?i).*(urgent.*action|immediate.*attention|account.*locked|payment.*failed).*"
+        - type: Not
+          criteria:
+            type: Or
+            criteria:
+              - type: SenderPattern
+                pattern: ".*@.*(chase|citi|amex|discover|capitalone|wellsfargo|bankofamerica|britishairways|ba\\.com)\\.(com|org)$"
+              - type: BodyPattern
+                pattern: "(?i).*(rewards.*program|bonus.*offer|miles.*points|cashback|signup.*bonus|new.*cardmember).*"
     score: 280
+    description: "Fake credit card bill phishing excluding legitimate offers"
   # Norton fake invoice scams
   - name: "Norton Fake Invoice Scam"
     criteria:

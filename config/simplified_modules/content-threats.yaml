@@ -179,14 +179,32 @@ rules:
   - name: "Advance fee fraud patterns"
     enabled: true
     criteria:
-      type: "Or"
+      type: And
       criteria:
-        - type: "SubjectPattern"
-          pattern: "(?i).*(inheritance.*fund|beneficiary|next.*of.*kin|deceased.*relative|fund.*management|collaborator.*fund).*"
-        - type: "BodyPattern"
-          pattern: "(?i).*(transfer.*funds|processing.*fee|legal.*fee|bank.*charges|wire.*transfer|confidential.*business).*"
+        - type: Or
+          criteria:
+            - type: SubjectPattern
+              pattern: "(?i).*(inheritance.*fund|beneficiary|next.*of.*kin|deceased.*relative|fund.*management|collaborator.*fund).*"
+            - type: And
+              criteria:
+                - type: BodyPattern
+                  pattern: "(?i).*(transfer.*funds|processing.*fee|legal.*fee|bank.*charges|wire.*transfer|confidential.*business).*"
+                - type: Or
+                  criteria:
+                    - type: BodyPattern
+                      pattern: "(?i).*(urgent.*assistance|help.*transfer|claim.*inheritance|deceased.*person|foreign.*country|government.*official).*"
+                    - type: BodyPattern
+                      pattern: "(?i).*(advance.*fee|upfront.*payment|release.*funds|tax.*clearance|legal.*documentation).*"
+        - type: Not
+          criteria:
+            type: Or
+            criteria:
+              - type: SenderPattern
+                pattern: ".*@.*(britishairways|ba\\.com|chase|jpmorgan|citi|amex|discover|capitalone|wellsfargo|bankofamerica)\\.(com|org)$"
+              - type: BodyPattern
+                pattern: "(?i).*(terms.*conditions|credit.*card.*agreement|rewards.*program|loyalty.*program|airline.*miles|points.*program).*"
     score: 150
-    description: "Advance fee fraud and inheritance scams"
+    description: "Advance fee fraud excluding legitimate financial institutions"
 
   # Lottery and prize scams
   - name: "Lottery and prize scams"
@@ -1318,10 +1336,22 @@ rules:
   # Enhanced finance loan patterns
   - name: "Enhanced Finance Loan Patterns"
     criteria:
-      type: Or
+      type: And
       criteria:
-        - type: SubjectPattern
-          pattern: "(?i).*(yelsen.*finance|personal.*loan|quick.*approval|loan.*offer).*"
-        - type: BodyPattern
-          pattern: "(?i).*(yelsen.*finance|personal.*loan|quick.*approval|loan.*offer).*"
+        - type: Or
+          criteria:
+            - type: SubjectPattern
+              pattern: "(?i).*(yelsen.*finance|personal.*loan|quick.*approval|loan.*offer).*"
+            - type: BodyPattern
+              pattern: "(?i).*(yelsen.*finance|personal.*loan|quick.*approval|loan.*offer).*"
+        - type: Not
+          criteria:
+            type: Or
+            criteria:
+              - type: SenderPattern
+                pattern: ".*@.*(becu|creditunion|bank|fidelity|schwab|vanguard|chase|wellsfargo|bankofamerica|citi|usbank)\\.(org|com)$"
+              - type: HeaderPattern
+                header: "Authentication-Results"
+                pattern: "dkim=pass.*\\.(becu|creditunion|bank|fidelity|schwab|vanguard|chase|wellsfargo|bankofamerica|citi|usbank)\\.(org|com)"
     score: 220
+    description: "Loan scam patterns excluding legitimate financial institutions"
