@@ -143,20 +143,21 @@ rules:
         - type: Or
           criteria:
             - type: SubjectPattern
-              pattern: "(?i).*(click.*here|verify.*now|urgent.*action|immediate).*"
+              pattern: "(?i).*(click.*here.*verify|verify.*account.*now|urgent.*action.*required|immediate.*verification|account.*suspended).*"
             - type: BodyPattern
-              pattern: "(?i).*(reply.*to.*this|contact.*us|customer.*service).*"
-        - type: Not
+              pattern: "(?i).*(click.*here.*verify|verify.*account.*immediately|urgent.*action.*required|account.*will.*be.*closed).*"
+        - type: Or
           criteria:
-            type: Or
-            criteria:
-              - type: SenderPattern
-                pattern: ".*@.*(adapthealth|healthcare|medical|clinic|hospital|pulmonary)\\.(com|net|org)$"
-              - type: HeaderPattern
+            - type: HeaderPattern
+              header: "Authentication-Results"
+              pattern: "dkim=fail"
+            - type: Not
+              criteria:
+                type: HeaderPattern
                 header: "Authentication-Results"
-                pattern: "dkim=pass.*adapthealth\\.com"
+                pattern: "dkim=pass"
     score: 60
-    description: "Forged no-reply headers with interactive content"
+    description: "Forged no-reply headers with phishing language and auth failure"
 
   # Legitimate Authentication Rewards (negative scores)
   - name: "Perfect Authentication"

@@ -632,13 +632,22 @@ rules:
   # Cognitive enhancement and brain power spam
   - name: "Cognitive Enhancement Spam"
     criteria:
-      type: Or
+      type: And
       criteria:
-        - type: SubjectPattern
-          pattern: "(?i).*(sip.*coffee.*3x.*brain.*power|cognitive.*coffee|brain.*power|mental.*enhancement).*"
-        - type: BodyPattern
-          pattern: "(?i).*(sip.*coffee.*3x.*brain.*power|cognitive.*coffee|brain.*power|mental.*enhancement).*"
+        - type: Or
+          criteria:
+            - type: BodyPattern
+              pattern: "(?i).*(boost.*brain.*power|enhance.*cognitive|improve.*memory|brain.*supplement|nootropic).*"
+            - type: SubjectPattern
+              pattern: "(?i).*(brain.*boost|cognitive.*enhancement|memory.*supplement|smart.*pill).*"
+        - type: Or
+          criteria:
+            - type: BodyPattern
+              pattern: "(?i).*(sip.*coffee.*3x|miracle.*brain|secret.*formula|doctors.*recommend|clinical.*study).*"
+            - type: BodyPattern
+              pattern: "(?i).*(increase.*iq|sharper.*mind|mental.*clarity|focus.*supplement).*"
     score: 200
+    description: "Cognitive enhancement supplement scams"
 
   # Dementia misinformation
   - name: "Dementia Misinformation Spam"
@@ -941,13 +950,25 @@ rules:
   # Enhanced transaction confirmation patterns
   - name: "Enhanced Transaction Confirmation Patterns"
     criteria:
-      type: Or
+      type: And
       criteria:
-        - type: SubjectPattern
-          pattern: "(?i).*(order.*transaction.*processed.*confirmed|order.*confirmation|payment.*confirmation|transaction.*confirmation|receipt.*confirmation|billing.*confirmation).*"
-        - type: BodyPattern
-          pattern: "(?i).*(order.*transaction.*processed.*confirmed|order.*confirmation|payment.*confirmation|transaction.*confirmation|receipt.*confirmation|billing.*confirmation).*"
+        - type: Or
+          criteria:
+            - type: SubjectPattern
+              pattern: "(?i).*(order.*confirmation|payment.*confirmation|transaction.*confirmation|receipt.*confirmation).*"
+            - type: BodyPattern
+              pattern: "(?i).*(order.*confirmation|payment.*confirmation|transaction.*confirmation|receipt.*confirmation).*"
+        - type: Or
+          criteria:
+            - type: BodyPattern
+              pattern: "(?i).*(click.*here.*view|download.*attachment.*view|verify.*payment.*method|update.*billing.*info).*"
+            - type: BodyPattern
+              pattern: "(?i).*(suspicious.*activity.*detected|account.*may.*be.*compromised|urgent.*action.*required).*"
+            - type: HeaderPattern
+              header: "Authentication-Results"
+              pattern: "dkim=fail"
     score: 280
+    description: "Fake transaction confirmations with suspicious elements"
   # Payment transaction thank you spam
   - name: "Payment Transaction Thank You Spam"
     criteria:
