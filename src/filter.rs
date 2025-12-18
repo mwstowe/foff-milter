@@ -3530,14 +3530,20 @@ impl FilterEngine {
                             }
                         }
                         if let Some(from_header) = &context.from_header {
-                            log::debug!(
-                                "SenderPattern checking from_header: '{}' against pattern: '{}'",
-                                from_header,
-                                pattern
-                            );
-                            if regex.is_match(from_header) {
-                                log::debug!("SenderPattern matched from_header: '{}'", from_header);
-                                return true;
+                            // Extract just the email address from the From header
+                            if let Some(email) = extract_email_from_header(from_header) {
+                                log::debug!(
+                                    "SenderPattern checking extracted email: '{}' (from '{}') against pattern: '{}'",
+                                    email,
+                                    from_header,
+                                    pattern
+                                );
+                                if regex.is_match(&email) {
+                                    log::debug!("SenderPattern matched extracted email: '{}'", email);
+                                    return true;
+                                }
+                            } else {
+                                log::debug!("SenderPattern could not extract email from from_header: '{}'", from_header);
                             }
                         }
                         log::debug!("SenderPattern no match for pattern: '{}'", pattern);
