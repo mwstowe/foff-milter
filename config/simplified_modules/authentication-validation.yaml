@@ -46,6 +46,12 @@ rules:
                 pattern: ".*@.*(gov|edu|mil)$"
               - type: "SenderPattern"
                 pattern: ".*@.*(amazonses|sendgrid|mailchimp|sparkpostmail)\\.(com|net)$"
+              - type: And
+                criteria:
+                  - type: SubjectPattern
+                    pattern: "(?i).*(invoice|receipt|statement|bill|payment|quote|estimate).*"
+                  - type: SenderPattern
+                    pattern: ".*@.*(exterminators|contractors|services|business|company)\\.(com|net|org)$"
     score: 30
     description: "DKIM signature validation failure"
 

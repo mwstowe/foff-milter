@@ -486,9 +486,19 @@ rules:
   - name: "Attachment-Only Emails"
     enabled: true
     criteria:
-      type: "AttachmentOnlyEmail"
+      type: And
+      criteria:
+        - type: "AttachmentOnlyEmail"
+        - type: Not
+          criteria:
+            type: Or
+            criteria:
+              - type: SubjectPattern
+                pattern: "(?i).*(invoice|receipt|statement|bill|payment|quote|estimate).*"
+              - type: SenderPattern
+                pattern: ".*@.*(exterminators|contractors|services|business|company)\\.(com|net|org)$"
     score: 15
-    description: "Emails with only attachments and no meaningful content"
+    description: "Emails with only attachments excluding business invoices"
 
   # Empty Content Emails
   - name: "Empty Content Emails"
@@ -512,6 +522,10 @@ rules:
               - type: "HeaderPattern"
                 header: "list-id"
                 pattern: ".*"
+              - type: SubjectPattern
+                pattern: "(?i).*(invoice|receipt|statement|bill|payment|quote|estimate).*"
+              - type: SenderPattern
+                pattern: ".*@.*(exterminators|contractors|services|business|company)\\.(com|net|org)$"
               - type: "HeaderPattern"
                 header: "mailing-list"
                 pattern: ".*"
