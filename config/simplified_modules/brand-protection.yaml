@@ -5,24 +5,30 @@ rules:
   - name: "Generic brand impersonation"
     enabled: true
     criteria:
-      type: "And"
+      type: And
       criteria:
-        - type: "Or"
+        - type: Or
           criteria:
-            - type: "HeaderPattern"
+            - type: HeaderPattern
               header: "From"
               pattern: "(?i).*(paypal|amazon|microsoft|google|apple|netflix|walmart|target|chase|bank.*america|wells.*fargo).*"
-            - type: "SubjectPattern"
+            - type: SubjectPattern
               pattern: "(?i).*(paypal|amazon|microsoft|google|apple|netflix|walmart|target|chase|bank.*america|wells.*fargo).*"
-        - type: "Not"
+        - type: Or
           criteria:
-            type: "Or"
-            criteria:
-              - type: "SenderPattern"
-                pattern: ".*@.*(paypal|amazon|microsoft|google|apple|netflix|walmart|target|chase|bankofamerica|wellsfargo)\\.(com|org)$"
-              - type: "SenderPattern"
-                pattern: ".*@.*(amazonses|sendgrid|mailchimp|sparkpostmail)\\.(com|net)$"
+            - type: HeaderPattern
+              header: "Authentication-Results"
+              pattern: "dkim=fail"
+            - type: HeaderPattern
+              header: "Authentication-Results"
+              pattern: "spf=fail"
+            - type: Not
+              criteria:
+                type: HeaderPattern
+                header: "Authentication-Results"
+                pattern: "dkim=pass"
     score: 200
+    description: "Brand impersonation with authentication failure"
     description: "Major brand claimed by unrelated domain"
 
   # Known brand from suspicious domain

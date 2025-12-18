@@ -12,17 +12,18 @@ rules:
     criteria:
       type: And
       criteria:
-        - type: BodyPattern
-          pattern: "(?i).*(blood.*pressure|diabetes|a1c|cholesterol|heart.*disease|weight.*loss|miracle.*cure).*"
-        - type: Not
+        - type: Or
           criteria:
-            type: Or
-            criteria:
-              - type: SenderPattern
-                pattern: ".*@.*(1800flowers|celebrations|wolfermans|withings|nytimes|nytdirect|washingtonpost|cnn|reuters|ap|wsj|harvard|mayo|webmd|healthline)\\.(com|net|org|edu)$"
-              - type: SenderPattern
-                pattern: ".*@.*pulse\\.celebrations\\.com"
+            - type: BodyPattern
+              pattern: "(?i).*(miracle.*cure|destroys.*overnight|secret.*doctors|big.*pharma.*hates|one.*weird.*trick|doctors.*shocked).*"
+            - type: BodyPattern
+              pattern: "(?i).*(cure.*diabetes.*forever|eliminate.*blood.*pressure|lose.*30.*pounds|ancient.*remedy|forbidden.*cure).*"
+            - type: SubjectPattern
+              pattern: "(?i).*(blood.*herb|destroys.*pressure|overnight.*cure|miracle.*diabetes|secret.*cure).*"
+        - type: BodyPattern
+          pattern: "(?i).*(blood.*pressure|diabetes|a1c|cholesterol|heart.*disease|weight.*loss).*"
     score: 200
+    description: "Health misinformation and miracle cure claims"
   
   # Adult content patterns
   - name: "Adult Enhancement Spam"
@@ -268,18 +269,18 @@ rules:
   - name: "Unrealistic return promises"
     enabled: true
     criteria:
-      type: "And"
+      type: And
       criteria:
-        - type: "Or"
+        - type: Or
           criteria:
-            - type: "SubjectPattern"
-              pattern: "(?i).*(earn|return|rate|yield|profit|investment|annuity|guaranteed.*income).*(\\d+\\.\\d+%|\\d+%|up to \\d+|\\$\\d+|\\d+.*USD|\\d+.*dollars?).*"
-            - type: "BodyPattern"
-              pattern: "(?i).*(earn|return|rate|yield|profit|investment|annuity|guaranteed.*income).*(\\d+\\.\\d+%|\\d+%|up to \\d+|\\$\\d+|\\d+.*USD|\\d+.*dollars?).*"
-        - type: "Not"
-          criteria:
-            type: "SenderPattern"
-            pattern: ".*@.*(disney|marvel|netflix|hulu|amazon|apple|microsoft|google|duluth|narvar|secretlab|oxford|nextdoor|sendgrid|butcherbox|becu|1800flowers|celebrations|eff|aclu|amnesty|greenpeace|redcross|unicef|oxfam|savethechildren|rejuvenation|rifftrax|bethesda|ecobee|wolfermans|wholefoodsmarket|coinbase|ally|walgreens|delta|united|american|southwest|jetblue|fiestatableware|kitchenaid|whirlpool|arbys|condenast|nationalgeographic|ecoflow|nordicmuseum|museum|cultural|arts)\\.(com|net|org)$"
+            - type: BodyPattern
+              pattern: "(?i).*(guaranteed.*return|risk.*free.*profit|no.*risk.*investment|instant.*wealth|get.*rich.*quick).*"
+            - type: BodyPattern
+              pattern: "(?i).*(secret.*investment|hidden.*opportunity|limited.*spots|act.*now.*invest|exclusive.*offer.*return).*"
+            - type: SubjectPattern
+              pattern: "(?i).*(guaranteed.*\\d+%|earn.*\\$\\d+.*daily|make.*money.*fast|passive.*income.*\\$).*"
+        - type: BodyPattern
+          pattern: "(?i).*(\\d+\\.\\d+%|\\d+%|\\$\\d+|\\d+.*USD).*"
     score: 90
     description: "Unrealistic financial return promises and investment scams"
 
