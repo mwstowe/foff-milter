@@ -151,6 +151,8 @@ rules:
             criteria:
               - type: SenderPattern
                 pattern: ".*@.*(fidelity|vanguard|schwab|merrill|chase|wellsfargo|bankofamerica)\\.(com|org)$"
+              - type: SenderPattern
+                pattern: ".*@.*docusign\\.(com|net)$"
               - type: HeaderPattern
                 header: "Authentication-Results"
                 pattern: "dkim=pass.*fidelity\\.com"
@@ -168,9 +170,9 @@ rules:
         - type: "Or"
           criteria:
             - type: "SubjectPattern"
-              pattern: "(?i).*(docusign|document.*signature|sign.*document|electronic.*signature).*"
+              pattern: "(?i).*(docusign|document.*signature|electronic.*signature|signature.*required).*"
             - type: "CombinedTextPattern"
-              pattern: "(?i).*(please.*sign|review.*and.*sign|signature.*required|document.*awaiting).*"
+              pattern: "(?i).*(please.*sign.*document|review.*and.*sign|signature.*required|document.*awaiting.*signature).*"
         - type: "Not"
           criteria:
             type: "SenderPattern"
@@ -220,6 +222,10 @@ rules:
                   - type: "SenderPattern"
                     pattern: ".*@.*(charmtracker|acemed|healthcare|medical|clinic|hospital)\\.(com|net|org)$"
                   - type: "SenderPattern"
+                    pattern: ".*@.*(disney|disneyplus|sparkpostmail|netflix|amazon|microsoft|google|apple)\\.(com|net|org)$"
+                  - type: "SenderPattern"
+                    pattern: ".*@(nedm\\.asus|butcherbox)\\.(com|net|org)$"
+                  - type: "SenderPattern"
                     pattern: "noreply@.*\\.(com|net|org)$"
                   - type: "HeaderPattern"
                     header: "Authentication-Results"
@@ -248,6 +254,10 @@ rules:
             criteria:
               - type: "SenderPattern"
                 pattern: ".*@.*(charmtracker|medical|healthcare|clinic|hospital|ehr)\\.(com|net|org)$"
+              - type: "SenderPattern"
+                pattern: ".*@.*(docusign|dropbox|google|microsoft|onedrive|box)\\.(com|net|org)$"
+              - type: "SenderPattern"
+                pattern: ".*@.*(dominos|doordash|butcherbox|usps|walgreens|xfinity)\\.(com|net|org)$"
               - type: "HeaderPattern"
                 header: "From"
                 pattern: "(?i).*(AceMed|Medical|Healthcare|Clinic|Hospital|EHR|Patient Portal).*"
@@ -415,12 +425,22 @@ rules:
   # Enhanced transaction confirmation scams
   - name: "Transaction Confirmation Enhanced"
     criteria:
-      type: Or
+      type: And
       criteria:
-        - type: SubjectPattern
-          pattern: "(?i).*(fake.*order.*transaction|fake.*payment.*confirmation|order.*confirmation|transaction.*confirmation|payment.*receipt).*"
-        - type: BodyPattern
-          pattern: "(?i).*(fake.*order.*transaction|fake.*payment.*confirmation|order.*confirmation|transaction.*confirmation|payment.*receipt).*"
+        - type: Or
+          criteria:
+            - type: SubjectPattern
+              pattern: "(?i).*(fake.*order.*transaction|fake.*payment.*confirmation|order.*confirmation|transaction.*confirmation|payment.*receipt).*"
+            - type: BodyPattern
+              pattern: "(?i).*(fake.*order.*transaction|fake.*payment.*confirmation|order.*confirmation|transaction.*confirmation|payment.*receipt).*"
+        - type: Not
+          criteria:
+            type: Or
+            criteria:
+              - type: SenderPattern
+                pattern: ".*@.*(dominos|doordash|butcherbox|amazon|walmart|target|bestbuy)\\.(com|net|org)$"
+              - type: SenderPattern
+                pattern: ".*@e-offers\\.dominos\\.com$"
     score: 300
   # Enhanced mailer daemon spoofing
   - name: "Enhanced Mailer Daemon Spoofing"
