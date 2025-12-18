@@ -3539,11 +3539,17 @@ impl FilterEngine {
                                     pattern
                                 );
                                 if regex.is_match(&email) {
-                                    log::debug!("SenderPattern matched extracted email: '{}'", email);
+                                    log::debug!(
+                                        "SenderPattern matched extracted email: '{}'",
+                                        email
+                                    );
                                     return true;
                                 }
                             } else {
-                                log::debug!("SenderPattern could not extract email from from_header: '{}'", from_header);
+                                log::debug!(
+                                    "SenderPattern could not extract email from from_header: '{}'",
+                                    from_header
+                                );
                             }
                         }
                         log::debug!("SenderPattern no match for pattern: '{}'", pattern);
