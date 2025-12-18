@@ -218,26 +218,33 @@ impl EmailNormalizer {
 
     fn decode_base64_if_present(&self, text: &str) -> (String, Vec<EncodingLayer>) {
         let mut layers = Vec::new();
-
-        // Only decode if it looks like base64 and is substantial
-        if let Some(b64_match) = self.base64_regex.find(text) {
-            if b64_match.as_str().len() > 50 {
-                // Substantial base64
-                if let Ok(decoded) = general_purpose::STANDARD.decode(b64_match.as_str()) {
-                    if let Ok(decoded_str) = String::from_utf8(decoded) {
-                        let result = text.replace(b64_match.as_str(), &decoded_str);
-                        layers.push(EncodingLayer {
-                            encoding_type: EncodingType::Base64,
-                            confidence: 0.8,
-                            suspicious: b64_match.as_str().len() > 200,
-                        });
-                        return (result, layers);
+        let mut result = text.to_string();
+        
+        // Find and decode ALL base64 matches, not just the first one
+        loop {
+            let current_result = result.clone();
+            if let Some(b64_match) = self.base64_regex.find(&current_result) {
+                if b64_match.as_str().len() > 50 {
+                    // Substantial base64
+                    if let Ok(decoded) = general_purpose::STANDARD.decode(b64_match.as_str()) {
+                        if let Ok(decoded_str) = String::from_utf8(decoded) {
+                            result = result.replace(b64_match.as_str(), &decoded_str);
+                            layers.push(EncodingLayer {
+                                encoding_type: EncodingType::Base64,
+                                confidence: 0.8,
+                                suspicious: b64_match.as_str().len() > 200,
+                            });
+                            // Continue to find more base64 chunks
+                            continue;
+                        }
                     }
                 }
             }
+            // No more base64 chunks found or couldn't decode
+            break;
         }
 
-        (text.to_string(), layers)
+        (result, layers)
     }
 
     fn decode_url_encoding(&self, text: &str) -> (String, Vec<EncodingLayer>) {

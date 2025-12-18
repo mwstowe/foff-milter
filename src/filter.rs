@@ -3548,12 +3548,12 @@ impl FilterEngine {
                     false
                 }
                 Criteria::SubjectPattern { pattern } => {
-                    // Use normalized subject if available, fallback to raw subject
+                    // Use normalized subject only - no fallback to raw content
                     let subject_text = if let Some(normalized) = &context.normalized {
                         &normalized.subject.normalized
-                    } else if let Some(subject) = &context.subject {
-                        subject
                     } else {
+                        // If normalization not available, pattern matching cannot proceed
+                        log::warn!("SubjectPattern evaluation attempted without normalized content");
                         return false;
                     };
 
@@ -3563,12 +3563,12 @@ impl FilterEngine {
                     false
                 }
                 Criteria::BodyPattern { pattern } => {
-                    // Use normalized body if available, fallback to raw body
+                    // Use normalized body only - no fallback to raw content
                     let body_text = if let Some(normalized) = &context.normalized {
                         &normalized.body_text.normalized
-                    } else if let Some(body) = &context.body {
-                        body
                     } else {
+                        // If normalization not available, pattern matching cannot proceed
+                        log::warn!("BodyPattern evaluation attempted without normalized content");
                         return false;
                     };
 
@@ -3587,13 +3587,13 @@ impl FilterEngine {
                 }
                 Criteria::CombinedTextPattern { pattern } => {
                     if let Some(regex) = self.compiled_patterns.get(pattern) {
-                        // Check normalized body text if available, fallback to raw body
+                        // Use normalized body only - no fallback to raw content
                         let body_text = if let Some(normalized) = &context.normalized {
                             &normalized.body_text.normalized
-                        } else if let Some(body) = &context.body {
-                            body
                         } else {
-                            ""
+                            // If normalization not available, pattern matching cannot proceed
+                            log::warn!("CombinedTextPattern evaluation attempted without normalized content");
+                            return false;
                         };
 
                         if regex.is_match(body_text) {
