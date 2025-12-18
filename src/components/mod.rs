@@ -13,8 +13,6 @@ pub mod hybrid_filter_engine;
 pub mod mismatch_analyzer;
 
 #[cfg(test)]
-pub mod benchmark;
-#[cfg(test)]
 pub mod migration_test;
 
 // TODO: Create rule_engine_v2 component
