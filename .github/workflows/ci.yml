@@ -44,8 +44,8 @@ jobs:
     - name: Run clippy (with OCR features)
       run: cargo clippy --all-targets --features ocr -- -D warnings
     
-    - name: Run unit tests
-      run: cargo test --verbose
+    - name: Run unit tests (with OCR features)
+      run: cargo test --verbose --features ocr
     
     - name: Build release (with OCR support)
       run: cargo build --release --features ocr --verbose
