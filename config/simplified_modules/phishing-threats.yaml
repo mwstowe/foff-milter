@@ -135,15 +135,29 @@ rules:
   - name: "Cloud Storage Phishing"
     enabled: true
     criteria:
-      type: "Or"
+      type: And
       criteria:
-        - type: "SubjectPattern"
-          pattern: "(?i).*(document.*shared|file.*shared|folder.*shared|shared.*with.*you).*"
-        - type: "CombinedTextPattern"
-          pattern: "(?i).*(view.*document|access.*file|download.*shared|dropbox.*shared|google.*drive.*shared).*"
-        - type: "CombinedTextPattern"
-          pattern: "(?i).*(onedrive.*shared|icloud.*shared|box\\.com.*shared|shared.*folder).*"
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(document.*shared|file.*shared|folder.*shared|shared.*with.*you).*"
+            - type: "CombinedTextPattern"
+              pattern: "(?i).*(view.*document|access.*file|download.*shared|dropbox.*shared|google.*drive.*shared).*"
+            - type: "CombinedTextPattern"
+              pattern: "(?i).*(onedrive.*shared|icloud.*shared|box\\.com.*shared|shared.*folder).*"
+        - type: Not
+          criteria:
+            type: Or
+            criteria:
+              - type: SenderPattern
+                pattern: ".*@.*(fidelity|vanguard|schwab|merrill|chase|wellsfargo|bankofamerica)\\.(com|org)$"
+              - type: HeaderPattern
+                header: "Authentication-Results"
+                pattern: "dkim=pass.*fidelity\\.com"
+              - type: BodyPattern
+                pattern: "(?i).*(401k|401\\(k\\)|retirement.*plan|employee.*benefits|plan.*information.*documents).*"
     score: 100
+    description: "Cloud storage phishing excluding legitimate financial institutions"
     description: "Fake cloud storage sharing notifications"
 
   # DocuSign Phishing (+175 points)
@@ -205,10 +219,15 @@ rules:
                   - type: "SenderPattern"
                     pattern: ".*@.*(adapthealth|healthcare|medical|clinic|hospital|pulmonary)\\.(com|net|org)$"
                   - type: "SenderPattern"
+                    pattern: ".*@.*(charmtracker|acemed|healthcare|medical|clinic|hospital)\\.(com|net|org)$"
+                  - type: "SenderPattern"
                     pattern: "noreply@.*\\.(com|net|org)$"
                   - type: "HeaderPattern"
                     header: "Authentication-Results"
                     pattern: "dkim=pass.*adapthealth\\.com"
+                  - type: "HeaderPattern"
+                    header: "Authentication-Results"
+                    pattern: "dkim=pass.*charmtracker\\.com"
         - type: "SubjectPattern"
           pattern: "(?i).*(account.*suspension|account.*suspended|domain.*impersonation|test.*subject).*"
         - type: "SubjectPattern"
@@ -338,14 +357,29 @@ rules:
 
   # Investment scams
   - name: "Investment Scam Patterns"
+    enabled: true
     criteria:
-      type: Or
+      type: And
       criteria:
-        - type: SubjectPattern
-          pattern: "(?i).*(fam.*investment|investment.*opportunity|guaranteed.*returns).*"
-        - type: BodyPattern
-          pattern: "(?i).*(fam.*investment|investment.*opportunity|guaranteed.*returns).*"
+        - type: Or
+          criteria:
+            - type: SubjectPattern
+              pattern: "(?i).*(fam.*investment|investment.*opportunity|guaranteed.*returns).*"
+            - type: BodyPattern
+              pattern: "(?i).*(fam.*investment|investment.*opportunity|guaranteed.*returns).*"
+        - type: Not
+          criteria:
+            type: Or
+            criteria:
+              - type: SenderPattern
+                pattern: ".*@.*(fidelity|vanguard|schwab|merrill|chase|wellsfargo|bankofamerica)\\.(com|org)$"
+              - type: HeaderPattern
+                header: "Authentication-Results"
+                pattern: "dkim=pass.*fidelity\\.com"
+              - type: BodyPattern
+                pattern: "(?i).*(401k|401\\(k\\)|retirement.*plan|employee.*benefits|no.*action.*required).*"
     score: 300
+    description: "Investment scams excluding legitimate financial institutions"
 
   # Romance scams
   - name: "Romance Scam Detection"
