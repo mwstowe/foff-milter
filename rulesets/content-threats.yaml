@@ -682,20 +682,16 @@ rules:
   # Cognitive enhancement and brain power spam
   - name: "Cognitive Enhancement Spam"
     criteria:
-      type: And
+      type: Or
       criteria:
-        - type: Or
-          criteria:
-            - type: BodyPattern
-              pattern: "(?i).*(boost.*brain.*power|enhance.*cognitive|improve.*memory|brain.*supplement|nootropic).*"
-            - type: SubjectPattern
-              pattern: "(?i).*(brain.*boost|cognitive.*enhancement|memory.*supplement|smart.*pill).*"
-        - type: Or
-          criteria:
-            - type: BodyPattern
-              pattern: "(?i).*(sip.*coffee.*3x|miracle.*brain|secret.*formula|doctors.*recommend|clinical.*study).*"
-            - type: BodyPattern
-              pattern: "(?i).*(increase.*iq|sharper.*mind|mental.*clarity|focus.*supplement).*"
+        - type: BodyPattern
+          pattern: "(?i).*(boost.*brain.*power|enhance.*cognitive|improve.*memory|brain.*supplement|nootropic).*"
+        - type: SubjectPattern
+          pattern: "(?i).*(brain.*boost|cognitive.*enhancement|memory.*supplement|smart.*pill|sip.*coffee.*3x|brain.*power).*"
+        - type: BodyPattern
+          pattern: "(?i).*(sip.*coffee.*3x|stir.*coffee.*3x|miracle.*brain|secret.*formula|doctors.*recommend|clinical.*study).*"
+        - type: BodyPattern
+          pattern: "(?i).*(increase.*iq|sharper.*mind|mental.*clarity|focus.*supplement).*"
     score: 200
     description: "Cognitive enhancement supplement scams"
 
@@ -755,7 +751,7 @@ rules:
                 pattern: ".*@.*uncommongoods\\.(com|net|org)$"
               - type: SenderPattern
                 pattern: ".*@.*williams-sonoma\\.(com|net|org)$"
-    score: 350
+    score: 400
     description: "Estonian money transfer scams excluding legitimate business documents"
   # Email list selling spam
   - name: "Email List Selling Enhanced"
@@ -1062,6 +1058,15 @@ rules:
             - type: HeaderPattern
               header: "Authentication-Results"
               pattern: "dkim=fail"
+        - type: Not
+          criteria:
+            type: Or
+            criteria:
+              - type: SenderPattern
+                pattern: ".*@.*(quickbooks|intuit|paypal|stripe|square)\\.(com|net|org)$"
+              - type: HeaderPattern
+                header: "From"
+                pattern: ".*QuickBooks.*"
     score: 280
     description: "Fake transaction confirmations with suspicious elements"
   # Payment transaction thank you spam
@@ -1168,6 +1173,30 @@ rules:
         - type: BodyPattern
           pattern: "(?i).*(stanford.*scientists.*reveal.*bedtime.*ritual.*reverses.*nerve.*damage|nerve.*damage.*overnight|stanford.*nerve.*damage).*"
     score: 220
+
+  # Stanford weight loss spam
+  - name: "Stanford Weight Loss Spam"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(stanford.*melt.*flab|stanford.*weight.*loss|stanford.*fat.*burning|stanford.*shower.*melt).*"
+        - type: BodyPattern
+          pattern: "(?i).*(stanford.*melt.*flab|stanford.*weight.*loss|stanford.*fat.*burning|stanford.*shower.*melt).*"
+    score: 300
+
+  # Professor Tee clothing scam
+  - name: "Professor Tee Clothing Scam"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(smart.*looks.*smart.*minds|professor.*tee|instadoodle).*"
+        - type: BodyPattern
+          pattern: "(?i).*(smart.*looks.*smart.*minds|professor.*tee|instadoodle).*"
+        - type: SenderPattern
+          pattern: ".*@.*instadoodle\\.(me|com|net|org)$"
+    score: 300
 
   # Shed building scam
   - name: "Shed Building Scam"
