@@ -285,105 +285,36 @@ impl FilterEngine {
         raw_email
     }
 
-    /// Get evasion score from normalized content with legitimate sender exclusions
+    /// Get evasion score from normalized content with authentication-based exclusions
     pub fn get_evasion_score(&self, context: &MailContext) -> i32 {
         if let Some(normalized) = &context.normalized {
             let base_score = self.calculate_evasion_score(normalized);
 
             if base_score > 0 {
-                let domain = self
-                    .extract_sender_domain(context)
-                    .unwrap_or_default()
-                    .to_lowercase();
+                // Check DKIM authentication status
+                let dkim = context.dkim_verification_readonly();
+                let has_valid_dkim = dkim.has_signature
+                    && matches!(
+                        dkim.auth_status,
+                        crate::dkim_verification::DkimAuthStatus::Pass
+                    );
 
-                // Legitimate senders that use complex encoding for legitimate purposes
-                let legitimate_encoding_senders = [
-                    "gog.com",
-                    "steam.com",
-                    "epicgames.com", // Gaming platforms
-                    "kickstarter.com",
-                    "indiegogo.com", // Crowdfunding
-                    "sendgrid.net",
-                    "mailchimp.com",
-                    "constantcontact.com", // ESPs
-                    "eff.org",
-                    "aclu.org",
-                    "amnesty.org", // Non-profits
-                    "wolfermans.com",
-                    "williams-sonoma.com", // Established retailers
-                    "suncadia.com",
-                    "kiwico.com",
-                    "ctagifts.com", // Additional established businesses
-                    "arbys.com",
-                    "emails.arbys.com", // Restaurant chains
-                    "kitchenaid.com",
-                    "dm.kitchenaid.com",
-                    "whirlpool.com", // Home appliance brands
-                    "condenast.com",
-                    "eml.condenast.com",
-                    "nationalgeographic.com",
-                    "email.nationalgeographic.com", // Publishing/media
-                    "ecoflow.com",
-                    "info.ecoflow.com",    // Emergency preparedness
-                    "fiestatableware.com", // Home goods
-                    "pmpress.org",         // Independent publishers
-                    "quickbooks.com",
-                    "1800flowers.com",
-                    "em.1800flowers.com",
-                    "1800flowersinc.com", // 1-800-FLOWERS
-                    "intuit.com",         // Payment processors
-                    "charmtracker.com",   // Medical services
-                    "email3.gog.com",
-                    "wl043.sendgrid.net",
-                    "wl044.sendgrid.net", // Specific ESP subdomains
-                    "wholefoodsmarket.com",
-                    "rejuvenation.com",
-                    "wolfermans-email.com",
-                    "tokyo-tiger.com",
-                    "coinbase.com",
-                    "mail.coinbase.com", // False positive domains
-                    "biqu.equipment",
-                    "bigtreetech.com", // 3D printing equipment
-                    "delta.com",
-                    "o.delta.com", // Airlines
-                    "costco.com",
-                    "digital.costco.com", // Major retailers
-                    "adobe.com",
-                    "cjm.adobe.com", // Marketing platforms
-                    "klaviyo.com",
-                    "klaviyomail.com",
-                    "klaviyodns.com", // Email service providers
-                    "rsgsv.net",
-                    "suw13.rsgsv.net", // Marketing platforms
-                    "emsend1.com",
-                    "cmd.emsend1.com",
-                    "spmailtechnolo.com", // Additional marketing platforms
-                ];
-
-                // Check if sender is from legitimate encoding-heavy domain
-                let is_legitimate_sender = legitimate_encoding_senders.iter().any(|legit_domain| {
-                    domain.contains(legit_domain) || self.is_subdomain_of(&domain, legit_domain)
-                });
-
-                if is_legitimate_sender {
-                    // Check DKIM for additional reduction
-                    let dkim = context.dkim_verification_readonly();
-                    let has_dkim = dkim.has_signature
-                        && matches!(
-                            dkim.auth_status,
-                            crate::dkim_verification::DkimAuthStatus::Pass
-                        );
-
-                    let reduced_score = if has_dkim {
-                        base_score / 10 // Reduce by 90% for DKIM-authenticated legitimate senders
-                    } else {
-                        base_score / 4 // Reduce by 75% for other legitimate senders
-                    };
-
+                // For legitimate senders with valid DKIM, encoding is usually for internationalization
+                if has_valid_dkim {
+                    let reduced_score = base_score / 20; // Reduce by 95% for DKIM-authenticated senders
                     log::debug!(
-                        "Reducing encoding evasion score for legitimate sender {} (DKIM: {}) from {} to {}",
-                        domain,
-                        has_dkim,
+                        "Reducing encoding evasion score for DKIM-authenticated sender from {} to {}",
+                        base_score,
+                        reduced_score
+                    );
+                    return reduced_score;
+                }
+
+                // Check if this is likely legitimate encoding (single layer, standard patterns)
+                if self.is_likely_legitimate_encoding(normalized) {
+                    let reduced_score = base_score / 5; // Reduce by 80% for likely legitimate encoding
+                    log::debug!(
+                        "Reducing encoding evasion score for likely legitimate encoding from {} to {}",
                         base_score,
                         reduced_score
                     );
@@ -395,6 +326,28 @@ impl FilterEngine {
         } else {
             0
         }
+    }
+
+    /// Check if encoding patterns suggest legitimate use rather than evasion
+    fn is_likely_legitimate_encoding(&self, normalized: &NormalizedEmail) -> bool {
+        // Check for single-layer standard encoding (UTF-8 Base64 in subject lines)
+        let subject_layers = normalized.subject.encoding_layers.len();
+        let body_layers = normalized.body_text.encoding_layers.len();
+        
+        // Legitimate encoding typically has 1-2 layers max and uses standard encodings
+        let has_reasonable_layers = subject_layers <= 2 && body_layers <= 2;
+        
+        // Check for standard legitimate encoding patterns
+        let has_standard_patterns = normalized.subject.encoding_layers.iter()
+            .chain(normalized.body_text.encoding_layers.iter())
+            .all(|layer| matches!(layer.encoding_type, 
+                crate::normalization::EncodingType::Base64 | 
+                crate::normalization::EncodingType::QuotedPrintable |
+                crate::normalization::EncodingType::UrlEncoding |
+                crate::normalization::EncodingType::HtmlEntities
+            ));
+        
+        has_reasonable_layers && has_standard_patterns
     }
 
     /// Normalize email content for enhanced analysis
