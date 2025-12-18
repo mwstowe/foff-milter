@@ -566,14 +566,26 @@ rules:
 
   # Medical spam patterns
   - name: "Medical Spam Detection"
+    enabled: true
     criteria:
-      type: Or
+      type: And
       criteria:
-        - type: SubjectPattern
-          pattern: "(?i).*(root.*cause.*breathing|breathing.*difficulties|french.*protein.*removes|artery.*plaque|dementia.*food|ed.*medical|fake.*harvard.*foot).*"
-        - type: BodyPattern
-          pattern: "(?i).*(root.*cause.*breathing|breathing.*difficulties|french.*protein.*removes|artery.*plaque|dementia.*food|ed.*medical|fake.*harvard.*foot).*"
+        - type: Or
+          criteria:
+            - type: SubjectPattern
+              pattern: "(?i).*(root.*cause.*breathing|breathing.*difficulties|french.*protein.*removes|artery.*plaque|dementia.*food|fake.*harvard.*foot).*"
+            - type: BodyPattern
+              pattern: "(?i).*(root.*cause.*breathing|breathing.*difficulties|french.*protein.*removes|artery.*plaque|dementia.*food|fake.*harvard.*foot).*"
+        - type: Not
+          criteria:
+            type: Or
+            criteria:
+              - type: SenderPattern
+                pattern: ".*@.*(withings|fitbit|garmin|apple|samsung|healthcare|medical|clinic|hospital)\\.(com|net|org)$"
+              - type: BodyPattern
+                pattern: "(?i).*(not.*intended.*for.*medical.*use|consult.*your.*doctor|medical.*disclaimer|health.*device|fitness.*tracker).*"
     score: 200
+    description: "Medical spam detection excluding legitimate health companies"
 
   # Financial scam patterns
   - name: "Financial Scam Detection"
@@ -624,9 +636,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(two.*finger.*massage.*revives.*ed|ed.*medical|erectile.*dysfunction|male.*enhancement|performance.*enhancement).*"
+          pattern: "(?i).*(two.*finger.*massage.*revives.*ed|erectile.*dysfunction|male.*enhancement|performance.*enhancement).*"
         - type: BodyPattern
-          pattern: "(?i).*(two.*finger.*massage.*revives.*ed|ed.*medical|erectile.*dysfunction|male.*enhancement|performance.*enhancement).*"
+          pattern: "(?i).*(two.*finger.*massage.*revives.*ed|erectile.*dysfunction|male.*enhancement|performance.*enhancement).*"
     score: 280
 
   # Fake savings and Black Friday scams
