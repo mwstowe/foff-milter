@@ -715,14 +715,28 @@ rules:
 
   # Estonian money transfer scams
   - name: "Estonian Money Transfer Scam"
+    enabled: true
     criteria:
-      type: Or
+      type: And
       criteria:
-        - type: SubjectPattern
-          pattern: "(?i).*(raha|estonian|estonia|baltic.*funds).*"
-        - type: BodyPattern
-          pattern: "(?i).*(raha|estonian|estonia|baltic.*funds).*"
+        - type: Or
+          criteria:
+            - type: SubjectPattern
+              pattern: "(?i).*(raha|estonian|estonia|baltic.*funds).*"
+            - type: BodyPattern
+              pattern: "(?i).*(raha|estonian|estonia|baltic.*funds).*"
+        - type: Not
+          criteria:
+            type: Or
+            criteria:
+              - type: BodyPattern
+                pattern: "^[A-Za-z0-9+/=\\s]{50,}$"
+              - type: SubjectPattern
+                pattern: "(?i).*(invoice|receipt|statement|bill|payment|quote|estimate).*"
+              - type: SenderPattern
+                pattern: ".*@.*(exterminators|contractors|services|business|company)\\.(com|net|org)$"
     score: 350
+    description: "Estonian money transfer scams excluding base64 content and business documents"
   # Email list selling spam
   - name: "Email List Selling Enhanced"
     criteria:
