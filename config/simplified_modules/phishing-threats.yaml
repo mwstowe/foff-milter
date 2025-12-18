@@ -120,9 +120,14 @@ rules:
             criteria:
               - type: SenderPattern
                 pattern: ".*@.*(paypal|stripe|square|quickbooks|freshbooks)\\.(com|org)$"
+              - type: SenderPattern
+                pattern: ".*@.*(adapthealth|healthcare|medical|clinic|hospital|pulmonary)\\.(com|net|org)$"
               - type: HeaderPattern
                 header: "Authentication-Results"
                 pattern: "dkim=pass.*spf=pass"
+              - type: HeaderPattern
+                header: "Authentication-Results"
+                pattern: "dkim=pass.*adapthealth\\.com"
     score: 150
     description: "Financial phishing attempts"
 
@@ -198,9 +203,12 @@ rules:
                 type: "Or"
                 criteria:
                   - type: "SenderPattern"
-                    pattern: ".*@.*(charmtracker|acemed|healthcare|medical|clinic|hospital)\\.(com|net|org)$"
+                    pattern: ".*@.*(adapthealth|healthcare|medical|clinic|hospital|pulmonary)\\.(com|net|org)$"
                   - type: "SenderPattern"
                     pattern: "noreply@.*\\.(com|net|org)$"
+                  - type: "HeaderPattern"
+                    header: "Authentication-Results"
+                    pattern: "dkim=pass.*adapthealth\\.com"
         - type: "SubjectPattern"
           pattern: "(?i).*(account.*suspension|account.*suspended|domain.*impersonation|test.*subject).*"
         - type: "SubjectPattern"

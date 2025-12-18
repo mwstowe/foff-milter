@@ -732,14 +732,27 @@ rules:
     score: 250
   # Generic suspicious messages
   - name: "Generic Suspicious Messages"
+    enabled: true
     criteria:
-      type: Or
+      type: And
       criteria:
-        - type: SubjectPattern
-          pattern: "(?i).*(message.*for.*you|fam.*inquiry|urgent.*inquiry|personal.*message).*"
-        - type: BodyPattern
-          pattern: "(?i).*(message.*for.*you|fam.*inquiry|urgent.*inquiry|personal.*message).*"
+        - type: Or
+          criteria:
+            - type: SubjectPattern
+              pattern: "(?i).*(message.*for.*you|fam.*inquiry|urgent.*inquiry|personal.*message).*"
+            - type: BodyPattern
+              pattern: "(?i).*(message.*for.*you|fam.*inquiry|urgent.*inquiry|personal.*message).*"
+        - type: Not
+          criteria:
+            type: Or
+            criteria:
+              - type: SenderPattern
+                pattern: ".*@.*(adapthealth|healthcare|medical|clinic|hospital|pulmonary)\\.(com|net|org)$"
+              - type: HeaderPattern
+                header: "Authentication-Results"
+                pattern: "dkim=pass.*adapthealth\\.com"
     score: 150
+    description: "Generic suspicious messages excluding healthcare"
 
   # Streaming service scams
   - name: "Streaming Service Scam"
