@@ -7934,7 +7934,8 @@ impl FilterEngine {
 
     /// Check if domain is a known legitimate partner for a brand
     fn is_known_legitimate_partner(&self, domain: &str, brand: &str) -> bool {
-        match brand {
+        // Check hardcoded partnerships first
+        let hardcoded_partner = match brand {
             "paypal" => {
                 // Honey is owned by PayPal
                 domain.contains("joinhoney.com") || self.is_subdomain_of(domain, "joinhoney.com")
@@ -7942,9 +7943,54 @@ impl FilterEngine {
             "amazon" => {
                 // Corporate travel and business services
                 domain.contains("bcdtravel.com") || self.is_subdomain_of(domain, "bcdtravel.com")
+                    || domain.contains("fidelity.com") || self.is_subdomain_of(domain, "fidelity.com")
             }
             _ => false,
+        };
+
+        if hardcoded_partner {
+            return true;
         }
+
+        // For other cases, check if this is a legitimate business partnership
+        // Legitimate partnerships typically have:
+        // 1. Valid DKIM authentication
+        // 2. Professional email infrastructure (not personal domains)
+        // 3. Established financial/business domains
+        self.is_likely_legitimate_business_partnership(domain, brand)
+    }
+
+    /// Check if this appears to be a legitimate business partnership based on authentication and domain patterns
+    fn is_likely_legitimate_business_partnership(&self, domain: &str, brand: &str) -> bool {
+        // Must be from established business domains (not personal/suspicious domains)
+        let is_business_domain = domain.ends_with(".com") || domain.ends_with(".org") || domain.ends_with(".net");
+        
+        // Check for established financial/business service patterns
+        let is_established_service = domain.contains("fidelity") 
+            || domain.contains("vanguard")
+            || domain.contains("schwab")
+            || domain.contains("etrade")
+            || domain.contains("tdameritrade")
+            || domain.contains("merrilledge")
+            || domain.contains("wellsfargo")
+            || domain.contains("chase")
+            || domain.contains("bankofamerica")
+            || domain.contains("benefits")
+            || domain.contains("hr")
+            || domain.contains("payroll");
+
+        // For Amazon specifically, check for 401k/benefits context
+        if brand == "amazon" {
+            let is_benefits_context = domain.contains("401k") 
+                || domain.contains("benefits")
+                || domain.contains("retirement")
+                || domain.contains("fidelity");
+            
+            return is_business_domain && (is_established_service || is_benefits_context);
+        }
+
+        // For other brands, require established financial service patterns
+        is_business_domain && is_established_service
     }
 
     /// Check if domain is a discussion/content platform that can mention brands
