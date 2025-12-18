@@ -2,6 +2,69 @@ name: "ESP Infrastructure"
 enabled: true
 
 rules:
+  # Walgreens Pharmacy Infrastructure
+  - name: "Walgreens Pharmacy Infrastructure"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*walgreens.*"
+    score: -150
+    description: "Legitimate pharmacy chain infrastructure"
+
+  # USPS Government Service Infrastructure
+  - name: "USPS Government Service Infrastructure"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*usps.*"
+    score: -100
+    description: "Legitimate government postal service infrastructure"
+
+  # A2 Hosting Infrastructure
+  - name: "A2 Hosting Infrastructure"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*a2hosting.*"
+    score: -100
+    description: "Legitimate hosting company infrastructure"
+
+  # Bearaby Sleep Products Infrastructure
+  - name: "Bearaby Sleep Products Infrastructure"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*bearaby.*"
+    score: -200
+    description: "Legitimate sleep products company infrastructure"
+
+  # Withings Health Device Infrastructure
+  - name: "Withings Health Device Infrastructure"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*withings.*"
+    score: -100
+    description: "Legitimate health device company infrastructure"
+
+  # Political Organization Infrastructure
+  - name: "Political Organization Infrastructure"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*democrats.*"
+    score: -400
+    description: "Legitimate political organization infrastructure"
+
+  # Oxford Club Newsletter Infrastructure
+  - name: "Oxford Club Newsletter Infrastructure"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*oxford.*"
+    score: -120
+    description: "Legitimate Oxford Club newsletter infrastructure"
+
   # Major ESP Infrastructure (-100 points)
   - name: "Major ESP Infrastructure"
     enabled: true

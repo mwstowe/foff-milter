@@ -513,7 +513,9 @@ impl ContextAnalyzer {
         let is_legitimate_service = from_header.to_lowercase().contains("disney")
             || from_header.to_lowercase().contains("netflix")
             || from_header.to_lowercase().contains("hulu")
-            || from_header.to_lowercase().contains("amazon");
+            || from_header.to_lowercase().contains("amazon")
+            || from_header.to_lowercase().contains("exterminators")
+            || from_header.to_lowercase().contains("pest");
 
         if has_medicare_content && !is_legitimate_service {
             // Check for image-only content (suspicious for Medicare scams)

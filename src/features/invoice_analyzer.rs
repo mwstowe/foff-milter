@@ -30,6 +30,7 @@ impl InvoiceAnalyzer {
             "sendgrid.net".to_string(),
             "mailchimp.com".to_string(),
             "constantcontact.com".to_string(),
+            "dominos.com".to_string(),
         ];
 
         Self {
@@ -53,6 +54,7 @@ impl InvoiceAnalyzer {
             "sendgrid.net".to_string(),
             "mailchimp.com".to_string(),
             "constantcontact.com".to_string(),
+            "dominos.com".to_string(),
         ];
 
         Self {

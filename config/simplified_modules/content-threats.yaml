@@ -200,7 +200,7 @@ rules:
             type: Or
             criteria:
               - type: SenderPattern
-                pattern: ".*@.*(britishairways|ba\\.com|chase|jpmorgan|citi|amex|discover|capitalone|wellsfargo|bankofamerica)\\.(com|org)$"
+                pattern: ".*@.*(britishairways|ba\\.com|chase|jpmorgan|citi|amex|discover|capitalone|wellsfargo|bankofamerica|docusign)\\.(com|org|net)$"
               - type: BodyPattern
                 pattern: "(?i).*(terms.*conditions|credit.*card.*agreement|rewards.*program|loyalty.*program|airline.*miles|points.*program).*"
     score: 150
@@ -301,6 +301,10 @@ rules:
               pattern: "(?i).*(guaranteed.*\\d+%|earn.*\\$\\d+.*daily|make.*money.*fast|passive.*income.*\\$).*"
         - type: BodyPattern
           pattern: "(?i).*(\\d+\\.\\d+%|\\d+%|\\$\\d+|\\d+.*USD).*"
+        - type: Not
+          criteria:
+            type: SenderPattern
+            pattern: ".*oxford.*"
     score: 90
     description: "Unrealistic financial return promises and investment scams"
 
@@ -736,9 +740,9 @@ rules:
         - type: Or
           criteria:
             - type: SubjectPattern
-              pattern: "(?i).*(raha|estonian|estonia|baltic.*funds).*"
+              pattern: "(?i).*(\\braha\\b|estonian|estonia|baltic.*funds).*"
             - type: BodyPattern
-              pattern: "(?i).*(raha|estonian|estonia|baltic.*funds).*"
+              pattern: "(?i).*(\\braha\\b|estonian|estonia|baltic.*funds).*"
         - type: Not
           criteria:
             type: Or
@@ -747,6 +751,10 @@ rules:
                 pattern: "(?i).*(invoice|receipt|statement|bill|payment|quote|estimate).*"
               - type: SenderPattern
                 pattern: ".*@.*(exterminators|contractors|services|business|company)\\.(com|net|org)$"
+              - type: SenderPattern
+                pattern: ".*@.*uncommongoods\\.(com|net|org)$"
+              - type: SenderPattern
+                pattern: ".*@.*williams-sonoma\\.(com|net|org)$"
     score: 350
     description: "Estonian money transfer scams excluding legitimate business documents"
   # Email list selling spam
@@ -787,7 +795,7 @@ rules:
             type: Or
             criteria:
               - type: SenderPattern
-                pattern: ".*@.*(adapthealth|healthcare|medical|clinic|hospital|pulmonary)\\.(com|net|org)$"
+                pattern: ".*@.*(adapthealth|healthcare|medical|clinic|hospital|pulmonary|levi|gmail|yahoo|hotmail|outlook|bearaby|sleep|wellness)\\.(com|net|org)$"
               - type: HeaderPattern
                 header: "Authentication-Results"
                 pattern: "dkim=pass.*adapthealth\\.com"
@@ -989,12 +997,22 @@ rules:
   # Product demo notification spam
   - name: "Product Demo Notification Spam"
     criteria:
-      type: Or
+      type: And
       criteria:
-        - type: SubjectPattern
-          pattern: "(?i).*(product.*demo.*notification|demo.*request|product.*demonstration|free.*demo).*"
-        - type: BodyPattern
-          pattern: "(?i).*(product.*demo.*notification|demo.*request|product.*demonstration|free.*demo).*"
+        - type: Or
+          criteria:
+            - type: SubjectPattern
+              pattern: "(?i).*(product.*demo.*notification|demo.*request|product.*demonstration|free.*demo).*"
+            - type: BodyPattern
+              pattern: "(?i).*(product.*demo.*notification|demo.*request|product.*demonstration|free.*demo).*"
+        - type: Not
+          criteria:
+            type: Or
+            criteria:
+              - type: SenderPattern
+                pattern: ".*@.*(democrats|republicans|political|campaign|gov)\\.(org|com|gov)$"
+              - type: SenderPattern
+                pattern: ".*@.*wa-democrats\\.(org|com)$"
     score: 180
   # Prostate health spam
   - name: "Prostate Health Spam"
@@ -1010,12 +1028,18 @@ rules:
   # Enhanced mailer daemon patterns
   - name: "Enhanced Mailer Daemon Patterns"
     criteria:
-      type: Or
+      type: And
       criteria:
-        - type: SubjectPattern
-          pattern: "(?i).*(mailer.*daemon|delivery.*failure|undelivered.*mail|returned.*mail|mail.*delivery.*subsystem).*"
-        - type: BodyPattern
-          pattern: "(?i).*(mailer.*daemon|delivery.*failure|undelivered.*mail|returned.*mail|mail.*delivery.*subsystem).*"
+        - type: Or
+          criteria:
+            - type: SubjectPattern
+              pattern: "(?i).*(mailer.*daemon|delivery.*failure|undelivered.*mail|returned.*mail|mail.*delivery.*subsystem).*"
+            - type: BodyPattern
+              pattern: "(?i).*(mailer.*daemon|delivery.*failure|undelivered.*mail|returned.*mail|mail.*delivery.*subsystem).*"
+        - type: Not
+          criteria:
+            type: SenderPattern
+            pattern: ".*@.*(levi|nike|adidas|gap|oldnavy)\\.(com|net|org)$"
     score: 320
 
   # Enhanced transaction confirmation patterns
@@ -1074,12 +1098,22 @@ rules:
   # Enhanced product demo spam
   - name: "Enhanced Product Demo Spam"
     criteria:
-      type: Or
+      type: And
       criteria:
-        - type: SubjectPattern
-          pattern: "(?i)^demo$|product.*demo.*notification|demo.*request|free.*demo"
-        - type: BodyPattern
-          pattern: "(?i)^demo$|product.*demo.*notification|demo.*request|free.*demo"
+        - type: Or
+          criteria:
+            - type: SubjectPattern
+              pattern: "(?i)^demo$|product.*demo.*notification|demo.*request|free.*demo"
+            - type: BodyPattern
+              pattern: "(?i)^demo$|product.*demo.*notification|demo.*request|free.*demo"
+        - type: Not
+          criteria:
+            type: Or
+            criteria:
+              - type: SenderPattern
+                pattern: ".*@.*(democrats|republicans|political|campaign|gov)\\.(org|com|gov)$"
+              - type: SenderPattern
+                pattern: ".*@.*wa-democrats\\.(org|com)$"
     score: 200
 
   # Unicode shipping ID spam
