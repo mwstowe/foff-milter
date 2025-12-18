@@ -268,6 +268,12 @@ rules:
                 pattern: ".*@.*(gmail|yahoo|hotmail|outlook|aol|icloud|mcdonalds|netflix|amazon|microsoft|google|apple)\\.(com|net)$"
               - type: "SenderPattern"
                 pattern: ".*@.*(amazonses|sendgrid|mailchimp|sparkpostmail)\\.(com|net)$"
+              - type: And
+                criteria:
+                  - type: SubjectPattern
+                    pattern: "(?i).*(invoice|receipt|statement|bill|payment|quote|estimate).*"
+                  - type: SenderPattern
+                    pattern: ".*@.*(exterminators|contractors|services|business|company)\\.(com|net|org)$"
               - type: "HeaderPattern"
                 header: "Authentication-Results"
                 pattern: "(?i)spf=pass"
