@@ -39,14 +39,25 @@ rules:
   - name: "Financial Phishing"
     enabled: true
     criteria:
-      type: "Or"
+      type: And
       criteria:
-        - type: "SubjectPattern"
-          pattern: "(?i).*(payment.*failed|card.*declined|account.*overdrawn|suspicious.*activity|fraud.*alert).*"
-        - type: "CombinedTextPattern"
-          pattern: "(?i).*(update.*payment.*method|verify.*card.*information|confirm.*bank.*details|resolve.*payment.*issue).*"
-        - type: "CombinedTextPattern"
-          pattern: "(?i).*(refund.*pending|tax.*refund.*available|stimulus.*payment|government.*benefit).*"
+        - type: Or
+          criteria:
+            - type: SubjectPattern
+              pattern: "(?i).*(payment.*failed|card.*declined|account.*overdrawn|suspicious.*activity|fraud.*alert).*"
+            - type: CombinedTextPattern
+              pattern: "(?i).*(update.*payment.*method|verify.*card.*information|confirm.*bank.*details|resolve.*payment.*issue).*"
+            - type: CombinedTextPattern
+              pattern: "(?i).*(refund.*pending|tax.*refund.*available|stimulus.*payment|government.*benefit).*"
+        - type: Not
+          criteria:
+            type: Or
+            criteria:
+              - type: SenderPattern
+                pattern: ".*@.*(adapthealth|healthcare|medical|clinic|hospital|pulmonary)\\.(com|net|org)$"
+              - type: HeaderPattern
+                header: "Authentication-Results"
+                pattern: "dkim=pass.*adapthealth\\.com"
     score: 250
     description: "Financial fraud and payment scam detection"
 
@@ -69,14 +80,27 @@ rules:
   - name: "Invoice Receipt Phishing"
     enabled: true
     criteria:
-      type: "And"
+      type: And
       criteria:
-        - type: "Or"
+        - type: Or
           criteria:
-            - type: "SubjectPattern"
+            - type: SubjectPattern
               pattern: "(?i).*(invoice.*attached|receipt.*confirmation|payment.*due|billing.*statement).*"
-            - type: "CombinedTextPattern"
+            - type: CombinedTextPattern
               pattern: "(?i).*(view.*invoice|download.*receipt|payment.*overdue|billing.*inquiry).*"
+        - type: Not
+          criteria:
+            type: Or
+            criteria:
+              - type: SenderPattern
+                pattern: ".*@.*(adapthealth|healthcare|medical|clinic|hospital|pulmonary)\\.(com|net|org)$"
+              - type: SenderPattern
+                pattern: ".*@.*sendgrid\\.net$"
+              - type: HeaderPattern
+                header: "Authentication-Results"
+                pattern: "dkim=pass.*adapthealth\\.com"
+    score: 150
+    description: "Fake invoice and receipt phishing attempts"
         - type: "Not"
           criteria:
             type: "Or"
@@ -152,8 +176,18 @@ rules:
           pattern: "(?i).*(removal.*request.*server|server.*accepted|domain.*removal|unsubscribe.*request).*"
         - type: "SubjectPattern"
           pattern: "(?i).*(mailer.*daemon|delivery.*failure|bounce.*message|system.*administrator).*"
-        - type: "CombinedTextPattern"
-          pattern: "(?i).*(server.*maintenance|system.*notification|automated.*message|no.*reply).*"
+        - type: "And"
+          criteria:
+            - type: "CombinedTextPattern"
+              pattern: "(?i).*(server.*maintenance|system.*notification|automated.*message|no.*reply).*"
+            - type: "Not"
+              criteria:
+                type: "Or"
+                criteria:
+                  - type: "SenderPattern"
+                    pattern: ".*@.*(charmtracker|acemed|healthcare|medical|clinic|hospital)\\.(com|net|org)$"
+                  - type: "SenderPattern"
+                    pattern: "noreply@.*\\.(com|net|org)$"
         - type: "SubjectPattern"
           pattern: "(?i).*(account.*suspension|account.*suspended|domain.*impersonation|test.*subject).*"
         - type: "SubjectPattern"

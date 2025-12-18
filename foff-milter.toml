@@ -4,7 +4,7 @@
 [system]
 socket_path = "/var/run/foff-milter.sock"
 reject_to_tag = true
-use_simplified_architecture = false  # Enable new component-based architecture
+use_simplified_architecture = true  # Enable new component-based architecture
 
 [infrastructure]
 config_file = "config/infrastructure.toml"
@@ -16,7 +16,7 @@ priority = 1  # Run before spam detection
 
 [rulesets]
 enabled = true
-config_dir = "rulesets"
+config_dir = "config/simplified_modules"
 
 [features]
 enabled = true

@@ -10,8 +10,18 @@ rules:
   
   - name: "Health Misinformation Detection"
     criteria:
-      type: BodyPattern
-      pattern: "(?i).*(blood.*pressure|diabetes|a1c|cholesterol|heart.*disease|weight.*loss|miracle.*cure).*"
+      type: And
+      criteria:
+        - type: BodyPattern
+          pattern: "(?i).*(blood.*pressure|diabetes|a1c|cholesterol|heart.*disease|weight.*loss|miracle.*cure).*"
+        - type: Not
+          criteria:
+            type: Or
+            criteria:
+              - type: SenderPattern
+                pattern: ".*@.*(1800flowers|celebrations|wolfermans|withings|nytimes|nytdirect|washingtonpost|cnn|reuters|ap|wsj|harvard|mayo|webmd|healthline)\\.(com|net|org|edu)$"
+              - type: SenderPattern
+                pattern: ".*@.*pulse\\.celebrations\\.com"
     score: 200
   
   # Adult content patterns

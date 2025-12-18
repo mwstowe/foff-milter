@@ -135,17 +135,26 @@ rules:
   - name: "Forged Sender Headers"
     enabled: true
     criteria:
-      type: "And"
+      type: And
       criteria:
-        - type: "HeaderPattern"
+        - type: HeaderPattern
           header: "From"
           pattern: "(?i).*(no.*reply|do.*not.*reply|automated|system).*"
-        - type: "Or"
+        - type: Or
           criteria:
-            - type: "SubjectPattern"
+            - type: SubjectPattern
               pattern: "(?i).*(click.*here|verify.*now|urgent.*action|immediate).*"
-            - type: "BodyPattern"
+            - type: BodyPattern
               pattern: "(?i).*(reply.*to.*this|contact.*us|customer.*service).*"
+        - type: Not
+          criteria:
+            type: Or
+            criteria:
+              - type: SenderPattern
+                pattern: ".*@.*(adapthealth|healthcare|medical|clinic|hospital|pulmonary)\\.(com|net|org)$"
+              - type: HeaderPattern
+                header: "Authentication-Results"
+                pattern: "dkim=pass.*adapthealth\\.com"
     score: 60
     description: "Forged no-reply headers with interactive content"
 

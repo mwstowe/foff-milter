@@ -102,7 +102,7 @@ rules:
         - type: "Not"
           criteria:
             type: "SenderPattern"
-            pattern: ".*@.*(cvs|unitedhealthcare|medicare|va|veterans)\\.(com|org|gov)$"
+            pattern: ".*@.*(cvs|unitedhealthcare|medicare|va|veterans|adapthealth|adapthealthmarketplace)\\.(com|org|gov)$"
     score: 175
     description: "Healthcare and government service impersonation"
 
@@ -185,3 +185,13 @@ rules:
         - type: BodyPattern
           pattern: "(?i).*(yeti.*outdoor.*bundle.*final.*shipping.*stage|yeti.*brand.*impersonation|fake.*yeti.*shipping).*"
     score: 290
+  # USA Today brand impersonation
+  - name: "USA Today Brand Impersonation"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(usa.*today.*automotive.*aftermarket.*special.*edition|usa.*today.*brand.*impersonation|fake.*usa.*today).*"
+        - type: BodyPattern
+          pattern: "(?i).*(usa.*today.*automotive.*aftermarket.*special.*edition|usa.*today.*brand.*impersonation|fake.*usa.*today).*"
+    score: 280
