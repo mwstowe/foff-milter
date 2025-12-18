@@ -153,6 +153,8 @@ rules:
                 pattern: ".*@.*(fidelity|vanguard|schwab|merrill|chase|wellsfargo|bankofamerica)\\.(com|org)$"
               - type: SenderPattern
                 pattern: ".*@.*docusign\\.(com|net)$"
+              - type: SenderPattern
+                pattern: ".*@(nedm\\.asus|.*\\.asus)\\.(com|net|org)$"
               - type: HeaderPattern
                 header: "Authentication-Results"
                 pattern: "dkim=pass.*fidelity\\.com"
@@ -225,6 +227,10 @@ rules:
                     pattern: ".*@.*(disney|disneyplus|sparkpostmail|netflix|amazon|microsoft|google|apple)\\.(com|net|org)$"
                   - type: "SenderPattern"
                     pattern: ".*@(nedm\\.asus|butcherbox)\\.(com|net|org)$"
+                  - type: "SenderPattern"
+                    pattern: ".*@.*usps\\.(com|gov)$"
+                  - type: "SenderPattern"
+                    pattern: ".*@(email\\.d23|sparkpostmail)\\.(com|net|org)$"
                   - type: "SenderPattern"
                     pattern: "noreply@.*\\.(com|net|org)$"
                   - type: "HeaderPattern"
@@ -328,7 +334,7 @@ rules:
         - type: "Not"
           criteria:
             type: "SenderPattern"
-            pattern: ".*@.*(microsoft|google|apple|amazon|paypal|adobe|salesforce|zoom|slack|dropbox)\\.(com|org)$"
+            pattern: ".*@.*(microsoft|google|apple|amazon|paypal|adobe|salesforce|zoom|slack|dropbox|disney|disneyplus|sparkpostmail|d23)\\.(com|org|net)$"
     score: 80
     description: "Password expiration phishing attempts"
   # CVS/Medicare phishing
@@ -345,12 +351,25 @@ rules:
   # Fake invoice patterns
   - name: "Fake Invoice Scam"
     criteria:
-      type: Or
+      type: And
       criteria:
-        - type: SubjectPattern
-          pattern: "(?i).*(fake.*invoice|norton.*invoice|order.*receipt|payment.*receipt).*"
-        - type: BodyPattern
-          pattern: "(?i).*(fake.*invoice|norton.*invoice|order.*receipt|payment.*receipt).*"
+        - type: Or
+          criteria:
+            - type: SubjectPattern
+              pattern: "(?i).*(fake.*invoice|norton.*invoice|order.*receipt|payment.*receipt).*"
+            - type: BodyPattern
+              pattern: "(?i).*(fake.*invoice|norton.*invoice|order.*receipt|payment.*receipt).*"
+        - type: Not
+          criteria:
+            type: Or
+            criteria:
+              - type: SenderPattern
+                pattern: ".*<.*@.*(butcherbox|dominos|doordash|amazon|walmart|target|bestbuy)\\.(com|net|org)>.*|.*@.*(butcherbox|dominos|doordash|amazon|walmart|target|bestbuy)\\.(com|net|org)$"
+              - type: SenderPattern
+                pattern: ".*<.*@.*(paypal|stripe|square|shopify|legitimate)\\.(com|net|org)>.*|.*@.*(paypal|stripe|square|shopify|legitimate)\\.(com|net|org)$"
+              - type: HeaderPattern
+                header: "From"
+                pattern: ".*@.*(butcherbox|dominos|doordash|amazon|walmart)\\.(com|net|org)$"
     score: 280
 
   # Brand impersonation (Google Workspace)
@@ -438,9 +457,12 @@ rules:
             type: Or
             criteria:
               - type: SenderPattern
-                pattern: ".*@.*(dominos|doordash|butcherbox|amazon|walmart|target|bestbuy)\\.(com|net|org)$"
+                pattern: ".*<.*@.*(dominos|doordash|butcherbox|amazon|walmart|target|bestbuy)\\.(com|net|org)>.*|.*@.*(dominos|doordash|butcherbox|amazon|walmart|target|bestbuy)\\.(com|net|org)$"
               - type: SenderPattern
                 pattern: ".*@e-offers\\.dominos\\.com$"
+              - type: HeaderPattern
+                header: "From"
+                pattern: ".*@.*(butcherbox|dominos|doordash|amazon|walmart)\\.(com|net|org)$"
     score: 300
   # Enhanced mailer daemon spoofing
   - name: "Enhanced Mailer Daemon Spoofing"
@@ -617,10 +639,20 @@ rules:
   # Storage upgrade general pattern
   - name: "Storage Upgrade General Pattern"
     criteria:
-      type: Or
+      type: And
       criteria:
-        - type: SubjectPattern
-          pattern: "(?i).*(storage.*upgrade|cloud.*storage|upgrade.*storage|storage.*limit).*"
-        - type: BodyPattern
-          pattern: "(?i).*(storage.*upgrade|cloud.*storage|upgrade.*storage|storage.*limit).*"
+        - type: Or
+          criteria:
+            - type: SubjectPattern
+              pattern: "(?i).*(storage.*upgrade|cloud.*storage|upgrade.*storage|storage.*limit).*"
+            - type: BodyPattern
+              pattern: "(?i).*(storage.*upgrade|cloud.*storage|upgrade.*storage|storage.*limit).*"
+        - type: Not
+          criteria:
+            type: Or
+            criteria:
+              - type: SenderPattern
+                pattern: ".*@(nedm\\.asus|google|microsoft|dropbox|icloud|onedrive)\\.(com|net|org)$"
+              - type: SenderPattern
+                pattern: ".*@.*(asus|google|microsoft|apple|amazon)\\.(com|net|org)$"
     score: 200
