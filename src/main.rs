@@ -165,10 +165,42 @@ async fn analyze_email_file(config: &HeuristicConfig, email_file: &str) {
     }
     
     // Check for forwarding
+    println!("\n📬 FORWARDING ANALYSIS");
+    println!("───────────────────────────────────────────────────────────────");
+    
+    let mut forwarding_detected = false;
+    
+    // Check for X-Forwarded headers
     for (key, value) in &headers {
         if key.to_lowercase().contains("forward") {
-            println!("\n⚠️  FORWARDED: {} = {}", key, value);
+            println!("⚠️  FORWARDED: {} = {}", key, value);
+            forwarding_detected = true;
         }
+    }
+    
+    // Check for Gmail forwarding patterns
+    let has_google_received = received_headers.iter()
+        .any(|h| h.to_lowercase().contains("google") || h.to_lowercase().contains("gmail"));
+    
+    if has_google_received {
+        println!("📧 Gmail forwarding detected in routing path");
+        forwarding_detected = true;
+    }
+    
+    // Check for other common forwarding patterns
+    for received in &received_headers {
+        let received_lower = received.to_lowercase();
+        if received_lower.contains("forwarded") || 
+           received_lower.contains("relay") ||
+           received_lower.contains("mta-") {
+            println!("🔄 Potential forwarding/relay detected: {}", 
+                received.lines().next().unwrap_or("").trim());
+            forwarding_detected = true;
+        }
+    }
+    
+    if !forwarding_detected {
+        println!("✅ No forwarding detected - direct delivery");
     }
     
     // 4. Authentication
@@ -213,7 +245,7 @@ async fn analyze_email_file(config: &HeuristicConfig, email_file: &str) {
     }
     
     // 5. Encoding Information
-    println!("\n📝 ENCODING & CONTENT");
+    println!("\n📝 ENCODING & CONTENT ANALYSIS");
     println!("───────────────────────────────────────────────────────────────");
     
     if let Some(content_type) = headers.get("Content-Type") {
@@ -224,35 +256,47 @@ async fn analyze_email_file(config: &HeuristicConfig, email_file: &str) {
         println!("Content-Transfer-Encoding: {}", content_encoding);
     }
     
+    // Check for MIME version
+    if let Some(mime_version) = headers.get("MIME-Version") {
+        println!("MIME-Version: {}", mime_version);
+    }
+    
     // Decode subject
     if let Some(subject) = headers.get("Subject") {
-        println!("\nSubject (raw): {}", subject);
+        println!("\nSubject Analysis:");
+        println!("  Raw: {}", subject);
         
         // Decode MIME encoded subject
         let decoded_subject = foff_milter::milter::decode_mime_header(subject);
         if decoded_subject != *subject {
-            println!("Subject (decoded): {}", decoded_subject);
+            println!("  Decoded: {}", decoded_subject);
+            println!("  🔍 MIME encoding detected in subject");
+        } else {
+            println!("  ✅ No encoding detected in subject");
         }
     }
     
-    // 6. Spam Analysis
-    println!("\n🎯 SPAM ANALYSIS");
-    println!("───────────────────────────────────────────────────────────────");
-    
-    // Normalize email
+    // Analyze email normalization
+    println!("\n🔍 CONTENT NORMALIZATION:");
     let normalizer = foff_milter::normalization::EmailNormalizer::new();
     let normalized = normalizer.normalize_email(&email_content);
     
-    println!("Body Text Encoding Layers: {}", normalized.body_text.encoding_layers.len());
-    println!("Body HTML Encoding Layers: {}", normalized.body_html.encoding_layers.len());
+    println!("  Text Encoding Layers: {}", normalized.body_text.encoding_layers.len());
+    println!("  HTML Encoding Layers: {}", normalized.body_html.encoding_layers.len());
     
     if !normalized.body_text.obfuscation_indicators.is_empty() {
-        println!("⚠️  Text obfuscation detected: {:?}", normalized.body_text.obfuscation_indicators);
+        println!("  ⚠️  Text obfuscation detected: {:?}", normalized.body_text.obfuscation_indicators);
     }
     
     if !normalized.body_html.obfuscation_indicators.is_empty() {
-        println!("⚠️  HTML obfuscation detected: {:?}", normalized.body_html.obfuscation_indicators);
+        println!("  ⚠️  HTML obfuscation detected: {:?}", normalized.body_html.obfuscation_indicators);
     }
+    
+    if normalized.body_text.encoding_layers.is_empty() && normalized.body_html.encoding_layers.is_empty() {
+        println!("  ✅ No suspicious encoding detected");
+    }
+    
+    // 6. Spam Analysis & Evaluation
     
     // Run through filter engine for scoring
     let mut filter_engine = match FilterEngine::new(config.clone()) {
@@ -307,17 +351,57 @@ async fn analyze_email_file(config: &HeuristicConfig, email_file: &str) {
     mail_context.body = Some(body_content.clone());
     
     // Evaluate
-    let (action, matched_rules, _evidence) = filter_engine.evaluate(&mail_context).await;
+    let (action, matched_rules, evidence) = filter_engine.evaluate(&mail_context).await;
     
     println!("\n📊 FINAL VERDICT");
     println!("───────────────────────────────────────────────────────────────");
     println!("Action: {:?}", action);
     
+    // Extract spam score from evidence if available
+    if !evidence.is_empty() {
+        println!("\n🎯 CONTEXTUAL ANALYSIS & SCORING:");
+        for (rule_name, score_info) in &evidence {
+            println!("  • {}: {}", rule_name, score_info);
+        }
+    }
+    
+    // Calculate total score from matched rules (approximation)
+    let mut total_score = 0;
+    for rule in &matched_rules {
+        if rule.contains("Infrastructure") || rule.contains("legitimate") {
+            total_score -= 50; // Negative score for legitimate
+        } else {
+            total_score += 100; // Positive score for threats
+        }
+    }
+    
+    println!("\n📈 SPAM SCORE ANALYSIS:");
+    println!("  Estimated Total Score: {}", total_score);
+    match action {
+        foff_milter::heuristic_config::Action::Accept => {
+            println!("  Classification: ✅ LEGITIMATE (Score < 50)");
+        },
+        foff_milter::heuristic_config::Action::TagAsSpam { .. } => {
+            println!("  Classification: ⚠️  SPAM (Score ≥ 50)");
+        },
+        foff_milter::heuristic_config::Action::Reject { .. } => {
+            println!("  Classification: ❌ REJECTED (Score ≥ 350)");
+        },
+        foff_milter::heuristic_config::Action::ReportAbuse { .. } => {
+            println!("  Classification: 🚨 ABUSE REPORTED (High threat)");
+        },
+        foff_milter::heuristic_config::Action::UnsubscribeGoogleGroup { .. } => {
+            println!("  Classification: 📧 GOOGLE GROUP UNSUBSCRIBE");
+        },
+    }
+    
     if !matched_rules.is_empty() {
-        println!("\nMatched Rules:");
+        println!("\n🎯 MATCHED DETECTION RULES:");
         for rule in &matched_rules {
             println!("  • {}", rule);
         }
+    } else {
+        println!("\n✅ No threat detection rules matched");
     }
     
     println!("\n═══════════════════════════════════════════════════════════════\n");
