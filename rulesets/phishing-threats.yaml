@@ -240,6 +240,8 @@ rules:
                   - type: "SenderPattern"
                     pattern: ".*@.*oxfordclub\\.com$"
                   - type: "SenderPattern"
+                    pattern: ".*@.*empower\\.(com|net|org)$"
+                  - type: "SenderPattern"
                     pattern: "noreply@.*\\.(com|net|org)$"
                   - type: "HeaderPattern"
                     header: "Authentication-Results"
@@ -372,14 +374,14 @@ rules:
             type: Or
             criteria:
               - type: SenderPattern
-                pattern: ".*<.*@.*(butcherbox|dominos|doordash|amazon|walmart|target|bestbuy)\\.(com|net|org)>.*|.*@.*(butcherbox|dominos|doordash|amazon|walmart|target|bestbuy)\\.(com|net|org)$"
+                pattern: ".*<.*@.*(butcherbox|dominos|doordash|amazon|walmart|target|bestbuy|walgreens)\\.(com|net|org)>.*|.*@.*(butcherbox|dominos|doordash|amazon|walmart|target|bestbuy|walgreens)\\.(com|net|org)$"
               - type: SenderPattern
                 pattern: ".*<.*@(mail\\.duluthtrading|em\\.michaelscustomframing)\\.(com|net|org)>.*|.*@(mail\\.duluthtrading|em\\.michaelscustomframing)\\.(com|net|org)$"
               - type: SenderPattern
                 pattern: ".*<.*@.*(paypal|stripe|square|shopify|legitimate)\\.(com|net|org)>.*|.*@.*(paypal|stripe|square|shopify|legitimate)\\.(com|net|org)$"
               - type: HeaderPattern
                 header: "From"
-                pattern: ".*@.*(butcherbox|dominos|doordash|amazon|walmart)\\.(com|net|org)$"
+                pattern: ".*@.*(butcherbox|dominos|doordash|amazon|walmart|walgreens)\\.(com|net|org)$"
     score: 280
 
   # Brand impersonation (Google Workspace)
@@ -467,14 +469,14 @@ rules:
             type: Or
             criteria:
               - type: SenderPattern
-                pattern: ".*<.*@.*(dominos|doordash|butcherbox|amazon|walmart|target|bestbuy)\\.(com|net|org)>.*|.*@.*(dominos|doordash|butcherbox|amazon|walmart|target|bestbuy)\\.(com|net|org)$"
+                pattern: ".*<.*@.*(dominos|doordash|butcherbox|amazon|walmart|target|bestbuy|walgreens)\\.(com|net|org)>.*|.*@.*(dominos|doordash|butcherbox|amazon|walmart|target|bestbuy|walgreens)\\.(com|net|org)$"
               - type: SenderPattern
                 pattern: ".*<.*@(mail\\.duluthtrading|em\\.michaelscustomframing)\\.(com|net|org)>.*|.*@(mail\\.duluthtrading|em\\.michaelscustomframing)\\.(com|net|org)$"
               - type: SenderPattern
                 pattern: ".*@e-offers\\.dominos\\.com$"
               - type: HeaderPattern
                 header: "From"
-                pattern: ".*@.*(butcherbox|dominos|doordash|amazon|walmart)\\.(com|net|org)$"
+                pattern: ".*@.*(butcherbox|dominos|doordash|amazon|walmart|walgreens)\\.(com|net|org)$"
     score: 300
   # Enhanced mailer daemon spoofing
   - name: "Enhanced Mailer Daemon Spoofing"
