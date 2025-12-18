@@ -79,10 +79,7 @@ impl PerformanceBenchmark {
     }
 
     /// Compare accuracy between architectures (simplified)
-    fn compare_accuracy(
-        original: &[BenchmarkResult],
-        simplified: &[BenchmarkResult],
-    ) -> bool {
+    fn compare_accuracy(original: &[BenchmarkResult], simplified: &[BenchmarkResult]) -> bool {
         if original.len() != simplified.len() {
             return false;
         }
