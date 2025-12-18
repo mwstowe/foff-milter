@@ -60,11 +60,21 @@ rules:
             - type: HeaderPattern
               header: "Authentication-Results"
               pattern: "spf=fail"
-            - type: Not
+            - type: And
               criteria:
-                type: HeaderPattern
-                header: "Authentication-Results"
-                pattern: "dkim=pass"
+                - type: Not
+                  criteria:
+                    type: HeaderPattern
+                    header: "Authentication-Results"
+                    pattern: "dkim=pass"
+                - type: Not
+                  criteria:
+                    type: Or
+                    criteria:
+                      - type: BodyPattern
+                        pattern: "(?i).*(apple.*wallet|google.*pay|samsung.*pay|paypal.*integration|amazon.*partnership).*"
+                      - type: SenderPattern
+                        pattern: ".*@.*(discover|chase|citi|amex|wellsfargo|bankofamerica)\\.(com|org)$"
     score: 200
     description: "Brand impersonation with authentication failure"
 
@@ -139,13 +149,17 @@ rules:
             - type: "SubjectPattern"
               pattern: "(?i).*(medicare|medicaid|unitedhealthcare|benefits.*center|veteran.*affairs).*"
             - type: "BodyPattern"
-              pattern: "(?i).*(health.*insurance|medicare.*advantage|benefits.*enrollment|va.*benefits).*"
+              pattern: "(?i).*(health.*insurance|medicare.*advantage|benefits.*enrollment|va.*benefits|health.*benefits.*center).*"
             - type: "SubjectPattern"
               pattern: "(?i).*(cvs.*order|pharmacy.*confirmation|prescription.*ready|health.*plan).*"
         - type: "Not"
           criteria:
-            type: "SenderPattern"
-            pattern: ".*@.*(cvs|unitedhealthcare|medicare|va|veterans|adapthealth|adapthealthmarketplace)\\.(com|org|gov)$"
+            type: "Or"
+            criteria:
+              - type: "SenderPattern"
+                pattern: ".*@.*(cvs|unitedhealthcare|medicare|va|veterans|adapthealth|adapthealthmarketplace)\\.(com|org|gov)$"
+              - type: "BodyPattern"
+                pattern: "(?i).*(loyalty.*program|rewards.*program|membership.*benefits|shipping.*benefits|passport.*benefits).*"
     score: 175
     description: "Healthcare and government service impersonation"
 
