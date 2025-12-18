@@ -1187,8 +1187,13 @@ async fn test_email_file(
         forwarding_source: None, // Will be detected during evaluation
         proximate_mailer: None,  // Will be detected during evaluation
         normalized: None,        // Will be populated during evaluation
-        dkim_verification: None, // Will be populated on first access
+        dkim_verification: None, // Will be populated below
     };
+
+    // Populate DKIM verification for test mode
+    use foff_milter::dkim_verification::DkimVerifier;
+    let sender_domain = sender.split('@').nth(1);
+    context.dkim_verification = Some(DkimVerifier::verify(&context.headers, sender_domain));
 
     // Add legitimate business detection for test mode
     context.is_legitimate_business = is_legitimate_business_test(&context);
