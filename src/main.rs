@@ -85,6 +85,244 @@ fn read_email_with_encoding_fallback(
     Ok(content.to_string())
 }
 
+async fn analyze_email_file(config: &HeuristicConfig, email_file: &str) {
+    println!("\n📧 Email Forensic Analysis");
+    println!("═══════════════════════════════════════════════════════════════\n");
+
+    // Read email file
+    let email_content = match read_email_with_encoding_fallback(email_file) {
+        Ok(content) => content,
+        Err(e) => {
+            eprintln!("❌ Error reading email file: {}", e);
+            return;
+        }
+    };
+
+    // Extract headers manually
+    let lines: Vec<&str> = email_content.lines().collect();
+    let mut headers = std::collections::HashMap::new();
+    let mut body_start = 0;
+    
+    // Parse headers
+    for (i, line) in lines.iter().enumerate() {
+        if line.trim().is_empty() {
+            body_start = i + 1;
+            break;
+        }
+        
+        if let Some(colon_pos) = line.find(':') {
+            let key = line[..colon_pos].trim().to_string();
+            let value = line[colon_pos + 1..].trim().to_string();
+            headers.insert(key, value);
+        }
+    }
+    
+    // 1. Sender Information
+    println!("📤 SENDER INFORMATION");
+    println!("───────────────────────────────────────────────────────────────");
+    
+    if let Some(from) = headers.get("From") {
+        println!("From: {}", from);
+        if let Some(email) = foff_milter::milter::extract_email_from_header(from) {
+            println!("  └─ Email: {}", email);
+            if let Some(domain) = email.split('@').nth(1) {
+                println!("  └─ Domain: {}", domain);
+            }
+        }
+    }
+    
+    if let Some(reply_to) = headers.get("Reply-To") {
+        println!("Reply-To: {}", reply_to);
+    }
+    
+    if let Some(return_path) = headers.get("Return-Path") {
+        println!("Return-Path: {}", return_path);
+    }
+    
+    // 2. Recipients
+    println!("\n📥 RECIPIENT INFORMATION");
+    println!("───────────────────────────────────────────────────────────────");
+    
+    if let Some(to) = headers.get("To") {
+        println!("To: {}", to);
+    }
+    
+    if let Some(cc) = headers.get("Cc") {
+        println!("Cc: {}", cc);
+    }
+    
+    // 3. Routing Information
+    println!("\n🌐 ROUTING & DELIVERY PATH");
+    println!("───────────────────────────────────────────────────────────────");
+    
+    let received_headers: Vec<_> = lines.iter()
+        .filter(|line| line.starts_with("Received:"))
+        .collect();
+    
+    println!("Hops: {}", received_headers.len());
+    for (i, received) in received_headers.iter().enumerate() {
+        println!("\nHop {}: {}", i + 1, received.trim_start_matches("Received:").trim());
+    }
+    
+    // Check for forwarding
+    for (key, value) in &headers {
+        if key.to_lowercase().contains("forward") {
+            println!("\n⚠️  FORWARDED: {} = {}", key, value);
+        }
+    }
+    
+    // 4. Authentication
+    println!("\n🔐 AUTHENTICATION STATUS");
+    println!("───────────────────────────────────────────────────────────────");
+    
+    if let Some(auth_results) = headers.get("Authentication-Results") {
+        println!("Authentication-Results: {}", auth_results);
+        
+        // Parse authentication details
+        if auth_results.contains("dkim=pass") {
+            println!("  ✅ DKIM: PASS");
+        } else if auth_results.contains("dkim=fail") {
+            println!("  ❌ DKIM: FAIL");
+        } else if auth_results.contains("dkim=none") {
+            println!("  ⚠️  DKIM: NONE");
+        }
+        
+        if auth_results.contains("spf=pass") {
+            println!("  ✅ SPF: PASS");
+        } else if auth_results.contains("spf=fail") {
+            println!("  ❌ SPF: FAIL");
+        } else if auth_results.contains("spf=none") {
+            println!("  ⚠️  SPF: NONE");
+        }
+        
+        if auth_results.contains("dmarc=pass") {
+            println!("  ✅ DMARC: PASS");
+        } else if auth_results.contains("dmarc=fail") {
+            println!("  ❌ DMARC: FAIL");
+        }
+    } else {
+        println!("⚠️  No Authentication-Results header found");
+    }
+    
+    // Check for DKIM signature
+    if let Some(dkim_sig) = headers.get("DKIM-Signature") {
+        println!("\nDKIM-Signature present:");
+        if let Some(domain) = dkim_sig.split("d=").nth(1).and_then(|s| s.split(';').next()) {
+            println!("  └─ Signing Domain: {}", domain.trim());
+        }
+    }
+    
+    // 5. Encoding Information
+    println!("\n📝 ENCODING & CONTENT");
+    println!("───────────────────────────────────────────────────────────────");
+    
+    if let Some(content_type) = headers.get("Content-Type") {
+        println!("Content-Type: {}", content_type);
+    }
+    
+    if let Some(content_encoding) = headers.get("Content-Transfer-Encoding") {
+        println!("Content-Transfer-Encoding: {}", content_encoding);
+    }
+    
+    // Decode subject
+    if let Some(subject) = headers.get("Subject") {
+        println!("\nSubject (raw): {}", subject);
+        
+        // Decode MIME encoded subject
+        let decoded_subject = foff_milter::milter::decode_mime_header(subject);
+        if decoded_subject != *subject {
+            println!("Subject (decoded): {}", decoded_subject);
+        }
+    }
+    
+    // 6. Spam Analysis
+    println!("\n🎯 SPAM ANALYSIS");
+    println!("───────────────────────────────────────────────────────────────");
+    
+    // Normalize email
+    let normalizer = foff_milter::normalization::EmailNormalizer::new();
+    let normalized = normalizer.normalize_email(&email_content);
+    
+    println!("Body Text Encoding Layers: {}", normalized.body_text.encoding_layers.len());
+    println!("Body HTML Encoding Layers: {}", normalized.body_html.encoding_layers.len());
+    
+    if !normalized.body_text.obfuscation_indicators.is_empty() {
+        println!("⚠️  Text obfuscation detected: {:?}", normalized.body_text.obfuscation_indicators);
+    }
+    
+    if !normalized.body_html.obfuscation_indicators.is_empty() {
+        println!("⚠️  HTML obfuscation detected: {:?}", normalized.body_html.obfuscation_indicators);
+    }
+    
+    // Run through filter engine for scoring
+    let mut filter_engine = match FilterEngine::new(config.clone()) {
+        Ok(engine) => engine,
+        Err(e) => {
+            eprintln!("❌ Error creating filter engine: {}", e);
+            return;
+        }
+    };
+    
+    // Build mail context
+    let mut mail_context = foff_milter::filter::MailContext {
+        sender: None,
+        from_header: None,
+        recipients: Vec::new(),
+        headers: std::collections::HashMap::new(),
+        mailer: None,
+        subject: None,
+        hostname: None,
+        helo: None,
+        body: None,
+        last_header_name: None,
+        attachments: Vec::new(),
+        extracted_media_text: String::new(),
+        is_legitimate_business: false,
+        is_first_hop: false,
+        forwarding_source: None,
+        dkim_verification: None,
+        normalized: None,
+        proximate_mailer: None,
+    };
+    
+    if let Some(from) = headers.get("From") {
+        mail_context.from_header = Some(from.clone());
+        if let Some(email) = foff_milter::milter::extract_email_from_header(from) {
+            mail_context.sender = Some(email);
+        }
+    }
+    
+    if let Some(to) = headers.get("To") {
+        if let Some(email) = foff_milter::milter::extract_email_from_header(to) {
+            mail_context.recipients.push(email);
+        }
+    }
+    
+    if let Some(subject) = headers.get("Subject") {
+        mail_context.subject = Some(foff_milter::milter::decode_mime_header(subject));
+    }
+    
+    // Get body content
+    let body_content: String = lines[body_start..].join("\n");
+    mail_context.body = Some(body_content.clone());
+    
+    // Evaluate
+    let (action, matched_rules, _evidence) = filter_engine.evaluate(&mail_context).await;
+    
+    println!("\n📊 FINAL VERDICT");
+    println!("───────────────────────────────────────────────────────────────");
+    println!("Action: {:?}", action);
+    
+    if !matched_rules.is_empty() {
+        println!("\nMatched Rules:");
+        for rule in &matched_rules {
+            println!("  • {}", rule);
+        }
+    }
+    
+    println!("\n═══════════════════════════════════════════════════════════════\n");
+}
+
 #[tokio::main]
 async fn main() {
     let matches = Command::new("foff-milter")
@@ -172,6 +410,13 @@ async fn main() {
                 .action(clap::ArgAction::Set),
         )
         .arg(
+            Arg::new("analyze")
+                .long("analyze")
+                .value_name("FILE")
+                .help("Perform comprehensive forensic analysis of email file")
+                .action(clap::ArgAction::Set),
+        )
+        .arg(
             Arg::new("anonymize")
                 .long("anonymize")
                 .value_name("FILE")
@@ -239,6 +484,11 @@ async fn main() {
 
     if let Some(email_file) = matches.get_one::<String>("anonymize") {
         anonymize_email_file(email_file).await;
+        return;
+    }
+
+    if let Some(email_file) = matches.get_one::<String>("analyze") {
+        analyze_email_file(&config, email_file).await;
         return;
     }
 
