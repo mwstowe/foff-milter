@@ -226,7 +226,7 @@ mod tests {
         let engine = FilterEngineV2::new();
         let context = create_test_context();
 
-        let (action, rules, headers) = engine.evaluate_v2(&context).await;
+        let (_action, _rules, headers) = engine.evaluate_v2(&context).await;
 
         // Should have some result
         assert!(!headers.is_empty());

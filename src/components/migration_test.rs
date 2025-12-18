@@ -43,7 +43,7 @@ async fn test_authentication_analysis() {
     let engine = FilterEngineV2::new();
     let context = create_authenticated_email_context();
 
-    let (action, rules, _headers) = engine.evaluate_v2(&context).await;
+    let (_action, rules, _headers) = engine.evaluate_v2(&context).await;
 
     // Should have authentication analysis
     assert!(rules
@@ -57,7 +57,7 @@ async fn test_mismatch_detection() {
     let engine = FilterEngineV2::new();
     let context = create_mismatch_email_context();
 
-    let (action, rules, _headers) = engine.evaluate_v2(&context).await;
+    let (_action, rules, _headers) = engine.evaluate_v2(&context).await;
 
     // Should detect mismatches
     assert!(rules.iter().any(|rule| rule.contains("MismatchAnalyzer")));

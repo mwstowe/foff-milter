@@ -825,37 +825,24 @@ fn generate_modular_configs(dir_path: &str) {
     // Embedded module configurations
     let modules = [
         (
-            "adult-content.yaml",
-            include_str!("../rulesets/adult-content.yaml"),
+            "authentication-validation.yaml",
+            include_str!("../rulesets/authentication-validation.yaml"),
         ),
         (
-            "financial-services.yaml",
-            include_str!("../rulesets/financial-services.yaml"),
+            "brand-protection.yaml",
+            include_str!("../rulesets/brand-protection.yaml"),
         ),
         (
-            "technology-scams.yaml",
-            include_str!("../rulesets/technology-scams.yaml"),
+            "content-threats.yaml",
+            include_str!("../rulesets/content-threats.yaml"),
         ),
         (
-            "multi-language.yaml",
-            include_str!("../rulesets/multi-language.yaml"),
+            "esp-infrastructure.yaml",
+            include_str!("../rulesets/esp-infrastructure.yaml"),
         ),
         (
-            "performance.yaml",
-            include_str!("../rulesets/performance.yaml"),
-        ),
-        ("analytics.yaml", include_str!("../rulesets/analytics.yaml")),
-        (
-            "advanced-heuristics.yaml",
-            include_str!("../rulesets/advanced-heuristics.yaml"),
-        ),
-        (
-            "integration.yaml",
-            include_str!("../rulesets/integration.yaml"),
-        ),
-        (
-            "advanced-security.yaml",
-            include_str!("../rulesets/advanced-security.yaml"),
+            "phishing-threats.yaml",
+            include_str!("../rulesets/phishing-threats.yaml"),
         ),
     ];
 

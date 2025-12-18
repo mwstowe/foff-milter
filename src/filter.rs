@@ -333,20 +333,26 @@ impl FilterEngine {
         // Check for single-layer standard encoding (UTF-8 Base64 in subject lines)
         let subject_layers = normalized.subject.encoding_layers.len();
         let body_layers = normalized.body_text.encoding_layers.len();
-        
+
         // Legitimate encoding typically has 1-2 layers max and uses standard encodings
         let has_reasonable_layers = subject_layers <= 2 && body_layers <= 2;
-        
+
         // Check for standard legitimate encoding patterns
-        let has_standard_patterns = normalized.subject.encoding_layers.iter()
+        let has_standard_patterns = normalized
+            .subject
+            .encoding_layers
+            .iter()
             .chain(normalized.body_text.encoding_layers.iter())
-            .all(|layer| matches!(layer.encoding_type, 
-                crate::normalization::EncodingType::Base64 | 
-                crate::normalization::EncodingType::QuotedPrintable |
-                crate::normalization::EncodingType::UrlEncoding |
-                crate::normalization::EncodingType::HtmlEntities
-            ));
-        
+            .all(|layer| {
+                matches!(
+                    layer.encoding_type,
+                    crate::normalization::EncodingType::Base64
+                        | crate::normalization::EncodingType::QuotedPrintable
+                        | crate::normalization::EncodingType::UrlEncoding
+                        | crate::normalization::EncodingType::HtmlEntities
+                )
+            });
+
         has_reasonable_layers && has_standard_patterns
     }
 
@@ -3553,7 +3559,9 @@ impl FilterEngine {
                         &normalized.subject.normalized
                     } else {
                         // If normalization not available, pattern matching cannot proceed
-                        log::warn!("SubjectPattern evaluation attempted without normalized content");
+                        log::warn!(
+                            "SubjectPattern evaluation attempted without normalized content"
+                        );
                         return false;
                     };
 
@@ -3569,7 +3577,9 @@ impl FilterEngine {
                             &normalized.body_text.normalized
                         } else {
                             // If normalization not available, pattern matching cannot proceed
-                            log::warn!("BodyPattern evaluation attempted without normalized content");
+                            log::warn!(
+                                "BodyPattern evaluation attempted without normalized content"
+                            );
                             return false;
                         };
 
@@ -7952,8 +7962,10 @@ impl FilterEngine {
             }
             "amazon" => {
                 // Corporate travel and business services
-                domain.contains("bcdtravel.com") || self.is_subdomain_of(domain, "bcdtravel.com")
-                    || domain.contains("fidelity.com") || self.is_subdomain_of(domain, "fidelity.com")
+                domain.contains("bcdtravel.com")
+                    || self.is_subdomain_of(domain, "bcdtravel.com")
+                    || domain.contains("fidelity.com")
+                    || self.is_subdomain_of(domain, "fidelity.com")
             }
             _ => false,
         };
@@ -7973,10 +7985,11 @@ impl FilterEngine {
     /// Check if this appears to be a legitimate business partnership based on authentication and domain patterns
     fn is_likely_legitimate_business_partnership(&self, domain: &str, brand: &str) -> bool {
         // Must be from established business domains (not personal/suspicious domains)
-        let is_business_domain = domain.ends_with(".com") || domain.ends_with(".org") || domain.ends_with(".net");
-        
+        let is_business_domain =
+            domain.ends_with(".com") || domain.ends_with(".org") || domain.ends_with(".net");
+
         // Check for established financial/business service patterns
-        let is_established_service = domain.contains("fidelity") 
+        let is_established_service = domain.contains("fidelity")
             || domain.contains("vanguard")
             || domain.contains("schwab")
             || domain.contains("etrade")
@@ -7991,11 +8004,11 @@ impl FilterEngine {
 
         // For Amazon specifically, check for 401k/benefits context
         if brand == "amazon" {
-            let is_benefits_context = domain.contains("401k") 
+            let is_benefits_context = domain.contains("401k")
                 || domain.contains("benefits")
                 || domain.contains("retirement")
                 || domain.contains("fidelity");
-            
+
             return is_business_domain && (is_established_service || is_benefits_context);
         }
 

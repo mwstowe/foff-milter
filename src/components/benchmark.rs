@@ -4,7 +4,6 @@
 
 use crate::components::hybrid_filter_engine::HybridFilterEngine;
 use crate::heuristic_config::Config;
-use crate::toml_config::{SystemConfig, TomlConfig};
 use crate::MailContext;
 use std::collections::HashMap;
 use std::time::{Duration, Instant};

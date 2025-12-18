@@ -219,7 +219,7 @@ impl EmailNormalizer {
     fn decode_base64_if_present(&self, text: &str) -> (String, Vec<EncodingLayer>) {
         let mut layers = Vec::new();
         let mut result = text.to_string();
-        
+
         // Find and decode ALL base64 matches, not just the first one
         loop {
             let current_result = result.clone();
