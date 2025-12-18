@@ -509,7 +509,13 @@ impl ContextAnalyzer {
                 || from_header.to_lowercase().contains(keyword)
         });
 
-        if has_medicare_content {
+        // Skip Medicare scam detection for legitimate entertainment services
+        let is_legitimate_service = from_header.to_lowercase().contains("disney")
+            || from_header.to_lowercase().contains("netflix")
+            || from_header.to_lowercase().contains("hulu")
+            || from_header.to_lowercase().contains("amazon");
+
+        if has_medicare_content && !is_legitimate_service {
             // Check for image-only content (suspicious for Medicare scams)
             let has_images = body.contains("<img") || body.contains("src=");
             let has_minimal_text = body.replace(['<', '>', '&', ';', '#'], "").trim().len() < 100;
