@@ -93,7 +93,9 @@ rules:
             type: Or
             criteria:
               - type: SenderPattern
-                pattern: ".*@.*(adapthealth|healthcare|medical|clinic|hospital|pulmonary)\\.(com|net|org)$"
+                pattern: ".*@.*(adapthealth|healthcare|medical|clinic|hospital|pulmonary|evergreentlc)\\.(com|net|org)$"
+              - type: SenderPattern
+                pattern: ".*gandiroofingsolutions@gmail\\.com$"
               - type: SenderPattern
                 pattern: ".*@.*sendgrid\\.net$"
               - type: HeaderPattern
@@ -119,7 +121,7 @@ rules:
             type: Or
             criteria:
               - type: SenderPattern
-                pattern: ".*@.*(paypal|stripe|square|quickbooks|freshbooks)\\.(com|org)$"
+                pattern: ".*@.*(paypal|stripe|square|quickbooks|freshbooks|xfinity)\\.(com|org)$"
               - type: SenderPattern
                 pattern: ".*@.*(adapthealth|healthcare|medical|clinic|hospital|pulmonary)\\.(com|net|org)$"
               - type: HeaderPattern
@@ -242,6 +244,14 @@ rules:
                   - type: "SenderPattern"
                     pattern: ".*@.*empower\\.(com|net|org)$"
                   - type: "SenderPattern"
+                    pattern: ".*@.*xfinity\\.(com|net|org)$"
+                  - type: "SenderPattern"
+                    pattern: ".*@.*govdelivery\\.(com|net|org)$"
+                  - type: "SenderPattern"
+                    pattern: ".*@.*bearaby\\.(com|net|org)$"
+                  - type: "SenderPattern"
+                    pattern: ".*@.*ecoflow\\.(com|net|org)$"
+                  - type: "SenderPattern"
                     pattern: "noreply@.*\\.(com|net|org)$"
                   - type: "HeaderPattern"
                     header: "Authentication-Results"
@@ -291,7 +301,7 @@ rules:
         - type: "Not"
           criteria:
             type: "SenderPattern"
-            pattern: ".*@.*(paypal|stripe|square|quickbooks|intuit)\\.(com|net)$"
+            pattern: ".*@.*(paypal|stripe|square|quickbooks|intuit)\\.(com|net)$|.*@.*apple(card)?\\.apple$"
     score: 75
     description: "Fake payment service notifications"
 
@@ -412,7 +422,7 @@ rules:
             type: Or
             criteria:
               - type: SenderPattern
-                pattern: ".*@.*(fidelity|vanguard|schwab|merrill|chase|wellsfargo|bankofamerica)\\.(com|org)$"
+                pattern: ".*@.*(fidelity|vanguard|schwab|merrill|chase|wellsfargo|bankofamerica|filtersfast)\\.(com|org)$"
               - type: HeaderPattern
                 header: "Authentication-Results"
                 pattern: "dkim=pass.*fidelity\\.com"
