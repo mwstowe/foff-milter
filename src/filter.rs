@@ -3563,17 +3563,27 @@ impl FilterEngine {
                     false
                 }
                 Criteria::BodyPattern { pattern } => {
-                    // Use normalized body only - no fallback to raw content
-                    let body_text = if let Some(normalized) = &context.normalized {
-                        &normalized.body_text.normalized
-                    } else {
-                        // If normalization not available, pattern matching cannot proceed
-                        log::warn!("BodyPattern evaluation attempted without normalized content");
-                        return false;
-                    };
-
                     if let Some(regex) = self.compiled_patterns.get(pattern) {
-                        return regex.is_match(body_text);
+                        // Use normalized body only - no fallback to raw content
+                        let body_text = if let Some(normalized) = &context.normalized {
+                            &normalized.body_text.normalized
+                        } else {
+                            // If normalization not available, pattern matching cannot proceed
+                            log::warn!("BodyPattern evaluation attempted without normalized content");
+                            return false;
+                        };
+
+                        // Check body text
+                        if regex.is_match(body_text) {
+                            return true;
+                        }
+
+                        // Also check extracted media text (like CombinedTextPattern does)
+                        if !context.extracted_media_text.is_empty()
+                            && regex.is_match(&context.extracted_media_text)
+                        {
+                            return true;
+                        }
                     }
                     false
                 }
