@@ -8,6 +8,12 @@ use crate::MailContext;
 use std::collections::HashMap;
 use std::time::{Duration, Instant};
 
+type BenchmarkResult = (
+    crate::heuristic_config::Action,
+    Vec<String>,
+    Vec<(String, String)>,
+);
+
 pub struct BenchmarkResults {
     pub original_time: Duration,
     pub simplified_time: Duration,
@@ -74,16 +80,8 @@ impl PerformanceBenchmark {
 
     /// Compare accuracy between architectures (simplified)
     fn compare_accuracy(
-        original: &[(
-            crate::heuristic_config::Action,
-            Vec<String>,
-            Vec<(String, String)>,
-        )],
-        simplified: &[(
-            crate::heuristic_config::Action,
-            Vec<String>,
-            Vec<(String, String)>,
-        )],
+        original: &[BenchmarkResult],
+        simplified: &[BenchmarkResult],
     ) -> bool {
         if original.len() != simplified.len() {
             return false;
