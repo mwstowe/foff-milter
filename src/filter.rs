@@ -3649,6 +3649,18 @@ impl FilterEngine {
                         .any(|attachment| attachment.contains_executables)
                 }
                 Criteria::HeaderPattern { header, pattern } => {
+                    // Special handling for authentication patterns - check for forwarding
+                    if header.to_lowercase() == "authentication-results"
+                        && pattern.contains("dkim=pass")
+                    {
+                        // Check for forwarding headers - forwarded emails don't get DKIM credit
+                        if context.headers.contains_key("x-forwarded-encrypted")
+                            || context.headers.contains_key("x-google-smtp-source")
+                        {
+                            return false; // Forwarded email - no DKIM credit
+                        }
+                    }
+
                     if let Some(header_value) =
                         self.get_header_case_insensitive(&context.headers, header)
                     {

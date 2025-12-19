@@ -87,14 +87,9 @@ impl SenderAlignmentAnalyzer {
         }
     }
 
-    fn extract_reply_to_email(&self, headers: &str) -> Option<String> {
-        let reply_to_regex =
-            Regex::new(r"(?i)reply-to:.*?([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})")
-                .unwrap();
-        reply_to_regex
-            .captures(headers)
-            .and_then(|caps| caps.get(1))
-            .map(|m| m.as_str().to_string())
+    fn extract_email_from_header(&self, header: &str) -> Option<String> {
+        // Use the same email extraction logic as the milter module
+        crate::milter::extract_email_from_header(header)
     }
 
     fn domain_exists(&self, domain: &str) -> bool {
@@ -1189,20 +1184,21 @@ impl FeatureExtractor for SenderAlignmentAnalyzer {
         }
 
         // Check Reply-To mismatch
-        if let Some(raw_headers) =
-            crate::features::get_header_case_insensitive(&context.headers, "raw")
+        if let Some(reply_to_header) =
+            crate::features::get_header_case_insensitive(&context.headers, "reply-to")
         {
-            if let Some(reply_to_email) = self.extract_reply_to_email(raw_headers) {
-                let reply_to_domain = self.extract_domain(&reply_to_email);
-                if !reply_to_domain.is_empty()
-                    && !sender_info.from_domain.is_empty()
-                    && reply_to_domain != sender_info.from_domain
+            if let Some(reply_to_email) = self.extract_email_from_header(reply_to_header) {
+                // Get From email for comparison
+                if let Some(from_email) = self
+                    .extract_email_from_header(context.from_header.as_deref().unwrap_or_default())
                 {
-                    score += 40;
-                    evidence.push(format!(
-                        "Reply-To domain ({}) differs from From domain ({})",
-                        reply_to_domain, sender_info.from_domain
-                    ));
+                    if from_email != reply_to_email {
+                        score += 40;
+                        evidence.push(format!(
+                            "Reply-To email ({}) differs from From email ({})",
+                            reply_to_email, from_email
+                        ));
+                    }
                 }
             }
         }

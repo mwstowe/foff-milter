@@ -78,6 +78,13 @@ impl AuthenticationAnalyzer {
     }
 
     fn analyze_dkim(&self, context: &MailContext) -> DkimStatus {
+        // Check for forwarding headers first - forwarded emails shouldn't get DKIM credit
+        if context.headers.contains_key("X-Forwarded-Encrypted")
+            || context.headers.contains_key("X-Google-Smtp-Source")
+        {
+            return DkimStatus::None; // Forwarded email - original sender doesn't get DKIM credit
+        }
+
         // Check for DKIM signature in headers
         if let Some(_dkim_sig) = context.headers.get("DKIM-Signature") {
             // Check authentication results

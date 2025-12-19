@@ -1471,3 +1471,25 @@ rules:
                 pattern: "dkim=pass.*\\.(becu|creditunion|bank|fidelity|schwab|vanguard|chase|wellsfargo|bankofamerica|citi|usbank)\\.(org|com)"
     score: 220
     description: "Loan scam patterns excluding legitimate financial institutions"
+
+  # German Inheritance Advance Fee Fraud
+  - name: "German Inheritance Scam"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "BodyPattern"
+          pattern: "(?i)(millionen euro|verm.*chtnis|notar|testament)"
+        - type: "BodyPattern" 
+          pattern: "(?i)(krebs|krank|sterben|tod)"
+    score: 150
+    description: "German advance fee fraud inheritance scams"
+
+  # External Contact Redirect Detection
+  - name: "External Contact Redirect"
+    enabled: true
+    criteria:
+      type: "BodyPattern"
+      pattern: "(?i)@yahoo\\.com|@hotmail\\.com"
+    score: 50
+    description: "Redirects to suspicious email providers"

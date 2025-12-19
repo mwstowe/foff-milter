@@ -102,74 +102,144 @@ async fn analyze_email_file(config: &HeuristicConfig, email_file: &str) {
     let lines: Vec<&str> = email_content.lines().collect();
     let mut headers = std::collections::HashMap::new();
     let mut body_start = 0;
-    
+
     // Parse headers
     for (i, line) in lines.iter().enumerate() {
         if line.trim().is_empty() {
             body_start = i + 1;
             break;
         }
-        
+
         if let Some(colon_pos) = line.find(':') {
             let key = line[..colon_pos].trim().to_string();
             let value = line[colon_pos + 1..].trim().to_string();
             headers.insert(key, value);
         }
     }
-    
+
     // 1. Sender Information
     println!("📤 SENDER INFORMATION");
     println!("───────────────────────────────────────────────────────────────");
-    
+
+    let mut from_email = None;
+    let mut reply_to_email = None;
+    let mut return_path_email = None;
+
     if let Some(from) = headers.get("From") {
         println!("From: {}", from);
         if let Some(email) = foff_milter::milter::extract_email_from_header(from) {
             println!("  └─ Email: {}", email);
+            from_email = Some(email.clone());
             if let Some(domain) = email.split('@').nth(1) {
                 println!("  └─ Domain: {}", domain);
             }
         }
     }
-    
+
     if let Some(reply_to) = headers.get("Reply-To") {
         println!("Reply-To: {}", reply_to);
+        if let Some(email) = foff_milter::milter::extract_email_from_header(reply_to) {
+            reply_to_email = Some(email);
+        }
     }
-    
+
     if let Some(return_path) = headers.get("Return-Path") {
         println!("Return-Path: {}", return_path);
+        if let Some(email) = foff_milter::milter::extract_email_from_header(return_path) {
+            return_path_email = Some(email.clone());
+            println!("  └─ Extracted: {}", email);
+        }
     }
-    
+
+    // Sender Consistency Analysis
+    println!("\n🔍 SENDER CONSISTENCY ANALYSIS");
+    println!("───────────────────────────────────────────────────────────────");
+
+    let mut inconsistencies = Vec::new();
+
+    // Check From vs Reply-To mismatch
+    if let (Some(from), Some(reply_to)) = (&from_email, &reply_to_email) {
+        if from != reply_to {
+            inconsistencies.push(format!("⚠️  From ({}) ≠ Reply-To ({})", from, reply_to));
+        }
+    }
+
+    // Check From vs Return-Path domain mismatch
+    if let (Some(from), Some(return_path)) = (&from_email, &return_path_email) {
+        let from_domain = from.split('@').nth(1).unwrap_or("");
+        let return_path_domain = return_path.split('@').nth(1).unwrap_or("");
+        if from_domain != return_path_domain {
+            inconsistencies.push(format!(
+                "⚠️  From domain ({}) ≠ Return-Path domain ({})",
+                from_domain, return_path_domain
+            ));
+        }
+    }
+
+    // Check for suspicious sender names (numbers, symbols)
+    if let Some(from) = headers.get("From") {
+        if let Some(name_part) = from.split('<').next() {
+            let name = name_part.trim().trim_matches('"');
+            if name.chars().all(|c| c.is_numeric() || c == '/' || c == '-') {
+                inconsistencies.push(format!(
+                    "⚠️  Suspicious sender name: '{}' (appears to be data, not a person)",
+                    name
+                ));
+            }
+            // Check for abbreviated vs full name inconsistencies
+            if name.contains('.') && name.len() < 25 {
+                inconsistencies.push(format!(
+                    "⚠️  Abbreviated sender name: '{}' (may not match signature)",
+                    name
+                ));
+            }
+        }
+    }
+
+    if inconsistencies.is_empty() {
+        println!("✅ No sender inconsistencies detected");
+    } else {
+        for inconsistency in inconsistencies {
+            println!("{}", inconsistency);
+        }
+    }
+
     // 2. Recipients
     println!("\n📥 RECIPIENT INFORMATION");
     println!("───────────────────────────────────────────────────────────────");
-    
+
     if let Some(to) = headers.get("To") {
         println!("To: {}", to);
     }
-    
+
     if let Some(cc) = headers.get("Cc") {
         println!("Cc: {}", cc);
     }
-    
+
     // 3. Routing Information
     println!("\n🌐 ROUTING & DELIVERY PATH");
     println!("───────────────────────────────────────────────────────────────");
-    
-    let received_headers: Vec<_> = lines.iter()
+
+    let received_headers: Vec<_> = lines
+        .iter()
         .filter(|line| line.starts_with("Received:"))
         .collect();
-    
+
     println!("Hops: {}", received_headers.len());
     for (i, received) in received_headers.iter().enumerate() {
-        println!("\nHop {}: {}", i + 1, received.trim_start_matches("Received:").trim());
+        println!(
+            "\nHop {}: {}",
+            i + 1,
+            received.trim_start_matches("Received:").trim()
+        );
     }
-    
+
     // Check for forwarding
     println!("\n📬 FORWARDING ANALYSIS");
     println!("───────────────────────────────────────────────────────────────");
-    
+
     let mut forwarding_detected = false;
-    
+
     // Check for X-Forwarded headers
     for (key, value) in &headers {
         if key.to_lowercase().contains("forward") {
@@ -177,39 +247,43 @@ async fn analyze_email_file(config: &HeuristicConfig, email_file: &str) {
             forwarding_detected = true;
         }
     }
-    
+
     // Check for Gmail forwarding patterns
-    let has_google_received = received_headers.iter()
+    let has_google_received = received_headers
+        .iter()
         .any(|h| h.to_lowercase().contains("google") || h.to_lowercase().contains("gmail"));
-    
+
     if has_google_received {
         println!("📧 Gmail forwarding detected in routing path");
         forwarding_detected = true;
     }
-    
+
     // Check for other common forwarding patterns
     for received in &received_headers {
         let received_lower = received.to_lowercase();
-        if received_lower.contains("forwarded") || 
-           received_lower.contains("relay") ||
-           received_lower.contains("mta-") {
-            println!("🔄 Potential forwarding/relay detected: {}", 
-                received.lines().next().unwrap_or("").trim());
+        if received_lower.contains("forwarded")
+            || received_lower.contains("relay")
+            || received_lower.contains("mta-")
+        {
+            println!(
+                "🔄 Potential forwarding/relay detected: {}",
+                received.lines().next().unwrap_or("").trim()
+            );
             forwarding_detected = true;
         }
     }
-    
+
     if !forwarding_detected {
         println!("✅ No forwarding detected - direct delivery");
     }
-    
+
     // 4. Authentication
     println!("\n🔐 AUTHENTICATION STATUS");
     println!("───────────────────────────────────────────────────────────────");
-    
+
     if let Some(auth_results) = headers.get("Authentication-Results") {
         println!("Authentication-Results: {}", auth_results);
-        
+
         // Parse authentication details
         if auth_results.contains("dkim=pass") {
             println!("  ✅ DKIM: PASS");
@@ -218,7 +292,7 @@ async fn analyze_email_file(config: &HeuristicConfig, email_file: &str) {
         } else if auth_results.contains("dkim=none") {
             println!("  ⚠️  DKIM: NONE");
         }
-        
+
         if auth_results.contains("spf=pass") {
             println!("  ✅ SPF: PASS");
         } else if auth_results.contains("spf=fail") {
@@ -226,7 +300,7 @@ async fn analyze_email_file(config: &HeuristicConfig, email_file: &str) {
         } else if auth_results.contains("spf=none") {
             println!("  ⚠️  SPF: NONE");
         }
-        
+
         if auth_results.contains("dmarc=pass") {
             println!("  ✅ DMARC: PASS");
         } else if auth_results.contains("dmarc=fail") {
@@ -235,37 +309,41 @@ async fn analyze_email_file(config: &HeuristicConfig, email_file: &str) {
     } else {
         println!("⚠️  No Authentication-Results header found");
     }
-    
+
     // Check for DKIM signature
     if let Some(dkim_sig) = headers.get("DKIM-Signature") {
         println!("\nDKIM-Signature present:");
-        if let Some(domain) = dkim_sig.split("d=").nth(1).and_then(|s| s.split(';').next()) {
+        if let Some(domain) = dkim_sig
+            .split("d=")
+            .nth(1)
+            .and_then(|s| s.split(';').next())
+        {
             println!("  └─ Signing Domain: {}", domain.trim());
         }
     }
-    
+
     // 5. Encoding Information
     println!("\n📝 ENCODING & CONTENT ANALYSIS");
     println!("───────────────────────────────────────────────────────────────");
-    
+
     if let Some(content_type) = headers.get("Content-Type") {
         println!("Content-Type: {}", content_type);
     }
-    
+
     if let Some(content_encoding) = headers.get("Content-Transfer-Encoding") {
         println!("Content-Transfer-Encoding: {}", content_encoding);
     }
-    
+
     // Check for MIME version
     if let Some(mime_version) = headers.get("MIME-Version") {
         println!("MIME-Version: {}", mime_version);
     }
-    
+
     // Decode subject
     if let Some(subject) = headers.get("Subject") {
         println!("\nSubject Analysis:");
         println!("  Raw: {}", subject);
-        
+
         // Decode MIME encoded subject
         let decoded_subject = foff_milter::milter::decode_mime_header(subject);
         if decoded_subject != *subject {
@@ -275,38 +353,52 @@ async fn analyze_email_file(config: &HeuristicConfig, email_file: &str) {
             println!("  ✅ No encoding detected in subject");
         }
     }
-    
+
     // Analyze email normalization
     println!("\n🔍 CONTENT NORMALIZATION:");
     let normalizer = foff_milter::normalization::EmailNormalizer::new();
     let normalized = normalizer.normalize_email(&email_content);
-    
-    println!("  Text Encoding Layers: {}", normalized.body_text.encoding_layers.len());
-    println!("  HTML Encoding Layers: {}", normalized.body_html.encoding_layers.len());
-    
+
+    println!(
+        "  Text Encoding Layers: {}",
+        normalized.body_text.encoding_layers.len()
+    );
+    println!(
+        "  HTML Encoding Layers: {}",
+        normalized.body_html.encoding_layers.len()
+    );
+
     if !normalized.body_text.obfuscation_indicators.is_empty() {
-        println!("  ⚠️  Text obfuscation detected: {:?}", normalized.body_text.obfuscation_indicators);
+        println!(
+            "  ⚠️  Text obfuscation detected: {:?}",
+            normalized.body_text.obfuscation_indicators
+        );
     }
-    
+
     if !normalized.body_html.obfuscation_indicators.is_empty() {
-        println!("  ⚠️  HTML obfuscation detected: {:?}", normalized.body_html.obfuscation_indicators);
+        println!(
+            "  ⚠️  HTML obfuscation detected: {:?}",
+            normalized.body_html.obfuscation_indicators
+        );
     }
-    
-    if normalized.body_text.encoding_layers.is_empty() && normalized.body_html.encoding_layers.is_empty() {
+
+    if normalized.body_text.encoding_layers.is_empty()
+        && normalized.body_html.encoding_layers.is_empty()
+    {
         println!("  ✅ No suspicious encoding detected");
     }
-    
+
     // 6. Spam Analysis & Evaluation
-    
+
     // Run through filter engine for scoring
-    let mut filter_engine = match FilterEngine::new(config.clone()) {
+    let filter_engine = match FilterEngine::new(config.clone()) {
         Ok(engine) => engine,
         Err(e) => {
             eprintln!("❌ Error creating filter engine: {}", e);
             return;
         }
     };
-    
+
     // Build mail context
     let mut mail_context = foff_milter::filter::MailContext {
         sender: None,
@@ -328,35 +420,35 @@ async fn analyze_email_file(config: &HeuristicConfig, email_file: &str) {
         normalized: None,
         proximate_mailer: None,
     };
-    
+
     if let Some(from) = headers.get("From") {
         mail_context.from_header = Some(from.clone());
         if let Some(email) = foff_milter::milter::extract_email_from_header(from) {
             mail_context.sender = Some(email);
         }
     }
-    
+
     if let Some(to) = headers.get("To") {
         if let Some(email) = foff_milter::milter::extract_email_from_header(to) {
             mail_context.recipients.push(email);
         }
     }
-    
+
     if let Some(subject) = headers.get("Subject") {
         mail_context.subject = Some(foff_milter::milter::decode_mime_header(subject));
     }
-    
+
     // Get body content
     let body_content: String = lines[body_start..].join("\n");
     mail_context.body = Some(body_content.clone());
-    
+
     // Evaluate
     let (action, matched_rules, evidence) = filter_engine.evaluate(&mail_context).await;
-    
+
     println!("\n📊 FINAL VERDICT");
     println!("───────────────────────────────────────────────────────────────");
     println!("Action: {:?}", action);
-    
+
     // Extract spam score from evidence if available
     if !evidence.is_empty() {
         println!("\n🎯 CONTEXTUAL ANALYSIS & SCORING:");
@@ -364,7 +456,7 @@ async fn analyze_email_file(config: &HeuristicConfig, email_file: &str) {
             println!("  • {}: {}", rule_name, score_info);
         }
     }
-    
+
     // Calculate total score from matched rules (approximation)
     let mut total_score = 0;
     for rule in &matched_rules {
@@ -374,27 +466,27 @@ async fn analyze_email_file(config: &HeuristicConfig, email_file: &str) {
             total_score += 100; // Positive score for threats
         }
     }
-    
+
     println!("\n📈 SPAM SCORE ANALYSIS:");
     println!("  Estimated Total Score: {}", total_score);
     match action {
         foff_milter::heuristic_config::Action::Accept => {
             println!("  Classification: ✅ LEGITIMATE (Score < 50)");
-        },
+        }
         foff_milter::heuristic_config::Action::TagAsSpam { .. } => {
             println!("  Classification: ⚠️  SPAM (Score ≥ 50)");
-        },
+        }
         foff_milter::heuristic_config::Action::Reject { .. } => {
             println!("  Classification: ❌ REJECTED (Score ≥ 350)");
-        },
+        }
         foff_milter::heuristic_config::Action::ReportAbuse { .. } => {
             println!("  Classification: 🚨 ABUSE REPORTED (High threat)");
-        },
+        }
         foff_milter::heuristic_config::Action::UnsubscribeGoogleGroup { .. } => {
             println!("  Classification: 📧 GOOGLE GROUP UNSUBSCRIBE");
-        },
+        }
     }
-    
+
     if !matched_rules.is_empty() {
         println!("\n🎯 MATCHED DETECTION RULES:");
         for rule in &matched_rules {
@@ -403,7 +495,7 @@ async fn analyze_email_file(config: &HeuristicConfig, email_file: &str) {
     } else {
         println!("\n✅ No threat detection rules matched");
     }
-    
+
     println!("\n═══════════════════════════════════════════════════════════════\n");
 }
 
