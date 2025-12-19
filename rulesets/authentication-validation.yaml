@@ -59,7 +59,7 @@ rules:
     score: 30
     description: "DKIM signature validation failure"
 
-  # SPF Failure Penalty (+25 points)
+  # SPF Failure Penalty (+30 points)
   - name: "SPF Failure Penalty"
     enabled: true
     criteria:
@@ -72,7 +72,7 @@ rules:
           criteria:
             type: "SenderPattern"
             pattern: ".*@.*(gov|edu|mil)$"
-    score: 25
+    score: 30
     description: "SPF policy validation failure"
 
   # Domain Mismatch Detection (+75 points)
