@@ -145,6 +145,7 @@ async fn analyze_email_file(
     blocklist_config: &Option<BlocklistConfig>,
     toml_config: &Option<TomlConfig>,
     email_file: &str,
+    force_reanalysis: bool,
 ) {
     println!("\n📧 Email Forensic Analysis");
     println!("═══════════════════════════════════════════════════════════════\n");
@@ -516,6 +517,11 @@ async fn analyze_email_file(
 
     // Set same-server detection (default enabled for analyze)
     filter_engine.set_same_server_detection(true);
+
+    // Disable upstream trust if force reanalysis is requested
+    if force_reanalysis {
+        filter_engine.set_disable_upstream_trust(true);
+    }
 
     // Set sender blocking configuration if available
     if let Some(toml_cfg) = &toml_config {
@@ -944,6 +950,12 @@ async fn main() {
                 .action(clap::ArgAction::Set),
         )
         .arg(
+            Arg::new("force-reanalysis")
+                .long("force-reanalysis")
+                .help("Force fresh analysis even if upstream FOFF headers exist")
+                .action(clap::ArgAction::SetTrue),
+        )
+        .arg(
             Arg::new("anonymize")
                 .long("anonymize")
                 .value_name("FILE")
@@ -1015,7 +1027,8 @@ async fn main() {
     }
 
     if let Some(email_file) = matches.get_one::<String>("analyze") {
-        analyze_email_file(&config, &whitelist_config, &blocklist_config, &toml_config, email_file).await;
+        let force_reanalysis = matches.get_flag("force-reanalysis");
+        analyze_email_file(&config, &whitelist_config, &blocklist_config, &toml_config, email_file, force_reanalysis).await;
         return;
     }
 

@@ -160,6 +160,7 @@ pub struct FilterEngine {
     sender_blocking_action: Action,
     // Same server detection (can be disabled for testing)
     same_server_detection_enabled: bool,
+    disable_upstream_trust: bool,
     // Invoice fraud analyzer
     invoice_analyzer: InvoiceAnalyzer,
     // Media content analyzer
@@ -670,6 +671,7 @@ impl FilterEngine {
                 message: "Sender blocked by pattern".to_string(),
             },
             same_server_detection_enabled: true,
+            disable_upstream_trust: false,
             invoice_analyzer: InvoiceAnalyzer::default(),
             media_analyzer: MediaAnalyzer::new(),
             feature_engine: FeatureEngine::new(),
@@ -706,6 +708,10 @@ impl FilterEngine {
 
     pub fn set_same_server_detection(&mut self, enabled: bool) {
         self.same_server_detection_enabled = enabled;
+    }
+
+    pub fn set_disable_upstream_trust(&mut self, disabled: bool) {
+        self.disable_upstream_trust = disabled;
     }
 
     pub fn set_sender_blocking(
@@ -773,6 +779,10 @@ impl FilterEngine {
     }
 
     fn check_upstream_trust(&self, context: &MailContext) -> Option<UpstreamTrustResult> {
+        // Skip upstream trust if disabled (for force reanalysis)
+        if self.disable_upstream_trust {
+            return None;
+        }
         // Look for existing FOFF-milter processing headers
         let has_foff_score = context
             .headers
