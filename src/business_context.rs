@@ -336,6 +336,8 @@ impl BusinessContextAnalyzer {
             "bankofamerica.com",
             "wellsfargo.com",
             "paypal.com",
+            "govdelivery.com",
+            "public.govdelivery.com",
             "fedex.com",
             "ups.com",
             "usps.com",
