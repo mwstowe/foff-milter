@@ -1,0 +1,1973 @@
+Return-Path: <0101019b37c36cdf-ac4ef465-89be-426b-a645-7160096dadff-000000@mail.capitaloneshopping.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTPS id 5BJHwd54038381
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <user@example.com>; Fri, 19 Dec 2025 17:58:39 GMT
+	(envelope-from 0101019b37c36cdf-ac4ef465-89be-426b-a645-7160096dadff-000000@mail.capitaloneshopping.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (1024-bit key; unprotected) header.d=capitaloneshopping.com header.i=@capitaloneshopping.com header.b=PzE2qR8p;
+	dkim=pass (1024-bit key; unprotected) header.d=amazonses.com header.i=@amazonses.com header.b=SLHMN80v
+Received: from h149-137.smtp-out.us-west-2.amazonses.com (h149-137.smtp-out.us-west-2.amazonses.com [206.55.149.137])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 5BJHwctu032594
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO)
+	for <user@example.com>; Fri, 19 Dec 2025 11:58:38 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 5BJHwctu032594
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (1024-bit key, unprotected) header.d=capitaloneshopping.com header.i=@capitaloneshopping.com header.a=rsa-sha256 header.s=u5qq6ldvhobg6qf3kt6a3owekdl5v2ka header.b=PzE2qR8p;
+	dkim=pass (1024-bit key, unprotected) header.d=amazonses.com header.i=@amazonses.com header.a=rsa-sha256 header.s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx header.b=SLHMN80v
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=u5qq6ldvhobg6qf3kt6a3owekdl5v2ka; d=capitaloneshopping.com;
+	t=555-123-4567;
+	h=List-Unsubscribe-Post:From:To:Subject:Message-ID:List-Help:List-Owner:List-Unsubscribe:Date:MIME-Version:Content-Type;
+	bh=t7ihAdn238yIZhVAMqKu6mYPHljUBBqKi3RXv5JFdNA=;
+	b=PzE2qR8pV+wwNAcEgmryDWh8GagKIyJJgkSVV76mWwlfxbouvqnRgvps6raeWuxU
+	EiL0aeOePn+2JNHTkZ7M7PXUbbED1inx385CMT2dV2z1RtEmK9OfWlmABOha3R8AKdq
+	gnhuSWoLB90sgr6IYhcpjtpasFkm6wBNBy5nF3KU=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=555-123-4567;
+	h=List-Unsubscribe-Post:From:To:Subject:Message-ID:List-Help:List-Owner:List-Unsubscribe:Date:MIME-Version:Content-Type:Feedback-ID;
+	bh=t7ihAdn238yIZhVAMqKu6mYPHljUBBqKi3RXv5JFdNA=;
+	b=SLHMN80vfS2OCXy1sKniYCPI8tKMPEmRK2JW9Ooq9ofvFTpQtEYRzO2g2EwlRmhV
+	En+Jjs0/v4CjXHoHdALVMYOGznreZ+sdmfhSoID0hL6+ImCgSpOcSj93eph3X0hLt7I
+	JLlu/ug6sAjouIWMhsLpZTgEd3L/HryZ2OUVlK9Q=
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+From: Capital One Shopping <hello@capitaloneshopping.com>
+To: user@example.com
+Subject: Offer Expiring Soon: Don't miss this offer from T-Mobile Home
+ Internet
+Message-ID: <0101019b37c36cdf-ac4ef465-89be-426b-a645-7160096dadff-000000@us-west-2.amazonses.com>
+List-Help: <mailto:CapitalOneShoppinghello@capitaloneshopping.com>
+List-Owner: <mailto:CapitalOneShoppinghello@capitaloneshopping.com>
+List-Unsubscribe:
+ <https://capitaloneshopping.com/api/v1/email/link-safe-ep/FSJtY_IgHrHDldR8CupHOLbcTxx8-b87RU_g1gBQ72HmO94JilJEzkoGA1YNHz0NqX4XXCRGO0aQCXyOJXIye1h_jPU0BD2cHP2FT9Nyi9344MqJ2409K_-SRrq6t-Nh2uyZ7VJzCOM5hpE1w8YOqZ-bxOVk7wp4dNMWozj05eZsngmibVe55beoBSD4EyB7RCCyC0hnHD3PnvgDFrF6KZXKUPYXrdttccO2MY1jp-SYkembm58I28zT_DSN0rjt3QvXSgsSKHWL-yFyKloXfBjT03rzNU9rorczpn1WCSJnF2Gz9106eBkmpQhq1AIbss246_Er7YOX4rPLhdexbMxPnGO2sPc7Z6W7SnnIu_6sBTnaE8mv_UPoi2mtioZDRqGZLUNl4ctKpajjLT-CIY42E2caZqn7d470wRAdSwIttCH9HciHNHobCACTUZhSABrBBdb51jYt5dxPHgAWi2WlkJBqseji4b3SvzMvlkcdFvErQmAUJIA1-TVpkpVC7Gz6qE3qABFO1G4ccxyC15RcuE8/end>
+Date: Fri, 19 Dec 2025 17:58:32 +0000
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="--_NmP-bd0c0cc976b9994b-Part_1"
+Feedback-ID: ::1.us-west-2.7vipsVnineg2dEkfuRGX3cbXvhAz9ktjuliiz3vienk=:AmazonSES
+X-SES-Outgoing: 2025.12.19-206.55.149.137
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Fri, 19 Dec 2025 17:58:39 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Fri, 19 Dec 2025 11:58:38 -0600 (CST)
+X-Spam-Flag: YES
+
+----_NmP-bd0c0cc976b9994b-Part_1
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+OFFER EXPIRING SOON: DON
+
+--------------------
+
+'
+
+--------------------
+
+T MISS THIS OFFER FROM T-MOBILE HOME INTERNET
+
+--------------------
+
+
+
+Capital One Shopping  logo
+
+
+T-Mobile Home Internet logo
+[https://capitaloneshopping.com/api/v1/redirectV2?autoRedirect=3Dtrue&chann=
+el=3Demail&clickEvent=3DemailOpen&credits=3Dtrue&destDomain=3Dt-mobile.=
+com&emailId=3Deb5fc2fe-59cd-462a-88be-7b5a82a04b44&experience=3Demail&promo=
+tionId=3D1f246bc6-c642-4b8c-a191-5275e0226ed5&redirectId=3Deb5fc2fe-59cd-46=
+2a-88be-7b5a82a04b44&subExperience=3Dmulti_merchant&token=3DeyJhbGciOiJSUzU=
+xMiJ9.eyJpIjoiZTZiYjdkYjEtZGQ3OC00NGRkLWFhZjAtZjFjMjJjYTlhZjY1IiwidSI6ImI3M=
+GY0MzQ1LTk0YmYtNGU5MC1hM2U2LWJlZDc1OTI4NGRhNSIsImQiOiJ0LW1vYmlsZS5jb20iLCJl=
+IjoxNzY2NDc2Nzk5OTk5LCJ0IjoiZml4ZWQiLCJhIjo2MDAwMCwiYiI6IlVTRCIsInEiOiJVU0Q=
+iLCJrIjp0cnVlfQ.VLAbHNgEQWOb-8Sg2Gvn7NUdPes96f5PyRHVaRXPomBBWVAivDyAAYw-Se8=
+4CW2mw65YUebBOffarnEJnppNDr-MXiTcAzWt8v7EBleiP6cQs1NfElw9RUAsLcJDdeOst4-N_T=
+ETAFD5rjy-nFf5DmfNYM9SX3RSoQTsjJF9tqjFGCvrKFu58igqKvCxgClDgBcAEhtk1qEeJMc15=
+4phQZszoN8jIPStLc5r4B05p2CHHNafWI59rhI-XaB7QlMsdf0KfWU0w7ztEoyHqHFhEPyirAa4=
+2uiWUwLYxQIIOj5fd-4tewA69J_WMIoUKo4IcLc_s_K0QaADJdyIQoG6kMM0UQxjhzCdGTEINkR=
+ShLy67WtgxmHgxTKG7TBD6-Igi0ro_PUFJzmgnW4HQt1-LV1DKq8YqUcWh7r2B7FDaoIpfbtsZI=
+U9W6FUDC2lbaTEi8-4Rl7dB0HBn0Gah634Goc7rXxpHVY0Xh3B_9oFV1P9GZp_dZcdOtyWZdAVR=
+7Rwz28wuV4U9HJsyGtvHwW39V7cEhjEONH6JP0EKkShWt_iDfm1toFiy8uhTcLhAmrrU1mFUBAd=
+INd8JcfStrDZmA46oj5gUroy9MRfdHJ6VcPznAu3xf4oF3DJ5t9ktIWe6epmf-ykV-SvyGsdq5U=
+WyoNnbPuK08954eQ8qWnuDwA&userId=3Db70f4345-94bf-4e90-a3e6-bed759284da5&wbPu=
+blisher=3Dwb]=20
+
+Single-use. Expiring Dec 22. Exclusively for you. Earn =
+$600 back Get rewards on your next purchase You last viewed Nov 21 =
+[https://capitaloneshopping.com/api/v1/redirectV2?autoRedirect=3Dtrue&chann=
+el=3Demail&clickEvent=3DemailOpen&credits=3Dtrue&destDomain=3Dt-mobile.=
+com&emailId=3Deb5fc2fe-59cd-462a-88be-7b5a82a04b44&experience=3Demail&promo=
+tionId=3D1f246bc6-c642-4b8c-a191-5275e0226ed5&redirectId=3Deb5fc2fe-59cd-46=
+2a-88be-7b5a82a04b44&subExperience=3Dmulti_merchant&token=3DeyJhbGciOiJSUzU=
+xMiJ9.eyJpIjoiZTZiYjdkYjEtZGQ3OC00NGRkLWFhZjAtZjFjMjJjYTlhZjY1IiwidSI6ImI3M=
+GY0MzQ1LTk0YmYtNGU5MC1hM2U2LWJlZDc1OTI4NGRhNSIsImQiOiJ0LW1vYmlsZS5jb20iLCJl=
+IjoxNzY2NDc2Nzk5OTk5LCJ0IjoiZml4ZWQiLCJhIjo2MDAwMCwiYiI6IlVTRCIsInEiOiJVU0Q=
+iLCJrIjp0cnVlfQ.VLAbHNgEQWOb-8Sg2Gvn7NUdPes96f5PyRHVaRXPomBBWVAivDyAAYw-Se8=
+4CW2mw65YUebBOffarnEJnppNDr-MXiTcAzWt8v7EBleiP6cQs1NfElw9RUAsLcJDdeOst4-N_T=
+ETAFD5rjy-nFf5DmfNYM9SX3RSoQTsjJF9tqjFGCvrKFu58igqKvCxgClDgBcAEhtk1qEeJMc15=
+4phQZszoN8jIPStLc5r4B05p2CHHNafWI59rhI-XaB7QlMsdf0KfWU0w7ztEoyHqHFhEPyirAa4=
+2uiWUwLYxQIIOj5fd-4tewA69J_WMIoUKo4IcLc_s_K0QaADJdyIQoG6kMM0UQxjhzCdGTEINkR=
+ShLy67WtgxmHgxTKG7TBD6-Igi0ro_PUFJzmgnW4HQt1-LV1DKq8YqUcWh7r2B7FDaoIpfbtsZI=
+U9W6FUDC2lbaTEi8-4Rl7dB0HBn0Gah634Goc7rXxpHVY0Xh3B_9oFV1P9GZp_dZcdOtyWZdAVR=
+7Rwz28wuV4U9HJsyGtvHwW39V7cEhjEONH6JP0EKkShWt_iDfm1toFiy8uhTcLhAmrrU1mFUBAd=
+INd8JcfStrDZmA46oj5gUroy9MRfdHJ6VcPznAu3xf4oF3DJ5t9ktIWe6epmf-ykV-SvyGsdq5U=
+WyoNnbPuK08954eQ8qWnuDwA&userId=3Db70f4345-94bf-4e90-a3e6-bed759284da5&wbPu=
+blisher=3Dwb] Unlock Your Offer [https://capitaloneshopping.=
+com/api/v1/redirectV2?autoRedirect=3Dtrue&channel=3Demail&clickEvent=3Demai=
+lOpen&credits=3Dtrue&destDomain=3Dt-mobile.com&emailId=3Deb5fc2fe-59cd-462a=
+-88be-7b5a82a04b44&experience=3Demail&promotionId=3D1f246bc6-c642-4b8c-a191=
+-5275e0226ed5&redirectId=3Deb5fc2fe-59cd-462a-88be-7b5a82a04b44&subExperien=
+ce=3Dmulti_merchant&token=3DeyJhbGciOiJSUzUxMiJ9.eyJpIjoiZTZiYjdkYjEtZGQ3OC=
+00NGRkLWFhZjAtZjFjMjJjYTlhZjY1IiwidSI6ImI3MGY0MzQ1LTk0YmYtNGU5MC1hM2U2LWJlZ=
+Dc1OTI4NGRhNSIsImQiOiJ0LW1vYmlsZS5jb20iLCJlIjoxNzY2NDc2Nzk5OTk5LCJ0IjoiZml4=
+ZWQiLCJhIjo2MDAwMCwiYiI6IlVTRCIsInEiOiJVU0QiLCJrIjp0cnVlfQ.=
+VLAbHNgEQWOb-8Sg2Gvn7NUdPes96f5PyRHVaRXPomBBWVAivDyAAYw-Se84CW2mw65YUebBOff=
+arnEJnppNDr-MXiTcAzWt8v7EBleiP6cQs1NfElw9RUAsLcJDdeOst4-N_TETAFD5rjy-nFf5Dm=
+fNYM9SX3RSoQTsjJF9tqjFGCvrKFu58igqKvCxgClDgBcAEhtk1qEeJMc154phQZszoN8jIPStL=
+c5r4B05p2CHHNafWI59rhI-XaB7QlMsdf0KfWU0w7ztEoyHqHFhEPyirAa42uiWUwLYxQIIOj5f=
+d-4tewA69J_WMIoUKo4IcLc_s_K0QaADJdyIQoG6kMM0UQxjhzCdGTEINkRShLy67WtgxmHgxTK=
+G7TBD6-Igi0ro_PUFJzmgnW4HQt1-LV1DKq8YqUcWh7r2B7FDaoIpfbtsZIU9W6FUDC2lbaTEi8=
+-4Rl7dB0HBn0Gah634Goc7rXxpHVY0Xh3B_9oFV1P9GZp_dZcdOtyWZdAVR7Rwz28wuV4U9HJsy=
+GtvHwW39V7cEhjEONH6JP0EKkShWt_iDfm1toFiy8uhTcLhAmrrU1mFUBAdINd8JcfStrDZmA46=
+oj5gUroy9MRfdHJ6VcPznAu3xf4oF3DJ5t9ktIWe6epmf-ykV-SvyGsdq5UWyoNnbPuK08954eQ=
+8qWnuDwA&userId=3Db70f4345-94bf-4e90-a3e6-bed759284da5&wbPublisher=3Dwb] =
+Rewards offer ends on December 22, 2025  at 11:59 PM PST. Exclusions =
+[https://capitaloneshopping.com/exclusions?d=3DdC1tb2JpbGUuY29t&campaignId=
+=3D2d44a586-c64f-449e-8b8d-aa15761bfdf6] and additional terms =
+[https://capitaloneshopping.com/our-terms/terms-of-service?=
+country=3DUS&campaignId=3D2d44a586-c64f-449e-8b8d-aa15761bfdf6] apply. =
+Today 's Top Offer Get this offer [https://capitaloneshopping.=
+com/api/v1/redirectV2?autoRedirect=3Dtrue&channel=3Demail&clickEvent=3Demai=
+lOpen&credits=3Dtrue&destDomain=3Dapple.com&destUrl=3Dhttps%3A%2F%2Fwww.=
+apple.com%2Fstore&emailId=3Deb5fc2fe-59cd-462a-88be-7b5a82a04b44&experience=
+=3Demail&promotionId=3Dd765dad2-3ba3-4c1e-806f-77c232f024e8&redirectId=3Deb=
+5fc2fe-59cd-462a-88be-7b5a82a04b44&subExperience=3Demail_headline_offer&tok=
+en=3DeyJhbGciOiJSUzUxMiJ9.eyJpIjoiZjBlYjM5ZWQtNzNjMC00MjM0LWE4MTYtM2EwY2Y4M=
+GRkNzRlIiwidSI6ImI3MGY0MzQ1LTk0YmYtNGU5MC1hM2U2LWJlZDc1OTI4NGRhNSIsImQiOiJh=
+cHBsZS5jb20iLCJlIjoxNzY2MjE3NTk5OTk5LCJ0IjoicGVyY2VudGFnZSIsImEiOjEwMDAsImI=
+iOiJVU0QiLCJwIjoxMDAwMDAsInEiOiJVU0QiLCJrIjp0cnVlfQ.=
+b1AxXjzjNRD0DsmHOjGkGZFXl4j1ckHAh5hrpzBm4IZi2Vfib6jJMMQ4PmmTUWmtt0L2OJ08EEH=
+Q4ze25r8GDkDIdFYC-443xyh5NqqxeCQcCsfYRBAPPDoU2DseFUG2cLz6BtOJwkzK2uH0qjEz9F=
+ThDDMpooCsq1FHc20tktLZIEluvw3OHO5UbZGa3ywnEEOmVxNNYy8_DtyknD1DexrxOYifg7Bb4=
+9L53u1SgapNZRy-ybbtkNP_S1yiww8za_NnHuCDWb-REQzK6oZCLINqovDVR7Sp2e4EgL8ZKSwp=
+uZxU8qvPxaeFu5mAJqrWs0lo-d2Bx0sVDHMbQrTzxZKn0SWGd6yudmdKeIjb2DwUhZhOdzu4tdM=
+dd7a-PkYD95cf99SyIcksLAtTe6pyIt2DYwdHU1xFQoKt-D5pkwbtvngbqtvlmogOik9uEBwQIL=
+aRHY_RQjmBWItIcukoMivJFSOGzYVJ1uRypjMoU0LpUaNXnkSHpr1SH_SR-6M8fLEnUd8B7K5eU=
+ILMIl4MEfLENr-0dINTooSUxvej3gRYpnHZHMEygsVwFxBP3J5HcRv4KVjqXcGxN05ARs1-FpXk=
+q9bZ_r3WMjMRuWrFt58RNjIEy5EZAlFKA3vdsKQTyrpPNv6xv7y22XaxZTi90uQI0kGuqXQ5d4H=
+kiwINGZs&userId=3Db70f4345-94bf-4e90-a3e6-bed759284da5&wbPublisher=3Dwb] =
+Our top offer revealed daily [https://capitaloneshopping.=
+com/api/v1/redirectV2?autoRedirect=3Dtrue&channel=3Demail&clickEvent=3Demai=
+lOpen&credits=3Dtrue&destDomain=3Dlanebryant.com&destUrl&emailId=3Deb5fc2fe=
+-59cd-462a-88be-7b5a82a04b44&experience=3Demail&promotionId=3Da6ec93db-94e6=
+-4155-a7a2-9343f64b52bc&redirectId=3Deb5fc2fe-59cd-462a-88be-7b5a82a04b44&s=
+ubExperience=3Demail_headline_offer_preview&token=3DeyJhbGciOiJSUzUxMiJ9.=
+eyJpIjoiNDVkOGUxNzMtNmFhNy00ZDYxLTg5NmYtNDY0NzA3ZTBjMzE4IiwidSI6ImI3MGY0MzQ=
+1LTk0YmYtNGU5MC1hM2U2LWJlZDc1OTI4NGRhNSIsImQiOiJsYW5lYnJ5YW50LmNvbSIsImUiOj=
+E3NjY0NzY3OTk5OTksInQiOiJwZXJjZW50YWdlIiwiYSI6MjQwMCwiYiI6IlVTRCIsInAiOjEwM=
+DAwMCwicSI6IlVTRCIsImsiOnRydWV9.SQrCFMxxKYY-BB3UIYo9eU8yVfVK6q2WOTkMB48-6hr=
+jXNsfsyeqD7d_Gf4_vr7GEHkqWXZOdOwcCTV4id1OcAnojWfjCnTedePqUYtYa22w4tgYmtIiol=
+GtAy1b_yTQ-NPaLag2M6g_uv68KVu1iH8S0Yb9mLMgEZETaMzMkt_9HOTqS5Ob_jz6yDBvTi-Dn=
+EuExlTzJvLFFhuE1Fa_VGJcZRJsa2s-emPUhuXtntSSLoAFNpfy4qcDMcb0aRs4Nge1jjbyWRb1=
+693aLqYamqQrOI6Oi3hiGzgYFn-eM6f4IrfYIsFDR9n9_uRy7DJVKbLbuEcC5abPxfgLix-iuJ3=
+7u-upWW_nDlUydOkxTq0YNMHWios8_Nvvnsnqs3hWBrE2uC0c3Ps7jqsR-lEMtTmp3MnNBgEvh5=
+70VJIIW2ev94z8dgtEtWcIvbZ7j0KXOy0fqq1CBHiBnQwjGNG42nh8FytOfgOnwiCPPUgEGZaKL=
+0mUmQEVtN3VxHsTAkNiAY7AS3AwmYRR5BD8aibDqBi-W-E988KOa1sqxTQNUUC2rDGGKpduc74p=
+3TbM6FkqTCD1-9JpWNLGtfLmxztWIaaQQWkJkNSKcMmMdMNG2LM_JO-rC9h6c717nCPI4788koO=
+Z5H_KxtuMHi06Lzl6dmODdDOFBpnH2rdVLzq4kOs&userId=3Db70f4345-94bf-4e90-a3e6-b=
+ed759284da5&wbPublisher=3Dwb] Sat 12/20 [https://capitaloneshopping.=
+com/api/v1/redirectV2?autoRedirect=3Dtrue&channel=3Demail&clickEvent=3Demai=
+lOpen&credits=3Dtrue&destDomain=3Dmintmobile.com&destUrl=3Dhttps%3A%2F%2Fww=
+w.mintmobile.com%2Funlimited-data-phone-plans%2F&emailId=3Deb5fc2fe-59cd-46=
+2a-88be-7b5a82a04b44&experience=3Demail&promotionId=3D418745c6-35a0-4691-b2=
+4b-ff36e74104ee&redirectId=3Deb5fc2fe-59cd-462a-88be-7b5a82a04b44&subExperi=
+ence=3Demail_headline_offer_preview&token=3DeyJhbGciOiJSUzUxMiJ9.=
+eyJpIjoiNjBhMDk1YmUtMjg5NC00MDZiLTk3NTAtMzg3ZmVhY2I3YThkIiwidSI6ImI3MGY0MzQ=
+1LTk0YmYtNGU5MC1hM2U2LWJlZDc1OTI4NGRhNSIsImQiOiJtaW50bW9iaWxlLmNvbSIsImUiOj=
+E3NjY0NzY3OTk5OTksInQiOiJjdXQiLCJhIjoyMDAwMCwiYiI6IlVTRCIsInEiOiJVU0QiLCJjI=
+jpbeyJhIjo2MDAwLCJuIjoiMTItTW9udGggVW5saW1pdGVkIFBsYW5zIiwidCI6ImZpeGVkIn0s=
+eyJhIjo0MDAwLCJuIjoiRGV2aWNlcyIsInQiOiJmaXhlZCJ9LHsiYSI6MTYwMCwibiI6IkFsbCB=
+PdGhlciBQbGFucyIsInQiOiJmaXhlZCJ9XSwiayI6dHJ1ZX0.ghjGssONjTZ2gNMOdE7G2Ux92c=
+nMpapOHN18Y4AMqfLYead41h9dgJfgYmcfvYxUK_ZT4VFYVYMJIyM01CUS3qMoVpEwAPUP77Ps_=
+1qV0sTMa-5T2y7JUw22t5Vyp9Vlh4bhfi5dAlmp7K3bNUz30MGsyI4wawzPfTvBLGsmXABLbbCb=
+DfLl-8Pvc4h_ToSrD5oeDPcUZxiSshqUvHyfVBpVfv6-8IJIvgHoE1riBXjALLFg8o6302iLzet=
+qBECm3L3TI-vWKFsvEzftp3VmnaxOeLASpiCAnrO-mo05Vqf8Kszam08J8TtEkkEX9_bx3ORsgr=
+bHAvF1Qd1NAsu_NG1RiCX_NLC_1hDJS6hYANCoH7xmwPEaxQAOT-t0fOYXksPXNKSUYXvFW3V6g=
+EFAiJ0YjAOo885XzCLSzLABXdgyrTD2Ce1Zd5KTwTPP9k8IbxKV9xNqfsooD5renHwNFyDI7VG7=
+iFLlfYfDbkf5G-1xIAy0p6GkjezeOnRZ_r5cavvxvOF2u2v9pJUh4rVZumepNe9o9SANJK0_AcO=
+K40XJ7H6X04YuYsHkprSzL7lSDEtJsVlIHEVldToiLdAiCVyuFop5qJL-2Tr_FRtNlQtMVpwb5U=
+pmHjt3CYK0XLW6BD5Opq0kzx78feriwdxo8WnmkI0JMg0Nl8fSg0KO5mg&userId=3Db70f4345=
+-94bf-4e90-a3e6-bed759284da5&wbPublisher=3Dwb] Sun 12/21 =
+[https://capitaloneshopping.com/api/v1/redirectV2?autoRedirect=3Dtrue&chann=
+el=3Demail&clickEvent=3DemailOpen&credits=3Dtrue&destDomain=3Dchewy.=
+com&destUrl=3Dhttps%3A%2F%2Fwww.chewy.com%2Fdeals%2Fup-to-40-off-select-toy=
+s-beds-more-172558&emailId=3Deb5fc2fe-59cd-462a-88be-7b5a82a04b44&experienc=
+e=3Demail&promotionId=3D7f50d150-007b-4c0d-8324-540b95712b19&redirectId=3De=
+b5fc2fe-59cd-462a-88be-7b5a82a04b44&subExperience=3Demail_headline_offer_pr=
+eview&token=3DeyJhbGciOiJSUzUxMiJ9.eyJpIjoiNmQ5MDliYmItMDM3Yy00YjE4LTljODAt=
+NGIzZGVlODUxNmZlIiwidSI6ImI3MGY0MzQ1LTk0YmYtNGU5MC1hM2U2LWJlZDc1OTI4NGRhNSI=
+sImQiOiJjaGV3eS5jb20iLCJlIjoxNzY2NDc2Nzk5OTk5LCJ0IjoicGVyY2VudGFnZSIsImEiOj=
+MwMDAsImIiOiJVU0QiLCJwIjoxMDAwMDAsInEiOiJVU0QiLCJrIjp0cnVlfQ.=
+gEUJmMfLBRyLSxtBeTzyIhEwufkhfZulCRtnbGodC8QN9Irf0gyIODvVpM29ecwEnNKlIBrfwPq=
+P9O5MSy5JIr5JujbUvziuwcYMmHMBG36kCWP9MYSWbo-DCcqeT_gRcS68hkgffFPzvJwPUaxroq=
+wFjYnSNEPgUuG9eVZz5oaQSWYeXW5b73RwCW_rGNry3aI6gnFiGt5LM_ZjVeZ5DcHCDLtZO2kmO=
+QFp05Fh5mtqwJINDx799-JtrMk2EanmbAuF_juhDMcFAbZjIVvpERkSx30pgKogMDsF2SOzbctf=
+42aKUzb4GMxGBWkAbw9yuIwCgsUby1p3l8CTM0ThHmoO-lCfvVYQRFgwwU0VZA-m7Q6bk8HOw7F=
+mwhhkcnc1KskVKwgnQtdsQSAus1mOrJ6iAQ8ux9etEndzX6pb4rdoL52L6mic0t5k_cXALmTRT3=
+50q2gz3hCopHExcstiSmmdeAcUpuWoVr8OxxLRPMP1ja2aJTHNTulTfTa8-9ZJXSdjga0zeokFm=
+-aBHTMG11fHPTHlJ-_KNW-tisxjFGgVn7gBXMow8FnkDWzBvCYmOP7JUEb3wDdB1-Qp37COY3ZC=
+DTaNRiUk8sqX4OqpEv7sMuuBvCNK_2LfXdxDoUKgPZ-6qI2QVBSbpXmoDJ-Icyxj9x49Gl-Iy2H=
+0d4myJsc&userId=3Db70f4345-94bf-4e90-a3e6-bed759284da5&wbPublisher=3Dwb] =
+Mon 12/22 [https://capitaloneshopping.com/api/v1/redirectV2?=
+autoRedirect=3Dtrue&channel=3Demail&clickEvent=3DemailOpen&credits=3Dtrue&d=
+estDomain=3Dashleyfurniture.com&destUrl&emailId=3Deb5fc2fe-59cd-462a-88be-7=
+b5a82a04b44&experience=3Demail&promotionId=3Da1400983-1cb3-4392-8459-99f5ab=
+bd110c&redirectId=3Deb5fc2fe-59cd-462a-88be-7b5a82a04b44&subExperience=3Dem=
+ail_headline_offer_preview&token=3DeyJhbGciOiJSUzUxMiJ9.=
+eyJpIjoiZjlhYjBmOTUtNjhlOS00OTcwLTk5NzUtZGFkNzIxMjE5ODNlIiwidSI6ImI3MGY0MzQ=
+1LTk0YmYtNGU5MC1hM2U2LWJlZDc1OTI4NGRhNSIsImQiOiJhc2hsZXlmdXJuaXR1cmUuY29tIi=
+wiZSI6MTc2NjQ3Njc5OTk5OSwidCI6InBlcmNlbnRhZ2UiLCJhIjoxMjAwLCJiIjoiVVNEIiwic=
+CI6MTAwMDAwLCJxIjoiVVNEIiwiayI6dHJ1ZX0.CK2hNz0dptOlPmd437Nh6ezPZNaG7BF9Ksic=
+1zopYiOBjz3s81U_tgv4ppwVnyy4F3PIdiaXYIJ4ywUweTZFLuVT2ZiYS7Je3eDNBo8oWK5LM0Q=
+jSxw-dfPn3Hb23JHRAE_5oazIxQIJCLYToPcZiIueXqZtX6RCEADf8XwdI5itp6zTXO3uB48d5C=
+yv6K49Z-CC0FlaVteIhN0MOocEVXAFZjHUhGHIuh60Ln-yMLucyjg4Wq6sUuIynQmdtMbip-xtL=
+UoCQzfLwvVrA2Zff_lQ1HcxbTXQD1GDkHkxaOE9COK4zvXmRxCPQk557tIYx4Zny4wssYHqwMF2=
+1r-QPZx7BNwogwd08nsd5ntQUSonHdkMWllw4GDJaMGX0Y6q_DT1lxbBrmxkZrFCI3cWu89aEEN=
+3884S9TEA0NDJzqII0prPs6Q5ZxO5jSb_oW5_k9fwNywvy0DDNfV2yijTeki8QkM7tGqvkQk22Q=
+efbSklZdMg93oM0_CVKd4nBs7drZ6xz7Ijc-z36O-9t_NTr0Vj4k7LcBXhniyW87Od70tE-cAEj=
+kOj6L8-s9JdwlZ25I73Ds7ELyuRMqInHIrfufwOJM6CssrlzxwrZxuyTyioM12OZj7AYNv7MPpd=
+teShTms_QuOD2YEi9Jsic6HLYmReJkFpx-OV9ehuHL6FdJw&userId=3Db70f4345-94bf-4e90=
+-a3e6-bed759284da5&wbPublisher=3Dwb] Tue 12/23 Rewards offer ends on =
+December 19, 2025 at 11:59 PM CST. Limited availability, rate may change. =
+Exclusions [https://capitaloneshopping.com/exclusions?=
+d=3DYXBwbGUuY29t&campaignId=3D2d44a586-c64f-449e-8b8d-aa15761bfdf6] and =
+additional terms [https://capitaloneshopping.com/our-terms/terms-of-service=
+?country=3DUS&campaignId=3D2d44a586-c64f-449e-8b8d-aa15761bfdf6] apply. =
+Other offers exclusively for you. Activate and get up to $1,000 back unless=
+ specified. See below for terms. 20% Back [https://capitaloneshopping.=
+com/api/v1/redirectV2?affTemplate&autoRedirect=3Dtrue&channel=3Demail&click=
+Event=3DemailOpen&credits=3Dtrue&destDomain=3Doneplus.=
+com&emailId=3Deb5fc2fe-59cd-462a-88be-7b5a82a04b44&experience=3Demail&redir=
+ectId=3Deb5fc2fe-59cd-462a-88be-7b5a82a04b44&subExperience=3Dbatch_send_mm&=
+token=3DeyJhbGciOiJSUzUxMiJ9.eyJpIjoiMWM1M2I0NTctYzFiOS00MjM0LWFiM2UtNzIyNT=
+lkZWQzMDlmIiwidSI6ImI3MGY0MzQ1LTk0YmYtNGU5MC1hM2U2LWJlZDc1OTI4NGRhNSIsImQiO=
+iJvbmVwbHVzLmNvbSIsImUiOjE3NjY0NzY3OTk5OTksInQiOiJwZXJjZW50YWdlIiwiYSI6MjAw=
+MCwiYiI6IlVTRCIsInAiOjEwMDAwMCwicSI6IlVTRCIsImsiOnRydWV9.=
+kwIA4dRkBAAt_wxy4n3LZgbTld3hmM9RKC-RhmUQ3QdIw2Q331l4djCKFJ5w3s0Ol2HvAgl_Fry=
+2TdeTtJgNSlmtqoQhOC0NaCxpg1JHxj_36TruvMSNkH-EFJNdyhS-OoM-tJjvdxcwkLknyOyt81=
+-E6ZHC4BEogr00UAgXTN5S_nWYzpnfOH_pfh6KMCsEZd3WiEHPzfaGvDzytKFNeQtd6xtkVNg21=
+nNPzJqHZv1arekoK3fZF5tOK0Th5NZUTDxGKaTdd9b1RkmuhEorigKOupExg7wrJrECUvovlm58=
+8W5Y3UkbThUcPrzzTiuVr6eT3SSXnOf1sNLsKRIj25yZTqH36jzOjIz2mPGNZ7G1vgjhV1P1BV_=
+528ioM4a4NdQEG3StlzYm8T9HfTCHvxkrnzFxywLYkhaw7VG7l-jg_Ub_X4rmir-LkUeGfeDbwI=
+rvzJ3nNoAjwQNRGMTedzJvpBL8igX0PVZKVdGG72BJYf1yzxskewqUzr8y9SnLTtDAWLBmiNd6K=
+lk3oT7cMvlfh8kq7GEimfhLd2RDyhkBvfbfA8_xIyDoOeiuOirSXYLbuEQKYHOoQOLc7Nu98kAW=
+KY3nLIunt7qesqLDLdBQVFvPVYDHdkfMqMwW4zuLZ7xulWc7zF6pPX9sT33SbeEBRZgkpuz01D6=
+fvk3a_cs&userId=3Db70f4345-94bf-4e90-a3e6-bed759284da5&wbPublisher=3Dwb] =
+10% Back [https://capitaloneshopping.com/api/v1/redirectV2?=
+affTemplate&autoRedirect=3Dtrue&channel=3Demail&clickEvent=3DemailOpen&cred=
+its=3Dtrue&destDomain=3Dapple.com&emailId=3Deb5fc2fe-59cd-462a-88be-7b5a82a=
+04b44&experience=3Demail&redirectId=3Deb5fc2fe-59cd-462a-88be-7b5a82a04b44&=
+subExperience=3Dbatch_send_mm&token=3DeyJhbGciOiJSUzUxMiJ9.=
+eyJpIjoiNjRiYWNiMjMtYWIxZi00Mzg2LThlMWEtN2I5ZTk2OGU3YWFlIiwidSI6ImI3MGY0MzQ=
+1LTk0YmYtNGU5MC1hM2U2LWJlZDc1OTI4NGRhNSIsImQiOiJhcHBsZS5jb20iLCJlIjoxNzY2Mj=
+E3NTk5OTk5LCJ0IjoicGVyY2VudGFnZSIsImEiOjEwMDAsImIiOiJVU0QiLCJwIjoxMDAwMDAsI=
+nEiOiJVU0QiLCJrIjp0cnVlfQ.Yg8cbFsdL5mwBdhFk1BVy0zLGI0gbrwQK1PWj5HGbszu1QcnJ=
+Md1HCaFdDVX0y8Pqv9bb84sU4aT1Xjui6HqAw5H869jaQBm5g_Mh-hYK2W1-WDyK8qaDoWee5AC=
+pzsoTLJbK_uv2uA_YkIe4u-spmq3mlBD6h03ALWJJaN8YWCIS6YUpnST7s1fFo_GfzNoE6i2hnX=
+pDQohoNfazt-DrvE2l4wpk4mUrFG8UQ75FrL2w1bCi7yNGl6DzQ4uXqyr_S-amjtTWAK2wjedU4=
+0Xmw8xa_ci3FMeKwgdLI8qMDu-S3xbPgOIJYId6F4Ih07r_ef-_gveakqp2Ndp3HauA1hsgX_Ar=
+bFxjdlbpCxiv9iPO-tACSWulFTjrTGcWD9_t2AE585Ubjkzt2TeEBYhbUXf6Z2nEO0bKst3qov8=
+EYgxwu5XFQfhEUFPWBatLmjI23_TuxnbfgMHV7AKK-al-jOh_KCs-8Oz2ya7cxHXGVKjOI9MRk5=
+JqIuzcRxyiNRq7CBFY1wA4k7-XLCBAH3WD327tP92HlDXkF359ftkESAehyiFD2mjJbPPq_1_QP=
+RTpyz5e6FYQFHgePdRVs5wj-PzDrDvBxC8qZG94IKqSb3lftbW1lNk0EjNj5ojARWhgVhFoQwgc=
+304h8bboyhdqFte2967_il0gmCTMz_qddg&userId=3Db70f4345-94bf-4e90-a3e6-bed7592=
+84da5&wbPublisher=3Dwb] 40% Back [https://capitaloneshopping.=
+com/api/v1/redirectV2?affTemplate&autoRedirect=3Dtrue&channel=3Demail&click=
+Event=3DemailOpen&credits=3Dtrue&destDomain=3Dotterbox.=
+com&emailId=3Deb5fc2fe-59cd-462a-88be-7b5a82a04b44&experience=3Demail&redir=
+ectId=3Deb5fc2fe-59cd-462a-88be-7b5a82a04b44&subExperience=3Dbatch_send_mm&=
+token=3DeyJhbGciOiJSUzUxMiJ9.eyJpIjoiY2NlNTZlNTYtYmFjYi00MTkyLThjYjEtNjVlMj=
+NhMjE4ZWI1IiwidSI6ImI3MGY0MzQ1LTk0YmYtNGU5MC1hM2U2LWJlZDc1OTI4NGRhNSIsImQiO=
+iJvdHRlcmJveC5jb20iLCJlIjoxNzY2NDc2Nzk5OTk5LCJ0IjoicGVyY2VudGFnZSIsImEiOjQw=
+MDAsImIiOiJVU0QiLCJwIjoxMDAwMDAsInEiOiJVU0QiLCJrIjp0cnVlfQ.=
+eTfrF0_Q6rKwlOorydZ-9T27dk06PVdD6jRH_PFIOiDq3znpK07FjFM9vEwu2nOCwVNE5vD9tTg=
+TlpZdGDOUoJ5nmCZTpI4ja4mAWlaw02Fnu4Wsnh-zerU7KdCTv357-28dT2ym55IqSjiS371LRF=
+hZYY4ZE6hplY-PmUXkpI9eYyB0ukdI1dX7SepCz55JIQNW4CSmttiIVSFKmaTfXwN3108gV8oMw=
+MYdYKLDdlcfLxIJ2IFAo5-WIvlxoga9oLQhzQrEVSXLk8GclpUapGDfIBOL66jy2e3uX4iPdey8=
+hPOY7vxFWdLpm3EO9aVxgFG4T-lysedL63jVNjW6C77_tKqwC8pLpz0b4L-ho9aDi_cTG9wYdpF=
+hmxggurZGCjhdYJ2jGwHj1Mcxi9ILq_hXw-m5UgS6ps94IYbASg8y-nxQ9hLizcWsYqKw42fJhf=
+eypKT7I80ImzslVWfGl0COCAyb50u7Xzr8eNraJhDFStiQzwRiJan1yYCiSaBkV4MfPMNT18IKY=
+sfJlnSfUDE2OKRhO9JDNeWZhgKN0n0-zpQVzjqOc_sZoEqtqoY33Wx91vKdEKp-MLeqQuggI79I=
+eK2NqOnFp-Ufecjnok1uf1kzmFkuEdjAEfSaApmJLbPa-qQx4Ax68Zfsxp53q-iYJ33omlFz4lJ=
+gZZ9AG3c&userId=3Db70f4345-94bf-4e90-a3e6-bed759284da5&wbPublisher=3Dwb] =
+24% Back [https://capitaloneshopping.com/api/v1/redirectV2?=
+affTemplate&autoRedirect=3Dtrue&channel=3Demail&clickEvent=3DemailOpen&cred=
+its=3Dtrue&destDomain=3Dmonoprice.com&emailId=3Deb5fc2fe-59cd-462a-88be-7b5=
+a82a04b44&experience=3Demail&redirectId=3Deb5fc2fe-59cd-462a-88be-7b5a82a04=
+b44&subExperience=3Dbatch_send_mm&token=3DeyJhbGciOiJSUzUxMiJ9.=
+eyJpIjoiZTE1YzU4M2MtNmFiMC00MWEwLThmMTYtNTM0MjQ3NGJjYTNlIiwidSI6ImI3MGY0MzQ=
+1LTk0YmYtNGU5MC1hM2U2LWJlZDc1OTI4NGRhNSIsImQiOiJtb25vcHJpY2UuY29tIiwiZSI6MT=
+c2NjQ3Njc5OTk5OSwidCI6InBlcmNlbnRhZ2UiLCJhIjoyNDAwLCJiIjoiVVNEIiwicCI6MTAwM=
+DAwLCJxIjoiVVNEIiwiayI6dHJ1ZX0.gnwEB1HLeoDjyoiR15UC82Zz9M4gF4GUp8UsRmACyc69=
+gcOKx7H_h3cBi1oZt8HdcPYx4G3vRlXvxERtPZLQ80ziRv2T4DLSpYDTTxQF6sL8n0qDYvf3y75=
+8z15NAyHW-XgpPTl_APdN0rckLDGvMd52uUA10bVJMMTJ5MqqD6u6QUzG5q-cd31bmZO5Y8SwTK=
+ixkbvPw5Vs5CA0GT_BWyS9aRcNTuvKps1a2lZQ0QoCept0V0OJjBHX-9uqeD7RhnfPzBVqXcqX0=
+YaVXNAhgVFN7Zc_U2nORw7_-6FmEU_-6_AfW63TRZCg03eybeO1UdlLW0S5kCCWO4A2CzTv_ET9=
+rvxU7uEYdRSTyr5QhO3-dc54ExakfxCpYO3mhYVStyV2VHKNBniDaaSLtk-2uoQ1CcOk_el-qto=
+Cvn3RCPfarf0Brad3c4gUXnPaVTadsbG_JQhsrCTfVC82UtjCAXKuILjDuC7V8hjMLo-E_wYrtr=
+-J_g7EfeKschYx3vOa54TKMEnKc81tig30oO2QuOsN953OPaNuIWrFpA1tlgocZDDNyRfEbZemn=
+eQSFZGQsyJCU32N7ZXkNaFxF2i6PTm0fhriPqaSFJXYoBBvaRkvhpNT9C4GV2t075ZO_oqQ1Ydf=
+KNTiI0fL8vt8eNqVGoezzbtC05FA-Z8vsHseqQs&userId=3Db70f4345-94bf-4e90-a3e6-be=
+d759284da5&wbPublisher=3Dwb] up to 70% Back [https://capitaloneshopping.=
+com/api/v1/redirectV2?affTemplate&autoRedirect=3Dtrue&channel=3Demail&click=
+Event=3DemailOpen&credits=3Dtrue&destDomain=3Dmalwarebytes.=
+com&emailId=3Deb5fc2fe-59cd-462a-88be-7b5a82a04b44&experience=3Demail&redir=
+ectId=3Deb5fc2fe-59cd-462a-88be-7b5a82a04b44&subExperience=3Dbatch_send_mm&=
+token=3DeyJhbGciOiJSUzUxMiJ9.eyJpIjoiMDlkNWY5ZWYtYjYwZi00YzQwLWEwZDYtMGRiZG=
+VmMDU4NjhjIiwidSI6ImI3MGY0MzQ1LTk0YmYtNGU5MC1hM2U2LWJlZDc1OTI4NGRhNSIsImQiO=
+iJtYWx3YXJlYnl0ZXMuY29tIiwiZSI6MTc2NjQ3Njc5OTk5OSwidCI6ImN1dCIsImEiOjkzMzMs=
+ImIiOiJVU0QiLCJwIjoxMDAwMDAsInEiOiJVU0QiLCJjIjpbeyJhIjo3MDAwLCJuIjoiSWRlbnR=
+pdHkgVGhlZnQgYW5kIFRlYW1zIFBsYW5zIiwidCI6InBlcmNlbnRhZ2UifSx7ImEiOjM3MDAsIm=
+4iOiJTdGFuZGFyZCBhbmQgUGx1cyBQbGFucyIsInQiOiJwZXJjZW50YWdlIn1dLCJrIjp0cnVlf=
+Q.MZpgqKTMy_IxD-F1dfpSi3j9uOI8i0Fz7SqmW_Ez9ON0yO1HD0Omqtot9JSTsXkxqYt8d8Tj_=
+d8yuc0y3-iL6qftIxSkPxUqMWOdwMmNX-Os4NGhDtIqlc5uVc283kUZGK-ptEGFNLdiJzCX1r3n=
+EPCaQjCeyiugn-4PDibB7Zb-tzT2Hs47snAEP2aVUjho0oSaP9Dqqe6lVjRL2Z9C5xNlQoW1eQ4=
+mTSnVtnuOCuqDsqAfjEZjXBiMro0mrO1NcR8ySZaziTvE_sDB-_AhYG-fuD6Kg6AFDJZ5nFIvjc=
+Qkpo8sbBiCvefw_Um2jfwKcM-7s1sxAwBFngSO0-XVoWyizg8T1G1XIj73Dzwf2Nkd3mVbSei5z=
+yNw86voHnJ7mUErZ6rfopjWnqFgunK-OpCWc0sYAuoc90DdAI_8DZMRmzgSB2tuaLfv5sKm5H3g=
+9lLqk0g3rzfeFfxgRAhr0ixrFykTZqWVvvjTf043y55B8BK2EI4u1qhgVsOvip0-kLhfHlNCqiW=
+8yoiiFM3m3dC4KPdp55k7oGps1frk5I4mTnCQd-LUBYwrlOwh0MKS6N7Qyowy7aNOENOkUD5oCj=
+i7j_mLp2AkdMkUJCNeTFMvOp0QgwYPh48pAFxZ49ozKrZNiF_go3Ge-QmPSiu3QnUM1Q_DJSKgt=
+yaRjsPESJw&userId=3Db70f4345-94bf-4e90-a3e6-bed759284da5&wbPublisher=3Dwb] =
+up to 28% Back [https://capitaloneshopping.com/api/v1/redirectV2?=
+affTemplate&autoRedirect=3Dtrue&channel=3Demail&clickEvent=3DemailOpen&cred=
+its=3Dtrue&destDomain=3Dofficedepot.com&emailId=3Deb5fc2fe-59cd-462a-88be-7=
+b5a82a04b44&experience=3Demail&redirectId=3Deb5fc2fe-59cd-462a-88be-7b5a82a=
+04b44&subExperience=3Dbatch_send_mm&token=3DeyJhbGciOiJSUzUxMiJ9.=
+eyJpIjoiODFmZTFmYmMtZjA5NS00Y2Y4LWJjNDUtNGRmMmMxYzk1YzdlIiwidSI6ImI3MGY0MzQ=
+1LTk0YmYtNGU5MC1hM2U2LWJlZDc1OTI4NGRhNSIsImQiOiJvZmZpY2VkZXBvdC5jb20iLCJlIj=
+oxNzY2NDc2Nzk5OTk5LCJ0IjoiY3V0IiwiYSI6MjAwMDAsImIiOiJVU0QiLCJwIjoxMDAwMDAsI=
+nEiOiJVU0QiLCJjIjpbeyJhIjoyODAwLCJuIjoiRXZlcnl0aGluZyBFbHNlIiwidCI6InBlcmNl=
+bnRhZ2UifSx7ImEiOjgwMCwibiI6IkZ1cm5pdHVyZS9BcHBsaWFuY2VzLCBFbGVjdHJvbmljcyI=
+sInQiOiJwZXJjZW50YWdlIn1dLCJrIjp0cnVlfQ.JjN1-1eh35ZTDN4M_C5EPTIqlBO8e33Pfpl=
+uFi1Wdzmf_nubD4Xhof9YA-C0ZnmPRqHVvS8Dm3FaFidgtS6D3yxNIysYKUYKaJBjsmGflMwv_7=
+5cUQnOXd4rUw2iPQ_JyD8B4JnT8gF73CyOnEK7-Py7bFdePmCEFd4rupLhJzm5Y6KDzAdEM8bic=
+M0RZZFyRNIF9fHXRieKTHY-PuUVspLeKNlz5cGwCppa_M_oLxvvcmFslfTVzIWAxdYI_Yp45Rey=
+xyDXRdeIguM8WxrPHzoIi0HLbBXvJNnbW4DkikfffEjUXAaOaNQk_YkA_B12EXX1tLG18-piz-0=
+5Yl9NbWxYpvOL5FkTgcaGYXiDyzt6tNi8d7ybw1IBRW4yMkO47gyiG-oLg4FEHpp9bf0iDHxuuO=
+aCjqygI_wVPQpLLoNp3WFTKOnSrmPqTgAJMZ67u5Q0TQqbKCGexpLydN8RQFjYg-c-2avlhRVaC=
+LPll27uyzl-Rcc583R5LCSxDgNjiC9DXlQoTLQI85-g-b4S9HRjjfLcZ-rFrlPW5L9etEkAH6h1=
+2Sqf7VxbgPLShaBuLCSR_Ceaw25iWaA25yZI5uDnfnVN9f-Az_x7voj2YBDWbEGf62z7UPeFHja=
+Mj6MqoNKj8VReBMfKoIyT7JgEs588EaKZ5Wg98hryAlJClEI&userId=3Db70f4345-94bf-4e9=
+0-a3e6-bed759284da5&wbPublisher=3Dwb] 70% Back [https://capitaloneshopping.=
+com/api/v1/redirectV2?affTemplate&autoRedirect=3Dtrue&channel=3Demail&click=
+Event=3DemailOpen&credits=3Dtrue&destDomain=3Dnorton.=
+com&emailId=3Deb5fc2fe-59cd-462a-88be-7b5a82a04b44&experience=3Demail&redir=
+ectId=3Deb5fc2fe-59cd-462a-88be-7b5a82a04b44&subExperience=3Dbatch_send_mm&=
+token=3DeyJhbGciOiJSUzUxMiJ9.eyJpIjoiMmQ5MGRiZTItYzNkNC00NjY0LTliZDctMzFmOD=
+gxMGZmNjg4IiwidSI6ImI3MGY0MzQ1LTk0YmYtNGU5MC1hM2U2LWJlZDc1OTI4NGRhNSIsImQiO=
+iJub3J0b24uY29tIiwiZSI6MTc2NjQ3Njc5OTk5OSwidCI6InBlcmNlbnRhZ2UiLCJhIjo3MDAw=
+LCJiIjoiVVNEIiwicCI6MTAwMDAwLCJxIjoiVVNEIiwiayI6dHJ1ZX0.=
+IxrKaa8P8aKSqYCngC7N845WT1QqooRCo2bWXW3YJfYIrkTeYk4Tx1roUE8A9HLB4-32xMq4mzl=
+nrmmp9suzZPBZjba55pNeZG3rx713rgTXVz9vBup3WvuLVIPhHop2nWYmr2RSbyL1dOeJ45Av0G=
+cCRW1Mib-esVCVEgV5gMhWJdlWo47Uh3bGRkxr4FmwTWJ1nQuk3Qg4wFZnP8f6cueFmQgmVlS95=
+RuYhgJmN2Wy2tk8km4I3G_-g4zrPEVMQ-O2VUTIbIRFcdAL8CWN2mv4n2At4lTWKt_MJm1OntCy=
+PWadw-73ciCvQ5NlrahssdYBI3U3eBAOJZ-_QwTowCgkgQ8OfWAEnxtidiaBbT84jeGOJ0JwUfF=
+TGxim0k60zYG1RkVV3-0fTlMFQ_Vy8-ytW2IQHZqmPmCW2_k8f8VoVi8SW_czXYOyXWAqERlemj=
+JkwE6ug6nxfyCqHtpoPx_dTqrwxa1urEzbcTAYoUqFC8yg3t33B2GbsRe5ml1RM7b0lO-59gnvi=
+8Jm7T3UgiH2R8jH3-4jXxGW35lV_LWxTYpy60WOiBRoHDdrDO6cEBpoke8TCnis836dV3lwg5NA=
+trDlao78NaXlB2OFPLiecDSyj7hh9uKwBSZ4ucB94gncz8KNKeKWzspp9vvmxVTgac_JTvTKEVx=
+k0FnRxRg&userId=3Db70f4345-94bf-4e90-a3e6-bed759284da5&wbPublisher=3Dwb] =
+70% Back [https://capitaloneshopping.com/api/v1/redirectV2?=
+affTemplate&autoRedirect=3Dtrue&channel=3Demail&clickEvent=3DemailOpen&cred=
+its=3Dtrue&destDomain=3Davg.com&emailId=3Deb5fc2fe-59cd-462a-88be-7b5a82a04=
+b44&experience=3Demail&redirectId=3Deb5fc2fe-59cd-462a-88be-7b5a82a04b44&su=
+bExperience=3Dbatch_send_mm&token=3DeyJhbGciOiJSUzUxMiJ9.=
+eyJpIjoiY2ZkZWU2NzItNjJkZS00ODljLWE5MzgtY2E0ZmQ1MzI2NjVhIiwidSI6ImI3MGY0MzQ=
+1LTk0YmYtNGU5MC1hM2U2LWJlZDc1OTI4NGRhNSIsImQiOiJhdmcuY29tIiwiZSI6MTc2NjQ3Nj=
+c5OTk5OSwidCI6InBlcmNlbnRhZ2UiLCJhIjo3MDAwLCJiIjoiVVNEIiwicCI6MTAwMDAwLCJxI=
+joiVVNEIiwiayI6dHJ1ZX0.PEoZaFVmMfvXDd-Ycu1LTzKHV57PHbMaZf4eObZgxke_N1qJcNyN=
+pzprhDtAN__YZ2Lhn1jWvfV80QofEN-ndoEuWMAbk-X1Y3haJRP_9kJJNNTC5OGrjxc4jCNf8Da=
+2JgRTOdy6eCdqufKWnFHlsJxdnkQ9TrKDX3OWBhaimN62TdS2wTK6_qTUg0DROqSf9KM4KX8VgG=
+HnM-cI4r26DHrsizslpZic4uh-VsNZJSLyCu_5vUY_xp3hbX_ZTdGHtnf9WwBXWshtje4YcZP8l=
+kAow9L501FBF7shkAl19WNy2C9EZiLcliOSo-zCh4oUSEIFGHuC-5MVggUndgfNHgj82qm0y7Dp=
+2T7rK9TAmMtlhoXy6CSou3h2Usi2-VqJUiJxZ-ZnoJV6pmgyNimT6Gg4ecTxwuioIrU1494bhZR=
+RVqx2Wa3vA6boMOlaP9lrYA7CsNOpiEYwVlg8yHcC2ry6dAhqNr4E-2eV5i-FSJR_6JK-o35n5Z=
+Y_CLHtm8_f3nonk6eO3_rukrCDE4f7yeQ-hwHeQfHml6IiUZit9OY3-LwvVmHfDjRnSqir6cqmS=
+YB1VgNV0o_iyAUJ_jfe8OD9szpkh8zssrXDw-MJF4-oPtgWlOaE-TxhuJdd208Ullhbc7lRFu2p=
+-50KADp3BErOOnv4uaesZlkZijICJss&userId=3Db70f4345-94bf-4e90-a3e6-bed759284d=
+a5&wbPublisher=3Dwb] 10% Back [https://capitaloneshopping.=
+com/api/v1/redirectV2?affTemplate&autoRedirect=3Dtrue&channel=3Demail&click=
+Event=3DemailOpen&credits=3Dtrue&destDomain=3Dsweetwater.=
+com&emailId=3Deb5fc2fe-59cd-462a-88be-7b5a82a04b44&experience=3Demail&redir=
+ectId=3Deb5fc2fe-59cd-462a-88be-7b5a82a04b44&subExperience=3Dbatch_send_mm&=
+token=3DeyJhbGciOiJSUzUxMiJ9.eyJpIjoiM2E1NDBiMDAtNzViMS00Yzc1LWE3ZTUtMDRhN2=
+NhZGMyN2NlIiwidSI6ImI3MGY0MzQ1LTk0YmYtNGU5MC1hM2U2LWJlZDc1OTI4NGRhNSIsImQiO=
+iJzd2VldHdhdGVyLmNvbSIsImUiOjE3NjY0NzY3OTk5OTksInQiOiJwZXJjZW50YWdlIiwiYSI6=
+MTAwMCwiYiI6IlVTRCIsInAiOjEwMDAwMCwicSI6IlVTRCIsImsiOnRydWV9.=
+n0dgTS_6YkefAyS-5O-ZsG-6Op3eNojlqnXb3kiwODnH3mE-XD6oURdIbPAOWHfk7vqPReD78wm=
+wZobXkjslpDirM8LmWCuR40wThuwatPUlCtnhC-zoFTetV5PXVeyL5px9ZYHx9LLVZvPHiOiBg2=
+JNjKriKYtdlCoJxxwKzSagrspPfBwxHqs-f5KVivkLpDpSLtGgWCgFrA2xFzZnZ0Gl3fOyFN3BY=
+WozglUN7Vkcc9TIJgeS5Ql1RWnoaD4r33BAhlOhaPEibmb1uZsDZX4aPPyeSFwVBGBv4QQjCfHn=
+FgI8O8vmUQ-z8BJmBEtCWftQc3bKde8mpOuUxOOu7eKE6IEpx6mJYMFh1XfIlVwOb_bMBy4YT0w=
+N2vxr4E5bbxQS_aNkvsHJmxKkUzhoYoKYz8oCjkeZFqsE0TRbuZtf_ZLA6ctb48kEarEpkzQkiH=
+frFPVl6A3tyDb7jNnV6O643wG_e3JwG4qIUrmBkwg-3NH1LTAwPsYj-fhoaMwZvefa4p80tajnD=
+FitsykURRTJ3-cfdtv3Tl0x9x05ar7t4TLS4yV_efnuFhzacO1x8vIG_AtpvQa2VLqsrLV1-eHq=
+dCMMUgUOdXVv78_u1zoLOPBt004EBMKyldRaZVGqRlQHRo3hMj4rVKIDvKLebgmEjB4OeCdbv__=
+PJFXqczI&userId=3Db70f4345-94bf-4e90-a3e6-bed759284da5&wbPublisher=3Dwb] =
+12% Back [https://capitaloneshopping.com/api/v1/redirectV2?=
+affTemplate&autoRedirect=3Dtrue&channel=3Demail&clickEvent=3DemailOpen&cred=
+its=3Dtrue&destDomain=3Dadorama.com&emailId=3Deb5fc2fe-59cd-462a-88be-7b5a8=
+2a04b44&experience=3Demail&redirectId=3Deb5fc2fe-59cd-462a-88be-7b5a82a04b4=
+4&subExperience=3Dbatch_send_mm&token=3DeyJhbGciOiJSUzUxMiJ9.=
+eyJpIjoiNGI1NzQ4NjQtYTk4Yy00OTgxLWI2ZTMtNzBjNjFjNTFiNGY3IiwidSI6ImI3MGY0MzQ=
+1LTk0YmYtNGU5MC1hM2U2LWJlZDc1OTI4NGRhNSIsImQiOiJhZG9yYW1hLmNvbSIsImUiOjE3Nj=
+Y0NzY3OTk5OTksInQiOiJwZXJjZW50YWdlIiwiYSI6MTIwMCwiYiI6IlVTRCIsInAiOjEwMDAwM=
+CwicSI6IlVTRCIsImsiOnRydWV9.rB3fQj8H3_d0wKBNFsSFPt6nscmUVg9TNDQMPr-z5hX5lDq=
+AGw0xNwVV4uIA1HSHof3HIiQFfwC33de87K0_nAZFdaQ5GV8I65Csj_4n6lOfyXHoyHJ4hjcwy9=
+NZkeYKtmLVAYZt0II-l33y-vatg9vLhvZX2hqemddzyjIeLdmjtregS9d3f_wS749KW6T2LxWPZ=
+zBoMaPlKsMMzKQ7D77z4Z_zUX6gbLLWwb4Zi-qPyMJwL9iCMM6Gv6ThZc6SHL-9Qv5_Z4NuscdG=
+nbi1DKEqa211PJDT2fugyEoWW6yTTYOETFJ5rU27WOwdTjBcjIWpeDOxlQUiMzNme1gQK2bq-bT=
+F9r4pEonJM6r8xx3Hr3qVf_qi5FQ8p3dAHiUTAEIfcRNMlMz4WnDKFu5Faw4C4VGqsqXvEyP3ru=
+z1uf6lXtjn_N3iV0NC2qhWyGEXlT1AaaKYou4JTs2cGm9GdnPNxSiLBEd7Z8umLqN0nYoMzkgDX=
+SiY_c6s_na8ilAFgNdpw8mGGflSEdiYBU1IfdKIi6fV5FiyaL2xzsdmAQlKXaucsfix6y_7pk82=
+DR0mZIN06iRU-swZMpagGxywht7EksZZgX4zQO_JT-UVEo6qGdeyKWY2W8-JSabS--miNwbz-s-=
+OZCwRChba5CViLEN15jMQ49w6DcQfybi4ZqE&userId=3Db70f4345-94bf-4e90-a3e6-bed75=
+9284da5&wbPublisher=3Dwb] 30% Back [https://capitaloneshopping.=
+com/api/v1/redirectV2?affTemplate&autoRedirect=3Dtrue&channel=3Demail&click=
+Event=3DemailOpen&credits=3Dtrue&destDomain=3Dmeta.com&emailId=3Deb5fc2fe-5=
+9cd-462a-88be-7b5a82a04b44&experience=3Demail&redirectId=3Deb5fc2fe-59cd-46=
+2a-88be-7b5a82a04b44&subExperience=3Dbatch_send_mm&token=3DeyJhbGciOiJSUzUx=
+MiJ9.eyJpIjoiNmY2OGJjY2QtMThhNC00ODhhLWI2NDAtNjE1N2RmNzE5ZGUyIiwidSI6ImI3MG=
+Y0MzQ1LTk0YmYtNGU5MC1hM2U2LWJlZDc1OTI4NGRhNSIsImQiOiJtZXRhLmNvbSIsImUiOjE3N=
+jY0NzY3OTk5OTksInQiOiJwZXJjZW50YWdlIiwiYSI6MzAwMCwiYiI6IlVTRCIsInAiOjEwMDAw=
+MCwicSI6IlVTRCIsImsiOnRydWV9.MWWsV-VWihM4n6NVDrtbeUC8qe5iVykOVPY5Sl0sGPiToP=
+ahoMdPGwVw1BQQBm2B7lJJTIflMIdhCh4BjM-LKc9LwT2PXbsVo6925xjnFaTXUDUML-17HJAjz=
+x6gtyS3mNOilZa95ump2wpRvXhNUrdqQdC1GAMmtzJPfRsEWlZNomy2h9Nt9oq1aatkV8v2IQLb=
+Ei1cTrEuSXloT7_ul0uPRufRkJRqt1kCVlpdvVVjv9KI0Ot9kkVjX4I7WFNhCNtgTcR6rMfxtCd=
+0D8jqhMjNw8wW_1mUVeKu-MUmpcFPvcgilEEDdKhwHh7w-chpbmhsMEjv9QMeFBiTeRkqft-Q5Y=
+2IKEhRvXd9F-ckt_tc6gQm74G8Z7rl4GymeLouCuWCvXddyWYyu9KM1UHEC04R7mDEqkjNbRy7G=
+u5QlK4RsuwBpZ-O0DtSs4dVQJ0lyziiVvdzbMSXYbjZ2I-ILG8GksL2U86BOmrclEA5qDxu8ONp=
+37D4SKAI1BXc1HN7B54v0Od_-tcrAp9GbIXg-VEmCe08oQFTKpB5T_zel8xE_y5w8j5y5aBNuYh=
+emBHrinPQLH_EaPSBymc_cKudHTzVIUuSDmGHp1Nh1IoWUT5G0Rm-Razx-u3uACikf7tgD91149=
+PAko-CgP_AeolVlsQjjlnpcoL4Lby6wFwbqdA&userId=3Db70f4345-94bf-4e90-a3e6-bed7=
+59284da5&wbPublisher=3Dwb] ALL: Rewards offer ends on December 22, 2025 at =
+11:59 PM PST unless otherwise specified. Exclusions =
+[https://capitaloneshopping.com/exclusions?d=3Db25lcGx1cy5jb20sYXBwbGUuY29t=
+LG90dGVyYm94LmNvbSxtb25vcHJpY2UuY29tLG1hbHdhcmVieXRlcy5jb20sb2ZmaWNlZGVwb3Q=
+uY29tLG5vcnRvbi5jb20sYXZnLmNvbSxzd2VldHdhdGVyLmNvbSxhZG9yYW1hLmNvbSxtZXRhLm=
+NvbQ=3D=3D&campaignId=3D2d44a586-c64f-449e-8b8d-aa15761bfdf6] and =
+additional terms [https://capitaloneshopping.com/our-terms/terms-of-service=
+?country=3DUS&campaignId=3D2d44a586-c64f-449e-8b8d-aa15761bfdf6] apply. =
+APPLE: Rewards offer ends on December 19, 2025 at 11:59 PM PST. Was this =
+email? Useful [https://capitaloneshopping.com/email-feedback?=
+campaignName=3DContent+Syndication&campaignId=3D2d44a586-c64f-449e-8b8d-aa1=
+5761bfdf6&emailId=3Deb5fc2fe-59cd-462a-88be-7b5a82a04b44&domain=3Dt-mobile.=
+com&type=3Dpositive] Not Useful [https://capitaloneshopping.=
+com/email-feedback?campaignName=3DContent+Syndication&campaignId=3D2d44a586=
+-c64f-449e-8b8d-aa15761bfdf6&emailId=3Deb5fc2fe-59cd-462a-88be-7b5a82a04b44=
+&domain=3Dt-mobile.com&type=3Dnegative] Report an Issue =
+[https://capitaloneshopping.com/email-feedback?campaignName=3DContent+Syndi=
+cation&campaignId=3D2d44a586-c64f-449e-8b8d-aa15761bfdf6&emailId=3Deb5fc2fe=
+-59cd-462a-88be-7b5a82a04b44&domain=3Dt-mobile.com&type=3Dissue]=20
+
+Capital One Shopping logo
+One click is all it takes to save. Copyright =
+=C2=A9 2025, Capital One Shopping Holdings, LLC. All rights reserved. =
+Capital One Shopping, PO Box 269030, Plano, TX 75026-9030 To earn Rewards, =
+you must click on an offer above, then complete a qualifying purchase at =
+the selected merchant 's site, in the browser opened by your device, within=
+ 24 hours. Offers are not valid by any other method. Offers are valid at =
+the time this email was sent and are subject to change. Please review offer=
+ details on the merchant websites for complete details. Additional Terms =
+[https://capitaloneshopping.com/our-terms/terms-of-service] apply. Usage of=
+ other affiliate or advertising services prior to making a purchase, =
+purchase of excluded or non-qualifying items, usage of ad blockers (other =
+than Adblock from Capital One Shopping), and other violations of terms will=
+ render you ineligible to receive Rewards. If you no longer wish to receive=
+ these emails, you may unsubscribe [https://capitaloneshopping.=
+com/email-subscriptions?token=3D0k5HXp5TNy%2BgzjlvRwP1u7XfuiEPceTsTeR2F3H6U=
+tYphq2UfyQpFSUJIGfK2pLb%2Fo1HZjJm1X2QRsLDm7rjsPXoFcNCbl9X%2Bg6mG3PyEgdUfyRr=
+UWtKQctf2NhrXju3vzYQF53uChPd7zmwWe3TRnh%2BX8Kv%2FcuGizJdvI8fm%2Fh4Ao0xgmG9A=
+2ZPn%2BNL]. Do not reply to this message; this email inbox is not monitored=
+. For questions, please see our FAQ [https://capitaloneshopping.com/help] =
+and Privacy Policy [https://capitaloneshopping.com/our-terms/privacy-policy=
+].
+----_NmP-bd0c0cc976b9994b-Part_1
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.=
+org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns=3D"http://www.w3.=
+org/1999/xhtml" dir=3D"ltr" lang=3D"en"><head><meta =
+http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8"><meta =
+name=3D"viewport" content=3D"width=3Ddevice-width, initial-scale=3D1.=
+0"><title>Offer Expiring Soon: Don&#x27;t miss this offer from T-Mobile =
+Home Internet</title><style data-emotion=3D"css 995hjt">.=
+css-995hjt{width:100%;background-color:#F7F7F7;}</style><style =
+data-emotion=3D"css hiq1gc">.css-hiq1gc{min-width:600px;max-width:600px;pad=
+ding-top:20px;}</style><style data-emotion=3D"css 1gx83ig">.=
+css-1gx83ig{width:100%;background-color:#FFFFFE;padding-left:20px;padding-r=
+ight:20px;padding-top:10px;padding-bottom:10px;}</style><style =
+data-emotion=3D"css d2dw86">.css-d2dw86{border-width:0px;border-style:solid=
+;border-color:#A9A9A9;padding-right:5px;width:31%;border-right-width:1px;}<=
+/style><style data-emotion=3D"css 17vhpsb">.css-17vhpsb{border-radius:5px;b=
+ackground-image:url('https://cdn.capitaloneshopping.=
+com/wikibuy-assets/images/upload_content/email-small-logo-background.=
+jpeg');-webkit-background-position:center;background-position:center;paddin=
+g-left:10px;padding-right:10px;padding-top:14px;padding-bottom:14px;}</styl=
+e><style data-emotion=3D"css 1hpmthx">.css-1hpmthx{border-width:0px;border-=
+left-width:1px;border-style:solid;border-color:#A9A9A9;padding-left:5px;}</=
+style><style data-emotion=3D"css 18x4293">.css-18x4293{display:table-cell;h=
+eight:60px;width:-webkit-fit-content;width:-moz-fit-content;width:fit-conte=
+nt;border-radius:5px;background-image:url('https://cdn.capitaloneshopping.=
+com/wikibuy-assets/images/upload_content/email-small-logo-background.=
+jpeg');-webkit-background-position:center;background-position:center;vertic=
+al-align:middle;}</style><style data-emotion=3D"css u9au6b">.=
+css-u9au6b{max-height:40px;padding:10px;max-width:160px;}</style><style =
+data-emotion=3D"css edgbno">.css-edgbno{margin:0px!important;font-size:12px=
+!important;font-weight:700;line-height:16px!important;color:green;}</style>=
+<style data-emotion=3D"css bayxa5">.css-bayxa5{margin:0px!=
+important;padding-top:2px;font-size:12px!important;font-weight:700;line-hei=
+ght:16px!important;color:green;}</style><style data-emotion=3D"css 8h87at">=
+.css-8h87at{height:10px;width:100%;background-color:#F1F6F9;}</style><style=
+ data-emotion=3D"css 1dgm9za">.css-1dgm9za{width:100%;background-color:#FFF=
+FFE;padding-left:25px;padding-right:25px;padding-bottom:10px;padding-top:20=
+px;}</style><style data-emotion=3D"css 1eewf2i">.css-1eewf2i{background-col=
+or:#FFFFFE;padding-bottom:10px;color:#000001;}</style><style =
+data-emotion=3D"css wogn4y">.css-wogn4y{margin:0px!important;text-align:lef=
+t;font-size:28px!important;font-weight:600;line-height:35px!=
+important;}</style><style data-emotion=3D"css k8f12j">.=
+css-k8f12j{margin:0px!important;font-size:18px!important;font-weight:600;li=
+ne-height:20px!important;color:#427E27;}</style><style data-emotion=3D"css =
+ptarqw">.css-ptarqw{background-color:#FFFFFE;}</style><style =
+data-emotion=3D"css pclyfj">.css-pclyfj{max-height:360px;}</style><style =
+data-emotion=3D"css 1y0aq8s">.css-1y0aq8s{max-width:500px;border-radius:5px=
+!important;background-image:url('https://cdn.capitaloneshopping.=
+com/wikibuy-assets/images/upload_content/email-small-hero-background.=
+jpeg');-webkit-background-position:center;background-position:center;paddin=
+g:25px;}</style><style data-emotion=3D"css icns00">.=
+css-icns00{padding-top:10px;}</style><style data-emotion=3D"css 1wt24gj">.=
+css-1wt24gj{margin:0px!important;text-align:center;font-size:16px!=
+important;font-weight:300!important;line-height:16px;}</style><style =
+data-emotion=3D"css 1616v5a">.css-1616v5a{padding-bottom:8px;padding-top:10=
+px;}</style><style data-emotion=3D"css 1td77r1">.css-1td77r1{border-radius:=
+5px;padding-top:10px!important;padding-bottom:10px!important;text-align:cen=
+ter;font-size:20px!important;width:225px;padding-left:25px!=
+important;padding-right:25px!important;padding-top:13px!=
+important;padding-bottom:13px!important;line-height:22px;}</style><style =
+data-emotion=3D"css qdxnkg">.css-qdxnkg{padding-top:10px!=
+important;padding-bottom:10px!important;font-size:12px!=
+important;font-weight:400!important;line-height:16px!important;color:gray!=
+important;}</style><style data-emotion=3D"css jh2gz7">.=
+css-jh2gz7{width:100%;background-color:#eeebee;padding-left:25px;padding-ri=
+ght:25px;padding-bottom:10px;padding-top:20px;}</style><style =
+data-emotion=3D"css js4qls">.css-js4qls{margin:0px!important;text-align:lef=
+t;font-size:32px!important;font-weight:700;line-height:35px!=
+important;}</style><style data-emotion=3D"css r54xzy">.=
+css-r54xzy{height:180px;padding-top:10px;}</style><style =
+data-emotion=3D"css 1woo7ys">.css-1woo7ys{height:180px;width:180px;border-r=
+adius:5px;background-image:url('https://cdn.capitaloneshopping.=
+com/wikibuy-assets/images/upload_content/email-small-logo-background.=
+jpeg');padding-left:10px!important;padding-right:10px!=
+important;}</style><style data-emotion=3D"css 1jjt2a">.=
+css-1jjt2a{max-height:170px;max-width:170px;}</style><style =
+data-emotion=3D"css 1m9wux9">.css-1m9wux9{width:80%;padding-left:20px;}</st=
+yle><style data-emotion=3D"css rq91nh">.css-rq91nh{margin-top:0!=
+important;margin-bottom:0!important;text-align:left;font-size:20px!=
+important;font-weight:700;color:#CE0E2D!important;}</style><style =
+data-emotion=3D"css 1hr62sw">.css-1hr62sw{margin-bottom:0px!=
+important;}</style><style data-emotion=3D"css 1th38yd">.=
+css-1th38yd{margin-bottom:3px!important;margin-top:5px!=
+important;font-size:24px!important;font-weight:400!important;line-height:28=
+px!important;}</style><style data-emotion=3D"css w8soi9">.=
+css-w8soi9{margin-top:0px!important;margin-bottom:8px!=
+important;font-size:16px!important;font-weight:400!important;color:#606465!=
+important;}</style><style data-emotion=3D"css 39qteh">.=
+css-39qteh{border-radius:5px;padding-top:10px!important;padding-bottom:10px=
+!important;text-align:center;font-size:20px!important;margin-top:6px!=
+important;padding-left:25px!important;padding-right:25px!=
+important;padding-top:13px!important;padding-bottom:13px!=
+important;font-size:16px!important;}</style><style data-emotion=3D"css =
+czdeix">.css-czdeix{margin-bottom:10px!important;display:block;text-align:l=
+eft;font-size:20px!important;font-weight:400;}</style><style =
+data-emotion=3D"css 1d1abc1">.css-1d1abc1{margin-top:1px;}</style><style =
+data-emotion=3D"css 1t2svgv">.css-1t2svgv{padding-right:18px;}.=
+css-1t2svgv:last-child{padding-right:0px;}</style><style =
+data-emotion=3D"css s4uwrv">.css-s4uwrv{width:124px;border-radius:5px;backg=
+round-image:url('https://cdn.capitaloneshopping.com/wikibuy-assets/images/u=
+pload_content/email-small-logo-background.jpeg');}</style><style =
+data-emotion=3D"css g8pqpu">.css-g8pqpu{height:100px;width:113px;}</style><=
+style data-emotion=3D"css 184gsr9">.css-184gsr9{max-height:95px;max-width:9=
+5px;}</style><style data-emotion=3D"css wbggas">.css-wbggas{margin-top:8px!=
+important;margin-bottom:8px!important;display:block;text-align:center;font-=
+size:20px!important;font-weight:400;color:#6b7280;}</style><style =
+data-emotion=3D"css jt9m3n">.css-jt9m3n{background-color:WHITE;}</style><st=
+yle data-emotion=3D"css 1d3w5wq">.css-1d3w5wq{width:100%;}</style><style =
+data-emotion=3D"css 1g49gfs">.css-1g49gfs{margin:0px!=
+important;text-align:left;font-size:30px!important;font-weight:600;line-hei=
+ght:35px!important;}</style><style data-emotion=3D"css 1x0wz6i">.=
+css-1x0wz6i{margin:0px!important;display:block;padding-top:5px;text-align:l=
+eft;font-size:16px!important;line-height:20px!important;}</style><style =
+data-emotion=3D"css bvf726">.css-bvf726{padding-left:0px;padding-right:0px;=
+padding-top:8px;padding-bottom:8px;}</style><style data-emotion=3D"css =
+4noa61">.css-4noa61{height:180px;background-color:WHITE;}</style><style =
+data-emotion=3D"css sdmcm8">.css-sdmcm8{height:180px;width:180px;padding:5p=
+x;}</style><style data-emotion=3D"css 1805932">.css-1805932{height:180px;wi=
+dth:180px;}</style><style data-emotion=3D"css 1p3hk33">.=
+css-1p3hk33{max-height:180px;max-width:180px;}</style><style =
+data-emotion=3D"css 478xvv">.css-478xvv{width:80%;padding-left:10px;}</styl=
+e><style data-emotion=3D"css 14qmkao">.css-14qmkao{max-width:315px;overflow=
+:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:700;color:bla=
+ck;font-size:24px;}</style><style data-emotion=3D"css 3g2v50">.=
+css-3g2v50{width:30px;cursor:pointer;padding-left:5px;}</style><style =
+data-emotion=3D"css ejayfl">.css-ejayfl{padding-left:0px;padding-right:0px;=
+padding-top:0.5rem;padding-bottom:0.5rem;}</style><style =
+data-emotion=3D"css 8p4z7j">.css-8p4z7j{height:70px;width:100%;background-c=
+olor:#F7F7F7;}</style><style data-emotion=3D"css 1bgub6r">.=
+css-1bgub6r{padding-top:5px;padding-bottom:5px;}</style><style =
+data-emotion=3D"css gy0siu">.css-gy0siu{padding-right:10px;vertical-align:m=
+iddle;}</style><style data-emotion=3D"css 18b5poq">.css-18b5poq{margin:0px!=
+important;font-size:14px;line-height:16px!important;color:gray!=
+important;}</style><style data-emotion=3D"css x244ge">.=
+css-x244ge{margin:0px!important;font-size:14px;line-height:16px!=
+important;color:#3292c3;text-decoration-line:underline;}</style><style =
+data-emotion=3D"css 17th7ok">.css-17th7ok{border-width:0px;border-left-widt=
+h:1px;border-right-width:1px;border-style:solid;border-color:gray;padding-l=
+eft:10px;padding-right:10px;vertical-align:middle;}</style><style =
+data-emotion=3D"css rqv6nk">.css-rqv6nk{padding-left:15px;vertical-align:mi=
+ddle;}</style><style data-emotion=3D"css 1yjx7km">.css-1yjx7km{padding:20px=
+;}</style><style data-emotion=3D"css 1kqn9gb">.css-1kqn9gb{padding-left:0px=
+;padding-right:0px;padding-top:20px;padding-bottom:20px;}</style><style =
+data-emotion=3D"css 14zzw0n">.css-14zzw0n{padding-left:0px;padding-right:0p=
+x;padding-bottom:80px;padding-top:0px;}</style><style data-emotion=3D"css =
+14snxzk">.css-14snxzk{margin:0px!important;font-size:24px!=
+important;font-weight:700;line-height:28px!important;}</style><style =
+data-emotion=3D"css spovqj">.css-spovqj{font-size:12px;line-height:18px;}</=
+style><style data-emotion=3D"css x2g0vq">.css-x2g0vq{border-style:none;colo=
+r:inherit;text-decoration-line:none;}</style><style data-emotion=3D"css =
+1xhop2u">.css-1xhop2u{color:inherit!important;text-decoration-line:underlin=
+e;}</style></head><body style=3D"background:#F7F7F7;margin:0;padding:0;-web=
+kit-text-size-adjust:100%;-ms-text-size-adjust:100%;font-family:Helvetica, =
+sans-serif"><img src=3D"https://capitaloneshopping.com/api/v1/email/open-sa=
+fe/4a0fa2e3-ffbd-4757-963a-8af86706b23c/end" style=3D"display: none; width:=
+ 1px; height: 1px;">
+
+       <!--[if !mso 9]><!-->
+      <span =
+style=3D"display:none !important;visibility:hidden;opacity:0;color:transpar=
+ent;height:0;width:0;">
+      Earn $600 in Rewards at T-Mobile Home =
+Internet. You last viewed Nov 21=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =
+=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =
+=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =
+=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =
+=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =
+=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =
+=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =
+=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =
+=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =
+=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =
+=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =
+=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =
+=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =
+=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =
+=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =
+=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =
+=E2=80=8C=20
+      </span>
+      <!--<![endif]-->
+      <table =
+align=3D"center" width=3D"100%" class=3D"css-995hjt" border=3D"0" =
+cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"width: =
+100%; background-color: #F7F7F7; max-width: 37.5em;" =
+bgcolor=3D"#F7F7F7"><tbody><tr style=3D"width:100%"><td><table =
+align=3D"center" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation" class=3D"css-hiq1gc" =
+style=3D"min-width: 600px; max-width: 600px; padding-top: =
+20px;"><tbody><tr><td><table align=3D"center" width=3D"100%" border=3D"0" =
+cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" =
+class=3D"css-1gx83ig" style=3D"width: 100%; background-color: #FFFFFE; =
+padding-left: 20px; padding-right: 20px; padding-top: 10px; padding-bottom:=
+ 10px;" bgcolor=3D"#FFFFFE"><tbody><tr><td><table align=3D"center" =
+width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" =
+role=3D"presentation"><tbody style=3D"width:100%"><tr =
+style=3D"width:100%"><td align=3D"right" valign=3D"middle" =
+class=3D"css-d2dw86" data-id=3D"__react-email-column" =
+style=3D"border-width: 0px; border-style: solid; border-color: #A9A9A9; =
+padding-right: 5px; width: 31%; border-right-width: 1px;" =
+width=3D"31%"><img class=3D"css-17vhpsb" alt=3D"Capital One Shopping  logo"=
+ src=3D"https://cdn.ivaws.com/wikibuy-assets/images/upload_content/c1-shopp=
+ing-logo-320px.png" style=3D"border-radius: 5px; background-image: =
+url('https://cdn.capitaloneshopping.com/wikibuy-assets/images/upload_conten=
+t/email-small-logo-background.jpeg'); -webkit-background-position: center; =
+background-position: center; padding-left: 10px; padding-right: 10px; =
+padding-top: 14px; padding-bottom: 14px; display: block; outline: none; =
+border: none; text-decoration: none;" width=3D"160"></td><td align=3D"left"=
+ valign=3D"middle" class=3D"css-1hpmthx" data-id=3D"__react-email-column" =
+style=3D"border-width: 0px; border-left-width: 1px; border-style: solid; =
+border-color: #A9A9A9; padding-left: 5px;"><div><!--[if !mso]>--></div><div=
+ class=3D"css-18x4293" style=3D"display: table-cell; height: 60px; width: =
+-webkit-fit-content; width: -moz-fit-content; width: fit-content; =
+border-radius: 5px; background-image: url('https://cdn.capitaloneshopping.=
+com/wikibuy-assets/images/upload_content/email-small-logo-background.=
+jpeg'); -webkit-background-position: center; background-position: center; =
+vertical-align: middle;"><a href=3D"https://capitaloneshopping.=
+com/api/v1/wrapped-link/bkxneHZncjh4R0hLZXdmck8zSENrc1p3dExEcTU5S3ZvUDMyNEt=
+RcUtudmZOa0duZTRrZ0pGZlJmdytjWC9iWW5qeDAraFU0S01HdXVXSzFZQlRJaldJdzgxRnM1NT=
+VHdEZCbXFRPT0/runV3dl" style=3D"color:#067df7;text-decoration-line:none" =
+target=3D"_blank" data-wblinkid=3D"5b11a2ea-eab9-4aeb-9622-44d78997cdf1" =
+rel=3D"noopener noreferrer"><img class=3D"css-u9au6b" alt=3D"T-Mobile Home =
+Internet logo" src=3D"https://images.capitaloneshopping.com/api/v1/logos?=
+domain=3Dt-mobile.com&amp;width=3D500&amp;fallback=3Dtrue&amp;type=3Dcroppe=
+d&amp;opaque=3Dtrue" style=3D"max-height: 40px; padding: 10px; max-width: =
+160px; display: block; outline: none; border: none; text-decoration: =
+none;"></a></div><div><![endif]--></div><div><!--[if mso]></div><a =
+data-deeplink=3D"true" href=3D"https://capitaloneshopping.=
+com/api/v1/redirectV2?autoRedirect=3Dtrue&amp;channel=3Demail&amp;clickEven=
+t=3DemailOpen&amp;credits=3Dtrue&amp;destDomain=3Dt-mobile.=
+com&amp;emailId=3Deb5fc2fe-59cd-462a-88be-7b5a82a04b44&amp;experience=3Dema=
+il&amp;promotionId=3D1f246bc6-c642-4b8c-a191-5275e0226ed5&amp;redirectId=3D=
+eb5fc2fe-59cd-462a-88be-7b5a82a04b44&amp;subExperience=3Dmulti_merchant&amp=
+;token=3DeyJhbGciOiJSUzUxMiJ9.eyJpIjoiZTZiYjdkYjEtZGQ3OC00NGRkLWFhZjAtZjFjM=
+jJjYTlhZjY1IiwidSI6ImI3MGY0MzQ1LTk0YmYtNGU5MC1hM2U2LWJlZDc1OTI4NGRhNSIsImQi=
+OiJ0LW1vYmlsZS5jb20iLCJlIjoxNzY2NDc2Nzk5OTk5LCJ0IjoiZml4ZWQiLCJhIjo2MDAwMCw=
+iYiI6IlVTRCIsInEiOiJVU0QiLCJrIjp0cnVlfQ.VLAbHNgEQWOb-8Sg2Gvn7NUdPes96f5PyRH=
+VaRXPomBBWVAivDyAAYw-Se84CW2mw65YUebBOffarnEJnppNDr-MXiTcAzWt8v7EBleiP6cQs1=
+NfElw9RUAsLcJDdeOst4-N_TETAFD5rjy-nFf5DmfNYM9SX3RSoQTsjJF9tqjFGCvrKFu58igqK=
+vCxgClDgBcAEhtk1qEeJMc154phQZszoN8jIPStLc5r4B05p2CHHNafWI59rhI-XaB7QlMsdf0K=
+fWU0w7ztEoyHqHFhEPyirAa42uiWUwLYxQIIOj5fd-4tewA69J_WMIoUKo4IcLc_s_K0QaADJdy=
+IQoG6kMM0UQxjhzCdGTEINkRShLy67WtgxmHgxTKG7TBD6-Igi0ro_PUFJzmgnW4HQt1-LV1DKq=
+8YqUcWh7r2B7FDaoIpfbtsZIU9W6FUDC2lbaTEi8-4Rl7dB0HBn0Gah634Goc7rXxpHVY0Xh3B_=
+9oFV1P9GZp_dZcdOtyWZdAVR7Rwz28wuV4U9HJsyGtvHwW39V7cEhjEONH6JP0EKkShWt_iDfm1=
+toFiy8uhTcLhAmrrU1mFUBAdINd8JcfStrDZmA46oj5gUroy9MRfdHJ6VcPznAu3xf4oF3DJ5t9=
+ktIWe6epmf-ykV-SvyGsdq5UWyoNnbPuK08954eQ8qWnuDwA&amp;userId=3Db70f4345-94bf=
+-4e90-a3e6-bed759284da5&amp;wbPublisher=3Dwb" style=3D"color:#067df7;text-d=
+ecoration-line:none" target=3D"_blank"><style data-emotion=3D"css 1989ovb">=
+.css-1989ovb{vertical-align:middle;}</style><img class=3D"css-1989ovb" =
+alt=3D"T-Mobile Home Internet logo" height=3D"40" src=3D"https://images.=
+capitaloneshopping.com/api/v1/logos?domain=3Dt-mobile.=
+com&amp;width=3D500&amp;fallback=3Dtrue&amp;type=3Dcropped&amp;opaque=3Dtru=
+e" style=3D"display:block;outline:none;border:none;text-decoration:none"/><=
+/a><div><![endif]--></div></td><td align=3D"right" data-id=3D"__react-email=
+-column"><table align=3D"center" width=3D"100%" border=3D"0" =
+cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation"><tbody><tr><td><t=
+able align=3D"center" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation"><tbody style=3D"width:100%"><tr =
+style=3D"width:100%"><td align=3D"right" data-id=3D"__react-email-column"><=
+p class=3D"css-edgbno" style=3D"font-weight: 700; color: green; margin-top:=
+ 16px; margin-bottom: 16px; margin: 0px; font-size: 12px; line-height: =
+16px;">Single-use. Expiring Dec 22.</p></td></tr></tbody></table><table =
+align=3D"center" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation"><tbody style=3D"width:100%"><tr =
+style=3D"width:100%"><td align=3D"right" data-id=3D"__react-email-column"><=
+p class=3D"css-bayxa5" style=3D"padding-top: 2px; font-weight: 700; color: =
+green; margin-top: 16px; margin-bottom: 16px; margin: 0px; font-size: 12px;=
+ line-height: 16px;">Exclusively for you.</p></td></tr></tbody></table></td=
+></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table><=
+table align=3D"center" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation" class=3D"css-8h87at" =
+style=3D"height: 10px; width: 100%; background-color: #F1F6F9;" =
+height=3D"10" bgcolor=3D"#F1F6F9"><tbody><tr><td></td></tr></tbody></table>=
+<table align=3D"center" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation" class=3D"css-1dgm9za" =
+style=3D"width: 100%; background-color: #FFFFFE; padding-left: 25px; =
+padding-right: 25px; padding-bottom: 10px; padding-top: 20px;" =
+bgcolor=3D"#FFFFFE"><tbody><tr><td><table align=3D"center" width=3D"100%" =
+border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" =
+class=3D"css-1eewf2i" style=3D"background-color: #FFFFFE; padding-bottom: =
+10px; color: #000001;" bgcolor=3D"#FFFFFE"><tbody><tr><td><table =
+align=3D"center" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation"><tbody style=3D"width:100%"><tr =
+style=3D"width:100%"><td data-id=3D"__react-email-column"><p =
+data-testid=3D"section-header-title" class=3D"css-wogn4y" =
+style=3D"text-align: left; font-weight: 600; margin-top: 16px; =
+margin-bottom: 16px; margin: 0px; font-size: 28px; line-height: 35px;">Earn=
+ $600 back</p><p data-testid=3D"section-header-rewards" =
+class=3D"css-k8f12j" style=3D"font-weight: 600; color: #427E27; margin-top:=
+ 16px; margin-bottom: 16px; margin: 0px; font-size: 18px; line-height: =
+20px;">Get rewards on your next purchase</p></td></tr></tbody></table></td>=
+</tr></tbody></table><table align=3D"center" width=3D"100%" border=3D"0" =
+cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" =
+class=3D"css-ptarqw" style=3D"background-color: #FFFFFE;" =
+bgcolor=3D"#FFFFFE"><tbody><tr><td><a href=3D"https://capitaloneshopping.=
+com/api/v1/wrapped-link/bkxneHZncjh4R0hLZXdmck8zSENrc1p3dExEcTU5S3ZvUDMyNEt=
+RcUtudmZOa0duZTRrZ0pGZlJmdytjWC9iWW5qeDAraFU0S01HdXVXSzFZQlRJaldJdzgxRnM1NT=
+VHdEZCbXFRPT0/runV3dl" style=3D"color:#067df7;text-decoration-line:none" =
+target=3D"_blank" data-wblinkid=3D"094f1198-ec9b-488f-b3c4-158644b5cefe" =
+rel=3D"noopener noreferrer"><table align=3D"center" width=3D"100%" =
+border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation"><tbo=
+dy style=3D"width:100%"><tr style=3D"width:100%"><td align=3D"center" =
+valign=3D"middle" class=3D"css-pclyfj" data-id=3D"__react-email-column" =
+style=3D"max-height: 360px; padding: 15px 0px;"><div><!--[if =
+mso]></div><img src=3D"https://images.capitaloneshopping.com/api/v1/logos?=
+domain=3Dt-mobile.com&amp;width=3D500&amp;fallback=3Dtrue&amp;type=3Dcroppe=
+d&amp;opaque=3Dtrue" style=3D"display:block;outline:none;border:none;text-d=
+ecoration:none" width=3D"300"/><div><![endif]--></div><div><!--[if !=
+mso]>--></div><img data-testid=3D"HeroOffer-svg-icon" class=3D"css-1y0aq8s"=
+ src=3D"https://images.capitaloneshopping.com/api/v1/logos?=
+domain=3Dt-mobile.com&amp;width=3D500&amp;fallback=3Dtrue&amp;type=3Dcroppe=
+d&amp;opaque=3Dtrue" style=3D"max-width: 500px; background-image: =
+url('https://cdn.capitaloneshopping.com/wikibuy-assets/images/upload_conten=
+t/email-small-hero-background.jpeg'); -webkit-background-position: center; =
+background-position: center; padding: 25px; display: block; outline: none; =
+border: none; text-decoration: none; max-height: 175px; border-radius: =
+5px;"><div><![endif]--></div></td></tr></tbody></table><table =
+align=3D"center" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation"><tbody style=3D"width:100%"><tr =
+style=3D"width:100%"><td valign=3D"middle" class=3D"css-icns00" =
+data-id=3D"__react-email-column" style=3D"padding-top: 10px;"><p =
+class=3D"css-1wt24gj" style=3D"text-align: center; line-height: 24px; =
+color: #4B5050; margin-top: 16px; margin-bottom: 16px; margin: 0px; =
+font-size: 16px; font-weight: 300;">You last viewed Nov =
+21</p></td></tr></tbody></table></a><table align=3D"center" width=3D"100%" =
+border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation"><tbo=
+dy style=3D"width:100%"><tr style=3D"width:100%"><td valign=3D"middle" =
+align=3D"center" class=3D"css-1616v5a" data-id=3D"__react-email-column" =
+style=3D"padding-bottom: 8px; padding-top: 10px;"><a =
+href=3D"https://capitaloneshopping.com/api/v1/wrapped-link/bkxneHZncjh4R0hL=
+ZXdmck8zSENrc1p3dExEcTU5S3ZvUDMyNEtRcUtudmZOa0duZTRrZ0pGZlJmdytjWC9iWW5qeDA=
+raFU0S01HdXVXSzFZQlRJaldJdzgxRnM1NTVHdEZCbXFRPT0/runV3dl" =
+class=3D"css-1td77r1" style=3D"border-radius: 5px; text-align: center; =
+width: 225px; line-height: 100%; text-decoration: none; display: =
+inline-block; max-width: 100%; mso-padding-alt: 0px; background-color: =
+#427E27; color: white; padding-top: 10px; padding-bottom: 10px; font-size: =
+20px; padding-left: 25px; padding-right: 25px; padding-top: 13px; =
+padding-bottom: 13px;" target=3D"_blank" data-wblinkid=3D"62ed22a6-07cb-4d0=
+8-912a-974de2f45730" rel=3D"noopener noreferrer"><span><!--[if mso]><i =
+style=3D"mso-font-width:0%;mso-text-raise:0" hidden></i><!=
+[endif]--></span><span style=3D"max-width:100%;display:inline-block;line-he=
+ight:120%;mso-padding-alt:0px">Unlock Your Offer</span><span><!--[if =
+mso]><i style=3D"mso-font-width:0%" hidden>&#8203;</i><!=
+[endif]--></span></a></td></tr></tbody></table></td></tr></tbody></table><t=
+able align=3D"center" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation" class=3D"css-qdxnkg" =
+style=3D"padding-top: 10px; padding-bottom: 10px; font-size: 12px; =
+font-weight: 400; line-height: 16px; color: gray;"><tbody><tr><td><span =
+data-testid=3D"rewards-end-date">Rewards offer ends on <strong>December 22,=
+ 2025</strong> at 11:59 PM PST. </span> <a href=3D"https://capitaloneshoppi=
+ng.com/api/v1/email/link-safe-ep/shaOajPNAzpB0RNOh6Q6LfLJ1YDDoVIuP1TMhlVXdB=
+QkFI0WLa0-IpToS7SCBYBIijnNoZb_9NtxiLubXNJct59VaQOJUnNSLOF7eNsJhYE6kmm2cytWo=
+Q-QQHJjFFc7jD0upJbXAfzUdBKGucUbwkfCASOPoK5Vnvhz71knUN1cHTQXcnIX2o7AuhkoRXtE=
+bjbJQw1r3Z-cwQJ4rIKxGpel_7UMJygQ2qpyRSRQ9e6XzhQorhl7zJPJaDQ9ukCc2MN17qwd0PV=
+6foWBFC1sezdo_TWBHVhhN-dfaYB64ZCoUK-3aPnfhageUW6BZXFVW3z8bay-C-axrWD8Pw/end=
+" style=3D"color:inherit;text-decoration-line:none;text-decoration:underlin=
+e" target=3D"_blank" data-wblinkid=3D"b746030f-f79a-402e-8d5e-3bc07fb17e79"=
+ rel=3D"noopener noreferrer">Exclusions</a> and additional <a =
+href=3D"https://capitaloneshopping.com/api/v1/email/link-safe-ep/iUmoOD5yCM=
+l81hiiQ6LLGyWgZf8HgMWRZneQcLBzjkwd6pWyH_mpxDdNcM3jKDS6ciMQUGKwol05MY_X51X09=
+R2UFbaXYPVSmB66g-3GSDhe8w5sOiW7t4tT2mjlYbgQM5G9SbAP1tfXIySCmxgcWjUgqhY6jNzZ=
+pK1G8FJYB87-wVlIlZv_dYrNAlJYHqD7qBdGIvwYeSroPR97bZK0N2ll0ndn8YxA4SOhY4iNLL7=
+ZIDf0TAew2pjZ9RLDFKfH7S2SHE2VzOgoh-hv0NGcXDhC2BpyLJs_Tz104Mrs8SIqiuMiNI1QQm=
+Jg8Lb2KGvLM3KFiKwv1NuB7ieClMVMSQ9eIRGd/end" style=3D"color:inherit;text-dec=
+oration-line:none;text-decoration:underline" target=3D"_blank" =
+data-wblinkid=3D"20221a1d-391b-4a21-ae73-2f0db8361513" rel=3D"noopener =
+noreferrer">terms</a> apply.</td></tr></tbody></table></td></tr></tbody></t=
+able><table align=3D"center" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation" class=3D"css-8h87at" =
+style=3D"height: 10px; width: 100%; background-color: #F1F6F9;" =
+height=3D"10" bgcolor=3D"#F1F6F9"><tbody><tr><td></td></tr></tbody></table>=
+<table align=3D"center" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation" class=3D"css-jh2gz7" =
+style=3D"width: 100%; background-color: #eeebee; padding-left: 25px; =
+padding-right: 25px; padding-bottom: 10px; padding-top: 20px;" =
+bgcolor=3D"#eeebee"><tbody><tr><td><p class=3D"css-js4qls" =
+style=3D"text-align: left; font-weight: 700; margin-top: 16px; =
+margin-bottom: 16px; margin: 0px; font-size: 32px; line-height: =
+35px;">Today&#x27;s Top Offer</p><table align=3D"center" width=3D"100%" =
+border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" =
+data-testid=3D"headlineOffer" class=3D"css-r54xzy" style=3D"height: 180px; =
+padding-top: 10px;" height=3D"180"><tbody><tr><td><a =
+href=3D"https://capitaloneshopping.com/api/v1/wrapped-link/aVhSZG9XZkZwSnMv=
+cWJIaVlzSkl2bFdBQkVtSXdsb3FiNXVTZ1VwVjhhUjBNd2xLdzhCV3FzK1hRZWdXQk54NEZ3L1R=
+6NFhHdk40cTNEVkR0dTQyTDBiSmRWQzJhbkxkc2lFMzZRPT0/runV3dl" =
+style=3D"color:#067df7;text-decoration-line:none" target=3D"_blank" =
+data-wblinkid=3D"88c53bc3-3978-4340-9b33-6ac197df929b" rel=3D"noopener =
+noreferrer"><table align=3D"center" width=3D"100%" border=3D"0" =
+cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation"><tbody =
+style=3D"width:100%"><tr style=3D"width:100%"><td align=3D"center" =
+valign=3D"middle" class=3D"css-1woo7ys" data-id=3D"__react-email-column" =
+style=3D"height: 180px; width: 180px; border-radius: 5px; background-image:=
+ url('https://cdn.capitaloneshopping.com/wikibuy-assets/images/upload_conte=
+nt/email-small-logo-background.jpeg'); padding-left: 10px; padding-right: =
+10px;" width=3D"180" height=3D"180" background=3D"https://cdn.=
+capitaloneshopping.com/wikibuy-assets/images/upload_content/email-small-log=
+o-background.jpeg"><div><!--[if mso]></div><style data-emotion=3D"css =
+4gy2w2">.css-4gy2w2{margin:auto!important;}</style><img =
+class=3D"css-4gy2w2" src=3D"https://images.capitaloneshopping.=
+com/api/v1/logos?domain=3Dapple.com&amp;width=3D300" =
+style=3D"display:block;outline:none;border:none;text-decoration:none" =
+width=3D"170"/><div><![endif]--></div><div><!--[if !mso]><!--></div><img =
+class=3D"css-1jjt2a" src=3D"https://images.capitaloneshopping.=
+com/api/v1/logos?domain=3Dapple.com&amp;width=3D300" style=3D"max-height: =
+170px; max-width: 170px; display: block; outline: none; border: none; =
+text-decoration: none;"><div><!--<![endif]--></div></td><td =
+valign=3D"middle" class=3D"css-1m9wux9" data-id=3D"__react-email-column" =
+style=3D"width: 80%; padding-left: 20px;" width=3D"80%"><p =
+class=3D"css-rq91nh" style=3D"text-align: left; font-weight: 700; =
+line-height: 24px; margin-top: 0; margin-bottom: 0; font-size: 20px; color:=
+ #CE0E2D;">TODAY ONLY!</p><span class=3D"css-1hr62sw" style=3D"font-family:=
+ sans-serif; font-size: 14px; line-height: 14px; color: #000; =
+margin-bottom: 0px;"><p data-testid=3D"headline-offer-reward" =
+class=3D"css-1th38yd" style=3D"margin-bottom: 3px; margin-top: 5px; =
+font-size: 24px; font-weight: 400; line-height: 28px;">Get <b>10% back</b> =
+at Apple</p></span><p class=3D"css-w8soi9" style=3D"line-height: 24px; =
+margin-top: 0px; margin-bottom: 8px; font-size: 16px; font-weight: 400; =
+color: #606465;">Up to $1,000</p><a href=3D"https://capitaloneshopping.=
+com/api/v1/wrapped-link/aVhSZG9XZkZwSnMvcWJIaVlzSkl2bFdBQkVtSXdsb3FiNXVTZ1V=
+wVjhhUjBNd2xLdzhCV3FzK1hRZWdXQk54NEZ3L1R6NFhHdk40cTNEVkR0dTQyTDBiSmRWQzJhbk=
+xkc2lFMzZRPT0/runV3dl" class=3D"css-39qteh" style=3D"border-radius: 5px; =
+text-align: center; line-height: 100%; text-decoration: none; display: =
+inline-block; max-width: 100%; mso-padding-alt: 0px; background-color: =
+#CE0E2D; color: white; padding-top: 10px; padding-bottom: 10px; font-size: =
+20px; margin-top: 6px; padding-left: 25px; padding-right: 25px; =
+padding-top: 13px; padding-bottom: 13px; font-size: 16px;" =
+target=3D"_blank" data-wblinkid=3D"ff8a46a4-6ade-424c-b952-313d0ff376b2" =
+rel=3D"noopener noreferrer"><span><!--[if mso]><i style=3D"mso-font-width:0=
+%;mso-text-raise:0" hidden></i><![endif]--></span><span =
+style=3D"max-width:100%;display:inline-block;line-height:120%;mso-padding-a=
+lt:0px">Get this offer</span><span><!--[if mso]><i style=3D"mso-font-width:=
+0%" hidden>&#8203;</i><![endif]--></span></a></td></tr></tbody></table></a>=
+</td></tr></tbody></table><p class=3D"css-czdeix" style=3D"display: block; =
+text-align: left; font-weight: 400; line-height: 24px; margin-top: 16px; =
+margin-bottom: 10px; font-size: 20px;">Our top offer revealed =
+daily</p><table align=3D"left" width=3D"482" border=3D"0" cellpadding=3D"0"=
+ cellspacing=3D"0" role=3D"presentation" class=3D"css-1d1abc1" =
+style=3D"margin-top: 1px;"><tbody><tr><td><table align=3D"center" =
+width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" =
+role=3D"presentation"><tbody style=3D"width:100%"><tr =
+style=3D"width:100%"><td width=3D"113" align=3D"left" valign=3D"top" =
+class=3D"css-1t2svgv" data-id=3D"__react-email-column" =
+style=3D"padding-right: 18px; width: 113px;"><table align=3D"center" =
+width=3D"124" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" =
+role=3D"presentation" class=3D"css-s4uwrv" style=3D"width: 124px; =
+border-radius: 5px; background-image: url('https://cdn.capitaloneshopping.=
+com/wikibuy-assets/images/upload_content/email-small-logo-background.=
+jpeg');" background=3D"https://cdn.capitaloneshopping.=
+com/wikibuy-assets/images/upload_content/email-small-logo-background.=
+jpeg"><tbody><tr><td><a href=3D"https://capitaloneshopping.=
+com/api/v1/wrapped-link/eERJMDkzYU1BMmN2YWlKd0hmRkM5azVQdGN2SUhxZnhoUmJLdjF=
+6Yzd3UzBZN1liOVJaY29pdFhEVW5QMkl0MWxSTStSS2ZPZkF2Nk84U1VoNjYyeDZLei9YYkNmOG=
+FjRDFSZzdnPT0/runV3dl" style=3D"color:#067df7;text-decoration-line:none" =
+target=3D"_blank" data-wblinkid=3D"f19a3abb-ad9f-43bf-9433-898dce207aa4" =
+rel=3D"noopener noreferrer"><table align=3D"center" width=3D"113" =
+border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" =
+class=3D"css-g8pqpu" style=3D"height: 100px; width: 113px;" =
+height=3D"100"><tbody style=3D"width:100%"><tr style=3D"width:100%"><td =
+align=3D"center" valign=3D"middle" data-id=3D"__react-email-column"><div><!=
+--[if mso]></div><img class=3D"css-4gy2w2" src=3D"https://images.=
+capitaloneshopping.com/api/v1/logos?domain=3Dlanebryant.=
+com&amp;width=3D300" style=3D"display:block;outline:none;border:none;text-d=
+ecoration:none" width=3D"95"/><div><![endif]--></div><div><!--[if !mso]><!=
+--></div><img class=3D"css-184gsr9" src=3D"https://images.=
+capitaloneshopping.com/api/v1/logos?domain=3Dlanebryant.=
+com&amp;width=3D300" style=3D"max-height: 95px; max-width: 95px; display: =
+block; outline: none; border: none; text-decoration: none;"><div><!--<!=
+[endif]--></div></td></tr></tbody></table></a><p data-testid=3D"future-offe=
+r-date-0" class=3D"css-wbggas" style=3D"display: block; text-align: center;=
+ font-weight: 400; color: #6b7280; line-height: 24px; margin-top: 8px; =
+margin-bottom: 8px; font-size: 20px;">Sat 12/20</p></td></tr></tbody></tabl=
+e></td><td width=3D"113" align=3D"left" valign=3D"top" =
+class=3D"css-1t2svgv" data-id=3D"__react-email-column" =
+style=3D"padding-right: 18px; width: 113px;"><table align=3D"center" =
+width=3D"124" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" =
+role=3D"presentation" class=3D"css-s4uwrv" style=3D"width: 124px; =
+border-radius: 5px; background-image: url('https://cdn.capitaloneshopping.=
+com/wikibuy-assets/images/upload_content/email-small-logo-background.=
+jpeg');" background=3D"https://cdn.capitaloneshopping.=
+com/wikibuy-assets/images/upload_content/email-small-logo-background.=
+jpeg"><tbody><tr><td><a href=3D"https://capitaloneshopping.=
+com/api/v1/wrapped-link/RWEvMEI0Y2FzSEZYZnk1UzdPT3BVa2VlMlNwU1R3QVE2TnFrMTV=
+maGxTbUxOOXNUbHU1UkVUbThnTDdxSUpUTWJ2eUFDek1NR2s3UjY3YWZBZVRvdlBYbTNUdmdOS0=
+ZhelRLUWZnPT0/runV3dl" style=3D"color:#067df7;text-decoration-line:none" =
+target=3D"_blank" data-wblinkid=3D"a9a73e27-8217-46ef-9876-d480bbdf81a1" =
+rel=3D"noopener noreferrer"><table align=3D"center" width=3D"113" =
+border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" =
+class=3D"css-g8pqpu" style=3D"height: 100px; width: 113px;" =
+height=3D"100"><tbody style=3D"width:100%"><tr style=3D"width:100%"><td =
+align=3D"center" valign=3D"middle" data-id=3D"__react-email-column"><div><!=
+--[if mso]></div><img class=3D"css-4gy2w2" src=3D"https://images.=
+capitaloneshopping.com/api/v1/logos?domain=3Dmintmobile.=
+com&amp;width=3D300" style=3D"display:block;outline:none;border:none;text-d=
+ecoration:none" width=3D"95"/><div><![endif]--></div><div><!--[if !mso]><!=
+--></div><img class=3D"css-184gsr9" src=3D"https://images.=
+capitaloneshopping.com/api/v1/logos?domain=3Dmintmobile.=
+com&amp;width=3D300" style=3D"max-height: 95px; max-width: 95px; display: =
+block; outline: none; border: none; text-decoration: none;"><div><!--<!=
+[endif]--></div></td></tr></tbody></table></a><p data-testid=3D"future-offe=
+r-date-1" class=3D"css-wbggas" style=3D"display: block; text-align: center;=
+ font-weight: 400; color: #6b7280; line-height: 24px; margin-top: 8px; =
+margin-bottom: 8px; font-size: 20px;">Sun 12/21</p></td></tr></tbody></tabl=
+e></td><td width=3D"113" align=3D"left" valign=3D"top" =
+class=3D"css-1t2svgv" data-id=3D"__react-email-column" =
+style=3D"padding-right: 18px; width: 113px;"><table align=3D"center" =
+width=3D"124" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" =
+role=3D"presentation" class=3D"css-s4uwrv" style=3D"width: 124px; =
+border-radius: 5px; background-image: url('https://cdn.capitaloneshopping.=
+com/wikibuy-assets/images/upload_content/email-small-logo-background.=
+jpeg');" background=3D"https://cdn.capitaloneshopping.=
+com/wikibuy-assets/images/upload_content/email-small-logo-background.=
+jpeg"><tbody><tr><td><a href=3D"https://capitaloneshopping.=
+com/api/v1/wrapped-link/S2hHVVdWRVhBOVpYKzJWaTkxZWRJdzFPK2JYKzRUWEYzR1pJWkJ=
+LY2hIalBUU2lkOTk3czN0K3hhUDlUbm9UQVBWR2xJa3NRVmRWNGZtK2xJRXRHUzhJYjdURmIydX=
+U4VmJEeU5BPT0/runV3dl" style=3D"color:#067df7;text-decoration-line:none" =
+target=3D"_blank" data-wblinkid=3D"ca9beddb-38da-4dc3-bdf7-906c322280a0" =
+rel=3D"noopener noreferrer"><table align=3D"center" width=3D"113" =
+border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" =
+class=3D"css-g8pqpu" style=3D"height: 100px; width: 113px;" =
+height=3D"100"><tbody style=3D"width:100%"><tr style=3D"width:100%"><td =
+align=3D"center" valign=3D"middle" data-id=3D"__react-email-column"><div><!=
+--[if mso]></div><img class=3D"css-4gy2w2" src=3D"https://images.=
+capitaloneshopping.com/api/v1/logos?domain=3Dchewy.com&amp;width=3D300" =
+style=3D"display:block;outline:none;border:none;text-decoration:none" =
+width=3D"95"/><div><![endif]--></div><div><!--[if !mso]><!--></div><img =
+class=3D"css-184gsr9" src=3D"https://images.capitaloneshopping.=
+com/api/v1/logos?domain=3Dchewy.com&amp;width=3D300" style=3D"max-height: =
+95px; max-width: 95px; display: block; outline: none; border: none; =
+text-decoration: none;"><div><!--<![endif]--></div></td></tr></tbody></tabl=
+e></a><p data-testid=3D"future-offer-date-2" class=3D"css-wbggas" =
+style=3D"display: block; text-align: center; font-weight: 400; color: =
+#6b7280; line-height: 24px; margin-top: 8px; margin-bottom: 8px; font-size:=
+ 20px;">Mon 12/22</p></td></tr></tbody></table></td><td width=3D"113" =
+align=3D"left" valign=3D"top" class=3D"css-1t2svgv" =
+data-id=3D"__react-email-column" style=3D"padding-right: 0px; width: =
+113px;"><table align=3D"center" width=3D"124" border=3D"0" =
+cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" =
+class=3D"css-s4uwrv" style=3D"width: 124px; border-radius: 5px; =
+background-image: url('https://cdn.capitaloneshopping.=
+com/wikibuy-assets/images/upload_content/email-small-logo-background.=
+jpeg');" background=3D"https://cdn.capitaloneshopping.=
+com/wikibuy-assets/images/upload_content/email-small-logo-background.=
+jpeg"><tbody><tr><td><a href=3D"https://capitaloneshopping.=
+com/api/v1/wrapped-link/bE5Vd2RPNi90TkViYWtMYkdMTlNUdlJqOVB1Y0Nia0tZNmhxbFl=
+CSXZIUmFUeVdETjRnVFdMV0RMRTg2RU10bDNhbXZndWpETWlmL3kxeUtpQnlQYXMzaUhMeGxJTj=
+NoaWFOalNnPT0/runV3dl" style=3D"color:#067df7;text-decoration-line:none" =
+target=3D"_blank" data-wblinkid=3D"08986193-1807-43b0-8386-049795a2d791" =
+rel=3D"noopener noreferrer"><table align=3D"center" width=3D"113" =
+border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" =
+class=3D"css-g8pqpu" style=3D"height: 100px; width: 113px;" =
+height=3D"100"><tbody style=3D"width:100%"><tr style=3D"width:100%"><td =
+align=3D"center" valign=3D"middle" data-id=3D"__react-email-column"><div><!=
+--[if mso]></div><img class=3D"css-4gy2w2" src=3D"https://images.=
+capitaloneshopping.com/api/v1/logos?domain=3Dashleyfurniture.=
+com&amp;width=3D300" style=3D"display:block;outline:none;border:none;text-d=
+ecoration:none" width=3D"95"/><div><![endif]--></div><div><!--[if !mso]><!=
+--></div><img class=3D"css-184gsr9" src=3D"https://images.=
+capitaloneshopping.com/api/v1/logos?domain=3Dashleyfurniture.=
+com&amp;width=3D300" style=3D"max-height: 95px; max-width: 95px; display: =
+block; outline: none; border: none; text-decoration: none;"><div><!--<!=
+[endif]--></div></td></tr></tbody></table></a><p data-testid=3D"future-offe=
+r-date-3" class=3D"css-wbggas" style=3D"display: block; text-align: center;=
+ font-weight: 400; color: #6b7280; line-height: 24px; margin-top: 8px; =
+margin-bottom: 8px; font-size: 20px;">Tue 12/23</p></td></tr></tbody></tabl=
+e></td></tr></tbody></table></td></tr></tbody></table><table =
+align=3D"center" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation" class=3D"css-qdxnkg" =
+style=3D"padding-top: 10px; padding-bottom: 10px; font-size: 12px; =
+font-weight: 400; line-height: 16px; color: gray;"><tbody><tr><td>Rewards =
+offer ends on December 19, 2025 at 11:59 PM CST. Limited availability, rate=
+ may change. <a href=3D"https://capitaloneshopping.com/api/v1/email/link-sa=
+fe-ep/87LNJIedNy58ugdJZ3Lp9oO6QJryp4HRjmT0W_fz4GOew7dXAxBKIDb4k2MSBgY9r4Wod=
+wghiie9YdqNFSew8OU1sdm1jQ8sciH0WLEWPBYnBboR-FcF21Klw1mJ0CyeIt-Wk2GM4-SlKH_E=
+6pKYYMlY8kLc6wshlP3PVmn7zlqXpf2GzJsoeWJ7Ugk0saKVCjYn8hCpSqeifhaVVVIcSkmk6PR=
+eO6TMbbB-driRYDbQb-LSJBeRyoHNEWEQwsBOn0maHo33uF5RCcrrawicjKNCuSM_efRyfTj4UR=
+71oJYgU8v-e4kHmJ4EtoElMh96b9fdQgktszvh/end" style=3D"color:inherit;text-dec=
+oration-line:none;text-decoration:underline" target=3D"_blank" =
+data-wblinkid=3D"3b18bb4c-8b2b-43d3-b293-4d1a171d8b99" rel=3D"noopener =
+noreferrer">Exclusions</a> and additional <a href=3D"https://capitaloneshop=
+ping.com/api/v1/email/link-safe-ep/iUmoOD5yCMl81hiiQ6LLGyWgZf8HgMWRZneQcLBz=
+jkwd6pWyH_mpxDdNcM3jKDS6ciMQUGKwol05MY_X51X09R2UFbaXYPVSmB66g-3GSDhe8w5sOiW=
+7t4tT2mjlYbgQM5G9SbAP1tfXIySCmxgcWjUgqhY6jNzZpK1G8FJYB87-wVlIlZv_dYrNAlJYHq=
+D7qBdGIvwYeSroPR97bZK0N2ll0ndn8YxA4SOhY4iNLL7ZIDf0TAew2pjZ9RLDFKfH7S2SHE2Vz=
+Ogoh-hv0NGcXDhC2BpyLJs_Tz104Mrs8SIqiuMiNI1QQmJg8Lb2KGvLM3KFiKwv1NuB7ieClMVM=
+SQ9eIRGd/end" style=3D"color:inherit;text-decoration-line:none;text-decorat=
+ion:underline" target=3D"_blank" data-wblinkid=3D"ef612ef9-f2ab-4b35-b6da-b=
+0e00268dfd9" rel=3D"noopener noreferrer">terms</a> apply.=
+</td></tr></tbody></table></td></tr></tbody></table><table align=3D"center"=
+ width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" =
+role=3D"presentation" class=3D"css-8h87at" style=3D"height: 10px; width: =
+100%; background-color: #F1F6F9;" height=3D"10" bgcolor=3D"#F1F6F9"><tbody>=
+<tr><td></td></tr></tbody></table><table align=3D"center" width=3D"100%" =
+border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" =
+class=3D"css-1dgm9za" style=3D"width: 100%; background-color: #FFFFFE; =
+padding-left: 25px; padding-right: 25px; padding-bottom: 10px; padding-top:=
+ 20px;" bgcolor=3D"#FFFFFE"><tbody><tr><td><table align=3D"center" =
+width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" =
+role=3D"presentation" class=3D"css-jt9m3n" style=3D"background-color: =
+WHITE;" bgcolor=3D"WHITE"><tbody><tr><td><table align=3D"center" =
+width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" =
+role=3D"presentation"><tbody><tr><td><table align=3D"left" width=3D"100%" =
+border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" =
+class=3D"css-1d3w5wq" style=3D"width: 100%;"><tbody><tr><td><p =
+class=3D"css-1g49gfs" style=3D"text-align: left; font-weight: 600; =
+margin-top: 16px; margin-bottom: 16px; margin: 0px; font-size: 30px; =
+line-height: 35px;">Other offers exclusively for you.=
+</p></td></tr></tbody></table><table align=3D"left" width=3D"100%" =
+border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation"><tbo=
+dy><tr><td><p class=3D"css-1x0wz6i" style=3D"display: block; padding-top: =
+5px; text-align: left; margin-top: 16px; margin-bottom: 16px; margin: 0px; =
+font-size: 16px; line-height: 20px;">Activate and get up to $1,000 back =
+unless specified. See below for terms.</p></td></tr></tbody></table></td></=
+tr></tbody></table><table align=3D"center" width=3D"100%" border=3D"0" =
+cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" =
+data-testid=3D"bonusOffers" class=3D"css-icns00" style=3D"padding-top: =
+10px;"><tbody><tr><td><table align=3D"center" width=3D"100%" border=3D"0" =
+cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" =
+class=3D"css-bvf726" style=3D"padding-left: 0px; padding-right: 0px; =
+padding-top: 8px; padding-bottom: 8px; border-bottom: 5px solid =
+#F1F6F9;"><tbody><tr><td><a href=3D"https://capitaloneshopping.=
+com/api/v1/wrapped-link/QjhQQW8yVkdwZXZRUWZIR2ZHVityMDlGMHFqdDJTNUdaQzJWcVZ=
+OSXlNZUhSdzdGdkIrbmtQRkhNc3JUUU82eklqd3ZnMnNaWkxKaDdXOEprWDhoQUZxbkFaSGVzaG=
+4yQnlhRVBBPT0/runV3dl" style=3D"color:#067df7;text-decoration-line:none" =
+target=3D"_blank" data-wblinkid=3D"6fafec7f-204e-4d09-9c3d-a67c85c660f0" =
+rel=3D"noopener noreferrer"><table align=3D"center" width=3D"100%" =
+border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" =
+class=3D"css-4noa61" style=3D"height: 180px; background-color: WHITE;" =
+height=3D"180" bgcolor=3D"WHITE"><tbody><tr><td><table align=3D"center" =
+width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" =
+role=3D"presentation"><tbody style=3D"width:100%"><tr =
+style=3D"width:100%"><td align=3D"center" valign=3D"middle" =
+class=3D"css-sdmcm8" data-id=3D"__react-email-column" style=3D"height: =
+180px; width: 180px; padding: 5px;" width=3D"180" height=3D"180"><table =
+align=3D"center" width=3D"180" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation" class=3D"css-1805932" =
+style=3D"height: 180px; width: 180px;" height=3D"180"><tbody><tr><td><table=
+ align=3D"center" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation"><tbody style=3D"width:100%"><tr =
+style=3D"width:100%"><td align=3D"center" valign=3D"middle" =
+data-id=3D"__react-email-column"><div><!--[if mso]></div><img =
+class=3D"css-4gy2w2" src=3D"https://images.capitaloneshopping.=
+com/api/v1/logos?domain=3Doneplus.com&amp;width=3D180&amp;fallback=3Dtrue&a=
+mp;type=3Dcropped&amp;opaque=3Dtrue" style=3D"display:block;outline:none;bo=
+rder:none;text-decoration:none" width=3D"180"/><div><!=
+[endif]--></div><div><!--[if !mso]><!--></div><img class=3D"css-1p3hk33" =
+src=3D"https://images.capitaloneshopping.com/api/v1/logos?domain=3Doneplus.=
+com&amp;width=3D180&amp;fallback=3Dtrue&amp;type=3Dcropped&amp;opaque=3Dtru=
+e" style=3D"max-height: 180px; max-width: 180px; display: block; outline: =
+none; border: none; text-decoration: none;"><div><!--<!=
+[endif]--></div></td></tr></tbody></table></td></tr></tbody></table></td><t=
+d valign=3D"middle" class=3D"css-478xvv" data-id=3D"__react-email-column" =
+style=3D"width: 80%; padding-left: 10px;" width=3D"80%"><table =
+align=3D"left" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation"><tbody><tr><td><table =
+align=3D"center" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation"><tbody style=3D"width:100%"><tr =
+style=3D"width:100%"><td align=3D"left" class=3D"css-14qmkao" =
+data-id=3D"__react-email-column" style=3D"max-width: 315px; overflow: =
+hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 700; =
+color: black; font-size: 24px;">OnePlus</td></tr></tbody></table><table =
+align=3D"center" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation"><tbody style=3D"width:100%"><tr =
+style=3D"width:100%"><td align=3D"left" valign=3D"middle" =
+data-id=3D"__react-email-column"><span style=3D"font-family:sans-serif;font=
+-size:24px;font-weight:bold;line-height:32px;color:green">20% =
+Back</span></td></tr></tbody></table></td></tr></tbody></table></td><td =
+data-testid=3D"carrotCta" valign=3D"middle" align=3D"right" =
+class=3D"css-3g2v50" data-id=3D"__react-email-column" style=3D"width: 30px;=
+ cursor: pointer; padding-left: 5px;" width=3D"30"><a =
+href=3D"https://capitaloneshopping.com/api/v1/wrapped-link/QjhQQW8yVkdwZXZR=
+UWZIR2ZHVityMDlGMHFqdDJTNUdaQzJWcVZOSXlNZUhSdzdGdkIrbmtQRkhNc3JUUU82eklqd3Z=
+nMnNaWkxKaDdXOEprWDhoQUZxbkFaSGVzaG4yQnlhRVBBPT0/runV3dl" =
+style=3D"color:#067df7;text-decoration-line:none" target=3D"_blank" =
+data-wblinkid=3D"94eb20ff-a52a-4048-ab12-3d82004565a8" rel=3D"noopener =
+noreferrer"><img height=3D"30" src=3D"https://cdn.capitaloneshopping.=
+com/wikibuy-assets/images/upload_content/icon-cta-button-2x.png" =
+style=3D"display:block;outline:none;border:none;text-decoration:none" =
+width=3D"30"></a></td></tr></tbody></table></td></tr></tbody></table></a></=
+td></tr></tbody></table><table align=3D"center" width=3D"100%" border=3D"0"=
+ cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" =
+class=3D"css-bvf726" style=3D"padding-left: 0px; padding-right: 0px; =
+padding-top: 8px; padding-bottom: 8px; border-bottom: 5px solid =
+#F1F6F9;"><tbody><tr><td><a href=3D"https://capitaloneshopping.=
+com/api/v1/wrapped-link/cFB2bDRwYmFkR1V0UjJETzNPSFJoWDJzZ0d4d1BoT2p6ekNiV1J=
+qc3dFMlR5WXZXUDEydUFVaUZaalNoWjBPVXU0bDlFSS9ScWZoNWU3bjBBOVJrQmVLTXlFaDZwRz=
+VUQ2lYYnJ3PT0/runV3dl" style=3D"color:#067df7;text-decoration-line:none" =
+target=3D"_blank" data-wblinkid=3D"532b4acf-4014-45e3-be6f-71566de585cb" =
+rel=3D"noopener noreferrer"><table align=3D"center" width=3D"100%" =
+border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" =
+class=3D"css-4noa61" style=3D"height: 180px; background-color: WHITE;" =
+height=3D"180" bgcolor=3D"WHITE"><tbody><tr><td><table align=3D"center" =
+width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" =
+role=3D"presentation"><tbody style=3D"width:100%"><tr =
+style=3D"width:100%"><td align=3D"center" valign=3D"middle" =
+class=3D"css-sdmcm8" data-id=3D"__react-email-column" style=3D"height: =
+180px; width: 180px; padding: 5px;" width=3D"180" height=3D"180"><table =
+align=3D"center" width=3D"180" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation" class=3D"css-1805932" =
+style=3D"height: 180px; width: 180px;" height=3D"180"><tbody><tr><td><table=
+ align=3D"center" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation"><tbody style=3D"width:100%"><tr =
+style=3D"width:100%"><td align=3D"center" valign=3D"middle" =
+data-id=3D"__react-email-column"><div><!--[if mso]></div><img =
+class=3D"css-4gy2w2" src=3D"https://cdn.capitaloneshopping.=
+com/wikibuy-assets/images/upload_content/02ce40f2f0dd7abb8db110a3.jpeg" =
+style=3D"display:block;outline:none;border:none;text-decoration:none" =
+width=3D"180"/><div><![endif]--></div><div><!--[if !mso]><!--></div><img =
+class=3D"css-1p3hk33" src=3D"https://cdn.capitaloneshopping.=
+com/wikibuy-assets/images/upload_content/02ce40f2f0dd7abb8db110a3.jpeg" =
+style=3D"max-height: 180px; max-width: 180px; display: block; outline: =
+none; border: none; text-decoration: none;"><div><!--<!=
+[endif]--></div></td></tr></tbody></table></td></tr></tbody></table></td><t=
+d valign=3D"middle" class=3D"css-478xvv" data-id=3D"__react-email-column" =
+style=3D"width: 80%; padding-left: 10px;" width=3D"80%"><table =
+align=3D"left" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation"><tbody><tr><td><table =
+align=3D"center" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation"><tbody style=3D"width:100%"><tr =
+style=3D"width:100%"><td align=3D"left" class=3D"css-14qmkao" =
+data-id=3D"__react-email-column" style=3D"max-width: 315px; overflow: =
+hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 700; =
+color: black; font-size: 24px;">Apple</td></tr></tbody></table><table =
+align=3D"center" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation"><tbody style=3D"width:100%"><tr =
+style=3D"width:100%"><td align=3D"left" valign=3D"middle" =
+data-id=3D"__react-email-column"><span style=3D"font-family:sans-serif;font=
+-size:24px;font-weight:bold;line-height:32px;color:green">10% =
+Back</span></td></tr></tbody></table></td></tr></tbody></table></td><td =
+data-testid=3D"carrotCta" valign=3D"middle" align=3D"right" =
+class=3D"css-3g2v50" data-id=3D"__react-email-column" style=3D"width: 30px;=
+ cursor: pointer; padding-left: 5px;" width=3D"30"><a =
+href=3D"https://capitaloneshopping.com/api/v1/wrapped-link/cFB2bDRwYmFkR1V0=
+UjJETzNPSFJoWDJzZ0d4d1BoT2p6ekNiV1Jqc3dFMlR5WXZXUDEydUFVaUZaalNoWjBPVXU0bDl=
+FSS9ScWZoNWU3bjBBOVJrQmVLTXlFaDZwRzVUQ2lYYnJ3PT0/runV3dl" =
+style=3D"color:#067df7;text-decoration-line:none" target=3D"_blank" =
+data-wblinkid=3D"89fe9fee-601b-42fd-b4b8-36bdb85d6f28" rel=3D"noopener =
+noreferrer"><img height=3D"30" src=3D"https://cdn.capitaloneshopping.=
+com/wikibuy-assets/images/upload_content/icon-cta-button-2x.png" =
+style=3D"display:block;outline:none;border:none;text-decoration:none" =
+width=3D"30"></a></td></tr></tbody></table></td></tr></tbody></table></a></=
+td></tr></tbody></table><table align=3D"center" width=3D"100%" border=3D"0"=
+ cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" =
+class=3D"css-bvf726" style=3D"padding-left: 0px; padding-right: 0px; =
+padding-top: 8px; padding-bottom: 8px; border-bottom: 5px solid =
+#F1F6F9;"><tbody><tr><td><a href=3D"https://capitaloneshopping.=
+com/api/v1/wrapped-link/MzNwQytRc2RXOEwwaEdBNHJMQzFVR1FOOGN2UzV6TGlnNFhBWkM=
+3ZmhDS1F2NHkrVURtakFTZENKYkxKU3diZHcxUHNpM1dnbXUyWEcwcXNjdlpRVHc4RjJzUSswd3=
+hxdm50dFJnPT0/runV3dl" style=3D"color:#067df7;text-decoration-line:none" =
+target=3D"_blank" data-wblinkid=3D"c5a0a984-d622-48be-80a3-9cdd577316ec" =
+rel=3D"noopener noreferrer"><table align=3D"center" width=3D"100%" =
+border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" =
+class=3D"css-4noa61" style=3D"height: 180px; background-color: WHITE;" =
+height=3D"180" bgcolor=3D"WHITE"><tbody><tr><td><table align=3D"center" =
+width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" =
+role=3D"presentation"><tbody style=3D"width:100%"><tr =
+style=3D"width:100%"><td align=3D"center" valign=3D"middle" =
+class=3D"css-sdmcm8" data-id=3D"__react-email-column" style=3D"height: =
+180px; width: 180px; padding: 5px;" width=3D"180" height=3D"180"><table =
+align=3D"center" width=3D"180" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation" class=3D"css-1805932" =
+style=3D"height: 180px; width: 180px;" height=3D"180"><tbody><tr><td><table=
+ align=3D"center" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation"><tbody style=3D"width:100%"><tr =
+style=3D"width:100%"><td align=3D"center" valign=3D"middle" =
+data-id=3D"__react-email-column"><div><!--[if mso]></div><img =
+class=3D"css-4gy2w2" src=3D"https://images.capitaloneshopping.=
+com/api/v1/logos?domain=3Dotterbox.com&amp;width=3D180&amp;fallback=3Dtrue&=
+amp;type=3Dcropped&amp;opaque=3Dtrue" style=3D"display:block;outline:none;b=
+order:none;text-decoration:none" width=3D"180"/><div><!=
+[endif]--></div><div><!--[if !mso]><!--></div><img class=3D"css-1p3hk33" =
+src=3D"https://images.capitaloneshopping.com/api/v1/logos?domain=3Dotterbox=
+.com&amp;width=3D180&amp;fallback=3Dtrue&amp;type=3Dcropped&amp;opaque=3Dtr=
+ue" style=3D"max-height: 180px; max-width: 180px; display: block; outline: =
+none; border: none; text-decoration: none;"><div><!--<!=
+[endif]--></div></td></tr></tbody></table></td></tr></tbody></table></td><t=
+d valign=3D"middle" class=3D"css-478xvv" data-id=3D"__react-email-column" =
+style=3D"width: 80%; padding-left: 10px;" width=3D"80%"><table =
+align=3D"left" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation"><tbody><tr><td><table =
+align=3D"center" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation"><tbody style=3D"width:100%"><tr =
+style=3D"width:100%"><td align=3D"left" class=3D"css-14qmkao" =
+data-id=3D"__react-email-column" style=3D"max-width: 315px; overflow: =
+hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 700; =
+color: black; font-size: 24px;">OtterBox</td></tr></tbody></table><table =
+align=3D"center" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation"><tbody style=3D"width:100%"><tr =
+style=3D"width:100%"><td align=3D"left" valign=3D"middle" =
+data-id=3D"__react-email-column"><span style=3D"font-family:sans-serif;font=
+-size:24px;font-weight:bold;line-height:32px;color:green">40% =
+Back</span></td></tr></tbody></table></td></tr></tbody></table></td><td =
+data-testid=3D"carrotCta" valign=3D"middle" align=3D"right" =
+class=3D"css-3g2v50" data-id=3D"__react-email-column" style=3D"width: 30px;=
+ cursor: pointer; padding-left: 5px;" width=3D"30"><a =
+href=3D"https://capitaloneshopping.com/api/v1/wrapped-link/MzNwQytRc2RXOEww=
+aEdBNHJMQzFVR1FOOGN2UzV6TGlnNFhBWkM3ZmhDS1F2NHkrVURtakFTZENKYkxKU3diZHcxUHN=
+pM1dnbXUyWEcwcXNjdlpRVHc4RjJzUSswd3hxdm50dFJnPT0/runV3dl" =
+style=3D"color:#067df7;text-decoration-line:none" target=3D"_blank" =
+data-wblinkid=3D"004bb0a5-64d7-4dfe-816c-2a562b661f1a" rel=3D"noopener =
+noreferrer"><img height=3D"30" src=3D"https://cdn.capitaloneshopping.=
+com/wikibuy-assets/images/upload_content/icon-cta-button-2x.png" =
+style=3D"display:block;outline:none;border:none;text-decoration:none" =
+width=3D"30"></a></td></tr></tbody></table></td></tr></tbody></table></a></=
+td></tr></tbody></table><table align=3D"center" width=3D"100%" border=3D"0"=
+ cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" =
+class=3D"css-bvf726" style=3D"padding-left: 0px; padding-right: 0px; =
+padding-top: 8px; padding-bottom: 8px; border-bottom: 5px solid =
+#F1F6F9;"><tbody><tr><td><a href=3D"https://capitaloneshopping.=
+com/api/v1/wrapped-link/YnlxZzNqTlo2MXVjS05mdUc0NjdBQnBhWTh5OWdkQllsazNEQVJ=
+IdjlHczZsL2J4ZFFJb2hSWVhPaWgvQ1kvQnhFWVE0NVZFNEduK0h3cXhHbVF1bGI3OGRWRElLVU=
+NOeUVIT1J3PT0/runV3dl" style=3D"color:#067df7;text-decoration-line:none" =
+target=3D"_blank" data-wblinkid=3D"c9bbb9b6-e100-4274-bdbd-4652758a27ca" =
+rel=3D"noopener noreferrer"><table align=3D"center" width=3D"100%" =
+border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" =
+class=3D"css-4noa61" style=3D"height: 180px; background-color: WHITE;" =
+height=3D"180" bgcolor=3D"WHITE"><tbody><tr><td><table align=3D"center" =
+width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" =
+role=3D"presentation"><tbody style=3D"width:100%"><tr =
+style=3D"width:100%"><td align=3D"center" valign=3D"middle" =
+class=3D"css-sdmcm8" data-id=3D"__react-email-column" style=3D"height: =
+180px; width: 180px; padding: 5px;" width=3D"180" height=3D"180"><table =
+align=3D"center" width=3D"180" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation" class=3D"css-1805932" =
+style=3D"height: 180px; width: 180px;" height=3D"180"><tbody><tr><td><table=
+ align=3D"center" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation"><tbody style=3D"width:100%"><tr =
+style=3D"width:100%"><td align=3D"center" valign=3D"middle" =
+data-id=3D"__react-email-column"><div><!--[if mso]></div><img =
+class=3D"css-4gy2w2" src=3D"https://images.capitaloneshopping.=
+com/api/v1/logos?domain=3Dmonoprice.com&amp;width=3D180&amp;fallback=3Dtrue=
+&amp;type=3Dcropped&amp;opaque=3Dtrue" style=3D"display:block;outline:none;=
+border:none;text-decoration:none" width=3D"180"/><div><!=
+[endif]--></div><div><!--[if !mso]><!--></div><img class=3D"css-1p3hk33" =
+src=3D"https://images.capitaloneshopping.com/api/v1/logos?=
+domain=3Dmonoprice.com&amp;width=3D180&amp;fallback=3Dtrue&amp;type=3Dcropp=
+ed&amp;opaque=3Dtrue" style=3D"max-height: 180px; max-width: 180px; =
+display: block; outline: none; border: none; text-decoration: none;"><div><=
+!--<![endif]--></div></td></tr></tbody></table></td></tr></tbody></table></=
+td><td valign=3D"middle" class=3D"css-478xvv" data-id=3D"__react-email-colu=
+mn" style=3D"width: 80%; padding-left: 10px;" width=3D"80%"><table =
+align=3D"left" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation"><tbody><tr><td><table =
+align=3D"center" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation"><tbody style=3D"width:100%"><tr =
+style=3D"width:100%"><td align=3D"left" class=3D"css-14qmkao" =
+data-id=3D"__react-email-column" style=3D"max-width: 315px; overflow: =
+hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 700; =
+color: black; font-size: 24px;">Monoprice</td></tr></tbody></table><table =
+align=3D"center" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation"><tbody style=3D"width:100%"><tr =
+style=3D"width:100%"><td align=3D"left" valign=3D"middle" =
+data-id=3D"__react-email-column"><span style=3D"font-family:sans-serif;font=
+-size:24px;font-weight:bold;line-height:32px;color:green">24% =
+Back</span></td></tr></tbody></table></td></tr></tbody></table></td><td =
+data-testid=3D"carrotCta" valign=3D"middle" align=3D"right" =
+class=3D"css-3g2v50" data-id=3D"__react-email-column" style=3D"width: 30px;=
+ cursor: pointer; padding-left: 5px;" width=3D"30"><a =
+href=3D"https://capitaloneshopping.com/api/v1/wrapped-link/YnlxZzNqTlo2MXVj=
+S05mdUc0NjdBQnBhWTh5OWdkQllsazNEQVJIdjlHczZsL2J4ZFFJb2hSWVhPaWgvQ1kvQnhFWVE=
+0NVZFNEduK0h3cXhHbVF1bGI3OGRWRElLVUNOeUVIT1J3PT0/runV3dl" =
+style=3D"color:#067df7;text-decoration-line:none" target=3D"_blank" =
+data-wblinkid=3D"8a41eb92-988b-4e94-a7cb-4a174beac9c0" rel=3D"noopener =
+noreferrer"><img height=3D"30" src=3D"https://cdn.capitaloneshopping.=
+com/wikibuy-assets/images/upload_content/icon-cta-button-2x.png" =
+style=3D"display:block;outline:none;border:none;text-decoration:none" =
+width=3D"30"></a></td></tr></tbody></table></td></tr></tbody></table></a></=
+td></tr></tbody></table><table align=3D"center" width=3D"100%" border=3D"0"=
+ cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" =
+class=3D"css-bvf726" style=3D"padding-left: 0px; padding-right: 0px; =
+padding-top: 8px; padding-bottom: 8px; border-bottom: 5px solid =
+#F1F6F9;"><tbody><tr><td><a href=3D"https://capitaloneshopping.=
+com/api/v1/wrapped-link/ZlJkWWlLOWZrbGRaQnlwR3RmOEc3aFgrSER6LzNuZVZUbERuT2h=
+seXZBTXlWVjBYOTFlS3V5WkRVaWNhdkE4ZnJrRk9ISEFrRzBqbzlSZzJBQTBWNjRsL01xZjdQaj=
+hmWTRldDB3PT0/runV3dl" style=3D"color:#067df7;text-decoration-line:none" =
+target=3D"_blank" data-wblinkid=3D"4ebc0d68-a7ff-480e-90fb-010fa2774ac1" =
+rel=3D"noopener noreferrer"><table align=3D"center" width=3D"100%" =
+border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" =
+class=3D"css-4noa61" style=3D"height: 180px; background-color: WHITE;" =
+height=3D"180" bgcolor=3D"WHITE"><tbody><tr><td><table align=3D"center" =
+width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" =
+role=3D"presentation"><tbody style=3D"width:100%"><tr =
+style=3D"width:100%"><td align=3D"center" valign=3D"middle" =
+class=3D"css-sdmcm8" data-id=3D"__react-email-column" style=3D"height: =
+180px; width: 180px; padding: 5px;" width=3D"180" height=3D"180"><table =
+align=3D"center" width=3D"180" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation" class=3D"css-1805932" =
+style=3D"height: 180px; width: 180px;" height=3D"180"><tbody><tr><td><table=
+ align=3D"center" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation"><tbody style=3D"width:100%"><tr =
+style=3D"width:100%"><td align=3D"center" valign=3D"middle" =
+data-id=3D"__react-email-column"><div><!--[if mso]></div><img =
+class=3D"css-4gy2w2" src=3D"https://images.capitaloneshopping.=
+com/api/v1/logos?domain=3Dmalwarebytes.com&amp;width=3D180&amp;fallback=3Dt=
+rue&amp;type=3Dcropped&amp;opaque=3Dtrue" style=3D"display:block;outline:no=
+ne;border:none;text-decoration:none" width=3D"180"/><div><!=
+[endif]--></div><div><!--[if !mso]><!--></div><img class=3D"css-1p3hk33" =
+src=3D"https://images.capitaloneshopping.com/api/v1/logos?=
+domain=3Dmalwarebytes.com&amp;width=3D180&amp;fallback=3Dtrue&amp;type=3Dcr=
+opped&amp;opaque=3Dtrue" style=3D"max-height: 180px; max-width: 180px; =
+display: block; outline: none; border: none; text-decoration: none;"><div><=
+!--<![endif]--></div></td></tr></tbody></table></td></tr></tbody></table></=
+td><td valign=3D"middle" class=3D"css-478xvv" data-id=3D"__react-email-colu=
+mn" style=3D"width: 80%; padding-left: 10px;" width=3D"80%"><table =
+align=3D"left" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation"><tbody><tr><td><table =
+align=3D"center" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation"><tbody style=3D"width:100%"><tr =
+style=3D"width:100%"><td align=3D"left" class=3D"css-14qmkao" =
+data-id=3D"__react-email-column" style=3D"max-width: 315px; overflow: =
+hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 700; =
+color: black; font-size: 24px;">Malwarebytes</td></tr></tbody></table><tabl=
+e align=3D"center" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation"><tbody style=3D"width:100%"><tr =
+style=3D"width:100%"><td align=3D"left" valign=3D"middle" =
+data-id=3D"__react-email-column"><span style=3D"font-family:sans-serif;font=
+-size:24px;font-weight:bold;line-height:32px;color:green">up to 70% =
+Back</span></td></tr></tbody></table></td></tr></tbody></table></td><td =
+data-testid=3D"carrotCta" valign=3D"middle" align=3D"right" =
+class=3D"css-3g2v50" data-id=3D"__react-email-column" style=3D"width: 30px;=
+ cursor: pointer; padding-left: 5px;" width=3D"30"><a =
+href=3D"https://capitaloneshopping.com/api/v1/wrapped-link/ZlJkWWlLOWZrbGRa=
+QnlwR3RmOEc3aFgrSER6LzNuZVZUbERuT2hseXZBTXlWVjBYOTFlS3V5WkRVaWNhdkE4ZnJrRk9=
+ISEFrRzBqbzlSZzJBQTBWNjRsL01xZjdQajhmWTRldDB3PT0/runV3dl" =
+style=3D"color:#067df7;text-decoration-line:none" target=3D"_blank" =
+data-wblinkid=3D"9ecba474-73fe-4843-b1cb-77819ac3a588" rel=3D"noopener =
+noreferrer"><img height=3D"30" src=3D"https://cdn.capitaloneshopping.=
+com/wikibuy-assets/images/upload_content/icon-cta-button-2x.png" =
+style=3D"display:block;outline:none;border:none;text-decoration:none" =
+width=3D"30"></a></td></tr></tbody></table></td></tr></tbody></table></a></=
+td></tr></tbody></table><table align=3D"center" width=3D"100%" border=3D"0"=
+ cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" =
+class=3D"css-bvf726" style=3D"padding-left: 0px; padding-right: 0px; =
+padding-top: 8px; padding-bottom: 8px; border-bottom: 5px solid =
+#F1F6F9;"><tbody><tr><td><a href=3D"https://capitaloneshopping.=
+com/api/v1/wrapped-link/ci9LUEhjUWRnckxCelp3Zkx2OFZiUGRBV0ovSVR4UWN4TktVVGh=
+CbGhyK2k0d1lKNGNQNnNtNzExZmJ6V3lIYkZpZURVNlVIcVB6dlZ4YzlqRmtQQmRLSmJrbUZTOX=
+p5eCt1OTlBPT0/runV3dl" style=3D"color:#067df7;text-decoration-line:none" =
+target=3D"_blank" data-wblinkid=3D"2f8c3b86-5e24-48a8-b643-ac851f273f49" =
+rel=3D"noopener noreferrer"><table align=3D"center" width=3D"100%" =
+border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" =
+class=3D"css-4noa61" style=3D"height: 180px; background-color: WHITE;" =
+height=3D"180" bgcolor=3D"WHITE"><tbody><tr><td><table align=3D"center" =
+width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" =
+role=3D"presentation"><tbody style=3D"width:100%"><tr =
+style=3D"width:100%"><td align=3D"center" valign=3D"middle" =
+class=3D"css-sdmcm8" data-id=3D"__react-email-column" style=3D"height: =
+180px; width: 180px; padding: 5px;" width=3D"180" height=3D"180"><table =
+align=3D"center" width=3D"180" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation" class=3D"css-1805932" =
+style=3D"height: 180px; width: 180px;" height=3D"180"><tbody><tr><td><table=
+ align=3D"center" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation"><tbody style=3D"width:100%"><tr =
+style=3D"width:100%"><td align=3D"center" valign=3D"middle" =
+data-id=3D"__react-email-column"><div><!--[if mso]></div><img =
+class=3D"css-4gy2w2" src=3D"https://images.capitaloneshopping.=
+com/api/v1/logos?domain=3Dofficedepot.com&amp;width=3D180&amp;fallback=3Dtr=
+ue&amp;type=3Dcropped&amp;opaque=3Dtrue" style=3D"display:block;outline:non=
+e;border:none;text-decoration:none" width=3D"180"/><div><!=
+[endif]--></div><div><!--[if !mso]><!--></div><img class=3D"css-1p3hk33" =
+src=3D"https://images.capitaloneshopping.com/api/v1/logos?=
+domain=3Dofficedepot.com&amp;width=3D180&amp;fallback=3Dtrue&amp;type=3Dcro=
+pped&amp;opaque=3Dtrue" style=3D"max-height: 180px; max-width: 180px; =
+display: block; outline: none; border: none; text-decoration: none;"><div><=
+!--<![endif]--></div></td></tr></tbody></table></td></tr></tbody></table></=
+td><td valign=3D"middle" class=3D"css-478xvv" data-id=3D"__react-email-colu=
+mn" style=3D"width: 80%; padding-left: 10px;" width=3D"80%"><table =
+align=3D"left" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation"><tbody><tr><td><table =
+align=3D"center" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation"><tbody style=3D"width:100%"><tr =
+style=3D"width:100%"><td align=3D"left" class=3D"css-14qmkao" =
+data-id=3D"__react-email-column" style=3D"max-width: 315px; overflow: =
+hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 700; =
+color: black; font-size: 24px;">Office Depot</td></tr></tbody></table><tabl=
+e align=3D"center" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation"><tbody style=3D"width:100%"><tr =
+style=3D"width:100%"><td align=3D"left" valign=3D"middle" =
+data-id=3D"__react-email-column"><span style=3D"font-family:sans-serif;font=
+-size:24px;font-weight:bold;line-height:32px;color:green">up to 28% =
+Back</span></td></tr></tbody></table></td></tr></tbody></table></td><td =
+data-testid=3D"carrotCta" valign=3D"middle" align=3D"right" =
+class=3D"css-3g2v50" data-id=3D"__react-email-column" style=3D"width: 30px;=
+ cursor: pointer; padding-left: 5px;" width=3D"30"><a =
+href=3D"https://capitaloneshopping.com/api/v1/wrapped-link/ci9LUEhjUWRnckxC=
+elp3Zkx2OFZiUGRBV0ovSVR4UWN4TktVVGhCbGhyK2k0d1lKNGNQNnNtNzExZmJ6V3lIYkZpZUR=
+VNlVIcVB6dlZ4YzlqRmtQQmRLSmJrbUZTOXp5eCt1OTlBPT0/runV3dl" =
+style=3D"color:#067df7;text-decoration-line:none" target=3D"_blank" =
+data-wblinkid=3D"4b16771c-bc6d-44cd-966e-bd6c7ef810c3" rel=3D"noopener =
+noreferrer"><img height=3D"30" src=3D"https://cdn.capitaloneshopping.=
+com/wikibuy-assets/images/upload_content/icon-cta-button-2x.png" =
+style=3D"display:block;outline:none;border:none;text-decoration:none" =
+width=3D"30"></a></td></tr></tbody></table></td></tr></tbody></table></a></=
+td></tr></tbody></table><table align=3D"center" width=3D"100%" border=3D"0"=
+ cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" =
+class=3D"css-bvf726" style=3D"padding-left: 0px; padding-right: 0px; =
+padding-top: 8px; padding-bottom: 8px; border-bottom: 5px solid =
+#F1F6F9;"><tbody><tr><td><a href=3D"https://capitaloneshopping.=
+com/api/v1/wrapped-link/Q3podEQ5N0JWZGVPaTNScVZvN3kvYU9Tb1gvWVBlLy92ZW94N1p=
+0VWVSQjZhYS84bng1djAxUzlEcHpJK0oxL2dyamgrMk8zNEhvaWtCUmlJUUVPeHM0eWVvdk8xUW=
+RuT1ptekl3PT0/runV3dl" style=3D"color:#067df7;text-decoration-line:none" =
+target=3D"_blank" data-wblinkid=3D"2673159e-09e9-43d2-b04a-88a70b25e476" =
+rel=3D"noopener noreferrer"><table align=3D"center" width=3D"100%" =
+border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" =
+class=3D"css-4noa61" style=3D"height: 180px; background-color: WHITE;" =
+height=3D"180" bgcolor=3D"WHITE"><tbody><tr><td><table align=3D"center" =
+width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" =
+role=3D"presentation"><tbody style=3D"width:100%"><tr =
+style=3D"width:100%"><td align=3D"center" valign=3D"middle" =
+class=3D"css-sdmcm8" data-id=3D"__react-email-column" style=3D"height: =
+180px; width: 180px; padding: 5px;" width=3D"180" height=3D"180"><table =
+align=3D"center" width=3D"180" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation" class=3D"css-1805932" =
+style=3D"height: 180px; width: 180px;" height=3D"180"><tbody><tr><td><table=
+ align=3D"center" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation"><tbody style=3D"width:100%"><tr =
+style=3D"width:100%"><td align=3D"center" valign=3D"middle" =
+data-id=3D"__react-email-column"><div><!--[if mso]></div><img =
+class=3D"css-4gy2w2" src=3D"https://images.capitaloneshopping.=
+com/api/v1/logos?domain=3Dnorton.com&amp;width=3D180&amp;fallback=3Dtrue&am=
+p;type=3Dcropped&amp;opaque=3Dtrue" style=3D"display:block;outline:none;bor=
+der:none;text-decoration:none" width=3D"180"/><div><![endif]--></div><div><=
+!--[if !mso]><!--></div><img class=3D"css-1p3hk33" src=3D"https://images.=
+capitaloneshopping.com/api/v1/logos?domain=3Dnorton.=
+com&amp;width=3D180&amp;fallback=3Dtrue&amp;type=3Dcropped&amp;opaque=3Dtru=
+e" style=3D"max-height: 180px; max-width: 180px; display: block; outline: =
+none; border: none; text-decoration: none;"><div><!--<!=
+[endif]--></div></td></tr></tbody></table></td></tr></tbody></table></td><t=
+d valign=3D"middle" class=3D"css-478xvv" data-id=3D"__react-email-column" =
+style=3D"width: 80%; padding-left: 10px;" width=3D"80%"><table =
+align=3D"left" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation"><tbody><tr><td><table =
+align=3D"center" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation"><tbody style=3D"width:100%"><tr =
+style=3D"width:100%"><td align=3D"left" class=3D"css-14qmkao" =
+data-id=3D"__react-email-column" style=3D"max-width: 315px; overflow: =
+hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 700; =
+color: black; font-size: 24px;">Norton US</td></tr></tbody></table><table =
+align=3D"center" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation"><tbody style=3D"width:100%"><tr =
+style=3D"width:100%"><td align=3D"left" valign=3D"middle" =
+data-id=3D"__react-email-column"><span style=3D"font-family:sans-serif;font=
+-size:24px;font-weight:bold;line-height:32px;color:green">70% =
+Back</span></td></tr></tbody></table></td></tr></tbody></table></td><td =
+data-testid=3D"carrotCta" valign=3D"middle" align=3D"right" =
+class=3D"css-3g2v50" data-id=3D"__react-email-column" style=3D"width: 30px;=
+ cursor: pointer; padding-left: 5px;" width=3D"30"><a =
+href=3D"https://capitaloneshopping.com/api/v1/wrapped-link/Q3podEQ5N0JWZGVP=
+aTNScVZvN3kvYU9Tb1gvWVBlLy92ZW94N1p0VWVSQjZhYS84bng1djAxUzlEcHpJK0oxL2dyamg=
+rMk8zNEhvaWtCUmlJUUVPeHM0eWVvdk8xUWRuT1ptekl3PT0/runV3dl" =
+style=3D"color:#067df7;text-decoration-line:none" target=3D"_blank" =
+data-wblinkid=3D"eb281e33-8a3f-4730-bae3-3bd7c343588c" rel=3D"noopener =
+noreferrer"><img height=3D"30" src=3D"https://cdn.capitaloneshopping.=
+com/wikibuy-assets/images/upload_content/icon-cta-button-2x.png" =
+style=3D"display:block;outline:none;border:none;text-decoration:none" =
+width=3D"30"></a></td></tr></tbody></table></td></tr></tbody></table></a></=
+td></tr></tbody></table><table align=3D"center" width=3D"100%" border=3D"0"=
+ cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" =
+class=3D"css-bvf726" style=3D"padding-left: 0px; padding-right: 0px; =
+padding-top: 8px; padding-bottom: 8px; border-bottom: 5px solid =
+#F1F6F9;"><tbody><tr><td><a href=3D"https://capitaloneshopping.=
+com/api/v1/wrapped-link/NE1oYkdhZVo4MzI3RHFRV21UMGtTQ3NqMW1uOWx3VlE0ZHY3Mml=
+aQ2xKSGg2eWtJa2R2dithcm9NSjZwKzJhVEJGYUttV1hpK1V3QUpNb3JUT3h6NDRUS0hBaDVwM0=
+JVSUdRTGlBPT0/runV3dl" style=3D"color:#067df7;text-decoration-line:none" =
+target=3D"_blank" data-wblinkid=3D"ba50a86b-3f86-4102-b2bf-cbacab45494c" =
+rel=3D"noopener noreferrer"><table align=3D"center" width=3D"100%" =
+border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" =
+class=3D"css-4noa61" style=3D"height: 180px; background-color: WHITE;" =
+height=3D"180" bgcolor=3D"WHITE"><tbody><tr><td><table align=3D"center" =
+width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" =
+role=3D"presentation"><tbody style=3D"width:100%"><tr =
+style=3D"width:100%"><td align=3D"center" valign=3D"middle" =
+class=3D"css-sdmcm8" data-id=3D"__react-email-column" style=3D"height: =
+180px; width: 180px; padding: 5px;" width=3D"180" height=3D"180"><table =
+align=3D"center" width=3D"180" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation" class=3D"css-1805932" =
+style=3D"height: 180px; width: 180px;" height=3D"180"><tbody><tr><td><table=
+ align=3D"center" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation"><tbody style=3D"width:100%"><tr =
+style=3D"width:100%"><td align=3D"center" valign=3D"middle" =
+data-id=3D"__react-email-column"><div><!--[if mso]></div><img =
+class=3D"css-4gy2w2" src=3D"https://images.capitaloneshopping.=
+com/api/v1/logos?domain=3Davg.com&amp;width=3D180&amp;fallback=3Dtrue&amp;t=
+ype=3Dcropped&amp;opaque=3Dtrue" style=3D"display:block;outline:none;border=
+:none;text-decoration:none" width=3D"180"/><div><![endif]--></div><div><!=
+--[if !mso]><!--></div><img class=3D"css-1p3hk33" src=3D"https://images.=
+capitaloneshopping.com/api/v1/logos?domain=3Davg.com&amp;width=3D180&amp;fa=
+llback=3Dtrue&amp;type=3Dcropped&amp;opaque=3Dtrue" style=3D"max-height: =
+180px; max-width: 180px; display: block; outline: none; border: none; =
+text-decoration: none;"><div><!--<![endif]--></div></td></tr></tbody></tabl=
+e></td></tr></tbody></table></td><td valign=3D"middle" class=3D"css-478xvv"=
+ data-id=3D"__react-email-column" style=3D"width: 80%; padding-left: 10px;"=
+ width=3D"80%"><table align=3D"left" width=3D"100%" border=3D"0" =
+cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation"><tbody><tr><td><t=
+able align=3D"center" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation"><tbody style=3D"width:100%"><tr =
+style=3D"width:100%"><td align=3D"left" class=3D"css-14qmkao" =
+data-id=3D"__react-email-column" style=3D"max-width: 315px; overflow: =
+hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 700; =
+color: black; font-size: 24px;">AVG</td></tr></tbody></table><table =
+align=3D"center" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation"><tbody style=3D"width:100%"><tr =
+style=3D"width:100%"><td align=3D"left" valign=3D"middle" =
+data-id=3D"__react-email-column"><span style=3D"font-family:sans-serif;font=
+-size:24px;font-weight:bold;line-height:32px;color:green">70% =
+Back</span></td></tr></tbody></table></td></tr></tbody></table></td><td =
+data-testid=3D"carrotCta" valign=3D"middle" align=3D"right" =
+class=3D"css-3g2v50" data-id=3D"__react-email-column" style=3D"width: 30px;=
+ cursor: pointer; padding-left: 5px;" width=3D"30"><a =
+href=3D"https://capitaloneshopping.com/api/v1/wrapped-link/NE1oYkdhZVo4MzI3=
+RHFRV21UMGtTQ3NqMW1uOWx3VlE0ZHY3MmlaQ2xKSGg2eWtJa2R2dithcm9NSjZwKzJhVEJGYUt=
+tV1hpK1V3QUpNb3JUT3h6NDRUS0hBaDVwM0JVSUdRTGlBPT0/runV3dl" =
+style=3D"color:#067df7;text-decoration-line:none" target=3D"_blank" =
+data-wblinkid=3D"e8009c2b-c1a8-4243-a6b6-2879be2dfab8" rel=3D"noopener =
+noreferrer"><img height=3D"30" src=3D"https://cdn.capitaloneshopping.=
+com/wikibuy-assets/images/upload_content/icon-cta-button-2x.png" =
+style=3D"display:block;outline:none;border:none;text-decoration:none" =
+width=3D"30"></a></td></tr></tbody></table></td></tr></tbody></table></a></=
+td></tr></tbody></table><table align=3D"center" width=3D"100%" border=3D"0"=
+ cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" =
+class=3D"css-bvf726" style=3D"padding-left: 0px; padding-right: 0px; =
+padding-top: 8px; padding-bottom: 8px; border-bottom: 5px solid =
+#F1F6F9;"><tbody><tr><td><a href=3D"https://capitaloneshopping.=
+com/api/v1/wrapped-link/SjBweTQzeGRQMlVnRjR2cEZoc2ZhcmxXSXRuMXJKdGF1a0wwVTF=
+OdmtlVDk1SFByV2VEcTlNSjJ2T0JsSXpnT05mQ0l3bCtUWSswRHlxY1N2MEhjS05qazJWSnRTWG=
+tYVGRXOUZBPT0/runV3dl" style=3D"color:#067df7;text-decoration-line:none" =
+target=3D"_blank" data-wblinkid=3D"9662fd84-1d45-45a3-8935-fcf7a1bf1f06" =
+rel=3D"noopener noreferrer"><table align=3D"center" width=3D"100%" =
+border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" =
+class=3D"css-4noa61" style=3D"height: 180px; background-color: WHITE;" =
+height=3D"180" bgcolor=3D"WHITE"><tbody><tr><td><table align=3D"center" =
+width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" =
+role=3D"presentation"><tbody style=3D"width:100%"><tr =
+style=3D"width:100%"><td align=3D"center" valign=3D"middle" =
+class=3D"css-sdmcm8" data-id=3D"__react-email-column" style=3D"height: =
+180px; width: 180px; padding: 5px;" width=3D"180" height=3D"180"><table =
+align=3D"center" width=3D"180" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation" class=3D"css-1805932" =
+style=3D"height: 180px; width: 180px;" height=3D"180"><tbody><tr><td><table=
+ align=3D"center" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation"><tbody style=3D"width:100%"><tr =
+style=3D"width:100%"><td align=3D"center" valign=3D"middle" =
+data-id=3D"__react-email-column"><div><!--[if mso]></div><img =
+class=3D"css-4gy2w2" src=3D"https://images.capitaloneshopping.=
+com/api/v1/logos?domain=3Dsweetwater.com&amp;width=3D180&amp;fallback=3Dtru=
+e&amp;type=3Dcropped&amp;opaque=3Dtrue" style=3D"display:block;outline:none=
+;border:none;text-decoration:none" width=3D"180"/><div><!=
+[endif]--></div><div><!--[if !mso]><!--></div><img class=3D"css-1p3hk33" =
+src=3D"https://images.capitaloneshopping.com/api/v1/logos?=
+domain=3Dsweetwater.com&amp;width=3D180&amp;fallback=3Dtrue&amp;type=3Dcrop=
+ped&amp;opaque=3Dtrue" style=3D"max-height: 180px; max-width: 180px; =
+display: block; outline: none; border: none; text-decoration: none;"><div><=
+!--<![endif]--></div></td></tr></tbody></table></td></tr></tbody></table></=
+td><td valign=3D"middle" class=3D"css-478xvv" data-id=3D"__react-email-colu=
+mn" style=3D"width: 80%; padding-left: 10px;" width=3D"80%"><table =
+align=3D"left" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation"><tbody><tr><td><table =
+align=3D"center" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation"><tbody style=3D"width:100%"><tr =
+style=3D"width:100%"><td align=3D"left" class=3D"css-14qmkao" =
+data-id=3D"__react-email-column" style=3D"max-width: 315px; overflow: =
+hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 700; =
+color: black; font-size: 24px;">Sweetwater</td></tr></tbody></table><table =
+align=3D"center" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation"><tbody style=3D"width:100%"><tr =
+style=3D"width:100%"><td align=3D"left" valign=3D"middle" =
+data-id=3D"__react-email-column"><span style=3D"font-family:sans-serif;font=
+-size:24px;font-weight:bold;line-height:32px;color:green">10% =
+Back</span></td></tr></tbody></table></td></tr></tbody></table></td><td =
+data-testid=3D"carrotCta" valign=3D"middle" align=3D"right" =
+class=3D"css-3g2v50" data-id=3D"__react-email-column" style=3D"width: 30px;=
+ cursor: pointer; padding-left: 5px;" width=3D"30"><a =
+href=3D"https://capitaloneshopping.com/api/v1/wrapped-link/SjBweTQzeGRQMlVn=
+RjR2cEZoc2ZhcmxXSXRuMXJKdGF1a0wwVTFOdmtlVDk1SFByV2VEcTlNSjJ2T0JsSXpnT05mQ0l=
+3bCtUWSswRHlxY1N2MEhjS05qazJWSnRTWGtYVGRXOUZBPT0/runV3dl" =
+style=3D"color:#067df7;text-decoration-line:none" target=3D"_blank" =
+data-wblinkid=3D"92e4424b-202a-4042-b4e8-3bbf1fe4d2d4" rel=3D"noopener =
+noreferrer"><img height=3D"30" src=3D"https://cdn.capitaloneshopping.=
+com/wikibuy-assets/images/upload_content/icon-cta-button-2x.png" =
+style=3D"display:block;outline:none;border:none;text-decoration:none" =
+width=3D"30"></a></td></tr></tbody></table></td></tr></tbody></table></a></=
+td></tr></tbody></table><table align=3D"center" width=3D"100%" border=3D"0"=
+ cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" =
+class=3D"css-bvf726" style=3D"padding-left: 0px; padding-right: 0px; =
+padding-top: 8px; padding-bottom: 8px; border-bottom: 5px solid =
+#F1F6F9;"><tbody><tr><td><a href=3D"https://capitaloneshopping.=
+com/api/v1/wrapped-link/N3hUNEZ1bndBeWR5VHJmaHNkVGZmZGFQSndVMGdraW9CUjNvZC9=
+4YUtudjlsQjBnWjh0Y3BwUW1WZUJqcFZuVHlZc0VnSVFQTDcrK0FKMmQ4OERvelZ4VVV3NFZwK2=
+85SGVCOEhnPT0/runV3dl" style=3D"color:#067df7;text-decoration-line:none" =
+target=3D"_blank" data-wblinkid=3D"ecd748db-03e5-4f4f-b274-0eef79c0858e" =
+rel=3D"noopener noreferrer"><table align=3D"center" width=3D"100%" =
+border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" =
+class=3D"css-4noa61" style=3D"height: 180px; background-color: WHITE;" =
+height=3D"180" bgcolor=3D"WHITE"><tbody><tr><td><table align=3D"center" =
+width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" =
+role=3D"presentation"><tbody style=3D"width:100%"><tr =
+style=3D"width:100%"><td align=3D"center" valign=3D"middle" =
+class=3D"css-sdmcm8" data-id=3D"__react-email-column" style=3D"height: =
+180px; width: 180px; padding: 5px;" width=3D"180" height=3D"180"><table =
+align=3D"center" width=3D"180" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation" class=3D"css-1805932" =
+style=3D"height: 180px; width: 180px;" height=3D"180"><tbody><tr><td><table=
+ align=3D"center" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation"><tbody style=3D"width:100%"><tr =
+style=3D"width:100%"><td align=3D"center" valign=3D"middle" =
+data-id=3D"__react-email-column"><div><!--[if mso]></div><img =
+class=3D"css-4gy2w2" src=3D"https://images.capitaloneshopping.=
+com/api/v1/logos?domain=3Dadorama.com&amp;width=3D180&amp;fallback=3Dtrue&a=
+mp;type=3Dcropped&amp;opaque=3Dtrue" style=3D"display:block;outline:none;bo=
+rder:none;text-decoration:none" width=3D"180"/><div><!=
+[endif]--></div><div><!--[if !mso]><!--></div><img class=3D"css-1p3hk33" =
+src=3D"https://images.capitaloneshopping.com/api/v1/logos?domain=3Dadorama.=
+com&amp;width=3D180&amp;fallback=3Dtrue&amp;type=3Dcropped&amp;opaque=3Dtru=
+e" style=3D"max-height: 180px; max-width: 180px; display: block; outline: =
+none; border: none; text-decoration: none;"><div><!--<!=
+[endif]--></div></td></tr></tbody></table></td></tr></tbody></table></td><t=
+d valign=3D"middle" class=3D"css-478xvv" data-id=3D"__react-email-column" =
+style=3D"width: 80%; padding-left: 10px;" width=3D"80%"><table =
+align=3D"left" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation"><tbody><tr><td><table =
+align=3D"center" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation"><tbody style=3D"width:100%"><tr =
+style=3D"width:100%"><td align=3D"left" class=3D"css-14qmkao" =
+data-id=3D"__react-email-column" style=3D"max-width: 315px; overflow: =
+hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 700; =
+color: black; font-size: 24px;">Adorama</td></tr></tbody></table><table =
+align=3D"center" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation"><tbody style=3D"width:100%"><tr =
+style=3D"width:100%"><td align=3D"left" valign=3D"middle" =
+data-id=3D"__react-email-column"><span style=3D"font-family:sans-serif;font=
+-size:24px;font-weight:bold;line-height:32px;color:green">12% =
+Back</span></td></tr></tbody></table></td></tr></tbody></table></td><td =
+data-testid=3D"carrotCta" valign=3D"middle" align=3D"right" =
+class=3D"css-3g2v50" data-id=3D"__react-email-column" style=3D"width: 30px;=
+ cursor: pointer; padding-left: 5px;" width=3D"30"><a =
+href=3D"https://capitaloneshopping.com/api/v1/wrapped-link/N3hUNEZ1bndBeWR5=
+VHJmaHNkVGZmZGFQSndVMGdraW9CUjNvZC94YUtudjlsQjBnWjh0Y3BwUW1WZUJqcFZuVHlZc0V=
+nSVFQTDcrK0FKMmQ4OERvelZ4VVV3NFZwK285SGVCOEhnPT0/runV3dl" =
+style=3D"color:#067df7;text-decoration-line:none" target=3D"_blank" =
+data-wblinkid=3D"ef63b0d1-e21a-45c2-aeda-942609ddb360" rel=3D"noopener =
+noreferrer"><img height=3D"30" src=3D"https://cdn.capitaloneshopping.=
+com/wikibuy-assets/images/upload_content/icon-cta-button-2x.png" =
+style=3D"display:block;outline:none;border:none;text-decoration:none" =
+width=3D"30"></a></td></tr></tbody></table></td></tr></tbody></table></a></=
+td></tr></tbody></table><table align=3D"center" width=3D"100%" border=3D"0"=
+ cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" =
+class=3D"css-bvf726" style=3D"padding-left: 0px; padding-right: 0px; =
+padding-top: 8px; padding-bottom: 8px;"><tbody><tr><td><a =
+href=3D"https://capitaloneshopping.com/api/v1/wrapped-link/SFp3YXZaNlFlQkww=
+eXh0UFNHeEZwMW5yc1hvbjJJd3laVWpYT0x6cndwZ3cveGZCdmR1NmZlMEFZVU1IR09jcjlNWFB=
+mTytoRFhENlVydlIweFM0TmMyM0o5NVFoNEZqUUJpdTBnPT0/runV3dl" =
+style=3D"color:#067df7;text-decoration-line:none" target=3D"_blank" =
+data-wblinkid=3D"d5f341e0-e2dd-4f8c-9223-ed38bf539ffd" rel=3D"noopener =
+noreferrer"><table align=3D"center" width=3D"100%" border=3D"0" =
+cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" =
+class=3D"css-4noa61" style=3D"height: 180px; background-color: WHITE;" =
+height=3D"180" bgcolor=3D"WHITE"><tbody><tr><td><table align=3D"center" =
+width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" =
+role=3D"presentation"><tbody style=3D"width:100%"><tr =
+style=3D"width:100%"><td align=3D"center" valign=3D"middle" =
+class=3D"css-sdmcm8" data-id=3D"__react-email-column" style=3D"height: =
+180px; width: 180px; padding: 5px;" width=3D"180" height=3D"180"><table =
+align=3D"center" width=3D"180" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation" class=3D"css-1805932" =
+style=3D"height: 180px; width: 180px;" height=3D"180"><tbody><tr><td><table=
+ align=3D"center" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation"><tbody style=3D"width:100%"><tr =
+style=3D"width:100%"><td align=3D"center" valign=3D"middle" =
+data-id=3D"__react-email-column"><div><!--[if mso]></div><img =
+class=3D"css-4gy2w2" src=3D"https://images.capitaloneshopping.=
+com/api/v1/logos?domain=3Dmeta.com&amp;width=3D180&amp;fallback=3Dtrue&amp;=
+type=3Dcropped&amp;opaque=3Dtrue" style=3D"display:block;outline:none;borde=
+r:none;text-decoration:none" width=3D"180"/><div><![endif]--></div><div><!=
+--[if !mso]><!--></div><img class=3D"css-1p3hk33" src=3D"https://images.=
+capitaloneshopping.com/api/v1/logos?domain=3Dmeta.com&amp;width=3D180&amp;f=
+allback=3Dtrue&amp;type=3Dcropped&amp;opaque=3Dtrue" style=3D"max-height: =
+180px; max-width: 180px; display: block; outline: none; border: none; =
+text-decoration: none;"><div><!--<![endif]--></div></td></tr></tbody></tabl=
+e></td></tr></tbody></table></td><td valign=3D"middle" class=3D"css-478xvv"=
+ data-id=3D"__react-email-column" style=3D"width: 80%; padding-left: 10px;"=
+ width=3D"80%"><table align=3D"left" width=3D"100%" border=3D"0" =
+cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation"><tbody><tr><td><t=
+able align=3D"center" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation"><tbody style=3D"width:100%"><tr =
+style=3D"width:100%"><td align=3D"left" class=3D"css-14qmkao" =
+data-id=3D"__react-email-column" style=3D"max-width: 315px; overflow: =
+hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 700; =
+color: black; font-size: 24px;">Meta</td></tr></tbody></table><table =
+align=3D"center" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation"><tbody style=3D"width:100%"><tr =
+style=3D"width:100%"><td align=3D"left" valign=3D"middle" =
+data-id=3D"__react-email-column"><span style=3D"font-family:sans-serif;font=
+-size:24px;font-weight:bold;line-height:32px;color:green">30% =
+Back</span></td></tr></tbody></table></td></tr></tbody></table></td><td =
+data-testid=3D"carrotCta" valign=3D"middle" align=3D"right" =
+class=3D"css-3g2v50" data-id=3D"__react-email-column" style=3D"width: 30px;=
+ cursor: pointer; padding-left: 5px;" width=3D"30"><a =
+href=3D"https://capitaloneshopping.com/api/v1/wrapped-link/SFp3YXZaNlFlQkww=
+eXh0UFNHeEZwMW5yc1hvbjJJd3laVWpYT0x6cndwZ3cveGZCdmR1NmZlMEFZVU1IR09jcjlNWFB=
+mTytoRFhENlVydlIweFM0TmMyM0o5NVFoNEZqUUJpdTBnPT0/runV3dl" =
+style=3D"color:#067df7;text-decoration-line:none" target=3D"_blank" =
+data-wblinkid=3D"86e59359-194f-4b19-b98f-625c11faca51" rel=3D"noopener =
+noreferrer"><img height=3D"30" src=3D"https://cdn.capitaloneshopping.=
+com/wikibuy-assets/images/upload_content/icon-cta-button-2x.png" =
+style=3D"display:block;outline:none;border:none;text-decoration:none" =
+width=3D"30"></a></td></tr></tbody></table></td></tr></tbody></table></a></=
+td></tr></tbody></table><table align=3D"center" width=3D"100%" border=3D"0"=
+ cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" =
+class=3D"css-ejayfl" style=3D"padding-left: 0px; padding-right: 0px; =
+padding-top: 0.5rem; padding-bottom: 0.5rem; border-top: 5px solid =
+#F1F6F9;"><tbody><tr><td><table align=3D"center" width=3D"100%" =
+border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" =
+class=3D"css-qdxnkg" style=3D"padding-top: 10px; padding-bottom: 10px; =
+font-size: 12px; font-weight: 400; line-height: 16px; color: =
+gray;"><tbody><tr><td><span><strong>ALL: </strong><span>Rewards offer ends =
+on December 22, 2025 at 11:59 PM PST unless otherwise specified. =
+</span></span> <a href=3D"https://capitaloneshopping.=
+com/api/v1/email/link-safe-ep/rF-IsgHxVpl1ux4wKt-uR1_lBgT7UlPptVD1-9VM_vgRm=
+PjM1-JSeusQvtAAOtjARjJgEFQN7Z4qB4gGF2-GI5EpTAEFZ7ouiwdxVeBqeuJfcsSKAXohcN1a=
+D3cZo0AV4FAZDycm3Q80Ak6T0ZnOPqczoyKag35DEAfZH6X-kHUfh7M5sscdNz1ZRggso0aLW45=
+iflb_S66LEsiqC2OU91ktHiY-pCzsL-G8ZJgYs_WkoZhZAhYc1QesLeglE6L4xt9OoBKIElDSaR=
+c1VP8mLp74PP2pfekREmo2O5qT7Ukn1ezdEgL5pweA0ASSKvgSTmzWT44ZhMf2H8eg-hrfZrFKJ=
+TgS-EralYCkZxapAc8LMEZn-fFpSEucu32M0ud8Hfq0DxYbqmlGeVP9FfHotdrTrthYx6Ap13zL=
+GK3N7w0vcxH4SscPPuXPgdh0xzOL-pZolqw_Z6oBPTgM5VTEk3mhjiEDQ46quTQHWOd1-zXQ9-X=
+tN8s02uHYHJKrcnLk5HZK2v7IZ7JdpqhODAELfdA1yd-Wr6bayine4r8djSzniCbZCA/end" =
+style=3D"color:inherit;text-decoration-line:none;text-decoration:underline"=
+ target=3D"_blank" data-wblinkid=3D"5b14439d-db16-4b1b-851a-5b0517e1c876" =
+rel=3D"noopener noreferrer">Exclusions</a> and additional <a =
+href=3D"https://capitaloneshopping.com/api/v1/email/link-safe-ep/iUmoOD5yCM=
+l81hiiQ6LLGyWgZf8HgMWRZneQcLBzjkwd6pWyH_mpxDdNcM3jKDS6ciMQUGKwol05MY_X51X09=
+R2UFbaXYPVSmB66g-3GSDhe8w5sOiW7t4tT2mjlYbgQM5G9SbAP1tfXIySCmxgcWjUgqhY6jNzZ=
+pK1G8FJYB87-wVlIlZv_dYrNAlJYHqD7qBdGIvwYeSroPR97bZK0N2ll0ndn8YxA4SOhY4iNLL7=
+ZIDf0TAew2pjZ9RLDFKfH7S2SHE2VzOgoh-hv0NGcXDhC2BpyLJs_Tz104Mrs8SIqiuMiNI1QQm=
+Jg8Lb2KGvLM3KFiKwv1NuB7ieClMVMSQ9eIRGd/end" style=3D"color:inherit;text-dec=
+oration-line:none;text-decoration:underline" target=3D"_blank" =
+data-wblinkid=3D"f19b8ada-51f6-43e7-ad29-f299ab1bd9f8" rel=3D"noopener =
+noreferrer">terms</a> apply. <span><strong>APPLE:</strong> <span>Rewards =
+offer ends on December 19, 2025 at 11:59 PM PST.</span> =
+</span></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbod=
+y></table></td></tr></tbody></table></td></tr></tbody></table><table =
+align=3D"center" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation" class=3D"css-8p4z7j" =
+style=3D"height: 70px; width: 100%; background-color: #F7F7F7;" =
+height=3D"70" bgcolor=3D"#F7F7F7"><tbody><tr><td><table align=3D"center" =
+width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" =
+role=3D"presentation" class=3D"css-1bgub6r" style=3D"padding-top: 5px; =
+padding-bottom: 5px;"><tbody style=3D"width:100%"><tr =
+style=3D"width:100%"><td align=3D"right" width=3D"36%" class=3D"css-gy0siu"=
+ data-id=3D"__react-email-column" style=3D"padding-right: 10px; =
+vertical-align: middle;" valign=3D"middle"><p class=3D"css-18b5poq" =
+style=3D"font-size: 14px; margin-top: 16px; margin-bottom: 16px; margin: =
+0px; line-height: 16px; color: gray;">Was this email?</p></td><td =
+align=3D"center" width=3D"10%" class=3D"css-gy0siu" =
+data-id=3D"__react-email-column" style=3D"padding-right: 10px; =
+vertical-align: middle;" valign=3D"middle"><a href=3D"https://capitalonesho=
+pping.com/api/v1/email/link-safe-ep/-2ZPFfJlke1Y9PIQPEVz0zmofcpvs4-tTk1vuV-=
+nRQFgXUIgat37ca4fZHbXWTUbHA4VRw-rFnYdOxq6Umlzmw7lNZYlWVmJtiKEDk0wo4J5kz9Mqp=
+RTDKL8fxQCl8KcPLOHfbFCGPkjCcB6wCe84EMr9T9_536VPf3TQPYPObpdiWu5D-ym6nwq9Z5gM=
+kGlNd3vawHZk0NOxhxTQP9Z3zwmW_Ik26NYAy45BRv32U6PBs1un2QEvhoXhFn9zTanwR50mgCF=
+jXq8bXw0JSXAdaZHNXiybZ2p2JxFBiZB3ht_GMhbLu1G87rgsEZEUkXUEtk3oYvyyjHw898BS70=
+TxCkqiyF9vagJkPXeb2j8HF1N1PBoy0JsTurcGfIIiJ8Iq5yrDjaZwrRmFQUQSs_ld6gjhIhBt-=
+b3jNQ-NwANT4MTl5INngBJyPfbRXZMCWtbdUTriSSSabt68kPzlyU/end" =
+style=3D"color:#067df7;text-decoration-line:none" target=3D"_blank" =
+data-wblinkid=3D"0605fff1-81d5-4296-87e8-69bd60d90f8a" rel=3D"noopener =
+noreferrer"><p class=3D"css-x244ge" style=3D"color: #3292c3; =
+text-decoration-line: underline; font-size: 14px; margin-top: 16px; =
+margin-bottom: 16px; margin: 0px; line-height: 16px;">Useful</p></a></td><t=
+d align=3D"center" width=3D"18%" class=3D"css-17th7ok" =
+data-id=3D"__react-email-column" style=3D"border-width: 0px; =
+border-left-width: 1px; border-right-width: 1px; border-style: solid; =
+border-color: gray; padding-left: 10px; padding-right: 10px; =
+vertical-align: middle;" valign=3D"middle"><a href=3D"https://capitalonesho=
+pping.com/api/v1/email/link-safe-ep/EVlhdIZnRkH9hu0NPOc1fOU9ktqpziz3DAISrnu=
+8d2d-RgOjBqGN9ueLOtSVohZdDc-mkLLtbmswvieCu33HstxlqMf9ccnI-cEOuUi66_3kFqkIzO=
+5wnu3uJ23pUQiBErZ-EoBLCyJtCsDYkKB2Kc3TUMB8a2uAMDjoa8Hk00N0LmACnEhQYCc-7_uBs=
+N1elVAZfX7wb-GBQ77UGNC7dVBzUgKO5ZRUI8m4XxpjETkzHGlRLCb9EKMxUwWWUAsS84vcX9EB=
+zs1MZwwSk5TekxJEwvTacvK1bonSHorRI8r8MC34eoFSkMw8ZRf4sbrztNqAAZeZ28qCWPaliFh=
+qtQ18XyJmHMsUNmIMxKt6M7B7qEJZGVV-gsPVXLUSoSkX56Zym2u78kfFnFfAMyG1mVH7-rpX9u=
+aHIwgfsWpMlUYvSxEgz5geO0IHOpBIyckavhaQBrKdCBVJbx076PQ/end" =
+style=3D"color:#067df7;text-decoration-line:none" target=3D"_blank" =
+data-wblinkid=3D"a699a4c7-dfec-4ca1-9e8d-9117b7de2dfa" rel=3D"noopener =
+noreferrer"><p class=3D"css-x244ge" style=3D"color: #3292c3; =
+text-decoration-line: underline; font-size: 14px; margin-top: 16px; =
+margin-bottom: 16px; margin: 0px; line-height: 16px;">Not =
+Useful</p></a></td><td align=3D"left" width=3D"36%" class=3D"css-rqv6nk" =
+data-id=3D"__react-email-column" style=3D"padding-left: 15px; =
+vertical-align: middle;" valign=3D"middle"><a href=3D"https://capitalonesho=
+pping.com/api/v1/email/link-safe-ep/UgdfOiXEX3_iyzRScGQWYmxqRMrgapZJarW27NL=
+rz9aFzg6WYGed2y7Pm9p-DJam9z5yzmMfcOoUKGb95EsqtacTEcy09Z0Nf2xwWc7dnrNWONhXZa=
+bNoXOQBjxw4lCNcMn4h_N2bTdxhpRNiqp8anICk3xZoiggIrRqpK6LCSfb6bo7Req3gldBYyuqx=
+XuEZPfS4kbQ0G1qnpJtaL6FmjtJ9pk75PgMa2i4dPUEO1ILJ--KcFhxSlMBBZhvGbeQIdSWnlIQ=
+2fYIFYvtz1lSewhTywMR5C8E-5adqsjBUw_zZqxgXM7k04AALVWvBjLp2djjcGiL6TchojFz1bx=
+oMXiDEl9_5bA8Cyne7cnt7YP4UuFWiZjMdNExUDy8zJ8o4XjpJrEabj-E1SBgKT9ONaElHqcsjI=
+WmMhRP0yN6O3DsSRrCIn81LdQP1l7onJo9lAFXlyHQ0_fA-e0/end" =
+style=3D"color:#067df7;text-decoration-line:none" target=3D"_blank" =
+data-wblinkid=3D"70d8fd12-7689-4928-802a-11121e410c6a" rel=3D"noopener =
+noreferrer"><p class=3D"css-x244ge" style=3D"color: #3292c3; =
+text-decoration-line: underline; font-size: 14px; margin-top: 16px; =
+margin-bottom: 16px; margin: 0px; line-height: 16px;">Report an =
+Issue</p></a></td></tr></tbody></table></td></tr></tbody></table><table =
+align=3D"center" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation" class=3D"css-1d3w5wq" =
+style=3D"width: 100%; color: #646464; background-color: #F7F7F7;" =
+bgcolor=3D"#F7F7F7"><tbody><tr><td><table align=3D"center" width=3D"100%" =
+border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" =
+class=3D"css-1yjx7km" style=3D"padding: 20px;"><tbody><tr><td><table =
+align=3D"center" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation" class=3D"css-1kqn9gb" =
+style=3D"padding-left: 0px; padding-right: 0px; padding-top: 20px; =
+padding-bottom: 20px;"><tbody><tr><td><img alt=3D"Capital One Shopping =
+logo" src=3D"https://cdn.ivaws.com/wikibuy-assets/images/upload_content/c1-=
+shopping-logo-320px.png" style=3D"display:block;outline:none;border:none;te=
+xt-decoration:none" width=3D"180"></td></tr></tbody></table><table =
+align=3D"center" width=3D"100%" border=3D"0" cellpadding=3D"0" =
+cellspacing=3D"0" role=3D"presentation" class=3D"css-14zzw0n" =
+style=3D"padding-left: 0px; padding-right: 0px; padding-bottom: 80px; =
+padding-top: 0px;"><tbody><tr><td><p class=3D"css-14snxzk" =
+style=3D"font-weight: 700; margin-top: 16px; margin-bottom: 16px; margin: =
+0px; font-size: 24px; line-height: 28px;">One click is all it takes to save=
+.</p></td></tr></tbody></table><table align=3D"center" width=3D"100%" =
+border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" =
+style=3D"color:#646464"><tbody><tr><td><div class=3D"css-spovqj" =
+style=3D"font-size: 12px; line-height: 18px;">Copyright =C2=A9 2025, =
+Capital One Shopping Holdings, LLC. All rights reserved.<br><span =
+class=3D"css-x2g0vq" style=3D"border-style: none; color: inherit; =
+text-decoration-line: none;">Capital One Shopping, PO Box 269030, Plano, TX=
+ 75026-9030</span></div><div class=3D"css-spovqj" style=3D"font-size: 12px;=
+ line-height: 18px;"><br>To earn Rewards, you must click on an offer above,=
+ then complete a qualifying purchase at the selected merchant&#x27;s site, =
+in the browser opened by your device, within 24 hours. Offers are not valid=
+ by any other method. Offers are valid at the time this email was sent and =
+are subject to change. Please review offer details on the merchant websites=
+ for complete details. Additional <a href=3D"https://capitaloneshopping.=
+com/api/v1/email/link-safe-ep/BPWR9RmijOo76xC7N2rCvIKxMBLZhzy1xqtFJoDF825Af=
+7gRu734kc4EwLp2-iDxDFAlrmfIG197Hs5SkLozUtV8-gMhToK3tLcx53yX9ptvyKj62TU0HMfJ=
+dd-5qCsxQWO4AckBpFUzS_wGOAl2x0zPxkbSvjokD039zmnQ6J735WP5PSEaJaL5bKWk0jNOn0u=
+cYHAa7Qn7imyb75VXpK7lvihUOYIHQnqdHuUf6miqQOb4HRqyaitImXixvCYVFvhYLD_HLfMMfQ=
+/end" class=3D"css-1xhop2u" data-wblinkid=3D"3fba5713-8c13-49c7-9014-409033=
+8753dd" target=3D"_blank" rel=3D"noopener noreferrer" =
+style=3D"text-decoration-line: underline; color: inherit;">Terms</a> apply.=
+ Usage of other affiliate or advertising services prior to making a =
+purchase, purchase of excluded or non-qualifying items, usage of ad =
+blockers (other than Adblock from Capital One Shopping), and other =
+violations of terms will render you ineligible to receive Rewards. If you =
+no longer wish to receive these emails, you may <a href=3D"https://capitalo=
+neshopping.com/api/v1/email/link-safe-ep/FSJtY_IgHrHDldR8CupHOLbcTxx8-b87RU=
+_g1gBQ72HmO94JilJEzkoGA1YNHz0NqX4XXCRGO0aQCXyOJXIye1h_jPU0BD2cHP2FT9Nyi9344=
+MqJ2409K_-SRrq6t-Nh2uyZ7VJzCOM5hpE1w8YOqZ-bxOVk7wp4dNMWozj05eZsngmibVe55beo=
+BSD4EyB7RCCyC0hnHD3PnvgDFrF6KZXKUPYXrdttccO2MY1jp-SYkembm58I28zT_DSN0rjt3Qv=
+XSgsSKHWL-yFyKloXfBjT03rzNU9rorczpn1WCSJnF2Gz9106eBkmpQhq1AIbss246_Er7YOX4r=
+PLhdexbMxPnGO2sPc7Z6W7SnnIu_6sBTnaE8mv_UPoi2mtioZDRqGZLUNl4ctKpajjLT-CIY42E=
+2caZqn7d470wRAdSwIttCH9HciHNHobCACTUZhSABrBBdb51jYt5dxPHgAWi2WlkJBqseji4b3S=
+vzMvlkcdFvErQmAUJIA1-TVpkpVC7Gz6qE3qABFO1G4ccxyC15RcuE8/end" =
+class=3D"css-1xhop2u" data-wblinkid=3D"d7e278a2-cd1e-486b-b6b0-41d441fb3b9d=
+" target=3D"_blank" rel=3D"noopener noreferrer" style=3D"text-decoration-li=
+ne: underline; color: inherit;">unsubscribe</a>. Do not reply to this =
+message; this email inbox is not monitored. For questions, please see our =
+<a href=3D"https://capitaloneshopping.com/api/v1/email/link-safe-ep/LsT8o8E=
+B_2IXuVDmlJuG6B2GPuAZc2goDwHNlf4cjg1NPKuvLGXP3mmGteIYZ8RnvQvHOoZcJzqMmbW8LB=
+4Kzv43kb5dZm6TtKHqtlb4WWsxj4j1_zjFyhhw27qUs65QJnAnVNg2gzlp-vrjGoQV3nQ5hawbw=
+L9DDahACUb1vbBS1Um2fFfU3EgNtXxTArTkh8vhl0cmep7HYXjqt7sEiMrvsSnx3-9XZky8ewTB=
+n-WPtwbn/end" class=3D"css-1xhop2u" data-wblinkid=3D"2733a176-d6b3-40df-8a3=
+e-1dbb4339672e" target=3D"_blank" rel=3D"noopener noreferrer" =
+style=3D"text-decoration-line: underline; color: inherit;">FAQ</a> and <a =
+href=3D"https://capitaloneshopping.com/api/v1/email/link-safe-ep/UTSfpFwq2E=
+FNOrRgyxQgZctjCj9dKLFV4HKMu2_3DN95lAS3s-vm5DaQR4hwKXCboXnPtSIz9dSQobrJypw_k=
+7UVOYSv9Z1rPxw7oV51s-3oTZ2Qh-Gt8dbZq6sjAVEI1MZMe2c1y2mwsai0XfGW2zZWS0CPSagZ=
+9Z0hWVbFHsnkcwQPLK_JIXKCephdo-zG8sKo2qzxd0YDFNioJQxuVTguh8S5ZrrxpbRKvszAAok=
+QRU3kJYSHKP2IauA2tLFQb8uw3qel-k8/end" class=3D"css-1xhop2u" =
+data-wblinkid=3D"28d630f7-d0f8-4130-b751-e7f09c0908c0" target=3D"_blank" =
+rel=3D"noopener noreferrer" style=3D"text-decoration-line: underline; =
+color: inherit;">Privacy Policy</a>.</div></td></tr></tbody></table></td></=
+tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td=
+></tr></tbody></table></body></html>
+----_NmP-bd0c0cc976b9994b-Part_1--
+
