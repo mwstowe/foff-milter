@@ -708,6 +708,46 @@ async fn analyze_email_file(
         println!("  • {}: {}", header_name, header_value);
     }
 
+    // 8. Production Consistency Analysis
+    println!("\n🔄 PRODUCTION CONSISTENCY ANALYSIS");
+    println!("───────────────────────────────────────────────────────────────");
+    
+    // Extract existing X-FOFF-Score from email headers
+    let existing_scores: Vec<_> = headers.iter()
+        .filter(|(key, _)| key.starts_with("x-foff-score"))
+        .collect();
+    
+    if existing_scores.is_empty() {
+        println!("✅ No existing X-FOFF-Score headers found - this is a clean email");
+    } else {
+        println!("📊 Found {} existing X-FOFF-Score header(s) from mail servers:", existing_scores.len());
+        
+        for (_, score_header) in &existing_scores {
+            // Extract score from "X-FOFF-Score: 410 - foff-milter v0.8.5 (hotel.baddomain.com)"
+            if let Some(existing_score) = score_header.split_whitespace().next().and_then(|s| s.parse::<i32>().ok()) {
+                let difference = actual_score - existing_score;
+                let consistency_status = match difference.abs() {
+                    0 => "✅ PERFECT",
+                    1..=5 => "✅ EXCELLENT", 
+                    6..=15 => "⚠️  MINOR",
+                    16..=50 => "⚠️  MODERATE",
+                    _ => "❌ SIGNIFICANT"
+                };
+                
+                println!("  • Production: {} | Current: {} | Diff: {:+} | Status: {}", 
+                    existing_score, actual_score, difference, consistency_status);
+                println!("    Server: {}", score_header);
+                
+                if difference.abs() > 15 {
+                    println!("    ⚠️  Scoring difference > 15 points may indicate:");
+                    println!("       - Rule changes since production processing");
+                    println!("       - Configuration differences");
+                    println!("       - Feature analysis improvements");
+                }
+            }
+        }
+    }
+
     if !matched_rules.is_empty() {
         println!("\n🎯 MATCHED DETECTION RULES:");
         for rule in &matched_rules {
