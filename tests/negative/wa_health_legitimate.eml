@@ -1,0 +1,831 @@
+Return-Path: <0101019b35cf5d12-dfb0ef39-085a-47cb-b43b-81881506a82a-000000@bounce.public.govdelivery.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTPS id 5BJ8qSU3019653
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <user@example.com>; Fri, 19 Dec 2025 08:52:28 GMT
+	(envelope-from 0101019b35cf5d12-dfb0ef39-085a-47cb-b43b-81881506a82a-000000@bounce.public.govdelivery.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (2048-bit key; unprotected) header.d=public.govdelivery.com header.i=@public.govdelivery.com header.b=qi18LnGG;
+	dkim=pass (1024-bit key; unprotected) header.d=messagingfabric.com header.i=@messagingfabric.com header.b=fUBBWQ9p
+Received: from mailer016201.govd2.service.govdelivery.com (mailer016201.govd2.service.govdelivery.com [66.179.16.201])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 5BJ8qQAI022525
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO)
+	for <user@example.com>; Fri, 19 Dec 2025 02:52:26 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 5BJ8qQAI022525
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (2048-bit key, unprotected) header.d=public.govdelivery.com header.i=@public.govdelivery.com header.a=rsa-sha256 header.s=vek2aib7eyp4kz5trecewubzbsmhqnsp header.b=qi18LnGG;
+	dkim=pass (1024-bit key, unprotected) header.d=messagingfabric.com header.i=@messagingfabric.com header.a=rsa-sha256 header.s=sdwquzu2a4io5lomurvncbcrpryr42dn header.b=fUBBWQ9p
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=vek2aib7eyp4kz5trecewubzbsmhqnsp; d=public.govdelivery.com;
+	t=555-123-4567;
+	h=Date:From:To:Message-ID:Subject:MIME-Version:Content-Type:List-Unsubscribe-POST;
+	bh=OLiuyjIZnGuQbDh/YG1FYNcsD2Q94PqZ3F/aZvOGkEQ=;
+	b=qi18LnGGl0wqQMr+L2oUzFTCzRQZCVM5ZtotTi+8xjZ7JTY9qfAA+SNf2JD61I2p
+	ujW+YulmBqInNDOQErOqhScmSKoqwlB3GGcmpN0FHVilt9wEKNyyfosswByfCsNlR4O
+	shBlC1tumqzrvM3RnA9j855BSEYKpvKX2/gJv3O/pWawxmUDXwevWhP8WkjqtrdNmYk
+	DlM5siUia+StV6DWlTfCZUZQUtWWgAln5NqTkC38teEoy2d29OGPETdgpmv/MIK1tAB
+	ttrDi2TRUVvcKiVTq33QZblgD/5UMg1iwJyWkBqRP+57Mp7GHH/hCp2JptBU7OxQ3Ta
+	OYaonmEkqQ==
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=sdwquzu2a4io5lomurvncbcrpryr42dn; d=messagingfabric.com;
+	t=555-123-4567;
+	h=Date:From:To:Message-ID:Subject:MIME-Version:Content-Type:List-Unsubscribe-POST:Feedback-ID;
+	bh=OLiuyjIZnGuQbDh/YG1FYNcsD2Q94PqZ3F/aZvOGkEQ=;
+	b=fUBBWQ9pWoW+EjDbYgNioRa0h8Pwv5yxhokaNk/OgBELDSpfGh/LsfWKhXnv+7yy
+	pjp4C102Bc7+8QNb8+XeQIWa+3msMSXIlMxBZFBIU/3NU59e5QpX5H4bngArEXKYtaU
+	40zVhvYaEMal4HG7eWc+w76apIAlByvU6AE3gP1A=
+Date: Fri, 19 Dec 2025 08:52:20 +0000
+From: WA Department of Health <waDOH@public.govdelivery.com>
+To: user@example.com
+Message-ID: <0101019b35cf5d12-dfb0ef39-085a-47cb-b43b-81881506a82a-000000@us-west-2.messagingfabric.com>
+Subject: Washington State Department of Health Daily Digest Bulletin
+MIME-Version: 1.0
+Content-Type: multipart/related; 
+	boundary="----=_Part_1803450_985723060.1766134322937"
+List-Unsubscribe-POST: List-Unsubscribe=One-Click
+x-subscriber: 3.7bfnnynK3/z2ZMNOeTgEHvISZg1/RONwoQg0n9rCWmjgsMdhXcIHI/xEKWVSIvxAL9fMAfHVgMfV1aC8mA6cLjL0HebtNa03xbUeCCA//dgYrcOKOhigsPQSNM0AAJ32P2UXkKl4o20IljhnxUclXQ==
+X-Accountcode: WADOH
+X-Template: digest
+open_flag: false
+Errors-To: messages@public.govdelivery.com
+X-MailingID: 519086823069353::555-123-4567::800::PRD-ZIPMAIL-555-123-4567::::1
+X-SMHeaderMap: mid="X-MailingID"
+X-VirtualServerGroup: Default
+emailMessageID: 555-123-4567::3::BP3
+Feedback-ID: ::1.us-west-2.p6s0dOSD/Bh2d1AskdlzeN80W4aso1ZElT3TVYD5Rrc=:AmazonSES
+X-SES-Outgoing: 2025.12.19-66.179.16.201
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Fri, 19 Dec 2025 08:52:28 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Fri, 19 Dec 2025 02:52:27 -0600 (CST)
+X-Spam-Flag: YES
+X-Spam-Flag: YES
+
+------=_Part_1803450_985723060.1766134322937
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_1803451_83650015.1766134322940"
+
+------=_Part_1803451_83650015.1766134322940
+Content-Type: text/plain; charset=Cp1252
+Content-Transfer-Encoding: quoted-printable
+
+WA Department of Health Alerts =20
+*Flood and Storm Updates and Information*  "12/17/2025" =20
+
+=20
+
+Office of Drinking Water Logo [ https://www.doh.wa.gov/CommunityandEnvironm=
+ent/DrinkingWater ]=20
+=20
+=20
+=20
+
+View this as a web page [ https://content.govdelivery.com/accounts/WADOH/bu=
+lletins/4006d50 ]
+
+Recommendations, Contacts, and Resources
+
+Dear Public Water System Operators and Owners,
+
+Thank you for your continued work and efforts to ensure safe and reliable w=
+ater through this storm event. There has been a nationally declared state o=
+f emergency for our state due to flooding and storm related impacts. We are=
+ monitoring ongoing impacts from this storm across the state.
+
+Last week we sent out information regarding =93Recommended Actions During F=
+lood Events=94 That information continues to be important and is repeated a=
+t the end of this email.
+
+With the National Emergency Declaration, remember to keep copies of all of =
+your receipts and timecards for any response to the emergency. This may be =
+important later for any potential recompense.
+
+Power Outages
+
+This storm has caused power outages across the state. This is something tha=
+t many of you are already familiar with and should be part of all of your e=
+mergency response plans. If you have a generator, you are likely able to ma=
+intain treatment and pressure. If you=92re running low on fuel and are havi=
+ng difficulty getting re-fueled, you should contact your local emergency re=
+sponse center for support.
+
+If your system loses pressure, please contact your ODW coliform contact=97s=
+ee our staff contacts by county webpage [ https://doh.wa.gov/community-and-=
+environment/drinking-water/contacts#Contacts ]. They can help you with boil=
+ water notifications and appropriate sampling to return to normal service.
+
+Recommended Actions During Flooding Events
+
+Assess system impacts immediately. If your wellhead, source facilities, tre=
+atment components, pump house, or any portion of the distribution system be=
+comes inundated, or if your system experiences low or no pressure, prepare =
+to issue a boil water advisory. Collect coliform samples as soon as it is s=
+afe to access the affected areas.
+
+
+  * Maintain adequate disinfection. Systems utilizing chlorine should consi=
+der increasing disinfectant residuals during flooding. Sudden decreases in =
+residual may indicate contamination or intrusion.=20
+  * Increase operational monitoring. Observe and document any changes in pr=
+essure, turbidity, taste, odor, or other water quality indicators. Adjust s=
+ystem operations as needed.=20
+  * Conduct additional sampling. Collect investigative coliform samples dur=
+ing and after flooding to confirm water safety and to support decision maki=
+ng regarding public notification and system restoration.=20
+
+Who to Contact for Assistance
+
+If your system has been impacted by flooding or if you anticipate operation=
+al challenges, please contact the Office of Drinking Water for technical as=
+sistance and coordination.
+
+
+  * Main Line, business hours M-F, 8 AM-5 PM=A0360-236-3100 or Toll Free 80=
+0-521-0323 (inside Washington); TTY 711 Washington Relay Service=20
+  * ODW staff contacts: Interactive County Contact Map 331-784 (PDF) [ http=
+s://doh.wa.gov/sites/default/files/2025-07/331-784.pdf ]=20
+
+After Hours, Weekends, and Holidays
+
+Office of Drinking Water Emergency Hotline, 555-123-4567 or 1-877 481 4901
+
+You may also need to coordinate with your local health jurisdiction, county=
+ or tribal emergency management, and the Washington Water and Wastewater Ag=
+ency Response Network [ https://www.wawarn.org/ ] (WAWARN) for mutual aid a=
+nd operational support.
+
+Additional Resources
+
+  * Flood Advice for Drinking Water Systems 331-300 (PDF) [ https://doh.wa.=
+gov/sites/default/files/legacy/Documents/Pubs/331-300.pdf ].=20
+  * Floods, Be Prepared, Be Safe webpage [ https://doh.wa.gov/emergencies/b=
+e-prepared-be-safe/floods ].=20
+  * Emergency Preparedness Publications for Drinking Water Systems webpage =
+[ https://doh.wa.gov/community-and-environment/drinking-water/drinking-wate=
+r-emergencies ].=20
+
+Thank you for your continued commitment to providing safe and reliable drin=
+king water to your communities during severe weather conditions. Please do =
+not hesitate to reach out for assistance
+
+=20
+=20
+=20
+=20
+ =20
+=20
+=20
+ ________________________________________________________________________
+
+________________________________________________________________________
+
+=20
+
+=A0 X logo [ https://twitter.com/WADeptHealth ] facebook [ https://www.face=
+book.com/WADeptHealth ] instagram [ https://www.instagram.com/wadepthealth/=
+ ] youtube [ https://www.youtube.com/user/WADepartmentofHealth ] medium [ h=
+ttps://medium.com/wadepthealth ] subscribe [ https://public.govdelivery.com=
+/accounts/WADOH/subscriber/new?qsp=3DCODE_RED ]=20
+ To request this document in another format, call 1-555-123-4567. Deaf or h=
+ard of hearing customers, please call 711 (Washington Relay) or=20
+email doh.information@doh.wa.gov Manage Subscriptions [ https://public.govd=
+elivery.com/accounts/WADOH/subscriber/edit?preferences=3Dtrue#tab1 ] =A0|=
+=A0 Unsubscribe [ https://public.govdelivery.com/accounts/WADOH/subscriber/=
+one_click_unsubscribe?verification=3D5.9a627be32136374a0ab4c380ff8ba792&des=
+tination=3Dmarcy%40baddomain.com ] =A0|=A0 Help [ https://subscriberhelp.go=
+vdelivery.com/ ] DOH logo [ http://WWW.DOH.WA.GOV ]=20
+=20
+=20
+=20
+
+________________________________________________________________________
+
+ This email was sent to user@example.com using GovDelivery Communication=
+s Cloud on behalf of: Washington State Department of Health =B7=A0101 Israe=
+l Road SE, Tumwater, WA 98501 GovDelivery logo [ https://subscriberhelp.gra=
+nicus.com/ ]=20
+=20
+body .abe-column-block { min-height: 5px; } table.gd_combo_table img {margi=
+n-left:10px; margin-right:10px;} table.gd_combo_table div.govd_image_displa=
+y img, table.gd_combo_table td.gd_combo_image_cell img {margin-left:0px; ma=
+rgin-right:0px;} table.govd_hr {min-width: 100%;} p, li, h1, h2, h3 { overf=
+low-wrap: normal; word-wrap: normal; word-break: keep-all; -moz-hyphens: no=
+ne; -ms-hyphens: none; -webkit-hyphens: none; hyphens: none; mso-hyphenate:=
+ none; }
+------=_Part_1803451_83650015.1766134322940
+Content-Type: text/html;charset=Cp1252
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"https://www.w3.org/TR/html4/loose.dtd">
+<html language=3D"en">
+=09<head>
+=09=09<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3DUTF=
+-8"/>
+=09=09<meta name=3D"viewport" content=3D"initial-scale=3D1.0"/>
+=09=09<meta name=3D"format-detection" content=3D"telephone=3Dno"/>
+=09=09<title>=20
+=09=09</title>
+=09=09<style type=3D"text/css">    #outlook a{padding:0;}
+    .ReadMsgBody { width: 100%; background-color: #f2f2f2;}
+    .ExternalClass {width: 100%; background-color: #f2f2f2;}
+    .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass f=
+ont, .ExternalClass td, .ExternalClass div {line-height:100%;}
+    div {line-height: 100%;}
+    table, td, p, a, li, blockquote{-webkit-text-size-adjust:100%; -ms-text=
+-size-adjust:100%;}
+    table {border-spacing:0;}
+    table, td{mso-table-lspace:0pt; mso-table-rspace:0pt;}
+    .yshortcuts a {border-bottom: none !important;}
+    img{-ms-interpolation-mode:bicubic;border:0; height:auto; line-height:1=
+00%; outline:none; text-decoration:none;}
+    table td {border-collapse:collapse !important;}
+    body, #bodyTable, #bodyCell{height:100% !important; margin:0; padding:0=
+; width:100% !important;}
+
+body {font-family: 'Helvetica Nueue', 'Helvetica', Helvetica, Arial, sans-s=
+erif;background-color:#ffffff;} =20
+       .digest-container-fill { width:100%;} =20
+       .digest-content-table { width:650px;} =20
+       .digest-header{text-align:center;font-family: 'Helvetica Nueue', 'He=
+lvetica', Helvetica, Arial, sans-serif;} =20
+       .digest-content-table-inner { padding-top:20px; padding-left:20px; p=
+adding-right:20px; text-align:left;}         =20
+       .digest-title-table { } =20
+       .digest-title {padding-left: 10px;font-family: 'Helvetica Nueue', 'H=
+elvetica', Helvetica, Arial, sans-serif;}         =20
+       .digest-topic-table { padding-top:20px;} =20
+       .topicv-head {padding-top:10px;padding-bottom:10px;padding-left:10px=
+;padding-right:10px;background-color:#efefef;font-family: 'Helvetica Nueue'=
+, 'Helvetica', Helvetica, Arial, sans-serif;} =20
+       .topic-title {font-size:16px;font-weight:bold;color:#333333;padding-=
+bottom:3px;font-family: 'Helvetica Nueue', 'Helvetica', Helvetica, Arial, s=
+ans-serif;} =20
+       .num-digest-items {color: #888888;font-family: 'Helvetica Nueue', 'H=
+elvetica', Helvetica, Arial, sans-serif;} =20
+       .rss_item {padding-top:20px;padding-left:15px;padding-right:15px;fon=
+t-family: 'Helvetica Nueue', 'Helvetica', Helvetica, Arial, sans-serif;} =
+=20
+       .rss_title {line-height:120% !important;font-size:24px;padding-botto=
+m:5px;font-family: 'Helvetica Nueue', 'Helvetica', Helvetica, Arial, sans-s=
+erif;} =20
+       .rss_pub_date {font-size:14px;padding-bottom:5px;color:#888888;font-=
+family: 'Helvetica Nueue', 'Helvetica', Helvetica, Arial, sans-serif;} =20
+       .rss_description {font-size:16px;color:#333333;padding-bottom:5px;li=
+ne-height: 18px;font-family: 'Helvetica Nueue', 'Helvetica', Helvetica, Ari=
+al, sans serif;}         =20
+       .topic-spacer { padding-top:20px;} =20
+       .digest-footer-table {width:100%;background-color:#efefef;}        =
+=20
+           .digest-footer{padding-top:20px;padding-bottom:40px;font-family:=
+ 'Helvetica Nueue', 'Helvetica', Helvetica, Arial, sans-serif;} =20
+           .digest-footer-table a { text-decoration: underline;} =20
+       .digest-footer-block {padding-top:20px;padding-left:20px;padding-rig=
+ht:20px;text-align:center;font-size:16px;font-family: 'Helvetica Nueue', 'H=
+elvetica', Helvetica, Arial, sans-serif;} =20
+       .digest-entry-date-sent {font-size:14px;padding-bottom:5px;color:#88=
+8888;font-family: 'Helvetica Nueue', 'Helvetica', Helvetica, Arial, sans-se=
+rif;} =20
+       .digest-entry-subject {font-size:24px;line-height:24px;padding-botto=
+m:5px;font-family: 'Helvetica Nueue', 'Helvetica', Helvetica, Arial, sans-s=
+erif;} =20
+       .digest-entry-content {font-size:16px;color:#333333;padding-bottom:5=
+px;line-height: 18px;font-family: 'Helvetica Nueue', 'Helvetica', Helvetica=
+, Arial, sans serif;} =20
+       #digest-banner-id {width: 650px;} =20
+       .digest-separator-table {padding-top:20px;} =20
+       .digest-separator {background-color:#686868;height:2px;width:100%;}
+=09=09</style>
+=09</head>
+=09<body>
+=09=09<table border=3D"0" width=3D"100%" cellpadding=3D"0" cellspacing=3D"0=
+" class=3D"digest-container-fill" style=3D"width:100%;">
+=09=09=09<tr>
+=09=09=09=09<td align=3D"center">
+=09=09=09=09=09<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" clas=
+s=3D"digest-content-table" style=3D"width:650px;">
+=09=09=09=09=09=09<tr>
+<td class=3D"digest-header" style=3D"text-align:center;font-family:'Helveti=
+ca Nueue','Helvetica',Helvetica,Arial,sans-serif;">
+=09<img id=3D"digest-banner-id" src=3D"https://public.govdelivery.com/syste=
+m/images/59987/original/WADOH_banner-new.png" style=3D"width:650px;" alt=3D=
+"WA Department of Health Alerts"/>
+</td>
+=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09<td class=3D"digest-content-table-inner" style=3D"padd=
+ing-top:20px;padding-left:20px;padding-right:20px;text-align:left;">
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" class=3D"digest-top=
+ic-table" style=3D"padding-top:20px;">
+=09<tr>
+=09=09<td class=3D"digest-entry-subject" style=3D"font-size:24px;line-heigh=
+t:24px;padding-bottom:5px;font-family:'Helvetica Nueue','Helvetica',Helveti=
+ca,Arial,sans-serif;">Flood and Storm Updates and Information
+=09=09</td>
+=09</tr>
+=09<tr>
+=09=09<td class=3D"digest-entry-date-sent" style=3D"font-size:14px;padding-=
+bottom:5px;color:#888;font-family:'Helvetica Nueue','Helvetica',Helvetica,A=
+rial,sans-serif;">12/17/2025
+=09=09</td>
+=09</tr>
+=09<tr>
+=09=09<td class=3D"digest-entry-content" style=3D"font-size:16px;color:#333=
+;padding-bottom:5px;line-height:18px;font-family:'Helvetica Nueue','Helveti=
+ca',Helvetica,Arial,sans serif;"><table width=3D"100%" cellpadding=3D"0" ce=
+llspacing=3D"0" border=3D"0" align=3D"center" class=3D"gd_tbl_wrap"><tr><td=
+ style=3D"background-color: #EEEEEE; margin: 0; padding: 0; width: 100% !im=
+portant" bgcolor=3D"#EEEEEE"><table id=3D"flexible-abe-main-table" width=3D=
+"100%" align=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" st=
+yle=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; border-s=
+pacing: 0; mso-table-lspace: 0pt; mso-table-rspace: 0pt; padding-top: 20px;=
+ padding-bottom: 20px;">
+  <tr>
+    <td style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%=
+; mso-table-lspace: 0pt; mso-table-rspace: 0pt;"></td>
+    <!-- centered column -->
+    <td style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%=
+; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+<!--[if (gte mso 9)|(IE)]>
+  <table width=3D"600" align=3D"center" border=3D"0" cellpadding=3D"0" cell=
+spacing=3D"0">
+    <tr>
+      <td>
+<![endif]-->
+<div class=3D"abe-section-block" data-block-type=3D"FancyBlockSection" data=
+-block-id=3D"156855736">
+  <table class=3D"abe-section-table" width=3D"100%" align=3D"center" border=
+=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"m=
+ax-width: 600px; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%=
+; border-spacing: 0; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+    <tr id=3D"abe-section-row-734a93b2-e0cb-4276-b9ad-3a0276f2bcd1" class=
+=3D"abe-section-row" style=3D"background-color: #FFFFFF;" bgcolor=3D"#FFFFF=
+F">
+      <td style=3D"text-align: center; vertical-align: top; font-size: 0; -=
+webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-table-lspace=
+: 0pt; mso-table-rspace: 0pt;" align=3D"center" valign=3D"top">
+        <!--[if (gte mso 9)|(IE)]>
+  <table width=3D"100%" align=3D"center" border=3D"0" cellpadding=3D"0" cel=
+lspacing=3D"0" style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjus=
+t: 100%; border-spacing: 0; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+    <tr>
+<![endif]-->
+<!--[if (gte mso 9)|(IE)]>
+  <td width=3D"600" valign=3D"top" id=3D"abe-column-block-c0799db0-3081-491=
+3-8c9b-cdd772f21e6a-outlook-only" class=3D"abe-column-block-outlook-only" s=
+tyle=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-tab=
+le-lspace: 0pt; mso-table-rspace: 0pt;">
+<![endif]-->
+<div id=3D"abe-column-block-c0799db0-3081-4913-8c9b-cdd772f21e6a" class=3D"=
+abe-column-block" data-block-type=3D"FancyBlockColumn" data-block-id=3D"156=
+855737" style=3D"width: 100%; box-sizing: border-box; display: inline-block=
+; font-size: 16px; vertical-align: top;">
+  <table width=3D"100%" align=3D"center" border=3D"0" cellpadding=3D"0" cel=
+lspacing=3D"0" role=3D"presentation" style=3D"table-layout: fixed; overflow=
+-wrap: break-word; word-wrap: break-word; text-align: left; -webkit-text-si=
+ze-adjust: 100%; -ms-text-size-adjust: 100%; border-spacing: 0; mso-table-l=
+space: 0pt; mso-table-rspace: 0pt;">
+    <tr>
+      <td class=3D"abe-column-block-padding" id=3D"abe-column-block-c0799db=
+0-3081-4913-8c9b-cdd772f21e6a-padding" style=3D"-webkit-text-size-adjust: 1=
+00%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0=
+pt; padding: 15px;"><a href=3D"https://links-2.govdelivery.com/CL0/https:%2=
+F%2Fwww.doh.wa.gov%2FCommunityandEnvironment%2FDrinkingWater/1/0101019b35cf=
+5d12-dfb0ef39-085a-47cb-b43b-81881506a82a-000000/SBXopAT9S2Yup8oe77t7rQ8jkt=
+OSIFLWIVfEuqZlzWo=3D436" target=3D"_blank" rel=3D"noopener noreferrer" styl=
+e=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;"><img clas=
+s=3D"govd_template_image" src=3D"https://content.govdelivery.com/attachment=
+s/fancy_images/WADOH/2023/02/7144282/4571645/govdeliveryheader-01_crop.png"=
+ style=3D"width: 570px; height: auto; -ms-interpolation-mode: bicubic; line=
+-height: 1; outline: none; text-decoration: none; max-width: 100%; border: =
+none;" alt=3D"Office of Drinking Water Logo" width=3D"570" height=3D"125"><=
+/a></td>
+    </tr>
+  </table>
+</div>
+<!--[if (gte mso 9)|(IE)]>
+  </td>
+<![endif]-->
+<!--[if (gte mso 9)|(IE)]>
+  </tr>
+  </table>
+<![endif]-->
+      </td>
+    </tr>
+  </table>
+</div>
+<!--[if (gte mso 9)|(IE)]>
+      </td>
+    </tr>
+  </table>
+<![endif]-->
+<!--[if (gte mso 9)|(IE)]>
+  <table width=3D"600" align=3D"center" border=3D"0" cellpadding=3D"0" cell=
+spacing=3D"0">
+    <tr>
+      <td>
+<![endif]-->
+<div class=3D"abe-section-block" data-block-type=3D"FancyBlockSection" data=
+-block-id=3D"156855739">
+  <table class=3D"abe-section-table" width=3D"100%" align=3D"center" border=
+=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"m=
+ax-width: 600px; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%=
+; border-spacing: 0; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+    <tr id=3D"abe-section-row-93ac5c7d-753c-4f88-ae02-33fa02467714" class=
+=3D"abe-section-row" style=3D"background-color: #FFFFFF;" bgcolor=3D"#FFFFF=
+F">
+      <td style=3D"text-align: center; vertical-align: top; font-size: 0; -=
+webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-table-lspace=
+: 0pt; mso-table-rspace: 0pt;" align=3D"center" valign=3D"top">
+        <!--[if (gte mso 9)|(IE)]>
+  <table width=3D"100%" align=3D"center" border=3D"0" cellpadding=3D"0" cel=
+lspacing=3D"0" style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjus=
+t: 100%; border-spacing: 0; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+    <tr>
+<![endif]-->
+<!--[if (gte mso 9)|(IE)]>
+  <td width=3D"600" valign=3D"top" id=3D"abe-column-block-0b8fde1b-0380-432=
+1-bfd6-a673eb9f11b5-outlook-only" class=3D"abe-column-block-outlook-only" s=
+tyle=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-tab=
+le-lspace: 0pt; mso-table-rspace: 0pt;">
+<![endif]-->
+<div id=3D"abe-column-block-0b8fde1b-0380-4321-bfd6-a673eb9f11b5" class=3D"=
+abe-column-block" data-block-type=3D"FancyBlockColumn" data-block-id=3D"156=
+855740" style=3D"width: 100%; box-sizing: border-box; display: inline-block=
+; font-size: 16px; vertical-align: top;">
+  <table width=3D"100%" align=3D"center" border=3D"0" cellpadding=3D"0" cel=
+lspacing=3D"0" role=3D"presentation" style=3D"table-layout: fixed; overflow=
+-wrap: break-word; word-wrap: break-word; text-align: left; -webkit-text-si=
+ze-adjust: 100%; -ms-text-size-adjust: 100%; border-spacing: 0; mso-table-l=
+space: 0pt; mso-table-rspace: 0pt;">
+    <tr>
+      <td class=3D"abe-column-block-padding" id=3D"abe-column-block-0b8fde1=
+b-0380-4321-bfd6-a673eb9f11b5-padding" style=3D"-webkit-text-size-adjust: 1=
+00%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0=
+pt; padding: 15px;">
+<p style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; lin=
+e-height: 1.4; font-family: helvetica; font-size: 13px; color: #000000; tex=
+t-align: left; margin: 0 0 15px;" align=3D"left"><a href=3D"https://links-2=
+.govdelivery.com/CL0/https:%2F%2Fcontent.govdelivery.com%2Faccounts%2FWADOH=
+%2Fbulletins%2F4006d50/1/0101019b35cf5d12-dfb0ef39-085a-47cb-b43b-81881506a=
+82a-000000/M_YM1yQ7Bu-MHh7Hb-z4Q8l2_saVAcEC4Uktf7gMYoc=3D436" target=3D"_bl=
+ank" title=3D"" rel=3D"noopener" style=3D"-webkit-text-size-adjust: 100%; -=
+ms-text-size-adjust: 100%; color: #547AA3;">View this as a web page</a></p>
+<h1 class=3D"govd_header" style=3D"line-height: 1.2; font-family: helvetica=
+; font-size: 28px; color: #446387; margin: 0 0 20px;">Recommendations, Cont=
+acts, and Resources</h1>
+<p style=3D"text-align: left; -webkit-text-size-adjust: 100%; -ms-text-size=
+-adjust: 100%; line-height: 1.4; font-family: helvetica; font-size: 13px; c=
+olor: #000000; margin: 0 0 15px;" align=3D"left">Dear Public Water System O=
+perators and Owners,</p>
+<p style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; lin=
+e-height: 1.4; font-family: helvetica; font-size: 13px; color: #000000; tex=
+t-align: left; margin: 0 0 15px;" align=3D"left">Thank you for your continu=
+ed work and efforts to ensure safe and reliable water through this storm ev=
+ent. There has been a nationally declared state of emergency for our state =
+due to flooding and storm related impacts. We are monitoring ongoing impact=
+s from this storm across the state.</p>
+<p style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; lin=
+e-height: 1.4; font-family: helvetica; font-size: 13px; color: #000000; tex=
+t-align: left; margin: 0 0 15px;" align=3D"left">Last week we sent out info=
+rmation regarding =93Recommended Actions During Flood Events=94 That inform=
+ation continues to be important and is repeated at the end of this email.</=
+p>
+<p style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; lin=
+e-height: 1.4; font-family: helvetica; font-size: 13px; color: #000000; tex=
+t-align: left; margin: 0 0 15px;" align=3D"left">With the National Emergenc=
+y Declaration, remember to keep copies of all of your receipts and timecard=
+s for any response to the emergency. This may be important later for any po=
+tential recompense.</p>
+<h2 style=3D"line-height: 1.2; font-family: helvetica; font-size: 22px; mar=
+gin: 0 0 18px;">Power Outages</h2>
+<p style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; lin=
+e-height: 1.4; font-family: helvetica; font-size: 13px; color: #000000; tex=
+t-align: left; margin: 0 0 15px;" align=3D"left">This storm has caused powe=
+r outages across the state. This is something that many of you are already =
+familiar with and should be part of all of your emergency response plans. I=
+f you have a generator, you are likely able to maintain treatment and press=
+ure. If you=92re running low on fuel and are having difficulty getting re-f=
+ueled, you should contact your local emergency response center for support.=
+</p>
+<p style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; lin=
+e-height: 1.4; font-family: helvetica; font-size: 13px; color: #000000; tex=
+t-align: left; margin: 0 0 15px;" align=3D"left">If your system loses press=
+ure, please contact your ODW coliform contact=97<a href=3D"https://links-2.=
+govdelivery.com/CL0/https:%2F%2Fdoh.wa.gov%2Fcommunity-and-environment%2Fdr=
+inking-water%2Fcontacts%23Contacts/1/0101019b35cf5d12-dfb0ef39-085a-47cb-b4=
+3b-81881506a82a-000000/LcBD3aL7eg1sCnSrIzanVcQLdsHxkSyV83SRtBUcp4M=3D436" t=
+arget=3D"_blank" rel=3D"noopener" style=3D"-webkit-text-size-adjust: 100%; =
+-ms-text-size-adjust: 100%; color: #547AA3;">see our staff contacts by coun=
+ty webpage</a>. They can help you with boil water notifications and appropr=
+iate sampling to return to normal service.</p>
+<h2 style=3D"line-height: 1.2; font-family: helvetica; font-size: 22px; mar=
+gin: 0 0 18px;">Recommended Actions During Flooding Events</h2>
+<p style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; lin=
+e-height: 1.4; font-family: helvetica; font-size: 13px; color: #000000; tex=
+t-align: left; margin: 0 0 15px;" align=3D"left">Assess system impacts imme=
+diately. If your wellhead, source facilities, treatment components, pump ho=
+use, or any portion of the distribution system becomes inundated, or if you=
+r system experiences low or no pressure, prepare to issue a boil water advi=
+sory. Collect coliform samples as soon as it is safe to access the affected=
+ areas.</p>
+<ul style=3D"margin-top: 0px; margin-bottom: 15px;">
+<li style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; li=
+ne-height: 1.4; font-family: helvetica; font-size: 13px; color: #000000; te=
+xt-align: left; margin-top: 0px;">Maintain adequate disinfection. Systems u=
+tilizing chlorine should consider increasing disinfectant residuals during =
+flooding. Sudden decreases in residual may indicate contamination or intrus=
+ion.</li>
+<li style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; li=
+ne-height: 1.4; font-family: helvetica; font-size: 13px; color: #000000; te=
+xt-align: left;">Increase operational monitoring. Observe and document any =
+changes in pressure, turbidity, taste, odor, or other water quality indicat=
+ors. Adjust system operations as needed.</li>
+<li style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; li=
+ne-height: 1.4; font-family: helvetica; font-size: 13px; color: #000000; te=
+xt-align: left; margin-bottom: 15px;">Conduct additional sampling. Collect =
+investigative coliform samples during and after flooding to confirm water s=
+afety and to support decision making regarding public notification and syst=
+em restoration.</li>
+</ul>
+<h2 style=3D"line-height: 1.2; font-family: helvetica; font-size: 22px; mar=
+gin: 0 0 18px;">Who to Contact for Assistance</h2>
+<p style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; lin=
+e-height: 1.4; font-family: helvetica; font-size: 13px; color: #000000; tex=
+t-align: left; margin: 0 0 15px;" align=3D"left">If your system has been im=
+pacted by flooding or if you anticipate operational challenges, please cont=
+act the Office of Drinking Water for technical assistance and coordination.=
+</p>
+<ul style=3D"margin-top: 0px; margin-bottom: 15px;">
+<li style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; li=
+ne-height: 1.4; font-family: helvetica; font-size: 13px; color: #000000; te=
+xt-align: left; margin-top: 0px;">Main Line, business hours M-F, 8 AM-5 PM=
+=A0360-236-3100 or Toll Free 555-123-4567 (inside Washington); TTY 711 Wash=
+ington Relay Service</li>
+<li style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; li=
+ne-height: 1.4; font-family: helvetica; font-size: 13px; color: #000000; te=
+xt-align: left; margin-bottom: 15px;">ODW staff contacts: <a href=3D"https:=
+//links-2.govdelivery.com/CL0/https:%2F%2Fdoh.wa.gov%2Fsites%2Fdefault%2Ffi=
+les%2F2025-07%2F331-784.pdf/1/0101019b35cf5d12-dfb0ef39-085a-47cb-b43b-8188=
+1506a82a-000000/1P1xzvuRSpEDXfWyuZ57DljShkN8vRY6x-Uzi3YP90g=3D436" target=
+=3D"_blank" rel=3D"noopener" style=3D"-webkit-text-size-adjust: 100%; -ms-t=
+ext-size-adjust: 100%; color: #547AA3;">Interactive County Contact Map 331-=
+784 (PDF)</a>
+</li>
+</ul>
+<h2 style=3D"line-height: 1.2; font-family: helvetica; font-size: 22px; mar=
+gin: 0 0 18px;">After Hours, Weekends, and Holidays</h2>
+<p style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; lin=
+e-height: 1.4; font-family: helvetica; font-size: 13px; color: #000000; tex=
+t-align: left; margin: 0 0 15px;" align=3D"left">Office of Drinking Water E=
+mergency Hotline, 555-123-4567 or 1-877 481 4901</p>
+<p style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; lin=
+e-height: 1.4; font-family: helvetica; font-size: 13px; color: #000000; tex=
+t-align: left; margin: 0 0 15px;" align=3D"left">You may also need to coord=
+inate with your local health jurisdiction, county or tribal emergency manag=
+ement, and the <a href=3D"https://links-2.govdelivery.com/CL0/https:%2F%2Fw=
+ww.wawarn.org%2F/1/0101019b35cf5d12-dfb0ef39-085a-47cb-b43b-81881506a82a-00=
+0000/ezFbWdGaYxk1sLdDvcSjruEq0seB6T82kbIqe6jj6hw=3D436" target=3D"_blank" r=
+el=3D"noopener" style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adju=
+st: 100%; color: #547AA3;">Washington Water and Wastewater Agency Response =
+Network</a> (WAWARN) for mutual aid and operational support.</p>
+<h2 style=3D"line-height: 1.2; font-family: helvetica; font-size: 22px; mar=
+gin: 0 0 18px;">Additional Resources</h2>
+<ul style=3D"margin-top: 0px; margin-bottom: 15px;">
+<li style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; li=
+ne-height: 1.4; font-family: helvetica; font-size: 13px; color: #000000; te=
+xt-align: left; margin-top: 0px;">
+<a href=3D"https://links-2.govdelivery.com/CL0/https:%2F%2Fdoh.wa.gov%2Fsit=
+es%2Fdefault%2Ffiles%2Flegacy%2FDocuments%2FPubs%2F331-300.pdf/1/0101019b35=
+cf5d12-dfb0ef39-085a-47cb-b43b-81881506a82a-000000/CKtcd6n6dz7ceNOAqX33hh4k=
+uLOXP8BfM8jTIEgp1U4=3D436" target=3D"_blank" rel=3D"noopener" style=3D"-web=
+kit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; color: #547AA3;">Fl=
+ood Advice for Drinking Water Systems 331-300 (PDF)</a>.</li>
+<li style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; li=
+ne-height: 1.4; font-family: helvetica; font-size: 13px; color: #000000; te=
+xt-align: left;">
+<a href=3D"https://links-2.govdelivery.com/CL0/https:%2F%2Fdoh.wa.gov%2Feme=
+rgencies%2Fbe-prepared-be-safe%2Ffloods/1/0101019b35cf5d12-dfb0ef39-085a-47=
+cb-b43b-81881506a82a-000000/TL_qCoZG_QwpwD5sbC5CmHMUoGcC5cKsFKBQoq-2COI=3D4=
+36" target=3D"_blank" rel=3D"noopener" style=3D"-webkit-text-size-adjust: 1=
+00%; -ms-text-size-adjust: 100%; color: #547AA3;">Floods, Be Prepared, Be S=
+afe webpage</a>.</li>
+<li style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; li=
+ne-height: 1.4; font-family: helvetica; font-size: 13px; color: #000000; te=
+xt-align: left; margin-bottom: 15px;">
+<a href=3D"https://links-2.govdelivery.com/CL0/https:%2F%2Fdoh.wa.gov%2Fcom=
+munity-and-environment%2Fdrinking-water%2Fdrinking-water-emergencies/1/0101=
+019b35cf5d12-dfb0ef39-085a-47cb-b43b-81881506a82a-000000/fK7FR_1gjm3fOXYzOb=
+KkaNAIWJhB94Zw7ooG5rTIw2o=3D436" target=3D"_blank" rel=3D"noopener" style=
+=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; color: #547=
+AA3;">Emergency Preparedness Publications for Drinking Water Systems webpag=
+e</a>.</li>
+</ul>
+<p style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; lin=
+e-height: 1.4; font-family: helvetica; font-size: 13px; color: #000000; tex=
+t-align: left; margin: 0 0 15px;" align=3D"left">Thank you for your continu=
+ed commitment to providing safe and reliable drinking water to your communi=
+ties during severe weather conditions. Please do not hesitate to reach out =
+for assistance</p>
+</td>
+    </tr>
+  </table>
+</div>
+<!--[if (gte mso 9)|(IE)]>
+  </td>
+<![endif]-->
+<!--[if (gte mso 9)|(IE)]>
+  </tr>
+  </table>
+<![endif]-->
+      </td>
+    </tr>
+  </table>
+</div>
+<!--[if (gte mso 9)|(IE)]>
+      </td>
+    </tr>
+  </table>
+<![endif]-->
+</td>
+    <td style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%=
+; mso-table-lspace: 0pt; mso-table-rspace: 0pt;"></td>
+  </tr>
+</table>
+</td></tr></table>
+=09=09</td>
+=09</tr>
+</table>
+=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09<td class=3D"digest-footer" style=3D"padding-top:20px;=
+padding-bottom:40px;font-family:'Helvetica Nueue','Helvetica',Helvetica,Ari=
+al,sans-serif;">
+=09=09=09=09=09=09=09=09<table border=3D"0" cellpadding=3D"0" cellspacing=
+=3D"0" width=3D"100%" class=3D"digest-footer-table" style=3D"width:100%;bac=
+kground-color:#efefef;">
+=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09<td class=3D"digest-footer-footer" ><table wi=
+dth=3D"100%" cellspacing=3D"0" cellpadding=3D"0" align=3D"center">
+<tbody>
+<tr>
+<td style=3D"text-align: center;" align=3D"center" width=3D"100%"><hr /></t=
+d>
+</tr>
+<tr>
+<td style=3D"background: #FFFFFF;" align=3D"center" bgcolor=3D"#FFFFFF" wid=
+th=3D"100%"><!--[if mso]>
+<table width=3D"600" align=3D"center" cellpadding=3D"0" cellspacing=3D"0" s=
+tyle=3D"width:600px;">
+<tr>
+<td>
+<![endif]-->
+<div style=3D"margin: 0 auto; max-width: 600px; width: 100%;">
+<table style=3D"border-collapse: collapse;" width=3D"100%" cellspacing=3D"0=
+" cellpadding=3D"0" align=3D"center">
+<tbody>
+<tr>
+<td style=3D"text-align: right;" align=3D"right" width=3D"100%">
+<table width=3D"100%" cellspacing=3D"0" cellpadding=3D"0" align=3D"right">
+<tbody>
+<tr>
+<td>&nbsp;</td>
+<td style=3D"width: 45px; text-align: right;" align=3D"right" width=3D"45">=
+<a href=3D"https://twitter.com/WADeptHealth" target=3D"_blank" rel=3D"noope=
+ner"><img src=3D"https://content.govdelivery.com/attachments/fancy_images/W=
+ADOH/2023/11/8525709/x-logo-icon-2023-70px_original.png" alt=3D"X logo" wid=
+th=3D"35" height=3D"35" style=3D"width: 35px; height: 35px;" /></a></td>
+<td style=3D"width: 45px; text-align: right;" align=3D"right" width=3D"45">=
+<a href=3D"https://www.facebook.com/WADeptHealth" target=3D"_blank" rel=3D"=
+noopener"><img src=3D"https://content.govdelivery.com/attachments/fancy_ima=
+ges/WADOH/2023/01/6993634/facebook2023-35px_original.png" alt=3D"facebook" =
+width=3D"35" height=3D"35" style=3D"width: 35px; height: 35px;" /></a></td>
+<td style=3D"width: 45px; text-align: right;" align=3D"right" width=3D"45">=
+<a href=3D"https://www.instagram.com/wadepthealth/" target=3D"_blank" rel=
+=3D"noopener"><img src=3D"https://content.govdelivery.com/attachments/fancy=
+_images/WADOH/2023/01/6993627/instagram2023-35_original.png" alt=3D"instagr=
+am" width=3D"35" height=3D"35" style=3D"width: 35px; height: 35px;" /></a><=
+/td>
+<td style=3D"width: 45px; text-align: right;" align=3D"right" width=3D"45">=
+<a href=3D"https://www.youtube.com/user/WADepartmentofHealth" target=3D"_bl=
+ank" rel=3D"noopener"><img src=3D"https://content.govdelivery.com/attachmen=
+ts/fancy_images/WADOH/2023/01/6993671/youtube2023-35_original.png" alt=3D"y=
+outube" width=3D"35" height=3D"35" style=3D"width: 35px; height: 35px;" /><=
+/a></td>
+<td style=3D"width: 45px; text-align: right;" align=3D"right" width=3D"45">=
+<a href=3D"https://medium.com/wadepthealth" target=3D"_blank" rel=3D"noopen=
+er"><img src=3D"https://content.govdelivery.com/attachments/fancy_images/WA=
+DOH/2023/01/6993654/medium2023-35px_original.png" alt=3D"medium" width=3D"3=
+5" height=3D"35" style=3D"width: 35px; height: 35px;" /></a></td>
+<td style=3D"width: 45px; text-align: right;" align=3D"right" width=3D"45">=
+<a href=3D"https://public.govdelivery.com/accounts/WADOH/subscriber/new?qsp=
+=3DCODE_RED" target=3D"_blank" rel=3D"noopener"><img src=3D"https://content=
+.govdelivery.com/attachments/fancy_images/WADOH/2023/01/6993623/govdelivery=
+2023-35px_original.png" alt=3D"subscribe" width=3D"35" height=3D"35" style=
+=3D"width: 35px; height: 35px;" /></a></td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+<tr>
+<td style=3D"font-family: Century Gothic,Apple Gothic,sans-serif; font-size=
+: 15px; padding: 10px 0px 0px; text-align: right; color: #000000;" align=3D=
+"right">To request this document in another format, call 1-555-123-4567. De=
+af or hard of hearing customers, please call 711 (Washington Relay) or <br =
+/>email <a href=3D"mailto:doh.information@doh.wa.gov" target=3D"_blank" rel=
+=3D"noopener">doh.information@doh.wa.gov</a></td>
+</tr>
+<tr>
+<td style=3D"font-family: Century Gothic,Apple Gothic,sans-serif; font-size=
+: 15px; padding: 10px 0px 15px; text-align: right; color: #349d96;" align=
+=3D"right"><a href=3D"https://links-2.govdelivery.com/CL0/https:%2F%2Fpubli=
+c.govdelivery.com%2Faccounts%2FWADOH%2Fsubscriber%2Fedit%3Fpreferences=3Dtr=
+ue%23tab1/1/0101019b35cf5d12-dfb0ef39-085a-47cb-b43b-81881506a82a-000000/bw=
+331q85W6--g7vsj5YYDu8NL3ccVtWirmzANRUd2y8=3D436" target=3D"_blank" rel=3D"n=
+oopener">Manage Subscriptions</a> &nbsp;|&nbsp; <a href=3D"https://links-2.=
+govdelivery.com/CL0/https:%2F%2Fpublic.govdelivery.com%2Faccounts%2FWADOH%2=
+Fsubscriber%2Fone_click_unsubscribe%3Fverification=3D5.9a627be32136374a0ab4=
+c380ff8ba792%26destination=3Dmarcy%2540baddomain.com/1/0101019b35cf5d12-dfb=
+0ef39-085a-47cb-b43b-81881506a82a-000000/boiCepKNnlb1gsaoq6tHwJb4bvLoUSdm6e=
+sLfTOf95k=3D436" target=3D"_blank" rel=3D"noopener">Unsubscribe</a> &nbsp;|=
+&nbsp; <a href=3D"https://subscriberhelp.govdelivery.com/" target=3D"_blank=
+" title=3D"Subscriber Help" rel=3D"noopener">Help</a></td>
+</tr>
+<tr>
+<td style=3D"text-align: right;" align=3D"right" width=3D"100%"><a href=3D"=
+http://WWW.DOH.WA.GOV" target=3D"_blank" title=3D"Washington State Departme=
+nt of Health" rel=3D"noopener"><img src=3D"https://content.govdelivery.com/=
+attachments/fancy_images/WADOH/2023/01/6992885/dohlogohorizontal400px_origi=
+nal.png" alt=3D"DOH logo" width=3D"400" style=3D"width: 400px; height: auto=
+; max-width: 100%;" /></a></td>
+</tr>
+</tbody>
+</table>
+</div>
+<!--[if mso]>
+</td>
+</tr>
+</table>
+<![endif]--></td>
+</tr>
+</tbody>
+</table>
+=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09<td class=3D"digest-footer-tagline" ><table s=
+tyle=3D"border-collapse: collapse; margin: 0px auto; width: 100%;" border=
+=3D"0" cellspacing=3D"0" cellpadding=3D"0">
+<tbody>
+<tr>
+<td style=3D"padding: 0 10px 0 10px;" valign=3D"top">
+<table class=3D"mobile-tagline" style=3D"border-collapse: collapse; margin:=
+ 0px auto; width: 100%;" border=3D"0" cellspacing=3D"0" cellpadding=3D"0" a=
+lign=3D"right">
+<tbody>
+<tr>
+<td style=3D"padding: 10px 0 0 0;" colspan=3D"2" valign=3D"top"><hr /></td>
+</tr>
+<tr>
+<td style=3D"padding: 10px 5px 10px 0;" align=3D"left" valign=3D"top"><span=
+ style=3D"color: #757575; font-size: 10px; font-family: arial, helvetica, s=
+ans-serif;">This email was sent to user@example.com using GovDelivery Co=
+mmunications Cloud on behalf of: Washington State Department of Health &mid=
+dot;&nbsp;<span>101 Israel Road SE, Tumwater, WA 98501</span></span></td>
+<td style=3D"width: 95px; padding-top: 10px;" align=3D"right" valign=3D"top=
+" width=3D"95"><a href=3D"https://subscriberhelp.granicus.com/" target=3D"_=
+blank" rel=3D"noopener"><img src=3D"https://content.govdelivery.com/images/=
+govd-logo-dark.png" border=3D"0" alt=3D"GovDelivery logo" width=3D"95" heig=
+ht=3D"27" align=3D"right" /></a></td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<style type=3D"text/css">body .abe-column-block { min-height: 5px; } table.=
+gd_combo_table img {margin-left:10px; margin-right:10px;} table.gd_combo_ta=
+ble div.govd_image_display img, table.gd_combo_table td.gd_combo_image_cell=
+ img {margin-left:0px; margin-right:0px;} table.govd_hr {min-width: 100%;} =
+p, li, h1, h2, h3 { overflow-wrap: normal; word-wrap: normal; word-break: k=
+eep-all; -moz-hyphens: none; -ms-hyphens: none; -webkit-hyphens: none; hyph=
+ens: none; mso-hyphenate: none; }</style>
+=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09</table>
+=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09</tr>
+=09=09=09=09=09</table>
+=09=09=09=09</td>
+=09=09=09</tr>
+=09=09</table>
+=09<img alt=3D"" src=3D"https://links-2.govdelivery.com/CI0/0101019b35cf5d1=
+2-dfb0ef39-085a-47cb-b43b-81881506a82a-000000/QXF2g96PKBGMparYbwKTJ0505YNH3=
+Pf-PiEmV6u4toQ=3D436" style=3D"display: none; width: 1px; height: 1px;">
+</body>
+</html>
+------=_Part_1803451_83650015.1766134322940--
+
+------=_Part_1803450_985723060.1766134322937--
+

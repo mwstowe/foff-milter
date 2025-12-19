@@ -1,0 +1,193 @@
+Return-Path: <return@sunflowerlearningchannel.com>
+Received: from juliett.baddomain.com (localhost [127.0.0.1])
+	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTP id 5BJANLvZ022596
+	for <mstowe@localhost>; Fri, 19 Dec 2025 10:23:21 GMT
+	(envelope-from return@sunflowerlearningchannel.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (2048-bit key; unprotected) header.d=sunflowerlearningchannel.com header.i=@sunflowerlearningchannel.com header.b=PQv01BTy
+Received: from jimapinternal-aol.imap.mail.g03.yahoodns.net [74.6.160.39]
+	by juliett.baddomain.com with IMAP (fetchmail-6.6.1)
+	for <mstowe@localhost> (single-drop); Fri, 19 Dec 2025 10:23:21 +0000 (UTC)
+Received: from 127.0.0.1
+ by atlas-production.v2-mail-prod1-bf1.omega.yahoo.com pod-id atlas--production-bf1-849cb4b6fc-494r6.bf1.yahoo.com with HTTP; Fri, 19 Dec 2025 10:18:30 +0000
+X-Originating-Ip: [35.165.180.76]
+Received-SPF: fail (domain of sunflowerlearningchannel.com does not designate 35.165.180.76 as permitted sender)
+Authentication-Results: atlas-production.v2-mail-prod1-bf1.omega.yahoo.com;
+ dkim=pass header.i=@sunflowerlearningchannel.com header.s=h1 arc_overridden_status=NOT_OVERRIDDEN;
+ spf=fail smtp.mailfrom=sunflowerlearningchannel.com arc_overridden_status=NOT_OVERRIDDEN;
+ dmarc=pass(p=QUARANTINE) header.from=sunflowerlearningchannel.com arc_overridden_status=NOT_OVERRIDDEN;
+X-Apparently-To: user@example.com; Fri, 19 Dec 2025 10:18:30 +0000
+X-YMailISG: WqXL9SYWLDtoLIz8cOb5YyPiyWwYEZTTx92KudJqVkJAlHdg
+ OlKKx9QsxK2BqF5MYajmPfbfGl7_Kq6s.gODfVPDRcsmSQvyc5cWQ23vCSuF
+ f57NrrJRPB5idE0X7A0Zs_2wVvJ5Wg318L0qx_QeZCFSWxxDiwLlsIfByr3X
+ gcZsWA6l6Kys9YoFFRztjigT8GIRImVv868MhQqpvJDaPHks_wYYK05dyfmQ
+ GprgG02snTJMmt53pbTEhO4PfZJUtBryV2fdkIGsgGtyQrzf2kwHnlWQRWvZ
+ Wt7WPIBmGdx3jwPSsdRmirWBRxPCWHszKXjFv2a88oDRy7pRn6y.y13PITU5
+ tkCy7d1BfMtupS.at.SzkD8hBYSKAW7DZvRxmTECgjzxUjtey6Ki1P49DvrK
+ hPkDXEqaK1m4FpCYdIWnCRJI2vA.vmVs0yIy_0qggtrKNGUt3lbs27HMt8XI
+ jR8xAaEF03hpzQycmAgvUoELgM09ZbNzYnUNbIFJHMX9YVjpvRla8d3JJ6sC
+ BFS8dcanc98rQ4fEuWdu_rbbIC2qcVxx5mN4sIuwJre50pFPxQgHik3rvukl
+ oSFZTqE4kqbJ7sED3neOseyG2qMgoRi336mP6qWkghBKmr7lwkuEmCRCp6Zi
+ jUsVK4WdhLQmMYQ1Kg3..eENkN0LJVl282IU0rnuX5ztDJzssd1M7duPQjfS
+ 5Eqxe_qNuGjkr57IA2St_iswkX7GhYj4K4GVaBaVOVB.H309GBGNjzn9RVjz
+ UL2cw8RBqBm70X5rJJRHc_cvyp4eHI4kQJBmmQzGLtTAfBEgXp5a3vDam8hd
+ U0TJ.rLrR7bKvLF_fek4WoC3mR5ZcJMdOhYgqrNH8PL5SSEz8AgwDYookClY
+ 8EKpRP7fgX8afxv0RE3WxJQbn6Nm4UjPeHehkQcaNdIQNAqFH1F1z0tBZdyA
+ 3.6AkNhaAGLXFEKEzzwxQ8daT51vZ7RxznbMs1lEcmJqpRW9Rmz.JdgAoaZt
+ lgkEsnlXGkzy2kKxzfl2o.DvH.H7qLmt0LICKCXlzxBNKNKHwg3j9.YfvYLJ
+ exaEIok5nSfpqoXCOsw4wghxHN8LIyhV1PDFpeaaxmjWXqTRL7yjte5Zq.sG
+ bHJIxTbOGRzxwS8V8SAE3iILGxOaupRREd6j4qWe4LqzeTBCEyoYR1zkT0as
+ bhRxfRz.CboMCDDAcy3nVB0q
+Received: from 35.165.180.76 (EHLO medmachine.b-glaw.com)
+ by 10.196.217.15 with SMTPs
+ (version=TLS1_2 cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256);
+ Fri, 19 Dec 2025 10:18:30 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=h1; d=sunflowerlearningchannel.com;
+ h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Transfer-Encoding:
+ Content-Type:List-Unsubscribe;
+ bh=rujkNv67mtXgU/LhTQFEPCNuLq73anV59Lfygx9bg5I=;
+ b=PQv01BTyiHEkn2vrSggw7z1PUJWwQvaWNt7y7RYjHN9qOFHI9RQwhj8lL8sll6RYp8xOfMAitlYi
+   Bnn0zhkRcxyWC2hYebmM8hKP5Iu1yLexJWCjipGcXQlhQe3DRv4zyj8dki4B1voQA+HNB0cHJTmR
+   4+lzpXk1tYB0BUvhS8NTD5ejG75/Z6WYWKlfntT8DMNzSvd6WrR4QSwJ3ConhfJOkbWIe1dBon8I
+   tWRo+LQcCb4AHvkDKf+qZwKFuFTrJ6KSRYsE160EH+9pAsgztIrxsPdVoRgWwBHHBRR83YTcJnuj
+   Jb+C1i4izlStQdIShd1erOePftU+yXIxvu/rlQ==
+Date: Fri, 19 Dec 2025 10:18:22 +0000
+From:      "=?UTF-8?B?TuKAi2HigIt04oCLaeKAi2/igItu4oCLYeKAi2zigIsg4oCLROKAi2XigIti4oCLdOKAiyDigItS4oCLZeKAi2zigItp4oCLZeKAi2Y=?=."      <MtgLarenHazelSaturnRelaafRatge@sunflowerlearningchannel.com>
+To:<user@example.com>
+Subject:      =?UTF-8?B?Q+KAi2jigItl4oCLY+KAi2vigIsg4oCLWeKAi2/igIt14oCLcuKAiyDigItF4oCLbOKAi2nigItn4oCLaeKAi2LigItp4oCLbOKAi2nigIt04oCLeeKAiyDigItm4oCLb+KAi3LigIsg4oCLUuKAi2XigIts4oCLaeKAi2XigItm4oCLIOKAi1TigItv4oCLZOKAi2HigIt5?=.      
+Message-ID: <@>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Type: text/html; charset="UTF-8"
+List-Unsubscribe: 
+<mailto:abuse-pro@sunflowerlearningchannel.com?subject=MailStop&body=dw3JyW2I-DyRB-LHQLDIz2xSRSd_474673>,
+<https://sunflowerlearningchannel.com/v4/unsubscribe?mid=aNOOTX-G3-1hR0RVI-G3-LHQLDIz2xSRSd&sid=474673>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [0.0.0.0]); Fri, 19 Dec 2025 10:23:22 +0000 (UTC)
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:v="urn:schemas-microsoft-com:vml" 
+      xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!--[if gte mso 9]>
+  <xml>
+    <o:OfficeDocumentSettings>
+      <o:AllowPNG/>
+      <o:PixelsPerInch>96</o:PixelsPerInch>
+    </o:OfficeDocumentSettings>
+  </xml>
+  <!-->
+
+  <style type="text/html">
+    #outlook a { padding: 0; }
+    .ExternalClass { width:100%; line-height:100%; }
+    .ExternalClass * { line-height: 100%; }
+    body { margin: 0; padding: 0; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; background-color:#f4f4f4;}
+    table, td { border-collapse: collapse !important; mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+    img { border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; display: block; }
+    p, h1, h2, h3, h4, h5 { margin: 0; padding: 0; }
+    a { text-decoration: none; color: inherit; }
+    div, span { display:block; }
+    /* fake complexity: unused helpers */
+    .hidden-text { display:none !important; visibility:hidden !important; overflow:hidden !important; font-size:1px; line-height:1px; max-height:0; max-width:0; opacity:0; }
+    .nochange { color:inherit !important; background:none !important; border:none !important; }
+    .wrapperfix { width:100% !important; table-layout:fixed !important; }
+    .extra-cell { mso-line-height-rule:exactly; line-height:1px; font-size:1px; }
+    @media only screen and (max-width:620px) {
+      .full-width-mobile { width: 100% !important; max-width: 100% !important; }
+      .stack-column { display: block !important; width: 100% !important; max-width: 100% !important; }
+      .mobile-padding { padding-left: 10px !important; padding-right: 10px !important; }
+      .mobile-title-font { font-size: 20px !important; line-height: 24px !important; }
+    }
+  </style>
+</head>
+
+<body style="margin:0;padding:0;font-family:Arial,Helvetica,sans-serif;background-color:#f4f4f4;width:100%;">
+  <center>
+    <div style="display:none; white-space:nowrap; font:15px courier; color:#f4f4f4;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation" class="wrapperfix" style="background-color:#f4f4f4;">
+      <tbody>
+        <tr>
+          <td align="center" valign="top" style="padding:20px 0;">
+            <table class="full-width-mobile" width="600" cellpadding="0" cellspacing="0" border="0" role="presentation" style="background-color:#ffffff;border-radius:8px;max-width:600px;width:100%;">
+              <tbody>
+                <tr>
+                  <td align="center" valign="top" style="padding:20px;" class="mobile-padding">
+
+                    <!-- header block -->
+                    <table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation">
+                      <tbody>
+                        <tr>
+                          <td align="center" style="padding-bottom:20px;">
+                            <div style="mso-line-height-rule:exactly;line-height:1px;font-size:1px;">&nbsp;</div>
+                            </a>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+
+                    <!-- image block -->
+                    <table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation">
+                      <tbody>
+                        <tr>
+                          <td align="center" style="padding-bottom:20px;line-height:0;">
+                           <img src="https://www.mokymounviewfarm.com/hZtlUtMlsrTubgqiYL3CxP/50hobn9yw1ihj409wh5" usemap="#image-map">
+			   
+			   <map name="image-map">
+     <area target="" alt="main_img" title="main_img" href="https://www.mokymounviewfarm.com/05X1KYxaU2xNBWaxfPRcz9wI/nmbutcovbgsjf83wl" coords="2,3,572,1654" shape="rect">
+    
+    <!-- divider -->
+                    <table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation">
+                      <tbody>
+                        <tr>
+                          <td style="padding-top:5px;padding-bottom:5px;font-size:1px;line-height:1px;">
+                            <div style="height:10px;line-height:10px;font-size:10px;border-top:1px solid #eeeeee;">&nbsp;</div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+		    
+    <area target="" alt="uns_img" title="uns_img" href="https://www.mokymounviewfarm.com/EmG7nSN4I0eka0QA8ZvdOjY/mldjtupxh5kv" coords="89,1753,8,1718" shape="rect">
+</map>
+
+                            <!--[if gte mso 9]>
+                                </v:textbox>
+                              </v:rect>
+                            <!-->
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+
+                   
+
+                    
+
+
+                    <!-- invisible tracking spacer -->
+                    <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0">
+                      <tbody>
+                        <tr>
+                          <td class="extra-cell" style="line-height:1px;font-size:1px;color:#f4f4f4;">&nbsp;</td>
+                        </tr>
+                      </tbody>
+                    </table>
+
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </center>
+</body>
+</html>
+
