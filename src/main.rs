@@ -85,6 +85,60 @@ fn read_email_with_encoding_fallback(
     Ok(content.to_string())
 }
 
+/// Decode email body content based on Content-Transfer-Encoding
+fn decode_email_body(body: &str, encoding: &str) -> String {
+    match encoding.to_lowercase().as_str() {
+        "quoted-printable" => {
+            // Decode quoted-printable encoding
+            let mut decoded = String::new();
+            let mut chars = body.chars().peekable();
+
+            while let Some(ch) = chars.next() {
+                if ch == '=' {
+                    if let Some(&'\n') = chars.peek() {
+                        // Soft line break - skip the = and newline
+                        chars.next();
+                        continue;
+                    } else if let Some(&'\r') = chars.peek() {
+                        // Soft line break with CRLF - skip = and \r, then check for \n
+                        chars.next();
+                        if let Some(&'\n') = chars.peek() {
+                            chars.next();
+                        }
+                        continue;
+                    } else {
+                        // Hex encoding =XX
+                        let hex1 = chars.next().unwrap_or('0');
+                        let hex2 = chars.next().unwrap_or('0');
+                        if let Ok(byte_val) =
+                            u8::from_str_radix(&format!("{}{}", hex1, hex2), 16)
+                        {
+                            decoded.push(byte_val as char);
+                        } else {
+                            // Invalid hex, keep original
+                            decoded.push('=');
+                            decoded.push(hex1);
+                            decoded.push(hex2);
+                        }
+                    }
+                } else {
+                    decoded.push(ch);
+                }
+            }
+            decoded
+        }
+        "base64" => {
+            // Decode base64 encoding
+            use base64::{engine::general_purpose, Engine as _};
+            match general_purpose::STANDARD.decode(body.replace('\n', "").replace('\r', "")) {
+                Ok(decoded_bytes) => String::from_utf8_lossy(&decoded_bytes).to_string(),
+                Err(_) => body.to_string(), // Return original if decoding fails
+            }
+        }
+        _ => body.to_string(), // No encoding or unsupported encoding
+    }
+}
+
 async fn analyze_email_file(
     config: &HeuristicConfig,
     whitelist_config: &Option<WhitelistConfig>,
@@ -106,20 +160,57 @@ async fn analyze_email_file(
 
     // Extract headers manually
     let lines: Vec<&str> = email_content.lines().collect();
-    let mut headers = std::collections::HashMap::new();
+    let mut headers: std::collections::HashMap<String, String> = std::collections::HashMap::new();
     let mut body_start = 0;
+    let mut sender = String::new();
+    let mut last_header_key: Option<String> = None;
 
-    // Parse headers
+    // Parse headers (match test_email_file logic exactly)
     for (i, line) in lines.iter().enumerate() {
         if line.trim().is_empty() {
             body_start = i + 1;
             break;
         }
 
+        // Handle header continuation lines (lines starting with space or tab)
+        if line.starts_with(' ') || line.starts_with('\t') {
+            if let Some(ref key) = last_header_key {
+                if let Some(existing_value) = headers.get_mut(key) {
+                    existing_value.push(' ');
+                    existing_value.push_str(line.trim());
+                }
+            }
+            continue;
+        }
+
         if let Some(colon_pos) = line.find(':') {
-            let key = line[..colon_pos].trim().to_string();
+            let key = line[..colon_pos].trim().to_lowercase(); // Normalize to lowercase like test_email_file
             let value = line[colon_pos + 1..].trim().to_string();
-            headers.insert(key, value);
+            last_header_key = Some(key.clone());
+
+            // Extract sender information (match test_email_file logic)
+            if key == "return-path" {
+                sender = value.trim_matches(['<', '>']).to_string();
+            } else if key == "from" && sender.is_empty() {
+                // Extract email from "Name <email@domain.com>" format
+                if let Some(start) = value.rfind('<') {
+                    if let Some(end) = value.rfind('>') {
+                        sender = value[start + 1..end].to_string();
+                    }
+                } else {
+                    sender = value.clone();
+                }
+            }
+
+            // Handle header continuation lines by concatenating values (match milter behavior)
+            if let Some(existing_value) = headers.get(&key) {
+                // Concatenate with existing value (same as milter)
+                let combined_value = format!("{} {}", existing_value, value);
+                headers.insert(key, combined_value);
+            } else {
+                // First occurrence of this header
+                headers.insert(key, value);
+            }
         }
     }
 
@@ -428,25 +519,40 @@ async fn analyze_email_file(
 
     // Build mail context (matching test_email_file setup exactly)
     
-    // Extract sender from headers
-    let sender = headers.get("From")
-        .and_then(|from| foff_milter::milter::extract_email_from_header(from))
-        .unwrap_or_default();
+    // Extract sender from headers (use parsed sender or fallback to From header)
+    let mut sender = if !sender.is_empty() {
+        sender
+    } else {
+        headers.get("from")
+            .and_then(|from| foff_milter::milter::extract_email_from_header(from))
+            .unwrap_or_default()
+    };
+    
+    // Fallback for empty sender (match test_email_file)
+    if sender.is_empty() {
+        sender = "unknown@example.com".to_string();
+    }
     
     // Extract recipients (basic implementation for analyze)
     let recipients = vec!["test@example.com".to_string()]; // Placeholder for analyze mode
     
     // Get body content
-    let body_content: String = lines[body_start..].join("\n");
+    let mut body_content: String = lines[body_start..].join("\n");
+    
+    // Decode email body content to match production milter behavior (like test_email_file)
+    let content_transfer_encoding = headers.get("content-transfer-encoding")
+        .map(|s| s.to_lowercase())
+        .unwrap_or_default();
+    body_content = decode_email_body(&body_content, &content_transfer_encoding);
     
     let mut mail_context = foff_milter::filter::MailContext {
         sender: Some(sender.clone()),
-        from_header: headers.get("From").cloned(),
+        from_header: headers.get("from").cloned(),
         recipients: recipients.clone(),
         headers: headers.clone(),
-        mailer: headers.get("X-Mailer").cloned(),
+        mailer: headers.get("x-mailer").cloned(),
         subject: headers
-            .get("Subject")
+            .get("subject")
             .map(|s| foff_milter::milter::decode_mime_header(s)),
         hostname: None,
         helo: None,
@@ -462,8 +568,16 @@ async fn analyze_email_file(
         proximate_mailer: None,
     };
 
+    // Populate DKIM verification for analyze mode (match test_email_file)
+    use foff_milter::dkim_verification::DkimVerifier;
+    let sender_domain = sender.split('@').nth(1);
+    mail_context.dkim_verification = Some(DkimVerifier::verify(&mail_context.headers, sender_domain));
+
+    // Add legitimate business detection for analyze mode (match test_email_file)
+    mail_context.is_legitimate_business = is_legitimate_business_test(&mail_context);
+
     // Evaluate
-    let (action, matched_rules, evidence) = filter_engine.evaluate(&mail_context).await;
+    let (action, matched_rules, headers_to_add) = filter_engine.evaluate(&mail_context).await;
 
     // 7. Configuration Analysis
     println!("\n🔧 CONFIGURATION ANALYSIS");
@@ -560,26 +674,17 @@ async fn analyze_email_file(
     println!("───────────────────────────────────────────────────────────────");
     println!("Action: {:?}", action);
 
-    // Extract spam score from evidence if available
-    if !evidence.is_empty() {
-        println!("\n🎯 CONTEXTUAL ANALYSIS & SCORING:");
-        for (rule_name, score_info) in &evidence {
-            println!("  • {}: {}", rule_name, score_info);
-        }
-    }
-
-    // Calculate total score from matched rules (approximation)
-    let mut total_score = 0;
-    for rule in &matched_rules {
-        if rule.contains("Infrastructure") || rule.contains("legitimate") {
-            total_score -= 50; // Negative score for legitimate
-        } else {
-            total_score += 100; // Positive score for threats
-        }
-    }
+    // Extract actual score from headers
+    let actual_score = headers_to_add.iter()
+        .find(|(name, _)| name.starts_with("X-FOFF-Score"))
+        .and_then(|(_, value)| {
+            // Extract score from "X-FOFF-Score: 54 - foff-milter v0.8.5 (zou)"
+            value.split_whitespace().next().and_then(|s| s.parse::<i32>().ok())
+        })
+        .unwrap_or(0);
 
     println!("\n📈 SPAM SCORE ANALYSIS:");
-    println!("  Estimated Total Score: {}", total_score);
+    println!("  Actual Score: {}", actual_score);
     match action {
         foff_milter::heuristic_config::Action::Accept => {
             println!("  Classification: ✅ LEGITIMATE (Score < 50)");
@@ -596,6 +701,11 @@ async fn analyze_email_file(
         foff_milter::heuristic_config::Action::UnsubscribeGoogleGroup { .. } => {
             println!("  Classification: 📧 GOOGLE GROUP UNSUBSCRIBE");
         }
+    }
+
+    // Show analysis headers (including X-FOFF-Score)
+    for (header_name, header_value) in &headers_to_add {
+        println!("  • {}: {}", header_name, header_value);
     }
 
     if !matched_rules.is_empty() {
