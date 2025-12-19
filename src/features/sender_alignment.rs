@@ -1198,15 +1198,19 @@ impl FeatureExtractor for SenderAlignmentAnalyzer {
                         let reply_to_domain = self.extract_domain(&reply_to_email);
                         let from_root = self.extract_root_domain(&from_domain);
                         let reply_to_root = self.extract_root_domain(&reply_to_domain);
-                        
+
                         // Check for legitimate business service patterns
-                        let is_legitimate_service = from_domain.contains("netsuite.com") 
+                        let is_legitimate_service = from_domain.contains("netsuite.com")
                             || from_domain.contains("oracleemaildelivery.com")
                             || from_domain.contains("toast-restaurants.com")
                             || (from_root.contains("lovepop") && reply_to_root.contains("lovepop"));
-                        
+
                         // Only flag if different root domains (cross-domain mismatch) and not legitimate service
-                        if from_root != reply_to_root && from_root != "unknown" && reply_to_root != "unknown" && !is_legitimate_service {
+                        if from_root != reply_to_root
+                            && from_root != "unknown"
+                            && reply_to_root != "unknown"
+                            && !is_legitimate_service
+                        {
                             score += 40;
                             evidence.push(format!(
                                 "Reply-To email ({}) differs from From email ({})",
