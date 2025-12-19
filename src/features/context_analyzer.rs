@@ -515,7 +515,16 @@ impl ContextAnalyzer {
             || from_header.to_lowercase().contains("hulu")
             || from_header.to_lowercase().contains("amazon")
             || from_header.to_lowercase().contains("exterminators")
-            || from_header.to_lowercase().contains("pest");
+            || from_header.to_lowercase().contains("pest")
+            || from_header.to_lowercase().contains("backerkit")
+            || from_header.to_lowercase().contains("joinhoney")
+            || from_header.to_lowercase().contains("honey")
+            || from_header.to_lowercase().contains("medium")
+            || from_header.to_lowercase().contains("williams-sonoma")
+            || from_header.to_lowercase().contains("lovepop")
+            || from_header.to_lowercase().contains("shutterfly")
+            || from_header.to_lowercase().contains("resmed")
+            || from_header.to_lowercase().contains("quora");
 
         if has_medicare_content && !is_legitimate_service {
             // Check for image-only content (suspicious for Medicare scams)

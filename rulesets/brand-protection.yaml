@@ -75,8 +75,17 @@ rules:
                         pattern: "(?i).*(apple.*wallet|google.*pay|samsung.*pay|paypal.*integration|amazon.*partnership).*"
                       - type: SenderPattern
                         pattern: ".*@.*(discover|chase|citi|amex|wellsfargo|bankofamerica)\\.(com|org)$"
+        - type: Not
+          criteria:
+            type: Or
+            criteria:
+              - type: SenderPattern
+                pattern: ".*@.*(medium|backerkit|joinhoney|williams-sonoma|lovepop|shutterfly|resmed|quora)\\.(com|org)$"
+              - type: HeaderPattern
+                header: "Authentication-Results"
+                pattern: "dkim=pass.*\\.(medium|backerkit|joinhoney|williams-sonoma|lovepop|shutterfly|resmed|quora)\\.(com|org)"
     score: 200
-    description: "Brand impersonation with authentication failure"
+    description: "Brand impersonation with authentication failure (excluding legitimate newsletters)"
 
   # Known brand from suspicious domain
   - name: "Known brand from suspicious domain"
