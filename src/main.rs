@@ -85,7 +85,13 @@ fn read_email_with_encoding_fallback(
     Ok(content.to_string())
 }
 
-async fn analyze_email_file(config: &HeuristicConfig, email_file: &str) {
+async fn analyze_email_file(
+    config: &HeuristicConfig,
+    whitelist_config: &Option<WhitelistConfig>,
+    blocklist_config: &Option<BlocklistConfig>,
+    toml_config: &Option<TomlConfig>,
+    email_file: &str,
+) {
     println!("\n📧 Email Forensic Analysis");
     println!("═══════════════════════════════════════════════════════════════\n");
 
@@ -390,14 +396,35 @@ async fn analyze_email_file(config: &HeuristicConfig, email_file: &str) {
 
     // 6. Spam Analysis & Evaluation
 
-    // Run through filter engine for scoring
-    let filter_engine = match FilterEngine::new(config.clone()) {
+    // Run through filter engine for scoring (using same setup as test_email_file)
+    let mut filter_engine = match FilterEngine::new(config.clone()) {
         Ok(engine) => engine,
         Err(e) => {
             eprintln!("❌ Error creating filter engine: {}", e);
             return;
         }
     };
+
+    // Set whitelist configuration if available
+    filter_engine.set_whitelist_config(whitelist_config.clone());
+
+    // Set blocklist configuration if available
+    filter_engine.set_blocklist_config(blocklist_config.clone());
+
+    // Set same-server detection (default enabled for analyze)
+    filter_engine.set_same_server_detection(true);
+
+    // Set sender blocking configuration if available
+    if let Some(toml_cfg) = &toml_config {
+        filter_engine.set_sender_blocking(toml_cfg.sender_blocking.clone());
+    }
+
+    // Set TOML configuration
+    if let Some(toml_cfg) = toml_config {
+        filter_engine.set_toml_config(toml_cfg.clone());
+    } else {
+        filter_engine.set_toml_config(TomlConfig::default());
+    }
 
     // Build mail context
     let mut mail_context = foff_milter::filter::MailContext {
@@ -444,6 +471,97 @@ async fn analyze_email_file(config: &HeuristicConfig, email_file: &str) {
 
     // Evaluate
     let (action, matched_rules, evidence) = filter_engine.evaluate(&mail_context).await;
+
+    // 7. Configuration Analysis
+    println!("\n🔧 CONFIGURATION ANALYSIS");
+    println!("───────────────────────────────────────────────────────────────");
+    
+    // Check whitelist status
+    if let Some(whitelist) = whitelist_config {
+        let sender_email = mail_context.from_header.as_deref().unwrap_or("")
+            .split('<').last().unwrap_or("").trim_end_matches('>');
+        let sender_domain = sender_email.split('@').nth(1).unwrap_or("");
+        
+        let mut whitelist_matches = Vec::new();
+        
+        if whitelist.addresses.contains(&sender_email.to_string()) {
+            whitelist_matches.push(format!("Address: {}", sender_email));
+        }
+        if whitelist.domains.contains(&sender_domain.to_string()) {
+            whitelist_matches.push(format!("Domain: {}", sender_domain));
+        }
+        for pattern in &whitelist.domain_patterns {
+            if regex::Regex::new(pattern).map_or(false, |r| r.is_match(sender_domain)) {
+                whitelist_matches.push(format!("Pattern: {}", pattern));
+            }
+        }
+        
+        if whitelist_matches.is_empty() {
+            println!("Whitelist: ❌ No matches");
+        } else {
+            println!("Whitelist: ✅ Matched - {}", whitelist_matches.join(", "));
+        }
+    } else {
+        println!("Whitelist: ⚪ Not configured");
+    }
+    
+    // Check blocklist status
+    if let Some(blocklist) = blocklist_config {
+        let sender_email = mail_context.from_header.as_deref().unwrap_or("")
+            .split('<').last().unwrap_or("").trim_end_matches('>');
+        let sender_domain = sender_email.split('@').nth(1).unwrap_or("");
+        
+        let mut blocklist_matches = Vec::new();
+        
+        if blocklist.addresses.contains(&sender_email.to_string()) {
+            blocklist_matches.push(format!("Address: {}", sender_email));
+        }
+        if blocklist.domains.contains(&sender_domain.to_string()) {
+            blocklist_matches.push(format!("Domain: {}", sender_domain));
+        }
+        for pattern in &blocklist.domain_patterns {
+            if regex::Regex::new(pattern).map_or(false, |r| r.is_match(sender_domain)) {
+                blocklist_matches.push(format!("Pattern: {}", pattern));
+            }
+        }
+        
+        if blocklist_matches.is_empty() {
+            println!("Blocklist: ✅ No matches");
+        } else {
+            println!("Blocklist: ❌ Matched - {}", blocklist_matches.join(", "));
+        }
+    } else {
+        println!("Blocklist: ⚪ Not configured");
+    }
+    
+    // Check sender blocking status
+    if let Some(toml_cfg) = toml_config {
+        if let Some(sender_blocking) = &toml_cfg.sender_blocking {
+            if sender_blocking.enabled {
+                let sender_email = mail_context.from_header.as_deref().unwrap_or("")
+                    .split('<').last().unwrap_or("").trim_end_matches('>');
+                
+                let mut blocking_matches = Vec::new();
+                for pattern in &sender_blocking.block_patterns {
+                    if regex::Regex::new(pattern).map_or(false, |r| r.is_match(sender_email)) {
+                        blocking_matches.push(pattern.clone());
+                    }
+                }
+                
+                if blocking_matches.is_empty() {
+                    println!("Sender Blocking: ✅ No matches");
+                } else {
+                    println!("Sender Blocking: ❌ Matched patterns: {}", blocking_matches.join(", "));
+                }
+            } else {
+                println!("Sender Blocking: ⚪ Disabled");
+            }
+        } else {
+            println!("Sender Blocking: ⚪ Not configured");
+        }
+    } else {
+        println!("Sender Blocking: ⚪ Not configured");
+    }
 
     println!("\n📊 FINAL VERDICT");
     println!("───────────────────────────────────────────────────────────────");
@@ -664,7 +782,7 @@ async fn main() {
     }
 
     if let Some(email_file) = matches.get_one::<String>("analyze") {
-        analyze_email_file(&config, email_file).await;
+        analyze_email_file(&config, &whitelist_config, &blocklist_config, &toml_config, email_file).await;
         return;
     }
 
