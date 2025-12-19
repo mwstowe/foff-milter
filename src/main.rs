@@ -769,6 +769,18 @@ async fn analyze_email_file(
         .iter()
         .filter(|(key, _)| key.starts_with("x-foff-feature-evidence"))
         .collect();
+    let existing_trust: Vec<_> = headers
+        .iter()
+        .filter(|(key, _)| key.starts_with("x-foff-trust-analysis"))
+        .collect();
+    let existing_business: Vec<_> = headers
+        .iter()
+        .filter(|(key, _)| key.starts_with("x-foff-business-analysis"))
+        .collect();
+    let existing_seasonal: Vec<_> = headers
+        .iter()
+        .filter(|(key, _)| key.starts_with("x-foff-seasonal-analysis"))
+        .collect();
 
     if existing_scores.is_empty() {
         println!("✅ No existing X-FOFF headers found - this is a clean email");
@@ -794,6 +806,148 @@ async fn analyze_email_file(
                     actual_score,
                     actual_score - existing_score
                 );
+                
+                // Detailed scoring breakdown
+                println!("\n🔍 DETAILED SCORING BREAKDOWN:");
+                
+                // Parse production analysis headers
+                let prod_trust = existing_trust.first().map(|(_, v)| v.as_str()).unwrap_or("");
+                let prod_business = existing_business.first().map(|(_, v)| v.as_str()).unwrap_or("");
+                let prod_seasonal = existing_seasonal.first().map(|(_, v)| v.as_str()).unwrap_or("");
+                
+                // Parse current analysis headers
+                let curr_trust = headers_to_add.iter()
+                    .find(|(name, _)| name.starts_with("X-FOFF-Trust-Analysis"))
+                    .map(|(_, v)| v.as_str()).unwrap_or("");
+                let curr_business = headers_to_add.iter()
+                    .find(|(name, _)| name.starts_with("X-FOFF-Business-Analysis"))
+                    .map(|(_, v)| v.as_str()).unwrap_or("");
+                let curr_seasonal = headers_to_add.iter()
+                    .find(|(name, _)| name.starts_with("X-FOFF-Seasonal-Analysis"))
+                    .map(|(_, v)| v.as_str()).unwrap_or("");
+                
+                println!("  Production Trust Analysis: {}", prod_trust);
+                println!("  Current Trust Analysis:    {}", curr_trust);
+                println!("  Production Business Analysis: {}", prod_business);
+                println!("  Current Business Analysis:    {}", curr_business);
+                println!("  Production Seasonal Analysis: {}", prod_seasonal);
+                println!("  Current Seasonal Analysis:    {}", curr_seasonal);
+                
+                // Calculate evidence scores
+                println!("\n📊 EVIDENCE SCORING COMPARISON:");
+                
+                // Parse trust/business/seasonal adjustments
+                let parse_analysis = |analysis_str: &str| -> (i32, i32) {
+                    let total = analysis_str.split("total=").nth(1)
+                        .and_then(|s| s.split(',').next())
+                        .and_then(|s| s.parse::<i32>().ok())
+                        .unwrap_or(0);
+                    let adj = analysis_str.split("adj=").nth(1)
+                        .and_then(|s| s.split_whitespace().next())
+                        .and_then(|s| s.parse::<i32>().ok())
+                        .unwrap_or(0);
+                    (total, adj)
+                };
+                
+                let (prod_trust_total, prod_trust_adj) = parse_analysis(prod_trust);
+                let (curr_trust_total, curr_trust_adj) = parse_analysis(curr_trust);
+                let (prod_business_total, prod_business_adj) = parse_analysis(prod_business);
+                let (curr_business_total, curr_business_adj) = parse_analysis(curr_business);
+                let (prod_seasonal_total, prod_seasonal_adj) = parse_analysis(prod_seasonal);
+                let (curr_seasonal_total, curr_seasonal_adj) = parse_analysis(curr_seasonal);
+                
+                println!("  Trust Analysis Diff: {} → {} (change: {:+})", 
+                    prod_trust_total + prod_trust_adj, 
+                    curr_trust_total + curr_trust_adj,
+                    (curr_trust_total + curr_trust_adj) - (prod_trust_total + prod_trust_adj));
+                    
+                println!("  Business Analysis Diff: {} → {} (change: {:+})", 
+                    prod_business_total + prod_business_adj, 
+                    curr_business_total + curr_business_adj,
+                    (curr_business_total + curr_business_adj) - (prod_business_total + prod_business_adj));
+                    
+                println!("  Seasonal Analysis Diff: {} → {} (change: {:+})", 
+                    prod_seasonal_total + prod_seasonal_adj, 
+                    curr_seasonal_total + curr_seasonal_adj,
+                    (curr_seasonal_total + curr_seasonal_adj) - (prod_seasonal_total + prod_seasonal_adj));
+                
+                let total_analysis_diff = 
+                    ((curr_trust_total + curr_trust_adj) - (prod_trust_total + prod_trust_adj)) +
+                    ((curr_business_total + curr_business_adj) - (prod_business_total + prod_business_adj)) +
+                    ((curr_seasonal_total + curr_seasonal_adj) - (prod_seasonal_total + prod_seasonal_adj));
+                
+                println!("\n🧮 SCORE ACCOUNTING:");
+                println!("  Total Score Difference: {:+}", actual_score - existing_score);
+                println!("  Analysis Components Diff: {:+}", total_analysis_diff);
+                println!("  Unaccounted Difference: {:+}", (actual_score - existing_score) - total_analysis_diff);
+                
+                if ((actual_score - existing_score) - total_analysis_diff).abs() > 5 {
+                    println!("\n❌ MAJOR UNACCOUNTED DIFFERENCE DETECTED!");
+                    println!("    Missing scoring components not shown in analysis headers:");
+                    println!("    - Base rule scoring may have changed");
+                    println!("    - Feature evidence weights may be different");
+                    println!("    - Hidden scoring adjustments not being emitted");
+                    println!("    - Calculation method fundamentally changed");
+                    
+                    println!("\n🔍 DETAILED COMPONENT ANALYSIS:");
+                    
+                    // Check if we can estimate individual evidence scores
+                    println!("  Evidence Count - Production: {}, Current: {}", 
+                        existing_evidence.len(), 
+                        headers_to_add.iter().filter(|(name, _)| name.starts_with("X-FOFF-Feature-Evidence")).count());
+                    
+                    // Check rule count
+                    println!("  Rule Count - Production: {}, Current: {}", 
+                        existing_rules.len(),
+                        headers_to_add.iter().filter(|(name, _)| name.starts_with("X-FOFF-Rule-Matched")).count());
+                    
+                    // Estimate what the base score should be
+                    let base_analysis_score = prod_trust_total + prod_business_total + prod_seasonal_total;
+                    let estimated_evidence_rule_score = existing_score - base_analysis_score;
+                    
+                    println!("  Production Base Analysis Score: {}", base_analysis_score);
+                    println!("  Production Estimated Evidence+Rule Score: {}", estimated_evidence_rule_score);
+                    
+                    let curr_base_analysis_score = curr_trust_total + curr_business_total + curr_seasonal_total;
+                    let curr_estimated_evidence_rule_score = actual_score - curr_base_analysis_score;
+                    
+                    println!("  Current Base Analysis Score: {}", curr_base_analysis_score);
+                    println!("  Current Estimated Evidence+Rule Score: {}", curr_estimated_evidence_rule_score);
+                    
+                    let evidence_rule_diff = curr_estimated_evidence_rule_score - estimated_evidence_rule_score;
+                    println!("  Evidence+Rule Score Difference: {:+}", evidence_rule_diff);
+                    
+                    if evidence_rule_diff.abs() > 50 {
+                        println!("\n🚨 CRITICAL: Evidence/Rule scoring has changed by {:+} points!", evidence_rule_diff);
+                        println!("    This suggests:");
+                        if evidence_rule_diff < 0 {
+                            println!("    - Feature evidence weights have been REDUCED");
+                            println!("    - Rule base scores have been LOWERED");
+                            println!("    - Scoring system has been made LESS aggressive");
+                        } else {
+                            println!("    - Feature evidence weights have been INCREASED");
+                            println!("    - Rule base scores have been RAISED");
+                            println!("    - Scoring system has been made MORE aggressive");
+                        }
+                    }
+                }
+                
+                println!("\n📋 EVIDENCE COMPARISON:");
+                for (_, evidence) in &existing_evidence {
+                    println!("  Production Evidence: {}", evidence);
+                }
+                
+                for (name, evidence) in &headers_to_add {
+                    if name.starts_with("X-FOFF-Feature-Evidence") {
+                        println!("  Current Evidence: {}", evidence);
+                    }
+                }
+                
+                println!("\n⚠️  Score calculation method may have changed between production and current");
+                println!("    Same evidence producing different final scores suggests:");
+                println!("    - Feature scoring weights changed");
+                println!("    - Trust/Business/Seasonal calculation modified");
+                println!("    - Base scoring algorithm updated");
             }
         }
     }
