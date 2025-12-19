@@ -692,6 +692,8 @@ impl ContextAnalyzer {
             "klaviyo",
             "adobe.com",
             "mailchimp.com",
+            "capitaloneshopping.com",
+            "govdelivery.com",
         ];
 
         let is_legitimate_sender = legitimate_retailers

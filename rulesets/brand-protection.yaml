@@ -15,8 +15,12 @@ rules:
               pattern: "(?i).*(hr.*department|human.*resources|salary.*information|payroll.*details|employee.*benefits).*"
         - type: Not
           criteria:
-            type: SenderPattern
-            pattern: ".*@.*(company\\.com|organization\\.org|legitimate\\.edu)$"
+            type: Or
+            criteria:
+              - type: SenderPattern
+                pattern: ".*@.*(company\\.com|organization\\.org|legitimate\\.edu)$"
+              - type: SenderPattern
+                pattern: ".*@.*(govdelivery|public\\.govdelivery|capitaloneshopping)\\.(com|net|org)$"
     score: 200
     description: "Business Email Compromise targeting HR/payroll themes"
 
