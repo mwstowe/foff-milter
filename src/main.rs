@@ -203,10 +203,22 @@ async fn analyze_email_file(
             }
 
             // Handle header continuation lines by concatenating values (match milter behavior)
+            // But don't concatenate X-FOFF headers - they should remain separate
             if let Some(existing_value) = headers.get(&key) {
-                // Concatenate with existing value (same as milter)
-                let combined_value = format!("{} {}", existing_value, value);
-                headers.insert(key, combined_value);
+                if key.starts_with("x-foff-") {
+                    // For X-FOFF headers, create a new key with a suffix to keep them separate
+                    let mut counter = 1;
+                    let mut new_key = format!("{}-{}", key, counter);
+                    while headers.contains_key(&new_key) {
+                        counter += 1;
+                        new_key = format!("{}-{}", key, counter);
+                    }
+                    headers.insert(new_key, value);
+                } else {
+                    // Concatenate with existing value (same as milter)
+                    let combined_value = format!("{} {}", existing_value, value);
+                    headers.insert(key, combined_value);
+                }
             } else {
                 // First occurrence of this header
                 headers.insert(key, value);
@@ -712,38 +724,116 @@ async fn analyze_email_file(
     println!("\n🔄 PRODUCTION CONSISTENCY ANALYSIS");
     println!("───────────────────────────────────────────────────────────────");
     
-    // Extract existing X-FOFF-Score from email headers
+    // Extract existing X-FOFF headers from email
     let existing_scores: Vec<_> = headers.iter()
         .filter(|(key, _)| key.starts_with("x-foff-score"))
         .collect();
+    let existing_rules: Vec<_> = headers.iter()
+        .filter(|(key, _)| key.starts_with("x-foff-rule-matched"))
+        .collect();
+    let existing_evidence: Vec<_> = headers.iter()
+        .filter(|(key, _)| key.starts_with("x-foff-feature-evidence"))
+        .collect();
     
     if existing_scores.is_empty() {
-        println!("✅ No existing X-FOFF-Score headers found - this is a clean email");
+        println!("✅ No existing X-FOFF headers found - this is a clean email");
+        return;
+    }
+
+    // Compare scores
+    for (_, score_header) in &existing_scores {
+        if let Some(existing_score) = score_header.split_whitespace().next().and_then(|s| s.parse::<i32>().ok()) {
+            if existing_score == actual_score {
+                println!("✅ Score Match: {} (production) = {} (current)", existing_score, actual_score);
+            } else {
+                println!("❌ Score Mismatch: {} (production) ≠ {} (current) | Diff: {:+}", 
+                    existing_score, actual_score, actual_score - existing_score);
+            }
+        }
+    }
+
+    // Compare matched rules by hash
+    let current_rule_hashes: std::collections::HashSet<_> = headers_to_add.iter()
+        .filter(|(name, _)| name.starts_with("X-FOFF-Rule-Matched"))
+        .filter_map(|(_, value)| {
+            // Extract hash from "Rule Name (server) [hash]"
+            value.rfind('[').and_then(|start| {
+                value[start+1..].find(']').map(|end| &value[start+1..start+1+end])
+            })
+        })
+        .collect();
+
+    let existing_rule_hashes: std::collections::HashSet<_> = existing_rules.iter()
+        .filter_map(|(_, value)| {
+            value.rfind('[').and_then(|start| {
+                value[start+1..].find(']').map(|end| &value[start+1..start+1+end])
+            })
+        })
+        .collect();
+
+    // Show rule differences
+    let missing_from_current: Vec<_> = existing_rule_hashes.difference(&current_rule_hashes).collect();
+    let new_in_current: Vec<_> = current_rule_hashes.difference(&existing_rule_hashes).collect();
+
+    if missing_from_current.is_empty() && new_in_current.is_empty() {
+        println!("✅ Rule Match: All {} rule hashes identical", existing_rule_hashes.len());
     } else {
-        println!("📊 Found {} existing X-FOFF-Score header(s) from mail servers:", existing_scores.len());
-        
-        for (_, score_header) in &existing_scores {
-            // Extract score from "X-FOFF-Score: 410 - foff-milter v0.8.5 (hotel.baddomain.com)"
-            if let Some(existing_score) = score_header.split_whitespace().next().and_then(|s| s.parse::<i32>().ok()) {
-                let difference = actual_score - existing_score;
-                let consistency_status = match difference.abs() {
-                    0 => "✅ PERFECT",
-                    1..=5 => "✅ EXCELLENT", 
-                    6..=15 => "⚠️  MINOR",
-                    16..=50 => "⚠️  MODERATE",
-                    _ => "❌ SIGNIFICANT"
-                };
-                
-                println!("  • Production: {} | Current: {} | Diff: {:+} | Status: {}", 
-                    existing_score, actual_score, difference, consistency_status);
-                println!("    Server: {}", score_header);
-                
-                if difference.abs() > 15 {
-                    println!("    ⚠️  Scoring difference > 15 points may indicate:");
-                    println!("       - Rule changes since production processing");
-                    println!("       - Configuration differences");
-                    println!("       - Feature analysis improvements");
-                }
+        println!("❌ Rule Mismatch:");
+        for hash in &missing_from_current {
+            // Find the rule name for this hash
+            if let Some((_, rule_line)) = existing_rules.iter().find(|(_, v)| v.contains(*hash)) {
+                let rule_name = rule_line.split(" (").next().unwrap_or("Unknown");
+                println!("  - Missing: {} [{}]", rule_name, hash);
+            }
+        }
+        for hash in &new_in_current {
+            // Find the rule name for this hash
+            if let Some((_, rule_line)) = headers_to_add.iter()
+                .filter(|(name, _)| name.starts_with("X-FOFF-Rule-Matched"))
+                .find(|(_, v)| v.contains(*hash)) {
+                let rule_name = rule_line.split(" (").next().unwrap_or("Unknown");
+                println!("  + Added: {} [{}]", rule_name, hash);
+            }
+        }
+    }
+
+    // Compare feature evidence by hash
+    let current_evidence_hashes: std::collections::HashSet<_> = headers_to_add.iter()
+        .filter(|(name, _)| name.starts_with("X-FOFF-Feature-Evidence"))
+        .filter_map(|(_, value)| {
+            value.rfind('[').and_then(|start| {
+                value[start+1..].find(']').map(|end| &value[start+1..start+1+end])
+            })
+        })
+        .collect();
+
+    let existing_evidence_hashes: std::collections::HashSet<_> = existing_evidence.iter()
+        .filter_map(|(_, value)| {
+            value.rfind('[').and_then(|start| {
+                value[start+1..].find(']').map(|end| &value[start+1..start+1+end])
+            })
+        })
+        .collect();
+
+    let missing_evidence: Vec<_> = existing_evidence_hashes.difference(&current_evidence_hashes).collect();
+    let new_evidence: Vec<_> = current_evidence_hashes.difference(&existing_evidence_hashes).collect();
+
+    if missing_evidence.is_empty() && new_evidence.is_empty() {
+        println!("✅ Evidence Match: All {} evidence hashes identical", existing_evidence_hashes.len());
+    } else {
+        println!("❌ Evidence Mismatch:");
+        for hash in &missing_evidence {
+            if let Some((_, evidence_line)) = existing_evidence.iter().find(|(_, v)| v.contains(*hash)) {
+                let evidence_name = evidence_line.split(": ").nth(1).and_then(|s| s.split(" (").next()).unwrap_or("Unknown");
+                println!("  - Missing: {} [{}]", evidence_name, hash);
+            }
+        }
+        for hash in &new_evidence {
+            if let Some((_, evidence_line)) = headers_to_add.iter()
+                .filter(|(name, _)| name.starts_with("X-FOFF-Feature-Evidence"))
+                .find(|(_, v)| v.contains(*hash)) {
+                let evidence_name = evidence_line.split(": ").nth(1).and_then(|s| s.split(" (").next()).unwrap_or("Unknown");
+                println!("  + Added: {} [{}]", evidence_name, hash);
             }
         }
     }
