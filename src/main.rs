@@ -110,9 +110,7 @@ fn decode_email_body(body: &str, encoding: &str) -> String {
                         // Hex encoding =XX
                         let hex1 = chars.next().unwrap_or('0');
                         let hex2 = chars.next().unwrap_or('0');
-                        if let Ok(byte_val) =
-                            u8::from_str_radix(&format!("{}{}", hex1, hex2), 16)
-                        {
+                        if let Ok(byte_val) = u8::from_str_radix(&format!("{}{}", hex1, hex2), 16) {
                             decoded.push(byte_val as char);
                         } else {
                             // Invalid hex, keep original
@@ -130,7 +128,7 @@ fn decode_email_body(body: &str, encoding: &str) -> String {
         "base64" => {
             // Decode base64 encoding
             use base64::{engine::general_purpose, Engine as _};
-            match general_purpose::STANDARD.decode(body.replace('\n', "").replace('\r', "")) {
+            match general_purpose::STANDARD.decode(body.replace(['\n', '\r'], "")) {
                 Ok(decoded_bytes) => String::from_utf8_lossy(&decoded_bytes).to_string(),
                 Err(_) => body.to_string(), // Return original if decoding fails
             }
@@ -536,33 +534,35 @@ async fn analyze_email_file(
     }
 
     // Build mail context (matching test_email_file setup exactly)
-    
+
     // Extract sender from headers (use parsed sender or fallback to From header)
     let mut sender = if !sender.is_empty() {
         sender
     } else {
-        headers.get("from")
+        headers
+            .get("from")
             .and_then(|from| foff_milter::milter::extract_email_from_header(from))
             .unwrap_or_default()
     };
-    
+
     // Fallback for empty sender (match test_email_file)
     if sender.is_empty() {
         sender = "unknown@example.com".to_string();
     }
-    
+
     // Extract recipients (basic implementation for analyze)
     let recipients = vec!["test@example.com".to_string()]; // Placeholder for analyze mode
-    
+
     // Get body content
     let mut body_content: String = lines[body_start..].join("\n");
-    
+
     // Decode email body content to match production milter behavior (like test_email_file)
-    let content_transfer_encoding = headers.get("content-transfer-encoding")
+    let content_transfer_encoding = headers
+        .get("content-transfer-encoding")
         .map(|s| s.to_lowercase())
         .unwrap_or_default();
     body_content = decode_email_body(&body_content, &content_transfer_encoding);
-    
+
     let mut mail_context = foff_milter::filter::MailContext {
         sender: Some(sender.clone()),
         from_header: headers.get("from").cloned(),
@@ -579,7 +579,7 @@ async fn analyze_email_file(
         attachments: Vec::new(),
         extracted_media_text: String::new(),
         is_legitimate_business: false,
-        is_first_hop: true,      // Match test mode
+        is_first_hop: true, // Match test mode
         forwarding_source: None,
         dkim_verification: None,
         normalized: None,
@@ -589,7 +589,8 @@ async fn analyze_email_file(
     // Populate DKIM verification for analyze mode (match test_email_file)
     use foff_milter::dkim_verification::DkimVerifier;
     let sender_domain = sender.split('@').nth(1);
-    mail_context.dkim_verification = Some(DkimVerifier::verify(&mail_context.headers, sender_domain));
+    mail_context.dkim_verification =
+        Some(DkimVerifier::verify(&mail_context.headers, sender_domain));
 
     // Add legitimate business detection for analyze mode (match test_email_file)
     mail_context.is_legitimate_business = is_legitimate_business_test(&mail_context);
@@ -600,15 +601,21 @@ async fn analyze_email_file(
     // 7. Configuration Analysis
     println!("\n🔧 CONFIGURATION ANALYSIS");
     println!("───────────────────────────────────────────────────────────────");
-    
+
     // Check whitelist status
     if let Some(whitelist) = whitelist_config {
-        let sender_email = mail_context.from_header.as_deref().unwrap_or("")
-            .split('<').last().unwrap_or("").trim_end_matches('>');
+        let sender_email = mail_context
+            .from_header
+            .as_deref()
+            .unwrap_or("")
+            .split('<')
+            .next_back()
+            .unwrap_or("")
+            .trim_end_matches('>');
         let sender_domain = sender_email.split('@').nth(1).unwrap_or("");
-        
+
         let mut whitelist_matches = Vec::new();
-        
+
         if whitelist.addresses.contains(&sender_email.to_string()) {
             whitelist_matches.push(format!("Address: {}", sender_email));
         }
@@ -616,11 +623,11 @@ async fn analyze_email_file(
             whitelist_matches.push(format!("Domain: {}", sender_domain));
         }
         for pattern in &whitelist.domain_patterns {
-            if regex::Regex::new(pattern).map_or(false, |r| r.is_match(sender_domain)) {
+            if regex::Regex::new(pattern).is_ok_and(|r| r.is_match(sender_domain)) {
                 whitelist_matches.push(format!("Pattern: {}", pattern));
             }
         }
-        
+
         if whitelist_matches.is_empty() {
             println!("Whitelist: ❌ No matches");
         } else {
@@ -629,15 +636,21 @@ async fn analyze_email_file(
     } else {
         println!("Whitelist: ⚪ Not configured");
     }
-    
+
     // Check blocklist status
     if let Some(blocklist) = blocklist_config {
-        let sender_email = mail_context.from_header.as_deref().unwrap_or("")
-            .split('<').last().unwrap_or("").trim_end_matches('>');
+        let sender_email = mail_context
+            .from_header
+            .as_deref()
+            .unwrap_or("")
+            .split('<')
+            .next_back()
+            .unwrap_or("")
+            .trim_end_matches('>');
         let sender_domain = sender_email.split('@').nth(1).unwrap_or("");
-        
+
         let mut blocklist_matches = Vec::new();
-        
+
         if blocklist.addresses.contains(&sender_email.to_string()) {
             blocklist_matches.push(format!("Address: {}", sender_email));
         }
@@ -645,11 +658,11 @@ async fn analyze_email_file(
             blocklist_matches.push(format!("Domain: {}", sender_domain));
         }
         for pattern in &blocklist.domain_patterns {
-            if regex::Regex::new(pattern).map_or(false, |r| r.is_match(sender_domain)) {
+            if regex::Regex::new(pattern).is_ok_and(|r| r.is_match(sender_domain)) {
                 blocklist_matches.push(format!("Pattern: {}", pattern));
             }
         }
-        
+
         if blocklist_matches.is_empty() {
             println!("Blocklist: ✅ No matches");
         } else {
@@ -658,25 +671,34 @@ async fn analyze_email_file(
     } else {
         println!("Blocklist: ⚪ Not configured");
     }
-    
+
     // Check sender blocking status
     if let Some(toml_cfg) = toml_config {
         if let Some(sender_blocking) = &toml_cfg.sender_blocking {
             if sender_blocking.enabled {
-                let sender_email = mail_context.from_header.as_deref().unwrap_or("")
-                    .split('<').last().unwrap_or("").trim_end_matches('>');
-                
+                let sender_email = mail_context
+                    .from_header
+                    .as_deref()
+                    .unwrap_or("")
+                    .split('<')
+                    .next_back()
+                    .unwrap_or("")
+                    .trim_end_matches('>');
+
                 let mut blocking_matches = Vec::new();
                 for pattern in &sender_blocking.block_patterns {
-                    if regex::Regex::new(pattern).map_or(false, |r| r.is_match(sender_email)) {
+                    if regex::Regex::new(pattern).is_ok_and(|r| r.is_match(sender_email)) {
                         blocking_matches.push(pattern.clone());
                     }
                 }
-                
+
                 if blocking_matches.is_empty() {
                     println!("Sender Blocking: ✅ No matches");
                 } else {
-                    println!("Sender Blocking: ❌ Matched patterns: {}", blocking_matches.join(", "));
+                    println!(
+                        "Sender Blocking: ❌ Matched patterns: {}",
+                        blocking_matches.join(", ")
+                    );
                 }
             } else {
                 println!("Sender Blocking: ⚪ Disabled");
@@ -693,11 +715,15 @@ async fn analyze_email_file(
     println!("Action: {:?}", action);
 
     // Extract actual score from headers
-    let actual_score = headers_to_add.iter()
+    let actual_score = headers_to_add
+        .iter()
         .find(|(name, _)| name.starts_with("X-FOFF-Score"))
         .and_then(|(_, value)| {
             // Extract score from "X-FOFF-Score: 54 - foff-milter v0.8.5 (zou)"
-            value.split_whitespace().next().and_then(|s| s.parse::<i32>().ok())
+            value
+                .split_whitespace()
+                .next()
+                .and_then(|s| s.parse::<i32>().ok())
         })
         .unwrap_or(0);
 
@@ -729,18 +755,21 @@ async fn analyze_email_file(
     // 8. Production Consistency Analysis
     println!("\n🔄 PRODUCTION CONSISTENCY ANALYSIS");
     println!("───────────────────────────────────────────────────────────────");
-    
+
     // Extract existing X-FOFF headers from email
-    let existing_scores: Vec<_> = headers.iter()
+    let existing_scores: Vec<_> = headers
+        .iter()
         .filter(|(key, _)| key.starts_with("x-foff-score"))
         .collect();
-    let existing_rules: Vec<_> = headers.iter()
+    let existing_rules: Vec<_> = headers
+        .iter()
         .filter(|(key, _)| key.starts_with("x-foff-rule-matched"))
         .collect();
-    let existing_evidence: Vec<_> = headers.iter()
+    let existing_evidence: Vec<_> = headers
+        .iter()
         .filter(|(key, _)| key.starts_with("x-foff-feature-evidence"))
         .collect();
-    
+
     if existing_scores.is_empty() {
         println!("✅ No existing X-FOFF headers found - this is a clean email");
         return;
@@ -748,41 +777,65 @@ async fn analyze_email_file(
 
     // Compare scores
     for (_, score_header) in &existing_scores {
-        if let Some(existing_score) = score_header.split_whitespace().next().and_then(|s| s.parse::<i32>().ok()) {
+        if let Some(existing_score) = score_header
+            .split_whitespace()
+            .next()
+            .and_then(|s| s.parse::<i32>().ok())
+        {
             if existing_score == actual_score {
-                println!("✅ Score Match: {} (production) = {} (current)", existing_score, actual_score);
+                println!(
+                    "✅ Score Match: {} (production) = {} (current)",
+                    existing_score, actual_score
+                );
             } else {
-                println!("❌ Score Mismatch: {} (production) ≠ {} (current) | Diff: {:+}", 
-                    existing_score, actual_score, actual_score - existing_score);
+                println!(
+                    "❌ Score Mismatch: {} (production) ≠ {} (current) | Diff: {:+}",
+                    existing_score,
+                    actual_score,
+                    actual_score - existing_score
+                );
             }
         }
     }
 
     // Compare matched rules by hash
-    let current_rule_hashes: std::collections::HashSet<_> = headers_to_add.iter()
+    let current_rule_hashes: std::collections::HashSet<_> = headers_to_add
+        .iter()
         .filter(|(name, _)| name.starts_with("X-FOFF-Rule-Matched"))
         .filter_map(|(_, value)| {
             // Extract hash from "Rule Name (server) [hash]"
             value.rfind('[').and_then(|start| {
-                value[start+1..].find(']').map(|end| &value[start+1..start+1+end])
+                value[start + 1..]
+                    .find(']')
+                    .map(|end| &value[start + 1..start + 1 + end])
             })
         })
         .collect();
 
-    let existing_rule_hashes: std::collections::HashSet<_> = existing_rules.iter()
+    let existing_rule_hashes: std::collections::HashSet<_> = existing_rules
+        .iter()
         .filter_map(|(_, value)| {
             value.rfind('[').and_then(|start| {
-                value[start+1..].find(']').map(|end| &value[start+1..start+1+end])
+                value[start + 1..]
+                    .find(']')
+                    .map(|end| &value[start + 1..start + 1 + end])
             })
         })
         .collect();
 
     // Show rule differences
-    let missing_from_current: Vec<_> = existing_rule_hashes.difference(&current_rule_hashes).collect();
-    let new_in_current: Vec<_> = current_rule_hashes.difference(&existing_rule_hashes).collect();
+    let missing_from_current: Vec<_> = existing_rule_hashes
+        .difference(&current_rule_hashes)
+        .collect();
+    let new_in_current: Vec<_> = current_rule_hashes
+        .difference(&existing_rule_hashes)
+        .collect();
 
     if missing_from_current.is_empty() && new_in_current.is_empty() {
-        println!("✅ Rule Match: All {} rule hashes identical", existing_rule_hashes.len());
+        println!(
+            "✅ Rule Match: All {} rule hashes identical",
+            existing_rule_hashes.len()
+        );
     } else {
         println!("❌ Rule Mismatch:");
         for hash in &missing_from_current {
@@ -794,9 +847,11 @@ async fn analyze_email_file(
         }
         for hash in &new_in_current {
             // Find the rule name for this hash
-            if let Some((_, rule_line)) = headers_to_add.iter()
+            if let Some((_, rule_line)) = headers_to_add
+                .iter()
                 .filter(|(name, _)| name.starts_with("X-FOFF-Rule-Matched"))
-                .find(|(_, v)| v.contains(*hash)) {
+                .find(|(_, v)| v.contains(*hash))
+            {
                 let rule_name = rule_line.split(" (").next().unwrap_or("Unknown");
                 println!("  + Added: {} [{}]", rule_name, hash);
             }
@@ -804,41 +859,66 @@ async fn analyze_email_file(
     }
 
     // Compare feature evidence by hash
-    let current_evidence_hashes: std::collections::HashSet<_> = headers_to_add.iter()
+    let current_evidence_hashes: std::collections::HashSet<_> = headers_to_add
+        .iter()
         .filter(|(name, _)| name.starts_with("X-FOFF-Feature-Evidence"))
         .filter_map(|(_, value)| {
             value.rfind('[').and_then(|start| {
-                value[start+1..].find(']').map(|end| &value[start+1..start+1+end])
+                value[start + 1..]
+                    .find(']')
+                    .map(|end| &value[start + 1..start + 1 + end])
             })
         })
         .collect();
 
-    let existing_evidence_hashes: std::collections::HashSet<_> = existing_evidence.iter()
+    let existing_evidence_hashes: std::collections::HashSet<_> = existing_evidence
+        .iter()
         .filter_map(|(_, value)| {
             value.rfind('[').and_then(|start| {
-                value[start+1..].find(']').map(|end| &value[start+1..start+1+end])
+                value[start + 1..]
+                    .find(']')
+                    .map(|end| &value[start + 1..start + 1 + end])
             })
         })
         .collect();
 
-    let missing_evidence: Vec<_> = existing_evidence_hashes.difference(&current_evidence_hashes).collect();
-    let new_evidence: Vec<_> = current_evidence_hashes.difference(&existing_evidence_hashes).collect();
+    let missing_evidence: Vec<_> = existing_evidence_hashes
+        .difference(&current_evidence_hashes)
+        .collect();
+    let new_evidence: Vec<_> = current_evidence_hashes
+        .difference(&existing_evidence_hashes)
+        .collect();
 
     if missing_evidence.is_empty() && new_evidence.is_empty() {
-        println!("✅ Evidence Match: All {} evidence hashes identical", existing_evidence_hashes.len());
+        println!(
+            "✅ Evidence Match: All {} evidence hashes identical",
+            existing_evidence_hashes.len()
+        );
     } else {
         println!("❌ Evidence Mismatch:");
         for hash in &missing_evidence {
-            if let Some((_, evidence_line)) = existing_evidence.iter().find(|(_, v)| v.contains(*hash)) {
-                let evidence_name = evidence_line.split(": ").nth(1).and_then(|s| s.split(" (").next()).unwrap_or("Unknown");
+            if let Some((_, evidence_line)) =
+                existing_evidence.iter().find(|(_, v)| v.contains(*hash))
+            {
+                let evidence_name = evidence_line
+                    .split(": ")
+                    .nth(1)
+                    .and_then(|s| s.split(" (").next())
+                    .unwrap_or("Unknown");
                 println!("  - Missing: {} [{}]", evidence_name, hash);
             }
         }
         for hash in &new_evidence {
-            if let Some((_, evidence_line)) = headers_to_add.iter()
+            if let Some((_, evidence_line)) = headers_to_add
+                .iter()
                 .filter(|(name, _)| name.starts_with("X-FOFF-Feature-Evidence"))
-                .find(|(_, v)| v.contains(*hash)) {
-                let evidence_name = evidence_line.split(": ").nth(1).and_then(|s| s.split(" (").next()).unwrap_or("Unknown");
+                .find(|(_, v)| v.contains(*hash))
+            {
+                let evidence_name = evidence_line
+                    .split(": ")
+                    .nth(1)
+                    .and_then(|s| s.split(" (").next())
+                    .unwrap_or("Unknown");
                 println!("  + Added: {} [{}]", evidence_name, hash);
             }
         }
@@ -1028,7 +1108,15 @@ async fn main() {
 
     if let Some(email_file) = matches.get_one::<String>("analyze") {
         let force_reanalysis = matches.get_flag("force-reanalysis");
-        analyze_email_file(&config, &whitelist_config, &blocklist_config, &toml_config, email_file, force_reanalysis).await;
+        analyze_email_file(
+            &config,
+            &whitelist_config,
+            &blocklist_config,
+            &toml_config,
+            email_file,
+            force_reanalysis,
+        )
+        .await;
         return;
     }
 
