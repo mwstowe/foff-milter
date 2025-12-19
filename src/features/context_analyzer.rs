@@ -694,6 +694,7 @@ impl ContextAnalyzer {
             "mailchimp.com",
             "capitaloneshopping.com",
             "govdelivery.com",
+            "public.govdelivery.com",
         ];
 
         let is_legitimate_sender = legitimate_retailers
@@ -755,7 +756,7 @@ impl FeatureExtractor for ContextAnalyzer {
 
         // Check for Medicare/healthcare scam patterns
         let medicare_issues = self.analyze_medicare_scam_patterns(context);
-        total_score += medicare_issues.len() as i32 * 60;
+        total_score += ((medicare_issues.len() as f32 * 60.0 * promo_discount) as i32);
         all_evidence.extend(medicare_issues);
 
         // Check for Unicode obfuscation in subject and body
