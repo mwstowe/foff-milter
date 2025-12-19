@@ -223,14 +223,20 @@ rules:
   - name: "Product spam and brand impersonation attempts"
     enabled: true
     criteria:
-      type: "Or"
+      type: And
       criteria:
-        - type: "BodyPattern"
-          pattern: "(?i).*(air.*filter.*factory|car.*emergency.*kit|joint.*knee.*pain|fake.*forum|brand.*impersonation|health.*ring|tracks.*health|titan.*ring|imagine.*ring).*"
-        - type: "SubjectPattern"
-          pattern: "(?i).*(air.*filter.*factory|car.*emergency.*kit|joint.*knee.*pain|fake.*forum|brand.*impersonation|health.*ring|tracks.*health|titan.*ring|imagine.*ring).*"
-        - type: "SenderPattern"
-          pattern: ".*@.*(forum|fake|scam|spam).*"
+        - type: "Or"
+          criteria:
+            - type: "BodyPattern"
+              pattern: "(?i).*(air.*filter.*factory|car.*emergency.*kit|joint.*knee.*pain|fake.*forum|brand.*impersonation|health.*ring|tracks.*health|titan.*ring|imagine.*ring).*"
+            - type: "SubjectPattern"
+              pattern: "(?i).*(air.*filter.*factory|car.*emergency.*kit|joint.*knee.*pain|fake.*forum|brand.*impersonation|health.*ring|tracks.*health|titan.*ring|imagine.*ring).*"
+            - type: "SenderPattern"
+              pattern: ".*@.*(forum|fake|scam|spam).*"
+        - type: Not
+          criteria:
+            type: SenderPattern
+            pattern: ".*@.*nytimes.*"
     score: 65
     description: "Product spam and brand impersonation attempts"
 
@@ -312,12 +318,18 @@ rules:
   - name: "Bulk email advertising spam"
     enabled: true
     criteria:
-      type: "Or"
+      type: And
       criteria:
-        - type: "SubjectPattern"
-          pattern: "(?i).*(advertise.*up.*to.*million|200.*million.*emails|bulk.*email.*service|email.*marketing.*blast).*"
-        - type: "BodyPattern"
-          pattern: "(?i).*(million.*emails|bulk.*advertising|email.*blast|mass.*mailing|targeted.*email.*list|fresh.*email.*database).*"
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(advertise.*up.*to.*million|200.*million.*emails|bulk.*email.*service|email.*marketing.*blast).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(million.*emails|bulk.*advertising|email.*blast|mass.*mailing|targeted.*email.*list|fresh.*email.*database).*"
+        - type: Not
+          criteria:
+            type: SenderPattern
+            pattern: ".*@.*nytimes.*"
     score: 100
     description: "Bulk email advertising and spam services"
 
@@ -650,12 +662,18 @@ rules:
   # Fake savings and Black Friday scams
   - name: "Fake Savings Scam Detection"
     criteria:
-      type: Or
+      type: And
       criteria:
-        - type: SubjectPattern
-          pattern: "(?i).*(fake.*black.*friday.*savings|fake.*savings.*scam|too.*good.*to.*be.*true).*"
-        - type: BodyPattern
-          pattern: "(?i).*(fake.*black.*friday.*savings|fake.*savings.*scam|too.*good.*to.*be.*true).*"
+        - type: Or
+          criteria:
+            - type: SubjectPattern
+              pattern: "(?i).*(fake.*black.*friday.*savings|fake.*savings.*scam|too.*good.*to.*be.*true).*"
+            - type: BodyPattern
+              pattern: "(?i).*(fake.*black.*friday.*savings|fake.*savings.*scam|too.*good.*to.*be.*true).*"
+        - type: Not
+          criteria:
+            type: SenderPattern
+            pattern: ".*@.*nytimes.*"
     score: 240
 
   # Interactive Brokers tax scams

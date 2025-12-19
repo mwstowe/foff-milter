@@ -183,8 +183,12 @@ rules:
               pattern: "(?i).*(please.*sign.*document|review.*and.*sign|signature.*required|document.*awaiting.*signature).*"
         - type: "Not"
           criteria:
-            type: "SenderPattern"
-            pattern: ".*@.*docusign\\.(com|net)$"
+            type: Or
+            criteria:
+              - type: "SenderPattern"
+                pattern: ".*@.*docusign\\.(com|net)$"
+              - type: "SenderPattern"
+                pattern: ".*@.*nytimes.*"
     score: 175
     description: "Fake DocuSign and document signing phishing"
 
