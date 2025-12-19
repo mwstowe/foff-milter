@@ -426,48 +426,41 @@ async fn analyze_email_file(
         filter_engine.set_toml_config(TomlConfig::default());
     }
 
-    // Build mail context
+    // Build mail context (matching test_email_file setup exactly)
+    
+    // Extract sender from headers
+    let sender = headers.get("From")
+        .and_then(|from| foff_milter::milter::extract_email_from_header(from))
+        .unwrap_or_default();
+    
+    // Extract recipients (basic implementation for analyze)
+    let recipients = vec!["test@example.com".to_string()]; // Placeholder for analyze mode
+    
+    // Get body content
+    let body_content: String = lines[body_start..].join("\n");
+    
     let mut mail_context = foff_milter::filter::MailContext {
-        sender: None,
-        from_header: None,
-        recipients: Vec::new(),
-        headers: std::collections::HashMap::new(),
-        mailer: None,
-        subject: None,
+        sender: Some(sender.clone()),
+        from_header: headers.get("From").cloned(),
+        recipients: recipients.clone(),
+        headers: headers.clone(),
+        mailer: headers.get("X-Mailer").cloned(),
+        subject: headers
+            .get("Subject")
+            .map(|s| foff_milter::milter::decode_mime_header(s)),
         hostname: None,
         helo: None,
-        body: None,
+        body: Some(body_content.clone()),
         last_header_name: None,
         attachments: Vec::new(),
         extracted_media_text: String::new(),
         is_legitimate_business: false,
-        is_first_hop: false,
+        is_first_hop: true,      // Match test mode
         forwarding_source: None,
         dkim_verification: None,
         normalized: None,
         proximate_mailer: None,
     };
-
-    if let Some(from) = headers.get("From") {
-        mail_context.from_header = Some(from.clone());
-        if let Some(email) = foff_milter::milter::extract_email_from_header(from) {
-            mail_context.sender = Some(email);
-        }
-    }
-
-    if let Some(to) = headers.get("To") {
-        if let Some(email) = foff_milter::milter::extract_email_from_header(to) {
-            mail_context.recipients.push(email);
-        }
-    }
-
-    if let Some(subject) = headers.get("Subject") {
-        mail_context.subject = Some(foff_milter::milter::decode_mime_header(subject));
-    }
-
-    // Get body content
-    let body_content: String = lines[body_start..].join("\n");
-    mail_context.body = Some(body_content.clone());
 
     // Evaluate
     let (action, matched_rules, evidence) = filter_engine.evaluate(&mail_context).await;
