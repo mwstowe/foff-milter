@@ -80,7 +80,7 @@ rules:
             type: Or
             criteria:
               - type: SenderPattern
-                pattern: ".*@.*(medium|backerkit|joinhoney|williams-sonoma|lovepop|shutterfly|resmed|quora)\\.(com|org)$"
+                pattern: ".*@.*(medium|backerkit|joinhoney|williams-sonoma|lovepop|shutterfly|resmed|quora|nytimes)\\.(com|org)$"
               - type: HeaderPattern
                 header: "Authentication-Results"
                 pattern: "dkim=pass.*\\.(medium|backerkit|joinhoney|williams-sonoma|lovepop|shutterfly|resmed|quora)\\.(com|org)"
@@ -118,14 +118,20 @@ rules:
   - name: "AAA Emergency Kit Scams"
     enabled: true
     criteria:
-      type: "Or"
+      type: And
       criteria:
-        - type: "SubjectPattern"
-          pattern: "(?i).*(aaa.*emergency.*kit|triple.*a.*kit|car.*emergency.*kit|safety.*kit|survival.*kit).*"
-        - type: "BodyPattern"
-          pattern: "(?i).*(aaa.*member|triple.*a.*member|emergency.*roadside|car.*breakdown|roadside.*assistance).*"
-        - type: "BodyPattern"
-          pattern: "(?i).*(state.*farm.*kit|allstate.*kit|geico.*kit|progressive.*kit).*"
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(aaa.*emergency.*kit|triple.*a.*kit|car.*emergency.*kit|safety.*kit|survival.*kit).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(aaa.*member|triple.*a.*member|emergency.*roadside|car.*breakdown|roadside.*assistance).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(state.*farm.*kit|allstate.*kit|geico.*kit|progressive.*kit).*"
+        - type: Not
+          criteria:
+            type: SenderPattern
+            pattern: ".*@.*nytimes.*"
     score: 150
     description: "AAA and insurance company emergency kit scams"
 

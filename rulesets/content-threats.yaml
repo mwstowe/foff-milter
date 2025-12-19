@@ -94,7 +94,7 @@ rules:
               - type: "SenderPattern"
                 pattern: ".*@.*withings.*"
               - type: "SenderPattern"
-                pattern: ".*@.*(1800flowers|celebrations|wolfermans).*"
+                pattern: ".*@.*(1800flowers|celebrations|wolfermans|nytimes).*"
     score: 75
     description: "Diabetes and blood sugar misinformation and miracle cure claims"
 
@@ -682,28 +682,40 @@ rules:
   # Cognitive enhancement and brain power spam
   - name: "Cognitive Enhancement Spam"
     criteria:
-      type: Or
+      type: And
       criteria:
-        - type: BodyPattern
-          pattern: "(?i).*(boost.*brain.*power|enhance.*cognitive|improve.*memory|brain.*supplement|nootropic).*"
-        - type: SubjectPattern
-          pattern: "(?i).*(brain.*boost|cognitive.*enhancement|memory.*supplement|smart.*pill|sip.*coffee.*3x|brain.*power).*"
-        - type: BodyPattern
-          pattern: "(?i).*(sip.*coffee.*3x|stir.*coffee.*3x|miracle.*brain|secret.*formula|doctors.*recommend|clinical.*study).*"
-        - type: BodyPattern
-          pattern: "(?i).*(increase.*iq|sharper.*mind|mental.*clarity|focus.*supplement).*"
+        - type: Or
+          criteria:
+            - type: BodyPattern
+              pattern: "(?i).*(boost.*brain.*power|enhance.*cognitive|improve.*memory|brain.*supplement|nootropic).*"
+            - type: SubjectPattern
+              pattern: "(?i).*(brain.*boost|cognitive.*enhancement|memory.*supplement|smart.*pill|sip.*coffee.*3x|brain.*power).*"
+            - type: BodyPattern
+              pattern: "(?i).*(sip.*coffee.*3x|stir.*coffee.*3x|miracle.*brain|secret.*formula|doctors.*recommend|clinical.*study).*"
+            - type: BodyPattern
+              pattern: "(?i).*(increase.*iq|sharper.*mind|mental.*clarity|focus.*supplement).*"
+        - type: Not
+          criteria:
+            type: SenderPattern
+            pattern: ".*@.*nytimes.*"
     score: 200
     description: "Cognitive enhancement supplement scams"
 
   # Dementia misinformation
   - name: "Dementia Misinformation Spam"
     criteria:
-      type: Or
+      type: And
       criteria:
-        - type: SubjectPattern
-          pattern: "(?i).*(common.*food.*triples.*dementia|dementia.*risk|dementia.*warning|brain.*decline).*"
-        - type: BodyPattern
-          pattern: "(?i).*(common.*food.*triples.*dementia|dementia.*risk|dementia.*warning|brain.*decline).*"
+        - type: Or
+          criteria:
+            - type: SubjectPattern
+              pattern: "(?i).*(common.*food.*triples.*dementia|dementia.*risk|dementia.*warning|brain.*decline).*"
+            - type: BodyPattern
+              pattern: "(?i).*(common.*food.*triples.*dementia|dementia.*risk|dementia.*warning|brain.*decline).*"
+        - type: Not
+          criteria:
+            type: SenderPattern
+            pattern: ".*@.*nytimes.*"
     score: 220
 
   # Digestive health spam
@@ -1378,12 +1390,18 @@ rules:
   # Ukrainian romance scam enhanced
   - name: "Ukrainian Romance Scam Enhanced"
     criteria:
-      type: Or
+      type: And
       criteria:
-        - type: SubjectPattern
-          pattern: "(?i).*(want.*to.*be.*with.*you.*how.*about.*you|ukrainian.*romance.*scam|find.*ukrainian.*love|ukrainian.*love).*"
-        - type: BodyPattern
-          pattern: "(?i).*(want.*to.*be.*with.*you.*how.*about.*you|ukrainian.*romance.*scam|find.*ukrainian.*love|ukrainian.*love).*"
+        - type: Or
+          criteria:
+            - type: SubjectPattern
+              pattern: "(?i).*(want.*to.*be.*with.*you.*how.*about.*you|ukrainian.*romance.*scam|find.*ukrainian.*love|ukrainian.*love).*"
+            - type: BodyPattern
+              pattern: "(?i).*(want.*to.*be.*with.*you.*how.*about.*you|ukrainian.*romance.*scam|find.*ukrainian.*love|ukrainian.*love).*"
+        - type: Not
+          criteria:
+            type: SenderPattern
+            pattern: ".*@.*nytimes.*"
     score: 300
   # Unsolicited web development spam
   - name: "Unsolicited Web Development Spam"

@@ -121,7 +121,7 @@ rules:
             type: Or
             criteria:
               - type: SenderPattern
-                pattern: ".*@.*(paypal|stripe|square|quickbooks|freshbooks|xfinity)\\.(com|org)$"
+                pattern: ".*@.*(paypal|stripe|square|quickbooks|freshbooks|xfinity|barnesandnoble)\\.(com|org)$"
               - type: SenderPattern
                 pattern: ".*@gmail\\.com$"
               - type: SenderPattern
@@ -226,7 +226,7 @@ rules:
                 type: "Or"
                 criteria:
                   - type: "SenderPattern"
-                    pattern: ".*@.*(adapthealth|healthcare|medical|clinic|hospital|pulmonary)\\.(com|net|org)$"
+                    pattern: ".*@.*(adapthealth|healthcare|medical|clinic|hospital|pulmonary|premera)\\.(com|net|org)$"
                   - type: "SenderPattern"
                     pattern: ".*@.*(charmtracker|acemed|healthcare|medical|clinic|hospital)\\.(com|net|org)$"
                   - type: "SenderPattern"
@@ -483,14 +483,14 @@ rules:
             type: Or
             criteria:
               - type: SenderPattern
-                pattern: ".*<.*@.*(dominos|doordash|butcherbox|amazon|walmart|target|bestbuy|walgreens)\\.(com|net|org)>.*|.*@.*(dominos|doordash|butcherbox|amazon|walmart|target|bestbuy|walgreens)\\.(com|net|org)$"
+                pattern: ".*<.*@.*(dominos|doordash|butcherbox|amazon|walmart|target|bestbuy|walgreens|barnesandnoble)\\.(com|net|org)>.*|.*@.*(dominos|doordash|butcherbox|amazon|walmart|target|bestbuy|walgreens|barnesandnoble)\\.(com|net|org)$"
               - type: SenderPattern
                 pattern: ".*<.*@(mail\\.duluthtrading|em\\.michaelscustomframing)\\.(com|net|org)>.*|.*@(mail\\.duluthtrading|em\\.michaelscustomframing)\\.(com|net|org)$"
               - type: SenderPattern
                 pattern: ".*@e-offers\\.dominos\\.com$"
               - type: HeaderPattern
                 header: "From"
-                pattern: ".*@.*(butcherbox|dominos|doordash|amazon|walmart|walgreens)\\.(com|net|org)$"
+                pattern: ".*@.*(butcherbox|dominos|doordash|amazon|walmart|walgreens|barnesandnoble)\\.(com|net|org)$"
     score: 300
   # Enhanced mailer daemon spoofing
   - name: "Enhanced Mailer Daemon Spoofing"

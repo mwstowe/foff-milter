@@ -524,7 +524,8 @@ impl ContextAnalyzer {
             || from_header.to_lowercase().contains("lovepop")
             || from_header.to_lowercase().contains("shutterfly")
             || from_header.to_lowercase().contains("resmed")
-            || from_header.to_lowercase().contains("quora");
+            || from_header.to_lowercase().contains("quora")
+            || from_header.to_lowercase().contains("nytimes");
 
         if has_medicare_content && !is_legitimate_service {
             // Check for image-only content (suspicious for Medicare scams)
