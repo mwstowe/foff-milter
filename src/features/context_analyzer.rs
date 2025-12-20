@@ -756,7 +756,7 @@ impl FeatureExtractor for ContextAnalyzer {
 
         // Check for Medicare/healthcare scam patterns
         let medicare_issues = self.analyze_medicare_scam_patterns(context);
-        total_score += ((medicare_issues.len() as f32 * 60.0 * promo_discount) as i32);
+        total_score += (medicare_issues.len() as f32 * 60.0 * promo_discount) as i32;
         all_evidence.extend(medicare_issues);
 
         // Check for Unicode obfuscation in subject and body
