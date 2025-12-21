@@ -1,0 +1,1013 @@
+Return-Path: <bounce-15_HTML-66267260-1659676-6368704-22014@bounce.wolfermans-email.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTPS id 5BJH2eWL036451
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <user@example.com>; Fri, 19 Dec 2025 17:02:40 GMT
+	(envelope-from bounce-15_HTML-66267260-1659676-6368704-22014@bounce.wolfermans-email.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (1024-bit key; unprotected) header.d=wolfermans-email.com header.i=Wolfermans@wolfermans-email.com header.b=qBzI0fVs;
+	dkim=pass (2048-bit key; unprotected) header.d=s6.y.mc.salesforce.com header.i=@s6.y.mc.salesforce.com header.b=tLSJxw3C
+Received: from mta2.wolfermans-email.com (mta2.wolfermans-email.com [136.147.184.26])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 5BJH2c6K031642
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO)
+	for <user@example.com>; Fri, 19 Dec 2025 11:02:39 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 5BJH2c6K031642
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (1024-bit key, unprotected) header.d=wolfermans-email.com header.i=Wolfermans@wolfermans-email.com header.a=rsa-sha256 header.s=200608 header.b=qBzI0fVs;
+	dkim=pass (2048-bit key, unprotected) header.d=s6.y.mc.salesforce.com header.i=@s6.y.mc.salesforce.com header.a=rsa-sha256 header.s=fbldkim6 header.b=tLSJxw3C
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=200608; d=wolfermans-email.com;
+ h=From:To:Subject:Date:List-Unsubscribe:List-Unsubscribe-Post:MIME-Version:
+ Reply-To:Message-ID:Content-Type; i=Wolfermans@wolfermans-email.com;
+ bh=xeKKHMqdev83SmLXr/Ke8GSTt6uxkGvmfcsf4AJdHFY=;
+ b=qBzI0fVs/DtmEWnukPG7ysJF66+shX4aoAmYWG1owQ62djCHS0Brh46Z1G7aQlY+j/whir1Uk97F
+   gNcG57nzMC6iI9PIQCyinh/JSyw/BvxDlRtvbrsCMyDdL9TESh5y6V01b2mXJ7kUGBemWKQw1HZH
+   ZvGlY60ozNtjgg9zMO0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=fbldkim6; d=s6.y.mc.salesforce.com;
+ h=From:To:Subject:Date:List-Unsubscribe:MIME-Version:Reply-To:Message-ID:
+ Content-Type;
+ bh=xeKKHMqdev83SmLXr/Ke8GSTt6uxkGvmfcsf4AJdHFY=;
+ b=tLSJxw3CiZ3L0IuKbQctOnVQyg01Sfrs62KhIRMeL3irA02Ek7bH7YSVAlbI15crHyD33bWdxoWu
+   mtdz0LjLB9D6lHVHPQRYusA80GjKn7qQTSUnNqHzl4A4y/kdPpv79P7HME4ZPPnvG6Auonrwo4PJ
+   MVs6i7g5Zlx9vrwxin+/RPkPN/tdhbO3lNmxQB/OF31wshdovOOGlrw+D7/lJiub+yS5EgB5SolF
+   4uBYGIABqVWzqoPcFzbogAXXrCTDkGbPZ79RUBXwqZsGYnsfZK6DltgMP6FRkfgNoEmOqvoGL/Vf
+   OD19W4gwvvgV3Yicf87U7hJDQSFSjk4txprs4Q==
+Received: by mta2.wolfermans-email.com id h8m2iu2fmd4j for <user@example.com>; Fri, 19 Dec 2025 17:02:38 +0000 (envelope-from <bounce-15_HTML-66267260-1659676-6368704-22014@bounce.wolfermans-email.com>)
+From: "Wolferman's Gourmet Bakery" <Wolfermans@wolfermans-email.com>
+To: <user@example.com>
+Subject: He's checked his list - have you? Send last-minute gifts with $5.99 shipping.
+Date: Fri, 19 Dec 2025 11:02:37 -0600
+List-Unsubscribe: <http://click.wolfermans-email.com/subscription_center.aspx?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtaWQiOiI2MzY4NzA0IiwicyI6IjY2MjY3MjYwIiwibGlkIjoiMTUiLCJqIjoiMTY1OTY3NiIsImpiIjoiMjIwMTQiLCJkIjoiNjAyNTAifQ.MQGGToaBEtVTfuW5HG6CrTKmGPHJ7OeOr5HqBuQlUg8>, <mailto:leave-fd8515751a3c402029-fe5c12767762037f7314-fe871576706d027a73-fe8d1273736c037d71-ff061672756500@leave.wolfermans-email.com>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+MIME-Version: 1.0
+Reply-To: "Wolferman's Gourmet Bakery" <reply-fe871576706d027a73-15_HTML-66267260-6368704-22014@wolfermans-email.com>
+X-SFMC-Stack: 6
+x-job: 6368704_1659676
+Message-ID: <76215303-41e9-4815-9162-ed4c75f386ca@ind1s06mta1721.xt.local>
+Content-Type: multipart/alternative;
+	boundary="MCvsNJhx0wCB=_?:"
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Fri, 19 Dec 2025 17:02:40 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Fri, 19 Dec 2025 11:02:39 -0600 (CST)
+X-Spam-Flag: YES
+
+This is a multi-part message in MIME format.
+
+--MCvsNJhx0wCB=_?:
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+
+
+
+
+
+
+
+
+Wolferman&rsquo;s
+ 
+https://view.wolfermans-email.com/?qs=ed32d9c3ea04595f8fd23644898e8dc0a89162a02459d46e44f67fb8d5fe7a72af39e44306fc3b1ec6b9ed4f2623bd04563351aa08220abaf06e17d908b977e9e86bbce3771d3fc7814a1a94f8c09281 
+View online
+
+ 
+
+http://click.wolfermans-email.com/?qs=41af2cbc05636d7a38cf403254ad43deae8cf01bf6ab8daccddd1362005a3005689d7edc3e6bb7339f1d5e14e4b5daec1c4ff1a66912f57b22d7acc80007d944 
+
+http://click.wolfermans-email.com/?qs=41af2cbc05636d7a7549307c9adea60caea6a438558a4b17f5a7b7836bce5a139de9da239d935bde14a4d1d821a5a7a5a1c960b555bf22f43fd3ba2bd299ecf3 
+Shop by Occasion 
+http://click.wolfermans-email.com/?qs=41af2cbc05636d7a7a8d115807105fb1d2121416ba6afeae496aeffa80953aa379155b5cf08d6c1012558a219192e81816d23bbc80502e4e0121f6950b1fe8a9 
+Gourmet Gifts 
+http://click.wolfermans-email.com/?qs=41af2cbc05636d7a358982394ee6cd6bf401ef29a1c9b171094153f4958474fb7d29eba6b973342139670b970d8def7a1e73b02095e35c54de6284c88349e588 
+Muffins & Bagels 
+http://click.wolfermans-email.com/?qs=41af2cbc05636d7afc1a9e74a337706536e8c6b9189831dd8f3db2e96b125a5a9a1c650f5beedc7b662060e475e166652709506c1bf3488587fab58968a10881 
+Pastries & Baked Goods 
+
+http://click.wolfermans-email.com/?qs=41af2cbc05636d7a38cf403254ad43deae8cf01bf6ab8daccddd1362005a3005689d7edc3e6bb7339f1d5e14e4b5daec1c4ff1a66912f57b22d7acc80007d944 
+
+http://click.wolfermans-email.com/?qs=41af2cbc05636d7a7549307c9adea60caea6a438558a4b17f5a7b7836bce5a139de9da239d935bde14a4d1d821a5a7a5a1c960b555bf22f43fd3ba2bd299ecf3 
+.Occasions
+http://click.wolfermans-email.com/?qs=41af2cbc05636d7a7a8d115807105fb1d2121416ba6afeae496aeffa80953aa379155b5cf08d6c1012558a219192e81816d23bbc80502e4e0121f6950b1fe8a9 
+Gifts 
+http://click.wolfermans-email.com/?qs=41af2cbc05636d7afc1a9e74a337706536e8c6b9189831dd8f3db2e96b125a5a9a1c650f5beedc7b662060e475e166652709506c1bf3488587fab58968a10881 
+BakedGoods 
+
+
+
+http://click.wolfermans-email.com/?qs=41af2cbc05636d7a9358c5fef7f214c5172b8fa870c737780d3f45ae52b5973f435f2a7435d2722c99bc5abe7fbc93fff05f004d0094881ae523c60becc499f7 
+
+http://click.wolfermans-email.com/?qs=41af2cbc05636d7a9e2116fa52a1ecf1501bdde61f3ab8056dd4f6e5a93ece5b41ef637603cd6c80827ca8d49e03966e6b7ea17de59c5ca42d65a3c7b7cd52d9 
+
+
+ Use code DASH5 and choose Dec&#65279;ember24,20&#65279;25, as the deliverydate.
+ 
+ 
+
+http://click.wolfermans-email.com/?qs=41af2cbc05636d7a9e2116fa52a1ecf1501bdde61f3ab8056dd4f6e5a93ece5b41ef637603cd6c80827ca8d49e03966e6b7ea17de59c5ca42d65a3c7b7cd52d9 
+Shop Now 
+
+
+ Offer valid through 1PMET, Dec&#65279;ember23,20&#65279;25. 
+ 
+
+
+  
+ 
+
+http://click.wolfermans-email.com/?qs=41af2cbc05636d7a95ff54494cd88a9609852676573079715e2755dc38ffb6ab81fb01ee8576c44979419bdc674d0a56a1fb80036186513d3b8bd2b42f530f98 
+
+
+  
+ 
+
+http://click.wolfermans-email.com/?qs=41af2cbc05636d7a448f76c9b330e54246ba0e955c93b0a6365feb9e035f633f85a7d6fa6ddfcd41c657c9ad579dd6902d8d4c8361648f9e97387d200b331e55 
+ " border="0" style="display:block;" />
+
+
+ 
+http://click.wolfermans-email.com/?qs=41af2cbc05636d7ae2f9fd2c3f926a964c0a161b2b43f5734b4ded09a295d948fbd552a917eb4366e14d2678def9be44e8c44bb4745642da 
+
+http://click.wolfermans-email.com/?qs=41af2cbc05636d7ae2f9fd2c3f926a964c0a161b2b43f5734b4ded09a295d948fbd552a917eb4366e14d2678def9be44e8c44bb4745642da 
+
+http://click.wolfermans-email.com/?qs=41af2cbc05636d7ae7c810d413bdaa1ee34ee43aa816891ee081402c99a208f0dddc545834c2953636e6dc82719344e39b4456893774341e 
+
+http://click.wolfermans-email.com/?qs=41af2cbc05636d7a6fa3bdcd7d85fd120192f235f54a9c0af3409e39e9362d8f4dd9546d2217d58fad0648875b46526c2cbe6b412ce34624 
+
+http://click.wolfermans-email.com/?qs=41af2cbc05636d7ae2f9fd2c3f926a964c0a161b2b43f5734b4ded09a295d948fbd552a917eb4366e14d2678def9be44e8c44bb4745642da 
+
+http://click.wolfermans-email.com/?qs=41af2cbc05636d7ae2f9fd2c3f926a964c0a161b2b43f5734b4ded09a295d948fbd552a917eb4366e14d2678def9be44e8c44bb4745642da 
+
+ 
+ 
+
+
+http://click.wolfermans-email.com/?qs=41af2cbc05636d7ad462a3ba547827ef7a58e89a3ecac210a3be1acaecb6813d50cb069a5832ee0cb5f69fa022eeb1e26e3bf0e280f3d73951ce7d1f869f28d5 
+
+http://click.wolfermans-email.com/?qs=41af2cbc05636d7a3d1355cdeb7f43a3ffb2a644725005b4331c72c80fd6e88a16820457a12da28fc85aeea001693a7907acc097746e7df2 
+
+ 
+
+
+
+
+
+  
+
+http://click.wolfermans-email.com/?qs=41af2cbc05636d7a1a58eaa8a0afcd544b36920ed45e264573c7d7db6ba47f89aa97bc56e3dcfd66085b649f7e554df81a79c3b1af3957f3 
+
+http://click.wolfermans-email.com/?qs=41af2cbc05636d7a6d358776e95a174a02efec05cb60e5fa2bb7565f83805e89eba3a1a35030305da851ac4f7e76e38b5f7affa02cb3ec0f 
+
+http://click.wolfermans-email.com/?qs=41af2cbc05636d7a6b2bbe7d309d05acb5c98e3554c3c22bcbb9b185062d6653b59f4d8dae204c31f287fd9634851ea455abdf76ad17bfcb 
+
+http://click.wolfermans-email.com/?qs=41af2cbc05636d7a4e0ae6bb9d3d88f08b2fbc8db9d86852608a54bc7a26c7668ee030e3e2e43ecd09529ee1a6fedaaa959414ed41417485 
+
+http://click.wolfermans-email.com/?qs=41af2cbc05636d7a1c14a1e42002084e829fe383c977b0835b717bf9818eb0012ac7d087ce95a0166b7089682f7ca1e704b4f18a6596a73c 
+
+http://click.wolfermans-email.com/?qs=41af2cbc05636d7af4f3f5c8b0d624bc48355b7657bab9e51c962404db1dfd54ca0b19dcf7e2bd0226507c9a50c7ea00fe137843ce97f749 
+
+http://click.wolfermans-email.com/?qs=41af2cbc05636d7aa4e31a4b90e8359a7343bee047585161e2a2b867e338513c3e9a6c9d758d5f0b7ecb24f66c9d5dc8b26f3e2f869713ca 
+
+http://click.wolfermans-email.com/?qs=41af2cbc05636d7a696275a9ab88f89923409173f32508a3f3f8748dd18de1c7ba68e2125c72148fd7dcf033f748cc50bd94e7b52ba596ba 
+
+http://click.wolfermans-email.com/?qs=41af2cbc05636d7aa0d289a4e5e58a839af69a7b672fdd5df818e6220a60ff4d196a7aad726de9e73ab71c7517182e648040491a3b1b4e21 
+
+http://click.wolfermans-email.com/?qs=41af2cbc05636d7afd3bf1831958f0cdfee486c9dfefd3a7189f361fe1ca424e24a35c8e2f461162092db2dbc3f378b0a46ed5895f05dd48 
+
+http://click.wolfermans-email.com/?qs=41af2cbc05636d7a778a2902601c8f000a31c02d4ed72542c4c31260e694806ac1585a5ea5fe901be7fa83ab15709d179d3b11dfdf059c7d 
+
+http://click.wolfermans-email.com/?qs=41af2cbc05636d7a5db8b6a166d91c4537a144177b790dd3193ea5aa4542d31c0eb4556aacfd131ff3f62ba42c096476ac31ea406038fc08 
+
+http://click.wolfermans-email.com/?qs=41af2cbc05636d7ab91cefe68bba50db5b44a656f62a649e8a76f6e597381069c770d345c4df6b29148e4f72c87a78b4aad4d66c31d7fdcd 
+
+
+ 
+ 
+http://click.wolfermans-email.com/?qs=41af2cbc05636d7a8ad0efaa72ddb81780c0fd1e6eb72b95b3e1af547d0362c3a2daaaefaa73bea4f9dc83deb0dcd6cca4cd97c0cd5a14b2 
+
+http://click.wolfermans-email.com/?qs=41af2cbc05636d7a46a8e714c261b57ab335430905cc7a2c7820a9e10ddcb816bffe30ed6ee3eb619331ed90f23ea91603cd7f96a385f797 
+
+http://click.wolfermans-email.com/?qs=41af2cbc05636d7ab0d7ac857b25611e12efeffbe31da56356c0f6e9118cb6777ac98bedc1c1e978606bf88ac95429ce92e5483ec8e5d497 
+
+
+ 
+ &dagger;Prices and discounts are exclusive of applicable taxes. Free Shipping charge applicable on standard weekday delivery for select gifts delivered via direct shipping by common carrier (FedEx, UPS, etc.) within the continental United States only. Free Service charge applicable on florist fulfilled gifts delivered within the United States and ordered at least two business days before delivery. Same-Day delivery is available for Florist Fulfilled items for a reduced service charge. Fees and surcharges may apply. Items may vary and are subject to availability, delivery rules and times. Expedited Delivery options may be available for a surcharge. Celebrations Passport(r) members also receive a discounted flat shipping fee of $5 on Wine items. Celebrations Passport(r) benefits are not
+ eligible on all products and are subject to restrictions and limitations. Celebrations Passport(r) members must sign into their accounts for shipping benefits to apply. Offers available online and some offers available by phone. Prices and charges are subject to change without notice. Void where prohibited. For a complete description of the Celebrations Passport(r) program see 
+http://click.wolfermans-email.com/?qs=41af2cbc05636d7a7295295dd74827e95b4ae0a4b9547e6f59967934c710514b80ec57ee3043ba4e0afa18028de9ba51c05612495c42c016 
+TERMSandCONDITIONS .
+ 
+
+
+*$5.99 shipping charge applies to select gifts marked “$5.99 SHIPPING EVENT” when you order online at 
+http://click.wolfermans-email.com/?qs=7627bf9d73385ec0f23f374ba8ecf1afe0c160fedcf325e2eb60ec67b77cbe74f9ca9fd6738add5b4676aab95c029461a6f571c031220ae8 
+Wolfe&#65279;rmans.com, choose Dec&#65279;ember 24, 20&#65279;25 as the delivery date, and enter code DASH5. Offer is not available for shipments to PO boxes, Alaska, Hawaii, or Canada. Offer available only while supplies last and cannot be applied to previous purchases. Fees and surcharges may apply. Not valid on orders of $2,500 or more; for orders of $2,500 or more, contact the Corporate Sales Division at 
+tel:800 798 6234 
+555-123-4567 for any applicable discounts or promotions. Offer good through 1PMET, Dec&#65279;ember23,20&#65279;25, and is subject to modification or cancellation withoutnotice.
+ 
+
+
+ &#9670; Offer ends at 11:59 AM ET on Dec&#65279;ember25,20&#65279;25. Prices and discounts are exclusive of applicable service and shipping charges and taxes. Items may vary and are subject to availability and delivery rules and times. Offer available online and by telephone only. Offers cannot be combined, may not be available on all products and are subject to restrictions, limitations and blackout periods. Prices and charges are subject to change withoutnotice.
+  
+ 
+ 
+ Note for products containing wine, including our pear cider: Wine is sold and shipped by Harry and David, LLC, Medford, OR. See further 
+http://click.wolfermans-email.com/?qs=7627bf9d73385ec01f37106b91e0bc9c33b1db744087b790041b1b289dced66077f2d35309a50ca2fe08e37d285375fb166cac90fec6ac2b 
+details and restrictions for offers containing wine products, and a list of states to which our wine products can be shipped. You must be 21 years of age or older to order, purchase, or receive delivery of wine. Offer void where prohibited by law.
+
+http://click.wolfermans-email.com/?qs=7627bf9d73385ec073973d1ef802d47766892628ef4ad97fdf7f5b6436aa3c6a12a31932bfc833b144bba885b1bd3410b457d41f1c6ac34c2d45fb83112583dc 
+Manage Preference Center  | 
+http://click.wolfermans-email.com/?qs=7627bf9d73385ec073973d1ef802d47766892628ef4ad97fdf7f5b6436aa3c6a12a31932bfc833b144bba885b1bd3410b457d41f1c6ac34c2d45fb83112583dc 
+Unsubscribe  | 
+http://click.wolfermans-email.com/?qs=41af2cbc05636d7a6fa3bdcd7d85fd120192f235f54a9c0af3409e39e9362d8f4dd9546d2217d58fad0648875b46526c2cbe6b412ce34624 
+Privacy Notice  | 
+http://click.wolfermans-email.com/?qs=7627bf9d73385ec0923591bfd68cb17eea42b287eb36bb8d2b48c7fc59111c4cd9d892b1da451e52e32423779af38ffe9538c4a1cc381a6d 
+Contact Us  | 
+http://click.wolfermans-email.com/?qs=7627bf9d73385ec01f37106b91e0bc9c33b1db744087b790041b1b289dced66077f2d35309a50ca2fe08e37d285375fb166cac90fec6ac2b 
+Wine Restrictions 
+The Celebrations Passport(R) program is not applicable in retail stores.
+This email was sent to: 
+mailto:user@example.com 
+user@example.com.
+(c) 2025, Harry and David, LLC. dba Wolferman's. All rights reserved.
+2&#65279;50&#65279;0 S P&#65279;ac&#65279;ific H&#65279;wy, Med&#65279;ford, O&#65279;R, 97&#65279;501 | 1-&#65279;800-&#65279;999-&#65279;1910
+
+
+ 
+
+
+
+--MCvsNJhx0wCB=_?:
+Content-Type: text/html;
+	charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"       xmlns:v="urn:schemas-microsoft-com:vml"       xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+  
+<link rel="Icon" type="image/x-icon" href="https://image.wolfermans-email.com/lib/fe8d1273736c037d71/m/14/WF_favicon.png">
+
+  
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
+  
+<!-- for Dark Mode-->
+<meta name="color-scheme" content="light dark">
+<meta name="supported-color-schemes" content="light dark">
+  
+  
+  
+<!--[if !mso]><!-->
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<!--<![endif]-->
+<title>Wolferman&rsquo;s</title>
+<style type="text/css">
+
+/* reset styles
+____________________________________*/
+table{border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;}
+table td{border-collapse:collapse;}
+img, a img{border:0;height:auto;outline:none;text-decoration:none;}
+body {height:100% !important;margin:0 auto !important;padding:0;width:100% !important;}
+
+/* client specific styles
+____________________________________*/
+#outlook a{padding:0;} /* Force Outlook 2007 and up to provide a "view in browser" message. */
+table{mso-table-lspace:0pt;mso-table-rspace:0pt;} /* Remove spacing between tables in Outlook 2007 and up. */
+.ReadMsgBody{width:100%;}
+.ExternalClass{width:100%;} /* Force Outlook.com to display emails at full width. */
+.ExternalClass,
+.ExternalClass p,
+.ExternalClass span,
+.ExternalClass font,
+.ExternalClass td,
+.ExternalClass div{line-height: 100%;}/* Force Outlook.com to display line heights normally. */
+a, td{mso-line-height-rule:exactly;} /* Force Outlook to render line heights as they're originally set. */
+a[href^="tel"], a[href^="sms"]{color:inherit;cursor:default;text-decoration:none;} /* Force mobile devices to inherit declared link styles. */
+a, td, body, table{-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;} /* Prevent Windows- and Webkit-based mobile platforms from changing declared text sizes. */
+a img{border:none;}
+img{outline:none;text-decoration:none;border:none;-ms-interpolation-mode: bicubic;}/* Force IE to smoothly render resized images. */
+a[x-apple-data-detectors] {color: inherit !important;text-decoration: none !important;font-size: inherit !important;font-family: inherit !important;font-weight: inherit !important;line-height: inherit !important;}
+
+/* structural styles
+____________________________________*/
+#bodyTable {margin:0;padding:0;width:100%;max-width:660px;}
+
+/* content styles
+____________________________________*/
+#bodyTable a{color:#ffffff; text-decoration:none;}
+#bodyTable a:link{color:#ffffff;text-decoration:none;}
+#bodyTable a:hover{color:#ffffff;text-decoration:underline}
+#bodyTable a:active{color:#ffffff;text-decoration:none;}
+#bodyTable a:visited{color:#ffffff;text-decoration:underline;}
+.gryLink a{color:#6A7C88;text-decoration:none;}
+.gryLink a:link{color:#6A7C88;text-decoration:none;}
+.gryLink a:hover{color:#6A7C88;text-decoration:underline;}
+.gryLink a:active{color:#6A7C88;text-decoration:none;}
+.gryLink a:visited{color:#6A7C88;text-decoration:underline;}
+
+.button a:link{color: #000000;}
+
+
+
+
+/* External Fonts
+_____________________________________*/
+
+
+/*================================================================================
+      Lora == https://fonts.googleapis.com/css?family=Lora:700&display=swap"%20rel="stylesheet
+==================================================================================*/
+@media screen {
+/* latin */
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url(https://fonts.gstatic.com/s/lora/v14/0QIhMX1D_JOuMw_LIftL.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/*================================================================================
+      Assistant == https://fonts.googleapis.com/css?family=Assistant&display=swap" rel="stylesheet
+==================================================================================*/
+
+/* latin */
+@font-face {
+  font-family: 'Assistant';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Assistant'), local('Assistant-Regular'), url(https://fonts.gstatic.com/s/assistant/v4/2sDcZGJYnIjSi6H75xkzaGW5.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+
+}
+
+
+/* mobile styles
+____________________________________*/
+@media screen and (min-width:661px) {
+    #bodyTable{width:660px !important;max-width:660px !important;}
+    .Deskhide1{display:none !important;}
+    }
+@media screen and (max-width:650px){
+    .Mblhid2{display: none !important;}
+    * [summary~="hide"] {display:none;}
+    }
+@media screen and (max-width:480px){
+  .columnOne{width:100% !important;}
+  .columnTwo{width:50% !important;}
+  .w100{max-width:100% !important;}
+  .mblRmv{display:none;}
+  .mblBdrRmv{border:0 !important;border:0 !important;}
+  .mblShow {display:block!important; max-height: none !important; max-width:none !important; line-height: 1.5 !important;width:100%!important; height:auto!important;}
+  .Body_Text4{font-size: 15px !important; line-height: 18px !important; width:185px !important; height:37px !important; padding:1px 1px !important;}
+  .Body_Text5{font-size: 16px !important; line-height: 19px !important;}
+  .Body_Text3{font-size: 14px !important; line-height: 16px !important; }
+  .MntxtP{font-size: 30px !important; line-height: 35px !important; }
+
+  .desktopLink{padding:0px 0px !important;}
+
+   /*FS49 banner 
+  __________________________________*/
+  .bnrTxt{font-size: 15px !important; line-height: 17px !important;padding:0px 0px !important;}
+  .bnrTxt1{font-size: 14px !important; line-height: 29px !important;}
+  /*.bnrTxt2{font-size: 15px !important; line-height: 17px !important; width:100% !important;}*/
+  .bnrTxt6{font-size: 25px !important; vertical-align:14px !important;} /*for asterick*/
+  .bnrTxt3{font-size: 30px !important; vertical-align:32px !important; padding:2px 2px !important;}  
+  .bnrTxt4{font-size: 35px !important; line-height: 55px !important; padding:5px 5px !important; letter-spacing:0px !important;}
+  .bnrTxt5{font-size: 23px !important; line-height: 35px !important; letter-spacing: 0px !important; padding-bottom: 0px 0px !important;}
+  .bnrTxt7 {width:85% !important;}
+  .MnTxt{font-size: 16px !important; line-height: 16px !important; padding: 5px 0px !important;}
+  .Title1b{font-size: 20px !important;}
+
+  .Sub1x3{font-size: 13px !important; line-height: 17px !important;}
+
+  /* Tiered Banner, 20 - 15 - 10 + CTA
+    _____________________________*/
+  .tierBnr1{font-size: 30px !important;}
+  .tierBnr2{font-size: 11px !important;}
+  .FS49Banner{font-size: 32px !important;}
+  .FS49Banner2{font-size: 20px !important; line-height: 25px !important;}
+
+  .bottomnavstacked {padding-bottom:8px !important;padding-right:5px !important;padding-left: 5px !important;padding-top:8px !important;}
+  .mobilebox {width:100% !important;max-width:95% !important;}
+  .mobileboxinner {width:98% !important;max-width:99% !important;}
+  .mobileboxtext {font-size:14px !important; line-height:16px !important; }
+  .mobileboxtext1 { font-size:14px !important; font-family: Georgia !important; }
+
+  .fallback-font {font-size:35px !important; line-height:40px !important; letter-spacing:0px !important; font-family:Lora, serif, Georgia !important;}
+  .fallback-font1 {font-size:24px !important; line-height:27px !important;  font-family: Georgia !important; } 
+  .fallback-font2 {font-size:22px !important; line-height:25px !important; letter-spacing:1px !important; font-family: Georgia !important; } 
+
+  }
+
+
+ /* Dark Mode */
+@media (prefers-color-scheme: dark) {
+  * {
+background-color: #000000 !important;
+background:#000000 !important;
+bgcolor: #000000 !important;
+
+}
+
+/* Sets the font color */
+* {
+color: #ffffff !important;
+}
+
+/* Sets the text link color */
+a {
+color: #ffffff !important;
+}
+
+/* Dark mode styles */
+}
+/* Dark Mode */
+  
+  
+  
+  
+</style>
+<!--[if gte mso 9]><xml> <o:OfficeDocumentSettings> <o:AllowPNG/> <o:PixelsPerInch>96</o:PixelsPerInch> </o:OfficeDocumentSettings> </xml><![endif]-->
+</head>
+<body bgcolor="#ffffff" style="width:100%; margin:0; padding:0;"><style type="text/css">
+div.preheader 
+{ display: none !important; } 
+</style>
+<div class="preheader" style="font-size: 1px; display: none !important;">Make sure everyone enjoys specialty holiday goodies this Christmas.</div>
+<div style="background:#ffffff;">
+<center>
+<!--[if (gte mso 9)|(IE)]> <table align="center" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="width:660px;"> <tr> <td align="center" valign="top"> <![endif]-->
+<table cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="width:100%; max-width:660px;" id="bodyTable">
+<tr>
+<td align="center" valign="top" style="padding-top:20px; padding-bottom:20px; padding-left:10px; padding-right:10px;">
+    <!--640px content table-->
+    <table align="center" cellpadding="0" cellspacing="0" border="0" style="width:640px;" class="columnOne">
+    <!--logo & main menu-->
+      
+      <!--View Online Button-->
+      <tr>
+  <td style="font-family:Arial, Helvetica, sans-serif; font-size:13px; color:#000000; line-height:19px; text-align:right; padding-bottom:10px; font-weight:bold;" class="footerLink"><a href="https://view.wolfermans-email.com/?qs=ed32d9c3ea04595f8fd23644898e8dc0a89162a02459d46e44f67fb8d5fe7a72af39e44306fc3b1ec6b9ed4f2623bd04563351aa08220abaf06e17d908b977e943956848cd3d607f1a17491e92e44e0d" style="color:#6A7C88; text-decoration: none; color:#000000"><u>View online</u></a></td>
+</tr>
+
+  <!--/View Online Button-->
+
+<!--WF Nav-->
+<!--logo & main menu-->
+    <!--scaled desktop-->
+    <tr>
+    <td align="center" valign="top" style=" background-color:#ffffff; padding-bottom: 5px;" class="mblRmv">
+    <table align="center" cellpadding="0" width="100%" cellspacing="0" border="0" style="max-width:632px; margin:auto; ">
+        <tr>
+        <td align="center" valign="top" style="background-color: #ffffff;">
+        <table align="center" cellpadding="0" cellspacing="0" border="0" style="max-width:632px; margin:auto;">
+        <tr>
+        <td align="center" valign="top" style="padding-bottom: 30px;"><a href="http://click.wolfermans-email.com/?qs=7627bf9d73385ec0940a5621539765800eb9a9346bf84ccc7bcc41fe3bcac83f9c1a426fd3fb7f7d5ed6072f4a3e8e7382be0886b91324cdc3c748bd095084a3"><img src="http://image.wolfermans-email.com/lib/fe8d1273736c037d71/m/14/WF_bakery_DM.png" width="226" alt="Wolferman’s® Bakery" title="Wolferman’s®"  style="display:block;border:0; font-family:Georgia,'Times New Roman',Times,serif; font-size:20px; color:#324765; width:226px; height:auto; max-width:226px;" /></a></td>
+        </tr>
+        <tr>
+        <td align="center" valign="top" style="background-color:#ffffff; padding-top:0px;">
+            <table align="center" width="100%" cellspacing="0" cellpadding="0" border="0" style="max-width:632px;">
+            <tr>
+            <td align="center" style="width:144px;  text-align:center;"><a href="http://click.wolfermans-email.com/?qs=7627bf9d73385ec0e664e6263c80ba1bf193a40494d487ce8b168afad71405076f7d71a23b4eaafe4879dd3efc6079965e6246056cf1550bf1f4f7af9d9545d7" style="font-family:Arial, Helvetica, Georgia,'Times New Roman',Times,serif; font-size:14px; color:#000000; text-decoration:none;">Shop by Occasion</a></td>
+                <td align="center" style="width:120px; text-align:center;"><a href="http://click.wolfermans-email.com/?qs=7627bf9d73385ec0f78d261e219b0ebfcbed1452eae51d5e366306652df777fc7a08663617b91b0b00deb59c95721db7b4d1ce9579593293de5c73553b21223a" style="font-family:Arial, Helvetica, Georgia,'Times New Roman',Times,serif; font-size:14px; color:#000000; text-decoration:none; ">Gourmet Gifts</a></td>
+            <td align="center" style="width:160px; text-align:center;"><a href="http://click.wolfermans-email.com/?qs=7627bf9d73385ec02c78147f50331285fa5d3f7dc6445fc7f7e0f9e6688656cb72ba22f6b847ad3ccf41c9513739c59627a598d74fb70c4bcee1890f2a4ff829" style="font-family:Arial, Helvetica, Georgia,'Times New Roman',Times,serif; font-size:14px; color:#000000; text-decoration:none;">Muffins &amp; Bagels</a></td>
+                <td align="center" style="width:190px; text-align:center;"><a href="http://click.wolfermans-email.com/?qs=7627bf9d73385ec0bd61ba9631cbfec6495551bf2e953ab41687dabe03f923ff8503ea10ec95517370955133e0dfde3b08e400ce7cfff87182f2c80300b22fd5" style="font-family:Arial, Helvetica, Georgia,'Times New Roman',Times,serif; font-size:14px; color:#000000; text-decoration:none;">Pastries &amp; Baked Goods</a></td>
+            </tr>
+            </table>
+        </td>
+        </tr>
+
+        </table>
+        <!--/logos desktop-->
+        </td>
+        </tr>
+    </table>
+    </td>
+    </tr>
+    <!--/scaled logo desktop-->
+    <!--main menu Mobile-->
+    <tr>
+    <td align="center" style="background-color:#ffffff; padding-bottom: 5px;mso-hide:all; display:none; max-height:0px; overflow:hidden; max-width: 0; " class="mblShow">
+        <div style="mso-hide:all; display:none; max-height:0px; overflow:hidden; max-width: 0; " class="mblShow">
+        <table align="center" cellpadding="0" cellspacing="0" border="0" style="width:100%; max-width:450px; margin:0 auto; mso-hide:all; ">
+        <tr>
+        <td align="center" style="mso-hide:all; ">
+            <table align="center" width="100%" cellspacing="0" cellpadding="0" border="0" style="mso-hide:all;">
+            <tr>
+            <!--WF Logo-->
+            <td align="center" style="mso-hide:all;padding-right:0px; border-right:1px solid #000000; width: 50px; ">
+
+            <a href="http://click.wolfermans-email.com/?qs=41af2cbc05636d7a80f13fb8e772c055c98730e8eb378b25906cf23df5deb1fef2cae055369d5758336638ccaf7d9451eea53ec8a3a68262f1508176cea42349"  style="font-family:Georgia, 'Times New Roman', Times, serif; font-size:14px; color:#324765; text-decoration:none;"><img src="http://image.wolfermans-email.com/lib/fe8d1273736c037d71/m/14/WF-Mobile_logo_DM.png" alt="WF" width="60" title="Wolferman’s®" border="0" style="display:block; border:0; outline:0; font-family:Georgia, 'Times New Roman', Times, serif; font-size:18px; color:#324765; width:100%; height:auto; width: 50px; max-width:50px;" /></a></td>
+            <!--/WF Logo-->
+
+            <!-- Occasions&D --> 
+            <td align="center" style="mso-hide:all; width:40px; min-width: 40px;  "><a href="http://click.wolfermans-email.com/?qs=41af2cbc05636d7a8fc1bbe941cd3fec5f69611038ed8186bbebc62f5c2620b8fd713ea8be42ea31d47d011c83896c66643ba18270e03ad0e6ee6c9bcf0660b6"  style="font-family:Helvetica, Arial, Georgia; font-size:14px; color:#000000; text-decoration:none;"><span style="color: #ffffff; font-size: 8px;">.</span>Occasions</a></td>
+
+            <!--/Occasions&D-->
+            <td align="center" style="mso-hide:all;width: 35px;"><a href="http://click.wolfermans-email.com/?qs=41af2cbc05636d7a709af16e6933964af463cb628c753b8f6b077e3700ff219830075c141616058e2ef7ec2acb580406a6f3387521ea440f67ffb83b5d578209"  style="font-family:Helvetica, Arial, Georgia; font-size:14px; color:#000000; text-decoration:none;">&#160;Gifts</a></td>
+
+            <td align="center" style="mso-hide:all; width: 70px; min-width: 70px;"><a href="http://click.wolfermans-email.com/?qs=41af2cbc05636d7ad52933cafab0285f8a7e756a06672def7ffa4da455960624bb91995b729a8175dc61a3fb596d958d1104e61b0c267e7811870aad2704e3cb"  style="font-family:Helvetica, Arial, Georgia; font-size:14px; color:#000000; text-decoration:none;">Baked&#160;Goods</a></td>
+            </tr>
+            </table>
+        </td>
+        </tr>
+        </table>
+        <!--logos mobile-->
+    </div>
+    </td>
+    </tr> 
+    <!--main menu Mobile-->
+<!--/WF Nav-->
+
+
+      
+
+
+    <tr>
+    <td align="center" valign="top" style="background-color:#ffffff;padding-top:0px; padding-bottom:0px; padding-left:0px; padding-right:0px;">
+        <table cellpadding="0" cellspacing="0" border="0" style="width:100%">   
+          
+
+<!--ALL CONTENT HERE-->
+<!--Sub Image-->
+  <tr>
+    <td align="center" style="padding-top: 0px; padding-bottom: 5px;background-color:#ffffff;line-height:0px;border-collapse: collapse; mso-table-lspace:0; mso-table-rspace:0;">
+      <table cellpadding="0" cellspacing="0" border="0" style="width:640px;" class="columnOne">
+        <tr>
+          <td align="center"><a href="http://click.wolfermans-email.com/?qs=41af2cbc05636d7ac3b3422d1bd2a4d4dede28303ca660d40ba1705c52de503811cff1e9d04b49eef20ba81f5b4d76eef09477856860c39d3bd013aa6448c104"  style="font-family:Georgia,'Times New Roman',Times,serif;font-size:14px;color:#324765;text-decoration:none;"><img src="http://image.wolfermans-email.com/lib/fe8d1273736c037d71/m/1/251219-WF_Holiday_12-19__12-22_HD-WF.jpg" alt="It's not too late! Order Christmas gifts by Dec. 23 with expedited shipping." border="0" style="display:block;" /></a>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+<!--/Sub Image-->
+ 
+<!--Feature-->
+  <tr>
+    <td align="center" style="padding-top:5px;padding-bottom:10px;background-color:#ffffff;line-height:0px;border-collapse: collapse; mso-table-lspace:0; mso-table-rspace:0;">
+      <table cellpadding="0" cellspacing="0" border="0" style="width:640px;" class="columnOne">
+        <tr>
+          <td align="center"><a href="http://click.wolfermans-email.com/?qs=41af2cbc05636d7aa5ca9ec55c71ea316a0c83ed03401c97ec8d75a78c43f711531c038387f9beddef8929e4eec49fce7db605bd92b8acb02a5a218cfbec64b9"  style="font-family:Georgia,'Times New Roman',Times,serif;font-size:14px;color:#324765;text-decoration:none;"><img src="http://image.wolfermans-email.com/lib/fe8d1273736c037d71/m/1/251219-WF_Feature_251219-WF_Email-5.99Shipping-4AM-PT.jpg" alt="Gifts by Christmas - $5.99 Shipping" border="0" style="display:block;"/></a>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+<!--/Feature-->
+
+<!--Body Copy-->
+  <tr>
+    <td align="center" valign="top" style="padding-top:0px;">
+      <table align="center" cellpadding="0" cellspacing="0" border="0" style="width:640px; background-color:#ffffff;" class="columnOne">
+        <tr>
+          <td align="center" valign="top">
+   
+            <table cellpadding="0" cellspacing="0" border="0" style="width:95%;">
+              <tr>
+                <td align="center" valign="top">
+                  <table cellpadding="0" cellspacing="0" border="0" style="width:70%">
+                    <tr>
+                      <td align="center" valign="top" style="font-family: Helvetica, Arial, sans-serif; text-align:center; font-size:18px; line-height:120%; color:#000000;padding:5px 0px 15px 0px;letter-spacing: 0px;" >
+                        Use code <strong>DASH5</strong> and choose Dec&#65279;ember&#160;24,&#160;20&#65279;25, as the delivery&#160;date.
+                           
+                      </td>
+                    </tr>                                  
+                  </table>
+                </td>
+              </tr>
+            </table>
+            <table cellpadding="0" cellspacing="0" border="0" style="width:75%;">
+            <!--button-->
+                <tr>
+                  <td align="center" style="padding: 0px 0px 0px 0px;">
+                    <table cellpadding="0" cellspacing="0" border="0" style="width:200px;background-color:#ffffff;">
+                      <tr>
+                        <td style="padding:3px 3px;">
+                          <table align="center" cellpadding="0" cellspacing="0" border="0" style="width:100%;background-color:#2e2e2e;border-radius: 5px;">
+                            <tr>
+                              <td valign="middle" height="26" style="height:56px;padding:3px 5px;text-align:center;"><a href="http://click.wolfermans-email.com/?qs=41af2cbc05636d7aa5ca9ec55c71ea316a0c83ed03401c97ec8d75a78c43f711531c038387f9beddef8929e4eec49fce7db605bd92b8acb02a5a218cfbec64b9"  style="padding:10px 5px;font-family: Arial, Helvetica, sans-serif;font-size:18px;color:#ffffff;display:block; text-decoration:none;font-weight: 700;">Shop Now</a>
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+            <!--/button-->
+            </table>
+            <table cellpadding="0" cellspacing="0" border="0" style="width:95%;">
+              <tr>
+                <td align="center" valign="top">
+                  <table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+                    <tr>
+                      <td align="center" valign="top" style="font-family: Helvetica, Arial, sans-serif; text-align:center; font-size:16px; line-height:120%; color:#000000;padding:20px 0px 20px 0px;letter-spacing: 0px;" >
+                          Offer valid through 1PM&#160;ET, Dec&#65279;ember&#160;23,&#160;20&#65279;25. 
+                      </td>
+                    </tr>                                  
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+<!--/Body Copy-->
+
+ <!-- Divider-->
+  <tr>
+    <td align="center" style="padding-top:10px;padding-bottom:10px;background-color:#ffffff;line-height:0px;border-collapse: collapse; mso-table-lspace:0; mso-table-rspace:0;">
+      <table cellpadding="0" cellspacing="0" border="0" style="width:640px;" class="columnOne">
+        <tr>
+          <td align="center" style="border-top: 1px solid #000000;">
+            &nbsp;
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+<!-- /Divider-->
+
+<!--Sub Image-->
+  <tr>
+    <td align="center" style="padding-top: 10px; padding-bottom: 10px;background-color:#ffffff;line-height:0px;border-collapse: collapse; mso-table-lspace:0; mso-table-rspace:0;">
+      <table cellpadding="0" cellspacing="0" border="0" style="width:640px;" class="columnOne">
+        <tr>
+          <td align="center"><a href="http://click.wolfermans-email.com/?qs=41af2cbc05636d7a7046a4e595e3b15232049402ea1d446719bc437c2a9024d3a692a2e67f4edd5feb14130031ac6054e4b187a1efa1a9c71cd395e80d5bf641"  style="font-family:Georgia,'Times New Roman',Times,serif;font-size:14px;color:#324765;text-decoration:none;"><img src="http://image.wolfermans-email.com/lib/fe8d1273736c037d71/m/1/251219-WF_fy26-ntl-email-banner.jpg" alt="1-800flowers.com - 20% OFF Same-Day Holiday Gifts – CODE 20XFLWS" border="0" style="display:block;" /></a>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+<!--/Sub Image-->
+
+ <!-- Divider-->
+  <tr>
+    <td align="center" style="padding-top:10px;padding-bottom:10px;background-color:#ffffff;line-height:0px;border-collapse: collapse; mso-table-lspace:0; mso-table-rspace:0;">
+      <table cellpadding="0" cellspacing="0" border="0" style="width:640px;" class="columnOne">
+        <tr>
+          <td align="center" style="border-top: 1px solid #000000;">
+            &nbsp;
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+<!-- /Divider-->
+
+<!--Sub Image-->
+  <tr>
+    <td align="center" style="padding-top: 10px; padding-bottom: 10px;background-color:#ffffff;line-height:0px;border-collapse: collapse; mso-table-lspace:0; mso-table-rspace:0;">
+      <table cellpadding="0" cellspacing="0" border="0" style="width:640px;" class="columnOne">
+        <tr>
+          <td align="center"><a href="http://click.wolfermans-email.com/?qs=41af2cbc05636d7a4604d69a86f71a76a83fff91c417f81bd80b6c11562a0de4e037716750710eeeb2206019bda97a237c3c2b48d20784f2bfb1a5eb0991ca9e"  style="font-family:Georgia,'Times New Roman',Times,serif;font-size:14px;color:#324765;text-decoration:none;"><img src="http://image.wolfermans-email.com/lib/fe8d1273736c037d71/m/1/251219-WF_-Email-Content-Bnr-640x210.jpg" alt="Countdown to Christmas - Check out festive events and activities leading up to December 25. Learn More >  " border="0" style="display:block;" /></a>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+<!--/Sub Image-->
+
+<!--/ALL CONTENT HERE-->
+<!--WF Divider-->
+<tr>
+          <td align="center" valign="top" style="padding-top: 20px; padding-bottom: 10px;">
+            <table align="center" cellpadding="0" cellspacing="0" border="0" style="max-width:590px; width:95%; " class="columnOne">
+            <tr>
+            <td align="center" valign="top"><img src="http://image.wolfermans-email.com/lib/fe8d1273736c037d71/m/1/Tree_divider.png" width="549" border="0" title="" style="display:block; border:0; outline:0; font-family:Georgia, 'Times New Roman', Times, serif; font-size:14px; color:#445566; line-height:20px; width:100%; height:auto; max-width:549px; text-decoration:none;" /></td>
+            </tr>
+        </table>
+    </td>
+</tr>
+<!--/WF Divider-->
+
+    <!--WF SMS Text Banner-->
+    <tr>
+      <td align="center" style="padding-top:10px;padding-bottom:10px;background-color:#ffffff; line-height:0px;border-collapse: collapse; mso-table-lspace:0; mso-table-rspace:0;">
+
+<table width="640" align="center" style="max-width:640px;width:100%;" cellspacing="0" cellpadding="0" role="presentation">
+        <tr>
+      <td align="center" style="padding-top:0px;padding-bottom:0px;">
+        <a href="http://click.wolfermans-email.com/?qs=41af2cbc05636d7a365852f72c713f8e9abb34173bf8ac9bf76e3a0495a6b6fadc1613f666b89c2ab2d68cafb153eac7a9f4bcbd631bbc8e" target="_blank"  style="text-decoration:none;"><img width="640" height="auto" style="display: block; text-align: center; padding: 0px; height:auto; width: 100%;max-width:640px; border: 0px;display:block;font-family:'Lato','Hind',Arial,Helvetica,sans-serif;font-size:20px;font-weight:900;white-space:pre;" src="http://image.wolfermans-email.com/lib/fe8d1273736c037d71/m/1/WF-Email-SMS-Text-to-Join-Banner_01_5924.jpg"></a>
+      </td>
+  </tr>          
+</table>
+           
+<table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" align="center" style="max-width: 640px;" class="em_wrapper em_module_color1">
+    <tr>
+      <td width="290" align="center">
+        <a href="http://click.wolfermans-email.com/?qs=41af2cbc05636d7a365852f72c713f8e9abb34173bf8ac9bf76e3a0495a6b6fadc1613f666b89c2ab2d68cafb153eac7a9f4bcbd631bbc8e" target="_blank" ><img align="left" src="http://image.wolfermans-email.com/lib/fe8d1273736c037d71/m/1/WF-Email-SMS-Text-to-Join-Banner_02_5924.jpg" style="display: block; text-align: center; padding: 0px; width: 100%;max-width:290px; border: 0px;display:block;margin: 0;" width="290" height="auto"></a>
+      </td>
+      <td width="32" align="center">
+        <a href="http://click.wolfermans-email.com/?qs=41af2cbc05636d7a3a20e9bd29e5194aec9d0c950b14c7f4592433db64939e0f37d32e765bfa68302d60f5f1a5cf75b4689dc7b7acbac529" target="_blank" ><img align="left" src="http://image.wolfermans-email.com/lib/fe8d1273736c037d71/m/1/WF-Email-SMS-Text-to-Join-Banner_03_5924.jpg" style="display: block; text-align: center; padding: 0px; width: 100%;max-width:32px; border: 0px;display:block;margin: 0;" width="32" height="auto"></a>
+      </td>
+       <td width="38" align="center">
+        <a href="http://click.wolfermans-email.com/?qs=41af2cbc05636d7af0d30d534c921e32404bac2a5a921b07fa857ece4e4b3c64f61f4592b72419bf82a3bc958acdca52d15c4a88a7d705da" target="_blank" ><img align="left" src="http://image.wolfermans-email.com/lib/fe8d1273736c037d71/m/1/WF-Email-SMS-Text-to-Join-Banner_04_5924.jpg" style="display: block; text-align: center; padding: 0px; width: 100%;max-width:38px; border: 0px;display:block;margin: 0;" width="38" height="auto"></a>
+      </td>
+     <td width="280" align="center">
+        <a href="http://click.wolfermans-email.com/?qs=41af2cbc05636d7a365852f72c713f8e9abb34173bf8ac9bf76e3a0495a6b6fadc1613f666b89c2ab2d68cafb153eac7a9f4bcbd631bbc8e" target="_blank" ><img align="left" src="http://image.wolfermans-email.com/lib/fe8d1273736c037d71/m/1/WF-Email-SMS-Text-to-Join-Banner_05_5924.jpg" style="display: block; text-align: center; padding: 0px; width: 100%;max-width:280px; border: 0px;display:block;margin: 0;" width="280" height="auto"></a>
+      </td>      
+    </tr>
+    </table>
+
+    <table width="640" align="center" style="max-width:640px;width:100%;" cellspacing="0" cellpadding="0" role="presentation">
+        <tr>
+      <td align="center" style="padding-top:0px;padding-bottom:0px;">
+        <a href="http://click.wolfermans-email.com/?qs=41af2cbc05636d7a365852f72c713f8e9abb34173bf8ac9bf76e3a0495a6b6fadc1613f666b89c2ab2d68cafb153eac7a9f4bcbd631bbc8e" target="_blank"  style="text-decoration:none;"><img align="left" width="640" height="auto" style="display: block; text-align: center; padding: 0px; height:auto; width: 100%;max-width:640px; border: 0px;display:block;font-family:'Lato','Hind',Arial,Helvetica,sans-serif;font-size:20px;font-weight:900;white-space:pre;margin: 0;" src="http://image.wolfermans-email.com/lib/fe8d1273736c037d71/m/1/WF-Email-SMS-Text-to-Join-Banner_06_5924.jpg"></a>
+      </td>
+  </tr>          
+</table>
+     </td>
+    </tr> 
+  <!--/WF SMS Text Banner-->
+
+<!--Celebrations Passport Join  + App Banner--->
+<tr>
+  <td align="center" style="padding-top: 0px; padding-bottom: 0px;background-color:#ffffff;line-height:0px;border-collapse: collapse; mso-table-lspace:0; mso-table-rspace:0;">
+    <table width="640" align="center" style="max-width:640px;width:100%;" cellspacing="0" cellpadding="0" role="presentation">
+      <tr>
+        <td align="center" style="padding-top:0px;padding-bottom:0px;"><a href="http://click.wolfermans-email.com/?qs=41af2cbc05636d7a308b4f14dba5e382a42eda34e39531abddf46278c41a39d406076e42a783043520637bf7c40af986d96381a9d2f795335d68c78c349b13a7" target="_blank"   style="text-decoration:none;"><img width="640" height="auto" style="display: block; text-align: center; padding: 0px; height:auto; width: 100%;max-width:640px; border: 0px;color:#85569E;font-family:'Lato','Hind',Arial,Helvetica,sans-serif;font-size:20px;font-weight:900;white-space:pre;" src="https://image.em.1800flowersinc.com/lib/fe9712727466027c73/m/1/PP_Banner_NonMember_2025.jpg" alt="Join Passport Now"></a>
+        </td> 
+      </tr>  
+    </table>
+  </td>
+</tr>
+<!-- Content Code -->
+<tr>
+  <td align="left" valign="top" style=" vertical-align:top; font-size:0; max-width: 640px; ">
+  <!--[if (gte mso 9)|(IE)]>
+  <table align="center" border="0" cellspacing="0" cellpadding="0" style="width:640px;">
+  <tr>
+  <td align="center" valign="top" style="width:300px;">
+  <![endif]-->           
+      <div style="vertical-align:top; max-width:640px; display:inline-block; width:100%;padding-top:0px;" class="w100">
+  <!--[if (gte mso 9)|(IE)]>
+  <table border="0" cellspacing="0" cellpadding="0" style="width:240px;">
+  <tr>
+  <td>
+  <![endif]--> 
+    <table cellpadding="0" cellspacing="0" border="0" style="max-width:640px; width:100%;" class="w100">
+      <tr>
+        <td align="left" valign="top" style="padding-top:0px;padding-bottom:7px;">
+          <table cellpadding="0" cellspacing="0" border="0" style="width:100%; border:0px ">
+            <tr>
+              <td align="left" valign="top" style="padding:0px 0px; background:#ffffff;">
+          <!--content-->
+                <table cellpadding="0" cellspacing="0" border="0" style="width:240px;" class="columnOne">
+                  <tr>
+                    <td align="center" valign="top" style="padding-top:10px;"><a href="http://click.wolfermans-email.com/?qs=41af2cbc05636d7ad75d09a339161ac51886d7c7040d40fd795df49fe58eb15f60f483e51d4364a249a8b9d7c92587eb587cc79065df0313" style="display: block"><img style="display:block; border:0; outline:0; font-family:Georgia, 'Times New Roman', Times, serif; font-size:14px; color:#445566; Line-height:18px; width:80%; height:auto; min-width:640px; max-width:640px;" border="0" src="http://image.wolfermans-email.com/lib/fe8d1273736c037d71/m/1/downloadApp.png" alt="Download our App Today" /></a>
+                    </td>
+                  </tr>
+                </table>
+          <!--content-->
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  <!--[if (gte mso 9)|(IE)]>
+  </td>
+  </tr>
+  </table>
+  <![endif]-->
+      </div>
+  <!--[if (gte mso 9)|(IE)]></td><td align="center" valign="top" style="width:300px;"><![endif]-->
+  <!--[if (gte mso 9)|(IE)]>
+  </td>
+  </tr>
+  </table>
+  <![endif]-->    
+  </td>
+</tr>
+
+        <!-- /Content Code -->  
+<!--/Celebrations Passport Join  + App Banner--->
+
+
+
+
+ <!--Family of Brands--> 
+<!--Family of Brands-->
+<table align="center" cellpadding="0" border="0" cellspacing="0" border-spacing="0" width="640" role="presentation" style="max-width:640px !important;border-collapse: collapse;border: none;" class="columnOne">
+<tr><td class="stylingblock-content-wrapper camarker-inner">
+              
+        <!-- == //Layout_For_One_Column == --> 
+<table width="100%" align="center" cellpadding="0" cellspacing="0" border="0" id="container" style="max-width:640px !important;background-color:#f9f6ed;border-collapse: collapse;border: none;">
+  <tr>
+    <td style="background-color:#f9f6ed;font-size:0; line-height: 0;"> 
+      <table width="100%" align="center" cellpadding="0" cellspacing="0" border="0" class="hidemobile" style="max-width:640px;background-color:#f9f6ed;border-collapse: collapse;">
+        <tr>
+          <td style="background-color:#f9f6ed;max-width:640px;height: auto;"> 
+            <!----Header---->
+
+ <a href="http://click.wolfermans-email.com/?qs=41af2cbc05636d7a69022f95c2ccf79232d54215ab3952476234ce26d8020043f60cee54381583948b5c89fd231c1b444c33d12d420ba529321f9d5d3723a476" target="_blank"  >
+                    <img title="Our Family of Brands" style="display: block;" alt="Our Family of Brands" src="https://image.harryanddavid-email.com/lib/fe911273736c037d75/m/1/fy26-fob-footer-header.png" border="0" cellspacing="0" cellpadding="0" border-spacing="0"></a> 
+
+            <!----Header End---->                      
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <table align="center" class="hidemobile" border="0" cellspacing="0" cellpadding="0" border-spacing="0" style="width: 640px;max-width:640px;background-color:#f9f6ed;border-collapse: collapse;border: none;">
+        <tr align="center" bgcolor="#f9f6ed" style="max-width: 640px !important;">
+          <td width="640" align="center" bgcolor="#f9f6ed" style="max-width: 640px;padding-top: 0px;">
+            <table width="640" style="max-width: 640px;" align="center" class="hidemobile" border="0" cellspacing="0" cellpadding="0" border-spacing="0">
+              <tr width="640" max-width="640" align="center" bgcolor="#f9f6ed" style="max-width: 640px;" border="0" cellspacing="0" cellpadding="0" border-spacing="0">
+                <td width="195" style="max-width:195px;height: auto;height: auto;display: inline-block;">
+                  <a href="http://click.wolfermans-email.com/?qs=41af2cbc05636d7aa7ec3a600e89bcf25316c100c85c6f592cd2acff867b4fa00c4ae34f2c88b358605498b8ef58281b8c74d09fd08242b72bba6367554cd0ef" target="_blank"  >
+                    <img title="1-800-Flowers.com" style="display: block;" alt="1-800-Flowers.com" src="https://image.harryanddavid-email.com/lib/fe911273736c037d75/m/1/fy26-fob-footer-1-18f.png" border="0" cellspacing="0" cellpadding="0" border-spacing="0"></a>     
+                </td>
+                <td width="150" style="max-width:150px;height: auto;display: inline-block;">
+                  <a href="http://click.wolfermans-email.com/?qs=41af2cbc05636d7a570ba1ae73bcdfa00a6bd712223d5046cd24ac679c46883bb2e6d61099538ca3208dd5b4570348f499b66f98710dfc4e92f7981bb9f4dd58" target="_blank"  >
+                    <img title="Harry &amp; David" style="display: block;" alt="Harry &amp; David" src="https://image.harryanddavid-email.com/lib/fe911273736c037d75/m/1/fy26-fob-footer-2-hd.png" border="0" cellspacing="0" cellpadding="0" border-spacing="0"></a>
+                </td>
+             
+                <td width="95" style="max-width:95px;height: auto;display: inline-block;">
+                  <a class="desktopLink" href="http://click.wolfermans-email.com/?qs=41af2cbc05636d7ad9cc9136117a70a851df410b519a3de2a8dbe4544d049acc379019e8d1464dc4c64ba4c541b6e7528d551e1992bf198b27f3ca374db00f3c" target="_blank"  > <img title="Cheryl's Cookies" style="display: block;" alt="Cheryl's Cookies" src="https://image.harryanddavid-email.com/lib/fe911273736c037d75/m/1/fy26-fob-footer-3-cco.png" border="0" cellspacing="0" cellpadding="0" border-spacing="0"></a> 
+                </td>   
+                   <td width="200" style="max-width:200px;height: auto;display: inline-block;">
+                  <a class="desktopLink" href="http://click.wolfermans-email.com/?qs=41af2cbc05636d7aff89056f84bc8e366679714930b95751435e2c5190874d240d639baf39e1bdc4081f1749fa8dae44db37127056e1da8e57408f4cc93e0aff" target="_blank"  > <img title="Shari's Berries" style="display: block;" alt="Shari's Berries" src="https://image.harryanddavid-email.com/lib/fe911273736c037d75/m/1/fy26-fob-footer-4-sb.png" border="0" cellspacing="0" cellpadding="0" border-spacing="0"></a>
+                </td>  
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+      <tr align="center" bgcolor="#f9f6ed" style="max-width: 640px !important;">
+          <td width="640" align="center" bgcolor="#f9f6ed" style="max-width: 640px !important;">
+            <table width="640" max-width="640" align="center" class="hidemobile" border="0" cellspacing="0" cellpadding="0" border-spacing="0" style="width: 640px;max-width:640px;min-width: 640px; background-color:#f9f6ed;border-collapse: collapse;border: none;">
+              <tr width="640" max-width="640" align="center" bgcolor="#f9f6ed" style="max-width: 640px;">
+                <td width="169" style="max-width:169px;height: auto;display: inline-block;">
+                  <a class="desktopLink" href="http://click.wolfermans-email.com/?qs=41af2cbc05636d7aed2d90653c84d0343645b441dd90c2ba3a49a796e849028ef85a4395d9579d98f3915272b088fe66a2091ca3703b17cc9594be2863ef4dca" target="_blank"  > <img title="Simply Chocolate" style="display: block;" alt="Simply Chocolate" src="https://image.harryanddavid-email.com/lib/fe911273736c037d75/m/1/fy26-fob-footer-5-sc.png" border="0" cellspacing="0" cellpadding="0" border-spacing="0"></a> 
+                </td>
+                <td width="116" style="max-width:116px;height: auto;display: inline-block;">
+                  <a class="desktopLink" href="http://click.wolfermans-email.com/?qs=41af2cbc05636d7a63e96bf61921093b49df6f5a58340494f5ea1861ad9924bea4bb5e1d0191df3cb7a47ca730225518e4ee6a1a1fe34323b2ac158007920042" target="_blank"  > <img title="Vital Choice" style="display: block;" alt="Vital Choice" src="https://image.harryanddavid-email.com/lib/fe911273736c037d75/m/1/fy26-fob-footer-6-vc.png" border="0" cellspacing="0" cellpadding="0" border-spacing="0"></a> 
+                </td>                    
+                <td width="92" style="max-width:92px;height: auto;display: inline-block;">
+                  <a class="desktopLink" href="http://click.wolfermans-email.com/?qs=41af2cbc05636d7aba7ce2fd623d235c4bf1a7ada43daefebfbb3de923fd401c82cdd1dc3f200eef39ea5c5140cd7945e090f4fa4badb3fb5e8000293570f962" target="_blank"  > <img title="The Popcorn Factory" style="display: block;" alt="The Popcorn Factory" src="https://image.harryanddavid-email.com/lib/fe911273736c037d75/m/1/fy26-fob-footer-7-tpf.png" border="0" cellspacing="0" cellpadding="0" border-spacing="0"></a> 
+                </td> 
+                <td width="101" style="max-width:101px;height: auto;display: inline-block;">
+                  <a class="desktopLink" href="http://click.wolfermans-email.com/?qs=41af2cbc05636d7adb3117d2550ba8749ecb414bd951f783e84411352c5c4bef3af28c7552e3e451aff4ca90e162027322ea12fee3c85b2da5e8f13c6b80e49a" target="_blank"  > <img title="1-800-Baskets" style="display: block;" alt="1800 Baskets" src="https://image.harryanddavid-email.com/lib/fe911273736c037d75/m/1/fy26-fob-footer-8-bsk.png" border="0" cellspacing="0" cellpadding="0" border-spacing="0"></a> 
+                </td>                 
+                <td width="162" style="max-width:162px;height: auto;display: inline-block;">
+                  <a class="desktopLink" href="http://click.wolfermans-email.com/?qs=41af2cbc05636d7a767c4515ef6493858b14eb34699993cc59ca586d0f96657206b391b041f3c6ead7543b8ec00fd287fb0e1fe0d6f1ef5b41b7ce04f1b82b18" target="_blank"  > <img title="Fruit Bouquets" style="display: block;" alt="Fruit Bouquets" src="https://image.harryanddavid-email.com/lib/fe911273736c037d75/m/1/fy26-fob-footer-9-fb.png" border="0" cellspacing="0" cellpadding="0" border-spacing="0"></a> 
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+    <tr align="center" bgcolor="#f9f6ed" style="max-width: 640px !important;"> 
+    <td align="center" style="background-color:#f9f6ed;"> 
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" border-spacing="0" align="center" class="hidemobile" style="max-width:640px;background-color:#f9f6ed;border-collapse: collapse;border: none;">
+                <tr align="center" bgcolor="#f9f6ed" style="max-width: 640px !important;">
+          <td width="640" align="center" bgcolor="#f9f6ed" style="max-width: 640px; padding-top: 0px;">
+            <table width="640" style="max-width: 640px;" align="center" class="hidemobile" border="0" cellspacing="0" cellpadding="0" border-spacing="0">
+              <tr width="640" max-width="640" align="center" bgcolor="#f9f6ed" style="max-width: 640px;" border="0" cellspacing="0" cellpadding="0" border-spacing="0">
+                <td width="265" style="max-width:265px;height: auto;height: auto;display: inline-block;">
+                  <a href="http://click.wolfermans-email.com/?qs=41af2cbc05636d7a0354d129f0e76c128a507f2bd0bf317bda6213bbc7ebfa18835b10a36a8e62a7184d35cca63cf6c006fe3c9e68a9f774a2e613170f012f4f" target="_blank"  >
+                    <img title="Personalization Mall" style="display: block;" alt="Personalization Mall" src="https://image.harryanddavid-email.com/lib/fe911273736c037d75/m/1/fy26-fob-footer-10-pm.png" border="0" cellspacing="0" cellpadding="0" border-spacing="0"></a>     
+                </td>
+                <td width="95" style="max-width:95px;height: auto;display: inline-block;">
+                  <a href="http://click.wolfermans-email.com/?qs=41af2cbc05636d7af38e685ec115b7e373997458c41a5e36cee3e12d33b55961b139a96197f2d23a4ec565519dc775aa6b4622e9d157f449c90092ed3b7bd847" target="_blank"  >
+                    <img title="Wolferman’s" style="display: block;" alt="Wolfermans" src="https://image.harryanddavid-email.com/lib/fe911273736c037d75/m/1/fy26-fob-footer-11-wf.png" border="0" cellspacing="0" cellpadding="0" border-spacing="0"></a>
+                </td>
+                <td width="280" style="max-width:280px;height: auto;display: inline-block;">
+                  <a class="desktopLink" href="http://click.wolfermans-email.com/?qs=41af2cbc05636d7a50175dc83cdea8e6c4e0f75094720beebf1a04c935e9d564aafa9def95415d22358c152d73318710ee0ec3af10c7290e06f31906e070a1f3" target="_blank"  > <img title="Things Remembered" style="display: block;" alt="Things Remembered" src="https://image.harryanddavid-email.com/lib/fe911273736c037d75/m/1/fy26-fob-footer-12-tr.png" border="0" cellspacing="0" cellpadding="0" border-spacing="0"></a>
+                </td>     
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+ </td></tr>
+
+</table>
+    <!--/Family of Brands-->
+  <!--/Family of Brands--> 
+
+    <!--Social Banner-->
+    <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner">
+        
+            <table cellspacing="0" cellpadding="0" border="0" style="width:100%; ">
+            <tr>
+            <td align="center" valign="top" style="padding-top:5px; padding-bottom:5px;">
+                <table style="width:160px;" border="0" cellpadding="10" cellspacing="0" align="center">
+                <tr>
+                <td valign="top" align="center" width="48" height="48"><a href="http://click.wolfermans-email.com/?qs=41af2cbc05636d7a4a6a68645cb864883ebfb6b8b361e8b7479478edb220e5e1af1d07d4de9009acdbea1531da108771bb94f956a1d575cd"><img src="http://image.wolfermans-email.com/lib/fe8d1273736c037d71/m/15/Facebook_Icon_1-19-23.png" alt="Facebook" title="Facebook" style="display:block; border:0; outline:0; font-family:Georgia, 'Times New Roman', Times, serif; font-size:14px; color:#364f5e; Line-height:18px;" border="0"></a></td>
+                <td width="48" height="48" valign="top" align="center"><a href="http://click.wolfermans-email.com/?qs=41af2cbc05636d7a86ace249990f1e1102c28c16c7c0a2e7b472ffa24c98c93dc3c6f5c520508183a269c4ec6132371613d740f4fe7ec109"><img src="http://image.wolfermans-email.com/lib/fe8d1273736c037d71/m/15/Instagram_Icon_1-19-23.png" alt="Instagram" title="Instagram" style="display:block; border:0; outline:0; font-family:Georgia, 'Times New Roman', Times, serif; font-size:14px; color:#364f5e; Line-height:18px;" border="0"></a></td>
+                   <td width="48" height="48" valign="top" align="center"><a href="http://click.wolfermans-email.com/?qs=41af2cbc05636d7a1c2ab66424f6fe7d562a5d93196900f77252f1571d15b188af08481b0f3ff57f1bba3fa8a1718d681646dfeed26f50c5"><img src="http://image.wolfermans-email.com/lib/fe8d1273736c037d71/m/15/Pinterest_Icon_1-19-23.png" alt="Pinterest" title="Pinterest" style="display:block; border:0; outline:0; font-family:Georgia, 'Times New Roman', Times, serif; font-size:14px; color:#364f5e; Line-height:18px;" border="0"></a></td>
+                
+                </tr>
+                </table>
+            </td>
+            </tr>
+            </table>
+        
+    </td></tr></table>
+    <!--/Social Banner-->
+
+  <!--footer-->
+    <tr>
+      <td align="center" valign="top" style="padding:15px 10px;" class="footerLink">
+        <table cellpadding="0" cellspacing="0" border="0" align="center" style="width:590px;" class="columnOne">
+          <tr>
+            <td style="font-family:Arial, Helvetica, sans-serif; font-size:13px; color:#6A7C88; line-height:19px; text-align:left;  padding-bottom:10px;" class="gryLink">
+      <!--Disclaimer-->
+    &dagger;Prices and discounts are exclusive of applicable taxes. Free Shipping charge applicable on standard weekday delivery for select gifts delivered via direct shipping by common carrier (FedEx, UPS, etc.) within the continental United States only. Free Service charge applicable on florist fulfilled gifts delivered within the United States and ordered at least two business days before delivery. Same-Day delivery is available for Florist Fulfilled items for a reduced service charge. Fees and surcharges may apply. Items may vary and are subject to availability, delivery rules and times. Expedited Delivery options may be available for a surcharge. Celebrations Passport<span style="font-size:10px;vertical-align: 3px;">&#174;
+</span> members also receive a discounted flat shipping fee of $5 on Wine items. Celebrations Passport<span style="font-size:10px;vertical-align: 3px;">&#174;</span> benefits are not eligible on all products and are subject to restrictions and limitations. Celebrations Passport<span style="font-size:10px;vertical-align: 3px;">&#174;</span> members must sign into their accounts for shipping benefits to apply. Offers available online and some offers available by phone. Prices and charges are subject to change without notice. Void where prohibited. For a complete description of the Celebrations Passport<span style="font-size:10px;vertical-align: 3px;">&#174;</span> program see 
+<a href="http://click.wolfermans-email.com/?qs=41af2cbc05636d7ab060a5f6248d533eb5f6dc4042033ee9049fb71df7489ce4e16b83a1114ac49c986b2912877263d19344ba29c0b69c1c" style="color: #0074cc; text-decoration: underline;" target="_blank">TERMS&#160;and&#160;CONDITIONS</a>.
+    <br><br>
+*$5.99 shipping charge applies to select gifts marked “$5.99 SHIPPING EVENT” when you order online at <a href=http://click.wolfermans-email.com/?qs=41af2cbc05636d7a0d8b29abc48617a48fedf1c9a5dd8b5a677c0a646ac851d7b7e240489e7d14c9609bbf59045eeaee516c666762d36be8 style="text-decoration:none;color:#6A7C88;"><span style="text-decoration:none; color: #6A7C88;">Wolfe&#65279;rmans.com</span></a>, choose Dec&#65279;ember 24, 20&#65279;25 as the delivery date, and enter code <strong>DASH5</strong>. Offer is not available for shipments to PO boxes, Alaska, Hawaii, or Canada. Offer available only while supplies last and cannot be applied to previous purchases. Fees and surcharges may apply.  Not valid on orders of $2,500 or more; for orders of $2,500 or more, contact the Corporate Sales Division at <a href="tel:800 798 6234" style="text-decoration:none: color: #6A7C88" target="_blank">
+<span style="text-decoration:none: color:#6A7C88; font-size:13px; font-family: Arial; "><font style="color: #6A7C88">555-123-4567</font></span></a> for any applicable discounts or promotions. Offer good through 1PM&#160;ET, Dec&#65279;ember&#160;23,&#160;20&#65279;25, and is subject to modification or cancellation without&#160;notice.
+ <br><br>
+ &#9670; Offer ends at 11:59 AM ET on Dec&#65279;ember&#160;25,&#160;20&#65279;25. Prices and discounts are exclusive of applicable service and shipping charges and taxes. Items may vary and are subject to availability and delivery rules and times. Offer available online and by telephone only. Offers cannot be combined, may not be available on all products and are subject to restrictions, limitations and blackout periods. Prices and charges are subject to change without&#160;notice.
+      <!--/Disclaimer-->   
+      
+              <br/>
+              <br/>
+
+      <!--WF Footer-->
+    <tr>
+      <td align="center" style="padding-bottom:30px;padding-left:0px;padding-right:0px;background-color:#ffffff;">
+        <table cellpadding="0" cellspacing="0" border="0" align="center" style="width:100%;max-width:590px;">
+          
+ <tr><td style="font-family:Arial, Helvetica, sans-serif; font-size:13px; color:#6A7C88; line-height:19px; text-align:left; padding-bottom:10px;" class="footerLink">Note for products containing wine, including our pear cider: Wine is sold and shipped by Harry and David, LLC, Medford, OR. See further <span style="text-decoration:none; color: #6A7C88;"><a href="http://click.wolfermans-email.com/?qs=41af2cbc05636d7a19ca51fde2585fa00b9cefb752bd3e3deaaa327c8374c799682b1b48a70af2a3cfc47a8b797260e484b08a145dd33de1" style="text-decoration:none;color: #6A7C88;"><u>details and restrictions</u></a></span> for offers containing wine products, and a list of states to which our wine products can be shipped. You must be 21 years of age or older to order, purchase, or receive delivery of wine. Offer void where prohibited by law.</td>
+</tr>
+
+<tr>
+  <td style="font-family:Arial, Helvetica, sans-serif; font-size:13px; color:#6A7C88; line-height:19px; text-align:center; padding-bottom:10px; font-weight:bold;" class="footerLink"><a href="http://click.wolfermans-email.com/?qs=41af2cbc05636d7abbec3abbfe967a1be5888712ecd94bac6c6873e449fbfee014bc5b78133fefbcb3ec7324b91c6393ae9c62ef86d513ca86c933ff1dbf84b6" style="color:#6A7C88;text-decoration: underline; text-decoration-color:blue;">Manage Preference Center</a>&nbsp;<strong>|</strong>&nbsp;<a href="http://click.wolfermans-email.com/?qs=41af2cbc05636d7abbec3abbfe967a1be5888712ecd94bac6c6873e449fbfee014bc5b78133fefbcb3ec7324b91c6393ae9c62ef86d513ca86c933ff1dbf84b6" style="color:#6A7C88;text-decoration: underline; text-decoration-color:blue;">Unsubscribe</a>&nbsp;<strong>|</strong>&nbsp;
+<a href="http://click.wolfermans-email.com/?qs=41af2cbc05636d7af0d30d534c921e32404bac2a5a921b07fa857ece4e4b3c64f61f4592b72419bf82a3bc958acdca52d15c4a88a7d705da" style="color:#6A7C88;text-decoration: underline; text-decoration-color:blue;">Privacy Notice</a>&nbsp;<strong>|</strong>&nbsp;
+<a style="color:#6A7C88;text-decoration: underline; text-decoration-color:blue;" href="http://click.wolfermans-email.com/?qs=41af2cbc05636d7aeb47da040dd261a74fce40ed8d55dccde45e4a56d6edaed6fb52180d91c5ff98ebf122ffdea8bde29ef6acadbb2a8973">Contact Us</a>&nbsp;<strong>|</strong>&nbsp;<a style="color:#6A7C88;text-decoration: underline; text-decoration-color:blue;" href="http://click.wolfermans-email.com/?qs=41af2cbc05636d7a19ca51fde2585fa00b9cefb752bd3e3deaaa327c8374c799682b1b48a70af2a3cfc47a8b797260e484b08a145dd33de1">Wine Restrictions</a></td>
+</tr>
+<tr>
+  <td style="font-family:Arial, Helvetica, sans-serif; font-size:13px; color:#6A7C88; line-height:19px; text-align:left; padding-bottom:10px; text-align:center;" class="footerLink">The Celebrations Passport&reg; program is not applicable in retail stores.</td>
+</tr>
+<tr>
+  <td style="font-family:Arial, Helvetica, sans-serif; font-size:13px; color:#6A7C88; line-height:19px; text-align:left; padding-bottom:10px; text-align:center;" class="footerLink">This email was sent to: <a href="mailto:user@example.com" style="font-family:Arial, Helvetica, sans-serif; font-size:13px; color:#6A7C88; text-decoration:underline;"><span style="color:#6A7C88;">user@example.com</span></a>.</td>
+</tr>
+<tr>
+  <td style="font-family:Arial, Helvetica, sans-serif; font-size:13px; color:#6A7C88; line-height:19px; text-align:left; padding-bottom:10px; text-align:center;" class="footerLink">&copy; 2025, Harry and David, LLC. dba Wolferman's. All rights reserved.<br />2&#65279;50&#65279;0 S P&#65279;ac&#65279;ific H&#65279;wy, Med&#65279;ford, O&#65279;R, 97&#65279;501  | 1-&#65279;800-&#65279;999-&#65279;1910</td>
+</tr>
+<tr>
+  <td style="font-family:Arial, Helvetica, sans-serif; font-size:13px; color:#6A7C88; line-height:19px; text-align:left; padding-bottom:10px; text-align:center;" class="footerLink"><img src="https://svopn.wolfermans.com/?sv_cid=0145_03635&sv_emopen=true&sv_svem=user@example.com" height="1" width="1" /></td>
+</tr>
+
+    <!--/WF Footer-->
+
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  <!--/footer-->
+  </table>
+</td>
+</tr>
+    <!--/640px content table-->
+</table>
+</td>
+</tr>
+</table>
+<!--[if (gte mso 9)|(IE)]> </td> </tr> </table> <![endif]-->
+</center>
+</div>
+<!-- Return Path Tracking Pixels -->
+<img src="https://pixel.app.returnpath.net/pixel.gif?r=ba113466b6c5f87bc05a64d3052e516c1cf7d36f&c=251219_WF_5.99_Shipping_9AM_PT" width="1" height="1" />
+<img src="https://pixel.inbox.exacttarget.com/pixel.gif?r=ba113466b6c5f87bc05a64d3052e516c1cf7d36f" width="1" height="1" />
+<!-- /Return Path Tracking Pixels -->
+<!--tracking pixels-->
+  <!-- Bounce Exchange Tracking Pixels (August 2017 Updated)-->
+  <img src="https://bounceexchange.com/tag/em/1772.gif" width=1 height=1 border=0 />
+  <!--/ Bounce Exchange Tracking Pixels (August 2017 Updated)-->
+<img src="https://pixel.monitor1.returnpath.net/pixel.gif?r=a8f48eaae77cd2ab48a251a0d7ca3f7ba144d6b9" width="1" height="1" />
+<img src="http://click.wolfermans-email.com/open.aspx?ffcb10-fe871576706d027a73-fe5c1375776404757212-fe8d1273736c037d71-ff991575-fe5c12767762037f7314-ff061672756500&d=60250&bmt=0" width="1" height="1" alt=""></custom>
+<!--/tracking pixels-->
+</body>
+</html>
+
+--MCvsNJhx0wCB=_?:--
+
+

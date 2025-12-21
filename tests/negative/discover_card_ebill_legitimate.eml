@@ -1,0 +1,253 @@
+Return-Path: <allybank@billpay.ally.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTPS id 5BJGOHID035166
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <user@example.com>; Fri, 19 Dec 2025 16:24:18 GMT
+	(envelope-from allybank@billpay.ally.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (2048-bit key; unprotected) header.d=billpay.ally.com header.i=@billpay.ally.com header.b=e/CEDb+r
+Received: from mx0a-0090d002.pphosted.com (mx0a-0090d002.pphosted.com [205.220.171.227])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 5BJGOFxL031026
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+	for <user@example.com>; Fri, 19 Dec 2025 10:24:16 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 5BJGOFxL031026
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (2048-bit key, unprotected) header.d=billpay.ally.com header.i=@billpay.ally.com header.a=rsa-sha256 header.s=sm1024 header.b=e/CEDb+r
+Received: from pps.filterd (m0504497.ppops.net [127.0.0.1])
+	by mx0a-0090d002.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5BJFCQ44008852
+	for <user@example.com>; Fri, 19 Dec 2025 11:24:15 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	billpay.ally.com; h=content-transfer-encoding:content-type:date
+	:from:message-id:mime-version:reply-to:subject:to; s=sm1024; bh=
+	FHRqXiNUEVLveStPkGii3WHKHcFy7dceV9znm9vVj1s=; b=e/CEDb+rEIPZ8AVJ
+	h//ZvZW1GCMSzMyrdLpWXiwuW8Y5GUdWLWY67KYvik3ITOEWaT1sfsszm6MfieIM
+	kr+x4M9yH/R1XPZL0IhyWj+vY6zNL+z+sSqU8tiXVFJwblCxjGU68+tZb6DGZRH+
+	yk51G7reE01MxdLh38Qq1tyItbpzWKP6muJrG1P69acNPIQIMLy/7m9UPkvaM2Uc
+	X4LWVS3Oz+TEU3aF0UXL5lyHa+jmjb0088EDwzNPzLisotOIQ6HIHHOcHPN8LA2L
+	lSteRUKW5+9o6PcmWlNRbEWXBnndnPtuMgoD+DYKVyA4tTluFpr2gYiakouuBGQ8
+	tKnHqw==
+Received: from rfxp2mgwppa0008.fiserv.one ([166.73.6.16])
+	by mx0a-0090d002.pphosted.com (PPS) with ESMTPS id 4b4rdbv21h-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <user@example.com>; Fri, 19 Dec 2025 11:24:15 -0500 (EST)
+Received: from pps.filterd (rfxp2mgwppa0008.fiserv.one [127.0.0.1])
+	by rfxp2mgwppa0008.fiserv.one (8.18.1.2/8.18.1.2) with ESMTP id 5BJFhkIE032542
+	for <user@example.com>; Fri, 19 Dec 2025 16:24:14 GMT
+Received: from 320b3046-4892-432d-7c23-a221 ([10.30.21.20])
+	by rfxp2mgwppa0008.fiserv.one (PPS) with ESMTP id 4b1kcdbedu-1
+	for <user@example.com>; Fri, 19 Dec 2025 16:24:14 +0000
+Date: Fri, 19 Dec 2025 16:24:14 +0000 (UTC)
+From:  <allybank@billpay.ally.com>
+Reply-To:  <allybankreply@billpay.ally.com>
+To: user@example.com
+Message-ID: <555-123-4567.12961522.1766161454235@320b3046-4892-432d-7c23-a221>
+Subject: Discover Card will no longer send you eBills
+MIME-Version: 1.0
+Content-Type: text/html; charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
+X-Priority: 2 (Normal)
+X-Mailer: cdasend
+X-MessageId:#520242354402812127660_
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjE5MDEzNCBTYWx0ZWRfXxdV4/MIdhSLo
+ zgs7x3bHj6FkA3amiRct/19H2od1K8NhGaUMQcGbxkaQg8r0XHsAh99tQJ0mbXVew5O27MA9c1q
+ cE5wRUMImj8qVhlhdW3uT1VInZH1JnTQ6uIbjGPE8VOBhTu6Ilk7FzignWsyYeDfG96GG0xX4iq
+ AimQ4InVl0SHY4xkxBUXrBuo/K28meAzUPGRFZGCkIYzTX8iFrgnbVnt9z6c84imlT2oMhvehhX
+ U/rPXCYloLolivzgi0u4CJ7vxjf2wuOL+yVxx44xy/JrcxSvjCTSN09qEgRjNfTyiIXwp+ftJ87
+ RHrFi/dPq4wI4x2WEel5vwp8fssXAgI8zC/Ke8lAxpZ+o6qVoN2S2l7/4cXPwApwaBu8RckilbX
+ mBBUX1Pf8r2dRshpjcxXQgRaviEcEw==
+X-Proofpoint-ORIG-GUID: kyVuU6HF1nV3ugPhOEEMhm2upkqzR1m-
+X-Authority-Analysis: v=2.4 cv=LagxKzfi c=1 sm=1 tr=0 ts=69457c2f cx=c_pps
+ a=xUBYsr2h533iBOLepvOrcQ==:117 a=xUBYsr2h533iBOLepvOrcQ==:17
+ a=zQ8kKeLhYiugjfxp:21 a=kj9zAlcOel0A:10 a=wP3pNCr1ah4A:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=ihgyX3CyAAAA:8 a=kVTRRMNvAAAA:8
+ a=T_1mITF_VcNPthP3rjUA:9 a=FIbL6UTayn2aNlRp:21 a=frz4AuCg-hUA:10
+ a=_W_S_7VecoQA:10 a=lqcHg5cX4UMA:10 a=CjuIK1q_8ugA:10
+ a=swy6z291ZFaP6e1Zxmkw:22 a=5fhTiYj6pjIqZ7gkZXum:22
+X-Proofpoint-GUID: kyVuU6HF1nV3ugPhOEEMhm2upkqzR1m-
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-19_06,2025-12-17_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
+ lowpriorityscore=0 spamscore=0 malwarescore=0 phishscore=0 adultscore=0
+ suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-555-123-4567
+ definitions=main-555-123-4567
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Fri, 19 Dec 2025 16:24:18 +0000 (UTC)
+X-Greylist: ACL 173 matched, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Fri, 19 Dec 2025 10:24:16 -0600 (CST)
+X-Spam-Flag: YES
+
+<html><body><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" =
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">  <head> <meta ht=
+tp-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8" /> <title>=
+ALLY</title> <style type=3D"text/css">  .ReadMsgBody{ width: 100%;} /* Forc=
+es Hotmail to display emails at full width */ .ExternalClass { width: 100%;=
+} /*Hotmail table centering fix*/ .ExternalClass, .ExternalClass p, .Extern=
+alClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div {l=
+ine-height: 100%;}  /* Forces Hotmail to display normal line spacing*/ p { =
+margin: 1em 0;} /*Yahoo paragraph fix*/ table td { border-collapse: collaps=
+e;}  /*This resolves the Outlook 07, 10, and Gmail td padding issue fix*/ /=
+*This resolves the issue when iphone puts links on dates, etc.*/ a {color:#=
+505050 !important; text-decoration:none !important;} .applelinksGrey a {col=
+or:#505050 !important; text-decoration:none !important;} .applelinksFtr a {=
+color:#505050 !important; text-decoration:none !important;} .applelinksPlum=
+ a {color:#650360 !important; text-decoration:none !important;}  @-ms-viewp=
+ort{     width: device-width; } /* Media query triggers alternate styles wh=
+en the file is displayed on a device with a maximum width lower than the as=
+signed pixel dimension. The default max width setting for max-width should =
+be 480px to trigger on mobile devices. */  @media only screen and (max-widt=
+h: 480px) { /* Resets the width of the body content. Called container simpl=
+y because it's the bucket the rest of the content sits inside. */ body[yaho=
+o] .container { =09width:100% !important;=09 =09} /* Hides content from the=
+ mobile view */ body[yahoo] .mobile-hidden {=09 =09display:none !important;=
+ =09} td[class=3D"hide"] { =09display:none !important; } /* Scales down fix=
+ed width images to 100% in mobile view */ body[yahoo] .photo { =09width:100=
+% !important; =09height:auto !important;=09=09 =09} /* Scales down logo wid=
+th properly on mobile view */=09 body[yahoo] .logo { =09height:auto !import=
+ant;=09=09 =09} /* Next classes resize font sizes larger and adjust padding=
+ */ body[yahoo] .title { =09font-size:20px !important; =09} body[yahoo] .do=
+llar { =09padding-left:20px !important; =09padding-right:20px !important; =
+=09} body[yahoo] .alert { =09font-size:20px !important; =09padding-left:20p=
+x !important; =09padding-right:20px !important; =09}=09 body[yahoo] .body {=
+ =09font-size: 12px !important; =09} body[yahoo] .bodyPadRight { =09font-si=
+ze: 12px !important; =09padding-right:90px !important; =09} body[yahoo] .ac=
+nt_data { =09font-size: 14px !important; =09padding-right:10px !important; =
+=09} body[yahoo] .textBlock { =09font-size: 15px !important; =09padding-lef=
+t:20px !important; =09padding-right:20px !important; =09} body[yahoo] .ftr =
+{ =09font-size: 12px !important; =09padding-left:20px !important; =09paddin=
+g-right:20px !important; =09} body[yahoo] .width-padding{ =09padding:5px !i=
+mportant; =09} body[yahoo] .main-padding { =09padding:0px !important; =09} =
+/*drops the right column under the left column*/ body[yahoo] .drop { =09wid=
+th: 100% !important; =09float: left !important; =09} /*puts a hard break in=
+ the mobile version*/ body[yahoo] .break { =09display: block !important; =
+=09}=09 /* Shows elements mobile-hidden from the desktop view in the mobile=
+ version. It is best to place this class in a div surrounding the element y=
+ou want to hide on desktop */ div[class=3D"show"] {     display: block !imp=
+ortant; =09margin:0 !important; =09padding:0 !important; =09overflow: visib=
+le !important; =09width: auto !important; =09max-height:inherit !important;=
+=09 =09} /* Resizes font size of footer smaller */ body[yahoo] .greetings {=
+ =09font-size:12px !important; =09} } /*--- Preheader declaration in style =
+block in addition to inline for Outlook */     .preheader { display:none !i=
+mportant; visibility:hidden; opacity:0; color:transparent; height:0; width:=
+0; }    </style> </head>   <span class=3D"preheader" style=3D"display: none=
+ !important; visibility: hidden; opacity: 0; color: transparent; height: 0;=
+ width: 0;">You'll no longer get eBills from Discover Card, but you may sti=
+ll owe money</span>  <!-- Centering Table --> <table width=3D"100%" border=
+=3D"0" cellspacing=3D"0" cellpadding=3D"0">   <tr>     <!--td class=3D"widt=
+h-padding" style=3D"padding:0 10px;"-->     <td bgcolor=3D"#d8d8d8"> =09=09=
+<div align=3D"center">     <!-- Containing table -->     <table class=3D"co=
+ntainer" width=3D"598" border=3D"0" cellspacing=3D"0" cellpadding=3D"0" ali=
+gn=3D"center">     <tr>     <td>     <table width=3D"100%" border=3D"0" cel=
+lspacing=3D"0" cellpadding=3D"0">   <tr>     <td width=3D"100%" class=3D"ti=
+tle" align=3D"left" bgcolor=3D"#328fc2" style=3D"border-bottom:2px solid #2=
+56c93; color:#ffffff; font-family:'Helvetica Neue', Arial, Helvetica, Genev=
+a, sans-serif; font-size:20px; padding-left:20px;">Ally Bank&nbsp;Alert</td=
+>     <td style=3D"border-bottom:2px solid #4a0246;" bgcolor=3D"#650360" al=
+ign=3D"center"><img src=3D"http://image.alerts.ally.com/lib/fed215777767047=
+d/m/1/allyAlertLogoV5.png" alt=3D"Ally" width=3D"88" height=3D"59" border=
+=3D"0" style=3D"display:block; color:#ffffff; font-family:'Helvetica Neue',=
+ Arial, Helvetica, Geneva, sans-serif; font-size:25px;" /></td>   </tr> </t=
+able>      </td>   </tr>   <tr>     <td bgcolor=3D"#f7f7f7" style=3D"font-f=
+amily:'Helvetica Neue', Arial, Helvetica, Geneva, sans-serif; color:#505050=
+; font-size:15px; padding: 10px 20px;"><table width=3D"100%" border=3D"0" c=
+ellspacing=3D"0" cellpadding=3D"0">       <tr>         <td width=3D"50%" al=
+ign=3D"left" valign=3D"top" class=3D"greetings" style=3D"font-family:'Helve=
+tica Neue', Arial, Helvetica, Geneva, sans-serif; color:#505050; font-size:=
+16px;"><span class=3D'mobile-hidden'>Hello, </span>MICHAEL STOWE</td> <td w=
+idth=3D"50%" align=3D"right" valign=3D"top" class=3D"greetings" style=3D"fo=
+nt-family:'Helvetica Neue', Arial, Helvetica, Geneva, sans-serif; color:#50=
+5050; font-size:16px;">Reference&nbsp;#:&nbsp;<span class=3D"mobile-hidden"=
+>&nbsp;&nbsp;</span>****************5546</td>       </tr>     </table></td>=
+   </tr>   <tr>     <td bgcolor=3D"#eeeeee" style=3D"border-top:#cccdcd 2px=
+ solid; "><table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=
+=3D"0">       <tr>         <td align=3D"left" class=3D"alert" style=3D"font=
+-family:'Helvetica Neue', Arial, Helvetica, Geneva, sans-serif; color:#6503=
+60; font-size:25px; padding:15px 20px;">Discover Card Will No Longer Send Y=
+ou eBills</td>       </tr>     </table></td>   </tr>      <tr>     <td alig=
+n=3D"center" bgcolor=3D"#eeeeee">       <table width=3D"95%" border=3D"0" c=
+ellspacing=3D"0" cellpadding=3D"0">         <tr>           <td bgcolor=3D"#=
+dadada" height=3D"1" style=3D"font-size:0px; line-height:1px;"><img src=3D"=
+http://image.email.ally.com/lib/fe651570746c03787615/m/1/spaceTrans.gif" wi=
+dth=3D"1" height=3D"1" /></td>           </tr>         <tr>           <td b=
+gcolor=3D"#ffffff" height=3D"1" style=3D"font-size:0px; line-height:1px;"><=
+img src=3D"http://image.email.ally.com/lib/fe651570746c03787615/m/1/spaceTr=
+ans.gif" width=3D"1" height=3D"1" /></td>           </tr>   </table>       =
+       </td>   </tr>   <tr>     <td bgcolor=3D"#eeeeee" style=3D"padding:25=
+px 20px; font-family:'Helvetica Neue', Arial, Helvetica, Geneva, sans-serif=
+; color:#505050; font-size:14px;">     <table width=3D"100%" border=3D"0" c=
+ellspacing=3D"0" cellpadding=3D"0">   <tr>     <td align=3D"left" valign=3D=
+"bottom" class=3D"acnt_data" style=3D"font-family:'Helvetica Neue', Arial, =
+Helvetica, Geneva, sans-serif; color:#505050; font-size:14px; padding-top:1=
+px;"><span class=3D"applelinksGrey">Discover Card has stopped sending you e=
+Bills in Bill Pay for account number ************2482 .</span></br></br></t=
+d>   </tr> <tr>     <td align=3D"left" valign=3D"bottom" class=3D"acnt_data=
+" style=3D"font-family:'Helvetica Neue', Arial, Helvetica, Geneva, sans-ser=
+if; color:#505050; font-size:14px; padding-top:1px;"><span class=3D"appleli=
+nksGrey">You should receive a paper statement through the mail from Discove=
+r Card, and you can pay it in Bill Pay.</span></br></br></td>   </tr> <tr> =
+    <td align=3D"left" valign=3D"bottom" class=3D"acnt_data" style=3D"font-=
+family:'Helvetica Neue', Arial, Helvetica, Geneva, sans-serif; color:#50505=
+0; font-size:14px; padding-top:1px;"><span class=3D"applelinksGrey"><b>Make=
+ sure you don't miss a payment.</b> Check the status of payments you've alr=
+eady scheduled in Bill Pay.</span></td></tr>       </table>      </td>   </=
+tr>      <tr>     <td align=3D"center" bgcolor=3D"#eeeeee">     <table widt=
+h=3D"95%" border=3D"0" cellspacing=3D"0" cellpadding=3D"0">   <tr>     <td =
+bgcolor=3D"#dadada" height=3D"1" style=3D"font-size:0px; line-height:1px;">=
+<img src=3D"http://image.email.ally.com/lib/fe651570746c03787615/m/1/spaceT=
+rans.gif" width=3D"1" height=3D"1" /></td>   </tr>   <tr>     <td bgcolor=
+=3D"#ffffff" height=3D"1" style=3D"font-size:0px; line-height:1px;"><img sr=
+c=3D"http://image.email.ally.com/lib/fe651570746c03787615/m/1/spaceTrans.gi=
+f" width=3D"1" height=3D"1" /></td>   </tr> </table>     </td>   </tr>   <!=
+-- Questions? section -->    <tr>     <td class=3D"mobile-hidden" align=3D"=
+left" bgcolor=3D"#eeeeee" style=3D"padding:30px 20px; font-family:'Helvetic=
+a Neue', Arial, Helvetica, Geneva, sans-serif; color:#505050; font-size:15p=
+x; ">     <table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=
+=3D"0" align=3D"left">   <tr>     <td valign=3D"middle" align=3D"left" styl=
+e=3D"padding-right:12px; font-family:'Helvetica Neue', Arial, Helvetica, Ge=
+neva, sans-serif; color:#505050; font-size:14px;"><strong>Questions?</stron=
+g></td>     <td valign=3D"middle" align=3D"left" style=3D"border-left:1px #=
+999999 solid; padding-left:18px; padding-right:12px; font-family:'Helvetica=
+ Neue', Arial, Helvetica, Geneva, sans-serif; color:#505050; font-size:14px=
+;">Call&nbsp;us&nbsp;<span class=3D"appleLinksFtr">24&#47;7</span>&nbsp;at<=
+br /><nobr><span class=3D"appleLinksFtr">877<span>&#45;247&#45;</span>2559<=
+/span></nobr></td>     <td valign=3D"middle" align=3D"left" style=3D"border=
+-left:1px #999999 solid; padding-left:18px; padding-right:12px; font-family=
+:'Helvetica Neue', Arial, Helvetica, Geneva, sans-serif; color:#505050; fon=
+t-size:14px;">Chat&nbsp;at<br />      <span class=3D"appleLinksFtr">allyban=
+k<span>&#46;com</span></span></td>     <td valign=3D"middle" align=3D"left"=
+ style=3D"border-left:1px #999999 solid; padding-left:18px;font-family:'Hel=
+vetica Neue', Arial, Helvetica, Geneva, sans-serif; color:#505050; font-siz=
+e:14px;">Log&nbsp;in&nbsp;and&nbsp;send&nbsp;a<br />Secure&nbsp;Message</td=
+>   </tr> </table>      </td>   </tr>   <!--[if !mso 9]><!-->   <tr>     <t=
+d align=3D"center" bgcolor=3D"#eeeeee" style=3D"font-family:'Helvetica Neue=
+', Arial, Helvetica, Geneva, sans-serif; color:#505050; font-size:14px;">  =
+        <div class=3D"show" style=3D" display:none; width:0px; max-height:0=
+px; overflow:hidden !important;">       <table width=3D"320" border=3D"0" c=
+ellspacing=3D"0" cellpadding=3D"0" align=3D"center">         <tr>          =
+ <td width=3D"70" valign=3D"middle" align=3D"left" style=3D"padding:20px 10=
+px 20px 20px; font-family:'Helvetica Neue', Arial, Helvetica, Geneva, sans-=
+serif; color:#505050; font-size:14px;"><strong>Questions?</strong></td>    =
+       <td valign=3D"middle" align=3D"left" style=3D"padding: 13px 10px 13p=
+x 0px; font-family:'Helvetica Neue', Arial, Helvetica, Geneva, sans-serif; =
+color:#505050; "><table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" > =
+            <tr>               <td style=3D" background-color:#f7f7f7; padd=
+ing-top:10px; padding-right:12px; padding-bottom:10px; padding-left:12px; b=
+order:1px solid #CCCCCC" align=3D"left"><a style=3D"color: #006899; font-fa=
+mily: 'Helvetica Neue', Arial, Helvetica, Geneva, sans-serif; font-size:14p=
+x; text-decoration: underline;" href=3D"tel:555-123-4567"><span style=3D"co=
+lor:#006899;  text-decoration: underline;"><strong>Call&nbsp;Us&nbsp;at&nbs=
+p;555-123-4567</strong></span></a></td>             </tr>           </table=
+></td>         </tr>       </table>     </div>     </td>   </tr>   <!--<![e=
+ndif]-->   <!-- END Questions? section -->      <!-- Footer -->   <tr>     =
+<td align=3D"left" class=3D"ftr" bgcolor=3D"#d8d8d8" style=3D"padding:30px =
+20px 30px 20px; font-family:'Helvetica Neue', Arial, Helvetica, Geneva, san=
+s-serif; color:#505050; font-size:14px;">       Concerned you've received a=
+ suspicious email that isn't from Ally Bank? Call us  at <span class=3D"app=
+leLinksFtr"><nobr>555-123-4567 </nobr></span> and we'll investigate.<br /><=
+br />       Please do not reply to this email.<br /><br />       Ally and A=
+lly Bank  are registered service marks.       Ally Bank &nbsp;<strong>Membe=
+r&nbsp;FDIC</strong><br /> <br /> Email ID: EBICI-V1-USB15.4</td>   </tr>  =
+ <!-- END Footer -->       </table>      <!-- End containing table -->     =
+</div></td>   </tr> </table> <!-- End centering table -->  <p><br>Please do=
+ not delete this section.<br>Email_ID:#520242354402812127660_<br><br></p></=
+body></html>
+

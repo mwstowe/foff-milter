@@ -192,11 +192,17 @@ impl SenderAlignmentAnalyzer {
             "narvar.com",
             "tracking.domain-track.prod20.narvar.com",
             "spmailtechno.com",
-            "gmail.com",              // For forwarded emails
-            "emails.pitneybowes.com", // Pitney Bowes email service
-            "mail.arrived.com",       // Arrived email service
-            "mcdlv.net",              // MailChimp delivery network
-            "wdc02.mcdlv.net",        // MailChimp WDC02 delivery
+            "gmail.com",                  // For forwarded emails
+            "emails.pitneybowes.com",     // Pitney Bowes email service
+            "mail.arrived.com",           // Arrived email service
+            "mcdlv.net",                  // MailChimp delivery network
+            "wdc02.mcdlv.net",            // MailChimp WDC02 delivery
+            "hb.d.mailin.fr",             // Mailjet/Sendinblue ESP
+            "mailin.fr",                  // Sendinblue
+            "bounce.e.rejuvenation.com",  // Rejuvenation ESP
+            "bounce.e.onestopplus.com",   // OneStopPlus ESP
+            "charmtracker.com",           // Healthcare EHR
+            "mailerehr.charmtracker.com", // CharmTracker EHR
         ];
 
         legitimate_services

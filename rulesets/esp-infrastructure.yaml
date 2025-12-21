@@ -47,6 +47,24 @@ rules:
     score: -100
     description: "Legitimate health device company infrastructure"
 
+  # Mailjet/Sendinblue ESP Infrastructure
+  - name: "Mailjet Sendinblue ESP Infrastructure"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*(hb\\.d\\.mailin\\.fr|mailin\\.fr|mailjet|sendinblue).*"
+    score: -150
+    description: "Legitimate ESP infrastructure for business communications"
+
+  # CharmTracker Healthcare EHR Infrastructure
+  - name: "CharmTracker Healthcare EHR Infrastructure"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*(charmtracker|mailerehr\\.charmtracker).*"
+    score: -200
+    description: "Legitimate healthcare EHR system infrastructure"
+
   # Political Organization Infrastructure
   - name: "Political Organization Infrastructure"
     enabled: true

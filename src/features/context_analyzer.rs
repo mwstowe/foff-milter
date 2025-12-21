@@ -276,6 +276,10 @@ impl ContextAnalyzer {
             "wayfair.com",
             "overstock.com",
             "newegg.com",
+            "michaels.com",
+            "emdeals.michaels.com",
+            "rejuvenation.com",
+            "onestopplus.com",
         ];
 
         let sender_lower = sender.to_lowercase();
@@ -695,6 +699,10 @@ impl ContextAnalyzer {
             "capitaloneshopping.com",
             "govdelivery.com",
             "public.govdelivery.com",
+            "michaels.com",
+            "emdeals.michaels.com",
+            "rejuvenation.com",
+            "onestopplus.com",
         ];
 
         let is_legitimate_sender = legitimate_retailers

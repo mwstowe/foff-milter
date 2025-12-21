@@ -1618,6 +1618,29 @@ impl FilterEngine {
         // Clone context to modify hop detection fields
         let mut context = context.clone();
 
+        // Check if this is from the same server FIRST - skip all analysis if true
+        if self.is_same_server_email(&context) {
+            log::info!("Same server email detected - removing X-FOFF headers and accepting");
+
+            // Remove any existing X-FOFF headers
+            let mut headers_to_remove = Vec::new();
+            for name in context.headers.keys() {
+                if name.to_lowercase().starts_with("x-foff") || name.to_lowercase() == "x-spam-flag"
+                {
+                    headers_to_remove.push(name.clone());
+                }
+            }
+
+            return (
+                Action::Accept,
+                vec!["Same server email - X-FOFF headers removed".to_string()],
+                headers_to_remove
+                    .into_iter()
+                    .map(|name| (name, String::new()))
+                    .collect(),
+            );
+        }
+
         // Normalize email content for enhanced analysis
         if let Some(_body) = &context.body {
             // Reconstruct raw email for normalization
@@ -1686,29 +1709,6 @@ impl FilterEngine {
             seasonal_score.total_seasonal_score,
             seasonal_adjustment
         );
-
-        // Check if this is from the same server - skip analysis and remove X-FOFF headers
-        if self.is_same_server_email(&context) {
-            log::info!("Same server email detected - removing X-FOFF headers and accepting");
-
-            // Remove any existing X-FOFF headers
-            let mut headers_to_remove = Vec::new();
-            for name in context.headers.keys() {
-                if name.to_lowercase().starts_with("x-foff") || name.to_lowercase() == "x-spam-flag"
-                {
-                    headers_to_remove.push(name.clone());
-                }
-            }
-
-            return (
-                Action::Accept,
-                vec!["Same server email - X-FOFF headers removed".to_string()],
-                headers_to_remove
-                    .into_iter()
-                    .map(|name| (name, String::new()))
-                    .collect(),
-            );
-        }
 
         // Check for upstream FOFF-milter processing and trust existing tags
         if let Some(trust_result) = self.check_upstream_trust(&context) {
@@ -7631,7 +7631,11 @@ impl FilterEngine {
         }
 
         // Use Return-Path (envelope sender) for actual sender verification, not spoofable From header
-        let actual_sender_domain = if let Some(return_path) = context.headers.get("Return-Path") {
+        let actual_sender_domain = if let Some(return_path) = context
+            .headers
+            .get("Return-Path")
+            .or_else(|| context.headers.get("return-path"))
+        {
             // Extract domain from Return-Path: <user@domain.com>
             if let Some(at_pos) = return_path.rfind('@') {
                 let after_at = &return_path[at_pos + 1..];

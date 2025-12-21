@@ -346,6 +346,10 @@ impl BusinessContextAnalyzer {
             "spotify.com",
             "hulu.com",
             "disney.com",
+            "michaels.com",
+            "emdeals.michaels.com",
+            "rejuvenation.com",
+            "onestopplus.com",
         ];
 
         established_domains

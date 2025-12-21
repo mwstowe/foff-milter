@@ -821,7 +821,7 @@ rules:
             type: Or
             criteria:
               - type: SenderPattern
-                pattern: ".*@.*(adapthealth|healthcare|medical|clinic|hospital|pulmonary|levi|gmail|yahoo|hotmail|outlook|bearaby|sleep|wellness)\\.(com|net|org)$"
+                pattern: ".*@.*(adapthealth|healthcare|medical|clinic|hospital|pulmonary|levi|gmail|yahoo|hotmail|outlook|bearaby|sleep|wellness|michaels|emdeals\\.michaels|rejuvenation|e\\.rejuvenation|onestopplus|e\\.onestopplus)\\.(com|net|org)$"
               - type: HeaderPattern
                 header: "Authentication-Results"
                 pattern: "dkim=pass.*adapthealth\\.com"
@@ -960,12 +960,22 @@ rules:
   # Malware attachment patterns
   - name: "Malware Attachment Spam"
     criteria:
-      type: Or
+      type: And
       criteria:
-        - type: SubjectPattern
-          pattern: "(?i).*(new.*enquiry|malware.*rar.*attachment|suspicious.*attachment|urgent.*document).*"
-        - type: BodyPattern
-          pattern: "(?i).*(new.*enquiry|malware.*rar.*attachment|suspicious.*attachment|urgent.*document).*"
+        - type: Or
+          criteria:
+            - type: SubjectPattern
+              pattern: "(?i).*(new.*enquiry|malware.*rar.*attachment|suspicious.*attachment|urgent.*document).*"
+            - type: BodyPattern
+              pattern: "(?i).*(new.*enquiry|malware.*rar.*attachment|suspicious.*attachment|urgent.*document).*"
+        - type: Not
+          criteria:
+            type: Or
+            criteria:
+              - type: SenderPattern
+                pattern: ".*@.*(acemedseattle|charmtracker|healthcare|medical|clinic|hospital)\\.(com|net|org)$"
+              - type: SenderPattern
+                pattern: ".*@.*(michaels|emdeals\\.michaels|rejuvenation|e\\.rejuvenation|onestopplus|e\\.onestopplus)\\.(com|net|org)$"
     score: 350
 
   # Enhanced knee health spam
