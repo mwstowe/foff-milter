@@ -576,6 +576,124 @@ impl ContextAnalyzer {
         issues
     }
 
+    /// Detect wire transfer fraud patterns
+    fn analyze_wire_transfer_fraud(&self, context: &MailContext) -> Vec<String> {
+        let mut issues = Vec::new();
+        let subject = context.subject.as_deref().unwrap_or("");
+        let body = context.body.as_deref().unwrap_or("");
+        let from_header = context.from_header.as_deref().unwrap_or("");
+
+        // Wire transfer indicators
+        let wire_transfer_patterns = [
+            r"(?i)wire.*transfer",
+            r"(?i)transfer.*confirmation",
+            r"(?i)transfer.*processed",
+            r"(?i)transfer.*complete",
+            r"(?i)funds.*sent",
+            r"(?i)payment.*processed",
+        ];
+
+        let has_wire_content = wire_transfer_patterns.iter().any(|pattern| {
+            if let Ok(regex) = Regex::new(pattern) {
+                regex.is_match(subject) || regex.is_match(body)
+            } else {
+                false
+            }
+        });
+
+        if has_wire_content {
+            // Check for brand impersonation with financial institutions
+            let financial_brands = [
+                "citi",
+                "citibank",
+                "chase",
+                "wells fargo",
+                "wellsfargo",
+                "bank of america",
+                "bankofamerica",
+                "jpmorgan",
+                "discover",
+            ];
+
+            let claims_financial_brand = financial_brands.iter().any(|brand| {
+                from_header.to_lowercase().contains(brand)
+                    || subject.to_lowercase().contains(brand)
+                    || body.to_lowercase().contains(brand)
+            });
+
+            if claims_financial_brand {
+                // Check if sender domain matches claimed brand
+                let legitimate_domains = [
+                    "citi.com",
+                    "citibank.com",
+                    "chase.com",
+                    "wellsfargo.com",
+                    "bankofamerica.com",
+                    "jpmorgan.com",
+                    "discover.com",
+                ];
+
+                let is_legitimate_domain = legitimate_domains
+                    .iter()
+                    .any(|domain| from_header.contains(domain));
+
+                if !is_legitimate_domain {
+                    issues.push(
+                        "Wire transfer fraud: Financial brand impersonation detected".to_string(),
+                    );
+                }
+            }
+
+            // Check for urgency tactics with wire transfers
+            let urgency_patterns = [
+                r"(?i)if.*you.*did.*not.*initiate",
+                r"(?i)unauthorized.*transaction",
+                r"(?i)contact.*us.*immediately",
+                r"(?i)urgent.*security.*notice",
+                r"(?i)call.*now.*to.*verify",
+            ];
+
+            let has_urgency = urgency_patterns.iter().any(|pattern| {
+                if let Ok(regex) = Regex::new(pattern) {
+                    regex.is_match(body)
+                } else {
+                    false
+                }
+            });
+
+            if has_urgency {
+                issues.push(
+                    "Wire transfer fraud: Urgency tactics with financial content".to_string(),
+                );
+            }
+
+            // Check for suspicious transaction details
+            let transaction_patterns = [
+                r"(?i)beneficiary.*name",
+                r"(?i)routing.*number",
+                r"(?i)confirmation.*number",
+                r"(?i)reference.*number",
+                r"(?i)amount.*\$\d+",
+            ];
+
+            let has_transaction_details = transaction_patterns.iter().any(|pattern| {
+                if let Ok(regex) = Regex::new(pattern) {
+                    regex.is_match(body)
+                } else {
+                    false
+                }
+            });
+
+            if has_transaction_details {
+                issues.push(
+                    "Wire transfer fraud: Suspicious transaction details provided".to_string(),
+                );
+            }
+        }
+
+        issues
+    }
+
     /// Detect Unicode character obfuscation (lookalike characters)
     fn detect_unicode_obfuscation(&self, text: &str) -> (bool, f32) {
         let suspicious_chars = [
@@ -779,6 +897,11 @@ impl FeatureExtractor for ContextAnalyzer {
         let medicare_issues = self.analyze_medicare_scam_patterns(context);
         total_score += (medicare_issues.len() as f32 * 60.0 * promo_discount) as i32;
         all_evidence.extend(medicare_issues);
+
+        // Check for wire transfer fraud patterns
+        let wire_fraud_issues = self.analyze_wire_transfer_fraud(context);
+        total_score += (wire_fraud_issues.len() as f32 * 150.0) as i32; // High penalty for wire fraud
+        all_evidence.extend(wire_fraud_issues);
 
         // Check for Unicode obfuscation in subject and body
         let combined_text = format!("{} {}", subject, body);

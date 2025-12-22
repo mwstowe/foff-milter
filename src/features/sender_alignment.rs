@@ -276,6 +276,17 @@ impl SenderAlignmentAnalyzer {
                 "apple",
                 "facebook",
                 "bank",
+                "citi",
+                "citibank",
+                "chase",
+                "wellsfargo",
+                "wells fargo",
+                "bankofamerica",
+                "bank of america",
+                "jpmorgan",
+                "discover",
+                "capitalone",
+                "capital one",
             ];
             let display_lower = display_part.to_lowercase();
             let email_lower = email_part.to_lowercase();
