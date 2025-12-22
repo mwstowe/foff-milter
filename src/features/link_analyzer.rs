@@ -208,11 +208,11 @@ impl LinkAnalyzer {
             "billpay.com",
             "autopay.com",
             "paymi.com",
-            "epay.com",
+            "netsuite.com",
         ];
 
         for processor in &payment_processors {
-            if link_domain.contains(processor) {
+            if link_domain.contains(processor) || link_domain.ends_with(".netsuite.com") {
                 return false;
             }
         }

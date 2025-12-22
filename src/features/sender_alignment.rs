@@ -188,6 +188,7 @@ impl SenderAlignmentAnalyzer {
             "mandrillapp.com",
             "mailjet.com",
             "concurcompleat.com",
+            "oracleemaildelivery.com",
             "bounce.concurcompleat.com",
             "narvar.com",
             "tracking.domain-track.prod20.narvar.com",
@@ -253,8 +254,14 @@ impl SenderAlignmentAnalyzer {
 
             // Check for domain mismatch in display name
             if display_part.contains('@') && !display_part.contains(email_part) {
-                score += 25;
-                evidence.push("Display name contains different email domain".to_string());
+                // Skip for legitimate NetSuite business invoices
+                let is_netsuite_invoice = email_part.contains("sent-via.netsuite.com") 
+                    && display_part.contains('(') && display_part.contains('@') && display_part.contains(')');
+                
+                if !is_netsuite_invoice {
+                    score += 25;
+                    evidence.push("Display name contains different email domain".to_string());
+                }
             }
 
             // Check for brand impersonation patterns

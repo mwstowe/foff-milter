@@ -852,6 +852,9 @@ impl FilterEngine {
             "capitaloneshopping.com",
             "accounts.capitaloneshopping.com",
             "usbank.com",
+            "netsuite.com",
+            "sent-via.netsuite.com",
+            "oracleemaildelivery.com",
         ];
 
         for financial_domain in &legitimate_financial {
