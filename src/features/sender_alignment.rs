@@ -233,8 +233,12 @@ impl SenderAlignmentAnalyzer {
             // Check for suspicious display name patterns
             let suspicious_chars = ['@', '<', '>', '[', ']', '{', '}', '|', '\\'];
             if display_part.chars().any(|c| suspicious_chars.contains(&c)) {
-                score += 20;
-                evidence.push("Display name contains suspicious characters".to_string());
+                // Skip if it's a legitimate business format like "Business Name (email@domain.com)"
+                let business_contact_pattern = regex::Regex::new(r"^[^<>]+\s*\([^)]+@[^)]+\)$").unwrap();
+                if !business_contact_pattern.is_match(display_part) {
+                    score += 20;
+                    evidence.push("Display name contains suspicious characters".to_string());
+                }
             }
 
             // Disabled: overly broad detection that flags legitimate business names

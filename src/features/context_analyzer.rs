@@ -305,13 +305,23 @@ impl ContextAnalyzer {
         let mut score = 0;
         let mut evidence = Vec::new();
 
-        // Check for employment scam patterns
-        for pattern in EMPLOYMENT_SCAM_PATTERNS {
-            if let Ok(regex) = Regex::new(pattern) {
-                if regex.is_match(text) {
-                    score += 40;
-                    evidence.push("Employment scam pattern detected".to_string());
-                    break;
+        // Skip employment scam detection for legitimate retail marketing
+        let is_retail_marketing = sender.to_lowercase().contains("torrid")
+            || sender.to_lowercase().contains("michaels")
+            || sender.to_lowercase().contains("target")
+            || sender.to_lowercase().contains("walmart")
+            || text.to_lowercase().contains("in-store")
+            || text.to_lowercase().contains("save big");
+
+        if !is_retail_marketing {
+            // Check for employment scam patterns
+            for pattern in EMPLOYMENT_SCAM_PATTERNS {
+                if let Ok(regex) = Regex::new(pattern) {
+                    if regex.is_match(text) {
+                        score += 40;
+                        evidence.push("Employment scam pattern detected".to_string());
+                        break;
+                    }
                 }
             }
         }
