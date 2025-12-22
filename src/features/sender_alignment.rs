@@ -627,6 +627,7 @@ impl SenderAlignmentAnalyzer {
             "ladyyum.com",
             "ikea.us",
             "capitalone.com",
+            "capitaloneshopping.com",
             "mailer.humblebundle.com",
             "poshmark.com", // Marketplace platform
             "ebay.com",
@@ -854,6 +855,7 @@ impl SenderAlignmentAnalyzer {
             "apple.com",
             "applecard.apple",
             "notification.capitalone.com",
+            "capitaloneshopping.com",
             "ikea.us",
             "bedjet.com",
             "ladyyum.com",
@@ -1214,6 +1216,7 @@ impl FeatureExtractor for SenderAlignmentAnalyzer {
                         let is_legitimate_service = from_domain.contains("netsuite.com")
                             || from_domain.contains("oracleemaildelivery.com")
                             || from_domain.contains("toast-restaurants.com")
+                            || sender_domain.contains("oracleemaildelivery.com")
                             || (from_root.contains("lovepop") && reply_to_root.contains("lovepop"));
 
                         // Only flag if different root domains (cross-domain mismatch) and not legitimate service
