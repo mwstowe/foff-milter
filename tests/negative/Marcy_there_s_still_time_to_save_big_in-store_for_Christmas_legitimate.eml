@@ -1,0 +1,1457 @@
+Return-Path: <bounce+aac317.589eb1-marcy=baddomain.com@mktg.torrid.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTPS id 5BKM63HQ096295
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <user@example.com>; Sat, 20 Dec 2025 22:06:03 GMT
+	(envelope-from bounce+aac317.589eb1-marcy=baddomain.com@mktg.torrid.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (2048-bit key; unprotected) header.d=mktg.torrid.com header.i=@mktg.torrid.com header.b=o7KUcHeD
+Received: from d2.c153.cordialmail.net (d2.c153.cordialmail.net [192.112.153.2])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 5BKM61rR027677
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO)
+	for <user@example.com>; Sat, 20 Dec 2025 16:06:02 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 5BKM61rR027677
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (2048-bit key, unprotected) header.d=mktg.torrid.com header.i=@mktg.torrid.com header.a=rsa-sha256 header.s=crdl01 header.b=o7KUcHeD
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mktg.torrid.com; q=dns/txt; s=crdl01; t=555-123-4567; x=555-123-4567;
+ h=Content-Transfer-Encoding: Content-Type: Message-Id: X-Feedback-Id: Reply-To: To: To: From: From: Subject: Subject: Mime-Version: Date: Sender: Sender: List-Unsubscribe: List-Unsubscribe-Post;
+ bh=fAOukrjC0Qh/+8YQ9x9QS9IiiLJ8M67N9SjhJgNCRuY=;
+ b=o7KUcHeD6Z+kVjvFBC6G32ahutQDudqQDs726MBKv/6h8vohspfOFTUTBs9G/hZph2pjbymcV9fiTJI9MR2/3EQpubNBfBOn9KWyFEGQGqRcx4xUDKDcL9PfQ6dhM/qesfpKGStkskmXz6EJSJaovi5mLMU0dHoYBY8I3WR0ITceebCrErRDhx6CHYpayojiR36eDufPo65DL9+0X/yd9RrURI40nMX2+zxzfcRab13t4AtDmGjxdH2hKScr7n7abpUZF34sD+41grNIgcfJ51VfIf+h4ZeGoX0jGpW0ZOuzlN1ljjZoC5CoH+DZ+fp8J7leOCh0JBlJXOmH7CYwtw==
+X-Mailgun-Sid: WyI3MjQ4NyIsIm1hcmN5QGJhZGRvbWFpbi5jb20iLCI1ODllYjEiXQ==
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+List-Unsubscribe: <mailto:u+mnzgi3cfnz3d24dsn5shky3unfxw4jtehu2tqolfmiysm2b5meydomjrmi4dmnlbgvtgknlemy2tsyrqmizgimjyge4gmytfgntcm2j5giydenjrgizdamrsga2tkmbogrsgiyrxgazdczlfhe4dqzrug4stimdnnn2goltun5zhe2lefzrw63jgnvrusrb5giydcmrfgnatmojugq4dgyzzha4dcolggm2dsyrvgbqtenlggmstgqlpoqstgqjwgyzdindggi3gezlcge4gemzwg5rtayzqmi2tijjtieysm4r5nvqxey3zeu2daytbmrsg63lbnfxc4y3pnuthipjfgjasm5r5gi@mktg.torrid.com>,
+ <https://mg.mktg.torrid.com/u/eJwczTFOxTAMANDTJGNlO3HrDBkqwcAx4jiBCtqgqHyJ2yP-_IZXp329Xo_8PYf91PsYl7fMkpqi_8gFNkSVlQv3xtY5KSgZCkrXFro_MgExEgERMMMSzXQDwtaSSI-bi3B-3u_LPeY8bKnj9Gd9e8kESC7sa4pRQk0imHqISRkKcQ8u7OP-95Vi7LRqUxQN61ahgnJ0YUc_81lm_XURtJiNsxzXM7izo90_Mv0FAAD___ylP2s>
+Received: by c11ccb53c421ef15ed5869fde4fee07f2aae03c13614be116c3b24a81f94bf30 with HTTP
+ id 69471dbeadbb759cb1253bd2; Sat, 20 Dec 2025 22:05:50 GMT
+X-Mailgun-Sending-Ip-Pool-Name: torrid_promo
+X-Mailgun-Sending-Ip-Pool: 66f4681be4fa9b244414638c
+X-Mailgun-Sending-Ip: 192.112.153.2
+Sender: info@mktg.torrid.com
+Date: Sat, 20 Dec 2025 22:05:50 +0000
+Mime-Version: 1.0
+Subject: =?utf-8?b?TWFyY3ksIHRoZXJl4oCZcyBzdGlsbCB0aW1lIHRvIHNhdmUgYmlnIGluLXN0b3JlIGZvciBDaHJpc3RtYXMg8J+OhA==?=
+From: Torrid Semi Annual Sale <info@mktg.torrid.com>
+To: user@example.com
+X-Mailgun-Tag: msID:2012:694483c98819f349b50a25f3:ot
+X-Mailgun-Track-Opens: true
+Bimi-Selector: v=BIMI1; s=default;
+X-Crdl-Mc: 2012:694483c98819f349b50a25f3:ot:66244f26beb18b367c0c0b54:1
+Reply-To: no-reply@mktg.torrid.com
+X-Feedback-Id: 2012:2012_694483c98819f349b50a25f3_ot:66244f26beb18b367c0c0b54:cordial
+X-Mailgun-Variables: {"crdlEnv": "production", "mcID":
+ "2012:694483c98819f349b50a25f3:ot:66244f26beb18b367c0c0b54:1"}
+Message-Id: <20251220220550.4ddb7021ee988f47@mktg.torrid.com>
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Sat, 20 Dec 2025 22:06:03 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Sat, 20 Dec 2025 16:06:02 -0600 (CST)
+X-Spam-Flag: YES
+
+<!DOCTYPE html><html lang=3D"en" xmlns=3D"http://www.w3.org/1999/xhtml" xml=
+ns:o=3D"urn:schemas-microsoft-com:office:office"><head><meta http-equiv=3D"=
+Content-Type" content=3D"text/html; charset=3Dutf-8"><title></title><meta n=
+ame=3D"format-detection" content=3D"telephone=3Dno"><meta name=3D"viewport"=
+ content=3D"width=3Ddevice-width, initial-scale=3D1, maximum-scale=3D1"><me=
+ta content=3D"width=3Ddevice-width, initial-scale=3D1, maximum-scale=3D1, u=
+ser-scalable=3Dyes" name=3D"viewport">    <style type=3D"text/css">
+      /* reset */
+      * {margin-top:0px;margin-bottom:0px;padding:0px;border:none;outline:n=
+one;-webkit-text-size-adjust: none;}
+      body {margin:0 !important;padding:0 !important;width: 100% !important=
+;-webkit-text-size-adjust: 100% !important;-ms-text-size-adjust: 100% !impo=
+rtant;-webkit-font-smoothing: antialiased !important;}
+      img {border:0 !important;display: block !important;outline: none !imp=
+ortant;}
+      table {border-collapse: collapse;mso-table-lspace:0px;mso-table-rspac=
+e: 0px;}
+      td {border-collapse:collapse;mso-line-height-rule:exactly;}
+      .ftr a {color:#888888;}
+      .ExternalClass {width: 100%;line-height: 100%;}
+      a[x-apple-data-detectors] {color: inherit !important;text-decoration:=
+ none !important;font-size: inherit !important;font-family: inherit !import=
+ant;font-weight: inherit !important;line-height: inherit !important;}
+
+      .MsoNormal { font-size:0 !important; line-height:0 !important}
+
+      /* @font-face CUSTOM FONTS HERE */
+           =20
+    @media only screen and (max-width:640px){
+      .hide_e {display: none !important;}
+      .show_e {display: block !important; width: auto !important; overflow:=
+ visible !important; float: none !important; max-height: inherit !important=
+; line-height: inherit !important;}
+      .mobile_img_early, .mobile_img_e {width: 100% !important; height: aut=
+o !important;}
+      .w100pc_early, .w100pc_e {width: 100% !important;}
+      .mobile_cta_early, .mobile_cta_e {width: 100% !important;max-width: 1=
+00% !important;}
+    }
+
+    @media only screen and (max-width:520px){
+      .w100pc, .width_100percent {width: 100% !important;}
+      .w10pc, .width_10percent {width: 10% !important;}
+      .mobile_img {width: 100% !important; height: auto !important;}
+      .prod_img {width: 100% !important; height: auto !important;}
+      .art_img {width: 100% !important; height: auto !important;}
+      .mobile_cta {width: 100% !important;max-width: 100% !important;}
+      .dblock {display: block !important;}
+      .block { display:block !important; }
+      .hide {display: none !important;}
+      .show {display: block !important; width: auto !important; overflow: v=
+isible !important; float: none !important; max-height: inherit !important; =
+line-height: inherit !important;}
+      .show_inline_table {display: inline-table !important;}
+      .bg_mobile {background-size: auto 100% !important;}
+      .maxWidth_none {max-width: none !important;}
+      .width_auto, .w_auto {width:  auto !important;}
+      .height_auto, .h_auto {height:  auto !important;}
+      .ptb20px, .paddingtopbottom_20 {padding-top: 20px !important;padding-=
+bottom: 20px !important;}
+      .ptb10px, .paddingtopbottom_10 {padding-top: 10px !important;padding-=
+bottom: 10px !important;}
+      .pl10 {padding-left:10px !important;}
+      .pr10 {padding-right:10px !important;}
+      .blockSides, .paddingsides_block {width: 20px !important;}
+      .textSides {width: 14px !important;}
+      .w20px, .width_20 {width: 20px !important;}
+      .w30px, .width_30 {width: 30px !important;}
+      .w2pc { width: 2% !important; }
+      .w3pc { width: 3% !important; }
+      .w4pc { width: 4% !important; }
+      .w5pc { width: 5% !important; }
+      .w23_5pc { width: 23.5% !important; }
+      .w25pc { width: 25% !important; }
+      .w30pc { width: 30% !important; }
+      .w32pc { width: 32% !important; }
+      .w40pc { width: 40% !important; }
+      .w48pc { width: 48% !important; }
+      .w10px, .width_10 { width: 10px !important; }
+      .w15px, .width_15 { width: 15px !important; }
+      .w20px, .width_20 { width: 20px !important; }
+      .w30px, .width_30 { width: 30px !important; }
+      .h10px, .height_10 {height: 10px !important;}
+      .h20px, .height_20 {height: 20px !important;}
+      .h30px, .height_30 {height: 30px !important;}
+      .h40px, .height_40 {height: 40px !important;}
+      .h50px, .height_50 {height: 50px !important;}
+      .h80px, .height_80 {height: 80px !important;}
+      .txt_10 {font-size: 10px !important; line-height: 12px !important;}
+      .txt_11 {font-size: 11px !important; line-height: 13px !important;}
+      .txt_12 {font-size: 12px !important; line-height: 14px !important;}
+      .txt_14 {font-size: 14px !important; line-height: 18px !important;}
+      .txt_16 {font-size: 16px !important; line-height: 20px !important;}
+      .txt_12_8 {font-size: 12px !important; line-height: 8px !important;}
+      .txt_14_10 {font-size: 14px !important; line-height: 10px !important;=
+}
+      .txt_18 {font-size: 18px !important; line-height: 22px !important;}
+      .txt_20 {font-size: 20px !important; line-height: 24px !important;}
+      .txt_24 {font-size: 24px !important; line-height: 28px !important;}
+      .txt_28 {font-size: 28px !important; line-height: 32px !important;}
+      .txt_32 {font-size: 32px !important; line-height: 36px !important;}
+      .centerText {text-align: center !important;}
+      .FullWidthOnMobile {width:100%!important;min-width:100%!important;}
+      .HalfWidthOnMobile {width:50%!important;min-width:50%!important;}
+    }
+    </style>
+
+    <!--[if mso]>
+    <style type=3D"text/css">
+      body, table, td, a, span {font-family: Arial,sans-serif !important;}
+      .nav {font-family: Arial,sans-serif !important;}
+      .hed {font-family: Arial,sans-serif !important;}
+      .ttl {font-family: Arial,sans-serif !important;}
+      .cta {font-family: Arial,sans-serif !important;}
+      .ftr {font-family: Arial,sans-serif !important;}
+      li {text-indent: -1em;}
+    </style>
+    <![endif]-->
+    <!--[if gte mso 9]>
+      <xml>
+      <o:OfficeDocumentSettings>
+      <o:AllowPNG/>
+      <o:PixelsPerInch>96</o:PixelsPerInch>
+      </o:OfficeDocumentSettings>
+      </xml>
+    <![endif]-->
+</head><body marginwidth=3D"0" marginheight=3D"0" style=3D"margin-top:0;mar=
+gin-bottom:0;padding-top:0;padding-bottom:0;width:100% !important;-webkit-t=
+ext-size-adjust:100%;-ms-text-size-adjust:100%;-webkit-font-smoothing:antia=
+liased;background-color:#ffffff;" offset=3D"0" topmargin=3D"0" leftmargin=
+=3D"0"><div data-crdl-tags=3D"sculpt-block-cqs-preheader"><table width=3D"1=
+00%" cellpadding=3D"0" cellspacing=3D"0" style=3D"background-color:#ffffff;=
+"><tr><td align=3D"center" valign=3D"top"><table width=3D"100%" cellpadding=
+=3D"0" cellspacing=3D"0"><tr><td align=3D"center" valign=3D"top" style=3D"f=
+ont-family:sans-serif;color:#ffffff;font-size:1px;line-height:1px;display:n=
+one;">Last minute? NP! Buy Online, Pick Up In Store</td></tr></table><table=
+ width=3D"100%" cellpadding=3D"0" cellspacing=3D"0"><tr><td align=3D"center=
+" valign=3D"top"><div style=3D"display: none; max-height: 0px; overflow: hi=
+dden;">=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F=
+ =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F=E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F=E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F=
+ =E2=80=87=CD=8F =E2=80=87=CD=8F=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F=E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F=E2=80=87=CD=
+=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F=E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F=E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F=C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD=C2=AD =C2=AD =C2=AD=
+ =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD=
+ =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD=
+ =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD=
+ =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD=C2=A0 </div=
+></td></tr></table></td></tr></table></div>
+ =20
+   =20
+
+
+<!-- MAP Pixel -->
+<img src=3D"https://analytics.torrid.com/pc/torrid-map/?pch=3D3&amp;pei=3D2=
+&amp;ci_paic=3D1&amp;ci_peic=3D1&amp;ogmap=3DEM%7C%7CSF%7C%7C%7C%7C%7C20251=
+220_PRO_SEMIANNUALSALESUPERSATURDAY_GRAPHIC_24M_2PM&amp;ogemid=3D66244f26be=
+b18b367c0c0b54&amp;ogemh=3D346d24f5520891d54bf3607712d0d55b20293ab187342d6c=
+cd1a0658b94423a4" width=3D"1" height=3D"1" style=3D"display:none">
+
+
+
+
+<!-- X-InboxMonster-CID:2012:694483c98819f349b50a25f3:ot-->     =20
+  <div>
+    <div><table width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" align=3D=
+"center" bgcolor=3D"#ffffff"><tr><td align=3D"center" valign=3D"top"><table=
+ width=3D"640" cellpadding=3D"0" cellspacing=3D"0" bgcolor=3D"#ffffff" clas=
+s=3D"w100pc_e"><tr><td height=3D"20" style=3D"line-height:1px;font-size:1px=
+;">=C2=A0</td></tr><tr><td align=3D"center" valign=3D"top"><table width=3D"=
+100%" cellpadding=3D"0" cellspacing=3D"0"><tr><td align=3D"center" valign=
+=3D"top"><a data-crdl-variant=3D"" target=3D"_blank" href=3D"https://e.mktg=
+=2Etorrid.com/c2/2012:694483c98819f349b=
+50a25f3:ot:66244f26beb18b367c0c0b54:1/=
+5f29dd25?jwtH=3DeyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9&amp;jwtP=3DeyJpYXQiOjE=
+3NjYyNjgzNTAsImNkIjoiLm1rdGcudG9ycmlkLmNvbSIsImNlIjo4NjQwMCwidGsiOiJ0b3JyaW=
+QiLCJtdGxJRCI6IjY5NDQ4NTYwZWFhNTk5ZjY0MzBkOTA0YiIsInR6IjotOCwibGlua1VybCI6I=
+mh0dHBzOi8vd3d3LnRvcnJpZC5jb20vP3V0bV9jb250ZW50PTIwMjUxMjIwX1BST19TRU1JQU5O=
+VUFMU0FMRVNVUEVSU0FUVVJEQVlfR1JBUEhJQ18yNE1fMlBNJnV0bV9tZWRpdW09RU1MJnV0bV9=
+zb3VyY2U9UFJPJnV0bV9jYW1wYWlnbj0yNE0mdXRtX3RoZW1lPVByb21vdGlvbmFsLVByb2R1Y3=
+Qmb2dtYXA9RU0lN0NQUk9NTyU3Q1NGJTdDJTdDJTdDJTdDJTdDMjAyNTEyMjBfUFJPX1NFTUlBT=
+k5VQUxTQUxFU1VQRVJTQVRVUkRBWV9HUkFQSElDXzI0TV8yUE0mb2dlbWlkPTY2MjQ0ZjI2YmVi=
+MThiMzY3YzBjMGI1NCZvZ2VtaD0zNDZkMjRmNTUyMDg5MWQ1NGJmMzYwNzcxMmQwZDU1YjIwMjk=
+zYWIxODczNDJkNmNjZDFhMDY1OGI5NDQyM2E0In0&amp;jwtS=3DIlX4VleQrQpwwvxDOwnV8Dt=
+6NR2AfYFSeyHmlQeqAIY"><img src=3D"https://images.usw2.cordial.com/2012/640x=
+75/TORRID_LOGO_EMAIL_HOLIDAY_2025.gif" width=3D"640" border=3D"0" style=3D"=
+width:640px;max-width:640px;height:auto;display:block;" alt=3D"Torrid" clas=
+s=3D"mobile_img_e"></a></td></tr></table></td></tr><tr><td height=3D"20" st=
+yle=3D"line-height:1px;font-size:1px;">=C2=A0</td></tr></table></td></tr></=
+table></div>
+    <div><table width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" align=3D=
+"center" style=3D"background-color:#ffffff"><tr><td align=3D"center" valign=
+=3D"top"><table width=3D"640" cellpadding=3D"0" cellspacing=3D"0" style=3D"=
+width:640px;background-color:#ffffff;" class=3D"w100pc_e"><tr><td align=3D"=
+center" valign=3D"top"><table width=3D"100%" cellpadding=3D"0" cellspacing=
+=3D"0"><tr><td width=3D"16.09375%" align=3D"left" valign=3D"top"><a data-cr=
+dl-variant=3D"" target=3D"_blank" href=3D"https://e.mktg.torrid.com/c2/2012=
+:694483c98819f349b50a25f3:ot:66244f26beb18b367c0c0b54:1/7deaad74?jwtH=3DeyJ=
+0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9&amp;jwtP=3DeyJpYXQiOjE3NjYyNjgzNTAsImNkIj=
+oiLm1rdGcudG9ycmlkLmNvbSIsImNlIjo4NjQwMCwidGsiOiJ0b3JyaWQiLCJtdGxJRCI6IjY5N=
+DQ4NTYwZWFhNTk5ZjY0MzBkOTA0YyIsInR6IjotOCwibGlua1VybCI6Imh0dHBzOi8vd3d3LnRv=
+cnJpZC5jb20vYnJhbmRzL3Nob3AtYWxsLWJyYW5kcy8_dXRtX2NvbnRlbnQ9MjAyNTEyMjBfUFJ=
+PX1NFTUlBTk5VQUxTQUxFU1VQRVJTQVRVUkRBWV9HUkFQSElDXzI0TV8yUE0mdXRtX21lZGl1bT=
+1FTUwmdXRtX3NvdXJjZT1QUk8mdXRtX2NhbXBhaWduPTI0TSZ1dG1fdGhlbWU9UHJvbW90aW9uY=
+WwtUHJvZHVjdCZvZ21hcD1FTSU3Q1BST01PJTdDU0YlN0MlN0MlN0MlN0MlN0MyMDI1MTIyMF9Q=
+Uk9fU0VNSUFOTlVBTFNBTEVTVVBFUlNBVFVSREFZX0dSQVBISUNfMjRNXzJQTSZvZ2VtaWQ9NjY=
+yNDRmMjZiZWIxOGIzNjdjMGMwYjU0Jm9nZW1oPTM0NmQyNGY1NTIwODkxZDU0YmYzNjA3NzEyZD=
+BkNTViMjAyOTNhYjE4NzM0MmQ2Y2NkMWEwNjU4Yjk0NDIzYTQifQ&amp;jwtS=3DS4qGg12joms=
+O_OcWe0Rg0mef3eCT_6hRn5_5nQRu_B8"><img src=3D"https://images.usw2.cordial.c=
+om/2012/103x65/2501_email_retro_template_02_brands.jpg" width=3D"103" borde=
+r=3D"0" style=3D"width:103px;height:auto;display:block;" alt=3D"Brands" cla=
+ss=3D"mobile_img_e"></a></td><td width=3D"12.1875%" align=3D"left" valign=
+=3D"top"><a data-crdl-variant=3D"" target=3D"_blank" href=3D"https://e.mktg=
+=2Etorrid.com/c2/2012:694483c98819f349b=
+50a25f3:ot:66244f26beb18b367c0c0b54:1/=
+443b0f63?jwtH=3DeyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9&amp;jwtP=3DeyJpYXQiOjE=
+3NjYyNjgzNTAsImNkIjoiLm1rdGcudG9ycmlkLmNvbSIsImNlIjo4NjQwMCwidGsiOiJ0b3JyaW=
+QiLCJtdGxJRCI6IjY5NDQ4NTYwZWFhNTk5ZjY0MzBkOTA0ZCIsInR6IjotOCwibGlua1VybCI6I=
+mh0dHBzOi8vd3d3LnRvcnJpZC5jb20vbmV3Lz91dG1fY29udGVudD0yMDI1MTIyMF9QUk9fU0VN=
+SUFOTlVBTFNBTEVTVVBFUlNBVFVSREFZX0dSQVBISUNfMjRNXzJQTSZ1dG1fbWVkaXVtPUVNTCZ=
+1dG1fc291cmNlPVBSTyZ1dG1fY2FtcGFpZ249MjRNJnV0bV90aGVtZT1Qcm9tb3Rpb25hbC1Qcm=
+9kdWN0Jm9nbWFwPUVNJTdDUFJPTU8lN0NTRiU3QyU3QyU3QyU3QyU3QzIwMjUxMjIwX1BST19TR=
+U1JQU5OVUFMU0FMRVNVUEVSU0FUVVJEQVlfR1JBUEhJQ18yNE1fMlBNJm9nZW1pZD02NjI0NGYy=
+NmJlYjE4YjM2N2MwYzBiNTQmb2dlbWg9MzQ2ZDI0ZjU1MjA4OTFkNTRiZjM2MDc3MTJkMGQ1NWI=
+yMDI5M2FiMTg3MzQyZDZjY2QxYTA2NThiOTQ0MjNhNCJ9&amp;jwtS=3DQFslPSBsr5zCZF6VE_=
+1FP2SpUtuAO6M3dyh-bVQ0ULs"><img src=3D"https://images.usw2.cordial.com/2012=
+/78x65/2501_email_retro_template_03_new.jpg" width=3D"78" border=3D"0" styl=
+e=3D"width:78px;height:auto;display:block;" alt=3D"New" class=3D"mobile_img=
+_e"></a></td><td width=3D"18.125%" align=3D"left" valign=3D"top"><a data-cr=
+dl-variant=3D"" target=3D"_blank" href=3D"https://e.mktg.torrid.com/c2/2012=
+:694483c98819f349b50a25f3:ot:66244f26beb18b367c0c0b54:1/6c53fa45?jwtH=3DeyJ=
+0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9&amp;jwtP=3DeyJpYXQiOjE3NjYyNjgzNTAsImNkIj=
+oiLm1rdGcudG9ycmlkLmNvbSIsImNlIjo4NjQwMCwidGsiOiJ0b3JyaWQiLCJtdGxJRCI6IjY5N=
+DQ4NTYwZWFhNTk5ZjY0MzBkOTA0ZSIsInR6IjotOCwibGlua1VybCI6Imh0dHBzOi8vd3d3LnRv=
+cnJpZC5jb20vY2xvdGhpbmcvP3V0bV9jb250ZW50PTIwMjUxMjIwX1BST19TRU1JQU5OVUFMU0F=
+MRVNVUEVSU0FUVVJEQVlfR1JBUEhJQ18yNE1fMlBNJnV0bV9tZWRpdW09RU1MJnV0bV9zb3VyY2=
+U9UFJPJnV0bV9jYW1wYWlnbj0yNE0mdXRtX3RoZW1lPVByb21vdGlvbmFsLVByb2R1Y3Qmb2dtY=
+XA9RU0lN0NQUk9NTyU3Q1NGJTdDJTdDJTdDJTdDJTdDMjAyNTEyMjBfUFJPX1NFTUlBTk5VQUxT=
+QUxFU1VQRVJTQVRVUkRBWV9HUkFQSElDXzI0TV8yUE0mb2dlbWlkPTY2MjQ0ZjI2YmViMThiMzY=
+3YzBjMGI1NCZvZ2VtaD0zNDZkMjRmNTUyMDg5MWQ1NGJmMzYwNzcxMmQwZDU1YjIwMjkzYWIxOD=
+czNDJkNmNjZDFhMDY1OGI5NDQyM2E0In0&amp;jwtS=3DfzATBsKZTQIItozhsIL4Q326zDQiNr=
+YoLMHfe8X7Kus"><img src=3D"https://images.usw2.cordial.com/2012/116x65/2501=
+_email_retro_template_04_clothing.jpg" width=3D"116" border=3D"0" style=3D"=
+width:116px;height:auto;display:block;" alt=3D"Clothing" class=3D"mobile_im=
+g_e"></a></td><td width=3D"13.59375%" align=3D"left" valign=3D"top"><a data=
+-crdl-variant=3D"" target=3D"_blank" href=3D"https://e.mktg.torrid.com/c2/2=
+012:694483c98819f349b50a25f3:ot:66244f26beb18b367c0c0b54:1/a8156970?jwtH=3D=
+eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9&amp;jwtP=3DeyJpYXQiOjE3NjYyNjgzNTAsImN=
+kIjoiLm1rdGcudG9ycmlkLmNvbSIsImNlIjo4NjQwMCwidGsiOiJ0b3JyaWQiLCJtdGxJRCI6Ij=
+Y5NDQ4NTYwZWFhNTk5ZjY0MzBkOTA0ZiIsInR6IjotOCwibGlua1VybCI6Imh0dHBzOi8vd3d3L=
+nRvcnJpZC5jb20vY2xvdGhpbmcvamVhbnMvP3V0bV9jb250ZW50PTIwMjUxMjIwX1BST19TRU1J=
+QU5OVUFMU0FMRVNVUEVSU0FUVVJEQVlfR1JBUEhJQ18yNE1fMlBNJnV0bV9tZWRpdW09RU1MJnV=
+0bV9zb3VyY2U9UFJPJnV0bV9jYW1wYWlnbj0yNE0mdXRtX3RoZW1lPVByb21vdGlvbmFsLVByb2=
+R1Y3Qmb2dtYXA9RU0lN0NQUk9NTyU3Q1NGJTdDJTdDJTdDJTdDJTdDMjAyNTEyMjBfUFJPX1NFT=
+UlBTk5VQUxTQUxFU1VQRVJTQVRVUkRBWV9HUkFQSElDXzI0TV8yUE0mb2dlbWlkPTY2MjQ0ZjI2=
+YmViMThiMzY3YzBjMGI1NCZvZ2VtaD0zNDZkMjRmNTUyMDg5MWQ1NGJmMzYwNzcxMmQwZDU1YjI=
+wMjkzYWIxODczNDJkNmNjZDFhMDY1OGI5NDQyM2E0In0&amp;jwtS=3DCgLCK8BPA2is5g6W7mW=
+ei35pQwgw7pujiR2QvmOAjh4"><img src=3D"https://images.usw2.cordial.com/2012/=
+87x65/2501_email_retro_template_05_jeans.jpg" width=3D"87" border=3D"0" sty=
+le=3D"width:87px;height:auto;display:block;" alt=3D"Jeans" class=3D"mobile_=
+img_e"></a></td><td width=3D"18.75%" align=3D"left" valign=3D"top"><a data-=
+crdl-variant=3D"" target=3D"_blank" href=3D"https://e.mktg.torrid.com/c2/20=
+12:694483c98819f349b50a25f3:ot:66244f26beb18b367c0c0b54:1/fa552371?jwtH=3De=
+yJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9&amp;jwtP=3DeyJpYXQiOjE3NjYyNjgzNTAsImNk=
+IjoiLm1rdGcudG9ycmlkLmNvbSIsImNlIjo4NjQwMCwidGsiOiJ0b3JyaWQiLCJtdGxJRCI6IjY=
+5NDQ4NTYwZWFhNTk5ZjY0MzBkOTA1MCIsInR6IjotOCwibGlua1VybCI6Imh0dHBzOi8vd3d3Ln=
+RvcnJpZC5jb20vaW50aW1hdGVzLz91dG1fY29udGVudD0yMDI1MTIyMF9QUk9fU0VNSUFOTlVBT=
+FNBTEVTVVBFUlNBVFVSREFZX0dSQVBISUNfMjRNXzJQTSZ1dG1fbWVkaXVtPUVNTCZ1dG1fc291=
+cmNlPVBSTyZ1dG1fY2FtcGFpZ249MjRNJnV0bV90aGVtZT1Qcm9tb3Rpb25hbC1Qcm9kdWN0Jm9=
+nbWFwPUVNJTdDUFJPTU8lN0NTRiU3QyU3QyU3QyU3QyU3QzIwMjUxMjIwX1BST19TRU1JQU5OVU=
+FMU0FMRVNVUEVSU0FUVVJEQVlfR1JBUEhJQ18yNE1fMlBNJm9nZW1pZD02NjI0NGYyNmJlYjE4Y=
+jM2N2MwYzBiNTQmb2dlbWg9MzQ2ZDI0ZjU1MjA4OTFkNTRiZjM2MDc3MTJkMGQ1NWIyMDI5M2Fi=
+MTg3MzQyZDZjY2QxYTA2NThiOTQ0MjNhNCJ9&amp;jwtS=3Dyc1j95ibawgi-FbHwXLJp9wtuvE=
+y5QAKitmMlw8oYd4"><img src=3D"https://images.usw2.cordial.com/2012/120x65/2=
+501_email_retro_template_06_intimates.jpg" width=3D"120" border=3D"0" style=
+=3D"width:120px;height:auto;display:block;" alt=3D"Intimates" class=3D"mobi=
+le_img_e"></a></td><td width=3D"21.25%" align=3D"left" valign=3D"top"><a da=
+ta-crdl-variant=3D"" target=3D"_blank" href=3D"https://e.mktg.torrid.com/c2=
+/2012:694483c98819f349b50a25f3:ot:66244f26beb18b367c0c0b54:1/f3c4a77d?jwtH=
+=3DeyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9&amp;jwtP=3DeyJpYXQiOjE3NjYyNjgzNTAs=
+ImNkIjoiLm1rdGcudG9ycmlkLmNvbSIsImNlIjo4NjQwMCwidGsiOiJ0b3JyaWQiLCJtdGxJRCI=
+6IjY5NDQ4NTYwZWFhNTk5ZjY0MzBkOTA1MSIsInR6IjotOCwibGlua1VybCI6Imh0dHBzOi8vd3=
+d3LnRvcnJpZC5jb20vc2FsZS9jbGVhcmFuY2UvP3V0bV9jb250ZW50PTIwMjUxMjIwX1BST19TR=
+U1JQU5OVUFMU0FMRVNVUEVSU0FUVVJEQVlfR1JBUEhJQ18yNE1fMlBNJnV0bV9tZWRpdW09RU1M=
+JnV0bV9zb3VyY2U9UFJPJnV0bV9jYW1wYWlnbj0yNE0mdXRtX3RoZW1lPVByb21vdGlvbmFsLVB=
+yb2R1Y3Qmb2dtYXA9RU0lN0NQUk9NTyU3Q1NGJTdDJTdDJTdDJTdDJTdDMjAyNTEyMjBfUFJPX1=
+NFTUlBTk5VQUxTQUxFU1VQRVJTQVRVUkRBWV9HUkFQSElDXzI0TV8yUE0mb2dlbWlkPTY2MjQ0Z=
+jI2YmViMThiMzY3YzBjMGI1NCZvZ2VtaD0zNDZkMjRmNTUyMDg5MWQ1NGJmMzYwNzcxMmQwZDU1=
+YjIwMjkzYWIxODczNDJkNmNjZDFhMDY1OGI5NDQyM2E0In0&amp;jwtS=3DGAd79N9yESaHACiN=
+TcNg1vAHMnR54fi4sIqg7EjWrfY"><img src=3D"https://images.usw2.cordial.com/20=
+12/136x65/2501_email_retro_template_07_clearance.jpg" width=3D"136" border=
+=3D"0" style=3D"width:136px;height:auto;display:block;" alt=3D"Clearance" c=
+lass=3D"mobile_img_e"></a></td></tr></table></td></tr></table></td></tr></t=
+able></div>
+    <div><table width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" align=3D=
+"center" style=3D"background-color:#ffffff"><tr><td align=3D"center" valign=
+=3D"top"><table width=3D"640" cellpadding=3D"0" cellspacing=3D"0" style=3D"=
+width:640px;background-color:#000000;" class=3D"w100pc_e"><tr><td height=3D=
+"10" style=3D"line-height:1px;font-size:1px;">=C2=A0</td></tr><tr><td align=
+=3D"center" valign=3D"top"><table width=3D"100%" cellpadding=3D"0" cellspac=
+ing=3D"0"><tr><td width=3D"10" style=3D"line-height:1px;font-size:1px;" cla=
+ss=3D"">=C2=A0</td><td align=3D"center" valign=3D"top"><table width=3D"100%=
+" cellpadding=3D"0" cellspacing=3D"0"><tr><td align=3D"center" valign=3D"to=
+p" style=3D"font-family:Arial,sans-serif;font-size:20px;line-height:22px;fo=
+nt-weight:400;font-style:normal;color:#fffffe;" class=3D"txt_12"><a data-cr=
+dl-variant=3D"" target=3D"_blank" style=3D"text-decoration:none;" href=3D"h=
+ttps://e.mktg.torrid.com/c2/2012:694483c98819f349b50a25f3:ot:66244f26beb18b=
+367c0c0b54:1/5ba6bc95?jwtH=3DeyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9&amp;jwtP=
+=3DeyJpYXQiOjE3NjYyNjgzNTAsImNkIjoiLm1rdGcudG9ycmlkLmNvbSIsImNlIjo4NjQwMCwi=
+dGsiOiJ0b3JyaWQiLCJtdGxJRCI6IjY5NDQ4NTYwZWFhNTk5ZjY0MzBkOTA1MiIsInR6IjotOCw=
+ibGlua1VybCI6Imh0dHBzOi8vd3d3LnRvcnJpZC5jb20vP3V0bV9jb250ZW50PTIwMjUxMjIwX1=
+BST19TRU1JQU5OVUFMU0FMRVNVUEVSU0FUVVJEQVlfR1JBUEhJQ18yNE1fMlBNJnV0bV9tZWRpd=
+W09RU1MJnV0bV9zb3VyY2U9UFJPJnV0bV9jYW1wYWlnbj0yNE0mdXRtX3RoZW1lPVByb21vdGlv=
+bmFsLVByb2R1Y3Qmb2dtYXA9RU0lN0NQUk9NTyU3Q1NGJTdDJTdDJTdDJTdDJTdDMjAyNTEyMjB=
+fUFJPX1NFTUlBTk5VQUxTQUxFU1VQRVJTQVRVUkRBWV9HUkFQSElDXzI0TV8yUE0mb2dlbWlkPT=
+Y2MjQ0ZjI2YmViMThiMzY3YzBjMGI1NCZvZ2VtaD0zNDZkMjRmNTUyMDg5MWQ1NGJmMzYwNzcxM=
+mQwZDU1YjIwMjkzYWIxODczNDJkNmNjZDFhMDY1OGI5NDQyM2E0In0&amp;jwtS=3Dc9JbBk9a6=
+ng8A1Ewto0WONfOK3EQD_WVHaVrfVyfNdo"><span style=3D"color:#fffffe;text-decor=
+ation:none;">You're only 137 points away from a  reward!=C2=B9</span></a></=
+td></tr></table></td><td width=3D"10" style=3D"line-height:1px;font-size:1p=
+x;" class=3D"">=C2=A0</td></tr></table></td></tr><tr><td height=3D"10" styl=
+e=3D"line-height:1px;font-size:1px;">=C2=A0</td></tr></table></td></tr></ta=
+ble></div>
+    <div><table width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" align=3D=
+"center" border=3D"0" style=3D"background-color:#ffffff"><tr><td align=3D"c=
+enter" valign=3D"top"><table width=3D"640" cellpadding=3D"0" cellspacing=3D=
+"0" border=3D"0" style=3D"width:640px;background-color:#ffffff;" class=3D"w=
+100pc_e"><tr><td align=3D"center" valign=3D"top"><table width=3D"100%" cell=
+padding=3D"0" cellspacing=3D"0" border=3D"0"><tr><td align=3D"center" valig=
+n=3D"top"><a data-crdl-variant=3D"" target=3D"_blank" href=3D"https://e.mkt=
+g.torrid.com/c2/2012:694483c98819f349b50a25f3:ot:66244f26beb18b367c0c0b54:1=
+/22341c16?jwtH=3DeyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9&amp;jwtP=3DeyJpYXQiOj=
+E3NjYyNjgzNTAsImNkIjoiLm1rdGcudG9ycmlkLmNvbSIsImNlIjo4NjQwMCwidGsiOiJ0b3Jya=
+WQiLCJtdGxJRCI6IjY5NDQ5MDZlZjlmMzU0OGUwMTA4OTI0MiIsInR6IjotOCwibGlua1VybCI6=
+Imh0dHBzOi8vd3d3LnRvcnJpZC5jb20vc2FsZS9jbGVhcmFuY2UvP3V0bV9jb250ZW50PTIwMjU=
+xMjIwX1BST19TRU1JQU5OVUFMU0FMRVNVUEVSU0FUVVJEQVlfR1JBUEhJQ18yNE1fMlBNJnV0bV=
+9tZWRpdW09RU1MJnV0bV9zb3VyY2U9UFJPJnV0bV9jYW1wYWlnbj0yNE0mdXRtX3RoZW1lPVByb=
+21vdGlvbmFsLVByb2R1Y3Qmb2dtYXA9RU0lN0NQUk9NTyU3Q1NGJTdDJTdDJTdDJTdDJTdDMjAy=
+NTEyMjBfUFJPX1NFTUlBTk5VQUxTQUxFU1VQRVJTQVRVUkRBWV9HUkFQSElDXzI0TV8yUE0mb2d=
+lbWlkPTY2MjQ0ZjI2YmViMThiMzY3YzBjMGI1NCZvZ2VtaD0zNDZkMjRmNTUyMDg5MWQ1NGJmMz=
+YwNzcxMmQwZDU1YjIwMjkzYWIxODczNDJkNmNjZDFhMDY1OGI5NDQyM2E0In0&amp;jwtS=3DTF=
+u50JymnreV_OxNUJgw_eP50WE1pnRlDZL7ahZoV5w"><img src=3D"https://images.usw2.=
+cordial.com/2012/640x1002/hero66.jpg" width=3D"640" border=3D"0" style=3D"w=
+idth:640px;max-width:640px;height:auto;border-radius:0px;display:block;" al=
+t=3D"It's Super Saturday! | Online + In Store | Semi Annual Clearance | Onl=
+ine + In Store | Earn 3X=E2=80=A0=E2=80=A0 Torrid Cash | Online Only | Extr=
+a 60 to 70% Off Clearance | Starting At $4.99USD | Shop Clearance &gt;" cla=
+ss=3D"mobile_img_e"></a></td></tr></table></td></tr></table></td></tr></tab=
+le></div><div><table width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" ali=
+gn=3D"center" border=3D"0" style=3D"background-color:#ffffff"><tr><td align=
+=3D"center" valign=3D"top"><table width=3D"640" cellpadding=3D"0" cellspaci=
+ng=3D"0" border=3D"0" style=3D"width:640px;background-color:#ffffff;" class=
+=3D"w100pc_e"><tr><td align=3D"center" valign=3D"top"><table width=3D"100%"=
+ cellpadding=3D"0" cellspacing=3D"0" border=3D"0"><tr><td align=3D"center" =
+valign=3D"top"><a data-crdl-variant=3D"" target=3D"_blank" href=3D"https://=
+e.mktg.torrid.com/c2/2012:694483c98819f349b50a25f3:ot:66244f26beb18b367c0c0=
+b54:1/5cb5c4da?jwtH=3DeyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9&amp;jwtP=3DeyJpY=
+XQiOjE3NjYyNjgzNTAsImNkIjoiLm1rdGcudG9ycmlkLmNvbSIsImNlIjo4NjQwMCwidGsiOiJ0=
+b3JyaWQiLCJtdGxJRCI6IjY5NDRhNzRhMDFmMDUyODFmNjA2NjBiNCIsInR6IjotOCwibGlua1V=
+ybCI6Imh0dHBzOi8vd3d3LnRvcnJpZC5jb20vc3RvcmVzLz91dG1fY29udGVudD0yMDI1MTIyMF=
+9QUk9fU0VNSUFOTlVBTFNBTEVTVVBFUlNBVFVSREFZX0dSQVBISUNfMjRNXzJQTSZ1dG1fbWVka=
+XVtPUVNTCZ1dG1fc291cmNlPVBSTyZ1dG1fY2FtcGFpZ249MjRNJnV0bV90aGVtZT1Qcm9tb3Rp=
+b25hbC1Qcm9kdWN0Jm9nbWFwPUVNJTdDUFJPTU8lN0NTRiU3QyU3QyU3QyU3QyU3QzIwMjUxMjI=
+wX1BST19TRU1JQU5OVUFMU0FMRVNVUEVSU0FUVVJEQVlfR1JBUEhJQ18yNE1fMlBNJm9nZW1pZD=
+02NjI0NGYyNmJlYjE4YjM2N2MwYzBiNTQmb2dlbWg9MzQ2ZDI0ZjU1MjA4OTFkNTRiZjM2MDc3M=
+TJkMGQ1NWIyMDI5M2FiMTg3MzQyZDZjY2QxYTA2NThiOTQ0MjNhNCJ9&amp;jwtS=3Dxx24_PfI=
+ktxBzoJ1JnpWPmJNwzu2mheIr4twXGava2c"><img src=3D"https://images.usw2.cordia=
+l.com/2012/640x597/D72D2D4E-75AD-4F14-8853-7CDEC429A7AB2.png" width=3D"640"=
+ border=3D"0" style=3D"width:640px;max-width:640px;height:auto;border-radiu=
+s:0px;display:block;" alt=3D"Head to stores | Planning a Torrid run? Get th=
+e deets. | In Store Only | Extra 50% Off Clearance* | $39  Holiday Dresses*=
+ | 50% Off Sweaters* | Get $15 off*** your next purchase when you buy a $10=
+0+ gift card in store | US Stores Only | Find a Store &gt;" class=3D"mobile=
+_img_e"></a></td></tr></table></td></tr></table></td></tr></table></div><di=
+v><table width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" align=3D"center=
+" border=3D"0" style=3D"background-color:#ffffff"><tr><td align=3D"center" =
+valign=3D"top"><table width=3D"640" cellpadding=3D"0" cellspacing=3D"0" bor=
+der=3D"0" style=3D"width:640px;background-color:#ffffff;" class=3D"w100pc_e=
+"><tr><td align=3D"center" valign=3D"top"><table width=3D"100%" cellpadding=
+=3D"0" cellspacing=3D"0" border=3D"0"><tr><td align=3D"center" valign=3D"to=
+p"><a data-crdl-variant=3D"" target=3D"_blank" href=3D"https://e.mktg.torri=
+d.com/c2/2012:694483c98819f349b50a25f3:ot:66244f26beb18b367c0c0b54:1/a41a65=
+f6?jwtH=3DeyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9&amp;jwtP=3DeyJpYXQiOjE3NjYyN=
+jgzNTAsImNkIjoiLm1rdGcudG9ycmlkLmNvbSIsImNlIjo4NjQwMCwidGsiOiJ0b3JyaWQiLCJt=
+dGxJRCI6IjY5NDRhNzRhMDFmMDUyODFmNjA2NjBiNSIsInR6IjotOCwibGlua1VybCI6Imh0dHB=
+zOi8vd3d3LnRvcnJpZC5jb20vc2FsZS90b2RheXMtZGVhbHMvY2F0ZWdvcnktcHJvbW9zL2plYW=
+5zLz91dG1fY29udGVudD0yMDI1MTIyMF9QUk9fU0VNSUFOTlVBTFNBTEVTVVBFUlNBVFVSREFZX=
+0dSQVBISUNfMjRNXzJQTSZ1dG1fbWVkaXVtPUVNTCZ1dG1fc291cmNlPVBSTyZ1dG1fY2FtcGFp=
+Z249MjRNJnV0bV90aGVtZT1Qcm9tb3Rpb25hbC1Qcm9kdWN0Jm9nbWFwPUVNJTdDUFJPTU8lN0N=
+TRiU3QyU3QyU3QyU3QyU3QzIwMjUxMjIwX1BST19TRU1JQU5OVUFMU0FMRVNVUEVSU0FUVVJEQV=
+lfR1JBUEhJQ18yNE1fMlBNJm9nZW1pZD02NjI0NGYyNmJlYjE4YjM2N2MwYzBiNTQmb2dlbWg9M=
+zQ2ZDI0ZjU1MjA4OTFkNTRiZjM2MDc3MTJkMGQ1NWIyMDI5M2FiMTg3MzQyZDZjY2QxYTA2NThi=
+OTQ0MjNhNCJ9&amp;jwtS=3DfHW5tL9I39ObVSagyC3X2ZdYKM1uGO_C1PHQ-ejjKpM"><img s=
+rc=3D"https://images.usw2.cordial.com/2012/640x204/slice466.jpg" width=3D"6=
+40" border=3D"0" style=3D"width:640px;max-width:640px;height:auto;border-ra=
+dius:0px;display:block;" alt=3D"In Store + Online | $39USD Jeans* | Shop Je=
+ans &gt;" class=3D"mobile_img_e"></a></td></tr></table></td></tr></table></=
+td></tr></table></div><div><table width=3D"100%" cellpadding=3D"0" cellspac=
+ing=3D"0" align=3D"center" border=3D"0" style=3D"background-color:#ffffff">=
+<tr><td align=3D"center" valign=3D"top"><table width=3D"640" cellpadding=3D=
+"0" cellspacing=3D"0" border=3D"0" style=3D"width:640px;background-color:#f=
+fffff;" class=3D"w100pc_e"><tr><td align=3D"center" valign=3D"top"><table w=
+idth=3D"100%" cellpadding=3D"0" cellspacing=3D"0" border=3D"0"><tr><td alig=
+n=3D"center" valign=3D"top"><a data-crdl-variant=3D"" target=3D"_blank" hre=
+f=3D"https://e.mktg.torrid.com/c2/2012:694483c98819f349b50a25f3:ot:66244f26=
+beb18b367c0c0b54:1/5490a18a?jwtH=3DeyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9&amp=
+;jwtP=3DeyJpYXQiOjE3NjYyNjgzNTAsImNkIjoiLm1rdGcudG9ycmlkLmNvbSIsImNlIjo4NjQ=
+wMCwidGsiOiJ0b3JyaWQiLCJtdGxJRCI6IjY5NDRhNzRhMDFmMDUyODFmNjA2NjBiNiIsInR6Ij=
+otOCwibGlua1VybCI6Imh0dHBzOi8vd3d3LnRvcnJpZC5jb20vc2FsZS90b2RheXMtZGVhbHMvc=
+2hvcC1jbG90aGluZy1pbnRpbWF0ZXMvP3V0bV9jb250ZW50PTIwMjUxMjIwX1BST19TRU1JQU5O=
+VUFMU0FMRVNVUEVSU0FUVVJEQVlfR1JBUEhJQ18yNE1fMlBNJnV0bV9tZWRpdW09RU1MJnV0bV9=
+zb3VyY2U9UFJPJnV0bV9jYW1wYWlnbj0yNE0mdXRtX3RoZW1lPVByb21vdGlvbmFsLVByb2R1Y3=
+Qmb2dtYXA9RU0lN0NQUk9NTyU3Q1NGJTdDJTdDJTdDJTdDJTdDMjAyNTEyMjBfUFJPX1NFTUlBT=
+k5VQUxTQUxFU1VQRVJTQVRVUkRBWV9HUkFQSElDXzI0TV8yUE0mb2dlbWlkPTY2MjQ0ZjI2YmVi=
+MThiMzY3YzBjMGI1NCZvZ2VtaD0zNDZkMjRmNTUyMDg5MWQ1NGJmMzYwNzcxMmQwZDU1YjIwMjk=
+zYWIxODczNDJkNmNjZDFhMDY1OGI5NDQyM2E0In0&amp;jwtS=3DKV7AtEssZyt3azxbG82SXCX=
+jfSCPbXj_gp2UWJDGP0w"><img src=3D"https://images.usw2.cordial.com/2012/640x=
+188/slice566.jpg" width=3D"640" border=3D"0" style=3D"width:640px;max-width=
+:640px;height:auto;border-radius:0px;display:block;" alt=3D"Online Only | 4=
+0% Off Regular Price* | Shop Now &gt;" class=3D"mobile_img_e"></a></td></tr=
+></table></td></tr></table></td></tr></table></div><div><table width=3D"100=
+%" cellpadding=3D"0" cellspacing=3D"0" align=3D"center" border=3D"0" style=
+=3D"background-color:#ffffff"><tr><td align=3D"center" valign=3D"top"><tabl=
+e width=3D"640" cellpadding=3D"0" cellspacing=3D"0" border=3D"0" style=3D"w=
+idth:640px;background-color:#ffffff;" class=3D"w100pc_e"><tr><td align=3D"c=
+enter" valign=3D"top"><table width=3D"100%" cellpadding=3D"0" cellspacing=
+=3D"0" border=3D"0"><tr><td align=3D"center" valign=3D"top"><a data-crdl-va=
+riant=3D"" target=3D"_blank" href=3D"https://e.mktg.torrid.com/c2/2012:6944=
+83c98819f349b50a25f3:ot:66244f26beb18b367c0c0b54:1/ec365149?jwtH=3DeyJ0eXAi=
+OiJKV1QiLCJhbGciOiJIUzI1NiJ9&amp;jwtP=3DeyJpYXQiOjE3NjYyNjgzNTAsImNkIjoiLm1=
+rdGcudG9ycmlkLmNvbSIsImNlIjo4NjQwMCwidGsiOiJ0b3JyaWQiLCJtdGxJRCI6IjY5NDRhNz=
+RhMDFmMDUyODFmNjA2NjBiNyIsInR6IjotOCwibGlua1VybCI6Imh0dHBzOi8vd3d3LnRvcnJpZ=
+C5jb20vc2FsZS9jbGVhcmFuY2UvdG9wcy9zd2VhdGVycy8_dXRtX2NvbnRlbnQ9MjAyNTEyMjBf=
+UFJPX1NFTUlBTk5VQUxTQUxFU1VQRVJTQVRVUkRBWV9HUkFQSElDXzI0TV8yUE0mdXRtX21lZGl=
+1bT1FTUwmdXRtX3NvdXJjZT1QUk8mdXRtX2NhbXBhaWduPTI0TSZ1dG1fdGhlbWU9UHJvbW90aW=
+9uYWwtUHJvZHVjdCZvZ21hcD1FTSU3Q1BST01PJTdDU0YlN0MlN0MlN0MlN0MlN0MyMDI1MTIyM=
+F9QUk9fU0VNSUFOTlVBTFNBTEVTVVBFUlNBVFVSREFZX0dSQVBISUNfMjRNXzJQTSZvZ2VtaWQ9=
+NjYyNDRmMjZiZWIxOGIzNjdjMGMwYjU0Jm9nZW1oPTM0NmQyNGY1NTIwODkxZDU0YmYzNjA3NzE=
+yZDBkNTViMjAyOTNhYjE4NzM0MmQ2Y2NkMWEwNjU4Yjk0NDIzYTQifQ&amp;jwtS=3DsAYFJrOg=
+SlucFIWTLnUZ_ONwk2uBaorydsEKaTmFkJY"><img src=3D"https://images.usw2.cordia=
+l.com/2012/640x141/slice666.jpg" width=3D"640" border=3D"0" style=3D"width:=
+640px;max-width:640px;height:auto;border-radius:0px;display:block;" alt=3D"=
+Sweaters &amp; Sweatshirts $12.99USD &amp; Up* | Shop Now &gt;" class=3D"mo=
+bile_img_e"></a></td></tr></table></td></tr></table></td></tr></table></div=
+><div><table width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" align=3D"ce=
+nter" border=3D"0" style=3D"background-color:#ffffff"><tr><td align=3D"cent=
+er" valign=3D"top"><table width=3D"640" cellpadding=3D"0" cellspacing=3D"0"=
+ border=3D"0" style=3D"width:640px;background-color:#ffffff;" class=3D"w100=
+pc_e"><tr><td align=3D"center" valign=3D"top"><table width=3D"100%" cellpad=
+ding=3D"0" cellspacing=3D"0" border=3D"0"><tr><td align=3D"center" valign=
+=3D"top"><a data-crdl-variant=3D"" target=3D"_blank" href=3D"https://e.mktg=
+=2Etorrid.com/c2/2012:694483c98819f349b=
+50a25f3:ot:66244f26beb18b367c0c0b54:1/=
+0b1f1b57?jwtH=3DeyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9&amp;jwtP=3DeyJpYXQiOjE=
+3NjYyNjgzNTAsImNkIjoiLm1rdGcudG9ycmlkLmNvbSIsImNlIjo4NjQwMCwidGsiOiJ0b3JyaW=
+QiLCJtdGxJRCI6IjY5NDRhNzRhMDFmMDUyODFmNjA2NjBiOCIsInR6IjotOCwibGlua1VybCI6I=
+mh0dHBzOi8vd3d3LnRvcnJpZC5jb20vc2FsZS9jbGVhcmFuY2UvZHJlc3Nlcy8_dXRtX2NvbnRl=
+bnQ9MjAyNTEyMjBfUFJPX1NFTUlBTk5VQUxTQUxFU1VQRVJTQVRVUkRBWV9HUkFQSElDXzI0TV8=
+yUE0mdXRtX21lZGl1bT1FTUwmdXRtX3NvdXJjZT1QUk8mdXRtX2NhbXBhaWduPTI0TSZ1dG1fdG=
+hlbWU9UHJvbW90aW9uYWwtUHJvZHVjdCZvZ21hcD1FTSU3Q1BST01PJTdDU0YlN0MlN0MlN0MlN=
+0MlN0MyMDI1MTIyMF9QUk9fU0VNSUFOTlVBTFNBTEVTVVBFUlNBVFVSREFZX0dSQVBISUNfMjRN=
+XzJQTSZvZ2VtaWQ9NjYyNDRmMjZiZWIxOGIzNjdjMGMwYjU0Jm9nZW1oPTM0NmQyNGY1NTIwODk=
+xZDU0YmYzNjA3NzEyZDBkNTViMjAyOTNhYjE4NzM0MmQ2Y2NkMWEwNjU4Yjk0NDIzYTQifQ&amp=
+;jwtS=3DCDm5em5p6JiKxC2OA6OTOooVp7THq1yEzpKTOogKioA"><img src=3D"https://im=
+ages.usw2.cordial.com/2012/640x141/slice766.jpg" width=3D"640" border=3D"0"=
+ style=3D"width:640px;max-width:640px;height:auto;border-radius:0px;display=
+:block;" alt=3D"Dresses $14.99USD &amp; Up* | Shop Clearance Dresses &gt;" =
+class=3D"mobile_img_e"></a></td></tr></table></td></tr></table></td></tr></=
+table></div><div><table width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" =
+align=3D"center" border=3D"0" style=3D"background-color:#ffffff"><tr><td al=
+ign=3D"center" valign=3D"top"><table width=3D"640" cellpadding=3D"0" cellsp=
+acing=3D"0" border=3D"0" style=3D"width:640px;background-color:#ffffff;" cl=
+ass=3D"w100pc_e"><tr><td align=3D"center" valign=3D"top"><table width=3D"10=
+0%" cellpadding=3D"0" cellspacing=3D"0" border=3D"0"><tr><td align=3D"cente=
+r" valign=3D"top"><a data-crdl-variant=3D"" target=3D"_blank" href=3D"https=
+://e.mktg.torrid.com/c2/2012:694483c98819f349b50a25f3:ot:66244f26beb18b367c=
+0c0b54:1/5aeb37b8?jwtH=3DeyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9&amp;jwtP=3Dey=
+JpYXQiOjE3NjYyNjgzNTAsImNkIjoiLm1rdGcudG9ycmlkLmNvbSIsImNlIjo4NjQwMCwidGsiO=
+iJ0b3JyaWQiLCJtdGxJRCI6IjY5NDRhNzRhMDFmMDUyODFmNjA2NjBiOSIsInR6IjotOCwibGlu=
+a1VybCI6Imh0dHBzOi8vd3d3LnRvcnJpZC5jb20vc2FsZS9jbGVhcmFuY2UvYm90dG9tcy8_dXR=
+tX2NvbnRlbnQ9MjAyNTEyMjBfUFJPX1NFTUlBTk5VQUxTQUxFU1VQRVJTQVRVUkRBWV9HUkFQSE=
+lDXzI0TV8yUE0mdXRtX21lZGl1bT1FTUwmdXRtX3NvdXJjZT1QUk8mdXRtX2NhbXBhaWduPTI0T=
+SZ1dG1fdGhlbWU9UHJvbW90aW9uYWwtUHJvZHVjdCZvZ21hcD1FTSU3Q1BST01PJTdDU0YlN0Ml=
+N0MlN0MlN0MlN0MyMDI1MTIyMF9QUk9fU0VNSUFOTlVBTFNBTEVTVVBFUlNBVFVSREFZX0dSQVB=
+ISUNfMjRNXzJQTSZvZ2VtaWQ9NjYyNDRmMjZiZWIxOGIzNjdjMGMwYjU0Jm9nZW1oPTM0NmQyNG=
+Y1NTIwODkxZDU0YmYzNjA3NzEyZDBkNTViMjAyOTNhYjE4NzM0MmQ2Y2NkMWEwNjU4Yjk0NDIzY=
+TQifQ&amp;jwtS=3D8g2TGbNO9_QrnVx3q086LNO6U_MNrBM_HhCBQ7rNPOg"><img src=3D"h=
+ttps://images.usw2.cordial.com/2012/640x146/slice866.jpg" width=3D"640" bor=
+der=3D"0" style=3D"width:640px;max-width:640px;height:auto;border-radius:0p=
+x;display:block;" alt=3D"Bottoms $8.99USD &amp; Up* | Shop Clearance Bottom=
+s &gt;" class=3D"mobile_img_e"></a></td></tr></table></td></tr></table></td=
+></tr></table></div><div><table width=3D"100%" cellpadding=3D"0" cellspacin=
+g=3D"0" align=3D"center" border=3D"0" style=3D"background-color:#ffffff"><t=
+r><td align=3D"center" valign=3D"top"><table width=3D"640" cellpadding=3D"0=
+" cellspacing=3D"0" border=3D"0" style=3D"width:640px;background-color:#fff=
+fff;" class=3D"w100pc_e"><tr><td align=3D"center" valign=3D"top"><table wid=
+th=3D"100%" cellpadding=3D"0" cellspacing=3D"0" border=3D"0"><tr><td align=
+=3D"center" valign=3D"top"><a data-crdl-variant=3D"" target=3D"_blank" href=
+=3D"https://e.mktg.torrid.com/c2/2012:694483c98819f349b50a25f3:ot:66244f26b=
+eb18b367c0c0b54:1/d566c409?jwtH=3DeyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9&amp;=
+jwtP=3DeyJpYXQiOjE3NjYyNjgzNTAsImNkIjoiLm1rdGcudG9ycmlkLmNvbSIsImNlIjo4NjQw=
+MCwidGsiOiJ0b3JyaWQiLCJtdGxJRCI6IjY5NDRhNzRhMDFmMDUyODFmNjA2NjBiYSIsInR6Ijo=
+tOCwibGlua1VybCI6Imh0dHBzOi8vd3d3LnRvcnJpZC5jb20vc2FsZS9jbGVhcmFuY2UvamFja2=
+V0cy8_dXRtX2NvbnRlbnQ9MjAyNTEyMjBfUFJPX1NFTUlBTk5VQUxTQUxFU1VQRVJTQVRVUkRBW=
+V9HUkFQSElDXzI0TV8yUE0mdXRtX21lZGl1bT1FTUwmdXRtX3NvdXJjZT1QUk8mdXRtX2NhbXBh=
+aWduPTI0TSZ1dG1fdGhlbWU9UHJvbW90aW9uYWwtUHJvZHVjdCZvZ21hcD1FTSU3Q1BST01PJTd=
+DU0YlN0MlN0MlN0MlN0MlN0MyMDI1MTIyMF9QUk9fU0VNSUFOTlVBTFNBTEVTVVBFUlNBVFVSRE=
+FZX0dSQVBISUNfMjRNXzJQTSZvZ2VtaWQ9NjYyNDRmMjZiZWIxOGIzNjdjMGMwYjU0Jm9nZW1oP=
+TM0NmQyNGY1NTIwODkxZDU0YmYzNjA3NzEyZDBkNTViMjAyOTNhYjE4NzM0MmQ2Y2NkMWEwNjU4=
+Yjk0NDIzYTQifQ&amp;jwtS=3D2_O6id3IDw1cL6XDNRo1233NdSZOV7vJNLIIvHwDWUA"><img=
+ src=3D"https://images.usw2.cordial.com/2012/640x146/slice966.jpg" width=3D=
+"640" border=3D"0" style=3D"width:640px;max-width:640px;height:auto;border-=
+radius:0px;display:block;" alt=3D"Jackets $19.99USD &amp; Up* | Shop Cleara=
+nce Jackets &gt;" class=3D"mobile_img_e"></a></td></tr></table></td></tr></=
+table></td></tr></table></div><div><table width=3D"100%" cellpadding=3D"0" =
+cellspacing=3D"0" align=3D"center" border=3D"0" style=3D"background-color:#=
+ffffff"><tr><td align=3D"center" valign=3D"top"><table width=3D"640" cellpa=
+dding=3D"0" cellspacing=3D"0" border=3D"0" style=3D"width:640px;background-=
+color:#ffffff;" class=3D"w100pc_e"><tr><td align=3D"center" valign=3D"top">=
+<table width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" border=3D"0"><tr>=
+<td align=3D"center" valign=3D"top"><a data-crdl-variant=3D"" target=3D"_bl=
+ank" href=3D"https://e.mktg.torrid.com/c2/2012:694483c98819f349b50a25f3:ot:=
+66244f26beb18b367c0c0b54:1/f09c85f6?jwtH=3DeyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1=
+NiJ9&amp;jwtP=3DeyJpYXQiOjE3NjYyNjgzNTAsImNkIjoiLm1rdGcudG9ycmlkLmNvbSIsImN=
+lIjo4NjQwMCwidGsiOiJ0b3JyaWQiLCJtdGxJRCI6IjY5NDRhNzRhMDFmMDUyODFmNjA2NjBiYi=
+IsInR6IjotOCwibGlua1VybCI6Imh0dHBzOi8vd3d3LnRvcnJpZC5jb20vc2FsZS9jbGVhcmFuY=
+2UvdG9wcy8_dXRtX2NvbnRlbnQ9MjAyNTEyMjBfUFJPX1NFTUlBTk5VQUxTQUxFU1VQRVJTQVRV=
+UkRBWV9HUkFQSElDXzI0TV8yUE0mdXRtX21lZGl1bT1FTUwmdXRtX3NvdXJjZT1QUk8mdXRtX2N=
+hbXBhaWduPTI0TSZ1dG1fdGhlbWU9UHJvbW90aW9uYWwtUHJvZHVjdCZvZ21hcD1FTSU3Q1BST0=
+1PJTdDU0YlN0MlN0MlN0MlN0MlN0MyMDI1MTIyMF9QUk9fU0VNSUFOTlVBTFNBTEVTVVBFUlNBV=
+FVSREFZX0dSQVBISUNfMjRNXzJQTSZvZ2VtaWQ9NjYyNDRmMjZiZWIxOGIzNjdjMGMwYjU0Jm9n=
+ZW1oPTM0NmQyNGY1NTIwODkxZDU0YmYzNjA3NzEyZDBkNTViMjAyOTNhYjE4NzM0MmQ2Y2NkMWE=
+wNjU4Yjk0NDIzYTQifQ&amp;jwtS=3DwNJledE0TeO8d2yDkrk-AYttd_Y6T7Oo4wkF6TyzZEY"=
+><img src=3D"https://images.usw2.cordial.com/2012/640x148/slice1066.jpg" wi=
+dth=3D"640" border=3D"0" style=3D"width:640px;max-width:640px;height:auto;b=
+order-radius:0px;display:block;" alt=3D"Tops $8.99USD &amp; Up* | Shop Clea=
+rance Tops &gt;" class=3D"mobile_img_e"></a></td></tr></table></td></tr></t=
+able></td></tr></table></div><div><table width=3D"100%" cellpadding=3D"0" c=
+ellspacing=3D"0" align=3D"center" border=3D"0" style=3D"background-color:#f=
+fffff"><tr><td align=3D"center" valign=3D"top"><table width=3D"640" cellpad=
+ding=3D"0" cellspacing=3D"0" border=3D"0" style=3D"width:640px;background-c=
+olor:#ffffff;" class=3D"w100pc_e"><tr><td align=3D"center" valign=3D"top"><=
+table width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" border=3D"0"><tr><=
+td align=3D"center" valign=3D"top"><a data-crdl-variant=3D"" target=3D"_bla=
+nk" href=3D"https://e.mktg.torrid.com/c2/2012:694483c98819f349b50a25f3:ot:6=
+6244f26beb18b367c0c0b54:1/68b89259?jwtH=3DeyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1N=
+iJ9&amp;jwtP=3DeyJpYXQiOjE3NjYyNjgzNTAsImNkIjoiLm1rdGcudG9ycmlkLmNvbSIsImNl=
+Ijo4NjQwMCwidGsiOiJ0b3JyaWQiLCJtdGxJRCI6IjY5NDRhNzRhMDFmMDUyODFmNjA2NjBiYyI=
+sInR6IjotOCwibGlua1VybCI6Imh0dHBzOi8vd3d3LnRvcnJpZC5jb20vc2FsZS9jbGVhcmFuY2=
+UvdG9wcy9ncmFwaGljLXQtc2hpcnRzLz91dG1fY29udGVudD0yMDI1MTIyMF9QUk9fU0VNSUFOT=
+lVBTFNBTEVTVVBFUlNBVFVSREFZX0dSQVBISUNfMjRNXzJQTSZ1dG1fbWVkaXVtPUVNTCZ1dG1f=
+c291cmNlPVBSTyZ1dG1fY2FtcGFpZ249MjRNJnV0bV90aGVtZT1Qcm9tb3Rpb25hbC1Qcm9kdWN=
+0Jm9nbWFwPUVNJTdDUFJPTU8lN0NTRiU3QyU3QyU3QyU3QyU3QzIwMjUxMjIwX1BST19TRU1JQU=
+5OVUFMU0FMRVNVUEVSU0FUVVJEQVlfR1JBUEhJQ18yNE1fMlBNJm9nZW1pZD02NjI0NGYyNmJlY=
+jE4YjM2N2MwYzBiNTQmb2dlbWg9MzQ2ZDI0ZjU1MjA4OTFkNTRiZjM2MDc3MTJkMGQ1NWIyMDI5=
+M2FiMTg3MzQyZDZjY2QxYTA2NThiOTQ0MjNhNCJ9&amp;jwtS=3DwSDNKO6CODK-HvLrtpDrVuu=
+r7SgMbxPeOmPNGhFhQ4Y"><img src=3D"https://images.usw2.cordial.com/2012/640x=
+153/slice1166.jpg" width=3D"640" border=3D"0" style=3D"width:640px;max-widt=
+h:640px;height:auto;border-radius:0px;display:block;" alt=3D"Graphic Tees $=
+9.99USD* | Shop Clearance Graphic Tees  &gt;" class=3D"mobile_img_e"></a></=
+td></tr></table></td></tr></table></td></tr></table></div><div><table width=
+=3D"100%" cellpadding=3D"0" cellspacing=3D"0" align=3D"center" style=3D"bac=
+kground-color:#ffffff"><tr><td align=3D"center" valign=3D"top"><table width=
+=3D"640" cellpadding=3D"0" cellspacing=3D"0" style=3D"width:640px;backgroun=
+d-color:#ffffff;" class=3D"w100pc_e"><tr><td align=3D"center" valign=3D"top=
+"><table width=3D"100%" cellpadding=3D"0" cellspacing=3D"0"><tr><td width=
+=3D"50%" align=3D"left" valign=3D"top"><a data-crdl-variant=3D"" target=3D"=
+_blank" href=3D"https://e.mktg.torrid.com/c2/2012:694483c98819f349b50a25f3:=
+ot:66244f26beb18b367c0c0b54:1/1326d880?jwtH=3DeyJ0eXAiOiJKV1QiLCJhbGciOiJIU=
+zI1NiJ9&amp;jwtP=3DeyJpYXQiOjE3NjYyNjgzNTAsImNkIjoiLm1rdGcudG9ycmlkLmNvbSIs=
+ImNlIjo4NjQwMCwidGsiOiJ0b3JyaWQiLCJtdGxJRCI6IjY5NDRhNzRhMDFmMDUyODFmNjA2NjB=
+iZCIsInR6IjotOCwibGlua1VybCI6Imh0dHBzOi8vd3d3LnRvcnJpZC5jb20vc3RvcmVzLz91dG=
+1fY29udGVudD0yMDI1MTIyMF9QUk9fU0VNSUFOTlVBTFNBTEVTVVBFUlNBVFVSREFZX0dSQVBIS=
+UNfMjRNXzJQTSZ1dG1fbWVkaXVtPUVNTCZ1dG1fc291cmNlPVBSTyZ1dG1fY2FtcGFpZ249MjRN=
+JnV0bV90aGVtZT1Qcm9tb3Rpb25hbC1Qcm9kdWN0Jm9nbWFwPUVNJTdDUFJPTU8lN0NTRiU3QyU=
+3QyU3QyU3QyU3QzIwMjUxMjIwX1BST19TRU1JQU5OVUFMU0FMRVNVUEVSU0FUVVJEQVlfR1JBUE=
+hJQ18yNE1fMlBNJm9nZW1pZD02NjI0NGYyNmJlYjE4YjM2N2MwYzBiNTQmb2dlbWg9MzQ2ZDI0Z=
+jU1MjA4OTFkNTRiZjM2MDc3MTJkMGQ1NWIyMDI5M2FiMTg3MzQyZDZjY2QxYTA2NThiOTQ0MjNh=
+NCJ9&amp;jwtS=3DPGFJmKkPJawZ4vOhg-sPJXFIMJGt2Q3Nw2GuUUF_Yj4"><img src=3D"ht=
+tps://images.usw2.cordial.com/2012/320x359/slice1266.jpg" width=3D"320" bor=
+der=3D"0" style=3D"width:320px;height:auto;display:block;" alt=3D"Holiday H=
+ours | Find out when your favorite store (us!) is open. | Find a Store &gt;=
+" class=3D"mobile_img_e"></a></td><td width=3D"50%" align=3D"left" valign=
+=3D"top"><a data-crdl-variant=3D"" target=3D"_blank" href=3D"https://e.mktg=
+=2Etorrid.com/c2/2012:694483c98819f349b=
+50a25f3:ot:66244f26beb18b367c0c0b54:1/=
+92a2040f?jwtH=3DeyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9&amp;jwtP=3DeyJpYXQiOjE=
+3NjYyNjgzNTAsImNkIjoiLm1rdGcudG9ycmlkLmNvbSIsImNlIjo4NjQwMCwidGsiOiJ0b3JyaW=
+QiLCJtdGxJRCI6IjY5NDRhNzRhMDFmMDUyODFmNjA2NjBiZSIsInR6IjotOCwibGlua1VybCI6I=
+mh0dHBzOi8vdG9ycmlkLmNhc2hzdGFyLmNvbS9zdG9yZT9yZWY9dHJkMSZ1dG1fY29udGVudD0y=
+MDI1MTIyMF9QUk9fU0VNSUFOTlVBTFNBTEVTVVBFUlNBVFVSREFZX0dSQVBISUNfMjRNXzJQTSZ=
+1dG1fbWVkaXVtPUVNTCZ1dG1fc291cmNlPVBSTyZ1dG1fY2FtcGFpZ249MjRNJnV0bV90aGVtZT=
+1Qcm9tb3Rpb25hbC1Qcm9kdWN0Jm9nbWFwPUVNJTdDUFJPTU8lN0NTRiU3QyU3QyU3QyU3QyU3Q=
+zIwMjUxMjIwX1BST19TRU1JQU5OVUFMU0FMRVNVUEVSU0FUVVJEQVlfR1JBUEhJQ18yNE1fMlBN=
+Jm9nZW1pZD02NjI0NGYyNmJlYjE4YjM2N2MwYzBiNTQmb2dlbWg9MzQ2ZDI0ZjU1MjA4OTFkNTR=
+iZjM2MDc3MTJkMGQ1NWIyMDI5M2FiMTg3MzQyZDZjY2QxYTA2NThiOTQ0MjNhNCJ9&amp;jwtS=
+=3DmUF2fsiyFXK6alghqJJb8wNjXQTsGXdDhmtccMs7tP4"><img src=3D"https://images.=
+usw2.cordial.com/2012/320x359/slice1366.jpg" width=3D"320" border=3D"0" sty=
+le=3D"width:320px;height:auto;display:block;" alt=3D"Need A Last Minute Gif=
+t? | Act fast! | Now Through 12/24, Get 10% Off** E-Gift Cards | E-Gift Car=
+ds &gt;" class=3D"mobile_img_e"></a></td></tr></table></td></tr></table></t=
+d></tr></table></div><div><table width=3D"100%" cellpadding=3D"0" cellspaci=
+ng=3D"0" align=3D"center" border=3D"0" style=3D"background-color:#ffffff"><=
+tr><td align=3D"center" valign=3D"top"><table width=3D"640" cellpadding=3D"=
+0" cellspacing=3D"0" border=3D"0" style=3D"width:640px;background-color:#ff=
+ffff;" class=3D"w100pc_e"><tr><td align=3D"center" valign=3D"top"><table wi=
+dth=3D"100%" cellpadding=3D"0" cellspacing=3D"0" border=3D"0"><tr><td align=
+=3D"center" valign=3D"top"><a data-crdl-variant=3D"" target=3D"_blank" href=
+=3D"https://e.mktg.torrid.com/c2/2012:694483c98819f349b50a25f3:ot:66244f26b=
+eb18b367c0c0b54:1/cb4c9022?jwtH=3DeyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9&amp;=
+jwtP=3DeyJpYXQiOjE3NjYyNjgzNTAsImNkIjoiLm1rdGcudG9ycmlkLmNvbSIsImNlIjo4NjQw=
+MCwidGsiOiJ0b3JyaWQiLCJtdGxJRCI6IjY5NDRhNzRhMDFmMDUyODFmNjA2NjBiZiIsInR6Ijo=
+tOCwibGlua1VybCI6Imh0dHBzOi8vd3d3Lmluc3RhZ3JhbS5jb20vdG9ycmlkP3V0bV9jb250ZW=
+50PTIwMjUxMjIwX1BST19TRU1JQU5OVUFMU0FMRVNVUEVSU0FUVVJEQVlfR1JBUEhJQ18yNE1fM=
+lBNJnV0bV9tZWRpdW09RU1MJnV0bV9zb3VyY2U9UFJPJnV0bV9jYW1wYWlnbj0yNE0mdXRtX3Ro=
+ZW1lPVByb21vdGlvbmFsLVByb2R1Y3Qmb2dtYXA9RU0lN0NQUk9NTyU3Q1NGJTdDJTdDJTdDJTd=
+DJTdDMjAyNTEyMjBfUFJPX1NFTUlBTk5VQUxTQUxFU1VQRVJTQVRVUkRBWV9HUkFQSElDXzI0TV=
+8yUE0mb2dlbWlkPTY2MjQ0ZjI2YmViMThiMzY3YzBjMGI1NCZvZ2VtaD0zNDZkMjRmNTUyMDg5M=
+WQ1NGJmMzYwNzcxMmQwZDU1YjIwMjkzYWIxODczNDJkNmNjZDFhMDY1OGI5NDQyM2E0In0&amp;=
+jwtS=3D4A6U_0UQ_DZ3E-BM_lXoyrmnwW08pGgP8P1xi7IDdH4"><img src=3D"https://ima=
+ges.usw2.cordial.com/2012/640x332/251117_email_banner_holiday66.jpg" width=
+=3D"640" border=3D"0" style=3D"width:640px;max-width:640px;height:auto;bord=
+er-radius:0px;display:block;" alt=3D"A Torrid Holiday | Curves on Tour | Th=
+e lights are twinkling, the looks are dazzling, and the celebrations are ju=
+st getting started. | Follow Us on IG &gt;" class=3D"mobile_img_e"></a></td=
+></tr></table></td></tr></table></td></tr></table></div>
+    <div>
+
+
+
+
+
+
+
+   =20
+
+
+
+
+
+
+
+ =20
+     =20
+
+
+
+   =20
+  <table align=3D"center" width=3D"640" cellpadding=3D"0" cellspacing=3D"0"=
+ class=3D"w100pc" style=3D"width:640px;background:#ffffff;"><tr><td><table =
+width=3D"100%" cellpadding=3D"0" cellspacing=3D"0"><tr><td align=3D"left" v=
+align=3D"top"><table width=3D"100%" cellpadding=3D"0" cellspacing=3D"0"><tr=
+><td height=3D"20" style=3D"height:20px;line-height:1px;font-size:1px;">=C2=
+=A0</td></tr><tr><td align=3D"center" style=3D"font-family:'DM Sans', Arial=
+, sans-serif;color:#000000;font-size:23px;line-height:27px;font-weight:600;=
+letter-spacing:normal;" class=3D"">Recommended for You</td></tr><tr><td hei=
+ght=3D"20" style=3D"height:20px;font-size:1px;line-height:1px;">=C2=A0</td>=
+</tr><tr><td align=3D"center" valign=3D"middle"><table width=3D"100%" cells=
+pacing=3D"0" cellpadding=3D"0" border=3D"0"><tr><td align=3D"center" valign=
+=3D"top" width=3D"200" style=3D"width:200px;background-color:#ffffff;" clas=
+s=3D"w32pc"><table width=3D"100%" cellspacing=3D"0" cellpadding=3D"0"><tr><=
+td><table width=3D"100%" cellpadding=3D"0" cellspacing=3D"0"><tr><td><table=
+ width=3D"100%" cellpadding=3D"0" cellspacing=3D"0"><tr><td align=3D"center=
+" style=3D"text-align:center;"><a data-crdl-variant=3D"" href=3D"https://e.=
+mktg.torrid.com/c2/2012:694483c98819f349b50a25f3:ot:66244f26beb18b367c0c0b5=
+4:1/d330043e?jwtH=3DeyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9&amp;jwtP=3DeyJpYXQ=
+iOjE3NjYyNjgzNTAsImNkIjoiLm1rdGcudG9ycmlkLmNvbSIsImNlIjo4NjQwMCwidGsiOiJ0b3=
+JyaWQiLCJtdGxJRCI6IjY5NDQ4NTYwZWFhNTk5ZjY0MzBkOTA1MyIsInR6IjotOCwibGlua1Vyb=
+CI6Imh0dHBzOi8vd3d3LnRvcnJpZC5jb20vcHJvZHVjdC9mb3h5LXNxdWFyZS1uZWNrLWhhbHRl=
+ci10b3AvNDM2MDU0ODYuaHRtbD91dG1fY29udGVudD0yMDI1MTIyMF9QUk9fU0VNSUFOTlVBTFN=
+BTEVTVVBFUlNBVFVSREFZX0dSQVBISUNfMjRNXzJQTSZ1dG1fbWVkaXVtPUVNTCZ1dG1fc291cm=
+NlPVBSTyZ1dG1fY2FtcGFpZ249MjRNJnV0bV90aGVtZT1Qcm9tb3Rpb25hbC1Qcm9kdWN0Jm9nb=
+WFwPUVNJTdDUFJPTU8lN0NTRiU3QyU3QyU3QyU3QyU3QzIwMjUxMjIwX1BST19TRU1JQU5OVUFM=
+U0FMRVNVUEVSU0FUVVJEQVlfR1JBUEhJQ18yNE1fMlBNJm9nZW1pZD02NjI0NGYyNmJlYjE4YjM=
+2N2MwYzBiNTQmb2dlbWg9MzQ2ZDI0ZjU1MjA4OTFkNTRiZjM2MDc3MTJkMGQ1NWIyMDI5M2FiMT=
+g3MzQyZDZjY2QxYTA2NThiOTQ0MjNhNCJ9&amp;jwtS=3D2pJgntCmNWcjuV67ho4wZSNkhZmcc=
+WoZBsHrKx4mpcQ"><img src=3D"https://cdn.torrid.com/i/torrid/43605486_00684_=
+hi?%24pdp_hero_standard%24" width=3D"200" alt=3D"Foxy Square Neck Halter To=
+p" style=3D"background-color:#ffffff;max-width:100%;display:block;width:200=
+px;margin:0 auto;" class=3D"w100pc"></a></td></tr><tr><td><table width=3D"1=
+00%" cellspacing=3D"0" cellpadding=3D"0"><tr><td width=3D"1" style=3D"width=
+:1px;" class=3D"textSides w10px">=C2=A0</td><td><table width=3D"100%" cells=
+pacing=3D"0" cellpadding=3D"0"><tr><td height=3D"10" style=3D"height:10px;f=
+ont-size:1px;line-height:1px;">=C2=A0</td></tr><tr><td align=3D"center" hei=
+ght=3D"60" style=3D"font-family:'DM Sans', Arial, sans-serif;font-size:16px=
+;line-height:17px;color:#000000;font-weight:400;" class=3D"txt_12 h80px"><!=
+-- 32 -->Foxy Square Neck Halter Top</td></tr><tr><td height=3D"10" style=
+=3D"height:10px;font-size:1px;line-height:1px;">=C2=A0</td></tr><tr><td><ta=
+ble width=3D"100%" align=3D"center" cellspacing=3D"0" cellpadding=3D"0" bor=
+der=3D"0" class=3D"mobile_cta"><tr><td align=3D"center" style=3D"background=
+-color:#000000;border-radius:0;mso-padding-alt:14px 15px;mso-border-alt:2px=
+ solid #000000;box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box=
+-sizing:border-box;"><a data-crdl-variant=3D"" target=3D"_blank" style=3D"p=
+adding: 14px 15px;border:solid 2px #000000;mso-padding-alt:14px 15px;mso-bo=
+rder-alt:none;border-radius:0;font-family:'DM Sans', Arial, sans-serif;font=
+-size:16px;line-height:18px;font-weight:600;font-style:normal;display:block=
+;text-decoration:none;color:#ffffff;" class=3D"" href=3D"https://e.mktg.tor=
+rid.com/c2/2012:694483c98819f349b50a25f3:ot:66244f26beb18b367c0c0b54:1/f8f2=
+196c?jwtH=3DeyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9&amp;jwtP=3DeyJpYXQiOjE3NjY=
+yNjgzNTAsImNkIjoiLm1rdGcudG9ycmlkLmNvbSIsImNlIjo4NjQwMCwidGsiOiJ0b3JyaWQiLC=
+JtdGxJRCI6IjY5NDQ4NTYwZWFhNTk5ZjY0MzBkOTA1NCIsInR6IjotOCwibGlua1VybCI6Imh0d=
+HBzOi8vd3d3LnRvcnJpZC5jb20vcHJvZHVjdC9mb3h5LXNxdWFyZS1uZWNrLWhhbHRlci10b3Av=
+NDM2MDU0ODYuaHRtbD91dG1fY29udGVudD0yMDI1MTIyMF9QUk9fU0VNSUFOTlVBTFNBTEVTVVB=
+FUlNBVFVSREFZX0dSQVBISUNfMjRNXzJQTSZ1dG1fbWVkaXVtPUVNTCZ1dG1fc291cmNlPVBSTy=
+Z1dG1fY2FtcGFpZ249MjRNJnV0bV90aGVtZT1Qcm9tb3Rpb25hbC1Qcm9kdWN0Jm9nbWFwPUVNJ=
+TdDUFJPTU8lN0NTRiU3QyU3QyU3QyU3QyU3QzIwMjUxMjIwX1BST19TRU1JQU5OVUFMU0FMRVNV=
+UEVSU0FUVVJEQVlfR1JBUEhJQ18yNE1fMlBNJm9nZW1pZD02NjI0NGYyNmJlYjE4YjM2N2MwYzB=
+iNTQmb2dlbWg9MzQ2ZDI0ZjU1MjA4OTFkNTRiZjM2MDc3MTJkMGQ1NWIyMDI5M2FiMTg3MzQyZD=
+ZjY2QxYTA2NThiOTQ0MjNhNCJ9&amp;jwtS=3DB3bMpXkYA1-tNJBNuzzzXJWfEGZiYCax8ubkm=
+LxX-EM"><span style=3D"text-decoration: none; color:#ffffff;" class=3D"cta =
+txt_12">SHOP NOW</span></a></td></tr></table></td></tr></table></td><td wid=
+th=3D"1" style=3D"width:1px;" class=3D"textSides">=C2=A0</td></tr></table><=
+/td></tr></table></td></tr></table></td></tr></table></td><td width=3D"20" =
+height=3D"20" style=3D"width:20px;height:20px;background:#ffffff;" class=3D=
+"w2pc"></td><td align=3D"center" valign=3D"top" width=3D"200" style=3D"widt=
+h:200px;background-color:#ffffff;" class=3D"w32pc"><table width=3D"100%" ce=
+llspacing=3D"0" cellpadding=3D"0"><tr><td><table width=3D"100%" cellpadding=
+=3D"0" cellspacing=3D"0"><tr><td><table width=3D"100%" cellpadding=3D"0" ce=
+llspacing=3D"0"><tr><td align=3D"center" style=3D"text-align:center;"><a da=
+ta-crdl-variant=3D"" href=3D"https://e.mktg.torrid.com/c2/2012:694483c98819=
+f349b50a25f3:ot:66244f26beb18b367c0c0b54:1/92e83ce4?jwtH=3DeyJ0eXAiOiJKV1Qi=
+LCJhbGciOiJIUzI1NiJ9&amp;jwtP=3DeyJpYXQiOjE3NjYyNjgzNTAsImNkIjoiLm1rdGcudG9=
+ycmlkLmNvbSIsImNlIjo4NjQwMCwidGsiOiJ0b3JyaWQiLCJtdGxJRCI6IjY5NDQ4NTYwZWFhNT=
+k5ZjY0MzBkOTA1MyIsInR6IjotOCwibGlua1VybCI6Imh0dHBzOi8vd3d3LnRvcnJpZC5jb20vc=
+HJvZHVjdC9lbWJyb2lkZXJlZC1raW1vbm8vNDQxNTU3OTAuaHRtbD91dG1fY29udGVudD0yMDI1=
+MTIyMF9QUk9fU0VNSUFOTlVBTFNBTEVTVVBFUlNBVFVSREFZX0dSQVBISUNfMjRNXzJQTSZ1dG1=
+fbWVkaXVtPUVNTCZ1dG1fc291cmNlPVBSTyZ1dG1fY2FtcGFpZ249MjRNJnV0bV90aGVtZT1Qcm=
+9tb3Rpb25hbC1Qcm9kdWN0Jm9nbWFwPUVNJTdDUFJPTU8lN0NTRiU3QyU3QyU3QyU3QyU3QzIwM=
+jUxMjIwX1BST19TRU1JQU5OVUFMU0FMRVNVUEVSU0FUVVJEQVlfR1JBUEhJQ18yNE1fMlBNJm9n=
+ZW1pZD02NjI0NGYyNmJlYjE4YjM2N2MwYzBiNTQmb2dlbWg9MzQ2ZDI0ZjU1MjA4OTFkNTRiZjM=
+2MDc3MTJkMGQ1NWIyMDI5M2FiMTg3MzQyZDZjY2QxYTA2NThiOTQ0MjNhNCJ9&amp;jwtS=3DgQ=
+wrcC88hVK5HmkcalwD7JovhlKQErrd5ffcmNU7ugQ"><img src=3D"https://cdn.torrid.c=
+om/i/torrid/44155790_21094_hi?%24pdp_hero_standard%24" width=3D"200" alt=3D=
+"Embroidered Kimono" style=3D"background-color:#ffffff;max-width:100%;displ=
+ay:block;width:200px;margin:0 auto;" class=3D"w100pc"></a></td></tr><tr><td=
+><table width=3D"100%" cellspacing=3D"0" cellpadding=3D"0"><tr><td width=3D=
+"1" style=3D"width:1px;" class=3D"textSides w10px">=C2=A0</td><td><table wi=
+dth=3D"100%" cellspacing=3D"0" cellpadding=3D"0"><tr><td height=3D"10" styl=
+e=3D"height:10px;font-size:1px;line-height:1px;">=C2=A0</td></tr><tr><td al=
+ign=3D"center" height=3D"60" style=3D"font-family:'DM Sans', Arial, sans-se=
+rif;font-size:16px;line-height:17px;color:#000000;font-weight:400;" class=
+=3D"txt_12 h80px"><!-- 32 -->Embroidered Kimono</td></tr><tr><td height=3D"=
+10" style=3D"height:10px;font-size:1px;line-height:1px;">=C2=A0</td></tr><t=
+r><td><table width=3D"100%" align=3D"center" cellspacing=3D"0" cellpadding=
+=3D"0" border=3D"0" class=3D"mobile_cta"><tr><td align=3D"center" style=3D"=
+background-color:#000000;border-radius:0;mso-padding-alt:14px 15px;mso-bord=
+er-alt:2px solid #000000;box-sizing:border-box;-moz-box-sizing:border-box;-=
+webkit-box-sizing:border-box;"><a data-crdl-variant=3D"" target=3D"_blank" =
+style=3D"padding: 14px 15px;border:solid 2px #000000;mso-padding-alt:14px 1=
+5px;mso-border-alt:none;border-radius:0;font-family:'DM Sans', Arial, sans-=
+serif;font-size:16px;line-height:18px;font-weight:600;font-style:normal;dis=
+play:block;text-decoration:none;color:#ffffff;" class=3D"" href=3D"https://=
+e.mktg.torrid.com/c2/2012:694483c98819f349b50a25f3:ot:66244f26beb18b367c0c0=
+b54:1/4add54a8?jwtH=3DeyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9&amp;jwtP=3DeyJpY=
+XQiOjE3NjYyNjgzNTAsImNkIjoiLm1rdGcudG9ycmlkLmNvbSIsImNlIjo4NjQwMCwidGsiOiJ0=
+b3JyaWQiLCJtdGxJRCI6IjY5NDQ4NTYwZWFhNTk5ZjY0MzBkOTA1NCIsInR6IjotOCwibGlua1V=
+ybCI6Imh0dHBzOi8vd3d3LnRvcnJpZC5jb20vcHJvZHVjdC9lbWJyb2lkZXJlZC1raW1vbm8vND=
+QxNTU3OTAuaHRtbD91dG1fY29udGVudD0yMDI1MTIyMF9QUk9fU0VNSUFOTlVBTFNBTEVTVVBFU=
+lNBVFVSREFZX0dSQVBISUNfMjRNXzJQTSZ1dG1fbWVkaXVtPUVNTCZ1dG1fc291cmNlPVBSTyZ1=
+dG1fY2FtcGFpZ249MjRNJnV0bV90aGVtZT1Qcm9tb3Rpb25hbC1Qcm9kdWN0Jm9nbWFwPUVNJTd=
+DUFJPTU8lN0NTRiU3QyU3QyU3QyU3QyU3QzIwMjUxMjIwX1BST19TRU1JQU5OVUFMU0FMRVNVUE=
+VSU0FUVVJEQVlfR1JBUEhJQ18yNE1fMlBNJm9nZW1pZD02NjI0NGYyNmJlYjE4YjM2N2MwYzBiN=
+TQmb2dlbWg9MzQ2ZDI0ZjU1MjA4OTFkNTRiZjM2MDc3MTJkMGQ1NWIyMDI5M2FiMTg3MzQyZDZj=
+Y2QxYTA2NThiOTQ0MjNhNCJ9&amp;jwtS=3DNb9ed1W1g-O_HlQKxc2jQG5ii4eoRZTG8sLhdek=
+mg9A"><span style=3D"text-decoration: none; color:#ffffff;" class=3D"cta tx=
+t_12">SHOP NOW</span></a></td></tr></table></td></tr></table></td><td width=
+=3D"1" style=3D"width:1px;" class=3D"textSides">=C2=A0</td></tr></table></t=
+d></tr></table></td></tr></table></td></tr></table></td><td width=3D"20" he=
+ight=3D"20" style=3D"width:20px;height:20px;background:#ffffff;" class=3D"w=
+2pc"></td><td align=3D"center" valign=3D"top" width=3D"200" style=3D"width:=
+200px;background-color:#ffffff;" class=3D"w32pc"><table width=3D"100%" cell=
+spacing=3D"0" cellpadding=3D"0"><tr><td><table width=3D"100%" cellpadding=
+=3D"0" cellspacing=3D"0"><tr><td><table width=3D"100%" cellpadding=3D"0" ce=
+llspacing=3D"0"><tr><td align=3D"center" style=3D"text-align:center;"><a da=
+ta-crdl-variant=3D"" href=3D"https://e.mktg.torrid.com/c2/2012:694483c98819=
+f349b50a25f3:ot:66244f26beb18b367c0c0b54:1/7086f3b3?jwtH=3DeyJ0eXAiOiJKV1Qi=
+LCJhbGciOiJIUzI1NiJ9&amp;jwtP=3DeyJpYXQiOjE3NjYyNjgzNTAsImNkIjoiLm1rdGcudG9=
+ycmlkLmNvbSIsImNlIjo4NjQwMCwidGsiOiJ0b3JyaWQiLCJtdGxJRCI6IjY5NDQ4NTYwZWFhNT=
+k5ZjY0MzBkOTA1MyIsInR6IjotOCwibGlua1VybCI6Imh0dHBzOi8vd3d3LnRvcnJpZC5jb20vc=
+HJvZHVjdC9saWdodHdlaWdodC1jb3R0b24tamVyc2V5LXNsZWVwLXRlZS80Mzk3NTY1NC5odG1s=
+P3V0bV9jb250ZW50PTIwMjUxMjIwX1BST19TRU1JQU5OVUFMU0FMRVNVUEVSU0FUVVJEQVlfR1J=
+BUEhJQ18yNE1fMlBNJnV0bV9tZWRpdW09RU1MJnV0bV9zb3VyY2U9UFJPJnV0bV9jYW1wYWlnbj=
+0yNE0mdXRtX3RoZW1lPVByb21vdGlvbmFsLVByb2R1Y3Qmb2dtYXA9RU0lN0NQUk9NTyU3Q1NGJ=
+TdDJTdDJTdDJTdDJTdDMjAyNTEyMjBfUFJPX1NFTUlBTk5VQUxTQUxFU1VQRVJTQVRVUkRBWV9H=
+UkFQSElDXzI0TV8yUE0mb2dlbWlkPTY2MjQ0ZjI2YmViMThiMzY3YzBjMGI1NCZvZ2VtaD0zNDZ=
+kMjRmNTUyMDg5MWQ1NGJmMzYwNzcxMmQwZDU1YjIwMjkzYWIxODczNDJkNmNjZDFhMDY1OGI5ND=
+QyM2E0In0&amp;jwtS=3DtalLUIqX-gTnaEaWfeh6mDzE6u7KulqzEMyomCsHvso"><img src=
+=3D"https://cdn.torrid.com/i/torrid/43975654_21188_hi?%24pdp_hero_standard%=
+24" width=3D"200" alt=3D"Lightweight Cotton Jersey Sleep Tee" style=3D"back=
+ground-color:#ffffff;max-width:100%;display:block;width:200px;margin:0 auto=
+;" class=3D"w100pc"></a></td></tr><tr><td><table width=3D"100%" cellspacing=
+=3D"0" cellpadding=3D"0"><tr><td width=3D"1" style=3D"width:1px;" class=3D"=
+textSides w10px">=C2=A0</td><td><table width=3D"100%" cellspacing=3D"0" cel=
+lpadding=3D"0"><tr><td height=3D"10" style=3D"height:10px;font-size:1px;lin=
+e-height:1px;">=C2=A0</td></tr><tr><td align=3D"center" height=3D"60" style=
+=3D"font-family:'DM Sans', Arial, sans-serif;font-size:16px;line-height:17p=
+x;color:#000000;font-weight:400;" class=3D"txt_12 h80px"><!-- 32 -->Lightwe=
+ight Cotton Jersey...</td></tr><tr><td height=3D"10" style=3D"height:10px;f=
+ont-size:1px;line-height:1px;">=C2=A0</td></tr><tr><td><table width=3D"100%=
+" align=3D"center" cellspacing=3D"0" cellpadding=3D"0" border=3D"0" class=
+=3D"mobile_cta"><tr><td align=3D"center" style=3D"background-color:#000000;=
+border-radius:0;mso-padding-alt:14px 15px;mso-border-alt:2px solid #000000;=
+box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-=
+box;"><a data-crdl-variant=3D"" target=3D"_blank" style=3D"padding: 14px 15=
+px;border:solid 2px #000000;mso-padding-alt:14px 15px;mso-border-alt:none;b=
+order-radius:0;font-family:'DM Sans', Arial, sans-serif;font-size:16px;line=
+-height:18px;font-weight:600;font-style:normal;display:block;text-decoratio=
+n:none;color:#ffffff;" class=3D"" href=3D"https://e.mktg.torrid.com/c2/2012=
+:694483c98819f349b50a25f3:ot:66244f26beb18b367c0c0b54:1/f98eda21?jwtH=3DeyJ=
+0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9&amp;jwtP=3DeyJpYXQiOjE3NjYyNjgzNTAsImNkIj=
+oiLm1rdGcudG9ycmlkLmNvbSIsImNlIjo4NjQwMCwidGsiOiJ0b3JyaWQiLCJtdGxJRCI6IjY5N=
+DQ4NTYwZWFhNTk5ZjY0MzBkOTA1NCIsInR6IjotOCwibGlua1VybCI6Imh0dHBzOi8vd3d3LnRv=
+cnJpZC5jb20vcHJvZHVjdC9saWdodHdlaWdodC1jb3R0b24tamVyc2V5LXNsZWVwLXRlZS80Mzk=
+3NTY1NC5odG1sP3V0bV9jb250ZW50PTIwMjUxMjIwX1BST19TRU1JQU5OVUFMU0FMRVNVUEVSU0=
+FUVVJEQVlfR1JBUEhJQ18yNE1fMlBNJnV0bV9tZWRpdW09RU1MJnV0bV9zb3VyY2U9UFJPJnV0b=
+V9jYW1wYWlnbj0yNE0mdXRtX3RoZW1lPVByb21vdGlvbmFsLVByb2R1Y3Qmb2dtYXA9RU0lN0NQ=
+Uk9NTyU3Q1NGJTdDJTdDJTdDJTdDJTdDMjAyNTEyMjBfUFJPX1NFTUlBTk5VQUxTQUxFU1VQRVJ=
+TQVRVUkRBWV9HUkFQSElDXzI0TV8yUE0mb2dlbWlkPTY2MjQ0ZjI2YmViMThiMzY3YzBjMGI1NC=
+ZvZ2VtaD0zNDZkMjRmNTUyMDg5MWQ1NGJmMzYwNzcxMmQwZDU1YjIwMjkzYWIxODczNDJkNmNjZ=
+DFhMDY1OGI5NDQyM2E0In0&amp;jwtS=3DoN_ShVJrK8s12-QrpbDPlJ1O8dfJyMgjaZ-Kf3uP6=
+8A"><span style=3D"text-decoration: none; color:#ffffff;" class=3D"cta txt_=
+12">SHOP NOW</span></a></td></tr></table></td></tr></table></td><td width=
+=3D"1" style=3D"width:1px;" class=3D"textSides">=C2=A0</td></tr></table></t=
+d></tr></table></td></tr></table></td></tr></table></td></tr></table></td><=
+/tr><tr><td height=3D"20" style=3D"height:20px;line-height:1px;font-size:1p=
+x;">=C2=A0</td></tr></table></td></tr></table></td></tr></table>
+
+
+</div>
+    <div><table width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" align=3D=
+"center" style=3D"background-color:#ffffff"><tr><td align=3D"center" valign=
+=3D"top"><table width=3D"640" cellpadding=3D"0" cellspacing=3D"0" style=3D"=
+width:640px;background-color:#ffffff;" class=3D"w100pc_e"><tr><td align=3D"=
+center" valign=3D"top"><table width=3D"100%" cellpadding=3D"0" cellspacing=
+=3D"0"><tr><td width=3D"50%" align=3D"left" valign=3D"top"><a data-crdl-var=
+iant=3D"" target=3D"_blank" href=3D"https://e.mktg.torrid.com/c2/2012:69448=
+3c98819f349b50a25f3:ot:66244f26beb18b367c0c0b54:1/6b06e51a?jwtH=3DeyJ0eXAiO=
+iJKV1QiLCJhbGciOiJIUzI1NiJ9&amp;jwtP=3DeyJpYXQiOjE3NjYyNjgzNTAsImNkIjoiLm1r=
+dGcudG9ycmlkLmNvbSIsImNlIjo4NjQwMCwidGsiOiJ0b3JyaWQiLCJtdGxJRCI6IjY5NDRhNzR=
+hMDFmMDUyODFmNjA2NjBjMCIsInR6IjotOCwibGlua1VybCI6Imh0dHBzOi8vd3d3LnRvcnJpZC=
+5jb20vbmV3Lz91dG1fY29udGVudD0yMDI1MTIyMF9QUk9fU0VNSUFOTlVBTFNBTEVTVVBFUlNBV=
+FVSREFZX0dSQVBISUNfMjRNXzJQTSZ1dG1fbWVkaXVtPUVNTCZ1dG1fc291cmNlPVBSTyZ1dG1f=
+Y2FtcGFpZ249MjRNJnV0bV90aGVtZT1Qcm9tb3Rpb25hbC1Qcm9kdWN0Jm9nbWFwPUVNJTdDUFJ=
+PTU8lN0NTRiU3QyU3QyU3QyU3QyU3QzIwMjUxMjIwX1BST19TRU1JQU5OVUFMU0FMRVNVUEVSU0=
+FUVVJEQVlfR1JBUEhJQ18yNE1fMlBNJm9nZW1pZD02NjI0NGYyNmJlYjE4YjM2N2MwYzBiNTQmb=
+2dlbWg9MzQ2ZDI0ZjU1MjA4OTFkNTRiZjM2MDc3MTJkMGQ1NWIyMDI5M2FiMTg3MzQyZDZjY2Qx=
+YTA2NThiOTQ0MjNhNCJ9&amp;jwtS=3D20xs8Rk7eEETCZyXbS2Cl-_tUDprmzI1J8h44Mq9l3Q=
+"><img src=3D"https://images.usw2.cordial.com/2012/320x97/footer_nav_1_L_ne=
+w_arrivals.jpeg" width=3D"320" border=3D"0" style=3D"width:320px;height:aut=
+o;display:block;" alt=3D"SHOP NEW ARRIVALS" class=3D"mobile_img_e"></a></td=
+><td width=3D"50%" align=3D"left" valign=3D"top"><a data-crdl-variant=3D"" =
+target=3D"_blank" href=3D"https://e.mktg.torrid.com/c2/2012:694483c98819f34=
+9b50a25f3:ot:66244f26beb18b367c0c0b54:1/baea0366?jwtH=3DeyJ0eXAiOiJKV1QiLCJ=
+hbGciOiJIUzI1NiJ9&amp;jwtP=3DeyJpYXQiOjE3NjYyNjgzNTAsImNkIjoiLm1rdGcudG9ycm=
+lkLmNvbSIsImNlIjo4NjQwMCwidGsiOiJ0b3JyaWQiLCJtdGxJRCI6IjY5NDRhNzRhMDFmMDUyO=
+DFmNjA2NjBjMSIsInR6IjotOCwibGlua1VybCI6Imh0dHBzOi8vd3d3LnRvcnJpZC5jb20vY2xv=
+dGhpbmcvdG9wcy8_dXRtX2NvbnRlbnQ9MjAyNTEyMjBfUFJPX1NFTUlBTk5VQUxTQUxFU1VQRVJ=
+TQVRVUkRBWV9HUkFQSElDXzI0TV8yUE0mdXRtX21lZGl1bT1FTUwmdXRtX3NvdXJjZT1QUk8mdX=
+RtX2NhbXBhaWduPTI0TSZ1dG1fdGhlbWU9UHJvbW90aW9uYWwtUHJvZHVjdCZvZ21hcD1FTSU3Q=
+1BST01PJTdDU0YlN0MlN0MlN0MlN0MlN0MyMDI1MTIyMF9QUk9fU0VNSUFOTlVBTFNBTEVTVVBF=
+UlNBVFVSREFZX0dSQVBISUNfMjRNXzJQTSZvZ2VtaWQ9NjYyNDRmMjZiZWIxOGIzNjdjMGMwYjU=
+0Jm9nZW1oPTM0NmQyNGY1NTIwODkxZDU0YmYzNjA3NzEyZDBkNTViMjAyOTNhYjE4NzM0MmQ2Y2=
+NkMWEwNjU4Yjk0NDIzYTQifQ&amp;jwtS=3DCjogVTmDm2RIwuvHQXeVKdqii6N6u8GN55187mo=
+6PfI"><img src=3D"https://images.usw2.cordial.com/2012/320x97/footer_nav_1_=
+R_tops.jpeg" width=3D"320" border=3D"0" style=3D"width:320px;height:auto;di=
+splay:block;" alt=3D"SHOP TOPS" class=3D"mobile_img_e"></a></td></tr></tabl=
+e></td></tr></table></td></tr></table></div>
+    <div><table width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" align=3D=
+"center" style=3D"background-color:#ffffff"><tr><td align=3D"center" valign=
+=3D"top"><table width=3D"640" cellpadding=3D"0" cellspacing=3D"0" style=3D"=
+width:640px;background-color:#ffffff;" class=3D"w100pc_e"><tr><td align=3D"=
+center" valign=3D"top"><table width=3D"100%" cellpadding=3D"0" cellspacing=
+=3D"0"><tr><td width=3D"50%" align=3D"left" valign=3D"top"><a data-crdl-var=
+iant=3D"" target=3D"_blank" href=3D"https://e.mktg.torrid.com/c2/2012:69448=
+3c98819f349b50a25f3:ot:66244f26beb18b367c0c0b54:1/40d1ea36?jwtH=3DeyJ0eXAiO=
+iJKV1QiLCJhbGciOiJIUzI1NiJ9&amp;jwtP=3DeyJpYXQiOjE3NjYyNjgzNTAsImNkIjoiLm1r=
+dGcudG9ycmlkLmNvbSIsImNlIjo4NjQwMCwidGsiOiJ0b3JyaWQiLCJtdGxJRCI6IjY5NDRhNzR=
+hMDFmMDUyODFmNjA2NjBjMiIsInR6IjotOCwibGlua1VybCI6Imh0dHBzOi8vd3d3LnRvcnJpZC=
+5jb20vY2xvdGhpbmcvamVhbnMvP3V0bV9jb250ZW50PTIwMjUxMjIwX1BST19TRU1JQU5OVUFMU=
+0FMRVNVUEVSU0FUVVJEQVlfR1JBUEhJQ18yNE1fMlBNJnV0bV9tZWRpdW09RU1MJnV0bV9zb3Vy=
+Y2U9UFJPJnV0bV9jYW1wYWlnbj0yNE0mdXRtX3RoZW1lPVByb21vdGlvbmFsLVByb2R1Y3Qmb2d=
+tYXA9RU0lN0NQUk9NTyU3Q1NGJTdDJTdDJTdDJTdDJTdDMjAyNTEyMjBfUFJPX1NFTUlBTk5VQU=
+xTQUxFU1VQRVJTQVRVUkRBWV9HUkFQSElDXzI0TV8yUE0mb2dlbWlkPTY2MjQ0ZjI2YmViMThiM=
+zY3YzBjMGI1NCZvZ2VtaD0zNDZkMjRmNTUyMDg5MWQ1NGJmMzYwNzcxMmQwZDU1YjIwMjkzYWIx=
+ODczNDJkNmNjZDFhMDY1OGI5NDQyM2E0In0&amp;jwtS=3D2Le90cdS8LkeixxKFDDtPo1JywGn=
+04UJUki0818nzus"><img src=3D"https://images.usw2.cordial.com/2012/320x76/fo=
+oter_nav_2_L_jeans.jpeg" width=3D"320" border=3D"0" style=3D"width:320px;he=
+ight:auto;display:block;" alt=3D"SHOP JEANS" class=3D"mobile_img_e"></a></t=
+d><td width=3D"50%" align=3D"left" valign=3D"top"><a data-crdl-variant=3D""=
+ target=3D"_blank" href=3D"https://e.mktg.torrid.com/c2/2012:694483c98819f3=
+49b50a25f3:ot:66244f26beb18b367c0c0b54:1/707680b0?jwtH=3DeyJ0eXAiOiJKV1QiLC=
+JhbGciOiJIUzI1NiJ9&amp;jwtP=3DeyJpYXQiOjE3NjYyNjgzNTAsImNkIjoiLm1rdGcudG9yc=
+mlkLmNvbSIsImNlIjo4NjQwMCwidGsiOiJ0b3JyaWQiLCJtdGxJRCI6IjY5NDRhNzRhMDFmMDUy=
+ODFmNjA2NjBjMyIsInR6IjotOCwibGlua1VybCI6Imh0dHBzOi8vd3d3LnRvcnJpZC5jb20vY2x=
+vdGhpbmcvZHJlc3Nlcy8_dXRtX2NvbnRlbnQ9MjAyNTEyMjBfUFJPX1NFTUlBTk5VQUxTQUxFU1=
+VQRVJTQVRVUkRBWV9HUkFQSElDXzI0TV8yUE0mdXRtX21lZGl1bT1FTUwmdXRtX3NvdXJjZT1QU=
+k8mdXRtX2NhbXBhaWduPTI0TSZ1dG1fdGhlbWU9UHJvbW90aW9uYWwtUHJvZHVjdCZvZ21hcD1F=
+TSU3Q1BST01PJTdDU0YlN0MlN0MlN0MlN0MlN0MyMDI1MTIyMF9QUk9fU0VNSUFOTlVBTFNBTEV=
+TVVBFUlNBVFVSREFZX0dSQVBISUNfMjRNXzJQTSZvZ2VtaWQ9NjYyNDRmMjZiZWIxOGIzNjdjMG=
+MwYjU0Jm9nZW1oPTM0NmQyNGY1NTIwODkxZDU0YmYzNjA3NzEyZDBkNTViMjAyOTNhYjE4NzM0M=
+mQ2Y2NkMWEwNjU4Yjk0NDIzYTQifQ&amp;jwtS=3D8tMpCtT8OxVvPNqn4SOv3bi-P7qoiEZZFp=
+s96eOw1_I"><img src=3D"https://images.usw2.cordial.com/2012/320x76/footer_n=
+av_2_R_dresses.jpeg" width=3D"320" border=3D"0" style=3D"width:320px;height=
+:auto;display:block;" alt=3D"SHOP DRESSES" class=3D"mobile_img_e"></a></td>=
+</tr></table></td></tr></table></td></tr></table></div>
+    <div><table width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" align=3D=
+"center" style=3D"background-color:#ffffff"><tr><td align=3D"center" valign=
+=3D"top"><table width=3D"640" cellpadding=3D"0" cellspacing=3D"0" style=3D"=
+width:640px;background-color:#ffffff;" class=3D"w100pc_e"><tr><td align=3D"=
+center" valign=3D"top"><table width=3D"100%" cellpadding=3D"0" cellspacing=
+=3D"0"><tr><td width=3D"50%" align=3D"left" valign=3D"top"><a data-crdl-var=
+iant=3D"" target=3D"_blank" href=3D"https://e.mktg.torrid.com/c2/2012:69448=
+3c98819f349b50a25f3:ot:66244f26beb18b367c0c0b54:1/ad125403?jwtH=3DeyJ0eXAiO=
+iJKV1QiLCJhbGciOiJIUzI1NiJ9&amp;jwtP=3DeyJpYXQiOjE3NjYyNjgzNTAsImNkIjoiLm1r=
+dGcudG9ycmlkLmNvbSIsImNlIjo4NjQwMCwidGsiOiJ0b3JyaWQiLCJtdGxJRCI6IjY5NDRhNzR=
+hMDFmMDUyODFmNjA2NjBjNCIsInR6IjotOCwibGlua1VybCI6Imh0dHBzOi8vd3d3LnRvcnJpZC=
+5jb20vaW50aW1hdGVzL2JyYXMvP3V0bV9jb250ZW50PTIwMjUxMjIwX1BST19TRU1JQU5OVUFMU=
+0FMRVNVUEVSU0FUVVJEQVlfR1JBUEhJQ18yNE1fMlBNJnV0bV9tZWRpdW09RU1MJnV0bV9zb3Vy=
+Y2U9UFJPJnV0bV9jYW1wYWlnbj0yNE0mdXRtX3RoZW1lPVByb21vdGlvbmFsLVByb2R1Y3Qmb2d=
+tYXA9RU0lN0NQUk9NTyU3Q1NGJTdDJTdDJTdDJTdDJTdDMjAyNTEyMjBfUFJPX1NFTUlBTk5VQU=
+xTQUxFU1VQRVJTQVRVUkRBWV9HUkFQSElDXzI0TV8yUE0mb2dlbWlkPTY2MjQ0ZjI2YmViMThiM=
+zY3YzBjMGI1NCZvZ2VtaD0zNDZkMjRmNTUyMDg5MWQ1NGJmMzYwNzcxMmQwZDU1YjIwMjkzYWIx=
+ODczNDJkNmNjZDFhMDY1OGI5NDQyM2E0In0&amp;jwtS=3DVPN_Rk0hRBppnfx3ePsvTh5eT9zc=
+BoJ8mIJFUEbzlYE"><img src=3D"https://images.usw2.cordial.com/2012/320x67/fo=
+oter_nav_3_L_bras.jpeg" width=3D"320" border=3D"0" style=3D"width:320px;hei=
+ght:auto;display:block;" alt=3D"SHOP BRAS" class=3D"mobile_img_e"></a></td>=
+<td width=3D"50%" align=3D"left" valign=3D"top"><a data-crdl-variant=3D"" t=
+arget=3D"_blank" href=3D"https://e.mktg.torrid.com/c2/2012:694483c98819f349=
+b50a25f3:ot:66244f26beb18b367c0c0b54:1/f93fe2e0?jwtH=3DeyJ0eXAiOiJKV1QiLCJh=
+bGciOiJIUzI1NiJ9&amp;jwtP=3DeyJpYXQiOjE3NjYyNjgzNTAsImNkIjoiLm1rdGcudG9ycml=
+kLmNvbSIsImNlIjo4NjQwMCwidGsiOiJ0b3JyaWQiLCJtdGxJRCI6IjY5NDRhNzRhMDFmMDUyOD=
+FmNjA2NjBjNSIsInR6IjotOCwibGlua1VybCI6Imh0dHBzOi8vd3d3LnRvcnJpZC5jb20vc2FsZ=
+S9jbGVhcmFuY2UvP3V0bV9jb250ZW50PTIwMjUxMjIwX1BST19TRU1JQU5OVUFMU0FMRVNVUEVS=
+U0FUVVJEQVlfR1JBUEhJQ18yNE1fMlBNJnV0bV9tZWRpdW09RU1MJnV0bV9zb3VyY2U9UFJPJnV=
+0bV9jYW1wYWlnbj0yNE0mdXRtX3RoZW1lPVByb21vdGlvbmFsLVByb2R1Y3Qmb2dtYXA9RU0lN0=
+NQUk9NTyU3Q1NGJTdDJTdDJTdDJTdDJTdDMjAyNTEyMjBfUFJPX1NFTUlBTk5VQUxTQUxFU1VQR=
+VJTQVRVUkRBWV9HUkFQSElDXzI0TV8yUE0mb2dlbWlkPTY2MjQ0ZjI2YmViMThiMzY3YzBjMGI1=
+NCZvZ2VtaD0zNDZkMjRmNTUyMDg5MWQ1NGJmMzYwNzcxMmQwZDU1YjIwMjkzYWIxODczNDJkNmN=
+jZDFhMDY1OGI5NDQyM2E0In0&amp;jwtS=3DNxno4NUqrBVNsCFh-rosCgtozyTGIpl0GTbcflP=
+8r9g"><img src=3D"https://images.usw2.cordial.com/2012/320x67/footer_nav_3_=
+R_clearance.jpeg" width=3D"320" border=3D"0" style=3D"width:320px;height:au=
+to;display:block;" alt=3D"SHOP CLEARANCE" class=3D"mobile_img_e"></a></td><=
+/tr></table></td></tr></table></td></tr></table></div>
+    <div><table width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" align=3D=
+"center" style=3D"background-color:#ffffff"><tr><td align=3D"center" valign=
+=3D"top"><table width=3D"640" cellpadding=3D"0" cellspacing=3D"0" style=3D"=
+width:640px;background-color:#ffffff;" class=3D"w100pc_e"><tr><td align=3D"=
+center" valign=3D"top"><table width=3D"100%" cellpadding=3D"0" cellspacing=
+=3D"0"><tr><td width=3D"0%" align=3D"left" valign=3D"top"><img src=3D"" wid=
+th=3D"0" border=3D"0" style=3D"width:0px;height:auto;display:block;" alt=3D=
+"" class=3D"mobile_img_e"></td><td width=3D"100%" align=3D"left" valign=3D"=
+top"><a data-crdl-variant=3D"" target=3D"_blank" href=3D"https://e.mktg.tor=
+rid.com/c2/2012:694483c98819f349b50a25f3:ot:66244f26beb18b367c0c0b54:1/f1a6=
+2dfd?jwtH=3DeyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9&amp;jwtP=3DeyJpYXQiOjE3NjY=
+yNjgzNTAsImNkIjoiLm1rdGcudG9ycmlkLmNvbSIsImNlIjo4NjQwMCwidGsiOiJ0b3JyaWQiLC=
+JtdGxJRCI6IjY5NDRhNzRhMDFmMDUyODFmNjA2NjBjNiIsInR6IjotOCwibGlua1VybCI6Imh0d=
+HBzOi8vd3d3LnRvcnJpZC5jb20vYnJhbmRzLz91dG1fY29udGVudD0yMDI1MTIyMF9QUk9fU0VN=
+SUFOTlVBTFNBTEVTVVBFUlNBVFVSREFZX0dSQVBISUNfMjRNXzJQTSZ1dG1fbWVkaXVtPUVNTCZ=
+1dG1fc291cmNlPVBSTyZ1dG1fY2FtcGFpZ249MjRNJnV0bV90aGVtZT1Qcm9tb3Rpb25hbC1Qcm=
+9kdWN0Jm9nbWFwPUVNJTdDUFJPTU8lN0NTRiU3QyU3QyU3QyU3QyU3QzIwMjUxMjIwX1BST19TR=
+U1JQU5OVUFMU0FMRVNVUEVSU0FUVVJEQVlfR1JBUEhJQ18yNE1fMlBNJm9nZW1pZD02NjI0NGYy=
+NmJlYjE4YjM2N2MwYzBiNTQmb2dlbWg9MzQ2ZDI0ZjU1MjA4OTFkNTRiZjM2MDc3MTJkMGQ1NWI=
+yMDI5M2FiMTg3MzQyZDZjY2QxYTA2NThiOTQ0MjNhNCJ9&amp;jwtS=3Dpx2R1cONIMg7VgqVjb=
+yVob5hpiwfjQENBICu00IOUw4"><img src=3D"https://images.usw2.cordial.com/2012=
+/640x75/2501_email_retro_template_14_brands_button.jpg" width=3D"640" borde=
+r=3D"0" style=3D"width:640px;height:auto;display:block;" alt=3D"Shop Brands=
+" class=3D"mobile_img_e"></a></td></tr></table></td></tr></table></td></tr>=
+</table></div>
+    <div><table width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" align=3D=
+"center" style=3D"background-color:#ffffff"><tr><td align=3D"center" valign=
+=3D"top"><table width=3D"640" cellpadding=3D"0" cellspacing=3D"0" style=3D"=
+width:640px;background-color:#ffffff;" class=3D"w100pc_e"><tr><td align=3D"=
+center" valign=3D"top"><table width=3D"100%" cellpadding=3D"0" cellspacing=
+=3D"0"><tr><td width=3D"26.40625%" align=3D"left" valign=3D"top"><a data-cr=
+dl-variant=3D"" target=3D"_blank" href=3D"https://e.mktg.torrid.com/c2/2012=
+:694483c98819f349b50a25f3:ot:66244f26beb18b367c0c0b54:1/313222f5?jwtH=3DeyJ=
+0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9&amp;jwtP=3DeyJpYXQiOjE3NjYyNjgzNTAsImNkIj=
+oiLm1rdGcudG9ycmlkLmNvbSIsImNlIjo4NjQwMCwidGsiOiJ0b3JyaWQiLCJtdGxJRCI6IjY5N=
+DRhNzRhMDFmMDUyODFmNjA2NjBjNyIsInR6IjotOCwibGlua1VybCI6Imh0dHBzOi8vd3d3LnRv=
+cnJpZC5jb20vdG9ycmlkL2N1c3RvbWVyLXNlcnZpY2UvdG9ycmlkLWFwcC90ZC1jdXN0b21lcnN=
+lcnZpY2UtYWJvdXRUb3JyaWRBUFAuaHRtbD91dG1fY29udGVudD0yMDI1MTIyMF9QUk9fU0VNSU=
+FOTlVBTFNBTEVTVVBFUlNBVFVSREFZX0dSQVBISUNfMjRNXzJQTSZ1dG1fbWVkaXVtPUVNTCZ1d=
+G1fc291cmNlPVBSTyZ1dG1fY2FtcGFpZ249MjRNJnV0bV90aGVtZT1Qcm9tb3Rpb25hbC1Qcm9k=
+dWN0Jm9nbWFwPUVNJTdDUFJPTU8lN0NTRiU3QyU3QyU3QyU3QyU3QzIwMjUxMjIwX1BST19TRU1=
+JQU5OVUFMU0FMRVNVUEVSU0FUVVJEQVlfR1JBUEhJQ18yNE1fMlBNJm9nZW1pZD02NjI0NGYyNm=
+JlYjE4YjM2N2MwYzBiNTQmb2dlbWg9MzQ2ZDI0ZjU1MjA4OTFkNTRiZjM2MDc3MTJkMGQ1NWIyM=
+DI5M2FiMTg3MzQyZDZjY2QxYTA2NThiOTQ0MjNhNCJ9&amp;jwtS=3DW-mDKEvB0-3RGA1dZ_ih=
+9edlHGVXcmuyz5sKAdAZc7I"><img src=3D"https://images.usw2.cordial.com/2012/1=
+69x180/footer_additional_links_1.jpeg" width=3D"169" border=3D"0" style=3D"=
+width:169px;height:auto;display:block;" alt=3D"Shop The App" class=3D"mobil=
+e_img_e"></a></td><td width=3D"23.59375%" align=3D"left" valign=3D"top"><a =
+data-crdl-variant=3D"" target=3D"_blank" href=3D"https://e.mktg.torrid.com/=
+c2/2012:694483c98819f349b50a25f3:ot:66244f26beb18b367c0c0b54:1/f959f89e?jwt=
+H=3DeyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9&amp;jwtP=3DeyJpYXQiOjE3NjYyNjgzNTA=
+sImNkIjoiLm1rdGcudG9ycmlkLmNvbSIsImNlIjo4NjQwMCwidGsiOiJ0b3JyaWQiLCJtdGxJRC=
+I6IjY5NDRhNzRhMDFmMDUyODFmNjA2NjBjOCIsInR6IjotOCwibGlua1VybCI6Imh0dHBzOi8vd=
+3d3LnRvcnJpZC5jb20vY3VzdG9tZXItc2VydmljZS9zaWduLXVwLWZvci1zbXMvP3V0bV9jb250=
+ZW50PTIwMjUxMjIwX1BST19TRU1JQU5OVUFMU0FMRVNVUEVSU0FUVVJEQVlfR1JBUEhJQ18yNE1=
+fMlBNJnV0bV9tZWRpdW09RU1MJnV0bV9zb3VyY2U9UFJPJnV0bV9jYW1wYWlnbj0yNE0mdXRtX3=
+RoZW1lPVByb21vdGlvbmFsLVByb2R1Y3Qmb2dtYXA9RU0lN0NQUk9NTyU3Q1NGJTdDJTdDJTdDJ=
+TdDJTdDMjAyNTEyMjBfUFJPX1NFTUlBTk5VQUxTQUxFU1VQRVJTQVRVUkRBWV9HUkFQSElDXzI0=
+TV8yUE0mb2dlbWlkPTY2MjQ0ZjI2YmViMThiMzY3YzBjMGI1NCZvZ2VtaD0zNDZkMjRmNTUyMDg=
+5MWQ1NGJmMzYwNzcxMmQwZDU1YjIwMjkzYWIxODczNDJkNmNjZDFhMDY1OGI5NDQyM2E0In0&am=
+p;jwtS=3DhN7BfvBl3gTLDzNJiz9WS1xIrL9bb57pDJeMax7FGhQ"><img src=3D"https://i=
+mages.usw2.cordial.com/2012/151x180/footer_additional_links_2.jpeg" width=
+=3D"151" border=3D"0" style=3D"width:151px;height:auto;display:block;" alt=
+=3D"Sign Up For SMS" class=3D"mobile_img_e"></a></td><td width=3D"23.59375%=
+" align=3D"left" valign=3D"top"><a data-crdl-variant=3D"" target=3D"_blank"=
+ href=3D"https://e.mktg.torrid.com/c2/2012:694483c98819f349b50a25f3:ot:6624=
+4f26beb18b367c0c0b54:1/33ac38cd?jwtH=3DeyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9=
+&amp;jwtP=3DeyJpYXQiOjE3NjYyNjgzNTAsImNkIjoiLm1rdGcudG9ycmlkLmNvbSIsImNlIjo=
+4NjQwMCwidGsiOiJ0b3JyaWQiLCJtdGxJRCI6IjY5NDRhNzRhMDFmMDUyODFmNjA2NjBjOSIsIn=
+R6IjotOCwibGlua1VybCI6Imh0dHBzOi8vd3d3LnRvcnJpZC5jb20vYnV5LW9ubGluZS1waWNrL=
+XVwLWluLXN0b3JlLz91dG1fY29udGVudD0yMDI1MTIyMF9QUk9fU0VNSUFOTlVBTFNBTEVTVVBF=
+UlNBVFVSREFZX0dSQVBISUNfMjRNXzJQTSZ1dG1fbWVkaXVtPUVNTCZ1dG1fc291cmNlPVBSTyZ=
+1dG1fY2FtcGFpZ249MjRNJnV0bV90aGVtZT1Qcm9tb3Rpb25hbC1Qcm9kdWN0Jm9nbWFwPUVNJT=
+dDUFJPTU8lN0NTRiU3QyU3QyU3QyU3QyU3QzIwMjUxMjIwX1BST19TRU1JQU5OVUFMU0FMRVNVU=
+EVSU0FUVVJEQVlfR1JBUEhJQ18yNE1fMlBNJm9nZW1pZD02NjI0NGYyNmJlYjE4YjM2N2MwYzBi=
+NTQmb2dlbWg9MzQ2ZDI0ZjU1MjA4OTFkNTRiZjM2MDc3MTJkMGQ1NWIyMDI5M2FiMTg3MzQyZDZ=
+jY2QxYTA2NThiOTQ0MjNhNCJ9&amp;jwtS=3DJazfqoNziEQEKsPX-1WldEaI6ujkH5mlVfR73b=
+E58J4"><img src=3D"https://images.usw2.cordial.com/2012/151x180/Image202409=
+555-123-4567.jpg" width=3D"151" border=3D"0" style=3D"width:151px;height:auto=
+;display:block;" alt=3D"Buy Online Pick Up In Store*" class=3D"mobile_img_e=
+"></a></td><td width=3D"26.40625%" align=3D"left" valign=3D"top"><a data-cr=
+dl-variant=3D"" target=3D"_blank" href=3D"https://e.mktg.torrid.com/c2/2012=
+:694483c98819f349b50a25f3:ot:66244f26beb18b367c0c0b54:1/f92646bf?jwtH=3DeyJ=
+0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9&amp;jwtP=3DeyJpYXQiOjE3NjYyNjgzNTAsImNkIj=
+oiLm1rdGcudG9ycmlkLmNvbSIsImNlIjo4NjQwMCwidGsiOiJ0b3JyaWQiLCJtdGxJRCI6IjY5N=
+DRhNzRhMDFmMDUyODFmNjA2NjBjYSIsInR6IjotOCwibGlua1VybCI6Imh0dHBzOi8vd3d3LnRv=
+cnJpZC5jb20vc3RvcmVzLz91dG1fY29udGVudD0yMDI1MTIyMF9QUk9fU0VNSUFOTlVBTFNBTEV=
+TVVBFUlNBVFVSREFZX0dSQVBISUNfMjRNXzJQTSZ1dG1fbWVkaXVtPUVNTCZ1dG1fc291cmNlPV=
+BSTyZ1dG1fY2FtcGFpZ249MjRNJnV0bV90aGVtZT1Qcm9tb3Rpb25hbC1Qcm9kdWN0Jm9nbWFwP=
+UVNJTdDUFJPTU8lN0NTRiU3QyU3QyU3QyU3QyU3QzIwMjUxMjIwX1BST19TRU1JQU5OVUFMU0FM=
+RVNVUEVSU0FUVVJEQVlfR1JBUEhJQ18yNE1fMlBNJm9nZW1pZD02NjI0NGYyNmJlYjE4YjM2N2M=
+wYzBiNTQmb2dlbWg9MzQ2ZDI0ZjU1MjA4OTFkNTRiZjM2MDc3MTJkMGQ1NWIyMDI5M2FiMTg3Mz=
+QyZDZjY2QxYTA2NThiOTQ0MjNhNCJ9&amp;jwtS=3D0rI_iw0R4AxwqmYXX7K3Oy3Uifig5Q-hB=
+WX68Yc3sfE"><img src=3D"https://images.usw2.cordial.com/2012/169x180/footer=
+_additional_links_4.jpeg" width=3D"169" border=3D"0" style=3D"width:169px;h=
+eight:auto;display:block;" alt=3D"Find A Store" class=3D"mobile_img_e"></a>=
+</td></tr></table></td></tr></table></td></tr></table></div>
+    <div data-crdl-tags=3D"sculpt-block-rewards-banner"><table width=3D"100=
+%" cellpadding=3D"0" cellspacing=3D"0" align=3D"center" style=3D"background=
+-color:#ffffff"><tr><td align=3D"center" valign=3D"top"><table width=3D"640=
+" cellpadding=3D"0" cellspacing=3D"0" style=3D"width:640px;background-color=
+:#ffffff;" class=3D"w100pc_e"><tr><td align=3D"center" valign=3D"top"><tabl=
+e class=3D"w100pc" width=3D"578" height=3D"82" cellpadding=3D"0" cellspacin=
+g=3D"0" align=3D"center" style=3D"border: 1px solid #000000; background-col=
+or:#ffffff"><tr><td width=3D"144" align=3D"left" valign=3D"middle"><table w=
+idth=3D"100%" cellpadding=3D"0" cellspacing=3D"0" align=3D"center"><tr><td =
+height=3D"4" style=3D"height:4px;font-size:0px;line-height:0px;">=C2=A0</td=
+></tr><tr><td height=3D"60"><img src=3D"https://images.usw2.cordial.com/201=
+2/144x59/rewardsBanner2.png" width=3D"144" border=3D"0" style=3D"width:144p=
+x;height:59px;max-width:144px;height:auto;border-radius:0px;display:block;"=
+ alt=3D"Torrid Rewards Current Status" class=3D"mobile_img_e"></td></tr><tr=
+><td height=3D"10" style=3D"height:10px;font-size:0px;line-height:0px;">=C2=
+=A0</td></tr></table></td><td width=3D"84" align=3D"left" valign=3D"top"><t=
+able width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" align=3D"center"><t=
+r><td class=3D"h50px txt_12" height=3D"70" width=3D"84" align=3D"center" va=
+lign=3D"bottom" style=3D"font-family: Arial, sans-serif; font-weight: bold;=
+ font-size: 16px; line-height: 18px; color: #373737;">Insider</td></tr><tr>=
+</tr></table></td><td width=3D"175" align=3D"left" valign=3D"top" style=3D"=
+border-left: 1px solid #000000;"><table width=3D"100%" cellpadding=3D"0" ce=
+llspacing=3D"0" align=3D"center"><tr><td height=3D"14" style=3D"height:14px=
+;font-size:0px;line-height:0px;">=C2=A0</td></tr><tr><td class=3D"txt_16" w=
+idth=3D"175" align=3D"center" valign=3D"top" style=3D"font-family: Arial, s=
+ans-serif; font-weight: bold; font-size: 20px; line-height: 20px; color: #3=
+73737;">113</td></tr><tr><td height=3D"10" style=3D"height:10px;font-size:0=
+px;line-height:0px;">=C2=A0</td></tr><tr><td height=3D"16" align=3D"center"=
+><img src=3D"https://images.usw2.cordial.com/2013/150x16/reward_banner_poin=
+ts_earned.png" width=3D"150" border=3D"0" style=3D"width:150px;max-width:15=
+0px;height:auto;border-radius:0px;display:block;" alt=3D"Points Earned" cla=
+ss=3D"mobile_img_e"></td></tr><tr></tr></table></td><td width=3D"175" align=
+=3D"left" valign=3D"top"><table width=3D"100%" cellpadding=3D"0" cellspacin=
+g=3D"0" align=3D"center"><tr><td height=3D"14" style=3D"height:14px;font-si=
+ze:0px;line-height:0px;">=C2=A0</td></tr><tr><td class=3D"txt_16" width=3D"=
+175" align=3D"center" valign=3D"top" style=3D"font-family: Arial, sans-seri=
+f; font-weight: bold; font-size: 20px; line-height: 20px; color: #373737;">=
+$0</td></tr><tr><td height=3D"10" style=3D"height:10px;font-size:0px;line-h=
+eight:0px;">=C2=A0</td></tr><tr><td height=3D"16" align=3D"center"><img src=
+=3D"https://images.usw2.cordial.com/2013/150x16/reward_banner_rewards_avail=
+able.png" width=3D"150" border=3D"0" style=3D"width:150px;max-width:150px;h=
+eight:auto;border-radius:0px;display:block;" alt=3D"Rewards Available" clas=
+s=3D"mobile_img_e"></td></tr><tr></tr></table></td><td width=3D"5" align=3D=
+"left" valign=3D"top">=C2=A0</td></tr></table></td></tr></table></td></tr><=
+/table></div>
+    <div><table width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" align=3D=
+"center" style=3D"background-color:#ffffff"><tr><td align=3D"center" valign=
+=3D"top"><table width=3D"640" cellpadding=3D"0" cellspacing=3D"0" style=3D"=
+width:640px;background-color:#ffffff;" class=3D"w100pc_e"><tr><td align=3D"=
+center" valign=3D"top"><table width=3D"100%" cellpadding=3D"0" cellspacing=
+=3D"0"><tr><td width=3D"62.65625%" align=3D"left" valign=3D"top"><a data-cr=
+dl-variant=3D"" target=3D"_blank" href=3D"https://e.mktg.torrid.com/c2/2012=
+:694483c98819f349b50a25f3:ot:66244f26beb18b367c0c0b54:1/43ebaa6b?jwtH=3DeyJ=
+0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9&amp;jwtP=3DeyJpYXQiOjE3NjYyNjgzNTAsImNkIj=
+oiLm1rdGcudG9ycmlkLmNvbSIsImNlIjo4NjQwMCwidGsiOiJ0b3JyaWQiLCJtdGxJRCI6IjY5N=
+DRhNzRhMDFmMDUyODFmNjA2NjBjYiIsInR6IjotOCwibGlua1VybCI6Imh0dHBzOi8vd3d3Lmlu=
+c3RhZ3JhbS5jb20vdG9ycmlkLz91dG1fY29udGVudD0yMDI1MTIyMF9QUk9fU0VNSUFOTlVBTFN=
+BTEVTVVBFUlNBVFVSREFZX0dSQVBISUNfMjRNXzJQTSZ1dG1fbWVkaXVtPUVNTCZ1dG1fc291cm=
+NlPVBSTyZ1dG1fY2FtcGFpZ249MjRNJnV0bV90aGVtZT1Qcm9tb3Rpb25hbC1Qcm9kdWN0Jm9nb=
+WFwPUVNJTdDUFJPTU8lN0NTRiU3QyU3QyU3QyU3QyU3QzIwMjUxMjIwX1BST19TRU1JQU5OVUFM=
+U0FMRVNVUEVSU0FUVVJEQVlfR1JBUEhJQ18yNE1fMlBNJm9nZW1pZD02NjI0NGYyNmJlYjE4YjM=
+2N2MwYzBiNTQmb2dlbWg9MzQ2ZDI0ZjU1MjA4OTFkNTRiZjM2MDc3MTJkMGQ1NWIyMDI5M2FiMT=
+g3MzQyZDZjY2QxYTA2NThiOTQ0MjNhNCJ9&amp;jwtS=3DOeoC-lnhB6TCMO8qqV7qfXJpwn11_=
+eccjturPTCZKN8"><img src=3D"https://images.usw2.cordial.com/2012/401x75/foo=
+ter_social_ig.jpeg" width=3D"401" border=3D"0" style=3D"width:401px;height:=
+auto;display:block;" alt=3D"Connect with us on social!" class=3D"mobile_img=
+_e"></a></td><td width=3D"8.4375%" align=3D"left" valign=3D"top"><a data-cr=
+dl-variant=3D"" target=3D"_blank" href=3D"https://e.mktg.torrid.com/c2/2012=
+:694483c98819f349b50a25f3:ot:66244f26beb18b367c0c0b54:1/274d47f5?jwtH=3DeyJ=
+0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9&amp;jwtP=3DeyJpYXQiOjE3NjYyNjgzNTAsImNkIj=
+oiLm1rdGcudG9ycmlkLmNvbSIsImNlIjo4NjQwMCwidGsiOiJ0b3JyaWQiLCJtdGxJRCI6IjY5N=
+DRhNzRhMDFmMDUyODFmNjA2NjBjYyIsInR6IjotOCwibGlua1VybCI6Imh0dHBzOi8vd3d3LnRp=
+a3Rvay5jb20vQHRvcnJpZD91dG1fY29udGVudD0yMDI1MTIyMF9QUk9fU0VNSUFOTlVBTFNBTEV=
+TVVBFUlNBVFVSREFZX0dSQVBISUNfMjRNXzJQTSZ1dG1fbWVkaXVtPUVNTCZ1dG1fc291cmNlPV=
+BSTyZ1dG1fY2FtcGFpZ249MjRNJnV0bV90aGVtZT1Qcm9tb3Rpb25hbC1Qcm9kdWN0Jm9nbWFwP=
+UVNJTdDUFJPTU8lN0NTRiU3QyU3QyU3QyU3QyU3QzIwMjUxMjIwX1BST19TRU1JQU5OVUFMU0FM=
+RVNVUEVSU0FUVVJEQVlfR1JBUEhJQ18yNE1fMlBNJm9nZW1pZD02NjI0NGYyNmJlYjE4YjM2N2M=
+wYzBiNTQmb2dlbWg9MzQ2ZDI0ZjU1MjA4OTFkNTRiZjM2MDc3MTJkMGQ1NWIyMDI5M2FiMTg3Mz=
+QyZDZjY2QxYTA2NThiOTQ0MjNhNCJ9&amp;jwtS=3DXcpyv0AkLiydV4aWhYtv6N87LVSZhvgrZ=
+x4YMlVsuyY"><img src=3D"https://images.usw2.cordial.com/2012/54x75/footer_s=
+ocial_tt_v2.jpeg" width=3D"54" border=3D"0" style=3D"width:54px;height:auto=
+;display:block;" alt=3D"TikTok" class=3D"mobile_img_e"></a></td><td width=
+=3D"28.90625%" align=3D"left" valign=3D"top"><a data-crdl-variant=3D"" targ=
+et=3D"_blank" href=3D"https://e.mktg.torrid.com/c2/2012:694483c98819f349b50=
+a25f3:ot:66244f26beb18b367c0c0b54:1/5ae2e388?jwtH=3DeyJ0eXAiOiJKV1QiLCJhbGc=
+iOiJIUzI1NiJ9&amp;jwtP=3DeyJpYXQiOjE3NjYyNjgzNTAsImNkIjoiLm1rdGcudG9ycmlkLm=
+NvbSIsImNlIjo4NjQwMCwidGsiOiJ0b3JyaWQiLCJtdGxJRCI6IjY5NDRhNzRhMDFmMDUyODFmN=
+jA2NjBjZCIsInR6IjotOCwibGlua1VybCI6Imh0dHBzOi8vd3d3LmZhY2Vib29rLmNvbS9Ub3Jy=
+aWQvP3V0bV9jb250ZW50PTIwMjUxMjIwX1BST19TRU1JQU5OVUFMU0FMRVNVUEVSU0FUVVJEQVl=
+fR1JBUEhJQ18yNE1fMlBNJnV0bV9tZWRpdW09RU1MJnV0bV9zb3VyY2U9UFJPJnV0bV9jYW1wYW=
+lnbj0yNE0mdXRtX3RoZW1lPVByb21vdGlvbmFsLVByb2R1Y3Qmb2dtYXA9RU0lN0NQUk9NTyU3Q=
+1NGJTdDJTdDJTdDJTdDJTdDMjAyNTEyMjBfUFJPX1NFTUlBTk5VQUxTQUxFU1VQRVJTQVRVUkRB=
+WV9HUkFQSElDXzI0TV8yUE0mb2dlbWlkPTY2MjQ0ZjI2YmViMThiMzY3YzBjMGI1NCZvZ2VtaD0=
+zNDZkMjRmNTUyMDg5MWQ1NGJmMzYwNzcxMmQwZDU1YjIwMjkzYWIxODczNDJkNmNjZDFhMDY1OG=
+I5NDQyM2E0In0&amp;jwtS=3D5haHTilzu1nRnY1skRCWbl75qx0lqFv4HVFd2eA8Q9I"><img =
+src=3D"https://images.usw2.cordial.com/2012/185x75/footer_social_fb.jpeg" w=
+idth=3D"185" border=3D"0" style=3D"width:185px;height:auto;display:block;" =
+alt=3D"Facebook" class=3D"mobile_img_e"></a></td></tr></table></td></tr></t=
+able></td></tr></table></div>
+   =20
+  </div>  <div><table width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" al=
+ign=3D"center" style=3D"max-width: 640px;" bgcolor=3D"#ffffff"><tr><td widt=
+h=3D"100%" align=3D"center" valign=3D"top" style=3D"max-width: 640px;"><tab=
+le width=3D"640" cellpadding=3D"0" cellspacing=3D"0" bgcolor=3D"#ffffff" cl=
+ass=3D"w100pc_e"><tr><td align=3D"center" valign=3D"top"><table width=3D"10=
+0%" cellpadding=3D"0" cellspacing=3D"0" bgcolor=3D"#ffffff"><tr><td width=
+=3D"30" class=3D"blockSides">=C2=A0</td><td align=3D"center" valign=3D"top"=
+><table width=3D"100%" cellpadding=3D"0" cellspacing=3D"0" style=3D"max-wid=
+th: 640px;"><tr><td align=3D"left" valign=3D"top" style=3D"font-family:Aria=
+l,sans-serif;font-size:11px;line-height:14px;mso-line-height-rule:exactly;f=
+ont-weight:400;color:#888888;" class=3D"ftr"><sup>=E2=80=A0=E2=80=A0</sup>B=
+onus earnings may take up to 3 days to add to your Torrid Rewards Account. =
+For every $50 spent on eligible merchandise, $75 Torrid Cash will be earned=
+, redeemable from 01/07/26-01/19/26. Standard eligibility rules apply. Not =
+valid on Spanx. Torrid LLC employees are ineligible to receive this discoun=
+t. This rewards program is provided by Torrid and its terms may change at a=
+ny time. For full Rewards Terms and Conditions, please see <a data-crdl-var=
+iant=3D"" data-crdl-plugin=3D"link" href=3D"https://e.mktg.torrid.com/c2/20=
+12:694483c98819f349b50a25f3:ot:66244f26beb18b367c0c0b54:1/5da85fad?jwtH=3De=
+yJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9&amp;jwtP=3DeyJpYXQiOjE3NjYyNjgzNTAsImNk=
+IjoiLm1rdGcudG9ycmlkLmNvbSIsImNlIjo4NjQwMCwidGsiOiJ0b3JyaWQiLCJtdGxJRCI6IjY=
+5NDQ5MDZlZjlmMzU0OGUwMTA4OTI1ZSIsInR6IjotOCwibGlua1VybCI6Imh0dHBzOi8vd3d3Ln=
+RvcnJpZC5jb20vcmV3YXJkc3Rlcm1zP3V0bV9jb250ZW50PTIwMjUxMjIwX1BST19TRU1JQU5OV=
+UFMU0FMRVNVUEVSU0FUVVJEQVlfR1JBUEhJQ18yNE1fMlBNJnV0bV9tZWRpdW09RU1MJnV0bV9z=
+b3VyY2U9UFJPJnV0bV9jYW1wYWlnbj0yNE0mdXRtX3RoZW1lPVByb21vdGlvbmFsLVByb2R1Y3Q=
+mb2dtYXA9RU0lN0NQUk9NTyU3Q1NGJTdDJTdDJTdDJTdDJTdDMjAyNTEyMjBfUFJPX1NFTUlBTk=
+5VQUxTQUxFU1VQRVJTQVRVUkRBWV9HUkFQSElDXzI0TV8yUE0mb2dlbWlkPTY2MjQ0ZjI2YmViM=
+ThiMzY3YzBjMGI1NCZvZ2VtaD0zNDZkMjRmNTUyMDg5MWQ1NGJmMzYwNzcxMmQwZDU1YjIwMjkz=
+YWIxODczNDJkNmNjZDFhMDY1OGI5NDQyM2E0In0&amp;jwtS=3DtdwVtcfqTw32LPXWRM2AQl5C=
+HQUSP6hNYjPZgHRKdDk"><u data-crdl-plugin=3D"underline">https://www.torrid.c=
+om/rewardsterms</u></a>.<br><br>***Offer valid in store from 11/1/2025=E2=
+=80=931/13/2026. Extra $15 off next purchase with purchase of Torrid gift c=
+ard valued at $100 or more. In store discount will be taken at register wit=
+h promo code. Limit to 1 per customer. Offer valid on select regular-priced=
+ merchandise and Clearance. Offer not available for use on prior purchases,=
+ gift cards, shipping, handling, and taxes. Not valid on Spanx. Other exclu=
+sions may apply. Void where prohibited by law. Offer has no cash value and =
+is not redeemable for cash. Employees and families of Torrid and its affili=
+ates are ineligible. Torrid reserves the right to end or modify this promo =
+at any time.<br><br>**Offer valid online only. LIMITED TIME ONLY. Offer val=
+id from 12:00 AM PT on December 13, 2025 through 11:59 PM PT on December 24=
+, 2025. Receive 10% off E-Gift card purchases, up to a maximum of $500 in t=
+otal E-Gift cards per transaction (maximum discount of $50). Offer valid on=
+ly on E-Gift cards purchased through <a data-crdl-variant=3D"" data-crdl-pl=
+ugin=3D"link" href=3D"https://e.mktg.torrid.com/c2/2012:694483c98819f349b50=
+a25f3:ot:66244f26beb18b367c0c0b54:1/0505fdf6?jwtH=3DeyJ0eXAiOiJKV1QiLCJhbGc=
+iOiJIUzI1NiJ9&amp;jwtP=3DeyJpYXQiOjE3NjYyNjgzNTAsImNkIjoiLm1rdGcudG9ycmlkLm=
+NvbSIsImNlIjo4NjQwMCwidGsiOiJ0b3JyaWQiLCJtdGxJRCI6IjY5NDQ5MDZlZjlmMzU0OGUwM=
+TA4OTI1ZiIsInR6IjotOCwibGlua1VybCI6Imh0dHBzOi8vdG9ycmlkLmNhc2hzdGFyLmNvbS8_=
+dXRtX2NvbnRlbnQ9MjAyNTEyMjBfUFJPX1NFTUlBTk5VQUxTQUxFU1VQRVJTQVRVUkRBWV9HUkF=
+QSElDXzI0TV8yUE0mdXRtX21lZGl1bT1FTUwmdXRtX3NvdXJjZT1QUk8mdXRtX2NhbXBhaWduPT=
+I0TSZ1dG1fdGhlbWU9UHJvbW90aW9uYWwtUHJvZHVjdCZvZ21hcD1FTSU3Q1BST01PJTdDU0YlN=
+0MlN0MlN0MlN0MlN0MyMDI1MTIyMF9QUk9fU0VNSUFOTlVBTFNBTEVTVVBFUlNBVFVSREFZX0dS=
+QVBISUNfMjRNXzJQTSZvZ2VtaWQ9NjYyNDRmMjZiZWIxOGIzNjdjMGMwYjU0Jm9nZW1oPTM0NmQ=
+yNGY1NTIwODkxZDU0YmYzNjA3NzEyZDBkNTViMjAyOTNhYjE4NzM0MmQ2Y2NkMWEwNjU4Yjk0ND=
+IzYTQifQ&amp;jwtS=3DS8MehVcZpEM90O6mIj1nVnwz2U3yJoRN8SwhF4V_pVE"><u data-cr=
+dl-plugin=3D"underline">https://torrid.cashstar.com/</u></a> during the pro=
+motional period. Not valid on physical gift cards. Void where prohibited by=
+ law. Torrid reserves the right to end or modify this promo at any time.</t=
+d></tr><tr><td height=3D"14" style=3D"line-height:1px;font-size:1px;">=C2=
+=A0</td></tr><tr><td align=3D"left" valign=3D"top" style=3D"font-family:Ari=
+al,sans-serif;font-size:11px;line-height:14px;mso-line-height-rule:exactly;=
+font-weight:400;color:#888888;" class=3D"ftr">*Prices in USD and may vary o=
+nline or in-stores. Some items may not be available at this time. Some excl=
+usions apply. View details here:=C2=A0<a data-crdl-variant=3D"" target=3D"_=
+blank" href=3D"https://e.mktg.torrid.com/c2/2012:694483c98819f349b50a25f3:o=
+t:66244f26beb18b367c0c0b54:1/6ae89331?jwtH=3DeyJ0eXAiOiJKV1QiLCJhbGciOiJIUz=
+I1NiJ9&amp;jwtP=3DeyJpYXQiOjE3NjYyNjgzNTAsImNkIjoiLm1rdGcudG9ycmlkLmNvbSIsI=
+mNlIjo4NjQwMCwidGsiOiJ0b3JyaWQiLCJtdGxJRCI6IjY5NDQ4NTYxZWFhNTk5ZjY0MzBkOTA2=
+MyIsInR6IjotOCwibGlua1VybCI6Imh0dHBzOi8vd3d3LnRvcnJpZC5jb20vZGV0YWlscy8_dXR=
+tX2NvbnRlbnQ9MjAyNTEyMjBfUFJPX1NFTUlBTk5VQUxTQUxFU1VQRVJTQVRVUkRBWV9HUkFQSE=
+lDXzI0TV8yUE0mdXRtX21lZGl1bT1FTUwmdXRtX3NvdXJjZT1QUk8mdXRtX2NhbXBhaWduPTI0T=
+SZ1dG1fdGhlbWU9UHJvbW90aW9uYWwtUHJvZHVjdCZvZ21hcD1FTSU3Q1BST01PJTdDU0YlN0Ml=
+N0MlN0MlN0MlN0MyMDI1MTIyMF9QUk9fU0VNSUFOTlVBTFNBTEVTVVBFUlNBVFVSREFZX0dSQVB=
+ISUNfMjRNXzJQTSZvZ2VtaWQ9NjYyNDRmMjZiZWIxOGIzNjdjMGMwYjU0Jm9nZW1oPTM0NmQyNG=
+Y1NTIwODkxZDU0YmYzNjA3NzEyZDBkNTViMjAyOTNhYjE4NzM0MmQ2Y2NkMWEwNjU4Yjk0NDIzY=
+TQifQ&amp;jwtS=3DQcV0RKISgAC_XoAPO7oEIIeU9VnnnAiPYZp3TfC6UTI"><span style=
+=3D"color:#888888;text-decoration:underline;display:inline-block;">https://=
+www.torrid.com/details/</span></a></td></tr><tr><td height=3D"14" style=3D"=
+line-height:1px;font-size:1px;">=C2=A0</td></tr><tr><td align=3D"left" vali=
+gn=3D"top" style=3D"font-family:Arial,sans-serif;font-size:11px;line-height=
+:14px;mso-line-height-rule:exactly;font-weight:400;color:#888888;" class=3D=
+"ftr"><strong>TORRID REWARDS</strong></td></tr><tr><td align=3D"left" valig=
+n=3D"top" style=3D"font-family:Arial,sans-serif;font-size:11px;line-height:=
+14px;mso-line-height-rule:exactly;font-weight:400;color:#888888;" class=3D"=
+ftr">The Torrid Rewards program is provided by Torrid, and Torrid may chang=
+e or discontinue it at any time. Rewards and Torrid Cash information shown =
+may take 2-3 days to fully update. For full Rewards Terms and Conditions, v=
+isit=C2=A0<a data-crdl-variant=3D"" target=3D"_blank" href=3D"https://e.mkt=
+g.torrid.com/c2/2012:694483c98819f349b50a25f3:ot:66244f26beb18b367c0c0b54:1=
+/21b76b60?jwtH=3DeyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9&amp;jwtP=3DeyJpYXQiOj=
+E3NjYyNjgzNTAsImNkIjoiLm1rdGcudG9ycmlkLmNvbSIsImNlIjo4NjQwMCwidGsiOiJ0b3Jya=
+WQiLCJtdGxJRCI6IjY5NDQ4NTYxZWFhNTk5ZjY0MzBkOTA2NCIsInR6IjotOCwibGlua1VybCI6=
+Imh0dHBzOi8vd3d3LnRvcnJpZC5jb20vcmV3YXJkc3Rlcm1zLz91dG1fY29udGVudD0yMDI1MTI=
+yMF9QUk9fU0VNSUFOTlVBTFNBTEVTVVBFUlNBVFVSREFZX0dSQVBISUNfMjRNXzJQTSZ1dG1fbW=
+VkaXVtPUVNTCZ1dG1fc291cmNlPVBSTyZ1dG1fY2FtcGFpZ249MjRNJnV0bV90aGVtZT1Qcm9tb=
+3Rpb25hbC1Qcm9kdWN0Jm9nbWFwPUVNJTdDUFJPTU8lN0NTRiU3QyU3QyU3QyU3QyU3QzIwMjUx=
+MjIwX1BST19TRU1JQU5OVUFMU0FMRVNVUEVSU0FUVVJEQVlfR1JBUEhJQ18yNE1fMlBNJm9nZW1=
+pZD02NjI0NGYyNmJlYjE4YjM2N2MwYzBiNTQmb2dlbWg9MzQ2ZDI0ZjU1MjA4OTFkNTRiZjM2MD=
+c3MTJkMGQ1NWIyMDI5M2FiMTg3MzQyZDZjY2QxYTA2NThiOTQ0MjNhNCJ9&amp;jwtS=3D8sAvy=
+k4v2aisYI6nj_pDOtBuMeB6ibp2n9gKOIe8ZsQ"><span style=3D"color:#888888;text-d=
+ecoration:underline;display:inline-block;">https://www.torrid.com/rewardste=
+rms/</span></a>.</td></tr><tr><td height=3D"14" style=3D"line-height:1px;fo=
+nt-size:1px;">=C2=A0</td></tr><tr><td align=3D"left" valign=3D"top" style=
+=3D"font-family:Arial,sans-serif;font-size:11px;line-height:14px;mso-line-h=
+eight-rule:exactly;font-weight:400;color:#888888;" class=3D"ftr"><sup style=
+=3D"font-size:8px;line-height: 0;">1</sup>Earn 1 point for every dollar spe=
+nt. Points will be loaded in 1-2 days. Once you get 250 points, a reward wi=
+ll be loaded to your Torrid Rewards account. Earn 1 point each day by click=
+ing the daily marketing email. Points will be loaded to your Torrid Rewards=
+ account in 3-4 days. For more information and other ways to earn points, c=
+lick here:=C2=A0<a data-crdl-variant=3D"" target=3D"_blank" href=3D"https:/=
+/e.mktg.torrid.com/c2/2012:694483c98819f349b50a25f3:ot:66244f26beb18b367c0c=
+0b54:1/b4c5f196?jwtH=3DeyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9&amp;jwtP=3DeyJp=
+YXQiOjE3NjYyNjgzNTAsImNkIjoiLm1rdGcudG9ycmlkLmNvbSIsImNlIjo4NjQwMCwidGsiOiJ=
+0b3JyaWQiLCJtdGxJRCI6IjY5NDU5NDUzMWQ1N2IxOTU0MjA1OWU5YyIsInR6IjotOCwibGlua1=
+VybCI6Imh0dHBzOi8vd3d3LnRvcnJpZC5jb20vdG9ycmlkL2N1c3RvbWVyLXNlcnZpY2UvdG9yc=
+mlkLXJld2FyZHMvaG93LXRvLWVhcm4tcG9pbnRzLmh0bWw_dXRtX2NvbnRlbnQ9MjAyNTEyMjBf=
+UFJPX1NFTUlBTk5VQUxTQUxFU1VQRVJTQVRVUkRBWV9HUkFQSElDXzI0TV8yUE0mdXRtX21lZGl=
+1bT1FTUwmdXRtX3NvdXJjZT1QUk8mdXRtX2NhbXBhaWduPTI0TSZ1dG1fdGhlbWU9UHJvbW90aW=
+9uYWwtUHJvZHVjdCZvZ21hcD1FTSU3Q1BST01PJTdDU0YlN0MlN0MlN0MlN0MlN0MyMDI1MTIyM=
+F9QUk9fU0VNSUFOTlVBTFNBTEVTVVBFUlNBVFVSREFZX0dSQVBISUNfMjRNXzJQTSZvZ2VtaWQ9=
+NjYyNDRmMjZiZWIxOGIzNjdjMGMwYjU0Jm9nZW1oPTM0NmQyNGY1NTIwODkxZDU0YmYzNjA3NzE=
+yZDBkNTViMjAyOTNhYjE4NzM0MmQ2Y2NkMWEwNjU4Yjk0NDIzYTQifQ&amp;jwtS=3DBk8ERmhI=
+yL41YkI_4xqMfBdDuFDPjINJJtOtR1m7qF4"><span style=3D"color:#888888;text-deco=
+ration:underline;display:inline-block;">https://www.torrid.com/torrid/custo=
+mer-service/torrid-rewards/how-to-earn-points.html</span></a></td></tr><tr>=
+<td height=3D"14" style=3D"line-height:1px;font-size:1px;">=C2=A0</td></tr>=
+<tr><td align=3D"left" valign=3D"top" style=3D"font-family:Arial,sans-serif=
+;font-size:11px;line-height:14px;mso-line-height-rule:exactly;font-weight:4=
+00;color:#888888;" class=3D"ftr"></td></tr><tr><td align=3D"left" valign=3D=
+"top" style=3D"font-family:Arial,sans-serif;font-size:11px;line-height:14px=
+;mso-line-height-rule:exactly;font-weight:400;color:#888888;" class=3D"ftr"=
+>PLEASE NOTE: Once order has been processed, Torrid is not responsible for =
+delays in shipping or delivery from factors outside its control, including =
+but not limited to interruptions to USPS networks, severe weather condition=
+s, etc=E2=80=A6</td></tr><tr><td height=3D"14" style=3D"line-height:1px;fon=
+t-size:1px;">=C2=A0</td></tr><tr><td align=3D"left" valign=3D"top" style=3D=
+"font-family:Arial,sans-serif;font-size:11px;line-height:14px;mso-line-heig=
+ht-rule:exactly;font-weight:400;color:#888888;" class=3D"ftr">To avoid orde=
+r processing issues, please make sure to review that the correct item, pric=
+e and address information appears on the final order review screen. Torrid =
+is not responsible for late emails due to electronic malfunction or traffic=
+ congestion on the Internet or at Torrid.com. Please review all orders care=
+fully prior to submitting. Torrid is not responsible for delays due to any =
+weather conditions.</td></tr><tr><td height=3D"14" style=3D"line-height:1px=
+;font-size:1px;">=C2=A0</td></tr><tr><td align=3D"left" valign=3D"top" styl=
+e=3D"font-family:Arial,sans-serif;font-size:11px;line-height:14px;mso-line-=
+height-rule:exactly;font-weight:400;color:#888888;" class=3D"ftr">Please do=
+ not reply to this email. For assistance, please contact=C2=A0<a data-crdl-=
+variant=3D"" target=3D"_blank" href=3D"https://e.mktg.torrid.com/c2/2012:69=
+4483c98819f349b50a25f3:ot:66244f26beb18b367c0c0b54:1/9d2ecbfc?jwtH=3DeyJ0eX=
+AiOiJKV1QiLCJhbGciOiJIUzI1NiJ9&amp;jwtP=3DeyJpYXQiOjE3NjYyNjgzNTAsImNkIjoiL=
+m1rdGcudG9ycmlkLmNvbSIsImNlIjo4NjQwMCwidGsiOiJ0b3JyaWQiLCJtdGxJRCI6IjY5NDQ4=
+NTYxZWFhNTk5ZjY0MzBkOTA2NSIsInR6IjotOCwibGlua1VybCI6Imh0dHBzOi8vd3d3LnRvcnJ=
+pZC5jb20vaGVscC8_dXRtX2NvbnRlbnQ9MjAyNTEyMjBfUFJPX1NFTUlBTk5VQUxTQUxFU1VQRV=
+JTQVRVUkRBWV9HUkFQSElDXzI0TV8yUE0mdXRtX21lZGl1bT1FTUwmdXRtX3NvdXJjZT1QUk8md=
+XRtX2NhbXBhaWduPTI0TSZ1dG1fdGhlbWU9UHJvbW90aW9uYWwtUHJvZHVjdCZvZ21hcD1FTSU3=
+Q1BST01PJTdDU0YlN0MlN0MlN0MlN0MlN0MyMDI1MTIyMF9QUk9fU0VNSUFOTlVBTFNBTEVTVVB=
+FUlNBVFVSREFZX0dSQVBISUNfMjRNXzJQTSZvZ2VtaWQ9NjYyNDRmMjZiZWIxOGIzNjdjMGMwYj=
+U0Jm9nZW1oPTM0NmQyNGY1NTIwODkxZDU0YmYzNjA3NzEyZDBkNTViMjAyOTNhYjE4NzM0MmQ2Y=
+2NkMWEwNjU4Yjk0NDIzYTQifQ&amp;jwtS=3DRK2_ACfnPwv4FWYzTFXhFYwJC8wN-t4qFtBN9F=
+hV7vQ"><span style=3D"color:#888888;text-decoration:underline;display:inlin=
+e-block;">Customer Service</span></a></td></tr><tr><td height=3D"14" style=
+=3D"line-height:1px;font-size:1px;">=C2=A0</td></tr><tr><td align=3D"left" =
+valign=3D"top" style=3D"font-family:Arial,sans-serif;font-size:11px;line-he=
+ight:14px;mso-line-height-rule:exactly;font-weight:400;color:#888888;" clas=
+s=3D"ftr"><a data-crdl-variant=3D"" target=3D"_blank" href=3D"https://e.mkt=
+g.torrid.com/c2/2012:694483c98819f349b50a25f3:ot:66244f26beb18b367c0c0b54:1=
+/723923ed?jwtH=3DeyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9&amp;jwtP=3DeyJpYXQiOj=
+E3NjYyNjgzNTAsImNkIjoiLm1rdGcudG9ycmlkLmNvbSIsImNlIjo4NjQwMCwidGsiOiJ0b3Jya=
+WQiLCJtdGxJRCI6IjY5NDQ4NTYxZWFhNTk5ZjY0MzBkOTA2NiIsInR6IjotOCwibGlua1VybCI6=
+Imh0dHBzOi8vcHJlZmVyZW5jZXMudG9ycmlkLmNvbS90b3JyaWQvcHJlZmVyZW5jZS1jZW50ZXI=
+_Y2lkPTY2MjQ0ZjI2YmViMThiMzY3YzBjMGI1NCZ1dG1fY29udGVudD0yMDI1MTIyMF9QUk9fU0=
+VNSUFOTlVBTFNBTEVTVVBFUlNBVFVSREFZX0dSQVBISUNfMjRNXzJQTSZ1dG1fbWVkaXVtPUVNT=
+CZ1dG1fc291cmNlPVBSTyZ1dG1fY2FtcGFpZ249MjRNJnV0bV90aGVtZT1Qcm9tb3Rpb25hbC1Q=
+cm9kdWN0Jm9nbWFwPUVNJTdDUFJPTU8lN0NTRiU3QyU3QyU3QyU3QyU3QzIwMjUxMjIwX1BST19=
+TRU1JQU5OVUFMU0FMRVNVUEVSU0FUVVJEQVlfR1JBUEhJQ18yNE1fMlBNJm9nZW1pZD02NjI0NG=
+YyNmJlYjE4YjM2N2MwYzBiNTQmb2dlbWg9MzQ2ZDI0ZjU1MjA4OTFkNTRiZjM2MDc3MTJkMGQ1N=
+WIyMDI5M2FiMTg3MzQyZDZjY2QxYTA2NThiOTQ0MjNhNCJ9&amp;jwtS=3Dhqc9kLEBw5SPcDTN=
+CitMW4tfBJHeel83P8oZvpfoDzc"><span style=3D"color:#888888;text-decoration:u=
+nderline;display:inline-block;">Update Preferences</span></a>=C2=A0=C2=A0=
+=C2=A0<a data-crdl-variant=3D"" target=3D"_blank" href=3D"https://e.mktg.to=
+rrid.com/c2/2012:694483c98819f349b50a25f3:ot:66244f26beb18b367c0c0b54:1/f3b=
+f9fce?jwtH=3DeyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9&amp;jwtP=3DeyJpYXQiOjE3Nj=
+YyNjgzNTAsImNkIjoiLm1rdGcudG9ycmlkLmNvbSIsImNlIjo4NjQwMCwidGsiOiJ0b3JyaWQiL=
+CJtdGxJRCI6IjY5NDQ4NTYxZWFhNTk5ZjY0MzBkOTA2NyIsInR6IjotOCwibGlua1VybCI6Imh0=
+dHBzOi8vZC5ta3RnLnRvcnJpZC5jb20vb3B0b3V0L2luZGV4LnBocD9tY0lEPTIwMTI6Njk0NDg=
+zYzk4ODE5ZjM0OWI1MGEyNWYzOm90OjY2MjQ0ZjI2YmViMThiMzY3YzBjMGI1NDoxJnR6PS04Jn=
+V0bV9jb250ZW50PTIwMjUxMjIwX1BST19TRU1JQU5OVUFMU0FMRVNVUEVSU0FUVVJEQVlfR1JBU=
+EhJQ18yNE1fMlBNJnV0bV9tZWRpdW09RU1MJnV0bV9zb3VyY2U9UFJPJnV0bV9jYW1wYWlnbj0y=
+NE0mdXRtX3RoZW1lPVByb21vdGlvbmFsLVByb2R1Y3Qmb2dtYXA9RU0lN0NQUk9NTyU3Q1NGJTd=
+DJTdDJTdDJTdDJTdDMjAyNTEyMjBfUFJPX1NFTUlBTk5VQUxTQUxFU1VQRVJTQVRVUkRBWV9HUk=
+FQSElDXzI0TV8yUE0mb2dlbWlkPTY2MjQ0ZjI2YmViMThiMzY3YzBjMGI1NCZvZ2VtaD0zNDZkM=
+jRmNTUyMDg5MWQ1NGJmMzYwNzcxMmQwZDU1YjIwMjkzYWIxODczNDJkNmNjZDFhMDY1OGI5NDQy=
+M2E0In0&amp;jwtS=3DiaSHx1kdBKQ95JixoMvAwjQhrtuhH2aJZNYsIX4YxK8"><span style=
+=3D"color:#888888;text-decoration:underline;display:inline-block;">Unsubscr=
+ibe</span></a>=C2=A0=C2=A0=C2=A0<a data-crdl-variant=3D"" target=3D"_blank"=
+ href=3D"https://e.mktg.torrid.com/c2/2012:694483c98819f349b50a25f3:ot:6624=
+4f26beb18b367c0c0b54:1/b3bf7cfb?jwtH=3DeyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9=
+&amp;jwtP=3DeyJpYXQiOjE3NjYyNjgzNTAsImNkIjoiLm1rdGcudG9ycmlkLmNvbSIsImNlIjo=
+4NjQwMCwidGsiOiJ0b3JyaWQiLCJtdGxJRCI6IjY5NDQ4NTYxZWFhNTk5ZjY0MzBkOTA2OCIsIn=
+R6IjotOCwibGlua1VybCI6Imh0dHBzOi8vd3d3LnRvcnJpZC5jb20vdG9ycmlkL2N1c3RvbWVyL=
+XNlcnZpY2UvYWJvdXQtdG9ycmlkL3RkLWN1c3RvbWVyc2VydmljZS1hYm91dHRvcnJpZC1wcml2=
+YWN5cmVzcG9uc2liaWxpdHkuaHRtbD91dG1fY29udGVudD0yMDI1MTIyMF9QUk9fU0VNSUFOTlV=
+BTFNBTEVTVVBFUlNBVFVSREFZX0dSQVBISUNfMjRNXzJQTSZ1dG1fbWVkaXVtPUVNTCZ1dG1fc2=
+91cmNlPVBSTyZ1dG1fY2FtcGFpZ249MjRNJnV0bV90aGVtZT1Qcm9tb3Rpb25hbC1Qcm9kdWN0J=
+m9nbWFwPUVNJTdDUFJPTU8lN0NTRiU3QyU3QyU3QyU3QyU3QzIwMjUxMjIwX1BST19TRU1JQU5O=
+VUFMU0FMRVNVUEVSU0FUVVJEQVlfR1JBUEhJQ18yNE1fMlBNJm9nZW1pZD02NjI0NGYyNmJlYjE=
+4YjM2N2MwYzBiNTQmb2dlbWg9MzQ2ZDI0ZjU1MjA4OTFkNTRiZjM2MDc3MTJkMGQ1NWIyMDI5M2=
+FiMTg3MzQyZDZjY2QxYTA2NThiOTQ0MjNhNCJ9&amp;jwtS=3Dlq0E-ERirlXv7WBukOUpaLoL_=
+JhBWukmJlevolAjJKI"><span style=3D"color:#888888;text-decoration:underline;=
+display:inline-block;">Privacy Policy</span></a></td></tr><tr><td height=3D=
+"14" style=3D"line-height:1px;font-size:1px;">=C2=A0</td></tr><tr><td align=
+=3D"left" valign=3D"top" style=3D"font-family:Arial,sans-serif;font-size:11=
+px;line-height:14px;mso-line-height-rule:exactly;font-weight:400;color:#888=
+888;" class=3D"ftr">Torrid Headquarters<br>18501 E. San Jose Avenue, City o=
+f Industry, CA 91748 U.S.A.</td></tr><tr><td height=3D"14" style=3D"line-he=
+ight:1px;font-size:1px;">=C2=A0</td></tr><tr><td align=3D"left" valign=3D"t=
+op" style=3D"font-family:Arial,sans-serif;font-size:11px;line-height:14px;m=
+so-line-height-rule:exactly;font-weight:400;color:#888888;" class=3D"ftr">C=
+OPYRIGHT TORRID =C2=A9 2025 ALL RIGHTS RESERVED.</td></tr></table></td><td =
+width=3D"30" class=3D"blockSides">=C2=A0</td></tr></table></td></tr><tr><td=
+ height=3D"40" style=3D"line-height:1px;font-size:1px;">=C2=A0</td></tr></t=
+able></td></tr></table></div>
+  <img src=3D"https://e.mktg.torrid.com/o/p/2012:694483c98819f349b50a25f3:o=
+t:66244f26beb18b367c0c0b54:1/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiO=
+jE3NjYyNjgzNTAsInR6IjotOH0.OEC0dQY3wpkEzQX0XV7NM3tTGwZ8qFJtIzW9Plq_WEA" hei=
+ght=3D1 width=3D1 /><img width=3D"1" height=3D"1" alt=3D"" src=3D"https://m=
+g.mktg.torrid.com/o/eJyMzTFOBSEQANDTQLkZhgGGgmKTb_GPsTCgG2UxiD_x9kZP8OtXvDL=
+l4-V6pM855Lusc1xakuNYs9E1meA9erYO9FvyQRyZGHxt3LhWRm7VFB9iOKoI6DMhoDOIgAjOwU=
+YiOQCaWiNzo6AI-vt63daY85StjK57ud8SgkFldx-J2JbIbGKzFLODA12zyu5j_blHooY-12w4W=
+x8KFMiOlN2Nnqkfs_wognyIjH6c13-wUv-635Tdn0n0I-FvAAAA___VZExm"></body>
+</html>
+

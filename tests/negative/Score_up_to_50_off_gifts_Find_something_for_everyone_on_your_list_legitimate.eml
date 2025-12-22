@@ -1,0 +1,1818 @@
+Return-Path: <mstowe+caf_=mstowe=baddomain.com@gmail.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTPS id 5BKLgAef095582
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <mstowe@baddomain.com>; Sat, 20 Dec 2025 21:42:10 GMT
+	(envelope-from mstowe+caf_=mstowe=baddomain.com@gmail.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (2048-bit key; unprotected) header.d=emdeals.michaels.com header.i=michaels@emdeals.michaels.com header.b=dFvS8h+G;
+	dkim=pass (2048-bit key; unprotected) header.d=s10.y.mc.salesforce.com header.i=@s10.y.mc.salesforce.com header.b=PjgdccP3
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 5BKLg7Hx027344
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=OK)
+	for <mstowe@baddomain.com>; Sat, 20 Dec 2025 15:42:08 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 5BKLg7Hx027344
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (2048-bit key, unprotected) header.d=emdeals.michaels.com header.i=michaels@emdeals.michaels.com header.a=rsa-sha256 header.s=10dkim1 header.b=dFvS8h+G;
+	dkim=pass (2048-bit key, unprotected) header.d=s10.y.mc.salesforce.com header.i=@s10.y.mc.salesforce.com header.a=rsa-sha256 header.s=fbldkim10 header.b=PjgdccP3
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-64b7a38f07eso3504942a12.0
+        for <mstowe@baddomain.com>; Sat, 20 Dec 2025 13:42:08 -0800 (PST)
+ARC-Seal: i=2; a=rsa-sha256; t=555-123-4567; cv=pass;
+        d=google.com; s=arc-20240605;
+        b=fF10FLUqna1wYJBRyRbkmrh3M8m3XOoyZXj1RiZOj5eSIdlMmt4nl9m/NnkaKJ2GZM
+         QizdnoEA/buM0+4BXyXU5ABK4agz4Zl5f0xTtx33Q7YIffKqr7l66RCEH4zqCDG7A6tA
+         VlbbNnHxaR3zGYvp5Qj81zK+auPfdC3/sU9+q2fHS0nUcRGHOhXlEJfkXuQ++JQOQlQe
+         04plcY4spTgXbcoGGRH9rMta5WI9ai+ih8mgU6tDAkSCWZdjojWPlkXmQXZta/bd2jsZ
+         mHeNIx6dBsiINDF+tHaJqynYPx6/vrfOJGIXbxLVALG3ru8VpXC3ZROVa5kjjEHiOrNE
+         Vwug==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=feedback-id:message-id:mime-version:list-unsubscribe-post
+         :list-unsubscribe:date:subject:to:from:dkim-signature:dkim-signature
+         :delivered-to;
+        bh=qOKjmRNzbCMm2q7r+tdpq5a3xBrD4+ErW8zCtbt5b4g=;
+        fh=X1WDGks5Xm+7A4sO+55kehneNH4rB6/1bAFpTftsh04=;
+        b=kHObP4Xzib1Wj67EvMbWHs6ww/YNa+PImHcHUlwKPNy3jKBDzk5BVYVmtjbAKvX+VJ
+         BqRV5Z8mFk1Kd5caXs1jVMB/TCxKdDUZcQzfFAs18ajJhwnfeMyftxE7Oa1KrK20qnP3
+         49FENnYzOyAB+DVZ8zOdaFnxy31M93kjOkLHg5D7xwRuQ91Ur/YlxtoRyX41dfuoZ+8r
+         7liF5C1HpJXOL40GdgB0G4Rpw/GGNGdpuRU/ASOvHHvHGhgIHMT4VI1YW6bMMAGb4jUi
+         sz3kiLUFJ9gXvFtmeKLPPYUU9gVRSsKR+08Xk6G/aOMxLaq1KpbuDsw7vaRvu0S3YmEd
+         poIA==;
+        darn=baddomain.com
+ARC-Authentication-Results: i=2; mx.google.com;
+       dkim=pass header.i=@emdeals.michaels.com header.s=10dkim1 header.b=dFvS8h+G;
+       dkim=pass header.i=@s10.y.mc.salesforce.com header.s=fbldkim10 header.b=PjgdccP3;
+       spf=pass (google.com: domain of bounce-26_html-482758420-358658-100010552-41543@bounce.emdeals.michaels.com designates 128.245.1.101 as permitted sender) smtp.mailfrom=bounce-26_HTML-482758420-358658-100010552-41543@bounce.emdeals.michaels.com;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=michaels.com
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=555-123-4567; x=555-123-4567;
+        h=feedback-id:message-id:mime-version:list-unsubscribe-post
+         :list-unsubscribe:date:subject:to:from:dkim-signature:dkim-signature
+         :delivered-to:x-forwarded-for:x-forwarded-to:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=qOKjmRNzbCMm2q7r+tdpq5a3xBrD4+ErW8zCtbt5b4g=;
+        b=tdjk8+zkID1eNrYACTRl4I9WmNZCHCyxXPiafMPXVwcsVCyLgstM6NqCHyc/bFaFoR
+         4cRG7RZfpn6UX8TQ0hdAJoaZLWG6NI3dQX1Dhlh/+VBkZrCDF3D2KxfiP02r+ySA6tbq
+         WN1Yb2C8itvvL0enjSKB2LjCx1zqsXvTF+4hiwzkRJpg0+58ggzRLXq12+PWBuvOdN13
+         g0WeD3mC1YlA7NWsoAxHSdubRwc7+UDcVHmD72sb8Atn2JmGHsukFyUkspwQvVqUa464
+         mvOv/QshWIUgeNDy2yrladEqoOXs3/pAAXDGMoz3XHMmly/8rx0aIeJTtUcFxoe8UfA5
+         BTqw==
+X-Forwarded-Encrypted: i=2; AJvYcCXaksBzl8oxv3t0BcJIH+o1MAq6MAtXQj9F9DHeJbRTCcv9it6LRp28UiTy30AlvKvMROsCiB8=@baddomain.com
+X-Gm-Message-State: AOJu0YwwM6TZ1hKmjJGPPR6UZyiWDu12YXp3iWs6/l/T/xgMUhgRp5RP
+	+pb8MaVmQtaG6vM95PDuM4XPjPPwXw0kUMUEWkSXgLCguokeDJgmv2W8eUCs+OZJKvQ8OmqUtjD
+	sDx/0ykh1cfaTJ646SwVU8r3NStvl+E1OQ6YmszMN4MFdOrFCuYHVB3LWZEwLiA==
+X-Received: by 2002:a05:6402:d08:b0:647:a636:76c with SMTP id 4fb4d7f45d1cf-64b8ef1840fmr5592472a12.31.1766266926480;
+        Sat, 20 Dec 2025 13:42:06 -0800 (PST)
+X-Forwarded-To: mstowe@baddomain.com
+X-Forwarded-For: mstowe@gmail.com mstowe@baddomain.com
+Delivered-To: mstowe@gmail.com
+Received: by 2002:a05:6400:682f:b0:2c2:3df:9599 with SMTP id 15csp886168ect;
+        Sat, 20 Dec 2025 13:42:04 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF2MJ6KwP/KTeiJNRRbTGozXGIYd8hzumQd8sWyUBCgGZV9AulC6VGEQqab1GsNQIwKpaoH
+X-Received: by 2002:a05:6820:1517:b0:65d:159c:d063 with SMTP id 006d021491bc7-65d159cd7e3mr2372447eaf.75.1766266924451;
+        Sat, 20 Dec 2025 13:42:04 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=555-123-4567; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Bau6MkWDhkHHpmpTo90gGplDdlrg3gWQmoFe0RB2wcplamImAq/olq184GuJLtzQG+
+         1rbaO0LCOefFBguuy/aabxxWr3St1sCOcK+eStaE3V4K9cnwCNiJWvGHcBy2ho06QRcg
+         3bRFeJgeAwtVm+/jJ8pEmCiup37PIHrEBBY5yGn3BNk/2ganZBXkWr3t7kwR0YyIFfAu
+         /K2veSAjJbrsZnkP4so77gxkfmQq3HbKGR6Prpd1Wwq8h7zINy9vQwMXuvhVc8IWh0d6
+         pbGZn3UpyzXShlGRZ75HCMYwuqvSQHDs7mKeAMxJ65M6htJNZbBpokhHzZ6Ru6ht0sat
+         mydw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=feedback-id:message-id:mime-version:list-unsubscribe-post
+         :list-unsubscribe:date:subject:to:from:dkim-signature:dkim-signature;
+        bh=qOKjmRNzbCMm2q7r+tdpq5a3xBrD4+ErW8zCtbt5b4g=;
+        fh=MWHuZBrah+4r7t/djJxy+RzBSI3bRRZ8Fl46Gjw4HC8=;
+        b=X42g1XfF3R0o27YPuVoRYB13K/T+0KOoA+BngXTH2rCK8Hf0KHtZR5uiMG5wYGJFEX
+         HPSuEhV2FUQ+bmYCy4DQr7SBl2f5sws6Z60olHYoNyxMY9xtioCL9d/UEHqSFLQaru91
+         ceVRcT13NTIY/+y9IkX2xpQ8nXS8kiSMQrnhclN2b6WtoiPGGRliiAiGHrwBrti8K2c1
+         MlFI3CK6DcKsHETPyhV85fYySOiGp3ILDVI+dpmWGGhEifX8rBlGzulMwIKYfYj/BN0w
+         xe/HtdHpLg4ZRaTdAjbBC1FLrWo4MVTnT/KRmeVh9mDkJxz+OR9Zak0zYg/yts8MDcWu
+         cYsw==;
+        dara=google.com
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@emdeals.michaels.com header.s=10dkim1 header.b=dFvS8h+G;
+       dkim=pass header.i=@s10.y.mc.salesforce.com header.s=fbldkim10 header.b=PjgdccP3;
+       spf=pass (google.com: domain of bounce-26_html-482758420-358658-100010552-41543@bounce.emdeals.michaels.com designates 128.245.1.101 as permitted sender) smtp.mailfrom=bounce-26_HTML-482758420-358658-100010552-41543@bounce.emdeals.michaels.com;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=michaels.com
+Received: from mta22.emdeals.michaels.com (mta22.emdeals.michaels.com. [128.245.1.101])
+        by mx.google.com with ESMTPS id 586e51a60fabf-3fdaa8d4460si4982800fac.63.2025.12.20.13.42.04
+        for <MSTOWE@gmail.com>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Sat, 20 Dec 2025 13:42:04 -0800 (PST)
+Received-SPF: pass (google.com: domain of bounce-26_html-482758420-358658-100010552-41543@bounce.emdeals.michaels.com designates 128.245.1.101 as permitted sender) client-ip=128.245.1.101;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@emdeals.michaels.com header.s=10dkim1 header.b=dFvS8h+G;
+       dkim=pass header.i=@s10.y.mc.salesforce.com header.s=fbldkim10 header.b=PjgdccP3;
+       spf=pass (google.com: domain of bounce-26_html-482758420-358658-100010552-41543@bounce.emdeals.michaels.com designates 128.245.1.101 as permitted sender) smtp.mailfrom=bounce-26_HTML-482758420-358658-100010552-41543@bounce.emdeals.michaels.com;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=michaels.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=10dkim1; d=emdeals.michaels.com;
+ h=From:To:Subject:Date:List-Unsubscribe:List-Unsubscribe-Post:MIME-Version:
+ Message-ID:Content-Type; i=michaels@emdeals.michaels.com;
+ bh=qOKjmRNzbCMm2q7r+tdpq5a3xBrD4+ErW8zCtbt5b4g=;
+ b=dFvS8h+GJDedb0P5VUXLJ8CUiiZToI1pt05Cj1awd7lTIvWvLQIA/v1okaId5bkjr5XKWPYEbfeC
+   0c8VptbiQm4iWyMPRG0VgcbdFKu+bSuiqwp6jjnHoJ+1pPfgzAFPuxYp+VC+ugPuYzLYgcewzvlF
+   YOsqHVG1TSfsavTC/TTlewMqanXKorQZgWdME8ViD+Wlm0V14uFh1Vfxv2edckpiFOnMCD4A0Dtb
+   VSy6IkkopklArTXQv8YHD2Zml0TssdcstP2+hgGBuee8JUhkQzbKw/yj0YvIsWgeRW7aB51xEoGX
+   Uj9sqbcZUxN4KRVkoEzfqrLVYUF5Sln7zRwq4w==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=fbldkim10; d=s10.y.mc.salesforce.com;
+ h=From:To:Subject:Date:List-Unsubscribe:MIME-Version:Message-ID:Content-Type;
+ bh=qOKjmRNzbCMm2q7r+tdpq5a3xBrD4+ErW8zCtbt5b4g=;
+ b=PjgdccP3HFM1cO6O+F2GN/AX2wQnWjKg4snznDvTejW5fbJ1D18qEAEDJVYzTD817+JEEXEpwruZ
+   IswAldkptu1bjUMSBzeypx2McEbecpMqqwtfP0TK1o1NVxdyhMTFdcjf7DquWelWhrhXMoGxiyxW
+   WRHeAfxrC2FOPfH26amPu7ETcwNo4TOWXKx9uX+Mc504mIX3ZuJtEaNuAgxilsZrj12VL8Mou+bz
+   oHEVmzbGhl8kZLe5dzJRGJSRkh+gqnYq+HTLWBer6a+FNcBlefPKUeN/eGWcwgzQQmm8lQ+2IBRW
+   xwSOkrWyHafn3NmXTjfy00Vz+wMJmUfqtPoGTg==
+Received: by mta22.emdeals.michaels.com id h8sc2o2fmd41 for <user@example.com>; Sat, 20 Dec 2025 21:42:03 +0000 (envelope-from <bounce-26_HTML-482758420-358658-100010552-41543@bounce.emdeals.michaels.com>)
+From: "Michaels" <michaels@emdeals.michaels.com>
+To: <user@example.com>
+Subject: =?UTF-8?B?U2NvcmUgdXAgdG8gNTAlIG9mZiBnaWZ0cyEg8J+OhSBGaW5kIHNv?=
+ =?UTF-8?B?bWV0aGluZyBmb3IgZXZlcnlvbmUgb24geW91ciBsaXN0Lg==?=
+Date: Sat, 20 Dec 2025 15:42:02 -0600
+List-Unsubscribe: <https://click.emdeals.michaels.com/subscription_center.aspx?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtaWQiOiIxMDAwMTA1NTIiLCJzIjoiNDgyNzU4NDIwIiwibGlkIjoiMjYiLCJqIjoiMzU4NjU4IiwiamIiOiI0MTU0MyIsImQiOiIxMDAyMTYifQ.CMaukkg0Y67yUaRBQUPntRpmy5ZYZkNLkotzMOu0Ntg>, <mailto:leave-fd8316761a3c402029-fe27107877630175711670-febc17757d620175-fe4115707564057d701172-fefe1071706007@leave.emdeals.michaels.com>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+MIME-Version: 1.0
+X-SFMC-Stack: 10
+x-job: 100010552_358658
+Message-ID: <b00bafc7-3e9c-4f52-b4c0-900a96594835@dfw1s10mta1378.xt.local>
+Feedback-ID: 100010552:358658:128.245.1.101:sfmktgcld
+Content-Type: multipart/alternative;
+	boundary="JslH552Jcqv6=_?:"
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Sat, 20 Dec 2025 21:42:10 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Sat, 20 Dec 2025 15:42:09 -0600 (CST)
+X-Spam-Flag: YES
+
+This is a multi-part message in MIME format.
+
+--JslH552Jcqv6=_?:
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+
+
+
+
+
+
+
+
+
+https://view.emdeals.michaels.com/?qs=157a777d1bdf049d78f4a500f24eedeae64fcb9b8654367f6d3e92baa962d897e2c3244d14471290f362ef3eb320feef17b71b18421f7e3bc4ce3d88db70a19f 
+View in Browser 
+
+https://www.michaels.com?cm_mmc=EMAIL-_-DCE-_-20251220_S2_US_TempD_DCE_FF_US-_-HEADER_HOME&customerEmail=bXN0b3dlQGdtYWlsLmNvbQ==&sfmc_Sub=1211039102333&emId=4179fc8b691afef3b7c4bea13af87207fa0865044f9fffb4543f1054ea424cc7&cm_mmca2=&mi_u=1211039102333&mi_ecmp=DCEmail20251220 
+
+https://mi.michaels.com/p/cp/ee8397d2aa7dd753/c?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=03:42:PM&url=https%3A%2F%2Fmi.michaels.com%2Fp%2Frp%2F6656fdb47f14f875%2Furl&url_sig=9NeXMaWtgaKv8k 
+
+https://mi.michaels.com/p/cp/ee8397d2aa7dd753/c?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=03:42:PM&url=https%3A%2F%2Fmi.michaels.com%2Fp%2Frp%2F39deae5d174c9cea%2Furl&url_sig=P5ikf5TcrhW674 
+
+https://mi.michaels.com/p/cp/ee8397d2aa7dd753/c?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=03:42:PM&url=https%3A%2F%2Fmi.michaels.com%2Fp%2Frp%2Fb4339810aa3985ec%2Furl&url_sig=2BDW6Oi2GhHVaQ 
+
+
+ 
+ 
+
+
+
+
+https://mi.michaels.com/p/cp/ee8397d2aa7dd753/c?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=03:42:PM&mi_loyalty_id=LMR90670604371&mi_voucherSum=&mi_voucherCount=0&mi_voucherEXP=&mi_PointsUntilReward=357&mi_AmtUntil6Percent=276.21&mi_DateToReach6Percent=01/02/2026&mi_T1MaxRewardPerTrans=500&mi_Segment=5&mi_OfferDescription=EARN $5 IN REWARDS WHEN YOU SPEND $25 OR MORE ON YOUR NEXT PURCHASE&mi_PLCCStatus=&mi_FirstName= &url=https%3A%2F%2Fmi.michaels.com%2Fp%2Frp%2F97ff2670bd1d63dc%2Furl&url_sig=x8Xtvu0HBHl0Eo&cm_mmc=EMAIL-_-DCE-_-20251220_S2_US_TempD_DCE_FF_US-_-MIK_Loyalty_Banner_US&customerEmail=bXN0b3dlQGdtYWlsLmNvbQ==&sfmc_Sub=1211039102333&emId=4179fc8b691afef3b7c4bea13af87207fa0865044f9fffb4543f1054ea424cc7&cm_mmca2=&mi_u=1211039102333&mi_ecmp=DCEmail20251220 
+
+
+
+
+
+
+
+
+https://mi.michaels.com/p/cp/ee8397d2aa7dd753/c?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=03:42:PM&mi_pro=False&mi_sms=False&mi_loyalty_id=LMR90670604371&plcc_status=&plcc_preselected=False&plcc_loyalty_tier=5|20&rtps_expiry_passed=True&F_NAME= &L_NAME= &BF_PRE_SCREEN=0&plcc_preapproved=False&EXPIRY_DT=&Pilot_Group=&url=https%3A%2F%2Fmi.michaels.com%2Fp%2Frp%2F6bc30560c6b70d98%2Furl&url_sig=lybkBCGxJkuxeF&cm_mmc=EMAIL-_-DCE-_-20251220_S2_US_TempD_DCE_FF_US-_-MIK_CMB_US&customerEmail=bXN0b3dlQGdtYWlsLmNvbQ==&sfmc_Sub=1211039102333&emId=4179fc8b691afef3b7c4bea13af87207fa0865044f9fffb4543f1054ea424cc7&cm_mmca2=&mi_u=1211039102333&mi_ecmp=DCEmail20251220 
+
+
+ 
+ 
+ 
+
+
+ 
+
+
+
+
+
+
+
+
+
+https://mi.michaels.com/p/cp/cc8f0fed2ed597bb/c?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=03:42:PM&url=https%3A%2F%2Fmi.michaels.com%2Fp%2Frp%2Ff2edf4cb142d05ff%2Furl&url_sig=oN3Os5ktFapJ7l&cm_mmc=EMAIL-_-DCE-_-20251220_S2_US_TempD_DCE_FF_US-_-2025_Christmas_CountDown_US&customerEmail=bXN0b3dlQGdtYWlsLmNvbQ==&sfmc_Sub=1211039102333&emId=4179fc8b691afef3b7c4bea13af87207fa0865044f9fffb4543f1054ea424cc7&cm_mmca2=&mi_u=1211039102333&mi_ecmp=DCEmail20251220 
+
+
+
+
+https://mi.michaels.com/p/cp/0a18a5d75e629e73/c?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=03:42:PM&mi_text=FFFFFF&mi_background=CF1F2E&mi_expiration=SAT 12/20/25&mi_offerTitle=All Regular Price Purchases&mi_promoCode=MAKEIT20&mi_offerAmount=20&url=https%3A%2F%2Fmi.michaels.com%2Fp%2Frp%2F8d408b6ab36d32d3%2Furl&url_sig=WVi0eG5QfWZRrF&cm_mmc=EMAIL-_-DCE-_-20251220_S2_US_TempD_DCE_FF_US-_-ECommCoupon_US&customerEmail=bXN0b3dlQGdtYWlsLmNvbQ==&sfmc_Sub=1211039102333&emId=4179fc8b691afef3b7c4bea13af87207fa0865044f9fffb4543f1054ea424cc7&cm_mmca2=&mi_u=1211039102333&mi_ecmp=DCEmail20251220 
+
+
+https://www.michaels.com/shop/holidays-occasions/gift-shop?cm_mmc=EMAIL-_-DCE-_-20251220_S2_US_TempD_DCE_FF_US-_-BigGiftSaleXC&customerEmail=bXN0b3dlQGdtYWlsLmNvbQ==&sfmc_Sub=1211039102333&emId=4179fc8b691afef3b7c4bea13af87207fa0865044f9fffb4543f1054ea424cc7&cm_mmca2=&mi_u=1211039102333&mi_ecmp=DCEmail20251220 
+
+https://www.michaels.com/shop/holidays-occasions/gift-shop/gifts-for-kids?cm_mmc=EMAIL-_-DCE-_-20251220_S2_US_TempD_DCE_FF_US-_-Kids&customerEmail=bXN0b3dlQGdtYWlsLmNvbQ==&sfmc_Sub=1211039102333&emId=4179fc8b691afef3b7c4bea13af87207fa0865044f9fffb4543f1054ea424cc7&cm_mmca2=&mi_u=1211039102333&mi_ecmp=DCEmail20251220 
+
+https://www.michaels.com/shop/yarn-needlework/knitting-crochet?cm_mmc=EMAIL-_-DCE-_-20251220_S2_US_TempD_DCE_FF_US-_-KnitterandCrocheters&customerEmail=bXN0b3dlQGdtYWlsLmNvbQ==&sfmc_Sub=1211039102333&emId=4179fc8b691afef3b7c4bea13af87207fa0865044f9fffb4543f1054ea424cc7&cm_mmca2=&mi_u=1211039102333&mi_ecmp=DCEmail20251220 
+
+https://www.michaels.com/ia/seasonal/gift-shop/gifts-for-jewely-makers?cm_mmc=EMAIL-_-DCE-_-20251220_S2_US_TempD_DCE_FF_US-_-JewelryMakers&customerEmail=bXN0b3dlQGdtYWlsLmNvbQ==&sfmc_Sub=1211039102333&emId=4179fc8b691afef3b7c4bea13af87207fa0865044f9fffb4543f1054ea424cc7&cm_mmca2=&mi_u=1211039102333&mi_ecmp=DCEmail20251220 
+
+https://www.michaels.com/ia/seasonal/gift-shop/gifts-for-artists?cm_mmc=EMAIL-_-DCE-_-20251220_S2_US_TempD_DCE_FF_US-_-Artist&customerEmail=bXN0b3dlQGdtYWlsLmNvbQ==&sfmc_Sub=1211039102333&emId=4179fc8b691afef3b7c4bea13af87207fa0865044f9fffb4543f1054ea424cc7&cm_mmca2=&mi_u=1211039102333&mi_ecmp=DCEmail20251220 
+
+https://www.michaels.com/sale?cm_mmc=EMAIL-_-DCE-_-20251220_S2_US_TempD_DCE_FF_US-_-ShoptheSale&customerEmail=bXN0b3dlQGdtYWlsLmNvbQ==&sfmc_Sub=1211039102333&emId=4179fc8b691afef3b7c4bea13af87207fa0865044f9fffb4543f1054ea424cc7&cm_mmca2=&mi_u=1211039102333&mi_ecmp=DCEmail20251220 
+
+
+https://www.michaels.com/shop/holidays-occasions/gift-shop?cm_mmc=EMAIL-_-DCE-_-20251220_S2_US_TempD_DCE_FF_US-_-Getyourgiftsbopiscurbside&customerEmail=bXN0b3dlQGdtYWlsLmNvbQ==&sfmc_Sub=1211039102333&emId=4179fc8b691afef3b7c4bea13af87207fa0865044f9fffb4543f1054ea424cc7&cm_mmca2=&mi_u=1211039102333&mi_ecmp=DCEmail20251220 
+
+
+
+https://mi.michaels.com/p/cp/c586064929c02e30/c?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=%40cacheprevent&mi_p1=6318&mi_p2=6322&mi_p3=6341&mi_p4=6321&mi_p5=6330&mi_userID=1211039102333&mi_color_hex=CF1F2E&mi_text_hex=FFFFFF&mi_secondary_hex=CF1F2E&mi_offers_exploreall_background_color=CF1F2E&mi_offers_exploreall_text_color=ffffff&mi_header_suboffer_text_color=CF1F2E&url=https%3A%2F%2Fmi.michaels.com%2Fp%2Frp%2Fc9aca2d8b8988074%2Furl&url_sig=o4vrhpBnsKt1tP&cm_mmc=EMAIL-_-DCE-_-20251220_S2_US_TempD_DCE_FF_US-_-Header&customerEmail=bXN0b3dlQGdtYWlsLmNvbQ==&sfmc_Sub=1211039102333&emId=4179fc8b691afef3b7c4bea13af87207fa0865044f9fffb4543f1054ea424cc7&cm_mmca2=&mi_u=1211039102333&mi_ecmp=DCEmail20251220 
+
+
+
+https://mi.michaels.com/p/cp/c586064929c02e30/c?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=%40cacheprevent&mi_p1=6318&mi_p2=6322&mi_p3=6341&mi_p4=6321&mi_p5=6330&mi_color_hex=CF1F2E&mi_text_hex=FFFFFF&mi_secondary_hex=CF1F2E&mi_offers_exploreall_background_color=CF1F2E&mi_offers_exploreall_text_color=ffffff&mi_header_suboffer_text_color=CF1F2E&mi_userID=1211039102333&url=https%3A%2F%2Fmi.michaels.com%2Fp%2Frp%2F6370fd8b9e8a15f6%2Furl&url_sig=ZeHGU6MYFU8Q12&cm_mmc=EMAIL-_-DCE-_-20251220_S2_US_TempD_DCE_FF_US-_-justforyoudeals1&customerEmail=bXN0b3dlQGdtYWlsLmNvbQ==&sfmc_Sub=1211039102333&emId=4179fc8b691afef3b7c4bea13af87207fa0865044f9fffb4543f1054ea424cc7&cm_mmca2=&mi_u=1211039102333&mi_ecmp=DCEmail20251220 
+
+https://mi.michaels.com/p/cp/c586064929c02e30/c?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=%40cacheprevent&mi_p1=6318&mi_p2=6322&mi_p3=6341&mi_p4=6321&mi_p5=6330&mi_color_hex=CF1F2E&mi_text_hex=FFFFFF&mi_secondary_hex=CF1F2E&mi_offers_exploreall_background_color=CF1F2E&mi_offers_exploreall_text_color=ffffff&mi_header_suboffer_text_color=CF1F2E&mi_userID=1211039102333&url=https%3A%2F%2Fmi.michaels.com%2Fp%2Frp%2Fafaa22417eea737e%2Furl&url_sig=iERCySNoyjHUnx&cm_mmc=EMAIL-_-DCE-_-20251220_S2_US_TempD_DCE_FF_US-_-justforyoudeals2&customerEmail=bXN0b3dlQGdtYWlsLmNvbQ==&sfmc_Sub=1211039102333&emId=4179fc8b691afef3b7c4bea13af87207fa0865044f9fffb4543f1054ea424cc7&cm_mmca2=&mi_u=1211039102333&mi_ecmp=DCEmail20251220 
+
+https://mi.michaels.com/p/cp/c586064929c02e30/c?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=%40cacheprevent&mi_p1=6318&mi_p2=6322&mi_p3=6341&mi_p4=6321&mi_p5=6330&mi_color_hex=CF1F2E&mi_text_hex=FFFFFF&mi_secondary_hex=CF1F2E&mi_offers_exploreall_background_color=CF1F2E&mi_offers_exploreall_text_color=ffffff&mi_header_suboffer_text_color=CF1F2E&mi_userID=1211039102333&url=https%3A%2F%2Fmi.michaels.com%2Fp%2Frp%2F75dc7583d01a98a7%2Furl&url_sig=cNIf6RXMM7q9rW&cm_mmc=EMAIL-_-DCE-_-20251220_S2_US_TempD_DCE_FF_US-_-justforyoudeals3&customerEmail=bXN0b3dlQGdtYWlsLmNvbQ==&sfmc_Sub=1211039102333&emId=4179fc8b691afef3b7c4bea13af87207fa0865044f9fffb4543f1054ea424cc7&cm_mmca2=&mi_u=1211039102333&mi_ecmp=DCEmail20251220 
+
+
+
+
+https://mi.michaels.com/p/cp/c586064929c02e30/c?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=%40cacheprevent&mi_p1=6318&mi_p2=6322&mi_p3=6341&mi_p4=6321&mi_p5=6330&mi_userID=1211039102333&mi_color_hex=CF1F2E&mi_text_hex=FFFFFF&mi_secondary_hex=CF1F2E&mi_offers_exploreall_background_color=CF1F2E&mi_offers_exploreall_text_color=ffffff&mi_header_suboffer_text_color=CF1F2E&url=https%3A%2F%2Fmi.michaels.com%2Fp%2Frp%2F7f703ac6107791dc%2Furl&url_sig=vWmmBR9ZAuwbth&cm_mmc=EMAIL-_-DCE-_-20251220_S2_US_TempD_DCE_FF_US-_-Header&customerEmail=bXN0b3dlQGdtYWlsLmNvbQ==&sfmc_Sub=1211039102333&emId=4179fc8b691afef3b7c4bea13af87207fa0865044f9fffb4543f1054ea424cc7&cm_mmca2=&mi_u=1211039102333&mi_ecmp=DCEmail20251220 
+
+
+
+https://mi.michaels.com/p/cp/c586064929c02e30/c?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=%40cacheprevent&mi_p1=6318&mi_p2=6322&mi_p3=6341&mi_p4=6321&mi_p5=6330&mi_userID=1211039102333&mi_color_hex=CF1F2E&mi_text_hex=FFFFFF&mi_secondary_hex=CF1F2E&mi_offers_exploreall_background_color=CF1F2E&mi_offers_exploreall_text_color=ffffff&mi_header_suboffer_text_color=CF1F2E&url=https%3A%2F%2Fmi.michaels.com%2Fp%2Frp%2F4cc030fabba2681e%2Furl&url_sig=prt6t790qSfzGe&cm_mmc=EMAIL-_-DCE-_-20251220_S2_US_TempD_DCE_FF_US-_-Header&customerEmail=bXN0b3dlQGdtYWlsLmNvbQ==&sfmc_Sub=1211039102333&emId=4179fc8b691afef3b7c4bea13af87207fa0865044f9fffb4543f1054ea424cc7&cm_mmca2=&mi_u=1211039102333&mi_ecmp=DCEmail20251220 
+
+
+
+https://mi.michaels.com/p/cp/c586064929c02e30/c?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=%40cacheprevent&mi_p1=6318&mi_p2=6322&mi_p3=6341&mi_p4=6321&mi_p5=6330&mi_color_hex=CF1F2E&mi_text_hex=FFFFFF&mi_secondary_hex=CF1F2E&mi_offers_exploreall_background_color=CF1F2E&mi_offers_exploreall_text_color=ffffff&mi_header_suboffer_text_color=CF1F2E&mi_userID=1211039102333&url=https%3A%2F%2Fmi.michaels.com%2Fp%2Frp%2F2b87a8f70cc65981%2Furl&url_sig=MgUCzb5Uo1cY3Y&cm_mmc=EMAIL-_-DCE-_-20251220_S2_US_TempD_DCE_FF_US-_-justforyoudeals1&customerEmail=bXN0b3dlQGdtYWlsLmNvbQ==&sfmc_Sub=1211039102333&emId=4179fc8b691afef3b7c4bea13af87207fa0865044f9fffb4543f1054ea424cc7&cm_mmca2=&mi_u=1211039102333&mi_ecmp=DCEmail20251220 
+
+https://mi.michaels.com/p/cp/c586064929c02e30/c?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=%40cacheprevent&mi_p1=6318&mi_p2=6322&mi_p3=6341&mi_p4=6321&mi_p5=6330&mi_color_hex=CF1F2E&mi_text_hex=FFFFFF&mi_secondary_hex=CF1F2E&mi_offers_exploreall_background_color=CF1F2E&mi_offers_exploreall_text_color=ffffff&mi_header_suboffer_text_color=CF1F2E&mi_userID=1211039102333&url=https%3A%2F%2Fmi.michaels.com%2Fp%2Frp%2Fd1d8b4abfabd449a%2Furl&url_sig=SLaJA56GDhdtjJ&cm_mmc=EMAIL-_-DCE-_-20251220_S2_US_TempD_DCE_FF_US-_-justforyoudeals2&customerEmail=bXN0b3dlQGdtYWlsLmNvbQ==&sfmc_Sub=1211039102333&emId=4179fc8b691afef3b7c4bea13af87207fa0865044f9fffb4543f1054ea424cc7&cm_mmca2=&mi_u=1211039102333&mi_ecmp=DCEmail20251220 
+
+https://mi.michaels.com/p/cp/c586064929c02e30/c?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=%40cacheprevent&mi_p1=6318&mi_p2=6322&mi_p3=6341&mi_p4=6321&mi_p5=6330&mi_color_hex=CF1F2E&mi_text_hex=FFFFFF&mi_secondary_hex=CF1F2E&mi_offers_exploreall_background_color=CF1F2E&mi_offers_exploreall_text_color=ffffff&mi_header_suboffer_text_color=CF1F2E&mi_userID=1211039102333&url=https%3A%2F%2Fmi.michaels.com%2Fp%2Frp%2F67a63e9b7a3e2a32%2Furl&url_sig=rPsiXaxpNntWi5&cm_mmc=EMAIL-_-DCE-_-20251220_S2_US_TempD_DCE_FF_US-_-justforyoudeals3&customerEmail=bXN0b3dlQGdtYWlsLmNvbQ==&sfmc_Sub=1211039102333&emId=4179fc8b691afef3b7c4bea13af87207fa0865044f9fffb4543f1054ea424cc7&cm_mmca2=&mi_u=1211039102333&mi_ecmp=DCEmail20251220 
+
+
+
+https://mi.michaels.com/p/cp/c586064929c02e30/c?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=%40cacheprevent&mi_p1=6318&mi_p2=6322&mi_p3=6341&mi_p4=6321&mi_p5=6330&mi_userID=1211039102333&mi_color_hex=CF1F2E&mi_text_hex=FFFFFF&mi_secondary_hex=CF1F2E&mi_offers_exploreall_background_color=CF1F2E&mi_offers_exploreall_text_color=ffffff&mi_header_suboffer_text_color=CF1F2E&url=https%3A%2F%2Fmi.michaels.com%2Fp%2Frp%2F48e4354488f7dfc2%2Furl&url_sig=vx1ZagqQNyYAX8&cm_mmc=EMAIL-_-DCE-_-20251220_S2_US_TempD_DCE_FF_US-_-Header&customerEmail=bXN0b3dlQGdtYWlsLmNvbQ==&sfmc_Sub=1211039102333&emId=4179fc8b691afef3b7c4bea13af87207fa0865044f9fffb4543f1054ea424cc7&cm_mmca2=&mi_u=1211039102333&mi_ecmp=DCEmail20251220 
+
+
+
+https://mi.michaels.com/p/cp/c586064929c02e30/c?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=%40cacheprevent&mi_p1=6318&mi_p2=6322&mi_p3=6341&mi_p4=6321&mi_p5=6330&mi_userID=1211039102333&mi_color_hex=CF1F2E&mi_offers_exploreall_background_color=CF1F2E&mi_offers_exploreall_text_color=ffffff&mi_header_suboffer_text_color=CF1F2E&mi_text_hex=FFFFFF&mi_secondary_hex=CF1F2E&url=https%3A%2F%2Fmi.michaels.com%2Fp%2Frp%2F48b9859f5b47697f%2Furl&url_sig=zJ28MCCIDljSQJ&cm_mmc=EMAIL-_-DCE-_-20251220_S2_US_TempD_DCE_FF_US-_-Header&customerEmail=bXN0b3dlQGdtYWlsLmNvbQ==&sfmc_Sub=1211039102333&emId=4179fc8b691afef3b7c4bea13af87207fa0865044f9fffb4543f1054ea424cc7&cm_mmca2=&mi_u=1211039102333&mi_ecmp=DCEmail20251220 
+
+
+
+https://mi.michaels.com/p/cp/c586064929c02e30/c?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=%40cacheprevent&mi_p1=6318&mi_p2=6322&mi_p3=6341&mi_p4=6321&mi_p5=6330&mi_color_hex=CF1F2E&mi_text_hex=FFFFFF&mi_secondary_hex=CF1F2E&mi_offers_exploreall_background_color=CF1F2E&mi_offers_exploreall_text_color=ffffff&mi_header_suboffer_text_color=CF1F2E&mi_userID=1211039102333&url=https%3A%2F%2Fmi.michaels.com%2Fp%2Frp%2F1381f4f7fcc0e7e8%2Furl&url_sig=263bzMExKiat5m&cm_mmc=EMAIL-_-DCE-_-20251220_S2_US_TempD_DCE_FF_US-_-justforyoudeals1&customerEmail=bXN0b3dlQGdtYWlsLmNvbQ==&sfmc_Sub=1211039102333&emId=4179fc8b691afef3b7c4bea13af87207fa0865044f9fffb4543f1054ea424cc7&cm_mmca2=&mi_u=1211039102333&mi_ecmp=DCEmail20251220 
+
+https://mi.michaels.com/p/cp/c586064929c02e30/c?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=%40cacheprevent&mi_p1=6318&mi_p2=6322&mi_p3=6341&mi_p4=6321&mi_p5=6330&mi_color_hex=CF1F2E&mi_text_hex=FFFFFF&mi_secondary_hex=CF1F2E&mi_offers_exploreall_background_color=CF1F2E&mi_offers_exploreall_text_color=ffffff&mi_header_suboffer_text_color=CF1F2E&mi_userID=1211039102333&url=https%3A%2F%2Fmi.michaels.com%2Fp%2Frp%2F1c99d7dbfd4eb397%2Furl&url_sig=2FXeqzIBKT0cLJ&cm_mmc=EMAIL-_-DCE-_-20251220_S2_US_TempD_DCE_FF_US-_-justforyoudeals2&customerEmail=bXN0b3dlQGdtYWlsLmNvbQ==&sfmc_Sub=1211039102333&emId=4179fc8b691afef3b7c4bea13af87207fa0865044f9fffb4543f1054ea424cc7&cm_mmca2=&mi_u=1211039102333&mi_ecmp=DCEmail20251220 
+
+https://mi.michaels.com/p/cp/c586064929c02e30/c?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=%40cacheprevent&mi_p1=6318&mi_p2=6322&mi_p3=6341&mi_p4=6321&mi_p5=6330&mi_color_hex=CF1F2E&mi_offers_exploreall_background_color=CF1F2E&mi_offers_exploreall_text_color=ffffff&mi_header_suboffer_text_color=CF1F2E&mi_text_hex=FFFFFF&mi_secondary_hex=CF1F2E&mi_userID=1211039102333&url=https%3A%2F%2Fmi.michaels.com%2Fp%2Frp%2Fe40206575481984e%2Furl&url_sig=P3J2LXVl2Y4D0q&cm_mmc=EMAIL-_-DCE-_-20251220_S2_US_TempD_DCE_FF_US-_-justforyoudeals3&customerEmail=bXN0b3dlQGdtYWlsLmNvbQ==&sfmc_Sub=1211039102333&emId=4179fc8b691afef3b7c4bea13af87207fa0865044f9fffb4543f1054ea424cc7&cm_mmca2=&mi_u=1211039102333&mi_ecmp=DCEmail20251220 
+
+
+
+
+https://mi.michaels.com/p/cp/c586064929c02e30/c?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=%40cacheprevent&mi_p1=6318&mi_p2=6322&mi_p3=6341&mi_p4=6321&mi_p5=6330&mi_userID=1211039102333&mi_color_hex=CF1F2E&mi_text_hex=FFFFFF&mi_secondary_hex=CF1F2E&mi_offers_exploreall_background_color=CF1F2E&mi_offers_exploreall_text_color=ffffff&mi_header_suboffer_text_color=CF1F2E&url=https%3A%2F%2Fmi.michaels.com%2Fp%2Frp%2Ff566d0738e1356b0%2Furl&url_sig=B3NEp3wIUMTfVE&cm_mmc=EMAIL-_-DCE-_-20251220_S2_US_TempD_DCE_FF_US-_-Header&customerEmail=bXN0b3dlQGdtYWlsLmNvbQ==&sfmc_Sub=1211039102333&emId=4179fc8b691afef3b7c4bea13af87207fa0865044f9fffb4543f1054ea424cc7&cm_mmca2=&mi_u=1211039102333&mi_ecmp=DCEmail20251220 
+
+
+
+
+https://mi.michaels.com/p/cp/0a18a5d75e629e73/c?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_date=&mi_background=CF1F2E&mi_text=FFFFFF&mi_expiration=&mi_EXP=&mi_ign=03:42:PM&url=https%3A%2F%2Fmi.michaels.com%2Fp%2Frp%2Fbf717cabb28ade82%2Furl&url_sig=O4tVn6rU1prTib&cm_mmc=EMAIL-_-DCE-_-20251220_S2_US_TempD_DCE_FF_US-_-Chain_Coupon_Bottom&customerEmail=bXN0b3dlQGdtYWlsLmNvbQ==&sfmc_Sub=1211039102333&emId=4179fc8b691afef3b7c4bea13af87207fa0865044f9fffb4543f1054ea424cc7&cm_mmca2=&mi_u=1211039102333&mi_ecmp=DCEmail20251220 
+
+
+
+
+
+
+
+
+
+https://www.michaelscustomframing.com/10min-custom-framing?cm_mmc=EMAIL-_-DCE-_-20251220_S2_US_TempD_DCE_FF_US-_-10MinCustom&customerEmail=bXN0b3dlQGdtYWlsLmNvbQ==&sfmc_Sub=1211039102333&emId=4179fc8b691afef3b7c4bea13af87207fa0865044f9fffb4543f1054ea424cc7&cm_mmca2=&mi_u=1211039102333&mi_ecmp=DCEmail20251220 
+
+https://www.michaelscustomframing.com/10min-custom-framing?cm_mmc=EMAIL-_-DCE-_-20251220_S2_US_TempD_DCE_FF_US-_-10MinCustom&customerEmail=bXN0b3dlQGdtYWlsLmNvbQ==&sfmc_Sub=1211039102333&emId=4179fc8b691afef3b7c4bea13af87207fa0865044f9fffb4543f1054ea424cc7&cm_mmca2=&mi_u=1211039102333&mi_ecmp=DCEmail20251220 
+
+
+
+
+
+https://www.michaels.com/shop/party/balloons-accessories?cm_mmc=EMAIL-_-DCE-_-20251220_S2_US_TempD_DCE_FF_US-_-ChristmasSameDayDeliveryBOPISBalloons_CRS&customerEmail=bXN0b3dlQGdtYWlsLmNvbQ==&sfmc_Sub=1211039102333&emId=4179fc8b691afef3b7c4bea13af87207fa0865044f9fffb4543f1054ea424cc7&cm_mmca2=&mi_u=1211039102333&mi_ecmp=DCEmail20251220 
+
+
+https://www.michaels.com/learn-with-michaels?cm_mmc=EMAIL-_-DCE-_-20251220_S2_US_TempD_DCE_FF_US-_-HolidayInStoreEventsWinterWorkshop&customerEmail=bXN0b3dlQGdtYWlsLmNvbQ==&sfmc_Sub=1211039102333&emId=4179fc8b691afef3b7c4bea13af87207fa0865044f9fffb4543f1054ea424cc7&cm_mmca2=&mi_u=1211039102333&mi_ecmp=DCEmail20251220 
+
+https://www.michaels.com/events?startDate=2025-12-01T06%3A00%3A00.000Z&endDate=2025-12-26T05%3A59%3A59.000Z&page=1&cm_mmc=EMAIL-_-DCE-_-20251220_S2_US_TempD_DCE_FF_US-_-HolidayInStoreEventsWinterWorkshop&customerEmail=bXN0b3dlQGdtYWlsLmNvbQ==&sfmc_Sub=1211039102333&emId=4179fc8b691afef3b7c4bea13af87207fa0865044f9fffb4543f1054ea424cc7&cm_mmca2=&mi_u=1211039102333&mi_ecmp=DCEmail20251220 
+
+https://www.michaels.com/winter-workshop?cm_mmc=EMAIL-_-DCE-_-20251220_S2_US_TempD_DCE_FF_US-_-HolidayInStoreEventsWinterWorkshop&customerEmail=bXN0b3dlQGdtYWlsLmNvbQ==&sfmc_Sub=1211039102333&emId=4179fc8b691afef3b7c4bea13af87207fa0865044f9fffb4543f1054ea424cc7&cm_mmca2=&mi_u=1211039102333&mi_ecmp=DCEmail20251220 
+
+
+https://www.michaels.com/lp/opera?cm_mmc=EMAIL-_-DCE-_-20251220_S2_US_TempD_DCE_FF_US-_-PinterestPredictsOpera&customerEmail=bXN0b3dlQGdtYWlsLmNvbQ==&sfmc_Sub=1211039102333&emId=4179fc8b691afef3b7c4bea13af87207fa0865044f9fffb4543f1054ea424cc7&cm_mmca2=&mi_u=1211039102333&mi_ecmp=DCEmail20251220 
+
+ 
+ 
+ 
+
+
+ 
+
+
+
+https://mi.michaels.com/p/cp/ee8397d2aa7dd753/c?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=03:42:PM&mi_loyalty_id=LMR90670604371&mi_FirstName= &url=https%3A%2F%2Fmi.michaels.com%2Fp%2Frp%2F7ee2759f610e80b5%2Furl&url_sig=4TAg5S7r9OHRzR&cm_mmc=EMAIL-_-DCE-_-20251220_S2_US_TempD_DCE_FF_US-_-MIK_Rewards_Footer_Header_US&customerEmail=bXN0b3dlQGdtYWlsLmNvbQ==&sfmc_Sub=1211039102333&emId=4179fc8b691afef3b7c4bea13af87207fa0865044f9fffb4543f1054ea424cc7&cm_mmca2=&mi_u=1211039102333&mi_ecmp=DCEmail20251220 
+
+
+
+
+
+https://mi.michaels.com/p/cp/ee8397d2aa7dd753/c?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=03:42:PM&mi_loyalty_id=LMR90670604371&mi_Segment=5&mi_OfferDescription=EARN $5 IN REWARDS WHEN YOU SPEND $25 OR MORE ON YOUR NEXT PURCHASE&mi_StartDate=12/14/2025 12:00:00 AM&mi_EndDate=1/3/2026 12:00:00 AM&url=https%3A%2F%2Fmi.michaels.com%2Fp%2Frp%2F83eb5a295c2b2b0e%2Furl&url_sig=0foboKawDcF9Ex&cm_mmc=EMAIL-_-DCE-_-20251220_S2_US_TempD_DCE_FF_US-_-MIK_Rewards_BonusOffers_US&customerEmail=bXN0b3dlQGdtYWlsLmNvbQ==&sfmc_Sub=1211039102333&emId=4179fc8b691afef3b7c4bea13af87207fa0865044f9fffb4543f1054ea424cc7&cm_mmca2=&mi_u=1211039102333&mi_ecmp=DCEmail20251220 
+
+
+
+
+
+https://mi.michaels.com/p/cp/ee8397d2aa7dd753/c?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=03:42:PM&mi_PointsUntilReward=357&mi_Points=143&mi_AmtUntil6Percent=276.21&mi_DateToReach6Percent=01/02/2026&mi_Segment=5|20&mi_FirstName= &mi_loyalty_id=LMR90670604371&url=https%3A%2F%2Fmi.michaels.com%2Fp%2Frp%2Fbf93933208fd5aaa%2Furl&url_sig=rqL8DerO7ajSuF&cm_mmc=EMAIL-_-DCE-_-20251220_S2_US_TempD_DCE_FF_US-_-MIK_Rewards_ProgressBar_US&customerEmail=bXN0b3dlQGdtYWlsLmNvbQ==&sfmc_Sub=1211039102333&emId=4179fc8b691afef3b7c4bea13af87207fa0865044f9fffb4543f1054ea424cc7&cm_mmca2=&mi_u=1211039102333&mi_ecmp=DCEmail20251220 
+
+
+
+
+
+
+
+
+https://www.michaels.com/signin?returnUrl=/coupons&headerAuthCta=true 
+
+https://mi.michaels.com/p/cp/ee8397d2aa7dd753/c?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=03:42:PM&mi_loyalty_id=LMR90670604371&url=https%3A%2F%2Fmi.michaels.com%2Fp%2Frp%2F2618a17f33ce6711%2Furl&url_sig=YsIzO1VCsCtD84&cm_mmc=EMAIL-_-DCE-_-20251220_S2_US_TempD_DCE_FF_US-_-MIK_StatusCheck_LOYALTY_US&customerEmail=bXN0b3dlQGdtYWlsLmNvbQ==&sfmc_Sub=1211039102333&emId=4179fc8b691afef3b7c4bea13af87207fa0865044f9fffb4543f1054ea424cc7&cm_mmca2=&mi_u=1211039102333&mi_ecmp=DCEmail20251220 
+
+https://mi.michaels.com/p/cp/ee8397d2aa7dd753/c?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=03:42:PM&mi_sms=False&url=https%3A%2F%2Fmi.michaels.com%2Fp%2Frp%2F0ee27fa770c53d2d%2Furl&url_sig=Li3eyM3ptBBf4J&cm_mmc=EMAIL-_-DCE-_-20251220_S2_US_TempD_DCE_FF_US-_-MIK_StatusCheck_SMS_US&customerEmail=bXN0b3dlQGdtYWlsLmNvbQ==&sfmc_Sub=1211039102333&emId=4179fc8b691afef3b7c4bea13af87207fa0865044f9fffb4543f1054ea424cc7&cm_mmca2=&mi_u=1211039102333&mi_ecmp=DCEmail20251220 
+
+https://mi.michaels.com/p/cp/ee8397d2aa7dd753/c?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=03:42:PM&mi_PUSHsignup=False&url=https%3A%2F%2Fmi.michaels.com%2Fp%2Frp%2Fc44e60cbc7e5671b%2Furl&url_sig=q5GZvL1pTZXwjv&cm_mmc=EMAIL-_-DCE-_-20251220_S2_US_TempD_DCE_FF_US-_-MIK_StatusCheck_PUSH_US&customerEmail=bXN0b3dlQGdtYWlsLmNvbQ==&sfmc_Sub=1211039102333&emId=4179fc8b691afef3b7c4bea13af87207fa0865044f9fffb4543f1054ea424cc7&cm_mmca2=&mi_u=1211039102333&mi_ecmp=DCEmail20251220 
+
+https://mi.michaels.com/p/cp/ee8397d2aa7dd753/c?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=03:42:PM&mi_loyaltybday= &url=https%3A%2F%2Fmi.michaels.com%2Fp%2Frp%2F2c608001d75ea09c%2Furl&url_sig=yTKRK2FveD4bCn&cm_mmc=EMAIL-_-DCE-_-20251220_S2_US_TempD_DCE_FF_US-_-MIK_StatusCheck_BDAY_US&customerEmail=bXN0b3dlQGdtYWlsLmNvbQ==&sfmc_Sub=1211039102333&emId=4179fc8b691afef3b7c4bea13af87207fa0865044f9fffb4543f1054ea424cc7&cm_mmca2=&mi_u=1211039102333&mi_ecmp=DCEmail20251220 
+
+
+
+
+
+
+
+
+
+https://mi.michaels.com/p/cp/ee8397d2aa7dd753/c?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=03:42:PM&mi_sms=False&url=https%3A%2F%2Fmi.michaels.com%2Fp%2Frp%2Fbf4bb92ab2602997%2Furl&url_sig=XJRIloMrN2VOAg&cm_mmc=EMAIL-_-DCE-_-20251220_S2_US_TempD_DCE_FF_US-_-MIK_SMS_Signup_US&customerEmail=bXN0b3dlQGdtYWlsLmNvbQ==&sfmc_Sub=1211039102333&emId=4179fc8b691afef3b7c4bea13af87207fa0865044f9fffb4543f1054ea424cc7&cm_mmca2=&mi_u=1211039102333&mi_ecmp=DCEmail20251220 
+
+
+
+ 
+ 
+ 
+
+
+ https://www.michaels.com/affirm?cm_mmc=EMAIL-_-DCE-_-20251220_S2_US_TempD_DCE_FF_US-_-Affirm&customerEmail=bXN0b3dlQGdtYWlsLmNvbQ==&sfmc_Sub=1211039102333&emId=4179fc8b691afef3b7c4bea13af87207fa0865044f9fffb4543f1054ea424cc7&cm_mmca2=&mi_u=1211039102333&mi_ecmp=DCEmail20251220 
+
+ 
+ 
+ 
+https://www.facebook.com/Michaels 
+
+https://www.instagram.com/michaelsstores/ 
+
+https://www.pinterest.com/michaelsstores/ 
+
+https://twitter.com/MichaelsStores 
+
+https://www.youtube.com/user/MichaelsStores 
+
+https://www.snapchat.com/add/michaelsstores 
+
+https://www.michaels.com?cm_mmc=EMAIL-_-DCE-_-20251220_S2_US_TempD_DCE_FF_US-_-FOOTER_SHOP&customerEmail=bXN0b3dlQGdtYWlsLmNvbQ==&sfmc_Sub=1211039102333&emId=4179fc8b691afef3b7c4bea13af87207fa0865044f9fffb4543f1054ea424cc7&cm_mmca2=&mi_u=1211039102333&mi_ecmp=DCEmail20251220 
+
+https://www.michaels.com/sale?cm_mmc=EMAIL-_-DCE-_-20251220_S2_US_TempD_DCE_FF_US-_-FOOTER_SALE&customerEmail=bXN0b3dlQGdtYWlsLmNvbQ==&sfmc_Sub=1211039102333&emId=4179fc8b691afef3b7c4bea13af87207fa0865044f9fffb4543f1054ea424cc7&cm_mmca2=&mi_u=1211039102333&mi_ecmp=DCEmail20251220 
+
+https://www.michaels.com/projects?cm_mmc=EMAIL-_-DCE-_-20251220_S2_US_TempD_DCE_FF_US-_-FOOTER_PROJECTS&customerEmail=bXN0b3dlQGdtYWlsLmNvbQ==&sfmc_Sub=1211039102333&emId=4179fc8b691afef3b7c4bea13af87207fa0865044f9fffb4543f1054ea424cc7&cm_mmca2=&mi_u=1211039102333&mi_ecmp=DCEmail20251220 
+
+https://www.michaels.com/classes?cm_mmc=EMAIL-_-DCE-_-20251220_S2_US_TempD_DCE_FF_US-_-FOOTER_CLASSES&customerEmail=bXN0b3dlQGdtYWlsLmNvbQ==&sfmc_Sub=1211039102333&emId=4179fc8b691afef3b7c4bea13af87207fa0865044f9fffb4543f1054ea424cc7&cm_mmca2=&mi_u=1211039102333&mi_ecmp=DCEmail20251220 
+
+https://www.michaelscustomframing.com?cm_mmc=EMAIL-_-DCE-_-20251220_S2_US_TempD_DCE_FF_US-_-FOOTER_CUSTOMFRAMING&customerEmail=bXN0b3dlQGdtYWlsLmNvbQ==&sfmc_Sub=1211039102333&emId=4179fc8b691afef3b7c4bea13af87207fa0865044f9fffb4543f1054ea424cc7&cm_mmca2=&mi_u=1211039102333&mi_ecmp=DCEmail20251220 
+
+https://www.michaels.com/makerplace?cm_mmc=EMAIL-_-DCE-_-20251220_S2_US_TempD_DCE_FF_US-_-Footer_MIKMakerPlace&customerEmail=bXN0b3dlQGdtYWlsLmNvbQ==&sfmc_Sub=1211039102333&emId=4179fc8b691afef3b7c4bea13af87207fa0865044f9fffb4543f1054ea424cc7&cm_mmca2=&mi_u=1211039102333&mi_ecmp=DCEmail20251220 
+
+Don't miss a thing! Add Michaels michaels&#65279;@&#65279;deals&#65279;.&#65279;michaels&#65279;.&#65279;com to your address book.
+Don't miss a thing! Add Michaels michaels&#65279;@&#65279;emdeals&#65279;.&#65279;michaels&#65279;.&#65279;com to your address book.
+
+ *Important Stuff We Have To Tell You
+
+
+ *Rates from 0–36% APR. Payment options through Affirm are subject to an eligibility check, may not be available everywhere, and are provided by these lending partners: 
+https://www.affirm.com/lenders 
+affirm.com/lenders . Options depend on your purchase amount, and a down payment may be required. CA residents: Loans by Affirm Loan Services, LLC are made or arranged pursuant to a California Finance Lenders Law license. For licenses and disclosures, see 
+https://www.affirm.com/licenses 
+affirm.com/licenses .
+ 
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+*Important Stuff We Have to Tell You About Rewards 
+
+REWARDS:
+ To be eligible to earn 6% in Rewards, member must have spent at least $300 on eligible purchases over the past 12 months; otherwise, members will earn 3% in Rewards on every eligible purchase. 6% eligibility is updated once a month.
+
+
+
+ 
+ Rewards are calculated based on actual amount paid, less applicable taxes. Valid only on purchases made in U.S. stores and online at
+ 
+https://www.michaels.com/ 
+Michaels Stores – Art Supplies, Crafts & Framing | Michaels. Limit $150 in total Rewards earned per day.
+ 
+
+
+ 
+ Rewards and Rewards vouchers have no cash value. Rewards cannot be earned on purchases of clearance merchandise. Rewards cannot be earned, and vouchers cannot be redeemed, on shipping, tax, purchase of Gift Cards and Extended Warranties, on items sold and shipped by third-party sellers on MakerPlace by Michaels, or purchases on 
+ 
+https://www.michaelsphotogifts.com/ 
+Photo Gifts, Photo Prints & Personalized Gifts At Michaels, 
+https://enterprise.michaels.com/ 
+https://enterprise.michaels.com, 
+https://education.michaels.com/ 
+https://education.michaels.com.
+
+
+ Rewards earned will show up in Rewards member’s account 48 hours after eligible purchase. Rewards vouchers will be issued within 72 hours once member reaches $5 threshold, and are valid for 32 days from the date of issuance. Michaels Rewards account information must be provided upon redemption of a Rewards voucher. Void where prohibited. Restrictions may apply. Michaels reserves the right to make updates to Michaels Rewards without member notification. See Rewards Terms and Conditions at 
+https://www.michaels.com/rewards/terms 
+Michaels Rewards Program | Terms & Conditions.
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+ Limit one coupon per product. Limit one coupon of each type per day. Limited to stock on hand. Void where prohibited. Valid only in US.
+ 
+
+EXCLUSIONS:
+  clearance; MichaelsPro Packs; Artist's Loft Super Value Canvas Packs; custom framing; Michaels Photo Gifts; beverages & candy; books & magazines; rolled posters; classes; Birthday Parties and Private Events, including party add-ons; cut-to-order fabric; gift cards; craft technology machines; sewing machines; Cricut, Glowforge, Silhouette; balloons, inflation, & Balloon Time Helium Tanks; Brother Sublimation Printer & Accessories; Elf On The Shelf Storybook Sets; Gildan; Kodak; Lego; Toybox; Ty Beanie Babies; 
+ 
+http://www.Michaels.com 
+michaels.com  and MakerPlace items sold and shipped by third-party sellers. Exclusions subject to change. See Team Member for details.
+ 
+
+
+ 
+†Important Stuff We Have to Tell You About Custom Framing
+ 
+
+CUSTOM FRAME DISCOUNT:
+  Excludes Aaron Brothers Essentials, Custom Frame Value Packages, Custom Frame Express, Michaels Photo Gifts, unframed specialty prints, value canvas, same-day custom framing, expedited shipping and engraved plates. Must purchase a custom frame. May not be applied to prior purchases or combined with any other coupon, sale or discount. Offers may vary by location. Valid only in U.S. See a Custom Frame Personal Designer for details.
+ 
+
+ 
+ Offers and pricing listed in this email are valid Saturday, December 20, 2025, unless otherwise noted. Prices effective in U.S. only. This message contains promotional content. Please do not reply to this email. ©2025 Michaels Stores, Inc. 3939 West John Carpenter Freeway, Irving, TX 75063.
+ 
+
+
+ Prices may vary in Alaska.
+ 
+
+
+ Some advertised items may not be available at all store locations. Percent off discounts are off original ticketed price. MichaelsPro™ Pack pricing may not be combined with any other offer, coupon or discount. All credit cards may not be accepted at all stores. Selection and regular prices may vary. Typographic and photographic errors are subject to correction at the store level. Products available while quantities last and no rain checks may be issued. We reserve the right to limit quantities.
+ 
+
+
+3Offer is exclusive to Michaels Credit Card holders enrolled in the Michaels Rewards program. Maximum of $150 in total rewards earned per day. Maximum of 9% rewards per transaction. Excludes taxes, gift cards, extended warranty purchases, shipping fees and items sold and shipped by third-party sellers on MakerPlace by Michaels. This rewards program is provided by Michaels and its terms may change at any time. For full Rewards Terms and Conditions, please see 
+https://www.michaels.com/rewards/terms 
+michaels.com/rewards/terms .
+ 
+
+
+ Credit Card offers are subject to credit approval.
+ 
+
+ Michaels Credit Card Accounts are issued by Comenity Capital Bank.
+ 
+
+ The Michaels Credit Card cannot be used on 
+https://www.michaelscustomframing.com/ 
+michaelscustomframing.com ;
+https://www.michaelsphotogifts.com/ 
+michaelsphotogifts.com ; 
+https://education.michaels.com/ 
+education.michaels.com ; 
+https://enterprise.michaels.com/ 
+enterprise.michaels.com ; and 
+https://merchant.sgiftcard.com/chrome/michaels 
+ merchant.sgiftcard.com/chrome/michaels .
+ 
+
+
+
+ 
+ 
+ 
+If you no longer wish to receive these emails, unsubscribe using the link below. 
+
+https://www.michaels.com/store-locator?cm_mmc=EMAIL-_-DCE-_-20251220_S2_US_TempD_DCE_FF_US-_-FOOTER_FIND_STORE&customerEmail=bXN0b3dlQGdtYWlsLmNvbQ==&sfmc_Sub=1211039102333&emId=4179fc8b691afef3b7c4bea13af87207fa0865044f9fffb4543f1054ea424cc7&cm_mmca2=&mi_u=1211039102333&mi_ecmp=DCEmail20251220 
+Find a Store  | 
+ 
+https://www.michaels.com/customer-care?cm_mmc=EMAIL-_-DCE-_-20251220_S2_US_TempD_DCE_FF_US-_-FOOTER_CONTACTUS&customerEmail=bXN0b3dlQGdtYWlsLmNvbQ==&sfmc_Sub=1211039102333&emId=4179fc8b691afef3b7c4bea13af87207fa0865044f9fffb4543f1054ea424cc7&cm_mmca2=&mi_u=1211039102333&mi_ecmp=DCEmail20251220 
+Contact Us  | 
+ 
+https://www.michaels.com/your-privacy-rights?cm_mmc=EMAIL-_-DCE-_-20251220_S2_US_TempD_DCE_FF_US-_-FOOTER_PRIVACYPOLICY&customerEmail=bXN0b3dlQGdtYWlsLmNvbQ==&sfmc_Sub=1211039102333&emId=4179fc8b691afef3b7c4bea13af87207fa0865044f9fffb4543f1054ea424cc7&cm_mmca2=&mi_u=1211039102333&mi_ecmp=DCEmail20251220 
+Privacy Policy  | 
+ 
+https://pub.s10.exacttarget.com/mi53nqnogsz?email_ID=1211039102333&jobid=358658&sid=482758420&mid=100010552 
+Unsubscribe (c)2025 Michaels Stores, Inc. Michaels and the Michaels logo and other trademarks and logos used in this email are owned or licensed by Michaels Stores, Inc. All rights reserved.
+
+
+ 
+ 
+
+ 
+ 
+
+ 
+ 
+
+
+--JslH552Jcqv6=_?:
+Content-Type: text/html;
+	charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+<!-- MASTER_Coremetrics_SLPH_Content -->
+
+<!-- Email content lookups code -->
+
+
+<!--  <!--   -->
+
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <style type="text/css">
+      ReadMsgBody {
+        width: 100%;
+      }
+      .ExternalClass {
+        width: 100%;
+      }
+      .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div {
+        line-height: 100%;
+      }
+      body {
+        -webkit-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+        margin: 0 !important;
+      }
+      p {
+        margin: 1em 0;
+      }
+      table td {
+        border-collapse: collapse;
+      }
+      img {
+        outline: 0;
+      }
+      a img {
+        border: none;
+      }
+      p {
+        margin: 1em 0;
+      }
+      a[x-apple-data-detectors] {
+        color: inherit !important;
+        text-decoration: none !important;
+        font-size: inherit !important;
+        font-family: inherit !important;
+        font-weight: inherit !important;
+        line-height: inherit !important;
+      }
+      @-ms-viewport {
+        width: device-width;
+      }
+    </style>
+    <style type="text/css">
+      @media only screen and (max-width: 480px) {
+        .container {
+          width: 100% !important;
+        }
+        .footer {
+          width: auto !important;
+          margin-left: 0;
+        }
+        .content-padding {
+          padding: 4px !important;
+        }
+        .mobile-hidden {
+          display: none !important;
+        }
+        .logo {
+          display: block !important;
+          padding: 0 !important;
+        }
+        img {
+          max-width: 100% !important;
+          height: auto !important;
+          max-height: auto !important;
+        }
+        .header img {
+          max-width: 100% !important;
+          height: auto !important;
+          max-height: auto !important;
+        }
+        .photo img {
+          width: 100% !important;
+          max-width: 100% !important;
+          height: auto !important;
+        }
+        .drop {
+          display: block !important;
+          width: 100% !important;
+          float: left;
+          clear: both;
+        }
+        .footerlogo {
+          display: block !important;
+          width: 100% !important;
+          padding-top: 15px;
+          float: left;
+          clear: both;
+        }
+        .nav4, .nav5, .nav6 {
+          display: none !important;
+        }
+        .tableBlock {
+          width: 100% !important;
+        }
+        .responsive-td {
+          width: 100% !important;
+          display: block !important;
+          padding: 0 !important;
+        }
+        .fluid, .fluid-centered {
+          width: 100% !important;
+          max-width: 100% !important;
+          height: auto !important;
+          margin-left: auto !important;
+          margin-right: auto !important;
+        }
+        .fluid-centered {
+          margin-left: auto !important;
+          margin-right: auto !important;
+        }
+        /* MOBILE GLOBAL STYLES - DO NOT CHANGE */
+        body {
+          padding: 0px !important;
+          font-size: 16px !important;
+          line-height: 150% !important;
+        }
+        a {
+          line-height: 110% !important;
+        }
+        h1 {
+          font-size: 22px !important;
+          line-height: normal !important;
+        }
+        h2 {
+          font-size: 20px !important;
+          line-height: normal !important;
+        }
+        h3 {
+          font-size: 18px !important;
+          line-height: normal !important;
+        }
+        .buttonstyles {
+          font-family: arial, helvetica, sans-serif !important;
+          font-size: 16px !important;
+          color: #FFFFFF !important;
+          padding: 10px !important;
+        }
+        /* END OF MOBILE GLOBAL STYLES - DO NOT CHANGE */
+      }
+      @media only screen and (max-width: 601px) {
+        .container {
+          width: 100% !important;
+        }
+        .mobile-hidden {
+          display: none !important;
+        }
+        .logo {
+          display: block !important;
+          padding: 0 !important;
+        }
+        .photo img {
+          width: 100% !important;
+          height: auto !important;
+        }
+        .nav5, .nav6 {
+          display: none !important;
+        }
+        .fluid, .fluid-centered {
+          width: 100% !important;
+          max-width: 100% !important;
+          height: auto !important;
+          margin-left: auto !important;
+          margin-right: auto !important;
+        }
+        .fluid-centered {
+          margin-left: auto !important;
+          margin-right: auto !important;
+        }
+        .MobilePadding {
+          padding: 12px !important;
+        }
+      }
+    </style>
+    <!--[if mso]> <style type="text/css"> /* Begin Outlook Font Fix */ body, table, td { font-family: Arial, Helvetica, sans-serif ; font-size:16px; color:#808080; line-height:1; } /* End Outlook Font Fix */ </style> <![endif]-->
+  </head>
+  <body text="#000000" style="color: #000000; margin: 0px; -webkit-text-size-adjust:none; line-height: normal; font-size: 14px; font-family:arial,helvetica,sans-serif;"><style type="text/css">
+div.preheader 
+{ display: none !important; } 
+</style>
+<div class="preheader" style="font-size: 1px; display: none !important;">Shop our Big Gift Sale today before it ends.</div>
+    <div style="font-size:0; line-height:0;">
+      <img src="https://click.emdeals.michaels.com/open.aspx?ffcb10-febc17757d620175-fe27117170610074751778-fe4115707564057d701172-ff971676-fe27107877630175711670-fefe1071706007&d=100216&bmt=0" width="1" height="1" alt=""></custom>
+      </custom>
+          </div>
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" align="center">
+          <tr>
+            <td align="center" style="padding: 5px; ">
+              <table cellspacing="0" cellpadding="0" border="0" width="600" class="container" align="center">
+                <tr>
+                  <td>
+                    <table class="tb_properties border_style" cellspacing="0" cellpadding="0" bgcolor="#ffffff" width="100%">
+                      <tr>
+                        <td align="center" valign="top">
+                          <table width="600" border="0" cellpadding="0" cellspacing="0" align="center" class="container">
+                            <tr>
+                              <td>
+                                <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                                  <!---->
+                                  <tr>
+                                    <td align="right" style="font-family:Helvetica, Arial, sans-serif; text-decoration:underline; font-size:12px; line-height:16px; color:#999999; padding:10px 30px 0 0;">
+                                      <a href="https://view.emdeals.michaels.com/?qs=157a777d1bdf049d78f4a500f24eedeae64fcb9b8654367f6d3e92baa962d897e2c3244d14471290f362ef3eb320feef17b71b18421f7e3b5f4b38b377f50eb16f2d3a79924799830f3b0b303d8f8030" target="_blank" style="color:#999999; text-decoration:underline;" >View in Browser</a>
+                                    </td>
+                                  </tr>
+                                  <!---->
+                  <tr>
+                                    <td align="center">
+                                      <table border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                         <!-- <td>                                             <a href="https://www.michaels.com?cm_mmc=EMAIL-_-DCE-_-20251220_S2_US_TempD_DCE_FF_US-_-HEADER_HOME&customerEmail=bXN0b3dlQGdtYWlsLmNvbQ==&sfmc_Sub=1211039102333&emId=4179fc8b691afef3b7c4bea13af87207fa0865044f9fffb4543f1054ea424cc7&cm_mmca2=&mi_u=1211039102333&mi_ecmp=DCEmail20251220" target="_blank" alias="Header: Logo"><img src="http://image.s10.exacttarget.com/lib/fe4115707564057d701172/m/1/f74bdb4b-a7fb-46e9-ade5-1b8ef3cd78f8.gif" alt="" width="175" style="display:block;" class="photo" border="0" /></a>                                           </td> -->
+                               
+                                          
+                                          <td align="center">
+                                            <a href="https://click.emdeals.michaels.com/?qs=22718678db09e693a6993d9edb1be3d1f6a644405198862fb495170de48ba091ef172e6f71192fc1c9ab0b6d7ca8876cfb828c73348d66ec15a65a5b8c3b7975" target="_blank" ><img src="https://image.emdeals.michaels.com/lib/fe4115707564057d701172/m/1/c474df5d-82c7-4912-8e16-db5caadaf575.jpg" alt="Michaels LOGO" width="auto" style="display:block;" border="0" class="photo" /> </a>
+                                         
+                                          </td>
+                                        <!--  <td>                                             <a href="https://www.michaels.com?cm_mmc=EMAIL-_-DCE-_-20251220_S2_US_TempD_DCE_FF_US-_-HEADER_HOME&customerEmail=bXN0b3dlQGdtYWlsLmNvbQ==&sfmc_Sub=1211039102333&emId=4179fc8b691afef3b7c4bea13af87207fa0865044f9fffb4543f1054ea424cc7&cm_mmca2=&mi_u=1211039102333&mi_ecmp=DCEmail20251220" target="_blank" alias="Header: Logo"><img src="http://image.s10.exacttarget.com/lib/fe4115707564057d701172/m/1/f74bdb4b-a7fb-46e9-ade5-1b8ef3cd78f8.gif" alt="" width="175" style="display:block;" class="photo" border="0" /></a>                                           </td> -->
+                                        </tr>
+                                      </table>
+                                    </td>
+                                  </tr>                               
+                                  <tr>
+                                    <td align="center" style="border-bottom: 0px #FFFFFF solid;">
+
+                                      
+                                     <table border="0" cellpadding="0" cellspacing="0">
+ 
+  <tr style="display: flex; justify-content:safe center; flex-direction: row; align-items: center;">
+   <td>
+    <a  href="https://click.emdeals.michaels.com/?qs=22718678db09e693c67e1bbf8871076167a5ca7b5b4f7c7e84e3b2156edf324cf1b5504ea618e875a64b4e51742059538d794e6d23417c3b10e17a14e62482cc" target="_blank"><img alt="SHOP" border="0" class="photo" src="https://mi.michaels.com/p/rp/6656fdb47f14f875.png?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=03:42:PM" style="display:block;" width="auto"></a></td>
+    <td align="center">
+    <a  href="https://click.emdeals.michaels.com/?qs=22718678db09e6934a2350d0b118c82b792beceb66fd4aeb0571da859d37a1a0e095d0eb4fcc1a29ce8d3191db390ee171d5d07728419aef8d5ab1a93e063a9c" target="_blank"><img alt="COUPONS" border="0" class="photo" src="https://mi.michaels.com/p/rp/39deae5d174c9cea.png?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=03:42:PM" style="display:block;" width="auto"></a></td>
+    <td>
+    <a  href="https://click.emdeals.michaels.com/?qs=22718678db09e693430e1f1825da093983067ab7d682347224affc0f19b2bc546bb730443eb4d5ecce0eb71b46d6131ea1b24bf186fed9941d82b5fe99cd5303" target="_blank"><img alt="Check out this Michaels event!" border="0" class="photo" src="https://mi.michaels.com/p/rp/b4339810aa3985ec.png?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=03:42:PM" style="display:block;" width="auto"></a></td>
+                                        </tr>
+                                      </table>
+                                    </td>
+                                  </tr>
+                                </table>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td align="center">
+                                <table width="600" border="0" cellspacing="0" cellpadding="0" class="container">
+                                  <tr>
+                                    <td align="center">
+                                      <!-- NEW_DynContentSnippet_US_TOP_EXP0831_Content -->
+ 
+
+<table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner">
+
+<!-- MIK_Loyalty_Banner_US_Content -->
+
+<a  href="https://click.emdeals.michaels.com/?qs=22718678db09e6939a0d8e4abce82986ed24a50df7634b4c5ec5926e98f848ab0c58bd6bc8a3faae5d0294fbc188bdcfc6a5355e7284f3073bfd0caead96845c" style="display: block"><img alt="Loyalty &amp; Rewards info banner" style="border: 0; display: block;" border="0" src="https://mi.michaels.com/p/rp/97ff2670bd1d63dc.png?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=03:42:PM&mi_loyalty_id=LMR90670604371&mi_voucherSum=&mi_voucherCount=0&mi_voucherEXP=&mi_PointsUntilReward=357&mi_AmtUntil6Percent=276.21&mi_DateToReach6Percent=01/02/2026&mi_T1MaxRewardPerTrans=500&mi_Segment=5&mi_OfferDescription=EARN $5 IN REWARDS WHEN YOU SPEND $25 OR MORE ON YOUR NEXT PURCHASE&mi_PLCCStatus=&mi_FirstName= "></a>
+</td></tr></table>
+
+
+
+<table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner">
+
+<!-- MIK_CMB_US_Content -->
+
+<a  href="https://click.emdeals.michaels.com/?qs=22718678db09e69317cce5eb47e8b40b1a6a26656353c844052188e93951ac85e0677505f722974800ebac3b2956bdb6fa00c9272a953d2168c5ee4cf2cc4f91" style="display: block"><img alt="Need a little inspo? - Click Here" style="border: 0; display: block;" border="0" src="https://mi.michaels.com/p/rp/6bc30560c6b70d98.png?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=03:42:PM&mi_pro=False&mi_sms=False&mi_loyalty_id=LMR90670604371&plcc_status=&plcc_preselected=False&plcc_loyalty_tier=5|20&rtps_expiry_passed=True&F_NAME= &L_NAME= &BF_PRE_SCREEN=0&plcc_preapproved=False&EXPIRY_DT=&Pilot_Group="></a>
+</td></tr></table>
+<table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><table cellpadding="0" cellspacing="0" role="presentation" width="100%">
+	
+		<tr>
+			<td align="center" style="height: 10px;">
+			</td></tr></table></td></tr></table> 
+                                      
+                                    </td>
+                                  </tr>
+                                </table>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td align="center">
+                                <table width="600" border="0" cellspacing="0" cellpadding="0" class="container">
+                                  <tr>
+                                    <td align="center">
+                                      <!-- 9Percent_LoyaltyEveryDay_CouponTest_2aSegTest_HideShow_December_Content -->
+
+
+
+
+<table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><table cellpadding="0" cellspacing="0" role="presentation" width="100%">
+	
+		<tr>
+			<td align="center" style="height: 20px;">
+			</td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- MI_2025_Christmas_CountDown_US_Content -->
+
+
+
+<!-- MI Content Snippet -->
+
+
+<table style="margin: 0 auto" cellspacing="0" cellpadding="0" border="0">
+  <tr>
+    <td border="0" style="margin: 0 auto; border: none" width="auto" align="center">
+      <a  href="https://click.emdeals.michaels.com/?qs=22718678db09e69394100f371b57c31d2a017786f45a2b37dda65286d3f7dbd30778d4ab4a4795ec4d867b9c133489b1e74921bc7135df659f1c815be9069aa2" style="display: block"><img alt="Our best deals end soon!" style="border: 0; display: block;" src="https://mi.michaels.com/p/rp/f2edf4cb142d05ff.png?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=03:42:PM" width="auto" border="0"></a>
+    </td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><table cellpadding="0" cellspacing="0" role="presentation" width="100%">
+	
+		<tr>
+			<td align="center" style="height: 20px;">
+			</td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- MI_DynEcommCpn_US_CF1F2E_US_EX_1220_Content -->
+
+<table border="0" cellpadding="0" cellspacing="0" style="margin: 0 auto">
+  <tr>
+    <td width="600" align="center" border="0" style="margin: 0 auto; border: none">
+      <a  href="https://click.emdeals.michaels.com/?qs=22718678db09e6937593bb0ef93edf89c9d8ddbf875f3be317854466384f088a02ce5801be06a93f6fbd54acad6ad0f8fb0fd6b519f93b93cd7aa9cbf069d3d7" style="display: block"><img alt="Coupon shown - Click here to get your coupon - Exclusions apply. See coupon for details." width="100%" style="border: 0; display: block;" border="0" src="https://mi.michaels.com/p/rp/8d408b6ab36d32d3.png?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=03:42:PM&mi_text=FFFFFF&mi_background=CF1F2E&mi_expiration=SAT 12/20/25&mi_offerTitle=All Regular Price Purchases&mi_promoCode=MAKEIT20&mi_offerAmount=20"></a>
+    </td>
+  </tr>
+</table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><table cellpadding="0" cellspacing="0" role="presentation" width="100%">
+	
+		<tr>
+			<td align="center" style="height: 20px;">
+			</td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- 20251216_US_BigGiftSaleXC_Content --><table cellpadding="0" cellspacing="0" role="presentation" width="100%">
+	
+		<tr>
+			<td align="center" style="line-height: 0px; mso-line-height-rule: exactly;" valign="middle">
+				<table cellpadding="0" cellspacing="0" role="presentation" width="100%">
+					
+						<tr>
+							<td align="center" style="line-height:0px; mso-line-height-rule:exactly;" valign="middle">
+								<a   data-linkto="other" href="https://click.emdeals.michaels.com/?qs=22718678db09e693a4a3dbabbb4beec8da90b4aae2f1e94dc30bb26f43e3d4a47651c68ad301ebf057dcaae73d62580f85aa66d9d08ebfd7b16c4808272be03e" style="text-decoration:none;" target="_blank" title=""><img alt="The Big Gift Sale/Find creative gifts for your whole list / Up to 50% off" src="https://image.emdeals.michaels.com/lib/fe4115707564057d701172/m/1/f28142ab-5265-47c6-8dbb-aec1f3199463.jpg" style="display: block; padding: 0px; width: 100%; height: auto; text-align: center; border: 0px none transparent;" width="600"></a></td></tr><tr>
+							<td align="center" style="line-height:0px; mso-line-height-rule:exactly;" valign="middle">
+								<table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" width="100%">
+									
+										<tr style="font-size:0; line-height:0;">
+											<td align="center" style="line-height:0px; padding-top:10px; mso-line-height-rule:exactly;padding:0; margin:0;" valign="middle">
+												<a   data-linkto="other" href="https://click.emdeals.michaels.com/?qs=22718678db09e693ec4ca806399306d59aa3f20f7725d73749a8b311c1d9ec183cc567ac201ad3c45feee4b0e38dad3f0f4d38f8f0f69808a213351285b00ea4" title=""><img alt="Kids Gifts" data-assetid="7324" src="https://image.emdeals.michaels.com/lib/fe4115707564057d701172/m/1/211f7f4a-c1ec-448e-8b22-743e74bf57cf.jpg" style="padding: 0px; text-align: center; width: 100%; height: auto; display: block; border: 0px none transparent;" width="auto"></a></td><td align="center" valign="middle">
+												<a   data-linkto="other" href="https://click.emdeals.michaels.com/?qs=22718678db09e69310044fec354e11ad2b264664461daf949d61aa01818f7686da7c2bcf7fda207a2211dca17d707bde623fa2ed86db0897fb695e7e4e9693ab" title=""><img alt="Knitter and Crocheters" data-assetid="7324" src="https://image.emdeals.michaels.com/lib/fe4115707564057d701172/m/1/8fa02467-6081-4241-99c0-102497d56b45.jpg" style="padding: 0px; text-align: center; width: 100%; height: auto; display: block; border: 0px none transparent;" width="auto"></a></td></tr></table></td></tr><tr>
+							<td align="center" style="line-height:0px; mso-line-height-rule:exactly;" valign="middle">
+								<table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" width="100%">
+									
+										<tr style="font-size:0; line-height:0;">
+											<td align="center" style="line-height:0px; padding-top:10px; mso-line-height-rule:exactly;padding:0; margin:0;" valign="middle">
+												<a   data-linkto="other" href="https://click.emdeals.michaels.com/?qs=22718678db09e693e33bd6eb1a1ae37fcb62bb25db43dd9743361b978a4cee13b3086a6e547e29055b70b09026d1aae53c1784f29007ee14b3b1f232348271a6" title=""><img alt="Jewelry Makers" data-assetid="7324" src="https://image.emdeals.michaels.com/lib/fe4115707564057d701172/m/1/a82e0138-b9cf-4a3f-a4c2-d8a49ec7c498.jpg" style="padding: 0px; text-align: center; width: 100%; height: auto; display: block; border: 0px none transparent;" width="auto"></a></td><td align="center" valign="middle">
+												<a   data-linkto="other" href="https://click.emdeals.michaels.com/?qs=22718678db09e693fad80c895ca7f63c7d28441ba481d1ba30c24d2ef9fb85b027e67a87c4a7fb38d4a420c4bc6ae5c61fbcf5a46f902a5a9f8a1a7478309fee" title=""><img alt="ArtistGifts" data-assetid="7324" src="https://image.emdeals.michaels.com/lib/fe4115707564057d701172/m/1/73f0b658-0d7c-4c45-a125-9f3fa602648e.jpg" style="padding: 0px; text-align: center; width: 100%; height: auto; display: block; border: 0px none transparent;" width="auto"></a></td></tr></table></td></tr><tr>
+							<td align="center" style="line-height: 0px; mso-line-height-rule: exactly;" valign="middle">
+								<a   data-linkto="other" href="https://click.emdeals.michaels.com/?qs=22718678db09e69375ce53536bdb9f739f36dc4d0c0d2996c9d6f53a204e2167eefd05811a2c1fe48250c001446396a1eca69fae34cb74d653cba3f652297e65" style="text-decoration:none;" target="_blank" title=""><img alt="ShopAllSale" src="https://image.emdeals.michaels.com/lib/fe4115707564057d701172/m/1/83c53118-d0fa-4de4-9372-2e1e76ea2a84.gif" style="display: block; padding: 0px; width: 100%; height: auto; text-align: center; border: 0px none transparent;" width="600"></a></td></tr></table></td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><table cellpadding="0" cellspacing="0" role="presentation" width="100%">
+	
+		<tr>
+			<td align="center" style="height: 20px;">
+			</td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><table width="100%" cellspacing="0" cellpadding="0" role="presentation"><tr><td align="center" valign="middle" style="line-height: 0px; mso-line-height-rule: exactly;"><a style="color:#FFFFFF;text-decoration:none;" target="_blank" href="https://click.emdeals.michaels.com/?qs=22718678db09e693d846ca9feb723a23be2157861bd6e177d1c2a8e61d2f6ae7cd237dedbb0ca9df57ebd3c1241982a0f6ce9af4f4c063b9ef8f7874fccc5739" title="20251219_US_Getyourgiftstoday_Content"   data-linkto="other">
+<img data-assetid="393438" src="https://image.emdeals.michaels.com/lib/fe4115707564057d701172/m/1/71239d74-d390-4cfe-8801-b35aa74e79fb.jpg" alt="Get your gifts today with curbside pickup or same-day delivery. Shop now" width="600" style="display: block; padding: 0px; width: 100%; height: auto; text-align: center; border: 0px none transparent;"></a></td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><table cellpadding="0" cellspacing="0" role="presentation" width="100%">
+ 
+  <tr>
+   <td align="center" style="height: 20px;">
+   </td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner">
+<!-- DCE_2.0_TempD_TransitionalHeader_Section1_New_Content -->
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td style="padding:0px;">
+      <table border="0" cellpadding="0" cellspacing="0" height="auto" width="auto">
+        <tr>
+          <!-- Header -->
+          <td height="auto" width="auto" align="center" style="border: 0; display: block;" border="0" valign="middle">
+            <a  href="https://click.emdeals.michaels.com/?qs=22718678db09e6930d72bab829ea728a4e70dd5f851bbef3e51b8a7e30e1ebf3708d3afda1490f29fc1506a4e7083d4f67c974f9e6becd1b6e122ba184e6e14d" style="display: block; height:auto; width:auto;" align="center"><img alt="Explore All Deals" style="border: 0; display: block; height:auto;width:auto;" border="0" src="https://mi.michaels.com/p/rp/c9aca2d8b8988074.png?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=%40cacheprevent&mi_p1=6318&mi_p2=6322&mi_p3=6341&mi_p4=6321&mi_p5=6330&mi_userID=1211039102333&mi_color_hex=CF1F2E&mi_text_hex=FFFFFF&mi_secondary_hex=CF1F2E&mi_offers_exploreall_background_color=CF1F2E&mi_offers_exploreall_text_color=ffffff&mi_header_suboffer_text_color=CF1F2E" height="auto" width="auto" align="center"></a>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner">
+<!-- DCE_2.0_TempD_DynamicOffers1_New_Content -->
+<!-- Offer 1 -->
+<table border="0" cellpadding="0" cellspacing="0" height="auto" width="auto">
+  <tr>
+    <td height="auto" width="auto" align="center" style="border: 0; display: block;" border="0" valign="middle">
+      <a  href="https://click.emdeals.michaels.com/?qs=22718678db09e693f0cc92e81a691e97fcc07abb3c6a6cedd735568100d0f1de461ca0c3d31030304e502c02f3e0d1a63faa357eea69540d95ac4c499e0df9c6" style="display: block"><img alt="Product deal of the week shown. Shop now" style="border: 0; display: block;" border="0" src="https://mi.michaels.com/p/rp/6370fd8b9e8a15f6.png?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=%40cacheprevent&mi_p1=6318&mi_p2=6322&mi_p3=6341&mi_p4=6321&mi_p5=6330&mi_color_hex=CF1F2E&mi_text_hex=FFFFFF&mi_secondary_hex=CF1F2E&mi_offers_exploreall_background_color=CF1F2E&mi_offers_exploreall_text_color=ffffff&mi_header_suboffer_text_color=CF1F2E&mi_userID=1211039102333"></a>
+      <!-- Offer 2 -->
+      <a  href="https://click.emdeals.michaels.com/?qs=22718678db09e6938d13b27b0558a21e12434d6eb0c84393e00b1407ac24e01dca573dccb51f07b5fa177dfad594a71caee7ae2d5c870fa185d2de3ce8d5ac59" style="display: block"><img alt="Product deal of the week shown. Shop now" style="border: 0; display: block;" border="0" src="https://mi.michaels.com/p/rp/afaa22417eea737e.png?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=%40cacheprevent&mi_p1=6318&mi_p2=6322&mi_p3=6341&mi_p4=6321&mi_p5=6330&mi_color_hex=CF1F2E&mi_text_hex=FFFFFF&mi_secondary_hex=CF1F2E&mi_offers_exploreall_background_color=CF1F2E&mi_offers_exploreall_text_color=ffffff&mi_header_suboffer_text_color=CF1F2E&mi_userID=1211039102333"></a>
+      <!-- Offer 3 -->
+      <a  href="https://click.emdeals.michaels.com/?qs=22718678db09e693b838ceef3c68968c2bae13d97950edc307f81e764b23abf9786c89758538fc3354366efa165f777c5863f5290e0e8f04b5805efe08ada687" style="display: block"><img alt="Product deal of the week shown. Shop now" style="border: 0; display: block;" border="0" src="https://mi.michaels.com/p/rp/75dc7583d01a98a7.png?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=%40cacheprevent&mi_p1=6318&mi_p2=6322&mi_p3=6341&mi_p4=6321&mi_p5=6330&mi_color_hex=CF1F2E&mi_text_hex=FFFFFF&mi_secondary_hex=CF1F2E&mi_offers_exploreall_background_color=CF1F2E&mi_offers_exploreall_text_color=ffffff&mi_header_suboffer_text_color=CF1F2E&mi_userID=1211039102333"></a>
+    </td>
+  </tr>
+</table></td></tr></table><!-- DCE_2.0_TempD_ExploreAllCTA_Section1_New_Content-->
+
+<!-- Singular_MI_DCE_D_Explore_All_CTA_Section1 DCE_2.0_TempD_ExploreAllCTA_Section1-->
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td style="padding:0px;">
+      <table border="0" cellpadding="0" cellspacing="0" height="auto" width="auto">
+        <tr>
+          <!-- Header -->
+          <td height="auto" width="auto" align="center" style="border: 0; display: block;" border="0" valign="middle">
+            <a  href="https://click.emdeals.michaels.com/?qs=22718678db09e69396cb019a9ee1d7840ecb5e66b872316aeddeeaff44d4fdd6d6b2373af6a85c1fc75df7fcead852b4901bb79971da37dad863b641908fb95b" style="display: block; height:auto; width:auto;" align="center"><img alt="Explore All Deals" style="border: 0; display: block; height:auto;width:auto;" border="0" src="https://mi.michaels.com/p/rp/7f703ac6107791dc.png?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=%40cacheprevent&mi_p1=6318&mi_p2=6322&mi_p3=6341&mi_p4=6321&mi_p5=6330&mi_userID=1211039102333&mi_color_hex=CF1F2E&mi_text_hex=FFFFFF&mi_secondary_hex=CF1F2E&mi_offers_exploreall_background_color=CF1F2E&mi_offers_exploreall_text_color=ffffff&mi_header_suboffer_text_color=CF1F2E" height="auto" width="auto" align="center"></a>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner">
+<!-- DCE_2.0_TempD_ExploreAllCTA_Section2_New_Content -->
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td style="padding:0px;">
+      <table border="0" cellpadding="0" cellspacing="0" height="auto" width="auto">
+        <tr>
+          <!-- Header -->
+          <td height="auto" width="auto" align="center" style="border: 0; display: block;" border="0" valign="middle">
+            <a  href="https://click.emdeals.michaels.com/?qs=22718678db09e693c27d99862332d0446da7b2f569bb187d6f4bbb580fa9a32c5a2768771722fa81e2df7a87c218ed0aa3bc01a9afb1348bc228d381523be664" style="display: block; height:auto; width:auto;" align="center"><img alt="Explore All Deals" style="border: 0; display: block; height:auto;width:auto;" border="0" src="https://mi.michaels.com/p/rp/4cc030fabba2681e.png?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=%40cacheprevent&mi_p1=6318&mi_p2=6322&mi_p3=6341&mi_p4=6321&mi_p5=6330&mi_userID=1211039102333&mi_color_hex=CF1F2E&mi_text_hex=FFFFFF&mi_secondary_hex=CF1F2E&mi_offers_exploreall_background_color=CF1F2E&mi_offers_exploreall_text_color=ffffff&mi_header_suboffer_text_color=CF1F2E" height="auto" width="auto" align="center"></a>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner">
+<!-- Content_DCE_2.0_TempD_DynamicOffers2_New_Content -->
+<!-- Offer 1 -->
+
+<table border="0" cellpadding="0" cellspacing="0" height="auto" width="auto">
+        <tr>
+          <td height="auto" width="auto" align="center" style="border: 0; display: block;" border="0" valign="middle">
+
+<a  href="https://click.emdeals.michaels.com/?qs=22718678db09e693a194fb87c7e626dbcc8d072d1363831d90951a7fbc1d6349fec317e34cb6ef44a6050318e2cdb3d9dfeb59cc2f64db010ebb9d90fd3794ff" style="display: block"><img alt="Product deal of the week shown. Shop now" style="border: 0; display: block;" border="0" src="https://mi.michaels.com/p/rp/2b87a8f70cc65981.png?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=%40cacheprevent&mi_p1=6318&mi_p2=6322&mi_p3=6341&mi_p4=6321&mi_p5=6330&mi_color_hex=CF1F2E&mi_text_hex=FFFFFF&mi_secondary_hex=CF1F2E&mi_offers_exploreall_background_color=CF1F2E&mi_offers_exploreall_text_color=ffffff&mi_header_suboffer_text_color=CF1F2E&mi_userID=1211039102333"></a>
+<!-- Offer 2 -->
+<a  href="https://click.emdeals.michaels.com/?qs=22718678db09e6933bce709630ef138d9bcda75e6b6857c67abdfe9efd6f97b8bf6b213f8c616902e1611fda264cccff571e59a2eae99576c858dd6ece1cea9f" style="display: block"><img alt="Product deal of the week shown. Shop now" style="border: 0; display: block;" border="0" src="https://mi.michaels.com/p/rp/d1d8b4abfabd449a.png?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=%40cacheprevent&mi_p1=6318&mi_p2=6322&mi_p3=6341&mi_p4=6321&mi_p5=6330&mi_color_hex=CF1F2E&mi_text_hex=FFFFFF&mi_secondary_hex=CF1F2E&mi_offers_exploreall_background_color=CF1F2E&mi_offers_exploreall_text_color=ffffff&mi_header_suboffer_text_color=CF1F2E&mi_userID=1211039102333"></a>
+<!-- Offer 3 -->
+<a  href="https://click.emdeals.michaels.com/?qs=22718678db09e693dd30e9637e0d2cc006d9a58068ae30976d35ec8a638f148449bb8970f0ffccdf9ee6960d52dcc081c42abac5af19e11693d26bfd4549c4c5" style="display: block"><img alt="Product deal of the week shown. Shop now" style="border: 0; display: block;" border="0" src="https://mi.michaels.com/p/rp/67a63e9b7a3e2a32.png?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=%40cacheprevent&mi_p1=6318&mi_p2=6322&mi_p3=6341&mi_p4=6321&mi_p5=6330&mi_color_hex=CF1F2E&mi_text_hex=FFFFFF&mi_secondary_hex=CF1F2E&mi_offers_exploreall_background_color=CF1F2E&mi_offers_exploreall_text_color=ffffff&mi_header_suboffer_text_color=CF1F2E&mi_userID=1211039102333"></a>
+            
+          </td></tr></table></td></tr></table>
+<!-- DCE_2.0_TempD_ExploreAllCTA_Section3_New_Content -->
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td  style="padding:0px;">
+      <table border="0" cellpadding="0" cellspacing="0" height="auto" width="auto">
+        <tr>
+          <!-- Header -->
+          <td height="auto" width="auto" align="center" style="border: 0; display: block;" border="0" valign="middle">
+            <a  href="https://click.emdeals.michaels.com/?qs=22718678db09e69361934f9e10849a9f6303c4fa65780f3d956c449dee6f3f143debce834c287625bc6e7eb56785e1941e53a61e63ba2158e84ede40d794d127" style="display: block; height:auto; width:auto;" align="center"><img alt="Explore All Deals" style="border: 0; display: block; height:auto;width:auto;" border="0" src="https://mi.michaels.com/p/rp/48e4354488f7dfc2.png?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=%40cacheprevent&mi_p1=6318&mi_p2=6322&mi_p3=6341&mi_p4=6321&mi_p5=6330&mi_userID=1211039102333&mi_color_hex=CF1F2E&mi_text_hex=FFFFFF&mi_secondary_hex=CF1F2E&mi_offers_exploreall_background_color=CF1F2E&mi_offers_exploreall_text_color=ffffff&mi_header_suboffer_text_color=CF1F2E" height="auto" width="auto" align="center"></a>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner">
+<!-- DCE_2.0_TempD_ExploreAllCTA_Section4_New_Content -->
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td style="padding:0px;">
+      <table border="0" cellpadding="0" cellspacing="0" height="auto" width="auto">
+        <tr>
+          <!-- Header -->
+          <td height="auto" width="auto" align="center" style="border: 0; display: block;" border="0" valign="middle">
+            <a  href="https://click.emdeals.michaels.com/?qs=22718678db09e693f68d7d51f5c6b7ef2e4a877452d011c185d3cca5064a6a499a68970b68d79b18360a92de953f84cfde1240cc3a1e8e358f2f647496aeea73" style="display: block; height:auto; width:auto;" align="center"><img alt="Explore All Deals" style="border: 0; display: block; height:auto;width:auto;" border="0" src="https://mi.michaels.com/p/rp/48b9859f5b47697f.png?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=%40cacheprevent&mi_p1=6318&mi_p2=6322&mi_p3=6341&mi_p4=6321&mi_p5=6330&mi_userID=1211039102333&mi_color_hex=CF1F2E&mi_text_hex=FFFFFF&mi_secondary_hex=CF1F2E&mi_offers_exploreall_background_color=CF1F2E&mi_offers_exploreall_text_color=ffffff&mi_header_suboffer_text_color=CF1F2E" height="auto" width="auto" align="center"></a>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner">
+<!-- DCE_2.0_TempD_DynamicOffers3_New_Content -->
+<!-- Offer 1 -->
+<table border="0" cellpadding="0" cellspacing="0" height="auto" width="auto">
+  <tr>
+    <td height="auto" width="auto" align="center" style="border: 0; display: block;" border="0" valign="middle">
+      <a  href="https://click.emdeals.michaels.com/?qs=22718678db09e693cfe6776673a7a278c282a6fcc0e48f1a899e2ec86ce86cd3d36c3c30efc06f685382dc959b2017833c0f69ce55efdb7bb7890e2b7d36e75b" style="display: block"><img alt="Product deal of the week shown. Shop now" style="border: 0; display: block;" border="0" src="https://mi.michaels.com/p/rp/1381f4f7fcc0e7e8.png?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=%40cacheprevent&mi_p1=6318&mi_p2=6322&mi_p3=6341&mi_p4=6321&mi_p5=6330&mi_color_hex=CF1F2E&mi_text_hex=FFFFFF&mi_secondary_hex=CF1F2E&mi_offers_exploreall_background_color=CF1F2E&mi_offers_exploreall_text_color=ffffff&mi_header_suboffer_text_color=CF1F2E&mi_userID=1211039102333"></a>
+      <!-- Offer 2 -->
+      <a  href="https://click.emdeals.michaels.com/?qs=22718678db09e693a1f8b6216d2e6ec9450f27c412cfec32e96b05c188fb3f6cfa26791e634ed97ca63ed4ae93bba5dbe6b19c2f7bb60a1335aa4f2266dec504" style="display: block"><img alt="Product deal of the week shown. Shop now" style="border: 0; display: block;" border="0" src="https://mi.michaels.com/p/rp/1c99d7dbfd4eb397.png?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=%40cacheprevent&mi_p1=6318&mi_p2=6322&mi_p3=6341&mi_p4=6321&mi_p5=6330&mi_color_hex=CF1F2E&mi_text_hex=FFFFFF&mi_secondary_hex=CF1F2E&mi_offers_exploreall_background_color=CF1F2E&mi_offers_exploreall_text_color=ffffff&mi_header_suboffer_text_color=CF1F2E&mi_userID=1211039102333"></a>
+      <!-- Offer 3 -->
+      <a  href="https://click.emdeals.michaels.com/?qs=22718678db09e693f0c8360ac00c0c8926fe504e9c0dadd0dcc6741c6a4bd7462bf5c4806696ae7ed274a9a84af0d5b7490320a577bf9fcf19d902ab79e7aca9" style="display: block"><img alt="Product deal of the week shown. Shop now" style="border: 0; display: block;" border="0" src="https://mi.michaels.com/p/rp/e40206575481984e.png?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=%40cacheprevent&mi_p1=6318&mi_p2=6322&mi_p3=6341&mi_p4=6321&mi_p5=6330&mi_color_hex=CF1F2E&mi_text_hex=FFFFFF&mi_secondary_hex=CF1F2E&mi_offers_exploreall_background_color=CF1F2E&mi_offers_exploreall_text_color=ffffff&mi_header_suboffer_text_color=CF1F2E&mi_userID=1211039102333"></a>
+    </td>
+  </tr>
+</table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner">
+
+<!-- DCE_2.0_TempD_ExploreAllCTA_Section5_New_Content -->
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td style="padding:0px;">
+      <table border="0" cellpadding="0" cellspacing="0" height="auto" width="auto">
+        <tr>
+          <!-- Header -->
+          <td height="auto" width="auto" align="center" style="border: 0; display: block;" border="0" valign="middle">
+            <a  href="https://click.emdeals.michaels.com/?qs=22718678db09e69317828ce97604e2920b8edcfece285b6df98384d1b8110a8b5c6b664ef06c34d2bc320b832d73a162c319751dc0577035985efd55bd76a654" style="display: block; height:auto; width:auto;" align="center"><img alt="Explore All Deals" style="border: 0; display: block; height:auto;width:auto;" border="0" src="https://mi.michaels.com/p/rp/f566d0738e1356b0.png?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=%40cacheprevent&mi_p1=6318&mi_p2=6322&mi_p3=6341&mi_p4=6321&mi_p5=6330&mi_userID=1211039102333&mi_color_hex=CF1F2E&mi_text_hex=FFFFFF&mi_secondary_hex=CF1F2E&mi_offers_exploreall_background_color=CF1F2E&mi_offers_exploreall_text_color=ffffff&mi_header_suboffer_text_color=CF1F2E" height="auto" width="auto" align="center"></a>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><table cellpadding="0" cellspacing="0" role="presentation" width="100%">
+	
+		<tr>
+			<td align="center" style="height: 10px;">
+			</td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- Rebrand_DCE_Chain_Coupon_CF1F2E_Content -->
+
+<!-- MI Content Snippet -->
+<table border="0" cellpadding="0" cellspacing="0" style="margin: 0 auto">
+  <tr>
+    <td width="600" align="center" border="0" style="margin: 0 auto; border: none">
+      <a  href="https://click.emdeals.michaels.com/?qs=22718678db09e693810f68154686eaa713b1e4480ad94a3e6746c13b1a5a1f53db60d7727097cddd272c1b38540a9b96af3b47d4dec9e878f98a156de332dc75" style="display: block"><img alt="Coupon shown - Click here to get your coupon - Exclusions apply. See coupon for details." width="100%" style="border: 0; display: block;" border="0" src="https://mi.michaels.com/p/rp/bf717cabb28ade82.png?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_background=CF1F2E&mi_text=FFFFFF&mi_expiration=Sat 12/20/25&mi_EXP=&mi_ign=03:42:PM&mi_email=72540512547315425280022">
+        <!--  12/20/2025 3:42:02 PM  12/14/2025 3:42:02 PM  12/14/25  -->
+      </a>
+    </td>
+  </tr>
+</table>
+</td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><table cellpadding="0" cellspacing="0" role="presentation" width="100%">
+	
+		<tr>
+			<td align="center" style="height: 10px;">
+			</td></tr></table></td></tr></table><!-- MakerPlace_Sellers_HideShow_HideShow_Content -->
+<table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><table cellpadding="0" cellspacing="0" role="presentation" width="100%">
+ 
+  <tr>
+   <td align="center" style="height: 10px;">
+   </td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- 20251119_10MinCustomFrameProject_HideShow_Content -->
+
+
+
+
+<table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- 20251119_10MinCustomFrameProject_US_Content --><table cellpadding="0" cellspacing="0" role="presentation" width="100%">
+ 
+  <tr>
+   <td align="center" style="line-height:0px; padding-top:0px; mso-line-height-rule:exactly;" valign="middle">
+    <table cellpadding="0" cellspacing="0" role="presentation" width="100%">
+     
+      <tr>
+       <td align="center" style="line-height:0px; mso-line-height-rule:exactly;" valign="middle">
+        <table align="center" border="0" cellpadding="0" cellspacing="0" style="margin:0;-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%;">
+         
+          <tr>
+           <td align="center" style="padding-top: 20px;">
+            <a   data-linkto="other" href="https://click.emdeals.michaels.com/?qs=f46f636dbefb79b1ffeff72a066f1e8851a34661a2f96211dc39e639ace6745dd603d0e7e558b87ce661650a0c6b89050447381cbe8165e475e9e8b4290d151f" style="color:#FFFFFF;text-decoration:none;" target="_blank" title="20251119_10MinCustomFrameProject_US_content"><img alt="10 Minute Custom Framing. Upload a photo and we will print, custom frame and package it." data-assetid="422534" src="https://image.em.michaelscustomframing.com/lib/fe3f15707564057d701174/m/1/3f42010a-e533-4386-89d3-c7cc82f083fe.jpg" style="padding: 0px; width: 100%; border: 0px none transparent; height: auto; display: block;" width="600"></a></td></tr><tr>
+           <td align="center" style="padding-top: 0px;">
+            <a   data-linkto="other" href="https://click.emdeals.michaels.com/?qs=f46f636dbefb79b1ffeff72a066f1e8851a34661a2f96211dc39e639ace6745dd603d0e7e558b87ce661650a0c6b89050447381cbe8165e475e9e8b4290d151f" style="color:#FFFFFF;text-decoration:none;" target="_blank" title="20251119_10MinCustomFrameProject_US_content"><img alt="10 Minute Custom Framing. Upload a photo and we will print, custom frame and package it." data-assetid="422535" src="https://image.em.michaelscustomframing.com/lib/fe3f15707564057d701174/m/1/28d15565-ad19-4a86-80e6-8b6fbd7ee71b.jpg" style="padding: 0px; width: 100%; border: 0px none transparent; height: auto; display: block;" width="600"></a></td></tr></table></td></tr></table></td></tr></table></td></tr></table>
+
+</td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><table cellpadding="0" cellspacing="0" role="presentation" width="100%">
+	
+		<tr>
+			<td align="center" style="height: 10px;">
+			</td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><table width="100%" cellspacing="0" cellpadding="0" role="presentation"><tr><td align="center" valign="middle" style="line-height: 0px; mso-line-height-rule: exactly;"><a style="color:#FFFFFF;text-decoration:none;" target="_blank" href="https://click.emdeals.michaels.com/?qs=22718678db09e69367b76025bd6aa58052d5723d259cfef56fed39bdd3c1228a2055be370d230e6aa71627fe64fd17725ff87e0ef902c27f61f90ef2e200d9de" title="2025_US_ChristmasBalloonsSDDBOPIS_Content"   data-linkto="other">
+<img data-assetid="423063" src="https://image.emdeals.michaels.com/lib/fe4115707564057d701172/m/1/500f295a-0676-403c-802c-1c87e2892b9f.jpg" alt="Order your Christmas balloons today Shop balloons Same day delivery Easy in-store pickup Balloons starting at $1.99" width="600" style="display: block; padding: 0px; width: 100%; height: auto; text-align: center; border: 0px none transparent;"></a></td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><table cellpadding="0" cellspacing="0" role="presentation" width="100%">
+	
+		<tr>
+			<td align="center" style="height: 20px;">
+			</td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!--20251114_US_HolidayInStoreEventWinterWorkshopXC_Content--><table cellpadding="0" cellspacing="0" role="presentation" width="100%">
+	
+		<tr>
+			<td align="center" style="line-height: 0px; mso-line-height-rule: exactly;" valign="middle">
+				<table cellpadding="0" cellspacing="0" role="presentation" width="100%">
+					
+						<tr>
+							<td align="center" style="line-height: 0px; mso-line-height-rule: exactly;" valign="middle">
+								<a   data-linkto="other" href="https://click.emdeals.michaels.com/?qs=22718678db09e693cb5c8c5ea31affc577f326dee8bb85d6bc426cd8110a6bd99a9ef9386cb4b277d2c96e86e3f79c644aac6bb383125d8043d0d8e614840e46" style="text-decoration:none;" target="_blank" title=""><img alt="Enjoy free festive crafting. Join us for ornament painting and treats while supplies last. Every Saturday in December til Christmas 1-3pm. Learn more. Plus join us for FRE online kids' classes and pre-recorded videos and more now thru 12/27. sign up" src="https://image.emdeals.michaels.com/lib/fe4115707564057d701172/m/1/d16de324-210b-4831-8ee0-74a847b9ef53.jpg" style="display: block; padding: 0px; width: 100%; height: auto; text-align: center; border: 0px none transparent;" width="600"></a></td></tr><tr>
+							<td align="center" style="line-height: 0px; mso-line-height-rule: exactly;" valign="middle">
+								<a   data-linkto="other" href="https://click.emdeals.michaels.com/?qs=22718678db09e693bfcd6647ab0e017e68c198272f4d0134a3ea7f0b46e7725f554151e0533ad31a7de308efc42e478169b8cdb4019750a4217c7ae570fe692b" style="text-decoration:none;" target="_blank" title=""><img alt="Enjoy free festive crafting. Join us for ornament painting and treats while supplies last. Every Saturday in December til Christmas 1-3pm. Learn more. Plus join us for FRE online kids' classes and pre-recorded videos and more now thru 12/27. sign up" src="https://image.emdeals.michaels.com/lib/fe4115707564057d701172/m/1/7773d906-367f-41a4-b105-c46ee0ef805a.jpg" style="display: block; padding: 0px; width: 100%; height: auto; text-align: center; border: 0px none transparent;" width="600"></a></td></tr><tr>
+							<td align="center" style="line-height: 0px; mso-line-height-rule: exactly;" valign="middle">
+								<a   data-linkto="other" href="https://click.emdeals.michaels.com/?qs=f46f636dbefb79b1db86a7a618fcdfb895c19b7a88ac2c8bd9b24fb1ae867d4d40e747375df0a85a3677951307e22873239c27d86195462a71716bcc8eab9e2c" style="text-decoration:none;" target="_blank" title=""><img alt="Enjoy free festive crafting. Join us for ornament painting and treats while supplies last. Every Saturday in December til Christmas 1-3pm. Learn more. Plus join us for FRE online kids' classes and pre-recorded videos and more now thru 12/27. sign up" src="https://image.emdeals.michaels.com/lib/fe4115707564057d701172/m/1/d93b943b-6831-4215-90a5-39ff2952469b.jpg" style="display: block; padding: 0px; width: 100%; height: auto; text-align: center; border: 0px none transparent;" width="600"></a></td></tr></table></td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr>
+<td class="stylingblock-content-wrapper camarker-inner"><table cellpadding="0" cellspacing="0" role="presentation" width="100%">
+	
+		<tr>
+			<td align="center" style="height: 30px;">
+			</td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- 20251212_US_PinterestPredictsOperaXC_Content --><table border="0" cellpadding="0" cellspacing="0" width="100%">
+	
+		<tr>
+			<td bgcolor="#ffffff" style="padding-top: 0px;">
+				<table border="0" cellpadding="0" cellspacing="0" width="100%">
+					
+						<tr>
+							<td align="center" style="line-height:0px; mso-line-height-rule:exactly;" valign="middle">
+								<a   data-linkto="other" href="https://click.emdeals.michaels.com/?qs=f46f636dbefb79b104f1d3b0680f3412e9f69d99f0bade21928a5de641970da4802176a8a54d7c86855c7ae7dd585d11c0143b8359003f746f741cc4b432397d" style="text-decoration:none;" target="_blank" title=""><img alt="Pinterest Predicts: Operaesthetic. Cue the curtain: go glam at your next gathering with an opulent mix of vintage theater-inspired decor and DIY projects. Get Inspired" data-assetid="424588" src="https://image.emdeals.michaels.com/lib/fe4115707564057d701172/m/1/42b7b0d7-0ee4-4f08-b84f-a332f3e53de2.gif" style="display: block; padding: 0px; width: 100%; height: auto; text-align: center; border: 0px none transparent;" width="600"></a></td></tr></table></td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner">
+<table cellpadding="0" cellspacing="0" role="presentation" width="100%">
+	
+		<tr>
+			<td align="center" style="height: 10px;">
+			</td></tr></table></td></tr></table> 
+                                      
+                                    </td>
+                                  </tr>
+                                </table>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td align="center">
+                                <table width="600" border="0" cellspacing="0" cellpadding="0" class="container">
+                                  <tr>
+                                    <td align="center">
+                                      <!-- NEW_DynContentSnippet_US_BOTTOM_Content -->
+
+<table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner">
+<!-- MIK_Rewards_Footer_Header_US_Content -->
+<a  href="https://click.emdeals.michaels.com/?qs=f46f636dbefb79b12f9f93a59d4512c23f77a224d07faa0d7455b2f40de38fc56b17422160c98a99f96862d494c807f1afe532c226a9a2a955e635480eea667b" style="display: block"><img alt="Loyalty &amp; Rewards header" style="border: 0; display: block;padding-top:20px;" border="0" src="https://mi.michaels.com/p/rp/7ee2759f610e80b5.png?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=03:42:PM&mi_loyalty_id=LMR90670604371&mi_FirstName= "></a>
+</td></tr></table>
+<table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner">
+
+<!-- MIK_Rewards_BonusOffers_US_Content -->
+
+<a  href="https://click.emdeals.michaels.com/?qs=f46f636dbefb79b17c021219bee6553ace90f8b039a6ce0080bf12a323fc5de3a1b2f916a349e4b86e71c9868e2bee8ebee122d617ec605ef6f33931820c1453" style="display: block"><img alt="Michaels Bonus Offer" style="border: 0; display: block;" border="0" src="https://mi.michaels.com/p/rp/83eb5a295c2b2b0e.png?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=03:42:PM&mi_loyalty_id=LMR90670604371&mi_Segment=5&mi_OfferDescription=EARN $5 IN REWARDS WHEN YOU SPEND $25 OR MORE ON YOUR NEXT PURCHASE&mi_StartDate=12/14/2025 12:00:00 AM&mi_EndDate=1/3/2026 12:00:00 AM"></a>
+</td></tr></table>
+<table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner">
+
+<!-- MIK_Rewards_ProgressBar_US_Content -->
+
+<a  href="https://click.emdeals.michaels.com/?qs=f46f636dbefb79b1d11cea1507cd0b1e9f00600b075df6ec9cba6eaef7f3174d429bd280bb3ebf5aba96e74cc9116ef462bb6b9c2cd5cc80bc23581a0f2b783d" style="display: block"><img alt="Keep going to earn more!" style="border: 0; display: block;" border="0" src="https://mi.michaels.com/p/rp/bf93933208fd5aaa.png?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=03:42:PM&mi_PointsUntilReward=357&mi_Points=143&mi_AmtUntil6Percent=276.21&mi_DateToReach6Percent=01/02/2026&mi_Segment=5|20&mi_FirstName= &mi_loyalty_id=LMR90670604371"></a>
+</td></tr></table>
+<table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner">
+
+<!-- MIK_StatusCheck_US_Content -->
+
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td bgcolor="#ffffff" style="padding:0px;">
+      <table border="0" cellpadding="0" cellspacing="0" width="100%">
+        <tr>
+          <td align="center" style="line-height:0px; mso-line-height-rule:exactly;" valign="middle">
+            <a   data-linkto="other" href="https://click.emdeals.michaels.com/?qs=f46f636dbefb79b1b6e552d94f5f339e2346dc631f22408b6964d5a76fe3ced1198062ac462c4bd23c1623200d1d30ad695f10365aaf72e1cdcf671cc5abad56" style="color:#FFFFFF;text-decoration:none;" target="_blank" title=""><img alt="Complete your savings checklist" src="https://image.emdeals.michaels.com/lib/fe4115707564057d701172/m/1/e1915cc4-23c0-414f-8dd9-bb80d6119bf2.jpg" style="padding: 0px; text-align: center; width: 100%; border: 0px none transparent; height: auto;" width="600"></a>
+          </td>
+        </tr>
+        <tr>
+          <td align="center" style="line-height:0px; mso-line-height-rule:exactly;" valign="middle">
+            <table align="center" border="0" cellpadding="0" cellspacing="0" style="margin:0;-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%;">
+              <tr>
+                <td style="line-height:0px; mso-line-height-rule:exactly;">
+                 <a  href="https://click.emdeals.michaels.com/?qs=f46f636dbefb79b15431c6db2b554c44297d12904ba5031da97ff45fc3b59e1405fcc50d9ded2502b7cb68b1920412942da8aac32a7d22ffd278817dc70ed9d6" style="display: block"><img alt="Michaels Rewards check" style="border: 0; display: block;" border="0" src="https://mi.michaels.com/p/rp/2618a17f33ce6711.png?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=03:42:PM&mi_loyalty_id=LMR90670604371"></a>
+                </td>
+                <td style="line-height:0px; mso-line-height-rule:exactly;">
+                <a  href="https://click.emdeals.michaels.com/?qs=f46f636dbefb79b17d595b6403f512bca8a25184f72e4b6079026281dc77f82eb80a48c0331c3f70bb1f32d8aaff5519bbae4c4f5b9e089edc0a698630d330a9" style="display: block"><img alt="Michaels SMS check" style="border: 0; display: block;" border="0" src="https://mi.michaels.com/p/rp/0ee27fa770c53d2d.png?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=03:42:PM&mi_sms=False"></a>
+                </td>
+                <td style="line-height:0px; mso-line-height-rule:exactly;">
+                  <a  href="https://click.emdeals.michaels.com/?qs=f46f636dbefb79b1e7483a2c8f4523945383ee0567a26f1258c9251d0bd99501d43fdf21000c172269cf44a53516b5cc58417207a4e88284d077f0e60a78aac0" style="display: block"><img alt="Michaels Push Notification check" style="border: 0; display: block;" border="0" src="https://mi.michaels.com/p/rp/c44e60cbc7e5671b.png?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=03:42:PM&mi_PUSHsignup=False"></a>
+                </td>
+                <td style="line-height:0px; mso-line-height-rule:exactly;">
+                 <a  href="https://click.emdeals.michaels.com/?qs=f46f636dbefb79b1720e5b67fe30e4f08e772437649bafaafdd327171f2766eba8ad6f688db340063ece43d7ac58ad7b48f3b7141aed94342889f3b92283bb35" style="display: block"><img alt="Michaels Birthday check" style="border: 0; display: block;" border="0" src="https://mi.michaels.com/p/rp/2c608001d75ea09c.png?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=03:42:PM&mi_loyaltybday= "></a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+
+
+</td></tr></table>
+<table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner">
+
+<!-- MIK_SMS_Signup_US_Content -->
+
+<a  href="https://click.emdeals.michaels.com/?qs=f46f636dbefb79b10fdf51fe5e6d81335c84b440fbb27d24f17753d644b70af8f79a61c7198463d4cf94f2558405dd6b60eea7534e0b47a3626f8f11126c8a35" style="display: block"><img alt="Michaels SMS Sign up" style="border: 0; display: block;" border="0" src="https://mi.michaels.com/p/rp/bf4bb92ab2602997.png?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=03:42:PM&mi_sms=False"></a>
+</td></tr></table>
+
+ 
+                                      
+                                    </td>
+                                  </tr>
+                                </table>
+                              </td>
+                            </tr>
+                            
+                               <tr>
+                              <td>
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                                  <tr>
+                                    <td align="center" style="border-top: 1px #999999 solid;">
+                                      <img src="http://image.emdeals.michaels.com/lib/fe4015707564057d701173/m/1/e323ae89-6f89-4b47-8f9a-f33897013cd1.jpg" alt="" width="600" class="photo" style="display:block;" border="0"/>
+                                    </td>
+                                  </tr>
+                                   <!-- Begin Affirm -->
+                              <tr>
+                                    <td width="600" align="center">
+                                      <table  border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                          <td border="0" style="margin: 0 auto; border: none" width="600" align="center">
+<a  href="https://click.emdeals.michaels.com/?qs=f46f636dbefb79b1b792f368dd2ffe3f1939f316ffee56cbb180b94e4568007b54c024cc88737701ecee17384fd41e6222ca80c61d1a8e174289279851643347" style="display: block"><img alt="Affirm. Buy now, pay over time. Find the plan that fits your budget starting at 0% APR. Learn more." style="border: 0; display: block;" src="https://image.emdeals.michaels.com/lib/fe4115707564057d701172/m/1/7d0b0473-bebf-4736-8b57-787668b2d216.jpg" border="0"></a>
+      </td>   
+                                        </tr>
+                                      </table>
+                                    </td>
+                                  </tr> 
+                                  
+                                  <!-- End Affirm -->
+                  
+                                  <!-- Begin Social -->
+                                 <tr style="background-color:#ffffff;">
+                                    <td width="600" align="center" style="background-color:#ffffff;">
+                                      <table  border="0" cellspacing="0" cellpadding="0" style="background-color:#ffffff;">
+                                        <tr style="background-color:#ffffff;">
+                                     
+                                          <td style="background-color:#ffffff;">
+                                            <a href="https://click.emdeals.michaels.com/?qs=f46f636dbefb79b13cad9d316653ec745ea3f0802e30467bb0cb5da10e467919f082dc833c2429e846b1f1a483d89df9006cde8c39be38220958367d13f86384" target="_blank" ><img src="https://image.emdeals.michaels.com/lib/fe4115707564057d701172/m/1/05b03aa4-cd10-4eab-a191-00458b833023.jpg" alt="Facebook" width="auto" class="photo" style="display:block;" border="0"/></a>
+                                          </td>
+<td style="background-color:#ffffff;">
+                                            <a href="https://click.emdeals.michaels.com/?qs=f46f636dbefb79b14e1adab0a3e9519c84dd72e6a1599fc6e309ba4c2f758a7faeb6e103537fd97bcaf78cd244ce5eca2ccd34259c8e38eb9a39afb0e8c861ad" target="_blank" ><img src="https://image.emdeals.michaels.com/lib/fe4115707564057d701172/m/1/ee939045-5828-4421-b87d-3cee148f0e52.jpg" alt="Instagram" width="auto" class="photo" style="display:block;" border="0"/></a>
+                                          </td>
+  <td style="background-color:#ffffff;">
+                                            <a href="https://click.emdeals.michaels.com/?qs=f46f636dbefb79b17cf23ed579a46549b0d2e1ad44ae17c70d017a90e48dd646df004f522b6b3f09236bf5fa9a9582f9f191cc6254da2e279c596db873341904" target="_blank" ><img src="https://image.emdeals.michaels.com/lib/fe4115707564057d701172/m/1/11d65d8a-9a34-48f1-ab0b-016fef9c3528.jpg" alt="Pinterest" width="auto" class="photo" style="display:block;" border="0"/></a>
+                                          </td>
+                                          <td style="background-color:#ffffff;">
+                                            <a href="https://click.emdeals.michaels.com/?qs=f46f636dbefb79b1e9a21c23265eece2d709f510ed468093bda719565b56923e6239151a233b7f32d33465678380ebc39de3deb71d61227bef46c786774b7df7" target="_blank" ><img src="https://image.emdeals.michaels.com/lib/fe4115707564057d701172/m/1/84d98a20-68d1-4c63-83a1-a8498ff9231b.jpg" alt="Twitter" width="auto" class="photo" style="display:block;" border="0"/></a>
+                                          </td>
+                                        
+                                          
+                                          <td style="background-color:#ffffff;">
+                                            <a href="https://click.emdeals.michaels.com/?qs=f46f636dbefb79b1c46e4bf4af494bc564b30784d5a2f2cbe339a455426f2578dc065be0bf99af767d0ad9c5c2624cbe96b188f16f4f765cea965c89dab6ece0" target="_blank" ><img src="https://image.emdeals.michaels.com/lib/fe4115707564057d701172/m/1/39bba64f-d76e-4e27-9485-29867bd7d379.jpg" alt="YouTube" width="auto" class="photo" style="display:block;" border="0"/></a>
+                                          </td>
+                                          <td style="background-color:#ffffff;">
+                                            <a href="https://click.emdeals.michaels.com/?qs=f46f636dbefb79b1ba2da580983e85b29ba817adfdc837bd4cbdc8a65efafeedc8f32874e2d9452c2b1785c5f174f9c047dbeffee4fecf8aece1a0a31f1ef55b" target="_blank" ><img src="https://image.emdeals.michaels.com/lib/fe4115707564057d701172/m/1/21f4ef71-3d4a-44d8-a4be-64434b87cf5c.jpg" alt="Snapchat" width="auto" class="photo" style="display:block;" border="0"/></a>
+                                          </td>
+                                 
+                                        </tr>
+                                      </table>
+                                    </td>
+                                  </tr>
+
+                                  <!-- Begin Footer Categories -->
+                                 
+                                  <tr style="background-color:#ffffff;">
+                                    <td width="600" align="center" style="background-color:#ffffff;">
+                                      <table  border="0" cellspacing="0" cellpadding="0" style="background-color:#ffffff;">
+                                        <tr style="background-color:#ffffff;">
+                                           <td style="background-color:#ffffff;">
+                                            <a href="https://click.emdeals.michaels.com/?qs=f46f636dbefb79b1747a4fb7d9a207c0850d02c57909160ac1ab12dbf2cb82f78464f00bee9dcd9e34bfba93618b5c17a885667e53d2d9718341b525a6e33866" target="_blank" ><img src="https://image.emdeals.michaels.com/lib/fe4115707564057d701172/m/1/4a358524-023c-4ad7-b2dc-0b6deba9a930.jpg" alt="SHOP" width="auto" class="photo" style="display:block;" border="0"/></a>
+                                          </td>
+     <td style="background-color:#ffffff;">
+                                            <a href="https://click.emdeals.michaels.com/?qs=f46f636dbefb79b14abaf56cc76f34f434549c3723e9c359d76b1a823f8d7969c466ff1749ce84e16d2e5578838c69be84c3e2f984c944f5dab97773c2da3d51" target="_blank" ><img src="https://image.emdeals.michaels.com/lib/fe4115707564057d701172/m/1/c2dff943-8c03-419f-98ba-8537e3eb864a.jpg" alt="SALE" width="auto" class="photo" style="display:block;" border="0"/></a>
+                                          </td>
+
+                                          <td style="background-color:#ffffff;">
+                                            <a href="https://click.emdeals.michaels.com/?qs=f46f636dbefb79b1a78ca9b545bbc92d23213964de1ccf753e12c91d65e3a88b8d9bd3a53014bde7425dd799a857e7b9717f78744fcb057238b2bd6870534dff" target="_blank" ><img src="https://image.emdeals.michaels.com/lib/fe4115707564057d701172/m/1/073f0696-30e9-45c5-8206-58e0f52d9307.jpg" alt="PROJECTS" width="auto" class="photo" style="display:block;" border="0"/></a>
+                                          </td>
+                                          <td style="background-color:#ffffff;">
+                                            <a href="https://click.emdeals.michaels.com/?qs=f46f636dbefb79b1b0daef19c2a9d4fec35a5de758342d64206153373e865f8ea314926c4d696a43ce2922ce87af22da7d09c848c60bcf376c41125d25510524" target="_blank" ><img src="https://image.emdeals.michaels.com/lib/fe4115707564057d701172/m/1/e3d9f74a-a262-4819-8552-96e677986f85.jpg" alt="CLASSES" width="auto" class="photo" style="display:block;" border="0"/></a>
+                                          </td>
+                                          <td style="background-color:#ffffff;">
+                                            <a href="https://click.emdeals.michaels.com/?qs=f46f636dbefb79b11d868505c3b886cd2f83e29ed3d9e755b42310f10a12c0ae67700cdd820a6577ed2deb019abaad20bed533999d7e8e992ef568e8290781a3" target="_blank" ><img src="https://image.emdeals.michaels.com/lib/fe4115707564057d701172/m/1/9a617048-2575-435b-8905-0e8026b5b44a.jpg" alt="CUSTOM FRAMING" width="auto" class="photo" style="display:block;" border="0"/></a>
+                                          </td>
+                                          <td style="background-color:#ffffff;">
+                                            <a href="https://click.emdeals.michaels.com/?qs=f46f636dbefb79b1754f021a9e50ad071ba843d516c137e407541ba6855e047490cdfa03f3e020a261a4c235c20e58204e2e244b9eff7900ddd2fa530fe27d8e" target="_blank" ><img src="https://image.emdeals.michaels.com/lib/fe4115707564057d701172/m/1/585573b5-33c2-44dd-8ba9-75942e20afff.jpg" alt="MAKERPLACE" width="auto" class="photo" style="display:block;" border="0"/></a>
+                                          </td>
+                                          
+                                        </tr>
+                                      </table>
+                                    </td>
+                                  </tr>  
+                          </table>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align="center" style="padding:20px;" class="MobilePadding">
+                          <table width="100%" border="0" cellspacing="0" cellpadding="0" class="container"> 
+                            <!-- BEGIN From Email Address -->  
+                            <!--  -->
+                            <tr>
+                              <td align="left" style="font-family:Helvetica, Arial, sans-serif; text-decoration:none; font-size:12px; line-height:16px; color:#999999;">
+                                <span style="color:#000000;">Don't miss a thing! Add Michaels <span style="text-decoration:none; color:#000000;">michaels&#65279;@&#65279;emdeals&#65279;.&#65279;michaels&#65279;.&#65279;com</span> to your address book.</span>
+                                <br/>
+                                <br/>
+                              </td>
+                            </tr>
+                            <!--  -->
+                            <!-- END From Email Address -->
+                            <tr>
+                              <td>
+                                <!-- MASTER_LegalText_Content -->
+
+
+<style>
+  /* unvisited link */
+  a: {
+    color: #999999;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size:12px;
+    line-height:16px;
+  }
+  a:link {
+    color: #999999;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size:12px;
+    line-height:16px;
+  }
+  /* visited link */
+  a:visited {
+    color: blue;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size:12px;
+    line-height:16px;
+  }
+  /* mouse over link */
+  a:hover {
+    color: #999999;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size:12px;
+    line-height:16px;
+  }
+  /* selected link */
+  a:active {
+    color: #999999;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size:12px;
+    line-height:16px;
+  }
+</style>
+<table width="100%" cellspacing="0" cellpadding="0" border="0">
+  <tr>
+    <td style="font-family:Helvetica, Arial, sans-serif; text-decoration:none; font-size:12px; line-height:16px; color:#999999;"  align="left">
+     <b>*Important Stuff We Have To Tell You</b>
+      <br>
+      <br>
+    </td>
+  </tr>
+</table><!-- MASTER_LegalText_AffirmBlock_DCE_Content -->
+
+
+<style>
+  /* unvisited link */
+  a: {
+    color: #999999;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size:12px;
+    line-height:16px;
+  }
+  a:link {
+    color: #999999;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size:12px;
+    line-height:16px;
+  }
+  /* visited link */
+  a:visited {
+    color: blue;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size:12px;
+    line-height:16px;
+  }
+  /* mouse over link */
+  a:hover {
+    color: #999999;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size:12px;
+    line-height:16px;
+  }
+  /* selected link */
+  a:active {
+    color: #999999;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size:12px;
+    line-height:16px;
+  }
+</style>
+  <table width="100%" cellspacing="0" cellpadding="0" border="0">
+  <tr>
+    <td style="font-family:Helvetica, Arial, sans-serif; text-decoration:none; font-size:12px; line-height:16px; color:#999999;"  align="left">
+    <!-- <b>*Important Stuff We Have To Tell You</b>       <br>       <br>-->
+      *Rates from 0–36% APR. Payment options through Affirm are subject to an eligibility check, may not be available everywhere, and are provided by these lending partners: <a  href="https://click.emdeals.michaels.com/?qs=f46f636dbefb79b16c37eb68fcd2ef4f5ae57e7c3c345d71946aa711f25654edb9ab579a93a5fda5f2c814d2592383789c89d89474a65735edb6c3f52be97ee5" style="color:#999999;">affirm.com/lenders</a>. Options depend on your purchase amount, and a down payment may be required. CA residents: Loans by Affirm Loan Services, LLC are made or arranged pursuant to a California Finance Lenders Law license. For licenses and disclosures, see <a  href="https://click.emdeals.michaels.com/?qs=f46f636dbefb79b18d6bdfe2503ece7bde7016f1039e566025bd758819970d4b3539169f8003163cc229e76f4888411300e4e77dca8cae45694cf027f5667018" style="color:#999999;">affirm.com/licenses</a>.
+      <br>
+     
+    </td>
+  </tr>
+</table>
+<!-- 2025_DallasCowboysGameDay_Disclaimer_Content -->
+
+<table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- MakerPlace_Sellers_HideShow_Disclaimer_Content -->
+</td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><table width="100%" cellspacing="0" cellpadding="0" border="0">
+  <tr>
+    <!-- DCE_2.0_TEMPLATE_C_Disclaimer_Content -->
+    <td style="font-family:Helvetica, Arial, sans-serif; text-decoration:none; font-size:12px; line-height:16px; color:#999999;" align="left"> <br>
+     <!-- <b>*Important Stuff We Have to Tell You </b>    <br> <br> -->
+</td>
+  </tr>
+</table>
+<!-- DCE_Template-D_Disclaimer1 -->
+<img alt="Product deal of the week disclaimer shown. See website for further details." style="border: 0; display: block;" border="0" src="https://mi.michaels.com/p/rp/ac51a22af360b99e.png?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=%40cacheprevent&mi_p1=6318&mi_p2=6322&mi_p3=6341&mi_p4=6321&mi_p5=6330&mi_userID=1211039102333">
+
+<!-- DCE_Template-D_Disclaimer2 -->
+<img alt="Product deal of the week disclaimer shown. See website for further details." style="border: 0; display: block;" border="0" src="https://mi.michaels.com/p/rp/67d749e94dc55b03.png?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=%40cacheprevent&mi_p1=6318&mi_p2=6322&mi_p3=6341&mi_p4=6321&mi_p5=6330&mi_userID=1211039102333">
+
+<!-- DCE_Template-D_Disclaimer3 -->
+<img alt="Product deal of the week disclaimer shown. See website for further details." style="border: 0; display: block;" border="0" src="https://mi.michaels.com/p/rp/5f84817cf3faf2f2.png?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=%40cacheprevent&mi_p1=6318&mi_p2=6322&mi_p3=6341&mi_p4=6321&mi_p5=6330&mi_userID=1211039102333">
+
+<!-- DCE_Template-D_Disclaimer4 -->
+<img alt="Product deal of the week disclaimer shown. See website for further details." style="border: 0; display: block;" border="0" src="https://mi.michaels.com/p/rp/f25657904e519974.png?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=%40cacheprevent&mi_p1=6318&mi_p2=6322&mi_p3=6341&mi_p4=6321&mi_p5=6330&mi_userID=1211039102333">
+
+<!-- DCE_Template-D_Disclaimer5 -->
+<img alt="Product deal of the week disclaimer shown. See website for further details." style="border: 0; display: block;" border="0" src="https://mi.michaels.com/p/rp/30788c3119f0b138.png?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=%40cacheprevent&mi_p1=6318&mi_p2=6322&mi_p3=6341&mi_p4=6321&mi_p5=6330&mi_userID=1211039102333">
+
+<!-- DCE_Template-D_Disclaimer6 -->
+<img alt="Product deal of the week disclaimer shown. See website for further details." style="border: 0; display: block;" border="0" src="https://mi.michaels.com/p/rp/79b557f53ab7e519.png?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=%40cacheprevent&mi_p1=6318&mi_p2=6322&mi_p3=6341&mi_p4=6321&mi_p5=6330&mi_userID=1211039102333">
+
+<!-- DCE_Template-D_Disclaimer7 -->
+<img alt="Product deal of the week disclaimer shown. See website for further details." style="border: 0; display: block;" border="0" src="https://mi.michaels.com/p/rp/ba7a29065683caac.png?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=%40cacheprevent&mi_p1=6318&mi_p2=6322&mi_p3=6341&mi_p4=6321&mi_p5=6330&mi_userID=1211039102333">
+
+<!-- DCE_Template-D_Disclaimer8 -->
+<img alt="Product deal of the week disclaimer shown. See website for further details." style="border: 0; display: block;" border="0" src="https://mi.michaels.com/p/rp/4fd9d7478dcf7057.png?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=%40cacheprevent&mi_p1=6318&mi_p2=6322&mi_p3=6341&mi_p4=6321&mi_p5=6330&mi_userID=1211039102333">
+
+<!-- DCE_Template-D_Disclaimer9 -->
+<img alt="Product deal of the week disclaimer shown. See website for further details." style="border: 0; display: block;" border="0" src="https://mi.michaels.com/p/rp/8e1d8f452bac0bb7.png?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US&mi_ign=%40cacheprevent&mi_p1=6318&mi_p2=6322&mi_p3=6341&mi_p4=6321&mi_p5=6330&mi_userID=1211039102333"></td></tr></table><!-- MASTER_LegalText_Disclaimer_9Percent_LylEveryDay_2aSegTest_HideShow_December_Content -->
+
+
+<table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- -->
+<style>
+  /* unvisited link */
+  a: {
+    color: #999999;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size:12px;
+    line-height:16px;
+  }
+  a:link {
+    color: #999999;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size:12px;
+    line-height:16px;
+  }
+  /* visited link */
+  a:visited {
+    color: #999999;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size:12px;
+    line-height:16px;
+  }
+  /* mouse over link */
+  a:hover {
+    color: #999999;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size:12px;
+    line-height:16px;
+  }
+  /* selected link */
+  a:active {
+    color: #999999;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size:12px;
+    line-height:16px;
+  }
+</style>
+  
+
+<table width="100%" cellspacing="0" cellpadding="0" border="0">
+  <tr>
+    <td style="font-family:Helvetica, Arial, sans-serif; text-decoration:none; font-size:12px; line-height:16px; color:#999999;" align="left">
+      <br> 
+      <b>*Important Stuff We Have to Tell You About Rewards </b>
+       <br>
+      <br><b>REWARDS:</b>
+      To be eligible to earn 6% in Rewards, member must have spent at least $300 on eligible purchases over the past 12 months; otherwise, members will earn 3% in Rewards on every eligible purchase. 6% eligibility is updated once a month.
+<br><br>
+      
+ Rewards are calculated based on actual amount paid, less applicable taxes. Valid only on purchases made in U.S. stores and online at
+      <a href="https://click.emdeals.michaels.com/?qs=f46f636dbefb79b107384f4691e573a38b1bac4407c32407d1eb088c8febbdd06894374c5c07726a9d5076203481d8d3e7268996cf972be70e9fb36b6b262e73" target="_blank" style="color:#999999;"><u>Michaels Stores – Art Supplies, Crafts & Framing | Michaels</u></a>.  Limit $150 in total Rewards earned per day.
+      <br><br>
+      
+      Rewards and Rewards vouchers have no cash value. Rewards cannot be earned on purchases of clearance merchandise. Rewards cannot be earned, and vouchers cannot be redeemed, on shipping, tax, purchase of Gift Cards and Extended Warranties, on items sold and shipped by third-party sellers on MakerPlace by Michaels, or purchases on 
+      <a href="https://click.emdeals.michaels.com/?qs=f46f636dbefb79b1ebb71206270ed9fc2b5bbf7369ab5720fde0875540f272c49cb0d6db06ca85f7754850c26cfd5ff03b825c7f1ed0442d4c8ae11e75a6fa7f" target="_blank" style="color:#999999;"><u>Photo Gifts, Photo Prints & Personalized Gifts At Michaels</u></a>, <a href="https://click.emdeals.michaels.com/?qs=f46f636dbefb79b1acb8e69ce8758c7430dbe7d8228bee1f17fd127f5e319bf4d731c43832c275e3726eeb539b8d4c5bd6b466a7e1896d3cbef965f7066c13c2" target="_blank" style="color:#999999;"> <u>https://enterprise.michaels.com</u></a>, <a href="https://click.emdeals.michaels.com/?qs=f46f636dbefb79b13cd50758a233795c137f6f59be8959dbe7b0c2e9bff0869603fb5cdf5b1d16be2e5dd89c3a370bc1fa8007faf332a4191479acc97ece6def" target="_blank" style="color:#999999;"><u>https://education.michaels.com</u>.</a>
+      <br><br>
+      Rewards earned will show up in Rewards member’s account 48 hours after eligible purchase. Rewards vouchers will be issued within 72 hours once member reaches $5 threshold, and are valid for 32 days from the date of issuance. Michaels Rewards account information must be provided upon redemption of a Rewards voucher. Void where prohibited. Restrictions may apply. Michaels reserves the right to make updates to Michaels Rewards without member notification. See Rewards Terms and Conditions at <a href="https://click.emdeals.michaels.com/?qs=f46f636dbefb79b17cf1a83ab0f26767e9e6b295b74798a3eb7f896fece3545c3c997e77d7763c5bc01008546d9b761fb0b6c37ad11252a30c9526a2ecb10ab8" target="_blank" style="color:#999999;"><u>Michaels Rewards Program | Terms & Conditions</u></a>.
+      <br>
+      <br>
+
+    </td>
+  </tr>
+</table>
+</td></tr></table>
+
+
+
+
+
+<!-- Ecomm_CouponDisclaimer_December_Content -->
+
+<style>
+  /* unvisited link */
+  a: {
+    color: #999999;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size:12px;
+    line-height:16px;
+  }
+  a:link {
+    color: #999999;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size:12px;
+    line-height:16px;
+  }
+  /* visited link */
+  a:visited {
+    color: blue;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size:12px;
+    line-height:16px;
+  }
+  /* mouse over link */
+  a:hover {
+    color: #999999;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size:12px;
+    line-height:16px;
+  }
+  /* selected link */
+  a:active {
+    color: #999999;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size:12px;
+    line-height:16px;
+  }
+</style>
+<table width="100%" cellspacing="0" cellpadding="0" border="0">
+  <tr>
+    <td style="font-family:Helvetica, Arial, sans-serif; text-decoration:none; font-size:12px; line-height:16px; color:#999999;"  align="left">
+      Limit one coupon per product. Limit one coupon of each type per day. Limited to stock on hand. Void where prohibited. Valid only in US.
+      <br>
+      <br> 
+      <b>EXCLUSIONS:
+      </b> clearance; MichaelsPro Packs; Artist's Loft Super Value Canvas Packs; custom framing; Michaels Photo Gifts; beverages & candy; books & magazines; rolled posters; classes; Birthday Parties and Private Events, including party add-ons; cut-to-order fabric; gift cards; craft technology machines; sewing machines; Cricut, Glowforge, Silhouette; balloons, inflation, & Balloon Time Helium Tanks; Brother Sublimation Printer & Accessories; Elf On The Shelf Storybook Sets; Gildan; Kodak; Lego; Toybox; Ty Beanie Babies; 
+      <a  href="https://click.emdeals.michaels.com/?qs=f46f636dbefb79b12eaef4af755cea9a89da50e0e47839f47df46866164638b75b165d9f8a5dae9492fe5caa50733162144885b73de2c43fe1bfddee4be58358">michaels.com</a> and MakerPlace items sold and shipped by third-party sellers. Exclusions subject to change. See Team Member for details.
+      <br>
+      <br>
+    </td>
+  </tr>
+  
+</table><!--MASTER_LegalText_Content-->
+<style>
+  /* unvisited link */
+  a: {
+    color: #999999;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size:12px;
+    line-height:16px;
+  }
+  a:link {
+    color: #999999;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size:12px;
+    line-height:16px;
+  }
+  /* visited link */
+  a:visited {
+    color: blue;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size:12px;
+    line-height:16px;
+  }
+  /* mouse over link */
+  a:hover {
+    color: #999999;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size:12px;
+    line-height:16px;
+  }
+  /* selected link */
+  a:active {
+    color: #999999;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size:12px;
+    line-height:16px;
+  }
+</style>
+<table width="100%" cellspacing="0" cellpadding="0" border="0">
+  <tr>
+    <td style="font-family:Helvetica, Arial, sans-serif; text-decoration:none; font-size:12px; line-height:16px; color:#999999;"  align="left">
+    
+      <b>†Important Stuff We Have to Tell You About Custom Framing
+      </b>
+      
+      <br>
+      <br>
+      
+    </td>
+  </tr>
+</table><!--MASTER_LegalText_Content-->
+<style>
+  /* unvisited link */
+  a: {
+    color: #999999;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size:12px;
+    line-height:16px;
+  }
+  a:link {
+    color: #999999;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size:12px;
+    line-height:16px;
+  }
+  /* visited link */
+  a:visited {
+    color: blue;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size:12px;
+    line-height:16px;
+  }
+  /* mouse over link */
+  a:hover {
+    color: #999999;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size:12px;
+    line-height:16px;
+  }
+  /* selected link */
+  a:active {
+    color: #999999;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size:12px;
+    line-height:16px;
+  }
+</style>
+<table width="100%" cellspacing="0" cellpadding="0" border="0">
+  <tr>
+    <td style="font-family:Helvetica, Arial, sans-serif; text-decoration:none; font-size:12px; line-height:16px; color:#999999;"  align="left">
+      <b>CUSTOM FRAME DISCOUNT:
+      </b> Excludes Aaron Brothers Essentials, Custom Frame Value Packages, Custom Frame Express, Michaels Photo Gifts, unframed specialty prints, value canvas, same-day custom framing, expedited shipping and engraved plates. Must purchase a custom frame. May not be applied to prior purchases or combined with any other coupon, sale or discount. Offers may vary by location. Valid only in U.S. See a Custom Frame Personal Designer for details.
+      <br>
+      <br>   
+      Offers and pricing listed in this email are valid Saturday, December 20, 2025, unless otherwise noted. Prices effective in U.S. only. This message contains promotional content. Please do not reply to this email. ©2025 Michaels Stores, Inc. 3939 West John Carpenter Freeway, Irving, TX 75063.
+      <br>
+      <br>
+      Prices may vary in Alaska.
+      <br>
+      <br>
+      Some advertised items may not be available at all store locations. Percent off discounts are off original ticketed price. MichaelsPro™ Pack pricing may not be combined with any other offer, coupon or discount. All credit cards may not be accepted at all stores. Selection and regular prices may vary. Typographic and photographic errors are subject to correction at the store level. Products available while quantities last and no rain checks may be issued. We reserve the right to limit quantities.
+      <br>
+      <br>
+    </td>
+  </tr>
+</table><!-- CMB_ProgressBar_Coupon_Disclaimer_Block_Content -->
+<style>
+  /* unvisited link */
+  a: {
+    color: #999999;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size:12px;
+    line-height:16px;
+  }
+  a:link {
+    color: #999999;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size:12px;
+    line-height:16px;
+  }
+  /* visited link */
+  a:visited {
+    color: blue;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size:12px;
+    line-height:16px;
+  }
+  /* mouse over link */
+  a:hover {
+    color: #999999;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size:12px;
+    line-height:16px;
+  }
+  /* selected link */
+  a:active {
+    color: #999999;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size:12px;
+    line-height:16px;
+  }
+</style>
+<table width="100%" cellspacing="0" cellpadding="0" border="0">
+  <tr>
+    <td style="font-family:Helvetica, Arial, sans-serif; text-decoration:none; font-size:12px; line-height:16px; color:#999999;"  align="left">
+     <sup>3</sup>Offer is exclusive to Michaels Credit Card holders enrolled in the Michaels Rewards program. Maximum of $150 in total rewards earned per day. Maximum of 9% rewards per transaction. Excludes taxes, gift cards, extended warranty purchases, shipping fees and items sold and shipped by third-party sellers on MakerPlace by Michaels. This rewards program is provided by Michaels and its terms may change at any time. For full Rewards Terms and Conditions, please see <a  href="https://click.emdeals.michaels.com/?qs=f46f636dbefb79b1e4594022632b55d39efa2eeea7b10aeb64162a212ff6132aeed1da1c099a71fae2dcf10c6e98e92dd8532951b527007b60a935697c36f52e" style="color:#999999;">michaels.com/rewards/terms</a>.
+      <br>
+      <br>
+      Credit Card offers are subject to credit approval.
+      <br>
+      Michaels Credit Card Accounts are issued by Comenity Capital Bank.
+      <br>
+      The Michaels Credit Card cannot be used on <a  href="https://click.emdeals.michaels.com/?qs=f46f636dbefb79b15fa8f9e623c1d457c5c469e787c4ca7989691b3494e00db0b7d64d01483ebaae838c3cdb8ef1418591e1bcb413619f584de2e34a2e174c2e" style="color:#999999;">michaelscustomframing.com</a>;<a  href="https://click.emdeals.michaels.com/?qs=f46f636dbefb79b121a357ce5e2dbfae1431ce4732fb3ac7f1f8dc135e20cbcfe6aaa247ce2d5ce9314ae4e1f73ee8a061af1dc25d208b62879fdeab255cfc85" style="color:#999999;">michaelsphotogifts.com</a>; <a  href="https://click.emdeals.michaels.com/?qs=f46f636dbefb79b19844e081dfa623dda9c564bf316e4d5faaee5fb92a18e3d126baeacd216ea7dd66cee733dcf40e7019df30195efed07739d41e266b5a7a49" style="color:#999999;">education.michaels.com</a>; <a  href="https://click.emdeals.michaels.com/?qs=f46f636dbefb79b12114d8bd592ee590442f3a3383cf36f552cfb7f6289ec1f3c0d3d62d113e47083c69214b5e7fe5e4eb6e91b97e216e2c49122ed64254115e" style="color:#999999;">enterprise.michaels.com</a>; and 
+<a  href="https://click.emdeals.michaels.com/?qs=f46f636dbefb79b11fcafb3e8907a8f0fbec754e869869c9fa6ab65a121e36b7e7760fe59f367901d32f2727afcfaffe9fa056c3f700db82cafdeddea38275a4" style="color:#999999;"> merchant.sgiftcard.com/chrome/michaels</a>.
+      <br>
+      <br>
+    </td>
+  </tr>
+</table>
+
+
+ 
+                                
+                              </td>
+                            </tr>
+                            <tr> 
+                              
+                                                          
+                              <td align="left" style="font-family:Helvetica, Arial, sans-serif; text-decoration:none; font-size:12px; line-height:16px; color:#999999;"><!--Click here to receive                                  <a href="https://pub.s10.exacttarget.com/roevnimqczg/l5ia4u01aia?email_ID=1211039102333&mid=100010552" target="_blank" alias="Footer: Canada emails in English" style="color:#999999; text-decoration: underline;">Canada emails in English</a> or                                  <a href="https://pub.s10.exacttarget.com/roevnimqczg/o520eeoyv3r?email_ID=1211039102333&mid=100010552" target="_blank" alias="Footer: Quebec emails in French" style="color:#999999; text-decoration: underline;">Qu&eacute;bec emails in French</a>.                                 <br/> -->
+                                
+                                
+                                 <a  target="_blank" style="color:#999999;">If you no longer wish to receive these emails, unsubscribe using the link below.</a> <br>
+                                
+                                <br/> 
+                                <a href="https://click.emdeals.michaels.com/?qs=f46f636dbefb79b1fa194a1ba63746bbdb2977931b55fdf78752805dade9d422d3f55de13ba9da828f6a1a98d2f36106eff2764106d45ef3dfbf173085b2fc23" target="_blank"  style="color:#999999; text-decoration: underline;">Find a Store</a> | 
+                                <a href="https://click.emdeals.michaels.com/?qs=f46f636dbefb79b15583166ad73d565172073086f928bc419a79ccb9752e474c2a257b5359d68f7675afac583f4b3ba31e96e6c3e10d4c25391f845611ff7f87" target="_blank"  style="color:#999999; text-decoration: underline;">Contact Us</a> | 
+                                <a href="https://click.emdeals.michaels.com/?qs=f46f636dbefb79b1c7cf1fcea87777cd880c2de5930fdbf22c0886f23460ecff12249c2a4f2c3a4911c15e16f628590f0727676f42bc0640018e82f20b514bb8" target="_blank"  style="color:#999999; text-decoration: underline;">Privacy Policy</a> | 
+                                <a href="https://click.emdeals.michaels.com/?qs=f46f636dbefb79b1573f657d5323c3bc6328dda3506a35343e8d40a14e8c14038a99014a0a9889431385670d332969ead647abd670eddac793a86706486b28e5" target="_blank"  style="color:#999999; text-decoration: underline;">Unsubscribe</a>
+                                <br/>
+                                <br/>
+                                <span style="font-size:10px; line-height:12px;">&copy;2025 Michaels Stores, Inc. Michaels and the Michaels logo and other trademarks and logos used in this email are owned or licensed by Michaels Stores, Inc. All rights reserved.</span>
+                              </td>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+        </td>
+      </tr>
+    </table>
+  <!-- Insert IS Tracking Pixel -->
+  
+  <table width="1" height="1" cellpadding="0" cellspacing="0" border="0">
+    <tr>
+      <td style="font-size:0px; line-height:0px;">
+        <img src="https://na5.thunderhead.com/one/rt/track/ONE-PFSLHYI824-2685/pixel?uri=outbound%3A%2F%2Femailpixel%2F?emailaddress%3Duser@example.com%26emailid%3D1211039102333" width="1" height="1" style="display: block" border="0" />
+      </td>
+    </tr>
+  </table>
+  <!-- Insert PI Tracking Pixel -->
+  
+  <table width="1" height="1" cellpadding="0" cellspacing="0" border="0">
+    <tr>
+      <td style="font-size:0px; line-height:0px;">
+        <img src="https://nova.collect.igodigital.com/c2/100010552/track_event?payload={%22user_info%22:{%22email%22:%22user@example.com%22}}" height="1px" width="1px" style="display: block" border="0" />
+      </td>
+    </tr>
+  </table>
+  <!-- Insert MI Tracking Pixel -->
+  
+  <table width="1" height="1" cellpadding="0" cellspacing="0" border="0">
+  <tr>
+    <td style="font-size:0px; line-height:0px;">
+    <img src="https://mi.michaels.com/p/up/1685668996a5c14c/o.gif?mi_u=1211039102333&mi_ecmp=20251220_S2_US_TempD_DCE_FF_US" width="1" height="1" alt="MI Tracking" aria-hidden="true" />
+  </td>
+    </tr>
+</table>
+  <!-- Insert 4Cite Tracking Pixel Tracking Pixel -->
+  <img src="http://svopn.e.michaels.com/?sv_cid=0415_03847&sv_emopen=true&sv_svemi=1211039102333" height="1" width="1" />
+  </body>
+</html>
+
+--JslH552Jcqv6=_?:--
+
+

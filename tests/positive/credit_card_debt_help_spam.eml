@@ -1,0 +1,193 @@
+Return-Path: <return@sydneyentertainmentcomplex.com>
+Received: from juliett.baddomain.com (localhost [127.0.0.1])
+	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTP id 5BM8r9a4062591
+	for <mstowe@localhost>; Mon, 22 Dec 2025 08:53:10 GMT
+	(envelope-from return@sydneyentertainmentcomplex.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (2048-bit key; unprotected) header.d=sydneyentertainmentcomplex.com header.i=@sydneyentertainmentcomplex.com header.b=TxeHVO4z
+Received: from jimapinternal-aol.imap.mail.g03.yahoodns.net [74.6.160.39]
+	by juliett.baddomain.com with IMAP (fetchmail-6.6.1)
+	for <mstowe@localhost> (single-drop); Mon, 22 Dec 2025 08:53:10 +0000 (UTC)
+Received: from 10.226.14.165
+ by atlas215.aol.mail.ne1.yahoo.com pod-id NONE with HTTPS; Mon, 22 Dec 2025 08:48:34 +0000
+X-Originating-Ip: [35.165.180.76]
+Received-SPF: softfail (domain of transitioningsydneyentertainmentcomplex.com does not designate 35.165.180.76 as permitted sender)
+Authentication-Results: atlas215.aol.mail.ne1.yahoo.com;
+ dkim=pass header.i=@sydneyentertainmentcomplex.com header.s=h1 arc_overridden_status=NOT_OVERRIDDEN;
+ spf=softfail smtp.mailfrom=sydneyentertainmentcomplex.com arc_overridden_status=NOT_OVERRIDDEN;
+ dmarc=pass(p=REJECT) header.from=sydneyentertainmentcomplex.com arc_overridden_status=NOT_OVERRIDDEN;
+X-Apparently-To: user@example.com; Mon, 22 Dec 2025 08:48:34 +0000
+X-YMailISG: 4PJtGG8WLDsw9JOcQifx7YrZGMJzIMmo4AEzQuJZ91tK9b3A
+ MbeR40zBk7B1V56j2UGbXi2g5o9x75jyuRguSf1l9iCVge9UFdjs3hLDWy11
+ H8rThRZ8J0pOieJ1hWWda8kkK.xcKG_zetHNH_VbVm5V3qVnzcD_PgBK.tpV
+ WDcu3eig1Sj0KfD5kb_h61PIX.BVRzxCcOqLZnPwYHRB3oQcwbWnmXu13kha
+ 97DS900uqcbxpSZLCQ8jlb.wfk3ptVidIIAS5gI2qeKq69QuTTRrH.VlhmkV
+ vELlRh_GT9L.0lWdSLwE0U5o0hEWi25qcNzgy5uMJdLGntfv8r3M4G1zej8B
+ YT0lj1ZsVCoy8vwHG1IsAJwUmbNMFLmkOiDnCkxuVTvm6U.TFVFtek5EXiZ7
+ kJZEfHE5w1cZ2bVIjmReG.51f9WP26HWjlsj1VVCyzCHGt5e.1yZyL9USz__
+ 5rlPN6RSUyQMN0OcdGRw_2HKDG2zWthIsYyu7gd9CjPm4O2ffxpaZp4e_0D2
+ Od9vdmN1.Oawqbrw4TuyvbTbFKvNrsw8ql2QEbyy1p3fepxGIOspPP1RRh9Y
+ CH.ydB4itXsV.mqQnzkTKcWoQy2UdtGVGcekK_NbCskHuvOIl7tNzogSbgkF
+ v9UT9gR4Bk4.YeMeQMLw7h31_arhCqtUrpzQS.kxU_f.LG7F0QZ.2nIFN.w.
+ 075FBXgZAt0GJmShXCoCr7D.1uD7u6FMHTh8gR19A5bfjJ8WT5jOJE20TFJG
+ Edzox5TD2NBBGpcTowk1NZCyTs9P3t_46H0st0QfZkaAWdn6UAIsdSkRqEFo
+ ylGaxxGb3SZBbsM9aJYENZokldYxA3sC7dh3FEx2wc6TG5zsaxTpAXFBSnrX
+ XZGCJWCaGCkl0b3H6TEMWXEk5tPbZvSwe37RUndOaoXNF_voHBmkLBV.JXgH
+ hqm35vYwBowaPx5mhNGU5Sblc8jLEDx5GTKE6TdrrTBh7k5oNLminhk26bX7
+ _FckTqkZsAhmQTpjhwh9DvZ14KarFvyHKyGMo4TyyK6yWRt6fLZzFxDFblPe
+ 2W8.Y8Q7iDkI.I5NlrMTrS6YYnXeGFiC_hOrkHp6NcuXacrXi13gFbjZ0d.L
+ _VKA.KCS_0wcyn6FKX0BEWMThEC1fQa3DGx8yI0NpZuew1b80uqW.zUG171z
+ BpWBfDrmfMDLYoTZc34n7Q--
+Received: from 35.165.180.76 (EHLO medmachine.b-glaw.com)
+ by 10.226.14.165 with SMTPs
+ (version=TLS1_2 cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256);
+ Mon, 22 Dec 2025 08:48:34 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=h1; d=sydneyentertainmentcomplex.com;
+ h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Transfer-Encoding:
+ Content-Type:List-Unsubscribe;
+ bh=CxHCceReYsg3jcLUiQROcTn0idcAnQp/c4fiGR9TaE4=;
+ b=TxeHVO4z9jPqjMmjHHGkrLcy8kJ8ohYBhrz1KpRsishexKZ3XBtMTsYrmtwd6/0qkCWC9mmxjfZ7
+   /gwRntmO6pS9pwKYIeOWmVRgxHob3nXNK5rkKJwgeKUMijgyq6XPz6WeD2tqmHIU2Vfp/SxZxPQI
+   m8lPno0FenNgMD4i7P6XTLYYdPWR7BTlcXERgyZfmayxiAswHCVuDj2OV4umlbmeSamqx10yb8iQ
+   YwWW9gqipyj7ArubEbeaUPaObCzostvTpuat02sBJYJCfeh28Bw5vfyrGzMWsji6vC/eyAdF70P4
+   z5ELKlGPhmIj2wQFmchHa9cC7NVq4YYNEQdLiw==
+Date: Mon, 22 Dec 2025 08:44:20 +0000
+From:           =?UTF-8?B?ICAgICAgICAgICAgICAgICAgICAgICAg4qSf4oal4qSg?==?UTF-8?B?TuKAi8mR4oCLdOKAi2nigItv4oCLbuKAi8mR4oCLbOKAiyDigItE4oCLZeKAi2LigIt04oCLIOKAi1LigItl4oCLbOKAi2nigItl4oCLZuKAiyDigItT4oCLcOKAi2XigItj4oCLaeKAi8mR4oCLbOKAi2nigItz4oCLdA==?=   <GMtgOakSaturnRag
+To:<user@example.com>
+Subject:           =?UTF-8?B?ICAgICAgICAgICAgICAgICAgICAgICAg4qSf4oal4qSg?==?UTF-8?B?T+KAi3bigItl4oCLcuKAi3figIto4oCLZeKAi2zigItt4oCLZeKAi2TigIsg4oCLYuKAi3nigIsg4oCLQ+KAi3LigItl4oCLZOKAi2nigIt04oCLIOKAi0PigIvJkeKAi3LigItk4oCLIOKAi0TigItl4oCLYuKAi3TigIs/4oCLIOKAi0zigItl4oCLdOKAiyDigItV4oCLc+KAiyDigItI4oCLZeKAi2zigItw4oCLIOKAi1nigItv4oCLdQ==?=      
+Message-ID: <@>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Type: text/html; charset="UTF-8"
+List-Unsubscribe: 
+<mailto:abuse-pro@sydneyentertainmentcomplex.com?subject=MailStop&body=AzqGil6l-8Mb2-AEt5MNygOVQel_241154>,
+<https://sydneyentertainmentcomplex.com/v4/unsubscribe?mid=sXyEcd-PZ-rTrlYbK-PZ-AEt5MNygOVQel&sid=241154>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [0.0.0.0]); Mon, 22 Dec 2025 08:53:11 +0000 (UTC)
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:v="urn:schemas-microsoft-com:vml" 
+      xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!--[if gte mso 9]>
+  <xml>
+    <o:OfficeDocumentSettings>
+      <o:AllowPNG/>
+      <o:PixelsPerInch>96</o:PixelsPerInch>
+    </o:OfficeDocumentSettings>
+  </xml>
+  <!-->
+
+  <style type="text/html">
+    #outlook a { padding: 0; }
+    .ExternalClass { width:100%; line-height:100%; }
+    .ExternalClass * { line-height: 100%; }
+    body { margin: 0; padding: 0; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; background-color:#f4f4f4;}
+    table, td { border-collapse: collapse !important; mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+    img { border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; display: block; }
+    p, h1, h2, h3, h4, h5 { margin: 0; padding: 0; }
+    a { text-decoration: none; color: inherit; }
+    div, span { display:block; }
+    /* fake complexity: unused helpers */
+    .hidden-text { display:none !important; visibility:hidden !important; overflow:hidden !important; font-size:1px; line-height:1px; max-height:0; max-width:0; opacity:0; }
+    .nochange { color:inherit !important; background:none !important; border:none !important; }
+    .wrapperfix { width:100% !important; table-layout:fixed !important; }
+    .extra-cell { mso-line-height-rule:exactly; line-height:1px; font-size:1px; }
+    @media only screen and (max-width:620px) {
+      .full-width-mobile { width: 100% !important; max-width: 100% !important; }
+      .stack-column { display: block !important; width: 100% !important; max-width: 100% !important; }
+      .mobile-padding { padding-left: 10px !important; padding-right: 10px !important; }
+      .mobile-title-font { font-size: 20px !important; line-height: 24px !important; }
+    }
+  </style>
+</head>
+
+<body style="margin:0;padding:0;font-family:Arial,Helvetica,sans-serif;background-color:#f4f4f4;width:100%;">
+  <center>
+    <div style="display:none; white-space:nowrap; font:15px courier; color:#f4f4f4;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation" class="wrapperfix" style="background-color:#f4f4f4;">
+      <tbody>
+        <tr>
+          <td align="center" valign="top" style="padding:20px 0;">
+            <table class="full-width-mobile" width="600" cellpadding="0" cellspacing="0" border="0" role="presentation" style="background-color:#ffffff;border-radius:8px;max-width:600px;width:100%;">
+              <tbody>
+                <tr>
+                  <td align="center" valign="top" style="padding:20px;" class="mobile-padding">
+
+                    <!-- header block -->
+                    <table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation">
+                      <tbody>
+                        <tr>
+                          <td align="center" style="padding-bottom:20px;">
+                            <div style="mso-line-height-rule:exactly;line-height:1px;font-size:1px;">&nbsp;</div>
+                            </a>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+
+                    <!-- image block -->
+                    <table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation">
+                      <tbody>
+                        <tr>
+                          <td align="center" style="padding-bottom:20px;line-height:0;">
+                           <img src="https://www.mokymounviewfarm.com/hZtlUtMlsrTubgqiYL3CxP/fdvmo1vjcjk3sqoi8gq" usemap="#image-map">
+			   
+			   <map name="image-map">
+     <area target="" alt="main_img" title="main_img" href="https://www.mokymounviewfarm.com/05X1KYxaU2xNBWaxfPRcz9wI/zgw336yae1efaet27" coords="2,3,572,1654" shape="rect">
+    
+    <!-- divider -->
+                    <table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation">
+                      <tbody>
+                        <tr>
+                          <td style="padding-top:5px;padding-bottom:5px;font-size:1px;line-height:1px;">
+                            <div style="height:10px;line-height:10px;font-size:10px;border-top:1px solid #eeeeee;">&nbsp;</div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+		    
+    <area target="" alt="uns_img" title="uns_img" href="https://www.mokymounviewfarm.com/EmG7nSN4I0eka0QA8ZvdOjY/dyrbpyeqnwjd" coords="89,1753,8,1718" shape="rect">
+</map>
+
+                            <!--[if gte mso 9]>
+                                </v:textbox>
+                              </v:rect>
+                            <!-->
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+
+                   
+
+                    
+
+
+                    <!-- invisible tracking spacer -->
+                    <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0">
+                      <tbody>
+                        <tr>
+                          <td class="extra-cell" style="line-height:1px;font-size:1px;color:#f4f4f4;">&nbsp;</td>
+                        </tr>
+                      </tbody>
+                    </table>
+
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </center>
+</body>
+</html>
+

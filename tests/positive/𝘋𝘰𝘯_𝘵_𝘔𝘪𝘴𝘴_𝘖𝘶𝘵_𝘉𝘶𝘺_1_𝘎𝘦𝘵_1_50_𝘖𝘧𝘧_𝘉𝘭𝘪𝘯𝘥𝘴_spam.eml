@@ -1,0 +1,88 @@
+Return-Path: <return@sydneyentertainmentcomplex.com>
+Received: from juliett.baddomain.com (localhost [127.0.0.1])
+	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTP id 5BM8Mcfx061706
+	for <mstowe@localhost>; Mon, 22 Dec 2025 08:22:39 GMT
+	(envelope-from return@sydneyentertainmentcomplex.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=sydneyentertainmentcomplex.com header.i=@sydneyentertainmentcomplex.com header.b=IpdnIAU3
+Received: from jimapinternal-aol.imap.mail.g03.yahoodns.net [74.6.160.39]
+	by juliett.baddomain.com with IMAP (fetchmail-6.6.1)
+	for <mstowe@localhost> (single-drop); Mon, 22 Dec 2025 08:22:39 +0000 (UTC)
+Received: from 127.0.0.1
+ by atlas-production.v2-mail-prod1-gq1.omega.yahoo.com pod-id atlas--production-gq1-588f549b8f-rncqg.gq1.yahoo.com with HTTP; Mon, 22 Dec 2025 08:17:43 +0000
+X-Originating-Ip: [52.34.133.100]
+Received-SPF: softfail (domain of transitioningsydneyentertainmentcomplex.com does not designate 52.34.133.100 as permitted sender)
+Authentication-Results: atlas-production.v2-mail-prod1-gq1.omega.yahoo.com;
+ dkim=pass header.i=@sydneyentertainmentcomplex.com header.s=h1 arc_overridden_status=NOT_OVERRIDDEN;
+ spf=softfail smtp.mailfrom=sydneyentertainmentcomplex.com arc_overridden_status=NOT_OVERRIDDEN;
+ dmarc=pass(p=REJECT) header.from=sydneyentertainmentcomplex.com arc_overridden_status=NOT_OVERRIDDEN;
+X-Apparently-To: user@example.com; Mon, 22 Dec 2025 08:17:43 +0000
+X-YMailISG: 0GbFxRQWLDs4z03Xc7MkBNG1oswwKrcG5v0jiGlU3cFSluGD
+ RdvjWiN5tPuJZXaCVxaUOKPa5MVyRKPPYToG1P9PkKYCi8OUzIDxDL7RNAe0
+ 2EOVImUvbIjfKChUfJAG5MviSEXFckAob6aCqG.zECo2fgvsFELHwUnA.a9v
+ 2wflUrY.C1XkmedlPM42JyX3SXb3FCEUvAB6meoENsSXA663fAobu593Ccnr
+ 1WB49xLgU593bQgzM1GruEc8hOKvnOmoved5AvppLROvq1S2qXtwflxeDerj
+ 8GRkR3TOz6Z35ZFfyhA3AdJo4kIBXmbRKaKi_m3D1A2FeUSPZOG_4Ezx0uuj
+ z_QrNknqNwUyXJQpAKus7o6FVBCs5AyrgSRv50VzLV2y8I3jeJH2gPIN_j5.
+ tmUBzboyBW3pwIVszOyn8jmxiuoQyymGkm2xds284yAMxt4iRTb4EyjX0gt3
+ KqqLhILeJbztW_2woBp7cNreKqRyj2XWWihkY948cEl4w2Yih2EjAap9ma.x
+ Zqp1.lkg8Mo0VJrD9l_I.7MRuB5bIRKE0ZhTrqTRLUJu20aOpdIR5GvNnvcN
+ fmDn00W1y_KR_SupLf25frvXfWiPJ6TeZ6m9KwL5U4NE1WTOC7gCA6OCLqwe
+ x88RmUSmHXWnQS5dR35s3fTgkbDsmaKTavAAGHRAvzzISdwrJCGm4z7fJPsv
+ 70cqOr.4Qf8GMqTbPW6Di9D4QsJ8HXQqR2kohGE1wNcrK0mPjE27r_Ljq_Ot
+ _kUXOQmgg7npxcZdcqw4X172iCewuunroh0Jk0tFPPO7wkf_pwnXZ4ERSrto
+ S6qyCTt2n1wJl8Jz05VbNzRqtcwlu1ZqlBimZaJWVr6DBtat69jb547ijqly
+ AC9QrY_z56n2YMTo3Oj5kcgWre0YO17jF2zWoJD4LkypDqOia9utF5x2HvLL
+ B5dRlkfT6Oyc8KivtIj39Cv_Ab0g.3hAk7fF2gtv9mLNkjt2dJUgZjAoGoPd
+ 7m9zxL5WodI4FyvrNplQwqnaWcHujT2CHTgNTbQYKs4R1J6yveQIOc_czusN
+ njiqqAn2FbhdESR8Lb3RIJkUbBA85QKKpDyli.8bzn1PNtrIevzu2BPdwg_r
+ ZBS5.gJPprJ7u0g3XaujPGva4rhxCNleSloY187gM19kAzn3tPTwU53w_KhV
+ TimycZQiSGr68T7PdgepQ.V1xsEV9tVIvQ65wy50
+Received: from 52.34.133.100 (EHLO nanolink.247-personals.com)
+ by 10.215.172.227 with SMTPs
+ (version=TLS1_2 cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256);
+ Mon, 22 Dec 2025 08:17:43 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=h1; d=sydneyentertainmentcomplex.com;
+ h=MIME-Version:Message-ID:Subject:Date:To:Reply-To:From:Content-Type;
+ bh=gdCkSU27auFmyigoq3lcT9oEIUzIyA58nrLOHg02VZA=;
+ b=IpdnIAU3o/RDxQuZpLfiksxf4t4Lrzf366ldcx+4HWGntp3oX6OhNXCII1NucP6+prCmiTVVvS7V
+   3hy+7kmPKCiyPdh/kc15jLuW+yDaM1/S1Mc9A1WQRsbRXXdamxV6cJPilnugqMi7tCQ5k7OdR6QK
+   2WIaOHQd4f7O8VnYTQhdoZ87NiXR81k04DGt8JgN5OKLxWI27IlK/HixibHGpHhEAF/PYFVdjnU/
+   ST4o5sR1LDMcQ10v0j+4IkS4wo65COuhZlzw1ViHTtJV+9ZlbXQNthcToHIOv85hcv6uHaGBsUM7
+   iAZi/rx9GSNln0pHQD3PykpVuBi4X19eNkZ69g==
+MIME-Version: 1.0
+Message-ID: <32184739.7311180@convertkit-mail.com>
+Subject:                        ~!!~         =?UTF-8?B?8J2Yi/CdmLDwnZiv4oCZ8J2YtSDwnZiU8J2YqvCdmLTwnZi0IPCdmJbwnZi28J2YteKAlPCdmInwnZi28J2YuiAxIPCdmI7wnZim8J2YtSAxIDUwJSDwnZiW8J2Yp/CdmKcg8J2YifCdmK3wnZiq8J2Yr/CdmKXwnZi0IQ==?=          ~!!~      
+Date: Mon, 22 Dec 2025 08:17:38 +0000 
+To: user@example.com
+Reply-To: sydneyentertainmentcomplex.com@jimapinternal-aol.imap.mail.g03.yahoodns.net
+From:               ~!!~           =?UTF-8?B?8J2XlfCdl7nwnZe28J2Xu/Cdl7HwnZiALfCdl5jwnZiF8J2XvfCdl7LwnZe/8J2YgfCdmIA=?=          ~!!~         <RamOakMarsThrowtghamgion@sydneyentertainmentcomplex.com>
+Content-Type: multipart/alternative; boundary=7f39464370f5f158969b55fe6fc968f142fa854e74ccd87a0c1d935780a7
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [0.0.0.0]); Mon, 22 Dec 2025 08:22:39 +0000 (UTC)
+
+--7f39464370f5f158969b55fe6fc968f142fa854e74ccd87a0c1d935780a7
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html; charset=utf-8
+
+<title>OR0G0SLVRVLM9HY buzpzbtxsfjbub  snaht UFR1DJBQE6HP6CR soqgvt2xi39gp8  KELLC  
+JEJPZ ZAE9LYWADM2VUHP ouyliwjtc3qi6i  vrvd1 EQ9ZMYESWAP0TIG gq9bbdguwxscbk  NCLBI</title>
+<title>BE8Y1QC1VZRVO0I 4sn6sftebxmlvw  ucclw CA93OXDPASVEDDA uygoanwrg4yva2  DILWW  
+BN7L1 0RFUJLWEHITFBTV vh1t168nebbntc  oj7qf 9RPR7IQMXCQFJRW by3l7qw9vpbmni  V8DPK</title>
+
+
+<center>
+<img src="https://www.thurfeeboro.com/UFHgQTEqy2EgnGPNeiBB/iRPVe" usemap="#image-map">
+<map name="image-map">
+    <area target="" alt="" title="" href="https://www.thurfeeboro.com/yDN9qehOkg8e82SG88ZVzP/1BLC5Mnx5bm" coords="3,2,595,1617" shape="rect">
+    <area target="" alt="" title="" href="https://www.thurfeeboro.com/a9d2cv6QjEQGQyEmzOqHFHL13/baxJz0p9Thqi" coords="7,1643,594,1989" shape="rect">
+</map>
+</center>
+
+
+<title>J02XF3QNZBKSLZU 02cfsglmhwpcb0  m18cv KSKSBAYLJSL9ZZ6 tfhxolxgnedvvn  DMFMZ  
+LQXSO CEJSKWJ2XGMCWM8 16zkps1tlg4jkk  g4ysx YKHEJEK4RV1XBWM sogklhhvef9hjf  EZYBJ</title>
+<title>QB5BP0MNQISQADO tfnsaewfxxct3c  pqoud ZXBUHLZPN2YT0YR 2t356dw2whfkij  CFPTM  
+ERLPZ ARBTBALDOAUXV7P o6pdrjyaghyugb  vim0a KBLHE5MU3JM5K3Q bkqttljbumniby  U4MMA</title>
+
+--7f39464370f5f158969b55fe6fc968f142fa854e74ccd87a0c1d935780a7--
+

@@ -904,6 +904,11 @@ impl SenderAlignmentAnalyzer {
             return (0, vec![]);
         }
 
+        // Exclude legitimate PayPal domains from brand impersonation detection
+        if domain_lower.contains("paypal.com") {
+            return (0, vec![]);
+        }
+
         log::debug!(
             "Brand impersonation check - sender: '{}', domain: '{}'",
             sender,

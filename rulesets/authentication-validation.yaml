@@ -205,14 +205,22 @@ rules:
         - type: "HeaderPattern"
           header: "Authentication-Results"
           pattern: "dkim=pass"
-        - type: "SenderPattern"
-          pattern: ".*@.*(com|org|net)$"
-        - type: "Not"
+        - type: "Or"
           criteria:
-            type: "SenderPattern"
-            pattern: ".*@[^.]*\\.(tk|ml|ga|cf|gq)$"
+            - type: "SenderPattern"
+              pattern: ".*@.*(amazon|microsoft|google|apple|paypal|ebay|walmart|target|bestbuy|homedepot|lowes|macys|nordstrom|costco)\\.(com|org|net)$"
+            - type: "SenderPattern"
+              pattern: ".*@.*(chase|wellsfargo|bankofamerica|citi|usbank|capitalone|discover|americanexpress)\\.(com|org|net)$"
+            - type: "SenderPattern"
+              pattern: ".*@.*(fedex|ups|usps|dhl)\\.(com|org|net|gov)$"
+            - type: "SenderPattern"
+              pattern: ".*@.*(netflix|spotify|hulu|disney|adobe|salesforce|shopify)\\.(com|org|net)$"
+            - type: "SenderPattern"
+              pattern: ".*@.*(govdelivery|public\\.govdelivery)\\.(com|org|net)$"
+            - type: "SenderPattern"
+              pattern: ".*@.*\\.(gov|edu|mil)$"
     score: -20
-    description: "Established domains with valid DKIM signatures"
+    description: "Known legitimate domains with valid DKIM signatures"
 
   # Known spam domains
   - name: "Known spam domains"

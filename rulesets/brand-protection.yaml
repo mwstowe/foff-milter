@@ -271,3 +271,38 @@ rules:
         - type: BodyPattern
           pattern: "(?i).*(usa.*today.*automotive.*aftermarket.*special.*edition|usa.*today.*brand.*impersonation|fake.*usa.*today).*"
     score: 280
+
+  # Unrelated Domain Brand Impersonation
+  - name: "Unrelated Domain Brand Impersonation"
+    enabled: true
+    criteria:
+      type: Or
+      criteria:
+        - type: And
+          criteria:
+            - type: HeaderPattern
+              header: "From"
+              pattern: "(?i).*wellaheat.*"
+            - type: SenderPattern
+              pattern: ".*@sydneyentertainmentcomplex\\.com$"
+        - type: SenderPattern
+          pattern: ".*@sydneyentertainmentcomplex\\.com$"
+    score: 250
+    description: "Suspicious domain used for multiple unrelated spam campaigns"
+
+  # Suspicious Shop Domain Health Spam
+  - name: "Suspicious Shop Domain Health Spam"
+    enabled: true
+    criteria:
+      type: And
+      criteria:
+        - type: SenderPattern
+          pattern: ".*@.*\\.shop$"
+        - type: Or
+          criteria:
+            - type: SubjectPattern
+              pattern: "(?i).*(japanese.*candy|joint.*replacement|surgery|supplement|miracle|health.*cure|pain.*relief).*"
+            - type: BodyPattern
+              pattern: "(?i).*(japanese.*candy|joint.*replacement|surgery|supplement|miracle|health.*cure|pain.*relief).*"
+    score: 75
+    description: "Health supplement spam from suspicious .shop domains"
