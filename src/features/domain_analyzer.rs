@@ -128,9 +128,10 @@ impl DomainAnalyzer {
         for pattern in &self.suspicious_patterns {
             if pattern.is_match(domain) {
                 // Skip legitimate long domain names
-                if domain.contains("capitaloneshopping.com") 
+                if domain.contains("capitaloneshopping.com")
                     || domain.contains("oracleemaildelivery.com")
-                    || domain.contains("amazonses.com") {
+                    || domain.contains("amazonses.com")
+                {
                     continue;
                 }
                 score += 15;

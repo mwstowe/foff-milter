@@ -235,7 +235,8 @@ impl SenderAlignmentAnalyzer {
             let suspicious_chars = ['@', '<', '>', '[', ']', '{', '}', '|', '\\'];
             if display_part.chars().any(|c| suspicious_chars.contains(&c)) {
                 // Skip if it's a legitimate business format like "Business Name (email@domain.com)"
-                let business_contact_pattern = regex::Regex::new(r"^[^<>]+\s*\([^)]+@[^)]+\)$").unwrap();
+                let business_contact_pattern =
+                    regex::Regex::new(r"^[^<>]+\s*\([^)]+@[^)]+\)$").unwrap();
                 if !business_contact_pattern.is_match(display_part) {
                     score += 20;
                     evidence.push("Display name contains suspicious characters".to_string());
@@ -255,9 +256,11 @@ impl SenderAlignmentAnalyzer {
             // Check for domain mismatch in display name
             if display_part.contains('@') && !display_part.contains(email_part) {
                 // Skip for legitimate NetSuite business invoices
-                let is_netsuite_invoice = email_part.contains("sent-via.netsuite.com") 
-                    && display_part.contains('(') && display_part.contains('@') && display_part.contains(')');
-                
+                let is_netsuite_invoice = email_part.contains("sent-via.netsuite.com")
+                    && display_part.contains('(')
+                    && display_part.contains('@')
+                    && display_part.contains(')');
+
                 if !is_netsuite_invoice {
                     score += 25;
                     evidence.push("Display name contains different email domain".to_string());

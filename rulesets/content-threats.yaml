@@ -619,12 +619,20 @@ rules:
   # Black Friday scams
   - name: "Black Friday Scam Detection"
     criteria:
-      type: Or
+      type: And
       criteria:
-        - type: SubjectPattern
-          pattern: "(?i).*(black.*friday.*sale.*happening|fake.*black.*friday|buy.*1.*get.*1.*50.*off).*"
-        - type: BodyPattern
-          pattern: "(?i).*(black.*friday.*sale.*happening|fake.*black.*friday|buy.*1.*get.*1.*50.*off).*"
+        - type: Or
+          criteria:
+            - type: SubjectPattern
+              pattern: "(?i).*(black.*friday.*sale.*happening|fake.*black.*friday|buy.*1.*get.*1.*50.*off).*"
+            - type: BodyPattern
+              pattern: "(?i).*(black.*friday.*sale.*happening|fake.*black.*friday|buy.*1.*get.*1.*50.*off).*"
+        - type: Not
+          criteria:
+            type: Or
+            criteria:
+              - type: SenderPattern
+                pattern: ".*@.*(torrid|mktg\\.torrid|michaels|target|walmart|disney|amazon)\\.(com|net|org)$"
     score: 220
 
   # Email list selling
