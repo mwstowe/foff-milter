@@ -804,6 +804,7 @@ impl SenderAlignmentAnalyzer {
             "helpscout.net",
             "intercom.io",
             "salesforce.com",
+            "resmed.com",
         ];
         support_domains.iter().any(|d| domain.contains(d))
     }
