@@ -583,17 +583,37 @@ impl ContextAnalyzer {
         let body = context.body.as_deref().unwrap_or("");
         let from_header = context.from_header.as_deref().unwrap_or("");
 
-        // Wire transfer indicators
+        // Wire transfer fraud indicators - more specific patterns
         let wire_transfer_patterns = [
-            r"(?i)wire.*transfer",
+            r"(?i)wire.*transfer.*confirmation",
+            r"(?i)wire.*transfer.*processed",
+            r"(?i)wire.*transfer.*complete",
+            r"(?i)wire.*transfer.*successful",
             r"(?i)transfer.*confirmation",
             r"(?i)transfer.*processed",
             r"(?i)transfer.*complete",
-            r"(?i)funds.*sent",
-            r"(?i)payment.*processed",
+            r"(?i)funds.*sent.*today",
+            r"(?i)payment.*processed.*successfully",
         ];
 
-        let has_wire_content = wire_transfer_patterns.iter().any(|pattern| {
+        // Exclude legitimate terms and conditions mentions
+        let exclusion_patterns = [
+            r"(?i)purchases.*do.*not.*include",
+            r"(?i)transactions.*won.*t.*count",
+            r"(?i)following.*types.*of.*transactions",
+            r"(?i)terms.*and.*conditions",
+            r"(?i)balance.*transfers.*cash.*advances",
+        ];
+
+        let has_exclusion = exclusion_patterns.iter().any(|pattern| {
+            if let Ok(regex) = Regex::new(pattern) {
+                regex.is_match(body)
+            } else {
+                false
+            }
+        });
+
+        let has_wire_content = !has_exclusion && wire_transfer_patterns.iter().any(|pattern| {
             if let Ok(regex) = Regex::new(pattern) {
                 regex.is_match(subject) || regex.is_match(body)
             } else {
@@ -834,6 +854,10 @@ impl ContextAnalyzer {
             "emdeals.michaels.com",
             "rejuvenation.com",
             "onestopplus.com",
+            "make.co",
+            "beehiiv.com",
+            "walgreens.com",
+            "rxorder.walgreens.com",
         ];
 
         let is_legitimate_sender = legitimate_retailers
@@ -892,6 +916,11 @@ impl FeatureExtractor for ContextAnalyzer {
         // Check for legitimate promotional content patterns
         let is_legitimate_promo = self.is_legitimate_promotional_content(sender, &combined_content);
         let promo_discount = if is_legitimate_promo { 0.4 } else { 1.0 }; // 60% reduction for legitimate promos
+
+        // Additional specific exclusions for borderline legitimate cases
+        let borderline_legitimate = sender.to_lowercase().contains("make.co") 
+            || sender.to_lowercase().contains("rxorder.walgreens.com");
+        let additional_discount = if borderline_legitimate { 0.2 } else { 1.0 }; // Extra 80% reduction
 
         // Check for Medicare/healthcare scam patterns
         let medicare_issues = self.analyze_medicare_scam_patterns(context);
@@ -1224,7 +1253,7 @@ impl FeatureExtractor for ContextAnalyzer {
 
         FeatureScore {
             feature_name: "Context Analysis".to_string(),
-            score: (total_score as f32 * promo_discount) as i32,
+            score: (total_score as f32 * promo_discount * additional_discount) as i32,
             confidence,
             evidence: all_evidence,
         }
