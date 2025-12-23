@@ -398,7 +398,7 @@ mod tests {
 
         let detections = analyzer.detect_brand_impersonation(
             "Microsoft security alert: urgent action required",
-            "fake.com",
+            "fake-microsoft.com",
         );
 
         assert!(!detections.is_empty());

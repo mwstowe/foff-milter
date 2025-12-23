@@ -419,7 +419,7 @@ mod tests {
 
         let detections = analyzer.detect_financial_phishing(
             "Chase account suspended - urgent action required",
-            "fake.com",
+            "fake-chase.com",
         );
 
         assert!(!detections.is_empty());
