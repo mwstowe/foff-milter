@@ -94,11 +94,18 @@ impl DkimVerifier {
     }
 
     fn parse_auth_results(headers: &HashMap<String, String>) -> DkimAuthStatus {
+        let mut pass_found = false;
+        let mut fail_reason = None;
+        let mut temp_error = false;
+        let mut perm_error = false;
+        let mut none_found = false;
+
+        // Collect all authentication results and prioritize PASS over FAIL
         for (key, value) in headers {
             if key.to_lowercase() == "authentication-results" {
                 let value_lower = value.to_lowercase();
                 if value_lower.contains("dkim=pass") {
-                    return DkimAuthStatus::Pass;
+                    pass_found = true;
                 } else if value_lower.contains("dkim=fail") {
                     // Extract failure reason if available
                     let reason = if value_lower.contains("signature verification failed") {
@@ -108,19 +115,32 @@ impl DkimVerifier {
                     } else {
                         "unknown failure".to_string()
                     };
-                    return DkimAuthStatus::Fail(reason);
+                    fail_reason = Some(reason);
                 } else if value_lower.contains("dkim=temperror") {
-                    return DkimAuthStatus::TempError;
+                    temp_error = true;
                 } else if value_lower.contains("dkim=permerror") {
-                    return DkimAuthStatus::PermError;
+                    perm_error = true;
                 } else if value_lower.contains("dkim=none") {
-                    return DkimAuthStatus::None;
+                    none_found = true;
                 }
             }
         }
 
-        // If no Authentication-Results but has DKIM signature, status is unknown
-        DkimAuthStatus::None
+        // Prioritize results: PASS > FAIL > TEMPERROR > PERMERROR > NONE
+        if pass_found {
+            DkimAuthStatus::Pass
+        } else if let Some(reason) = fail_reason {
+            DkimAuthStatus::Fail(reason)
+        } else if temp_error {
+            DkimAuthStatus::TempError
+        } else if perm_error {
+            DkimAuthStatus::PermError
+        } else if none_found {
+            DkimAuthStatus::None
+        } else {
+            // If no Authentication-Results but has DKIM signature, status is none
+            DkimAuthStatus::None
+        }
     }
 
     fn check_domain_alignment(dkim_domains: &[String], sender_domain: &str) -> DomainAlignment {

@@ -259,10 +259,10 @@ rules:
         - type: "Or"
           criteria:
             - type: "SenderPattern"
-              pattern: ".*\\.(icu|tk|ml|ga|cf)$"
+              pattern: ".*\\.(icu|tk|ml|ga|cf|shop)$"
             - type: "HeaderPattern"
               header: "Return-Path"
-              pattern: ".*\\.(icu|tk|ml|ga|cf)$"
+              pattern: ".*\\.(icu|tk|ml|ga|cf|shop)$"
         - type: "Or"
           criteria:
             - type: "SenderPattern"
@@ -285,9 +285,9 @@ rules:
             - type: "SubjectPattern"
               pattern: "(?i).*(sexual.*health|sexual.*beast|male.*enhancement|erectile|testosterone).*"
             - type: "BodyPattern"
-              pattern: "(?i).*(blood.*pressure|neuropathy|prostate|tinnitus|joint.*pain|knee.*pain|breathing.*difficulties).*"
+              pattern: "(?i).*(blood.*pressure|neuropathy|prostate|tinnitus|joint.*pain|knee.*pain|breathing.*difficulties|longevity|lifespan|extends.*lifespan|live.*to.*10[0-9]|tea.*trick|mayo.*clinic|male.*elongation.*secret|penis.*elongation|african.*tribesmen.*elongation|white.*wife.*finds.*elongation).*"
             - type: "SubjectPattern"
-              pattern: "(?i).*(blood.*pressure|neuropathy|prostate|tinnitus|joint.*pain|knee.*pain|breathing.*difficulties).*"
+              pattern: "(?i).*(blood.*pressure|neuropathy|prostate|tinnitus|joint.*pain|knee.*pain|breathing.*difficulties|longevity|lifespan|extends.*lifespan|live.*to.*10[0-9]|tea.*trick|mayo.*clinic|male.*elongation.*secret|penis.*elongation|african.*tribesmen.*elongation|white.*wife.*finds.*elongation).*"
         - type: "Not"
           criteria:
             type: "Or"
@@ -298,8 +298,29 @@ rules:
                 pattern: ".*@.*1800flowers.*"
               - type: "SenderPattern"
                 pattern: ".*@.*labcorp.*"
+              - type: "SenderPattern"
+                pattern: ".*@.*backerkit.*"
+              - type: "SenderPattern"
+                pattern: ".*@.*levi.*"
     score: 85
-    description: "Comprehensive health misinformation and enhancement scams"
+    description: "Comprehensive health misinformation, enhancement scams, and adult content"
+
+  # Forwarded spam detection
+  - name: "Forwarded spam detection"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i)^(fwd?:|re:)\\s*(low\\s*cost|cheap.*price|best.*deal|urgent|important|limited.*time|act.*now)"
+        - type: "Or"
+          criteria:
+            - type: "BodyPattern"
+              pattern: "(?i).*(click.*here|visit.*now|limited.*offer|act.*fast|don't.*miss|hurry.*up).*"
+            - type: "BodyPattern"
+              pattern: "^\\s*http://[^\\s]+\\s*$"
+    score: 65
+    description: "Suspicious forwarded emails with spam characteristics"
 
   # Unrealistic return promises
   - name: "Unrealistic return promises"
