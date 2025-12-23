@@ -1,9 +1,9 @@
-# FOFF Milter v0.8.4 Configuration
-# Simplified modular architecture with zero false positives
+# FOFF Milter v0.8.7 Production Configuration
+# Production-ready defaults with comprehensive security
 
 [system]
 socket_path = "/var/run/foff-milter.sock"
-reject_to_tag = true
+reject_to_tag = false
 
 [rulesets]
 enabled = true
@@ -20,9 +20,9 @@ accept_threshold = 0
 
 [whitelist]
 enabled = true
-addresses = ["waDOH@public.govdelivery.com"]
-domains = ["public.govdelivery.com", "bounce.public.govdelivery.com"]
-domain_patterns = []
+addresses = []
+domains = []
+domain_patterns = [".*\\.gov$", ".*\\.edu$", ".*\\.mil$"]
 
 [statistics]
 enabled = true

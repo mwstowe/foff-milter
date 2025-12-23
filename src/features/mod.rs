@@ -1,11 +1,14 @@
+pub mod authentication_analysis;
 pub mod brand_impersonation;
 pub mod context_analyzer;
 pub mod domain_analyzer;
 pub mod domain_reputation;
+pub mod esp_validation;
 pub mod financial_validation;
 pub mod invoice_analyzer;
 pub mod link_analyzer;
 pub mod sender_alignment;
+pub mod tld_risk;
 
 use crate::MailContext;
 use serde::{Deserialize, Serialize};
@@ -115,6 +118,9 @@ impl FeatureEngine {
                 Box::new(domain_reputation::DomainReputationFeature::new()),
                 Box::new(brand_impersonation::BrandImpersonationFeature::new()),
                 Box::new(financial_validation::FinancialValidationFeature::new()),
+                Box::new(esp_validation::EspValidationFeature::new()),
+                Box::new(tld_risk::TldRiskFeature::new()),
+                Box::new(authentication_analysis::AuthenticationFeature::new()),
             ],
         }
     }
