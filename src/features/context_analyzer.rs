@@ -613,13 +613,14 @@ impl ContextAnalyzer {
             }
         });
 
-        let has_wire_content = !has_exclusion && wire_transfer_patterns.iter().any(|pattern| {
-            if let Ok(regex) = Regex::new(pattern) {
-                regex.is_match(subject) || regex.is_match(body)
-            } else {
-                false
-            }
-        });
+        let has_wire_content = !has_exclusion
+            && wire_transfer_patterns.iter().any(|pattern| {
+                if let Ok(regex) = Regex::new(pattern) {
+                    regex.is_match(subject) || regex.is_match(body)
+                } else {
+                    false
+                }
+            });
 
         if has_wire_content {
             // Check for brand impersonation with financial institutions
@@ -918,7 +919,7 @@ impl FeatureExtractor for ContextAnalyzer {
         let promo_discount = if is_legitimate_promo { 0.4 } else { 1.0 }; // 60% reduction for legitimate promos
 
         // Additional specific exclusions for borderline legitimate cases
-        let borderline_legitimate = sender.to_lowercase().contains("make.co") 
+        let borderline_legitimate = sender.to_lowercase().contains("make.co")
             || sender.to_lowercase().contains("rxorder.walgreens.com");
         let additional_discount = if borderline_legitimate { 0.2 } else { 1.0 }; // Extra 80% reduction
 
