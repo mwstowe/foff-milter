@@ -1,0 +1,105 @@
+# Domain Reputation Configuration
+# Centralized domain classification for reputation-based analysis
+
+[domain_reputation]
+
+# Financial institutions and payment processors
+financial_institutions = [
+    "chase.com",
+    "wellsfargo.com", 
+    "bankofamerica.com",
+    "citi.com",
+    "citicards.com",
+    "info6.citi.com",
+    "info.citi.com",
+    "mail.citi.com",
+    "usbank.com",
+    "capitalone.com",
+    "discover.com",
+    "services.discover.com",
+    "americanexpress.com",
+    "schwab.com",
+    "fidelity.com",
+    "vanguard.com",
+    "tdameritrade.com",
+    "etrade.com",
+    "robinhood.com",
+    "paypal.com",
+    "paypal-communications.com",
+    "stripe.com",
+    "square.com",
+    "venmo.com",
+    "zelle.com",
+    "jpmorgan.com",
+    "jpmorganchase.com"
+]
+
+# Email service providers and infrastructure
+email_service_providers = [
+    "sendgrid.net",
+    "mailgun.org",
+    "mailgun.com", 
+    "mailchimp.com",
+    "constantcontact.com",
+    "amazonses.com",
+    "sparkpostmail.com",
+    "campaignmonitor.com",
+    "aweber.com",
+    "getresponse.com",
+    "convertkit.com",
+    "klaviyo.com",
+    "hubspot.com",
+    "marketo.com",
+    "pardot.com",
+    "salesforce.com",
+    "exacttarget.com"
+]
+
+# Suspicious top-level domains
+suspicious_tlds = [
+    "tk",
+    "ml", 
+    "ga",
+    "cf",
+    "shop",
+    "icu",
+    "click",
+    "download",
+    "loan"
+]
+
+# Known legitimate domains (major brands/services)
+legitimate_domains = [
+    "google.com",
+    "microsoft.com",
+    "apple.com",
+    "amazon.com",
+    "facebook.com",
+    "twitter.com",
+    "linkedin.com",
+    "github.com",
+    "stackoverflow.com",
+    "reddit.com",
+    "wikipedia.org",
+    "youtube.com",
+    "gmail.com",
+    "outlook.com",
+    "yahoo.com",
+    "hotmail.com",
+    "aol.com"
+]
+
+# Known malicious domains (examples - would be populated from threat intel)
+known_malicious = [
+    # This would be populated from threat intelligence feeds
+    # "example-malicious.com"
+]
+
+# Domain reputation scoring weights
+[domain_reputation.scoring]
+trusted_boost = -20
+financial_boost = -15  
+esp_boost = -10
+unknown_neutral = 0
+suspicious_penalty = 30
+malicious_penalty = 100
