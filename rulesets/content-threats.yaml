@@ -210,14 +210,24 @@ rules:
   - name: "Lottery and prize scams"
     enabled: true
     criteria:
-      type: "Or"
+      type: And
       criteria:
-        - type: "SubjectPattern"
-          pattern: "(?i).*(you.*have.*won|lottery.*winner|prize.*notification|congratulations.*winner|eligible.*reward).*"
-        - type: "BodyPattern"
-          pattern: "(?i).*(claim.*your.*prize|lottery.*commission|winning.*notification|prize.*money|million.*dollars).*"
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(you.*have.*won|lottery.*winner|prize.*notification|congratulations.*winner|eligible.*reward).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(claim.*your.*prize|lottery.*commission|winning.*notification|prize.*money|million.*dollars).*"
+        - type: Not
+          criteria:
+            type: Or
+            criteria:
+              - type: SenderPattern
+                pattern: ".*@.*(make\\.co|beehiiv\\.com|newsletter|news|media|tech).*"
+              - type: BodyPattern
+                pattern: "(?i).*(annually|per year|business|company|revenue|cost|spend|budget).*"
     score: 120
-    description: "Lottery and prize scam detection"
+    description: "Lottery and prize scam detection excluding legitimate business content"
 
   # Product spam and brand impersonation attempts
   - name: "Product spam and brand impersonation attempts"
