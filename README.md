@@ -1,10 +1,10 @@
-# FOFF Milter v0.8.5
+# FOFF Milter v0.8.7
 
 A comprehensive, enterprise-grade email security platform written in Rust featuring intelligent threat detection, modular rulesets, and zero-configuration deployment.
 
 ## 🎯 **Production Ready - 100% Test Compliance**
 
-**Latest Achievement**: Complete production readiness with 100.0% test success rate (337/337 tests passing), zero false positives on legitimate business emails, and comprehensive spam detection including advanced inheritance fraud and health misinformation campaigns.
+**Latest Achievement**: Complete production readiness with 100.0% test success rate (379/379 tests passing), enhanced link analysis with proper quoted-printable decoding, and comprehensive phishing detection including Chase banking fraud and cross-domain marketing validation.
 
 ## 🚀 Complete Email Security Platform
 
@@ -43,11 +43,12 @@ FOFF Milter uses advanced feature extraction and comprehensive email normalizati
 - **Zero-Width Attacks**: Removal of U+200B, U+200C, U+200D, U+FEFF characters
 - **Encoding Complexity**: Automatic scoring based on encoding layers and techniques
 
-### Link Analysis Engine
-- **URL vs Display Text**: Detects mismatched display text and actual destinations
-- **Domain Extraction**: Analyzes relationship between sender and link domains
-- **Suspicious Patterns**: Identifies URL shorteners, suspicious TLDs, and phishing indicators
-- **Context Scoring**: Weighs link legitimacy against sender reputation
+### Enhanced Link Analysis Engine (v0.8.7)
+- **Quoted-Printable Decoding**: RFC-compliant decoder for proper email content processing
+- **Cross-Domain Validation**: Intelligent recognition of legitimate business relationships
+- **Subdomain Recognition**: Advanced root domain matching for ESP infrastructure
+- **Early Redirect Validation**: Comprehensive link checking before action pattern analysis
+- **ESP Infrastructure Support**: Proper handling of complex email service provider setups
 
 ### Sender Alignment Analysis
 - **Brand Validation**: Matches claimed brands against actual sender domains
@@ -392,25 +393,28 @@ sudo foff-milter -v -c /etc/foff-milter.toml
 - **Selective blocking**: Use targeted sender blocking patterns
 - **Statistics monitoring**: Track processing performance and bottlenecks
 
-## 🏆 v0.8.5 Production Achievements
+## 🏆 v0.8.7 Production Achievements
 
-### ✅ **100% Test Compliance**
-- **337/337 tests passing** with zero false positives
-- **Complete business email support**: E-commerce, healthcare, news, services
-- **Advanced fraud detection**: German inheritance scams, health misinformation
-- **Enhanced forensic analysis**: Comprehensive sender consistency checks
+### ✅ **Enhanced Link Analysis & Phishing Detection**
+- **379/379 tests passing** with comprehensive threat coverage
+- **Chase phishing detection**: Advanced typosquatting and brand impersonation detection
+- **Quoted-printable decoding**: RFC-compliant email content processing
+- **Cross-domain validation**: Legitimate business relationship recognition (OneStopPlus ↔ FullBeauty)
+- **ESP infrastructure support**: Complex email service provider handling (Consumer Reports via ZetaGlobal)
 
-### 🔧 **Enterprise Integrations**
-- **Barnes & Noble**: Order confirmations and transaction emails
-- **Healthcare Providers**: Premera, medical benefits, EOB processing  
-- **News & Media**: New York Times, Medium newsletters
-- **Business Services**: NetSuite invoicing, Toast restaurants, Lovepop
+### 🔧 **Advanced Technical Improvements**
+- **Root domain matching**: Intelligent subdomain relationship detection
+- **Early redirect validation**: All links checked for legitimacy, not just action patterns
+- **Proper architecture**: Uses existing ESP functions instead of hardcoded patterns
+- **Reduced false positives**: Legitimate marketing emails now properly recognized
+- **Enhanced security**: Maintains threat detection while improving accuracy
 
-### 🎯 **Advanced Detection Capabilities**
-- **Sender Alignment Analysis**: Reply-To mismatch detection with ESP exclusions
-- **Authentication Bypass Prevention**: Forwarded email authentication fixes
-- **Context-Aware Scoring**: Industry-specific legitimate content recognition
-- **Comprehensive Whitelisting**: Major brand and service provider support
+### 🎯 **Comprehensive Threat Coverage**
+- **Financial phishing**: Chase, banking, and cryptocurrency fraud detection
+- **Brand impersonation**: Major brand protection with authentication validation
+- **Cross-brand marketing**: Legitimate business relationships properly handled
+- **ESP complexity**: Multi-domain email infrastructure support
+- **Advanced evasion**: Quoted-printable, Unicode, and encoding abuse detection
 
 ## 📄 License
 
