@@ -334,12 +334,53 @@ async fn analyze_email_file(
         .collect();
 
     println!("Hops: {}", received_headers.len());
-    for (i, received) in received_headers.iter().enumerate() {
+
+    // Reverse the order to show actual mail flow (origin → destination)
+    for (i, received) in received_headers.iter().rev().enumerate() {
+        let hop_num = i + 1;
+        let total_hops = received_headers.len();
+
+        // Determine hop type
+        let hop_type = if hop_num == 1 {
+            "ORIGIN"
+        } else if hop_num == total_hops {
+            "DESTINATION"
+        } else if hop_num == total_hops - 1 {
+            // This is the proximate hop - the one that delivered to our server
+            "PROXIMATE"
+        } else {
+            // Check if this is forwarding vs relaying
+            let received_text = received
+                .trim_start_matches("Received:")
+                .trim()
+                .to_lowercase();
+            if received_text.contains("forwarded")
+                || received_text.contains("x-forwarded")
+                || lines
+                    .iter()
+                    .any(|line| line.to_lowercase().contains("x-forwarded-for"))
+            {
+                "FORWARDING"
+            } else {
+                "RELAY"
+            }
+        };
+
+        // Highlight the proximate hop
+        let prefix = if hop_type == "PROXIMATE" { "🎯 " } else { "" };
+
         println!(
-            "\nHop {}: {}",
-            i + 1,
+            "\n{}Hop {} ({}): {}",
+            prefix,
+            hop_num,
+            hop_type,
             received.trim_start_matches("Received:").trim()
         );
+
+        // Add security note for proximate hop
+        if hop_type == "PROXIMATE" {
+            println!("    └─ 🔍 This is the server that delivered directly to your mail system");
+        }
     }
 
     // Check for forwarding
@@ -389,45 +430,127 @@ async fn analyze_email_file(
     println!("\n🔐 AUTHENTICATION STATUS");
     println!("───────────────────────────────────────────────────────────────");
 
-    if let Some(auth_results) = headers.get("Authentication-Results") {
-        println!("Authentication-Results: {}", auth_results);
+    let mut auth_risk_factors = 0;
+    let mut has_any_auth = false;
 
-        // Parse authentication details
+    // Find the proximate sender from routing path
+    let mut proximate_sender = "unknown".to_string();
+    if received_headers.len() >= 2 {
+        // The proximate sender is the second-to-last hop (the one that delivered to our server)
+        let proximate_hop = &received_headers[1]; // Second from end in original order
+        if let Some(from_part) = proximate_hop
+            .split_whitespace()
+            .find(|&word| word.starts_with("from"))
+        {
+            if let Some(sender) = proximate_hop
+                .split_whitespace()
+                .skip_while(|&word| word != from_part)
+                .nth(1)
+            {
+                proximate_sender = sender.to_string();
+            }
+        }
+    }
+
+    if let Some(auth_results) = headers.get("authentication-results") {
+        // Extract the analyzing server (first part before semicolon)
+        let parts: Vec<&str> = auth_results.split(';').collect();
+        if let Some(server_part) = parts.first() {
+            let analyzing_server = server_part.trim();
+            println!("Analyzed by: {}", analyzing_server);
+        }
+
+        println!("Proximate Sender: {}", proximate_sender);
+        has_any_auth = true;
+
+        // Parse authentication details (look for the last occurrence of each, which is usually proximate)
         if auth_results.contains("dkim=pass") {
             println!("  ✅ DKIM: PASS");
         } else if auth_results.contains("dkim=fail") {
-            println!("  ❌ DKIM: FAIL");
+            println!("  ❌ DKIM: FAIL - Message integrity compromised");
+            auth_risk_factors += 2;
         } else if auth_results.contains("dkim=none") {
-            println!("  ⚠️  DKIM: NONE");
+            println!("  ⚠️  DKIM: NONE - No digital signature");
+            auth_risk_factors += 1;
         }
 
         if auth_results.contains("spf=pass") {
             println!("  ✅ SPF: PASS");
         } else if auth_results.contains("spf=fail") {
-            println!("  ❌ SPF: FAIL");
+            println!("  ❌ SPF: FAIL - Sender IP not authorized");
+            auth_risk_factors += 2;
         } else if auth_results.contains("spf=none") {
-            println!("  ⚠️  SPF: NONE");
+            println!("  ⚠️  SPF: NONE - No sender policy found");
+            auth_risk_factors += 1;
         }
 
         if auth_results.contains("dmarc=pass") {
             println!("  ✅ DMARC: PASS");
         } else if auth_results.contains("dmarc=fail") {
-            println!("  ❌ DMARC: FAIL");
+            println!("  ❌ DMARC: FAIL - Policy violation detected");
+            auth_risk_factors += 2;
+        } else if auth_results.contains("dmarc=none") {
+            println!("  ⚠️  DMARC: NONE - No domain policy");
+            auth_risk_factors += 1;
         }
     } else {
         println!("⚠️  No Authentication-Results header found");
+        auth_risk_factors += 1;
     }
 
-    // Check for DKIM signature
-    if let Some(dkim_sig) = headers.get("DKIM-Signature") {
-        println!("\nDKIM-Signature present:");
+    // Check for DKIM signature even without Authentication-Results
+    if let Some(dkim_sig) = headers.get("dkim-signature") {
+        if !has_any_auth {
+            println!("\nDKIM Signature Analysis:");
+        } else {
+            println!("\nDKIM Signature Details:");
+        }
+
         if let Some(domain) = dkim_sig
             .split("d=")
             .nth(1)
             .and_then(|s| s.split(';').next())
         {
-            println!("  └─ Signing Domain: {}", domain.trim());
+            let signing_domain = domain.trim();
+            println!("  └─ Signing Domain: {}", signing_domain);
+
+            // Check domain alignment with sender
+            if let Some(from_header) = headers.get("from") {
+                if let Some(sender_domain) = from_header.split('@').nth(1) {
+                    let sender_domain_clean = sender_domain.trim_end_matches('>').trim();
+                    if signing_domain == sender_domain_clean {
+                        println!("  └─ ✅ Domain Aligned: Signature matches sender");
+                    } else {
+                        println!(
+                            "  └─ ⚠️  Domain Misaligned: {} ≠ {}",
+                            signing_domain, sender_domain_clean
+                        );
+                        auth_risk_factors += 1;
+                    }
+                }
+            }
         }
+
+        // Extract signature algorithm
+        if let Some(algorithm) = dkim_sig
+            .split("a=")
+            .nth(1)
+            .and_then(|s| s.split(';').next())
+        {
+            println!("  └─ Algorithm: {}", algorithm.trim());
+        }
+    } else if !has_any_auth {
+        println!("❌ No DKIM signature found");
+        auth_risk_factors += 2;
+    }
+
+    // Overall authentication risk assessment
+    println!("\nAuthentication Risk Assessment:");
+    match auth_risk_factors {
+        0 => println!("  🟢 LOW RISK - Strong authentication present"),
+        1..=2 => println!("  🟡 MEDIUM RISK - Some authentication issues"),
+        3..=4 => println!("  🟠 HIGH RISK - Multiple authentication failures"),
+        _ => println!("  🔴 CRITICAL RISK - No authentication or major failures"),
     }
 
     // 5. Encoding Information
@@ -598,6 +721,136 @@ async fn analyze_email_file(
     // Evaluate
     let (action, matched_rules, headers_to_add) = filter_engine.evaluate(&mail_context).await;
 
+    // 6. Link Analysis
+    println!("\n🔗 LINK ANALYSIS");
+    println!("───────────────────────────────────────────────────────────────");
+
+    // Extract and analyze links vs URLs from email content
+    use regex::Regex;
+
+    let mut clickable_links = Vec::new();
+    let mut content_urls = Vec::new();
+
+    if let Some(body) = &mail_context.body {
+        // Parse HTML to distinguish clickable links from content URLs
+        let link_regex =
+            Regex::new(r#"<a[^>]*href\s*=\s*["']([^"']+)["'][^>]*>([^<]*)</a>"#).unwrap();
+        let img_regex = Regex::new(r#"<img[^>]*src\s*=\s*["']([^"']+)["'][^>]*"#).unwrap();
+        let css_regex = Regex::new(r#"<link[^>]*href\s*=\s*["']([^"']+)["'][^>]*"#).unwrap();
+        let script_regex = Regex::new(r#"<script[^>]*src\s*=\s*["']([^"']+)["'][^>]*"#).unwrap();
+
+        // Extract clickable links
+        for cap in link_regex.captures_iter(body) {
+            if let (Some(url), Some(text)) = (cap.get(1), cap.get(2)) {
+                clickable_links.push((url.as_str().to_string(), text.as_str().trim().to_string()));
+            }
+        }
+
+        // Extract content URLs
+        for cap in img_regex.captures_iter(body) {
+            if let Some(url) = cap.get(1) {
+                content_urls.push(("Image".to_string(), url.as_str().to_string()));
+            }
+        }
+
+        for cap in css_regex.captures_iter(body) {
+            if let Some(url) = cap.get(1) {
+                content_urls.push(("CSS".to_string(), url.as_str().to_string()));
+            }
+        }
+
+        for cap in script_regex.captures_iter(body) {
+            if let Some(url) = cap.get(1) {
+                content_urls.push(("Script".to_string(), url.as_str().to_string()));
+            }
+        }
+    }
+
+    // Display clickable links
+    if clickable_links.is_empty() {
+        println!("Clickable Links: 0");
+    } else {
+        println!("Clickable Links: {}", clickable_links.len());
+
+        for (i, (url, text)) in clickable_links.iter().take(5).enumerate() {
+            println!("\nLink {}: {}", i + 1, url);
+            if !text.is_empty() {
+                println!("  └─ Text: \"{}\"", text);
+            }
+
+            // Analyze link purpose
+            let url_lower = url.to_lowercase();
+            if url_lower.contains("unsubscribe") || url_lower.contains("opt-out") {
+                println!("  └─ 📧 Unsubscribe link");
+            } else if url_lower.contains("buy")
+                || url_lower.contains("purchase")
+                || url_lower.contains("order")
+            {
+                println!("  └─ 🛒 Purchase/Action link");
+            } else if url_lower.contains("track") || url_lower.contains("click") {
+                println!("  └─ 📊 Tracking link");
+            }
+
+            // Domain analysis
+            if let Ok(parsed_url) = url::Url::parse(url) {
+                if let Some(domain) = parsed_url.domain() {
+                    println!("  └─ Domain: {}", domain);
+
+                    // Risk assessment
+                    if domain.contains("bit.ly")
+                        || domain.contains("tinyurl")
+                        || domain.contains("t.co")
+                    {
+                        println!("  └─ ⚠️  URL shortener - high phishing risk");
+                    }
+
+                    if domain.ends_with(".tk") || domain.ends_with(".ml") || domain.ends_with(".ga")
+                    {
+                        println!("  └─ ⚠️  Suspicious TLD - high spam risk");
+                    }
+                }
+            } else {
+                println!("  └─ ❌ Malformed URL - potential attack");
+            }
+        }
+
+        if clickable_links.len() > 5 {
+            println!(
+                "\n... and {} more clickable links",
+                clickable_links.len() - 5
+            );
+        }
+    }
+
+    // Display content URLs
+    if content_urls.is_empty() {
+        println!("\nContent URLs: 0");
+    } else {
+        println!("\nContent URLs: {}", content_urls.len());
+
+        for (i, (url_type, url)) in content_urls.iter().take(3).enumerate() {
+            println!("\n{} {}: {}", url_type, i + 1, url);
+
+            // Special analysis for tracking pixels
+            if url_type == "Image"
+                && (url.contains("1x1") || url.contains("pixel") || url.contains("track"))
+            {
+                println!("  └─ 👁️  Likely tracking pixel");
+            }
+
+            // Domain analysis for content URLs
+            if let Ok(parsed_url) = url::Url::parse(url) {
+                if let Some(domain) = parsed_url.domain() {
+                    println!("  └─ Domain: {}", domain);
+                }
+            }
+        }
+
+        if content_urls.len() > 3 {
+            println!("\n... and {} more content URLs", content_urls.len() - 3);
+        }
+    }
+
     // 7. Configuration Analysis
     println!("\n🔧 CONFIGURATION ANALYSIS");
     println!("───────────────────────────────────────────────────────────────");
@@ -761,394 +1014,230 @@ async fn analyze_email_file(
         .iter()
         .filter(|(key, _)| key.starts_with("x-foff-score"))
         .collect();
-    let existing_rules: Vec<_> = headers
-        .iter()
-        .filter(|(key, _)| key.starts_with("x-foff-rule-matched"))
-        .collect();
-    let existing_evidence: Vec<_> = headers
-        .iter()
-        .filter(|(key, _)| key.starts_with("x-foff-feature-evidence"))
-        .collect();
-    let existing_trust: Vec<_> = headers
-        .iter()
-        .filter(|(key, _)| key.starts_with("x-foff-trust-analysis"))
-        .collect();
-    let existing_business: Vec<_> = headers
-        .iter()
-        .filter(|(key, _)| key.starts_with("x-foff-business-analysis"))
-        .collect();
-    let existing_seasonal: Vec<_> = headers
-        .iter()
-        .filter(|(key, _)| key.starts_with("x-foff-seasonal-analysis"))
-        .collect();
 
     if existing_scores.is_empty() {
         println!("✅ No existing X-FOFF headers found - this is a clean email");
         return;
     }
 
-    // Compare scores
+    // Extract existing evidence and rules for comparison
+    let existing_evidence: Vec<_> = headers
+        .iter()
+        .filter(|(key, _)| key.starts_with("x-foff-feature-evidence"))
+        .collect();
+
+    let existing_rules: Vec<_> = headers
+        .iter()
+        .filter(|(key, _)| key.starts_with("x-foff-rule-matched"))
+        .collect();
+
+    // Compare scores and show what changed
     for (_, score_header) in &existing_scores {
         if let Some(existing_score) = score_header
             .split_whitespace()
             .next()
             .and_then(|s| s.parse::<i32>().ok())
         {
-            if existing_score == actual_score {
-                println!(
-                    "✅ Score Match: {} (production) = {} (current)",
-                    existing_score, actual_score
-                );
+            let diff = actual_score - existing_score;
+            if diff == 0 {
+                println!("✅ Score unchanged: {}", actual_score);
             } else {
                 println!(
-                    "❌ Score Mismatch: {} (production) ≠ {} (current) | Diff: {:+}",
+                    "📊 Score changed: {} → {} ({}{})",
                     existing_score,
                     actual_score,
-                    actual_score - existing_score
+                    if diff > 0 { "+" } else { "" },
+                    diff
                 );
 
-                // Detailed scoring breakdown
-                println!("\n🔍 DETAILED SCORING BREAKDOWN:");
-
-                // Parse production analysis headers
-                let prod_trust = existing_trust
-                    .first()
-                    .map(|(_, v)| v.as_str())
-                    .unwrap_or("");
-                let prod_business = existing_business
-                    .first()
-                    .map(|(_, v)| v.as_str())
-                    .unwrap_or("");
-                let prod_seasonal = existing_seasonal
-                    .first()
-                    .map(|(_, v)| v.as_str())
-                    .unwrap_or("");
-
-                // Parse current analysis headers
-                let curr_trust = headers_to_add
+                // Show what changed
+                let current_evidence_count = headers_to_add
                     .iter()
-                    .find(|(name, _)| name.starts_with("X-FOFF-Trust-Analysis"))
-                    .map(|(_, v)| v.as_str())
-                    .unwrap_or("");
-                let curr_business = headers_to_add
+                    .filter(|(name, _)| name.starts_with("X-FOFF-Feature-Evidence"))
+                    .count();
+                let current_rules_count = headers_to_add
                     .iter()
-                    .find(|(name, _)| name.starts_with("X-FOFF-Business-Analysis"))
-                    .map(|(_, v)| v.as_str())
-                    .unwrap_or("");
-                let curr_seasonal = headers_to_add
+                    .filter(|(name, _)| name.starts_with("X-FOFF-Rule-Matched"))
+                    .count();
+
+                println!(
+                    "  Evidence: {} → {} rules",
+                    existing_evidence.len(),
+                    current_evidence_count
+                );
+                println!(
+                    "  Rules: {} → {} matched",
+                    existing_rules.len(),
+                    current_rules_count
+                );
+
+                // Compare evidence by hash
+                let existing_evidence_hashes: std::collections::HashSet<_> = existing_evidence
                     .iter()
-                    .find(|(name, _)| name.starts_with("X-FOFF-Seasonal-Analysis"))
-                    .map(|(_, v)| v.as_str())
-                    .unwrap_or("");
+                    .filter_map(|(_, value)| {
+                        value.rfind('[').and_then(|start| {
+                            value[start + 1..]
+                                .find(']')
+                                .map(|end| &value[start + 1..start + 1 + end])
+                        })
+                    })
+                    .collect();
 
-                println!("  Production Trust Analysis: {}", prod_trust);
-                println!("  Current Trust Analysis:    {}", curr_trust);
-                println!("  Production Business Analysis: {}", prod_business);
-                println!("  Current Business Analysis:    {}", curr_business);
-                println!("  Production Seasonal Analysis: {}", prod_seasonal);
-                println!("  Current Seasonal Analysis:    {}", curr_seasonal);
+                let current_evidence_hashes: std::collections::HashSet<_> = headers_to_add
+                    .iter()
+                    .filter(|(name, _)| name.starts_with("X-FOFF-Feature-Evidence"))
+                    .filter_map(|(_, value)| {
+                        value.rfind('[').and_then(|start| {
+                            value[start + 1..]
+                                .find(']')
+                                .map(|end| &value[start + 1..start + 1 + end])
+                        })
+                    })
+                    .collect();
 
-                // Calculate evidence scores
-                println!("\n📊 EVIDENCE SCORING COMPARISON:");
+                // Check if this is a server hostname difference
+                let existing_server = existing_evidence.first().and_then(|(_, value)| {
+                    value.find(" (").and_then(|start| {
+                        value[start + 2..]
+                            .find(')')
+                            .map(|end| &value[start + 2..start + 2 + end])
+                    })
+                });
 
-                // Parse trust/business/seasonal adjustments
-                let parse_analysis = |analysis_str: &str| -> (i32, i32) {
-                    let total = analysis_str
-                        .split("total=")
-                        .nth(1)
-                        .and_then(|s| s.split(',').next())
-                        .and_then(|s| s.parse::<i32>().ok())
-                        .unwrap_or(0);
-                    let adj = analysis_str
-                        .split("adj=")
-                        .nth(1)
-                        .and_then(|s| s.split_whitespace().next())
-                        .and_then(|s| s.parse::<i32>().ok())
-                        .unwrap_or(0);
-                    (total, adj)
-                };
+                let current_server = headers_to_add
+                    .iter()
+                    .find(|(name, _)| name.starts_with("X-FOFF-Feature-Evidence"))
+                    .and_then(|(_, value)| {
+                        value.find(" (").and_then(|start| {
+                            value[start + 2..]
+                                .find(')')
+                                .map(|end| &value[start + 2..start + 2 + end])
+                        })
+                    });
 
-                let (prod_trust_total, prod_trust_adj) = parse_analysis(prod_trust);
-                let (curr_trust_total, curr_trust_adj) = parse_analysis(curr_trust);
-                let (prod_business_total, prod_business_adj) = parse_analysis(prod_business);
-                let (curr_business_total, curr_business_adj) = parse_analysis(curr_business);
-                let (prod_seasonal_total, prod_seasonal_adj) = parse_analysis(prod_seasonal);
-                let (curr_seasonal_total, curr_seasonal_adj) = parse_analysis(curr_seasonal);
-
-                println!(
-                    "  Trust Analysis Diff: {} → {} (change: {:+})",
-                    prod_trust_total + prod_trust_adj,
-                    curr_trust_total + curr_trust_adj,
-                    (curr_trust_total + curr_trust_adj) - (prod_trust_total + prod_trust_adj)
-                );
-
-                println!(
-                    "  Business Analysis Diff: {} → {} (change: {:+})",
-                    prod_business_total + prod_business_adj,
-                    curr_business_total + curr_business_adj,
-                    (curr_business_total + curr_business_adj)
-                        - (prod_business_total + prod_business_adj)
-                );
-
-                println!(
-                    "  Seasonal Analysis Diff: {} → {} (change: {:+})",
-                    prod_seasonal_total + prod_seasonal_adj,
-                    curr_seasonal_total + curr_seasonal_adj,
-                    (curr_seasonal_total + curr_seasonal_adj)
-                        - (prod_seasonal_total + prod_seasonal_adj)
-                );
-
-                let total_analysis_diff = ((curr_trust_total + curr_trust_adj)
-                    - (prod_trust_total + prod_trust_adj))
-                    + ((curr_business_total + curr_business_adj)
-                        - (prod_business_total + prod_business_adj))
-                    + ((curr_seasonal_total + curr_seasonal_adj)
-                        - (prod_seasonal_total + prod_seasonal_adj));
-
-                println!("\n🧮 SCORE ACCOUNTING:");
-                println!(
-                    "  Total Score Difference: {:+}",
-                    actual_score - existing_score
-                );
-                println!("  Analysis Components Diff: {:+}", total_analysis_diff);
-                println!(
-                    "  Unaccounted Difference: {:+}",
-                    (actual_score - existing_score) - total_analysis_diff
-                );
-
-                if ((actual_score - existing_score) - total_analysis_diff).abs() > 5 {
-                    println!("\n❌ MAJOR UNACCOUNTED DIFFERENCE DETECTED!");
-                    println!("    Missing scoring components not shown in analysis headers:");
-                    println!("    - Base rule scoring may have changed");
-                    println!("    - Feature evidence weights may be different");
-                    println!("    - Hidden scoring adjustments not being emitted");
-                    println!("    - Calculation method fundamentally changed");
-
-                    println!("\n🔍 DETAILED COMPONENT ANALYSIS:");
-
-                    // Check if we can estimate individual evidence scores
-                    println!(
-                        "  Evidence Count - Production: {}, Current: {}",
-                        existing_evidence.len(),
-                        headers_to_add
-                            .iter()
-                            .filter(|(name, _)| name.starts_with("X-FOFF-Feature-Evidence"))
-                            .count()
-                    );
-
-                    // Check rule count
-                    println!(
-                        "  Rule Count - Production: {}, Current: {}",
-                        existing_rules.len(),
-                        headers_to_add
-                            .iter()
-                            .filter(|(name, _)| name.starts_with("X-FOFF-Rule-Matched"))
-                            .count()
-                    );
-
-                    // Estimate what the base score should be
-                    let base_analysis_score =
-                        prod_trust_total + prod_business_total + prod_seasonal_total;
-                    let estimated_evidence_rule_score = existing_score - base_analysis_score;
-
-                    println!("  Production Base Analysis Score: {}", base_analysis_score);
-                    println!(
-                        "  Production Estimated Evidence+Rule Score: {}",
-                        estimated_evidence_rule_score
-                    );
-
-                    let curr_base_analysis_score =
-                        curr_trust_total + curr_business_total + curr_seasonal_total;
-                    let curr_estimated_evidence_rule_score =
-                        actual_score - curr_base_analysis_score;
-
-                    println!(
-                        "  Current Base Analysis Score: {}",
-                        curr_base_analysis_score
-                    );
-                    println!(
-                        "  Current Estimated Evidence+Rule Score: {}",
-                        curr_estimated_evidence_rule_score
-                    );
-
-                    let evidence_rule_diff =
-                        curr_estimated_evidence_rule_score - estimated_evidence_rule_score;
-                    println!("  Evidence+Rule Score Difference: {:+}", evidence_rule_diff);
-
-                    if evidence_rule_diff.abs() > 50 {
+                if let (Some(existing_srv), Some(current_srv)) = (existing_server, current_server) {
+                    if existing_srv != current_srv {
                         println!(
-                            "\n🚨 CRITICAL: Evidence/Rule scoring has changed by {:+} points!",
-                            evidence_rule_diff
+                            "  ℹ️  Server changed: {} → {} (hashes will differ)",
+                            existing_srv, current_srv
                         );
-                        println!("    This suggests:");
-                        if evidence_rule_diff < 0 {
-                            println!("    - Feature evidence weights have been REDUCED");
-                            println!("    - Rule base scores have been LOWERED");
-                            println!("    - Scoring system has been made LESS aggressive");
-                        } else {
-                            println!("    - Feature evidence weights have been INCREASED");
-                            println!("    - Rule base scores have been RAISED");
-                            println!("    - Scoring system has been made MORE aggressive");
-                        }
                     }
                 }
 
-                println!("\n📋 EVIDENCE COMPARISON:");
-                for (_, evidence) in &existing_evidence {
-                    println!("  Production Evidence: {}", evidence);
-                }
+                let missing_evidence: Vec<_> = existing_evidence_hashes
+                    .difference(&current_evidence_hashes)
+                    .collect();
+                let new_evidence: Vec<_> = current_evidence_hashes
+                    .difference(&existing_evidence_hashes)
+                    .collect();
 
-                for (name, evidence) in &headers_to_add {
-                    if name.starts_with("X-FOFF-Feature-Evidence") {
-                        println!("  Current Evidence: {}", evidence);
+                for hash in &missing_evidence {
+                    if let Some((_, evidence)) =
+                        existing_evidence.iter().find(|(_, v)| v.contains(*hash))
+                    {
+                        let name = evidence
+                            .split(": ")
+                            .nth(1)
+                            .and_then(|s| s.split(" (").next())
+                            .unwrap_or("Unknown");
+                        println!("  - Missing evidence: {}", name);
+                    }
+                }
+                for hash in &new_evidence {
+                    if let Some((_, evidence)) = headers_to_add
+                        .iter()
+                        .filter(|(name, _)| name.starts_with("X-FOFF-Feature-Evidence"))
+                        .find(|(_, v)| v.contains(*hash))
+                    {
+                        let name = evidence
+                            .split(": ")
+                            .nth(1)
+                            .and_then(|s| s.split(" (").next())
+                            .unwrap_or("Unknown");
+                        println!("  + New evidence: {}", name);
                     }
                 }
 
-                println!("\n⚠️  Score calculation method may have changed between production and current");
-                println!("    Same evidence producing different final scores suggests:");
-                println!("    - Feature scoring weights changed");
-                println!("    - Trust/Business/Seasonal calculation modified");
-                println!("    - Base scoring algorithm updated");
+                // Compare rules by hash
+                let existing_rule_hashes: std::collections::HashSet<_> = existing_rules
+                    .iter()
+                    .filter_map(|(_, value)| {
+                        value.rfind('[').and_then(|start| {
+                            value[start + 1..]
+                                .find(']')
+                                .map(|end| &value[start + 1..start + 1 + end])
+                        })
+                    })
+                    .collect();
+
+                let current_rule_hashes: std::collections::HashSet<_> = headers_to_add
+                    .iter()
+                    .filter(|(name, _)| name.starts_with("X-FOFF-Rule-Matched"))
+                    .filter_map(|(_, value)| {
+                        value.rfind('[').and_then(|start| {
+                            value[start + 1..]
+                                .find(']')
+                                .map(|end| &value[start + 1..start + 1 + end])
+                        })
+                    })
+                    .collect();
+
+                let missing_rules: Vec<_> = existing_rule_hashes
+                    .difference(&current_rule_hashes)
+                    .collect();
+                let new_rules: Vec<_> = current_rule_hashes
+                    .difference(&existing_rule_hashes)
+                    .collect();
+
+                for hash in &missing_rules {
+                    if let Some((_, rule)) = existing_rules.iter().find(|(_, v)| v.contains(*hash))
+                    {
+                        let name = rule.split(" (").next().unwrap_or("Unknown");
+                        println!("  - Missing rule: {}", name);
+                    }
+                }
+                for hash in &new_rules {
+                    if let Some((_, rule)) = headers_to_add
+                        .iter()
+                        .filter(|(name, _)| name.starts_with("X-FOFF-Rule-Matched"))
+                        .find(|(_, v)| v.contains(*hash))
+                    {
+                        let name = rule.split(" (").next().unwrap_or("Unknown");
+                        println!("  + New rule: {}", name);
+                    }
+                }
+
+                if diff.abs() >= 50 {
+                    if diff > 0 {
+                        println!("  └─ ⚠️  Significantly more suspicious than before");
+                    } else {
+                        println!("  └─ ✅ Significantly less suspicious than before");
+                    }
+                }
             }
-        }
-    }
-
-    // Compare matched rules by hash
-    let current_rule_hashes: std::collections::HashSet<_> = headers_to_add
-        .iter()
-        .filter(|(name, _)| name.starts_with("X-FOFF-Rule-Matched"))
-        .filter_map(|(_, value)| {
-            // Extract hash from "Rule Name (server) [hash]"
-            value.rfind('[').and_then(|start| {
-                value[start + 1..]
-                    .find(']')
-                    .map(|end| &value[start + 1..start + 1 + end])
-            })
-        })
-        .collect();
-
-    let existing_rule_hashes: std::collections::HashSet<_> = existing_rules
-        .iter()
-        .filter_map(|(_, value)| {
-            value.rfind('[').and_then(|start| {
-                value[start + 1..]
-                    .find(']')
-                    .map(|end| &value[start + 1..start + 1 + end])
-            })
-        })
-        .collect();
-
-    // Show rule differences
-    let missing_from_current: Vec<_> = existing_rule_hashes
-        .difference(&current_rule_hashes)
-        .collect();
-    let new_in_current: Vec<_> = current_rule_hashes
-        .difference(&existing_rule_hashes)
-        .collect();
-
-    if missing_from_current.is_empty() && new_in_current.is_empty() {
-        println!(
-            "✅ Rule Match: All {} rule hashes identical",
-            existing_rule_hashes.len()
-        );
-    } else {
-        println!("❌ Rule Mismatch:");
-        for hash in &missing_from_current {
-            // Find the rule name for this hash
-            if let Some((_, rule_line)) = existing_rules.iter().find(|(_, v)| v.contains(*hash)) {
-                let rule_name = rule_line.split(" (").next().unwrap_or("Unknown");
-                println!("  - Missing: {} [{}]", rule_name, hash);
-            }
-        }
-        for hash in &new_in_current {
-            // Find the rule name for this hash
-            if let Some((_, rule_line)) = headers_to_add
-                .iter()
-                .filter(|(name, _)| name.starts_with("X-FOFF-Rule-Matched"))
-                .find(|(_, v)| v.contains(*hash))
-            {
-                let rule_name = rule_line.split(" (").next().unwrap_or("Unknown");
-                println!("  + Added: {} [{}]", rule_name, hash);
-            }
-        }
-    }
-
-    // Compare feature evidence by hash
-    let current_evidence_hashes: std::collections::HashSet<_> = headers_to_add
-        .iter()
-        .filter(|(name, _)| name.starts_with("X-FOFF-Feature-Evidence"))
-        .filter_map(|(_, value)| {
-            value.rfind('[').and_then(|start| {
-                value[start + 1..]
-                    .find(']')
-                    .map(|end| &value[start + 1..start + 1 + end])
-            })
-        })
-        .collect();
-
-    let existing_evidence_hashes: std::collections::HashSet<_> = existing_evidence
-        .iter()
-        .filter_map(|(_, value)| {
-            value.rfind('[').and_then(|start| {
-                value[start + 1..]
-                    .find(']')
-                    .map(|end| &value[start + 1..start + 1 + end])
-            })
-        })
-        .collect();
-
-    let missing_evidence: Vec<_> = existing_evidence_hashes
-        .difference(&current_evidence_hashes)
-        .collect();
-    let new_evidence: Vec<_> = current_evidence_hashes
-        .difference(&existing_evidence_hashes)
-        .collect();
-
-    if missing_evidence.is_empty() && new_evidence.is_empty() {
-        println!(
-            "✅ Evidence Match: All {} evidence hashes identical",
-            existing_evidence_hashes.len()
-        );
-    } else {
-        println!("❌ Evidence Mismatch:");
-        for hash in &missing_evidence {
-            if let Some((_, evidence_line)) =
-                existing_evidence.iter().find(|(_, v)| v.contains(*hash))
-            {
-                let evidence_name = evidence_line
-                    .split(": ")
-                    .nth(1)
-                    .and_then(|s| s.split(" (").next())
-                    .unwrap_or("Unknown");
-                println!("  - Missing: {} [{}]", evidence_name, hash);
-            }
-        }
-        for hash in &new_evidence {
-            if let Some((_, evidence_line)) = headers_to_add
-                .iter()
-                .filter(|(name, _)| name.starts_with("X-FOFF-Feature-Evidence"))
-                .find(|(_, v)| v.contains(*hash))
-            {
-                let evidence_name = evidence_line
-                    .split(": ")
-                    .nth(1)
-                    .and_then(|s| s.split(" (").next())
-                    .unwrap_or("Unknown");
-                println!("  + Added: {} [{}]", evidence_name, hash);
-            }
+            break; // Only show first score comparison
         }
     }
 
     if !matched_rules.is_empty() {
-        println!("\n🎯 MATCHED DETECTION RULES:");
-        for rule in &matched_rules {
-            println!("  • {}", rule);
+        let useful_rules: Vec<_> = matched_rules
+            .iter()
+            .filter(|rule| !rule.contains("Trusting upstream FOFF-milter"))
+            .collect();
+
+        if !useful_rules.is_empty() {
+            println!("\n🎯 MATCHED DETECTION RULES:");
+            for rule in useful_rules {
+                println!("  • {}", rule);
+            }
+        } else {
+            println!("\n✅ No threat detection rules matched");
         }
     } else {
         println!("\n✅ No threat detection rules matched");
     }
 
-    println!("\n═══════════════════════════════════════════════════════════════\n");
+    println!("\n═══════════════════════════════════════════════════════════════");
 }
 
 #[tokio::main]

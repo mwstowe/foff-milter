@@ -782,6 +782,20 @@ impl ContextAnalyzer {
         let sender_lower = sender.to_lowercase();
         let content_lower = content.to_lowercase();
 
+        // Job spam detection - check first to catch spam before legitimate industry detection
+        if (content_lower.contains("job")
+            || content_lower.contains("career")
+            || content_lower.contains("hiring")
+            || content_lower.contains("help wanted")
+            || content_lower.contains("we're hiring"))
+            && (content_lower.contains("per hour") || content_lower.contains("per year"))
+            && (content_lower.contains("view opening")
+                || content_lower.contains("view details")
+                || content_lower.contains("apply now"))
+        {
+            return Some("job_spam".to_string());
+        }
+
         // Floral industry
         if sender_lower.contains("floral")
             || sender_lower.contains("flower")
@@ -789,7 +803,6 @@ impl ContextAnalyzer {
             || sender_lower.contains("ftd")
             || content_lower.contains("arrangement")
             || content_lower.contains("bouquet")
-            || content_lower.contains("delivery")
             || content_lower.contains("florist")
         {
             return Some("floral".to_string());
@@ -892,6 +905,7 @@ impl ContextAnalyzer {
 
     fn get_industry_urgency_multiplier(&self, industry: &str) -> f32 {
         match industry {
+            "job_spam" => 2.0,        // 100% increase for job spam
             "floral" => 0.4,          // 60% reduction for floral marketing
             "marketplace" => 0.3,     // 70% reduction for marketplace offers
             "tech_newsletter" => 0.2, // 80% reduction for newsletters
@@ -959,9 +973,21 @@ impl FeatureExtractor for ContextAnalyzer {
         // Industry-aware scoring adjustments
         if let Some(industry) = &industry_context {
             let multiplier = self.get_industry_urgency_multiplier(industry);
+
+            // Add base score for job spam detection
+            if industry == "job_spam" {
+                total_score += 75; // Base score for unsolicited job listings
+                all_evidence.push("Unsolicited job listing detected".to_string());
+            }
+
             if multiplier < 1.0 {
                 all_evidence.push(format!(
                     "Industry context detected: {} (reduced scoring)",
+                    industry
+                ));
+            } else if multiplier > 1.0 {
+                all_evidence.push(format!(
+                    "Industry context detected: {} (increased scoring)",
                     industry
                 ));
             }

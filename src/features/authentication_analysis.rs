@@ -50,8 +50,11 @@ impl AuthenticationAnalyzer {
         let mut evidence = Vec::new();
         let mut risk_factors = 0;
 
-        // Extract sender domain
-        let sender_domain = if let Some(sender) = &context.sender {
+        // Extract sender domain - prioritize From header for forwarded mail
+        let sender_domain = if let Some(from_header) = &context.from_header {
+            // For forwarded mail, use the From header (original sender) not envelope sender
+            self.extract_domain(from_header).unwrap_or_default()
+        } else if let Some(sender) = &context.sender {
             self.extract_domain(sender).unwrap_or_default()
         } else {
             return (
@@ -285,7 +288,14 @@ impl AuthenticationAnalyzer {
 
     /// Extract domain from email address
     fn extract_domain(&self, email: &str) -> Option<String> {
-        email.split('@').nth(1).map(|s| s.to_string())
+        email.split('@').nth(1).map(|s| {
+            // Clean up common trailing characters from email parsing
+            s.trim_end_matches('>')
+                .trim_end_matches(',')
+                .trim_end_matches(';')
+                .trim()
+                .to_string()
+        })
     }
 }
 
