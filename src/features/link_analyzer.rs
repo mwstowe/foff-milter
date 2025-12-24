@@ -61,7 +61,10 @@ impl LinkAnalyzer {
         );
 
         Self {
-            link_regex: Regex::new(r#"<a[^>]+href=["']([^"']+)["'][^>]*>([^<]+)</a>"#).unwrap(),
+            link_regex: Regex::new(
+                r#"(?s)<[aA][^>]*href\s*=\s*["']([^"']+)["'][^>]*>([^<]+)</[aA]>"#,
+            )
+            .unwrap(),
             action_patterns,
             url_resolver: UrlResolver::default(),
         }
@@ -77,6 +80,7 @@ impl LinkAnalyzer {
         // Extract from body with HTML entity decoding
         if let Some(body) = &context.body {
             let decoded_body = self.decode_html_entities(body);
+
             for cap in self.link_regex.captures_iter(&decoded_body) {
                 if let (Some(url), Some(text)) = (cap.get(1), cap.get(2)) {
                     links.push(self.analyze_link(
@@ -144,7 +148,14 @@ impl LinkAnalyzer {
     }
 
     fn decode_html_entities(&self, text: &str) -> String {
-        // Common HTML entity patterns used in spam
+        // First decode quoted-printable encoding properly
+        let decoded =
+            match quoted_printable::decode(text.as_bytes(), quoted_printable::ParseMode::Robust) {
+                Ok(bytes) => String::from_utf8_lossy(&bytes).to_string(),
+                Err(_) => text.to_string(), // Fallback to original if decoding fails
+            };
+
+        // Then handle HTML entities
         let entities = [
             ("&#108;", "l"),
             ("&#97;", "a"),
@@ -164,11 +175,11 @@ impl LinkAnalyzer {
             ("&quot;", "\""),
         ];
 
-        let mut decoded = text.to_string();
+        let mut result = decoded;
         for (entity, replacement) in &entities {
-            decoded = decoded.replace(entity, replacement);
+            result = result.replace(entity, replacement);
         }
-        decoded
+        result
     }
 
     fn extract_domain(&self, url: &str) -> String {
@@ -217,9 +228,18 @@ impl LinkAnalyzer {
             }
         }
 
-        // Check if action matches expected domain
-        let sender_domain = self.extract_sender_domain(context);
+        // ESP infrastructure recognition - check for common ESP domain patterns
+        if self.is_esp_infrastructure_link(context, link_domain) {
+            return false;
+        }
 
+        // Early redirect check - applies to ALL links, not just action patterns
+        let sender_domain = self.extract_sender_domain(context);
+        if self.is_legitimate_redirect(&sender_domain, link_domain) {
+            return false;
+        }
+
+        // Check if action matches expected domain
         // If display text suggests account action but domain doesn't match sender
         for (action_type, patterns) in &self.action_patterns {
             for pattern in patterns {
@@ -258,17 +278,12 @@ impl LinkAnalyzer {
         &self,
         sender_domain: &str,
         link_domain: &str,
-        action_type: &str,
+        _action_type: &str,
     ) -> bool {
-        // For login/payment actions, domains should align or be known legitimate redirects
-        match action_type {
-            "login" | "payment" | "security" => {
-                !sender_domain.contains(link_domain)
-                    && !link_domain.contains(sender_domain)
-                    && !self.is_legitimate_redirect(sender_domain, link_domain)
-            }
-            _ => false,
-        }
+        // For all actions, check if domains align or are known legitimate redirects
+        !sender_domain.contains(link_domain)
+            && !link_domain.contains(sender_domain)
+            && !self.is_legitimate_redirect(sender_domain, link_domain)
     }
 
     fn is_legitimate_redirect(&self, sender_domain: &str, link_domain: &str) -> bool {
@@ -279,12 +294,22 @@ impl LinkAnalyzer {
             ("microsoft.com", "aka.ms"),
             ("google.com", "goo.gl"),
             ("humblebundle.com", "e.mailer.humblebundle.com"),
-            ("mailer.humblebundle.com", "e.mailer.humblebundle.com"),
+            ("onestopplus.com", "fullbeauty.com"),
         ];
 
         for (sender, redirect) in &legitimate_redirects {
             if sender_domain.contains(sender) && link_domain.contains(redirect) {
                 return true;
+            }
+        }
+
+        // Improved subdomain recognition - check if both domains share the same root domain
+        if let (Some(sender_root), Some(link_root)) = (
+            self.extract_root_domain(sender_domain),
+            self.extract_root_domain(link_domain),
+        ) {
+            if sender_root == link_root {
+                return true; // Same root domain, different subdomains is legitimate
             }
         }
 
@@ -305,6 +330,35 @@ impl LinkAnalyzer {
         for processor in &payment_processors {
             if link_domain.contains(processor) {
                 return true;
+            }
+        }
+
+        false
+    }
+
+    fn extract_root_domain(&self, domain: &str) -> Option<String> {
+        let parts: Vec<&str> = domain.split('.').collect();
+        if parts.len() >= 2 {
+            // Return the last two parts (domain.tld)
+            Some(format!(
+                "{}.{}",
+                parts[parts.len() - 2],
+                parts[parts.len() - 1]
+            ))
+        } else {
+            None
+        }
+    }
+
+    fn is_esp_infrastructure_link(&self, context: &MailContext, link_domain: &str) -> bool {
+        let sender = context.from_header.as_deref().unwrap_or("");
+
+        // Check if sender is from legitimate ESP and link domain matches brand
+        if self.is_legitimate_esp(sender) {
+            if let Some(brand) = self.extract_brand_from_sender(sender) {
+                if link_domain.contains(&brand) {
+                    return true;
+                }
             }
         }
 
@@ -344,6 +398,7 @@ impl LinkAnalyzer {
                         "mailchimp.com",
                         "constantcontact.com",
                         "sendgrid.net",
+                        "consumerreports.org",
                     ];
 
                     for domain in &legitimate_redirect_domains {
@@ -462,8 +517,8 @@ impl LinkAnalyzer {
             "target.com",
             "walmart.com",
             "humblebundle.com",
-            "mailer.humblebundle.com",
             "ladyyum.com",
+            "onestopplus.com",
         ];
 
         major_retailers
