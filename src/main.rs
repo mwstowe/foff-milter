@@ -656,8 +656,6 @@ async fn analyze_email_file(
         filter_engine.set_toml_config(TomlConfig::default());
     }
 
-    // Build mail context (matching test_email_file setup exactly)
-
     // Extract sender from headers (use parsed sender or fallback to From header)
     let mut sender = if !sender.is_empty() {
         sender
@@ -668,7 +666,7 @@ async fn analyze_email_file(
             .unwrap_or_default()
     };
 
-    // Fallback for empty sender (match test_email_file)
+    // Fallback for empty sender
     if sender.is_empty() {
         sender = "unknown@example.com".to_string();
     }
@@ -679,14 +677,15 @@ async fn analyze_email_file(
     // Get body content
     let mut body_content: String = lines[body_start..].join("\n");
 
-    // Decode email body content to match production milter behavior (like test_email_file)
+    // Decode email body content to match production milter behavior
     let content_transfer_encoding = headers
         .get("content-transfer-encoding")
         .map(|s| s.to_lowercase())
         .unwrap_or_default();
     body_content = decode_email_body(&body_content, &content_transfer_encoding);
 
-    let mut mail_context = foff_milter::filter::MailContext {
+    // Build mail context (matching milter mode setup exactly)
+    let mail_context = foff_milter::filter::MailContext {
         sender: Some(sender.clone()),
         from_header: headers.get("from").cloned(),
         recipients: recipients.clone(),
@@ -702,26 +701,50 @@ async fn analyze_email_file(
         attachments: Vec::new(),
         extracted_media_text: String::new(),
         is_legitimate_business: false,
-        is_first_hop: true, // Match test mode
+        is_first_hop: true, // Match milter mode
         forwarding_source: None,
         dkim_verification: None,
-        normalized: None,
+        normalized: None, // Let FilterEngine handle this
         proximate_mailer: None,
     };
 
-    // Populate DKIM verification for analyze mode (match test_email_file)
-    use foff_milter::dkim_verification::DkimVerifier;
-    let sender_domain = sender.split('@').nth(1);
-    mail_context.dkim_verification =
-        Some(DkimVerifier::verify(&mail_context.headers, sender_domain));
-
-    // Add legitimate business detection for analyze mode (match test_email_file)
-    mail_context.is_legitimate_business = is_legitimate_business_test(&mail_context);
-
-    // Evaluate
+    // Let FilterEngine do all the processing (same as milter mode)
     let (action, matched_rules, headers_to_add) = filter_engine.evaluate(&mail_context).await;
 
-    // 6. Link Analysis
+    // 6. Feature Analysis Results
+    println!("\n🧠 FEATURE ANALYSIS");
+    println!("───────────────────────────────────────────────────────────────");
+
+    // Display feature evidence
+    let feature_evidence: Vec<_> = headers_to_add
+        .iter()
+        .filter(|(name, _)| name.starts_with("X-FOFF-Feature-Evidence"))
+        .collect();
+
+    if feature_evidence.is_empty() {
+        println!("✅ No suspicious features detected");
+    } else {
+        println!("🔍 Detected Features: {}", feature_evidence.len());
+        for (_, evidence) in &feature_evidence {
+            // Parse evidence format: "Module: Evidence description (server) [hash]"
+            if let Some(colon_pos) = evidence.find(": ") {
+                let module = &evidence[..colon_pos];
+                let rest = &evidence[colon_pos + 2..];
+
+                // Extract description (everything before the server part)
+                if let Some(paren_pos) = rest.rfind(" (") {
+                    let description = &rest[..paren_pos];
+                    println!("  • {}: {}", module, description);
+                } else {
+                    println!("  • {}", evidence);
+                }
+            } else {
+                println!("  • {}", evidence);
+            }
+        }
+    }
+
+    // 7. Link Analysis
     println!("\n🔗 LINK ANALYSIS");
     println!("───────────────────────────────────────────────────────────────");
 

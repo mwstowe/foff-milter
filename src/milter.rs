@@ -9,7 +9,7 @@ use std::sync::{Arc, Mutex};
 use std::time::Duration;
 use tokio::net::UnixListener;
 
-fn is_legitimate_business_sender(context: &MailContext) -> bool {
+pub fn is_legitimate_business_sender(context: &MailContext) -> bool {
     let legitimate_businesses = [
         "costco.com",
         "pitneybowes.com",
