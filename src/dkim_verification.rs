@@ -94,53 +94,38 @@ impl DkimVerifier {
     }
 
     fn parse_auth_results(headers: &HashMap<String, String>) -> DkimAuthStatus {
-        let mut pass_found = false;
-        let mut fail_reason = None;
-        let mut temp_error = false;
-        let mut perm_error = false;
-        let mut none_found = false;
+        // Use the first Authentication-Results header chronologically (first server to analyze)
+        // This ensures we use the analysis from the first server that saw the unmodified message
 
-        // Collect all authentication results and prioritize PASS over FAIL
-        for (key, value) in headers {
-            if key.to_lowercase() == "authentication-results" {
-                let value_lower = value.to_lowercase();
-                if value_lower.contains("dkim=pass") {
-                    pass_found = true;
-                } else if value_lower.contains("dkim=fail") {
-                    // Extract failure reason if available
-                    let reason = if value_lower.contains("signature verification failed") {
-                        "signature verification failed".to_string()
-                    } else if value_lower.contains("body hash mismatch") {
-                        "body hash mismatch".to_string()
-                    } else {
-                        "unknown failure".to_string()
-                    };
-                    fail_reason = Some(reason);
-                } else if value_lower.contains("dkim=temperror") {
-                    temp_error = true;
-                } else if value_lower.contains("dkim=permerror") {
-                    perm_error = true;
-                } else if value_lower.contains("dkim=none") {
-                    none_found = true;
-                }
+        if let Some((_, first_auth_result)) = headers
+            .iter()
+            .find(|(key, _)| key.to_lowercase() == "authentication-results")
+        {
+            let value_lower = first_auth_result.to_lowercase();
+
+            if value_lower.contains("dkim=pass") {
+                return DkimAuthStatus::Pass;
+            } else if value_lower.contains("dkim=fail") {
+                // Extract failure reason if available
+                let reason = if value_lower.contains("signature verification failed") {
+                    "signature verification failed".to_string()
+                } else if value_lower.contains("body hash mismatch") {
+                    "body hash mismatch".to_string()
+                } else {
+                    "unknown failure".to_string()
+                };
+                return DkimAuthStatus::Fail(reason);
+            } else if value_lower.contains("dkim=temperror") {
+                return DkimAuthStatus::TempError;
+            } else if value_lower.contains("dkim=permerror") {
+                return DkimAuthStatus::PermError;
+            } else if value_lower.contains("dkim=none") {
+                return DkimAuthStatus::None;
             }
         }
 
-        // Prioritize results: PASS > FAIL > TEMPERROR > PERMERROR > NONE
-        if pass_found {
-            DkimAuthStatus::Pass
-        } else if let Some(reason) = fail_reason {
-            DkimAuthStatus::Fail(reason)
-        } else if temp_error {
-            DkimAuthStatus::TempError
-        } else if perm_error {
-            DkimAuthStatus::PermError
-        } else if none_found {
-            DkimAuthStatus::None
-        } else {
-            // If no Authentication-Results but has DKIM signature, status is none
-            DkimAuthStatus::None
-        }
+        // If no Authentication-Results found, status is none
+        DkimAuthStatus::None
     }
 
     fn check_domain_alignment(dkim_domains: &[String], sender_domain: &str) -> DomainAlignment {
