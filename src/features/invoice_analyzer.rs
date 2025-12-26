@@ -31,6 +31,8 @@ impl InvoiceAnalyzer {
             "mailchimp.com".to_string(),
             "constantcontact.com".to_string(),
             "dominos.com".to_string(),
+            "onestopplus.com".to_string(),
+            "empower.com".to_string(),
         ];
 
         Self {
@@ -55,6 +57,8 @@ impl InvoiceAnalyzer {
             "mailchimp.com".to_string(),
             "constantcontact.com".to_string(),
             "dominos.com".to_string(),
+            "onestopplus.com".to_string(),
+            "empower.com".to_string(),
         ];
 
         Self {

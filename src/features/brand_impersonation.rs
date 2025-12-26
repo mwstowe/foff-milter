@@ -149,11 +149,26 @@ impl BrandImpersonationFeature {
 
     fn is_legitimate_domain_for_brand(&self, brand: &str, domain: &str) -> bool {
         if let Some(legitimate) = self.legitimate_domains.get(brand) {
-            return legitimate
+            if legitimate
                 .iter()
-                .any(|d| domain == d || domain.ends_with(&format!(".{}", d)));
+                .any(|d| domain == d || domain.ends_with(&format!(".{}", d)))
+            {
+                return true;
+            }
         }
-        false
+
+        // Handle legitimate business partnerships
+        match brand {
+            "amazon" => {
+                // Amazon partnerships with financial institutions
+                domain.contains("fidelity")
+                    || domain.contains("chase")
+                    || domain.contains("wellsfargo")
+                    || domain.contains("onestopplus")
+                    || domain.contains("empower")
+            }
+            _ => false,
+        }
     }
 }
 
