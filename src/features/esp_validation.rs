@@ -260,6 +260,15 @@ impl EspValidationFeature {
             },
         );
 
+        providers.insert(
+            "adobe_campaign".to_string(),
+            EspProvider {
+                domains: vec!["cjm.adobe.com".to_string()],
+                reputation: EspReputation::Trusted,
+                aliases: vec!["cname.cjm.adobe.com".to_string()],
+            },
+        );
+
         let config = EspValidationConfig {
             providers,
             suspicious_patterns: vec![

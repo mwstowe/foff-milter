@@ -559,6 +559,8 @@ impl LinkAnalyzer {
                 "aweber.com".to_string(),
                 "list-manage.com".to_string(),
                 "campaign-archive.com".to_string(),
+                "cjm.adobe.com".to_string(),  // Adobe Campaign
+                "cname.cjm.adobe.com".to_string(),  // Adobe Campaign CNAME
             ];
 
             DomainUtils::matches_domain_list(&domain, &esp_domains)

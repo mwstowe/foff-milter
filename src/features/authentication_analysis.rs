@@ -80,11 +80,24 @@ impl AuthenticationAnalyzer {
                         dkim_domain,
                         sender_domain,
                     } => {
-                        evidence.push(format!(
-                            "DKIM domain misaligned: {} vs {}",
-                            dkim_domain, sender_domain
-                        ));
-                        risk_factors += 1;
+                        // Check if this is a legitimate ESP - reduce penalty
+                        let is_esp_misalignment = self.config.esp_domains.iter().any(|esp| 
+                            dkim_domain.contains(esp) || sender_domain.contains(esp)
+                        );
+                        
+                        if is_esp_misalignment {
+                            evidence.push(format!(
+                                "DKIM domain misaligned but legitimate ESP: {} vs {}",
+                                dkim_domain, sender_domain
+                            ));
+                            // Don't add risk factor for ESP misalignment
+                        } else {
+                            evidence.push(format!(
+                                "DKIM domain misaligned: {} vs {}",
+                                dkim_domain, sender_domain
+                            ));
+                            risk_factors += 1;
+                        }
                     }
                     DomainAlignment::Unknown => {
                         evidence.push("DKIM domain alignment unknown".to_string());
@@ -139,6 +152,14 @@ impl AuthenticationAnalyzer {
             }
             SpfResult::Unknown => {
                 evidence.push("SPF result unknown".to_string());
+                // Don't penalize ESPs for unknown SPF results
+                let sender_domain = context.from_header.as_deref()
+                    .and_then(|from| from.split('@').nth(1))
+                    .unwrap_or("");
+                let is_esp = self.config.esp_domains.iter().any(|esp| sender_domain.contains(esp));
+                if !is_esp {
+                    risk_factors += 1;
+                }
             }
         }
 
@@ -159,6 +180,14 @@ impl AuthenticationAnalyzer {
             }
             DmarcResult::Unknown => {
                 evidence.push("DMARC result unknown".to_string());
+                // Don't penalize ESPs for unknown DMARC results
+                let sender_domain = context.from_header.as_deref()
+                    .and_then(|from| from.split('@').nth(1))
+                    .unwrap_or("");
+                let is_esp = self.config.esp_domains.iter().any(|esp| sender_domain.contains(esp));
+                if !is_esp {
+                    risk_factors += 1;
+                }
             }
         }
 
@@ -343,6 +372,8 @@ impl AuthenticationFeature {
                 "mailgun.org".to_string(),
                 "mailchimp.com".to_string(),
                 "amazonses.com".to_string(),
+                "cjm.adobe.com".to_string(),  // Adobe Campaign
+                "cname.cjm.adobe.com".to_string(),  // Adobe Campaign CNAME
             ],
             suspicious_patterns: vec![
                 "verify account".to_string(),
