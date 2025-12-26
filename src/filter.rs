@@ -257,6 +257,7 @@ pub struct AttachmentInfo {
 #[derive(Debug, Clone)]
 pub struct UpstreamTrustResult {
     pub reason: String,
+    pub score: i32,
 }
 
 impl FilterEngine {
@@ -795,29 +796,37 @@ impl FilterEngine {
                 || key_lower.starts_with("x-foff-rule-matched")
         });
 
-        // If we have FOFF processing evidence, check if it's marked as spam
+        // If we have FOFF processing evidence, extract the score
         if has_foff_score || has_foff_evidence {
-            let is_spam_tagged = context.headers.iter().any(|(key, value)| {
+            let mut upstream_score = 0;
+            let mut is_spam_tagged = false;
+
+            // Extract score and check spam status
+            for (key, value) in &context.headers {
                 let key_lower = key.to_lowercase();
                 let value_lower = value.to_lowercase();
 
                 // Check for spam indicators
-                (key_lower == "x-spam-flag" && value_lower.contains("yes"))
-                    || (key_lower.starts_with("x-foff-score") && {
-                        // Extract score from "X-FOFF-Score: 75 - analyzed by foff-milter..."
-                        value
-                            .split_whitespace()
-                            .next()
-                            .and_then(|s| s.parse::<i32>().ok())
-                            .unwrap_or(0)
-                            >= 50
-                    })
-            });
+                if key_lower == "x-spam-flag" && value_lower.contains("yes") {
+                    is_spam_tagged = true;
+                } else if key_lower.starts_with("x-foff-score") {
+                    // Extract score from "X-FOFF-Score: 75 - analyzed by foff-milter..."
+                    if let Some(score_str) = value.split_whitespace().next() {
+                        if let Ok(score) = score_str.parse::<i32>() {
+                            upstream_score = score;
+                            if score >= 50 {
+                                is_spam_tagged = true;
+                            }
+                        }
+                    }
+                }
+            }
 
             // ONLY trust if upstream marked it as spam
             if is_spam_tagged {
                 Some(UpstreamTrustResult {
                     reason: "Trusting upstream FOFF-milter spam classification".to_string(),
+                    score: upstream_score,
                 })
             } else {
                 // Email processed upstream but not spam - continue normal processing
@@ -1716,13 +1725,51 @@ impl FilterEngine {
         // Check for upstream FOFF-milter processing and trust existing tags
         if let Some(trust_result) = self.check_upstream_trust(&context) {
             log::info!(
-                "Trusting upstream FOFF-milter processing: {}",
-                trust_result.reason
+                "Trusting upstream FOFF-milter processing: {} (score: {})",
+                trust_result.reason,
+                trust_result.score
             );
+            
+            // Get thresholds from TOML config or use defaults
+            let reject_threshold = self
+                .toml_config
+                .as_ref()
+                .and_then(|c| c.heuristics.as_ref())
+                .map(|h| h.reject_threshold)
+                .unwrap_or(350);
+            let spam_threshold = self
+                .toml_config
+                .as_ref()
+                .and_then(|c| c.heuristics.as_ref())
+                .map(|h| h.spam_threshold)
+                .unwrap_or(50);
+            
+            // Determine action based on upstream score
+            let action = if trust_result.score >= reject_threshold {
+                Action::Reject {
+                    message: "Upstream FOFF-milter marked as high threat".to_string(),
+                }
+            } else if trust_result.score >= spam_threshold {
+                Action::TagAsSpam {
+                    header_name: "X-Spam-Flag".to_string(),
+                    header_value: "YES".to_string(),
+                }
+            } else {
+                Action::Accept
+            };
+            
             return (
-                Action::Accept,
+                action,
                 vec![trust_result.reason.clone()],
-                vec![("X-FOFF-Upstream-Trust".to_string(), trust_result.reason)],
+                vec![(
+                    "X-FOFF-Score".to_string(),
+                    format!(
+                        "{} - trusted from upstream foff-milter v{} on {}",
+                        trust_result.score,
+                        env!("CARGO_PKG_VERSION"),
+                        get_hostname()
+                    )
+                )],
             );
         }
 

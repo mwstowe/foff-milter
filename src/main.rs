@@ -143,7 +143,7 @@ async fn analyze_email_file(
     blocklist_config: &Option<BlocklistConfig>,
     toml_config: &Option<TomlConfig>,
     email_file: &str,
-    force_reanalysis: bool,
+    _force_reanalysis: bool,
 ) {
     println!("\n📧 Email Forensic Analysis");
     println!("═══════════════════════════════════════════════════════════════\n");
@@ -705,10 +705,9 @@ async fn analyze_email_file(
     // Set same-server detection (default enabled for analyze)
     filter_engine.set_same_server_detection(true);
 
-    // Disable upstream trust if force reanalysis is requested
-    if force_reanalysis {
-        filter_engine.set_disable_upstream_trust(true);
-    }
+    // Disable upstream trust by default for command line analysis
+    // Only enable upstream trust if --force-reanalysis is explicitly set to false (which isn't possible with current CLI)
+    filter_engine.set_disable_upstream_trust(true);
 
     // Set sender blocking configuration if available
     if let Some(toml_cfg) = &toml_config {
