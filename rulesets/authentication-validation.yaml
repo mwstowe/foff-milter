@@ -115,22 +115,15 @@ rules:
     score: 50
     description: "Suspicious sender domain or address patterns"
 
-  # Missing Authentication Headers (+40 points)
+  # Missing Authentication Headers (+40 points) - Feature-Based
   - name: "Missing Authentication Headers"
     enabled: true
     criteria:
       type: "And"
       criteria:
-        - type: "Not"
-          criteria:
-            type: "HeaderPattern"
-            header: "Authentication-Results"
-            pattern: "dkim=.*"
-        - type: "Not"
-          criteria:
-            type: "HeaderPattern"
-            header: "Authentication-Results"
-            pattern: "spf=.*"
+        - type: "FeatureAnalysis"
+          feature_name: "Authentication Analysis"
+          evidence_pattern: "Authentication risk level: Insecure"
         - type: "Or"
           criteria:
             - type: "SubjectPattern"
@@ -139,7 +132,7 @@ rules:
               header: "From"
               pattern: "(?i).*(official|support|security|billing).*"
     score: 40
-    description: "Missing authentication headers for suspicious content"
+    description: "Missing authentication headers for suspicious content using feature analysis"
 
   # Forged Sender Headers (+60 points)
   - name: "Forged Sender Headers"
@@ -173,19 +166,11 @@ rules:
   - name: "Perfect Authentication"
     enabled: true
     criteria:
-      type: "And"
-      criteria:
-        - type: "HeaderPattern"
-          header: "Authentication-Results"
-          pattern: "dkim=pass"
-        - type: "HeaderPattern"
-          header: "Authentication-Results"
-          pattern: "spf=pass"
-        - type: "HeaderPattern"
-          header: "Authentication-Results"
-          pattern: "dmarc=pass"
+      type: "FeatureAnalysis"
+      feature_name: "Authentication Analysis"
+      evidence_pattern: "Authentication risk level: Secure"
     score: -30
-    description: "Perfect authentication (DKIM, SPF, DMARC all pass)"
+    description: "Perfect authentication using feature analysis (Secure risk level)"
 
   # Government and Educational Domains (-50 points)
   - name: "Government Educational Domains"
@@ -194,17 +179,32 @@ rules:
       type: "SenderPattern"
       pattern: ".*@.*\\.(gov|edu|mil)$"
     score: -50
-    description: "Government, educational, and military domains"
+    description: "Government, educational, and military domains using feature analysis"
 
-  # Established Domain Authentication (-20 points)
+  # Feature-Based Suspicious Email Detection (NEW) - DISABLED for testing
+  - name: "Feature-Based Suspicious Email Detection"
+    enabled: false
+    criteria:
+      type: "And"
+      criteria:
+        - type: "FeatureAnalysis"
+          feature_name: "Sender Alignment"
+          min_score: 30
+        - type: "FeatureAnalysis"
+          feature_name: "Authentication Analysis"
+          evidence_pattern: "Authentication risk level: (Suspicious|Insecure)"
+    score: 50
+    description: "Combination of sender alignment issues and authentication problems using feature analysis"
+
+  # Established Domain Authentication (-20 points) - Feature-Based
   - name: "Established Domain Authentication"
     enabled: true
     criteria:
       type: "And"
       criteria:
-        - type: "HeaderPattern"
-          header: "Authentication-Results"
-          pattern: "dkim=pass"
+        - type: "FeatureAnalysis"
+          feature_name: "Authentication Analysis"
+          evidence_pattern: "DKIM authentication passed"
         - type: "Or"
           criteria:
             - type: "SenderPattern"
@@ -220,7 +220,7 @@ rules:
             - type: "SenderPattern"
               pattern: ".*@.*\\.(gov|edu|mil)$"
     score: -20
-    description: "Known legitimate domains with valid DKIM signatures"
+    description: "Known legitimate domains with valid DKIM signatures using feature analysis"
 
   # Known spam domains
   - name: "Known spam domains"
