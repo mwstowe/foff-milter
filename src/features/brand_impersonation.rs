@@ -65,7 +65,7 @@ impl BrandImpersonationFeature {
         );
         legitimate_domains.insert("home_depot".to_string(), vec!["homedepot.com".to_string()]);
 
-        brand_patterns.insert("lowes".to_string(), vec![r"(?i)\blowe'?s\b".to_string()]);
+        brand_patterns.insert("lowes".to_string(), vec![r"(?i)\blowe'?s\s".to_string()]);
         legitimate_domains.insert("lowes".to_string(), vec!["lowes.com".to_string()]);
 
         brand_patterns.insert(
@@ -112,6 +112,7 @@ impl BrandImpersonationFeature {
     fn detect_brand_mentions(&self, text: &str) -> Vec<String> {
         let mut detected_brands = Vec::new();
         let text_lower = text.to_lowercase();
+        let regex_lowes = Regex::new(r"(?i)\blowe'?s\s").unwrap();
 
         for (brand, patterns) in &self.brand_patterns {
             for pattern in patterns {
@@ -137,7 +138,7 @@ impl BrandImpersonationFeature {
         if text_lower.contains("home depot") {
             detected_brands.push("home_depot".to_string());
         }
-        if text_lower.contains("lowes") || text_lower.contains("lowe's") {
+        if regex_lowes.is_match(&text_lower) {
             detected_brands.push("lowes".to_string());
         }
         if text_lower.contains("tinnitus") {

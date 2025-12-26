@@ -25,7 +25,7 @@ impl ContextAnalyzer {
     pub fn new() -> Self {
         let urgency_patterns = vec![
             Regex::new(r"(?i)(urgent|immediate|act now|limited time|expires today)").unwrap(),
-            Regex::new(r"(?i)(overdue|today|24 hours|don't miss|hurry|last chance)").unwrap(),
+            Regex::new(r"(?i)\b(overdue|within 24 hours|don't miss|hurry|last chance)\b").unwrap(),
             Regex::new(r"(?i)(verify.*account.*immediately|suspend.*account)").unwrap(),
             Regex::new(r"(?i)(click.*here.*now|respond.*within.*hours)").unwrap(),
             // Enhanced service termination urgency patterns
@@ -542,7 +542,8 @@ impl ContextAnalyzer {
             || from_header.to_lowercase().contains("shutterfly")
             || from_header.to_lowercase().contains("resmed")
             || from_header.to_lowercase().contains("quora")
-            || from_header.to_lowercase().contains("nytimes");
+            || from_header.to_lowercase().contains("nytimes")
+            || from_header.to_lowercase().contains("walgreens");
 
         if has_medicare_content && !is_legitimate_service {
             // Check for image-only content (suspicious for Medicare scams)

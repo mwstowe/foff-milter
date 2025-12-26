@@ -17,7 +17,7 @@ impl InvoiceAnalyzer {
     pub fn new() -> Self {
         let scam_indicators = vec![
             Regex::new(r"(?i)(overdue|total amount|invoice number)").unwrap(),
-            Regex::new(r"(?i)(24 hours|payment required|account suspended)").unwrap(),
+            Regex::new(r"(?i)(within 24 hours|payment required|account suspended)").unwrap(),
             Regex::new(r"(?i)\b(click\s+here|verify\s+.*\s+account|update\s+.*\s+payment)\b")
                 .unwrap(),
         ];
@@ -33,6 +33,7 @@ impl InvoiceAnalyzer {
             "dominos.com".to_string(),
             "onestopplus.com".to_string(),
             "empower.com".to_string(),
+            "walgreens.com".to_string(),
         ];
 
         Self {
@@ -59,6 +60,7 @@ impl InvoiceAnalyzer {
             "dominos.com".to_string(),
             "onestopplus.com".to_string(),
             "empower.com".to_string(),
+            "walgreens.com".to_string(),
         ];
 
         Self {

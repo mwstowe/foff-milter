@@ -397,6 +397,7 @@ impl LinkAnalyzer {
                         "shopify.com",
                         "mailchimp.com",
                         "constantcontact.com",
+                        "rs6.net",
                         "sendgrid.net",
                         "consumerreports.org",
                     ];
@@ -547,6 +548,7 @@ impl LinkAnalyzer {
                 "mailgun.com".to_string(),
                 "mailchimp.com".to_string(),
                 "constantcontact.com".to_string(),
+                "rs6.net".to_string(),
                 "sparkpost.com".to_string(),
                 "mandrill.com".to_string(),
                 "amazonses.com".to_string(),
