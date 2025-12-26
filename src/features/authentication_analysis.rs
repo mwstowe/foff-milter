@@ -374,6 +374,8 @@ impl AuthenticationFeature {
                 "amazonses.com".to_string(),
                 "cjm.adobe.com".to_string(),  // Adobe Campaign
                 "cname.cjm.adobe.com".to_string(),  // Adobe Campaign CNAME
+                "klaviyomail.com".to_string(),  // Klaviyo ESP
+                "klaviyodns.com".to_string(),   // Klaviyo DNS/tracking
             ],
             suspicious_patterns: vec![
                 "verify account".to_string(),

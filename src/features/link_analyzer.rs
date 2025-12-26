@@ -561,6 +561,8 @@ impl LinkAnalyzer {
                 "campaign-archive.com".to_string(),
                 "cjm.adobe.com".to_string(),  // Adobe Campaign
                 "cname.cjm.adobe.com".to_string(),  // Adobe Campaign CNAME
+                "klaviyomail.com".to_string(),  // Klaviyo ESP
+                "klaviyodns.com".to_string(),   // Klaviyo DNS/tracking
             ];
 
             DomainUtils::matches_domain_list(&domain, &esp_domains)

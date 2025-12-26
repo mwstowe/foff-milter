@@ -269,6 +269,15 @@ impl EspValidationFeature {
             },
         );
 
+        providers.insert(
+            "klaviyo".to_string(),
+            EspProvider {
+                domains: vec!["klaviyomail.com".to_string(), "klaviyodns.com".to_string()],
+                reputation: EspReputation::Trusted,
+                aliases: vec!["shared.klaviyomail.com".to_string()],
+            },
+        );
+
         let config = EspValidationConfig {
             providers,
             suspicious_patterns: vec![
