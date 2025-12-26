@@ -446,6 +446,11 @@ impl LinkAnalyzer {
             }
         }
 
+        // Check for legitimate business subdomains
+        if self.is_legitimate_subdomain_relationship(sender_domain, link_domain) {
+            return false;
+        }
+
         // If display text mentions a brand but link goes elsewhere
         let brand_mentions = [
             "paypal",
@@ -503,6 +508,48 @@ impl LinkAnalyzer {
         medical_institutions
             .iter()
             .any(|institution| sender.to_lowercase().contains(institution))
+    }
+
+    /// Check if link domain is a legitimate subdomain of sender domain or vice versa
+    fn is_legitimate_subdomain_relationship(&self, sender_domain: &str, link_domain: &str) -> bool {
+        // Extract root domains for comparison
+        let sender_root = self.extract_root_domain(sender_domain).unwrap_or_default();
+        let link_root = self.extract_root_domain(link_domain).unwrap_or_default();
+        
+        // If root domains match, this is a legitimate subdomain relationship
+        if !sender_root.is_empty() && !link_root.is_empty() && sender_root == link_root {
+            return true;
+        }
+        
+        // Check for known legitimate business domain patterns within complex ESP structures
+        let legitimate_business_domains = [
+            "costco.com",
+            "walmart.com", 
+            "target.com",
+            "amazon.com",
+            "microsoft.com",
+            "google.com",
+            "apple.com",
+            "adobe.com",
+            "salesforce.com",
+            "shopify.com",
+            "stripe.com",
+            "paypal.com",
+            "square.com",
+            "mailchimp.com",
+            "sendgrid.net",
+            "constantcontact.com",
+        ];
+        
+        // Check if both domains contain the same legitimate business domain
+        // This handles cases like digital.costco.com.cname.cjm.adobe.com vs data.digital.costco.com
+        for business_domain in &legitimate_business_domains {
+            if sender_domain.contains(business_domain) && link_domain.contains(business_domain) {
+                return true;
+            }
+        }
+        
+        false
     }
 
     fn is_legitimate_retailer(&self, sender: &str) -> bool {
