@@ -1782,23 +1782,18 @@ impl FilterEngine {
         // Check blocklist second - if blocklisted, reject immediately
         if self.is_blocklisted(&context_with_attachments) {
             log::info!("Email blocklisted, rejecting immediately");
-            let (reject_action, headers) = if let Some(ref toml_config) = self.toml_config {
-                if toml_config.system.as_ref().is_none_or(|s| s.reject_to_tag) {
-                    let headers = vec![
-                        (
-                            "X-FOFF-Reject-Converted".to_string(),
-                            "WOULD-REJECT: Message rejected by blocklist".to_string(),
-                        ),
-                        ("X-Spam-Flag".to_string(), "YES".to_string()),
-                    ];
-                    (self.heuristic_spam.clone(), headers)
-                } else {
-                    (self.heuristic_reject.clone(), vec![])
-                }
-            } else {
-                (self.heuristic_reject.clone(), vec![])
-            };
-            return (reject_action, vec!["Blocklisted".to_string()], headers);
+            // Always tag blocklisted emails as spam (default behavior)
+            log::info!("Blocklist: Using spam tag action (default behavior)");
+            let headers = vec![
+                (
+                    "X-FOFF-Reject-Converted".to_string(),
+                    "WOULD-REJECT: Message rejected by blocklist".to_string(),
+                ),
+                ("X-Spam-Flag".to_string(), "YES".to_string()),
+            ];
+            let blocklist_action = self.heuristic_spam.clone();
+            log::info!("Blocklist action: {:?}", blocklist_action);
+            return (blocklist_action, vec!["Blocklisted".to_string()], headers);
         }
 
         let mut matched_rules = Vec::new();
