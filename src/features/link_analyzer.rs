@@ -353,6 +353,24 @@ impl LinkAnalyzer {
     fn is_esp_infrastructure_link(&self, context: &MailContext, link_domain: &str) -> bool {
         let sender = context.from_header.as_deref().unwrap_or("");
 
+        // Check for specific legitimate business infrastructure patterns
+        let business_infrastructure_patterns = [
+            ("costco.com", vec!["digital.costco.com", "data.digital.costco.com"]),
+            ("walmart.com", vec!["walmart.com", "email.walmart.com"]),
+            ("target.com", vec!["target.com", "email.target.com"]),
+            ("amazon.com", vec!["amazon.com", "email.amazon.com"]),
+        ];
+
+        for (business_domain, link_patterns) in &business_infrastructure_patterns {
+            if sender.contains(business_domain) {
+                for pattern in link_patterns {
+                    if link_domain.contains(pattern) {
+                        return true;
+                    }
+                }
+            }
+        }
+
         // Check if sender is from legitimate ESP and link domain matches brand
         if self.is_legitimate_esp(sender) {
             if let Some(brand) = self.extract_brand_from_sender(sender) {
