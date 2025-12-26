@@ -249,6 +249,19 @@ pub enum Criteria {
         // Detects when From header display name claims to be from a different domain than the actual sender
         trusted_domains: Vec<String>,
     },
+    /// Feature-based criteria that checks feature analysis results
+    FeatureAnalysis {
+        // Name of the feature to check (e.g., "Authentication Analysis", "Domain Reputation")
+        feature_name: String,
+        // Minimum score threshold (optional)
+        min_score: Option<i32>,
+        // Maximum score threshold (optional)
+        max_score: Option<i32>,
+        // Evidence pattern to match (optional)
+        evidence_pattern: Option<String>,
+        // Whether to invert the match (default: false)
+        invert: Option<bool>,
+    },
     PhishingSuspiciousLinks {
         // Detects suspicious link patterns commonly used in phishing
         check_url_shorteners: Option<bool>,

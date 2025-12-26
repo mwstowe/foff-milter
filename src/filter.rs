@@ -1389,6 +1389,13 @@ impl FilterEngine {
         extract_email_from_header(header_value)
     }
 
+    /// Get feature analysis results for use in YAML rules
+    fn get_feature_analysis_results(&self, context: &MailContext) -> Vec<crate::features::FeatureScore> {
+        // Run feature analysis on the context
+        let analysis = self.feature_engine.analyze(context);
+        analysis.scores
+    }
+
     /// Check if an IP address is in a private range
     fn is_private_ip(&self, ip_str: &str) -> bool {
         let parts: Vec<&str> = ip_str.split('.').collect();
@@ -1539,6 +1546,9 @@ impl FilterEngine {
             }
             Criteria::PhishingSenderSpoofing { .. } => {
                 // No regex patterns to compile for sender spoofing detection
+            }
+            Criteria::FeatureAnalysis { .. } => {
+                // No regex patterns to compile for feature analysis
             }
             Criteria::PhishingSuspiciousLinks {
                 suspicious_patterns,
@@ -4068,6 +4078,55 @@ impl FilterEngine {
                     }
 
                     false
+                }
+                Criteria::FeatureAnalysis {
+                    feature_name,
+                    min_score,
+                    max_score,
+                    evidence_pattern,
+                    invert,
+                } => {
+                    log::debug!("Checking feature analysis for: {}", feature_name);
+
+                    // Get feature analysis results from context
+                    let feature_results = self.get_feature_analysis_results(context);
+                    
+                    // Find the matching feature
+                    if let Some(feature_score) = feature_results.iter().find(|f| f.feature_name == *feature_name) {
+                        let mut matches = true;
+
+                        // Check score thresholds
+                        if let Some(min) = min_score {
+                            if feature_score.score < *min {
+                                matches = false;
+                            }
+                        }
+                        if let Some(max) = max_score {
+                            if feature_score.score > *max {
+                                matches = false;
+                            }
+                        }
+
+                        // Check evidence pattern
+                        if let Some(pattern) = evidence_pattern {
+                            if let Ok(regex) = regex::Regex::new(pattern) {
+                                let evidence_text = feature_score.evidence.join(" ");
+                                if !regex.is_match(&evidence_text) {
+                                    matches = false;
+                                }
+                            }
+                        }
+
+                        // Apply inversion if requested
+                        if invert.unwrap_or(false) {
+                            matches = !matches;
+                        }
+
+                        matches
+                    } else {
+                        // Feature not found - return false (or true if inverted)
+                        invert.unwrap_or(false)
+                    }
                 }
                 Criteria::PhishingSuspiciousLinks {
                     check_url_shorteners,
