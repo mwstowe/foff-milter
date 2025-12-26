@@ -301,6 +301,20 @@ impl FilterEngine {
                         crate::dkim_verification::DkimAuthStatus::Pass
                     );
 
+                // Check if this is a legitimate business email
+                let is_legitimate_business = self.is_legitimate_business_email(context);
+
+                // For legitimate business emails with valid DKIM, encoding is usually for content formatting
+                if has_valid_dkim && is_legitimate_business {
+                    let reduced_score = base_score / 50; // Reduce by 98% for legitimate business emails
+                    log::debug!(
+                        "Reducing encoding evasion score for legitimate business email from {} to {}",
+                        base_score,
+                        reduced_score
+                    );
+                    return reduced_score;
+                }
+
                 // For legitimate senders with valid DKIM, encoding is usually for internationalization
                 if has_valid_dkim {
                     let reduced_score = base_score / 20; // Reduce by 95% for DKIM-authenticated senders
@@ -356,6 +370,85 @@ impl FilterEngine {
             });
 
         has_reasonable_layers && has_standard_patterns
+    }
+
+    /// Check if this is a legitimate business email that commonly uses encoding
+    fn is_legitimate_business_email(&self, context: &MailContext) -> bool {
+        // Check sender domain for known legitimate businesses
+        let sender_domain = context.from_header.as_deref()
+            .and_then(|from| {
+                // Extract domain from "Name <email@domain.com>" or "email@domain.com" format
+                if let Some(email_start) = from.rfind('<') {
+                    let email_part = &from[email_start + 1..];
+                    if let Some(email_end) = email_part.find('>') {
+                        let email = &email_part[..email_end];
+                        email.split('@').nth(1)
+                    } else {
+                        email_part.split('@').nth(1)
+                    }
+                } else {
+                    from.split('@').nth(1)
+                }
+            })
+            .unwrap_or("");
+
+        log::debug!("Checking legitimate business domain: {}", sender_domain);
+
+        let legitimate_business_domains = [
+            "namecheap.com",
+            "godaddy.com", 
+            "bluehost.com",
+            "hostgator.com",
+            "siteground.com",
+            "digitalocean.com",
+            "linode.com",
+            "vultr.com",
+            "cloudflare.com",
+            "amazon.com",
+            "microsoft.com",
+            "google.com",
+            "apple.com",
+            "paypal.com",
+            "stripe.com",
+            "square.com",
+            "shopify.com",
+            "costco.com",
+            "walmart.com",
+            "target.com",
+            "bestbuy.com",
+            "homedepot.com",
+            "lowes.com",
+            "macys.com",
+            "nordstrom.com",
+            "kohls.com",
+            "jcpenney.com",
+            "sears.com",
+            "overstock.com",
+            "wayfair.com",
+            "etsy.com",
+            "ebay.com",
+        ];
+
+        let is_legitimate_domain = legitimate_business_domains.iter()
+            .any(|domain| sender_domain.contains(domain));
+
+        // Check subject for business email patterns
+        let subject = context.subject.as_deref().unwrap_or("").to_lowercase();
+        let is_business_subject = subject.contains("order") 
+            || subject.contains("receipt") 
+            || subject.contains("invoice") 
+            || subject.contains("statement") 
+            || subject.contains("confirmation") 
+            || subject.contains("summary")
+            || subject.contains("welcome")
+            || subject.contains("account")
+            || subject.contains("subscription")
+            || subject.contains("payment");
+
+        log::debug!("Legitimate business check: domain={}, subject={}, result={}", 
+                   is_legitimate_domain, is_business_subject, is_legitimate_domain || is_business_subject);
+
+        is_legitimate_domain || is_business_subject
     }
 
     /// Normalize email content for enhanced analysis

@@ -219,8 +219,10 @@ impl EmailNormalizer {
     fn decode_base64_if_present(&self, text: &str) -> (String, Vec<EncodingLayer>) {
         let mut layers = Vec::new();
         let mut result = text.to_string();
+        let mut found_any_base64 = false;
+        let mut total_base64_length = 0;
 
-        // Find and decode ALL base64 matches, not just the first one
+        // Find and decode ALL base64 matches, but count as single layer
         loop {
             let current_result = result.clone();
             if let Some(b64_match) = self.base64_regex.find(&current_result) {
@@ -229,11 +231,8 @@ impl EmailNormalizer {
                     if let Ok(decoded) = general_purpose::STANDARD.decode(b64_match.as_str()) {
                         if let Ok(decoded_str) = String::from_utf8(decoded) {
                             result = result.replace(b64_match.as_str(), &decoded_str);
-                            layers.push(EncodingLayer {
-                                encoding_type: EncodingType::Base64,
-                                confidence: 0.8,
-                                suspicious: b64_match.as_str().len() > 200,
-                            });
+                            found_any_base64 = true;
+                            total_base64_length += b64_match.as_str().len();
                             // Continue to find more base64 chunks
                             continue;
                         }
@@ -242,6 +241,15 @@ impl EmailNormalizer {
             }
             // No more base64 chunks found or couldn't decode
             break;
+        }
+
+        // Add only ONE layer for all base64 content found in this pass
+        if found_any_base64 {
+            layers.push(EncodingLayer {
+                encoding_type: EncodingType::Base64,
+                confidence: 0.8,
+                suspicious: total_base64_length > 1000, // Only suspicious if extremely long
+            });
         }
 
         (result, layers)
