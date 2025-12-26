@@ -144,8 +144,22 @@ impl Default for TomlConfig {
             blocklist: Some(BlocklistConfig {
                 enabled: true,
                 addresses: vec![],
-                domains: vec![],
-                domain_patterns: vec![],
+                domains: vec![
+                    "mudwatch.org".to_string(),
+                    "ojjstone.com".to_string(),
+                    "lrxrivera.co.uk".to_string(),
+                    "pass.tjynorth.com".to_string(),
+                    "apartamentywpolsce.pl".to_string(),
+                    "dhdk.pewcar.org".to_string(),
+                ],
+                domain_patterns: vec![
+                    ".*\\.tk$".to_string(),
+                    ".*\\.ml$".to_string(),
+                    ".*\\.ga$".to_string(),
+                    ".*\\.cf$".to_string(),
+                    ".*\\.ru\\.com$".to_string(),
+                    ".*\\.sa\\.com$".to_string(),
+                ],
             }),
             default_action: Some(DefaultActionConfig {
                 action_type: "Accept".to_string(),
@@ -376,8 +390,22 @@ impl TomlConfig {
             blocklist: Some(BlocklistConfig {
                 enabled: true,
                 addresses: vec![],
-                domains: vec![],
-                domain_patterns: vec![],
+                domains: vec![
+                    "mudwatch.org".to_string(),
+                    "ojjstone.com".to_string(),
+                    "lrxrivera.co.uk".to_string(),
+                    "pass.tjynorth.com".to_string(),
+                    "apartamentywpolsce.pl".to_string(),
+                    "dhdk.pewcar.org".to_string(),
+                ],
+                domain_patterns: vec![
+                    ".*\\.tk$".to_string(),
+                    ".*\\.ml$".to_string(),
+                    ".*\\.ga$".to_string(),
+                    ".*\\.cf$".to_string(),
+                    ".*\\.ru\\.com$".to_string(),
+                    ".*\\.sa\\.com$".to_string(),
+                ],
             }),
             default_action: Some(DefaultActionConfig {
                 action_type: "Accept".to_string(),
