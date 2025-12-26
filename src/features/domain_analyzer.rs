@@ -131,6 +131,9 @@ impl DomainAnalyzer {
                 if domain.contains("capitaloneshopping.com")
                     || domain.contains("oracleemaildelivery.com")
                     || domain.contains("amazonses.com")
+                    || domain.contains("blackwellswines.com")
+                    || domain.contains("luxpotshop.com")
+                    || domain.contains("alpineiq.com")
                 {
                     continue;
                 }

@@ -302,6 +302,8 @@ rules:
                 pattern: ".*@.*backerkit.*"
               - type: "SenderPattern"
                 pattern: ".*@.*levi.*"
+              - type: "SenderPattern"
+                pattern: ".*@.*(michaels|costco|walmart|target|amazon|bestbuy|homedepot|lowes)\\.(com|net)$"
     score: 85
     description: "Comprehensive health misinformation, enhancement scams, and adult content"
 
@@ -1385,12 +1387,22 @@ rules:
   # Triple A car kit spam
   - name: "Triple A Car Kit Spam"
     criteria:
-      type: Or
+      type: "And"
       criteria:
-        - type: SubjectPattern
-          pattern: "(?i).*(vehicle.*should.*be.*on.*road|triple.*a|emergency.*car.*kit|roadside.*assistance).*"
-        - type: BodyPattern
-          pattern: "(?i).*(vehicle.*should.*be.*on.*road|triple.*a|emergency.*car.*kit|roadside.*assistance).*"
+        - type: Or
+          criteria:
+            - type: SubjectPattern
+              pattern: "(?i).*(vehicle.*should.*be.*on.*road|triple.*a|emergency.*car.*kit|roadside.*assistance).*"
+            - type: BodyPattern
+              pattern: "(?i).*(vehicle.*should.*be.*on.*road|triple.*a|emergency.*car.*kit|roadside.*assistance).*"
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "SenderPattern"
+                pattern: ".*@.*(backstage|linkedin|indeed|monster|glassdoor|ziprecruiter)\\.(com|net)$"
+              - type: "SenderPattern"
+                pattern: ".*@.*(gov|edu|mil)$"
     score: 180
   # Septic tank spam
   - name: "Septic Tank Spam"

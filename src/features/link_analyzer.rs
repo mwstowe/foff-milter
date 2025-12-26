@@ -359,6 +359,7 @@ impl LinkAnalyzer {
             ("walmart.com", vec!["walmart.com", "email.walmart.com"]),
             ("target.com", vec!["target.com", "email.target.com"]),
             ("amazon.com", vec!["amazon.com", "email.amazon.com"]),
+            ("luxpotshop.com", vec!["alpineiq.com", "lab.alpineiq.com"]),
         ];
 
         for (business_domain, link_patterns) in &business_infrastructure_patterns {
