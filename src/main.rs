@@ -233,29 +233,95 @@ async fn analyze_email_file(
     let mut reply_to_email = None;
     let mut return_path_email = None;
 
-    if let Some(from) = headers.get("From") {
+    if let Some(from) = headers.get("from") {
         println!("From: {}", from);
         if let Some(email) = foff_milter::milter::extract_email_from_header(from) {
             println!("  └─ Email: {}", email);
             from_email = Some(email.clone());
             if let Some(domain) = email.split('@').nth(1) {
                 println!("  └─ Domain: {}", domain);
+
+                // Check domain age
+                let domain_checker = foff_milter::domain_age::DomainAgeChecker::new(10, false);
+                match domain_checker.get_domain_info(domain).await {
+                    Ok(info) => {
+                        if let Some(age_days) = info.age_days {
+                            println!("  └─ Age: {} days old", age_days);
+                            if age_days <= 30 {
+                                println!("      ⚠️  Very young domain (≤30 days)");
+                            } else if age_days <= 90 {
+                                println!("      ⚠️  Young domain (≤90 days)");
+                            }
+                        } else {
+                            println!("  └─ Age: Unknown");
+                        }
+                    }
+                    Err(_) => {
+                        println!("  └─ Age: Could not determine");
+                    }
+                }
             }
         }
     }
 
-    if let Some(reply_to) = headers.get("Reply-To") {
+    if let Some(reply_to) = headers.get("reply-to") {
         println!("Reply-To: {}", reply_to);
         if let Some(email) = foff_milter::milter::extract_email_from_header(reply_to) {
-            reply_to_email = Some(email);
+            reply_to_email = Some(email.clone());
+            if let Some(domain) = email.split('@').nth(1) {
+                println!("  └─ Domain: {}", domain);
+
+                // Check domain age
+                let domain_checker = foff_milter::domain_age::DomainAgeChecker::new(10, false);
+                match domain_checker.get_domain_info(domain).await {
+                    Ok(info) => {
+                        if let Some(age_days) = info.age_days {
+                            println!("  └─ Age: {} days old", age_days);
+                            if age_days <= 30 {
+                                println!("      ⚠️  Very young domain (≤30 days)");
+                            } else if age_days <= 90 {
+                                println!("      ⚠️  Young domain (≤90 days)");
+                            }
+                        } else {
+                            println!("  └─ Age: Unknown");
+                        }
+                    }
+                    Err(_) => {
+                        println!("  └─ Age: Could not determine");
+                    }
+                }
+            }
         }
     }
 
-    if let Some(return_path) = headers.get("Return-Path") {
+    if let Some(return_path) = headers.get("return-path") {
         println!("Return-Path: {}", return_path);
         if let Some(email) = foff_milter::milter::extract_email_from_header(return_path) {
             return_path_email = Some(email.clone());
             println!("  └─ Extracted: {}", email);
+            if let Some(domain) = email.split('@').nth(1) {
+                println!("  └─ Domain: {}", domain);
+
+                // Check domain age
+                let domain_checker = foff_milter::domain_age::DomainAgeChecker::new(10, false);
+                match domain_checker.get_domain_info(domain).await {
+                    Ok(info) => {
+                        if let Some(age_days) = info.age_days {
+                            println!("  └─ Age: {} days old", age_days);
+                            if age_days <= 30 {
+                                println!("      ⚠️  Very young domain (≤30 days)");
+                            } else if age_days <= 90 {
+                                println!("      ⚠️  Young domain (≤90 days)");
+                            }
+                        } else {
+                            println!("  └─ Age: Unknown");
+                        }
+                    }
+                    Err(_) => {
+                        println!("  └─ Age: Could not determine");
+                    }
+                }
+            }
         }
     }
 
@@ -285,7 +351,7 @@ async fn analyze_email_file(
     }
 
     // Check for suspicious sender names (numbers, symbols)
-    if let Some(from) = headers.get("From") {
+    if let Some(from) = headers.get("from") {
         if let Some(name_part) = from.split('<').next() {
             let name = name_part.trim().trim_matches('"');
             if name.chars().all(|c| c.is_numeric() || c == '/' || c == '-') {

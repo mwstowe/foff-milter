@@ -194,14 +194,33 @@ impl DomainReputationAnalyzer {
 
     /// Get reputation score for domain (for scoring systems)
     pub fn get_reputation_score(&self, domain: &str) -> i32 {
-        match self.analyze_domain(domain) {
+        let mut score = match self.analyze_domain(domain) {
             DomainReputation::Trusted => -20,   // Boost legitimate domains
             DomainReputation::Financial => -15, // Boost financial institutions
             DomainReputation::EmailServiceProvider => -10, // Slight boost for ESPs
             DomainReputation::Unknown => 0,     // Neutral
-            DomainReputation::Suspicious => 30, // Penalize suspicious
+            DomainReputation::Suspicious => 50, // Increased penalty for suspicious
             DomainReputation::Malicious => 100, // Heavy penalty for malicious
+        };
+
+        // Enhanced heuristic domain age penalty for suspicious TLDs
+        if matches!(self.analyze_domain(domain), DomainReputation::Suspicious) {
+            // These TLDs are commonly used for newly registered domains in spam/phishing
+            if domain.ends_with(".tk")
+                || domain.ends_with(".ml")
+                || domain.ends_with(".ga")
+                || domain.ends_with(".cf")
+                || domain.ends_with(".icu")
+            {
+                score += 25; // Additional penalty for likely young suspicious domains
+            }
+            // Extra penalty for .cc domains (commonly abused)
+            if domain.ends_with(".cc") {
+                score += 20; // Additional penalty for .cc domains
+            }
         }
+
+        score
     }
 }
 
@@ -408,7 +427,7 @@ mod tests {
 
         assert_eq!(analyzer.get_reputation_score("chase.com"), -15);
         assert_eq!(analyzer.get_reputation_score("sendgrid.net"), -10);
-        assert_eq!(analyzer.get_reputation_score("suspicious.tk"), 30);
+        assert_eq!(analyzer.get_reputation_score("suspicious.tk"), 75); // Updated: 50 base + 25 age penalty
         assert_eq!(analyzer.get_reputation_score("malicious.com"), 100);
     }
 }

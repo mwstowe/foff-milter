@@ -1,172 +1,11 @@
 use crate::features::{FeatureExtractor, FeatureScore};
 use crate::MailContext;
-use serde::Deserialize;
+use regex::Regex;
 use std::collections::HashMap;
 
-#[derive(Debug, Clone, Deserialize)]
-pub struct BrandConfig {
-    pub domains: Vec<String>,
-}
-
-#[derive(Debug, Clone, Deserialize)]
-pub struct BrandImpersonationConfig {
-    pub brands: HashMap<String, BrandConfig>,
-    pub security_keywords: Vec<String>,
-    pub financial_keywords: Vec<String>,
-    pub urgency_keywords: Vec<String>,
-}
-
-#[derive(Debug, Clone)]
-pub struct BrandImpersonationAnalyzer {
-    config: BrandImpersonationConfig,
-    brand_domains: HashMap<String, Vec<String>>, // brand_name -> domains
-    domain_to_brand: HashMap<String, String>,    // domain -> brand_name
-}
-
-impl BrandImpersonationAnalyzer {
-    pub fn new(config: BrandImpersonationConfig) -> Self {
-        let mut brand_domains = HashMap::new();
-        let mut domain_to_brand = HashMap::new();
-
-        // Build lookup tables
-        for (brand_name, brand_config) in &config.brands {
-            let domains: Vec<String> = brand_config
-                .domains
-                .iter()
-                .map(|d| d.to_lowercase())
-                .collect();
-
-            for domain in &domains {
-                domain_to_brand.insert(domain.clone(), brand_name.clone());
-            }
-
-            brand_domains.insert(brand_name.clone(), domains);
-        }
-
-        Self {
-            config,
-            brand_domains,
-            domain_to_brand,
-        }
-    }
-
-    /// Check if sender domain is legitimate for claimed brand
-    pub fn validate_brand_sender(&self, sender_domain: &str, claimed_brand: &str) -> bool {
-        let sender_lower = sender_domain.to_lowercase();
-        let brand_lower = claimed_brand.to_lowercase();
-
-        // Get legitimate domains for this brand
-        if let Some(legitimate_domains) = self.brand_domains.get(&brand_lower) {
-            // Check direct domain match
-            if legitimate_domains.contains(&sender_lower) {
-                return true;
-            }
-
-            // Check subdomain match
-            for domain in legitimate_domains {
-                if sender_lower.ends_with(&format!(".{}", domain)) {
-                    return true;
-                }
-            }
-        }
-
-        false
-    }
-
-    /// Detect brand impersonation in content
-    pub fn detect_brand_impersonation(
-        &self,
-        content: &str,
-        sender_domain: &str,
-    ) -> Vec<(String, i32, String)> {
-        let mut detections = Vec::new();
-        let sender_lower = sender_domain.to_lowercase();
-
-        // Only check for impersonation if sender domain contains brand name
-        // This prevents flagging legitimate mentions of brands in content
-        for brand_name in self.brand_domains.keys() {
-            let brand_lower = brand_name.to_lowercase();
-
-            // Check if sender domain contains the brand name (potential impersonation)
-            if sender_lower.contains(&brand_lower)
-                && !self.validate_brand_sender(&sender_lower, &brand_lower)
-            {
-                // This is a suspicious domain mimicking the brand
-                let score = 40 + self.calculate_context_score(content, &brand_lower);
-                detections.push((
-                    brand_name.clone(),
-                    score,
-                    format!(
-                        "Suspicious domain mimicking brand: {} in {}",
-                        brand_name, sender_domain
-                    ),
-                ));
-            }
-        }
-
-        detections
-    }
-
-    /// Calculate additional score based on suspicious context
-    fn calculate_context_score(&self, content: &str, _brand: &str) -> i32 {
-        let content_lower = content.to_lowercase();
-        let mut score = 0;
-
-        // Check for security-related impersonation
-        for keyword in &self.config.security_keywords {
-            if content_lower.contains(&keyword.to_lowercase()) {
-                score += 30;
-                break;
-            }
-        }
-
-        // Check for financial-related impersonation
-        for keyword in &self.config.financial_keywords {
-            if content_lower.contains(&keyword.to_lowercase()) {
-                score += 25;
-                break;
-            }
-        }
-
-        // Check for urgency tactics
-        for keyword in &self.config.urgency_keywords {
-            if content_lower.contains(&keyword.to_lowercase()) {
-                score += 15;
-                break;
-            }
-        }
-
-        score
-    }
-
-    /// Extract domain from email address
-    fn extract_domain(&self, email: &str) -> Option<String> {
-        email.split('@').nth(1).map(|s| s.to_string())
-    }
-
-    /// Get brand from domain if it's a known legitimate domain
-    pub fn get_brand_from_domain(&self, domain: &str) -> Option<String> {
-        let domain_lower = domain.to_lowercase();
-
-        // Direct lookup
-        if let Some(brand) = self.domain_to_brand.get(&domain_lower) {
-            return Some(brand.clone());
-        }
-
-        // Check subdomains
-        for (legitimate_domain, brand) in &self.domain_to_brand {
-            if domain_lower.ends_with(&format!(".{}", legitimate_domain)) {
-                return Some(brand.clone());
-            }
-        }
-
-        None
-    }
-}
-
-/// Feature extractor for brand impersonation detection
 pub struct BrandImpersonationFeature {
-    analyzer: BrandImpersonationAnalyzer,
+    brand_patterns: HashMap<String, Vec<String>>,
+    legitimate_domains: HashMap<String, Vec<String>>,
 }
 
 impl Default for BrandImpersonationFeature {
@@ -177,99 +16,144 @@ impl Default for BrandImpersonationFeature {
 
 impl BrandImpersonationFeature {
     pub fn new() -> Self {
-        // Default configuration with major brands
-        let mut brands = HashMap::new();
+        let mut brand_patterns = HashMap::new();
+        let mut legitimate_domains = HashMap::new();
 
-        brands.insert(
-            "microsoft".to_string(),
-            BrandConfig {
-                domains: vec![
-                    "microsoft.com".to_string(),
-                    "outlook.com".to_string(),
-                    "live.com".to_string(),
-                ],
-            },
+        // Major brands and their legitimate domains
+        brand_patterns.insert(
+            "starbucks".to_string(),
+            vec![
+                r"(?i)\bstarbucks\b".to_string(),
+                r"(?i)\bstarbuck\b".to_string(),
+            ],
+        );
+        legitimate_domains.insert(
+            "starbucks".to_string(),
+            vec!["starbucks.com".to_string(), "starbucks.co.uk".to_string()],
         );
 
-        brands.insert(
-            "apple".to_string(),
-            BrandConfig {
-                domains: vec!["apple.com".to_string(), "icloud.com".to_string()],
-            },
+        brand_patterns.insert(
+            "omaha_steaks".to_string(),
+            vec![
+                r"(?i)\bomaha\s*steaks?\b".to_string(),
+                r"(?i)\bomaha\b".to_string(),
+            ],
+        );
+        legitimate_domains.insert(
+            "omaha_steaks".to_string(),
+            vec!["omahasteaks.com".to_string()],
         );
 
-        brands.insert(
-            "google".to_string(),
-            BrandConfig {
-                domains: vec!["google.com".to_string(), "gmail.com".to_string()],
-            },
-        );
-
-        brands.insert(
+        brand_patterns.insert("amazon".to_string(), vec![r"(?i)\bamazon\b".to_string()]);
+        legitimate_domains.insert(
             "amazon".to_string(),
-            BrandConfig {
-                domains: vec!["amazon.com".to_string(), "amazonses.com".to_string()],
-            },
+            vec!["amazon.com".to_string(), "amazon.co.uk".to_string()],
         );
 
-        brands.insert(
-            "paypal".to_string(),
-            BrandConfig {
-                domains: vec![
-                    "paypal.com".to_string(),
-                    "paypal-communications.com".to_string(),
-                ],
-            },
+        brand_patterns.insert(
+            "harbor_freight".to_string(),
+            vec![r"(?i)\bharbor\s*freight\b".to_string()],
+        );
+        legitimate_domains.insert(
+            "harbor_freight".to_string(),
+            vec!["harborfreight.com".to_string()],
         );
 
-        brands.insert(
-            "chase".to_string(),
-            BrandConfig {
-                domains: vec!["chase.com".to_string(), "jpmorgan.com".to_string()],
-            },
+        brand_patterns.insert(
+            "home_depot".to_string(),
+            vec![r"(?i)\bhome\s*depot\b".to_string()],
         );
+        legitimate_domains.insert("home_depot".to_string(), vec!["homedepot.com".to_string()]);
 
-        let config = BrandImpersonationConfig {
-            brands,
-            security_keywords: vec![
-                "security alert".to_string(),
-                "suspicious login".to_string(),
-                "unauthorized access".to_string(),
-                "breach detected".to_string(),
-                "virus found".to_string(),
-                "malware detected".to_string(),
-                "security scan required".to_string(),
-                "update antivirus".to_string(),
+        brand_patterns.insert("lowes".to_string(), vec![r"(?i)\blowe'?s\b".to_string()]);
+        legitimate_domains.insert("lowes".to_string(), vec!["lowes.com".to_string()]);
+
+        brand_patterns.insert(
+            "tinnitus".to_string(),
+            vec![
+                r"(?i)\btinnitus\s*\d+\b".to_string(),
+                r"(?i)\bhearing\s*(aid|device)\b".to_string(),
             ],
-            financial_keywords: vec![
-                "update payment method".to_string(),
-                "verify card information".to_string(),
-                "confirm bank details".to_string(),
-                "resolve payment issue".to_string(),
-                "account suspended".to_string(),
-                "payment failed".to_string(),
-                "billing problem".to_string(),
-            ],
-            urgency_keywords: vec![
-                "immediate action".to_string(),
-                "urgent".to_string(),
-                "expires today".to_string(),
-                "act now".to_string(),
-                "limited time".to_string(),
-                "verify now".to_string(),
-                "click here now".to_string(),
-            ],
-        };
+        );
+        legitimate_domains.insert("tinnitus".to_string(), vec!["hearingaid.com".to_string()]);
+        legitimate_domains.insert("paypal".to_string(), vec!["paypal.com".to_string()]);
 
         Self {
-            analyzer: BrandImpersonationAnalyzer::new(config),
+            brand_patterns,
+            legitimate_domains,
         }
     }
 
-    pub fn from_config(config: BrandImpersonationConfig) -> Self {
-        Self {
-            analyzer: BrandImpersonationAnalyzer::new(config),
+    fn extract_domain(&self, email: &str) -> Option<String> {
+        email.split('@').nth(1).map(|s| s.to_lowercase())
+    }
+
+    fn is_suspicious_domain_pattern(&self, domain: &str) -> bool {
+        // Random-looking domain patterns
+        let patterns = [
+            r"^[bcdfghjklmnpqrstvwxyz]{3,}[aeiou][bcdfghjklmnpqrstvwxyz]{3,}\.(com|org|net|co\.uk|cc)$",
+            r"^[a-z]{8,15}\.(cc|tk|ml|ga|cf)$",
+            // Dictionary word + random suffix patterns
+            r"^[a-z]{4,8}(watch|stone|car|dock|temp)\.(org|com|net)$",
+            // Random word combinations
+            r"^(mud|oil|top|big|new|old)(watch|stone|car|dock|temp|cause)\.(org|com|net)$",
+        ];
+
+        for pattern in &patterns {
+            if let Ok(regex) = Regex::new(pattern) {
+                if regex.is_match(domain) {
+                    return true;
+                }
+            }
         }
+        false
+    }
+
+    fn detect_brand_mentions(&self, text: &str) -> Vec<String> {
+        let mut detected_brands = Vec::new();
+        let text_lower = text.to_lowercase();
+
+        for (brand, patterns) in &self.brand_patterns {
+            for pattern in patterns {
+                if let Ok(regex) = Regex::new(pattern) {
+                    if regex.is_match(&text_lower) {
+                        detected_brands.push(brand.clone());
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Also do simple string matching as fallback
+        if text_lower.contains("starbucks") {
+            detected_brands.push("starbucks".to_string());
+        }
+        if text_lower.contains("omaha") {
+            detected_brands.push("omaha_steaks".to_string());
+        }
+        if text_lower.contains("harbor freight") {
+            detected_brands.push("harbor_freight".to_string());
+        }
+        if text_lower.contains("home depot") {
+            detected_brands.push("home_depot".to_string());
+        }
+        if text_lower.contains("lowes") || text_lower.contains("lowe's") {
+            detected_brands.push("lowes".to_string());
+        }
+        if text_lower.contains("tinnitus") {
+            detected_brands.push("tinnitus".to_string());
+        }
+
+        detected_brands
+    }
+
+    fn is_legitimate_domain_for_brand(&self, brand: &str, domain: &str) -> bool {
+        if let Some(legitimate) = self.legitimate_domains.get(brand) {
+            return legitimate
+                .iter()
+                .any(|d| domain == d || domain.ends_with(&format!(".{}", d)));
+        }
+        false
     }
 }
 
@@ -277,68 +161,71 @@ impl FeatureExtractor for BrandImpersonationFeature {
     fn extract(&self, context: &MailContext) -> FeatureScore {
         let mut score = 0;
         let mut evidence = Vec::new();
-        let mut confidence = 0.0f32;
+        let mut confidence: f32 = 0.0;
 
         // Get sender domain
         let sender_domain = if let Some(sender) = &context.sender {
-            if let Some(domain) = self.analyzer.extract_domain(sender) {
-                domain
-            } else {
-                return FeatureScore {
-                    feature_name: "Brand Impersonation".to_string(),
-                    score: 0,
-                    confidence: 0.0,
-                    evidence: vec!["No valid sender domain found".to_string()],
-                };
-            }
+            self.extract_domain(sender)
         } else {
-            return FeatureScore {
-                feature_name: "Brand Impersonation".to_string(),
-                score: 0,
-                confidence: 0.0,
-                evidence: vec!["No sender found".to_string()],
-            };
+            None
         };
 
-        // Combine subject and body for analysis
-        let mut content = String::new();
-        if let Some(subject) = context.headers.get("subject") {
-            content.push_str(subject);
-            content.push(' ');
-        }
-        if let Some(body) = &context.body {
-            if !body.is_empty() {
-                content.push_str(body);
+        // Analyze subject and body for brand mentions
+        let subject = context.subject.as_deref().unwrap_or("");
+        let body = context.body.as_deref().unwrap_or("");
+
+        // Decode subject if it's still encoded - simple Q-encoding decoder
+        let decoded_subject = if subject.contains("=?UTF-8?Q?") || subject.contains("=?ASCII?Q?") {
+            decode_q_encoding(subject)
+        } else {
+            subject.to_string()
+        };
+
+        let combined_text = format!("{} {}", decoded_subject, body);
+
+        let detected_brands = self.detect_brand_mentions(&combined_text);
+
+        if let Some(domain) = &sender_domain {
+            // Check for suspicious domain patterns
+            if self.is_suspicious_domain_pattern(domain) {
+                score += 30;
+                evidence.push(format!("Suspicious domain pattern: {}", domain));
+                confidence += 0.7;
             }
-        }
 
-        // Detect brand impersonation
-        let detections = self
-            .analyzer
-            .detect_brand_impersonation(&content, &sender_domain);
-
-        for (_brand, brand_score, reason) in detections {
-            score += brand_score;
-            evidence.push(format!("Brand impersonation detected: {}", reason));
-            confidence += 0.7; // High confidence in brand impersonation detection
-        }
-
-        // Check if sender claims to be from a major brand but isn't
-        let sender_brand = self.analyzer.get_brand_from_domain(&sender_domain);
-        if sender_brand.is_none() {
-            // Check for brand keywords in sender domain itself
-            for brand_name in self.analyzer.brand_domains.keys() {
-                if sender_domain
-                    .to_lowercase()
-                    .contains(&brand_name.to_lowercase())
-                {
-                    score += 40;
+            // Check for brand impersonation
+            for brand in &detected_brands {
+                if !self.is_legitimate_domain_for_brand(brand, domain) {
+                    score += 85;
                     evidence.push(format!(
-                        "Suspicious domain mimicking brand: {} in {}",
-                        brand_name, sender_domain
+                        "Brand impersonation: Claims to be {} but sender domain is {}",
+                        brand, domain
                     ));
-                    confidence += 0.8;
-                    break;
+                    confidence += 0.9;
+                }
+            }
+
+            // Additional penalties for suspicious patterns with brand claims
+            if !detected_brands.is_empty() {
+                // .org domains with commercial brand claims are suspicious
+                if domain.ends_with(".org") {
+                    score += 25;
+                    evidence.push(format!(
+                        "Commercial brand claims from .org domain: {}",
+                        domain
+                    ));
+                    confidence += 0.7;
+                }
+
+                // Suspicious TLD penalty
+                if domain.ends_with(".cc")
+                    || domain.ends_with(".tk")
+                    || domain.ends_with(".ml")
+                    || domain.ends_with(".co.uk")
+                {
+                    score += 35;
+                    evidence.push(format!("Suspicious TLD with brand claims: {}", domain));
+                    confidence += 0.6;
                 }
             }
         }
@@ -356,67 +243,35 @@ impl FeatureExtractor for BrandImpersonationFeature {
     }
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+/// Simple Q-encoding decoder for MIME headers
+fn decode_q_encoding(encoded: &str) -> String {
+    // Extract the encoded part between =?charset?Q? and ?=
+    if let Some(start) = encoded.find("?Q?") {
+        if let Some(end) = encoded.rfind("?=") {
+            let encoded_part = &encoded[start + 3..end];
 
-    fn create_test_config() -> BrandImpersonationConfig {
-        let mut brands = HashMap::new();
-        brands.insert(
-            "microsoft".to_string(),
-            BrandConfig {
-                domains: vec!["microsoft.com".to_string(), "outlook.com".to_string()],
-            },
-        );
-        brands.insert(
-            "paypal".to_string(),
-            BrandConfig {
-                domains: vec!["paypal.com".to_string()],
-            },
-        );
+            // Decode Q-encoding: =XX becomes the byte XX, _ becomes space
+            let mut result = String::new();
+            let mut chars = encoded_part.chars().peekable();
 
-        BrandImpersonationConfig {
-            brands,
-            security_keywords: vec!["security alert".to_string()],
-            financial_keywords: vec!["payment failed".to_string()],
-            urgency_keywords: vec!["urgent".to_string()],
+            while let Some(ch) = chars.next() {
+                match ch {
+                    '=' => {
+                        // Read next two hex digits
+                        if let (Some(h1), Some(h2)) = (chars.next(), chars.next()) {
+                            if let Ok(byte) = u8::from_str_radix(&format!("{}{}", h1, h2), 16) {
+                                result.push(byte as char);
+                            }
+                        }
+                    }
+                    '_' => result.push(' '),
+                    other => result.push(other),
+                }
+            }
+
+            return result;
         }
     }
 
-    #[test]
-    fn test_legitimate_brand_sender() {
-        let analyzer = BrandImpersonationAnalyzer::new(create_test_config());
-
-        assert!(analyzer.validate_brand_sender("microsoft.com", "microsoft"));
-        assert!(analyzer.validate_brand_sender("mail.microsoft.com", "microsoft"));
-        assert!(!analyzer.validate_brand_sender("fake-microsoft.com", "microsoft"));
-    }
-
-    #[test]
-    fn test_brand_impersonation_detection() {
-        let analyzer = BrandImpersonationAnalyzer::new(create_test_config());
-
-        let detections = analyzer.detect_brand_impersonation(
-            "Microsoft security alert: urgent action required",
-            "fake-microsoft.com",
-        );
-
-        assert!(!detections.is_empty());
-        assert!(detections[0].1 > 50); // Should have high score due to security + urgency
-    }
-
-    #[test]
-    fn test_brand_from_domain() {
-        let analyzer = BrandImpersonationAnalyzer::new(create_test_config());
-
-        assert_eq!(
-            analyzer.get_brand_from_domain("microsoft.com"),
-            Some("microsoft".to_string())
-        );
-        assert_eq!(
-            analyzer.get_brand_from_domain("mail.microsoft.com"),
-            Some("microsoft".to_string())
-        );
-        assert_eq!(analyzer.get_brand_from_domain("fake.com"), None);
-    }
+    encoded.to_string()
 }

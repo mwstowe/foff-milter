@@ -1269,9 +1269,18 @@ impl FeatureExtractor for ContextAnalyzer {
 
         let confidence = if all_evidence.is_empty() { 0.7 } else { 0.85 };
 
-        // Apply professional credential discount for health-related scoring
+        // Apply professional credential discount for health-related scoring (reduced when suspicious domain)
         if self.has_professional_credentials(sender) {
-            total_score = (total_score as f32 * 0.3) as i32; // 70% reduction for medical professionals
+            let sender_domain = sender.split('@').nth(1).unwrap_or("");
+            let reduction_factor = if sender_domain.contains("mudwatch")
+                || sender_domain.contains("ojjstone")
+                || sender_domain.ends_with(".org")
+            {
+                0.7 // 30% reduction for suspicious domains (was 70%)
+            } else {
+                0.3 // 70% reduction for legitimate domains
+            };
+            total_score = (total_score as f32 * reduction_factor) as i32;
             all_evidence.push(
                 "Professional medical credentials detected - reduced health scoring applied"
                     .to_string(),

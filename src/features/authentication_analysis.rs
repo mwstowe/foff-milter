@@ -370,11 +370,86 @@ impl AuthenticationFeature {
             analyzer: AuthenticationAnalyzer::new(config),
         }
     }
+
+    /// Detect potential brand impersonation
+    fn detect_brand_impersonation(&self, context: &MailContext) -> bool {
+        let subject = context.subject.as_deref().unwrap_or("");
+        let body = context.body.as_deref().unwrap_or("");
+        let combined_text = format!("{} {}", subject, body).to_lowercase();
+
+        // Debug output
+        log::debug!("Brand detection - Subject: '{}'", subject);
+        log::debug!(
+            "Brand detection - Combined text contains 'starbucks': {}",
+            combined_text.contains("starbucks")
+        );
+
+        // Major brands to check for
+        let brands = [
+            "starbucks",
+            "amazon",
+            "paypal",
+            "apple",
+            "microsoft",
+            "google",
+            "omaha",
+        ];
+
+        // Get sender domain
+        let sender_domain = if let Some(sender) = &context.sender {
+            sender.split('@').nth(1).map(|s| s.to_lowercase())
+        } else {
+            None
+        };
+
+        // Check if content mentions brands but sender domain doesn't match
+        for brand in &brands {
+            if combined_text.contains(brand) {
+                if let Some(ref domain) = sender_domain {
+                    // Check if sender domain matches the brand
+                    if !domain.contains(brand) && !self.is_legitimate_esp(domain) {
+                        log::debug!(
+                            "Brand impersonation detected: {} in content but domain is {}",
+                            brand,
+                            domain
+                        );
+                        return true;
+                    }
+                }
+            }
+        }
+
+        false
+    }
+
+    /// Check if domain is a legitimate ESP that can send for any brand
+    fn is_legitimate_esp(&self, domain: &str) -> bool {
+        let esp_domains = [
+            "sendgrid.net",
+            "mailgun.org",
+            "mailchimp.com",
+            "constantcontact.com",
+            "campaignmonitor.com",
+            "awsses.com",
+            "amazonses.com",
+        ];
+
+        esp_domains.iter().any(|esp| domain.contains(esp))
+    }
 }
 
 impl FeatureExtractor for AuthenticationFeature {
     fn extract(&self, context: &MailContext) -> FeatureScore {
-        let (risk_level, score, evidence) = self.analyzer.analyze_authentication(context);
+        let (risk_level, mut score, evidence) = self.analyzer.analyze_authentication(context);
+
+        // Check for brand impersonation to reduce authentication bonuses
+        let has_brand_impersonation = self.detect_brand_impersonation(context);
+
+        // Reduce authentication bonuses if suspicious content detected
+        if has_brand_impersonation && score < 0 {
+            // Reduce authentication bonus by 50% when brand impersonation detected
+            score /= 2;
+        }
 
         let confidence = match risk_level {
             AuthenticationRisk::Secure => 0.9,
@@ -386,6 +461,11 @@ impl FeatureExtractor for AuthenticationFeature {
 
         let mut final_evidence = evidence;
         final_evidence.push(format!("Authentication risk level: {:?}", risk_level));
+
+        if has_brand_impersonation {
+            final_evidence
+                .push("Authentication bonus reduced due to suspicious content".to_string());
+        }
 
         FeatureScore {
             feature_name: "Authentication Analysis".to_string(),

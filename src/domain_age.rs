@@ -137,7 +137,7 @@ impl DomainAgeChecker {
     }
 
     /// Get domain information (with caching)
-    async fn get_domain_info(&self, domain: &str) -> Result<DomainInfo> {
+    pub async fn get_domain_info(&self, domain: &str) -> Result<DomainInfo> {
         let domain = domain.to_lowercase();
 
         // Check cache first

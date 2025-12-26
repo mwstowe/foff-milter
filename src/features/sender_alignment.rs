@@ -1295,16 +1295,26 @@ impl FeatureExtractor for SenderAlignmentAnalyzer {
         // Ensure we return a result if brand impersonation was detected, even if base score was 0
         let confidence = if evidence.is_empty() { 0.9 } else { 0.85 };
 
-        // Apply professional credential discount
+        // Apply professional credential discount (reduced when domain mismatch present)
         if self.detect_professional_credentials(context.from_header.as_deref().unwrap_or("")) {
-            score = (score as f32 * 0.3) as i32; // 70% reduction for medical professionals
+            let reduction_factor = if sender_info.from_domain != sender_info.sender_domain {
+                0.6 // 40% reduction when domain mismatch (was 70%)
+            } else {
+                0.3 // 70% reduction when domains match
+            };
+            score = (score as f32 * reduction_factor) as i32;
             evidence
                 .push("Professional credentials detected - reduced scoring applied".to_string());
         }
 
-        // Apply organization whitelist discount
+        // Apply organization whitelist discount (reduced when domain mismatch present)
         if self.detect_legitimate_organization(&sender_info.from_domain) {
-            score = (score as f32 * 0.2) as i32; // 80% reduction for legitimate organizations
+            let reduction_factor = if sender_info.from_domain != sender_info.sender_domain {
+                0.8 // 20% reduction when domain mismatch (was 50%)
+            } else {
+                0.2 // 80% reduction when domains match
+            };
+            score = (score as f32 * reduction_factor) as i32;
             evidence.push(
                 "Legitimate organization detected - significant scoring reduction applied"
                     .to_string(),
