@@ -1,0 +1,354 @@
+Return-Path: <info@dhdk.pewcar.org>
+Received: from juliett.baddomain.com (localhost [127.0.0.1])
+	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTP id 5BPJgUXi093024
+	for <mstowe@localhost>; Thu, 25 Dec 2025 19:42:30 GMT
+	(envelope-from info@dhdk.pewcar.org)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (2048-bit key; unprotected) header.d=mudwatch.org header.i=iddi@mudwatch.org header.b=AnuGsfOt
+Received: from jimapinternal-aol.imap.mail.g03.yahoodns.net [74.6.160.39]
+	by juliett.baddomain.com with IMAP (fetchmail-6.6.1)
+	for <mstowe@localhost> (single-drop); Thu, 25 Dec 2025 19:42:30 +0000 (UTC)
+Received: from 127.0.0.1
+ by atlas-production.v2-mail-prod1-bf1.omega.yahoo.com pod-id atlas--production-bf1-79956fdf7c-ngmbx.bf1.yahoo.com with HTTP; Thu, 25 Dec 2025 19:41:24 +0000
+X-Originating-Ip: [94.237.27.3]
+Received-SPF: pass (domain of dhdk.pewcar.org designates 94.237.27.3 as permitted sender)
+Authentication-Results: atlas-production.v2-mail-prod1-bf1.omega.yahoo.com;
+ dkim=pass header.i=@mudwatch.org header.s=selector1 arc_overridden_status=NOT_OVERRIDDEN;
+ spf=pass smtp.mailfrom=dhdk.pewcar.org arc_overridden_status=NOT_OVERRIDDEN;
+ dmarc=pass(p=REJECT) header.from=mudwatch.org arc_overridden_status=NOT_OVERRIDDEN;
+X-Apparently-To: user@example.com; Thu, 25 Dec 2025 19:41:25 +0000
+X-YMailISG: K_MmRDsWLDssGkVMANG6xURC4NqqRx1LbUaCCtYp3NMcvzwF
+ rysqyJ_J2uAELkUeNNf1oNGxB_of9myV5uYf6qXL8tBC0Uo2OQk4OXYbLbe7
+ n9xx9Jeio9p9HuxI6osRGwk24PqmUEZFcRF0RC3aIvFojjoAMoB5uV8VW0mH
+ V.MjFuDjushg_i6RkF5KJjBTTRyGV9CC62DYOrqngY8qY1KuNmkLjb09Xr32
+ M3LrjcPirWm.._CDvR3exc6zBm9bhRmBZkBhDTfmI..j_JLHLRfwRlhwO2js
+ YBdOkbUdK3yW4kHiArvNNUyXVYSTcDurffj1G9Fs_C6bkLBztOLBe7xznE8b
+ NY6lIeR5TYLUItIcco6FLfIK..i6LjEOOcWTEVFiM38w4T3j5ZsWpwk5YG2c
+ exUFLkDBHRu5ymO2Rw8qaxTUUAzhWBZeWT7q5eKzt35U1lEjLj_Lm4LG0F6K
+ zc1J7DmTEXP9BXvp3UVJ.MISnkjgH8upxpXnDCJFlZ8W24x1VEaN.QgkQru8
+ PRSI9SMV925SINJHE4hl4VbKT0a3UxwKOjAMkUwq0xabjzoV5YXON9kctnB8
+ negZNpxxg0sjEbcbeiAgcZSGYNVMBizm21tRaigjE0zHo9UTB8Fw7e76nByw
+ VcoWVYVDn.yd1tZVWYQx5P3eqZ_GUDYRSRqwN9HERsl1DGktS_yO.J9anrpT
+ d9HTKnylhbZ12DgxWcbkZaU00aNLaJCfUsQrq.vAJTaqBfoqz9YzJH9TAMaM
+ 1boVjpg5q.iNpnrReFyy0Ut4oQ3hm586XAsW08n6gxjrbArbuzj_ePvvXT.a
+ .JDykhcx8cRC8IOsdsMtFEFhDmDNNPdBWSs2yiDTb93kWZcWlQ.m6slHj_8r
+ PQm4rKzdTCtW9Odx.ncDGu4UG6wo2AJ2.gWnykSjLK_.sInpXFdDwXGh82Za
+ 5N50_Dz.oBoueFL4sDCNyD6bjDk3V2FFL3PcmJNU4G8EKWrmOyMPyp_o8fLz
+ tsSKpxtFZMJqeJ0OS1tZ1xH6Ucs8Csyor6.RrUg2QnQI74ACUUvq_bgO2Ehf
+ avjuhjhOCDUgQJWDUJMy3Yku_ldW8hI5DlZKNJi9YZsiDz5zwoD3junPE9bb
+ tu7ZMExH3qG8zvcyO3AyE85coKW4TpMlg6ksYzr7QRfA0hBVdzkbLWCKo.Hg
+ yQjfDh07tlqZpKo2ExC._xfVInTYZ9jd1MYCKBWgrtrNXA7w59Cxooq5Xz8j
+ Ue6s332wJyZCzQ7dy1aaZ5B.sJbrueXKZqF6aQ1xMV6_uWb_PyIsBXXnUwI4
+ M9X.xpk_IBXSGBA27WvwBRMggPDDxcyMeMgLCtnchhAJ9ltIk0SBAeGNfwoP
+ OHxNpt18jL1_fNS7A7aIq0xspVNR89tFClAY.h6BvztSrbw1lhWIwc7LDw--
+Received: from 94.237.27.3 (EHLO outbound.goskillfully.info)
+ by 10.196.122.44 with SMTP;
+ Thu, 25 Dec 2025 19:41:24 +0000
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; s=selector1; d=mudwatch.org;
+ h=Date:From:Subject:To:Reply-To:Message-ID:Content-Transfer-Encoding:Content-Type:MIME-Version:List-Unsubscribe; i=iddi@mudwatch.org;
+ bh=3AQ05c4xUqD9O8QzaAh7TIYGlyg=;
+ b=AnuGsfOtw2uKgtYQmyXfEWW+nSjE/NsBNq4KlfMT7hR6/dBT3klWhhWuWPMiR9HBzUSbGig6vYSm
+   VHiMvPYztbqLX3dRe7qt/w9OoidJmKsFQsscwjnYQLy24PDxYByamRaa9vJrMpI4CBRErwEFmS0R
+   mqoL1jWJcbt4IaXvCeMdljvbH0Z/9TfQ3ZgqoOj/Z9P8XcN22UOhUP/80Y3HyVH/PETU2ga3J1hM
+   i1YTIRMnXo5serwT6aspZ9QKchVhlb1H6cJ7kb5//BDOs3xTAujiZZOtWe2wIXiWDA6AepWVqslC
+   VNcusBGQSs8d9UB2GlkBeYrCBmF1DT/R36aLtQ==
+DomainKey-Signature: a=rsa-sha1; c=nofws; q=dns; s=selector1; d=mudwatch.org;
+ b=ocPDxoWdA0nB1xp5yude/w+w/Wo94LOnJDk0F3n8sm3MxMv9W+raE0fly7sExeXMJSHrk81LBCao
+   6il9s75tR911g/RZ0Kx6vwF4XObY0P4sbkGFWGI4IdatvOcPISxq2oz5BOFiJkoQn59pT3qSXen+
+   hK+mwb8iyJ/98/BaMkKauqnF1BlTfYoFWpIkOraCrhkHuxRbJ1sNTUkHwr9ElyadbjSQyI6bdjhd
+   y/kqG5Q9/mEczZ1awCKU8R7Wg2PvGJkQMlNe9qGTmQNZFuWSUNAAzquGg980BLad+tbRLWtv3peP
+   iICH0iUZzD6GelUcVhOcGOtDNKL/Vtq/7Ykd0w==;
+Date: Thu, 25 Dec 2025 14:41:03 -0500
+From: """"" =?ASCII?Q?Harbor=20Freight=20Customer=20Team?=       """"" <iddi@mudwatch.org>
+Subject: =?ASCII?Q?Your=20Harbor=20Freight=20Overview?= 
+To: user@example.com
+Reply-To: <iddi@mudwatch.org>
+Message-ID: <4qnf00tnpd.62q881771w28m91sibnm@mudwatch.org>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html; charset="UTF-"
+MIME-Version: 1.0
+List-Unsubscribe: <https://mudwatch.org/release-notes/unsub.htm>, <mailto:unsubscribe-555-123-4567@mudwatch.org?subject=Unsubscribe>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [0.0.0.0]); Thu, 25 Dec 2025 19:42:31 +0000 (UTC)
+
+<html>
+  <body>
+<center><div class=3D"centered">
+    <a href=3D"http://top.nibcause.org/3729188xP17061174Se19699118dP8171VJ5Jir236901sz" title=3D"">
+      <img src=3D"http://top.nibcause.org/images/gyU8k.png" alt=3D"">
+    </a>
+  </div>
+
+  <div class=3D"centered">
+    <a href=3D"http://top.nibcause.org/3729188GH17061174OC19699118cH8171Qb5wSu236901pJ" title=3D"">
+      <img src=3D"http://top.nibcause.org/images/JbEG8.png" alt=3D"">
+    </a>
+  
+  <p>   <img src=3D"http://top.nibcause.org/3729188Ci17061174eR19699118Gc8171Nf5eZo236901Aa" width=3D'1=
+px' height=3D'1px'>
+    
+  </div></center>
+</body>
+  </html>
+  <div id ="preheader" style="display:none; mso-hide: all;"><singleline label="PreHeader">
+<span style="display: none !important; font-size: 0px; color: #ffffff; mso-hide: all;">
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Greenhouse Update</title>
+<style type="text/css">
+      span,
+      td,
+      table,
+      div {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      .st-email-body {
+        width: 100% !important;
+        -webkit-text-size-adjust: 100%;
+        margin: 0 auto !important;
+        padding: 0px;
+        background-color: #ffffff;
+      }
+      #outlook a {
+        padding: 0;
+        text-decoration: none !important
+      }
+      span.st-preheader {
+        display: none !important;
+      }
+      img+div {
+        display: none;
+      }
+      a[href^="tel"],
+      a[href^="sms"] {
+        text-decoration: none;
+        color: inherit !important;
+        pointer-events: none;
+        cursor: default;
+      }
+      u+.st-email-body a {
+        color: inherit;
+        text-decoration: none;
+        font-size: inherit;
+        font-family: inherit;
+        font-weight: inherit;
+        line-height: inherit;
+      }
+      *[x-apple-data-detectors] {
+        color: inherit !important;
+        text-decoration: none !important;
+        font-size: inherit !important;
+        font-family: inherit !important;
+        font-weight: inherit !important;
+        line-height: inherit !important;
+      }
+      a,
+      a:hover,
+      a:link,
+      a:visited {
+        text-decoration: none !important;
+        outline: none;
+      }
+      p {
+        margin: 0;
+        padding: 0;
+      }
+      .st-hide-desktop {
+        display: none;
+        font-size: 0;
+        height: 0;
+        min-height: 0;
+        max-height: 0;
+        line-height: 0;
+        mso-hide: all;
+      }
+      .st-gmail-fix {
+        display: none !important;
+      }
+      @media screen and (max-width: 480px) {
+        .st-col,
+        .st-mobile-full-width,
+        .st-module-wrapper-table,
+        .st-wrapper,
+        .st-wrapper-table {
+          width: 100% !important
+        }
+        .st-col {
+          padding: 0 !important
+        }
+        .st-resize {
+          width: 100% !important
+        }
+        .st-mobile-width-constraint,
+        .st-resize {
+          display: block !important;
+          height: auto !important
+        }
+        .st-mobile-width-constraint {
+          max-width: 100% !important
+        }
+        .st-equal-height,
+        .st-height-auto {
+          height: auto !important
+        }
+        .st-hide-desktop {
+          display: table-row !important
+        }
+        .st-hide-mobile {
+          display: none !important
+        }
+        .st-mobile-inline {
+          display: inline !important
+        }
+        .show-img-mobile {
+          display: table-row !important;
+          width: 100% !important;
+          float: none;
+          overflow: visible !important;
+          height: auto !important
+        }
+        .st-dynamic-555-2 {
+          width: 100% !important;
+          max-width: 122px !important;
+        }
+        .st-dynamic-537-5 {
+          background-image: none !important;
+        }
+        .st-dynamic-628-10 {
+          width: 100% !important;
+          max-width: 120px !important;
+        }
+        .st-dynamic-674-17 {
+          width: 100% !important;
+          max-width: 19px !important;
+        }
+        .st-wrapper-table {
+          width: 100% !important;
+          max-width: 480px !important;
+          margin: 0 auto;
+        }
+      }
+      #MessageViewBody .st-module-wrapper-table {
+        margin-top: -1px
+      }
+      @media (max-width:599px) and (min-width:480px) {
+        .st-module-wrapper-table {
+          margin-top: -1px !important;
+        }
+      }
+      div>u+.body .st-module-wrapper-table {
+        margin-top: 0px !important
+      }
+    </style>
+
+    <!--[if mso]>
+    <style>
+        table{
+            border-collapse: collapse;
+        }
+                span.MsoHyperlink {
+            mso-style-priority:99;
+            color:inherit;
+        }
+        span.MsoHyperlinkFollowed {
+            mso-style-priority:99;
+            color:inherit;
+        }
+        ul, ol{margin:0px !important}
+        ol li, ul li {margin-top:0px !important;margin-bottom:0px !important;}
+        ol li {margin-left:45px !important}
+        ul li {list-style: disc outside;mso-special-format: bullet;margin-left:40px !important}
+    </style>
+<!-->
+
+    <!--[if gte mso 9]>
+    <style>
+        .st-mso-full-width{
+            width: 100%;
+        }
+            </style>
+<!-->
+
+    <!--[if IEMobile]>
+    <style type="text/css">
+        .st-mso-full-width{
+            width: 100%;
+        }
+    </style>
+<!-->
+    <style>
+      .aligned-bullets ul {
+        list-style-position: outside !important;
+      }
+      .aligned-bullets ol {
+        list-style-position: outside !important;
+      }
+      @media screen and (max-width: 480px) {
+        .center-element {
+          text-align: center !important;
+          margin: 0 auto !important;
+        }
+        .center-element table {
+          margin: 0 auto !important;
+        }
+        .center-element img {
+          margin: 0 auto !important;
+        }
+        .center-element p {
+          text-align: center !important;
+        }
+        .center-image img {
+          margin: 0 auto !important;
+        }
+        .reset-padding-sides {
+          padding-left: 0px !important;
+          padding-right: 0px !important;
+        }
+        .padding-mob-col {
+          padding-left: 39px !important;
+          padding-right: 19px !important;
+        }
+        .height325 img {
+          height: 325px !important;
+        }
+        .min-width img {
+          min-width: 120px !important;
+        }
+      }
+    </style>
+</head>
+<body>
+
+  <h1>Greenhouse Company Update</h1>
+
+  <p>Dear customer,</p>
+
+  <p>I’d like to share important news about Greenhouse. This update will be announced to all Greenhouse customers, media, analysts and partners today.</p>
+
+  <p>Greenhouse has secured an investment from TPG to support our growth and strengthen our mission of helping companies improve their hiring practices.</p>
+
+  <p>The investment comes from TPG Growth and The Rise Fund, TPG’s social impact fund. This partnership brings additional resources and long-term vision aligned with our goals. The Rise Fund focuses on measurable impact, which supports our efforts to create positive outcomes for our customers and the broader community.</p>
+
+  <p>Since we began, we’ve been supported by investors who believed in our strategy and mission. As we looked toward our next phase, we selected a partner who understands our work with more than 4,000 customers and recognizes our role in shaping talent acquisition. This partnership will enable Greenhouse to advance product innovation, expand into new markets and build solutions that improve diversity, equity and inclusion in hiring.</p>
+
+  <p>You can read more about this investment and why we chose this partnership on our blog.</p>
+
+  <p>On behalf of myself, my co-founder Jon, and the entire Greenhouse team, thank you for your continued support.</p>
+
+  <p>We’re excited for what’s ahead!</p>
+
+  <p class="signature">— The Greenhouse Team</p>
+
+</body>
+</html>
+
+
+
+
+
+
+

@@ -1,0 +1,2408 @@
+Return-Path: <mstowe+caf_=mstowe=baddomain.com@gmail.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTPS id 5BP1HFqA056906
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <mstowe@baddomain.com>; Thu, 25 Dec 2025 01:17:16 GMT
+	(envelope-from mstowe+caf_=mstowe=baddomain.com@gmail.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (2048-bit key; unprotected) header.d=email.surlatable.com header.i=sur_la_table@email.surlatable.com header.b=4F4fqGV/;
+	dkim=pass (2048-bit key; unprotected) header.d=emarsys.net header.i=@emarsys.net header.b=FJ4k3pie
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 5BP1HD3k033821
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=OK)
+	for <mstowe@baddomain.com>; Wed, 24 Dec 2025 19:17:14 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 5BP1HD3k033821
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (2048-bit key, unprotected) header.d=email.surlatable.com header.i=sur_la_table@email.surlatable.com header.a=rsa-sha256 header.s=key6 header.b=4F4fqGV/;
+	dkim=pass (2048-bit key, unprotected) header.d=emarsys.net header.i=@emarsys.net header.a=rsa-sha256 header.s=emarsys-2048a header.b=FJ4k3pie
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-64b58553449so7036482a12.1
+        for <mstowe@baddomain.com>; Wed, 24 Dec 2025 17:17:14 -0800 (PST)
+ARC-Seal: i=2; a=rsa-sha256; t=555-123-4567; cv=pass;
+        d=google.com; s=arc-20240605;
+        b=ISCophgYwg2Bcj3zPFblb3G4cBvf89CKGfjOhNeCWGb1xcseZCHeQT5yBYBzZHvni8
+         KFNuQ8h6ISLtAh6k0/hTPpwPeIvimpK8f34ct8Xz/jnPN7OCZFEN64NA5HmWt1ROhnKB
+         6uGEe4rnNu0l3hmRenDWsc9qpeKZ2It9tSlDxMwhNblJYa9aPWF5oJIVhRanwMZMu31F
+         4KS01dPUia1XuUWhGnAvDfRhij36zZ9cIlzY+dlJSOvSmBU7KgtehlnLufH0pWOotWlB
+         asUls0pwEk+JFCSxuH472Zsr4RIFNSXK4bmOWxjkXGAxLpbmwAG0l/b9GZgNxF5urHLj
+         4BYw==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=date:message-id:list-unsubscribe-post:list-unsubscribe:list-id
+         :mime-version:from:subject:to:dkim-signature:dkim-signature
+         :delivered-to;
+        bh=xTps9NmNZYFWJFciadDSstxtQo2G8e6U2X6oP21UsEg=;
+        fh=qwCf6KnlqWa53ZTDBQrO4Jc464AqEiB0+9X93fmpeLQ=;
+        b=dD8Ms3zmH6zO5UfNNcS1cPXhmO+vTmZMe9FmCDQsUWX4ZsAltLzTonQh28KNJdjwls
+         HuMYBFzDakZgqdzMa1M101dHjqr3T1xWwtgi3j/SqhwZLjLRuyV6l92ho5ynm1ZkZuRn
+         wyBezqXsieTSm0+tsIMyTQ+4+1gFahU3EhjUHpX2UhL9HKSPOUkltrMDy4HnnKEvCmeV
+         577qvVm/j05Brd0quXlmrHMuKv1Ue/rg+O1Ii3SBukcCJGqlUcBzun54qhDe+FE4Kz+v
+         7x8qKOv427rDaX75UVl4EhvF0eDdN1cL5XZowv7uPhg4zAyjD0IDx0VXIug2r/X7inlQ
+         D3vA==;
+        darn=baddomain.com
+ARC-Authentication-Results: i=2; mx.google.com;
+       dkim=pass header.i=@email.surlatable.com header.s=key6 header.b="4F4fqGV/";
+       dkim=pass header.i=@emarsys.net header.s=emarsys-2048a header.b=FJ4k3pie;
+       spf=pass (google.com: domain of suite17@bounces.email.surlatable.com designates 185.90.21.101 as permitted sender) smtp.mailfrom=suite17@bounces.email.surlatable.com;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=email.surlatable.com
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=555-123-4567; x=555-123-4567;
+        h=date:message-id:list-unsubscribe-post:list-unsubscribe:list-id
+         :mime-version:from:subject:to:dkim-signature:dkim-signature
+         :delivered-to:x-forwarded-for:x-forwarded-to:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=xTps9NmNZYFWJFciadDSstxtQo2G8e6U2X6oP21UsEg=;
+        b=TRWVZ6Jm+dU+d3P87nYmyBmNTojzl4snVmNB2sq+pt8ePv3aQ3vS5S3U2PDrtu8NP0
+         IIu4sy3dxQ8WMUTWx4kAOCx+T6xSuu8U62ahhpxdD8rhi1ixTlBn9jOYiCswuSCXRW/N
+         5zo0lsftflKlN/Jh6gvy8Q9ecHzanBnROdk18rlRasjxPMjaZlTe5MgJzAZmroEPSros
+         1PM+w6g98wxE2ENjLvUP3CqwZYCNIRukRx3iorf56J0zksu/iPN8d5CKJu18zrcdrqQs
+         qpBKVAPCrAygOcB6YhAPSXeuTDgurRdbbaRvh5lM0Lw87b9yxL3cSBINaUrNp/B6VxdN
+         /T7Q==
+X-Forwarded-Encrypted: i=2; AJvYcCXjTVlvKZueueFT3gJ1cCnf5AFbrDz6ncnXSU5ofQ+/OPYwzyAf3l1rnJSuV9JiXgzGvb8pCm0=@baddomain.com
+X-Gm-Message-State: AOJu0YwVBpvWF1fSCloyJ2dGJAD8/RrzwuXQgfLwnVAchGhplOKHZEwr
+	G0t5xejRKMkUDQ9eaSKwGq2PMaYjbr/MFVq26MybaHVxpkqLQDck2XRKdKoZ60pnWgbKYr1xXcm
+	xxuGv37FHfuWtWDDs/C3w8YvQ4qn8/BAvRdb1anih1JKxia1sR4IV9RJMMBlfcQ==
+X-Received: by 2002:a17:906:c109:b0:b80:325d:99e2 with SMTP id a640c23a62f3a-b803705ddb6mr2094623366b.33.1766625432388;
+        Wed, 24 Dec 2025 17:17:12 -0800 (PST)
+X-Forwarded-To: mstowe@baddomain.com
+X-Forwarded-For: user@example.com mstowe@baddomain.com
+Delivered-To: user@example.com
+Received: by 2002:a05:6400:682f:b0:2c2:3df:9599 with SMTP id 15csp3362134ect;
+        Wed, 24 Dec 2025 17:17:10 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEwl3rb+NXHrmx3i9QXbghcL0+iuu7+RJUSonMX8M81IplCjDwh0A4goriVcvVO1QxakK0H
+X-Received: by 2002:a05:6402:148e:b0:64c:e9b6:14d8 with SMTP id 4fb4d7f45d1cf-64ce9b61774mr11474232a12.16.1766625430772;
+        Wed, 24 Dec 2025 17:17:10 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=555-123-4567; cv=none;
+        d=google.com; s=arc-20240605;
+        b=B3DNruQyJJgOz9oxgMUgoSTa4DFJbbhtDcX6w023fTNwBlzOQ30rrFL9EN2mWgwQax
+         QXBGRohxo9VNM5GI7btxLI1qjaItk00XDnh9LdXOubq3sHEUW3L1RrGEJ7tVdFFd4aH9
+         jkNUBCPmEa04VTvekKzIDjIPyyrBSA7ni/xQhPxB3Kz2J040MeP21wfiQX9hd3xtrKhu
+         DWMJAUZb7NnXRQRetdi1cHO4fFOnwtXIPfpmerwDFvIkrZYqp4EuWNjFKW8wiDJwIZh/
+         wPkeqimTIbGrZLIZpBE+aV2QVxvwa5Yxddi+Tmo5F82IMsMts9g6OndBesXxvT1brSSb
+         Bthg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=date:message-id:list-unsubscribe-post:list-unsubscribe:list-id
+         :mime-version:from:subject:to:dkim-signature:dkim-signature;
+        bh=xTps9NmNZYFWJFciadDSstxtQo2G8e6U2X6oP21UsEg=;
+        fh=mT0Hi1oeQuwKdVkoCKIRR+MEHYH9sEP9ymI/x2O5QRU=;
+        b=MgZGAQJeS169xXAv1AGPXY6N/P+v6dxFj62znkNsa2OrxN1sr3+/fmbSrE/N+Ov5zN
+         J4FLySfhH8L5G2xgQnd1OkVZUhtInHf/jnjrS4+3HSWs1arVtLdXtBD2dvmulhIFAKXA
+         vFylgMLvkasPCvtilT5dH3cAeE/hQe3gOhgQZTgEdJTPVfYuSvFUVC4BIAZJ653kfVg8
+         /p8cq9rCX1IUPgIHiRb3BJNtNJ0vf7feDilB2lxJPBOQRpevlZNgDYfTomF1NKF3YyWw
+         lN6i7w4MdQ8Pd504qiNDEvljINFhb0xo1LsM/8Uo2li7YSpZXTf4xKs1SDamhwLkparj
+         qYrw==;
+        dara=google.com
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@email.surlatable.com header.s=key6 header.b="4F4fqGV/";
+       dkim=pass header.i=@emarsys.net header.s=emarsys-2048a header.b=FJ4k3pie;
+       spf=pass (google.com: domain of suite17@bounces.email.surlatable.com designates 185.90.21.101 as permitted sender) smtp.mailfrom=suite17@bounces.email.surlatable.com;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=email.surlatable.com
+Received: from suitepmta021101.emarsys.us (suitepmta021101.emarsys.us. [185.90.21.101])
+        by mx.google.com with ESMTPS id 4fb4d7f45d1cf-64b910564a3si17648560a12.96.2025.12.24.17.17.10
+        for <user@example.com>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 24 Dec 2025 17:17:10 -0800 (PST)
+Received-SPF: pass (google.com: domain of suite17@bounces.email.surlatable.com designates 185.90.21.101 as permitted sender) client-ip=185.90.21.101;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@email.surlatable.com header.s=key6 header.b="4F4fqGV/";
+       dkim=pass header.i=@emarsys.net header.s=emarsys-2048a header.b=FJ4k3pie;
+       spf=pass (google.com: domain of suite17@bounces.email.surlatable.com designates 185.90.21.101 as permitted sender) smtp.mailfrom=suite17@bounces.email.surlatable.com;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=email.surlatable.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=key6; d=email.surlatable.com;
+ h=To:Subject:From:MIME-Version:List-Id:List-Unsubscribe:List-Unsubscribe-Post:
+ Content-Type:Message-ID:Date; i=sur_la_table@email.surlatable.com;
+ bh=xTps9NmNZYFWJFciadDSstxtQo2G8e6U2X6oP21UsEg=;
+ b=4F4fqGV/vzX8Yp84kIWPrhkgPX7d1EneWSww16jVM90LUsJdfcfhMvo1rNKss50SYKuoIuj+9B9O
+   wpPibS/Y586niD2nXSyGBpJzuDVqtaQfwynT1EO7kCtV6rL6fekkCRbBG2xh10ixw53Rn7LN5it2
+   RtpxDzxodTtJId2ovt4rCf6nt46UwNXtSvXcqVcziFmRMxh7epqP5+YAREdvatscppW9meUi2ANq
+   WuqlLKL88u1dSWd0A9KAxKOYIr3o+NYGCnduukPx/Z7f2tfWvin+pILgsY+aRy2l9dKz4VPFuFqD
+   aHGGlCnnxh1TdW9AH6sK1CA6bz/ByYIq6xGP7Q==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=emarsys-2048a; d=emarsys.net;
+ h=To:Subject:From:MIME-Version:List-Id:List-Unsubscribe:List-Unsubscribe-Post:
+ Content-Type:Message-ID:Date;
+ bh=xTps9NmNZYFWJFciadDSstxtQo2G8e6U2X6oP21UsEg=;
+ b=FJ4k3pie+iXAOrWuhtzuBeJnU4ujadc3w6FeZJ049DbXdGEg0OdPXux2NPtI8zbHkolTi403Ls3h
+   GPjcGmAwSOxjdu2Ramw4jxMOGRxJPOrrOLD7vs0abjXqCkoF9sPzgwVa4AKPsVwEsuSzYxW8U+Os
+   ExmuyTLiGHfvrWn7j4/TyJCK0bwkJxyDneWwjGIAA689rH0XChjLfoIFwtwDAN8FjeCq5LkHFGl2
+   d8EfPfey2AYI2MfQBVjgCol1Y5uYmo5b5aUQBJ4+16tXyn+sDSrKrnyYdJHEJFOV6e3h2UH0QBjC
+   9EWQkaJZzgQh63mYE/VUXcXNqApb+dzzR+qqvw==
+To: user@example.com
+Subject: This Christmas, give the gift of cooking.
+X-Mailer: class SMTPMail
+From: "Cooking at Sur La Table" <sur_la_table@email.surlatable.com>
+MIME-Version: 1.0
+List-Id: 767471653 <Cooking at Sur La Table>
+X-EMarSys-Identify: 767471653_5956934_1325192
+X-EMarSys-Environment: suite17
+X-Report-Abuse: Please report abuse here: abuse-report@emarsys.com
+List-Unsubscribe: <https://list-unsubscribe.eservice.emarsys.net/api/unsubscribe/767471653_5956934_1325192_krgLuzLAuK>, <mailto:list-unsubscribe+767471653_5956934_1325192_krgLuzLAuK@emarsys.net>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+Content-Type: multipart/alternative;
+ boundary="--=_---NextPart--=_-PBbjQpqaGB"
+Message-ID: <0.0.3F.9D0.1DC753ABB7E2234.0@suitepmta021101.emarsys.us>
+Date: Thu, 25 Dec 2025 02:06:42 +0100
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Thu, 25 Dec 2025 01:17:16 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Wed, 24 Dec 2025 19:17:15 -0600 (CST)
+X-Spam-Flag: YES
+
+
+----=_---NextPart--=_-PBbjQpqaGB
+Content-Type: text/plain; charset=utf-8
+Content-transfer-encoding: quoted-printable
+
+Our hands-on classes make great gifts! Bonus: no wrapping required!
+
+=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=
+=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=
+=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=C2=A0=E2=80=8C=C2=A0=E2=
+=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=
+=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=C2=A0=E2=80=8C=C2=
+=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=
+=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=
+=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=
+=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=
+=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=
+=8C=C2=A0=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=C2=A0=E2=80=8C=
+=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=
+=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=
+=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=
+=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=
+=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=
+=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=
+=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=
+=A0=E2=80=8C=C2=A0=C2=A0=E2=80=8C
+
+=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=
+=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=
+=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=C2=A0=E2=80=8C=C2=A0=E2=
+=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=
+=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=C2=A0=E2=80=8C=C2=
+=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=
+=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=
+=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=
+=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=
+=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=
+=8C=C2=A0=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=
+=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=C2=A0=E2=80=8C=
+=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=
+=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=80=8C=
+=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=C2=A0=E2=80=8C=C2=A0=E2=80=8C=C2=A0=E2=
+=80=8C=C2=A0=E2=80=8C
+
+Open to see in browser
+https://link.surlatable.com/u/gm.php?prm=3DkrgLuzLAuK_767471653_5956934_132=
+5192&_esuh=3D_11_2a17c7b9bb923fab57125330acf21f8b72e6f1863888ac838ba3a6c543=
+c27c14
+
+
+FREE SHIPPING ON ORDERS OVER $75
+https://link.surlatable.com/u/nrd.php?p=3DkrgLuzLAuK_1325192_5956934_1_2&em=
+s_l=3D8535816&i=3D1&d=3DNTU3NDg0Nzc1%7Ca3JnTHV6TEF1Sw%3D%3D%7CMTMzNTg5ZjliO=
+Tc3N2FjNDE%3D%7CMjUxMjI0XzVQTV9HaXZlLXRoZS1naWZ0LW9mLUhvbGlkYXktQ2xhc3Nlcw%=
+3D%3D%7CSW4rU3RvcmUrQ29va2luZw%3D%3D%7CaGVhZGVy%7CMjAyNS1RM19QSVNDX0wxODBEX=
+09wZW4uQ2xpY2suUmVnLUFsbC1leGNsdWRpbmctcHJpdmFjeS1vcGVucy13LUwzRC1DUk8tQXV0=
+by1zdXBwcmVzc2lvbnM%3D%7C&_esuh=3D_11_34edbcbed9f3bf085b70544ce6f232bc70a46=
+f451b47f5bd3f6d563afae39c82
+
+
+Sur la table spacing
+
+Sur la table
+https://link.surlatable.com/u/nrd.php?p=3DkrgLuzLAuK_1325192_5956934_1_4&em=
+s_l=3D8535816&i=3D1&d=3DNTU3NDg0Nzc3%7Ca3JnTHV6TEF1Sw%3D%3D%7CMTMzNTg5ZjliO=
+Tc3N2FjNDE%3D%7CMjUxMjI0XzVQTV9HaXZlLXRoZS1naWZ0LW9mLUhvbGlkYXktQ2xhc3Nlcw%=
+3D%3D%7CSW4rU3RvcmUrQ29va2luZw%3D%3D%7Cc2x0LWxvZ29fZW1haWwtdG9wLW5hdg%3D%3D=
+%7CMjAyNS1RM19QSVNDX0wxODBEX09wZW4uQ2xpY2suUmVnLUFsbC1leGNsdWRpbmctcHJpdmFj=
+eS1vcGVucy13LUwzRC1DUk8tQXV0by1zdXBwcmVzc2lvbnM%3D%7C&_esuh=3D_11_f2c8f5c84=
+98a90fd5ef72cf11a2e57e3be526ead7b89d48c137a5a9dc3706fa3
+
+
+Sur la table spacing
+
+Buy Online, Pickup In Store
+https://link.surlatable.com/u/nrd.php?p=3DkrgLuzLAuK_1325192_5956934_1_6&em=
+s_l=3D8535816&i=3D1&d=3DNTU3NDg0Nzc5%7Ca3JnTHV6TEF1Sw%3D%3D%7CMTMzNTg5ZjliO=
+Tc3N2FjNDE%3D%7CMjUxMjI0XzVQTV9HaXZlLXRoZS1naWZ0LW9mLUhvbGlkYXktQ2xhc3Nlcw%=
+3D%3D%7CSW4rU3RvcmUrQ29va2luZw%3D%3D%7CYnV5LW9ubGluZS1waWNrLXVwLWluLXN0b3Jl=
+X2VtYWls%7CMjAyNS1RM19QSVNDX0wxODBEX09wZW4uQ2xpY2suUmVnLUFsbC1leGNsdWRpbmct=
+cHJpdmFjeS1vcGVucy13LUwzRC1DUk8tQXV0by1zdXBwcmVzc2lvbnM%3D%7C&_esuh=3D_11_4=
+e7057b2a7bd10b14ad2177ee6abf7a6e9aff7c1c66b8b49a1ef6a5e14bd979e
+
+
+Sur la table spacing
+
+Left Space
+
+NEW
+https://link.surlatable.com/u/nrd.php?p=3DkrgLuzLAuK_1325192_5956934_1_8&em=
+s_l=3D8535816&i=3D1&d=3DNTU3NDg0Nzgx%7Ca3JnTHV6TEF1Sw%3D%3D%7CMTMzNTg5ZjliO=
+Tc3N2FjNDE%3D%7CMjUxMjI0XzVQTV9HaXZlLXRoZS1naWZ0LW9mLUhvbGlkYXktQ2xhc3Nlcw%=
+3D%3D%7CSW4rU3RvcmUrQ29va2luZw%3D%3D%7CbmV3LWFycml2YWxzX2VtYWlsLXRvcC1uYXY%=
+3D%7CMjAyNS1RM19QSVNDX0wxODBEX09wZW4uQ2xpY2suUmVnLUFsbC1leGNsdWRpbmctcHJpdm=
+FjeS1vcGVucy13LUwzRC1DUk8tQXV0by1zdXBwcmVzc2lvbnM%3D%7C&_esuh=3D_11_25188c7=
+e9095da74b2d70f0ec37de3e4c9521034d6bc832f685799ce7b48cf0a
+
+
+GIFTS
+https://link.surlatable.com/u/nrd.php?p=3DkrgLuzLAuK_1325192_5956934_1_10&e=
+ms_l=3D8535816&i=3D1&d=3DNTU3NDg0Nzgz%7Ca3JnTHV6TEF1Sw%3D%3D%7CMTMzNTg5Zjli=
+OTc3N2FjNDE%3D%7CMjUxMjI0XzVQTV9HaXZlLXRoZS1naWZ0LW9mLUhvbGlkYXktQ2xhc3Nlcw=
+%3D%3D%7CSW4rU3RvcmUrQ29va2luZw%3D%3D%7CZ2lmdHNfZW1haWwtdG9wLW5hdg%3D%3D%7C=
+MjAyNS1RM19QSVNDX0wxODBEX09wZW4uQ2xpY2suUmVnLUFsbC1leGNsdWRpbmctcHJpdmFjeS1=
+vcGVucy13LUwzRC1DUk8tQXV0by1zdXBwcmVzc2lvbnM%3D%7C&_esuh=3D_11_2027cf3c1629=
+81cfd4f6329b11209125ef55bdee0df9dcff1ca27a332a0c4700
+
+
+BRANDS
+https://link.surlatable.com/u/nrd.php?p=3DkrgLuzLAuK_1325192_5956934_1_12&e=
+ms_l=3D8535816&i=3D1&d=3DNTU3NDg0Nzg1%7Ca3JnTHV6TEF1Sw%3D%3D%7CMTMzNTg5Zjli=
+OTc3N2FjNDE%3D%7CMjUxMjI0XzVQTV9HaXZlLXRoZS1naWZ0LW9mLUhvbGlkYXktQ2xhc3Nlcw=
+%3D%3D%7CSW4rU3RvcmUrQ29va2luZw%3D%3D%7CYnJhbmRzX2VtYWlsLXRvcC1uYXY%3D%7CMj=
+AyNS1RM19QSVNDX0wxODBEX09wZW4uQ2xpY2suUmVnLUFsbC1leGNsdWRpbmctcHJpdmFjeS1vc=
+GVucy13LUwzRC1DUk8tQXV0by1zdXBwcmVzc2lvbnM%3D%7C&_esuh=3D_11_951b34512d86e0=
+29f236aefe3e160372a3fd2ef83126291c15ca2741fbc4f2b4
+
+
+CLASSES
+https://link.surlatable.com/u/nrd.php?p=3DkrgLuzLAuK_1325192_5956934_1_14&e=
+ms_l=3D8535816&i=3D1&d=3DNTU3NDg0Nzg3%7Ca3JnTHV6TEF1Sw%3D%3D%7CMTMzNTg5Zjli=
+OTc3N2FjNDE%3D%7CMjUxMjI0XzVQTV9HaXZlLXRoZS1naWZ0LW9mLUhvbGlkYXktQ2xhc3Nlcw=
+%3D%3D%7CSW4rU3RvcmUrQ29va2luZw%3D%3D%7CY29va2luZy1jbGFzc2VzX2VtYWlsLXRvcC1=
+uYXY%3D%7CMjAyNS1RM19QSVNDX0wxODBEX09wZW4uQ2xpY2suUmVnLUFsbC1leGNsdWRpbmctc=
+HJpdmFjeS1vcGVucy13LUwzRC1DUk8tQXV0by1zdXBwcmVzc2lvbnM%3D%7C&_esuh=3D_11_d8=
+430534278e49ba33e7ad44399c8169d8697b286185832e8aa42c15c27bae92
+
+
+SALE
+https://link.surlatable.com/u/nrd.php?p=3DkrgLuzLAuK_1325192_5956934_1_16&e=
+ms_l=3D8535816&i=3D1&d=3DNTU3NDg0Nzg5%7Ca3JnTHV6TEF1Sw%3D%3D%7CMTMzNTg5Zjli=
+OTc3N2FjNDE%3D%7CMjUxMjI0XzVQTV9HaXZlLXRoZS1naWZ0LW9mLUhvbGlkYXktQ2xhc3Nlcw=
+%3D%3D%7CSW4rU3RvcmUrQ29va2luZw%3D%3D%7Cc2FsZV9lbWFpbC10b3AtbmF2%7CMjAyNS1R=
+M19QSVNDX0wxODBEX09wZW4uQ2xpY2suUmVnLUFsbC1leGNsdWRpbmctcHJpdmFjeS1vcGVucy1=
+3LUwzRC1DUk8tQXV0by1zdXBwcmVzc2lvbnM%3D%7C&_esuh=3D_11_21748a576502a9173ac4=
+c9f43622ff9d8ca61f499d8c808f50929b9b29beee95
+
+
+Right Space
+
+Sur la table spacing
+
+In Store Cooking Class
+https://link.surlatable.com/u/nrd.php?p=3DkrgLuzLAuK_1325192_5956934_1_18&e=
+ms_l=3D8535816&i=3D1&d=3DNTU3NDg0Nzkx%7Ca3JnTHV6TEF1Sw%3D%3D%7CMTMzNTg5Zjli=
+OTc3N2FjNDE%3D%7CMjUxMjI0XzVQTV9HaXZlLXRoZS1naWZ0LW9mLUhvbGlkYXktQ2xhc3Nlcw=
+%3D%3D%7CSW4rU3RvcmUrQ29va2luZw%3D%3D%7CaW4tc3RvcmUtY29va2luZy1jbGFzc2VzX2V=
+tYWls%7CMjAyNS1RM19QSVNDX0wxODBEX09wZW4uQ2xpY2suUmVnLUFsbC1leGNsdWRpbmctcHJ=
+pdmFjeS1vcGVucy13LUwzRC1DUk8tQXV0by1zdXBwcmVzc2lvbnM%3D%7C&_esuh=3D_11_9a71=
+acdbd144ec4248d33176fd7dfc44583cd1551537a64985f8e58de3c7e2dd
+
+
+In Store Cooking Class
+https://link.surlatable.com/u/nrd.php?p=3DkrgLuzLAuK_1325192_5956934_1_20&e=
+ms_l=3D8535816&i=3D1&d=3DNTU3NDg0Nzkz%7Ca3JnTHV6TEF1Sw%3D%3D%7CMTMzNTg5Zjli=
+OTc3N2FjNDE%3D%7CMjUxMjI0XzVQTV9HaXZlLXRoZS1naWZ0LW9mLUhvbGlkYXktQ2xhc3Nlcw=
+%3D%3D%7CSW4rU3RvcmUrQ29va2luZw%3D%3D%7CaW4tc3RvcmUtY29va2luZy1jbGFzc2VzX2V=
+tYWls%7CMjAyNS1RM19QSVNDX0wxODBEX09wZW4uQ2xpY2suUmVnLUFsbC1leGNsdWRpbmctcHJ=
+pdmFjeS1vcGVucy13LUwzRC1DUk8tQXV0by1zdXBwcmVzc2lvbnM%3D%7C&_esuh=3D_11_89c0=
+666b5ffd81d5df26fb76430e552c246d362bb0dbe41aa6cb48cbcf489495
+
+
+Essential Skills for Every Cook
+https://link.surlatable.com/u/nrd.php?p=3DkrgLuzLAuK_1325192_5956934_1_22&e=
+ms_l=3D8535816&i=3D1&d=3DNTU3NDg0Nzk1%7Ca3JnTHV6TEF1Sw%3D%3D%7CMTMzNTg5Zjli=
+OTc3N2FjNDE%3D%7CMjUxMjI0XzVQTV9HaXZlLXRoZS1naWZ0LW9mLUhvbGlkYXktQ2xhc3Nlcw=
+%3D%3D%7CSW4rU3RvcmUrQ29va2luZw%3D%3D%7CaW4tc3RvcmUtY29va2luZy1jbGFzc2VzX2V=
+tYWls%7CMjAyNS1RM19QSVNDX0wxODBEX09wZW4uQ2xpY2suUmVnLUFsbC1leGNsdWRpbmctcHJ=
+pdmFjeS1vcGVucy13LUwzRC1DUk8tQXV0by1zdXBwcmVzc2lvbnM%3D%7C&_esuh=3D_11_bf8c=
+eb9e54e2679b46dd58461c68ea6f97567a388f790541d52538de20ddde3f
+
+
+Date Night: New Year=E2=80=99s Eve
+https://link.surlatable.com/u/nrd.php?p=3DkrgLuzLAuK_1325192_5956934_1_24&e=
+ms_l=3D8535816&i=3D1&d=3DNTU3NDg0Nzk3%7Ca3JnTHV6TEF1Sw%3D%3D%7CMTMzNTg5Zjli=
+OTc3N2FjNDE%3D%7CMjUxMjI0XzVQTV9HaXZlLXRoZS1naWZ0LW9mLUhvbGlkYXktQ2xhc3Nlcw=
+%3D%3D%7CSW4rU3RvcmUrQ29va2luZw%3D%3D%7CZGF0ZS1uaWdodC1jb29raW5nLWNsYXNzZXN=
+fZW1haWw%3D%7CMjAyNS1RM19QSVNDX0wxODBEX09wZW4uQ2xpY2suUmVnLUFsbC1leGNsdWRpb=
+mctcHJpdmFjeS1vcGVucy13LUwzRC1DUk8tQXV0by1zdXBwcmVzc2lvbnM%3D%7C&_esuh=3D_1=
+1_b101e9528b49856bc3f46cda306755f951253626bcb8667ad1da2339e5b73227
+
+
+Global Holiday Feast
+https://link.surlatable.com/u/nrd.php?p=3DkrgLuzLAuK_1325192_5956934_1_26&e=
+ms_l=3D8535816&i=3D1&d=3DNTU3NDg0Nzk5%7Ca3JnTHV6TEF1Sw%3D%3D%7CMTMzNTg5Zjli=
+OTc3N2FjNDE%3D%7CMjUxMjI0XzVQTV9HaXZlLXRoZS1naWZ0LW9mLUhvbGlkYXktQ2xhc3Nlcw=
+%3D%3D%7CSW4rU3RvcmUrQ29va2luZw%3D%3D%7CaW4tc3RvcmUtY29va2luZy1jbGFzc2VzX2V=
+tYWls%7CMjAyNS1RM19QSVNDX0wxODBEX09wZW4uQ2xpY2suUmVnLUFsbC1leGNsdWRpbmctcHJ=
+pdmFjeS1vcGVucy13LUwzRC1DUk8tQXV0by1zdXBwcmVzc2lvbnM%3D%7C&_esuh=3D_11_2dc0=
+596939d127f476b8ff108eb0a0f093683defd0f56709760324b1246d61de
+
+
+The Best of Italy
+https://link.surlatable.com/u/nrd.php?p=3DkrgLuzLAuK_1325192_5956934_1_28&e=
+ms_l=3D8535816&i=3D1&d=3DNTU3NDg0ODAx%7Ca3JnTHV6TEF1Sw%3D%3D%7CMTMzNTg5Zjli=
+OTc3N2FjNDE%3D%7CMjUxMjI0XzVQTV9HaXZlLXRoZS1naWZ0LW9mLUhvbGlkYXktQ2xhc3Nlcw=
+%3D%3D%7CSW4rU3RvcmUrQ29va2luZw%3D%3D%7CaW4tc3RvcmUtY29va2luZy1jbGFzc2VzX2V=
+tYWls%7CMjAyNS1RM19QSVNDX0wxODBEX09wZW4uQ2xpY2suUmVnLUFsbC1leGNsdWRpbmctcHJ=
+pdmFjeS1vcGVucy13LUwzRC1DUk8tQXV0by1zdXBwcmVzc2lvbnM%3D%7C&_esuh=3D_11_19ef=
+201f8526162fa0bb872ae3acd57b92ffa043402f21fc0932c74ba02df2e9
+
+
+Sur la table spacing
+
+Baking Classes
+https://link.surlatable.com/u/nrd.php?p=3DkrgLuzLAuK_1325192_5956934_1_30&e=
+ms_l=3D8535816&i=3D1&d=3DNTU3NDg0ODAz%7Ca3JnTHV6TEF1Sw%3D%3D%7CMTMzNTg5Zjli=
+OTc3N2FjNDE%3D%7CMjUxMjI0XzVQTV9HaXZlLXRoZS1naWZ0LW9mLUhvbGlkYXktQ2xhc3Nlcw=
+%3D%3D%7CSW4rU3RvcmUrQ29va2luZw%3D%3D%7CYmFraW5nLWNvb2tpbmctY2xhc3Nlc19lbWF=
+pbA%3D%3D%7CMjAyNS1RM19QSVNDX0wxODBEX09wZW4uQ2xpY2suUmVnLUFsbC1leGNsdWRpbmc=
+tcHJpdmFjeS1vcGVucy13LUwzRC1DUk8tQXV0by1zdXBwcmVzc2lvbnM%3D%7C&_esuh=3D_11_=
+e2cc2698b071e202fd2bd1d66e10982496b0a5b2edf993d619db27478c930be9
+
+
+Holiday Macaron Workshop
+https://link.surlatable.com/u/nrd.php?p=3DkrgLuzLAuK_1325192_5956934_1_32&e=
+ms_l=3D8535816&i=3D1&d=3DNTU3NDg0ODA1%7Ca3JnTHV6TEF1Sw%3D%3D%7CMTMzNTg5Zjli=
+OTc3N2FjNDE%3D%7CMjUxMjI0XzVQTV9HaXZlLXRoZS1naWZ0LW9mLUhvbGlkYXktQ2xhc3Nlcw=
+%3D%3D%7CSW4rU3RvcmUrQ29va2luZw%3D%3D%7CYmFraW5nLWNvb2tpbmctY2xhc3Nlc19lbWF=
+pbA%3D%3D%7CMjAyNS1RM19QSVNDX0wxODBEX09wZW4uQ2xpY2suUmVnLUFsbC1leGNsdWRpbmc=
+tcHJpdmFjeS1vcGVucy13LUwzRC1DUk8tQXV0by1zdXBwcmVzc2lvbnM%3D%7C&_esuh=3D_11_=
+892743ef22d1bf6477e4b4732b2571fafa4776556068edb0fb47b9cb4f9c7c6e
+
+
+Handcrafted Breads & Butter
+https://link.surlatable.com/u/nrd.php?p=3DkrgLuzLAuK_1325192_5956934_1_34&e=
+ms_l=3D8535816&i=3D1&d=3DNTU3NDg0ODA3%7Ca3JnTHV6TEF1Sw%3D%3D%7CMTMzNTg5Zjli=
+OTc3N2FjNDE%3D%7CMjUxMjI0XzVQTV9HaXZlLXRoZS1naWZ0LW9mLUhvbGlkYXktQ2xhc3Nlcw=
+%3D%3D%7CSW4rU3RvcmUrQ29va2luZw%3D%3D%7CYmFraW5nLWNvb2tpbmctY2xhc3Nlc19lbWF=
+pbA%3D%3D%7CMjAyNS1RM19QSVNDX0wxODBEX09wZW4uQ2xpY2suUmVnLUFsbC1leGNsdWRpbmc=
+tcHJpdmFjeS1vcGVucy13LUwzRC1DUk8tQXV0by1zdXBwcmVzc2lvbnM%3D%7C&_esuh=3D_11_=
+a3db100429c2830926df2fc50bdcd5fa21992d6e37d47942c9bb25c38b7acadf
+
+
+Marvelous Macarons
+https://link.surlatable.com/u/nrd.php?p=3DkrgLuzLAuK_1325192_5956934_1_36&e=
+ms_l=3D8535816&i=3D1&d=3DNTU3NDg0ODA5%7Ca3JnTHV6TEF1Sw%3D%3D%7CMTMzNTg5Zjli=
+OTc3N2FjNDE%3D%7CMjUxMjI0XzVQTV9HaXZlLXRoZS1naWZ0LW9mLUhvbGlkYXktQ2xhc3Nlcw=
+%3D%3D%7CSW4rU3RvcmUrQ29va2luZw%3D%3D%7CYmFraW5nLWNvb2tpbmctY2xhc3Nlc19lbWF=
+pbA%3D%3D%7CMjAyNS1RM19QSVNDX0wxODBEX09wZW4uQ2xpY2suUmVnLUFsbC1leGNsdWRpbmc=
+tcHJpdmFjeS1vcGVucy13LUwzRC1DUk8tQXV0by1zdXBwcmVzc2lvbnM%3D%7C&_esuh=3D_11_=
+f251b7001abee77db71d3149d7ab2f4d533a4b4d30ff82c4d88ee828fe7062ef
+
+
+Dolce Italiana
+https://link.surlatable.com/u/nrd.php?p=3DkrgLuzLAuK_1325192_5956934_1_38&e=
+ms_l=3D8535816&i=3D1&d=3DNTU3NDg0ODEx%7Ca3JnTHV6TEF1Sw%3D%3D%7CMTMzNTg5Zjli=
+OTc3N2FjNDE%3D%7CMjUxMjI0XzVQTV9HaXZlLXRoZS1naWZ0LW9mLUhvbGlkYXktQ2xhc3Nlcw=
+%3D%3D%7CSW4rU3RvcmUrQ29va2luZw%3D%3D%7CYm9keQ%3D%3D%7CMjAyNS1RM19QSVNDX0wx=
+ODBEX09wZW4uQ2xpY2suUmVnLUFsbC1leGNsdWRpbmctcHJpdmFjeS1vcGVucy13LUwzRC1DUk8=
+tQXV0by1zdXBwcmVzc2lvbnM%3D%7C&_esuh=3D_11_b45d3020456834b944a3c48446a03856=
+301a1fe53497108f1ab6721e065d40a7
+
+
+Sur la table spacing
+
+Digital Card
+https://link.surlatable.com/u/nrd.php?p=3DkrgLuzLAuK_1325192_5956934_1_40&e=
+ms_l=3D8535816&i=3D1&d=3DNTU3NDg0ODEz%7Ca3JnTHV6TEF1Sw%3D%3D%7CMTMzNTg5Zjli=
+OTc3N2FjNDE%3D%7CMjUxMjI0XzVQTV9HaXZlLXRoZS1naWZ0LW9mLUhvbGlkYXktQ2xhc3Nlcw=
+%3D%3D%7CSW4rU3RvcmUrQ29va2luZw%3D%3D%7CZGlnaXRhbC1naWZ0LWNhcmRfZW1haWw%3D%=
+7CMjAyNS1RM19QSVNDX0wxODBEX09wZW4uQ2xpY2suUmVnLUFsbC1leGNsdWRpbmctcHJpdmFje=
+S1vcGVucy13LUwzRC1DUk8tQXV0by1zdXBwcmVzc2lvbnM%3D%7C&_esuh=3D_11_cf3097c0f1=
+33a65122a9c55ec2e7bf9aa6b353c6464d9a535ab30529b8b6a5af
+
+
+Sur la table spacing
+
+Just for Michael
+
+recommended product I
+https://link.surlatable.com/u/nrd.php?p=3DkrgLuzLAuK_1325192_5956934_1_42&e=
+ms_l=3D8535816&i=3D1&d=3DMTMzNTg5ZjliOTc3N2FjNDE%3D%7CN2E0YjYzZDMzYTRlMQ%3D=
+%3D%7CNTU3NDg0ODE1%7Ca3JnTHV6TEF1Sw%3D%3D%7CMTMzNTg5ZjliOTc3N2FjNDE%3D%7CMj=
+UxMjI0XzVQTV9HaXZlLXRoZS1naWZ0LW9mLUhvbGlkYXktQ2xhc3Nlcw%3D%3D%7CSW4rU3Rvcm=
+UrQ29va2luZw%3D%3D%7CcmVjb21tZW5kZWQtcHJvZHVjdF9lbWFpbA%3D%3D%7CMjAyNS1RM19=
+QSVNDX0wxODBEX09wZW4uQ2xpY2suUmVnLUFsbC1leGNsdWRpbmctcHJpdmFjeS1vcGVucy13LU=
+wzRC1DUk8tQXV0by1zdXBwcmVzc2lvbnM%3D%7C&_esuh=3D_11_bab653ceb1759346336361e=
+aa6c6c93422ac91eb62f34586ac0cb68b3e4b58d7
+
+
+recommended product II
+https://link.surlatable.com/u/nrd.php?p=3DkrgLuzLAuK_1325192_5956934_1_44&e=
+ms_l=3D8535816&i=3D1&d=3DMTMzNTg5ZjliOTc3N2FjNDE%3D%7CN2E0YjYzZDMzYTRlMQ%3D=
+%3D%7CNTU3NDg0ODE3%7Ca3JnTHV6TEF1Sw%3D%3D%7CMTMzNTg5ZjliOTc3N2FjNDE%3D%7CMj=
+UxMjI0XzVQTV9HaXZlLXRoZS1naWZ0LW9mLUhvbGlkYXktQ2xhc3Nlcw%3D%3D%7CSW4rU3Rvcm=
+UrQ29va2luZw%3D%3D%7CcmVjb21tZW5kZWQtcHJvZHVjdF9lbWFpbA%3D%3D%7CMjAyNS1RM19=
+QSVNDX0wxODBEX09wZW4uQ2xpY2suUmVnLUFsbC1leGNsdWRpbmctcHJpdmFjeS1vcGVucy13LU=
+wzRC1DUk8tQXV0by1zdXBwcmVzc2lvbnM%3D%7C&_esuh=3D_11_de3e1b74b008c93911a2af8=
+e1b34325c6fd156bf14bb1947aef502a2e3efc3b4
+
+
+recommended product III
+https://link.surlatable.com/u/nrd.php?p=3DkrgLuzLAuK_1325192_5956934_1_46&e=
+ms_l=3D8535816&i=3D1&d=3DMTMzNTg5ZjliOTc3N2FjNDE%3D%7CN2E0YjYzZDMzYTRlMQ%3D=
+%3D%7CNTU3NDg0ODE5%7Ca3JnTHV6TEF1Sw%3D%3D%7CMTMzNTg5ZjliOTc3N2FjNDE%3D%7CMj=
+UxMjI0XzVQTV9HaXZlLXRoZS1naWZ0LW9mLUhvbGlkYXktQ2xhc3Nlcw%3D%3D%7CSW4rU3Rvcm=
+UrQ29va2luZw%3D%3D%7CcmVjb21tZW5kZWQtcHJvZHVjdF9lbWFpbA%3D%3D%7CMjAyNS1RM19=
+QSVNDX0wxODBEX09wZW4uQ2xpY2suUmVnLUFsbC1leGNsdWRpbmctcHJpdmFjeS1vcGVucy13LU=
+wzRC1DUk8tQXV0by1zdXBwcmVzc2lvbnM%3D%7C&_esuh=3D_11_a0c3be717d8b4d5f120b02c=
+abec89303c7ada98db9362c8806ef5447573e6473
+
+
+Sur la table spacing
+
+recommended product I
+https://link.surlatable.com/u/nrd.php?p=3DkrgLuzLAuK_1325192_5956934_1_48&e=
+ms_l=3D8535816&i=3D1&d=3DMTMzNTg5ZjliOTc3N2FjNDE%3D%7CN2E0YjYzZDMzYTRlMQ%3D=
+%3D%7CNTU3NDg0ODIx%7Ca3JnTHV6TEF1Sw%3D%3D%7CMTMzNTg5ZjliOTc3N2FjNDE%3D%7CMj=
+UxMjI0XzVQTV9HaXZlLXRoZS1naWZ0LW9mLUhvbGlkYXktQ2xhc3Nlcw%3D%3D%7CSW4rU3Rvcm=
+UrQ29va2luZw%3D%3D%7CcmVjb21tZW5kZWQtcHJvZHVjdF9lbWFpbA%3D%3D%7CMjAyNS1RM19=
+QSVNDX0wxODBEX09wZW4uQ2xpY2suUmVnLUFsbC1leGNsdWRpbmctcHJpdmFjeS1vcGVucy13LU=
+wzRC1DUk8tQXV0by1zdXBwcmVzc2lvbnM%3D%7C&_esuh=3D_11_778fa25579a57b55302604a=
+dfb3545502f99bcdc5ac2ef006b4259ea5e70a765
+
+
+recommended product II
+https://link.surlatable.com/u/nrd.php?p=3DkrgLuzLAuK_1325192_5956934_1_50&e=
+ms_l=3D8535816&i=3D1&d=3DMTMzNTg5ZjliOTc3N2FjNDE%3D%7CN2E0YjYzZDMzYTRlMQ%3D=
+%3D%7CNTU3NDg0ODIz%7Ca3JnTHV6TEF1Sw%3D%3D%7CMTMzNTg5ZjliOTc3N2FjNDE%3D%7CMj=
+UxMjI0XzVQTV9HaXZlLXRoZS1naWZ0LW9mLUhvbGlkYXktQ2xhc3Nlcw%3D%3D%7CSW4rU3Rvcm=
+UrQ29va2luZw%3D%3D%7CcmVjb21tZW5kZWQtcHJvZHVjdF9lbWFpbA%3D%3D%7CMjAyNS1RM19=
+QSVNDX0wxODBEX09wZW4uQ2xpY2suUmVnLUFsbC1leGNsdWRpbmctcHJpdmFjeS1vcGVucy13LU=
+wzRC1DUk8tQXV0by1zdXBwcmVzc2lvbnM%3D%7C&_esuh=3D_11_d193ece2d7a02136c2da908=
+57a837dc53ac75dbb79f5085b56ab357225674af6
+
+
+recommended product III
+https://link.surlatable.com/u/nrd.php?p=3DkrgLuzLAuK_1325192_5956934_1_52&e=
+ms_l=3D8535816&i=3D1&d=3DMTMzNTg5ZjliOTc3N2FjNDE%3D%7CN2E0YjYzZDMzYTRlMQ%3D=
+%3D%7CNTU3NDg0ODI1%7Ca3JnTHV6TEF1Sw%3D%3D%7CMTMzNTg5ZjliOTc3N2FjNDE%3D%7CMj=
+UxMjI0XzVQTV9HaXZlLXRoZS1naWZ0LW9mLUhvbGlkYXktQ2xhc3Nlcw%3D%3D%7CSW4rU3Rvcm=
+UrQ29va2luZw%3D%3D%7CcmVjb21tZW5kZWQtcHJvZHVjdF9lbWFpbA%3D%3D%7CMjAyNS1RM19=
+QSVNDX0wxODBEX09wZW4uQ2xpY2suUmVnLUFsbC1leGNsdWRpbmctcHJpdmFjeS1vcGVucy13LU=
+wzRC1DUk8tQXV0by1zdXBwcmVzc2lvbnM%3D%7C&_esuh=3D_11_a1f8f0240cd181965431b60=
+fa173d2706b441a249532e256366472b8b883ad0f
+
+
+Sur la table spacing
+
+TEXT JOIN TO 23266
+
+Buy Online, Pick Up In-Store
+https://link.surlatable.com/u/nrd.php?p=3DkrgLuzLAuK_1325192_5956934_1_58&e=
+ms_l=3D8535816&i=3D1&d=3DNTU3NDg0ODMx%7Ca3JnTHV6TEF1Sw%3D%3D%7CMTMzNTg5Zjli=
+OTc3N2FjNDE%3D%7CMjUxMjI0XzVQTV9HaXZlLXRoZS1naWZ0LW9mLUhvbGlkYXktQ2xhc3Nlcw=
+%3D%3D%7CSW4rU3RvcmUrQ29va2luZw%3D%3D%7CaW4tc3RvcmUtcGljay11cF9lbWFpbC1mb29=
+0ZXI%3D%7CMjAyNS1RM19QSVNDX0wxODBEX09wZW4uQ2xpY2suUmVnLUFsbC1leGNsdWRpbmctc=
+HJpdmFjeS1vcGVucy13LUwzRC1DUk8tQXV0by1zdXBwcmVzc2lvbnM%3D%7C&_esuh=3D_11_51=
+1a2b78754bacf49c8ddff9bcbdd265b64cc9e26e4e6f9d71f3a548a6d2ae2c
+
+
+Same-Day Delivery
+https://link.surlatable.com/u/nrd.php?p=3DkrgLuzLAuK_1325192_5956934_1_60&e=
+ms_l=3D8535816&i=3D1&d=3DNTU3NDg0ODMz%7Ca3JnTHV6TEF1Sw%3D%3D%7CMTMzNTg5Zjli=
+OTc3N2FjNDE%3D%7CMjUxMjI0XzVQTV9HaXZlLXRoZS1naWZ0LW9mLUhvbGlkYXktQ2xhc3Nlcw=
+%3D%3D%7CSW4rU3RvcmUrQ29va2luZw%3D%3D%7Cc2FtZS1kYXktZGVsaXZlcnlfZW1haWw%3D%=
+7CMjAyNS1RM19QSVNDX0wxODBEX09wZW4uQ2xpY2suUmVnLUFsbC1leGNsdWRpbmctcHJpdmFje=
+S1vcGVucy13LUwzRC1DUk8tQXV0by1zdXBwcmVzc2lvbnM%3D%7C&_esuh=3D_11_550b5c91c9=
+7890c3dc8860c4769b8dbd0b9a3f5844b549d36724fc5ffdfccad9
+
+
+Sur La Table Gift Cards
+https://link.surlatable.com/u/nrd.php?p=3DkrgLuzLAuK_1325192_5956934_1_62&e=
+ms_l=3D8535816&i=3D1&d=3DNTU3NDg0ODM1%7Ca3JnTHV6TEF1Sw%3D%3D%7CMTMzNTg5Zjli=
+OTc3N2FjNDE%3D%7CMjUxMjI0XzVQTV9HaXZlLXRoZS1naWZ0LW9mLUhvbGlkYXktQ2xhc3Nlcw=
+%3D%3D%7CSW4rU3RvcmUrQ29va2luZw%3D%3D%7CZ2lmdC1jYXJkc19lbWFpbC1mb290ZXI%3D%=
+7CMjAyNS1RM19QSVNDX0wxODBEX09wZW4uQ2xpY2suUmVnLUFsbC1leGNsdWRpbmctcHJpdmFje=
+S1vcGVucy13LUwzRC1DUk8tQXV0by1zdXBwcmVzc2lvbnM%3D%7C&_esuh=3D_11_4cae1a966d=
+ccb3972fa55a8d6c6ad82cda97d2a2d398f5f6dcf4a61aad47ff8f
+
+
+My Account at Sur La Table
+https://link.surlatable.com/u/nrd.php?p=3DkrgLuzLAuK_1325192_5956934_1_64&e=
+ms_l=3D8535816&i=3D1&d=3DNTU3NDg0ODM3%7Ca3JnTHV6TEF1Sw%3D%3D%7CMTMzNTg5Zjli=
+OTc3N2FjNDE%3D%7CMjUxMjI0XzVQTV9HaXZlLXRoZS1naWZ0LW9mLUhvbGlkYXktQ2xhc3Nlcw=
+%3D%3D%7CSW4rU3RvcmUrQ29va2luZw%3D%3D%7CbXktYWNjb3VudF9lbWFpbA%3D%3D%7CMjAy=
+NS1RM19QSVNDX0wxODBEX09wZW4uQ2xpY2suUmVnLUFsbC1leGNsdWRpbmctcHJpdmFjeS1vcGV=
+ucy13LUwzRC1DUk8tQXV0by1zdXBwcmVzc2lvbnM%3D%7C&_esuh=3D_11_c478befba1285740=
+c9c8f55406607b682f404f6139807eb33cab162e97a6491b
+
+
+Recipes at Sur La Table
+https://link.surlatable.com/u/nrd.php?p=3DkrgLuzLAuK_1325192_5956934_1_66&e=
+ms_l=3D8535816&i=3D1&d=3DNTU3NDg0ODM5%7Ca3JnTHV6TEF1Sw%3D%3D%7CMTMzNTg5Zjli=
+OTc3N2FjNDE%3D%7CMjUxMjI0XzVQTV9HaXZlLXRoZS1naWZ0LW9mLUhvbGlkYXktQ2xhc3Nlcw=
+%3D%3D%7CSW4rU3RvcmUrQ29va2luZw%3D%3D%7Cc2x0LXJlY2lwZXNfZW1haWwtZm9vdGVy%7C=
+MjAyNS1RM19QSVNDX0wxODBEX09wZW4uQ2xpY2suUmVnLUFsbC1leGNsdWRpbmctcHJpdmFjeS1=
+vcGVucy13LUwzRC1DUk8tQXV0by1zdXBwcmVzc2lvbnM%3D%7C&_esuh=3D_11_3494304d2582=
+3319db539c6bb141ff064fe0a35aabc6e535721718a858ee46d6
+
+
+SLT Perks
+https://link.surlatable.com/u/nrd.php?p=3DkrgLuzLAuK_1325192_5956934_1_68&e=
+ms_l=3D8535816&i=3D1&d=3DNTU3NDg0ODQx%7Ca3JnTHV6TEF1Sw%3D%3D%7CMTMzNTg5Zjli=
+OTc3N2FjNDE%3D%7CMjUxMjI0XzVQTV9HaXZlLXRoZS1naWZ0LW9mLUhvbGlkYXktQ2xhc3Nlcw=
+%3D%3D%7CSW4rU3RvcmUrQ29va2luZw%3D%3D%7Cc2x0LXBlcmtzX2VtYWls%7CMjAyNS1RM19Q=
+SVNDX0wxODBEX09wZW4uQ2xpY2suUmVnLUFsbC1leGNsdWRpbmctcHJpdmFjeS1vcGVucy13LUw=
+zRC1DUk8tQXV0by1zdXBwcmVzc2lvbnM%3D%7C&_esuh=3D_11_102a0e2a4263b912fa7f265a=
+274b7d646d6fbd6653b7d9902481f21b612bf073
+
+
+Sur La Table Near Me
+https://link.surlatable.com/u/nrd.php?p=3DkrgLuzLAuK_1325192_5956934_1_70&e=
+ms_l=3D8535816&i=3D1&d=3DNTU3NDg0ODQz%7Ca3JnTHV6TEF1Sw%3D%3D%7CMTMzNTg5Zjli=
+OTc3N2FjNDE%3D%7CMjUxMjI0XzVQTV9HaXZlLXRoZS1naWZ0LW9mLUhvbGlkYXktQ2xhc3Nlcw=
+%3D%3D%7CSW4rU3RvcmUrQ29va2luZw%3D%3D%7Cc3RvcmUtbG9jYXRvcl9lbWFpbC1mb290ZXI=
+%3D%7CMjAyNS1RM19QSVNDX0wxODBEX09wZW4uQ2xpY2suUmVnLUFsbC1leGNsdWRpbmctcHJpd=
+mFjeS1vcGVucy13LUwzRC1DUk8tQXV0by1zdXBwcmVzc2lvbnM%3D%7C&_esuh=3D_11_e009e3=
+5f7afc301f4df331d8173870d8ebefba057256727f09e3dcb4d01e38e8
+
+
+*FREE SHIPPING ON ORDERS OVER $75: Offer applies to ground shipping only
+for all
+orders placed on SurLaTable.com or through our catalog and with a
+merchandise
+total of $75 or more. Note: order subtotal must be $75 or more after any
+coupons
+or promotions are applied. Discount will automatically be applied at
+checkout.
+Valid for shipments bound to a single destination only within the
+continental
+United States. Gift cards, gift wrap, taxes, and prior purchases do not
+qualify
+toward the minimum purchase requirement, and offer cannot be applied to
+such
+items. Rush shipping and vendor shipping surcharges still apply.
+Additional
+shipping charges apply to AK, HI, Puerto Rico, U.S. Virgin Islands and
+Guam. No
+adjustments to prior purchases.
+
+*$15 OFF YOUR ORDER OVER $75 FOR JOINING TEXTS: Present your code at
+time of
+purchase in store or enter code at checkout online to receive this
+discount.
+Excludes sale and clearance (items with prices ending in 9 and 6), gift
+cards,
+prior purchases and gift-wrap. One-time use only. Cannot be combined
+with any
+other offers or discounts. Not redeemable for cash. Valid online and in
+stores.
+No adjustments to prior purchases. Hard good and cooking class purchases
+over
+$75 qualify for free shipping, and free shipping will automatically be
+applied
+to qualifying purchases when using code. Valid for shipments bound to a
+single
+destination only within the continental United States. Rush shipping and
+vendor
+shipping surcharges still apply. Other restrictions may apply.
+Additional
+shipping charges apply to AK, HI, Puerto Rico, U.S. Virgin Islands and
+Guam.
+*Brand Exclusions Apply.
+https://link.surlatable.com/u/nrd.php?p=3DkrgLuzLAuK_1325192_5956934_1_72&e=
+ms_l=3D8535816&i=3D1&d=3DNTU3NDg0ODQ1%7Ca3JnTHV6TEF1Sw%3D%3D%7CMTMzNTg5Zjli=
+OTc3N2FjNDE%3D%7CMjUxMjI0XzVQTV9HaXZlLXRoZS1naWZ0LW9mLUhvbGlkYXktQ2xhc3Nlcw=
+%3D%3D%7CSW4rU3RvcmUrQ29va2luZw%3D%3D%7CZXhjbHVzaW9ucy1hcHBseV9lbWFpbC1sZWd=
+hbA%3D%3D%7CMjAyNS1RM19QSVNDX0wxODBEX09wZW4uQ2xpY2suUmVnLUFsbC1leGNsdWRpbmc=
+tcHJpdmFjeS1vcGVucy13LUwzRC1DUk8tQXV0by1zdXBwcmVzc2lvbnM%3D%7C&_esuh=3D_11_=
+6e9b07e4b19945028e5343b751a0c35ad12e508939ff68b5c4ac4fc12054d93f
+
+
+Unsubscribe or Update Your Preferences
+https://link.surlatable.com/u/nrd.php?p=3DkrgLuzLAuK_1325192_5956934_1_54&e=
+ms_l=3D8535816&i=3D1&d=3Da3JnTHV6TEF1Sw%3D%3D%7CNTU3NDg0ODI3%7Ca3JnTHV6TEF1=
+Sw%3D%3D%7CMTMzNTg5ZjliOTc3N2FjNDE%3D%7CMjUxMjI0XzVQTV9HaXZlLXRoZS1naWZ0LW9=
+mLUhvbGlkYXktQ2xhc3Nlcw%3D%3D%7CSW4rU3RvcmUrQ29va2luZw%3D%3D%7CdXBkYXRlLXBy=
+ZWZlcmVuY2VzX2VtYWlsLWZvb3Rlcg%3D%3D%7CMjAyNS1RM19QSVNDX0wxODBEX09wZW4uQ2xp=
+Y2suUmVnLUFsbC1leGNsdWRpbmctcHJpdmFjeS1vcGVucy13LUwzRC1DUk8tQXV0by1zdXBwcmV=
+zc2lvbnM%3D%7C&_esuh=3D_11_9987ff792e40b63584428225f3b8050079af1c248c01c408=
+fb0e8ccabaeb4087
+
+Contact Customer Service
+https://link.surlatable.com/u/nrd.php?p=3DkrgLuzLAuK_1325192_5956934_1_56&e=
+ms_l=3D8535816&i=3D1&d=3DNTU3NDg0ODI5%7Ca3JnTHV6TEF1Sw%3D%3D%7CMTMzNTg5Zjli=
+OTc3N2FjNDE%3D%7CMjUxMjI0XzVQTV9HaXZlLXRoZS1naWZ0LW9mLUhvbGlkYXktQ2xhc3Nlcw=
+%3D%3D%7CSW4rU3RvcmUrQ29va2luZw%3D%3D%7CY3VzdG9tZXItc2VydmljZV9lbWFpbC1mb29=
+0ZXI%3D%7CMjAyNS1RM19QSVNDX0wxODBEX09wZW4uQ2xpY2suUmVnLUFsbC1leGNsdWRpbmctc=
+HJpdmFjeS1vcGVucy13LUwzRC1DUk8tQXV0by1zdXBwcmVzc2lvbnM%3D%7C&_esuh=3D_11_88=
+33f5acc5d9c552b3d5b06b3ef5eba2c08b6421c265228b3631dccbd8ead77e
+
+
+Add sur_la_table@email.surlatable.com to your address book to ensure
+that you
+receive our emails in your inbox.
+
+2025 Sur La Table=C2=A0=C2=A0=C2=A0=C2=A0 6100=C2=A04th=C2=A0Avenue=C2=A0S,=
+ Suite=C2=A0500, Seattle,=C2=A0WA
+98108
+
+
+----=_---NextPart--=_-PBbjQpqaGB
+Content-Type: text/html; charset=utf-8
+Content-transfer-encoding: quoted-printable
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.=
+w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns=3D"http://www.w3.=
+org/1999/xhtml" xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:o=3D"urn:sc=
+hemas-microsoft-com:office:office" e-locale=3D"en-US" e-is-multilanguage=3D=
+"false">
+<head>
+<script type=3D"application/ld+json">
+[{
+"@context": "http://schema.org/",
+"@type": "Organization",
+"logo": "https://link.surlatable.com/custloads/767471653/md_1398945.jpg"
+},{
+"@context": "http://schema.org/",
+"@type": "EmailMessage",
+}]
+</script>
+<!--Begin Carousel--> <!--Build the first image preview in your product car=
+ousel:--> <div itemscope itemtype=3D"http://schema.org/PromotionCard" style=
+=3D"font-family: Arial, Verdana, Geneva, sans-serif;"> <meta itemprop=3D"im=
+age" content=3D"IMAGE_URL1"> <!-- The URL to your image in PNG or JPEG form=
+at, such as https://www.example.com/image.png. The supported aspect ratios =
+are 4:5, 1:1, 1.91:1. For product carousels, each image must have a unique =
+URL and use the same aspect ratio. --> <meta itemprop=3D"url" content=3D"PR=
+OMO_URL1"> <!-- The URL for the promotion. When users click the image from =
+the Promotions tab, they visit this URL. --> <!-- Optionally, include the f=
+ollowing PromotionCard properties: --> <meta itemprop=3D"headline" content=
+=3D"HEADLINE1"> <!-- A 1 to 2-line description of the promotion that displa=
+ys under the preview image. --> <meta itemprop=3D"price" content=3D"PRICE1"=
+> <!-- The price of the promotion. --> <meta itemprop=3D"priceCurrency" con=
+tent=3D"USD"> <!-- The currency of the price in 3-letter ISO 4217 format, s=
+uch as USD. Determines the currency symbol displayed with the price. --> <m=
+eta itemprop=3D"discountValue" content=3D"DISCOUNT_VALUE1"> <!-- The amount=
+ subtracted from the price to display an adjusted price. The adjusted price=
+ is displayed next to the original price. For example, if the discountValue=
+ is 25, the price is 100, and the priceCurrency is USD, the adjusted price =
+displays as $75. --> <meta itemprop=3D"position" content=3D"POSITION"> <!--=
+ The position of the card in the carousel. --> </div> <!--Build the second =
+image preview in your product carousel:--> <div itemscope itemtype=3D"http:=
+//schema.org/PromotionCard" style=3D"font-family: Arial, Verdana, Geneva, s=
+ans-serif;"> <meta itemprop=3D"image" content=3D"IMAGE_URL2"> <meta itempro=
+p=3D"url" content=3D"PROMO_URL2"> <!-- Optionally, include the following Pr=
+omotionCard properties: --> <meta itemprop=3D"headline" content=3D"HEADLINE=
+2"> <meta itemprop=3D"price" content=3D"PRICE2"> <meta itemprop=3D"priceCur=
+rency" content=3D"PRICE_CURRENCY2"> <meta itemprop=3D"discountValue" conten=
+t=3D"DISCOUNT_VALUE2"> <meta itemprop=3D"position" content=3D"POSITION"> </=
+div> <!-- To include more image previews, add additional PromotionCard obje=
+cts. // You can include up to 10 image previews in a product carousel. --> =
+<!--End Carousel--> <!--Begin Single Image Promotion Card--> <!-- Build the=
+ first image preview in your Promotion Card:--> <div itemscope itemtype=3D"=
+http://schema.org/PromotionCard" style=3D"font-family: Arial, Verdana, Gene=
+va, sans-serif;"> <meta itemprop=3D"image" content=3D"IMAGE_URL"> <!-- The =
+URL for the preview image in PNG or JPEG format, such as https://www.exampl=
+e.com/image.png. The supported aspect ratio is 1.91:1. --> <meta itemprop=
+=3D"url" content=3D"PROMO_URL"> <!-- When users click the image, the URL th=
+at directs to the promotion. --> <!-- // Optionally, include the following =
+PromotionCard properties: --> <meta itemprop=3D"headline" content=3D"HEADLI=
+NE"> <!-- Optional: A 1 to 2-line description of the promotion that display=
+s under the preview image. --> <meta itemprop=3D"price" content=3D"PRICE"> =
+<!-- Optional: The price of the promotion. --> <meta itemprop=3D"priceCurre=
+ncy" content=3D"USD"> <!-- Optional: The currency of the price in 3-letter =
+ISO 4217 format, such as USD. Determines the currency symbol displayed with=
+ the price. --> <meta itemprop=3D"discountValue" content=3D"DISCOUNT_VALUE"=
+> <!-- Optional: The amount subtracted from the price to display an adjuste=
+d price. The adjusted price is displayed next to the original price. --> </=
+div> <!--Begin Single Image Promotion Card--> <!--Begin Deal Annotation--> =
+<div itemscope itemtype=3D"http://schema.org/DiscountOffer" style=3D"font-f=
+amily: Arial, Verdana, Geneva, sans-serif;"> <meta itemprop=3D"description"=
+ content=3D"DESCRIPTION"> <!-- A short, compelling summary of your offer. E=
+xample: "20% off sitewide" or "Buy one, get one free". --> <meta itemprop=
+=3D"discountCode" content=3D"DISCOUNT_CODE"> <!-- The promo code a user nee=
+ds to apply at checkout. Example: 20TODAY. --> <meta itemprop=3D"availabili=
+tyStarts" content=3D"START_DATE_TIME"> <!-- The start date and time of the =
+promotion in ISO 8601 format. Example: 2025-08-24T18:44:37-07:00. --> <meta=
+ itemprop=3D"availabilityEnds" content=3D"END_DATE_TIME"> <!-- The end date=
+ and time of the promotion in ISO 8601 format. Example: 2025-09-23T18:44:37=
+-07:00. --> </div> <!--End Deal Annotation-->
+<title>Sur La Table</title>
+<meta name=3D"viewport" content=3D"initial-scale=3D1, user-scalable=3Dyes">
+<!--[if !mso]><!--><meta http-equiv=3D"X-UA-Compatible" content=3D"IE=3Dedg=
+e"><!--<![endif]-->
+<style>
+@import url("https://use.typekit.net/xum1iaq.css");
+</style> <style>
+@import url('https://fonts.googleapis.com/css?family=3DLato:300,400,900');
+</style>
+<style>
+body, table, td, a{-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 10=
+0%;}
+a{-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; color: #78a4d=
+5;}
+table, td{mso-table-lspace: 0pt; mso-table-rspace: 0pt;}
+img{-ms-interpolation-mode: bicubic;}
+.ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font,=
+ .ExternalClass td, .ExternalClass div { line-height: 100%; }
+[office365] div, button { margin:0 !important; padding:0 !important; displa=
+y:block !important; }
+a,
+a:hover,
+a:visited,
+a:active {color: #6597CF;}
+img{border: 0; height: auto; line-height: 100%; outline: none; text-decorat=
+ion: none;}
+table{border-collapse: collapse !important;}
+body{margin: 0 auto !important; padding: 0 !important; width: 100% !importa=
+nt; font-family: Arial, Verdana, Geneva, sans-serif;}
+table, td, th, p, div, span { font-family: Arial, Verdana, Geneva, sans-ser=
+if; }
+a[x-apple-data-detectors] {color: inherit !important; text-decoration: none=
+ !important; font-size: inherit !important; font-family: inherit !important=
+; font-weight: inherit !important; line-height: inherit !important;}
+h1 {
+font-size: 30px;=09font-weight: bold;=09margin: 0 0 12px 0;
+}
+h1 a,
+h1 a:hover,
+h1 a:visited,
+h1 a:active {
+color: #002838;=09text-decoration: none;
+}
+h2 {
+color: #000000;=09font-size: 18px;=09font-weight: normal; margin: 0 0 8px 0=
+;
+}
+h2 a,
+h2 a:hover,
+h2 a:visited,
+h2 a:active {
+color: #002838;=09text-decoration: none;
+}
+h3 {
+color: #000000;=09font-size: 23px;=09font-weight: lighter; text-align: left=
+;
+}
+p {
+margin: 0 0 18px 0;
+}
+.imgandtext {
+background-color: #ffffff;=09color: #000000;=09font-size: 14px; font-weight=
+: lighter;
+line-height: 19px;
+}
+.en-box {
+background-color: #ffffff;=09color: #000000;=09font-size: 14px; font-weight=
+: lighter;
+}
+.cb07c {
+background-color: #ffffff;=09color: #000000;=09font-size: 13px;
+font-weight: lighter;
+}
+.footer-box {
+color: #000000;=09font-size:14px; line-height: 18px;=09font-weight: normal;=
+=09font-family: Arial, Verdana, Geneva, sans-serif !important;
+}
+.unsub-box {
+background-color: #f3f3ef;=09color: #000000;=09font-size: 10px;
+font-weight: normal;=09font-family: Arial, Verdana, Geneva, sans-serif !imp=
+ortant;
+}
+.spacer {
+background-color: #ffffff;
+}
+.dfu {
+background-color: #ffffff;
+line-height: 1;
+}
+.dfd {
+background-color: #ffffff;
+line-height: 1;
+}
+.padtext {
+padding: 20px 130px !important;
+}
+.spacerht {
+height: 20px;
+}
+.separatorline {
+padding:0;
+border: 0;=09width: 600px;=09height: 1px;=09color:#000000;=09background-col=
+or: #ffffff;
+}
+.separatorbg {
+background-color: #ffffff;
+}
+.mst { max-height:0;
+display:none;
+mso-hide:all;
+overflow:hidden;
+}
+.ff{
+font-family: Arial, Verdana, Geneva, sans-serif ;
+}
+[office365] button {display: block !important; }
+[office365] div {display: block !important; }
+@media (prefers-color-scheme: dark)
+{
+.bgimg {
+background-color:black !important;
+background-image:url(https://link.surlatable.com/custloads/767471653/backgr=
+ound1.jpg);
+filter: invert(100%);
+-webkit-filter: invert(100%);
+z-index: -1;}
+}
+[data-ogsc] .bgimg {
+background-color:black !important;
+background-image:url(https://link.surlatable.com/custloads/767471653/backgr=
+ound1.jpg);
+filter: invert(100%);
+-webkit-filter: invert(100%);
+z-index: -1;}
+div[style*=3D"margin: 16px 0;"] { margin: 0 !important; }
+@media only screen and (max-width:500px) and (-webkit-min-device-pixel-rati=
+o:1.1) {
+.ftd { display:block; width:100% !important; }
+.hide {display:none !important;}
+.fth tr > th { display:block; width:100% !important; }
+.fw { width:100% !important; min-width:0 !important; }
+.fs1 { font-size: 14px !important; }
+.w100 { width:100px !important; }
+.w200 { width:200px !important; }
+.w50 { width:50px !important; }
+.w350 { width:350px !important; }
+.winh { width:inherit !important; }
+.sec { width:100% !important; float:none !important; }
+.mh, .mobile_hidden {max-height:0; display:none !important; mso-hide:all; o=
+verflow:hidden;}
+.ms, .mobile_show { display:inline !important; }
+.mst { display:table-cell !important; max-height:none!important; overflow:v=
+isible!important;}
+.image { width:100%; height:auto; }
+.logo { width:60%; height: auto; }
+.w70 {width:70% !important; height: auto !important;}
+.w90 {width:90% !important; height: auto !important;}
+.comt { margin:0 auto !important; }
+.xsmall, .xsmall font {font-size:11px !important; font-size:4.0625vw !impor=
+tant;}
+.mfont {font-size:16px !important;}
+.com { text-align:center !important;}
+.lom { text-align:left; }
+.mf20 { font-size: 20px !important; }
+.mf10 { font-size: 10px !important; }
+.h1, .h1 font { font-size:24px !important; line-height:29px !important; }
+.h2, .h2 font { font-size:22px !important; line-height:27px !important; }
+.cta, .cta td { padding:0 !important; }
+.cta a { padding:15px 5px !important; }
+.rwom { width:auto !important; }
+.rhom { height:auto !important; }
+.rw50, rw50 img { width:50px !important; }
+.rw25, .rw25 img { width:25px !important; }
+.rw10, .rw10 img { width:10px !important; }
+.rw5, .rw5 img { width:5px !important; }
+.rh20 { height:20px !important; }
+.rh10, .rh10 img { height:10px !important; }
+.h100 { height:100px !important; }
+.ha { height:auto !important; }
+.mtop10 { margin-top:10px; }
+.bdt {border-top: 2px #3d3d3d solid; margin-top:10px;}
+.nbo { border: none !important; }
+.p0 { padding:0 !important;}
+.pl30 { padding:0 0 0 30px !important;}
+.pl25 { padding:0 0 0 25px !important;}
+.plr10 { padding:0 10px !important;}
+.plr15 { padding:0 15px !important;}
+.plr20tb10 { padding:10px 20px !important;}
+.ptb10 { padding:10px 0 !important;}
+.pt10 { padding:10px 0 0 0 !important;}
+.pb10 { padding:0 0 10px 0 !important;}
+.p10 { padding:10px !important;}
+.p15 { padding:15px !important;}
+.p20 { padding:20px 20px !important;}
+.nav { background-color:#ffffff; height:40px;}
+.nav td:last-child font:after { content:'=E2=89=A1'; font-size:40px; paddin=
+g:0px 0px 0px 0px; font-weight:normal; color:#000000;}
+.content th:first-child { border-top: none; }
+.content th a{ border: 1px solid #000000; border-top: none; padding:5px 20p=
+x; display:block;}
+input[type=3Dcheckbox]:checked + .content {max-height: 500px !important;}
+.content { max-height:0px; overflow:hidden; -moz-transition: all 750ms ease=
+; -ms-transition: all 750ms ease; -o-transition: all 750ms ease; -webkit-tr=
+ansition: all 750ms ease; transition: all 750ms ease;}
+.full {display:block; width:100%;}}
+@media only screen and (width:375px) {.pr1 {padding-right:1px;}}
+<!--
+body { margin: 0 auto !important; padding:0; background:#d8d8d8; -webkit-te=
+xt-size-adjust:none; -ms-text-size-adjust:none; }
+a, a:active, a:visited, .yshortcuts, .yshortcuts a span { color:#000000; te=
+xt-decoration:none; font-weight:normal; }
+a[x-apple-data-detectors] { color: inherit !important; text-decoration: non=
+e !important; font-size: inherit !important; font-family: inherit !importan=
+t; font-weight: inherit !important; line-height: inherit !important; }
+.ReadMsgBody { width:100%; }
+.ExternalClass *, .b-message-body { line-height:100%; }
+.ExternalClass { width:100%; }
+input { display:none !important; max-height:0px; overflow:hidden; }
+table th { padding:0; Margin:0; border:0; font-weight:normal; vertical-alig=
+n:top;}
+*[lang=3D"uri"] a { color: inherit !important; text-decoration: none !impor=
+tant; font-size: inherit !important; font-family: inherit !important; font-=
+weight: inherit !important; line-height: inherit !important; }
+-->
+</style>
+</head>
+<body style=3D"font-family: Arial, Verdana, Geneva, sans-serif; -webkit-fon=
+t-smoothing: antialiased; -webkit-text-size-adjust: none; -ms-text-size-adj=
+ust: none; margin: 0 auto !important; padding: 0 !important; width: 100% !i=
+mportant;"><div ems:preheader style=3D"font-family: Arial, Verdana, Geneva,=
+ sans-serif; font-size: 1px; color: #333333; line-height: 1px; max-height: =
+0px; max-width: 0px; opacity: 0; overflow: hidden; mso-hide: all; display: =
+none!important;">Our hands-on classes make great gifts! Bonus: no wrapping =
+required!</div>
+<div style=3D"font-family: Arial, Verdana, Geneva, sans-serif; display: non=
+e; max-height: 0px; overflow: hidden;">
+&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nb=
+sp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;=
+&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nb=
+sp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;=
+&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nb=
+sp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;=
+&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nb=
+sp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;=
+&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nb=
+sp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;=
+&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nb=
+sp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;=
+&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nb=
+sp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;=
+&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nb=
+sp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;=
+&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;
+</div>
+<div style=3D"font-family: Arial, Verdana, Geneva, sans-serif; display: non=
+e; max-height: 0px; overflow: hidden;">
+&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nb=
+sp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;=
+&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nb=
+sp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;=
+&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nb=
+sp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;=
+&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nb=
+sp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;=
+&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nb=
+sp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;=
+&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nb=
+sp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;=
+&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nb=
+sp;&zwnj;&nbsp;
+</div>
+<div style=3D"font-family: Arial, Verdana, Geneva, sans-serif;">
+<table cellspacing=3D"0" cellpadding=3D"0" border=3D"0" width=3D"100%" heig=
+ht=3D"100%" bgcolor=3D"#ffffff" style=3D"-webkit-text-size-adjust: 100%; -m=
+s-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; fon=
+t-family: Arial, Verdana, Geneva, sans-serif; border-collapse: collapse !im=
+portant;">
+<tr>
+<td align=3D"center" valign=3D"top" style=3D"-webkit-text-size-adjust: 100%=
+; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt;=
+ font-family: Arial, Verdana, Geneva, sans-serif;">
+<table cellspacing=3D"0" cellpadding=3D"0" border=3D"0" width=3D"600" style=
+=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-table-l=
+space: 0pt; mso-table-rspace: 0pt; font-family: Arial, Verdana, Geneva, san=
+s-serif; width: 600px; min-width: 600px; border-collapse: collapse !importa=
+nt;" class=3D"fw">
+<tr>
+<td style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; ms=
+o-table-lspace: 0pt; mso-table-rspace: 0pt; font-family: Arial, Verdana, Ge=
+neva, sans-serif;">
+<table cellspacing=3D"0" cellpadding=3D"0" border=3D"0" width=3D"600" style=
+=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-table-l=
+space: 0pt; mso-table-rspace: 0pt; font-family: Arial, Verdana, Geneva, san=
+s-serif; width: 600px; min-width: 600px; border-collapse: collapse !importa=
+nt;" class=3D"fw">
+<tr>
+<td class=3D"pr1" width=3D"600" style=3D"-webkit-text-size-adjust: 100%; -m=
+s-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; fon=
+t-family: Arial, Verdana, Geneva, sans-serif;">
+<table cellspacing=3D"0" cellpadding=3D"0" border=3D"0" width=3D"600" style=
+=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-table-l=
+space: 0pt; mso-table-rspace: 0pt; font-family: Arial, Verdana, Geneva, san=
+s-serif; width: 600px; min-width: 600px; border-collapse: collapse !importa=
+nt;" bgcolor=3D"#ffffff" class=3D"fw">
+<tr e-block-id=3D"5c644ca822a877b940000001">
+<td style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; ms=
+o-table-lspace: 0pt; mso-table-rspace: 0pt; font-family: Arial, Verdana, Ge=
+neva, sans-serif; padding-bottom: 10px;">
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" align=3D"center" cl=
+ass=3D"fw" style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 1=
+00%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-family: Arial, Verd=
+ana, Geneva, sans-serif; margin-top: 10px; border-collapse: collapse !impor=
+tant;">
+<tr>
+<td class=3D"ftd pb10 com" align=3D"right" valign=3D"top" style=3D"-webkit-=
+text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; =
+mso-table-rspace: 0pt; font-family: Verdana, Geneva, sans-serif; font-size:=
+ 11px; color: #696461; text-decoration: none; padding-right: 0px;">
+<span style=3D"font-family: Arial, Geneva, sans-serif; font-size: 11px; col=
+or: #696461; text-decoration: none;" e-editable=3D"viewonlinetext"><a href=
+=3D"https://link.surlatable.com/u/gm.php?prm=3DkrgLuzLAuK_767471653_5956934=
+_1325192&_esuh=3D_11_2a17c7b9bb923fab57125330acf21f8b72e6f1863888ac838ba3a6=
+c543c27c14" style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: =
+100%; font-weight: normal; color: #696461; text-decoration: underline;" tar=
+get=3D"_blank" alias=3D"browser">Open to see in browser</a></span>
+</td>
+</tr>
+</table>
+</td>
+</tr><tr e-block-id=3D"6949cbeb8cf5531276000004">
+<td style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; ms=
+o-table-lspace: 0pt; mso-table-rspace: 0pt; font-family: Arial, Verdana, Ge=
+neva, sans-serif;">
+<a e-editable=3D"shippinglink" target=3D"_blank" href=3D"https://link.surla=
+table.com/u/nrd.php?p=3DkrgLuzLAuK_1325192_5956934_1_1&ems_l=3D8535816&i=3D=
+1&d=3DNTU3NDg0Nzc0%7Ca3JnTHV6TEF1Sw%3D%3D%7CMTMzNTg5ZjliOTc3N2FjNDE%3D%7CMj=
+UxMjI0XzVQTV9HaXZlLXRoZS1naWZ0LW9mLUhvbGlkYXktQ2xhc3Nlcw%3D%3D%7CSW4rU3Rvcm=
+UrQ29va2luZw%3D%3D%7CaGVhZGVy%7CMjAyNS1RM19QSVNDX0wxODBEX09wZW4uQ2xpY2suUmV=
+nLUFsbC1leGNsdWRpbmctcHJpdmFjeS1vcGVucy13LUwzRC1DUk8tQXV0by1zdXBwcmVzc2lvbn=
+M%3D%7C&_esuh=3D_11_9c12d6fc34778072369f750674baec25be0280e2e0dd8e1e7892378=
+df004a63a" title=3D"Free Shipping on Orders Over $75" style=3D"-webkit-text=
+-size-adjust: 100%; -ms-text-size-adjust: 100%; color: #000000; text-decora=
+tion: none; font-weight: normal;"><img e-editable=3D"freeshipping" src=3D"h=
+ttps://link.surlatable.com/custloads/767471653/Header_Footer_190813/Freeshi=
+pping_75_even.gif" alt=3D"FREE SHIPPING ON ORDERS OVER $75" style=3D"-ms-in=
+terpolation-mode: bicubic; border: 0; height: auto; line-height: 100%; outl=
+ine: none; text-decoration: none; display: block;" border=3D"0" width=3D"60=
+0" class=3D"image"></a>
+</td>
+</tr><tr e-block-id=3D"6930641c285116da94000002">
+<td style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; ms=
+o-table-lspace: 0pt; mso-table-rspace: 0pt; font-family: Arial, Verdana, Ge=
+neva, sans-serif;">
+<table width=3D"600" border=3D"0" cellspacing=3D"0" cellpadding=3D"0" class=
+=3D"com fw" align=3D"center" style=3D"-webkit-text-size-adjust: 100%; -ms-t=
+ext-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-f=
+amily: Arial, Verdana, Geneva, sans-serif; border-collapse: collapse !impor=
+tant;">
+<tr>
+<td align=3D"center" valign=3D"top" style=3D"-webkit-text-size-adjust: 100%=
+; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt;=
+ font-family: Arial, Verdana, Geneva, sans-serif; font-size: 0;">
+<div style=3D"font-family: Arial, Verdana, Geneva, sans-serif;">
+<img src=3D"https://link.surlatable.com/custloads/767471653/md_1485599.jpg"=
+ e-max-width=3D"600" style=3D"-ms-interpolation-mode: bicubic; border: 0; h=
+eight: auto; line-height: 100%; outline: none; text-decoration: none; displ=
+ay: block;" border=3D"0" class=3D"image" width=3D"600" height=3D"22" e-edit=
+able=3D"fullWidthImgNL" alt=3D"Sur la table spacing">
+</div>
+</td>
+</tr>
+</table>
+</td>
+</tr><tr e-block-id=3D"589bc9d85b2746df5f00000e">
+<td align=3D"center" style=3D"-webkit-text-size-adjust: 100%; -ms-text-size=
+-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-family: A=
+rial, Verdana, Geneva, sans-serif; padding: 0px;">
+<a e-editable=3D"logoUrl" href=3D"https://link.surlatable.com/u/nrd.php?p=
+=3DkrgLuzLAuK_1325192_5956934_1_3&ems_l=3D8535816&i=3D1&d=3DNTU3NDg0Nzc2%7C=
+a3JnTHV6TEF1Sw%3D%3D%7CMTMzNTg5ZjliOTc3N2FjNDE%3D%7CMjUxMjI0XzVQTV9HaXZlLXR=
+oZS1naWZ0LW9mLUhvbGlkYXktQ2xhc3Nlcw%3D%3D%7CSW4rU3RvcmUrQ29va2luZw%3D%3D%7C=
+c2x0LWxvZ29fZW1haWwtdG9wLW5hdg%3D%3D%7CMjAyNS1RM19QSVNDX0wxODBEX09wZW4uQ2xp=
+Y2suUmVnLUFsbC1leGNsdWRpbmctcHJpdmFjeS1vcGVucy13LUwzRC1DUk8tQXV0by1zdXBwcmV=
+zc2lvbnM%3D%7C&_esuh=3D_11_176b632a14242747aee65e0974c9a4a6aa69a646af17dce1=
+95a9187122e8053c" target=3D"_blank" alias=3D"SLT Logo Top Nav Bar" style=3D=
+"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; color: #000000=
+; text-decoration: none; font-weight: normal;">
+<img e-editable=3D"logoImg" class src=3D"https://link.surlatable.com/custlo=
+ads/767471653/md_1390503.jpg" alt=3D"Sur la table" width=3D"600" style=3D"-=
+ms-interpolation-mode: bicubic; border: 0; height: auto; line-height: 100%;=
+ outline: none; display: block; padding: 0; color: #404040; text-decoration=
+: none; font-family: Verdana, Geneva, sans-serif; font-size: 14px;" title=
+=3D"Sur la table">
+</a>
+</td>
+</tr><tr e-block-id=3D"65492b7c60d089ccaa000003">
+<td style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; ms=
+o-table-lspace: 0pt; mso-table-rspace: 0pt; font-family: Arial, Verdana, Ge=
+neva, sans-serif;">
+<table width=3D"600" border=3D"0" cellspacing=3D"0" cellpadding=3D"0" class=
+=3D"com fw" align=3D"center" style=3D"-webkit-text-size-adjust: 100%; -ms-t=
+ext-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-f=
+amily: Arial, Verdana, Geneva, sans-serif; border-collapse: collapse !impor=
+tant;">
+<tr>
+<td align=3D"center" valign=3D"top" style=3D"-webkit-text-size-adjust: 100%=
+; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt;=
+ font-family: Arial, Verdana, Geneva, sans-serif; font-size: 0;">
+<div style=3D"font-family: Arial, Verdana, Geneva, sans-serif;">
+<img src=3D"https://link.surlatable.com/custloads/767471653/md_1485599.jpg"=
+ e-max-width=3D"600" style=3D"-ms-interpolation-mode: bicubic; border: 0; h=
+eight: auto; line-height: 100%; outline: none; text-decoration: none; displ=
+ay: block;" border=3D"0" class=3D"image" width=3D"600" height=3D"22" e-edit=
+able=3D"fullWidthImgNL" alt=3D"Sur la table spacing">
+</div>
+</td>
+</tr>
+</table>
+</td>
+</tr><tr e-block-id=3D"6949522d85edcece4400000a">
+<td style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; ms=
+o-table-lspace: 0pt; mso-table-rspace: 0pt; font-family: Arial, Verdana, Ge=
+neva, sans-serif;">
+<table width=3D"600" border=3D"0" cellspacing=3D"0" cellpadding=3D"0" class=
+=3D"com fw" align=3D"center" style=3D"-webkit-text-size-adjust: 100%; -ms-t=
+ext-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-f=
+amily: Arial, Verdana, Geneva, sans-serif; border-collapse: collapse !impor=
+tant;">
+<tr>
+<td align=3D"center" valign=3D"top" style=3D"-webkit-text-size-adjust: 100%=
+; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt;=
+ font-family: Arial, Verdana, Geneva, sans-serif; font-size: 0;">
+<div style=3D"font-family: Arial, Verdana, Geneva, sans-serif;">
+<a href=3D"https://link.surlatable.com/u/nrd.php?p=3DkrgLuzLAuK_1325192_595=
+6934_1_5&ems_l=3D8535816&i=3D1&d=3DNTU3NDg0Nzc4%7Ca3JnTHV6TEF1Sw%3D%3D%7CMT=
+MzNTg5ZjliOTc3N2FjNDE%3D%7CMjUxMjI0XzVQTV9HaXZlLXRoZS1naWZ0LW9mLUhvbGlkYXkt=
+Q2xhc3Nlcw%3D%3D%7CSW4rU3RvcmUrQ29va2luZw%3D%3D%7CYnV5LW9ubGluZS1waWNrLXVwL=
+WluLXN0b3JlX2VtYWls%7CMjAyNS1RM19QSVNDX0wxODBEX09wZW4uQ2xpY2suUmVnLUFsbC1le=
+GNsdWRpbmctcHJpdmFjeS1vcGVucy13LUwzRC1DUk8tQXV0by1zdXBwcmVzc2lvbnM%3D%7C&_e=
+suh=3D_11_1c931274962d4299c973b9c1cb8732db2673ee13577c6d8ee796325ff31719f6"=
+ e-editable=3D"fullWidthImageUrl" title=3D"Buy Online, Pickup In Store" sty=
+le=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; color: #0=
+00000; text-decoration: none; font-weight: normal;" target=3D"_blank">
+<img src=3D"https://link.surlatable.com/custloads/767471653/251206/251206_1=
+5_3PM_Gifts-by-Price-Point-Great-Gifting-Event_02.jpg" e-max-width=3D"600" =
+style=3D"-ms-interpolation-mode: bicubic; border: 0; height: auto; line-hei=
+ght: 100%; outline: none; text-decoration: none; display: block; width: 600=
+px;" border=3D"0" class=3D"image" width=3D"600" e-editable=3D"fullWidthImg"=
+ alt=3D"Buy Online, Pickup In Store">
+</a>
+</div>
+</td>
+</tr>
+</table>
+</td>
+</tr><tr e-block-id=3D"6949520285edcece44000004">
+<td style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; ms=
+o-table-lspace: 0pt; mso-table-rspace: 0pt; font-family: Arial, Verdana, Ge=
+neva, sans-serif;">
+<table width=3D"600" border=3D"0" cellspacing=3D"0" cellpadding=3D"0" class=
+=3D"com fw" align=3D"center" style=3D"-webkit-text-size-adjust: 100%; -ms-t=
+ext-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-f=
+amily: Arial, Verdana, Geneva, sans-serif; border-collapse: collapse !impor=
+tant;">
+<tr>
+<td align=3D"center" valign=3D"top" style=3D"-webkit-text-size-adjust: 100%=
+; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt;=
+ font-family: Arial, Verdana, Geneva, sans-serif; font-size: 0;">
+<div style=3D"font-family: Arial, Verdana, Geneva, sans-serif;">
+<img src=3D"https://link.surlatable.com/custloads/767471653/md_1485599.jpg"=
+ e-max-width=3D"600" style=3D"-ms-interpolation-mode: bicubic; border: 0; h=
+eight: auto; line-height: 100%; outline: none; text-decoration: none; displ=
+ay: block;" border=3D"0" class=3D"image" width=3D"600" height=3D"22" e-edit=
+able=3D"fullWidthImgNL" alt=3D"Sur la table spacing">
+</div>
+</td>
+</tr>
+</table>
+</td>
+</tr><tr e-block-id=3D"671143b6a24874fee0000001">
+<td style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; ms=
+o-table-lspace: 0pt; mso-table-rspace: 0pt; font-family: Arial, Verdana, Ge=
+neva, sans-serif;"><table cellspacing=3D"0" cellpadding=3D"0" border=3D"0" =
+align=3D"center" width=3D"600" class=3D"fw" style=3D"-webkit-text-size-adju=
+st: 100%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspa=
+ce: 0pt; font-family: Arial, Verdana, Geneva, sans-serif; width: 600px; bor=
+der-collapse: collapse !important;">
+<tr>
+<td align=3D"center" style=3D"-webkit-text-size-adjust: 100%; -ms-text-size=
+-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-family: A=
+rial, Verdana, Geneva, sans-serif;"><table cellspacing=3D"0" cellpadding=3D=
+"0" border=3D"0" style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adj=
+ust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-family: Arial=
+, Verdana, Geneva, sans-serif; border-collapse: collapse !important;">
+<tr>
+<th align=3D"center" valign=3D"top" class=3D"vam fl" style=3D"font-family: =
+Arial, Verdana, Geneva, sans-serif; padding: 0; Margin: 0; border: 0; font-=
+weight: normal; vertical-align: top;">
+<table cellspacing=3D"0" cellpadding=3D"0" border=3D"0" style=3D"-webkit-te=
+xt-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; ms=
+o-table-rspace: 0pt; font-family: Arial, Verdana, Geneva, sans-serif; borde=
+r-collapse: collapse !important;">
+<tr>
+<td align=3D"center" class=3D"mh" style=3D"-webkit-text-size-adjust: 100%; =
+-ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; f=
+ont-family: Arial, Verdana, Geneva, sans-serif;"><img src=3D"https://link.s=
+urlatable.com/custloads/767471653/2023_Navigation/nav_left.jpg" border=3D"0=
+" style=3D"-ms-interpolation-mode: bicubic; border: 0; height: auto; line-h=
+eight: 100%; outline: none; text-decoration: none; display: block;" width=
+=3D"85" class=3D"image" alt=3D"Left Space"></td>
+<td align=3D"center" style=3D"-webkit-text-size-adjust: 100%; -ms-text-size=
+-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-family: A=
+rial, Verdana, Geneva, sans-serif;"><a e-editable=3D"navlink1" href=3D"http=
+s://link.surlatable.com/u/nrd.php?p=3DkrgLuzLAuK_1325192_5956934_1_7&ems_l=
+=3D8535816&i=3D1&d=3DNTU3NDg0Nzgw%7Ca3JnTHV6TEF1Sw%3D%3D%7CMTMzNTg5ZjliOTc3=
+N2FjNDE%3D%7CMjUxMjI0XzVQTV9HaXZlLXRoZS1naWZ0LW9mLUhvbGlkYXktQ2xhc3Nlcw%3D%=
+3D%7CSW4rU3RvcmUrQ29va2luZw%3D%3D%7CbmV3LWFycml2YWxzX2VtYWlsLXRvcC1uYXY%3D%=
+7CMjAyNS1RM19QSVNDX0wxODBEX09wZW4uQ2xpY2suUmVnLUFsbC1leGNsdWRpbmctcHJpdmFje=
+S1vcGVucy13LUwzRC1DUk8tQXV0by1zdXBwcmVzc2lvbnM%3D%7C&_esuh=3D_11_30fe666d5e=
+d51ef2b3caee0b6c6ff2f6534d97046de9cf14f87d310765efdb7c" title=3D"NEW" targe=
+t=3D"_blank" style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust:=
+ 100%; color: #000000; text-decoration: none; font-weight: normal;"><img e-=
+editable=3D"Image1" src=3D"https://link.surlatable.com/custloads/767471653/=
+2023_Navigation/nav_new.jpg" border=3D"0" style=3D"-ms-interpolation-mode: =
+bicubic; border: 0; height: auto; line-height: 100%; outline: none; text-de=
+coration: none; display: block;" width=3D"85" class=3D"image" alt=3D"NEW"><=
+/a></td>
+<td align=3D"center" style=3D"-webkit-text-size-adjust: 100%; -ms-text-size=
+-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-family: A=
+rial, Verdana, Geneva, sans-serif;"><a e-editable=3D"navlink2" href=3D"http=
+s://link.surlatable.com/u/nrd.php?p=3DkrgLuzLAuK_1325192_5956934_1_9&ems_l=
+=3D8535816&i=3D1&d=3DNTU3NDg0Nzgy%7Ca3JnTHV6TEF1Sw%3D%3D%7CMTMzNTg5ZjliOTc3=
+N2FjNDE%3D%7CMjUxMjI0XzVQTV9HaXZlLXRoZS1naWZ0LW9mLUhvbGlkYXktQ2xhc3Nlcw%3D%=
+3D%7CSW4rU3RvcmUrQ29va2luZw%3D%3D%7CZ2lmdHNfZW1haWwtdG9wLW5hdg%3D%3D%7CMjAy=
+NS1RM19QSVNDX0wxODBEX09wZW4uQ2xpY2suUmVnLUFsbC1leGNsdWRpbmctcHJpdmFjeS1vcGV=
+ucy13LUwzRC1DUk8tQXV0by1zdXBwcmVzc2lvbnM%3D%7C&_esuh=3D_11_10df954af0d39173=
+90c016f549b441a9f833217027e915becac218aa5e288aac" title=3D"GIFTS" target=3D=
+"_blank" style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100=
+%; color: #000000; text-decoration: none; font-weight: normal;"><img e-edit=
+able=3D"Image2" src=3D"https://link.surlatable.com/custloads/767471653/2023=
+_Navigation/nav_gifts.jpg" border=3D"0" style=3D"-ms-interpolation-mode: bi=
+cubic; border: 0; height: auto; line-height: 100%; outline: none; text-deco=
+ration: none; display: block;" width=3D"76" class=3D"image" alt=3D"GIFTS"><=
+/a></td>
+<td align=3D"center" style=3D"-webkit-text-size-adjust: 100%; -ms-text-size=
+-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-family: A=
+rial, Verdana, Geneva, sans-serif;"><a e-editable=3D"navlink3" href=3D"http=
+s://link.surlatable.com/u/nrd.php?p=3DkrgLuzLAuK_1325192_5956934_1_11&ems_l=
+=3D8535816&i=3D1&d=3DNTU3NDg0Nzg0%7Ca3JnTHV6TEF1Sw%3D%3D%7CMTMzNTg5ZjliOTc3=
+N2FjNDE%3D%7CMjUxMjI0XzVQTV9HaXZlLXRoZS1naWZ0LW9mLUhvbGlkYXktQ2xhc3Nlcw%3D%=
+3D%7CSW4rU3RvcmUrQ29va2luZw%3D%3D%7CYnJhbmRzX2VtYWlsLXRvcC1uYXY%3D%7CMjAyNS=
+1RM19QSVNDX0wxODBEX09wZW4uQ2xpY2suUmVnLUFsbC1leGNsdWRpbmctcHJpdmFjeS1vcGVuc=
+y13LUwzRC1DUk8tQXV0by1zdXBwcmVzc2lvbnM%3D%7C&_esuh=3D_11_52b99dc4d1caa204ed=
+90d451b859fefafd351eef94f5265ea6349ff09d96c867" title=3D"BRANDS" target=3D"=
+_blank" style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%=
+; color: #000000; text-decoration: none; font-weight: normal;"><img e-edita=
+ble=3D"Image3" src=3D"https://link.surlatable.com/custloads/767471653/2023_=
+Navigation/nav_brands.jpg" border=3D"0" style=3D"-ms-interpolation-mode: bi=
+cubic; border: 0; height: auto; line-height: 100%; outline: none; text-deco=
+ration: none; display: block;" width=3D"92" class=3D"image" alt=3D"BRANDS">=
+</a></td>
+<td align=3D"center" style=3D"-webkit-text-size-adjust: 100%; -ms-text-size=
+-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-family: A=
+rial, Verdana, Geneva, sans-serif;"><a e-editable=3D"navlink4" href=3D"http=
+s://link.surlatable.com/u/nrd.php?p=3DkrgLuzLAuK_1325192_5956934_1_13&ems_l=
+=3D8535816&i=3D1&d=3DNTU3NDg0Nzg2%7Ca3JnTHV6TEF1Sw%3D%3D%7CMTMzNTg5ZjliOTc3=
+N2FjNDE%3D%7CMjUxMjI0XzVQTV9HaXZlLXRoZS1naWZ0LW9mLUhvbGlkYXktQ2xhc3Nlcw%3D%=
+3D%7CSW4rU3RvcmUrQ29va2luZw%3D%3D%7CY29va2luZy1jbGFzc2VzX2VtYWlsLXRvcC1uYXY=
+%3D%7CMjAyNS1RM19QSVNDX0wxODBEX09wZW4uQ2xpY2suUmVnLUFsbC1leGNsdWRpbmctcHJpd=
+mFjeS1vcGVucy13LUwzRC1DUk8tQXV0by1zdXBwcmVzc2lvbnM%3D%7C&_esuh=3D_11_0434b6=
+fd62ff5ed8afe501768afadcd0457999ebd9ebbb937599f8c388a8311c" title=3D"CLASSE=
+S" target=3D"_blank" style=3D"-webkit-text-size-adjust: 100%; -ms-text-size=
+-adjust: 100%; color: #000000; text-decoration: none; font-weight: normal;"=
+><img e-editable=3D"Image4" src=3D"https://link.surlatable.com/custloads/76=
+7471653/2023_Navigation/nav_classes.jpg" border=3D"0" style=3D"-ms-interpol=
+ation-mode: bicubic; border: 0; height: auto; line-height: 100%; outline: n=
+one; text-decoration: none; display: block;" width=3D"97" class=3D"image" a=
+lt=3D"CLASSES"></a></td>
+<td align=3D"center" style=3D"-webkit-text-size-adjust: 100%; -ms-text-size=
+-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-family: A=
+rial, Verdana, Geneva, sans-serif;"><a e-editable=3D"navlink5" href=3D"http=
+s://link.surlatable.com/u/nrd.php?p=3DkrgLuzLAuK_1325192_5956934_1_15&ems_l=
+=3D8535816&i=3D1&d=3DNTU3NDg0Nzg4%7Ca3JnTHV6TEF1Sw%3D%3D%7CMTMzNTg5ZjliOTc3=
+N2FjNDE%3D%7CMjUxMjI0XzVQTV9HaXZlLXRoZS1naWZ0LW9mLUhvbGlkYXktQ2xhc3Nlcw%3D%=
+3D%7CSW4rU3RvcmUrQ29va2luZw%3D%3D%7Cc2FsZV9lbWFpbC10b3AtbmF2%7CMjAyNS1RM19Q=
+SVNDX0wxODBEX09wZW4uQ2xpY2suUmVnLUFsbC1leGNsdWRpbmctcHJpdmFjeS1vcGVucy13LUw=
+zRC1DUk8tQXV0by1zdXBwcmVzc2lvbnM%3D%7C&_esuh=3D_11_3aa53980215dcc0155f4e6da=
+3636e9e790c4df9fef1f671cc746472f5b967f81" title=3D"SALE" target=3D"_blank" =
+style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; color:=
+ #000000; text-decoration: none; font-weight: normal;"><img e-editable=3D"I=
+mage5" src=3D"https://link.surlatable.com/custloads/767471653/2023_Navigati=
+on/nav_sale.jpg" border=3D"0" style=3D"-ms-interpolation-mode: bicubic; bor=
+der: 0; height: auto; line-height: 100%; outline: none; text-decoration: no=
+ne; display: block;" width=3D"82" class=3D"image" alt=3D"SALE"></a></td>
+<td align=3D"center" class=3D"mh" style=3D"-webkit-text-size-adjust: 100%; =
+-ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; f=
+ont-family: Arial, Verdana, Geneva, sans-serif;"><img src=3D"https://link.s=
+urlatable.com/custloads/767471653/2023_Navigation/nav_right.jpg" border=3D"=
+0" style=3D"-ms-interpolation-mode: bicubic; border: 0; height: auto; line-=
+height: 100%; outline: none; text-decoration: none; display: block;" width=
+=3D"83" class=3D"image" alt=3D"Right Space"></td> </tr>
+</table>
+</th>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr><tr e-block-id=3D"65837ed8413007436b000002">
+<td style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; ms=
+o-table-lspace: 0pt; mso-table-rspace: 0pt; font-family: Arial, Verdana, Ge=
+neva, sans-serif;">
+<table width=3D"600" border=3D"0" cellspacing=3D"0" cellpadding=3D"0" class=
+=3D"com fw" align=3D"center" style=3D"-webkit-text-size-adjust: 100%; -ms-t=
+ext-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-f=
+amily: Arial, Verdana, Geneva, sans-serif; border-collapse: collapse !impor=
+tant;">
+<tr>
+<td align=3D"center" valign=3D"top" style=3D"-webkit-text-size-adjust: 100%=
+; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt;=
+ font-family: Arial, Verdana, Geneva, sans-serif; font-size: 0;">
+<div style=3D"font-family: Arial, Verdana, Geneva, sans-serif;">
+<img src=3D"https://link.surlatable.com/custloads/767471653/md_1485599.jpg"=
+ e-max-width=3D"600" style=3D"-ms-interpolation-mode: bicubic; border: 0; h=
+eight: auto; line-height: 100%; outline: none; text-decoration: none; displ=
+ay: block;" border=3D"0" class=3D"image" width=3D"600" height=3D"22" e-edit=
+able=3D"fullWidthImgNL" alt=3D"Sur la table spacing">
+</div>
+</td>
+</tr>
+</table>
+</td>
+</tr><tr e-block-id=3D"5b1012280a4ac76bc7000001">
+<td style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; ms=
+o-table-lspace: 0pt; mso-table-rspace: 0pt; font-family: Arial, Verdana, Ge=
+neva, sans-serif;">
+<table width=3D"600" border=3D"0" cellspacing=3D"0" cellpadding=3D"0" class=
+=3D"com fw" align=3D"center" style=3D"-webkit-text-size-adjust: 100%; -ms-t=
+ext-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-f=
+amily: Arial, Verdana, Geneva, sans-serif; border-collapse: collapse !impor=
+tant;">
+<tr>
+<td align=3D"center" valign=3D"top" style=3D"-webkit-text-size-adjust: 100%=
+; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt;=
+ font-family: Arial, Verdana, Geneva, sans-serif; font-size: 0;">
+<div style=3D"font-family: Arial, Verdana, Geneva, sans-serif;">
+<a href=3D"https://link.surlatable.com/u/nrd.php?p=3DkrgLuzLAuK_1325192_595=
+6934_1_17&ems_l=3D8535816&i=3D1&d=3DNTU3NDg0Nzkw%7Ca3JnTHV6TEF1Sw%3D%3D%7CM=
+TMzNTg5ZjliOTc3N2FjNDE%3D%7CMjUxMjI0XzVQTV9HaXZlLXRoZS1naWZ0LW9mLUhvbGlkYXk=
+tQ2xhc3Nlcw%3D%3D%7CSW4rU3RvcmUrQ29va2luZw%3D%3D%7CaW4tc3RvcmUtY29va2luZy1j=
+bGFzc2VzX2VtYWls%7CMjAyNS1RM19QSVNDX0wxODBEX09wZW4uQ2xpY2suUmVnLUFsbC1leGNs=
+dWRpbmctcHJpdmFjeS1vcGVucy13LUwzRC1DUk8tQXV0by1zdXBwcmVzc2lvbnM%3D%7C&_esuh=
+=3D_11_8f9f360589ad178d872407830393ce42e155ecc7072e24185386154cc480d007" e-=
+editable=3D"fullWidthImageUrl" title=3D"In Store Cooking Class" style=3D"-w=
+ebkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; color: #000000; t=
+ext-decoration: none; font-weight: normal;" target=3D"_blank">
+<img src=3D"https://link.surlatable.com/custloads/767471653/251224/Give-the=
+-gift-of-Holiday-Classes/GIF_Give-the-gift-of-cooking.gif" e-max-width=3D"6=
+00" style=3D"-ms-interpolation-mode: bicubic; border: 0; height: auto; line=
+-height: 100%; outline: none; text-decoration: none; display: block; width:=
+ 600px;" border=3D"0" class=3D"image" width=3D"600" e-editable=3D"fullWidth=
+Img" alt=3D"In Store Cooking Class">
+</a>
+</div>
+</td>
+</tr>
+</table>
+</td>
+</tr><tr e-block-id=3D"694952dd85edcece4400000e">
+<td style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; ms=
+o-table-lspace: 0pt; mso-table-rspace: 0pt; font-family: Arial, Verdana, Ge=
+neva, sans-serif;">
+<table width=3D"600" border=3D"0" cellspacing=3D"0" cellpadding=3D"0" class=
+=3D"com fw" align=3D"center" style=3D"-webkit-text-size-adjust: 100%; -ms-t=
+ext-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-f=
+amily: Arial, Verdana, Geneva, sans-serif; border-collapse: collapse !impor=
+tant;">
+<tr>
+<td align=3D"center" valign=3D"top" style=3D"-webkit-text-size-adjust: 100%=
+; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt;=
+ font-family: Arial, Verdana, Geneva, sans-serif; font-size: 0;">
+<div style=3D"font-family: Arial, Verdana, Geneva, sans-serif;">
+<a href=3D"https://link.surlatable.com/u/nrd.php?p=3DkrgLuzLAuK_1325192_595=
+6934_1_19&ems_l=3D8535816&i=3D1&d=3DNTU3NDg0Nzky%7Ca3JnTHV6TEF1Sw%3D%3D%7CM=
+TMzNTg5ZjliOTc3N2FjNDE%3D%7CMjUxMjI0XzVQTV9HaXZlLXRoZS1naWZ0LW9mLUhvbGlkYXk=
+tQ2xhc3Nlcw%3D%3D%7CSW4rU3RvcmUrQ29va2luZw%3D%3D%7CaW4tc3RvcmUtY29va2luZy1j=
+bGFzc2VzX2VtYWls%7CMjAyNS1RM19QSVNDX0wxODBEX09wZW4uQ2xpY2suUmVnLUFsbC1leGNs=
+dWRpbmctcHJpdmFjeS1vcGVucy13LUwzRC1DUk8tQXV0by1zdXBwcmVzc2lvbnM%3D%7C&_esuh=
+=3D_11_987076d7c7d1af4f0affb37b29f1c99af438010acd7824dcdd56d4086fd46e3d" e-=
+editable=3D"fullWidthImageUrl" title=3D"In Store Cooking Class" style=3D"-w=
+ebkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; color: #000000; t=
+ext-decoration: none; font-weight: normal;" target=3D"_blank">
+<img src=3D"https://link.surlatable.com/custloads/767471653/251224/Give-the=
+-gift-of-Holiday-Classes/251224_18_6PM_Give-the-gift-of-Holiday-Classes_AG_=
+02.jpg" e-max-width=3D"600" style=3D"-ms-interpolation-mode: bicubic; borde=
+r: 0; height: auto; line-height: 100%; outline: none; text-decoration: none=
+; display: block; width: 600px;" border=3D"0" class=3D"image" width=3D"600"=
+ e-editable=3D"fullWidthImg" alt=3D"In Store Cooking Class">
+</a>
+</div>
+</td>
+</tr>
+</table>
+</td>
+</tr><tr e-block-id=3D"6949522285edcece44000008">
+<td style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; ms=
+o-table-lspace: 0pt; mso-table-rspace: 0pt; font-family: Arial, Verdana, Ge=
+neva, sans-serif;">
+<table width=3D"600" border=3D"0" cellspacing=3D"0" cellpadding=3D"0" class=
+=3D"com fw" align=3D"center" style=3D"-webkit-text-size-adjust: 100%; -ms-t=
+ext-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-f=
+amily: Arial, Verdana, Geneva, sans-serif; border-collapse: collapse !impor=
+tant;">
+<tr>
+<td align=3D"center" valign=3D"top" style=3D"-webkit-text-size-adjust: 100%=
+; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt;=
+ font-family: Arial, Verdana, Geneva, sans-serif; font-size: 0;">
+<div style=3D"font-family: Arial, Verdana, Geneva, sans-serif;">
+<a href=3D"https://link.surlatable.com/u/nrd.php?p=3DkrgLuzLAuK_1325192_595=
+6934_1_21&ems_l=3D8535816&i=3D1&d=3DNTU3NDg0Nzk0%7Ca3JnTHV6TEF1Sw%3D%3D%7CM=
+TMzNTg5ZjliOTc3N2FjNDE%3D%7CMjUxMjI0XzVQTV9HaXZlLXRoZS1naWZ0LW9mLUhvbGlkYXk=
+tQ2xhc3Nlcw%3D%3D%7CSW4rU3RvcmUrQ29va2luZw%3D%3D%7CaW4tc3RvcmUtY29va2luZy1j=
+bGFzc2VzX2VtYWls%7CMjAyNS1RM19QSVNDX0wxODBEX09wZW4uQ2xpY2suUmVnLUFsbC1leGNs=
+dWRpbmctcHJpdmFjeS1vcGVucy13LUwzRC1DUk8tQXV0by1zdXBwcmVzc2lvbnM%3D%7C&_esuh=
+=3D_11_3e0a282acfab46137bcbffcaf9d0d997e2e14f4009bb3b1da364829f235722d4" e-=
+editable=3D"fullWidthImageUrl" title=3D"Essential Skills for Every Cook " s=
+tyle=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; color: =
+#000000; text-decoration: none; font-weight: normal;" target=3D"_blank">
+<img src=3D"https://link.surlatable.com/custloads/767471653/251224/Give-the=
+-gift-of-Holiday-Classes/UPDATED-V1_251224_18_6PM_Give-the-gift-of-Holiday-=
+Classes_AG_02.jpg" e-max-width=3D"600" style=3D"-ms-interpolation-mode: bic=
+ubic; border: 0; height: auto; line-height: 100%; outline: none; text-decor=
+ation: none; display: block; width: 600px;" border=3D"0" class=3D"image" wi=
+dth=3D"600" e-editable=3D"fullWidthImg" alt=3D"Essential Skills for Every C=
+ook">
+</a>
+</div>
+</td>
+</tr>
+</table>
+</td>
+</tr><tr e-block-id=3D"6949525e85edcece4400000b">
+<td style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; ms=
+o-table-lspace: 0pt; mso-table-rspace: 0pt; font-family: Arial, Verdana, Ge=
+neva, sans-serif;">
+<table width=3D"600" border=3D"0" cellspacing=3D"0" cellpadding=3D"0" class=
+=3D"fw" align=3D"center" style=3D"-webkit-text-size-adjust: 100%; -ms-text-=
+size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-famil=
+y: Arial, Verdana, Geneva, sans-serif; border-collapse: collapse !important=
+;">
+<tr>
+<td align=3D"left" class valign=3D"top" style=3D"-webkit-text-size-adjust: =
+100%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: =
+0pt; font-family: Arial, Verdana, Geneva, sans-serif; font-size: 0;">
+<div style=3D"font-family: Arial, Verdana, Geneva, sans-serif;">
+<a e-editable=3D"leftImg3colUrl" href=3D"https://link.surlatable.com/u/nrd.=
+php?p=3DkrgLuzLAuK_1325192_5956934_1_23&ems_l=3D8535816&i=3D1&d=3DNTU3NDg0N=
+zk2%7Ca3JnTHV6TEF1Sw%3D%3D%7CMTMzNTg5ZjliOTc3N2FjNDE%3D%7CMjUxMjI0XzVQTV9Ha=
+XZlLXRoZS1naWZ0LW9mLUhvbGlkYXktQ2xhc3Nlcw%3D%3D%7CSW4rU3RvcmUrQ29va2luZw%3D=
+%3D%7CZGF0ZS1uaWdodC1jb29raW5nLWNsYXNzZXNfZW1haWw%3D%7CMjAyNS1RM19QSVNDX0wx=
+ODBEX09wZW4uQ2xpY2suUmVnLUFsbC1leGNsdWRpbmctcHJpdmFjeS1vcGVucy13LUwzRC1DUk8=
+tQXV0by1zdXBwcmVzc2lvbnM%3D%7C&_esuh=3D_11_f07e890652467a42de3eaefceaae9b7a=
+b8456d65f6ad014fac04d4b990d4a811" title=3D"Date Night: New Year=E2=80=99s E=
+ve " style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; c=
+olor: #000000; text-decoration: none; font-weight: normal;" target=3D"_blan=
+k">
+<img e-editable=3D"leftImg3col" src=3D"https://link.surlatable.com/custload=
+s/767471653/251224/Give-the-gift-of-Holiday-Classes/UPDATED-V1_251224_18_6P=
+M_Give-the-gift-of-Holiday-Classes_AG_03.jpg" style=3D"-ms-interpolation-mo=
+de: bicubic; border: 0; height: auto; line-height: 100%; outline: none; tex=
+t-decoration: none; display: block; width: 200px;" border=3D"0" width=3D"20=
+0" class=3D"image" alt=3D"Date Night: New Year=E2=80=99s Eve">
+</a>
+</div>
+</td>
+<td align=3D"center" class valign=3D"top" style=3D"-webkit-text-size-adjust=
+: 100%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace=
+: 0pt; font-family: Arial, Verdana, Geneva, sans-serif; font-size: 0;">
+<div style=3D"font-family: Arial, Verdana, Geneva, sans-serif;">
+<a e-editable=3D"centerImg3colUrl" href=3D"https://link.surlatable.com/u/nr=
+d.php?p=3DkrgLuzLAuK_1325192_5956934_1_25&ems_l=3D8535816&i=3D1&d=3DNTU3NDg=
+0Nzk4%7Ca3JnTHV6TEF1Sw%3D%3D%7CMTMzNTg5ZjliOTc3N2FjNDE%3D%7CMjUxMjI0XzVQTV9=
+HaXZlLXRoZS1naWZ0LW9mLUhvbGlkYXktQ2xhc3Nlcw%3D%3D%7CSW4rU3RvcmUrQ29va2luZw%=
+3D%3D%7CaW4tc3RvcmUtY29va2luZy1jbGFzc2VzX2VtYWls%7CMjAyNS1RM19QSVNDX0wxODBE=
+X09wZW4uQ2xpY2suUmVnLUFsbC1leGNsdWRpbmctcHJpdmFjeS1vcGVucy13LUwzRC1DUk8tQXV=
+0by1zdXBwcmVzc2lvbnM%3D%7C&_esuh=3D_11_6885c4d42ccf145fe3970012b33a489995c4=
+a1f7b6f1d1d1848552709a225849" title=3D"Global Holiday Feast " style=3D"-web=
+kit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; color: #000000; tex=
+t-decoration: none; font-weight: normal;" target=3D"_blank">
+<img e-editable=3D"centerImg3col" src=3D"https://link.surlatable.com/custlo=
+ads/767471653/251224/Give-the-gift-of-Holiday-Classes/UPDATED-V1_251224_18_=
+6PM_Give-the-gift-of-Holiday-Classes_AG_04.jpg" style=3D"-ms-interpolation-=
+mode: bicubic; border: 0; height: auto; line-height: 100%; outline: none; t=
+ext-decoration: none; display: block; width: 200px;" width=3D"200" border=
+=3D"0" class=3D"image" alt=3D"Global Holiday Feast">
+</a>
+</div>
+</td>
+<td align=3D"right" class valign=3D"top" style=3D"-webkit-text-size-adjust:=
+ 100%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace:=
+ 0pt; font-family: Arial, Verdana, Geneva, sans-serif; font-size: 0;">
+<div style=3D"font-family: Arial, Verdana, Geneva, sans-serif;">
+<a e-editable=3D"rightImg3colUrl" href=3D"https://link.surlatable.com/u/nrd=
+.php?p=3DkrgLuzLAuK_1325192_5956934_1_27&ems_l=3D8535816&i=3D1&d=3DNTU3NDg0=
+ODAw%7Ca3JnTHV6TEF1Sw%3D%3D%7CMTMzNTg5ZjliOTc3N2FjNDE%3D%7CMjUxMjI0XzVQTV9H=
+aXZlLXRoZS1naWZ0LW9mLUhvbGlkYXktQ2xhc3Nlcw%3D%3D%7CSW4rU3RvcmUrQ29va2luZw%3=
+D%3D%7CaW4tc3RvcmUtY29va2luZy1jbGFzc2VzX2VtYWls%7CMjAyNS1RM19QSVNDX0wxODBEX=
+09wZW4uQ2xpY2suUmVnLUFsbC1leGNsdWRpbmctcHJpdmFjeS1vcGVucy13LUwzRC1DUk8tQXV0=
+by1zdXBwcmVzc2lvbnM%3D%7C&_esuh=3D_11_f9bb803700524689f62e17a5ae6c59bce092e=
+fa413d889541c932dc109b59972" title=3D"The Best of Italy " style=3D"-webkit-=
+text-size-adjust: 100%; -ms-text-size-adjust: 100%; color: #000000; text-de=
+coration: none; font-weight: normal;" target=3D"_blank">
+<img e-editable=3D"rightImg2col" src=3D"https://link.surlatable.com/custloa=
+ds/767471653/251224/Give-the-gift-of-Holiday-Classes/UPDATED-V1_251224_18_6=
+PM_Give-the-gift-of-Holiday-Classes_AG_05.jpg" style=3D"-ms-interpolation-m=
+ode: bicubic; border: 0; height: auto; line-height: 100%; outline: none; te=
+xt-decoration: none; display: block; width: 200px;" width=3D"200" border=3D=
+"0" class=3D"image" alt=3D"The Best of Italy">
+</a>
+</div>
+</td>
+</tr>
+</table>
+</td>
+</tr><tr e-block-id=3D"6949c74103b4f76cb9000007">
+<td style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; ms=
+o-table-lspace: 0pt; mso-table-rspace: 0pt; font-family: Arial, Verdana, Ge=
+neva, sans-serif;">
+<table width=3D"600" border=3D"0" cellspacing=3D"0" cellpadding=3D"0" class=
+=3D"com fw" align=3D"center" style=3D"-webkit-text-size-adjust: 100%; -ms-t=
+ext-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-f=
+amily: Arial, Verdana, Geneva, sans-serif; border-collapse: collapse !impor=
+tant;">
+<tr>
+<td align=3D"center" valign=3D"top" style=3D"-webkit-text-size-adjust: 100%=
+; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt;=
+ font-family: Arial, Verdana, Geneva, sans-serif; font-size: 0;">
+<div style=3D"font-family: Arial, Verdana, Geneva, sans-serif;">
+<img src=3D"https://link.surlatable.com/custloads/767471653/md_1485599.jpg"=
+ e-max-width=3D"600" style=3D"-ms-interpolation-mode: bicubic; border: 0; h=
+eight: auto; line-height: 100%; outline: none; text-decoration: none; displ=
+ay: block;" border=3D"0" class=3D"image" width=3D"600" height=3D"22" e-edit=
+able=3D"fullWidthImgNL" alt=3D"Sur la table spacing">
+</div>
+</td>
+</tr>
+</table>
+</td>
+</tr><tr e-block-id=3D"6949522085edcece44000007">
+<td style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; ms=
+o-table-lspace: 0pt; mso-table-rspace: 0pt; font-family: Arial, Verdana, Ge=
+neva, sans-serif;">
+<table width=3D"600" border=3D"0" cellspacing=3D"0" cellpadding=3D"0" class=
+=3D"com fw" align=3D"center" style=3D"-webkit-text-size-adjust: 100%; -ms-t=
+ext-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-f=
+amily: Arial, Verdana, Geneva, sans-serif; border-collapse: collapse !impor=
+tant;">
+<tr>
+<td align=3D"center" valign=3D"top" style=3D"-webkit-text-size-adjust: 100%=
+; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt;=
+ font-family: Arial, Verdana, Geneva, sans-serif; font-size: 0;">
+<div style=3D"font-family: Arial, Verdana, Geneva, sans-serif;">
+<a href=3D"https://link.surlatable.com/u/nrd.php?p=3DkrgLuzLAuK_1325192_595=
+6934_1_29&ems_l=3D8535816&i=3D1&d=3DNTU3NDg0ODAy%7Ca3JnTHV6TEF1Sw%3D%3D%7CM=
+TMzNTg5ZjliOTc3N2FjNDE%3D%7CMjUxMjI0XzVQTV9HaXZlLXRoZS1naWZ0LW9mLUhvbGlkYXk=
+tQ2xhc3Nlcw%3D%3D%7CSW4rU3RvcmUrQ29va2luZw%3D%3D%7CYmFraW5nLWNvb2tpbmctY2xh=
+c3Nlc19lbWFpbA%3D%3D%7CMjAyNS1RM19QSVNDX0wxODBEX09wZW4uQ2xpY2suUmVnLUFsbC1l=
+eGNsdWRpbmctcHJpdmFjeS1vcGVucy13LUwzRC1DUk8tQXV0by1zdXBwcmVzc2lvbnM%3D%7C&_=
+esuh=3D_11_e325906b55015bfea51811b8eba5f7ec3e933643af7af5a5f7877f8c001e0eaf=
+" e-editable=3D"fullWidthImageUrl" title=3D"Baking Classes" style=3D"-webki=
+t-text-size-adjust: 100%; -ms-text-size-adjust: 100%; color: #000000; text-=
+decoration: none; font-weight: normal;" target=3D"_blank">
+<img src=3D"https://link.surlatable.com/custloads/767471653/251224/Give-the=
+-gift-of-Holiday-Classes/UPDATED-V1_251224_18_6PM_Give-the-gift-of-Holiday-=
+Classes_AG_06.jpg" e-max-width=3D"600" style=3D"-ms-interpolation-mode: bic=
+ubic; border: 0; height: auto; line-height: 100%; outline: none; text-decor=
+ation: none; display: block; width: 600px;" border=3D"0" class=3D"image" wi=
+dth=3D"600" e-editable=3D"fullWidthImg" alt=3D"Baking Classes">
+</a>
+</div>
+</td>
+</tr>
+</table>
+</td>
+</tr><tr e-block-id=3D"6949521d85edcece44000006">
+<td style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; ms=
+o-table-lspace: 0pt; mso-table-rspace: 0pt; font-family: Arial, Verdana, Ge=
+neva, sans-serif;">
+<table width=3D"600" border=3D"0" cellspacing=3D"0" cellpadding=3D"0" class=
+=3D"com fw" align=3D"center" style=3D"-webkit-text-size-adjust: 100%; -ms-t=
+ext-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-f=
+amily: Arial, Verdana, Geneva, sans-serif; border-collapse: collapse !impor=
+tant;">
+<tr>
+<td align=3D"center" valign=3D"top" style=3D"-webkit-text-size-adjust: 100%=
+; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt;=
+ font-family: Arial, Verdana, Geneva, sans-serif; font-size: 0;">
+<div style=3D"font-family: Arial, Verdana, Geneva, sans-serif;">
+<a href=3D"https://link.surlatable.com/u/nrd.php?p=3DkrgLuzLAuK_1325192_595=
+6934_1_31&ems_l=3D8535816&i=3D1&d=3DNTU3NDg0ODA0%7Ca3JnTHV6TEF1Sw%3D%3D%7CM=
+TMzNTg5ZjliOTc3N2FjNDE%3D%7CMjUxMjI0XzVQTV9HaXZlLXRoZS1naWZ0LW9mLUhvbGlkYXk=
+tQ2xhc3Nlcw%3D%3D%7CSW4rU3RvcmUrQ29va2luZw%3D%3D%7CYmFraW5nLWNvb2tpbmctY2xh=
+c3Nlc19lbWFpbA%3D%3D%7CMjAyNS1RM19QSVNDX0wxODBEX09wZW4uQ2xpY2suUmVnLUFsbC1l=
+eGNsdWRpbmctcHJpdmFjeS1vcGVucy13LUwzRC1DUk8tQXV0by1zdXBwcmVzc2lvbnM%3D%7C&_=
+esuh=3D_11_5aa8d3413bedf11a0404a9f952c21ecaaf1dbcd6d3de4536d7d27d033e55ea46=
+" e-editable=3D"fullWidthImageUrl" title=3D"Holiday Macaron Workshop " styl=
+e=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; color: #00=
+0000; text-decoration: none; font-weight: normal;" target=3D"_blank">
+<img src=3D"https://link.surlatable.com/custloads/767471653/251224/Give-the=
+-gift-of-Holiday-Classes/UPDATED-V1_251224_18_6PM_Give-the-gift-of-Holiday-=
+Classes_AG_07.jpg" e-max-width=3D"600" style=3D"-ms-interpolation-mode: bic=
+ubic; border: 0; height: auto; line-height: 100%; outline: none; text-decor=
+ation: none; display: block; width: 600px;" border=3D"0" class=3D"image" wi=
+dth=3D"600" e-editable=3D"fullWidthImg" alt=3D"Holiday Macaron Workshop">
+</a>
+</div>
+</td>
+</tr>
+</table>
+</td>
+</tr><tr e-block-id=3D"6949c8bb03b4f76cb9000008">
+<td style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; ms=
+o-table-lspace: 0pt; mso-table-rspace: 0pt; font-family: Arial, Verdana, Ge=
+neva, sans-serif;">
+<table width=3D"600" border=3D"0" cellspacing=3D"0" cellpadding=3D"0" class=
+=3D"fw" align=3D"center" style=3D"-webkit-text-size-adjust: 100%; -ms-text-=
+size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-famil=
+y: Arial, Verdana, Geneva, sans-serif; border-collapse: collapse !important=
+;">
+<tr>
+<td align=3D"left" class valign=3D"top" style=3D"-webkit-text-size-adjust: =
+100%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: =
+0pt; font-family: Arial, Verdana, Geneva, sans-serif; font-size: 0;">
+<div style=3D"font-family: Arial, Verdana, Geneva, sans-serif;">
+<a e-editable=3D"leftImg3colUrl" href=3D"https://link.surlatable.com/u/nrd.=
+php?p=3DkrgLuzLAuK_1325192_5956934_1_33&ems_l=3D8535816&i=3D1&d=3DNTU3NDg0O=
+DA2%7Ca3JnTHV6TEF1Sw%3D%3D%7CMTMzNTg5ZjliOTc3N2FjNDE%3D%7CMjUxMjI0XzVQTV9Ha=
+XZlLXRoZS1naWZ0LW9mLUhvbGlkYXktQ2xhc3Nlcw%3D%3D%7CSW4rU3RvcmUrQ29va2luZw%3D=
+%3D%7CYmFraW5nLWNvb2tpbmctY2xhc3Nlc19lbWFpbA%3D%3D%7CMjAyNS1RM19QSVNDX0wxOD=
+BEX09wZW4uQ2xpY2suUmVnLUFsbC1leGNsdWRpbmctcHJpdmFjeS1vcGVucy13LUwzRC1DUk8tQ=
+XV0by1zdXBwcmVzc2lvbnM%3D%7C&_esuh=3D_11_0b2d33cfedb4c1281a512a09267e9515d2=
+b0252df60f93388c35c6f898df2b02" title=3D"Handcrafted Breads & Butter " styl=
+e=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; color: #00=
+0000; text-decoration: none; font-weight: normal;" target=3D"_blank">
+<img e-editable=3D"leftImg3col" src=3D"https://link.surlatable.com/custload=
+s/767471653/251224/Give-the-gift-of-Holiday-Classes/251224_18_6PM_Give-the-=
+gift-of-Holiday-Classes_AG_09.jpg" style=3D"-ms-interpolation-mode: bicubic=
+; border: 0; height: auto; line-height: 100%; outline: none; text-decoratio=
+n: none; display: block; width: 200px;" border=3D"0" width=3D"200" class=3D=
+"image" alt=3D"Handcrafted Breads & Butter">
+</a>
+</div>
+</td>
+<td align=3D"center" class valign=3D"top" style=3D"-webkit-text-size-adjust=
+: 100%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace=
+: 0pt; font-family: Arial, Verdana, Geneva, sans-serif; font-size: 0;">
+<div style=3D"font-family: Arial, Verdana, Geneva, sans-serif;">
+<a e-editable=3D"centerImg3colUrl" href=3D"https://link.surlatable.com/u/nr=
+d.php?p=3DkrgLuzLAuK_1325192_5956934_1_35&ems_l=3D8535816&i=3D1&d=3DNTU3NDg=
+0ODA4%7Ca3JnTHV6TEF1Sw%3D%3D%7CMTMzNTg5ZjliOTc3N2FjNDE%3D%7CMjUxMjI0XzVQTV9=
+HaXZlLXRoZS1naWZ0LW9mLUhvbGlkYXktQ2xhc3Nlcw%3D%3D%7CSW4rU3RvcmUrQ29va2luZw%=
+3D%3D%7CYmFraW5nLWNvb2tpbmctY2xhc3Nlc19lbWFpbA%3D%3D%7CMjAyNS1RM19QSVNDX0wx=
+ODBEX09wZW4uQ2xpY2suUmVnLUFsbC1leGNsdWRpbmctcHJpdmFjeS1vcGVucy13LUwzRC1DUk8=
+tQXV0by1zdXBwcmVzc2lvbnM%3D%7C&_esuh=3D_11_5cf99a6c8ffe0969c9fbdbe649d6ad1b=
+3f9ba96205a7a06f2b581df56c9ad84e" title=3D"Marvelous Macarons " style=3D"-w=
+ebkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; color: #000000; t=
+ext-decoration: none; font-weight: normal;" target=3D"_blank">
+<img e-editable=3D"centerImg3col" src=3D"https://link.surlatable.com/custlo=
+ads/767471653/251224/Give-the-gift-of-Holiday-Classes/251224_18_6PM_Give-th=
+e-gift-of-Holiday-Classes_AG_10.jpg" style=3D"-ms-interpolation-mode: bicub=
+ic; border: 0; height: auto; line-height: 100%; outline: none; text-decorat=
+ion: none; display: block; width: 200px;" width=3D"200" border=3D"0" class=
+=3D"image" alt=3D"Marvelous Macarons">
+</a>
+</div>
+</td>
+<td align=3D"right" class valign=3D"top" style=3D"-webkit-text-size-adjust:=
+ 100%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace:=
+ 0pt; font-family: Arial, Verdana, Geneva, sans-serif; font-size: 0;">
+<div style=3D"font-family: Arial, Verdana, Geneva, sans-serif;">
+<a e-editable=3D"rightImg3colUrl" href=3D"https://link.surlatable.com/u/nrd=
+.php?p=3DkrgLuzLAuK_1325192_5956934_1_37&ems_l=3D8535816&i=3D1&d=3DNTU3NDg0=
+ODEw%7Ca3JnTHV6TEF1Sw%3D%3D%7CMTMzNTg5ZjliOTc3N2FjNDE%3D%7CMjUxMjI0XzVQTV9H=
+aXZlLXRoZS1naWZ0LW9mLUhvbGlkYXktQ2xhc3Nlcw%3D%3D%7CSW4rU3RvcmUrQ29va2luZw%3=
+D%3D%7CYm9keQ%3D%3D%7CMjAyNS1RM19QSVNDX0wxODBEX09wZW4uQ2xpY2suUmVnLUFsbC1le=
+GNsdWRpbmctcHJpdmFjeS1vcGVucy13LUwzRC1DUk8tQXV0by1zdXBwcmVzc2lvbnM%3D%7C&_e=
+suh=3D_11_8626a573999ac3ea1e6487112e6cd5ae0eb5b86fc9b734dae4ff13a4358de6ef"=
+ title=3D"Dolce Italiana " style=3D"-webkit-text-size-adjust: 100%; -ms-tex=
+t-size-adjust: 100%; color: #000000; text-decoration: none; font-weight: no=
+rmal;" target=3D"_blank">
+<img e-editable=3D"rightImg2col" src=3D"https://link.surlatable.com/custloa=
+ds/767471653/251224/Give-the-gift-of-Holiday-Classes/251224_18_6PM_Give-the=
+-gift-of-Holiday-Classes_AG_11.jpg" style=3D"-ms-interpolation-mode: bicubi=
+c; border: 0; height: auto; line-height: 100%; outline: none; text-decorati=
+on: none; display: block; width: 200px;" width=3D"200" border=3D"0" class=
+=3D"image" alt=3D"Dolce Italiana">
+</a>
+</div>
+</td>
+</tr>
+</table>
+</td>
+</tr><tr e-block-id=3D"6949c73d03b4f76cb9000006">
+<td style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; ms=
+o-table-lspace: 0pt; mso-table-rspace: 0pt; font-family: Arial, Verdana, Ge=
+neva, sans-serif;">
+<table width=3D"600" border=3D"0" cellspacing=3D"0" cellpadding=3D"0" class=
+=3D"com fw" align=3D"center" style=3D"-webkit-text-size-adjust: 100%; -ms-t=
+ext-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-f=
+amily: Arial, Verdana, Geneva, sans-serif; border-collapse: collapse !impor=
+tant;">
+<tr>
+<td align=3D"center" valign=3D"top" style=3D"-webkit-text-size-adjust: 100%=
+; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt;=
+ font-family: Arial, Verdana, Geneva, sans-serif; font-size: 0;">
+<div style=3D"font-family: Arial, Verdana, Geneva, sans-serif;">
+<img src=3D"https://link.surlatable.com/custloads/767471653/md_1485599.jpg"=
+ e-max-width=3D"600" style=3D"-ms-interpolation-mode: bicubic; border: 0; h=
+eight: auto; line-height: 100%; outline: none; text-decoration: none; displ=
+ay: block;" border=3D"0" class=3D"image" width=3D"600" height=3D"22" e-edit=
+able=3D"fullWidthImgNL" alt=3D"Sur la table spacing">
+</div>
+</td>
+</tr>
+</table>
+</td>
+</tr><tr e-block-id=3D"6949529585edcece4400000c">
+<td style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; ms=
+o-table-lspace: 0pt; mso-table-rspace: 0pt; font-family: Arial, Verdana, Ge=
+neva, sans-serif;">
+<table width=3D"600" border=3D"0" cellspacing=3D"0" cellpadding=3D"0" class=
+=3D"com fw" align=3D"center" style=3D"-webkit-text-size-adjust: 100%; -ms-t=
+ext-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-f=
+amily: Arial, Verdana, Geneva, sans-serif; border-collapse: collapse !impor=
+tant;">
+<tr>
+<td align=3D"center" valign=3D"top" style=3D"-webkit-text-size-adjust: 100%=
+; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt;=
+ font-family: Arial, Verdana, Geneva, sans-serif; font-size: 0;">
+<div style=3D"font-family: Arial, Verdana, Geneva, sans-serif;">
+<a href=3D"https://link.surlatable.com/u/nrd.php?p=3DkrgLuzLAuK_1325192_595=
+6934_1_39&ems_l=3D8535816&i=3D1&d=3DNTU3NDg0ODEy%7Ca3JnTHV6TEF1Sw%3D%3D%7CM=
+TMzNTg5ZjliOTc3N2FjNDE%3D%7CMjUxMjI0XzVQTV9HaXZlLXRoZS1naWZ0LW9mLUhvbGlkYXk=
+tQ2xhc3Nlcw%3D%3D%7CSW4rU3RvcmUrQ29va2luZw%3D%3D%7CZGlnaXRhbC1naWZ0LWNhcmRf=
+ZW1haWw%3D%7CMjAyNS1RM19QSVNDX0wxODBEX09wZW4uQ2xpY2suUmVnLUFsbC1leGNsdWRpbm=
+ctcHJpdmFjeS1vcGVucy13LUwzRC1DUk8tQXV0by1zdXBwcmVzc2lvbnM%3D%7C&_esuh=3D_11=
+_1d28b1e0a04a7f5931928ba7ea8ce2c219879563d9f0c8075ff846f24174d5b2" e-editab=
+le=3D"fullWidthImageUrl" title=3D"Digital Card" style=3D"-webkit-text-size-=
+adjust: 100%; -ms-text-size-adjust: 100%; color: #000000; text-decoration: =
+none; font-weight: normal;" target=3D"_blank">
+<img src=3D"https://link.surlatable.com/custloads/767471653/251224/Give-the=
+-gift-of-Holiday-Classes/UPDATED-V1_251224_18_6PM_Give-the-gift-of-Holiday-=
+Classes_AG_08.jpg" e-max-width=3D"600" style=3D"-ms-interpolation-mode: bic=
+ubic; border: 0; height: auto; line-height: 100%; outline: none; text-decor=
+ation: none; display: block; width: 600px;" border=3D"0" class=3D"image" wi=
+dth=3D"600" e-editable=3D"fullWidthImg" alt=3D"Digital Card">
+</a>
+</div>
+</td>
+</tr>
+</table>
+</td>
+</tr><tr e-block-id=3D"66d722b0cf92dc27ae000003">
+<td style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; ms=
+o-table-lspace: 0pt; mso-table-rspace: 0pt; font-family: Arial, Verdana, Ge=
+neva, sans-serif;">
+<table width=3D"600" border=3D"0" cellspacing=3D"0" cellpadding=3D"0" class=
+=3D"com fw" align=3D"center" style=3D"-webkit-text-size-adjust: 100%; -ms-t=
+ext-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-f=
+amily: Arial, Verdana, Geneva, sans-serif; border-collapse: collapse !impor=
+tant;">
+<tr>
+<td align=3D"center" valign=3D"top" style=3D"-webkit-text-size-adjust: 100%=
+; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt;=
+ font-family: Arial, Verdana, Geneva, sans-serif; font-size: 0;">
+<div style=3D"font-family: Arial, Verdana, Geneva, sans-serif;">
+<img src=3D"https://link.surlatable.com/custloads/767471653/md_1485599.jpg"=
+ e-max-width=3D"600" style=3D"-ms-interpolation-mode: bicubic; border: 0; h=
+eight: auto; line-height: 100%; outline: none; text-decoration: none; displ=
+ay: block;" border=3D"0" class=3D"image" width=3D"600" height=3D"22" e-edit=
+able=3D"fullWidthImgNL" alt=3D"Sur la table spacing">
+</div>
+</td>
+</tr>
+</table>
+</td>
+</tr> <tr e-block-id=3D"62153b6f4e4a53d0ae000001">
+<td e-editable=3D"header" align=3D"center" style=3D"-webkit-text-size-adjus=
+t: 100%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspac=
+e: 0pt; color: #444444; font-size: 24px; font-family: Lato, Trebuchet MS, H=
+elvetica, Arial, sans-serif; letter-spacing: 0.1em; text-transform: upperca=
+se; padding: 30px; font-weight: bold;">Just for Michael
+</td>
+</tr><tr e-block-id=3D"665a5290f529209766000001">
+<td align=3D"center" style=3D"-webkit-text-size-adjust: 100%; -ms-text-size=
+-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-family: A=
+rial, Verdana, Geneva, sans-serif;"><table class=3D"fth fw" border=3D"0" ce=
+llspacing=3D"0" cellpadding=3D"0" width=3D"600" style=3D"-webkit-text-size-=
+adjust: 100%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-=
+rspace: 0pt; font-family: Arial, Verdana, Geneva, sans-serif; border-collap=
+se: collapse !important;">
+<tr>
+<th width=3D"600" class=3D"pb10" style=3D"font-family: Arial, Verdana, Gene=
+va, sans-serif; padding: 0; Margin: 0; border: 0; font-weight: normal; vert=
+ical-align: top;" valign=3D"top"> <table border=3D"0" cellspacing=3D"0" cel=
+lpadding=3D"0" class=3D"fw" align=3D"center" style=3D"-webkit-text-size-adj=
+ust: 100%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rsp=
+ace: 0pt; font-family: Arial, Verdana, Geneva, sans-serif; border-collapse:=
+ collapse !important;">
+<tr>
+<td align=3D"left" class valign=3D"top" style=3D"-webkit-text-size-adjust: =
+100%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: =
+0pt; font-family: Arial, Verdana, Geneva, sans-serif; font-size: 0; padding=
+: 0px;"><div style=3D"font-family: Arial, Verdana, Geneva, sans-serif;"> <a=
+ e-editable=3D"LeftImg3colUrl" href=3D"https://link.surlatable.com/u/nrd.ph=
+p?p=3DkrgLuzLAuK_1325192_5956934_1_41&ems_l=3D8535816&i=3D1&d=3DMTMzNTg5Zjl=
+iOTc3N2FjNDE%3D%7CN2E0YjYzZDMzYTRlMQ%3D%3D%7CNTU3NDg0ODE0%7Ca3JnTHV6TEF1Sw%=
+3D%3D%7CMTMzNTg5ZjliOTc3N2FjNDE%3D%7CMjUxMjI0XzVQTV9HaXZlLXRoZS1naWZ0LW9mLU=
+hvbGlkYXktQ2xhc3Nlcw%3D%3D%7CSW4rU3RvcmUrQ29va2luZw%3D%3D%7CcmVjb21tZW5kZWQ=
+tcHJvZHVjdF9lbWFpbA%3D%3D%7CMjAyNS1RM19QSVNDX0wxODBEX09wZW4uQ2xpY2suUmVnLUF=
+sbC1leGNsdWRpbmctcHJpdmFjeS1vcGVucy13LUwzRC1DUk8tQXV0by1zdXBwcmVzc2lvbnM%3D=
+%7C&_esuh=3D_11_93c8a25a42035177eeee4379e54929726e6969007c0869b55495e8d3923=
+74670" style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;=
+ color: #000000; text-decoration: none; font-weight: normal;" target=3D"_bl=
+ank"> <img e-editable=3D"leftImg3col" src=3D"https://recommender.scarabrese=
+arch.com/merchants/163A519060812551/jby0hu/3.jpg?eh=3D133589f9b9777ac41&es=
+=3D7a4b63d33a4e1" style=3D"-ms-interpolation-mode: bicubic; border: 0; heig=
+ht: auto; line-height: 100%; outline: none; text-decoration: none; display:=
+ block;" border=3D"0" class=3D"image" width=3D"200" alt=3D"recommended prod=
+uct I"> </a> </div></td>
+<td align=3D"center" class valign=3D"top" style=3D"-webkit-text-size-adjust=
+: 100%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace=
+: 0pt; font-family: Arial, Verdana, Geneva, sans-serif; font-size: 0; paddi=
+ng: 0px;"><div style=3D"font-family: Arial, Verdana, Geneva, sans-serif;"> =
+<a e-editable=3D"CenterImg3colUrl" href=3D"https://link.surlatable.com/u/nr=
+d.php?p=3DkrgLuzLAuK_1325192_5956934_1_43&ems_l=3D8535816&i=3D1&d=3DMTMzNTg=
+5ZjliOTc3N2FjNDE%3D%7CN2E0YjYzZDMzYTRlMQ%3D%3D%7CNTU3NDg0ODE2%7Ca3JnTHV6TEF=
+1Sw%3D%3D%7CMTMzNTg5ZjliOTc3N2FjNDE%3D%7CMjUxMjI0XzVQTV9HaXZlLXRoZS1naWZ0LW=
+9mLUhvbGlkYXktQ2xhc3Nlcw%3D%3D%7CSW4rU3RvcmUrQ29va2luZw%3D%3D%7CcmVjb21tZW5=
+kZWQtcHJvZHVjdF9lbWFpbA%3D%3D%7CMjAyNS1RM19QSVNDX0wxODBEX09wZW4uQ2xpY2suUmV=
+nLUFsbC1leGNsdWRpbmctcHJpdmFjeS1vcGVucy13LUwzRC1DUk8tQXV0by1zdXBwcmVzc2lvbn=
+M%3D%7C&_esuh=3D_11_5824701489c5a64ea33d2bc42d21452377bd2cf940db50aceda553e=
+4daf36d6c" style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 1=
+00%; color: #000000; text-decoration: none; font-weight: normal;" target=3D=
+"_blank"> <img e-editable=3D"CenterImg3col" src=3D"https://recommender.scar=
+abresearch.com/merchants/163A519060812551/jby0hu/1.jpg?eh=3D133589f9b9777ac=
+41&es=3D7a4b63d33a4e1" style=3D"-ms-interpolation-mode: bicubic; border: 0;=
+ height: auto; line-height: 100%; outline: none; text-decoration: none; dis=
+play: block;" border=3D"0" class=3D"image" width=3D"200" alt=3D"recommended=
+ product II"> </a> </div></td>
+<td align=3D"right" class valign=3D"top" style=3D"-webkit-text-size-adjust:=
+ 100%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace:=
+ 0pt; font-family: Arial, Verdana, Geneva, sans-serif; font-size: 0; paddin=
+g: 0px;"><div style=3D"font-family: Arial, Verdana, Geneva, sans-serif;"> <=
+a e-editable=3D"RightImg3colUrl" href=3D"https://link.surlatable.com/u/nrd.=
+php?p=3DkrgLuzLAuK_1325192_5956934_1_45&ems_l=3D8535816&i=3D1&d=3DMTMzNTg5Z=
+jliOTc3N2FjNDE%3D%7CN2E0YjYzZDMzYTRlMQ%3D%3D%7CNTU3NDg0ODE4%7Ca3JnTHV6TEF1S=
+w%3D%3D%7CMTMzNTg5ZjliOTc3N2FjNDE%3D%7CMjUxMjI0XzVQTV9HaXZlLXRoZS1naWZ0LW9m=
+LUhvbGlkYXktQ2xhc3Nlcw%3D%3D%7CSW4rU3RvcmUrQ29va2luZw%3D%3D%7CcmVjb21tZW5kZ=
+WQtcHJvZHVjdF9lbWFpbA%3D%3D%7CMjAyNS1RM19QSVNDX0wxODBEX09wZW4uQ2xpY2suUmVnL=
+UFsbC1leGNsdWRpbmctcHJpdmFjeS1vcGVucy13LUwzRC1DUk8tQXV0by1zdXBwcmVzc2lvbnM%=
+3D%7C&_esuh=3D_11_dd9fa249f5f5ff404ba886022f3d55985f6ca5db0d8193a55b5ceec7a=
+7293965" style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100=
+%; color: #000000; text-decoration: none; font-weight: normal;" target=3D"_=
+blank"> <img e-editable=3D"RightImg3col" src=3D"https://recommender.scarabr=
+esearch.com/merchants/163A519060812551/jby0hu/2.jpg?eh=3D133589f9b9777ac41&=
+es=3D7a4b63d33a4e1" style=3D"-ms-interpolation-mode: bicubic; border: 0; he=
+ight: auto; line-height: 100%; outline: none; text-decoration: none; displa=
+y: block;" border=3D"0" class=3D"image" width=3D"200" alt=3D"recommended pr=
+oduct III"> </a> </div></td> </tr>
+</table>
+</th>
+</tr>
+</table></td>
+</tr><tr e-block-id=3D"66d722b4cf92dc27ae000004">
+<td style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; ms=
+o-table-lspace: 0pt; mso-table-rspace: 0pt; font-family: Arial, Verdana, Ge=
+neva, sans-serif;">
+<table width=3D"600" border=3D"0" cellspacing=3D"0" cellpadding=3D"0" class=
+=3D"com fw" align=3D"center" style=3D"-webkit-text-size-adjust: 100%; -ms-t=
+ext-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-f=
+amily: Arial, Verdana, Geneva, sans-serif; border-collapse: collapse !impor=
+tant;">
+<tr>
+<td align=3D"center" valign=3D"top" style=3D"-webkit-text-size-adjust: 100%=
+; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt;=
+ font-family: Arial, Verdana, Geneva, sans-serif; font-size: 0;">
+<div style=3D"font-family: Arial, Verdana, Geneva, sans-serif;">
+<img src=3D"https://link.surlatable.com/custloads/767471653/md_1485599.jpg"=
+ e-max-width=3D"600" style=3D"-ms-interpolation-mode: bicubic; border: 0; h=
+eight: auto; line-height: 100%; outline: none; text-decoration: none; displ=
+ay: block;" border=3D"0" class=3D"image" width=3D"600" height=3D"22" e-edit=
+able=3D"fullWidthImgNL" alt=3D"Sur la table spacing">
+</div>
+</td>
+</tr>
+</table>
+</td>
+</tr><tr e-block-id=3D"6949520c85edcece44000005">
+<td align=3D"center" style=3D"-webkit-text-size-adjust: 100%; -ms-text-size=
+-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-family: A=
+rial, Verdana, Geneva, sans-serif;"><table class=3D"fth fw" border=3D"0" ce=
+llspacing=3D"0" cellpadding=3D"0" width=3D"600" style=3D"-webkit-text-size-=
+adjust: 100%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-=
+rspace: 0pt; font-family: Arial, Verdana, Geneva, sans-serif; border-collap=
+se: collapse !important;">
+<tr>
+<th width=3D"600" class=3D"pb10" style=3D"font-family: Arial, Verdana, Gene=
+va, sans-serif; padding: 0; Margin: 0; border: 0; font-weight: normal; vert=
+ical-align: top;" valign=3D"top"> <table border=3D"0" cellspacing=3D"0" cel=
+lpadding=3D"0" class=3D"fw" align=3D"center" style=3D"-webkit-text-size-adj=
+ust: 100%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rsp=
+ace: 0pt; font-family: Arial, Verdana, Geneva, sans-serif; border-collapse:=
+ collapse !important;">
+<tr>
+<td align=3D"left" class valign=3D"top" style=3D"-webkit-text-size-adjust: =
+100%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: =
+0pt; font-family: Arial, Verdana, Geneva, sans-serif; font-size: 0; padding=
+: 0px;"><div style=3D"font-family: Arial, Verdana, Geneva, sans-serif;"> <a=
+ e-editable=3D"LeftImg3colUrl" href=3D"https://link.surlatable.com/u/nrd.ph=
+p?p=3DkrgLuzLAuK_1325192_5956934_1_47&ems_l=3D8535816&i=3D1&d=3DMTMzNTg5Zjl=
+iOTc3N2FjNDE%3D%7CN2E0YjYzZDMzYTRlMQ%3D%3D%7CNTU3NDg0ODIw%7Ca3JnTHV6TEF1Sw%=
+3D%3D%7CMTMzNTg5ZjliOTc3N2FjNDE%3D%7CMjUxMjI0XzVQTV9HaXZlLXRoZS1naWZ0LW9mLU=
+hvbGlkYXktQ2xhc3Nlcw%3D%3D%7CSW4rU3RvcmUrQ29va2luZw%3D%3D%7CcmVjb21tZW5kZWQ=
+tcHJvZHVjdF9lbWFpbA%3D%3D%7CMjAyNS1RM19QSVNDX0wxODBEX09wZW4uQ2xpY2suUmVnLUF=
+sbC1leGNsdWRpbmctcHJpdmFjeS1vcGVucy13LUwzRC1DUk8tQXV0by1zdXBwcmVzc2lvbnM%3D=
+%7C&_esuh=3D_11_f0979a9ae0fa3c40e4e5ab8475482e214b376155e9c6a1e31a8053021ab=
+2dcf4" style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;=
+ color: #000000; text-decoration: none; font-weight: normal;" target=3D"_bl=
+ank"> <img e-editable=3D"leftImg3col" src=3D"https://recommender.scarabrese=
+arch.com/merchants/163A519060812551/jby0hu/6.jpg?eh=3D133589f9b9777ac41&es=
+=3D7a4b63d33a4e1" style=3D"-ms-interpolation-mode: bicubic; border: 0; heig=
+ht: auto; line-height: 100%; outline: none; text-decoration: none; display:=
+ block;" border=3D"0" class=3D"image" width=3D"200" alt=3D"recommended prod=
+uct I"> </a> </div></td>
+<td align=3D"center" class valign=3D"top" style=3D"-webkit-text-size-adjust=
+: 100%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace=
+: 0pt; font-family: Arial, Verdana, Geneva, sans-serif; font-size: 0; paddi=
+ng: 0px;"><div style=3D"font-family: Arial, Verdana, Geneva, sans-serif;"> =
+<a e-editable=3D"CenterImg3colUrl" href=3D"https://link.surlatable.com/u/nr=
+d.php?p=3DkrgLuzLAuK_1325192_5956934_1_49&ems_l=3D8535816&i=3D1&d=3DMTMzNTg=
+5ZjliOTc3N2FjNDE%3D%7CN2E0YjYzZDMzYTRlMQ%3D%3D%7CNTU3NDg0ODIy%7Ca3JnTHV6TEF=
+1Sw%3D%3D%7CMTMzNTg5ZjliOTc3N2FjNDE%3D%7CMjUxMjI0XzVQTV9HaXZlLXRoZS1naWZ0LW=
+9mLUhvbGlkYXktQ2xhc3Nlcw%3D%3D%7CSW4rU3RvcmUrQ29va2luZw%3D%3D%7CcmVjb21tZW5=
+kZWQtcHJvZHVjdF9lbWFpbA%3D%3D%7CMjAyNS1RM19QSVNDX0wxODBEX09wZW4uQ2xpY2suUmV=
+nLUFsbC1leGNsdWRpbmctcHJpdmFjeS1vcGVucy13LUwzRC1DUk8tQXV0by1zdXBwcmVzc2lvbn=
+M%3D%7C&_esuh=3D_11_d44ea147c8922ba383bd9a12ad916beb4505cba0a50bab78f5c1948=
+81e61b6f5" style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 1=
+00%; color: #000000; text-decoration: none; font-weight: normal;" target=3D=
+"_blank"> <img e-editable=3D"CenterImg3col" src=3D"https://recommender.scar=
+abresearch.com/merchants/163A519060812551/jby0hu/4.jpg?eh=3D133589f9b9777ac=
+41&es=3D7a4b63d33a4e1" style=3D"-ms-interpolation-mode: bicubic; border: 0;=
+ height: auto; line-height: 100%; outline: none; text-decoration: none; dis=
+play: block;" border=3D"0" class=3D"image" width=3D"200" alt=3D"recommended=
+ product II"> </a> </div></td>
+<td align=3D"right" class valign=3D"top" style=3D"-webkit-text-size-adjust:=
+ 100%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace:=
+ 0pt; font-family: Arial, Verdana, Geneva, sans-serif; font-size: 0; paddin=
+g: 0px;"><div style=3D"font-family: Arial, Verdana, Geneva, sans-serif;"> <=
+a e-editable=3D"RightImg3colUrl" href=3D"https://link.surlatable.com/u/nrd.=
+php?p=3DkrgLuzLAuK_1325192_5956934_1_51&ems_l=3D8535816&i=3D1&d=3DMTMzNTg5Z=
+jliOTc3N2FjNDE%3D%7CN2E0YjYzZDMzYTRlMQ%3D%3D%7CNTU3NDg0ODI0%7Ca3JnTHV6TEF1S=
+w%3D%3D%7CMTMzNTg5ZjliOTc3N2FjNDE%3D%7CMjUxMjI0XzVQTV9HaXZlLXRoZS1naWZ0LW9m=
+LUhvbGlkYXktQ2xhc3Nlcw%3D%3D%7CSW4rU3RvcmUrQ29va2luZw%3D%3D%7CcmVjb21tZW5kZ=
+WQtcHJvZHVjdF9lbWFpbA%3D%3D%7CMjAyNS1RM19QSVNDX0wxODBEX09wZW4uQ2xpY2suUmVnL=
+UFsbC1leGNsdWRpbmctcHJpdmFjeS1vcGVucy13LUwzRC1DUk8tQXV0by1zdXBwcmVzc2lvbnM%=
+3D%7C&_esuh=3D_11_00fddd6323bdf7b8ece9bb9a6d73b318ffd47fb94993509b5b67c6405=
+4ee544d" style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100=
+%; color: #000000; text-decoration: none; font-weight: normal;" target=3D"_=
+blank"> <img e-editable=3D"RightImg3col" src=3D"https://recommender.scarabr=
+esearch.com/merchants/163A519060812551/jby0hu/5.jpg?eh=3D133589f9b9777ac41&=
+es=3D7a4b63d33a4e1" style=3D"-ms-interpolation-mode: bicubic; border: 0; he=
+ight: auto; line-height: 100%; outline: none; text-decoration: none; displa=
+y: block;" border=3D"0" class=3D"image" width=3D"200" alt=3D"recommended pr=
+oduct III"> </a> </div></td> </tr>
+</table>
+</th>
+</tr>
+</table></td>
+</tr><tr e-block-id=3D"64cd3593c37805137a000002">
+<td style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; ms=
+o-table-lspace: 0pt; mso-table-rspace: 0pt; font-family: Arial, Verdana, Ge=
+neva, sans-serif;">
+<table width=3D"600" border=3D"0" cellspacing=3D"0" cellpadding=3D"0" class=
+=3D"com fw" align=3D"center" style=3D"-webkit-text-size-adjust: 100%; -ms-t=
+ext-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-f=
+amily: Arial, Verdana, Geneva, sans-serif; border-collapse: collapse !impor=
+tant;">
+<tr>
+<td align=3D"center" valign=3D"top" style=3D"-webkit-text-size-adjust: 100%=
+; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt;=
+ font-family: Arial, Verdana, Geneva, sans-serif; font-size: 0;">
+<div style=3D"font-family: Arial, Verdana, Geneva, sans-serif;">
+<img src=3D"https://link.surlatable.com/custloads/767471653/md_1485599.jpg"=
+ e-max-width=3D"600" style=3D"-ms-interpolation-mode: bicubic; border: 0; h=
+eight: auto; line-height: 100%; outline: none; text-decoration: none; displ=
+ay: block;" border=3D"0" class=3D"image" width=3D"600" height=3D"22" e-edit=
+able=3D"fullWidthImgNL" alt=3D"Sur la table spacing">
+</div>
+</td>
+</tr>
+</table>
+</td>
+</tr><tr e-block-id=3D"67a3cba9853afadc92000002">
+<td style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; ms=
+o-table-lspace: 0pt; mso-table-rspace: 0pt; font-family: Arial, Verdana, Ge=
+neva, sans-serif;">
+<table width=3D"600" border=3D"0" cellspacing=3D"0" cellpadding=3D"0" class=
+=3D"com fw" align=3D"center" style=3D"-webkit-text-size-adjust: 100%; -ms-t=
+ext-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-f=
+amily: Arial, Verdana, Geneva, sans-serif; border-collapse: collapse !impor=
+tant;">
+<tr>
+<td align=3D"center" valign=3D"top" style=3D"-webkit-text-size-adjust: 100%=
+; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt;=
+ font-family: Arial, Verdana, Geneva, sans-serif; font-size: 0;">
+<div style=3D"font-family: Arial, Verdana, Geneva, sans-serif;"> <img src=
+=3D"https://link.surlatable.com/custloads/767471653/2024_Footer/01_top_imag=
+e.jpg" e-max-width=3D"600" style=3D"-ms-interpolation-mode: bicubic; border=
+: 0; height: auto; line-height: 100%; outline: none; text-decoration: none;=
+ display: block;" border=3D"0" class=3D"image" width=3D"600" e-editable=3D"=
+unlock_image" alt=3D"TEXT JOIN TO 23266"> </div>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr e-block-id=3D"67a3cba9853afadc92000002">
+<td style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; ms=
+o-table-lspace: 0pt; mso-table-rspace: 0pt; font-family: Arial, Verdana, Ge=
+neva, sans-serif;">
+<table width=3D"600" border=3D"0" cellspacing=3D"0" cellpadding=3D"0" class=
+=3D"fw" align=3D"center" style=3D"-webkit-text-size-adjust: 100%; -ms-text-=
+size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-famil=
+y: Arial, Verdana, Geneva, sans-serif; border-collapse: collapse !important=
+;">
+<tr>
+<td align=3D"left" class valign=3D"top" style=3D"-webkit-text-size-adjust: =
+100%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: =
+0pt; font-family: Arial, Verdana, Geneva, sans-serif; font-size: 0;">
+<div style=3D"font-family: Arial, Verdana, Geneva, sans-serif;"> <a e-edita=
+ble=3D"buy_online_URL" href=3D"https://link.surlatable.com/u/nrd.php?p=3Dkr=
+gLuzLAuK_1325192_5956934_1_57&ems_l=3D8535816&i=3D1&d=3DNTU3NDg0ODMw%7Ca3Jn=
+THV6TEF1Sw%3D%3D%7CMTMzNTg5ZjliOTc3N2FjNDE%3D%7CMjUxMjI0XzVQTV9HaXZlLXRoZS1=
+naWZ0LW9mLUhvbGlkYXktQ2xhc3Nlcw%3D%3D%7CSW4rU3RvcmUrQ29va2luZw%3D%3D%7CaW4t=
+c3RvcmUtcGljay11cF9lbWFpbC1mb290ZXI%3D%7CMjAyNS1RM19QSVNDX0wxODBEX09wZW4uQ2=
+xpY2suUmVnLUFsbC1leGNsdWRpbmctcHJpdmFjeS1vcGVucy13LUwzRC1DUk8tQXV0by1zdXBwc=
+mVzc2lvbnM%3D%7C&_esuh=3D_11_f637bd1568b7c32e43b791e62b569df6fb20cfcc4fc4d9=
+ba0fa2644504d5027f" target=3D"blank" style=3D"-webkit-text-size-adjust: 100=
+%; -ms-text-size-adjust: 100%; color: #000000; text-decoration: none; font-=
+weight: normal;"> <img e-editable=3D"buy_online_image" src=3D"https://link.=
+surlatable.com/custloads/767471653/2024_Footer/02_image.jpg" style=3D"-ms-i=
+nterpolation-mode: bicubic; border: 0; height: auto; line-height: 100%; out=
+line: none; text-decoration: none; display: block;" border=3D"0" width=3D"2=
+00" class=3D"image" alt=3D"Buy Online, Pick Up In-Store"> </a> </div>
+</td>
+<td align=3D"center" class valign=3D"top" style=3D"-webkit-text-size-adjust=
+: 100%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace=
+: 0pt; font-family: Arial, Verdana, Geneva, sans-serif; font-size: 0;">
+<div style=3D"font-family: Arial, Verdana, Geneva, sans-serif;"> <a e-edita=
+ble=3D"same_day_URL" href=3D"https://link.surlatable.com/u/nrd.php?p=3DkrgL=
+uzLAuK_1325192_5956934_1_59&ems_l=3D8535816&i=3D1&d=3DNTU3NDg0ODMy%7Ca3JnTH=
+V6TEF1Sw%3D%3D%7CMTMzNTg5ZjliOTc3N2FjNDE%3D%7CMjUxMjI0XzVQTV9HaXZlLXRoZS1na=
+WZ0LW9mLUhvbGlkYXktQ2xhc3Nlcw%3D%3D%7CSW4rU3RvcmUrQ29va2luZw%3D%3D%7Cc2FtZS=
+1kYXktZGVsaXZlcnlfZW1haWw%3D%7CMjAyNS1RM19QSVNDX0wxODBEX09wZW4uQ2xpY2suUmVn=
+LUFsbC1leGNsdWRpbmctcHJpdmFjeS1vcGVucy13LUwzRC1DUk8tQXV0by1zdXBwcmVzc2lvbnM=
+%3D%7C&_esuh=3D_11_5f8f3db4c4c6129259a356755ad7844f87af918181fd188ce929570a=
+2797500b" target=3D"blank" style=3D"-webkit-text-size-adjust: 100%; -ms-tex=
+t-size-adjust: 100%; color: #000000; text-decoration: none; font-weight: no=
+rmal;"> <img e-editable=3D"same_day_image" src=3D"https://link.surlatable.c=
+om/custloads/767471653/2024_Footer/03_image.jpg" style=3D"-ms-interpolation=
+-mode: bicubic; border: 0; height: auto; line-height: 100%; outline: none; =
+text-decoration: none; display: block;" width=3D"200" border=3D"0" class=3D=
+"image" alt=3D"Same-Day Delivery"> </a> </div>
+</td>
+<td align=3D"right" class valign=3D"top" style=3D"-webkit-text-size-adjust:=
+ 100%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace:=
+ 0pt; font-family: Arial, Verdana, Geneva, sans-serif; font-size: 0;">
+<div style=3D"font-family: Arial, Verdana, Geneva, sans-serif;"> <a e-edita=
+ble=3D"gift_cards_URL" href=3D"https://link.surlatable.com/u/nrd.php?p=3Dkr=
+gLuzLAuK_1325192_5956934_1_61&ems_l=3D8535816&i=3D1&d=3DNTU3NDg0ODM0%7Ca3Jn=
+THV6TEF1Sw%3D%3D%7CMTMzNTg5ZjliOTc3N2FjNDE%3D%7CMjUxMjI0XzVQTV9HaXZlLXRoZS1=
+naWZ0LW9mLUhvbGlkYXktQ2xhc3Nlcw%3D%3D%7CSW4rU3RvcmUrQ29va2luZw%3D%3D%7CZ2lm=
+dC1jYXJkc19lbWFpbC1mb290ZXI%3D%7CMjAyNS1RM19QSVNDX0wxODBEX09wZW4uQ2xpY2suUm=
+VnLUFsbC1leGNsdWRpbmctcHJpdmFjeS1vcGVucy13LUwzRC1DUk8tQXV0by1zdXBwcmVzc2lvb=
+nM%3D%7C&_esuh=3D_11_7432ccf3c698342da30d80a870bbfdfe0a65a0916e0ab6932aa0ce=
+2b12043ce9" target=3D"blank" style=3D"-webkit-text-size-adjust: 100%; -ms-t=
+ext-size-adjust: 100%; color: #000000; text-decoration: none; font-weight: =
+normal;"> <img e-editable=3D"gift_cards_image" src=3D"https://link.surlatab=
+le.com/custloads/767471653/2024_Footer/04_image.jpg" style=3D"-ms-interpola=
+tion-mode: bicubic; border: 0; height: auto; line-height: 100%; outline: no=
+ne; text-decoration: none; display: block;" width=3D"200" border=3D"0" clas=
+s=3D"image" alt=3D"Sur La Table Gift Cards"> </a> </div>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr e-block-id=3D"67a3cba9853afadc92000002">
+<td style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; ms=
+o-table-lspace: 0pt; mso-table-rspace: 0pt; font-family: Arial, Verdana, Ge=
+neva, sans-serif;">
+<table width=3D"600" border=3D"0" cellspacing=3D"0" cellpadding=3D"0" class=
+=3D"fw" align=3D"center" style=3D"-webkit-text-size-adjust: 100%; -ms-text-=
+size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-famil=
+y: Arial, Verdana, Geneva, sans-serif; border-collapse: collapse !important=
+;">
+<tr>
+<td align=3D"left" class valign=3D"top" style=3D"-webkit-text-size-adjust: =
+100%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: =
+0pt; font-family: Arial, Verdana, Geneva, sans-serif; font-size: 0;">
+<div style=3D"font-family: Arial, Verdana, Geneva, sans-serif;"> <a e-edita=
+ble=3D"my_account_URL" href=3D"https://link.surlatable.com/u/nrd.php?p=3Dkr=
+gLuzLAuK_1325192_5956934_1_63&ems_l=3D8535816&i=3D1&d=3DNTU3NDg0ODM2%7Ca3Jn=
+THV6TEF1Sw%3D%3D%7CMTMzNTg5ZjliOTc3N2FjNDE%3D%7CMjUxMjI0XzVQTV9HaXZlLXRoZS1=
+naWZ0LW9mLUhvbGlkYXktQ2xhc3Nlcw%3D%3D%7CSW4rU3RvcmUrQ29va2luZw%3D%3D%7CbXkt=
+YWNjb3VudF9lbWFpbA%3D%3D%7CMjAyNS1RM19QSVNDX0wxODBEX09wZW4uQ2xpY2suUmVnLUFs=
+bC1leGNsdWRpbmctcHJpdmFjeS1vcGVucy13LUwzRC1DUk8tQXV0by1zdXBwcmVzc2lvbnM%3D%=
+7C&_esuh=3D_11_d479b345ded8b32d088ab85eccc9e0cf2cd9e646d85d827a59570a8dda31=
+0e0b" target=3D"blank" style=3D"-webkit-text-size-adjust: 100%; -ms-text-si=
+ze-adjust: 100%; color: #000000; text-decoration: none; font-weight: normal=
+;"> <img e-editable=3D"my_account_image" src=3D"https://link.surlatable.com=
+/custloads/767471653/2024_Footer/05_image.jpg" style=3D"-ms-interpolation-m=
+ode: bicubic; border: 0; height: auto; line-height: 100%; outline: none; te=
+xt-decoration: none; display: block;" border=3D"0" width=3D"200" class=3D"i=
+mage" alt=3D"My Account at Sur La Table"> </a> </div>
+</td>
+<td align=3D"center" class valign=3D"top" style=3D"-webkit-text-size-adjust=
+: 100%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace=
+: 0pt; font-family: Arial, Verdana, Geneva, sans-serif; font-size: 0;">
+<div style=3D"font-family: Arial, Verdana, Geneva, sans-serif;"> <a e-edita=
+ble=3D"recipes_URL" href=3D"https://link.surlatable.com/u/nrd.php?p=3DkrgLu=
+zLAuK_1325192_5956934_1_65&ems_l=3D8535816&i=3D1&d=3DNTU3NDg0ODM4%7Ca3JnTHV=
+6TEF1Sw%3D%3D%7CMTMzNTg5ZjliOTc3N2FjNDE%3D%7CMjUxMjI0XzVQTV9HaXZlLXRoZS1naW=
+Z0LW9mLUhvbGlkYXktQ2xhc3Nlcw%3D%3D%7CSW4rU3RvcmUrQ29va2luZw%3D%3D%7Cc2x0LXJ=
+lY2lwZXNfZW1haWwtZm9vdGVy%7CMjAyNS1RM19QSVNDX0wxODBEX09wZW4uQ2xpY2suUmVnLUF=
+sbC1leGNsdWRpbmctcHJpdmFjeS1vcGVucy13LUwzRC1DUk8tQXV0by1zdXBwcmVzc2lvbnM%3D=
+%7C&_esuh=3D_11_797a6d1f79b6d3d6eb9881f27b1c95d88125fff8f1e9e7f432b82a903b8=
+ce9c4" target=3D"blank" style=3D"-webkit-text-size-adjust: 100%; -ms-text-s=
+ize-adjust: 100%; color: #000000; text-decoration: none; font-weight: norma=
+l;"> <img e-editable=3D"recipes_image" src=3D"https://link.surlatable.com/c=
+ustloads/767471653/2024_Footer/06_image.jpg" style=3D"-ms-interpolation-mod=
+e: bicubic; border: 0; height: auto; line-height: 100%; outline: none; text=
+-decoration: none; display: block;" width=3D"200" border=3D"0" class=3D"ima=
+ge" alt=3D"Recipes at Sur La Table"> </a> </div>
+</td>
+<td align=3D"right" class valign=3D"top" style=3D"-webkit-text-size-adjust:=
+ 100%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace:=
+ 0pt; font-family: Arial, Verdana, Geneva, sans-serif; font-size: 0;">
+<div style=3D"font-family: Arial, Verdana, Geneva, sans-serif;"> <a e-edita=
+ble=3D"slt_perks_URL" href=3D"https://link.surlatable.com/u/nrd.php?p=3Dkrg=
+LuzLAuK_1325192_5956934_1_67&ems_l=3D8535816&i=3D1&d=3DNTU3NDg0ODQw%7Ca3JnT=
+HV6TEF1Sw%3D%3D%7CMTMzNTg5ZjliOTc3N2FjNDE%3D%7CMjUxMjI0XzVQTV9HaXZlLXRoZS1n=
+aWZ0LW9mLUhvbGlkYXktQ2xhc3Nlcw%3D%3D%7CSW4rU3RvcmUrQ29va2luZw%3D%3D%7Cc2x0L=
+XBlcmtzX2VtYWls%7CMjAyNS1RM19QSVNDX0wxODBEX09wZW4uQ2xpY2suUmVnLUFsbC1leGNsd=
+WRpbmctcHJpdmFjeS1vcGVucy13LUwzRC1DUk8tQXV0by1zdXBwcmVzc2lvbnM%3D%7C&_esuh=
+=3D_11_4fe18adfdd592514886bef12afd684180712433299c188c86a93e253b7325564" ta=
+rget=3D"blank" style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjus=
+t: 100%; color: #000000; text-decoration: none; font-weight: normal;"> <img=
+ e-editable=3D"slt_perks_image" src=3D"https://link.surlatable.com/custload=
+s/767471653/2024_Footer/07_image.jpg" style=3D"-ms-interpolation-mode: bicu=
+bic; border: 0; height: auto; line-height: 100%; outline: none; text-decora=
+tion: none; display: block;" width=3D"200" border=3D"0" class=3D"image" alt=
+=3D"SLT Perks"> </a> </div>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr e-block-id=3D"67a3cba9853afadc92000002">
+<td style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; ms=
+o-table-lspace: 0pt; mso-table-rspace: 0pt; font-family: Arial, Verdana, Ge=
+neva, sans-serif;">
+<table width=3D"600" border=3D"0" cellspacing=3D"0" cellpadding=3D"0" class=
+=3D"com fw" align=3D"center" style=3D"-webkit-text-size-adjust: 100%; -ms-t=
+ext-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-f=
+amily: Arial, Verdana, Geneva, sans-serif; border-collapse: collapse !impor=
+tant;">
+<tr>
+<td align=3D"center" valign=3D"top" style=3D"-webkit-text-size-adjust: 100%=
+; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt;=
+ font-family: Arial, Verdana, Geneva, sans-serif; font-size: 0;">
+<div style=3D"font-family: Arial, Verdana, Geneva, sans-serif;"> <a href=3D=
+"https://link.surlatable.com/u/nrd.php?p=3DkrgLuzLAuK_1325192_5956934_1_69&=
+ems_l=3D8535816&i=3D1&d=3DNTU3NDg0ODQy%7Ca3JnTHV6TEF1Sw%3D%3D%7CMTMzNTg5Zjl=
+iOTc3N2FjNDE%3D%7CMjUxMjI0XzVQTV9HaXZlLXRoZS1naWZ0LW9mLUhvbGlkYXktQ2xhc3Nlc=
+w%3D%3D%7CSW4rU3RvcmUrQ29va2luZw%3D%3D%7Cc3RvcmUtbG9jYXRvcl9lbWFpbC1mb290ZX=
+I%3D%7CMjAyNS1RM19QSVNDX0wxODBEX09wZW4uQ2xpY2suUmVnLUFsbC1leGNsdWRpbmctcHJp=
+dmFjeS1vcGVucy13LUwzRC1DUk8tQXV0by1zdXBwcmVzc2lvbnM%3D%7C&_esuh=3D_11_117b4=
+13d74334c21fa90859fb6102bd65eae4b4a31abc812bd47d5b0e556a2a2" e-editable=3D"=
+find_a_store_URL" target=3D"blank" style=3D"-webkit-text-size-adjust: 100%;=
+ -ms-text-size-adjust: 100%; color: #000000; text-decoration: none; font-we=
+ight: normal;"> <img src=3D"https://link.surlatable.com/custloads/767471653=
+/2024_Footer/08_bottom_image.jpg" e-max-width=3D"600" style=3D"-ms-interpol=
+ation-mode: bicubic; border: 0; height: auto; line-height: 100%; outline: n=
+one; text-decoration: none; display: block;" border=3D"0" class=3D"image" w=
+idth=3D"600" e-editable=3D"find_a_store_image" alt=3D"Sur La Table Near Me"=
+> </a> </div>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr e-block-id=3D"67a3cba9853afadc92000002">
+<td height=3D"20" class style=3D"-webkit-text-size-adjust: 100%; -ms-text-s=
+ize-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-family=
+: Arial, Verdana, Geneva, sans-serif;">
+<div style=3D"font-family: Arial, Verdana, Geneva, sans-serif;"></div>
+</td>
+</tr>
+<tr e-block-id=3D"67a3cba9853afadc92000002">
+<td style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; ms=
+o-table-lspace: 0pt; mso-table-rspace: 0pt; font-family: Arial, Verdana, Ge=
+neva, sans-serif; padding: 25px 20px;">
+<table cellpadding=3D"0" cellspacing=3D"0" border=3D"0" width=3D"400" align=
+=3D"center" class=3D"fw" style=3D"-webkit-text-size-adjust: 100%; -ms-text-=
+size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-famil=
+y: Arial, Verdana, Geneva, sans-serif; border-collapse: collapse !important=
+;">
+<tr>
+<td align=3D"center" style=3D"-webkit-text-size-adjust: 100%; -ms-text-size=
+-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-family: A=
+rial, Geneva, sans-serif; font-size: 14px; color: #696461; text-decoration:=
+ none;">
+<div style=3D"font-family: Arial, Verdana, Geneva, sans-serif;">
+<font style=3D"font-family:Arial, Geneva, sans-serif; font-size:14px; color=
+:#696461; text-decoration:none;" e-editable=3D"disclaimer-text"> <b>*FREE S=
+HIPPING ON ORDERS OVER $75:</b> Offer applies to ground shipping only for a=
+ll orders placed on SurLaTable.com or through our catalog and with a mercha=
+ndise total of $75 or more. Note: order subtotal must be $75 or more after =
+any coupons or promotions are applied. Discount will automatically be appli=
+ed at checkout. Valid for shipments bound to a single destination only with=
+in the continental United States. Gift cards, gift wrap, taxes, and prior p=
+urchases do not qualify toward the minimum purchase requirement, and offer =
+cannot be applied to such items. Rush shipping and vendor shipping surcharg=
+es still apply. Additional shipping charges apply to AK, HI, Puerto Rico, U=
+.S. Virgin Islands and Guam. No adjustments to prior purchases. <br>
+<br>
+<br>
+<b>*$15 OFF YOUR ORDER OVER $75 FOR JOINING TEXTS: </b> Present your code a=
+t time of purchase in store or enter code at checkout online to receive thi=
+s discount. Excludes sale and clearance (items with prices ending in 9 and =
+6), gift cards, prior purchases and gift-wrap. One-time use only. Cannot be=
+ combined with any other offers or discounts. Not redeemable for cash. Vali=
+d online and in stores. No adjustments to prior purchases. Hard good and co=
+oking class purchases over $75 qualify for free shipping, and free shipping=
+ will automatically be applied to qualifying purchases when using code. Val=
+id for shipments bound to a single destination only within the continental =
+United States. Rush shipping and vendor shipping surcharges still apply. Ot=
+her restrictions may apply. Additional shipping charges apply to AK, HI, Pu=
+erto Rico, U.S. Virgin Islands and Guam. <a href=3D"https://link.surlatable=
+.com/u/nrd.php?p=3DkrgLuzLAuK_1325192_5956934_1_71&ems_l=3D8535816&i=3D1&d=
+=3DNTU3NDg0ODQ0%7Ca3JnTHV6TEF1Sw%3D%3D%7CMTMzNTg5ZjliOTc3N2FjNDE%3D%7CMjUxM=
+jI0XzVQTV9HaXZlLXRoZS1naWZ0LW9mLUhvbGlkYXktQ2xhc3Nlcw%3D%3D%7CSW4rU3RvcmUrQ=
+29va2luZw%3D%3D%7CZXhjbHVzaW9ucy1hcHBseV9lbWFpbC1sZWdhbA%3D%3D%7CMjAyNS1RM1=
+9QSVNDX0wxODBEX09wZW4uQ2xpY2suUmVnLUFsbC1leGNsdWRpbmctcHJpdmFjeS1vcGVucy13L=
+UwzRC1DUk8tQXV0by1zdXBwcmVzc2lvbnM%3D%7C&_esuh=3D_11_14af2f48ac9a7208735622=
+ac87fd3ea7d8dcce78689c535a3934a78ae5f8aafe" target=3D"blank" class style=3D=
+"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; display: block=
+; text-decoration: underline; font-size: 14px; font-family: Arial, Helvetic=
+a, sans-serif; color: #444444; font-weight: normal;">*Brand Exclusions Appl=
+y.</a>
+</font>
+</div>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr e-block-id=3D"67a3cba9853afadc92000002">
+<td style=3D"-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; ms=
+o-table-lspace: 0pt; mso-table-rspace: 0pt; font-family: Arial, Verdana, Ge=
+neva, sans-serif;">
+<table cellpadding=3D"0" cellspacing=3D"0" border=3D"0" width=3D"500" align=
+=3D"center" class=3D"fw" role=3D"presentation" style=3D"-webkit-text-size-a=
+djust: 100%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-r=
+space: 0pt; font-family: Arial, Verdana, Geneva, sans-serif; border-collaps=
+e: collapse !important;">
+<tr>
+<td height=3D"10" class=3D"rh20" style=3D"-webkit-text-size-adjust: 100%; -=
+ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; fo=
+nt-family: Arial, Verdana, Geneva, sans-serif;">
+<div style=3D"font-family: Arial, Verdana, Geneva, sans-serif;"></div>
+</td>
+</tr>
+<tr>
+<td align=3D"center" class style=3D"-webkit-text-size-adjust: 100%; -ms-tex=
+t-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-fam=
+ily: Arial, Verdana, Geneva, sans-serif;">
+<table cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"-=
+webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; mso-table-lspace=
+: 0pt; mso-table-rspace: 0pt; font-family: Arial, Verdana, Geneva, sans-ser=
+if; border-collapse: collapse !important;">
+<tr>
+<th align=3D"center" class=3D"ftd" style=3D"font-family: Arial, Verdana, Ge=
+neva, sans-serif; Margin: 0; border: 0; font-weight: normal; vertical-align=
+: top; padding: 10px;" valign=3D"top"><a href=3D"https://link.surlatable.co=
+m/u/nrd.php?p=3DkrgLuzLAuK_1325192_5956934_1_53&ems_l=3D8535816&i=3D1&d=3Da=
+3JnTHV6TEF1Sw%3D%3D%7CNTU3NDg0ODI2%7Ca3JnTHV6TEF1Sw%3D%3D%7CMTMzNTg5ZjliOTc=
+3N2FjNDE%3D%7CMjUxMjI0XzVQTV9HaXZlLXRoZS1naWZ0LW9mLUhvbGlkYXktQ2xhc3Nlcw%3D=
+%3D%7CSW4rU3RvcmUrQ29va2luZw%3D%3D%7CdXBkYXRlLXByZWZlcmVuY2VzX2VtYWlsLWZvb3=
+Rlcg%3D%3D%7CMjAyNS1RM19QSVNDX0wxODBEX09wZW4uQ2xpY2suUmVnLUFsbC1leGNsdWRpbm=
+ctcHJpdmFjeS1vcGVucy13LUwzRC1DUk8tQXV0by1zdXBwcmVzc2lvbnM%3D%7C&_esuh=3D_11=
+_41fd253b78b571c88072bd9dd684357cd03f419c815a4e0422c519e401e9cf5f" target=
+=3D"blank" class=3D"Unsubscribe" style=3D"-webkit-text-size-adjust: 100%; -=
+ms-text-size-adjust: 100%; display: block; text-decoration: underline; font=
+-size: 14px; font-family: Arial, Helvetica, sans-serif; color: #444444; fon=
+t-weight: normal;">Unsubscribe or Update Your Preferences</a></th>
+<th align=3D"center" class=3D"ftd" style=3D"font-family: Arial, Verdana, Ge=
+neva, sans-serif; Margin: 0; border: 0; font-weight: normal; vertical-align=
+: top; padding: 10px;" valign=3D"top"><a href=3D"https://link.surlatable.co=
+m/u/nrd.php?p=3DkrgLuzLAuK_1325192_5956934_1_55&ems_l=3D8535816&i=3D1&d=3DN=
+TU3NDg0ODI4%7Ca3JnTHV6TEF1Sw%3D%3D%7CMTMzNTg5ZjliOTc3N2FjNDE%3D%7CMjUxMjI0X=
+zVQTV9HaXZlLXRoZS1naWZ0LW9mLUhvbGlkYXktQ2xhc3Nlcw%3D%3D%7CSW4rU3RvcmUrQ29va=
+2luZw%3D%3D%7CY3VzdG9tZXItc2VydmljZV9lbWFpbC1mb290ZXI%3D%7CMjAyNS1RM19QSVND=
+X0wxODBEX09wZW4uQ2xpY2suUmVnLUFsbC1leGNsdWRpbmctcHJpdmFjeS1vcGVucy13LUwzRC1=
+DUk8tQXV0by1zdXBwcmVzc2lvbnM%3D%7C&_esuh=3D_11_fb7b1bd5f90417a3886e42ba893c=
+0f2083ddd60d8842f58636d7a6857e95afa4" target=3D"blank" class style=3D"-webk=
+it-text-size-adjust: 100%; -ms-text-size-adjust: 100%; display: block; text=
+-decoration: underline; font-size: 14px; font-family: Arial, Helvetica, san=
+s-serif; color: #444444; font-weight: normal;">Contact Customer Service</a>=
+</th>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td height=3D"10" class=3D"rh20" style=3D"-webkit-text-size-adjust: 100%; -=
+ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; fo=
+nt-family: Arial, Verdana, Geneva, sans-serif;">
+<div style=3D"font-family: Arial, Verdana, Geneva, sans-serif;"></div>
+</td>
+</tr>
+<tr>
+<td align=3D"center" class=3D"lh15p plr10" style=3D"-webkit-text-size-adjus=
+t: 100%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspac=
+e: 0pt; font-family: Arial, Helvetica, sans-serif; color: #444444; text-dec=
+oration: none; font-size: 14px; font-weight: normal; padding: 0 10px;">Add =
+<span style=3D"font-family: Arial, Verdana, Geneva, sans-serif; text-decora=
+tion: underline;">sur_la_table@email.surlatable.com</span> to your address =
+book to ensure that you receive our emails in your inbox.</td>
+</tr>
+<tr>
+<td height=3D"10" class=3D"rh20" style=3D"-webkit-text-size-adjust: 100%; -=
+ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; fo=
+nt-family: Arial, Verdana, Geneva, sans-serif;">
+<div style=3D"font-family: Arial, Verdana, Geneva, sans-serif;"></div>
+</td>
+</tr>
+<tr>
+<td align=3D"center" class=3D"lh15p plr10" style=3D"-webkit-text-size-adjus=
+t: 100%; -ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspac=
+e: 0pt; padding: 0 10px; font-family: Arial, Helvetica, sans-serif; color: =
+#444444; text-decoration: none; font-size: 14px; font-weight: normal; paddi=
+ng: 0 10px;">&copy;2025 Sur La Table&nbsp;&nbsp;&nbsp;&nbsp; 6100&nbsp;4th&=
+nbsp;Avenue&nbsp;S, Suite&nbsp;500, Seattle,&nbsp;WA 98108</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr e-block-id=3D"67a3cba9853afadc92000002">
+<td height=3D"40" class=3D"rh20" style=3D"-webkit-text-size-adjust: 100%; -=
+ms-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; fo=
+nt-family: Arial, Verdana, Geneva, sans-serif;">
+<div style=3D"font-family: Arial, Verdana, Geneva, sans-serif;"></div>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>=09</td>
+</tr>
+<div style=3D"font-family: Arial, Verdana, Geneva, sans-serif; display: non=
+e; white-space: nowrap; font: 15px courier; line-height: 0;">&nbsp; &nbsp; =
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp=
+; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nb=
+sp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</div>
+</table>
+</div>
+<img src=3D"https://link.surlatable.com/mo/krgLuzLAuK_767471653_5956934_132=
+5192_8535816.gif" height=3D"2" width=3D"2" border=3D"0" alt=3D"" aria-hidde=
+n=3D"true"></body>
+</html>
+----=_---NextPart--=_-PBbjQpqaGB--
+

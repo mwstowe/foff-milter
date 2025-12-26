@@ -1,0 +1,233 @@
+Return-Path: <info@pass.tjynorth.com>
+Received: from juliett.baddomain.com (localhost [127.0.0.1])
+	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTP id 5BOMr9kW052214
+	for <mstowe@localhost>; Wed, 24 Dec 2025 22:53:09 GMT
+	(envelope-from info@pass.tjynorth.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (2048-bit key; unprotected) header.d=lrxrivera.co.uk header.i=constantly@lrxrivera.co.uk header.b=lFIeI10Q
+Received: from jimapinternal-aol.imap.mail.g03.yahoodns.net [74.6.160.39]
+	by juliett.baddomain.com with IMAP (fetchmail-6.6.1)
+	for <mstowe@localhost> (single-drop); Wed, 24 Dec 2025 22:53:09 +0000 (UTC)
+Received: from 127.0.0.1
+ by atlas-production.v2-mail-prod1-bf1.omega.yahoo.com pod-id atlas--production-bf1-79956fdf7c-tcvjn.bf1.yahoo.com with HTTP; Wed, 24 Dec 2025 22:51:19 +0000
+X-Originating-Ip: [45.91.94.242]
+Received-SPF: pass (domain of pass.tjynorth.com designates 45.91.94.242 as permitted sender)
+Authentication-Results: atlas-production.v2-mail-prod1-bf1.omega.yahoo.com;
+ dkim=pass header.i=@lrxrivera.co.uk header.s=selector1 arc_overridden_status=NOT_OVERRIDDEN;
+ spf=pass smtp.mailfrom=pass.tjynorth.com arc_overridden_status=NOT_OVERRIDDEN;
+ dmarc=pass(p=REJECT) header.from=lrxrivera.co.uk arc_overridden_status=NOT_OVERRIDDEN;
+X-Apparently-To: user@example.com; Wed, 24 Dec 2025 22:51:19 +0000
+X-YMailISG: k2XnSvUWLDtiggFoOfAX7JW0mP0TjIzWmTcfENusmXX3uQp0
+ so.vCN2PUMgrtFhtL0HDOyXolkXczOecjv5E8qQatybn.eHMYY2CLUNRDCmZ
+ RsHUt4i7oo4J2HEdicuVd9.2q1eFRtOhbordNgDTigTJc6XjfGFEzve8s__Z
+ EfpEdak1.YeZujMbBkloyJa8b3uW9dln1Z5wWDwBJBC1FnNUnZWnNX9e70pp
+ ukD5szrN21331U2YPkDbwiEaoD6F9_xi8ORprdnkjd33XGuBJqWwg.OZeWR3
+ w62b917KV44LxTst8Pnaukp2GZ10hk64tmbfMeQmRK0jzQaddLco0DC8gpDi
+ NVAkah3JdXPGysbehyJli4Dz7SzuywgzUMtVcLzwpoSyaW4eOnrhiOuApq6e
+ TIzFtykjlge14F0aKt_OzZEhLzc0lFZuY0ZQPrDLpxHOiUOtJEzgHGRSgnGx
+ 1nmVttqZhgPvFHpCqkfUEE3VP9BwvAvWFHLlwPGdMHdX8Us0bX8nlZxTGXHs
+ BzLoF1cL9Gob0.zFg1gTvjAj19Alf5tZKZxZ08pF85ANwT8QkUU0NmPViicc
+ q3BswORapc9CNfKFcAtCC5A2so8CakRSpSRoOSvEUu5PM39N3JtEfEbSj2Bv
+ bQZvj2MMnLvEzCJ8I3sQ6w8EBBFedWEiKjwsYG_1PI3QXft9Y0ez5jtucLZz
+ _7UvWGpbmgyfEmeLhnTEbbF.h0g_wJ2gZhqXDkwv2BLsGgnkhTBc_guMEGCV
+ WHG1GlZfhJQKWWNa6qoJG7OexWhtIv9Wr9sh7e2zeYvNcL_n.aUnp1HztMsF
+ L8uiMvaTuBQOLquCmBVylZpJRi8Qa3F5OdUPChcKm6lV71LOjA35poTjDnvl
+ sNeiaO_MBmh6rf43IGHr3zSr2YqFg5sAYxxFwKCBk6cL3KxoiXBe1HBxYFlP
+ zFjrzaChRY70qH09eU65piLkBl50Y4PiBmC9dU9GvhrMLAC_8w4YAgRMQMc2
+ dfgmGelzGnmDhKAC7yDpmIb5zHV8GoL1qp0iJ4xvZaLrpZZX2rwTF15.qqIP
+ t_d9xEg8N_GTZcDHNFZ4W5sVMlrgmDUJGEmKv1jXUBFjTWIVmZdkplvg2T6Q
+ MYCJJH4dDGZwR1EUqhsMVaVBKn4mZ3XpxcPI9zdjWgaROSVc6YgDwuBSAN7w
+ 1VxOZCus_aiMSKXu6nhWXYe8CozfA_Vw3RxkJ_WSLlVlZ3vPsj06dyEl4xdp
+ BpuITp5wdLnBSCktImkkaThEOeOLDHYja032d3Dhm7i0SNK5.ZCMrHi41gUU
+ FCi8nsz6s.2rAeDlh7AuhxLLJmIWvu7YDcnSIyadP3fXwdmdr14_XCl0UOOK
+ UR.84KZk.L.AP9oKbfLW3LNl5DQy0SOZseibeP0U8SLZevLmxS1gryqVnO54
+ gc6qKMPG6bbpKJTzUE18Ww--
+Received: from 45.91.94.242 (EHLO mentemp.siux.at)
+ by 10.196.122.43 with SMTP;
+ Wed, 24 Dec 2025 22:51:19 +0000
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; s=selector1; d=lrxrivera.co.uk;
+ h=Date:From:Subject:To:Reply-To:Message-ID:Content-Transfer-Encoding:Content-Type:MIME-Version:List-Unsubscribe; i=constantly@lrxrivera.co.uk;
+ bh=YilbDdHaXBqreaY/mrljRfJygC4=;
+ b=lFIeI10QcbQMcQtwuk/wFLVj/38UPdGhRMuibixiFgGDlIEiVkcx7UjvvcqTKzCySiiCC5FwQm1T
+   IAFynvJ2giDyFouMpZ1gwo8Vy1H/iA1dRbb2eOX6GvlrGeBAuffElJYFJCkj69R0O1leyQ302Rqn
+   R0jKDxXjcLRoJuOHQwqVW79+7OxyNPwE5eSewS0EkCQHFZlJ46qHqwCXjjyvEDw3WL6aQxmU4Lz8
+   FnK4BTMIkoR3mHgMaRvZg2iL/hZAcVX9mzd2hi2ZDbR39bZEdm+VwZoh0n0c9gqgKBGA9U/jhgSv
+   wL6k2eDOcxkQZ+3TrYvq01ZU8uNVSL7sVzSW+g==
+DomainKey-Signature: a=rsa-sha1; c=nofws; q=dns; s=selector1; d=lrxrivera.co.uk;
+ b=JpHJr6Ht7hYEWaEMsDsfxp+Y3FS3UkUASy3YZlEo0iDKdR+M7yZX7CiToUw0XZviAx2+4Y3hCmH9
+   jbtxKfJNvJWhV+f6nmhPrlsvMF6ApQzVWa6DfBrhGLThWd38nMu2z9B69qHkQBSo5wF+I/3cN0Sw
+   h+Wa/GpIaB9hFQPNArt+gAbv+BjQORdt+FP3rm0Sfg9pHgsDADl1jhpy3vAH1JPXuPXu9k0j14Ba
+   +zdnwDmJKgZRSRkgZiO9/LzMXgrmdv/UZvvQA1N/+tB5cp7VuzyrR/dy4Pywwp3jOYZKqnHwvYM4
+   tcJTD4+3UMq5v/IYjtKxbYGIWZD3UOMVVk7Khg==;
+Date: Wed, 24 Dec 2025 17:50:56 -0500
+From: """"" =?ASCII?Q?Yeti=5FRambler=5FTumbler=5FNotice?=    """"" <constantly@lrxrivera.co.uk>
+Subject: =?ASCII?Q?A=5FNew=5FStarbucks=5FUpdate=5Ffor=5FYou?= 
+To: user@example.com
+Reply-To: <constantly@lrxrivera.co.uk>
+Message-ID: <vwedcfnszn.wx56ncfwglhba4t36nbm@lrxrivera.co.uk>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html; charset="UTF-"
+MIME-Version: 1.0
+List-Unsubscribe: <https://lrxrivera.co.uk/release-notes/unsub.htm>, <mailto:unsubscribe-555-123-4567@lrxrivera.co.uk?subject=Unsubscribe>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [0.0.0.0]); Wed, 24 Dec 2025 22:53:10 +0000 (UTC)
+
+<html>
+  <body>
+<center><div class=3D"centered">
+    <a href=3D"http://top.nibcause.org/3727055Ta17100836wN19699118CY8171Bj5Ndr236273xA" title=3D"">
+      <img src=3D"http://top.nibcause.org/images/Xgt82.png" alt=3D"">
+    </a>
+  </div>
+
+  <div class=3D"centered">
+    <a href=3D"http://top.nibcause.org/3727055zd17100836jh19699118gR8171yj5gvu236273VZ" title=3D"">
+      <img src=3D"http://top.nibcause.org/images/pvpMY.png" alt=3D"">
+    </a>
+  
+  <p>   <img src=3D"http://top.nibcause.org/3727055bA17100836cS19699118KN8171Dx5JTo236273cq" width=3D'1=
+px' height=3D'1px'>
+    
+  </div></center>
+</body>
+  </html>
+  <div id ="preheader" style="display:none; mso-hide: all;"><singleline label="PreHeader">
+<span style="display: none !important; font-size: 0px; color: #ffffff; mso-hide: all;">
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Update – March 2030</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<style type="text/css">
+      @media only screen and (max-width:480px) {
+        table.mj-full-width-mobile {
+          width: 100% !important;
+        }
+        td.mj-full-width-mobile {
+          width: auto !important;
+        }
+      }
+    </style>
+    <style type="text/css">
+      .buttonSecondary a {
+        background-color: #ffffff;
+        border: 1px solid #000000;
+        color: #000000;
+      }
+      .bodyText {}
+      .bodyText div {}
+      @media only screen and (min-width: 480px) {
+        .image-lead-override,
+        .image-lead-override td,
+        .image-lead-override img {
+          width: 471px !important;
+          height: 282px !important;
+        }
+      }
+      @media only screen and (min-width:480px) {
+        .mj-section-rh>table>tbody>tr>td {
+          padding-left: 90px !important;
+          padding-right: 90px !important;
+        }
+        .header-image-full-bleed>table>tbody>tr>td {
+          padding-left: 0px !important;
+          padding-right: 0px !important;
+        }
+      }
+      a {
+        color: inherit !important;
+        text-decoration: none !important;
+        font-size: inherit !important;
+        font-family: inherit !important;
+        font-weight: inherit !important;
+        line-height: inherit !important;
+      }
+    </style>
+
+<h1>March 2030</h1>
+
+<p>Hi Poetuhkh,</p>
+
+<p>The email designer continues to improve and is becoming clearer and more enjoyable to usehl.</p>
+
+<div class="section">
+  <h2>Recent improvements</h2>
+  <ul>
+    <li>A clearer user interface</li>
+    <li>Adjustable line height for titles and text</li>
+    <li>Social media icon alignment options</li>
+    <li>Expanded font library, now totaling 20 fonts</li>
+    <li>Updated text formatting toolbar</li>
+    <li>General fixes and performance improvements</li>
+    <li>Mobile preview support</li>
+  </ul>
+
+  <p>More templates are on the way. New designs are being developed to take advantage of the latest features and provide inspiration for your own layouts.</p>
+</div>
+
+<div class="section">
+  <h2>Helpful reading</h2>
+
+  <h3>8 Ways to Make Your Newsletter Signup Form Work Better</h3>
+  <p>Your signup form can play a meaningful role in growing your audience when it is placed thoughtfully and designed with purpose.</p>
+
+  <h3>20 Simple Ways to Grow Your Email List</h3>
+  <p>When you put effort into writing newsletters, reaching more readers helps ensure your work has the impact it deserves.</p>
+</div>
+
+<div class="section">
+  <h2>Email writing insights</h2>
+
+  <p class="date">March 9, 2019</p>
+  <h3>11 Subject Line Styles That Encourage Opens</h3>
+  <p>Strong subject lines help readers decide whether to engage with your message.</p>
+
+  <p class="date">March 14, 2019</p>
+  <h3>12 Notable Email Subject Lines</h3>
+  <p>A curated set of examples designed to spark ideas.</p>
+
+  <p class="date">March 12, 2019</p>
+  <h3>4 Tips to Prepare Emails for Calendar Events</h3>
+  <p>Planning ahead helps emails stay relevant during holidays and seasonal moments.</p>
+
+  <p class="date">March 8, 2019</p>
+  <h3>Using Video in Email: A Practical Guide</h3>
+  <p>Video can add value to emails when used thoughtfully.</p>
+</div>
+
+<div class="section">
+  <h2>Email delivery at scale</h2>
+  <p>MailPoet offers a delivery service designed specifically for WordPress websites, focusing on speed and reliability.</p>
+</div>
+
+<div class="section">
+  <h2>From the team</h2>
+  <p>This month’s photo comes from a colleague traveling in Chile during a short break.</p>
+</div>
+
+<div class="section">
+  <h2>Links that sparked discussion</h2>
+  <ul>
+    <li>Why keeping plugins updated matters for site security</li>
+    <li>A case study on mobile optimization and user signups</li>
+    <li>A preview of upcoming WordPress health tools</li>
+    <li>Firefox’s new file transfer service</li>
+    <li>Nintendo’s long history and continued relevance</li>
+    <li>Reflections on the web’s 30-year milestone</li>
+    <li>Public clean-up challenges gaining attention online</li>
+    <li>Spotify’s response to platform competition</li>
+    <li>A historical look at extraordinary wealth</li>
+    <li>5G technology and global competition</li>
+    <li>Advances in image creation research</li>
+  </ul>
+</div>
+
+<footer>
+  <p>Kim and the MailPoet team</p>
+</footer>
+
+</body>
+</html>
+
+
