@@ -802,6 +802,7 @@ impl SenderAlignmentAnalyzer {
         } else if display_name.contains("support")
             && !sender_info.from_domain.contains("support")
             && !self.is_known_support_domain(&sender_info.from_domain)
+            && !self.is_legitimate_support_pattern(&sender_info.from_display_name, &sender_info.from_domain)
         {
             issues.push("Display name suggests support but domain doesn't match".to_string());
         }
@@ -824,8 +825,80 @@ impl SenderAlignmentAnalyzer {
             "intercom.io",
             "salesforce.com",
             "resmed.com",
+            // Major legitimate businesses that commonly use "support" in display names
+            "namecheap.com",
+            "godaddy.com",
+            "hostgator.com",
+            "bluehost.com",
+            "dreamhost.com",
+            "siteground.com",
+            "digitalocean.com",
+            "linode.com",
+            "vultr.com",
+            "cloudflare.com",
+            "amazon.com",
+            "microsoft.com",
+            "google.com",
+            "apple.com",
+            "paypal.com",
+            "stripe.com",
+            "square.com",
+            "shopify.com",
+            "woocommerce.com",
+            "wordpress.com",
+            "github.com",
+            "gitlab.com",
+            "bitbucket.org",
+            "atlassian.com",
+            "slack.com",
+            "discord.com",
+            "zoom.us",
+            "dropbox.com",
+            "box.com",
+            "adobe.com",
+            "autodesk.com",
+            "salesforce.com",
+            "hubspot.com",
+            "mailchimp.com",
+            "constantcontact.com",
+            "sendgrid.net",
+            "twilio.com",
         ];
         support_domains.iter().any(|d| domain.contains(d))
+    }
+
+    /// Check if this is a legitimate support pattern (e.g., "Company Support" from company.com)
+    fn is_legitimate_support_pattern(&self, display_name: &str, domain: &str) -> bool {
+        let display_lower = display_name.to_lowercase();
+        let domain_lower = domain.to_lowercase();
+        
+        // Extract company name from domain (e.g., "namecheap" from "namecheap.com")
+        let domain_parts: Vec<&str> = domain_lower.split('.').collect();
+        if let Some(company_name) = domain_parts.first() {
+            // Check if display name contains the company name + support
+            // e.g., "Namecheap Support" from namecheap.com
+            if display_lower.contains(company_name) && display_lower.contains("support") {
+                return true;
+            }
+            
+            // Check for common legitimate patterns
+            let legitimate_patterns = [
+                &format!("{} support", company_name),
+                &format!("support {}", company_name),
+                &format!("{} customer support", company_name),
+                &format!("{} technical support", company_name),
+                &format!("{} help", company_name),
+                &format!("{} team", company_name),
+            ];
+            
+            for pattern in &legitimate_patterns {
+                if display_lower.contains(pattern.as_str()) {
+                    return true;
+                }
+            }
+        }
+        
+        false
     }
 
     fn detect_professional_credentials(&self, sender: &str) -> bool {
