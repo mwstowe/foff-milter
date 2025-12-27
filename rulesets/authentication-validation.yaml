@@ -35,9 +35,9 @@ rules:
     criteria:
       type: "And"
       criteria:
-        - type: "HeaderPattern"
-          header: "Authentication-Results"
-          pattern: "dkim=fail"
+        - type: "FeatureAnalysis"
+          feature_name: "Authentication Analysis"
+          evidence_pattern: "DKIM authentication failed"
         - type: "Not"
           criteria:
             type: "Or"
@@ -65,9 +65,9 @@ rules:
     criteria:
       type: "And"
       criteria:
-        - type: "HeaderPattern"
-          header: "Authentication-Results"
-          pattern: "spf=fail"
+        - type: "FeatureAnalysis"
+          feature_name: "Authentication Analysis"
+          evidence_pattern: "SPF authentication failed"
         - type: "Not"
           criteria:
             type: "SenderPattern"
@@ -90,9 +90,14 @@ rules:
             criteria:
               - type: "SenderPattern"
                 pattern: ".*@.*\\.(com|org|net|edu|gov)$"
-              - type: "HeaderPattern"
-                header: "Authentication-Results"
-                pattern: "dkim=pass.*spf=pass"
+              - type: "And"
+                criteria:
+                  - type: "FeatureAnalysis"
+                    feature_name: "Authentication Analysis"
+                    evidence_pattern: "DKIM authentication passed"
+                  - type: "FeatureAnalysis"
+                    feature_name: "Authentication Analysis"
+                    evidence_pattern: "SPF authentication passed"
     score: 75
     description: "Sender domain mismatch with claimed organization"
 
@@ -131,8 +136,36 @@ rules:
             - type: "HeaderPattern"
               header: "From"
               pattern: "(?i).*(official|support|security|billing).*"
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "SenderPattern"
+                pattern: ".*@.*(xfinity|comcast|verizon|att|tmobile|sprint)\\.(com|net)$"
+              - type: "SenderPattern"
+                pattern: ".*@.*(gov|edu|mil)$"
     score: 40
     description: "Missing authentication headers for suspicious content using feature analysis"
+
+  # No Authentication Analysis Available (+35 points)
+  - name: "No Authentication Analysis Available"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "FeatureAnalysis"
+          feature_name: "Authentication Analysis"
+          evidence_pattern: ".*"
+          invert: true
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(urgent|verify|suspended|security|payment|declined|expired).*"
+            - type: "HeaderPattern"
+              header: "From"
+              pattern: "(?i).*(official|support|security|billing|noreply).*"
+    score: 35
+    description: "No authentication analysis available for suspicious content"
 
   # Forged Sender Headers (+60 points)
   - name: "Forged Sender Headers"
@@ -269,9 +302,9 @@ rules:
     criteria:
       type: "And"
       criteria:
-        - type: "HeaderPattern"
-          header: "Authentication-Results"
-          pattern: "(?i)dkim=fail.*signature verification failed"
+        - type: "FeatureAnalysis"
+          feature_name: "Authentication Analysis"
+          evidence_pattern: "DKIM authentication failed.*signature verification failed"
         - type: "Not"
           criteria:
             type: "Or"
@@ -302,9 +335,9 @@ rules:
     criteria:
       type: "And"
       criteria:
-        - type: "HeaderPattern"
-          header: "Authentication-Results"
-          pattern: "(?i)spf=none.*no designated sender hosts"
+        - type: "FeatureAnalysis"
+          feature_name: "Authentication Analysis"
+          evidence_pattern: "No SPF record found"
         - type: "Not"
           criteria:
             type: "SenderPattern"

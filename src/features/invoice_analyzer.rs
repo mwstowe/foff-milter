@@ -31,6 +31,7 @@ impl InvoiceAnalyzer {
             "mailchimp.com".to_string(),
             "constantcontact.com".to_string(),
             "dominos.com".to_string(),
+            "e-offers.dominos.com".to_string(),
             "onestopplus.com".to_string(),
             "empower.com".to_string(),
             "walgreens.com".to_string(),
@@ -58,6 +59,7 @@ impl InvoiceAnalyzer {
             "mailchimp.com".to_string(),
             "constantcontact.com".to_string(),
             "dominos.com".to_string(),
+            "e-offers.dominos.com".to_string(),
             "onestopplus.com".to_string(),
             "empower.com".to_string(),
             "walgreens.com".to_string(),
@@ -166,7 +168,7 @@ impl FeatureExtractor for InvoiceAnalyzer {
                     }
                 }
 
-                let base_score = if is_legitimate_or_medical { 5 } else { 30 }; // Reduced score for legitimate senders
+                let base_score = if is_legitimate_or_medical { 0 } else { 30 }; // No score for legitimate senders
                 let industry_multiplier = self.get_industry_multiplier(from_header);
                 let adjusted_score = (base_score as f32 * industry_multiplier) as i32;
 

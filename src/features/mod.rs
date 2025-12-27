@@ -1,3 +1,4 @@
+pub mod adobe_campaign_analyzer;
 pub mod authentication_analysis;
 pub mod brand_impersonation;
 pub mod context_analyzer;
@@ -121,6 +122,7 @@ impl FeatureEngine {
                 Box::new(esp_validation::EspValidationFeature::new()),
                 Box::new(tld_risk::TldRiskFeature::new()),
                 Box::new(authentication_analysis::AuthenticationFeature::new()),
+                Box::new(adobe_campaign_analyzer::AdobeCampaignAnalyzer::new()),
             ],
         }
     }

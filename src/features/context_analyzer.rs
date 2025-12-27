@@ -820,15 +820,39 @@ impl ContextAnalyzer {
             return Some("marketplace".to_string());
         }
 
-        // Tech/Newsletter
-        if sender_lower.contains("medium")
+        // Cannabis/CBD retailers - legitimate regulated businesses
+        if sender_lower.contains("pot")
+            || sender_lower.contains("cannabis")
+            || sender_lower.contains("cbd")
+            || sender_lower.contains("dispensary")
+            || sender_lower.contains("hemp")
+        {
+            return Some("cannabis_retail".to_string());
+        }
+
+        // Tech/Newsletter - only for legitimate newsletter content, not technical headers
+        if (sender_lower.contains("medium")
             || sender_lower.contains("substack")
-            || content_lower.contains("coding")
+            || sender_lower.contains("newsletter"))
+            && !sender_lower.contains("antivirus")
+            && !sender_lower.contains("security")
+            && !content_lower.contains("vulnerable")
+            && !content_lower.contains("declined")
+            && !content_lower.contains("payment")
+        {
+            return Some("tech_newsletter".to_string());
+        }
+
+        // Only classify as tech newsletter if actual tech content is present
+        if (content_lower.contains("coding")
             || content_lower.contains("development")
             || content_lower.contains("technology")
             || content_lower.contains("ai")
-            || content_lower.contains("daily digest")
-            || content_lower.contains("newsletter")
+            || content_lower.contains("daily digest"))
+            && !content_lower.contains("vulnerable")
+            && !content_lower.contains("declined")
+            && !content_lower.contains("payment")
+            && !content_lower.contains("secure it")
         {
             return Some("tech_newsletter".to_string());
         }
@@ -873,6 +897,7 @@ impl ContextAnalyzer {
             "beehiiv.com",
             "walgreens.com",
             "rxorder.walgreens.com",
+            "luxpotshop.com",
         ];
 
         let is_legitimate_sender = legitimate_retailers
@@ -910,6 +935,7 @@ impl ContextAnalyzer {
             "floral" => 0.4,          // 60% reduction for floral marketing
             "marketplace" => 0.3,     // 70% reduction for marketplace offers
             "tech_newsletter" => 0.2, // 80% reduction for newsletters
+            "cannabis_retail" => 0.2, // 80% reduction for legitimate cannabis retailers
             "electronics" => 0.5,     // 50% reduction for electronics retailers
             _ => 1.0,
         }
@@ -935,7 +961,8 @@ impl FeatureExtractor for ContextAnalyzer {
 
         // Additional specific exclusions for borderline legitimate cases
         let borderline_legitimate = sender.to_lowercase().contains("make.co")
-            || sender.to_lowercase().contains("rxorder.walgreens.com");
+            || sender.to_lowercase().contains("rxorder.walgreens.com")
+            || sender.to_lowercase().contains("luxpotshop.com");
         let additional_discount = if borderline_legitimate { 0.2 } else { 1.0 }; // Extra 80% reduction
 
         // Check for Medicare/healthcare scam patterns

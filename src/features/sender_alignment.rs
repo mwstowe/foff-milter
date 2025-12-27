@@ -802,7 +802,10 @@ impl SenderAlignmentAnalyzer {
         } else if display_name.contains("support")
             && !sender_info.from_domain.contains("support")
             && !self.is_known_support_domain(&sender_info.from_domain)
-            && !self.is_legitimate_support_pattern(&sender_info.from_display_name, &sender_info.from_domain)
+            && !self.is_legitimate_support_pattern(
+                &sender_info.from_display_name,
+                &sender_info.from_domain,
+            )
         {
             issues.push("Display name suggests support but domain doesn't match".to_string());
         }
@@ -871,7 +874,7 @@ impl SenderAlignmentAnalyzer {
     fn is_legitimate_support_pattern(&self, display_name: &str, domain: &str) -> bool {
         let display_lower = display_name.to_lowercase();
         let domain_lower = domain.to_lowercase();
-        
+
         // Extract company name from domain (e.g., "namecheap" from "namecheap.com")
         let domain_parts: Vec<&str> = domain_lower.split('.').collect();
         if let Some(company_name) = domain_parts.first() {
@@ -880,7 +883,7 @@ impl SenderAlignmentAnalyzer {
             if display_lower.contains(company_name) && display_lower.contains("support") {
                 return true;
             }
-            
+
             // Check for common legitimate patterns
             let legitimate_patterns = [
                 &format!("{} support", company_name),
@@ -890,14 +893,14 @@ impl SenderAlignmentAnalyzer {
                 &format!("{} help", company_name),
                 &format!("{} team", company_name),
             ];
-            
+
             for pattern in &legitimate_patterns {
                 if display_lower.contains(pattern.as_str()) {
                     return true;
                 }
             }
         }
-        
+
         false
     }
 

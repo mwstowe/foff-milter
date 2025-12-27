@@ -355,7 +355,10 @@ impl LinkAnalyzer {
 
         // Check for specific legitimate business infrastructure patterns
         let business_infrastructure_patterns = [
-            ("costco.com", vec!["digital.costco.com", "data.digital.costco.com"]),
+            (
+                "costco.com",
+                vec!["digital.costco.com", "data.digital.costco.com"],
+            ),
             ("walmart.com", vec!["walmart.com", "email.walmart.com"]),
             ("target.com", vec!["target.com", "email.target.com"]),
             ("amazon.com", vec!["amazon.com", "email.amazon.com"]),
@@ -534,16 +537,16 @@ impl LinkAnalyzer {
         // Extract root domains for comparison
         let sender_root = self.extract_root_domain(sender_domain).unwrap_or_default();
         let link_root = self.extract_root_domain(link_domain).unwrap_or_default();
-        
+
         // If root domains match, this is a legitimate subdomain relationship
         if !sender_root.is_empty() && !link_root.is_empty() && sender_root == link_root {
             return true;
         }
-        
+
         // Check for known legitimate business domain patterns within complex ESP structures
         let legitimate_business_domains = [
             "costco.com",
-            "walmart.com", 
+            "walmart.com",
             "target.com",
             "amazon.com",
             "microsoft.com",
@@ -559,7 +562,7 @@ impl LinkAnalyzer {
             "sendgrid.net",
             "constantcontact.com",
         ];
-        
+
         // Check if both domains contain the same legitimate business domain
         // This handles cases like digital.costco.com.cname.cjm.adobe.com vs data.digital.costco.com
         for business_domain in &legitimate_business_domains {
@@ -567,7 +570,7 @@ impl LinkAnalyzer {
                 return true;
             }
         }
-        
+
         false
     }
 
@@ -625,10 +628,10 @@ impl LinkAnalyzer {
                 "aweber.com".to_string(),
                 "list-manage.com".to_string(),
                 "campaign-archive.com".to_string(),
-                "cjm.adobe.com".to_string(),  // Adobe Campaign
-                "cname.cjm.adobe.com".to_string(),  // Adobe Campaign CNAME
-                "klaviyomail.com".to_string(),  // Klaviyo ESP
-                "klaviyodns.com".to_string(),   // Klaviyo DNS/tracking
+                "cjm.adobe.com".to_string(),       // Adobe Campaign
+                "cname.cjm.adobe.com".to_string(), // Adobe Campaign CNAME
+                "klaviyomail.com".to_string(),     // Klaviyo ESP
+                "klaviyodns.com".to_string(),      // Klaviyo DNS/tracking
             ];
 
             DomainUtils::matches_domain_list(&domain, &esp_domains)

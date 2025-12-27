@@ -136,12 +136,12 @@ impl DkimVerifier {
         let sender_lower = sender_domain.to_lowercase();
         for dkim_domain in dkim_domains {
             let dkim_lower = dkim_domain.to_lowercase();
-            
+
             // Exact match
             if dkim_lower == sender_lower {
                 return DomainAlignment::Aligned;
             }
-            
+
             // Check if one is a subdomain of the other
             if Self::is_subdomain_aligned(&dkim_lower, &sender_lower) {
                 return DomainAlignment::Aligned;
@@ -158,17 +158,17 @@ impl DkimVerifier {
             DomainAlignment::Unknown
         }
     }
-    
+
     /// Check if domains are aligned considering subdomain relationships
     fn is_subdomain_aligned(dkim_domain: &str, sender_domain: &str) -> bool {
         // Extract root domains (last two parts: domain.tld)
         let dkim_root = Self::extract_root_domain(dkim_domain);
         let sender_root = Self::extract_root_domain(sender_domain);
-        
+
         // If root domains match, consider aligned
         dkim_root == sender_root
     }
-    
+
     /// Extract root domain (domain.tld) from a full domain
     fn extract_root_domain(domain: &str) -> String {
         let parts: Vec<&str> = domain.split('.').collect();
@@ -218,12 +218,12 @@ mod tests {
         let dkim_domains = vec!["send.backstage.com".to_string()];
         let alignment = DkimVerifier::check_domain_alignment(&dkim_domains, "backstage.com");
         assert!(matches!(alignment, DomainAlignment::Aligned));
-        
+
         // Test reverse - backstage.com should align with send.backstage.com
         let dkim_domains = vec!["backstage.com".to_string()];
         let alignment = DkimVerifier::check_domain_alignment(&dkim_domains, "send.backstage.com");
         assert!(matches!(alignment, DomainAlignment::Aligned));
-        
+
         // Test different domains should not align
         let dkim_domains = vec!["example.com".to_string()];
         let alignment = DkimVerifier::check_domain_alignment(&dkim_domains, "different.com");
@@ -232,9 +232,21 @@ mod tests {
 
     #[test]
     fn test_root_domain_extraction() {
-        assert_eq!(DkimVerifier::extract_root_domain("send.backstage.com"), "backstage.com");
-        assert_eq!(DkimVerifier::extract_root_domain("mail.example.org"), "example.org");
-        assert_eq!(DkimVerifier::extract_root_domain("example.com"), "example.com");
-        assert_eq!(DkimVerifier::extract_root_domain("sub.domain.example.co.uk"), "co.uk"); // Note: this is a limitation
+        assert_eq!(
+            DkimVerifier::extract_root_domain("send.backstage.com"),
+            "backstage.com"
+        );
+        assert_eq!(
+            DkimVerifier::extract_root_domain("mail.example.org"),
+            "example.org"
+        );
+        assert_eq!(
+            DkimVerifier::extract_root_domain("example.com"),
+            "example.com"
+        );
+        assert_eq!(
+            DkimVerifier::extract_root_domain("sub.domain.example.co.uk"),
+            "co.uk"
+        ); // Note: this is a limitation
     }
 }

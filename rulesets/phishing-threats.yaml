@@ -44,7 +44,7 @@ rules:
         - type: Or
           criteria:
             - type: SubjectPattern
-              pattern: "(?i).*(payment.*failed|card.*declined|account.*overdrawn|suspicious.*activity|fraud.*alert).*"
+              pattern: "(?i).*(payment.*(failed|declined|method.*declined)|card.*declined|account.*overdrawn|suspicious.*activity|fraud.*alert).*"
             - type: CombinedTextPattern
               pattern: "(?i).*(update.*payment.*method|verify.*card.*information|confirm.*bank.*details|resolve.*payment.*issue).*"
             - type: CombinedTextPattern
@@ -55,6 +55,8 @@ rules:
             criteria:
               - type: SenderPattern
                 pattern: ".*@.*(adapthealth|healthcare|medical|clinic|hospital|pulmonary)\\.(com|net|org)$"
+              - type: SenderPattern
+                pattern: ".*@.*(wine|wines|winery|brewery|distillery|spirits|liquor|beverage).*\\.(com|net|org)$"
               - type: HeaderPattern
                 header: "Authentication-Results"
                 pattern: "dkim=pass.*adapthealth\\.com"
@@ -126,9 +128,16 @@ rules:
                 pattern: ".*@gmail\\.com$"
               - type: SenderPattern
                 pattern: ".*@.*(adapthealth|healthcare|medical|clinic|hospital|pulmonary)\\.(com|net|org)$"
-              - type: HeaderPattern
-                header: "Authentication-Results"
-                pattern: "dkim=pass.*spf=pass"
+              - type: SenderPattern
+                pattern: ".*@.*(wine|wines|winery|brewery|distillery|spirits|liquor|beverage).*\\.(com|net|org)$"
+              - type: And
+                criteria:
+                  - type: "FeatureAnalysis"
+                    feature_name: "Authentication Analysis"
+                    evidence_pattern: "DKIM authentication passed"
+                  - type: "FeatureAnalysis"
+                    feature_name: "Authentication Analysis"
+                    evidence_pattern: "SPF authentication passed"
               - type: HeaderPattern
                 header: "Authentication-Results"
                 pattern: "dkim=pass.*adapthealth\\.com"
@@ -253,6 +262,10 @@ rules:
                     pattern: ".*@.*duluthtrading\\.(com|net|org)$"
                   - type: "SenderPattern"
                     pattern: ".*@em\\.michaelscustomframing\\.com$"
+                  - type: "SenderPattern"
+                    pattern: ".*@.*costco\\.(com|net|org)$"
+                  - type: "SenderPattern"
+                    pattern: ".*@.*\\.costco\\.com\\..*$"
                   - type: "SenderPattern"
                     pattern: ".*@.*oxfordclub\\.com$"
                   - type: "SenderPattern"
@@ -684,6 +697,24 @@ rules:
         - type: BodyPattern
           pattern: "(?i).*(re.*your.*creditcard.*bill|credit.*card.*bill.*unicode|gastric.*bypass.*directory).*"
     score: 280
+
+  # Unicode Credit Card Phishing (General)
+  - name: "Unicode Credit Card Phishing"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "FeatureAnalysis"
+          feature_name: "Context Analysis"
+          evidence_pattern: "Suspicious subject with excessive special characters"
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: ".*[𝘊𝘤𝘳𝘦𝘥𝘪𝘵|𝘊𝘢𝘳𝘥|𝘔𝘰𝘯𝘦𝘺|𝘍𝘳𝘦𝘦].*"
+            - type: "BodyPattern"
+              pattern: ".*[𝘊𝘤𝘳𝘦𝘥𝘪𝘵|𝘊𝘢𝘳𝘥|𝘔𝘰𝘯𝘦𝘺|𝘍𝘳𝘦𝘦].*"
+    score: 10
+    description: "Unicode obfuscation in credit card phishing"
   # Storage upgrade general pattern
   - name: "Storage Upgrade General Pattern"
     criteria:

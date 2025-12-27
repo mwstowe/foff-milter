@@ -375,7 +375,9 @@ impl FilterEngine {
     /// Check if this is a legitimate business email that commonly uses encoding
     fn is_legitimate_business_email(&self, context: &MailContext) -> bool {
         // Check sender domain for known legitimate businesses
-        let sender_domain = context.from_header.as_deref()
+        let sender_domain = context
+            .from_header
+            .as_deref()
             .and_then(|from| {
                 // Extract domain from "Name <email@domain.com>" or "email@domain.com" format
                 if let Some(email_start) = from.rfind('<') {
@@ -396,7 +398,7 @@ impl FilterEngine {
 
         let legitimate_business_domains = [
             "namecheap.com",
-            "godaddy.com", 
+            "godaddy.com",
             "bluehost.com",
             "hostgator.com",
             "siteground.com",
@@ -429,24 +431,29 @@ impl FilterEngine {
             "ebay.com",
         ];
 
-        let is_legitimate_domain = legitimate_business_domains.iter()
+        let is_legitimate_domain = legitimate_business_domains
+            .iter()
             .any(|domain| sender_domain.contains(domain));
 
         // Check subject for business email patterns
         let subject = context.subject.as_deref().unwrap_or("").to_lowercase();
-        let is_business_subject = subject.contains("order") 
-            || subject.contains("receipt") 
-            || subject.contains("invoice") 
-            || subject.contains("statement") 
-            || subject.contains("confirmation") 
+        let is_business_subject = subject.contains("order")
+            || subject.contains("receipt")
+            || subject.contains("invoice")
+            || subject.contains("statement")
+            || subject.contains("confirmation")
             || subject.contains("summary")
             || subject.contains("welcome")
             || subject.contains("account")
             || subject.contains("subscription")
             || subject.contains("payment");
 
-        log::debug!("Legitimate business check: domain={}, subject={}, result={}", 
-                   is_legitimate_domain, is_business_subject, is_legitimate_domain || is_business_subject);
+        log::debug!(
+            "Legitimate business check: domain={}, subject={}, result={}",
+            is_legitimate_domain,
+            is_business_subject,
+            is_legitimate_domain || is_business_subject
+        );
 
         is_legitimate_domain || is_business_subject
     }
@@ -1390,7 +1397,10 @@ impl FilterEngine {
     }
 
     /// Get feature analysis results for use in YAML rules
-    fn get_feature_analysis_results(&self, context: &MailContext) -> Vec<crate::features::FeatureScore> {
+    fn get_feature_analysis_results(
+        &self,
+        context: &MailContext,
+    ) -> Vec<crate::features::FeatureScore> {
         // Run feature analysis on the context
         let analysis = self.feature_engine.analyze(context);
         analysis.scores
@@ -1832,7 +1842,7 @@ impl FilterEngine {
                 trust_result.reason,
                 trust_result.score
             );
-            
+
             // Get thresholds from TOML config or use defaults
             let reject_threshold = self
                 .toml_config
@@ -1846,7 +1856,7 @@ impl FilterEngine {
                 .and_then(|c| c.heuristics.as_ref())
                 .map(|h| h.spam_threshold)
                 .unwrap_or(50);
-            
+
             // Determine action based on upstream score
             let action = if trust_result.score >= reject_threshold {
                 Action::Reject {
@@ -1860,7 +1870,7 @@ impl FilterEngine {
             } else {
                 Action::Accept
             };
-            
+
             return (
                 action,
                 vec![trust_result.reason.clone()],
@@ -1871,7 +1881,7 @@ impl FilterEngine {
                         trust_result.score,
                         env!("CARGO_PKG_VERSION"),
                         get_hostname()
-                    )
+                    ),
                 )],
             );
         }
@@ -4090,9 +4100,12 @@ impl FilterEngine {
 
                     // Get feature analysis results from context
                     let feature_results = self.get_feature_analysis_results(context);
-                    
+
                     // Find the matching feature
-                    if let Some(feature_score) = feature_results.iter().find(|f| f.feature_name == *feature_name) {
+                    if let Some(feature_score) = feature_results
+                        .iter()
+                        .find(|f| f.feature_name == *feature_name)
+                    {
                         let mut matches = true;
 
                         // Check score thresholds

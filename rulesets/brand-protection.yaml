@@ -1,6 +1,16 @@
 name: "Brand Protection"
 enabled: true
 rules:
+  # Feature-Based Brand Impersonation Detection
+  - name: "Feature-Based Brand Impersonation"
+    enabled: true
+    criteria:
+      type: "FeatureAnalysis"
+      feature_name: "Sender Alignment"
+      evidence_pattern: "Brand .* mentioned but sender domain .* not legitimate"
+    score: 50
+    description: "Brand impersonation detected via sender alignment analysis"
+
   # HR Document Sharing Phishing (BEC)
   - name: "HR Document Sharing Phishing"
     enabled: true

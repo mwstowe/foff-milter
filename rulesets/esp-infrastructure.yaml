@@ -83,6 +83,22 @@ rules:
     score: -120
     description: "Legitimate Oxford Club newsletter infrastructure"
 
+  # Legitimate Cannabis Retailers (-150 points)
+  - name: "Legitimate Cannabis Retailers"
+    enabled: true
+    criteria:
+      type: And
+      criteria:
+        - type: Or
+          criteria:
+            - type: SenderPattern
+              pattern: ".*@.*(pot|cannabis|cbd|dispensary|hemp).*\\.(com|net|org)$"
+        - type: FeatureAnalysis
+          feature_name: "Authentication Analysis"
+          evidence_pattern: "DKIM authentication passed"
+    score: -150
+    description: "Legitimate cannabis retailers with proper authentication"
+
   # Major ESP Infrastructure (-100 points)
   - name: "Major ESP Infrastructure"
     enabled: true
