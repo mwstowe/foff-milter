@@ -797,13 +797,24 @@ impl ContextAnalyzer {
             return Some("job_spam".to_string());
         }
 
-        // Floral industry
+        // Food delivery/restaurant industry
+        if sender_lower.contains("doordash")
+            || sender_lower.contains("ubereats")
+            || sender_lower.contains("grubhub")
+            || sender_lower.contains("postmates")
+            || (content_lower.contains("hosting") && content_lower.contains("new year"))
+            || (content_lower.contains("restaurant") && content_lower.contains("delivery"))
+        {
+            return Some("food_delivery".to_string());
+        }
+
+        // Floral industry - be more specific to avoid CSS/styling false positives
         if sender_lower.contains("floral")
             || sender_lower.contains("flower")
             || sender_lower.contains("eflorist")
             || sender_lower.contains("ftd")
-            || content_lower.contains("arrangement")
-            || content_lower.contains("bouquet")
+            || (content_lower.contains("arrangement") && !content_lower.contains("css"))
+            || (content_lower.contains("bouquet") && !content_lower.contains("bouquet0") && !content_lower.contains("#bouquet"))
             || content_lower.contains("florist")
         {
             return Some("floral".to_string());
@@ -933,6 +944,7 @@ impl ContextAnalyzer {
         match industry {
             "job_spam" => 2.0,        // 100% increase for job spam
             "floral" => 0.4,          // 60% reduction for floral marketing
+            "food_delivery" => 0.4,   // 60% reduction for food delivery marketing
             "marketplace" => 0.3,     // 70% reduction for marketplace offers
             "tech_newsletter" => 0.2, // 80% reduction for newsletters
             "cannabis_retail" => 0.2, // 80% reduction for legitimate cannabis retailers

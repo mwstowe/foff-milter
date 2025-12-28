@@ -283,34 +283,34 @@ impl FeatureExtractor for DomainReputationFeature {
         let mut evidence = Vec::new();
         let mut confidence = 0.0f32;
 
-        // Analyze sender domain
-        if let Some(sender) = &context.sender {
-            if let Some(domain) = self.analyzer.extract_domain(sender) {
-                let reputation = self.analyzer.analyze_domain(&domain);
-                let domain_score = self.analyzer.get_reputation_score(&domain);
+        // Get primary domain from multiple sources
+        let primary_domain = self.get_primary_domain(context);
+        
+        if !primary_domain.is_empty() {
+            let reputation = self.analyzer.analyze_domain(&primary_domain);
+            let domain_score = self.analyzer.get_reputation_score(&primary_domain);
 
-                score += domain_score;
-                confidence += 0.8; // High confidence in domain analysis
+            score += domain_score;
+            confidence += 0.8; // High confidence in domain analysis
 
-                match reputation {
-                    DomainReputation::Trusted => {
-                        evidence.push(format!("Trusted domain: {}", domain));
-                    }
-                    DomainReputation::Financial => {
-                        evidence.push(format!("Financial institution: {}", domain));
-                    }
-                    DomainReputation::EmailServiceProvider => {
-                        evidence.push(format!("Email service provider: {}", domain));
-                    }
-                    DomainReputation::Suspicious => {
-                        evidence.push(format!("Suspicious domain: {}", domain));
-                    }
-                    DomainReputation::Malicious => {
-                        evidence.push(format!("Malicious domain: {}", domain));
-                    }
-                    DomainReputation::Unknown => {
-                        evidence.push(format!("Unknown domain reputation: {}", domain));
-                    }
+            match reputation {
+                DomainReputation::Trusted => {
+                    evidence.push(format!("Trusted domain: {}", primary_domain));
+                }
+                DomainReputation::Financial => {
+                    evidence.push(format!("Financial institution: {}", primary_domain));
+                }
+                DomainReputation::EmailServiceProvider => {
+                    evidence.push(format!("Email service provider: {}", primary_domain));
+                }
+                DomainReputation::Suspicious => {
+                    evidence.push(format!("Suspicious domain: {}", primary_domain));
+                }
+                DomainReputation::Malicious => {
+                    evidence.push(format!("Malicious domain: {}", primary_domain));
+                }
+                DomainReputation::Unknown => {
+                    evidence.push(format!("Unknown domain reputation: {}", primary_domain));
                 }
             }
         }
@@ -318,14 +318,16 @@ impl FeatureExtractor for DomainReputationFeature {
         // Analyze Return-Path domain if different
         if let Some(return_path) = context.headers.get("return-path") {
             if let Some(domain) = self.analyzer.extract_domain(return_path) {
-                let reputation = self.analyzer.analyze_domain(&domain);
-                if reputation == DomainReputation::Suspicious
-                    || reputation == DomainReputation::Malicious
-                {
-                    let domain_score = self.analyzer.get_reputation_score(&domain);
-                    score += domain_score / 2; // Reduced weight for Return-Path
-                    evidence.push(format!("Suspicious Return-Path domain: {}", domain));
-                    confidence += 0.6;
+                if domain != primary_domain {
+                    let reputation = self.analyzer.analyze_domain(&domain);
+                    if reputation == DomainReputation::Suspicious
+                        || reputation == DomainReputation::Malicious
+                    {
+                        let domain_score = self.analyzer.get_reputation_score(&domain);
+                        score += domain_score / 2; // Reduced weight for Return-Path
+                        evidence.push(format!("Suspicious Return-Path domain: {}", domain));
+                        confidence += 0.6;
+                    }
                 }
             }
         }
@@ -340,6 +342,41 @@ impl FeatureExtractor for DomainReputationFeature {
 
     fn name(&self) -> &str {
         "Domain Reputation"
+    }
+}
+
+impl DomainReputationFeature {
+    /// Get primary domain from multiple sources in order of preference
+    fn get_primary_domain(&self, context: &MailContext) -> String {
+        // 1. Try envelope sender first
+        if let Some(sender) = &context.sender {
+            if let Some(domain) = self.analyzer.extract_domain(sender) {
+                return domain;
+            }
+        }
+
+        // 2. Try From header
+        if let Some(from) = context.headers.get("from") {
+            if let Some(domain) = self.analyzer.extract_domain(from) {
+                return domain;
+            }
+        }
+
+        // 3. Try Return-Path header
+        if let Some(return_path) = context.headers.get("return-path") {
+            if let Some(domain) = self.analyzer.extract_domain(return_path) {
+                return domain;
+            }
+        }
+
+        // 4. Try Reply-To header
+        if let Some(reply_to) = context.headers.get("reply-to") {
+            if let Some(domain) = self.analyzer.extract_domain(reply_to) {
+                return domain;
+            }
+        }
+
+        String::new()
     }
 }
 

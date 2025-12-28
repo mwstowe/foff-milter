@@ -363,26 +363,17 @@ impl FeatureExtractor for TldRiskFeature {
         let mut evidence = Vec::new();
         let mut confidence = 0.0f32;
 
-        // Get sender domain
-        let sender_domain = if let Some(sender) = &context.sender {
-            if let Some(domain) = self.analyzer.extract_domain(sender) {
-                domain
-            } else {
-                return FeatureScore {
-                    feature_name: "TLD Risk Assessment".to_string(),
-                    score: 0,
-                    confidence: 0.0,
-                    evidence: vec!["No valid sender domain found".to_string()],
-                };
-            }
-        } else {
+        // Try multiple sources for domain information
+        let sender_domain = self.get_primary_domain(context);
+        
+        if sender_domain.is_empty() {
             return FeatureScore {
                 feature_name: "TLD Risk Assessment".to_string(),
                 score: 0,
                 confidence: 0.0,
-                evidence: vec!["No sender found".to_string()],
+                evidence: vec!["No valid domain found in any header".to_string()],
             };
-        };
+        }
 
         // Combine subject and body for content analysis
         let mut content = String::new();
@@ -429,6 +420,41 @@ impl FeatureExtractor for TldRiskFeature {
 
     fn name(&self) -> &str {
         "TLD Risk Assessment"
+    }
+}
+
+impl TldRiskFeature {
+    /// Get primary domain from multiple sources in order of preference
+    fn get_primary_domain(&self, context: &MailContext) -> String {
+        // 1. Try envelope sender first
+        if let Some(sender) = &context.sender {
+            if let Some(domain) = self.analyzer.extract_domain(sender) {
+                return domain;
+            }
+        }
+
+        // 2. Try From header
+        if let Some(from) = context.headers.get("from") {
+            if let Some(domain) = self.analyzer.extract_domain(from) {
+                return domain;
+            }
+        }
+
+        // 3. Try Return-Path header
+        if let Some(return_path) = context.headers.get("return-path") {
+            if let Some(domain) = self.analyzer.extract_domain(return_path) {
+                return domain;
+            }
+        }
+
+        // 4. Try Reply-To header
+        if let Some(reply_to) = context.headers.get("reply-to") {
+            if let Some(domain) = self.analyzer.extract_domain(reply_to) {
+                return domain;
+            }
+        }
+
+        String::new()
     }
 }
 

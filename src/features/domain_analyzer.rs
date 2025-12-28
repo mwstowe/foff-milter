@@ -134,6 +134,7 @@ impl DomainAnalyzer {
                     || domain.contains("blackwellswines.com")
                     || domain.contains("luxpotshop.com")
                     || domain.contains("alpineiq.com")
+                    || domain.contains("sparkpostmail.com")
                 {
                     continue;
                 }
