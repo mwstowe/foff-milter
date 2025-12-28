@@ -264,6 +264,7 @@ impl ContextAnalyzer {
             "adafruit.com",
             "eflorist.com",
             "1800flowers.com",
+            "pulse.celebrations.com",  // 1-800-FLOWERS email service
             "ftd.com",
             "teleflora.com",
             "eyebuydirect.com",
