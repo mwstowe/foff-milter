@@ -304,6 +304,10 @@ rules:
                 pattern: ".*@.*levi.*"
               - type: "SenderPattern"
                 pattern: ".*@.*(michaels|costco|walmart|target|amazon|bestbuy|homedepot|lowes)\\.(com|net)$"
+              - type: "SenderPattern"
+                pattern: ".*@.*(nytimes|washingtonpost|cnn|bbc|reuters|ap|wsj|usatoday)\\.(com|org)$"
+              - type: "SubjectPattern"
+                pattern: "(?i).*(recipe|cooking|breakfast|meal|food|nutrition|diet).*"
     score: 85
     description: "Comprehensive health misinformation, enhancement scams, and adult content"
 
@@ -597,12 +601,22 @@ rules:
   # Weight loss spam
   - name: "Weight Loss Diet Spam"
     criteria:
-      type: Or
+      type: And
       criteria:
-        - type: SubjectPattern
-          pattern: "(?i).*(weight.*loss.*diet|diet.*weight.*loss|lose.*weight.*fast|soda.*water.*diet|flushes.*out.*fat).*"
-        - type: BodyPattern
-          pattern: "(?i).*(weight.*loss.*diet|diet.*weight.*loss|lose.*weight.*fast|soda.*water.*diet|flushes.*out.*fat).*"
+        - type: Or
+          criteria:
+            - type: SubjectPattern
+              pattern: "(?i).*(weight.*loss.*diet|diet.*weight.*loss|lose.*weight.*fast|soda.*water.*diet|flushes.*out.*fat).*"
+            - type: BodyPattern
+              pattern: "(?i).*(weight.*loss.*diet|diet.*weight.*loss|lose.*weight.*fast|soda.*water.*diet|flushes.*out.*fat).*"
+        - type: Not
+          criteria:
+            type: Or
+            criteria:
+              - type: SenderPattern
+                pattern: ".*@.*(nytimes|washingtonpost|cnn|bbc|reuters|ap|wsj|usatoday)\\.(com|org)$"
+              - type: SubjectPattern
+                pattern: "(?i).*(recipe|cooking|breakfast|meal|food|nutrition).*"
     score: 200
   # Product spam patterns
   - name: "Product Spam Detection"
@@ -990,12 +1004,22 @@ rules:
   # Enhanced immune system misinformation
   - name: "Enhanced Immune System Misinformation"
     criteria:
-      type: Or
+      type: And
       criteria:
-        - type: SubjectPattern
-          pattern: "(?i).*(hidden.*truth.*immune.*system|immune.*system.*misinformation|al.*sears.*md|immune.*system.*secret).*"
-        - type: BodyPattern
-          pattern: "(?i).*(hidden.*truth.*immune.*system|immune.*system.*misinformation|al.*sears.*md|immune.*system.*secret).*"
+        - type: Or
+          criteria:
+            - type: SubjectPattern
+              pattern: "(?i).*(hidden.*truth.*immune.*system|immune.*system.*misinformation|al.*sears.*md|immune.*system.*secret).*"
+            - type: BodyPattern
+              pattern: "(?i).*(hidden.*truth.*immune.*system|immune.*system.*misinformation|al.*sears.*md|immune.*system.*secret).*"
+        - type: Not
+          criteria:
+            type: Or
+            criteria:
+              - type: SenderPattern
+                pattern: ".*@.*(nytimes|washingtonpost|cnn|bbc|reuters|ap|wsj|usatoday)\\.(com|org)$"
+              - type: SubjectPattern
+                pattern: "(?i).*(recipe|cooking|breakfast|meal|food|nutrition).*"
     score: 220
 
   # Malware attachment patterns
@@ -1535,6 +1559,47 @@ rules:
         - type: BodyPattern
           pattern: "(?i).*(yelsen.*finance.*loan|personal.*loan.*offer|quick.*loan.*approval|finance.*loan.*spam).*"
     score: 220
+  # Cross-Domain Content Hosting (+75 points)
+  - name: "Cross-Domain Content Hosting"
+    enabled: true
+    criteria:
+      type: And
+      criteria:
+        - type: BodyPattern
+          pattern: "(?i).*<img.*src.*http://.*"
+        - type: BodyPattern
+          pattern: "(?i).*stringentshortcut.*"
+    score: 75
+    description: "Content hosted on suspicious external domains"
+
+  # Suspicious Tracking Pixels (+50 points)
+  - name: "Suspicious Tracking Pixels"
+    enabled: true
+    criteria:
+      type: BodyPattern
+      pattern: "(?i).*<img.*width=['\"]1px['\"].*height=['\"]1px['\"].*"
+    score: 50
+    description: "Suspicious 1px tracking pixels"
+
+  # Image-Only Spam (+150 points)
+  - name: "Image-Only Spam"
+    enabled: true
+    criteria:
+      type: And
+      criteria:
+        - type: BodyPattern
+          pattern: "(?i).*<img.*src.*http.*"
+        - type: Not
+          criteria:
+            type: BodyPattern
+            pattern: "(?s).{50,}"
+        - type: Not
+          criteria:
+            type: SenderPattern
+            pattern: ".*@.*(nytimes|washingtonpost|michaels|walgreens|capitaloneshopping|lowes|homedepot|target|walmart|amazon|bestbuy)\\.(com|net)$"
+    score: 150
+    description: "Emails with minimal text and external images from suspicious senders"
+
   # Enhanced woodworking plans
   - name: "Enhanced Woodworking Plans"
     criteria:

@@ -35,6 +35,21 @@ rules:
     score: 300
     description: "High-urgency phishing language patterns"
 
+  # Confirmation Request Phishing (+100 points)
+  - name: "Confirmation Request Phishing"
+    enabled: true
+    criteria:
+      type: And
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(can.*you.*confirm|please.*confirm|confirm.*you.*received|did.*you.*receive).*"
+        - type: Not
+          criteria:
+            type: SenderPattern
+            pattern: ".*@.*(paypal|amazon|ebay|microsoft|google|apple|chase|wellsfargo|bankofamerica|citi|walgreens|capitaloneshopping|michaels|lowes|homedepot|target|walmart)\\.(com|org)$"
+    score: 100
+    description: "Suspicious confirmation requests from unknown senders"
+
   # Financial Phishing (+250 points)
   - name: "Financial Phishing"
     enabled: true

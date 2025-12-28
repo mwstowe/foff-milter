@@ -1,0 +1,1484 @@
+Return-Path: <mstowe+caf_=mstowe=user@gmail.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTPS id 5BSD0IJX042246
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <user@baddomain.com>; Sun, 28 Dec 2025 13:00:18 GMT
+	(envelope-from mstowe+caf_=mstowe=user@gmail.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (4096-bit key; unprotected) header.d=nytimes.com header.i=@nytimes.com header.b=m3O3EjV8
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 5BSD0EdM119644
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=OK)
+	for <user@baddomain.com>; Sun, 28 Dec 2025 07:00:16 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 5BSD0EdM119644
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (4096-bit key, unprotected) header.d=nytimes.com header.i=@nytimes.com header.a=rsa-sha256 header.s=scph20250409 header.b=m3O3EjV8
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-64b4f730a02so13835617a12.0
+        for <user@baddomain.com>; Sun, 28 Dec 2025 05:00:16 -0800 (PST)
+ARC-Seal: i=2; a=rsa-sha256; t=555-123-4567; cv=pass;
+        d=google.com; s=arc-20240605;
+        b=LAwzz97aCBv+ikxeMRCAeMb6Z9kMujMMUc7yuKeXehjlh5vxe/j0ulvvvmV78uHpYc
+         CSPotT6ceuPXN/0yfi3+km8Jw5OZfF3eaeIsIn4dGKHTx56zXIYtFu1ogHIvw+3wMdnS
+         8wZIBVl1TjKpJqWkNnzkXMB8w35AOoFzSgTlCgxrfSUa4KcyFezKutoDNmTUBwp0ykoL
+         XeCxJc8gNMIjo0RyVytviaKad82WF7ThUrDd8HsO0gGNkdwcz/J7VqEWjqePr4zcYWn0
+         5MaK0utqci3YXf7l3ajJ2TYuKnwjAU3rNJc1MLHPKsERapHwtM+y1/CnNhB/VCMsLURH
+         /hDA==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=list-unsubscribe-post:list-unsubscribe:feedback-id:list-id:reply-to
+         :bimi-selector:from:subject:mime-version:date:message-id:to
+         :content-transfer-encoding:dkim-signature:delivered-to;
+        bh=R+VPgoux+oRFVHYsZc3Cf43VdqyX8LJc//KapkIihnc=;
+        fh=+UK6FyZn+c34T3ftjQNxSdz73JsFDEuTz9f40XxHtYU=;
+        b=YSpU1G9qscvOk/QytYrgEyd+9nQIKRlPTkBk0xnHUCU7S1xRMuAo+UnXa5WQbS+svI
+         ALi3TDG2xQuQMEiu/x7qIxXDaBXfou2UDeFv+ylrzCoK6n5x9eRbsWKnwPmZr33Or7yz
+         wL2lK6ZPnyvrLuEJdGLaBIZgCa8cYuOecsF7b75PfdbwLMV+kVQ2oNbke/vHkPZs4CLg
+         ESy5+KAIY41vsReMlj8qyB0rnXNf7uIcb8UQGSjA0QWNRTBwKgVkA2/iBqI79GLMn8qn
+         9pcqs1UhwohZaYWUJTf/hEIsGUkui6KRjX6DEnT84JZ0skofjEoT22pXGBoizBfNzGHG
+         SflA==;
+        darn=baddomain.com
+ARC-Authentication-Results: i=2; mx.google.com;
+       dkim=pass header.i=@nytimes.com header.s=scph20250409 header.b=m3O3EjV8;
+       spf=pass (google.com: domain of msprvs1=20457i4_ixqte=user@bounce.nytimes.com designates 156.70.4.234 as permitted sender) smtp.mailfrom="msprvs1=20457i4_IxqTE=user@bounce.nytimes.com";
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=nytimes.com
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=555-123-4567; x=555-123-4567;
+        h=list-unsubscribe-post:list-unsubscribe:feedback-id:list-id:reply-to
+         :bimi-selector:from:subject:mime-version:date:message-id:to
+         :content-transfer-encoding:dkim-signature:delivered-to
+         :x-forwarded-for:x-forwarded-to:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=R+VPgoux+oRFVHYsZc3Cf43VdqyX8LJc//KapkIihnc=;
+        b=ea79xLgNqN1XX9n+4z1Yaw7jX0mKis/J9m7zFBT9/FnT1caKq67LQiQTgoUlkliE/S
+         ScGG6v1mwslmNyujuN4wiTpWl5q9AbdLsO3RY4j+aJ7T6c03naNvpSqv9O8MTXm9zjza
+         1Oe/YslPVYqCwsMm8DF2R2aVpMKtmLBQEguzZsRdg7VZSFNvMLyGsUDJ6MmUTu0dS2hU
+         z6AuVW9ND6a5f6S01Jq8Pn/wznekw3JMlLtkZl5G6ABoFPD5GdoCpk1Uw9X7yqwB4dqU
+         4pUJ4T45jIXZWF0kGYAjO9QFTsjZYCu0atxgHdaMJu71nEJDJ80+QVFNVCedxXGVBTk6
+         8ILg==
+X-Forwarded-Encrypted: i=2; AJvYcCVZ087/WrXFhNe8mMU3Ew2zsbmK8cU9PSaXOM1n+OeNEQ0U1pZ+Kd63WQcW44abft+Pd/tUIB0=@baddomain.com
+X-Gm-Message-State: AOJu0Yz6ljKzA+prOydLQ3IzNoXD3dNuhXiGfzUi4HXoWg5ptp/ClHkl
+	BmuJTMhJ7uWiIb0RRFob8VxWdb6eEcwMLuyGRMtz7aLanWmn7upmc6cDgqY5PSBYPRt5hEwJXLc
+	ox357SoDPe4ZUEBAUaKJeZojNWh6QGxTKtRHkLPtSAusMoYQRnoY34CHlER6tIw==
+X-Received: by 2002:a05:6402:1d4b:b0:64b:7dd2:6b9d with SMTP id 4fb4d7f45d1cf-64b8eb738abmr24918634a12.8.1766926814044;
+        Sun, 28 Dec 2025 05:00:14 -0800 (PST)
+X-Forwarded-To: user@baddomain.com
+X-Forwarded-For: user@gmail.com user@baddomain.com
+Delivered-To: user@gmail.com
+Received: by 2002:a05:6400:682f:b0:2c2:3df:9599 with SMTP id 15csp5027263ect;
+        Sun, 28 Dec 2025 05:00:10 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHnT0jQUZ9oyWhTF1Toula53xXc11CBCjBZI58Bw5jMQ625VmcmTsIoWeaBvUl93jLM0n6z
+X-Received: by 2002:a05:690e:1892:b0:646:7ad7:c85e with SMTP id 956f58d0204a3-6467ad7c9d4mr16036819d50.85.1766926810515;
+        Sun, 28 Dec 2025 05:00:10 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=555-123-4567; cv=none;
+        d=google.com; s=arc-20240605;
+        b=IEx+urTh0/MYiUMPHdlTowYMOnMqCOptd8c3dsmflAHE0ojJZtM1owCiC/zCxqUw0a
+         ISR09V+sITwtrW7iN9dfv64x/AUxzeCRvVsYhW1pBoJAaF3tol0yjBWF+gra3go4reH1
+         mn639KsQbM0v/m/pn8Vel3aGqVy3NX032iA3ZpyyIcoG19r5IRvcJPnR/U1srP7ZPlkW
+         Tyib/15LwhJkKhIr5+vgFMfC4GG9P+Ho+/rXhgB06qCjygVopsiCHSyfDGyRoSZEq6pS
+         M9bCEbhHCX4IGwhr1G62mIeKCzjetdrHcD5A1UZznGyJzDPCGiTmso0UGbYbPJ7OJYdW
+         yKww==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=list-unsubscribe-post:list-unsubscribe:feedback-id:list-id:reply-to
+         :bimi-selector:from:subject:mime-version:date:message-id:to
+         :content-transfer-encoding:dkim-signature;
+        bh=R+VPgoux+oRFVHYsZc3Cf43VdqyX8LJc//KapkIihnc=;
+        fh=mT0Hi1oeQuwKdVkoCKIRR+MEHYH9sEP9ymI/x2O5QRU=;
+        b=fuMB+xNVpJO+O7DY/w7cdHBLGbTNUd/M6QFrs9L84C9/PQ2srcmcqGXXj7iK5xk9GG
+         6dyOhnNMcs1BwCjXTnDG6b/d6MmRE1drd8QNVvvdFuhsfR7sPfGtbD7vXv47tUl7iqUz
+         q+L85j6bBKCNCVFqDaU/h9H5pzXqh4r+5UM/tUsSPVn8UahhwLe4/Zf5JuYvOtND0ESi
+         X2rinn8CJJqF6wjjtgACNt3F7/7xwqFVj4bdmrmrOFaTsRaSig9Y9RFW+OVh7xTqF2hI
+         8KCF2gfMgEDoeeCdQtTKgZx2m19Ipe0pokDteGS68FUu58iJAMiQIYwgowDFTMmtNgZm
+         WlXw==;
+        dara=google.com
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@nytimes.com header.s=scph20250409 header.b=m3O3EjV8;
+       spf=pass (google.com: domain of msprvs1=20457i4_ixqte=user@bounce.nytimes.com designates 156.70.4.234 as permitted sender) smtp.mailfrom="msprvs1=20457i4_IxqTE=user@bounce.nytimes.com";
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=nytimes.com
+Received: from mta-70-4-234.sparkpostmail.com (mta-70-4-234.sparkpostmail.com. [156.70.4.234])
+        by mx.google.com with ESMTPS id 00721157ae682-78fb4552b96si424757477b3.101.2025.12.28.05.00.09
+        for <user@gmail.com>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 28 Dec 2025 05:00:10 -0800 (PST)
+Received-SPF: pass (google.com: domain of msprvs1=20457i4_ixqte=user@bounce.nytimes.com designates 156.70.4.234 as permitted sender) client-ip=156.70.4.234;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@nytimes.com header.s=scph20250409 header.b=m3O3EjV8;
+       spf=pass (google.com: domain of msprvs1=20457i4_ixqte=user@bounce.nytimes.com designates 156.70.4.234 as permitted sender) smtp.mailfrom="msprvs1=20457i4_IxqTE=user@bounce.nytimes.com";
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=nytimes.com
+X-MSFBL: 2BglkO64vZb7m0VYv0wms2Fk9t17nm3xCbpZJOtDqxQ=|eyJzdWJhY2NvdW50X2l
+	kIjoiMyIsImN1c3RvbWVyX2lkIjoiMSIsInRlbmFudF9pZCI6Im55dCIsIm1lc3N
+	hZ2VfaWQiOiI2OTQ1ZDAyOTUxNjliYzkzMjMxZSIsInIiOiJtc3Rvd2VAZ21haWw
+	uY29tIn0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nytimes.com;
+	s=scph20250409; t=555-123-4567; i=@nytimes.com;
+	bh=R+VPgoux+oRFVHYsZc3Cf43VdqyX8LJc//KapkIihnc=;
+	h=Content-Type:To:Message-ID:Date:Subject:From:List-Unsubscribe:
+	 List-Unsubscribe-Post:From:To:Cc:Subject;
+	b=m3O3EjV8NlcNUhtuvfLXYi+8vMFRop2wvfHX90lVS3DQ25pztTmk6AH+8kBY+VvyG
+	 QLJZSlBy9CODdadZ7Ap9+VLE7D6L7q9uOLtymym1DF9PMrw5H0pPx35/4Lg57HBQfj
+	 +5D/9HdwgNfWhCddlXsvlXHLFqioJIqQS3vM+MFP8XWaJycWjzJu4mccG/D217Rtjv
+	 wo7GitNbEVWaRNXx6rSzheBfAT7WsUkDWa7t9DWiThrqw8Hdp8LBbGfERUFgKANwoy
+	 /zdFe4ncf6pTfKzWAHaBSgiJI39WRoDUj8S2qSz7f69/8VsrxVfsFUYZx4Iv9LkeiC
+	 WHGQ4uyVaBlCU2hozhdPVeR9RRvVoYgf1iA7nmNgfy/5S3j2Q2NvuwuhxU1A+RyPmy
+	 otEwOFUnWM0uIhrBsgXu9IwgphIhgmXonEldN1H748csIH/GipS90bDQydIdpqio0S
+	 EadlohFhHUGp0H9aKSKrA0L4k4KOewY6/Mi1VCVunfj/WfCUWajIM2kAojmtQ/flt6
+	 SVXK/tGXQ9EC+XDmiyXUCA2oons6n0k81ROWuu88bbxUrRtQw600mUXHopq6lK/rF0
+	 WjLC2hy6aF0Rc0il++UhrU4g1YfofF8NJuL0Jnjl2YohHlTwS8+4LjFlbGulo5NUfw
+	 Vfjr3Vi9Qk2iInUhnrifQAos=
+Received: from [10.90.46.150] ([10.90.46.150])
+	by i-09ba5a1d0b56cd796.mta2vrest.sd.prd.sparkpost (ecelerity 5.1.0.74732 r(msys-ecelerity:tags/5.1.0.24)) with REST
+	id E1/32-35737-0D921596; Sun, 28 Dec 2025 13:00:00 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html; charset="UTF-8"
+To: user@gmail.com
+Message-ID: <user@i-09ba5a1d0b56cd796.mta2vrest.sd.prd.sparkpost>
+Date: Sun, 28 Dec 2025 13:00:00 +0000
+MIME-Version: 1.0
+Subject: John Doe: Make-ahead breakfasts
+From: John Doe John Doe <user@nytimes.com>
+BIMI-Selector: v=BIMI1; s=nyt;
+Reply-To: user@nytimes.com
+List-ID: the morning <nn.nytimes.com>
+Feedback-ID: sid.212836:tid.27:pid.NN:nytimes
+List-Unsubscribe: <mailto:user@nyt.mail.e.sparkpost.com?subject=unsubscribe:40IHbG7WGZZfsA8mNEOOPzYxZQNq5qwq0ob6_TAXc5c~|eyAicmNwdF90byI6ICJtc3Rvd2VAZ21haWwuY29tIiwgInRlbmFudF9pZCI6ICJueXQiLCAiY3VzdG9tZXJfaWQiOiAiMSIsICJzdWJhY2NvdW50X2lkIjogIjMiLCAibWVzc2FnZV9pZCI6ICI2OTQ1ZDAyOTUxNjliYzkzMjMxZSIgfQ~~>,<https://unsubscribe.spmta.com/u/B2x-cfZfT7Dg3vZ2lEBeHA~~/AAAAARA~/QTa7YkmbScjnfkO4LeqsPIasy8i4-KJiRf7oyqTAO9104eO3Y559fIuAA8bt4qZNedJBuN1ZHKCcp7vIY20_eg~~>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Sun, 28 Dec 2025 13:00:18 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Sun, 28 Dec 2025 07:00:17 -0600 (CST)
+X-Spam-Flag: YES
+X-FOFF-Feature-Evidence: John Doe: Authentication bonus reduced due to suspicious content (hotel.baddomain.com) [ed5235f6]
+X-FOFF-Feature-Evidence: John Doe: Authentication risk level: Secure (hotel.baddomain.com) [2c31ec4f]
+X-FOFF-Feature-Evidence: John Doe: DMARC authentication passed (hotel.baddomain.com) [e80b4998]
+X-FOFF-Feature-Evidence: John Doe: SPF authentication passed (hotel.baddomain.com) [a5ad0bae]
+X-FOFF-Feature-Evidence: John Doe: DKIM domain properly aligned (hotel.baddomain.com) [50606dfd]
+X-FOFF-Feature-Evidence: John Doe: DKIM authentication passed (hotel.baddomain.com) [55e44c80]
+X-FOFF-Feature-Evidence: John Doe: Multiple exclamation marks detected (hotel.baddomain.com) [8c765852]
+X-FOFF-Feature-Evidence: John Doe: Industry context detected: floral (reduced scoring) (hotel.baddomain.com) [306d3d25]
+X-FOFF-Rule-Matched: John Doe: Comprehensive health misinformation (hotel.baddomain.com) [ff4c98a1]
+X-FOFF-Rule-Matched: John Doe: John Doe (hotel.baddomain.com) [93c572dd]
+X-FOFF-Score: 90 - trusted from upstream foff-milter v0.8.8 on juliett.baddomain.com
+X-FOFF-Score: 90 - foff-milter v0.8.8 (hotel.baddomain.com)
+X-FOFF-Trust-Analysis: auth=100, infra=10, behavior=-10, content=15, total=53, adj=-10
+X-FOFF-Business-Analysis: comm=40, legit=5, industry=30, compliance=20, total=25, adj=0
+X-FOFF-Seasonal-Analysis: seasonal=15, consistency=10, patterns=0, timing=10, total=10, adj=-5
+
+<!DOCTYPE html><html xmlns=3D"http://www.w3.org/1999/xhtml" xmlns:v=3D"urn:=
+schemas-microsoft-com:vml" xmlns:o=3D"urn:schemas-microsoft-com:office:offi=
+ce"><head><title>John Doe: Make-ahead breakfasts</title><!--[if !mso]><!=
+-- --><meta http-equiv=3D"X-UA-Compatible" content=3D"IE=3Dedge"><!--<![end=
+if]--><meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3DUTF=
+-8"><meta name=3D"viewport" content=3D"width=3Ddevice-width,initial-scale=
+=3D1"><style type=3D"text/css">#outlook a{padding:0}body{margin:0;padding:0=
+;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%}table,td{border-co=
+llapse:collapse;mso-table-lspace:0;mso-table-rspace:0}img{border:0;height:a=
+uto;line-height:100%;outline:0;text-decoration:none;-ms-interpolation-mode:=
+bicubic}p{display:block;margin:13px 0}p,ul{margin-top:0}@media (max-width:6=
+00px){body{padding:0 15px!important}}</style><!--[if mso]>=0A        <xml>=
+=0A        <o:OfficeDocumentSettings>=0A          <o:AllowPNG/>=0A         =
+ <o:PixelsPerInch>96</o:PixelsPerInch>=0A        </o:OfficeDocumentSettings=
+>=0A        </xml>=0A        <![endif]--><style type=3D"text/css">@media (m=
+ax-width:480px){.css-1ujlque{padding-left:14px!important}}@media (max-width=
+:480px){.css-1vh79tv{font-size:16px!important}}.css-sdwaa1:hover{-webkit-te=
+xt-decoration:none!important;text-decoration:none!important}@media (max-wid=
+th:480px){.css-63f6sn{display:none!important}}@media (max-width:480px){.css=
+-1npprw9{display:table-row!important}}@media (max-width:480px){.css-r2ey6x{=
+width:100%!important}}.css-1n5iqtj:hover{-webkit-text-decoration:none!impor=
+tant;text-decoration:none!important}@media (max-width:600px){.css-1n5iqtj{d=
+isplay:inline-block;border-right:1px solid #dcdcdc;padding-right:10px;margi=
+n-right:10px}}.css-wf08f0:hover{-webkit-text-decoration:none!important;text=
+-decoration:none!important}@media (max-width:600px){.css-wf08f0{display:inl=
+ine-block!important}}.css-mex8pt:hover{-webkit-text-decoration:none!importa=
+nt;text-decoration:none!important}.css-mex8pt:hover{-webkit-text-decoration=
+:none!important;text-decoration:none!important}.css-nanfcg:hover{-webkit-te=
+xt-decoration:none!important;text-decoration:none!important}.css-nanfcg:hov=
+er{border-bottom:none!important}@media (max-width:480px){.css-36ugzx{paddin=
+g-bottom:0!important}}@media (max-width:480px){.css-1dtd48z{padding-left:30=
+px!important}}@media (max-width:480px){.css-tmef31{padding:0 0 0!important}=
+}@media (max-width:600px){.css-xsf469{width:100%!important;height:auto!impo=
+rtant}}@media (max-width:600px){.css-1wuwhda{width:100%!important;padding:0=
+!important}}@media (max-width:600px){.css-1a0tlge{font-size:28px!important;=
+line-height:31px!important}}@media (max-width:480px){.css-1hnedf7{font-size=
+:13px!important}}@media (max-width:480px){.css-sj7u5m{padding-bottom:5px!im=
+portant}}@media (max-width:480px){.css-hft257{width:100%}}</style></head><b=
+ody>=0D=0A<div style=3D"color:transparent;visibility:hidden;opacity:0;font-=
+size:0px;border:0;max-height:1px;width:1px;margin:0px;padding:0px;border-wi=
+dth:0px!important;display:none!important;line-height:0px!important;"><img b=
+order=3D"0" width=3D"1" height=3D"1" src=3D"https://nl.nytimes.com/q/JmVUqW=
+gMZfqS-IKnVVFUTA~~/AAAAARA~/EGLTGsfPT6-ItpmGgXIV5mNpmbdxUmvWScOZP6al4zWKmDR=
+JYeqro9YtWfjvX3yY6msrji4PnIQw40Wqc3-YSw~~" alt=3D""/></div>=0D=0A<div style=
+=3D"display:none;font-size:1px;color:#fff;line-height:1px;max-height:0;max-=
+width:0;opacity:0;overflow:hidden">Plus, Ukraine talks, immigration and Bri=
+gitte Bardot</div><div><!--[if mso | IE]><table border=3D"0" cellpadding=3D=
+"0" cellspacing=3D"0" style=3D"margin-right: auto; margin-left: auto" width=
+=3D"600" align=3D"center"><tr><td><![endif]--><table width=3D"100%" align=
+=3D"left" border=3D"0" style=3D"margin:0" bgcolor=3D"#FFFFFF"><tbody><tr><t=
+d id=3D"EMAIL_CONTAINER" align=3D"left" width=3D"100%"><div style=3D"margin=
+:0 auto;max-width:600px;width:100%"><table border=3D"0" cellpadding=3D"0" c=
+ellspacing=3D"0" style=3D"width:100%"><tbody><tr><td style=3D"padding:15px =
+0 5px;text-align:center;width:100%"><div style=3D"font-family:arial,sans-se=
+rif;font-size:12px;text-align:center;width:100%;padding-bottom:10px"><a tit=
+le=3D"View in browser" href=3D"https://nl.nytimes.com/f/a/Jp8A4FLKgSHwtEEk9=
+AkxcA~~/AAAAARA~/jORcdJQR9vLJt81UemJDhSh1cKjmks9-3z074lSWqROc2b4Eans95_ouds=
+PlPk03Wrkeuzf50V3X1y3JmsUXD0V7wEx432jc-CNIBZKZ4JyjTx9P4CiLD8FH0jFBtrNHFP44D=
+C-nwHeFZe-BVXi99yq7kGvhmPkEVC4Z_nYdr-NZ98rnc5yPu4OMia8H4xqapxmqhPldUQy8NbL5=
+ponX9wNBfoOKA2uBsM7sc92Z6vLnBooXAQSOfo4ZF00kxu-Zjhv0Bbg8tD1WYEWqQQbDZp2HskQ=
+cKklkHegC69cMpo4MtaL0o6RmX6TVLYL2J70swfuiRKYS80MNQ6StvXXb-Gcyl9Qlvpr0kB-6oY=
+IrW2nU9xZ2m5K8sE7Cc8_4Yf8fluFz_dvahGckStIZP4Fv78kP--JQuvjKBZQnG-1cKd-p-Gpt8=
+4sPSATShmaTIAcgUPaxiHXrGW9vUy9y_4gzjkKWaoptOF7DJnl8AvrmZiY9HjMLrMVvWvErRmFW=
+vjaR" class=3D"css-sdwaa1" style=3D"color:#666;-webkit-text-decoration:none=
+;text-decoration:none;line-height:18px">View in browser</a><span style=3D"c=
+olor:#dcdcdc;margin:0 10px">|</span><a title=3D"John Doe John Doe" href=3D=
+"https://nl.nytimes.com/f/a/1ANPiqg-i34qoQKthrirzg~~/AAAAARA~/NM1nfkjfGXBq0=
+HUVn-Wu4erNvX0xyusuV4Ik36_YEs6YCuIG724Icj6Wj3dJZyucoo3yo25j-KMvnz7SpdsDCpPz=
+yzQob0SBLlHCV4SwNy1Xnbo8MxnalcB-Vf3r_Bxl342L96n15YyV52UXaaU7rOzbya4ASvdaebg=
+ayQozHVTqO3ewDljZYxhLs_0RA4tNPkOnGMgpLC7I7yomQvRzyFQBxE2UcK6JwcCEZrqmw3YJTc=
+Alq_KcEbOLb-lH930R1kDT4zEdwNch0J6bcXmSHoGrVW23f4tKFSFcUre37QA~" class=3D"cs=
+s-sdwaa1" style=3D"color:#666;-webkit-text-decoration:none;text-decoration:=
+none;line-height:18px">nytimes.com</a></div><table border=3D"0" cellpadding=
+=3D"0" cellspacing=3D"0" style=3D"width:100%"><tbody><tr aria-hidden=3D"tru=
+e"><td><span style=3D"text-align:center"><table style=3D"margin:0 auto" bor=
+der=3D"0" cellpadding=3D"0" cellspacing=3D"0"><tbody><tr><td style=3D"line-=
+height:0;font-size:0"><a rel=3D"noopener noreferrer nofollow" tabindex=3D"-=
+1" target=3D"_blank" href=3D"https://nl.nytimes.com/f/a/O6uIFzmRN2YSqkPXBCr=
+AZg~~/AAAAARA~/rmi2GESGRXQC7AnyLIGKbjiK6bG_di4JZ9AOStOhH1kLXmRnqtJxNCPrivxj=
+GYDsSHV3CAJpZ3vonusT9QBVtLj8NAQM5epFlQKBvNbTz82-YXkP3CV7hcU5D2Rfhli9u65XEXN=
+zw85d-Naz4gnP8MCAjuY-8ggYAkXB99Ff_J9CJWgvOFmCyLwa5kAioziGSZZkXWxX5HtYhAO2IX=
+t2_isKizn7wk2wPt0X535_KQk~" class=3D"css-sdwaa1" style=3D"color:#286ed0;-we=
+bkit-text-decoration:underline;text-decoration:underline"><img src=3D"https=
+://liveintent.newyorktimesinfo.com/imp=3Fs=3D859181&li=3DNN&m=3Da7e1537ab8a=
+ffc044b0251dada1b274b&p=3DNN_20251228&stpe=3Ddefault&li_coord=3Ddesktop&col=
+lapse_width=3D600" alt=3D"Ad" border=3D"0" width=3D"600" style=3D"display:b=
+lock;width:100%;max-width:600px" class=3D"css-63f6sn"></a></td></tr><tr sty=
+le=3D"display:none" class=3D"css-1npprw9"><td style=3D"line-height:0;font-s=
+ize:0"><a rel=3D"noopener noreferrer nofollow" tabindex=3D"-1" target=3D"_b=
+lank" href=3D"https://nl.nytimes.com/f/a/O6uIFzmRN2YSqkPXBCrAZg~~/AAAAARA~/=
+rmi2GESGRXQC7AnyLIGKbjiK6bG_di4JZ9AOStOhH1kLXmRnqtJxNCPrivxjGYDsSHV3CAJpZ3v=
+onusT9QBVtLj8NAQM5epFlQKBvNbTz82-YXkP3CV7hcU5D2Rfhli9u65XEXNzw85d-Naz4gnP8M=
+CAjuY-8ggYAkXB99Ff_J9CJWgvOFmCyLwa5kAioziGSZZkXWxX5HtYhAO2IXt2_isKizn7wk2wP=
+t0X535_KQk~" class=3D"css-sdwaa1" style=3D"color:#286ed0;-webkit-text-decor=
+ation:underline;text-decoration:underline"><img src=3D"https://liveintent.n=
+ewyorktimesinfo.com/imp=3Fs=3D859181&li=3DNN&m=3Da7e1537ab8affc044b0251dada=
+1b274b&p=3DNN_20251228&stpe=3Ddefault&li_coord=3Dmobile&collapse_width=3D48=
+0" alt=3D"Ad" border=3D"0" width=3D"480" style=3D"display:block;width:100%;=
+max-width:480px"></a></td></tr></tbody></table></span></td></tr><tr><td hei=
+ght=3D"10"></td></tr></tbody></table></td></tr></tbody></table><table borde=
+r=3D"0" cellpadding=3D"0" cellspacing=3D"0" style=3D"width:100%"><tbody><tr=
+><td style=3D"border-top:1px solid #dcdcdc"></td></tr><tr><td style=3D"padd=
+ing:8px 0 0;width:100%;text-align:center" class=3D"css-tmef31"><div style=
+=3D"margin-bottom:7px"><a title=3D"John Doe" class=3D"css-sdwaa1" style=
+=3D"color:#286ed0;-webkit-text-decoration:underline;text-decoration:underli=
+ne"><img src=3D"https://static01.nyt.com/email-images/newsletters/padded-lo=
+gos/TheMorning.png" alt=3D"John Doe" width=3D"300" style=3D"width:300px"=
+ class=3D"css-r2ey6x"></a></div><div style=3D"width:100%;margin-bottom:31px=
+;font:12px/12px georgia,serif">December 28, 2025</div><p style=3D"font-size=
+:0;line-height:0;margin:0" aria-hidden=3D"true"><a rel=3D"noopener noreferr=
+er nofollow" tabindex=3D"-1" target=3D"_blank" href=3D"https://nl.nytimes.c=
+om/f/a/gk1ECLuX-CIkI1sJwuTD7w~~/AAAAARA~/tmEtoYkNIu4GA-u_Fbt3V8DJQBxXX2C7K-=
+HfFXJ3zGAODDPSqgQ3nyPHPZCGnG8hiDZ3KoE0vNmEHjqRCWZ_sKvvcsFVkqXkPyjSrn8O1wlPo=
+62RDprldmx0jvDWacAvsyRHNroNcNyocwBVbzP4jU_ARVkBRqcLM-aEgNUx2XVNRQjcdS5w5_-z=
+AVpQT0NVH_GPCbTztbDkrcq8hT7PdkYrGJSlML5pU_tt5eHbaKA~" class=3D"css-sdwaa1" =
+style=3D"color:#286ed0;-webkit-text-decoration:underline;text-decoration:un=
+derline"><img alt=3D"Ad" src=3D"https://liveintent.newyorktimesinfo.com/imp=
+=3Fs=3D1080679&li=3DNN&m=3Da7e1537ab8affc044b0251dada1b274b&p=3DNN_20251228=
+&stpe=3Ddefault&li_coord=3Ddesktop&collapse_width=3D600" width=3D"600" styl=
+e=3D"max-width:600px;width:100%"></a></p></td></tr><tr><td style=3D"border-=
+bottom:1px solid #dcdcdc"></td></tr><tr><td height=3D"20"></td></tr></tbody=
+></table><p style=3D"display:block;color:#333;font:400 18.5px/26px georgia,=
+serif;margin:0 0 10px"><span>Good morning. John Doe </span><a href=
+=3D"https://nl.nytimes.com/f/newsletter/6N73PK2gDQRfrtK7FwRUHw~~/AAAAARA~/d=
+2rC6IgHUwdHQ_j3LyKjtwtJXDxHdqekeekH71NYdose1seFc5JucwDAXKBIK9pYbRaFSLkthPN4=
+i73Bo1Gks1OHMnvQ9WQmB9pPO5YuFtoEGfBvtoSoivnfTUd8Wu9hLNbXELIT-Ks67vaWmzKpeFd=
+VsdKO2lzUvQS-Jp6wMJhltIWdEnZ7u6ecLgGijCTtzMkXUxJUnJ3qvjbrOXOaXKG1qeIhIZxQHD=
+CoyDXSsR4JN8DcLGbQbFYNnkWyZhdmdwvK_1zGUbzhl1YcVuS-gNujjd7Rj31cDvnmfu2Q25Y5p=
+aveyPtFYAOTb7GH0-r-vonkk0JBO8D95yVFLVLAR7kiN-bat6OjXpRLwUCPv_5RjVw-lZl20r2c=
+iRIzc0yM" class=3D"css-sdwaa1" style=3D"color:#286ed0;-webkit-text-decorati=
+on:underline;text-decoration:underline">is expected to meet</a><span> Volod=
+ymyr Zelensky at Mar-a-Lago today to discuss a plan to end the war in Ukrai=
+ne. It=E2=80=99s been a year since a deadly plane crash in John Doe, but=
+ victims=E2=80=99 families </span><a href=3D"https://nl.nytimes.com/f/newsl=
+etter/K_YT0uRDmdjbmSoJ1ieurw~~/AAAAARA~/rukj7pBkpiUv19ZKgA9zEyT6glkkxnmAdge=
+oq1KhPeCR8TNy9xKieSgTRnGeUswRv8jgohrQytJ0lCqNcVYtNTuNPAgek270-LHNf0LQW8sSq0=
+Dv9VTMUEQlX6-vvxA_b2awE00H2CI__KTDIudxlmN6AOBIb0o8QATCPb4ue0m81QSnkAQUVBnzO=
+31YDAgWQZkCk7wMqKLkSKVrlgisslruGycc0_uTUdP_j9qPuPHrRUYoqWyS7NhOJjFoORu5eJP3=
+bjjjtoezPsjr1B0kxovST7Vj_w0sqixlYxfFgOM7C_k5Ibg5jieLh8BvJaHHpKhEwMbHbQ0TUUR=
+b46XS6SM5yAcJsD1PffvhpxBaFviOwONUfgWOh6Zsrua5m7FY" class=3D"css-sdwaa1" sty=
+le=3D"color:#286ed0;-webkit-text-decoration:underline;text-decoration:under=
+line">are still waiting for answers</a><span>. John Doe Bardot has died=
+=2E</span></p><p style=3D"display:block;color:#333;font:400 18.5px/26px geo=
+rgia,serif;margin:0 0 10px"><span>We=E2=80=99ll have more news below. But f=
+irst, the host of our Cooking newsletter offers a few ideas for John Doe=E2=
+=80=99s Day breakfasts that you can prep ahead of time.</span></p><table bo=
+rder=3D"0" cellpadding=3D"0" cellspacing=3D"0" style=3D"width:100%"><tbody>=
+<tr><td height=3D"20"></td></tr><tr><td height=3D"14" width=3D"100%" style=
+=3D"background-color:#000;font-size:0;line-height:0"></td></tr><tr><td heig=
+ht=3D"20"></td></tr></tbody></table><table border=3D"0" cellpadding=3D"0" c=
+ellspacing=3D"0" style=3D"width:100%"><tbody><tr><td style=3D"text-align:ce=
+nter"><a href=3D"https://nl.nytimes.com/f/cooking/tOJDK_wxtyA1Ah8rPoJMGA~~/=
+AAAAARA~/YsJMqO_UK99hxN_Z1Ii12V3G61dbmysDBYP3I3e7lGU-MTk9TWr1hyR1ndrHR3--ZT=
+CsBG8Z9H-kqRGszYeDe-zmkI9vMmASbSKamHju8STUt5TlwAqqK6uYQQit-2etxcqJjuhNEle6O=
+FhstpwwMHPj_ba0tsbQhJYvBNqwEMaWwvWzBkGx-CBi9ImOuS7DRFlRqz4UA7lw5ZpTdKvcTrFB=
+cin2dea9ZEqvVOUYN95XF8EplcDD577CpeyORgMKHwH3idEW2fBOZJMPpF4QBneFZntLnsSk7eJ=
+rDH8Y0G1jYwrzhyvWmLnqYX-v2vWtmJn1Ph6IzOZpxa9MyqQFee9aEs4vbgjc8TA481BXGXQ~" =
+class=3D"css-sdwaa1" style=3D"color:#286ed0;-webkit-text-decoration:underli=
+ne;text-decoration:underline"><img width=3D"500" height=3D"500" style=3D"di=
+splay:inline-block;width:83%;max-width:500px;height:auto;padding-top:10px;p=
+adding-bottom:0;line-height:0" class=3D"css-xsf469" src=3D"https://static01=
+=2Enyt.com/images/2023/10/20/multimedia/28themorning-nl-FTC/28themorning-nl=
+-FTC-jumbo.jpg" alt=3D"French toast casserole in a white dish dusted with p=
+owdered sugar in a white dish. A large metal spoon sits in the bowl."></a><=
+/td></tr><tr><td style=3D"text-align:center;width:100%;padding-top:6px;padd=
+ing-bottom:20px;line-height:12px"><span style=3D"width:83%;max-width:500px;=
+display:inline-block;text-align:left" class=3D"css-1wuwhda"><span style=3D"=
+color:#666;font:normal 12px georgia,serif" class=3D"css-1hnedf7">French toa=
+st casserole.=C2=A0</span><span style=3D"margin:0;font:11px/11px georgia,se=
+rif;color:#888;letter-spacing:.01em;padding-left:5px">John Doe f=
+or John Doe John Doe</span></span></td></tr></tbody></table><h1 style=3D"c=
+olor:#000;font:700 31px/34px nyt-cheltenham,georgia,serif;margin:0 0 10px" =
+class=3D"css-1a0tlge"><span>Head start</span></h1><div style=3D"margin:0 au=
+to;max-width:600px;width:100%"><table style=3D"width:100%" cellpadding=3D"0=
+"><tbody><tr><td style=3D"padding:0 9px 0 0;box-sizing:content-box;vertical=
+-align:middle;width:45px" width=3D"45" valign=3D"middle"><a class=3D"css-sd=
+waa1" href=3D"https://nl.nytimes.com/f/newsletter/tM9kOTYfRxQsCMkbh_iQEw~~/=
+AAAAARA~/tTgrBPj1EJUaz43pOqpBXg2jnP6_zE49KEBy8ISJuzOgB8blkGzsqclTaxXHslGnxE=
+0ZPH2IGaVyh-WHXn2BJxUlRYcFNxzSqwkTyOY46c3_3MysHS57JZ_Ro2e_pGUZ5fei9_MrPg_TU=
+_psXfZs0gp8i4NY-ro6X4Q0SHkYCQALROHRlTC9lr9FYeoHFstCPE-4R4jDjf8HiAI7HexBxdvb=
+Wd10T4De2CTnEU9m-Xw_U1Tq5oVFad-XFUnmwWh__q9KJ2ORxaidmQeptwYKDav77AI-10h8rgO=
+eExnCAsg_vjq2YtdXoBhCwFeB3GOH" style=3D"-webkit-text-decoration:underline;t=
+ext-decoration:underline;color:inherit"><img src=3D"https://static01.nyt.co=
+m/images/2018/06/21/multimedia/author-melissa-clark/author-melissa-clark-bl=
+ogSmallThumb.png" alt=3D"John Doe" style=3D"width:45px;height:45px;b=
+order-radius:100%" width=3D"45" height=3D"45"></a></td><td style=3D"padding=
+:0;box-sizing:content-box;vertical-align:middle" valign=3D"middle"><p style=
+=3D"font:13px/18px arial,sans-serif;letter-spacing:.2px;color:#000;font:600=
+ 13px/18px arial,sans-serif;margin-bottom:0">By <a class=3D"css-nanfcg" hre=
+f=3D"https://nl.nytimes.com/f/newsletter/tM9kOTYfRxQsCMkbh_iQEw~~/AAAAARA~/=
+tTgrBPj1EJUaz43pOqpBXg2jnP6_zE49KEBy8ISJuzOgB8blkGzsqclTaxXHslGnxE0ZPH2IGaV=
+yh-WHXn2BJxUlRYcFNxzSqwkTyOY46c3_3MysHS57JZ_Ro2e_pGUZ5fei9_MrPg_TU_psXfZs0g=
+p8i4NY-ro6X4Q0SHkYCQALROHRlTC9lr9FYeoHFstCPE-4R4jDjf8HiAI7HexBxdvbWd10T4De2=
+CTnEU9m-Xw_U1Tq5oVFad-XFUnmwWh__q9KJ2ORxaidmQeptwYKDav77AI-10h8rgOeExnCAsg_=
+vjq2YtdXoBhCwFeB3GOH" style=3D"-webkit-text-decoration:underline;text-decor=
+ation:underline;-webkit-text-decoration:none;text-decoration:none;border-bo=
+ttom:1px solid #ccc;color:inherit">John Doe</a></p><p style=3D"font:13=
+px/18px arial,sans-serif;letter-spacing:.2px;color:#000;margin-bottom:0"><s=
+pan style=3D"color:inherit">I=E2=80=99m a columnist for NYT Cooking and the=
+ host of the Cooking newsletter.</span></p></td></tr><tr><td height=3D"15">=
+</td></tr></tbody></table></div><p style=3D"font:normal 17px/25px georgia,s=
+erif;color:#333;margin:0 0 15px"><span>If your John Doe=E2=80=99s Eve is fr=
+enetic, a whirlwind lasting way past bedtime, the morning after should be a=
+nything but. You want the year=E2=80=99s first breakfast =E2=80=94 well, le=
+t=E2=80=99s say brunch =E2=80=94 to be special yet calm, and preferably coo=
+ked by someone operating on a full night=E2=80=99s sleep and no hangover. I=
+f such a person is not readily available, however, the next best thing woul=
+d be to do most of the work ahead while it=E2=80=99s still 2025.</span></p>=
+<p style=3D"font:normal 17px/25px georgia,serif;color:#333;margin:0 0 15px"=
+><span>The editors at John Doe John Doe have saved you the difficult f=
+irst step by collecting </span><a href=3D"https://nl.nytimes.com/f/cooking/=
+F8MHF6qxyU3K2iydAoc2jQ~~/AAAAARA~/2tIhqr_-qt8jHB0lxN_sdvpitQ7Sa2QieKR8yFsWV=
+IE3q5nwiK4W1MQEKtEwYWR6RbN8zbeccjyMsKx9zpOcJzqymcFvOt17rDmaqW90F9mVML4WCRAA=
+O0AkmQvhLfHbVVrFwE9nRafQr368YsFxUoX5XFIk48yJ0OsK45_SqJya2hnqtqez0JUJWdOxk3c=
+YF0uT5eMYn7_0EEoC6Y6McNTWBlJ-0xlAVzhy5oVkzFZ-f1zc9mqUFnsuUP6gLWHklgAGATZT7U=
+971rLOqGMx2pFS1pnRcKmlezuuYYIg_RXtvQQdQXiOVZZMpWsbGdAXPlJ9ar_Y9AlfLYmziMNtB=
+zOGrQSYEsEJEB88r9RHVds~" class=3D"css-sdwaa1" style=3D"color:#286ed0;-webki=
+t-text-decoration:underline;text-decoration:underline">25 make-ahead breakf=
+ast dishes</a><span> that are festive enough for a holiday, but can (mostly=
+) be prepared the day before, so they=E2=80=99re easy to serve up the next =
+morning as you wait for the caffeine to kick in.</span></p><table border=3D=
+"0" cellpadding=3D"0" cellspacing=3D"0" style=3D"width:100%"><tbody><tr><td=
+ style=3D"text-align:center"><img width=3D"500" height=3D"500" style=3D"dis=
+play:inline-block;width:83%;max-width:500px;height:auto;padding-top:10px;pa=
+dding-bottom:0;line-height:0" class=3D"css-xsf469" src=3D"https://static01.=
+nyt.com/images/2015/12/23/dining/28themorning-nl-CASSEROLE/28themorning-nl-=
+CASSEROLE-jumbo-v2.jpg" alt=3D"Croissant breakfast casserole in a brown cer=
+amic dish."></td></tr><tr><td style=3D"text-align:center;width:100%;padding=
+-top:3px;padding-bottom:20px;line-height:12px"><span style=3D"width:83%;max=
+-width:500px;display:inline-block;text-align:right" class=3D"css-1wuwhda"><=
+span style=3D"margin:0;font:11px/11px georgia,serif;color:#888;letter-spaci=
+ng:.01em;padding-left:0">John Doe for John Doe John Doe</span></spa=
+n></td></tr></tbody></table><p style=3D"font:normal 17px/25px georgia,serif=
+;color:#333;margin:0 0 15px"><span>Anyone craving the decadent trifecta of =
+fat, salt and melted cheese will adore this </span><a href=3D"https://nl.ny=
+times.com/f/cooking/t6QMezpNBV1zFGv1une3gA~~/AAAAARA~/zVLxlNvYTm1dkhY1DSbpI=
+koOMwO7LJHec1XctFDyh_Svb4fTE9RBQLiBxtxm2DpJvc_mMHw-YZHq1iYfQ1ubnKSU7snv-ltd=
+SoPQ94j6QOLt8aJ8hIRHp7ZRJGvdJa7_zas8i4WuveTuwSNIyXrOAzRuLXXALFqZDVzAuV0p9aN=
+tOWjWHNQEi8xpKHhlLhOI60hhleVALWc_hlLmGT-dcrD7CQqsz-FIVej5nT0YPzjXkoOq8SEQ-0=
+SMidbXGCivrsHA0ErOnWgJe-OkAMyT2P6MRJjxsF5ee3OALp11knjYxDH_bvgLJH0m-O_BAPpOy=
+5QY1I4IDUnQIUzuwGQ882yK7fJ1o-4qDhwIFseM1Zk~" class=3D"css-sdwaa1" style=3D"=
+color:#286ed0;-webkit-text-decoration:underline;text-decoration:underline">=
+buttery breakfast casserole</a><span>. The move here is to use croissants, =
+whose flaky layers readily absorb the savory mix of eggs, sausage and Gruy=
+=C3=A8re that they bake in. Crisp on top, soft in the center, delicious all=
+ over. Equally indulgent, but meatless, is John Doe=E2=80=99s </span>=
+<a href=3D"https://nl.nytimes.com/f/cooking/7ivLwb6UjcBDcdzZ9H2dRw~~/AAAAAR=
+A~/J6NfgCjss5C_7s-TVBBgIrgHBI1Vrqspk0nT65i_OTWcOQ00iRKsHZplQe6UpDlvDV4IhfaH=
+PQ5MQ6_FICHYO1617B2YUDnZRQUFWArJXzrth3rIA5zFzW1D5JEzOI-jQwLYF0PbLaWBDUZAQLB=
+ucdhwV_Keflv-sfreA5XDp25OU3M2tUIkfhMRBtPgohScOFr_xzlflzQe6zuE5hPcI04unHDYu0=
+F8bzyRId3JYT9_p7oE63Oetqh7TEXd9J2damUaN3xgbsz531_-dy9bRdwAkXYpjm3aWN-oTH7pj=
+cl3EqBvdzx78DWCUFn-49Je1EAh6cQv4oSUDIHVaPu-Wb6enbbu97tqett4JJj4W1c~" class=
+=3D"css-sdwaa1" style=3D"color:#286ed0;-webkit-text-decoration:underline;te=
+xt-decoration:underline">crustless egg and cheese quiche</a><span>, a wobbl=
+y, custardy mix of mushrooms and Cheddar or Comt=C3=A9 that can be popped i=
+n the oven while the coffee brews.</span></p><p style=3D"font:normal 17px/2=
+5px georgia,serif;color:#333;margin:0 0 15px"><span>For breakfast pastry lo=
+vers, you can=E2=80=99t beat blueberry muffins, especially if they=E2=80=99=
+re as light and cakey as the ones in </span><a href=3D"https://nl.nytimes.c=
+om/f/cooking/raSTwdoPVpQ5wPchI6mqbg~~/AAAAARA~/zVLxlNvYTm1dkhY1DSbpIkoOMwO7=
+LJHec1XctFDyh_S7gHRTbvIGLG4nzjq8GovBp3FQhppJzMCz30FhpPsFH4iZ8sR-Sg4YXMXh0J3=
+7i18sttSuXJVVeIDrZ60BVqJNddB-Si71Q-DtugxjQFYZ55lVTH2SmHjUGk85L64h6FmFgcLgp_=
+zU4YZI-zv6IVbnaajxwBCJ8zp5eDlryG3271m1NZ-VfL6XhOBvhJmB8jX0Pbra-tr_hooB8BWae=
+K4708hZMmS8sDD7UInCY90tG_z_S5DKUTTdeOUsr1nW3kCRKELdIu29Fyo37yuZGflysqGGBZsN=
+H__uWL4uWPSeJqN5X47QMARKrrYlnBy4_Uk~" class=3D"css-sdwaa1" style=3D"color:#=
+286ed0;-webkit-text-decoration:underline;text-decoration:underline">this re=
+cipe from the (now closed) John Doe department store</a><span> that Mar=
+ian Burros adapted years ago. It=E2=80=99s a keeper.</span></p><p style=3D"=
+font:normal 17px/25px georgia,serif;color:#333;margin:0 0 15px"><span>Or ma=
+ybe your resolutions involve eating more thoughtfully and healthfully, in w=
+hich case there=E2=80=99s John Doe=E2=80=99s </span><a href=3D"https://n=
+l.nytimes.com/f/cooking/Wg2fnbcqwkc87dOj52CcVA~~/AAAAARA~/jcqCWq96PiRqlv0wn=
+mPtl85ZgzStDwZVv_oVuekxZrg0Wqpon1drGtIczWlKDO7UgY-2ICOiKw1S1dbEoOB8GAQzVfO1=
+oHHsQk1sDI2Sij_CDb_TLpO6gvJbZN-EIYLtX-SmqPQxCjMY3Q-f7jczYfYXOQXwzU-Dkak9USu=
+NSnydG-PBf_X67JVzvkoxUCAqgsOl2fF0AHOnF42t_NSO5ch2Aj0MxheMTJaPah6N-zW0SY6wjZ=
+MZ98z0X1d18cUE0a_b7bAS6LKNUBKFg3x9HCHtnCtTW9bWXEDU45UUJIwPPF8p0keIFi5g3mGE3=
+TgOdNzRZMgWAeUcyazscypGrneMsYZi_fho6vl71x7YOms~" class=3D"css-sdwaa1" style=
+=3D"color:#286ed0;-webkit-text-decoration:underline;text-decoration:underli=
+ne">matcha overnight oats</a><span>, a delightful mash-up of a bowl of oatm=
+eal and a matcha latte. You can make this as potent as you like; add the fu=
+ll teaspoon of matcha powder for a verdant dish with a strong punch of gree=
+n tea, or use less for something more delicate. Then serve it dolloped with=
+ yogurt and covered with berries and mango for pops of color and tanginess.=
+</span></p><table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" style=3D=
+"width:100%"><tbody><tr><td style=3D"text-align:center"><img width=3D"500" =
+height=3D"500" style=3D"display:inline-block;width:83%;max-width:500px;heig=
+ht:auto;padding-top:10px;padding-bottom:0;line-height:0" class=3D"css-xsf46=
+9" src=3D"https://static01.nyt.com/images/2024/03/06/multimedia/28themornin=
+g-nl-POP/28themorning-nl-POP-jumbo-v3.jpg" alt=3D"Four homemade Pop-Tarts o=
+n a piece of parchment."></td></tr><tr><td style=3D"text-align:center;width=
+:100%;padding-top:3px;padding-bottom:20px;line-height:12px"><span style=3D"=
+width:83%;max-width:500px;display:inline-block;text-align:right" class=3D"c=
+ss-1wuwhda"><span style=3D"margin:0;font:11px/11px georgia,serif;color:#888=
+;letter-spacing:.01em;padding-left:0">John Doe for John Doe John Doe=
+</span></span></td></tr></tbody></table><p style=3D"font:normal 17px/25px g=
+eorgia,serif;color:#333;margin:0 0 15px"><span>Happy kids mean happy parent=
+s, especially when said parents are recovering from a long night. To satisf=
+y early-rising little ones, bake up a batch of </span><a href=3D"https://nl=
+=2Enytimes.com/f/cooking/G2fWs809xiaYtHGUPKQQsQ~~/AAAAARA~/2tIhqr_-qt8jHB0l=
+xN_sdvpitQ7Sa2QieKR8yFsWVIH32mQPH0BsMQelg-GldqjHAGmOJ1EB2bO1bdxHFrlHKTp7q0V=
+7KvLL1a-SE6Y5q5-QJoPtl8kixtWawyZYb8Qh_BB6n7jZ9LXWwQ1HX7R7VYFqdXGYoF2YZswZIr=
+q9nqggOE-JRvmwM5ztbPQ64wWnX-AzvOz_aqYujj14_G4YX07U9yDeRcb38A6Yfac-dG81m3vec=
+SMyMqxn862fnywZNCDUwbmanFF7pMzI3_naC3Ho4ozg2bxTeVV1MDKmJxkv6wmNbOfVL23TEnYx=
+oiMdwPwe6eiRtwQKkAVOhhPz5oIpX_J90Ftlbpdq8DA7Yd0~" class=3D"css-sdwaa1" styl=
+e=3D"color:#286ed0;-webkit-text-decoration:underline;text-decoration:underl=
+ine">homemade Pop-Tarts</a><span>, which are sure to delight sweet tooths o=
+f all ages. John Doe=E2=80=99s recipe calls for making your own cream=
+ cheese pastry and a quick berry jam, but feel free to substitute store-bou=
+ght pie dough and your favorite jarred fruit preserves. Or go rogue on the =
+filling, substituting chocolate-hazelnut spread or peanut butter and jelly.=
+ You can make these up to a week ahead and then warm them up in the toaster=
+ oven just before serving.</span></p><p style=3D"font:normal 17px/25px geor=
+gia,serif;color:#333;margin:0 0 15px"><span>For a breakfast that doubles as=
+ a dessert, John Doe=E2=80=99s </span><a href=3D"https://nl.nytimes.c=
+om/f/cooking/qSjaE1oH8yR4xS1PfM28gw~~/AAAAARA~/J6NfgCjss5C_7s-TVBBgIrgHBI1V=
+rqspk0nT65i_OTU0ogkZQlr7AZlBb25T-ofPdEnv2yD2ZihFV7ByGpPC-Enr4eLRwp7o8APur2n=
+13jLXV8HFcVfj1M-dXOahZwxPOZyfXaYwIrwXdPYNEGHtypH1JO4LRECDQYcb8UkQ-PlbLUHjCK=
+_yVkDV06Ppx82FJgMjApXAEciKSXOuf7U66oFn4VGpTRuFI0oZ3JAcwBxKslx4urBiC9Og_2pbw=
+Ka5rzcBfgW73fJ49tyUHssPkgw44RFq46J18Ql-7J1jkZSyfn_jbj8VwDhCVJWt_qnnOfu3Jj7-=
+O4IPuA7TzIBZVarohbcKya6wa4oL3KPWQt4~" class=3D"css-sdwaa1" style=3D"color:#=
+286ed0;-webkit-text-decoration:underline;text-decoration:underline">John Doe=
+ey cardamom crumb cake</a><span> is moist, just sweet enough and covered wi=
+th nubby, spice-filled streusel that gets gloriously crisp after baking.</s=
+pan></p><p style=3D"font:normal 17px/25px georgia,serif;color:#333;margin:0=
+ 0 15px"><span>If none of these seem quite right, we have </span><a href=3D=
+"https://nl.nytimes.com/f/cooking/F8MHF6qxyU3K2iydAoc2jQ~~/AAAAARA~/2tIhqr_=
+-qt8jHB0lxN_sdvpitQ7Sa2QieKR8yFsWVIE3q5nwiK4W1MQEKtEwYWR6RbN8zbeccjyMsKx9zp=
+OcJzqymcFvOt17rDmaqW90F9mVML4WCRAAO0AkmQvhLfHbVVrFwE9nRafQr368YsFxUoX5XFIk4=
+8yJ0OsK45_SqJya2hnqtqez0JUJWdOxk3cYF0uT5eMYn7_0EEoC6Y6McNTWBlJ-0xlAVzhy5oVk=
+zFZ-f1zc9mqUFnsuUP6gLWHklgAGATZT7U971rLOqGMx2pFS1pnRcKmlezuuYYIg_RXtvQQdQXi=
+OVZZMpWsbGdAXPlJ9ar_Y9AlfLYmziMNtBzOGrQSYEsEJEB88r9RHVds~" class=3D"css-sdw=
+aa1" style=3D"color:#286ed0;-webkit-text-decoration:underline;text-decorati=
+on:underline">20 other ideas for you here</a><span>. So go ahead, stay out =
+late and then sleep in knowing that whenever you do make it out of bed, a g=
+ood breakfast will be waiting for you. It=E2=80=99s the least 2025 can do f=
+or 2026.</span></p><div style=3D"margin:0 auto;max-width:600px;width:100%">=
+<table style=3D"width:100%;cell-padding:0" width=3D"100%"><tbody><tr style=
+=3D"width:100%"><td height=3D"0"></td></tr><tr style=3D"width:100%"><td hei=
+ght=3D"17" style=3D"border-top:1px solid #dcdcdc;font-size:0"></td></tr><tr=
+ style=3D"width:100%"><td align=3D"left"><table><tbody><tr style=3D"width:1=
+00%"><td style=3D"vertical-align:top;margin:0;padding:0;width:62px;height:6=
+6px" width=3D"62" height=3D"66" valign=3D"top"><img src=3D"https://static.n=
+ytimes.com/email-images/Karnak_Headers/NYT-Newsletters-Cooking-Icon.jpg" al=
+t=3D"New recipes, easy dinner ideas and smart kitchen tips from John Doe=
+rk, John Doe and our John Doe John Doe editors." style=3D"margin-top=
+:4px;width:62px;height:62px" width=3D"62" height=3D"62"></td><td class=3D"c=
+ss-1ujlque" style=3D"vertical-align:top;margin:0;padding:1px 0 0 16px" vali=
+gn=3D"top"><p class=3D"css-1vh79tv" style=3D"font-style:italic;font-weight:=
+700;font-family:georgia,serif;color:#000;padding:0 0 2px 0;margin:0;font-si=
+ze:16px;line-height:20px"><span>Want more from Melissa=3F</span></p><p styl=
+e=3D"font-style:italic;font-weight:300;font-family:georgia,serif;color:#000=
+;padding:0 0 2px 0;margin:0;display:block;font-size:16px;line-height:20px">=
+<span>John Doe newsletter features new recipes, easy dinner ideas and sm=
+art kitchen tips.</span></p><a class=3D"css-mex8pt" href=3D"https://nl.nyti=
+mes.com/f/a/CUzWEwRS53uUOIlrqvDF7w~~/AAAAARA~/F9RbL3iCIilD9efB7iGUhdU9c1QrU=
+frrqkOOmZ1aXuxILQjhWmCaEe1A8oVbw5PbKWrVgFGay0XE2JytKPOgm2DgRX987dOugwlFUFbg=
+m9j9ZGnG0yyIJ7EisHQwkEj3KqwW7MFnwFz8M2ytPmSb3Qh0zENzvcW_WV8qqkDnw1sbbLqjYgr=
+6M8sIG1Q_DhLF-DMFgdJ9H5BAnlY20AJOeRNOOTb_NNEglMwWc7ME7s1WQcW0CNgI1rdYaYXGMt=
+EE4T3w4jZrjf6vPQmP_3tINW06m4SDEVwMHb-BRk-6119qstXWAef89pM3BdFm7yLky2rV4AWU-=
+FkzMMPb4fAEQVTgbT_xpuTQ9yblw9Eym-I~" style=3D"color:#286ed0;-webkit-text-de=
+coration:underline;text-decoration:underline;font-style:italic;font-weight:=
+300;font-family:georgia,serif;color:#286ed0;-webkit-text-decoration:underli=
+ne;text-decoration:underline;padding:0;margin:0;font-size:16px;line-height:=
+20px">Get it in your inbox</a></td></tr></tbody></table></td></tr><tr style=
+=3D"width:100%"><td height=3D"24"></td></tr></tbody></table></div><table bo=
+rder=3D"0" cellpadding=3D"0" cellspacing=3D"0" style=3D"width:100%"><tbody>=
+<tr><td style=3D"border-top:0 solid #dcdcdc;padding-top:15px"></td></tr><tr=
+ aria-hidden=3D"true"><td><div style=3D"width:100%;text-align:center;line-h=
+eight:0"><img alt=3D"Ad" src=3D"https://liveintent.newyorktimesinfo.com/imp=
+=3Fs=3D859191&li=3DNN&m=3Da7e1537ab8affc044b0251dada1b274b&p=3DNN_20251228&=
+stpe=3Ddefault" border=3D"0" style=3D"max-width:96px;margin-bottom:7px"></d=
+iv><span style=3D"text-align:center"><table style=3D"margin:0 auto" border=
+=3D"0" cellpadding=3D"0" cellspacing=3D"0"><tbody><tr><td style=3D"line-hei=
+ght:0;font-size:0"><a rel=3D"noopener noreferrer nofollow" tabindex=3D"-1" =
+target=3D"_blank" href=3D"https://nl.nytimes.com/f/a/--n3yrouuUQkwtwM0gdqow=
+~~/AAAAARA~/rmi2GESGRXQC7AnyLIGKbjiK6bG_di4JZ9AOStOhH1kLXmRnqtJxNCPrivxjGYD=
+sXTTi9iuaNs-He7SrY0ea69IAgVGCJTFVnyWjlFFy9R31pOQUCWsevBpUl11uorFNhAXBVms53y=
+dumTa-a_Z9ezdXG5jMIiWcWxx1c7VBeU4hd04JkyYCfwtZ6ew9AQ1Md5b3p6yeU34R7RP8ohvr0=
+0K6yY16WqU8q9C_mvA_6IU~" class=3D"css-sdwaa1" style=3D"color:#286ed0;-webki=
+t-text-decoration:underline;text-decoration:underline"><img src=3D"https://=
+liveintent.newyorktimesinfo.com/imp=3Fs=3D859187&li=3DNN&m=3Da7e1537ab8affc=
+044b0251dada1b274b&p=3DNN_20251228&stpe=3Ddefault&li_coord=3Ddesktop&collap=
+se_width=3D600" alt=3D"Ad" border=3D"0" width=3D"600" style=3D"display:bloc=
+k;width:100%;max-width:600px" class=3D"css-63f6sn"></a></td></tr><tr style=
+=3D"display:none" class=3D"css-1npprw9"><td style=3D"line-height:0;font-siz=
+e:0"><a rel=3D"noopener noreferrer nofollow" tabindex=3D"-1" target=3D"_bla=
+nk" href=3D"https://nl.nytimes.com/f/a/--n3yrouuUQkwtwM0gdqow~~/AAAAARA~/rm=
+i2GESGRXQC7AnyLIGKbjiK6bG_di4JZ9AOStOhH1kLXmRnqtJxNCPrivxjGYDsXTTi9iuaNs-He=
+7SrY0ea69IAgVGCJTFVnyWjlFFy9R31pOQUCWsevBpUl11uorFNhAXBVms53ydumTa-a_Z9ezdX=
+G5jMIiWcWxx1c7VBeU4hd04JkyYCfwtZ6ew9AQ1Md5b3p6yeU34R7RP8ohvr00K6yY16WqU8q9C=
+_mvA_6IU~" class=3D"css-sdwaa1" style=3D"color:#286ed0;-webkit-text-decorat=
+ion:underline;text-decoration:underline"><img src=3D"https://liveintent.new=
+yorktimesinfo.com/imp=3Fs=3D859187&li=3DNN&m=3Da7e1537ab8affc044b0251dada1b=
+274b&p=3DNN_20251228&stpe=3Ddefault&li_coord=3Dmobile&collapse_width=3D480"=
+ alt=3D"Ad" border=3D"0" width=3D"480" style=3D"display:block;width:100%;ma=
+x-width:480px"></a></td></tr></tbody></table></span></td></tr><tr><td style=
+=3D"padding-bottom:15px;border-bottom:1px solid #dcdcdc"></td></tr><tr><td =
+height=3D"20"></td></tr></tbody></table><table border=3D"0" cellpadding=3D"=
+0" cellspacing=3D"0" style=3D"width:100%"><tbody><tr><td height=3D"30"></td=
+></tr><td style=3D"padding:0;font-size:0;border-top:14px solid #000"><h3 st=
+yle=3D"color:#000;font:700 17px/25px arial,sans-serif;margin:5px 0 30px 0;l=
+etter-spacing:.2px"><span style=3D"font-weight:700">THE LATEST NEWS</span><=
+/h3></td></tbody></table><p style=3D"padding-bottom:20px;font:700 17px/15px=
+ arial,sans-serif;color:#000;padding-top:undefined;margin:0">Immigration</p=
+><table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" style=3D"width:100=
+%"><tbody><tr><td style=3D"text-align:center"><img width=3D"500" height=3D"=
+500" style=3D"display:inline-block;width:83%;max-width:500px;height:auto;pa=
+dding-top:10px;padding-bottom:0;line-height:0" class=3D"css-xsf469" src=3D"=
+https://static01.nyt.com/images/2025/12/28/multimedia/28themorning-nl-immig=
+ration-qfmk/28themorning-nl-immigration-qfmk-jumbo-v2.jpg" alt=3D"A woman w=
+earing a blue sweatshirt and gray leggings and a man wearing black clothes =
+in a grocery store."></td></tr><tr><td style=3D"text-align:center;width:100=
+%;padding-top:6px;padding-bottom:20px;line-height:12px"><span style=3D"widt=
+h:83%;max-width:500px;display:inline-block;text-align:left" class=3D"css-1w=
+uwhda"><span style=3D"color:#666;font:normal 12px georgia,serif" class=3D"c=
+ss-1hnedf7">John Doe.=C2=A0</span><span style=3D"margin:0;font:11px/11px geo=
+rgia,serif;color:#888;letter-spacing:.01em;padding-left:5px">KC McGinnis fo=
+r John Doe John Doe</span></span></td></tr></tbody></table><div style=3D"m=
+argin:0 auto;max-width:600px;width:100%"><table><tbody><tr><td style=3D"pad=
+ding:0 0 5px"><ul style=3D"color:#333;font:10px georgia,serif;text-align:le=
+ft;padding-left:50px" class=3D"css-1dtd48z"><li style=3D"margin:0 0 10px 0;=
+line-height:27.5px"><span style=3D"font:normal 17px/25px georgia,serif;vert=
+ical-align:middle">Almost a year into Trump=E2=80=99s immigration crackdown=
+, towns across the country </span><a href=3D"https://nl.nytimes.com/f/newsl=
+etter/SRkCQBMpNhc3z9JXUHPZeQ~~/AAAAARA~/J6NfgCjss5C_7s-TVBBgIkWNC668FKUAltJ=
+cKTNDgMrXezGyPD3wwV7Bxd7V2SH6XRtqtb3aUtpH6WjjgUOK_stXHQtatF6uMAwdGNKPYeJNY0=
+V4luzI5gBIvoiHT0r5GaVmlOu1ge3gee2DcZrmmxQ-1p_e9WXO6boBvqgPBCOMxzODuY2-zjIgl=
+aocFtXnWD8cnJvldB4GTKKKQGVMygyKD_SwVTf8T9-JqlDsaDWNFGHq98LM7wyTSIqHXZxZb7Bt=
+Ttkp1HtJJTPrSgoenjn8ZlR-8FD2u5vYcdDnuYuBqKZpLg0lcNvWDXeENCRqTvCnJ0IOh7QC_lv=
+ySEZrLVBmNzAPR-ReVHmcnpuJ85E~" class=3D"css-sdwaa1" style=3D"color:#286ed0;=
+-webkit-text-decoration:underline;text-decoration:underline;font:normal 17p=
+x/25px georgia,serif;vertical-align:middle">are feeling the effects</a><spa=
+n style=3D"font:normal 17px/25px georgia,serif;vertical-align:middle">.</sp=
+an></li><li style=3D"margin:0 0 10px 0;line-height:27.5px"><span style=3D"f=
+ont:normal 17px/25px georgia,serif;vertical-align:middle">Workers at import=
+ warehouses say that </span><a href=3D"https://nl.nytimes.com/f/newsletter/=
+MZOxXLRbSmnq8GtYVIN7oQ~~/AAAAARA~/CS1mhzpy8oSRb2NI1nOQwOYH8xjjA0ufvi49xYeKA=
+LGbmGP2_K82FgmRgKOzI5EDOf18jH_SPoeBqMTO8e4KySGsIUXLWWJxG_j4ADPSLqNsJj8Hk3hd=
+HGQjxoCZh45DgSZJoVBwkDcG_k17M6WvBDocZlrF88IgCalQ6okr3VY2ZKW2-VTZUqfg_sxc3-Z=
+W5jAioIgR3O3SbBgf-gztVVUg7aKaCz6C3ZScoLRkYUUQRu2NFWAh0hcoTbXBkog4FQRRuyR14b=
+19tf6jCtmT__vbvX3zW69-gh6bvS11gtXgxndEsV_BDvyQ2kFfIg_HwIKWXebrSUAWFrRzqwAhu=
+LsxB6u7huWAIkZWZrqagj3y5xARaPkBlgx-cuuz-lJSj3flX-n7rdXtMBkid3zrnA~~" class=
+=3D"css-sdwaa1" style=3D"color:#286ed0;-webkit-text-decoration:underline;te=
+xt-decoration:underline;font:normal 17px/25px georgia,serif;vertical-align:=
+middle">customs officials are helping immigration agents</a><span style=3D"=
+font:normal 17px/25px georgia,serif;vertical-align:middle"> arrest migrants=
+=2E</span></li></ul></td></tr></tbody></table></div><p style=3D"padding-bot=
+tom:10px;font:700 17px/15px arial,sans-serif;color:#000;padding-top:15px;ma=
+rgin:0" class=3D"css-sj7u5m">John Doe</p><div style=3D"margin:0=
+ auto;max-width:600px;width:100%"><table><tbody><tr><td style=3D"padding:0 =
+0 5px"><ul style=3D"color:#333;font:10px georgia,serif;text-align:left;padd=
+ing-left:50px" class=3D"css-1dtd48z"><li style=3D"margin:0 0 10px 0;line-he=
+ight:27.5px"><span style=3D"font:normal 17px/25px georgia,serif;vertical-al=
+ign:middle">Trump promised radical change in his second term. </span><a hre=
+f=3D"https://nl.nytimes.com/f/newsletter/fV4d8gudoBb2f8xWoJtHFg~~/AAAAARA~/=
+n1WCk2jAKmcUiuESoMpDQ5Lm5_w3b-vykyc_j1HSreqf-ub_mg8-jO8qejWLrSzdQGu6YD8Gqyk=
+ZejtJnyPFREKs2rQT2twQuojMq_yj5yBSaPImHihjoIYcSQbtLRgKxv8i73dsm3h3qN7gYtjDiA=
+Urm5UcG8YR22OqyDhdVZ1QAIIyzMSKC_F-FhjyKMMMXQyRVXK-DceX_cG1xZvOhMJgJPRF-GZ0_=
+zyZTr6wbeipcp4ujc8KBCwlIL17BdAoKmvKJLADnyolyHjp-N3DGo9UoYt9UV7wAcbAJXst_a0F=
+MJB9K9rzUrFRFOZsG0a8PdO5m9qlro48bUUC_gVrqtCn42YJEV-Ffif-LET1WAgFePhjLM3WPvU=
+u_m9NXEIe" class=3D"css-sdwaa1" style=3D"color:#286ed0;-webkit-text-decorat=
+ion:underline;text-decoration:underline;font:normal 17px/25px georgia,serif=
+;vertical-align:middle">Here=E2=80=99s what he has done so far</a><span sty=
+le=3D"font:normal 17px/25px georgia,serif;vertical-align:middle">.</span></=
+li><li style=3D"margin:0 0 10px 0;line-height:27.5px"><span style=3D"font:n=
+ormal 17px/25px georgia,serif;vertical-align:middle">America=E2=80=99s big =
+tech companies </span><a href=3D"https://nl.nytimes.com/f/newsletter/qTPWn_=
+SvZ_RlZlsV4BiQSg~~/AAAAARA~/WhRSKdTDOCSNmBkJfiBKiIq6m-JcO14bN3pdVDUxdBTvign=
+hWVo1W5EWCSSRCE0kxEymDui4mtSWmCLru72EI4lk9wqw1GLeov2EoRti4aFZMs5MAmXursdy9Q=
+SoLxNLo-qj3BWW665MJN6zLyk-B8FZVnWo29AflUS74OH_HxdQKi960REkiltG_j6I6ex5w_jr_=
+jbmjsUKXUU4taO_DC_9rn263WymWx-mpimqZQXaf4Hq6aCoVsdTOM892P5ILJPj0yIY9sd5P0Bo=
+8fFzQRnpbL-Hp-Lhq_o623CLzUzxvdek5SGzFz6lsOyXxK7BcrEce_t78lhVdzHD05t7N_3fh8D=
+rHk8WsnKi_F1D--E~" class=3D"css-sdwaa1" style=3D"color:#286ed0;-webkit-text=
+-decoration:underline;text-decoration:underline;font:normal 17px/25px georg=
+ia,serif;vertical-align:middle">are benefiting from the administration=E2=
+=80=99s policies</a><span style=3D"font:normal 17px/25px georgia,serif;vert=
+ical-align:middle"> on A.I. and cryptocurrency.</span></li></ul></td></tr><=
+/tbody></table></div><p style=3D"padding-bottom:20px;font:700 17px/15px ari=
+al,sans-serif;color:#000;padding-top:15px;margin:0">International</p><table=
+ border=3D"0" cellpadding=3D"0" cellspacing=3D"0" style=3D"width:100%"><tbo=
+dy><tr><td style=3D"text-align:center"><img width=3D"500" height=3D"500" st=
+yle=3D"display:inline-block;width:83%;max-width:500px;height:auto;padding-t=
+op:10px;padding-bottom:0;line-height:0" class=3D"css-xsf469" src=3D"https:/=
+/static01.nyt.com/images/2025/12/28/multimedia/28themorning-nl-myanmar-tbvc=
+/28themorning-nl-myanmar-tbvc-jumbo.jpg" alt=3D"Myanmar military officers a=
+nd their families line up to vote."></td></tr><tr><td style=3D"text-align:c=
+enter;width:100%;padding-top:6px;padding-bottom:20px;line-height:12px"><spa=
+n style=3D"width:83%;max-width:500px;display:inline-block;text-align:left" =
+class=3D"css-1wuwhda"><span style=3D"color:#666;font:normal 12px georgia,se=
+rif" class=3D"css-1hnedf7">John Doe.=C2=A0</span><span style=3D"margin:0;=
+font:11px/11px georgia,serif;color:#888;letter-spacing:.01em;padding-left:5=
+px">John Doe/John Doe John Doe</span></span></td></tr></tbody></ta=
+ble><div style=3D"margin:0 auto;max-width:600px;width:100%"><table><tbody><=
+tr><td style=3D"padding:0 0 5px"><ul style=3D"color:#333;font:10px georgia,=
+serif;text-align:left;padding-left:50px" class=3D"css-1dtd48z"><li style=3D=
+"margin:0 0 10px 0;line-height:27.5px"><span style=3D"font:normal 17px/25px=
+ georgia,serif;vertical-align:middle">Voters in Myanmar </span><a href=3D"h=
+ttps://nl.nytimes.com/f/newsletter/gmkt9Y97WK2AfN8ZCqAtSw~~/AAAAARA~/O3I4JV=
+lFr9xGUd5iZp25jbxpLKzH6wcK1yhq_mbXn_8rKLmfK2N3iQIKJzplPyEiWPop2bt7va7PcDM3Q=
+x9HeefbA7efVGGzOolN7uUoKDlo6umG9nuTsmuJLRa5-iFXG5qX2YszhSiLro4z-CLjDZSd6eq6=
+RRKUzsWAKWqXmdtpTyzl4ofagOBoaEFBD85UCNZo4ep4e8mtBuACVkIyexSS8t7wR9sxgFOz2XO=
+8699Bx38PWw9g6em-VcVTYxOxNEmj7MzcC-T7-LZPGln6OQ9PNnVsER8YF0b3HnmUZ8pCJU5ohV=
+XUz05Zwmm6r6E168pNQetsdKVztyOdkc_A77VDtvXrpQQOMOqPFJfN-Ck~" class=3D"css-sd=
+waa1" style=3D"color:#286ed0;-webkit-text-decoration:underline;text-decorat=
+ion:underline;font:normal 17px/25px georgia,serif;vertical-align:middle">we=
+nt to the polls today</a><span style=3D"font:normal 17px/25px georgia,serif=
+;vertical-align:middle"> in the country=E2=80=99s first election since a 20=
+21 coup. The ruling military junta is expected to maintain power.</span></l=
+i><li style=3D"margin:0 0 10px 0;line-height:27.5px"><span style=3D"font:no=
+rmal 17px/25px georgia,serif;vertical-align:middle">Thailand and Cambodia <=
+/span><a href=3D"https://nl.nytimes.com/f/newsletter/pKtH1TeVsucFxYZUFal_ww=
+~~/AAAAARA~/KT40eiT4JURhJfy4C4d-CnLIL6fYp4ZQZRdgyKYcD61znWzlC26c0sJ_1_oNkgT=
+MeRJSafdJYURVAvDc6Oa-63-KIzcLkczSilfOfZ6Cr_QibLAU8-PuV31ZPXEzTMU_Nc4PoH4huK=
+xnJscJCsxQ-_Ui7P6L9eySNbpmB4k4-oX2KH-a-xIZzUN3-q6RQCGkZ5DViUooTIRzzQa-KUW6M=
+-xu07EeVhsMoWLIRmFNWK0JxUeewTZdLEI1TiQajcj6EZaeM3LhROfimFduWCHZcqLdt_cYwESh=
+oua13MFIEhu33J8hbgFpHi1LZoZW6dxWnFBbEWlyUkXiOuKPbPnwuUWB0n9H9i5GDz7QWpvagkY=
+KvpzviDyNktSE-XnJcoPG" class=3D"css-sdwaa1" style=3D"color:#286ed0;-webkit-=
+text-decoration:underline;text-decoration:underline;font:normal 17px/25px g=
+eorgia,serif;vertical-align:middle">agreed to a brief cease-fire</a><span s=
+tyle=3D"font:normal 17px/25px georgia,serif;vertical-align:middle"> in thei=
+r 20-day border war.</span></li><li style=3D"margin:0 0 10px 0;line-height:=
+27.5px"><span style=3D"font:normal 17px/25px georgia,serif;vertical-align:m=
+iddle">John Doe, a Saudi-led coalition said that it would intervene if </sp=
+an><a href=3D"https://nl.nytimes.com/f/newsletter/mEpMetBE4QlWTk2eLvLYSQ~~/=
+AAAAARA~/n1WCk2jAKmcUiuESoMpDQ5Lm5_w3b-vykyc_j1HSreriGWUMFiVb-6t0_hMHn6i1-8=
+gljC2rlhirKFanb8aLxcgaHYp1_LSQp5W6ascJVLODLjfIo2FTQLFQ3N48nIsYzUjinNB98m3GE=
+BNgRQhxSCUFcvSdeym5feFM-Hmr99d4F0fRd4gZtsOw0BHT8ap-bSybU3LN5hqdzsJvwbBib9C6=
+z_rtx6rApYmj9id6ZLu6L6F081ENQoF2ion74CMOlHIs4TwKD01EzBblrYVl2d9voM4qQst0toE=
+lQjnmgB-XKqmj0aOlHw7pUiz3u0oOgwqMGT6474YyzVvCyJEo2QULK5vTzQENqOkpRprMQP5ID3=
+Z7Q9ClOqn5NBrt-3SQ" class=3D"css-sdwaa1" style=3D"color:#286ed0;-webkit-tex=
+t-decoration:underline;text-decoration:underline;font:normal 17px/25px geor=
+gia,serif;vertical-align:middle">separatists did not withdraw</a><span styl=
+e=3D"font:normal 17px/25px georgia,serif;vertical-align:middle"> from an oi=
+l-rich part of the country.</span></li></ul></td></tr></tbody></table></div=
+><p style=3D"padding-bottom:10px;font:700 17px/15px arial,sans-serif;color:=
+#000;padding-top:15px;margin:0" class=3D"css-sj7u5m">Science</p><div style=
+=3D"margin:0 auto;max-width:600px;width:100%"><table><tbody><tr><td style=
+=3D"padding:0 0 5px"><ul style=3D"color:#333;font:10px georgia,serif;text-a=
+lign:left;padding-left:50px" class=3D"css-1dtd48z"><li style=3D"margin:0 0 =
+10px 0;line-height:27.5px"><span style=3D"font:normal 17px/25px georgia,ser=
+if;vertical-align:middle">John Doe John Doe has arranged thousan=
+ds of kidney swaps, but it also </span><a href=3D"https://nl.nytimes.com/f/=
+newsletter/Tr024UOhzAWGGQf2mKhFZg~~/AAAAARA~/p5e-XD4-vDJLSkGP9E_4y_zip_p-Sr=
+XH2DLjQ4KChfU9rgPz7PQ02-REUfLlhTDOycxYnfSaBRNqS9c9_xCa-gjodksEA0eajbzTTzQis=
+juhZEKQBM3JKpDwXZYuq96hkMNyG8ewIqdZErU_aC0Zk0SqtwIVhmk72py7q1lWAzuK2Yuj6Pn9=
+5rCa0DZd98JzlN3JAx7nK9I4VWZHJfF1Gx5UCFLEHxQ_Fr1buF6g7C9CrJbnQYYoOblgiDAosdM=
+ee04ih03ZtCiPOi3eC4C-FBUg6OwyJLVKZFbGqDyBBb03YtvQ5f27mMdXn3bJCX97BTVUCEkh8Y=
+s_-IaHWD3Cp65C0HZgcIUrDArcJVoKWxgyb2_A3ZA6D8y0jIBGW1K1" class=3D"css-sdwaa1=
+" style=3D"color:#286ed0;-webkit-text-decoration:underline;text-decoration:=
+underline;font:normal 17px/25px georgia,serif;vertical-align:middle">has pa=
+id millions</a><span style=3D"font:normal 17px/25px georgia,serif;vertical-=
+align:middle"> to a company owned by its founder.</span></li><li style=3D"m=
+argin:0 0 10px 0;line-height:27.5px"><span style=3D"font:normal 17px/25px g=
+eorgia,serif;vertical-align:middle">The age of an ovary, not just the eggs =
+it contains, </span><a href=3D"https://nl.nytimes.com/f/newsletter/xXS-7z7t=
+fkoorE_2kQUosg~~/AAAAARA~/J6NfgCjss5C_7s-TVBBgIkWNC668FKUAltJcKTNDgMr5jXqAo=
+WGklq-NzjyOQuyv6m8e3aR2JankJIjhM_nWHSyweaAHnRDthF5nBTVbK-yJsasu3VyAOHFkhCLK=
+C6ZQu3gvJZr1Jd-VacCbxQWsVZfDP5IHf8r-1YJ7LT0Frrw9mc7DJlakg-4tZWKqeQ6NKA4bEA8=
+kGYovH69doCsxdwem8pdq5tnX6SCFFXCu0NRU0dpBbS5ChH8nTlYQiHsyMtgdSbrgrHJCoeU5Nf=
+AUkzHigA8NR07vKv78sWIlzUrtFMJ61JA-P9jguxE7roK31uM4Y0m3LEqCL-I2a4dqTbZpzYuPS=
+raL-9yDPf2G-cE~" class=3D"css-sdwaa1" style=3D"color:#286ed0;-webkit-text-d=
+ecoration:underline;text-decoration:underline;font:normal 17px/25px georgia=
+,serif;vertical-align:middle">is important to fertility</a><span style=3D"f=
+ont:normal 17px/25px georgia,serif;vertical-align:middle">, recent research=
+ suggests.</span></li></ul></td></tr></tbody></table></div><p style=3D"padd=
+ing-bottom:20px;font:700 17px/15px arial,sans-serif;color:#000;padding-top:=
+15px;margin:0">John Doe Stories</p><table border=3D"0" cellpadding=3D"0" c=
+ellspacing=3D"0" style=3D"width:100%"><tbody><tr><td style=3D"text-align:ce=
+nter"><img width=3D"500" height=3D"500" style=3D"display:inline-block;width=
+:83%;max-width:500px;height:auto;padding-top:10px;padding-bottom:0;line-hei=
+ght:0" class=3D"css-xsf469" src=3D"https://static01.nyt.com/images/2025/01/=
+27/multimedia/27themorning-nl-soc-media-parents-plfv/27themorning-nl-soc-me=
+dia-parents-plfv-jumbo.jpg" alt=3D"A young boy walks through a ferry termin=
+al holding his phone."></td></tr><tr><td style=3D"text-align:center;width:1=
+00%;padding-top:6px;padding-bottom:20px;line-height:12px"><span style=3D"wi=
+dth:83%;max-width:500px;display:inline-block;text-align:left" class=3D"css-=
+1wuwhda"><span style=3D"color:#666;font:normal 12px georgia,serif" class=3D=
+"css-1hnedf7">John Doe.=C2=A0</span><span style=3D"margin:0;font:11px/1=
+1px georgia,serif;color:#888;letter-spacing:.01em;padding-left:5px">Matthew=
+ Abbott for John Doe John Doe</span></span></td></tr></tbody></table><div =
+style=3D"margin:0 auto;max-width:600px;width:100%"><table><tbody><tr><td st=
+yle=3D"padding:0 0 5px"><ul style=3D"color:#333;font:10px georgia,serif;tex=
+t-align:left;padding-left:50px" class=3D"css-1dtd48z"><li style=3D"margin:0=
+ 0 10px 0;line-height:27.5px"><span style=3D"font:normal 17px/25px georgia,=
+serif;vertical-align:middle">Parents around the world </span><a href=3D"htt=
+ps://nl.nytimes.com/f/newsletter/20fe8UqxhRH-YPpMc4-70w~~/AAAAARA~/vc-sATbi=
+UG_90O7i3o_vQcLWLzg8w_Fc3fXKKt0HwIz6YpQBGy2-SRNaxZL_oS1Qjh3TPx5o559_tNnxlUy=
+RPVAV_wRKvYY3LxNKmu_UE865w_b-HRs2Rr-Whosld9bZ_-82Gj5XFfF7Zx0YQj4i4i7WK9y1mr=
+PLXhG1zyNtQoMVA3OD77Q8PcgFP2ACFvAN4i0415daHcexMAWfmVpI3XXtnMutgoh_MAaSXwpDO=
+rsTld5b1LUpYpnTAS5Tleh8ZGT1E3C7kfb663qWiEXq3DfZOU8hzdsHSbl4WVujpQEBNqLIhup6=
+K39Z7FWUP-TAo7ulJL-CR5eytD-4UQgcilIYPgeil_HRCu-tav8T5UWz_wgFijRHDjqfTQnwFAx=
+b" class=3D"css-sdwaa1" style=3D"color:#286ed0;-webkit-text-decoration:unde=
+rline;text-decoration:underline;font:normal 17px/25px georgia,serif;vertica=
+l-align:middle">are debating</a><span style=3D"font:normal 17px/25px georgi=
+a,serif;vertical-align:middle"> whether more countries should follow Austra=
+lia=E2=80=99s lead and bar children under 16 from social media.</span></li>=
+<li style=3D"margin:0 0 10px 0;line-height:27.5px"><span style=3D"font:norm=
+al 17px/25px georgia,serif;vertical-align:middle">Some billionaires say the=
+y are </span><a href=3D"https://nl.nytimes.com/f/newsletter/x1cxdP-x3VQGqaO=
+eMm662w~~/AAAAARA~/zu78jrhx-Ih5o2SPJx6PT15I7BSKW0q7a_Hyt5idCJonGULbuqn1-9cB=
+oJujrc70RnoC9HdB58cvPOpU6ZNwvEoGr5TMqmpLSXN0zyH3vf3CSHjoKFNBju9Z8bWbzBiW3cf=
+hqGeo5kG_nGWNegmQmnp1RBVE4fO9imj32X1BMTncK7RZWuJnK3B5bCUNaw-gBc_Vl7i4Kmd2MT=
+INRuJ33gISLkF28USyKQ3kvLA7wzLTldZdGcmN1-DgEFp0Kk6VpVoggN4yyHK0tllBUibOtxy7C=
+iqaq80HTTEFya4IgiwpiVheoCWd3SFDsfL-BRG-NXgR6vS__JoV9UFjZunYJ5UZGtr5gjaKUcAN=
+FnOiiYWahdUTmr-_Q0T9I9ZdBwtg" class=3D"css-sdwaa1" style=3D"color:#286ed0;-=
+webkit-text-decoration:underline;text-decoration:underline;font:normal 17px=
+/25px georgia,serif;vertical-align:middle">considering leaving California</=
+a><span style=3D"font:normal 17px/25px georgia,serif;vertical-align:middle"=
+> because of a proposed wealth tax.</span></li><li style=3D"margin:0 0 10px=
+ 0;line-height:27.5px"><span style=3D"font:normal 17px/25px georgia,serif;v=
+ertical-align:middle">Slopes at Telluride, Colo., </span><a href=3D"https:/=
+/nl.nytimes.com/f/newsletter/AtaB5hzPzbpN-bJf5o_cTA~~/AAAAARA~/7ws2vVN3FFFh=
+6aLSuBPSmOhVMcfUwhi4FNAP1izecoVgp29AdOdrlxLlw7CGwyb46D1TMqcF4qwkMIY_uma3Cft=
+tpjPKnkebnX343sIA8eq-1gkxpaRbHtJoembHDEGGHInBDpXf8dnrjVzC1qHRya6d95CNkleJp_=
+27hOgpkmGrOk7utj-bJMtxDa_gVHXgvr3CowX10biabwSgG30RRVRd8EvKGdVeIZDMCN-qcJXyD=
+IOsDzeR_kk9CCdtZEBwFFao5pv5hyE0bdfYJGuM-1B49vXJx0aEW4KFDnT3-vWnGOkjPlJiZJHY=
+lK-DvQo93MPqJi-WfML8goKyZkmiuxYv_tzPSjYHN6y7G3L1oZDnPEk724gddZmDnTu8NlJH" c=
+lass=3D"css-sdwaa1" style=3D"color:#286ed0;-webkit-text-decoration:underlin=
+e;text-decoration:underline;font:normal 17px/25px georgia,serif;vertical-al=
+ign:middle">are closed this weekend</a><span style=3D"font:normal 17px/25px=
+ georgia,serif;vertical-align:middle"> because of a labor dispute.</span></=
+li></ul></td></tr></tbody></table></div><table border=3D"0" cellpadding=3D"=
+0" cellspacing=3D"0" style=3D"width:100%"><tbody><tr><td height=3D"30"></td=
+></tr><td style=3D"padding:0;font-size:0;border-top:14px solid #000"><h3 st=
+yle=3D"color:#000;font:700 17px/25px arial,sans-serif;margin:5px 0 30px 0;l=
+etter-spacing:.2px"><span style=3D"font-weight:700">THE SUNDAY DEBATE</span=
+></h3></td></tbody></table><p style=3D"font:normal 17px/25px georgia,serif;=
+color:#333;margin:0 0 15px"><span style=3D"font-weight:700">It=E2=80=99s a =
+perennial question around this time of year: Should you be wishing people a=
+ =E2=80=9CMerry Christmas=E2=80=9D or a =E2=80=9CHappy Holidays=E2=80=9D=3F=
+</span></p><p style=3D"font:normal 17px/25px georgia,serif;color:#333;margi=
+n:0 0 15px"><span style=3D"font-weight:700">John Doe:</span><span> W=
+ishing someone a =E2=80=9CMerry Christmas=E2=80=9D isn=E2=80=99t about agre=
+eing with a theology but about recognizing their cultural identity and stre=
+ngthening relationships. =E2=80=9C=E2=80=98Happy Holidays,=E2=80=99 by cont=
+rast, often feels transactional, avoiding engagement instead of encouraging=
+ it,=E2=80=9D </span><a href=3D"https://nl.nytimes.com/f/a/AuyaCnrtcb_7I0QV=
+eBM9Ww~~/AAAAARA~/vc-sATbiUG_90O7i3o_vQQxHie7Y8tKsxaziqC8Vp5Pdbdh3AEAuQWkgi=
+9y7t6P60SdLJs77ip4-ylGmknxA0MsVdfUroIJ_zNLmGsFkVaI1T7yrlnJnlU3sU6SSY5vmVF6c=
+NI2uKC5EVes1Fnes-9wY6VhjBH98-KXyJuk1Ja7IfkxPDGZYOSvnrHzu2d_Cb-ohLcAEuCGwIvD=
+LfVQ0TsxAUxjFL8e9hxnncSQCNLkoUo05V_bb_1k3PqhnB2w9dGS98uODqjmoH5Umy21vTeTp_2=
+jG9mp0YIFYTNoLjDtUH1Z8Gnc6x91fMJtHYGB2ZpjaQ09FO3v9RpxAgk4T_bsygvg0Qw_EEXYtK=
+k-tC9GgeRBs4LeYzcYTjlTAYvW4" class=3D"css-sdwaa1" style=3D"color:#286ed0;-w=
+ebkit-text-decoration:underline;text-decoration:underline">John Doe wri=
+tes for John Doe</a><span>.</span></p><p style=3D"font:normal 17px/25px geo=
+rgia,serif;color:#333;margin:0 0 15px"><span style=3D"font-weight:700">Happ=
+y Holidays:</span><span> The greeting is an appreciation of our country=E2=
+=80=99s religious diversity. =E2=80=9CMy season=E2=80=99s greeting isn=E2=
+=80=99t a political statement, nor =E2=80=94 in keeping with the spirit of =
+the season =E2=80=94 should it be,=E2=80=9D </span><a href=3D"https://nl.ny=
+times.com/f/a/pUMuVTqG13n8pHq2rWOZOg~~/AAAAARA~/n1WCk2jAKmcUiuESoMpDQxcyrr4=
+E0UI5Nmj89ShtNSxwFfGDABgITHw9AWcnLCQXGacR4lATDgYKqEPYGOrXtjO1M4dp5QRni0H8PL=
+lRcspaLz8zTx682p0uVBoMRsNcS_VTruYhktsU3JVUB4bVuSkXXpVU9gSnK26xt27tzYIK4nDch=
+NVzS3rQ8Cr95ejK2uErvwBPsZWdsz6rm96MhlO8FhWiQelW-wB_-emqhDHH7hT-pSOKO5TvkEC2=
+VCssnlx-6EOLuM5609zvBhg8L0qoIEQWJclHPUbUpzYCQLFAf_2cA7jJE7De66VUOpuAgQnrAry=
+zLNsdSiQEaMn_D03nnLGiE1CoC0lAU1kyc4cdpfVJjjYCUE_lEGbmeiqt" class=3D"css-sdw=
+aa1" style=3D"color:#286ed0;-webkit-text-decoration:underline;text-decorati=
+on:underline">John Doe John Doe=E2=80=99s John Doe writes</a><span=
+>.</span></p><table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" style=
+=3D"width:100%"><tbody><tr><td height=3D"30"></td></tr><td style=3D"padding=
+:0;font-size:0;border-top:14px solid #000"><h3 style=3D"color:#000;font:700=
+ 17px/25px arial,sans-serif;margin:5px 0 30px 0;letter-spacing:.2px"><span =
+style=3D"font-weight:700">FROM OPINION</span></h3></td></tbody></table><tab=
+le border=3D"0" cellpadding=3D"0" cellspacing=3D"0" style=3D"width:100%"><t=
+body><tr><td style=3D"text-align:center"><img width=3D"500" height=3D"500" =
+style=3D"display:inline-block;width:83%;max-width:500px;height:auto;padding=
+-top:10px;padding-bottom:0;line-height:0" class=3D"css-xsf469" src=3D"https=
+://static01.nyt.com/images/2025/12/27/opinion/28themorning-nl-27rattner-sti=
+ll-copy/28themorning-nl-27rattner-still-copy-jumbo.png" alt></td></tr><tr><=
+td style=3D"text-align:center;width:100%;padding-top:3px;padding-bottom:20p=
+x;line-height:12px"><span style=3D"width:83%;max-width:500px;display:inline=
+-block;text-align:right" class=3D"css-1wuwhda"><span style=3D"margin:0;font=
+:11px/11px georgia,serif;color:#888;letter-spacing:.01em;padding-left:0">Mo=
+rten Kants=C3=B8</span></span></td></tr></tbody></table><p style=3D"font:no=
+rmal 17px/25px georgia,serif;color:#333;margin:0 0 15px"><span style=3D"fon=
+t-weight:700">John Doe </span><a href=3D"https://nl.nytimes.com/f/new=
+sletter/iH1EBr3YYPRUsl5HzRpZgA~~/AAAAARA~/o4CspOQ3kx8nRnObYGj1ktLgMtpwqHAHa=
+f8VJi1SgQ_HHOzHIsMvSA0G5ez95669dzP0U423KYNAeEm_iI7UPRhWNOwBGLTM2oXUKDK6sKOU=
+wxGhl6dFinkwfUUaVvEf1d5n4p-oYUDLCCSAlVWeVk0D5lPIgjm2MOaVoYwrlLwAkEznwmOnveE=
+QtTHTemQrOCm0D9CDQHgPM6INtpefnXB62nhoGkFHskpEdWo1SgMEzN6Thsf8dUdjuzlvkENLr_=
+UT6X9n6BgFNwilEOsFLjPlcGfTiholdvGdPyNRt3EFCnhRQfma2DfLSljyIZ46WHEMmkg_ZCraf=
+2FZSSTR__3AIIVLbtko7CGfovRQAXZWx3GUrYuIi5--W-fl5suU" class=3D"css-sdwaa1" s=
+tyle=3D"color:#286ed0;-webkit-text-decoration:underline;text-decoration:und=
+erline">offers 10 charts</a><span> to show the impact of Trump=E2=80=99s fi=
+rst year back in the John Doe.</span></p><p style=3D"font:normal 17px/25=
+px georgia,serif;color:#333;margin:0 0 15px"><span>Celebrities spend thousa=
+nds of dollars on plastic surgery and injections to try to stay beautiful a=
+nd young. </span><a href=3D"https://nl.nytimes.com/f/newsletter/RFU8ohHy6MZ=
+QT27Qh44vVg~~/AAAAARA~/o1ynP4zhJSm8qheJwy1YWzwRIZElVcChiIhObpc7HG1jI2_tDojD=
+mERhnv8PuJGUGggXOK5DoGe6I2TrAYczL4Xk-jxN9zGaMIr-zKRgTMWJxsZKh78aucAY8jCODFk=
+v5l_gXvJB3ui-DQnq-o3KPcp1gbn_srrqnjcAcDofUSso087AIm_Huodjh1UTVf4sH2Y1HGcUyt=
+V3CvWT7lWO6j7QpMhuK0UR63QYoQ2zTSZtZ8_lG9BoviqBhUI1xtjomGkxl4j_6PtCUfyJw3-Oa=
+kT8y305BCUz75YrfOR5or-kbbd6LIgBXiZDch50pp9ZsHfvc2kB_WEmocPVgYDVGsfgXWNvnhD4=
+MF9hp1MlvkZpXHGPcYsW7CpD9C1a7qBR" class=3D"css-sdwaa1" style=3D"color:#286e=
+d0;-webkit-text-decoration:underline;text-decoration:underline">Resist the =
+urge to join them</a><span>, </span><span style=3D"font-weight:700">Marisa =
+Meltzer</span><span> writes.</span></p><p style=3D"font:normal 17px/25px ge=
+orgia,serif;color:#333;margin:0 0 15px"><span>Here is a column by </span><s=
+pan style=3D"font-weight:700">John Doe </span><span>on </span><a hr=
+ef=3D"https://nl.nytimes.com/f/newsletter/6weROvbhHX6YEgoTw9BFQQ~~/AAAAARA~=
+/Kpq_dC8V-8dbnkL9QwKqNx5q4IbSLfqT04WZgcClp9-V7vj0Ka6KMT33s91wXuyhYZMrGHTKL9=
+qPdngytsmFlZCglSyLcnODAE3tVi5GMrfU7fI5RLkXFGeOVfpvm-dcXqrJsotLGNOsZsKerujTU=
+lEJMYJZ5FD_znVyRnchcQGTCBVtwCSisiErfysd2jEbf2F45jKHwPAXUT4HB7PJAZSAamN8euJ7=
+zohFmSFMiZWzltlDTTdFpwEGQ-xwSEFGZdtAcXTeG1JrohkOVAsxg6v1mx0T60CDozf9oSYxhIz=
+CMpVQbx3LfocqzraB3m7_i4VRrdTJP5sb4vaPaiqyWg~~" class=3D"css-sdwaa1" style=
+=3D"color:#286ed0;-webkit-text-decoration:underline;text-decoration:underli=
+ne">the bright side of a bad year</a><span>.</span></p><table border=3D"0" =
+cellpadding=3D"0" cellspacing=3D"0" style=3D"width:100%"><tbody><tr><td hei=
+ght=3D"10"></td></tr><tr><td style=3D"border-top:1px solid #dcdcdc;padding-=
+top:15px"></td></tr><tr aria-hidden=3D"true"><td><div style=3D"width:100%;t=
+ext-align:center;line-height:0"><img alt=3D"Ad" src=3D"https://liveintent.n=
+ewyorktimesinfo.com/imp=3Fs=3D859196&li=3DNN&m=3Da7e1537ab8affc044b0251dada=
+1b274b&p=3DNN_20251228&stpe=3Ddefault" border=3D"0" style=3D"max-width:96px=
+;margin-bottom:7px"></div><span style=3D"text-align:center"><table style=3D=
+"margin:0 auto" border=3D"0" cellpadding=3D"0" cellspacing=3D"0"><tbody><tr=
+><td style=3D"line-height:0;font-size:0"><a rel=3D"noopener noreferrer nofo=
+llow" tabindex=3D"-1" target=3D"_blank" href=3D"https://nl.nytimes.com/f/a/=
+WvZMAVXTz7Bjmyi8zTRzbQ~~/AAAAARA~/rmi2GESGRXQC7AnyLIGKbjiK6bG_di4JZ9AOStOhH=
+1kLXmRnqtJxNCPrivxjGYDs07vPuxl3MCuDWzZ1hW6m_r8oya05R1RzJl25Vu1SPrdWK8rnwvKZ=
+fUSYho9qXOXLlt-MyaCqtEOFZBU4Q2JlCUwwEQq7Rn9RTK94Eipc8-dv5xbX1qdAy_IKXumdE4O=
+MIRL2Lph9cnPmqT69Wq9twTXA2eitsL_k29qlo67L5X8~" class=3D"css-sdwaa1" style=
+=3D"color:#286ed0;-webkit-text-decoration:underline;text-decoration:underli=
+ne"><img src=3D"https://liveintent.newyorktimesinfo.com/imp=3Fs=3D859192&li=
+=3DNN&m=3Da7e1537ab8affc044b0251dada1b274b&p=3DNN_20251228&stpe=3Ddefault&l=
+i_coord=3Ddesktop&collapse_width=3D600" alt=3D"Ad" border=3D"0" width=3D"60=
+0" style=3D"display:block;width:100%;max-width:600px" class=3D"css-63f6sn">=
+</a></td></tr><tr style=3D"display:none" class=3D"css-1npprw9"><td style=3D=
+"line-height:0;font-size:0"><a rel=3D"noopener noreferrer nofollow" tabinde=
+x=3D"-1" target=3D"_blank" href=3D"https://nl.nytimes.com/f/a/WvZMAVXTz7Bjm=
+yi8zTRzbQ~~/AAAAARA~/rmi2GESGRXQC7AnyLIGKbjiK6bG_di4JZ9AOStOhH1kLXmRnqtJxNC=
+PrivxjGYDs07vPuxl3MCuDWzZ1hW6m_r8oya05R1RzJl25Vu1SPrdWK8rnwvKZfUSYho9qXOXLl=
+t-MyaCqtEOFZBU4Q2JlCUwwEQq7Rn9RTK94Eipc8-dv5xbX1qdAy_IKXumdE4OMIRL2Lph9cnPm=
+qT69Wq9twTXA2eitsL_k29qlo67L5X8~" class=3D"css-sdwaa1" style=3D"color:#286e=
+d0;-webkit-text-decoration:underline;text-decoration:underline"><img src=3D=
+"https://liveintent.newyorktimesinfo.com/imp=3Fs=3D859192&li=3DNN&m=3Da7e15=
+37ab8affc044b0251dada1b274b&p=3DNN_20251228&stpe=3Ddefault&li_coord=3Dmobil=
+e&collapse_width=3D480" alt=3D"Ad" border=3D"0" width=3D"480" style=3D"disp=
+lay:block;width:100%;max-width:480px"></a></td></tr></tbody></table></span>=
+</td></tr><tr><td style=3D"padding-bottom:15px;border-bottom:1px solid #dcd=
+cdc"></td></tr><tr><td height=3D"20"></td></tr></tbody></table><table borde=
+r=3D"0" cellpadding=3D"0" cellspacing=3D"0" style=3D"width:100%"><tbody><tr=
+><td height=3D"30"></td></tr><td style=3D"padding:0;font-size:0;border-top:=
+14px solid #000"><h3 style=3D"color:#000;font:700 17px/25px arial,sans-seri=
+f;margin:5px 0 30px 0;letter-spacing:.2px"><span style=3D"font-weight:700">=
+MORNING READS</span></h3></td></tbody></table><table border=3D"0" cellpaddi=
+ng=3D"0" cellspacing=3D"0" style=3D"width:100%"><tbody><tr><td style=3D"tex=
+t-align:center"><img width=3D"500" height=3D"571" style=3D"display:inline-b=
+lock;width:83%;max-width:500px;height:auto;padding-top:10px;padding-bottom:=
+0;line-height:0" class=3D"css-xsf469" src=3D"https://static01.nyt.com/image=
+s/2025/12/26/multimedia/28themorning-nl-VOWS/28themorning-nl-VOWS-jumbo.jpg=
+" alt=3D"A couple standing together in a holiday scene of Christmas trees a=
+nd candy canes with a bouquet foregrounded between them. The woman on the l=
+eft wears a red cape and laurel of greens while her partner wears a suit.">=
+</td></tr><tr><td style=3D"text-align:center;width:100%;padding-top:6px;pad=
+ding-bottom:20px;line-height:12px"><span style=3D"width:83%;max-width:500px=
+;display:inline-block;text-align:left" class=3D"css-1wuwhda"><span style=3D=
+"color:#666;font:normal 12px georgia,serif" class=3D"css-1hnedf7">Michelle =
+Cathey-Casino and John Doe=C2=A0</span><span style=3D"margin:0;font:11px=
+/11px georgia,serif;color:#888;letter-spacing:.01em;padding-left:5px">John Doe=
+n for John Doe John Doe</span></span></td></tr></tbody></table><p style=3D=
+"font:normal 17px/25px georgia,serif;color:#333;margin:0 0 15px"><span styl=
+e=3D"font-weight:700">Vows:</span><span> John Doe knows how to put on a =
+show. </span><a href=3D"https://nl.nytimes.com/f/newsletter/Rg-ewCLBOAgNv-q=
+D2893sw~~/AAAAARA~/rnGVImb0nFSEKcHdGamt4a983iQAMNBWeumbHiwkl0RM8eEcQ6xhU93k=
+EZjoBDtwTdStRzeZ8QHU9EAKHol3meQ_uLsVsA15us_g_d46LDtaF0iLXjUmuFVaKDMSIpcj8uy=
+Ta3suYzur4m6GrM7XtQOlv93VjJIipUc7pHUGFrusNjXjkyBMltU0hSZcbEZhhtbhxO0LQ-nOQo=
+NYvhXl9XLj9zk12lu9MaLoVhdgFTbRdim3vAfGaxM0ZnPW7RF_XVc8Cd6z6vKVjjasXKMpp1oo6=
+xSbmXg1Afv1IZQh_vSOz_KRykKr6K1UaJMUlw2Tn8qq8JRaJtXVknkj-3nJWHrgqS-DXmt2iG2E=
+cKksuwIgpuTpfHErLEoCttz6c6vT0kyQyji_Gut1s063xv160Q~~" class=3D"css-sdwaa1" =
+style=3D"color:#286ed0;-webkit-text-decoration:underline;text-decoration:un=
+derline">This one doubled as a wedding</a><span>.</span></p><p style=3D"fon=
+t:normal 17px/25px georgia,serif;color:#333;margin:0 0 15px"><span style=3D=
+"font-weight:700">=E2=80=98She was pouncing on me=E2=80=99:</span><span> Hi=
+s wife started taking testosterone. </span><a href=3D"https://nl.nytimes.co=
+m/f/newsletter/DlbTLYimuQe-ewNWckKScA~~/AAAAARA~/tLgYeREotCqjDSKrqNeb_UyYPh=
+NybwRzm605kn7Xq7j7IW4lDrvgvqAT0pfCF24AKUacRzUpfhUcnLQ2k9ctYlzJBlFbBOzIKDy_F=
+F0SfiCeSoCGqPeWMhQVXUokC8UCOEA4Q3Klr7bpUR_uKunMNVOIj9vtKCCRhPWqYWlj7o3K7yM8=
+ycTBD-H5HUUGfppojTv4qAntcW08tL7ONXwjToID8Bpg9Ki2Rb8_zTNELru1qoM3kVY8H7297yJ=
+nMga3pfM67pS3cUnTKdG0ZbDycViCK-D0btEZbtrgKDrx-4TKEA3tq4IgBvb9rIL4UjTqLH62Qb=
+KbJSxpRaAbyK4KISlw_xY4XLnPDWeHiWCZmgqEZKaMzSeNUJWe2eO293y6FOvZ4Z6qRfFcUe9Ls=
+l1sig~~" class=3D"css-sdwaa1" style=3D"color:#286ed0;-webkit-text-decoratio=
+n:underline;text-decoration:underline">It changed their marriage</a><span>.=
+</span></p><p style=3D"font:normal 17px/25px georgia,serif;color:#333;margi=
+n:0 0 15px"><span style=3D"font-weight:700">John Doe:</span><span> Tech le=
+aders said A.I. would help cure diseases and fix the planet. But </span><a =
+href=3D"https://nl.nytimes.com/f/newsletter/w2z-KpHqxP7v-RhMDSP_Pg~~/AAAAAR=
+A~/h8dENOHEJDmBV3R5m_OYIhDuHAOzfwrlzWFgA-eDOIjBhJjopLLHF8FGT2r9hpuEBpWpJ-vt=
+s2Lv1g4QyQ8UNhm2JX5gzE0nTtDItt4Tw6ntj-2EzhXYAjGKnNapE73T1bEx7nIsELZS4zzYT5Y=
+LxkIEBiQb2wwKGjJOhpaXHc7K4rtzKBbf84uqctTczWPSL3wMeZzLqaSHe-TL3IovIdRoXTQ3J6=
+rP0-Kln6WK6xL7dLFHADHXEwGFAuSlJlBIbLCA4s_Nr7-_nZOWzq9fYIYvHgHVVk678c1mvDStU=
+CcVqgZ9D1YbkbjaB2kFq8JBDTaNK458kkyVHKPbRqqnfjqW0yJdtUW34FYFGAxPqis~" class=
+=3D"css-sdwaa1" style=3D"color:#286ed0;-webkit-text-decoration:underline;te=
+xt-decoration:underline">where is all of the A.I.-driven scientific progres=
+s</a><span>=3F</span></p><p style=3D"font:normal 17px/25px georgia,serif;co=
+lor:#333;margin:0 0 15px"><span style=3D"font-weight:700">Your pick</span><=
+span>: John Doe=E2=80=99s most-clicked link yesterday was </span><a href=
+=3D"https://nl.nytimes.com/f/newsletter/fQ7lHi3Yx3WalmPuhAyviA~~/AAAAARA~/J=
+6NfgCjss5C_7s-TVBBgIkWNC668FKUAltJcKTNDgMrWa9kRHZarp1QzvjFPeO83Bn_i-p6koOfB=
+cpYyxsLonUonnv_mYCMDb9oQz4uXzby0Ro-L_gVJyYoK9GD76oDqcIXTfqdKVrFc4yhdEIlnyW_=
+LUzQLGunf3wFw1UjhUXgUtZCPZtr6pkwz7Z6l0S0iNTWAvCAAuca5ofDCfkOompYii5J2W6s6gM=
+3UZFgaqJn0YBAtyu1X8YK2xg-cBc8nwN7_CXdhpLu6TNMV7IaFciqV0ZUdExBjoBZK8pa8E6sNC=
+c5ry-X6L6bvE0ykWP4p4HRPA9GILBl7RSx1HjdywlKKf7iE2N_gXr16ete8pnM~" class=3D"c=
+ss-sdwaa1" style=3D"color:#286ed0;-webkit-text-decoration:underline;text-de=
+coration:underline">about the year=E2=80=99s surprise hit novels</a><span>.=
+</span></p><p style=3D"font:normal 17px/25px georgia,serif;color:#333;margi=
+n:0 0 15px"><span style=3D"font-weight:700">Sears=E2=80=99s demise:</span><=
+span> There are only five stores left in the country. </span><a href=3D"htt=
+ps://nl.nytimes.com/f/newsletter/VfU0CVdIWPcOOq1I96eKgA~~/AAAAARA~/g8X9AC69=
+g8LJSc1dtQJo5ClK-HBiin5313dSQiOLUAQW5fuEf46GTZy1mPPO2lk7Te1enFKMJC6rmildsDY=
+luk2q8dkBuoaOk3l9VDUZlGG6gpJTBykQVJaixiePr7iRqUCZgfXmFkwx_yGcO7tk7UJWS49yqD=
+jXF_Ahy1GQatazBtyIyrtmnjNC4K5hfA8SaRZ0m3pWSFzO2s3EhSfrqJkwqKCSUgVFk9vPW2OrV=
+bOry6DkVKwkxyCPGS_Ga8A4uu0l8ssdOT4iVbbwHFJEFOZjhatHi-LZb8Ah-D0jiA9C5aYxBvCr=
+kWm-QuYEsJ-gBo1N_4wMkmzx-ZiFXKNgAGKcPmxjzZ5-SgoB-70kDcMm0cDm9cIfvGYUAUcU_CS=
+-" class=3D"css-sdwaa1" style=3D"color:#286ed0;-webkit-text-decoration:unde=
+rline;text-decoration:underline">The end looks near</a><span> for this once=
+-mighty American retailer.</span></p><p style=3D"font:normal 17px/25px geor=
+gia,serif;color:#333;margin:0 0 15px"><span style=3D"font-weight:700">Helpi=
+ng the homeless</span><span>: A program that tackles the root causes of hom=
+elessness for some John Doe </span><a href=3D"https://nl.nytimes.com/f/n=
+ewsletter/f2FyURMh4YfZW-B7P7LiLQ~~/AAAAARA~/JtOW8INyA6nT579wLmG1Z5_U-9E2oKY=
+Q8CSjTeSmv8LvL7Rx6fSE9vdKefeCyzH1fDIa2XLzxWAXBAGhBAcxfI_d1WgQEo1R6GiGrBOni6=
+cX3uSLK7NQmco4k3_2tNKY-tUhKiibev97VjXpEPfiEs64V0kAd4IqOmldn2xvd3r4aYkLF7ts2=
+TQu7rj3az2cCPHHB8NDY5LoiEeP78YNSHd3rcjtzhrTO5HSEzE79TWu5ba4WDA3J3_90RVcowVX=
+qH2AnL1k_zZDVH6PZGkmRF5Ap3t34HarIjMODd1zd2sBIGwZGkpq9i6kwd2wIP4ugPF-DyoMt1f=
+0xxziVvj_5qnanOwKjbtx6AtVKVdNO-RozmthWZ0BBaApp4QDvN8l" class=3D"css-sdwaa1"=
+ style=3D"color:#286ed0;-webkit-text-decoration:underline;text-decoration:u=
+nderline">has a promising track record</a><span>, but can involve months in=
+ a psychiatric ward.</span></p><table border=3D"0" cellpadding=3D"0" cellsp=
+acing=3D"0" style=3D"width:100%"><tbody><tr><td height=3D"30"></td></tr><td=
+ style=3D"padding:0;font-size:0;border-top:14px solid #000"><h3 style=3D"co=
+lor:#000;font:700 17px/25px arial,sans-serif;margin:5px 0 30px 0;letter-spa=
+cing:.2px"><span style=3D"font-weight:700">BRIGITTE BARDOT (1934-2025)</spa=
+n></h3></td></tbody></table><table border=3D"0" cellpadding=3D"0" cellspaci=
+ng=3D"0" style=3D"width:100%"><tbody><tr><td style=3D"text-align:center"><i=
+mg width=3D"500" height=3D"488" style=3D"display:inline-block;width:83%;max=
+-width:500px;height:auto;padding-top:10px;padding-bottom:0;line-height:0" c=
+lass=3D"css-xsf469" src=3D"https://static01.nyt.com/images/2025/12/28/multi=
+media/28obit-Brigitte-Bardot-HP-alert-mwfz/28obit-Brigitte-Bardot-HP-alert-=
+mwfz-jumbo-v2.jpg" alt=3D"a black-and-white photo of John Doe wearin=
+g a large hat. "></td></tr><tr><td style=3D"text-align:center;width:100%;pa=
+dding-top:6px;padding-bottom:20px;line-height:12px"><span style=3D"width:83=
+%;max-width:500px;display:inline-block;text-align:left" class=3D"css-1wuwhd=
+a"><span style=3D"color:#666;font:normal 12px georgia,serif" class=3D"css-1=
+hnedf7">John Doe=C2=A0</span><span style=3D"margin:0;font:11px/11px =
+georgia,serif;color:#888;letter-spacing:.01em;padding-left:5px">Associated =
+Press</span></span></td></tr></tbody></table><p style=3D"font:normal 17px/2=
+5px georgia,serif;color:#333;margin:0 0 15px"><span>John Doe actress Brig=
+itte Bardot became a world-famous sex symbol with the 1956 film =E2=80=9CAn=
+d John Doe Woman.=E2=80=9D In the 1950s and =E2=80=9960s, she was a mega=
+star, hounded by paparazzi and a frequent topic of discussion among France=
+=E2=80=99s intellectual set.</span></p><p style=3D"font:normal 17px/25px ge=
+orgia,serif;color:#333;margin:0 0 15px"><span>She announced her retirement =
+from films in 1973 and devoted her life to animal rights and welfare. In he=
+r later years, she often attracted attention for her contentious political =
+views, which many saw as racist. She died at 91. </span><a href=3D"https://=
+nl.nytimes.com/f/newsletter/dEivYz2CtldLXkvm_NhS-A~~/AAAAARA~/O3I4JVlFr9xGU=
+d5iZp25jbxpLKzH6wcK1yhq_mbXn__Ne4ENSR9N2cXplwFMuN8bsCcJg89cRM72pI-HsSTSpuJ2=
+PFSUMkcxQdlRSI4TMJvh2C4dKWRbL8xPMUbxUgaGDj779MKkYHaVs3Dp8JlM9xPWa_2PgI0Rli7=
+UkwBzBGdtk5lc6Z0-jyGkx1eMwnx2AU_iG3226yJJ0DZG1xS174MRUnj_7qyqp6FLRYwfb8wdNk=
+oXx0ILcxcH-YZFgbs2YRgbteQRui8vaothT9AR8AlGoqyaZzM0cy9bV8p3OpxqyTFrA5pyuDAvr=
+OHbh5YvL_aOqH14JbJrgDM3s1h-MN6LlFx-C-0XKwxt2E4uWhE~" class=3D"css-sdwaa1" s=
+tyle=3D"color:#286ed0;-webkit-text-decoration:underline;text-decoration:und=
+erline">Read her full obituary</a><span>.</span></p><table border=3D"0" cel=
+lpadding=3D"0" cellspacing=3D"0" style=3D"width:100%"><tbody><tr><td height=
+=3D"30"></td></tr><td style=3D"padding:0;font-size:0;border-top:14px solid =
+#000"><h3 style=3D"color:#000;font:700 17px/25px arial,sans-serif;margin:5p=
+x 0 30px 0;letter-spacing:.2px"><span style=3D"font-weight:700">SPORTS</spa=
+n></h3></td></tbody></table><p style=3D"font:normal 17px/25px georgia,serif=
+;color:#333;margin:0 0 15px"><span style=3D"font-weight:700">N.F.L.: </span=
+><span>John Doe Texans </span><a href=3D"https://nl.nytimes.com/f/a/CQND=
+aztQt8fTVY6sze_XlQ~~/AAAAARA~/kplgkhlFfZbWSuoB6QKhHBbrljsYAmU2U69i_47HSPOr-=
+vZNHywD-MnK60eME260cWATsSrMe1Gn4zTjIyNiIKWgvtbf45o5IrT20qUgacHY7ZV-eEVkGME1=
+HuzX9v54ZAad6fqkSxhZYb6oB3Au1fcdjkOYAzWpa0wT1FoXCyJI4RqnhEvj790sWYx_xU99viI=
+48iBvUloH6woUx3M0yetGscoQAX8XI5zEyaHD9z1r0Pdh3cSwRwjMpjHn3Eut1jsWUt4_tFbXvu=
+9lUh1-sadpNb99AF9hyw5zScsum7JveOFU6pFmddfgblkNXRCRLDlEiiZF5_2_DwvIfBn6AxaOu=
+OfiSSCm6OjVPDxdTcJjjnpzyH5mWDzwJGYfpjfxaGk4LvhsdpbfJdA5GSFW2A~~" class=3D"c=
+ss-sdwaa1" style=3D"color:#286ed0;-webkit-text-decoration:underline;text-de=
+coration:underline">clinched a playoff spot</a><span> with a win over the L=
+os John Doe.</span></p><p style=3D"font:normal 17px/25px georgia,se=
+rif;color:#333;margin:0 0 15px"><span style=3D"font-weight:700">Eligibility=
+: </span><span>The</span><span style=3D"font-weight:700"> </span><span>Heis=
+man Trophy runner-up John Doe is </span><a href=3D"https://nl.nytimes.co=
+m/f/a/aHh5pxiU8ugiySajQpWu0Q~~/AAAAARA~/Jrj2qc1VLoHjqo69yegj6wq26xyQUZn1g2A=
+C9WvpcvzFTDFk2bxZuRQR6kZJ6H1ian1_3cZgtHl10t4NfCYKD3LjQ1Fl_o8eaI6x8EkV1sClaQ=
+njJatmidtLGXK3pmsZlIv9dx71HoSoCpHADafGQraR-dKQrd6P1RKi3_atCGj5Gh49WLGqzUzvj=
+cIFpEO1qJ041A-9fCYyAI42xAeffcFv9PWWkZ3M7iyHzFsygLscnsKS2mn8bHIEKOcrrOD5X3Ca=
+__BMmiSQ6cZ9h2Go9AOQbzj8H5D1dfdbJUYhs2OENOT3-rfDPMNRkRjhnrOuPn7onOzA9GBuQ12=
+8B1Y7KCj4spf4L0kGLqE0LUiv8faenD6CgMpgUThdZMl1SQ0_l4ojGKFUJSDcVwBbTXNh0w~~" =
+class=3D"css-sdwaa1" style=3D"color:#286ed0;-webkit-text-decoration:underli=
+ne;text-decoration:underline">part of a lawsuit challenging an N.C.A.A. rul=
+e</a><span> that counts athletes=E2=80=99 years playing in junior college a=
+gainst their eligibility.</span></p><p style=3D"font:normal 17px/25px georg=
+ia,serif;color:#333;margin:0 0 15px"><span style=3D"font-weight:700">Colleg=
+e football: </span><span>Top teams </span><a href=3D"https://nl.nytimes.com=
+/f/a/ODPfscRt2BeN9ui4AYXSfQ~~/AAAAARA~/9MCoGJA70vapRb6EcaIxw-ETd0vdmngSKnqX=
+-E8f9YR-OOAVzJIeG27phXfECGGq92I4Hjlfe9bFEUvkeQQrQlJj7blSTM5TPcMscMYkQ2wd3Q2=
+Cu-y6xYgPzFeKXZfMBH0-4hXyLODng9YFKSwIUmTO7Av6_1-F66ALStHnm2aADdnJotwonbBVmI=
+MZv2vVrfL9T9bHofcJ9I54HQ7_a-J49CZuhIEB5BdU_i6TT2fK4KvUh3tOqwdWFwEkG0nIqNege=
+KTf7eAyjYexCe9zjueIe8-LcbUcmIVeEiHDVkx1BVdhbcG6R5UfdC85F50NfdsgDG-oOInK70p-=
+vrTqWqgd8MXsqxK908gcrK5XvUz2q9OWTzzhuGoyFx_2EtZp6oIIyPMIxKR-LJFFgDOxxA~~" c=
+lass=3D"css-sdwaa1" style=3D"color:#286ed0;-webkit-text-decoration:underlin=
+e;text-decoration:underline">are already circumventing the sport=E2=80=99s =
+new spending cap</a><span>.</span></p><table border=3D"0" cellpadding=3D"0"=
+ cellspacing=3D"0" style=3D"width:100%"><tbody><tr><td height=3D"30"></td><=
+/tr><td style=3D"padding:0;font-size:0;border-top:14px solid #000"><h3 styl=
+e=3D"color:#000;font:700 17px/25px arial,sans-serif;margin:5px 0 30px 0;let=
+ter-spacing:.2px"><span style=3D"font-weight:700">THE NEW YORK TIMES MAGAZI=
+NE</span></h3></td></tbody></table><table border=3D"0" cellpadding=3D"0" ce=
+llspacing=3D"0" style=3D"width:100%"><tbody><tr><td style=3D"text-align:cen=
+ter"><a href=3D"https://nl.nytimes.com/f/newsletter/VkLzlgT_zMR9AkE6K7QZrQ~=
+~/AAAAARA~/p5e-XD4-vDJLSkGP9E_4y_zip_p-SrXH2DLjQ4KChfXYlgmhVIwNuQOQM_8THRYr=
+sR9JDNqUwlcxoTKtSQWVT6EGrtP1w-w2k1ZFxOFeg8VyB1t6JWC3fazSpTisd3MUR3flPUwTA3P=
+IuqgJWiNrHk9i8V4SxOMsz_h0QhKym8vDVmncBgFFLgEmnpfW4qqWJjV_3Ws1U880lsvTd5WBvm=
+IxVA58jiP3rlUyF5VG5YAiKoc9ai-KEje9GSQStkgcRx_J9nNVS74x-qoooVt9OfFEXyg0003vZ=
+OBqkPq6_b1oao_2B03D0Ft6fx1CH1FKiUv8bAgeJrSnTT4pJ9dWtgbdCCFshCdF37VEcpA0tpvh=
+LQU5TdhDYKJzFaJlbANB" class=3D"css-sdwaa1" style=3D"color:#286ed0;-webkit-t=
+ext-decoration:underline;text-decoration:underline"><img width=3D"500" heig=
+ht=3D"612" style=3D"display:inline-block;width:83%;max-width:500px;height:a=
+uto;padding-top:10px;padding-bottom:20px;line-height:0" class=3D"css-xsf469=
+" src=3D"https://static01.nyt.com/images/2025/12/26/admin/oakImage-17667824=
+19416/oakImage-1766782419416-jumbo.jpg" alt=3D"A person smiling on a cover =
+of a magazine."></a></td></tr></tbody></table><p style=3D"font:normal 17px/=
+25px georgia,serif;color:#333;margin:0 0 15px"><a href=3D"https://nl.nytime=
+s.com/f/newsletter/VkLzlgT_zMR9AkE6K7QZrQ~~/AAAAARA~/p5e-XD4-vDJLSkGP9E_4y_=
+zip_p-SrXH2DLjQ4KChfXYlgmhVIwNuQOQM_8THRYrsR9JDNqUwlcxoTKtSQWVT6EGrtP1w-w2k=
+1ZFxOFeg8VyB1t6JWC3fazSpTisd3MUR3flPUwTA3PIuqgJWiNrHk9i8V4SxOMsz_h0QhKym8vD=
+VmncBgFFLgEmnpfW4qqWJjV_3Ws1U880lsvTd5WBvmIxVA58jiP3rlUyF5VG5YAiKoc9ai-KEje=
+9GSQStkgcRx_J9nNVS74x-qoooVt9OfFEXyg0003vZOBqkPq6_b1oao_2B03D0Ft6fx1CH1FKiU=
+v8bAgeJrSnTT4pJ9dWtgbdCCFshCdF37VEcpA0tpvhLQU5TdhDYKJzFaJlbANB" class=3D"cs=
+s-sdwaa1" style=3D"color:#286ed0;-webkit-text-decoration:underline;text-dec=
+oration:underline">Read this week=E2=80=99s magazine</a><span>.</span></p><=
+table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" style=3D"width:100%"=
+><tbody><tr><td height=3D"30"></td></tr><td style=3D"padding:0;font-size:0;=
+border-top:14px solid #000"><h3 style=3D"color:#000;font:700 17px/25px aria=
+l,sans-serif;margin:5px 0 30px 0;letter-spacing:.2px"><span style=3D"font-w=
+eight:700">THE MORNING RECOMMENDS =E2=80=A6</span></h3></td></tbody></table=
+><p style=3D"font:normal 17px/25px georgia,serif;color:#333;margin:0 0 15px=
+"><span style=3D"font-weight:700">Fix</span><span> your lumpy, moldy bathtu=
+b caulk </span><a href=3D"https://nl.nytimes.com/f/a/ZrGx15DduFElErmlMsokBg=
+~~/AAAAARA~/vc-sATbiUG_90O7i3o_vQcLWLzg8w_Fc3fXKKt0HwIxqp-lTOBz_MIYw2qXwtuj=
+fZUMvqqchooMlG_pZ2bh-S8VCXr-R2JNu8-VC0f_K_D50RzVQUxO6dTYZ0oovmrTsbBNE-9xmf9=
+lR9uZlndh_Ti1DANTmyqHgbdkGyBAzufByY91YzPJGnwfa5YImCfSaspalSsSQBXwtxuFB_7wpK=
+pXEgimhu5xA9fi5Tua_qlAj6bkVEu2Jq00njk0QpQSF7XkpNlPQSGDH2pmRQlq2TeN61WB6b5Ri=
+sprscWPUQRcTOpUKz1WwRyrmJiQjm8SHshPyZrFSHUNpJPjglR1xv80wfjQs4wVp_D_AA9pldct=
+fXeu-3HFaVIPBplqSOK1D" class=3D"css-sdwaa1" style=3D"color:#286ed0;-webkit-=
+text-decoration:underline;text-decoration:underline">with this $5 tool</a><=
+span>.</span></p><p style=3D"font:normal 17px/25px georgia,serif;color:#333=
+;margin:0 0 15px"><span style=3D"font-weight:700">Sleep</span><span> on one=
+ of these mattresses </span><a href=3D"https://nl.nytimes.com/f/a/StTKFGIQi=
+sDqe5sc7RqcKA~~/AAAAARA~/h8dENOHEJDmBV3R5m_OYIhDuHAOzfwrlzWFgA-eDOIi9RdgW2A=
+K9oegSpZpAsjiHHqTtBV1LRuqlQ2iQm6QBQn766VJu-wkOjIbOpg4YNkb41fU3TloHTdHd1b-qH=
+hU32uYJlgVnBnQCdzN24HwcxnWp_lOKpF8ZFx81wDXrM6yEb66ZIEnsKoIQhO9GppB_N1FBa5iz=
+laA54iBDcMc9UOZygJzTg71QwhLPsaUwfKq3ju3LVYsiZfKg11G35OV3ZccHkCp-VQfFXK-UECe=
+rlLatOjlWH7Ssn0KFoTacAxwj_y0_RO_P21uMxgi_SqyS4T8suqEWOiMIBYEyq_4aAS9N27y-ep=
+PuG_Mx7v39pp4~" class=3D"css-sdwaa1" style=3D"color:#286ed0;-webkit-text-de=
+coration:underline;text-decoration:underline">if you=E2=80=99re having trou=
+ble with back pain</a><span>.</span></p><p style=3D"font:normal 17px/25px g=
+eorgia,serif;color:#333;margin:0 0 15px"><span style=3D"font-weight:700">As=
+k</span><span> yourself </span><a href=3D"https://nl.nytimes.com/f/newslett=
+er/swkBt1T2L-5B6jGbFEgLCw~~/AAAAARA~/uQM2s_pSPmx22Z0T52kocqs8P8AKtNIfeJ-TTu=
+oG72_Go4SG19CE58v8Bn7lyGIAuLQiBwDxuyo36Mi7FwUSJ8Sjp1K6_m7thKHaakHzN13-0HG5j=
+mCCtxRyKWBcDMxGN02BXjccK3O9yVmuE3n4oqOZubHmZXWgxGzsYOmZVnRX6DaVOtyZhiRK9O7r=
+IyMuu0i3iIeAA8YH1UAKzAQLMN1J6MuRDE9JRnjdvTjI9x6u8khDHt5jCugePf3BsLvUBeI9i_y=
+Usqg0z3CxhaJkDRtAIB_aMoFQQpwACtCY13Ch10WvUqg9f5EDgn7BICSzhWM_AJ_JZyPmlaugXe=
+cM5Hlkz0w2IS-dRxnjbgo6DY2WZTaz1JbVIuIaOfJ4tW_d" class=3D"css-sdwaa1" style=
+=3D"color:#286ed0;-webkit-text-decoration:underline;text-decoration:underli=
+ne">these seven questions</a><span> for a happier new year.</span></p><tabl=
+e border=3D"0" cellpadding=3D"0" cellspacing=3D"0" style=3D"width:100%"><tb=
+ody><tr><td height=3D"30"></td></tr><td style=3D"padding:0;font-size:0;bord=
+er-top:14px solid #000"><h3 style=3D"color:#000;font:700 17px/25px arial,sa=
+ns-serif;margin:5px 0 30px 0;letter-spacing:.2px"><span style=3D"font-weigh=
+t:700">MEAL PLAN</span></h3></td></tbody></table><table border=3D"0" cellpa=
+dding=3D"0" cellspacing=3D"0" style=3D"width:100%"><tbody><tr><td style=3D"=
+text-align:center"><img width=3D"500" height=3D"500" style=3D"display:inlin=
+e-block;width:83%;max-width:500px;height:auto;padding-top:10px;padding-bott=
+om:0;line-height:0" class=3D"css-xsf469" src=3D"https://static01.nyt.com/im=
+ages/2023/04/13/multimedia/28themorning-nl-COOKING/28themorning-nl-COOKING-=
+jumbo.jpg" alt=3D"Yellowish chicken sitting in a pot of yellowish rice."></=
+td></tr><tr><td style=3D"text-align:center;width:100%;padding-top:3px;paddi=
+ng-bottom:20px;line-height:12px"><span style=3D"width:83%;max-width:500px;d=
+isplay:inline-block;text-align:right" class=3D"css-1wuwhda"><span style=3D"=
+margin:0;font:11px/11px georgia,serif;color:#888;letter-spacing:.01em;paddi=
+ng-left:0">John Doe for John Doe John Doe</span></span></td></tr></tbo=
+dy></table><p style=3D"font:normal 17px/25px georgia,serif;color:#333;margi=
+n:0 0 15px"><span>It=E2=80=99s a funny moment for food. We usually recommen=
+d fast and simple recipes. But this is the time of year that calls for luxu=
+ry, pageantry and scale =E2=80=94 food that requires a team of home cooks a=
+nd more than a few sets of hands.</span></p><p style=3D"font:normal 17px/25=
+px georgia,serif;color:#333;margin:0 0 15px"><span>In that spirit, John Doe=
+instein=E2=80=99s </span><a href=3D"https://nl.nytimes.com/f/newsletter/Uj1=
+d10LYB7pt40MPFxLv_g~~/AAAAARA~/n1WCk2jAKmcUiuESoMpDQ5Lm5_w3b-vykyc_j1HSrepI=
+4keAIoTvJUy3Jpz5t-10iswIuhRWGTKRaOH6T0VugxKiDX0WCqnHaWGTsEf9KrK6FuYzOfrwGZw=
+qra4fsp-FPl4X3KplZ1UJNnwHAzVnXwhnVVfCWnDgM0n7MmausYWSw5v-UAazRP-jSkY2Klnh2a=
+qVjQ87EZ22g5JIw6ivThV1egnGLAa_opWWYD-UO0iqokBn1DwRD7JxNV0rbgoZ3QMeyaABmPdgh=
+NniXqOwyx6SAH-keHn7N7L03xwzREk8Y0DXMrU8ZIfHeZbXxmmzW3tOVXIwp03vMDUs8F5BTP8b=
+ZI7XCVdd3N7gbTUr_B4cc_bdl6IpeR-Bw73-enKu" class=3D"css-sdwaa1" style=3D"col=
+or:#286ed0;-webkit-text-decoration:underline;text-decoration:underline">Fiv=
+e John Doe newsletter</a><span> has some recipes for you that are f=
+ancy but still Tuesday night-level easy. You=E2=80=99ll love John Doe=
+=E2=80=99s </span><a href=3D"https://nl.nytimes.com/f/cooking/Y6Cwv4maRs3EF=
+XEhySD6MA~~/AAAAARA~/vc-sATbiUG_90O7i3o_vQbRC-QgT-vndxBzDFiTo3vO2tfR0TmOoat=
+qW06USxrnwmy-irO6VHhh0LTBQ7s-qyREmoewFCh_XDXLeK5bkz0d3qDeBkag7NFVJhty4HKxx2=
+7KqsXpAponVsf-hWLNnsV8GRTkaJyxdTAVZrdJrOICvj7t_9FA82fLPQywwl_WcQh9ctkijond1=
+JbQcGz6204oEDd2qkAfRsVzIqG4u8j1xfwjGcpCtAb7kDG3XrVWsF7aIxQZwtggTYpzAb74dH7n=
+8uXZzQwmmXMlRV7Zwbwpld1Hf-mAc18DptVxB0PfXfp_dF1AKzMorxUv01dJD9UAD8pYAGR96Mc=
+uCRcA0vuuQsQI9U8vq-6R7H98ytLv-" class=3D"css-sdwaa1" style=3D"color:#286ed0=
+;-webkit-text-decoration:underline;text-decoration:underline">one-pot whole=
+ roasted chicken and rice</a><span>, golden from turmeric and a pinch of sa=
+ffron, and Joshua McFadden=E2=80=99s </span><a href=3D"https://nl.nytimes.c=
+om/f/cooking/2fU0_KTcfQBOjRDPPXtV0Q~~/AAAAARA~/-y0EfERG5VUqpprjD7lwCYhcfJlh=
+ZpST27VZFhkzJMKq0ximLl8RnFCCg3yVabJ07w6CpTRzyZXYJNZBwbWQh9KWWWbAsRBxvj4Awhv=
+DLx3-UDuWeuulPKcIoLhpjIzHLmdeIdlHM9nplRDg-92vLKRkZh_aTNv_2yoTn8Hw2ml-YmMj8U=
+iDdN70z78HYm_seKb5BPRWcio5JzO2lhuIbokhTS7jRfONUZDi_9mzYTtp57tWisFwj3VLj2Gqh=
+8c67DodH3Ajbjv4F7vwqc6mjioTNtEVOr6NPT_lf2LZSAHN-0nYrwpFtVpXVzKEjrh239OnQANu=
+9zD0uLi3PT1NF8oBYzdvIeoLocuFwRfU3_8~" class=3D"css-sdwaa1" style=3D"color:#=
+286ed0;-webkit-text-decoration:underline;text-decoration:underline">chicken=
+ rag=C3=B9 bianco</a><span>, a superb pasta recipe from his new book.</span=
+></p><table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" style=3D"width=
+:100%"><tbody><tr><td height=3D"30"></td></tr><td style=3D"padding:0;font-s=
+ize:0;border-top:14px solid #000"><h3 style=3D"color:#000;font:700 17px/25p=
+x arial,sans-serif;margin:5px 0 30px 0;letter-spacing:.2px"><span style=3D"=
+font-weight:700">NOW TIME TO PLAY</span></h3></td></tbody></table><table bo=
+rder=3D"0" cellpadding=3D"0" cellspacing=3D"0" style=3D"width:100%"><tbody>=
+<tr><td style=3D"text-align:center"><a href=3D"https://nl.nytimes.com/f/a/U=
+XIFDvvMapK9vPyWDPff9w~~/AAAAARA~/QLnuQg3ACTWcpylcoTPYZcQzqcHsPeTpmajNsnjWoE=
+02kcriZDsg0FQccVrGV9zBJXgxq9ablBfgSABJ0kI-2qhefPqGm1zMiQtM7WN-CfxUAEJZ2K2cM=
+FNPrJeGU4HnC7tqmn4idyMiuJjBgYqbKrIkutpZ6-pRCZL8EtBhlQNX5q-ERZfTjLqTcTykL7MP=
+fuPDgWk9zjoeFn9XRUSfOk4gqJ-b5uL5p9q2zGsrS7lSVedr3SqxsHXXTpqD-sLhMOc0he0Cg2e=
+w5mVOnf3vFR5Yd4OEA73p8XvvWlkaJ8WyKby7Dpb6qxM_MN3uRePnxIH67C4CyWaCzx-Htsd0Bg=
+~~" class=3D"css-sdwaa1" style=3D"color:#286ed0;-webkit-text-decoration:und=
+erline;text-decoration:underline"><img width=3D"500" height=3D"222" style=
+=3D"display:inline-block;width:83%;max-width:500px;height:auto;padding-top:=
+10px;padding-bottom:20px;line-height:0" class=3D"css-xsf469" src=3D"https:/=
+/static01.nyt.com/images/2025/12/28/multimedia/28morning-bee/28morning-bee-=
+jumbo.png" alt></a></td></tr></tbody></table><p style=3D"font:normal 17px/2=
+5px georgia,serif;color:#333;margin:0 0 15px"><span>Here is </span><a href=
+=3D"https://nl.nytimes.com/f/a/UXIFDvvMapK9vPyWDPff9w~~/AAAAARA~/QLnuQg3ACT=
+WcpylcoTPYZcQzqcHsPeTpmajNsnjWoE02kcriZDsg0FQccVrGV9zBJXgxq9ablBfgSABJ0kI-2=
+qhefPqGm1zMiQtM7WN-CfxUAEJZ2K2cMFNPrJeGU4HnC7tqmn4idyMiuJjBgYqbKrIkutpZ6-pR=
+CZL8EtBhlQNX5q-ERZfTjLqTcTykL7MPfuPDgWk9zjoeFn9XRUSfOk4gqJ-b5uL5p9q2zGsrS7l=
+SVedr3SqxsHXXTpqD-sLhMOc0he0Cg2ew5mVOnf3vFR5Yd4OEA73p8XvvWlkaJ8WyKby7Dpb6qx=
+M_MN3uRePnxIH67C4CyWaCzx-Htsd0Bg~~" class=3D"css-sdwaa1" style=3D"color:#28=
+6ed0;-webkit-text-decoration:underline;text-decoration:underline">today=E2=
+=80=99s John Doe</a><span>. Yesterday=E2=80=99s pangrams were </span><s=
+pan style=3D"font-style:italic">gauntlet, ungulate </span><span>and</span><=
+span style=3D"font-style:italic"> untangle</span><span>.</span></p><p style=
+=3D"font:normal 17px/25px georgia,serif;color:#333;margin:0 0 15px"><span>C=
+an you put eight historical events =E2=80=94 including the seven-day week, =
+the high five and the three rival popes =E2=80=94 in chronological order=3F=
+ </span><a href=3D"https://nl.nytimes.com/f/newsletter/cHTPRHSLcH2bRCOVq7c1=
+rg~~/AAAAARA~/h8dENOHEJDmBV3R5m_OYIhDuHAOzfwrlzWFgA-eDOIhu1EJnb__UXVx3UCqT_=
+TfByT9LFXRVzK6daHDgu14xTInBK7ej_r3SA7JSRCJX-nbFyjJYYYjNkpqxlOW0vZkXb92oxdb_=
+qVilV5gr6dPKNZrzb0M_IIfkFBw6OAEvKiwLHJpN4OlEMBEpaPTc9AurKj8D6jbQa6PjGs__B3Y=
+xbIL-saZ8ls_6cSG2Pq4r1CKaHPRIHC0ecpt736M7TzgunkoohlmtBG9YbyzCmAjP0gDkBm9C7N=
+JapXwacqjlAZo3o_IhFtwDbpEDhVX5TDPST7Enf8R1FlfslTQGGHxtEbQhAwBfdtQVxhrne9Fii=
+UU~" class=3D"css-sdwaa1" style=3D"color:#286ed0;-webkit-text-decoration:un=
+derline;text-decoration:underline">Take this week=E2=80=99s Flashback quiz<=
+/a><span>.</span></p><p style=3D"font:normal 17px/25px georgia,serif;color:=
+#333;margin:0 0 15px"><span>And here are </span><a href=3D"https://nl.nytim=
+es.com/f/a/3CHVxRsLID1TnfOuoRPnlw~~/AAAAARA~/QLnuQg3ACTWcpylcoTPYZcQzqcHsPe=
+TpmajNsnjWoE0oJd9qidUqepGQk-ZozR3hYRDdi7lnZnKm749IVO-zuwch8h7CvwTgDMcAUb4gD=
+nITNFbV76HY1vROEVIlEphQkkpyB2puCsvBZd33782cPr5nQROOqYVKMHLMBgBQ3w7Avu3R50QE=
+koxizNcj69A12cj3gfjRyaIOh91XWQGZunC0QYtVBepULHYjz1Xl_4i2a1nqbYP_Nh9m-4VkTrR=
+YFEarcwF6vSpAGIDjWArVsHr6cQNY7L3C3bi2WIcJ7wvi7LNrw9Caat8124B2rn8CqSxMv9tqUi=
+ySUcJ5qwEaug~~" class=3D"css-sdwaa1" style=3D"color:#286ed0;-webkit-text-de=
+coration:underline;text-decoration:underline">today=E2=80=99s John Doe=
+d</a><span>, </span><a href=3D"https://nl.nytimes.com/f/a/XR5f_Nzm2yRWSh2LV=
+0V46g~~/AAAAARA~/faECiBExsjEqxgRU8EE6kT3GrkqNVpPWxIfi2_Trcp_3-3hAVW9jLMwJlp=
+DJDCXp1jptbHmMcoDZ9mIlNOZN_N2Icr9McCTwfg_oWJTj_sKNuS61imq6ypdlUkUxOserelc2E=
+p57-zt-6j1paCos7LBmKtDhdiyftrsL4pGv4C2rKyeLrDH6u6u65LkTe6sKPNioCaqA5LscE-gX=
+IYvGRHA_wH3vV41kaNbFAhlzcHHa_xMju3F-abwVMjVcMgm6r-WH_P-6OWRcMAnExSfpeEHjZIk=
+Y1ig5Gz7x-_DGrKr2KEbCilNfaOItdvOPeFycUfL7zrSHMJ4iibqP4YAgGQ~~" class=3D"css=
+-sdwaa1" style=3D"color:#286ed0;-webkit-text-decoration:underline;text-deco=
+ration:underline">Wordle</a><span>, </span><a href=3D"https://nl.nytimes.co=
+m/f/a/UNVHqYlLebUAJ6Aieqg08g~~/AAAAARA~/hOPp8tsu25hwUcLivKbKA7FsWB_lo82gkJf=
+71JbMedA7uqyrjJGov1A07LQ2gjVX18uSjVzlKdZPF5cHY9TixlXFADW6c5FmAU26T5gi08PzNq=
+bDzHj-d9cE87FMpylfnmSl87xGatjAn2PNkk2OqK4JcPhMq4_cMzKY0on9UMSTrnwgjRFIoKtEh=
+2Q936DJvaxDLVGR7Y3r2c-6PIE5wsvhNmn83I0Vad0K4bAloZGz-67ppvZ3SJyb49BFTvdMHuev=
+b5d-XDpmyqG5DzbKHAA3RxssBqxulYgwJ8xuoqkOL3BQ4Kudk9-kylZRt1Ah" class=3D"css-=
+sdwaa1" style=3D"color:#286ed0;-webkit-text-decoration:underline;text-decor=
+ation:underline">Sudoku</a><span>, </span><a href=3D"https://nl.nytimes.com=
+/f/a/RJuAQ6sQ9HBTLfbbU9zipA~~/AAAAARA~/XMw1kNRCLvFrmQgMXGy31yd8i8B1iCkRdno9=
+aSPeOJqTjAFN7wXtGdDK7sUxAzliXH8-P6axKTi7PxRtGTGGsDqb1gx3CMCqRxcjLE-fFjfK_Cf=
+UFkq0lS1E4HoxPY-cj1vkdE0UCuxi1b2dnisYJEGlrBzVt9cpwIj0QhIwoWj_zFzIzl5QBfjm2-=
+3o9IO6BDjUDVAybTiMBNXRwHBIOyf-5WEONqavKuUmf5IHL6KkGZyH_kX-nqHNGkGaUTLjH6e-H=
+5HaOoobF1P1-zNmIqMhx56gPgh92RfaQrRxdggUskPyewfMsuNwfmkPAbvH" class=3D"css-s=
+dwaa1" style=3D"color:#286ed0;-webkit-text-decoration:underline;text-decora=
+tion:underline">Connections</a><span> and </span><a href=3D"https://nl.nyti=
+mes.com/f/a/a6GE29U3_RGNadf_2sj9bg~~/AAAAARA~/D0KFpedVdyyNpyENnLZSSlsJTAKKV=
+RMr67JXM9Jx2a8vAcc9QSk6MB0lIgkugzV9Xgy5n3vy_MC6Uf0DU3hTyE1FsM4UB3Ki85_oVs7r=
+-zBf-7eZMaLGAFNOqQ5jMc-zWNXBXl5tfyod0V7dFg1A9iaQYP84U3xIpjesUb3Ho-nRa2D2SfI=
+ziJpfnd43fFt_SXLht9uJL55eMY3BLkNHYHdkBYCQ2co_O7-5o8cNk5zb9SlzpcqxYBU0HZiJUa=
+321m7xjAarpZHzIa1phuZgPchYJ0PHUV1_hjDvjJ74CUvDqRzMBAhVKGdBenuhuzsd" class=
+=3D"css-sdwaa1" style=3D"color:#286ed0;-webkit-text-decoration:underline;te=
+xt-decoration:underline">Strands</a><span>.</span></p><table width=3D"100%"=
+><tbody><tr><td style=3D"padding-bottom:15px" class=3D"css-36ugzx"></td></t=
+r><tr><td style=3D"border-top:1px solid #dcdcdc;padding-bottom:15px"></td><=
+/tr></tbody></table><p style=3D"font:normal 17px/25px georgia,serif;color:#=
+333;margin:0 0 15px"><span style=3D"font-style:italic;font-weight:700">Than=
+ks for spending part of your weekend with John Doe.</span></p><p style=3D"=
+font:normal 17px/25px georgia,serif;color:#333;margin:0 0 15px"><span>P.S.:=
+ The regular Book of the Week and Interview sections of this newsletter are=
+ on a holiday break. They will return in January.</span></p><p style=3D"fon=
+t:normal 17px/25px georgia,serif;color:#333;margin:0 0 15px"><a href=3D"htt=
+ps://nl.nytimes.com/f/a/DJWj2C4V_znZhQYlXykrcA~~/AAAAARA~/E7XfR83TFVo8p67FM=
+K_muusjS-i_dBkWSNRMySaL3KzzAW_-IV5MXx4FlP-LFx7614-vzsCL9jpE11Pbrcpgmc3GhCph=
+vCZw8x6ee4Z4sjLAJRqhNgCZbJY_Bnktr8U33136k6jYf5nAWX71IISZ3C2MpRIOP6UkKmrkp4F=
+R3rfUlJ-d7XiGCgfD2fzkeTdveKD4KNPDLs5113wiSgu_tUtHuuqt3TjKBHp_9dx1tHdJtJd_XT=
+MXd49iGi1n1LFqKXeWfgGOqm9j_gceFqYZTIdeJzROaZCDjjemdRY5XSfzBL1pHPb4z0yTSEgTj=
+bd9K0m9T2YMy8GSHfh_uDIKaw~~" class=3D"css-sdwaa1" style=3D"color:#286ed0;-w=
+ebkit-text-decoration:underline;text-decoration:underline;font-style:italic=
+">Sign up here to get this newsletter in your inbox</a><span style=3D"font-=
+style:italic">. Reach our team at </span><a href=3D"mailto:themorning@nytim=
+es.com" class=3D"css-sdwaa1" style=3D"color:#286ed0;-webkit-text-decoration=
+:underline;text-decoration:underline;font-style:italic">themorning@nytimes.=
+com</a><span style=3D"font-style:italic">.</span></p><div style=3D"overflow=
+:hidden;height:0;width:100%;max-width:600px;margin:0 auto" aria-hidden=3D"t=
+rue"><table cellpadding=3D"0" cellspacing=3D"0" border=3D"0" width=3D"40"><=
+tbody><tr><td height=3D"6"><img src=3D"https://liveintent.newyorktimesinfo.=
+com/imp=3Fs=3D126745500&sz=3D2x1&m=3Da7e1537ab8affc044b0251dada1b274b&p=3DN=
+N_20251228&li=3DNN" width=3D"2" height=3D"6" border=3D"0"></td><td height=
+=3D"6"><img src=3D"https://liveintent.newyorktimesinfo.com/imp=3Fs=3D126745=
+501&sz=3D2x1&m=3Da7e1537ab8affc044b0251dada1b274b&p=3DNN_20251228&li=3DNN" =
+width=3D"2" height=3D"6" border=3D"0"></td><td height=3D"6"><img src=3D"htt=
+ps://liveintent.newyorktimesinfo.com/imp=3Fs=3D126745502&sz=3D2x1&m=3Da7e15=
+37ab8affc044b0251dada1b274b&p=3DNN_20251228&li=3DNN" width=3D"2" height=3D"=
+6" border=3D"0"></td><td height=3D"6"><img src=3D"https://liveintent.newyor=
+ktimesinfo.com/imp=3Fs=3D126745503&sz=3D2x1&m=3Da7e1537ab8affc044b0251dada1=
+b274b&p=3DNN_20251228&li=3DNN" width=3D"2" height=3D"6" border=3D"0"></td><=
+td height=3D"6"><img src=3D"https://liveintent.newyorktimesinfo.com/imp=3Fs=
+=3D126745504&sz=3D2x1&m=3Da7e1537ab8affc044b0251dada1b274b&p=3DNN_20251228&=
+li=3DNN" width=3D"2" height=3D"6" border=3D"0"></td></tr></tbody></table></=
+div><table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" style=3D"width:=
+100%"><tbody><tr><td style=3D"border-top:1px solid #dcdcdc;padding:20px 0">=
+<img width=3D"100%" style=3D"display:block" class=3D"css-hft257" src=3D"htt=
+ps://static.nytimes.com/email-images/morning-briefing/us/morning-briefing-f=
+ooter-credit-logo.png" alt=3D"John Doe John Doe"></td></tr><tr><t=
+d style=3D"padding:0 0 30px"><p style=3D"font:400 12px/18px arial,sans-seri=
+f;color:#333;letter-spacing:0;margin:0"><span style=3D"font:700 12px/18px a=
+rial,sans-serif">Host:</span> John Doe</p><p style=3D"font:400 12px/18px =
+arial,sans-serif;color:#333;letter-spacing:0;margin:0"><span style=3D"font:=
+700 12px/18px arial,sans-serif">Editor:</span> Adam B. Kushner</p><p style=
+=3D"font:400 12px/18px arial,sans-serif;color:#333;letter-spacing:0;margin:=
+0"><span style=3D"font:700 12px/18px arial,sans-serif">John Doe:</span> =
+John Doe-Piersanti</p><p style=3D"font:400 12px/18px arial,sans-serif;col=
+or:#333;letter-spacing:0;margin:0"><span style=3D"font:700 12px/18px arial,=
+sans-serif">John Doe:</span> John Doe</p><p style=3D"font:400=
+ 12px/18px arial,sans-serif;color:#333;letter-spacing:0;margin:0"><span sty=
+le=3D"font:700 12px/18px arial,sans-serif">John Doe:</span> <span style=
+=3D"display:inline-block">John Doe</span>, <span style=3D"display:inli=
+ne-block">John Doe</span>, <span style=3D"display:inline-block">Lara McC=
+oy</span>, <span style=3D"display:inline-block">John Doe</span></p><p s=
+tyle=3D"font:400 12px/18px arial,sans-serif;color:#333;letter-spacing:0;mar=
+gin:0"><span style=3D"font:700 12px/18px arial,sans-serif">John Doe:<=
+/span> John Doe</p><p style=3D"font:400 12px/18px arial,sans-serif;col=
+or:#333;letter-spacing:0;margin:0"><span style=3D"font:700 12px/18px arial,=
+sans-serif">John Doe:</span> John Doe</p><p style=3D"font:400 =
+12px/18px arial,sans-serif;color:#333;letter-spacing:0;margin:0"><span styl=
+e=3D"font:700 12px/18px arial,sans-serif">John Doe, Newsletters:<=
+/span> John Doe</p></td></tr></tbody></table><table><tbody><tr><td styl=
+e=3D"height:15px"></td></tr><tr><td style=3D"padding:12px 0;border-top:1px =
+solid #000"><p style=3D"font:12px/15px arial,sans-serif;color:#666;margin-b=
+ottom:7px">If you received this newsletter from someone else, <a href=3D"ht=
+tps://nl.nytimes.com/f/a/7JedPMFfRgSB2XOs5bUAvw~~/AAAAARA~/F9RbL3iCIilD9efB=
+7iGUhdU9c1QrUfrrqkOOmZ1aXuxILQjhWmCaEe1A8oVbw5PbKWrVgFGay0XE2JytKPOgm2DgRX9=
+87dOugwlFUFbgm9j9ZGnG0yyIJ7EisHQwkEj3KqwW7MFnwFz8M2ytPmSb3Qh0zENzvcW_WV8qqk=
+Dnw1sbbLqjYgr6M8sIG1Q_DhLFELn3gJ2LA2ayCph81g3HePfwivkf8AM3hOj__R_NyqeB2tbcz=
+l1WMeiNGc4l-tXbbrPytDmkFSj0UZ9mD35swPe_nLfo8m5zduvL-X0BS__kdIjip_jq0Zzpl5di=
+RvgDMrbjla7Nlkm6SAcZp4AD0rEy1PJXllZjIiif4dzooWc~" class=3D"css-sdwaa1" styl=
+e=3D"-webkit-text-decoration:underline;text-decoration:none;color:#286ed0">=
+subscribe here</a>.</p><p style=3D"font:12px/15px arial,sans-serif;color:#6=
+66;margin-bottom:7px">Need help=3F Review our <a href=3D"https://nl.nytimes=
+=2Ecom/f/a/yGwK9y_ZPnswnJqkexIJdw~~/AAAAARA~/XLNNSDsLEJ8PuruopjQc5QQxEAeIeX=
+4ELGuEYbWglxW32JEqe3A9aW1s2TYaN3Ej3Hef9jjCaGo4qYZuT_U8oPjsD3QQUgCFRbk51MBav=
+lpZin_WaM_Ff3BqjPdIpub6NT-qGpEbTouPMMyQiAXlvtHQI8wfExemfHvWpBohIZRiON0celyE=
+OrIbqpNPNoES9w7TOW8p4M99msZ3Dr6Sq2X0q-2dy0RCciurCP0B3FnpfD6L9rMBMT0zbn5P09i=
+1AAa5R8MXYERr3iXZvPXO1eUx0HuphhKtoYo1wSAS3ODk4Jh3uYWwvRzGwFLciHRWDgbjblfRgX=
+h74DHYcYzq94zBmvhk8O6atfwoCFfvBn4~" class=3D"css-sdwaa1" style=3D"-webkit-t=
+ext-decoration:underline;text-decoration:none;color:#286ed0">newsletter hel=
+p page</a> or <a href=3D"https://nl.nytimes.com/f/a/eSc_Etz3QX527nTEfQcd1A~=
+~/AAAAARA~/YsJMqO_UK99hxN_Z1Ii12fGzICM9JG8EF0uWiQeBTTFclpsHlcAXBg8kYUj5IE-g=
+pJh-Bd-gGUtTJZT1Tvwg0FkZKt3_qa7x_56gG_mMfqnkadsQ3XdwMiakNxIRC81aCvhSLqryXB-=
+B34vnpaZhiQBbZpCGnosbr0zuUasyQSTLp1Cs5c8ey2UxHNJFtlvdTGTqc2NKgqnF0aZq-nchNE=
+eMcOMAuxIR3fiu6-9RV3QlpUyi7NNKNTga4a_CPXN09WW38OPLh821KcFvmOt_sDstrQDvG6Agm=
+uykWuiwp8pLdFzJYmid_imU5CtXez3LXWlFyjhh9nslZFPjnz5ImRtS5LUKgtCOTNha8HP9ZEQ~=
+" class=3D"css-sdwaa1" style=3D"-webkit-text-decoration:underline;text-deco=
+ration:none;color:#286ed0">contact us</a> for assistance.</p><p style=3D"fo=
+nt:12px/15px arial,sans-serif;color:#666;margin-bottom:7px"><span>You recei=
+ved this email because you signed up for the Morning newsletter from John Doe=
+w John Doe, or as part of your John Doe Times account.</span></p><p style=
+=3D"font:12px/15px arial,sans-serif;color:#666;margin-bottom:7px">To stop r=
+eceiving John Doe, <a href=3D"https://nl.nytimes.com/f/a/nIaLH4jvBAvxn8p=
+S3QoJ7A~~/AAAAARA~/oxSL3H2O_zwbAPalNK3fwkmtcCzSne_w0ApFz0WDbf_u7MX1PpdnV9FV=
+1XFG8kfvWHS9-guryuU7N7EtCv2pGWYkNpxJgU66Xrf3mRWL0ieRvvIzX8fe6rTsAmYnYiE6X-X=
+-aAFchS8KPv23GrOzmBt_3H2oW5A_VVCXA_z4T3pqW1c_WWBUx17dcUNdKiTNeLqSQUmpM2m1qW=
+qdao3XhrPhpcHWnkOmAgj9sqyXrFiM-ucFhKDkUPZxj6k-kjQOFAq4vMEnF1Hw3SLNxjekulgCu=
+9hILGUi2tdg3gautqu1Jli_i2CWH9H3LD7HMV6Y" class=3D"css-sdwaa1" style=3D"-web=
+kit-text-decoration:underline;text-decoration:none;color:#286ed0">unsubscri=
+be</a>. To opt out of other promotional emails from John Doe, including th=
+ose regarding John Doe, <a href=3D"https://nl.nytimes.com/f/a/Y19ZZSw9M=
+KD23f0hsQMRvA~~/AAAAARA~/Co3kws2RKSowEcIvOyUfgMmUjiNj89x6BXe-jB7aYjKH61odzQ=
+1LMRYDlkuEH_ZusvFStaE7r0djYaWUU0HN02znOdNZlk_-pv6vds351wxFSqJ5oogVLYQk2ZG51=
+9UFeTXB-kXUdFn8U-vFMM_udg1ekWGtVRre2NATITIKI7wlkI9WTs8G3sM8mF5_8sM-7FoB3GxW=
+yikjHeErQx9hfJw22Tsy9RNpi5dE7QDsaMhjj_OeH3DV1pBBL6zafqg8rfwx_OKdanxhqrCk4wo=
+OAeUC4h9a1a1Rd_wNjky7LEE~" class=3D"css-sdwaa1" style=3D"-webkit-text-decor=
+ation:underline;text-decoration:none;color:#286ed0">manage your=C2=A0email=
+=C2=A0settings</a>.</p></td></tr><tr><td style=3D"padding:10px 0;border-top=
+:1px solid #dcdcdc"><p style=3D"font:12px/15px arial,sans-serif;color:#666;=
+margin:0"><a class=3D"css-1n5iqtj" href=3D"https://nl.nytimes.com/f/a/BjrZf=
+hioBRwnd0IfQJSwmA~~/AAAAARA~/QLOpjTLEWLDqwJ6gBSXeDiVosBmip-fX9bKgFd73TBF_sE=
+AxPRSPq83L1I0IHG8xft5t5wnHSaRVX9tH8itEiz_dSx-cpKZvbLze5tUanPbz6GOqdJ58oZWJq=
+XaSnjzTiL-iLoiHwfg8dgv6VujHWQZXInzqgFsj-6l9-T3maiEGK0RqvQrAtNH5tVqihsn0Iyvm=
+u3Qq_nuqYtir112epBVMnWzGNAqCd0Px9sIBZLffmeP7-T3U7ghr7rx-NM_evGJD-8htEyD-01Y=
+g6JHqwjuZeSyrATncPzAwEhAFNsxbWkY5IGoDQFUGi40FV0E2Y1cionwWhKYkaBbtgAnsgQ~~" =
+style=3D"-webkit-text-decoration:underline;text-decoration:none;color:#286e=
+d0">Subscribe to John Doe</a><a class=3D"css-wf08f0" href=3D"https://nl.ny=
+times.com/f/a/YtJWCVPUDNt__FHcJmjTKQ~~/AAAAARA~/juaFuN9BOOUo-fsjjrc_CHfLUCI=
+sS46qKR87iVhJ-MsHG4ahm7PqVnQguNLMRKx8z7dcf9Y92aiTtDKPiWeYNJKa0LABitWCKENvCO=
+NiIT0uo7qqAkZB6zDjpaU_cfShXfVk4007QkUJ4C23n81_Ix6Z0cVunyAHgDKGeddeF7wr_7_-x=
+S7ONBiL0DDrtY_3HOr4gtQQ2zoAxyXYLWqn7dq9WupGK8dlUolGOyPB2lQWA07lEosAOXkVUlc5=
+DSAaH4R6fovScLKYYWwuyqLkX6Q37EhUeN9AJk5j3Zrs3miAib4Gey70d2nU7raeVsiAJ8J2a7L=
+30fbsH8QkBlXm9A~~" style=3D"-webkit-text-decoration:underline;text-decorati=
+on:none;color:#286ed0;display:none">John Doe John Doe Times app</a></p></td>=
+</tr><tr><td style=3D"padding:9px 0 8px;border-top:1px solid #dcdcdc"><tabl=
+e><tbody><tr><td style=3D"padding-right:15px"><p style=3D"font:12px/15px ar=
+ial,sans-serif;color:#666;margin:0">Connect with us on:</p></td><td style=
+=3D"padding-right:15px"><a href=3D"https://nl.nytimes.com/f/a/pLIgsdIYgCTb9=
+BiacVGBog~~/AAAAARA~/9BhjDwSqVn_eonj98v9XSfjVQCUvRT5Wn9OTOYaGoHcaD6-tUlGN_V=
+vIYA7Nl0WEBnI6ce22zxUH55kkYHFoP0tPikh0mTAjOmRXV9WnxWitkqmlafFc51-FnPYmhS7aM=
+06MEQjl-RccX-pL7mPBJso25N0b0bJpxcaaEdMrfnJIr-EYBeH0NiapBD_LppPNPO35_PGzbB9q=
+riDlv2GOMKk3w5YUi79wO-jri3TGArqwL5Dg7tgxTk2HICgizl9_H8vNrezfKnZIkANeeySnI6j=
+MQCC9fKI01286xsiA-sX44X-1q9NoXiJYVhNk9ddd" class=3D"css-sdwaa1" style=3D"co=
+lor:#286ed0;-webkit-text-decoration:underline;text-decoration:underline"><i=
+mg width=3D"25" height=3D"25" alt=3D"facebook" style=3D"vertical-align:midd=
+le" src=3D"https://static.nytimes.com/email-images/design-system/social-ico=
+ns/facebook.png"></a></td><td style=3D"padding-right:15px"><a href=3D"https=
+://nl.nytimes.com/f/a/aQn6qUQ3lKUe48KGdw1nYQ~~/AAAAARA~/6zSzZ5jMxwBHy2bv6Zu=
+SYO08VLiLBULpnO6DOPtL7j11XISLVsVnbY1enBaF9dk0vdvXaemxvjlrqeWrqpxy_euXibsvmF=
+9KOZsXTxzp8-tLPKjk2fd1eR697g1WSVFK-6oQ41JpxS0Bdo7kFZ3xPWzif6yfru4VeU3ifvVhx=
+K58tY1P0Raw6FLCz5XXak986v2YxIhrZV3CuRV6Hrgcl3avq2_PhQD0-JyL-ig0JPmSHbQztz7C=
+gv12Mhdmk7WvUQZm1zVggzYT6y394gSPWUUFgixerTmK3yXs0_CZeyk~" class=3D"css-sdwa=
+a1" style=3D"color:#286ed0;-webkit-text-decoration:underline;text-decoratio=
+n:underline"><img width=3D"25" height=3D"25" alt=3D"x" style=3D"vertical-al=
+ign:middle" src=3D"https://static.nytimes.com/email-images/design-system/so=
+cial-icons/x.png"></a></td><td style=3D"padding-right:15px"><a href=3D"http=
+s://nl.nytimes.com/f/a/9Px-_imV6vIVcK5U_L28FQ~~/AAAAARA~/nqzv0lbR5itT4x-M9Z=
+aHn0T6UOmRpyYuvOqREwGaq625CulxbUWY48_Pye1nFGGFfWaMy8QiS-lRXTUqBuw7O8OO9bxnm=
+aL61P_rSC1QwRDWsiTN-QptUSFaPuyjsDAYP9Hiz40dTGuXMb8qK7I1tjZgity8e3PxtR4ahGf-=
+Tcv6CqbkQ0eCTNRRmx-DIpLX183U6Gd3b-Lp5OrEbTqjb2y-SsmfwIENv7V9gQmvHwDyFH-1ea_=
+_TF2Ua0Gw3Ilrjc_unP4hRI5MR8fnLNox24Uew9Ldbch9dm68YdJss2Phpm9vg4L4wJhILIAL21=
+5v" class=3D"css-sdwaa1" style=3D"color:#286ed0;-webkit-text-decoration:und=
+erline;text-decoration:underline"><img width=3D"25" height=3D"25" alt=3D"in=
+stagram" style=3D"vertical-align:middle" src=3D"https://static.nytimes.com/=
+email-images/design-system/social-icons/instagram.png"></a></td><td style=
+=3D"padding-right:15px"><a href=3D"https://nl.nytimes.com/f/a/oHYO9Cbu7spZA=
+a2MuNK-Sg~~/AAAAARA~/Kpq_dC8V-8dbnkL9QwKqN0ZmvzTJahmxH114IarvcTpuaIEqMBH_-H=
+uqV4fPlhuZPm6PqYOhqBfbPZ7z7MkSq_bQchR84M6LvRUMvOxrAm-6Yk4iUWSKLXVCVhHLB6ZK2=
+Lu3nVw2PVzIhMjZSvqEfgnbnQd_HdziPGOiTkhTs_PohKrzqLqh2bFH9VzKOaSFqyrueY67hcqu=
+NFamuH6edF4_zRahN7_zEbKhxMJJCUuIWr-6gDpV0cbnG1IJmI4BpcEpFOVdWoVVb4ouS5FdeCo=
+t0YOPBd-HXjLfvLgiGgDZi5Dvlicu1bDHfuGn4AKxWBK9_nV7YAsnpwgFIorDOQ~~" class=3D=
+"css-sdwaa1" style=3D"color:#286ed0;-webkit-text-decoration:underline;text-=
+decoration:underline"><img width=3D"25" height=3D"25" alt=3D"whatsapp" styl=
+e=3D"vertical-align:middle" src=3D"https://static.nytimes.com/email-images/=
+design-system/social-icons/whatsapp.png"></a></td></tr></tbody></table></td=
+></tr><tr><td style=3D"padding:10px 0;border-top:1px solid #dcdcdc"><p styl=
+e=3D"font:12px/15px arial,sans-serif;color:#666;margin:0;line-height:20px">=
+<a href=3D"https://nl.nytimes.com/f/a/VYzPbirs7Pow685KMcMnyA~~/AAAAARA~/QLn=
+uQg3ACTWcpylcoTPYZc0QufAqmOHf8lkcYaO1nsfZ452jFELxJYWHYn4q06No6S7TuAhMYcNM-e=
+hO_pb-dOPVe40Upm3aY7f8qx3krx6H8JZJ3SgHkRoruV83p1DTbgfDyyZgVe6NZvvYcYmt8eLGw=
+f6Zws23yIGpHJsoGoRm_P9lpRBHHunxTAynMM8i86ediHG8uLuojKR-zGB-awd2Q1EqUyJEJ2fo=
+WZQGaX1SIuRLidfV8la02IVnINsb3tOHBX6eUHbvVVEjPX0hGA4DwKRVXz_puVX5j1y-g-w6ge-=
+DGPosDeX0uWi0fMd0h9JeaHQzj7OwkxP01tnIeQ~~" class=3D"css-sdwaa1" style=3D"-w=
+ebkit-text-decoration:underline;text-decoration:none;color:#286ed0;display:=
+inline-block;border-right:1px solid #dcdcdc;padding-right:10px;margin-right=
+:10px">John Doe Email</a><a href=3D"https://nl.nytimes.com/f/a/d27JQuwYz=
+NdwS4rYA5hAyQ~~/AAAAARA~/g8X9AC69g8LJSc1dtQJo5ClK-HBiin5313dSQiOLUAQhb9XpK6=
+t8k2fuwVFMAc07rZJsA7PvojU5bWOzrfl2tiI4BOgg9ilXjqcpPc4QWDtEUp5lHJZ_LBNGfGdH6=
+UoXBL8waHMBUn92q9DibntYkAlmHbgIdWajWNX3rcl6J9vQ7r2OyV9RLqc6kyeixz7vwtzFZyfD=
+IoK-YKpLzzUqVO8z73W7J-nKcnFnVZKgYNQvJy3sZuLO-7-ATutwk3KItioGUnuOOsy7ntRlI1Z=
+RWglAGNMpccCPfIa8K5RRJzTakyumajCmfoQRgd5r57rnYuFIIo1Lx6p6QL8T8EQGEtAzX2m46Q=
+iBIZ883lpp3d_SSCj0JmLR-OU0bHGVSn5M" class=3D"css-sdwaa1" style=3D"-webkit-t=
+ext-decoration:underline;text-decoration:none;color:#286ed0;display:inline-=
+block;border-right:1px solid #dcdcdc;padding-right:10px;margin-right:10px">=
+John Doe</a><a href=3D"https://nl.nytimes.com/f/a/QXsCqAQHh7rHNGt2kW6=
+CNQ~~/AAAAARA~/E7XfR83TFVo8p67FMK_mun3RdA7xT5tfUDx6o4FVKhEdF5DT5shx-4BtvQeU=
+59LKpS0ouwhJDUEqRyxeBEsxVALS6BCyKZa6eeSaiNPhVeS1RczNp8z6Fo5Rp4iQ465xyZ8ghew=
+JUxbRVDG0jyES_ijA4sjHNXWer72WMoZMJvU9_7AV7JYykO17DmAQftJNP7r-kRDyubyse-cvoD=
+Zq3SxZpBQyxQ7ejq_DEoUjl7fV5Zg7coNeHroxv_y04aJ0C5M-YUDY9JmnuwLOyb3gO31H1EKy4=
+cWq_LWPu-DP-ZbMlIVHh0tPw3aw-cTelWIhzMimjCNmIkKLTnKpPEJK4Q~~" class=3D"css-s=
+dwaa1" style=3D"-webkit-text-decoration:underline;text-decoration:none;colo=
+r:#286ed0;display:inline-block;border-right:1px solid #dcdcdc;padding-right=
+:10px;margin-right:10px">John Doe</a><a href=3D"https://nl.nytimes.com/f/=
+a/30P4O-NUr9gGd4v4RPerlg~~/AAAAARA~/cv9LriMvfD7yB14j5QHbn9R8sphjfqpLZInYGDW=
+PcmC1nn3yAcRyWXFU3a6Jxo8uHfUPyVfFOeJDhOr-twbxOfk6h4KGy9WzE0fXP0WU9iYQ0EMnIx=
+Pa8b5QRjqmENrefp5En3pWTqyLTE0HU2u2NCjhtEf-pZhqohgssprNrrvROwLuiz34MKSvkt2dG=
+JUSQ3DZ4g9_VZs845CdmY4jgSUACjQHCFWYXPlu98w98xcTo9kIz8jKbZnkRGCl8H-4bMcuLpCq=
+oBmDlvBS0uqX5ASmAb08JxCZDdHAfKN01ZEp4EC8QCaq_dT7d7CBgtDPS-C0pT4ZZCO58JMiX5e=
+Puw~~" class=3D"css-sdwaa1" style=3D"-webkit-text-decoration:underline;text=
+-decoration:none;color:#286ed0">John Doe</a></p></td></tr><tr><td=
+ style=3D"padding:5px 0 7px;border-top:1px solid #dcdcdc"><a href=3D"https:=
+//nl.nytimes.com/f/a/niXiTlEuhKQ3bZzbjVM11g~~/AAAAARA~/ZKIXb6rdEo47-o6pOmxB=
+JbR8K5HgTkQFwgiT-upIaMGdXlEPPiWWsjOd5o8jJmcH_AH9puJroXjnaBh_sVGS4UHD9snxtKw=
+WtYn1AAPQ1jIx0-q4JZRP9xzDywueBRDv" class=3D"css-sdwaa1" style=3D"-webkit-te=
+xt-decoration:underline;text-decoration:none;color:#666;line-height:0;displ=
+ay:inline-block;border-right:1px solid #dcdcdc;padding-right:10px;margin-ri=
+ght:10px"><img width=3D"150" alt=3D"LiveIntent Logo" style=3D"vertical-alig=
+n:middle" src=3D"https://static.nytimes.com/email-images/design-system/ads/=
+liveintentads.png"></a><a href=3D"https://nl.nytimes.com/f/a/MIDRacNzAt2KV5=
+Nkr2JVQQ~~/AAAAARA~/ZKIXb6rdEo47-o6pOmxBJbR8K5HgTkQFwgiT-upIaMHL1HeBHBKvqty=
+okQzuT_Clwm0hBuLWwtVJ8U-r3mK6MURzxkQ5AecoPr_ByHCxkj93KSB7woa7Z9zO2DX0mBGg" =
+class=3D"css-sdwaa1" style=3D"-webkit-text-decoration:underline;text-decora=
+tion:none;color:#666;line-height:0"><img width=3D"70" alt=3D"AdChoices Logo=
+" style=3D"vertical-align:middle" src=3D"https://static.nytimes.com/email-i=
+mages/design-system/ads/adchoices.png"></a></td></tr><tr><td style=3D"borde=
+r-top:1px solid #dcdcdc;padding:10px 0 30px"><p style=3D"color:#999;font:12=
+px/15px arial,sans-serif;margin:0">John Doe John Doe Company. 620 Eighth A=
+venue John Doe, NY 10018</p></td></tr></tbody></table></div></td></tr></tbo=
+dy></table><!--[if mso | IE]></td></tr></table><![endif]--></div>=0D=0A<img=
+ border=3D"0" width=3D"1" height=3D"1" alt=3D"" src=3D"https://nl.nytimes.c=
+om/q/q_eOKN6bIBcRcj-zHLUmYA~~/AAAAARA~/6YAr_3BKKSlVVppd5c10AJu47TndvQFA4-y9=
+n2SYBp3cpou8J2Dw9WIwMwuckH1dE-J2WHJSsW3YiSzGWUAp1g~~">=0D=0A</body></html>
+
+

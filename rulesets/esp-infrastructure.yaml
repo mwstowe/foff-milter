@@ -344,8 +344,16 @@ rules:
         - type: "HeaderPattern"
           header: "From"
           pattern: "(?i).*(newsletter|marketing|promo|updates|news).*"
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "BodyPattern"
+                pattern: "(?i).*<img.*src.*http.*"
+              - type: "BodyPattern"
+                pattern: "^.{0,200}$"
     score: -100
-    description: "Legitimate mailing services with proper authentication and unsubscribe"
+    description: "Legitimate mailing services with proper authentication, unsubscribe, and substantial content"
 
   # Enhanced Marketing ESP Infrastructure
   - name: "Enhanced Marketing ESP Infrastructure"
