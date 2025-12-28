@@ -929,12 +929,22 @@ rules:
   # Health and immune system spam
   - name: "Health Immune System Spam"
     criteria:
-      type: Or
+      type: And
       criteria:
-        - type: SubjectPattern
-          pattern: "(?i).*(miracle.*cure.*chronic.*pain|doctors.*hate.*this|immune.*system.*health.*misinformation|health.*spam|boost.*immune.*system|immune.*support).*"
-        - type: BodyPattern
-          pattern: "(?i).*(miracle.*cure.*chronic.*pain|doctors.*hate.*this|immune.*system.*health.*misinformation|health.*spam|boost.*immune.*system|immune.*support).*"
+        - type: Or
+          criteria:
+            - type: SubjectPattern
+              pattern: "(?i).*(miracle.*cure.*chronic.*pain|doctors.*hate.*this|immune.*system.*health.*misinformation|health.*spam|boost.*immune.*system|immune.*support).*"
+            - type: BodyPattern
+              pattern: "(?i).*(miracle.*cure.*chronic.*pain|doctors.*hate.*this|immune.*system.*health.*misinformation|health.*spam|boost.*immune.*system|immune.*support).*"
+        - type: Not
+          criteria:
+            type: Or
+            criteria:
+              - type: SenderPattern
+                pattern: ".*@.*(costco|walmart|target|amazon|bestbuy|homedepot|lowes|walgreens|cvs)\\.(com|net)$"
+              - type: SenderPattern
+                pattern: ".*@.*costco\\.com\\..*$"
     score: 190
 
   # Heater and appliance spam

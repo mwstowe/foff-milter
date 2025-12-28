@@ -797,6 +797,32 @@ impl ContextAnalyzer {
             return Some("job_spam".to_string());
         }
 
+        // Organization/Nonprofit industry
+        if sender_lower.contains("leaderswedeserve")
+            || sender_lower.contains("nonprofit")
+            || sender_lower.contains("organization")
+            || sender_lower.contains("foundation")
+            || content_lower.contains("progress update")
+            || content_lower.contains("our mission")
+        {
+            return Some("nonprofit".to_string());
+        }
+
+        // Retail/E-commerce industry
+        if sender_lower.contains("costco")
+            || sender_lower.contains("walmart")
+            || sender_lower.contains("target")
+            || sender_lower.contains("amazon")
+            || sender_lower.contains("bestbuy")
+            || sender_lower.contains("homedepot")
+            || sender_lower.contains("lowes")
+            || sender_lower.contains("michaels")
+            || sender_lower.contains("lovepop")
+            || sender_lower.contains("capitaloneshopping")
+        {
+            return Some("retail".to_string());
+        }
+
         // Food delivery/restaurant industry
         if sender_lower.contains("doordash")
             || sender_lower.contains("ubereats")
@@ -910,6 +936,8 @@ impl ContextAnalyzer {
             "rxorder.walgreens.com",
             "luxpotshop.com",
             "michaelscustomframing.com",
+            "lovepop.com",
+            "lovepopcards.com",
         ];
 
         let is_legitimate_sender = legitimate_retailers
@@ -946,6 +974,8 @@ impl ContextAnalyzer {
             "job_spam" => 2.0,        // 100% increase for job spam
             "floral" => 0.4,          // 60% reduction for floral marketing
             "food_delivery" => 0.4,   // 60% reduction for food delivery marketing
+            "nonprofit" => 0.3,       // 70% reduction for nonprofit communications
+            "retail" => 0.3,          // 70% reduction for retail marketing
             "marketplace" => 0.3,     // 70% reduction for marketplace offers
             "tech_newsletter" => 0.2, // 80% reduction for newsletters
             "cannabis_retail" => 0.2, // 80% reduction for legitimate cannabis retailers
@@ -980,7 +1010,9 @@ impl FeatureExtractor for ContextAnalyzer {
             || sender.to_lowercase().contains("michaels.com")
             || sender.to_lowercase().contains("customframe")
             || sender.to_lowercase().contains("michaelscustomframing.com")
-            || sender.to_lowercase().contains("walgreens.com");
+            || sender.to_lowercase().contains("walgreens.com")
+            || sender.to_lowercase().contains("lovepop.com")
+            || sender.to_lowercase().contains("lovepopcards.com");
         let additional_discount = if borderline_legitimate { 0.2 } else { 1.0 }; // Extra 80% reduction
 
         // Check for Medicare/healthcare scam patterns
