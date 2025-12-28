@@ -909,6 +909,7 @@ impl ContextAnalyzer {
             "walgreens.com",
             "rxorder.walgreens.com",
             "luxpotshop.com",
+            "michaelscustomframing.com",
         ];
 
         let is_legitimate_sender = legitimate_retailers
@@ -974,7 +975,12 @@ impl FeatureExtractor for ContextAnalyzer {
         // Additional specific exclusions for borderline legitimate cases
         let borderline_legitimate = sender.to_lowercase().contains("make.co")
             || sender.to_lowercase().contains("rxorder.walgreens.com")
-            || sender.to_lowercase().contains("luxpotshop.com");
+            || sender.to_lowercase().contains("luxpotshop.com")
+            || sender.to_lowercase().contains("capitaloneshopping.com")
+            || sender.to_lowercase().contains("michaels.com")
+            || sender.to_lowercase().contains("customframe")
+            || sender.to_lowercase().contains("michaelscustomframing.com")
+            || sender.to_lowercase().contains("walgreens.com");
         let additional_discount = if borderline_legitimate { 0.2 } else { 1.0 }; // Extra 80% reduction
 
         // Check for Medicare/healthcare scam patterns
