@@ -318,9 +318,26 @@ impl AuthenticationAnalyzer {
         // Check for Reply-To mismatch with From
         if let Some(from) = context.headers.get("from") {
             if let Some(reply_to) = context.headers.get("reply-to") {
-                if self.extract_domain(from) != self.extract_domain(reply_to) {
-                    // Different domains in From and Reply-To can indicate spoofing
-                    spoofing_score += 15;
+                let from_domain = self.extract_domain(from);
+                let reply_to_domain = self.extract_domain(reply_to);
+                
+                if from_domain != reply_to_domain {
+                    // Check for legitimate domain relationships
+                    let is_legitimate = match (&from_domain, &reply_to_domain) {
+                        (Some(from_d), Some(reply_d)) => {
+                            // Lovepop legitimate domain relationship
+                            (from_d == "magic.lovepop.com" && reply_d == "lovepopcards.com") ||
+                            (from_d == "lovepopcards.com" && reply_d == "magic.lovepop.com") ||
+                            // Same root domain (e.g., mail.example.com -> support.example.com)
+                            self.same_root_domain(from_d, reply_d)
+                        }
+                        _ => false,
+                    };
+                    
+                    if !is_legitimate {
+                        // Different domains in From and Reply-To can indicate spoofing
+                        spoofing_score += 15;
+                    }
                 }
             }
         }
@@ -338,6 +355,20 @@ impl AuthenticationAnalyzer {
                 .trim()
                 .to_string()
         })
+    }
+
+    /// Check if two domains share the same root domain
+    fn same_root_domain(&self, domain1: &str, domain2: &str) -> bool {
+        let get_root_domain = |domain: &str| -> String {
+            let parts: Vec<&str> = domain.split('.').collect();
+            if parts.len() >= 2 {
+                format!("{}.{}", parts[parts.len() - 2], parts[parts.len() - 1])
+            } else {
+                domain.to_string()
+            }
+        };
+        
+        get_root_domain(domain1) == get_root_domain(domain2)
     }
 }
 
