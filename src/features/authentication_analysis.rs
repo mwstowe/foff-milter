@@ -559,7 +559,7 @@ impl FeatureExtractor for AuthenticationFeature {
                           sender.contains(".org") || sender.contains("charity") || sender.contains("foundation");
         
         if is_nonprofit && matches!(risk_level, AuthenticationRisk::Secure) {
-            score -= 8; // Enhanced bonus for secure nonprofit authentication
+            score -= 16; // Strong bonus for secure nonprofit authentication
         }
 
         let confidence = match risk_level {

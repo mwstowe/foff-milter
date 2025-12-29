@@ -1,0 +1,445 @@
+Return-Path: <mstowe+caf_=mstowe=user@gmail.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTPS id 5BSHMV8d050835
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <user@baddomain.com>; Sun, 28 Dec 2025 17:22:31 GMT
+	(envelope-from mstowe+caf_=mstowe=user@gmail.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (1024-bit key; unprotected) header.d=e.leaderswedeserve.com header.i=@e.leaderswedeserve.com header.b=KZN/7VDL
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 5BSHMS3L124123
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=OK)
+	for <user@baddomain.com>; Sun, 28 Dec 2025 11:22:30 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 5BSHMS3L124123
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (1024-bit key, unprotected) header.d=e.leaderswedeserve.com header.i=@e.leaderswedeserve.com header.a=rsa-sha256 header.s=ak01 header.b=KZN/7VDL
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-64b7318f1b0so9947551a12.2
+        for <user@baddomain.com>; Sun, 28 Dec 2025 09:22:29 -0800 (PST)
+ARC-Seal: i=2; a=rsa-sha256; t=555-123-4567; cv=pass;
+        d=google.com; s=arc-20240605;
+        b=X1loYHLp3pWR0I/65ORjl7N95r+/jrxMqfyXMkNRkSv4GDaznRmv8+7SSnAzI165Ip
+         kzLU4jEeLVowqvn+hOO2BWiTHgLM0djWExYcRSIH7Jp/LiW384ou7PSoMz+IO7T8Gace
+         F9cY6CY91AFksed+0PLPB3QGTLJ6F4TJloq03oKVrFXJSNhs3W8ytCWAhkD9FWLIQfhM
+         Xo/wjHz59eGqZVKHpuHA2ISeHjLSANMqIID7aHs/qeCoQ7FoQbuHjl6HG56e+dCmYpLG
+         Ne97jzklzxgQQn8l+BIwJZaxGN5DFAW/ykz9+KaVd4WezU3VSORJEAyYD2Nwqcyn/y1Z
+         IWOA==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=list-unsubscribe-post:list-unsubscribe:feedback-id:list-id:reply-to
+         :message-id:to:from:subject:mime-version:date:dkim-signature
+         :delivered-to;
+        bh=YkOU12yOdcfESj23wPTmIpyhvvQta1xz/aqD0ty7PSU=;
+        fh=v1a48hpaoZoBnFL9ZengOYGCZBy1Il6kGmfd8Y3p3Ms=;
+        b=UBZb9DnJcS9XKYvA9m60HTAhyki5lMEb2/5dg2yKyBeBrcvbSu894gY6R9+qBN2G2S
+         CMqxUr+WL4S+ErGz0twd8BcmrOGLbRC494g2RmrtNYxQAkUbFF82pnR+5CMjWp8neeq4
+         HgU6TN3m4NwBbb3OUf54I4ZmiZjSsVWH9pIJBl3PyhVfCJJINTEftVE9HLFvCTdYyYMI
+         5feZk1zirfKUr3UW0kWu9REqKTgGi9+VbleTipIA5JKj7lzy5wvHiX7FCF9jVKZttcjU
+         lFNedNc/7SqMo43Hm5ASkXjosgZA/KL56PmVMfTkddMnTCjaUXH5IdDD4KD47/nAswgj
+         Kxig==;
+        darn=baddomain.com
+ARC-Authentication-Results: i=2; mx.google.com;
+       dkim=pass header.i=@e.leaderswedeserve.com header.s=ak01 header.b="KZN/7VDL";
+       spf=pass (google.com: domain of user@bounces.e.leaderswedeserve.com designates 192.174.93.45 as permitted sender) smtp.mailfrom=user@bounces.e.leaderswedeserve.com;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=e.leaderswedeserve.com
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=555-123-4567; x=555-123-4567;
+        h=list-unsubscribe-post:list-unsubscribe:feedback-id:list-id:reply-to
+         :message-id:to:from:subject:mime-version:date:dkim-signature
+         :delivered-to:x-forwarded-for:x-forwarded-to:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=YkOU12yOdcfESj23wPTmIpyhvvQta1xz/aqD0ty7PSU=;
+        b=Jm/a/y7zmiyOsYlw883vrZUHVTmU2LyBjHP+bV3es4uVCx4DoabDlgtFgNGaT0F1Nb
+         R+vP1uSRAPfTe2r3n8s82xHe3XY8dP1161fJrw3b4SGga+Vhhj8D5nFmfPtwxgjtw1el
+         6yBZmfmA6dnZj9bOj0Z5zZehGkcDI3ZhwGq1Z+w07oEp7dt/qGn90JEjBTqGOAmU0obU
+         C3uBy7PoHaonfv8TxjVagsa6FHlD69rvvhkdebi4LsR+mDdMNWtlvEHjqJmjyam6HDx6
+         FZDDUpkp4b4PY8ahx3Bz6Pbl7ytOKiQEOIWwz3u1NGbxNh4oCAqBJzZUbnLJCMXVGET0
+         RyWQ==
+X-Forwarded-Encrypted: i=2; AJvYcCX3TaC1YrED/XDMtsrk6XHdVBxNDOyaT0JUbzunI7qEhYFQFz8pjv2RjwJUcW039BkY8cNcEn8=@baddomain.com
+X-Gm-Message-State: AOJu0YygnTa3fTdQ5SqVuxXQgMEVStitfvCO9WKRDjKXd9XJuH5ZAGSD
+	eHfCjPWFjwGkeQv3KeBOduIt+070DT0UmIrQXS0e7a9nKBMle+Wl5GmPTkUlkeIlJgDg9uOTotf
+	TSJfMbXdqrrx65oAmAriBeNC6XSpcEvQJJHxIbuqJEkSjLSfHJ4XYlLhQHbLwZw==
+X-Received: by 2002:a05:6402:1d4b:b0:64b:7dd2:6b9d with SMTP id 4fb4d7f45d1cf-64b8eb738abmr25393927a12.8.1766942547892;
+        Sun, 28 Dec 2025 09:22:27 -0800 (PST)
+X-Forwarded-To: user@baddomain.com
+X-Forwarded-For: user@gmail.com user@baddomain.com
+Delivered-To: user@gmail.com
+Received: by 2002:a05:6400:682f:b0:2c2:3df:9599 with SMTP id 15csp5140530ect;
+        Sun, 28 Dec 2025 09:22:26 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEWA9mvO12NFdVN6Xx6U693HHqjmCELl0qkCpuQGOU/NjR+ybz8ksY+NpLtaDTgrZC8+dDk
+X-Received: by 2002:a05:690c:92:b0:786:68da:26ee with SMTP id 00721157ae682-78fb35cd0eamr213066547b3.8.1766942546288;
+        Sun, 28 Dec 2025 09:22:26 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=555-123-4567; cv=none;
+        d=google.com; s=arc-20240605;
+        b=RM4q11pOfgwrumEikyZxonWOPLiB+5bVqaELafF8U0fcqof9yx1rvtycq5PGZDZy47
+         paF9ghHCOHOG9aHFYWrMZy/zq5/MUiqxPRmv26eaJWZMurG4zSyt+A76fp+hph05NXI6
+         EOT6QRVo5Bqz9yjByTLLDyex6CAabxs7gSy90QqBdIWtysIN7b1P9UFNqrLx6068ctYc
+         dlzqg2qQuaGV7PbOxJJREKjfN/QTXGOl4uJZykAJhfOQDldofMYeXgfKpeqpHj0TCGug
+         cS6MsAPz5XRM9BaeTxPjiUGFCrva13R7qaLFIIUcHI1Hg4a4FnM6xDE6FF/SfJVYpfAq
+         fuIg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=list-unsubscribe-post:list-unsubscribe:feedback-id:list-id:reply-to
+         :message-id:to:from:subject:mime-version:date:dkim-signature;
+        bh=YkOU12yOdcfESj23wPTmIpyhvvQta1xz/aqD0ty7PSU=;
+        fh=2y4pd6at64vq6YDzAu/PN2XUrC4Yq4COG1cVK3o/UjE=;
+        b=E74z0da9srs9K/Bt598AUuqq0eS5WvXjJvHFS0//Dd/TaCi/ZL5WFKPv37CsqkRqpx
+         3wDR73j58+GvEb+IE3MxEVPToCeucHjpRbqT0GnheWyTgCO0bklXUoFl9YxYY8KZfQiw
+         8MR4d4WDLgbVnb2pTfh7B7VsD0rRzKcfl1w9nqUgY1/Plm4q2Seh9b9lUsKCh2koR3eQ
+         d3Ft0HY6yJOXKwzASvHIaQ69b22+fwmk/wCQV+LKQO1sGWyzIoeWPrIZV5czO1WSepI+
+         r5FtgJp/mz8tN/oY/tcgpL4wsm1gHrqb4ZO4BNrBb2zPWLShen8NtBtuC66e+mAk6Lbx
+         9+mA==;
+        dara=google.com
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@e.leaderswedeserve.com header.s=ak01 header.b="KZN/7VDL";
+       spf=pass (google.com: domain of user@bounces.e.leaderswedeserve.com designates 192.174.93.45 as permitted sender) smtp.mailfrom=user@bounces.e.leaderswedeserve.com;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=e.leaderswedeserve.com
+Received: from mta-174-93-45.sparkpostmail.com (mta-174-93-45.sparkpostmail.com. [192.174.93.45])
+        by mx.google.com with ESMTPS id 00721157ae682-78fb45cc4e5si568512757b3.196.2025.12.28.09.22.25
+        for <user@gmail.com>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 28 Dec 2025 09:22:26 -0800 (PST)
+Received-SPF: pass (google.com: domain of user@bounces.e.leaderswedeserve.com designates 192.174.93.45 as permitted sender) client-ip=192.174.93.45;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@e.leaderswedeserve.com header.s=ak01 header.b="KZN/7VDL";
+       spf=pass (google.com: domain of user@bounces.e.leaderswedeserve.com designates 192.174.93.45 as permitted sender) smtp.mailfrom=user@bounces.e.leaderswedeserve.com;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=e.leaderswedeserve.com
+X-MSFBL: SOgcoRheu6fVAw63YRXHvIRoswaObcgaLjBA7l99oc0=|eyJjdXN0b21lcl9pZCI
+	6IjEiLCJyIjoibXN0b3dlQGdtYWlsLmNvbSIsInRlbmFudF9pZCI6Indhd2QiLCJ
+	zdWJhY2NvdW50X2lkIjoiMzE1IiwibWVzc2FnZV9pZCI6IjY5NDU1MTY3NTE2OWJ
+	hYWIxODMxIn0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=e.leaderswedeserve.com; s=ak01; t=555-123-4567;
+	i=@e.leaderswedeserve.com;
+	bh=YkOU12yOdcfESj23wPTmIpyhvvQta1xz/aqD0ty7PSU=;
+	h=Date:Content-Type:Subject:From:To:Message-ID:List-Unsubscribe:
+	 List-Unsubscribe-Post:From:To:Cc:Subject;
+	b=KZN/7VDLelkeC/S3lQBWP60OBmIu9aeWMUqultjdrRyNiLjSH9IY/Ws2tLGmY6Tsq
+	 lx53o9MqGnqv+pqeQ6oj52IWazn0YyfwXIjn/nJ6r7Ci2aKmZGmAbnMivnfwWhpYBz
+	 6fZKig3y5VeWhbGSt+FtucoLrxrlGvxVORYnPPW0=
+Received: from [10.90.5.230] ([10.90.5.230])
+	by i-08e555c51d5bf18ce.mta2vrest.sd.prd.sparkpost (ecelerity 5.1.0.74732 r(msys-ecelerity:tags/5.1.0.24)) with REST
+	id 13/81-33985-15761596; Sun, 28 Dec 2025 17:22:25 +0000
+Date: Sun, 28 Dec 2025 17:22:25 +0000
+Content-Type: multipart/alternative;
+	boundary="----=_943263e326673e9c633ba23da6f4ce5"
+MIME-Version: 1.0
+Subject: An update on our progress
+From: "John Doe" <user@e.leaderswedeserve.com>
+To: "John Doe" <user@gmail.com>
+Message-ID: <user@e.leaderswedeserve.com>
+Reply-To: user@leaderswedeserve.com
+List-ID: 
+Feedback-ID: 02c8861f:b:2977.mailingid:actionkit
+X-Provider: sp_rest
+List-Unsubscribe: <mailto:user@sp.actionkit.com?subject=unsubscribe:FyIl1K5Z-H2Yq4Ey4_I49pb-ZU39pvv9clY5Uf8vBDg~|eyAicmNwdF90byI6ICJtc3Rvd2VAZ21haWwuY29tIiwgInRlbmFudF9pZCI6ICJ3YXdkIiwgImN1c3RvbWVyX2lkIjogIjEiLCAic3ViYWNjb3VudF9pZCI6ICIzMTUiLCAibWVzc2FnZV9pZCI6ICI2OTQ1NTE2NzUxNjliYWFiMTgzMSIgfQ~~>,<https://unsubscribe.spmta.com/u/EQ6F7oIFB5a8CVcy8FoWvA~~/AAAAARA~/8_4MISBxLJnP7JbNRGJ4vH8QSr9lTkrFL_S8LcQiQBlM90t0qL7hdlIlJRix2zuDjGWlZ1vkIQ3NZ_Pmq7C6rw~~>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Sun, 28 Dec 2025 17:22:32 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Sun, 28 Dec 2025 11:22:30 -0600 (CST)
+X-Spam-Flag: YES
+X-FOFF-Feature-Evidence: John Doe: Authentication risk level: Suspicious (hotel.baddomain.com) [aea683a9]
+X-FOFF-Feature-Evidence: John Doe: Potential spoofing attempt detected (hotel.baddomain.com) [60e03b2e]
+X-FOFF-Feature-Evidence: John Doe: DMARC authentication passed (hotel.baddomain.com) [e80b4998]
+X-FOFF-Feature-Evidence: John Doe: SPF authentication passed (hotel.baddomain.com) [a5ad0bae]
+X-FOFF-Feature-Evidence: John Doe: DKIM domain properly aligned (hotel.baddomain.com) [50606dfd]
+X-FOFF-Feature-Evidence: John Doe: DKIM authentication passed (hotel.baddomain.com) [55e44c80]
+X-FOFF-Feature-Evidence: John Doe: Suspicious domain pattern detected: e.leaderswedeserve.com (hotel.baddomain.com) [b9d1fa22]
+X-FOFF-Feature-Evidence: John Doe: Multiple exclamation marks detected (hotel.baddomain.com) [8c765852]
+X-FOFF-Feature-Evidence: John Doe: Industry context detected: tech_newsletter (reduced scoring) (hotel.baddomain.com) [80e1dd3b]
+X-FOFF-Score: 130 - trusted from upstream foff-milter v0.8.8 on juliett.baddomain.com
+X-FOFF-Score: 130 - analyzed by foff-milter v0.8.8 on hotel.baddomain.com
+X-FOFF-Score: 130 - foff-milter v0.8.8 (hotel.baddomain.com)
+X-FOFF-Trust-Analysis: auth=100, infra=10, behavior=0, content=20, total=55, adj=-10
+X-FOFF-Business-Analysis: comm=60, legit=5, industry=10, compliance=25, total=28, adj=0
+X-FOFF-Seasonal-Analysis: seasonal=0, consistency=10, patterns=0, timing=5, total=4, adj=0
+
+This is a multi-part message in MIME format.
+
+------=_943263e326673e9c633ba23da6f4ce5
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+
+   =0D=0A      =0D=0A     =0D=0A    =0D=0A     =0D=0A    =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=0D=0A   =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=0D=0A   =0D=0A=0D=0A      =
+                       [ https://act.leaderswedeserve.com/go/853=3Frefcode=
+=3Dem20251228-1&t=3D1001&akid=3D2977%2E6149044%2EMcB_zz ]John Doe Deserve=
+=0D=0A=0D=0A   =0D=0A=0D=0A   I=E2=80=99m Audrey, the Fundraising=0D=0A   D=
+irector here at John Doe Deserve.=0D=0A=0D=0A   I wanted to give you a tr=
+ansparent update about our progress toward our=0D=0A   goal:=0D=0A=0D=0A   =
+We=E2=80=99re a few=0D=0A   thousand donors away from reaching our 250,000 =
+individual contributors=0D=0A   goal. [ https://act.leaderswedeserve.com/go=
+/3954=3Fc0=3Dem_ms_lwd_20251228_1_goalupdate.8jvKMS&refcode=3Dem20251228-29=
+77&t=3D1003&akid=3D2977%2E6149044%2EMcB_zz ]Will you step up and make your =
+first contribution of just $1 now=0D=0A   to help us close the gap=3F =0D=
+=0A=0D=0A   This goal isn=E2=80=99t arbitrary. We NEED to finish this year =
+strong and=0D=0A   start 2026 in the best position possible. It=E2=80=99s t=
+he only way we=E2=80=99ll fulfill=0D=0A   our mission and elect the inspiri=
+ng young Democrats we=E2=80=99re endorsing in the=0D=0A   midterm elections=
+=2E=0D=0A=0D=0A   We don=E2=80=99t take corporate PAC money, and neither do=
+ our candidates. That=0D=0A   means that we rely on grassroots support from=
+ people like you who believe=0D=0A   in this fight.=0D=0A=0D=0A   [ https:/=
+/act.leaderswedeserve.com/go/2160=3Fc0=3Dem_ms_lwd_20251228_1_goalupdate.cF=
+fiv3&refcode=3Dem20251228-2977&amount=3D5&t=3D1004&akid=3D2977%2E6149044%2E=
+McB_zz ]Please pitch in $5 now=0D=0A   before the FEC end-of-year deadline.=
+=0D=0A=0D=0A   =0D=0A=0D=0A                         [ https://act.leaderswe=
+deserve.com/go/2160=3Fc0=3Dem_ms_lwd_20251228_1_goalupdate.cFfiv3&amount=3D=
+5&refcode=3Dem20251228-2977&t=3D1023&akid=3D2977%2E6149044%2EMcB_zz ]Donate=
+ $5 =C2=BB=0D=0A=0D=0A   =0D=0A=0D=0A   Thank you,=0D=0A=0D=0A   John Doe=
+n=0D=0A   John Doe=0D=0A   John Doe Deserve=0D=0A=0D=0A   =0D=
+=0A=0D=0A     =0D=0A     =0D=0A   This email was sent to user@gmail.com. =
+Email is a critical way we communicate with grassroots supporters like you.=
+ However, if you would like to change your subscription preferences, here a=
+re some options:=0D=0A=0D=0AReceive John Doe: https://act.leaderswedese=
+rve.com/signup/receive-fewer-emails/=3Ft=3D1024&akid=3D2977%2E6149044%2EMcB=
+_zz=0D=0AUpdate John Doe: https://act.leaderswedeserve.com/signup/u=
+pdate-your-information/=0D=0AUnsubscribe: https://act.leaderswedeserve.com/=
+unsubscribe/unsubscribe/=3Ft=3D1025&akid=3D2977%2E6149044%2EMcB_zz=0D=0A=0D=
+=0ALeaders John Doe=0D=0A611 John Doe SE=0D=0A#192=0D=0AWashingto=
+n, DC 20003=0D=user@leaderswedeserve.com=0D=0A=0D=0A[PAID FOR BY LEADERS =
+WE DESERVE, LEADERSWEDESERVE.COM, NOT AUTHORIZED BY ANY CANDIDATE OR CANDID=
+ATE'S COMMITTEE]=0D=0A=0D=0A=0D=0A
+------=_943263e326673e9c633ba23da6f4ce5
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html; charset="utf-8"
+
+<!--HEADER-->=0D=0A=0D=0A=0D=0A  =0D=0A    =0D=0A      =0D=0A    =0D=0A    =
+=0D=0A=09=0D=0A      =0D=0A      =0D=0A      =0D=0A=0D=0A=09=0D=0A=0D=0A=0D=
+=0A=0D=0A<head><style type=3D"text/css">=0D=0A=09@media (min-width: 500px) =
+{ =0D=0A=09=09.overridetable { display:block !important;mso-hide: all; }=0D=
+=0A=09}</style>=0D=0A=09<!--[if gte mso 9]>=0D=0A=09<style type=3D"text/css=
+">=0D=0A=09=09.overridetable { display:none !important;mso-hide: all; }=0D=
+=0A=09</style>=0D=0A=09<[endif]-->=0D=0A</head>=0D=0A<style type=3D"text/cs=
+s">html,body{=0D=0A=09=09=09background-color:#FFF;=0D=0A=09=09}=0D=0A=09=09=
+div{=0D=0A=09=09=09font-family:"John Doe", Helvetica, Arial, "Lucida =
+Grande", sans-serif;=0D=0A=09=09=09font-weight:400;=0D=0A=09=09=09font-size=
+:17px;=0D=0A=09=09=09line-height:140%;=0D=0A=09=09}=0D=0A</style>=0D=0A<sty=
+le type=3D"text/css">=0D=0A=09=09@media (min-width: 500px) { =0D=0A=09=09.o=
+verridetable { display:block !important;mso-hide: all; }=0D=0A=09}=0D=0A</s=
+tyle>=0D=0A<!--[if gte mso 9]>=0D=0A=09<style type=3D"text/css">=0D=0A=09=
+=09.overridetable { display:none !important;mso-hide: all; }=0D=0A@media (m=
+in-width: 500px) { =0D=0A=09=09.overridetable { display:none !important;mso=
+-hide: all; }=0D=0A=09}=0D=0A=09</style>=0D=0A=09<[endif]-->=0D=0A<div styl=
+e=3D"display: none; max-height: 0px; overflow: hidden;">Can you support our=
+ work before the end-of-year deadline=3F&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj=
+;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&n=
+bsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj=
+;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&n=
+bsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj=
+;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&n=
+bsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp=
+;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&n=
+bsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp=
+;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&n=
+bsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp=
+;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&n=
+bsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp=
+;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&n=
+bsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp=
+;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&n=
+bsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp=
+;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&n=
+bsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp=
+;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&n=
+bsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp=
+;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&z=
+wnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp=
+;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&z=
+wnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp=
+;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&z=
+wnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp=
+;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&z=
+wnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp=
+;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&z=
+wnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp=
+;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&z=
+wnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp=
+;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&z=
+wnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj=
+;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&z=
+wnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj=
+;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&z=
+wnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj=
+;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&z=
+wnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj=
+;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&z=
+wnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj=
+;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&z=
+wnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj=
+;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&z=
+wnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj=
+;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&n=
+bsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj=
+;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&n=
+bsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj=
+;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&n=
+bsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj=
+;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&n=
+bsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj=
+;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&n=
+bsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj=
+;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&n=
+bsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj=
+;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&n=
+bsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp=
+;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&n=
+bsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp=
+;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&n=
+bsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp=
+;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&n=
+bsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp=
+;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&n=
+bsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp=
+;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&n=
+bsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp=
+;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&n=
+bsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp=
+;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&n=
+bsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp=
+;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&z=
+wnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp=
+;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&z=
+wnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp=
+;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&z=
+wnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp=
+;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&z=
+wnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp=
+;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&z=
+wnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp=
+;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&z=
+wnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp=
+;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&z=
+wnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj=
+;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&z=
+wnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj=
+;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&z=
+wnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj=
+;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&z=
+wnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj=
+;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&z=
+wnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj=
+;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&z=
+wnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj=
+;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&z=
+wnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj=
+;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&n=
+bsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj=
+;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&n=
+bsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj=
+;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&n=
+bsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj=
+;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&n=
+bsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj=
+;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&n=
+bsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj=
+;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&n=
+bsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj=
+;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&n=
+bsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp=
+;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&n=
+bsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp=
+;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&n=
+bsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp=
+;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&n=
+bsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp=
+;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&n=
+bsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp=
+;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&n=
+bsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp=
+;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&n=
+bsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp=
+;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&n=
+bsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp=
+;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&z=
+wnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp=
+;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&z=
+wnj;&nbsp;&zwnj;&nbsp;</div>=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=
+=0A=0D=0A    <h1 style=3D"text-align: center; padding: 25px 0 12px 0; font-=
+weight: 400; font-size: 14px; border: 0; margin: 0;"><a href=3D"https://act=
+=2Eleaderswedeserve.com/go/852=3Frefcode=3Dem20251228-1&t=3D1&akid=3D2977%2=
+E6149044%2EMcB_zz"><img style=3D"width:100%;max-width:225px;margin-left:aut=
+o;margin-right:auto" width=3D"225" src=3D"https://lwd.cdn.actionkit.com/ima=
+ges/leaders_we_deserve-logo-a.png" alt=3D"John Doe Deserve"></a></h1>=0D=
+=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A<!--[if mso]>=0D=0A<div style=3D"width:100=
+%;height:12px;color:#FFF;font-size:12px;">&nbsp;</div>=0D=0A   <center>=0D=
+=0A      <table>=0D=0A         <tr>=0D=0A            <td width=3D"600">=0D=
+=0A               <![endif]-->=0D=0A<div style=3D"max-width: 650px; margin:=
+ 0 auto;font-weight: 400; font-size: 17px; line-height: 150%;"><style> p { =
+margin-bottom:1em; }=0D=0A=09@media (min-width: 600px) { =0D=0A=09=09.overr=
+idetable { display:block; }=0D=0A=09}</style><p></p>=0D=0A<p>I=E2=80=99m Au=
+drey, the John Doe here at John Doe Deserve.</p>=0D=0A<p>I wa=
+nted to give you a transparent update about our progress toward our goal:</=
+p>=0D=0A<p>We=E2=80=99re a few thousand donors away from reaching our 250,0=
+00 individual contributors goal. <strong><a href=3D"https://act.leaderswede=
+serve.com/go/3954=3Fc0=3Dem_ms_lwd_20251228_1_goalupdate.8jvKMS&refcode=3De=
+m20251228-2977&t=3D3&akid=3D2977%2E6149044%2EMcB_zz">Will you step up and m=
+ake your first contribution of just $1 now to help us close the gap=3F</a><=
+/strong> </p>=0D=0A<p>This goal isn=E2=80=99t arbitrary. We NEED to finish =
+this year strong and start 2026 in the best position possible. It=E2=80=99s=
+ the only way we=E2=80=99ll fulfill our mission and elect the inspiring you=
+ng Democrats we=E2=80=99re endorsing in the midterm elections.</p>=0D=0A<p>=
+We don=E2=80=99t take corporate PAC money, and neither do our candidates. T=
+hat means that we rely on grassroots support from people like you who belie=
+ve in this fight.</p>=0D=0A<p><strong><a href=3D"https://act.leaderswedeser=
+ve.com/go/2160=3Fc0=3Dem_ms_lwd_20251228_1_goalupdate.cFfiv3&refcode=3Dem20=
+555-123-4567&amount=3D5&t=3D4&akid=3D2977%2E6149044%2EMcB_zz">Please pitch i=
+n $5 now before the FEC end-of-year deadline. </a></strong></p>=0D=0A<p></p=
+>=0D=0A<p style=3D"text-align: center; width: 100%;" align=3D"center"><stro=
+ng><a style=3D"font-weight: bold; font-family: Helvetica, Arial,sans-serif;=
+ font-size: 19px; background-color: #36193b; border-radius: 6px; border-bot=
+tom: 2px solid #ea3e13; width: 95%; max-width: 400px; margin: 24px auto; te=
+xt-align: center; color: #f1eefa; text-decoration: none; padding: 14px 5px =
+13px; display: block; letter-spacing: 0px;" href=3D"https://act.leaderswede=
+serve.com/go/2160=3Fc0=3Dem_ms_lwd_20251228_1_goalupdate.cFfiv3&amount=3D5&=
+refcode=3Dem20251228-2977&t=3D23&akid=3D2977%2E6149044%2EMcB_zz">Donate $5 =
+=C2=BB</a></strong></p>=0D=0A<p></p>=0D=0A<p>Thank you,</p>=0D=0A<p>Audrey =
+Ryan<br />John Doe<br />John Doe Deserve</p>=0D=0A<p></p><img=
+ src=3D"https://act.leaderswedeserve.com/o.gif=3Fakid=3D2977.6149044.McB_zz=
+" alt=3D""/>=0D=0A</div>=0D=0A=0D=0A    =0D=0A  =0D=0A=0D=0A=0D=0A=0D=0A<!-=
+-END HEADER--><!-- START FOOTER-->=0D=0A<div style=3D"max-width: 600px; ali=
+gn: center; margin-left: auto; margin-right: auto;"><hr></div>=0D=0A<p styl=
+e=3D"text-align: center; width: 100%;" align=3D"center"><strong><a style=3D=
+"font-weight: bold; font-family: Helvetica, Arial,sans-serif; font-size: 19=
+px; background-color: #36193b; border-radius: 6px; border-bottom: 2px solid=
+ #ea3e13; width: 95%; max-width: 400px; margin: 20px auto; text-align: cent=
+er; color: #f1eefa; text-decoration: none; padding: 14px 5px 13px; font-wei=
+ght: bold; display: block; letter-spacing: 0px;" href=3D"https://secure.act=
+blue.com/donate/lwd-em-footer=3Frefcode=3Dem20251228-1&t=3D24&refcode2=3D29=
+77_6149044_McB_zz&akid=3D2977%2E6149044%2EMcB_zz">Donate =C2=BB</a></strong=
+></p>=0D=0A<div class=3D"footer" style=3D"text-align: center; max-width: 60=
+0px; margin-left: auto; margin-right: auto; font-weight: 400; font-size: 13=
+px; line-height: 120%;">=0D=0A=0D=0A<p style=3D"font-family: 'John Doe=
+e', Helvetica, Arial, 'John Doe', sans-serif; font-size: 14px;">This e=
+mail was sent to <a style=3D"text-decoration: none !important; color: #000 =
+!important; font-weight: normal;" href=3D"#">user@gmail.com</a>. Email is=
+ a critical way we communicate with grassroots supporters like you. However=
+, if you would like to change your subscription preferences, here are some =
+options:<ul class=3D"footer-links" style=3D"margin: 0; padding: 0; list-sty=
+le-type: none;">=0D=0A<li style=3D"margin-bottom: 12px;"><a style=3D"font-w=
+eight: bold;" href=3D"https://act.leaderswedeserve.com/signup/receive-fewer=
+-emails/=3Ft=3D25&akid=3D2977%2E6149044%2EMcB_zz">John Doe Emails</a><=
+/li>=0D=0A<li style=3D"margin-bottom: 12px;"><a style=3D"font-weight: bold;=
+" href=3D"https://act.leaderswedeserve.com/signup/update-your-information/"=
+>John Doe Information</a></li>=0D=0A<li style=3D"margin-bottom: 12px;"><=
+a style=3D"font-weight: bold;" href=3D"https://act.leaderswedeserve.com/uns=
+ubscribe/unsubscribe/=3Ft=3D26&akid=3D2977%2E6149044%2EMcB_zz">Unsubscribe<=
+/a></li>=0D=0A</ul>=0D=0A<p style=3D"font-family: 'John Doe', Helveti=
+ca, Arial, 'John Doe', sans-serif; font-size: 14px;">To give by check:=
+<br>John Doe Deserve<br>611 John Doe SE<br>#192<br>Washington, DC=
+ 20003</p>=0D=0A<p style=3D"font-family: 'John Doe', Helvetica, Arial=
+, 'John Doe', sans-serif; font-size: 14px;">Email us: <a href=3D"mailt=
+o:user@leaderswedeserve.com">user@leaderswedeserve.com</a></p>=0D=0A<p styl=
+e=3D"font-family: 'John Doe', Helvetica, Arial, 'John Doe', sans=
+-serif; width: 100%; max-width: 350px; color: #595959; border: 1px solid #5=
+95959; font-weight: 600; box-sizing: border-box; padding: 10px; margin-righ=
+t: auto; margin-left: auto; text-align: center; line-height: 1;">PAID FOR B=
+Y LEADERS WE DESERVE, LEADERSWEDESERVE.COM, NOT AUTHORIZED BY ANY CANDIDATE=
+ OR CANDIDATE'S COMMITTEE</p>=0D=0A</div></div>=0D=0A</div><!-- [if mso]>=
+=0D=0A            </td>=0D=0A         </tr>=0D=0A      </table>=0D=0A   </c=
+enter>=0D=0A   <![endif]-->=0D=0A   =0D=0A<!--END FOOTER-->=0D=0A<img borde=
+r=3D"0" width=3D"1" height=3D"1" alt=3D"" src=3D"https://track.sp.actionkit=
+=2Ecom/q/fX0-WWiZipdelvbVSL8RSw~~/AAAAARA~/qZ5NhwhF0IBbiVeCgRcaZC01ovxqx7hx=
+yGWiOM6VMM3LVz9arVGN4fpfUdMyZ0LjOBHVgz7gB011AopEoRz-yA~~">=0D=0A=0D=0A
+------=_943263e326673e9c633ba23da6f4ce5--
+
