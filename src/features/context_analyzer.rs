@@ -1064,7 +1064,7 @@ impl FeatureExtractor for ContextAnalyzer {
         let photo_discount = if sender.to_lowercase().contains("shutterfly") || 
                                sender.to_lowercase().contains("snapfish") ||
                                sender.to_lowercase().contains("costcophoto") { 
-            0.4  // 60% additional reduction for photo service retailers
+            0.3  // 70% additional reduction for photo service retailers
         } else { 
             1.0 
         };

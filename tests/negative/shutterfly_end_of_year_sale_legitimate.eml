@@ -1,0 +1,508 @@
+Return-Path: <user@bounce.em.shutterfly.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTPS id 5BSCpxPL042024
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <user@baddomain.com>; Sun, 28 Dec 2025 12:51:59 GMT
+	(envelope-from user@bounce.em.shutterfly.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (2048-bit key; unprotected) header.d=em.shutterfly.com header.i=user@em.shutterfly.com header.b=dpwDh5sl;
+	dkim=pass (2048-bit key; unprotected) header.d=s10.y.mc.salesforce.com header.i=@s10.y.mc.salesforce.com header.b=PigDo8ZX
+Received: from mta10.em.shutterfly.com (mta10.em.shutterfly.com [13.111.58.252])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 5BSCpvZJ119571
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO)
+	for <user@baddomain.com>; Sun, 28 Dec 2025 06:51:57 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 5BSCpvZJ119571
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (2048-bit key, unprotected) header.d=em.shutterfly.com header.i=user@em.shutterfly.com header.a=rsa-sha256 header.s=10dkim1 header.b=dpwDh5sl;
+	dkim=pass (2048-bit key, unprotected) header.d=s10.y.mc.salesforce.com header.i=@s10.y.mc.salesforce.com header.a=rsa-sha256 header.s=fbldkim10 header.b=PigDo8ZX
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=10dkim1; d=em.shutterfly.com;
+ h=From:To:Subject:Date:List-Unsubscribe:List-Unsubscribe-Post:MIME-Version:
+ Reply-To:Message-ID:Content-Type:Content-Transfer-Encoding;
+ i=user@em.shutterfly.com;
+ bh=qxX9SlF6ph52Ttb+TTl3Z/OYf13qvz1iX5t8xPborr4=;
+ b=dpwDh5sl+GzNBUCHQ0JoV0W00MjUmFWXRtbj1qpGr29hhmFMbwqxeNG/rTkqRBkZSvOKtBn/h4Hr
+   r5/UcNnfKYY2KPzY9yC+y8ZlXNaoiJ1Fb49mTFkDKz2pwMHRdlNoqtow2bVvbQk+bTlYTfmlBv6P
+   72fNzwhr0W0QXUvbtz/N0qvkHYaLT2+ZE9/Fo6427KGd3GpihGXXKrqDIa5jtoXSqp1jEqbM5G7s
+   l0/zDoA3o6QI/NsIAb3sgU/nY/RrG8X0WBpjTJ1DdLq2wUlWrPms4e1zmmBMXYqRoMCwKaj+TZqU
+   Y3Th//7Jkuv8+eqvgfr5mktFMkyvCdM82/GiBQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=fbldkim10; d=s10.y.mc.salesforce.com;
+ h=From:To:Subject:Date:List-Unsubscribe:MIME-Version:Reply-To:Message-ID:
+ Content-Type:Content-Transfer-Encoding;
+ bh=qxX9SlF6ph52Ttb+TTl3Z/OYf13qvz1iX5t8xPborr4=;
+ b=PigDo8ZXsrLuyz71hDXNPV1aLGdXSSoJ+m3XA5XG8LpoqPvIYAVJSQ5tqw9nFE2bVidGKOnP8NgA
+   x5OOfQIBYMYQX66h+TEXbMHIQk8CuVdNkulr4dCBIm5f/flPTCQfFV85CkL4E9x7U7CUS+5capZw
+   xlelUGIoUwyPb3xWqLCISu+CqYPaNEayxnlpXxgqvt6UQ6po+yltJYi5YHxMq508bam0utwmAQP1
+   EvCq3xFFpx+PBcBGZrn5NTu7VoS4HMH3dcnllBNUC/+ZYd6qRG2dIVM/FVyWMsYp+ElYh1TjQj47
+   wm2JcKJsuG+bl9bPt0BBKwW8TFHR9mT3zJba2A==
+Received: by mta10.em.shutterfly.com id ha4juq2fmd4q for <user@baddomain.com>; Sun, 28 Dec 2025 12:51:57 +0000 (envelope-from <user@bounce.em.shutterfly.com>)
+From: "John Doe" <user@em.shutterfly.com>
+To: <user@baddomain.com>
+Subject: End of John Doe ends TONIGHT: 50% off almost everything, including John Doe!
+Date: Sun, 28 Dec 2025 06:51:56 -0600
+List-Unsubscribe: <https://click.em.shutterfly.com/subscription_center.aspx?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtaWQiOiIxMDAwMDk5MDAiLCJzIjoiMzA5NzA1ODg0IiwibGlkIjoiMTY0IiwiaiI6IjEyNDMxMDAiLCJqYiI6IjQwMTI5IiwiZCI6IjEwMDIxOSJ9.xkx_B1-F8GPMi-C703-y2cO3gL0i4Mifcm3RLUhgQNk>, <mailto:user@leave.em.shutterfly.com>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+MIME-Version: 1.0
+Reply-To: "John Doe" <user@em.shutterfly.com>
+X-SFMC-Stack: 10
+x-job: 100009900_1243100
+Message-ID: <user@dfw1s10mta1327.xt.local>
+Content-Type: text/html;
+	charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Sun, 28 Dec 2025 12:51:59 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Sun, 28 Dec 2025 06:51:58 -0600 (CST)
+X-Spam-Flag: YES
+X-FOFF-Feature-Evidence: John Doe: Authentication bonus reduced due to suspicious content (hotel.baddomain.com) [ed5235f6]
+X-FOFF-Feature-Evidence: John Doe: Authentication risk level: Suspicious (hotel.baddomain.com) [aea683a9]
+X-FOFF-Feature-Evidence: John Doe: DMARC result unknown (hotel.baddomain.com) [30e3b12c]
+X-FOFF-Feature-Evidence: John Doe: SPF result unknown (hotel.baddomain.com) [f318740e]
+X-FOFF-Feature-Evidence: John Doe: DKIM domain misaligned: s10.y.mc.salesforce.com vs em.shutterfly.com (hotel.baddomain.com) [68908a5e]
+X-FOFF-Feature-Evidence: John Doe: DKIM authentication passed (hotel.baddomain.com) [55e44c80]
+X-FOFF-Feature-Evidence: John Doe: Multiple exclamation marks detected (hotel.baddomain.com) [8c765852]
+X-FOFF-Feature-Evidence: John Doe: Industry context detected: tech_newsletter (reduced scoring) (hotel.baddomain.com) [80e1dd3b]
+X-FOFF-Rule-Matched: John Doe: John Doe Phishing (hotel.baddomain.com) [c6d00455]
+X-FOFF-Score: 110 - trusted from upstream foff-milter v0.8.8 on juliett.baddomain.com
+X-FOFF-Score: 110 - foff-milter v0.8.8 (hotel.baddomain.com)
+X-FOFF-Trust-Analysis: auth=0, infra=10, behavior=-10, content=20, total=3, adj=0
+X-FOFF-Business-Analysis: comm=55, legit=15, industry=20, compliance=35, total=33, adj=0
+X-FOFF-Seasonal-Analysis: seasonal=0, consistency=10, patterns=0, timing=-15, total=1, adj=0
+
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="UTF-8">
+  <meta name="HandheldFriendly" content="true">
+           
+  <meta name="viewport" content="width=device-width, initial-scale=0.666667, maximum-scale=0.666667, user-scalable=0">
+    
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <meta name="viewport" content="width=device-width">
+    
+  <meta name="format-detection" content="telephone=no,date=no,address=no,email=no"/>
+
+  <title></title>
+  <style media="all" type="text/css">
+    body {
+      /*height: 100% !important;*/
+      width: 100% !important;
+      margin: 0;
+      padding: 0;
+    }
+
+    table {
+      margin: 0 auto !important;
+      border-collapse: collapse;
+    }
+
+    .gmailfix {
+      display: none;
+      display: none !important;
+    }
+
+    button {
+      display: block !important
+    }
+
+    /*
+    div {
+      display: block !important
+    }
+    */
+
+    body,
+    div,
+    span,
+    p,
+    a,
+    li,
+    td {
+      -webkit-text-size-adjust: none;
+    }
+
+    .apple_link a {
+      text-decoration: none;
+      color: #181512;
+    }
+    
+    #unlinkDatesIOSWrapper #unlinkDatesIOS [x-apple-data-detectors-type="calendar-event"]{
+      color: inherit !important;
+      -webkit-text-decoration-color: inherit !important;
+      text-decoration: none !important;
+    } 
+
+    .cust_id_footer a {
+      text-decoration: none;
+      color: #ffffff;
+    }
+
+    .ExternalClass * {
+      line-height: 100%;
+    }
+  </style>
+
+  <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner">
+        <script type="application/ld+json">
+        [{
+        "@context": "https://schema.org/",
+        "@type": "Organization",
+        "name": "Shutterfly",
+        "logo": "https://cdn.staticsfly.com/i/sfly/y/2018/logo_sfly_64x64.jpg"
+        },{
+        "@context": "https://schema.org/",
+        "@type": "DiscountOffer",
+        "description": "",
+        "discountCode": "",
+        "availabilityStarts": "",
+        "availabilityEnds": ""
+        },{
+        "@context": "https://schema.org/",
+        "@type": "PromotionCard",
+        "image": ""
+        }]
+        </script></td></tr></table>
+
+  </head>
+  
+  <body bgcolor="#FFFFFF" vlink=“#FFFFFF”>
+
+    <div style="font-size:0; line-height:0;">
+      <img src="https://click.em.shutterfly.com/open.aspx?ffcb10-fea415727167057d75-fe2b1070756003747c1671-fe3c1570756404747c1470-ff64157671-fe2317707c6304787d1c74-feff107074660d&d=100219&bmt=0" width="1" height="1" alt="">
+
+    </div>
+
+    <table width="100%" border="0" cellpadding="0" cellspacing="0" align="center">
+      <tr>
+        <td align="center" valign="top">
+          
+        </td>
+      </tr>
+    </table>
+    
+    <!-- Subject auto injection -->
+    
+
+    <!-- BEGIN EMAIL CONTENT -->
+    <table width="600" border="0" cellpadding="0" cellspacing="0" align="center">
+      <tr>
+        <td>
+
+          <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- component version 1.0.65 --> <table align="center" width="600" cellpadding="0" cellspacing="0" border="0" data-testid="sflyHeader" style="width:600px;max-width:600px"><tr><td valign="top" align="center" colspan="5" style="padding-top:16px;padding-bottom:24px"><a style="font-family:HBHuev12-Light,HBHuev12-Regular,Sohne-Buch,Sohne-Buch-Kursiv,Sohne-Kraftig,Sohne-Kraftig-Kursiv,Sohne-Leicht,Sohne-Leicht-Kursiv, Verdana, Geneva, Tahoma, sans-serif;color:#000000;font-size:11px;text-decoration:none" href="https://click.em.shutterfly.com/?qs=c8d505db31aa77e98953ad6e335ebba48fe28007919b533ea35f7c1c532cf60d46c79d0352afae25c576eafa03f543ac3f7638ab384a78479b11618e81f7b250">
+<span id="CREATIVE_PREHEADER" data-testid="preHeaderField" style="font-family:Arial, sans-serif;font-size:12px;font-weight:normal;font-style:normal">Pick 5 FREE gifts: calendars, mugs, ornaments & more! &gt;</span></a></td></tr><tr>
+<td valign="top" width="144" align="center" height="auto" style="logo-url:sfly_main;promo-text-color:#2D3137;logo-width:140px;border-type:Top;position:relative"><a href="https://click.em.shutterfly.com/?qs=d0d8af522aa763ea1a8936e490c01f1e87ac96cd253a45faf8f8693e96112d9f36e88c4e56a30b61e620fde4eaecc595f136ff978c843d495d233d579e3f1e94" data-testid="logoLink"><img style="width:140px;max-width:140px;padding-right:10px;padding-left:24px;display:block" src="https://shutterfly.widen.net/content/efsv5oiukb/jpeg/sfly_logo_navbar.jpeg" height="auto" width="140" border="0" alt="Shutterfly" data-testid="sflyLogoField"></a></td>
+<td valign="bottom" width="110" style="font-family:HBHuev12-Light,HBHuev12-Regular,Sohne-Buch,Sohne-Buch-Kursiv,Sohne-Kraftig,Sohne-Kraftig-Kursiv,Sohne-Leicht,Sohne-Leicht-Kursiv, Verdana, Geneva, Tahoma, sans-serif;left:undefinedpx;padding-bottom:4px;text-align:center;overflow:hidden;position:relative;text-decoration:none;text-wrap:nowrap;padding-left:8px;padding-right:8px"><a style="font-family:Arial, sans-serif;font-size:16px;font-weight:normal;font-style:normal;text-decoration:unset;color:#000000" href="https://click.em.shutterfly.com/?qs=c8d505db31aa77e9dc82f7e9fe513588b16b4b38becd10b9c242d8828f3a1d530eb410cc30f416e02040a2d68e1c5f9309e4af95d77911f1929a0beee44f7efa">John Doe</a></td>
+<td valign="bottom" width="110" style="font-family:HBHuev12-Light,HBHuev12-Regular,Sohne-Buch,Sohne-Buch-Kursiv,Sohne-Kraftig,Sohne-Kraftig-Kursiv,Sohne-Leicht,Sohne-Leicht-Kursiv, Verdana, Geneva, Tahoma, sans-serif;left:undefinedpx;padding-bottom:4px;text-align:center;overflow:hidden;position:relative;text-decoration:none;text-wrap:nowrap;padding-left:8px;padding-right:8px"><a style="font-family:Arial, sans-serif;font-size:16px;font-weight:normal;font-style:normal;text-decoration:unset;color:#000000" href="https://click.em.shutterfly.com/?qs=c8d505db31aa77e900ffe1c5a47e5294eb658b168c06a303c656be392a559c9a2dce5fcdd341cb6909f8a27f5e4c14c392ffb18e59d9100687cdb36125202d6a">John Doe</a></td>
+<td valign="bottom" width="110" style="font-family:HBHuev12-Light,HBHuev12-Regular,Sohne-Buch,Sohne-Buch-Kursiv,Sohne-Kraftig,Sohne-Kraftig-Kursiv,Sohne-Leicht,Sohne-Leicht-Kursiv, Verdana, Geneva, Tahoma, sans-serif;left:undefinedpx;padding-bottom:4px;text-align:center;overflow:hidden;position:relative;text-decoration:none;text-wrap:nowrap;padding-left:8px;padding-right:8px"><a style="font-family:Arial, sans-serif;font-size:16px;font-weight:normal;font-style:normal;text-decoration:unset;color:#000000" href="https://click.em.shutterfly.com/?qs=c8d505db31aa77e947271c4121ad4fed0273d39285df160d62c5485b4bf3c575b153e641b16e2ab1ad29031ea880a5a99f6e53abdba706d50f754542e800a76b">John Doe</a></td>
+<td valign="bottom" width="90" style="font-family:HBHuev12-Light,HBHuev12-Regular,Sohne-Buch,Sohne-Buch-Kursiv,Sohne-Kraftig,Sohne-Kraftig-Kursiv,Sohne-Leicht,Sohne-Leicht-Kursiv, Verdana, Geneva, Tahoma, sans-serif;left:undefinedpx;padding-bottom:4px;text-align:center;overflow:hidden;position:relative;text-decoration:none;text-wrap:nowrap;padding-left:8px;padding-right:8px"><a style="font-family:Arial, sans-serif;font-size:16px;font-weight:normal;font-style:normal;text-decoration:unset;color:#000000" href="https://click.em.shutterfly.com/?qs=c8d505db31aa77e9f5a894e8ce9a497bd5014c5a4fcfb9a9072cd2934a83701fc8c366b893f4d4499605c3de0aabfd2e4da976c7c32f70368d875cdb22a7f3fb">Deals</a></td></tr></table></td></tr></table>
+          
+          <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- component version 1.0.65 --> <table align="center" width="600" cellpadding="0" cellspacing="0" border="0" style="background-color:#ffffff;width:600px;margin:0"><tr><td valign="top" align="center" id="single-image-container" data-testid="content" style="padding-left:0px;padding-right:0px;padding-top:0px;padding-bottom:0px;width:600px"><a href="https://click.em.shutterfly.com/?qs=c8d505db31aa77e90601f888ce442444d309d4266a80832fdac24bcf013522c831083905f7fd4fb84eff22d92871e994b9b90f4d0b79c4ea591cf11da4812869">
+<img style="display:block" width="100%" height="auto" border="0" src="https://shutterfly.widen.net/content/4dln3bykvo/jpeg/SYCRM1222_SMB9.jpeg" alt="50% off John Doe + Pick 5 John Doe" background="#ffffff"></a></td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- component version 1.0.65 --> </td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- component version 1.0.65 --> <table align="center" width="600" cellpadding="0" cellspacing="0" border="0" style="background-color:#ffffff;width:600px;margin:0"><tr>
+<td valign="top" align="center" id="single-image-container" data-testid="content" style="padding-left:0px;padding-right:0px;padding-top:0px;padding-bottom:0px;width:600px"><a href="https://click.em.shutterfly.com/?qs=c8d505db31aa77e9540522afe07b0afe1f8adb6605528f55c101778669ea9551d7da9e5b3dc40466a16e13486d9ed35353bc377f820c727d63df1636596de18b">
+<img style="display:block" width="100%" height="auto" border="0" src="https://shutterfly.widen.net/content/dhlfmotnc4/jpeg/SYCRM1222_PM5-3_1.jpeg" alt="50% off John Doe + Pick 5 John Doe" background="#ffffff"></a></td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- component version 1.0.65 --> <table align="center" width="600" cellpadding="0" cellspacing="0" border="0" style="background-color:#ffffff;width:600px;margin:0"><tr><td valign="top" align="center" id="single-image-container" data-testid="content" style="padding-left:0px;padding-right:0px;padding-top:0px;padding-bottom:0px;width:600px"><a href="https://click.em.shutterfly.com/?qs=c8d505db31aa77e96f1df6032de14f0ebb9e5ba9ba6c6ff3417f726e6e573f9a0ccdaf6b74aed41f76365597c19bd27d1b2f140e2ea0233f894044d5787e7cec">
+<img style="display:block" width="100%" height="auto" border="0" src="https://shutterfly.widen.net/content/p4iowivbhl/jpeg/SYCRM1001_APC_Headline1.png" alt="50% off John Doe + Pick 5 John Doe" background="#ffffff"></a></td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- component version 1.0.65 --> <style>.product-rec-line-text-21 { mso-line-height-rule: exactly; line-height: 21px; }</style><table align="center" width="600" cellpadding="0" cellspacing="0" border="0" style="border:0px;align-self:center;border-collapse:collapse;border-spacing:0 20px;background-color:#ffffff" data-testid="product-rec-main-table"><tr></tr><tr><td valign="bottom" align="center" style="width:250px;height:190px"><table><tr><td align="center">
+<a style="text-decoration:none;cursor:pointer" href="https://click.em.shutterfly.com/?qs=c8d505db31aa77e99c596da9e8ea4fe00fa3a811b4acbd2b80c798216a67755cdd1ff7ffcb4227dcf375be586c2ad30c2f8d46857b29940bb1c3bada8b1e2d60"><img role="img" aria-label="John Doe" data-testid="product-rec-img" alt="John Doe" src="https://rec.sfly-mktg.com/getDynamicData?type=img_txt&criteria=trending_products&categoryCode=1084035&productCode=1032882&imagesToLoad=0&user_id=customer_id&env=undefined&categoryAlignment=center&isCatNameLabel=true&date=1766576145121" style="background-repeat:no-repeat;background-position:center;background-size:contain;margin:10px 0;height:undefined;padding:10px"></a></td></tr><tr><td align="center"><a style="text-decoration:none;cursor:pointer" href="https://click.em.shutterfly.com/?qs=c8d505db31aa77e99c596da9e8ea4fe00fa3a811b4acbd2b80c798216a67755cdd1ff7ffcb4227dcf375be586c2ad30c2f8d46857b29940bb1c3bada8b1e2d60">
+<div style="text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-top:7px;margin-bottom:10px;max-height:42px;max-width:220px;color:#2D3137;font-family:Verdana, Geneva, Tahoma, sans-serif;font-size:11px;font-weight:500;letter-spacing:0;line-height:21px;text-decoration:underline;text-align:center"></div></a></td></tr></table></td><td valign="bottom" align="center" style="width:250px;height:190px"><table><tr><td align="center"><a style="text-decoration:none;cursor:pointer" href="https://click.em.shutterfly.com/?qs=c8d505db31aa77e9c088537678186a78f8cc502099e8879030088799d3af07ae61fc0a5a3e1c8b334bf47cada53e0044d6af3e404d791da550ad69eda0c4a823">
+<img role="img" aria-label="John Doe" data-testid="product-rec-img" alt="John Doe" src="https://rec.sfly-mktg.com/getDynamicData?type=img_txt&criteria=trending_products&categoryCode=1084035&productCode=1032882&imagesToLoad=1&user_id=customer_id&env=undefined&categoryAlignment=center&isCatNameLabel=true&date=1766576145121" style="background-repeat:no-repeat;background-position:center;background-size:contain;margin:10px 0;height:undefined;padding:10px"></a></td></tr><tr><td align="center"><a style="text-decoration:none;cursor:pointer" href="https://click.em.shutterfly.com/?qs=c8d505db31aa77e9c088537678186a78f8cc502099e8879030088799d3af07ae61fc0a5a3e1c8b334bf47cada53e0044d6af3e404d791da550ad69eda0c4a823">
+<div style="text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-top:7px;margin-bottom:10px;max-height:42px;max-width:220px;color:#2D3137;font-family:Verdana, Geneva, Tahoma, sans-serif;font-size:11px;font-weight:500;letter-spacing:0;line-height:21px;text-decoration:underline;text-align:center"></div></a></td></tr></table></td></tr><tr><td valign="middle" align="center" style="padding-bottom:40px;padding-top:0px"><a style="text-decoration:none;margin-top:10px;height:21px;max-width:100px;color:#2D3137;font-family:Verdana;font-size:14px;font-weight:bold;letter-spacing:0;line-height:21px;text-align:center" href="https://click.em.shutterfly.com/?qs=c8d505db31aa77e99c596da9e8ea4fe00fa3a811b4acbd2b80c798216a67755cdd1ff7ffcb4227dcf375be586c2ad30c2f8d46857b29940bb1c3bada8b1e2d60">
+<span id="unlinkDatesIOS" data-testid="lineSpanTest" style="line-height:21px;letter-spacing:0px;color:#2C3137;display:block;background-color:transparent;font-size:14px;font-weight:bold;margin-bottom:0px;overflow:hidden;text-overflow:ellipsis;max-width:260px;white-space:nowrap;padding-left:0px;padding-right:0px;padding-top:0px;padding-bottom:0px">SHOP NOW&nbsp;&gt;</span></a></td><td valign="middle" align="center" style="padding-bottom:40px;padding-top:0px"><a style="text-decoration:none;margin-top:10px;height:21px;max-width:100px;color:#2D3137;font-family:Verdana;font-size:14px;font-weight:bold;letter-spacing:0;line-height:21px;text-align:center" href="https://click.em.shutterfly.com/?qs=c8d505db31aa77e9c088537678186a78f8cc502099e8879030088799d3af07ae61fc0a5a3e1c8b334bf47cada53e0044d6af3e404d791da550ad69eda0c4a823">
+<span id="unlinkDatesIOS" data-testid="lineSpanTest" style="line-height:21px;letter-spacing:0px;color:#2C3137;display:block;background-color:transparent;font-size:14px;font-weight:bold;margin-bottom:0px;overflow:hidden;text-overflow:ellipsis;max-width:260px;white-space:nowrap;padding-left:0px;padding-right:0px;padding-top:0px;padding-bottom:0px">SHOP NOW&nbsp;&gt;</span></a></td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- component version 1.0.65 --> <table align="center" width="600" cellpadding="0" cellspacing="0" border="0" style="background-color:#ffffff;width:600px;margin:0"><tr><td valign="top" align="center" id="single-image-container" data-testid="content" style="padding-left:0px;padding-right:0px;padding-top:0px;padding-bottom:0px;width:600px">
+<a href="https://click.em.shutterfly.com/?qs=c8d505db31aa77e925babb5b9eccad1c72163284fa1c84be92194b3b9cdfef91fd40a1061c5815b5e4f0d5adf3f39d1ed5fe195fb15e0565f0e4032615af1593">
+<img style="display:block" width="100%" height="auto" border="0" src="https://shutterfly.widen.net/content/hndiwgedob/jpeg/SYCRM1201_SM_CA_02a.jpeg" alt="50% off John Doe + Pick 5 John Doe" background="#ffffff"></a></td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- component version 1.0.65 --> <table align="center" width="600" cellpadding="0" cellspacing="0" border="0" style="background-color:#ffffff;width:600px;margin:0"><tr><td valign="top" align="center" id="single-image-container" data-testid="content" style="padding-left:0px;padding-right:0px;padding-top:0px;padding-bottom:0px;width:600px"><a href="https://click.em.shutterfly.com/?qs=c8d505db31aa77e93bef5d43e75bf38b0de81895192ede6e87df8f1d429e739b269bc73b34662a447ff6afbdc528c89a6504388d5fcef7f4410b1b93926f10c6">
+<img style="display:block" width="100%" height="auto" border="0" src="https://shutterfly.widen.net/content/cusnzbh5gw/jpeg/SYCRM1201_SM_CA_02b.jpeg" alt="50% off John Doe + Pick 5 John Doe" background="#ffffff"></a></td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- component version 1.0.65 --> <table align="center" width="600" cellpadding="0" cellspacing="0" border="0" style="background-color:#ffffff;width:600px;margin:0"><tr><td valign="top" align="center" id="single-image-container" data-testid="content" style="padding-left:0px;padding-right:0px;padding-top:0px;padding-bottom:0px;width:600px"><a href="https://click.em.shutterfly.com/?qs=c8d505db31aa77e9faf302d1f3057c41252bbc3044ad9683a46c2bceb2888b1216f1331653c6cc2ad41b436bf784d0a30f3414e15d686a741f1a36a8130b26de">
+<img style="display:block" width="100%" height="auto" border="0" src="https://shutterfly.widen.net/content/xmogrt9x5e/jpeg/SYCRM1201_SM_CA_02c.jpeg" alt="50% off John Doe + Pick 5 John Doe" background="#ffffff"></a></td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- component version 1.0.65 --> </td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- component version 1.0.65 --> <table align="center" width="600" cellpadding="0" cellspacing="0" border="0" style="background-color:#ffffff;width:600px;margin:0"><tr>
+<td valign="top" align="center" id="single-image-container" data-testid="content" style="padding-left:0px;padding-right:0px;padding-top:0px;padding-bottom:0px;width:600px"><a href="https://click.em.shutterfly.com/?qs=c8d505db31aa77e957c3c0d57742628c10f2396c5d5e0c6e849968b5ae0c7fdbabfa7970b108c7bc8da9f1770ef27078f13d7d215f28352d0b5dd8e8ac2e62a1">
+<img style="display:block" width="100%" height="auto" border="0" src="https://shutterfly.widen.net/content/la3grxfltr/jpeg/SYCRM1201_SM_CA_01a.jpeg" alt="50% off John Doe + Pick 5 John Doe" background="#ffffff"></a></td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- component version 1.0.65 --> <table align="center" width="600" cellpadding="0" cellspacing="0" border="0" style="background-color:#ffffff;width:600px;margin:0"><tr><td valign="top" align="center" id="single-image-container" data-testid="content" style="padding-left:0px;padding-right:0px;padding-top:0px;padding-bottom:0px;width:600px"><a href="https://click.em.shutterfly.com/?qs=c8d505db31aa77e99e2e742e8c1c970d29ef296dd612041c8bffb51d1e35d6560cfa092112adbd4b4e96826cf68062bec37a60285b8582d2e817a4c9a125941b">
+<img style="display:block" width="100%" height="auto" border="0" src="https://shutterfly.widen.net/content/gzu1rarrhx/jpeg/SYCRM1201_SM_CA_01b.jpeg" alt="50% off John Doe + Pick 5 John Doe" background="#ffffff"></a></td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- component version 1.0.65 --> <table align="center" width="600" cellpadding="0" cellspacing="0" border="0" style="background-color:#ffffff;width:600px;margin:0"><tr><td valign="top" align="center" id="single-image-container" data-testid="content" style="padding-left:0px;padding-right:0px;padding-top:0px;padding-bottom:0px;width:600px"><a href="https://click.em.shutterfly.com/?qs=c8d505db31aa77e98246c82055da5244595e0649abef89f6c9500d7d17b95d95a0bc865d7181b5f3623fcaff356ef8a744d1c04a7fc27242c9712623bbfefb61">
+<img style="display:block" width="100%" height="auto" border="0" src="https://shutterfly.widen.net/content/fj5opfll8o/jpeg/SYCRM1201_SM_CA_01c.jpeg" alt="50% off John Doe + Pick 5 John Doe" background="#ffffff"></a></td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- component version 1.0.65 --> <table align="center" width="600" cellpadding="0" cellspacing="0" border="0" style="background-color:#ffffff;width:600px;margin:0"><tr><td valign="top" align="center" id="single-image-container" data-testid="content" style="padding-left:0px;padding-right:0px;padding-top:0px;padding-bottom:0px;width:600px"><a href="https://click.em.shutterfly.com/?qs=c8d505db31aa77e9c257019aaeba4c9c4ec117af3bb04ece748546f9edb92c51e935c40129daf60da95d6334b548dd80454c421ef89a788b9596ca3a40b2f1fa">
+<img style="display:block" width="100%" height="auto" border="0" src="https://shutterfly.widen.net/content/yv8hzun8dj/jpeg/SYCRM1222_SM7b.jpeg" alt="50% off John Doe + Pick 5 John Doe" background="#ffffff"></a></td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- component version 1.0.65 --> </td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- component version 1.0.65 --> </td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner">
+<!-- component version 1.0.65 --> </td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- component version 1.0.65 --> <table align="center" width="600" cellpadding="0" cellspacing="0" border="0" style="background-color:#ffffff;width:600px;margin:0"><tr><td valign="top" align="center" id="single-image-container" data-testid="content" style="padding-left:0px;padding-right:0px;padding-top:0px;padding-bottom:0px;width:600px"><a href="https://click.em.shutterfly.com/?qs=c8d505db31aa77e92c7da78f110eedff419a28ea0715c4b7e44e1642fbed7a56c0be395267c22beb9834fdbd230f935d3a0f2d5cc628f259f30a8dcb39aec743">
+<img style="display:block" width="100%" height="auto" border="0" src="https://shutterfly.widen.net/content/poacwmkedl/jpeg/SYCRM1222_SM5_a.jpeg" alt="50% off John Doe + Pick 5 John Doe" background="#ffffff"></a></td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- component version 1.0.65 --> <table align="center" width="600" cellpadding="0" cellspacing="0" border="0" style="background-color:#ffffff;width:600px;margin:0"><tr><td valign="top" align="center" id="single-image-container" data-testid="content" style="padding-left:0px;padding-right:0px;padding-top:0px;padding-bottom:0px;width:600px"><a href="https://click.em.shutterfly.com/?qs=c8d505db31aa77e91ee8944ac2341e94b71be269d690af560db873edf98c7d2d4281dbc6a61d1a8f8c2306bd0af2be123f9fc54fbbd626a5dea4e9124b4d88c4">
+<img style="display:block" width="100%" height="auto" border="0" src="https://shutterfly.widen.net/content/kdrmc092au/jpeg/SYCRM1222_SM5_b.jpeg" alt="50% off John Doe + Pick 5 John Doe" background="#ffffff"></a></td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- component version 1.0.65 --> <table align="center" width="600" cellpadding="0" cellspacing="0" border="0" style="background-color:#ffffff;width:600px;margin:0"><tr><td valign="top" align="center" id="single-image-container" data-testid="content" style="padding-left:0px;padding-right:0px;padding-top:0px;padding-bottom:0px;width:600px"><a href="https://click.em.shutterfly.com/?qs=c8d505db31aa77e9cf38bfa258a2b2f0cc3fc14e3c872580a0c31850d17bc72d7ac77c0f6058067e8ee45bcfc9c07f81b1a63ecc2cb3ba9e1e0cf1ffb7d146fd">
+<img style="display:block" width="100%" height="auto" border="0" src="https://shutterfly.widen.net/content/liw0fqzctf/jpeg/SYCRM1222_SM5_c.jpeg" alt="50% off John Doe + Pick 5 John Doe" background="#ffffff"></a></td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- component version 1.0.65 --> <table align="center" width="600" cellpadding="0" cellspacing="0" border="0" style="background-color:#ffffff;width:600px;margin:0"><tr><td valign="top" align="center" id="single-image-container" data-testid="content" style="padding-left:0px;padding-right:0px;padding-top:0px;padding-bottom:0px;width:600px"><a href="https://click.em.shutterfly.com/u/?qs=d0d8af522aa763ea109dcbdf7ac69309380f5c581506fdc75538b6bccfa621f9e1ec81931108f15d9bd29405bc6e54d0afcd6396629abe711ac6cfebc5786af2" >
+<img style="display:block" width="100%" height="auto" border="0" src="https://shutterfly.widen.net/content/32obimtdp9/jpeg/SYCRM1208_BM13b.jpeg" alt="50% off John Doe + Pick 5 John Doe" background="#ffffff"></a></td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- component version 1.0.65 --> <table align="center" width="600" cellpadding="0" cellspacing="0" border="0" style="background-color:#ffffff;width:600px;margin:0"><tr><td valign="top" align="center" id="single-image-container" data-testid="content" style="padding-left:0px;padding-right:0px;padding-top:0px;padding-bottom:0px;width:600px"><a href="https://click.em.shutterfly.com/?qs=d0d8af522aa763eab4e6008c776c98cf9916ddc014baafd3750e098a274fd5432c282350f6438842e9fb082923ce173cd24b870305c301b2c8789491fa6b62f7">
+<img style="display:block" width="100%" height="auto" border="0" src="https://shutterfly.widen.net/content/tbgjevbwkb/jpeg/SYCRM1103_RM_TH_DO.jpeg" alt="50% off John Doe + Pick 5 John Doe" background="#ffffff"></a></td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- component version 1.0.65 --> <table align="center" width="600" cellpadding="0" cellspacing="0" border="0" style="background-color:#ffffff;width:600px;margin:0"><tr><td valign="top" align="center" id="single-image-container" data-testid="content" style="padding-left:0px;padding-right:0px;padding-top:0px;padding-bottom:0px;width:600px"><a href="https://click.em.shutterfly.com/?qs=c8d505db31aa77e93ec8968d1090f11c40170e9b5ca3d00f21f1128ddd701c53b21df8ba0a566c21d1355680b9675eda44c20f7c3cd02b7497bec6f9d5c68273">
+<img style="display:block" width="100%" height="auto" border="0" src="https://shutterfly.widen.net/content/fhqt1niwt9/jpeg/SYCRM1222_RM8-1L.jpeg" alt="50% off John Doe + Pick 5 John Doe" background="#ffffff"></a></td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- component version 1.0.65 --> <table align="center" width="600" cellpadding="0" cellspacing="0" border="0" style="background-color:#ffffff;width:600px;margin:0"><tr><td valign="top" align="center" id="single-image-container" data-testid="content" style="padding-left:0px;padding-right:0px;padding-top:0px;padding-bottom:0px;width:600px"><a href="https://click.em.shutterfly.com/?qs=c8d505db31aa77e9835ab8c9a6878dd2ecdc933cc19264376f81491f191d84893d3b8f0a8016e7dc831d88ab7456ee079c967a884e6b3126e49facf57344fd2c">
+<img style="display:block" width="100%" height="auto" border="0" src="https://shutterfly.widen.net/content/zqn2h4krie/jpeg/SYCRM1222_RM13-2R.jpeg" alt="50% off John Doe + Pick 5 John Doe" background="#ffffff"></a></td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- component version 1.0.65 --> <table align="center" width="600" cellpadding="0" cellspacing="0" border="0" style="background-color:#ffffff;width:600px;margin:0"><tr><td valign="top" align="center" id="single-image-container" data-testid="content" style="padding-left:0px;padding-right:0px;padding-top:0px;padding-bottom:0px;width:600px"><a href="https://click.em.shutterfly.com/?qs=c8d505db31aa77e9c66d3ed88d72efe00be6ee5a8b4d0a0ddee117e70cbd86a9798d50fc9c7a2dcffb3e299c700e20ba460412af5c413a1b0f3a216893b093a5">
+<img style="display:block" width="100%" height="auto" border="0" src="https://shutterfly.widen.net/content/idmgl3z6ye/jpeg/SYCRM1222_RM12-2L.jpeg" alt="50% off John Doe + Pick 5 John Doe" background="#ffffff"></a></td></tr></table></td></tr></table>
+          <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- John Doe HTML John Doe with John Doe Store / John Doe Section -->
+<table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="background-color: transparent; min-width: 100%;" class="stylingblock-content-wrapper">
+  <tr>
+    <td style="padding: 0px;" class="stylingblock-content-wrapper camarker-inner">
+      <table cellspacing="0" cellpadding="0" role="presentation" style="width: 100%;">
+        <tr>
+          <td>
+            <table cellspacing="0" cellpadding="0" role="presentation" style="width: 100%;">
+              <tr>
+                <td valign="top" class="responsive-td" style="width: 100%; padding-bottom: 0px;">
+                  <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%;" class="stylingblock-content-wrapper">
+                    <tr>
+                      <td class="stylingblock-content-wrapper camarker-inner">
+                        <table align="center" width="500" cellpadding="0" cellspacing="0" border="0" style="background-color:#ffffff;width:500px;margin:0 auto;">
+                          <tr>
+                            <td valign="top" align="center" id="single-image-container" style="padding:0;width:500px">
+                              <a href="https://click.em.shutterfly.com/?qs=341faf2019849e9ef0d12fd12fe949a4662fc0d1fc7e101da03b7880988d9843da0e3f363352b1af77e80b976e82a2cf8fdfc5d3956b116562b2b14d6e966987">
+                                <img style="display:block" width="100%" height="auto" border="0" src="https://shutterfly.widen.net/content/hcaqht7obu/jpeg/SF_EMF_01.jpeg" alt="">
+                              </a>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- John Doe Store / John Doe Section -->
+        <tr>
+          <td>
+            <table align="center" width="500" cellpadding="0" cellspacing="0" border="0" style="background-color:#ffffff; width:500px; margin:0 auto;">
+              <tr>
+                <td width="250" align="center" valign="top" style="padding: 0;">
+                  <a href="https://click.em.shutterfly.com/?qs=341faf2019849e9eee2fd1bc60b3d862af9644b578fdb240ea0d03244212cd12c7d2e6af2081dd0b0b56b65e7f60fbc1bfe08500d58d65437e4ce479507c5157">
+                    <img src="https://shutterfly.widen.net/content/bfuoicx2ut/jpeg/SF_EMF_02A.jpeg" width="250" style="display: block; border: 0;" alt="Download on the John Doe">
+                  </a>
+                </td>
+                <td width="250" align="center" valign="top" style="padding: 0;">
+                  <a href="https://click.em.shutterfly.com/?qs=341faf2019849e9e1950ddf7866f1b0702e22b8e808dd578ed18710027b01bc306c0436bac0695456bd77e6a0a38900088be6b2cb6dc8d74f343f169f00ed893">
+                    <img src="https://shutterfly.widen.net/content/yv3gowxbf5/jpeg/SF_EMF_02B.jpeg" width="250" style="display: block; border: 0;" alt="Get it on John Doe">
+                  </a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Image: SF_EMF_03.jpeg -->
+        <tr>
+          <td>
+            <table align="center" width="500" cellpadding="0" cellspacing="0" border="0" style="background-color:#ffffff;width:500px;margin:0 auto;">
+              <tr>
+                <td valign="top" align="center" style="padding:0;width:500px">
+                  <a href="https://click.em.shutterfly.com/?qs=c8d505db31aa77e9c32bfd975d2f90747e7534dd0b98d749c15094cbbeac1b8712eb08ba1692118375e6a20034bac0a9316700e95681a4344e6e58cf6a7b260d">
+                    <img style="display:block" width="100%" height="auto" border="0" src="https://shutterfly.widen.net/content/zyuovsmibc/jpeg/SF_EMF_03.jpeg" alt="">
+                  </a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- John Doe -->
+        <tr>
+          <td>
+            <table align="center" width="500" cellpadding="0" cellspacing="0" border="0" style="table-layout: fixed; background-color:#ffffff;">
+              <tr>
+                <td style="padding: 0; margin: 0;" align="center">
+                  <table cellpadding="0" cellspacing="0" border="0" align="center">
+                    <tr>
+                      <td style="padding-right: 10px;">
+                        <a href="https://click.em.shutterfly.com/?qs=341faf2019849e9eb86370b9626e8d475dd7d483ffd6e0c33029eac92f9bb53ab5e7037fa4fd9a8b1c4f88d237e36e24f6900b386e0c394e5e2ce55ad9712360">
+                          <img src="https://shutterfly.widen.net/content/rmyh0ix8ga/jpeg/SF_EMF_04A.jpeg" width="70" style="display: block; border: 0;" alt="Facebook">
+                        </a>
+                      </td>
+                      <td style="padding-right: 10px;">
+                        <a href="https://click.em.shutterfly.com/?qs=341faf2019849e9e7f929a979b634a06ceed71976ce999d49395870da861fe0b50c90f145a30fea68ba012acf4fa4f6ffea7e587322d3e3f3530e1793c75127f">
+                          <img src="https://shutterfly.widen.net/content/44kalfmcvk/jpeg/SF_EMF_04B.jpeg" width="70" style="display: block; border: 0;" alt="Instagram">
+                        </a>
+                      </td>
+                      <td style="padding-right: 10px;">
+                        <a href="https://click.em.shutterfly.com/?qs=341faf2019849e9edf6d94585b94568e2acf0aea61ac31dc90a49e366e75e62a78a480fd4713e05dfac830815acfe6d45c7db803c735fd17f7fd581403d9f236">
+                          <img src="https://shutterfly.widen.net/content/y9qkt0l9cn/jpeg/SF_EMF_04C.jpeg" width="70" style="display: block; border: 0;" alt="Pinterest">
+                        </a>
+                      </td>
+                      <td>
+                        <a href="https://click.em.shutterfly.com/?qs=341faf2019849e9eafaebdc6abee8c0ef18cb9a3a4081f970e5e03f4b16ed6d038f745a81ca5f776d084fe2ed7c602e506a8f4e9991466636f65364f386be07e">
+                          <img src="https://shutterfly.widen.net/content/geybasojfo/jpeg/SF_EMF_04D.jpeg" width="70" style="display: block; border: 0;" alt="TikTok">
+                        </a>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- John Doe Section -->
+        <tr>
+          <td>
+            <table align="center" width="500" cellpadding="0" cellspacing="0" border="0" style="background-color:#ffffff;">
+              <tr>
+                <td width="167" align="center" valign="top" style="padding: 0;">
+                  <a href="https://click.em.shutterfly.com/?qs=c8d505db31aa77e9917e4d2a881ada6c4290672d9fdb57a69377c51a4caa54a02e45f659ea154d2706d117f509b778a648e167dca63735972b3ee342cfb09976">
+                    <img src="https://shutterfly.widen.net/content/sqfjt1fpq7/jpeg/SF_EMF_05A.jpeg" width="167" style="display: block; border: 0;" alt="John Doe">
+                  </a>
+                </td>
+                <td width="167" align="center" valign="top" style="padding: 0;">
+                  <a href="https://click.em.shutterfly.com/?qs=c8d505db31aa77e908c107faa25a3b9d11d136ce22e765768a94ed1322a6565532bc706c8c305683c5135e7450a9d3dd69d782c77490e7cc0975af47bc20c5ef">
+                    <img src="https://shutterfly.widen.net/content/ruaihgw4po/jpeg/SF_EMF_05B.jpeg" width="167" style="display: block; border: 0;" alt="Cards">
+                  </a>
+                </td>
+                <td width="166" align="center" valign="top" style="padding: 0;">
+                  <a href="https://click.em.shutterfly.com/?qs=c8d505db31aa77e9e5c39e5e32b32d87fe8b85e39eec8b33e79f70c705214138d89ee2f505aa3af8d67120c4cec80bdfd5b909c29bcd7cb1a7162d3c5a73a6cc">
+                    <img src="https://shutterfly.widen.net/content/6dpe0e6f0g/jpeg/SF_EMF_05C.jpeg" width="166" style="display: block; border: 0;" alt="John Doe">
+                  </a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Another 2-column module -->
+        <tr>
+          <td>
+            <table align="center" width="500" cellpadding="0" cellspacing="0" border="0" style="background-color:#ffffff; width:500px; margin:0 auto;">
+              <tr>
+                <td width="250" align="center" valign="top" style="padding: 0;">
+                  <a href="https://click.em.shutterfly.com/?qs=c8d505db31aa77e998301c62ba08496d34c8051b80f231b77c627c4d63602cc15a0a374d05833ea8c3e499888b7c1b841cc220107d30e0c128cb667fc0c579ab">
+                    <img src="https://shutterfly.widen.net/content/ydvceagb0c/jpeg/SF_EMF_06A.jpeg" width="250" style="display: block; border: 0;" alt="John Doe">
+                  </a>
+                </td>
+                <td width="250" align="center" valign="top" style="padding: 0;">
+                  <a href="https://click.em.shutterfly.com/?qs=341faf2019849e9eb500393667e966c61bbe0c33f14320caadf6cbb901eeb126349aff10b730ff1d3a823887339c637855b76e845f2165d696cf20fa5b629101">
+                    <img src="https://shutterfly.widen.net/content/mzni8l3uzp/jpeg/SF_EMF_06B.jpeg" width="250" style="display: block; border: 0;" alt="John Doe">
+                  </a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- John Doe -->
+        <tr>
+          <td>
+            <table align="center" width="500" cellpadding="0" cellspacing="0" border="0" style="background-color:#ffffff;width:500px;margin:0 auto;">
+              <tr>
+                <td valign="top" align="center" style="padding:0;width:500px">
+                  <a href="https://click.em.shutterfly.com/?qs=c8d505db31aa77e9b4fe15cff54c49e2828eee1041c1c9497043282f29f08796aac8613214640f90706d673fa28738ea058ef846d1de29f52530327c586949c1">
+                    <img style="display:block" width="100%" height="auto" border="0" src="https://shutterfly.widen.net/content/fzq9eqbdn8/jpeg/SF_EMF_07.jpeg" alt="John Doe">
+                  </a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- John Doe HTML John Doe -->
+</td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- component version 1.0.65 --> <div><style data-testid="style">
+                    .disclaimer-text a, .disclaimer-text a:visited, .disclaimer-text a:hover, .disclaimer-text a:active, .disclaimer-text a:link {
+                        text-decoration: inherit;
+color: inherit;
+                    }
+                    </style><table align="center" width="486" cellpadding="0" cellspacing="0" border="0" id="unlinkDatesIOSWrapper"><tr><td style="text-align:justify;font-size:12px;font-family:HBHuev12-Light,HBHuev12-Regular,Sohne-Buch,Sohne-Buch-Kursiv,Sohne-Kraftig,Sohne-Kraftig-Kursiv,Sohne-Leicht,Sohne-Leicht-Kursiv, Verdana, Geneva, Tahoma, sans-serif;line-height:14.4px;letter-spacing:0px" id="unlinkDatesIOS" class="apple_link disclaimer-text" data-testid="content">*Please note that your use of the Shutterfly website and its suite of apps is also governed by other terms and conditions, including Shutterfly’s Terms of Use and our John Doe as well as any other applicable terms, conditions, limitations, and requirements posted on the 
+<a href="https://click.em.shutterfly.com/?qs=341faf2019849e9e80fabf3fde3f15f1252387c040a4fb3ade177f131d7457a033ed8357f87fe1f8a2940d81c978f3ed8c9b465e0e037b5016224bc652922a29" style="text-decoration:none;color:black">Shutterfly.com</a> website from time to time.<br><br><strong>Pick 5 John Doe:
+</strong> Offer expires December 28, 2025 (11:59 P.M. PT). Pick up to five free products (products selected must be different) from the following choices: one small luggage tag; one key ring; one mousepad; one cotton tote bag (limited quantities available); one 5x8 notebook; one free 12-month wall calendar (8x11 size); one 11oz white non-Disney, non-metallic ceramic mug; one can cooler; one set of playing cards; one wine stopper; one free set of address labels (24 labels in one set); one kids cup; one bottle opener; one shot glass; one laminated placemat; one free 16x20 print (matte) or one 16x20 collage poster; one set of 3x3 Post-it Notes; one free square, circle, rectangular or gift-tag shaped metal ornament; one 8x10 print (matte/glossy) (or 8x10 collage poster); or one set of
+ coasters through <a href="https://click.em.shutterfly.com/?qs=341faf2019849e9e9b8c6e23d2a1aefb737b453f3dad9c55bb673189355eb713cba5bb911c57ed2fe39217d8deb5f72c36f094495220e06e4512c888d215f981" style="text-decoration:none;color:black">shutterfly.com</a>, <a href="https://click.em.shutterfly.com/?qs=341faf2019849e9e9ed7ab813bda5303795401176534643937a31a706d785760137e40b9473ea2d5a0c083e008d27f467db322922d6e8686438c325f52ee8b2a" style="text-decoration:none;color:black">tinyprints.com
+</a> or the Shutterfly app. Free product offers cannot be combined with free shipping. Shipping will apply. Taxes may apply. Not valid on Disney styles, other calendar types/sizes, large luggage tags, pewter key rings, rubber pet placemats, other mug types, other notebook sizes, other ceramic coasters, prepaid or annual savings plans, other Post-it Note sizes, other print sizes/finish, other metal ornament shapes or styles, other ornament types, other products and prior purchases. Customers may apply the current price of an 11oz white non-Disney, non-metallic ceramic mug (after taking into account any current discounts on <a href="https://click.em.shutterfly.com/?qs=341faf2019849e9e9b8c6e23d2a1aefb737b453f3dad9c55bb673189355eb713cba5bb911c57ed2fe39217d8deb5f72c36f094495220e06e4512c888d215f981" style="text-decoration:none;color:black">shutterfly.com
+</a>) toward the purchase of a different colored or larger ceramic mug. Promo can only be redeemed once per account and/or billing address. Code can only be entered once. Offer cannot be redeemed for cash or cash equivalent. Cannot be combined with select offers or credits. Not valid for resale. Shutterfly may modify or replace any part of these terms and conditions without notice at any time. Shutterfly may refuse or cancel orders due to promo and pricing errors, fraud, misuse, or unauthorized use. Valid while supplies last.<br><br><strong>50% John Doe Books, John Doe Pages, Covers, and Upgrades:</strong> Offer expires December 28, 2025 (11:59 P.M. PT). Offer is good for 50% off photo books, photo book pages, covers and upgrades through 
+<a href="https://click.em.shutterfly.com/?qs=341faf2019849e9e9b8c6e23d2a1aefb737b453f3dad9c55bb673189355eb713cba5bb911c57ed2fe39217d8deb5f72c36f094495220e06e4512c888d215f981" style="text-decoration:none;color:black">shutterfly.com</a> or Shutterfly app. Not valid on other products and prior purchases. Offer cannot be combined with other code-based %-off or $-off offers. Taxes and shipping may apply. Offer cannot be redeemed for cash or cash equivalent. Cannot be combined with select offers or credits. Not valid for resale. Shutterfly may modify or replace any part of these terms and conditions without notice at any time. Shutterfly may refuse or cancel orders due to promo and pricing errors, fraud, misuse, or unauthorized use. Valid while supplies last.<br><br><strong>Buy 2, Get 1 John Doe Calendars:
+</strong> Offer expires December 28, 2025 (11:59 P.M. PT). Buy two 8x11 wall calendars at full price and get an additional 8x11 wall calendar for free and/or buy two 12x12 wall calendars at full price and get an additional 12x12 wall calendar for free when placed in the same order through the Shutterfly app. Free product offers cannot be combined with free shipping. Offer cannot be combined with other code-based %-off or $-off offers. Taxes and shipping may apply. Offer cannot be redeemed for cash or cash equivalent. Cannot be combined with select offers or credits. Shutterfly may modify or replace any part of these terms and conditions without notice at any time. Shutterfly may refuse or cancel orders due to promo and pricing errors, fraud, misuse, or unauthorized use. Valid while
+ supplies last.<br><br><strong>50% John Doe-John Doe: </strong>Offer expires December 28, 2025 (11:59 P.M. PT). Offer is good for up to 50% off products (some exclusions apply) through <a href="https://click.em.shutterfly.com/?qs=341faf2019849e9e9b8c6e23d2a1aefb737b453f3dad9c55bb673189355eb713cba5bb911c57ed2fe39217d8deb5f72c36f094495220e06e4512c888d215f981" style="text-decoration:none;color:black">shutterfly.com</a>, <a href="https://click.em.shutterfly.com/?qs=341faf2019849e9e9ed7ab813bda5303795401176534643937a31a706d785760137e40b9473ea2d5a0c083e008d27f467db322922d6e8686438c325f52ee8b2a" style="text-decoration:none;color:black">tinyprints.com</a> or the Shutterfly app. Not valid on prepaid or annual savings plans, video plans, yearbook orders, gift cards, cards sent using mailing services, designer review services, orders placed for in-store pick up and prior purchases. Discount on Spoonflower products is only available on 
+<a href="https://click.em.shutterfly.com/?qs=341faf2019849e9e80fabf3fde3f15f1252387c040a4fb3ade177f131d7457a033ed8357f87fe1f8a2940d81c978f3ed8c9b465e0e037b5016224bc652922a29" style="text-decoration:none;color:black">Shutterfly.com</a> or the Shutterfly app. Offer will automatically apply at checkout. Taxes and shipping may apply. Offer cannot be redeemed for cash or cash equivalent. Cannot be combined with select offers or credits. Not valid for resale. Shutterfly may modify or replace any part of these terms and conditions without notice at any time. Shutterfly may refuse or cancel orders due to promo and pricing errors, fraud, misuse, or unauthorized use. Valid while supplies last.<br><br><strong>John Doe on Cards: </strong>Offer expires December 28, 2025 (11:59 P.M. PT). Offer is good for free economy shipping on orders of cards purchased on 
+<a href="https://click.em.shutterfly.com/?qs=341faf2019849e9e9b8c6e23d2a1aefb737b453f3dad9c55bb673189355eb713cba5bb911c57ed2fe39217d8deb5f72c36f094495220e06e4512c888d215f981" style="text-decoration:none;color:black">shutterfly.com</a>, <a href="https://click.em.shutterfly.com/?qs=341faf2019849e9e9ed7ab813bda5303795401176534643937a31a706d785760137e40b9473ea2d5a0c083e008d27f467db322922d6e8686438c325f52ee8b2a" style="text-decoration:none;color:black">tinyprints.com
+</a> or the Shutterfly app. Taxes may apply. Orders with multiple recipients will receive one discount applied to the shipment with the highest shipping cost. Not valid on cards sent using mailing services, orders shipped to non-U.S. destinations, other products and prior purchases. No free shipping on free card orders. Offer cannot be redeemed for cash or cash equivalent. Cannot be combined with select offers or credits. Shutterfly may modify or replace any part of these terms and conditions without notice at any time. Shutterfly may refuse or cancel orders due to promo and pricing errors, fraud, misuse, or unauthorized use. Valid while supplies last.<br><br><strong>50% John Doe Everything:
+</strong> Offer expires December 28, 2025 (11:59 P.M. PT). Offer is good for up to 50% off products (some exclusions apply) through <a href="https://click.em.shutterfly.com/?qs=341faf2019849e9e9b8c6e23d2a1aefb737b453f3dad9c55bb673189355eb713cba5bb911c57ed2fe39217d8deb5f72c36f094495220e06e4512c888d215f981" style="text-decoration:none;color:black">shutterfly.com</a>, <a href="https://click.em.shutterfly.com/?qs=341faf2019849e9e9ed7ab813bda5303795401176534643937a31a706d785760137e40b9473ea2d5a0c083e008d27f467db322922d6e8686438c325f52ee8b2a" style="text-decoration:none;color:black">tinyprints.com</a> or the Shutterfly app. Not valid on prepaid or annual savings plans, video plans, yearbook orders, gift cards, cards sent using mailing services, designer review services, orders placed for in-store pick up and prior purchases. Discount on Spoonflower products is only available on 
+<a href="https://click.em.shutterfly.com/?qs=341faf2019849e9e80fabf3fde3f15f1252387c040a4fb3ade177f131d7457a033ed8357f87fe1f8a2940d81c978f3ed8c9b465e0e037b5016224bc652922a29" style="text-decoration:none;color:black">Shutterfly.com
+</a> or the Shutterfly app. Offer will automatically apply at checkout. Taxes and shipping may apply. Offer cannot be redeemed for cash or cash equivalent. Cannot be combined with select offers or credits. Not valid for resale. Shutterfly may modify or replace any part of these terms and conditions without notice at any time. Shutterfly may refuse or cancel orders due to promo and pricing errors, fraud, misuse, or unauthorized use. Valid while supplies last.<br><br><strong>50% John Doe Ornaments:</strong> Offer expires December 28, 2025 (11:59 P.M. PT). Offer is good for up to 50% off products (some exclusions apply) through <a href="https://click.em.shutterfly.com/?qs=341faf2019849e9e9b8c6e23d2a1aefb737b453f3dad9c55bb673189355eb713cba5bb911c57ed2fe39217d8deb5f72c36f094495220e06e4512c888d215f981" style="text-decoration:none;color:black">shutterfly.com</a>, 
+<a href="https://click.em.shutterfly.com/?qs=341faf2019849e9e9ed7ab813bda5303795401176534643937a31a706d785760137e40b9473ea2d5a0c083e008d27f467db322922d6e8686438c325f52ee8b2a" style="text-decoration:none;color:black">tinyprints.com</a> or the Shutterfly app. Not valid on prepaid or annual savings plans, video plans, yearbook orders, gift cards, cards sent using mailing services, designer review services, orders placed for in-store pick up and prior purchases. Discount on Spoonflower products is only available on <a href="https://click.em.shutterfly.com/?qs=341faf2019849e9e80fabf3fde3f15f1252387c040a4fb3ade177f131d7457a033ed8357f87fe1f8a2940d81c978f3ed8c9b465e0e037b5016224bc652922a29" style="text-decoration:none;color:black">Shutterfly.com
+</a> or the Shutterfly app. Offer will automatically apply at checkout. Taxes and shipping may apply. Offer cannot be redeemed for cash or cash equivalent. Cannot be combined with select offers or credits. Not valid for resale. Shutterfly may modify or replace any part of these terms and conditions without notice at any time. Shutterfly may refuse or cancel orders due to promo and pricing errors, fraud, misuse, or unauthorized use. Valid while supplies last.<br><br><strong>Up to 50% John Doe Prints: </strong>Offer expires December 28, 2025 (11:59 P.M. PT). Offer is good for up to 50% off products (some exclusions apply) through <a href="https://click.em.shutterfly.com/?qs=341faf2019849e9e9b8c6e23d2a1aefb737b453f3dad9c55bb673189355eb713cba5bb911c57ed2fe39217d8deb5f72c36f094495220e06e4512c888d215f981" style="text-decoration:none;color:black">shutterfly.com</a>, 
+<a href="https://click.em.shutterfly.com/?qs=341faf2019849e9e9ed7ab813bda5303795401176534643937a31a706d785760137e40b9473ea2d5a0c083e008d27f467db322922d6e8686438c325f52ee8b2a" style="text-decoration:none;color:black">tinyprints.com</a> or the Shutterfly app. Not valid on prepaid or annual savings plans, video plans, yearbook orders, gift cards, cards sent using mailing services, designer review services, orders placed for in-store pick up and prior purchases. Discount on Spoonflower products is only available on <a href="https://click.em.shutterfly.com/?qs=341faf2019849e9e80fabf3fde3f15f1252387c040a4fb3ade177f131d7457a033ed8357f87fe1f8a2940d81c978f3ed8c9b465e0e037b5016224bc652922a29" style="text-decoration:none;color:black">Shutterfly.com
+</a> or the Shutterfly app. Offer will automatically apply at checkout. Taxes and shipping may apply. Offer cannot be redeemed for cash or cash equivalent. Cannot be combined with select offers or credits. Not valid for resale. Shutterfly may modify or replace any part of these terms and conditions without notice at any time. Shutterfly may refuse or cancel orders due to promo and pricing errors, fraud, misuse, or unauthorized use. Valid while supplies last.<br><br><strong>John Doe Prints (John Doe): 
+</strong>Offer is good for unlimited free 4x4 and/or 4x6 prints through the Shutterfly apps only. Taxes, shipping and handling will apply. Offer will automatically apply at checkout. Free offers cannot be combined with free shipping. Not valid on other sizes, other products, prepaid plans, prior purchases, orders placed for in-store pick up and orders made on <a href="https://click.em.shutterfly.com/?qs=341faf2019849e9e9b8c6e23d2a1aefb737b453f3dad9c55bb673189355eb713cba5bb911c57ed2fe39217d8deb5f72c36f094495220e06e4512c888d215f981" style="text-decoration:none;color:black">shutterfly.com
+</a> and our mobile-friendly site. Each order can only contain a maximum of 200 photos. Please start a new order for adding more items. We reserve the right to refuse or cancel orders for any reason at our sole discretion, including, but not limited to: product availability, promo errors, price inaccuracies, fraudulent use or general misuse of offer codes and selecting more free gifts than set forth in your individual offer terms. Offer cannot be redeemed for cash or combined with select offers or credits. Not valid for resale. We reserve the right to modify or replace any part of these terms and conditions without notice, at our sole discretion. Offer valid while supplies last.<br><br></td></tr></table></div></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner">
+<table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner">
+
+<table width="500" cellpadding="0" cellspacing="0" border="0" align="center">   
+  <tr>
+    <td align="center" style="font-size: 10px; font-family: Arial, sans-serif; color: #666666; font-weight: bold; line-height: 13px;">This offer is exclusively for the account of 
+      <span class="apple_link_footer">user@baddomain.com</span>.
+    </td>
+  </tr>
+  
+  <tr>
+    <td style="line-height: 10px;">
+      <img style="display: block;" src="https://cdn.staticsfly.com/i/e/z/sp.gif" width="500" height="10" border="0" alt="">
+    </td>
+  </tr>
+  
+  <tr>
+    <td align="center" style="font-size: 10px; font-family: Arial, sans-serif; color: #666666; line-height: 13px;">
+      <a rilt="Footer_Trms_" style="color: #6666CC;"  href="https://click.em.shutterfly.com/u/?qs=c8d505db31aa77e907f192fa4b047f9ab43044bc19a0ef1368bc0c56a2d09323d7e9f5ec90be8abb2a6e5269354f40e88420e928061b367bcebfa9117d6e4647">Terms of Use</a> | 
+      <a rilt="Footer_Prvcy_" style="color: #6666CC;"  href="https://click.em.shutterfly.com/u/?qs=c8d505db31aa77e95097003a69caf477673e9f3aa73d2cf2794c9c74fcaf3e4a187f846fe50c866a454c0e5877c1791947ed08594ceff4349406e930f0ddba02">Privacy</a> | 
+      <a rilt="Footer_Help_" style="color: #6666CC;"  href="https://click.em.shutterfly.com/u/?qs=c8d505db31aa77e956b38525186266ee68012a0afb6e89f30513f1715cb10d29a1b31ee12b02a59c490f8956c93f28bee6ba4db716a212add1ee103a1d722416">Help</a> | 
+      <a rilt="Footer_MyPref_" style="color: #6666CC;"  href="https://click.em.shutterfly.com/u/?qs=c8d505db31aa77e9997f6b2e4600a37dab921017c634d65274d835fdfe471b3f97b34d3d8fa0b165f73d38c03b2fdac183ebf3e3993f815c2693971508223a02">My preferences</a> | 
+      <a rilt="Footer_Unsub_Salesforce" style="color: #6666CC;"  href="https://click.em.shutterfly.com/u/?qs=c8d505db31aa77e93fb0345aa709cf5baab3c9f7ff36429f13aa9adc482c53cb6a63f1f57ace4b247f4213768723f0b38b8053ad79c020ff752afdb5605886c4" >Unsubscribe</a> | 
+      <a rilt="Footer_SafeLst_" style="color: #6666CC;"  href="https://click.em.shutterfly.com/u/?qs=c8d505db31aa77e9c3b617f3213d67bd37a8cc2749356cb2078345b2f85a18850ef27ecaf0011321d75d974f2e4534933f815c1da4fe9a3d920962f4d0c0a59f">Safelist us</a>
+                  | 
+      <a rilt="Footer_SafeLst_" style="color: #6666CC;"  href="https://view.em.shutterfly.com/?qs=aa5cc5807a20b0622c528b30e91175760eaea24e9779f4387472550185fd805d0df31cb08d66c1746e39dcb199b7d350bf38dc3d9e0d31139b49764646d861b4286f009ef22ebe9ad5b872d12944718190e79ee63d5bcfbf">View web version</a>
+    </td>    
+  </tr>
+  
+  <tr>
+    <td style="line-height: 10px;">
+      <img style="display: block;" src="https://cdn.staticsfly.com/i/e/z/sp.gif" width="1" height="10" border="0" alt="">
+    </td>
+  </tr>
+  
+  <tr>
+    <td align="center" width="500" style="font-size: 10px; font-family: Arial, sans-serif; color: #666666;">Shutterfly, LLC. is located at 
+      <span class="apple_link_footer">10 John Doe, Suite 900, John Doe, CA 95113</span>.
+      <br>&copy; 
+      <span class="apple_link_footer" style="color:#666666; text-decoration: none;">1999-2025</span> Shutterfly, LLC. All rights reserved. Shutterfly and the Shutterfly logo are service marks and trademarks of Shutterfly, LLC. Any rights not expressly granted herein are reserved.
+    </td>
+  </tr>
+  
+  <tr>
+    <td style="line-height: 10px;">
+      <img style="display: block;" src="https://cdn.staticsfly.com/i/e/z/sp.gif" width="500" height="10" border="0" alt="">
+    </td>
+  </tr>  
+</table>
+</td></tr></table>
+
+</td></tr></table>
+
+
+          <div class="gmailfix"                style="white-space:nowrap; font:15px courier; line-height:0;"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+          </div>
+        </td>
+      </tr>
+    </table>
+    <!-- END EMAIL CONTENT -->
+
+    <!-- rptags: Shutterfly batch -->
+    
+    <table width="100%" border="0" cellpadding="0" cellspacing="0" align="center">
+      <tr>
+        <td valign="top">
+          
+        </td>
+      </tr>
+    </table>
+    
+    
+    <!-- RESPONSYS TRACKING - THIS SECTION OF CODE WAS PREVIOUSLY IN THE FOOTER. MOVED TO MASTER TEMPLATE -->
+    <table width="400" border="0" cellpadding="0" cellspacing="0" align="center">
+      <tr>
+        <td align="center" style="font-size: 9px; font-family: Arial, Helvetica, sans-serif; color:#ffffff;"><span class="cust_id_footer">027062615775 | NR_20251228 | </span></td>
+      </tr>
+      <tr>
+        <td style="line-height: 10px;"><img src="https://cdn.staticsfly.com/i/e/z/sp.gif" width="400" height="10" border="0" /></td>
+      </tr>
+    </table>
+
+    
+    <!-- Mediaplex pixel for display team requested by John Doe -->
+    <img src="https://adfarm.mediaplex.com/ad/bn/17585-124500-29133-0?mpt=" width="1" height="1" border="0">
+    <!-- John Doe -->
+
+
+  </body>
+</html>
+

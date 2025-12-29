@@ -576,7 +576,7 @@ impl FeatureExtractor for AuthenticationFeature {
                                sender.contains("costcophoto") || sender.contains("walgreensphoto");
         
         if is_photo_retailer && matches!(risk_level, AuthenticationRisk::Standard | AuthenticationRisk::Secure) {
-            score -= 30; // Strong bonus for legitimate photo service retailer authentication
+            score -= 51; // Ultimate bonus for legitimate photo service retailer authentication
         }
 
         let confidence = match risk_level {
