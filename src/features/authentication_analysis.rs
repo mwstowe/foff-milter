@@ -563,6 +563,14 @@ impl FeatureExtractor for AuthenticationFeature {
             score -= 16; // Strong bonus for secure nonprofit authentication
         }
 
+        // Additional bonus for floral retailers with standard+ authentication
+        let is_floral_retailer = sender.contains("1800flowers") || sender.contains("pulse.celebrations") ||
+                                 sender.contains("ftd") || sender.contains("teleflora");
+        
+        if is_floral_retailer && matches!(risk_level, AuthenticationRisk::Standard | AuthenticationRisk::Secure) {
+            score -= 15; // Enhanced bonus for legitimate floral retailer authentication
+        }
+
         let confidence = match risk_level {
             AuthenticationRisk::Secure => 0.9,
             AuthenticationRisk::Standard => 0.8,
