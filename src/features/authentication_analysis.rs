@@ -462,7 +462,7 @@ impl AuthenticationFeature {
         let legitimate_retailers = [
             "bedjet.com", "ikea.com", "amazon.com", "walmart.com", "target.com",
             "bestbuy.com", "costco.com", "homedepot.com", "lowes.com", "macys.com",
-            "nordstrom.com", "michaels.com", "shutterfly.com", "1800flowers.com",
+            "nordstrom.com", "michaels.com", "michaelscustomframing.com", "shutterfly.com", "1800flowers.com",
             "pulse.celebrations.com",  // 1-800-FLOWERS email service
             "klaviyo", "sendgrid", "sparkpost", "mailchimp"
         ];
@@ -577,6 +577,14 @@ impl FeatureExtractor for AuthenticationFeature {
         
         if is_photo_retailer && matches!(risk_level, AuthenticationRisk::Standard | AuthenticationRisk::Secure) {
             score -= 51; // Ultimate bonus for legitimate photo service retailer authentication
+        }
+
+        // Additional bonus for craft/framing retailers with standard+ authentication
+        let is_craft_retailer = sender.contains("michaels") || sender.contains("michaelscustomframing") ||
+                               sender.contains("joann") || sender.contains("hobbylobby");
+        
+        if is_craft_retailer && matches!(risk_level, AuthenticationRisk::Standard | AuthenticationRisk::Secure) {
+            score -= 40; // Strong bonus for legitimate craft/framing retailer authentication
         }
 
         let confidence = match risk_level {
