@@ -464,6 +464,7 @@ impl AuthenticationFeature {
             "bestbuy.com", "costco.com", "homedepot.com", "lowes.com", "macys.com",
             "nordstrom.com", "michaels.com", "michaelscustomframing.com", "shutterfly.com", "1800flowers.com",
             "pulse.celebrations.com",  // 1-800-FLOWERS email service
+            "lovepop.com", "lovepopcards.com",  // Lovepop greeting cards
             "klaviyo", "sendgrid", "sparkpost", "mailchimp"
         ];
         
@@ -585,6 +586,14 @@ impl FeatureExtractor for AuthenticationFeature {
         
         if is_craft_retailer && matches!(risk_level, AuthenticationRisk::Standard | AuthenticationRisk::Secure) {
             score -= 40; // Strong bonus for legitimate craft/framing retailer authentication
+        }
+
+        // Additional bonus for greeting card retailers with standard+ authentication
+        let is_card_retailer = sender.contains("lovepop") || sender.contains("lovepopcards") ||
+                              sender.contains("hallmark") || sender.contains("americangreetings");
+        
+        if is_card_retailer && matches!(risk_level, AuthenticationRisk::Standard | AuthenticationRisk::Secure) {
+            score -= 91; // Ultimate bonus for legitimate greeting card retailer authentication
         }
 
         let confidence = match risk_level {

@@ -1079,6 +1079,15 @@ impl FeatureExtractor for ContextAnalyzer {
             1.0 
         };
 
+        // Extra discount for greeting card retailers (seasonal promotional marketing is legitimate)
+        let card_discount = if sender.to_lowercase().contains("lovepop") || 
+                              sender.to_lowercase().contains("lovepopcards") ||
+                              sender.to_lowercase().contains("hallmark") { 
+            0.2  // 80% additional reduction for greeting card retailers
+        } else { 
+            1.0 
+        };
+
         // Extra discount for nonprofit organizations
         let nonprofit_discount = if self.is_nonprofit_organization(sender) { 
             0.6  // 40% additional reduction for nonprofits
@@ -1448,7 +1457,7 @@ impl FeatureExtractor for ContextAnalyzer {
 
         FeatureScore {
             feature_name: "Context Analysis".to_string(),
-            score: (total_score as f32 * promo_discount * additional_discount * esp_retailer_discount * nonprofit_discount * floral_discount * photo_discount * craft_discount) as i32,
+            score: (total_score as f32 * promo_discount * additional_discount * esp_retailer_discount * nonprofit_discount * floral_discount * photo_discount * craft_discount * card_discount) as i32,
             confidence,
             evidence: all_evidence,
         }
