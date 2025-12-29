@@ -135,6 +135,7 @@ impl DomainAnalyzer {
                     || domain.contains("luxpotshop.com")
                     || domain.contains("alpineiq.com")
                     || domain.contains("sparkpostmail.com")
+                    || domain.contains("michaelscustomframing.com")  // Michaels email marketing
                 {
                     continue;
                 }
