@@ -211,6 +211,21 @@ impl LinkAnalyzer {
         link_domain: &str,
         context: &MailContext,
     ) -> bool {
+        // Early return for legitimate automotive/dealership domains
+        let legitimate_automotive_domains = [
+            "click.drivecentric.com",
+            "drivecentric.com",
+            "dealertrack.com",
+            "dealersocket.com",
+            "vinsolutions.com",
+        ];
+
+        for legitimate in &legitimate_automotive_domains {
+            if link_domain.contains(legitimate) {
+                return false;
+            }
+        }
+
         // Check if sender is from legitimate marketplace
         let sender = context.from_header.as_deref().unwrap_or("");
         if self.is_legitimate_marketplace(sender) {
