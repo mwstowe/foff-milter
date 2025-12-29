@@ -281,6 +281,7 @@ impl ContextAnalyzer {
             "emdeals.michaels.com",
             "rejuvenation.com",
             "onestopplus.com",
+            "shutterfly.com",  // Photo service provider
         ];
 
         let sender_lower = sender.to_lowercase();
@@ -939,6 +940,7 @@ impl ContextAnalyzer {
             "michaelscustomframing.com",
             "lovepop.com",
             "lovepopcards.com",
+            "shutterfly.com",  // Photo service provider
         ];
 
         let is_legitimate_sender = legitimate_retailers
