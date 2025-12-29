@@ -185,12 +185,19 @@ impl ContextAnalyzer {
         ];
 
         // If sender is legitimate business and urgency is marketing-related
-        legitimate_businesses
+        let is_legitimate_business = legitimate_businesses
             .iter()
-            .any(|business| sender.contains(business))
-            && marketing_urgency
-                .iter()
-                .any(|phrase| text_lower.contains(phrase))
+            .any(|business| sender.contains(business));
+            
+        let has_marketing_urgency = marketing_urgency
+            .iter()
+            .any(|phrase| text_lower.contains(phrase));
+            
+        // Special case for floral retailers - they often use emotional urgency for legitimate seasonal promotions
+        let is_floral_retailer = sender.contains("1800flowers") || sender.contains("pulse.celebrations") || 
+                                sender.contains("ftd") || sender.contains("teleflora");
+        
+        is_legitimate_business && (has_marketing_urgency || is_floral_retailer)
     }
 
     fn detect_service_alert_phishing(&self, text: &str, sender: &str) -> (i32, Vec<String>) {
