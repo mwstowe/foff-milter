@@ -180,6 +180,8 @@ impl ContextAnalyzer {
             "ubereats.com",
             "doordash.com",
             "bedjet.com",  // Sleep technology retailer
+            "1800flowers.com",  // Floral retailer
+            "pulse.celebrations.com",  // 1-800-FLOWERS email service
         ];
 
         // If sender is legitimate business and urgency is marketing-related
@@ -1035,7 +1037,9 @@ impl FeatureExtractor for ContextAnalyzer {
             || sender.to_lowercase().contains("lovepop.com")
             || sender.to_lowercase().contains("lovepopcards.com")
             || sender.to_lowercase().contains("bedjet.com")  // Sleep technology retailer
-            || sender.to_lowercase().contains("leaderswedeserve.com");  // Nonprofit organization
+            || sender.to_lowercase().contains("leaderswedeserve.com")  // Nonprofit organization
+            || sender.to_lowercase().contains("1800flowers.com")  // Floral retailer
+            || sender.to_lowercase().contains("pulse.celebrations.com");  // 1-800-FLOWERS email service
         let additional_discount = if borderline_legitimate { 0.2 } else { 1.0 }; // Extra 80% reduction
 
         // Extra discount for nonprofit organizations

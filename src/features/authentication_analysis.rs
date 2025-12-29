@@ -463,6 +463,7 @@ impl AuthenticationFeature {
             "bedjet.com", "ikea.com", "amazon.com", "walmart.com", "target.com",
             "bestbuy.com", "costco.com", "homedepot.com", "lowes.com", "macys.com",
             "nordstrom.com", "michaels.com", "shutterfly.com", "1800flowers.com",
+            "pulse.celebrations.com",  // 1-800-FLOWERS email service
             "klaviyo", "sendgrid", "sparkpost", "mailchimp"
         ];
         
