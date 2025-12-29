@@ -62,7 +62,7 @@ impl LinkAnalyzer {
 
         Self {
             link_regex: Regex::new(
-                r#"(?s)<[aA][^>]*href\s*=\s*["']([^"']+)["'][^>]*>([^<]+)</[aA]>"#,
+                r#"(?s)<[aA][^>]*href\s*=\s*["']([^"']+)["'][^>]*>(.*?)</[aA]>"#,
             )
             .unwrap(),
             action_patterns,
@@ -82,10 +82,11 @@ impl LinkAnalyzer {
             let decoded_body = self.decode_html_entities(body);
 
             for cap in self.link_regex.captures_iter(&decoded_body) {
-                if let (Some(url), Some(text)) = (cap.get(1), cap.get(2)) {
+                if let (Some(url), Some(content)) = (cap.get(1), cap.get(2)) {
+                    let display_text = self.extract_text_from_html(content.as_str());
                     links.push(self.analyze_link(
                         url.as_str(),
-                        text.as_str(),
+                        &display_text,
                         LinkContext::Body,
                         context,
                     ));
@@ -191,6 +192,18 @@ impl LinkAnalyzer {
         "unknown".to_string()
     }
 
+    fn extract_text_from_html(&self, html: &str) -> String {
+        // Remove HTML tags and extract clean text
+        let tag_regex = Regex::new(r"<[^>]*>").unwrap();
+        let clean_text = tag_regex.replace_all(html, " ");
+
+        // Clean up whitespace
+        let whitespace_regex = Regex::new(r"\s+").unwrap();
+        let normalized = whitespace_regex.replace_all(&clean_text, " ");
+
+        normalized.trim().to_string()
+    }
+
     fn is_link_suspicious(
         &self,
         url: &str,
@@ -259,6 +272,7 @@ impl LinkAnalyzer {
         self.is_suspicious_shortener(link_domain, display_text)
             || self.has_suspicious_parameters(url)
             || self.domain_mismatch_suspicious(&sender_domain, link_domain, display_text)
+            || self.is_suspicious_redirect_domain(link_domain)
     }
 
     fn extract_sender_domain(&self, context: &MailContext) -> String {
@@ -660,6 +674,38 @@ impl LinkAnalyzer {
         } else {
             None
         }
+    }
+
+    fn is_suspicious_redirect_domain(&self, domain: &str) -> bool {
+        // Check for legitimate automotive/dealership domains first
+        let legitimate_automotive_domains = [
+            "click.drivecentric.com",
+            "drivecentric.com",
+            "dealertrack.com",
+            "dealersocket.com",
+            "vinsolutions.com",
+        ];
+
+        for legitimate in &legitimate_automotive_domains {
+            if domain.contains(legitimate) {
+                return false;
+            }
+        }
+
+        let suspicious_redirect_domains = [
+            "email.mx02.email-max.com",
+            "click.email-max.com",
+            "track.email-max.com",
+            "redirect.email-max.com",
+            "go.email-max.com",
+            "link.email-max.com",
+            "clicks.aweber.com",
+            "clicks.convertkit.com",
+        ];
+
+        suspicious_redirect_domains
+            .iter()
+            .any(|&suspicious| domain.contains(suspicious))
     }
 }
 

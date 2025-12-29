@@ -8,6 +8,7 @@ pub mod esp_validation;
 pub mod financial_validation;
 pub mod invoice_analyzer;
 pub mod link_analyzer;
+pub mod priority_abuse;
 pub mod sender_alignment;
 pub mod system_blocklist;
 pub mod tld_risk;
@@ -105,6 +106,16 @@ impl FeatureEngine {
                 Box::new(invoice_analyzer::InvoiceAnalyzer::from_config(
                     &config.feature_scoring.invoice_analysis,
                 )),
+                Box::new(domain_analyzer::DomainAnalyzer::new()),
+                Box::new(domain_reputation::DomainReputationFeature::new()),
+                Box::new(brand_impersonation::BrandImpersonationFeature::new()),
+                Box::new(financial_validation::FinancialValidationFeature::new()),
+                Box::new(esp_validation::EspValidationFeature::new()),
+                Box::new(tld_risk::TldRiskFeature::new()),
+                Box::new(authentication_analysis::AuthenticationFeature::new()),
+                Box::new(adobe_campaign_analyzer::AdobeCampaignAnalyzer::new()),
+                Box::new(system_blocklist::SystemBlocklistFeature::new()),
+                Box::new(priority_abuse::PriorityAbuseFeature::new()),
             ],
         }
     }
@@ -125,6 +136,7 @@ impl FeatureEngine {
                 Box::new(authentication_analysis::AuthenticationFeature::new()),
                 Box::new(adobe_campaign_analyzer::AdobeCampaignAnalyzer::new()),
                 Box::new(system_blocklist::SystemBlocklistFeature::new()),
+                Box::new(priority_abuse::PriorityAbuseFeature::new()),
             ],
         }
     }
