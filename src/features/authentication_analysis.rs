@@ -456,6 +456,19 @@ impl AuthenticationFeature {
         let subject = context.subject.as_deref().unwrap_or("");
         let body = context.body.as_deref().unwrap_or("");
         let combined_text = format!("{} {}", subject, body).to_lowercase();
+        let sender = context.from_header.as_deref().unwrap_or("").to_lowercase();
+
+        // Skip brand impersonation check for legitimate retailers
+        let legitimate_retailers = [
+            "bedjet.com", "ikea.com", "amazon.com", "walmart.com", "target.com",
+            "bestbuy.com", "costco.com", "homedepot.com", "lowes.com", "macys.com",
+            "nordstrom.com", "michaels.com", "shutterfly.com", "1800flowers.com",
+            "klaviyo", "sendgrid", "sparkpost", "mailchimp"
+        ];
+        
+        if legitimate_retailers.iter().any(|retailer| sender.contains(retailer)) {
+            return false; // Skip brand impersonation detection for legitimate retailers
+        }
 
         // Debug output
         log::debug!("Brand detection - Subject: '{}'", subject);
@@ -529,6 +542,16 @@ impl FeatureExtractor for AuthenticationFeature {
         if has_brand_impersonation && score < 0 {
             // Reduce authentication bonus by 50% when brand impersonation detected
             score /= 2;
+        }
+
+        // Small bonus for trusted ESP + legitimate retailer combinations
+        let sender = context.from_header.as_deref().unwrap_or("").to_lowercase();
+        let is_trusted_esp = sender.contains("klaviyo") || sender.contains("sendgrid") || sender.contains("sparkpost");
+        let is_legitimate_retailer = ["bedjet.com", "ikea.com", "amazon.com", "walmart.com", "target.com"]
+            .iter().any(|retailer| sender.contains(retailer));
+        
+        if is_trusted_esp && is_legitimate_retailer {
+            score -= 3; // Small bonus for trusted ESP + retailer combination
         }
 
         let confidence = match risk_level {
