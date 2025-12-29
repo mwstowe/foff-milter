@@ -1049,6 +1049,16 @@ impl FeatureExtractor for ContextAnalyzer {
             || sender.to_lowercase().contains("pulse.celebrations.com");  // 1-800-FLOWERS email service
         let additional_discount = if borderline_legitimate { 0.2 } else { 1.0 }; // Extra 80% reduction
 
+        // Extra discount for floral retailers (seasonal emotional marketing is legitimate)
+        let floral_discount = if sender.to_lowercase().contains("1800flowers") || 
+                                sender.to_lowercase().contains("pulse.celebrations") ||
+                                sender.to_lowercase().contains("ftd") || 
+                                sender.to_lowercase().contains("teleflora") { 
+            0.5  // 50% additional reduction for floral retailers
+        } else { 
+            1.0 
+        };
+
         // Extra discount for nonprofit organizations
         let nonprofit_discount = if self.is_nonprofit_organization(sender) { 
             0.6  // 40% additional reduction for nonprofits
@@ -1418,7 +1428,7 @@ impl FeatureExtractor for ContextAnalyzer {
 
         FeatureScore {
             feature_name: "Context Analysis".to_string(),
-            score: (total_score as f32 * promo_discount * additional_discount * esp_retailer_discount * nonprofit_discount) as i32,
+            score: (total_score as f32 * promo_discount * additional_discount * esp_retailer_discount * nonprofit_discount * floral_discount) as i32,
             confidence,
             evidence: all_evidence,
         }
