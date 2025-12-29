@@ -1022,7 +1022,8 @@ impl FeatureExtractor for ContextAnalyzer {
             || sender.to_lowercase().contains("walgreens.com")
             || sender.to_lowercase().contains("lovepop.com")
             || sender.to_lowercase().contains("lovepopcards.com")
-            || sender.to_lowercase().contains("bedjet.com");  // Sleep technology retailer
+            || sender.to_lowercase().contains("bedjet.com")  // Sleep technology retailer
+            || sender.to_lowercase().contains("leaderswedeserve.com");  // Nonprofit organization
         let additional_discount = if borderline_legitimate { 0.2 } else { 1.0 }; // Extra 80% reduction
 
         // Extra discount for trusted ESP + legitimate retailer combinations
