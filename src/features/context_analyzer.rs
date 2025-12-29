@@ -167,6 +167,8 @@ impl ContextAnalyzer {
             "black friday",
             "cyber monday",
             "holiday sale",
+            "up to",  // "up to X% off" patterns
+            "% off",  // Percentage discount patterns
         ];
 
         let legitimate_businesses = [
@@ -177,6 +179,7 @@ impl ContextAnalyzer {
             "pizzahut.com",
             "ubereats.com",
             "doordash.com",
+            "bedjet.com",  // Sleep technology retailer
         ];
 
         // If sender is legitimate business and urgency is marketing-related
@@ -401,6 +404,9 @@ impl ContextAnalyzer {
                 if self.is_legitimate_marketing_urgency(&full_text, sender) {
                     urgency_score += 2; // Reduced penalty for legitimate marketing
                     evidence.push(format!("Marketing urgency detected: {}", pattern.as_str()));
+                } else if self.is_legitimate_retailer(sender) {
+                    urgency_score += 3; // Reduced penalty for legitimate retailers
+                    evidence.push(format!("Retailer urgency detected: {}", pattern.as_str()));
                 } else {
                     urgency_score += 10;
                     evidence.push(format!("Urgency pattern detected: {}", pattern.as_str()));
