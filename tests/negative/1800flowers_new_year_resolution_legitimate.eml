@@ -1,0 +1,1023 @@
+Return-Path: <user@bounce.pulse.celebrations.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTPS id 5BSJJRxh054669
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <user@baddomain.com>; Sun, 28 Dec 2025 19:19:27 GMT
+	(envelope-from user@bounce.pulse.celebrations.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (1024-bit key; unprotected) header.d=pulse.celebrations.com header.i=user@pulse.celebrations.com header.b=RGJUlSPQ;
+	dkim=pass (2048-bit key; unprotected) header.d=s6.y.mc.salesforce.com header.i=@s6.y.mc.salesforce.com header.b=FpuiroxH
+Received: from mta.pulse.celebrations.com (mta.pulse.celebrations.com [128.17.65.214])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 5BSJJ7s5126148
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO)
+	for <user@baddomain.com>; Sun, 28 Dec 2025 13:19:21 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 5BSJJ7s5126148
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (1024-bit key, unprotected) header.d=pulse.celebrations.com header.i=user@pulse.celebrations.com header.a=rsa-sha256 header.s=200608 header.b=RGJUlSPQ;
+	dkim=pass (2048-bit key, unprotected) header.d=s6.y.mc.salesforce.com header.i=@s6.y.mc.salesforce.com header.a=rsa-sha256 header.s=fbldkim6 header.b=FpuiroxH
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=200608; d=pulse.celebrations.com;
+ h=From:To:Subject:Date:List-Unsubscribe:List-Unsubscribe-Post:MIME-Version:
+ Reply-To:Message-ID:Content-Type; i=user@pulse.celebrations.com;
+ bh=j5Sk9fy6rGbFUJE8TO7sBhE+AGxlwFUGdE8xL7Q2144=;
+ b=RGJUlSPQENq0waBQbzH+rx1Yn7avkf3J7vCbtPSDPyTeTHavDR4/GckI1fsJrQXxlol7kvpFzmP5
+   n7GTQuZRyvB3R6hYMYEo2F6Y9M0pGGC65tuPtCNP6uo7bT6oq7zlK/3D9TLrTKvivKAQE+A/cnat
+   4snKdUh3OCD7zeHmvu4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=fbldkim6; d=s6.y.mc.salesforce.com;
+ h=From:To:Subject:Date:List-Unsubscribe:MIME-Version:Reply-To:Message-ID:
+ Content-Type;
+ bh=j5Sk9fy6rGbFUJE8TO7sBhE+AGxlwFUGdE8xL7Q2144=;
+ b=FpuiroxHrP+65UymY+1bhoxtTMm94N6SHKqgRI+jsIY2mer8imfZmm7RBg/HT1FbrcvEo6KbTBQz
+   D6XKLv1zMKrnH8ZDicY6zhHZvMqNywxsId9K2dh76Re31+NutqG8zmdU9MMrxGjoN8RDtPbjp/8f
+   F7nq2FUF8VpKGep2aJORAXFDx7qe1fiNV4fHpQbVFKR2mcV6rH1ucu0k7K6vO8hdYmWNfKDvlHGo
+   8sE+3zIOmpnfRV0K+E1PwXWU3Pc20U0idCTKgpb+2B7jjIWXMO9/2nYFAxIJPVCWYZeOgbjBKjeR
+   YQ8C211xUdEdox14l9fTrVc6zQp1iEUcI0w+Og==
+Received: by mta.pulse.celebrations.com id ha61bk2fmd4h for <user@baddomain.com>; Sun, 28 Dec 2025 19:17:55 +0000 (envelope-from <user@bounce.pulse.celebrations.com>)
+From: "John Doe" <user@pulse.celebrations.com>
+To: <user@baddomain.com>
+Subject: =?UTF-8?B?VGhlIE1vc3QgSW1wb3J0YW50IE5ldyBZZWFy4oCZcyBSZXNvbHV0?=
+ =?UTF-8?B?aW9uIFlvdeKAmWxsIE1ha2U=?=
+Date: Sun, 28 Dec 2025 13:17:55 -0600
+List-Unsubscribe: <https://click.pulse.celebrations.com/subscription_center.aspx?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtaWQiOiI1MjAwMDQxNTMiLCJzIjoiNjYyNjcyNjAiLCJsaWQiOiI2NyIsImoiOiIxNjYxODI4IiwiamIiOiIzMTIwOCIsImQiOiI2MDI1MyJ9.WeR8D5pweSx5i4BOtQUrKUnCfyzYdlk75d1cyVLFoUk>, <mailto:user@leave.pulse.celebrations.com>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+MIME-Version: 1.0
+Reply-To: "John Doe" <user@pulse.celebrations.com>
+X-SFMC-Stack: 6
+x-job: 520004153_1661828
+Message-ID: <user@ind1s06mta2231.xt.local>
+Content-Type: multipart/alternative;
+	boundary="0KEJpfm6oQSt=_?:"
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Sun, 28 Dec 2025 19:19:27 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Sun, 28 Dec 2025 13:19:26 -0600 (CST)
+X-Spam-Flag: YES
+X-FOFF-Feature-Evidence: John Doe: Authentication bonus reduced due to suspicious content (hotel.baddomain.com) [ed5235f6]
+X-FOFF-Feature-Evidence: John Doe: Authentication risk level: Suspicious (hotel.baddomain.com) [aea683a9]
+X-FOFF-Feature-Evidence: John Doe: DMARC result unknown (hotel.baddomain.com) [30e3b12c]
+X-FOFF-Feature-Evidence: John Doe: SPF result unknown (hotel.baddomain.com) [f318740e]
+X-FOFF-Feature-Evidence: John Doe: DKIM domain misaligned: s6.y.mc.salesforce.com vs pulse.celebrations.com (hotel.baddomain.com) [a79f3d4f]
+X-FOFF-Feature-Evidence: John Doe: DKIM authentication passed (hotel.baddomain.com) [55e44c80]
+X-FOFF-Feature-Evidence: John Doe: Invoice scam pattern detected: (?i)\b(click\s+here|verify\s+.*\s+account|update\s+.*\s+payment)\b (legitimate sender: false) (hotel.baddomain.com) [12283d2d]
+X-FOFF-Feature-Evidence: John Doe: Multiple exclamation marks detected (hotel.baddomain.com) [8c765852]
+X-FOFF-Feature-Evidence: John Doe: John Doe pattern detected (2 indicators) (hotel.baddomain.com) [aa2187bb]
+X-FOFF-Feature-Evidence: John Doe: Urgency pattern detected: (?i)\b(overdue|within 24 hours|don't miss|hurry|last chance)\b (hotel.baddomain.com) [6250ae2e]
+X-FOFF-Feature-Evidence: John Doe: Urgency pattern detected: (?i)(urgent|immediate|act now|limited time|expires today) (hotel.baddomain.com) [6a51379a]
+X-FOFF-Feature-Evidence: John Doe: Industry context detected: tech_newsletter (reduced scoring) (hotel.baddomain.com) [80e1dd3b]
+X-FOFF-Rule-Matched: John Doe: Comprehensive health misinformation (hotel.baddomain.com) [ff4c98a1]
+X-FOFF-Score: 160 - trusted from upstream foff-milter v0.8.8 on juliett.baddomain.com
+X-FOFF-Score: 160 - foff-milter v0.8.8 (hotel.baddomain.com)
+X-FOFF-Trust-Analysis: auth=0, infra=10, behavior=-10, content=20, total=3, adj=0
+X-FOFF-Business-Analysis: comm=30, legit=15, industry=20, compliance=10, total=21, adj=0
+X-FOFF-Seasonal-Analysis: seasonal=15, consistency=10, patterns=0, timing=0, total=8, adj=-5
+
+This is a multi-part message in MIME format.
+
+--0KEJpfm6oQSt=_?:
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+
+
+&#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj;
+ &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; &#847;&zwnj; 
+
+
+https://click.pulse.celebrations.com/?qs=5c733619924fadce0e09a00f600b3bf69a7686d7cba3b62ad755946cb1272ffa83d24a306aecb72f30393778e329e4ee73cb3fafe44c9497f93228926bf244a2 
+John Doe Here to John Doe Preferences or Unsubscribe 
+
+
+https://click.pulse.celebrations.com/?qs=fe35b450168a183d44cbe1ac8a2fe6d514f353bd156d1b43efd21dd7d0b14f14332ad9d7c211fa378ecedd50e5e37b2cb02e1397adba4ba4ea9691d32f745e5d 
+
+
+
+
+
+
+
+The days after Christmas and Hanukkah don’t feel like the rest of the year. The big moments have passed, but the kids are still home, work has slowed, and the house feels a little fuller than usual. Outside, it’s dark early, and there’s less pressure to be anywhere in a hurry.
+ 
+
+
+This week is an 
+https://click.pulse.celebrations.com/?qs=fe35b450168a183d1d4bd4eb63c030ed67685735ca5ae6a4d3b044fe2d76f82dc2ba39050aa4578effc6cf4fc709a80252b81836440875d26f06f94ba0234bed 
+in-between moment . It’s easy to let it slip by if you’re not paying attention. I like to think of these days as a gift of extra time, where nothing’s scheduled and nothing feels urgent. There’s just time to be together.
+
+
+This period invites reflection. Memories from the past year surface, along with questions about the one ahead. Did I spend my time the way I wanted to? What mattered more than I expected? What do I want to carry forward when life picks up speed again?
+
+
+Those questions often lead to John Doe’s resolutions and the inevitable 
+https://click.pulse.celebrations.com/?qs=fe35b450168a183dc08e94fe1ddfd0d28281258debf6e9e3e40eef1602a65833adfc68b8f95b995318996dbdac7db66ad9ff6dcc8bc08900ebfae07bb5e8b675 
+challenge of keeping them  once January gives way to February and beyond. I’ve struggled with that myself. Over the years, I’ve found a few ways to stay on track, and I’d like to share them here.
+
+
+
+
+ 
+
+Why resolutions so often fail
+
+
+By now, most of us know how this story goes. We begin the year with ambitious resolutions, fueled by optimism and good intentions. “This will be the year I get in shape, eat better, save more money.” Sound familiar? Within weeks — sometimes days — many of those promises 
+https://click.pulse.celebrations.com/?qs=fe35b450168a183da112c5d49f476e89e056b26ed9e1251649e017cf3ea100657a44dcf2bde032782294264842cce3d355d48242772748ce81f6bc8b00a01912 
+slip away . The cycle 
+https://click.pulse.celebrations.com/?qs=fe35b450168a183d7f2e02f7e5700da203e6c60eeece21b234ae2ed309d8d190b23f1e89e277367cd0fc94e009d9337357ce63d467d26fb8266b1ae71d1670d0 
+repeats itself  year after year.
+
+
+It’s tempting to blame a lack of discipline or willpower, but I don’t think that’s the whole story. More often than not, the problem isn’t a lack of effort; it’s how we frame the resolution from the very beginning.
+
+
+We tend to 
+https://click.pulse.celebrations.com/?qs=fe35b450168a183d782c76fa82c3b62e933c00592baf82092f01ae911f61b6d91193bf37ffa171f1bfc3c630d7bd04ef9489065be1070fdf95dc870b3b316bc5 
+ask too much  of ourselves, too quickly. We aim for sweeping change instead of manageable steps. The goals are big, rigid, and disconnected from the realities of daily life. When progress doesn’t show up immediately, discouragement sets in.
+
+
+A better approach is to 
+https://click.pulse.celebrations.com/?qs=fe35b450168a183d1289d4b1ab02160c499030bcf5e5ebe70bf1d8651950b0b61fe7f7643cd11f485710ff5171da77f8f443eff8e4d79fe8192c5c76ed101acd 
+start small . Break a big challenge into more manageable pieces. If the goal is better health, begin with a short daily walk. If it’s saving money, start by setting aside a modest amount each week. These steps may feel simple, but that’s the point.
+
+
+Relationship resolutions
+
+
+If you’re looking for a resolution that delivers the greatest return, consider investing in your relationships. Few choices offer more impact for so little effort. Both research and experience point to the same conclusion: 
+https://click.pulse.celebrations.com/?qs=fe35b450168a183dfcfa9b58286e17bdef1efcbb8dcaf2eb2e88cbf1e609649238bc9d874efa2045b799072ecd6a6922edfc8abc480b194c5caf53a4281cb9bf 
+Strong relationships sit at the center of a healthy, fulfilling life .
+ 
+
+
+As I’ve written in many John Doe letters, scientists have found that strong social ties reduce stress, 
+https://click.pulse.celebrations.com/?qs=fe35b450168a183d1cc0d0577e6463d064d8bafa4efebbb524ae7d7b5bbac2067dcbd169f196f6d1589dcc02484647d6248a38907eee4d57893176ceb98287b0 
+improve physical and mental health , and protect us against loneliness. They also support every other goal we care about, from career growth to emotional resilience.
+ 
+
+
+And yet, despite knowing all of this, many of us feel more disconnected than ever. Life gets busy, responsibilities stack up, and time moves faster than we expect. Most relationships don’t end with a blowup or a falling out. Instead, they 
+https://click.pulse.celebrations.com/?qs=fe35b450168a183de5fba27b031046f7d0a8fd00e48489c907d41f8691dae65458f9c21b1edb438bac2a4cd33a8d167dabcf428c75731608f1765fb7bb885a36 
+fade quietly  when we stop tending to them.
+ 
+
+
+That’s why choosing to focus on relationships makes for a strong foundational resolution. When our connections are strong, everything else feels more manageable.
+
+
+
+
+https://click.pulse.celebrations.com/?qs=fe35b450168a183dd488e63c06648f6b2b0bf6ca418a69c7539f39074f6a2baffb6c4c7e819e1ed230b1fff7f7f68115987f781aa7632024aa72de411dfa85e5 
+
+A personal experience
+
+
+Years ago, during an especially demanding stretch of my life, I realized that good intentions weren’t enough. I cared deeply about the people in my life, but that care wasn’t translating into consistent action.
+
+
+John Doe, I decided to make a change. I built a simple system to help myself stay in touch on a regular basis. Each day, I reached out to one person. Sometimes it was a quick phone call. Other times, a short note or message. 
+
+
+What surprised me was how effective my “connectivity calendar” became. The effort was small, and the impact was immediate: Conversations deepened, relationships strengthened, and I felt back on track with the people who mattered most.
+
+
+
+
+An invitation to think differently
+
+
+As the new year begins, I hope you take time to reflect on all the relationships you have and want to have. As my friend 
+https://click.pulse.celebrations.com/?qs=fe35b450168a183d0a9f3d0e3785bd1271852d14d05d6e39631a68faa3a647f6ac5b2ccea86cedf91017bd35b3e85650e2520d5113ad78ba3e701348e4310674 
+Dr. George S. Everly, Jr. , says: “Nurture the relationships you have, rekindle the relationships you’ve lost, and create the relationships you wish you had.”
+
+
+It’s a great John Doe’s resolution — and one that’s simple enough that you won’t be abandoning it after a few weeks. Don’t start with a sweeping goal; start with a person who will appreciate hearing from you.
+ 
+
+
+That single act of connection can become a habit. And that habit can quietly shape the year ahead in ways no other resolution ever could.
+
+
+ 
+
+
+John Doe Year!
+ 
+
+
+
+
+https://click.pulse.celebrations.com/?qs=fe35b450168a183dc55cd139f4fe4c401638494c2ba33bb90072f0184b0a4e781acb2339539f480ed9f187add0b2e707620908ba24c75f78f06270923f753f76 
+
+https://click.pulse.celebrations.com/?qs=fe35b450168a183d9dd13e553f5fdadf3e60e790b18523bea958097fc16bef048c06c26983accd76943293b2c8fe784d659001f92fde5cdef688689c876bae43 
+
+https://click.pulse.celebrations.com/?qs=fe35b450168a183ddaa77e2df7ef2009c0347881d31c90edc358d8b6ff6e9349cd4b29db64bbcdff392d616c550943a786f847dbd464c57e76f640c897607d86 
+
+https://click.pulse.celebrations.com/?qs=fe35b450168a183dd6651a17b2800dd0157ddc651605c6b9dbe4b555daecda778afd2d0e25ae9f63a2a26aab7768fb4004e32845db6c5816785d45545332fc0d 
+
+
+https://click.pulse.celebrations.com/?qs=fe35b450168a183d96c246f1bdf0a453320b79fb60fcf694f66bd4a03312a46ae759eeea5c8ba470f9bb16a6bc47cee3de31f9a95c3c7a929460698336cda10b 
+
+
+https://click.pulse.celebrations.com/?qs=5c733619924fadce7988cb5abb5eff36cce5c020b0e84f32a713506741aeafe9a4eafa9c04f462a4b11a56f80585a7a8a2bffdb5a814769f63e7c976694ad824 
+
+https://click.pulse.celebrations.com/?qs=5c733619924fadce4c27ec902eac6a4584557b3e540f297baa6507aa0763259b55e6707ba663ef1618ebfeffedb128e52b3c41edf5801c66af217e77d7fb6059 
+
+https://click.pulse.celebrations.com/?qs=5c733619924fadce12da7e8da82742c8c7fad899d7a253e3b0ecf4ca50bcb0afa7d83e15b77d0930d4a591ce4a40a93d76f17a98e11adff8892c14af4968da8a 
+
+
+Recorded live at 
+https://click.pulse.celebrations.com/?qs=fe35b450168a183d13134f2e1f2b6061bf2e9b43adac65667db84abb17360b8785c000e02cb9c9165621b9916838e00151dfc57fe6cb6a5d54f1a5678fd45616 
+Techonomy 25 , this week’s episode of Power & Impact brings together two voices thinking deeply about where creativity and leadership are headed: 
+https://click.pulse.celebrations.com/?qs=fe35b450168a183d4ad40986c72a8ce74e7207d4765161be259ffa90bcf80bbabfc502fc39af284965c4999ba70a7307e82732b6f1ba93e1408b1a6f88c03e1d 
+John Doe Ferrero , CEO of 
+https://click.pulse.celebrations.com/?qs=fe35b450168a183d4ba12ddd64d013e734f5ea8fdd787ca36b2a766e237d088c70242c3aa78336bbef9b2f8bd5504e7524cddc29921cc699d8cc70c27abe5fd3 
+John Doe  and a global leader in AI-driven brand storytelling, and 
+https://click.pulse.celebrations.com/?qs=fe35b450168a183d963b3ae65b81a79283fe5c150caf92cdaccf42a85bfb9dc98792da21927487c452c3e1a0e3505020c37bd2c7bb4fe421c15d42ada80a4e2b 
+Dr. John Doe , a Harvard lecturer focused on team health, connection, and performance.
+ 
+
+
+The conversation cuts through the noise around artificial intelligence to focus on what actually matters. Sergio and Bobbi talk about how AI is changing the way we create and lead, the role of craft in an era of rapid automation, and why human connection remains the foundation of great teams and great work.
+ 
+
+
+Along the way, we explore creativity as a source of exponential impact and the future of work as something shaped by entirely new capabilities we’re just beginning to understand. It’s a candid, forward-looking discussion about change, responsibility, and opportunity.
+ 
+
+
+If you’re thinking about how to lead, create, and build meaningful connections in a fast-moving world, this episode offers both clarity and optimism about what comes next.
+
+
+
+
+ 
+
+
+
+What’s your resolution strategy?
+
+
+As the new year begins, I’d love to hear how you’re thinking about the months ahead. What’s one resolution you’re focusing on, or a small step you’re taking as you start the year? And how are you planning to stay with it as January gives way to the rest of the year?
+ 
+
+
+I’ll be gathering the community’s reflections for a special John Doe letter in 2026. These notes are always thoughtful and inspiring, and I’m looking forward to sharing your stories with other readers in the year ahead.
+ 
+
+
+As a thank-you, I’ll select five entries at random to receive a gift from the 1-800-Flowers.com family of brands — something to help you start the year on a good note.
+
+
+
+
+
+
+mailto:user@1800flowers.com 
+
+Planning a quiet John Doe’s Eve?
+
+https://click.pulse.celebrations.com/?qs=fe35b450168a183d815a6446ad70b02873680ede3b79157d236d0d4ac672f7a2650b417407963c76c6d6bb8afcf60e04d7c7da89085b409e445e55fc31602a88 
+John Doe’s Eve  doesn’t have to be loud or crowded to be meaningful. Some of the most memorable celebrations happen at home, shaped by a bit of intention and shared with the people who matter most.
+
+
+My advice is to approach it the way you would any thoughtful gathering. Send an invite, set a tone with a dress code — pajamas or black tie both work! — and decide on one or two simple moments that give the evening shape, whether that’s a favorite game, a movie everyone loves, or an adult beverage reserved for midnight.
+
+
+It’s also a great opportunity to begin something you might 
+https://click.pulse.celebrations.com/?qs=fe35b450168a183ddff798c2c26a84029982132160b01f25ec266358f6c16dbb469be93feea58051e43496e36d9b4a11d340cb8dc918dbcb6cee72c973771bcc 
+carry forward . A photo taken each year, a shared toast, or a small ritual can turn an ordinary night into a tradition that’s uniquely yours.
+
+
+Keep the food uncomplicated so the focus stays on being together. Order in, light a few candles, and add 
+https://click.pulse.celebrations.com/?qs=fe35b450168a183d46b4b765d3b2cbd5c13a388da95501bd9643288c7b5dc2d5c00d7c082fbef52353cc2f396b8d394b88c9e992cd003b6e6065ce8bd482348a 
+flowers  or soft lighting to create a sense of occasion.
+
+
+However you choose to celebrate, the intention is the same: to welcome the new year feeling present and connected. Sometimes, staying in is exactly the right way to begin.
+
+
+
+
+https://click.pulse.celebrations.com/?qs=5c733619924fadce3688755c187ebf0b1b9a3a9160bdf22369fe9ae259791d901dde80e83c6d2586ed4c8215f385ecc4cce6eb8c77fba11d3d5dfb59c53e199c 
+
+https://click.pulse.celebrations.com/?qs=5c733619924fadcec1c4e9df1985a80e69ce336f86f667e23dbe55e59fe700ad382a88b121d1df9c4e065162bbab35c34e06156ede7e7d2592c2ba37ac7ee8c4 
+
+https://click.pulse.celebrations.com/?qs=5c733619924fadce39655a8ed26dcaa450e838e19db9d4e33f86645f3b79fbc2e2d38bb97dc39d94cd8214690a09093e1d0e861f5597e668006334c50597510b 
+
+
+https://click.pulse.celebrations.com/?qs=fe35b450168a183d06971ab42d1ac9bf81ce322a36a81e2530f69b3a7e702c356d5a6ce45c47f7da4137ba5fad99498b262a9e9655d330dea9e0af0f1f38bb8a 
+
+https://click.pulse.celebrations.com/?qs=fe35b450168a183d8edaab3b9ce9342467752886955f463686cc5ebbcd09425b2a889efd6f3a3ab992f12a6b1bc2500899051560b2c722f31052e0d0f9552860 
+
+https://click.pulse.celebrations.com/?qs=fe35b450168a183d5e6cedc3d4a8efbb438073810094af0fa58550e8a2190100fcb797ed97da331e568de3a0384da6f7211deab5346972d78685de58715da0b6 
+
+Related articles that caught my eye
+
+
+https://click.pulse.celebrations.com/?qs=fe35b450168a183d2f804551e62433e3c0c94147c390dddfac20020869ddf8bf736fb159b52592b2cd38da8a106ea8d967c802322f9e4967613b18fb94365128 
+
+
+https://click.pulse.celebrations.com/?qs=fe35b450168a183db6678b65c06708d686d157f899dfee45f2b8e79d29f509589f85aef024597c2fc19a14f4b353405896c2f3ccd75c5be00548c514ab7d341d 
+
+
+https://click.pulse.celebrations.com/?qs=fe35b450168a183debd5766eab7968fe7a85eeddcbf6605cc9117593b213826dc11cf94f1e43beb858b7ce895c50600e645cf8d108d732f0c33482b05560d965 
+
+
+
+
+
+
+https://click.pulse.celebrations.com/?qs=fe35b450168a183de46e4e22924d9f01a378f318955cc0b720e2bbeac26e2094fa216147f25c45070004c04016851ad452070fffb446e49123145269f6002803 
+
+
+https://click.pulse.celebrations.com/?qs=fe35b450168a183d615a85c9186f1d7e999fa4ea9f8313e18bb60d7a53a4fee3ffe30fe9e531c074d6dd654e80bf8836b42d7808b37fcf44a61428593d77a2c3 
+
+
+mailto:user@1800flowers.com 
+
+Written by our Founder and Chairman, our John Doe letters aim to engage with our community. From sharing stories to welcoming your ideas, we want to help you to express, connect, and celebrate the important people in your life.
+
+
+https://view.pulse.celebrations.com/?qs=0ed11e0feabbd7ad008b6b26651f7461c6a07abea879b8ce6a390e2ca5864c746272db7f0b9e9fe5cf46f4f6320cecba4f4265f1c97de811d620cc67ffeeda1d92f12800c8a471c1335837a0d9636b5d 
+View as webpage 
+
+This email was sent by: 1-800-FLOWERS.COM, Inc.
+John Doe Plaza Suite 200 Jericho, NY, 11753, USA
+
+https://click.pulse.celebrations.com/profile_center.aspx?qs=24ed0e2eb117d861268d298626c365211425c893843a7b78b8945041ac157fecef1db6bf086a463f625bc1cdaa6dc27416dbc81ec0b9a8aefcaf2c13d1e24eb5a01af22c71245c1a 
+John Doe Preferences  | 
+https://click.pulse.celebrations.com/?qs=fe35b450168a183d242ed106233c2bb21e16bdb817b747a0b39acbc6d489c3038af3fdf9a61a5b7afca6e4f81fc6d068317480119d08d647b262abffb0472331 
+Terms & Conditions  | 
+https://click.pulse.celebrations.com/?qs=fe35b450168a183d50d86ebe85de99f5b71266c5da7885b9ab9355189154d767c8859fc95950f4cfe3c6416148aac64c82a6e11f826616c3a4c4849b38538665 
+Unsubscribe from John Doe 
+
+
+
+
+
+--0KEJpfm6oQSt=_?:
+Content-Type: text/html;
+	charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+ <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+ <style type="text/css">
+ body {
+ margin: 0px;
+ }
+ .ReadMsgBody {
+ width: 100%;
+ }
+ .ExternalClass {
+ width: 100%;
+ }
+ /* Hotmail symbol fix */
+ .symbolfix img {
+ width: 5px !important;
+ height: 5px !important;
+ }
+  th {font-weight:400;font-size:20px !important;padding:5px;text-align:center;color:#000000 !important;}
+  th a {color:#000000 !important;}
+   .navfreeship {color:#800080 !important;}
+  a.navfreeship:link {color:#800080 !important;}
+  table #logodesktop {margin:auto;text-align:center;}
+   .sharpen {
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -o-crisp-edges;
+    image-rendering: -webkit-optimize-contrast;
+    -ms-interpolation-mode: nearest-neighbor;
+}
+  
+@media only screen and (max-width: 500px) and (min-width: 320px) {
+  div #nav {font-size:12px !important;}
+  th {font-weight:400;font-size:12px !important;padding:5px;text-align:center;color:#000000 !important;background-color:#ffffff;}
+  table #navmenu {background-color:#ffffff;color:#000000 !important;font-size:12px !important;}
+  th a {color:#000000 !important;font-size:12px !important;display:inline;}
+  a.navfreeship:link {color:#800080 !important;}
+  .navfreeship {color:#800080 !important;}
+  .savingspass {font-size:13px !important;}
+  .promocodetable {width:75% !important;}
+   .tablemobilestacked {display:block !important;width:95% !important;max-width:500px !important;}
+   .tablemobilestackedd {display:block !important;width:95% !important;max-width:500px !important;}
+   
+   .bottomnavstacked {padding-bottom:8px !important;padding-right:5px !important;padding-left: 5px !important;padding-top:8px !important;}
+   .mobilebox {width:100% !important;max-width:95% !important;}
+   .mobileboxinner {width:100% !important;max-width:100% !important;}
+  .mobileboxtext {font-size:11px !important; font-weight:600 !important; font-family: Arial !important;}
+  
+  a.offertext1:link {font-size:22px !important;}
+  a.offertext2:link {font-size:14px !important;}
+  .mobilehide {display:none !important;visibility:hidden !important;width:0px;}
+  .passporttext1 {font-size:16px !important;}
+  .passporttext2 {font-size:18px !important;}
+  .boxborder {border:1px solid #000000 !important;}
+  .width100 {width:100% !important;}
+  .centered {text-align:center !important;margin-left:auto !important;margin-right:auto !important;}
+  .padding10 {padding:10px !important;}
+  .padding20 {padding:20px !important;}
+  .padding30 {padding:30px !important;}
+  .padding40 {padding:40px !important;}
+  .padding50 {padding:50px !important;}
+  }
+   
+@media only screen and (max-width: 600px) and (min-width: 500px) {
+    div #nav {font-size:12px !important;}
+  th {font-weight:400;font-size:12px !important;padding:5px;text-align:center;color:#000000 !important;background-color:#ffffff;}
+  table #navmenu {background-color:#ffffff;color:#000000 !important;font-size:12px !important;}
+  th a {color:#000000 !important;font-size:12px !important;display:inline;}
+  a.navfreeship:link {color:#800080 !important;}
+  .navfreeship {color:#800080 !important;}
+  .savingspass {font-size:13px !important;}
+  .promocodetable {width:75% !important;}
+   .tablemobilestacked {display:block !important;width:95% !important;max-width:500px !important;}
+   .tablemobilestackedd {display:block !important;width:95% !important;max-width:500px !important;}
+     
+   .bottomnavstacked {width:50% !important;max-width:50% !important; padding-bottom:8px !important;padding-top:8px !important;}
+   .mobilebox {width:100% !important;max-width:145px !important;}
+   .mobileboxinner {width:100% !important;max-width:100% !important;}
+  .mobileboxtext {font-size:10px !important;font-weight:600 !important;font-family: Arial !important;}
+  .bottomnavlesspadding {padding:10px !important;}
+  a.offertext1:link {font-size:22px !important;}
+  a.offertext2:link {font-size:14px !important;}
+  .mobilehide {display:none !important;visibility:hidden !important;width:0px;}
+  .passporttext1 {font-size:16px !important;}
+  .passporttext2 {font-size:17px !important;}
+  .boxborder {border:1px solid #000000 !important;}
+  .width100 {width:100% !important;}
+  .centered {text-align:center !important;margin-left:auto !important;margin-right:auto !important;}
+  .padding10 {padding:10px !important;}
+  .padding20 {padding:20px !important;}
+  .padding30 {padding:30px !important;}
+  .padding40 {padding:40px !important;}
+  .padding50 {padding:50px !important;}
+  
+  }
+   
+   
+@media only screen and (max-width: 320px) {
+  div #nav {font-size:12px !important;}
+  th {font-weight:400;font-size:12px !important;padding:5px;text-align:center;color:#000000 !important;background-color:#ffffff;}
+  table #navmenu {background-color:#ffffff;color:#000000 !important;font-size:12px !important;}
+  th a {color:#000000 !important;font-size:12px !important;;display:inline;}
+  a.navfreeship:link {color:#800080 !important;}
+  .navfreeship {color:#800080 !important;}
+  img.mobilelogo {max-width:50% !important;}
+  .mobilelogo {max-width:50% !important;}
+  .savingspass {font-size:13px !important;}
+  .promocodetable {width:75% !important;}
+   .tablemobilestacked {display:block !important;width:95% !important;max-width:500px !important;}
+   .tablemobilestackedd {display:block !important;width:95% !important;max-width:500px !important;}
+  
+   .bottomnavstacked {width:50% !important;max-width:50% !important; padding-bottom:8px !important;padding-top:8px !important;}
+   .mobilebox {width:100% !important;max-width:145px !important;}
+   .mobileboxinner {width:100% !important;max-width:100% !important;}
+  .mobileboxtext {font-size:10px !important;font-weight:600 !important; font-family: Arial !important;}
+  .bottomnavlesspadding {padding:10px !important;}
+  a.offertext1:link {font-size:22px !important;}
+  a.offertext2:link {font-size:14px !important;}
+  .mobilehide {display:none !important;visibility:hidden !important;width:0px;}
+  .passporttext1 {font-size:18px !important;}
+  .passporttext2 {font-size:22px !important;}
+  .boxborder {border:1px solid #000000 !important;}
+  .width100 {width:100% !important;}
+  .centered {text-align:center !important;margin-left:auto !important;margin-right:auto !important;}
+  .padding10 {padding:10px !important;}
+  .padding20 {padding:20px !important;}
+  .padding30 {padding:30px !important;}
+  .padding40 {padding:40px !important;}
+  .padding50 {padding:50px !important;}
+  }
+   
+
+</style>
+</head>
+<body style="margin: 0px; padding:0px; -webkit-text-size-adjust:none; -ms-text-size-adjust: none;" yahoo="fix"><style type="text/css">
+div.preheader 
+{ display: none !important; } 
+</style>
+<div class="preheader" style="font-size: 1px; display: none !important;">Sharing a Letter from our Founder & Chairman</div>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+ <tr>
+  <td align="center">
+  <div align="center">
+  <table border="0" cellspacing="0" cellpadding="0" class="container" style="max-width:640px;">
+   <tr>
+    <td align="left" valign="top">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+     <tr>
+      <td align="left" valign="top"><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- zero width space to hide unsub text -->
+<div style="display: none; max-height: 0px; overflow: hidden;">
+&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;
+&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;
+</div>
+</td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td align="center" style="padding-bottom:10px"><table border="0" cellspacing="0" cellpadding="0"><tr><td class="innertd buttonblock" bgcolor="#7F3FBF" style=" border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; background-color: #7F3FBF;">
+<a style=" font-size: 14px; font-family: Arial, helvetica, sans-serif; color: #000000; text-align: center; text-decoration: none; display: block; background-color:  #FFFFFF; border: 1px solid transparent; padding: 10px; border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px;" target="_blank" class="buttonstyles" href="https://click.pulse.celebrations.com/?qs=5c733619924fadce0e09a00f600b3bf69a7686d7cba3b62ad755946cb1272ffa83d24a306aecb72f30393778e329e4ee73cb3fafe44c9497f93228926bf244a2"  >John Doe Here to John Doe Preferences or Unsubscribe</a></td></tr></table></td></tr></table>
+<!--/prefs-->
+</td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><div id="logo">
+  <table width="100%" align="center" id="logodesktop" style="max-width:640px;width:100%" border="0" cellspacing="0" cellpadding="10">
+        <tr>
+        <td align="center">
+          <a title="1-800-Flowers.com" href="https://click.pulse.celebrations.com/?qs=5c733619924fadce1f9569749cee3da9bfb4b42fd8e08ce3c76f7a1a2f8315bbc4224a85658fe9d936500e0ba7761e9e74c8e2543ba11f734dd6e84b2deb4d3a" target="_blank"  ><img width="125" height="55" title="1-800-Flowers.com" id="logo" style="display:block;text-align:center;" alt="1-800-Flowers.com" src="https://assets.bounceexchange.com/assets/uploads/users/4034/1800f/logo-238x106-20200513.png" border="0"></a>
+    </td>
+      </tr>
+      </table>
+</div>
+
+<!--this tracks the clicks for Jim's podcast banners. do not remove, it's part of tracking-->
+
+</td></tr></table></td></tr></table></td>
+     </tr>
+    </table>
+    </td>
+   </tr>
+   <tr>
+    <td align="left" valign="top">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+     <tr>
+      <td align="left" valign="top" class="photo"><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><div id="hero">
+  <table width="640" align="center" style="max-width:640px;width:100%;" bgcolor="#ffffff" cellspacing="0" cellpadding="0">
+        <tr>
+      <td align="center" style="padding-bottom:0px;">
+
+        <img style="display:block;border:0;outline:0;padding:0;width:100%;max-width:640px;height:auto;" alt="celebrations pulse" src="https://image.em.1800flowersinc.com/lib/fe9712727466027c73/m/1/NYResolutions_hero_SWAP.jpg" border="0">
+    </td>
+      </tr>
+      </table>
+</div>
+
+</td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><div align="center" id="footer" width="640"> 
+  <table align="center" style="max-width:640px;" border="0" cellspacing="0" cellpadding="0">    
+   
+ 
+ 
+<tr>
+  <td width="640" align="center" valign="top" style="font-family: Calibri, Helvetica, San serif; line-height:1.4; font-size:17px; color:#000000; background-color:#ffffff; padding-left:40px;padding-right:40px;padding-top:5px;padding-bottom:5px;text-align:left;">The days after Christmas and Hanukkah don’t feel like the rest of the year. The big moments have passed, but the kids are still home, work has slowed, and the house feels a little fuller than usual. Outside, it’s dark early, and there’s less pressure to be anywhere in a hurry.
+    <br><br>
+This week is an <a  style="color:#000000;font-weight:bold;text-decoration:underline;margin:0 !important;padding:0 !important;line-height:100% !important;mso-line-height-rule:exactly !important;" href="https://click.pulse.celebrations.com/?qs=5c733619924fadce4ccd6b666db4f584869b0527e6627f2fc8bb2016b2f78158eaef50b646f071df6be3af98af02c54b316195175c7260fac33a6a916e0cca83">in-between moment</a>. It’s easy to let it slip by if you’re not paying attention. I like to think of these days as a gift of extra time, where nothing’s scheduled and nothing feels urgent. There’s just time to be together.<br><br>
+This period invites reflection. Memories from the past year surface, along with questions about the one ahead. Did I spend my time the way I wanted to? What mattered more than I expected? What do I want to carry forward when life picks up speed again?<br><br>
+Those questions often lead to John Doe’s resolutions and the inevitable <a  style="color:#000000;font-weight:bold;text-decoration:underline;margin:0 !important;padding:0 !important;line-height:100% !important;mso-line-height-rule:exactly !important;" href="https://click.pulse.celebrations.com/?qs=5c733619924fadce31440b07496ae1369905d4b6f0e2bfec8742fa29ae8400f77cc228420d86ec1eaaffe5af51b120092131e8403ee9a2e20b536427230882a8">challenge of keeping them</a> once January gives way to February and beyond. I’ve struggled with that myself. Over the years, I’ve found a few ways to stay on track, and I’d like to share them here.
+
+
+
+
+ </td></tr></table></div></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><div id="hero">
+  <table width="640" align="center" style="max-width:640px;width:100%;" bgcolor="#ffffff" cellspacing="0" cellpadding="0">
+        <tr>
+      <td align="center" style="padding-bottom:0px;">
+
+        <img style="display:block;border:0;outline:0;padding:0;width:100%;max-width:640px;height:auto;" alt="celebrations pulse" src="https://image.em.1800flowersinc.com/lib/fe9712727466027c73/m/1/Pic1-HolidayRituals_251228.jpg" border="0">
+    </td>
+      </tr>
+      </table>
+</div>
+
+</td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><div align="center" id="footer" width="640"> 
+  <table align="center" style="max-width:640px;" border="0" cellspacing="0" cellpadding="0">    
+    
+<tr>
+  <td width="640" align="center" valign="top" style="font-family: Calibri, Helvetica, San serif; line-height:1.4; font-size:17px; color:#000000; background-color:#ffffff; padding-left:40px;padding-right:40px;padding-top:0px;padding-bottom:0px;text-align:left;"><span style="line-height:28px;font-size:22px;color: #a43b3b;"><strong>Why resolutions so often fail</strong></span><br><br>
+By now, most of us know how this story goes. We begin the year with ambitious resolutions, fueled by optimism and good intentions. “This will be the year I get in shape, eat better, save more money.” Sound familiar? Within weeks — sometimes days — many of those promises <a  style="color:#000000;font-weight:bold;text-decoration:underline;margin:0 !important;padding:0 !important;line-height:100% !important;mso-line-height-rule:exactly !important;" href="https://click.pulse.celebrations.com/?qs=5c733619924fadce21c619b066f4a1453437269d958fb663b34136d8afc084ba1b0ff795e823951043cd4753652a3db704852e73d1d1982bb40067b011e740fc">slip away</a>. The cycle 
+<a  style="color:#000000;font-weight:bold;text-decoration:underline;margin:0 !important;padding:0 !important;line-height:100% !important;mso-line-height-rule:exactly !important;" href="https://click.pulse.celebrations.com/?qs=5c733619924fadce2eef77e66950e05f476d43dca0ac5c95f3b38648a036733aaeb508ec7479a3598607ef66d704ccd38b16fad11c7880f775abf4760a6648ed">repeats itself
+</a> year after year.<br><br>
+It’s tempting to blame a lack of discipline or willpower, but I don’t think that’s the whole story. More often than not, the problem isn’t a lack of effort; it’s how we frame the resolution from the very beginning.<br><br>
+We tend to <a  style="color:#000000;font-weight:bold;text-decoration:underline;margin:0 !important;padding:0 !important;line-height:100% !important;mso-line-height-rule:exactly !important;" href="https://click.pulse.celebrations.com/?qs=5c733619924fadcef056662d6ebe009a612608e8309393042dc80da2e9ac0464fffc3a4997d2d11fe1b99270a0b4c7aa7a99e3313234c680659f54e9bf66eaec">ask too much</a> of ourselves, too quickly. We aim for sweeping change instead of manageable steps. The goals are big, rigid, and disconnected from the realities of daily life. When progress doesn’t show up immediately, discouragement sets in.<br><br>
+A better approach is to <a  style="color:#000000;font-weight:bold;text-decoration:underline;margin:0 !important;padding:0 !important;line-height:100% !important;mso-line-height-rule:exactly !important;" href="https://click.pulse.celebrations.com/?qs=5c733619924fadce5df5fad20d6a522172b8d4171724ce8906590ee7ffaab67923b6c4ceeb4a1942d71e73caa8134b262462ce419f6a9d134ce8ba620e8f0bd3">start small</a>. Break a big challenge into more manageable pieces. If the goal is better health, begin with a short daily walk. If it’s saving money, start by setting aside a modest amount each week. These steps may feel simple, but that’s the point.
+</td></tr></table></div></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><div align="center" id="footer" width="640"> 
+  <table align="center" style="max-width:640px;" border="0" cellspacing="0" cellpadding="0">    
+    
+<tr>
+  <td width="640" align="center" valign="top" style="font-family: Calibri, Helvetica, San serif; line-height:1.4; font-size:17px; color:#000000; background-color:#ffffff; padding-left:40px;padding-right:40px;padding-top:25px;padding-bottom:5px;text-align:left;"><span style="line-height:28px;font-size:22px;color: #a43b3b;"><strong>Relationship resolutions</strong></span><br><br>
+If you’re looking for a resolution that delivers the greatest return, consider investing in your relationships. Few choices offer more impact for so little effort. Both research and experience point to the same conclusion: <a  style="color:#000000;font-weight:bold;text-decoration:underline;margin:0 !important;padding:0 !important;line-height:100% !important;mso-line-height-rule:exactly !important;" href="https://click.pulse.celebrations.com/?qs=5c733619924fadce7f77413f2ff1eac31fe6ed8f28a99feb10b17a21d7655b011185aab6e8d79423119eba0679238fef9a7c6224dcab8046dcb23ac054fcbc6c">Strong relationships sit at the center of a healthy, fulfilling life</a>.
+    <br><br>
+As I’ve written in many <i>John Doe</i> letters, scientists have found that strong social ties reduce stress, <a  style="color:#000000;font-weight:bold;text-decoration:underline;margin:0 !important;padding:0 !important;line-height:100% !important;mso-line-height-rule:exactly !important;" href="https://click.pulse.celebrations.com/?qs=5c733619924fadce5da429171b27bf17d36e0568e8bdd7035a8a9ead00abad14495264dd247952b74452c39eaeb4957f377e0750c01ef5d5b7521a9fb5c2fb5e">improve physical and mental health</a>, and protect us against loneliness. They also support every other goal we care about, from career growth to emotional resilience.
+    <br><br>
+And yet, despite knowing all of this, many of us feel more disconnected than ever. Life gets busy, responsibilities stack up, and time moves faster than we expect. Most relationships don’t end with a blowup or a falling out. Instead, they <a  style="color:#000000;font-weight:bold;text-decoration:underline;margin:0 !important;padding:0 !important;line-height:100% !important;mso-line-height-rule:exactly !important;" href="https://click.pulse.celebrations.com/?qs=5c733619924fadcee3cd715512fbd55f8a17a79cd9ba1b2ddfaaba4d8565a1953dad3d16ef0adf0e2083c064aa6ec772e976ef290bfe7abb843cf552fe8135cd">fade quietly</a> when we stop tending to them.
+    <br><br>
+That’s why choosing to focus on relationships makes for a strong foundational resolution. When our connections are strong, everything else feels more manageable.
+
+</td></tr></table></div></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><div id="hero">
+  <table width="640" align="center" style="max-width:640px;width:100%;" bgcolor="#ddf3fa" cellspacing="0" cellpadding="0">
+        <tr>
+      <td align="center" style="padding-bottom:0px;">
+
+        <a  href="https://click.pulse.celebrations.com/?qs=5c733619924fadce6e5d29e76b7aaefe3263cab3036c77c61f015215e5bb71a3209b40fe8ce7526fa777b1947529c7421233647ed02a3f08ee11b9286ce45a5d"><img style="display:block;border:0;outline:0;padding:0;width:100%;max-width:640px;height:auto;" alt="celebrations pulse" src="https://image.em.1800flowersinc.com/lib/fe9712727466027c73/m/1/RelationshipResolutions_Top.gif" border="0"></a>
+    </td>
+      </tr>
+      </table>
+</div>
+
+</td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><div align="center" id="footer" width="640"> 
+  <table align="center" style="max-width:640px;" border="0" cellspacing="0" cellpadding="0">    
+    
+<tr>
+  <td width="640" align="center" valign="top" style="font-family: Calibri, Helvetica, San serif; line-height:1.4; font-size:17px; color:#000000; background-color:#ffffff; padding-left:40px;padding-right:40px;padding-top:20px;padding-bottom:5px;text-align:left;"><span style="line-height:28px;font-size:22px;color: #a43b3b;"><strong>A personal experience</strong></span><br><br>
+Years ago, during an especially demanding stretch of my life, I realized that good intentions weren’t enough. I cared deeply about the people in my life, but that care wasn’t translating into consistent action.<br><br>
+John Doe, I decided to make a change. I built a simple system to help myself stay in touch on a regular basis. Each day, I reached out to one person. Sometimes it was a quick phone call. Other times, a short note or message. <br><br>
+What surprised me was how effective my “connectivity calendar” became. The effort was small, and the impact was immediate: Conversations deepened, relationships strengthened, and I felt back on track with the people who mattered most.
+
+
+</td></tr></table></div></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><div align="center" id="footer" width="640"> 
+  <table align="center" style="max-width:640px;" border="0" cellspacing="0" cellpadding="0">    
+    
+<tr>
+  <td width="640" align="center" valign="top" style="font-family: Calibri, Helvetica, San serif; line-height:1.4; font-size:17px; color:#000000; background-color:#ffffff; padding-left:40px;padding-right:40px;padding-top:20px;padding-bottom:5px;text-align:left;"><span style="line-height:28px;font-size:22px;color: #a43b3b;"><strong>An invitation to think differently</strong></span><br><br>
+As the new year begins, I hope you take time to reflect on all the relationships you have and want to have. As my friend <a  style="color:#000000;font-weight:bold;text-decoration:underline;margin:0 !important;padding:0 !important;line-height:100% !important;mso-line-height-rule:exactly !important;" href="https://click.pulse.celebrations.com/?qs=5c733619924fadce28b6f87682520fbd7cf92f470e78ff817a15bfd8af8dfbfb1ef3727648ef640fe78555a2767a80d4e0b84ed4f48bbafc932370dd0fb1befa">Dr. George S. Everly, Jr.</a>, says: “Nurture the relationships you have, rekindle the relationships you’ve lost, and create the relationships you wish you had.”<br><br>
+It’s a great John Doe’s resolution — and one that’s simple enough that you won’t be abandoning it after a few weeks. Don’t start with a sweeping goal; start with a person who will appreciate hearing from you.
+    <br><br>
+That single act of connection can become a habit. And that habit can quietly shape the year ahead in ways no other resolution ever could.
+
+
+    <br><br>
+John Doe Year!
+    
+
+</td></tr></table></div></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner">
+<div id="logo">
+  <table width="640" align="center" style="max-width:640px;width:100%;" bgcolor="#ffffff" cellspacing="0" cellpadding="0">
+        <tr>
+      <td align="left" style="padding-bottom:0px;">
+ <a title="Chris" href="https://click.pulse.celebrations.com/?qs=5c733619924fadce63702c2cce8d503eca8553888e61809a2bcda932245d11509f402904c0d52627bd858ae9c268a125a88bff23460939b5b6a59708103b5d10" target="_blank"  ><img width="237" style="display:block;border:0;outline:0;padding:0;width:100%;max-width:237px;height:auto;" alt="Chris" src="https://image.em.1800flowersinc.com/lib/fe9712727466027c73/m/1/Jim250516.jpg" border="0"></a>
+          </td>
+         <td align="center" style="padding-bottom:0px;">
+         <a title="Jim" href="https://click.pulse.celebrations.com/?qs=5c733619924fadced90e1235e00267106a301b2419f8ed828de8dfe7315ed84f0c10584a5f4df51e044077d9827a8c67b270f401367e6d9784106deeacd62720" target="_blank"  ><img width="75" style="display:block;border:0;outline:0;padding:0;width:100%;max-width:75px;height:auto;" alt="Jim" src="https://image.em.1800flowersinc.com/lib/fe9712727466027c73/m/1/Jim_LinkedIn250516.gif" border="0"></a>
+    </td>
+          <td align="center" style="padding-bottom:0px;">
+         <a title="Jim" href="https://click.pulse.celebrations.com/?qs=5c733619924fadcea1663658c662375754c57ee57bc269dad4d55991c7c679d0abb076a6ab830f453d5a32c400dfaef553426af0bfb2571896bf3095c845bb7a" target="_blank"  ><img width="75" style="display:block;border:0;outline:0;padding:0;width:100%;max-width:75px;height:auto;" alt="Jim" src="https://image.em.1800flowersinc.com/lib/fe9712727466027c73/m/1/Jim_X250516.gif" border="0"></a>
+    </td>
+          <td align="center" style="padding-bottom:0px;">
+         <a title="Jim" href="https://click.pulse.celebrations.com/?qs=5c733619924fadce6d0bfe261ce8294a3b7005ef304d0cd69c57c9743bace660ce65178f091c4571542e841330c09652b3a278c9f28e5a81df9c25a2988253a5" target="_blank"  ><img width="253" style="display:block;border:0;outline:0;padding:0;width:100%;max-width:253px;height:auto;" alt="Jim" src="https://image.em.1800flowersinc.com/lib/fe9712727466027c73/m/1/Jim_Instagram250516.gif" border="0"></a>
+    </td>
+      </tr>
+    
+      </table>
+</div>
+
+</td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><div id="hero">
+  <table width="640" align="center" style="max-width:640px;width:100%;" bgcolor="#ddf3fa" cellspacing="0" cellpadding="0">
+        <tr>
+      <td align="center" style="padding-bottom:0px;">
+
+        <a  href="https://click.pulse.celebrations.com/?qs=5c733619924fadce78b3d674538ed3a6ab368fa88a74b5d4f4192c4b265f9df5e2da1c2d69e15774df8fdc9d3b7b9afcb10336c05fe42877190553efd1754acc"><img style="display:block;border:0;outline:0;padding:0;width:100%;max-width:640px;height:auto;" alt="celebrations pulse" src="https://image.em.1800flowersinc.com/lib/fe9712727466027c73/m/1/PowerImpact_251228.jpg" border="0"></a>
+    </td>
+      </tr>
+      </table>
+</div>
+
+</td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner">
+<table width="640" align="center" style="max-width:640px;width:100%;" bgcolor="#ebf3f5" cellspacing="0" cellpadding="0">
+      <!--products 8 9 10-->  
+    <tr>
+       <td align="left" style="padding-bottom:0px;">
+      <a href="https://click.pulse.celebrations.com/?qs=5c733619924fadce7988cb5abb5eff36cce5c020b0e84f32a713506741aeafe9a4eafa9c04f462a4b11a56f80585a7a8a2bffdb5a814769f63e7c976694ad824" style="display: block"><img alt="Youtube" style="display:block;border:0;outline:0;padding:0;width:100%;max-width:640px;height:auto;" border="0" src="https://image.em.1800flowersinc.com/lib/fe9712727466027c73/m/1/PowerImpact_YouTube_251228.gif"></a>
+
+      </td>
+      <td align="center" style="padding-bottom:0px;">
+
+ <a href="https://click.pulse.celebrations.com/?qs=5c733619924fadce4c27ec902eac6a4584557b3e540f297baa6507aa0763259b55e6707ba663ef1618ebfeffedb128e52b3c41edf5801c66af217e77d7fb6059" style="display: block"><img alt="Spotify" style="display:block;border:0;outline:0;padding:0;width:100%;max-width:640px;height:auto;" border="0" src="https://image.em.1800flowersinc.com/lib/fe9712727466027c73/m/1/PowerImpact_Spotify_251228.gif"></a>
+       
+     
+      </td>
+      <td align="right" style="padding-bottom:0px;">
+        
+<a href="https://click.pulse.celebrations.com/?qs=5c733619924fadce12da7e8da82742c8c7fad899d7a253e3b0ecf4ca50bcb0afa7d83e15b77d0930d4a591ce4a40a93d76f17a98e11adff8892c14af4968da8a" style="display: block"><img alt="John Doe" style="display:block;border:0;outline:0;padding:0;width:100%;max-width:640px;height:auto;" border="0" src="https://image.em.1800flowersinc.com/lib/fe9712727466027c73/m/1/PowerImpact_Apple_251228.gif"></a>
+
+     </td></tr>
+  </table>
+
+</td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><div align="center" id="footer" width="640"> 
+  <table align="center" style="max-width:640px" border="0" cellspacing="0" cellpadding="0" bgcolor="#f5f4f4">    
+    
+<tr>
+  <td width="640" align="center" valign="top" style="font-family: Calibri, Helvetica, San serif; line-height:1.4; font-size:17px; color:#000000;  padding-left:40px;padding-right:40px;padding-top:10px;padding-bottom:5px;text-align:left;">
+Recorded live at <a  style="color:#000000;font-weight:bold;text-decoration:underline;margin:0 !important;padding:0 !important;line-height:100% !important;mso-line-height-rule:exactly !important;" href="https://click.pulse.celebrations.com/?qs=5c733619924fadce8ff42b1853a1b5020feebc80a66af6c237345754a9ac8726d7a89094a5d0a56c6d4ddd60e60e33397e4e3c6cdc90e8fc4800e8005f93ddc8">Techonomy 25</a>, this week’s episode of <i>Power & Impact</i> brings together two voices thinking deeply about where creativity and leadership are headed: <a  style="color:#000000;font-weight:bold;text-decoration:underline;margin:0 !important;padding:0 !important;line-height:100% !important;mso-line-height-rule:exactly !important;" href="https://click.pulse.celebrations.com/?qs=5c733619924fadce9db04e2bffdd290910a98549a8a36388e136846c571e976e742cb47fcd26c144312c4946f639da3b72cacf789e85400d6aa2614e6e6a8d57">John Doe Ferrero</a>, CEO of 
+<a  style="color:#000000;font-weight:bold;text-decoration:underline;margin:0 !important;padding:0 !important;line-height:100% !important;mso-line-height-rule:exactly !important;" href="https://click.pulse.celebrations.com/?qs=5c733619924fadcef8af853f12740132807ab73ee2310e26c4cfaefb5a5d6d0f7f4a4d1dc97ae804b8a9ba02db929f6eeb4f108b6bb77f17fa7f7feecb08ba9b">John Doe</a> and a global leader in AI-driven brand storytelling, and <a  style="color:#000000;font-weight:bold;text-decoration:underline;margin:0 !important;padding:0 !important;line-height:100% !important;mso-line-height-rule:exactly !important;" href="https://click.pulse.celebrations.com/?qs=5c733619924fadce4e64cec46e00c6188d1eb93cd7d72dba4e4ddb17955cf4fbb7b9c38cdab33af3fcbc2c21acf7c34c9c98d9174cadedb0bcf76f1855ba2b67">Dr. John Doe</a>, a Harvard lecturer focused on team health, connection, and performance.
+    <br><br>
+The conversation cuts through the noise around artificial intelligence to focus on what actually matters. Sergio and Bobbi talk about how AI is changing the way we create and lead, the role of craft in an era of rapid automation, and why human connection remains the foundation of great teams and great work.
+    <br><br>
+Along the way, we explore creativity as a source of exponential impact and the future of work as something shaped by entirely new capabilities we’re just beginning to understand. It’s a candid, forward-looking discussion about change, responsibility, and opportunity.
+    <br><br>
+If you’re thinking about how to lead, create, and build meaningful connections in a fast-moving world, this episode offers both clarity and optimism about what comes next.
+
+
+
+
+ 
+
+</td></tr></table></div></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><div align="center" id="footer" width="640"> 
+  <table align="center" style="max-width:640px;  background-color:#f5f4f4;" border="0" cellspacing="0" cellpadding="0">    
+<tr>
+  <td width="640" align="center" valign="top" style="font-family: Calibri, Helvetica, San serif; line-height:1; font-size:17px; background-color:#f5f4f4; padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;text-align:left;">  
+<hr style="border-top: 1px solid #a43b3b; border-bottom:0px;">
+</td></tr></table></div></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><div id="hero">
+  <table width="640" align="center" style="max-width:640px;width:100%;" bgcolor="#ffffff" cellspacing="0" cellpadding="0">
+        <tr>
+      <td align="center" style="padding-bottom:0px;">
+
+        <img style="display:block;border:0;outline:0;padding:0;width:100%;max-width:640px;height:auto;" alt="celebrations pulse" src="https://image.em.1800flowersinc.com/lib/fe9712727466027c73/m/1/Resolutions-strategy-pic.jpg" border="0">
+    </td>
+      </tr>
+      </table>
+</div>
+
+</td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><div align="center" id="footer" width="640"> 
+  <table align="center" style="max-width:640px;" border="0" cellspacing="0" cellpadding="0" bgcolor="#f5f4f4">    
+    
+<tr>
+  <td width="640" align="center" valign="top" style="font-family: Calibri, Helvetica, San serif; line-height:1.4; font-size:17px; color:#000000; padding-left:40px;padding-right:40px;padding-top:10px;padding-bottom:5px;text-align:left;"><span style="line-height:28px;font-size:22px;color: #a43b3b;"><strong>What’s your resolution strategy?</strong></span><br><br>
+As the new year begins, I’d love to hear how you’re thinking about the months ahead. What’s one resolution you’re focusing on, or a small step you’re taking as you start the year? And how are you planning to stay with it as January gives way to the rest of the year?
+    <br><br>
+I’ll be gathering the community’s reflections for a special <i>John Doe</i> letter in 2026. These notes are always thoughtful and inspiring, and I’m looking forward to sharing your stories with other readers in the year ahead.
+    <br><br>
+As a thank-you, I’ll select five entries at random to receive a gift from the 1-800-Flowers.com family of brands — something to help you start the year on a good note.
+
+
+
+</td></tr></table></div></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><div id="hero">
+  <table width="640" align="center" style="max-width:640px;width:100%;" bgcolor="#ddf3fa" cellspacing="0" cellpadding="0">
+        <tr>
+      <td align="center" style="padding-bottom:0px;">
+
+        <a alias="watch" href="mailto:user@1800flowers.com"><img style="display:block;border:0;outline:0;padding:0;width:100%;max-width:640px;height:auto;" alt="celebrations pulse" src="https://image.em.1800flowersinc.com/lib/fe9712727466027c73/m/1/Res-Strategy-cta.gif" border="0"></a>
+    </td>
+      </tr>
+      </table>
+</div>
+
+</td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><div align="center" id="footer" width="640"> 
+  <table align="center" style="max-width:640px;  background-color:#f5f4f4;" border="0" cellspacing="0" cellpadding="0">    
+<tr>
+  <td width="640" align="center" valign="top" style="font-family: Calibri, Helvetica, San serif; line-height:1; font-size:17px; background-color:#f5f4f4; padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;text-align:left;">  
+<hr style="border-top: 1px solid #a43b3b; border-bottom:0px;">
+</td></tr></table></div></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><div id="hero">
+  <table width="640" align="center" style="max-width:640px;width:100%;" bgcolor="#ffffff" cellspacing="0" cellpadding="0">
+        <tr>
+      <td align="center" style="padding-bottom:0px;">
+
+        <img style="display:block;border:0;outline:0;padding:0;width:100%;max-width:640px;height:auto;" alt="celebrations pulse" src="https://image.em.1800flowersinc.com/lib/fe9712727466027c73/m/1/NYE-party-pic.jpg" border="0">
+    </td>
+      </tr>
+      </table>
+</div>
+
+</td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><div align="center" id="footer" width="640"> 
+  <table align="center" style="max-width:640px;" border="0" cellspacing="0" cellpadding="0" bgcolor="#f5f4f4">    
+    
+<tr>
+  <td width="640" align="center" valign="top" style="font-family: Calibri, Helvetica, San serif; line-height:1.4; font-size:17px; color:#000000; padding-left:40px;padding-right:40px;padding-top:10px;padding-bottom:5px;text-align:left;"><span style="line-height:28px;font-size:22px;color: #a43b3b;"><strong>Planning a quiet John Doe’s Eve?</strong></span><br><br>
+<a  style="color:#000000;font-weight:bold;text-decoration:underline;margin:0 !important;padding:0 !important;line-height:100% !important;mso-line-height-rule:exactly !important;" href="https://click.pulse.celebrations.com/?qs=5c733619924fadce6560686be1c90eab21205231cc7f3f680cb78e500c14273f6e02492c12d908c62787cdad4916f2a4b6d6f5cdfc34f469e7046284c1dfdc1c">John Doe’s Eve</a> doesn’t have to be loud or crowded to be meaningful. Some of the most memorable celebrations happen at home, shaped by a bit of intention and shared with the people who matter most.<br><br>
+My advice is to approach it the way you would any thoughtful gathering. Send an invite, set a tone with a dress code — pajamas or black tie both work! — and decide on one or two simple moments that give the evening shape, whether that’s a favorite game, a movie everyone loves, or an adult beverage reserved for midnight.<br><br>
+It’s also a great opportunity to begin something you might <a  style="color:#000000;font-weight:bold;text-decoration:underline;margin:0 !important;padding:0 !important;line-height:100% !important;mso-line-height-rule:exactly !important;" href="https://click.pulse.celebrations.com/?qs=5c733619924fadce05864d924ed2d4d6f2438da4fe38cf4e889f7809c28daac1d8f3c4513130c2d2d934b5797724e0424b248beb73d3de76236dc7f478d0cc57">carry forward</a>. A photo taken each year, a shared toast, or a small ritual can turn an ordinary night into a tradition that’s uniquely yours.<br><br>
+Keep the food uncomplicated so the focus stays on being together. Order in, light a few candles, and add <a  style="color:#000000;font-weight:bold;text-decoration:underline;margin:0 !important;padding:0 !important;line-height:100% !important;mso-line-height-rule:exactly !important;" href="https://click.pulse.celebrations.com/?qs=5c733619924fadce6301a394076008995fc0bc1cd1bd3cffe545297198704718d6f5151c45c2a14f6cd9a0fa10235f2090dcf2c1899d567f2d38b13de2e3c2f2">flowers</a> or soft lighting to create a sense of occasion.<br><br>
+However you choose to celebrate, the intention is the same: to welcome the new year feeling present and connected. Sometimes, staying in is exactly the right way to begin.
+</td></tr></table></div></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><div align="center" id="footer" width="640"> 
+  <table align="center" style="max-width:640px;  background-color:#f5f4f4;" border="0" cellspacing="0" cellpadding="0">    
+<tr>
+  <td width="640" align="center" valign="top" style="font-family: Calibri, Helvetica, San serif; line-height:1; font-size:17px; background-color:#f5f4f4; padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;text-align:left;">  
+<hr style="border-top: 1px solid #a43b3b; border-bottom:0px;">
+</td></tr></table></div></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><div id="hero">
+  <table width="640" align="center" style="max-width:640px;width:100%;" bgcolor="#ffffff" cellspacing="0" cellpadding="0">
+        <tr>
+      <td align="center" style="padding-bottom:0px;">
+
+        <img style="display:block;border:0;outline:0;padding:0;width:100%;max-width:640px;height:auto;" alt="celebrations pulse" src="https://image.em.1800flowersinc.com/lib/fe9712727466027c73/m/1/cal-top.gif" border="0">
+    </td>
+      </tr>
+      </table>
+</div>
+
+</td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner">
+<table width="640" style="max-width:640px;width:100%;" border="0" cellspacing="0" cellpadding="0" align="center">
+<tr>
+<!--prod1-->
+<td width="189" align="center" style="padding-bottom:0px;background-color:#f0efe8;" class="mobilewidth">
+<table width="100%" style="max-width:189px;width:100%;" border="0" cellspacing="0" cellpadding="0" align="center">
+<tr>
+<td width="100%" align="center" style="padding-bottom:0px;background-color:#f0efe8;" class="mobilewidth">
+ <img width="189" height="auto" style="text-align: center; padding: 0px; height:auto; width: 100%;max-width:189px; border: 0px;display:block;color:#fff6eb;background-color:#f0efe8;font-size:18px;font-family:'Hind',Arial,sans-serif;white-space:pre;font-weight:600;" src="https://image.em.1800flowersinc.com/lib/fe9712727466027c73/m/1/cal-jan1.gif" class="mobilewidth" alt="John Doe's Day">
+</td>
+</tr>       
+</table>
+</td>
+<!--/prod1-->
+<!--prod2-->
+<td width="130" align="center" style="padding-bottom:0px;background-color:#f0efe8;" class="mobilewidth">
+<table width="100%" style="max-width:130px;width:100%;" border="0" cellspacing="0" cellpadding="0" align="center">
+<tr>
+<td width="100%" align="center" style="padding-bottom:0px;background-color:#f0efe8;" class="mobilewidth">
+<a href="https://click.pulse.celebrations.com/?qs=5c733619924fadce3688755c187ebf0b1b9a3a9160bdf22369fe9ae259791d901dde80e83c6d2586ed4c8215f385ecc4cce6eb8c77fba11d3d5dfb59c53e199c"><img width="130" height="auto" style="text-align: center; padding: 0px; height:auto; width: 100%;max-width:130px; border: 0px;display:block;color:#fff6eb;background-color:#f0efe8;font-size:18px;font-family:'Hind',Arial,sans-serif;white-space:pre;font-weight:600;" src="https://image.em.1800flowersinc.com/lib/fe9712727466027c73/m/1/cal-jan10.gif" class="mobilewidth" alt="John Doe Day"></a>
+</td>
+</tr>        
+</table>
+</td>
+<!--/prod2-->
+<!--prod3-->
+<td width="130" align="center" style="padding-bottom:0px;background-color:#f0efe8;" class="mobilewidth">
+<table width="100%" style="max-width:130px;width:100%;" border="0" cellspacing="0" cellpadding="0" align="center">
+<tr>
+<td width="100%" align="center" style="padding-bottom:0px;background-color:#f0efe8;" class="mobilewidth">
+  <a href="https://click.pulse.celebrations.com/?qs=5c733619924fadcec1c4e9df1985a80e69ce336f86f667e23dbe55e59fe700ad382a88b121d1df9c4e065162bbab35c34e06156ede7e7d2592c2ba37ac7ee8c4"><img width="130" height="auto" style="text-align: center; padding: 0px; height:auto; width: 100%;max-width:130px; border: 0px;display:block;color:#fff6eb;background-color:#f0efe8;font-size:18px;font-family:'Hind',Arial,sans-serif;white-space:pre;font-weight:600;" src="https://image.em.1800flowersinc.com/lib/fe9712727466027c73/m/1/cal-jan11.gif" class="mobilewidth" alt="John Doe Week"></a>
+</td>
+</tr>
+</table>
+</td>
+<!--/prod3-->
+    <td width="191" align="center" style="padding-bottom:0px;" class="mobilewidth">
+<table width="100%" style="max-width:191px;width:100%;" border="0" cellspacing="0" cellpadding="0" align="center">
+<tr>
+<td width="100%" align="center" style="padding-bottom:0px;background-color:#f0efe8;" class="mobilewidth">
+  <a href="https://click.pulse.celebrations.com/?qs=5c733619924fadce39655a8ed26dcaa450e838e19db9d4e33f86645f3b79fbc2e2d38bb97dc39d94cd8214690a09093e1d0e861f5597e668006334c50597510b"><img width="190" height="auto" style="text-align: center; padding: 0px; height:auto; width: 100%;max-width:191px; border: 0px;display:block;color:#fff6eb;background-color:#f0efe8;font-size:18px;font-family:'Hind',Arial,sans-serif;white-space:pre;font-weight:600;" src="https://image.em.1800flowersinc.com/lib/fe9712727466027c73/m/1/cal-jan15.gif" class="mobilewidth" alt="John Doe Day"></a>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner">
+<table width="640" style="max-width:640px;width:100%;" border="0" cellspacing="0" cellpadding="0" align="center">
+<tr>
+<!--prod1-->
+<td width="189" align="center" style="padding-bottom:0px;background-color:#f0efe8;" class="mobilewidth">
+<table width="100%" style="max-width:189px;width:100%;" border="0" cellspacing="0" cellpadding="0" align="center">
+<tr>
+<td width="100%" align="center" style="padding-bottom:0px;background-color:#f0efe8;" class="mobilewidth">
+  <a href="https://click.pulse.celebrations.com/?qs=fe35b450168a183d06971ab42d1ac9bf81ce322a36a81e2530f69b3a7e702c356d5a6ce45c47f7da4137ba5fad99498b262a9e9655d330dea9e0af0f1f38bb8a"><img width="189" height="auto" style="text-align: center; padding: 0px; height:auto; width: 100%;max-width:189px; border: 0px;display:block;color:#fff6eb;background-color:#f0efe8;font-size:18px;font-family:'Hind',Arial,sans-serif;white-space:pre;font-weight:600;" src="https://image.em.1800flowersinc.com/lib/fe9712727466027c73/m/1/cal-jan19.gif" class="mobilewidth" alt="John Doe Day"></a>
+</td>
+</tr>       
+</table>
+</td>
+<!--/prod1-->
+<!--prod2-->
+<td width="131" align="center" style="padding-bottom:0px;background-color:#f0efe8;" class="mobilewidth">
+<table width="100%" style="max-width:131px;width:100%;" border="0" cellspacing="0" cellpadding="0" align="center">
+<tr>
+<td width="100%" align="center" style="padding-bottom:0px;background-color:#f0efe8;" class="mobilewidth">
+<img width="131" height="auto" style="text-align: center; padding: 0px; height:auto; width: 100%;max-width:131px; border: 0px;display:block;color:#fff6eb;background-color:#f0efe8;font-size:18px;font-family:'Hind',Arial,sans-serif;white-space:pre;font-weight:600;" src="https://image.em.1800flowersinc.com/lib/fe9712727466027c73/m/1/cal-jan21_SWAP.gif" class="mobilewidth" alt="John Doe King, Jr. Day">
+</td>
+</tr>        
+</table>
+</td>
+<!--/prod2-->
+<!--prod3-->
+<td width="129" align="center" style="padding-bottom:0px;background-color:#f0efe8;" class="mobilewidth">
+<table width="100%" style="max-width:129px;width:100%;" border="0" cellspacing="0" cellpadding="0" align="center">
+<tr>
+<td width="100%" align="center" style="padding-bottom:0px;background-color:#f0efe8;" class="mobilewidth">
+  <a href="https://click.pulse.celebrations.com/?qs=fe35b450168a183d8edaab3b9ce9342467752886955f463686cc5ebbcd09425b2a889efd6f3a3ab992f12a6b1bc2500899051560b2c722f31052e0d0f9552860"><img width="130" height="auto" style="text-align: center; padding: 0px; height:auto; width: 100%;max-width:129px; border: 0px;display:block;color:#fff6eb;background-color:#f0efe8;font-size:18px;font-family:'Hind',Arial,sans-serif;white-space:pre;font-weight:600;" src="https://image.em.1800flowersinc.com/lib/fe9712727466027c73/m/1/caljan22.gif" class="mobilewidth" alt="John Doe Day"></a>
+</td>
+</tr>
+</table>
+</td>
+<!--/prod3-->
+    <td width="191" align="center" style="padding-bottom:0px;" class="mobilewidth">
+<table width="100%" style="max-width:191px;width:100%;" border="0" cellspacing="0" cellpadding="0" align="center">
+<tr>
+<td width="100%" align="center" style="padding-bottom:0px;background-color:#f0efe8;" class="mobilewidth">
+  <a href="https://click.pulse.celebrations.com/?qs=fe35b450168a183d5e6cedc3d4a8efbb438073810094af0fa58550e8a2190100fcb797ed97da331e568de3a0384da6f7211deab5346972d78685de58715da0b6"><img width="191" height="auto" style="text-align: center; padding: 0px; height:auto; width: 100%;max-width:191px; border: 0px;display:block;color:#fff6eb;background-color:#f0efe8;font-size:18px;font-family:'Hind',Arial,sans-serif;white-space:pre;font-weight:600;" src="https://image.em.1800flowersinc.com/lib/fe9712727466027c73/m/1/cal-jan31.gif" class="mobilewidth" alt="John Doe Day"></a>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><div align="center" id="footer" width="640"> 
+  <table align="center" style="max-width:640px;  background-color:#f5f4f4;" border="0" cellspacing="0" cellpadding="0">    
+<tr>
+  <td width="640" align="center" valign="top" style="font-family: Calibri, Helvetica, San serif; line-height:1; font-size:17px; background-color:#f5f4f4; padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;text-align:left;">  
+<hr style="border-top: 1px solid #a43b3b; border-bottom:0px;">
+</td></tr></table></div></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><div align="center" id="footer" width="640"> 
+  <table align="center" style="max-width:640px;" border="0" cellspacing="0" cellpadding="0" bgcolor="#f5f4f4">    
+    
+<tr>
+  <td width="640" align="center" valign="top" style="font-family: Calibri, Helvetica, San serif; line-height:1.4; font-size:17px; color:#000000; padding-left:40px;padding-right:40px;padding-top:10px;padding-bottom:5px;text-align:left;"><span style="line-height:28px;font-size:22px;color: #a43b3b;"><strong>Related articles that caught my eye</strong></span>
+</td></tr></table></div></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><div id="hero">
+  <table width="640" align="center" style="max-width:640px;width:100%;padding-top:0px;padding:0px;" bgcolor="#ddf3fa" cellspacing="0" cellpadding="0">
+        <tr>
+      <td align="center" style="padding-top:0px;padding-bottom:0px;">
+        <a href="https://click.pulse.celebrations.com/?qs=fe35b450168a183d487d88d8eabf2394962e2bba74543e501bf71bf4749611cb7926f4e8331756cc8ddf63dc0f583d9578a8e1dfc2672bb7a59b702e791f1a9d" ><img style="display:block;border:0;outline:0;padding:0;width:100%;max-width:640px;height:auto;" alt="celebrations pulse" src="https://image.em.1800flowersinc.com/lib/fe9712727466027c73/m/1/Article1_251228.jpg" border="0"></a>
+    </td>
+      </tr>
+      </table>
+</div>
+
+</td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><div id="hero">
+  <table width="640" align="center" style="max-width:640px;width:100%;padding-top:0px;padding:0px;" bgcolor="#ddf3fa" cellspacing="0" cellpadding="0">
+        <tr>
+      <td align="center" style="padding-top:0px;padding-bottom:0px;">
+        <a href="https://click.pulse.celebrations.com/?qs=fe35b450168a183dad0a90cfc0b0e20e886db44fe03b421bec341ddbdb90be2a0f6dcb7f4a0b7b6fcb7ded799f93bf35f9d3f5b500216dd51c84257bcae4284e" ><img style="display:block;border:0;outline:0;padding:0;width:100%;max-width:640px;height:auto;" alt="celebrations pulse" src="https://image.em.1800flowersinc.com/lib/fe9712727466027c73/m/1/Article2_251228.jpg" border="0"></a>
+    </td>
+      </tr>
+      </table>
+</div>
+
+</td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><div id="hero">
+  <table width="640" align="center" style="max-width:640px;width:100%;padding-top:0px;padding:0px;" bgcolor="#ddf3fa" cellspacing="0" cellpadding="0">
+        <tr>
+      <td align="center" style="padding-top:0px;padding-bottom:0px;">
+        <a href="https://click.pulse.celebrations.com/?qs=fe35b450168a183d83e8fd4dce2f13d6abb4209add0bcfd4ac05306b69affd9afe00ef2905525bbe20afe52f293a0411f9b82858f4676885f99c253912f77294" ><img style="display:block;border:0;outline:0;padding:0;width:100%;max-width:640px;height:auto;" alt="celebrations pulse" src="https://image.em.1800flowersinc.com/lib/fe9712727466027c73/m/1/Article3_251228.jpg" border="0"></a>
+    </td>
+      </tr>
+      </table>
+</div>
+
+</td></tr></table></td>
+     </tr>
+    </table>
+    </td>
+   </tr>
+   <tr>
+    <td align="left" valign="top">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+     <tr>
+      <td align="left" valign="top" class="photo"></td>
+     </tr>
+    </table>
+    </td>
+   </tr>
+   <tr>
+    <td align="center" valign="top" width="640">
+    <table width="100%" align="center" border="0" cellspacing="0" cellpadding="0" class="container" style="max-width:640px;">
+     <tr>
+      <td align="center" valign="top" class="photo" width="640"><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner">
+
+<div id="hero">
+  <table width="640" align="center" style="max-width:640px;width:100%;" cellspacing="0" cellpadding="0">
+
+        
+    <tr>
+      <td align="center" style="padding-bottom:0px;">
+        <a style="display: block" href="https://click.pulse.celebrations.com/?qs=fe35b450168a183d7b3bc4fd3b84f4091284859d6ea0bf4f399ec35d129c0423bb8c3da2c66248a9da8a15f1c1eb662d0b725eab882c4652591cf154407365d3" ><img style="display:block;border:0;outline:0;padding:0;width:100%;max-width:640px;height:auto;" src="https://image.em.1800flowersinc.com/lib/fe9712727466027c73/m/1/Banner_SubsribeNow_251228.gif" border="0"></a>
+        
+        
+       
+      </td>
+     </tr>   
+  </table>
+</div>
+  </td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner">
+
+<div id="hero">
+  <table width="640" align="center" style="max-width:640px;width:100%;" cellspacing="0" cellpadding="0">
+
+        
+    <tr>
+      <td align="center" style="padding-bottom:0px;">
+        <a style="display: block" href="https://click.pulse.celebrations.com/?qs=fe35b450168a183db4313d9b9b3d762a84b61e2d54ab96948ac55ce396971921f1b50673a91e90f02d921578e07b2b092d9f4b5f5623b1769465d211c2b10f1d" ><img style="display:block;border:0;outline:0;padding:0;width:100%;max-width:640px;height:auto;" src="https://image.em.1800flowersinc.com/lib/fe9712727466027c73/m/1/Banner_ReferAFriend_251228.gif" border="0"></a>
+        
+        
+       
+      </td>
+     </tr>   
+  </table>
+</div>
+  </td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner">
+
+<div id="hero">
+  <table width="640" align="center" style="max-width:640px;width:100%;" cellspacing="0" cellpadding="0">
+
+        
+    <tr>
+      <td align="center" style="padding-bottom:0px;">
+        <a style="display: block" href="mailto:user@1800flowers.com" alias="ShareBnr_0904"><img style="display:block;border:0;outline:0;padding:0;width:100%;max-width:640px;height:auto;" src="https://image.em.1800flowersinc.com/lib/fe9712727466027c73/m/1/Banner_ContactJim_251228.gif" border="0"></a>
+        
+        
+       
+      </td>
+     </tr>   
+  </table>
+</div>
+  </td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner">
+<div align="center" id="footer" width="640"> 
+  <!--prefs footer-->
+ 
+  <!--/prefs footer-->
+  <table align="center" style="max-width:640px;" border="0" cellspacing="0" cellpadding="0">   
+      
+<tr>
+  <td width="640" align="center" valign="top" style="font-family: Calibri, Helvetica, San serif; line-height:1.4; font-size:15px; color:#000000;padding-left:40px;padding-right:40px;padding-top:10px;padding-bottom:40px;text-align:left;background-color:#ffffff;">
+<i>Written by our Founder and Chairman, our</i> John Doe <i>letters aim to engage with our community. From sharing stories to welcoming your ideas, we want to help you to express, connect, and celebrate the important people in your life.</i>
+<br><br>
+</td></tr></table></div></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><div id="footer" align="center" width="640"> 
+  <!--prefs footer-->
+
+  <!--/prefs footer-->
+  <table align="center" style="max-width:640px;" border="0" cellpadding="0" cellspacing="0">    
+  <tr>
+    <td align="center" valign="top" style="font-family: Arial, Helvetica, sans-serif; line-height:16px; font-size:12px; color:#000000;padding-left:20px;padding-right:20px;padding-top:20px;padding-bottom:0px;">
+ <a style=" text-decoration:none; color:#000000;" href="https://view.pulse.celebrations.com/?qs=0ed11e0feabbd7ad008b6b26651f7461c6a07abea879b8ce6a390e2ca5864c746272db7f0b9e9fe5cf46f4f6320cecba4f4265f1c97de811d620cc67ffeeda1d92f12800c8a471c1335837a0d9636b5d" target="_blank">View as webpage</a>
+      </td>
+    </tr></table><br><table align="a&quot;center&quot;" style="max-width:640px;" border="0" cellspacing="0" cellpadding="0"><tr><td align="center"><font face="verdana" size="1" color="#444444">This email was sent by: <b>1-800-FLOWERS.COM, Inc.</b><br>John Doe Plaza Suite 200 Jericho, NY, 11753, USA<br><br></font></td></tr><tr><td align="center"><a href="https://click.pulse.celebrations.com/profile_center.aspx?qs=24ed0e2eb117d861268d298626c365211425c893843a7b78b8945041ac157fecef1db6bf086a463f625bc1cdaa6dc27416dbc81ec0b9a8ae43fb24e7b62657d4537276b64ce08957" >John Doe Preferences</a> | <a href="https://click.pulse.celebrations.com/?qs=fe35b450168a183de2ee37416855684e3f5fce06fce912d9fe5495378c36958fca3d915c7ded6f2670cda2d4366b85a603b420c2217ab3377a0f8af11803b662" >Terms &amp; Conditions</a> | 
+<a href="https://click.pulse.celebrations.com/?qs=fe35b450168a183d0d782c4c6733b3fae95b3d302855eb12c131e5300b5abc4e650bc447155e988770cc04b5b3ed205997071b38f8ff64da599dbd287ee4589a"  title="Unsubscribe">Unsubscribe from John Doe</a></td></tr></table></div></td></tr></table></td>
+     </tr>
+    </table>
+    </td>
+   </tr>
+  </table>
+  </div>
+  </td>
+ </tr>
+</table>
+  <img src="https://click.pulse.celebrations.com/open.aspx?ffcb10-fe8f157673650c7f7d-fe5c1375776404757212-fe3b117275640479741173-ff921277-fe5c12767762037f7314-ff01177177640c&d=60253&bmt=0" width="1" height="1" alt=""></custom>
+</body>
+</html>
+
+--0KEJpfm6oQSt=_?:--
+
+
