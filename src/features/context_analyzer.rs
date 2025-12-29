@@ -293,6 +293,16 @@ impl ContextAnalyzer {
             .any(|retailer| sender_lower.contains(retailer))
     }
 
+    fn is_nonprofit_organization(&self, sender: &str) -> bool {
+        let sender_lower = sender.to_lowercase();
+        sender_lower.contains("leaderswedeserve")
+            || sender_lower.contains("nonprofit")
+            || sender_lower.contains("organization")
+            || sender_lower.contains(".org")
+            || sender_lower.contains("charity")
+            || sender_lower.contains("foundation")
+    }
+
     fn detect_employment_scam(&self, text: &str, sender: &str) -> (i32, Vec<String>) {
         const EMPLOYMENT_SCAM_PATTERNS: &[&str] = &[
             r"(?i)(work|live).*in.*(london|uk|canada|australia|usa|america)",
@@ -494,9 +504,11 @@ impl ContextAnalyzer {
             if exclamation_count > 3 {
                 let penalty = if self.is_legitimate_retailer(sender) {
                     2
+                } else if self.is_nonprofit_organization(sender) {
+                    1  // Very reduced penalty for nonprofits (advocacy language)
                 } else {
                     5
-                }; // Reduced for retailers
+                }; // Reduced for retailers and nonprofits
                 score += penalty;
                 evidence.push("Multiple exclamation marks detected".to_string());
             }
@@ -1026,6 +1038,13 @@ impl FeatureExtractor for ContextAnalyzer {
             || sender.to_lowercase().contains("leaderswedeserve.com");  // Nonprofit organization
         let additional_discount = if borderline_legitimate { 0.2 } else { 1.0 }; // Extra 80% reduction
 
+        // Extra discount for nonprofit organizations
+        let nonprofit_discount = if self.is_nonprofit_organization(sender) { 
+            0.6  // 40% additional reduction for nonprofits
+        } else { 
+            1.0 
+        };
+
         // Extra discount for trusted ESP + legitimate retailer combinations
         let esp_retailer_discount = if (sender.to_lowercase().contains("klaviyo") || 
                                        sender.to_lowercase().contains("sparkpost") ||
@@ -1388,7 +1407,7 @@ impl FeatureExtractor for ContextAnalyzer {
 
         FeatureScore {
             feature_name: "Context Analysis".to_string(),
-            score: (total_score as f32 * promo_discount * additional_discount * esp_retailer_discount) as i32,
+            score: (total_score as f32 * promo_discount * additional_discount * esp_retailer_discount * nonprofit_discount) as i32,
             confidence,
             evidence: all_evidence,
         }
