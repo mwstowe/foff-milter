@@ -554,6 +554,14 @@ impl FeatureExtractor for AuthenticationFeature {
             score -= 3; // Small bonus for trusted ESP + retailer combination
         }
 
+        // Additional bonus for nonprofit organizations with secure authentication
+        let is_nonprofit = sender.contains("leaderswedeserve") || sender.contains("nonprofit") || 
+                          sender.contains(".org") || sender.contains("charity") || sender.contains("foundation");
+        
+        if is_nonprofit && matches!(risk_level, AuthenticationRisk::Secure) {
+            score -= 8; // Enhanced bonus for secure nonprofit authentication
+        }
+
         let confidence = match risk_level {
             AuthenticationRisk::Secure => 0.9,
             AuthenticationRisk::Standard => 0.8,
