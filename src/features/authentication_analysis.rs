@@ -568,7 +568,7 @@ impl FeatureExtractor for AuthenticationFeature {
                                  sender.contains("ftd") || sender.contains("teleflora");
         
         if is_floral_retailer && matches!(risk_level, AuthenticationRisk::Standard | AuthenticationRisk::Secure) {
-            score -= 25; // Strong bonus for legitimate floral retailer authentication
+            score -= 40; // Maximum bonus for legitimate floral retailer authentication
         }
 
         let confidence = match risk_level {

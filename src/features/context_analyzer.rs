@@ -1054,7 +1054,7 @@ impl FeatureExtractor for ContextAnalyzer {
                                 sender.to_lowercase().contains("pulse.celebrations") ||
                                 sender.to_lowercase().contains("ftd") || 
                                 sender.to_lowercase().contains("teleflora") { 
-            0.2  // 80% additional reduction for floral retailers (seasonal emotional marketing)
+            0.15  // 85% additional reduction for floral retailers (maximum for seasonal emotional marketing)
         } else { 
             1.0 
         };
