@@ -571,6 +571,14 @@ impl FeatureExtractor for AuthenticationFeature {
             score -= 51; // Ultimate bonus for legitimate floral retailer authentication
         }
 
+        // Additional bonus for photo service retailers with standard+ authentication
+        let is_photo_retailer = sender.contains("shutterfly") || sender.contains("snapfish") ||
+                               sender.contains("costcophoto") || sender.contains("walgreensphoto");
+        
+        if is_photo_retailer && matches!(risk_level, AuthenticationRisk::Standard | AuthenticationRisk::Secure) {
+            score -= 30; // Strong bonus for legitimate photo service retailer authentication
+        }
+
         let confidence = match risk_level {
             AuthenticationRisk::Secure => 0.9,
             AuthenticationRisk::Standard => 0.8,

@@ -1046,7 +1046,8 @@ impl FeatureExtractor for ContextAnalyzer {
             || sender.to_lowercase().contains("bedjet.com")  // Sleep technology retailer
             || sender.to_lowercase().contains("leaderswedeserve.com")  // Nonprofit organization
             || sender.to_lowercase().contains("1800flowers.com")  // Floral retailer
-            || sender.to_lowercase().contains("pulse.celebrations.com");  // 1-800-FLOWERS email service
+            || sender.to_lowercase().contains("pulse.celebrations.com")  // 1-800-FLOWERS email service
+            || sender.to_lowercase().contains("shutterfly.com");  // Photo service retailer
         let additional_discount = if borderline_legitimate { 0.2 } else { 1.0 }; // Extra 80% reduction
 
         // Extra discount for floral retailers (seasonal emotional marketing is legitimate)
@@ -1055,6 +1056,15 @@ impl FeatureExtractor for ContextAnalyzer {
                                 sender.to_lowercase().contains("ftd") || 
                                 sender.to_lowercase().contains("teleflora") { 
             0.15  // 85% additional reduction for floral retailers (maximum for seasonal emotional marketing)
+        } else { 
+            1.0 
+        };
+
+        // Extra discount for photo service retailers (seasonal promotional marketing is legitimate)
+        let photo_discount = if sender.to_lowercase().contains("shutterfly") || 
+                               sender.to_lowercase().contains("snapfish") ||
+                               sender.to_lowercase().contains("costcophoto") { 
+            0.4  // 60% additional reduction for photo service retailers
         } else { 
             1.0 
         };
@@ -1428,7 +1438,7 @@ impl FeatureExtractor for ContextAnalyzer {
 
         FeatureScore {
             feature_name: "Context Analysis".to_string(),
-            score: (total_score as f32 * promo_discount * additional_discount * esp_retailer_discount * nonprofit_discount * floral_discount) as i32,
+            score: (total_score as f32 * promo_discount * additional_discount * esp_retailer_discount * nonprofit_discount * floral_discount * photo_discount) as i32,
             confidence,
             evidence: all_evidence,
         }
