@@ -9,6 +9,7 @@ pub mod financial_validation;
 pub mod invoice_analyzer;
 pub mod link_analyzer;
 pub mod sender_alignment;
+pub mod system_blocklist;
 pub mod tld_risk;
 
 use crate::MailContext;
@@ -123,6 +124,7 @@ impl FeatureEngine {
                 Box::new(tld_risk::TldRiskFeature::new()),
                 Box::new(authentication_analysis::AuthenticationFeature::new()),
                 Box::new(adobe_campaign_analyzer::AdobeCampaignAnalyzer::new()),
+                Box::new(system_blocklist::SystemBlocklistFeature::new()),
             ],
         }
     }
