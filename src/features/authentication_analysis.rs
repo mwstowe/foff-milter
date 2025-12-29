@@ -328,6 +328,9 @@ impl AuthenticationAnalyzer {
                             // Lovepop legitimate domain relationship
                             (from_d == "magic.lovepop.com" && reply_d == "lovepopcards.com") ||
                             (from_d == "lovepopcards.com" && reply_d == "magic.lovepop.com") ||
+                            // Saily VPN service using SparkPost ESP
+                            (from_d == "sparkpostmail.com" && reply_d == "saily.com") ||
+                            (from_d == "saily.com" && reply_d == "sparkpostmail.com") ||
                             // Same root domain (e.g., mail.example.com -> support.example.com)
                             self.same_root_domain(from_d, reply_d)
                         }
