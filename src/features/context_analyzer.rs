@@ -167,8 +167,8 @@ impl ContextAnalyzer {
             "black friday",
             "cyber monday",
             "holiday sale",
-            "up to",  // "up to X% off" patterns
-            "% off",  // Percentage discount patterns
+            "up to", // "up to X% off" patterns
+            "% off", // Percentage discount patterns
         ];
 
         let legitimate_businesses = [
@@ -179,24 +179,26 @@ impl ContextAnalyzer {
             "pizzahut.com",
             "ubereats.com",
             "doordash.com",
-            "bedjet.com",  // Sleep technology retailer
-            "1800flowers.com",  // Floral retailer
-            "pulse.celebrations.com",  // 1-800-FLOWERS email service
+            "bedjet.com",             // Sleep technology retailer
+            "1800flowers.com",        // Floral retailer
+            "pulse.celebrations.com", // 1-800-FLOWERS email service
         ];
 
         // If sender is legitimate business and urgency is marketing-related
         let is_legitimate_business = legitimate_businesses
             .iter()
             .any(|business| sender.contains(business));
-            
+
         let has_marketing_urgency = marketing_urgency
             .iter()
             .any(|phrase| text_lower.contains(phrase));
-            
+
         // Special case for floral retailers - they often use emotional urgency for legitimate seasonal promotions
-        let is_floral_retailer = sender.contains("1800flowers") || sender.contains("pulse.celebrations") || 
-                                sender.contains("ftd") || sender.contains("teleflora");
-        
+        let is_floral_retailer = sender.contains("1800flowers")
+            || sender.contains("pulse.celebrations")
+            || sender.contains("ftd")
+            || sender.contains("teleflora");
+
         is_legitimate_business && (has_marketing_urgency || is_floral_retailer)
     }
 
@@ -276,7 +278,7 @@ impl ContextAnalyzer {
             "adafruit.com",
             "eflorist.com",
             "1800flowers.com",
-            "pulse.celebrations.com",  // 1-800-FLOWERS email service
+            "pulse.celebrations.com", // 1-800-FLOWERS email service
             "ftd.com",
             "teleflora.com",
             "eyebuydirect.com",
@@ -293,7 +295,7 @@ impl ContextAnalyzer {
             "emdeals.michaels.com",
             "rejuvenation.com",
             "onestopplus.com",
-            "shutterfly.com",  // Photo service provider
+            "shutterfly.com", // Photo service provider
         ];
 
         let sender_lower = sender.to_lowercase();
@@ -514,7 +516,7 @@ impl ContextAnalyzer {
                 let penalty = if self.is_legitimate_retailer(sender) {
                     2
                 } else if self.is_nonprofit_organization(sender) {
-                    1  // Very reduced penalty for nonprofits (advocacy language)
+                    1 // Very reduced penalty for nonprofits (advocacy language)
                 } else {
                     5
                 }; // Reduced for retailers and nonprofits
@@ -869,7 +871,9 @@ impl ContextAnalyzer {
             || sender_lower.contains("eflorist")
             || sender_lower.contains("ftd")
             || (content_lower.contains("arrangement") && !content_lower.contains("css"))
-            || (content_lower.contains("bouquet") && !content_lower.contains("bouquet0") && !content_lower.contains("#bouquet"))
+            || (content_lower.contains("bouquet")
+                && !content_lower.contains("bouquet0")
+                && !content_lower.contains("#bouquet"))
             || content_lower.contains("florist")
         {
             return Some("floral".to_string());
@@ -967,7 +971,7 @@ impl ContextAnalyzer {
             "michaelscustomframing.com",
             "lovepop.com",
             "lovepopcards.com",
-            "shutterfly.com",  // Photo service provider
+            "shutterfly.com", // Photo service provider
         ];
 
         let is_legitimate_sender = legitimate_retailers
@@ -1048,61 +1052,66 @@ impl FeatureExtractor for ContextAnalyzer {
             || sender.to_lowercase().contains("1800flowers.com")  // Floral retailer
             || sender.to_lowercase().contains("pulse.celebrations.com")  // 1-800-FLOWERS email service
             || sender.to_lowercase().contains("shutterfly.com")  // Photo service retailer
-            || sender.to_lowercase().contains("michaelscustomframing.com");  // Craft/framing retailer
+            || sender.to_lowercase().contains("michaelscustomframing.com"); // Craft/framing retailer
         let additional_discount = if borderline_legitimate { 0.2 } else { 1.0 }; // Extra 80% reduction
 
         // Extra discount for floral retailers (seasonal emotional marketing is legitimate)
-        let floral_discount = if sender.to_lowercase().contains("1800flowers") || 
-                                sender.to_lowercase().contains("pulse.celebrations") ||
-                                sender.to_lowercase().contains("ftd") || 
-                                sender.to_lowercase().contains("teleflora") { 
-            0.15  // 85% additional reduction for floral retailers (maximum for seasonal emotional marketing)
-        } else { 
-            1.0 
+        let floral_discount = if sender.to_lowercase().contains("1800flowers")
+            || sender.to_lowercase().contains("pulse.celebrations")
+            || sender.to_lowercase().contains("ftd")
+            || sender.to_lowercase().contains("teleflora")
+        {
+            0.15 // 85% additional reduction for floral retailers (maximum for seasonal emotional marketing)
+        } else {
+            1.0
         };
 
         // Extra discount for photo service retailers (seasonal promotional marketing is legitimate)
-        let photo_discount = if sender.to_lowercase().contains("shutterfly") || 
-                               sender.to_lowercase().contains("snapfish") ||
-                               sender.to_lowercase().contains("costcophoto") { 
-            0.3  // 70% additional reduction for photo service retailers
-        } else { 
-            1.0 
+        let photo_discount = if sender.to_lowercase().contains("shutterfly")
+            || sender.to_lowercase().contains("snapfish")
+            || sender.to_lowercase().contains("costcophoto")
+        {
+            0.3 // 70% additional reduction for photo service retailers
+        } else {
+            1.0
         };
 
         // Extra discount for craft/framing retailers (promotional marketing is legitimate)
-        let craft_discount = if sender.to_lowercase().contains("michaels") || 
-                               sender.to_lowercase().contains("michaelscustomframing") ||
-                               sender.to_lowercase().contains("joann") { 
-            0.4  // 60% additional reduction for craft/framing retailers
-        } else { 
-            1.0 
+        let craft_discount = if sender.to_lowercase().contains("michaels")
+            || sender.to_lowercase().contains("michaelscustomframing")
+            || sender.to_lowercase().contains("joann")
+        {
+            0.4 // 60% additional reduction for craft/framing retailers
+        } else {
+            1.0
         };
 
         // Extra discount for greeting card retailers (seasonal promotional marketing is legitimate)
-        let card_discount = if sender.to_lowercase().contains("lovepop") || 
-                              sender.to_lowercase().contains("lovepopcards") ||
-                              sender.to_lowercase().contains("hallmark") { 
-            0.2  // 80% additional reduction for greeting card retailers
-        } else { 
-            1.0 
+        let card_discount = if sender.to_lowercase().contains("lovepop")
+            || sender.to_lowercase().contains("lovepopcards")
+            || sender.to_lowercase().contains("hallmark")
+        {
+            0.2 // 80% additional reduction for greeting card retailers
+        } else {
+            1.0
         };
 
         // Extra discount for nonprofit organizations
-        let nonprofit_discount = if self.is_nonprofit_organization(sender) { 
-            0.6  // 40% additional reduction for nonprofits
-        } else { 
-            1.0 
+        let nonprofit_discount = if self.is_nonprofit_organization(sender) {
+            0.6 // 40% additional reduction for nonprofits
+        } else {
+            1.0
         };
 
         // Extra discount for trusted ESP + legitimate retailer combinations
-        let esp_retailer_discount = if (sender.to_lowercase().contains("klaviyo") || 
-                                       sender.to_lowercase().contains("sparkpost") ||
-                                       sender.to_lowercase().contains("sendgrid")) && 
-                                      self.is_legitimate_retailer(sender) { 
-            0.8  // 20% additional reduction for ESP + retailer
-        } else { 
-            1.0 
+        let esp_retailer_discount = if (sender.to_lowercase().contains("klaviyo")
+            || sender.to_lowercase().contains("sparkpost")
+            || sender.to_lowercase().contains("sendgrid"))
+            && self.is_legitimate_retailer(sender)
+        {
+            0.8 // 20% additional reduction for ESP + retailer
+        } else {
+            1.0
         };
 
         // Check for Medicare/healthcare scam patterns
@@ -1457,7 +1466,15 @@ impl FeatureExtractor for ContextAnalyzer {
 
         FeatureScore {
             feature_name: "Context Analysis".to_string(),
-            score: (total_score as f32 * promo_discount * additional_discount * esp_retailer_discount * nonprofit_discount * floral_discount * photo_discount * craft_discount * card_discount) as i32,
+            score: (total_score as f32
+                * promo_discount
+                * additional_discount
+                * esp_retailer_discount
+                * nonprofit_discount
+                * floral_discount
+                * photo_discount
+                * craft_discount
+                * card_discount) as i32,
             confidence,
             evidence: all_evidence,
         }

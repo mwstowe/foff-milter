@@ -285,7 +285,7 @@ impl FeatureExtractor for DomainReputationFeature {
 
         // Get primary domain from multiple sources
         let primary_domain = self.get_primary_domain(context);
-        
+
         if !primary_domain.is_empty() {
             let reputation = self.analyzer.analyze_domain(&primary_domain);
             let domain_score = self.analyzer.get_reputation_score(&primary_domain);

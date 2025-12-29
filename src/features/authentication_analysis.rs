@@ -320,7 +320,7 @@ impl AuthenticationAnalyzer {
             if let Some(reply_to) = context.headers.get("reply-to") {
                 let from_domain = self.extract_domain(from);
                 let reply_to_domain = self.extract_domain(reply_to);
-                
+
                 if from_domain != reply_to_domain {
                     // Check for legitimate domain relationships
                     let is_legitimate = match (&from_domain, &reply_to_domain) {
@@ -336,7 +336,7 @@ impl AuthenticationAnalyzer {
                         }
                         _ => false,
                     };
-                    
+
                     if !is_legitimate {
                         // Different domains in From and Reply-To can indicate spoofing
                         spoofing_score += 15;
@@ -370,7 +370,7 @@ impl AuthenticationAnalyzer {
                 domain.to_string()
             }
         };
-        
+
         get_root_domain(domain1) == get_root_domain(domain2)
     }
 }
@@ -460,15 +460,34 @@ impl AuthenticationFeature {
 
         // Skip brand impersonation check for legitimate retailers
         let legitimate_retailers = [
-            "bedjet.com", "ikea.com", "amazon.com", "walmart.com", "target.com",
-            "bestbuy.com", "costco.com", "homedepot.com", "lowes.com", "macys.com",
-            "nordstrom.com", "michaels.com", "michaelscustomframing.com", "shutterfly.com", "1800flowers.com",
-            "pulse.celebrations.com",  // 1-800-FLOWERS email service
-            "lovepop.com", "lovepopcards.com",  // Lovepop greeting cards
-            "klaviyo", "sendgrid", "sparkpost", "mailchimp"
+            "bedjet.com",
+            "ikea.com",
+            "amazon.com",
+            "walmart.com",
+            "target.com",
+            "bestbuy.com",
+            "costco.com",
+            "homedepot.com",
+            "lowes.com",
+            "macys.com",
+            "nordstrom.com",
+            "michaels.com",
+            "michaelscustomframing.com",
+            "shutterfly.com",
+            "1800flowers.com",
+            "pulse.celebrations.com", // 1-800-FLOWERS email service
+            "lovepop.com",
+            "lovepopcards.com", // Lovepop greeting cards
+            "klaviyo",
+            "sendgrid",
+            "sparkpost",
+            "mailchimp",
         ];
-        
-        if legitimate_retailers.iter().any(|retailer| sender.contains(retailer)) {
+
+        if legitimate_retailers
+            .iter()
+            .any(|retailer| sender.contains(retailer))
+        {
             return false; // Skip brand impersonation detection for legitimate retailers
         }
 
@@ -548,51 +567,91 @@ impl FeatureExtractor for AuthenticationFeature {
 
         // Small bonus for trusted ESP + legitimate retailer combinations
         let sender = context.from_header.as_deref().unwrap_or("").to_lowercase();
-        let is_trusted_esp = sender.contains("klaviyo") || sender.contains("sendgrid") || sender.contains("sparkpost");
-        let is_legitimate_retailer = ["bedjet.com", "ikea.com", "amazon.com", "walmart.com", "target.com"]
-            .iter().any(|retailer| sender.contains(retailer));
-        
+        let is_trusted_esp = sender.contains("klaviyo")
+            || sender.contains("sendgrid")
+            || sender.contains("sparkpost");
+        let is_legitimate_retailer = [
+            "bedjet.com",
+            "ikea.com",
+            "amazon.com",
+            "walmart.com",
+            "target.com",
+        ]
+        .iter()
+        .any(|retailer| sender.contains(retailer));
+
         if is_trusted_esp && is_legitimate_retailer {
             score -= 3; // Small bonus for trusted ESP + retailer combination
         }
 
         // Additional bonus for nonprofit organizations with secure authentication
-        let is_nonprofit = sender.contains("leaderswedeserve") || sender.contains("nonprofit") || 
-                          sender.contains(".org") || sender.contains("charity") || sender.contains("foundation");
-        
+        let is_nonprofit = sender.contains("leaderswedeserve")
+            || sender.contains("nonprofit")
+            || sender.contains(".org")
+            || sender.contains("charity")
+            || sender.contains("foundation");
+
         if is_nonprofit && matches!(risk_level, AuthenticationRisk::Secure) {
             score -= 16; // Strong bonus for secure nonprofit authentication
         }
 
         // Additional bonus for floral retailers with standard+ authentication
-        let is_floral_retailer = sender.contains("1800flowers") || sender.contains("pulse.celebrations") ||
-                                 sender.contains("ftd") || sender.contains("teleflora");
-        
-        if is_floral_retailer && matches!(risk_level, AuthenticationRisk::Standard | AuthenticationRisk::Secure) {
+        let is_floral_retailer = sender.contains("1800flowers")
+            || sender.contains("pulse.celebrations")
+            || sender.contains("ftd")
+            || sender.contains("teleflora");
+
+        if is_floral_retailer
+            && matches!(
+                risk_level,
+                AuthenticationRisk::Standard | AuthenticationRisk::Secure
+            )
+        {
             score -= 51; // Ultimate bonus for legitimate floral retailer authentication
         }
 
         // Additional bonus for photo service retailers with standard+ authentication
-        let is_photo_retailer = sender.contains("shutterfly") || sender.contains("snapfish") ||
-                               sender.contains("costcophoto") || sender.contains("walgreensphoto");
-        
-        if is_photo_retailer && matches!(risk_level, AuthenticationRisk::Standard | AuthenticationRisk::Secure) {
+        let is_photo_retailer = sender.contains("shutterfly")
+            || sender.contains("snapfish")
+            || sender.contains("costcophoto")
+            || sender.contains("walgreensphoto");
+
+        if is_photo_retailer
+            && matches!(
+                risk_level,
+                AuthenticationRisk::Standard | AuthenticationRisk::Secure
+            )
+        {
             score -= 51; // Ultimate bonus for legitimate photo service retailer authentication
         }
 
         // Additional bonus for craft/framing retailers with standard+ authentication
-        let is_craft_retailer = sender.contains("michaels") || sender.contains("michaelscustomframing") ||
-                               sender.contains("joann") || sender.contains("hobbylobby");
-        
-        if is_craft_retailer && matches!(risk_level, AuthenticationRisk::Standard | AuthenticationRisk::Secure) {
+        let is_craft_retailer = sender.contains("michaels")
+            || sender.contains("michaelscustomframing")
+            || sender.contains("joann")
+            || sender.contains("hobbylobby");
+
+        if is_craft_retailer
+            && matches!(
+                risk_level,
+                AuthenticationRisk::Standard | AuthenticationRisk::Secure
+            )
+        {
             score -= 40; // Strong bonus for legitimate craft/framing retailer authentication
         }
 
         // Additional bonus for greeting card retailers with standard+ authentication
-        let is_card_retailer = sender.contains("lovepop") || sender.contains("lovepopcards") ||
-                              sender.contains("hallmark") || sender.contains("americangreetings");
-        
-        if is_card_retailer && matches!(risk_level, AuthenticationRisk::Standard | AuthenticationRisk::Secure) {
+        let is_card_retailer = sender.contains("lovepop")
+            || sender.contains("lovepopcards")
+            || sender.contains("hallmark")
+            || sender.contains("americangreetings");
+
+        if is_card_retailer
+            && matches!(
+                risk_level,
+                AuthenticationRisk::Standard | AuthenticationRisk::Secure
+            )
+        {
             score -= 91; // Ultimate bonus for legitimate greeting card retailer authentication
         }
 

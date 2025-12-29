@@ -365,7 +365,7 @@ impl FeatureExtractor for TldRiskFeature {
 
         // Try multiple sources for domain information
         let sender_domain = self.get_primary_domain(context);
-        
+
         if sender_domain.is_empty() {
             return FeatureScore {
                 feature_name: "TLD Risk Assessment".to_string(),

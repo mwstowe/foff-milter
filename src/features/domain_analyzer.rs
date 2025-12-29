@@ -137,7 +137,8 @@ impl DomainAnalyzer {
                     || domain.contains("sparkpostmail.com")
                     || domain.contains("michaelscustomframing.com")  // Michaels email marketing
                     || domain.contains("shutterfly.com")  // Shutterfly photo service
-                    || domain.contains("leaderswedeserve.com")  // Leaders We Deserve nonprofit
+                    || domain.contains("leaderswedeserve.com")
+                // Leaders We Deserve nonprofit
                 {
                     continue;
                 }

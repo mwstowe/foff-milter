@@ -345,12 +345,22 @@ impl FeatureExtractor for EspValidationFeature {
                     EspReputation::Trusted => {
                         evidence.push(format!("Trusted ESP: {}", esp_name));
                         confidence += 0.9;
-                        
+
                         // Additional bonus for legitimate retailers using trusted ESPs
-                        let from_header = context.from_header.as_deref().unwrap_or("").to_lowercase();
-                        let legitimate_retailers = ["bedjet.com", "ikea.com", "amazon.com", "walmart.com", 
-                                                   "1800flowers.com", "pulse.celebrations.com"];
-                        if legitimate_retailers.iter().any(|retailer| from_header.contains(retailer)) {
+                        let from_header =
+                            context.from_header.as_deref().unwrap_or("").to_lowercase();
+                        let legitimate_retailers = [
+                            "bedjet.com",
+                            "ikea.com",
+                            "amazon.com",
+                            "walmart.com",
+                            "1800flowers.com",
+                            "pulse.celebrations.com",
+                        ];
+                        if legitimate_retailers
+                            .iter()
+                            .any(|retailer| from_header.contains(retailer))
+                        {
                             score -= 2; // Small additional bonus for legitimate retailers
                             evidence.push("Legitimate retailer using trusted ESP".to_string());
                         }

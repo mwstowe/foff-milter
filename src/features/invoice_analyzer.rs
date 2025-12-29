@@ -35,7 +35,7 @@ impl InvoiceAnalyzer {
             "onestopplus.com".to_string(),
             "empower.com".to_string(),
             "walgreens.com".to_string(),
-            "pulse.celebrations.com".to_string(),  // 1-800-FLOWERS
+            "pulse.celebrations.com".to_string(), // 1-800-FLOWERS
         ];
 
         Self {
@@ -64,7 +64,7 @@ impl InvoiceAnalyzer {
             "onestopplus.com".to_string(),
             "empower.com".to_string(),
             "walgreens.com".to_string(),
-            "pulse.celebrations.com".to_string(),  // 1-800-FLOWERS
+            "pulse.celebrations.com".to_string(), // 1-800-FLOWERS
         ];
 
         Self {
