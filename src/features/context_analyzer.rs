@@ -1021,8 +1021,19 @@ impl FeatureExtractor for ContextAnalyzer {
             || sender.to_lowercase().contains("michaelscustomframing.com")
             || sender.to_lowercase().contains("walgreens.com")
             || sender.to_lowercase().contains("lovepop.com")
-            || sender.to_lowercase().contains("lovepopcards.com");
+            || sender.to_lowercase().contains("lovepopcards.com")
+            || sender.to_lowercase().contains("bedjet.com");  // Sleep technology retailer
         let additional_discount = if borderline_legitimate { 0.2 } else { 1.0 }; // Extra 80% reduction
+
+        // Extra discount for trusted ESP + legitimate retailer combinations
+        let esp_retailer_discount = if (sender.to_lowercase().contains("klaviyo") || 
+                                       sender.to_lowercase().contains("sparkpost") ||
+                                       sender.to_lowercase().contains("sendgrid")) && 
+                                      self.is_legitimate_retailer(sender) { 
+            0.8  // 20% additional reduction for ESP + retailer
+        } else { 
+            1.0 
+        };
 
         // Check for Medicare/healthcare scam patterns
         let medicare_issues = self.analyze_medicare_scam_patterns(context);
@@ -1376,7 +1387,7 @@ impl FeatureExtractor for ContextAnalyzer {
 
         FeatureScore {
             feature_name: "Context Analysis".to_string(),
-            score: (total_score as f32 * promo_discount * additional_discount) as i32,
+            score: (total_score as f32 * promo_discount * additional_discount * esp_retailer_discount) as i32,
             confidence,
             evidence: all_evidence,
         }
