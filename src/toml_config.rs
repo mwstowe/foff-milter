@@ -435,6 +435,7 @@ impl TomlConfig {
             default_action: Action::Accept, // Will be updated below
             statistics: None,
             module_config_dir: None,
+            feature_config_dir: None,
             rules: vec![],
             smtp: None,
             version: env!("CARGO_PKG_VERSION").to_string(),
@@ -480,6 +481,13 @@ impl TomlConfig {
         let rulesets = self.rulesets.as_ref().unwrap_or(default_rulesets);
         if rulesets.enabled {
             heuristic_config.module_config_dir = Some(rulesets.config_dir.clone());
+        }
+
+        // Set feature config directory with platform-specific defaults
+        let default_features = default_config.features.as_ref().unwrap();
+        let features = self.features.as_ref().unwrap_or(default_features);
+        if features.enabled {
+            heuristic_config.feature_config_dir = Some(features.config_dir.clone());
         }
 
         Ok(heuristic_config)

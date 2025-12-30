@@ -98,6 +98,7 @@ pub struct Config {
     #[serde(default = "default_rule_set_timestamp")]
     pub rule_set_timestamp: String,
     pub module_config_dir: Option<String>,
+    pub feature_config_dir: Option<String>,
 }
 
 fn default_version() -> String {
@@ -576,6 +577,7 @@ impl Default for Config {
             version: default_version(),
             rule_set_timestamp: default_rule_set_timestamp(),
             module_config_dir: None,
+            feature_config_dir: None,
         }
     }
 }

@@ -8,6 +8,7 @@ use std::path::Path;
 pub struct Config {
     pub socket_path: String,
     pub module_config_dir: Option<String>,
+    pub feature_config_dir: Option<String>,
     pub default_action: Action,
     pub statistics: Option<StatisticsConfig>,
     pub rules: Vec<FilterRule>,
@@ -269,6 +270,7 @@ impl Config {
         Config {
             socket_path: "/var/run/foff-milter.sock".to_string(),
             module_config_dir: Some("rulesets".to_string()),
+            feature_config_dir: Some("features".to_string()),
             default_action: Action::Accept,
             statistics: None,
             rules: Vec::new(),
@@ -290,6 +292,13 @@ impl Config {
             module_config_dir: toml_config.rulesets.as_ref().and_then(|m| {
                 if m.enabled {
                     Some(m.config_dir.clone())
+                } else {
+                    None
+                }
+            }),
+            feature_config_dir: toml_config.features.as_ref().and_then(|f| {
+                if f.enabled {
+                    Some(f.config_dir.clone())
                 } else {
                     None
                 }

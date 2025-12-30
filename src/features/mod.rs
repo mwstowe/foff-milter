@@ -120,7 +120,7 @@ impl FeatureEngine {
         }
     }
 
-    fn default_config() -> Self {
+    pub fn default_config() -> Self {
         Self {
             extractors: vec![
                 Box::new(link_analyzer::LinkAnalyzer::new()),

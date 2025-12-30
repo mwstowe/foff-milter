@@ -752,6 +752,9 @@ impl FilterEngine {
             Vec::new()
         };
 
+        // Extract feature config directory before moving config
+        let feature_config_dir = config.feature_config_dir.clone();
+
         let mut engine = FilterEngine {
             abuse_reporter: AbuseReporter::with_smtp_config(config.smtp.clone()),
             config,
@@ -775,7 +778,18 @@ impl FilterEngine {
             disable_upstream_trust: false,
             invoice_analyzer: InvoiceAnalyzer::default(),
             media_analyzer: MediaAnalyzer::new(),
-            feature_engine: FeatureEngine::new(),
+            feature_engine: if let Some(feature_dir) = &feature_config_dir {
+                FeatureEngine::from_config_dir(feature_dir).unwrap_or_else(|e| {
+                    log::warn!(
+                        "Failed to load feature config from {}, using defaults: {}",
+                        feature_dir,
+                        e
+                    );
+                    FeatureEngine::default_config()
+                })
+            } else {
+                FeatureEngine::new()
+            },
             trust_analyzer: crate::trust_analyzer::TrustAnalyzer::new(),
             business_analyzer: crate::business_context::BusinessContextAnalyzer::new(),
             seasonal_analyzer: crate::seasonal_behavioral::SeasonalBehavioralAnalyzer::new(),
