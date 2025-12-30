@@ -267,7 +267,7 @@ impl SenderAlignmentAnalyzer {
                 }
             }
 
-            // Check for brand impersonation patterns
+            // Check for brand impersonation patterns (skip social media links)
             let brand_keywords = [
                 "paypal",
                 "amazon",
@@ -289,14 +289,27 @@ impl SenderAlignmentAnalyzer {
             let display_lower = display_part.to_lowercase();
             let email_lower = email_part.to_lowercase();
 
-            for brand in &brand_keywords {
-                if display_lower.contains(brand) && !email_lower.contains(brand) {
-                    score += 30;
-                    evidence.push(format!(
-                        "Display name claims '{}' but email domain doesn't match",
-                        brand
-                    ));
-                    break;
+            // Skip brand detection if this appears to be social media links or footers
+            let is_social_media_context = display_lower.contains("facebook.com") 
+                || display_lower.contains("twitter.com")
+                || display_lower.contains("instagram.com")
+                || display_lower.contains("linkedin.com")
+                || display_lower.contains("plus.google.com")
+                || display_lower.contains("youtube.com")
+                || display_lower.contains("google.com/maps")
+                || display_lower.contains("googlemail.com")
+                || display_lower.contains("gmail.com");
+
+            if !is_social_media_context {
+                for brand in &brand_keywords {
+                    if display_lower.contains(brand) && !email_lower.contains(brand) {
+                        score += 30;
+                        evidence.push(format!(
+                            "Display name claims '{}' but email domain doesn't match",
+                            brand
+                        ));
+                        break;
+                    }
                 }
             }
         }
@@ -475,6 +488,23 @@ impl SenderAlignmentAnalyzer {
 
         // Skip brand impersonation detection for job-related content
         if self.is_job_related_content(subject, body) {
+            return issues;
+        }
+
+        // Check if email body contains social media links (indicates legitimate business communication)
+        let is_social_media_context = body.to_lowercase().contains("facebook.com") 
+            || body.to_lowercase().contains("twitter.com")
+            || body.to_lowercase().contains("instagram.com")
+            || body.to_lowercase().contains("linkedin.com")
+            || body.to_lowercase().contains("plus.google.com")
+            || body.to_lowercase().contains("youtube.com")
+            || body.to_lowercase().contains("pinterest.com")
+            || body.to_lowercase().contains("google.com/maps")
+            || body.to_lowercase().contains("googlemail.com")
+            || body.to_lowercase().contains("gmail.com");
+
+        // Skip brand detection if this appears to be legitimate business communication with social media
+        if is_social_media_context {
             return issues;
         }
 

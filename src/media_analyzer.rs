@@ -11,6 +11,15 @@ pub struct MediaAnalyzer {
     tesseract: Option<TesseractAPI>,
 }
 
+#[cfg(feature = "ocr")]
+impl Drop for MediaAnalyzer {
+    fn drop(&mut self) {
+        if let Some(ref mut api) = self.tesseract {
+            api.end();
+        }
+    }
+}
+
 #[derive(Debug, Clone)]
 pub struct MediaAnalysis {
     pub extracted_text: String,
