@@ -15,7 +15,7 @@ pub struct MediaAnalyzer {
 impl Drop for MediaAnalyzer {
     fn drop(&mut self) {
         if let Some(ref mut api) = self.tesseract {
-            api.end();
+            let _ = api.end();
         }
     }
 }
