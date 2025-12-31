@@ -290,7 +290,7 @@ impl SenderAlignmentAnalyzer {
             let email_lower = email_part.to_lowercase();
 
             // Skip brand detection if this appears to be social media links or footers
-            let is_social_media_context = display_lower.contains("facebook.com") 
+            let is_social_media_context = display_lower.contains("facebook.com")
                 || display_lower.contains("twitter.com")
                 || display_lower.contains("instagram.com")
                 || display_lower.contains("linkedin.com")
@@ -492,7 +492,7 @@ impl SenderAlignmentAnalyzer {
         }
 
         // Check if email body contains social media links (indicates legitimate business communication)
-        let is_social_media_context = body.to_lowercase().contains("facebook.com") 
+        let is_social_media_context = body.to_lowercase().contains("facebook.com")
             || body.to_lowercase().contains("twitter.com")
             || body.to_lowercase().contains("instagram.com")
             || body.to_lowercase().contains("linkedin.com")
