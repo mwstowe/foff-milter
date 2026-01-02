@@ -1,10 +1,10 @@
-# FOFF Milter v0.8.7
+# FOFF Milter v0.8.11
 
 A comprehensive, enterprise-grade email security platform written in Rust featuring intelligent threat detection, modular rulesets, and zero-configuration deployment.
 
 ## 🎯 **Production Ready - 100% Test Compliance**
 
-**Latest Achievement**: Complete production readiness with 100.0% test success rate (379/379 tests passing), enhanced link analysis with proper quoted-printable decoding, and comprehensive phishing detection including Chase banking fraud and cross-domain marketing validation.
+**Latest Achievement**: Complete production readiness with 100.0% test success rate (401/401 tests passing), enhanced Unicode normalization with Mathematical Alphanumeric Symbols support, cross-domain link detection, and domain business mismatch analysis for institutional abuse detection.
 
 ## 🚀 Complete Email Security Platform
 
@@ -25,7 +25,9 @@ FOFF Milter provides production-ready email security with:
 
 FOFF Milter uses advanced feature extraction and comprehensive email normalization:
 
-### Email Normalization Engine (v0.8.0)
+### Enhanced Unicode Normalization Engine (v0.8.11)
+- **Mathematical Alphanumeric Symbols**: Complete support for Unicode range U+1D400-1D7FF including Mathematical Sans-Serif Bold
+- **Advanced Evasion Detection**: Suspicious decorative symbols (⟰, ⵑ) removal and normalization
 - **Multi-Layer Decoding**: Automatic detection and decoding of Base64, HTML entities, URL encoding, UUEncoding
 - **Unicode Obfuscation Resolution**: Homoglyph replacement, zero-width character removal, mathematical symbol normalization
 - **Evasion Detection**: Sophisticated scoring of encoding layers and obfuscation techniques
@@ -43,12 +45,21 @@ FOFF Milter uses advanced feature extraction and comprehensive email normalizati
 - **Zero-Width Attacks**: Removal of U+200B, U+200C, U+200D, U+FEFF characters
 - **Encoding Complexity**: Automatic scoring based on encoding layers and techniques
 
-### Enhanced Link Analysis Engine (v0.8.7)
+### Enhanced Link Analysis Engine (v0.8.11)
+- **Cross-Domain Link Detection**: Intelligent detection of links unrelated to sender domain
+- **ESP Infrastructure Recognition**: Proper handling of Return-Path domains for legitimate ESPs
 - **Quoted-Printable Decoding**: RFC-compliant decoder for proper email content processing
 - **Cross-Domain Validation**: Intelligent recognition of legitimate business relationships
 - **Subdomain Recognition**: Advanced root domain matching for ESP infrastructure
 - **Early Redirect Validation**: Comprehensive link checking before action pattern analysis
 - **ESP Infrastructure Support**: Proper handling of complex email service provider setups
+
+### Domain Business Mismatch Analysis (v0.8.11)
+- **Institutional Domain Abuse Detection**: Identifies educational/government domains sending commercial content
+- **Compromised Account Indicators**: Detects generic greetings with payment themes
+- **Geographic Language Mismatches**: Flags foreign domains with inconsistent content languages
+- **Payment Scam Prevention**: Specialized detection for fake invoice and billing scams
+- **Context-Aware Scoring**: Intelligent penalties based on domain type and content patterns
 
 ### Sender Alignment Analysis
 - **Brand Validation**: Matches claimed brands against actual sender domains
@@ -393,28 +404,28 @@ sudo foff-milter -v -c /etc/foff-milter.toml
 - **Selective blocking**: Use targeted sender blocking patterns
 - **Statistics monitoring**: Track processing performance and bottlenecks
 
-## 🏆 v0.8.7 Production Achievements
+## 🏆 v0.8.11 Production Achievements
 
-### ✅ **Enhanced Link Analysis & Phishing Detection**
-- **379/379 tests passing** with comprehensive threat coverage
-- **Chase phishing detection**: Advanced typosquatting and brand impersonation detection
-- **Quoted-printable decoding**: RFC-compliant email content processing
-- **Cross-domain validation**: Legitimate business relationship recognition (OneStopPlus ↔ FullBeauty)
-- **ESP infrastructure support**: Complex email service provider handling (Consumer Reports via ZetaGlobal)
+### ✅ **Enhanced Unicode Normalization & Cross-Domain Detection**
+- **401/401 tests passing** with comprehensive threat coverage
+- **Mathematical Alphanumeric Symbols normalization**: Handles sophisticated Unicode evasion (U+1D5D4-1D607)
+- **Cross-domain link detection**: Catches unrelated domains while preserving ESP relationships
+- **Domain business mismatch detection**: Identifies institutional domain abuse for payment scams
+- **Scoring consistency**: Unified behavior between analyze and test modes with first-hop DKIM verification
 
 ### 🔧 **Advanced Technical Improvements**
-- **Root domain matching**: Intelligent subdomain relationship detection
-- **Early redirect validation**: All links checked for legitimacy, not just action patterns
-- **Proper architecture**: Uses existing ESP functions instead of hardcoded patterns
-- **Reduced false positives**: Legitimate marketing emails now properly recognized
-- **Enhanced security**: Maintains threat detection while improving accuracy
+- **Enhanced Unicode support**: Mathematical Sans-Serif Bold and suspicious symbol removal
+- **ESP infrastructure recognition**: Complex email service provider handling with Return-Path analysis
+- **Institutional abuse detection**: Educational/government domains sending commercial payment content
+- **Reduced false positives**: Legitimate businesses and ESPs properly recognized
+- **Production quality**: 100% clippy compliance, proper formatting, comprehensive testing
 
 ### 🎯 **Comprehensive Threat Coverage**
-- **Financial phishing**: Chase, banking, and cryptocurrency fraud detection
+- **Unicode evasion attacks**: Mathematical symbol obfuscation and decorative symbol abuse
+- **Cross-domain spam campaigns**: Links to unrelated domains (fugioverystore.com vs m-atr.com)
+- **Compromised institutional accounts**: Educational domains sending payment scams
 - **Brand impersonation**: Major brand protection with authentication validation
-- **Cross-brand marketing**: Legitimate business relationships properly handled
-- **ESP complexity**: Multi-domain email infrastructure support
-- **Advanced evasion**: Quoted-printable, Unicode, and encoding abuse detection
+- **Advanced phishing**: Cloud backup scams, financial fraud, and fake invoice detection
 
 ## 📄 License
 
