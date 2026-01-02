@@ -894,7 +894,8 @@ impl FeatureExtractor for LinkAnalyzer {
         let mut evidence = Vec::new();
 
         // Check for cross-domain link mismatch (links unrelated to sender domain)
-        if let Some(_sender) = crate::features::get_header_case_insensitive(&context.headers, "From")
+        if let Some(_sender) =
+            crate::features::get_header_case_insensitive(&context.headers, "From")
         {
             let sender_domains = self.get_sender_domains(context);
             if !sender_domains.is_empty() {
