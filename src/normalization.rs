@@ -82,6 +82,20 @@ impl EmailNormalizer {
         homoglyph_map.insert('𝐝', 'd');
         homoglyph_map.insert('𝐞', 'e');
 
+        // Mathematical Sans-Serif Bold (U+1D5D4-1D607) - commonly used in spam
+        // Uppercase A-Z
+        for i in 0..26 {
+            let math_char = char::from_u32(0x1D5D4 + i).unwrap();
+            let latin_char = char::from_u32(b'A' as u32 + i).unwrap();
+            homoglyph_map.insert(math_char, latin_char);
+        }
+        // Lowercase a-z
+        for i in 0..26 {
+            let math_char = char::from_u32(0x1D5EE + i).unwrap();
+            let latin_char = char::from_u32(b'a' as u32 + i).unwrap();
+            homoglyph_map.insert(math_char, latin_char);
+        }
+
         Self {
             html_entity_regex: Regex::new(r"&(?:#(\d+)|#x([0-9A-Fa-f]+)|([a-zA-Z][a-zA-Z0-9]*));")
                 .unwrap(),
@@ -314,6 +328,14 @@ impl EmailNormalizer {
             else if self.zero_width_chars.contains(&ch) {
                 found_zero_width = true;
                 // Skip zero-width characters
+            }
+            // Check for suspicious decorative symbols used for evasion
+            else if matches!(
+                ch,
+                '⟰' | 'ⵑ' | '⟱' | '⟲' | '⟳' | '⟴' | '⟵' | '⟶' | '⟷' | '⟸' | '⟹' | '⟺'
+            ) {
+                found_homoglyphs = true;
+                // Skip suspicious arrow/decorative symbols commonly used in spam
             }
             // Check for BIDI override characters
             else if matches!(

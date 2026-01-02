@@ -667,7 +667,7 @@ impl FilterEngine {
                 last_header_name: context.last_header_name.clone(),
                 attachments: context.attachments.clone(),
                 extracted_media_text: context.extracted_media_text.clone(),
-                is_legitimate_business: context.is_legitimate_business,
+                is_legitimate_business: self.is_legitimate_business_email(context),
                 is_first_hop: context.is_first_hop,
                 forwarding_source: context.forwarding_source.clone(),
                 proximate_mailer: context.proximate_mailer.clone(),
@@ -703,7 +703,7 @@ impl FilterEngine {
             last_header_name: context.last_header_name.clone(),
             mailer: context.mailer.clone(),
             extracted_media_text: context.extracted_media_text.clone(),
-            is_legitimate_business: context.is_legitimate_business,
+            is_legitimate_business: self.is_legitimate_business_email(context),
             is_first_hop: context.is_first_hop,
             forwarding_source: context.forwarding_source.clone(),
             proximate_mailer: context.proximate_mailer.clone(),
@@ -1757,6 +1757,9 @@ impl FilterEngine {
         // Clone context to modify hop detection fields
         let mut context = context.clone();
 
+        // Compute legitimate business status once for consistent use throughout evaluation
+        let is_legitimate_business = self.is_legitimate_business_email(&context);
+
         // Check if this is from the same server FIRST - skip all analysis if true
         if self.is_same_server_email(&context) {
             log::info!("Same server email detected - removing X-FOFF headers and accepting");
@@ -2225,7 +2228,7 @@ impl FilterEngine {
                         }
 
                         // Skip certain rules for legitimate businesses
-                        if context.is_legitimate_business
+                        if is_legitimate_business
                             && self.should_exempt_rule_for_business(&module.name, &rule.name)
                         {
                             log::info!(
@@ -2253,12 +2256,12 @@ impl FilterEngine {
                             // Accumulate score if present
                             if let Some(mut score) = rule.score {
                                 // Apply legitimate business discount
-                                if context.is_legitimate_business {
+                                if is_legitimate_business {
                                     score = (score as f32 * 0.3) as i32; // 70% reduction
                                 }
 
                                 total_score += score;
-                                let score_display = if context.is_legitimate_business {
+                                let score_display = if is_legitimate_business {
                                     format!(
                                         "{}: {} (+{}, business discount)",
                                         module.name, rule.name, score
@@ -2273,7 +2276,7 @@ impl FilterEngine {
                                     rule.name,
                                     score,
                                     total_score,
-                                    if context.is_legitimate_business {
+                                    if is_legitimate_business {
                                         " (business discount applied)"
                                     } else {
                                         ""
@@ -2315,7 +2318,7 @@ impl FilterEngine {
                         }
 
                         // Skip certain rules for legitimate businesses
-                        if context.is_legitimate_business
+                        if is_legitimate_business
                             && self.should_exempt_rule_for_business(&module.name, &rule.name)
                         {
                             log::info!(
@@ -2343,12 +2346,12 @@ impl FilterEngine {
                             // Accumulate score if present
                             if let Some(mut score) = rule.score {
                                 // Apply legitimate business discount
-                                if context.is_legitimate_business {
+                                if is_legitimate_business {
                                     score = (score as f32 * 0.3) as i32; // 70% reduction
                                 }
 
                                 total_score += score;
-                                let score_display = if context.is_legitimate_business {
+                                let score_display = if is_legitimate_business {
                                     format!(
                                         "{}: {} (+{}, business discount)",
                                         module.name, rule.name, score
@@ -2363,7 +2366,7 @@ impl FilterEngine {
                                     rule.name,
                                     score,
                                     total_score,
-                                    if context.is_legitimate_business {
+                                    if is_legitimate_business {
                                         " (business discount applied)"
                                     } else {
                                         ""

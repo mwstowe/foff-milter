@@ -331,11 +331,12 @@ impl ContextAnalyzer {
         let mut score = 0;
         let mut evidence = Vec::new();
 
-        // Skip employment scam detection for legitimate retail marketing
+        // Skip employment scam detection for legitimate retail marketing and news organizations
         let is_retail_marketing = sender.to_lowercase().contains("torrid")
             || sender.to_lowercase().contains("michaels")
             || sender.to_lowercase().contains("target")
             || sender.to_lowercase().contains("walmart")
+            || sender.to_lowercase().contains("nytimes")
             || text.to_lowercase().contains("in-store")
             || text.to_lowercase().contains("save big");
 

@@ -3,6 +3,7 @@ pub mod authentication_analysis;
 pub mod brand_impersonation;
 pub mod context_analyzer;
 pub mod domain_analyzer;
+pub mod domain_business_mismatch;
 pub mod domain_reputation;
 pub mod esp_validation;
 pub mod financial_validation;
@@ -114,6 +115,7 @@ impl FeatureEngine {
                 Box::new(tld_risk::TldRiskFeature::new()),
                 Box::new(authentication_analysis::AuthenticationFeature::new()),
                 Box::new(adobe_campaign_analyzer::AdobeCampaignAnalyzer::new()),
+                Box::new(domain_business_mismatch::DomainBusinessMismatchAnalyzer::new()),
                 Box::new(system_blocklist::SystemBlocklistFeature::new()),
                 Box::new(priority_abuse::PriorityAbuseFeature::new()),
             ],
@@ -135,6 +137,7 @@ impl FeatureEngine {
                 Box::new(tld_risk::TldRiskFeature::new()),
                 Box::new(authentication_analysis::AuthenticationFeature::new()),
                 Box::new(adobe_campaign_analyzer::AdobeCampaignAnalyzer::new()),
+                Box::new(domain_business_mismatch::DomainBusinessMismatchAnalyzer::new()),
                 Box::new(system_blocklist::SystemBlocklistFeature::new()),
                 Box::new(priority_abuse::PriorityAbuseFeature::new()),
             ],

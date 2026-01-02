@@ -750,7 +750,7 @@ async fn analyze_email_file(
     body_content = decode_email_body(&body_content, &content_transfer_encoding);
 
     // Build mail context (matching milter mode setup exactly)
-    let mail_context = foff_milter::filter::MailContext {
+    let mut mail_context = foff_milter::filter::MailContext {
         sender: Some(sender.clone()),
         from_header: headers.get("from").cloned(),
         recipients: recipients.clone(),
@@ -772,6 +772,12 @@ async fn analyze_email_file(
         normalized: None, // Let FilterEngine handle this
         proximate_mailer: None,
     };
+
+    // Pre-compute DKIM verification (first hop behavior - must be done before any header modifications)
+    use foff_milter::dkim_verification::DkimVerifier;
+    let sender_domain = sender.split('@').nth(1);
+    mail_context.dkim_verification =
+        Some(DkimVerifier::verify(&mail_context.headers, sender_domain));
 
     // Let FilterEngine do all the processing (same as milter mode)
     let (action, matched_rules, headers_to_add) = filter_engine.evaluate(&mail_context).await;

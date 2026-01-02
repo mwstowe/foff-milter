@@ -722,6 +722,120 @@ impl LinkAnalyzer {
             .iter()
             .any(|&suspicious| domain.contains(suspicious))
     }
+
+    /// Extract domain from sender email address
+    fn extract_domain_from_sender(&self, sender: &str) -> Option<String> {
+        // Extract email from "Name <email@domain.com>" format
+        let email = if let Some(start) = sender.rfind('<') {
+            if let Some(end) = sender.rfind('>') {
+                &sender[start + 1..end]
+            } else {
+                sender
+            }
+        } else {
+            sender
+        };
+
+        // Extract domain from email
+        email.split('@').nth(1).map(|s| s.to_lowercase())
+    }
+
+    /// Get sender domain considering both From and Return-Path headers
+    fn get_sender_domains(&self, context: &MailContext) -> Vec<String> {
+        let mut domains = Vec::new();
+
+        // From header domain
+        if let Some(from) = crate::features::get_header_case_insensitive(&context.headers, "From") {
+            if let Some(domain) = self.extract_domain_from_sender(from) {
+                domains.push(domain);
+            }
+        }
+
+        // Return-Path domain (ESP infrastructure)
+        if let Some(return_path) =
+            crate::features::get_header_case_insensitive(&context.headers, "Return-Path")
+        {
+            if let Some(domain) = self.extract_domain_from_sender(return_path) {
+                domains.push(domain);
+            }
+        }
+
+        domains
+    }
+
+    /// Check if link domain is related to sender domain
+    fn is_domain_related(&self, sender_domain: &str, link_domain: &str) -> bool {
+        let sender_lower = sender_domain.to_lowercase();
+        let link_lower = link_domain.to_lowercase();
+
+        // Exact match
+        if sender_lower == link_lower {
+            return true;
+        }
+
+        // Extract root domains for comparison
+        let sender_root = self.extract_root_domain(&sender_lower).unwrap_or_default();
+        let link_root = self.extract_root_domain(&link_lower).unwrap_or_default();
+
+        // Root domain match (e.g., docusign.net and docusign.com)
+        if !sender_root.is_empty() && !link_root.is_empty() {
+            let sender_base = sender_root.split('.').next().unwrap_or("");
+            let link_base = link_root.split('.').next().unwrap_or("");
+            if sender_base == link_base && !sender_base.is_empty() {
+                return true;
+            }
+        }
+
+        // Check for known legitimate business relationships and ESP patterns
+        let legitimate_business_domains = [
+            "amazon.com",
+            "microsoft.com",
+            "google.com",
+            "apple.com",
+            "adobe.com",
+            "salesforce.com",
+            "shopify.com",
+            "stripe.com",
+            "paypal.com",
+            "square.com",
+            "mailchimp.com",
+            "sendgrid.net",
+            "constantcontact.com",
+            "klaviyo.com",
+        ];
+
+        for business_domain in &legitimate_business_domains {
+            if sender_lower.contains(business_domain) && link_lower.contains(business_domain) {
+                return true;
+            }
+        }
+
+        // Check for ESP infrastructure patterns (sender uses ESP, links go to ESP)
+        let esp_patterns = [
+            (
+                "constantcontact.com",
+                vec!["constantcontact.com", "cc.rs6.net"],
+            ),
+            ("mailchimp.com", vec!["mailchimp.com", "mcusercontent.com"]),
+            ("sendgrid.net", vec!["sendgrid.net", "sendgrid.com"]),
+            (
+                "klaviyo.com",
+                vec!["klaviyo.com", "klaviyomail.com", "klaviyodns.com"],
+            ),
+        ];
+
+        for (esp_sender, esp_domains) in &esp_patterns {
+            if sender_lower.contains(esp_sender) {
+                for esp_domain in esp_domains {
+                    if link_lower.contains(esp_domain) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        false
+    }
 }
 
 impl FeatureExtractor for LinkAnalyzer {
@@ -778,6 +892,51 @@ impl FeatureExtractor for LinkAnalyzer {
         }
 
         let mut evidence = Vec::new();
+
+        // Check for cross-domain link mismatch (links unrelated to sender domain)
+        if let Some(_sender) = crate::features::get_header_case_insensitive(&context.headers, "From")
+        {
+            let sender_domains = self.get_sender_domains(context);
+            if !sender_domains.is_empty() {
+                let unrelated_links: Vec<_> = links
+                    .iter()
+                    .filter(|link| {
+                        // Check if link is related to any of the sender domains
+                        !sender_domains
+                            .iter()
+                            .any(|domain| self.is_domain_related(domain, &link.domain))
+                    })
+                    .collect();
+
+                // Check for suspicious cross-domain patterns:
+                // 1. If we have 3+ links and >80% are unrelated (spam campaigns)
+                // 2. If we have 1-2 links but they're to obviously suspicious domains
+                let suspicious_cross_domain = if total_links >= 3 {
+                    (unrelated_links.len() as f32 / total_links as f32) > 0.8
+                } else if total_links > 0 {
+                    // For few links, check if they're to obviously suspicious domains
+                    unrelated_links.iter().any(|link| {
+                        let domain = &link.domain.to_lowercase();
+                        // Suspicious patterns: random words + common suffixes
+                        domain.contains("store")
+                            || domain.contains("shop")
+                            || domain.contains("very")
+                            || domain.contains("best")
+                            || domain.ends_with(".tk")
+                            || domain.ends_with(".ml")
+                            || domain.ends_with(".ga")
+                    })
+                } else {
+                    false
+                };
+
+                if suspicious_cross_domain {
+                    evidence.push("Suspicious cross-domain links detected".to_string());
+                    score += 10; // Moderate penalty for cross-domain mismatch
+                }
+            }
+        }
+
         for link in &links {
             if link.is_suspicious {
                 evidence.push(format!(
