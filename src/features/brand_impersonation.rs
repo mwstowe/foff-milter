@@ -155,6 +155,11 @@ impl BrandImpersonationFeature {
     }
 
     fn is_legitimate_domain_for_brand(&self, brand: &str, domain: &str) -> bool {
+        // Check if this is a legitimate multi-brand company (cashback, deals, affiliates)
+        if self.is_legitimate_multi_brand_company(domain) {
+            return true;
+        }
+
         if let Some(legitimate) = self.legitimate_domains.get(brand) {
             if legitimate
                 .iter()
@@ -176,6 +181,48 @@ impl BrandImpersonationFeature {
             }
             _ => false,
         }
+    }
+
+    /// Check if domain belongs to legitimate multi-brand companies
+    fn is_legitimate_multi_brand_company(&self, domain: &str) -> bool {
+        let multi_brand_companies = [
+            // Cashback and rewards services
+            "capitaloneshopping.com",
+            "accounts.capitaloneshopping.com",
+            "rakuten.com",
+            "ebates.com",
+            "honey.com",
+            "ibotta.com",
+            "dosh.com",
+            // Deal aggregators and comparison sites
+            "slickdeals.net",
+            "dealnews.com",
+            "retailmenot.com",
+            "groupon.com",
+            "woot.com",
+            "fatwallet.com",
+            // Affiliate marketing platforms
+            "commission-junction.com",
+            "cj.com",
+            "shareasale.com",
+            "linkshare.com",
+            "impact.com",
+            // Price comparison and shopping engines
+            "shopping.google.com",
+            "nextag.com",
+            "shopzilla.com",
+            "pricegrabber.com",
+            "shopping.yahoo.com",
+            // Coupon and deal sites
+            "coupons.com",
+            "coupon.com",
+            "valpak.com",
+            "redplum.com",
+        ];
+
+        multi_brand_companies
+            .iter()
+            .any(|company| domain == *company || domain.ends_with(&format!(".{}", company)))
     }
 }
 

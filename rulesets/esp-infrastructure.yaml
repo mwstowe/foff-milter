@@ -104,7 +104,7 @@ rules:
     enabled: true
     criteria:
       type: "SenderPattern"
-      pattern: ".*@.*(amazonses|sendgrid|mailchimp|constantcontact|mailgun|sparkpost|postmark|mandrill)\\.(com|net)$"
+      pattern: ".*@.*(amazonses|sendgrid|mailchimp|constantcontact|mailgun|sparkpost|postmark|mandrill|adobe-campaign|akamaiedge)\\.(com|net)$"
     score: -100
     description: "Major email service providers with established reputation"
 
@@ -363,6 +363,15 @@ rules:
       pattern: ".*@.*(klaviyomail|campaignmonitor|aweber|getresponse|convertkit|activecampaign|drip|mailerlite|flodesk)\\.(com|net|email)$"
     score: -60
     description: "Enhanced legitimate marketing email service providers"
+
+  # Major Technology Companies
+  - name: "Major Technology Companies"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*(asus|nedm\\.asus|meta|email\\.meta|do_not_reply@email\\.meta|capitalone|capitaloneshopping|accounts\\.capitaloneshopping|hello@accounts\\.capitaloneshopping)\\.(com|net|org)$"
+    score: -100
+    description: "Legitimate major technology and financial companies"
 
   # Authenticated Commercial Content Adjustment
   - name: "Authenticated Commercial Content Adjustment"

@@ -768,6 +768,7 @@ async fn analyze_email_file(
         is_legitimate_business: false,
         is_first_hop: true, // Match milter mode
         forwarding_source: None,
+        forwarding_info: None,
         dkim_verification: None,
         normalized: None, // Let FilterEngine handle this
         proximate_mailer: None,
@@ -2448,6 +2449,7 @@ async fn test_email_file(
         is_legitimate_business: false, // Will be set below
         is_first_hop: true,      // Test mode assumes first hop
         forwarding_source: None, // Will be detected during evaluation
+        forwarding_info: None,   // Will be detected during evaluation
         proximate_mailer: None,  // Will be detected during evaluation
         normalized: None,        // Will be populated during evaluation
         dkim_verification: None, // Will be populated below

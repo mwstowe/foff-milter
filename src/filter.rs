@@ -18,6 +18,20 @@ use hickory_resolver::TokioAsyncResolver;
 use lazy_static::lazy_static;
 use regex::Regex;
 
+#[derive(Debug, Clone, PartialEq)]
+pub enum ForwardingType {
+    UserInitiated,
+    ServiceAutomatic,
+}
+
+#[derive(Debug, Clone)]
+pub struct ForwardingInfo {
+    pub forwarding_type: ForwardingType,
+    pub forwarding_user: Option<String>,
+    pub original_sender: Option<String>,
+    pub confidence: f32,
+}
+
 fn extract_domain_from_email(email: &str) -> Option<String> {
     email.split('@').nth(1).map(|s| s.to_string())
 }
@@ -195,6 +209,7 @@ pub struct MailContext {
     pub is_first_hop: bool,               // True if this is the first mailer receiving the email
     pub forwarding_source: Option<String>, // Source of forwarding (gmail.com, aol.com, etc.)
     pub proximate_mailer: Option<String>, // The immediate/proximate mailer hostname
+    pub forwarding_info: Option<ForwardingInfo>, // Detailed forwarding analysis
     pub normalized: Option<NormalizedEmail>, // Normalized email content
     pub dkim_verification: Option<DkimVerificationResult>, // Cached DKIM verification result
 }
@@ -218,6 +233,7 @@ impl Default for MailContext {
             is_first_hop: true, // Default to first hop
             forwarding_source: None,
             proximate_mailer: None,
+            forwarding_info: None,
             normalized: None,
             dkim_verification: None,
         }
@@ -671,6 +687,7 @@ impl FilterEngine {
                 is_first_hop: context.is_first_hop,
                 forwarding_source: context.forwarding_source.clone(),
                 proximate_mailer: context.proximate_mailer.clone(),
+                forwarding_info: context.forwarding_info.clone(),
                 normalized: context.normalized.clone(),
                 dkim_verification: context.dkim_verification.clone(),
             }
@@ -707,6 +724,7 @@ impl FilterEngine {
             is_first_hop: context.is_first_hop,
             forwarding_source: context.forwarding_source.clone(),
             proximate_mailer: context.proximate_mailer.clone(),
+            forwarding_info: context.forwarding_info.clone(),
             normalized: context.normalized.clone(),
             dkim_verification: context.dkim_verification.clone(),
         }
@@ -1760,27 +1778,41 @@ impl FilterEngine {
         // Compute legitimate business status once for consistent use throughout evaluation
         let is_legitimate_business = self.is_legitimate_business_email(&context);
 
-        // Check if this is from the same server FIRST - skip all analysis if true
-        if self.is_same_server_email(&context) {
-            log::info!("Same server email detected - removing X-FOFF headers and accepting");
-
-            // Remove any existing X-FOFF headers
-            let mut headers_to_remove = Vec::new();
-            for name in context.headers.keys() {
-                if name.to_lowercase().starts_with("x-foff") || name.to_lowercase() == "x-spam-flag"
-                {
-                    headers_to_remove.push(name.clone());
-                }
-            }
-
-            return (
-                Action::Accept,
-                vec!["Same server email - X-FOFF headers removed".to_string()],
-                headers_to_remove
-                    .into_iter()
-                    .map(|name| (name, String::new()))
-                    .collect(),
+        // Check if this is from the same server FIRST - but still allow user forwarding analysis
+        let is_same_server = self.is_same_server_email(&context);
+        if is_same_server {
+            log::info!(
+                "Same server email detected - checking for user forwarding before accepting"
             );
+
+            // Still detect user forwarding for same server emails
+            if let Some(forwarding_info) = self.detect_user_forwarding(&context) {
+                log::info!(
+                    "User forwarding detected in same server email: {:?}",
+                    forwarding_info
+                );
+                // Continue with normal processing for forwarded emails
+            } else {
+                log::info!("No forwarding detected - removing X-FOFF headers and accepting");
+                // Remove any existing X-FOFF headers
+                let mut headers_to_remove = Vec::new();
+                for name in context.headers.keys() {
+                    if name.to_lowercase().starts_with("x-foff")
+                        || name.to_lowercase() == "x-spam-flag"
+                    {
+                        headers_to_remove.push(name.clone());
+                    }
+                }
+
+                return (
+                    Action::Accept,
+                    vec!["Same server email - X-FOFF headers removed".to_string()],
+                    headers_to_remove
+                        .into_iter()
+                        .map(|name| (name, String::new()))
+                        .collect(),
+                );
+            }
         }
 
         // Normalize email content for enhanced analysis
@@ -1790,11 +1822,17 @@ impl FilterEngine {
             self.normalize_email_content(&mut context, &raw_email);
         }
 
-        // Detect email hop status
+        // Detect email hop status and forwarding
         let (is_first_hop, forwarding_source, proximate_mailer) = self.detect_email_hop(&context);
         context.is_first_hop = is_first_hop;
         context.forwarding_source = forwarding_source.clone();
         context.proximate_mailer = proximate_mailer.clone();
+
+        // Detect user-initiated forwarding
+        if let Some(forwarding_info) = self.detect_user_forwarding(&context) {
+            context.forwarding_info = Some(forwarding_info.clone());
+            log::info!("User forwarding detected: {:?}", forwarding_info);
+        }
 
         if let Some(source) = &forwarding_source {
             log::info!("Email forwarded from: {}", source);
@@ -1986,6 +2024,26 @@ impl FilterEngine {
             log::info!(
                 "Gmail forwarding detected and headers stripped - processing with original sender"
             );
+        }
+
+        // Handle user-initiated forwarding with dual context analysis
+        let mut user_forwarding_adjustment = 0i32;
+        if let Some(forwarding_info) = &context_with_attachments.forwarding_info {
+            if forwarding_info.forwarding_type == ForwardingType::UserInitiated {
+                log::info!("Applying user forwarding analysis");
+
+                // Apply trust bonus for known internal users
+                if let Some(forwarding_user) = &forwarding_info.forwarding_user {
+                    if self.is_trusted_internal_user(forwarding_user) {
+                        user_forwarding_adjustment -= 50;
+                        log::info!("Trusted internal user forwarding bonus: -50");
+                    }
+                }
+
+                // Reduce scoring severity for user-forwarded content
+                user_forwarding_adjustment -= 25;
+                log::info!("User forwarding reduction: -25");
+            }
         }
 
         // Check for legitimate mailing list infrastructure
@@ -2427,6 +2485,15 @@ impl FilterEngine {
                     ));
                 }
 
+                // Apply user forwarding adjustment
+                total_score += user_forwarding_adjustment;
+                if user_forwarding_adjustment != 0 {
+                    scoring_rules.push(format!(
+                        "User Forwarding Analysis: Forwarding adjustment ({:+})",
+                        user_forwarding_adjustment
+                    ));
+                }
+
                 log::info!(
                     "Heuristic evaluation: total_score={}, rules: [{}]",
                     total_score,
@@ -2650,15 +2717,27 @@ impl FilterEngine {
 
         // Apply selective reject based on hop detection and configuration
         let (final_action, headers_to_add) = if let Some(ref toml_config) = self.toml_config {
-            // Check if reject_to_tag is enabled OR if this is not the first hop
+            // Check if reject_to_tag is enabled OR if this is not the first hop OR if user forwarding
             let should_convert_reject = toml_config.system.as_ref().is_none_or(|s| s.reject_to_tag)
-                || !normalized_context.is_first_hop;
+                || !normalized_context.is_first_hop
+                || normalized_context
+                    .forwarding_info
+                    .as_ref()
+                    .map(|f| f.forwarding_type == ForwardingType::UserInitiated)
+                    .unwrap_or(false);
 
             if should_convert_reject {
                 if let Action::Reject { message } = final_action {
                     // Add both the conversion header and the standard spam flag
                     let mut headers = headers_to_add;
-                    let reason = if !normalized_context.is_first_hop {
+                    let reason = if normalized_context
+                        .forwarding_info
+                        .as_ref()
+                        .map(|f| f.forwarding_type == ForwardingType::UserInitiated)
+                        .unwrap_or(false)
+                    {
+                        "USER-FORWARDED-REJECT-TO-TAG"
+                    } else if !normalized_context.is_first_hop {
                         "FORWARDED-EMAIL-REJECT-TO-TAG"
                     } else {
                         "WOULD-REJECT"
@@ -2676,13 +2755,29 @@ impl FilterEngine {
                 (final_action.clone(), headers_to_add)
             }
         } else {
-            // No TOML config - apply hop-based logic
-            if !normalized_context.is_first_hop {
+            // No TOML config - apply hop-based logic including user forwarding
+            if !normalized_context.is_first_hop
+                || normalized_context
+                    .forwarding_info
+                    .as_ref()
+                    .map(|f| f.forwarding_type == ForwardingType::UserInitiated)
+                    .unwrap_or(false)
+            {
                 if let Action::Reject { message } = final_action {
                     let mut headers = headers_to_add;
+                    let reason = if normalized_context
+                        .forwarding_info
+                        .as_ref()
+                        .map(|f| f.forwarding_type == ForwardingType::UserInitiated)
+                        .unwrap_or(false)
+                    {
+                        "USER-FORWARDED-REJECT-TO-TAG"
+                    } else {
+                        "FORWARDED-EMAIL-REJECT-TO-TAG"
+                    };
                     headers.push((
                         "X-FOFF-Reject-Converted".to_string(),
-                        format!("FORWARDED-EMAIL-REJECT-TO-TAG: {}", message),
+                        format!("{}: {}", reason, message),
                     ));
                     headers.push(("X-Spam-Flag".to_string(), "YES".to_string()));
                     (self.heuristic_spam.clone(), headers)
@@ -6773,6 +6868,139 @@ impl FilterEngine {
         }
 
         is_gmail_forwarded
+    }
+
+    /// Detects user-initiated forwarding (Fwd: subject, mail client signatures)
+    fn detect_user_forwarding(&self, context: &MailContext) -> Option<ForwardingInfo> {
+        let mut confidence = 0.0;
+        let mut original_sender = None;
+
+        // Check subject for forwarding patterns
+        if let Some(subject) = &context.subject {
+            let subject_lower = subject.to_lowercase();
+            if subject_lower.starts_with("fwd:")
+                || subject_lower.starts_with("fw:")
+                || subject_lower.starts_with("forward:")
+            {
+                confidence += 0.8;
+                log::info!("User forwarding detected: subject pattern '{}'", subject);
+            }
+        }
+
+        // Check for mail client signatures
+        if let Some(mailer) = context.headers.get("X-Mailer") {
+            let mailer_lower = mailer.to_lowercase();
+            if mailer_lower.contains("ipad mail")
+                || mailer_lower.contains("iphone mail")
+                || mailer_lower.contains("outlook")
+                || mailer_lower.contains("thunderbird")
+            {
+                confidence += 0.3;
+                log::info!("User forwarding detected: mail client '{}'", mailer);
+            }
+        }
+
+        // Extract original sender from body content
+        if let Some(body) = &context.body {
+            if let Some(extracted_sender) = self.extract_original_sender_from_body(body) {
+                original_sender = Some(extracted_sender.clone());
+                confidence += 0.4;
+                log::info!(
+                    "User forwarding detected: original sender '{}'",
+                    extracted_sender
+                );
+            }
+        }
+
+        // Require minimum confidence threshold
+        if confidence >= 0.8 {
+            Some(ForwardingInfo {
+                forwarding_type: ForwardingType::UserInitiated,
+                forwarding_user: context.sender.clone(),
+                original_sender,
+                confidence,
+            })
+        } else {
+            None
+        }
+    }
+
+    /// Extract original sender from forwarded email body
+    fn extract_original_sender_from_body(&self, body: &str) -> Option<String> {
+        // Look for "From:" pattern in forwarded content
+        let from_patterns = [
+            r"<b>From:</b>\s*([^<\r\n]+?)&lt;([^&\r\n]+?)&gt;",
+            r"<b>From:</b>\s*([^<\r\n]+)",
+            r"From:\s*([^\r\n]+)",
+        ];
+
+        for pattern in &from_patterns {
+            if let Ok(re) = Regex::new(pattern) {
+                if let Some(captures) = re.captures(body) {
+                    let sender = if captures.len() > 2 && captures.get(2).is_some() {
+                        // Extract email from "Name <email>" format
+                        captures.get(2).map(|m| m.as_str()).unwrap_or("")
+                    } else {
+                        captures.get(1).map(|m| m.as_str()).unwrap_or("")
+                    };
+
+                    let cleaned = sender
+                        .trim()
+                        .replace("&lt;", "<")
+                        .replace("&gt;", ">")
+                        .replace("&amp;", "&");
+
+                    // Extract email if in "Name <email>" format
+                    if let Some(start) = cleaned.rfind('<') {
+                        if let Some(end) = cleaned.rfind('>') {
+                            let email = cleaned[start + 1..end].to_string();
+                            if email.contains('@') {
+                                return Some(email);
+                            }
+                        }
+                    }
+
+                    // Return as-is if it looks like an email
+                    if cleaned.contains('@') {
+                        return Some(cleaned);
+                    }
+                }
+            }
+        }
+        None
+    }
+
+    /// Check if user is a trusted internal user for forwarding
+    fn is_trusted_internal_user(&self, email: &str) -> bool {
+        // Extract domain from email
+        if let Some(domain) = email.split('@').nth(1) {
+            // Check if it's the same domain as our server
+            if domain == "baddomain.com" {
+                return true;
+            }
+
+            // Check against whitelist domains
+            if let Some(toml_config) = &self.toml_config {
+                if let Some(whitelist) = &toml_config.whitelist {
+                    if whitelist.enabled {
+                        // Check exact domains
+                        if whitelist.domains.contains(&domain.to_string()) {
+                            return true;
+                        }
+
+                        // Check domain patterns
+                        for pattern in &whitelist.domain_patterns {
+                            if let Ok(re) = Regex::new(pattern) {
+                                if re.is_match(domain) {
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        false
     }
 
     /// Detects legitimate mailing list infrastructure

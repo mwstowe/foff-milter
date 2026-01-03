@@ -868,9 +868,9 @@ rules:
         - type: Or
           criteria:
             - type: SubjectPattern
-              pattern: "(?i).*(message.*for.*you|fam.*inquiry|urgent.*inquiry|personal.*message).*"
+              pattern: "(?i).*(important.*message.*for.*you|urgent.*message.*for.*you|private.*message.*for.*you|confidential.*message.*for.*you|fam.*inquiry|urgent.*inquiry|personal.*message).*"
             - type: BodyPattern
-              pattern: "(?i).*(message.*for.*you|fam.*inquiry|urgent.*inquiry|personal.*message).*"
+              pattern: "(?i).*(important.*message.*for.*you|urgent.*message.*for.*you|private.*message.*for.*you|confidential.*message.*for.*you|fam.*inquiry|urgent.*inquiry|personal.*message).*"
         - type: Not
           criteria:
             type: Or
@@ -1437,6 +1437,8 @@ rules:
                 pattern: ".*@.*(backstage|linkedin|indeed|monster|glassdoor|ziprecruiter)\\.(com|net)$"
               - type: "SenderPattern"
                 pattern: ".*@.*(gov|edu|mil)$"
+              - type: "SenderPattern"
+                pattern: ".*@.*(rejuvenation|westelm|potterybarn|crateandbarrel|wayfair|homedepot|lowes)\\.(com|net)$"
     score: 180
   # Septic tank spam
   - name: "Septic Tank Spam"
@@ -1463,12 +1465,18 @@ rules:
   # T-Mobile tech upgrade spam
   - name: "TMobile Tech Upgrade Spam"
     criteria:
-      type: Or
+      type: And
       criteria:
-        - type: SubjectPattern
-          pattern: "(?i).*(tmobile.*tech.*upgrade|t.*mobile.*upgrade|mobile.*tech.*upgrade|phone.*upgrade.*offer).*"
-        - type: BodyPattern
-          pattern: "(?i).*(tmobile.*tech.*upgrade|t.*mobile.*upgrade|mobile.*tech.*upgrade|phone.*upgrade.*offer).*"
+        - type: Or
+          criteria:
+            - type: SubjectPattern
+              pattern: "(?i).*(tmobile.*tech.*upgrade|t.*mobile.*upgrade|mobile.*tech.*upgrade|phone.*upgrade.*offer).*"
+            - type: BodyPattern
+              pattern: "(?i).*(tmobile.*tech.*upgrade|t.*mobile.*upgrade|mobile.*tech.*upgrade|phone.*upgrade.*offer).*"
+        - type: Not
+          criteria:
+            type: SenderPattern
+            pattern: "(?i).*(xfinity|comcast|verizon|att\\.com|t-mobile\\.com).*"
     score: 200
   # Credit card resolution medical spam
   - name: "Credit Card Resolution Medical Spam"

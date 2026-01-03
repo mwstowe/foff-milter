@@ -404,6 +404,14 @@ impl LinkAnalyzer {
             }
         }
 
+        // Use the same ESP relationship logic as cross-domain detection
+        let sender_domains = self.get_sender_domains(context);
+        for sender_domain in &sender_domains {
+            if self.is_domain_related(sender_domain, link_domain) {
+                return true;
+            }
+        }
+
         // Check if sender is from legitimate ESP and link domain matches brand
         if self.is_legitimate_esp(sender) {
             if let Some(brand) = self.extract_brand_from_sender(sender) {
@@ -822,6 +830,14 @@ impl LinkAnalyzer {
                 "klaviyo.com",
                 vec!["klaviyo.com", "klaviyomail.com", "klaviyodns.com"],
             ),
+            (
+                "xfinity.com",
+                vec![
+                    "adobe-campaign.com",
+                    "akamaiedge.net",
+                    "comcastdotcom-mid-prod1-all-t.adobe-campaign.com",
+                ],
+            ),
         ];
 
         for (esp_sender, esp_domains) in &esp_patterns {
@@ -830,6 +846,22 @@ impl LinkAnalyzer {
                     if link_lower.contains(esp_domain) {
                         return true;
                     }
+                }
+            }
+        }
+
+        // Additional check for Adobe Campaign ESP infrastructure
+        if sender_lower.contains("xfinity") && link_lower.contains("adobe-campaign.com") {
+            return true;
+        }
+
+        // General Adobe Campaign ESP pattern (handles complex subdomains)
+        if link_lower.ends_with(".adobe-campaign.com") {
+            // Check if sender is from a major brand that would use Adobe Campaign
+            let adobe_campaign_users = ["xfinity", "comcast", "verizon", "att", "tmobile"];
+            for brand in &adobe_campaign_users {
+                if sender_lower.contains(brand) {
+                    return true;
                 }
             }
         }

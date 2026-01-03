@@ -298,6 +298,8 @@ rules:
                   - type: "SenderPattern"
                     pattern: ".*@.*govdelivery\\.(com|net|org)$"
                   - type: "SenderPattern"
+                    pattern: ".*@.*(pershing|bnymellon|investor\\.pershing|edelivery|akamaiedge)\\.(com|net|org)$"
+                  - type: "SenderPattern"
                     pattern: ".*@.*bearaby\\.(com|net|org)$"
                   - type: "SenderPattern"
                     pattern: ".*@.*ecoflow\\.(com|net|org)$"
@@ -476,7 +478,7 @@ rules:
             type: Or
             criteria:
               - type: SenderPattern
-                pattern: ".*@.*(fidelity|vanguard|schwab|merrill|chase|wellsfargo|bankofamerica|filtersfast)\\.(com|org)$"
+                pattern: ".*@.*(fidelity|vanguard|schwab|merrill|chase|wellsfargo|bankofamerica|pershing|bnymellon|akamaiedge|filtersfast)\\.(com|org|net)$"
               - type: HeaderPattern
                 header: "Authentication-Results"
                 pattern: "dkim=pass.*fidelity\\.com"
