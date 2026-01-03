@@ -143,6 +143,7 @@ mod tests {
             is_legitimate_business: false,
             is_first_hop: true,
             forwarding_source: None,
+            forwarding_info: None,
             proximate_mailer: None,
             normalized: None,
             dkim_verification: None,
