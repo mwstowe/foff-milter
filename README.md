@@ -1,4 +1,4 @@
-# FOFF Milter v0.8.11
+# FOFF Milter v0.8.12
 
 A comprehensive, enterprise-grade email security platform written in Rust featuring intelligent threat detection, modular rulesets, and zero-configuration deployment.
 
@@ -404,7 +404,7 @@ sudo foff-milter -v -c /etc/foff-milter.toml
 - **Selective blocking**: Use targeted sender blocking patterns
 - **Statistics monitoring**: Track processing performance and bottlenecks
 
-## 🏆 v0.8.11 Production Achievements
+## 🏆 v0.8.12 Production Achievements
 
 ### ✅ **Complete False Positive Resolution & ESP Infrastructure Enhancement**
 - **401/401 tests passing** with zero false positives in comprehensive analysis
