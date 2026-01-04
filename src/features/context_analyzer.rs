@@ -575,7 +575,8 @@ impl ContextAnalyzer {
             || from_header.to_lowercase().contains("resmed")
             || from_header.to_lowercase().contains("quora")
             || from_header.to_lowercase().contains("nytimes")
-            || from_header.to_lowercase().contains("walgreens");
+            || from_header.to_lowercase().contains("walgreens")
+            || from_header.to_lowercase().contains("humblebundle");
 
         if has_medicare_content && !is_legitimate_service {
             // Check for image-only content (suspicious for Medicare scams)
@@ -1053,7 +1054,11 @@ impl FeatureExtractor for ContextAnalyzer {
             || sender.to_lowercase().contains("1800flowers.com")  // Floral retailer
             || sender.to_lowercase().contains("pulse.celebrations.com")  // 1-800-FLOWERS email service
             || sender.to_lowercase().contains("shutterfly.com")  // Photo service retailer
-            || sender.to_lowercase().contains("michaelscustomframing.com"); // Craft/framing retailer
+            || sender.to_lowercase().contains("michaelscustomframing.com")  // Craft/framing retailer
+            || sender.to_lowercase().contains("govdelivery.com")  // Government email service
+            || sender.to_lowercase().contains("public.govdelivery.com")  // Government newsletter service
+            || sender.ends_with(".gov")  // Government domains
+            || sender.ends_with(".edu"); // Educational domains
         let additional_discount = if borderline_legitimate { 0.2 } else { 1.0 }; // Extra 80% reduction
 
         // Extra discount for floral retailers (seasonal emotional marketing is legitimate)

@@ -159,6 +159,29 @@ rules:
     score: 150
     description: "Financial phishing attempts"
 
+  # Senior-Targeted Shopping Scams (+150 points)
+  - name: "Senior-Targeted Shopping Scams"
+    enabled: true
+    criteria:
+      type: And
+      criteria:
+        - type: Or
+          criteria:
+            - type: SenderPattern
+              pattern: ".*@.*(senior|elderly|mature|age|retirement).*shopping.*\\.(com|net|org)$"
+            - type: SenderPattern
+              pattern: ".*@.*senior.*(tips|deals|savings|discounts).*\\.(com|net|org)$"
+            - type: SubjectPattern
+              pattern: "(?i).*(deals.*good.*don.*wait|tap.*now.*thank|senior.*discount|age.*qualified).*"
+        - type: Or
+          criteria:
+            - type: CombinedTextPattern
+              pattern: "(?i).*(tap.*now|click.*here.*save|limited.*time.*seniors|exclusive.*age|retirement.*deals).*"
+            - type: SubjectPattern
+              pattern: "(?i).*(urgent.*deal|act.*now.*save|don.*wait|hurry.*limited).*"
+    score: 150
+    description: "Shopping scams targeting senior citizens with urgency tactics"
+
   # Cloud Storage Phishing (+100 points)
   - name: "Cloud Storage Phishing"
     enabled: true

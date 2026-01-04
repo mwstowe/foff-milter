@@ -2264,6 +2264,96 @@ impl FilterEngine {
             );
         }
 
+        // Check for user-forwarded emails and skip YAML rules if detected
+        if context
+            .forwarding_info
+            .as_ref()
+            .map(|f| f.forwarding_type == ForwardingType::UserInitiated)
+            .unwrap_or(false)
+        {
+            log::info!(
+                "User-forwarded email detected - skipping all YAML rules for trusted forwarding"
+            );
+
+            // Get thresholds from TOML config or use defaults
+            let reject_threshold = self
+                .toml_config
+                .as_ref()
+                .and_then(|c| c.heuristics.as_ref())
+                .map(|h| h.reject_threshold)
+                .unwrap_or(350);
+            let spam_threshold = self
+                .toml_config
+                .as_ref()
+                .and_then(|c| c.heuristics.as_ref())
+                .map(|h| h.spam_threshold)
+                .unwrap_or(50);
+
+            // Still run feature analysis but skip threat detection rules
+            let feature_results = self.feature_engine.analyze(&normalized_context);
+            let feature_score: i32 = feature_results.scores.iter().map(|s| s.score).sum();
+
+            log::info!(
+                "Feature analysis score for forwarded email: {}",
+                feature_score
+            );
+
+            // Apply user forwarding trust bonus
+            let forwarding_adjustment = if let Some(forwarding_info) = &context.forwarding_info {
+                if let Some(forwarding_user) = &forwarding_info.forwarding_user {
+                    if self.is_trusted_internal_user(forwarding_user) {
+                        log::info!("Trusted internal user forwarding bonus: -100");
+                        -100
+                    } else {
+                        log::info!("General user forwarding bonus: -75");
+                        -75
+                    }
+                } else {
+                    -75
+                }
+            } else {
+                -75
+            };
+
+            let final_score = feature_score + forwarding_adjustment;
+            log::info!(
+                "Final score for user-forwarded email: {} (features: {}, forwarding: {})",
+                final_score,
+                feature_score,
+                forwarding_adjustment
+            );
+
+            // Determine action based on final score
+            let final_action = if final_score >= reject_threshold {
+                Action::Reject {
+                    message: format!("Forwarded email rejected (score: {})", final_score),
+                }
+            } else if final_score >= spam_threshold {
+                self.heuristic_spam.clone()
+            } else {
+                Action::Accept
+            };
+
+            let headers_to_add = vec![
+                (
+                    "X-FOFF-Score".to_string(),
+                    format!(
+                        "{} - foff-milter v{} ({})",
+                        final_score,
+                        env!("CARGO_PKG_VERSION"),
+                        get_hostname()
+                    ),
+                ),
+                ("X-FOFF-User-Forwarded".to_string(), "YES".to_string()),
+            ];
+
+            return (
+                final_action,
+                vec!["User forwarding detected - YAML rules skipped".to_string()],
+                headers_to_add,
+            );
+        }
+
         // Process modules first if modular system is enabled
         if !self.modules.is_empty() {
             log::info!("Processing {} modules", self.modules.len());

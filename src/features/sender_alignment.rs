@@ -193,11 +193,18 @@ impl SenderAlignmentAnalyzer {
             "narvar.com",
             "tracking.domain-track.prod20.narvar.com",
             "spmailtechno.com",
-            "gmail.com",                  // For forwarded emails
-            "emails.pitneybowes.com",     // Pitney Bowes email service
-            "mail.arrived.com",           // Arrived email service
-            "mcdlv.net",                  // MailChimp delivery network
-            "wdc02.mcdlv.net",            // MailChimp WDC02 delivery
+            "gmail.com",              // For forwarded emails
+            "emails.pitneybowes.com", // Pitney Bowes email service
+            "mail.arrived.com",       // Arrived email service
+            "mcdlv.net",              // MailChimp delivery network
+            "wdc02.mcdlv.net",        // MailChimp WDC02 delivery
+            // Veterinary/Medical ESP Platforms
+            "ourvet.com",                 // Veterinary practice management
+            "outbound.ourvet.com",        // Veterinary email platform
+            "vetcove.com",                // Veterinary supply platform
+            "pets.vetcove.com",           // Veterinary management system
+            "mtasv.net",                  // Mail transfer service
+            "pm.mtasv.net",               // Platform mail service
             "hb.d.mailin.fr",             // Mailjet/Sendinblue ESP
             "mailin.fr",                  // Sendinblue
             "bounce.e.rejuvenation.com",  // Rejuvenation ESP
