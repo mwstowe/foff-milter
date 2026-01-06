@@ -942,22 +942,24 @@ impl FeatureExtractor for LinkAnalyzer {
                     .collect();
 
                 // Check for suspicious cross-domain patterns:
-                // 1. If we have 3+ links and >80% are unrelated (spam campaigns)
+                // 1. If we have 3+ links and >90% are unrelated (raised from 80%)
                 // 2. If we have 1-2 links but they're to obviously suspicious domains
                 let suspicious_cross_domain = if total_links >= 3 {
-                    (unrelated_links.len() as f32 / total_links as f32) > 0.8
+                    (unrelated_links.len() as f32 / total_links as f32) > 0.9 // Raised threshold
                 } else if total_links > 0 {
                     // For few links, check if they're to obviously suspicious domains
                     unrelated_links.iter().any(|link| {
                         let domain = &link.domain.to_lowercase();
-                        // Suspicious patterns: random words + common suffixes
-                        domain.contains("store")
-                            || domain.contains("shop")
-                            || domain.contains("very")
+                        // More restrictive suspicious patterns - removed "store" and "shop"
+                        domain.contains("very")
                             || domain.contains("best")
                             || domain.ends_with(".tk")
                             || domain.ends_with(".ml")
                             || domain.ends_with(".ga")
+                            // Add more specific suspicious patterns
+                            || domain.contains("randomstring")
+                            || domain.contains("tempmail")
+                            || (domain.len() > 20 && domain.chars().filter(|c| c.is_numeric()).count() > 5)
                     })
                 } else {
                     false
@@ -965,7 +967,7 @@ impl FeatureExtractor for LinkAnalyzer {
 
                 if suspicious_cross_domain {
                     evidence.push("Suspicious cross-domain links detected".to_string());
-                    score += 10; // Moderate penalty for cross-domain mismatch
+                    score += 5; // Reduced penalty from 10 to 5
                 }
             }
         }

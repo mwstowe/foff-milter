@@ -513,13 +513,14 @@ impl ContextAnalyzer {
 
             // Multiple exclamation marks
             let exclamation_count = body.matches('!').count();
-            if exclamation_count > 3 {
-                let penalty = if self.is_legitimate_retailer(sender) {
-                    2
-                } else if self.is_nonprofit_organization(sender) {
-                    1 // Very reduced penalty for nonprofits (advocacy language)
+            if exclamation_count > 5 {
+                // Raised threshold from 3 to 5
+                let penalty = if self.is_legitimate_retailer(sender)
+                    || self.is_nonprofit_organization(sender)
+                {
+                    1 // Reduced penalty for retailers and nonprofits
                 } else {
-                    5
+                    3 // Reduced from 5 to 3
                 }; // Reduced for retailers and nonprofits
                 score += penalty;
                 evidence.push("Multiple exclamation marks detected".to_string());
@@ -536,16 +537,19 @@ impl ContextAnalyzer {
         let subject = context.subject.as_deref().unwrap_or("");
         let from_header = context.from_header.as_deref().unwrap_or("");
 
-        // Medicare/healthcare keywords
+        // Medicare/healthcare keywords - made more specific
         let medicare_keywords = [
             "medicare",
             "medicareadvantage",
-            "health plan",
-            "insurance plan",
+            "medicare advantage",
+            "medicare plan",
+            "medicare enrollment",
             "ehealth",
             "aep",
             "enrollment period",
             "advantage plan",
+            "medicare supplement",
+            "medigap",
         ];
 
         // Check for Medicare content
@@ -576,7 +580,37 @@ impl ContextAnalyzer {
             || from_header.to_lowercase().contains("quora")
             || from_header.to_lowercase().contains("nytimes")
             || from_header.to_lowercase().contains("walgreens")
-            || from_header.to_lowercase().contains("humblebundle");
+            || from_header.to_lowercase().contains("humblebundle")
+            // Retail and e-commerce
+            || from_header.to_lowercase().contains("retail")
+            || from_header.to_lowercase().contains("shop")
+            || from_header.to_lowercase().contains("store")
+            || from_header.to_lowercase().contains("clothing")
+            || from_header.to_lowercase().contains("fashion")
+            || from_header.to_lowercase().contains("fleece")
+            || from_header.to_lowercase().contains("thermal")
+            // Travel and booking
+            || from_header.to_lowercase().contains("travel")
+            || from_header.to_lowercase().contains("flight")
+            || from_header.to_lowercase().contains("booking")
+            || from_header.to_lowercase().contains("airline")
+            // Newsletter and media
+            || subject.to_lowercase().contains("newsletter")
+            || subject.to_lowercase().contains("weekly")
+            || subject.to_lowercase().contains("books")
+            || subject.to_lowercase().contains("mysteries")
+            || subject.to_lowercase().contains("thrillers")
+            // Veterinary services
+            || from_header.to_lowercase().contains("ourvet")
+            || from_header.to_lowercase().contains("vetcove")
+            || from_header.to_lowercase().contains("mtasv")
+            || from_header.to_lowercase().contains("veterinary")
+            || from_header.to_lowercase().contains("pet")
+            // Retail services
+            || from_header.to_lowercase().contains("onestopplus")
+            || from_header.to_lowercase().contains("retail")
+            || from_header.to_lowercase().contains("clothing")
+            || from_header.to_lowercase().contains("fashion");
 
         if has_medicare_content && !is_legitimate_service {
             // Check for image-only content (suspicious for Medicare scams)
@@ -902,10 +936,20 @@ impl ContextAnalyzer {
             return Some("cannabis_retail".to_string());
         }
 
-        // Tech/Newsletter - only for legitimate newsletter content, not technical headers
+        // Tech/Newsletter - expanded to include more newsletter types
         if (sender_lower.contains("medium")
             || sender_lower.contains("substack")
-            || sender_lower.contains("newsletter"))
+            || sender_lower.contains("newsletter")
+            || sender_lower.contains("weekly")
+            || sender_lower.contains("digest")
+            || content_lower.contains("newsletter")
+            || content_lower.contains("weekly")
+            || content_lower.contains("unsubscribe")
+            || content_lower.contains("books")
+            || content_lower.contains("mysteries")
+            || content_lower.contains("thrillers")
+            || content_lower.contains("travel")
+            || content_lower.contains("deals"))
             && !sender_lower.contains("antivirus")
             && !sender_lower.contains("security")
             && !content_lower.contains("vulnerable")

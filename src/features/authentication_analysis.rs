@@ -64,8 +64,10 @@ impl AuthenticationAnalyzer {
             );
         };
 
-        // Analyze DKIM
+        // Analyze DKIM first to determine if we have sufficient authentication
         let dkim_result = DkimVerifier::verify(&context.headers, Some(&sender_domain));
+        let dkim_passes = matches!(dkim_result.auth_status, DkimAuthStatus::Pass);
+
         match dkim_result.auth_status {
             DkimAuthStatus::Pass => {
                 score += self.config.scoring.dkim_pass_boost;
@@ -153,19 +155,22 @@ impl AuthenticationAnalyzer {
             }
             SpfResult::Unknown => {
                 evidence.push("SPF result unknown".to_string());
-                // Don't penalize ESPs for unknown SPF results
-                let sender_domain = context
-                    .from_header
-                    .as_deref()
-                    .and_then(|from| from.split('@').nth(1))
-                    .unwrap_or("");
-                let is_esp = self
-                    .config
-                    .esp_domains
-                    .iter()
-                    .any(|esp| sender_domain.contains(esp));
-                if !is_esp {
-                    risk_factors += 1;
+                // If DKIM passes, don't penalize for unknown SPF
+                if !dkim_passes {
+                    // Don't penalize ESPs for unknown SPF results
+                    let sender_domain = context
+                        .from_header
+                        .as_deref()
+                        .and_then(|from| from.split('@').nth(1))
+                        .unwrap_or("");
+                    let is_esp = self
+                        .config
+                        .esp_domains
+                        .iter()
+                        .any(|esp| sender_domain.contains(esp));
+                    if !is_esp {
+                        risk_factors += 1;
+                    }
                 }
             }
         }
@@ -187,19 +192,22 @@ impl AuthenticationAnalyzer {
             }
             DmarcResult::Unknown => {
                 evidence.push("DMARC result unknown".to_string());
-                // Don't penalize ESPs for unknown DMARC results
-                let sender_domain = context
-                    .from_header
-                    .as_deref()
-                    .and_then(|from| from.split('@').nth(1))
-                    .unwrap_or("");
-                let is_esp = self
-                    .config
-                    .esp_domains
-                    .iter()
-                    .any(|esp| sender_domain.contains(esp));
-                if !is_esp {
-                    risk_factors += 1;
+                // If DKIM passes, don't penalize for unknown DMARC
+                if !dkim_passes {
+                    // Don't penalize ESPs for unknown DMARC results
+                    let sender_domain = context
+                        .from_header
+                        .as_deref()
+                        .and_then(|from| from.split('@').nth(1))
+                        .unwrap_or("");
+                    let is_esp = self
+                        .config
+                        .esp_domains
+                        .iter()
+                        .any(|esp| sender_domain.contains(esp));
+                    if !is_esp {
+                        risk_factors += 1;
+                    }
                 }
             }
         }
@@ -306,11 +314,41 @@ impl AuthenticationAnalyzer {
     fn detect_spoofing_attempts(&self, context: &MailContext) -> i32 {
         let mut spoofing_score = 0;
 
-        // Check for suspicious patterns in headers
+        // Check for suspicious patterns in headers with context awareness
         for pattern in &self.config.suspicious_patterns {
             if let Some(subject) = context.headers.get("subject") {
                 if subject.to_lowercase().contains(&pattern.to_lowercase()) {
-                    spoofing_score += 20;
+                    // Reduce penalty for "click here" in legitimate marketing context
+                    if pattern.to_lowercase() == "click here" {
+                        // Check for legitimate marketing indicators
+                        let body = context.body.as_deref().unwrap_or("");
+                        let has_unsubscribe = body.to_lowercase().contains("unsubscribe");
+                        let has_privacy = body.to_lowercase().contains("privacy");
+                        let sender = context.from_header.as_deref().unwrap_or("").to_lowercase();
+
+                        // Check if sender is a known legitimate retailer
+                        let legitimate_retailers = [
+                            "onestopplus.com",
+                            "airnz.co.nz",
+                            "amazon.com",
+                            "walmart.com",
+                            "target.com",
+                            "bestbuy.com",
+                            "costco.com",
+                            "homedepot.com",
+                        ];
+                        let is_legitimate_retailer = legitimate_retailers
+                            .iter()
+                            .any(|retailer| sender.contains(retailer));
+
+                        if (has_unsubscribe || has_privacy) && is_legitimate_retailer {
+                            spoofing_score += 5; // Reduced penalty for legitimate marketing
+                        } else {
+                            spoofing_score += 20; // Full penalty for suspicious context
+                        }
+                    } else {
+                        spoofing_score += 20; // Full penalty for other suspicious patterns
+                    }
                 }
             }
         }
@@ -364,7 +402,26 @@ impl AuthenticationAnalyzer {
     fn same_root_domain(&self, domain1: &str, domain2: &str) -> bool {
         let get_root_domain = |domain: &str| -> String {
             let parts: Vec<&str> = domain.split('.').collect();
-            if parts.len() >= 2 {
+
+            // Handle common country code domains
+            if parts.len() >= 3 {
+                let last_two = format!("{}.{}", parts[parts.len() - 2], parts[parts.len() - 1]);
+                match last_two.as_str() {
+                    "co.nz" | "co.uk" | "com.au" | "co.za" | "co.jp" | "co.kr" | "com.br" => {
+                        // For country code domains, take 3 parts: domain.co.nz
+                        format!(
+                            "{}.{}.{}",
+                            parts[parts.len() - 3],
+                            parts[parts.len() - 2],
+                            parts[parts.len() - 1]
+                        )
+                    }
+                    _ => {
+                        // For regular domains, take 2 parts: domain.com
+                        format!("{}.{}", parts[parts.len() - 2], parts[parts.len() - 1])
+                    }
+                }
+            } else if parts.len() >= 2 {
                 format!("{}.{}", parts[parts.len() - 2], parts[parts.len() - 1])
             } else {
                 domain.to_string()
@@ -455,7 +512,18 @@ impl AuthenticationFeature {
     fn detect_brand_impersonation(&self, context: &MailContext) -> bool {
         let subject = context.subject.as_deref().unwrap_or("");
         let body = context.body.as_deref().unwrap_or("");
-        let combined_text = format!("{} {}", subject, body).to_lowercase();
+
+        // Clean content by removing HTML namespace declarations and technical markup
+        let clean_subject = subject.to_lowercase();
+        let clean_body = body
+            .to_lowercase()
+            .replace("schemas-microsoft-com", "")
+            .replace("urn:schemas-", "")
+            .replace("xmlns:", "")
+            .replace("office:office", "")
+            .replace("vml", "");
+
+        let combined_text = format!("{} {}", clean_subject, clean_body);
         let sender = context.from_header.as_deref().unwrap_or("").to_lowercase();
 
         // Skip brand impersonation check for legitimate retailers
@@ -482,6 +550,10 @@ impl AuthenticationFeature {
             "sendgrid",
             "sparkpost",
             "mailchimp",
+            // Add missing legitimate businesses
+            "onestopplus.com",
+            "airnz.co.nz",
+            "digitalcomms.airnz.co.nz",
         ];
 
         if legitimate_retailers

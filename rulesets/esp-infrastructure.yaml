@@ -47,6 +47,24 @@ rules:
     score: -100
     description: "Legitimate health device company infrastructure"
 
+  # Medical Billing ESP Infrastructure
+  - name: "Medical Billing ESP Infrastructure"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*(docugateway|virginiamason).*"
+    score: -150
+    description: "Legitimate medical billing service infrastructure"
+
+  # Veterinary ESP Infrastructure
+  - name: "Veterinary ESP Infrastructure"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*(ourvet|vetcove|mtasv).*"
+    score: -150
+    description: "Legitimate veterinary service infrastructure"
+
   # Mailjet/Sendinblue ESP Infrastructure
   - name: "Mailjet Sendinblue ESP Infrastructure"
     enabled: true

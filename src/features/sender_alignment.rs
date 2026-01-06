@@ -1356,7 +1356,15 @@ impl FeatureExtractor for SenderAlignmentAnalyzer {
                             || sender_domain.contains("oracleemaildelivery.com")
                             || (from_root.contains("lovepop") && reply_to_root.contains("lovepop"))
                             || (from_domain.contains("sparkpostmail.com")
-                                && reply_to_root.contains("saily"));
+                                && reply_to_root.contains("saily"))
+                            // Medical billing services
+                            || (from_domain.contains("docugateway.com") && reply_to_domain.ends_with(".org"))
+                            || (from_root.contains("virginiamason") && reply_to_root.contains("virginiamason"))
+                            // Veterinary ESP services
+                            || (from_domain.contains("ourvet.com") && reply_to_domain.contains("vetcove.com"))
+                            || (from_root.contains("vetcove") && reply_to_root.contains("vetcove"))
+                            || (from_domain.contains("mtasv.net") && reply_to_domain.contains("ourvet.com"))
+                            || (from_domain.contains("mtasv.net") && reply_to_domain.contains("vetcove.com"));
 
                         // Only flag if different root domains (cross-domain mismatch) and not legitimate service
                         if from_root != reply_to_root

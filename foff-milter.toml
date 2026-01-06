@@ -1,36 +1,10 @@
-# FOFF Milter v0.8.7 Production Configuration
-# Production-ready defaults with comprehensive security
+# FOFF Milter Production Configuration
+# Uses system defaults for all paths and settings
 
 [system]
-socket_path = "/var/run/foff-milter.sock"
-reject_to_tag = false
-
-[rulesets]
-enabled = true
-config_dir = "rulesets"
-
-[features]
-enabled = true
-config_dir = "features"
+reject_to_tag = true
 
 [heuristics]
 reject_threshold = 350
 spam_threshold = 50
 accept_threshold = 0
-
-[whitelist]
-enabled = true
-addresses = []
-domains = []
-domain_patterns = [".*\\.gov$", ".*\\.edu$", ".*\\.mil$"]
-
-[blocklist]
-enabled = true
-addresses = []
-domains = []
-domain_patterns = []
-
-[statistics]
-enabled = true
-database_path = "/var/lib/foff-milter/stats.db"
-flush_interval_seconds = 60

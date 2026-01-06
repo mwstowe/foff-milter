@@ -111,14 +111,29 @@ rules:
           pattern: ".*@[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}$"
         - type: "SenderPattern"
           pattern: ".*@.*\\.(tk|ml|ga|cf|gq|pl|cn)$"
-        - type: "SenderPattern"
-          pattern: ".*[0-9]{8,}@.*"
+        - type: "And"
+          criteria:
+            - type: "SenderPattern"
+              pattern: ".*[0-9]{8,}@.*"
+            - type: "Not"
+              criteria:
+                type: "Or"
+                criteria:
+                  # Exclude legitimate ESP domains and tracking patterns
+                  - type: "SenderPattern"
+                    pattern: ".*@.*\\.(onestopplus|airnz|amazon|walmart|target|bestbuy|costco|homedepot|sendgrid|mailchimp|klaviyo|constantcontact)\\.(com|co\\.nz|net|org)$"
+                  # Exclude legitimate ESP tracking patterns (bounce-, campaign-, track-, etc.)
+                  - type: "SenderPattern"
+                    pattern: ".*(bounce|campaign|track|newsletter|promo|marketing|email|mail|esp|delivery|notification)-.*[0-9]{8,}@.*"
+                  # Exclude do-not-reply patterns with tracking
+                  - type: "SenderPattern"
+                    pattern: ".*(do-not-reply|noreply|no-reply).*[0-9]{8,}@.*"
         - type: "SenderPattern"
           pattern: ".*@invalid$"
         - type: "SenderPattern"
           pattern: ".*@.*\\.(icu|top|click|download|loan|win)$"
     score: 50
-    description: "Suspicious sender domain or address patterns"
+    description: "Suspicious sender domain or address patterns (excludes legitimate ESP tracking)"
 
   # Missing Authentication Headers (+40 points) - Feature-Based
   - name: "Missing Authentication Headers"

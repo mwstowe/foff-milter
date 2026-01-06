@@ -1,4 +1,5 @@
 use super::{FeatureExtractor, FeatureScore};
+use crate::domain_utils::DomainUtils;
 use crate::MailContext;
 use regex::Regex;
 
@@ -39,6 +40,15 @@ impl InvoiceAnalyzer {
             "aran.com".to_string(),
             "septicresponse.com".to_string(),
             "acemedseattle.com".to_string(),
+            // Airlines and travel
+            "airnz.co.nz".to_string(),
+            "airfrance.com".to_string(),
+            "lufthansa.com".to_string(),
+            "delta.com".to_string(),
+            "united.com".to_string(),
+            "american.com".to_string(),
+            "expedia.com".to_string(),
+            "kayak.com".to_string(),
         ];
 
         Self {
@@ -71,6 +81,15 @@ impl InvoiceAnalyzer {
             "aran.com".to_string(),
             "septicresponse.com".to_string(),
             "acemedseattle.com".to_string(),
+            // Airlines and travel
+            "airnz.co.nz".to_string(),
+            "airfrance.com".to_string(),
+            "lufthansa.com".to_string(),
+            "delta.com".to_string(),
+            "united.com".to_string(),
+            "american.com".to_string(),
+            "expedia.com".to_string(),
+            "kayak.com".to_string(),
         ];
 
         Self {
@@ -100,6 +119,25 @@ impl InvoiceAnalyzer {
             || sender_lower.contains("substack")
         {
             0.2 // 80% reduction for newsletters
+        } else if sender_lower.contains("travel")
+            || sender_lower.contains("flight")
+            || sender_lower.contains("airline")
+            || sender_lower.contains("booking")
+            || sender_lower.contains("expedia")
+            || sender_lower.contains("kayak")
+            || sender_lower.contains("airnz")
+            || sender_lower.contains("airfrance")
+            || sender_lower.contains("lufthansa")
+            || sender_lower.contains("delta")
+            || sender_lower.contains("united")
+            || sender_lower.contains("american")
+            || sender_lower.contains("ourvet")
+            || sender_lower.contains("vetcove")
+            || sender_lower.contains("mtasv")
+            || sender_lower.contains("veterinary")
+            || sender_lower.contains("pet")
+        {
+            0.1 // 90% reduction for travel industry and veterinary services
         } else {
             1.0 // No reduction for unknown senders
         }
@@ -119,13 +157,26 @@ impl FeatureExtractor for InvoiceAnalyzer {
         let mut score = 0;
         let mut evidence = Vec::new();
 
-        // Check if sender is from legitimate domain
+        // Check if sender is from legitimate domain using proper domain matching
         let sender = context.sender.as_deref().unwrap_or("");
         let from_header = context.from_header.as_deref().unwrap_or("");
-        let is_legitimate = self
-            .legitimate_domains
-            .iter()
-            .any(|domain| sender.contains(domain) || from_header.contains(domain));
+
+        // Extract domains from sender and from_header
+        let sender_domain = DomainUtils::extract_domain(sender).unwrap_or_default();
+        let from_domain = if let Some(email_start) = from_header.find('<') {
+            if let Some(email_end) = from_header.find('>') {
+                let email = &from_header[email_start + 1..email_end];
+                DomainUtils::extract_domain(email).unwrap_or_default()
+            } else {
+                DomainUtils::extract_domain(from_header).unwrap_or_default()
+            }
+        } else {
+            DomainUtils::extract_domain(from_header).unwrap_or_default()
+        };
+
+        let is_legitimate =
+            DomainUtils::matches_domain_list(&sender_domain, &self.legitimate_domains)
+                || DomainUtils::matches_domain_list(&from_domain, &self.legitimate_domains);
 
         // Check for medical institutions
         let medical_institutions = [
