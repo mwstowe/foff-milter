@@ -1,0 +1,19 @@
+# FOFF Milter CI Configuration
+# Uses local paths for GitHub Actions testing
+
+[rulesets]
+enabled = true
+config_dir = "rulesets"
+
+[features]
+enabled = true
+config_dir = "features"
+
+[heuristics]
+reject_threshold = 350
+spam_threshold = 50
+accept_threshold = 0
+
+[system]
+socket_path = "/tmp/foff-milter.sock"
+reject_to_tag = true

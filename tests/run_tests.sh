@@ -14,6 +14,11 @@ else
 fi
 
 CONFIG="./foff-milter.toml"
+
+# Use CI config if in GitHub Actions
+if [ "$GITHUB_ACTIONS" = "true" ]; then
+    CONFIG="./foff-milter-ci.toml"
+fi
 PASSED=0
 FAILED=0
 
