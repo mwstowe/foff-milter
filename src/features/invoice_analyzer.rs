@@ -164,9 +164,13 @@ impl FeatureExtractor for InvoiceAnalyzer {
         // Extract domains from sender and from_header
         let sender_domain = DomainUtils::extract_domain(sender).unwrap_or_default();
         let from_domain = if let Some(email_start) = from_header.find('<') {
-            if let Some(email_end) = from_header.find('>') {
-                let email = &from_header[email_start + 1..email_end];
-                DomainUtils::extract_domain(email).unwrap_or_default()
+            if let Some(email_end) = from_header.rfind('>') {
+                if email_start + 1 < email_end {
+                    let email = &from_header[email_start + 1..email_end];
+                    DomainUtils::extract_domain(email).unwrap_or_default()
+                } else {
+                    DomainUtils::extract_domain(from_header).unwrap_or_default()
+                }
             } else {
                 DomainUtils::extract_domain(from_header).unwrap_or_default()
             }

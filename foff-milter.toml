@@ -1,8 +1,17 @@
 # FOFF Milter Production Configuration
-# Uses system defaults for all paths and settings
+# Uses local paths for development/testing
 
 [system]
+socket_path = "/var/run/foff-milter.sock"
 reject_to_tag = true
+
+[rulesets]
+enabled = true
+config_dir = "rulesets"
+
+[features]
+enabled = true
+config_dir = "features"
 
 [heuristics]
 reject_threshold = 350
