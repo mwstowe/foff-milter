@@ -3,6 +3,12 @@ use crate::MailContext;
 
 pub struct UnicodeObfuscationAnalyzer;
 
+impl Default for UnicodeObfuscationAnalyzer {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl UnicodeObfuscationAnalyzer {
     pub fn new() -> Self {
         Self
@@ -18,17 +24,29 @@ impl FeatureExtractor for UnicodeObfuscationAnalyzer {
         if let Some(normalized) = &context.normalized {
             let subject_obfuscation = &normalized.subject.obfuscation_indicators;
             let body_obfuscation = &normalized.body_text.obfuscation_indicators;
-            
+
             // Count Unicode homoglyph obfuscation
-            let subject_unicode_count = subject_obfuscation.iter()
-                .filter(|&t| matches!(t, crate::normalization::ObfuscationTechnique::UnicodeHomoglyphs))
+            let subject_unicode_count = subject_obfuscation
+                .iter()
+                .filter(|&t| {
+                    matches!(
+                        t,
+                        crate::normalization::ObfuscationTechnique::UnicodeHomoglyphs
+                    )
+                })
                 .count();
-            let body_unicode_count = body_obfuscation.iter()
-                .filter(|&t| matches!(t, crate::normalization::ObfuscationTechnique::UnicodeHomoglyphs))
+            let body_unicode_count = body_obfuscation
+                .iter()
+                .filter(|&t| {
+                    matches!(
+                        t,
+                        crate::normalization::ObfuscationTechnique::UnicodeHomoglyphs
+                    )
+                })
                 .count();
-                
+
             let total_unicode_obfuscation = subject_unicode_count + body_unicode_count;
-            
+
             if total_unicode_obfuscation > 0 {
                 // High penalty for Unicode obfuscation detected during normalization
                 let penalty = if total_unicode_obfuscation >= 2 {

@@ -119,7 +119,8 @@ impl FeatureEngine {
                 Box::new(domain_business_mismatch::DomainBusinessMismatchAnalyzer::new()),
                 Box::new(system_blocklist::SystemBlocklistFeature::new()),
                 Box::new(priority_abuse::PriorityAbuseFeature::new()),
-                Box::new(unicode_obfuscation::UnicodeObfuscationAnalyzer::new()),            ],
+                Box::new(unicode_obfuscation::UnicodeObfuscationAnalyzer::new()),
+            ],
         }
     }
 

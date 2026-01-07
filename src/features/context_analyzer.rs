@@ -833,7 +833,7 @@ impl ContextAnalyzer {
                     obfuscation_count += 1; // Count arrows as obfuscation
                 }
             }
-            
+
             // Check for Mathematical Alphanumeric Symbols (U+1D400-1D7FF)
             let code_point = ch as u32;
             if (0x1D400..=0x1D7FF).contains(&code_point) {
@@ -850,7 +850,8 @@ impl ContextAnalyzer {
         let obfuscation_ratio = (obfuscation_count as f32 / total_chars as f32) * 100.0;
 
         // Special case: if we have 3+ arrow characters or 2+ mathematical Unicode, it's definitely evasion
-        let has_obfuscation = obfuscation_ratio > 5.0 || arrow_count >= 3 || math_unicode_count >= 2;
+        let has_obfuscation =
+            obfuscation_ratio > 5.0 || arrow_count >= 3 || math_unicode_count >= 2;
 
         (has_obfuscation, obfuscation_ratio)
     }
@@ -1356,17 +1357,24 @@ impl FeatureExtractor for ContextAnalyzer {
         }
 
         // Enhanced survey + brand impersonation detection
-        let sender_survey_regex = Regex::new(r"(?i)\b(prime.*survey|customer.*survey|member.*survey|survey.*panel)\b").unwrap();
+        let sender_survey_regex =
+            Regex::new(r"(?i)\b(prime.*survey|customer.*survey|member.*survey|survey.*panel)\b")
+                .unwrap();
         let has_survey_sender = sender_survey_regex.is_match(sender);
-        let has_brand_impersonation = all_evidence.iter().any(|e| e.contains("Brand") && e.contains("mentioned but sender domain"));
-        
+        let has_brand_impersonation = all_evidence
+            .iter()
+            .any(|e| e.contains("Brand") && e.contains("mentioned but sender domain"));
+
         if has_survey_sender && has_brand_impersonation {
             total_score += 15;
-            all_evidence.push("Survey authority claim with brand impersonation detected".to_string());
+            all_evidence
+                .push("Survey authority claim with brand impersonation detected".to_string());
         } else if has_survey_sender {
             // Survey claims from non-survey domains are suspicious
             let sender_domain = sender.split('@').nth(1).unwrap_or("");
-            let is_survey_domain = sender_domain.contains("survey") || sender_domain.contains("research") || sender_domain.contains("poll");
+            let is_survey_domain = sender_domain.contains("survey")
+                || sender_domain.contains("research")
+                || sender_domain.contains("poll");
             if !is_survey_domain && !sender_domain.is_empty() {
                 total_score += 8;
                 all_evidence.push("Survey authority claim from non-survey domain".to_string());
