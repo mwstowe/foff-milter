@@ -1355,6 +1355,24 @@ impl FeatureExtractor for ContextAnalyzer {
             all_evidence.push("Survey scam pattern detected".to_string());
         }
 
+        // Enhanced survey + brand impersonation detection
+        let sender_survey_regex = Regex::new(r"(?i)\b(prime.*survey|customer.*survey|member.*survey|survey.*panel)\b").unwrap();
+        let has_survey_sender = sender_survey_regex.is_match(sender);
+        let has_brand_impersonation = all_evidence.iter().any(|e| e.contains("Brand") && e.contains("mentioned but sender domain"));
+        
+        if has_survey_sender && has_brand_impersonation {
+            total_score += 15;
+            all_evidence.push("Survey authority claim with brand impersonation detected".to_string());
+        } else if has_survey_sender {
+            // Survey claims from non-survey domains are suspicious
+            let sender_domain = sender.split('@').nth(1).unwrap_or("");
+            let is_survey_domain = sender_domain.contains("survey") || sender_domain.contains("research") || sender_domain.contains("poll");
+            if !is_survey_domain && !sender_domain.is_empty() {
+                total_score += 8;
+                all_evidence.push("Survey authority claim from non-survey domain".to_string());
+            }
+        }
+
         // Subject pattern analysis
         let subject_special_chars = Regex::new(r"[.?%#]{3,}").unwrap();
         let subject_text = context.subject.as_deref().unwrap_or("");

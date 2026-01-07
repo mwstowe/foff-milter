@@ -14,58 +14,41 @@ impl FeatureExtractor for UnicodeObfuscationAnalyzer {
         let mut score = 0;
         let mut evidence = Vec::new();
 
-        // Get the properly normalized subject and body
-        let subject = if let Some(normalized) = &context.normalized {
-            &normalized.subject.normalized
-        } else {
-            context.subject.as_deref().unwrap_or("")
-        };
-        
-        let body = if let Some(normalized) = &context.normalized {
-            &normalized.body_text.normalized
-        } else {
-            context.body.as_deref().unwrap_or("")
-        };
-        
-        let combined_text = format!("{} {}", subject, body);
-
-        // Check for Mathematical Alphanumeric Symbols (U+1D400-1D7FF)
-        let mut math_unicode_count = 0;
-        let mut total_chars = 0;
-
-        for ch in combined_text.chars() {
-            if ch.is_alphabetic() || ch.is_numeric() {
-                total_chars += 1;
-                let code_point = ch as u32;
-                if (0x1D400..=0x1D7FF).contains(&code_point) {
-                    math_unicode_count += 1;
-                }
-            }
-        }
-
-        if math_unicode_count > 0 {
-            let obfuscation_ratio = (math_unicode_count as f32 / total_chars as f32) * 100.0;
+        // Check if we have normalized content with obfuscation indicators
+        if let Some(normalized) = &context.normalized {
+            let subject_obfuscation = &normalized.subject.obfuscation_indicators;
+            let body_obfuscation = &normalized.body_text.obfuscation_indicators;
             
-            // High penalty for mathematical Unicode obfuscation
-            let penalty = if math_unicode_count >= 5 {
-                60 // Heavy penalty for extensive obfuscation
-            } else if math_unicode_count >= 2 {
-                40 // Moderate penalty for some obfuscation
-            } else {
-                20 // Light penalty for minimal obfuscation
-            };
+            // Count Unicode homoglyph obfuscation
+            let subject_unicode_count = subject_obfuscation.iter()
+                .filter(|&t| matches!(t, crate::normalization::ObfuscationTechnique::UnicodeHomoglyphs))
+                .count();
+            let body_unicode_count = body_obfuscation.iter()
+                .filter(|&t| matches!(t, crate::normalization::ObfuscationTechnique::UnicodeHomoglyphs))
+                .count();
+                
+            let total_unicode_obfuscation = subject_unicode_count + body_unicode_count;
+            
+            if total_unicode_obfuscation > 0 {
+                // High penalty for Unicode obfuscation detected during normalization
+                let penalty = if total_unicode_obfuscation >= 2 {
+                    60 // Heavy penalty for obfuscation in both subject and body
+                } else {
+                    40 // Moderate penalty for obfuscation in one area
+                };
 
-            score += penalty;
-            evidence.push(format!(
-                "Mathematical Unicode obfuscation detected: {} characters ({:.1}% of text)",
-                math_unicode_count, obfuscation_ratio
-            ));
+                score += penalty;
+                evidence.push(format!(
+                    "Unicode obfuscation detected during normalization: {} instances",
+                    total_unicode_obfuscation
+                ));
+            }
         }
 
         FeatureScore {
             feature_name: self.name().to_string(),
             score,
-            confidence: if math_unicode_count > 0 { 0.9 } else { 0.0 },
+            confidence: if score > 0 { 0.9 } else { 0.0 },
             evidence,
         }
     }
