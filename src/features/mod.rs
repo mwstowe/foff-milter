@@ -9,6 +9,7 @@ pub mod esp_validation;
 pub mod financial_validation;
 pub mod invoice_analyzer;
 pub mod link_analyzer;
+pub mod portuguese_language;
 pub mod priority_abuse;
 pub mod sender_alignment;
 pub mod system_blocklist;
@@ -120,7 +121,7 @@ impl FeatureEngine {
                 Box::new(system_blocklist::SystemBlocklistFeature::new()),
                 Box::new(priority_abuse::PriorityAbuseFeature::new()),
                 Box::new(unicode_obfuscation::UnicodeObfuscationAnalyzer::new()),
-            ],
+                Box::new(portuguese_language::PortugueseLanguageAnalyzer::new()),            ],
         }
     }
 
@@ -143,6 +144,7 @@ impl FeatureEngine {
                 Box::new(system_blocklist::SystemBlocklistFeature::new()),
                 Box::new(priority_abuse::PriorityAbuseFeature::new()),
                 Box::new(unicode_obfuscation::UnicodeObfuscationAnalyzer::new()),
+                Box::new(portuguese_language::PortugueseLanguageAnalyzer::new()),
             ],
         }
     }

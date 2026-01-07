@@ -10,6 +10,7 @@ impl LanguageDetector {
             "russian" | "ru" => Self::contains_russian(text),
             "thai" | "th" => Self::contains_thai(text),
             "hebrew" | "he" => Self::contains_hebrew(text),
+            "portuguese" | "pt" => Self::contains_portuguese(text),
             _ => {
                 log::warn!("Unsupported language for detection: {language}");
                 false
@@ -96,6 +97,25 @@ impl LanguageDetector {
         })
     }
 
+    pub fn contains_portuguese(text: &str) -> bool {
+        // Portuguese-specific accented characters
+        let portuguese_chars = text.chars().any(|c| {
+            matches!(c, 'ã' | 'õ' | 'ç' | 'á' | 'à' | 'â' | 'é' | 'ê' | 'í' | 'ó' | 'ô' | 'ú' | 'Ã' | 'Õ' | 'Ç')
+        });
+        
+        // Common Portuguese words and scam keywords
+        let text_lower = text.to_lowercase();
+        let portuguese_words = [
+            "validação", "conferência", "processo", "documento", "assinatura", 
+            "pendentes", "aguardando", "realizar", "notas", "registros",
+            "para", "com", "não", "que", "uma", "dos", "das", "concluir"
+        ];
+        let has_portuguese_words = portuguese_words.iter()
+            .any(|&word| text_lower.contains(word));
+        
+        portuguese_chars || has_portuguese_words
+    }
+
     pub fn detect_languages(text: &str) -> Vec<String> {
         let mut languages = Vec::new();
 
@@ -119,6 +139,9 @@ impl LanguageDetector {
         }
         if Self::contains_hebrew(text) {
             languages.push("Hebrew".to_string());
+        }
+        if Self::contains_portuguese(text) {
+            languages.push("Portuguese".to_string());
         }
 
         languages
@@ -164,6 +187,15 @@ mod tests {
         assert!(LanguageDetector::contains_russian("Привет"));
         assert!(LanguageDetector::contains_russian("русский"));
         assert!(!LanguageDetector::contains_russian("Hello World"));
+    }
+
+    #[test]
+    fn test_portuguese_detection() {
+        assert!(LanguageDetector::contains_portuguese("validação"));
+        assert!(LanguageDetector::contains_portuguese("conferência"));
+        assert!(LanguageDetector::contains_portuguese("Há registros aguardando"));
+        assert!(LanguageDetector::contains_portuguese("não responder"));
+        assert!(!LanguageDetector::contains_portuguese("Hello World"));
     }
 
     #[test]
