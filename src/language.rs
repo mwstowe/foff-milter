@@ -103,14 +103,14 @@ impl LanguageDetector {
             matches!(c, 'ã' | 'õ' | 'ç' | 'á' | 'à' | 'â' | 'é' | 'ê' | 'í' | 'ó' | 'ô' | 'ú' | 'Ã' | 'Õ' | 'Ç')
         });
         
-        // Common Portuguese words and scam keywords
+        // Portuguese-specific words and scam keywords (removed common Romance language words)
         let text_lower = text.to_lowercase();
-        let portuguese_words = [
+        let portuguese_specific_words = [
             "validação", "conferência", "processo", "documento", "assinatura", 
             "pendentes", "aguardando", "realizar", "notas", "registros",
-            "para", "com", "não", "que", "uma", "dos", "das", "concluir"
+            "concluir", "não"  // Only kept distinctly Portuguese words
         ];
-        let has_portuguese_words = portuguese_words.iter()
+        let has_portuguese_words = portuguese_specific_words.iter()
             .any(|&word| text_lower.contains(word));
         
         portuguese_chars || has_portuguese_words
