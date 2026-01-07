@@ -100,19 +100,45 @@ impl LanguageDetector {
     pub fn contains_portuguese(text: &str) -> bool {
         // Portuguese-specific accented characters
         let portuguese_chars = text.chars().any(|c| {
-            matches!(c, 'ã' | 'õ' | 'ç' | 'á' | 'à' | 'â' | 'é' | 'ê' | 'í' | 'ó' | 'ô' | 'ú' | 'Ã' | 'Õ' | 'Ç')
+            matches!(
+                c,
+                'ã' | 'õ'
+                    | 'ç'
+                    | 'á'
+                    | 'à'
+                    | 'â'
+                    | 'é'
+                    | 'ê'
+                    | 'í'
+                    | 'ó'
+                    | 'ô'
+                    | 'ú'
+                    | 'Ã'
+                    | 'Õ'
+                    | 'Ç'
+            )
         });
-        
+
         // Portuguese-specific words and scam keywords (removed common Romance language words)
         let text_lower = text.to_lowercase();
         let portuguese_specific_words = [
-            "validação", "conferência", "processo", "documento", "assinatura", 
-            "pendentes", "aguardando", "realizar", "notas", "registros",
-            "concluir", "não"  // Only kept distinctly Portuguese words
+            "validação",
+            "conferência",
+            "processo",
+            "documento",
+            "assinatura",
+            "pendentes",
+            "aguardando",
+            "realizar",
+            "notas",
+            "registros",
+            "concluir",
+            "não", // Only kept distinctly Portuguese words
         ];
-        let has_portuguese_words = portuguese_specific_words.iter()
+        let has_portuguese_words = portuguese_specific_words
+            .iter()
             .any(|&word| text_lower.contains(word));
-        
+
         portuguese_chars || has_portuguese_words
     }
 
@@ -193,7 +219,9 @@ mod tests {
     fn test_portuguese_detection() {
         assert!(LanguageDetector::contains_portuguese("validação"));
         assert!(LanguageDetector::contains_portuguese("conferência"));
-        assert!(LanguageDetector::contains_portuguese("Há registros aguardando"));
+        assert!(LanguageDetector::contains_portuguese(
+            "Há registros aguardando"
+        ));
         assert!(LanguageDetector::contains_portuguese("não responder"));
         assert!(!LanguageDetector::contains_portuguese("Hello World"));
     }

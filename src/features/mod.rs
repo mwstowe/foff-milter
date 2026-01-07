@@ -7,10 +7,13 @@ pub mod domain_business_mismatch;
 pub mod domain_reputation;
 pub mod esp_validation;
 pub mod financial_validation;
+pub mod geographic_mismatch;
+pub mod health_spam;
 pub mod invoice_analyzer;
 pub mod link_analyzer;
 pub mod portuguese_language;
 pub mod priority_abuse;
+pub mod product_spam;
 pub mod sender_alignment;
 pub mod system_blocklist;
 pub mod tld_risk;
@@ -121,7 +124,11 @@ impl FeatureEngine {
                 Box::new(system_blocklist::SystemBlocklistFeature::new()),
                 Box::new(priority_abuse::PriorityAbuseFeature::new()),
                 Box::new(unicode_obfuscation::UnicodeObfuscationAnalyzer::new()),
-                Box::new(portuguese_language::PortugueseLanguageAnalyzer::new()),            ],
+                Box::new(portuguese_language::PortugueseLanguageAnalyzer::new()),
+                Box::new(health_spam::HealthSpamAnalyzer::new()),
+                Box::new(product_spam::ProductSpamAnalyzer::new()),
+                Box::new(geographic_mismatch::GeographicMismatchAnalyzer::new()),
+            ],
         }
     }
 
@@ -145,6 +152,9 @@ impl FeatureEngine {
                 Box::new(priority_abuse::PriorityAbuseFeature::new()),
                 Box::new(unicode_obfuscation::UnicodeObfuscationAnalyzer::new()),
                 Box::new(portuguese_language::PortugueseLanguageAnalyzer::new()),
+                Box::new(health_spam::HealthSpamAnalyzer::new()),
+                Box::new(product_spam::ProductSpamAnalyzer::new()),
+                Box::new(geographic_mismatch::GeographicMismatchAnalyzer::new()),
             ],
         }
     }

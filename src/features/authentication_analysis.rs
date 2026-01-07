@@ -631,9 +631,17 @@ impl FeatureExtractor for AuthenticationFeature {
         // Check for brand impersonation to reduce authentication bonuses
         let has_brand_impersonation = self.detect_brand_impersonation(context);
 
+        // Check for Portuguese content to reduce authentication bonuses
+        let has_portuguese_content =
+            crate::language::LanguageDetector::contains_portuguese(&format!(
+                "{} {}",
+                context.subject.as_deref().unwrap_or(""),
+                context.body.as_deref().unwrap_or("")
+            ));
+
         // Reduce authentication bonuses if suspicious content detected
-        if has_brand_impersonation && score < 0 {
-            // Reduce authentication bonus by 50% when brand impersonation detected
+        if (has_brand_impersonation || has_portuguese_content) && score < 0 {
+            // Reduce authentication bonus by 50% when suspicious content detected
             score /= 2;
         }
 
@@ -741,6 +749,11 @@ impl FeatureExtractor for AuthenticationFeature {
         if has_brand_impersonation {
             final_evidence
                 .push("Authentication bonus reduced due to suspicious content".to_string());
+        }
+
+        if has_portuguese_content {
+            final_evidence
+                .push("Authentication bonus reduced due to Portuguese content".to_string());
         }
 
         FeatureScore {

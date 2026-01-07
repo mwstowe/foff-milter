@@ -29,7 +29,8 @@ impl FeatureExtractor for PortugueseLanguageAnalyzer {
         if LanguageDetector::contains_portuguese(&combined_text) {
             // High penalty since no Portuguese emails are expected
             score += 60;
-            evidence.push("Portuguese language detected - unexpected in this environment".to_string());
+            evidence
+                .push("Portuguese language detected - unexpected in this environment".to_string());
 
             // Additional penalties for Portuguese scam patterns
             let scam_patterns = [
