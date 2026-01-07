@@ -13,6 +13,7 @@ pub mod priority_abuse;
 pub mod sender_alignment;
 pub mod system_blocklist;
 pub mod tld_risk;
+pub mod unicode_obfuscation;
 
 use crate::MailContext;
 use serde::{Deserialize, Serialize};
@@ -118,7 +119,7 @@ impl FeatureEngine {
                 Box::new(domain_business_mismatch::DomainBusinessMismatchAnalyzer::new()),
                 Box::new(system_blocklist::SystemBlocklistFeature::new()),
                 Box::new(priority_abuse::PriorityAbuseFeature::new()),
-            ],
+                Box::new(unicode_obfuscation::UnicodeObfuscationAnalyzer::new()),            ],
         }
     }
 
@@ -140,6 +141,7 @@ impl FeatureEngine {
                 Box::new(domain_business_mismatch::DomainBusinessMismatchAnalyzer::new()),
                 Box::new(system_blocklist::SystemBlocklistFeature::new()),
                 Box::new(priority_abuse::PriorityAbuseFeature::new()),
+                Box::new(unicode_obfuscation::UnicodeObfuscationAnalyzer::new()),
             ],
         }
     }

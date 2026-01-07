@@ -82,6 +82,7 @@ impl EmailNormalizer {
         homoglyph_map.insert('𝐝', 'd');
         homoglyph_map.insert('𝐞', 'e');
 
+        // Mathematical Alphanumeric Symbols (U+1D400-1D7FF) - comprehensive coverage
         // Mathematical Sans-Serif Bold (U+1D5D4-1D607) - commonly used in spam
         // Uppercase A-Z
         for i in 0..26 {
@@ -94,6 +95,34 @@ impl EmailNormalizer {
             let math_char = char::from_u32(0x1D5EE + i).unwrap();
             let latin_char = char::from_u32(b'a' as u32 + i).unwrap();
             homoglyph_map.insert(math_char, latin_char);
+        }
+
+        // Mathematical Monospace Digits (U+1D7F6-1D7FF) - digits 0-9
+        for i in 0..10 {
+            let math_char = char::from_u32(0x1D7F6 + i).unwrap();
+            let digit_char = char::from_u32(b'0' as u32 + i).unwrap();
+            homoglyph_map.insert(math_char, digit_char);
+        }
+
+        // Mathematical Double-Struck Digits (U+1D7CE-1D7D7) - digits 0-9
+        for i in 0..10 {
+            let math_char = char::from_u32(0x1D7CE + i).unwrap();
+            let digit_char = char::from_u32(b'0' as u32 + i).unwrap();
+            homoglyph_map.insert(math_char, digit_char);
+        }
+
+        // Mathematical Sans-Serif Digits (U+1D7E2-1D7EB) - digits 0-9
+        for i in 0..10 {
+            let math_char = char::from_u32(0x1D7E2 + i).unwrap();
+            let digit_char = char::from_u32(b'0' as u32 + i).unwrap();
+            homoglyph_map.insert(math_char, digit_char);
+        }
+
+        // Mathematical Sans-Serif Bold Digits (U+1D7EC-1D7F5) - digits 0-9
+        for i in 0..10 {
+            let math_char = char::from_u32(0x1D7EC + i).unwrap();
+            let digit_char = char::from_u32(b'0' as u32 + i).unwrap();
+            homoglyph_map.insert(math_char, digit_char);
         }
 
         Self {

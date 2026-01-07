@@ -818,6 +818,7 @@ impl ContextAnalyzer {
         let mut obfuscation_count = 0;
         let mut total_chars = 0;
         let mut arrow_count = 0;
+        let mut math_unicode_count = 0;
 
         for ch in text.chars() {
             if ch.is_alphabetic() || arrow_chars.contains(&ch) {
@@ -832,6 +833,14 @@ impl ContextAnalyzer {
                     obfuscation_count += 1; // Count arrows as obfuscation
                 }
             }
+            
+            // Check for Mathematical Alphanumeric Symbols (U+1D400-1D7FF)
+            let code_point = ch as u32;
+            if (0x1D400..=0x1D7FF).contains(&code_point) {
+                math_unicode_count += 1;
+                total_chars += 1;
+                obfuscation_count += 1; // Count mathematical Unicode as obfuscation
+            }
         }
 
         if total_chars == 0 {
@@ -840,8 +849,8 @@ impl ContextAnalyzer {
 
         let obfuscation_ratio = (obfuscation_count as f32 / total_chars as f32) * 100.0;
 
-        // Special case: if we have 3+ arrow characters, it's definitely evasion
-        let has_obfuscation = obfuscation_ratio > 5.0 || arrow_count >= 3;
+        // Special case: if we have 3+ arrow characters or 2+ mathematical Unicode, it's definitely evasion
+        let has_obfuscation = obfuscation_ratio > 5.0 || arrow_count >= 3 || math_unicode_count >= 2;
 
         (has_obfuscation, obfuscation_ratio)
     }
@@ -1178,8 +1187,8 @@ impl FeatureExtractor for ContextAnalyzer {
         let combined_text = format!("{} {}", subject, body);
         let (has_obfuscation, obfuscation_ratio) = self.detect_unicode_obfuscation(&combined_text);
         if has_obfuscation {
-            let obfuscation_score = (obfuscation_ratio * 0.4) as i32; // Scale appropriately
-            total_score += obfuscation_score.max(40); // Minimum 40 points for any obfuscation
+            let obfuscation_score = (obfuscation_ratio * 0.6) as i32; // Increased penalty for obfuscation
+            total_score += obfuscation_score.max(50); // Minimum 50 points for any obfuscation
             all_evidence.push(format!(
                 "Unicode obfuscation detected: {:.1}% suspicious characters",
                 obfuscation_ratio
