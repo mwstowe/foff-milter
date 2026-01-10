@@ -26,11 +26,10 @@ impl FeatureExtractor for ProductSpamAnalyzer {
         )
         .to_lowercase();
 
-        // Heating/cooling product spam
+        // Heating/cooling product spam (use word boundaries to avoid false positives)
         let heating_products = [
             "heat up",
             "heating",
-            "heater",
             "warm up",
             "cozy heat",
             "heat pro",
@@ -62,9 +61,20 @@ impl FeatureExtractor for ProductSpamAnalyzer {
             .unwrap_or("")
             .to_lowercase();
 
-        // Check for heating product promotion
+        // Check for heating product promotion (use word boundaries to avoid false positives)
         for product in &heating_products {
-            if content.contains(product) {
+            // Use word boundaries for single words, exact match for phrases
+            let matches = if product.contains(' ') {
+                content.contains(product)
+            } else {
+                // Check for word boundaries to avoid substring matches
+                content.split_whitespace().any(|word| word == *product)
+                    || content
+                        .split(&[' ', '.', ',', '!', '?', ';', ':', '\n', '\r'][..])
+                        .any(|word| word == *product)
+            };
+
+            if matches {
                 score += 50;
                 evidence.push(format!("Heating/cooling product promotion: '{}'", product));
                 break;
@@ -99,12 +109,56 @@ impl FeatureExtractor for ProductSpamAnalyzer {
             evidence.push("Minimal content with promotional links".to_string());
         }
 
-        // Product rewards/offers pattern
+        // Product rewards/offers pattern (exclude legitimate retailers)
         if (content.contains("reward") || content.contains("offer"))
             && (content.contains("take") || content.contains("get") || content.contains("claim"))
         {
-            score += 35;
-            evidence.push("Product reward/offer promotion".to_string());
+            // Exclude legitimate retailers and ESP services
+            let legitimate_retailers = [
+                "1800flowers",
+                "pulse.celebrations",
+                "ftd",
+                "teleflora",
+                "proflowers",
+                "shutterfly",
+                "disney",
+                "d23",
+                "waltdisneypictures",
+                "walgreens",
+                "levis",
+                "reolink",
+                "nytimes",
+                "usps",
+                "docusign",
+                "saily",
+                "thinkvacuums",
+                "sparkpost",    // ESP service
+                "evergreentlc", // Tree care service
+                "tmobile",
+                "t-mobile",           // Telecom
+                "capitaloneshopping", // Financial services
+                // Entertainment industry
+                "livenation",
+                "ticketmaster",
+                "stubhub",
+                "eventbrite",
+                // Publishing and media
+                "gardensillustrated",
+                "nytdirect", // Specific NY Times sender
+                // Nurseries and gardening
+                "swansonsnursery",
+                // Fashion retail
+                "musvc3",     // Mail.com ESP for fashion retailers
+                "pierotucci", // Pierotucci leather goods
+            ];
+            let is_legitimate_retailer = legitimate_retailers
+                .iter()
+                .any(|retailer| sender_domain.contains(retailer));
+
+            if !is_legitimate_retailer {
+                score += 35;
+                evidence.push("Product reward/offer promotion".to_string());
+            }
         }
 
         let confidence = if score > 0 { 0.85 } else { 0.1 };

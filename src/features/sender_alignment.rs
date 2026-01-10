@@ -310,6 +310,24 @@ impl SenderAlignmentAnalyzer {
             if !is_social_media_context {
                 for brand in &brand_keywords {
                     if display_lower.contains(brand) && !email_lower.contains(brand) {
+                        // Skip bank claims from legitimate financial advisors
+                        if *brand == "bank" {
+                            let legitimate_financial_services = [
+                                "financial",
+                                "advisor",
+                                "planning",
+                                "wealth",
+                                "investment",
+                                "ally",
+                            ];
+                            if legitimate_financial_services
+                                .iter()
+                                .any(|service| email_lower.contains(service))
+                            {
+                                continue;
+                            }
+                        }
+
                         score += 30;
                         evidence.push(format!(
                             "Display name claims '{}' but email domain doesn't match",
@@ -617,6 +635,18 @@ impl SenderAlignmentAnalyzer {
                     continue;
                 }
 
+                // Skip PayPal mentions from legitimate publishers/organizations
+                if brand == "paypal" {
+                    let legitimate_paypal_mentioners =
+                        ["pmpress", "versobooks", "haymarketbooks", "publisher"];
+                    if legitimate_paypal_mentioners
+                        .iter()
+                        .any(|org| sender_info.from_domain.contains(org))
+                    {
+                        continue;
+                    }
+                }
+
                 // Check if sender domain is legitimate for this brand
                 let domain_legitimate = legitimate_domains.iter().any(|domain| {
                     sender_info.from_domain.contains(domain)
@@ -847,8 +877,31 @@ impl SenderAlignmentAnalyzer {
             issues.push("Display name suggests support but domain doesn't match".to_string());
         }
 
-        // Check for Unicode spoofing
-        if display_name.chars().any(|c| c as u32 > 127) {
+        // Check for Unicode spoofing (exclude legitimate brands with trademark symbols)
+        let legitimate_trademark_domains = [
+            "levi.com",
+            "mail.levi.com",
+            "nike.com",
+            "adidas.com",
+            "puma.com",
+            "coca-cola.com",
+            "pepsi.com",
+            "mcdonalds.com",
+            "starbucks.com",
+            "apple.com",
+            "microsoft.com",
+            "google.com",
+            "facebook.com",
+            "instagram.com",
+            "twitter.com",
+            "linkedin.com",
+            "youtube.com",
+        ];
+        let is_legitimate_trademark = legitimate_trademark_domains
+            .iter()
+            .any(|domain| sender_info.from_domain.contains(domain));
+
+        if display_name.chars().any(|c| c as u32 > 127) && !is_legitimate_trademark {
             issues.push(
                 "Display name contains non-ASCII characters (potential spoofing)".to_string(),
             );
@@ -986,6 +1039,9 @@ impl SenderAlignmentAnalyzer {
             "mayo.edu",
             "cleveland",
             "johns",
+            // Medical ESP services
+            "batemanhornecenter",
+            "mtasv",
         ];
 
         const MAJOR_BRANDS: &[&str] = &[
@@ -998,6 +1054,14 @@ impl SenderAlignmentAnalyzer {
             "ladyyum.com",
             "humblebundle.com",
             "mailer.humblebundle.com",
+            // Publishers
+            "pmpress.org",
+            "versobooks.com",
+            "haymarketbooks.org",
+            "nytimes.com",
+            // Entertainment
+            "livenation.com",
+            "ticketmaster.com",
         ];
 
         // Check for .org domains (general nonprofit indicator)
@@ -1098,6 +1162,55 @@ impl FeatureExtractor for SenderAlignmentAnalyzer {
         let mut evidence = Vec::new();
         let mut score = 0;
 
+        // Check for legitimate business partnerships first
+        let display_name = self.extract_display_name(context.from_header.as_deref().unwrap_or(""));
+        let display_name_lower = display_name.to_lowercase();
+
+        let legitimate_partnerships = [
+            ("amazon", vec!["fidelity", "chase", "synchrony"]),
+            ("fidelity", vec!["amazon"]),
+            ("netsuite", vec!["oracle"]), // NetSuite ESP alignment
+        ];
+
+        for (brand, partners) in &legitimate_partnerships {
+            if display_name_lower.contains(brand) {
+                for partner in partners {
+                    if sender_info.from_domain.contains(partner) {
+                        return FeatureScore {
+                            feature_name: "Sender Alignment".to_string(),
+                            score: 0,
+                            confidence: 0.1,
+                            evidence: vec![format!(
+                                "Legitimate {} partnership with {}",
+                                brand, partner
+                            )],
+                        };
+                    }
+                }
+            }
+        }
+
+        // Check for legitimate ESP services (NetSuite, DocuSign, etc.)
+        let legitimate_esp_services = [
+            "netsuite",
+            "docusign",
+            "oracleemaildelivery",
+            "mtasv",
+            "ab.mtasv",
+            "msgfocus",
+        ];
+        if legitimate_esp_services
+            .iter()
+            .any(|esp| sender_info.from_domain.contains(esp))
+        {
+            return FeatureScore {
+                feature_name: "Sender Alignment".to_string(),
+                score: 0,
+                confidence: 0.1,
+                evidence: vec!["Legitimate business service ESP".to_string()],
+            };
+        }
+
         // Check for invalid or missing domains (very high score) - only critical headers
         // From header MUST have a valid domain
         if sender_info.from_domain == "unknown" || sender_info.from_domain.is_empty() {
@@ -1115,11 +1228,23 @@ impl FeatureExtractor for SenderAlignmentAnalyzer {
                 sender_info.from_domain
             ));
         } else if !self.domain_exists(&sender_info.from_domain) {
-            score += 110;
-            evidence.push(format!(
-                "From domain does not exist: {}",
-                sender_info.from_domain
-            ));
+            // Skip domain existence check for known legitimate marketing subdomains
+            let legitimate_marketing_domains = [
+                "marketing.zoomcare.com",
+                "email.zoomcare.com",
+                "mail.zoomcare.com",
+            ];
+            let is_legitimate_marketing = legitimate_marketing_domains
+                .iter()
+                .any(|domain| sender_info.from_domain.contains(domain));
+
+            if !is_legitimate_marketing {
+                score += 110;
+                evidence.push(format!(
+                    "From domain does not exist: {}",
+                    sender_info.from_domain
+                ));
+            }
         }
 
         // Return-Path should also have a valid domain (but less critical)

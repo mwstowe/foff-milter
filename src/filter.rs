@@ -2047,11 +2047,26 @@ impl FilterEngine {
         }
 
         // Check for legitimate mailing list infrastructure
-        if self.is_legitimate_mailing_list(&context_with_attachments) {
-            log::info!("Legitimate mailing list detected - applying negative score");
+        let is_mailing_list = self.is_legitimate_mailing_list(&context_with_attachments);
+        if is_mailing_list {
+            log::warn!(
+                "MAILING LIST DETECTED: Applying -200 score for email from: {}",
+                context_with_attachments
+                    .from_header
+                    .as_deref()
+                    .unwrap_or("unknown")
+            );
             total_score -= 200; // Strong negative score to override false positives
             scoring_rules
                 .push("Mailing List Detection: Legitimate mailing list (-200)".to_string());
+        } else {
+            log::info!(
+                "No mailing list detected for email from: {}",
+                context_with_attachments
+                    .from_header
+                    .as_deref()
+                    .unwrap_or("unknown")
+            );
         }
 
         // Check for domain-content semantic mismatch
@@ -7107,13 +7122,47 @@ impl FilterEngine {
 
             // Strong indicators (count as 2 points each)
             if header_lower == "list-id" {
-                has_list_id = true;
-                list_indicators += 2;
-                log::debug!(
-                    "Strong mailing list indicator: {} = {}",
-                    header_name,
-                    header_value
-                );
+                // Validate that List-id contains legitimate mailing list patterns, not just recipient addresses
+                let recipient_email = context
+                    .recipients
+                    .first()
+                    .unwrap_or(&String::new())
+                    .to_lowercase();
+                let recipient_username = recipient_email
+                    .split('@')
+                    .next()
+                    .unwrap_or("")
+                    .to_lowercase();
+
+                let is_legitimate_list_id = value_lower.contains("list")
+                    || value_lower.contains("newsletter")
+                    || value_lower.contains("announce")
+                    || value_lower.contains("updates")
+                    || value_lower.contains("news")
+                    || value_lower.contains("digest")
+                    || value_lower.contains("group")
+                    || value_lower.contains("community")
+                    || value_lower.contains("forum")
+                    || value_lower.contains("discussion")
+                    || value_lower.contains("mailing")
+                    || value_lower.contains("mailman")
+                    || value_lower.contains("listserv")
+                    || value_lower.contains("majordomo")
+                    || value_lower.contains(".groups.")
+                    || value_lower.contains("googlegroups")
+                    || value_lower.contains("yahoogroups");
+
+                // Reject if List-id is just the recipient's email or username
+                let is_fake_list_id =
+                    value_lower == recipient_email || value_lower == recipient_username;
+
+                if is_legitimate_list_id && !is_fake_list_id {
+                    has_list_id = true;
+                    list_indicators += 2;
+                    log::warn!("Mailing list: List-id found: {}", header_value);
+                } else {
+                    log::warn!("Mailing list: REJECTED fake List-id: {}", header_value);
+                }
             } else if header_lower == "x-google-group-id"
                 || (header_lower == "list-id" && value_lower.contains("groups.google.com"))
             {
@@ -7160,8 +7209,8 @@ impl FilterEngine {
                 || header_lower == "list-unsubscribe-post"
             {
                 list_indicators += 1;
-                log::debug!(
-                    "Moderate mailing list indicator: {} = {}",
+                log::warn!(
+                    "Mailing list: Moderate indicator found: {} = {}",
                     header_name,
                     header_value
                 );

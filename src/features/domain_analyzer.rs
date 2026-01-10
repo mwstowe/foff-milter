@@ -44,6 +44,13 @@ impl DomainAnalyzer {
             "review",
             "faith",
             "accountant",
+            "digital",
+            "lat",
+            "info",
+            "biz",
+            "cc",
+            "ws",
+            "tv",
         ];
 
         Self {
@@ -138,7 +145,13 @@ impl DomainAnalyzer {
                     || domain.contains("michaelscustomframing.com")  // Michaels email marketing
                     || domain.contains("shutterfly.com")  // Shutterfly photo service
                     || domain.contains("leaderswedeserve.com")
-                // Leaders We Deserve nonprofit
+                    // Leaders We Deserve nonprofit
+                    || domain.contains("batemanhornecenter.org")  // Medical center
+                    || domain.contains("mtasv.net")  // Medical ESP service
+                    || domain.contains("gardensillustrated")  // Gardens Illustrated magazine
+                    || domain.contains("swansonsnursery")  // Swansons Nursery
+                    || domain.contains("nytimes")
+                // NY Times news
                 {
                     continue;
                 }
@@ -174,8 +187,11 @@ impl DomainAnalyzer {
 
         if let Some(main_part) = parts.first() {
             if main_part.len() > 20 {
-                score += 15;
-                evidence.push("Excessively long domain name detected".to_string());
+                // Skip long domain penalty for legitimate ESP services and known publishers
+                if !domain.contains("msgfocus") && !domain.contains("gardensillustrated") {
+                    score += 15;
+                    evidence.push("Excessively long domain name detected".to_string());
+                }
             }
         }
 

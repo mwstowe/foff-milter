@@ -71,8 +71,24 @@ impl FeatureExtractor for HealthSpamAnalyzer {
                 let sender_domain_clean = sender_domain.replace(".", "").replace("-", "");
                 let brand_clean = brand.replace(".", "").replace("-", "");
 
-                // Only flag if domain doesn't contain the brand name at all
-                if !sender_domain_clean.contains(&brand_clean) {
+                // Whitelist legitimate healthcare domains
+                let legitimate_health_domains = [
+                    "adapthealth",
+                    "adapthealthmarketplace",
+                    "unitedhealthcare",
+                    "aetna",
+                    "cigna",
+                    "humana",
+                    "anthem",
+                    "bluecross",
+                    "kaiser",
+                ];
+                let is_legitimate_health = legitimate_health_domains
+                    .iter()
+                    .any(|domain| sender_domain.contains(domain));
+
+                // Only flag if domain doesn't contain the brand name at all and not from legitimate health domain
+                if !sender_domain_clean.contains(&brand_clean) && !is_legitimate_health {
                     score += 80;
                     evidence.push(format!(
                         "Health brand '{}' impersonation from non-health domain",
@@ -83,14 +99,57 @@ impl FeatureExtractor for HealthSpamAnalyzer {
             }
         }
 
-        // Airline brand impersonation (specific patterns to avoid false positives)
-        if content.contains("ana マイル") || content.contains("ana mile") || 
-            (content.contains("ana") && (content.contains("航空") || content.contains("airline") || content.contains("マイル"))) {
-            let sender_domain_clean = sender_domain.replace(".", "").replace("-", "");
-            if !sender_domain_clean.contains("ana") {
-                score += 90;
-                evidence.push("ANA airline brand impersonation from non-airline domain".to_string());
+        // Hotel/travel brand impersonation
+        let hotel_brands = [
+            "marriott",
+            "hilton",
+            "hyatt",
+            "sheraton",
+            "westin",
+            "doubletree",
+            "holiday inn",
+            "best western",
+            "radisson",
+            "intercontinental",
+        ];
+
+        for brand in &hotel_brands {
+            if content.contains(brand) {
+                let sender_domain_clean = sender_domain.replace(".", "").replace("-", "");
+                let brand_clean = brand.replace(" ", "").replace(".", "").replace("-", "");
+
+                if !sender_domain_clean.contains(&brand_clean) {
+                    score += 100;
+                    evidence.push(format!(
+                        "Hotel brand '{}' impersonation from non-hotel domain",
+                        brand
+                    ));
+                    break;
+                }
             }
+        }
+
+        // Chinese domains sending Japanese content (geographic mismatch)
+        if sender_domain.ends_with(".cn")
+            && content.chars().any(|c| {
+                ('\u{3040}'..='\u{309F}').contains(&c) || // Hiragana
+            ('\u{30A0}'..='\u{30FF}').contains(&c) || // Katakana
+            ('\u{4E00}'..='\u{9FAF}').contains(&c) // CJK Unified Ideographs
+            })
+        {
+            score += 200;
+            evidence
+                .push("Chinese domain sending Japanese content - geographic mismatch".to_string());
+        }
+
+        // ANA airline brand impersonation from non-Japanese domains
+        if ((content.contains("ana") && content.contains("マイル"))
+            || content.contains("anaマイレージ"))
+            && !sender_domain.contains("ana")
+            && !sender_domain.ends_with(".jp")
+        {
+            score += 150;
+            evidence.push("ANA airline brand impersonation from non-Japanese domain".to_string());
         }
 
         // Check for health product promotion from suspicious domains
@@ -110,12 +169,37 @@ impl FeatureExtractor for HealthSpamAnalyzer {
             }
         }
 
-        // Health reward/gift scams
+        // Health reward/gift scams (exclude legitimate retailers)
         if (content.contains("health") || content.contains("dental") || content.contains("medical"))
             && (content.contains("free") || content.contains("gift") || content.contains("reward"))
         {
-            score += 40;
-            evidence.push("Health-related free gift/reward offer".to_string());
+            // Exclude legitimate retailers and healthcare companies
+            let legitimate_retailers = [
+                "1800flowers",
+                "pulse.celebrations",
+                "ftd",
+                "teleflora",
+                "proflowers",
+                "adapthealth",
+                "adapthealthmarketplace",
+                "shutterfly",
+                "disney",
+                "walgreens",
+                "evergreentlc",
+                // Medical organizations
+                "mtasv",
+                "batemanhornecenter",
+                // News organizations (specific senders only)
+                "nytdirect",
+            ];
+            let is_legitimate_retailer = legitimate_retailers
+                .iter()
+                .any(|retailer| sender_domain.contains(retailer));
+
+            if !is_legitimate_retailer {
+                score += 40;
+                evidence.push("Health-related free gift/reward offer".to_string());
+            }
         }
 
         let confidence = if score > 0 { 0.9 } else { 0.1 };

@@ -1,0 +1,1027 @@
+Return-Path: <bounce-15_HTML-27315908-298398-7296546-69003@bounce.email.livenation.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTPS id 609Dut9v097713
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <user@example.com>; Fri, 9 Jan 2026 13:56:56 GMT
+	(envelope-from bounce-15_HTML-27315908-298398-7296546-69003@bounce.email.livenation.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (1024-bit key; unprotected) header.d=email.livenation.com header.i=reply@email.livenation.com header.b=CPxUWeLt;
+	dkim=pass (2048-bit key; unprotected) header.d=s7.y.mc.salesforce.com header.i=@s7.y.mc.salesforce.com header.b=3So21feg
+Received: from mta25.email.livenation.com (mta25.email.livenation.com [13.111.26.240])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 609DurqW027273
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO)
+	for <user@example.com>; Fri, 9 Jan 2026 07:56:54 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 609DurqW027273
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (1024-bit key, unprotected) header.d=email.livenation.com header.i=reply@email.livenation.com header.a=rsa-sha256 header.s=200608 header.b=CPxUWeLt;
+	dkim=pass (2048-bit key, unprotected) header.d=s7.y.mc.salesforce.com header.i=@s7.y.mc.salesforce.com header.a=rsa-sha256 header.s=fbldkim7 header.b=3So21feg
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=200608; d=email.livenation.com;
+ h=From:To:Subject:Date:List-Unsubscribe:List-Unsubscribe-Post:MIME-Version:
+ Reply-To:Message-ID:Content-Type:Content-Transfer-Encoding;
+ i=reply@email.livenation.com;
+ bh=dXywgwPG1q9nVd3jZqSbzT6hBihIvnZy83FosiNrjqg=;
+ b=CPxUWeLt2P0ja0YkGuAUb1R06ofXByKk5+khchINcwwBL6cWrUXkU9Vr/50s2NDqVqseBUtyhOuA
+   Lmr9A8yoRao8D3mZ1kgL7/7LpAfzcTCePk+BysAPAbeDEAmh4+lEIbiXtiKT/u7Ea0j4Eda7I1jj
+   Jmvq+r0m6sPY0t6Hlqg=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=fbldkim7; d=s7.y.mc.salesforce.com;
+ h=From:To:Subject:Date:List-Unsubscribe:MIME-Version:Reply-To:Message-ID:
+ Content-Type:Content-Transfer-Encoding;
+ bh=dXywgwPG1q9nVd3jZqSbzT6hBihIvnZy83FosiNrjqg=;
+ b=3So21feg84a9saBs8cMfQEJkmajTfru39Lps3+OwLH3bYSL4mlp4odZSnKkUs+rUHyBzZLT9kr2/
+   gfk+cgN6+fx7awHWVhVYc3lEEXaQUvzLMCs2eXyCO9mcyPPtrxTumjUyMUAWa8EHZ23zxfVHUuQU
+   Gy2M6wifrO30Ta/2jWlRw4331LCWPF7DSvkDFLgd0sLuQr2FCjmWJ0GFYbwU2x0KPd0bgTFtIojd
+   S5+ltFGqSwjcppMOIGXftgB3YqPbavI3zMGbm45uwbbbdupyfQCgcJujiRAAIutay5hLVHUEVyUG
+   W5QWc48WlfH7WRzGttn2NagAX/nF1jPslmY1Gw==
+Received: by mta25.email.livenation.com id hc44ic2fmd4h for <user@example.com>; Fri, 9 Jan 2026 13:56:52 +0000 (envelope-from <bounce-15_HTML-27315908-298398-7296546-69003@bounce.email.livenation.com>)
+From: "Live Nation Concerts" <reply@email.livenation.com>
+To: <user@example.com>
+Subject: Jim Gaffigan, Nick Offerman, John Mulaney + More Comedy Shows Near You
+Date: Fri, 09 Jan 2026 07:56:49 -0600
+List-Unsubscribe: <https://click.email.livenation.com/subscription_center.aspx?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtaWQiOiI3Mjk2NTQ2IiwicyI6IjI3MzE1OTA4IiwibGlkIjoiMTUiLCJqIjoiMjk4Mzk4IiwiamIiOiI2OTAwMyIsImQiOiI3MDI0OSJ9.BJWJT7ZNVLUETaUMWiMNqWKFicYk_T2e-6Skg-4uaeM>, <mailto:leave-fd8515751a3c402029-fe5c167776650174751c-feb816797d670d75-fe8813727c62017973-fefd1279756407@leave.email.livenation.com>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+MIME-Version: 1.0
+Reply-To: "Live Nation Concerts" <reply-feb816797d670d75-15_HTML-27315908-7296546-69003@email.livenation.com>
+X-SFMC-Stack: 7
+x-job: 7296546_298398
+Message-ID: <6f59959a-84a3-49e5-b8d1-7cc63240df8e@atl1s07mta2769.xt.local>
+Content-Type: text/html;
+	charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Fri, 09 Jan 2026 13:56:56 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Fri, 09 Jan 2026 07:56:54 -0600 (CST)
+X-Spam-Flag: YES
+
+<html>
+  <head>
+    <title>Live Nation
+    </title>
+    <style type="text/css">
+      @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,600,700);
+      .opensans {
+        font-family: 'Open Sans', Arial, Helvetica, sans-serif !important;
+      }
+      * {
+        -webkit-text-size-adjust: none;
+      }
+      /* Prevent iOS font upsizing */
+      .ExternalClass * {
+        line-height: 100%;
+      }
+      /* Force Outlook.com to honor line-height */
+      td {
+        mso-line-height-rule: exactly;
+      }
+      /* Prevent iOS auto-linking */
+      a[x-apple-data-detectors] {
+        color: inherit !important;
+        text-decoration: none !important;
+        font-size: inherit !important;
+        font-family: inherit !important;
+        font-weight: inherit !important;
+        line-height: inherit !important;
+      }
+      /** Prevent Outlook Purple Links on CTAs **/
+      .blueLink a:link {
+        color: #ffffff;
+      }
+      .fullWidthImgContainer, .fullWidthImgContainer > img {
+        border: none !important;
+        border-style: none !important;
+        color: #F2F2F2 !important;
+        text-decoration: none !important;
+      }
+      /*** Responsive CSS ***/
+      @media only screen and (max-device-width: 480px),
+        screen and (max-width: 480px) {
+          .imgReplace {
+            background-image: url('http://image.direct.livenation.com/lib/fe95157070600c7a74/m/4/dm_480.jpg') !important;
+            /* Update padding-top if image dimensions change */
+            /* Padding-top = mobile image height/width as a percentage */
+            /* If decimal, round down */
+            padding-top: 63% !important;
+            width: 100% !important;
+            height: auto !important;
+            background-size: contain !important;
+            background-position: center top !important;
+            background-repeat: no-repeat !important;
+            display: block !important;
+          }
+          .imgSwapG1 {
+            background-image: url('http://image.direct.livenation.com/lib/fe95157070600c7a74/m/4/414mob.jpg');
+            /* Update padding-top if image dimensions change */
+            /* Padding-top = mobile image height/width as a percentage */
+            /* If decimal, round down */
+            padding-top: 53% !important;
+            width: 100% !important;
+            height: auto !important;
+            background-size: 100% !important;
+            background-position: center top !important;
+            background-repeat: no-repeat !important;
+            display: block !important;
+          }
+          .imgSwapG2 {
+            background-image: url('http://image.direct.livenation.com/lib/fe95157070600c7a74/m/4/414mob.jpg');
+            /* Update padding-top if image dimensions change */
+            /* Padding-top = mobile image height/width as a percentage */
+            /* If decimal, round down */
+            padding-top: 53% !important;
+            width: 100% !important;
+            height: auto !important;
+            background-size: cover !important;
+            background-position: center top !important;
+            background-repeat: no-repeat !important;
+            display: block !important;
+          }
+          /*** Layout ***/
+          body {
+            width: 100%;
+            min-width: 100%;
+            position: relative;
+            top: 0;
+            left: 0;
+            right: 0;
+            margin: 0;
+            padding: 0;
+          }
+          .marginFix {
+            position: relative;
+            top: 0;
+            left: 0;
+            right: 0;
+          }
+      }
+    </style>
+    <style type="text/css">
+      @media only screen and (max-device-width: 480px),
+        screen and (max-width: 480px) {
+          .full-width-container {
+            width: 100% !important;
+            min-width: 320px !important;
+          }
+          .full-width-container-inner {
+            width: 100% !important;
+            min-width: 100% !important;
+            padding: 0px 10px 0px 10px !important;
+          }
+          .hide {
+            width: 0px !important;
+            height: 0px !important;
+            display: none !important;
+          }
+          .full-width {
+            width: 100% !important;
+            min-width: 100% !important;
+          }
+          .stackTbl {
+            width: 100% !important;
+            display: table !important;
+          }
+          .stackTblMarginTop {
+            width: 100% !important;
+            display: table !important;
+            margin-top: 20px !important;
+          }
+          .center {
+            margin: 0px auto !important;
+          }
+          .ctaWidth {
+            width: 250px !important;
+          }
+          .ctaWidthCenter {
+            width: 250px !important;
+            margin: 0px auto !important;
+            display: block !important;
+          }
+          .width120 {
+            width: 120px !important;
+          }
+          .width120 img {
+            width: 120px !important;
+            height: auto !important;
+          }
+          .autoHeight {
+            height: auto !important;
+          }
+          .sidebarColor {
+            width: 10px !important;
+          }
+          .logoHeader {
+            width: 185px !important;
+            height: 39px !important;
+          }
+          /*** Text Styles ***/
+          .centerText {
+            text-align: center !important;
+          }
+          .text10px {
+            font-size: 10px !important;
+            line-height: 16px !important;
+          }
+          .text12px {
+            font-size: 12px !important;
+            line-height: 16px !important;
+          }
+          .text14px {
+            font-size: 14px !important;
+            line-height: 19px !important;
+          }
+          .text16px {
+            font-size: 16px !important;
+            line-height: 22px !important;
+          }
+          .text20px {
+            font-size: 20px !important;
+            line-height: 24px !important;
+          }
+          .text22px {
+            font-size: 22px !important;
+            line-height: 26px !important;
+          }
+          .text24px {
+            font-size: 24px !important;
+            line-height: 28px !important;
+          }
+          .text28px {
+            font-size: 28px !important;
+            line-height: 32px !important;
+          }
+      }
+    </style>
+    <style type="text/css">
+      @media only screen and (max-device-width: 480px),
+        screen and (max-width: 480px) {
+          /*** Padding Styles ***/
+          .mobilePadding {
+            padding: 20px 20px 20px 20px !important;
+          }
+          .mobilePadding1 {
+            padding: 0px 20px 20px 20px !important;
+            height: auto !important;
+          }
+          .mobilePadding2 {
+            padding: 40px 40px 40px 40px !important;
+          }
+          .mobilePadding3 {
+            padding: 20px 20px 0px 20px !important;
+          }
+          .mobilePadding4 {
+            padding: 20px 30px 20px 30px !important;
+          }
+          .mobilePadding5 {
+            padding: 20px 10px 20px 10px !important;
+          }
+          .mobilePadding6 {
+            padding: 20px 10px 0px 10px !important;
+          }
+          .mobilePadding7 {
+            padding: 10px 10px 0px 10px !important;
+          }
+          .mobilePadding8 {
+            padding: 30px 30px 20px 30px !important;
+          }
+          .mobilePadding9 {
+            padding: 0px 30px 30px 30px !important;
+          }
+          .mobilePadding10 {
+            padding: 20px 20px 40px 20px !important;
+          }
+          .MobilePaddingReduce1 {
+            padding: 0px 20px 35px 20px !important;
+          }
+          .paddingLR20 {
+            padding-right: 20px !important;
+            padding-left: 20px !important;
+          }
+          .padding0 {
+            padding: 0px !important;
+          }
+          .topPadding0 {
+            padding-top: 0px !important;
+          }
+          .topPadding10 {
+            padding-top: 10px !important;
+          }
+          .topPadding20 {
+            padding-top: 20px !important;
+          }
+          .topPadding40 {
+            padding-top: 40px !important;
+          }
+          .bottomPadding0 {
+            padding-bottom: 0px !important;
+          }
+          .bottomPadding10 {
+            padding-bottom: 10px !important;
+          }
+          .bottomPadding15 {
+            padding-bottom: 15px !important;
+          }
+          .bottomPadding20 {
+            padding-bottom: 20px !important;
+          }
+          .bottomPadding40 {
+            padding-bottom: 40px !important;
+          }
+          /*** Text/Divider/Image Styles ***/
+          .noBackground {
+            background: none !important;
+            background-color: #1174C3 !important;
+            height: auto !important;
+          }
+          .divider {
+            width: 88% !important;
+          }
+          .fullWidthImg, .fullWidthImgContainer > img {
+            width: 100% !important;
+            height: auto !important;
+            min-width: 100% !important;
+          }
+          .maxWidth305 {
+            width: 100% !important;
+            height: auto !important;
+            max-width: 305px !important;
+          }
+          .maxWidth300 {
+            width: 100% !important;
+            height: auto !important;
+            max-width: 300px !important;
+          }
+          /*** 3 Across Styling ***/
+          .threeAcrossWidth {
+            width: 30% !important;
+          }
+          /* 3-across section resize */
+          .threeWideResize {
+            width: 100% !important;
+            height: auto !important;
+            font-size: 16px !important;
+            line-height: 19px !important;
+            padding-bottom: 0px !important;
+          }
+          /*** Navigation ***/
+          .topnav {
+            width: 33% !important;
+          }
+          .topnav-right {
+            width: 33% !important;
+            text-align: right !important;
+          }
+          .footernavfirst {
+            display: block !important;
+            width: 100% !important;
+            text-align: center !important;
+            border-right: none !important;
+            border-bottom: 1px solid #cccccc !important;
+            border-top: 1px solid #cccccc !important;
+            padding: 15px 0px 15px 0px !important;
+          }
+          .footernav {
+            display: block !important;
+            width: 100% !important;
+            text-align: center !important;
+            border-right: none !important;
+            border-bottom: 1px solid #cccccc !important;
+            padding: 15px 0px 15px 0px !important;
+          }
+          .footernavlast {
+            display: block !important;
+            width: 100% !important;
+            text-align: center !important;
+            border-right: none !important;
+            padding: 15px 0px 20px 0px !important;
+          }
+          .dateHeader {
+            font-size: 48px !important;
+            line-height: 48px !important;
+            text-align: center !important;
+            padding: 0 !important;
+          }
+      }
+    </style>
+  </head>
+  <body style="margin:0px; padding:0px;"><style type="text/css">
+div.preheader 
+{ display: none !important; } 
+</style>
+<div class="preheader" style="font-size: 1px; display: none !important;"></div>
+    <!-- OUTLOOK WEBFONT FONT FIX -->
+    <!--[if gt mso 9]> <style type="text/css"> /* Prevents Outlook from defaulting to Times New Roman */ .opensans { font-family: Arial, Helvetica, sans-serif !important; } </style> <![endif]-->
+    <img src="https://click.email.livenation.com/open.aspx?ffcb10-feb816797d670d75-fe6416777664027d7010-fe8813727c62017973-ff991575-fe5c167776650174751c-fefd1279756407&d=70249&bmt=0" width="1" height="1" alt="">
+      <!-- LIVENATION TEMPLATE SHELL 07-2017 -->
+      <!-- CONTAINER -->
+      <!-- ** OUTLOOK 2007-2010 BEST PRACTICE ** This table is intended to hold 5 modules or less. If your email contains more than 5 modules, please duplicate this table for the additional modules. -->
+      <table width="100%" cellspacing="0" cellpadding="0" border="0" class="marginFix">
+        <!-- START BACKGROUND – HEADER -->
+        <tr>
+          <td width="100%" align="center" bgcolor="#ffffff">
+            <!-- START – MAIN-HEADER -->
+            <table width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#111111">
+              <tr>
+                <td valign="top" align="center" class="mobilePadding" style="padding: 25px 30px;">
+                  <!-- START – MAIN LOGO -->
+                  <table cellspacing="0" cellpadding="0" border="0" class="center">
+                    <tr>
+                      <td>
+                        <a target="_blank" href="https://click.email.livenation.com/u/?qs=1bf6fb48093099c0c9a2e3944720c8eb5d97505033650ebf20f92c971369b709ecb0ab7115b563c416291515bc4ad3d1f0911fa41351da79fda675f796263a42" >
+                          <img width="246" height="52" border="0" alt="Logo" src="https://image.email.livenation.com/lib/fe8813727c62017973/m/1/LN_Logo_Primary_White_rs.png" class="logoHeader" style="display: block; color: #ffffff; font-weight: bold; font-size: 15px; font-family: arial, helvetica, serif;" />
+                        </a>
+                      </td>
+                    </tr>
+                  </table>
+                  <!-- END – MAIN LOGO -->
+                </td>
+              </tr>
+            </table>
+            <!-- END – MAIN-HEADER -->
+          </td>
+        </tr>
+        <!-- END BACKGROUND – HEADER -->
+        <!-- START GRAY BACKGROUND – BODY + FOOTER -->
+        <tr>
+          <td width="100%" align="center" bgcolor="#111111">
+            <table cellpadding="0" cellspacing="0" border="0" width="100%">
+              <!-- START 735PX ROW – ALL BODY CONTENT -->
+              <tr>
+                <td align="center">
+                  <table cellpadding="0" cellspacing="0" border="0" width="735" class="full-width-container">
+                    <tr>
+                      <td width="735" align="center" style="min-width:735px;" class="full-width-container-inner">
+                        <span style="color:#ffffff;"><!----></span><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><span style="color:#ffffff;"></span> <!----></td></tr></table>
+                        
+                        <span style="color:#ffffff;"> </span>
+<!---->
+
+
+
+
+
+<!---->
+
+
+                       
+<!---->
+
+
+
+<!---->
+
+
+
+<!---->
+
+                       
+<!---->
+
+
+
+<!---->
+
+
+
+<!---->
+
+
+
+<!---->
+
+
+
+<!---->
+
+                       
+<!---->
+
+
+
+<!---->
+
+
+
+<!---->
+
+                       
+<!---->
+
+
+
+<!---->
+
+
+
+<!---->
+
+                       
+<!---->
+
+
+
+<!---->
+
+
+
+<!---->
+
+                       
+<!---->
+
+
+
+<!---->
+
+
+
+<!---->
+
+                       
+<!---->
+
+
+
+<!---->
+
+
+
+<!---->
+
+                       
+<!---->
+
+
+
+<!---->
+
+
+
+<!---->
+
+
+
+<!---->
+
+<!---->
+    
+
+
+<!---->
+
+ <!---->
+                        
+                        <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><table width="100%" cellspacing="0" cellpadding="0" role="presentation"><tr><td align="center"><a href="https://click.email.livenation.com/u/?qs=1bf6fb48093099c0bc79bc73bd421daceed751e05e102a461c00a37a2b9ca3d8aa1c60a9c47996cba37627360dbc6fdef21286de669ad19d941a9206ac3ef7a6" title="hero"   data-linkto="https://"><img data-assetid="160541" src="https://image.email.livenation.com/lib/fe8813727c62017973/m/1/ComedyHeader.jpg" alt="Laugh with the World's Top Comedians LIVE" width="734" style="display: block; padding: 0px; text-align: center; height: auto; width: 100%; border: 0px;"></a></td></tr></table></td></tr></table>
+                        
+                        <span style="color:#ffffff;"></span> <!---->
+
+<!---->
+                        
+                        <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"> <!----> <!----><table bgcolor="#000000" border="0" cellpadding="0" cellspacing="0" class="full-width" width="735">
+	
+		<tr>
+			<td align="center" class="mobilePadding" style="padding:25px 30px 15px 30px;">
+				<table border="0" cellpadding="0" cellspacing="0" width="100%">
+					
+						<tr>
+							<td align="center" style="font-family:Arial, Helvetica, sans serif; color:#ffffff; font-size:32px; line-height:35px; font-weight:900; letter-spacing:-1px; text-transform:none;" valign="top">
+								Laughs Coming Your Way</td></tr></table></td></tr></table> <!----> <!-- START LOOP --><!----><table bgcolor="#000000" border="0" cellpadding="0" cellspacing="0" width="100%">
+	
+		<tr>
+			<td align="center" class="mobilePadding" style="padding:30px 50px 30px 50px;">
+				<table border="0" cellpadding="0" cellspacing="0" width="100%">
+					<!-- Primary Section Header --><!-- Secondary Section Header -->
+						<tr>
+							<td>
+								<!-- image --><table align="left" border="0" cellpadding="0" cellspacing="0" class="stackTbl" width="305">
+									
+										<tr>
+											<td align="center" class="ymal_artist artist_863832" valign="top">
+												<a  href="https://click.email.livenation.com/u/?qs=1bf6fb48093099c03772975f1c75dced082edfc18c916214e0d7bf9b075b8e104643058a3ca09c949fec066964f41877fb2ec906778481605b55fc85ed3a7827" target="_blank"><img alt="Jim Gaffigan" border="0" class="maxWidth305" height="225" src="http://media.ticketmaster.com/tm/en-us/dam/a/838/aabe1f75-fe3d-4040-b17b-7f53ded6d838_CUSTOM.jpg" style="display:block;" width="305"></a></td></tr></table><!-- end image --><!-- copy --><table align="right" border="0" cellpadding="0" cellspacing="0" class="stackTbl" width="305">
+									
+										<tr>
+											<td align="left" class="opensans centerText text34px" style="font-family:Arial, Helvetica, sans serif; color:#e41937; font-size:32px; line-height:34px; font-weight:bold; padding:0px 0px 5px 0px" valign="top">
+												Jim Gaffigan</td></tr><tr>
+											<td align="left" class="topPadding0" valign="top">
+												<table border="0" cellpadding="0" cellspacing="0" width="100%">
+													<!---->
+														<tr>
+															<td align="left" class="opensans centerText text24px" style="font-family:Arial, Helvetica, sans serif; color:#ffffff; font-size:24px; line-height:24px;padding:0px 0px 2px 0px;font-weight:bold" valign="top">
+																Wed, Jun 10</td></tr><!----><!----><tr>
+															<td align="left" class="opensans centerText text18px" style="font-family:Arial, Helvetica, sans serif; color:#ffffff; font-size:18px; line-height:21px;padding:0px 0px 2px 0px;" valign="top">
+																Jim Gaffigan: Everything is Wonderful! at&nbsp;BECU Live at Northern Quest</td></tr><!----><!----><!----><!----><!----></table><!-- End Event Information --><!----><!-- CTA / Add/Share buttons --><table align="left" border="0" cellpadding="0" cellspacing="0" class="stackTbl" style="display:inline;" width="140">
+													
+														<tr>
+															<td align="left" valign="top">
+																<table border="0" cellpadding="0" cellspacing="0" class="full-width">
+																	<!-- CTA -->
+																		<tr>
+																			<td align="center" style="padding-top:20px">
+																				<table align="center" border="0" cellpadding="0" cellspacing="0" class="ctaWidth">
+																					
+																						<tr>
+																							<td align="center" bgcolor="#e51937" class="whiteLink opensans" height="46" style="font-family:Arial, Helvetica, sans serif; font-size:16px; line-height:20px; color:#ffffff; font-weight:600;padding:0px 0px 0px 0px; border-radius:2px;" width="275">
+																								<a  href="https://click.email.livenation.com/u/?qs=1bf6fb48093099c01213ecd32dd98d47ce1122d4606e866361d8d82ee6200b933ad7b7bea523924c22a37db35be06b3abc87363c5c7a1df2143b3e68a348cfcc" style="text-decoration:none; color:#ffffff; text-transform:uppercase;" target="_blank">GET TICKETS</a></td></tr></table></td></tr><!-- end CTA --></table></td></tr></table><!-- end CTA / Add/Share buttons --><!----></td></tr></table><!-- end copy --></td></tr></table></td></tr></table> <!----><table bgcolor="#000000" border="0" cellpadding="0" cellspacing="0" width="100%">
+	
+		<tr>
+			<td align="center" class="mobilePadding" style="padding:30px 50px 30px 50px;">
+				<table border="0" cellpadding="0" cellspacing="0" width="100%">
+					<!-- Primary Section Header --><!-- Secondary Section Header -->
+						<tr>
+							<td>
+								<!-- image --><table align="left" border="0" cellpadding="0" cellspacing="0" class="stackTbl" width="305">
+									
+										<tr>
+											<td align="center" class="ymal_artist artist_1670233" valign="top">
+												<a  href="https://click.email.livenation.com/u/?qs=1bf6fb48093099c01fb919942cac0ceb2607537fe9c7916a3888533244e8375d72c0c74c1c23bfffdcdb910f79a0f9915e55f955b09f6779e0d95357495c7273" target="_blank"><img alt="Nick Offerman" border="0" class="maxWidth305" height="225" src="http://media.ticketmaster.com/tm/en-us/dam/a/3b7/8c1011f6-582e-48d0-b2bf-4d4d722413b7_CUSTOM.jpg" style="display:block;" width="305"></a></td></tr></table><!-- end image --><!-- copy --><table align="right" border="0" cellpadding="0" cellspacing="0" class="stackTbl" width="305">
+									
+										<tr>
+											<td align="left" class="opensans centerText text34px" style="font-family:Arial, Helvetica, sans serif; color:#e41937; font-size:32px; line-height:34px; font-weight:bold; padding:0px 0px 5px 0px" valign="top">
+												Nick Offerman</td></tr><tr>
+											<td align="left" class="topPadding0" valign="top">
+												<table border="0" cellpadding="0" cellspacing="0" width="100%">
+													<!----><!----><tr>
+															<td align="left" class="opensans centerText text18px" style="font-family:Arial, Helvetica, sans serif; color:#ffffff; font-size:18px; line-height:21px;padding:0px 0px 2px 0px;" valign="top">
+																Nick Offerman: Big Woodchuck</td></tr><!----><!----><!----><!----><!----><tr>
+															<td align="left" class="opensans centerText text18px" style="font-family:Arial, Helvetica, sans serif; color:#e41937; font-weight:bold; font-size:18px; line-height:20px;padding:10px 0px 0px 0px;" valign="top">
+																<span class="opensans centerText paddingLR20" style="font-family:Arial, Helvetica, sans serif; color:#ffffff; font-size:18px; line-height:20px;font-weight:400;padding:10px 0 0 0" valign="top"><!----> <!----> <span style="font-weight:bold">Sat, Feb 14
+</span>&nbsp;at&nbsp;Mount Baker Theatre <!----> <!----><br>
+																<!----> <span style="font-weight:bold">Sat, Feb 14
+</span>&nbsp;at&nbsp;Mount Baker Theatre <!----> <!----><br>
+																<!----> <span style="font-weight:bold">Mon, Feb 16
+</span>&nbsp;at&nbsp;Martin Woldson Theater at the Fox <!----> <!----><br>
+																<!---->  <!----> </span></td></tr><!----><!----><!----><tr>
+															<td align="left" class="opensans centerText text18px" style="font-family:Arial, Helvetica, sans serif; color:#e41937; font-weight:bold; font-size:18px; line-height:20px;padding:10px 0px 0px 0px;" valign="top">
+																<br>
+																&nbsp;</td></tr><!----></table><!-- End Event Information --><!----><!-- CTA / Add/Share buttons --><table align="left" border="0" cellpadding="0" cellspacing="0" class="stackTbl" style="display:inline;" width="140">
+													
+														<tr>
+															<td align="left" valign="top">
+																<table border="0" cellpadding="0" cellspacing="0" class="full-width">
+																	<!-- CTA -->
+																		<tr>
+																			<td align="center" style="padding-top:20px">
+																				<table align="center" border="0" cellpadding="0" cellspacing="0" class="ctaWidth">
+																					
+																						<tr>
+																							<td align="center" bgcolor="#e51937" class="whiteLink opensans" height="46" style="font-family:Arial, Helvetica, sans serif; font-size:16px; line-height:20px; color:#ffffff; font-weight:600;padding:0px 0px 0px 0px; border-radius:2px;" width="275">
+																								<a  href="https://click.email.livenation.com/u/?qs=1bf6fb48093099c0014b07e242ec0b64fb175a23b9f6c2f69f669fc8d1150bff50cd970ef87b6143538d32c6dfd19e0137251880734f905b952215cde238b2dc" style="text-decoration:none; color:#ffffff; text-transform:uppercase;" target="_blank">GET TICKETS</a></td></tr></table></td></tr><!-- end CTA --></table></td></tr></table><!-- end CTA / Add/Share buttons --><!----></td></tr></table><!-- end copy --></td></tr></table></td></tr></table> <!----><table bgcolor="#000000" border="0" cellpadding="0" cellspacing="0" width="100%">
+	
+		<tr>
+			<td align="center" class="mobilePadding" style="padding:30px 50px 30px 50px;">
+				<table border="0" cellpadding="0" cellspacing="0" width="100%">
+					<!-- Primary Section Header --><!-- Secondary Section Header -->
+						<tr>
+							<td>
+								<!-- image --><table align="left" border="0" cellpadding="0" cellspacing="0" class="stackTbl" width="305">
+									
+										<tr>
+											<td align="center" class="ymal_artist artist_1231400" valign="top">
+												<a  href="https://click.email.livenation.com/u/?qs=1bf6fb48093099c0ba16a9de922c7d452555e797a8d9c4445ba0bf0da9392e93379a4c74d36be6a273610c75c7a577ea5c496d4fa3975003d93b0fdb51a825a6" target="_blank"><img alt="John Mulaney" border="0" class="maxWidth305" height="225" src="http://media.ticketmaster.com/tm/en-us/dam/a/115/ddf4b172-a6a4-4687-8598-c6f56c432115_CUSTOM.jpg" style="display:block;" width="305"></a></td></tr></table><!-- end image --><!-- copy --><table align="right" border="0" cellpadding="0" cellspacing="0" class="stackTbl" width="305">
+									
+										<tr>
+											<td align="left" class="opensans centerText text34px" style="font-family:Arial, Helvetica, sans serif; color:#e41937; font-size:32px; line-height:34px; font-weight:bold; padding:0px 0px 5px 0px" valign="top">
+												John Mulaney</td></tr><tr>
+											<td align="left" class="topPadding0" valign="top">
+												<table border="0" cellpadding="0" cellspacing="0" width="100%">
+													<!---->
+														<tr>
+															<td align="left" class="opensans centerText text24px" style="font-family:Arial, Helvetica, sans serif; color:#ffffff; font-size:24px; line-height:24px;padding:0px 0px 2px 0px;font-weight:bold" valign="top">
+																Sat, Jan 31</td></tr><!----><!----><tr>
+															<td align="left" class="opensans centerText text18px" style="font-family:Arial, Helvetica, sans serif; color:#ffffff; font-size:18px; line-height:21px;padding:0px 0px 2px 0px;" valign="top">
+																John Mulaney: Mister Whatever at&nbsp;Paramount Theatre</td></tr><!----><!----><!----><!----><!----></table><!-- End Event Information --><!----><!-- CTA / Add/Share buttons --><table align="left" border="0" cellpadding="0" cellspacing="0" class="stackTbl" style="display:inline;" width="140">
+													
+														<tr>
+															<td align="left" valign="top">
+																<table border="0" cellpadding="0" cellspacing="0" class="full-width">
+																	<!-- CTA -->
+																		<tr>
+																			<td align="center" style="padding-top:20px">
+																				<table align="center" border="0" cellpadding="0" cellspacing="0" class="ctaWidth">
+																					
+																						<tr>
+																							<td align="center" bgcolor="#e51937" class="whiteLink opensans" height="46" style="font-family:Arial, Helvetica, sans serif; font-size:16px; line-height:20px; color:#ffffff; font-weight:600;padding:0px 0px 0px 0px; border-radius:2px;" width="275">
+																								<a  href="https://click.email.livenation.com/u/?qs=1bf6fb48093099c0de55d22f09250fa4f94840f604a0b3c2d54b9249f32900260dd481dccc6530a953e6e66879ba639db99a13550ea13646ec001761be698314" style="text-decoration:none; color:#ffffff; text-transform:uppercase;" target="_blank">GET TICKETS</a></td></tr></table></td></tr><!-- end CTA --></table></td></tr></table><!-- end CTA / Add/Share buttons --><!----></td></tr></table><!-- end copy --></td></tr></table></td></tr></table> <!----><table bgcolor="#000000" border="0" cellpadding="0" cellspacing="0" width="100%">
+	
+		<tr>
+			<td align="center" class="mobilePadding" style="padding:30px 50px 30px 50px;">
+				<table border="0" cellpadding="0" cellspacing="0" width="100%">
+					<!-- Primary Section Header --><!-- Secondary Section Header -->
+						<tr>
+							<td>
+								<!-- image --><table align="left" border="0" cellpadding="0" cellspacing="0" class="stackTbl" width="305">
+									
+										<tr>
+											<td align="center" class="ymal_artist artist_764591" valign="top">
+												<a  href="https://click.email.livenation.com/u/?qs=1bf6fb48093099c0f57e248ca832557580756084702ef7cd1e62d7994ec9d00c9f33cfad374127dcab2c5911e467b897f26fadaac04a654899a30ce6ca58bc2e" target="_blank"><img alt="Ron White" border="0" class="maxWidth305" height="225" src="http://media.ticketmaster.com/tm/en-us/dam/a/285/636a6b15-758f-487c-81d0-d829cbe3e285_CUSTOM.jpg" style="display:block;" width="305"></a></td></tr></table><!-- end image --><!-- copy --><table align="right" border="0" cellpadding="0" cellspacing="0" class="stackTbl" width="305">
+									
+										<tr>
+											<td align="left" class="opensans centerText text34px" style="font-family:Arial, Helvetica, sans serif; color:#e41937; font-size:32px; line-height:34px; font-weight:bold; padding:0px 0px 5px 0px" valign="top">
+												Ron White</td></tr><tr>
+											<td align="left" class="topPadding0" valign="top">
+												<table border="0" cellpadding="0" cellspacing="0" width="100%">
+													<!---->
+														<tr>
+															<td align="left" class="opensans centerText text24px" style="font-family:Arial, Helvetica, sans serif; color:#ffffff; font-size:24px; line-height:24px;padding:0px 0px 2px 0px;font-weight:bold" valign="top">
+																Sat, May 23</td></tr><!----><!----><tr>
+															<td align="left" class="opensans centerText text18px" style="font-family:Arial, Helvetica, sans serif; color:#ffffff; font-size:18px; line-height:21px;padding:0px 0px 2px 0px;" valign="top">
+																BECU Live at Northern Quest</td></tr><!----><!----><!----><!----><!----></table><!-- End Event Information --><!----><!-- CTA / Add/Share buttons --><table align="left" border="0" cellpadding="0" cellspacing="0" class="stackTbl" style="display:inline;" width="140">
+													
+														<tr>
+															<td align="left" valign="top">
+																<table border="0" cellpadding="0" cellspacing="0" class="full-width">
+																	<!-- CTA -->
+																		<tr>
+																			<td align="center" style="padding-top:20px">
+																				<table align="center" border="0" cellpadding="0" cellspacing="0" class="ctaWidth">
+																					
+																						<tr>
+																							<td align="center" bgcolor="#e51937" class="whiteLink opensans" height="46" style="font-family:Arial, Helvetica, sans serif; font-size:16px; line-height:20px; color:#ffffff; font-weight:600;padding:0px 0px 0px 0px; border-radius:2px;" width="275">
+																								<a  href="https://click.email.livenation.com/u/?qs=1bf6fb48093099c0f62d07126e95415aa2c0b43624ffea7b0e8c70b3edb8022ffe5798366a722759f2747b1c0543eaa68a3bf672caa012ed8590d9d49213855c" style="text-decoration:none; color:#ffffff; text-transform:uppercase;" target="_blank">GET TICKETS</a></td></tr></table></td></tr><!-- end CTA --></table></td></tr></table><!-- end CTA / Add/Share buttons --><!----></td></tr></table><!-- end copy --></td></tr></table></td></tr></table> <!----><table bgcolor="#000000" border="0" cellpadding="0" cellspacing="0" width="100%">
+	
+		<tr>
+			<td align="center" class="mobilePadding" style="padding:30px 50px 30px 50px;">
+				<table border="0" cellpadding="0" cellspacing="0" width="100%">
+					<!-- Primary Section Header --><!-- Secondary Section Header -->
+						<tr>
+							<td>
+								<!-- image --><table align="left" border="0" cellpadding="0" cellspacing="0" class="stackTbl" width="305">
+									
+										<tr>
+											<td align="center" class="ymal_artist artist_784761" valign="top">
+												<a  href="https://click.email.livenation.com/u/?qs=1bf6fb48093099c077e965528b2d4c275371b5907ed7f940f6b7b4f6b03bd1a29568776826b2a1933c223cd714e5391a113c31cd76b93022ce6bb0ee4924a60a" target="_blank"><img alt="Margaret Cho" border="0" class="maxWidth305" height="225" src="http://media.ticketmaster.com/tm/en-us/dam/a/881/853bc405-3922-4368-bed0-127532b30881_CUSTOM.jpg" style="display:block;" width="305"></a></td></tr></table><!-- end image --><!-- copy --><table align="right" border="0" cellpadding="0" cellspacing="0" class="stackTbl" width="305">
+									
+										<tr>
+											<td align="left" class="opensans centerText text34px" style="font-family:Arial, Helvetica, sans serif; color:#e41937; font-size:32px; line-height:34px; font-weight:bold; padding:0px 0px 5px 0px" valign="top">
+												Margaret Cho</td></tr><tr>
+											<td align="left" class="topPadding0" valign="top">
+												<table border="0" cellpadding="0" cellspacing="0" width="100%">
+													<!---->
+														<tr>
+															<td align="left" class="opensans centerText text24px" style="font-family:Arial, Helvetica, sans serif; color:#ffffff; font-size:24px; line-height:24px;padding:0px 0px 2px 0px;font-weight:bold" valign="top">
+																Sun, Apr 19</td></tr><!----><!----><tr>
+															<td align="left" class="opensans centerText text18px" style="font-family:Arial, Helvetica, sans serif; color:#ffffff; font-size:18px; line-height:21px;padding:0px 0px 2px 0px;" valign="top">
+																Margaret Cho: Choligarchy at&nbsp;Moore Theatre</td></tr><!----><!----><!----><!----><!----></table><!-- End Event Information --><!----><!-- CTA / Add/Share buttons --><table align="left" border="0" cellpadding="0" cellspacing="0" class="stackTbl" style="display:inline;" width="140">
+													
+														<tr>
+															<td align="left" valign="top">
+																<table border="0" cellpadding="0" cellspacing="0" class="full-width">
+																	<!-- CTA -->
+																		<tr>
+																			<td align="center" style="padding-top:20px">
+																				<table align="center" border="0" cellpadding="0" cellspacing="0" class="ctaWidth">
+																					
+																						<tr>
+																							<td align="center" bgcolor="#e51937" class="whiteLink opensans" height="46" style="font-family:Arial, Helvetica, sans serif; font-size:16px; line-height:20px; color:#ffffff; font-weight:600;padding:0px 0px 0px 0px; border-radius:2px;" width="275">
+																								<a  href="https://click.email.livenation.com/u/?qs=1bf6fb48093099c006cea5560da81b3c2d4061c11c0c4ae8175e700c08a4804a7dd9af6819efdabe5e3f74b64f07cc26358b708d3e5465fc6685ed223e9a5e61" style="text-decoration:none; color:#ffffff; text-transform:uppercase;" target="_blank">GET TICKETS</a></td></tr></table></td></tr><!-- end CTA --></table></td></tr></table><!-- end CTA / Add/Share buttons --><!----></td></tr></table><!-- end copy --></td></tr></table></td></tr></table> <!----><table bgcolor="#000000" border="0" cellpadding="0" cellspacing="0" width="100%">
+	
+		<tr>
+			<td align="center" class="mobilePadding" style="padding:30px 50px 30px 50px;">
+				<table border="0" cellpadding="0" cellspacing="0" width="100%">
+					<!-- Primary Section Header --><!-- Secondary Section Header -->
+						<tr>
+							<td>
+								<!-- image --><table align="left" border="0" cellpadding="0" cellspacing="0" class="stackTbl" width="305">
+									
+										<tr>
+											<td align="center" class="ymal_artist artist_1048344" valign="top">
+												<a  href="https://click.email.livenation.com/u/?qs=1bf6fb48093099c0aa4694fd42186101e57064b476488587ef7169cb857aa7d9880bdf09caa70c006bd7aa4d993090b432288b4a91ae16b7232a1d1b00b8541e" target="_blank"><img alt="Chelsea Handler" border="0" class="maxWidth305" height="225" src="http://media.ticketmaster.com/tm/en-us/dam/a/e90/38e0c356-6bcb-4cd2-ab5d-97809a77ce90_CUSTOM.jpg" style="display:block;" width="305"></a></td></tr></table><!-- end image --><!-- copy --><table align="right" border="0" cellpadding="0" cellspacing="0" class="stackTbl" width="305">
+									
+										<tr>
+											<td align="left" class="opensans centerText text34px" style="font-family:Arial, Helvetica, sans serif; color:#e41937; font-size:32px; line-height:34px; font-weight:bold; padding:0px 0px 5px 0px" valign="top">
+												Chelsea Handler</td></tr><tr>
+											<td align="left" class="topPadding0" valign="top">
+												<table border="0" cellpadding="0" cellspacing="0" width="100%">
+													<!---->
+														<tr>
+															<td align="left" class="opensans centerText text24px" style="font-family:Arial, Helvetica, sans serif; color:#ffffff; font-size:24px; line-height:24px;padding:0px 0px 2px 0px;font-weight:bold" valign="top">
+																Sat, Jun 13</td></tr><!----><!----><tr>
+															<td align="left" class="opensans centerText text18px" style="font-family:Arial, Helvetica, sans serif; color:#ffffff; font-size:18px; line-height:21px;padding:0px 0px 2px 0px;" valign="top">
+																CHELSEA HANDLER: THE HIGH AND MIGHTY TOUR at&nbsp;Paramount Theatre</td></tr><!----><!----><!----><!----><!----></table><!-- End Event Information --><!----><!-- CTA / Add/Share buttons --><table align="left" border="0" cellpadding="0" cellspacing="0" class="stackTbl" style="display:inline;" width="140">
+													
+														<tr>
+															<td align="left" valign="top">
+																<table border="0" cellpadding="0" cellspacing="0" class="full-width">
+																	<!-- CTA -->
+																		<tr>
+																			<td align="center" style="padding-top:20px">
+																				<table align="center" border="0" cellpadding="0" cellspacing="0" class="ctaWidth">
+																					
+																						<tr>
+																							<td align="center" bgcolor="#e51937" class="whiteLink opensans" height="46" style="font-family:Arial, Helvetica, sans serif; font-size:16px; line-height:20px; color:#ffffff; font-weight:600;padding:0px 0px 0px 0px; border-radius:2px;" width="275">
+																								<a  href="https://click.email.livenation.com/u/?qs=1bf6fb48093099c0acacee5d02eb44f7c8e2b067d1a710da37b7d1f383fbbd925913f9c1811a757949e45ee39d7d068f464c2f8cff7de70417c2d7ef83cb2da1" style="text-decoration:none; color:#ffffff; text-transform:uppercase;" target="_blank">GET TICKETS</a></td></tr></table></td></tr><!-- end CTA --></table></td></tr></table><!-- end CTA / Add/Share buttons --><!----></td></tr></table><!-- end copy --></td></tr></table></td></tr></table> <!----><table bgcolor="#000000" border="0" cellpadding="0" cellspacing="0" width="100%">
+	
+		<tr>
+			<td align="center" class="mobilePadding" style="padding:30px 50px 30px 50px;">
+				<table border="0" cellpadding="0" cellspacing="0" width="100%">
+					<!-- Primary Section Header --><!-- Secondary Section Header -->
+						<tr>
+							<td>
+								<!-- image --><table align="left" border="0" cellpadding="0" cellspacing="0" class="stackTbl" width="305">
+									
+										<tr>
+											<td align="center" class="ymal_artist artist_1330747" valign="top">
+												<a  href="https://click.email.livenation.com/u/?qs=1bf6fb48093099c0baa6a89fe6af6548ededff54ed6844e05f9befa6b3b9343566ca0c4b7ccdf4374ea363dbcc90f00996fd9c623c5a8403dfd0877ee8a1ebab" target="_blank"><img alt="Tom Papa" border="0" class="maxWidth305" height="225" src="http://media.ticketmaster.com/tm/en-us/dam/a/298/e1da6737-7aa4-424d-8fb6-24c0700c8298_CUSTOM.jpg" style="display:block;" width="305"></a></td></tr></table><!-- end image --><!-- copy --><table align="right" border="0" cellpadding="0" cellspacing="0" class="stackTbl" width="305">
+									
+										<tr>
+											<td align="left" class="opensans centerText text34px" style="font-family:Arial, Helvetica, sans serif; color:#e41937; font-size:32px; line-height:34px; font-weight:bold; padding:0px 0px 5px 0px" valign="top">
+												Tom Papa</td></tr><tr>
+											<td align="left" class="topPadding0" valign="top">
+												<table border="0" cellpadding="0" cellspacing="0" width="100%">
+													<!---->
+														<tr>
+															<td align="left" class="opensans centerText text24px" style="font-family:Arial, Helvetica, sans serif; color:#ffffff; font-size:24px; line-height:24px;padding:0px 0px 2px 0px;font-weight:bold" valign="top">
+																Fri, Jan 23</td></tr><!----><!----><tr>
+															<td align="left" class="opensans centerText text18px" style="font-family:Arial, Helvetica, sans serif; color:#ffffff; font-size:18px; line-height:21px;padding:0px 0px 2px 0px;" valign="top">
+																Tom Papa: Grateful Bread Tour at&nbsp;Pantages Theater</td></tr><!----><!----><!----><!----><!----></table><!-- End Event Information --><!----><!-- CTA / Add/Share buttons --><table align="left" border="0" cellpadding="0" cellspacing="0" class="stackTbl" style="display:inline;" width="140">
+													
+														<tr>
+															<td align="left" valign="top">
+																<table border="0" cellpadding="0" cellspacing="0" class="full-width">
+																	<!-- CTA -->
+																		<tr>
+																			<td align="center" style="padding-top:20px">
+																				<table align="center" border="0" cellpadding="0" cellspacing="0" class="ctaWidth">
+																					
+																						<tr>
+																							<td align="center" bgcolor="#e51937" class="whiteLink opensans" height="46" style="font-family:Arial, Helvetica, sans serif; font-size:16px; line-height:20px; color:#ffffff; font-weight:600;padding:0px 0px 0px 0px; border-radius:2px;" width="275">
+																								<a  href="https://click.email.livenation.com/u/?qs=1bf6fb48093099c0a0f7776cb2b402f2ec3595f64cea3b381036f3d6da07c4e53df6d4c664a826d04f1691036cd7c3ff431a8e28dbc3ab7c32ba738b40080838" style="text-decoration:none; color:#ffffff; text-transform:uppercase;" target="_blank">GET TICKETS</a></td></tr></table></td></tr><!-- end CTA --></table></td></tr></table><!-- end CTA / Add/Share buttons --><!----></td></tr></table><!-- end copy --></td></tr></table></td></tr></table> <!----><table bgcolor="#000000" border="0" cellpadding="0" cellspacing="0" width="100%">
+	
+		<tr>
+			<td align="center" class="mobilePadding" style="padding:30px 50px 30px 50px;">
+				<table border="0" cellpadding="0" cellspacing="0" width="100%">
+					<!-- Primary Section Header --><!-- Secondary Section Header -->
+						<tr>
+							<td>
+								<!-- image --><table align="left" border="0" cellpadding="0" cellspacing="0" class="stackTbl" width="305">
+									
+										<tr>
+											<td align="center" class="ymal_artist artist_1113004" valign="top">
+												<a  href="https://click.email.livenation.com/u/?qs=1bf6fb48093099c09fead459fd6d8142e0ce68fe8d076059e9e4713e4ecdac4bb5e8f9b046d1ceb9b6ea8889bd07f9c85159258d151128fb0c26ca9feb26df77" target="_blank"><img alt="Brad Williams" border="0" class="maxWidth305" height="225" src="http://media.ticketmaster.com/tm/en-us/dam/a/685/0c876ac5-1fa5-43a2-9fd5-08187f9b7685_CUSTOM.jpg" style="display:block;" width="305"></a></td></tr></table><!-- end image --><!-- copy --><table align="right" border="0" cellpadding="0" cellspacing="0" class="stackTbl" width="305">
+									
+										<tr>
+											<td align="left" class="opensans centerText text34px" style="font-family:Arial, Helvetica, sans serif; color:#e41937; font-size:32px; line-height:34px; font-weight:bold; padding:0px 0px 5px 0px" valign="top">
+												Brad Williams</td></tr><tr>
+											<td align="left" class="topPadding0" valign="top">
+												<table border="0" cellpadding="0" cellspacing="0" width="100%">
+													<!----><!----><tr>
+															<td align="left" class="opensans centerText text18px" style="font-family:Arial, Helvetica, sans serif; color:#ffffff; font-size:18px; line-height:21px;padding:0px 0px 2px 0px;" valign="top">
+																Brad Williams: The Tall Tales Tour</td></tr><!----><!----><!----><!----><!----><tr>
+															<td align="left" class="opensans centerText text18px" style="font-family:Arial, Helvetica, sans serif; color:#e41937; font-weight:bold; font-size:18px; line-height:20px;padding:10px 0px 0px 0px;" valign="top">
+																<span class="opensans centerText paddingLR20" style="font-family:Arial, Helvetica, sans serif; color:#ffffff; font-size:18px; line-height:20px;font-weight:400;padding:10px 0 0 0" valign="top"><!----> <!----> <span style="font-weight:bold">Fri, Jan 23
+</span>&nbsp;at&nbsp;Martin Woldson Theater at the Fox <!----> <!----><br>
+																<!----> <span style="font-weight:bold">Sat, Jan 24
+</span>&nbsp;at&nbsp;The 5th Avenue Theatre <!----> <!----><br>
+																<!---->  <!----> </span></td></tr><!----><!----><!----><tr>
+															<td align="left" class="opensans centerText text18px" style="font-family:Arial, Helvetica, sans serif; color:#e41937; font-weight:bold; font-size:18px; line-height:20px;padding:10px 0px 0px 0px;" valign="top">
+																<br>
+																&nbsp;</td></tr><!----></table><!-- End Event Information --><!----><!-- CTA / Add/Share buttons --><table align="left" border="0" cellpadding="0" cellspacing="0" class="stackTbl" style="display:inline;" width="140">
+													
+														<tr>
+															<td align="left" valign="top">
+																<table border="0" cellpadding="0" cellspacing="0" class="full-width">
+																	<!-- CTA -->
+																		<tr>
+																			<td align="center" style="padding-top:20px">
+																				<table align="center" border="0" cellpadding="0" cellspacing="0" class="ctaWidth">
+																					
+																						<tr>
+																							<td align="center" bgcolor="#e51937" class="whiteLink opensans" height="46" style="font-family:Arial, Helvetica, sans serif; font-size:16px; line-height:20px; color:#ffffff; font-weight:600;padding:0px 0px 0px 0px; border-radius:2px;" width="275">
+																								<a  href="https://click.email.livenation.com/u/?qs=1bf6fb48093099c0efb35ec98bc39e76d0b5899cb265358f774b7b05b5ca0e39c6d5d6ce009701c3f70d3c848534c506737d2ce60476321d363360ea4d41bf18" style="text-decoration:none; color:#ffffff; text-transform:uppercase;" target="_blank">GET TICKETS</a></td></tr></table></td></tr><!-- end CTA --></table></td></tr></table><!-- end CTA / Add/Share buttons --><!----></td></tr></table><!-- end copy --></td></tr></table></td></tr></table> <!----><!-- END LOOP --><!----><!----></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><span style="color:#ffffff;"> </span><!-- Spacer 25 --><table border="0" cellpadding="0" cellspacing="0" width="100%" bgcolor="#000000">
+ 
+  <tr>
+   <td align="center" class="spacer-25" style="font-size: 25px; line-height: 25px; font-family: Arial, Helvetica, sans-serif; mso-line-height-rule: exactly; font-weight: normal;" valign="top">
+    <span style="color:#ffffff;">&nbsp;</span></td></tr></table><!-- /Spacer 25 --></td></tr></table>
+                        
+                        <!-- START FOOTER BLOCKS -->
+                        <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                          <tr>
+                            <td valign="middle" align="center" class="padding0" style="padding: 25px 30px 50px;">
+                              <!-- Social Links -->
+                              <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                                <tr>
+                                  <td align="center" class="opensans topPadding20" style="font-family: arial, helvetica, sans-serif; color: #ffffff; font-size: 24px; line-height: 28px; font-weight: normal;">
+                                    Connect with us
+                                  </td>
+                                </tr>
+                              </table>
+                              <table cellspacing="0" cellpadding="0" border="0" align="center">
+                                <tr>
+                                  <td align="center" style="padding: 25px 0px 0px;">
+                                    <table cellspacing="0" cellpadding="0" border="0" align="left">
+                                      <tr>
+                                        <td width="49" valign="middle" align="center" style="padding: 0px 30px 0px 0px;">
+                                          <a href="https://click.email.livenation.com/u/?qs=1bf6fb48093099c069af1213d8eb8f098f80dbc535f1f9f8be4be8cdd9965e5a122b6d280d9902cb221af414aeddcb43d93fe25ac049f19f5c3c67974ce67ddb" title="FB" ><img width="49" height="49" border="0" alt="Facebook" src="https://image.email.livenation.com/lib/fe8813727c62017973/m/2/e3e405b1-01cd-4e40-b453-6058e9c384db.png" style="display: block;" /></a>
+                                        </td>
+                                        <td width="49" valign="middle" align="center" style="padding: 0px 30px 0px 0px;">
+                                          <a href="https://click.email.livenation.com/u/?qs=1bf6fb48093099c09504484d2ea74d1783e939e6ebc4ff85195f09da9329f6752c4675524c826de2cbf1c88b9ee7cb7178bbae24945fa2bc0b25fa3535f273c1" title="x" ><img width="49" height="49" border="0" alt="X" src="https://image.email.livenation.com/lib/fe8813727c62017973/m/2/99845c46-5c21-41a0-bf8c-23f9ea625510.png" style="display: block;" /></a>
+                                        </td>
+                                        <td width="49" valign="middle" align="center" style="padding: 0px 30px 0px 0px;">
+                                          <a target="_blank" href="https://click.email.livenation.com/u/?qs=1bf6fb48093099c00b5d30fd1aed6589cd13409d6fd7674d4768cdafb52861060c62d702f36353a8403bd1a9bae135942f1e9f9dec68a0c95e46263d9d2ebe7d" style="color: #ffffff; text-decoration: none;"><img width="49" height="49" border="0" alt="Instagram" src="https://image.email.livenation.com/lib/fe8813727c62017973/m/2/482b8b08-4a08-4603-af4f-b7accdff33ee.png" style="display: block;" /></a>
+                                        </td>
+                                        <td width="49" valign="middle" align="center" style="padding: 0px;">
+                                          <a target="_blank" href="https://click.email.livenation.com/u/?qs=1bf6fb48093099c0dc619eb7a3e4ae94a032309b4c5eb6e730697117ad6e6b4f84a3a7328fef60814d03e20dd91ab9494023ef174bac65f5a5959001a48636ab" style="color: #ffffff; text-decoration: none;"><img width="49" height="49" border="0" alt="Youtube" src="https://image.email.livenation.com/lib/fe8813727c62017973/m/2/2321db43-ef04-4990-b51d-906f5950997e.png" style="display: block;" /></a>
+                                        </td>
+                                      </tr>
+                                    </table>
+                                  </td>
+                                </tr>
+                              </table>
+                              <!-- End Social Links -->
+                              <!-- Helpful Links -->
+                              <table cellspacing="0" cellpadding="0" border="0" align="center">
+                                <tr>
+                                  <td align="center" class="topPadding40" style="padding: 50px 0px 0px;">
+                                    <!--[if gte mso 9]><table cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td align="left" valign="top"><![endif]-->
+                                    <table cellspacing="0" cellpadding="0" border="0" align="left" class="full-width">
+                                      <tr>
+                                        <td valign="middle" align="center" class="opensans footernavfirst" style="padding: 0px 15px 0px 0px; font-family: arial, helvetica, sans-serif; font-size: 16px; line-height: 20px; color: #ffffff; font-weight: 600; border-right-width: 1px; border-right-style: solid; border-right-color: #ffffff;">
+                                          <a target="_blank" href="https://click.email.livenation.com/u/?qs=1bf6fb48093099c0d8471c839eb0fe1767fe61b2e8b266b5232fae0e174acc1bf65561477b70bff98f325b79e5d5530acaaba70fc45eda3ecccfd2f7ea09d829" xmenc="true" style="color: #ffffff; text-decoration: none;">Unsubscribe</a>
+                                        </td>
+                                      </tr>
+                                    </table>
+                                    <!--[if gte mso 9]></td><td align="left" valign="top"><![endif]-->
+                                    <table cellspacing="0" cellpadding="0" border="0" align="left" class="full-width">
+                                      <tr>
+                                        <td valign="middle" align="center" class="opensans footernav" style="padding: 0px 15px; font-family: arial, helvetica, sans-serif; font-size: 16px; line-height: 20px; color: #ffffff; font-weight: 600; border-right-width: 1px; border-right-style: solid; border-right-color: #ffffff;">
+                                          <a target="_blank" href="https://click.email.livenation.com/u/?qs=1bf6fb48093099c0c51abeff321bfe8255292e88f45b766c1b36131f9b56c97a41fda7ab0bb6cd2f007b0d8d831c36c54b64d1b867c066ab1b1451933f36a665" xmenc="true" style="color: #ffffff; text-decoration: none;">Change&nbsp;Location</a>
+                                        </td>
+                                      </tr>
+                                    </table>
+                                    <!--[if gte mso 9]></td><td align="left" valign="top"><![endif]-->
+                                    <table cellspacing="0" cellpadding="0" border="0" align="left" class="full-width">
+                                      <tr>
+                                        <td valign="middle" align="center" class="opensans footernav" style="padding: 0px 15px; font-family: arial, helvetica, sans-serif; font-size: 16px; line-height: 20px; color: #ffffff; font-weight: 600; ">
+                                          <a target="_blank" href="https://click.email.livenation.com/u/?qs=1bf6fb48093099c0d9bda4614d047f11d2a4ce0d4f40441f222143fa4932b163ce27b223aea2243b7adf21f38850f1eea2e73b88f3f3a56de3e265b2e2bee455" style="color: #ffffff; text-decoration: none;">Help</a>
+                                        </td>
+                                      </tr>
+                                    </table>
+                                    
+                                    <!--[if gte mso 9]></td></tr></table><![endif]-->
+                                  </td>
+                                </tr>
+                              </table>
+                              <!-- End Helpful Links -->
+                              <!-- Contact Info / Legal Footer -->
+                              <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                                <tr>
+                                  <td align="left" class="mobilePadding2" style="padding: 50px 50px 30px;">
+                                    <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                                      <tr>
+                                        <td valign="top" align="center" class="opensans" style="font-family: arial, helvetica, sans-serif; font-size: 14px; line-height: 24px; color: #ffffff;">
+                                          This email was sent by Live Nation, 9348 Civic Center Drive, Beverly Hills, CA 90210, USA.
+                                          <br/>
+                                          <br/> &#169; 2026 Live Nation Worldwide, Inc. All rights reserved.
+                                        </td>
+                                      </tr>
+                                    </table>
+                                  </td>
+                                </tr>
+                              </table>
+                              <!--end Contact Info / Legal Footer -->
+                              <!-- Email Links -->
+                              <table cellspacing="0" cellpadding="0" border="0" align="center">
+                                <tr>
+                                  <td align="center" class="padding0" style="padding: 10px 0px 0px;">
+                                    <!--[if gte mso 9]><table cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td align="left" valign="top"><![endif]-->
+                                    <table cellspacing="0" cellpadding="0" border="0" align="left" class="full-width">
+                                      <tr>
+                                        <td valign="middle" align="center" class="opensans footernavfirst" style="padding: 0px 15px 0px 0px; font-family: arial, helvetica, sans-serif; font-size: 14px; line-height: 18px; color: #ffffff; font-weight: 600; border-right-width: 1px; border-right-style: solid; border-right-color: #ffffff;">
+                                          <a target="_blank" href="https://click.email.livenation.com/u/?qs=1bf6fb48093099c02f2f0024449372d827080e179beccdcd4e6610da2f5adb5d1625627c2a6669d590d79293b9917d5c780021025dbaff4a30756cf38434e1b8" style="color: #ffffff; text-decoration: none;">Privacy</a>
+                                        </td>
+                                      </tr>
+                                    </table>
+                                    <!--[if gte mso 9]></td><td align="left" valign="top"><![endif]-->
+                                    <table cellspacing="0" cellpadding="0" border="0" align="left" class="full-width">
+                                      <tr>
+                                        <td valign="middle" align="center" class="opensans footernav" style="padding: 0px 15px; font-family: arial, helvetica, sans-serif; font-size: 14px; line-height: 18px; color: #ffffff; font-weight: 600; border-right-width: 1px; border-right-style: solid; border-right-color: #ffffff;">
+                                          <a target="_blank" href="https://click.email.livenation.com/u/?qs=1bf6fb48093099c034cc60c3cc7311a463fcedb8a208c815384e4f15377a13fc971ffbb3d1c8378e96efe949519c998c7d2cb36e3c49f321201ec1bd9108216f" style="color: #ffffff; text-decoration: none;">Terms&nbsp;of&nbsp;Use</a>
+                                        </td>
+                                      </tr>
+                                    </table>
+                                    <!--[if gte mso 9]></td><td align="left" valign="top"><![endif]-->
+                                    <table cellspacing="0" cellpadding="0" border="0" align="left" class="full-width">
+                                      <tr>
+                                        <td valign="middle" align="center" class="opensans footernavlast" style="padding: 0px 0px 0px 15px; font-family: arial, helvetica, sans-serif; font-size: 14px; line-height: 18px; color: #ffffff; font-weight: 600;">
+                                          <a target="_blank" href="https://view.email.livenation.com/?qs=ecc9726a6dd64f38203b7e2d3273b265f6ebbc6783b924f5de3113c8ad0f22a38049483c1d4622f6a42456449ca615c6452ca4dc497b4e7537d1c025f69d2e9f9492144f205e10febdf2ccd1fafb137e" xmenc="true" style="color: #ffffff; text-decoration: none;">View&nbsp;in&nbsp;browser</a>
+                                        </td>
+                                      </tr>
+                                    </table>
+                                    <!--[if gte mso 9]></td></tr></table><![endif]-->
+                                  </td>
+                                </tr>
+                              </table>
+                              <!-- End Email Links -->
+                            </td>
+                          </tr>
+                        </table>
+                        <!-- END FOOTER BLOCKS -->
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <!-- END 735PX ROW – ALL BODY CONTENT -->
+            </table>
+          </td>
+        </tr>
+        <!-- END GRAY BACKGROUND – BODY + FOOTER -->
+      </table>
+      </body>
+    </html>
+

@@ -658,6 +658,12 @@ impl LinkAnalyzer {
                 "sparkpost.com".to_string(),
                 "mandrill.com".to_string(),
                 "amazonses.com".to_string(),
+                "fidelity.com".to_string(),
+                "mail.fidelity.com".to_string(),
+                "click.fidelityinvestments.com".to_string(),
+                "jotform.com".to_string(),
+                "netsuite.com".to_string(),
+                "docusign.net".to_string(),
                 "postmarkapp.com".to_string(),
                 "mailjet.com".to_string(),
                 "sendinblue.com".to_string(),
@@ -724,11 +730,61 @@ impl LinkAnalyzer {
             "link.email-max.com",
             "clicks.aweber.com",
             "clicks.convertkit.com",
+            // Malicious redirect domains
+            "giabend.net",
+            "dezf.giabend.net",
         ];
 
-        suspicious_redirect_domains
+        // Check explicit suspicious domains first
+        if suspicious_redirect_domains
             .iter()
             .any(|&suspicious| domain.contains(suspicious))
+        {
+            return true;
+        }
+
+        // Pattern-based detection for suspicious redirect domains
+        let domain_lower = domain.to_lowercase();
+
+        // Skip pattern detection for known legitimate ESPs
+        let legitimate_esp_domains = [
+            "rs6.net",
+            "constantcontact.com",
+            "mailchimp.com",
+            "sendgrid.net",
+            "musvc3.net",
+            "msgfocus.com",
+            "software-newsletter.musvc3.net",
+        ];
+        if legitimate_esp_domains
+            .iter()
+            .any(|&esp| domain_lower.contains(esp))
+        {
+            return false;
+        }
+
+        // Random subdomain + suspicious TLD patterns
+        if domain_lower.contains(".net")
+            || domain_lower.contains(".click")
+            || domain_lower.contains(".link")
+        {
+            // Check for random-looking subdomains (4+ random chars)
+            if let Some(subdomain) = domain_lower.split('.').next() {
+                if subdomain.len() >= 4 && subdomain.chars().all(|c| c.is_ascii_alphanumeric()) {
+                    // Check if it looks random (mix of letters and numbers, or all lowercase letters > 6 chars)
+                    let has_numbers = subdomain.chars().any(|c| c.is_ascii_digit());
+                    let has_letters = subdomain.chars().any(|c| c.is_ascii_alphabetic());
+                    if (has_numbers && has_letters)
+                        || (subdomain.len() > 6
+                            && subdomain.chars().all(|c| c.is_ascii_lowercase()))
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        false
     }
 
     /// Extract domain from sender email address
@@ -810,7 +866,34 @@ impl LinkAnalyzer {
             "sendgrid.net",
             "constantcontact.com",
             "klaviyo.com",
+            "fidelity.com",
+            "fidelityinvestments.com",
         ];
+
+        // Check for legitimate business partnerships
+        let business_partnerships = [
+            ("fidelity", vec!["amazon", "fidelityinvestments"]), // Fidelity can link to Amazon and its own investment domain
+            ("amazon", vec!["fidelity", "chase"]),
+            ("sparkpost", vec!["disney", "disneyplus"]), // SparkPost ESP for Disney
+            ("netsuite", vec!["jotform", "oracle"]), // NetSuite can link to JotForm payment processor
+            ("oracleemaildelivery", vec!["jotform", "netsuite"]), // Oracle ESP for NetSuite
+            ("facebookmail", vec!["facebook", "meta", "instagram"]), // Facebook ESP for Facebook services
+            ("toast-restaurants", vec!["mailjet", "bnc3"]), // Toast restaurant platform using Mailjet ESP
+            ("msgfocus", vec!["gardensillustrated"]), // MsgFocus ESP for Gardens Illustrated magazine
+            ("mcsv", vec!["swansonsnursery"]),        // MailChimp ESP for Swansons Nursery
+            ("musvc", vec!["pierotucci"]),            // Mail.com ESP for Pierotucci leather goods
+            ("pierotucci", vec!["musvc", "software-newsletter"]), // Pierotucci can link to Mail.com ESP
+        ];
+
+        for (business_domain, partners) in &business_partnerships {
+            if sender_lower.contains(business_domain) {
+                for partner in partners {
+                    if link_lower.contains(partner) {
+                        return true;
+                    }
+                }
+            }
+        }
 
         for business_domain in &legitimate_business_domains {
             if sender_lower.contains(business_domain) && link_lower.contains(business_domain) {

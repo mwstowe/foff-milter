@@ -298,6 +298,76 @@ impl TldRiskFeature {
             },
         );
 
+        tlds.insert(
+            "digital".to_string(),
+            TldInfo {
+                risk_level: TldRisk::Suspicious,
+                abuse_score: 25,
+                description: "Digital domain - commonly abused for tech scams".to_string(),
+                common_uses: vec!["Tech services, often abused for phishing".to_string()],
+            },
+        );
+
+        tlds.insert(
+            "lat".to_string(),
+            TldInfo {
+                risk_level: TldRisk::Suspicious,
+                abuse_score: 25,
+                description: "Latvia domain - commonly abused for international scams".to_string(),
+                common_uses: vec!["Various, often abused for spam".to_string()],
+            },
+        );
+
+        tlds.insert(
+            "info".to_string(),
+            TldInfo {
+                risk_level: TldRisk::Suspicious,
+                abuse_score: 30,
+                description: "Info domain - heavily abused for spam".to_string(),
+                common_uses: vec!["Information sites, heavily abused".to_string()],
+            },
+        );
+
+        tlds.insert(
+            "biz".to_string(),
+            TldInfo {
+                risk_level: TldRisk::Suspicious,
+                abuse_score: 25,
+                description: "Business domain - high spam rates".to_string(),
+                common_uses: vec!["Business sites, often abused".to_string()],
+            },
+        );
+
+        tlds.insert(
+            "cc".to_string(),
+            TldInfo {
+                risk_level: TldRisk::Suspicious,
+                abuse_score: 30,
+                description: "Cocos Islands domain - frequently abused".to_string(),
+                common_uses: vec!["Various, frequently abused".to_string()],
+            },
+        );
+
+        tlds.insert(
+            "ws".to_string(),
+            TldInfo {
+                risk_level: TldRisk::Suspicious,
+                abuse_score: 25,
+                description: "Western Samoa domain - popular with spammers".to_string(),
+                common_uses: vec!["Various, popular with spammers".to_string()],
+            },
+        );
+
+        tlds.insert(
+            "tv".to_string(),
+            TldInfo {
+                risk_level: TldRisk::Suspicious,
+                abuse_score: 20,
+                description: "Tuvalu domain - often misused for spam".to_string(),
+                common_uses: vec!["TV/media sites, often misused".to_string()],
+            },
+        );
+
         // High-risk TLDs
         tlds.insert(
             "tk".to_string(),

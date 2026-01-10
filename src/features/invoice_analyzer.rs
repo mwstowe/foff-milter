@@ -21,6 +21,10 @@ impl InvoiceAnalyzer {
             Regex::new(r"(?i)(within 24 hours|payment required|account suspended)").unwrap(),
             Regex::new(r"(?i)\b(click\s+here|verify\s+.*\s+account|update\s+.*\s+payment)\b")
                 .unwrap(),
+            // Generic fake invoice patterns
+            Regex::new(r"(?i)(invoice\s+and\s+details\s+enclosed)").unwrap(),
+            Regex::new(r"(?i)(thank\s+you\s+for\s+paying\s+for\s+order)").unwrap(),
+            Regex::new(r"(?i)(thank\s+you\s+for\s+choosing\s+us.*invoice)").unwrap(),
         ];
 
         let legitimate_domains = vec![
@@ -49,6 +53,14 @@ impl InvoiceAnalyzer {
             "american.com".to_string(),
             "expedia.com".to_string(),
             "kayak.com".to_string(),
+            // Telecom
+            "tmobile.com".to_string(),
+            "t-mobile.com".to_string(),
+            // Financial services
+            "capitaloneshopping.com".to_string(),
+            // Health devices
+            "withings.com".to_string(),
+            "email.withings.com".to_string(),
         ];
 
         Self {
@@ -90,6 +102,14 @@ impl InvoiceAnalyzer {
             "american.com".to_string(),
             "expedia.com".to_string(),
             "kayak.com".to_string(),
+            // Telecom
+            "tmobile.com".to_string(),
+            "t-mobile.com".to_string(),
+            // Financial services
+            "capitaloneshopping.com".to_string(),
+            // Health devices
+            "withings.com".to_string(),
+            "email.withings.com".to_string(),
         ];
 
         Self {
@@ -117,6 +137,7 @@ impl InvoiceAnalyzer {
             || sender_lower.contains("digest")
             || sender_lower.contains("newsletter")
             || sender_lower.contains("substack")
+            || sender_lower.contains("nytimes")
         {
             0.2 // 80% reduction for newsletters
         } else if sender_lower.contains("travel")
@@ -208,6 +229,32 @@ impl FeatureExtractor for InvoiceAnalyzer {
 
         // Check for invoice scam indicators with context awareness
         let click_here_regex = Regex::new(r"(?i)\bclick\s+here\b").unwrap();
+
+        // Check for suspicious invoice patterns from non-business domains
+        let has_generic_invoice_content = full_text
+            .to_lowercase()
+            .contains("invoice and details enclosed")
+            || full_text
+                .to_lowercase()
+                .contains("thank you for paying for order")
+            || (full_text
+                .to_lowercase()
+                .contains("thank you for choosing us")
+                && full_text.to_lowercase().contains("invoice"));
+
+        let is_suspicious_domain = sender_domain.ends_with(".hu")
+            || sender_domain.contains("homerentals")
+            || from_domain.ends_with(".hu")
+            || from_domain.contains("homerentals");
+
+        // Only flag generic/fake invoice patterns, not legitimate business invoices
+        if has_generic_invoice_content && is_suspicious_domain && !is_legitimate_or_medical {
+            score += 50;
+            evidence.push(format!(
+                "Generic fake invoice pattern from suspicious domain: {}",
+                sender_domain
+            ));
+        }
 
         for pattern in &self.scam_indicators {
             if pattern.is_match(&full_text) {

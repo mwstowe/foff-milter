@@ -306,6 +306,8 @@ rules:
                 pattern: ".*@.*(michaels|costco|walmart|target|amazon|bestbuy|homedepot|lowes)\\.(com|net)$"
               - type: "SenderPattern"
                 pattern: ".*@.*(nytimes|washingtonpost|cnn|bbc|reuters|ap|wsj|usatoday)\\.(com|org)$"
+              - type: "SenderPattern"
+                pattern: ".*@.*(livenation|ticketmaster|stubhub|eventbrite)\\.(com|net)$"
               - type: "SubjectPattern"
                 pattern: "(?i).*(recipe|cooking|breakfast|meal|food|nutrition|diet).*"
     score: 85
@@ -347,7 +349,7 @@ rules:
         - type: Not
           criteria:
             type: SenderPattern
-            pattern: ".*oxford.*"
+            pattern: ".*@.*(oxford|nytimes|washingtonpost|cnn|bbc|reuters|ap|wsj|usatoday)\\.(com|org)$"
     score: 90
     description: "Unrealistic financial return promises and investment scams"
 
@@ -679,7 +681,7 @@ rules:
             type: Or
             criteria:
               - type: SenderPattern
-                pattern: ".*@.*(torrid|mktg\\.torrid|michaels|target|walmart|disney|amazon)\\.(com|net|org)$"
+                pattern: ".*@.*(torrid|mktg\\.torrid|michaels|target|walmart|disney|amazon|nytimes|washingtonpost|cnn|bbc|reuters|ap|wsj|usatoday)\\.(com|net|org)$"
     score: 220
 
   # Email list selling
@@ -841,12 +843,18 @@ rules:
   # Email list selling spam
   - name: "Email List Selling Enhanced"
     criteria:
-      type: Or
+      type: And
       criteria:
-        - type: SubjectPattern
-          pattern: "(?i).*(email.*lists.*2026|100.*mx.*tested.*emails|buy.*email.*database|selling.*email.*lists).*"
-        - type: BodyPattern
-          pattern: "(?i).*(email.*lists.*2026|100.*mx.*tested.*emails|buy.*email.*database|selling.*email.*lists).*"
+        - type: Or
+          criteria:
+            - type: SubjectPattern
+              pattern: "(?i).*(email.*lists.*2026|100.*mx.*tested.*emails|buy.*email.*database|selling.*email.*lists).*"
+            - type: BodyPattern
+              pattern: "(?i).*(email.*lists.*2026|100.*mx.*tested.*emails|buy.*email.*database|selling.*email.*lists).*"
+        - type: Not
+          criteria:
+            type: SenderPattern
+            pattern: ".*@.*(nytimes|washingtonpost|cnn|bbc|reuters|ap|wsj|usatoday)\\.(com|org)$"
     score: 300
 
   # Black Friday event scams
@@ -1124,6 +1132,8 @@ rules:
                 pattern: ".*@.*(democrats|republicans|political|campaign|gov)\\.(org|com|gov)$"
               - type: SenderPattern
                 pattern: ".*@.*wa-democrats\\.(org|com)$"
+              - type: SenderPattern
+                pattern: ".*@.*(nytimes|washingtonpost|cnn|bbc|reuters|ap|wsj|usatoday)\\.(com|org)$"
     score: 180
   # Prostate health spam
   - name: "Prostate Health Spam"
@@ -1234,6 +1244,8 @@ rules:
                 pattern: ".*@.*(democrats|republicans|political|campaign|gov)\\.(org|com|gov)$"
               - type: SenderPattern
                 pattern: ".*@.*wa-democrats\\.(org|com)$"
+              - type: SenderPattern
+                pattern: ".*@.*(nytimes|washingtonpost|cnn|bbc|reuters|ap|wsj|usatoday)\\.(com|org)$"
     score: 200
 
   # Unicode shipping ID spam
@@ -1336,12 +1348,18 @@ rules:
   # Eyesight test spam
   - name: "Eyesight Test Spam"
     criteria:
-      type: Or
+      type: And
       criteria:
-        - type: SubjectPattern
-          pattern: "(?i).*(eyesight.*flower|test.*eyesight|vision.*test|eye.*health.*test).*"
-        - type: BodyPattern
-          pattern: "(?i).*(eyesight.*flower|test.*eyesight|vision.*test|eye.*health.*test).*"
+        - type: Or
+          criteria:
+            - type: SubjectPattern
+              pattern: "(?i).*(eyesight.*flower|test.*eyesight|vision.*test|eye.*health.*test).*"
+            - type: BodyPattern
+              pattern: "(?i).*(eyesight.*flower|test.*eyesight|vision.*test|eye.*health.*test).*"
+        - type: Not
+          criteria:
+            type: SenderPattern
+            pattern: ".*@.*(nytimes|washingtonpost|cnn|bbc|reuters|ap|wsj|usatoday)\\.(com|org)$"
     score: 180
 
   # Holiday shipping sleep spam
@@ -1662,6 +1680,10 @@ rules:
           pattern: "(?i)(millionen euro|verm.*chtnis|notar|testament)"
         - type: "BodyPattern" 
           pattern: "(?i)(krebs|krank|sterben|tod)"
+        - type: Not
+          criteria:
+            type: SenderPattern
+            pattern: ".*@.*(nytimes|washingtonpost|cnn|bbc|reuters|ap|wsj|usatoday)\\.(com|org)$"
     score: 150
     description: "German advance fee fraud inheritance scams"
 

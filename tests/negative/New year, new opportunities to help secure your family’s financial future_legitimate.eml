@@ -1,0 +1,1096 @@
+Return-Path: <bounce-1928280_HTML-933432580-14271587-555-123-4567@bounce.email.ally.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.1/8.18.1) with ESMTPS id 609DAHuh096170
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <user@example.com>; Fri, 9 Jan 2026 13:10:18 GMT
+	(envelope-from bounce-1928280_HTML-933432580-14271587-555-123-4567@bounce.email.ally.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (1024-bit key; unprotected) header.d=email.ally.com header.i=email@email.ally.com header.b=Z1wWOu+F;
+	dkim=pass (2048-bit key; unprotected) header.d=s1.y.mc.salesforce.com header.i=@s1.y.mc.salesforce.com header.b=H35Z0K3B
+Received: from mta2.alerts.ally.com (mta2.alerts.ally.com [136.147.139.48])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 609DAFki026549
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO)
+	for <user@example.com>; Fri, 9 Jan 2026 07:10:16 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 609DAFki026549
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (1024-bit key, unprotected) header.d=email.ally.com header.i=email@email.ally.com header.a=rsa-sha256 header.s=200608 header.b=Z1wWOu+F;
+	dkim=pass (2048-bit key, unprotected) header.d=s1.y.mc.salesforce.com header.i=@s1.y.mc.salesforce.com header.a=rsa-sha256 header.s=fbldkim1 header.b=H35Z0K3B
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=200608; d=email.ally.com;
+ h=From:To:Subject:Date:List-Unsubscribe:List-Unsubscribe-Post:MIME-Version:
+ Reply-To:Message-ID:Content-Type; i=email@email.ally.com;
+ bh=ZZSuGBcGX7kMCHw2MB2z/ToXNMAZ1WtM7dDWWCpSR+w=;
+ b=Z1wWOu+Ft7Ym5ijxyPyYzqcEFfIS4NfEGl0dSXHUbC2APr474N5vRuI04lDgCKOJ/yXpS53CAHA2
+   GYlK17cZKjhW+yfzm+xBXHDRS3C1/sP6W4cWmyn4XY79TZ7RQh8cKLn3MLPxtebi0bBxw0QRkmBc
+   wa59sqKnMsqt6VDuHAQ=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=fbldkim1; d=s1.y.mc.salesforce.com;
+ h=From:To:Subject:Date:List-Unsubscribe:MIME-Version:Reply-To:Message-ID:
+ Content-Type;
+ bh=ZZSuGBcGX7kMCHw2MB2z/ToXNMAZ1WtM7dDWWCpSR+w=;
+ b=H35Z0K3Bx5vcWgK6u4D5P4icB5rYUuHomjmOerSQ2q2oZhD9hmkmyyJBkW6biW1BU3IiVlHbuYlj
+   dSiwaGuhkRIqN8OuNxzbBjdeXOKZv+OwAotvhTjLQLpNVJE/hJ8fkGs2zu+RVmAZT8SHP0UzqToJ
+   yiM5M0YdajsA8cP3H1bedd798bsYXEhUFzXbRj821bCgLVLLQmQLM75+9aujTJ2QVhmd43ONXTtH
+   uQ2WuKQ8IcEA0HItex0FRJMwFWi7Y3VJpyTBnyy2ln4j8jVjM3Hm+SJBxyxlQnd/Ps1Myd1Ytl7O
+   dIgJUiON4tuRj2lN9axFpebfXDGncf7Ipbym1g==
+Received: by mta2.alerts.ally.com id hc3v3g2fmd40 for <user@example.com>; Fri, 9 Jan 2026 13:10:15 +0000 (envelope-from <bounce-1928280_HTML-933432580-14271587-555-123-4567@bounce.email.ally.com>)
+From: "Ally Bank" <email@email.ally.com>
+To: <user@example.com>
+Subject: =?UTF-8?B?TmV3IHllYXIsIG5ldyBvcHBvcnR1bml0aWVzIHRvIGhlbHAgc2Vj?=
+ =?UTF-8?B?dXJlIHlvdXIgZmFtaWx54oCZcyBmaW5hbmNpYWwgZnV0dXJl?=
+Date: Fri, 09 Jan 2026 07:10:14 -0600
+List-Unsubscribe: <https://click.email.ally.com/subscription_center.aspx?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtaWQiOiIxNzIyOTkiLCJzIjoiOTMzNDMyNTgwIiwibGlkIjoiMTkyODI4MCIsImoiOiIxNDI3MTU4NyIsImpiIjoiMjc4MCIsImQiOiIxMDE5NyJ9.bVAvEBxDpl45BThVpvW_Y5KMiu1np3oKwKq6bqVt6sQ>, <mailto:leave-fc7d1579776c0675757b28313958-fe2a1d737660077f701c70-fe5c1574776305787d13-fec1157777660d74-ff2e16777d64@leave.email.ally.com>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+MIME-Version: 1.0
+Reply-To: "Ally Bank Marketing" <reply-14271587-1928280_HTML-933432580-555-123-4567@email.ally.com>
+X-SFMC-Stack: 1
+x-job: 172299_14271587
+Message-ID: <6f964ab0-b8f2-40c0-a0c3-df2fb8fa538c@ind1s01mta1044.xt.local>
+Content-Type: multipart/alternative;
+	boundary="K5wsghqXcHev=_?:"
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Fri, 09 Jan 2026 13:10:18 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Fri, 09 Jan 2026 07:10:16 -0600 (CST)
+X-Spam-Flag: YES
+
+This is a multi-part message in MIME format.
+
+--K5wsghqXcHev=_?:
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+
+ 
+Ally
+https://www.ally.com/?cp=EML400004307 
+
+https://www.ladderlife.com/apply?utm_campaign=EML400002714&utm_source=ally 
+
+https://www.ladderlife.com/apply?utm_campaign=EML400002714&utm_source=ally 
+
+Michael, as we step into a new year, we remain committed to helping our Ally Bank customers set goals and plan ahead. To help you get started setting your financial goals in 2026, check out this article: 
+https://www.ally.com/stories/save/new-year-financial-checklist/?cp=EML400004307&mid=410042570950238 
+New year, new budget: Your financial check-in for 2026.
+
+
+Whether you’re preparing for major milestones or want to help safeguard your family’s financial wellbeing, now’s a good time to explore your life insurance coverage options. That’s why we’ve teamed up with Ladder to bring you term life insurance for the years you need it most, at a cost you could afford. Ally recommends easy, flexible term life insurance through Ladder. 
+
+Your life evolves. So should your plan.
+Ladder gives you the freedom to adjust as your needs change. 
+
+
+ For every milestone, there’s coverage for:
+ 
+
+
+ Becoming a homeowner.
+ &#8202;
+ This big step comes with new financial responsibilities and assets that are important to protect.
+ &#8202;
+https://www.ally.com/stories/insurance/life-insurance-for-homeowners/?cp=EML400004307&mid=410042570950238 
+Read More
+
+
+ Getting married.
+ &#8202;
+ The beginning of a marriage can be an ideal time to adjust your policies and help ensure your spouse’s financial security.
+ &#8202;
+https://www.ally.com/stories/marriage/life-insurance-for-married-couples/?cp=EML400004307&mid=410042570950238 
+Read More
+
+
+ Expecting a child.
+ &#8202;
+ As your family grows, you may want to implement a safeguard to help protect them for years to come.
+ &#8202;
+https://www.ally.com/stories/family/tips-for-getting-life-insurance-when-pregnant/?cp=EML400004307&mid=410042570950238 
+Read More
+
+&#8202;
+https://www.ladderlife.com/apply?utm_campaign=EML400002714&utm_source=ally 
+Get Started
+
+
+ We're all better off with an ally.
+  
+
+
+ The Ally Mobile app lets you manage your
+ accounts on the go. It's fast, secure and free.
+ 
+ 
+https://apps.apple.com/us/app/ally-banking-investing/id514374715 
+
+https://play.google.com/store/apps/details?id=com.ally.MobileBanking 
+
+https://www.instagram.com/ally/ 
+
+https://www.facebook.com/Ally 
+
+Questions?
+
+https://www.ally.com/contact-us/#ally-bank 
+Chat with us anytime or call us 24/7 at 
+tel:1-555-123-4567 
+1-555-123-4567
+
+
+ (c)2009&ndash;2026 Ally Financial Inc.
+ 
+
+ Ally Bank, 
+https://www.ally.com/bank/fdic/ 
+Member FDIC
+
+ Ally and Ally Bank are registered service marks of Ally Financial Inc.
+ 
+
+ Ally Bank Customer Care Department, P.O. Box 951, Horsham, PA 19044
+ 
+
+https://www.ally.com/privacy/ 
+Privacy | 
+https://www.ally.com/security/ 
+Security
+
+
+ Ladder Insurance Services, LLC (CA license # OK22568; AR license # 555-123-4567) distributes term life insurance products issued by multiple insurers – for further details see ladderlife.com. All insurance products are governed by the terms set forth in the applicable insurance policy. Each insurer has financial responsibility for its own products. 
+ 
+
+
+ 250528-4539315
+ 
+
+
+ Apple and the Apple logo are trademarks of Apple Inc., registered in the U.S. and other countries and regions. App Store is a service mark of Apple Inc.
+ 
+
+
+ Google Play and the Google Play logo are trademarks of Google LLC.
+ 
+
+
+ You can 
+https://cloud.email.ally.com/ally_unsubscribe/unsub?qs=e7701caf9d6b30d46ff57b7b4d6de6fc32a5b3ef05a2f8515a5cef40123300dbb1b2606db124ee8725cdd73a876959efe5796a06d19f9c17e61a8734cd67f93fe5e2d8f65db8235f6f59ee736f0937504a4ce53c767494beee12cfa9eadf38c5915d433888af21fb446fd2f9be57f4fa69f0545e7b4c648dfdd9eb3a44072bcd5327715f6a147722 
+unsubscribe from Ally Bank marketing emails at any time. Please do not reply to this email.
+ 
+
+
+
+--K5wsghqXcHev=_?:
+Content-Type: text/html;
+	charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<span style="display: none;">
+  
+</span>
+<html lang="en">
+<head>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+  <meta content="width=device-width, initial-scale=1.0, user-scalable=YES" name="viewport">
+  <meta content="IE=edge" http-equiv="X-UA-Compatible">
+  <meta name="x-apple-disable-message-reformatting">
+  <title>Ally</title>
+
+  <!--[if mso | IE]>       <xml>           <o:OfficeDocumentSettings>               <o:AllowPNG/>               <o:PixelsPerInch>96</o:PixelsPerInch>           </o:OfficeDocumentSettings>       </xml>   <![endif]-->
+
+  <!--[if gte mso 9]><xml>     <o:OfficeDocumentSettings>       <o:AllowPNG/>       <o:PixelsPerInch>96</o:PixelsPerInch>     </o:OfficeDocumentSettings>      td.mod-space2{     height:5px !important;     padding:5px 0px 0px 0px !important;     line-height:5px !important;   }    td.title{     font-size: 18px !important;   }     td.mod-IconBulletNumberImage {     line-height:46px !important;     width: 45px !important;      max-width: 45px !important;    }    td.mod-Space {     width: 38px;      max-width: 38px;   }    .mod-bulletNumberImage{     line-height:40px !important;   }    </xml><![endif]-->
+
+  <!--[if gt mso 15]>   <style>   table {border-collapse: collapse;}    td.mod-space2{     height:5px !important;     padding:5px 0px 0px 0px !important;     line-height:5px !important;   }    td.title{     font-size: 18px !important;   }    td.mod-IconBulletNumberImage {     line-height:46px !important;     width: 45px !important;      max-width: 45px !important;    }      td.mod-Space {     width: 38px;      max-width: 38px;   }    .mod-bulletNumberImage{     line-height:40px !important;   }   </style>    <![endif]--> 
+
+  <style type="text/css">
+    .ReadMsgBody {
+    width: 100%;
+    }
+    .ExternalClass {
+    width: 100%;
+    }
+    td {
+    /* border: 0px !important; */
+    }
+    /* Prevent WebKit and Windows mobile changing default text sizes */
+    body,
+    table,
+    td,
+    a {
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    }
+    /* Outlook line height fix */
+    .ExternalClass,
+    .ExternalClass p,
+    .ExternalClass span,
+    .ExternalClass font,
+    .ExternalClass td,
+    .ExternalClass div {
+    line-height: 100%;
+    }
+    p,
+    a,
+    li,
+    td,
+    blockquote {
+    mso-line-height-rule: exactly;
+    }
+
+    body, table, td, p, a, li, blockquote {
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+    }
+
+    /* Remove spaces above and below list */
+    ol,
+    ul {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    }
+    /* Outlook spacing fix */
+    table,
+    td {
+    border-collapse: collapse;
+    mso-table-lspace: 0pt;
+    mso-table-rspace: 0pt;
+    /* border: 0px !important; */
+    }
+    /* IMG style fixes */
+    img,
+    a img {
+    border: 0;
+    line-height: 100%;
+    outline: none;
+    text-decoration: none;
+    -ms-interpolation-mode: bicubic;
+    white-space: pre;
+    }
+    img {
+    border-style: none !important;
+    border: 0px !important;
+    }
+    img[x-apple-data-detectors] {
+    border-style: none !important;
+    border: 0px !important;
+    }
+    /* iOS blue links fix */
+    a[x-apple-data-detectors] {
+    color: inherit !important;
+    text-decoration: none !important;
+    font-size: inherit !important;
+    font-family: inherit !important;
+    font-weight: inherit !important;
+    line-height: inherit !important;
+    }
+    a {
+    color: inherit;
+    text-decoration: none;
+    }
+    /* Set default font */
+    body, table, td, div, span, li {
+    font-family: Helvetica, Arial, sans-serif !important;
+
+    }
+    .noShow {
+    display: none !important;
+    }
+    .D_hidebr br{
+    display: none !important;
+    }
+  </style>
+  <style type="text/css">
+    @media screen and (max-width:480px) {
+  
+  
+  .stack, .column {
+                display: block !important;
+                width: 100% !important;
+                padding-top: 0px !important;
+                padding-left: 0px !important;
+                padding-right: 0px !important;
+                padding-bottom: 10px !important;
+
+            }
+  
+  .stack2 {
+                display: block !important;
+                width: 100% !important;
+                padding-top: 0px !important;
+                padding-left: 0px !important;
+                padding-right: 0px !important;
+                padding-bottom: 10px !important;
+
+            }
+      
+      td.padding0-20 {
+        padding: 0px 20px !important;
+      }
+  
+  td.padding-mod3 {
+                padding-left: 20px !important;
+                padding-right: 20px !important;
+            }
+  
+  
+  
+    body, table, td, div, span, li {
+    font-family: Helvetica, Arial, sans-serif !important;
+    
+    }
+
+    .D_hidebr br{
+    display: block !important;
+    } 
+    img.img_90_width {
+      width: 90% !important;
+      height: auto !important;
+    }
+    .width20 {
+      width: 20px !important;
+    }
+    .noShow {
+      display: block !important;
+    }
+    /* Hides content from the mobile view */
+    .hide {
+      display: none !important;
+    }
+
+    .earsFooter{
+      background:#300942 !important;
+      width: 20px !important;
+    }
+      
+     td.padding0 {
+        padding: 0px !important;
+      }
+
+    /* Resets the width to the width of the screen */
+    .width-container {
+      width: 100% !important;
+      max-width: 480px !important;
+      min-width: 300px !important;
+    }
+    .container {
+      width: 100% !important;
+    }
+    /* resize images to the screen width */
+    img.img_full_width {
+      width: 100% !important;
+      height: auto !important;
+    }
+    .mobile-btn {
+      width: 100% !important;
+      font-size: 23px !important;
+    }
+    .padding0 {
+      padding: 0px !important;
+    }
+
+    .padding40-20 { 
+      padding: 40px 20px !important;
+    }
+
+    .dropTDcell {
+      width: 0px !important;
+      text-align: left !important;
+      padding: 0px 20px 50px 20px !important;
+    }
+    .dropTDcellButton {
+      text-align: left !important;
+      padding: 40px 0px 60px 0px !important;
+    }
+    .dropTDcellButton2 {
+      width: 0px !important;
+      text-align: left !important;
+      padding: 0px 20px 80px 20px !important;
+    }
+    .dropTDcellButton3 {
+      text-align: left !important;
+      padding: 40px 0px 20px 0px !important;
+    }
+    .dropSocialcell {
+      display: block !important;
+      width: 100% !important;
+      text-align: left !important;
+      padding: 0px 0px 0px 0px !important;
+    }
+    /* display desktop-hidden content on mobile */
+    div.show {
+      display: block !important;
+      margin: 0px;
+      padding: 0px;
+      overflow: visible !important;
+      max-height: inherit !important;
+      padding: 0px;
+    }
+    .padding20 {
+      padding: 26px 20px 15px 25px !important;
+    }
+    td.padding35-20 {
+      padding: 30px 20px 0px 20px !important;
+    }
+    img.img_Logoleft {
+      width: 155px !important;
+      height: auto !important;
+    }
+    td.app {
+      padding: 0px 20px 60px 0px !important;
+    }
+
+    /* LITANY */
+    .header-heightLitanny{
+      height: 110px !important;
+      max-height: 110px !important;
+      background-color: #300942 !important;
+    }
+    img.img_90_widthLine {
+      width: 100% !important;
+      height: 1px !important;
+      padding: 0px 0px 0px 0px !important
+    }
+    .padding-Litany {
+      padding-left: 20px !important;
+      padding-right: 20px !important;
+    }
+    .padding-Litany1 {
+      padding: 30px 0px 20px 0px !important;
+    }
+    .padding-Litany2 {
+      padding: 0px 0px 0px 0px !important;
+    }
+    .padding-Litany3 {
+      padding: 0px 0px 0px 0px !important;
+      border:1px solid #300942 !important;
+    }
+    .padding-Litany4 {
+      padding: 20px 20px 0px 0px !important;
+      border: 1px solid #300942 !important;
+    }
+      
+            .padding-LR20 {
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+      }
+      
+      
+    /* END LITANY */
+    .padding-LR20-title {
+      padding: 70px 0px 20px 0px !important;
+    }
+
+    .dropTDcellImageBox{
+      padding: 0px 0px 5px 0px !important;
+    }
+
+    .dropTDcellImageBox-lower{
+      padding: 10px 0px 5px 0px !important;
+    }
+
+    .mod1-text {
+      padding: 45px 15px 45px 20px !important;
+    }
+
+    .mod2-text {
+      padding: 60px 25px 60px 20px !important;
+    }
+
+    .mod3-box{
+      padding: 0px 0px 0px 0px !important;
+    }
+
+    .mod3-boxBullet{
+      padding: 40px 20px 60px 20px !important;
+    }
+
+    .mod3-boxTitle{
+      padding: 0px 10px 10px 0px !important;
+    }
+
+    .widthFull{
+      width: auto !important;
+    }
+
+    .widthFull a{
+      color: #FFFFFF !important;
+      color: white;
+    }
+
+    .line {
+      padding: 30px 20px 20px 20px !important;
+      max-width: 320px !important;
+    }
+
+    .displayBlock{
+      display: block !important;
+    }
+
+    /* BulletNumberImage */
+    .mod-IconBulletNumberImage{
+      vertical-align: top !important;
+      padding: 0px 0px 5px 0px;
+    }
+    
+    .dropTDtext{
+      padding: 10px 0px 10px 0px !important;
+    }
+
+    .mod-space{
+      height:10px !important;
+    }
+
+    .mod-space2{
+      height:0px !important;
+      padding: 0px 0px 0px 0px !important;
+    }
+    .textLowerBanner{
+      border-left: 1px solid #954293 !important;
+      padding: 20px 0px 60px 0px !important;
+    }
+
+    .mod-bulletNumberImage{
+      padding: 10px 0px 0px 0px !important;
+    }
+
+    .referMobile{
+      font-size: 22px !important;
+    }
+
+    .mobile-line { padding: 20px 0px 0px 0px !important}
+
+    .padding20-0 { 
+      padding: 20px 0px 20px 0px !important
+    }
+
+    .padding40-0 { 
+      padding: 40px 0px 40px 0px !important
+    }
+    .drop {
+          display: block !important;
+          width: 100% !important;
+        }
+
+        .bulletMobile { vertical-align: top !important; padding-top: 10px}
+
+    .block1-h2 { padding: 40px 20px 0px 20px !important } 
+        .dropGreeting { padding: 20px 20px 0px 20px !important; width: 100% !important }
+        .dropGreeting2 { padding: 10px 20px 20px 18px !important; text-align: left !important; width: 100% !important; }
+
+        .padding60-20 { padding: 60px 20px !important}
+
+        .bottomModule1 { padding: 0px 20px 20px 20px !important}
+        .bottomModule2 { padding: 0px 20px 40px 20px !important}
+    }
+  </style>
+
+          <!--[if mso]><style>               .outlook-bullet { line-height: 24px !important }               .outlook-spacer { line-height: 2px !important }           </style><![endif]-->  
+</head>
+
+<body style="margin: 0px; padding: 0px; -webkit-text-size-adjust: none; -ms-text-size-adjust: 100%; background-color: #FFFFFF;"><style type="text/css">
+div.preheader 
+{ display: none !important; } 
+</style>
+<div class="preheader" style="font-size: 1px; display: none !important;">Prioritize your peace of mind with term life insurance through Ladder.</div>
+  <!-- EMAIL BODY CONTAINER -->
+  <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
+    <tr>
+      <td bgcolor="#FFFFFF">
+        <div align="center">
+          <!-- EMAIL CONTENT CONTAINER -->
+          <table class="container" width="736" border="0" cellpadding="0" cellspacing="0" role="presentation">
+            <!-- START BRANDED HEADER & HERO -->
+            <tr>
+              <td class="padding0" style="padding: 0px 0px 0px 0px;" bgcolor="#FFFFFF" align="center" valign="top">
+                <table class="container" width="100%" align="center" border="0" cellpadding="0" cellspacing="0" role="presentation">
+                  <!-- START BRANDED BANNER: ALLY LOGO -->
+                  <tr>
+                    <td class="padding20" style="padding: 26px 80px 15px 40px; color: #FFFFFF;" bgcolor="#300942" valign="top">
+                      <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
+                        <tr>
+                          <td class="" style="padding: 0px 10px 0px 0px; font-family: Helvetica, Arial, sans-serif; font-size: 15px;" width="50%" valign="middle" align="left">
+                            <a href="https://click.email.ally.com/?qs=475b0913427d79e6f6e3f8f1f1aa800238ea119d20efee581be1cb3c483e067fdef5b851f501436ccb614ca416a91581a87b9d901f14e24c9352fc8e97e897b7"  title="" target="_blank">
+                              <img alt="ALLY(R) DO IT RIGHT(R)" style="display: block; font-family: Helvetica, Arial, sans-serif; font-size: 20px; color: #FFFFFF;" src="https://image.email.ally.com/lib/fec1157777660d74/m/6/eb1c8aca-5e4a-4142-86f2-a0094d047e66.png" class="img_width_143" width="179" height="38" border="0" />
+                            </a>
+                          </td>
+                          <td class="" style="padding: 0px 0px 0px 0px; font-family: Helvetica, Arial, sans-serif; font-size: 16px; color: #FFFFFF;" width="50%" valign="middle" align="right"></td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                  <!-- END BRANDED BANNER: ALLY LOGO -->
+                  <!-- START HERO TYPE 2 -->
+                  <tr>
+                    <td valign="top">
+                      <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
+                        <tr>
+                          <!-- HEADER CENTER COLUMN -->
+                          <td bgcolor="#5F2779">
+                            <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
+                              <tr>
+                                <td>
+                                  <a href="https://click.email.ally.com/?qs=475b0913427d79e6c708f495083a52a65dd6209b60ddb0360df27121d9f44844133c28e0d4cb998c07fdaa3c207ed694761042ada0515969"  title="Explore Options" target="_blank">
+                                    <img src="https://image.email.ally.com/lib/fec815777761017e/m/1/7130b8e6-fd47-4a90-bd5c-8828f45e03db.png" width="736" height="" alt="Make their financial security your resolution. Term life insurance through Ladder can help you plan for what you can't predict. Image of parents smiling while holding baby. Button: Explore Coverage" style="display: block; font-size: 14px; color: #FFF7F0;" border="0" class="hide" />
+                                  </a>
+                                  <!--[if !mso 9]><!-->
+                                  <div class="show" style="font-size: 0%; max-height: 0; overflow: hidden; display: none;">
+                                    <a href="https://click.email.ally.com/?qs=475b0913427d79e6c708f495083a52a65dd6209b60ddb0360df27121d9f44844133c28e0d4cb998c07fdaa3c207ed694761042ada0515969"  title="Explore Options" target="_blank">
+                                      <img src="https://image.email.ally.com/lib/fec815777761017e/m/1/31572aef-c93e-467b-b861-c91b43a37cba.png" width="321" height="" alt="Make their financial security your resolution. Term life insurance through Ladder can help you plan for what you can't predict. Image of parents smiling while holding baby. Button: Explore Coverage" style="display: block; font-size: 16px; color: #FFF7F0;" class="img_full_width" />
+                                    </a>
+                                  </div>
+                                  <!--<![endif]-->
+                                </td>
+                              </tr>
+                              
+                              
+                              
+                              
+                              
+                              
+                              
+                            </table>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                  <!-- END HERO TYPE 2 -->
+                </table>
+              </td>
+            </tr>
+            <!-- END BRANDED HEADER & HERO -->
+            <!-- START SECTION 1 -->
+            <tr>
+              <td class="" style="padding: 0px 0px 0px 0px;" bgcolor="#FFFFFF" width="100%" align="center" valign="top">
+                <table class="container" width="100%" align="center" border="0" cellpadding="0" cellspacing="0" role="presentation">
+                  <tr>
+                    <td class="padding-LR20" style="padding: 64px 80px 64px 80px;" bgcolor="#FFFFFF"><div style="font-family: Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px; mso-line-height-rule: exactly; color: #300942;">Michael, as we step into a new year, we remain committed to helping our Ally Bank customers set goals and plan ahead. To help you get started setting your financial goals in 2026, check out this article: <a href="https://click.email.ally.com/?qs=475b0913427d79e62b98a64919556aa2d62a0f5f6c12be9e3d12a8678e4f398bfbeaf6b01fb31e1bf10ec491992f8ffa14a52c043ffd0a0406c14ce22369ae01"  title="Read More" target="_blank" style="text-decoration: underline; color: #0071C4;"><span style="color: #0071C4; text-decoration: underline; font-weight: normal;">
+<strong>New year, new budget: Your financial check-in for 2026.</strong></span></a>
+                      <br><br>
+Whether you’re preparing for major milestones or want to help safeguard your family’s financial wellbeing, now’s a good time to explore your life insurance coverage options. That’s why we’ve teamed up with Ladder to bring you term life insurance for the years you need it most, at a cost you could afford.<strong> Ally recommends easy, flexible term life insurance through Ladder. </strong>                      
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <!-- END SECTION 1 -->
+            <!-- START SECTION 2 -->
+          <tr>
+            <td bgcolor="#FFFFFF" style="font-family: Helvetica, Arial, sans-serif; font-size:16px; line-height: 24px; color:#FFF7F0; padding: 44px 0px 44px 44px; background-color:#FFFFFF;" class="padding0"><table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="">
+                <tr>
+                  <td><!--[if !mso 9]><!-->
+                    
+                    <div class="show" style="padding-bottom: 10px; font-size:0%; max-height: 0; overflow: hidden; display: none;">
+                      <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="">
+                        <tr>
+                          <td align="center" class="padding-img-2"><img src="https://image.email.ally.com/lib/fec1157777660d74/m/1/bdddacb7-324f-4254-90f6-46dc38891628.png" width="240" height="" alt="" style="display: block; color: #ffffff;" class="img_full_width"></td>
+                        </tr>
+                      </table>
+                    </div>
+                    
+                    <!--<![endif]-->
+                    
+                    <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="">
+                      <tr>
+                        <td width="347" style="font-family: Helvetica, Arial, sans-serif; color: #FFFFFF; padding:0px 30px 0px 0px; font-weight: normal; font-size:16px;" valign="middle" class="dropTDcell4"><table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="">
+                            <tr>
+                              <td width="" class="" style="padding: 0px 0px 0px 20px;"><table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="">
+                                  <tr>
+                                    <td style="font-family: Helvetica, Arial, sans-serif; color:#300942; padding: 14px 0px 14px 0px; font-size:34px;" align="left" valign="middle" class="padding-btm-15" width="100%"><div class="" style="font-size: 48px; line-height: 52px; font-weight: bold;">Your life evolves. So should your plan.</div></td>
+                                  </tr>
+                                  <tr>
+                                    <td style="font-family: Helvetica, Arial, sans-serif; color:#300942; padding:0px 0px 15px 0px; font-size:16px;" align="left" valign="middle" class="padding-btm-15" width="100%"><div class="" style="font-size: 22px; line-height: 26px; font-weight: normal;">Ladder gives you the freedom to adjust as your needs change. </div></td>
+                                  </tr>
+                                </table>
+                                </td>
+                            </tr>
+                          </table></td>
+                        <td width="360" style="font-family: Helvetica, Arial, sans-serif; font-size:16px; color:#300942; padding:0px 0px 0px 0px; font-weight: normal; text-align: right;" align="right" valign="middle" class="hide"><table class="container" width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                              <td class="" align="right" style="text-align: right;"><img class="img90" src="https://image.email.ally.com/lib/fec1157777660d74/m/1/36de761e-2682-4ac3-9f7f-32292488842f.png" width="360" height="" alt=""/></td>
+                            </tr>
+                          </table></td>
+                      </tr>
+                    </table></td>
+                </tr>
+              </table></td>
+          </tr>
+            <!-- END SECTION 2 -->           
+            <!-- START SECTION 3 -->
+            <tr>
+              <td class="" style="padding: 0px 0px 0px 0px;" bgcolor="#FFFFFF" width="100%" align="center" valign="top">
+                <table class="container" width="100%" align="center" border="0" cellpadding="0" cellspacing="0" role="presentation">
+                  <tr>
+                    <td class="padding40-20" style="padding: 40px 80px 40px 60px;" bgcolor="#FFFFFF">
+                      <div style="font-family: Helvetica, Arial, sans-serif; font-size: 36px; font-weight: bold; line-height: 40px; mso-line-height-rule: exactly; color: #300942;">
+                        For every milestone, there’s coverage for:
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <!-- END SECTION 3 -->
+            <!-- START VERTICAL SPACER -->
+            <tr>
+              <td height="4" bgcolor="#FFFFFF"></td>
+            </tr>
+            <!-- END VERTICAL SPACER -->
+            <!-- START SECTION 4 -->
+            <tr>
+              <td class="" style="padding: 0px 0px 0px 0px;" bgcolor="#954293" width="100%" align="center" valign="top">
+                <table class="container" width="100%" align="center" border="0" cellpadding="0" cellspacing="0" role="presentation">
+                  <tr>
+                    <td class="padding0" style="padding: 20px 80px 20px 0px;" bgcolor="#954293">
+                      <table class="container" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
+                        <tr>
+                          <th class="column" style="text-align: left; font-weight: normal; direction: ltr; vertical-align: middle;" width="212" height="">
+                            <!-- CONTENT -->
+                            <img src="https://image.email.ally.com/lib/fec1157777660d74/m/1/4a6e5176-dd92-4db7-9826-c0b25b573cb5.png" width="212" height="" alt="Two individuals hanging artwork" style="font-size: 14px; display: block; color: #000000;" border="0" class="hide">
+                            <!--[if !mso 9]><!-->
+                            <div class="show" style="font-size: 0%; max-height: 0; overflow: hidden; display: none;">
+                              <img src="https://image.email.ally.com/lib/fec1157777660d74/m/1/8c1c2035-5858-41b4-953d-52951c4e3057.png" width="321" height="" alt="Two individuals hanging artwork" style="font-size: 16px; display: block; color: #000000;" class="img_full_width">
+                            </div>
+                            <!--<![endif]-->
+                          </th>
+                          <th class="column" width="80" height="40">
+                            <!-- H/V SPACER -->
+                          </th>
+                          <th class="column" style="text-align: left; font-weight: normal; direction: ltr; vertical-align: top;" width="364" height="">
+                            <!-- CONTENT -->
+                            <table class="container" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
+                              <tr>
+                                <td class="padding0-20">
+                                  <div style="font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: bold; line-height: 24px; mso-line-height-rule: exactly; color: #ffffff;">
+                                    Becoming a homeowner.
+                                  </div>
+                                  <div style="line-height: 24px; mso-line-height-rule: exactly; height: 24px;">&#8202;</div>
+                                  <div style="font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; line-height: 24px; mso-line-height-rule: exactly; color: #ffffff;">
+                                   This big step comes with new financial responsibilities and assets that are important to protect.
+                                  </div>
+                                  <div style="line-height: 24px; mso-line-height-rule: exactly; height: 24px;">&#8202;</div>
+                                  <div style="font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; line-height: 28px; mso-line-height-rule: exactly; color: #ffffff;">
+                                    <a href="https://click.email.ally.com/?qs=475b0913427d79e690f45889519a060402eba04a8e009b553d66e8a53b0313a918bcc6ef4e08decf94d9f37aa55044f7a479202d458030ce93ea550daf4877a4"  title="Read More" target="_blank" style="text-decoration: underline; color: #C1E8FA;"><span style="color: #C1E8FA; text-decoration: underline; font-weight: normal;"><strong>Read More</strong></span></a>
+                                  </div>
+                                </td>
+                              </tr>
+                            </table>
+                          </th>
+                          <th class="column" width="0" height="40">
+                            <!-- H/V SPACER -->
+                          </th>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <!-- END SECTION 4 -->
+            <!-- START VERTICAL SPACER -->
+            <tr>
+              <td height="4" bgcolor="#FFFFFF"></td>
+            </tr>
+            <!-- END VERTICAL SPACER -->
+            <!-- START SECTION 5 -->
+            <tr>
+              <td class="" style="padding: 0px 0px 0px 0px;" bgcolor="#954293" width="100%" align="center" valign="top">
+                <table class="container" width="100%" align="center" border="0" cellpadding="0" cellspacing="0" role="presentation">
+                  <tr>
+                    <td class="padding0" style="padding: 20px 80px 20px 0px;" bgcolor="#954293">
+                      <table class="container" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
+                        <tr>
+                          <th class="column" style="text-align: left; font-weight: normal; direction: ltr; vertical-align: middle;" width="212" height="">
+                            <!-- CONTENT -->
+                            <img src="https://image.email.ally.com/lib/fec1157777660d74/m/1/1a11dcf5-2e50-4102-90ed-10a86113c0dc.png" width="212" height="" alt="Bride and groom smiling" style="font-size: 14px; display: block; color: #000000;" border="0" class="hide">
+                            <!--[if !mso 9]><!-->
+                            <div class="show" style="font-size: 0%; max-height: 0; overflow: hidden; display: none;">
+                              <img src="https://image.email.ally.com/lib/fec1157777660d74/m/1/ca74d87d-54f0-481d-8254-68ff1e90fbce.png" width="321" height="" alt="Bride and groom smiling" style="font-size: 16px; display: block; color: #000000;" class="img_full_width">
+                            </div>
+                            <!--<![endif]-->
+                          </th>
+                          <th class="column" width="80" height="40">
+                            <!-- H/V SPACER -->
+                          </th>
+                          <th class="column" style="text-align: left; font-weight: normal; direction: ltr; vertical-align: top;" width="364" height="">
+                            <!-- CONTENT -->
+                            <table class="container" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
+                              <tr>
+                                <td class="padding0-20">
+                                  <div style="font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: bold; line-height: 24px; mso-line-height-rule: exactly; color: #ffffff;">
+                                    Getting married.
+                                  </div>
+                                  <div style="line-height: 24px; mso-line-height-rule: exactly; height: 24px;">&#8202;</div>
+                                  <div style="font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; line-height: 28px; mso-line-height-rule: exactly; color: #ffffff; letter-spacing: -0.08px;">
+                                    The beginning of a marriage can be an ideal time to adjust your policies and help ensure your spouse’s financial security.
+                                  </div>
+                                  <div style="line-height: 24px; mso-line-height-rule: exactly; height: 24px;">&#8202;</div>
+                                  <div style="font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; line-height: 24px; mso-line-height-rule: exactly; color: #ffffff;">
+                                    <a href="https://click.email.ally.com/?qs=475b0913427d79e61fa4b32313ae6bd732d99d065e25699e945181c86446fbc18675b6dcc235c578564958db51490c672c2d0e505ccb070feddaa6f45b6ebddb"  title="Read More" target="_blank" style="text-decoration: underline; color: #C1E8FA;"><span style="color: #C1E8FA; text-decoration: underline; font-weight: normal;"><strong>Read More</strong></span></a>
+                                  </div>
+                                </td>
+                              </tr>
+                            </table>
+                          </th>
+                          <th class="column" width="0" height="40">
+                            <!-- H/V SPACER -->
+                          </th>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <!-- END SECTION 5 -->
+     <!-- START VERTICAL SPACER -->
+            <tr>
+              <td height="4" bgcolor="#FFFFFF"></td>
+            </tr>
+            <!-- END VERTICAL SPACER -->
+     <!-- START SECTION 6 -->
+            <tr>
+              <td class="" style="padding: 0px 0px 0px 0px;" bgcolor="#954293" width="100%" align="center" valign="top">
+                <table class="container" width="100%" align="center" border="0" cellpadding="0" cellspacing="0" role="presentation">
+                  <tr>
+                    <td class="padding0" style="padding: 20px 80px 20px 0px;" bgcolor="#954293">
+                      <table class="container" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
+                        <tr>
+                          <th class="column" style="text-align: left; font-weight: normal; direction: ltr; vertical-align: middle;" width="212" height="">
+                            <!-- CONTENT -->
+                            <img src="https://image.email.ally.com/lib/fec1157777660d74/m/1/105f8f3d-3ada-427b-a8ab-36aa2a0f3512.png" width="212" height="" alt="Father reading with child sleeping in arms" style="font-size: 14px; display: block; color: #000000;" border="0" class="hide">
+                            <!--[if !mso 9]><!-->
+                            <div class="show" style="font-size: 0%; max-height: 0; overflow: hidden; display: none;">
+                              <img src="https://image.email.ally.com/lib/fec1157777660d74/m/1/d8bbbc37-3baf-4fcf-a9f1-941d340aefe6.png" width="321" height="" alt="Father reading with child sleeping in arms" style="font-size: 16px; display: block; color: #000000;" class="img_full_width">
+                            </div>
+                            <!--<![endif]-->
+                          </th>
+                          <th class="column" width="80" height="40">
+                            <!-- H/V SPACER -->
+                          </th>
+                          <th class="column" style="text-align: left; font-weight: normal; direction: ltr; vertical-align: top;" width="364" height="">
+                            <!-- CONTENT -->
+                            <table class="container" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
+                              <tr>
+                                <td class="padding0-20">
+                                  <div style="font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: bold; line-height: 24px; mso-line-height-rule: exactly; color: #ffffff;">
+                                    Expecting a child.
+                                  </div>
+                                  <div style="line-height: 24px; mso-line-height-rule: exactly; height: 24px;">&#8202;</div>
+                                  <div style="font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; line-height: 28px; mso-line-height-rule: exactly; color: #ffffff; letter-spacing: -0.08px;">
+                                    As your family grows, you may want to implement a safeguard to help protect them for years to come.
+                                  </div>
+                                  <div style="line-height: 24px; mso-line-height-rule: exactly; height: 24px;">&#8202;</div>
+                                  <div style="font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: normal; line-height: 24px; mso-line-height-rule: exactly; color: #ffffff;">
+                                    <a href="https://click.email.ally.com/?qs=475b0913427d79e637549b532d8c6eff4a48b79382efd8730de42fb2edd9305e7a127c16d2ae794ef3c39d351f721c88be95788c2b9e254f92ab57ca5de90a66"  title="Read More" target="_blank" style="text-decoration: underline; color: #C1E8FA;"><span style="color: #C1E8FA; text-decoration: underline; font-weight: normal;"><strong>Read More</strong></span></a>
+                                  </div>
+                                </td>
+                              </tr>
+                            </table>
+                          </th>
+                          <th class="column" width="0" height="40">
+                            <!-- H/V SPACER -->
+                          </th>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <!-- END SECTION 6 -->
+            <!-- START SECTION 8 -->
+            <tr>
+              <td class="" style="padding: 0px 0px 0px 0px;" bgcolor="#E3FFFA" width="100%" align="center" valign="top">
+                <table class="container" width="100%" align="center" border="0" cellpadding="0" cellspacing="0" role="presentation">
+                  <tr>
+                    <td class="padding-LR20" style="padding: 64px 80px 64px 80px;" bgcolor="#E3FFFA">
+                      <img src="https://image.email.ally.com/lib/fec1157777660d74/m/1/779834bf-74ca-49a4-b00f-6c3000fcfaa3.png" width="576" height="" alt="See what term life insurance looks like for you. Apply online in just minutes to find a policy that fits your needs." style="font-size: 14px; display: block; color: #000000;" border="0" class="hide">
+                      <!--[if !mso 9]><!-->
+                      <div class="show" style="font-size: 0%; max-height: 0; overflow: hidden; display: none;">
+                        <img src="https://image.email.ally.com/lib/fec1157777660d74/m/1/2306cc5e-3a09-406f-9339-1922e855f822.png" width="321" height="" alt="See what term life insurance looks like for you. Apply online in just minutes to find a policy that fits your needs." style="font-size: 16px; display: block; color: #000000;" class="img_70_width">
+                      </div>
+                      <!--<![endif]-->
+                      <div style="line-height: 40px; mso-line-height-rule: exactly; height: 40px;">&#8202;</div>
+                      <table class="container" border="0" cellpadding="0" cellspacing="0" role="button">
+                        <tr>
+                          <td class="mobile-btn" style="padding: 0px 24px 0px 24px; font-family: Helvetica, Arial, sans-serif; font-size: 21px; color: #650360; border-radius: 4px;" height="60" bgcolor="#22D6B7" align="center" valign="middle" nowrap="nowrap">
+                            <a href="https://click.email.ally.com/?qs=475b0913427d79e6c7303f9848bee929eeac6ee236d2b09e917f3389736c86d46a05182914730a094743e604d007ddd49beb4407f97fd08d"  title="Get Started with term life insurance" target="_blank"><span style="text-decoration: none; color: #300942; font-weight: bold; white-space: nowrap;">Get Started</span></a>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <!-- END SECTION 8 -->
+            <!-- START LITANY -->
+            <tr>
+              <td class="padding0" style="padding: 0px 40px 0px 40px; font-family: Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px; color: #2A2A2A;" bgcolor="#300942">
+                <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
+                  <tr>
+                    <td class="padding-LR20" style="padding: 30px 40px 30px 40px; font-family: Helvetica, Arial, sans-serif; font-size: 14px; color: #FFF7F0;" bgcolor="#300942">
+                      We're all better off with an ally.
+                      <div class="" style="font-size: 15px; line-height: 15px;">&nbsp;</div>
+                      <img src="https://image.email.ally.com/lib/fec1157777660d74/m/6/7ef27534-a37d-4aa3-9809-a9a977e2ca20.png" alt="Text: digitally | financially | personally" width="316" height="" style="max-width: 316px;" class="img_90_width" />
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <!-- END LITANY -->
+            <!-- HORIZONTAL RULE -->
+            <tr>
+              <td class="padding0" style="padding: 0px 40px 0px 40px;" bgcolor="#300942">
+                <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
+                  <tr>
+                    <td class="padding-LR20" style="padding: 0px 40px 0px 40px;" bgcolor="#300942">
+                      <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
+                        <tr>
+                          <td style="border-bottom: 1px solid #FFFFFF;"></td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <!-- END HORIZONTAL RULE -->
+            <!-- START APPS SECTION -->
+            <tr>
+              <td class="padding0" style="padding: 0px 40px 0px 40px; font-family: Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px; color: #2A2A2A;" bgcolor="#300942">
+                <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
+                  <tr>
+                    <td class="padding-LR20" style="padding: 30px 40px 30px 40px; font-family: Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px; color: #FFFFFF;" bgcolor="#300942">
+                      <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
+                        <tr>
+                          <th class="dropSocialcell" style="padding: 0px 35px 0px 0px; font-family: Helvetica, Arial, sans-serif; font-size: 12px; line-height: 16px; color: #FFFFFF;" align="left" valign="top">
+                            <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
+                              <tr>
+                                <td class="padding0" style="padding: 0px 0px 0px 0px; font-family: Helvetica, Arial, sans-serif; font-size: 12px; font-weight: normal; line-height: 16px; color: #FFF7F0;" align="left" valign="top">
+                                  The Ally Mobile app lets you manage your<br /> accounts on the go. It's fast, secure and free.
+                                </td>
+                              </tr>
+                            </table>
+                          </th>
+                          <th class="dropSocialcell" style="font-size: 25px; line-height: 25px;" width="1" height="25">&nbsp;</th>
+                          <th class="dropSocialcell" style="padding: 0px 0px 0px 0px; font-family: Helvetica, Arial, sans-serif; font-size: 12px; line-height: 16px; color: #FFFFFF;" width="185" align="left" valign="top">
+                            <!-- ALLY APP LINKS -->
+                            <table width="190" align="left" border="0" cellpadding="0" cellspacing="0" role="presentation">
+                              <tr>
+                                <td style="padding: 0px 10px 0px 0px; font-family: Helvetica, Arial, sans-serif; font-size: 12px; color: #FFFFFF;" align="right" valign="top">
+                                  <a href="https://click.email.ally.com/?qs=475b0913427d79e6a68e6f50f461b67b80d5a7f1f2f202c7d8d6f6026e6f96406dc38709e09eaf22e8b94e8de06e088df68fae5ca5dc73d8"  title="Apple App Store" target="_blank" style="text-decoration: none; color: #FFFFFF;"><img src="https://image.email.ally.com/lib/fec8157777610778/m/1/e24116bc-98d8-49e2-86a9-326dc0809dfe.png" height="32" width="108" alt="Apple App Store Badge" style="color: #FFFFFF; font-size: 12px;" /></a>
+                                </td>
+                                <td align="right" valign="top" style="font-family: Helvetica, Arial, sans-serif; font-size: 12px; color: #FFFFFF; padding: 0px 0px 0px 0px;">
+                                  <a href="https://click.email.ally.com/?qs=475b0913427d79e64969381a149b0e1a6f91b186ee7e374f54d4d8133357dbb9cd5a08b60bb7721a29ff55a8b24f2b11c88576282ec084aa"  title="Google Play Store" target="_blank" style="text-decoration: none; color: #FFFFFF;"><img src="https://image.email.ally.com/lib/fec8157777610778/m/1/5488dfec-7ba3-49dd-9d77-2cc2912bff57.png" height="32" width="108" alt="Google Play Badge" style="color: #FFFFFF; font-size: 12px;" /></a>
+                                </td>
+                              </tr>
+                            </table>
+                          </th>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <!--END APPS SECTION -->
+            <!--  START FOOTER -->
+            <tr>
+              <td style="padding: 0px 0px 0px 0px;" valign="top" bgcolor="#FFFFFF">
+                <table class="container" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
+                  <tr>
+                    <td class="padding40-20" style="padding: 50px 80px 30px 80px; background-color: #FFFFFF; color: #650360;" bgcolor="#FFFFFF" valign="top">
+                      <table width="100%" align="left" border="0" cellpadding="0" cellspacing="0" role="presentation">
+                        <tr>
+                          <td style="padding: 0px 0px 0px 0px; font-family: Helvetica, Arial, sans-serif; color: #2A2A2A;" width="100%" valign="top" align="left">
+                            <table class="container" width="100%" align="left" border="0" cellpadding="0" cellspacing="0" role="presentation">
+                              <tr>
+                                <td style="padding: 0px 0px 16px 0px; font-family: Helvetica, Arial, sans-serif; font-size: 12px; color: #650360;" width="100%" valign="top" align="left">
+                                  <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
+                                    <tr>
+                                      <th class="dropSocialcell" style="padding: 0px 0px 0px 0px; font-family: Helvetica, Arial, sans-serif; font-size: 12px; line-height: 16px; color: #FFFFFF;" align="left" valign="middle">
+                                        <table class="hide" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
+                                          <tr>
+                                            <td class="padding0" style="padding: 0px 0px 0px 0px; font-family: Helvetica, Arial, sans-serif; font-size: 12px; font-weight: normal; line-height: 16px; color: #300942;" align="left" valign="middle"></td>
+                                          </tr>
+                                        </table>
+                                      </th>
+                                      <th width="185" class="dropSocialcell" style="padding: 0px 0px 0px 0px; font-family: Helvetica, Arial, sans-serif; font-size: 12px; line-height: 16px; color: #FFFFFF;" align="right" valign="top">
+                                        <table border="0" cellpadding="0" cellspacing="0" role="presentation">
+                                          <tr>
+                                            <td style="padding: 5px 32px 0px 0px;" align="left">
+                                              <a href="https://click.email.ally.com/?qs=475b0913427d79e6365a501da8d544d9e1a00adab302ab0376998f6030197104e230bbbd6c714aa66a29b5f8bd0fe060ec3c420efc97d5d4"  title="Instagram" target="_blank">
+                                                <img alt="Ally Instagram button" src="http://image.email.ally.com/lib/fec1157777660d74/m/3/c2adabdf-5d4c-45af-983c-a9a88dc07c77.png" style="font-family: Arial; font-size: 10px; color: #2A2A2A;" width="14" border="0" />
+                                              </a>
+                                            </td>
+                                            <td style="padding: 5px 32px 0px 0px;" align="left">
+                                              <a href="https://click.email.ally.com/?qs=475b0913427d79e65c53e78328485e9fb985abe10a9a3fe43f5087465e246955a8a78e2f35c7c50c037c11a4ef7e0519dacb881ad5a3bdf8"  title="Facebook" target="_blank">
+                                                <img alt="Ally Facebook button" src="http://image.email.ally.com/lib/fec1157777660d74/m/3/61879b57-efbf-4c6e-b401-c607497568d8.png" style="font-family: Arial; font-size: 10px; color: #2A2A2A;" width="14" border="0" />
+                                              </a>
+                                            </td>
+                                          </tr>
+                                        </table>
+                                      </th>
+                                    </tr>
+                                  </table>
+                                </td>
+                              </tr>
+                            </table>
+                          </td>
+                        </tr>
+                        <!--END SOCIAL Section-->
+                                               <!--Copyright Section-->
+                        <tr>
+                          <td style="padding: 0px 0px 0px 0px; font-family: Helvetica, Arial, sans-serif; font-size: 12px; line-height: 18px; color: #300942;" valign="middle" align="left">
+                             <strong>Questions?</strong>
+                            <br />
+                            <a href="https://click.email.ally.com/?qs=475b0913427d79e63deaa9cc2bc8f9466b5e9dd0f1736148e3bcd62ef25abee3cca1533a3d2fd9ad3e02615820eb396f6d5cb30bb8efe727"  title="Chat with us anytime" target="_blank" style="text-decoration: none; color: #0071C4;"><span style="color: #0071C4; text-decoration: underline; font-weight: normal;"><strong>Chat with us anytime</strong></span></a> or call us 24/7 at <a href="tel:1-555-123-4567" alias="Footer: Phone Number" title="1-555-123-4567" target="_blank" style="color: #0071C4; text-decoration: none; font-weight: bold;"><span style="color: #0071C4; text-decoration: underline; font-weight: bold;"><strong>1-555-123-4567</strong></span></a>
+                            <br /><br />
+                            &copy;2009&ndash;2026 Ally&nbsp;Financial&nbsp;Inc.
+                            <br />
+                            Ally Bank, <a href="https://click.email.ally.com/?qs=475b0913427d79e6baeb8957006c38c4a58ef4220293259686455844215eccbdf12123d503312f1ea6cac8c2d86d3bd5a703aed8c9c6934e"  title="Member FDIC" target="_blank" style="text-decoration: none; color: #0071C4;"><span style="color: #0071C4; text-decoration: underline; font-weight: normal;"><strong>Member FDIC</strong></span></a>
+                            <br />
+                            Ally and Ally Bank are registered service marks of Ally Financial Inc.
+                            <br />
+                            Ally Bank Customer Care Department, P.O. Box 951, Horsham, PA 19044
+                            <br />
+                            <a href="https://click.email.ally.com/?qs=475b0913427d79e60b9eb62be670376fc8a9cc3483ec90e45c372b38cf6b2316c392cc949f69f78e3fe758ac621d607a73c79e2f74712a0b"  title="Privacy" target="_blank" style="color: #0071C4; text-decoration: none; font-weight: bold;"><span style="color: #0071C4; text-decoration: underline; font-weight: bold;"><strong>Privacy</strong></span></a>&nbsp;|&nbsp;<a href="https://click.email.ally.com/?qs=475b0913427d79e6c897ed14d6cd2cab7702c407d6e5db5c50e0e5bf99a21d60987231966cc74205d6cf2c28c45ccff0a6bd87e4e2b3c20e"  title="Security" target="_blank" style="color: #0071C4; text-decoration: none; font-weight: bold;"><span style="color: #0071C4; text-decoration: underline; font-weight: bold;"><strong>Security</strong></span></a>
+                            <br /><br />
+                            Ladder Insurance Services, LLC (CA license # OK22568; AR license # 555-123-4567) distributes term life insurance products issued by multiple insurers – for further details see <span class="applelinksBlueberry">ladderlife.com</span>. All insurance products are governed by the terms set forth in the applicable insurance policy. Each insurer has financial responsibility for its own products. 
+                            <br /><br />
+                            250528-4539315
+                            <br /><br />
+                            Apple and the Apple logo are trademarks of Apple Inc., registered in the U.S. and other countries and regions. App Store is a service mark of Apple Inc.
+                            <br /><br />
+                            Google Play and the Google Play logo are trademarks of Google LLC.
+                            <br /><br />
+                            You can <a href="https://click.email.ally.com/?qs=475b0913427d79e6dc34cbc88556183010a0a2a1ba739ba0b591afa380498cf3af8fdd60ef1d66bf82f93fdd3e0ed4ab57ef309e54a95527"  title="unsubscribe" target="_blank" style="text-decoration: none; color: #0071C4;"><span style="color: #0071C4; text-decoration: underline; font-weight: normal;"><strong>unsubscribe</strong></span></a> from Ally Bank marketing emails at any time. Please do not reply to this email.
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+                <!-- END Table use to set width of email -->
+              </td>
+            </tr>
+            
+            
+            <!-- END FOOTER -->
+          </table>
+          <!-- END Table use to set width of email -->
+        </div>
+      </td>
+    </tr>
+  </table>
+  <!-- END Table used to center email -->
+  <!-- ET Tracking Code -->
+  <img src="https://click.email.ally.com/open.aspx?ffcb10-fe5c1574776305787d13-fdf912737d61057e76177271-fec1157777660d74-fe911579776c067575-fe2a1d737660077f701c70-ff2e16777d64&d=10197&bmt=0" width="1" height="1" alt="">
+</body>
+
+</html>
+
+--K5wsghqXcHev=_?:--
+
+

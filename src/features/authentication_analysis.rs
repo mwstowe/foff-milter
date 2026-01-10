@@ -476,10 +476,13 @@ impl AuthenticationFeature {
                 "mailgun.org".to_string(),
                 "mailchimp.com".to_string(),
                 "amazonses.com".to_string(),
-                "cjm.adobe.com".to_string(),       // Adobe Campaign
-                "cname.cjm.adobe.com".to_string(), // Adobe Campaign CNAME
-                "klaviyomail.com".to_string(),     // Klaviyo ESP
-                "klaviyodns.com".to_string(),      // Klaviyo DNS/tracking
+                "cjm.adobe.com".to_string(),           // Adobe Campaign
+                "cname.cjm.adobe.com".to_string(),     // Adobe Campaign CNAME
+                "klaviyomail.com".to_string(),         // Klaviyo ESP
+                "klaviyodns.com".to_string(),          // Klaviyo DNS/tracking
+                "netsuite.com".to_string(),            // NetSuite business software
+                "oracleemaildelivery.com".to_string(), // Oracle ESP for NetSuite
+                "docusign.net".to_string(),            // DocuSign document service
             ],
             suspicious_patterns: vec![
                 "verify account".to_string(),
@@ -523,6 +526,7 @@ impl AuthenticationFeature {
             .replace("office:office", "")
             .replace("vml", "");
 
+        // Only check subject and body content, not headers (to avoid infrastructure false positives)
         let combined_text = format!("{} {}", clean_subject, clean_body);
         let sender = context.from_header.as_deref().unwrap_or("").to_lowercase();
 
@@ -554,6 +558,9 @@ impl AuthenticationFeature {
             "onestopplus.com",
             "airnz.co.nz",
             "digitalcomms.airnz.co.nz",
+            "nytimes.com",    // NY Times
+            "ecoflow.com",    // EcoFlow
+            "backerhome.com", // Backer Home
         ];
 
         if legitimate_retailers
@@ -579,6 +586,8 @@ impl AuthenticationFeature {
             "microsoft",
             "google",
             "omaha",
+            "ace hardware",
+            "ace",
         ];
 
         // Get sender domain
@@ -626,7 +635,7 @@ impl AuthenticationFeature {
 
 impl FeatureExtractor for AuthenticationFeature {
     fn extract(&self, context: &MailContext) -> FeatureScore {
-        let (risk_level, mut score, evidence) = self.analyzer.analyze_authentication(context);
+        let (risk_level, mut score, mut evidence) = self.analyzer.analyze_authentication(context);
 
         // Check for brand impersonation to reduce authentication bonuses
         let has_brand_impersonation = self.detect_brand_impersonation(context);
@@ -639,10 +648,61 @@ impl FeatureExtractor for AuthenticationFeature {
                 context.body.as_deref().unwrap_or("")
             ));
 
+        // Skip Portuguese content reduction for legitimate retail domains
+        let sender_domain = context
+            .from_header
+            .as_deref()
+            .and_then(|from| from.split('@').nth(1))
+            .unwrap_or("")
+            .to_lowercase();
+
+        let legitimate_retail_domains = [
+            "torrid.com",
+            "mktg.torrid.com",
+            "levi.com",
+            "mail.levi.com",
+            "target.com",
+            "walmart.com",
+            "amazon.com",
+            "bestbuy.com",
+            "homedepot.com",
+            "lowes.com",
+            "macys.com",
+            "nordstrom.com",
+            "kohls.com",
+            "jcpenney.com",
+            "sears.com",
+            "oldnavy.com",
+            "gap.com",
+            "bananarepublic.com",
+            "victoriassecret.com",
+            "nytimes.com",
+            "toast-restaurants.com",
+            // Medical ESP services
+            "mtasv.net",
+            "batemanhornecenter.org",
+        ];
+
+        let is_legitimate_retail = legitimate_retail_domains
+            .iter()
+            .any(|domain| sender_domain.contains(domain));
+
+        let should_reduce_bonus =
+            has_brand_impersonation || (has_portuguese_content && !is_legitimate_retail);
+
         // Reduce authentication bonuses if suspicious content detected
-        if (has_brand_impersonation || has_portuguese_content) && score < 0 {
-            // Reduce authentication bonus by 50% when suspicious content detected
-            score /= 2;
+        if should_reduce_bonus {
+            // Only apply significant reduction for brand impersonation (not Portuguese content)
+            if has_brand_impersonation {
+                // Reduce authentication bonus by 75% when brand impersonation detected
+                score = (score as f32 * 0.25) as i32;
+                evidence
+                    .push("Authentication bonus reduced due to brand impersonation".to_string());
+            } else if has_portuguese_content && !is_legitimate_retail && score < 0 {
+                // Only reduce Portuguese content bonuses for negative scores
+                score /= 2;
+                evidence.push("Authentication bonus reduced due to Portuguese content".to_string());
+            }
         }
 
         // Small bonus for trusted ESP + legitimate retailer combinations
@@ -751,7 +811,7 @@ impl FeatureExtractor for AuthenticationFeature {
                 .push("Authentication bonus reduced due to suspicious content".to_string());
         }
 
-        if has_portuguese_content {
+        if has_portuguese_content && !is_legitimate_retail {
             final_evidence
                 .push("Authentication bonus reduced due to Portuguese content".to_string());
         }

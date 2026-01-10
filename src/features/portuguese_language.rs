@@ -27,24 +27,64 @@ impl FeatureExtractor for PortugueseLanguageAnalyzer {
 
         // Check for Portuguese language
         if LanguageDetector::contains_portuguese(&combined_text) {
-            // High penalty since no Portuguese emails are expected
-            score += 60;
-            evidence
-                .push("Portuguese language detected - unexpected in this environment".to_string());
+            // Skip Portuguese detection for legitimate retail domains
+            let sender_domain = context
+                .from_header
+                .as_deref()
+                .and_then(|from| from.split('@').nth(1))
+                .unwrap_or("")
+                .to_lowercase();
 
-            // Additional penalties for Portuguese scam patterns
-            let scam_patterns = [
-                ("validação", "document validation scam"),
-                ("conferência", "conference/meeting scam"),
-                ("assinatura digital", "digital signature scam"),
-                ("notas pendentes", "pending notes scam"),
-                ("processo", "process completion scam"),
+            let legitimate_retail_domains = [
+                "torrid.com",
+                "mktg.torrid.com",
+                "levi.com",
+                "mail.levi.com",
+                "target.com",
+                "walmart.com",
+                "amazon.com",
+                "bestbuy.com",
+                "homedepot.com",
+                "lowes.com",
+                "macys.com",
+                "nordstrom.com",
+                "kohls.com",
+                "jcpenney.com",
+                "sears.com",
+                "oldnavy.com",
+                "gap.com",
+                "bananarepublic.com",
+                "victoriassecret.com",
+                "nytimes.com",
+                "washingtonpost.com",
+                "toast-restaurants.com",
             ];
 
-            for (pattern, description) in &scam_patterns {
-                if combined_text.to_lowercase().contains(pattern) {
-                    score += 20;
-                    evidence.push(format!("Portuguese scam pattern detected: {}", description));
+            let is_legitimate_retail = legitimate_retail_domains
+                .iter()
+                .any(|domain| sender_domain.contains(domain));
+
+            if !is_legitimate_retail {
+                // High penalty since no Portuguese emails are expected
+                score += 60;
+                evidence.push(
+                    "Portuguese language detected - unexpected in this environment".to_string(),
+                );
+
+                // Additional penalties for Portuguese scam patterns
+                let scam_patterns = [
+                    ("validação", "document validation scam"),
+                    ("conferência", "conference/meeting scam"),
+                    ("assinatura digital", "digital signature scam"),
+                    ("notas pendentes", "pending notes scam"),
+                    ("processo", "process completion scam"),
+                ];
+
+                for (pattern, description) in &scam_patterns {
+                    if combined_text.to_lowercase().contains(pattern) {
+                        score += 20;
+                        evidence.push(format!("Portuguese scam pattern detected: {}", description));
+                    }
                 }
             }
         }

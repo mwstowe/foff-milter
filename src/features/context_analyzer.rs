@@ -219,6 +219,9 @@ impl ContextAnalyzer {
             "county.gov",
             "state.gov",
             "municipal.gov",
+            "gardensillustrated.com",
+            "swansonsnursery.com",
+            "nytimes.com",
         ];
 
         // Check if matches service alert pattern
@@ -337,6 +340,10 @@ impl ContextAnalyzer {
             || sender.to_lowercase().contains("target")
             || sender.to_lowercase().contains("walmart")
             || sender.to_lowercase().contains("nytimes")
+            || sender.to_lowercase().contains("levi")
+            || sender.to_lowercase().contains("usps")
+            || sender.to_lowercase().contains("mtasv")
+            || sender.to_lowercase().contains("batemanhornecenter")
             || text.to_lowercase().contains("in-store")
             || text.to_lowercase().contains("save big");
 
@@ -462,10 +469,33 @@ impl ContextAnalyzer {
             .unwrap_or("");
         let full_text = format!("{} {}", subject, body).to_lowercase();
 
+        // Check for legitimate business services that may use payment language
+        let from_header = context.from_header.as_deref().unwrap_or("").to_lowercase();
+
+        let legitimate_business_services = [
+            "netsuite",
+            "docusign",
+            "oracleemaildelivery",
+            "jotform",
+            "quickbooks",
+            "xero",
+            "freshbooks",
+            "invoiceninja",
+        ];
+
+        let is_legitimate_business_service = legitimate_business_services
+            .iter()
+            .any(|service| from_header.contains(service));
+
         let mut total_score = 0;
         let mut evidence = Vec::new();
 
         for pattern in &self.scam_combinations {
+            // Skip urgent payment scam detection for legitimate business services
+            if pattern.name == "Urgent Payment Scam" && is_legitimate_business_service {
+                continue;
+            }
+
             let matches = pattern
                 .indicators
                 .iter()
@@ -564,6 +594,8 @@ impl ContextAnalyzer {
             || from_header.to_lowercase().contains("netflix")
             || from_header.to_lowercase().contains("hulu")
             || from_header.to_lowercase().contains("amazon")
+            || from_header.to_lowercase().contains("backerhome")
+            || from_header.to_lowercase().contains("nytimes")
             || from_header.to_lowercase().contains("capitalone")
             || from_header.to_lowercase().contains("tmobile")
             || from_header.to_lowercase().contains("t-mobile")
@@ -581,6 +613,8 @@ impl ContextAnalyzer {
             || from_header.to_lowercase().contains("nytimes")
             || from_header.to_lowercase().contains("walgreens")
             || from_header.to_lowercase().contains("humblebundle")
+            || from_header.to_lowercase().contains("usps")
+            || from_header.to_lowercase().contains("withings")
             // Retail and e-commerce
             || from_header.to_lowercase().contains("retail")
             || from_header.to_lowercase().contains("shop")
@@ -959,12 +993,14 @@ impl ContextAnalyzer {
             || content_lower.contains("mysteries")
             || content_lower.contains("thrillers")
             || content_lower.contains("travel")
-            || content_lower.contains("deals"))
+            || (content_lower.contains("deals") && !content_lower.contains("details")))
             && !sender_lower.contains("antivirus")
             && !sender_lower.contains("security")
             && !content_lower.contains("vulnerable")
             && !content_lower.contains("declined")
             && !content_lower.contains("payment")
+            && !(content_lower.contains("invoice") && content_lower.contains("enclosed"))
+            && !(content_lower.contains("paying") && content_lower.contains("order"))
         {
             return Some("tech_newsletter".to_string());
         }
@@ -978,6 +1014,9 @@ impl ContextAnalyzer {
             && !content_lower.contains("vulnerable")
             && !content_lower.contains("declined")
             && !content_lower.contains("payment")
+            && !content_lower.contains("paying")
+            && !content_lower.contains("invoice")
+            && !content_lower.contains("order")
             && !content_lower.contains("secure it")
         {
             return Some("tech_newsletter".to_string());
@@ -1001,7 +1040,7 @@ impl ContextAnalyzer {
         let sender_lower = sender.to_lowercase();
         let content_lower = content.to_lowercase();
 
-        // Established retailers and brands
+        // First check: Must be from a legitimate sender domain
         let legitimate_retailers = [
             "tokyo-tiger.com",
             "biqu.equipment",
@@ -1033,6 +1072,21 @@ impl ContextAnalyzer {
         let is_legitimate_sender = legitimate_retailers
             .iter()
             .any(|domain| sender_lower.contains(domain));
+
+        // Reject promotional discount if sender is not from legitimate domain
+        if !is_legitimate_sender {
+            return false;
+        }
+
+        // Additional checks: No random alphanumeric senders
+        if sender_lower.chars().filter(|c| c.is_alphanumeric()).count() > 10 {
+            let alpha_ratio = sender_lower.chars().filter(|c| c.is_alphabetic()).count() as f32
+                / sender_lower.chars().filter(|c| c.is_alphanumeric()).count() as f32;
+            if alpha_ratio < 0.6 {
+                // More than 40% numbers/random chars
+                return false;
+            }
+        }
 
         // Legitimate promotional patterns
         let has_unsubscribe = content_lower.contains("unsubscribe");
@@ -1099,6 +1153,9 @@ impl FeatureExtractor for ContextAnalyzer {
             || sender.to_lowercase().contains("capitaloneshopping.com")
             || sender.to_lowercase().contains("michaels.com")
             || sender.to_lowercase().contains("customframe")
+            || sender.to_lowercase().contains("gardensillustrated")
+            || sender.to_lowercase().contains("pierotucci")
+            || sender.to_lowercase().contains("nytimes")
             || sender.to_lowercase().contains("michaelscustomframing.com")
             || sender.to_lowercase().contains("walgreens.com")
             || sender.to_lowercase().contains("lovepop.com")
@@ -1120,6 +1177,8 @@ impl FeatureExtractor for ContextAnalyzer {
             || sender.to_lowercase().contains("pulse.celebrations")
             || sender.to_lowercase().contains("ftd")
             || sender.to_lowercase().contains("teleflora")
+            || sender.to_lowercase().contains("gardensillustrated")
+            || sender.to_lowercase().contains("pierotucci")
         {
             0.15 // 85% additional reduction for floral retailers (maximum for seasonal emotional marketing)
         } else {
@@ -1551,15 +1610,35 @@ impl FeatureExtractor for ContextAnalyzer {
 
         FeatureScore {
             feature_name: "Context Analysis".to_string(),
-            score: (total_score as f32
-                * promo_discount
-                * additional_discount
-                * esp_retailer_discount
-                * nonprofit_discount
-                * floral_discount
-                * photo_discount
-                * craft_discount
-                * card_discount) as i32,
+            score: {
+                let base_score = (total_score as f32
+                    * promo_discount
+                    * additional_discount
+                    * esp_retailer_discount
+                    * nonprofit_discount
+                    * floral_discount
+                    * photo_discount
+                    * craft_discount
+                    * card_discount) as i32;
+
+                // Safety check: Don't allow negative scores for emails with authentication failures
+                // and suspicious characteristics (prevents spam from getting negative scores)
+                if base_score < 0 && sender.contains("@") {
+                    let has_random_sender = sender.chars().filter(|c| c.is_alphanumeric()).count()
+                        > 8
+                        && (sender.chars().filter(|c| c.is_alphabetic()).count() as f32
+                            / sender.chars().filter(|c| c.is_alphanumeric()).count() as f32)
+                            < 0.6;
+
+                    if has_random_sender {
+                        0 // Don't allow negative scores for suspicious emails with random senders
+                    } else {
+                        base_score
+                    }
+                } else {
+                    base_score
+                }
+            },
             confidence,
             evidence: all_evidence,
         }
