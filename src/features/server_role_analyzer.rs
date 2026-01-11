@@ -89,7 +89,7 @@ impl ServerRoleAnalyzer {
         let legitimate_domains = [
             "docusign.com",
             "docusign.net",
-            "adobe.com", 
+            "adobe.com",
             "microsoft.com",
             "google.com",
             "amazon.com",
