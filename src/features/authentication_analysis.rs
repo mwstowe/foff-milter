@@ -640,6 +640,32 @@ impl FeatureExtractor for AuthenticationFeature {
         // Check for brand impersonation to reduce authentication bonuses
         let has_brand_impersonation = self.detect_brand_impersonation(context);
 
+        // Check for suspicious domains that shouldn't get authentication bonuses
+        let sender_domain = context
+            .from_header
+            .as_deref()
+            .and_then(|from| {
+                if let Some(email_start) = from.find('<') {
+                    if let Some(email_end) = from.rfind('>') {
+                        if email_start + 1 < email_end {
+                            let email = &from[email_start + 1..email_end];
+                            return email.split('@').nth(1).map(|s| s.to_lowercase());
+                        }
+                    }
+                }
+                from.split('@').nth(1).map(|s| s.to_lowercase())
+            })
+            .unwrap_or_default();
+
+        let is_suspicious_domain = sender_domain.ends_with(".shop")
+            || sender_domain.ends_with(".space")
+            || sender_domain.ends_with(".click")
+            || sender_domain.ends_with(".link")
+            || sender_domain.ends_with(".tk")
+            || sender_domain.ends_with(".ml")
+            || sender_domain.ends_with(".ga")
+            || sender_domain.ends_with(".cf");
+
         // Check for Portuguese content to reduce authentication bonuses
         let has_portuguese_content =
             crate::language::LanguageDetector::contains_portuguese(&format!(
@@ -687,8 +713,9 @@ impl FeatureExtractor for AuthenticationFeature {
             .iter()
             .any(|domain| sender_domain.contains(domain));
 
-        let should_reduce_bonus =
-            has_brand_impersonation || (has_portuguese_content && !is_legitimate_retail);
+        let should_reduce_bonus = has_brand_impersonation
+            || is_suspicious_domain
+            || (has_portuguese_content && !is_legitimate_retail);
 
         // Reduce authentication bonuses if suspicious content detected
         if should_reduce_bonus {
@@ -698,6 +725,13 @@ impl FeatureExtractor for AuthenticationFeature {
                 score = (score as f32 * 0.25) as i32;
                 evidence
                     .push("Authentication bonus reduced due to brand impersonation".to_string());
+            } else if is_suspicious_domain {
+                // Reduce authentication bonus by 50% for suspicious domains
+                score = (score as f32 * 0.5) as i32;
+                evidence.push(format!(
+                    "Authentication bonus reduced due to suspicious domain: {}",
+                    sender_domain
+                ));
             } else if has_portuguese_content && !is_legitimate_retail && score < 0 {
                 // Only reduce Portuguese content bonuses for negative scores
                 score /= 2;

@@ -15,6 +15,7 @@ pub mod portuguese_language;
 pub mod priority_abuse;
 pub mod product_spam;
 pub mod sender_alignment;
+pub mod server_role_analyzer;
 pub mod system_blocklist;
 pub mod tld_risk;
 pub mod unicode_obfuscation;
@@ -128,6 +129,7 @@ impl FeatureEngine {
                 Box::new(health_spam::HealthSpamAnalyzer::new()),
                 Box::new(product_spam::ProductSpamAnalyzer::new()),
                 Box::new(geographic_mismatch::GeographicMismatchAnalyzer::new()),
+                Box::new(server_role_analyzer::ServerRoleAnalyzer::new()),
             ],
         }
     }
@@ -155,6 +157,7 @@ impl FeatureEngine {
                 Box::new(health_spam::HealthSpamAnalyzer::new()),
                 Box::new(product_spam::ProductSpamAnalyzer::new()),
                 Box::new(geographic_mismatch::GeographicMismatchAnalyzer::new()),
+                Box::new(server_role_analyzer::ServerRoleAnalyzer::new()),
             ],
         }
     }
