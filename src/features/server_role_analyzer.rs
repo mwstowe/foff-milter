@@ -88,6 +88,7 @@ impl ServerRoleAnalyzer {
         // Skip legitimate business domains
         let legitimate_domains = [
             "docusign.com",
+            "docusign.net",
             "adobe.com", 
             "microsoft.com",
             "google.com",
@@ -108,6 +109,9 @@ impl ServerRoleAnalyzer {
             "gmail.com",
             "outlook.com",
             "yahoo.com",
+            "technews.com",
+            "ecoflow.com",
+            "nytimes.com",
         ];
 
         for legitimate in &legitimate_domains {
