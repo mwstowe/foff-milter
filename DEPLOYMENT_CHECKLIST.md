@@ -1,55 +1,47 @@
-# FOFF Milter Production Deployment Checklist
+# Production Deployment Checklist
 
-This checklist must be completed before any production deployment.
+## Pre-Deployment Requirements
 
-## Pre-Deployment Verification
+### 1. Configuration Validation
+- [x] All settings must be set to defaults in `foff-milter.toml`
+- [x] No custom overrides that could affect production behavior
+- [x] Configuration file syntax is valid
 
-### 1. Configuration Defaults ✅
-- [x] All settings are set to production defaults
-- [x] No development-specific configurations remain
-- [x] Configuration files use appropriate production paths
-
-### 2. Code Quality - Formatting ✅
-- [x] `cargo fmt` passes without changes
-- [x] All code follows consistent formatting standards
-
-### 3. Code Quality - Linting ✅
+### 2. Code Quality Standards
+- [x] `cargo fmt` passes without changes required
 - [x] `cargo clippy -- -D warnings` passes (strict mode)
-- [x] No clippy warnings or errors remain
-- [x] All code follows Rust best practices
+- [x] No compiler warnings or errors
 
-### 4. Test Suite ✅
-- [x] `cd tests && ./run_tests.sh` shows 100% pass rate (431/431)
-- [x] All positive tests pass (spam detection)
-- [x] All negative tests pass (legitimate email acceptance)
-- [x] No test regressions introduced
+### 3. Test Suite Validation
+- [x] Full test suite passes at 100% success rate
+- [x] Command: `cd tests && ./run_tests.sh`
+- [x] Expected: `431/431 passed` with `100.0%` success rate
+- [x] No regression tests failing
 
-### 5. Version Control ✅
-- [x] All changes committed to git
-- [x] Version bumped appropriately in Cargo.toml and README.md
-- [x] Changes pushed to GitHub main branch (commit: a5a43a2)
-- [x] Commit messages are descriptive and follow conventions
+### 4. Version Control
+- [ ] All changes committed to git
+- [ ] Version bumped in `Cargo.toml` if needed
+- [ ] Changes pushed to GitHub main branch
+- [ ] No uncommitted changes in working directory
 
-### 6. Continuous Integration ⏳
-- [ ] GitHub Actions CI pipeline passes
+### 5. Continuous Integration
+- [ ] GitHub Actions CI pipeline passes successfully
+- [ ] All build targets compile successfully
 - [ ] All automated tests pass in CI environment
-- [ ] Build succeeds on all target platforms
-- [ ] No CI failures or warnings
-- **Status**: CI running at https://github.com/mwstowe/foff-milter/actions
 
-### 7. Documentation ✅
-- [x] README.md updated with new features/changes
-- [x] Version numbers updated throughout documentation
-- [x] Achievement metrics updated (test counts, success rates)
-- [x] Any breaking changes documented
+### 6. Documentation Updates
+- [ ] `README.md` updated with new version information
+- [ ] Achievement section updated with latest test counts
+- [ ] New features documented if applicable
+- [ ] Version number updated throughout documentation
 
 ## Deployment Commands
 
 ```bash
 # 1. Verify configuration defaults
-grep -r "default" src/ | grep -v test
+cat foff-milter.toml
 
-# 2. Check formatting
+# 2. Check code formatting
 cargo fmt --check
 
 # 3. Run strict clippy
@@ -58,33 +50,33 @@ cargo clippy -- -D warnings
 # 4. Run full test suite
 cd tests && ./run_tests.sh
 
-# 5. Verify git status
-git status
-git log --oneline -5
+# 5. Commit and push changes
+git add .
+git commit -m "Production release v0.8.14"
+git push origin main
 
-# 6. Check CI status (after push)
-# Visit: https://github.com/your-repo/foff-milter/actions
-
-# 7. Verify documentation
-grep -n "v0\." README.md
+# 6. Verify CI status
+# Check GitHub Actions at: https://github.com/mwstowe/foff-milter/actions
 ```
 
 ## Post-Deployment Verification
 
-- [ ] Production deployment successful
-- [ ] Monitoring shows expected behavior
-- [ ] No immediate issues reported
-- [ ] Performance metrics within expected ranges
+- [ ] Production build completes successfully
+- [ ] Service starts without errors
+- [ ] Email processing functions correctly
+- [ ] Statistics collection working
+- [ ] No performance regressions observed
 
 ## Rollback Plan
 
-If issues are detected post-deployment:
-
-1. Revert to previous stable version
-2. Investigate issues in development environment
-3. Apply fixes and re-run this checklist
-4. Re-deploy when all checks pass
+If issues are discovered:
+1. Revert to previous git commit
+2. Rebuild and redeploy previous version
+3. Monitor for stability
+4. Document issues for future fixes
 
 ---
 
-**Note**: This checklist must be completed in order. Do not skip any steps.
+**Last Updated**: 2026-01-12  
+**Current Version**: v0.8.14  
+**Test Status**: 431/431 passing (100.0%)

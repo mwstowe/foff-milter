@@ -875,6 +875,7 @@ impl LinkAnalyzer {
             ("fidelity", vec!["amazon", "fidelityinvestments"]), // Fidelity can link to Amazon and its own investment domain
             ("amazon", vec!["fidelity", "chase"]),
             ("sparkpost", vec!["disney", "disneyplus"]), // SparkPost ESP for Disney
+            ("spmailtechnolo", vec!["kiwico"]),          // SparkPost ESP for KiwiCo
             ("netsuite", vec!["jotform", "oracle"]), // NetSuite can link to JotForm payment processor
             ("oracleemaildelivery", vec!["jotform", "netsuite"]), // Oracle ESP for NetSuite
             ("facebookmail", vec!["facebook", "meta", "instagram"]), // Facebook ESP for Facebook services

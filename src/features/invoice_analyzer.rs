@@ -58,6 +58,7 @@ impl InvoiceAnalyzer {
             "t-mobile.com".to_string(),
             // Financial services
             "capitaloneshopping.com".to_string(),
+            "empower.com".to_string(),
             // Health devices
             "withings.com".to_string(),
             "email.withings.com".to_string(),
@@ -107,6 +108,7 @@ impl InvoiceAnalyzer {
             "t-mobile.com".to_string(),
             // Financial services
             "capitaloneshopping.com".to_string(),
+            "empower.com".to_string(),
             // Health devices
             "withings.com".to_string(),
             "email.withings.com".to_string(),

@@ -1170,6 +1170,7 @@ impl FeatureExtractor for SenderAlignmentAnalyzer {
             ("amazon", vec!["fidelity", "chase", "synchrony"]),
             ("fidelity", vec!["amazon"]),
             ("netsuite", vec!["oracle"]), // NetSuite ESP alignment
+            ("kiwico", vec!["spmailtechnolo", "sparkpost"]), // KiwiCo ESP alignment
         ];
 
         for (brand, partners) in &legitimate_partnerships {
@@ -1198,6 +1199,7 @@ impl FeatureExtractor for SenderAlignmentAnalyzer {
             "mtasv",
             "ab.mtasv",
             "msgfocus",
+            "spmailtechnolo", // SparkPost ESP for KiwiCo
         ];
         if legitimate_esp_services
             .iter()

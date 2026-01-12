@@ -128,7 +128,7 @@ impl FeatureEngine {
                 Box::new(portuguese_language::PortugueseLanguageAnalyzer::new()),
                 Box::new(health_spam::HealthSpamAnalyzer::new()),
                 Box::new(product_spam::ProductSpamAnalyzer::new()),
-                Box::new(geographic_mismatch::GeographicMismatchAnalyzer::new()),
+                Box::new(geographic_mismatch::GeographicMismatchFeature::new()),
                 Box::new(server_role_analyzer::ServerRoleAnalyzer::new()),
             ],
         }
@@ -156,7 +156,7 @@ impl FeatureEngine {
                 Box::new(portuguese_language::PortugueseLanguageAnalyzer::new()),
                 Box::new(health_spam::HealthSpamAnalyzer::new()),
                 Box::new(product_spam::ProductSpamAnalyzer::new()),
-                Box::new(geographic_mismatch::GeographicMismatchAnalyzer::new()),
+                Box::new(geographic_mismatch::GeographicMismatchFeature::new()),
                 Box::new(server_role_analyzer::ServerRoleAnalyzer::new()),
             ],
         }

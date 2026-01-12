@@ -98,6 +98,9 @@ impl ServerRoleAnalyzer {
             "mailchimp.com",
             "constantcontact.com",
             "sendgrid.net",
+            "medium.com",  // Medium publishing platform
+            "kiwico.com",  // KiwiCo educational kits
+            "empower.com", // Empower financial services
             "sendgrid.info",
             "bcdtravel.com",
             "concurcompleat.com",

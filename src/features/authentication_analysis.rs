@@ -561,6 +561,9 @@ impl AuthenticationFeature {
             "nytimes.com",    // NY Times
             "ecoflow.com",    // EcoFlow
             "backerhome.com", // Backer Home
+            "medium.com",     // Medium publishing platform
+            "kiwico.com",     // KiwiCo STEM kits
+            "empower.com",    // Empower financial services
         ];
 
         if legitimate_retailers
@@ -603,6 +606,21 @@ impl AuthenticationFeature {
                 if let Some(ref domain) = sender_domain {
                     // Check if sender domain matches the brand
                     if !domain.contains(brand) && !self.is_legitimate_esp(domain) {
+                        // Skip brand impersonation for editorial/article content from legitimate platforms
+                        if domain.contains("medium.com")
+                            || domain.contains("substack.com")
+                            || domain.contains("newsletter")
+                            || combined_text.contains("article")
+                            || combined_text.contains("write a catalyst")
+                            || combined_text.contains("author")
+                        {
+                            log::debug!(
+                                "Skipping brand impersonation for editorial content from {}",
+                                domain
+                            );
+                            continue;
+                        }
+
                         log::debug!(
                             "Brand impersonation detected: {} in content but domain is {}",
                             brand,

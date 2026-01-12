@@ -47,7 +47,6 @@ impl FeatureExtractor for ProductSpamAnalyzer {
             "solution for",
             "revolutionary",
             "breakthrough",
-            "amazing",
             "incredible",
         ];
 
@@ -145,11 +144,16 @@ impl FeatureExtractor for ProductSpamAnalyzer {
                 // Publishing and media
                 "gardensillustrated",
                 "nytdirect", // Specific NY Times sender
+                "medium",    // Medium publishing platform
                 // Nurseries and gardening
                 "swansonsnursery",
                 // Fashion retail
                 "musvc3",     // Mail.com ESP for fashion retailers
                 "pierotucci", // Pierotucci leather goods
+                // STEM education
+                "kiwico", // KiwiCo educational kits
+                // Financial services
+                "empower", // Empower retirement services
             ];
             let is_legitimate_retailer = legitimate_retailers
                 .iter()

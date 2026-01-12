@@ -644,7 +644,11 @@ impl ContextAnalyzer {
             || from_header.to_lowercase().contains("onestopplus")
             || from_header.to_lowercase().contains("retail")
             || from_header.to_lowercase().contains("clothing")
-            || from_header.to_lowercase().contains("fashion");
+            || from_header.to_lowercase().contains("fashion")
+            // Educational services
+            || from_header.to_lowercase().contains("kiwico")
+            || from_header.to_lowercase().contains("educational")
+            || from_header.to_lowercase().contains("stem");
 
         if has_medicare_content && !is_legitimate_service {
             // Check for image-only content (suspicious for Medicare scams)
@@ -890,7 +894,12 @@ impl ContextAnalyzer {
         (has_obfuscation, obfuscation_ratio)
     }
 
-    fn detect_industry_context(&self, sender: &str, content: &str) -> Option<String> {
+    fn detect_industry_context(
+        &self,
+        sender: &str,
+        content: &str,
+        subject: &str,
+    ) -> Option<String> {
         let sender_lower = sender.to_lowercase();
         let content_lower = content.to_lowercase();
 
@@ -1001,6 +1010,7 @@ impl ContextAnalyzer {
             && !content_lower.contains("payment")
             && !(content_lower.contains("invoice") && content_lower.contains("enclosed"))
             && !(content_lower.contains("paying") && content_lower.contains("order"))
+            && !self.is_financial_content(&content_lower, subject)
         {
             return Some("tech_newsletter".to_string());
         }
@@ -1127,6 +1137,44 @@ impl ContextAnalyzer {
             _ => 1.0,
         }
     }
+
+    fn is_financial_content(&self, content: &str, subject: &str) -> bool {
+        let combined = format!("{} {}", content, subject);
+
+        // Japanese financial terms
+        if combined.contains("ポイント") // points
+            || combined.contains("残高") // balance
+            || combined.contains("ご案内") // notification
+            || combined.contains("jaccs") // JACCS financial company
+            || combined.contains("カード") // card
+            || combined.contains("クレジット")
+        // credit
+        {
+            return true;
+        }
+
+        // English financial terms
+        if combined.contains("points balance")
+            || combined.contains("credit card")
+            || combined.contains("account balance")
+            || combined.contains("payment due")
+            || combined.contains("statement")
+            || combined.contains("billing")
+        {
+            return true;
+        }
+
+        // Chinese financial terms (common in phishing)
+        if combined.contains("积分") // points
+            || combined.contains("余额") // balance
+            || combined.contains("信用卡")
+        // credit card
+        {
+            return true;
+        }
+
+        false
+    }
 }
 
 impl FeatureExtractor for ContextAnalyzer {
@@ -1140,7 +1188,7 @@ impl FeatureExtractor for ContextAnalyzer {
 
         // Detect industry context for appropriate scoring adjustments
         let combined_content = format!("{} {}", subject, body);
-        let industry_context = self.detect_industry_context(sender, &combined_content);
+        let industry_context = self.detect_industry_context(sender, &combined_content, subject);
 
         // Check for legitimate promotional content patterns
         let is_legitimate_promo = self.is_legitimate_promotional_content(sender, &combined_content);
