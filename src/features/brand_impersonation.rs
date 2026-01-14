@@ -94,6 +94,44 @@ impl BrandImpersonationFeature {
             ],
         );
         legitimate_domains.insert("tinnitus".to_string(), vec!["hearingaid.com".to_string()]);
+
+        brand_patterns.insert(
+            "aaa".to_string(),
+            vec![
+                r"(?i)\baaa\b".to_string(),
+                r"(?i)\btriple\s*a\b".to_string(),
+                r"(?i)\bamerican\s*automobile\s*association\b".to_string(),
+            ],
+        );
+        legitimate_domains.insert(
+            "aaa".to_string(),
+            vec!["aaa.com".to_string(), "aaa.org".to_string()],
+        );
+
+        brand_patterns.insert(
+            "tmobile".to_string(),
+            vec![
+                r"(?i)\bt-?mobile\b".to_string(),
+                r"(?i)\btmobile\b".to_string(),
+            ],
+        );
+        legitimate_domains.insert(
+            "tmobile".to_string(),
+            vec!["t-mobile.com".to_string(), "tmobile.com".to_string()],
+        );
+
+        brand_patterns.insert(
+            "att".to_string(),
+            vec![r"(?i)\bat&t\b".to_string(), r"(?i)\batt\b".to_string()],
+        );
+        legitimate_domains.insert("att".to_string(), vec!["att.com".to_string()]);
+
+        brand_patterns.insert("verizon".to_string(), vec![r"(?i)\bverizon\b".to_string()]);
+        legitimate_domains.insert(
+            "verizon".to_string(),
+            vec!["verizon.com".to_string(), "verizon.net".to_string()],
+        );
+
         legitimate_domains.insert("paypal".to_string(), vec!["paypal.com".to_string()]);
 
         Self {

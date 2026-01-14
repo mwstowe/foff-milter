@@ -19,15 +19,17 @@
 - [x] No regression tests failing
 
 ### 4. Version Control
-- [ ] All changes committed to git
-- [ ] Version bumped in `Cargo.toml` if needed
-- [ ] Changes pushed to GitHub main branch
-- [ ] No uncommitted changes in working directory
+- [x] All changes committed to git
+- [x] Version bumped in `Cargo.toml` if needed
+- [x] Changes pushed to GitHub main branch
+- [x] No uncommitted changes in working directory
 
 ### 5. Continuous Integration
 - [ ] GitHub Actions CI pipeline passes successfully
-- [ ] All build targets compile successfully
+- [ ] All build targets compile successfully  
 - [ ] All automated tests pass in CI environment
+- [ ] **CI Link**: https://github.com/mwstowe/foff-milter/actions
+- [ ] **Commit**: e9aad26c31b216bce49f8d69693cb35a09a025ce
 
 ### 6. Documentation Updates
 - [ ] `README.md` updated with new version information

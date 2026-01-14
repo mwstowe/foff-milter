@@ -999,18 +999,26 @@ impl SenderAlignmentAnalyzer {
             "dr.", "dr ", "md", "phd", "dds", "dvm", "pharmd", "rn", "np",
         ];
 
-        const MEDICAL_DOMAINS: &[&str] = &[
-            ".edu", "medical", "health", "clinic", "hospital", "research",
-        ];
+        const MEDICAL_DOMAINS: &[&str] = &[".edu", "medical", "clinic", "hospital", "research"];
 
         let sender_lower = sender.to_lowercase();
+
+        // Skip if sender contains promotional keywords
+        if sender_lower.contains("deals")
+            || sender_lower.contains("offers")
+            || sender_lower.contains("promotion")
+            || sender_lower.contains("upgrade")
+            || sender_lower.contains("desk")
+        {
+            return false;
+        }
 
         // Check for medical credentials in sender name
         let has_credentials = MEDICAL_CREDENTIALS
             .iter()
             .any(|cred| sender_lower.contains(cred));
 
-        // Check for medical/research domains
+        // Check for medical/research domains (but not generic "health" in domain)
         let has_medical_domain = MEDICAL_DOMAINS
             .iter()
             .any(|domain| sender_lower.contains(domain));

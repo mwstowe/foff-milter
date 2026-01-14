@@ -25,6 +25,14 @@ impl InvoiceAnalyzer {
             Regex::new(r"(?i)(invoice\s+and\s+details\s+enclosed)").unwrap(),
             Regex::new(r"(?i)(thank\s+you\s+for\s+paying\s+for\s+order)").unwrap(),
             Regex::new(r"(?i)(thank\s+you\s+for\s+choosing\s+us.*invoice)").unwrap(),
+            // Generic greeting + payment received + invoice attached pattern
+            Regex::new(r"(?i)(dear.*payment.*received.*invoice.*attached)").unwrap(),
+            // Alternative pattern for comma-separated greeting
+            Regex::new(r"(?i)(dear,.*payment.*received.*invoice.*attached)").unwrap(),
+            // Order successfully processed patterns
+            Regex::new(r"(?i)(order.*successfully\s+processed)").unwrap(),
+            Regex::new(r"(?i)(find\s+attached.*order\s+summary)").unwrap(),
+            Regex::new(r"(?i)(greetings.*order.*processed)").unwrap(),
         ];
 
         let legitimate_domains = vec![
@@ -290,6 +298,50 @@ impl FeatureExtractor for InvoiceAnalyzer {
                     pattern.as_str(),
                     is_legitimate_or_medical
                 ));
+            }
+        }
+
+        // Check for mass mailing indicators (multiple recipients in To header)
+        if let Some(to_header) = context.headers.get("To") {
+            let recipient_count = to_header.matches(',').count() + 1;
+            if recipient_count >= 10 && !is_legitimate_or_medical {
+                let mass_mail_penalty = if recipient_count >= 30 { 40 } else { 25 };
+                score += mass_mail_penalty;
+                evidence.push(format!(
+                    "Mass mailing detected: {} recipients (invoice context suspicious)",
+                    recipient_count
+                ));
+            }
+        }
+
+        // Check for compromised institutional domains (.org, .edu) sending invoices
+        if score > 0 && !is_legitimate_or_medical {
+            let is_institutional_domain = sender_domain.ends_with(".org")
+                || sender_domain.ends_with(".edu")
+                || from_domain.ends_with(".org")
+                || from_domain.ends_with(".edu");
+
+            if is_institutional_domain {
+                score += 30;
+                evidence.push(format!(
+                    "Institutional domain sending invoice/order content (likely compromised): {}",
+                    sender_domain
+                ));
+            }
+        }
+
+        // Additional penalty for authentication issues combined with invoice content
+        if score > 0 && !is_legitimate_or_medical {
+            // Check for DKIM domain misalignment from headers
+            let has_auth_issues = context
+                .headers
+                .get("X-FOFF-Feature-Evidence")
+                .map(|evidence_header| evidence_header.contains("DKIM domain misaligned"))
+                .unwrap_or(false);
+
+            if has_auth_issues {
+                score += 20;
+                evidence.push("Authentication issues combined with invoice content".to_string());
             }
         }
 
