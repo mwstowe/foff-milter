@@ -29,7 +29,7 @@
 - [ ] All build targets compile successfully  
 - [ ] All automated tests pass in CI environment
 - [ ] **CI Link**: https://github.com/mwstowe/foff-milter/actions
-- [ ] **Commit**: e9aad26c31b216bce49f8d69693cb35a09a025ce
+- [ ] **Commit**: 2a12aad23ba8e87a3827603f6765d7d27a3fcb78
 
 ### 6. Documentation Updates
 - [ ] `README.md` updated with new version information

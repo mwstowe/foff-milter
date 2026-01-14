@@ -1,10 +1,10 @@
-# FOFF Milter v0.8.14
+# FOFF Milter v0.8.15
 
 A comprehensive, enterprise-grade email security platform written in Rust featuring intelligent threat detection, modular rulesets, and zero-configuration deployment.
 
 ## 🎯 **Production Ready - 100% Test Compliance & Zero False Positives**
 
-**Latest Achievement**: Complete threat detection with 100.0% test success rate (431/431 tests passing), advanced Unicode obfuscation detection, enhanced survey scam protection, sophisticated brand impersonation prevention, and comprehensive false positive elimination. Zero false positives achieved through intelligent context analysis, mathematical Unicode normalization, comprehensive threat pattern recognition, and extensive legitimate business service whitelisting.
+**Latest Achievement**: Complete threat detection with 100.0% test success rate (431/431 tests passing), enhanced telecom brand impersonation detection (T-Mobile, AT&T, Verizon), advanced fake invoice/order confirmation detection, compromised institutional domain detection, and comprehensive false positive elimination. Zero false positives achieved through intelligent context analysis, professional credential filtering, and extensive legitimate business service whitelisting.
 
 ## 🚀 Complete Email Security Platform
 
@@ -404,34 +404,35 @@ sudo foff-milter -v -c /etc/foff-milter.toml
 - **Selective blocking**: Use targeted sender blocking patterns
 - **Statistics monitoring**: Track processing performance and bottlenecks
 
-## 🏆 v0.8.13 Production Achievements
+## 🏆 v0.8.15 Production Achievements
 
 ### ✅ **Perfect Threat Detection & Zero False Positives**
-- **431/431 tests passing** with 100.0% success rate across comprehensive test suite including 55 new legitimate business email tests and 6 anonymized spam regression tests
-- **Advanced Unicode obfuscation detection**: Mathematical Alphanumeric Symbols (U+1D400-1D7FF) normalization and scoring
-- **Enhanced survey scam protection**: Detection of "Prime Survey + Brand Impersonation" patterns
-- **Sophisticated brand impersonation prevention**: Multi-layer detection with authentication correlation
+- **431/431 tests passing** with 100.0% success rate across comprehensive test suite
+- **Enhanced telecom brand impersonation detection**: T-Mobile, AT&T, and Verizon protection
+- **Advanced fake invoice/order confirmation detection**: Multiple pattern recognition for order scams
+- **Compromised institutional domain detection**: Flags .org/.edu domains sending commercial content
+- **Professional credential filtering**: Eliminates false reductions for promotional senders
 - **Zero false positives**: All legitimate emails correctly classified while catching advanced threats
-- **Comprehensive business service recognition**: Extensive whitelisting for legitimate retail, healthcare, financial, technology, news, and publishing services
+- **Comprehensive business service recognition**: Extensive whitelisting for legitimate services
 
 ### 🔧 **Advanced Technical Improvements**
-- **Expanded suspicious TLD detection**: Added 6 new high-abuse TLDs (.lat, .info, .biz, .cc, .ws, .tv) for comprehensive coverage
-- **Enhanced domain reputation analysis**: 21 suspicious TLDs now detected with contextual scoring
-- **Unicode normalization expansion**: Complete Mathematical Alphanumeric coverage including digits (U+1D7CE-1D7FF ranges)
-- **Survey authority validation**: Detection of survey claims from non-survey domains (holidaydine.space claiming Microsoft survey)
-- **Enhanced context analysis**: Improved scoring for Unicode obfuscation (40-60 point penalties)
-- **String safety improvements**: Fixed bounds checking in invoice analyzer for malformed headers
+- **Telecom brand protection**: Added T-Mobile, AT&T, Verizon to brand impersonation detection
+- **Suspicious TLD expansion**: Added .bar TLD to high-abuse domain list
+- **Enhanced invoice patterns**: "order successfully processed", "find attached order summary", "greetings order processed"
+- **Compromised domain detection**: Institutional domains (.org/.edu) sending invoice/order content flagged
+- **Professional credential refinement**: Excludes promotional keywords (deals, offers, upgrade, desk) from credential detection
+- **Mass mailing detection**: Enhanced penalties for bulk invoice/order emails
 - **Production quality**: 100% clippy compliance, proper formatting, comprehensive testing
 
 ### 🎯 **Comprehensive Threat Coverage**
-- **Unicode evasion techniques**: Mathematical Unicode character obfuscation in subjects and content
-- **Survey-based social engineering**: Authority claims combined with brand impersonation
-- **Authentication paradox resolution**: Balanced scoring when good auth meets suspicious content
-- **Sophisticated phishing**: Multi-vector attacks using legitimate infrastructure for malicious purposes
+- **Fake order confirmations**: Generic greeting + order processed patterns from compromised domains
+- **Telecom brand impersonation**: T-Mobile, AT&T, Verizon phishing attempts
+- **Institutional domain abuse**: Compromised educational/organizational domains sending scams
+- **Mass-mailed invoice scams**: Bulk fake invoice/order emails with suspicious patterns
+- **Promotional sender impersonation**: iPhone Upgrade Desk, TMobileDeals, etc.
+- **Cross-domain phishing**: Suspicious TLDs (.bar, .shop) used for brand impersonation
+- **Authentication bypass attempts**: DKIM misalignment combined with invoice content
 - **Enterprise-grade detection**: Production-ready with conservative thresholds and zero false positives
-- **Veterinary service platforms**: B2B medical software infrastructure recognition
-- **Suspicious TLD abuse**: Comprehensive detection of 21 high-abuse top-level domains
-- **Tactical gear spam**: Political exploitation and military-themed product scams
 
 ## 📄 License
 
