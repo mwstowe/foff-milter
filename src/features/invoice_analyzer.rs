@@ -70,6 +70,8 @@ impl InvoiceAnalyzer {
             // Health devices
             "withings.com".to_string(),
             "email.withings.com".to_string(),
+            // Construction/contracting
+            "builtsquare.com".to_string(),
         ];
 
         Self {
@@ -120,6 +122,8 @@ impl InvoiceAnalyzer {
             // Health devices
             "withings.com".to_string(),
             "email.withings.com".to_string(),
+            // Construction/contracting
+            "builtsquare.com".to_string(),
         ];
 
         Self {
@@ -310,6 +314,37 @@ impl FeatureExtractor for InvoiceAnalyzer {
                 evidence.push(format!(
                     "Mass mailing detected: {} recipients (invoice context suspicious)",
                     recipient_count
+                ));
+            }
+        }
+
+        // Check for legitimate business context indicators
+        if score > 0 && !is_legitimate_or_medical {
+            let has_professional_software = full_text.to_lowercase().contains("buildertrend")
+                || full_text.to_lowercase().contains("quickbooks")
+                || full_text.to_lowercase().contains("freshbooks")
+                || full_text.to_lowercase().contains("xero")
+                || full_text.to_lowercase().contains("sage");
+
+            let has_cc_header = context.headers.contains_key("Cc");
+
+            let has_personal_context = from_header.contains(" ")
+                && !from_header.to_lowercase().contains("info")
+                && !from_header.to_lowercase().contains("noreply")
+                && !from_header.to_lowercase().contains("support");
+
+            // Reduce score for legitimate business invoice indicators
+            if has_professional_software || (has_cc_header && has_personal_context) {
+                let reduction_factor = if has_professional_software && has_cc_header {
+                    0.3 // 70% reduction for strong business indicators
+                } else {
+                    0.6 // 40% reduction for moderate indicators
+                };
+                let original_score = score;
+                score = (score as f32 * reduction_factor) as i32;
+                evidence.push(format!(
+                    "Legitimate business context detected - score reduced from {} to {}",
+                    original_score, score
                 ));
             }
         }

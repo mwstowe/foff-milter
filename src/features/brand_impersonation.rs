@@ -132,6 +132,24 @@ impl BrandImpersonationFeature {
             vec!["verizon.com".to_string(), "verizon.net".to_string()],
         );
 
+        brand_patterns.insert(
+            "costco".to_string(),
+            vec![
+                r"(?i)\bcostco\b".to_string(),
+                r"(?i)\bc0stc0\b".to_string(), // Character substitution (0 for O)
+            ],
+        );
+        legitimate_domains.insert(
+            "costco".to_string(),
+            vec!["costco.com".to_string(), "costco.ca".to_string()],
+        );
+
+        brand_patterns.insert("keurig".to_string(), vec![r"(?i)\bkeurig\b".to_string()]);
+        legitimate_domains.insert(
+            "keurig".to_string(),
+            vec!["keurig.com".to_string(), "keurig.ca".to_string()],
+        );
+
         legitimate_domains.insert("paypal".to_string(), vec!["paypal.com".to_string()]);
 
         Self {

@@ -1463,6 +1463,16 @@ impl FeatureExtractor for ContextAnalyzer {
             all_evidence.push("Survey scam pattern detected".to_string());
         }
 
+        // Questionnaire/opinion scam detection (Costco-style)
+        let questionnaire_regex = Regex::new(
+            r"(?i)\b(share your opinions|questionnaire program|valued.*member.*participating|member-focused.*questionnaire)\b",
+        )
+        .unwrap();
+        if questionnaire_regex.is_match(&combined_text) {
+            total_score += 30;
+            all_evidence.push("Questionnaire/survey scam pattern detected".to_string());
+        }
+
         // Enhanced survey + brand impersonation detection
         let sender_survey_regex =
             Regex::new(r"(?i)\b(prime.*survey|customer.*survey|member.*survey|survey.*panel)\b")
