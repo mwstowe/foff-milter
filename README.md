@@ -1,4 +1,4 @@
-# FOFF Milter v0.8.15
+# FOFF Milter v0.8.16
 
 A comprehensive, enterprise-grade email security platform written in Rust featuring intelligent threat detection, modular rulesets, and zero-configuration deployment.
 
@@ -404,34 +404,33 @@ sudo foff-milter -v -c /etc/foff-milter.toml
 - **Selective blocking**: Use targeted sender blocking patterns
 - **Statistics monitoring**: Track processing performance and bottlenecks
 
-## 🏆 v0.8.15 Production Achievements
+## 🏆 v0.8.16 Production Achievements
 
 ### ✅ **Perfect Threat Detection & Zero False Positives**
 - **431/431 tests passing** with 100.0% success rate across comprehensive test suite
-- **Enhanced telecom brand impersonation detection**: T-Mobile, AT&T, and Verizon protection
-- **Advanced fake invoice/order confirmation detection**: Multiple pattern recognition for order scams
-- **Compromised institutional domain detection**: Flags .org/.edu domains sending commercial content
-- **Professional credential filtering**: Eliminates false reductions for promotional senders
-- **Zero false positives**: All legitimate emails correctly classified while catching advanced threats
-- **Comprehensive business service recognition**: Extensive whitelisting for legitimate services
+- **Enhanced retail brand impersonation detection**: Costco and Keurig protection with character substitution evasion
+- **Advanced survey/questionnaire scam detection**: Detects "share your opinions" and "questionnaire program" patterns
+- **Legitimate business invoice protection**: Context-aware scoring for professional business communications
+- **Zero false positives**: All legitimate business emails correctly classified while catching advanced threats
+- **Comprehensive business service recognition**: Built Square construction and expanded legitimate business whitelist
 
 ### 🔧 **Advanced Technical Improvements**
-- **Telecom brand protection**: Added T-Mobile, AT&T, Verizon to brand impersonation detection
-- **Suspicious TLD expansion**: Added .bar TLD to high-abuse domain list
-- **Enhanced invoice patterns**: "order successfully processed", "find attached order summary", "greetings order processed"
-- **Compromised domain detection**: Institutional domains (.org/.edu) sending invoice/order content flagged
-- **Professional credential refinement**: Excludes promotional keywords (deals, offers, upgrade, desk) from credential detection
-- **Mass mailing detection**: Enhanced penalties for bulk invoice/order emails
+- **Retail brand protection**: Costco (including C0STC0 character substitution) and Keurig brand impersonation detection
+- **Survey scam patterns**: "share your opinions", "questionnaire program", "valued member participating"
+- **Professional software detection**: BuilderTrend, QuickBooks, FreshBooks, Xero, Sage references reduce false positives
+- **Business context validation**: CC header presence, personal sender names, professional software mentions
+- **Scoring reduction logic**: 40-70% reduction for legitimate business invoice indicators
+- **Built Square whitelisting**: Added across invoice analyzer, server role analyzer, and YAML rules
 - **Production quality**: 100% clippy compliance, proper formatting, comprehensive testing
 
 ### 🎯 **Comprehensive Threat Coverage**
-- **Fake order confirmations**: Generic greeting + order processed patterns from compromised domains
-- **Telecom brand impersonation**: T-Mobile, AT&T, Verizon phishing attempts
-- **Institutional domain abuse**: Compromised educational/organizational domains sending scams
-- **Mass-mailed invoice scams**: Bulk fake invoice/order emails with suspicious patterns
-- **Promotional sender impersonation**: iPhone Upgrade Desk, TMobileDeals, etc.
-- **Cross-domain phishing**: Suspicious TLDs (.bar, .shop) used for brand impersonation
-- **Authentication bypass attempts**: DKIM misalignment combined with invoice content
+- **Dual brand impersonation**: Costco + Keurig survey scams properly detected (score -7 → 193)
+- **Character substitution evasion**: C0STC0 (zeros for O's) detection prevents brand impersonation bypass
+- **Survey-based phishing**: Questionnaire program scams combined with brand impersonation
+- **Retail brand scams**: Major retailer impersonation with reward/prize baits
+- **False positive elimination**: Legitimate construction billing statements properly accepted (score 68 → -2)
+- **Business invoice protection**: Professional context prevents legitimate invoices from being flagged
+- **Context-aware detection**: Distinguishes between fake scams and real business communications
 - **Enterprise-grade detection**: Production-ready with conservative thresholds and zero false positives
 
 ## 📄 License
