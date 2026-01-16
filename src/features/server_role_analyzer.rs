@@ -112,10 +112,12 @@ impl ServerRoleAnalyzer {
             "backerhome.com",
             "gmail.com",
             "outlook.com",
+            "hotmail.com", // Microsoft consumer email
             "yahoo.com",
             "technews.com",
             "ecoflow.com",
             "nytimes.com",
+            "salesmanago.com", // Marketing automation platform
         ];
 
         for legitimate in &legitimate_domains {

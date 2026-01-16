@@ -554,8 +554,19 @@ rules:
                 pattern: "(?i).*(invoice|receipt|statement|bill|payment|quote|estimate).*"
               - type: SenderPattern
                 pattern: ".*@.*(exterminators|contractors|services|business|company)\\.(com|net|org)$"
+              - type: HeaderPattern
+                header: "References"
+                pattern: ".*"
+              - type: HeaderPattern
+                header: "In-Reply-To"
+                pattern: ".*"
+              - type: HeaderPattern
+                header: "Thread-Index"
+                pattern: ".*"
+              - type: SenderPattern
+                pattern: ".*@.*(outlook|hotmail|gmail|yahoo)\\.com$"
     score: 15
-    description: "Emails with only attachments excluding business invoices"
+    description: "Emails with only attachments excluding business invoices and email threads"
 
   # Empty Content Emails
   - name: "Empty Content Emails"
@@ -598,6 +609,17 @@ rules:
               - type: "HeaderPattern"
                 header: "from"
                 pattern: ".*@.*epic\\.com.*"
+              - type: "HeaderPattern"
+                header: "References"
+                pattern: ".*"
+              - type: "HeaderPattern"
+                header: "In-Reply-To"
+                pattern: ".*"
+              - type: "HeaderPattern"
+                header: "Thread-Index"
+                pattern: ".*"
+              - type: SenderPattern
+                pattern: ".*@.*(outlook|hotmail|gmail|yahoo)\\.com$"
     score: 10
     description: "Emails with no subject or body content, excluding NetSuite business systems, medical platforms, and legitimate mailing lists"
   # Weight loss spam

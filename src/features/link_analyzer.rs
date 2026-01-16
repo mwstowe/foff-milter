@@ -675,6 +675,7 @@ impl LinkAnalyzer {
                 "cname.cjm.adobe.com".to_string(), // Adobe Campaign CNAME
                 "klaviyomail.com".to_string(),     // Klaviyo ESP
                 "klaviyodns.com".to_string(),      // Klaviyo DNS/tracking
+                "salesmanago.com".to_string(),     // SALESmanago marketing automation
             ];
 
             DomainUtils::matches_domain_list(&domain, &esp_domains)
@@ -884,6 +885,8 @@ impl LinkAnalyzer {
             ("mcsv", vec!["swansonsnursery"]),        // MailChimp ESP for Swansons Nursery
             ("musvc", vec!["pierotucci"]),            // Mail.com ESP for Pierotucci leather goods
             ("pierotucci", vec!["musvc", "software-newsletter"]), // Pierotucci can link to Mail.com ESP
+            ("gog", vec!["salesmanago"]), // GOG.com uses SALESmanago marketing automation
+            ("salesmanago", vec!["gog"]), // SALESmanago links back to GOG
         ];
 
         for (business_domain, partners) in &business_partnerships {
