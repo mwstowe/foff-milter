@@ -305,10 +305,36 @@ impl FeatureExtractor for InvoiceAnalyzer {
             }
         }
 
-        // Check for mass mailing indicators (multiple recipients in To header)
-        if let Some(to_header) = context.headers.get("To") {
+        // Check for compromised institutional domains sending mass spam
+        let is_institutional_domain = sender_domain.ends_with(".org")
+            || sender_domain.ends_with(".edu")
+            || from_domain.ends_with(".org")
+            || from_domain.ends_with(".edu")
+            || sender_domain.contains("school")
+            || sender_domain.contains("liceo")  // Italian schools
+            || sender_domain.contains("college")
+            || sender_domain.contains("university")
+            || sender_domain.contains(".ac.")  // Academic domains (uk, etc)
+            || sender_domain.ends_with(".ac.uk");
+
+        if let Some(to_header) = context
+            .headers
+            .get("To")
+            .or_else(|| context.headers.get("to"))
+        {
             let recipient_count = to_header.matches(',').count() + 1;
-            if recipient_count >= 10 && !is_legitimate_or_medical {
+
+            // Institutional domain + mass recipients = likely compromised account
+            if recipient_count >= 10 && is_institutional_domain && !is_legitimate_or_medical {
+                let penalty = if recipient_count >= 30 { 60 } else { 45 };
+                score += penalty;
+                evidence.push(format!(
+                    "Compromised institutional account: {} sending to {} recipients",
+                    sender_domain, recipient_count
+                ));
+            }
+            // Mass mailing in invoice context (existing check)
+            else if recipient_count >= 10 && !is_legitimate_or_medical && score > 0 {
                 let mass_mail_penalty = if recipient_count >= 30 { 40 } else { 25 };
                 score += mass_mail_penalty;
                 evidence.push(format!(
@@ -350,19 +376,12 @@ impl FeatureExtractor for InvoiceAnalyzer {
         }
 
         // Check for compromised institutional domains (.org, .edu) sending invoices
-        if score > 0 && !is_legitimate_or_medical {
-            let is_institutional_domain = sender_domain.ends_with(".org")
-                || sender_domain.ends_with(".edu")
-                || from_domain.ends_with(".org")
-                || from_domain.ends_with(".edu");
-
-            if is_institutional_domain {
-                score += 30;
-                evidence.push(format!(
-                    "Institutional domain sending invoice/order content (likely compromised): {}",
-                    sender_domain
-                ));
-            }
+        if score > 0 && !is_legitimate_or_medical && is_institutional_domain {
+            score += 30;
+            evidence.push(format!(
+                "Institutional domain sending invoice/order content (likely compromised): {}",
+                sender_domain
+            ));
         }
 
         // Additional penalty for authentication issues combined with invoice content
