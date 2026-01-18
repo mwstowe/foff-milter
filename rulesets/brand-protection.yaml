@@ -1,6 +1,47 @@
 name: "Brand Protection"
 enabled: true
 rules:
+  # Harbor Freight Brand Impersonation
+  - name: "Harbor Freight Brand Impersonation"
+    enabled: true
+    criteria:
+      type: And
+      criteria:
+        - type: Or
+          criteria:
+            - type: SubjectPattern
+              pattern: "(?i).*(harbor.*freight|harborfreight).*"
+            - type: BodyPattern
+              pattern: "(?i).*(harbor.*freight|harborfreight).*"
+            - type: HeaderPattern
+              header: "From"
+              pattern: "(?i).*(harbor.*freight|harborfreight|harbor@freight).*"
+        - type: Not
+          criteria:
+            type: SenderPattern
+            pattern: ".*@.*(harborfreight|hftools)\\.(com|net)$"
+    score: 125
+    description: "Harbor Freight brand impersonation from non-legitimate domain"
+
+  # Chinese Domain Amazon Impersonation
+  - name: "Chinese Domain Amazon Impersonation"
+    enabled: true
+    criteria:
+      type: And
+      criteria:
+        - type: SenderPattern
+          pattern: ".*@.*\\.cn$"
+        - type: Or
+          criteria:
+            - type: SubjectPattern
+              pattern: "(?i).*amazon.*"
+            - type: SubjectPattern
+              pattern: ".*QW1hem9u.*"  # Base64 encoded "Amazon"
+            - type: BodyPattern
+              pattern: "(?i).*amazon.*"
+    score: 150
+    description: "Chinese domain impersonating Amazon (common phishing pattern)"
+
   # Feature-Based Brand Impersonation Detection
   - name: "Feature-Based Brand Impersonation"
     enabled: true

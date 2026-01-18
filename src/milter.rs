@@ -133,10 +133,14 @@ impl Drop for EmailToken {
 pub fn decode_mime_header(header_value: &str) -> String {
     let mut result = String::new();
     let mut remaining = header_value;
+    let mut last_was_encoded = false;
 
     while let Some(start) = remaining.find("=?") {
-        // Add any text before the encoded part
-        result.push_str(&remaining[..start]);
+        // Add any text before the encoded part (but skip whitespace between adjacent encoded-words per RFC 2047)
+        let before_text = &remaining[..start];
+        if !last_was_encoded || !before_text.trim().is_empty() {
+            result.push_str(before_text);
+        }
 
         if let Some(end) = remaining[start..].find("?=") {
             let encoded_part = &remaining[start..start + end + 2];
@@ -156,11 +160,14 @@ pub fn decode_mime_header(header_value: &str) -> String {
                         {
                             if let Ok(decoded_str) = String::from_utf8(decoded_bytes) {
                                 result.push_str(&decoded_str);
+                                last_was_encoded = true;
                             } else {
                                 result.push_str(encoded_part); // Fallback to original
+                                last_was_encoded = false;
                             }
                         } else {
                             result.push_str(encoded_part); // Fallback to original
+                            last_was_encoded = false;
                         }
                     }
                     "Q" => {
@@ -170,13 +177,16 @@ pub fn decode_mime_header(header_value: &str) -> String {
                             .replace("=20", " ")
                             .replace("=3D", "=");
                         result.push_str(&decoded);
+                        last_was_encoded = true;
                     }
                     _ => {
                         result.push_str(encoded_part); // Unknown encoding, keep original
+                        last_was_encoded = false;
                     }
                 }
             } else {
                 result.push_str(encoded_part); // Malformed, keep original
+                last_was_encoded = false;
             }
 
             remaining = &remaining[start + end + 2..];

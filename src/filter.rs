@@ -60,24 +60,42 @@ fn decode_mime_words(text: &str) -> String {
         static ref MIME_WORD_RE: Regex = Regex::new(r"=\?([^?]+)\?([BQbq])\?([^?]*)\?=").unwrap();
     }
 
-    MIME_WORD_RE
-        .replace_all(text, |caps: &regex::Captures| {
-            let charset = &caps[1];
-            let encoding = caps[2].to_uppercase();
-            let data = &caps[3];
+    let mut result = String::new();
+    let mut last_end = 0;
+    let mut last_was_encoded = false;
 
-            let decoded_bytes = match encoding.as_str() {
-                "B" => BASE64_STANDARD.decode(data).unwrap_or_default(),
-                "Q" => decode_quoted_printable(data),
-                _ => data.as_bytes().to_vec(),
-            };
+    for cap in MIME_WORD_RE.captures_iter(text) {
+        let match_start = cap.get(0).unwrap().start();
+        let match_end = cap.get(0).unwrap().end();
 
-            // Try to decode with specified charset
-            let encoding = Encoding::for_label(charset.as_bytes()).unwrap_or(UTF_8);
-            let (decoded_text, _, _) = encoding.decode(&decoded_bytes);
-            decoded_text.to_string()
-        })
-        .to_string()
+        // Add text between matches, but skip whitespace between adjacent encoded-words (RFC 2047)
+        let between = &text[last_end..match_start];
+        if !last_was_encoded || !between.trim().is_empty() {
+            result.push_str(between);
+        }
+
+        let charset = &cap[1];
+        let encoding = cap[2].to_uppercase();
+        let data = &cap[3];
+
+        let decoded_bytes = match encoding.as_str() {
+            "B" => BASE64_STANDARD.decode(data).unwrap_or_default(),
+            "Q" => decode_quoted_printable(data),
+            _ => data.as_bytes().to_vec(),
+        };
+
+        // Try to decode with specified charset
+        let encoding = Encoding::for_label(charset.as_bytes()).unwrap_or(UTF_8);
+        let (decoded_text, _, _) = encoding.decode(&decoded_bytes);
+        result.push_str(&decoded_text);
+
+        last_end = match_end;
+        last_was_encoded = true;
+    }
+
+    // Add any remaining text
+    result.push_str(&text[last_end..]);
+    result
 }
 
 /// Simple quoted-printable decoder

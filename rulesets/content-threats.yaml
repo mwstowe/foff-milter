@@ -46,6 +46,31 @@ rules:
       pattern: "(?i).*(business.*development|partnership.*opportunity|investment.*proposal).*"
     score: 150
 
+  # Stock spam and pump-and-dump schemes
+  - name: "Stock Spam and Pump-and-Dump"
+    enabled: true
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(executive.*summary|stock.*pick|hot.*stock|penny.*stock|stock.*alert|trading.*alert).*"
+        - type: And
+          criteria:
+            - type: Or
+              criteria:
+                - type: SubjectPattern
+                  pattern: "(?i).*(stock|trading|investment|portfolio).*"
+                - type: BodyPattern
+                  pattern: "(?i).*(stock.*genius|trading.*genius|investment.*genius|stock.*alert|penny.*stock).*"
+            - type: Or
+              criteria:
+                - type: BodyPattern
+                  pattern: "(?i).*(buy.*now|act.*fast|limited.*time|explosive.*growth|guaranteed.*profit).*"
+                - type: SenderPattern
+                  pattern: ".*@.*(stockgenius|stockalert|pennystocks|tradingalert).*"
+    score: 150
+    description: "Stock spam, pump-and-dump schemes, and unsolicited financial advice"
+
   # Medical misinformation - cure claims
   - name: "Unsubstantiated medical cure claims"
     enabled: true
@@ -111,19 +136,27 @@ rules:
   - name: "Romance Scam Patterns"
     enabled: true
     criteria:
-      type: "SubjectPattern"
-      pattern: "(?i).*(lonely.*woman|beautiful.*girl|meet.*singles|find.*love|romance.*scam|sugar.*daddy|sugar.*baby|want.*to.*be.*with.*you|how.*about.*you).*"
-    score: 40
+      type: Or
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(lonely.*woman|beautiful.*girl|meet.*singles|find.*love|romance.*scam|sugar.*daddy|sugar.*baby|want.*to.*be.*with.*you|how.*about.*you).*"
+        - type: "SubjectPattern"
+          pattern: "(?i).*(woman.*alone|woman.*lonely|girls?.*alone|girls?.*lonely|don't.*want.*to.*be.*alone).*"
+    score: 75
     description: "Romance and dating scam patterns"
 
-  # Ukrainian dating spam direct
-  - name: "Ukrainian dating spam direct"
+  # Ukrainian dating spam
+  - name: "Ukrainian Dating Spam"
     enabled: true
     criteria:
-      type: "SubjectPattern"
-      pattern: "(?i).*ukrainian.*girl.*"
+      type: Or
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*ukrainian.*(girl|woman|women|ladies|beauty|beauties).*"
+        - type: "BodyPattern"
+          pattern: "(?i).*ukrainian.*(girl|woman|women|ladies|dating|romance).*"
     score: 75
-    description: "Ukrainian dating spam"
+    description: "Ukrainian dating and romance spam"
 
   # Bayesian Spam Word Patterns
   - name: "Bayesian Spam Word Patterns"
