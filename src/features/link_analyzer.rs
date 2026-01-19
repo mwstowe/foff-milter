@@ -756,6 +756,8 @@ impl LinkAnalyzer {
             "musvc3.net",
             "msgfocus.com",
             "software-newsletter.musvc3.net",
+            "sng.link",       // Uber's link shortener
+            "rides.sng.link", // Uber rides
         ];
         if legitimate_esp_domains
             .iter()

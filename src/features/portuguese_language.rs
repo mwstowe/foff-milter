@@ -58,6 +58,9 @@ impl FeatureExtractor for PortugueseLanguageAnalyzer {
                 "nytimes.com",
                 "washingtonpost.com",
                 "toast-restaurants.com",
+                "uber.com",
+                "mgm.uber.com",
+                "lyft.com",
             ];
 
             let is_legitimate_retail = legitimate_retail_domains

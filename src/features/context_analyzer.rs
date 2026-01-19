@@ -594,6 +594,8 @@ impl ContextAnalyzer {
             || from_header.to_lowercase().contains("netflix")
             || from_header.to_lowercase().contains("hulu")
             || from_header.to_lowercase().contains("amazon")
+            || from_header.to_lowercase().contains("uber")
+            || from_header.to_lowercase().contains("lyft")
             || from_header.to_lowercase().contains("backerhome")
             || from_header.to_lowercase().contains("nytimes")
             || from_header.to_lowercase().contains("capitalone")
