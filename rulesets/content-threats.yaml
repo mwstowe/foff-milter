@@ -71,6 +71,51 @@ rules:
     score: 150
     description: "Stock spam, pump-and-dump schemes, and unsolicited financial advice"
 
+  # SEO and web services spam
+  - name: "SEO and Web Services Spam"
+    enabled: true
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(package.*for.*keywords|seo.*package|ranking.*package|backlink.*package).*"
+        - type: And
+          criteria:
+            - type: Or
+              criteria:
+                - type: BodyPattern
+                  pattern: "(?i).*(not.*ranking.*high|improve.*your.*ranking|seo.*services|backlink.*building|keyword.*optimization).*"
+                - type: BodyPattern
+                  pattern: "(?i).*(search.*engine.*optimization|google.*ranking|website.*ranking|increase.*traffic).*"
+            - type: Or
+              criteria:
+                - type: BodyPattern
+                  pattern: "(?i).*(looking.*at.*your.*website|realized.*that.*despite|not.*ranking.*on.*google).*"
+                - type: SubjectPattern
+                  pattern: "(?i).*(keywords|seo|ranking|backlink).*"
+    score: 100
+    description: "Unsolicited SEO and web services spam"
+
+  # Fake antivirus and security software spam
+  - name: "Fake Antivirus and Security Spam"
+    enabled: true
+    criteria:
+      type: And
+      criteria:
+        - type: Or
+          criteria:
+            - type: SubjectPattern
+              pattern: "(?i).*(data.*vulnerable|secure.*it.*today|antivirus.*protection|security.*software).*"
+            - type: HeaderPattern
+              header: "From"
+              pattern: "(?i).*(antivirus.*protection|security.*software|data.*protection).*"
+        - type: Not
+          criteria:
+            type: SenderPattern
+            pattern: ".*@.*(norton|mcafee|kaspersky|bitdefender|avast|avg|eset|sophos|trendmicro|symantec)\\.(com|net)$"
+    score: 125
+    description: "Fake antivirus and security software spam from non-legitimate vendors"
+
   # Medical misinformation - cure claims
   - name: "Unsubstantiated medical cure claims"
     enabled: true
