@@ -177,6 +177,38 @@ rules:
     score: 50
     description: "Adult content and dating scam detection"
 
+  # Fake Delivery Notification Scams
+  - name: "Fake Delivery Notification"
+    enabled: true
+    criteria:
+      type: And
+      criteria:
+        - type: Or
+          criteria:
+            - type: SubjectPattern
+              pattern: "(?i).*(delivery.*failed|parcel.*information|package.*held|shipment.*delayed|delivery.*attempt|address.*verification|incorrect.*address.*delivery).*"
+            - type: BodyPattern
+              pattern: "(?i).*(delivery.*failed|incorrect.*address.*delivery|verify.*shipping.*address|update.*delivery.*address|parcel.*waiting|package.*undeliverable).*"
+        - type: Not
+          criteria:
+            type: Or
+            criteria:
+              - type: SenderPattern
+                pattern: ".*@.*(usps|fedex|ups|dhl|amazon|ebay|shopify|torrid)\\.(com|gov)$"
+              - type: BodyPattern
+                pattern: "(?i).*(delays.*in.*shipping.*or.*delivery.*from.*factors|standard.*shipping.*terms).*"
+    score: 100
+    description: "Fake delivery notification from non-shipping company"
+
+  # Google Translate URL Wrapper Abuse
+  - name: "Google Translate Phishing Wrapper"
+    enabled: true
+    criteria:
+      type: BodyPattern
+      pattern: "(?i).*translate\\.google\\.com/translate\\?.*u=.*"
+    score: 150
+    description: "Phishing URL wrapped in Google Translate to hide destination"
+
   # Romance Scam Patterns
   - name: "Romance Scam Patterns"
     enabled: true
