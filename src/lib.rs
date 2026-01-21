@@ -28,6 +28,7 @@ pub mod statistics;
 pub mod toml_config;
 pub mod trust_analyzer;
 pub mod url_resolver;
+pub mod version;
 
 // Re-export Config and related types for backward compatibility
 pub use filter::{FilterEngine, MailContext};

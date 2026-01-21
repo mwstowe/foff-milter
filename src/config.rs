@@ -274,7 +274,7 @@ impl Config {
             default_action: Action::Accept,
             statistics: None,
             rules: Vec::new(),
-            version: env!("CARGO_PKG_VERSION").to_string(),
+            version: crate::version::VERSION.to_string(),
             rule_set_timestamp: chrono::Utc::now()
                 .format("%Y-%m-%d %H:%M:%S UTC")
                 .to_string(),
@@ -325,7 +325,7 @@ impl Config {
                 flush_interval_seconds: Some(s.flush_interval_seconds),
             }),
             rules: Vec::new(),
-            version: env!("CARGO_PKG_VERSION").to_string(),
+            version: crate::version::VERSION.to_string(),
             rule_set_timestamp: chrono::Utc::now()
                 .format("%Y-%m-%d %H:%M:%S UTC")
                 .to_string(),

@@ -438,7 +438,7 @@ impl TomlConfig {
             feature_config_dir: None,
             rules: vec![],
             smtp: None,
-            version: env!("CARGO_PKG_VERSION").to_string(),
+            version: crate::version::VERSION.to_string(),
             rule_set_timestamp: chrono::Utc::now()
                 .format("%Y-%m-%d %H:%M:%S UTC")
                 .to_string(),
