@@ -308,7 +308,8 @@ impl FeatureExtractor for BrandImpersonationFeature {
                     .get("from")
                     .and_then(|from| {
                         // Extract display name from "Display Name <email@domain.com>"
-                        from.find('<').map(|start| from[..start].trim().to_lowercase())
+                        from.find('<')
+                            .map(|start| from[..start].trim().to_lowercase())
                     })
                     .unwrap_or_default();
 
