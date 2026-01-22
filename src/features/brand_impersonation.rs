@@ -300,6 +300,50 @@ impl FeatureExtractor for BrandImpersonationFeature {
         let mut evidence = Vec::new();
         let mut confidence: f32 = 0.0;
 
+        // Check for recipient domain impersonation in display name
+        if let Some(to_header) = context.headers.get("to") {
+            if let Some(recipient_domain) = self.extract_domain(to_header) {
+                let display_name = context
+                    .headers
+                    .get("from")
+                    .and_then(|from| {
+                        // Extract display name from "Display Name <email@domain.com>"
+                        from.find('<').map(|start| from[..start].trim().to_lowercase())
+                    })
+                    .unwrap_or_default();
+
+                // Extract sender domain from sender or from_header
+                let sender_domain = context
+                    .sender
+                    .as_ref()
+                    .or(context.from_header.as_ref())
+                    .and_then(|s| self.extract_domain(s))
+                    .unwrap_or_default()
+                    .to_lowercase();
+
+                // Check if display name contains recipient domain (without dots) but sender is from different domain
+                let recipient_domain_nodots = recipient_domain.replace('.', "");
+                let recipient_domain_parts: Vec<&str> = recipient_domain.split('.').collect();
+
+                // Check if display name contains the main domain part (before TLD)
+                let main_domain_part = recipient_domain_parts.first().unwrap_or(&"");
+                let contains_domain = display_name.contains(&recipient_domain_nodots)
+                    || display_name.contains(&recipient_domain.replace('.', "_"))
+                    || display_name.contains(&recipient_domain.replace('.', "-"))
+                    || (!main_domain_part.is_empty() && display_name.contains(main_domain_part));
+
+                if !display_name.is_empty() && contains_domain && sender_domain != recipient_domain
+                {
+                    score += 150;
+                    confidence = 95.0;
+                    evidence.push(format!(
+                        "CRITICAL: Display name '{}' impersonates recipient domain '{}' but sender is from '{}'",
+                        display_name, recipient_domain, sender_domain
+                    ));
+                }
+            }
+        }
+
         // Get sender domain
         let sender_domain = if let Some(sender) = &context.sender {
             self.extract_domain(sender)
