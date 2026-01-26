@@ -110,7 +110,9 @@ rules:
         - type: Or
           criteria:
             - type: SenderPattern
-              pattern: ".*@.*(pot|cannabis|cbd|dispensary|hemp).*\\.(com|net|org)$"
+              pattern: ".*@.*(cannabis|dispensary|hemp).*\\.(com|net|org)$"
+            - type: SenderPattern
+              pattern: ".*@.*\\b(pot|cbd)\\b.*\\.(com|net|org)$"
         - type: FeatureAnalysis
           feature_name: "Authentication Analysis"
           evidence_pattern: "DKIM authentication passed"

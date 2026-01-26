@@ -109,6 +109,19 @@ impl BrandImpersonationFeature {
         );
 
         brand_patterns.insert(
+            "tractor_supply".to_string(),
+            vec![
+                r"(?i)\btractor\s*supply\b".to_string(),
+                r"(?i)\btractor-supply\b".to_string(),
+                r"(?i)\bts\s*co\b".to_string(),
+            ],
+        );
+        legitimate_domains.insert(
+            "tractor_supply".to_string(),
+            vec!["tractorsupply.com".to_string()],
+        );
+
+        brand_patterns.insert(
             "tmobile".to_string(),
             vec![
                 r"(?i)\bt-?mobile\b".to_string(),
