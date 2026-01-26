@@ -216,6 +216,8 @@ rules:
                 pattern: ".*@(nedm\\.asus|.*\\.asus|dt\\.torrid)\\.(com|net|org)$"
               - type: SenderPattern
                 pattern: ".*@.*(charmtracker|acemed|healthcare|medical|clinic|hospital)\\.(com|net|org)$"
+              - type: SenderPattern
+                pattern: ".*@.*(nytimes|washingtonpost|cnn|bbc|reuters|ap|wsj|usatoday)\\.(com|org)$"
               - type: HeaderPattern
                 header: "Authentication-Results"
                 pattern: "dkim=pass.*fidelity\\.com"
@@ -369,6 +371,8 @@ rules:
                 pattern: ".*@.*(docusign|dropbox|google|microsoft|onedrive|box)\\.(com|net|org)$"
               - type: "SenderPattern"
                 pattern: ".*@.*(dominos|doordash|butcherbox|usps|walgreens|xfinity)\\.(com|net|org)$"
+              - type: "SenderPattern"
+                pattern: ".*@.*(nytimes|washingtonpost|cnn|bbc|reuters|ap|wsj|usatoday)\\.(com|org)$"
               - type: "HeaderPattern"
                 header: "From"
                 pattern: "(?i).*(AceMed|Medical|Healthcare|Clinic|Hospital|EHR|Patient Portal).*"

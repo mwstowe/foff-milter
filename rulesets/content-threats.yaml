@@ -22,6 +22,10 @@ rules:
               pattern: "(?i).*(blood.*herb|destroys.*pressure|overnight.*cure|miracle.*diabetes|secret.*cure).*"
         - type: BodyPattern
           pattern: "(?i).*(blood.*pressure|diabetes|a1c|cholesterol|heart.*disease|weight.*loss).*"
+        - type: Not
+          criteria:
+            type: SenderPattern
+            pattern: ".*@.*(nytimes|washingtonpost|cnn|bbc|reuters|ap|wsj|usatoday)\\.(com|org)$"
     score: 200
     description: "Health misinformation and miracle cure claims"
   
@@ -819,12 +823,18 @@ rules:
   # Email list selling
   - name: "Email List Selling Spam"
     criteria:
-      type: Or
+      type: And
       criteria:
-        - type: SubjectPattern
-          pattern: "(?i).*(email.*list.*selling|selling.*email.*list|buy.*email.*list).*"
-        - type: BodyPattern
-          pattern: "(?i).*(email.*list.*selling|selling.*email.*list|buy.*email.*list).*"
+        - type: Or
+          criteria:
+            - type: SubjectPattern
+              pattern: "(?i).*(email.*list.*selling|selling.*email.*list|buy.*email.*list).*"
+            - type: BodyPattern
+              pattern: "(?i).*(email.*list.*selling|selling.*email.*list|buy.*email.*list).*"
+        - type: Not
+          criteria:
+            type: SenderPattern
+            pattern: ".*@.*(nytimes|washingtonpost|cnn|bbc|reuters|ap|wsj|usatoday)\\.(com|org)$"
     score: 250
   # Credit card and financial resolution spam
   - name: "Credit Card Resolution Spam"

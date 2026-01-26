@@ -647,6 +647,25 @@ impl SenderAlignmentAnalyzer {
                     }
                 }
 
+                // Skip brand mentions from legitimate news organizations (they report on all companies)
+                let news_organizations = [
+                    "nytimes.com",
+                    "washingtonpost.com",
+                    "cnn.com",
+                    "bbc.com",
+                    "bbc.co.uk",
+                    "reuters.com",
+                    "ap.org",
+                    "wsj.com",
+                    "usatoday.com",
+                ];
+                if news_organizations
+                    .iter()
+                    .any(|org| sender_info.from_domain.contains(org))
+                {
+                    continue;
+                }
+
                 // Check if sender domain is legitimate for this brand
                 let domain_legitimate = legitimate_domains.iter().any(|domain| {
                     sender_info.from_domain.contains(domain)
