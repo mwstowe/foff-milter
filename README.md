@@ -1,10 +1,10 @@
-# FOFF Milter v0.8.16
+# FOFF Milter v0.8.17
 
 A comprehensive, enterprise-grade email security platform written in Rust featuring intelligent threat detection, modular rulesets, and zero-configuration deployment.
 
 ## 🎯 **Production Ready - 100% Test Compliance & Zero False Positives**
 
-**Latest Achievement**: Complete threat detection with 100.0% test success rate (431/431 tests passing), enhanced telecom brand impersonation detection (T-Mobile, AT&T, Verizon), advanced fake invoice/order confirmation detection, compromised institutional domain detection, and comprehensive false positive elimination. Zero false positives achieved through intelligent context analysis, professional credential filtering, and extensive legitimate business service whitelisting.
+**Latest Achievement**: Critical bug fix for header continuation line handling that caused features to receive empty subjects in milter mode. Enhanced Chinese domain Amazon impersonation detection and Ukrainian romance spam patterns. Maintains 431/431 tests passing (100% success rate) with zero false positives.
 
 ## 🚀 Complete Email Security Platform
 

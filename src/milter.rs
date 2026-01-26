@@ -544,9 +544,29 @@ impl Milter {
                                             existing_value,
                                             combined_value
                                         );
-                                                mail_ctx
-                                                    .headers
-                                                    .insert(last_header.clone(), combined_value);
+                                                mail_ctx.headers.insert(
+                                                    last_header.clone(),
+                                                    combined_value.clone(),
+                                                );
+
+                                                // Also update special fields if this is a continuation of them
+                                                match last_header.as_str() {
+                                                    "subject" => {
+                                                        let decoded_subject =
+                                                            decode_mime_header(&combined_value);
+                                                        mail_ctx.subject = Some(decoded_subject);
+                                                    }
+                                                    "from" => {
+                                                        if let Some(email) =
+                                                            extract_email_from_header(
+                                                                &combined_value,
+                                                            )
+                                                        {
+                                                            mail_ctx.from_header = Some(email);
+                                                        }
+                                                    }
+                                                    _ => {}
+                                                }
                                             }
                                         }
                                     } else {
