@@ -1,6 +1,22 @@
 name: "Brand Protection"
 enabled: true
 rules:
+  # Brand Name in Sender Address from Non-Brand Domain
+  - name: "Brand Name in Sender Address from Non-Brand Domain"
+    enabled: true
+    criteria:
+      type: And
+      criteria:
+        - type: HeaderPattern
+          header: "From"
+          pattern: "(?i).*(carshield|geico|progressive|allstate|statefarm|liberty.*mutual).*@.*"
+        - type: Not
+          criteria:
+            type: SenderPattern
+            pattern: ".*@.*(carshield|geico|progressive|allstate|statefarm|libertymutual)\\.(com|net)$"
+    score: 75
+    description: "Insurance brand name in sender address but from non-brand domain"
+
   # Suspicious Forwarding Domain
   - name: "Suspicious Forwarding Domain"
     enabled: true

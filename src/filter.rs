@@ -3928,35 +3928,74 @@ impl FilterEngine {
                 }
                 Criteria::SenderPattern { pattern } => {
                     if let Some(regex) = self.compiled_patterns.get(pattern) {
-                        // Check both envelope sender and From header sender
-                        if let Some(sender) = &context.sender {
-                            log::debug!("SenderPattern checking envelope sender: '{}' against pattern: '{}'", sender, pattern);
-                            if regex.is_match(sender) {
-                                log::debug!("SenderPattern matched envelope sender: '{}'", sender);
-                                return true;
-                            }
-                        }
-                        if let Some(from_header) = &context.from_header {
-                            // Extract just the email address from the From header
-                            if let Some(email) = extract_email_from_header(from_header) {
-                                log::debug!(
-                                    "SenderPattern checking extracted email: '{}' (from '{}') against pattern: '{}'",
-                                    email,
-                                    from_header,
-                                    pattern
-                                );
-                                if regex.is_match(&email) {
+                        // For forwarded emails, prioritize From header over envelope sender
+                        // since envelope sender is the forwarding service (gmail.com, etc.)
+                        let check_from_first = context.forwarding_source.is_some();
+
+                        if check_from_first {
+                            // Check From header first for forwarded emails
+                            if let Some(from_header) = &context.from_header {
+                                if let Some(email) = extract_email_from_header(from_header) {
                                     log::debug!(
-                                        "SenderPattern matched extracted email: '{}'",
-                                        email
+                                        "SenderPattern (forwarded) checking extracted email: '{}' (from '{}') against pattern: '{}'",
+                                        email,
+                                        from_header,
+                                        pattern
+                                    );
+                                    if regex.is_match(&email) {
+                                        log::debug!(
+                                            "SenderPattern matched extracted email: '{}'",
+                                            email
+                                        );
+                                        return true;
+                                    }
+                                }
+                            }
+                            // Fall back to envelope sender if From header didn't match
+                            if let Some(sender) = &context.sender {
+                                log::debug!("SenderPattern (forwarded fallback) checking envelope sender: '{}' against pattern: '{}'", sender, pattern);
+                                if regex.is_match(sender) {
+                                    log::debug!(
+                                        "SenderPattern matched envelope sender: '{}'",
+                                        sender
                                     );
                                     return true;
                                 }
-                            } else {
-                                log::debug!(
-                                    "SenderPattern could not extract email from from_header: '{}'",
-                                    from_header
-                                );
+                            }
+                        } else {
+                            // Normal (non-forwarded) emails: check envelope sender first
+                            if let Some(sender) = &context.sender {
+                                log::debug!("SenderPattern checking envelope sender: '{}' against pattern: '{}'", sender, pattern);
+                                if regex.is_match(sender) {
+                                    log::debug!(
+                                        "SenderPattern matched envelope sender: '{}'",
+                                        sender
+                                    );
+                                    return true;
+                                }
+                            }
+                            if let Some(from_header) = &context.from_header {
+                                // Extract just the email address from the From header
+                                if let Some(email) = extract_email_from_header(from_header) {
+                                    log::debug!(
+                                        "SenderPattern checking extracted email: '{}' (from '{}') against pattern: '{}'",
+                                        email,
+                                        from_header,
+                                        pattern
+                                    );
+                                    if regex.is_match(&email) {
+                                        log::debug!(
+                                            "SenderPattern matched extracted email: '{}'",
+                                            email
+                                        );
+                                        return true;
+                                    }
+                                } else {
+                                    log::debug!(
+                                        "SenderPattern could not extract email from from_header: '{}'",
+                                        from_header
+                                    );
+                                }
                             }
                         }
                         log::debug!("SenderPattern no match for pattern: '{}'", pattern);
