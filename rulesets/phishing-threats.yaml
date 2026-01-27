@@ -819,3 +819,79 @@ rules:
               - type: SenderPattern
                 pattern: ".*@.*(asus|google|microsoft|apple|amazon)\\.(com|net|org)$"
     score: 200
+
+  # Institutional Domain Commercial Abuse
+  - name: "Institutional Domain Commercial Abuse"
+    enabled: true
+    criteria:
+      type: And
+      criteria:
+        - type: Or
+          criteria:
+            - type: SenderPattern
+              pattern: ".*@.*\\.(gov|edu|mil)\\."
+            - type: SenderPattern
+              pattern: ".*@.*\\.(gov|edu|mil)$"
+        - type: Or
+          criteria:
+            - type: SubjectPattern
+              pattern: "(?i).*(payment|invoice|order|receipt|transaction|billing|purchase).*"
+            - type: CombinedTextPattern
+              pattern: "(?i).*(payment.*received|order.*confirmed|invoice.*attached|transaction.*complete).*"
+        - type: Not
+          criteria:
+            type: Or
+            criteria:
+              - type: SenderPattern
+                pattern: ".*@.*(bursar|finance|accounting|treasurer|payment|billing).*\\.(gov|edu|mil)"
+              - type: SubjectPattern
+                pattern: "(?i).*(tuition|student.*account|university.*bill|campus.*card).*"
+    score: 80
+    description: "Institutional domains sending commercial/payment content"
+
+  # Young Domain Random Sender
+  - name: "Young Domain Random Sender"
+    enabled: true
+    criteria:
+      type: And
+      criteria:
+        - type: SenderPattern
+          pattern: ".*[a-z]{12,}@.*"
+        - type: Not
+          criteria:
+            type: Or
+            criteria:
+              - type: SenderPattern
+                pattern: ".*@.*(noreply|no-reply|newsletter|info|support|contact|hello|team|notification|updates|marketing|investments|communications|services).*"
+              - type: SenderPattern
+                pattern: ".*@.*(sendgrid|mailchimp|mailgun|amazonses|sparkpost|mandrill|fidelity|amazon|disney|iheart|britishairways|cdw|msgfocus|thinkgeek|concurcompleat|vacuums|emailsp)\\.(com|net)$"
+              - type: SenderPattern
+                pattern: ".*@bounce\\.(crm\\.ba|cdwemail|emailsp)\\.(com|net)$"
+              - type: SenderPattern
+                pattern: ".*@.*(gov|edu|mil|org)$"
+              - type: SenderPattern
+                pattern: ".*@mail\\.(fidelity|amazon|disney|britishairways|cdw|iheart)\\.(com|net)$"
+    score: 60
+    description: "Random-looking sender address (12+ consecutive lowercase letters)"
+
+  # Institutional Domain Generic Business Display
+  - name: "Institutional Domain Generic Business Display"
+    enabled: true
+    criteria:
+      type: And
+      criteria:
+        - type: Or
+          criteria:
+            - type: SenderPattern
+              pattern: ".*@.*\\.(gov|edu|mil|istruzioneer)\\."
+            - type: SenderPattern
+              pattern: ".*@.*\\.(gov|edu|mil)$"
+        - type: HeaderPattern
+          header: "From"
+          pattern: "(?i).*(CUSTOMER SYSTEMS|BILLING DEPT|PAYMENT CENTER|ACCOUNT SERVICES|CUSTOMER SERVICE|SUPPORT TEAM|NOTIFICATION CENTER|SECURITY TEAM|VERIFICATION DEPT).*"
+        - type: Not
+          criteria:
+            type: SenderPattern
+            pattern: ".*@.*(customer|billing|payment|support|service|help).*\\.(gov|edu|mil)"
+    score: 170
+    description: "Institutional domain with generic corporate display name"

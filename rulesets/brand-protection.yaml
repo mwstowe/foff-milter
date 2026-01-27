@@ -1,6 +1,50 @@
 name: "Brand Protection"
 enabled: true
 rules:
+  # Suspicious Forwarding Domain
+  - name: "Suspicious Forwarding Domain"
+    enabled: true
+    criteria:
+      type: And
+      criteria:
+        - type: HeaderPattern
+          header: "Return-Path"
+          pattern: ".*@tzkefeng\\.com.*"
+        - type: Not
+          criteria:
+            type: HeaderPattern
+            header: "From"
+            pattern: ".*@tzkefeng\\.com.*"
+    score: 75
+    description: "Email forwarded through suspicious domain (tzkefeng.com) with domain mismatch"
+
+  # Young Domain Suspicious Content
+  - name: "Young Domain Suspicious Content"
+    enabled: true
+    criteria:
+      type: And
+      criteria:
+        - type: DomainAge
+          max_age_days: 90
+          check_sender: true
+          timeout_seconds: 5
+        - type: Or
+          criteria:
+            - type: SubjectPattern
+              pattern: "(?i).*(urgent|limited.*(time|spots?|offer)|act.*now|expires?|before.*ends|claim|verify|confirm|update.*account|suspended|locked|unusual.*activity|security.*alert).*"
+            - type: SubjectPattern
+              pattern: "(?i).*(prize|winner|congratulations|free.*gift|exclusive.*offer|special.*deal|protect.*your).*"
+        - type: Not
+          criteria:
+            type: Or
+            criteria:
+              - type: SenderPattern
+                pattern: ".*@.*(sendgrid|mailchimp|klaviyo|constantcontact|mailgun|sparkpost|postmark|amazonses|adobe|salesforce)\\.(com|net)$"
+              - type: SenderPattern
+                pattern: ".*@.*(thinkgeek|thinkgeekmail|bcdtravel|britishairways|cdw|vacuums)\\.(com|net)$"
+    score: 50
+    description: "Young domain (≤90 days) with suspicious urgency or promotional content"
+
   # Harbor Freight Brand Impersonation
   - name: "Harbor Freight Brand Impersonation"
     enabled: true
