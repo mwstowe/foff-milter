@@ -420,7 +420,13 @@ impl EmailNormalizer {
         for line in headers.lines() {
             if let Some(colon_pos) = line.find(':') {
                 let key = line[..colon_pos].trim().to_lowercase();
-                let value = line[colon_pos + 1..].trim().to_string();
+                let mut value = line[colon_pos + 1..].trim().to_string();
+
+                // Decode MIME-encoded headers (=?charset?encoding?data?=)
+                if key == "subject" || key == "from" || key == "to" || key == "cc" {
+                    value = crate::milter::decode_mime_header(&value);
+                }
+
                 normalized.insert(key, value);
             }
         }
