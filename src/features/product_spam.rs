@@ -18,6 +18,10 @@ impl FeatureExtractor for ProductSpamAnalyzer {
         let mut score = 0;
         let mut evidence = Vec::new();
 
+        // Check if from trusted ESP - reduce penalties significantly
+        let is_trusted_esp = crate::features::esp_validation::is_from_trusted_esp(context);
+        let esp_multiplier = if is_trusted_esp { 0.3 } else { 1.0 }; // 70% reduction for trusted ESPs
+
         let content = format!(
             "{} {} {}",
             context.subject.as_deref().unwrap_or(""),
@@ -167,9 +171,12 @@ impl FeatureExtractor for ProductSpamAnalyzer {
 
         let confidence = if score > 0 { 0.85 } else { 0.1 };
 
+        // Apply ESP multiplier to reduce false positives for trusted ESPs
+        let final_score = (score as f32 * esp_multiplier) as i32;
+
         FeatureScore {
             feature_name: "Product Spam".to_string(),
-            score,
+            score: final_score,
             confidence,
             evidence,
         }

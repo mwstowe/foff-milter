@@ -1014,30 +1014,35 @@ impl FeatureExtractor for LinkAnalyzer {
 
         let mut evidence = Vec::new();
 
-        // Check for cross-domain link mismatch (links unrelated to sender domain)
-        if let Some(_sender) =
-            crate::features::get_header_case_insensitive(&context.headers, "From")
-        {
-            let sender_domains = self.get_sender_domains(context);
-            if !sender_domains.is_empty() {
-                let unrelated_links: Vec<_> = links
-                    .iter()
-                    .filter(|link| {
-                        // Check if link is related to any of the sender domains
-                        !sender_domains
-                            .iter()
-                            .any(|domain| self.is_domain_related(domain, &link.domain))
-                    })
-                    .collect();
+        // Check if this is from a trusted ESP - skip cross-domain penalties
+        let is_trusted_esp = crate::features::esp_validation::is_from_trusted_esp(context);
 
-                // Check for suspicious cross-domain patterns:
-                // 1. If we have 3+ links and >90% are unrelated (raised from 80%)
-                // 2. If we have 1-2 links but they're to obviously suspicious domains
-                let suspicious_cross_domain = if total_links >= 3 {
-                    (unrelated_links.len() as f32 / total_links as f32) > 0.9 // Raised threshold
-                } else if total_links > 0 {
-                    // For few links, check if they're to obviously suspicious domains
-                    unrelated_links.iter().any(|link| {
+        // Check for cross-domain link mismatch (links unrelated to sender domain)
+        if !is_trusted_esp {
+            if let Some(_sender) =
+                crate::features::get_header_case_insensitive(&context.headers, "From")
+            {
+                let sender_domains = self.get_sender_domains(context);
+                if !sender_domains.is_empty() {
+                    let unrelated_links: Vec<_> = links
+                        .iter()
+                        .filter(|link| {
+                            // Check if link is related to any of the sender domains
+                            !sender_domains
+                                .iter()
+                                .any(|domain| self.is_domain_related(domain, &link.domain))
+                        })
+                        .collect();
+
+                    // Check for suspicious cross-domain patterns:
+                    // 1. If we have 3+ links and >90% are unrelated (raised from 80%)
+                    // 2. If we have 1-2 links but they're to obviously suspicious domains
+                    let suspicious_cross_domain = if total_links >= 3 {
+                        (unrelated_links.len() as f32 / total_links as f32) > 0.9
+                    // Raised threshold
+                    } else if total_links > 0 {
+                        // For few links, check if they're to obviously suspicious domains
+                        unrelated_links.iter().any(|link| {
                         let domain = &link.domain.to_lowercase();
                         // More restrictive suspicious patterns - removed "store" and "shop"
                         domain.contains("very")
@@ -1050,13 +1055,14 @@ impl FeatureExtractor for LinkAnalyzer {
                             || domain.contains("tempmail")
                             || (domain.len() > 20 && domain.chars().filter(|c| c.is_numeric()).count() > 5)
                     })
-                } else {
-                    false
-                };
+                    } else {
+                        false
+                    };
 
-                if suspicious_cross_domain {
-                    evidence.push("Suspicious cross-domain links detected".to_string());
-                    score += 5; // Reduced penalty from 10 to 5
+                    if suspicious_cross_domain {
+                        evidence.push("Suspicious cross-domain links detected".to_string());
+                        score += 5; // Reduced penalty from 10 to 5
+                    }
                 }
             }
         }

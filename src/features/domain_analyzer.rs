@@ -134,7 +134,7 @@ impl DomainAnalyzer {
         // Check for suspicious patterns
         for pattern in &self.suspicious_patterns {
             if pattern.is_match(domain) {
-                // Skip legitimate long domain names
+                // Skip legitimate long domain names and ESP infrastructure
                 if domain.contains("capitaloneshopping.com")
                     || domain.contains("oracleemaildelivery.com")
                     || domain.contains("amazonses.com")
@@ -142,6 +142,8 @@ impl DomainAnalyzer {
                     || domain.contains("luxpotshop.com")
                     || domain.contains("alpineiq.com")
                     || domain.contains("sparkpostmail.com")
+                    || domain.contains("mailchimpapp.com")  // Mailchimp ESP infrastructure
+                    || domain.contains("mcsv.net")  // Mailchimp server infrastructure
                     || domain.contains("michaelscustomframing.com")  // Michaels email marketing
                     || domain.contains("shutterfly.com")  // Shutterfly photo service
                     || domain.contains("leaderswedeserve.com")

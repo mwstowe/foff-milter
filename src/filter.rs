@@ -230,6 +230,7 @@ pub struct MailContext {
     pub forwarding_info: Option<ForwardingInfo>, // Detailed forwarding analysis
     pub normalized: Option<NormalizedEmail>, // Normalized email content
     pub dkim_verification: Option<DkimVerificationResult>, // Cached DKIM verification result
+    pub trusted_esp: Option<String>,      // Detected trusted ESP (mailchimp, sendgrid, etc.)
 }
 
 impl Default for MailContext {
@@ -254,6 +255,7 @@ impl Default for MailContext {
             forwarding_info: None,
             normalized: None,
             dkim_verification: None,
+            trusted_esp: None,
         }
     }
 }
@@ -708,6 +710,7 @@ impl FilterEngine {
                 forwarding_info: context.forwarding_info.clone(),
                 normalized: context.normalized.clone(),
                 dkim_verification: context.dkim_verification.clone(),
+                trusted_esp: context.trusted_esp.clone(),
             }
         } else {
             // Fallback to simple normalization if proper normalization not available
@@ -745,6 +748,7 @@ impl FilterEngine {
             forwarding_info: context.forwarding_info.clone(),
             normalized: context.normalized.clone(),
             dkim_verification: context.dkim_verification.clone(),
+            trusted_esp: context.trusted_esp.clone(),
         }
     }
 

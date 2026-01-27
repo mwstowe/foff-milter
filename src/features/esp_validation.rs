@@ -179,6 +179,46 @@ impl EspValidationAnalyzer {
 
         false
     }
+
+    /// Check if domain is from a trusted ESP (public helper for other features)
+    pub fn is_trusted_esp(&self, domain: &str) -> bool {
+        if let Some(esp_name) = self.get_esp_from_domain(domain) {
+            matches!(self.get_esp_reputation(&esp_name), EspReputation::Trusted)
+        } else {
+            false
+        }
+    }
+}
+
+/// Global helper to check if a context is from a trusted ESP
+pub fn is_from_trusted_esp(context: &MailContext) -> bool {
+    // Check sender domain
+    if let Some(sender) = &context.sender {
+        if let Some(domain) = sender.split('@').nth(1) {
+            let domain_lower = domain.to_lowercase();
+            // Check for known trusted ESP domains
+            let trusted_esps = [
+                "sendgrid.net",
+                "mailgun.org",
+                "amazonses.com",
+                "mailchimp.com",
+                "mailchimpapp.com",
+                "mcsv.net",
+                "constantcontact.com",
+                "sparkpostmail.com",
+                "mandrill.com",
+                "postmarkapp.com",
+            ];
+
+            for esp in &trusted_esps {
+                if domain_lower.contains(esp) {
+                    return true;
+                }
+            }
+        }
+    }
+
+    false
 }
 
 /// Feature extractor for ESP validation

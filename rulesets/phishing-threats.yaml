@@ -664,6 +664,32 @@ rules:
         - type: BodyPattern
           pattern: "(?i).*(lembrete.*assinatura.*pendente|portuguese.*signature|assinatura.*portuguesa|documento.*assinatura|signature.*phishing).*"
     score: 320
+
+  # Portuguese job application spam
+  - name: "Portuguese Job Application Spam"
+    enabled: true
+    criteria:
+      type: And
+      criteria:
+        - type: Or
+          criteria:
+            - type: SubjectPattern
+              pattern: "(?i).*(curr[ií]culo|curriculo).*"
+            - type: SubjectPattern
+              pattern: ".*Q3VycsOtY3VsbyBQcm9maXNzaW9uYWw.*"  # Base64 encoded "Currículo Profissional"
+            - type: CombinedTextPattern
+              pattern: "(?i).*(curr[ií]culo|curriculo|encaminho.*anexo|anexo.*curr[ií]culo).*"
+        - type: Not
+          criteria:
+            type: Or
+            criteria:
+              - type: SenderPattern
+                pattern: ".*@.*(linkedin|indeed|glassdoor|monster|careerbuilder|ziprecruiter)\\.(com|net|org)$"
+              - type: SenderPattern
+                pattern: ".*@.*(gov|edu|mil)$"
+    score: 150
+    description: "Portuguese curriculum/resume spam from suspicious domains"
+
   # Enhanced O'Reilly jump starter impersonation
   - name: "Enhanced OReilly Jump Starter Impersonation"
     criteria:

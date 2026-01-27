@@ -169,6 +169,8 @@ impl SenderAlignmentAnalyzer {
             "mailgun.org",
             "amazonses.com",
             "mailchimp.com",
+            "mailchimpapp.com", // MailChimp application domain
+            "mcsv.net",         // MailChimp server domain
             "constantcontact.com",
             "campaignmonitor.com",
             "aweber.com",
@@ -1497,6 +1499,10 @@ impl FeatureExtractor for SenderAlignmentAnalyzer {
                     .extract_email_from_header(context.from_header.as_deref().unwrap_or_default())
                 {
                     if from_email != reply_to_email {
+                        // Check if this is from a trusted ESP (Mailchimp, SendGrid, etc.)
+                        let is_trusted_esp =
+                            crate::features::esp_validation::is_from_trusted_esp(context);
+
                         // Check if this is a legitimate ESP practice (same root domain)
                         let from_domain = self.extract_domain(&from_email);
                         let reply_to_domain = self.extract_domain(&reply_to_email);
@@ -1520,11 +1526,12 @@ impl FeatureExtractor for SenderAlignmentAnalyzer {
                             || (from_domain.contains("mtasv.net") && reply_to_domain.contains("ourvet.com"))
                             || (from_domain.contains("mtasv.net") && reply_to_domain.contains("vetcove.com"));
 
-                        // Only flag if different root domains (cross-domain mismatch) and not legitimate service
+                        // Only flag if different root domains (cross-domain mismatch) and not legitimate service or trusted ESP
                         if from_root != reply_to_root
                             && from_root != "unknown"
                             && reply_to_root != "unknown"
                             && !is_legitimate_service
+                            && !is_trusted_esp
                         {
                             score += 40;
                             evidence.push(format!(
