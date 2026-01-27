@@ -147,6 +147,7 @@ mod tests {
             proximate_mailer: None,
             normalized: None,
             dkim_verification: None,
+            trusted_esp: None,
         }
     }
 

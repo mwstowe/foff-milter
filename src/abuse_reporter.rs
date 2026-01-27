@@ -329,6 +329,7 @@ mod tests {
             proximate_mailer: None,
             normalized: None,
             dkim_verification: None,
+            trusted_esp: None,
         };
 
         // Test SendGrid abuse reporting (will log since no SMTP configured)
@@ -379,6 +380,7 @@ mod tests {
             proximate_mailer: None,
             normalized: None,
             dkim_verification: None,
+            trusted_esp: None,
         };
 
         let result = reporter

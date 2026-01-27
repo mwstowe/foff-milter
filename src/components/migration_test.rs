@@ -98,6 +98,7 @@ fn create_legitimate_email_context() -> MailContext {
         proximate_mailer: None,
         normalized: None,
         dkim_verification: None,
+        trusted_esp: None,
     }
 }
 
@@ -135,6 +136,7 @@ fn create_spam_email_context() -> MailContext {
         proximate_mailer: None,
         normalized: None,
         dkim_verification: None,
+        trusted_esp: None,
     }
 }
 
@@ -171,6 +173,7 @@ fn create_authenticated_email_context() -> MailContext {
         proximate_mailer: None,
         normalized: None,
         dkim_verification: None,
+        trusted_esp: None,
     }
 }
 
@@ -205,5 +208,6 @@ fn create_mismatch_email_context() -> MailContext {
         proximate_mailer: None,
         normalized: None,
         dkim_verification: None,
+        trusted_esp: None,
     }
 }
