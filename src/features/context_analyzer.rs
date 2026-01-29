@@ -344,6 +344,7 @@ impl ContextAnalyzer {
             || sender.to_lowercase().contains("usps")
             || sender.to_lowercase().contains("mtasv")
             || sender.to_lowercase().contains("batemanhornecenter")
+            || sender.to_lowercase().contains("livenation")
             || text.to_lowercase().contains("in-store")
             || text.to_lowercase().contains("save big");
 
@@ -617,6 +618,7 @@ impl ContextAnalyzer {
             || from_header.to_lowercase().contains("humblebundle")
             || from_header.to_lowercase().contains("usps")
             || from_header.to_lowercase().contains("withings")
+            || from_header.to_lowercase().contains("livenation")
             // Retail and e-commerce
             || from_header.to_lowercase().contains("retail")
             || from_header.to_lowercase().contains("shop")

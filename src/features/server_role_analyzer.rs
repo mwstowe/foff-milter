@@ -118,6 +118,7 @@ impl ServerRoleAnalyzer {
             "ecoflow.com",
             "nytimes.com",
             "salesmanago.com", // Marketing automation platform
+            "kickstarter.com", // Kickstarter crowdfunding platform
         ];
 
         for legitimate in &legitimate_domains {

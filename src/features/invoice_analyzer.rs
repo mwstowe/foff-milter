@@ -278,6 +278,16 @@ impl FeatureExtractor for InvoiceAnalyzer {
                     if !click_here_regex.is_match(&full_text) {
                         continue; // Skip this match
                     }
+                    // Skip if in unsubscribe context
+                    let full_text_lower = full_text.to_lowercase();
+                    if full_text_lower.contains("unsubscribe") && full_text_lower.contains("click here") {
+                        let unsubscribe_pos = full_text_lower.find("unsubscribe").unwrap_or(0);
+                        let click_here_pos = full_text_lower.find("click here").unwrap_or(0);
+                        // If click here is within 200 chars of unsubscribe, skip
+                        if click_here_pos.abs_diff(unsubscribe_pos) < 200 {
+                            continue;
+                        }
+                    }
                     // Additional check: avoid matches in URLs by checking context
                     let lines: Vec<&str> = full_text.lines().collect();
                     let mut found_legitimate_click_here = false;

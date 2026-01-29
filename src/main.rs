@@ -2390,9 +2390,24 @@ async fn test_email_file(
                     }
                 }
 
-                // Handle header continuation lines by concatenating values (match milter behavior)
-                if let Some(existing_value) = headers.get(&key) {
-                    // Concatenate with existing value (same as milter)
+                // Handle duplicate headers - for DKIM-Signature, keep all separate with indexed keys
+                if key == "dkim-signature" {
+                    // Count existing DKIM signatures
+                    let mut count = 0;
+                    while headers.contains_key(&format!("dkim-signature-{}", count)) {
+                        count += 1;
+                    }
+                    if headers.contains_key("dkim-signature") {
+                        // Move first one to indexed key
+                        if let Some(first_sig) = headers.remove("dkim-signature") {
+                            headers.insert("dkim-signature-0".to_string(), first_sig);
+                        }
+                        headers.insert(format!("dkim-signature-{}", count + 1), value);
+                    } else {
+                        headers.insert(key, value);
+                    }
+                } else if let Some(existing_value) = headers.get(&key) {
+                    // For other headers, concatenate with existing value (match milter behavior)
                     let combined_value = format!("{} {}", existing_value, value);
                     headers.insert(key, combined_value);
                 } else {

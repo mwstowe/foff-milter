@@ -53,10 +53,13 @@ impl DkimVerifier {
     ) -> DkimVerificationResult {
         let mut result = DkimVerificationResult::default();
 
-        // Find DKIM signatures (case-insensitive)
+        // Find DKIM signatures (case-insensitive, including indexed duplicates)
         let dkim_signatures: Vec<String> = headers
             .iter()
-            .filter(|(key, _)| key.to_lowercase() == "dkim-signature")
+            .filter(|(key, _)| {
+                let key_lower = key.to_lowercase();
+                key_lower == "dkim-signature" || key_lower.starts_with("dkim-signature-")
+            })
             .map(|(_, value)| value.clone())
             .collect();
 
