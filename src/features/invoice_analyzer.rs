@@ -280,7 +280,9 @@ impl FeatureExtractor for InvoiceAnalyzer {
                     }
                     // Skip if in unsubscribe context
                     let full_text_lower = full_text.to_lowercase();
-                    if full_text_lower.contains("unsubscribe") && full_text_lower.contains("click here") {
+                    if full_text_lower.contains("unsubscribe")
+                        && full_text_lower.contains("click here")
+                    {
                         let unsubscribe_pos = full_text_lower.find("unsubscribe").unwrap_or(0);
                         let click_here_pos = full_text_lower.find("click here").unwrap_or(0);
                         // If click here is within 200 chars of unsubscribe, skip
