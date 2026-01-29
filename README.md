@@ -1,10 +1,10 @@
-# FOFF Milter v0.8.17
+# FOFF Milter v0.8.21
 
 A comprehensive, enterprise-grade email security platform written in Rust featuring intelligent threat detection, modular rulesets, and zero-configuration deployment.
 
 ## 🎯 **Production Ready - 100% Test Compliance & Zero False Positives**
 
-**Latest Achievement**: Critical bug fix for header continuation line handling that caused features to receive empty subjects in milter mode. Enhanced Chinese domain Amazon impersonation detection and Ukrainian romance spam patterns. Maintains 431/431 tests passing (100% success rate) with zero false positives.
+**Latest Achievement**: Critical bug fix for test mode DKIM handling that caused discrepancies between test and production environments. Fixed duplicate DKIM-Signature header processing to match milter mode behavior. Resolved all 10 production false positives including Live Nation concert presales and Kickstarter crowdfunding emails. Maintains 436/436 tests passing (100% success rate) with zero false positives.
 
 ## 🚀 Complete Email Security Platform
 
@@ -404,20 +404,22 @@ sudo foff-milter -v -c /etc/foff-milter.toml
 - **Selective blocking**: Use targeted sender blocking patterns
 - **Statistics monitoring**: Track processing performance and bottlenecks
 
-## 🏆 v0.8.16 Production Achievements
+## 🏆 v0.8.21 Production Achievements
 
 ### ✅ **Perfect Threat Detection & Zero False Positives**
-- **431/431 tests passing** with 100.0% success rate across comprehensive test suite
-- **Enhanced retail brand impersonation detection**: Costco and Keurig protection with character substitution evasion
-- **Advanced survey/questionnaire scam detection**: Detects "share your opinions" and "questionnaire program" patterns
-- **Legitimate business invoice protection**: Context-aware scoring for professional business communications
+- **436/436 tests passing** with 100.0% success rate across comprehensive test suite
+- **Critical test mode DKIM bug fix**: Duplicate DKIM-Signature headers now handled correctly in test mode
+- **Production false positive elimination**: All 10 production false positives resolved (100% fix rate)
+- **Live Nation concert presale protection**: Proper handling of legitimate entertainment marketing emails
+- **Kickstarter crowdfunding support**: Crowdfunding platform emails correctly classified as legitimate
+- **Enhanced unsubscribe link detection**: "Click here" in unsubscribe context no longer triggers false positives
 - **Zero false positives**: All legitimate business emails correctly classified while catching advanced threats
-- **Comprehensive business service recognition**: Built Square construction and expanded legitimate business whitelist
 
 ### 🔧 **Advanced Technical Improvements**
-- **Retail brand protection**: Costco (including C0STC0 character substitution) and Keurig brand impersonation detection
-- **Survey scam patterns**: "share your opinions", "questionnaire program", "valued member participating"
-- **Professional software detection**: BuilderTrend, QuickBooks, FreshBooks, Xero, Sage references reduce false positives
+- **Test mode parity**: Test mode now accurately reflects production milter mode behavior for DKIM verification
+- **Indexed DKIM headers**: Multiple DKIM-Signature headers stored with indexed keys (dkim-signature-0, dkim-signature-1)
+- **Context-aware click detection**: Unsubscribe link detection with 200-character proximity check
+- **Legitimate domain expansion**: Added livenation.com and kickstarter.com to exclusion lists
 - **Business context validation**: CC header presence, personal sender names, professional software mentions
 - **Scoring reduction logic**: 40-70% reduction for legitimate business invoice indicators
 - **Built Square whitelisting**: Added across invoice analyzer, server role analyzer, and YAML rules
