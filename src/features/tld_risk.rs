@@ -503,22 +503,41 @@ impl TldRiskFeature {
             }
         }
 
-        // 2. Try From header
-        if let Some(from) = context.headers.get("from") {
+        // 2. Try From header (case-insensitive)
+        if let Some(from) = context
+            .headers
+            .get("from")
+            .or_else(|| context.headers.get("From"))
+        {
             if let Some(domain) = self.analyzer.extract_domain(from) {
                 return domain;
             }
         }
 
-        // 3. Try Return-Path header
-        if let Some(return_path) = context.headers.get("return-path") {
+        // 3. Try context.from_header field
+        if let Some(from) = &context.from_header {
+            if let Some(domain) = self.analyzer.extract_domain(from) {
+                return domain;
+            }
+        }
+
+        // 4. Try Return-Path header (case-insensitive)
+        if let Some(return_path) = context
+            .headers
+            .get("return-path")
+            .or_else(|| context.headers.get("Return-Path"))
+        {
             if let Some(domain) = self.analyzer.extract_domain(return_path) {
                 return domain;
             }
         }
 
-        // 4. Try Reply-To header
-        if let Some(reply_to) = context.headers.get("reply-to") {
+        // 5. Try Reply-To header (case-insensitive)
+        if let Some(reply_to) = context
+            .headers
+            .get("reply-to")
+            .or_else(|| context.headers.get("Reply-To"))
+        {
             if let Some(domain) = self.analyzer.extract_domain(reply_to) {
                 return domain;
             }

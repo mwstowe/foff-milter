@@ -71,11 +71,19 @@ impl SenderAlignmentAnalyzer {
     }
 
     fn extract_sender_info(&self, context: &MailContext) -> SenderInfo {
-        let from_header = context.from_header.as_deref().unwrap_or_default();
+        // Try context.from_header first, then fallback to headers HashMap
+        let from_header = context
+            .from_header
+            .as_deref()
+            .or_else(|| context.headers.get("from").map(|s| s.as_str()))
+            .unwrap_or_default();
+
         let sender_header = context.sender.as_deref().unwrap_or_default();
+
         let return_path = context
             .headers
             .get("Return-Path")
+            .or_else(|| context.headers.get("return-path"))
             .cloned()
             .unwrap_or_default();
 

@@ -1,6 +1,27 @@
 name: "Brand Protection"
 enabled: true
 rules:
+  # Suspicious TLD Promotional Content
+  - name: "Suspicious TLD Promotional Content"
+    enabled: true
+    criteria:
+      type: And
+      criteria:
+        - type: SenderPattern
+          pattern: ".*@.*\\.(autos|shop|online|site|store|xyz|top|click|win|bid)$"
+        - type: Or
+          criteria:
+            - type: SubjectPattern
+              pattern: "(?i).*(tough|tactical|survival|adventure|gear|equipment|deal|offer|discount|save|free shipping|limited stock|exclusive).*"
+            - type: BodyPattern
+              pattern: "(?i).*(shop now|order now|buy now|limited stock|exclusive offer|click here to shop).*"
+        - type: Not
+          criteria:
+            type: SenderPattern
+            pattern: ".*@.*(sendgrid|mailchimp|klaviyo|amazonses|sparkpost|mailgun)\\.(com|net)$"
+    score: 40
+    description: "Promotional content from suspicious TLD (not legitimate ESP)"
+
   # Brand Name in Sender Address from Non-Brand Domain
   - name: "Brand Name in Sender Address from Non-Brand Domain"
     enabled: true
