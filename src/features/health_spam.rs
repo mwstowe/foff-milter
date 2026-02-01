@@ -189,8 +189,9 @@ impl FeatureExtractor for HealthSpamAnalyzer {
                 // Medical organizations
                 "mtasv",
                 "batemanhornecenter",
-                // News organizations (specific senders only)
+                // News organizations
                 "nytdirect",
+                "nytimes.com",
             ];
             let is_legitimate_retailer = legitimate_retailers
                 .iter()

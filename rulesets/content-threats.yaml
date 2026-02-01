@@ -1226,12 +1226,18 @@ rules:
   # Chef knife and kitchen product spam
   - name: "Chef Knife Kitchen Product Spam"
     criteria:
-      type: Or
+      type: And
       criteria:
-        - type: SubjectPattern
-          pattern: "(?i).*(last.*day.*grab.*big.*promo|matsato.*chef.*knife|kitchen.*knife.*promo|chef.*knife.*sale).*"
-        - type: BodyPattern
-          pattern: "(?i).*(last.*day.*grab.*big.*promo|matsato.*chef.*knife|kitchen.*knife.*promo|chef.*knife.*sale).*"
+        - type: Or
+          criteria:
+            - type: SubjectPattern
+              pattern: "(?i).*(last.*day.*grab.*big.*promo|matsato.*chef.*knife|kitchen.*knife.*promo|chef.*knife.*sale).*"
+            - type: BodyPattern
+              pattern: "(?i).*(last.*day.*grab.*big.*promo|matsato.*chef.*knife|kitchen.*knife.*promo|chef.*knife.*sale).*"
+        - type: Not
+          criteria:
+            type: SenderPattern
+            pattern: ".*@.*(nytimes|washingtonpost|wsj)\\.(com|net)$"
     score: 160
 
   # Enhanced knee health patterns

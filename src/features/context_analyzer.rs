@@ -1390,8 +1390,23 @@ impl FeatureExtractor for ContextAnalyzer {
         // Product prize scam detection (very specific to scam contexts)
         let product_prize_regex = Regex::new(r"(?i)\b(yeti.*(rambler|tumbler).*awaits|your.*(prize|gift).*awaits|claim.*your.*(prize|gift).*from)\b").unwrap();
         if product_prize_regex.is_match(&combined_text) {
-            total_score += 50;
-            all_evidence.push("Product prize scam pattern detected".to_string());
+            // Skip for legitimate news organizations
+            let sender_domain = context
+                .from_header
+                .as_deref()
+                .and_then(|from| from.split('@').nth(1))
+                .unwrap_or("")
+                .to_lowercase();
+
+            let legitimate_news = ["nytimes.com", "washingtonpost.com", "wsj.com"];
+            let is_legitimate_news = legitimate_news
+                .iter()
+                .any(|domain| sender_domain.contains(domain));
+
+            if !is_legitimate_news {
+                total_score += 50;
+                all_evidence.push("Product prize scam pattern detected".to_string());
+            }
         }
 
         // Holiday/seasonal giveaway scams (more specific to actual scam patterns)
