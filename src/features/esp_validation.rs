@@ -117,19 +117,34 @@ impl EspValidationAnalyzer {
         let sender_lower = sender_domain.to_lowercase();
 
         // Check if sender claims to be an ESP but isn't
+        // Get the actual ESP for this domain (if any)
+        let actual_esp = self.get_esp_from_domain(&sender_lower);
+
         for esp_name in self.esp_domains.values() {
-            if sender_lower.contains(&esp_name.to_lowercase()) && !self.is_esp_domain(&sender_lower)
-            {
-                // Suspicious domain mimicking ESP
-                let score = 35;
-                detections.push((
-                    esp_name.clone(),
-                    score,
-                    format!(
-                        "Suspicious domain mimicking ESP: {} in {}",
-                        esp_name, sender_domain
-                    ),
-                ));
+            let esp_name_lower = esp_name.to_lowercase();
+
+            // Check if sender domain contains an ESP name
+            if sender_lower.contains(&esp_name_lower) {
+                // If this domain is legitimately associated with this ESP, skip
+                if let Some(ref actual) = actual_esp {
+                    if actual.to_lowercase() == esp_name_lower {
+                        continue; // This is legitimate
+                    }
+                }
+
+                // If domain is not an ESP domain at all, it's suspicious
+                if !self.is_esp_domain(&sender_lower) {
+                    // Suspicious domain mimicking ESP
+                    let score = 35;
+                    detections.push((
+                        esp_name.clone(),
+                        score,
+                        format!(
+                            "Suspicious domain mimicking ESP: {} in {}",
+                            esp_name, sender_domain
+                        ),
+                    ));
+                }
             }
         }
 
