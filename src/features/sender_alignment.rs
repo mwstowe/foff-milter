@@ -208,6 +208,9 @@ impl SenderAlignmentAnalyzer {
             "mail.arrived.com",       // Arrived email service
             "mcdlv.net",              // MailChimp delivery network
             "wdc02.mcdlv.net",        // MailChimp WDC02 delivery
+            "rsgsv.net",              // Retail Solutions Group ESP
+            "emailsp.net",            // Email Service Provider
+            "musvc.com",              // Marketing/Email service
             // Veterinary/Medical ESP Platforms
             "ourvet.com",                 // Veterinary practice management
             "outbound.ourvet.com",        // Veterinary email platform
@@ -698,6 +701,21 @@ impl SenderAlignmentAnalyzer {
     fn analyze_domain_consistency(&self, sender_info: &SenderInfo) -> Vec<String> {
         let mut issues = Vec::new();
 
+        // Skip domain consistency checks for legitimate platforms
+        let platform_domains = [
+            "quora.com",
+            "reddit.com",
+            "stackoverflow.com",
+            "github.com",
+            "medium.com",
+        ];
+        if platform_domains
+            .iter()
+            .any(|domain| sender_info.from_domain.contains(domain))
+        {
+            return issues; // No issues for legitimate platforms
+        }
+
         // Check if From and Sender domains are consistent (allow legitimate email services)
         if !sender_info.sender_domain.is_empty()
             && sender_info.sender_domain != "unknown"
@@ -710,10 +728,11 @@ impl SenderAlignmentAnalyzer {
             ));
         }
 
-        // Check Return-Path alignment
+        // Check Return-Path alignment (skip for legitimate ESPs)
         if !sender_info.return_path_domain.is_empty()
             && sender_info.return_path_domain != "unknown"
             && !self.domains_related(&sender_info.from_domain, &sender_info.return_path_domain)
+            && !self.is_legitimate_email_service(&sender_info.return_path_domain)
         {
             issues.push(format!(
                 "From domain '{}' doesn't align with Return-Path domain '{}'",
