@@ -61,6 +61,12 @@ impl FeatureExtractor for PortugueseLanguageAnalyzer {
                 "uber.com",
                 "mgm.uber.com",
                 "lyft.com",
+                "mail.instagram.com", // Instagram social platform
+                "instagram.com",
+                "facebook.com",
+                "rejuvenation.com", // Rejuvenation retail
+                "pbteen.com",       // Pottery Barn Teen
+                "woot.com",         // Woot marketplace
             ];
 
             let is_legitimate_retail = legitimate_retail_domains

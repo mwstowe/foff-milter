@@ -158,6 +158,13 @@ impl FeatureExtractor for ProductSpamAnalyzer {
                 "kiwico", // KiwiCo educational kits
                 // Financial services
                 "empower", // Empower retirement services
+                // Additional retail brands
+                "pbteen",       // Pottery Barn Teen
+                "woot",         // Woot marketplace (Amazon)
+                "rejuvenation", // Rejuvenation retail
+                "tokyo-tiger",  // Tokyo Tiger retail
+                "backstage",    // Backstage job board
+                "evgo",         // EVgo EV charging
             ];
             let is_legitimate_retailer = legitimate_retailers
                 .iter()

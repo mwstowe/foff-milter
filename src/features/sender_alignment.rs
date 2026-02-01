@@ -1648,7 +1648,15 @@ impl FeatureExtractor for SenderAlignmentAnalyzer {
         }
 
         // Apply platform recognition discount for known Q&A and development platforms
-        let platform_domains = ["quora.com", "reddit.com", "stackoverflow.com", "github.com"];
+        let platform_domains = [
+            "quora.com",
+            "reddit.com",
+            "stackoverflow.com",
+            "github.com",
+            "mail.instagram.com",
+            "instagram.com",
+            "facebook.com",
+        ];
         if platform_domains
             .iter()
             .any(|domain| sender_info.from_domain.contains(domain))

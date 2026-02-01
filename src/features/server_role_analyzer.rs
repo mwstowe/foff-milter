@@ -117,8 +117,15 @@ impl ServerRoleAnalyzer {
             "technews.com",
             "ecoflow.com",
             "nytimes.com",
-            "salesmanago.com", // Marketing automation platform
-            "kickstarter.com", // Kickstarter crowdfunding platform
+            "salesmanago.com",    // Marketing automation platform
+            "kickstarter.com",    // Kickstarter crowdfunding platform
+            "backstage.com",      // Backstage job board
+            "pbteen.com",         // Pottery Barn Teen retail
+            "mail.instagram.com", // Instagram social platform
+            "woot.com",           // Woot marketplace (Amazon)
+            "evgo.com",           // EVgo EV charging service
+            "rejuvenation.com",   // Rejuvenation retail
+            "tokyo-tiger.com",    // Tokyo Tiger retail
         ];
 
         for legitimate in &legitimate_domains {
