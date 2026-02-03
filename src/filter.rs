@@ -8139,13 +8139,16 @@ impl FilterEngine {
         }
 
         let content_lower = content.to_lowercase();
-        
+
         // Skip for legitimate tech newsletters
         let legitimate_tech = ["thegadgetflow", "gadgetflow", "medium", "techcrunch"];
-        if legitimate_tech.iter().any(|tech| content_lower.contains(tech)) {
+        if legitimate_tech
+            .iter()
+            .any(|tech| content_lower.contains(tech))
+        {
             return 0;
         }
-        
+
         let mut score = 0;
 
         // Solar spam patterns

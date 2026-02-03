@@ -189,15 +189,15 @@ impl FeatureExtractor for ProductSpamAnalyzer {
                 // Financial services
                 "empower", // Empower retirement services
                 // Additional retail brands
-                "pbteen",       // Pottery Barn Teen
-                "woot",         // Woot marketplace (Amazon)
-                "rejuvenation", // Rejuvenation retail
-                "tokyo-tiger",    // Tokyo Tiger retail
-                "backstage",      // Backstage job board
-                "evgo",           // EVgo EV charging
-                "eyebuydirect",   // Eyewear retailer
-                "thegadgetflow",  // Tech product newsletter
-                "gadgetflow",     // Tech product newsletter
+                "pbteen",        // Pottery Barn Teen
+                "woot",          // Woot marketplace (Amazon)
+                "rejuvenation",  // Rejuvenation retail
+                "tokyo-tiger",   // Tokyo Tiger retail
+                "backstage",     // Backstage job board
+                "evgo",          // EVgo EV charging
+                "eyebuydirect",  // Eyewear retailer
+                "thegadgetflow", // Tech product newsletter
+                "gadgetflow",    // Tech product newsletter
             ];
             let is_legitimate_retailer = legitimate_retailers
                 .iter()
