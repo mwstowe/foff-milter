@@ -135,7 +135,7 @@ impl BrandImpersonationFeature {
 
         brand_patterns.insert(
             "att".to_string(),
-            vec![r"(?i)\bat&t\b".to_string(), r"(?i)\batt\b".to_string()],
+            vec![r"(?i)\bat&t\b".to_string()], // Only match "at&t", not bare "att"
         );
         legitimate_domains.insert("att".to_string(), vec!["att.com".to_string()]);
 
@@ -342,10 +342,11 @@ impl FeatureExtractor for BrandImpersonationFeature {
         let mut confidence: f32 = 0.0;
 
         // Skip brand impersonation detection for legitimate newsletters and ESPs
+        // Check from_header first as it's more reliable for ESP detection
         let sender_domain = context
-            .sender
+            .from_header
             .as_ref()
-            .or(context.from_header.as_ref())
+            .or(context.sender.as_ref())
             .and_then(|s| self.extract_domain(s))
             .unwrap_or_default()
             .to_lowercase();

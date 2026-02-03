@@ -395,6 +395,11 @@ impl LinkAnalyzer {
             ("target.com", vec!["target.com", "email.target.com"]),
             ("amazon.com", vec!["amazon.com", "email.amazon.com"]),
             ("luxpotshop.com", vec!["alpineiq.com", "lab.alpineiq.com"]),
+            (
+                "searshomeservices.com",
+                vec!["shopyourway.com", "searshomeadvantage.shopyourway.com"],
+            ),
+            ("kickstarter.com", vec!["kickstarter.com", "kck.st"]),
         ];
 
         for (business_domain, link_patterns) in &business_infrastructure_patterns {

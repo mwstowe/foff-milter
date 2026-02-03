@@ -180,6 +180,8 @@ impl FeatureExtractor for HealthSpamAnalyzer {
             "quora",
             "medium",
             "sparkpost",
+            "thegadgetflow",
+            "gadgetflow",
         ];
         let is_legitimate_news = legitimate_news
             .iter()
