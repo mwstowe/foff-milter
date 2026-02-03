@@ -395,10 +395,10 @@ impl Milter {
                             SESSION_COUNTER.fetch_add(1, std::sync::atomic::Ordering::SeqCst)
                         );
                         log::debug!("Connection from: {hostname_str} (session: {session_id})");
-                        
+
                         // Store session ID in context data
                         ctx.data = Some(session_id.clone());
-                        
+
                         let mail_ctx = MailContext {
                             hostname: Some(hostname_str),
                             ..Default::default()
@@ -428,7 +428,7 @@ impl Milter {
                             .collect::<Vec<_>>()
                             .join(",");
                         log::debug!("Mail from: {sender_str}");
-                        
+
                         // Get session ID from context private data
                         let session_id = match ctx.data.as_ref() {
                             Some(id) => id.clone(),
@@ -437,7 +437,7 @@ impl Milter {
                                 return Status::Tempfail;
                             }
                         };
-                        
+
                         // Update the correct context by session ID
                         match state.lock() {
                             Ok(mut guard) => {
@@ -468,7 +468,7 @@ impl Milter {
                             .collect::<Vec<_>>()
                             .join(",");
                         log::debug!("Rcpt to: {recipient_str}");
-                        
+
                         // Get session ID from context private data
                         let session_id = match ctx.data.as_ref() {
                             Some(id) => id.clone(),
@@ -477,7 +477,7 @@ impl Milter {
                                 return Status::Tempfail;
                             }
                         };
-                        
+
                         // Update the correct context by session ID
                         match state.lock() {
                             Ok(mut guard) => {
@@ -506,9 +506,11 @@ impl Milter {
                         let value_str = value.to_string_lossy().to_string();
                         log::debug!("Header: {name_str}: {value_str}");
 
-                        // Special debug logging for Authentication-Results
+                        // Store Authentication-Results header
                         if name_str.to_lowercase() == "authentication-results" {
-                            log::error!("CRITICAL: Authentication-Results header received: '{name_str}: {value_str}'");
+                            log::debug!(
+                                "Authentication-Results header received: '{name_str}: {value_str}'"
+                            );
                         }
 
                         // Get session ID from context private data
@@ -612,7 +614,7 @@ impl Milter {
                     let state = state.clone();
                     Box::pin(async move {
                         let body_str = String::from_utf8_lossy(&body_chunk);
-                        
+
                         // Get session ID from context private data
                         let session_id = match ctx.data.as_ref() {
                             Some(id) => id.clone(),
@@ -621,7 +623,7 @@ impl Milter {
                                 return Status::Tempfail;
                             }
                         };
-                        
+
                         // Update the correct context by session ID
                         match state.lock() {
                             Ok(mut guard) => {
@@ -681,11 +683,7 @@ impl Milter {
                         // Token will automatically decrement counter when dropped
 
                         // Intelligent DKIM completion detection
-                        let mail_ctx_for_check = state
-                            .lock()
-                            .unwrap()
-                            .get(&session_id)
-                            .cloned();
+                        let mail_ctx_for_check = state.lock().unwrap().get(&session_id).cloned();
 
                         if let Some(mail_ctx) = mail_ctx_for_check {
                             // Check if DKIM processing has started (DKIM-Filter header present)
@@ -697,11 +695,8 @@ impl Milter {
                                 let max_attempts = 10; // 10 attempts * 50ms = 500ms max
 
                                 while attempts < max_attempts {
-                                    let current_ctx = state
-                                        .lock()
-                                        .unwrap()
-                                        .get(&session_id)
-                                        .cloned();
+                                    let current_ctx =
+                                        state.lock().unwrap().get(&session_id).cloned();
 
                                     if let Some(ctx) = current_ctx {
                                         if ctx.headers.contains_key("authentication-results") {
@@ -724,11 +719,7 @@ impl Milter {
                         }
 
                         // Clone mail context to avoid holding mutex across await (use session ID)
-                        let mail_ctx_clone = state
-                            .lock()
-                            .unwrap()
-                            .get(&session_id)
-                            .cloned();
+                        let mail_ctx_clone = state.lock().unwrap().get(&session_id).cloned();
 
                         if let Some(mut mail_ctx) = mail_ctx_clone {
                             // Add legitimate business detection
@@ -805,7 +796,7 @@ impl Milter {
                                     header_name,
                                     header_value,
                                 } => {
-                                    log::error!("CRITICAL: TagAsSpam action triggered! from={sender} to={recipients} header={header_name}:{header_value}");
+                                    log::debug!("TagAsSpam action triggered! from={sender} to={recipients} header={header_name}:{header_value}");
 
                                     // Check if the header already exists to avoid duplicates
                                     let header_exists = mail_ctx.headers.iter().any(|(k, v)| {
@@ -827,7 +818,7 @@ impl Milter {
                                         {
                                             log::error!("Failed to add header: {e}");
                                         } else {
-                                            log::error!("CRITICAL: Successfully added header: {header_name}={header_value}");
+                                            log::debug!(" Successfully added header: {header_name}={header_value}");
                                             // Log to syslog for maillog visibility
                                             if syslog::init(
                                                 syslog::Facility::LOG_MAIL,

@@ -56,8 +56,7 @@ impl FeatureExtractor for ProductSpamAnalyzer {
 
         // Suspicious promotional domains (expanded to compensate for Domain Reputation bug in milter mode)
         let promo_domains = [
-            ".click", ".shop", ".store", ".deals", ".offers",
-            ".skin",  // Pet/health spam
+            ".click", ".shop", ".store", ".deals", ".offers", ".skin",  // Pet/health spam
             ".quest", // Vision/health spam
         ];
 

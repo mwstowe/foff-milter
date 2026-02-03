@@ -1,10 +1,10 @@
-# FOFF Milter v0.8.23
+# FOFF Milter v0.8.25
 
 A comprehensive, enterprise-grade email security platform written in Rust featuring intelligent threat detection, modular rulesets, and zero-configuration deployment.
 
 ## 🎯 **Production Ready - 100% Test Compliance & Zero False Positives**
 
-**Latest Achievement**: Critical bug fix for milter mode header case sensitivity that caused TLD Risk Assessment and Domain Reputation features to fail in production. Fixed domain extraction to use case-insensitive header lookups, enabling proper detection of .shop and .autos spam domains. Enhanced legitimate platform handling for Quora, Reddit, and business ESPs. Maintains 436/436 tests passing (100% success rate) with zero false positives.
+**Latest Achievement**: Critical milter mode bug fix for concurrent email processing. Fixed session context confusion that prevented Domain Reputation and TLD Risk Assessment features from working in production. All callbacks now use session-specific context lookup, ensuring each email gets its own correct context even under high load. Maintains 436/436 tests passing (100% success rate) with zero false positives.
 
 ## 🚀 Complete Email Security Platform
 

@@ -1000,7 +1000,7 @@ impl FeatureExtractor for LinkAnalyzer {
         if let Some(sender) = crate::features::get_header_case_insensitive(&context.headers, "from")
         {
             // Use lowercase 'from'
-            eprintln!("DEBUG: Checking From header: {}", sender);
+            log::debug!(" Checking From header: {}", sender);
             if sender.to_lowercase().contains("humblebundle") {
                 eprintln!(
                     "DEBUG: Humble Bundle detected in From header, reducing score from {} to 10",
@@ -1009,7 +1009,7 @@ impl FeatureExtractor for LinkAnalyzer {
                 score = score.min(10); // Cap at 10 points for Humble Bundle
             }
         } else {
-            eprintln!("DEBUG: No 'from' header found");
+            log::debug!(" No 'from' header found");
         }
 
         let mut evidence = Vec::new();
