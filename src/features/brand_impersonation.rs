@@ -176,6 +176,18 @@ impl BrandImpersonationFeature {
             vec!["fidelity.com".to_string(), "fidelityinvestments.com".to_string()],
         );
 
+        brand_patterns.insert(
+            "schwab".to_string(),
+            vec![
+                r"(?i)\bschwab\b".to_string(),
+                r"(?i)\bcharles\s*schwab\b".to_string(),
+            ],
+        );
+        legitimate_domains.insert(
+            "schwab".to_string(),
+            vec!["schwab.com".to_string(), "aboutschwab.com".to_string()],
+        );
+
         legitimate_domains.insert("paypal".to_string(), vec!["paypal.com".to_string()]);
 
         Self {
