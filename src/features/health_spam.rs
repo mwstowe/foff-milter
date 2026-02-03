@@ -169,11 +169,61 @@ impl FeatureExtractor for HealthSpamAnalyzer {
             }
         }
 
+        // Pet health spam patterns (exclude legitimate news and platforms)
+        let legitimate_news = ["nytimes", "washingtonpost", "cnn", "bbc", "reuters", "disney", "quora", "medium"];
+        let is_legitimate_news = legitimate_news.iter().any(|news| sender_domain.contains(news));
+        
+        if (content.contains("dog") || content.contains("pet") || content.contains("puppy"))
+            && (content.contains("add") && content.contains("years") && content.contains("life"))
+            && !is_legitimate_news
+        {
+            score += 80;
+            evidence.push("Pet health spam: 'Add years to your pet's life' claim".to_string());
+        }
+
+        // Vision health spam patterns
+        if content.contains("throw away") && (content.contains("glasses") || content.contains("contacts"))
+        {
+            score += 80;
+            evidence.push("Vision health spam: 'Throw away glasses' claim".to_string());
+        }
+
+        // Generic health miracle claims
+        if (content.contains("miracle") || content.contains("breakthrough") || content.contains("secret"))
+            && (content.contains("health") || content.contains("cure") || content.contains("treatment"))
+        {
+            score += 60;
+            evidence.push("Health miracle claim detected".to_string());
+        }
+
+        // Generic phishing with vague subject from free email providers
+        let subject_lower = context.subject.as_deref().unwrap_or("").to_lowercase();
+        let vague_subjects = ["check in", "hello", "hi there", "hey", "update", "important"];
+        let free_email_providers = ["hotmail", "gmail", "yahoo", "aol", "outlook"];
+        
+        // Don't flag replies or forwards
+        let is_reply_or_forward = subject_lower.starts_with("re:") 
+            || subject_lower.starts_with("fwd:") 
+            || subject_lower.starts_with("fw:");
+        
+        let is_vague_subject = vague_subjects.iter().any(|s| {
+            let subject_words: Vec<&str> = subject_lower.split_whitespace().collect();
+            subject_words.len() <= 3 && subject_lower.contains(s)
+        });
+        
+        let is_free_email = free_email_providers.iter().any(|provider| sender_domain.contains(provider));
+        
+        // Only flag if it's NOT a reply/forward AND has vague subject AND from free email
+        if is_vague_subject && is_free_email && !is_reply_or_forward {
+            score += 60;
+            evidence.push("Generic phishing: vague subject from free email provider".to_string());
+        }
+
         // Health reward/gift scams (exclude legitimate retailers)
         if (content.contains("health") || content.contains("dental") || content.contains("medical"))
             && (content.contains("free") || content.contains("gift") || content.contains("reward"))
         {
-            // Exclude legitimate retailers and healthcare companies
+            // Exclude legitimate retailers, healthcare companies, and entertainment
             let legitimate_retailers = [
                 "1800flowers",
                 "pulse.celebrations",

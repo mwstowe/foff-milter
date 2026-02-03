@@ -94,10 +94,14 @@ rules:
       criteria:
         - type: "SubjectPattern"
           pattern: "(?i).*(security.*alert|suspicious.*login|unauthorized.*access|breach.*detected|virus.*found).*"
+        - type: "SubjectPattern"
+          pattern: "(?i).*(high-severity.*alert|critical.*alert|urgent.*security|account.*changes).*"
         - type: "CombinedTextPattern"
           pattern: "(?i).*(your.*computer.*infected|malware.*detected|security.*scan.*required|update.*antivirus).*"
         - type: "CombinedTextPattern"
           pattern: "(?i).*(microsoft.*security|windows.*defender|apple.*security|google.*security).*"
+        - type: "CombinedTextPattern"
+          pattern: "(?i).*(recent.*changes.*to.*account|verify.*account.*immediately|suspicious.*activity.*detected).*"
     score: 200
     description: "Fake security alerts and tech support scams"
 

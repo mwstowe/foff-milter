@@ -25,6 +25,8 @@ impl DomainBusinessMismatchAnalyzer {
             "school".to_string(),
             "caehs".to_string(), // College of Agriculture, Environment and Health Sciences
             "univ".to_string(),
+            "dekalb".to_string(), // DeKalb school district
+            "central.net".to_string(), // Educational networks
         ];
 
         let government_domains = vec![".gov".to_string(), ".mil".to_string(), ".gov.".to_string()];
@@ -33,6 +35,8 @@ impl DomainBusinessMismatchAnalyzer {
             Regex::new(r"(?i)\b(payment|billing|invoice|receipt|order)\b.*\b(status|update|statement|acknowledgement)\b").unwrap(),
             Regex::new(r"(?i)\bfind.*\b(billing|payment|invoice)\b.*\bstatement\b").unwrap(),
             Regex::new(r"(?i)\bdear\s*,\s*please\b").unwrap(),
+            Regex::new(r"(?i)\border\s+worth\s+\$[\d,]+").unwrap(),
+            Regex::new(r"(?i)\border.*is\s+being\s+(activated|processed)").unwrap(),
         ];
 
         Self {
@@ -113,25 +117,25 @@ impl FeatureExtractor for DomainBusinessMismatchAnalyzer {
 
             // Educational domain sending payment content
             if is_edu && has_payment {
-                score += 25;
+                score += 70; // Increased from 50 - even stronger penalty
                 evidence.push("Educational domain sending payment/billing content".to_string());
             }
 
             // Government domain sending payment content
             if is_gov && has_payment {
-                score += 30;
+                score += 60; // Increased from 30 - stronger penalty
                 evidence.push("Government domain sending payment/billing content".to_string());
             }
 
             // Generic greeting with payment content (compromised account indicator)
             if has_generic && has_payment {
-                score += 15;
+                score += 30; // Increased from 15
                 evidence.push("Generic greeting with payment content detected".to_string());
             }
 
             // Educational/government domain with generic payment greeting (high suspicion)
             if (is_edu || is_gov) && has_generic && has_payment {
-                score += 10; // Additional penalty for combination
+                score += 20; // Increased from 10 - Additional penalty for combination
                 evidence.push("Institutional domain with suspicious payment pattern".to_string());
             }
         }

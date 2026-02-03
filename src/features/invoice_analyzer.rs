@@ -33,6 +33,10 @@ impl InvoiceAnalyzer {
             Regex::new(r"(?i)(order.*successfully\s+processed)").unwrap(),
             Regex::new(r"(?i)(find\s+attached.*order\s+summary)").unwrap(),
             Regex::new(r"(?i)(greetings.*order.*processed)").unwrap(),
+            // Fake order activation patterns
+            Regex::new(r"(?i)(order\s+worth\s+\$[\d,]+.*is\s+being\s+activated)").unwrap(),
+            Regex::new(r"(?i)(order.*is\s+being\s+(activated|processed|prepared))").unwrap(),
+            Regex::new(r"(?i)(your\s+order.*\$[\d,]+.*has\s+been\s+confirmed)").unwrap(),
         ];
 
         let legitimate_domains = vec![
@@ -304,7 +308,7 @@ impl FeatureExtractor for InvoiceAnalyzer {
                     }
                 }
 
-                let base_score = if is_legitimate_or_medical { 0 } else { 30 }; // No score for legitimate senders
+                let base_score = if is_legitimate_or_medical { 0 } else { 60 }; // Increased from 30
                 let industry_multiplier = self.get_industry_multiplier(from_header);
                 let adjusted_score = (base_score as f32 * industry_multiplier) as i32;
 

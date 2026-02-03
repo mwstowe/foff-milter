@@ -958,16 +958,13 @@ impl ContextAnalyzer {
             return Some("food_delivery".to_string());
         }
 
-        // Floral industry - be more specific to avoid CSS/styling false positives
+        // Floral industry - check sender domain, not content (avoid false positives)
         if sender_lower.contains("floral")
-            || sender_lower.contains("flower")
+            || sender_lower.contains("1800flowers")
             || sender_lower.contains("eflorist")
             || sender_lower.contains("ftd")
-            || (content_lower.contains("arrangement") && !content_lower.contains("css"))
-            || (content_lower.contains("bouquet")
-                && !content_lower.contains("bouquet0")
-                && !content_lower.contains("#bouquet"))
-            || content_lower.contains("florist")
+            || sender_lower.contains("teleflora")
+            || sender_lower.contains("proflowers")
         {
             return Some("floral".to_string());
         }
@@ -993,20 +990,11 @@ impl ContextAnalyzer {
             return Some("cannabis_retail".to_string());
         }
 
-        // Tech/Newsletter - expanded to include more newsletter types
+        // Tech/Newsletter - check sender domain primarily, not just content
         if (sender_lower.contains("medium")
             || sender_lower.contains("substack")
             || sender_lower.contains("newsletter")
-            || sender_lower.contains("weekly")
-            || sender_lower.contains("digest")
-            || content_lower.contains("newsletter")
-            || content_lower.contains("weekly")
-            || content_lower.contains("unsubscribe")
-            || content_lower.contains("books")
-            || content_lower.contains("mysteries")
-            || content_lower.contains("thrillers")
-            || content_lower.contains("travel")
-            || (content_lower.contains("deals") && !content_lower.contains("details")))
+            || sender_lower.contains("digest"))
             && !sender_lower.contains("antivirus")
             && !sender_lower.contains("security")
             && !content_lower.contains("vulnerable")

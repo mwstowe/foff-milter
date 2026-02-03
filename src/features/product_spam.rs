@@ -105,6 +105,23 @@ impl FeatureExtractor for ProductSpamAnalyzer {
             }
         }
 
+        // Telecom/plan spam patterns
+        if (content.contains("switch to") || content.contains("upgrade to"))
+            && (content.contains("plan") || content.contains("service"))
+            && (content.contains("/mo") || content.contains("per month") || content.contains("$"))
+        {
+            // Exclude legitimate telecom and entertainment companies
+            let legitimate_telecom = ["tmobile", "t-mobile", "verizon", "att", "sprint", "disney", "hulu", "netflix"];
+            let is_legitimate_telecom = legitimate_telecom
+                .iter()
+                .any(|telecom| sender_domain.contains(telecom));
+
+            if !is_legitimate_telecom {
+                score += 70;
+                evidence.push("Telecom plan spam: pricing and plan switching language".to_string());
+            }
+        }
+
         // Minimal content with only links (typical of product spam)
         let text_content = context.body.as_deref().unwrap_or("");
         let link_count = text_content.matches("http").count();
@@ -168,6 +185,7 @@ impl FeatureExtractor for ProductSpamAnalyzer {
                 "tokyo-tiger",  // Tokyo Tiger retail
                 "backstage",    // Backstage job board
                 "evgo",         // EVgo EV charging
+                "eyebuydirect", // Eyewear retailer
             ];
             let is_legitimate_retailer = legitimate_retailers
                 .iter()
