@@ -173,7 +173,10 @@ impl BrandImpersonationFeature {
         );
         legitimate_domains.insert(
             "fidelity".to_string(),
-            vec!["fidelity.com".to_string(), "fidelityinvestments.com".to_string()],
+            vec![
+                "fidelity.com".to_string(),
+                "fidelityinvestments.com".to_string(),
+            ],
         );
 
         brand_patterns.insert(
@@ -346,9 +349,12 @@ impl FeatureExtractor for BrandImpersonationFeature {
             .and_then(|s| self.extract_domain(s))
             .unwrap_or_default()
             .to_lowercase();
-        
+
         let legitimate_newsletter_esps = ["sendgrid", "medium", "substack", "mailchimp"];
-        if legitimate_newsletter_esps.iter().any(|esp| sender_domain.contains(esp)) {
+        if legitimate_newsletter_esps
+            .iter()
+            .any(|esp| sender_domain.contains(esp))
+        {
             return FeatureScore {
                 feature_name: "Brand Impersonation".to_string(),
                 score: 0,

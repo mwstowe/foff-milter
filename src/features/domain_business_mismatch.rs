@@ -25,7 +25,7 @@ impl DomainBusinessMismatchAnalyzer {
             "school".to_string(),
             "caehs".to_string(), // College of Agriculture, Environment and Health Sciences
             "univ".to_string(),
-            "dekalb".to_string(), // DeKalb school district
+            "dekalb".to_string(),      // DeKalb school district
             "central.net".to_string(), // Educational networks
         ];
 

@@ -111,7 +111,17 @@ impl FeatureExtractor for ProductSpamAnalyzer {
             && (content.contains("/mo") || content.contains("per month") || content.contains("$"))
         {
             // Exclude legitimate telecom, entertainment, and ESPs
-            let legitimate_telecom = ["tmobile", "t-mobile", "verizon", "att", "sprint", "disney", "hulu", "netflix", "sparkpost"];
+            let legitimate_telecom = [
+                "tmobile",
+                "t-mobile",
+                "verizon",
+                "att",
+                "sprint",
+                "disney",
+                "hulu",
+                "netflix",
+                "sparkpost",
+            ];
             let is_legitimate_telecom = legitimate_telecom
                 .iter()
                 .any(|telecom| sender_domain.contains(telecom));

@@ -354,9 +354,9 @@ impl LinkAnalyzer {
             "autopay.com",
             "paymi.com",
             "epay.com",
-            "ngpvan.com",        // Political fundraising
-            "everyaction.com",   // Political fundraising
-            "actblue.com",       // Political fundraising
+            "ngpvan.com",      // Political fundraising
+            "everyaction.com", // Political fundraising
+            "actblue.com",     // Political fundraising
         ];
 
         for processor in &payment_processors {
