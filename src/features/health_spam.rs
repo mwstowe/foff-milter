@@ -170,7 +170,7 @@ impl FeatureExtractor for HealthSpamAnalyzer {
         }
 
         // Pet health spam patterns (exclude legitimate news and platforms)
-        let legitimate_news = ["nytimes", "washingtonpost", "cnn", "bbc", "reuters", "disney", "quora", "medium"];
+        let legitimate_news = ["nytimes", "washingtonpost", "cnn", "bbc", "reuters", "disney", "quora", "medium", "sparkpost"];
         let is_legitimate_news = legitimate_news.iter().any(|news| sender_domain.contains(news));
         
         if (content.contains("dog") || content.contains("pet") || content.contains("puppy"))
@@ -223,7 +223,7 @@ impl FeatureExtractor for HealthSpamAnalyzer {
         if (content.contains("health") || content.contains("dental") || content.contains("medical"))
             && (content.contains("free") || content.contains("gift") || content.contains("reward"))
         {
-            // Exclude legitimate retailers, healthcare companies, and entertainment
+            // Exclude legitimate retailers, healthcare companies, entertainment, and ESPs
             let legitimate_retailers = [
                 "1800flowers",
                 "pulse.celebrations",
@@ -236,6 +236,7 @@ impl FeatureExtractor for HealthSpamAnalyzer {
                 "disney",
                 "walgreens",
                 "evergreentlc",
+                "sparkpost",
                 // Medical organizations
                 "mtasv",
                 "batemanhornecenter",

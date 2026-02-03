@@ -313,6 +313,25 @@ impl FeatureExtractor for BrandImpersonationFeature {
         let mut evidence = Vec::new();
         let mut confidence: f32 = 0.0;
 
+        // Skip brand impersonation detection for legitimate newsletters and ESPs
+        let sender_domain = context
+            .sender
+            .as_ref()
+            .or(context.from_header.as_ref())
+            .and_then(|s| self.extract_domain(s))
+            .unwrap_or_default()
+            .to_lowercase();
+        
+        let legitimate_newsletter_esps = ["sendgrid", "medium", "substack", "mailchimp"];
+        if legitimate_newsletter_esps.iter().any(|esp| sender_domain.contains(esp)) {
+            return FeatureScore {
+                feature_name: "Brand Impersonation".to_string(),
+                score: 0,
+                confidence: 0.0,
+                evidence: vec![],
+            };
+        }
+
         // Check for recipient domain impersonation in display name
         if let Some(to_header) = context.headers.get("to") {
             if let Some(recipient_domain) = self.extract_domain(to_header) {
