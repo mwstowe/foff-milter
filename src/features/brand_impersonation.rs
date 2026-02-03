@@ -163,6 +163,19 @@ impl BrandImpersonationFeature {
             vec!["keurig.com".to_string(), "keurig.ca".to_string()],
         );
 
+        // Financial services brands
+        brand_patterns.insert(
+            "fidelity".to_string(),
+            vec![
+                r"(?i)\bfidelity\b".to_string(),
+                r"(?i)\bfidelity\s*investments?\b".to_string(),
+            ],
+        );
+        legitimate_domains.insert(
+            "fidelity".to_string(),
+            vec!["fidelity.com".to_string(), "fidelityinvestments.com".to_string()],
+        );
+
         legitimate_domains.insert("paypal".to_string(), vec!["paypal.com".to_string()]);
 
         Self {
