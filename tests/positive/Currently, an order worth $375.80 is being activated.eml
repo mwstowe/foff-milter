@@ -1,0 +1,147 @@
+Return-Path: <zkeller01@dekalbcentral.net>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.2/8.18.1) with ESMTPS id 612Fw6gc033502
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <marcy@baddomain.com>; Mon, 2 Feb 2026 15:58:06 GMT
+	(envelope-from zkeller01@dekalbcentral.net)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (1024-bit key; unprotected) header.d=dekalbcentral.net header.i=@dekalbcentral.net header.b=HJvCGyYg
+Received: from mail-yx1-f52.google.com (mail-yx1-f52.google.com [74.125.224.52])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 612Fw4C4073132
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=OK)
+	for <marcy@baddomain.com>; Mon, 2 Feb 2026 09:58:05 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 612Fw4C4073132
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (1024-bit key, unprotected) header.d=dekalbcentral.net header.i=@dekalbcentral.net header.a=rsa-sha256 header.s=google header.b=HJvCGyYg
+Received: by mail-yx1-f52.google.com with SMTP id 956f58d0204a3-649bd1f08acso1533713d50.1
+        for <marcy@baddomain.com>; Mon, 02 Feb 2026 07:58:04 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770047878; cv=none;
+        d=google.com; s=arc-20240605;
+        b=OaaBzW2BJYK5y+c/s4aPSSBpsB/QF/zNWcyO/LCu8HCVovBar86VYb7P1168dO2TGu
+         JoLb/d0WP1YK3hkQ6O+a56m61Abux2GK2KV8ZHvmenIxFD+gtxlOUqXtAogacQgyQ+Y3
+         bLwUW4dGj78ku7YqMca1P9ZVKGAbqTOafHh69JXsqBZc3UMmfThmUTrfNtdhUAn2qLMz
+         iga/8x4cUFz75CalJNg0+hcgeVpqrCxQ2XeZcjqFbqsz5nGA42DKcFzpLI6sFfq7gFs4
+         EwQxuF1zuVsiaLZhgPqgg/awTKaRiYxf40DWzlKVo56SoetCVUJevvCJ0MK/tBpVX4mZ
+         SPCg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=Pee2fH3kFcfWYKLIyZ6ckt6DYLbRdoDPhySmG5TUxXI=;
+        fh=C5vVl7DB+wiFzQ+axKLuISq8lcWJLWGhmwlngf8pS9k=;
+        b=OTo2/rQ8Fvm83i6VZ7FU6kgS7f5FKOHZtnEo0qsTO/Kk29/cf5Jv4gllyuv8F26W8Y
+         TCPaX2NonSqhNZZJ9jdy2mRbf1AmmiP0jf9b/eKuHUhl1CmG64XG5hdUbQPy45mFvYZa
+         sx7+Ysb8IktUUCnyOf4MzG4jtHb05q5Jon6j9/1oBwEoxSeNU+FQmE4+YpTyu4D8aZm4
+         vXI9gbG18uwNI7EsAQAHYoDXmSSL2ojtrKg7ZMhL0yJ4I94aeTzFR6UuIUSzeAuy6AI1
+         ceDkpUpeZ0DCeXW0uQhmGTWSRb6VcBta54YBz7UxJat56q1SQ4x8ROQ4DRv6zeGA33YG
+         dW1w==;
+        darn=baddomain.com
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dekalbcentral.net; s=google; t=1770047878; x=1770652678; darn=baddomain.com;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Pee2fH3kFcfWYKLIyZ6ckt6DYLbRdoDPhySmG5TUxXI=;
+        b=HJvCGyYgclQyb+Pef3NSYYbEfrsPHGtc2jROXbWLYSndtRDIYa90G62PppI2JHWjt0
+         4O9Ay5SUBf6SMccjqPXH2JE+d/arscWyGf7zx+72Q8KJxAegnI4ymcHjd5eUAFy+R8t6
+         /ukpdy6OO/xOwOtjZG4r8j+8DWmeb4aikYH70=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770047878; x=1770652678;
+        h=to:subject:message-id:date:from:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Pee2fH3kFcfWYKLIyZ6ckt6DYLbRdoDPhySmG5TUxXI=;
+        b=h0qL/BhhSyYU+6gQSsjyb6aM9ITeCLwzI3Ru0DcNwE+ZJe98vthM06AZCkHvo544dv
+         FsBFYQCATAZ0HoDE4PIDi6Xnj+epPeAVjs0hFxZ39JOX2xKwzL7LkVh6cPq7nHVQBHBI
+         rEFFGnvFLv7JFNN2PqOAL39AxVl8TvyGgECSvW/jQG1p2efeCFyjB9Lq2vJ9uyQD9uiy
+         CzGFbCoVLQux5UZhM5+b7s0tZc60SF8Q7O2oEhueIzhTm27qZ13ktoD2Zi5l5ByzX+d6
+         /akSL0jeYFQDteERSOQEFI3jF7AZRWsT9Fcup7V2tEsPJQVpsgzM5TY8fxSf/Yb9vXf7
+         1lKw==
+X-Forwarded-Encrypted: i=1; AJvYcCWMG0oSNTkaPqhYu2IbOeN68uVcOjm2p0/EAVytYt63ya9AR4BJoojRU1KkL+RRlBcieChzQw==@baddomain.com
+X-Gm-Message-State: AOJu0YxUgRhD3gqslTtlwqc00f/OZnADuuDPmtutfI1ORCWV7NgEmjYs
+	3X61qjGYDQDaigSqAyfiiZ4msG8KfDn/kKwilkr+NTz+asA4ih6RPUoW3dUqrW5SRZm+Wb3qzp3
+	lFjmy4hn9B9H0VezsF/hqX1wcEJNEDN/WCTikHyrHnqGbM59+m1c3k163gQxpXstuNaRhNeDDEc
+	wIcBQYF7OP72mvxOS+d8GuL+bbaIOITC8/u+YWiraud43MQXr8ljdC/K/Zh2ZKdu4cXUJ5OGrSg
+	wdzhWh6nH1PkSc=
+X-Gm-Gg: AZuq6aJD42tt/WUOsmOiTIpH2Jb4OMDzAQ//cyWpPy3thcISyUSpM3N8cuithnPTRyP
+	FjAQW99uRqSg3swFwWWIMJOZeJ+Ek29X0sFKQPhyLwI0Ply+zrOhxvbEOXOJ9inBlBNCXeKrZL3
+	530vSrdO8kUOUJgNdbrhz1r9iKyqP1Mb8Yi9pvVfRiDZEeab0iJAHOLq4LgJGWP7D7jl2jCfc16
+	R5YyUDj/wxOblOAJTsItLyg1m6qI6W1FqsTa8/VusfufetZS8AklyaBO6E4AftHRd8LOKJqj/F6
+	YhE7idzegekzv95EDCfvK/S8yDxsCjrclgdo91ZQsH64Y3ylYGbr5eAaLG35
+X-Received: by 2002:a05:690e:12c6:b0:63f:31f7:b956 with SMTP id
+ 956f58d0204a3-649a83be8aemr9697786d50.27.1770047876590; Mon, 02 Feb 2026
+ 07:57:56 -0800 (PST)
+MIME-Version: 1.0
+From: Zaydyn Keller <zkeller01@dekalbcentral.net>
+Date: Mon, 2 Feb 2026 21:57:39 +0600
+X-Gm-Features: AZwV_Qj3x0SPazMgKb1zB88AVqM8Po0wcti2b4KcQ-sDCdM7MAC7QQNFYVjQ_yc
+Message-ID: <CAMsc0oD4DyzSz9BCetde5VYNNacHAwCzv2sSkO=6zdcgM9UMEQ@mail.gmail.com>
+Subject: Currently, an order worth $375.80 is being activated.
+To: undisclosed-recipients:;
+Content-Type: multipart/alternative; boundary="000000000000eb896a0649d962e9"
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Mon, 02 Feb 2026 15:58:06 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Mon, 02 Feb 2026 09:58:05 -0600 (CST)
+
+--000000000000eb896a0649d962e9
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Dear Customer,
+
+A billing invoice has been generated for your Geek Squad service.
+
+*Invoice ID:* GS-INV-7614852
+*Service:* Technical Support
+*Amount:* $375.80 USD
+*Date:* February 2, 2026
+*Status:* Pending
+
+If you *do not recognize* this charge, contact us immediately:
+=F0=9F=93=9E *Geek Squad Support:* *(855) 818-0035*
+
+Thank you,
+*Geek Squad Billing Department*
+
+--=20
+This e-mail and any attachments are from a sender at DeKalb Central United=
+=20
+School District in Waterloo, Indiana. They are intended for the named=20
+recipients and may contain information that is confidential or privileged=
+=20
+under Indiana and federal law. Any error in addressing or sending this=20
+e-mail is not a waiver of confidentiality and does not consent to copying=
+=20
+or distribution of this e-mail or attachments. If you receive this e-mail=
+=20
+in error, please notify the sender of the error by return e-mail and delete=
+=20
+this e-mail and its attachments. If there is a need to speak to the sender,=
+=20
+please call [260] 920-1010
+
+--000000000000eb896a0649d962e9
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div><p><font face=3D"comic sans ms, sans-serif">Dear Cust=
+omer,</font></p><p><font face=3D"comic sans ms, sans-serif">A billing invoi=
+ce has been generated for your Geek Squad service.</font></p><p><font face=
+=3D"comic sans ms, sans-serif"><strong>Invoice ID:</strong>=C2=A0GS-INV-761=
+4852<br><strong>Service:</strong>=C2=A0Technical Support<br><strong>Amount:=
+</strong>=C2=A0$375.80=C2=A0USD<br><strong>Date:</strong>=C2=A0February 2, =
+2026<br><strong>Status:</strong>=C2=A0Pending</font></p><p><font face=3D"co=
+mic sans ms, sans-serif">If you=C2=A0<strong>do not recognize</strong>=C2=
+=A0this charge, contact us immediately:<br>=F0=9F=93=9E=C2=A0<strong>Geek S=
+quad Support:</strong>=C2=A0<b>(855) 818-0035</b></font></p><p><font face=
+=3D"comic sans ms, sans-serif">Thank you,<br><strong>Geek Squad Billing Dep=
+artment</strong></font></p></div></div>
+
+<br>
+<span style=3D"font-size:13px">This e-mail and any attachments are from a s=
+ender at DeKalb Central United School District in Waterloo, Indiana. They a=
+re intended for the named recipients and may contain information that is co=
+nfidential or privileged under Indiana and federal law. Any error in addres=
+sing or sending this e-mail is not a waiver of confidentiality and does not=
+ consent to copying or distribution of this e-mail or attachments. If you r=
+eceive this e-mail in error, please notify the sender of the error by retur=
+n e-mail and delete this e-mail and its attachments. If there is a need to =
+speak to the sender, please call [260] 920-1010</span>
+--000000000000eb896a0649d962e9--
+

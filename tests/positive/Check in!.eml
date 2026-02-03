@@ -1,0 +1,262 @@
+Return-Path: <mstowe+caf_=mstowe=baddomain.com@gmail.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.2/8.18.1) with ESMTPS id 612DUULG028338
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <mstowe@baddomain.com>; Mon, 2 Feb 2026 13:30:30 GMT
+	(envelope-from mstowe+caf_=mstowe=baddomain.com@gmail.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (2048-bit key; unprotected) header.d=hotmail.com header.i=@hotmail.com header.b=TgUsneWz
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 612DURno070220
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=OK)
+	for <mstowe@baddomain.com>; Mon, 2 Feb 2026 07:30:29 -0600
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 612DURno070220
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (2048-bit key, unprotected) header.d=hotmail.com header.i=@hotmail.com header.a=rsa-sha256 header.s=selector1 header.b=TgUsneWz
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-65832e566edso5964076a12.2
+        for <mstowe@baddomain.com>; Mon, 02 Feb 2026 05:30:29 -0800 (PST)
+ARC-Seal: i=3; a=rsa-sha256; t=1770039027; cv=pass;
+        d=google.com; s=arc-20240605;
+        b=eJZmgUVSD20JM3F0yvar5TmWMxG8ljVVLMFUYxfvAet7M+Om9PFj1OK7WtnFMcMf41
+         wRe8Elc/Kj8ghcwkpVDQG1XKaxPUwJx7AEBT6u9Zg/AoJikVpi3CBUtyHiofGABa1dXT
+         HsUnUPLTjTTPnulndCcDllkLsPF1X8/aK8aqZ9G4nKNa7wLeOoe5Jiqt8XvSWwuWwDrx
+         he5vkO7oNbNc2MEOylMZTasC98kJyvf1NYdPYEiaF2D83adCAHOk1gBUmMuAbxrs1bTY
+         vQi9A8p4ajTnKEmMxDZpsTRwX0hNOutnv71R2Ut4cVAPASiiYPzqxSafNMs+ULW3dlUb
+         VB6A==
+ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=mime-version:msip_labels:content-language:accept-language
+         :in-reply-to:references:message-id:date:thread-index:thread-topic
+         :subject:from:dkim-signature:delivered-to;
+        bh=70dZxS3Khi/pC96tGt1f2Xmgl2s49LMlbI5CjAfr8ik=;
+        fh=symd8/qIH2ZlwYJymv0ijRljeV8iKPWQ/2Fl1VVJSYY=;
+        b=lXr55DEkKkjTS9Kivgm5GNpgfePdTRNQAY6KnQPNFM5zdhi9mNIlQztfhDvWAkV5FG
+         fapsQBtZsbLPplZWi5TuPkq9EEH8mgeOlxhWEEXhVjZ9+QQttHUwC/ypAyuUE1WGE71r
+         LcPmeON13DwHOEm+1g+gH+p0BOTndf4uCAEN+ijdiAkIDzIWFMQ2V/8LDAt5YuwQIO2O
+         xLFi0HlvZfmQaQHB7+4wImx33CwEHUpuOZHHY7uzoG8mJEX4WPjAvQVJrM/x6zQQH2Xi
+         jBzzB/gF/fKuhxgFLX4d1xkM03nxNM5fAAEMKl2F6VwwlrPmW3UAmmEWbQKcXqFqrQ/x
+         hGPA==;
+        darn=baddomain.com
+ARC-Authentication-Results: i=3; mx.google.com;
+       dkim=pass header.i=@hotmail.com header.s=selector1 header.b=TgUsneWz;
+       arc=pass (i=1);
+       spf=pass (google.com: domain of lindadesormeaux@hotmail.com designates 2a01:111:f403:d100::1 as permitted sender) smtp.mailfrom=lindadesormeaux@hotmail.com;
+       dmarc=pass (p=NONE sp=NONE dis=NONE) header.from=hotmail.com
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770039027; x=1770643827;
+        h=mime-version:msip_labels:content-language:accept-language
+         :in-reply-to:references:message-id:date:thread-index:thread-topic
+         :subject:from:dkim-signature:delivered-to:x-forwarded-for
+         :x-forwarded-to:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=70dZxS3Khi/pC96tGt1f2Xmgl2s49LMlbI5CjAfr8ik=;
+        b=fJPoMDIy3u3uYJY8B5kaGfkAeq1Iyq78l4piYfJFEVlro2q9Ons+/4QFORS7kN8kjY
+         0x/tX6xQXXlsR6f26uPu1zN3K7k+A7rtto9V+VEBMgXJBsharr/D2uzNuFcmoe331oJS
+         EpjRaixmiQ/n13omDm+03i2GILwbrB5RFT0t52OidYTmEDuAJMwkrxKmnSewSMnG0cL1
+         yBzOmNR3rPv2m71/zuYSQinKv9AknuXQuPbWffmDLJNoYK1bhPSqrVGhWqJWOjWFlY6k
+         vORHi29U4h6kkMPyzHM5oam8HwP4cXbj83qS/QoGW7BkffarY7eJVRUnMtArhj1rZ/ve
+         V5MQ==
+X-Forwarded-Encrypted: i=3; AJvYcCXglL6ISBfGFxkNl6PfJZ42qlnT0i6zBXw5VDNgOf/7zP0HlHxzTWzPjJz6uKM7NsKZt/iFnD0=@baddomain.com
+X-Gm-Message-State: AOJu0Ywn4ZPu+NNt2qhLRJeI5MDA/6ARIMPAboeFBbrpEjnpCejepENj
+	xghtXxK4CrfcSc6tYyrym3c4ik+PEDcN5v+obMmytWq6zNcDFOLNgN6yZ/LACpg7c4Ee69GzYTS
+	j+/bopTvqSMqmwpm+SGmc5S+iRjuCiU6hRtkJmzK368Eu25WUIYi3NrbD72lm7w==
+X-Received: by 2002:a05:6402:518e:b0:64b:4c70:a5f0 with SMTP id 4fb4d7f45d1cf-658de594f4cmr6661059a12.24.1770039027161;
+        Mon, 02 Feb 2026 05:30:27 -0800 (PST)
+X-Forwarded-To: mstowe@baddomain.com
+X-Forwarded-For: mstowe@gmail.com mstowe@baddomain.com
+Delivered-To: mstowe@gmail.com
+Received: by 2002:ab4:a1e3:0:b0:2c4:e6c4:5080 with SMTP id dl3csp1827942ecb;
+        Mon, 2 Feb 2026 05:30:25 -0800 (PST)
+X-Forwarded-Encrypted: i=3; AJvYcCWsJ31KgzZLfIYcYuWfcWjZsARmcKLZl9UyxB0KSxxl/M1uV6hkX6J8Y2TmBlFW1pI0/o9YVPA=@gmail.com
+X-Received: by 2002:a05:690e:1c1b:b0:649:4d4a:37bd with SMTP id 956f58d0204a3-649a8da08aemr7333890d50.18.1770039025462;
+        Mon, 02 Feb 2026 05:30:25 -0800 (PST)
+ARC-Seal: i=2; a=rsa-sha256; t=1770039025; cv=pass;
+        d=google.com; s=arc-20240605;
+        b=TqKkqRWvYQv7IpVIbkItHU1CDQPDH/3zvkGBHrSifIqEovMyHoMQTS3xaWlX70EXMm
+         FQXmsZE6XFIQQhxVcbU4DOBKSoko5syzs0VXqf0vqN1MrY3Pi8tQ1hJ8LRpQBLhK5+y5
+         KIAFxhcBJLcemRLU8LbT5nhdXrBE8yoM0jsIdJXtWUZUgS0Sdngv+dmGhtFtGDo7mW3W
+         ZnHBUq0wEjtNd2AIOx+RhxlK8VyuZCknh8SSwcNlrDn9LgZSrSPaCBdWncDN3zSIXG/x
+         /Z4dFKyRpmXPaC6IBOq/KnPJzeulmRqipsSvHNNIVpRyBsBz6GUl4LcRO5aj8qyyTUdu
+         EtIA==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=mime-version:msip_labels:content-language:accept-language
+         :in-reply-to:references:message-id:date:thread-index:thread-topic
+         :subject:from:dkim-signature;
+        bh=70dZxS3Khi/pC96tGt1f2Xmgl2s49LMlbI5CjAfr8ik=;
+        fh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+        b=gjMq2pYEJdKjMcAeT3GsjVTZ8rPwFZrO/tp06JbW4gNBfrGfLgY5zHZLYeEZymEX3P
+         pTkz38y9kSs9bQj/0o6MFQ0OYPagituVMxRqUso4Ge3CaC99H1qs2YhOSqCJ6F2BFHcI
+         4ypdLyX5Xj6V03KWK1G9hyTP89gRyRhh3cN5k+wLQd+XEbDZYKkAu2+QgH9NojY4KbrP
+         pJwSlI0I7KiT7drVddD7yFc+vWL9t2ItUtr6+iq45IBxZhIZAu/ZXX4qb4PmSnhwICuu
+         tfANAa9mIqz96WhF+E1rH6dJehnRbz8zYibH045BpO/vxxSxtw101ODfV2z4MxdUCBPb
+         exRA==;
+        dara=google.com
+ARC-Authentication-Results: i=2; mx.google.com;
+       dkim=pass header.i=@hotmail.com header.s=selector1 header.b=TgUsneWz;
+       arc=pass (i=1);
+       spf=pass (google.com: domain of lindadesormeaux@hotmail.com designates 2a01:111:f403:d100::1 as permitted sender) smtp.mailfrom=lindadesormeaux@hotmail.com;
+       dmarc=pass (p=NONE sp=NONE dis=NONE) header.from=hotmail.com
+Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazolkn190120001.outbound.protection.outlook.com. [2a01:111:f403:d100::1])
+        by mx.google.com with ESMTPS id 956f58d0204a3-6499610f2e1si11937775d50.131.2026.02.02.05.30.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Feb 2026 05:30:25 -0800 (PST)
+Received-SPF: pass (google.com: domain of lindadesormeaux@hotmail.com designates 2a01:111:f403:d100::1 as permitted sender) client-ip=2a01:111:f403:d100::1;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@hotmail.com header.s=selector1 header.b=TgUsneWz;
+       arc=pass (i=1);
+       spf=pass (google.com: domain of lindadesormeaux@hotmail.com designates 2a01:111:f403:d100::1 as permitted sender) smtp.mailfrom=lindadesormeaux@hotmail.com;
+       dmarc=pass (p=NONE sp=NONE dis=NONE) header.from=hotmail.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=iL/1zxT0xXs+/EsmAU3NA9SC0Li4eI/1C/0Q7sRAodX8HggvWiSWbPeR6hTm8KsFz4cbsD6ovFI4qJ6/GwIyHvOxLIIeAP57xHaI43PwTa4c6vLD0OgLjg9W0jV2tYBrqKy70DggjdpeBWkJXiCSFv5A7CwqhOHtFyHIEnZMjiyCxEgUr0iFFgLoL6cLRifo92Ez4DuOPOcMN4ZUDNoS9vnumNOT0ofQnVJuvXaM2fYM+xMXal2LzJefRMYEKVL1q0nV0qPSclUmvlhe9QBKa02zTagUtP0aB8O5agzCPBUA4OrMmUT1C93WmmNAuPIUbC3M6iCi47KwltNtLBLTzg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=70dZxS3Khi/pC96tGt1f2Xmgl2s49LMlbI5CjAfr8ik=;
+ b=C+nh+aNPsNAXxtIIUJQBPb+iAG30BxSEf71hPeLrsdOXM3gIB0bV8QTz87X7xpg+HTprczNlucJZsC9uKu4TVe9IVgIMi4QP050/EQ/HYBlTgMdosuWAJqeHiEZFmR06m2aNTNSLMQ1EtCaNM8F4UrLaV/TWgVh4IzvNLT+/Tyr+/HEbxpAASavsLikk6uZbFXapYSOPoTMnjKOIaHnLQgtxog3oOCNvDpkFZMuFZs25MihskEvbyLtJAc8+z/V9SMt6xBRKA0bOUkPTkwj9IsvGB5DPMsRHMZPXRPuYkL0o/x6GbuDWn4xS0aIl+sKGDW9uz+JrzJKhFUq5tI3kdw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=70dZxS3Khi/pC96tGt1f2Xmgl2s49LMlbI5CjAfr8ik=;
+ b=TgUsneWziVI/ij101isqc75/Ijo6vIcMf2TyUy5PUVRDdZhS+Pt2LtT8zu0KCZly0cS/JEmzc/xPi94HaUct6eHIL+FMP/yK6ljUW5O0Z5KvGrBWlOPl9FxywwvWgSe8GrF0G5+2Mgh2pEeq3816Gsrqt7HVOXEblhb0QaBkvm7sUh1gNtwjcO9PlIZGgzM1YoBiS5Ynbb8YR6Jve7iZNmEuOW7yQxe3iFEG3EmQEedIgo+VlHBxsKn/vSj4SAJiHyQncDkxz5hhjbw4W3F9sPbNpuOfUcZ4OhFeKIAqJxiz9fZno0IPtHhgJu2XvRm4JuU2Zj4ZSgSUBS+7HiEnBA==
+Received: from MWHPR1001MB2096.namprd10.prod.outlook.com
+ (2603:10b6:301:2c::21) by IA3PR10MB8589.namprd10.prod.outlook.com
+ (2603:10b6:208:577::14) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.16; Mon, 2 Feb
+ 2026 13:30:22 +0000
+Received: from MWHPR1001MB2096.namprd10.prod.outlook.com
+ ([fe80::2eed:9987:468d:6a3b]) by MWHPR1001MB2096.namprd10.prod.outlook.com
+ ([fe80::2eed:9987:468d:6a3b%4]) with mapi id 15.20.9564.016; Mon, 2 Feb 2026
+ 13:30:21 +0000
+From: linda desormeaux <lindadesormeaux@hotmail.com>
+Subject: Check in!
+Thread-Topic: Check in!
+Thread-Index: AQHclES3TVIRU1nrsEW9YZKSCiFpqrVvZwAzgAAAi5M=
+Date: Mon, 2 Feb 2026 13:30:21 +0000
+Message-ID:
+ <MWHPR1001MB2096B7139C04DC0FF32C04F6AA9AA@MWHPR1001MB2096.namprd10.prod.outlook.com>
+References:
+ <MWHPR1001MB2096A7937A9A7DE46DEBBC18AA9AA@MWHPR1001MB2096.namprd10.prod.outlook.com>
+ <MWHPR1001MB209619EFC2EA55BDCD583FF3AA9AA@MWHPR1001MB2096.namprd10.prod.outlook.com>
+In-Reply-To:
+ <MWHPR1001MB209619EFC2EA55BDCD583FF3AA9AA@MWHPR1001MB2096.namprd10.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MWHPR1001MB2096:EE_|IA3PR10MB8589:EE_
+x-ms-office365-filtering-correlation-id: a0ea69b9-cd82-498d-4ca7-08de625f3704
+x-ms-exchange-slblob-mailprops:
+ hMn5pMJ7kd9eKpVYRW/sWRPePLUed5EIGESEY69hFufbUmBjA+fSAaX3UQYVmVy9NQEXXUL5fOFBEO7YUTdSJv4kGSoMIXqtflTWr5YygsjBmhdmIrSoZ9+o/7MW+VNJGq+iJgE4fMmgRd7qisADkTG1ZPbusa1l75RHceq4Np3kQ02OJP39TpUFxZ8xv7J32ZwaXzZpNSi4XdSBGcRFk3/Lufgp6ikGY8vVA7nmDTKlq/pHPnVDirgesTtlIso22uig9hlvvBqq/qefc35kJ+b0c9wQ+cwzf3txWRLMgiUaAmmO1JCxsh588yrGfLHnPHd/x0Rvi+aHRBlKg5JDL4TGyZkYNzRNkHW1Oz8nGszf76shlk3x/7dvJK4hFiWRZXBXlHWYwOiHV2qW5wt2+pit00gQY9PSwfQTFsiLcfRK4fi78pSBjAzK2yyqc48A7laER65PL9j/OLwuI8MhRyai8RAMsToW6wnYDc5dASD0p5A1fJEOgAIH98uuzAsGG4bE0WWhR/eZGiVIgySH6ra/K6GqxyOMZDPWoSD3az23T9eaVwm9X9IgiCigzAEi9b9DETdcrEAXUjDXSkXNNxBf9quSbi+KfFYb5N1cAcU=
+x-microsoft-antispam:
+ BCL:0;ARA:14566002|31061999003|15080799012|15030799006|461199028|19110799012|8062599012|8060799015|39105399006|3412199025|440099028|31055399003|40105399003|102099032;
+x-microsoft-antispam-message-info:
+ =?iso-8859-1?Q?4sp1ZGB7XSU6etk18vr8Mtdox9BP43Mj8+DarUdOjNg+G/BT4LuExlxHuR?=
+ =?iso-8859-1?Q?tugAkTymxXYvWufpHj1G7dpNl+avq+UQx9k3jtIgnCMD9XNInQe0lLfXsh?=
+ =?iso-8859-1?Q?K2QHZgBxnkCK7BA91d3srpp6xvNIuaziu+LQVmoLboXUbwue9SpwwUweCP?=
+ =?iso-8859-1?Q?gXMmoYvcIlsoZgqdY/k5tqFN5zcCxEBCXuMZDDYBe3lDbRKX0yH693NCDp?=
+ =?iso-8859-1?Q?QJkG5N696PgN4GjOiaDL0mABVkRG6A2dd25uh1hshy0M5yGaUJm0D60EdB?=
+ =?iso-8859-1?Q?M8mAydoig7+eh2Gazt4He4nmwHT8hwzINCnuOLpYV5rBMfbQM1NO+peaR/?=
+ =?iso-8859-1?Q?iB4utfc1o2rtrpPEhvV8iPnY9MplWWuUiWSLuYOnqF7A78CPn7675wsDf+?=
+ =?iso-8859-1?Q?dqHcDTJwUptTMGij3QA+vynkO+7Akm3YKcEqg67ZKTeRyA11K6yN7G+arn?=
+ =?iso-8859-1?Q?gn/FVzcYYGW3LIVOWshPpJgv37vEE9nzV41qXf+9Ntw7P16+FzvWz9Y+LC?=
+ =?iso-8859-1?Q?F5Wo9d3Px33i+aBJRVItFH6qFxJDnxuzL7zqPmeprgjMEwBV492LSoojG2?=
+ =?iso-8859-1?Q?HRsHmdsiNG9jrQqgAEPgt78AoEir96m5B2CNqMQwECGmwKQFR9YCNASFec?=
+ =?iso-8859-1?Q?wOxkJHf70/qwG18I+oXo+SaKEIqwQ1Io5Mat42RGNwt1m9V7Il8jNFyeBS?=
+ =?iso-8859-1?Q?f7v1Nmcb53njdNziYMqG+b4Gkirw4BL8AIIpRvMWexoL2fZtp67jwY7gua?=
+ =?iso-8859-1?Q?jW+EhxdrnFMIDIMN7zahJ4g/CDmKZk3f+vOZzv6cziHa5R0CyoXd+fD9Cs?=
+ =?iso-8859-1?Q?fkApCbxAQg0o8IKiZN1BQtn2U+mAYW9V0BHgfy6AXRTCMj6PJ/yHxly9er?=
+ =?iso-8859-1?Q?4C66itA7Xlw1DIiCaXDppaP5s1Wv+/9uiCq5Fxi6qlBheILBVZIrmP9nFA?=
+ =?iso-8859-1?Q?PWlV2230qkSvIL6xVpNEwkF7YNcMHd2EfR+PX8VCx6kJuV4gctVpqYhQUz?=
+ =?iso-8859-1?Q?B4KHTRJQeaLLiJ7JQWByAxTtQwW8tkJvVhp1lnL5yaYKqtdKNC3Hhlo5Kf?=
+ =?iso-8859-1?Q?Otdb3SkGLY2l6ENiOVYMzS54uyUdEAKYe2DhoXsjsHvPsIeJNBkGYH8QJz?=
+ =?iso-8859-1?Q?k4OTBG4ibmvZbTvRvx9Yd2OnpVDUhaS9Lx2dIMKuTnBKc0Eh8kHRN5CEXn?=
+ =?iso-8859-1?Q?h4J6RETYy8XqkA74HWQTpUIOXU5x4vOrolWAoCoB1lS/p1ivu+I+g9Cak7?=
+ =?iso-8859-1?Q?EONvp2BmRNaHVH4yijoGvckjpjJxHzMo5E+CU/q24=3D?=
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-1?Q?5ex8whfq2TDlAQAxoS44UKrEtp4gxwP50GZKhuZiRE4n+ScWgF8BwVSyl+?=
+ =?iso-8859-1?Q?RR2XGRYhVPfrzAjSnCCRUwc/Vm0zs2ZtsjVAHSJvwt2XEevh3sb0FDnxqw?=
+ =?iso-8859-1?Q?PrALwOjFK95qE4sP4tfnphxxWThLDal42vjxim0yeAjqXTKB0PEqiLt6yH?=
+ =?iso-8859-1?Q?qqQdNBx1FlsYtquHW7i4LRl9VSx/m4V/zqLQzVRZl0ofW0g+MFlDMbX/PX?=
+ =?iso-8859-1?Q?zGsYMCJxvGNthn8r7vAsSNWwiYpQRbWvOLpFNqCrIOenrSOl3b4KQKjJSf?=
+ =?iso-8859-1?Q?JMN8W1yeadQLqN2iu/cy2klMsIV1QG4iH7Hc5h0qNQylBQE6xIDAmGWzYA?=
+ =?iso-8859-1?Q?tm1cmeJ260z+rmQ2AeQ1/NKQOLb/tcUx6K8Jnc6q+NLBkRUcV5Qsc6LJas?=
+ =?iso-8859-1?Q?/KEqL2goCBR3/Obrjt4bROW5SfNLAUrYZeu3PAtVeda+mCmFXhy5qnF8xH?=
+ =?iso-8859-1?Q?Y/iQozCLr598kwJd9pR71fRtl/08vMRioI3ZZtJ6bhJsjWqAhyG5i2r9HV?=
+ =?iso-8859-1?Q?GejNGcu/fWVzZyVJutYRBBrLxhkR+p4vQj3bq4hXbrae1D1hGPYIIeoabF?=
+ =?iso-8859-1?Q?xpf7hZZGupqDMCH7oHmkXvlEo2aqYZZSA1gFpjqvVFDVK8SO9xfW+KkEpd?=
+ =?iso-8859-1?Q?rdVmRCnYyPHgvyFEs4LYVT3x8JyO5meQbBwMXn+mQdDPHbhxpvLLoaaLnO?=
+ =?iso-8859-1?Q?+aBp4PCVUF86lNSbgPUUVObqh98Lb1v81YBsnSy4janhzLTh8Jawi4u0W9?=
+ =?iso-8859-1?Q?Apije22x729tACs2rnQZ01UbKQrSfEtjAkXX1dsyTtE+5QuIkUSAQaDhPX?=
+ =?iso-8859-1?Q?Sjm/tJarz47wX8C4UmJAqdoy805v9Js15kPYw+WxujV19PAG0aT0+9edh/?=
+ =?iso-8859-1?Q?5kZ9CS8SVfPdrkLN15dhXtG+0lELE2q2OvctbauMljFVZ02ne7FML1bwhE?=
+ =?iso-8859-1?Q?oksHZBg9JZFfYiX7aj+HPt4yTSxxRJoE874a6K0EwfyfkNihTl3aBZ0rXb?=
+ =?iso-8859-1?Q?BVnKDqXvOfL9qCdFw3N83+G63zb/+b0oT/LFPkXhamUONYTcrm0sQn3Ej8?=
+ =?iso-8859-1?Q?3eQ2A3R5oofE1Ed5OnYBwSxf971Mhh44X7TWRjnGrmjvLKR9l0XwqjsMr8?=
+ =?iso-8859-1?Q?/gk42bnad+qRTflbhLM3kFsm9gTxk8ui6XraViY/jts0/XuJrlW1lEeJSt?=
+ =?iso-8859-1?Q?aAKQJSWycRU2Att2or/7YqVJoFqPrxhoOpMrEwyPuyX2IMXqmApYk4Hhw9?=
+ =?iso-8859-1?Q?pqKsbdxYgqhQIocm5l6JSsbs0RtWiOtUowpqaBFpL3QNZba9YkbEBlaIhB?=
+ =?iso-8859-1?Q?NCnXDJJwLdM5XqcYpZNzc4V3rXKS/+ZvRQtGBJYLw8nygqVSqyVuX2BIwg?=
+ =?iso-8859-1?Q?Uo0QJZy9nzDIHDv56/Zp5HHmiPKX0n0Sf4isYx8RedGzv/oWobXpqqYE1p?=
+ =?iso-8859-1?Q?BEBgB7Dy+V6Nmu9w?=
+Content-Type: multipart/alternative;
+	boundary="_000_MWHPR1001MB2096B7139C04DC0FF32C04F6AA9AAMWHPR1001MB2096_"
+MIME-Version: 1.0
+X-OriginatorOrg: sct-15-20-9412-4-msonline-outlook-25888.templateTenant
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MWHPR1001MB2096.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: a0ea69b9-cd82-498d-4ca7-08de625f3704
+X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Feb 2026 13:30:21.6557
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA3PR10MB8589
+To: undisclosed-recipients:;
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Mon, 02 Feb 2026 13:30:30 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Mon, 02 Feb 2026 07:30:29 -0600 (CST)
+
+--_000_MWHPR1001MB2096B7139C04DC0FF32C04F6AA9AAMWHPR1001MB2096_
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+Hi, Quick question, do you purchase stuff often on Amaz on??.
+
+Thank you,
+Linda
+
+--_000_MWHPR1001MB2096B7139C04DC0FF32C04F6AA9AAMWHPR1001MB2096_
+Content-Type: text/html; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<html>
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Diso-8859-=
+1">
+<style type=3D"text/css" style=3D"display:none;"> P {margin-top:0;margin-bo=
+ttom:0;} </style>
+</head>
+<body dir=3D"ltr">
+<div style=3D"font-family: Calibri, Helvetica, sans-serif; font-size: 16pt;=
+ color: rgb(0, 0, 0);" class=3D"elementToProof">
+Hi, Quick question, do you purchase stuff often on Amaz on??.</div>
+<div style=3D"direction: ltr; font-family: Calibri, Helvetica, sans-serif; =
+font-size: 16pt; color: rgb(0, 0, 0);">
+<br>
+</div>
+<div style=3D"direction: ltr; font-family: Calibri, Helvetica, sans-serif; =
+font-size: 16pt; color: rgb(0, 0, 0);">
+Thank you,</div>
+<div style=3D"direction: ltr; font-family: Calibri, Helvetica, sans-serif; =
+font-size: 16pt; color: rgb(0, 0, 0);">
+Linda</div>
+</body>
+</html>
+
+--_000_MWHPR1001MB2096B7139C04DC0FF32C04F6AA9AAMWHPR1001MB2096_--
+
