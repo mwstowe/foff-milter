@@ -79,6 +79,6 @@ If issues are discovered:
 
 ---
 
-**Last Updated**: 2026-01-31  
-**Current Version**: v0.8.23  
-**Test Status**: 436/436 passing (100.0%)
+**Last Updated**: 2026-02-02  
+**Current Version**: v0.8.25  
+**Test Status**: 439/439 passing (100.0%)
