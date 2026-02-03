@@ -381,11 +381,11 @@ impl Milter {
         let engine = self.engine.clone();
         let state: StateMap = Arc::new(Mutex::new(HashMap::new()));
 
-        // Create callbacks with explicit type annotation
-        let callbacks: Callbacks<()> = Callbacks {
+        // Create callbacks with session ID as private data
+        let callbacks: Callbacks<String> = Callbacks {
             connect: Some(Box::new({
                 let state = state.clone();
-                move |_ctx: &mut indymilter::Context<()>, hostname, _addr| {
+                move |ctx: &mut indymilter::Context<String>, hostname, _addr| {
                     let state = state.clone();
                     Box::pin(async move {
                         let hostname_str = hostname.to_string_lossy().to_string();
@@ -395,6 +395,10 @@ impl Milter {
                             SESSION_COUNTER.fetch_add(1, std::sync::atomic::Ordering::SeqCst)
                         );
                         log::debug!("Connection from: {hostname_str} (session: {session_id})");
+                        
+                        // Store session ID in context data
+                        ctx.data = Some(session_id.clone());
+                        
                         let mail_ctx = MailContext {
                             hostname: Some(hostname_str),
                             ..Default::default()
@@ -415,7 +419,7 @@ impl Milter {
 
             mail: Some(Box::new({
                 let state = state.clone();
-                move |_ctx: &mut indymilter::Context<()>, sender| {
+                move |ctx: &mut indymilter::Context<String>, sender| {
                     let state = state.clone();
                     Box::pin(async move {
                         let sender_str = sender
@@ -424,18 +428,23 @@ impl Milter {
                             .collect::<Vec<_>>()
                             .join(",");
                         log::debug!("Mail from: {sender_str}");
-                        // Update the most recent context (by highest session number)
+                        
+                        // Get session ID from context private data
+                        let session_id = match ctx.data.as_ref() {
+                            Some(id) => id.clone(),
+                            None => {
+                                log::error!("No session ID in context private data");
+                                return Status::Tempfail;
+                            }
+                        };
+                        
+                        // Update the correct context by session ID
                         match state.lock() {
                             Ok(mut guard) => {
-                                if let Some((_, mail_ctx)) =
-                                    guard.iter_mut().max_by_key(|(k, _)| {
-                                        k.split('-')
-                                            .next_back()
-                                            .and_then(|s| s.parse::<u64>().ok())
-                                            .unwrap_or(0)
-                                    })
-                                {
+                                if let Some(mail_ctx) = guard.get_mut(&session_id) {
                                     mail_ctx.sender = Some(sender_str);
+                                } else {
+                                    log::error!("Session {} not found in state", session_id);
                                 }
                             }
                             Err(e) => {
@@ -450,7 +459,7 @@ impl Milter {
 
             rcpt: Some(Box::new({
                 let state = state.clone();
-                move |_ctx: &mut indymilter::Context<()>, recipient| {
+                move |ctx: &mut indymilter::Context<String>, recipient| {
                     let state = state.clone();
                     Box::pin(async move {
                         let recipient_str = recipient
@@ -459,18 +468,23 @@ impl Milter {
                             .collect::<Vec<_>>()
                             .join(",");
                         log::debug!("Rcpt to: {recipient_str}");
-                        // Update the most recent context (by highest session number)
+                        
+                        // Get session ID from context private data
+                        let session_id = match ctx.data.as_ref() {
+                            Some(id) => id.clone(),
+                            None => {
+                                log::error!("No session ID in context private data");
+                                return Status::Tempfail;
+                            }
+                        };
+                        
+                        // Update the correct context by session ID
                         match state.lock() {
                             Ok(mut guard) => {
-                                if let Some((_, mail_ctx)) =
-                                    guard.iter_mut().max_by_key(|(k, _)| {
-                                        k.split('-')
-                                            .next_back()
-                                            .and_then(|s| s.parse::<u64>().ok())
-                                            .unwrap_or(0)
-                                    })
-                                {
+                                if let Some(mail_ctx) = guard.get_mut(&session_id) {
                                     mail_ctx.recipients.push(recipient_str);
+                                } else {
+                                    log::error!("Session {} not found in state", session_id);
                                 }
                             }
                             Err(e) => {
@@ -485,7 +499,7 @@ impl Milter {
 
             header: Some(Box::new({
                 let state = state.clone();
-                move |_ctx: &mut indymilter::Context<()>, name, value| {
+                move |ctx: &mut indymilter::Context<String>, name, value| {
                     let state = state.clone();
                     Box::pin(async move {
                         let name_str = name.to_string_lossy().to_string();
@@ -497,17 +511,19 @@ impl Milter {
                             log::error!("CRITICAL: Authentication-Results header received: '{name_str}: {value_str}'");
                         }
 
-                        // Update the most recent context (by highest session number)
+                        // Get session ID from context private data
+                        let session_id = match ctx.data.as_ref() {
+                            Some(id) => id.clone(),
+                            None => {
+                                log::error!("No session ID in context private data");
+                                return Status::Tempfail;
+                            }
+                        };
+
+                        // Update the correct context by session ID
                         match state.lock() {
                             Ok(mut guard) => {
-                                if let Some((_, mail_ctx)) =
-                                    guard.iter_mut().max_by_key(|(k, _)| {
-                                        k.split('-')
-                                            .next_back()
-                                            .and_then(|s| s.parse::<u64>().ok())
-                                            .unwrap_or(0)
-                                    })
-                                {
+                                if let Some(mail_ctx) = guard.get_mut(&session_id) {
                                     // Store important headers
                                     match name_str.to_lowercase().as_str() {
                                         "subject" => {
@@ -576,6 +592,8 @@ impl Milter {
                                         mail_ctx.headers.insert(header_key.clone(), value_str);
                                         mail_ctx.last_header_name = Some(header_key);
                                     }
+                                } else {
+                                    log::error!("Session {} not found in state", session_id);
                                 }
                             }
                             Err(e) => {
@@ -590,21 +608,24 @@ impl Milter {
 
             body: Some(Box::new({
                 let state = state.clone();
-                move |_ctx: &mut indymilter::Context<()>, body_chunk| {
+                move |ctx: &mut indymilter::Context<String>, body_chunk| {
                     let state = state.clone();
                     Box::pin(async move {
                         let body_str = String::from_utf8_lossy(&body_chunk);
-                        // Update the most recent context (by highest session number)
+                        
+                        // Get session ID from context private data
+                        let session_id = match ctx.data.as_ref() {
+                            Some(id) => id.clone(),
+                            None => {
+                                log::error!("No session ID in context private data");
+                                return Status::Tempfail;
+                            }
+                        };
+                        
+                        // Update the correct context by session ID
                         match state.lock() {
                             Ok(mut guard) => {
-                                if let Some((_, mail_ctx)) =
-                                    guard.iter_mut().max_by_key(|(k, _)| {
-                                        k.split('-')
-                                            .next_back()
-                                            .and_then(|s| s.parse::<u64>().ok())
-                                            .unwrap_or(0)
-                                    })
-                                {
+                                if let Some(mail_ctx) = guard.get_mut(&session_id) {
                                     match &mut mail_ctx.body {
                                         Some(existing_body) => {
                                             existing_body.push_str(&body_str);
@@ -613,6 +634,8 @@ impl Milter {
                                             mail_ctx.body = Some(body_str.to_string());
                                         }
                                     }
+                                } else {
+                                    log::error!("Session {} not found in state", session_id);
                                 }
                             }
                             Err(e) => {
@@ -630,13 +653,22 @@ impl Milter {
                 let state = state.clone();
                 let statistics = self.statistics.clone();
                 let processing_guard = self.processing_guard.clone();
-                move |ctx: &mut indymilter::EomContext<()>| {
+                move |ctx: &mut indymilter::EomContext<String>| {
                     let engine = engine.clone();
                     let state = state.clone();
                     let statistics = statistics.clone();
                     let processing_guard = processing_guard.clone();
                     Box::pin(async move {
                         log::debug!("EOM callback invoked");
+
+                        // Get session ID from context private data
+                        let session_id = match ctx.data.as_ref() {
+                            Some(id) => id.clone(),
+                            None => {
+                                log::error!("No session ID in EOM context private data");
+                                return Status::Tempfail;
+                            }
+                        };
 
                         // Start email processing with guard protection
                         let _email_token = match processing_guard.start_email_processing() {
@@ -652,9 +684,8 @@ impl Milter {
                         let mail_ctx_for_check = state
                             .lock()
                             .unwrap()
-                            .iter()
-                            .max_by_key(|(k, _)| k.parse::<u32>().unwrap_or(0))
-                            .map(|(_, v)| v.clone());
+                            .get(&session_id)
+                            .cloned();
 
                         if let Some(mail_ctx) = mail_ctx_for_check {
                             // Check if DKIM processing has started (DKIM-Filter header present)
@@ -669,9 +700,8 @@ impl Milter {
                                     let current_ctx = state
                                         .lock()
                                         .unwrap()
-                                        .iter()
-                                        .max_by_key(|(k, _)| k.parse::<u32>().unwrap_or(0))
-                                        .map(|(_, v)| v.clone());
+                                        .get(&session_id)
+                                        .cloned();
 
                                     if let Some(ctx) = current_ctx {
                                         if ctx.headers.contains_key("authentication-results") {
@@ -693,18 +723,12 @@ impl Milter {
                             }
                         }
 
-                        // Clone mail context to avoid holding mutex across await (get most recent by session number)
+                        // Clone mail context to avoid holding mutex across await (use session ID)
                         let mail_ctx_clone = state
                             .lock()
                             .unwrap()
-                            .iter()
-                            .max_by_key(|(k, _)| {
-                                k.split('-')
-                                    .next_back()
-                                    .and_then(|s| s.parse::<u64>().ok())
-                                    .unwrap_or(0)
-                            })
-                            .map(|(_, ctx)| ctx.clone());
+                            .get(&session_id)
+                            .cloned();
 
                         if let Some(mut mail_ctx) = mail_ctx_clone {
                             // Add legitimate business detection
