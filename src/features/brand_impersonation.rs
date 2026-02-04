@@ -77,7 +77,10 @@ impl BrandImpersonationFeature {
         );
         legitimate_domains.insert("home_depot".to_string(), vec!["homedepot.com".to_string()]);
 
-        brand_patterns.insert("lowes".to_string(), vec![r"(?i)\blowe'?s\s".to_string()]);
+        brand_patterns.insert(
+            "lowes".to_string(),
+            vec![r"(?i)\blowe'?s\b".to_string()], // Match "lowes" or "lowe's" with word boundary
+        );
         legitimate_domains.insert(
             "lowes".to_string(),
             vec![
