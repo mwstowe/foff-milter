@@ -436,7 +436,10 @@ impl FeatureExtractor for TldRiskFeature {
         // Try multiple sources for domain information
         let sender_domain = self.get_primary_domain(context);
 
+        log::info!("TLD Risk Assessment: sender_domain = '{}'", sender_domain);
+
         if sender_domain.is_empty() {
+            log::warn!("TLD Risk Assessment: No valid domain found");
             return FeatureScore {
                 feature_name: "TLD Risk Assessment".to_string(),
                 score: 0,

@@ -286,9 +286,17 @@ impl FeatureExtractor for DomainReputationFeature {
         // Get primary domain from multiple sources
         let primary_domain = self.get_primary_domain(context);
 
+        log::info!("Domain Reputation: primary_domain = '{}'", primary_domain);
+
         if !primary_domain.is_empty() {
             let reputation = self.analyzer.analyze_domain(&primary_domain);
             let domain_score = self.analyzer.get_reputation_score(&primary_domain);
+
+            log::info!(
+                "Domain Reputation: reputation = {:?}, score = {}",
+                reputation,
+                domain_score
+            );
 
             score += domain_score;
             confidence += 0.8; // High confidence in domain analysis
