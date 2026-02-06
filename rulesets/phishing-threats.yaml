@@ -680,13 +680,17 @@ rules:
         - type: Or
           criteria:
             - type: SubjectPattern
-              pattern: "(?i).*(darf|irpj|imposto.*renda|guia.*pagamento|departamento.*cont[aá]bil).*"
+              pattern: "(?i).*(\\bDARF\\b|\\bIRPJ\\b|imposto.*renda|guia.*pagamento|departamento.*cont[aá]bil).*"
             - type: BodyPattern
-              pattern: "(?i).*(darf|irpj|imposto.*renda|guia.*pagamento|receita.*federal).*"
+              pattern: "(?i).*(\\bDARF\\b|\\bIRPJ\\b|imposto.*renda|guia.*pagamento|receita.*federal).*"
         - type: Not
           criteria:
-            type: SenderPattern
-            pattern: ".*@.*(gov\\.br|receita\\.fazenda\\.gov\\.br|serpro\\.gov\\.br)$"
+            type: Or
+            criteria:
+              - type: SenderPattern
+                pattern: ".*@.*(gov\\.br|receita\\.fazenda\\.gov\\.br|serpro\\.gov\\.br|usps\\.com|usps\\.gov)$"
+              - type: SenderPattern
+                pattern: ".*@.*(gov|edu|mil)$"
     score: 350
     description: "Fake Brazilian tax payment notifications (DARF/IRPJ scams)"
 
