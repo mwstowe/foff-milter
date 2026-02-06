@@ -174,13 +174,16 @@ impl TldRiskAnalyzer {
                     additional_score += 15;
                 }
             }
-            "shop" => {
-                // .shop domains with health claims
+            "shop" | "fun" | "site" => {
+                // .shop/.fun/.site domains with health claims
                 if content_lower.contains("health")
                     || content_lower.contains("cure")
                     || content_lower.contains("supplement")
+                    || content_lower.contains("memory")
+                    || content_lower.contains("cognitive")
+                    || content_lower.contains("fungus")
                 {
-                    additional_score += 20;
+                    additional_score += 30;
                 }
             }
             "icu" => {
@@ -285,6 +288,26 @@ impl TldRiskFeature {
                 abuse_score: 25,
                 description: "Shopping domain - high spam abuse".to_string(),
                 common_uses: vec!["E-commerce, often abused for spam".to_string()],
+            },
+        );
+
+        tlds.insert(
+            "fun".to_string(),
+            TldInfo {
+                risk_level: TldRisk::Suspicious,
+                abuse_score: 30,
+                description: "Fun domain - high spam abuse".to_string(),
+                common_uses: vec!["Entertainment, often abused for spam".to_string()],
+            },
+        );
+
+        tlds.insert(
+            "site".to_string(),
+            TldInfo {
+                risk_level: TldRisk::Suspicious,
+                abuse_score: 30,
+                description: "Generic site domain - high spam abuse".to_string(),
+                common_uses: vec!["Various, often abused for phishing".to_string()],
             },
         );
 

@@ -671,6 +671,25 @@ rules:
           pattern: "(?i).*(lembrete.*assinatura.*pendente|portuguese.*signature|assinatura.*portuguesa|documento.*assinatura|signature.*phishing).*"
     score: 320
 
+  # Brazilian tax payment scam (DARF/IRPJ)
+  - name: "Brazilian Tax Payment Scam"
+    enabled: true
+    criteria:
+      type: And
+      criteria:
+        - type: Or
+          criteria:
+            - type: SubjectPattern
+              pattern: "(?i).*(darf|irpj|imposto.*renda|guia.*pagamento|departamento.*cont[aá]bil).*"
+            - type: BodyPattern
+              pattern: "(?i).*(darf|irpj|imposto.*renda|guia.*pagamento|receita.*federal).*"
+        - type: Not
+          criteria:
+            type: SenderPattern
+            pattern: ".*@.*(gov\\.br|receita\\.fazenda\\.gov\\.br|serpro\\.gov\\.br)$"
+    score: 350
+    description: "Fake Brazilian tax payment notifications (DARF/IRPJ scams)"
+
   # Portuguese job application spam
   - name: "Portuguese Job Application Spam"
     enabled: true

@@ -215,6 +215,30 @@ impl FeatureExtractor for HealthSpamAnalyzer {
             evidence.push("Health miracle claim detected".to_string());
         }
 
+        // Memory/cognitive enhancement spam
+        if (content.contains("memory")
+            || content.contains("cognitive")
+            || content.contains("brain"))
+            && (content.contains("trick")
+                || content.contains("enhance")
+                || content.contains("improve")
+                || content.contains("boost")
+                || content.contains("sharpen"))
+        {
+            score += 80;
+            evidence.push("Memory/cognitive enhancement spam detected".to_string());
+        }
+
+        // Fungus/toe health spam
+        if (content.contains("fungus") || content.contains("toenail"))
+            && (content.contains("rub")
+                || content.contains("apply")
+                || content.contains("treatment"))
+        {
+            score += 70;
+            evidence.push("Fungus treatment spam detected".to_string());
+        }
+
         // Generic phishing with vague subject from free email providers
         let subject_lower = context.subject.as_deref().unwrap_or("").to_lowercase();
         let vague_subjects = [
