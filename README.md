@@ -1,10 +1,10 @@
-# FOFF Milter v0.8.25
+# FOFF Milter v0.8.27
 
 A comprehensive, enterprise-grade email security platform written in Rust featuring intelligent threat detection, modular rulesets, and zero-configuration deployment.
 
 ## 🎯 **Production Ready - 100% Test Compliance & Zero False Positives**
 
-**Latest Achievement**: Critical milter mode bug fix for duplicate DKIM signature handling. Fixed DKIM signature overwriting that caused alignment checks to use wrong signature in production. Milter mode now uses indexed DKIM signature storage matching test mode behavior. Maintains 448/448 tests passing (100% success rate) with zero false positives.
+**Latest Achievement**: Production-ready v0.8.27 with 100% test compliance. Fixed DKIM duplicate signature handling for emails with multiple signatures (ESP + sender). Added detection for memory enhancement spam, fungus treatment spam, and Brazilian tax scams. Updated security dependencies (bytes, time). Maintains 448/448 tests passing with zero false positives.
 
 ## 🚀 Complete Email Security Platform
 
