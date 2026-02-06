@@ -591,7 +591,39 @@ impl Milter {
                                         // Regular header
                                         let header_key = name_str.to_lowercase();
                                         log::debug!("Header: '{}': '{}'", header_key, value_str);
-                                        mail_ctx.headers.insert(header_key.clone(), value_str);
+
+                                        // Handle duplicate DKIM-Signature headers with indexed keys
+                                        if header_key == "dkim-signature" {
+                                            let mut count = 0;
+                                            while mail_ctx
+                                                .headers
+                                                .contains_key(&format!("dkim-signature-{}", count))
+                                            {
+                                                count += 1;
+                                            }
+                                            if mail_ctx.headers.contains_key("dkim-signature") {
+                                                // Move first one to indexed key
+                                                if let Some(first_sig) =
+                                                    mail_ctx.headers.remove("dkim-signature")
+                                                {
+                                                    mail_ctx.headers.insert(
+                                                        "dkim-signature-0".to_string(),
+                                                        first_sig,
+                                                    );
+                                                }
+                                                mail_ctx.headers.insert(
+                                                    format!("dkim-signature-{}", count + 1),
+                                                    value_str,
+                                                );
+                                            } else {
+                                                mail_ctx
+                                                    .headers
+                                                    .insert(header_key.clone(), value_str);
+                                            }
+                                        } else {
+                                            mail_ctx.headers.insert(header_key.clone(), value_str);
+                                        }
+
                                         mail_ctx.last_header_name = Some(header_key);
                                     }
                                 } else {
