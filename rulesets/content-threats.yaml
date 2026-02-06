@@ -1463,14 +1463,20 @@ rules:
   # Professor Tee clothing scam
   - name: "Professor Tee Clothing Scam"
     criteria:
-      type: Or
+      type: And
       criteria:
-        - type: SubjectPattern
-          pattern: "(?i).*(smart.*looks.*smart.*minds|professor.*tee|instadoodle).*"
-        - type: BodyPattern
-          pattern: "(?i).*(smart.*looks.*smart.*minds|professor.*tee|instadoodle).*"
-        - type: SenderPattern
-          pattern: ".*@.*instadoodle\\.(me|com|net|org)$"
+        - type: Or
+          criteria:
+            - type: SubjectPattern
+              pattern: "(?i).*(smart.*looks.*smart.*minds|professor.*tee|instadoodle).*"
+            - type: BodyPattern
+              pattern: "(?i).*(smart.*looks.*smart.*minds|professor.*tee|instadoodle).*"
+            - type: SenderPattern
+              pattern: ".*@.*instadoodle\\.(me|com|net|org)$"
+        - type: Not
+          criteria:
+            type: SenderPattern
+            pattern: ".*@.*(nytimes|newyorktimes)\\.(com|org)$"
     score: 300
 
   # Shed building scam

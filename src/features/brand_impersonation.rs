@@ -170,8 +170,8 @@ impl BrandImpersonationFeature {
         brand_patterns.insert(
             "fidelity".to_string(),
             vec![
-                r"(?i)\bfidelity\b".to_string(),
                 r"(?i)\bfidelity\s*investments?\b".to_string(),
+                r"(?i)\bfidelity\s*brokerage\b".to_string(),
             ],
         );
         legitimate_domains.insert(
@@ -290,6 +290,8 @@ impl BrandImpersonationFeature {
                     || domain.contains("wellsfargo")
                     || domain.contains("onestopplus")
                     || domain.contains("empower")
+                    // Legitimate retailers that sell on Amazon
+                    || domain.contains("asus.com")
             }
             _ => false,
         }
