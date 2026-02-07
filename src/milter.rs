@@ -427,7 +427,17 @@ impl Milter {
                             .map(|s| s.to_string_lossy())
                             .collect::<Vec<_>>()
                             .join(",");
-                        log::info!("MILTER: Mail from (envelope sender): {}", sender_str);
+                        log::info!("MILTER: Mail from (envelope sender raw): {}", sender_str);
+                        
+                        // Strip ESMTP parameters (e.g., ">,SIZE=124410,BODY=7BIT")
+                        // These appear after the email address in ESMTP MAIL FROM
+                        let sender_clean = sender_str
+                            .split('>').next()
+                            .unwrap_or(&sender_str)
+                            .trim_matches('<')
+                            .trim()
+                            .to_string();
+                        log::info!("MILTER: Mail from (envelope sender cleaned): {}", sender_clean);
 
                         // Get session ID from context private data
                         let session_id = match ctx.data.as_ref() {
@@ -442,8 +452,8 @@ impl Milter {
                         match state.lock() {
                             Ok(mut guard) => {
                                 if let Some(mail_ctx) = guard.get_mut(&session_id) {
-                                    mail_ctx.sender = Some(sender_str.clone());
-                                    log::info!("MILTER: Set context.sender to: {}", sender_str);
+                                    mail_ctx.sender = Some(sender_clean.clone());
+                                    log::info!("MILTER: Set context.sender to: {}", sender_clean);
                                 } else {
                                     log::error!("Session {} not found in state", session_id);
                                 }
