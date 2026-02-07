@@ -427,7 +427,7 @@ impl Milter {
                             .map(|s| s.to_string_lossy())
                             .collect::<Vec<_>>()
                             .join(",");
-                        log::debug!("Mail from: {sender_str}");
+                        log::info!("MILTER: Mail from (envelope sender): {}", sender_str);
 
                         // Get session ID from context private data
                         let session_id = match ctx.data.as_ref() {
@@ -442,7 +442,8 @@ impl Milter {
                         match state.lock() {
                             Ok(mut guard) => {
                                 if let Some(mail_ctx) = guard.get_mut(&session_id) {
-                                    mail_ctx.sender = Some(sender_str);
+                                    mail_ctx.sender = Some(sender_str.clone());
+                                    log::info!("MILTER: Set context.sender to: {}", sender_str);
                                 } else {
                                     log::error!("Session {} not found in state", session_id);
                                 }

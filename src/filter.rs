@@ -3965,14 +3965,18 @@ impl FilterEngine {
                         } else {
                             // Normal (non-forwarded) emails: check envelope sender first
                             if let Some(sender) = &context.sender {
-                                log::debug!("SenderPattern checking envelope sender: '{}' against pattern: '{}'", sender, pattern);
+                                log::info!("SenderPattern: Checking envelope sender '{}' against pattern '{}'", sender, pattern);
                                 if regex.is_match(sender) {
-                                    log::debug!(
-                                        "SenderPattern matched envelope sender: '{}'",
+                                    log::info!(
+                                        "SenderPattern: MATCHED envelope sender '{}'",
                                         sender
                                     );
                                     return true;
+                                } else {
+                                    log::info!("SenderPattern: NO MATCH for envelope sender '{}'", sender);
                                 }
+                            } else {
+                                log::warn!("SenderPattern: context.sender is None!");
                             }
                             if let Some(from_header) = &context.from_header {
                                 // Extract just the email address from the From header
