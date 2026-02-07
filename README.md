@@ -1,10 +1,10 @@
-# FOFF Milter v0.8.27
+# FOFF Milter v0.8.28
 
 A comprehensive, enterprise-grade email security platform written in Rust featuring intelligent threat detection, modular rulesets, and zero-configuration deployment.
 
 ## 🎯 **Production Ready - 100% Test Compliance & Zero False Positives**
 
-**Latest Achievement**: Production-ready v0.8.27 with 100% test compliance. Fixed DKIM duplicate signature handling for emails with multiple signatures (ESP + sender). Added detection for memory enhancement spam, fungus treatment spam, and Brazilian tax scams. Updated security dependencies (bytes, time). Maintains 448/448 tests passing with zero false positives.
+**Latest Achievement**: Production-ready v0.8.28 with critical ESP detection fix. Fixed ESMTP parameter handling that prevented SendGrid ESP detection, causing legitimate marketing emails to be flagged. Fixed Google Groups mailing list false positives. Added .fun and .site TLD detection, memory/fungus/Brazilian tax spam detection. Maintains 448/448 tests passing with zero false positives.
 
 ## 🚀 Complete Email Security Platform
 
