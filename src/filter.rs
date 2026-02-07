@@ -7228,12 +7228,14 @@ impl FilterEngine {
                 } else {
                     log::warn!("Mailing list: REJECTED fake List-id: {}", header_value);
                 }
-            } else if header_lower == "x-google-group-id"
+            }
+            
+            if header_lower == "x-google-group-id"
                 || (header_lower == "list-id" && value_lower.contains("groups.google.com"))
             {
                 has_google_groups = true;
                 list_indicators += 2;
-                log::debug!(
+                log::warn!(
                     "Google Groups indicator: {} = {}",
                     header_name,
                     header_value
@@ -7289,6 +7291,11 @@ impl FilterEngine {
             || has_crowdfunding_platform)
             && list_indicators >= 2;
 
+        log::info!(
+            "Mailing list detection: has_list_id={}, has_google_groups={}, list_indicators={}, has_mailing_list_infrastructure={}",
+            has_list_id, has_google_groups, list_indicators, has_mailing_list_infrastructure
+        );
+
         // Check for obvious spam content that should not get mailing list override
         let has_spam_content = self.has_obvious_spam_content(context);
 
@@ -7299,6 +7306,12 @@ impl FilterEngine {
             && !has_spam_content
             && !has_unicode_obfuscation
             && !self.has_suspicious_unsubscribe_links(context);
+
+        log::info!(
+            "Mailing list legitimacy check: infrastructure={}, spam_content={}, unicode_obfuscation={}, suspicious_unsubscribe={}, is_legitimate={}",
+            has_mailing_list_infrastructure, has_spam_content, has_unicode_obfuscation, 
+            self.has_suspicious_unsubscribe_links(context), is_legitimate
+        );
 
         if has_mailing_list_infrastructure
             && (has_spam_content
@@ -8860,16 +8873,24 @@ impl FilterEngine {
 
     /// Detects suspicious unsubscribe links that indicate fake mailing lists
     fn has_suspicious_unsubscribe_links(&self, context: &MailContext) -> bool {
+        // Skip unsubscribe check for Google Groups - they have legitimate unsubscribe links
+        if context.headers.contains_key("x-google-group-id") 
+            || context.headers.contains_key("X-Google-Group-Id") 
+        {
+            log::info!("Skipping unsubscribe check for Google Groups email");
+            return false;
+        }
+        
         // Check List-Unsubscribe header (case-insensitive)
-        log::debug!(
-            "Looking for List-Unsubscribe header in {} headers",
+        log::info!(
+            "Checking unsubscribe links - {} headers total",
             context.headers.len()
         );
         let list_unsubscribe =
             self.get_header_case_insensitive(&context.headers, "List-Unsubscribe");
 
         if let Some(list_unsubscribe) = list_unsubscribe {
-            log::debug!("Analyzing unsubscribe header: {}", list_unsubscribe);
+            log::info!("Found List-Unsubscribe header: {}", list_unsubscribe);
             // Extract sender domain for comparison
             let sender_domain = if let Some(from_header) = &context.from_header {
                 if let Some(at_pos) = from_header.rfind('@') {
@@ -8889,9 +8910,22 @@ impl FilterEngine {
             if let Some(mailto_start) = list_unsubscribe.find("mailto:") {
                 if let Some(mailto_end) = list_unsubscribe[mailto_start..].find('@') {
                     let username = &list_unsubscribe[mailto_start + 7..mailto_start + mailto_end];
-                    if username.len() > 30 && username.chars().all(|c| c.is_ascii_alphanumeric()) {
-                        log::debug!(
-                            "Suspicious unsubscribe: long random mailto username ({})",
+                    
+                    // Whitelist legitimate mailing list services
+                    let is_legitimate_service = list_unsubscribe.contains("@googlegroups.com")
+                        || list_unsubscribe.contains("@groups.google.com")
+                        || list_unsubscribe.contains("@mailchimp.com")
+                        || list_unsubscribe.contains("@sendgrid.net");
+                    
+                    // Check for long random alphanumeric-only usernames (excluding + and - which are used by legitimate services)
+                    let alphanumeric_only = username.chars().all(|c| c.is_ascii_alphanumeric());
+                    
+                    if !is_legitimate_service 
+                        && username.len() > 30 
+                        && alphanumeric_only
+                    {
+                        log::info!(
+                            "Suspicious unsubscribe: long random mailto username ({} chars)",
                             username.len()
                         );
                         return true;
@@ -8918,11 +8952,23 @@ impl FilterEngine {
                             if let Some(domain_end) = url[domain_start + 3..].find('/') {
                                 let unsubscribe_domain =
                                     &url[domain_start + 3..domain_start + 3 + domain_end];
+                                
+                                log::info!("Checking domain mismatch: unsub={} vs sender={}", unsubscribe_domain, sender_domain);
+                                
+                                // Whitelist legitimate mailing list services
+                                let is_legitimate_mailing_list = unsubscribe_domain.contains("groups.google.com")
+                                    || unsubscribe_domain.contains("googlegroups.com")
+                                    || unsubscribe_domain.contains("mailchimp.com")
+                                    || unsubscribe_domain.contains("sendgrid.net");
+                                
+                                log::info!("is_legitimate_mailing_list={}", is_legitimate_mailing_list);
+                                
                                 // Allow subdomains but flag completely different domains
-                                if !unsubscribe_domain.ends_with(sender_domain)
+                                if !is_legitimate_mailing_list
+                                    && !unsubscribe_domain.ends_with(sender_domain)
                                     && !sender_domain.ends_with(unsubscribe_domain)
                                 {
-                                    log::debug!(
+                                    log::info!(
                                         "Suspicious unsubscribe: domain mismatch ({} vs {})",
                                         unsubscribe_domain,
                                         sender_domain
@@ -8940,13 +8986,16 @@ impl FilterEngine {
                 || list_unsubscribe.contains(".png")
                 || list_unsubscribe.contains(".gif")
             {
-                log::debug!("Suspicious unsubscribe: contains image file extensions");
+                log::info!("Suspicious unsubscribe: contains image file extensions");
                 return true;
             }
+            
+            log::info!("Unsubscribe link passed all checks - not suspicious");
         } else {
-            log::debug!("List-Unsubscribe header not found");
+            log::info!("List-Unsubscribe header not found");
         }
 
+        log::info!("has_suspicious_unsubscribe_links returning false");
         false
     }
 
