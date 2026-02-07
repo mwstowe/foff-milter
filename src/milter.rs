@@ -428,16 +428,20 @@ impl Milter {
                             .collect::<Vec<_>>()
                             .join(",");
                         log::info!("MILTER: Mail from (envelope sender raw): {}", sender_str);
-                        
+
                         // Strip ESMTP parameters (e.g., ">,SIZE=124410,BODY=7BIT")
                         // These appear after the email address in ESMTP MAIL FROM
                         let sender_clean = sender_str
-                            .split('>').next()
+                            .split('>')
+                            .next()
                             .unwrap_or(&sender_str)
                             .trim_matches('<')
                             .trim()
                             .to_string();
-                        log::info!("MILTER: Mail from (envelope sender cleaned): {}", sender_clean);
+                        log::info!(
+                            "MILTER: Mail from (envelope sender cleaned): {}",
+                            sender_clean
+                        );
 
                         // Get session ID from context private data
                         let session_id = match ctx.data.as_ref() {
