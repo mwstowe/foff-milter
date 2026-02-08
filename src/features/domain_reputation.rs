@@ -357,13 +357,35 @@ impl DomainReputationFeature {
     /// Get primary domain from multiple sources in order of preference
     fn get_primary_domain(&self, context: &MailContext) -> String {
         // 1. Try envelope sender first
-        if let Some(sender) = &context.sender {
-            if let Some(domain) = self.analyzer.extract_domain(sender) {
-                return domain;
+        let envelope_domain = if let Some(sender) = &context.sender {
+            self.analyzer.extract_domain(sender)
+        } else {
+            None
+        };
+
+        // 2. Try Return-Path header (case-insensitive) - check early for ESP domains
+        let return_path_domain = context
+            .headers
+            .get("return-path")
+            .or_else(|| context.headers.get("Return-Path"))
+            .and_then(|rp| self.analyzer.extract_domain(rp));
+
+        // If envelope sender exists but isn't an ESP, and Return-Path is an ESP, use Return-Path
+        if let Some(ref env_domain) = envelope_domain {
+            if let Some(ref rp_domain) = return_path_domain {
+                if self.analyzer.is_esp_domain(rp_domain) && !self.analyzer.is_esp_domain(env_domain) {
+                    return rp_domain.clone();
+                }
             }
+            return env_domain.clone();
         }
 
-        // 2. Try From header (case-insensitive)
+        // If no envelope sender, use Return-Path if available
+        if let Some(rp_domain) = return_path_domain {
+            return rp_domain;
+        }
+
+        // 3. Try From header (case-insensitive)
         if let Some(from) = context
             .headers
             .get("from")
@@ -374,20 +396,9 @@ impl DomainReputationFeature {
             }
         }
 
-        // 3. Try context.from_header field
+        // 4. Try context.from_header field
         if let Some(from) = &context.from_header {
             if let Some(domain) = self.analyzer.extract_domain(from) {
-                return domain;
-            }
-        }
-
-        // 4. Try Return-Path header (case-insensitive)
-        if let Some(return_path) = context
-            .headers
-            .get("return-path")
-            .or_else(|| context.headers.get("Return-Path"))
-        {
-            if let Some(domain) = self.analyzer.extract_domain(return_path) {
                 return domain;
             }
         }

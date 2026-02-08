@@ -284,7 +284,7 @@ impl BrandImpersonationFeature {
         // Handle legitimate business partnerships
         match brand {
             "amazon" => {
-                // Amazon partnerships with financial institutions
+                // Amazon partnerships with financial institutions and logistics
                 domain.contains("fidelity")
                     || domain.contains("chase")
                     || domain.contains("wellsfargo")
@@ -292,6 +292,10 @@ impl BrandImpersonationFeature {
                     || domain.contains("empower")
                     // Legitimate retailers that sell on Amazon
                     || domain.contains("asus.com")
+                    // Shipping/logistics partners that deliver Amazon packages
+                    || domain.contains("ups.com")
+                    || domain.contains("fedex.com")
+                    || domain.contains("usps.com")
             }
             _ => false,
         }

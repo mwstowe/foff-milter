@@ -368,16 +368,56 @@ impl FeatureExtractor for EspValidationFeature {
         let mut evidence = Vec::new();
         let mut confidence = 0.0f32;
 
-        // Get sender domain
+        // Get sender domain from envelope sender
         let sender_domain = if let Some(sender) = &context.sender {
-            if let Some(domain) = self.analyzer.extract_domain(sender) {
-                domain
+            self.analyzer.extract_domain(sender)
+        } else {
+            None
+        };
+
+        // If envelope sender isn't an ESP, check Return-Path header as fallback
+        let return_path_domain = if sender_domain.is_none() || !self.analyzer.is_esp_domain(&sender_domain.clone().unwrap_or_default()) {
+            context.headers.get("return-path")
+                .and_then(|rp| {
+                    let cleaned = rp.trim_matches(['<', '>', ' ']);
+                    self.analyzer.extract_domain(cleaned)
+                })
+        } else {
+            None
+        };
+
+        // Use whichever domain is an ESP
+        let sender_domain = if let Some(ref domain) = sender_domain {
+            if self.analyzer.is_esp_domain(domain) {
+                domain.clone()
+            } else if let Some(ref rp_domain) = return_path_domain {
+                if self.analyzer.is_esp_domain(rp_domain) {
+                    rp_domain.clone()
+                } else {
+                    return FeatureScore {
+                        feature_name: "ESP Validation".to_string(),
+                        score: 0,
+                        confidence: 0.0,
+                        evidence: vec!["No ESP domain found in envelope or Return-Path".to_string()],
+                    };
+                }
             } else {
                 return FeatureScore {
                     feature_name: "ESP Validation".to_string(),
                     score: 0,
                     confidence: 0.0,
                     evidence: vec!["No valid sender domain found".to_string()],
+                };
+            }
+        } else if let Some(ref rp_domain) = return_path_domain {
+            if self.analyzer.is_esp_domain(rp_domain) {
+                rp_domain.clone()
+            } else {
+                return FeatureScore {
+                    feature_name: "ESP Validation".to_string(),
+                    score: 0,
+                    confidence: 0.0,
+                    evidence: vec!["No ESP domain found".to_string()],
                 };
             }
         } else {
