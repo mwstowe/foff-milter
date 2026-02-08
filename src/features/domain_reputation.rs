@@ -373,7 +373,9 @@ impl DomainReputationFeature {
         // If envelope sender exists but isn't an ESP, and Return-Path is an ESP, use Return-Path
         if let Some(ref env_domain) = envelope_domain {
             if let Some(ref rp_domain) = return_path_domain {
-                if self.analyzer.is_esp_domain(rp_domain) && !self.analyzer.is_esp_domain(env_domain) {
+                if self.analyzer.is_esp_domain(rp_domain)
+                    && !self.analyzer.is_esp_domain(env_domain)
+                {
                     return rp_domain.clone();
                 }
             }

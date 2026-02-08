@@ -376,12 +376,15 @@ impl FeatureExtractor for EspValidationFeature {
         };
 
         // If envelope sender isn't an ESP, check Return-Path header as fallback
-        let return_path_domain = if sender_domain.is_none() || !self.analyzer.is_esp_domain(&sender_domain.clone().unwrap_or_default()) {
-            context.headers.get("return-path")
-                .and_then(|rp| {
-                    let cleaned = rp.trim_matches(['<', '>', ' ']);
-                    self.analyzer.extract_domain(cleaned)
-                })
+        let return_path_domain = if sender_domain.is_none()
+            || !self
+                .analyzer
+                .is_esp_domain(&sender_domain.clone().unwrap_or_default())
+        {
+            context.headers.get("return-path").and_then(|rp| {
+                let cleaned = rp.trim_matches(['<', '>', ' ']);
+                self.analyzer.extract_domain(cleaned)
+            })
         } else {
             None
         };
