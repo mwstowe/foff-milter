@@ -312,6 +312,16 @@ impl TldRiskFeature {
         );
 
         tlds.insert(
+            "cyou".to_string(),
+            TldInfo {
+                risk_level: TldRisk::Suspicious,
+                abuse_score: 35,
+                description: "See you domain - high spam abuse".to_string(),
+                common_uses: vec!["Marketing, often abused for health spam".to_string()],
+            },
+        );
+
+        tlds.insert(
             "icu".to_string(),
             TldInfo {
                 risk_level: TldRisk::Suspicious,

@@ -71,7 +71,7 @@ impl FeatureExtractor for HealthSpamAnalyzer {
                 let sender_domain_clean = sender_domain.replace(".", "").replace("-", "");
                 let brand_clean = brand.replace(".", "").replace("-", "");
 
-                // Whitelist legitimate healthcare domains
+                // Whitelist legitimate healthcare and government domains
                 let legitimate_health_domains = [
                     "adapthealth",
                     "adapthealthmarketplace",
@@ -82,10 +82,13 @@ impl FeatureExtractor for HealthSpamAnalyzer {
                     "anthem",
                     "bluecross",
                     "kaiser",
+                    "usps.com",
+                    "usps.gov",
                 ];
                 let is_legitimate_health = legitimate_health_domains
                     .iter()
-                    .any(|domain| sender_domain.contains(domain));
+                    .any(|domain| sender_domain.contains(domain))
+                    || sender_domain.ends_with(".gov");
 
                 // Only flag if domain doesn't contain the brand name at all and not from legitimate health domain
                 if !sender_domain_clean.contains(&brand_clean) && !is_legitimate_health {
@@ -237,6 +240,22 @@ impl FeatureExtractor for HealthSpamAnalyzer {
         {
             score += 70;
             evidence.push("Fungus treatment spam detected".to_string());
+        }
+
+        // Joint/arthritis health spam
+        // Exclude government and postal service domains
+        let is_government = sender_domain.ends_with(".gov") 
+            || sender_domain.contains("usps.com")
+            || sender_domain.contains("usps.gov");
+        
+        if !is_government
+            && ((content.contains("joint") && content.contains("replacement"))
+                || (content.contains("arthritis") && content.contains("pain"))
+                || (content.contains("knee") && content.contains("alternative"))
+                || (content.contains("stiff joints")))
+        {
+            score += 80;
+            evidence.push("Joint/arthritis health spam detected".to_string());
         }
 
         // Generic phishing with vague subject from free email providers
