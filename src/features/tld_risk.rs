@@ -66,15 +66,15 @@ impl TldRiskAnalyzer {
                 info.description.clone(),
             )
         } else {
-            // Unknown TLD - use default risk
+            // Unknown TLD - use default risk (Suspicious for new/unknown TLDs)
             match self.config.default_risk {
                 TldRisk::Trusted => (TldRisk::Trusted, -5, "Unknown trusted TLD".to_string()),
                 TldRisk::Standard => (TldRisk::Standard, 0, "Unknown standard TLD".to_string()),
                 TldRisk::Regional => (TldRisk::Regional, 5, "Unknown regional TLD".to_string()),
                 TldRisk::Suspicious => (
                     TldRisk::Suspicious,
-                    15,
-                    "Unknown suspicious TLD".to_string(),
+                    20,
+                    "Unknown/new TLD - potentially suspicious".to_string(),
                 ),
                 TldRisk::HighRisk => (TldRisk::HighRisk, 30, "Unknown high-risk TLD".to_string()),
             }
@@ -198,7 +198,8 @@ impl TldRiskAnalyzer {
 
     /// Extract domain from email address
     fn extract_domain(&self, email: &str) -> Option<String> {
-        email.split('@').nth(1).map(|s| s.to_string())
+        let cleaned = email.trim_matches(['<', '>', ' ']);
+        cleaned.split('@').nth(1).map(|s| s.to_string())
     }
 }
 
@@ -280,7 +281,26 @@ impl TldRiskFeature {
             },
         );
 
-        // Suspicious TLDs
+        // Major country code TLDs (established, legitimate use)
+        let country_tlds = vec![
+            "uk", "ca", "au", "de", "fr", "jp", "nl", "ch", "se", "no", "dk", "fi", "es", "it",
+            "be", "at", "nz", "ie", "sg", "hk", "kr", "tw", "in", "br", "mx", "ar", "cl", "co",
+            "za", "ae", "il", "pl", "cz", "pt", "gr", "hu", "ro", "ru", "ua", "tr",
+        ];
+
+        for cc in country_tlds {
+            tlds.insert(
+                cc.to_string(),
+                TldInfo {
+                    risk_level: TldRisk::Standard,
+                    abuse_score: 0,
+                    description: format!("Country code TLD: .{}", cc),
+                    common_uses: vec!["Legitimate businesses and organizations".to_string()],
+                },
+            );
+        }
+
+        // Suspicious TLDs (explicitly flagged for high abuse)
         tlds.insert(
             "shop".to_string(),
             TldInfo {
@@ -308,16 +328,6 @@ impl TldRiskFeature {
                 abuse_score: 30,
                 description: "Generic site domain - high spam abuse".to_string(),
                 common_uses: vec!["Various, often abused for phishing".to_string()],
-            },
-        );
-
-        tlds.insert(
-            "cyou".to_string(),
-            TldInfo {
-                risk_level: TldRisk::Suspicious,
-                abuse_score: 35,
-                description: "See you domain - high spam abuse".to_string(),
-                common_uses: vec!["Marketing, often abused for health spam".to_string()],
             },
         );
 
@@ -444,7 +454,7 @@ impl TldRiskFeature {
 
         let config = TldRiskConfig {
             tlds,
-            default_risk: TldRisk::Standard,
+            default_risk: TldRisk::Suspicious, // Unknown TLDs are suspicious by default
             risk_multipliers: HashMap::new(),
         };
 
