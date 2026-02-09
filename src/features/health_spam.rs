@@ -244,10 +244,10 @@ impl FeatureExtractor for HealthSpamAnalyzer {
 
         // Joint/arthritis health spam
         // Exclude government and postal service domains
-        let is_government = sender_domain.ends_with(".gov") 
+        let is_government = sender_domain.ends_with(".gov")
             || sender_domain.contains("usps.com")
             || sender_domain.contains("usps.gov");
-        
+
         if !is_government
             && ((content.contains("joint") && content.contains("replacement"))
                 || (content.contains("arthritis") && content.contains("pain"))
