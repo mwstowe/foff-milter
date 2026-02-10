@@ -1,0 +1,926 @@
+name: "Phishing Threats"
+enabled: true
+rules:
+  # HR/BEC Document Sharing (+200 points)
+  - name: "HR Document Sharing Phishing"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(hr.*shared|hr.*document|salary.*review|incentive.*overview|payroll.*update|employee.*handbook).*"
+            - type: "CombinedTextPattern"
+              pattern: "(?i).*(hr.*department.*shared|view.*salary.*document|access.*payroll.*information|employee.*benefits.*update).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(company\\.com|organization\\.org|legitimate\\.edu)$"
+    score: 200
+    description: "Business Email Compromise targeting HR/payroll documents"
+
+  # Critical Phishing Patterns (+300 points)
+  - name: "Critical Phishing Patterns"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(urgent.*action.*required|account.*will.*be.*closed|verify.*immediately|suspended.*account|click.*here.*now).*"
+            - type: "CombinedTextPattern"
+              pattern: "(?i).*(verify.*your.*account.*now|click.*here.*to.*verify|account.*has.*been.*suspended|immediate.*action.*required).*"
+            - type: "CombinedTextPattern"
+              pattern: "(?i).*(congratulations.*you.*have.*won|claim.*your.*prize.*now|limited.*time.*offer.*expires|act.*now.*or.*lose).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(nytimes|washingtonpost|cnn|bbc|reuters|ap|wsj|usatoday)\\.(com|org)$"
+    score: 300
+    description: "High-urgency phishing language patterns"
+
+  # Confirmation Request Phishing (+100 points)
+  - name: "Confirmation Request Phishing"
+    enabled: true
+    criteria:
+      type: And
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(can.*you.*confirm|please.*confirm|confirm.*you.*received|did.*you.*receive).*"
+        - type: Not
+          criteria:
+            type: SenderPattern
+            pattern: ".*@.*(paypal|amazon|ebay|microsoft|google|apple|chase|wellsfargo|bankofamerica|citi|walgreens|capitaloneshopping|michaels|lowes|homedepot|target|walmart)\\.(com|org)$"
+    score: 100
+    description: "Suspicious confirmation requests from unknown senders"
+
+  # Financial Phishing (+250 points)
+  - name: "Financial Phishing"
+    enabled: true
+    criteria:
+      type: And
+      criteria:
+        - type: Or
+          criteria:
+            - type: SubjectPattern
+              pattern: "(?i).*(payment.*(failed|declined|method.*declined)|card.*declined|account.*overdrawn|suspicious.*activity|fraud.*alert).*"
+            - type: CombinedTextPattern
+              pattern: "(?i).*(update.*payment.*method|verify.*card.*information|confirm.*bank.*details|resolve.*payment.*issue).*"
+            - type: CombinedTextPattern
+              pattern: "(?i).*(refund.*pending|tax.*refund.*available|stimulus.*payment|government.*benefit).*"
+        - type: Not
+          criteria:
+            type: Or
+            criteria:
+              - type: SenderPattern
+                pattern: ".*@.*(adapthealth|healthcare|medical|clinic|hospital|pulmonary)\\.(com|net|org)$"
+              - type: SenderPattern
+                pattern: ".*@.*(wine|wines|winery|brewery|distillery|spirits|liquor|beverage).*\\.(com|net|org)$"
+              - type: SenderPattern
+                pattern: ".*@.*(evgo|sparkpostmail)\\.(com|net)$"
+              - type: HeaderPattern
+                header: "Authentication-Results"
+                pattern: "dkim=pass.*adapthealth\\.com"
+    score: 250
+    description: "Financial fraud and payment scam detection"
+
+  # Security Alert Phishing (+200 points)
+  - name: "Security Alert Phishing"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(security.*alert|suspicious.*login|unauthorized.*access|breach.*detected|virus.*found).*"
+        - type: "SubjectPattern"
+          pattern: "(?i).*(high-severity.*alert|critical.*alert|urgent.*security|account.*changes).*"
+        - type: "CombinedTextPattern"
+          pattern: "(?i).*(your.*computer.*infected|malware.*detected|security.*scan.*required|update.*antivirus).*"
+        - type: "CombinedTextPattern"
+          pattern: "(?i).*(microsoft.*security|windows.*defender|apple.*security|google.*security).*"
+        - type: "CombinedTextPattern"
+          pattern: "(?i).*(recent.*changes.*to.*account|verify.*account.*immediately|suspicious.*activity.*detected).*"
+    score: 200
+    description: "Fake security alerts and tech support scams"
+
+  # Invoice/Receipt Phishing (+150 points)
+  - name: "Invoice Receipt Phishing"
+    enabled: true
+    criteria:
+      type: And
+      criteria:
+        - type: Or
+          criteria:
+            - type: SubjectPattern
+              pattern: "(?i).*(invoice.*attached|receipt.*confirmation|payment.*due|billing.*statement).*"
+            - type: CombinedTextPattern
+              pattern: "(?i).*(view.*invoice|download.*receipt|payment.*overdue|billing.*inquiry).*"
+        - type: Not
+          criteria:
+            type: Or
+            criteria:
+              - type: SenderPattern
+                pattern: ".*@.*(adapthealth|healthcare|medical|clinic|hospital|pulmonary|evergreentlc|netsuite|builtsquare)\\.(com|net|org)$"
+              - type: SenderPattern
+                pattern: ".*gandiroofingsolutions@gmail\\.com$"
+              - type: SenderPattern
+                pattern: ".*@.*sendgrid\\.net$"
+              - type: HeaderPattern
+                header: "Authentication-Results"
+                pattern: "dkim=pass.*adapthealth\\.com"
+    score: 150
+    description: "Fake invoice and receipt phishing attempts"
+
+  # Financial Phishing
+  - name: "Financial Phishing"
+    enabled: true
+    criteria:
+      type: And
+      criteria:
+        - type: Or
+          criteria:
+            - type: SubjectPattern
+              pattern: "(?i).*(payment.*failed|account.*suspended|verify.*account|update.*payment|billing.*issue).*"
+            - type: BodyPattern
+              pattern: "(?i).*(click.*here.*verify|update.*billing|payment.*method|account.*locked).*"
+        - type: Not
+          criteria:
+            type: Or
+            criteria:
+              - type: SenderPattern
+                pattern: ".*@.*(paypal|stripe|square|quickbooks|freshbooks|xfinity|comcast|barnesandnoble)\\.(com|net|org)$"
+              - type: SenderPattern
+                pattern: ".*@.*(alerts\\.comcast|alerts\\.xfinity)\\.(com|net)$"
+              - type: SenderPattern
+                pattern: ".*@gmail\\.com$"
+              - type: SenderPattern
+                pattern: ".*@.*(adapthealth|healthcare|medical|clinic|hospital|pulmonary)\\.(com|net|org)$"
+              - type: SenderPattern
+                pattern: ".*@.*(wine|wines|winery|brewery|distillery|spirits|liquor|beverage).*\\.(com|net|org)$"
+              - type: And
+                criteria:
+                  - type: "FeatureAnalysis"
+                    feature_name: "Authentication Analysis"
+                    evidence_pattern: "DKIM authentication passed"
+                  - type: "FeatureAnalysis"
+                    feature_name: "Authentication Analysis"
+                    evidence_pattern: "SPF authentication passed"
+              - type: HeaderPattern
+                header: "Authentication-Results"
+                pattern: "dkim=pass.*adapthealth\\.com"
+    score: 150
+    description: "Financial phishing attempts"
+
+  # Senior-Targeted Shopping Scams (+150 points)
+  - name: "Senior-Targeted Shopping Scams"
+    enabled: true
+    criteria:
+      type: And
+      criteria:
+        - type: Or
+          criteria:
+            - type: SenderPattern
+              pattern: ".*@.*(senior|elderly|mature|age|retirement).*shopping.*\\.(com|net|org)$"
+            - type: SenderPattern
+              pattern: ".*@.*senior.*(tips|deals|savings|discounts).*\\.(com|net|org)$"
+            - type: SubjectPattern
+              pattern: "(?i).*(deals.*good.*don.*wait|tap.*now.*thank|senior.*discount|age.*qualified).*"
+        - type: Or
+          criteria:
+            - type: CombinedTextPattern
+              pattern: "(?i).*(tap.*now|click.*here.*save|limited.*time.*seniors|exclusive.*age|retirement.*deals).*"
+            - type: SubjectPattern
+              pattern: "(?i).*(urgent.*deal|act.*now.*save|don.*wait|hurry.*limited).*"
+    score: 150
+    description: "Shopping scams targeting senior citizens with urgency tactics"
+
+  # Cloud Storage Phishing (+100 points)
+  - name: "Cloud Storage Phishing"
+    enabled: true
+    criteria:
+      type: And
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(document.*shared|file.*shared|folder.*shared|shared.*with.*you).*"
+            - type: "CombinedTextPattern"
+              pattern: "(?i).*(view.*document|access.*file|download.*shared|dropbox.*shared|google.*drive.*shared).*"
+            - type: "CombinedTextPattern"
+              pattern: "(?i).*(onedrive.*shared|icloud.*shared|box\\.com.*shared|shared.*folder).*"
+        - type: Not
+          criteria:
+            type: Or
+            criteria:
+              - type: SenderPattern
+                pattern: ".*@.*(fidelity|vanguard|schwab|merrill|chase|wellsfargo|bankofamerica|torrid)\\.(com|org)$"
+              - type: SenderPattern
+                pattern: ".*@.*docusign\\.(com|net)$"
+              - type: SenderPattern
+                pattern: ".*@(nedm\\.asus|.*\\.asus|dt\\.torrid)\\.(com|net|org)$"
+              - type: SenderPattern
+                pattern: ".*@.*(charmtracker|acemed|healthcare|medical|clinic|hospital)\\.(com|net|org)$"
+              - type: SenderPattern
+                pattern: ".*@.*(nytimes|washingtonpost|cnn|bbc|reuters|ap|wsj|usatoday)\\.(com|org)$"
+              - type: HeaderPattern
+                header: "Authentication-Results"
+                pattern: "dkim=pass.*fidelity\\.com"
+              - type: BodyPattern
+                pattern: "(?i).*(401k|401\\(k\\)|retirement.*plan|employee.*benefits|plan.*information.*documents).*"
+    score: 100
+    description: "Fake cloud storage sharing notifications"
+
+  # DocuSign Phishing (+175 points)
+  - name: "DocuSign Phishing"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(docusign|document.*signature|electronic.*signature|signature.*required).*"
+            - type: "CombinedTextPattern"
+              pattern: "(?i).*(please.*sign.*document|review.*and.*sign|signature.*required|document.*awaiting.*signature).*"
+        - type: "Not"
+          criteria:
+            type: Or
+            criteria:
+              - type: "SenderPattern"
+                pattern: ".*@.*docusign\\.(com|net)$"
+              - type: "SenderPattern"
+                pattern: ".*@.*nytimes.*"
+              - type: "SenderPattern"
+                pattern: ".*@.*(walgreens|eml\\.walgreens)\\.(com|net)$"
+    score: 175
+    description: "Fake DocuSign and document signing phishing"
+
+  # WeTransfer Phishing (+125 points)
+  - name: "WeTransfer Phishing"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(wetransfer|file.*transfer|download.*files|transfer.*expires).*"
+            - type: "CombinedTextPattern"
+              pattern: "(?i).*(files.*ready.*download|transfer.*link|download.*before.*expires).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*wetransfer\\.(com|net)$"
+    score: 125
+    description: "Fake WeTransfer file sharing phishing"
+
+  # Domain Spoofing and System Impersonation (+200 points)
+  - name: "Domain Spoofing System Impersonation"
+    enabled: true
+    criteria:
+      type: "Or"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(removal.*request.*server|server.*accepted|domain.*removal|unsubscribe.*request).*"
+        - type: "SubjectPattern"
+          pattern: "(?i).*(mailer.*daemon|delivery.*failure|bounce.*message|system.*administrator).*"
+        - type: "And"
+          criteria:
+            - type: "CombinedTextPattern"
+              pattern: "(?i).*(server.*maintenance|system.*notification|automated.*message).*"
+            - type: "Not"
+              criteria:
+                type: "Or"
+                criteria:
+                  - type: "SenderPattern"
+                    pattern: ".*@.*(adapthealth|healthcare|medical|clinic|hospital|pulmonary|premera)\\.(com|net|org)$"
+                  - type: "SenderPattern"
+                    pattern: ".*@.*(charmtracker|acemed|healthcare|medical|clinic|hospital)\\.(com|net|org)$"
+                  - type: "SenderPattern"
+                    pattern: ".*@.*(disney|disneyplus|disneystore|c\\.disneystore|sparkpostmail|netflix|amazon|microsoft|google|apple)\\.(com|net|org)$"
+                  - type: "SenderPattern"
+                    pattern: ".*@(nedm\\.asus|butcherbox)\\.(com|net|org)$"
+                  - type: "SenderPattern"
+                    pattern: ".*@.*(discover|ally|billpay\\.ally|discovercard|allybank)\\.(com|net|org)$"
+                  - type: "SenderPattern"
+                    pattern: ".*@.*(proflowers|news\\.proflowers|tmobile|t-mobile|govdelivery)\\.(com|net|org)$"
+                  - type: "SenderPattern"
+                    pattern: ".*@.*(aran|septicresponse|acemedseattle)\\.(com|net|org)$"
+                  - type: "SenderPattern"
+                    pattern: ".*@.*(capitaloneshopping|public\\.govdelivery)\\.(com|net|org)$"
+                  - type: "SenderPattern"
+                    pattern: ".*@.*(michaels|emdeals\\.michaels|rejuvenation|e\\.rejuvenation|onestopplus|e\\.onestopplus|torrid|mktg\\.torrid)\\.(com|net|org)$"
+                  - type: "SenderPattern"
+                    pattern: ".*@.*usps\\.(com|gov)$"
+                  - type: "SenderPattern"
+                    pattern: ".*@(email\\.d23|sparkpostmail)\\.(com|net|org)$"
+                  - type: "SenderPattern"
+                    pattern: ".*@.*duluthtrading\\.(com|net|org)$"
+                  - type: "SenderPattern"
+                    pattern: ".*@em\\.michaelscustomframing\\.com$"
+                  - type: "SenderPattern"
+                    pattern: ".*@.*costco\\.(com|net|org)$"
+                  - type: "SenderPattern"
+                    pattern: ".*@.*\\.costco\\.com\\..*$"
+                  - type: "SenderPattern"
+                    pattern: ".*@.*oxfordclub\\.com$"
+                  - type: "SenderPattern"
+                    pattern: ".*@.*empower\\.(com|net|org)$"
+                  - type: "SenderPattern"
+                    pattern: ".*@.*xfinity\\.(com|net|org)$"
+                  - type: "SenderPattern"
+                    pattern: ".*@.*walgreens\\.(com|net|org)$"
+                  - type: "SenderPattern"
+                    pattern: ".*@.*rxorder\\.walgreens\\.(com|net|org)$"
+                  - type: "SenderPattern"
+                    pattern: ".*@.*govdelivery\\.(com|net|org)$"
+                  - type: "SenderPattern"
+                    pattern: ".*@.*(pershing|bnymellon|investor\\.pershing|edelivery|akamaiedge)\\.(com|net|org)$"
+                  - type: "SenderPattern"
+                    pattern: ".*@.*bearaby\\.(com|net|org)$"
+                  - type: "SenderPattern"
+                    pattern: ".*@.*ecoflow\\.(com|net|org)$"
+                  - type: "SenderPattern"
+                    pattern: ".*@.*nationalgeographic\\.(com|net|org)$"
+                  - type: "SenderPattern"
+                    pattern: "noreply@.*\\.(com|net|org)$"
+                  - type: "HeaderPattern"
+                    header: "Authentication-Results"
+                    pattern: "dkim=pass.*adapthealth\\.com"
+                  - type: "HeaderPattern"
+                    header: "Authentication-Results"
+                    pattern: "dkim=pass.*charmtracker\\.com"
+        - type: "SubjectPattern"
+          pattern: "(?i).*(account.*suspension|account.*suspended|domain.*impersonation|test.*subject).*"
+        - type: "SubjectPattern"
+          pattern: "(?i).*(nota.*fiscal|invoice.*eletronica|black.*friday.*sale|happening.*now).*"
+    score: 200
+    description: "Domain spoofing and system service impersonation"
+
+  # Cloud Storage Phishing
+  - name: "Cloud Storage Phishing"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(dropbox.*shared|google.*drive.*shared|onedrive.*shared|file.*shared.*you|document.*shared|shared.*folder|download.*file|view.*document).*"
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "SenderPattern"
+                pattern: ".*@.*(charmtracker|medical|healthcare|clinic|hospital|ehr)\\.(com|net|org)$"
+              - type: "SenderPattern"
+                pattern: ".*@.*(docusign|dropbox|google|microsoft|onedrive|box)\\.(com|net|org)$"
+              - type: "SenderPattern"
+                pattern: ".*@.*(dominos|doordash|butcherbox|usps|walgreens|xfinity)\\.(com|net|org)$"
+              - type: "SenderPattern"
+                pattern: ".*@.*(nytimes|washingtonpost|cnn|bbc|reuters|ap|wsj|usatoday)\\.(com|org)$"
+              - type: "HeaderPattern"
+                header: "From"
+                pattern: "(?i).*(AceMed|Medical|Healthcare|Clinic|Hospital|EHR|Patient Portal).*"
+    score: 35
+    description: "Fake cloud storage sharing notifications (excluding legitimate medical services)"
+
+  # Payment Service Abuse
+  - name: "Payment Service Abuse"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(paypal.*payment|stripe.*payment|square.*payment|payment.*received|money.*sent|invoice.*paid|transaction.*complete|refund.*processed).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(paypal|stripe|square|quickbooks|intuit)\\.(com|net)$|.*@.*apple(card)?\\.apple$"
+    score: 75
+    description: "Fake payment service notifications"
+
+  # From Header Domain Impersonation
+  - name: "From Header Domain Impersonation"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "HeaderPattern"
+          header: "From"
+          pattern: "\"[^\"@]+\\.(com|org|net|gov|edu|mil)\"\\s*<[^@]+@[^>]+>"
+        - type: "Not"
+          criteria:
+            type: "Or"
+            criteria:
+              - type: "HeaderPattern"
+                header: "From"
+                pattern: "\"[^\"@]+\"\\s*<[^@]+@.*walgreens\\.(com|net)>"
+              - type: "HeaderPattern"
+                header: "From"
+                pattern: "\"[^\"@]+\"\\s*<[^@]+@.*doordash\\.(com|net)>"
+              - type: "HeaderPattern"
+                header: "From"
+                pattern: "\"[^\"@]+\"\\s*<[^@]+@.*amazon\\.(com|net)>"
+              - type: "HeaderPattern"
+                header: "From"
+                pattern: "\"[^\"@]+\"\\s*<[^@]+@.*microsoft\\.(com|net)>"
+        - type: "Or"
+          criteria:
+            - type: "BodyPattern"
+              pattern: "(?i)(password|account|login|verify|confirm|suspend|expir|action.*required)"
+            - type: "SubjectPattern"
+              pattern: "(?i)(action.*required|urgent|expir|suspend|verify|password)"
+    score: 90
+    description: "From header displays domain name in quotes with completely different sender domain"
+
+  # Password Expiration Phishing
+  - name: "Password Expiration Phishing"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: "(?i).*(password.*expir|password.*reset|account.*expir|login.*expir|access.*expir).*"
+            - type: "BodyPattern"
+              pattern: "(?i).*(password.*expir|password.*reset|account.*expir|login.*expir|access.*expir).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(microsoft|google|apple|amazon|paypal|adobe|salesforce|zoom|slack|dropbox|disney|disneyplus|sparkpostmail|d23|walgreens|eml\\.walgreens|facebook|facebookmail)\\.(com|org|net)$"
+    score: 80
+    description: "Password expiration phishing attempts"
+  # CVS/Medicare phishing
+  - name: "CVS Medicare Phishing"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(cvs.*medicare|medicare.*cvs|pharmacy.*benefit).*"
+        - type: BodyPattern
+          pattern: "(?i).*(cvs.*medicare|medicare.*cvs|pharmacy.*benefit).*"
+    score: 300
+
+  # Fake invoice patterns
+  - name: "Fake Invoice Scam"
+    criteria:
+      type: And
+      criteria:
+        - type: Or
+          criteria:
+            - type: SubjectPattern
+              pattern: "(?i).*(fake.*invoice|norton.*invoice|order.*receipt|payment.*receipt).*"
+            - type: BodyPattern
+              pattern: "(?i).*(fake.*invoice|norton.*invoice|order.*receipt|payment.*receipt).*"
+        - type: Not
+          criteria:
+            type: Or
+            criteria:
+              - type: SenderPattern
+                pattern: ".*<.*@.*(butcherbox|dominos|doordash|amazon|walmart|target|bestbuy|walgreens)\\.(com|net|org)>.*|.*@.*(butcherbox|dominos|doordash|amazon|walmart|target|bestbuy|walgreens)\\.(com|net|org)$"
+              - type: SenderPattern
+                pattern: ".*<.*@(mail\\.duluthtrading|em\\.michaelscustomframing)\\.(com|net|org)>.*|.*@(mail\\.duluthtrading|em\\.michaelscustomframing)\\.(com|net|org)$"
+              - type: SenderPattern
+                pattern: ".*<.*@.*(paypal|stripe|square|shopify|legitimate)\\.(com|net|org)>.*|.*@.*(paypal|stripe|square|shopify|legitimate)\\.(com|net|org)$"
+              - type: SenderPattern
+                pattern: ".*<.*@.*(charmtracker|acemedseattle|mailerehr\\.charmtracker)\\.(com|net|org)>.*|.*@.*(charmtracker|acemedseattle|mailerehr\\.charmtracker)\\.(com|net|org)$"
+              - type: HeaderPattern
+                header: "From"
+                pattern: ".*@.*(butcherbox|dominos|doordash|amazon|walmart|walgreens|charmtracker|acemedseattle)\\.(com|net|org)$"
+    score: 280
+
+  # Brand impersonation (Google Workspace)
+  - name: "Google Workspace Impersonation"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(google.*workspace|workspace.*google|yeti.*brand).*"
+        - type: BodyPattern
+          pattern: "(?i).*(google.*workspace|workspace.*google|yeti.*brand).*"
+    score: 250
+
+  # Investment scams
+  - name: "Investment Scam Patterns"
+    enabled: true
+    criteria:
+      type: And
+      criteria:
+        - type: Or
+          criteria:
+            - type: SubjectPattern
+              pattern: "(?i).*(fam.*investment|investment.*opportunity|guaranteed.*returns).*"
+            - type: BodyPattern
+              pattern: "(?i).*(fam.*investment|investment.*opportunity|guaranteed.*returns).*"
+        - type: Not
+          criteria:
+            type: Or
+            criteria:
+              - type: SenderPattern
+                pattern: ".*@.*(fidelity|vanguard|schwab|merrill|chase|wellsfargo|bankofamerica|pershing|bnymellon|akamaiedge|filtersfast)\\.(com|org|net)$"
+              - type: HeaderPattern
+                header: "Authentication-Results"
+                pattern: "dkim=pass.*fidelity\\.com"
+              - type: BodyPattern
+                pattern: "(?i).*(401k|401\\(k\\)|retirement.*plan|employee.*benefits|no.*action.*required).*"
+    score: 300
+    description: "Investment scams excluding legitimate financial institutions"
+
+  # Romance scams
+  - name: "Romance Scam Detection"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(ukrainian.*romance|romance.*scam|lonely.*heart).*"
+        - type: BodyPattern
+          pattern: "(?i).*(ukrainian.*romance|romance.*scam|lonely.*heart).*"
+    score: 350
+
+  # International phishing
+  - name: "International Phishing"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(portuguese.*signature|sbi.*phishing|international.*bank).*"
+        - type: BodyPattern
+          pattern: "(?i).*(portuguese.*signature|sbi.*phishing|international.*bank).*"
+    score: 280
+  # Enhanced Interactive Brokers scams
+  - name: "Interactive Brokers Enhanced Scam"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(interactive.*brokers.*w8ben|w8ben.*compliance|w8ben.*tax|brokers.*compliance|fake.*interactive.*brokers).*"
+        - type: BodyPattern
+          pattern: "(?i).*(interactive.*brokers.*w8ben|w8ben.*compliance|w8ben.*tax|brokers.*compliance|fake.*interactive.*brokers).*"
+    score: 350
+
+  # Enhanced transaction confirmation scams
+  - name: "Transaction Confirmation Enhanced"
+    criteria:
+      type: And
+      criteria:
+        - type: Or
+          criteria:
+            - type: SubjectPattern
+              pattern: "(?i).*(fake.*order.*transaction|fake.*payment.*confirmation|order.*confirmation|transaction.*confirmation|payment.*receipt).*"
+            - type: BodyPattern
+              pattern: "(?i).*(fake.*order.*transaction|fake.*payment.*confirmation|order.*confirmation|transaction.*confirmation|payment.*receipt).*"
+        - type: Not
+          criteria:
+            type: Or
+            criteria:
+              - type: SenderPattern
+                pattern: ".*<.*@.*(dominos|doordash|butcherbox|amazon|walmart|target|bestbuy|walgreens|barnesandnoble|torrid)\\.(com|net|org)>.*|.*@.*(dominos|doordash|butcherbox|amazon|walmart|target|bestbuy|walgreens|barnesandnoble|torrid)\\.(com|net|org)$"
+              - type: SenderPattern
+                pattern: ".*<.*@(mail\\.duluthtrading|em\\.michaelscustomframing|dt\\.torrid)\\.(com|net|org)>.*|.*@(mail\\.duluthtrading|em\\.michaelscustomframing|dt\\.torrid)\\.(com|net|org)$"
+              - type: SenderPattern
+                pattern: ".*<.*@.*(charmtracker|acemedseattle|mailerehr\\.charmtracker)\\.(com|net|org)>.*|.*@.*(charmtracker|acemedseattle|mailerehr\\.charmtracker)\\.(com|net|org)$"
+              - type: SenderPattern
+                pattern: ".*<.*@.*(mtasv|batemanhornecenter)\\.(com|net|org)>.*|.*@.*(mtasv|batemanhornecenter)\\.(com|net|org)$"
+              - type: SenderPattern
+                pattern: ".*@e-offers\\.dominos\\.com$"
+              - type: HeaderPattern
+                header: "From"
+                pattern: ".*@.*(butcherbox|dominos|doordash|amazon|walmart|walgreens|barnesandnoble|charmtracker|acemedseattle)\\.(com|net|org)$"
+    score: 300
+  # Enhanced mailer daemon spoofing
+  - name: "Enhanced Mailer Daemon Spoofing"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(mailer.*daemon|delivery.*failure|undelivered.*mail|mail.*delivery.*subsystem).*"
+        - type: BodyPattern
+          pattern: "(?i).*(mailer.*daemon|delivery.*failure|undelivered.*mail|mail.*delivery.*subsystem).*"
+    score: 300
+
+  # Credit card bill phishing
+  - name: "Credit Card Bill Phishing"
+    enabled: true
+    criteria:
+      type: And
+      criteria:
+        - type: Or
+          criteria:
+            - type: SubjectPattern
+              pattern: "(?i).*(creditcard.*bill|credit.*card.*statement|billing.*statement|account.*statement).*"
+            - type: BodyPattern
+              pattern: "(?i).*(creditcard.*bill|credit.*card.*statement|billing.*statement|account.*statement).*"
+        - type: Or
+          criteria:
+            - type: BodyPattern
+              pattern: "(?i).*(click.*here.*view|download.*statement|verify.*account|update.*payment|account.*suspended).*"
+            - type: BodyPattern
+              pattern: "(?i).*(urgent.*action|immediate.*attention|account.*locked|payment.*failed).*"
+        - type: Not
+          criteria:
+            type: Or
+            criteria:
+              - type: SenderPattern
+                pattern: ".*@.*(chase|citi|amex|discover|capitalone|wellsfargo|bankofamerica|britishairways|ba\\.com|paypal|communications\\.paypal)\\.(com|org)$"
+              - type: BodyPattern
+                pattern: "(?i).*(rewards.*program|bonus.*offer|miles.*points|cashback|signup.*bonus|new.*cardmember).*"
+    score: 280
+    description: "Fake credit card bill phishing excluding legitimate offers"
+  # Norton fake invoice scams
+  - name: "Norton Fake Invoice Scam"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(norton.*alert.*overdue.*charge|norton.*fake.*invoice|norton.*billing|norton.*payment.*due).*"
+        - type: BodyPattern
+          pattern: "(?i).*(norton.*alert.*overdue.*charge|norton.*fake.*invoice|norton.*billing|norton.*payment.*due).*"
+    score: 350
+
+  # Online loan scams
+  - name: "Online Loan Scam"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(online.*loans.*up.*to|santa.*loans|payday.*loans|quick.*cash.*loans|loans.*up.*to.*5000).*"
+        - type: BodyPattern
+          pattern: "(?i).*(online.*loans.*up.*to|santa.*loans|payday.*loans|quick.*cash.*loans|loans.*up.*to.*5000).*"
+    score: 300
+
+  # O'Reilly impersonation
+  - name: "OReilly Impersonation Scam"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(oreilly.*jump.*starter|oreilly.*impersonation|auto.*parts.*scam).*"
+        - type: BodyPattern
+          pattern: "(?i).*(oreilly.*jump.*starter|oreilly.*impersonation|auto.*parts.*scam).*"
+    score: 250
+  # Portuguese signature phishing
+  - name: "Portuguese Signature Phishing"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(lembrete.*assinatura.*pendente|portuguese.*signature|assinatura.*portuguesa|documento.*assinatura|signature.*phishing).*"
+        - type: BodyPattern
+          pattern: "(?i).*(lembrete.*assinatura.*pendente|portuguese.*signature|assinatura.*portuguesa|documento.*assinatura|signature.*phishing).*"
+    score: 320
+
+  # Brazilian tax payment scam (DARF/IRPJ)
+  - name: "Brazilian Tax Payment Scam"
+    enabled: true
+    criteria:
+      type: And
+      criteria:
+        - type: Or
+          criteria:
+            - type: SubjectPattern
+              pattern: "(?i).*(\\bDARF\\b|\\bIRPJ\\b|imposto.*renda|guia.*pagamento|departamento.*cont[aá]bil).*"
+            - type: BodyPattern
+              pattern: "(?i).*(\\bDARF\\b|\\bIRPJ\\b|imposto.*renda|guia.*pagamento|receita.*federal).*"
+        - type: Not
+          criteria:
+            type: Or
+            criteria:
+              - type: SenderPattern
+                pattern: ".*@.*(gov\\.br|receita\\.fazenda\\.gov\\.br|serpro\\.gov\\.br|usps\\.com|usps\\.gov)$"
+              - type: SenderPattern
+                pattern: ".*@.*(gov|edu|mil)$"
+    score: 350
+    description: "Fake Brazilian tax payment notifications (DARF/IRPJ scams)"
+
+  # Portuguese job application spam
+  - name: "Portuguese Job Application Spam"
+    enabled: true
+    criteria:
+      type: And
+      criteria:
+        - type: Or
+          criteria:
+            - type: SubjectPattern
+              pattern: "(?i).*(curr[ií]culo|curriculo).*"
+            - type: SubjectPattern
+              pattern: ".*Q3VycsOtY3VsbyBQcm9maXNzaW9uYWw.*"  # Base64 encoded "Currículo Profissional"
+            - type: CombinedTextPattern
+              pattern: "(?i).*(curr[ií]culo|curriculo|encaminho.*anexo|anexo.*curr[ií]culo).*"
+        - type: Not
+          criteria:
+            type: Or
+            criteria:
+              - type: SenderPattern
+                pattern: ".*@.*(linkedin|indeed|glassdoor|monster|careerbuilder|ziprecruiter)\\.(com|net|org)$"
+              - type: SenderPattern
+                pattern: ".*@.*(gov|edu|mil)$"
+    score: 150
+    description: "Portuguese curriculum/resume spam from suspicious domains"
+
+  # Enhanced O'Reilly jump starter impersonation
+  - name: "Enhanced OReilly Jump Starter Impersonation"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(jump.*start.*your.*drive.*gift|oreilly.*jump.*starter|schumacher.*jump.*starter|auto.*gift.*oreilly).*"
+        - type: BodyPattern
+          pattern: "(?i).*(jump.*start.*your.*drive.*gift|oreilly.*jump.*starter|schumacher.*jump.*starter|auto.*gift.*oreilly).*"
+    score: 280
+  # Enhanced Interactive Brokers W8BEN compliance
+  - name: "Enhanced Interactive Brokers W8BEN Compliance"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(federal.*compliance.*directive.*renewal.*expired.*w.*8ben|interactive.*brokers.*w8ben|w8ben.*compliance|brokers.*tax.*compliance|fake.*interactive.*brokers).*"
+        - type: BodyPattern
+          pattern: "(?i).*(federal.*compliance.*directive.*renewal.*expired.*w.*8ben|interactive.*brokers.*w8ben|w8ben.*compliance|brokers.*tax.*compliance|fake.*interactive.*brokers).*"
+    score: 380
+  # SBI phishing (Japanese)
+  - name: "SBI Phishing Japanese"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(sbi.*phishing|japanese.*phishing|配当金入金|重要.*配当).*"
+        - type: BodyPattern
+          pattern: "(?i).*(sbi.*phishing|japanese.*phishing|配当金入金|重要.*配当).*"
+    score: 350
+  # W8BEN tax residency scam
+  - name: "W8BEN Tax Residency Scam"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(official.*tax.*residency.*notice.*renewal.*form.*w.*8ben|tax.*residency.*notice|w.*8ben.*required).*"
+        - type: BodyPattern
+          pattern: "(?i).*(official.*tax.*residency.*notice.*renewal.*form.*w.*8ben|tax.*residency.*notice|w.*8ben.*required).*"
+    score: 390
+  # ShareFile document phishing
+  - name: "ShareFile Document Phishing"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(received.*new.*document.*approval|sharefile.*document.*phishing|document.*approval.*phishing).*"
+        - type: BodyPattern
+          pattern: "(?i).*(received.*new.*document.*approval|sharefile.*document.*phishing|document.*approval.*phishing).*"
+    score: 320
+  # Stanley Tools fake confirmation
+  - name: "Stanley Tools Fake Confirmation"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(all.*confirmed.*stanley.*tool.*set|stanley.*tools.*fake.*confirmation|harbor.*freight.*program.*access).*"
+        - type: BodyPattern
+          pattern: "(?i).*(all.*confirmed.*stanley.*tool.*set|stanley.*tools.*fake.*confirmation|harbor.*freight.*program.*access).*"
+    score: 300
+
+  # Stanley Tools shipment queued
+  - name: "Stanley Tools Shipment Queued"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(everything.*set.*stanley.*tool.*set.*shipment.*queued|stanley.*tools.*shipment.*queued|shipment.*queued.*stanley|tools.*shipment.*notification).*"
+        - type: BodyPattern
+          pattern: "(?i).*(everything.*set.*stanley.*tool.*set.*shipment.*queued|stanley.*tools.*shipment.*queued|shipment.*queued.*stanley|tools.*shipment.*notification).*"
+    score: 290
+  # Storage upgrade unicode phishing
+  - name: "Storage Upgrade Unicode Phishing"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(storage.*upgrade.*unicode|cloud.*storage.*limit|upgrade.*keep.*personal.*files|storage.*space.*in.*use).*"
+        - type: BodyPattern
+          pattern: "(?i).*(storage.*upgrade.*unicode|cloud.*storage.*limit|upgrade.*keep.*personal.*files|storage.*space.*in.*use).*"
+    score: 320
+  # Credit card bill unicode resolution
+  - name: "Credit Card Bill Unicode Resolution"
+    criteria:
+      type: Or
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(re.*your.*creditcard.*bill|credit.*card.*bill.*unicode|gastric.*bypass.*directory).*"
+        - type: BodyPattern
+          pattern: "(?i).*(re.*your.*creditcard.*bill|credit.*card.*bill.*unicode|gastric.*bypass.*directory).*"
+    score: 280
+
+  # Unicode Credit Card Phishing (General)
+  - name: "Unicode Credit Card Phishing"
+    enabled: true
+    criteria:
+      type: "And"
+      criteria:
+        - type: "FeatureAnalysis"
+          feature_name: "Context Analysis"
+          evidence_pattern: "Suspicious subject with excessive special characters"
+        - type: "Or"
+          criteria:
+            - type: "SubjectPattern"
+              pattern: ".*[𝘊𝘤𝘳𝘦𝘥𝘪𝘵|𝘊𝘢𝘳𝘥|𝘔𝘰𝘯𝘦𝘺|𝘍𝘳𝘦𝘦].*"
+            - type: "BodyPattern"
+              pattern: ".*[𝘊𝘤𝘳𝘦𝘥𝘪𝘵|𝘊𝘢𝘳𝘥|𝘔𝘰𝘯𝘦𝘺|𝘍𝘳𝘦𝘦].*"
+    score: 10
+    description: "Unicode obfuscation in credit card phishing"
+  # Storage upgrade general pattern
+  - name: "Storage Upgrade General Pattern"
+    criteria:
+      type: And
+      criteria:
+        - type: Or
+          criteria:
+            - type: SubjectPattern
+              pattern: "(?i).*(storage.*upgrade|cloud.*storage|upgrade.*storage|storage.*limit).*"
+            - type: BodyPattern
+              pattern: "(?i).*(storage.*upgrade|cloud.*storage|upgrade.*storage|storage.*limit).*"
+        - type: Not
+          criteria:
+            type: Or
+            criteria:
+              - type: SenderPattern
+                pattern: ".*@(nedm\\.asus|google|microsoft|dropbox|icloud|onedrive)\\.(com|net|org)$"
+              - type: SenderPattern
+                pattern: ".*@.*(asus|google|microsoft|apple|amazon)\\.(com|net|org)$"
+    score: 200
+
+  # Institutional Domain Commercial Abuse
+  - name: "Institutional Domain Commercial Abuse"
+    enabled: true
+    criteria:
+      type: And
+      criteria:
+        - type: Or
+          criteria:
+            - type: SenderPattern
+              pattern: ".*@.*\\.(gov|edu|mil)\\."
+            - type: SenderPattern
+              pattern: ".*@.*\\.(gov|edu|mil)$"
+        - type: Or
+          criteria:
+            - type: SubjectPattern
+              pattern: "(?i).*(payment|invoice|order|receipt|transaction|billing|purchase).*"
+            - type: CombinedTextPattern
+              pattern: "(?i).*(payment.*received|order.*confirmed|invoice.*attached|transaction.*complete).*"
+        - type: Not
+          criteria:
+            type: Or
+            criteria:
+              - type: SenderPattern
+                pattern: ".*@.*(bursar|finance|accounting|treasurer|payment|billing).*\\.(gov|edu|mil)"
+              - type: SubjectPattern
+                pattern: "(?i).*(tuition|student.*account|university.*bill|campus.*card).*"
+    score: 80
+    description: "Institutional domains sending commercial/payment content"
+
+  # Young Domain Random Sender
+  - name: "Young Domain Random Sender"
+    enabled: true
+    criteria:
+      type: And
+      criteria:
+        - type: SenderPattern
+          pattern: ".*[a-z]{12,}@.*"
+        - type: Not
+          criteria:
+            type: Or
+            criteria:
+              - type: SenderPattern
+                pattern: ".*@.*(noreply|no-reply|newsletter|info|support|contact|hello|team|notification|updates|marketing|investments|communications|services).*"
+              - type: SenderPattern
+                pattern: ".*@.*(sendgrid|mailchimp|mailgun|amazonses|sparkpost|mandrill|fidelity|amazon|disney|iheart|britishairways|cdw|msgfocus|thinkgeek|concurcompleat|vacuums|emailsp)\\.(com|net)$"
+              - type: SenderPattern
+                pattern: ".*@bounce\\.(crm\\.ba|cdwemail|emailsp)\\.(com|net)$"
+              - type: SenderPattern
+                pattern: ".*@.*(gov|edu|mil|org)$"
+              - type: SenderPattern
+                pattern: ".*@mail\\.(fidelity|amazon|disney|britishairways|cdw|iheart)\\.(com|net)$"
+    score: 60
+    description: "Random-looking sender address (12+ consecutive lowercase letters)"
+
+  # Institutional Domain Generic Business Display
+  - name: "Institutional Domain Generic Business Display"
+    enabled: true
+    criteria:
+      type: And
+      criteria:
+        - type: Or
+          criteria:
+            - type: SenderPattern
+              pattern: ".*@.*\\.(gov|edu|mil|istruzioneer)\\."
+            - type: SenderPattern
+              pattern: ".*@.*\\.(gov|edu|mil)$"
+        - type: HeaderPattern
+          header: "From"
+          pattern: "(?i).*(CUSTOMER SYSTEMS|BILLING DEPT|PAYMENT CENTER|ACCOUNT SERVICES|CUSTOMER SERVICE|SUPPORT TEAM|NOTIFICATION CENTER|SECURITY TEAM|VERIFICATION DEPT).*"
+        - type: Not
+          criteria:
+            type: SenderPattern
+            pattern: ".*@.*(customer|billing|payment|support|service|help).*\\.(gov|edu|mil)"
+    score: 170
+    description: "Institutional domain with generic corporate display name"

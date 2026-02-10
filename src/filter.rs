@@ -2188,6 +2188,8 @@ impl FilterEngine {
         }
 
         // Encoding evasion analysis
+        // Ensure DKIM verification is populated before evasion score calculation
+        context_with_attachments.dkim_verification();
         let evasion_score = self.get_evasion_score(&context_with_attachments);
         if evasion_score > 0 {
             total_score += evasion_score;

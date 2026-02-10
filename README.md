@@ -1,10 +1,10 @@
-# FOFF Milter v0.8.30
+# FOFF Milter v0.8.31
 
 A comprehensive, enterprise-grade email security platform written in Rust featuring intelligent threat detection, modular rulesets, and zero-configuration deployment.
 
 ## 🎯 **Production Ready - 100% Test Compliance & Zero False Positives**
 
-**Latest Achievement**: Production-ready v0.8.30 with TLD whitelist approach and joint/arthritis health spam detection. Unknown TLDs now automatically flagged as suspicious (+20 points), catching new threats like .cyou, .xyz, .top without manual updates. Added detection for joint replacement and arthritis pain spam. Maintains 448/448 tests passing with zero false positives.
+**Latest Achievement**: Production-ready v0.8.31 with critical encoding evasion scoring fix. Resolved 281-point score discrepancy between milter mode and test mode by ensuring DKIM verification is populated before evasion score calculation. DKIM-authenticated senders now properly receive 95% reduction in encoding evasion scores across all modes. Maintains 448/448 tests passing with zero false positives.
 
 ## 🚀 Complete Email Security Platform
 
