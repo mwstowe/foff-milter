@@ -620,6 +620,8 @@ impl ContextAnalyzer {
             || from_header.to_lowercase().contains("walgreens")
             || from_header.to_lowercase().contains("humblebundle")
             || from_header.to_lowercase().contains("usps")
+            || from_header.to_lowercase().contains("ups")
+            || from_header.to_lowercase().contains("fedex")
             || from_header.to_lowercase().contains("withings")
             || from_header.to_lowercase().contains("livenation")
             // Retail and e-commerce

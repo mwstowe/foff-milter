@@ -110,7 +110,7 @@ impl FeatureExtractor for ProductSpamAnalyzer {
             && (content.contains("plan") || content.contains("service"))
             && (content.contains("/mo") || content.contains("per month") || content.contains("$"))
         {
-            // Exclude legitimate telecom, entertainment, and ESPs
+            // Exclude legitimate telecom, entertainment, shipping, and ESPs
             let legitimate_telecom = [
                 "tmobile",
                 "t-mobile",
@@ -121,6 +121,9 @@ impl FeatureExtractor for ProductSpamAnalyzer {
                 "hulu",
                 "netflix",
                 "sparkpost",
+                "ups",
+                "fedex",
+                "usps",
             ];
             let is_legitimate_telecom = legitimate_telecom
                 .iter()

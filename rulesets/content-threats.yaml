@@ -724,6 +724,15 @@ rules:
                 header: "from"
                 pattern: ".*@.*epic\\.com.*"
               - type: "HeaderPattern"
+                header: "from"
+                pattern: ".*@.*ups\\.com.*"
+              - type: "HeaderPattern"
+                header: "from"
+                pattern: ".*@.*fedex\\.com.*"
+              - type: "HeaderPattern"
+                header: "from"
+                pattern: ".*@.*usps\\.com.*"
+              - type: "HeaderPattern"
                 header: "References"
                 pattern: ".*"
               - type: "HeaderPattern"
@@ -1793,12 +1802,23 @@ rules:
   # Enhanced woodworking plans
   - name: "Enhanced Woodworking Plans"
     criteria:
-      type: Or
+      type: And
       criteria:
-        - type: SubjectPattern
-          pattern: "(?i).*(woodworking.*plans|wood.*project|diy.*(carpentry|woodwork|furniture|cabinet)|furniture.*plans|carpentry.*guide).*"
-        - type: BodyPattern
-          pattern: "(?i).*(woodworking.*plans|wood.*project|diy.*(carpentry|woodwork|furniture|cabinet)|furniture.*plans|carpentry.*guide).*"
+        - type: Or
+          criteria:
+            - type: SubjectPattern
+              pattern: "(?i).*(woodworking.*plans|wood.*project|diy.*(carpentry|woodwork|furniture|cabinet)|furniture.*plans|carpentry.*guide).*"
+            - type: BodyPattern
+              pattern: "(?i).*(woodworking.*plans|wood.*project|diy.*(carpentry|woodwork|furniture|cabinet)|furniture.*plans|carpentry.*guide).*"
+        - type: Not
+          criteria:
+            type: Or
+            criteria:
+              - type: SenderPattern
+                pattern: ".*@.*(kickstarter|indiegogo|patreon|gofundme)\\.(com|net)$"
+              - type: HeaderPattern
+                header: "from"
+                pattern: ".*@.*(kickstarter|indiegogo|patreon|gofundme)\\.(com|net).*"
     score: 160
 
   # Enhanced finance loan patterns

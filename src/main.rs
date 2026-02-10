@@ -178,9 +178,12 @@ async fn analyze_email_file(
         // Handle header continuation lines (lines starting with space or tab)
         if line.starts_with(' ') || line.starts_with('\t') {
             if let Some(ref key) = last_header_key {
-                if let Some(existing_value) = headers.get_mut(key) {
-                    existing_value.push(' ');
-                    existing_value.push_str(line.trim());
+                // Skip continuation lines for X-FOFF headers
+                if !key.starts_with("x-foff-") {
+                    if let Some(existing_value) = headers.get_mut(key) {
+                        existing_value.push(' ');
+                        existing_value.push_str(line.trim());
+                    }
                 }
             }
             continue;
@@ -190,6 +193,11 @@ async fn analyze_email_file(
             let key = line[..colon_pos].trim().to_lowercase(); // Normalize to lowercase like test_email_file
             let value = line[colon_pos + 1..].trim().to_string();
             last_header_key = Some(key.clone());
+
+            // Skip X-FOFF headers from previous processing
+            if key.starts_with("x-foff-") {
+                continue;
+            }
 
             // Extract sender information (match test_email_file logic)
             if key == "return-path" {
@@ -206,22 +214,10 @@ async fn analyze_email_file(
             }
 
             // Handle header continuation lines by concatenating values (match milter behavior)
-            // But don't concatenate X-FOFF headers - they should remain separate
             if let Some(existing_value) = headers.get(&key) {
-                if key.starts_with("x-foff-") {
-                    // For X-FOFF headers, create a new key with a suffix to keep them separate
-                    let mut counter = 1;
-                    let mut new_key = format!("{}-{}", key, counter);
-                    while headers.contains_key(&new_key) {
-                        counter += 1;
-                        new_key = format!("{}-{}", key, counter);
-                    }
-                    headers.insert(new_key, value);
-                } else {
-                    // Concatenate with existing value (same as milter)
-                    let combined_value = format!("{} {}", existing_value, value);
-                    headers.insert(key, combined_value);
-                }
+                // Concatenate with existing value (same as milter)
+                let combined_value = format!("{} {}", existing_value, value);
+                headers.insert(key, combined_value);
             } else {
                 // First occurrence of this header
                 headers.insert(key, value);
