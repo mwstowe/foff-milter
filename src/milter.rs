@@ -636,7 +636,20 @@ impl Milter {
                                                     .insert(header_key.clone(), value_str);
                                             }
                                         } else {
-                                            mail_ctx.headers.insert(header_key.clone(), value_str);
+                                            // For other headers, concatenate with existing value (match test mode behavior)
+                                            if let Some(existing_value) =
+                                                mail_ctx.headers.get(&header_key)
+                                            {
+                                                let combined_value =
+                                                    format!("{} {}", existing_value, value_str);
+                                                mail_ctx
+                                                    .headers
+                                                    .insert(header_key.clone(), combined_value);
+                                            } else {
+                                                mail_ctx
+                                                    .headers
+                                                    .insert(header_key.clone(), value_str);
+                                            }
                                         }
 
                                         mail_ctx.last_header_name = Some(header_key);

@@ -98,28 +98,10 @@ impl LanguageDetector {
     }
 
     pub fn contains_portuguese(text: &str) -> bool {
-        // Portuguese-specific accented characters
-        let portuguese_chars = text.chars().any(|c| {
-            matches!(
-                c,
-                'ã' | 'õ'
-                    | 'ç'
-                    | 'á'
-                    | 'à'
-                    | 'â'
-                    | 'é'
-                    | 'ê'
-                    | 'í'
-                    | 'ó'
-                    | 'ô'
-                    | 'ú'
-                    | 'Ã'
-                    | 'Õ'
-                    | 'Ç'
-            )
-        });
+        // Highly Portuguese-specific characters (ã, õ are almost exclusively Portuguese)
+        let has_highly_specific_chars = text.chars().any(|c| matches!(c, 'ã' | 'õ' | 'Ã' | 'Õ'));
 
-        // Portuguese-specific words and scam keywords (removed common Romance language words)
+        // Portuguese-specific words
         let text_lower = text.to_lowercase();
         let portuguese_specific_words = [
             "validação",
@@ -133,13 +115,18 @@ impl LanguageDetector {
             "notas",
             "registros",
             "concluir",
-            "não", // Only kept distinctly Portuguese words
+            "não",
         ];
         let has_portuguese_words = portuguese_specific_words
             .iter()
             .any(|&word| text_lower.contains(word));
 
-        portuguese_chars || has_portuguese_words
+        // Detect Portuguese if:
+        // 1. Has highly specific characters (ã, õ) - these are almost exclusively Portuguese
+        // 2. Has Portuguese-specific words - these are unambiguous
+        // This prevents false positives from common accented characters (á, é, í, ó, ú, ç)
+        // that appear in Spanish, French, and brand names
+        has_highly_specific_chars || has_portuguese_words
     }
 
     pub fn detect_languages(text: &str) -> Vec<String> {

@@ -468,6 +468,13 @@ impl EmailNormalizer {
 
         let non_html_layers = normalized.encoding_layers.len() - html_entity_layers;
 
+        log::debug!(
+            "Evasion score calculation: total_layers={}, html_layers={}, non_html_layers={}",
+            normalized.encoding_layers.len(),
+            html_entity_layers,
+            non_html_layers
+        );
+
         // Score non-HTML encoding layers, but be much more lenient for legitimate MIME encoding
         // Score non-HTML encoding layers more heavily
         score += non_html_layers as i32 * 25;
@@ -484,6 +491,7 @@ impl EmailNormalizer {
 
         // Penalty for suspicious encodings
         for layer in &normalized.encoding_layers {
+            let layer_score_before = score;
             if layer.suspicious {
                 score += 50;
             }
@@ -494,6 +502,13 @@ impl EmailNormalizer {
                 EncodingType::HtmlEntities => 0, // Already scored above with context
                 _ => 10,
             };
+            log::debug!(
+                "Layer {:?} (suspicious={}): added {} points (total now {})",
+                layer.encoding_type,
+                layer.suspicious,
+                score - layer_score_before,
+                score
+            );
         }
 
         // Penalty for obfuscation techniques
