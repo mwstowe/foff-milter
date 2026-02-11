@@ -50,6 +50,18 @@ impl BrandImpersonationFeature {
             vec!["amazon.com".to_string(), "amazon.co.uk".to_string()],
         );
 
+        brand_patterns.insert("coinbase".to_string(), vec![r"(?i)\bcoinbase\b".to_string()]);
+        legitimate_domains.insert("coinbase".to_string(), vec!["coinbase.com".to_string()]);
+
+        brand_patterns.insert(
+            "mcdonalds".to_string(),
+            vec![r"(?i)\bmcdonalds?\b".to_string(), r"(?i)\bmcd\b".to_string()],
+        );
+        legitimate_domains.insert(
+            "mcdonalds".to_string(),
+            vec!["mcdonalds.com".to_string(), "sparkpostmail.com".to_string()],
+        );
+
         brand_patterns.insert(
             "ace_hardware".to_string(),
             vec![

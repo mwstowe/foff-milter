@@ -146,7 +146,8 @@ impl DomainAnalyzer {
                     || domain.contains("mcsv.net")  // Mailchimp server infrastructure
                     || domain.contains("michaelscustomframing.com")  // Michaels email marketing
                     || domain.contains("shutterfly.com")  // Shutterfly photo service
-                    || domain.contains("leaderswedeserve.com")
+                    || domain.contains("leaderswedeserve.com")  // Leaders We Deserve nonprofit
+                    || domain.contains("499inks.com")  // 499inks legitimate business
                     // Leaders We Deserve nonprofit
                     || domain.contains("batemanhornecenter.org")  // Medical center
                     || domain.contains("mtasv.net")  // Medical ESP service

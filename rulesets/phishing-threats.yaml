@@ -150,7 +150,7 @@ rules:
             type: Or
             criteria:
               - type: SenderPattern
-                pattern: ".*@.*(paypal|stripe|square|quickbooks|freshbooks|xfinity|comcast|barnesandnoble)\\.(com|net|org)$"
+                pattern: ".*@.*(paypal|stripe|square|quickbooks|freshbooks|xfinity|comcast|barnesandnoble|williams-sonoma|499inks)\\.(com|net|org)$"
               - type: SenderPattern
                 pattern: ".*@.*(alerts\\.comcast|alerts\\.xfinity)\\.(com|net)$"
               - type: SenderPattern
@@ -425,6 +425,21 @@ rules:
               - type: "HeaderPattern"
                 header: "From"
                 pattern: "\"[^\"@]+\"\\s*<[^@]+@.*microsoft\\.(com|net)>"
+              - type: "HeaderPattern"
+                header: "From"
+                pattern: "\"[^\"@]+\"\\s*<[^@]+@.*mailchimp.*\\.(com|net)>"
+              - type: "HeaderPattern"
+                header: "From"
+                pattern: "\"[^\"@]+\"\\s*<[^@]+@.*mcdlv\\.(com|net)>"
+              - type: "HeaderPattern"
+                header: "From"
+                pattern: "\"[^\"@]+\"\\s*<[^@]+@.*sendgrid\\.(com|net)>"
+              - type: "HeaderPattern"
+                header: "From"
+                pattern: "\"[^\"@]+\"\\s*<[^@]+@.*e\\.williams-sonoma\\.com>"
+              - type: "HeaderPattern"
+                header: "From"
+                pattern: "\"499inks\\.com\"\\s*<[^@]+@499inks\\.com>"
         - type: "Or"
           criteria:
             - type: "BodyPattern"
