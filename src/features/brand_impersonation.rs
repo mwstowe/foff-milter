@@ -50,23 +50,35 @@ impl BrandImpersonationFeature {
             vec!["amazon.com".to_string(), "amazon.co.uk".to_string()],
         );
 
-        brand_patterns.insert("coinbase".to_string(), vec![r"(?i)\bcoinbase\b".to_string()]);
+        brand_patterns.insert(
+            "coinbase".to_string(),
+            vec![r"(?i)\bcoinbase\b".to_string()],
+        );
         legitimate_domains.insert("coinbase".to_string(), vec!["coinbase.com".to_string()]);
 
         brand_patterns.insert(
             "mcdonalds".to_string(),
-            vec![r"(?i)\bmcdonalds?\b".to_string(), r"(?i)\bmcd\b".to_string()],
+            vec![
+                r"(?i)\bmcdonalds?\b".to_string(),
+                r"(?i)\bmcd\b".to_string(),
+            ],
         );
         legitimate_domains.insert(
             "mcdonalds".to_string(),
             vec!["mcdonalds.com".to_string(), "sparkpostmail.com".to_string()],
         );
 
-        brand_patterns.insert("butcherbox".to_string(), vec![r"(?i)\bbutcher\s*box\b".to_string()]);
+        brand_patterns.insert(
+            "butcherbox".to_string(),
+            vec![r"(?i)\bbutcher\s*box\b".to_string()],
+        );
         legitimate_domains.insert("butcherbox".to_string(), vec!["butcherbox.com".to_string()]);
 
         brand_patterns.insert("aldi".to_string(), vec![r"(?i)\baldi\b".to_string()]);
-        legitimate_domains.insert("aldi".to_string(), vec!["aldi.com".to_string(), "aldi.us".to_string()]);
+        legitimate_domains.insert(
+            "aldi".to_string(),
+            vec!["aldi.com".to_string(), "aldi.us".to_string()],
+        );
 
         brand_patterns.insert("publix".to_string(), vec![r"(?i)\bpublix\b".to_string()]);
         legitimate_domains.insert("publix".to_string(), vec!["publix.com".to_string()]);

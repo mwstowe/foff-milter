@@ -1179,14 +1179,14 @@ impl ContextAnalyzer {
 
         // Count sentences (rough approximation)
         let sentence_count = text.matches('.').count();
-        
+
         // Count words
         let word_count = text.split_whitespace().count();
-        
+
         // Average words per sentence
         if sentence_count > 0 {
             let avg_words_per_sentence = word_count / sentence_count;
-            
+
             // Very long rambling sentences (evasion technique)
             // Require both very long sentences AND many sentences to avoid false positives on HTML emails
             if avg_words_per_sentence > 100 && sentence_count > 10 {
@@ -1197,7 +1197,7 @@ impl ContextAnalyzer {
                 ));
             }
         }
-        
+
         // Extremely long body text (over 1400 words) with mundane content
         if word_count > 1400 {
             let mundane_phrases = [
@@ -1212,12 +1212,13 @@ impl ContextAnalyzer {
                 "typical tuesday",
                 "team meeting",
             ];
-            
+
             let text_lower = text.to_lowercase();
-            let mundane_count = mundane_phrases.iter()
+            let mundane_count = mundane_phrases
+                .iter()
                 .filter(|phrase| text_lower.contains(*phrase))
                 .count();
-            
+
             if mundane_count >= 3 {
                 score += 35;
                 evidence.push(format!(
@@ -1226,7 +1227,7 @@ impl ContextAnalyzer {
                 ));
             }
         }
-        
+
         (score, evidence)
     }
 }
@@ -1510,7 +1511,7 @@ impl FeatureExtractor for ContextAnalyzer {
         let is_invoice = body.to_lowercase().contains("invoice")
             || body.to_lowercase().contains("statement")
             || body.to_lowercase().contains("payment due");
-        
+
         if !is_invoice {
             let (rambling_score, rambling_evidence) = self.detect_rambling_evasion(body);
             total_score += rambling_score;

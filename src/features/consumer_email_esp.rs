@@ -78,9 +78,7 @@ impl FeatureExtractor for ConsumerEmailEspAnalyzer {
             "awsmail.com",
         ];
 
-        let sent_through_esp = esp_domains
-            .iter()
-            .any(|&esp| envelope_domain.contains(esp));
+        let sent_through_esp = esp_domains.iter().any(|&esp| envelope_domain.contains(esp));
 
         if sent_through_esp {
             // Consumer email domain sent through ESP is highly suspicious
