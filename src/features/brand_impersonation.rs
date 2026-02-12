@@ -62,6 +62,15 @@ impl BrandImpersonationFeature {
             vec!["mcdonalds.com".to_string(), "sparkpostmail.com".to_string()],
         );
 
+        brand_patterns.insert("butcherbox".to_string(), vec![r"(?i)\bbutcher\s*box\b".to_string()]);
+        legitimate_domains.insert("butcherbox".to_string(), vec!["butcherbox.com".to_string()]);
+
+        brand_patterns.insert("aldi".to_string(), vec![r"(?i)\baldi\b".to_string()]);
+        legitimate_domains.insert("aldi".to_string(), vec!["aldi.com".to_string(), "aldi.us".to_string()]);
+
+        brand_patterns.insert("publix".to_string(), vec![r"(?i)\bpublix\b".to_string()]);
+        legitimate_domains.insert("publix".to_string(), vec!["publix.com".to_string()]);
+
         brand_patterns.insert(
             "ace_hardware".to_string(),
             vec![

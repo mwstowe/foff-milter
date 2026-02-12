@@ -1,10 +1,10 @@
-# FOFF Milter v0.8.33
+# FOFF Milter v0.8.34
 
 A comprehensive, enterprise-grade email security platform written in Rust featuring intelligent threat detection, modular rulesets, and zero-configuration deployment.
 
 ## 🎯 **Production Ready - 100% Test Compliance & Zero False Positives**
 
-**Latest Achievement**: Production-ready v0.8.33 with consumer email ESP detection and enhanced brand impersonation. New feature detects consumer email domains (outlook.com, gmail.com) sent through ESPs (SendGrid, MailChimp) - a strong indicator of spoofing. Added Coinbase and McDonald's to brand impersonation detection. Fixed false positives on legitimate retail marketing (Williams Sonoma, 499inks). Maintains 448/448 tests passing with zero false positives.
+**Latest Achievement**: Production-ready v0.8.34 with enhanced brand impersonation detection and rambling text evasion analysis. Added ButcherBox, Aldi, and Publix to brand protection. New rambling text detection identifies spam using long mundane filler content as an evasion technique. Caught 3 additional spam emails that were previously missed. Maintains 448/448 tests passing with zero false positives.
 
 ## 🚀 Complete Email Security Platform
 
