@@ -352,6 +352,16 @@ impl TldRiskFeature {
         );
 
         tlds.insert(
+            "live".to_string(),
+            TldInfo {
+                risk_level: TldRisk::Suspicious,
+                abuse_score: 80,
+                description: "Live domain - heavily abused for spam and phishing".to_string(),
+                common_uses: vec!["Various, heavily abused for spam campaigns".to_string()],
+            },
+        );
+
+        tlds.insert(
             "lat".to_string(),
             TldInfo {
                 risk_level: TldRisk::Suspicious,

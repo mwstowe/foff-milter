@@ -84,6 +84,21 @@ impl BrandImpersonationFeature {
         legitimate_domains.insert("publix".to_string(), vec!["publix.com".to_string()]);
 
         brand_patterns.insert(
+            "endurance".to_string(),
+            vec![
+                r"(?i)\bendurance\b".to_string(),
+                r"(?i)\bendurance.*warranty\b".to_string(),
+            ],
+        );
+        legitimate_domains.insert(
+            "endurance".to_string(),
+            vec![
+                "endurancewarranty.com".to_string(),
+                "endurance.com".to_string(),
+            ],
+        );
+
+        brand_patterns.insert(
             "ace_hardware".to_string(),
             vec![
                 r"(?i)\bace\s*hardware\b".to_string(),

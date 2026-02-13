@@ -679,6 +679,7 @@ impl FeatureExtractor for AuthenticationFeature {
             || sender_domain.ends_with(".space")
             || sender_domain.ends_with(".click")
             || sender_domain.ends_with(".link")
+            || sender_domain.ends_with(".live")
             || sender_domain.ends_with(".tk")
             || sender_domain.ends_with(".ml")
             || sender_domain.ends_with(".ga")
