@@ -1,10 +1,10 @@
-# FOFF Milter v0.8.35
+# FOFF Milter v0.8.36
 
 A comprehensive, enterprise-grade email security platform written in Rust featuring intelligent threat detection, modular rulesets, and zero-configuration deployment.
 
 ## 🎯 **Production Ready - 100% Test Compliance & Zero False Positives**
 
-**Latest Achievement**: Production-ready v0.8.35 with enhanced .live TLD protection and Endurance warranty scam detection. Increased .live TLD abuse score to 80 (from 30) to combat heavily abused spam domains. Added Endurance brand impersonation detection for auto warranty scams. Reduced authentication bonus for suspicious TLDs to prevent DKIM-authenticated spam from bypassing detection. Caught 3 additional .live TLD spam emails. Maintains 448/448 tests passing with zero false positives.
+**Latest Achievement**: Production-ready v0.8.36 with Kroger brand protection and gift card survey scam detection. Added Kroger to brand impersonation detection. Increased .live TLD abuse score to 85 (from 80). New gift card survey scam pattern detects "$X gift card for participation/survey" schemes while excluding legitimate retail gift card sales. Caught 2 additional spam emails. Maintains 448/448 tests passing with zero false positives.
 
 ## 🚀 Complete Email Security Platform
 

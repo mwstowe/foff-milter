@@ -1593,6 +1593,16 @@ impl FeatureExtractor for ContextAnalyzer {
             all_evidence.push("Suspicious subject with excessive special characters".to_string());
         }
 
+        // Gift card survey scam detection
+        let gift_card_scam_regex = Regex::new(
+            r"(?i)\b(you'?ll?\s+receive.*\$\d+.*gift\s*card|win.*\$\d+.*gift\s*card|\$\d+.*gift\s*card.*(participation|survey|review))\b",
+        )
+        .unwrap();
+        if gift_card_scam_regex.is_match(&combined_text) {
+            total_score += 60;
+            all_evidence.push("Gift card survey scam pattern detected".to_string());
+        }
+
         // Social engineering detection
         let social_eng_regex = Regex::new(
             r"(?i)\b(screenshot of the error|would you like me to send|technical assistance)\b",

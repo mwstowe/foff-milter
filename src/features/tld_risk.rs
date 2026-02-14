@@ -355,7 +355,7 @@ impl TldRiskFeature {
             "live".to_string(),
             TldInfo {
                 risk_level: TldRisk::Suspicious,
-                abuse_score: 80,
+                abuse_score: 85,
                 description: "Live domain - heavily abused for spam and phishing".to_string(),
                 common_uses: vec!["Various, heavily abused for spam campaigns".to_string()],
             },

@@ -98,6 +98,12 @@ impl BrandImpersonationFeature {
             ],
         );
 
+        brand_patterns.insert("kroger".to_string(), vec![r"(?i)\bkroger\b".to_string()]);
+        legitimate_domains.insert(
+            "kroger".to_string(),
+            vec!["kroger.com".to_string(), "krogeremail.com".to_string()],
+        );
+
         brand_patterns.insert(
             "ace_hardware".to_string(),
             vec![
