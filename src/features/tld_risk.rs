@@ -48,6 +48,16 @@ impl TldRiskAnalyzer {
     /// Extract TLD from domain
     pub fn extract_tld(&self, domain: &str) -> Option<String> {
         let parts: Vec<&str> = domain.split('.').collect();
+
+        // Check for multi-part TLDs (e.g., .za.com, .co.uk)
+        if parts.len() >= 3 {
+            let two_part = format!("{}.{}", parts[parts.len() - 2], parts[parts.len() - 1]);
+            if self.tld_lookup.contains_key(&two_part.to_lowercase()) {
+                return Some(two_part.to_lowercase());
+            }
+        }
+
+        // Single-part TLD
         if parts.len() >= 2 {
             Some(parts.last()?.to_lowercase())
         } else {
@@ -358,6 +368,36 @@ impl TldRiskFeature {
                 abuse_score: 85,
                 description: "Live domain - heavily abused for spam and phishing".to_string(),
                 common_uses: vec!["Various, heavily abused for spam campaigns".to_string()],
+            },
+        );
+
+        tlds.insert(
+            "za.com".to_string(),
+            TldInfo {
+                risk_level: TldRisk::Suspicious,
+                abuse_score: 85,
+                description: "South Africa commercial domain - heavily abused for spam".to_string(),
+                common_uses: vec!["Various, heavily abused for adult/dating spam".to_string()],
+            },
+        );
+
+        tlds.insert(
+            "sa.com".to_string(),
+            TldInfo {
+                risk_level: TldRisk::Suspicious,
+                abuse_score: 85,
+                description: "Saudi Arabia commercial domain - heavily abused for spam".to_string(),
+                common_uses: vec!["Various, heavily abused for spam campaigns".to_string()],
+            },
+        );
+
+        tlds.insert(
+            "pro".to_string(),
+            TldInfo {
+                risk_level: TldRisk::Suspicious,
+                abuse_score: 50,
+                description: "Professional domain - commonly abused for scams".to_string(),
+                common_uses: vec!["Professional services, often abused for spam".to_string()],
             },
         );
 

@@ -105,6 +105,15 @@ impl BrandImpersonationFeature {
         );
 
         brand_patterns.insert(
+            "ahs".to_string(),
+            vec![
+                r"(?i)\bahs\b".to_string(),
+                r"(?i)\bamerican\s*home\s*shield\b".to_string(),
+            ],
+        );
+        legitimate_domains.insert("ahs".to_string(), vec!["ahs.com".to_string()]);
+
+        brand_patterns.insert(
             "ace_hardware".to_string(),
             vec![
                 r"(?i)\bace\s*hardware\b".to_string(),
