@@ -874,6 +874,7 @@ impl SenderAlignmentAnalyzer {
             ("primevideo.com", "amazonses.com"),
             ("microsoft.com", "outlook.com"),
             ("google.com", "gmail.com"),
+            ("kitchenaid.com", "whirlpool.com"), // Whirlpool owns KitchenAid
         ];
 
         for (d1, d2) in &legitimate_pairs {

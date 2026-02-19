@@ -1,10 +1,10 @@
-# FOFF Milter v0.8.37
+# FOFF Milter v0.8.38
 
 A comprehensive, enterprise-grade email security platform written in Rust featuring intelligent threat detection, modular rulesets, and zero-configuration deployment.
 
 ## 🎯 **Production Ready - 100% Test Compliance & Zero False Positives**
 
-**Latest Achievement**: Production-ready v0.8.37 with multi-part TLD detection and enhanced spam domain protection. Added .za.com and .sa.com TLD detection (abuse score 85), .pro TLD increased to 50, and AHS brand impersonation. Implemented multi-part TLD extraction to properly detect .za.com, .co.uk, and similar compound TLDs. Caught 3 additional spam emails. Maintains 448/448 tests passing with zero false positives.
+**Latest Achievement**: Production-ready v0.8.38 with critical prod/test parity fix for forwarded emails. Fixed brand impersonation to use From header instead of envelope sender, resolving false positives on forwarded legitimate emails (NY Times case). Added Adobe Campaign CNAME domain support, KitchenAid/Whirlpool relationship recognition, and reduced urgency scoring for legitimate platforms (Kickstarter, retail). Maintains 448/448 tests passing with zero false positives.
 
 ## 🚀 Complete Email Security Platform
 

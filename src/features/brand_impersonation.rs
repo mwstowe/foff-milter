@@ -266,7 +266,25 @@ impl BrandImpersonationFeature {
     }
 
     fn extract_domain(&self, email: &str) -> Option<String> {
-        email.split('@').nth(1).map(|s| s.to_lowercase())
+        // Extract email from "Name <email@domain.com>" format
+        let email_part = if let Some(start) = email.rfind('<') {
+            if let Some(end) = email.rfind('>') {
+                if start < end {
+                    &email[start + 1..end]
+                } else {
+                    email
+                }
+            } else {
+                email
+            }
+        } else {
+            email
+        };
+
+        email_part
+            .split('@')
+            .nth(1)
+            .map(|s| s.trim().to_lowercase())
     }
 
     fn is_suspicious_domain_pattern(&self, domain: &str) -> bool {
@@ -333,6 +351,17 @@ impl BrandImpersonationFeature {
         // Check if this is a legitimate multi-brand company (cashback, deals, affiliates)
         if self.is_legitimate_multi_brand_company(domain) {
             return true;
+        }
+
+        // Check for Adobe Campaign CNAME domains (brand.com.cname.cjm.adobe.com)
+        if domain.contains(".cname.cjm.adobe.com") || domain.contains(".campaign.adobe.com") {
+            // Extract the brand part before .cname
+            if let Some(brand_part) = domain.split(".cname").next() {
+                // Check if the brand name appears in the domain
+                if brand_part.contains(brand) {
+                    return true;
+                }
+            }
         }
 
         if let Some(legitimate) = self.legitimate_domains.get(brand) {
@@ -481,12 +510,13 @@ impl FeatureExtractor for BrandImpersonationFeature {
             }
         }
 
-        // Get sender domain
-        let sender_domain = if let Some(sender) = &context.sender {
-            self.extract_domain(sender)
-        } else {
-            None
-        };
+        // Get sender domain - prioritize From header over envelope sender
+        // This handles forwarded emails correctly (uses original sender, not forwarder)
+        let sender_domain = context
+            .from_header
+            .as_ref()
+            .or(context.sender.as_ref())
+            .and_then(|s| self.extract_domain(s));
 
         // Analyze subject and body for brand mentions
         let subject = context.subject.as_deref().unwrap_or("");
@@ -514,7 +544,7 @@ impl FeatureExtractor for BrandImpersonationFeature {
             // Check for brand impersonation
             for brand in &detected_brands {
                 if !self.is_legitimate_domain_for_brand(brand, domain) {
-                    score += 85;
+                    score += 90;
                     evidence.push(format!(
                         "Brand impersonation: Claims to be {} but sender domain is {}",
                         brand, domain

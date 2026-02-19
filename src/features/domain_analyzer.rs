@@ -173,6 +173,12 @@ impl DomainAnalyzer {
             }
         }
 
+        // Check for specific known suspicious domains
+        if domain.contains("giize.com") {
+            score += 30;
+            evidence.push(format!("Known suspicious domain detected: {}", domain));
+        }
+
         // Check TLD reputation
         if let Some(tld) = domain.split('.').next_back() {
             if self.suspicious_tlds.contains(&tld) {

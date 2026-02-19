@@ -1595,12 +1595,49 @@ impl FeatureExtractor for ContextAnalyzer {
 
         // Gift card survey scam detection
         let gift_card_scam_regex = Regex::new(
-            r"(?i)\b(you'?ll?\s+receive.*\$\d+.*gift\s*card|win.*\$\d+.*gift\s*card|\$\d+.*gift\s*card.*(participation|survey|review))\b",
+            r"(?i)\b(you'?ll?\s+receive.*\$\d+.*gift\s*card|win.*\$\d+.*gift\s*card|\$\d+.*gift\s*card.*(participation|survey|review)|explore.*gift\s*card|gift\s*card\s*information|learn.*about.*gift\s*card)\b",
         )
         .unwrap();
         if gift_card_scam_regex.is_match(&combined_text) {
             total_score += 60;
             all_evidence.push("Gift card survey scam pattern detected".to_string());
+        }
+
+        // Aggressive urgency detection
+        let aggressive_urgency_regex = Regex::new(
+            r"(?i)\b(last\s+chance|final\s+opportunity|ends\s+today|don'?t\s+miss\s+out|act\s+now\s+or|time\s+is\s+running\s+out)\b",
+        )
+        .unwrap();
+        if aggressive_urgency_regex.is_match(&combined_text) {
+            // Reduce urgency scoring for legitimate platforms and retail
+            let sender_lower = sender.to_lowercase();
+            let is_legitimate_platform = sender_lower.contains("kickstarter.com")
+                || sender_lower.contains("indiegogo.com")
+                || sender_lower.contains("gofundme.com");
+
+            let is_legitimate_retail = sender_lower.contains("thinkvacuums.com")
+                || sender_lower.contains("kitchenaid.com")
+                || sender_lower.contains("whirlpool.com")
+                || self.is_legitimate_retailer(&sender_lower);
+
+            if is_legitimate_platform || is_legitimate_retail {
+                // Legitimate marketing urgency - reduced penalty
+                total_score += 10;
+                all_evidence.push("Marketing urgency pattern detected".to_string());
+            } else {
+                total_score += 40;
+                all_evidence.push("Aggressive urgency pattern detected".to_string());
+            }
+        }
+
+        // Business solicitation spam detection
+        let business_solicitation_regex = Regex::new(
+            r"(?i)\b(bid\s*proposals?|tender\s*proposals?|supply\s+collaboration|procurement\s+opportunity|vendor\s+opportunity|contract\s+opportunity|upcoming\s+bid)\b",
+        )
+        .unwrap();
+        if business_solicitation_regex.is_match(&combined_text) {
+            total_score += 50;
+            all_evidence.push("Business solicitation spam pattern detected".to_string());
         }
 
         // Social engineering detection
