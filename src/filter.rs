@@ -342,9 +342,20 @@ impl FilterEngine {
 
                 // For legitimate business emails with valid DKIM, encoding is usually for content formatting
                 if has_valid_dkim && is_legitimate_business {
-                    let reduced_score = base_score / 50; // Reduce by 98% for legitimate business emails
+                    let reduced_score = 0; // No penalty for legitimate business emails with DKIM
                     log::debug!(
                         "Reducing encoding evasion score for legitimate business email from {} to {}",
+                        base_score,
+                        reduced_score
+                    );
+                    return reduced_score;
+                }
+
+                // For legitimate business emails without DKIM but with business subject
+                if is_legitimate_business {
+                    let reduced_score = base_score / 200; // Reduce by 99.5% for legitimate business emails
+                    log::debug!(
+                        "Reducing encoding evasion score for legitimate business email (no DKIM) from {} to {}",
                         base_score,
                         reduced_score
                     );
@@ -443,6 +454,7 @@ impl FilterEngine {
             "vultr.com",
             "cloudflare.com",
             "amazon.com",
+            "amazonmusic.com",
             "microsoft.com",
             "google.com",
             "apple.com",
@@ -465,6 +477,7 @@ impl FilterEngine {
             "wayfair.com",
             "etsy.com",
             "ebay.com",
+            "daburns.com",
         ];
 
         let is_legitimate_domain = legitimate_business_domains
@@ -4004,6 +4017,24 @@ impl FilterEngine {
                                         "SenderPattern could not extract email from from_header: '{}'",
                                         from_header
                                     );
+                                }
+                            }
+                            // Check Return-Path as fallback (for forwarded emails where envelope sender changes)
+                            if let Some(return_path) = context.headers.get("return-path") {
+                                // Extract email from Return-Path (format: <email@domain.com>)
+                                let return_path_email =
+                                    return_path.trim_matches(['<', '>', ' ', '\r', '\n']);
+                                log::debug!(
+                                    "SenderPattern checking Return-Path: '{}' against pattern: '{}'",
+                                    return_path_email,
+                                    pattern
+                                );
+                                if regex.is_match(return_path_email) {
+                                    log::info!(
+                                        "SenderPattern matched Return-Path: '{}'",
+                                        return_path_email
+                                    );
+                                    return true;
                                 }
                             }
                         }
@@ -8691,6 +8722,8 @@ impl FilterEngine {
                     || self.is_subdomain_of(domain, "bcdtravel.com")
                     || domain.contains("fidelity.com")
                     || self.is_subdomain_of(domain, "fidelity.com")
+                    || domain.contains("amazonmusic.com")
+                    || self.is_subdomain_of(domain, "amazonmusic.com")
             }
             _ => false,
         };

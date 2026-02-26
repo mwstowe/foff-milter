@@ -65,6 +65,17 @@ impl FeatureExtractor for ConsumerEmailEspAnalyzer {
             .unwrap_or("")
             .to_lowercase();
 
+        // Also check Return-Path as fallback (for forwarded emails)
+        let return_path_domain = context
+            .headers
+            .get("return-path")
+            .and_then(|rp| {
+                let rp_clean = rp.trim_matches(['<', '>', ' ', '\r', '\n']);
+                rp_clean.split('@').nth(1)
+            })
+            .unwrap_or("")
+            .to_lowercase();
+
         let esp_domains = [
             "sendgrid.net",
             "mailgun.org",
@@ -78,14 +89,25 @@ impl FeatureExtractor for ConsumerEmailEspAnalyzer {
             "awsmail.com",
         ];
 
-        let sent_through_esp = esp_domains.iter().any(|&esp| envelope_domain.contains(esp));
+        let sent_through_esp = esp_domains
+            .iter()
+            .any(|&esp| envelope_domain.contains(esp) || return_path_domain.contains(esp));
 
         if sent_through_esp {
             // Consumer email domain sent through ESP is highly suspicious
             score += 200;
+            let esp_source = if envelope_domain.contains("sendgrid")
+                || envelope_domain.contains("mailgun")
+                || envelope_domain.contains("amazonses")
+                || envelope_domain.contains("mailchimp")
+            {
+                envelope_domain.clone()
+            } else {
+                return_path_domain.clone()
+            };
             evidence.push(format!(
                 "Consumer email domain ({}) sent through ESP ({}) - likely spoofed",
-                from_domain, envelope_domain
+                from_domain, esp_source
             ));
         }
 

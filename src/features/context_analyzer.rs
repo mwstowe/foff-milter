@@ -624,6 +624,7 @@ impl ContextAnalyzer {
             || from_header.to_lowercase().contains("fedex")
             || from_header.to_lowercase().contains("withings")
             || from_header.to_lowercase().contains("livenation")
+            || from_header.to_lowercase().contains("daburns")
             // Retail and e-commerce
             || from_header.to_lowercase().contains("retail")
             || from_header.to_lowercase().contains("shop")
@@ -1241,6 +1242,40 @@ impl FeatureExtractor for ContextAnalyzer {
         let subject = context.subject.as_deref().unwrap_or("");
         let sender = context.from_header.as_deref().unwrap_or("");
 
+        // Check for suspicious hosting (Firebase) with urgency - high priority phishing indicator
+        let sender_domain = sender
+            .split('@')
+            .nth(1)
+            .unwrap_or("")
+            .trim_end_matches('>')
+            .to_lowercase();
+
+        if sender_domain.contains("firebaseapp.com") {
+            let urgency_keywords = [
+                "urgent",
+                "immediate",
+                "expire",
+                "suspend",
+                "closure",
+                "lost",
+                "payment",
+                "account",
+                "verify",
+                "confirm",
+                "action required",
+            ];
+            let combined_text = format!("{} {}", subject, sender).to_lowercase();
+            let has_urgency = urgency_keywords.iter().any(|kw| combined_text.contains(kw));
+
+            if has_urgency {
+                total_score += 60; // High score for Firebase + urgency combination
+                all_evidence.push(
+                    "Suspicious hosting (Firebase) with urgency indicators - likely phishing"
+                        .to_string(),
+                );
+            }
+        }
+
         // Detect industry context for appropriate scoring adjustments
         let combined_content = format!("{} {}", subject, body);
         let industry_context = self.detect_industry_context(sender, &combined_content, subject);
@@ -1271,6 +1306,7 @@ impl FeatureExtractor for ContextAnalyzer {
             || sender.to_lowercase().contains("michaelscustomframing.com")  // Craft/framing retailer
             || sender.to_lowercase().contains("govdelivery.com")  // Government email service
             || sender.to_lowercase().contains("public.govdelivery.com")  // Government newsletter service
+            || sender.to_lowercase().contains("amazonmusic.com")  // Amazon Music service
             || sender.ends_with(".gov")  // Government domains
             || sender.ends_with(".edu"); // Educational domains
         let additional_discount = if borderline_legitimate { 0.2 } else { 1.0 }; // Extra 80% reduction

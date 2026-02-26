@@ -716,11 +716,62 @@ impl SenderAlignmentAnalyzer {
             return issues; // No issues for legitimate platforms
         }
 
+        // Check for consumer email domain with non-consumer infrastructure (high priority)
+        let consumer_email_domains = [
+            "gmail.com",
+            "yahoo.com",
+            "outlook.com",
+            "hotmail.com",
+            "aol.com",
+            "icloud.com",
+            "me.com",
+            "mac.com",
+        ];
+
+        let is_consumer_from = consumer_email_domains
+            .iter()
+            .any(|domain| sender_info.from_domain.ends_with(domain));
+
+        let is_consumer_sender = consumer_email_domains
+            .iter()
+            .any(|domain| sender_info.sender_domain.ends_with(domain));
+
+        let is_consumer_return_path = consumer_email_domains
+            .iter()
+            .any(|domain| sender_info.return_path_domain.ends_with(domain));
+
+        // If From is consumer email but infrastructure is not, this is highly suspicious
+        if is_consumer_from
+            && !sender_info.sender_domain.is_empty()
+            && sender_info.sender_domain != "unknown"
+            && !is_consumer_sender
+            && !self.is_legitimate_email_service(&sender_info.sender_domain)
+        {
+            issues.push(format!(
+                "Consumer email domain ({}) sent through non-consumer infrastructure ({}) - likely spoofed",
+                sender_info.from_domain, sender_info.sender_domain
+            ));
+        }
+
+        if is_consumer_from
+            && !sender_info.return_path_domain.is_empty()
+            && sender_info.return_path_domain != "unknown"
+            && !is_consumer_return_path
+            && !self.is_legitimate_email_service(&sender_info.return_path_domain)
+        {
+            issues.push(format!(
+                "Consumer email domain ({}) with non-consumer Return-Path ({}) - likely spoofed",
+                sender_info.from_domain, sender_info.return_path_domain
+            ));
+        }
+
         // Check if From and Sender domains are consistent (allow legitimate email services)
         if !sender_info.sender_domain.is_empty()
             && sender_info.sender_domain != "unknown"
             && !self.domains_related(&sender_info.from_domain, &sender_info.sender_domain)
             && !self.is_legitimate_email_service(&sender_info.sender_domain)
+            && !is_consumer_from
+        // Skip if already flagged above
         {
             issues.push(format!(
                 "From domain '{}' doesn't match Sender domain '{}'",
@@ -733,6 +784,8 @@ impl SenderAlignmentAnalyzer {
             && sender_info.return_path_domain != "unknown"
             && !self.domains_related(&sender_info.from_domain, &sender_info.return_path_domain)
             && !self.is_legitimate_email_service(&sender_info.return_path_domain)
+            && !is_consumer_from
+        // Skip if already flagged above
         {
             issues.push(format!(
                 "From domain '{}' doesn't align with Return-Path domain '{}'",
@@ -1589,7 +1642,14 @@ impl FeatureExtractor for SenderAlignmentAnalyzer {
 
         // Analyze domain consistency
         let domain_issues = self.analyze_domain_consistency(&sender_info);
-        score += domain_issues.len() as i32 * 20;
+        // Score consumer email spoofing higher (100 points) than regular domain mismatches (20 points)
+        for issue in &domain_issues {
+            if issue.contains("Consumer email domain") && issue.contains("likely spoofed") {
+                score += 100;
+            } else {
+                score += 20;
+            }
+        }
         evidence.extend(domain_issues);
 
         // Analyze display name spoofing

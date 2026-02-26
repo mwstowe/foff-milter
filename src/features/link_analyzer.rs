@@ -218,6 +218,7 @@ impl LinkAnalyzer {
             "dealertrack.com",
             "dealersocket.com",
             "vinsolutions.com",
+            "daburns.com", // D.A. Burns service provider
         ];
 
         for legitimate in &legitimate_automotive_domains {
@@ -884,9 +885,10 @@ impl LinkAnalyzer {
         // Check for legitimate business partnerships
         let business_partnerships = [
             ("fidelity", vec!["amazon", "fidelityinvestments"]), // Fidelity can link to Amazon and its own investment domain
-            ("amazon", vec!["fidelity", "chase"]),
-            ("sparkpost", vec!["disney", "disneyplus"]), // SparkPost ESP for Disney
-            ("spmailtechnolo", vec!["kiwico"]),          // SparkPost ESP for KiwiCo
+            ("amazon", vec!["fidelity", "chase", "amazonmusic"]), // Amazon can link to Amazon Music
+            ("amazonmusic", vec!["amazon"]),                     // Amazon Music can link to Amazon
+            ("sparkpost", vec!["disney", "disneyplus"]),         // SparkPost ESP for Disney
+            ("spmailtechnolo", vec!["kiwico"]),                  // SparkPost ESP for KiwiCo
             ("netsuite", vec!["jotform", "oracle"]), // NetSuite can link to JotForm payment processor
             ("oracleemaildelivery", vec!["jotform", "netsuite"]), // Oracle ESP for NetSuite
             ("facebookmail", vec!["facebook", "meta", "instagram"]), // Facebook ESP for Facebook services
@@ -961,6 +963,11 @@ impl LinkAnalyzer {
                     return true;
                 }
             }
+        }
+
+        // General SendGrid ESP pattern - if link goes to sendgrid.net, it's likely legitimate ESP usage
+        if link_lower.contains("sendgrid.net") || link_lower.contains("sendgrid.com") {
+            return true;
         }
 
         false

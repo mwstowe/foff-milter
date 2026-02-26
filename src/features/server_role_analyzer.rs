@@ -31,6 +31,7 @@ impl ServerRoleAnalyzer {
             Regex::new(r"^[a-z]+\d+\.(shop|space|click)$").unwrap(), // Word + numbers + suspicious TLD
             Regex::new(r"^tc\d+\.shop$").unwrap(),                   // tc25.shop pattern
             Regex::new(r"^[a-z]+zens?\.(shop|space)$").unwrap(),     // arcticzens.shop pattern
+            Regex::new(r"^[a-z0-9-]+\.firebaseapp\.com$").unwrap(),  // Firebase hosting phishing
         ];
 
         Self {
@@ -93,6 +94,7 @@ impl ServerRoleAnalyzer {
             "microsoft.com",
             "google.com",
             "amazon.com",
+            "amazonmusic.com", // Amazon Music service
             "salesforce.com",
             "hubspot.com",
             "mailchimp.com",
@@ -126,6 +128,7 @@ impl ServerRoleAnalyzer {
             "evgo.com",           // EVgo EV charging service
             "rejuvenation.com",   // Rejuvenation retail
             "tokyo-tiger.com",    // Tokyo Tiger retail
+            "daburns.com",        // D.A. Burns service provider
         ];
 
         for legitimate in &legitimate_domains {

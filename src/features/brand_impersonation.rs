@@ -47,7 +47,11 @@ impl BrandImpersonationFeature {
         brand_patterns.insert("amazon".to_string(), vec![r"(?i)\bamazon\b".to_string()]);
         legitimate_domains.insert(
             "amazon".to_string(),
-            vec!["amazon.com".to_string(), "amazon.co.uk".to_string()],
+            vec![
+                "amazon.com".to_string(),
+                "amazon.co.uk".to_string(),
+                "amazonmusic.com".to_string(),
+            ],
         );
 
         brand_patterns.insert(
@@ -151,6 +155,15 @@ impl BrandImpersonationFeature {
                 "mail.capitaloneshopping.com".to_string(), // Capital One Shopping affiliate
             ],
         );
+
+        brand_patterns.insert(
+            "sams_club".to_string(),
+            vec![
+                r"(?i)\bsam'?s\s*club\b".to_string(),
+                r"(?i)\bsamsclub\b".to_string(),
+            ],
+        );
+        legitimate_domains.insert("sams_club".to_string(), vec!["samsclub.com".to_string()]);
 
         brand_patterns.insert(
             "tinnitus".to_string(),
