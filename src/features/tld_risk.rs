@@ -325,7 +325,7 @@ impl TldRiskFeature {
             "fun".to_string(),
             TldInfo {
                 risk_level: TldRisk::Suspicious,
-                abuse_score: 30,
+                abuse_score: 45,
                 description: "Fun domain - high spam abuse".to_string(),
                 common_uses: vec!["Entertainment, often abused for spam".to_string()],
             },

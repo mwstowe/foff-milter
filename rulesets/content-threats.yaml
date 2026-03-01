@@ -32,8 +32,18 @@ rules:
   # Adult content patterns
   - name: "Adult Enhancement Spam"
     criteria:
-      type: SubjectPattern
-      pattern: "(?i).*(raging.*hard|enhancement|enlargement|performance|stamina).*"
+      type: And
+      criteria:
+        - type: SubjectPattern
+          pattern: "(?i).*(raging.*hard|enhancement|enlargement|performance|stamina).*"
+        - type: Not
+          criteria:
+            type: Or
+            criteria:
+              - type: SubjectPattern
+                pattern: "(?i).*(financial|investment|portfolio|quarterly|annual|report|update|metric|business|review|2025|2026|2027|january|february|march|april|may|june|july|august|september|october|november|december|q1|q2|q3|q4).*"
+              - type: FromDomain
+                domains: ["arrived.com", "arrivedhomes.com"]
     score: 250
   
   # Financial fraud patterns  

@@ -88,6 +88,22 @@ impl ContextAnalyzer {
                 ],
                 weight: 45,
             },
+            ScamPattern {
+                name: "Gift Card Scam".to_string(),
+                indicators: vec![
+                    "$".to_string(),
+                    "clock runs out".to_string(),
+                    "expires".to_string(),
+                    "by tomorrow".to_string(),
+                    "given".to_string(),
+                ],
+                weight: 50,
+            },
+            ScamPattern {
+                name: "Weight Loss Scam".to_string(),
+                indicators: vec!["fat".to_string(), "burn".to_string()],
+                weight: 30,
+            },
         ];
 
         Self {
@@ -482,6 +498,10 @@ impl ContextAnalyzer {
             "xero",
             "freshbooks",
             "invoiceninja",
+            "pmpress.org",
+            "uvwaudi.com",
+            "arrived.com",
+            "arrivedhomes.com",
         ];
 
         let is_legitimate_business_service = legitimate_business_services
@@ -1654,11 +1674,14 @@ impl FeatureExtractor for ContextAnalyzer {
             let is_legitimate_retail = sender_lower.contains("thinkvacuums.com")
                 || sender_lower.contains("kitchenaid.com")
                 || sender_lower.contains("whirlpool.com")
+                || sender_lower.contains("uvwaudi.com")
+                || sender_lower.contains("arrived.com")
+                || sender_lower.contains("pmpress.org")
                 || self.is_legitimate_retailer(&sender_lower);
 
             if is_legitimate_platform || is_legitimate_retail {
                 // Legitimate marketing urgency - reduced penalty
-                total_score += 10;
+                total_score += 5;
                 all_evidence.push("Marketing urgency pattern detected".to_string());
             } else {
                 total_score += 40;

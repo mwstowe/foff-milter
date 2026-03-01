@@ -166,6 +166,31 @@ impl BrandImpersonationFeature {
         legitimate_domains.insert("sams_club".to_string(), vec!["samsclub.com".to_string()]);
 
         brand_patterns.insert(
+            "tmobile".to_string(),
+            vec![
+                r"(?i)\bt-?mobile\b".to_string(),
+                r"(?i)\bt\s*mobile\b".to_string(),
+            ],
+        );
+        legitimate_domains.insert(
+            "tmobile".to_string(),
+            vec!["tmobile.com".to_string(), "t-mobile.com".to_string()],
+        );
+
+        brand_patterns.insert(
+            "norton".to_string(),
+            vec![
+                r"(?i)\bnorton\b".to_string(),
+                r"(?i)\bnorton\s*security\b".to_string(),
+                r"(?i)\bnorton\s*lifelock\b".to_string(),
+            ],
+        );
+        legitimate_domains.insert(
+            "norton".to_string(),
+            vec!["norton.com".to_string(), "nortonlifelock.com".to_string()],
+        );
+
+        brand_patterns.insert(
             "tinnitus".to_string(),
             vec![
                 r"(?i)\btinnitus\s*\d+\b".to_string(),
@@ -301,6 +326,18 @@ impl BrandImpersonationFeature {
     }
 
     fn is_suspicious_domain_pattern(&self, domain: &str) -> bool {
+        // Whitelist legitimate domains
+        let legitimate = [
+            "pmpress.org",
+            "uvwaudi.com",
+            "arrived.com",
+            "arrivedhomes.com",
+        ];
+
+        if legitimate.iter().any(|d| domain.ends_with(d)) {
+            return false;
+        }
+
         // Random-looking domain patterns
         let patterns = [
             r"^[bcdfghjklmnpqrstvwxyz]{3,}[aeiou][bcdfghjklmnpqrstvwxyz]{3,}\.(com|org|net|co\.uk|cc)$",
@@ -531,9 +568,18 @@ impl FeatureExtractor for BrandImpersonationFeature {
             .or(context.sender.as_ref())
             .and_then(|s| self.extract_domain(s));
 
-        // Analyze subject and body for brand mentions
+        // Analyze subject, body, and From display name for brand mentions
         let subject = context.subject.as_deref().unwrap_or("");
-        let body = context.body.as_deref().unwrap_or("");
+
+        // Extract From display name
+        let from_display_name = context
+            .from_header
+            .as_deref()
+            .and_then(|from| {
+                // Extract display name from "Display Name <email@domain.com>"
+                from.find('<').map(|start| from[..start].trim())
+            })
+            .unwrap_or("");
 
         // Decode subject if it's still encoded - simple Q-encoding decoder
         let decoded_subject = if subject.contains("=?UTF-8?Q?") || subject.contains("=?ASCII?Q?") {
@@ -542,7 +588,9 @@ impl FeatureExtractor for BrandImpersonationFeature {
             subject.to_string()
         };
 
-        let combined_text = format!("{} {}", decoded_subject, body);
+        // Only check From display name and subject for brand impersonation
+        // Don't check body - mentioning a brand in context is not impersonation
+        let combined_text = format!("{} {}", from_display_name, decoded_subject);
 
         let detected_brands = self.detect_brand_mentions(&combined_text);
 

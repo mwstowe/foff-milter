@@ -478,6 +478,10 @@ impl FilterEngine {
             "etsy.com",
             "ebay.com",
             "daburns.com",
+            "pmpress.org",
+            "uvwaudi.com",
+            "arrived.com",
+            "arrivedhomes.com",
         ];
 
         let is_legitimate_domain = legitimate_business_domains

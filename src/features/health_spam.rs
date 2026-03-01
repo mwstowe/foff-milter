@@ -56,6 +56,11 @@ impl FeatureExtractor for HealthSpamAnalyzer {
             "medical",
             "wellness",
             "fitness tracker",
+            "fat burning",
+            "fat-burning",
+            "weight loss",
+            "diet pill",
+            "metabolism booster",
         ];
 
         let sender_domain = context
@@ -323,6 +328,22 @@ impl FeatureExtractor for HealthSpamAnalyzer {
                 score += 40;
                 evidence.push("Health-related free gift/reward offer".to_string());
             }
+        }
+
+        // Weight loss / fat burning spam on suspicious TLDs
+        let suspicious_tlds = [".fun", ".pro", ".top", ".xyz", ".click"];
+        let is_suspicious_tld = suspicious_tlds
+            .iter()
+            .any(|tld| sender_domain.ends_with(tld));
+
+        if is_suspicious_tld
+            && (content.contains("fat burning")
+                || content.contains("fat-burning")
+                || content.contains("weight loss")
+                || content.contains("diet pill"))
+        {
+            score += 50;
+            evidence.push("Weight loss/fat burning spam from suspicious TLD".to_string());
         }
 
         let confidence = if score > 0 { 0.9 } else { 0.1 };

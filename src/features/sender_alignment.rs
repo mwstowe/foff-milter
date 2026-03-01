@@ -375,10 +375,60 @@ impl SenderAlignmentAnalyzer {
 
     fn extract_display_name(&self, from_header: &str) -> String {
         if let Some(lt_pos) = from_header.find('<') {
-            from_header[..lt_pos].trim().trim_matches('"').to_string()
+            let display_name = from_header[..lt_pos].trim().trim_matches('"');
+            // Decode MIME-encoded display names (=?utf-8?Q?...?=)
+            self.decode_mime_header(display_name)
         } else {
             "".to_string()
         }
+    }
+
+    fn decode_mime_header(&self, encoded: &str) -> String {
+        // Handle MIME encoded-word format: =?charset?encoding?encoded-text?=
+        if let Some(start) = encoded.find("=?") {
+            if let Some(end) = encoded.rfind("?=") {
+                let encoded_part = &encoded[start + 2..end];
+                let parts: Vec<&str> = encoded_part.split('?').collect();
+
+                if parts.len() == 3 {
+                    let encoding = parts[1].to_uppercase();
+                    let text = parts[2];
+
+                    if encoding == "Q" {
+                        // Q-encoding: =XX becomes byte, _ becomes space
+                        let mut result = String::new();
+                        let mut chars = text.chars().peekable();
+
+                        while let Some(ch) = chars.next() {
+                            match ch {
+                                '=' => {
+                                    if let (Some(h1), Some(h2)) = (chars.next(), chars.next()) {
+                                        if let Ok(byte) =
+                                            u8::from_str_radix(&format!("{}{}", h1, h2), 16)
+                                        {
+                                            result.push(byte as char);
+                                        }
+                                    }
+                                }
+                                '_' => result.push(' '),
+                                other => result.push(other),
+                            }
+                        }
+                        return result;
+                    } else if encoding == "B" {
+                        // Base64 encoding
+                        use base64::{engine::general_purpose, Engine as _};
+                        if let Ok(decoded) = general_purpose::STANDARD.decode(text) {
+                            if let Ok(s) = String::from_utf8(decoded) {
+                                return s;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        encoded.to_string()
     }
 
     fn analyze_sender_name_spoofing(
@@ -1579,34 +1629,36 @@ impl FeatureExtractor for SenderAlignmentAnalyzer {
                 if let Some(from_email) = self
                     .extract_email_from_header(context.from_header.as_deref().unwrap_or_default())
                 {
+                    // Check if this is from a trusted ESP (Mailchimp, SendGrid, etc.)
+                    let is_trusted_esp =
+                        crate::features::esp_validation::is_from_trusted_esp(context);
+
+                    // Check if this is a legitimate ESP practice (same root domain)
+                    let from_domain = self.extract_domain(&from_email);
+                    let reply_to_domain = self.extract_domain(&reply_to_email);
+                    let from_root = self.extract_root_domain(&from_domain);
+                    let reply_to_root = self.extract_root_domain(&reply_to_domain);
+
+                    // Check for legitimate business service patterns
+                    let is_legitimate_service = from_domain.contains("netsuite.com")
+                        || from_domain.contains("oracleemaildelivery.com")
+                        || from_domain.contains("toast-restaurants.com")
+                        || from_domain.contains("kickstarter.com")
+                        || sender_domain.contains("oracleemaildelivery.com")
+                        || (from_root.contains("lovepop") && reply_to_root.contains("lovepop"))
+                        || (from_domain.contains("sparkpostmail.com")
+                            && reply_to_root.contains("saily"))
+                        // Medical billing services
+                        || (from_domain.contains("docugateway.com") && reply_to_domain.ends_with(".org"))
+                        || (from_root.contains("virginiamason") && reply_to_root.contains("virginiamason"))
+                        // Veterinary ESP services
+                        || (from_domain.contains("ourvet.com") && reply_to_domain.contains("vetcove.com"))
+                        || (from_root.contains("vetcove") && reply_to_root.contains("vetcove"))
+                        || (from_domain.contains("mtasv.net") && reply_to_domain.contains("ourvet.com"))
+                        || (from_domain.contains("mtasv.net") && reply_to_domain.contains("vetcove.com"));
+
+                    // Check for email address mismatch
                     if from_email != reply_to_email {
-                        // Check if this is from a trusted ESP (Mailchimp, SendGrid, etc.)
-                        let is_trusted_esp =
-                            crate::features::esp_validation::is_from_trusted_esp(context);
-
-                        // Check if this is a legitimate ESP practice (same root domain)
-                        let from_domain = self.extract_domain(&from_email);
-                        let reply_to_domain = self.extract_domain(&reply_to_email);
-                        let from_root = self.extract_root_domain(&from_domain);
-                        let reply_to_root = self.extract_root_domain(&reply_to_domain);
-
-                        // Check for legitimate business service patterns
-                        let is_legitimate_service = from_domain.contains("netsuite.com")
-                            || from_domain.contains("oracleemaildelivery.com")
-                            || from_domain.contains("toast-restaurants.com")
-                            || sender_domain.contains("oracleemaildelivery.com")
-                            || (from_root.contains("lovepop") && reply_to_root.contains("lovepop"))
-                            || (from_domain.contains("sparkpostmail.com")
-                                && reply_to_root.contains("saily"))
-                            // Medical billing services
-                            || (from_domain.contains("docugateway.com") && reply_to_domain.ends_with(".org"))
-                            || (from_root.contains("virginiamason") && reply_to_root.contains("virginiamason"))
-                            // Veterinary ESP services
-                            || (from_domain.contains("ourvet.com") && reply_to_domain.contains("vetcove.com"))
-                            || (from_root.contains("vetcove") && reply_to_root.contains("vetcove"))
-                            || (from_domain.contains("mtasv.net") && reply_to_domain.contains("ourvet.com"))
-                            || (from_domain.contains("mtasv.net") && reply_to_domain.contains("vetcove.com"));
-
                         // Only flag if different root domains (cross-domain mismatch) and not legitimate service or trusted ESP
                         if from_root != reply_to_root
                             && from_root != "unknown"
@@ -1620,6 +1672,28 @@ impl FeatureExtractor for SenderAlignmentAnalyzer {
                                 reply_to_email, from_email
                             ));
                         }
+                    }
+
+                    // Check for From/Reply-To display name mismatch (spam indicator)
+                    // This can occur even when email addresses are the same
+                    // Only flag if BOTH have display names AND they're different AND same domain
+                    let from_display = self
+                        .extract_display_name(context.from_header.as_deref().unwrap_or_default());
+                    let reply_to_display = self.extract_display_name(reply_to_header);
+
+                    // Only flag if both have display names, they differ, same root domain, and not legitimate
+                    if !from_display.is_empty() && !reply_to_display.is_empty()
+                        && from_display != reply_to_display
+                        && from_root == reply_to_root  // Same domain - suspicious if different names
+                        && from_email == reply_to_email  // Same email address - very suspicious
+                        && !is_legitimate_service
+                        && !is_trusted_esp
+                    {
+                        score += 50;
+                        evidence.push(format!(
+                            "From/Reply-To display name mismatch: '{}' vs '{}'",
+                            from_display, reply_to_display
+                        ));
                     }
                 }
             }

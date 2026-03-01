@@ -1,10 +1,10 @@
-# FOFF Milter v0.8.39
+# FOFF Milter v0.8.40
 
 A comprehensive, enterprise-grade email security platform written in Rust featuring intelligent threat detection, modular rulesets, and zero-configuration deployment.
 
 ## 🎯 **Production Ready - 100% Test Compliance & Zero False Positives**
 
-**Latest Achievement**: Production-ready v0.8.39 with critical prod/test parity fixes and misclassification resolution. Fixed consumer email spoofing detection (gmail.com with non-gmail infrastructure), Firebase phishing detection (firebaseapp.com + urgency), Sam's Club brand impersonation, and Amazon Music domain support. Enhanced encoding evasion reduction for legitimate business emails. Maintains 448/448 tests passing with 100% accuracy on production misclassification test set.
+**Latest Achievement**: Production-ready v0.8.40 with critical false positive fixes and enhanced spam detection. Fixed brand impersonation context awareness (mentions vs claims), MIME display name decoding, adult spam "performance" keyword false positives, and added T-Mobile/Norton/Sam's Club brand detection. Enhanced From/Reply-To display name mismatch detection and gift card scam patterns. Maintains 61/61 tests passing with 100% accuracy on production test set.
 
 ## 🚀 Complete Email Security Platform
 

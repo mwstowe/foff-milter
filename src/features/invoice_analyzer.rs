@@ -76,6 +76,10 @@ impl InvoiceAnalyzer {
             "email.withings.com".to_string(),
             // Construction/contracting
             "builtsquare.com".to_string(),
+            "pmpress.org".to_string(),
+            "uvwaudi.com".to_string(),
+            "arrived.com".to_string(),
+            "arrivedhomes.com".to_string(),
         ];
 
         Self {
@@ -128,6 +132,10 @@ impl InvoiceAnalyzer {
             "email.withings.com".to_string(),
             // Construction/contracting
             "builtsquare.com".to_string(),
+            "pmpress.org".to_string(),
+            "uvwaudi.com".to_string(),
+            "arrived.com".to_string(),
+            "arrivedhomes.com".to_string(),
         ];
 
         Self {

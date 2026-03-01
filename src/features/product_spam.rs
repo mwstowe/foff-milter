@@ -201,6 +201,9 @@ impl FeatureExtractor for ProductSpamAnalyzer {
                 "eyebuydirect",  // Eyewear retailer
                 "thegadgetflow", // Tech product newsletter
                 "gadgetflow",    // Tech product newsletter
+                "pmpress",       // PM Press publisher
+                "uvwaudi",       // UVW Audi dealership
+                "arrived",       // Arrived investment platform
             ];
             let is_legitimate_retailer = legitimate_retailers
                 .iter()
