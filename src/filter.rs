@@ -261,6 +261,43 @@ impl Default for MailContext {
 }
 
 impl MailContext {
+    /// Get the effective envelope sender for rule evaluation.
+    /// This ensures consistent sender evaluation across milter mode (first/second hop) and test mode.
+    ///
+    /// Logic:
+    /// - First hop (direct SMTP): Use context.sender from SMTP envelope
+    /// - Second hop (forwarded): Use Return-Path header (original envelope sender)
+    /// - Test mode: Use Return-Path header (no SMTP envelope available)
+    pub fn get_effective_envelope_sender(&self) -> Option<String> {
+        // If this is a forwarded email (second hop), always use Return-Path
+        // because context.sender would be the forwarding service's envelope
+        if self.forwarding_source.is_some() || !self.is_first_hop {
+            if let Some(return_path) = self.headers.get("return-path") {
+                let cleaned = return_path.trim_matches(['<', '>', ' ', '\r', '\n']);
+                if !cleaned.is_empty() {
+                    return Some(cleaned.to_string());
+                }
+            }
+        }
+
+        // First hop: prefer context.sender (SMTP envelope) if available
+        if let Some(sender) = &self.sender {
+            return Some(sender.clone());
+        }
+
+        // Fallback to Return-Path if context.sender not set (e.g., test mode)
+        if let Some(return_path) = self.headers.get("return-path") {
+            let cleaned = return_path.trim_matches(['<', '>', ' ', '\r', '\n']);
+            if !cleaned.is_empty() {
+                return Some(cleaned.to_string());
+            }
+        }
+
+        None
+    }
+}
+
+impl MailContext {
     /// Get DKIM verification result (lazy evaluation with caching)
     pub fn dkim_verification(&mut self) -> &DkimVerificationResult {
         if self.dkim_verification.is_none() {
@@ -3947,101 +3984,46 @@ impl FilterEngine {
                 }
                 Criteria::SenderPattern { pattern } => {
                     if let Some(regex) = self.compiled_patterns.get(pattern) {
-                        // For forwarded emails, prioritize From header over envelope sender
-                        // since envelope sender is the forwarding service (gmail.com, etc.)
-                        let check_from_first = context.forwarding_source.is_some();
+                        // Use unified envelope sender evaluation for consistency across modes
+                        let effective_sender = context.get_effective_envelope_sender();
 
-                        if check_from_first {
-                            // Check From header first for forwarded emails
-                            if let Some(from_header) = &context.from_header {
-                                if let Some(email) = extract_email_from_header(from_header) {
-                                    log::debug!(
-                                        "SenderPattern (forwarded) checking extracted email: '{}' (from '{}') against pattern: '{}'",
-                                        email,
-                                        from_header,
-                                        pattern
-                                    );
-                                    if regex.is_match(&email) {
-                                        log::debug!(
-                                            "SenderPattern matched extracted email: '{}'",
-                                            email
-                                        );
-                                        return true;
-                                    }
-                                }
-                            }
-                            // Fall back to envelope sender if From header didn't match
-                            if let Some(sender) = &context.sender {
-                                log::debug!("SenderPattern (forwarded fallback) checking envelope sender: '{}' against pattern: '{}'", sender, pattern);
-                                if regex.is_match(sender) {
-                                    log::debug!(
-                                        "SenderPattern matched envelope sender: '{}'",
-                                        sender
-                                    );
-                                    return true;
-                                }
+                        // Check effective envelope sender first
+                        if let Some(sender) = &effective_sender {
+                            log::info!("SenderPattern: Checking effective envelope sender '{}' against pattern '{}'", sender, pattern);
+                            if regex.is_match(sender) {
+                                log::info!(
+                                    "SenderPattern: MATCHED effective envelope sender '{}'",
+                                    sender
+                                );
+                                return true;
+                            } else {
+                                log::info!(
+                                    "SenderPattern: NO MATCH for effective envelope sender '{}'",
+                                    sender
+                                );
                             }
                         } else {
-                            // Normal (non-forwarded) emails: check envelope sender first
-                            if let Some(sender) = &context.sender {
-                                log::info!("SenderPattern: Checking envelope sender '{}' against pattern '{}'", sender, pattern);
-                                if regex.is_match(sender) {
-                                    log::info!(
-                                        "SenderPattern: MATCHED envelope sender '{}'",
-                                        sender
-                                    );
-                                    return true;
-                                } else {
-                                    log::info!(
-                                        "SenderPattern: NO MATCH for envelope sender '{}'",
-                                        sender
-                                    );
-                                }
-                            } else {
-                                log::warn!("SenderPattern: context.sender is None!");
-                            }
-                            if let Some(from_header) = &context.from_header {
-                                // Extract just the email address from the From header
-                                if let Some(email) = extract_email_from_header(from_header) {
-                                    log::debug!(
-                                        "SenderPattern checking extracted email: '{}' (from '{}') against pattern: '{}'",
-                                        email,
-                                        from_header,
-                                        pattern
-                                    );
-                                    if regex.is_match(&email) {
-                                        log::debug!(
-                                            "SenderPattern matched extracted email: '{}'",
-                                            email
-                                        );
-                                        return true;
-                                    }
-                                } else {
-                                    log::debug!(
-                                        "SenderPattern could not extract email from from_header: '{}'",
-                                        from_header
-                                    );
-                                }
-                            }
-                            // Check Return-Path as fallback (for forwarded emails where envelope sender changes)
-                            if let Some(return_path) = context.headers.get("return-path") {
-                                // Extract email from Return-Path (format: <email@domain.com>)
-                                let return_path_email =
-                                    return_path.trim_matches(['<', '>', ' ', '\r', '\n']);
+                            log::warn!("SenderPattern: No effective envelope sender available!");
+                        }
+
+                        // Fallback: check From header email address
+                        if let Some(from_header) = &context.from_header {
+                            if let Some(email) = extract_email_from_header(from_header) {
                                 log::debug!(
-                                    "SenderPattern checking Return-Path: '{}' against pattern: '{}'",
-                                    return_path_email,
+                                    "SenderPattern checking From header email: '{}' against pattern: '{}'",
+                                    email,
                                     pattern
                                 );
-                                if regex.is_match(return_path_email) {
-                                    log::info!(
-                                        "SenderPattern matched Return-Path: '{}'",
-                                        return_path_email
+                                if regex.is_match(&email) {
+                                    log::debug!(
+                                        "SenderPattern matched From header email: '{}'",
+                                        email
                                     );
                                     return true;
                                 }
                             }
                         }
+
                         log::debug!("SenderPattern no match for pattern: '{}'", pattern);
                     }
                     false

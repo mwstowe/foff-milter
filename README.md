@@ -1,10 +1,10 @@
-# FOFF Milter v0.8.40
+# FOFF Milter v0.8.41
 
 A comprehensive, enterprise-grade email security platform written in Rust featuring intelligent threat detection, modular rulesets, and zero-configuration deployment.
 
 ## 🎯 **Production Ready - 100% Test Compliance & Zero False Positives**
 
-**Latest Achievement**: Production-ready v0.8.40 with critical false positive fixes and enhanced spam detection. Fixed brand impersonation context awareness (mentions vs claims), MIME display name decoding, adult spam "performance" keyword false positives, and added T-Mobile/Norton/Sam's Club brand detection. Enhanced From/Reply-To display name mismatch detection and gift card scam patterns. Maintains 61/61 tests passing with 100% accuracy on production test set.
+**Latest Achievement**: Production-ready v0.8.41 with critical milter/test mode parity fix. Unified envelope sender evaluation ensures consistent scoring across test mode, milter first hop, and milter second hop (forwarded emails). All modes now use identical sender values for rule evaluation, eliminating score discrepancies. Maintains 460/460 tests passing with 100% accuracy.
 
 ## 🚀 Complete Email Security Platform
 
