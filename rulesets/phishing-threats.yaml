@@ -906,16 +906,16 @@ rules:
             type: Or
             criteria:
               - type: SenderPattern
-                pattern: ".*@.*(noreply|no-reply|newsletter|info|support|contact|hello|team|notification|updates|marketing|investments|communications|services).*"
+                pattern: ".*@.*(noreply|no-reply|newsletter|info|support|contact|hello|team|notification|updates|marketing|investments|communications|services|myairsupport).*"
               - type: SenderPattern
-                pattern: ".*@.*(sendgrid|mailchimp|mailgun|amazonses|sparkpost|mandrill|fidelity|amazon|disney|iheart|britishairways|cdw|msgfocus|thinkgeek|concurcompleat|vacuums|emailsp)\\.(com|net)$"
+                pattern: ".*@.*(sendgrid|mailchimp|mailgun|amazonses|sparkpost|mandrill|fidelity|amazon|disney|iheart|britishairways|cdw|msgfocus|thinkgeek|concurcompleat|vacuums|emailsp|resmed|kickstarter)\\.(com|net)$"
               - type: SenderPattern
                 pattern: ".*@bounce\\.(crm\\.ba|cdwemail|emailsp)\\.(com|net)$"
               - type: SenderPattern
                 pattern: ".*@.*(gov|edu|mil|org)$"
               - type: SenderPattern
                 pattern: ".*@mail\\.(fidelity|amazon|disney|britishairways|cdw|iheart)\\.(com|net)$"
-    score: 60
+    score: 80
     description: "Random-looking sender address (12+ consecutive lowercase letters)"
 
   # Institutional Domain Generic Business Display

@@ -552,12 +552,9 @@ impl Milter {
                                             mail_ctx.mailer = Some(value_str.clone());
                                         }
                                         "from" => {
-                                            // Extract email address from From header
-                                            if let Some(email) =
-                                                extract_email_from_header(&value_str)
-                                            {
-                                                mail_ctx.from_header = Some(email);
-                                            }
+                                            // Store the full From header (including display name)
+                                            // This is needed for brand impersonation detection
+                                            mail_ctx.from_header = Some(value_str.clone());
                                         }
                                         _ => {}
                                     }
