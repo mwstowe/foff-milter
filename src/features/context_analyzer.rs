@@ -1283,6 +1283,9 @@ impl FeatureExtractor for ContextAnalyzer {
                 "verify",
                 "confirm",
                 "action required",
+                "deletion",
+                "delete",
+                "final notice",
             ];
             let combined_text = format!("{} {}", subject, sender).to_lowercase();
             let has_urgency = urgency_keywords.iter().any(|kw| combined_text.contains(kw));

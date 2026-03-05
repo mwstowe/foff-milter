@@ -346,6 +346,17 @@ impl FeatureExtractor for HealthSpamAnalyzer {
             evidence.push("Weight loss/fat burning spam from suspicious TLD".to_string());
         }
 
+        // Check for complimentary wellness review scams
+        if (content.contains("complimentary") || content.contains("free"))
+            && content.contains("wellness")
+            && (content.contains("review")
+                || content.contains("assessment")
+                || content.contains("checkup"))
+        {
+            score += 10;
+            evidence.push("Complimentary wellness review scam".to_string());
+        }
+
         let confidence = if score > 0 { 0.9 } else { 0.1 };
 
         FeatureScore {

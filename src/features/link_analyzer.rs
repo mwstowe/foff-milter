@@ -1029,6 +1029,16 @@ impl FeatureExtractor for LinkAnalyzer {
 
         let mut evidence = Vec::new();
 
+        // Check for unreplaced template variables in body (fake unsubscribe links)
+        if let Some(body) = &context.body {
+            let template_var_regex = Regex::new(r#"href=3D?"?\{[^}]+\}"?"#).unwrap();
+            if template_var_regex.is_match(body) {
+                score += 60;
+                evidence
+                    .push("Unreplaced template variables in links (fake unsubscribe)".to_string());
+            }
+        }
+
         // Check if this is from a trusted ESP - skip cross-domain penalties
         let is_trusted_esp = crate::features::esp_validation::is_from_trusted_esp(context);
 
