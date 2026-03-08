@@ -1286,6 +1286,8 @@ impl FeatureExtractor for ContextAnalyzer {
                 "deletion",
                 "delete",
                 "final notice",
+                "reset",
+                "password",
             ];
             let combined_text = format!("{} {}", subject, sender).to_lowercase();
             let has_urgency = urgency_keywords.iter().any(|kw| combined_text.contains(kw));
@@ -1296,6 +1298,28 @@ impl FeatureExtractor for ContextAnalyzer {
                     "Suspicious hosting (Firebase) with urgency indicators - likely phishing"
                         .to_string(),
                 );
+            }
+        }
+
+        // Check for home equity access scams
+        let combined_text = format!("{} {} {}", subject, body, sender).to_lowercase();
+        if (combined_text.contains("equity") && combined_text.contains("access"))
+            || (combined_text.contains("home") && combined_text.contains("equity"))
+        {
+            // Check if from suspicious TLD
+            let sender_domain = sender
+                .split('@')
+                .nth(1)
+                .unwrap_or("")
+                .trim_end_matches('>')
+                .to_lowercase();
+            if sender_domain.ends_with(".help")
+                || sender_domain.ends_with(".loan")
+                || sender_domain.ends_with(".loans")
+                || sender_domain.ends_with(".finance")
+            {
+                total_score += 40;
+                all_evidence.push("Home equity access scam from suspicious TLD".to_string());
             }
         }
 

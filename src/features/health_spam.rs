@@ -89,6 +89,7 @@ impl FeatureExtractor for HealthSpamAnalyzer {
                     "kaiser",
                     "usps.com",
                     "usps.gov",
+                    "nytimes.com", // NY Times news articles
                 ];
                 let is_legitimate_health = legitimate_health_domains
                     .iter()

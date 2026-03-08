@@ -564,6 +564,9 @@ impl AuthenticationFeature {
             "medium.com",     // Medium publishing platform
             "kiwico.com",     // KiwiCo STEM kits
             "empower.com",    // Empower financial services
+            "adapthealth.com", // AdaptHealth medical services
+            "filtersfast.com", // Filters Fast
+            "tokyo-tiger.com", // Tokyo-Tiger
         ];
 
         if legitimate_retailers
@@ -593,12 +596,22 @@ impl AuthenticationFeature {
             "ace",
         ];
 
-        // Get sender domain
-        let sender_domain = if let Some(sender) = &context.sender {
-            sender.split('@').nth(1).map(|s| s.to_lowercase())
-        } else {
-            None
-        };
+        // Get sender domain from From header (not envelope sender)
+        // Envelope sender is often ESP infrastructure, From header shows actual sender
+        let sender_domain = context
+            .from_header
+            .as_deref()
+            .and_then(|from| {
+                // Extract email from "Name <email@domain.com>" format
+                if let Some(start) = from.rfind('<') {
+                    if let Some(end) = from.rfind('>') {
+                        let email = &from[start + 1..end];
+                        return email.split('@').nth(1).map(|s| s.to_lowercase());
+                    }
+                }
+                // Try direct email format
+                from.split('@').nth(1).map(|s| s.to_lowercase())
+            });
 
         // Check if content mentions brands but sender domain doesn't match
         for brand in &brands {

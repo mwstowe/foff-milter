@@ -505,7 +505,13 @@ impl FeatureExtractor for BrandImpersonationFeature {
             .unwrap_or_default()
             .to_lowercase();
 
-        let legitimate_newsletter_esps = ["sendgrid", "medium", "substack", "mailchimp"];
+        let legitimate_newsletter_esps = [
+            "sendgrid",
+            "medium",
+            "substack",
+            "mailchimp",
+            "nytimes.com", // NY Times legitimate news
+        ];
         if legitimate_newsletter_esps
             .iter()
             .any(|esp| sender_domain.contains(esp))
