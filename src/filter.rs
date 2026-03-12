@@ -334,6 +334,57 @@ pub struct UpstreamTrustResult {
 }
 
 impl FilterEngine {
+    /// Decode email body based on Content-Transfer-Encoding
+    fn decode_body(&self, body: &str, encoding: &str) -> String {
+        match encoding.to_lowercase().as_str() {
+            "quoted-printable" => {
+                let mut decoded = String::new();
+                let mut chars = body.chars().peekable();
+                while let Some(ch) = chars.next() {
+                    if ch == '=' {
+                        if let Some(&'\n') = chars.peek() {
+                            chars.next();
+                            continue;
+                        } else if let Some(&'\r') = chars.peek() {
+                            chars.next();
+                            if let Some(&'\n') = chars.peek() {
+                                chars.next();
+                            }
+                            continue;
+                        } else {
+                            let hex1 = chars.next().unwrap_or('0');
+                            let hex2 = chars.next().unwrap_or('0');
+                            if let Ok(byte_val) =
+                                u8::from_str_radix(&format!("{}{}", hex1, hex2), 16)
+                            {
+                                decoded.push(byte_val as char);
+                            } else {
+                                decoded.push('=');
+                                decoded.push(hex1);
+                                decoded.push(hex2);
+                            }
+                        }
+                    } else {
+                        decoded.push(ch);
+                    }
+                }
+                decoded
+            }
+            "base64" => {
+                use base64::{engine::general_purpose, Engine as _};
+                let cleaned = body
+                    .chars()
+                    .filter(|c| !c.is_whitespace())
+                    .collect::<String>();
+                match general_purpose::STANDARD.decode(&cleaned) {
+                    Ok(bytes) => String::from_utf8_lossy(&bytes).to_string(),
+                    Err(_) => body.to_string(),
+                }
+            }
+            _ => body.to_string(),
+        }
+    }
+
     /// Normalize email content and add to context
     pub fn normalize_email_content(&self, context: &mut MailContext, raw_email: &str) {
         let normalized = self.normalizer.normalize_email(raw_email);
@@ -1888,6 +1939,18 @@ impl FilterEngine {
                         .map(|name| (name, String::new()))
                         .collect(),
                 );
+            }
+        }
+
+        // Decode body content if needed (ensures parity between milter and test modes)
+        if let Some(body) = &context.body {
+            if let Some(encoding) = context
+                .headers
+                .get("content-transfer-encoding")
+                .or_else(|| context.headers.get("Content-Transfer-Encoding"))
+            {
+                let decoded = self.decode_body(body, encoding);
+                context.body = Some(decoded);
             }
         }
 

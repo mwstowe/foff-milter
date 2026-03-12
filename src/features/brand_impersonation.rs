@@ -61,6 +61,15 @@ impl BrandImpersonationFeature {
         legitimate_domains.insert("coinbase".to_string(), vec!["coinbase.com".to_string()]);
 
         brand_patterns.insert(
+            "skymiles".to_string(),
+            vec![r"(?i)\bsky\s*miles\b".to_string()],
+        );
+        legitimate_domains.insert(
+            "skymiles".to_string(),
+            vec!["delta.com".to_string(), "delta-air.com".to_string()],
+        );
+
+        brand_patterns.insert(
             "mcdonalds".to_string(),
             vec![
                 r"(?i)\bmcdonalds?\b".to_string(),

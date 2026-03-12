@@ -1283,17 +1283,36 @@ impl FeatureExtractor for ContextAnalyzer {
                 "verify",
                 "confirm",
                 "action required",
+                "action needed",
                 "deletion",
                 "delete",
                 "final notice",
                 "reset",
                 "password",
+                "error",
+                "warning",
+                "data loss",
+                "files protected",
+                "upload",
             ];
             let combined_text = format!("{} {}", subject, sender).to_lowercase();
             let has_urgency = urgency_keywords.iter().any(|kw| combined_text.contains(kw));
 
-            if has_urgency {
-                total_score += 60; // High score for Firebase + urgency combination
+            // Also check for generic support/system names from Firebase
+            let generic_names = [
+                "support team",
+                "security team",
+                "system update",
+                "storage support",
+                "account team",
+                "notification",
+            ];
+            let has_generic_name = generic_names
+                .iter()
+                .any(|name| sender.to_lowercase().contains(name));
+
+            if has_urgency || has_generic_name {
+                total_score += 60; // High score for Firebase + urgency/generic name
                 all_evidence.push(
                     "Suspicious hosting (Firebase) with urgency indicators - likely phishing"
                         .to_string(),

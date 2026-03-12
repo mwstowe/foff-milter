@@ -1671,6 +1671,19 @@ impl FeatureExtractor for SenderAlignmentAnalyzer {
                                 "Reply-To email ({}) differs from From email ({})",
                                 reply_to_email, from_email
                             ));
+
+                            // Additional penalty for generic business subjects (likely compromised)
+                            let subject_lower =
+                                context.subject.as_deref().unwrap_or("").to_lowercase();
+                            if subject_lower.contains("re:")
+                                && (subject_lower.contains("meeting")
+                                    || subject_lower.contains("project")
+                                    || subject_lower.contains("document")
+                                    || subject_lower.contains("invoice"))
+                            {
+                                score += 10;
+                                evidence.push("Generic business subject with Reply-To mismatch (compromised account)".to_string());
+                            }
                         }
                     }
 
