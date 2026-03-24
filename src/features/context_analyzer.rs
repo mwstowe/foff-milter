@@ -1271,6 +1271,11 @@ impl FeatureExtractor for ContextAnalyzer {
             .to_lowercase();
 
         if sender_domain.contains("firebaseapp.com") {
+            // No legitimate business sends from firebaseapp.com - base score
+            total_score += 55;
+            all_evidence
+                .push("Suspicious hosting: firebaseapp.com (no legitimate use)".to_string());
+
             let urgency_keywords = [
                 "urgent",
                 "immediate",
@@ -1340,6 +1345,65 @@ impl FeatureExtractor for ContextAnalyzer {
                 total_score += 40;
                 all_evidence.push("Home equity access scam from suspicious TLD".to_string());
             }
+        }
+
+        // Check for investment/stock pump scams from unrelated domains
+        let subject_lower = subject.to_lowercase();
+        if (subject_lower.contains("stock") || subject_lower.contains("ipo"))
+            && (subject_lower.contains("buy") || subject_lower.contains("#1"))
+        {
+            let financial_domains = [
+                "finance", "invest", "capital", "fund", "trade", "stock", "wealth", "fidelity",
+                "schwab", "vanguard", "oxford",
+            ];
+            let sender_lower = sender.to_lowercase();
+            let is_financial = financial_domains.iter().any(|d| sender_lower.contains(d));
+            if !is_financial {
+                total_score += 80;
+                all_evidence.push("Investment/stock scam from non-financial domain".to_string());
+            }
+        }
+
+        // Check for unsolicited SEO/marketing solicitation spam
+        let sender_lower = sender.to_lowercase();
+        let body_lower = body.to_lowercase();
+        if sender_lower.contains("seo")
+            && (body_lower.contains("error")
+                || body_lower.contains("website")
+                || body_lower.contains("your site"))
+        {
+            total_score += 200;
+            all_evidence.push("SEO service solicitation spam".to_string());
+        } else if (body_lower.contains("page #1") || body_lower.contains("page 1"))
+            && (body_lower.contains("portfolio")
+                || body_lower.contains("quotes")
+                || body_lower.contains("proposal")
+                || body_lower.contains("ranking"))
+        {
+            total_score += 80;
+            all_evidence.push("Unsolicited marketing solicitation spam".to_string());
+        }
+
+        // Check for business register scams
+        if body_lower.contains("business register") {
+            let sender_domain = sender
+                .split('@')
+                .nth(1)
+                .unwrap_or("")
+                .trim_end_matches('>')
+                .to_lowercase();
+            if !sender_domain.ends_with(".eu") && !sender_domain.contains("europa") {
+                total_score += 10;
+                all_evidence.push("Business register scam from non-EU domain".to_string());
+            }
+        }
+
+        // Check for recipient email address embedded in subject (spam indicator)
+        let email_in_subject =
+            Regex::new(r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}").unwrap();
+        if email_in_subject.is_match(subject) {
+            total_score += 20;
+            all_evidence.push("Email address embedded in subject".to_string());
         }
 
         // Detect industry context for appropriate scoring adjustments

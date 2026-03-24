@@ -1,10 +1,10 @@
-# FOFF Milter v0.8.45
+# FOFF Milter v0.8.46
 
 A comprehensive, enterprise-grade email security platform written in Rust featuring intelligent threat detection, modular rulesets, and zero-configuration deployment.
 
 ## 🎯 **Production Ready - 100% Test Compliance & Zero False Positives**
 
-**Latest Achievement**: Production-ready v0.8.45 with critical milter/test parity fix and enhanced spam detection. Fixed body encoding parity bug (milter mode now decodes base64/quoted-printable bodies before normalization). Added Firebase generic support name detection, SkyMiles brand impersonation, and compromised account detection. Caught 5 untagged spam emails (Firebase scams, brand impersonation, compromised support systems). Maintains 460/460 tests passing with 100% accuracy.
+**Latest Achievement**: Production-ready v0.8.46 with 11 new spam detections. Firebase hosting now scored as inherently suspicious (+55 base). Added Japanese Amazon impersonation (アマゾン pattern), .autos TLD abuse detection, investment/stock pump scam detection, SEO solicitation spam detection, business register scam detection, and email-in-subject spam indicator. Maintains 460/460 tests passing with 100% accuracy.
 
 ## 🚀 Complete Email Security Platform
 

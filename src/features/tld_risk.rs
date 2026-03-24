@@ -502,6 +502,16 @@ impl TldRiskFeature {
             },
         );
 
+        tlds.insert(
+            "autos".to_string(),
+            TldInfo {
+                risk_level: TldRisk::Suspicious,
+                abuse_score: 45,
+                description: "Autos domain - heavily abused for Brazilian phishing".to_string(),
+                common_uses: vec!["Automotive, heavily abused for phishing".to_string()],
+            },
+        );
+
         let config = TldRiskConfig {
             tlds,
             default_risk: TldRisk::Suspicious, // Unknown TLDs are suspicious by default

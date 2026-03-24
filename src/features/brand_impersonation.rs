@@ -44,12 +44,16 @@ impl BrandImpersonationFeature {
             vec!["omahasteaks.com".to_string()],
         );
 
-        brand_patterns.insert("amazon".to_string(), vec![r"(?i)\bamazon\b".to_string()]);
+        brand_patterns.insert(
+            "amazon".to_string(),
+            vec![r"(?i)\bamazon\b".to_string(), r"アマゾン".to_string()],
+        );
         legitimate_domains.insert(
             "amazon".to_string(),
             vec![
                 "amazon.com".to_string(),
                 "amazon.co.uk".to_string(),
+                "amazon.co.jp".to_string(),
                 "amazonmusic.com".to_string(),
             ],
         );
