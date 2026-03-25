@@ -1406,6 +1406,25 @@ impl FeatureExtractor for ContextAnalyzer {
             all_evidence.push("Email address embedded in subject".to_string());
         }
 
+        // Check for Japanese delivery/order phishing from non-Japanese domains
+        let jp_delivery_keywords = ["お届け", "配達", "注文", "商品", "荷物"];
+        if jp_delivery_keywords.iter().any(|kw| subject.contains(kw)) {
+            let sender_domain = sender
+                .split('@')
+                .nth(1)
+                .unwrap_or("")
+                .trim_end_matches('>')
+                .to_lowercase();
+            if !sender_domain.ends_with(".jp")
+                && !sender_domain.contains("amazon")
+                && !sender_domain.contains("rakuten")
+            {
+                total_score += 80;
+                all_evidence
+                    .push("Japanese delivery notification from non-Japanese domain".to_string());
+            }
+        }
+
         // Detect industry context for appropriate scoring adjustments
         let combined_content = format!("{} {}", subject, body);
         let industry_context = self.detect_industry_context(sender, &combined_content, subject);
