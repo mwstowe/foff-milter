@@ -523,7 +523,10 @@ impl FeatureExtractor for BrandImpersonationFeature {
             "medium",
             "substack",
             "mailchimp",
-            "nytimes.com", // NY Times legitimate news
+            "nytimes.com",
+            "shutterfly.com",
+            "em.shutterfly.com",
+            "backerkit.com",
         ];
         if legitimate_newsletter_esps
             .iter()

@@ -558,15 +558,19 @@ impl AuthenticationFeature {
             "onestopplus.com",
             "airnz.co.nz",
             "digitalcomms.airnz.co.nz",
-            "nytimes.com",     // NY Times
-            "ecoflow.com",     // EcoFlow
-            "backerhome.com",  // Backer Home
-            "medium.com",      // Medium publishing platform
-            "kiwico.com",      // KiwiCo STEM kits
-            "empower.com",     // Empower financial services
-            "adapthealth.com", // AdaptHealth medical services
-            "filtersfast.com", // Filters Fast
-            "tokyo-tiger.com", // Tokyo-Tiger
+            "nytimes.com",      // NY Times
+            "ecoflow.com",      // EcoFlow
+            "backerhome.com",   // Backer Home
+            "medium.com",       // Medium publishing platform
+            "kiwico.com",       // KiwiCo STEM kits
+            "empower.com",      // Empower financial services
+            "adapthealth.com",  // AdaptHealth medical services
+            "filtersfast.com",  // Filters Fast
+            "tokyo-tiger.com",  // Tokyo-Tiger
+            "cjm.adobe.com",    // Adobe Campaign ESP
+            "ally.com",         // Ally Bank
+            "rejuvenation.com", // Rejuvenation home furnishings
+            "backerkit.com",    // BackerKit crowdfunding
         ];
 
         if legitimate_retailers

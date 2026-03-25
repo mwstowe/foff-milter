@@ -68,6 +68,7 @@ impl FeatureExtractor for HealthSpamAnalyzer {
             .as_deref()
             .and_then(|from| from.split('@').nth(1))
             .unwrap_or("")
+            .trim_end_matches('>')
             .to_lowercase();
 
         // Check for health brand impersonation
@@ -356,6 +357,19 @@ impl FeatureExtractor for HealthSpamAnalyzer {
         {
             score += 10;
             evidence.push("Complimentary wellness review scam".to_string());
+        }
+
+        // Check for health scam from suspicious TLDs (.fun, .shop, etc)
+        if (content.contains("pain")
+            || content.contains("sciatica")
+            || content.contains("nerve")
+            || content.contains("joint"))
+            && (sender_domain.ends_with(".fun")
+                || sender_domain.ends_with(".shop")
+                || sender_domain.ends_with(".site"))
+        {
+            score += 50;
+            evidence.push("Health pain scam from suspicious TLD".to_string());
         }
 
         let confidence = if score > 0 { 0.9 } else { 0.1 };

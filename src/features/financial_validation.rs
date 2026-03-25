@@ -251,6 +251,7 @@ impl FinancialValidationFeature {
                 domains: vec![
                     "paypal.com".to_string(),
                     "paypal-communications.com".to_string(),
+                    "paypal.com.cname.cjm.adobe.com".to_string(), // Adobe Campaign ESP
                 ],
                 aliases: vec!["pay pal".to_string()],
             },

@@ -219,6 +219,8 @@ rules:
             criteria:
               - type: SenderPattern
                 pattern: ".*@.*(medium|backerkit|joinhoney|williams-sonoma|lovepop|shutterfly|resmed|quora|nytimes)\\.(com|org)$"
+              - type: SenderPattern
+                pattern: ".*paypal.*adobe.*"
               - type: HeaderPattern
                 header: "Authentication-Results"
                 pattern: "dkim=pass.*\\.(medium|backerkit|joinhoney|williams-sonoma|lovepop|shutterfly|resmed|quora)\\.(com|org)"
@@ -246,6 +248,8 @@ rules:
                 pattern: ".*@.*(mcdonalds|netflix|disney|starbucks|walmart|amazon|amazonmusic|target|bestbuy|homedepot|lowes|cvs|walgreens|chase|bankofamerica|wellsfargo|citi|capitalone|americanexpress|discover|paypal|venmo|apple|microsoft|google|facebook|instagram|twitter|linkedin|youtube|tiktok|snapchat|whatsapp|telegram|zoom|skype|slack|teams|dropbox|onedrive|icloud|gmail|yahoo|outlook|hotmail|aol|comcast|verizon|att|tmobile|sprint|ups|fedex|usps|dhl|uber|lyft|airbnb|booking|expedia|priceline|hotels|marriott|hilton|hyatt|ihg|choice|wyndham|radisson|accor|fidelity|fidelityinvestments|d23|waltdisneypictures)\\.(com|org|net)$"
               - type: "SenderPattern"
                 pattern: ".*@.*(sparkpostmail|sendgrid|mailchimp|mailchimpapp|amazonses|constantcontact|mailgun|facebookmail|zoomcare|pb-dynmktg|pardot|marketo|eloqua|hubspot|campaignmonitor)\\.(com|net)$"
+              - type: "SenderPattern"
+                pattern: ".*paypal.*adobe.*"
     score: 150
     description: "Known brand claims from suspicious or unrelated domains"
 

@@ -1,10 +1,10 @@
-# FOFF Milter v0.8.47
+# FOFF Milter v0.8.48
 
 A comprehensive, enterprise-grade email security platform written in Rust featuring intelligent threat detection, modular rulesets, and zero-configuration deployment.
 
 ## 🎯 **Production Ready - 100% Test Compliance & Zero False Positives**
 
-**Latest Achievement**: Production-ready v0.8.47 with Japanese delivery phishing detection. Detects Japanese delivery/order keywords (お届け, 配達, 注文) in subjects from non-.jp domains, catching Amazon impersonation that hides brand name from headers. Maintains 460/460 tests passing with 100% accuracy.
+**Latest Achievement**: Production-ready v0.8.48 with unauthenticated government domain spoofing detection and 6 false positive fixes. Detects spoofed USPS/IRS/UPS/FedEx emails lacking DKIM. Fixed PayPal via Adobe Campaign ESP, Shutterfly, Ally Bank, Rejuvenation, Filters Fast, and BackerKit false positives. Added health pain scam detection from suspicious TLDs. Maintains 460/460 tests passing with 100% accuracy.
 
 ## 🚀 Complete Email Security Platform
 

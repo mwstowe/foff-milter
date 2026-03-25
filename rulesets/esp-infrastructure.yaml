@@ -11,6 +11,51 @@ rules:
     score: -150
     description: "Legitimate pharmacy chain infrastructure"
 
+  # Shutterfly Photo Service Infrastructure
+  - name: "Shutterfly Photo Service Infrastructure"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*shutterfly.*"
+    score: -200
+    description: "Legitimate photo service infrastructure"
+
+  # Ally Bank Infrastructure
+  - name: "Ally Bank Infrastructure"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*@.*ally\\.com"
+    score: -150
+    description: "Legitimate bank infrastructure"
+
+  # Rejuvenation Home Furnishings Infrastructure
+  - name: "Rejuvenation Infrastructure"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*rejuvenation.*"
+    score: -100
+    description: "Legitimate home furnishings retailer"
+
+  # Filters Fast Home Products Infrastructure
+  - name: "Filters Fast Infrastructure"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*filtersfast.*"
+    score: -200
+    description: "Legitimate home products retailer"
+
+  # PayPal via Adobe Campaign Infrastructure
+  - name: "PayPal Adobe Campaign Infrastructure"
+    enabled: true
+    criteria:
+      type: "SenderPattern"
+      pattern: ".*paypal.*adobe.*"
+    score: -500
+    description: "Legitimate PayPal via Adobe Campaign ESP"
+
   # USPS Government Service Infrastructure
   - name: "USPS Government Service Infrastructure"
     enabled: true

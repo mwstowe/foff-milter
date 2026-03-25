@@ -1408,6 +1408,31 @@ impl FeatureExtractor for ContextAnalyzer {
 
         // Check for Japanese delivery/order phishing from non-Japanese domains
         let jp_delivery_keywords = ["お届け", "配達", "注文", "商品", "荷物"];
+
+        // Check for unauthenticated government/sensitive domain spoofing
+        let sensitive_domains = ["usps.com", "irs.gov", "ssa.gov", "ups.com", "fedex.com"];
+        let sender_domain_lower = sender
+            .split('@')
+            .nth(1)
+            .unwrap_or("")
+            .trim_end_matches('>')
+            .to_lowercase();
+        if sensitive_domains
+            .iter()
+            .any(|d| sender_domain_lower.ends_with(d))
+        {
+            let has_dkim = context
+                .headers
+                .iter()
+                .any(|(k, _)| k.to_lowercase().contains("dkim-signature"));
+            if !has_dkim {
+                total_score += 100;
+                all_evidence.push(
+                    "Unauthenticated email claiming sensitive domain (likely spoofed)".to_string(),
+                );
+            }
+        }
+
         if jp_delivery_keywords.iter().any(|kw| subject.contains(kw)) {
             let sender_domain = sender
                 .split('@')
