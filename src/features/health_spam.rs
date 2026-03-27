@@ -372,6 +372,24 @@ impl FeatureExtractor for HealthSpamAnalyzer {
             evidence.push("Health pain scam from suspicious TLD".to_string());
         }
 
+        // Check for health keywords in From display name from non-health domains
+        let display_name = context
+            .from_header
+            .as_deref()
+            .and_then(|from| from.find('<').map(|i| from[..i].trim()))
+            .unwrap_or("")
+            .to_lowercase();
+        let health_display_keywords = ["sciatica", "pain", "nerve", "arthritis", "diabetes"];
+        if health_display_keywords
+            .iter()
+            .any(|kw| display_name.contains(kw))
+            && !sender_domain.contains("health")
+            && !sender_domain.contains("medical")
+        {
+            score += 40;
+            evidence.push("Health keyword in display name from non-health domain".to_string());
+        }
+
         let confidence = if score > 0 { 0.9 } else { 0.1 };
 
         FeatureScore {

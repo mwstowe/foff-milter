@@ -2713,14 +2713,7 @@ impl FilterEngine {
                     ));
                 }
 
-                // Apply business context adjustment
-                total_score += business_adjustment;
-                if business_adjustment != 0 {
-                    scoring_rules.push(format!(
-                        "Business Context Analysis: Business adjustment ({:+})",
-                        business_adjustment
-                    ));
-                }
+                // Business context adjustment already applied above - skip duplicate
 
                 // Apply seasonal behavioral adjustment
                 total_score += seasonal_adjustment;

@@ -1347,8 +1347,18 @@ impl FeatureExtractor for ContextAnalyzer {
             }
         }
 
-        // Check for investment/stock pump scams from unrelated domains
+        // Check for home warranty scam
         let subject_lower = subject.to_lowercase();
+        if (subject_lower.contains("home")
+            && (subject_lower.contains("plan") || subject_lower.contains("warranty"))
+            && (subject_lower.contains("repair") || subject_lower.contains("covered")))
+            || body.to_lowercase().contains("home warranty")
+        {
+            total_score += 65;
+            all_evidence.push("Home warranty scam pattern detected".to_string());
+        }
+
+        // Check for investment/stock pump scams from unrelated domains
         if (subject_lower.contains("stock") || subject_lower.contains("ipo"))
             && (subject_lower.contains("buy") || subject_lower.contains("#1"))
         {
@@ -1410,17 +1420,39 @@ impl FeatureExtractor for ContextAnalyzer {
         let jp_delivery_keywords = ["お届け", "配達", "注文", "商品", "荷物"];
 
         // Check for unauthenticated government/sensitive domain spoofing
-        let sensitive_domains = ["usps.com", "irs.gov", "ssa.gov", "ups.com", "fedex.com"];
-        let sender_domain_lower = sender
+        let sensitive_domains = [
+            "usps.com",
+            "irs.gov",
+            "ssa.gov",
+            "ups.com",
+            "fedex.com",
+            "amazon.com",
+            "paypal.com",
+            "apple.com",
+            "microsoft.com",
+            "google.com",
+            "walmart.com",
+            "chase.com",
+            "bankofamerica.com",
+            "wellsfargo.com",
+        ];
+        // Check both From header domain and envelope sender domain
+        let from_domain = sender
             .split('@')
             .nth(1)
             .unwrap_or("")
             .trim_end_matches('>')
             .to_lowercase();
-        if sensitive_domains
+        let envelope_domain = context
+            .sender
+            .as_deref()
+            .and_then(|s| s.split('@').nth(1))
+            .unwrap_or("")
+            .to_lowercase();
+        let claims_sensitive = sensitive_domains
             .iter()
-            .any(|d| sender_domain_lower.ends_with(d))
-        {
+            .any(|d| from_domain.ends_with(d) || envelope_domain.ends_with(d));
+        if claims_sensitive {
             let has_dkim = context
                 .headers
                 .iter()

@@ -527,6 +527,7 @@ impl FeatureExtractor for BrandImpersonationFeature {
             "shutterfly.com",
             "em.shutterfly.com",
             "backerkit.com",
+            "quora.com",
         ];
         if legitimate_newsletter_esps
             .iter()
