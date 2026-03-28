@@ -1358,6 +1358,38 @@ impl FeatureExtractor for ContextAnalyzer {
             all_evidence.push("Home warranty scam pattern detected".to_string());
         }
 
+        // Check for reverse mortgage / home equity scam
+        let body_lower = body.to_lowercase();
+        if (subject_lower.contains("home")
+            && (subject_lower.contains("pay you")
+                || subject_lower.contains("pay back")
+                || subject_lower.contains("extra income")))
+            || body_lower.contains("reverse mortgage")
+        {
+            total_score += 30;
+            all_evidence.push("Reverse mortgage scam pattern detected".to_string());
+        }
+
+        // Check for unclaimed funds / asset scam
+        if subject_lower.contains("asset located")
+            || subject_lower.contains("unclaimed")
+            || (body_lower.contains("unclaimed funds") || body_lower.contains("unclaimed money"))
+        {
+            total_score += 30;
+            all_evidence.push("Unclaimed funds scam pattern detected".to_string());
+        }
+
+        // Check for unsolicited home repair scam (roofing, etc)
+        if (subject_lower.contains("shingle") || subject_lower.contains("roof"))
+            && (subject_lower.contains("crack")
+                || subject_lower.contains("damage")
+                || subject_lower.contains("leak")
+                || body_lower.contains("inspection"))
+        {
+            total_score += 30;
+            all_evidence.push("Unsolicited home repair scam detected".to_string());
+        }
+
         // Check for investment/stock pump scams from unrelated domains
         if (subject_lower.contains("stock") || subject_lower.contains("ipo"))
             && (subject_lower.contains("buy") || subject_lower.contains("#1"))

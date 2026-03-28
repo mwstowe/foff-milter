@@ -1,10 +1,10 @@
-# FOFF Milter v0.8.49
+# FOFF Milter v0.8.50
 
 A comprehensive, enterprise-grade email security platform written in Rust featuring intelligent threat detection, modular rulesets, and zero-configuration deployment.
 
 ## 🎯 **Production Ready - 100% Test Compliance & Zero False Positives**
 
-**Latest Achievement**: Production-ready v0.8.49 with home warranty scam detection, expanded spoofed domain detection (Amazon, PayPal, major brands), health display name spam detection, duplicate business adjustment bugfix, and Quora false positive fix. Added 6 new test cases (466 total). Maintains 100% accuracy.
+**Latest Achievement**: Production-ready v0.8.50 with reverse mortgage scam, unclaimed funds scam, and unsolicited roofing scam detection. Catches 7 new spam variants using subject and body content patterns. Maintains 466/466 tests passing with 100% accuracy.
 
 ## 🚀 Complete Email Security Platform
 
