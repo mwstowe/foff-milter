@@ -457,6 +457,10 @@ impl Milter {
                             Ok(mut guard) => {
                                 if let Some(mail_ctx) = guard.get_mut(&session_id) {
                                     mail_ctx.sender = Some(sender_clean.clone());
+                                    mail_ctx.headers.insert(
+                                        "return-path".to_string(),
+                                        format!("<{}>", sender_clean),
+                                    );
                                     log::info!("MILTER: Set context.sender to: {}", sender_clean);
                                 } else {
                                     log::error!("Session {} not found in state", session_id);

@@ -1360,14 +1360,31 @@ impl FeatureExtractor for ContextAnalyzer {
 
         // Check for reverse mortgage / home equity scam
         let body_lower = body.to_lowercase();
-        if (subject_lower.contains("home")
-            && (subject_lower.contains("pay you")
-                || subject_lower.contains("pay back")
-                || subject_lower.contains("extra income")))
-            || body_lower.contains("reverse mortgage")
-        {
+        let reverse_mortgage_subject = subject_lower.contains("home")
+            && Regex::new(r"pay(s|ing)?\s+you|pay\s+back|extra\s+income")
+                .unwrap()
+                .is_match(&subject_lower);
+        if reverse_mortgage_subject || body_lower.contains("reverse mortgage") {
             total_score += 30;
             all_evidence.push("Reverse mortgage scam pattern detected".to_string());
+        }
+
+        // Check for fake product review/complimentary offer scam
+        if body_lower.contains("complimentary")
+            && (body_lower.contains("pillow")
+                || body_lower.contains("mattress")
+                || body_lower.contains("sleep"))
+        {
+            total_score += 40;
+            all_evidence.push("Fake complimentary product review scam".to_string());
+        }
+
+        // Check for vague security scare spam
+        if (subject_lower.contains("security") || subject_lower.contains("at stake"))
+            && (body_lower.contains("check here") || body_lower.contains("noticed something"))
+        {
+            total_score += 50;
+            all_evidence.push("Vague security scare with check-here link".to_string());
         }
 
         // Check for unclaimed funds / asset scam
@@ -1449,7 +1466,7 @@ impl FeatureExtractor for ContextAnalyzer {
         }
 
         // Check for Japanese delivery/order phishing from non-Japanese domains
-        let jp_delivery_keywords = ["お届け", "配達", "注文", "商品", "荷物"];
+        let jp_delivery_keywords = ["お届け", "配達", "配送", "注文", "商品", "荷物"];
 
         // Check for unauthenticated government/sensitive domain spoofing
         let sensitive_domains = [
