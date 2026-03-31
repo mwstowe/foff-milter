@@ -1148,7 +1148,7 @@ impl SenderAlignmentAnalyzer {
 
     fn detect_professional_credentials(&self, sender: &str) -> bool {
         const MEDICAL_CREDENTIALS: &[&str] = &[
-            "dr.", "dr ", "md", "phd", "dds", "dvm", "pharmd", "rn", "np",
+            "dr.", "dr ", " md", "md ", ",md", "phd", "dds", "dvm", "pharmd", "rn,", " rn ", " np ",
         ];
 
         const MEDICAL_DOMAINS: &[&str] = &[".edu", "medical", "clinic", "hospital", "research"];

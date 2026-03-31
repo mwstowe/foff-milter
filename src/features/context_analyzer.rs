@@ -262,7 +262,7 @@ impl ContextAnalyzer {
 
     fn has_professional_credentials(&self, sender: &str) -> bool {
         const MEDICAL_CREDENTIALS: &[&str] = &[
-            "dr.", "dr ", "md", "phd", "dds", "dvm", "pharmd", "rn", "np",
+            "dr.", "dr ", " md", "md ", ",md", "phd", "dds", "dvm", "pharmd", "rn,", " rn ", " np ",
         ];
 
         let sender_lower = sender.to_lowercase();
@@ -1380,11 +1380,23 @@ impl FeatureExtractor for ContextAnalyzer {
         }
 
         // Check for vague security scare spam
-        if (subject_lower.contains("security") || subject_lower.contains("at stake"))
-            && (body_lower.contains("check here") || body_lower.contains("noticed something"))
+        if (subject_lower.contains("security")
+            || subject_lower.contains("secure")
+            || subject_lower.contains("at stake"))
+            && (body_lower.contains("check here")
+                || body_lower.contains("check it here")
+                || body_lower.contains("noticed something"))
         {
             total_score += 50;
             all_evidence.push("Vague security scare with check-here link".to_string());
+        }
+
+        // Check for gift card scam
+        if (subject_lower.contains("chosen") || subject_lower.contains("selected"))
+            && (subject_lower.contains("gift card") || subject_lower.contains("reward"))
+        {
+            total_score += 30;
+            all_evidence.push("Gift card scam pattern detected".to_string());
         }
 
         // Check for unclaimed funds / asset scam
