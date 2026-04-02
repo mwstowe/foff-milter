@@ -59,6 +59,19 @@ impl BrandImpersonationFeature {
         );
 
         brand_patterns.insert(
+            "americanexpress".to_string(),
+            vec![
+                r"(?i)\bamerican\s*express\b".to_string(),
+                r"(?i)\bamex\b".to_string(),
+                r"アメリカン・エキスプレス".to_string(),
+            ],
+        );
+        legitimate_domains.insert(
+            "americanexpress".to_string(),
+            vec!["americanexpress.com".to_string(), "aexp.com".to_string()],
+        );
+
+        brand_patterns.insert(
             "coinbase".to_string(),
             vec![r"(?i)\bcoinbase\b".to_string()],
         );
@@ -528,6 +541,15 @@ impl FeatureExtractor for BrandImpersonationFeature {
             "em.shutterfly.com",
             "backerkit.com",
             "quora.com",
+            "williams-sonoma.com",
+            "united.com",
+            "waltdisneypictures.com",
+            "disneyplus",
+            "siriusxm.com",
+            "sparkpostmail.com",
+            "blinkcharging.com",
+            "oxfordclub.com",
+            "bmsend.com",
         ];
         if legitimate_newsletter_esps
             .iter()

@@ -255,7 +255,11 @@ impl EspValidationFeature {
         providers.insert(
             "sendgrid".to_string(),
             EspProvider {
-                domains: vec!["sendgrid.net".to_string(), "sendgrid.com".to_string()],
+                domains: vec![
+                    "sendgrid.net".to_string(),
+                    "sendgrid.com".to_string(),
+                    "sendgrid.info".to_string(),
+                ],
                 reputation: EspReputation::Trusted,
                 aliases: vec!["sg.sendgrid.net".to_string()],
             },
@@ -267,6 +271,15 @@ impl EspValidationFeature {
                 domains: vec!["mailgun.org".to_string(), "mailgun.com".to_string()],
                 reputation: EspReputation::Trusted,
                 aliases: vec!["mg.mailgun.org".to_string()],
+            },
+        );
+
+        providers.insert(
+            "salesforce".to_string(),
+            EspProvider {
+                domains: vec!["salesforce.com".to_string()],
+                reputation: EspReputation::Trusted,
+                aliases: vec![],
             },
         );
 
@@ -389,13 +402,41 @@ impl FeatureExtractor for EspValidationFeature {
             None
         };
 
-        // Use whichever domain is an ESP
+        // If neither envelope sender nor Return-Path is an ESP, check DKIM signatures
+        // ESPs often add their own DKIM signature alongside the customer's
+        let dkim_esp_domain = if (sender_domain.is_none()
+            || !self
+                .analyzer
+                .is_esp_domain(&sender_domain.clone().unwrap_or_default()))
+            && (return_path_domain.is_none()
+                || !self
+                    .analyzer
+                    .is_esp_domain(&return_path_domain.clone().unwrap_or_default()))
+        {
+            context
+                .headers
+                .iter()
+                .filter(|(k, _)| k.starts_with("dkim-signature"))
+                .find_map(|(_, v)| {
+                    // Extract d= domain from DKIM signature
+                    v.split(';')
+                        .find(|part| part.trim().starts_with("d="))
+                        .map(|part| part.trim().trim_start_matches("d=").trim().to_lowercase())
+                        .filter(|d| self.analyzer.is_esp_domain(d))
+                })
+        } else {
+            None
+        };
+
+        // Use whichever domain is an ESP (priority: envelope > return-path > DKIM signature)
         let sender_domain = if let Some(ref domain) = sender_domain {
             if self.analyzer.is_esp_domain(domain) {
                 domain.clone()
             } else if let Some(ref rp_domain) = return_path_domain {
                 if self.analyzer.is_esp_domain(rp_domain) {
                     rp_domain.clone()
+                } else if let Some(ref dkim_domain) = dkim_esp_domain {
+                    dkim_domain.clone()
                 } else {
                     return FeatureScore {
                         feature_name: "ESP Validation".to_string(),
@@ -404,6 +445,8 @@ impl FeatureExtractor for EspValidationFeature {
                         evidence: vec!["No ESP domain found in envelope or Return-Path".to_string()],
                     };
                 }
+            } else if let Some(ref dkim_domain) = dkim_esp_domain {
+                dkim_domain.clone()
             } else {
                 return FeatureScore {
                     feature_name: "ESP Validation".to_string(),
@@ -415,6 +458,8 @@ impl FeatureExtractor for EspValidationFeature {
         } else if let Some(ref rp_domain) = return_path_domain {
             if self.analyzer.is_esp_domain(rp_domain) {
                 rp_domain.clone()
+            } else if let Some(ref dkim_domain) = dkim_esp_domain {
+                dkim_domain.clone()
             } else {
                 return FeatureScore {
                     feature_name: "ESP Validation".to_string(),

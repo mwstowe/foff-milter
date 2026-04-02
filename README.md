@@ -1,10 +1,10 @@
-# FOFF Milter v0.8.52
+# FOFF Milter v0.8.53
 
 A comprehensive, enterprise-grade email security platform written in Rust featuring intelligent threat detection, modular rulesets, and zero-configuration deployment.
 
 ## 🎯 **Production Ready - 100% Test Compliance & Zero False Positives**
 
-**Latest Achievement**: Production-ready v0.8.52 with professional credential false positive fix, expanded security scare detection, and gift card scam detection. Fixed bare "md" matching inside random strings (e.g. "amdkreps") causing false credential detection. Maintains 466/466 tests passing with 100% accuracy.
+**Latest Achievement**: Production-ready v0.8.53 with DMARC-based trust for rule suppression. Emails with DMARC pass (strong policy, non-consumer domain, non-gibberish username) skip phishing/content/brand YAML rules. Fixed credential false positive (bare "md" matching), expanded reverse mortgage/Japanese delivery detection, added gift card scam and security scare patterns. Maintains 466/466 tests passing with 100% accuracy.
 
 ## 🚀 Complete Email Security Platform
 

@@ -248,6 +248,8 @@ impl DomainReputationFeature {
             ],
             email_service_providers: vec![
                 "sendgrid.net".to_string(),
+                "sendgrid.info".to_string(),
+                "salesforce.com".to_string(),
                 "mailgun.org".to_string(),
                 "mailchimp.com".to_string(),
             ],
@@ -354,6 +356,20 @@ impl FeatureExtractor for DomainReputationFeature {
 }
 
 impl DomainReputationFeature {
+    /// Find ESP domain in DKIM signatures
+    fn find_esp_in_dkim(&self, context: &MailContext) -> Option<String> {
+        context
+            .headers
+            .iter()
+            .filter(|(k, _)| k.starts_with("dkim-signature"))
+            .find_map(|(_, v)| {
+                v.split(';')
+                    .find(|part| part.trim().starts_with("d="))
+                    .map(|part| part.trim().trim_start_matches("d=").trim().to_lowercase())
+                    .filter(|d| self.analyzer.is_esp_domain(d))
+            })
+    }
+
     /// Get primary domain from multiple sources in order of preference
     fn get_primary_domain(&self, context: &MailContext) -> String {
         // 1. Try envelope sender first
@@ -377,6 +393,12 @@ impl DomainReputationFeature {
                     && !self.analyzer.is_esp_domain(env_domain)
                 {
                     return rp_domain.clone();
+                }
+            }
+            // Check DKIM signatures for ESP domain as fallback
+            if !self.analyzer.is_esp_domain(env_domain) {
+                if let Some(dkim_esp) = self.find_esp_in_dkim(context) {
+                    return dkim_esp;
                 }
             }
             return env_domain.clone();
@@ -435,6 +457,8 @@ mod tests {
                 "sendgrid.net".to_string(),
                 "mailgun.org".to_string(),
                 "mailchimp.com".to_string(),
+                "sendgrid.info".to_string(),
+                "salesforce.com".to_string(),
             ],
             suspicious_tlds: vec!["tk".to_string(), "ml".to_string(), "shop".to_string()],
             legitimate_domains: vec!["google.com".to_string(), "microsoft.com".to_string()],

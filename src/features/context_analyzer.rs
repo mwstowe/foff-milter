@@ -1360,7 +1360,9 @@ impl FeatureExtractor for ContextAnalyzer {
 
         // Check for reverse mortgage / home equity scam
         let body_lower = body.to_lowercase();
-        let reverse_mortgage_subject = subject_lower.contains("home")
+        let reverse_mortgage_subject = (subject_lower.contains("home")
+            || subject_lower.contains("house")
+            || subject_lower.contains("property"))
             && Regex::new(r"pay(s|ing)?\s+you|pay\s+back|extra\s+income")
                 .unwrap()
                 .is_match(&subject_lower);
@@ -1478,7 +1480,7 @@ impl FeatureExtractor for ContextAnalyzer {
         }
 
         // Check for Japanese delivery/order phishing from non-Japanese domains
-        let jp_delivery_keywords = ["お届け", "配達", "配送", "注文", "商品", "荷物"];
+        let jp_delivery_keywords = ["お届け", "配達", "配送", "注文", "商品", "荷物", "出荷"];
 
         // Check for unauthenticated government/sensitive domain spoofing
         let sensitive_domains = [

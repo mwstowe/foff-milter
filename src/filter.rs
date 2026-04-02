@@ -2514,6 +2514,77 @@ impl FilterEngine {
         if !self.modules.is_empty() {
             log::info!("Processing {} modules", self.modules.len());
 
+            // Check if sender has verified DMARC-passing authentication
+            // DMARC pass means: the domain has a published policy, AND the email
+            // complies with it (DKIM/SPF aligned with From domain). This proves
+            // the domain owner authorized this email. Spammers on throwaway domains
+            // won't have DMARC policies. This is the gold standard for sender verification.
+            // Exception: consumer email providers (gmail, hotmail, etc.) - anyone can
+            // create an account, so DMARC pass doesn't imply organizational trust.
+            let is_authenticated_sender = {
+                let auth_results = context_with_attachments
+                    .headers
+                    .iter()
+                    .filter(|(k, _)| k.to_lowercase() == "authentication-results")
+                    .map(|(_, v)| v.to_lowercase())
+                    .collect::<Vec<_>>()
+                    .join(" ");
+                let dmarc_pass = auth_results.contains("dmarc=pass");
+                // Only trust strong DMARC policies (reject/quarantine), not p=NONE
+                let has_strong_dmarc = dmarc_pass
+                    && (auth_results.contains("p=reject") || auth_results.contains("p=quarantine"));
+                let from_domain = context_with_attachments
+                    .from_header
+                    .as_deref()
+                    .and_then(|f| f.split('@').nth(1))
+                    .unwrap_or("")
+                    .trim_end_matches('>')
+                    .to_lowercase();
+                let from_user = context_with_attachments
+                    .from_header
+                    .as_deref()
+                    .and_then(|f| {
+                        let email = if let Some(start) = f.find('<') {
+                            &f[start + 1..]
+                        } else {
+                            f
+                        };
+                        email.split('@').next()
+                    })
+                    .unwrap_or("");
+                // Gibberish usernames (many mixed-case transitions) indicate spam
+                let case_transitions = from_user
+                    .as_bytes()
+                    .windows(2)
+                    .filter(|w| {
+                        (w[0].is_ascii_lowercase() && w[1].is_ascii_uppercase())
+                            || (w[0].is_ascii_uppercase() && w[1].is_ascii_lowercase())
+                    })
+                    .count();
+                let is_gibberish_user = from_user.len() > 20 || case_transitions > 5;
+                let is_consumer_email = [
+                    "gmail.com",
+                    "hotmail.com",
+                    "outlook.com",
+                    "yahoo.com",
+                    "aol.com",
+                    "live.com",
+                    "icloud.com",
+                    "me.com",
+                    "mail.com",
+                    "protonmail.com",
+                    "zoho.com",
+                ]
+                .iter()
+                .any(|d| from_domain == *d);
+                dmarc_pass && has_strong_dmarc && !is_consumer_email && !is_gibberish_user
+            };
+            if is_authenticated_sender {
+                log::info!(
+                    "Authenticated sender detected - phishing/content rules will be suppressed"
+                );
+            }
+
             // Process whitelist modules first to ensure they're always checked
             for module in &self.modules {
                 if module.name.to_lowercase().contains("whitelist") {
@@ -2627,6 +2698,21 @@ impl FilterEngine {
                         {
                             log::info!(
                                 "Module '{}' Rule '{}' skipped for legitimate business",
+                                module.name,
+                                rule.name
+                            );
+                            continue;
+                        }
+
+                        // Skip positive-scoring phishing/content rules for DMARC-verified senders
+                        if is_authenticated_sender
+                            && rule.score.unwrap_or(0) > 0
+                            && (module.name.contains("Phishing")
+                                || module.name.contains("Content Threats")
+                                || module.name.contains("Brand Protection"))
+                        {
+                            log::info!(
+                                "Module '{}' Rule '{}' skipped for DMARC-verified sender",
                                 module.name,
                                 rule.name
                             );

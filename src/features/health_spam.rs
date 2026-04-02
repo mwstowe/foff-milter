@@ -379,7 +379,18 @@ impl FeatureExtractor for HealthSpamAnalyzer {
             .and_then(|from| from.find('<').map(|i| from[..i].trim()))
             .unwrap_or("")
             .to_lowercase();
-        let health_display_keywords = ["sciatica", "pain", "nerve", "arthritis", "diabetes"];
+        let health_display_keywords = [
+            "sciatica",
+            "pain",
+            "nerve",
+            "arthritis",
+            "diabetes",
+            "vitamin",
+            "soothe",
+            "myco",
+            "supplement",
+            "remedy",
+        ];
         if health_display_keywords
             .iter()
             .any(|kw| display_name.contains(kw))
