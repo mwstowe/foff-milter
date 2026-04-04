@@ -18,7 +18,7 @@ pub struct Module {
 impl Module {
     pub fn load_from_file(path: &Path) -> Result<Self, Box<dyn std::error::Error>> {
         let content = fs::read_to_string(path)?;
-        let mut module: Module = serde_yml::from_str(&content)?;
+        let mut module: Module = yaml_serde::from_str(&content)?;
 
         // Calculate hash of the module content
         let mut hasher = DefaultHasher::new();

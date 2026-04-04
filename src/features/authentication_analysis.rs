@@ -577,6 +577,7 @@ impl AuthenticationFeature {
             "oxfordclub.com",         // Oxford Club newsletter
             "blinkcharging.com",      // Blink Charging
             "williams-sonoma.com",    // Williams Sonoma
+            "suncadia.com",           // Suncadia Resort
         ];
 
         if legitimate_retailers

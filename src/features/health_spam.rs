@@ -128,7 +128,11 @@ impl FeatureExtractor for HealthSpamAnalyzer {
                 let sender_domain_clean = sender_domain.replace(".", "").replace("-", "");
                 let brand_clean = brand.replace(" ", "").replace(".", "").replace("-", "");
 
-                if !sender_domain_clean.contains(&brand_clean) {
+                // Whitelist legitimate hotel properties and resorts
+                let hotel_whitelist = ["suncadia", "marriott", "hilton", "hyatt"];
+                let is_legit_hotel = hotel_whitelist.iter().any(|h| sender_domain.contains(h));
+
+                if !sender_domain_clean.contains(&brand_clean) && !is_legit_hotel {
                     score += 100;
                     evidence.push(format!(
                         "Hotel brand '{}' impersonation from non-hotel domain",
@@ -192,6 +196,7 @@ impl FeatureExtractor for HealthSpamAnalyzer {
             "sparkpost",
             "thegadgetflow",
             "gadgetflow",
+            "nationalgeographic",
         ];
         let is_legitimate_news = legitimate_news
             .iter()

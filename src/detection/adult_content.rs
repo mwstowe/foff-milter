@@ -63,7 +63,7 @@ impl AdultContentDetector {
 
     pub fn load_from_file(path: &str) -> Result<Self, Box<dyn std::error::Error>> {
         let content = std::fs::read_to_string(path)?;
-        let config: AdultContentConfig = serde_yml::from_str(&content)?;
+        let config: AdultContentConfig = yaml_serde::from_str(&content)?;
         Ok(Self::new(config))
     }
 

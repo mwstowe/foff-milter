@@ -1,10 +1,10 @@
-# FOFF Milter v0.8.54
+# FOFF Milter v0.8.55
 
 A comprehensive, enterprise-grade email security platform written in Rust featuring intelligent threat detection, modular rulesets, and zero-configuration deployment.
 
 ## 🎯 **Production Ready - 100% Test Compliance & Zero False Positives**
 
-**Latest Achievement**: Production-ready v0.8.54 with ESP-authenticated trust and DKIM-based ESP detection. Emails with DKIM aligned + Trusted ESP + no brand impersonation skip phishing/content/brand YAML rules. Added DKIM signature scanning for ESP identification (sendgrid.info, salesforce.com). New ESPs: bmsend.com, pd25.com/Pardot, 14westmail.net. SparkPost upgraded to Trusted. Added Twilio/SendGrid and American Express brand patterns. Fixed 6 false positives and 1 uncaught spam. Maintains 466/466 tests passing with 100% accuracy.
+**Latest Achievement**: Production-ready v0.8.55 with hidden text (Bayesian poisoning) detection, Marriott brand impersonation, and dependency updates. Detects large blocks of conversational text hidden via CSS (display:none) — a common spam evasion technique. Fixed National Geographic and Suncadia Resort false positives. Added emsend1.com ESP. Updated 15 dependencies to latest patch versions. Maintains 466/466 tests passing with 100% accuracy.
 
 ## 🚀 Complete Email Security Platform
 

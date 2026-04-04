@@ -1347,6 +1347,33 @@ impl FeatureExtractor for ContextAnalyzer {
             }
         }
 
+        // Check for hidden text (Bayesian poisoning / spam evasion)
+        // Spam hides large blocks of conversational filler text to evade filters.
+        // Legitimate emails use display:none for short preheaders or CSS.
+        let raw_body = body;
+        let hidden_block_re = Regex::new(r#"(?i)display:\s*none[^>]*>([^<]{200,})"#).unwrap();
+        if let Some(caps) = hidden_block_re.captures(raw_body) {
+            let hidden_text = &caps[1];
+            // Check if hidden text contains conversational English (not CSS/encoded)
+            let css_words = [
+                "auto", "font", "div", "img", "left", "right", "screen", "only", "and", "none",
+                "block", "table", "width", "height", "color", "border", "margin", "padding",
+                "style", "class", "max", "min",
+            ];
+            let word_count = hidden_text
+                .split_whitespace()
+                .filter(|w| {
+                    w.len() > 2
+                        && w.chars().all(|c| c.is_ascii_alphabetic())
+                        && !css_words.contains(&w.to_lowercase().as_str())
+                })
+                .count();
+            if word_count > 20 {
+                total_score += 60;
+                all_evidence.push("Hidden text detected (spam evasion technique)".to_string());
+            }
+        }
+
         // Check for home warranty scam
         let subject_lower = subject.to_lowercase();
         if (subject_lower.contains("home")
@@ -1580,6 +1607,7 @@ impl FeatureExtractor for ContextAnalyzer {
             || sender.to_lowercase().contains("waltdisneypictures.com")  // Walt Disney Pictures
             || sender.to_lowercase().contains("disneyplus")  // Disney+
             || sender.to_lowercase().contains("sparkpostmail.com")  // SparkPost ESP
+            || sender.to_lowercase().contains("suncadia.com")  // Suncadia Resort
             || sender.ends_with(".gov")  // Government domains
             || sender.ends_with(".edu"); // Educational domains
         let additional_discount = if borderline_legitimate { 0.2 } else { 1.0 }; // Extra 80% reduction

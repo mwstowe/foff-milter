@@ -94,6 +94,12 @@ impl BrandImpersonationFeature {
         );
 
         brand_patterns.insert(
+            "marriott".to_string(),
+            vec![r"(?i)\bmarriott?\b".to_string()],
+        );
+        legitimate_domains.insert("marriott".to_string(), vec!["marriott.com".to_string()]);
+
+        brand_patterns.insert(
             "skymiles".to_string(),
             vec![r"(?i)\bsky\s*miles\b".to_string()],
         );

@@ -135,6 +135,7 @@ impl ServerRoleAnalyzer {
             "oxfordclub.com",         // Oxford Club newsletter
             "disneyplus.com",         // Disney+
             "sparkpostmail.com",      // SparkPost ESP
+            "suncadia.com",           // Suncadia Resort
         ];
 
         for legitimate in &legitimate_domains {

@@ -302,6 +302,15 @@ impl EspValidationFeature {
         );
 
         providers.insert(
+            "emsend".to_string(),
+            EspProvider {
+                domains: vec!["emsend1.com".to_string()],
+                reputation: EspReputation::Trusted,
+                aliases: vec![],
+            },
+        );
+
+        providers.insert(
             "mailchimp".to_string(),
             EspProvider {
                 domains: vec!["mailchimp.com".to_string(), "mcsv.net".to_string()],

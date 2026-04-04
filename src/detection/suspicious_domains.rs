@@ -49,7 +49,7 @@ impl SuspiciousDomainDetector {
 
     pub fn load_from_file(path: &str) -> Result<Self, Box<dyn std::error::Error>> {
         let content = std::fs::read_to_string(path)?;
-        let config: SuspiciousDomainConfig = serde_yml::from_str(&content)?;
+        let config: SuspiciousDomainConfig = yaml_serde::from_str(&content)?;
         Ok(Self::new(config))
     }
 
