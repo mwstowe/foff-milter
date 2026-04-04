@@ -2579,9 +2579,32 @@ impl FilterEngine {
                 .any(|d| from_domain == *d);
                 dmarc_pass && has_strong_dmarc && !is_consumer_email && !is_gibberish_user
             };
-            if is_authenticated_sender {
+
+            // Also trust DKIM-aligned senders via recognized ESPs
+            // ESPs enforce anti-spam policies, so DKIM aligned + ESP = legitimate
+            // But only if feature analysis doesn't already flag it as suspicious
+            let is_esp_authenticated = if !is_authenticated_sender {
+                let evidence_text = headers_to_add
+                    .iter()
+                    .filter(|(k, _)| k == "X-FOFF-Feature-Evidence")
+                    .map(|(_, v)| v.as_str())
+                    .collect::<Vec<_>>()
+                    .join(" ");
+                let dkim_aligned = evidence_text.contains("DKIM domain properly aligned");
+                let has_esp = evidence_text.contains("Trusted ESP:");
+                let no_brand_impersonation = !evidence_text
+                    .contains("Brand impersonation: Claims to be")
+                    && !evidence_text.contains("reduced due to brand impersonation");
+                dkim_aligned && has_esp && no_brand_impersonation
+            } else {
+                false
+            };
+
+            let suppress_rules = is_authenticated_sender || is_esp_authenticated;
+            if suppress_rules {
                 log::info!(
-                    "Authenticated sender detected - phishing/content rules will be suppressed"
+                    "Verified sender detected (dmarc={}, esp={}) - phishing/content rules will be suppressed",
+                    is_authenticated_sender, is_esp_authenticated
                 );
             }
 
@@ -2704,15 +2727,15 @@ impl FilterEngine {
                             continue;
                         }
 
-                        // Skip positive-scoring phishing/content rules for DMARC-verified senders
-                        if is_authenticated_sender
+                        // Skip positive-scoring phishing/content rules for verified senders
+                        if suppress_rules
                             && rule.score.unwrap_or(0) > 0
                             && (module.name.contains("Phishing")
                                 || module.name.contains("Content Threats")
                                 || module.name.contains("Brand Protection"))
                         {
                             log::info!(
-                                "Module '{}' Rule '{}' skipped for DMARC-verified sender",
+                                "Module '{}' Rule '{}' skipped for verified sender",
                                 module.name,
                                 rule.name
                             );

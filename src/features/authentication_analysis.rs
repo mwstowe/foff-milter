@@ -558,19 +558,25 @@ impl AuthenticationFeature {
             "onestopplus.com",
             "airnz.co.nz",
             "digitalcomms.airnz.co.nz",
-            "nytimes.com",      // NY Times
-            "ecoflow.com",      // EcoFlow
-            "backerhome.com",   // Backer Home
-            "medium.com",       // Medium publishing platform
-            "kiwico.com",       // KiwiCo STEM kits
-            "empower.com",      // Empower financial services
-            "adapthealth.com",  // AdaptHealth medical services
-            "filtersfast.com",  // Filters Fast
-            "tokyo-tiger.com",  // Tokyo-Tiger
-            "cjm.adobe.com",    // Adobe Campaign ESP
-            "ally.com",         // Ally Bank
-            "rejuvenation.com", // Rejuvenation home furnishings
-            "backerkit.com",    // BackerKit crowdfunding
+            "nytimes.com",            // NY Times
+            "ecoflow.com",            // EcoFlow
+            "backerhome.com",         // Backer Home
+            "medium.com",             // Medium publishing platform
+            "kiwico.com",             // KiwiCo STEM kits
+            "empower.com",            // Empower financial services
+            "adapthealth.com",        // AdaptHealth medical services
+            "filtersfast.com",        // Filters Fast
+            "tokyo-tiger.com",        // Tokyo-Tiger
+            "cjm.adobe.com",          // Adobe Campaign ESP
+            "ally.com",               // Ally Bank
+            "rejuvenation.com",       // Rejuvenation home furnishings
+            "backerkit.com",          // BackerKit crowdfunding
+            "waltdisneypictures.com", // Walt Disney Pictures
+            "disneyplus",             // Disney+
+            "sparkpostmail.com",      // SparkPost ESP
+            "oxfordclub.com",         // Oxford Club newsletter
+            "blinkcharging.com",      // Blink Charging
+            "williams-sonoma.com",    // Williams Sonoma
         ];
 
         if legitimate_retailers

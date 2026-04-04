@@ -1367,7 +1367,7 @@ impl FeatureExtractor for ContextAnalyzer {
                 .unwrap()
                 .is_match(&subject_lower);
         if reverse_mortgage_subject || body_lower.contains("reverse mortgage") {
-            total_score += 30;
+            total_score += 35;
             all_evidence.push("Reverse mortgage scam pattern detected".to_string());
         }
 
@@ -1576,6 +1576,10 @@ impl FeatureExtractor for ContextAnalyzer {
             || sender.to_lowercase().contains("govdelivery.com")  // Government email service
             || sender.to_lowercase().contains("public.govdelivery.com")  // Government newsletter service
             || sender.to_lowercase().contains("amazonmusic.com")  // Amazon Music service
+            || sender.to_lowercase().contains("oxfordclub.com")  // Oxford Club newsletter
+            || sender.to_lowercase().contains("waltdisneypictures.com")  // Walt Disney Pictures
+            || sender.to_lowercase().contains("disneyplus")  // Disney+
+            || sender.to_lowercase().contains("sparkpostmail.com")  // SparkPost ESP
             || sender.ends_with(".gov")  // Government domains
             || sender.ends_with(".edu"); // Educational domains
         let additional_discount = if borderline_legitimate { 0.2 } else { 1.0 }; // Extra 80% reduction

@@ -1866,8 +1866,12 @@ rules:
           pattern: "(?i)(krebs|krank|sterben|tod)"
         - type: Not
           criteria:
-            type: SenderPattern
-            pattern: ".*@.*(nytimes|washingtonpost|cnn|bbc|reuters|ap|wsj|usatoday)\\.(com|org)$"
+            type: Or
+            criteria:
+              - type: SenderPattern
+                pattern: ".*@.*(nytimes|washingtonpost|cnn|bbc|reuters|ap|wsj|usatoday)\\.(com|org)$"
+              - type: SenderPattern
+                pattern: ".*@.*(disney|disneyplus|sparkpostmail)\\.(com|net)$"
     score: 150
     description: "German advance fee fraud inheritance scams"
 

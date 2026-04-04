@@ -78,6 +78,22 @@ impl BrandImpersonationFeature {
         legitimate_domains.insert("coinbase".to_string(), vec!["coinbase.com".to_string()]);
 
         brand_patterns.insert(
+            "twilio".to_string(),
+            vec![
+                r"(?i)\btwilio\b".to_string(),
+                r"(?i)\bsendgrid\b".to_string(),
+            ],
+        );
+        legitimate_domains.insert(
+            "twilio".to_string(),
+            vec![
+                "twilio.com".to_string(),
+                "sendgrid.com".to_string(),
+                "sendgrid.net".to_string(),
+            ],
+        );
+
+        brand_patterns.insert(
             "skymiles".to_string(),
             vec![r"(?i)\bsky\s*miles\b".to_string()],
         );
@@ -540,6 +556,9 @@ impl FeatureExtractor for BrandImpersonationFeature {
             "shutterfly.com",
             "em.shutterfly.com",
             "backerkit.com",
+            "waltdisneypictures.com",
+            "disneyplus",
+            "sparkpostmail.com",
             "quora.com",
             "williams-sonoma.com",
             "united.com",

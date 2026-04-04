@@ -119,16 +119,22 @@ impl ServerRoleAnalyzer {
             "technews.com",
             "ecoflow.com",
             "nytimes.com",
-            "salesmanago.com",    // Marketing automation platform
-            "kickstarter.com",    // Kickstarter crowdfunding platform
-            "backstage.com",      // Backstage job board
-            "pbteen.com",         // Pottery Barn Teen retail
-            "mail.instagram.com", // Instagram social platform
-            "woot.com",           // Woot marketplace (Amazon)
-            "evgo.com",           // EVgo EV charging service
-            "rejuvenation.com",   // Rejuvenation retail
-            "tokyo-tiger.com",    // Tokyo Tiger retail
-            "daburns.com",        // D.A. Burns service provider
+            "salesmanago.com",        // Marketing automation platform
+            "kickstarter.com",        // Kickstarter crowdfunding platform
+            "backstage.com",          // Backstage job board
+            "pbteen.com",             // Pottery Barn Teen retail
+            "mail.instagram.com",     // Instagram social platform
+            "woot.com",               // Woot marketplace (Amazon)
+            "evgo.com",               // EVgo EV charging service
+            "rejuvenation.com",       // Rejuvenation retail
+            "tokyo-tiger.com",        // Tokyo Tiger retail
+            "waltdisneypictures.com", // Walt Disney Pictures
+            "doordash.com",           // DoorDash food delivery
+            "daburns.com",            // D.A. Burns service provider
+            "blinkcharging.com",      // Blink Charging
+            "oxfordclub.com",         // Oxford Club newsletter
+            "disneyplus.com",         // Disney+
+            "sparkpostmail.com",      // SparkPost ESP
         ];
 
         for legitimate in &legitimate_domains {

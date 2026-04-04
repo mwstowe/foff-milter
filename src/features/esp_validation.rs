@@ -277,7 +277,25 @@ impl EspValidationFeature {
         providers.insert(
             "salesforce".to_string(),
             EspProvider {
-                domains: vec!["salesforce.com".to_string()],
+                domains: vec!["salesforce.com".to_string(), "pd25.com".to_string()],
+                reputation: EspReputation::Trusted,
+                aliases: vec![],
+            },
+        );
+
+        providers.insert(
+            "bmsend".to_string(),
+            EspProvider {
+                domains: vec!["bmsend.com".to_string()],
+                reputation: EspReputation::Trusted,
+                aliases: vec![],
+            },
+        );
+
+        providers.insert(
+            "14west".to_string(),
+            EspProvider {
+                domains: vec!["14westmail.net".to_string()],
                 reputation: EspReputation::Trusted,
                 aliases: vec![],
             },
@@ -314,7 +332,7 @@ impl EspValidationFeature {
             "sparkpost".to_string(),
             EspProvider {
                 domains: vec!["sparkpostmail.com".to_string(), "sparkpost.com".to_string()],
-                reputation: EspReputation::Standard,
+                reputation: EspReputation::Trusted,
                 aliases: vec!["spmailtechno.com".to_string()],
             },
         );
