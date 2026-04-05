@@ -653,6 +653,37 @@ impl Milter {
                                             }
                                         }
 
+                                        // Extract envelope-from from Received header to fix
+                                        // sendmail envelope rewriting parity issue
+                                        if header_key == "received" {
+                                            let envelope_addr = mail_ctx
+                                                .headers
+                                                .get("received")
+                                                .and_then(|val| {
+                                                    val.find("envelope-from ").map(|start| {
+                                                        let rest = &val[start + 14..];
+                                                        rest.split(')')
+                                                            .next()
+                                                            .unwrap_or("")
+                                                            .trim()
+                                                            .trim_matches(['<', '>'])
+                                                            .to_string()
+                                                    })
+                                                })
+                                                .filter(|a| !a.is_empty() && a.contains('@'));
+                                            if let Some(addr) = envelope_addr {
+                                                mail_ctx.sender = Some(addr.clone());
+                                                mail_ctx.headers.insert(
+                                                    "return-path".to_string(),
+                                                    format!("<{}>", addr),
+                                                );
+                                                log::info!(
+                                                    "MILTER: Updated sender from envelope-from: {}",
+                                                    addr
+                                                );
+                                            }
+                                        }
+
                                         mail_ctx.last_header_name = Some(header_key);
                                     }
                                 } else {

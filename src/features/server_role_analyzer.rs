@@ -136,6 +136,9 @@ impl ServerRoleAnalyzer {
             "disneyplus.com",         // Disney+
             "sparkpostmail.com",      // SparkPost ESP
             "suncadia.com",           // Suncadia Resort
+            "americanmeadows.com",    // American Meadows
+            "portlandnursery.com",    // Portland Nursery
+            "ccsend.com",             // Constant Contact ESP
         ];
 
         for legitimate in &legitimate_domains {

@@ -226,10 +226,15 @@ rules:
   - name: "Government Educational Domains"
     enabled: true
     criteria:
-      type: "SenderPattern"
-      pattern: ".*@.*\\.(gov|edu|mil)$"
+      type: "And"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@.*\\.(gov|edu|mil)$"
+        - type: "HeaderPattern"
+          header: "Authentication-Results"
+          pattern: "dkim=pass"
     score: -50
-    description: "Government, educational, and military domains using feature analysis"
+    description: "Government, educational, and military domains with DKIM authentication"
 
   # Feature-Based Suspicious Email Detection (NEW) - DISABLED for testing
   - name: "Feature-Based Suspicious Email Detection"

@@ -200,10 +200,15 @@ rules:
   - name: "Government and Educational"
     enabled: true
     criteria:
-      type: "SenderPattern"
-      pattern: ".*@.*\\.(gov|mil|edu)$"
+      type: "And"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@.*\\.(gov|mil|edu)$"
+        - type: "HeaderPattern"
+          header: "Authentication-Results"
+          pattern: "dkim=pass"
     score: -200
-    description: "Government and educational institutions"
+    description: "Government and educational institutions with DKIM authentication"
 
   # Established Brand Domains (-150 points)
   - name: "Established Brand Domains"

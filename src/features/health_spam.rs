@@ -197,6 +197,7 @@ impl FeatureExtractor for HealthSpamAnalyzer {
             "thegadgetflow",
             "gadgetflow",
             "nationalgeographic",
+            "ccsend.com",
         ];
         let is_legitimate_news = legitimate_news
             .iter()

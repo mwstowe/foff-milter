@@ -2187,7 +2187,49 @@ impl FilterEngine {
 
         // Check for legitimate mailing list infrastructure
         let is_mailing_list = self.is_legitimate_mailing_list(&context_with_attachments);
-        if is_mailing_list {
+        // Don't trust mailing list headers if display name has "via gibberish" (Google Groups abuse)
+        // or if the List-Id domain looks like a gibberish/spam domain
+        let from_display_ml = context_with_attachments
+            .from_header
+            .as_deref()
+            .and_then(|f| f.split('<').next())
+            .unwrap_or("")
+            .trim()
+            .trim_matches('"')
+            .to_lowercase();
+        let has_via_gibberish = {
+            let re = regex::Regex::new(r"via\s+([a-z]{6,})\s*'?\s*$").unwrap();
+            re.captures(&from_display_ml)
+                .map(|c| {
+                    let name = &c[1];
+                    ![
+                        "docusign",
+                        "google",
+                        "groups",
+                        "linkedin",
+                        "facebook",
+                        "outlook",
+                        "microsoft",
+                        "dropbox",
+                        "slack",
+                    ]
+                    .iter()
+                    .any(|l| name.contains(l))
+                })
+                .unwrap_or(false)
+        };
+        let has_suspicious_list_id = context_with_attachments.headers.iter().any(|(k, v)| {
+            k.to_lowercase() == "list-id" && {
+                // Check if List-Id has a very short group name on a gibberish domain
+                let cleaned = v.trim_matches(['<', '>', ' ']);
+                let parts: Vec<&str> = cleaned.splitn(2, '.').collect();
+                let group_name = parts.first().unwrap_or(&"");
+                let domain = parts.get(1).unwrap_or(&"");
+                // Short group name (1-2 chars like "R2") on non-well-known domain
+                group_name.len() <= 2 && !domain.contains("google") && !domain.contains("yahoo")
+            }
+        });
+        if is_mailing_list && !has_via_gibberish && !has_suspicious_list_id {
             log::warn!(
                 "MAILING LIST DETECTED: Applying -200 score for email from: {}",
                 context_with_attachments

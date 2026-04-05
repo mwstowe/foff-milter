@@ -578,6 +578,7 @@ impl AuthenticationFeature {
             "blinkcharging.com",      // Blink Charging
             "williams-sonoma.com",    // Williams Sonoma
             "suncadia.com",           // Suncadia Resort
+            "ccsend.com",             // Constant Contact ESP
         ];
 
         if legitimate_retailers

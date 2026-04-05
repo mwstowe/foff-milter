@@ -331,7 +331,7 @@ impl EspValidationFeature {
         providers.insert(
             "constantcontact".to_string(),
             EspProvider {
-                domains: vec!["constantcontact.com".to_string()],
+                domains: vec!["constantcontact.com".to_string(), "ccsend.com".to_string()],
                 reputation: EspReputation::Standard,
                 aliases: vec!["ctctcdn.com".to_string()],
             },

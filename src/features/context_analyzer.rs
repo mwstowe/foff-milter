@@ -1347,6 +1347,35 @@ impl FeatureExtractor for ContextAnalyzer {
             }
         }
 
+        // Check for "via" + gibberish group name in display name (Google Groups abuse)
+        let from_display = sender
+            .split('<')
+            .next()
+            .unwrap_or("")
+            .trim()
+            .trim_matches('"')
+            .to_lowercase();
+        let via_gibberish = Regex::new(r"via\s+([a-z]{6,})\s*'?\s*$").unwrap();
+        if let Some(caps) = via_gibberish.captures(&from_display) {
+            let group_name = &caps[1];
+            let legit_via = [
+                "docusign",
+                "google",
+                "groups",
+                "linkedin",
+                "facebook",
+                "outlook",
+                "microsoft",
+                "dropbox",
+                "slack",
+            ];
+            if !legit_via.iter().any(|l| group_name.contains(l)) {
+                total_score += 60;
+                all_evidence
+                    .push("Suspicious 'via' gibberish group name in display name".to_string());
+            }
+        }
+
         // Check for hidden text (Bayesian poisoning / spam evasion)
         // Spam hides large blocks of conversational filler text to evade filters.
         // Legitimate emails use display:none for short preheaders or CSS.
@@ -1541,7 +1570,10 @@ impl FeatureExtractor for ContextAnalyzer {
             .to_lowercase();
         let claims_sensitive = sensitive_domains
             .iter()
-            .any(|d| from_domain.ends_with(d) || envelope_domain.ends_with(d));
+            .any(|d| from_domain.ends_with(d) || envelope_domain.ends_with(d))
+            || from_domain.ends_with(".edu")
+            || from_domain.ends_with(".gov")
+            || from_domain.ends_with(".mil");
         if claims_sensitive {
             let has_dkim = context
                 .headers
@@ -1608,6 +1640,9 @@ impl FeatureExtractor for ContextAnalyzer {
             || sender.to_lowercase().contains("disneyplus")  // Disney+
             || sender.to_lowercase().contains("sparkpostmail.com")  // SparkPost ESP
             || sender.to_lowercase().contains("suncadia.com")  // Suncadia Resort
+            || sender.to_lowercase().contains("americanmeadows.com")  // American Meadows
+            || sender.to_lowercase().contains("portlandnursery.com")  // Portland Nursery
+            || sender.to_lowercase().contains("ccsend.com")  // Constant Contact ESP
             || sender.ends_with(".gov")  // Government domains
             || sender.ends_with(".edu"); // Educational domains
         let additional_discount = if borderline_legitimate { 0.2 } else { 1.0 }; // Extra 80% reduction
