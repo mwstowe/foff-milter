@@ -198,6 +198,7 @@ impl FeatureExtractor for HealthSpamAnalyzer {
             "gadgetflow",
             "nationalgeographic",
             "ccsend.com",
+            "consumerreports",
         ];
         let is_legitimate_news = legitimate_news
             .iter()
@@ -327,6 +328,9 @@ impl FeatureExtractor for HealthSpamAnalyzer {
                 // News organizations
                 "nytdirect",
                 "nytimes.com",
+                "consumerreports",
+                "ugg.com",
+                "aliexpress",
             ];
             let is_legitimate_retailer = legitimate_retailers
                 .iter()

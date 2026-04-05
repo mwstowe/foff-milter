@@ -654,18 +654,46 @@ impl FeatureExtractor for BrandImpersonationFeature {
             })
             .unwrap_or("");
 
-        // Decode subject if it's still encoded - simple Q-encoding decoder
-        let decoded_subject = if subject.contains("=?UTF-8?Q?") || subject.contains("=?ASCII?Q?") {
-            decode_q_encoding(subject)
-        } else {
-            subject.to_string()
-        };
+        // Decode subject if it's still MIME encoded
+        let decoded_subject =
+            if subject.contains("=?") && (subject.contains("?Q?") || subject.contains("?B?")) {
+                crate::filter::decode_mime_words(subject)
+            } else {
+                subject.to_string()
+            };
 
         // Only check From display name and subject for brand impersonation
         // Don't check body - mentioning a brand in context is not impersonation
         let combined_text = format!("{} {}", from_display_name, decoded_subject);
 
+        // Also check for spaced-letter evasion: "A M A Z O N" → "AMAZON"
+        let has_spaced_letters = {
+            let re = Regex::new(r"(?i)([A-Z]) ([A-Z]) ([A-Z]) ([A-Z])").unwrap();
+            re.is_match(&combined_text)
+        };
+
         let detected_brands = self.detect_brand_mentions(&combined_text);
+
+        let evasion_brands: Vec<String> = if has_spaced_letters && detected_brands.is_empty() {
+            let collapsed: String = combined_text
+                .chars()
+                .filter(|c| *c != ' ' || !c.is_ascii())
+                .collect();
+            self.brand_patterns
+                .keys()
+                .filter(|name| collapsed.to_lowercase().contains(name.as_str()))
+                .cloned()
+                .collect()
+        } else {
+            vec![]
+        };
+
+        let has_evasion = !evasion_brands.is_empty();
+        let all_brands = if has_evasion {
+            &evasion_brands
+        } else {
+            &detected_brands
+        };
 
         if let Some(domain) = &sender_domain {
             // Check for suspicious domain patterns
@@ -676,13 +704,21 @@ impl FeatureExtractor for BrandImpersonationFeature {
             }
 
             // Check for brand impersonation
-            for brand in &detected_brands {
+            for brand in all_brands {
                 if !self.is_legitimate_domain_for_brand(brand, domain) {
                     score += 90;
-                    evidence.push(format!(
-                        "Brand impersonation: Claims to be {} but sender domain is {}",
-                        brand, domain
-                    ));
+                    if has_evasion {
+                        score += 30; // Extra penalty for deliberate evasion
+                        evidence.push(format!(
+                            "Brand impersonation with spaced-letter evasion: {} from {}",
+                            brand, domain
+                        ));
+                    } else {
+                        evidence.push(format!(
+                            "Brand impersonation: Claims to be {} but sender domain is {}",
+                            brand, domain
+                        ));
+                    }
                     confidence += 0.9;
                 }
             }
@@ -725,35 +761,4 @@ impl FeatureExtractor for BrandImpersonationFeature {
     }
 }
 
-/// Simple Q-encoding decoder for MIME headers
-fn decode_q_encoding(encoded: &str) -> String {
-    // Extract the encoded part between =?charset?Q? and ?=
-    if let Some(start) = encoded.find("?Q?") {
-        if let Some(end) = encoded.rfind("?=") {
-            let encoded_part = &encoded[start + 3..end];
-
-            // Decode Q-encoding: =XX becomes the byte XX, _ becomes space
-            let mut result = String::new();
-            let mut chars = encoded_part.chars().peekable();
-
-            while let Some(ch) = chars.next() {
-                match ch {
-                    '=' => {
-                        // Read next two hex digits
-                        if let (Some(h1), Some(h2)) = (chars.next(), chars.next()) {
-                            if let Ok(byte) = u8::from_str_radix(&format!("{}{}", h1, h2), 16) {
-                                result.push(byte as char);
-                            }
-                        }
-                    }
-                    '_' => result.push(' '),
-                    other => result.push(other),
-                }
-            }
-
-            return result;
-        }
-    }
-
-    encoded.to_string()
-}
+// decode_q_encoding removed - using crate::filter::decode_mime_words instead

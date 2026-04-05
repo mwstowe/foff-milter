@@ -1604,6 +1604,24 @@ impl FeatureExtractor for ContextAnalyzer {
             }
         }
 
+        // Check for Japanese billing/payment phishing from non-Japanese domains
+        let jp_billing_keywords = ["お支払い", "未払い", "料金", "請求", "口座"];
+        if jp_billing_keywords.iter().any(|kw| subject.contains(kw)) {
+            let sender_domain = sender
+                .split('@')
+                .nth(1)
+                .unwrap_or("")
+                .trim_end_matches('>')
+                .to_lowercase();
+            if !sender_domain.ends_with(".jp")
+                && !sender_domain.contains("amazon")
+                && !sender_domain.contains("rakuten")
+            {
+                total_score += 80;
+                all_evidence.push("Japanese billing scam from non-Japanese domain".to_string());
+            }
+        }
+
         // Detect industry context for appropriate scoring adjustments
         let combined_content = format!("{} {}", subject, body);
         let industry_context = self.detect_industry_context(sender, &combined_content, subject);
@@ -1643,6 +1661,10 @@ impl FeatureExtractor for ContextAnalyzer {
             || sender.to_lowercase().contains("americanmeadows.com")  // American Meadows
             || sender.to_lowercase().contains("portlandnursery.com")  // Portland Nursery
             || sender.to_lowercase().contains("ccsend.com")  // Constant Contact ESP
+            || sender.to_lowercase().contains("consumerreports.org")  // Consumer Reports
+            || sender.to_lowercase().contains("ikea")  // IKEA
+            || sender.to_lowercase().contains("ugg.com")  // UGG
+            || sender.to_lowercase().contains("aliexpress")  // AliExpress
             || sender.ends_with(".gov")  // Government domains
             || sender.ends_with(".edu"); // Educational domains
         let additional_discount = if borderline_legitimate { 0.2 } else { 1.0 }; // Extra 80% reduction

@@ -898,6 +898,8 @@ impl LinkAnalyzer {
             ("musvc", vec!["pierotucci"]),            // Mail.com ESP for Pierotucci leather goods
             ("pierotucci", vec!["musvc", "software-newsletter"]), // Pierotucci can link to Mail.com ESP
             ("gog", vec!["salesmanago"]), // GOG.com uses SALESmanago marketing automation
+            ("aliexpress", vec!["alibaba", "alicdn", "aliimg"]), // AliExpress/Alibaba ecosystem
+            ("alibaba", vec!["aliexpress", "alicdn", "aliimg"]),
             ("salesmanago", vec!["gog"]), // SALESmanago links back to GOG
         ];
 

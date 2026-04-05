@@ -579,6 +579,8 @@ impl AuthenticationFeature {
             "williams-sonoma.com",    // Williams Sonoma
             "suncadia.com",           // Suncadia Resort
             "ccsend.com",             // Constant Contact ESP
+            "consumerreports.org",    // Consumer Reports
+            "ikea",                   // IKEA
         ];
 
         if legitimate_retailers

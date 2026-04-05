@@ -429,7 +429,7 @@ rules:
               - type: "SenderPattern"
                 pattern: ".*@.*(michaels|costco|walmart|target|amazon|bestbuy|homedepot|lowes)\\.(com|net)$"
               - type: "SenderPattern"
-                pattern: ".*@.*(nytimes|washingtonpost|cnn|bbc|reuters|ap|wsj|usatoday|nationalgeographic|torrid)\\.(com|org)$"
+                pattern: ".*@.*(nytimes|washingtonpost|cnn|bbc|reuters|ap|wsj|usatoday|nationalgeographic|torrid|ugg)\\.(com|org)$"
               - type: "SenderPattern"
                 pattern: ".*@.*(livenation|ticketmaster|stubhub|eventbrite)\\.(com|net)$"
               - type: "SubjectPattern"
@@ -473,7 +473,7 @@ rules:
         - type: Not
           criteria:
             type: SenderPattern
-            pattern: ".*@.*(oxford|nytimes|washingtonpost|cnn|bbc|reuters|ap|wsj|usatoday)\\.(com|org)$"
+            pattern: ".*@.*(oxford|nytimes|washingtonpost|cnn|bbc|reuters|ap|wsj|usatoday|ugg|torrid)\\.(com|org)$"
     score: 90
     description: "Unrealistic financial return promises and investment scams"
 
@@ -1825,10 +1825,10 @@ rules:
             type: Or
             criteria:
               - type: SenderPattern
-                pattern: ".*@.*(kickstarter|indiegogo|patreon|gofundme)\\.(com|net)$"
+                pattern: ".*@.*(kickstarter|indiegogo|patreon|gofundme|humblebundle)\\.(com|net)$"
               - type: HeaderPattern
                 header: "from"
-                pattern: ".*@.*(kickstarter|indiegogo|patreon|gofundme)\\.(com|net).*"
+                pattern: ".*@.*(kickstarter|indiegogo|patreon|gofundme|humblebundle)\\.(com|net).*"
     score: 160
 
   # Enhanced finance loan patterns
@@ -1871,7 +1871,7 @@ rules:
               - type: SenderPattern
                 pattern: ".*@.*(nytimes|washingtonpost|cnn|bbc|reuters|ap|wsj|usatoday)\\.(com|org)$"
               - type: SenderPattern
-                pattern: ".*@.*(disney|disneyplus|sparkpostmail)\\.(com|net)$"
+                pattern: ".*@.*(disney|disneyplus|sparkpostmail|nationalgeographic)\\.(com|net)$"
     score: 150
     description: "German advance fee fraud inheritance scams"
 

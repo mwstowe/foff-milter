@@ -55,7 +55,7 @@ fn normalize_encoding(text: &str) -> String {
 }
 
 /// Decode MIME encoded words like =?UTF-8?B?base64data?= and =?UTF-8?Q?quoted-printable?=
-fn decode_mime_words(text: &str) -> String {
+pub fn decode_mime_words(text: &str) -> String {
     lazy_static! {
         static ref MIME_WORD_RE: Regex = Regex::new(r"=\?([^?]+)\?([BQbq])\?([^?]*)\?=").unwrap();
     }
@@ -2028,6 +2028,30 @@ impl FilterEngine {
             seasonal_score.total_seasonal_score,
             seasonal_adjustment
         );
+
+        // Skip scoring for internal/local mail
+        let from_domain = context
+            .from_header
+            .as_deref()
+            .and_then(|f| f.split('@').nth(1))
+            .unwrap_or("")
+            .trim_end_matches('>')
+            .to_lowercase();
+        if from_domain == "localdomain"
+            || from_domain.ends_with(".localdomain")
+            || from_domain.ends_with(".local")
+            || from_domain.ends_with(".internal")
+        {
+            let headers = vec![(
+                "X-FOFF-Score".to_string(),
+                format!(
+                    "0 - internal mail by foff-milter v{} on {}",
+                    env!("CARGO_PKG_VERSION"),
+                    get_hostname()
+                ),
+            )];
+            return (Action::Accept, vec!["Internal mail".to_string()], headers);
+        }
 
         // Check for upstream FOFF-milter processing and trust existing tags
         if let Some(trust_result) = self.check_upstream_trust(&context) {

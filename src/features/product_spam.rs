@@ -18,6 +18,34 @@ impl FeatureExtractor for ProductSpamAnalyzer {
         let mut score = 0;
         let mut evidence = Vec::new();
 
+        // Skip product spam detection for known legitimate retailers/publishers
+        let sender_domain = context
+            .from_header
+            .as_deref()
+            .and_then(|f| f.split('@').nth(1))
+            .unwrap_or("")
+            .to_lowercase();
+        let sender_display = context.from_header.as_deref().unwrap_or("").to_lowercase();
+        let legit_senders = [
+            "consumerreports",
+            "ikea",
+            "humblebundle",
+            "backerkit",
+            "ugg.com",
+            "aliexpress",
+        ];
+        if legit_senders
+            .iter()
+            .any(|s| sender_domain.contains(s) || sender_display.contains(s))
+        {
+            return FeatureScore {
+                feature_name: "Product Spam".to_string(),
+                score: 0,
+                confidence: 0.0,
+                evidence: vec![],
+            };
+        }
+
         // Check if from trusted ESP - reduce penalties significantly
         let is_trusted_esp = crate::features::esp_validation::is_from_trusted_esp(context);
         let esp_multiplier = if is_trusted_esp { 0.3 } else { 1.0 }; // 70% reduction for trusted ESPs

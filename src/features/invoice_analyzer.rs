@@ -164,6 +164,8 @@ impl InvoiceAnalyzer {
             || sender_lower.contains("newsletter")
             || sender_lower.contains("substack")
             || sender_lower.contains("nytimes")
+            || sender_lower.contains("consumerreports")
+            || sender_lower.contains("ikea")
         {
             0.2 // 80% reduction for newsletters
         } else if sender_lower.contains("travel")
