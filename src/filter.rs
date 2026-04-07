@@ -2657,7 +2657,8 @@ impl FilterEngine {
                     .collect::<Vec<_>>()
                     .join(" ");
                 let dkim_aligned = evidence_text.contains("DKIM domain properly aligned");
-                let has_esp = evidence_text.contains("Trusted ESP:");
+                let has_esp = evidence_text.contains("Trusted ESP:")
+                    || evidence_text.contains("Legitimate financial institution");
                 let no_brand_impersonation = !evidence_text
                     .contains("Brand impersonation: Claims to be")
                     && !evidence_text.contains("reduced due to brand impersonation");
@@ -8612,6 +8613,37 @@ impl FilterEngine {
             // Additional validation: check if this is actually from our server infrastructure
             let legitimate_server_domains = ["baddomain.com"];
             if legitimate_server_domains.contains(&actual_sender_domain.as_str()) {
+                // Verify the email actually came from our own server, not spoofed externally
+                // Check the Received headers for the original connecting host
+                let received = context
+                    .headers
+                    .get("received")
+                    .or_else(|| context.headers.get("Received"))
+                    .map(|s| s.to_lowercase())
+                    .unwrap_or_default();
+                let trusted_hosts = [
+                    "hotel.baddomain.com",
+                    "juliett.baddomain.com",
+                    "localhost",
+                    "127.0.0.1",
+                ];
+                // Find the LAST "from" in Received (original source)
+                if let Some(last_from) = received.rfind("from ") {
+                    let from_part = &received[last_from + 5..];
+                    let connecting_host = from_part
+                        .split(|c: char| c.is_whitespace() || c == '(')
+                        .next()
+                        .unwrap_or("");
+                    let is_trusted = trusted_hosts.iter().any(|h| connecting_host.contains(h));
+                    if !is_trusted {
+                        log::warn!(
+                            "Same-server email REJECTED: external host '{}' spoofing {}",
+                            connecting_host,
+                            actual_sender_domain
+                        );
+                        return false;
+                    }
+                }
                 log::debug!(
                     "Legitimate same server email detected: {} -> {}",
                     actual_sender_domain,
