@@ -581,6 +581,7 @@ impl AuthenticationFeature {
             "ccsend.com",             // Constant Contact ESP
             "consumerreports.org",    // Consumer Reports
             "ikea",                   // IKEA
+            "hubitat.com",            // Hubitat smart home
         ];
 
         if legitimate_retailers

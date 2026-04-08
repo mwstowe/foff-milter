@@ -33,6 +33,7 @@ impl FeatureExtractor for ProductSpamAnalyzer {
             "backerkit",
             "ugg.com",
             "aliexpress",
+            "hubitat",
         ];
         if legit_senders
             .iter()

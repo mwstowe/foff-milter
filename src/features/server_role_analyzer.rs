@@ -140,6 +140,8 @@ impl ServerRoleAnalyzer {
             "portlandnursery.com",    // Portland Nursery
             "ccsend.com",             // Constant Contact ESP
             "consumerreports.org",    // Consumer Reports
+            "iheart.com",             // iHeart Media
+            "hubitat.com",            // Hubitat smart home
         ];
 
         for legitimate in &legitimate_domains {

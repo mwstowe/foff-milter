@@ -512,6 +512,18 @@ impl TldRiskFeature {
             },
         );
 
+        tlds.insert(
+            "help".to_string(),
+            TldInfo {
+                risk_level: TldRisk::Suspicious,
+                abuse_score: 40,
+                description: "Help domain - heavily abused for scams".to_string(),
+                common_uses: vec![
+                    "Various, heavily abused for home warranty and equity scams".to_string()
+                ],
+            },
+        );
+
         let config = TldRiskConfig {
             tlds,
             default_risk: TldRisk::Suspicious, // Unknown TLDs are suspicious by default

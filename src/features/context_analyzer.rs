@@ -1405,10 +1405,14 @@ impl FeatureExtractor for ContextAnalyzer {
 
         // Check for home warranty scam
         let subject_lower = subject.to_lowercase();
+        let body_lower_hw = body.to_lowercase();
         if (subject_lower.contains("home")
             && (subject_lower.contains("plan") || subject_lower.contains("warranty"))
             && (subject_lower.contains("repair") || subject_lower.contains("covered")))
-            || body.to_lowercase().contains("home warranty")
+            || body_lower_hw.contains("home warranty")
+            || (body_lower_hw.contains("home")
+                && body_lower_hw.contains("shield")
+                && body_lower_hw.contains("appliance"))
         {
             total_score += 65;
             all_evidence.push("Home warranty scam pattern detected".to_string());
@@ -1662,6 +1666,8 @@ impl FeatureExtractor for ContextAnalyzer {
             || sender.to_lowercase().contains("portlandnursery.com")  // Portland Nursery
             || sender.to_lowercase().contains("ccsend.com")  // Constant Contact ESP
             || sender.to_lowercase().contains("consumerreports.org")  // Consumer Reports
+            || sender.to_lowercase().contains("iheart.com")  // iHeart Media
+            || sender.to_lowercase().contains("hubitat.com")  // Hubitat smart home
             || sender.to_lowercase().contains("ikea")  // IKEA
             || sender.to_lowercase().contains("ugg.com")  // UGG
             || sender.to_lowercase().contains("aliexpress")  // AliExpress

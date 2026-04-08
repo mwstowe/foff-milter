@@ -129,7 +129,7 @@ impl FeatureExtractor for HealthSpamAnalyzer {
                 let brand_clean = brand.replace(" ", "").replace(".", "").replace("-", "");
 
                 // Whitelist legitimate hotel properties and resorts
-                let hotel_whitelist = ["suncadia", "marriott", "hilton", "hyatt"];
+                let hotel_whitelist = ["suncadia", "marriott", "hilton", "hyatt", "iheart"];
                 let is_legit_hotel = hotel_whitelist.iter().any(|h| sender_domain.contains(h));
 
                 if !sender_domain_clean.contains(&brand_clean) && !is_legit_hotel {
