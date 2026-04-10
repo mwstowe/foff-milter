@@ -1376,6 +1376,57 @@ impl FeatureExtractor for ContextAnalyzer {
             }
         }
 
+        // Check for IP-based URLs in links (almost always malicious)
+        let ip_url_re = Regex::new(r"https?://\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}").unwrap();
+        if ip_url_re.is_match(body) {
+            total_score += 40;
+            all_evidence.push("Link to IP-based URL (likely malicious)".to_string());
+        }
+
+        // Check for deeply nested subdomains (free hosting abuse)
+        {
+            let sender_domain = sender
+                .split('@')
+                .nth(1)
+                .unwrap_or("")
+                .trim_end_matches('>')
+                .to_lowercase();
+            let dot_count = sender_domain.chars().filter(|c| *c == '.').count();
+            if dot_count >= 3 {
+                total_score += 40;
+                all_evidence
+                    .push("Deeply nested subdomain (likely free hosting abuse)".to_string());
+            }
+            // No email address in From header is suspicious
+            if !sender.contains('@') && !sender.is_empty() {
+                total_score += 30;
+                all_evidence.push("No email address in From header".to_string());
+            }
+        }
+
+        // Check for vague/minimal body spam (short filler text + link)
+        {
+            let body_lower_vague = body.to_lowercase();
+            let vague_phrases = [
+                "check it here",
+                "check here",
+                "take a look",
+                "take a closer look",
+                "came across",
+                "caught my attention",
+                "not sure if it",
+                "quick question",
+                "have you seen this",
+            ];
+            let has_vague = vague_phrases.iter().any(|p| body_lower_vague.contains(p));
+            let has_link =
+                body.contains("http://") || body.contains("https://") || body.contains("href=");
+            if has_vague && has_link {
+                total_score += 40;
+                all_evidence.push("Vague minimal body with link (likely spam)".to_string());
+            }
+        }
+
         // Check for hidden text (Bayesian poisoning / spam evasion)
         // Spam hides large blocks of conversational filler text to evade filters.
         // Legitimate emails use display:none for short preheaders or CSS.
@@ -1540,7 +1591,16 @@ impl FeatureExtractor for ContextAnalyzer {
         }
 
         // Check for Japanese delivery/order phishing from non-Japanese domains
-        let jp_delivery_keywords = ["お届け", "配達", "配送", "注文", "商品", "荷物", "出荷"];
+        let jp_delivery_keywords = [
+            "お届け",
+            "配達",
+            "配送",
+            "注文",
+            "商品",
+            "荷物",
+            "出荷",
+            "受け取り",
+        ];
 
         // Check for unauthenticated government/sensitive domain spoofing
         let sensitive_domains = [

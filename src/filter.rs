@@ -2627,7 +2627,10 @@ impl FilterEngine {
                             || (w[0].is_ascii_uppercase() && w[1].is_ascii_lowercase())
                     })
                     .count();
-                let is_gibberish_user = from_user.len() > 20 || case_transitions > 5;
+                let has_structure =
+                    from_user.contains('-') || from_user.contains('_') || from_user.contains('.');
+                let is_gibberish_user =
+                    (from_user.len() > 30 && !has_structure) || case_transitions > 5;
                 let is_consumer_email = [
                     "gmail.com",
                     "hotmail.com",
@@ -2656,12 +2659,14 @@ impl FilterEngine {
                     .map(|(_, v)| v.as_str())
                     .collect::<Vec<_>>()
                     .join(" ");
-                let dkim_aligned = evidence_text.contains("DKIM domain properly aligned");
+                let dkim_aligned = evidence_text.contains("DKIM domain properly aligned")
+                    || evidence_text.contains("DKIM domain misaligned but legitimate ESP")
+                    || (evidence_text.contains("DKIM authentication passed")
+                        && evidence_text.contains("Trusted ESP:"));
                 let has_esp = evidence_text.contains("Trusted ESP:")
                     || evidence_text.contains("Legitimate financial institution");
-                let no_brand_impersonation = !evidence_text
-                    .contains("Brand impersonation: Claims to be")
-                    && !evidence_text.contains("reduced due to brand impersonation");
+                let no_brand_impersonation =
+                    !evidence_text.contains("Brand impersonation: Claims to be");
                 dkim_aligned && has_esp && no_brand_impersonation
             } else {
                 false
@@ -4292,19 +4297,23 @@ impl FilterEngine {
                         let body_text = if let Some(normalized) = &context.normalized {
                             &normalized.body_text.normalized
                         } else {
-                            // If normalization not available, pattern matching cannot proceed
                             log::warn!(
                                 "BodyPattern evaluation attempted without normalized content"
                             );
                             return false;
                         };
 
-                        // Check body text
-                        if regex.is_match(body_text) {
+                        // Strip HTML tags for rule matching to avoid false positives
+                        // on CSS, tracking URLs, and template code
+                        let html_re = regex::Regex::new(r"<[^>]+>").unwrap();
+                        let stripped = html_re.replace_all(body_text, " ");
+
+                        // Check stripped body text
+                        if regex.is_match(&stripped) {
                             return true;
                         }
 
-                        // Also check extracted media text (like CombinedTextPattern does)
+                        // Also check extracted media text
                         if !context.extracted_media_text.is_empty()
                             && regex.is_match(&context.extracted_media_text)
                         {
@@ -4327,12 +4336,15 @@ impl FilterEngine {
                         let body_text = if let Some(normalized) = &context.normalized {
                             &normalized.body_text.normalized
                         } else {
-                            // If normalization not available, pattern matching cannot proceed
                             log::warn!("CombinedTextPattern evaluation attempted without normalized content");
                             return false;
                         };
 
-                        if regex.is_match(body_text) {
+                        // Strip HTML tags for rule matching
+                        let html_re = regex::Regex::new(r"<[^>]+>").unwrap();
+                        let stripped = html_re.replace_all(body_text, " ");
+
+                        if regex.is_match(&stripped) {
                             return true;
                         }
 

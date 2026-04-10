@@ -154,7 +154,7 @@ rules:
               - type: SenderPattern
                 pattern: ".*@.*(govdelivery|public\\.govdelivery|capitaloneshopping)\\.(com|net|org)$"
               - type: SenderPattern
-                pattern: ".*@.*(nytimes|washingtonpost|cnn|bbc|reuters|ap|wsj|usatoday)\\.(com|org)$"
+                pattern: ".*@.*(nytimes|washingtonpost|cnn|bbc|reuters|ap|wsj|usatoday|acemedseattle)\\.(com|org)$"
     score: 200
     description: "Business Email Compromise targeting HR/payroll themes"
 
@@ -221,6 +221,8 @@ rules:
                 pattern: ".*@.*(medium|backerkit|joinhoney|williams-sonoma|lovepop|shutterfly|resmed|quora|nytimes)\\.(com|org)$"
               - type: SenderPattern
                 pattern: ".*paypal.*adobe.*"
+              - type: SenderPattern
+                pattern: ".*@.*sparkpostmail\\.(com|net)$"
               - type: HeaderPattern
                 header: "Authentication-Results"
                 pattern: "dkim=pass.*\\.(medium|backerkit|joinhoney|williams-sonoma|lovepop|shutterfly|resmed|quora)\\.(com|org)"

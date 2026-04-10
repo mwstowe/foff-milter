@@ -772,11 +772,14 @@ async fn analyze_email_file(
                             std::collections::HashMap::new();
                         let mut part_body = String::new();
                         let mut in_part_headers = true;
+                        let mut found_header = false;
 
                         for line in part.lines() {
                             if in_part_headers {
                                 if line.trim().is_empty() {
-                                    in_part_headers = false;
+                                    if found_header {
+                                        in_part_headers = false;
+                                    }
                                     continue;
                                 }
                                 if let Some((key, value)) = line.split_once(':') {
@@ -784,6 +787,7 @@ async fn analyze_email_file(
                                         key.trim().to_lowercase(),
                                         value.trim().to_string(),
                                     );
+                                    found_header = true;
                                 }
                             } else {
                                 part_body.push_str(line);
@@ -2446,11 +2450,14 @@ async fn test_email_file(
                         let mut part_headers: HashMap<String, String> = HashMap::new();
                         let mut part_body = String::new();
                         let mut in_part_headers = true;
+                        let mut found_header = false;
 
                         for line in part.lines() {
                             if in_part_headers {
                                 if line.trim().is_empty() {
-                                    in_part_headers = false;
+                                    if found_header {
+                                        in_part_headers = false;
+                                    }
                                     continue;
                                 }
                                 if let Some((key, value)) = line.split_once(':') {
@@ -2458,6 +2465,7 @@ async fn test_email_file(
                                         key.trim().to_lowercase(),
                                         value.trim().to_string(),
                                     );
+                                    found_header = true;
                                 }
                             } else {
                                 part_body.push_str(line);

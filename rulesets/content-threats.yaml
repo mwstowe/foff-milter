@@ -281,8 +281,14 @@ rules:
   - name: "Fake brand surveys and contest scams"
     enabled: true
     criteria:
-      type: "SubjectPattern"
-      pattern: "(?i).*(survey.*chance.*win|complete.*survey.*win|feedback.*win|customer.*survey.*prize|survey.*gift|survey.*reward|survey.*car.*kit|survey.*emergency.*kit).*"
+      type: "And"
+      criteria:
+        - type: "SubjectPattern"
+          pattern: "(?i).*(survey.*chance.*win|complete.*survey.*win|feedback.*win|customer.*survey.*prize|survey.*gift|survey.*reward|survey.*car.*kit|survey.*emergency.*kit).*"
+        - type: "Not"
+          criteria:
+            type: "SenderPattern"
+            pattern: ".*@.*(sparkpostmail|sendgrid|mailchimp|constantcontact|amazonses)\\.(com|net)$"
     score: 80
     description: "Fake brand surveys and contest scams"
 
@@ -1045,7 +1051,7 @@ rules:
             type: Or
             criteria:
               - type: SenderPattern
-                pattern: ".*@.*(adapthealth|healthcare|medical|clinic|hospital|pulmonary|levi|gmail|yahoo|hotmail|outlook|bearaby|sleep|wellness|michaels|emdeals\\.michaels|rejuvenation|e\\.rejuvenation|onestopplus|e\\.onestopplus)\\.(com|net|org)$"
+                pattern: ".*@.*(adapthealth|healthcare|medical|clinic|hospital|pulmonary|levi|gmail|yahoo|hotmail|outlook|bearaby|sleep|wellness|michaels|emdeals\\.michaels|rejuvenation|e\\.rejuvenation|onestopplus|e\\.onestopplus|acemedseattle|sense)\\.(com|net|org)$"
               - type: HeaderPattern
                 header: "Authentication-Results"
                 pattern: "dkim=pass.*adapthealth\\.com"
@@ -1327,7 +1333,7 @@ rules:
         - type: Not
           criteria:
             type: SenderPattern
-            pattern: ".*@.*(levi|nike|adidas|gap|oldnavy)\\.(com|net|org)$"
+            pattern: ".*@.*(levi|nike|adidas|gap|oldnavy|ecoflow|onestopplus|torrid|sense)\\.(com|net|org)$"
     score: 320
 
   # Enhanced transaction confirmation patterns
