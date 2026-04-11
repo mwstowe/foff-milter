@@ -8420,6 +8420,20 @@ impl FilterEngine {
 
     /// Detect solar/energy spam patterns
     fn get_solar_energy_spam_score(&self, context: &MailContext) -> i32 {
+        // Skip for newsletters sent via known ESPs
+        let return_path = context
+            .headers
+            .get("return-path")
+            .map(|s| s.to_lowercase())
+            .unwrap_or_default();
+        if return_path.contains("rsgsv.net")
+            || return_path.contains("mcsv.net")
+            || return_path.contains("list-manage.com")
+            || return_path.contains("ccsend.com")
+        {
+            return 0;
+        }
+
         let mut content = String::new();
         if let Some(subject) = &context.subject {
             content.push_str(subject);

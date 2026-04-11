@@ -1,0 +1,751 @@
+✅ Loading modern TOML configuration: ../foff-milter.toml
+Return-Path: <bounce-sy1-ZH_synchy_NNTAN04112026c1231153-h-510f93b107=2@servicing.synchrony.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.2/8.18.1) with ESMTPS id 63B8NmNp084424
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <user@example.com>; Sat, 11 Apr 2026 08:23:48 GMT
+	(envelope-from bounce-sy1-ZH_synchy_NNTAN04112026c1231153-h-510f93b107=2@servicing.synchrony.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (2048-bit key; unprotected) header.d=fbl.zetaglobal.net header.i=@fbl.zetaglobal.net header.b=Ox4cdfa4;
+	dkim=pass (2048-bit key; unprotected) header.d=servicing.synchrony.com header.i=@servicing.synchrony.com header.b=AU53uPXa
+Received: from synchrony-194-1.bm16.maas.zetaglobal.net (synchrony-194-1.bm16.maas.zetaglobal.net [96.47.26.201])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 63B8Njdx211356
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO)
+	for <user@example.com>; Sat, 11 Apr 2026 03:23:46 -0500
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 63B8Njdx211356
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (2048-bit key, unprotected) header.d=fbl.zetaglobal.net header.i=@fbl.zetaglobal.net header.a=rsa-sha256 header.s=v2 header.b=Ox4cdfa4;
+	dkim=pass (2048-bit key, unprotected) header.d=servicing.synchrony.com header.i=@servicing.synchrony.com header.a=rsa-sha256 header.s=v2 header.b=AU53uPXa
+DKIM-Signature: a=rsa-sha256; bh=42l4nVN4Y22L0m75G3tkC4UB2sg/UWkF8BWLB9Hk26c=;
+ c=relaxed/relaxed; d=fbl.zetaglobal.net;
+ h=DKIM-Signature:X-Mailer-Info:X-Mailer-Info-Extra:Subject:From:To:Date:Received:Message-ID:Reply-to:List-Unsubscribe:Feedback-ID:X-rpcampaign:X-cid:X-messageuid:List-Unsubscribe-Post:campaign_token:campaign_id:rcpt_domain:MIME-Version:Content-Type;
+ s=v2; t=555-123-4567; v=1;
+ b=Ox4cdfa4ZGsS4shxKw5+Ek8TK6JyRvTpftwGdO7vnxUEdPPYNa6jTYTBE/JXFTaEaonshBb0
+ k4bUzTTRc6n0msJkXpO1gxu555psR5IUaJnuXsJ36m4ArMB/0tlzMlffx0AVXgO//iNJaB/IFuf
+ 6gkUUZdEXHKFVrNJMVoDWYpDHPrMeT4nxR0GFk0K23EXQISjEsWzlH/jAArI38mdtwKm51Y5dGW
+ 6Gu/YR9tzAVvImhOApG2MpoQYv6ncDPnywNCMy7+9fFYDMe0x9MLFKOFll+QpuFqb1Cpoft5FkE
+ gJAnBm5NAPS6jaJtqO5cF5tWJQci5UIKBAu3yP5H2HYTw==
+DKIM-Signature: a=rsa-sha256; bh=42l4nVN4Y22L0m75G3tkC4UB2sg/UWkF8BWLB9Hk26c=;
+ c=relaxed/relaxed; d=servicing.synchrony.com;
+ h=X-Mailer-Info:X-Mailer-Info-Extra:Subject:From:To:Date:Received:Message-ID:Reply-to:List-Unsubscribe:Feedback-ID:X-rpcampaign:X-cid:X-messageuid:List-Unsubscribe-Post:campaign_token:campaign_id:rcpt_domain:MIME-Version:Content-Type;
+ s=v2; t=555-123-4567; v=1;
+ b=AU53uPXa7Dzx+XVf8hp7VFPO0QntdetUnS/99nVXB0K+D+CaSCp8YK7GRTF0bvskpPLMYj3h
+ g8EYpGOoC3uEbMBh1XdmRBN1qkB/GnlqYUC/GBUwBAqO2OcIMLYdIp8JjkRbia76rCK61QIFtOO
+ 8tpuUAspRbhGE3I2+rjJBqinKaoQhL7ZLRRGySd2FMAzk9aRVPpUyr+H+krxlEaAXoN/rKfI662
+ d7HvP5GUMtRzffcoOqdceylSZCE+/r+RzM7+g5lVV2baSTVfPu8lGlQikx/UV3R9H8b4ca0CADu
+ Ns95JImN9ziPFKqR6DxEJea8q/vvUwRSkPdkhxbr7c6SA==
+X-Mailer-Info: 10.zlXM.geo91c552Yol3Xu5Gdh5GM0ETMyAjM2MWMyMTMxUzM.02c092dlBkY
+ hRGZv1WYp5mLj9Wb.7JSbpRmI6ISM3cTN4kTN4AjMxEjM1EzY5E2MzkDZhNWNiwiIjRnI6Iyc5ZW
+ LzVmc2l2Yp52ZtAncvRWLiJWYkRjZlZjYlV2MykDN1IDO4YTZ2gjNmR2Y0kTYiFTLwICLiIHZioj
+ ICFERE9UTBlkTuM0TNJSf..AM0ETMyAjM2MUMyMTMxUzM..
+X-Mailer-Info-Extra: 510f93b107:0zUTMxMjMxMkNyAjMxEDNwAQaA0nIN90Qu4USB
+ 10TERUQCJiOiQmciwiIw0SMiFWO0MGZmZDO2UmN4gjM1QTOyMTZlJmNlZGNkFmYi1CZvJ
+ HctcmbpNWa2JXZz1iZ5NnI6ICdjJCLiUzYhRWOzMTY5MWM1ITMxIDM4UTO4UzN3EjI6IC
+ Zp1mI7BwYA00TD5iTJFUTPRERBJEQFd1TUNVT++
+Subject: New Card Issued  
+From: =?UTF-8?Q?Synchrony_for_your_PayPal_Extras_World_Mastercard_=C2=AE?= <customer.service@servicing.synchrony.com>
+To: user@example.com
+Date: 11 Apr 2026 08:23:38 -0000
+Received: from 10.100.47.51 by 10.73.0.21 with http; 11 Apr 2026 08:23:38 +0000
+Message-ID: <mid-177589580211251c9a339dac5@servicing.synchrony.com>
+Reply-to: "Synchrony for your PayPal Extras World Mastercard ®"<customer.service@servicing.synchrony.com>
+List-Unsubscribe: <https://view.servicing.synchrony.com/messages/177589580211251c9a339dac5/unsubscribe>, <mailto:unsubscribe-177589580211251c9a339dac5@servicing.synchrony.com?subject=Unsubscribe>
+Feedback-ID: bbad4fe6bee329452886e686fdc49ab1:syf-servicing-prod:trigger:bme
+X-rpcampaign: syfservicingprod1231154_0
+X-cid: syfservicingprod1231154_0
+X-messageuid: 177589580211251c9a339dac5
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+campaign_token: syf-servicing-prod-bbad4fe6bee329452886e686fdc49ab1-0
+campaign_id: 1231154
+rcpt_domain: BADDOMAIN.COM
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="==1edb962319b6355e638616ebc3d0ec01"
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Sat, 11 Apr 2026 08:23:49 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Sat, 11 Apr 2026 03:23:46 -0500 (CDT)
+X-Spam-Flag: YES
+
+This is a multi-part message in MIME format.
+
+--==1edb962319b6355e638616ebc3d0ec01
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+Subject Line:   New Card Issued =20
+Preheader:=20
+
+New Card Issued
+
+
+
+
+It looks like your email client might not support HTML formatted email.
+
+Try opening this email in another email client.
+
+Or, open the following link to view this email in a browser:
+https://e.servicing.synchrony.com/click?ETVNUT1dFQEJBRERPTUFJTi5DT00/Cey=
+JtaWQiOiIxNzc1ODk1ODAyMTEyNTFjOWEzMzlkYWM1IiwiY3QiOiJzeWYtc2VydmljaW5nLX=
+Byb2QtYmJhZDRmZTZiZWUzMjk0NTI4ODZlNjg2ZmRjNDlhYjEtMCIsInJkIjoiQkFERE9NQU=
+lOLkNPTSJ9/UaHR0cHM6Ly92aWV3LnNlcnZpY2luZy5zeW5jaHJvbnkuY29tL21lc3NhZ2Vz=
+LzE3NzU4OTU4MDIxMTI1MWM5YTMzOWRhYzUvcmF3/SWkhfc3luY2h5X05OVEFOMDQxMTIwMj=
+ZjMTIzMTE1Mw/Lc3kx/gadoFCg/JMDQxMTIwMjZDMTIzMTE1Mw/s3te27f481b
+
+------------------------------------------------------------------------=
+-------
+
+We respect your privacy, if this e-mail has been sent to you by error or=
+ you no longer wish to receive email, open the following link in a brows=
+er to unsubscribe:
+https://e.servicing.synchrony.com/click?ETVNUT1dFQEJBRERPTUFJTi5DT00/Cey=
+JtaWQiOiIxNzc1ODk1ODAyMTEyNTFjOWEzMzlkYWM1IiwiY3QiOiJzeWYtc2VydmljaW5nLX=
+Byb2QtYmJhZDRmZTZiZWUzMjk0NTI4ODZlNjg2ZmRjNDlhYjEtMCIsInJkIjoiQkFERE9NQU=
+lOLkNPTSJ9/UaHR0cHM6Ly92aWV3LnNlcnZpY2luZy5zeW5jaHJvbnkuY29tL21lc3NhZ2Vz=
+LzE3NzU4OTU4MDIxMTI1MWM5YTMzOWRhYzUvdW5zdWJzY3JpYmU/SWkhfc3luY2h5X05OVEF=
+OMDQxMTIwMjZjMTIzMTE1Mw/Lc3kx/gadoFCg/JMDQxMTIwMjZDMTIzMTE1Mw/sdm0131532=
+9
+
+--==1edb962319b6355e638616ebc3d0ec01
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE html>
+<html xmlns=3D"http://www.w3.org/1999/xhtml" xmlns:o=3D"urn:schemas-micr=
+osoft-com:office:office" xmlns:v=3D"urn:schemas-microsoft-com:vml" style=
+=3D"-ms-text-size-adjust: 100%; -webkit-font-smoothing: antialiased; -we=
+bkit-text-size-adjust: 100%;">
+
+<head>
+    <meta content=3D"text/html; charset=3DUTF-8" http-equiv=3D"Content-T=
+ype">
+    <meta content=3D"width=3Ddevice-width, initial-scale=3D1.0" name=3D"=
+viewport">
+    <meta content=3D"IE=3Dedge" http-equiv=3D"X-UA-Compatible">
+    <title>Synchrony</title>
+    <style type=3D"text/css">
+        * {
+              -webkit-font-smoothing: antialiased;
+              -webkit-text-size-adjust: 100%;
+              -ms-text-size-adjust: 100%;
+              }
+              /* Outlook link fix */
+              #outlook a {
+                padding: 0;
+              }
+              /* Hotmail background & line height fixes */
+              .ExternalClass {
+                width: 100% !important;
+              }
+              .ExternalClass,
+              .ExternalClass p,
+              .ExternalClass span,
+              .ExternalClass font,
+              .ExternalClass td,
+              .ExternalClass div {
+                line-height: 100%;
+              }
+              /* Image borders & formatting */
+              img {
+                outline: none;
+                text-decoration: none;
+                -ms-interpolation-mode: bicubic;
+              }
+              a img {
+                border: none;
+              }
+              /* Hotmail symbol fix for mobile devices */
+              .ExternalClass img[class^=3DEmoji] {
+                width: 10px !important;
+                height: 10px !important;
+                display: inline !important;
+              }
+              /* iPhone Minimum Font Size Fix */
+              div, p, a, li, td {
+                -webkit-text-size-adjust: none;
+                -ms-text-size-adjust: 100%;
+              }
+              .appleLinksBody, .appleLinksBody a {
+                color: #232f3e !important;
+                text-decoration: none !important;
+              }
+              .appleLinksFooter, .appleLinksFooter a {
+                color: #767676 !important;
+                text-decoration: none !important;
+              }
+              .appleLinksWhite, .appleLinksWhite a{
+                color: #ffffff !important;
+                text-decoration: none !important;
+              }
+              /* Remove Blue Links on Apple Devices */
+              a[x-apple-data-detectors] {
+                color: inherit !important;
+                text-decoration: none !important;
+                font-size: inherit !important;
+                font-family: inherit !important;
+                font-weight: inherit !important;
+                line-height: inherit !important;
+              }
+              /* Remove Blue Links in Gmail */
+              u + #body a {
+                color: inherit;
+                text-decoration: none;
+                font-size: inherit;
+                font-family: inherit;
+                font-weight: inherit;
+                line-height: inherit;
+              }
+              .nowrap{
+                white-space: nowrap !important;
+              }
+      li::marker {
+    color: blue;
+    font-size: 1.2em !important;
+    content: "&#128073; "; /* Change the marker content */
+  }
+    </style>
+    <style type=3D"text/css">
+        /* Responsive styles */
+              @media only screen and (max-width: 480px) {
+                body {
+                  width: 100% !important;
+                  min-width: 100% !important;
+                }
+                #emailContainer {
+                  width: 100% !important;
+                }
+                table.deviceWidth,
+                td.deviceWidth,
+                img.deviceWidth {
+                  width: 100% !important;
+                  padding: 0 !important;
+                }
+                .mCenterBlock{
+                  display: block !important;
+                  float: none !important;
+                  text-align: left !important;
+                  margin: 0 auto !important;
+                }
+                .noDisplay {
+                  display: none !important;
+                }
+                img {
+                  max-width: 100% !important;
+                  height: auto !important;
+                }
+                .mHero{
+                  display: block !important;
+                  width: 100% !important;
+                  height: auto !important;
+                  line-height: 20px !important;
+                  font-size: 16px !important;
+                }
+                .securityZone{
+                  font-size: 10px !important;
+                  line-height: 12px !important;
+                }
+                .body_container{
+                  padding: 30px 15px !important;
+                }
+                .mBodyFont{
+                  font-size: 16px !important;
+                  line-height: 21px !important;
+                }
+                .help_icon{
+                  width: 100% !important;
+                  border-bottom: 0px solid #999999 !important;
+                  padding: 20px 50px 20px!important;
+                }
+                .help_title{
+                  font-size: 18px !important;
+                  line-height: 38px !important;
+                  border-bottom: 1px solid #999999;
+                  padding-bottom: 20px !important;
+                }
+                .help_label{
+                  font-size: 18px !important;
+                  line-height: 38px !important;
+                  padding-left: 20px !important;
+                }
+                .chat_img{
+                  width: 42px !important;
+                  height: auto !important;
+                }
+                .login_img{
+                  width: 35px !important;
+                  height: auto !important;
+                }
+                .triptych_column_first{
+                  border-right: none !important;
+                  border-bottom: 1px solid #dbd9d6;
+                  padding-top: 0 !important;
+                }
+                .triptych_column{
+                  border-right: none !important;
+                  border-bottom: 1px solid #dbd9d6;
+                }
+                .triptych_text{
+                  font-size: 28px !important;
+                  line-height: 32px !important;
+                }
+                .legal{
+                  padding: 20px !important;
+                }
+              }
+              @media only screen and (max-width: 616px) {
+                *.gmail-fix {
+                  display: none !important;
+                }
+              }
+    </style>
+    <style type=3D"text/css">
+        @media only screen and (max-width: 600px) {
+                .clientLogo{
+        	  width: 130px;
+        	  height: auto !important;
+                }
+        	.syfLogo{
+        	  width: 95px;
+        	  height: auto !important;
+                }
+              }
+    </style>
+    <!--[if gte mso 9]>
+<xml>
+<o:OfficeDocumentSettings>
+<o:AllowPNG/>
+<o:PixelsPerInch>96</o:PixelsPerInch>
+</o:OfficeDocumentSettings>
+</xml>
+<![endif]-->
+</head>
+<body style=3D"-ms-text-size-adjust: 100%; -webkit-font-smoothing: antia=
+liased; -webkit-text-size-adjust: 100%;">
+<p style=3D"-ms-text-size-adjust: 100%; -webkit-font-smoothing: antialia=
+sed; -webkit-text-size-adjust: none;">=20
+
+</p>
+<div style=3D"-ms-text-size-adjust: 100%; -webkit-font-smoothing: antial=
+iased; -webkit-text-size-adjust: none; display: none; max-height: 0px; o=
+verflow: hidden;">
+
+New Card Issued
+
+</div>
+    <table role=3D"presentation" align=3D"center" border=3D"0" cellpaddi=
+ng=3D"0" cellspacing=3D"0" width=3D"100%" style=3D"-ms-text-size-adjust:=
+ 100%; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: 10=
+0%;">
+        <tbody style=3D"-ms-text-size-adjust: 100%; -webkit-font-smoothi=
+ng: antialiased; -webkit-text-size-adjust: 100%;">
+            <tr style=3D"-ms-text-size-adjust: 100%; -webkit-font-smooth=
+ing: antialiased; -webkit-text-size-adjust: 100%;">
+                <td align=3D"center" style=3D"-ms-text-size-adjust: 100%=
+; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: none;">=
+
+                    <table role=3D"presentation" align=3D"center" cellpa=
+dding=3D"0" cellspacing=3D"0" id=3D"emailContainer" style=3D"-ms-text-si=
+ze-adjust: 100%; -webkit-font-smoothing: antialiased; -webkit-text-size-=
+adjust: 100%; border: 1px solid rgb(0,0,0);" width=3D"600">
+                        <tbody style=3D"-ms-text-size-adjust: 100%; -web=
+kit-font-smoothing: antialiased; -webkit-text-size-adjust: 100%;">
+                            <tr style=3D"-ms-text-size-adjust: 100%; -we=
+bkit-font-smoothing: antialiased; -webkit-text-size-adjust: 100%;">
+                                <td data-content-region-name=3D"PHT" id=3D=
+"PHT" style=3D"-ms-text-size-adjust: 100%; -webkit-font-smoothing: antia=
+liased; -webkit-text-size-adjust: none; color: transparent; display: non=
+e; height: 0px; line-height: 0; opacity: 0; overflow: hidden; visibility=
+: hidden; width: 0px;" width=3D"100%"></td>
+                            </tr>
+                            <tr style=3D"-ms-text-size-adjust: 100%; -we=
+bkit-font-smoothing: antialiased; -webkit-text-size-adjust: 100%;">
+                                <td style=3D"-ms-text-size-adjust: 100%;=
+ -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: none; pa=
+dding: 20px;">
+ <!------------------RC/PSCC Common Header staterts---------------------=
+---------------->
+              =20
+        =20
+           <table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D=
+"presentation" width=3D"100%">
+    <tr>
+        <td>
+   =20
+      =20
+<!-- (If) part for eventtype equalto lost stolen & multi_like_unique_key=
+ (else) parts for eventtype not equalto lost stolen(starts) -->=20
+
+
+
+
+        =20
+            <div align=3D"right" class=3D"securityZone" style=3D"color: =
+#333333; font-family: Arial, sans-serif; font-size: 12px; line-height: 1=
+4px;">
+                Account ending in: 7848 | <a href=3D"https://e.servicing=
+.synchrony.com/click?ETVNUT1dFQEJBRERPTUFJTi5DT00/CeyJtaWQiOiIxNzc1ODk1O=
+DAyMTEyNTFjOWEzMzlkYWM1IiwiY3QiOiJzeWYtc2VydmljaW5nLXByb2QtYmJhZDRmZTZiZ=
+WUzMjk0NTI4ODZlNjg2ZmRjNDlhYjEtMCIsInJkIjoiQkFERE9NQUlOLkNPTSJ9/VaHR0cHM=
+6Ly93d3cucGF5cGFsLmNvbQ/SWkhfc3luY2h5X05OVEFOMDQxMTIwMjZjMTIzMTE1Mw/Lc3k=
+x/gadoFCg/JMDQxMTIwMjZDMTIzMTE1Mw/s6m2c9581b2" style=3D"text-decoration:=
+ underline; color: #333333" data-location=3D"t3">Log in</a>
+            </div>
+
+			<div valign=3D"bottom">
+			=09
+			</div> =09
+        </td>
+    </tr>
+    <tr>
+        <td style=3D"padding-bottom:18px;">
+          <table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D=
+"presentation" width=3D"100%">
+            <tr>
+			=20
+			 =20
+				<td valign=3D"bottom">
+	         =20
+                   =20
+             		=20
+     				=20
+     			=09
+						<img align=3D"left" alt=3D"paypal" src=3D"https://images.servicing=
+.synchrony.com/images/f9eaeeaa24f2162cb497c58ba37de069/PRD/paypaldualcar=
+d_logo.png" width=3D"270" class=3D"clientLogo">
+				=09
+               =20
+				</td>
+			 =20
+		=09
+		=09
+			 =20
+				<td valign=3D"bottom">
+					<img align=3D"right" alt=3D"synchrony" src=3D"https://images.servic=
+ing.synchrony.com/images/f9eaeeaa24f2162cb497c58ba37de069/SYF/synchrony_=
+logo_rgb_positive.png" width=3D"175" class=3D"syfLogo">=09
+
+				</td>
+			 =20
+		=09
+            </tr>
+          </table>
+        </td>
+    </tr>
+    <tr>
+        <td>=20
+            <table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=
+=3D"presentation" width=3D"100%">
+                <tr>
+                    <td width=3D"6%" style=3D"width:6%;">
+                    </td>
+                    <td width=3D"88%" style=3D"width:88%; border-bottom:=
+ 1px solid #A8A8A8;">
+                    </td>
+                    <td width=3D"6%" style=3D"width:6%;">
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>=20
+</table>=20
+        =20
+
+ <!------------------RC/PSCC Common Header Ends-------------------------=
+------------>
+                                </td>
+                            </tr>
+ <!-------------------------------BANNER_BODY SNIPPET-------------------=
+------------>
+                       =20
+             <!--Start of Banner -->
+     <tr>
+         <td>
+             <table align=3D"center" border=3D"0" cellpadding=3D"0" cell=
+spacing=3D"0" valign=3D"middle" role=3D"presentation" width=3D"100%">
+                 <tbody>
+                     <tr>
+                         <!-- <td class=3D"hero" style=3D"padding: 20px;=
+ text-align: center; color: rgb(255, 255, 255); line-height: 35px; font-=
+family: Arial, sans-serif; font-size: 29px;"> -->
+                         <td class=3D"hero" style=3D"padding: 20px; text=
+-align: center; color: #333333; line-height: 35px; font-family: Arial, s=
+ans-serif; font-size: 29px;">  New Card Issued  </td>
+                     </tr>
+                 </tbody>
+             </table>
+         </td>
+     </tr>=20
+       <!-- End of  Banner -->=20
+       <!--Start of BODY ES -->
+
+           <!--Start of BODY EN -->
+                     <tr>
+                         <td class=3D"body_container" style=3D"padding: =
+30px 35px">
+                             <table border=3D"0" cellpadding=3D"0" cells=
+pacing=3D"0" role=3D"presentation" width=3D"100%">
+                                 <tbody>
+                                     <tr>
+                                         <td class=3D"mBodyFont" style=3D=
+"color: #333333; font-family: Arial, sans-serif; font-size: 18px; line-h=
+eight: 21px; padding-bottom: 15px;"> Hi Michael, </td>
+                                     </tr>
+                                     <tr>
+                                         <td style=3D"color: #333333; fo=
+nt-family: Arial, sans-serif; font-size: 18px; line-height: 21px; paddin=
+g-bottom: 5px;" class=3D"mBodyFont">
+                                            A new card has been successf=
+ully requested for your PayPal Extras World Mastercard =C2=AE account. I=
+t should arrive within 7-10 business days. Once received,=C2=A0please de=
+stroy any old cards and follow the instructions that come with your new =
+card as activation may be required prior to use.
+                                            <br><br>
+                                            You will receive another ema=
+il in the next few days once your new card has shipped.=C2=A0If you thin=
+k this card was requested in error, let us know by calling customer serv=
+ice at the number listed on the back of your card or on your billing sta=
+tement. Some of the reasons a new card could have been issued for your a=
+ccount include:
+                                       </td>
+                                     </tr>
+                                     <tr>
+                                         <td style=3D"padding-top: 10px"=
+>
+                                             <table cellpadding=3D"0" ce=
+llspacing=3D"0" border=3D"0" role=3D"presentation" width=3D"100%">
+                                                 <tr>
+                                                     <td class=3D"device=
+Width" style=3D"padding: 0 40px">
+                                                         <table width=3D=
+"100%" cellpadding=3D"0" cellspacing=3D"0" border=3D"0" role=3D"presenta=
+tion">
+                                                             <tr>
+                                                                 <td sty=
+le=3D"color: #f9c20a; font-family: Arial, sans-serif; font-size: 32px; l=
+ine-height: 32px; padding: 0px 10px 0 0" width=3D"13"><img src=3D"https:=
+//images.servicing.synchrony.com/images/f9eaeeaa24f2162cb497c58ba37de069=
+/SYF/bullet_blackdot.gif" style=3D"display: block; border: 0" alt=3D"=E2=
+=80=A2" width=3D"6" align=3D"left"></td>
+                                                                 <td sty=
+le=3D"color: #333333; font-family: Arial, sans-serif; font-size: 18px; l=
+ine-height: 21px; padding: 0px 0 0" class=3D"mBodyFont" valign=3D"top">A=
+ replacement card was requested </td>
+                                                             </tr>
+                                                             <tr>
+                                                                 <td sty=
+le=3D"color: #f9c20a; font-family: Arial, sans-serif; font-size: 32px; l=
+ine-height: 32px; padding: 0px 10px 0 0" width=3D"13"><img src=3D"https:=
+//images.servicing.synchrony.com/images/f9eaeeaa24f2162cb497c58ba37de069=
+/SYF/bullet_blackdot.gif" style=3D"display: block; border: 0" alt=3D"=E2=
+=80=A2" width=3D"6" align=3D"left"></td>
+                                                                 <td sty=
+le=3D"color: #333333; font-family: Arial, sans-serif; font-size: 18px; l=
+ine-height: 21px; padding: 0px 0 0" class=3D"mBodyFont" valign=3D"top">A=
+n authorized user was added to your account </td>
+                                                             </tr>
+                                                             <tr>
+                                                                 <td sty=
+le=3D"color: #f9c20a; font-family: Arial, sans-serif; font-size: 32px; l=
+ine-height: 32px; padding: 0px 10px 0 0" width=3D"13"><img src=3D"https:=
+//images.servicing.synchrony.com/images/f9eaeeaa24f2162cb497c58ba37de069=
+/SYF/bullet_blackdot.gif" style=3D"display: block; border: 0" alt=3D"=E2=
+=80=A2" width=3D"6" align=3D"left"></td>
+                                                                 <td sty=
+le=3D"color: #333333; font-family: Arial, sans-serif; font-size: 18px; l=
+ine-height: 21px; padding: 0px 0 0" class=3D"mBodyFont" valign=3D"top">Y=
+our card was reported as lost or stolen</td>
+                                                             </tr>
+                                                              <tr>
+                                                                 <td sty=
+le=3D"color: #f9c20a; font-family: Arial, sans-serif; font-size: 32px; l=
+ine-height: 32px; padding: 0px 10px 0 0" width=3D"13"><img src=3D"https:=
+//images.servicing.synchrony.com/images/f9eaeeaa24f2162cb497c58ba37de069=
+/SYF/bullet_blackdot.gif" style=3D"display: block; border: 0" alt=3D"=E2=
+=80=A2" width=3D"6" align=3D"left"></td>
+                                                                 <td sty=
+le=3D"color: #333333; font-family: Arial, sans-serif; font-size: 18px; l=
+ine-height: 21px; padding: 0px 0 0" class=3D"mBodyFont" valign=3D"top">A=
+ new card was issued by Synchrony </td>
+                                                             </tr>
+                                                         </table>
+                                                     </td>
+                                                 </tr>
+                                             </table>
+                                         </td>
+                                     </tr>
+            =20
+              <!--End of BODY EN -->                    =20
+                        =20
+                     =20
+               </tbody>
+           </table>
+                         =20
+ <!-------------------------------BANNER_BODY SNIPPET-------------------=
+-------------->   =20
+            =20
+ <!---------------------------START_REVOLVING_COMMON_BUTTON-------------=
+-------------->                         =20
+          =20
+
+
+
+
+
+
+
+</td>
+</tr>
+<tr>
+    <td class=3D"body_container" style=3D"padding:0px 50px">
+        <table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"=
+presentation" width=3D"100%">
+            <tbody>
+                <tr>
+                    <td style=3D"padding-top:10px; font-family: Arial, s=
+ans-serif; font-size: 16px; color: #4c8b2b" align=3D"center">
+                        <!--[if mso]>
+						<v:rect xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:w=3D"urn:s=
+chemas-microsoft-com:office:word" href=3D"https://e.servicing.synchrony.=
+com/click?ETVNUT1dFQEJBRERPTUFJTi5DT00/CeyJtaWQiOiIxNzc1ODk1ODAyMTEyNTFj=
+OWEzMzlkYWM1IiwiY3QiOiJzeWYtc2VydmljaW5nLXByb2QtYmJhZDRmZTZiZWUzMjk0NTI4=
+ODZlNjg2ZmRjNDlhYjEtMCIsInJkIjoiQkFERE9NQUlOLkNPTSJ9/VaHR0cHM6Ly93d3cucG=
+F5cGFsLmNvbQ/SWkhfc3luY2h5X05OVEFOMDQxMTIwMjZjMTIzMTE1Mw/Lc3kx/gadoFCg/J=
+MDQxMTIwMjZDMTIzMTE1Mw/s6m2c9581b2" style=3D"height:40px;v-text-anchor:m=
+iddle;width:160px;" stroke=3D"f" fillcolor=3D"#003087" target=3D"_blank"=
+>
+						<w:anchorlock/>
+						<center>
+						<![endif]-->
+                        <a href=3D"https://e.servicing.synchrony.com/cli=
+ck?ETVNUT1dFQEJBRERPTUFJTi5DT00/CeyJtaWQiOiIxNzc1ODk1ODAyMTEyNTFjOWEzMzl=
+kYWM1IiwiY3QiOiJzeWYtc2VydmljaW5nLXByb2QtYmJhZDRmZTZiZWUzMjk0NTI4ODZlNjg=
+2ZmRjNDlhYjEtMCIsInJkIjoiQkFERE9NQUlOLkNPTSJ9/VaHR0cHM6Ly93d3cucGF5cGFsL=
+mNvbQ/SWkhfc3luY2h5X05OVEFOMDQxMTIwMjZjMTIzMTE1Mw/Lc3kx/gadoFCg/JMDQxMTI=
+wMjZDMTIzMTE1Mw/s6m2c9581b2" style=3D"background-color:#003087;color:#ff=
+ffff;display:inline-block;font-family:sans-serif;font-size:16px;line-hei=
+ght:40px;text-align:center;text-decoration:none;width:160px;-webkit-text=
+-size-adjust:none;" target=3D"_blank" data-location=3D"t8">Log In Now</a=
+>
+                        <!--[if mso]>
+						</center>
+						</v:rect>
+						<![endif]-->
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </td>
+</tr>
+
+                        =20
+ <!---------------------------END_REVOLVING_COMMON_BUTTON---------------=
+------------>   =20
+
+ <!--------------------------- RC/PSCC Common Footer starts-------------=
+------------->=20
+            <tr style=3D"-ms-text-size-adjust: 100%; -webkit-font-smooth=
+ing: antialiased; -webkit-text-size-adjust: 100%;">
+                <td style=3D"-ms-text-size-adjust: 100%; -webkit-font-sm=
+oothing: antialiased; -webkit-text-size-adjust: none;">
+                   =20
+                       =20
+</td>
+</tr>
+<tr>
+<td class=3D"legal" style=3D"padding: 30px;">
+<table width=3D"100%" role=3D"presentation" cellpadding=3D"0" cellspacin=
+g=3D"0" border=3D"0">=20
+
+
+
+<tr>
+
+    <td style=3D"padding-bottom: 15px; color: rgb(51, 51, 51); line-heig=
+ht: 13px; font-family: Arial, sans-serif; font-size: 11px;">
+
+        The PayPal Extras World Mastercard =C2=AE is issued by Synchrony=
+ Bank pursuant to a license by Mastercard International Incorporated. Ma=
+stercard is a registered trademark, and the circles design is a trademar=
+k of Mastercard International Incorporated.
+	</td>
+</tr>
+
+<tr>
+    <td style=3D"padding-bottom: 15px; color: rgb(51, 51, 51); line-heig=
+ht: 13px; font-family: Arial, sans-serif; font-size: 11px;">          =20=
+
+        Head off identity theft before it happens. For more information =
+about identity theft, please visit the Federal Trade Commission=E2=80=B2=
+s (FTC) consumer <a style=3D"text-decoration:underline;" href=3D"https:/=
+/e.servicing.synchrony.com/click?ETVNUT1dFQEJBRERPTUFJTi5DT00/CeyJtaWQiO=
+iIxNzc1ODk1ODAyMTEyNTFjOWEzMzlkYWM1IiwiY3QiOiJzeWYtc2VydmljaW5nLXByb2QtY=
+mJhZDRmZTZiZWUzMjk0NTI4ODZlNjg2ZmRjNDlhYjEtMCIsInJkIjoiQkFERE9NQUlOLkNPT=
+SJ9/VaHR0cHM6Ly93d3cuaWRlbnRpdHl0aGVmdC5nb3Yv/SWkhfc3luY2h5X05OVEFOMDQxM=
+TIwMjZjMTIzMTE1Mw/Lc3kx/gadoFCg/JMDQxMTIwMjZDMTIzMTE1Mw/s0jaf7f4c48" dat=
+a-location=3D"t13">website</a>.
+    </td>
+</tr>
+<tr>
+    <td style=3D"padding-bottom: 15px; color: rgb(51, 51, 51); line-heig=
+ht: 13px; font-family: Arial, sans-serif; font-size: 11px;">          =20=
+
+		This is an unmonitored email box.  Please do not reply to this email.
+    </td>
+</tr>
+<tr>
+    <td style=3D"padding-bottom: 15px; color: rgb(51, 51, 51); line-heig=
+ht: 13px; font-family: Arial, sans-serif; font-size: 11px;">          =20=
+
+		<strong>ABOUT THIS EMAIL MESSAGE:</strong> This email was sent by Sync=
+hrony to provide important account servicing information regarding your =
+PayPal Extras World Mastercard =C2=AE account. You may receive account s=
+ervicing emails even if you have requested not to receive marketing offe=
+rs by email for your PayPal Extras World Mastercard =C2=AE account.=20
+	</td>
+</tr>
+<tr>
+    <td style=3D"color: rgb(51, 51, 51); line-height: 13px; font-family:=
+ Arial, sans-serif; font-size: 11px;">          =20
+       Credit is extended by Synchrony Bank, which is located=C2=A0<span=
+ class=3D"nolinkcolor" style=3D"color: #2f3033; text-decoration: none"> =
+at 170 Election Road, Suite 125, Draper, UT 84020-6425, USA.</span>
+		<a style=3D"text-decoration:underline;" href=3D"https://e.servicing.sy=
+nchrony.com/click?ETVNUT1dFQEJBRERPTUFJTi5DT00/CeyJtaWQiOiIxNzc1ODk1ODAy=
+MTEyNTFjOWEzMzlkYWM1IiwiY3QiOiJzeWYtc2VydmljaW5nLXByb2QtYmJhZDRmZTZiZWUz=
+Mjk0NTI4ODZlNjg2ZmRjNDlhYjEtMCIsInJkIjoiQkFERE9NQUlOLkNPTSJ9/VaHR0cDovL3=
+d3dy5zeW5jaHJvbnkuY29t/SWkhfc3luY2h5X05OVEFOMDQxMTIwMjZjMTIzMTE1Mw/Lc3kx=
+/gadoFCg/JMDQxMTIwMjZDMTIzMTE1Mw/s9iff87666a" data-location=3D"t14">www.=
+synchrony.com</a><a>
+	</a>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+=20
+                  =20
+               =20
+           =20
+  <!--------------------------- RC/PSCC Common Footer Ends--------------=
+------------> =09
+                        </tbody>
+                    </table>
+                </td>
+            </tr>=20
+      </tbody>
+    </table>
+
+
+
+
+
+
+<img src=3D"https://e.servicing.synchrony.com/open?ETVNUT1dFQEJBRERPTUFJ=
+Ti5DT00/CeyJtaWQiOiIxNzc1ODk1ODAyMTEyNTFjOWEzMzlkYWM1IiwiY3QiOiJzeWYtc2V=
+ydmljaW5nLXByb2QtYmJhZDRmZTZiZWUzMjk0NTI4ODZlNjg2ZmRjNDlhYjEtMCIsInJkIjo=
+iQkFERE9NQUlOLkNPTSJ9/V/SWkhfc3luY2h5X05OVEFOMDQxMTIwMjZjMTIzMTE1Mw/Lc3k=
+x/gadoFCg/JMDQxMTIwMjZDMTIzMTE1Mw/s8j83995e1b" height=3D"2" width=3D"3" =
+alt=3D""></body>
+</html>
+
+--==1edb962319b6355e638616ebc3d0ec01--
+

@@ -79,7 +79,7 @@ rules:
               - type: SenderPattern
                 pattern: ".*@.*(wine|wines|winery|brewery|distillery|spirits|liquor|beverage).*\\.(com|net|org)$"
               - type: SenderPattern
-                pattern: ".*@.*(evgo|sparkpostmail|acemedseattle)\\.(com|net)$"
+                pattern: ".*@.*(evgo|sparkpostmail|acemedseattle|americanmeadows)\\.(com|net)$"
               - type: HeaderPattern
                 header: "Authentication-Results"
                 pattern: "dkim=pass.*adapthealth\\.com"
@@ -161,7 +161,7 @@ rules:
             type: Or
             criteria:
               - type: SenderPattern
-                pattern: ".*@.*(paypal|stripe|square|quickbooks|freshbooks|xfinity|comcast|barnesandnoble|williams-sonoma|499inks)\\.(com|net|org)$"
+                pattern: ".*@.*(paypal|stripe|square|quickbooks|freshbooks|xfinity|comcast|barnesandnoble|williams-sonoma|499inks|americanmeadows)\\.(com|net|org)$"
               - type: SenderPattern
                 pattern: ".*@.*(alerts\\.comcast|alerts\\.xfinity)\\.(com|net)$"
               - type: SenderPattern
@@ -181,6 +181,9 @@ rules:
               - type: HeaderPattern
                 header: "Authentication-Results"
                 pattern: "dkim=pass.*adapthealth\\.com"
+              - type: FeatureAnalysis
+                feature_name: "Authentication Analysis"
+                evidence_pattern: "DKIM domain properly aligned"
     score: 150
     description: "Financial phishing attempts"
 
@@ -602,7 +605,7 @@ rules:
             type: Or
             criteria:
               - type: SenderPattern
-                pattern: ".*<.*@.*(dominos|doordash|butcherbox|amazon|walmart|target|bestbuy|walgreens|barnesandnoble|torrid)\\.(com|net|org)>.*|.*@.*(dominos|doordash|butcherbox|amazon|walmart|target|bestbuy|walgreens|barnesandnoble|torrid)\\.(com|net|org)$"
+                pattern: ".*<.*@.*(dominos|doordash|butcherbox|amazon|walmart|target|bestbuy|walgreens|barnesandnoble|torrid|americanmeadows)\\.(com|net|org)>.*|.*@.*(dominos|doordash|butcherbox|amazon|walmart|target|bestbuy|walgreens|barnesandnoble|torrid|americanmeadows)\\.(com|net|org)$"
               - type: SenderPattern
                 pattern: ".*<.*@(mail\\.duluthtrading|em\\.michaelscustomframing|dt\\.torrid)\\.(com|net|org)>.*|.*@(mail\\.duluthtrading|em\\.michaelscustomframing|dt\\.torrid)\\.(com|net|org)$"
               - type: SenderPattern
@@ -613,7 +616,10 @@ rules:
                 pattern: ".*@e-offers\\.dominos\\.com$"
               - type: HeaderPattern
                 header: "From"
-                pattern: ".*@.*(butcherbox|dominos|doordash|amazon|walmart|walgreens|barnesandnoble|charmtracker|acemedseattle)\\.(com|net|org)$"
+                pattern: ".*@.*(butcherbox|dominos|doordash|amazon|walmart|walgreens|barnesandnoble|charmtracker|acemedseattle|americanmeadows)\\.(com|net|org)$"
+              - type: FeatureAnalysis
+                feature_name: "Authentication Analysis"
+                evidence_pattern: "DKIM domain properly aligned"
     score: 300
   # Enhanced mailer daemon spoofing
   - name: "Enhanced Mailer Daemon Spoofing"

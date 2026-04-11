@@ -465,6 +465,29 @@ impl FeatureExtractor for EspValidationFeature {
                 } else if let Some(ref dkim_domain) = dkim_esp_domain {
                     dkim_domain.clone()
                 } else {
+                    // Check Return-Path for newsletter ESPs not in main ESP list
+                    let rp = context
+                        .headers
+                        .get("return-path")
+                        .map(|s| s.to_lowercase())
+                        .unwrap_or_default();
+                    let rp_esp_domains = [
+                        ("rsgsv.net", "mailchimp"),
+                        ("mcsv.net", "mailchimp"),
+                        ("mcdlv.net", "mailchimp"),
+                        ("list-manage.com", "mailchimp"),
+                        ("ccsend.com", "constant_contact"),
+                    ];
+                    for (domain, esp_name) in &rp_esp_domains {
+                        if rp.contains(domain) {
+                            return FeatureScore {
+                                feature_name: "ESP Validation".to_string(),
+                                score: -15,
+                                confidence: 0.9,
+                                evidence: vec![format!("Trusted ESP: {}", esp_name)],
+                            };
+                        }
+                    }
                     return FeatureScore {
                         feature_name: "ESP Validation".to_string(),
                         score: 0,
@@ -488,6 +511,29 @@ impl FeatureExtractor for EspValidationFeature {
             } else if let Some(ref dkim_domain) = dkim_esp_domain {
                 dkim_domain.clone()
             } else {
+                // Check Return-Path for newsletter ESPs not in main ESP list
+                let rp = context
+                    .headers
+                    .get("return-path")
+                    .map(|s| s.to_lowercase())
+                    .unwrap_or_default();
+                let rp_esp_domains = [
+                    ("rsgsv.net", "mailchimp"),
+                    ("mcsv.net", "mailchimp"),
+                    ("mcdlv.net", "mailchimp"),
+                    ("list-manage.com", "mailchimp"),
+                    ("ccsend.com", "constant_contact"),
+                ];
+                for (domain, esp_name) in &rp_esp_domains {
+                    if rp.contains(domain) {
+                        return FeatureScore {
+                            feature_name: "ESP Validation".to_string(),
+                            score: -15,
+                            confidence: 0.9,
+                            evidence: vec![format!("Trusted ESP: {}", esp_name)],
+                        };
+                    }
+                }
                 return FeatureScore {
                     feature_name: "ESP Validation".to_string(),
                     score: 0,

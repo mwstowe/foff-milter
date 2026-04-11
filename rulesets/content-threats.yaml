@@ -375,8 +375,12 @@ rules:
               pattern: ".*@.*(forum|fake|scam|spam).*"
         - type: Not
           criteria:
-            type: SenderPattern
-            pattern: ".*@.*nytimes.*"
+            type: Or
+            criteria:
+              - type: SenderPattern
+                pattern: ".*@.*nytimes.*"
+              - type: SenderPattern
+                pattern: ".*@.*(commonspirit|virginiamason|providence|kaiser|hospital|medical|clinic)\\.(com|org|net)$"
     score: 65
     description: "Product spam and brand impersonation attempts"
 

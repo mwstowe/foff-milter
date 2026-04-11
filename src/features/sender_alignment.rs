@@ -341,6 +341,22 @@ impl SenderAlignmentAnalyzer {
                             }
                         }
 
+                        // Skip financial co-branding (e.g., "Synchrony for your PayPal card")
+                        let financial_cobranding = [
+                            "synchrony",
+                            "comenity",
+                            "barclays",
+                            "citi",
+                            "chase",
+                            "capital one",
+                        ];
+                        if financial_cobranding
+                            .iter()
+                            .any(|fc| display_lower.contains(fc) || email_lower.contains(fc))
+                        {
+                            continue;
+                        }
+
                         score += 30;
                         evidence.push(format!(
                             "Display name claims '{}' but email domain doesn't match",
@@ -1053,7 +1069,12 @@ impl SenderAlignmentAnalyzer {
             .iter()
             .any(|domain| sender_info.from_domain.contains(domain));
 
-        if display_name.chars().any(|c| c as u32 > 127) && !is_legitimate_trademark {
+        if display_name
+            .chars()
+            .filter(|c| !matches!(*c, '®' | '™' | '©'))
+            .any(|c| c as u32 > 127)
+            && !is_legitimate_trademark
+        {
             issues.push(
                 "Display name contains non-ASCII characters (potential spoofing)".to_string(),
             );
@@ -1648,6 +1669,12 @@ impl FeatureExtractor for SenderAlignmentAnalyzer {
                         || (from_root.contains("lovepop") && reply_to_root.contains("lovepop"))
                         || (from_domain.contains("sparkpostmail.com")
                             && reply_to_root.contains("saily"))
+                        // ESP reply-to infrastructure
+                        || reply_to_domain.contains("mailchimpapp.net")
+                        || reply_to_domain.contains("list-manage.com")
+                        || reply_to_domain.contains("rsgsv.net")
+                        || reply_to_domain.contains("sendgrid.net")
+                        || reply_to_domain.contains("ccsend.com")
                         // Medical billing services
                         || (from_domain.contains("docugateway.com") && reply_to_domain.ends_with(".org"))
                         || (from_root.contains("virginiamason") && reply_to_root.contains("virginiamason"))

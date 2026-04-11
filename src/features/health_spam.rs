@@ -71,6 +71,57 @@ impl FeatureExtractor for HealthSpamAnalyzer {
             .trim_end_matches('>')
             .to_lowercase();
 
+        // Skip health spam detection for actual healthcare organizations
+        let healthcare_keywords = [
+            "health",
+            "hospital",
+            "medical",
+            "clinic",
+            "care",
+            "physician",
+            "doctor",
+            "patient",
+            "commonspirit",
+            "providence",
+            "kaiser",
+            "mayo",
+            "cedars",
+            "virginia mason",
+            "franciscan",
+        ];
+        let is_healthcare_org = healthcare_keywords
+            .iter()
+            .any(|kw| sender_domain.contains(kw))
+            || sender_domain.ends_with(".org")
+                && healthcare_keywords.iter().any(|kw| content.contains(kw));
+        if is_healthcare_org {
+            return FeatureScore {
+                feature_name: "Health Spam".to_string(),
+                score: 0,
+                confidence: 0.0,
+                evidence: vec![],
+            };
+        }
+
+        // Skip health spam for newsletters sent via known ESPs
+        let return_path = context
+            .headers
+            .get("return-path")
+            .map(|s| s.to_lowercase())
+            .unwrap_or_default();
+        let is_newsletter_esp = return_path.contains("rsgsv.net")
+            || return_path.contains("mcsv.net")
+            || return_path.contains("list-manage.com")
+            || return_path.contains("ccsend.com");
+        if is_newsletter_esp {
+            return FeatureScore {
+                feature_name: "Health Spam".to_string(),
+                score: 0,
+                confidence: 0.0,
+                evidence: vec![],
+            };
+        }
+
         // Check for health brand impersonation
         for brand in &health_brands {
             if content.contains(brand) {

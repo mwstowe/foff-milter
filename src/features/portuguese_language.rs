@@ -69,9 +69,21 @@ impl FeatureExtractor for PortugueseLanguageAnalyzer {
                 "woot.com",         // Woot marketplace
             ];
 
+            // Also check if sent via known newsletter ESP (Return-Path)
+            let return_path = context
+                .headers
+                .get("return-path")
+                .map(|s| s.to_lowercase())
+                .unwrap_or_default();
+            let is_newsletter_esp = return_path.contains("rsgsv.net")
+                || return_path.contains("list-manage.com")
+                || return_path.contains("mailchimp.com")
+                || return_path.contains("ccsend.com");
+
             let is_legitimate_retail = legitimate_retail_domains
                 .iter()
-                .any(|domain| sender_domain.contains(domain));
+                .any(|domain| sender_domain.contains(domain))
+                || is_newsletter_esp;
 
             if !is_legitimate_retail {
                 // High penalty since no Portuguese emails are expected
