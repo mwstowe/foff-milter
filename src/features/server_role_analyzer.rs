@@ -24,10 +24,11 @@ impl ServerRoleAnalyzer {
             ".click".to_string(),
             ".link".to_string(),
             ".space".to_string(),
+            ".name".to_string(),
         ];
 
         let suspicious_domain_patterns = vec![
-            Regex::new(r"^[a-z0-9]{6,12}\.(com|net|org)$").unwrap(), // Random alphanumeric
+            Regex::new(r"^[a-z0-9]{6,10}\.(com|net|org|name)$").unwrap(), // Random alphanumeric
             Regex::new(r"^[a-z]+\d+\.(shop|space|click)$").unwrap(), // Word + numbers + suspicious TLD
             Regex::new(r"^tc\d+\.shop$").unwrap(),                   // tc25.shop pattern
             Regex::new(r"^[a-z]+zens?\.(shop|space)$").unwrap(),     // arcticzens.shop pattern

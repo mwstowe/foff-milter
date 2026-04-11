@@ -361,6 +361,7 @@ impl ContextAnalyzer {
             || sender.to_lowercase().contains("mtasv")
             || sender.to_lowercase().contains("batemanhornecenter")
             || sender.to_lowercase().contains("livenation")
+            || sender.to_lowercase().contains("silhouetteamerica")
             || text.to_lowercase().contains("in-store")
             || text.to_lowercase().contains("save big");
 

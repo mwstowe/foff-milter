@@ -409,6 +409,34 @@ impl BrandImpersonationFeature {
         false
     }
 
+    fn normalize_homoglyphs(&self, text: &str) -> String {
+        // Normalize visually similar characters used to evade brand detection
+        // e.g., "CIub" (capital I for lowercase l), Cyrillic/Greek lookalikes
+        let mut result: String = text
+            .chars()
+            .map(|c| match c {
+                'І' | 'Ι' | 'Ⅰ' => 'I', // Cyrillic/Greek I, Roman numeral
+                'і' | 'ι' => 'i',       // Cyrillic/Greek i
+                'О' | 'Ο' => 'O',       // Cyrillic/Greek O
+                'о' | 'ο' => 'o',       // Cyrillic/Greek o
+                'А' | 'Α' => 'A',       // Cyrillic/Greek A
+                'а' | 'α' => 'a',       // Cyrillic/Greek a
+                'Е' | 'Ε' => 'E',       // Cyrillic/Greek E
+                'е' | 'ε' => 'e',       // Cyrillic/Greek e
+                'С' => 'C',             // Cyrillic Es
+                'с' => 'c',
+                'Р' => 'P', // Cyrillic Er
+                'р' => 'p',
+                _ => c,
+            })
+            .collect();
+        // Normalize "I" used as "l" in lowercase context: e.g., "CIub" → "Club"
+        // Pattern: I followed by lowercase letter (and not start of word like "I am")
+        let re = Regex::new(r"([A-Za-z])I([a-z])").unwrap();
+        result = re.replace_all(&result, "${1}l${2}").to_string();
+        result
+    }
+
     fn detect_brand_mentions(&self, text: &str) -> Vec<String> {
         let mut detected_brands = Vec::new();
         let text_lower = text.to_lowercase();
@@ -666,16 +694,19 @@ impl FeatureExtractor for BrandImpersonationFeature {
         // Don't check body - mentioning a brand in context is not impersonation
         let combined_text = format!("{} {}", from_display_name, decoded_subject);
 
+        // Normalize common homoglyphs used to evade brand detection
+        let normalized_text = self.normalize_homoglyphs(&combined_text);
+
         // Also check for spaced-letter evasion: "A M A Z O N" → "AMAZON"
         let has_spaced_letters = {
             let re = Regex::new(r"(?i)([A-Z]) ([A-Z]) ([A-Z]) ([A-Z])").unwrap();
-            re.is_match(&combined_text)
+            re.is_match(&normalized_text)
         };
 
-        let detected_brands = self.detect_brand_mentions(&combined_text);
+        let detected_brands = self.detect_brand_mentions(&normalized_text);
 
         let evasion_brands: Vec<String> = if has_spaced_letters && detected_brands.is_empty() {
-            let collapsed: String = combined_text
+            let collapsed: String = normalized_text
                 .chars()
                 .filter(|c| *c != ' ' || !c.is_ascii())
                 .collect();

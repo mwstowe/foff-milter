@@ -216,9 +216,23 @@ rules:
   - name: "Perfect Authentication"
     enabled: true
     criteria:
-      type: "FeatureAnalysis"
-      feature_name: "Authentication Analysis"
-      evidence_pattern: "Authentication risk level: Secure"
+      type: "And"
+      criteria:
+        - type: "FeatureAnalysis"
+          feature_name: "Authentication Analysis"
+          evidence_pattern: "Authentication risk level: Secure"
+        - type: "Not"
+          criteria:
+            type: "And"
+            criteria:
+              - type: "FeatureAnalysis"
+                feature_name: "Server Role Analysis"
+                evidence_pattern: "Authentication bonus should be reduced"
+              - type: "Not"
+                criteria:
+                  type: "HeaderPattern"
+                  header: "Authentication-Results"
+                  pattern: "dmarc=pass"
     score: -30
     description: "Perfect authentication using feature analysis (Secure risk level)"
 

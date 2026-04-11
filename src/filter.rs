@@ -2336,6 +2336,16 @@ impl FilterEngine {
             ));
         }
 
+        // Check for gibberish sender domain (random-looking domains used by spammers)
+        let gibberish_domain_score = self.get_gibberish_domain_score(&context_with_attachments);
+        if gibberish_domain_score > 0 {
+            total_score += gibberish_domain_score;
+            scoring_rules.push(format!(
+                "Gibberish Domain: Random-looking sender domain (+{})",
+                gibberish_domain_score
+            ));
+        }
+
         // Check for product sales spam
         let product_spam_score = self.get_product_sales_spam_score(&context_with_attachments);
         if product_spam_score > 0 {
@@ -8497,7 +8507,81 @@ impl FilterEngine {
         0
     }
 
-    /// Detect product sales spam
+    /// Detect gibberish/random sender domains used by spammers
+    fn get_gibberish_domain_score(&self, context: &MailContext) -> i32 {
+        let domain = self
+            .extract_sender_domain(context)
+            .unwrap_or_default()
+            .to_lowercase();
+
+        if domain.is_empty() {
+            return 0;
+        }
+
+        // Skip well-known domains
+        if self.is_established_business_domain(&domain) {
+            return 0;
+        }
+
+        // Skip if DMARC passes (legitimate domains have DMARC)
+        if let Some(auth) = context.headers.get("authentication-results") {
+            if auth.contains("dmarc=pass") {
+                return 0;
+            }
+        }
+
+        // Extract the registrable domain name (before TLD)
+        let name = domain.split('.').next().unwrap_or("");
+        if name.len() < 7 {
+            return 0; // Short domains are common legitimate names
+        }
+
+        // Skip domains containing common English words (likely compound names)
+        let common_words = [
+            "travel", "shop", "store", "mail", "tech", "home", "health", "care", "news", "media",
+            "cloud", "data", "soft", "ware", "group", "team", "work", "trade", "market", "world",
+            "global", "smart", "fast", "best", "real", "safe", "free", "easy", "star", "blue",
+            "green", "black", "white", "gold", "silver", "fire", "water", "light", "dark", "think",
+            "drive", "sign", "east", "west", "north", "south", "mini", "mega",
+        ];
+        if common_words.iter().any(|w| name.contains(w)) {
+            return 0;
+        }
+
+        // Check for consonant clusters (4+ consonants in a row) — sign of gibberish
+        let vowels = "aeiouy";
+        let mut consonant_run = 0;
+        let mut max_consonant_run = 0;
+        for c in name.chars() {
+            if c.is_ascii_alphabetic() && !vowels.contains(c) {
+                consonant_run += 1;
+                max_consonant_run = max_consonant_run.max(consonant_run);
+            } else {
+                consonant_run = 0;
+            }
+        }
+
+        // Gibberish domains: long names + severe consonant clusters + no common suffixes
+        let has_consonant_cluster = max_consonant_run >= 4;
+        let is_long = name.len() >= 10;
+        let common_suffixes = [
+            "mail", "tech", "shop", "store", "news", "media", "data", "cloud", "soft", "ware",
+            "hub", "lab", "dev", "app", "web", "net", "pro", "plus", "max", "one", "corp", "group",
+            "team", "work", "flow", "base", "link", "site", "page", "zone", "box",
+        ];
+        let has_common_suffix = common_suffixes.iter().any(|s| name.ends_with(s));
+
+        if has_consonant_cluster && is_long && !has_common_suffix {
+            return 50;
+        }
+
+        // Shorter gibberish with severe consonant clusters
+        if has_consonant_cluster && name.len() >= 7 && !has_common_suffix {
+            return 35;
+        }
+
+        0
+    }
     fn get_product_sales_spam_score(&self, context: &MailContext) -> i32 {
         let domain = self
             .extract_sender_domain(context)

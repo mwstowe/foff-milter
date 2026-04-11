@@ -1,121 +1,442 @@
-Return-Path: <2908-643-3134-285-user=example.com@mail.postpeak.shop>
-Received: from hotel.example.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
-	by juliett.example.com (8.18.1/8.18.1) with ESMTPS id 5A4AKBqR046185
+âœ… Loading modern TOML configuration: ../foff-milter.toml
+Return-Path: <bounce@messagethenow.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.2/8.18.1) with ESMTPS id 63A8ooB9009219
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
-	for <user@example.com>; Tue, 4 Nov 2025 10:20:11 GMT
-	(envelope-from 2908-643-3134-285-user=example.com@mail.postpeak.shop)
-Authentication-Results: juliett.example.com;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=postpeak.shop header.i=Menâ€™sWellness@postpeak.shop header.b=CcysM8eA
-X-Authentication-Warning: juliett.example.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.example.com
-Received: from affirm.postpeak.shop (104.223.79.151.static.greencloudvps.com [104.223.79.151] (may be forged))
-	by hotel.example.com (8.16.1/8.16.1) with ESMTP id 5A4AK3V5085196
-	for <user@example.com>; Tue, 4 Nov 2025 04:20:05 -0600
-DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.example.com 5A4AK3V5085196
-Authentication-Results: hotel.example.com;
-	dkim=pass (2048-bit key, unprotected) header.d=postpeak.shop header.i=Menâ€™sWellness@postpeak.shop header.a=rsa-sha1 header.s=k1 header.b=CcysM8eA
-DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; s=k1; d=postpeak.shop;
- h=Mime-Version:Content-Type:Date:From:Reply-To:Subject:To:Message-ID; i=Men=E2=80=99sWellness@postpeak.shop;
- bh=Q3qI5gfg5SY8VDUyeobzfvrPX5A=;
- b=CcysM8eA/zN7BtWUFlyYIEuCfm/eUI3OVx7w9QVGi+icmFlz40w8bNmNohhWJSkHdYm+uFtNHKP4
-   ev9Dv5dyun1JAsp7YDNpSeXu8GcyYsdT/FEz74XqeDkXO6Vw4+KnX3xgCo1nzIJ2xxzL3VAgO98v
-   9IBX2Tv0WHdB2uPDl3eIB2qDsYJMagEzSfrT7deMJeZwqpEX9nGVJGiddjtC/qWIYF8xoKWu1+pi
-   jY8VCuY9+nTZb5gxz8DqF0j5X7bsuKzdKbAUe3M7fVjGgMiGMxWXAiL7XdBohznCvZqG2L1UcBZW
-   +GpNkdwS/6nnGxXx84sEq0l9Rvl+510Qr4uQqQ==
-DomainKey-Signature: a=rsa-sha1; c=nofws; q=dns; s=k1; d=postpeak.shop;
- b=ye4207kwwmzN+r/xfAmtEd4ZNEBnkmnmfXWWQIEY3NewLVy5EpYwuD0DWuAz5H8xaFOgq0bF+0pG
-   fbtYyveLHqnVe3o0z/xk2Itq4OWQ5Q+EjotooGCNcwy7Y+Y8y9PTGUMDSt50jcqea5AUmBt5WP6T
-   beh5HeZkM+2KUZYpbIxGqturJ7+kujYlH6+FOBGtVJNGIfLE9KjX2O7f3saSEJmUSZUGNF46EhPu
-   jUa0wm2QOCtFCD38MDVSswHFrjloDu3tbOHW7676c+dOJAjTTSZ1n49COBykcIRomGUpZ4u+4n56
-   Kz199TaN3aj8bN1+r333PLmYotRlcbY+U6Se9A==;
-Mime-Version: 1.0
-Content-Type: multipart/alternative; boundary="241ffe3847bbb60ea45ba1d2e57e0bfc"
-Date: Tue, 4 Nov 2025 02:12:03 -0800
-From: "Panama Tonic" <Menâ€™s.Wellness@postpeak.shop>
-Reply-To: "Panama Tonic" <Menâ€™s.Wellness@postpeak.shop>
-Subject: UNCLOGS your prostate overnight
-To: <user@example.com>
-Message-ID: <w9jg2y7xxlo1wsrq-0lnje4v8gsmwiu42-c3e@postpeak.shop>
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.example.com [172.31.18.8]); Tue, 04 Nov 2025 10:20:11 +0000 (UTC)
-X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.example.com [23.95.222.152]); Tue, 04 Nov 2025 04:20:10 -0600 (CST)
-
---241ffe3847bbb60ea45ba1d2e57e0bfc
-Content-Type: text/plain;
-Content-Transfer-Encoding: 8bit
-
-http://postpeak.shop/eBRR3EDXAO8u9WHPchiCb8B_W4L1y2gEtjF9AJwq79gGPg
-
- 
- 
- 
+	for <user@example.com>; Fri, 10 Apr 2026 08:50:50 GMT
+	(envelope-from bounce@messagethenow.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (2048-bit key; unprotected) header.d=messagethenow.com header.i=news@messagethenow.com header.b=vpkVK9S8
+Received: from mail.messagethenow.com (mail.messagethenow.com [51.75.50.65])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 63A8okfU180386
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <user@example.com>; Fri, 10 Apr 2026 03:50:48 -0500
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 63A8okfU180386
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (2048-bit key, unprotected) header.d=messagethenow.com header.i=news@messagethenow.com header.a=rsa-sha256 header.s=default header.b=vpkVK9S8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=default; d=messagethenow.com;
+ h=Message-ID:Date:Subject:From:Reply-To:To:MIME-Version:Content-Type:
+ List-Unsubscribe-Post:List-Unsubscribe:List-Id; i=news@messagethenow.com;
+ bh=LSOor1fHrxyy3w2uU68AFKofdnCFdSAFd2cUh5Z4rw0=;
+ b=vpkVK9S8EqrPQi2Qgr3Dt0JU3l/4DsQ96QtGrpd10KHgHmyZsQgLxcIXyS913qJRQJs7V8yWaLiP
+   kyTualiO+nomROXAA8E64r9ORbdCSC2g2P40WJYoPlQOR6IdGD0eVNGdX6jL1eoR6v4pzhtq4L+t
+   qsIa9znUoh3xqZdiLIU/UNEbOdWt1JlpGLGbXR1M9Vi6Y1pA81xiw6UxMlBUZ+4EwiXnIUsAZDMj
+   hEQlNDDmExLKu3CYkjWIgVCk1QFCKHWeH7mIxr4KnHU8WgIrTztn2HWd5X4oxOPs+8RkWQTEqBIS
+   TFnbMNE3PM3FYEf5YF7QB/dYxW6MUycNAj8imQ==
+Message-ID: <01084111793b4c6e14893252863b33675f5fe17c@messagethenow.com>
+Date: Fri, 10 Apr 2026 08:50:45 +0000
+Subject: spring water DISSOLVES prostate clog in minutes
+From: Make Life Easy <news@messagethenow.com>
+Reply-To: Make Life Easy <info@messagethenow.com>
+To: "user@example.com" <user@example.com>
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="_=_swift_1775811045_ed3ba60679b48c3073ac6e5b59dbe7b4_=_"
+X-Report-Abuse: https://deals4stuff.com/mail/campaigns/qy8166olbwb26/report-abuse/fk212o1xv3db4/nn006m1kkq32e
+X-EBS: https://deals4stuff.com/mail/lists/block-address
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+List-Unsubscribe: <https://deals4stuff.com/mail/lists/fk212o1xv3db4/unsubscribe/nn006m1kkq32e/qy8166olbwb26?source=email-client-unsubscribe-button>,
+ <mailto:info@messagethenow.com?subject=Campaign-Uid%3Aqy8166olbwb26%20%2F%20Subscriber-Uid%3Ann006m1kkq32e%20-%20Unsubscribe%20request&body=Please%20unsubscribe%20me%21>
+List-Id: fk212o1xv3db4 <General List>
+Feedback-ID: qy8166olbwb26:regular:fk212o1xv3db4:bm339e1bk521f
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Fri, 10 Apr 2026 08:50:50 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Fri, 10 Apr 2026 03:50:48 -0500 (CDT)
 
 
+--_=_swift_1775811045_ed3ba60679b48c3073ac6e5b59dbe7b4_=_
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+=20
+Discover the simple morning juice men are using to support easier
+flo=
+w, comfort, and better nights.=20
+
+COULD A SILENT =E2=80=9CCLOG=E2=80=
+=9D BE CONTRIBUTING TO PROSTATE DISCOMFORT?
+
+A new discovery is making =
+men rethink prostate swelling, discomfort,
+and weak flow.
+
+Some belie=
+ve an enlarged prostate may be linked to a so-called
+=E2=80=9CHIDDEN CLOG=
+=E2=80=9D deep inside.
+
+Researchers connected to Fukushima University i=
+n Japan reportedly
+suggest this silent clog could be a factor in BPH for =
+many men.
+
+This unpleasant buildup may slow circulation, cause cells to=
+ collect,
+enlarge the prostate, block your pipes, squeeze your bladder, a=
+nd make
+everyday life miserable.
+
+This unique spring water juice from=
+ Asia may help reduce =E2=80=9Cprostate
+clog=E2=80=9D and support relief =
+from swelling.=20
+
+WHY SOUTHEAST ASIAN MEN ARE SPARKING INTEREST
+
+Som=
+e reports suggest men living in Southeast Asian islands tend to
+have rema=
+rkably small prostates.
+
+Many say the difference may come from a specia=
+l =E2=80=9CSPRING WATER
+JUICE=E2=80=9D enjoyed every morning.
+
+Advoca=
+tes say it may help dissolve buildup, improve circulation, and
+support vi=
+tality.
+
+ =09* Supports a healthy, stronger flow
+ =09* Supports easie=
+r, less frustrating bathroom visits
+ =09* May promote deeper, more restfu=
+l sleep
+ =09* Easy to make at home in only minutes
+
+Best of all, this=
+ simple at-home method may help support prostate
+comfort in only days.
+=
+
+Powerful juice works fast on =E2=80=9Cprostate clog=E2=80=9D and may hel=
+p restore
+easier urination.=20
+Watch the Prostate Relief Video
+[https:/=
+/deals4stuff.com/mail/campaigns/qy8166olbwb26/track-url/nn006m1kkq32e/18f89=
+3cd0c15a9abafc593ad28026423024dab0a]
+
+Discover how this easy morning me=
+thod is helping men feel better
+again.=20
+
+Disclaimer: This email is fo=
+r informational purposes only and is not
+medical advice. Individual resul=
+ts may vary. Consult a qualified
+healthcare professional before making ch=
+anges to your diet or routine.
+You=E2=80=99re receiving this message beca=
+use you subscribed via one of our
+partner sites or requested similar info=
+rmation. If this email no
+longer applies to you, you may unsubscribe belo=
+w.
+
+Remove me
+[https://deals4stuff.com/mail/campaigns/qy8166olbwb26/t=
+rack-url/nn006m1kkq32e/29a036a48f1ee2068cf8e2a7778fd7ec2a780979]
+=C2=
+=A0=E2=80=A2=C2=A0 Update preferences
+[https://deals4stuff.com/mail/campa=
+igns/qy8166olbwb26/track-url/nn006m1kkq32e/29a036a48f1ee2068cf8e2a7778fd7ec=
+2a780979]
 
 
+=20
 
+--_=_swift_1775811045_ed3ba60679b48c3073ac6e5b59dbe7b4_=_
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
+<!DOCTYPE html>
+<html lang=3D"en">
+<head><meta charset=3D"UTF-8" /><meta name=3D"viewport" content=3D"width=3D=
+device-width, initial-scale=3D1.0" />
+=09<title>spring water DISSOLVES prostate clog in minutes</title>
+=09<style type=3D"text/css">body{
+  margin:0;
+  padding:0;
+  background:#eef3f7;
+  font-family:Arial, Helvetica, sans-serif;
+  color:#1f2937;
+}
 
+.preheader{
+  display:none!important;
+  visibility:hidden;
+  opacity:0;
+  color:transparent;
+  height:0;
+  width:0;
+  overflow:hidden;
+  mso-hide:all;
+  font-size:0;
+  line-height:0;
+}
 
+.wrapper{
+  width:100%;
+  table-layout:fixed;
+  background:#eef3f7;
+  padding:24px 0;
+}
 
+.container{
+  max-width:600px;
+  margin:0 auto;
+  background:#ffffff;
+  border:3px solid #1d3557;
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:0 4px 18px rgba(0,0,0,0.08);
+}
 
- 
+.hero{
+  background:linear-gradient(135deg,#0f4c81,#2a9d8f);
+  padding:38px 28px;
+  text-align:center;
+  color:#ffffff;
+}
 
+.hero h1{
+  margin:0;
+  font-size:30px;
+  line-height:1.25;
+  font-weight:700;
+}
 
+.hero p{
+  margin:14px 0 0;
+  font-size:16px;
+  line-height:1.6;
+}
 
+.content{
+  padding:32px 30px;
+}
 
+.content p{
+  margin:0 0 18px;
+  font-size:17px;
+  line-height:1.75;
+  color:#374151;
+}
 
+.highlight{
+  background:#f0f9f7;
+  border-left:5px solid #2a9d8f;
+  padding:18px 18px;
+  margin:22px 0;
+  border-radius:8px;
+  font-size:18px;
+  line-height:1.7;
+  font-weight:700;
+  color:#0f4c5c;
+}
 
- http://[Unsubscribe]]
+.section-title{
+  font-size:24px;
+  line-height:1.3;
+  color:#0f172a;
+  margin:0 0 18px;
+  font-weight:700;
+}
 
---241ffe3847bbb60ea45ba1d2e57e0bfc
-Content-Type: text/html;
-Content-Transfer-Encoding: 8bit
+.benefits{
+  margin:0 0 24px;
+  padding:0 0 0 20px;
+}
 
-<html>
-<head>
-	<title></title>
+.benefits li{
+  margin:0 0 12px;
+  font-size:17px;
+  line-height:1.7;
+  color:#374151;
+}
+
+.cta-wrap{
+  text-align:center;
+  padding:10px 0 4px;
+}
+
+.cta{
+  display:inline-block;
+  background:#d62828;
+  color:#ffffff!important;
+  text-decoration:none;
+  font-size:18px;
+  font-weight:700;
+  line-height:1.2;
+  padding:16px 28px;
+  border-radius:999px;
+}
+
+.note{
+  margin-top:18px;
+  text-align:center;
+  font-size:14px;
+  line-height:1.6;
+  color:#6b7280;
+}
+
+.footer{
+  background:#f8fafc;
+  border-top:1px solid #e5e7eb;
+  padding:20px 24px;
+  text-align:center;
+  font-size:12px;
+  line-height:1.7;
+  color:#6b7280;
+}
+
+@media only screen and (max-width:620px){
+  .container{
+    width:100%!important;
+    border-radius:0;
+  }
+
+  .hero{
+    padding:30px 20px;
+  }
+
+  .hero h1{
+    font-size:25px;
+  }
+
+  .content{
+    padding:24px 20px;
+  }
+
+  .content p,
+  .benefits li{
+    font-size:16px;
+  }
+
+  .highlight{
+    font-size:17px;
+  }
+
+  .cta{
+    font-size:17px;
+    padding:15px 22px;
+  }
+}
+=09</style>
 </head>
 <body>
-<div style="margin-left: 40px;"><span style="font-size:26px;"><span style="font-family:arial,helvetica,sans-serif;"><a href="http://postpeak.shop/kdipun2aJR2a9sl4WQy49VR32xR-sVi2nOmahkdn76tEaw"><span style="color:#000000;"><img src="http://postpeak.shop/D118s0cXk13AT0GQq9ljQP9Y05EZfRs8X8W7huowGI61ow" /></span></a></span></span><br />
-&nbsp;</div>
+<div class=3D"preheader">Discover the simple morning juice men are using to=
+ support easier flow, comfort, and better nights.</div>
 
-<p style="box-sizing: border-box; margin-top: 0px; margin-bottom: 1rem; color: rgb(103, 119, 136); font-family: Inter, sans-serif; font-size: 14px; background-color: rgb(255, 255, 255); margin-left: 40px;"><span style="font-size:26px;"><span style="font-family:arial,helvetica,sans-serif;"><span style="color:#000000;">Harvard urologists just EXPOSED how&nbsp;</span><a href="http://postpeak.shop/eBRR3EDXAO8u9WHPchiCb8B_W4L1y2gEtjF9AJwq79gGPg" rel="noopener" style="box-sizing: border-box; color: rgb(28, 32, 45); text-decoration-line: none;" target="_blank"><span style="color:#0000FF;"><span style="box-sizing: border-box; font-weight: bolder;"><u style="box-sizing: border-box;">1 glass of<br />
-THIS &ldquo;Panama Tonic&rdquo;</u></span></span></a><span style="color:#000000;">&nbsp;can<br />
-UNCLOG your prostate overnight.&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</span></span></span></p>
+<div class=3D"wrapper">
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentatio=
+n" width=3D"100%">
+=09<tbody>
+=09=09<tr>
+=09=09=09<td align=3D"center">
+=09=09=09<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" class=3D"c=
+ontainer" role=3D"presentation" width=3D"600">
+=09=09=09=09<tbody>
+=09=09=09=09=09<tr>
+=09=09=09=09=09=09<td class=3D"hero">
+=09=09=09=09=09=09<h1>Could a Silent =E2=80=9CClog=E2=80=9D Be Contributing=
+ to Prostate Discomfort?</h1>
 
-<p style="box-sizing: border-box; margin-top: 0px; margin-bottom: 1rem; color: rgb(103, 119, 136); font-family: Inter, sans-serif; font-size: 14px; background-color: rgb(255, 255, 255); margin-left: 40px;"><span style="font-size:26px;"><span style="color:#000000;"><span style="font-family:arial,helvetica,sans-serif;">* It shrinks a swollen prostate by 92%</span></span></span></p>
+=09=09=09=09=09=09<p>A new discovery is making men rethink prostate swellin=
+g, discomfort, and weak flow.</p>
+=09=09=09=09=09=09</td>
+=09=09=09=09=09</tr>
+=09=09=09=09=09<tr>
+=09=09=09=09=09=09<td class=3D"content">
+=09=09=09=09=09=09<p>Some believe an enlarged prostate may be linked to a s=
+o-called <strong>=E2=80=9Chidden clog=E2=80=9D</strong> deep inside.</p>
 
-<p style="box-sizing: border-box; margin-top: 0px; margin-bottom: 1rem; color: rgb(103, 119, 136); font-family: Inter, sans-serif; font-size: 14px; background-color: rgb(255, 255, 255); margin-left: 40px;"><span style="font-size:26px;"><span style="color:#000000;"><span style="font-family:arial,helvetica,sans-serif;">* Helping you pee like in your 30s</span></span></span></p>
+=09=09=09=09=09=09<p>Researchers connected to Fukushima University in Japan=
+ reportedly suggest this silent clog could be a factor in BPH for many men.=
+</p>
 
-<p style="box-sizing: border-box; margin-top: 0px; margin-bottom: 1rem; color: rgb(103, 119, 136); font-family: Inter, sans-serif; font-size: 14px; background-color: rgb(255, 255, 255); margin-left: 40px;"><span style="font-size:26px;"><span style="color:#000000;"><span style="font-family:arial,helvetica,sans-serif;">* So you can fully empty your bladder &amp; sleep all night</span></span></span></p>
+=09=09=09=09=09=09<p>This unpleasant buildup may slow circulation, cause ce=
+lls to collect, enlarge the prostate, block your pipes, squeeze your bladde=
+r, and make everyday life miserable.</p>
 
-<p style="box-sizing: border-box; margin-top: 0px; margin-bottom: 1rem; color: rgb(103, 119, 136); font-family: Inter, sans-serif; font-size: 14px; background-color: rgb(255, 255, 255); margin-left: 40px;"><span style="font-size:26px;"><span style="font-family:arial,helvetica,sans-serif;"><a href="http://postpeak.shop/eBRR3EDXAO8u9WHPchiCb8B_W4L1y2gEtjF9AJwq79gGPg" rel="noopener" style="box-sizing: border-box; color: rgb(28, 32, 45); text-decoration-line: none;" target="_blank"><span style="color:#000000;"><img alt="" height="294" src="http://postpeak.shop/e83a4765a0d2e77550.png" style="box-sizing: border-box; vertical-align: middle;" width="401" /></span></a></span></span></p>
+=09=09=09=09=09=09<div class=3D"highlight">This unique spring water juice f=
+rom Asia may help reduce =E2=80=9Cprostate clog=E2=80=9D and support relief=
+ from swelling.</div>
 
-<p style="box-sizing: border-box; margin-top: 0px; margin-bottom: 1rem; color: rgb(103, 119, 136); font-family: Inter, sans-serif; font-size: 14px; background-color: rgb(255, 255, 255); margin-left: 40px;"><span style="font-size:26px;"><span style="color:#000000;"><span style="font-family:arial,helvetica,sans-serif;">Some experts believe this&nbsp;<em style="box-sizing: border-box;">&ldquo;... will make prostate surgery obsolete&rdquo;.</em></span></span></span></p>
+=09=09=09=09=09=09<h2 class=3D"section-title">Why Southeast Asian Men Are S=
+parking Interest</h2>
 
-<p style="box-sizing: border-box; margin-top: 0px; margin-bottom: 1rem; color: rgb(103, 119, 136); font-family: Inter, sans-serif; font-size: 14px; background-color: rgb(255, 255, 255); margin-left: 40px;"><span style="font-size:26px;"><span style="color:#000000;"><span style="font-family:arial,helvetica,sans-serif;">Because it&#39;s 100% safe&hellip;</span></span></span></p>
+=09=09=09=09=09=09<p>Some reports suggest men living in Southeast Asian isl=
+ands tend to have remarkably small prostates.</p>
 
-<p style="box-sizing: border-box; margin-top: 0px; margin-bottom: 1rem; color: rgb(103, 119, 136); font-family: Inter, sans-serif; font-size: 14px; background-color: rgb(255, 255, 255); margin-left: 40px;"><span style="font-size:26px;"><span style="color:#000000;"><span style="font-family:arial,helvetica,sans-serif;">Easy to make&hellip;<br style="box-sizing: border-box;" />
-<br style="box-sizing: border-box;" />
-<span style="box-sizing: border-box; font-weight: bolder;">And new studies show it works FOR ANY MAN &ndash;&nbsp;</span><br />
-even if you struggled with BPH for decades</span></span></span></p>
+=09=09=09=09=09=09<p>Many say the difference may come from a special <stron=
+g>=E2=80=9Cspring water juice=E2=80=9D</strong> enjoyed every morning.</p>
 
-<p style="box-sizing: border-box; margin-top: 0px; margin-bottom: 1rem; color: rgb(103, 119, 136); font-family: Inter, sans-serif; font-size: 14px; background-color: rgb(255, 255, 255); margin-left: 40px;"><span style="font-size:26px;"><span style="color:#000000;"><span style="font-family:arial,helvetica,sans-serif;">(no catheters needed).</span></span></span></p>
+=09=09=09=09=09=09<p>Advocates say it may help dissolve buildup, improve ci=
+rculation, and support vitality.</p>
 
-<p style="box-sizing: border-box; margin-top: 0px; margin-bottom: 1rem; color: rgb(103, 119, 136); font-family: Inter, sans-serif; font-size: 14px; background-color: rgb(255, 255, 255); margin-left: 40px;"><span style="font-size:26px;"><span style="font-family:arial,helvetica,sans-serif;"><a href="http://postpeak.shop/eBRR3EDXAO8u9WHPchiCb8B_W4L1y2gEtjF9AJwq79gGPg" rel="noopener" style="box-sizing: border-box; color: rgb(28, 32, 45); text-decoration-line: none;" target="_blank"><span style="color:#0000FF;"><span style="box-sizing: border-box; font-weight: bolder;"><u style="box-sizing: border-box;">&gt;&gt; drink THIS &ldquo;panama tonic&rdquo; to UNCLOG your<br />
-prostate &amp; PEE like a racehorse again.</u></span></span></a></span></span></p>
+=09=09=09=09=09=09<ul class=3D"benefits">
+=09=09=09=09=09=09=09<li>Supports a healthy, stronger flow</li>
+=09=09=09=09=09=09=09<li>Supports easier, less frustrating bathroom visits<=
+/li>
+=09=09=09=09=09=09=09<li>May promote deeper, more restful sleep</li>
+=09=09=09=09=09=09=09<li>Easy to make at home in only minutes</li>
+=09=09=09=09=09=09</ul>
 
-<div style="margin-left: 40px;"><br />
-<br />
-<br />
-<br />
-&nbsp;</div>
+=09=09=09=09=09=09<p>Best of all, this simple at-home method may help suppo=
+rt prostate comfort in only days.</p>
 
-<div style="margin-left: 40px;"><span style="font-size:10px;">1922 Watson Lane Hancock, TX 78130<br />
-<span style="font-family:arial,helvetica,sans-serif;"><a href="http://postpeak.shop/b1dMVqkz-mFUOebx6ojt0yZvf4YrVvn89xiOMiwO3XxRGA"><span style="color:#0000FF;">Unsubscribe</span></a></span></span></div>
+=09=09=09=09=09=09<div class=3D"highlight">Powerful juice works fast on =
+=E2=80=9Cprostate clog=E2=80=9D and may help restore easier urination.</div=
+>
 
-<div style="margin-left: 40px;"><span style="color:#000000;"><span style="font-family:arial,helvetica,sans-serif;"><span style="font-size:20px;">&nbsp;</span></span></span></div>
+=09=09=09=09=09=09<div class=3D"cta-wrap"><a class=3D"cta" href=3D"https://=
+deals4stuff.com/mail/campaigns/qy8166olbwb26/track-url/nn006m1kkq32e/18f893=
+cd0c15a9abafc593ad28026423024dab0a">Watch the Prostate Relief Video</a>
+
+=09=09=09=09=09=09<div class=3D"note">Discover how this easy morning method=
+ is helping men feel better again.</div>
+=09=09=09=09=09=09</div>
+=09=09=09=09=09=09</td>
+=09=09=09=09=09</tr>
+=09=09=09=09=09<tr>
+=09=09=09=09=09=09<td class=3D"footer">
+=09=09=09=09=09=09<div style=3D"text-align: left;">Disclaimer: This email i=
+s for informational purposes only and is not medical advice. Individual res=
+ults may vary. Consult a qualified healthcare professional before making ch=
+anges to your diet or routine.</div>
+
+=09=09=09=09=09=09<p class=3D"small muted" style=3D"margin: 0px 0px 6px; co=
+lor: rgb(107, 114, 128); font-family: Arial, Helvetica, sans-serif; text-al=
+ign: left;"><span style=3D"font-size:12px;">You=E2=80=99re receiving this m=
+essage because you subscribed via one of our partner sites or requested sim=
+ilar information. If this email no longer applies to you, you may unsubscri=
+be below.</span></p>
+
+=09=09=09=09=09=09<p class=3D"small muted" style=3D"margin: 0px; color: rgb=
+(107, 114, 128); font-family: Arial, Helvetica, sans-serif; text-align: lef=
+t;"><span style=3D"font-size:12px;"><a data-unsubtag=3D"_UNSUBSCRIBE_URL_" =
+href=3D"https://deals4stuff.com/mail/campaigns/qy8166olbwb26/track-url/nn00=
+6m1kkq32e/29a036a48f1ee2068cf8e2a7778fd7ec2a780979" style=3D"color:#6b7280;=
+text-decoration:underline;">Remove me</a> =C2=A0=E2=80=A2=C2=A0 <a data-uns=
+ubtag=3D"_UNSUBSCRIBE_URL_" href=3D"https://deals4stuff.com/mail/campaigns/=
+qy8166olbwb26/track-url/nn006m1kkq32e/29a036a48f1ee2068cf8e2a7778fd7ec2a780=
+979" style=3D"color:#6b7280;text-decoration:underline;">Update preferences<=
+/a> </span></p>
+=09=09=09=09=09=09</td>
+=09=09=09=09=09</tr>
+=09=09=09=09</tbody>
+=09=09=09</table>
+=09=09=09</td>
+=09=09</tr>
+=09</tbody>
+</table>
+</div>
+<img width=3D"1" height=3D"1" src=3D"https://deals4stuff.com/mail/campaigns=
+/qy8166olbwb26/track-opening/nn006m1kkq32e" alt=3D"" />
 </body>
 </html>
 
---241ffe3847bbb60ea45ba1d2e57e0bfc--
+--_=_swift_1775811045_ed3ba60679b48c3073ac6e5b59dbe7b4_=_--
+
 

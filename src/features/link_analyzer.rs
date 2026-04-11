@@ -1087,8 +1087,24 @@ impl FeatureExtractor for LinkAnalyzer {
                     };
 
                     if suspicious_cross_domain {
-                        evidence.push("Suspicious cross-domain links detected".to_string());
-                        score += 5; // Reduced penalty from 10 to 5
+                        // Check if link domains contain spam-like keywords
+                        let spammy_link_domain = unrelated_links.iter().any(|link| {
+                            let d = link.domain.to_lowercase();
+                            let spam_words = [
+                                "deals", "stuff", "offer", "promo", "discount", "freebie", "prize",
+                                "winner", "bonus", "reward", "cheap", "bargain",
+                            ];
+                            spam_words.iter().any(|w| d.contains(w))
+                        });
+                        if spammy_link_domain {
+                            evidence.push(
+                                "Suspicious cross-domain links to spam-like domain".to_string(),
+                            );
+                            score += 40;
+                        } else {
+                            evidence.push("Suspicious cross-domain links detected".to_string());
+                            score += 5;
+                        }
                     }
                 }
             }
