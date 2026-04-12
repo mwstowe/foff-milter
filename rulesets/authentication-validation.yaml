@@ -19,9 +19,9 @@ rules:
           criteria:
             - type: "HeaderPattern"
               header: "From"
-              pattern: "(?i).*(paypal|amazon|microsoft|google|apple|bank).*"
+              pattern: "(?i).{0,100}(paypal|amazon|microsoft|google|apple|bank).*"
             - type: "SubjectPattern"
-              pattern: "(?i).*(urgent|verify|suspended|security|payment).*"
+              pattern: "(?i).{0,100}(urgent|verify|suspended|security|payment).*"
         - type: "Not"
           criteria:
             type: "SenderPattern"
@@ -55,7 +55,7 @@ rules:
               - type: And
                 criteria:
                   - type: SubjectPattern
-                    pattern: "(?i).*(invoice|receipt|statement|bill|payment|quote|estimate).*"
+                    pattern: "(?i).{0,100}(invoice|receipt|statement|bill|payment|quote|estimate).*"
                   - type: SenderPattern
                     pattern: ".*@.*(exterminators|contractors|services|business|company)\\.(com|net|org)$"
     score: 30
@@ -85,7 +85,7 @@ rules:
       criteria:
         - type: "HeaderPattern"
           header: "From"
-          pattern: "(?i).*(company|organization|business|enterprise).*"
+          pattern: "(?i).{0,100}(company|organization|business|enterprise).*"
         - type: "Not"
           criteria:
             type: "Or"
@@ -149,10 +149,10 @@ rules:
         - type: "Or"
           criteria:
             - type: "SubjectPattern"
-              pattern: "(?i).*(urgent|verify|suspended|security|payment).*"
+              pattern: "(?i).{0,100}(urgent|verify|suspended|security|payment).*"
             - type: "HeaderPattern"
               header: "From"
-              pattern: "(?i).*(official|support|security|billing).*"
+              pattern: "(?i).{0,100}(official|support|security|billing).*"
         - type: "Not"
           criteria:
             type: "Or"
@@ -177,10 +177,10 @@ rules:
         - type: "Or"
           criteria:
             - type: "SubjectPattern"
-              pattern: "(?i).*(urgent|verify|suspended|security|payment|declined|expired).*"
+              pattern: "(?i).{0,100}(urgent|verify|suspended|security|payment|declined|expired).*"
             - type: "HeaderPattern"
               header: "From"
-              pattern: "(?i).*(official|support|security|billing|noreply).*"
+              pattern: "(?i).{0,100}(official|support|security|billing|noreply).*"
     score: 35
     description: "No authentication analysis available for suspicious content"
 
@@ -192,13 +192,13 @@ rules:
       criteria:
         - type: HeaderPattern
           header: "From"
-          pattern: "(?i).*(no.*reply|do.*not.*reply|automated|system).*"
+          pattern: "(?i).{0,100}(no.{0,100}reply|do.{0,100}not.{0,100}reply|automated|system).*"
         - type: Or
           criteria:
             - type: SubjectPattern
-              pattern: "(?i).*(click.*here.*verify|verify.*account.*now|urgent.*action.*required|immediate.*verification|account.*suspended).*"
+              pattern: "(?i).{0,100}(click.{0,100}here.{0,100}verify|verify.{0,100}account.{0,100}now|urgent.{0,100}action.{0,100}required|immediate.{0,100}verification|account.{0,100}suspended).*"
             - type: BodyPattern
-              pattern: "(?i).*(click.*here.*verify|verify.*account.*immediately|urgent.*action.*required|account.*will.*be.*closed).*"
+              pattern: "(?i).{0,100}(click.{0,100}here.{0,100}verify|verify.{0,100}account.{0,100}immediately|urgent.{0,100}action.{0,100}required|account.{0,100}will.{0,100}be.{0,100}closed).*"
         - type: Or
           criteria:
             - type: HeaderPattern
@@ -326,9 +326,9 @@ rules:
         - type: "Or"
           criteria:
             - type: "SubjectPattern"
-              pattern: "(?i).*(amazon|apple|microsoft|google|facebook|paypal|aarp|walmart|target|netflix|disney|fedex|ups|visa|chase|bank).*"
+              pattern: "(?i).{0,100}(amazon|apple|microsoft|google|facebook|paypal|aarp|walmart|target|netflix|disney|fedex|ups|visa|chase|bank).*"
             - type: "SenderPattern"
-              pattern: "(?i).*(amazon|apple|microsoft|google|facebook|paypal|aarp|walmart|target|netflix|disney|fedex|ups|visa|chase|bank).*"
+              pattern: "(?i).{0,100}(amazon|apple|microsoft|google|facebook|paypal|aarp|walmart|target|netflix|disney|fedex|ups|visa|chase|bank).*"
     score: 120
     description: "Suspicious TLD domains claiming to be major brands"
 
@@ -340,7 +340,7 @@ rules:
       criteria:
         - type: "FeatureAnalysis"
           feature_name: "Authentication Analysis"
-          evidence_pattern: "DKIM authentication failed.*signature verification failed"
+          evidence_pattern: "DKIM authentication failed.{0,100}signature verification failed"
         - type: "Not"
           criteria:
             type: "Or"
@@ -356,7 +356,7 @@ rules:
               - type: And
                 criteria:
                   - type: SubjectPattern
-                    pattern: "(?i).*(invoice|receipt|statement|bill|payment|quote|estimate).*"
+                    pattern: "(?i).{0,100}(invoice|receipt|statement|bill|payment|quote|estimate).*"
                   - type: SenderPattern
                     pattern: ".*@.*(exterminators|contractors|services|business|company)\\.(com|net|org)$"
               - type: "HeaderPattern"

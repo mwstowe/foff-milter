@@ -5,7 +5,7 @@ rules:
   - name: "Health Subject Line Threats"
     criteria:
       type: SubjectPattern
-      pattern: "(?i).*(blood.*herb|destroys.*pressure|overnight.*cure|breathing.*lung|cardiovascular|coffee.*weight).*"
+      pattern: "(?i).{0,100}(blood.{0,100}herb|destroys.{0,100}pressure|overnight.{0,100}cure|breathing.{0,100}lung|cardiovascular|coffee.{0,100}weight).*"
     score: 180
   
   - name: "Health Misinformation Detection"
@@ -15,13 +15,13 @@ rules:
         - type: Or
           criteria:
             - type: BodyPattern
-              pattern: "(?i).*(miracle.*cure|destroys.*overnight|secret.*doctors|big.*pharma.*hates|one.*weird.*trick|doctors.*shocked).*"
+              pattern: "(?i).{0,100}(miracle.{0,100}cure|destroys.{0,100}overnight|secret.{0,100}doctors|big.{0,100}pharma.{0,100}hates|one.{0,100}weird.{0,100}trick|doctors.{0,100}shocked).*"
             - type: BodyPattern
-              pattern: "(?i).*(cure.*diabetes.*forever|eliminate.*blood.*pressure|lose.*30.*pounds|ancient.*remedy|forbidden.*cure).*"
+              pattern: "(?i).{0,100}(cure.{0,100}diabetes.{0,100}forever|eliminate.{0,100}blood.{0,100}pressure|lose.{0,100}30.{0,100}pounds|ancient.{0,100}remedy|forbidden.{0,100}cure).*"
             - type: SubjectPattern
-              pattern: "(?i).*(blood.*herb|destroys.*pressure|overnight.*cure|miracle.*diabetes|secret.*cure).*"
+              pattern: "(?i).{0,100}(blood.{0,100}herb|destroys.{0,100}pressure|overnight.{0,100}cure|miracle.{0,100}diabetes|secret.{0,100}cure).*"
         - type: BodyPattern
-          pattern: "(?i).*(blood.*pressure|diabetes|a1c|cholesterol|heart.*disease|weight.*loss).*"
+          pattern: "(?i).{0,100}(blood.{0,100}pressure|diabetes|a1c|cholesterol|heart.{0,100}disease|weight.{0,100}loss).*"
         - type: Not
           criteria:
             type: SenderPattern
@@ -35,13 +35,13 @@ rules:
       type: And
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(raging.*hard|enhancement|enlargement|performance|stamina).*"
+          pattern: "(?i).{0,100}(raging.{0,100}hard|enhancement|enlargement|performance|stamina).*"
         - type: Not
           criteria:
             type: Or
             criteria:
               - type: SubjectPattern
-                pattern: "(?i).*(financial|investment|portfolio|quarterly|annual|report|update|metric|business|review|2025|2026|2027|january|february|march|april|may|june|july|august|september|october|november|december|q1|q2|q3|q4).*"
+                pattern: "(?i).{0,100}(financial|investment|portfolio|quarterly|annual|report|update|metric|business|review|2025|2026|2027|january|february|march|april|may|june|july|august|september|october|november|december|q1|q2|q3|q4).*"
               - type: FromDomain
                 domains: ["arrived.com", "arrivedhomes.com"]
     score: 250
@@ -50,14 +50,14 @@ rules:
   - name: "Advance Fee Fraud"
     criteria:
       type: SubjectPattern
-      pattern: "(?i).*(private|confidential|urgent.*proposal|business.*proposal|inheritance).*"
+      pattern: "(?i).{0,100}(private|confidential|urgent.{0,100}proposal|business.{0,100}proposal|inheritance).*"
     score: 300
   
   # Business spam patterns
   - name: "Business Development Spam"
     criteria:
       type: SubjectPattern
-      pattern: "(?i).*(business.*development|partnership.*opportunity|investment.*proposal).*"
+      pattern: "(?i).{0,100}(business.{0,100}development|partnership.{0,100}opportunity|investment.{0,100}proposal).*"
     score: 150
 
   # Stock spam and pump-and-dump schemes
@@ -67,19 +67,19 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(executive.*summary|stock.*pick|hot.*stock|penny.*stock|stock.*alert|trading.*alert).*"
+          pattern: "(?i).{0,100}(executive.{0,100}summary|stock.{0,100}pick|hot.{0,100}stock|penny.{0,100}stock|stock.{0,100}alert|trading.{0,100}alert).*"
         - type: And
           criteria:
             - type: Or
               criteria:
                 - type: SubjectPattern
-                  pattern: "(?i).*(stock|trading|investment|portfolio).*"
+                  pattern: "(?i).{0,100}(stock|trading|investment|portfolio).*"
                 - type: BodyPattern
-                  pattern: "(?i).*(stock.*genius|trading.*genius|investment.*genius|stock.*alert|penny.*stock).*"
+                  pattern: "(?i).{0,100}(stock.{0,100}genius|trading.{0,100}genius|investment.{0,100}genius|stock.{0,100}alert|penny.{0,100}stock).*"
             - type: Or
               criteria:
                 - type: BodyPattern
-                  pattern: "(?i).*(buy.*now|act.*fast|limited.*time|explosive.*growth|guaranteed.*profit).*"
+                  pattern: "(?i).{0,100}(buy.{0,100}now|act.{0,100}fast|limited.{0,100}time|explosive.{0,100}growth|guaranteed.{0,100}profit).*"
                 - type: SenderPattern
                   pattern: ".*@.*(stockgenius|stockalert|pennystocks|tradingalert).*"
     score: 150
@@ -92,21 +92,21 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(package.*for.*keywords|seo.*package|ranking.*package|backlink.*package).*"
+          pattern: "(?i).{0,100}(package.{0,100}for.{0,100}keywords|seo.{0,100}package|ranking.{0,100}package|backlink.{0,100}package).*"
         - type: And
           criteria:
             - type: Or
               criteria:
                 - type: BodyPattern
-                  pattern: "(?i).*(not.*ranking.*high|improve.*your.*ranking|seo.*services|backlink.*building|keyword.*optimization).*"
+                  pattern: "(?i).{0,100}(not.{0,100}ranking.{0,100}high|improve.{0,100}your.{0,100}ranking|seo.{0,100}services|backlink.{0,100}building|keyword.{0,100}optimization).*"
                 - type: BodyPattern
-                  pattern: "(?i).*(search.*engine.*optimization|google.*ranking|website.*ranking|increase.*traffic).*"
+                  pattern: "(?i).{0,100}(search.{0,100}engine.{0,100}optimization|google.{0,100}ranking|website.{0,100}ranking|increase.{0,100}traffic).*"
             - type: Or
               criteria:
                 - type: BodyPattern
-                  pattern: "(?i).*(looking.*at.*your.*website|realized.*that.*despite|not.*ranking.*on.*google).*"
+                  pattern: "(?i).{0,100}(looking.{0,100}at.{0,100}your.{0,100}website|realized.{0,100}that.{0,100}despite|not.{0,100}ranking.{0,100}on.{0,100}google).*"
                 - type: SubjectPattern
-                  pattern: "(?i).*(keywords|seo|ranking|backlink).*"
+                  pattern: "(?i).{0,100}(keywords|seo|ranking|backlink).*"
     score: 100
     description: "Unsolicited SEO and web services spam"
 
@@ -119,10 +119,10 @@ rules:
         - type: Or
           criteria:
             - type: SubjectPattern
-              pattern: "(?i).*(data.*vulnerable|secure.*it.*today|antivirus.*protection|security.*software).*"
+              pattern: "(?i).{0,100}(data.{0,100}vulnerable|secure.{0,100}it.{0,100}today|antivirus.{0,100}protection|security.{0,100}software).*"
             - type: HeaderPattern
               header: "From"
-              pattern: "(?i).*(antivirus.*protection|security.*software|data.*protection).*"
+              pattern: "(?i).{0,100}(antivirus.{0,100}protection|security.{0,100}software|data.{0,100}protection).*"
         - type: Not
           criteria:
             type: SenderPattern
@@ -139,15 +139,15 @@ rules:
         - type: "Or"
           criteria:
             - type: "SubjectPattern"
-              pattern: "(?i).*(reverse|cure|heal|eliminate|fix|solve).*(diabetes|cancer|vitiligo|arthritis|depression|anxiety|pain).*"
+              pattern: "(?i).{0,100}(reverse|cure|heal|eliminate|fix|solve).{0,100}(diabetes|cancer|vitiligo|arthritis|depression|anxiety|pain).*"
             - type: "BodyPattern"
-              pattern: "(?i).*(reverse|cure|heal|eliminate|fix|solve).*(diabetes|cancer|vitiligo|arthritis|depression|anxiety|pain).*"
+              pattern: "(?i).{0,100}(reverse|cure|heal|eliminate|fix|solve).{0,100}(diabetes|cancer|vitiligo|arthritis|depression|anxiety|pain).*"
         - type: "Or"
           criteria:
             - type: "SubjectPattern"
-              pattern: "(?i).*naturally.*"
+              pattern: "(?i).{0,100}naturally.*"
             - type: "BodyPattern"
-              pattern: "(?i).*(naturally|without.*doctor|without.*prescription|secret.*method).*"
+              pattern: "(?i).{0,100}(naturally|without.{0,100}doctor|without.{0,100}prescription|secret.{0,100}method).*"
     score: 120
     description: "Unsubstantiated medical cure claims"
 
@@ -160,15 +160,15 @@ rules:
         - type: "Or"
           criteria:
             - type: "BodyPattern"
-              pattern: "(?i).*(diabetes|blood.*sugar|pancreas|insulin.*resistance|diabetic|blood.*glucose).*"
+              pattern: "(?i).{0,100}(diabetes|blood.{0,100}sugar|pancreas|insulin.{0,100}resistance|diabetic|blood.{0,100}glucose).*"
             - type: "BodyPattern"
-              pattern: "(?i).*\\ba1c\\b.*"
+              pattern: "(?i).{0,100}\\ba1c\\b.*"
             - type: "SubjectPattern"
-              pattern: "(?i).*(diabetes|blood.*sugar|a1c|pancreas|insulin.*resistance|diabetic|blood.*glucose).*"
+              pattern: "(?i).{0,100}(diabetes|blood.{0,100}sugar|a1c|pancreas|insulin.{0,100}resistance|diabetic|blood.{0,100}glucose).*"
         - type: "Not"
           criteria:
             type: "SenderPattern"
-            pattern: ".*@.*williams.*sonoma.*"
+            pattern: ".*@.*williams.{0,100}sonoma.*"
         - type: "Not"
           criteria:
             type: "Or"
@@ -187,7 +187,7 @@ rules:
     enabled: true
     criteria:
       type: "SubjectPattern"
-      pattern: "(?i).*(adult.*content|xxx|porn|sex.*chat|dating.*site|hookup|escort|webcam.*girls|adult.*entertainment|raging.*hard|male.*enhancement|get.*hard|boost.*performance).*"
+      pattern: "(?i).{0,100}(adult.{0,100}content|xxx|porn|sex.{0,100}chat|dating.{0,100}site|hookup|escort|webcam.{0,100}girls|adult.{0,100}entertainment|raging.{0,100}hard|male.{0,100}enhancement|get.{0,100}hard|boost.{0,100}performance).*"
     score: 50
     description: "Adult content and dating scam detection"
 
@@ -200,9 +200,9 @@ rules:
         - type: Or
           criteria:
             - type: SubjectPattern
-              pattern: "(?i).*(delivery.*failed|parcel.*information|package.*held|shipment.*delayed|delivery.*attempt|address.*verification|incorrect.*address.*delivery).*"
+              pattern: "(?i).{0,100}(delivery.{0,100}failed|parcel.{0,100}information|package.{0,100}held|shipment.{0,100}delayed|delivery.{0,100}attempt|address.{0,100}verification|incorrect.{0,100}address.{0,100}delivery).*"
             - type: BodyPattern
-              pattern: "(?i).*(delivery.*failed|incorrect.*address.*delivery|verify.*shipping.*address|update.*delivery.*address|parcel.*waiting|package.*undeliverable).*"
+              pattern: "(?i).{0,100}(delivery.{0,100}failed|incorrect.{0,100}address.{0,100}delivery|verify.{0,100}shipping.{0,100}address|update.{0,100}delivery.{0,100}address|parcel.{0,100}waiting|package.{0,100}undeliverable).*"
         - type: Not
           criteria:
             type: Or
@@ -210,7 +210,7 @@ rules:
               - type: SenderPattern
                 pattern: ".*@.*(usps|fedex|ups|dhl|amazon|ebay|shopify|torrid)\\.(com|gov)$"
               - type: BodyPattern
-                pattern: "(?i).*(delays.*in.*shipping.*or.*delivery.*from.*factors|standard.*shipping.*terms).*"
+                pattern: "(?i).{0,100}(delays.{0,100}in.{0,100}shipping.{0,100}or.{0,100}delivery.{0,100}from.{0,100}factors|standard.{0,100}shipping.{0,100}terms).*"
     score: 100
     description: "Fake delivery notification from non-shipping company"
 
@@ -219,7 +219,7 @@ rules:
     enabled: true
     criteria:
       type: BodyPattern
-      pattern: "(?i).*translate\\.google\\.com/translate\\?.*u=.*"
+      pattern: "(?i).{0,100}translate\\.google\\.com/translate\\?.*u=.*"
     score: 150
     description: "Phishing URL wrapped in Google Translate to hide destination"
 
@@ -230,9 +230,9 @@ rules:
       type: Or
       criteria:
         - type: "SubjectPattern"
-          pattern: "(?i).*(lonely.*woman|beautiful.*girl|meet.*singles|find.*love|romance.*scam|sugar.*daddy|sugar.*baby|want.*to.*be.*with.*you|how.*about.*you).*"
+          pattern: "(?i).{0,100}(lonely.{0,100}woman|beautiful.{0,100}girl|meet.{0,100}singles|find.{0,100}love|romance.{0,100}scam|sugar.{0,100}daddy|sugar.{0,100}baby|want.{0,100}to.{0,100}be.{0,100}with.{0,100}you|how.{0,100}about.{0,100}you).*"
         - type: "SubjectPattern"
-          pattern: "(?i).*(woman.*alone|woman.*lonely|girls?.*alone|girls?.*lonely|don't.*want.*to.*be.*alone).*"
+          pattern: "(?i).{0,100}(woman.{0,100}alone|woman.{0,100}lonely|girls?.*alone|girls?.*lonely|don't.{0,100}want.{0,100}to.{0,100}be.{0,100}alone).*"
     score: 75
     description: "Romance and dating scam patterns"
 
@@ -243,9 +243,9 @@ rules:
       type: Or
       criteria:
         - type: "SubjectPattern"
-          pattern: "(?i).*ukrainian.*(girl|woman|women|ladies|beauty|beauties).*"
+          pattern: "(?i).{0,100}ukrainian.{0,100}(girl|woman|women|ladies|beauty|beauties).*"
         - type: "BodyPattern"
-          pattern: "(?i).*ukrainian.*(girl|woman|women|ladies|dating|romance).*"
+          pattern: "(?i).{0,100}ukrainian.{0,100}(girl|woman|women|ladies|dating|romance).*"
     score: 75
     description: "Ukrainian dating and romance spam"
 
@@ -256,7 +256,7 @@ rules:
       type: "And"
       criteria:
         - type: "SubjectPattern"
-          pattern: "(?i).*(free|win|winner|congratulations|urgent|act.*now|limited.*time|exclusive|special.*offer|guaranteed|amazing|incredible|revolutionary).*"
+          pattern: "(?i).{0,100}(free|win|winner|congratulations|urgent|act.{0,100}now|limited.{0,100}time|exclusive|special.{0,100}offer|guaranteed|amazing|incredible|revolutionary).*"
         - type: "Not"
           criteria:
             type: "Or"
@@ -268,7 +268,7 @@ rules:
               - type: "SenderPattern"
                 pattern: ".*@(paypal\\.com|.*\\.paypal\\.com)$"
               - type: "SenderPattern"
-                pattern: ".*@(wolfermans\\.com|.*wolfermans.*\\.com|.*filtersfast\\.com|.*\\.filtersfast\\.com|.*backerkit\\.com|.*\\.backerkit\\.com)$"
+                pattern: ".*@(wolfermans\\.com|.*wolfermans.{0,100}\\.com|.*filtersfast\\.com|.*\\.filtersfast\\.com|.*backerkit\\.com|.*\\.backerkit\\.com)$"
               - type: "SenderPattern"
                 pattern: ".*@(.*nextdoor\\.com|suncadia\\.com)$"
               - type: "HeaderPattern"
@@ -284,7 +284,7 @@ rules:
       type: "And"
       criteria:
         - type: "SubjectPattern"
-          pattern: "(?i).*(survey.*chance.*win|complete.*survey.*win|feedback.*win|customer.*survey.*prize|survey.*gift|survey.*reward|survey.*car.*kit|survey.*emergency.*kit).*"
+          pattern: "(?i).{0,100}(survey.{0,100}chance.{0,100}win|complete.{0,100}survey.{0,100}win|feedback.{0,100}win|customer.{0,100}survey.{0,100}prize|survey.{0,100}gift|survey.{0,100}reward|survey.{0,100}car.{0,100}kit|survey.{0,100}emergency.{0,100}kit).*"
         - type: "Not"
           criteria:
             type: "SenderPattern"
@@ -299,9 +299,9 @@ rules:
       type: "Or"
       criteria:
         - type: "SubjectPattern"
-          pattern: "(?i).*(get.*rich.*quick|make.*money.*fast|financial.*freedom|guaranteed.*income|work.*from.*home).*"
+          pattern: "(?i).{0,100}(get.{0,100}rich.{0,100}quick|make.{0,100}money.{0,100}fast|financial.{0,100}freedom|guaranteed.{0,100}income|work.{0,100}from.{0,100}home).*"
         - type: "SubjectPattern"
-          pattern: "(?i).*(business.*opportunity|investment.*opportunity|passive.*income|residual.*income).*"
+          pattern: "(?i).{0,100}(business.{0,100}opportunity|investment.{0,100}opportunity|passive.{0,100}income|residual.{0,100}income).*"
     score: 85
     description: "Financial opportunity and get-rich-quick schemes"
 
@@ -314,17 +314,17 @@ rules:
         - type: Or
           criteria:
             - type: SubjectPattern
-              pattern: "(?i).*(inheritance.*fund|beneficiary|next.*of.*kin|deceased.*relative|fund.*management|collaborator.*fund).*"
+              pattern: "(?i).{0,100}(inheritance.{0,100}fund|beneficiary|next.{0,100}of.{0,100}kin|deceased.{0,100}relative|fund.{0,100}management|collaborator.{0,100}fund).*"
             - type: And
               criteria:
                 - type: BodyPattern
-                  pattern: "(?i).*(transfer.*funds|processing.*fee|legal.*fee|bank.*charges|wire.*transfer|confidential.*business).*"
+                  pattern: "(?i).{0,100}(transfer.{0,100}funds|processing.{0,100}fee|legal.{0,100}fee|bank.{0,100}charges|wire.{0,100}transfer|confidential.{0,100}business).*"
                 - type: Or
                   criteria:
                     - type: BodyPattern
-                      pattern: "(?i).*(urgent.*assistance|help.*transfer|claim.*inheritance|deceased.*person|foreign.*country|government.*official).*"
+                      pattern: "(?i).{0,100}(urgent.{0,100}assistance|help.{0,100}transfer|claim.{0,100}inheritance|deceased.{0,100}person|foreign.{0,100}country|government.{0,100}official).*"
                     - type: BodyPattern
-                      pattern: "(?i).*(advance.*fee|upfront.*payment|release.*funds|tax.*clearance|legal.*documentation).*"
+                      pattern: "(?i).{0,100}(advance.{0,100}fee|upfront.{0,100}payment|release.{0,100}funds|tax.{0,100}clearance|legal.{0,100}documentation).*"
         - type: Not
           criteria:
             type: Or
@@ -332,7 +332,7 @@ rules:
               - type: SenderPattern
                 pattern: ".*@.*(britishairways|ba\\.com|chase|jpmorgan|citi|amex|discover|capitalone|wellsfargo|bankofamerica|docusign)\\.(com|org|net)$"
               - type: BodyPattern
-                pattern: "(?i).*(terms.*conditions|credit.*card.*agreement|rewards.*program|loyalty.*program|airline.*miles|points.*program).*"
+                pattern: "(?i).{0,100}(terms.{0,100}conditions|credit.{0,100}card.{0,100}agreement|rewards.{0,100}program|loyalty.{0,100}program|airline.{0,100}miles|points.{0,100}program).*"
     score: 150
     description: "Advance fee fraud excluding legitimate financial institutions"
 
@@ -345,9 +345,9 @@ rules:
         - type: "Or"
           criteria:
             - type: "SubjectPattern"
-              pattern: "(?i).*(you.*have.*won|lottery.*winner|prize.*notification|congratulations.*winner|eligible.*reward).*"
+              pattern: "(?i).{0,100}(you.{0,100}have.{0,100}won|lottery.{0,100}winner|prize.{0,100}notification|congratulations.{0,100}winner|eligible.{0,100}reward).*"
             - type: "BodyPattern"
-              pattern: "(?i).*(claim.*your.*prize|lottery.*commission|winning.*notification|prize.*money|million.*dollars).*"
+              pattern: "(?i).{0,100}(claim.{0,100}your.{0,100}prize|lottery.{0,100}commission|winning.{0,100}notification|prize.{0,100}money|million.{0,100}dollars).*"
         - type: Not
           criteria:
             type: Or
@@ -355,7 +355,7 @@ rules:
               - type: SenderPattern
                 pattern: ".*@.*(make\\.co|beehiiv\\.com|newsletter|news|media|tech).*"
               - type: BodyPattern
-                pattern: "(?i).*(annually|per year|business|company|revenue|cost|spend|budget).*"
+                pattern: "(?i).{0,100}(annually|per year|business|company|revenue|cost|spend|budget).*"
     score: 120
     description: "Lottery and prize scam detection excluding legitimate business content"
 
@@ -368,9 +368,9 @@ rules:
         - type: "Or"
           criteria:
             - type: "BodyPattern"
-              pattern: "(?i).*(air.*filter.*factory|car.*emergency.*kit|joint.*knee.*pain|fake.*forum|brand.*impersonation|health.*ring|tracks.*health|titan.*ring|imagine.*ring).*"
+              pattern: "(?i).{0,100}(air.{0,100}filter.{0,100}factory|car.{0,100}emergency.{0,100}kit|joint.{0,100}knee.{0,100}pain|fake.{0,100}forum|brand.{0,100}impersonation|health.{0,100}ring|tracks.{0,100}health|titan.{0,100}ring|imagine.{0,100}ring).*"
             - type: "SubjectPattern"
-              pattern: "(?i).*(air.*filter.*factory|car.*emergency.*kit|joint.*knee.*pain|fake.*forum|brand.*impersonation|health.*ring|tracks.*health|titan.*ring|imagine.*ring).*"
+              pattern: "(?i).{0,100}(air.{0,100}filter.{0,100}factory|car.{0,100}emergency.{0,100}kit|joint.{0,100}knee.{0,100}pain|fake.{0,100}forum|brand.{0,100}impersonation|health.{0,100}ring|tracks.{0,100}health|titan.{0,100}ring|imagine.{0,100}ring).*"
             - type: "SenderPattern"
               pattern: ".*@.*(forum|fake|scam|spam).*"
         - type: Not
@@ -400,9 +400,9 @@ rules:
         - type: "Or"
           criteria:
             - type: "SenderPattern"
-              pattern: "(?i).*(health|medical|cure|heal|skin|vita|med|pharma).*"
+              pattern: "(?i).{0,100}(health|medical|cure|heal|skin|vita|med|pharma).*"
             - type: "SubjectPattern"
-              pattern: "(?i).*(health|medical|cure|heal|skin|treatment|remedy).*"
+              pattern: "(?i).{0,100}(health|medical|cure|heal|skin|treatment|remedy).*"
     score: 80
     description: "Health claims from suspicious TLD domains"
 
@@ -415,13 +415,13 @@ rules:
         - type: "Or"
           criteria:
             - type: "BodyPattern"
-              pattern: "(?i).*(sexual.*health|sexual.*beast|erectile.*dysfunction|male.*enhancement|libido|testosterone).*"
+              pattern: "(?i).{0,100}(sexual.{0,100}health|sexual.{0,100}beast|erectile.{0,100}dysfunction|male.{0,100}enhancement|libido|testosterone).*"
             - type: "SubjectPattern"
-              pattern: "(?i).*(sexual.*health|sexual.*beast|male.*enhancement|erectile|testosterone).*"
+              pattern: "(?i).{0,100}(sexual.{0,100}health|sexual.{0,100}beast|male.{0,100}enhancement|erectile|testosterone).*"
             - type: "BodyPattern"
-              pattern: "(?i).*(blood.*pressure|neuropathy|prostate|tinnitus|joint.*pain|knee.*pain|breathing.*difficulties|longevity|lifespan|extends.*lifespan|live.*to.*10[0-9]|tea.*trick|mayo.*clinic|male.*elongation.*secret|penis.*elongation|african.*tribesmen.*elongation|white.*wife.*finds.*elongation).*"
+              pattern: "(?i).{0,100}(blood.{0,100}pressure|neuropathy|prostate|tinnitus|joint.{0,100}pain|knee.{0,100}pain|breathing.{0,100}difficulties|longevity|lifespan|extends.{0,100}lifespan|live.{0,100}to.{0,100}10[0-9]|tea.{0,100}trick|mayo.{0,100}clinic|male.{0,100}elongation.{0,100}secret|penis.{0,100}elongation|african.{0,100}tribesmen.{0,100}elongation|white.{0,100}wife.{0,100}finds.{0,100}elongation).*"
             - type: "SubjectPattern"
-              pattern: "(?i).*(blood.*pressure|neuropathy|prostate|tinnitus|joint.*pain|knee.*pain|breathing.*difficulties|longevity|lifespan|extends.*lifespan|live.*to.*10[0-9]|tea.*trick|mayo.*clinic|male.*elongation.*secret|penis.*elongation|african.*tribesmen.*elongation|white.*wife.*finds.*elongation).*"
+              pattern: "(?i).{0,100}(blood.{0,100}pressure|neuropathy|prostate|tinnitus|joint.{0,100}pain|knee.{0,100}pain|breathing.{0,100}difficulties|longevity|lifespan|extends.{0,100}lifespan|live.{0,100}to.{0,100}10[0-9]|tea.{0,100}trick|mayo.{0,100}clinic|male.{0,100}elongation.{0,100}secret|penis.{0,100}elongation|african.{0,100}tribesmen.{0,100}elongation|white.{0,100}wife.{0,100}finds.{0,100}elongation).*"
         - type: "Not"
           criteria:
             type: "Or"
@@ -443,7 +443,7 @@ rules:
               - type: "SenderPattern"
                 pattern: ".*@.*(livenation|ticketmaster|stubhub|eventbrite)\\.(com|net)$"
               - type: "SubjectPattern"
-                pattern: "(?i).*(recipe|cooking|breakfast|meal|food|nutrition|diet).*"
+                pattern: "(?i).{0,100}(recipe|cooking|breakfast|meal|food|nutrition|diet).*"
     score: 85
     description: "Comprehensive health misinformation, enhancement scams, and adult content"
 
@@ -454,11 +454,11 @@ rules:
       type: "And"
       criteria:
         - type: "SubjectPattern"
-          pattern: "(?i)^(fwd?:|re:)\\s*(low\\s*cost|cheap.*price|best.*deal|urgent|important|limited.*time|act.*now)"
+          pattern: "(?i)^(fwd?:|re:)\\s*(low\\s*cost|cheap.{0,100}price|best.{0,100}deal|urgent|important|limited.{0,100}time|act.{0,100}now)"
         - type: "Or"
           criteria:
             - type: "BodyPattern"
-              pattern: "(?i).*(click.*here|visit.*now|limited.*offer|act.*fast|don't.*miss|hurry.*up).*"
+              pattern: "(?i).{0,100}(click.{0,100}here|visit.{0,100}now|limited.{0,100}offer|act.{0,100}fast|don't.{0,100}miss|hurry.{0,100}up).*"
             - type: "BodyPattern"
               pattern: "^\\s*http://[^\\s]+\\s*$"
     score: 65
@@ -473,13 +473,13 @@ rules:
         - type: Or
           criteria:
             - type: BodyPattern
-              pattern: "(?i).*(guaranteed.*return|risk.*free.*profit|no.*risk.*investment|instant.*wealth|get.*rich.*quick).*"
+              pattern: "(?i).*(guaranteed.{0,30}return|risk.{0,30}free.{0,30}profit|no.{0,30}risk.{0,30}investment|instant.{0,30}wealth|get.{0,30}rich.{0,30}quick).*"
             - type: BodyPattern
-              pattern: "(?i).*(secret.*investment|hidden.*opportunity|limited.*spots|act.*now.*invest|exclusive.*offer.*return).*"
+              pattern: "(?i).*(secret.{0,30}investment|hidden.{0,30}opportunity|limited.{0,30}spots|act.{0,30}now.{0,30}invest|exclusive.{0,30}offer.{0,30}return).*"
             - type: SubjectPattern
-              pattern: "(?i).*(guaranteed.*\\d+%|earn.*\\$\\d+.*daily|make.*money.*fast|passive.*income.*\\$).*"
+              pattern: "(?i).*(guaranteed.{0,30}\\d+%|earn.{0,30}\\$\\d+.{0,30}daily|make.{0,30}money.{0,30}fast|passive.{0,30}income.{0,30}\\$).*"
         - type: BodyPattern
-          pattern: "(?i).*(\\d+\\.\\d+%|\\d+%|\\$\\d+|\\d+.*USD).*"
+          pattern: "(?i).{0,100}(\\d+\\.\\d+%|\\d+%|\\$\\d+|\\d+.*USD).*"
         - type: Not
           criteria:
             type: SenderPattern
@@ -496,9 +496,9 @@ rules:
         - type: "Or"
           criteria:
             - type: "SubjectPattern"
-              pattern: "(?i).*(advertise.*up.*to.*million|200.*million.*emails|bulk.*email.*service|email.*marketing.*blast).*"
+              pattern: "(?i).{0,100}(advertise.{0,100}up.{0,100}to.{0,100}million|200.{0,100}million.{0,100}emails|bulk.{0,100}email.{0,100}service|email.{0,100}marketing.{0,100}blast).*"
             - type: "BodyPattern"
-              pattern: "(?i).*(million.*emails|bulk.*advertising|email.*blast|mass.*mailing|targeted.*email.*list|fresh.*email.*database).*"
+              pattern: "(?i).{0,100}(million.{0,100}emails|bulk.{0,100}advertising|email.{0,100}blast|mass.{0,100}mailing|targeted.{0,100}email.{0,100}list|fresh.{0,100}email.{0,100}database).*"
         - type: Not
           criteria:
             type: SenderPattern
@@ -511,7 +511,7 @@ rules:
     enabled: true
     criteria:
       type: "CombinedTextPattern"
-      pattern: "(?i).*(invoice.*overdue|urgent.*payment|bitcoin.*payment|cryptocurrency.*required|nota fiscal|fatura|documento.*fiscal).*"
+      pattern: "(?i).{0,100}(invoice.{0,100}overdue|urgent.{0,100}payment|bitcoin.{0,100}payment|cryptocurrency.{0,100}required|nota fiscal|fatura|documento.{0,100}fiscal).*"
     score: 75
     description: "Detect invoice scams and crypto payment demands in email body or media attachments"
 
@@ -520,7 +520,7 @@ rules:
     enabled: true
     criteria:
       type: "CombinedTextPattern"
-      pattern: "(?i).*(\\bviagra\\b|\\bcialis\\b|\\badult.*content|\\bxxx\\s|penis.*enlargement|male.*enhancement|\\berection.*pills).*"
+      pattern: "(?i).{0,100}(\\bviagra\\b|\\bcialis\\b|\\badult.{0,100}content|\\bxxx\\s|penis.{0,100}enlargement|male.{0,100}enhancement|\\berection.{0,100}pills).*"
     score: 60
     description: "Detect adult content keywords in email body or extracted from images/PDFs"
 
@@ -529,7 +529,7 @@ rules:
     enabled: true
     criteria:
       type: "CombinedTextPattern"
-      pattern: "(?i).*(guaranteed.*profit|investment.*opportunity|bitcoin.*trading|crypto.*mining).*"
+      pattern: "(?i).{0,100}(guaranteed.{0,100}profit|investment.{0,100}opportunity|bitcoin.{0,100}trading|crypto.{0,100}mining).*"
     score: 65
     description: "Detect financial scam content in email body or media attachments"
 
@@ -538,7 +538,7 @@ rules:
     enabled: true
     criteria:
       type: "CombinedTextPattern"
-      pattern: "(?i).*(miracle.*cure|secret.*remedy|doctors.*hate|pharmaceutical.*conspiracy|natural.*healing).*"
+      pattern: "(?i).{0,100}(miracle.{0,100}cure|secret.{0,100}remedy|doctors.{0,100}hate|pharmaceutical.{0,100}conspiracy|natural.{0,100}healing).*"
     score: 70
     description: "Detect health misinformation in email body or media attachments"
 
@@ -547,7 +547,7 @@ rules:
     enabled: true
     criteria:
       type: "SubjectPattern"
-      pattern: "(?i).*(computer.*virus|system.*infected|microsoft.*support|windows.*security|tech.*support|computer.*problem|virus.*detected|security.*alert|system.*compromised).*"
+      pattern: "(?i).{0,100}(computer.{0,100}virus|system.{0,100}infected|microsoft.{0,100}support|windows.{0,100}security|tech.{0,100}support|computer.{0,100}problem|virus.{0,100}detected|security.{0,100}alert|system.{0,100}compromised).*"
     score: 45
     description: "Fake tech support and virus alert scams"
 
@@ -556,7 +556,7 @@ rules:
     enabled: true
     criteria:
       type: "SubjectPattern"
-      pattern: "(?i).*(free.*software|cracked.*software|keygen|serial.*number|activation.*key|license.*key.*free|pirated.*software).*"
+      pattern: "(?i).{0,100}(free.{0,100}software|cracked.{0,100}software|keygen|serial.{0,100}number|activation.{0,100}key|license.{0,100}key.{0,100}free|pirated.{0,100}software).*"
     score: 35
     description: "Illegal software and keygen scams"
 
@@ -567,7 +567,7 @@ rules:
       type: "Or"
       criteria:
         - type: "SubjectPattern"
-          pattern: "(?i).*(cloud.*backup.*stopped|backup.*expired|storage.*full|account.*suspended|restore.*now|backup.*failed|sync.*error|data.*lost|files.*deleted|storage.*limit).*"
+          pattern: "(?i).{0,100}(cloud.{0,100}backup.{0,100}stopped|backup.{0,100}expired|storage.{0,100}full|account.{0,100}suspended|restore.{0,100}now|backup.{0,100}failed|sync.{0,100}error|data.{0,100}lost|files.{0,100}deleted|storage.{0,100}limit).*"
         - type: "SubjectPattern"
           pattern: ".*[⤦⤧⤨⤩⤪⤫⤬⤭⤮⤯⤰⤱⤲⤳⤴⤵⤶⤷⤸⤹⤺⤻⤼⤽⤾⤿⥀⥁⥂⥃⥄⥅⥆⥇⥈⥉⥊⥋⥌⥍⥎⥏⥐⥑⥒⥓⥔⥕⥖⥗⥘⥙⥚⥛⥜⥝⥞⥟⥠⥡⥢⥣⥤⥥⥦⥧⥨⥩⥪⥫⥬⥭⥮⥯⥰⥱⥲⥳⥴⥵⥶⥷⥸⥹⥺⥻⥼⥽⥾⥿].*"
     score: 80
@@ -578,7 +578,7 @@ rules:
     enabled: true
     criteria:
       type: "SubjectPattern"
-      pattern: "(?i).*(security.*breach|account.*hacked|suspicious.*activity|login.*attempt|security.*warning|unauthorized.*access).*"
+      pattern: "(?i).{0,100}(security.{0,100}breach|account.{0,100}hacked|suspicious.{0,100}activity|login.{0,100}attempt|security.{0,100}warning|unauthorized.{0,100}access).*"
     score: 40
     description: "Fake security alerts and breach notifications"
 
@@ -589,9 +589,9 @@ rules:
       type: "Or"
       criteria:
         - type: "SubjectPattern"
-          pattern: "(?i).*(customize.*website|website.*design.*development|web.*development.*services|professional.*website|website.*redesign|digital.*marketing.*services|seo.*services|online.*presence).*"
+          pattern: "(?i).{0,100}(customize.{0,100}website|website.{0,100}design.{0,100}development|web.{0,100}development.{0,100}services|professional.{0,100}website|website.{0,100}redesign|digital.{0,100}marketing.{0,100}services|seo.{0,100}services|online.{0,100}presence).*"
         - type: "SubjectPattern"
-          pattern: "(?i)^(communication|hello|greetings|business.*proposal|partnership.*opportunity)$"
+          pattern: "(?i)^(communication|hello|greetings|business.{0,100}proposal|partnership.{0,100}opportunity)$"
     score: 70
     description: "Unsolicited web development and business services spam"
 
@@ -604,13 +604,13 @@ rules:
         - type: "Or"
           criteria:
             - type: "BodyPattern"
-              pattern: "(?i).*(errors on your website|website audit|website issues|site review|website problems|noticed.*errors).*"
+              pattern: "(?i).{0,100}(errors on your website|website audit|website issues|site review|website problems|noticed.{0,100}errors).*"
             - type: "SubjectPattern"
-              pattern: "(?i).*(site review|website audit|website errors|site issues).*"
+              pattern: "(?i).{0,100}(site review|website audit|website errors|site issues).*"
         - type: "Or"
           criteria:
             - type: "BodyPattern"
-              pattern: "(?i).*(screenshot|send over|reply.*ok|simply reply|would you like me to).*"
+              pattern: "(?i).{0,100}(screenshot|send over|reply.{0,100}ok|simply reply|would you like me to).*"
     score: 65
     description: "Website audit and SEO spam"
 
@@ -619,7 +619,7 @@ rules:
     enabled: true
     criteria:
       type: "LanguageGeographyMismatch"
-      domain_pattern: "(?i).*\\.cn$"
+      domain_pattern: "(?i).{0,100}\\.cn$"
       content_pattern: "(?i).*[\\u3040-\\u309F\\u30A0-\\u30FF\\u4E00-\\u9FAF].*"
       description: "Japanese characters from .cn domain"
     score: 65
@@ -630,7 +630,7 @@ rules:
     enabled: true
     criteria:
       type: "LanguageGeographyMismatch"
-      domain_pattern: "(?i).*\\.jp$"
+      domain_pattern: "(?i).{0,100}\\.jp$"
       content_pattern: "(?i).*[\\u4E00-\\u9FAF].*"
       description: "Chinese characters from .jp domain"
     score: 35
@@ -641,7 +641,7 @@ rules:
     enabled: true
     criteria:
       type: "LanguageGeographyMismatch"
-      domain_pattern: "(?i).*\\.(cn|jp|ru|tk|ml|ga)$"
+      domain_pattern: "(?i).{0,100}\\.(cn|jp|ru|tk|ml|ga)$"
       content_pattern: "(?i).*[\\uAC00-\\uD7AF\\u1100-\\u11FF\\u3130-\\u318F].*"
       description: "Korean characters from non-Korean domain"
     score: 45
@@ -667,9 +667,9 @@ rules:
         - type: "Or"
           criteria:
             - type: "BodyPattern"
-              pattern: "(?i).*(seo.*services|website.*optimization|digital.*marketing|web.*development|online.*marketing).*"
+              pattern: "(?i).{0,100}(seo.{0,100}services|website.{0,100}optimization|digital.{0,100}marketing|web.{0,100}development|online.{0,100}marketing).*"
             - type: "SubjectPattern"
-              pattern: "(?i).*(seo.*services|website.*optimization|digital.*marketing|web.*development|online.*marketing).*"
+              pattern: "(?i).{0,100}(seo.{0,100}services|website.{0,100}optimization|digital.{0,100}marketing|web.{0,100}development|online.{0,100}marketing).*"
     score: 85
     description: "SEO spam via Google Groups should override mailing list trust"
 
@@ -685,7 +685,7 @@ rules:
             type: Or
             criteria:
               - type: SubjectPattern
-                pattern: "(?i).*(invoice|receipt|statement|bill|payment|quote|estimate).*"
+                pattern: "(?i).{0,100}(invoice|receipt|statement|bill|payment|quote|estimate).*"
               - type: SenderPattern
                 pattern: ".*@.*(exterminators|contractors|services|business|company)\\.(com|net|org)$"
               - type: HeaderPattern
@@ -725,7 +725,7 @@ rules:
                 header: "list-id"
                 pattern: ".*"
               - type: SubjectPattern
-                pattern: "(?i).*(invoice|receipt|statement|bill|payment|quote|estimate|order|summary|confirmation).*"
+                pattern: "(?i).{0,100}(invoice|receipt|statement|bill|payment|quote|estimate|order|summary|confirmation).*"
               - type: SenderPattern
                 pattern: ".*@.*(exterminators|contractors|services|business|company)\\.(com|net|org)$"
               - type: "HeaderPattern"
@@ -773,9 +773,9 @@ rules:
         - type: Or
           criteria:
             - type: SubjectPattern
-              pattern: "(?i).*(weight.*loss.*diet|diet.*weight.*loss|lose.*weight.*fast|soda.*water.*diet|flushes.*out.*fat).*"
+              pattern: "(?i).{0,100}(weight.{0,100}loss.{0,100}diet|diet.{0,100}weight.{0,100}loss|lose.{0,100}weight.{0,100}fast|soda.{0,100}water.{0,100}diet|flushes.{0,100}out.{0,100}fat).*"
             - type: BodyPattern
-              pattern: "(?i).*(weight.*loss.*diet|diet.*weight.*loss|lose.*weight.*fast|soda.*water.*diet|flushes.*out.*fat).*"
+              pattern: "(?i).{0,100}(weight.{0,100}loss.{0,100}diet|diet.{0,100}weight.{0,100}loss|lose.{0,100}weight.{0,100}fast|soda.{0,100}water.{0,100}diet|flushes.{0,100}out.{0,100}fat).*"
         - type: Not
           criteria:
             type: Or
@@ -783,7 +783,7 @@ rules:
               - type: SenderPattern
                 pattern: ".*@.*(nytimes|washingtonpost|cnn|bbc|reuters|ap|wsj|usatoday)\\.(com|org)$"
               - type: SubjectPattern
-                pattern: "(?i).*(recipe|cooking|breakfast|meal|food|nutrition).*"
+                pattern: "(?i).{0,100}(recipe|cooking|breakfast|meal|food|nutrition).*"
     score: 200
   # Product spam patterns
   - name: "Product Spam Detection"
@@ -791,9 +791,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(air.*filter.*factory|billionaire.*bridge|cognitive.*coffee|digestive.*flush|endurance.*auto.*protection).*"
+          pattern: "(?i).{0,100}(air.{0,100}filter.{0,100}factory|billionaire.{0,100}bridge|cognitive.{0,100}coffee|digestive.{0,100}flush|endurance.{0,100}auto.{0,100}protection).*"
         - type: BodyPattern
-          pattern: "(?i).*(air.*filter.*factory|billionaire.*bridge|cognitive.*coffee|digestive.*flush|endurance.*auto.*protection).*"
+          pattern: "(?i).{0,100}(air.{0,100}filter.{0,100}factory|billionaire.{0,100}bridge|cognitive.{0,100}coffee|digestive.{0,100}flush|endurance.{0,100}auto.{0,100}protection).*"
     score: 180
 
   # Medical spam patterns
@@ -805,9 +805,9 @@ rules:
         - type: Or
           criteria:
             - type: SubjectPattern
-              pattern: "(?i).*(root.*cause.*breathing|breathing.*difficulties|french.*protein.*removes|artery.*plaque|dementia.*food|fake.*harvard.*foot).*"
+              pattern: "(?i).{0,100}(root.{0,100}cause.{0,100}breathing|breathing.{0,100}difficulties|french.{0,100}protein.{0,100}removes|artery.{0,100}plaque|dementia.{0,100}food|fake.{0,100}harvard.{0,100}foot).*"
             - type: BodyPattern
-              pattern: "(?i).*(root.*cause.*breathing|breathing.*difficulties|french.*protein.*removes|artery.*plaque|dementia.*food|fake.*harvard.*foot).*"
+              pattern: "(?i).{0,100}(root.{0,100}cause.{0,100}breathing|breathing.{0,100}difficulties|french.{0,100}protein.{0,100}removes|artery.{0,100}plaque|dementia.{0,100}food|fake.{0,100}harvard.{0,100}foot).*"
         - type: Not
           criteria:
             type: Or
@@ -815,7 +815,7 @@ rules:
               - type: SenderPattern
                 pattern: ".*@.*(withings|fitbit|garmin|apple|samsung|healthcare|medical|clinic|hospital)\\.(com|net|org)$"
               - type: BodyPattern
-                pattern: "(?i).*(not.*intended.*for.*medical.*use|consult.*your.*doctor|medical.*disclaimer|health.*device|fitness.*tracker).*"
+                pattern: "(?i).{0,100}(not.{0,100}intended.{0,100}for.{0,100}medical.{0,100}use|consult.{0,100}your.{0,100}doctor|medical.{0,100}disclaimer|health.{0,100}device|fitness.{0,100}tracker).*"
     score: 200
     description: "Medical spam detection excluding legitimate health companies"
 
@@ -825,9 +825,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(estonian.*money.*transfer|interactive.*brokers.*w8ben|fake.*order.*transaction|fake.*payment.*confirmation).*"
+          pattern: "(?i).{0,100}(estonian.{0,100}money.{0,100}transfer|interactive.{0,100}brokers.{0,100}w8ben|fake.{0,100}order.{0,100}transaction|fake.{0,100}payment.{0,100}confirmation).*"
         - type: BodyPattern
-          pattern: "(?i).*(estonian.*money.*transfer|interactive.*brokers.*w8ben|fake.*order.*transaction|fake.*payment.*confirmation).*"
+          pattern: "(?i).{0,100}(estonian.{0,100}money.{0,100}transfer|interactive.{0,100}brokers.{0,100}w8ben|fake.{0,100}order.{0,100}transaction|fake.{0,100}payment.{0,100}confirmation).*"
     score: 300
 
   # Black Friday scams
@@ -838,9 +838,9 @@ rules:
         - type: Or
           criteria:
             - type: SubjectPattern
-              pattern: "(?i).*(black.*friday.*sale.*happening|fake.*black.*friday|buy.*1.*get.*1.*50.*off).*"
+              pattern: "(?i).{0,100}(black.{0,100}friday.{0,100}sale.{0,100}happening|fake.{0,100}black.{0,100}friday|buy.{0,100}1.{0,100}get.{0,100}1.{0,100}50.{0,100}off).*"
             - type: BodyPattern
-              pattern: "(?i).*(black.*friday.*sale.*happening|fake.*black.*friday|buy.*1.*get.*1.*50.*off).*"
+              pattern: "(?i).{0,100}(black.{0,100}friday.{0,100}sale.{0,100}happening|fake.{0,100}black.{0,100}friday|buy.{0,100}1.{0,100}get.{0,100}1.{0,100}50.{0,100}off).*"
         - type: Not
           criteria:
             type: Or
@@ -857,9 +857,9 @@ rules:
         - type: Or
           criteria:
             - type: SubjectPattern
-              pattern: "(?i).*(email.*list.*selling|selling.*email.*list|buy.*email.*list).*"
+              pattern: "(?i).{0,100}(email.{0,100}list.{0,100}selling|selling.{0,100}email.{0,100}list|buy.{0,100}email.{0,100}list).*"
             - type: BodyPattern
-              pattern: "(?i).*(email.*list.*selling|selling.*email.*list|buy.*email.*list).*"
+              pattern: "(?i).{0,100}(email.{0,100}list.{0,100}selling|selling.{0,100}email.{0,100}list|buy.{0,100}email.{0,100}list).*"
         - type: Not
           criteria:
             type: SenderPattern
@@ -871,9 +871,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(creditcard.*bill|credit.*card.*resolution|unicode.*medical|dementia.*food.*misinformation|digestive.*flush).*"
+          pattern: "(?i).{0,100}(creditcard.{0,100}bill|credit.{0,100}card.{0,100}resolution|unicode.{0,100}medical|dementia.{0,100}food.{0,100}misinformation|digestive.{0,100}flush).*"
         - type: BodyPattern
-          pattern: "(?i).*(creditcard.*bill|credit.*card.*resolution|unicode.*medical|dementia.*food.*misinformation|digestive.*flush).*"
+          pattern: "(?i).{0,100}(creditcard.{0,100}bill|credit.{0,100}card.{0,100}resolution|unicode.{0,100}medical|dementia.{0,100}food.{0,100}misinformation|digestive.{0,100}flush).*"
     score: 250
 
   # ED and medical enhancement spam
@@ -882,9 +882,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(two.*finger.*massage.*revives.*ed|erectile.*dysfunction|male.*enhancement|performance.*enhancement).*"
+          pattern: "(?i).{0,100}(two.{0,100}finger.{0,100}massage.{0,100}revives.{0,100}ed|erectile.{0,100}dysfunction|male.{0,100}enhancement|performance.{0,100}enhancement).*"
         - type: BodyPattern
-          pattern: "(?i).*(two.*finger.*massage.*revives.*ed|erectile.*dysfunction|male.*enhancement|performance.*enhancement).*"
+          pattern: "(?i).{0,100}(two.{0,100}finger.{0,100}massage.{0,100}revives.{0,100}ed|erectile.{0,100}dysfunction|male.{0,100}enhancement|performance.{0,100}enhancement).*"
     score: 280
 
   # Fake savings and Black Friday scams
@@ -895,9 +895,9 @@ rules:
         - type: Or
           criteria:
             - type: SubjectPattern
-              pattern: "(?i).*(fake.*black.*friday.*savings|fake.*savings.*scam|too.*good.*to.*be.*true).*"
+              pattern: "(?i).{0,100}(fake.{0,100}black.{0,100}friday.{0,100}savings|fake.{0,100}savings.{0,100}scam|too.{0,100}good.{0,100}to.{0,100}be.{0,100}true).*"
             - type: BodyPattern
-              pattern: "(?i).*(fake.*black.*friday.*savings|fake.*savings.*scam|too.*good.*to.*be.*true).*"
+              pattern: "(?i).{0,100}(fake.{0,100}black.{0,100}friday.{0,100}savings|fake.{0,100}savings.{0,100}scam|too.{0,100}good.{0,100}to.{0,100}be.{0,100}true).*"
         - type: Not
           criteria:
             type: SenderPattern
@@ -910,9 +910,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(interactive.*brokers.*w8ben|w8ben.*compliance|w8ben.*tax.*scam|fake.*interactive.*brokers).*"
+          pattern: "(?i).{0,100}(interactive.{0,100}brokers.{0,100}w8ben|w8ben.{0,100}compliance|w8ben.{0,100}tax.{0,100}scam|fake.{0,100}interactive.{0,100}brokers).*"
         - type: BodyPattern
-          pattern: "(?i).*(interactive.*brokers.*w8ben|w8ben.*compliance|w8ben.*tax.*scam|fake.*interactive.*brokers).*"
+          pattern: "(?i).{0,100}(interactive.{0,100}brokers.{0,100}w8ben|w8ben.{0,100}compliance|w8ben.{0,100}tax.{0,100}scam|fake.{0,100}interactive.{0,100}brokers).*"
     score: 350
 
   # Fake order and transaction confirmations
@@ -921,9 +921,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(fake.*order.*transaction|fake.*payment.*confirmation|order.*confirmation.*spam|transaction.*confirmation.*spam).*"
+          pattern: "(?i).{0,100}(fake.{0,100}order.{0,100}transaction|fake.{0,100}payment.{0,100}confirmation|order.{0,100}confirmation.{0,100}spam|transaction.{0,100}confirmation.{0,100}spam).*"
         - type: BodyPattern
-          pattern: "(?i).*(fake.*order.*transaction|fake.*payment.*confirmation|order.*confirmation.*spam|transaction.*confirmation.*spam).*"
+          pattern: "(?i).{0,100}(fake.{0,100}order.{0,100}transaction|fake.{0,100}payment.{0,100}confirmation|order.{0,100}confirmation.{0,100}spam|transaction.{0,100}confirmation.{0,100}spam).*"
     score: 320
   # Cognitive enhancement and brain power spam
   - name: "Cognitive Enhancement Spam"
@@ -933,13 +933,13 @@ rules:
         - type: Or
           criteria:
             - type: BodyPattern
-              pattern: "(?i).*(boost.*brain.*power|enhance.*cognitive|improve.*memory|brain.*supplement|nootropic).*"
+              pattern: "(?i).{0,100}(boost.{0,100}brain.{0,100}power|enhance.{0,100}cognitive|improve.{0,100}memory|brain.{0,100}supplement|nootropic).*"
             - type: SubjectPattern
-              pattern: "(?i).*(brain.*boost|cognitive.*enhancement|memory.*supplement|smart.*pill|sip.*coffee.*3x|brain.*power).*"
+              pattern: "(?i).{0,100}(brain.{0,100}boost|cognitive.{0,100}enhancement|memory.{0,100}supplement|smart.{0,100}pill|sip.{0,100}coffee.{0,100}3x|brain.{0,100}power).*"
             - type: BodyPattern
-              pattern: "(?i).*(sip.*coffee.*3x|stir.*coffee.*3x|miracle.*brain|secret.*formula|doctors.*recommend|clinical.*study).*"
+              pattern: "(?i).{0,100}(sip.{0,100}coffee.{0,100}3x|stir.{0,100}coffee.{0,100}3x|miracle.{0,100}brain|secret.{0,100}formula|doctors.{0,100}recommend|clinical.{0,100}study).*"
             - type: BodyPattern
-              pattern: "(?i).*(increase.*iq|sharper.*mind|mental.*clarity|focus.*supplement).*"
+              pattern: "(?i).{0,100}(increase.{0,100}iq|sharper.{0,100}mind|mental.{0,100}clarity|focus.{0,100}supplement).*"
         - type: Not
           criteria:
             type: SenderPattern
@@ -955,9 +955,9 @@ rules:
         - type: Or
           criteria:
             - type: SubjectPattern
-              pattern: "(?i).*(common.*food.*triples.*dementia|dementia.*risk|dementia.*warning|brain.*decline).*"
+              pattern: "(?i).{0,100}(common.{0,100}food.{0,100}triples.{0,100}dementia|dementia.{0,100}risk|dementia.{0,100}warning|brain.{0,100}decline).*"
             - type: BodyPattern
-              pattern: "(?i).*(common.*food.*triples.*dementia|dementia.*risk|dementia.*warning|brain.*decline).*"
+              pattern: "(?i).{0,100}(common.{0,100}food.{0,100}triples.{0,100}dementia|dementia.{0,100}risk|dementia.{0,100}warning|brain.{0,100}decline).*"
         - type: Not
           criteria:
             type: SenderPattern
@@ -970,9 +970,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(need.*this.*flush.*not.*enema|digestive.*flush|gut.*health.*secret|digestive.*cleanse|colon.*cleanse).*"
+          pattern: "(?i).{0,100}(need.{0,100}this.{0,100}flush.{0,100}not.{0,100}enema|digestive.{0,100}flush|gut.{0,100}health.{0,100}secret|digestive.{0,100}cleanse|colon.{0,100}cleanse).*"
         - type: BodyPattern
-          pattern: "(?i).*(need.*this.*flush.*not.*enema|digestive.*flush|gut.*health.*secret|digestive.*cleanse|colon.*cleanse).*"
+          pattern: "(?i).{0,100}(need.{0,100}this.{0,100}flush.{0,100}not.{0,100}enema|digestive.{0,100}flush|gut.{0,100}health.{0,100}secret|digestive.{0,100}cleanse|colon.{0,100}cleanse).*"
     score: 180
   # Fake Harvard health claims
   - name: "Fake Harvard Health Claims"
@@ -980,9 +980,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*\\[harvard\\].*stretch.*foot|harvard.*foot.*health|fake.*harvard.*study.*"
+          pattern: "(?i).{0,100}\\[harvard\\].{0,100}stretch.{0,100}foot|harvard.{0,100}foot.{0,100}health|fake.{0,100}harvard.{0,100}study.*"
         - type: BodyPattern
-          pattern: "(?i).*\\[harvard\\].*stretch.*foot|harvard.*foot.*health|fake.*harvard.*study.*"
+          pattern: "(?i).{0,100}\\[harvard\\].{0,100}stretch.{0,100}foot|harvard.{0,100}foot.{0,100}health|fake.{0,100}harvard.{0,100}study.*"
     score: 280
 
   # Estonian money transfer scams
@@ -994,15 +994,15 @@ rules:
         - type: Or
           criteria:
             - type: SubjectPattern
-              pattern: "(?i).*(\\braha\\b|estonian|estonia|baltic.*funds|=\\?utf-8\\?Q\\?Raha).*"
+              pattern: "(?i).{0,100}(\\braha\\b|estonian|estonia|baltic.{0,100}funds|=\\?utf-8\\?Q\\?Raha).*"
             - type: BodyPattern
-              pattern: "(?i).*(\\braha\\b|estonian|estonia|baltic.*funds).*"
+              pattern: "(?i).{0,100}(\\braha\\b|estonian|estonia|baltic.{0,100}funds).*"
         - type: Not
           criteria:
             type: Or
             criteria:
               - type: SubjectPattern
-                pattern: "(?i).*(invoice|receipt|statement|bill|payment|quote|estimate).*"
+                pattern: "(?i).{0,100}(invoice|receipt|statement|bill|payment|quote|estimate).*"
               - type: SenderPattern
                 pattern: ".*@.*(exterminators|contractors|services|business|company)\\.(com|net|org)$"
               - type: SenderPattern
@@ -1019,9 +1019,9 @@ rules:
         - type: Or
           criteria:
             - type: SubjectPattern
-              pattern: "(?i).*(email.*lists.*2026|100.*mx.*tested.*emails|buy.*email.*database|selling.*email.*lists).*"
+              pattern: "(?i).{0,100}(email.{0,100}lists.{0,100}2026|100.{0,100}mx.{0,100}tested.{0,100}emails|buy.{0,100}email.{0,100}database|selling.{0,100}email.{0,100}lists).*"
             - type: BodyPattern
-              pattern: "(?i).*(email.*lists.*2026|100.*mx.*tested.*emails|buy.*email.*database|selling.*email.*lists).*"
+              pattern: "(?i).{0,100}(email.{0,100}lists.{0,100}2026|100.{0,100}mx.{0,100}tested.{0,100}emails|buy.{0,100}email.{0,100}database|selling.{0,100}email.{0,100}lists).*"
         - type: Not
           criteria:
             type: SenderPattern
@@ -1034,9 +1034,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(get.*ready.*black.*friday.*event.*coming|black.*friday.*event.*is.*coming|fake.*black.*friday.*savings).*"
+          pattern: "(?i).{0,100}(get.{0,100}ready.{0,100}black.{0,100}friday.{0,100}event.{0,100}coming|black.{0,100}friday.{0,100}event.{0,100}is.{0,100}coming|fake.{0,100}black.{0,100}friday.{0,100}savings).*"
         - type: BodyPattern
-          pattern: "(?i).*(get.*ready.*black.*friday.*event.*coming|black.*friday.*event.*is.*coming|fake.*black.*friday.*savings).*"
+          pattern: "(?i).{0,100}(get.{0,100}ready.{0,100}black.{0,100}friday.{0,100}event.{0,100}coming|black.{0,100}friday.{0,100}event.{0,100}is.{0,100}coming|fake.{0,100}black.{0,100}friday.{0,100}savings).*"
     score: 250
   # Generic suspicious messages
   - name: "Generic Suspicious Messages"
@@ -1047,9 +1047,9 @@ rules:
         - type: Or
           criteria:
             - type: SubjectPattern
-              pattern: "(?i).*(important.*message.*for.*you|urgent.*message.*for.*you|private.*message.*for.*you|confidential.*message.*for.*you|fam.*inquiry|urgent.*inquiry|personal.*message).*"
+              pattern: "(?i).{0,100}(important.{0,100}message.{0,100}for.{0,100}you|urgent.{0,100}message.{0,100}for.{0,100}you|private.{0,100}message.{0,100}for.{0,100}you|confidential.{0,100}message.{0,100}for.{0,100}you|fam.{0,100}inquiry|urgent.{0,100}inquiry|personal.{0,100}message).*"
             - type: BodyPattern
-              pattern: "(?i).*(important.*message.*for.*you|urgent.*message.*for.*you|private.*message.*for.*you|confidential.*message.*for.*you|fam.*inquiry|urgent.*inquiry|personal.*message).*"
+              pattern: "(?i).{0,100}(important.{0,100}message.{0,100}for.{0,100}you|urgent.{0,100}message.{0,100}for.{0,100}you|private.{0,100}message.{0,100}for.{0,100}you|confidential.{0,100}message.{0,100}for.{0,100}you|fam.{0,100}inquiry|urgent.{0,100}inquiry|personal.{0,100}message).*"
         - type: Not
           criteria:
             type: Or
@@ -1058,7 +1058,7 @@ rules:
                 pattern: ".*@.*(adapthealth|healthcare|medical|clinic|hospital|pulmonary|levi|gmail|yahoo|hotmail|outlook|bearaby|sleep|wellness|michaels|emdeals\\.michaels|rejuvenation|e\\.rejuvenation|onestopplus|e\\.onestopplus|acemedseattle|sense)\\.(com|net|org)$"
               - type: HeaderPattern
                 header: "Authentication-Results"
-                pattern: "dkim=pass.*adapthealth\\.com"
+                pattern: "dkim=pass.{0,100}adapthealth\\.com"
     score: 150
     description: "Generic suspicious messages excluding healthcare"
 
@@ -1068,9 +1068,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(flixy.*delivers.*unlimited.*streaming|unlimited.*streaming.*offer|fake.*streaming.*service).*"
+          pattern: "(?i).{0,100}(flixy.{0,100}delivers.{0,100}unlimited.{0,100}streaming|unlimited.{0,100}streaming.{0,100}offer|fake.{0,100}streaming.{0,100}service).*"
         - type: BodyPattern
-          pattern: "(?i).*(flixy.*delivers.*unlimited.*streaming|unlimited.*streaming.*offer|fake.*streaming.*service).*"
+          pattern: "(?i).{0,100}(flixy.{0,100}delivers.{0,100}unlimited.{0,100}streaming|unlimited.{0,100}streaming.{0,100}offer|fake.{0,100}streaming.{0,100}service).*"
     score: 220
 
   # Sam's Club forum spam
@@ -1079,9 +1079,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(sams.*club.*forum|fake.*forum.*domain|club.*membership.*scam).*"
+          pattern: "(?i).{0,100}(sams.{0,100}club.{0,100}forum|fake.{0,100}forum.{0,100}domain|club.{0,100}membership.{0,100}scam).*"
         - type: BodyPattern
-          pattern: "(?i).*(sams.*club.*forum|fake.*forum.*domain|club.*membership.*scam).*"
+          pattern: "(?i).{0,100}(sams.{0,100}club.{0,100}forum|fake.{0,100}forum.{0,100}domain|club.{0,100}membership.{0,100}scam).*"
     score: 200
   # Free tools and software scams
   - name: "Free Tools Software Scam"
@@ -1089,9 +1089,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(tools.*built.*for.*pros.*yours.*free|free.*professional.*tools|microsoft.*compromise.*tools).*"
+          pattern: "(?i).{0,100}(tools.{0,100}built.{0,100}for.{0,100}pros.{0,100}yours.{0,100}free|free.{0,100}professional.{0,100}tools|microsoft.{0,100}compromise.{0,100}tools).*"
         - type: BodyPattern
-          pattern: "(?i).*(tools.*built.*for.*pros.*yours.*free|free.*professional.*tools|microsoft.*compromise.*tools).*"
+          pattern: "(?i).{0,100}(tools.{0,100}built.{0,100}for.{0,100}pros.{0,100}yours.{0,100}free|free.{0,100}professional.{0,100}tools|microsoft.{0,100}compromise.{0,100}tools).*"
     score: 240
 
   # French rental payment scams
@@ -1100,9 +1100,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(avis.*de.*rappel.*pour.*bail|french.*rental.*payment|bail.*novembre|rental.*reminder).*"
+          pattern: "(?i).{0,100}(avis.{0,100}de.{0,100}rappel.{0,100}pour.{0,100}bail|french.{0,100}rental.{0,100}payment|bail.{0,100}novembre|rental.{0,100}reminder).*"
         - type: BodyPattern
-          pattern: "(?i).*(avis.*de.*rappel.*pour.*bail|french.*rental.*payment|bail.*novembre|rental.*reminder).*"
+          pattern: "(?i).{0,100}(avis.{0,100}de.{0,100}rappel.{0,100}pour.{0,100}bail|french.{0,100}rental.{0,100}payment|bail.{0,100}novembre|rental.{0,100}reminder).*"
     score: 300
 
   # Health and immune system spam
@@ -1113,9 +1113,9 @@ rules:
         - type: Or
           criteria:
             - type: SubjectPattern
-              pattern: "(?i).*(miracle.*cure.*chronic.*pain|doctors.*hate.*this|immune.*system.*health.*misinformation|health.*spam|boost.*immune.*system|immune.*support).*"
+              pattern: "(?i).{0,100}(miracle.{0,100}cure.{0,100}chronic.{0,100}pain|doctors.{0,100}hate.{0,100}this|immune.{0,100}system.{0,100}health.{0,100}misinformation|health.{0,100}spam|boost.{0,100}immune.{0,100}system|immune.{0,100}support).*"
             - type: BodyPattern
-              pattern: "(?i).*(miracle.*cure.*chronic.*pain|doctors.*hate.*this|immune.*system.*health.*misinformation|health.*spam|boost.*immune.*system|immune.*support).*"
+              pattern: "(?i).{0,100}(miracle.{0,100}cure.{0,100}chronic.{0,100}pain|doctors.{0,100}hate.{0,100}this|immune.{0,100}system.{0,100}health.{0,100}misinformation|health.{0,100}spam|boost.{0,100}immune.{0,100}system|immune.{0,100}support).*"
         - type: Not
           criteria:
             type: Or
@@ -1132,9 +1132,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(heatwell.*heater|miracle.*heater|energy.*saving.*heater|portable.*heater.*scam).*"
+          pattern: "(?i).{0,100}(heatwell.{0,100}heater|miracle.{0,100}heater|energy.{0,100}saving.{0,100}heater|portable.{0,100}heater.{0,100}scam).*"
         - type: BodyPattern
-          pattern: "(?i).*(heatwell.*heater|miracle.*heater|energy.*saving.*heater|portable.*heater.*scam).*"
+          pattern: "(?i).{0,100}(heatwell.{0,100}heater|miracle.{0,100}heater|energy.{0,100}saving.{0,100}heater|portable.{0,100}heater.{0,100}scam).*"
     score: 180
   # Joint and knee pain spam
   - name: "Joint Knee Pain Spam"
@@ -1142,9 +1142,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(bone.*on.*bone|joint.*knee.*pain|knee.*health.*spam|painful.*knees|joint.*pain.*relief).*"
+          pattern: "(?i).{0,100}(bone.{0,100}on.{0,100}bone|joint.{0,100}knee.{0,100}pain|knee.{0,100}health.{0,100}spam|painful.{0,100}knees|joint.{0,100}pain.{0,100}relief).*"
         - type: BodyPattern
-          pattern: "(?i).*(bone.*on.*bone|joint.*knee.*pain|knee.*health.*spam|painful.*knees|joint.*pain.*relief).*"
+          pattern: "(?i).{0,100}(bone.{0,100}on.{0,100}bone|joint.{0,100}knee.{0,100}pain|knee.{0,100}health.{0,100}spam|painful.{0,100}knees|joint.{0,100}pain.{0,100}relief).*"
     score: 200
 
   # Keto diet spam
@@ -1153,9 +1153,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(truth.*about.*keto|keto.*diet.*secret|keto.*weight.*loss|ketogenic.*scam).*"
+          pattern: "(?i).{0,100}(truth.{0,100}about.{0,100}keto|keto.{0,100}diet.{0,100}secret|keto.{0,100}weight.{0,100}loss|ketogenic.{0,100}scam).*"
         - type: BodyPattern
-          pattern: "(?i).*(truth.*about.*keto|keto.*diet.*secret|keto.*weight.*loss|ketogenic.*scam).*"
+          pattern: "(?i).{0,100}(truth.{0,100}about.{0,100}keto|keto.{0,100}diet.{0,100}secret|keto.{0,100}weight.{0,100}loss|ketogenic.{0,100}scam).*"
     score: 180
 
   # Gutter protection spam
@@ -1164,9 +1164,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(fall.*into.*savings.*gutter.*protection|leaffilter.*gutter.*protection|leafguard.*gutter|gutter.*protection.*spam|home.*improvement.*scam).*"
+          pattern: "(?i).{0,100}(fall.{0,100}into.{0,100}savings.{0,100}gutter.{0,100}protection|leaffilter.{0,100}gutter.{0,100}protection|leafguard.{0,100}gutter|gutter.{0,100}protection.{0,100}spam|home.{0,100}improvement.{0,100}scam).*"
         - type: BodyPattern
-          pattern: "(?i).*(fall.*into.*savings.*gutter.*protection|leaffilter.*gutter.*protection|leafguard.*gutter|gutter.*protection.*spam|home.*improvement.*scam).*"
+          pattern: "(?i).{0,100}(fall.{0,100}into.{0,100}savings.{0,100}gutter.{0,100}protection|leaffilter.{0,100}gutter.{0,100}protection|leafguard.{0,100}gutter|gutter.{0,100}protection.{0,100}spam|home.{0,100}improvement.{0,100}scam).*"
     score: 160
 
   # Mailer daemon spoofing
@@ -1175,9 +1175,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(mailer.*daemon.*spoofing|fake.*mailer.*daemon|delivery.*failure.*scam).*"
+          pattern: "(?i).{0,100}(mailer.{0,100}daemon.{0,100}spoofing|fake.{0,100}mailer.{0,100}daemon|delivery.{0,100}failure.{0,100}scam).*"
         - type: BodyPattern
-          pattern: "(?i).*(mailer.*daemon.*spoofing|fake.*mailer.*daemon|delivery.*failure.*scam).*"
+          pattern: "(?i).{0,100}(mailer.{0,100}daemon.{0,100}spoofing|fake.{0,100}mailer.{0,100}daemon|delivery.{0,100}failure.{0,100}scam).*"
     score: 300
 
   # Unicode discount offers
@@ -1186,9 +1186,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(𝗟𝗮𝘀𝘁.*𝗰𝗵𝗮𝗻𝗰𝗲|𝗚𝗲𝘁.*𝟱𝟬.*𝗢𝗙𝗙|unicode.*discount|special.*characters.*offer).*"
+          pattern: "(?i).{0,100}(𝗟𝗮𝘀𝘁.*𝗰𝗵𝗮𝗻𝗰𝗲|𝗚𝗲𝘁.*𝟱𝟬.*𝗢𝗙𝗙|unicode.{0,100}discount|special.{0,100}characters.{0,100}offer).*"
         - type: BodyPattern
-          pattern: "(?i).*(𝗟𝗮𝘀𝘁.*𝗰𝗵𝗮𝗻𝗰𝗲|𝗚𝗲𝘁.*𝟱𝟬.*𝗢𝗙𝗙|unicode.*discount|special.*characters.*offer).*"
+          pattern: "(?i).{0,100}(𝗟𝗮𝘀𝘁.*𝗰𝗵𝗮𝗻𝗰𝗲|𝗚𝗲𝘁.*𝟱𝟬.*𝗢𝗙𝗙|unicode.{0,100}discount|special.{0,100}characters.{0,100}offer).*"
     score: 250
   # Enhanced immune system misinformation
   - name: "Enhanced Immune System Misinformation"
@@ -1198,9 +1198,9 @@ rules:
         - type: Or
           criteria:
             - type: SubjectPattern
-              pattern: "(?i).*(hidden.*truth.*immune.*system|immune.*system.*misinformation|al.*sears.*md|immune.*system.*secret).*"
+              pattern: "(?i).{0,100}(hidden.{0,100}truth.{0,100}immune.{0,100}system|immune.{0,100}system.{0,100}misinformation|al.{0,100}sears.{0,100}md|immune.{0,100}system.{0,100}secret).*"
             - type: BodyPattern
-              pattern: "(?i).*(hidden.*truth.*immune.*system|immune.*system.*misinformation|al.*sears.*md|immune.*system.*secret).*"
+              pattern: "(?i).{0,100}(hidden.{0,100}truth.{0,100}immune.{0,100}system|immune.{0,100}system.{0,100}misinformation|al.{0,100}sears.{0,100}md|immune.{0,100}system.{0,100}secret).*"
         - type: Not
           criteria:
             type: Or
@@ -1208,7 +1208,7 @@ rules:
               - type: SenderPattern
                 pattern: ".*@.*(nytimes|washingtonpost|cnn|bbc|reuters|ap|wsj|usatoday)\\.(com|org)$"
               - type: SubjectPattern
-                pattern: "(?i).*(recipe|cooking|breakfast|meal|food|nutrition).*"
+                pattern: "(?i).{0,100}(recipe|cooking|breakfast|meal|food|nutrition).*"
     score: 220
 
   # Malware attachment patterns
@@ -1219,9 +1219,9 @@ rules:
         - type: Or
           criteria:
             - type: SubjectPattern
-              pattern: "(?i).*(new.*enquiry|malware.*rar.*attachment|suspicious.*attachment|urgent.*document).*"
+              pattern: "(?i).{0,100}(new.{0,100}enquiry|malware.{0,100}rar.{0,100}attachment|suspicious.{0,100}attachment|urgent.{0,100}document).*"
             - type: BodyPattern
-              pattern: "(?i).*(new.*enquiry|malware.*rar.*attachment|suspicious.*attachment|urgent.*document).*"
+              pattern: "(?i).{0,100}(new.{0,100}enquiry|malware.{0,100}rar.{0,100}attachment|suspicious.{0,100}attachment|urgent.{0,100}document).*"
         - type: Not
           criteria:
             type: Or
@@ -1238,9 +1238,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(knee.*health.*spam|knee.*pain.*relief|joint.*restoration|arthritis.*cure).*"
+          pattern: "(?i).{0,100}(knee.{0,100}health.{0,100}spam|knee.{0,100}pain.{0,100}relief|joint.{0,100}restoration|arthritis.{0,100}cure).*"
         - type: BodyPattern
-          pattern: "(?i).*(knee.*health.*spam|knee.*pain.*relief|joint.*restoration|arthritis.*cure).*"
+          pattern: "(?i).{0,100}(knee.{0,100}health.{0,100}spam|knee.{0,100}pain.{0,100}relief|joint.{0,100}restoration|arthritis.{0,100}cure).*"
     score: 190
   # Enhanced leafguard gutter spam
   - name: "Enhanced Leafguard Gutter Spam"
@@ -1248,9 +1248,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(gutter.*zero.*maintenance|leafguard|gutter.*peace.*mind).*"
+          pattern: "(?i).{0,100}(gutter.{0,100}zero.{0,100}maintenance|leafguard|gutter.{0,100}peace.{0,100}mind).*"
         - type: BodyPattern
-          pattern: "(?i).*(gutter.*zero.*maintenance|leafguard|gutter.*peace.*mind).*"
+          pattern: "(?i).{0,100}(gutter.{0,100}zero.{0,100}maintenance|leafguard|gutter.{0,100}peace.{0,100}mind).*"
     score: 170
   # Chef knife and kitchen product spam
   - name: "Chef Knife Kitchen Product Spam"
@@ -1260,9 +1260,9 @@ rules:
         - type: Or
           criteria:
             - type: SubjectPattern
-              pattern: "(?i).*(last.*day.*grab.*big.*promo|matsato.*chef.*knife|kitchen.*knife.*promo|chef.*knife.*sale).*"
+              pattern: "(?i).{0,100}(last.{0,100}day.{0,100}grab.{0,100}big.{0,100}promo|matsato.{0,100}chef.{0,100}knife|kitchen.{0,100}knife.{0,100}promo|chef.{0,100}knife.{0,100}sale).*"
             - type: BodyPattern
-              pattern: "(?i).*(last.*day.*grab.*big.*promo|matsato.*chef.*knife|kitchen.*knife.*promo|chef.*knife.*sale).*"
+              pattern: "(?i).{0,100}(last.{0,100}day.{0,100}grab.{0,100}big.{0,100}promo|matsato.{0,100}chef.{0,100}knife|kitchen.{0,100}knife.{0,100}promo|chef.{0,100}knife.{0,100}sale).*"
         - type: Not
           criteria:
             type: SenderPattern
@@ -1275,9 +1275,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(knee.*health|joint.*pain|arthritis.*relief|mobility.*improvement).*"
+          pattern: "(?i).{0,100}(knee.{0,100}health|joint.{0,100}pain|arthritis.{0,100}relief|mobility.{0,100}improvement).*"
         - type: BodyPattern
-          pattern: "(?i).*(knee.*health|joint.*pain|arthritis.*relief|mobility.*improvement).*"
+          pattern: "(?i).{0,100}(knee.{0,100}health|joint.{0,100}pain|arthritis.{0,100}relief|mobility.{0,100}improvement).*"
     score: 180
   # Piano course spam
   - name: "Piano Course Spam"
@@ -1285,9 +1285,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(i.*love.*my.*piano.*now|piano.*course.*shop|learn.*piano.*fast|piano.*lessons).*"
+          pattern: "(?i).{0,100}(i.{0,100}love.{0,100}my.{0,100}piano.{0,100}now|piano.{0,100}course.{0,100}shop|learn.{0,100}piano.{0,100}fast|piano.{0,100}lessons).*"
         - type: BodyPattern
-          pattern: "(?i).*(i.*love.*my.*piano.*now|piano.*course.*shop|learn.*piano.*fast|piano.*lessons).*"
+          pattern: "(?i).{0,100}(i.{0,100}love.{0,100}my.{0,100}piano.{0,100}now|piano.{0,100}course.{0,100}shop|learn.{0,100}piano.{0,100}fast|piano.{0,100}lessons).*"
     score: 160
 
   # Product demo notification spam
@@ -1298,9 +1298,9 @@ rules:
         - type: Or
           criteria:
             - type: SubjectPattern
-              pattern: "(?i).*(product.*demo.*notification|demo.*request|product.*demonstration|free.*demo).*"
+              pattern: "(?i).{0,100}(product.{0,100}demo.{0,100}notification|demo.{0,100}request|product.{0,100}demonstration|free.{0,100}demo).*"
             - type: BodyPattern
-              pattern: "(?i).*(product.*demo.*notification|demo.*request|product.*demonstration|free.*demo).*"
+              pattern: "(?i).{0,100}(product.{0,100}demo.{0,100}notification|demo.{0,100}request|product.{0,100}demonstration|free.{0,100}demo).*"
         - type: Not
           criteria:
             type: Or
@@ -1318,9 +1318,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(hidden.*toxin.*bloating.*prostate|ancient.*fix.*flushes|prostate.*toxin|prostate.*health.*scam).*"
+          pattern: "(?i).{0,100}(hidden.{0,100}toxin.{0,100}bloating.{0,100}prostate|ancient.{0,100}fix.{0,100}flushes|prostate.{0,100}toxin|prostate.{0,100}health.{0,100}scam).*"
         - type: BodyPattern
-          pattern: "(?i).*(hidden.*toxin.*bloating.*prostate|ancient.*fix.*flushes|prostate.*toxin|prostate.*health.*scam).*"
+          pattern: "(?i).{0,100}(hidden.{0,100}toxin.{0,100}bloating.{0,100}prostate|ancient.{0,100}fix.{0,100}flushes|prostate.{0,100}toxin|prostate.{0,100}health.{0,100}scam).*"
     score: 220
 
   # Enhanced mailer daemon patterns
@@ -1331,9 +1331,9 @@ rules:
         - type: Or
           criteria:
             - type: SubjectPattern
-              pattern: "(?i).*(mailer.*daemon|delivery.*failure|undelivered.*mail|returned.*mail|mail.*delivery.*subsystem).*"
+              pattern: "(?i).{0,100}(mailer.{0,100}daemon|delivery.{0,100}failure|undelivered.{0,100}mail|returned.{0,100}mail|mail.{0,100}delivery.{0,100}subsystem).*"
             - type: BodyPattern
-              pattern: "(?i).*(mailer.*daemon|delivery.*failure|undelivered.*mail|returned.*mail|mail.*delivery.*subsystem).*"
+              pattern: "(?i).{0,100}(mailer.{0,100}daemon|delivery.{0,100}failure|undelivered.{0,100}mail|returned.{0,100}mail|mail.{0,100}delivery.{0,100}subsystem).*"
         - type: Not
           criteria:
             type: SenderPattern
@@ -1348,15 +1348,15 @@ rules:
         - type: Or
           criteria:
             - type: SubjectPattern
-              pattern: "(?i).*(order.*confirmation|payment.*confirmation|transaction.*confirmation|receipt.*confirmation).*"
+              pattern: "(?i).{0,100}(order.{0,100}confirmation|payment.{0,100}confirmation|transaction.{0,100}confirmation|receipt.{0,100}confirmation).*"
             - type: BodyPattern
-              pattern: "(?i).*(order.*confirmation|payment.*confirmation|transaction.*confirmation|receipt.*confirmation).*"
+              pattern: "(?i).{0,100}(order.{0,100}confirmation|payment.{0,100}confirmation|transaction.{0,100}confirmation|receipt.{0,100}confirmation).*"
         - type: Or
           criteria:
             - type: BodyPattern
-              pattern: "(?i).*(click.*here.*view|download.*attachment.*view|verify.*payment.*method|update.*billing.*info).*"
+              pattern: "(?i).{0,100}(click.{0,100}here.{0,100}view|download.{0,100}attachment.{0,100}view|verify.{0,100}payment.{0,100}method|update.{0,100}billing.{0,100}info).*"
             - type: BodyPattern
-              pattern: "(?i).*(suspicious.*activity.*detected|account.*may.*be.*compromised|urgent.*action.*required).*"
+              pattern: "(?i).{0,100}(suspicious.{0,100}activity.{0,100}detected|account.{0,100}may.{0,100}be.{0,100}compromised|urgent.{0,100}action.{0,100}required).*"
             - type: HeaderPattern
               header: "Authentication-Results"
               pattern: "dkim=fail"
@@ -1377,9 +1377,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(thank.*you.*payment.*transaction|payment.*confirmation.*transaction|transaction.*payment.*thank).*"
+          pattern: "(?i).{0,100}(thank.{0,100}you.{0,100}payment.{0,100}transaction|payment.{0,100}confirmation.{0,100}transaction|transaction.{0,100}payment.{0,100}thank).*"
         - type: BodyPattern
-          pattern: "(?i).*(thank.*you.*payment.*transaction|payment.*confirmation.*transaction|transaction.*payment.*thank).*"
+          pattern: "(?i).{0,100}(thank.{0,100}you.{0,100}payment.{0,100}transaction|payment.{0,100}confirmation.{0,100}transaction|transaction.{0,100}payment.{0,100}thank).*"
     score: 300
 
   # Knee mistake health spam
@@ -1388,9 +1388,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(mistake.*makes.*bad.*knees.*worse|knee.*health.*mistake|bad.*knees.*worse).*"
+          pattern: "(?i).{0,100}(mistake.{0,100}makes.{0,100}bad.{0,100}knees.{0,100}worse|knee.{0,100}health.{0,100}mistake|bad.{0,100}knees.{0,100}worse).*"
         - type: BodyPattern
-          pattern: "(?i).*(mistake.*makes.*bad.*knees.*worse|knee.*health.*mistake|bad.*knees.*worse).*"
+          pattern: "(?i).{0,100}(mistake.{0,100}makes.{0,100}bad.{0,100}knees.{0,100}worse|knee.{0,100}health.{0,100}mistake|bad.{0,100}knees.{0,100}worse).*"
     score: 190
   # Debt relief solutions spam
   - name: "Debt Relief Solutions Spam"
@@ -1398,9 +1398,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(reduce.*debt.*expert.*debt.*relief|debt.*relief.*solutions|expert.*debt.*relief).*"
+          pattern: "(?i).{0,100}(reduce.{0,100}debt.{0,100}expert.{0,100}debt.{0,100}relief|debt.{0,100}relief.{0,100}solutions|expert.{0,100}debt.{0,100}relief).*"
         - type: BodyPattern
-          pattern: "(?i).*(reduce.*debt.*expert.*debt.*relief|debt.*relief.*solutions|expert.*debt.*relief).*"
+          pattern: "(?i).{0,100}(reduce.{0,100}debt.{0,100}expert.{0,100}debt.{0,100}relief|debt.{0,100}relief.{0,100}solutions|expert.{0,100}debt.{0,100}relief).*"
     score: 200
   # Enhanced product demo spam
   - name: "Enhanced Product Demo Spam"
@@ -1410,9 +1410,9 @@ rules:
         - type: Or
           criteria:
             - type: SubjectPattern
-              pattern: "(?i)^demo$|product.*demo.*notification|demo.*request|free.*demo"
+              pattern: "(?i)^demo$|product.{0,100}demo.{0,100}notification|demo.{0,100}request|free.{0,100}demo"
             - type: BodyPattern
-              pattern: "(?i)^demo$|product.*demo.*notification|demo.*request|free.*demo"
+              pattern: "(?i)^demo$|product.{0,100}demo.{0,100}notification|demo.{0,100}request|free.{0,100}demo"
         - type: Not
           criteria:
             type: Or
@@ -1431,9 +1431,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(𝗦𝗵𝗶𝗽𝗽𝗶𝗻𝗴.*𝗜𝗗|shipping.*id.*unicode|bold.*unicode.*shipping).*"
+          pattern: "(?i).{0,100}(𝗦𝗵𝗶𝗽𝗽𝗶𝗻𝗴.*𝗜𝗗|shipping.{0,100}id.{0,100}unicode|bold.{0,100}unicode.{0,100}shipping).*"
         - type: BodyPattern
-          pattern: "(?i).*(𝗦𝗵𝗶𝗽𝗽𝗶𝗻𝗴.*𝗜𝗗|shipping.*id.*unicode|bold.*unicode.*shipping).*"
+          pattern: "(?i).{0,100}(𝗦𝗵𝗶𝗽𝗽𝗶𝗻𝗴.*𝗜𝗗|shipping.{0,100}id.{0,100}unicode|bold.{0,100}unicode.{0,100}shipping).*"
     score: 280
   # Screenshot spam
   - name: "Screenshot Spam"
@@ -1441,9 +1441,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(screenshot.*\\?\\?%%##|screenshot.*spam|suspicious.*screenshot).*"
+          pattern: "(?i).{0,100}(screenshot.{0,100}\\?\\?%%##|screenshot.{0,100}spam|suspicious.{0,100}screenshot).*"
         - type: BodyPattern
-          pattern: "(?i).*(screenshot.*\\?\\?%%##|screenshot.*spam|suspicious.*screenshot).*"
+          pattern: "(?i).{0,100}(screenshot.{0,100}\\?\\?%%##|screenshot.{0,100}spam|suspicious.{0,100}screenshot).*"
     score: 200
 
   # VPN offer spam
@@ -1452,9 +1452,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(secure.*my.*connection|vpn.*offer|connection.*security|vpn.*protection|unlocator.*vpn).*"
+          pattern: "(?i).{0,100}(secure.{0,100}my.{0,100}connection|vpn.{0,100}offer|connection.{0,100}security|vpn.{0,100}protection|unlocator.{0,100}vpn).*"
         - type: BodyPattern
-          pattern: "(?i).*(secure.*my.*connection|vpn.*offer|connection.*security|vpn.*protection|unlocator.*vpn).*"
+          pattern: "(?i).{0,100}(secure.{0,100}my.{0,100}connection|vpn.{0,100}offer|connection.{0,100}security|vpn.{0,100}protection|unlocator.{0,100}vpn).*"
     score: 180
   # Security camera light socket spam
   - name: "Security Camera Light Socket Spam"
@@ -1462,9 +1462,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(ultra.*security.*must.*have.*homeowners|light.*socket.*security.*camera|security.*camera.*homeowners).*"
+          pattern: "(?i).{0,100}(ultra.{0,100}security.{0,100}must.{0,100}have.{0,100}homeowners|light.{0,100}socket.{0,100}security.{0,100}camera|security.{0,100}camera.{0,100}homeowners).*"
         - type: BodyPattern
-          pattern: "(?i).*(ultra.*security.*must.*have.*homeowners|light.*socket.*security.*camera|security.*camera.*homeowners).*"
+          pattern: "(?i).{0,100}(ultra.{0,100}security.{0,100}must.{0,100}have.{0,100}homeowners|light.{0,100}socket.{0,100}security.{0,100}camera|security.{0,100}camera.{0,100}homeowners).*"
     score: 180
 
   # Stanford nerve damage spam
@@ -1473,9 +1473,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(stanford.*scientists.*reveal.*bedtime.*ritual.*reverses.*nerve.*damage|nerve.*damage.*overnight|stanford.*nerve.*damage).*"
+          pattern: "(?i).{0,100}(stanford.{0,100}scientists.{0,100}reveal.{0,100}bedtime.{0,100}ritual.{0,100}reverses.{0,100}nerve.{0,100}damage|nerve.{0,100}damage.{0,100}overnight|stanford.{0,100}nerve.{0,100}damage).*"
         - type: BodyPattern
-          pattern: "(?i).*(stanford.*scientists.*reveal.*bedtime.*ritual.*reverses.*nerve.*damage|nerve.*damage.*overnight|stanford.*nerve.*damage).*"
+          pattern: "(?i).{0,100}(stanford.{0,100}scientists.{0,100}reveal.{0,100}bedtime.{0,100}ritual.{0,100}reverses.{0,100}nerve.{0,100}damage|nerve.{0,100}damage.{0,100}overnight|stanford.{0,100}nerve.{0,100}damage).*"
     score: 220
 
   # Stanford weight loss spam
@@ -1484,9 +1484,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(stanford.*melt.*flab|stanford.*weight.*loss|stanford.*fat.*burning|stanford.*shower.*melt).*"
+          pattern: "(?i).{0,100}(stanford.{0,100}melt.{0,100}flab|stanford.{0,100}weight.{0,100}loss|stanford.{0,100}fat.{0,100}burning|stanford.{0,100}shower.{0,100}melt).*"
         - type: BodyPattern
-          pattern: "(?i).*(stanford.*melt.*flab|stanford.*weight.*loss|stanford.*fat.*burning|stanford.*shower.*melt).*"
+          pattern: "(?i).{0,100}(stanford.{0,100}melt.{0,100}flab|stanford.{0,100}weight.{0,100}loss|stanford.{0,100}fat.{0,100}burning|stanford.{0,100}shower.{0,100}melt).*"
     score: 300
 
   # Professor Tee clothing scam
@@ -1497,9 +1497,9 @@ rules:
         - type: Or
           criteria:
             - type: SubjectPattern
-              pattern: "(?i).*(smart.*looks.*smart.*minds|professor.*tee|instadoodle).*"
+              pattern: "(?i).{0,100}(smart.{0,100}looks.{0,100}smart.{0,100}minds|professor.{0,100}tee|instadoodle).*"
             - type: BodyPattern
-              pattern: "(?i).*(smart.*looks.*smart.*minds|professor.*tee|instadoodle).*"
+              pattern: "(?i).{0,100}(smart.{0,100}looks.{0,100}smart.{0,100}minds|professor.{0,100}tee|instadoodle).*"
             - type: SenderPattern
               pattern: ".*@.*instadoodle\\.(me|com|net|org)$"
         - type: Not
@@ -1514,9 +1514,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(shed.*building.*scam|build.*shed.*cheap|diy.*shed.*plans).*"
+          pattern: "(?i).{0,100}(shed.{0,100}building.{0,100}scam|build.{0,100}shed.{0,100}cheap|diy.{0,100}shed.{0,100}plans).*"
         - type: BodyPattern
-          pattern: "(?i).*(shed.*building.*scam|build.*shed.*cheap|diy.*shed.*plans).*"
+          pattern: "(?i).{0,100}(shed.{0,100}building.{0,100}scam|build.{0,100}shed.{0,100}cheap|diy.{0,100}shed.{0,100}plans).*"
     score: 160
   # Brain age test spam
   - name: "Brain Age Test Spam"
@@ -1524,9 +1524,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(take.*brain.*age.*test|brain.*age.*test|cognitive.*age.*test|mental.*age.*assessment).*"
+          pattern: "(?i).{0,100}(take.{0,100}brain.{0,100}age.{0,100}test|brain.{0,100}age.{0,100}test|cognitive.{0,100}age.{0,100}test|mental.{0,100}age.{0,100}assessment).*"
         - type: BodyPattern
-          pattern: "(?i).*(take.*brain.*age.*test|brain.*age.*test|cognitive.*age.*test|mental.*age.*assessment).*"
+          pattern: "(?i).{0,100}(take.{0,100}brain.{0,100}age.{0,100}test|brain.{0,100}age.{0,100}test|cognitive.{0,100}age.{0,100}test|mental.{0,100}age.{0,100}assessment).*"
     score: 190
   # Eyesight test spam
   - name: "Eyesight Test Spam"
@@ -1536,9 +1536,9 @@ rules:
         - type: Or
           criteria:
             - type: SubjectPattern
-              pattern: "(?i).*(eyesight.*flower|test.*eyesight|vision.*test|eye.*health.*test).*"
+              pattern: "(?i).{0,100}(eyesight.{0,100}flower|test.{0,100}eyesight|vision.{0,100}test|eye.{0,100}health.{0,100}test).*"
             - type: BodyPattern
-              pattern: "(?i).*(eyesight.*flower|test.*eyesight|vision.*test|eye.*health.*test).*"
+              pattern: "(?i).{0,100}(eyesight.{0,100}flower|test.{0,100}eyesight|vision.{0,100}test|eye.{0,100}health.{0,100}test).*"
         - type: Not
           criteria:
             type: SenderPattern
@@ -1551,9 +1551,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(time.*gift.*better.*sleep.*holiday.*shipping|holiday.*shipping.*ends.*soon|gift.*better.*sleep).*"
+          pattern: "(?i).{0,100}(time.{0,100}gift.{0,100}better.{0,100}sleep.{0,100}holiday.{0,100}shipping|holiday.{0,100}shipping.{0,100}ends.{0,100}soon|gift.{0,100}better.{0,100}sleep).*"
         - type: BodyPattern
-          pattern: "(?i).*(time.*gift.*better.*sleep.*holiday.*shipping|holiday.*shipping.*ends.*soon|gift.*better.*sleep).*"
+          pattern: "(?i).{0,100}(time.{0,100}gift.{0,100}better.{0,100}sleep.{0,100}holiday.{0,100}shipping|holiday.{0,100}shipping.{0,100}ends.{0,100}soon|gift.{0,100}better.{0,100}sleep).*"
     score: 170
 
   # Synoshi cleaning spam
@@ -1562,9 +1562,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(clean.*less.*live.*more|synoshi.*cleaning|cleaning.*help.*domain|synoshi.*product|cleaning.*scrubber).*"
+          pattern: "(?i).{0,100}(clean.{0,100}less.{0,100}live.{0,100}more|synoshi.{0,100}cleaning|cleaning.{0,100}help.{0,100}domain|synoshi.{0,100}product|cleaning.{0,100}scrubber).*"
         - type: BodyPattern
-          pattern: "(?i).*(clean.*less.*live.*more|synoshi.*cleaning|cleaning.*help.*domain|synoshi.*product|cleaning.*scrubber).*"
+          pattern: "(?i).{0,100}(clean.{0,100}less.{0,100}live.{0,100}more|synoshi.{0,100}cleaning|cleaning.{0,100}help.{0,100}domain|synoshi.{0,100}product|cleaning.{0,100}scrubber).*"
     score: 160
   # Unicode credit card bill
   - name: "Unicode Credit Card Bill"
@@ -1572,9 +1572,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(𝚛𝚎.*𝚢𝚘𝚞𝚛.*𝚌𝚛𝚎𝚍𝚒𝚝.*𝚌𝚊𝚛𝚍.*𝚋𝚒𝚕𝚕|unicode.*credit.*card|monospace.*credit.*card).*"
+          pattern: "(?i).{0,100}(𝚛𝚎.*𝚢𝚘𝚞𝚛.*𝚌𝚛𝚎𝚍𝚒𝚝.*𝚌𝚊𝚛𝚍.*𝚋𝚒𝚕𝚕|unicode.{0,100}credit.{0,100}card|monospace.{0,100}credit.{0,100}card).*"
         - type: BodyPattern
-          pattern: "(?i).*(𝚛𝚎.*𝚢𝚘𝚞𝚛.*𝚌𝚛𝚎𝚍𝚒𝚝.*𝚌𝚊𝚛𝚍.*𝚋𝚒𝚕𝚕|unicode.*credit.*card|monospace.*credit.*card).*"
+          pattern: "(?i).{0,100}(𝚛𝚎.*𝚢𝚘𝚞𝚛.*𝚌𝚛𝚎𝚍𝚒𝚝.*𝚌𝚊𝚛𝚍.*𝚋𝚒𝚕𝚕|unicode.{0,100}credit.{0,100}card|monospace.{0,100}credit.{0,100}card).*"
     score: 280
   # Mascara beauty spam
   - name: "Mascara Beauty Spam"
@@ -1582,9 +1582,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(thick.*luscious.*curly.*lashes|test.*mascara|mascara.*beauty.*spam|lash.*enhancement).*"
+          pattern: "(?i).{0,100}(thick.{0,100}luscious.{0,100}curly.{0,100}lashes|test.{0,100}mascara|mascara.{0,100}beauty.{0,100}spam|lash.{0,100}enhancement).*"
         - type: BodyPattern
-          pattern: "(?i).*(thick.*luscious.*curly.*lashes|test.*mascara|mascara.*beauty.*spam|lash.*enhancement).*"
+          pattern: "(?i).{0,100}(thick.{0,100}luscious.{0,100}curly.{0,100}lashes|test.{0,100}mascara|mascara.{0,100}beauty.{0,100}spam|lash.{0,100}enhancement).*"
     score: 170
 
   # Heated vest winter spam
@@ -1593,9 +1593,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(stay.*warm.*style.*solana.*heated.*vest|heated.*vest.*winter.*essential|solana.*heated.*vest).*"
+          pattern: "(?i).{0,100}(stay.{0,100}warm.{0,100}style.{0,100}solana.{0,100}heated.{0,100}vest|heated.{0,100}vest.{0,100}winter.{0,100}essential|solana.{0,100}heated.{0,100}vest).*"
         - type: BodyPattern
-          pattern: "(?i).*(stay.*warm.*style.*solana.*heated.*vest|heated.*vest.*winter.*essential|solana.*heated.*vest).*"
+          pattern: "(?i).{0,100}(stay.{0,100}warm.{0,100}style.{0,100}solana.{0,100}heated.{0,100}vest|heated.{0,100}vest.{0,100}winter.{0,100}essential|solana.{0,100}heated.{0,100}vest).*"
     score: 180
   # Toenail fungus health spam
   - name: "Toenail Fungus Health Spam"
@@ -1603,9 +1603,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(soak.*feet.*bowl.*vanish.*toenail.*fungus|toenail.*fungus.*health|fungus.*treatment|nail.*fungus.*cure).*"
+          pattern: "(?i).{0,100}(soak.{0,100}feet.{0,100}bowl.{0,100}vanish.{0,100}toenail.{0,100}fungus|toenail.{0,100}fungus.{0,100}health|fungus.{0,100}treatment|nail.{0,100}fungus.{0,100}cure).*"
         - type: BodyPattern
-          pattern: "(?i).*(soak.*feet.*bowl.*vanish.*toenail.*fungus|toenail.*fungus.*health|fungus.*treatment|nail.*fungus.*cure).*"
+          pattern: "(?i).{0,100}(soak.{0,100}feet.{0,100}bowl.{0,100}vanish.{0,100}toenail.{0,100}fungus|toenail.{0,100}fungus.{0,100}health|fungus.{0,100}treatment|nail.{0,100}fungus.{0,100}cure).*"
     score: 200
 
   # Ukrainian dating spam
@@ -1614,9 +1614,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(date.*easy.*english.*speaking.*ukrainian.*girls|ukrainian.*dating|ukrainian.*girls|eastern.*european.*dating).*"
+          pattern: "(?i).{0,100}(date.{0,100}easy.{0,100}english.{0,100}speaking.{0,100}ukrainian.{0,100}girls|ukrainian.{0,100}dating|ukrainian.{0,100}girls|eastern.{0,100}european.{0,100}dating).*"
         - type: BodyPattern
-          pattern: "(?i).*(date.*easy.*english.*speaking.*ukrainian.*girls|ukrainian.*dating|ukrainian.*girls|eastern.*european.*dating).*"
+          pattern: "(?i).{0,100}(date.{0,100}easy.{0,100}english.{0,100}speaking.{0,100}ukrainian.{0,100}girls|ukrainian.{0,100}dating|ukrainian.{0,100}girls|eastern.{0,100}european.{0,100}dating).*"
     score: 250
 
   # Triple A car kit spam
@@ -1627,9 +1627,9 @@ rules:
         - type: Or
           criteria:
             - type: SubjectPattern
-              pattern: "(?i).*(vehicle.*should.*be.*on.*road|triple.*a|emergency.*car.*kit|roadside.*assistance).*"
+              pattern: "(?i).{0,100}(vehicle.{0,100}should.{0,100}be.{0,100}on.{0,100}road|triple.{0,100}a|emergency.{0,100}car.{0,100}kit|roadside.{0,100}assistance).*"
             - type: BodyPattern
-              pattern: "(?i).*(vehicle.*should.*be.*on.*road|triple.*a|emergency.*car.*kit|roadside.*assistance).*"
+              pattern: "(?i).{0,100}(vehicle.{0,100}should.{0,100}be.{0,100}on.{0,100}road|triple.{0,100}a|emergency.{0,100}car.{0,100}kit|roadside.{0,100}assistance).*"
         - type: "Not"
           criteria:
             type: "Or"
@@ -1647,9 +1647,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(septic.*tank.*smell.*eliminates.*smell.*3.*days|septic.*tank.*smell|septic.*system.*maintenance).*"
+          pattern: "(?i).{0,100}(septic.{0,100}tank.{0,100}smell.{0,100}eliminates.{0,100}smell.{0,100}3.{0,100}days|septic.{0,100}tank.{0,100}smell|septic.{0,100}system.{0,100}maintenance).*"
         - type: BodyPattern
-          pattern: "(?i).*(septic.*tank.*smell.*eliminates.*smell.*3.*days|septic.*tank.*smell|septic.*system.*maintenance).*"
+          pattern: "(?i).{0,100}(septic.{0,100}tank.{0,100}smell.{0,100}eliminates.{0,100}smell.{0,100}3.{0,100}days|septic.{0,100}tank.{0,100}smell|septic.{0,100}system.{0,100}maintenance).*"
     score: 180
 
   # Timeshare exit travel scam
@@ -1658,9 +1658,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(travel.*wherever.*you.*like.*holiday.*season|timeshare.*exit.*travel|exit.*my.*timeshare).*"
+          pattern: "(?i).{0,100}(travel.{0,100}wherever.{0,100}you.{0,100}like.{0,100}holiday.{0,100}season|timeshare.{0,100}exit.{0,100}travel|exit.{0,100}my.{0,100}timeshare).*"
         - type: BodyPattern
-          pattern: "(?i).*(travel.*wherever.*you.*like.*holiday.*season|timeshare.*exit.*travel|exit.*my.*timeshare).*"
+          pattern: "(?i).{0,100}(travel.{0,100}wherever.{0,100}you.{0,100}like.{0,100}holiday.{0,100}season|timeshare.{0,100}exit.{0,100}travel|exit.{0,100}my.{0,100}timeshare).*"
     score: 250
 
   # T-Mobile tech upgrade spam
@@ -1671,13 +1671,13 @@ rules:
         - type: Or
           criteria:
             - type: SubjectPattern
-              pattern: "(?i).*(tmobile.*tech.*upgrade|t.*mobile.*upgrade|mobile.*tech.*upgrade|phone.*upgrade.*offer).*"
+              pattern: "(?i).{0,100}(tmobile.{0,100}tech.{0,100}upgrade|t.{0,100}mobile.{0,100}upgrade|mobile.{0,100}tech.{0,100}upgrade|phone.{0,100}upgrade.{0,100}offer).*"
             - type: BodyPattern
-              pattern: "(?i).*(tmobile.*tech.*upgrade|t.*mobile.*upgrade|mobile.*tech.*upgrade|phone.*upgrade.*offer).*"
+              pattern: "(?i).{0,100}(tmobile.{0,100}tech.{0,100}upgrade|t.{0,100}mobile.{0,100}upgrade|mobile.{0,100}tech.{0,100}upgrade|phone.{0,100}upgrade.{0,100}offer).*"
         - type: Not
           criteria:
             type: SenderPattern
-            pattern: "(?i).*(xfinity|comcast|verizon|att\\.com|t-mobile\\.com).*"
+            pattern: "(?i).{0,100}(xfinity|comcast|verizon|att\\.com|t-mobile\\.com).*"
     score: 200
   # Credit card resolution medical spam
   - name: "Credit Card Resolution Medical Spam"
@@ -1685,9 +1685,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(credit.*card.*resolution.*unicode.*medical|credit.*card.*medical|billing.*medical.*resolution).*"
+          pattern: "(?i).{0,100}(credit.{0,100}card.{0,100}resolution.{0,100}unicode.{0,100}medical|credit.{0,100}card.{0,100}medical|billing.{0,100}medical.{0,100}resolution).*"
         - type: BodyPattern
-          pattern: "(?i).*(credit.*card.*resolution.*unicode.*medical|credit.*card.*medical|billing.*medical.*resolution).*"
+          pattern: "(?i).{0,100}(credit.{0,100}card.{0,100}resolution.{0,100}unicode.{0,100}medical|credit.{0,100}card.{0,100}medical|billing.{0,100}medical.{0,100}resolution).*"
     score: 200
   # Enhanced leafguard final pattern
   - name: "Enhanced Leafguard Final Pattern"
@@ -1695,9 +1695,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(leafguard|leaf.*guard|gutter.*protection|gutter.*maintenance).*"
+          pattern: "(?i).{0,100}(leafguard|leaf.{0,100}guard|gutter.{0,100}protection|gutter.{0,100}maintenance).*"
         - type: BodyPattern
-          pattern: "(?i).*(leafguard|leaf.*guard|gutter.*protection|gutter.*maintenance).*"
+          pattern: "(?i).{0,100}(leafguard|leaf.{0,100}guard|gutter.{0,100}protection|gutter.{0,100}maintenance).*"
     score: 150
   # Gutter maintenance zero pattern
   - name: "Gutter Maintenance Zero Pattern"
@@ -1705,9 +1705,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(one.*gutter.*zero.*maintenance|gutter.*zero.*maintenance|total.*peace.*mind.*gutter).*"
+          pattern: "(?i).{0,100}(one.{0,100}gutter.{0,100}zero.{0,100}maintenance|gutter.{0,100}zero.{0,100}maintenance|total.{0,100}peace.{0,100}mind.{0,100}gutter).*"
         - type: BodyPattern
-          pattern: "(?i).*(one.*gutter.*zero.*maintenance|gutter.*zero.*maintenance|total.*peace.*mind.*gutter).*"
+          pattern: "(?i).{0,100}(one.{0,100}gutter.{0,100}zero.{0,100}maintenance|gutter.{0,100}zero.{0,100}maintenance|total.{0,100}peace.{0,100}mind.{0,100}gutter).*"
     score: 170
   # Ukrainian romance scam enhanced
   - name: "Ukrainian Romance Scam Enhanced"
@@ -1717,9 +1717,9 @@ rules:
         - type: Or
           criteria:
             - type: SubjectPattern
-              pattern: "(?i).*(want.*to.*be.*with.*you.*how.*about.*you|ukrainian.*romance.*scam|find.*ukrainian.*love|ukrainian.*love).*"
+              pattern: "(?i).{0,100}(want.{0,100}to.{0,100}be.{0,100}with.{0,100}you.{0,100}how.{0,100}about.{0,100}you|ukrainian.{0,100}romance.{0,100}scam|find.{0,100}ukrainian.{0,100}love|ukrainian.{0,100}love).*"
             - type: BodyPattern
-              pattern: "(?i).*(want.*to.*be.*with.*you.*how.*about.*you|ukrainian.*romance.*scam|find.*ukrainian.*love|ukrainian.*love).*"
+              pattern: "(?i).{0,100}(want.{0,100}to.{0,100}be.{0,100}with.{0,100}you.{0,100}how.{0,100}about.{0,100}you|ukrainian.{0,100}romance.{0,100}scam|find.{0,100}ukrainian.{0,100}love|ukrainian.{0,100}love).*"
         - type: Not
           criteria:
             type: SenderPattern
@@ -1731,9 +1731,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(customize.*website.*design.*development|unsolicited.*web.*development|website.*development.*spam|web.*design.*services).*"
+          pattern: "(?i).{0,100}(customize.{0,100}website.{0,100}design.{0,100}development|unsolicited.{0,100}web.{0,100}development|website.{0,100}development.{0,100}spam|web.{0,100}design.{0,100}services).*"
         - type: BodyPattern
-          pattern: "(?i).*(customize.*website.*design.*development|unsolicited.*web.*development|website.*development.*spam|web.*design.*services).*"
+          pattern: "(?i).{0,100}(customize.{0,100}website.{0,100}design.{0,100}development|unsolicited.{0,100}web.{0,100}development|website.{0,100}development.{0,100}spam|web.{0,100}design.{0,100}services).*"
     score: 200
 
   # T-Mobile tech upgrade enhanced
@@ -1742,9 +1742,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(your.*tech.*upgrade.*is.*ready|tmobile.*tech.*upgrade|tech.*gift.*from.*t.*mobile|free.*hp.*laptop).*"
+          pattern: "(?i).{0,100}(your.{0,100}tech.{0,100}upgrade.{0,100}is.{0,100}ready|tmobile.{0,100}tech.{0,100}upgrade|tech.{0,100}gift.{0,100}from.{0,100}t.{0,100}mobile|free.{0,100}hp.{0,100}laptop).*"
         - type: BodyPattern
-          pattern: "(?i).*(your.*tech.*upgrade.*is.*ready|tmobile.*tech.*upgrade|tech.*gift.*from.*t.*mobile|free.*hp.*laptop).*"
+          pattern: "(?i).{0,100}(your.{0,100}tech.{0,100}upgrade.{0,100}is.{0,100}ready|tmobile.{0,100}tech.{0,100}upgrade|tech.{0,100}gift.{0,100}from.{0,100}t.{0,100}mobile|free.{0,100}hp.{0,100}laptop).*"
     score: 250
   # Vision ritual health spam
   - name: "Vision Ritual Health Spam"
@@ -1752,9 +1752,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(morning.*vision.*ritual|vision.*ritual.*health|vision.*research.*group|eye.*health.*ritual).*"
+          pattern: "(?i).{0,100}(morning.{0,100}vision.{0,100}ritual|vision.{0,100}ritual.{0,100}health|vision.{0,100}research.{0,100}group|eye.{0,100}health.{0,100}ritual).*"
         - type: BodyPattern
-          pattern: "(?i).*(morning.*vision.*ritual|vision.*ritual.*health|vision.*research.*group|eye.*health.*ritual).*"
+          pattern: "(?i).{0,100}(morning.{0,100}vision.{0,100}ritual|vision.{0,100}ritual.{0,100}health|vision.{0,100}research.{0,100}group|eye.{0,100}health.{0,100}ritual).*"
     score: 200
 
   # Woodworking plans spam
@@ -1763,9 +1763,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(woodworking.*plans.*spam|diy.*woodworking|wood.*project.*plans|carpentry.*plans).*"
+          pattern: "(?i).{0,100}(woodworking.{0,100}plans.{0,100}spam|diy.{0,100}woodworking|wood.{0,100}project.{0,100}plans|carpentry.{0,100}plans).*"
         - type: BodyPattern
-          pattern: "(?i).*(woodworking.*plans.*spam|diy.*woodworking|wood.*project.*plans|carpentry.*plans).*"
+          pattern: "(?i).{0,100}(woodworking.{0,100}plans.{0,100}spam|diy.{0,100}woodworking|wood.{0,100}project.{0,100}plans|carpentry.{0,100}plans).*"
     score: 160
 
   # Yelsen finance loan spam
@@ -1774,9 +1774,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(yelsen.*finance.*loan|personal.*loan.*offer|quick.*loan.*approval|finance.*loan.*spam).*"
+          pattern: "(?i).{0,100}(yelsen.{0,100}finance.{0,100}loan|personal.{0,100}loan.{0,100}offer|quick.{0,100}loan.{0,100}approval|finance.{0,100}loan.{0,100}spam).*"
         - type: BodyPattern
-          pattern: "(?i).*(yelsen.*finance.*loan|personal.*loan.*offer|quick.*loan.*approval|finance.*loan.*spam).*"
+          pattern: "(?i).{0,100}(yelsen.{0,100}finance.{0,100}loan|personal.{0,100}loan.{0,100}offer|quick.{0,100}loan.{0,100}approval|finance.{0,100}loan.{0,100}spam).*"
     score: 220
   # Cross-Domain Content Hosting (+75 points)
   - name: "Cross-Domain Content Hosting"
@@ -1785,9 +1785,9 @@ rules:
       type: And
       criteria:
         - type: BodyPattern
-          pattern: "(?i).*<img.*src.*http://.*"
+          pattern: "(?i).*<img.{0,100}src.{0,100}http://.*"
         - type: BodyPattern
-          pattern: "(?i).*stringentshortcut.*"
+          pattern: "(?i).{0,100}stringentshortcut.*"
     score: 75
     description: "Content hosted on suspicious external domains"
 
@@ -1796,7 +1796,7 @@ rules:
     enabled: true
     criteria:
       type: BodyPattern
-      pattern: "(?i).*<img.*width=['\"]1px['\"].*height=['\"]1px['\"].*"
+      pattern: "(?i).*<img.{0,100}width=['\"]1px['\"].{0,100}height=['\"]1px['\"].*"
     score: 50
     description: "Suspicious 1px tracking pixels"
 
@@ -1807,7 +1807,7 @@ rules:
       type: And
       criteria:
         - type: BodyPattern
-          pattern: "(?i).*<img.*src.*http.*"
+          pattern: "(?i).*<img.{0,100}src.{0,100}http.*"
         - type: Not
           criteria:
             type: BodyPattern
@@ -1827,9 +1827,9 @@ rules:
         - type: Or
           criteria:
             - type: SubjectPattern
-              pattern: "(?i).*(woodworking.*plans|wood.*project|diy.*(carpentry|woodwork|furniture|cabinet)|furniture.*plans|carpentry.*guide).*"
+              pattern: "(?i).{0,100}(woodworking.{0,100}plans|wood.{0,100}project|diy.{0,100}(carpentry|woodwork|furniture|cabinet)|furniture.{0,100}plans|carpentry.{0,100}guide).*"
             - type: BodyPattern
-              pattern: "(?i).*(woodworking.*plans|wood.*project|diy.*(carpentry|woodwork|furniture|cabinet)|furniture.*plans|carpentry.*guide).*"
+              pattern: "(?i).{0,100}(woodworking.{0,100}plans|wood.{0,100}project|diy.{0,100}(carpentry|woodwork|furniture|cabinet)|furniture.{0,100}plans|carpentry.{0,100}guide).*"
         - type: Not
           criteria:
             type: Or
@@ -1849,9 +1849,9 @@ rules:
         - type: Or
           criteria:
             - type: SubjectPattern
-              pattern: "(?i).*(yelsen.*finance|personal.*loan|quick.*approval|loan.*offer).*"
+              pattern: "(?i).{0,100}(yelsen.{0,100}finance|personal.{0,100}loan|quick.{0,100}approval|loan.{0,100}offer).*"
             - type: BodyPattern
-              pattern: "(?i).*(yelsen.*finance|personal.*loan|quick.*approval|loan.*offer).*"
+              pattern: "(?i).{0,100}(yelsen.{0,100}finance|personal.{0,100}loan|quick.{0,100}approval|loan.{0,100}offer).*"
         - type: Not
           criteria:
             type: Or
@@ -1860,7 +1860,7 @@ rules:
                 pattern: ".*@.*(becu|creditunion|bank|fidelity|schwab|vanguard|chase|wellsfargo|bankofamerica|citi|usbank)\\.(org|com)$"
               - type: HeaderPattern
                 header: "Authentication-Results"
-                pattern: "dkim=pass.*\\.(becu|creditunion|bank|fidelity|schwab|vanguard|chase|wellsfargo|bankofamerica|citi|usbank)\\.(org|com)"
+                pattern: "dkim=pass.{0,100}\\.(becu|creditunion|bank|fidelity|schwab|vanguard|chase|wellsfargo|bankofamerica|citi|usbank)\\.(org|com)"
     score: 220
     description: "Loan scam patterns excluding legitimate financial institutions"
 
@@ -1871,7 +1871,7 @@ rules:
       type: "And"
       criteria:
         - type: "BodyPattern"
-          pattern: "(?i)(millionen euro|verm.*chtnis|notar|testament)"
+          pattern: "(?i)(millionen euro|verm.{0,100}chtnis|notar|testament)"
         - type: "BodyPattern" 
           pattern: "(?i)(krebs|krank|sterben|tod)"
         - type: Not

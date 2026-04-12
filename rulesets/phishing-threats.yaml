@@ -10,9 +10,9 @@ rules:
         - type: "Or"
           criteria:
             - type: "SubjectPattern"
-              pattern: "(?i).*(hr.*shared|hr.*document|salary.*review|incentive.*overview|payroll.*update|employee.*handbook).*"
+              pattern: "(?i).{0,100}(hr.{0,100}shared|hr.{0,100}document|salary.{0,100}review|incentive.{0,100}overview|payroll.{0,100}update|employee.{0,100}handbook).*"
             - type: "CombinedTextPattern"
-              pattern: "(?i).*(hr.*department.*shared|view.*salary.*document|access.*payroll.*information|employee.*benefits.*update).*"
+              pattern: "(?i).{0,100}(hr.{0,100}department.{0,100}shared|view.{0,100}salary.{0,100}document|access.{0,100}payroll.{0,100}information|employee.{0,100}benefits.{0,100}update).*"
         - type: "Not"
           criteria:
             type: "SenderPattern"
@@ -29,11 +29,11 @@ rules:
         - type: "Or"
           criteria:
             - type: "SubjectPattern"
-              pattern: "(?i).*(urgent.*action.*required|account.*will.*be.*closed|verify.*immediately|suspended.*account|click.*here.*now).*"
+              pattern: "(?i).*(urgent.{0,30}action.{0,30}required|account.{0,30}will.{0,30}be.{0,30}closed|verify.{0,30}immediately|suspended.{0,30}account|click.{0,30}here.{0,30}now).*"
             - type: "CombinedTextPattern"
-              pattern: "(?i).*(verify.*your.*account.*now|click.*here.*to.*verify|account.*has.*been.*suspended|immediate.*action.*required).*"
+              pattern: "(?i).*(verify.{0,30}your.{0,30}account.{0,30}now|click.{0,30}here.{0,30}to.{0,30}verify|account.{0,30}has.{0,30}been.{0,30}suspended|immediate.{0,30}action.{0,30}required).*"
             - type: "CombinedTextPattern"
-              pattern: "(?i).*(congratulations.*you.*have.*won|claim.*your.*prize.*now|limited.*time.*offer.*expires|act.*now.*or.*lose).*"
+              pattern: "(?i).*(congratulations.{0,30}you.{0,30}have.{0,30}won|claim.{0,30}your.{0,30}prize.{0,30}now|limited.{0,30}time.{0,30}offer.{0,30}expires|act.{0,30}now.{0,30}or.{0,30}lose).*"
         - type: "Not"
           criteria:
             type: "SenderPattern"
@@ -48,7 +48,7 @@ rules:
       type: And
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(can.*you.*confirm|please.*confirm|confirm.*you.*received|did.*you.*receive).*"
+          pattern: "(?i).{0,100}(can.{0,100}you.{0,100}confirm|please.{0,100}confirm|confirm.{0,100}you.{0,100}received|did.{0,100}you.{0,100}receive).*"
         - type: Not
           criteria:
             type: SenderPattern
@@ -65,11 +65,11 @@ rules:
         - type: Or
           criteria:
             - type: SubjectPattern
-              pattern: "(?i).*(payment.*(failed|declined|method.*declined)|card.*declined|account.*overdrawn|suspicious.*activity|fraud.*alert).*"
+              pattern: "(?i).{0,100}(payment.{0,100}(failed|declined|method.{0,100}declined)|card.{0,100}declined|account.{0,100}overdrawn|suspicious.{0,100}activity|fraud.{0,100}alert).*"
             - type: CombinedTextPattern
-              pattern: "(?i).*(update.*payment.*method|verify.*card.*information|confirm.*bank.*details|resolve.*payment.*issue).*"
+              pattern: "(?i).{0,100}(update.{0,100}payment.{0,100}method|verify.{0,100}card.{0,100}information|confirm.{0,100}bank.{0,100}details|resolve.{0,100}payment.{0,100}issue).*"
             - type: CombinedTextPattern
-              pattern: "(?i).*(refund.*pending|tax.*refund.*available|stimulus.*payment|government.*benefit).*"
+              pattern: "(?i).{0,100}(refund.{0,100}pending|tax.{0,100}refund.{0,100}available|stimulus.{0,100}payment|government.{0,100}benefit).*"
         - type: Not
           criteria:
             type: Or
@@ -77,12 +77,12 @@ rules:
               - type: SenderPattern
                 pattern: ".*@.*(adapthealth|healthcare|medical|clinic|hospital|pulmonary)\\.(com|net|org)$"
               - type: SenderPattern
-                pattern: ".*@.*(wine|wines|winery|brewery|distillery|spirits|liquor|beverage).*\\.(com|net|org)$"
+                pattern: ".*@.*(wine|wines|winery|brewery|distillery|spirits|liquor|beverage).{0,100}\\.(com|net|org)$"
               - type: SenderPattern
                 pattern: ".*@.*(evgo|sparkpostmail|acemedseattle|americanmeadows)\\.(com|net)$"
               - type: HeaderPattern
                 header: "Authentication-Results"
-                pattern: "dkim=pass.*adapthealth\\.com"
+                pattern: "dkim=pass.{0,100}adapthealth\\.com"
     score: 250
     description: "Financial fraud and payment scam detection"
 
@@ -95,15 +95,15 @@ rules:
         - type: "Or"
           criteria:
             - type: "SubjectPattern"
-              pattern: "(?i).*(security.*alert|suspicious.*login|unauthorized.*access|breach.*detected|virus.*found).*"
+              pattern: "(?i).{0,100}(security.{0,100}alert|suspicious.{0,100}login|unauthorized.{0,100}access|breach.{0,100}detected|virus.{0,100}found).*"
             - type: "SubjectPattern"
-              pattern: "(?i).*(high-severity.*alert|critical.*alert|urgent.*security|account.*changes).*"
+              pattern: "(?i).{0,100}(high-severity.{0,100}alert|critical.{0,100}alert|urgent.{0,100}security|account.{0,100}changes).*"
             - type: "CombinedTextPattern"
-              pattern: "(?i).*(your.*computer.*infected|malware.*detected|security.*scan.*required|update.*antivirus).*"
+              pattern: "(?i).{0,100}(your.{0,100}computer.{0,100}infected|malware.{0,100}detected|security.{0,100}scan.{0,100}required|update.{0,100}antivirus).*"
             - type: "CombinedTextPattern"
-              pattern: "(?i).*(microsoft.*security|windows.*defender|apple.*security|google.*security).*"
+              pattern: "(?i).{0,100}(microsoft.{0,100}security|windows.{0,100}defender|apple.{0,100}security|google.{0,100}security).*"
             - type: "CombinedTextPattern"
-              pattern: "(?i).*(recent.*changes.*to.*account|verify.*account.*immediately|suspicious.*activity.*detected).*"
+              pattern: "(?i).{0,100}(recent.{0,100}changes.{0,100}to.{0,100}account|verify.{0,100}account.{0,100}immediately|suspicious.{0,100}activity.{0,100}detected).*"
         - type: "Not"
           criteria:
             type: "Or"
@@ -125,9 +125,9 @@ rules:
         - type: Or
           criteria:
             - type: SubjectPattern
-              pattern: "(?i).*(invoice.*attached|receipt.*confirmation|payment.*due|billing.*statement).*"
+              pattern: "(?i).{0,100}(invoice.{0,100}attached|receipt.{0,100}confirmation|payment.{0,100}due|billing.{0,100}statement).*"
             - type: CombinedTextPattern
-              pattern: "(?i).*(view.*invoice|download.*receipt|payment.*overdue|billing.*inquiry).*"
+              pattern: "(?i).{0,100}(view.{0,100}invoice|download.{0,100}receipt|payment.{0,100}overdue|billing.{0,100}inquiry).*"
         - type: Not
           criteria:
             type: Or
@@ -140,7 +140,7 @@ rules:
                 pattern: ".*@.*sendgrid\\.net$"
               - type: HeaderPattern
                 header: "Authentication-Results"
-                pattern: "dkim=pass.*adapthealth\\.com"
+                pattern: "dkim=pass.{0,100}adapthealth\\.com"
     score: 150
     description: "Fake invoice and receipt phishing attempts"
 
@@ -153,9 +153,9 @@ rules:
         - type: Or
           criteria:
             - type: SubjectPattern
-              pattern: "(?i).*(payment.*failed|account.*suspended|verify.*account|update.*payment|billing.*issue).*"
+              pattern: "(?i).{0,100}(payment.{0,100}failed|account.{0,100}suspended|verify.{0,100}account|update.{0,100}payment|billing.{0,100}issue).*"
             - type: BodyPattern
-              pattern: "(?i).*(click.*here.*verify|update.*billing|payment.*method|account.*locked).*"
+              pattern: "(?i).{0,100}(click.{0,100}here.{0,100}verify|update.{0,100}billing|payment.{0,100}method|account.{0,100}locked).*"
         - type: Not
           criteria:
             type: Or
@@ -169,7 +169,7 @@ rules:
               - type: SenderPattern
                 pattern: ".*@.*(adapthealth|healthcare|medical|clinic|hospital|pulmonary)\\.(com|net|org)$"
               - type: SenderPattern
-                pattern: ".*@.*(wine|wines|winery|brewery|distillery|spirits|liquor|beverage).*\\.(com|net|org)$"
+                pattern: ".*@.*(wine|wines|winery|brewery|distillery|spirits|liquor|beverage).{0,100}\\.(com|net|org)$"
               - type: And
                 criteria:
                   - type: "FeatureAnalysis"
@@ -180,7 +180,7 @@ rules:
                     evidence_pattern: "SPF authentication passed"
               - type: HeaderPattern
                 header: "Authentication-Results"
-                pattern: "dkim=pass.*adapthealth\\.com"
+                pattern: "dkim=pass.{0,100}adapthealth\\.com"
               - type: FeatureAnalysis
                 feature_name: "Authentication Analysis"
                 evidence_pattern: "DKIM domain properly aligned"
@@ -196,17 +196,17 @@ rules:
         - type: Or
           criteria:
             - type: SenderPattern
-              pattern: ".*@.*(senior|elderly|mature|age|retirement).*shopping.*\\.(com|net|org)$"
+              pattern: ".*@.*(senior|elderly|mature|age|retirement).{0,100}shopping.{0,100}\\.(com|net|org)$"
             - type: SenderPattern
-              pattern: ".*@.*senior.*(tips|deals|savings|discounts).*\\.(com|net|org)$"
+              pattern: ".*@.*senior.{0,100}(tips|deals|savings|discounts).{0,100}\\.(com|net|org)$"
             - type: SubjectPattern
-              pattern: "(?i).*(deals.*good.*don.*wait|tap.*now.*thank|senior.*discount|age.*qualified).*"
+              pattern: "(?i).{0,100}(deals.{0,100}good.{0,100}don.{0,100}wait|tap.{0,100}now.{0,100}thank|senior.{0,100}discount|age.{0,100}qualified).*"
         - type: Or
           criteria:
             - type: CombinedTextPattern
-              pattern: "(?i).*(tap.*now|click.*here.*save|limited.*time.*seniors|exclusive.*age|retirement.*deals).*"
+              pattern: "(?i).{0,100}(tap.{0,100}now|click.{0,100}here.{0,100}save|limited.{0,100}time.{0,100}seniors|exclusive.{0,100}age|retirement.{0,100}deals).*"
             - type: SubjectPattern
-              pattern: "(?i).*(urgent.*deal|act.*now.*save|don.*wait|hurry.*limited).*"
+              pattern: "(?i).{0,100}(urgent.{0,100}deal|act.{0,100}now.{0,100}save|don.{0,100}wait|hurry.{0,100}limited).*"
     score: 150
     description: "Shopping scams targeting senior citizens with urgency tactics"
 
@@ -219,11 +219,11 @@ rules:
         - type: "Or"
           criteria:
             - type: "SubjectPattern"
-              pattern: "(?i).*(document.*shared|file.*shared|folder.*shared|shared.*with.*you).*"
+              pattern: "(?i).{0,100}(document.{0,100}shared|file.{0,100}shared|folder.{0,100}shared|shared.{0,100}with.{0,100}you).*"
             - type: "CombinedTextPattern"
-              pattern: "(?i).*(view.*document|access.*file|download.*shared|dropbox.*shared|google.*drive.*shared).*"
+              pattern: "(?i).{0,100}(view.{0,100}document|access.{0,100}file|download.{0,100}shared|dropbox.{0,100}shared|google.{0,100}drive.{0,100}shared).*"
             - type: "CombinedTextPattern"
-              pattern: "(?i).*(onedrive.*shared|icloud.*shared|box\\.com.*shared|shared.*folder).*"
+              pattern: "(?i).{0,100}(onedrive.{0,100}shared|icloud.{0,100}shared|box\\.com.{0,100}shared|shared.{0,100}folder).*"
         - type: Not
           criteria:
             type: Or
@@ -240,9 +240,9 @@ rules:
                 pattern: ".*@.*(nytimes|washingtonpost|cnn|bbc|reuters|ap|wsj|usatoday)\\.(com|org)$"
               - type: HeaderPattern
                 header: "Authentication-Results"
-                pattern: "dkim=pass.*fidelity\\.com"
+                pattern: "dkim=pass.{0,100}fidelity\\.com"
               - type: BodyPattern
-                pattern: "(?i).*(401k|401\\(k\\)|retirement.*plan|employee.*benefits|plan.*information.*documents).*"
+                pattern: "(?i).{0,100}(401k|401\\(k\\)|retirement.{0,100}plan|employee.{0,100}benefits|plan.{0,100}information.{0,100}documents).*"
     score: 100
     description: "Fake cloud storage sharing notifications"
 
@@ -255,9 +255,9 @@ rules:
         - type: "Or"
           criteria:
             - type: "SubjectPattern"
-              pattern: "(?i).*(docusign|document.*signature|electronic.*signature|signature.*required).*"
+              pattern: "(?i).{0,100}(docusign|document.{0,100}signature|electronic.{0,100}signature|signature.{0,100}required).*"
             - type: "CombinedTextPattern"
-              pattern: "(?i).*(please.*sign.*document|review.*and.*sign|signature.*required|document.*awaiting.*signature).*"
+              pattern: "(?i).{0,100}(please.{0,100}sign.{0,100}document|review.{0,100}and.{0,100}sign|signature.{0,100}required|document.{0,100}awaiting.{0,100}signature).*"
         - type: "Not"
           criteria:
             type: Or
@@ -280,9 +280,9 @@ rules:
         - type: "Or"
           criteria:
             - type: "SubjectPattern"
-              pattern: "(?i).*(wetransfer|file.*transfer|download.*files|transfer.*expires).*"
+              pattern: "(?i).{0,100}(wetransfer|file.{0,100}transfer|download.{0,100}files|transfer.{0,100}expires).*"
             - type: "CombinedTextPattern"
-              pattern: "(?i).*(files.*ready.*download|transfer.*link|download.*before.*expires).*"
+              pattern: "(?i).{0,100}(files.{0,100}ready.{0,100}download|transfer.{0,100}link|download.{0,100}before.{0,100}expires).*"
         - type: "Not"
           criteria:
             type: "SenderPattern"
@@ -297,13 +297,13 @@ rules:
       type: "Or"
       criteria:
         - type: "SubjectPattern"
-          pattern: "(?i).*(removal.*request.*server|server.*accepted|domain.*removal|unsubscribe.*request).*"
+          pattern: "(?i).{0,100}(removal.{0,100}request.{0,100}server|server.{0,100}accepted|domain.{0,100}removal|unsubscribe.{0,100}request).*"
         - type: "SubjectPattern"
-          pattern: "(?i).*(mailer.*daemon|delivery.*failure|bounce.*message|system.*administrator).*"
+          pattern: "(?i).{0,100}(mailer.{0,100}daemon|delivery.{0,100}failure|bounce.{0,100}message|system.{0,100}administrator).*"
         - type: "And"
           criteria:
             - type: "CombinedTextPattern"
-              pattern: "(?i).*(server.*maintenance|system.*notification|automated.*message).*"
+              pattern: "(?i).{0,100}(server.{0,100}maintenance|system.{0,100}notification|automated.{0,100}message).*"
             - type: "Not"
               criteria:
                 type: "Or"
@@ -362,14 +362,14 @@ rules:
                     pattern: "noreply@.*\\.(com|net|org)$"
                   - type: "HeaderPattern"
                     header: "Authentication-Results"
-                    pattern: "dkim=pass.*adapthealth\\.com"
+                    pattern: "dkim=pass.{0,100}adapthealth\\.com"
                   - type: "HeaderPattern"
                     header: "Authentication-Results"
-                    pattern: "dkim=pass.*charmtracker\\.com"
+                    pattern: "dkim=pass.{0,100}charmtracker\\.com"
         - type: "SubjectPattern"
-          pattern: "(?i).*(account.*suspension|account.*suspended|domain.*impersonation|test.*subject).*"
+          pattern: "(?i).{0,100}(account.{0,100}suspension|account.{0,100}suspended|domain.{0,100}impersonation|test.{0,100}subject).*"
         - type: "SubjectPattern"
-          pattern: "(?i).*(nota.*fiscal|invoice.*eletronica|black.*friday.*sale|happening.*now).*"
+          pattern: "(?i).{0,100}(nota.{0,100}fiscal|invoice.{0,100}eletronica|black.{0,100}friday.{0,100}sale|happening.{0,100}now).*"
     score: 200
     description: "Domain spoofing and system service impersonation"
 
@@ -380,7 +380,7 @@ rules:
       type: "And"
       criteria:
         - type: "SubjectPattern"
-          pattern: "(?i).*(dropbox.*shared|google.*drive.*shared|onedrive.*shared|file.*shared.*you|document.*shared|shared.*folder|download.*file|view.*document).*"
+          pattern: "(?i).{0,100}(dropbox.{0,100}shared|google.{0,100}drive.{0,100}shared|onedrive.{0,100}shared|file.{0,100}shared.{0,100}you|document.{0,100}shared|shared.{0,100}folder|download.{0,100}file|view.{0,100}document).*"
         - type: "Not"
           criteria:
             type: "Or"
@@ -395,7 +395,7 @@ rules:
                 pattern: ".*@.*(nytimes|washingtonpost|cnn|bbc|reuters|ap|wsj|usatoday)\\.(com|org)$"
               - type: "HeaderPattern"
                 header: "From"
-                pattern: "(?i).*(AceMed|Medical|Healthcare|Clinic|Hospital|EHR|Patient Portal).*"
+                pattern: "(?i).{0,100}(AceMed|Medical|Healthcare|Clinic|Hospital|EHR|Patient Portal).*"
     score: 35
     description: "Fake cloud storage sharing notifications (excluding legitimate medical services)"
 
@@ -406,7 +406,7 @@ rules:
       type: "And"
       criteria:
         - type: "SubjectPattern"
-          pattern: "(?i).*(paypal.*payment|stripe.*payment|square.*payment|payment.*received|money.*sent|invoice.*paid|transaction.*complete|refund.*processed).*"
+          pattern: "(?i).{0,100}(paypal.{0,100}payment|stripe.{0,100}payment|square.{0,100}payment|payment.{0,100}received|money.{0,100}sent|invoice.{0,100}paid|transaction.{0,100}complete|refund.{0,100}processed).*"
         - type: "Not"
           criteria:
             type: "SenderPattern"
@@ -441,7 +441,7 @@ rules:
                 pattern: "\"[^\"@]+\"\\s*<[^@]+@.*microsoft\\.(com|net)>"
               - type: "HeaderPattern"
                 header: "From"
-                pattern: "\"[^\"@]+\"\\s*<[^@]+@.*mailchimp.*\\.(com|net)>"
+                pattern: "\"[^\"@]+\"\\s*<[^@]+@.*mailchimp.{0,100}\\.(com|net)>"
               - type: "HeaderPattern"
                 header: "From"
                 pattern: "\"[^\"@]+\"\\s*<[^@]+@.*mcdlv\\.(com|net)>"
@@ -457,9 +457,9 @@ rules:
         - type: "Or"
           criteria:
             - type: "BodyPattern"
-              pattern: "(?i)(password|account|login|verify|confirm|suspend|expir|action.*required)"
+              pattern: "(?i)(password|account|login|verify|confirm|suspend|expir|action.{0,100}required)"
             - type: "SubjectPattern"
-              pattern: "(?i)(action.*required|urgent|expir|suspend|verify|password)"
+              pattern: "(?i)(action.{0,100}required|urgent|expir|suspend|verify|password)"
     score: 90
     description: "From header displays domain name in quotes with completely different sender domain"
 
@@ -472,9 +472,9 @@ rules:
         - type: "Or"
           criteria:
             - type: "SubjectPattern"
-              pattern: "(?i).*(password.*expir|password.*reset|account.*expir|login.*expir|access.*expir).*"
+              pattern: "(?i).{0,100}(password.{0,100}expir|password.{0,100}reset|account.{0,100}expir|login.{0,100}expir|access.{0,100}expir).*"
             - type: "BodyPattern"
-              pattern: "(?i).*(password.*expir|password.*reset|account.*expir|login.*expir|access.*expir).*"
+              pattern: "(?i).{0,100}(password.{0,100}expir|password.{0,100}reset|account.{0,100}expir|login.{0,100}expir|access.{0,100}expir).*"
         - type: "Not"
           criteria:
             type: "SenderPattern"
@@ -487,9 +487,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(cvs.*medicare|medicare.*cvs|pharmacy.*benefit).*"
+          pattern: "(?i).{0,100}(cvs.{0,100}medicare|medicare.{0,100}cvs|pharmacy.{0,100}benefit).*"
         - type: BodyPattern
-          pattern: "(?i).*(cvs.*medicare|medicare.*cvs|pharmacy.*benefit).*"
+          pattern: "(?i).{0,100}(cvs.{0,100}medicare|medicare.{0,100}cvs|pharmacy.{0,100}benefit).*"
     score: 300
 
   # Fake invoice patterns
@@ -500,9 +500,9 @@ rules:
         - type: Or
           criteria:
             - type: SubjectPattern
-              pattern: "(?i).*(fake.*invoice|norton.*invoice|order.*receipt|payment.*receipt).*"
+              pattern: "(?i).{0,100}(fake.{0,100}invoice|norton.{0,100}invoice|order.{0,100}receipt|payment.{0,100}receipt).*"
             - type: BodyPattern
-              pattern: "(?i).*(fake.*invoice|norton.*invoice|order.*receipt|payment.*receipt).*"
+              pattern: "(?i).{0,100}(fake.{0,100}invoice|norton.{0,100}invoice|order.{0,100}receipt|payment.{0,100}receipt).*"
         - type: Not
           criteria:
             type: Or
@@ -526,9 +526,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(google.*workspace|workspace.*google|yeti.*brand).*"
+          pattern: "(?i).{0,100}(google.{0,100}workspace|workspace.{0,100}google|yeti.{0,100}brand).*"
         - type: BodyPattern
-          pattern: "(?i).*(google.*workspace|workspace.*google|yeti.*brand).*"
+          pattern: "(?i).{0,100}(google.{0,100}workspace|workspace.{0,100}google|yeti.{0,100}brand).*"
     score: 250
 
   # Investment scams
@@ -540,9 +540,9 @@ rules:
         - type: Or
           criteria:
             - type: SubjectPattern
-              pattern: "(?i).*(fam.*investment|investment.*opportunity|guaranteed.*returns).*"
+              pattern: "(?i).{0,100}(fam.{0,100}investment|investment.{0,100}opportunity|guaranteed.{0,100}returns).*"
             - type: BodyPattern
-              pattern: "(?i).*(fam.*investment|investment.*opportunity|guaranteed.*returns).*"
+              pattern: "(?i).{0,100}(fam.{0,100}investment|investment.{0,100}opportunity|guaranteed.{0,100}returns).*"
         - type: Not
           criteria:
             type: Or
@@ -551,9 +551,9 @@ rules:
                 pattern: ".*@.*(fidelity|vanguard|schwab|merrill|chase|wellsfargo|bankofamerica|pershing|bnymellon|akamaiedge|filtersfast)\\.(com|org|net)$"
               - type: HeaderPattern
                 header: "Authentication-Results"
-                pattern: "dkim=pass.*fidelity\\.com"
+                pattern: "dkim=pass.{0,100}fidelity\\.com"
               - type: BodyPattern
-                pattern: "(?i).*(401k|401\\(k\\)|retirement.*plan|employee.*benefits|no.*action.*required).*"
+                pattern: "(?i).{0,100}(401k|401\\(k\\)|retirement.{0,100}plan|employee.{0,100}benefits|no.{0,100}action.{0,100}required).*"
     score: 300
     description: "Investment scams excluding legitimate financial institutions"
 
@@ -563,9 +563,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(ukrainian.*romance|romance.*scam|lonely.*heart).*"
+          pattern: "(?i).{0,100}(ukrainian.{0,100}romance|romance.{0,100}scam|lonely.{0,100}heart).*"
         - type: BodyPattern
-          pattern: "(?i).*(ukrainian.*romance|romance.*scam|lonely.*heart).*"
+          pattern: "(?i).{0,100}(ukrainian.{0,100}romance|romance.{0,100}scam|lonely.{0,100}heart).*"
     score: 350
 
   # International phishing
@@ -574,9 +574,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(portuguese.*signature|sbi.*phishing|international.*bank).*"
+          pattern: "(?i).{0,100}(portuguese.{0,100}signature|sbi.{0,100}phishing|international.{0,100}bank).*"
         - type: BodyPattern
-          pattern: "(?i).*(portuguese.*signature|sbi.*phishing|international.*bank).*"
+          pattern: "(?i).{0,100}(portuguese.{0,100}signature|sbi.{0,100}phishing|international.{0,100}bank).*"
     score: 280
   # Enhanced Interactive Brokers scams
   - name: "Interactive Brokers Enhanced Scam"
@@ -584,9 +584,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(interactive.*brokers.*w8ben|w8ben.*compliance|w8ben.*tax|brokers.*compliance|fake.*interactive.*brokers).*"
+          pattern: "(?i).{0,100}(interactive.{0,100}brokers.{0,100}w8ben|w8ben.{0,100}compliance|w8ben.{0,100}tax|brokers.{0,100}compliance|fake.{0,100}interactive.{0,100}brokers).*"
         - type: BodyPattern
-          pattern: "(?i).*(interactive.*brokers.*w8ben|w8ben.*compliance|w8ben.*tax|brokers.*compliance|fake.*interactive.*brokers).*"
+          pattern: "(?i).{0,100}(interactive.{0,100}brokers.{0,100}w8ben|w8ben.{0,100}compliance|w8ben.{0,100}tax|brokers.{0,100}compliance|fake.{0,100}interactive.{0,100}brokers).*"
     score: 350
 
   # Enhanced transaction confirmation scams
@@ -597,9 +597,9 @@ rules:
         - type: Or
           criteria:
             - type: SubjectPattern
-              pattern: "(?i).*(fake.*order.*transaction|fake.*payment.*confirmation|order.*confirmation|transaction.*confirmation|payment.*receipt).*"
+              pattern: "(?i).{0,100}(fake.{0,100}order.{0,100}transaction|fake.{0,100}payment.{0,100}confirmation|order.{0,100}confirmation|transaction.{0,100}confirmation|payment.{0,100}receipt).*"
             - type: BodyPattern
-              pattern: "(?i).*(fake.*order.*transaction|fake.*payment.*confirmation|order.*confirmation|transaction.*confirmation|payment.*receipt).*"
+              pattern: "(?i).{0,100}(fake.{0,100}order.{0,100}transaction|fake.{0,100}payment.{0,100}confirmation|order.{0,100}confirmation|transaction.{0,100}confirmation|payment.{0,100}receipt).*"
         - type: Not
           criteria:
             type: Or
@@ -629,9 +629,9 @@ rules:
         - type: Or
           criteria:
             - type: SubjectPattern
-              pattern: "(?i).*(mailer.*daemon|delivery.*failure|undelivered.*mail|mail.*delivery.*subsystem).*"
+              pattern: "(?i).{0,100}(mailer.{0,100}daemon|delivery.{0,100}failure|undelivered.{0,100}mail|mail.{0,100}delivery.{0,100}subsystem).*"
             - type: BodyPattern
-              pattern: "(?i).*(mailer.*daemon|delivery.*failure|undelivered.*mail|mail.*delivery.*subsystem).*"
+              pattern: "(?i).{0,100}(mailer.{0,100}daemon|delivery.{0,100}failure|undelivered.{0,100}mail|mail.{0,100}delivery.{0,100}subsystem).*"
         - type: Not
           criteria:
             type: Or
@@ -652,15 +652,15 @@ rules:
         - type: Or
           criteria:
             - type: SubjectPattern
-              pattern: "(?i).*(creditcard.*bill|credit.*card.*statement|billing.*statement|account.*statement).*"
+              pattern: "(?i).{0,100}(creditcard.{0,100}bill|credit.{0,100}card.{0,100}statement|billing.{0,100}statement|account.{0,100}statement).*"
             - type: BodyPattern
-              pattern: "(?i).*(creditcard.*bill|credit.*card.*statement|billing.*statement|account.*statement).*"
+              pattern: "(?i).{0,100}(creditcard.{0,100}bill|credit.{0,100}card.{0,100}statement|billing.{0,100}statement|account.{0,100}statement).*"
         - type: Or
           criteria:
             - type: BodyPattern
-              pattern: "(?i).*(click.*here.*view|download.*statement|verify.*account|update.*payment|account.*suspended).*"
+              pattern: "(?i).{0,100}(click.{0,100}here.{0,100}view|download.{0,100}statement|verify.{0,100}account|update.{0,100}payment|account.{0,100}suspended).*"
             - type: BodyPattern
-              pattern: "(?i).*(urgent.*action|immediate.*attention|account.*locked|payment.*failed).*"
+              pattern: "(?i).{0,100}(urgent.{0,100}action|immediate.{0,100}attention|account.{0,100}locked|payment.{0,100}failed).*"
         - type: Not
           criteria:
             type: Or
@@ -668,7 +668,7 @@ rules:
               - type: SenderPattern
                 pattern: ".*@.*(chase|citi|amex|discover|capitalone|wellsfargo|bankofamerica|britishairways|ba\\.com|paypal|communications\\.paypal)\\.(com|org)$"
               - type: BodyPattern
-                pattern: "(?i).*(rewards.*program|bonus.*offer|miles.*points|cashback|signup.*bonus|new.*cardmember).*"
+                pattern: "(?i).{0,100}(rewards.{0,100}program|bonus.{0,100}offer|miles.{0,100}points|cashback|signup.{0,100}bonus|new.{0,100}cardmember).*"
     score: 280
     description: "Fake credit card bill phishing excluding legitimate offers"
   # Norton fake invoice scams
@@ -677,9 +677,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(norton.*alert.*overdue.*charge|norton.*fake.*invoice|norton.*billing|norton.*payment.*due).*"
+          pattern: "(?i).{0,100}(norton.{0,100}alert.{0,100}overdue.{0,100}charge|norton.{0,100}fake.{0,100}invoice|norton.{0,100}billing|norton.{0,100}payment.{0,100}due).*"
         - type: BodyPattern
-          pattern: "(?i).*(norton.*alert.*overdue.*charge|norton.*fake.*invoice|norton.*billing|norton.*payment.*due).*"
+          pattern: "(?i).{0,100}(norton.{0,100}alert.{0,100}overdue.{0,100}charge|norton.{0,100}fake.{0,100}invoice|norton.{0,100}billing|norton.{0,100}payment.{0,100}due).*"
     score: 350
 
   # Online loan scams
@@ -688,9 +688,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(online.*loans.*up.*to|santa.*loans|payday.*loans|quick.*cash.*loans|loans.*up.*to.*5000).*"
+          pattern: "(?i).{0,100}(online.{0,100}loans.{0,100}up.{0,100}to|santa.{0,100}loans|payday.{0,100}loans|quick.{0,100}cash.{0,100}loans|loans.{0,100}up.{0,100}to.{0,100}5000).*"
         - type: BodyPattern
-          pattern: "(?i).*(online.*loans.*up.*to|santa.*loans|payday.*loans|quick.*cash.*loans|loans.*up.*to.*5000).*"
+          pattern: "(?i).{0,100}(online.{0,100}loans.{0,100}up.{0,100}to|santa.{0,100}loans|payday.{0,100}loans|quick.{0,100}cash.{0,100}loans|loans.{0,100}up.{0,100}to.{0,100}5000).*"
     score: 300
 
   # O'Reilly impersonation
@@ -699,9 +699,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(oreilly.*jump.*starter|oreilly.*impersonation|auto.*parts.*scam).*"
+          pattern: "(?i).{0,100}(oreilly.{0,100}jump.{0,100}starter|oreilly.{0,100}impersonation|auto.{0,100}parts.{0,100}scam).*"
         - type: BodyPattern
-          pattern: "(?i).*(oreilly.*jump.*starter|oreilly.*impersonation|auto.*parts.*scam).*"
+          pattern: "(?i).{0,100}(oreilly.{0,100}jump.{0,100}starter|oreilly.{0,100}impersonation|auto.{0,100}parts.{0,100}scam).*"
     score: 250
   # Portuguese signature phishing
   - name: "Portuguese Signature Phishing"
@@ -709,9 +709,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(lembrete.*assinatura.*pendente|portuguese.*signature|assinatura.*portuguesa|documento.*assinatura|signature.*phishing).*"
+          pattern: "(?i).{0,100}(lembrete.{0,100}assinatura.{0,100}pendente|portuguese.{0,100}signature|assinatura.{0,100}portuguesa|documento.{0,100}assinatura|signature.{0,100}phishing).*"
         - type: BodyPattern
-          pattern: "(?i).*(lembrete.*assinatura.*pendente|portuguese.*signature|assinatura.*portuguesa|documento.*assinatura|signature.*phishing).*"
+          pattern: "(?i).{0,100}(lembrete.{0,100}assinatura.{0,100}pendente|portuguese.{0,100}signature|assinatura.{0,100}portuguesa|documento.{0,100}assinatura|signature.{0,100}phishing).*"
     score: 320
 
   # Brazilian tax payment scam (DARF/IRPJ)
@@ -723,9 +723,9 @@ rules:
         - type: Or
           criteria:
             - type: SubjectPattern
-              pattern: "(?i).*(\\bDARF\\b|\\bIRPJ\\b|imposto.*renda|guia.*pagamento|departamento.*cont[aá]bil).*"
+              pattern: "(?i).{0,100}(\\bDARF\\b|\\bIRPJ\\b|imposto.{0,100}renda|guia.{0,100}pagamento|departamento.{0,100}cont[aá]bil).*"
             - type: BodyPattern
-              pattern: "(?i).*(\\bDARF\\b|\\bIRPJ\\b|imposto.*renda|guia.*pagamento|receita.*federal).*"
+              pattern: "(?i).{0,100}(\\bDARF\\b|\\bIRPJ\\b|imposto.{0,100}renda|guia.{0,100}pagamento|receita.{0,100}federal).*"
         - type: Not
           criteria:
             type: Or
@@ -746,11 +746,11 @@ rules:
         - type: Or
           criteria:
             - type: SubjectPattern
-              pattern: "(?i).*(curr[ií]culo|curriculo).*"
+              pattern: "(?i).{0,100}(curr[ií]culo|curriculo).*"
             - type: SubjectPattern
               pattern: ".*Q3VycsOtY3VsbyBQcm9maXNzaW9uYWw.*"  # Base64 encoded "Currículo Profissional"
             - type: CombinedTextPattern
-              pattern: "(?i).*(curr[ií]culo|curriculo|encaminho.*anexo|anexo.*curr[ií]culo).*"
+              pattern: "(?i).{0,100}(curr[ií]culo|curriculo|encaminho.{0,100}anexo|anexo.{0,100}curr[ií]culo).*"
         - type: Not
           criteria:
             type: Or
@@ -768,9 +768,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(jump.*start.*your.*drive.*gift|oreilly.*jump.*starter|schumacher.*jump.*starter|auto.*gift.*oreilly).*"
+          pattern: "(?i).{0,100}(jump.{0,100}start.{0,100}your.{0,100}drive.{0,100}gift|oreilly.{0,100}jump.{0,100}starter|schumacher.{0,100}jump.{0,100}starter|auto.{0,100}gift.{0,100}oreilly).*"
         - type: BodyPattern
-          pattern: "(?i).*(jump.*start.*your.*drive.*gift|oreilly.*jump.*starter|schumacher.*jump.*starter|auto.*gift.*oreilly).*"
+          pattern: "(?i).{0,100}(jump.{0,100}start.{0,100}your.{0,100}drive.{0,100}gift|oreilly.{0,100}jump.{0,100}starter|schumacher.{0,100}jump.{0,100}starter|auto.{0,100}gift.{0,100}oreilly).*"
     score: 280
   # Enhanced Interactive Brokers W8BEN compliance
   - name: "Enhanced Interactive Brokers W8BEN Compliance"
@@ -778,9 +778,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(federal.*compliance.*directive.*renewal.*expired.*w.*8ben|interactive.*brokers.*w8ben|w8ben.*compliance|brokers.*tax.*compliance|fake.*interactive.*brokers).*"
+          pattern: "(?i).{0,100}(federal.{0,100}compliance.{0,100}directive.{0,100}renewal.{0,100}expired.{0,100}w.{0,100}8ben|interactive.{0,100}brokers.{0,100}w8ben|w8ben.{0,100}compliance|brokers.{0,100}tax.{0,100}compliance|fake.{0,100}interactive.{0,100}brokers).*"
         - type: BodyPattern
-          pattern: "(?i).*(federal.*compliance.*directive.*renewal.*expired.*w.*8ben|interactive.*brokers.*w8ben|w8ben.*compliance|brokers.*tax.*compliance|fake.*interactive.*brokers).*"
+          pattern: "(?i).{0,100}(federal.{0,100}compliance.{0,100}directive.{0,100}renewal.{0,100}expired.{0,100}w.{0,100}8ben|interactive.{0,100}brokers.{0,100}w8ben|w8ben.{0,100}compliance|brokers.{0,100}tax.{0,100}compliance|fake.{0,100}interactive.{0,100}brokers).*"
     score: 380
   # SBI phishing (Japanese)
   - name: "SBI Phishing Japanese"
@@ -788,9 +788,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(sbi.*phishing|japanese.*phishing|配当金入金|重要.*配当).*"
+          pattern: "(?i).{0,100}(sbi.{0,100}phishing|japanese.{0,100}phishing|配当金入金|重要.*配当).*"
         - type: BodyPattern
-          pattern: "(?i).*(sbi.*phishing|japanese.*phishing|配当金入金|重要.*配当).*"
+          pattern: "(?i).{0,100}(sbi.{0,100}phishing|japanese.{0,100}phishing|配当金入金|重要.*配当).*"
     score: 350
   # W8BEN tax residency scam
   - name: "W8BEN Tax Residency Scam"
@@ -798,9 +798,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(official.*tax.*residency.*notice.*renewal.*form.*w.*8ben|tax.*residency.*notice|w.*8ben.*required).*"
+          pattern: "(?i).{0,100}(official.{0,100}tax.{0,100}residency.{0,100}notice.{0,100}renewal.{0,100}form.{0,100}w.{0,100}8ben|tax.{0,100}residency.{0,100}notice|w.{0,100}8ben.{0,100}required).*"
         - type: BodyPattern
-          pattern: "(?i).*(official.*tax.*residency.*notice.*renewal.*form.*w.*8ben|tax.*residency.*notice|w.*8ben.*required).*"
+          pattern: "(?i).{0,100}(official.{0,100}tax.{0,100}residency.{0,100}notice.{0,100}renewal.{0,100}form.{0,100}w.{0,100}8ben|tax.{0,100}residency.{0,100}notice|w.{0,100}8ben.{0,100}required).*"
     score: 390
   # ShareFile document phishing
   - name: "ShareFile Document Phishing"
@@ -808,9 +808,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(received.*new.*document.*approval|sharefile.*document.*phishing|document.*approval.*phishing).*"
+          pattern: "(?i).{0,100}(received.{0,100}new.{0,100}document.{0,100}approval|sharefile.{0,100}document.{0,100}phishing|document.{0,100}approval.{0,100}phishing).*"
         - type: BodyPattern
-          pattern: "(?i).*(received.*new.*document.*approval|sharefile.*document.*phishing|document.*approval.*phishing).*"
+          pattern: "(?i).{0,100}(received.{0,100}new.{0,100}document.{0,100}approval|sharefile.{0,100}document.{0,100}phishing|document.{0,100}approval.{0,100}phishing).*"
     score: 320
   # Stanley Tools fake confirmation
   - name: "Stanley Tools Fake Confirmation"
@@ -818,9 +818,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(all.*confirmed.*stanley.*tool.*set|stanley.*tools.*fake.*confirmation|harbor.*freight.*program.*access).*"
+          pattern: "(?i).{0,100}(all.{0,100}confirmed.{0,100}stanley.{0,100}tool.{0,100}set|stanley.{0,100}tools.{0,100}fake.{0,100}confirmation|harbor.{0,100}freight.{0,100}program.{0,100}access).*"
         - type: BodyPattern
-          pattern: "(?i).*(all.*confirmed.*stanley.*tool.*set|stanley.*tools.*fake.*confirmation|harbor.*freight.*program.*access).*"
+          pattern: "(?i).{0,100}(all.{0,100}confirmed.{0,100}stanley.{0,100}tool.{0,100}set|stanley.{0,100}tools.{0,100}fake.{0,100}confirmation|harbor.{0,100}freight.{0,100}program.{0,100}access).*"
     score: 300
 
   # Stanley Tools shipment queued
@@ -829,9 +829,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(everything.*set.*stanley.*tool.*set.*shipment.*queued|stanley.*tools.*shipment.*queued|shipment.*queued.*stanley|tools.*shipment.*notification).*"
+          pattern: "(?i).{0,100}(everything.{0,100}set.{0,100}stanley.{0,100}tool.{0,100}set.{0,100}shipment.{0,100}queued|stanley.{0,100}tools.{0,100}shipment.{0,100}queued|shipment.{0,100}queued.{0,100}stanley|tools.{0,100}shipment.{0,100}notification).*"
         - type: BodyPattern
-          pattern: "(?i).*(everything.*set.*stanley.*tool.*set.*shipment.*queued|stanley.*tools.*shipment.*queued|shipment.*queued.*stanley|tools.*shipment.*notification).*"
+          pattern: "(?i).{0,100}(everything.{0,100}set.{0,100}stanley.{0,100}tool.{0,100}set.{0,100}shipment.{0,100}queued|stanley.{0,100}tools.{0,100}shipment.{0,100}queued|shipment.{0,100}queued.{0,100}stanley|tools.{0,100}shipment.{0,100}notification).*"
     score: 290
   # Storage upgrade unicode phishing
   - name: "Storage Upgrade Unicode Phishing"
@@ -839,9 +839,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(storage.*upgrade.*unicode|cloud.*storage.*limit|upgrade.*keep.*personal.*files|storage.*space.*in.*use).*"
+          pattern: "(?i).{0,100}(storage.{0,100}upgrade.{0,100}unicode|cloud.{0,100}storage.{0,100}limit|upgrade.{0,100}keep.{0,100}personal.{0,100}files|storage.{0,100}space.{0,100}in.{0,100}use).*"
         - type: BodyPattern
-          pattern: "(?i).*(storage.*upgrade.*unicode|cloud.*storage.*limit|upgrade.*keep.*personal.*files|storage.*space.*in.*use).*"
+          pattern: "(?i).{0,100}(storage.{0,100}upgrade.{0,100}unicode|cloud.{0,100}storage.{0,100}limit|upgrade.{0,100}keep.{0,100}personal.{0,100}files|storage.{0,100}space.{0,100}in.{0,100}use).*"
     score: 320
   # Credit card bill unicode resolution
   - name: "Credit Card Bill Unicode Resolution"
@@ -849,9 +849,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(re.*your.*creditcard.*bill|credit.*card.*bill.*unicode|gastric.*bypass.*directory).*"
+          pattern: "(?i).{0,100}(re.{0,100}your.{0,100}creditcard.{0,100}bill|credit.{0,100}card.{0,100}bill.{0,100}unicode|gastric.{0,100}bypass.{0,100}directory).*"
         - type: BodyPattern
-          pattern: "(?i).*(re.*your.*creditcard.*bill|credit.*card.*bill.*unicode|gastric.*bypass.*directory).*"
+          pattern: "(?i).{0,100}(re.{0,100}your.{0,100}creditcard.{0,100}bill|credit.{0,100}card.{0,100}bill.{0,100}unicode|gastric.{0,100}bypass.{0,100}directory).*"
     score: 280
 
   # Unicode Credit Card Phishing (General)
@@ -879,9 +879,9 @@ rules:
         - type: Or
           criteria:
             - type: SubjectPattern
-              pattern: "(?i).*(storage.*upgrade|cloud.*storage|upgrade.*storage|storage.*limit).*"
+              pattern: "(?i).{0,100}(storage.{0,100}upgrade|cloud.{0,100}storage|upgrade.{0,100}storage|storage.{0,100}limit).*"
             - type: BodyPattern
-              pattern: "(?i).*(storage.*upgrade|cloud.*storage|upgrade.*storage|storage.*limit).*"
+              pattern: "(?i).{0,100}(storage.{0,100}upgrade|cloud.{0,100}storage|upgrade.{0,100}storage|storage.{0,100}limit).*"
         - type: Not
           criteria:
             type: Or
@@ -907,17 +907,17 @@ rules:
         - type: Or
           criteria:
             - type: SubjectPattern
-              pattern: "(?i).*(payment|invoice|order|receipt|transaction|billing|purchase).*"
+              pattern: "(?i).{0,100}(payment|invoice|order|receipt|transaction|billing|purchase).*"
             - type: CombinedTextPattern
-              pattern: "(?i).*(payment.*received|order.*confirmed|invoice.*attached|transaction.*complete).*"
+              pattern: "(?i).{0,100}(payment.{0,100}received|order.{0,100}confirmed|invoice.{0,100}attached|transaction.{0,100}complete).*"
         - type: Not
           criteria:
             type: Or
             criteria:
               - type: SenderPattern
-                pattern: ".*@.*(bursar|finance|accounting|treasurer|payment|billing).*\\.(gov|edu|mil)"
+                pattern: ".*@.*(bursar|finance|accounting|treasurer|payment|billing).{0,100}\\.(gov|edu|mil)"
               - type: SubjectPattern
-                pattern: "(?i).*(tuition|student.*account|university.*bill|campus.*card).*"
+                pattern: "(?i).{0,100}(tuition|student.{0,100}account|university.{0,100}bill|campus.{0,100}card).*"
     score: 80
     description: "Institutional domains sending commercial/payment content"
 
@@ -960,10 +960,10 @@ rules:
               pattern: ".*@.*\\.(gov|edu|mil)$"
         - type: HeaderPattern
           header: "From"
-          pattern: "(?i).*(CUSTOMER SYSTEMS|BILLING DEPT|PAYMENT CENTER|ACCOUNT SERVICES|CUSTOMER SERVICE|SUPPORT TEAM|NOTIFICATION CENTER|SECURITY TEAM|VERIFICATION DEPT).*"
+          pattern: "(?i).{0,100}(CUSTOMER SYSTEMS|BILLING DEPT|PAYMENT CENTER|ACCOUNT SERVICES|CUSTOMER SERVICE|SUPPORT TEAM|NOTIFICATION CENTER|SECURITY TEAM|VERIFICATION DEPT).*"
         - type: Not
           criteria:
             type: SenderPattern
-            pattern: ".*@.*(customer|billing|payment|support|service|help).*\\.(gov|edu|mil)"
+            pattern: ".*@.*(customer|billing|payment|support|service|help).{0,100}\\.(gov|edu|mil)"
     score: 170
     description: "Institutional domain with generic corporate display name"

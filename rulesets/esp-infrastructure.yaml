@@ -52,7 +52,7 @@ rules:
     enabled: true
     criteria:
       type: "SenderPattern"
-      pattern: ".*paypal.*adobe.*"
+      pattern: ".*paypal.{0,100}adobe.*"
     score: -500
     description: "Legitimate PayPal via Adobe Campaign ESP"
 
@@ -155,9 +155,9 @@ rules:
         - type: Or
           criteria:
             - type: SenderPattern
-              pattern: ".*@.*(cannabis|dispensary|hemp).*\\.(com|net|org)$"
+              pattern: ".*@.*(cannabis|dispensary|hemp).{0,100}\\.(com|net|org)$"
             - type: SenderPattern
-              pattern: ".*@.*\\b(pot|cbd)\\b.*\\.(com|net|org)$"
+              pattern: ".*@.*\\b(pot|cbd)\\b.{0,100}\\.(com|net|org)$"
         - type: FeatureAnalysis
           feature_name: "Authentication Analysis"
           evidence_pattern: "DKIM authentication passed"
@@ -375,9 +375,9 @@ rules:
           header: "DKIM-Signature"
           pattern: ".*d=.*\\.vetcove\\.com.*"
         - type: "BodyPattern"
-          pattern: "(?i).*(veterinary|pet.*hospital|animal.*clinic|veterinarian)"
+          pattern: "(?i).{0,100}(veterinary|pet.{0,100}hospital|animal.{0,100}clinic|veterinarian)"
         - type: "SubjectPattern"
-          pattern: "(?i).*(appointment.*reminder|vaccination.*due|pet.*health)"
+          pattern: "(?i).{0,100}(appointment.{0,100}reminder|vaccination.{0,100}due|pet.{0,100}health)"
     score: -200
     description: "Whitelist legitimate veterinary and pet service communications"
 
@@ -416,7 +416,7 @@ rules:
           pattern: "dmarc=pass"
         - type: "HeaderPattern"
           header: "From"
-          pattern: "(?i).*(newsletter|marketing|promo|updates|news).*"
+          pattern: "(?i).{0,100}(newsletter|marketing|promo|updates|news).*"
         - type: "Not"
           criteria:
             type: "Or"
@@ -443,7 +443,7 @@ rules:
           pattern: "dkim=pass"
         - type: "HeaderPattern"
           header: "From"
-          pattern: "(?i).*(newsletter|marketing|promo|updates|news).*"
+          pattern: "(?i).{0,100}(newsletter|marketing|promo|updates|news).*"
         - type: "Not"
           criteria:
             type: "Or"
@@ -493,7 +493,7 @@ rules:
           header: "List-Unsubscribe"
           pattern: ".*"
         - type: "BodyPattern"
-          pattern: "(?i)(sale|discount|offer|deal|promotion|limited.*time)"
+          pattern: "(?i)(sale|discount|offer|deal|promotion|limited.{0,100}time)"
         - type: "SenderPattern"
           pattern: ".*@.*(amazon|ebay|etsy|shopify|target|walmart|bestbuy|homedepot|lowes|macys|nordstrom|kohls|disney|kickstarter|eyebuydirect|torrid)\\.(com|net|org)$"
         - type: "Not"

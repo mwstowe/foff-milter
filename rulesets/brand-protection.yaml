@@ -12,9 +12,9 @@ rules:
         - type: Or
           criteria:
             - type: SubjectPattern
-              pattern: "(?i).*(tough|tactical|survival|adventure|gear|equipment|deal|offer|discount|save|free shipping|limited stock|exclusive).*"
+              pattern: "(?i).{0,100}(tough|tactical|survival|adventure|gear|equipment|deal|offer|discount|save|free shipping|limited stock|exclusive).*"
             - type: BodyPattern
-              pattern: "(?i).*(shop now|order now|buy now|limited stock|exclusive offer|click here to shop).*"
+              pattern: "(?i).{0,100}(shop now|order now|buy now|limited stock|exclusive offer|click here to shop).*"
         - type: Not
           criteria:
             type: SenderPattern
@@ -30,7 +30,7 @@ rules:
       criteria:
         - type: HeaderPattern
           header: "From"
-          pattern: "(?i).*(carshield|geico|progressive|allstate|statefarm|liberty.*mutual).*@.*"
+          pattern: "(?i).{0,100}(carshield|geico|progressive|allstate|statefarm|liberty.{0,100}mutual).*@.*"
         - type: Not
           criteria:
             type: SenderPattern
@@ -68,9 +68,9 @@ rules:
         - type: Or
           criteria:
             - type: SubjectPattern
-              pattern: "(?i).*(urgent|limited.*(time|spots?|offer)|act.*now|expires?|before.*ends|claim|verify|confirm|update.*account|suspended|locked|unusual.*activity|security.*alert).*"
+              pattern: "(?i).{0,100}(urgent|limited.{0,100}(time|spots?|offer)|act.{0,100}now|expires?|before.{0,100}ends|claim|verify|confirm|update.{0,100}account|suspended|locked|unusual.{0,100}activity|security.{0,100}alert).*"
             - type: SubjectPattern
-              pattern: "(?i).*(prize|winner|congratulations|free.*gift|exclusive.*offer|special.*deal|protect.*your).*"
+              pattern: "(?i).{0,100}(prize|winner|congratulations|free.{0,100}gift|exclusive.{0,100}offer|special.{0,100}deal|protect.{0,100}your).*"
         - type: Not
           criteria:
             type: Or
@@ -91,12 +91,12 @@ rules:
         - type: Or
           criteria:
             - type: SubjectPattern
-              pattern: "(?i).*(harbor.*freight|harborfreight).*"
+              pattern: "(?i).{0,100}(harbor.{0,100}freight|harborfreight).*"
             - type: BodyPattern
-              pattern: "(?i).*(harbor.*freight|harborfreight).*"
+              pattern: "(?i).{0,100}(harbor.{0,100}freight|harborfreight).*"
             - type: HeaderPattern
               header: "From"
-              pattern: "(?i).*(harbor.*freight|harborfreight|harbor@freight).*"
+              pattern: "(?i).{0,100}(harbor.{0,100}freight|harborfreight|harbor@freight).*"
         - type: Not
           criteria:
             type: SenderPattern
@@ -115,11 +115,11 @@ rules:
         - type: Or
           criteria:
             - type: SubjectPattern
-              pattern: "(?i).*amazon.*"
+              pattern: "(?i).{0,100}amazon.*"
             - type: SubjectPattern
               pattern: ".*QW1hem9u.*"  # Base64 encoded "Amazon"
             - type: BodyPattern
-              pattern: "(?i).*amazon.*"
+              pattern: "(?i).{0,100}amazon.*"
     score: 150
     description: "Chinese domain impersonating Amazon (common phishing pattern)"
 
@@ -142,9 +142,9 @@ rules:
         - type: Or
           criteria:
             - type: SubjectPattern
-              pattern: "(?i).*(hr.*shared|hr.*document|salary.*review|incentive.*overview|payroll.*document|employee.*handbook).*"
+              pattern: "(?i).{0,100}(hr.{0,100}shared|hr.{0,100}document|salary.{0,100}review|incentive.{0,100}overview|payroll.{0,100}document|employee.{0,100}handbook).*"
             - type: BodyPattern
-              pattern: "(?i).*(hr.*department|human.*resources|salary.*information|payroll.*details|employee.*benefits).*"
+              pattern: "(?i).{0,100}(hr.{0,100}department|human.{0,100}resources|salary.{0,100}information|payroll.{0,100}details|employee.{0,100}benefits).*"
         - type: Not
           criteria:
             type: Or
@@ -167,9 +167,9 @@ rules:
         - type: Or
           criteria:
             - type: SubjectPattern
-              pattern: "(?i).*baddomain\\.com\\s+(hr|it|admin|support|team).*"
+              pattern: "(?i).{0,100}baddomain\\.com\\s+(hr|it|admin|support|team).*"
             - type: BodyPattern
-              pattern: "(?i).*baddomain\\.com.*(department|team|staff|employee).*"
+              pattern: "(?i).{0,100}baddomain\\.com.{0,100}(department|team|staff|employee).*"
         - type: Not
           criteria:
             type: SenderPattern
@@ -187,9 +187,9 @@ rules:
           criteria:
             - type: HeaderPattern
               header: "From"
-              pattern: "(?i).*(paypal|amazon|microsoft|google|apple|netflix|walmart|target|chase|bank.*america|wells.*fargo).*"
+              pattern: "(?i).{0,100}(paypal|amazon|microsoft|google|apple|netflix|walmart|target|chase|bank.{0,100}america|wells.{0,100}fargo).*"
             - type: SubjectPattern
-              pattern: "(?i).*(paypal|amazon|microsoft|google|apple|netflix|walmart|target|chase|bank.*america|wells.*fargo).*"
+              pattern: "(?i).{0,100}(paypal|amazon|microsoft|google|apple|netflix|walmart|target|chase|bank.{0,100}america|wells.{0,100}fargo).*"
         - type: Or
           criteria:
             - type: HeaderPattern
@@ -210,7 +210,7 @@ rules:
                     type: Or
                     criteria:
                       - type: BodyPattern
-                        pattern: "(?i).*(apple.*wallet|google.*pay|samsung.*pay|paypal.*integration|amazon.*partnership).*"
+                        pattern: "(?i).{0,100}(apple.{0,100}wallet|google.{0,100}pay|samsung.{0,100}pay|paypal.{0,100}integration|amazon.{0,100}partnership).*"
                       - type: SenderPattern
                         pattern: ".*@.*(discover|chase|citi|amex|wellsfargo|bankofamerica)\\.(com|org)$"
         - type: Not
@@ -220,12 +220,12 @@ rules:
               - type: SenderPattern
                 pattern: ".*@.*(medium|backerkit|joinhoney|williams-sonoma|lovepop|shutterfly|resmed|quora|nytimes)\\.(com|org)$"
               - type: SenderPattern
-                pattern: ".*paypal.*adobe.*"
+                pattern: ".*paypal.{0,100}adobe.*"
               - type: SenderPattern
                 pattern: ".*@.*sparkpostmail\\.(com|net)$"
               - type: HeaderPattern
                 header: "Authentication-Results"
-                pattern: "dkim=pass.*\\.(medium|backerkit|joinhoney|williams-sonoma|lovepop|shutterfly|resmed|quora)\\.(com|org)"
+                pattern: "dkim=pass.{0,100}\\.(medium|backerkit|joinhoney|williams-sonoma|lovepop|shutterfly|resmed|quora)\\.(com|org)"
     score: 200
     description: "Brand impersonation with authentication failure (excluding legitimate newsletters)"
 
@@ -239,9 +239,9 @@ rules:
           criteria:
             - type: "HeaderPattern"
               header: "From"
-              pattern: "(?i).*(McDonald's|Netflix|Disney|Starbucks|Walmart|Amazon|Target|Best Buy|Home Depot|Lowe's|CVS|Walgreens|Chase|Bank of America|Wells Fargo|Citi|Capital One|American Express|Discover|PayPal|Venmo|Cash App|Zelle|Apple|Microsoft|Google|Facebook|Instagram|Twitter|LinkedIn|YouTube|TikTok|Snapchat|WhatsApp|Telegram|Zoom|Skype|Slack|Teams|Dropbox|OneDrive|iCloud|Gmail|Yahoo|Outlook|Hotmail|AOL|Comcast|Verizon|AT&T|T-Mobile|Sprint|UPS|FedEx|USPS|DHL|Uber|Lyft|Airbnb|Booking|Expedia|Priceline|Hotels|Marriott|Hilton|Hyatt|IHG|Choice|Wyndham|Radisson|Accor|Four Seasons|Ritz Carlton|Sheraton|Westin|Doubletree|Hampton|Holiday Inn|Courtyard|Residence Inn|SpringHill|Fairfield|TownePlace|Aloft|Element|Moxy|AC Hotels|Autograph|Tribute|Design Hotels|Luxury Collection|St. Regis|W Hotels|Edition|Le Meridien|Renaissance|Delta|Gaylord|Omni|Loews|Kimpton|Joie de Vivre|Thompson|Tommie|Unbound|Tapestry|Curio|DoubleTree|Embassy Suites|Homewood Suites|Home2 Suites|Tru|Canopy|Signia|LXR|Conrad|Waldorf Astoria|Tempo|Graduate|Even|Avid|WoodSpring|MainStay|Candlewood|Staybridge|Extended Stay|Red Roof|Motel 6|Super 8|Days Inn|Ramada|Howard Johnson|Travelodge|Knights Inn|Econo Lodge|Quality Inn|Comfort Inn|Comfort Suites|Sleep Inn|Clarion|Cambria|Ascend|Suburban|WoodSpring|MainStay|Candlewood|Staybridge|Extended Stay|Red Roof|Motel 6|Super 8|Days Inn|Ramada|Howard Johnson|Travelodge|Knights Inn|Econo Lodge|Quality Inn|Comfort Inn|Comfort Suites|Sleep Inn|Clarion|Cambria|Ascend|Suburban).*"
+              pattern: "(?i).{0,100}(McDonald's|Netflix|Disney|Starbucks|Walmart|Amazon|Target|Best Buy|Home Depot|Lowe's|CVS|Walgreens|Chase|Bank of America|Wells Fargo|Citi|Capital One|American Express|Discover|PayPal|Venmo|Cash App|Zelle|Apple|Microsoft|Google|Facebook|Instagram|Twitter|LinkedIn|YouTube|TikTok|Snapchat|WhatsApp|Telegram|Zoom|Skype|Slack|Teams|Dropbox|OneDrive|iCloud|Gmail|Yahoo|Outlook|Hotmail|AOL|Comcast|Verizon|AT&T|T-Mobile|Sprint|UPS|FedEx|USPS|DHL|Uber|Lyft|Airbnb|Booking|Expedia|Priceline|Hotels|Marriott|Hilton|Hyatt|IHG|Choice|Wyndham|Radisson|Accor|Four Seasons|Ritz Carlton|Sheraton|Westin|Doubletree|Hampton|Holiday Inn|Courtyard|Residence Inn|SpringHill|Fairfield|TownePlace|Aloft|Element|Moxy|AC Hotels|Autograph|Tribute|Design Hotels|Luxury Collection|St. Regis|W Hotels|Edition|Le Meridien|Renaissance|Delta|Gaylord|Omni|Loews|Kimpton|Joie de Vivre|Thompson|Tommie|Unbound|Tapestry|Curio|DoubleTree|Embassy Suites|Homewood Suites|Home2 Suites|Tru|Canopy|Signia|LXR|Conrad|Waldorf Astoria|Tempo|Graduate|Even|Avid|WoodSpring|MainStay|Candlewood|Staybridge|Extended Stay|Red Roof|Motel 6|Super 8|Days Inn|Ramada|Howard Johnson|Travelodge|Knights Inn|Econo Lodge|Quality Inn|Comfort Inn|Comfort Suites|Sleep Inn|Clarion|Cambria|Ascend|Suburban|WoodSpring|MainStay|Candlewood|Staybridge|Extended Stay|Red Roof|Motel 6|Super 8|Days Inn|Ramada|Howard Johnson|Travelodge|Knights Inn|Econo Lodge|Quality Inn|Comfort Inn|Comfort Suites|Sleep Inn|Clarion|Cambria|Ascend|Suburban).*"
             - type: "SubjectPattern"
-              pattern: "(?i).*(McDonald's|Netflix|Disney|Starbucks|major.*brand|official.*notification|customer.*service|account.*verification|security.*alert).*"
+              pattern: "(?i).{0,100}(McDonald's|Netflix|Disney|Starbucks|major.{0,100}brand|official.{0,100}notification|customer.{0,100}service|account.{0,100}verification|security.{0,100}alert).*"
         - type: "Not"
           criteria:
             type: "Or"
@@ -251,7 +251,7 @@ rules:
               - type: "SenderPattern"
                 pattern: ".*@.*(sparkpostmail|sendgrid|mailchimp|mailchimpapp|amazonses|constantcontact|mailgun|facebookmail|zoomcare|pb-dynmktg|pardot|marketo|eloqua|hubspot|campaignmonitor)\\.(com|net)$"
               - type: "SenderPattern"
-                pattern: ".*paypal.*adobe.*"
+                pattern: ".*paypal.{0,100}adobe.*"
               - type: "SenderPattern"
                 pattern: ".*@.*iheart\\.(com|net)$"
     score: 150
@@ -266,11 +266,11 @@ rules:
         - type: "Or"
           criteria:
             - type: "SubjectPattern"
-              pattern: "(?i).*(aaa.*emergency.*kit|triple.*a.*kit|car.*emergency.*kit|safety.*kit|survival.*kit).*"
+              pattern: "(?i).{0,100}(aaa.{0,100}emergency.{0,100}kit|triple.{0,100}a.{0,100}kit|car.{0,100}emergency.{0,100}kit|safety.{0,100}kit|survival.{0,100}kit).*"
             - type: "BodyPattern"
-              pattern: "(?i).*(aaa.*member|triple.*a.*member|emergency.*roadside|car.*breakdown|roadside.*assistance).*"
+              pattern: "(?i).{0,100}(aaa.{0,100}member|triple.{0,100}a.{0,100}member|emergency.{0,100}roadside|car.{0,100}breakdown|roadside.{0,100}assistance).*"
             - type: "BodyPattern"
-              pattern: "(?i).*(state.*farm.*kit|allstate.*kit|geico.*kit|progressive.*kit).*"
+              pattern: "(?i).{0,100}(state.{0,100}farm.{0,100}kit|allstate.{0,100}kit|geico.{0,100}kit|progressive.{0,100}kit).*"
         - type: Not
           criteria:
             type: SenderPattern
@@ -292,7 +292,7 @@ rules:
               header: "Authentication-Results"
               pattern: "dkim=fail"
             - type: "SubjectPattern"
-              pattern: "(?i).*(taste|special|uid[0-9]+|restaurant|food|dining).*"
+              pattern: "(?i).{0,100}(taste|special|uid[0-9]+|restaurant|food|dining).*"
     score: 100
     description: "Compromised Microsoft tenant domains"
 
@@ -305,11 +305,11 @@ rules:
         - type: "Or"
           criteria:
             - type: "SubjectPattern"
-              pattern: "(?i).*(medicare|medicaid|unitedhealthcare|benefits.*center|veteran.*affairs).*"
+              pattern: "(?i).*(medicare|medicaid|unitedhealthcare|benefits.{0,30}center|veteran.{0,30}affairs).*"
             - type: "BodyPattern"
-              pattern: "(?i).*(health.*insurance|medicare.*advantage|benefits.*enrollment|va.*benefits|health.*benefits.*center).*"
+              pattern: "(?i).*(health.{0,30}insurance|medicare.{0,30}advantage|benefits.{0,30}enrollment|va.{0,30}benefits|health.{0,30}benefits.{0,30}center).*"
             - type: "SubjectPattern"
-              pattern: "(?i).*(cvs.*order|pharmacy.*confirmation|prescription.*ready|health.*plan).*"
+              pattern: "(?i).*(cvs.{0,30}order|pharmacy.{0,30}confirmation|prescription.{0,30}ready|health.{0,30}plan).*"
         - type: "Not"
           criteria:
             type: "Or"
@@ -317,7 +317,7 @@ rules:
               - type: "SenderPattern"
                 pattern: ".*@.*(cvs|unitedhealthcare|medicare|va|veterans|adapthealth|adapthealthmarketplace|sears|searshomeservices|nytimes|newyorktimes)\\.(com|org|gov)$"
               - type: "BodyPattern"
-                pattern: "(?i).*(loyalty.*program|rewards.*program|membership.*benefits|shipping.*benefits|passport.*benefits).*"
+                pattern: "(?i).*(loyalty.{0,30}program|rewards.{0,30}program|membership.{0,30}benefits|shipping.{0,30}benefits|passport.{0,30}benefits).*"
     score: 175
     description: "Healthcare and government service impersonation"
 
@@ -328,7 +328,7 @@ rules:
       type: "And"
       criteria:
         - type: "SenderPattern"
-          pattern: "(?i).*(amazon|apple|microsoft|google|facebook|paypal|aarp|walmart|target|netflix|disney|fedex|ups|visa|chase|bank).*"
+          pattern: "(?i).{0,100}(amazon|apple|microsoft|google|facebook|paypal|aarp|walmart|target|netflix|disney|fedex|ups|visa|chase|bank).*"
         - type: "Or"
           criteria:
             - type: "HeaderPattern"
@@ -347,7 +347,7 @@ rules:
                 pattern: ".*@.*(amazon|google|microsoft|apple|netflix|walmart|target|disney|fedex|ups|visa|chase)\\.(com|org)$"
               - type: "HeaderPattern"
                 header: "From"
-                pattern: "(?i).*(newsletter|digest|marketing|promotional|noreply|no-reply).*"
+                pattern: "(?i).{0,100}(newsletter|digest|marketing|promotional|noreply|no-reply).*"
     score: 300
     description: "Critical: Major brand + authentication failure + domain mismatch"
 
@@ -363,7 +363,7 @@ rules:
           criteria:
             - type: "HeaderPattern"
               header: "From"
-              pattern: "(?i).*ana.*"
+              pattern: "(?i).{0,100}ana.*"
             - type: "SubjectPattern"
               pattern: ".*ANA.*"
     score: 200
@@ -384,9 +384,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(fire.*doesn.*t.*wait.*neither.*should.*you|state.*farm.*fire.*emergency.*kit|fire.*kit.*brand.*impersonation).*"
+          pattern: "(?i).{0,100}(fire.{0,100}doesn.{0,100}t.{0,100}wait.{0,100}neither.{0,100}should.{0,100}you|state.{0,100}farm.{0,100}fire.{0,100}emergency.{0,100}kit|fire.{0,100}kit.{0,100}brand.{0,100}impersonation).*"
         - type: BodyPattern
-          pattern: "(?i).*(fire.*doesn.*t.*wait.*neither.*should.*you|state.*farm.*fire.*emergency.*kit|fire.*kit.*brand.*impersonation).*"
+          pattern: "(?i).{0,100}(fire.{0,100}doesn.{0,100}t.{0,100}wait.{0,100}neither.{0,100}should.{0,100}you|state.{0,100}farm.{0,100}fire.{0,100}emergency.{0,100}kit|fire.{0,100}kit.{0,100}brand.{0,100}impersonation).*"
     score: 280
   # WeTransfer brand impersonation
   - name: "WeTransfer Brand Impersonation"
@@ -394,9 +394,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(transfer.*you.*received.*expired.*can.*still.*recover|wetransfer.*brand.*impersonation|fake.*wetransfer).*"
+          pattern: "(?i).{0,100}(transfer.{0,100}you.{0,100}received.{0,100}expired.{0,100}can.{0,100}still.{0,100}recover|wetransfer.{0,100}brand.{0,100}impersonation|fake.{0,100}wetransfer).*"
         - type: BodyPattern
-          pattern: "(?i).*(transfer.*you.*received.*expired.*can.*still.*recover|wetransfer.*brand.*impersonation|fake.*wetransfer).*"
+          pattern: "(?i).{0,100}(transfer.{0,100}you.{0,100}received.{0,100}expired.{0,100}can.{0,100}still.{0,100}recover|wetransfer.{0,100}brand.{0,100}impersonation|fake.{0,100}wetransfer).*"
     score: 300
   # YETI brand impersonation Google Workspace
   - name: "YETI Brand Impersonation Google Workspace"
@@ -404,9 +404,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(yeti.*outdoor.*bundle.*final.*shipping.*stage|yeti.*brand.*impersonation|fake.*yeti.*shipping).*"
+          pattern: "(?i).{0,100}(yeti.{0,100}outdoor.{0,100}bundle.{0,100}final.{0,100}shipping.{0,100}stage|yeti.{0,100}brand.{0,100}impersonation|fake.{0,100}yeti.{0,100}shipping).*"
         - type: BodyPattern
-          pattern: "(?i).*(yeti.*outdoor.*bundle.*final.*shipping.*stage|yeti.*brand.*impersonation|fake.*yeti.*shipping).*"
+          pattern: "(?i).{0,100}(yeti.{0,100}outdoor.{0,100}bundle.{0,100}final.{0,100}shipping.{0,100}stage|yeti.{0,100}brand.{0,100}impersonation|fake.{0,100}yeti.{0,100}shipping).*"
     score: 290
   # USA Today brand impersonation
   - name: "USA Today Brand Impersonation"
@@ -414,9 +414,9 @@ rules:
       type: Or
       criteria:
         - type: SubjectPattern
-          pattern: "(?i).*(usa.*today.*automotive.*aftermarket.*special.*edition|usa.*today.*brand.*impersonation|fake.*usa.*today).*"
+          pattern: "(?i).{0,100}(usa.{0,100}today.{0,100}automotive.{0,100}aftermarket.{0,100}special.{0,100}edition|usa.{0,100}today.{0,100}brand.{0,100}impersonation|fake.{0,100}usa.{0,100}today).*"
         - type: BodyPattern
-          pattern: "(?i).*(usa.*today.*automotive.*aftermarket.*special.*edition|usa.*today.*brand.*impersonation|fake.*usa.*today).*"
+          pattern: "(?i).{0,100}(usa.{0,100}today.{0,100}automotive.{0,100}aftermarket.{0,100}special.{0,100}edition|usa.{0,100}today.{0,100}brand.{0,100}impersonation|fake.{0,100}usa.{0,100}today).*"
     score: 280
 
   # Unrelated Domain Brand Impersonation
@@ -429,7 +429,7 @@ rules:
           criteria:
             - type: HeaderPattern
               header: "From"
-              pattern: "(?i).*wellaheat.*"
+              pattern: "(?i).{0,100}wellaheat.*"
             - type: SenderPattern
               pattern: ".*@sydneyentertainmentcomplex\\.com$"
         - type: SenderPattern
@@ -448,8 +448,8 @@ rules:
         - type: Or
           criteria:
             - type: SubjectPattern
-              pattern: "(?i).*(japanese.*candy|joint.*replacement|surgery|supplement|miracle|health.*cure|pain.*relief).*"
+              pattern: "(?i).{0,100}(japanese.{0,100}candy|joint.{0,100}replacement|surgery|supplement|miracle|health.{0,100}cure|pain.{0,100}relief).*"
             - type: BodyPattern
-              pattern: "(?i).*(japanese.*candy|joint.*replacement|surgery|supplement|miracle|health.*cure|pain.*relief).*"
+              pattern: "(?i).{0,100}(japanese.{0,100}candy|joint.{0,100}replacement|surgery|supplement|miracle|health.{0,100}cure|pain.{0,100}relief).*"
     score: 75
     description: "Health supplement spam from suspicious .shop domains"
