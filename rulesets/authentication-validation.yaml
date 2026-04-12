@@ -223,16 +223,21 @@ rules:
           evidence_pattern: "Authentication risk level: Secure"
         - type: "Not"
           criteria:
-            type: "And"
+            type: "Or"
             criteria:
-              - type: "FeatureAnalysis"
-                feature_name: "Server Role Analysis"
-                evidence_pattern: "Authentication bonus should be reduced"
-              - type: "Not"
+              - type: "And"
                 criteria:
-                  type: "HeaderPattern"
-                  header: "Authentication-Results"
-                  pattern: "dmarc=pass"
+                  - type: "FeatureAnalysis"
+                    feature_name: "Server Role Analysis"
+                    evidence_pattern: "Authentication bonus should be reduced"
+                  - type: "Not"
+                    criteria:
+                      type: "HeaderPattern"
+                      header: "Authentication-Results"
+                      pattern: "dmarc=pass"
+              - type: "FeatureAnalysis"
+                feature_name: "Link Analysis"
+                evidence_pattern: "cross-domain links to spam-like domain"
     score: -30
     description: "Perfect authentication using feature analysis (Secure risk level)"
 

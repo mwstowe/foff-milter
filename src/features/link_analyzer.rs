@@ -1100,7 +1100,7 @@ impl FeatureExtractor for LinkAnalyzer {
                             evidence.push(
                                 "Suspicious cross-domain links to spam-like domain".to_string(),
                             );
-                            score += 40;
+                            score += 60;
                         } else {
                             evidence.push("Suspicious cross-domain links detected".to_string());
                             score += 5;
