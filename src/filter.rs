@@ -2346,6 +2346,62 @@ impl FilterEngine {
             ));
         }
 
+        // Check for mass-recipient To: header (10+ addresses = spam indicator)
+        if let Some(to_header) = context_with_attachments.headers.get("to") {
+            let addr_count = to_header.matches('@').count();
+            if addr_count >= 10 {
+                let mass_score = 50;
+                total_score += mass_score;
+                scoring_rules.push(format!(
+                    "Mass Recipient: {} addresses in To: header (+{})",
+                    addr_count, mass_score
+                ));
+            }
+        }
+
+        // Check for income/money-making scam content
+        {
+            let content = format!(
+                "{} {}",
+                context_with_attachments.subject.as_deref().unwrap_or(""),
+                context_with_attachments.body.as_deref().unwrap_or("")
+            )
+            .to_lowercase();
+            let income_patterns = [
+                "income system",
+                "generate extra income",
+                "make money online",
+                "earn money from home",
+                "passive income",
+                "income opportunity",
+                "cash system",
+                "profit system",
+                "money-making",
+                "extra income online",
+            ];
+            let urgency_patterns = [
+                "no experience required",
+                "no prior experience",
+                "spots may be limited",
+                "limited spots",
+                "act now",
+                "don't miss",
+                "quietly trending",
+                "quietly gaining",
+            ];
+            let has_income = income_patterns.iter().any(|p| content.contains(p));
+            let has_urgency = urgency_patterns.iter().any(|p| content.contains(p));
+            if has_income && has_urgency {
+                total_score += 60;
+                scoring_rules.push(
+                    "Income Scam: Money-making scheme with urgency tactics (+60)".to_string(),
+                );
+            } else if has_income {
+                total_score += 30;
+                scoring_rules.push("Income Scam: Money-making scheme detected (+30)".to_string());
+            }
+        }
+
         // Check for product sales spam
         let product_spam_score = self.get_product_sales_spam_score(&context_with_attachments);
         if product_spam_score > 0 {

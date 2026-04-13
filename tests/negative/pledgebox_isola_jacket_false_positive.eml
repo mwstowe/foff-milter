@@ -1,0 +1,1826 @@
+✅ Loading modern TOML configuration: ../foff-milter.toml
+Return-Path: <mstowe+caf_=mstowe=baddomain.com@gmail.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.2/8.18.1) with ESMTPS id 63DEb8lK000576
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <mstowe@baddomain.com>; Mon, 13 Apr 2026 14:37:08 GMT
+	(envelope-from mstowe+caf_=mstowe=baddomain.com@gmail.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (1024-bit key; unprotected) header.d=pledgebox.com header.i=@pledgebox.com header.b=ZUoVF8Oj;
+	dkim=pass (1024-bit key; unprotected) header.d=amazonses.com header.i=@amazonses.com header.b=FJqQGNUI
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 63DEb42q275794
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=OK)
+	for <mstowe@baddomain.com>; Mon, 13 Apr 2026 09:37:06 -0500
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 63DEb42q275794
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (1024-bit key, unprotected) header.d=pledgebox.com header.i=@pledgebox.com header.a=rsa-sha256 header.s=osjrcyking2eai7gbjaracex2s5lt6s3 header.b=ZUoVF8Oj;
+	dkim=pass (1024-bit key, unprotected) header.d=amazonses.com header.i=@amazonses.com header.a=rsa-sha256 header.s=shh3fegwg5fppqsuzphvschd53n6ihuv header.b=FJqQGNUI
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6715594a4c2so1374415a12.1
+        for <mstowe@baddomain.com>; Mon, 13 Apr 2026 07:37:06 -0700 (PDT)
+ARC-Seal: i=2; a=rsa-sha256; t=555-123-4567; cv=pass;
+        d=google.com; s=arc-20240605;
+        b=DAhX2S26FzqxtaMAe7yIkSdp1ZUI3Vk+Z3DSWpuMeZNAajBMzB+mlipD+7u1Ndt7zO
+         tsqL3AiDu3lam646ZNG/88ueEoaGovjRkrQaYNkv/0Su7DL4zU/BCcuqXppUjBz7HfgW
+         ywa3nqgJF5Pn1am1g+49VZ2sd40pEDpq+Dt4SkLNlOkJAvyW0vidPBfZROTug+XBWHN9
+         vbytd2VgJLnFRoBBAwoGdO+qxjuM63JeewY6S7iQxRx7uGxkhdymtwmX6ZRkEsOTfbfg
+         bi/tlpc8j3vDw6Nw6O84UuJHYINdDKkmn9OybKOBqHIkXEYrZrb2rGtIhfhAVB8GoIkQ
+         r/yQ==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=feedback-id:date:message-id:mime-version:subject:to:from
+         :dkim-signature:dkim-signature:delivered-to;
+        bh=0oZ9cGjxivWWCfYSRvfUNSm9loK5m40kmRa+kliKTsI=;
+        fh=bYjaYq2xDMQVu6Y6EdTCwMXNso02LqzYEoSBSZ3Ip5w=;
+        b=A+TG+vIMNr1ktSgFu6BhIMHodsbdiCXRmOIS63ogfirgzWYM6us35GCdylVb9oN5tR
+         bqHDUNsJpF05HucTsnG+lVgxsnA4WW9rq3ceS8rsLisyw4nnPXjbPW/6fi7bDvOXpjUb
+         hxZ+EzpVBjvYchohMHvdOmdU65mrMECcCBlfICBwgmBwjtLlwy3cKeWwzEV19RzwVgoi
+         v25RZQ5eyoaO/ykEvtjr6UeMTSo35TtPkTMsuIj/NtsnSc5J/elrIb2YxWDHrr++q01o
+         Nyo/EkiFn8IF9Av4no/mNhYrcVO8a8+I5V35neMGmNAkMCW6NqDHW4FXlvt3aW1+kzgW
+         tHTg==;
+        darn=baddomain.com
+ARC-Authentication-Results: i=2; mx.google.com;
+       dkim=pass header.i=@pledgebox.com header.s=osjrcyking2eai7gbjaracex2s5lt6s3 header.b=ZUoVF8Oj;
+       dkim=pass header.i=@amazonses.com header.s=shh3fegwg5fppqsuzphvschd53n6ihuv header.b=FJqQGNUI;
+       spf=pass (google.com: domain of 0102019d87462a68-c3b88403-7a4e-4a97-806f-237846e75e39-000000@eu-west-1.amazonses.com designates 54.240.52.128 as permitted sender) smtp.mailfrom=0102019d87462a68-c3b88403-7a4e-4a97-806f-237846e75e39-000000@eu-west-1.amazonses.com
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=555-123-4567; x=555-123-4567;
+        h=feedback-id:date:message-id:mime-version:subject:to:from
+         :dkim-signature:dkim-signature:delivered-to:x-forwarded-for
+         :x-forwarded-to:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0oZ9cGjxivWWCfYSRvfUNSm9loK5m40kmRa+kliKTsI=;
+        b=nbsSmA7eq7v4pSZwJaHlSh1R94+d/Gial74v7I6+Vb0egD3F+Ua07GkAAm3pUSw7qu
+         vRsL3jtem0j35YnVtArIuogC19nUEfZc3DiKoqRxB44iqd78Xn+YZmN5vs66F9I0s7pK
+         0hynkeJ1Ugd9N+NQzPiFRLdn5Yt3vrUgm5B3vo63Ed+9bLDMexG8xVy9Lj6RAjVvpHnF
+         SJZf1diB5bFP2CcBbCv6XpBWDYAfdeTmcOrJwrTTG8QpnkxT9tvfhijE6mybDcb5eYpb
+         Sa3LkOgw0PNGNCO4HjWZBYeicsVgaMcDn0DypIOSp1Q0+ryRt7g+vRsZXmeXit6qslzi
+         0dsQ==
+X-Forwarded-Encrypted: i=2; AFNElJ8eGSO52ysc3NdgDSQ7H/coT4agl6edSHsXZkeR+6piCVg2IYmecnWK0XGzdF3Y3MoCn7nAEJE=@baddomain.com
+X-Gm-Message-State: AOJu0YxQLxDULEPVWJdZYfi9HmtKU0L4DkDSnZNS6MKUdabBL2eKMENE
+	5F36F+KH4HaJeIXOnyJnd8+X6b9MtHpnRGKN2HtfZe00e4vuGlyIWI2BQ02hHYNqadDFCPLDvml
+	tUbULF5MRYPzE1TWwJQjNU4oddhsyexBZPbheR1KDvG+V7vFQxcn2BLFHzSLXsA==
+X-Received: by 2002:a17:907:3991:b0:b97:b3bc:f6ba with SMTP id a640c23a62f3a-b9d727d01d5mr796874566b.39.1776091018824;
+        Mon, 13 Apr 2026 07:36:58 -0700 (PDT)
+X-Forwarded-To: mstowe@baddomain.com
+X-Forwarded-For: user@example.com mstowe@baddomain.com
+Delivered-To: user@example.com
+Received: by 2002:a54:3504:0:b0:2cb:91fa:1144 with SMTP id g4csp353268ecq;
+        Mon, 13 Apr 2026 07:36:56 -0700 (PDT)
+X-Received: by 2002:a05:6000:18a8:b0:43d:26a2:f8c3 with SMTP id ffacd0b85a97d-43d642cd1bcmr19474656f8f.35.1776091016245;
+        Mon, 13 Apr 2026 07:36:56 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=555-123-4567; cv=none;
+        d=google.com; s=arc-20240605;
+        b=TfGyrnqMtrsdf+MebckTBgnulHju/l6f73EW610TRBoEu1C4EcnCdQkBm8kZC0Puz9
+         6bgDyiOpX8MivVNGS8/qhbF10K6bfn+DtkLFA1ZBGCKOwU4/e2hynGIWXW+a/iXHcSNj
+         IHKf8mCIxj3BXkjxA//+Ct/edCYgsu+xslnR1KoDncsXe+Pyj+K9JjnEN0MNh5T0f+nk
+         IKvlArRCKlGTbbYmK/uYG9QYMsOfSGrOxXKG2Atg8k1B0kNgALV0iYrDdYVd+IYY5mwg
+         +/EAZaEPOMuUWL3fKNW15hyxPD7MS/Bxw3LRjFRWYtM/Ag7ZAVzFT33stH5F30BcP8P1
+         ixXQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=feedback-id:date:message-id:mime-version:subject:to:from
+         :dkim-signature:dkim-signature;
+        bh=0oZ9cGjxivWWCfYSRvfUNSm9loK5m40kmRa+kliKTsI=;
+        fh=mT0Hi1oeQuwKdVkoCKIRR+MEHYH9sEP9ymI/x2O5QRU=;
+        b=Syem9VlUmMsuWRo0Khi7wA9QejhXkCl2pELpjzyjYfMdibtK3pTGEmy++EnfctJ7oJ
+         TigJwb1ev8g0gMsNzab0jbWB/AWpkEWMZ7Y9dW76LL/IJOEK1A/G6RebqJnUP41Q0m+c
+         Ld0YiA41jwB6oTH592OOiRZQebXsSWGUVdNV43Cy/PLx/Lr3+CvdB+6ExQkPq5ZMSHiN
+         sLcOCB6Hh7IsKL+nxmgQYtaJ6i/PwpYSAvqbE00HMvhA6Sl9DDOE3pKnREFGR68ZZVTB
+         Q4rMCyiESI3LpVm/m5O1j9EQYmBzxapeT1ohyZYP8ReZenCA/E8jjV3XD5InP0kleELJ
+         brDw==;
+        dara=google.com
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@pledgebox.com header.s=osjrcyking2eai7gbjaracex2s5lt6s3 header.b=ZUoVF8Oj;
+       dkim=pass header.i=@amazonses.com header.s=shh3fegwg5fppqsuzphvschd53n6ihuv header.b=FJqQGNUI;
+       spf=pass (google.com: domain of 0102019d87462a68-c3b88403-7a4e-4a97-806f-237846e75e39-000000@eu-west-1.amazonses.com designates 54.240.52.128 as permitted sender) smtp.mailfrom=0102019d87462a68-c3b88403-7a4e-4a97-806f-237846e75e39-000000@eu-west-1.amazonses.com
+Received: from a52-128.smtp-out.eu-west-1.amazonses.com (a52-128.smtp-out.eu-west-1.amazonses.com. [54.240.52.128])
+        by mx.google.com with ESMTPS id ffacd0b85a97d-43d63e7e911si20993698f8f.277.2026.04.13.07.36.55
+        for <user@example.com>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 13 Apr 2026 07:36:56 -0700 (PDT)
+Received-SPF: pass (google.com: domain of 0102019d87462a68-c3b88403-7a4e-4a97-806f-237846e75e39-000000@eu-west-1.amazonses.com designates 54.240.52.128 as permitted sender) client-ip=54.240.52.128;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@pledgebox.com header.s=osjrcyking2eai7gbjaracex2s5lt6s3 header.b=ZUoVF8Oj;
+       dkim=pass header.i=@amazonses.com header.s=shh3fegwg5fppqsuzphvschd53n6ihuv header.b=FJqQGNUI;
+       spf=pass (google.com: domain of 0102019d87462a68-c3b88403-7a4e-4a97-806f-237846e75e39-000000@eu-west-1.amazonses.com designates 54.240.52.128 as permitted sender) smtp.mailfrom=0102019d87462a68-c3b88403-7a4e-4a97-806f-237846e75e39-000000@eu-west-1.amazonses.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=osjrcyking2eai7gbjaracex2s5lt6s3; d=pledgebox.com; t=555-123-4567;
+	h=From:To:Subject:MIME-Version:Content-Type:Message-ID:Date;
+	bh=OBMuOy/SHUvvaTbs7RktCmGWBCZ7J3KBVwfXfgfn7Jg=;
+	b=ZUoVF8Oj/kTjl0+4ZFiG2+ZraVaYIBR66Dsyk3RAjEfvj08axRESoKi5AqKmgVAe
+	CBgfxyeuJmW+L1xODb2ujRi6iWuGsyNWDoVbr5JnKYt4TVXekim2nq6FpUlAJ/8MPkt
+	C+ec/nHRkW1e/4So/fFPa9rrNm4Dwaw5VKkbZ3KU=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=shh3fegwg5fppqsuzphvschd53n6ihuv; d=amazonses.com; t=555-123-4567;
+	h=From:To:Subject:MIME-Version:Content-Type:Message-ID:Date:Feedback-ID;
+	bh=OBMuOy/SHUvvaTbs7RktCmGWBCZ7J3KBVwfXfgfn7Jg=;
+	b=FJqQGNUIaKh4G/un5VUCwIGmm8N45065mjYTVmm8pxz7z47weVCTzQFHiv7fl7TK
+	VU4j3EdcuoVxUQyXHxZcwb+m+nYHPfRYmzDh84kyjbCDKFzeDOuBhiI8exifiE5C6Dy
+	SWQ35BGhnYXiR234aps04BtzVfQXj5NrOt4aCikI=
+From: PledgeBox <newsletter@pledgebox.com>
+To: user@example.com
+Subject: =?UTF-8?Q?=E2=8F=B3_48_Hours_Left:_ISOLA26_|_365-?=
+ =?UTF-8?Q?Day_Waterproof_Adventure_Jacket?=
+MIME-Version: 1.0
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_98272_601295621.1776091015784"
+Message-ID: <0102019d87462a68-c3b88403-7a4e-4a97-806f-237846e75e39-000000@eu-west-1.amazonses.com>
+Date: Mon, 13 Apr 2026 14:36:55 +0000
+Feedback-ID: ::1.eu-west-1.37Sm3Nu8uxSlBkKb03WZwe66rr9TPtaf0LrLaHHQkVo=:AmazonSES
+X-SES-Outgoing: 2026.04.13-54.240.52.128
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Mon, 13 Apr 2026 14:37:08 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Mon, 13 Apr 2026 09:37:06 -0500 (CDT)
+X-Spam-Flag: YES
+
+------=_Part_98272_601295621.1776091015784
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+PledgeBox Logo
+
+[ISOLA26]
+https://newsletter.pledgebox.com/isola26-year-round-waterproof-adventure-ja=
+cket?email=3D*|EMAIL|*
+
+[ISOLA26]
+https://newsletter.pledgebox.com/isola26-year-round-waterproof-adventure-ja=
+cket?email=3D*|EMAIL|*
+
+365-Day Waterproof Adventure Jacket
+
+The Future of Weather Protection
+
+You shouldn't have to choose between carrying what you need and moving free=
+ly.
+
+We built ISOLA26 for the unpredictable days. Whether you're rushing through=
+ a
+crowded boarding gate or caught in a sudden downpour, the jacket adapts to =
+your
+rhythm. It=E2=80=99s not just a piece of outerwear=E2=80=94it=E2=80=99s you=
+r entire daily carry, built
+into a 20K waterproof shell.
+
+Forget digging through wet bags in the rain. Your essentials stay locked do=
+wn
+and shielded from both the weather and the crowds. You can check your map
+through the transparent chest desk without breaking stride. When the sun fi=
+nally
+comes out, the whole jacket instantly folds into a minimalist sling bag. An=
+d
+yes, it securely holds a 16=E2=80=9D laptop right against your back.
+
+Total control, no matter the weather. Plus, we=E2=80=99ve just unlocked the=
+ ThermoCloud=E2=84=A2
+inner layer and our secret add-ons.
+
+This is our 8th Kickstarter. and Isola26 is the most ambitious gear yet!
+We=E2=80=99re in the final hours =E2=80=94 don=E2=80=99t miss up to 55% off=
+ before we close (48h left).
+
+[Learn More]
+https://newsletter.pledgebox.com/isola26-year-round-waterproof-adventure-ja=
+cket?email=3D*|EMAIL|*
+
+[Pledge Now]
+https://newsletter.pledgebox.com/isola26-year-round-waterproof-adventure-ja=
+cket?email=3D*|EMAIL|*
+
+Facebook YouTube
+
+Copyright =C2=A9 2026 PledgeBox Limited
+
+PledgeBox sends updates like this to help you keep up with the hot campaign=
+s of
+crowdfunding.
+
+[Unsubscribe]
+*|UNSUB|*
+------=_Part_98272_601295621.1776091015784
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www=
+.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns=3D"http://www.w3.org/1999/xhtml" xmlns:v=3D"urn:schemas-microso=
+ft-com:vml" xmlns:o=3D"urn:schemas-microsoft-com:office:office">
+<head>
+<!--[if gte mso 9]>
+<xml>
+  <o:OfficeDocumentSettings>
+    <o:AllowPNG/>
+    <o:PixelsPerInch>96</o:PixelsPerInch>
+  </o:OfficeDocumentSettings>
+</xml>
+<![endif]-->
+  <meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3DUTF-8">
+  <meta name=3D"viewport" content=3D"width=3Ddevice-width, initial-scale=3D=
+1.0">
+  <meta name=3D"x-apple-disable-message-reformatting">
+  <!--[if !mso]><!--><meta http-equiv=3D"X-UA-Compatible" content=3D"IE=3De=
+dge"><!--<![endif]-->
+  <title></title>
+ =20
+    <style type=3D"text/css">
+     =20
+      @media only screen and (min-width: 650px) {
+        .u-row {
+          width: 630px !important;
+        }
+
+        .u-row .u-col {
+          vertical-align: top;
+        }
+
+       =20
+            .u-row .u-col-100 {
+              width: 630px !important;
+            }
+         =20
+      }
+
+      @media only screen and (max-width: 650px) {
+        .u-row-container {
+          max-width: 100% !important;
+          padding-left: 0px !important;
+          padding-right: 0px !important;
+        }
+
+        .u-row {
+          width: 100% !important;
+        }
+
+        .u-row .u-col {
+          display: block !important;
+          width: 100% !important;
+          min-width: 320px !important;
+          max-width: 100% !important;
+        }
+
+        .u-row .u-col > div {
+          margin: 0 auto;
+        }
+
+
+        .u-row .u-col img {
+          max-width: 100% !important;
+        }
+
+}
+   =20
+body{margin:0;padding:0}table,td,tr{border-collapse:collapse;vertical-align=
+:top}p{margin:0}.ie-container table,.mso-container table{table-layout:fixed=
+}*{line-height:inherit}a[x-apple-data-detectors=3Dtrue]{color:inherit!impor=
+tant;text-decoration:none!important}
+
+
+table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: =
+underline; }
+    </style>
+ =20
+ =20
+
+</head>
+
+<body class=3D"clean-body u_body" style=3D"margin: 0;padding: 0;-webkit-tex=
+t-size-adjust: 100%;background-color: #F7F8F9;color: #000000"><div style=3D=
+"display:none;font-size:1px;color:#ffffff;line-height:1px;max-height:0px;ma=
+x-width:0px;opacity:0;overflow:hidden;">A Smarter way to move through the W=
+orld | 26 Pockets, Touch-View Desk, GPS Sleeve, Built-In Backpack =E2=80=94=
+ Carry Smarter Go Further!</div>
+  <!--[if IE]><div class=3D"ie-container"><![endif]-->
+  <!--[if mso]><div class=3D"mso-container"><![endif]-->
+  <table id=3D"u_body" style=3D"border-collapse: collapse;table-layout: fix=
+ed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-a=
+lign: top;min-width: 320px;Margin: 0 auto;background-color: #F7F8F9;width:1=
+00%" cellpadding=3D"0" cellspacing=3D"0">
+  <tbody>
+  <tr style=3D"vertical-align: top">
+    <td style=3D"word-break: break-word;border-collapse: collapse !importan=
+t;vertical-align: top">
+    <!--[if (mso)|(IE)]><table width=3D"100%" cellpadding=3D"0" cellspacing=
+=3D"0" border=3D"0"><tr><td align=3D"center" style=3D"background-color: #F7=
+F8F9;"><![endif]-->
+   =20
+ =20
+ =20
+<div class=3D"u-row-container" style=3D"padding: 0px;background-color: #fff=
+fff">
+  <div class=3D"u-row" style=3D"margin: 0 auto;min-width: 320px;max-width: =
+630px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-wor=
+d;background-color: transparent;">
+    <div style=3D"border-collapse: collapse;display: table;width: 100%;heig=
+ht: 100%;background-color: transparent;">
+      <!--[if (mso)|(IE)]><table width=3D"100%" cellpadding=3D"0" cellspaci=
+ng=3D"0" border=3D"0"><tr><td style=3D"padding: 0px;background-color: #ffff=
+ff;" align=3D"center"><table cellpadding=3D"0" cellspacing=3D"0" border=3D"=
+0" style=3D"width:630px;"><tr style=3D"background-color: transparent;"><![e=
+ndif]-->
+     =20
+<!--[if (mso)|(IE)]><td align=3D"center" width=3D"630" style=3D"width: 630p=
+x;padding: 0px;border-top: 0px solid transparent;border-left: 0px solid tra=
+nsparent;border-right: 0px solid transparent;border-bottom: 0px solid trans=
+parent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radius: 0=
+px;" valign=3D"top"><![endif]-->
+<div class=3D"u-col u-col-100" style=3D"max-width: 320px;min-width: 630px;d=
+isplay: table-cell;vertical-align: top;">
+  <div style=3D"height: 100%;width: 100% !important;border-radius: 0px;-web=
+kit-border-radius: 0px; -moz-border-radius: 0px;">
+  <!--[if (!mso)&(!IE)]><!--><div style=3D"box-sizing: border-box; height: =
+100%; padding: 0px;border-top: 0px solid transparent;border-left: 0px solid=
+ transparent;border-right: 0px solid transparent;border-bottom: 0px solid t=
+ransparent;border-radius: 0px;-webkit-border-radius: 0px; -moz-border-radiu=
+s: 0px;"><!--<![endif]-->
+ =20
+<table style=3D"font-family:arial,helvetica,sans-serif;" role=3D"presentati=
+on" cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" border=3D"0">
+  <tbody>
+    <tr>
+      <td style=3D"overflow-wrap:break-word;word-break:break-word;padding:1=
+0px;font-family:arial,helvetica,sans-serif;" align=3D"left">
+       =20
+  <div>
+    <!DOCTYPE html>
+<html lang=3D"en">
+=09<head>
+=09=09<title></title>
+=09=09<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf=
+-8">
+=09=09<meta name=3D"viewport" content=3D"width=3Ddevice-width, initial-scal=
+e=3D1.0">
+=09=09<!--[if mso
+      ]>
+    <xml
+    >
+    <o:OfficeDocumentSettings>
+        <o:PixelsPerInch>96</o:PixelsPerInch>
+        <o:AllowPNG/>
+    </o:OfficeDocumentSettings>
+    </xml
+    ><![endif]-->
+=09=09<!--[if !mso]><!-->
+=09=09<link href=3D"https://fonts.googleapis.com/css?family=3DLato" rel=3D"=
+stylesheet" type=3D"text/css">
+=09=09<!--<![endif]-->
+=09=09<style>
+=09=09=09* {
+=09=09=09=09box-sizing: border-box;
+=09=09=09}
+=09=09=09
+=09=09=09body {
+=09=09=09=09margin: 0;
+=09=09=09=09padding: 0;
+=09=09=09}
+=09=09=09
+=09=09=09a[x-apple-data-detectors] {
+=09=09=09=09color: inherit !important;
+=09=09=09=09text-decoration: inherit !important;
+=09=09=09}
+=09=09=09
+=09=09=09#MessageViewBody a {
+=09=09=09=09color: inherit;
+=09=09=09=09text-decoration: none;
+=09=09=09}
+=09=09=09
+=09=09=09p {
+=09=09=09=09line-height: inherit;
+=09=09=09}
+=09=09=09
+=09=09=09.desktop_hide,
+=09=09=09.desktop_hide table {
+=09=09=09=09mso-hide: all;
+=09=09=09=09display: none;
+=09=09=09=09max-height: 0px;
+=09=09=09=09overflow: hidden;
+=09=09=09}
+=09=09=09
+=09=09=09.image_block img+div {
+=09=09=09=09display: none;
+=09=09=09}
+=09=09=09
+=09=09=09@media (max-width: 640px) {
+=09=09=09=09.social_block.desktop_hide .social-table {
+=09=09=09=09=09display: inline-block !important;
+=09=09=09=09}
+=09=09=09=09.image_block img.fullWidth {
+=09=09=09=09=09max-width: 100% !important;
+=09=09=09=09}
+=09=09=09=09.mobile_hide {
+=09=09=09=09=09display: none;
+=09=09=09=09}
+=09=09=09=09.row-content {
+=09=09=09=09=09width: 100% !important;
+=09=09=09=09}
+=09=09=09=09.stack .column {
+=09=09=09=09=09width: 100%;
+=09=09=09=09=09display: block;
+=09=09=09=09}
+=09=09=09=09.mobile_hide {
+=09=09=09=09=09min-height: 0;
+=09=09=09=09=09max-height: 0;
+=09=09=09=09=09max-width: 0;
+=09=09=09=09=09overflow: hidden;
+=09=09=09=09=09font-size: 0px;
+=09=09=09=09}
+=09=09=09=09.desktop_hide,
+=09=09=09=09.desktop_hide table {
+=09=09=09=09=09display: table !important;
+=09=09=09=09=09max-height: none !important;
+=09=09=09=09}
+=09=09=09}
+
+=09=09</style>
+=09</head>
+=09<body aria-disabled=3D"false" style=3D"background-color: rgb(255, 255, 2=
+55); margin: 0px; padding: 0px; text-size-adjust: none;">
+
+
+=09=09<div class=3D"os-padding">
+=09=09=09<div class=3D"os-viewport os-viewport-native-scrollbars-invisible"=
+>
+=09=09=09=09<div class=3D"os-content" style=3D"padding: 0px; height: 100%; =
+width: 100%;">
+
+=09=09=09=09=09<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" clas=
+s=3D"nl-container" style=3D"mso-table-lspace: 0pt; mso-table-rspace: 0pt; b=
+ackground-color: #fff;" width=3D"100%">
+=09=09=09=09=09=09<tbody>
+=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09<td>
+
+=09=09=09=09=09=09=09=09=09<table align=3D"center" border=3D"0" cellpadding=
+=3D"0" cellspacing=3D"0" class=3D"row row-1" style=3D"mso-table-lspace: 0pt=
+; mso-table-rspace: 0pt; background-color: #ffffff;" width=3D"100%">
+=09=09=09=09=09=09=09=09=09=09<tbody>
+=09=09=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09=09=09<td>
+
+=09=09=09=09=09=09=09=09=09=09=09=09=09<table align=3D"center" border=3D"0"=
+ cellpadding=3D"0" cellspacing=3D"0" class=3D"row-content stack" style=3D"m=
+so-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #f8f9fa; col=
+or: #000; width: 620px; margin: 0 auto;" width=3D"620">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<td class=3D"column column-=
+1" style=3D"
+                                    mso-table-lspace: 0pt;
+                                    mso-table-rspace: 0pt;
+                                    font-weight: 400;
+                                    text-align: left;
+                                    padding-bottom: 30px;
+                                    padding-top: 30px;
+                                    vertical-align: top;
+                                    border-top: 0px;
+                                    border-right: 0px;
+                                    border-bottom: 0px;
+                                    border-left: 0px;" width=3D"100%">
+
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<table border=3D"0" cell=
+padding=3D"0" cellspacing=3D"0" class=3D"image_block block-1" style=3D"mso-=
+table-lspace: 0pt; mso-table-rspace: 0pt;" width=3D"100%">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<td class=3D"pa=
+d" style=3D"width: 100%; padding-right: 0px; padding-left: 0px;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<div align=
+=3D"center" class=3D"alignment" style=3D"line-height: 10px;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<a href=
+=3D"https://api.pledgebox.com/api/edm/track/click/cd94a96398abd2a4ff9c12e03=
+60f462ad5100285d5e5d6340dc15c9b4932b9e7?url=3Dhttps%3A%2F%2Fwww.pledgebox.c=
+om%2F%3Futm_source%3DPledgeBox%26utm_medium%3DNewsletter" style=3D"outline:=
+ none;" tabindex=3D"-1" target=3D"_blank"><img src=3D"https://api.pledgebox=
+.com/images/dark_text_logo.png" style=3D"display: block; height: auto; bord=
+er: 0; width: 186px;" width=3D"186" alt=3D"PledgeBox Logo" title=3D"PledgeB=
+ox Logo"></a>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</div>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</table>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09</table>
+=09=09=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09=09=09</tbody>
+=09=09=09=09=09=09=09=09=09</table>
+
+=09=09=09=09=09=09=09=09=09<table align=3D"center" border=3D"0" cellpadding=
+=3D"0" cellspacing=3D"0" class=3D"row row-2" style=3D"mso-table-lspace: 0pt=
+; mso-table-rspace: 0pt;" width=3D"100%">
+=09=09=09=09=09=09=09=09=09=09<tbody>
+=09=09=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09=09=09<td>
+
+=09=09=09=09=09=09=09=09=09=09=09=09=09<table align=3D"center" border=3D"0"=
+ cellpadding=3D"0" cellspacing=3D"0" class=3D"row-content stack" style=3D"m=
+so-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #fff; color:=
+ #000; width: 620px; margin: 0 auto;" width=3D"620">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<td class=3D"column column-=
+1" style=3D"
+                                    mso-table-lspace: 0pt;
+                                    mso-table-rspace: 0pt;
+                                    font-weight: 400;
+                                    text-align: left;
+                                    padding-bottom: 5px;
+                                    padding-top: 5px;
+                                    vertical-align: top;
+                                    border-top: 0px;
+                                    border-right: 0px;
+                                    border-bottom: 0px;
+                                    border-left: 0px;" width=3D"100%">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<div class=3D"spacer_blo=
+ck block-1" style=3D"height: 0px; line-height: 0px; font-size: 1px;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</div>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09</table>
+=09=09=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09=09=09</tbody>
+=09=09=09=09=09=09=09=09=09</table>
+
+=09=09=09=09=09=09=09=09=09<table align=3D"center" border=3D"0" cellpadding=
+=3D"0" cellspacing=3D"0" class=3D"row row-3" style=3D"mso-table-lspace: 0pt=
+; mso-table-rspace: 0pt; background-position: top center;" width=3D"100%">
+=09=09=09=09=09=09=09=09=09=09<tbody>
+=09=09=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09=09=09<td>
+
+=09=09=09=09=09=09=09=09=09=09=09=09=09<table align=3D"center" border=3D"0"=
+ cellpadding=3D"0" cellspacing=3D"0" class=3D"row-content stack" style=3D"m=
+so-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #f8f9fa; col=
+or: #000; width: 620px; margin: 0 auto;" width=3D"620">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<td class=3D"column column-=
+1" style=3D"
+                                    mso-table-lspace: 0pt;
+                                    mso-table-rspace: 0pt;
+                                    font-weight: 400;
+                                    text-align: left;
+                                    padding-bottom: 5px;
+                                    padding-top: 30px;
+                                    vertical-align: top;
+                                    border-top: 0px;
+                                    border-right: 0px;
+                                    border-bottom: 0px;
+                                    border-left: 0px;" width=3D"100%">
+
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<table border=3D"0" cell=
+padding=3D"0" cellspacing=3D"0" class=3D"text_block block-1 mobile_hide" st=
+yle=3D"mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word=
+;" width=3D"100%">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<td class=3D"pa=
+d">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<div style=
+=3D"font-family: Tahoma, Verdana, sans-serif;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<div styl=
+e=3D"
+                                                font-size: 12px;
+                                                font-family: Lato, Tahoma, =
+Verdana, Segoe, sans-serif;
+                                                mso-line-height-alt: 14.399=
+999999999999px;
+                                                color: #000000;
+                                                line-height: 1.2;">
+
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<p sty=
+le=3D"margin: 0; font-size: 12px; text-align: center; mso-line-height-alt: =
+14.399999999999999px;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<a =
+href=3D"https://api.pledgebox.com/api/edm/track/click/cd94a96398abd2a4ff9c1=
+2e0360f462ad5100285d5e5d6340dc15c9b4932b9e7?url=3Dhttps%3A%2F%2Fnewsletter.=
+pledgebox.com%2Fisola26-year-round-waterproof-adventure-jacket%3Femail%3Dms=
+towe%40gmail.com" style=3D"outline: none;color: inherit;" tabindex=3D"-1" t=
+arget=3D"_blank">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=
+<strong>
+                                                                           =
+                         <span style=3D"font-size: 28px;">
+                                                                           =
+                             <span>
+                                                                           =
+                                 <span>
+                                                                           =
+                                     <span class=3D"tinyMce-placeholder">
+                                                                           =
+                                         <span>ISOLA26</span>
+                                                                           =
+                                     </span>
+                                                                           =
+                                 </span>
+                                                                           =
+                             </span>
+                                                                           =
+                         </span>
+                                                                           =
+                     </strong>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</a=
+>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</p>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</div>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</div>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</table>
+
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<table border=3D"0" cell=
+padding=3D"0" cellspacing=3D"0" class=3D"text_block block-2 desktop_hide" s=
+tyle=3D"
+                                      mso-table-lspace: 0pt;
+                                      mso-table-rspace: 0pt;
+                                      mso-hide: all;
+                                      display: none;
+                                      max-height: 0;
+                                      overflow: hidden;
+                                      word-break: break-word;" width=3D"100=
+%">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<td class=3D"pa=
+d">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<div style=
+=3D"font-family: Tahoma, Verdana, sans-serif;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<div styl=
+e=3D"
+                                                font-size: 12px;
+                                                font-family: Lato, Tahoma, =
+Verdana, Segoe, sans-serif;
+                                                mso-line-height-alt: 14.399=
+999999999999px;
+                                                color: #000000;
+                                                line-height: 1.2;">
+
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<p sty=
+le=3D"margin: 0; font-size: 12px; text-align: center; mso-line-height-alt: =
+14.399999999999999px;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<sp=
+an style=3D"font-size: 24px;">
+                                                                           =
+                     <a href=3D"https://api.pledgebox.com/api/edm/track/cli=
+ck/cd94a96398abd2a4ff9c12e0360f462ad5100285d5e5d6340dc15c9b4932b9e7?url=3Dh=
+ttps%3A%2F%2Fnewsletter.pledgebox.com%2Fisola26-year-round-waterproof-adven=
+ture-jacket%3Femail%3Dmstowe%40gmail.com" style=3D"outline: none;color: inh=
+erit;" tabindex=3D"-1" target=3D"_blank">
+                                                                           =
+                         <strong>
+                                                                           =
+                             <span><span><span><span class=3D"tinyMce-place=
+holder">
+                                                                           =
+                                             <span>ISOLA26</span>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</s=
+pan></span></span></span>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</s=
+trong>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</a=
+>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</s=
+pan>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</p>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</div>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</div>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</table>
+
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<table border=3D"0" cell=
+padding=3D"0" cellspacing=3D"0" class=3D"text_block block-3" style=3D"mso-t=
+able-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width=3D"=
+100%">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<td class=3D"pa=
+d" style=3D"padding-bottom: 20px; padding-left: 15px; padding-right: 15px; =
+padding-top: 10px;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<div style=
+=3D"font-family: Arial, sans-serif;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<div styl=
+e=3D"
+                                                font-size: 12px;
+                                                font-family: Helvetica Neue=
+, Helvetica, Arial, sans-serif;
+                                                mso-line-height-alt: 18px;
+                                                color: #555555;
+                                                line-height: 1.5;">
+
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<p sty=
+le=3D"margin: 0; font-size: 12px; text-align: center; mso-line-height-alt: =
+22.5px;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<sp=
+an style=3D"font-size: 15px; color: #000000;"><span class=3D"tinyMce-placeh=
+older">365-Day Waterproof Adventure Jacket</span></span>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</p>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</div>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</div>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</table>
+
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<table border=3D"0" cell=
+padding=3D"0" cellspacing=3D"0" class=3D"image_block block-4" style=3D"mso-=
+table-lspace: 0pt; mso-table-rspace: 0pt;" width=3D"100%">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<td class=3D"pa=
+d" style=3D"width: 100%; padding-right: 0px; padding-left: 0px;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<div align=
+=3D"center" class=3D"alignment" style=3D"line-height: 10px;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<a href=
+=3D"https://api.pledgebox.com/api/edm/track/click/cd94a96398abd2a4ff9c12e03=
+60f462ad5100285d5e5d6340dc15c9b4932b9e7?url=3Dhttps%3A%2F%2Fnewsletter.pled=
+gebox.com%2Fisola26-year-round-waterproof-adventure-jacket%3Femail%3Dmstowe=
+%40gmail.com" style=3D"outline: none;" tabindex=3D"-1" target=3D"_blank"><i=
+mg class=3D"fullWidth" src=3D"https://img.pledgebox.com/uploads/images/2026=
+0412/7MePAqn2US58D78opaR8uFMkkRyvRvAS.jpg" style=3D"display: block; height:=
+ auto; border: 0; max-width: 620px; width: 100%;" width=3D"620"></a>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</div>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</table>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<div class=3D"spacer_blo=
+ck block-5" style=3D"height: 20px; line-height: 20px; font-size: 1px;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</div>
+
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<table border=3D"0" cell=
+padding=3D"0" cellspacing=3D"0" class=3D"text_block block-6" style=3D"mso-t=
+able-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width=3D"=
+100%">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<td class=3D"pa=
+d" style=3D"padding-bottom: 10px; padding-left: 25px; padding-right: 25px;"=
+>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<div style=
+=3D"font-family: Arial, sans-serif;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<div styl=
+e=3D"
+                                                font-size: 14px;
+                                                font-family: Helvetica Neue=
+, Helvetica, Arial, sans-serif;
+                                                mso-line-height-alt: 18px;
+                                                color: #000;
+                                                line-height: 1.6;">
+
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<p>You=
+ shouldn't have to choose between carrying your gear and moving freely.</p>
+<table width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0">
+  <tr>
+    <td height=3D"19.5" style=3D"font-size:6px; line-height:6px;">=C2=A0</t=
+d>
+  </tr>
+</table>
+
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<p>Rus=
+hing through a crowded boarding gate or caught in a sudden downpour=E2=80=
+=94ISOLA26 adapts to your rhythm. It=E2=80=99s not just outerwear. It=E2=80=
+=99s your entire daily carry, built into a 20K waterproof shell.</p>
+<table width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0">
+  <tr>
+    <td height=3D"19.5" style=3D"font-size:6px; line-height:6px;">=C2=A0</t=
+d>
+  </tr>
+</table>
+
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<p>No =
+more digging through wet bags. Check your map through the transparent chest=
+ desk without breaking stride. When the weather clears, the jacket turns in=
+to a minimalist backpack, securing upto 16" laptop and the valuables you ca=
+rry in separate compartments.</p>
+
+<table width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0">
+  <tr>
+    <td height=3D"19.5" style=3D"font-size:6px; line-height:6px;">=C2=A0</t=
+d>
+  </tr>
+</table><p>Total control, whatever the sky does, plus we=E2=80=99ve just un=
+locked the ThermoCloud=E2=84=A2 inner layer and our secret add-ons.</p>
+
+<table width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0">
+  <tr>
+    <td height=3D"19.5" style=3D"font-size:6px; line-height:6px;">=C2=A0</t=
+d>
+  </tr>
+</table>
+                                                                           =
+               <p>This is our 8th Kickstarter! Your rewards are in safe han=
+ds!</p>
+
+<p>=E2=8F=B0Final hours! Grab Yours at 55% OFF before we close!=E2=8F=B0</p=
+>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</div>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</div>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</table>
+
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<table border=3D"0" cell=
+padding=3D"0" cellspacing=3D"0" class=3D"button_block block-7" style=3D"mso=
+-table-lspace: 0pt; mso-table-rspace: 0pt;" width=3D"100%">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<td class=3D"pa=
+d" style=3D"
+                                            padding-bottom: 20px;
+                                            padding-left: 10px;
+                                            padding-right: 10px;
+                                            padding-top: 10px;
+                                            text-align: center;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<div align=
+=3D"center" class=3D"alignment">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<!--[if m=
+so]><v:roundrect xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:w=3D"urn:s=
+chemas-microsoft-com:office:word" href=3D"https://newsletter.pledgebox.com/=
+isola26-year-round-waterproof-adventure-jacket?email=3Duser@example.com" st=
+yle=3D"height:42px;width:570px;v-text-anchor:middle;" arcsize=3D"0%" stroke=
+=3D"false" fillcolor=3D"#0040ff"><w:anchorlock/><v:textbox inset=3D"0px,0px=
+,0px,0px"><center style=3D"color:#ffffff; font-family:Arial, sans-serif; fo=
+nt-size:16px"><!
+                                                                [endif]--><=
+a href=3D"https://api.pledgebox.com/api/edm/track/click/cd94a96398abd2a4ff9=
+c12e0360f462ad5100285d5e5d6340dc15c9b4932b9e7?url=3Dhttps%3A%2F%2Fnewslette=
+r.pledgebox.com%2Fisola26-year-round-waterproof-adventure-jacket%3Femail%3D=
+mstowe%40gmail.com" style=3D"
+                                                text-decoration: none;
+                                                display: block;
+                                                color: #ffffff;
+                                                background-color: #0040ff;
+                                                border-radius: 0px;
+                                                width: 95%;
+                                                border-top: 0px solid trans=
+parent;
+                                                font-weight: 400;
+                                                border-right: 0px solid tra=
+nsparent;
+                                                border-bottom: 0px solid tr=
+ansparent;
+                                                border-left: 0px solid tran=
+sparent;
+                                                padding-top: 5px;
+                                                padding-bottom: 5px;
+                                                font-family: Helvetica Neue=
+, Helvetica, Arial, sans-serif;
+                                                font-size: 16px;
+                                                text-align: center;
+                                                mso-border-alt: none;
+                                                word-break: keep-all;" targ=
+et=3D"_blank"><span style=3D"
+                                                  padding-left: 50px;
+                                                  padding-right: 50px;
+                                                  font-size: 16px;
+                                                  display: inline-block;
+                                                  letter-spacing: normal;">=
+<span style=3D"word-break: break-word;"><span data-mce-style=3D"" style=3D"=
+line-height: 32px;">Learn More</span></span></span></a>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<!--[if m=
+so]></center></v:textbox></v:roundrect>
+                                                                <![endif]--=
+>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</div>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</table>
+
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<table border=3D"0" cell=
+padding=3D"0" cellspacing=3D"0" class=3D"image_block block-8" style=3D"mso-=
+table-lspace: 0pt; mso-table-rspace: 0pt;" width=3D"100%">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<td class=3D"pa=
+d" style=3D"width: 100%;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<div align=
+=3D"center" class=3D"alignment" style=3D"line-height: 10px;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<a href=
+=3D"https://api.pledgebox.com/api/edm/track/click/cd94a96398abd2a4ff9c12e03=
+60f462ad5100285d5e5d6340dc15c9b4932b9e7?url=3Dhttps%3A%2F%2Fnewsletter.pled=
+gebox.com%2Fisola26-year-round-waterproof-adventure-jacket%3Femail%3Dmstowe=
+%40gmail.com" style=3D"outline: none;" tabindex=3D"-1" target=3D"_blank"><i=
+mg src=3D"https://img.pledgebox.com/uploads/images/20260331/H864jUuJxyl4rcy=
+RA4Vyvslp1XL7D2mp.jpg" style=3D"display: block; height: auto; border: 0; ma=
+x-width: 620px; width: 100%;" width=3D"620"></a>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</div>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</table>
+
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<table border=3D"0" cell=
+padding=3D"0" cellspacing=3D"0" class=3D"image_block block-8" style=3D"mso-=
+table-lspace: 0pt; mso-table-rspace: 0pt;" width=3D"100%">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<td class=3D"pa=
+d" style=3D"width: 100%;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<div align=
+=3D"center" class=3D"alignment" style=3D"line-height: 10px;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<a href=
+=3D"https://api.pledgebox.com/api/edm/track/click/cd94a96398abd2a4ff9c12e03=
+60f462ad5100285d5e5d6340dc15c9b4932b9e7?url=3Dhttps%3A%2F%2Fnewsletter.pled=
+gebox.com%2Fisola26-year-round-waterproof-adventure-jacket%3Femail%3Dmstowe=
+%40gmail.com" style=3D"outline: none;" tabindex=3D"-1" target=3D"_blank"><i=
+mg src=3D"https://img.pledgebox.com/uploads/images/20260331/ytByYobwanuwcEV=
+l8unMtIVUZqJBm3gW.gif" style=3D"display: block; height: auto; border: 0; ma=
+x-width: 620px; width: 100%;" width=3D"620"></a>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</div>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</table>
+
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<table border=3D"0" cell=
+padding=3D"0" cellspacing=3D"0" class=3D"image_block block-8" style=3D"mso-=
+table-lspace: 0pt; mso-table-rspace: 0pt;" width=3D"100%">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<td class=3D"pa=
+d" style=3D"width: 100%;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<div align=
+=3D"center" class=3D"alignment" style=3D"line-height: 10px;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<a href=
+=3D"https://api.pledgebox.com/api/edm/track/click/cd94a96398abd2a4ff9c12e03=
+60f462ad5100285d5e5d6340dc15c9b4932b9e7?url=3Dhttps%3A%2F%2Fnewsletter.pled=
+gebox.com%2Fisola26-year-round-waterproof-adventure-jacket%3Femail%3Dmstowe=
+%40gmail.com" style=3D"outline: none;" tabindex=3D"-1" target=3D"_blank"><i=
+mg src=3D"https://img.pledgebox.com/uploads/images/20260331/KhVKc4arjpR0775=
+Edyt2z212PHiAzqRc.jpg" style=3D"display: block; height: auto; border: 0; ma=
+x-width: 620px; width: 100%;" width=3D"620"></a>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</div>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</table>
+
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<table border=3D"0" cell=
+padding=3D"0" cellspacing=3D"0" class=3D"image_block block-8" style=3D"mso-=
+table-lspace: 0pt; mso-table-rspace: 0pt;" width=3D"100%">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<td class=3D"pa=
+d" style=3D"width: 100%;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<div align=
+=3D"center" class=3D"alignment" style=3D"line-height: 10px;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<a href=
+=3D"https://api.pledgebox.com/api/edm/track/click/cd94a96398abd2a4ff9c12e03=
+60f462ad5100285d5e5d6340dc15c9b4932b9e7?url=3Dhttps%3A%2F%2Fnewsletter.pled=
+gebox.com%2Fisola26-year-round-waterproof-adventure-jacket%3Femail%3Dmstowe=
+%40gmail.com" style=3D"outline: none;" tabindex=3D"-1" target=3D"_blank"><i=
+mg src=3D"https://img.pledgebox.com/uploads/images/20260331/GcqkuiA5zNCYYvI=
+MT5qD1h2frDm740aj.jpg" style=3D"display: block; height: auto; border: 0; ma=
+x-width: 620px; width: 100%;" width=3D"620"></a>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</div>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</table>
+
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<table border=3D"0" cell=
+padding=3D"0" cellspacing=3D"0" class=3D"image_block block-8" style=3D"mso-=
+table-lspace: 0pt; mso-table-rspace: 0pt;" width=3D"100%">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<td class=3D"pa=
+d" style=3D"width: 100%;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<div align=
+=3D"center" class=3D"alignment" style=3D"line-height: 10px;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<a href=
+=3D"https://api.pledgebox.com/api/edm/track/click/cd94a96398abd2a4ff9c12e03=
+60f462ad5100285d5e5d6340dc15c9b4932b9e7?url=3Dhttps%3A%2F%2Fnewsletter.pled=
+gebox.com%2Fisola26-year-round-waterproof-adventure-jacket%3Femail%3Dmstowe=
+%40gmail.com" style=3D"outline: none;" tabindex=3D"-1" target=3D"_blank"><i=
+mg src=3D"https://img.pledgebox.com/uploads/images/20260331/38b3rVYoASELzZi=
+suZCCjXIO9PfxDXHl.jpg" style=3D"display: block; height: auto; border: 0; ma=
+x-width: 620px; width: 100%;" width=3D"620"></a>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</div>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</table>
+
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<table border=3D"0" cell=
+padding=3D"0" cellspacing=3D"0" class=3D"image_block block-8" style=3D"mso-=
+table-lspace: 0pt; mso-table-rspace: 0pt;" width=3D"100%">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<td class=3D"pa=
+d" style=3D"width: 100%;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<div align=
+=3D"center" class=3D"alignment" style=3D"line-height: 10px;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<a href=
+=3D"https://api.pledgebox.com/api/edm/track/click/cd94a96398abd2a4ff9c12e03=
+60f462ad5100285d5e5d6340dc15c9b4932b9e7?url=3Dhttps%3A%2F%2Fnewsletter.pled=
+gebox.com%2Fisola26-year-round-waterproof-adventure-jacket%3Femail%3Dmstowe=
+%40gmail.com" style=3D"outline: none;" tabindex=3D"-1" target=3D"_blank"><i=
+mg src=3D"https://img.pledgebox.com/uploads/images/20260331/W16zRCVujWrg56w=
+iXcQo0WzLgmlVr7dQ.gif" style=3D"display: block; height: auto; border: 0; ma=
+x-width: 620px; width: 100%;" width=3D"620"></a>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</div>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</table>
+
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<table border=3D"0" cell=
+padding=3D"0" cellspacing=3D"0" class=3D"image_block block-8" style=3D"mso-=
+table-lspace: 0pt; mso-table-rspace: 0pt;" width=3D"100%">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<td class=3D"pa=
+d" style=3D"width: 100%;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<div align=
+=3D"center" class=3D"alignment" style=3D"line-height: 10px;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<a href=
+=3D"https://api.pledgebox.com/api/edm/track/click/cd94a96398abd2a4ff9c12e03=
+60f462ad5100285d5e5d6340dc15c9b4932b9e7?url=3Dhttps%3A%2F%2Fnewsletter.pled=
+gebox.com%2Fisola26-year-round-waterproof-adventure-jacket%3Femail%3Dmstowe=
+%40gmail.com" style=3D"outline: none;" tabindex=3D"-1" target=3D"_blank"><i=
+mg src=3D"https://img.pledgebox.com/uploads/images/20260331/CDZjSkdZDls4SNd=
+f4RS9Kxkgh7d1LXD9.jpg" style=3D"display: block; height: auto; border: 0; ma=
+x-width: 620px; width: 100%;" width=3D"620"></a>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</div>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</table>
+
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<table border=3D"0" cell=
+padding=3D"0" cellspacing=3D"0" class=3D"image_block block-8" style=3D"mso-=
+table-lspace: 0pt; mso-table-rspace: 0pt;" width=3D"100%">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<td class=3D"pa=
+d" style=3D"width: 100%;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<div align=
+=3D"center" class=3D"alignment" style=3D"line-height: 10px;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<a href=
+=3D"https://api.pledgebox.com/api/edm/track/click/cd94a96398abd2a4ff9c12e03=
+60f462ad5100285d5e5d6340dc15c9b4932b9e7?url=3Dhttps%3A%2F%2Fnewsletter.pled=
+gebox.com%2Fisola26-year-round-waterproof-adventure-jacket%3Femail%3Dmstowe=
+%40gmail.com" style=3D"outline: none;" tabindex=3D"-1" target=3D"_blank"><i=
+mg src=3D"https://img.pledgebox.com/uploads/images/20260331/7mteQqZLjJXDPdL=
+bZsNSrD9qPjC4aix1.gif" style=3D"display: block; height: auto; border: 0; ma=
+x-width: 620px; width: 100%;" width=3D"620"></a>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</div>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</table>
+
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<table border=3D"0" cell=
+padding=3D"0" cellspacing=3D"0" class=3D"image_block block-8" style=3D"mso-=
+table-lspace: 0pt; mso-table-rspace: 0pt;" width=3D"100%">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<td class=3D"pa=
+d" style=3D"width: 100%;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<div align=
+=3D"center" class=3D"alignment" style=3D"line-height: 10px;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<a href=
+=3D"https://api.pledgebox.com/api/edm/track/click/cd94a96398abd2a4ff9c12e03=
+60f462ad5100285d5e5d6340dc15c9b4932b9e7?url=3Dhttps%3A%2F%2Fnewsletter.pled=
+gebox.com%2Fisola26-year-round-waterproof-adventure-jacket%3Femail%3Dmstowe=
+%40gmail.com" style=3D"outline: none;" tabindex=3D"-1" target=3D"_blank"><i=
+mg src=3D"https://img.pledgebox.com/uploads/images/20260331/U7TAXJziC5xVKQK=
+xcjMjBRmRXK711YED.jpg" style=3D"display: block; height: auto; border: 0; ma=
+x-width: 620px; width: 100%;" width=3D"620"></a>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</div>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</table>
+
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<table border=3D"0" cell=
+padding=3D"0" cellspacing=3D"0" class=3D"image_block block-8" style=3D"mso-=
+table-lspace: 0pt; mso-table-rspace: 0pt;" width=3D"100%">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<td class=3D"pa=
+d" style=3D"width: 100%;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<div align=
+=3D"center" class=3D"alignment" style=3D"line-height: 10px;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<a href=
+=3D"https://api.pledgebox.com/api/edm/track/click/cd94a96398abd2a4ff9c12e03=
+60f462ad5100285d5e5d6340dc15c9b4932b9e7?url=3Dhttps%3A%2F%2Fnewsletter.pled=
+gebox.com%2Fisola26-year-round-waterproof-adventure-jacket%3Femail%3Dmstowe=
+%40gmail.com" style=3D"outline: none;" tabindex=3D"-1" target=3D"_blank"><i=
+mg src=3D"https://img.pledgebox.com/uploads/images/20260331/WlXCC81mIO7nYw9=
+HzjdjQLEBIcbQd0Rn.gif" style=3D"display: block; height: auto; border: 0; ma=
+x-width: 620px; width: 100%;" width=3D"620"></a>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</div>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</table>
+
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<table border=3D"0" cell=
+padding=3D"0" cellspacing=3D"0" class=3D"image_block block-8" style=3D"mso-=
+table-lspace: 0pt; mso-table-rspace: 0pt;" width=3D"100%">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<td class=3D"pa=
+d" style=3D"width: 100%;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<div align=
+=3D"center" class=3D"alignment" style=3D"line-height: 10px;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<a href=
+=3D"https://api.pledgebox.com/api/edm/track/click/cd94a96398abd2a4ff9c12e03=
+60f462ad5100285d5e5d6340dc15c9b4932b9e7?url=3Dhttps%3A%2F%2Fnewsletter.pled=
+gebox.com%2Fisola26-year-round-waterproof-adventure-jacket%3Femail%3Dmstowe=
+%40gmail.com" style=3D"outline: none;" tabindex=3D"-1" target=3D"_blank"><i=
+mg src=3D"https://img.pledgebox.com/uploads/images/20260331/O1EwZLp5U9jDxZd=
+SMPmhOOdnoa23ojbh.jpg" style=3D"display: block; height: auto; border: 0; ma=
+x-width: 620px; width: 100%;" width=3D"620"></a>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</div>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</table>
+
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<table border=3D"0" cell=
+padding=3D"0" cellspacing=3D"0" class=3D"image_block block-8" style=3D"mso-=
+table-lspace: 0pt; mso-table-rspace: 0pt;" width=3D"100%">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<td class=3D"pa=
+d" style=3D"width: 100%;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<div align=
+=3D"center" class=3D"alignment" style=3D"line-height: 10px;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<a href=
+=3D"https://api.pledgebox.com/api/edm/track/click/cd94a96398abd2a4ff9c12e03=
+60f462ad5100285d5e5d6340dc15c9b4932b9e7?url=3Dhttps%3A%2F%2Fnewsletter.pled=
+gebox.com%2Fisola26-year-round-waterproof-adventure-jacket%3Femail%3Dmstowe=
+%40gmail.com" style=3D"outline: none;" tabindex=3D"-1" target=3D"_blank"><i=
+mg src=3D"https://img.pledgebox.com/uploads/images/20260331/yNgSHM4UeWtmb0x=
+HrdYLPQNvEULiolCm.gif" style=3D"display: block; height: auto; border: 0; ma=
+x-width: 620px; width: 100%;" width=3D"620"></a>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</div>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</table>
+
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<table border=3D"0" cell=
+padding=3D"0" cellspacing=3D"0" class=3D"image_block block-8" style=3D"mso-=
+table-lspace: 0pt; mso-table-rspace: 0pt;" width=3D"100%">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<td class=3D"pa=
+d" style=3D"width: 100%;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<div align=
+=3D"center" class=3D"alignment" style=3D"line-height: 10px;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<a href=
+=3D"https://api.pledgebox.com/api/edm/track/click/cd94a96398abd2a4ff9c12e03=
+60f462ad5100285d5e5d6340dc15c9b4932b9e7?url=3Dhttps%3A%2F%2Fnewsletter.pled=
+gebox.com%2Fisola26-year-round-waterproof-adventure-jacket%3Femail%3Dmstowe=
+%40gmail.com" style=3D"outline: none;" tabindex=3D"-1" target=3D"_blank"><i=
+mg src=3D"https://img.pledgebox.com/uploads/images/20260331/wcSP1e860UizZqq=
+zwEPnZ3fW5GKKUKBE.jpg" style=3D"display: block; height: auto; border: 0; ma=
+x-width: 620px; width: 100%;" width=3D"620"></a>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</div>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</table>
+
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<table border=3D"0" cell=
+padding=3D"0" cellspacing=3D"0" class=3D"image_block block-8" style=3D"mso-=
+table-lspace: 0pt; mso-table-rspace: 0pt;" width=3D"100%">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<td class=3D"pa=
+d" style=3D"width: 100%;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<div align=
+=3D"center" class=3D"alignment" style=3D"line-height: 10px;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<a href=
+=3D"https://api.pledgebox.com/api/edm/track/click/cd94a96398abd2a4ff9c12e03=
+60f462ad5100285d5e5d6340dc15c9b4932b9e7?url=3Dhttps%3A%2F%2Fnewsletter.pled=
+gebox.com%2Fisola26-year-round-waterproof-adventure-jacket%3Femail%3Dmstowe=
+%40gmail.com" style=3D"outline: none;" tabindex=3D"-1" target=3D"_blank"><i=
+mg src=3D"https://img.pledgebox.com/uploads/images/20260331/SlMiyMJQcecAv5b=
+YrwgT10W12wuj8F6m.gif" style=3D"display: block; height: auto; border: 0; ma=
+x-width: 620px; width: 100%;" width=3D"620"></a>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</div>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</table>
+
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<table border=3D"0" cell=
+padding=3D"0" cellspacing=3D"0" class=3D"image_block block-8" style=3D"mso-=
+table-lspace: 0pt; mso-table-rspace: 0pt;" width=3D"100%">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<td class=3D"pa=
+d" style=3D"width: 100%;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<div align=
+=3D"center" class=3D"alignment" style=3D"line-height: 10px;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<a href=
+=3D"https://api.pledgebox.com/api/edm/track/click/cd94a96398abd2a4ff9c12e03=
+60f462ad5100285d5e5d6340dc15c9b4932b9e7?url=3Dhttps%3A%2F%2Fnewsletter.pled=
+gebox.com%2Fisola26-year-round-waterproof-adventure-jacket%3Femail%3Dmstowe=
+%40gmail.com" style=3D"outline: none;" tabindex=3D"-1" target=3D"_blank"><i=
+mg src=3D"https://img.pledgebox.com/uploads/images/20260331/6cO7wakjPriS2eh=
+I9YB1LGbPKDg2PkNj.jpg" style=3D"display: block; height: auto; border: 0; ma=
+x-width: 620px; width: 100%;" width=3D"620"></a>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</div>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</table>
+
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<table border=3D"0" cell=
+padding=3D"0" cellspacing=3D"0" class=3D"image_block block-8" style=3D"mso-=
+table-lspace: 0pt; mso-table-rspace: 0pt;" width=3D"100%">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<td class=3D"pa=
+d" style=3D"width: 100%;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<div align=
+=3D"center" class=3D"alignment" style=3D"line-height: 10px;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<a href=
+=3D"https://api.pledgebox.com/api/edm/track/click/cd94a96398abd2a4ff9c12e03=
+60f462ad5100285d5e5d6340dc15c9b4932b9e7?url=3Dhttps%3A%2F%2Fnewsletter.pled=
+gebox.com%2Fisola26-year-round-waterproof-adventure-jacket%3Femail%3Dmstowe=
+%40gmail.com" style=3D"outline: none;" tabindex=3D"-1" target=3D"_blank"><i=
+mg src=3D"https://img.pledgebox.com/uploads/images/20260331/dyeCrqfkil7obEB=
+aYUE4453H2eXVbSgN.gif" style=3D"display: block; height: auto; border: 0; ma=
+x-width: 620px; width: 100%;" width=3D"620"></a>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</div>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</table>
+
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<table border=3D"0" cell=
+padding=3D"0" cellspacing=3D"0" class=3D"image_block block-8" style=3D"mso-=
+table-lspace: 0pt; mso-table-rspace: 0pt;" width=3D"100%">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<td class=3D"pa=
+d" style=3D"width: 100%;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<div align=
+=3D"center" class=3D"alignment" style=3D"line-height: 10px;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<a href=
+=3D"https://api.pledgebox.com/api/edm/track/click/cd94a96398abd2a4ff9c12e03=
+60f462ad5100285d5e5d6340dc15c9b4932b9e7?url=3Dhttps%3A%2F%2Fnewsletter.pled=
+gebox.com%2Fisola26-year-round-waterproof-adventure-jacket%3Femail%3Dmstowe=
+%40gmail.com" style=3D"outline: none;" tabindex=3D"-1" target=3D"_blank"><i=
+mg src=3D"https://img.pledgebox.com/uploads/images/20260331/qaosE0Xm5rUI5wg=
+KBmF52pP2yinBCoE1.jpg" style=3D"display: block; height: auto; border: 0; ma=
+x-width: 620px; width: 100%;" width=3D"620"></a>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</div>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</table>
+
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<table border=3D"0" cell=
+padding=3D"0" cellspacing=3D"0" class=3D"image_block block-8" style=3D"mso-=
+table-lspace: 0pt; mso-table-rspace: 0pt;" width=3D"100%">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<td class=3D"pa=
+d" style=3D"width: 100%;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<div align=
+=3D"center" class=3D"alignment" style=3D"line-height: 10px;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<a href=
+=3D"https://api.pledgebox.com/api/edm/track/click/cd94a96398abd2a4ff9c12e03=
+60f462ad5100285d5e5d6340dc15c9b4932b9e7?url=3Dhttps%3A%2F%2Fnewsletter.pled=
+gebox.com%2Fisola26-year-round-waterproof-adventure-jacket%3Femail%3Dmstowe=
+%40gmail.com" style=3D"outline: none;" tabindex=3D"-1" target=3D"_blank"><i=
+mg src=3D"https://img.pledgebox.com/uploads/images/20260331/pTb9LsHEw1DAuJw=
+hax9zezbYc5JR0iX6.jpg" style=3D"display: block; height: auto; border: 0; ma=
+x-width: 620px; width: 100%;" width=3D"620"></a>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</div>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</table>
+
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<table border=3D"0" cell=
+padding=3D"0" cellspacing=3D"0" class=3D"image_block block-8" style=3D"mso-=
+table-lspace: 0pt; mso-table-rspace: 0pt;" width=3D"100%">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<td class=3D"pa=
+d" style=3D"width: 100%;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<div align=
+=3D"center" class=3D"alignment" style=3D"line-height: 10px;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<a href=
+=3D"https://api.pledgebox.com/api/edm/track/click/cd94a96398abd2a4ff9c12e03=
+60f462ad5100285d5e5d6340dc15c9b4932b9e7?url=3Dhttps%3A%2F%2Fnewsletter.pled=
+gebox.com%2Fisola26-year-round-waterproof-adventure-jacket%3Femail%3Dmstowe=
+%40gmail.com" style=3D"outline: none;" tabindex=3D"-1" target=3D"_blank"><i=
+mg src=3D"https://img.pledgebox.com/uploads/images/20260331/ZRyJ4nevACAw439=
+zBRHDmz7HJEx68ISV.gif" style=3D"display: block; height: auto; border: 0; ma=
+x-width: 620px; width: 100%;" width=3D"620"></a>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</div>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</table>
+
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<table border=3D"0" cell=
+padding=3D"0" cellspacing=3D"0" class=3D"image_block block-8" style=3D"mso-=
+table-lspace: 0pt; mso-table-rspace: 0pt;" width=3D"100%">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<td class=3D"pa=
+d" style=3D"width: 100%;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<div align=
+=3D"center" class=3D"alignment" style=3D"line-height: 10px;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<a href=
+=3D"https://api.pledgebox.com/api/edm/track/click/cd94a96398abd2a4ff9c12e03=
+60f462ad5100285d5e5d6340dc15c9b4932b9e7?url=3Dhttps%3A%2F%2Fnewsletter.pled=
+gebox.com%2Fisola26-year-round-waterproof-adventure-jacket%3Femail%3Dmstowe=
+%40gmail.com" style=3D"outline: none;" tabindex=3D"-1" target=3D"_blank"><i=
+mg src=3D"https://img.pledgebox.com/uploads/images/20260331/BIbEQDiTfmIJJon=
+vcVDR8V5p9RqWFu9G.jpg" style=3D"display: block; height: auto; border: 0; ma=
+x-width: 620px; width: 100%;" width=3D"620"></a>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</div>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</table>
+
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<table border=3D"0" cell=
+padding=3D"0" cellspacing=3D"0" class=3D"image_block block-8" style=3D"mso-=
+table-lspace: 0pt; mso-table-rspace: 0pt;" width=3D"100%">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<td class=3D"pa=
+d" style=3D"width: 100%;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<div align=
+=3D"center" class=3D"alignment" style=3D"line-height: 10px;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<a href=
+=3D"https://api.pledgebox.com/api/edm/track/click/cd94a96398abd2a4ff9c12e03=
+60f462ad5100285d5e5d6340dc15c9b4932b9e7?url=3Dhttps%3A%2F%2Fnewsletter.pled=
+gebox.com%2Fisola26-year-round-waterproof-adventure-jacket%3Femail%3Dmstowe=
+%40gmail.com" style=3D"outline: none;" tabindex=3D"-1" target=3D"_blank"><i=
+mg src=3D"https://img.pledgebox.com/uploads/images/20260331/ZL60tMmwnRC0m5H=
+g2jEuUvUY30GtZQWr.gif" style=3D"display: block; height: auto; border: 0; ma=
+x-width: 620px; width: 100%;" width=3D"620"></a>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</div>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</table>
+
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<table border=3D"0" cell=
+padding=3D"0" cellspacing=3D"0" class=3D"image_block block-8" style=3D"mso-=
+table-lspace: 0pt; mso-table-rspace: 0pt;" width=3D"100%">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<td class=3D"pa=
+d" style=3D"width: 100%;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<div align=
+=3D"center" class=3D"alignment" style=3D"line-height: 10px;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<a href=
+=3D"https://api.pledgebox.com/api/edm/track/click/cd94a96398abd2a4ff9c12e03=
+60f462ad5100285d5e5d6340dc15c9b4932b9e7?url=3Dhttps%3A%2F%2Fnewsletter.pled=
+gebox.com%2Fisola26-year-round-waterproof-adventure-jacket%3Femail%3Dmstowe=
+%40gmail.com" style=3D"outline: none;" tabindex=3D"-1" target=3D"_blank"><i=
+mg src=3D"https://img.pledgebox.com/uploads/images/20260331/0D0q1v0IJq4vnbT=
+dvpWWpCik5pD6Yju8.jpg" style=3D"display: block; height: auto; border: 0; ma=
+x-width: 620px; width: 100%;" width=3D"620"></a>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</div>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</table>
+
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<table border=3D"0" cell=
+padding=3D"0" cellspacing=3D"0" class=3D"image_block block-8" style=3D"mso-=
+table-lspace: 0pt; mso-table-rspace: 0pt;" width=3D"100%">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<td class=3D"pa=
+d" style=3D"width: 100%;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<div align=
+=3D"center" class=3D"alignment" style=3D"line-height: 10px;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<a href=
+=3D"https://api.pledgebox.com/api/edm/track/click/cd94a96398abd2a4ff9c12e03=
+60f462ad5100285d5e5d6340dc15c9b4932b9e7?url=3Dhttps%3A%2F%2Fnewsletter.pled=
+gebox.com%2Fisola26-year-round-waterproof-adventure-jacket%3Femail%3Dmstowe=
+%40gmail.com" style=3D"outline: none;" tabindex=3D"-1" target=3D"_blank"><i=
+mg src=3D"https://img.pledgebox.com/uploads/images/20260331/eksiMJ2kGkU9n6A=
+mIGYvxOzJoZ3iPJRV.jpg" style=3D"display: block; height: auto; border: 0; ma=
+x-width: 620px; width: 100%;" width=3D"620"></a>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</div>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</table>
+
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<table border=3D"0" cell=
+padding=3D"0" cellspacing=3D"0" class=3D"image_block block-8" style=3D"mso-=
+table-lspace: 0pt; mso-table-rspace: 0pt;" width=3D"100%">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<td class=3D"pa=
+d" style=3D"width: 100%;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<div align=
+=3D"center" class=3D"alignment" style=3D"line-height: 10px;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<a href=
+=3D"https://api.pledgebox.com/api/edm/track/click/cd94a96398abd2a4ff9c12e03=
+60f462ad5100285d5e5d6340dc15c9b4932b9e7?url=3Dhttps%3A%2F%2Fnewsletter.pled=
+gebox.com%2Fisola26-year-round-waterproof-adventure-jacket%3Femail%3Dmstowe=
+%40gmail.com" style=3D"outline: none;" tabindex=3D"-1" target=3D"_blank"><i=
+mg src=3D"https://img.pledgebox.com/uploads/images/20260331/K4KucLI4df9lNc2=
+g4NDFGgRI5EGupLjB.gif" style=3D"display: block; height: auto; border: 0; ma=
+x-width: 620px; width: 100%;" width=3D"620"></a>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</div>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</table>
+
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<table border=3D"0" cell=
+padding=3D"0" cellspacing=3D"0" class=3D"image_block block-8" style=3D"mso-=
+table-lspace: 0pt; mso-table-rspace: 0pt;" width=3D"100%">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<td class=3D"pa=
+d" style=3D"width: 100%;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<div align=
+=3D"center" class=3D"alignment" style=3D"line-height: 10px;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<a href=
+=3D"https://api.pledgebox.com/api/edm/track/click/cd94a96398abd2a4ff9c12e03=
+60f462ad5100285d5e5d6340dc15c9b4932b9e7?url=3Dhttps%3A%2F%2Fnewsletter.pled=
+gebox.com%2Fisola26-year-round-waterproof-adventure-jacket%3Femail%3Dmstowe=
+%40gmail.com" style=3D"outline: none;" tabindex=3D"-1" target=3D"_blank"><i=
+mg src=3D"https://img.pledgebox.com/uploads/images/20260331/DsX1z1VaUuB1JSi=
+hN7smzyrP3sr9kzkF.jpg" style=3D"display: block; height: auto; border: 0; ma=
+x-width: 620px; width: 100%;" width=3D"620"></a>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</div>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</table>
+
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<table border=3D"0" cell=
+padding=3D"0" cellspacing=3D"0" class=3D"image_block block-8" style=3D"mso-=
+table-lspace: 0pt; mso-table-rspace: 0pt;" width=3D"100%">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<td class=3D"pa=
+d" style=3D"width: 100%;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<div align=
+=3D"center" class=3D"alignment" style=3D"line-height: 10px;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<a href=
+=3D"https://api.pledgebox.com/api/edm/track/click/cd94a96398abd2a4ff9c12e03=
+60f462ad5100285d5e5d6340dc15c9b4932b9e7?url=3Dhttps%3A%2F%2Fnewsletter.pled=
+gebox.com%2Fisola26-year-round-waterproof-adventure-jacket%3Femail%3Dmstowe=
+%40gmail.com" style=3D"outline: none;" tabindex=3D"-1" target=3D"_blank"><i=
+mg src=3D"https://img.pledgebox.com/uploads/images/20260331/QId6ldjIims1i26=
+wyaslRdiL6UPUvNjm.jpg" style=3D"display: block; height: auto; border: 0; ma=
+x-width: 620px; width: 100%;" width=3D"620"></a>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</div>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</table>
+
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<table border=3D"0" cell=
+padding=3D"0" cellspacing=3D"0" class=3D"image_block block-8" style=3D"mso-=
+table-lspace: 0pt; mso-table-rspace: 0pt;" width=3D"100%">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<td class=3D"pa=
+d" style=3D"width: 100%;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<div align=
+=3D"center" class=3D"alignment" style=3D"line-height: 10px;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<a href=
+=3D"https://api.pledgebox.com/api/edm/track/click/cd94a96398abd2a4ff9c12e03=
+60f462ad5100285d5e5d6340dc15c9b4932b9e7?url=3Dhttps%3A%2F%2Fnewsletter.pled=
+gebox.com%2Fisola26-year-round-waterproof-adventure-jacket%3Femail%3Dmstowe=
+%40gmail.com" style=3D"outline: none;" tabindex=3D"-1" target=3D"_blank"><i=
+mg src=3D"https://img.pledgebox.com/uploads/images/20260331/h0uyoBHIGEtHd0D=
+H6YVe7wMjiM454pAJ.gif" style=3D"display: block; height: auto; border: 0; ma=
+x-width: 620px; width: 100%;" width=3D"620"></a>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</div>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</table>
+
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<table border=3D"0" cell=
+padding=3D"0" cellspacing=3D"0" class=3D"button_block block-15" style=3D"ms=
+o-table-lspace: 0pt; mso-table-rspace: 0pt;" width=3D"100%">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<td class=3D"pa=
+d" style=3D"
+                                            padding-bottom: 20px;
+                                            padding-left: 10px;
+                                            padding-right: 10px;
+                                            padding-top: 15px;
+                                            text-align: center;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<div align=
+=3D"center" class=3D"alignment">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<!--[if m=
+so]><v:roundrect xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:w=3D"urn:s=
+chemas-microsoft-com:office:word" href=3D"https://newsletter.pledgebox.com/=
+isola26-year-round-waterproof-adventure-jacket?email=3Duser@example.com" st=
+yle=3D"height:42px;width:570px;v-text-anchor:middle;" arcsize=3D"0%" stroke=
+=3D"false" fillcolor=3D"#0040ff"><w:anchorlock/><v:textbox inset=3D"0px,0px=
+,0px,0px"><center style=3D"color:#ffffff; font-family:Arial, sans-serif; fo=
+nt-size:16px"><!
+                                                                [endif]--><=
+a href=3D"https://api.pledgebox.com/api/edm/track/click/cd94a96398abd2a4ff9=
+c12e0360f462ad5100285d5e5d6340dc15c9b4932b9e7?url=3Dhttps%3A%2F%2Fnewslette=
+r.pledgebox.com%2Fisola26-year-round-waterproof-adventure-jacket%3Femail%3D=
+mstowe%40gmail.com" style=3D"
+                                                text-decoration: none;
+                                                display: block;
+                                                color: #ffffff;
+                                                background-color: #0040ff;
+                                                border-radius: 0px;
+                                                width: 95%;
+                                                border-top: 0px solid trans=
+parent;
+                                                font-weight: 400;
+                                                border-right: 0px solid tra=
+nsparent;
+                                                border-bottom: 0px solid tr=
+ansparent;
+                                                border-left: 0px solid tran=
+sparent;
+                                                padding-top: 5px;
+                                                padding-bottom: 5px;
+                                                font-family: Helvetica Neue=
+, Helvetica, Arial, sans-serif;
+                                                font-size: 16px;
+                                                text-align: center;
+                                                mso-border-alt: none;
+                                                word-break: keep-all;" targ=
+et=3D"_blank"><span style=3D"
+                                                  padding-left: 50px;
+                                                  padding-right: 50px;
+                                                  font-size: 16px;
+                                                  display: inline-block;
+                                                  letter-spacing: normal;">=
+<span style=3D"word-break: break-word;"><span data-mce-style=3D"" style=3D"=
+line-height: 32px;">Pledge Now</span></span></span></a>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<!--[if m=
+so]></center></v:textbox></v:roundrect>
+                                                                <![endif]--=
+>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</div>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</table>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09</table>
+=09=09=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09=09=09</tbody>
+=09=09=09=09=09=09=09=09=09</table>
+
+=09=09=09=09=09=09=09=09=09<table align=3D"center" border=3D"0" cellpadding=
+=3D"0" cellspacing=3D"0" class=3D"row row-4" style=3D"mso-table-lspace: 0pt=
+; mso-table-rspace: 0pt;" width=3D"100%">
+=09=09=09=09=09=09=09=09=09=09<tbody>
+=09=09=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09=09=09<td>
+
+=09=09=09=09=09=09=09=09=09=09=09=09=09<table align=3D"center" border=3D"0"=
+ cellpadding=3D"0" cellspacing=3D"0" class=3D"row-content stack" style=3D"m=
+so-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #fff; color:=
+ #000; width: 620px; margin: 0 auto;" width=3D"620">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<td class=3D"column column-=
+1" style=3D"
+                                    mso-table-lspace: 0pt;
+                                    mso-table-rspace: 0pt;
+                                    font-weight: 400;
+                                    text-align: left;
+                                    padding-bottom: 5px;
+                                    padding-top: 5px;
+                                    vertical-align: top;
+                                    border-top: 0px;
+                                    border-right: 0px;
+                                    border-bottom: 0px;
+                                    border-left: 0px;" width=3D"100%">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<div class=3D"spacer_blo=
+ck block-1" style=3D"height: 0px; line-height: 0px; font-size: 1px;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</div>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09</table>
+=09=09=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09=09=09</tbody>
+=09=09=09=09=09=09=09=09=09</table>
+
+=09=09=09=09=09=09=09=09=09<table align=3D"center" border=3D"0" cellpadding=
+=3D"0" cellspacing=3D"0" class=3D"row row-5" style=3D"mso-table-lspace: 0pt=
+; mso-table-rspace: 0pt;" width=3D"100%">
+=09=09=09=09=09=09=09=09=09=09<tbody>
+=09=09=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09=09=09<td>
+
+=09=09=09=09=09=09=09=09=09=09=09=09=09<table align=3D"center" border=3D"0"=
+ cellpadding=3D"0" cellspacing=3D"0" class=3D"row-content stack" style=3D"m=
+so-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #f8f9fa; col=
+or: #000; width: 620px; margin: 0 auto;" width=3D"620">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<td class=3D"column column-=
+1" style=3D"
+                                    mso-table-lspace: 0pt;
+                                    mso-table-rspace: 0pt;
+                                    font-weight: 400;
+                                    text-align: left;
+                                    padding-bottom: 10px;
+                                    padding-top: 10px;
+                                    vertical-align: top;
+                                    border-top: 0px;
+                                    border-right: 0px;
+                                    border-bottom: 0px;
+                                    border-left: 0px;" width=3D"100%">
+
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<table border=3D"0" cell=
+padding=3D"10" cellspacing=3D"0" class=3D"social_block block-1" style=3D"ms=
+o-table-lspace: 0pt; mso-table-rspace: 0pt;" width=3D"100%">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<td class=3D"pa=
+d">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<div align=
+=3D"center" class=3D"alignment">
+
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<table bo=
+rder=3D"0" cellpadding=3D"0" cellspacing=3D"0" class=3D"social-table" style=
+=3D"mso-table-lspace: 0pt; mso-table-rspace: 0pt; display: inline-block;" w=
+idth=3D"104px">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tbody=
+>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tr=
+>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=
+<td style=3D"padding: 0 10px 0 10px;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=
+=09<a href=3D"https://api.pledgebox.com/api/edm/track/click/cd94a96398abd2a=
+4ff9c12e0360f462ad5100285d5e5d6340dc15c9b4932b9e7?url=3Dhttps%3A%2F%2Fwww.f=
+acebook.com%2Fpledgebox%2F%3Futm_source%3DPledgeBox%26utm_medium%3DNewslett=
+er" target=3D"_blank"><img src=3D"https://api.pledgebox.com/images/nl_templ=
+ate/facebook@2x.png" width=3D"32" height=3D"32" alt=3D"Facebook" title=3D"F=
+acebook" style=3D"display: block; height: auto; border: 0;"></a>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=
+</td>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=
+<td style=3D"padding: 0 10px 0 10px;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=
+=09<a href=3D"https://api.pledgebox.com/api/edm/track/click/cd94a96398abd2a=
+4ff9c12e0360f462ad5100285d5e5d6340dc15c9b4932b9e7?url=3Dhttps%3A%2F%2Fwww.y=
+outube.com%2Fchannel%2FUCPHWIUcN7ZmS8BPw3mACQsg" target=3D"_blank"><img src=
+=3D"https://api.pledgebox.com/images/nl_template/youtube@2x.png" width=3D"3=
+2" height=3D"32" alt=3D"YouTube" title=3D"YouTube" style=3D"display: block;=
+ height: auto; border: 0;"></a>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=
+</td>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</t=
+r>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tbod=
+y>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</table>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</div>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</table>
+
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<table border=3D"0" cell=
+padding=3D"10" cellspacing=3D"0" class=3D"text_block block-2" style=3D"mso-=
+table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;" width=3D=
+"100%">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<td class=3D"pa=
+d">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<div style=
+=3D"font-family: Arial, sans-serif;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<div styl=
+e=3D"
+                                                font-size: 12px;
+                                                font-family: Helvetica Neue=
+, Helvetica, Arial, sans-serif;
+                                                mso-line-height-alt: 14.399=
+999999999999px;
+                                                color: #9c9c9c;
+                                                line-height: 1.2;">
+
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<p sty=
+le=3D"margin: 0; text-align: center; mso-line-height-alt: 14.39999999999999=
+9px;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09Cop=
+yright =C2=A9 2026 PledgeBox Limited=C2=A0=C2=A0
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</p>
+
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<p sty=
+le=3D"margin: 0; text-align: center; mso-line-height-alt: 14.39999999999999=
+9px;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=C2=
+=A0</p>
+
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<p sty=
+le=3D"margin: 0; text-align: center; mso-line-height-alt: 14.39999999999999=
+9px;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09You=
+ are receiving this email because you previously used PledgeBox to complete=
+ a backer survey or manage your shipping details for a Kickstarter project.
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</p>
+
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<p sty=
+le=3D"margin: 0; text-align: center; mso-line-height-alt: 14.39999999999999=
+9px;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=C2=
+=A0</p>
+
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<p sty=
+le=3D"margin: 0; text-align: center; mso-line-height-alt: 14.39999999999999=
+9px;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<a =
+href=3D"https://api.pledgebox.com/edm/unsubscribe?token=3DeyJpdiI6Ikptb3dyK=
+1wvWGw3Y01MREhOcGhLN3BRPT0iLCJ2YWx1ZSI6Ilo3ek84NktUSnNZZDl0VGVnMHFwNXpxNnd3=
+OHY4eUt6NzkyRVZ2WjlUcTJkdE9VU0JtVmZJNWp1RTBjeEVMRkQiLCJtYWMiOiI1ZmEyYmVlYTY=
+5MGE4NzUwMzY3OTA2NjQzMGY2ZTc0ZGVlMzY4MWZmMjU2NWQxYjExNDUwN2YyNDM5NWNjMjRjIn=
+0%3D" rel=3D"noopener" style=3D"text-decoration: underline; color: #9c9c9c;=
+">Unsubscribe</a>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</p>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</div>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</div>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</table>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09<div class=3D"spacer_blo=
+ck block-3" style=3D"height: 20px; line-height: 20px; font-size: 1px;">
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</div>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09=09=09=09=09=09=09</tbody>
+=09=09=09=09=09=09=09=09=09=09=09=09=09</table>
+=09=09=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09=09=09</tbody>
+=09=09=09=09=09=09=09=09=09</table>
+=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09</tbody>
+=09=09=09=09=09</table>
+=09=09=09=09=09<!-- End -->
+=09=09=09=09</div>
+=09=09=09</div>
+=09=09</div>
+=09</body>
+</html>
+
+  </div>
+
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+  <!--[if (!mso)&(!IE)]><!--></div><!--<![endif]-->
+  </div>
+</div>
+<!--[if (mso)|(IE)]></td><![endif]-->
+      <!--[if (mso)|(IE)]></tr></table></td></tr></table><![endif]-->
+    </div>
+  </div>
+  </div>
+ =20
+
+
+    <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
+    </td>
+  </tr>
+  </tbody>
+  </table>
+  <!--[if mso]></div><![endif]-->
+  <!--[if IE]></div><![endif]-->
+<img src=3D"https://api.pledgebox.com/api/edm/track/open/cd94a96398abd2a4ff=
+9c12e0360f462ad5100285d5e5d6340dc15c9b4932b9e7" width=3D"1" height=3D"1" st=
+yle=3D"display:none;" /></body>
+
+</html>
+------=_Part_98272_601295621.1776091015784--
+

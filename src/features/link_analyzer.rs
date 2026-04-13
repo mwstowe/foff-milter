@@ -1102,8 +1102,37 @@ impl FeatureExtractor for LinkAnalyzer {
                             );
                             score += 60;
                         } else {
-                            evidence.push("Suspicious cross-domain links detected".to_string());
-                            score += 5;
+                            // Check if links use URL shorteners
+                            let shortener_domains = [
+                                "rebrand.ly",
+                                "bit.ly",
+                                "tinyurl.com",
+                                "t.co",
+                                "goo.gl",
+                                "ow.ly",
+                                "is.gd",
+                                "buff.ly",
+                                "shorturl.at",
+                                "cutt.ly",
+                                "rb.gy",
+                                "short.io",
+                                "tiny.cc",
+                            ];
+                            let has_shortener = unrelated_links.iter().any(|link| {
+                                let d = link.domain.to_lowercase();
+                                shortener_domains
+                                    .iter()
+                                    .any(|s| d == *s || d.ends_with(&format!(".{}", s)))
+                            });
+                            if has_shortener {
+                                evidence.push(
+                                    "Suspicious cross-domain links via URL shortener".to_string(),
+                                );
+                                score += 30;
+                            } else {
+                                evidence.push("Suspicious cross-domain links detected".to_string());
+                                score += 5;
+                            }
                         }
                     }
                 }
