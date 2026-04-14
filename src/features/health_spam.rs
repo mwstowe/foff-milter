@@ -319,6 +319,7 @@ impl FeatureExtractor for HealthSpamAnalyzer {
                 || content.contains("improve")
                 || content.contains("boost")
                 || content.contains("sharpen"))
+            && !is_legitimate_news
         {
             score += 80;
             evidence.push("Memory/cognitive enhancement spam detected".to_string());

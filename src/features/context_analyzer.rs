@@ -104,6 +104,16 @@ impl ContextAnalyzer {
                 indicators: vec!["fat".to_string(), "burn".to_string()],
                 weight: 30,
             },
+            ScamPattern {
+                name: "Payday Loan Spam".to_string(),
+                indicators: vec![
+                    "cash".to_string(),
+                    "loan".to_string(),
+                    "lender".to_string(),
+                    "short-term".to_string(),
+                ],
+                weight: 60,
+            },
         ];
 
         Self {
@@ -161,6 +171,16 @@ impl ContextAnalyzer {
                     "account locked".to_string(),
                 ],
                 weight: 35,
+            },
+            ScamPattern {
+                name: "Payday Loan Spam".to_string(),
+                indicators: vec![
+                    "cash".to_string(),
+                    "loan".to_string(),
+                    "lender".to_string(),
+                    "short-term".to_string(),
+                ],
+                weight: 60,
             },
         ];
 
