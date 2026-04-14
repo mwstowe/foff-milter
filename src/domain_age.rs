@@ -359,9 +359,9 @@ impl DomainAgeChecker {
     async fn fallback_domain_check(&self, domain: &str) -> Result<DomainInfo> {
         log::debug!("Using DNS fallback for domain: {domain}");
 
-        use hickory_resolver::TokioAsyncResolver;
+        use hickory_resolver::Resolver;
 
-        let resolver = TokioAsyncResolver::tokio_from_system_conf()?;
+        let resolver = Resolver::builder_tokio().map(|b| b.build())?;
 
         match resolver.lookup_ip(domain).await {
             Ok(_) => {

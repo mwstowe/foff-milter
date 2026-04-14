@@ -14,7 +14,7 @@ use crate::toml_config::{BlocklistConfig, WhitelistConfig};
 
 use base64::{engine::general_purpose::STANDARD as BASE64_STANDARD, Engine as _};
 use encoding_rs::{Encoding, UTF_8, WINDOWS_1252};
-use hickory_resolver::TokioAsyncResolver;
+use hickory_resolver::Resolver;
 use lazy_static::lazy_static;
 use regex::Regex;
 
@@ -1418,7 +1418,7 @@ impl FilterEngine {
     async fn validate_email_domain_dns(&self, domain: &str, timeout_seconds: u64) -> bool {
         log::debug!("Checking email domain DNS for: {domain} (timeout: {timeout_seconds}s)");
 
-        let resolver = match TokioAsyncResolver::tokio_from_system_conf() {
+        let resolver = match Resolver::builder_tokio().map(|b| b.build()) {
             Ok(resolver) => resolver,
             Err(e) => {
                 log::warn!("Failed to create DNS resolver for {domain}: {e}");
@@ -1466,7 +1466,7 @@ impl FilterEngine {
     async fn validate_domain_dns(&self, domain: &str, timeout_seconds: u64) -> bool {
         log::debug!("Checking DNS for domain: {domain} (timeout: {timeout_seconds}s)");
 
-        let resolver = match TokioAsyncResolver::tokio_from_system_conf() {
+        let resolver = match Resolver::builder_tokio().map(|b| b.build()) {
             Ok(resolver) => resolver,
             Err(e) => {
                 log::warn!("Failed to create DNS resolver for {domain}: {e}");
@@ -5231,7 +5231,7 @@ impl FilterEngine {
                                 log::debug!("Validating reply-to domain: {domain}");
 
                                 // Check DNS resolution
-                                let resolver = match TokioAsyncResolver::tokio_from_system_conf() {
+                                let resolver = match Resolver::builder_tokio().map(|b| b.build()) {
                                     Ok(resolver) => resolver,
                                     Err(e) => {
                                         log::warn!(
