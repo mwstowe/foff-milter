@@ -12,22 +12,22 @@ use tokio::time::interval;
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RuleStats {
     pub rule_name: String,
-    pub matches: u64,
-    pub accepts: u64,
-    pub rejects: u64,
-    pub tags: u64,
+    pub matches: i64,
+    pub accepts: i64,
+    pub rejects: i64,
+    pub tags: i64,
     pub first_match: Option<DateTime<Utc>>,
     pub last_match: Option<DateTime<Utc>>,
-    pub total_processing_time_ms: u64,
+    pub total_processing_time_ms: i64,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GlobalStats {
-    pub total_emails: u64,
-    pub total_accepts: u64,
-    pub total_rejects: u64,
-    pub total_tags: u64,
-    pub no_rule_matches: u64, // Emails that didn't match any rule
+    pub total_emails: i64,
+    pub total_accepts: i64,
+    pub total_rejects: i64,
+    pub total_tags: i64,
+    pub no_rule_matches: i64, // Emails that didn't match any rule
     pub start_time: DateTime<Utc>,
     pub last_updated: DateTime<Utc>,
 }
@@ -37,7 +37,7 @@ pub enum StatEvent {
     RuleMatch {
         rule_name: String,
         action: String, // "Accept", "Reject", "TagAsSpam"
-        processing_time_ms: u64,
+        processing_time_ms: i64,
     },
     NoRuleMatch,
     EmailProcessed,
