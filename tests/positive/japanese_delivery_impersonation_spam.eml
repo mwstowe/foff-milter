@@ -1,0 +1,64 @@
+✅ Loading modern TOML configuration: ../foff-milter.toml
+Return-Path: <noreply@smtphost.fwvhifu.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.2/8.18.1) with ESMTPS id 63EGlNxq082626
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <user@example.com>; Tue, 14 Apr 2026 16:47:23 GMT
+	(envelope-from noreply@smtphost.fwvhifu.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=fail reason="key not found in DNS" (0-bit key; unprotected) header.d=smtphost.fwvhifu.com header.i=@smtphost.fwvhifu.com header.b=MgOhKgbW;
+	dkim=pass (2048-bit key; unprotected) header.d=smtphost.fwvhifu.com header.i=@smtphost.fwvhifu.com header.b=JtroAjFW
+Received: from smtphost.fwvhifu.com (253.129.229.35.bc.googleusercontent.com [35.229.129.253])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 63EGlHsc312688
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=FAIL)
+	for <user@example.com>; Tue, 14 Apr 2026 11:47:20 -0500
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 63EGlHsc312688
+Authentication-Results: hotel.baddomain.com;
+	dkim=temperror header.d=smtphost.fwvhifu.com header.i=@smtphost.fwvhifu.com header.a=rsa-sha256 header.s=selector2 header.b=MgOhKgbW;
+	dkim=pass (2048-bit key, unprotected) header.d=smtphost.fwvhifu.com header.i=@smtphost.fwvhifu.com header.a=rsa-sha256 header.s=smtphost header.b=JtroAjFW
+Authentication-Results: smtphost.fwvhifu.com;
+	auth=pass (plain);
+	dkim=fail (body hash did not verify) header.i=@smtphost.fwvhifu.com header.d=smtphost.fwvhifu.com header.s=selector2
+Received: from smtp.source-statistics.ne.jp ([211.144.233.204])
+ (Authenticated sender: webmaster970@smtphost.fwvhifu.com)
+ by smtphost.fwvhifu.com (Postfix/smtpd) with ESMTPSA id D6X7B6JS-2AB7-8648-9FCB.8
+ for <user@example.com>;
+ TLS1_3, cipher=TLS_RSA_WITH_AES_256_GCM_SHA384 (authenticated bits=0); Wed, 15 Apr 2026 01:25:52 +0900
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=smtphost.fwvhifu.com; s=selector2; t=555-123-4567;
+ h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding;
+ bh=LrYyN8Skg/1OBDWZgr1rxu9iXMZveaQ1LMrGCdweGBs=;
+ b=MgOhKgbW8VXOX+w5VG9eQvN+xB4p1FkoZBfWqe2EhlSGgTuzUg+NQHIawsheUSDmGWfHi/YZ
+   e893yxd2g9xj9OwhtQB97kzBN40RFHa9PSVoAUIrQg+m5oPzrl+g5XJhF5NkK9qlBvoyfsQe
+   s+GaIHH0RDGPzY4NmlpNJIdBag3xl6hK/uwv9jcTGtSt9chiMsSXIZqK+Y0HiHLxXXE/zq00
+   i61AkR2LUXpslxFSgKilMYvoDmPJmMyNn/HQqzYha6zJnc30Xpdx5vBKD3jowNanx1B2i4DC
+   khYSMkv4NEjXzjPULbO1cKA9/6UwzANlh0c/TbJN1MhlxvjGy5AXvQ==
+From: =?ISO-2022-JP?B?GyRCJCpGTyQxPGpHWyU7JXMlPyE8GyhC?= <noreply@smtphost.fwvhifu.com>
+To: user@example.com
+Subject: =?ISO-2022-JP?B?GyRCJDRDbUo4SUokLDZhJC8kXiRHRk8kJCRGJCQkXiQ5GyhC?=
+Date: Wed, 15 Apr 2026 01:25:52 +0900
+Message-ID: <CAGB7vrpkfOE1rpfOLNvaVVtiaqs9T4i@smtphost.fwvhifu.com>
+MIME-Version: 1.0
+X-Mailer: iPad Mail (16A404)
+Track-ID: e90efe243476413b934b3052b3469953
+Content-Type: text/html; charset="ISO-2022-JP"
+Content-Transfer-Encoding: 7bit
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=smtphost.fwvhifu.com; s=smtphost;
+	h=from:to:subject:date:message-id:mime-version:content-type:content-transfer-encoding;
+	bh=NN97Onqu8EcCJT3xSNNYB4MyLeYxJzVoiLssSmRS//c=;
+	b=JtroAjFWAnlfbStPysuHuatG965HqlMKqjfWAcgCXqZXMadBtH3ILOoD5GJkTq8VM7ureG6kU7
+	akD0yWgsEpaPat7dY7miRgPfWLDN6Ci1T/tIFgVNS4H5mmVHz9+/IFEGieHC3xctRW6NG6zVaoSX
+	/TQP+lMRwgNSG+t+QZinmceWPC2ktMyd39iyBr9+YJnZrp9RuvGQeFXV9nCADJHUAHOQPh1VdL4N
+	y0dMbKbClSgGNYtAvbipR/be09qNWraqP7AjR0s4AWiDuXYOQaphE3UGGpIcykTL7og+02XZaCOX
+	MZtbr9j4JcB2Qpl30J0b8hg29gZHXaYRWVVi3kmw==
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Tue, 14 Apr 2026 16:47:23 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Tue, 14 Apr 2026 11:47:21 -0500 (CDT)
+
+<!DOCTYPE html><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><html><body style="margin:0;padding:24px;font-family:Arial,'Hiragino Sans',sans-serif;background:#f7f7f7"><div style="max-width:680px;margin:0 auto;background:#fff;border-left:3px solid #131921;border-bottom:1px solid #dadada;padding:26px;font-size:14px;line-height:1.65;color:#2c2c2c"><div style="font-size:18px;font-weight:bold;margin-bottom:14px">$B$*5RMM(B</div>
+<p style="margin:0 0 18px">$BBg@Z$J$*2YJ*$r!"L@F|FO$1$kM=Dj$G$4$6$$$^$9!#(B <b style="border-bottom:2px solid #00DFFC">"$B$*FO$140N;<L??(B"</b>$B$N@_DjJQ99$O!"G[Aw>u67%Z!<%8$+$i$*<jB3$-$$$?$@$1$^$9!#$^$?!"C4Ev%I%i%$%P!<$+$i$*EEOC!J(B<b>050-7663-8452</b>$B!K$b$7$/$O%7%g!<%H%a%C%;!<%8$G;vA0$K$4O"Mm$9$k>l9g$,$4$6$$$^$9!#G[C#$N;~4VBS$O(B7$B;~$+$i(B22$B;~$H$J$C$F$*$j$^$9!#(B</p>
+<ul style="list-style:none;padding:0;margin:0 0 16px"><li style="margin-bottom:4px">$BG[C#6H<T!'(B<b>$B%"%^%>%s(B</b></li><li>$BDI@WHV9f!'(B<b style="border-bottom:2px solid #00DFFC">720521186841</b></li></ul>
+<div style="padding:18px 0;text-align:center"><a href="https://hnblast.com/invite/whqeu/accept" target="_blank" rel="nofollow noopener noreferrer" style="display:block;background:#ffa41c;color:#111;text-decoration:none;padding:13px;text-align:center;font-weight:bold">$BG[Aw>u67(B</a></div>
+<hr style="border:0;height:1px;background:#d5d5d5;margin:14px 0">
+<div style="font-size:10px;color:#888;line-height:15px">$B$3$N%a!<%k$OAw?.@lMQ$H$J$C$F$*$j$^$9!#$4JV?.$O$41sN8$/$@$5$$!#(B</div></div></body></html>
+

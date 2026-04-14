@@ -217,6 +217,33 @@ impl FeatureExtractor for HealthSpamAnalyzer {
             evidence.push("ANA airline brand impersonation from non-Japanese domain".to_string());
         }
 
+        // Japanese delivery impersonation (Amazon/courier phishing)
+        let jp_delivery_keywords = ["お届け", "配送", "お荷物", "追跡番号", "ご注文"];
+        let jp_brand_keywords = ["アマゾン", "amazon", "ヤマト", "佐川", "日本郵便"];
+        let has_jp_delivery = jp_delivery_keywords.iter().filter(|k| content.contains(*k)).count();
+        let has_jp_brand = jp_brand_keywords.iter().any(|k| content.contains(k));
+        if has_jp_delivery >= 2
+            && has_jp_brand
+            && !sender_domain.contains("amazon")
+            && !sender_domain.ends_with(".jp")
+        {
+            score += 100;
+            evidence.push(
+                "Japanese delivery impersonation spam from non-Japanese domain".to_string(),
+            );
+        } else if has_jp_delivery >= 1
+            && !sender_domain.ends_with(".jp")
+            && !sender_domain.contains("amazon")
+            && !sender_domain.contains("rakuten")
+        {
+            // Subject has Japanese delivery keywords from non-JP domain
+            // (body may be ISO-2022-JP encoded and not decoded)
+            score += 100;
+            evidence.push(
+                "Japanese delivery notification from non-Japanese domain".to_string(),
+            );
+        }
+
         // Check for health product promotion from suspicious domains
         let suspicious_domains = ["cookfest", "fiveharvest", "foodie", "recipe", "kitchen"];
         let is_suspicious_domain = suspicious_domains.iter().any(|d| sender_domain.contains(d));

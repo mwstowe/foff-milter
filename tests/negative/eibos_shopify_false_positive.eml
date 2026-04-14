@@ -1,0 +1,928 @@
+✅ Loading modern TOML configuration: ../foff-milter.toml
+Return-Path: <bounce+c50568.557d72-mstowe=baddomain.com@shops.myshopify.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.2/8.18.1) with ESMTPS id 63EEAnlx075993
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <user@example.com>; Tue, 14 Apr 2026 14:10:49 GMT
+	(envelope-from bounce+c50568.557d72-mstowe=baddomain.com@shops.myshopify.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=dkim3.omnisend.email header.i=@dkim3.omnisend.email header.b=aDi5hpyJ;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=shop.eibos3d.com header.i=@shop.eibos3d.com header.b=dGTUFNdt
+Received: from v5175.v5d1da871.use4.send.mailgun.net (v5175.v5d1da871.use4.send.mailgun.net [143.55.230.175])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 63EEAi2p306443
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO)
+	for <user@example.com>; Tue, 14 Apr 2026 09:10:45 -0500
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 63EEAi2p306443
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (2048-bit key, unprotected) header.d=dkim3.omnisend.email header.i=@dkim3.omnisend.email header.a=rsa-sha256 header.s=omni1 header.b=aDi5hpyJ;
+	dkim=pass (1024-bit key, unprotected) header.d=shop.eibos3d.com header.i=@shop.eibos3d.com header.a=rsa-sha256 header.s=krs header.b=dGTUFNdt
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=dkim3.omnisend.email; q=dns/txt; s=omni1; t=555-123-4567; x=555-123-4567;
+ h=Message-Id: List-Unsubscribe-Post: List-Unsubscribe: To: To: From: From: Subject: Subject: Content-Type: Mime-Version: Date: Sender: Sender;
+ bh=Bia4W2JNNeAJnHgsqrwkX///U12EwGhH37/XYyvZ6io=;
+ b=aDi5hpyJUEwrPG5tG0sPeW4/4ygpPh6OqUCWQRHjPmv+PSbyAsafiH4XfqBuZEr6c4tN2t9sYT/TXfR6s3xTGJtgmIj2h/wR7IvQsldb79LZmQyBQb/h2UQ/tFSNqmHv1CEji4eScIXz++Lu3t8J8/5P5LwBmbhRwJP785xBb1YCeb3KORaE8021UyOfY0ZQczUG7Yftc/lV/pSwAGz1z3hEF+4Bbc9aXmDXEbT9CTX3KO1bbqDN1n83FQsF2vxOQMdOLir9r+isbZc18qiU9Im103lY4+7sF329/frSnCYHmX/fbNuFkWdRMfQDTYqBVvSKSmvFlfigOrIseiwWxg==
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=shop.eibos3d.com; q=dns/txt; s=krs; t=555-123-4567; x=555-123-4567;
+ h=Message-Id: List-Unsubscribe-Post: List-Unsubscribe: To: To: From: From: Subject: Subject: Content-Type: Mime-Version: Date: Sender: Sender;
+ bh=Bia4W2JNNeAJnHgsqrwkX///U12EwGhH37/XYyvZ6io=;
+ b=dGTUFNdtwuPe4N/qLQ8n9tMOukMic2P49FgLCOjXUfBifXqW6NED8Fsaj2cu7ajBkhAhDYwJXN9ZQisk6xv451txw+uNuYY6zK0r9PWnP7Lj8wkzarbP2BglR2xRIdc5pQGC23lDgNXesPgQyf4TfHZ6xBW6+yMWxgiDtEuHA4A=
+X-Mailgun-Sid: WyJhYmY4YiIsIm1zdG93ZUBiYWRkb21haW4uY29tIiwiNTU3ZDcyIl0=
+Received: by 1e03d1d0b836ae551dac5507282f7e6d7b684b22a6c0b4fedcf24b5d49431922 with HTTP
+ id 69de4ada946c658a7db1b0cd; Tue, 14 Apr 2026 14:10:30 GMT
+X-Mailgun-Sending-Ip-Pool-Name: AS1
+X-Mailgun-Sending-Ip-Pool: 6655a2b264456f546bd5b794
+X-Mailgun-Sending-Ip: 143.55.230.175
+X-Mailgun-Batch-Id: 69de4ad69007a2d487e83ca7
+Sender: marketing=eibos3d.com@shops.myshopify.com
+Date: Tue, 14 Apr 2026 14:10:30 +0000
+Mime-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="6e194a04bd62655cdd413dd1e4e40f2884fdf8dc78a9c934c4f1c194d7e5"
+Subject: EIBOS Cold Build Plate KRIOS is LIVE!
+From: EIBOS <marketing@eibos3d.com>
+To: user@example.com
+X-Mailgun-Tag: secondary-dkim-signed
+X-Mailgun-Track: false
+X-Mailgun-Secondary-Dkim: dkim3.omnisend.email,omni1
+Feedback-Id: 69dc8af107d98f486a94daef:6729a86932a1ca41079559b6:campaign:omnisend
+List-Unsubscribe: <https://wfh.soundestlink.com/contactsPreferences/v2/unsubscribe/?b=6729a86932a1ca41079559b6&c=69560c8adaa6a9cadb8e346e&payload=bV0uT1NUvSXw-102t1n5p_XGLzArglbkdLWQp_4FLeRTmrI-f_eZ6br98dypfWf7ezaaQtDhySsnML8asmrGQt9zRZR-zLAc6_-ADEX1fjzXxykhTSiQdYzpk6WrEow4Jlwp&headerUnsub=true>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+X-Mailgun-Variables: {"brandID": "6729a86932a1ca41079559b6", "contactID":
+ "69560c8adaa6a9cadb8e346e", "progressID": "69de2b5b07d98f486a94f56b"}
+Message-Id: <20260414141030.5b33661b868e7509@shop.eibos3d.com>
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Tue, 14 Apr 2026 14:10:50 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Tue, 14 Apr 2026 09:10:46 -0500 (CDT)
+X-Spam-Flag: YES
+
+--6e194a04bd62655cdd413dd1e4e40f2884fdf8dc78a9c934c4f1c194d7e5
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+
+First 100 orders ship free. Symmetrical design =E2=80=94 no wrong way to in=
+stall.
+
+This email was sent to you as HTML-only. To view it, please visit:=20
+https://wfh.soundestlink.com/ce/v/69560c8adaa6a9cadb8e346e/69de2b5b07d98f48=
+6a94f56b
+
+**************************
+
+Make sure you keep getting our latest offers and add marketing@eibos3d.com =
+to your address book.
+
+Unsubscribe=20
+https://wfh.soundestlink.com/contactsPreferences/v2/unsubscribe/?b=3D6729a8=
+6932a1ca41079559b6&c=3D69560c8adaa6a9cadb8e346e&payload=3DbV0uT1NUvSXw-102t=
+1n5p_XGLzArglbkdLWQp_4FLeRTmrI-f_eZ6br98dypfWf7ezaaQtDhySsnML8asmrGQt9zRZR-=
+zLAc6_-ADEX1fjzXxykhTSiQdYzpk6WrEow4Jlwp
+
+Visit site
+http://shop.eibos3d.com
+
+=C2=96
+
+--6e194a04bd62655cdd413dd1e4e40f2884fdf8dc78a9c934c4f1c194d7e5
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE html>
+<html xmlns=3D"http://www.w3.org/1999/xhtml" xmlns:v=3D"urn:schemas-microso=
+ft-com:vml" xmlns:o=3D"urn:schemas-microsoft-com:office:office">
+<head><!-- Used for outlook versions from 9 and greater -->
+<!--[if gte mso 9]><xml><o:OfficeDocumentSettings><o:AllowPNG/><o:PixelsPer=
+Inch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml>
+<![endif]-->
+<title>EIBOS Cold Build Plate KRIOS is LIVE!</title>
+<meta content=3D"text/html; charset=3Dutf-8" http-equiv=3D"Content-Type"/>
+<meta content=3D"width=3Ddevice-width, initial-scale=3D1" name=3D"viewport"=
+/>
+<meta content=3D"telephone=3Dno" name=3D"format-detection"/>
+<link rel=3D"icon" href=3D"data:,">
+<link rel=3D"stylesheet" type=3D"text/css" href=3D"https://fonts.soundestli=
+nk.com/fonts/css/Abril+Fatface"/>
+<style type=3D"text/css">
+html,body{width:100%!important;height:100%!important;margin:0 auto!importan=
+t;padding:0!important;-webkit-font-smoothing:antialiased;-webkit-text-size-=
+adjust:none;-ms-text-size-adjust:none;}body,table,td,a{-webkit-text-size-ad=
+just:100%;-ms-text-size-adjust:100%;}table{border-collapse:collapse;}table,=
+td{mso-table-lspace:0pt;mso-table-rspace:0pt;}th{font-weight:300;}img{-ms-i=
+nterpolation-mode:bicubic;}a[x-apple-data-detectors]{text-decoration:none!i=
+mportant;font-size:
+inherit!important;font-family:inherit!important;font-weight:inherit!importa=
+nt;line-height:inherit!important;color:inherit;}a:link,span.MsoHyperlink{te=
+xt-decoration:none;color:inherit;}u+#body a{text-decoration:none;font-size:=
+inherit;font-family:inherit;font-weight:inherit;line-height:inherit;color:i=
+nherit;}.appleFooterLinks a{text-decoration:none;color:inherit;}.desktop-wr=
+apper{display:table-cell;}.default-margin p{margin:0!important;}.centered-b=
+lock{display:block;margin:0 auto!important;}
+=2Emobile{display:none!important;}.side=
+-by-side{width:50%;max-width:50%;}.pro=
+duct-description-table th{mso-line-height-rule:exactly}.no-margin{margin:0;=
+}.margin-top{margin:4px 0 0 0;}p{word-spacing:normal;}
+@media screen and (max-width:600px){body{min-width:1px!important;}.desktop{=
+display:none!important;}.mobile{display:table!important;}.mobile-body-conta=
+iner{min-width:1px!important;}.mobile-container{width:100%!important;displa=
+y:table!important;}.mobile-container-half{width:50%!important;display:inlin=
+e-block!important;}.mobile-image{width:100%!important;height:auto!important=
+;}.mobile-bounded-image{max-width:100%!important;width:auto!important;heigh=
+t:auto!important;}.mobile-image-stacked{max-width:
+100%!important;max-height:552px!important;width:auto!important;}.mobile-ima=
+ge-stacked-height{height:auto!important;}.mobile-table{width:100%!important=
+;}.padding-left{padding-left:12px!important;}.padding-right{padding-right:1=
+2px!important;}.padding-top{padding-top:12px!important;}.padding-bottom{pad=
+ding-bottom:12px!important;}.mobile-hidden{display:none!important;}.placeho=
+lder-image-block-table-cell{height:150px!important;}/* STARTS Order confirm=
+ation */ .order-product-table-responsive-cell{
+display:block!important;width:100%;}.order-product-image-responsive-element=
+{width:80px!important;height:auto;}.placeholder-image-block-table-cell.orde=
+r-product-image-responsive-element{height:80px!important;}/* ENDS Order con=
+firmation */ /* STARTS Order billing & shipping */ .order-billing-and-shipp=
+ing-responsive-cell{display:table-row!important;}/* ENDS Order billing & sh=
+ipping */ .desktop-wrapper{display:inline-block!important;} }
+@media screen and (max-width:480px){.stack-column{display:block!important;w=
+idth:100%!important;min-width:100%!important;direction:ltr!important;paddin=
+g:12px 0px!important;box-sizing:border-box;} }
+</style>
+</head>
+<body id=3D"body"
+style=3D"padding:0px;margin:0px"><p
+style=3D"max-height:0;font-size:0;line-height:0;margin:0;overflow:hidden;">=
+ First 100 orders ship free. Symmetrical design =E2=80=94 no wrong way to i=
+nstall. </p><div
+style=3D"display:none;width:0px;height:0px;max-height:0px;overflow:hidden;"=
+> &#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&=
+#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#84=
+7;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&=
+nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbs=
+p;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&=
+#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#84=
+7;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&=
+nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbs=
+p;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&=
+#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#84=
+7;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&=
+nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbs=
+p;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&=
+#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#84=
+7;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&=
+nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbs=
+p;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&=
+#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#84=
+7;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&=
+nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbs=
+p;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&=
+#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#84=
+7;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&=
+nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbsp;&#847;&nbs=
+p;
+&shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &sh=
+y; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; =
+&shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &sh=
+y; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; =
+&shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &sh=
+y; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; =
+&shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy;
+&shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &sh=
+y; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; =
+&shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &sh=
+y; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; &shy; =
+&shy; &shy; &shy; &shy; &shy; </div><p
+style=3D"max-height:0;font-size:0;line-height:0;margin:0;overflow:hidden;">=
+ <img alt=3D"" border=3D"0" src=3D"https://wfh.soundestlink.com/ce/o/69560c=
+8adaa6a9cadb8e346e/69de2b5b07d98f486a94f56b?signature=3D2f19c52a24c690f8695=
+10cb392b23f47bc1cbaa5f4d5fbdcb32a9ed84a8ad24f" width=3D"1" height=3D"1"/></=
+p>
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"100%"
+      height=3D"100%"
+style=3D"background-color:#E3E5E8;" class=3D"mobile-body-container"><tr><td=
+>
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"100%"
+style=3D"min-width:290px"><tr><td>
+<table width=3D"600" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" align=
+=3D"center"
+style=3D"width:600px;margin:0px auto;background-color:#FFFFFF;" class=3D"mo=
+bile-container"><tr><td>
+<table width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0"><tr>=
+<td>
+<table id=3D"6768dbd2caeb7ddbc1daefc6" border=3D"0" cellspacing=3D"0" cellp=
+adding=3D"0" width=3D"100%"
+style=3D""><tr><td class=3D"padding-left padding-right" background=3D""
+style=3D"padding-left:24px;padding-right:24px;padding-top:0px;padding-botto=
+m:0px;vertical-align:top;background-repeat:no-repeat;background-size:cover;=
+background-position:unset;background-color:#FFFFFF;">
+<table id=3D"6768dbd2caeb7ddbc1daefc7" background=3D"" border=3D"0" cellspa=
+cing=3D"0" cellpadding=3D"0" width=3D"100%"
+style=3D""><tr><td>
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%"
+style=3D"width:100%"><tr><td id=3D"6768dbd2caeb7ddbc1daefc8"
+style=3D"width:552px;vertical-align:top;">
+<table id=3D"6768dbe0caeb7ddbc1daf84f" border=3D"0" cellspacing=3D"0" cellp=
+adding=3D"0" width=3D"552" align=3D"center" class=3D"mobile-table"><tr><td
+style=3D"padding-top:6px;padding-right:12px;padding-bottom:6px;padding-left=
+:12px;" align=3D"center">
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" align=3D"center"
+style=3D"width:100%"><tr><td
+style=3D"text-align:center"><a target=3D"_blank" href=3D"https://bxl.sounde=
+stlink.com/ce/c/69560c8adaa6a9cadb8e346e/69de2b5b07d98f486a94f56b/69de4ac20=
+d2cd63075abb4f1?signature=3D2f19c52a24c690f869510cb392b23f47bc1cbaa5f4d5fbd=
+cb32a9ed84a8ad24f"><img width=3D"77px" alt=3D"" height=3D"77" class=3D"mobi=
+le-image" border=3D"0" src=3D"https://wfh.soundestlink.com/image/newsletter=
+/673478ae30513f7a8141b7d7"
+style=3D"max-width:77px!important;height:auto;margin:0 0;vertical-align:mid=
+dle;font-family:Arial,sans-serif;font-size:12px;color:#383838;line-height:1=
+50%;"></a>
+</td></tr></table>
+</td></tr></table>
+</td></tr></table>
+</td></tr></table>
+</td></tr></table>
+<table id=3D"684d135419327014012bd5fd" border=3D"0" cellspacing=3D"0" cellp=
+adding=3D"0" width=3D"100%" class=3D"desktop"
+style=3D""><tr><td class=3D"padding-left padding-right" background=3D""
+style=3D"padding-left:24px;padding-right:24px;padding-top:0px;padding-botto=
+m:0px;vertical-align:middle;background-repeat:no-repeat;background-size:cov=
+er;background-position:unset;background-color:#000;">
+<table id=3D"684d135419327014012bd5fe" background=3D"" border=3D"0" cellspa=
+cing=3D"0" cellpadding=3D"0" width=3D"100%"
+style=3D""><tr><td>
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%"
+style=3D"width:100%"><tr><td id=3D"684d135419327014012bd5ff" class=3D"mobil=
+e-container"
+style=3D"width:184px;vertical-align:middle;">
+<table id=3D"684d1f2a19327014012bde81" border=3D"0" cellspacing=3D"0" cellp=
+adding=3D"0" width=3D"100%"
+style=3D"table-layout:fixed;"><tbody><tr><td align=3D"center" class=3D"mobi=
+le-table"
+style=3D"padding-top:12px;padding-right:0px;padding-bottom:12px;padding-lef=
+t:12px;" valign=3D"top">
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0"
+style=3D"background-color:#000;border:0px solid #FFFFFF;border-radius:0px;b=
+order-collapse:separate;"><tbody><tr>
+<!--[if !mso]><!--><td align=3D"center" valign=3D"middle"
+style=3D"font-family:Arial,sans-serif;font-size:15px;font-weight:bold;color=
+:#FFFFFF;letter-spacing:0px;">
+<!--<![endif]-->
+<!--[if mso]><td align=3D"center" valign=3D"middle"
+style=3D"font-family:Arial,sans-serif;font-size:15px;font-weight:bold;color=
+:#FFFFFF;letter-spacing:0px;padding-left:18px;padding-right:8px;padding-top=
+:10px;padding-bottom:10px;">
+<![endif]--> <a target=3D"_blank"data-link-id=3D"684d1f2a19327014012bde81" =
+href=3D"https://bxl.soundestlink.com/ce/c/69560c8adaa6a9cadb8e346e/69de2b5b=
+07d98f486a94f56b/69de4ac30d2cd63075abb4f2?signature=3D2f19c52a24c690f869510=
+cb392b23f47bc1cbaa5f4d5fbdcb32a9ed84a8ad24f"
+style=3D"text-decoration:none;padding-left:18px;padding-right:8px;padding-t=
+op:10px;padding-bottom:10px;;display:inline-block;font-family:Arial,sans-se=
+rif;font-size:15px;font-weight:bold;color:#FFFFFF;letter-spacing:0px;line-h=
+eight:1.2;"> Filament Dryer </a>
+</td></tr></tbody></table>
+</td></tr></tbody></table>
+</td><td id=3D"684d135419327014012bd600" class=3D"mobile-container"
+style=3D"width:184px;vertical-align:middle;">
+<table id=3D"684d1f2d19327014012bde82" border=3D"0" cellspacing=3D"0" cellp=
+adding=3D"0" width=3D"100%"
+style=3D"table-layout:fixed;"><tbody><tr><td align=3D"center" class=3D"mobi=
+le-table"
+style=3D"padding-top:12px;padding-right:0px;padding-bottom:12px;padding-lef=
+t:0px;" valign=3D"top">
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0"
+style=3D"background-color:#000;border:0px solid #FFFFFF;border-radius:0px;b=
+order-collapse:separate;"><tbody><tr>
+<!--[if !mso]><!--><td align=3D"center" valign=3D"middle"
+style=3D"font-family:Arial,sans-serif;font-size:15px;font-weight:bold;color=
+:#FFFFFF;letter-spacing:0px;">
+<!--<![endif]-->
+<!--[if mso]><td align=3D"center" valign=3D"middle"
+style=3D"font-family:Arial,sans-serif;font-size:15px;font-weight:bold;color=
+:#FFFFFF;letter-spacing:0px;padding-left:18px;padding-right:8px;padding-top=
+:10px;padding-bottom:10px;">
+<![endif]--> <a target=3D"_blank"data-link-id=3D"684d1f2d19327014012bde82" =
+href=3D"https://bxl.soundestlink.com/ce/c/69560c8adaa6a9cadb8e346e/69de2b5b=
+07d98f486a94f56b/69de4ac30d2cd63075abb4f3?signature=3D2f19c52a24c690f869510=
+cb392b23f47bc1cbaa5f4d5fbdcb32a9ed84a8ad24f"
+style=3D"text-decoration:none;padding-left:18px;padding-right:8px;padding-t=
+op:10px;padding-bottom:10px;;display:inline-block;font-family:Arial,sans-se=
+rif;font-size:15px;font-weight:bold;color:#FFFFFF;letter-spacing:0px;line-h=
+eight:1.2;"> Filament </a>
+</td></tr></tbody></table>
+</td></tr></tbody></table>
+</td><td id=3D"684d135419327014012bd601" class=3D"mobile-container"
+style=3D"width:184px;vertical-align:middle;">
+<table id=3D"684d1f3019327014012bde83" border=3D"0" cellspacing=3D"0" cellp=
+adding=3D"0" width=3D"100%"
+style=3D"table-layout:fixed;"><tbody><tr><td align=3D"center" class=3D"mobi=
+le-table"
+style=3D"padding-top:12px;padding-right:0px;padding-bottom:12px;padding-lef=
+t:0px;" valign=3D"top">
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0"
+style=3D"background-color:#000;border:0px solid #FFFFFF;border-radius:0px;b=
+order-collapse:separate;"><tbody><tr>
+<!--[if !mso]><!--><td align=3D"center" valign=3D"middle"
+style=3D"font-family:Arial,sans-serif;font-size:15px;font-weight:bold;color=
+:#FFFFFF;letter-spacing:0px;">
+<!--<![endif]-->
+<!--[if mso]><td align=3D"center" valign=3D"middle"
+style=3D"font-family:Arial,sans-serif;font-size:15px;font-weight:bold;color=
+:#FFFFFF;letter-spacing:0px;padding-left:18px;padding-right:8px;padding-top=
+:10px;padding-bottom:10px;">
+<![endif]--> <a target=3D"_blank"data-link-id=3D"684d1f3019327014012bde83" =
+href=3D"https://bxl.soundestlink.com/ce/c/69560c8adaa6a9cadb8e346e/69de2b5b=
+07d98f486a94f56b/69de4ac30d2cd63075abb4f4?signature=3D2f19c52a24c690f869510=
+cb392b23f47bc1cbaa5f4d5fbdcb32a9ed84a8ad24f"
+style=3D"text-decoration:none;padding-left:18px;padding-right:8px;padding-t=
+op:10px;padding-bottom:10px;;display:inline-block;font-family:Arial,sans-se=
+rif;font-size:15px;font-weight:bold;color:#FFFFFF;letter-spacing:0px;line-h=
+eight:1.2;"> Filament Storage Bag </a>
+</td></tr></tbody></table>
+</td></tr></tbody></table>
+</td></tr></table>
+</td></tr></table>
+</td></tr></table>
+<table id=3D"671f2f49e859c32e5f8fb4e1" border=3D"0" cellspacing=3D"0" cellp=
+adding=3D"0" width=3D"100%"
+style=3D""><tr><td background=3D""
+style=3D"padding-left:0px;padding-right:0px;padding-top:0px;padding-bottom:=
+0px;background-repeat:no-repeat;background-size:cover;background-position:u=
+nset;">
+<table id=3D"671f2f49e859c32e5f8fb4e2" background=3D"" border=3D"0" cellspa=
+cing=3D"0" cellpadding=3D"0" width=3D"100%"
+style=3D""><tr><td>
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%"
+style=3D"width:100%"><tr><td id=3D"671f2f49e859c32e5f8fb4e3" class=3D"mobil=
+e-container"
+style=3D"width:600px;vertical-align:top;"><!--HTML code content block start=
+s -->
+<table id=3D"h6809ca3fab44f88d691316ad" border=3D"0" cellspacing=3D"0" cell=
+padding=3D"0" width=3D"100%"><tr><td>
+</td></tr></table><!--HTML code content block ends -->
+</td></tr></table>
+</td></tr></table>
+</td></tr></table>
+<table id=3D"69737e08241e9badb083fcf6" border=3D"0" cellspacing=3D"0" cellp=
+adding=3D"0" width=3D"100%"
+style=3D""><tr><td background=3D""
+style=3D"padding-left:0px;padding-right:0px;padding-top:0px;padding-bottom:=
+0px;">
+<table id=3D"69737e08241e9badb083fcf7" background=3D"" border=3D"0" cellspa=
+cing=3D"0" cellpadding=3D"0" width=3D"100%"
+style=3D"background-repeat:no-repeat;background-size:cover;background-posit=
+ion:unset;"><tr><td>
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%"
+style=3D"width:100%"><tr><td id=3D"69737e08241e9badb083fcf8" class=3D"mobil=
+e-container"
+style=3D"width:600px;vertical-align:top;">
+<table id=3D"69d8e405a961db3540fedad1" border=3D"0" cellspacing=3D"0" cellp=
+adding=3D"0" width=3D"600" align=3D"center" class=3D"mobile-table"><tr><td
+style=3D"padding-top:0px;padding-right:0px;padding-bottom:0px;padding-left:=
+0px;" align=3D"center">
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" align=3D"center"
+style=3D"width:100%;"><tr><td
+style=3D"text-align:center;"><a target=3D"_blank" data-link-id=3D"69d8e405a=
+961db3540fedad1" href=3D"https://bxl.soundestlink.com/ce/c/69560c8adaa6a9ca=
+db8e346e/69de2b5b07d98f486a94f56b/69de4ac30d2cd63075abb4f5?signature=3D2f19=
+c52a24c690f869510cb392b23f47bc1cbaa5f4d5fbdcb32a9ed84a8ad24f"><img alt=3D""
+                                 class=3D"mobile-image centered-block"width=
+=3D"600"=20
+                                    height=3D"600"border=3D"0"src=3D"https:=
+//wfh.soundestlink.com/image/newsletter/69dcb9905a18c9e3e0a36547"
+style=3D"max-width:600px;height:auto;margin:0 0;vertical-align:middle;font-=
+family:Arial,sans-serif;font-size:12px;color:#383838;line-height:150%;width=
+:600px;"></a>
+</td></tr></table>
+</td></tr></table>
+</td></tr></table>
+</td></tr></table>
+</td></tr></table>
+<table id=3D"69ddcf6c46c6d1b3efb95a23" border=3D"0" cellspacing=3D"0" cellp=
+adding=3D"0" width=3D"100%"
+style=3D""><tr><td class=3D"padding-left padding-right padding-top" backgro=
+und=3D""
+style=3D"padding-left:24px;padding-right:24px;padding-top:24px;padding-bott=
+om:0px;">
+<table id=3D"69ddcf6c46c6d1b3efb95a24" background=3D"" border=3D"0" cellspa=
+cing=3D"0" cellpadding=3D"0" width=3D"100%"
+style=3D""><tr><td>
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%"
+style=3D"width:100%"><tr><td id=3D"69ddcf6c46c6d1b3efb95a25" class=3D"mobil=
+e-container"
+style=3D"width:552px;vertical-align:top;">
+<table id=3D"69ddcf6f46c6d1b3efb95a29" border=3D"0" cellspacing=3D"0" cellp=
+adding=3D"0" width=3D"100%"
+style=3D"overflow-wrap:anywhere;word-wrap:anywhere"><tr><td align=3D"center=
+"
+style=3D"color:#383838;font-family:Abril Fatface,Georgia,Times New Roman,Ti=
+mes,serif;font-size:24px;line-height:125%;mso-line-height-alt:125%;padding-=
+top:12px;padding-right:12px;padding-bottom:12px;padding-left:12px;" bgcolor=
+=3D"" class=3D"mobile-table"><p
+style=3D"text-align:center;margin-top:0px;margin-bottom:0px;">EIBOS Cold Bu=
+ild Plate KRIOS Is LIVE!</p><p
+style=3D"text-align:center;margin-top:0px;margin-bottom:0px;"><a
+style=3D"color:#55ADFF"></a><a
+style=3D"color:#55ADFF"></a></p><p
+style=3D"text-align:center;margin-top:0px;margin-bottom:0px;"><a
+style=3D"color:#55ADFF"></a><a
+style=3D"color:#55ADFF"></a></p><p
+style=3D"margin-top:0px;margin-bottom:0px;"><a
+style=3D"color:#55ADFF"></a><a
+style=3D"color:#55ADFF"></a></p><p
+style=3D"margin-top:0px;margin-bottom:0px;"><a
+style=3D"color:#55ADFF"></a><a
+style=3D"color:#55ADFF"></a></p><p
+style=3D"margin-top:0px;margin-bottom:0px;"><a
+style=3D"color:#55ADFF"></a><a
+style=3D"color:#55ADFF"></a></p>
+</td></tr></table>
+</td></tr></table>
+</td></tr></table>
+</td></tr></table>
+<table id=3D"69ddb2e61c44d6404cd1bd7b" border=3D"0" cellspacing=3D"0" cellp=
+adding=3D"0" width=3D"100%"
+style=3D""><tr><td class=3D"padding-left padding-right padding-bottom" back=
+ground=3D""
+style=3D"padding-left:24px;padding-right:24px;padding-top:0px;padding-botto=
+m:24px;background-repeat:no-repeat;background-size:cover;background-positio=
+n:unset;">
+<table id=3D"69ddb2e61c44d6404cd1bd7c" background=3D"" border=3D"0" cellspa=
+cing=3D"0" cellpadding=3D"0" width=3D"100%"
+style=3D""><tr><td>
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%"
+style=3D"width:100%"><tr><td id=3D"69ddb2e61c44d6404cd1bd7d" class=3D"mobil=
+e-container"
+style=3D"width:552px;vertical-align:top;">
+<table id=3D"69ddb2e91c44d6404cd1bd81" border=3D"0" cellspacing=3D"0" cellp=
+adding=3D"0" width=3D"100%"
+style=3D"overflow-wrap:anywhere;word-wrap:anywhere"><tr><td align=3D"center=
+"
+style=3D"color:#383838;font-family:Helvetica,Helvetica Neue,Arial,Verdana,s=
+ans-serif;font-size:14px;line-height:1.5;mso-line-height-alt:150%;padding-t=
+op:12px;padding-right:12px;padding-bottom:12px;padding-left:12px;" bgcolor=
+=3D"" class=3D"mobile-table"><p
+style=3D"text-align:center;margin-top:0px;margin-bottom:0px;"><span
+style=3D"font-family:Helvetica,&#39;Helvetica Neue&#39;,Arial,Verdana,sans-=
+serif;font-size:16px;">The First Symmetrical Cold Build Plate for Bambu Lab=
+ &amp; Snapmaker.</span></p><p
+style=3D"text-align:center;margin-top:0px;margin-bottom:0px;"><span
+style=3D"font-family:Helvetica,&#39;Helvetica Neue&#39;,Arial,Verdana,sans-=
+serif;font-size:16px;">No Front, No Back, No Wrong Way to Install. PLA at 4=
+0=C2=B0C, PETG at 55=C2=B0C, no glue needed</span></p><p
+style=3D"text-align:center;margin-top:0px;margin-bottom:0px;"><span
+style=3D"font-family:Helvetica,&#39;Helvetica Neue&#39;,Arial,Verdana,sans-=
+serif;font-size:16px;"><br></span></p><p
+style=3D"text-align:center;margin-top:0px;margin-bottom:0px;"><span
+style=3D"font-family:Helvetica,&#39;Helvetica Neue&#39;,Arial,Verdana,sans-=
+serif;font-size:16px;">For Bambu Lab P1/P2/X1/A1: $29.99</span></p><p
+style=3D"text-align:center;margin-top:0px;margin-bottom:0px;"><span
+style=3D"font-family:Helvetica,&#39;Helvetica Neue&#39;,Arial,Verdana,sans-=
+serif;font-size:16px;">For Bambu Lab A1 Mini: $19.99&nbsp;</span></p><p
+style=3D"text-align:center;margin-top:0px;margin-bottom:0px;"><span
+style=3D"font-family:Helvetica,&#39;Helvetica Neue&#39;,Arial,Verdana,sans-=
+serif;font-size:16px;">For Snapmaker U1: $29.99</span></p><p
+style=3D"text-align:center;margin-top:0px;margin-bottom:0px;"><a
+style=3D"color:#55ADFF"></a><a
+style=3D"color:#55ADFF"></a></p><p
+style=3D"text-align:center;margin-top:0px;margin-bottom:0px;"><a
+style=3D"color:#55ADFF"></a><a
+style=3D"color:#55ADFF"></a></p><p
+style=3D"text-align:center;margin-top:0px;margin-bottom:0px;"><a
+style=3D"color:#55ADFF"></a><a
+style=3D"color:#55ADFF"></a></p><p
+style=3D"text-align:center;margin-top:0px;margin-bottom:0px;"><a
+style=3D"color:#55ADFF"></a><a
+style=3D"color:#55ADFF"></a></p><p
+style=3D"text-align:center;margin-top:0px;margin-bottom:0px;"><a
+style=3D"color:#55ADFF"></a><a
+style=3D"color:#55ADFF"></a></p><p
+style=3D"text-align:center;margin-top:0px;margin-bottom:0px;"><a
+style=3D"color:#55ADFF"></a><a
+style=3D"color:#55ADFF"></a></p><p
+style=3D"text-align:center;margin-top:0px;margin-bottom:0px;"><a
+style=3D"color:#55ADFF"></a><a
+style=3D"color:#55ADFF"></a></p><p
+style=3D"margin-top:0px;margin-bottom:0px;"><a
+style=3D"color:#55ADFF"></a><a
+style=3D"color:#55ADFF"></a></p><p
+style=3D"margin-top:0px;margin-bottom:0px;"><br></p><p
+style=3D"margin-top:0px;margin-bottom:0px;"><a
+style=3D"color:#55ADFF"></a><a
+style=3D"color:#55ADFF"></a></p><p
+style=3D"margin-top:0px;margin-bottom:0px;"><a
+style=3D"color:#55ADFF"></a><a
+style=3D"color:#55ADFF"></a></p><p
+style=3D"margin-top:0px;margin-bottom:0px;"><a
+style=3D"color:#55ADFF"></a><a
+style=3D"color:#55ADFF"></a></p><p
+style=3D"margin-top:0px;margin-bottom:0px;"><a
+style=3D"color:#55ADFF"></a><a
+style=3D"color:#55ADFF"></a></p>
+</td></tr></table>
+<table id=3D"69ddcec246c6d1b3efb95a21" border=3D"0" cellspacing=3D"0" cellp=
+adding=3D"0" width=3D"100%"
+style=3D"table-layout:fixed;"><tbody><tr><td align=3D"center" class=3D"mobi=
+le-table"
+style=3D"padding-top:12px;padding-right:12px;padding-bottom:12px;padding-le=
+ft:12px;" valign=3D"top">
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0"width=3D"100%"
+style=3D"background-color:#78B1DA;border:2px solid #FFFFFF;border-radius:0p=
+x;border-collapse:separate;"><tbody><tr>
+<!--[if !mso]><!--><td align=3D"center" valign=3D"middle"
+style=3D"font-family:Arial,sans-serif;font-size:16px;color:#FFFFFF;">
+<!--<![endif]-->
+<!--[if mso]><td align=3D"center" valign=3D"middle"
+style=3D"font-family:Arial,sans-serif;font-size:16px;color:#FFFFFF;padding-=
+left:120px;padding-right:120px;padding-top:16px;padding-bottom:16px;">
+<![endif]--> <a target=3D"_blank"data-link-id=3D"69ddcec246c6d1b3efb95a21" =
+href=3D"https://bxl.soundestlink.com/ce/c/69560c8adaa6a9cadb8e346e/69de2b5b=
+07d98f486a94f56b/69de4ac30d2cd63075abb4f6?signature=3D2f19c52a24c690f869510=
+cb392b23f47bc1cbaa5f4d5fbdcb32a9ed84a8ad24f"
+style=3D"text-decoration:none;;display:inline-block;width:100%;padding-top:=
+16px;padding-bottom:16px;text-align:center;font-family:Arial,sans-serif;fon=
+t-size:16px;color:#FFFFFF;line-height:1.2;"> =F0=9F=94=A5First 100 Orders S=
+hip Free! </a>
+</td></tr></tbody></table>
+</td></tr></tbody></table><!--Line/space content block starts -->
+<table id=3D"69ddcf3046c6d1b3efb95a22" border=3D"0" cellspacing=3D"0" cellp=
+adding=3D"0" width=3D"100%"><tr><td align=3D"center"
+style=3D"padding-top:6px;padding-right:12px;padding-bottom:6px;padding-left=
+:12px;">
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%"><tr>=
+<td
+style=3D"font-size:0;line-height:0;border-top:2px solid #000000;">&nbsp;
+</td></tr></table>
+</td></tr></table><!--Line/space content block ends -->
+</td></tr></table>
+</td></tr></table>
+</td></tr></table>
+<table id=3D"69ddd06546c6d1b3efb95a35" border=3D"0" cellspacing=3D"0" cellp=
+adding=3D"0" width=3D"100%"
+style=3D""><tr><td class=3D"padding-left padding-right" background=3D""
+style=3D"padding-left:24px;padding-right:24px;padding-top:0px;padding-botto=
+m:12px;">
+<table id=3D"69ddd06546c6d1b3efb95a36" background=3D"" border=3D"0" cellspa=
+cing=3D"0" cellpadding=3D"0" width=3D"100%"
+style=3D""><tr><td>
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%"
+style=3D"width:100%"><tr><td id=3D"69ddd06546c6d1b3efb95a37" class=3D"mobil=
+e-container"
+style=3D"width:552px;vertical-align:top;">
+<table id=3D"69ddd06a46c6d1b3efb95a3b" border=3D"0" cellspacing=3D"0" cellp=
+adding=3D"0" width=3D"100%"
+style=3D"overflow-wrap:anywhere;word-wrap:anywhere"><tr><td align=3D"center=
+"
+style=3D"color:#383838;font-family:Abril Fatface,Georgia,Times New Roman,Ti=
+mes,serif;font-size:24px;line-height:125%;mso-line-height-alt:125%;padding-=
+top:12px;padding-right:12px;padding-bottom:12px;padding-left:12px;" bgcolor=
+=3D"" class=3D"mobile-table"><p
+style=3D"text-align:center;margin-top:0px;margin-bottom:0px;">What makes Kr=
+ios stand out?</p><p
+style=3D"text-align:center;margin-top:0px;margin-bottom:0px;"><a
+style=3D"color:#55ADFF"></a><a
+style=3D"color:#55ADFF"></a></p><p
+style=3D"margin-top:0px;margin-bottom:0px;"><a
+style=3D"color:#55ADFF"></a><a
+style=3D"color:#55ADFF"></a></p><p
+style=3D"margin-top:0px;margin-bottom:0px;"><a
+style=3D"color:#55ADFF"></a><a
+style=3D"color:#55ADFF"></a></p><p
+style=3D"margin-top:0px;margin-bottom:0px;"><a
+style=3D"color:#55ADFF"></a><a
+style=3D"color:#55ADFF"></a></p><p
+style=3D"margin-top:0px;margin-bottom:0px;"><a
+style=3D"color:#55ADFF"></a><a
+style=3D"color:#55ADFF"></a></p><p
+style=3D"margin-top:0px;margin-bottom:0px;"><a
+style=3D"color:#55ADFF"></a><a
+style=3D"color:#55ADFF"></a></p><p
+style=3D"margin-top:0px;margin-bottom:0px;"><a
+style=3D"color:#55ADFF"></a><a
+style=3D"color:#55ADFF"></a></p><p
+style=3D"margin-top:0px;margin-bottom:0px;"><a
+style=3D"color:#55ADFF"></a><a
+style=3D"color:#55ADFF"></a></p><p
+style=3D"margin-top:0px;margin-bottom:0px;"><a
+style=3D"color:#55ADFF"></a><a
+style=3D"color:#55ADFF"></a></p>
+</td></tr></table>
+</td></tr></table>
+</td></tr></table>
+</td></tr></table>
+<table id=3D"69d7527b5c1d685902dd1408" border=3D"0" cellspacing=3D"0" cellp=
+adding=3D"0" width=3D"100%"
+style=3D""><tr><td background=3D""
+style=3D"padding-left:0px;padding-right:0px;padding-top:0px;padding-bottom:=
+0px;background-repeat:no-repeat;background-size:cover;background-position:u=
+nset;">
+<table id=3D"69d7527b5c1d685902dd1409" background=3D"" border=3D"0" cellspa=
+cing=3D"0" cellpadding=3D"0" width=3D"100%"
+style=3D""><tr><td>
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%"
+style=3D"width:100%"><tr><td id=3D"69d7527b5c1d685902dd140a" class=3D"mobil=
+e-container"
+style=3D"width:600px;vertical-align:top;">
+<table id=3D"69d8e43ca961db3540fedad2" border=3D"0" cellspacing=3D"0" cellp=
+adding=3D"0" width=3D"600" align=3D"center" class=3D"mobile-table"><tr><td
+style=3D"padding-top:0px;padding-right:0px;padding-bottom:0px;padding-left:=
+0px;" align=3D"center">
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" align=3D"center"
+style=3D"width:100%;"><tr><td
+style=3D"text-align:center;"><a target=3D"_blank" data-link-id=3D"69d8e43ca=
+961db3540fedad2" href=3D"https://bxl.soundestlink.com/ce/c/69560c8adaa6a9ca=
+db8e346e/69de2b5b07d98f486a94f56b/69de4ac30d2cd63075abb4f7?signature=3D2f19=
+c52a24c690f869510cb392b23f47bc1cbaa5f4d5fbdcb32a9ed84a8ad24f"><img alt=3D""
+                                 class=3D"mobile-image centered-block"width=
+=3D"600"=20
+                                    height=3D"300"border=3D"0"src=3D"https:=
+//wfh.soundestlink.com/image/newsletter/69dcb9bc7df5e3c03c16fea8"
+style=3D"max-width:600px;height:auto;margin:0 0;vertical-align:middle;font-=
+family:Arial,sans-serif;font-size:12px;color:#383838;line-height:150%;width=
+:600px;"></a>
+</td></tr></table>
+</td></tr></table>
+</td></tr></table>
+</td></tr></table>
+</td></tr></table>
+<table id=3D"69ddcfb746c6d1b3efb95a2a" border=3D"0" cellspacing=3D"0" cellp=
+adding=3D"0" width=3D"100%"
+style=3D""><tr><td class=3D"padding-left padding-right padding-top padding-=
+bottom" background=3D""
+style=3D"padding-left:24px;padding-right:24px;padding-top:24px;padding-bott=
+om:24px;background-repeat:no-repeat;background-size:cover;background-positi=
+on:unset;">
+<table id=3D"69ddcfb746c6d1b3efb95a2b" background=3D"" border=3D"0" cellspa=
+cing=3D"0" cellpadding=3D"0" width=3D"100%"
+style=3D""><tr><td>
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%"
+style=3D"width:100%"><tr><td id=3D"69ddcfb746c6d1b3efb95a2c" class=3D"mobil=
+e-container"
+style=3D"width:276px;vertical-align:top;">
+<table id=3D"69ddcfbe46c6d1b3efb95a32" border=3D"0" cellspacing=3D"0" cellp=
+adding=3D"0" width=3D"100%"
+style=3D"overflow-wrap:anywhere;word-wrap:anywhere"><tr><td align=3D"left"
+style=3D"color:#383838;font-family:Arial,sans-serif;font-size:14px;line-hei=
+ght:1.5;mso-line-height-alt:150%;padding-top:12px;padding-right:12px;paddin=
+g-bottom:12px;padding-left:12px;" bgcolor=3D"" class=3D"mobile-table"><p
+style=3D"text-align:left;margin-top:0px;margin-bottom:0px;">Traditional pla=
+tes have a front and a back =E2=80=94 Krios doesn&#39;t. Place it either wa=
+y, the nozzle wipe zone is always right.</p><p
+style=3D"text-align:left;margin-top:0px;margin-bottom:0px;"><a
+style=3D"color:#55ADFF"></a><a
+style=3D"color:#55ADFF"></a></p><p
+style=3D"margin-top:0px;margin-bottom:0px;text-align:left;"><a
+style=3D"color:#55ADFF"></a><a
+style=3D"color:#55ADFF"></a></p><p
+style=3D"margin-top:0px;margin-bottom:0px;text-align:left;"><a
+style=3D"color:#55ADFF"></a><a
+style=3D"color:#55ADFF"></a></p><p
+style=3D"margin-top:0px;margin-bottom:0px;text-align:left;"><a
+style=3D"color:#55ADFF"></a><a
+style=3D"color:#55ADFF"></a></p><p
+style=3D"margin-top:0px;margin-bottom:0px;text-align:left;"><a
+style=3D"color:#55ADFF"></a><a
+style=3D"color:#55ADFF"></a></p><p
+style=3D"margin-top:0px;margin-bottom:0px;text-align:left;"><a
+style=3D"color:#55ADFF"></a><a
+style=3D"color:#55ADFF"></a></p><p
+style=3D"margin-top:0px;margin-bottom:0px;text-align:left;"><a
+style=3D"color:#55ADFF"></a><a
+style=3D"color:#55ADFF"></a></p>
+</td></tr></table>
+</td><td id=3D"69ddcfb746c6d1b3efb95a2d" class=3D"mobile-container"
+style=3D"width:276px;vertical-align:top;">
+<table id=3D"69ddcfc146c6d1b3efb95a33" border=3D"0" cellspacing=3D"0" cellp=
+adding=3D"0" width=3D"100%"
+style=3D"overflow-wrap:anywhere;word-wrap:anywhere"><tr><td align=3D"left"
+style=3D"color:#383838;font-family:Arial,sans-serif;font-size:14px;line-hei=
+ght:1.5;mso-line-height-alt:150%;padding-top:12px;padding-right:12px;paddin=
+g-bottom:12px;padding-left:12px;" bgcolor=3D"" class=3D"mobile-table"><p
+style=3D"margin-top:0px;margin-bottom:0px;text-align:left;">EIBOS Krios gri=
+ps even the smallest contact points starting at just 40=C2=B0C for PLA and =
+55=C2=B0C for PETG =E2=80=94 no glue needed.</p><p
+style=3D"margin-top:0px;margin-bottom:0px;text-align:left;"><a
+style=3D"color:#55ADFF"></a><a
+style=3D"color:#55ADFF"></a></p><p
+style=3D"margin-top:0px;margin-bottom:0px;text-align:left;"><a
+style=3D"color:#55ADFF"></a><a
+style=3D"color:#55ADFF"></a></p><p
+style=3D"margin-top:0px;margin-bottom:0px;text-align:left;"><a
+style=3D"color:#55ADFF"></a><a
+style=3D"color:#55ADFF"></a></p><p
+style=3D"margin-top:0px;margin-bottom:0px;text-align:left;"><a
+style=3D"color:#55ADFF"></a><a
+style=3D"color:#55ADFF"></a></p>
+</td></tr></table>
+</td></tr></table>
+</td></tr></table>
+</td></tr></table>
+<table id=3D"69ddd2ea46c6d1b3efb95a55" border=3D"0" cellspacing=3D"0" cellp=
+adding=3D"0" width=3D"100%"
+style=3D""><tr><td background=3D""
+style=3D"padding-left:0px;padding-right:0px;padding-top:0px;padding-bottom:=
+0px;">
+<table id=3D"69ddd2ea46c6d1b3efb95a56" background=3D"" border=3D"0" cellspa=
+cing=3D"0" cellpadding=3D"0" width=3D"100%"
+style=3D""><tr><td>
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%"
+style=3D"width:100%"><tr><td id=3D"69ddd2ea46c6d1b3efb95a57" class=3D"mobil=
+e-container"
+style=3D"width:600px;vertical-align:top;">
+<table id=3D"69ddd2ef46c6d1b3efb95a5b" border=3D"0" cellspacing=3D"0" cellp=
+adding=3D"0" width=3D"600" align=3D"center" class=3D"mobile-table"><tr><td
+style=3D"padding-top:0px;padding-right:0px;padding-bottom:0px;padding-left:=
+0px;" align=3D"center">
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" align=3D"center"
+style=3D"width:100%;"><tr><td
+style=3D"text-align:center;"><a target=3D"_blank" data-link-id=3D"69ddd2ef4=
+6c6d1b3efb95a5b" href=3D"https://bxl.soundestlink.com/ce/c/69560c8adaa6a9ca=
+db8e346e/69de2b5b07d98f486a94f56b/69de4ac30d2cd63075abb4f8?signature=3D2f19=
+c52a24c690f869510cb392b23f47bc1cbaa5f4d5fbdcb32a9ed84a8ad24f"><img alt=3D""
+                                 class=3D"mobile-image centered-block"width=
+=3D"600"=20
+                                    height=3D"300"border=3D"0"src=3D"https:=
+//wfh.soundestlink.com/image/newsletter/69ddec3d0a689e9d655767ad"
+style=3D"max-width:600px;height:auto;margin:0 0;vertical-align:middle;font-=
+family:Arial,sans-serif;font-size:12px;color:#383838;line-height:150%;width=
+:600px;"></a>
+</td></tr></table>
+</td></tr></table>
+</td></tr></table>
+</td></tr></table>
+</td></tr></table>
+<table id=3D"69ddd2e346c6d1b3efb95a4d" border=3D"0" cellspacing=3D"0" cellp=
+adding=3D"0" width=3D"100%"
+style=3D""><tr><td class=3D"padding-left padding-right padding-top padding-=
+bottom" background=3D""
+style=3D"padding-left:24px;padding-right:24px;padding-top:24px;padding-bott=
+om:24px;">
+<table id=3D"69ddd2e346c6d1b3efb95a4e" background=3D"" border=3D"0" cellspa=
+cing=3D"0" cellpadding=3D"0" width=3D"100%"
+style=3D""><tr><td>
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%"
+style=3D"width:100%"><tr><td id=3D"69ddd2e346c6d1b3efb95a4f" class=3D"mobil=
+e-container"
+style=3D"width:276px;vertical-align:top;">
+<table id=3D"69ddd8cc46c6d1b3efb95a5c" border=3D"0" cellspacing=3D"0" cellp=
+adding=3D"0" width=3D"100%"
+style=3D"overflow-wrap:anywhere;word-wrap:anywhere"><tr><td align=3D"left"
+style=3D"color:#383838;font-family:Arial,sans-serif;font-size:14px;line-hei=
+ght:1.5;mso-line-height-alt:150%;padding-top:12px;padding-right:12px;paddin=
+g-bottom:12px;padding-left:12px;" bgcolor=3D"" class=3D"mobile-table"><p
+style=3D"margin-top:0px;margin-bottom:0px;text-align:left;">AR codes are pr=
+inted on both sides of the plate. Simply select the matching plate type in =
+Bambu Studio, and your X1 series or P2S printer will verify the plate autom=
+atically before printing.</p><p
+style=3D"margin-top:0px;margin-bottom:0px;text-align:left;"><a
+style=3D"color:#55ADFF"></a><a
+style=3D"color:#55ADFF"></a></p><p
+style=3D"margin-top:0px;margin-bottom:0px;text-align:left;"><a
+style=3D"color:#55ADFF"></a><a
+style=3D"color:#55ADFF"></a></p><p
+style=3D"margin-top:0px;margin-bottom:0px;text-align:left;"><a
+style=3D"color:#55ADFF"></a><a
+style=3D"color:#55ADFF"></a></p>
+</td></tr></table>
+</td><td id=3D"69ddd2e346c6d1b3efb95a50" class=3D"mobile-container"
+style=3D"width:276px;vertical-align:top;">
+<table id=3D"69ddd8cf46c6d1b3efb95a5d" border=3D"0" cellspacing=3D"0" cellp=
+adding=3D"0" width=3D"100%"
+style=3D"overflow-wrap:anywhere;word-wrap:anywhere"><tr><td align=3D"left"
+style=3D"color:#383838;font-family:Arial,sans-serif;font-size:14px;line-hei=
+ght:1.5;mso-line-height-alt:150%;padding-top:12px;padding-right:12px;paddin=
+g-bottom:12px;padding-left:12px;" bgcolor=3D"" class=3D"mobile-table"><p
+style=3D"margin-top:0px;margin-bottom:0px;text-align:left;">Krios&#39;s coa=
+ting grips firmly at lower temperatures =E2=80=94 No need to overheat the b=
+ed. Nearly half the bed temperature for your most common prints. Less waiti=
+ng, less power, same grip.</p><p
+style=3D"margin-top:0px;margin-bottom:0px;text-align:left;"><a
+style=3D"color:#55ADFF"></a><a
+style=3D"color:#55ADFF"></a></p><p
+style=3D"margin-top:0px;margin-bottom:0px;text-align:left;"><a
+style=3D"color:#55ADFF"></a><a
+style=3D"color:#55ADFF"></a></p><p
+style=3D"margin-top:0px;margin-bottom:0px;text-align:left;"><a
+style=3D"color:#55ADFF"></a><a
+style=3D"color:#55ADFF"></a></p><p
+style=3D"margin-top:0px;margin-bottom:0px;text-align:left;"><a
+style=3D"color:#55ADFF"></a><a
+style=3D"color:#55ADFF"></a></p>
+</td></tr></table>
+</td></tr></table>
+</td></tr></table>
+</td></tr></table>
+<table id=3D"69ddec9f46c6d1b3efb95a5e" border=3D"0" cellspacing=3D"0" cellp=
+adding=3D"0" width=3D"100%"
+style=3D""><tr><td class=3D"padding-left padding-right padding-top padding-=
+bottom" background=3D""
+style=3D"padding-left:24px;padding-right:24px;padding-top:24px;padding-bott=
+om:24px;background-repeat:no-repeat;background-size:cover;background-positi=
+on:unset;">
+<table id=3D"69ddec9f46c6d1b3efb95a5f" background=3D"" border=3D"0" cellspa=
+cing=3D"0" cellpadding=3D"0" width=3D"100%"
+style=3D""><tr><td>
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%"
+style=3D"width:100%"><tr><td id=3D"69ddec9f46c6d1b3efb95a60" class=3D"mobil=
+e-container"
+style=3D"width:552px;vertical-align:top;">
+<table id=3D"69ddeca246c6d1b3efb95a64" border=3D"0" cellspacing=3D"0" cellp=
+adding=3D"0" width=3D"100%"
+style=3D"table-layout:fixed;"><tbody><tr><td align=3D"center" class=3D"mobi=
+le-table"
+style=3D"padding-top:12px;padding-right:12px;padding-bottom:12px;padding-le=
+ft:12px;" valign=3D"top">
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0"width=3D"100%"
+style=3D"background-color:#78B1DA;border:2px solid #FFFFFF;border-radius:0p=
+x;border-collapse:separate;"><tbody><tr>
+<!--[if !mso]><!--><td align=3D"center" valign=3D"middle"
+style=3D"font-family:Arial,sans-serif;font-size:16px;color:#FFFFFF;">
+<!--<![endif]-->
+<!--[if mso]><td align=3D"center" valign=3D"middle"
+style=3D"font-family:Arial,sans-serif;font-size:16px;color:#FFFFFF;padding-=
+left:120px;padding-right:120px;padding-top:16px;padding-bottom:16px;">
+<![endif]--> <a target=3D"_blank"data-link-id=3D"69ddeca246c6d1b3efb95a64" =
+href=3D"https://bxl.soundestlink.com/ce/c/69560c8adaa6a9cadb8e346e/69de2b5b=
+07d98f486a94f56b/69de4ac30d2cd63075abb4f9?signature=3D2f19c52a24c690f869510=
+cb392b23f47bc1cbaa5f4d5fbdcb32a9ed84a8ad24f"
+style=3D"text-decoration:none;;display:inline-block;width:100%;padding-top:=
+16px;padding-bottom:16px;text-align:center;font-family:Arial,sans-serif;fon=
+t-size:16px;color:#FFFFFF;line-height:1.2;"> Get Your Krios Now! </a>
+</td></tr></tbody></table>
+</td></tr></tbody></table>
+</td></tr></table>
+</td></tr></table>
+</td></tr></table>
+<table id=3D"6768e037a0c0ed1acc45c3e1" border=3D"0" cellspacing=3D"0" cellp=
+adding=3D"0" width=3D"100%"
+style=3D""><tr><td class=3D"padding-left padding-right padding-top padding-=
+bottom" background=3D""
+style=3D"padding-left:24px;padding-right:24px;padding-top:32px;padding-bott=
+om:24px;vertical-align:middle;background-repeat:no-repeat;background-size:c=
+over;background-position:unset;background-color:#000000;">
+<table id=3D"6768e037a0c0ed1acc45c3e2" background=3D"" border=3D"0" cellspa=
+cing=3D"0" cellpadding=3D"0" width=3D"100%"
+style=3D""><tr><td>
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%"
+style=3D"width:100%"><tr><td id=3D"6768e037a0c0ed1acc45c3e3" class=3D"mobil=
+e-container"
+style=3D"width:552px;vertical-align:middle;">
+<table id=3D"6768e037a0c0ed1acc45c3e4" border=3D"0" cellspacing=3D"0" cellp=
+adding=3D"0" width=3D"100%"><tr><td align=3D"center"
+style=3D"12px;">
+<table border=3D"0" cellspacing=3D"0" cellpadding=3D"0"><tr><td
+style=3D"padding:12px;"><a target=3D"_blank" href=3D"https://bxl.soundestli=
+nk.com/ce/c/69560c8adaa6a9cadb8e346e/69de2b5b07d98f486a94f56b/69de4ac30d2cd=
+63075abb4fa?signature=3D2f19c52a24c690f869510cb392b23f47bc1cbaa5f4d5fbdcb32=
+a9ed84a8ad24f"><img width=3D"24" height=3D"24" alt=3D"facebook" border=3D"0=
+" src=3D"https://wfh.soundestlink.com/dynamicImage/social/facebook/48/24/B3=
+855D"
+style=3D"width:24px;height:auto;display:block;margin:0 auto;font-family:Ari=
+al,sans-serif;font-size:14px;color:#383838;line-height:150%;"></a>
+</td><td
+style=3D"padding:12px;"><a target=3D"_blank" href=3D"https://bxl.soundestli=
+nk.com/ce/c/69560c8adaa6a9cadb8e346e/69de2b5b07d98f486a94f56b/69de4ac30d2cd=
+63075abb4fb?signature=3D2f19c52a24c690f869510cb392b23f47bc1cbaa5f4d5fbdcb32=
+a9ed84a8ad24f"><img width=3D"24" height=3D"24" alt=3D"twitter" border=3D"0"=
+ src=3D"https://wfh.soundestlink.com/dynamicImage/social/twitter/48/24/B385=
+5D"
+style=3D"width:24px;height:auto;display:block;margin:0 auto;font-family:Ari=
+al,sans-serif;font-size:14px;color:#383838;line-height:150%;"></a>
+</td><td
+style=3D"padding:12px;"><a target=3D"_blank" href=3D"https://bxl.soundestli=
+nk.com/ce/c/69560c8adaa6a9cadb8e346e/69de2b5b07d98f486a94f56b/69de4ac30d2cd=
+63075abb4fc?signature=3D2f19c52a24c690f869510cb392b23f47bc1cbaa5f4d5fbdcb32=
+a9ed84a8ad24f"><img width=3D"24" height=3D"24" alt=3D"youtube" border=3D"0"=
+ src=3D"https://wfh.soundestlink.com/dynamicImage/social/youtube/48/24/B385=
+5D"
+style=3D"width:24px;height:auto;display:block;margin:0 auto;font-family:Ari=
+al,sans-serif;font-size:14px;color:#383838;line-height:150%;"></a>
+</td></tr></table>
+</td></tr></table>
+<table id=3D"6768e037a0c0ed1acc45c3e5" border=3D"0" cellspacing=3D"0" cellp=
+adding=3D"0" width=3D"100%"
+style=3D"overflow-wrap:anywhere;word-wrap:anywhere"><tr><td align=3D""
+style=3D"color:#383838;font-family:Arial,sans-serif;font-size:12px;line-hei=
+ght:1.5;mso-line-height-alt:150%;padding:12px;" bgcolor=3D"" class=3D"mobil=
+e-table"><p id=3D"isPasted"
+style=3D"text-align:center;margin:0px;"><span
+style=3D"color:rgb(255,255,255);">=C2=A9 EIBOS3D</span></p><p
+style=3D"text-align:left;margin:0px;"><span
+style=3D"color:rgb(255,255,255);"><br/></span></p><p
+style=3D"text-align:center;margin:0px;"><span
+style=3D"color:rgb(255,255,255);"><a
+style=3D"color:#F9F9F9" data-translation-key=3D"preference" href=3D"https:/=
+/wfh.soundestlink.com/contactsPreferences/v2/?b=3D6729a86932a1ca41079559b6&=
+c=3D69560c8adaa6a9cadb8e346e&payload=3DdrvVj2yjEHPsCzx4e0jIjDnQfJ7R3csZSJuN=
+-EmKQDWecPU-n2bUn117XCNh1gkPIcj1BxCadqHSBA3IDB76cF9pzC1ryVyQtLTjF64-zR0eWcd=
+NDXxnt-TGITbAjWUXMRbd" target=3D"_blank">Edit preferences</a> | <a
+style=3D"color:#F9F9F9" data-translation-key=3D"unsubscribe" href=3D"https:=
+//wfh.soundestlink.com/contactsPreferences/v2/unsubscribe/?b=3D6729a86932a1=
+ca41079559b6&c=3D69560c8adaa6a9cadb8e346e&payload=3DbV0uT1NUvSXw-102t1n5p_X=
+GLzArglbkdLWQp_4FLeRTmrI-f_eZ6br98dypfWf7ezaaQtDhySsnML8asmrGQt9zRZR-zLAc6_=
+-ADEX1fjzXxykhTSiQdYzpk6WrEow4Jlwp" target=3D"_blank">Unsubscribe</a></span=
+></p>
+</td></tr></table>
+</td></tr></table>
+</td></tr></table>
+</td></tr></table>
+</td></tr></table>
+</td></tr></table>
+</td></tr></table>
+</td></tr></table>
+</body>
+</html>
+--6e194a04bd62655cdd413dd1e4e40f2884fdf8dc78a9c934c4f1c194d7e5--
+
