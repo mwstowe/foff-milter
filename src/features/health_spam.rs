@@ -220,7 +220,10 @@ impl FeatureExtractor for HealthSpamAnalyzer {
         // Japanese delivery impersonation (Amazon/courier phishing)
         let jp_delivery_keywords = ["お届け", "配送", "お荷物", "追跡番号", "ご注文"];
         let jp_brand_keywords = ["アマゾン", "amazon", "ヤマト", "佐川", "日本郵便"];
-        let has_jp_delivery = jp_delivery_keywords.iter().filter(|k| content.contains(*k)).count();
+        let has_jp_delivery = jp_delivery_keywords
+            .iter()
+            .filter(|k| content.contains(*k))
+            .count();
         let has_jp_brand = jp_brand_keywords.iter().any(|k| content.contains(k));
         if has_jp_delivery >= 2
             && has_jp_brand
@@ -228,9 +231,8 @@ impl FeatureExtractor for HealthSpamAnalyzer {
             && !sender_domain.ends_with(".jp")
         {
             score += 100;
-            evidence.push(
-                "Japanese delivery impersonation spam from non-Japanese domain".to_string(),
-            );
+            evidence
+                .push("Japanese delivery impersonation spam from non-Japanese domain".to_string());
         } else if has_jp_delivery >= 1
             && !sender_domain.ends_with(".jp")
             && !sender_domain.contains("amazon")
@@ -239,9 +241,7 @@ impl FeatureExtractor for HealthSpamAnalyzer {
             // Subject has Japanese delivery keywords from non-JP domain
             // (body may be ISO-2022-JP encoded and not decoded)
             score += 100;
-            evidence.push(
-                "Japanese delivery notification from non-Japanese domain".to_string(),
-            );
+            evidence.push("Japanese delivery notification from non-Japanese domain".to_string());
         }
 
         // Check for health product promotion from suspicious domains
@@ -503,7 +503,10 @@ impl FeatureExtractor for HealthSpamAnalyzer {
             "early detection",
             "life line screening",
         ];
-        let has_screening = screening_keywords.iter().filter(|k| content.contains(*k)).count();
+        let has_screening = screening_keywords
+            .iter()
+            .filter(|k| content.contains(*k))
+            .count();
         if has_screening >= 2
             && (display_name.starts_with("dr ")
                 || display_name.starts_with("dr.")
