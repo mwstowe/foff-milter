@@ -462,6 +462,37 @@ impl FeatureExtractor for HealthSpamAnalyzer {
             evidence.push("Health keyword in display name from non-health domain".to_string());
         }
 
+        // Health screening spam: "Dr" sender from non-medical domain with screening content
+        let screening_keywords = [
+            "screening package",
+            "health screening",
+            "stroke risk",
+            "heart disease",
+            "chronic illness",
+            "cardiovascular",
+            "carotid",
+            "non-invasive",
+            "preventive health",
+            "early detection",
+            "life line screening",
+        ];
+        let has_screening = screening_keywords.iter().filter(|k| content.contains(*k)).count();
+        if has_screening >= 2
+            && (display_name.starts_with("dr ")
+                || display_name.starts_with("dr.")
+                || display_name.contains("doctor"))
+            && !sender_domain.contains("health")
+            && !sender_domain.contains("medical")
+            && !sender_domain.contains("screening")
+            && !sender_domain.contains("hospital")
+        {
+            score += 85;
+            evidence.push("Health screening spam: fake doctor from non-medical domain".to_string());
+        } else if has_screening >= 3 {
+            score += 60;
+            evidence.push("Health screening spam content detected".to_string());
+        }
+
         let confidence = if score > 0 { 0.9 } else { 0.1 };
 
         FeatureScore {
