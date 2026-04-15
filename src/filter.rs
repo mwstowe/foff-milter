@@ -8461,6 +8461,22 @@ impl FilterEngine {
             }
         }
 
+        // Boost score when insurance content comes from non-insurance domain
+        if score > 0
+            && !domain.contains("insurance")
+            && !domain.contains("geico")
+            && !domain.contains("allstate")
+            && !domain.contains("statefarm")
+            && !domain.contains("progressive")
+            && !domain.contains("usaa")
+            && !domain.contains("liberty")
+            && !domain.contains("nationwide")
+            && !domain.contains("farmers")
+        {
+            score += 40;
+            log::debug!("Insurance spam from non-insurance domain: {}", domain);
+        }
+
         // Large dollar amount patterns (common in insurance spam)
         if content_lower.contains("$")
             && (content_lower.contains("million")
