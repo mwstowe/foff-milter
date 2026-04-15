@@ -1,5 +1,5 @@
 #!/bin/bash
-# FOFF Milter Complete Test Suite
+# FOFF Milter Complete Test Suite (Parallel)
 
 cd "$(dirname "$0")/.."
 
@@ -14,88 +14,102 @@ else
 fi
 
 CONFIG="./foff-milter.toml"
-
-# Use CI config if in GitHub Actions
 if [ "$GITHUB_ACTIONS" = "true" ]; then
     CONFIG="./foff-milter-ci.toml"
 fi
-PASSED=0
-FAILED=0
+
+# Parallelism: use nproc or default to 8
+JOBS=${FOFF_TEST_JOBS:-$(nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo 8)}
 
 echo "🧪 FOFF Milter Complete Test Suite"
 echo "=================================="
 echo "Using binary: $BINARY"
+echo "Parallel jobs: $JOBS"
 
-# Quick config validation
+# Config validation
 echo "🔧 Testing configuration..."
 if $BINARY --test-config -c "$CONFIG" >/dev/null 2>&1; then
     echo "✅ Configuration is valid"
-    ((PASSED++))
+    CONFIG_PASS=1
 else
     echo "❌ Configuration is invalid"
-    ((FAILED++))
+    CONFIG_PASS=0
 fi
 
-echo
-echo "📧 Testing positive cases (should be caught)..."
-positive_passed=0
-positive_failed=0
-positive_count=0
+TMPDIR=$(mktemp -d)
+trap "rm -rf $TMPDIR" EXIT
 
-for email in tests/positive/*.eml; do
-    [ ! -f "$email" ] && continue
-    ((positive_count++))
-    
-    echo -n "Testing $(basename "$email"): "
-    if $BINARY --test-email "$email" -c "$CONFIG" 2>/dev/null | grep -qE "(TAG AS SPAM|REJECT)"; then
-        echo "✅ CAUGHT"
-        ((positive_passed++))
-        ((PASSED++))
+# Test a single email, write result to temp file
+test_email() {
+    local email="$1"
+    local expect="$2"  # "spam" or "clean"
+    local binary="$3"
+    local config="$4"
+    local tmpdir="$5"
+    local base=$(basename "$email")
+    local result
+
+    result=$($binary --test-email "$email" -c "$config" 2>/dev/null)
+
+    if [ "$expect" = "spam" ]; then
+        if echo "$result" | grep -qE "(TAG AS SPAM|REJECT)"; then
+            echo "PASS" > "$tmpdir/result_${base}"
+        else
+            echo "FAIL" > "$tmpdir/result_${base}"
+            echo "  ❌ MISSED: $base" >&2
+        fi
     else
-        echo "❌ MISSED"
-        ((positive_failed++))
-        ((FAILED++))
+        if echo "$result" | grep -q "Result: ACCEPT"; then
+            echo "PASS" > "$tmpdir/result_${base}"
+        else
+            echo "FAIL" > "$tmpdir/result_${base}"
+            echo "  ❌ FALSE POSITIVE: $base" >&2
+        fi
     fi
-done
+}
+export -f test_email
 
 echo
-echo "📧 Testing negative cases (should pass)..."
-negative_passed=0
-negative_failed=0
-negative_count=0
+echo "📧 Running positive tests (should be caught)..."
+positive_count=$(find tests/positive -name "*.eml" | wc -l)
 
-for email in tests/negative/*.eml; do
-    [ ! -f "$email" ] && continue
-    ((negative_count++))
-    
-    echo -n "Testing $(basename "$email"): "
-    if $BINARY --test-email "$email" -c "$CONFIG" 2>/dev/null | grep -q "Result: ACCEPT"; then
-        echo "✅ PASSED"
-        ((negative_passed++))
-        ((PASSED++))
-    else
-        echo "❌ FAILED"
-        ((negative_failed++))
-        ((FAILED++))
-    fi
-done
+find tests/positive -name "*.eml" -print0 | \
+    xargs -0 -P "$JOBS" -I{} bash -c 'test_email "$@"' _ {} spam "$BINARY" "$CONFIG" "$TMPDIR"
 
-# Calculate totals
-total_tests=$((positive_count + negative_count + 1))  # +1 for config test
-success_rate=$(echo "scale=1; $PASSED * 100 / $total_tests" | bc -l 2>/dev/null || echo "0")
+positive_passed=$(grep -rl "PASS" "$TMPDIR"/result_* 2>/dev/null | wc -l)
+positive_failed=$((positive_count - positive_passed))
+
+echo "✅ Positive: $positive_passed/$positive_count"
+
+# Clear results for negative tests
+rm -f "$TMPDIR"/result_*
 
 echo
-echo "📊 Complete Test Results:"
-echo "========================="
-echo "✅ Positive Tests: $positive_passed/$positive_count passed"
-echo "✅ Negative Tests: $negative_passed/$negative_count passed"
-echo "📈 Total: $PASSED/$total_tests passed"
+echo "📧 Running negative tests (should pass)..."
+negative_count=$(find tests/negative -name "*.eml" | wc -l)
+
+find tests/negative -name "*.eml" -print0 | \
+    xargs -0 -P "$JOBS" -I{} bash -c 'test_email "$@"' _ {} clean "$BINARY" "$CONFIG" "$TMPDIR"
+
+negative_passed=$(grep -rl "PASS" "$TMPDIR"/result_* 2>/dev/null | wc -l)
+negative_failed=$((negative_count - negative_passed))
+
+echo "✅ Negative: $negative_passed/$negative_count"
+
+# Totals
+total_tests=$((positive_count + negative_count + 1))
+total_passed=$((positive_passed + negative_passed + CONFIG_PASS))
+total_failed=$((total_tests - total_passed))
+success_rate=$(echo "scale=1; $total_passed * 100 / $total_tests" | bc -l 2>/dev/null || echo "0")
+
+echo
+echo "📈 Total: $total_passed/$total_tests passed"
 echo "🎯 Success Rate: ${success_rate}%"
 
-if [ $FAILED -eq 0 ]; then
+if [ $total_failed -eq 0 ]; then
     echo "🎉 All tests passed!"
     exit 0
 else
-    echo "💥 $FAILED tests failed!"
+    echo "💥 $total_failed tests failed!"
     exit 1
 fi
