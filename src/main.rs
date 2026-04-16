@@ -86,61 +86,6 @@ fn read_email_with_encoding_fallback(
 }
 
 /// Decode email body content based on Content-Transfer-Encoding
-fn decode_email_body(body: &str, encoding: &str) -> String {
-    match encoding.to_lowercase().as_str() {
-        "quoted-printable" => {
-            // Decode quoted-printable encoding
-            let mut decoded = String::new();
-            let mut chars = body.chars().peekable();
-
-            while let Some(ch) = chars.next() {
-                if ch == '=' {
-                    if let Some(&'\n') = chars.peek() {
-                        // Soft line break - skip the = and newline
-                        chars.next();
-                        continue;
-                    } else if let Some(&'\r') = chars.peek() {
-                        // Soft line break with CRLF - skip = and \r, then check for \n
-                        chars.next();
-                        if let Some(&'\n') = chars.peek() {
-                            chars.next();
-                        }
-                        continue;
-                    } else {
-                        // Hex encoding =XX
-                        let hex1 = chars.next().unwrap_or('0');
-                        let hex2 = chars.next().unwrap_or('0');
-                        if let Ok(byte_val) = u8::from_str_radix(&format!("{}{}", hex1, hex2), 16) {
-                            decoded.push(byte_val as char);
-                        } else {
-                            // Invalid hex, keep original
-                            decoded.push('=');
-                            decoded.push(hex1);
-                            decoded.push(hex2);
-                        }
-                    }
-                } else {
-                    decoded.push(ch);
-                }
-            }
-            decoded
-        }
-        "base64" => {
-            // Decode base64 encoding - remove ALL whitespace for robustness
-            use base64::{engine::general_purpose, Engine as _};
-            let cleaned = body
-                .chars()
-                .filter(|c| !c.is_whitespace())
-                .collect::<String>();
-            match general_purpose::STANDARD.decode(&cleaned) {
-                Ok(bytes) => String::from_utf8_lossy(&bytes).to_string(),
-                Err(_) => body.to_string(), // Return original if decode fails
-            }
-        }
-        _ => body.to_string(), // No encoding or unsupported encoding
-    }
-}
-
 async fn analyze_email_file(
     config: &HeuristicConfig,
     whitelist_config: &Option<WhitelistConfig>,
@@ -740,99 +685,9 @@ async fn analyze_email_file(
     let recipients = vec!["test@example.com".to_string()]; // Placeholder for analyze mode
 
     // Get body content
-    let mut body_content: String = lines[body_start..].join("\n");
-
-    // Parse multipart MIME messages to extract actual content (same as test mode)
-    if let Some(content_type) = headers.get("content-type") {
-        if content_type.to_lowercase().contains("multipart") {
-            // Extract boundary
-            if let Some(boundary_start) = content_type.find("boundary=") {
-                let boundary_str = &content_type[boundary_start + 9..];
-                let boundary = boundary_str
-                    .trim_matches('"')
-                    .split(';')
-                    .next()
-                    .unwrap_or("")
-                    .trim();
-
-                if !boundary.is_empty() {
-                    // Parse MIME parts
-                    let parts: Vec<&str> = body_content.split(&format!("--{}", boundary)).collect();
-                    let mut best_part = String::new();
-                    let mut best_encoding = String::new();
-
-                    for part in parts.iter().skip(1) {
-                        // Skip first empty part
-                        if part.trim().is_empty() || part.starts_with("--") {
-                            continue;
-                        }
-
-                        // Parse part headers and body
-                        let mut part_headers: std::collections::HashMap<String, String> =
-                            std::collections::HashMap::new();
-                        let mut part_body = String::new();
-                        let mut in_part_headers = true;
-                        let mut found_header = false;
-
-                        for line in part.lines() {
-                            if in_part_headers {
-                                if line.trim().is_empty() {
-                                    if found_header {
-                                        in_part_headers = false;
-                                    }
-                                    continue;
-                                }
-                                if let Some((key, value)) = line.split_once(':') {
-                                    part_headers.insert(
-                                        key.trim().to_lowercase(),
-                                        value.trim().to_string(),
-                                    );
-                                    found_header = true;
-                                }
-                            } else {
-                                part_body.push_str(line);
-                                part_body.push('\n');
-                            }
-                        }
-
-                        // Prefer text/html over text/plain for better content extraction
-                        if let Some(part_content_type) = part_headers.get("content-type") {
-                            if part_content_type.contains("text/html")
-                                || (part_content_type.contains("text/plain")
-                                    && best_part.is_empty())
-                            {
-                                best_part = part_body;
-                                best_encoding = part_headers
-                                    .get("content-transfer-encoding")
-                                    .cloned()
-                                    .unwrap_or_default();
-
-                                // If we found HTML, use it and stop looking
-                                if part_content_type.contains("text/html") {
-                                    break;
-                                }
-                            }
-                        }
-                    }
-
-                    if !best_part.is_empty() {
-                        body_content = best_part;
-                        // Update encoding for the selected part
-                        if !best_encoding.is_empty() {
-                            headers.insert("content-transfer-encoding".to_string(), best_encoding);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    // Decode email body content to match production milter behavior
-    let content_transfer_encoding = headers
-        .get("content-transfer-encoding")
-        .map(|s| s.to_lowercase())
-        .unwrap_or_default();
-    body_content = decode_email_body(&body_content, &content_transfer_encoding);
+    let body_content: String = lines[body_start..].join("\n");
+    // Pass raw MIME body to filter engine — same as milter mode
+    // The filter engine handles decoding and normalization
 
     // Build mail context (matching milter mode setup exactly)
     let mut mail_context = foff_milter::filter::MailContext {
@@ -858,6 +713,8 @@ async fn analyze_email_file(
         normalized: None, // Let FilterEngine handle this
         proximate_mailer: None,
         trusted_esp: None,
+        raw_body: Some(body_content.clone()),
+        media_spam_score: 0,
     };
 
     // Pre-compute DKIM verification (first hop behavior - must be done before any header modifications)
@@ -2345,7 +2202,7 @@ async fn test_email_file(
     let mut body = String::new();
     let mut in_headers = true;
     let mut last_header_key: Option<String> = None;
-    let mut content_transfer_encoding = String::new();
+    let mut _content_transfer_encoding = String::new();
 
     for line in email_content.lines() {
         if in_headers {
@@ -2373,7 +2230,7 @@ async fn test_email_file(
 
                 // Track content encoding headers
                 if key == "content-transfer-encoding" {
-                    content_transfer_encoding = value.clone();
+                    _content_transfer_encoding = value.clone();
                 }
 
                 // Extract sender from Return-Path or From
@@ -2421,90 +2278,8 @@ async fn test_email_file(
         }
     }
 
-    // Parse multipart MIME messages to extract actual content
-    if let Some(content_type) = headers.get("content-type") {
-        if content_type.to_lowercase().contains("multipart") {
-            // Extract boundary
-            if let Some(boundary_start) = content_type.find("boundary=") {
-                let boundary_str = &content_type[boundary_start + 9..];
-                let boundary = boundary_str
-                    .trim_matches('"')
-                    .split(';')
-                    .next()
-                    .unwrap_or("")
-                    .trim();
-
-                if !boundary.is_empty() {
-                    // Parse MIME parts
-                    let parts: Vec<&str> = body.split(&format!("--{}", boundary)).collect();
-                    let mut best_part = String::new();
-                    let mut best_encoding = String::new();
-
-                    for part in parts.iter().skip(1) {
-                        // Skip first empty part
-                        if part.trim().is_empty() || part.starts_with("--") {
-                            continue;
-                        }
-
-                        // Parse part headers and body
-                        let mut part_headers: HashMap<String, String> = HashMap::new();
-                        let mut part_body = String::new();
-                        let mut in_part_headers = true;
-                        let mut found_header = false;
-
-                        for line in part.lines() {
-                            if in_part_headers {
-                                if line.trim().is_empty() {
-                                    if found_header {
-                                        in_part_headers = false;
-                                    }
-                                    continue;
-                                }
-                                if let Some((key, value)) = line.split_once(':') {
-                                    part_headers.insert(
-                                        key.trim().to_lowercase(),
-                                        value.trim().to_string(),
-                                    );
-                                    found_header = true;
-                                }
-                            } else {
-                                part_body.push_str(line);
-                                part_body.push('\n');
-                            }
-                        }
-
-                        // Prefer text/html over text/plain for better content extraction
-                        if let Some(part_content_type) = part_headers.get("content-type") {
-                            if part_content_type.contains("text/html")
-                                || (part_content_type.contains("text/plain")
-                                    && best_part.is_empty())
-                            {
-                                best_part = part_body;
-                                best_encoding = part_headers
-                                    .get("content-transfer-encoding")
-                                    .cloned()
-                                    .unwrap_or_default();
-
-                                // If we found HTML, use it and stop looking
-                                if part_content_type.contains("text/html") {
-                                    break;
-                                }
-                            }
-                        }
-                    }
-
-                    if !best_part.is_empty() {
-                        body = best_part;
-                        content_transfer_encoding = best_encoding;
-                    }
-                }
-            }
-        }
-    }
-
-    // Decode email body content to match production milter behavior
-    let decoded_body = decode_email_body(&body, &content_transfer_encoding);
-    body = decoded_body;
+    // Pass raw MIME body to filter engine — same as milter mode
+    // The filter engine handles decoding and normalization
 
     if sender.is_empty() {
         sender = "unknown@example.com".to_string();
@@ -2566,7 +2341,7 @@ async fn test_email_file(
             .map(|s| foff_milter::milter::decode_mime_header(s)),
         hostname: None,
         helo: None,
-        body: Some(body),
+        body: Some(body.clone()),
         last_header_name: None,
         attachments: Vec::new(), // Will be populated by analyze_attachments
         extracted_media_text: String::new(), // Will be populated by media analysis
@@ -2578,6 +2353,8 @@ async fn test_email_file(
         normalized: None,        // Will be populated during evaluation
         dkim_verification: None, // Will be populated below
         trusted_esp: None,       // Will be detected by ESP validation feature
+        raw_body: Some(body),
+        media_spam_score: 0,
     };
 
     // Populate DKIM verification for test mode

@@ -518,6 +518,9 @@ rules:
               - type: HeaderPattern
                 header: "From"
                 pattern: ".*@.*(butcherbox|dominos|doordash|amazon|walmart|walgreens|charmtracker|acemedseattle)\\.(com|net|org)$"
+              - type: FeatureAnalysis
+                feature_name: "Authentication Analysis"
+                evidence_pattern: "DKIM domain properly aligned"
     score: 280
 
   # Brand impersonation (Google Workspace)

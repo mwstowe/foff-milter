@@ -220,6 +220,8 @@ mod tests {
             normalized: None,
             dkim_verification: None,
             trusted_esp: None,
+            raw_body: None,
+            media_spam_score: 0,
         }
     }
 

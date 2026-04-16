@@ -231,6 +231,8 @@ pub struct MailContext {
     pub normalized: Option<NormalizedEmail>, // Normalized email content
     pub dkim_verification: Option<DkimVerificationResult>, // Cached DKIM verification result
     pub trusted_esp: Option<String>,      // Detected trusted ESP (mailchimp, sendgrid, etc.)
+    pub raw_body: Option<String>,         // Raw MIME body for attachment analysis
+    pub media_spam_score: i32,            // Spam score from OCR/media analysis
 }
 
 impl Default for MailContext {
@@ -256,6 +258,8 @@ impl Default for MailContext {
             normalized: None,
             dkim_verification: None,
             trusted_esp: None,
+            raw_body: None,
+            media_spam_score: 0,
         }
     }
 }
@@ -382,6 +386,98 @@ impl FilterEngine {
                 }
             }
             _ => body.to_string(),
+        }
+    }
+
+    /// Extract the best text part from a multipart MIME body
+    fn extract_mime_text_part(&self, body: &str, content_type: &str) -> Option<String> {
+        let boundary = content_type
+            .find("boundary=")
+            .map(|i| &content_type[i + 9..])
+            .map(|s| s.trim_matches('"').split(';').next().unwrap_or("").trim())?;
+        if boundary.is_empty() {
+            return None;
+        }
+        log::debug!(
+            "MIME extraction: boundary='{}', body_len={}",
+            boundary,
+            body.len()
+        );
+
+        let separator = format!("--{}", boundary);
+        let parts: Vec<&str> = body.split(&separator).collect();
+        let mut best_part = String::new();
+
+        for part in parts.iter().skip(1) {
+            if part.trim().is_empty() || part.starts_with("--") {
+                continue;
+            }
+
+            let mut part_ct = String::new();
+            let mut part_enc = String::new();
+            let mut in_headers = true;
+            let mut found_header = false;
+            let mut part_body = String::new();
+
+            for line in part.lines() {
+                if in_headers {
+                    if line.trim().is_empty() {
+                        if found_header {
+                            in_headers = false;
+                        }
+                        continue;
+                    }
+                    let lower = line.to_lowercase();
+                    if let Some(ct) = lower.strip_prefix("content-type:") {
+                        part_ct = ct.trim().to_string();
+                        found_header = true;
+                    } else if let Some(enc) = lower.strip_prefix("content-transfer-encoding:") {
+                        part_enc = enc.trim().to_string();
+                        found_header = true;
+                    } else if line.contains(':') {
+                        found_header = true;
+                    }
+                } else {
+                    part_body.push_str(line);
+                    part_body.push('\n');
+                }
+            }
+
+            // Recurse into nested multipart
+            if part_ct.contains("multipart") {
+                log::debug!("MIME: recursing into nested multipart: {}", part_ct);
+                if let Some(nested) = self.extract_mime_text_part(&part_body, &part_ct) {
+                    return Some(nested);
+                }
+                continue;
+            }
+
+            log::debug!(
+                "MIME part: ct='{}', enc='{}', body_len={}",
+                part_ct,
+                part_enc,
+                part_body.len()
+            );
+
+            if part_ct.contains("text/html")
+                || (part_ct.contains("text/plain") && best_part.is_empty())
+            {
+                let decoded = if !part_enc.is_empty() {
+                    self.decode_body(&part_body, &part_enc)
+                } else {
+                    part_body
+                };
+                if part_ct.contains("text/html") {
+                    return Some(decoded);
+                }
+                best_part = decoded;
+            }
+        }
+
+        if !best_part.is_empty() {
+            Some(best_part)
+        } else {
+            None
         }
     }
 
@@ -816,6 +912,8 @@ impl FilterEngine {
                 normalized: context.normalized.clone(),
                 dkim_verification: context.dkim_verification.clone(),
                 trusted_esp: context.trusted_esp.clone(),
+                raw_body: context.raw_body.clone(),
+                media_spam_score: context.media_spam_score,
             }
         } else {
             // Fallback to simple normalization if proper normalization not available
@@ -854,6 +952,8 @@ impl FilterEngine {
             normalized: context.normalized.clone(),
             dkim_verification: context.dkim_verification.clone(),
             trusted_esp: context.trusted_esp.clone(),
+            raw_body: context.raw_body.clone(),
+            media_spam_score: context.media_spam_score,
         }
     }
 
@@ -1943,20 +2043,44 @@ impl FilterEngine {
         }
 
         // Decode body content if needed (ensures parity between milter and test modes)
-        if let Some(body) = &context.body {
-            if let Some(encoding) = context
-                .headers
-                .get("content-transfer-encoding")
-                .or_else(|| context.headers.get("Content-Transfer-Encoding"))
-            {
-                let decoded = self.decode_body(body, encoding);
-                context.body = Some(decoded);
+        // Decode body content if needed (skip for multipart — parts have their own encoding)
+        let is_multipart = context
+            .headers
+            .get("content-type")
+            .or_else(|| context.headers.get("Content-Type"))
+            .map(|ct| ct.to_lowercase().contains("multipart"))
+            .unwrap_or(false);
+
+        if !is_multipart {
+            if let Some(body) = &context.body {
+                if let Some(encoding) = context
+                    .headers
+                    .get("content-transfer-encoding")
+                    .or_else(|| context.headers.get("Content-Transfer-Encoding"))
+                {
+                    let decoded = self.decode_body(body, encoding);
+                    context.body = Some(decoded);
+                }
+            }
+        }
+
+        // Extract text from multipart MIME bodies
+        if is_multipart {
+            if let Some(body) = &context.body {
+                if let Some(content_type) = context
+                    .headers
+                    .get("content-type")
+                    .or_else(|| context.headers.get("Content-Type"))
+                {
+                    if let Some(extracted) = self.extract_mime_text_part(body, content_type) {
+                        context.body = Some(extracted);
+                    }
+                }
             }
         }
 
         // Normalize email content for enhanced analysis
         if let Some(_body) = &context.body {
-            // Reconstruct raw email for normalization
             let raw_email = self.reconstruct_raw_email(&context);
             self.normalize_email_content(&mut context, &raw_email);
         }
@@ -2136,11 +2260,10 @@ impl FilterEngine {
             return (action, vec!["Sender Blocking".to_string()], headers);
         }
 
-        // Create mutable copy for attachment analysis
         // Use proper Unicode normalization for rule evaluation
         let mut context_with_attachments = self.get_normalized_context_for_rules(&context);
 
-        // Analyze attachments for malicious content
+        // Analyze attachments (uses raw_body for MIME parsing)
         self.analyze_attachments(&mut context_with_attachments);
 
         // Check whitelist first - if whitelisted, accept immediately
@@ -2346,6 +2469,15 @@ impl FilterEngine {
             ));
         }
 
+        // Add media/OCR spam score from image analysis
+        if context_with_attachments.media_spam_score > 0 {
+            total_score += context_with_attachments.media_spam_score;
+            scoring_rules.push(format!(
+                "Image Spam: OCR detected spam content in image (+{})",
+                context_with_attachments.media_spam_score
+            ));
+        }
+
         // Check for mass-recipient To: header (10+ addresses = spam indicator)
         if let Some(to_header) = context_with_attachments.headers.get("to") {
             let addr_count = to_header.matches('@').count();
@@ -2450,10 +2582,7 @@ impl FilterEngine {
         }
 
         // Advanced feature-based analysis
-        // Feature analysis using properly normalized content
-        let feature_analysis = self
-            .feature_engine
-            .analyze(&self.get_normalized_context_for_rules(&context));
+        let feature_analysis = self.feature_engine.analyze(&context_with_attachments);
         total_score += feature_analysis.total_score;
         for feature_score in &feature_analysis.scores {
             if feature_score.score != 0 {
@@ -7690,7 +7819,9 @@ impl FilterEngine {
     /// Analyze email attachments for malicious content
     fn analyze_attachments(&self, context: &mut MailContext) {
         log::debug!("Starting attachment analysis");
-        if let Some(body) = &context.body {
+        // Prefer raw_body (original MIME) over body (may be normalized)
+        let body_ref = context.raw_body.as_ref().or(context.body.as_ref()).cloned();
+        if let Some(body) = &body_ref {
             // Look for MIME boundaries and attachment headers
             let lines: Vec<&str> = body.lines().collect();
             let mut i = 0;
@@ -7730,8 +7861,8 @@ impl FilterEngine {
                                             media_analysis.spam_score,
                                             media_analysis.detected_patterns
                                         );
-                                        // Add media spam score to context for later evaluation
-                                        // This will be picked up by the heuristic scoring system
+                                        context.media_spam_score +=
+                                            media_analysis.spam_score as i32;
                                     }
 
                                     if !media_analysis.extracted_text.is_empty() {
@@ -7865,15 +7996,55 @@ impl FilterEngine {
     }
 
     fn extract_filename_from_headers(&self, lines: &[&str], start_idx: usize) -> Option<String> {
-        // Look for Content-Disposition header with filename
-        for line in lines.iter().skip(start_idx).take(5) {
-            let line_lower = line.to_lowercase();
-            if line_lower.contains("content-disposition") && line_lower.contains("filename") {
-                if let Some(filename_start) = line_lower.find("filename=") {
-                    let filename_part = &line_lower[filename_start + 9..];
-                    let filename = filename_part.trim_matches('"').trim();
-                    return Some(filename.to_string());
+        // Join continuation lines and look for filename in Content-Type or Content-Disposition
+        let mut combined = String::new();
+        for line in lines.iter().skip(start_idx).take(8) {
+            if line.starts_with('\t') || line.starts_with(' ') {
+                combined.push(' ');
+                combined.push_str(line.trim());
+            } else if !combined.is_empty() && !line.trim().is_empty() && line.contains(':') {
+                // New header — check what we have so far, then start new
+                let lower = combined.to_lowercase();
+                if let Some(f) = self.extract_filename_from_str(&lower) {
+                    return Some(f);
                 }
+                combined = line.to_string();
+            } else {
+                combined.push_str(line);
+            }
+        }
+        // Check the last accumulated header
+        let lower = combined.to_lowercase();
+        self.extract_filename_from_str(&lower)
+    }
+
+    fn extract_filename_from_str(&self, header: &str) -> Option<String> {
+        if let Some(idx) = header.find("filename=") {
+            let part = &header[idx + 9..];
+            let name = part
+                .trim_matches('"')
+                .split(';')
+                .next()
+                .unwrap_or("")
+                .trim()
+                .trim_matches('"')
+                .trim();
+            if !name.is_empty() {
+                return Some(name.to_string());
+            }
+        }
+        if let Some(idx) = header.find("name=") {
+            let part = &header[idx + 5..];
+            let name = part
+                .trim_matches('"')
+                .split(';')
+                .next()
+                .unwrap_or("")
+                .trim()
+                .trim_matches('"')
+                .trim();
+            if !name.is_empty() {
+                return Some(name.to_string());
             }
         }
         None

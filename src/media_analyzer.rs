@@ -50,7 +50,11 @@ impl MediaAnalyzer {
                 Regex::new(r"(?i)(act.*now|limited.*time|expires|urgent|immediate|offer.*ends)")
                     .unwrap(),
                 // Brand impersonation
-                Regex::new(r"(?i)(norton|mcafee|microsoft|apple|amazon|paypal|invoice|overdue)")
+                Regex::new(r"(?i)(norton|mcafee|microsoft|apple|amazon|paypal)").unwrap(),
+                // Invoice scam (requires brand + invoice context)
+                Regex::new(r"(?i)(invoice|overdue).{0,50}(paypal|amazon|apple|norton|mcafee)")
+                    .unwrap(),
+                Regex::new(r"(?i)(paypal|amazon|apple|norton|mcafee).{0,50}(invoice|overdue)")
                     .unwrap(),
             ],
             #[cfg(feature = "ocr")]

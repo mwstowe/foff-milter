@@ -729,6 +729,15 @@ impl Milter {
                                             mail_ctx.body = Some(body_str.to_string());
                                         }
                                     }
+                                    // Also accumulate raw body for attachment analysis
+                                    match &mut mail_ctx.raw_body {
+                                        Some(existing) => {
+                                            existing.push_str(&body_str);
+                                        }
+                                        None => {
+                                            mail_ctx.raw_body = Some(body_str.to_string());
+                                        }
+                                    }
                                 } else {
                                     log::error!("Session {} not found in state", session_id);
                                 }

@@ -330,6 +330,8 @@ mod tests {
             normalized: None,
             dkim_verification: None,
             trusted_esp: None,
+            raw_body: None,
+            media_spam_score: 0,
         };
 
         // Test SendGrid abuse reporting (will log since no SMTP configured)
@@ -381,6 +383,8 @@ mod tests {
             normalized: None,
             dkim_verification: None,
             trusted_esp: None,
+            raw_body: None,
+            media_spam_score: 0,
         };
 
         let result = reporter

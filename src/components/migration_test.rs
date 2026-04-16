@@ -99,6 +99,8 @@ fn create_legitimate_email_context() -> MailContext {
         normalized: None,
         dkim_verification: None,
         trusted_esp: None,
+        raw_body: None,
+        media_spam_score: 0,
     }
 }
 
@@ -137,6 +139,8 @@ fn create_spam_email_context() -> MailContext {
         normalized: None,
         dkim_verification: None,
         trusted_esp: None,
+        raw_body: None,
+        media_spam_score: 0,
     }
 }
 
@@ -174,6 +178,8 @@ fn create_authenticated_email_context() -> MailContext {
         normalized: None,
         dkim_verification: None,
         trusted_esp: None,
+        raw_body: None,
+        media_spam_score: 0,
     }
 }
 
@@ -209,5 +215,7 @@ fn create_mismatch_email_context() -> MailContext {
         normalized: None,
         dkim_verification: None,
         trusted_esp: None,
+        raw_body: None,
+        media_spam_score: 0,
     }
 }
