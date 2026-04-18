@@ -165,6 +165,19 @@ impl ServerRoleAnalyzer {
             }
         }
 
+        // Check for spam-keyword compound domains (e.g., seniorshoppingtips.com)
+        let name = domain_lower.split('.').next().unwrap_or("");
+        if name.len() >= 14 {
+            let spam_keywords = [
+                "tips", "deals", "offer", "discount", "bargain", "cheap", "promo", "shopping",
+                "senior", "savings", "bonus", "reward", "winner", "prize",
+            ];
+            let keyword_count = spam_keywords.iter().filter(|kw| name.contains(*kw)).count();
+            if keyword_count >= 2 {
+                return true;
+            }
+        }
+
         false
     }
 

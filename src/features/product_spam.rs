@@ -26,6 +26,23 @@ impl FeatureExtractor for ProductSpamAnalyzer {
             .unwrap_or("")
             .to_lowercase();
         let sender_display = context.from_header.as_deref().unwrap_or("").to_lowercase();
+
+        // Skip for Trusted ESP with DKIM pass
+        let is_trusted_esp = crate::features::esp_validation::is_from_trusted_esp(context);
+        let has_dkim = context
+            .headers
+            .get("authentication-results")
+            .map(|v| v.contains("dkim=pass"))
+            .unwrap_or(false);
+        if is_trusted_esp && has_dkim {
+            return FeatureScore {
+                feature_name: "Product Spam".to_string(),
+                score: 0,
+                confidence: 0.0,
+                evidence: vec![],
+            };
+        }
+
         let legit_senders = [
             "consumerreports",
             "ikea",

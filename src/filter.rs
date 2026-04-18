@@ -3,7 +3,7 @@ use crate::attachment_analyzer::AttachmentAnalyzer;
 use crate::dkim_verification::{DkimVerificationResult, DkimVerifier};
 use crate::domain_age::DomainAgeChecker;
 use crate::domain_utils::DomainUtils;
-use crate::features::FeatureEngine;
+use crate::features::{FeatureEngine, FeatureExtractor};
 use crate::heuristic_config::{load_modules, Action, Config, Criteria, Module};
 use crate::invoice_analyzer::{InvoiceAnalysis, InvoiceAnalyzer};
 use crate::language::LanguageDetector;
@@ -2376,7 +2376,37 @@ impl FilterEngine {
                 group_name.len() <= 2 && !domain.contains("google") && !domain.contains("yahoo")
             }
         });
-        if is_mailing_list && !has_via_gibberish && !has_suspicious_list_id {
+        // Check if brand impersonation is detected (suppresses mailing list bonus)
+        let has_brand_impersonation = {
+            let bi_feature = crate::features::brand_impersonation::BrandImpersonationFeature::new();
+            let bi_result = bi_feature.extract(&context_with_attachments);
+            bi_result
+                .evidence
+                .iter()
+                .any(|e| e.contains("Claims to be"))
+        };
+        // Check if domain reputation is suspicious (suppresses mailing list bonus)
+        let has_suspicious_domain_reputation = {
+            let dr_feature = crate::features::domain_reputation::DomainReputationFeature::new();
+            let dr_result = dr_feature.extract(&context_with_attachments);
+            dr_result
+                .evidence
+                .iter()
+                .any(|e| e.contains("Suspicious domain pattern detected"))
+        };
+        // Check DMARC - suspicious domains with DMARC pass are OK
+        let has_dmarc_pass = context_with_attachments
+            .headers
+            .get("authentication-results")
+            .map(|v| v.contains("dmarc=pass"))
+            .unwrap_or(false);
+        let suppress_mailing_list =
+            has_brand_impersonation || (has_suspicious_domain_reputation && !has_dmarc_pass);
+        if is_mailing_list
+            && !has_via_gibberish
+            && !has_suspicious_list_id
+            && !suppress_mailing_list
+        {
             log::warn!(
                 "MAILING LIST DETECTED: Applying -200 score for email from: {}",
                 context_with_attachments
@@ -2552,6 +2582,69 @@ impl FilterEngine {
                 "Personal Domain Suspicion: Personal domain making business claims (+{})",
                 personal_domain_score
             ));
+        }
+
+        // Check for fake order confirmations from consumer email
+        {
+            let sender = context_with_attachments
+                .from_header
+                .as_deref()
+                .unwrap_or("")
+                .to_lowercase();
+            let subject = context_with_attachments
+                .subject
+                .as_deref()
+                .unwrap_or("")
+                .to_lowercase();
+            let consumer_domains = [
+                "gmail.com",
+                "hotmail.com",
+                "outlook.com",
+                "yahoo.com",
+                "live.com",
+                "aol.com",
+            ];
+            let is_consumer = consumer_domains.iter().any(|d| sender.contains(d));
+            let is_order = subject.contains("order confirmation")
+                || subject.contains("order #")
+                || subject.contains("invoice #")
+                || subject.contains("payment confirmation");
+            if is_consumer && is_order {
+                total_score += 40;
+                scoring_rules
+                    .push("Fake Order: Order confirmation from consumer email (+40)".to_string());
+            }
+        }
+
+        // 2FA/MFA verification code detection — suppress false positives on legitimate auth emails
+        {
+            let subject = context_with_attachments
+                .subject
+                .as_deref()
+                .unwrap_or("")
+                .to_lowercase();
+            let is_verification = subject.contains("verification code")
+                || subject.contains("security code")
+                || subject.contains("one-time code")
+                || subject.contains("sign-in code")
+                || subject.contains("login code")
+                || subject.contains("2fa")
+                || subject.contains("mfa")
+                || subject.contains("otp")
+                || (subject.contains("verify") && subject.contains("account"))
+                || (subject.contains("confirm") && subject.contains("login"));
+            let has_dkim = context_with_attachments
+                .headers
+                .get("authentication-results")
+                .map(|v| v.contains("dkim=pass"))
+                .unwrap_or(false);
+            if is_verification && has_dkim {
+                total_score -= 80;
+                scoring_rules.push(
+                    "2FA/MFA Detection: Verification code from authenticated sender (-80)"
+                        .to_string(),
+                );
+            }
         }
 
         // Apply business context adjustments to reduce false positives
@@ -8794,6 +8887,18 @@ impl FilterEngine {
         }
 
         // Skip domains containing common English words (likely compound names)
+        // BUT first check for spam-keyword domains (long domains with multiple spam indicators)
+        if name.len() >= 14 {
+            let spam_keywords = [
+                "tips", "deals", "offer", "discount", "bargain", "cheap", "promo", "shopping",
+                "senior", "savings", "bonus", "reward", "winner", "prize",
+            ];
+            let keyword_count = spam_keywords.iter().filter(|kw| name.contains(*kw)).count();
+            if keyword_count >= 2 {
+                return 40;
+            }
+        }
+
         let common_words = [
             "travel", "shop", "store", "mail", "tech", "home", "health", "care", "news", "media",
             "cloud", "data", "soft", "ware", "group", "team", "work", "trade", "market", "world",

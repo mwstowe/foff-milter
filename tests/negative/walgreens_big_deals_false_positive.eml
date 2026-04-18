@@ -1,0 +1,1357 @@
+✅ Loading modern TOML configuration: ../foff-milter.toml
+Return-Path: <bounce@eml.walgreens.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.2/8.18.1) with ESMTPS id 63IHNa4Q067267
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <user@example.com>; Sat, 18 Apr 2026 17:23:36 GMT
+	(envelope-from bounce@eml.walgreens.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (2048-bit key; unprotected) header.d=eml.walgreens.com header.i=@eml.walgreens.com header.b=c2F2PErO
+Received: from r140.eml.walgreens.com (r140.eml.walgreens.com [130.248.190.140])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 63IHNUqn070856
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO)
+	for <user@example.com>; Sat, 18 Apr 2026 12:23:31 -0500
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 63IHNUqn070856
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (2048-bit key, unprotected) header.d=eml.walgreens.com header.i=@eml.walgreens.com header.a=rsa-sha256 header.s=walgreens header.b=c2F2PErO
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=eml.walgreens.com;
+	s=walgreens; t=555-123-4567;
+	bh=GtR/0EprHHkSlsK4YdOMrs+0vdg+8EnWNHkOji5DPxo=;
+	h=From:Subject:Date:To:MIME-Version:Message-ID:List-Unsubscribe:
+	 Content-Type;
+	b=c2F2PErOVRY6qwtnsSZRdbx4fol74bX8TB0JYAVtYNRR9yg6EI0Zp98LgQWrV7lNC
+	 zDW+UAZ3IQnQ7KIH7Af0Vgt02G73z89wHKcNhZCE/RP6NjZF0z0M8xnQU+YPRNblEN
+	 yV0O9lPhXZ70uiJdtJh17EwlKENRRZmq0t3uQdxq6MiEzRnxIwCJJRJJnb2Lmqyqxb
+	 bSAj4Gqp/1lVVEMKxl06EDilTR7atSij9FFt7uYZm/hpFCWA2oMYdyhyNLaPjWl2Je
+	 4BYbkopOwMri9NBhxADM/4A4JQy6jMDYXBLYzbRKzxvr30Ue7p4h6XUgvgHmv7SkTR
+	 VcTt3RG2FH4FA==
+X-MSFBL: dGPL5l0fkP/ZAZmj03mCMlLiyUVA/lkANdEAU8GsJEQ=|eyJyY3B0X21ldGEiOns
+	gIm0iOiAiMTM5MDQyMTc3MiIsICJkIjogIjQ1NTYyODcxNyIsICJpbiI6ICJ3YWx
+	ncmVlX21pZF9wcm9kMyIsICJyIjogIm1zdG93ZUBiYWRkb21haW4uY29tIiB9LCJ
+	yIjoibXN0b3dlQGJhZGRvbWFpbi5jb20iLCJiIjoid2FsZ3JlZW5zXzEzMC4yNDg
+	uMTkwLjE0MF9wcm9kLndhbGdyZWVuc21haW5fOTE0ZDdlOWEtZTYzOS00YTFmLWF
+	kM2QtM2MzMDI2NWRlMjkwIiwiZyI6InByb2Qud2FsZ3JlZW5zbWFpbl85MTRkN2U
+	5YS1lNjM5LTRhMWYtYWQzZC0zYzMwMjY1ZGUyOTAifQ==
+Received: from [10.1.1.102] ([10.1.1.102:50259] helo=r143.eml.walgreens.com) by or2-prod1-mta-i-0ec1de4ccb2c86551 (envelope-from <bounce@eml.walgreens.com>) (ecelerity 4.4.1.20033 r(msys-ecelerity:tags/4.4.1.0^0)) with ESMTP id D5/F2-05863-D0EB3E96; Sat, 18 Apr 2026 17:23:25 +0000
+From: "Walgreens" <walgreens@eml.walgreens.com>
+Subject: =?windows-1252?Q?Big_Deals=2C_Big_Savings=97Shop_the_Offers_Now?=
+Date: Sat, 18 Apr 2026 12:22:47 -0500
+To: <user@example.com>
+Reply-To: "Walgreens" <support@e.walgreens.com>
+MIME-Version: 1.0
+X-mailer: nlserver, Build 6.7.0
+Message-ID: <NM652E0270C1B2857ADwalgree_mid_prod3@eml.walgreens.com>
+List-Unsubscribe: <mailto:bounce@eml.walgreens.com?subject=unsubscribe%3CNM652E0270C1B2857ADwalgree_mid_prod3@eml.walgreens.com%3E>
+X-rpcampaign: WAG75500512
+Content-Type: text/html;
+	charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Sat, 18 Apr 2026 17:23:36 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Sat, 18 Apr 2026 12:23:31 -0500 (CDT)
+X-Spam-Flag: YES
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.=
+w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--V2-->
+<html xmlns=3D"http://www.w3.org/1999/xhtml" xmlns:v=3D"urn:schemas-microso=
+ft-com:vml" xmlns:o=3D"urn:schemas-microsoft-com:office:office">
+<head>
+<!-- /* General settings start */ -->
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8" />
+<meta name=3D"viewport" content=3D"width=3Ddevice-width, initial-scale=3D1,=
+ maximum-scale=3D1" />
+<meta name=3D"x-apple-disable-message-reformatting">
+<!--[if !mso]><!-->
+<link rel=3D"preconnect" href=3D"https://fonts.gstatic.com/">
+<link href=3D"https://fonts.googleapis.com/css2=3Ffamily=3DSource+Sans+Pro:=
+ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700=
+;1,900&amp;display=3Dswap" rel=3D"stylesheet">
+<!--<![endif]-->
+
+<title>Walgreens</title>
+<style>
+/* <!-- MI styling starts--> */
+=2EReadMsgBody {width: 100%;}
+=2EExternalClass p,
+=2EExternalClass span,
+=2EExternalClass font,
+=2EExternalClass td
+{line-height: 100%}
+
+body {width:100% !important; -webkit-text-size-adjust:100%; -ms-text-size-a=
+djust:100%; margin:0; padding:0;}
+/* Font fix to apply small values */
+table { border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0p=
+t; padding:0; table-layout: auto;}
+table td {border-collapse: collapse;}
+p{margin:0; text-align:center;}
+*{-webkit-text-size-adjust:none;-ms-text-size-adjust:none;max-height:100000=
+0px;mso-line-height-rule:exactly; line-height: 100%}
+=2EappleLinks a {color: #000000 !important; text-decoration: none !importan=
+t;}
+img { -ms-interpolation-mode: bicubic; }
+/* General settings END */
+
+@media only screen and (min-device-width: 375px) and (max-device-width: 413=
+px) {
+=2Econtenttable{ width:100% !important;}
+=2Eblock {display: block !important;}
+=2Ehide {display: none !important;}
+=2Eshowmobile{display:block !important;  margin:auto !important; width:414p=
+x !important; height:auto !important; max-height:inherit !important; overfl=
+ow:visible !important;}
+=2Eemail-container { min-width: 375px !important; }
+}
+
+@media only screen and (min-width: 768px) {
+  /* For desktop: */
+  img {max-width: 640px}
+}
+@media only screen and (min-width: 640px) {
+  /* For desktop: */
+  img {max-width: 640px}
+}
+</style>
+
+ <!--[if mso]>
+<xml>
+  <o:OfficeDocumentSettings>
+    <o:PixelsPerInch>96</o:PixelsPerInch>
+  </o:OfficeDocumentSettings>
+</xml>
+<style>
+  table { border-collapse: collapse; }
+  td,th,div,p,a { }
+  .spacer,.divider,div,p,a,h1,h2,h3,h4,h5,h6 { mso-line-height-rule: exactl=
+y; }
+</style>
+<![endif]-->
+<!--[if !mso]><!-->
+<!--<![endif]-->
+<!----- MI styling end----->
+
+<!----- CLIENT styling start----->
+<style type=3D"text/css">
+    @media only screen and (max-width: 640px) {
+        u+.gmail { font-size: inherit !important; line-height: 14px !import=
+ant; color: #284B9B !important; }
+        .mobile-hidden { display: none; }
+    }
+
+    @media only screen and (min-device-width: 375px) and (max-device-width:=
+ 413px) {
+        .email-container { min-width: 375px !important; }
+    }
+
+    *[x-apple-data-detectors],
+    /* iOS */
+    .x-gmail-data-detectors,
+    /* Gmail */
+    .x-gmail-data-detectors * {
+        border-bottom: 0 !important;
+        cursor: default !important;
+        color: inherit !important;
+        text-decoration: none !important;
+        font-size: inherit !important;
+        font-family: inherit !important;
+        font-weight: inherit !important;
+        line-height: inherit !important;
+    }
+
+    /* triggers "view in browser" link in Outlook */
+    #outlook a { padding: 0; }
+    .ac-content-cell img { max-width: 100%; height: auto; }
+    .wba-main-footer a { color: #284B9B; text-decoration: none; }
+    .wba-main-footer p { line-height: 18px; margin-bottom: 14px; }
+</style>
+    <!--[if mso]>
+<style>
+body, table tr, table td, p, a, span,h1,h2,h3,h4,h5,h6{
+  font-family: Arial, Helvetica, sans-serif !important;
+}
+a{
+color: #284B9B;
+}
+=2Eshipping__item{
+=09font-size:19px;
+}
+</style>
+<![endif]-->
+
+<!----- CLIENT styling END----->
+
+</head>
+
+<body style=3D"padding:0 !important;">
+<table width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0">
+    <tr>
+        <td valign=3D"top" style=3D"padding-top:30px">
+=09=09=09
+                
+<!--START Preheader STATIC CB -->
+<table cellspacing=3D"0" cellpadding=3D"0" width=3D"640" align=3D"center" b=
+order=3D"0" class=3D"contenttable" role=3D"presentation">
+    <tr>
+        <td width=3D"640" align=3D"center" bgcolor=3D"#ffffff" align=3D"cen=
+ter" style=3D"display:none!important;font-size:0px;color:#ffffff;line-heigh=
+t:0px;max-height:0px;max-width:0px;opacity:0;visibility:hidden;mso-hide:all=
+;overflow:hidden;padding:0;margin:0;">
+        
+            <!-- Unique variable to use on the DV platform -->
+            <div style=3D"margin-bottom:1px;">Don=E2=80=99t Miss Out=E2=80=
+=94Big Deals & Big Savings Await!</div>
+            <!-- Header_PreheaderHiddenText -->
+            <div style=3D"display:none;font-size:1px;line-height:1px;max-he=
+ight:0px;max-width:0px;opacity:0;overflow:hidden;mso-hide:all;">&nbsp;&zwnj=
+;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&n=
+bsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp=
+;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&z=
+wnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj=
+;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&n=
+bsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp=
+;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&z=
+wnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj=
+;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&n=
+bsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp=
+;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&z=
+wnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj=
+;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&n=
+bsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp=
+;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&z=
+wnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj=
+;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&n=
+bsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp=
+;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&z=
+wnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj=
+;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&n=
+bsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp=
+;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&z=
+wnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj=
+;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&n=
+bsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp=
+;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&z=
+wnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj=
+;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&n=
+bsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;</div>
+            <!-- end Header_PreheaderHiddenText -->
+    
+        </td>
+    </tr>
+</table>
+<!--END Preheader STATIC CB -->
+
+            
+                <div>
+
+
+</div>
+            
+                <table border=3D"0" align=3D"center" cellpadding=3D"0" cell=
+spacing=3D"0" width=3D"640" style=3D"border-collapse: collapse; width: 640p=
+x;" class=3D"contenttable">
+   <tr id=3D"wba-email-body">
+      <td class=3D"ac-content-cell" valign=3D"top" style=3D"padding: 0">
+         <table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"1=
+00%" style=3D"border-collapse: collapse; width: 100%">
+            <tbody>
+               <tr>
+                  <td align=3D"center" valign=3D"middle" class=3D"ac-conten=
+t-cell"
+                     style=3D" border-collapse: collapse; mso-table-lspace:=
+ 0; mso-table-rspace: 0; vertical-align: middle; mso-line-height-rule: exac=
+tly; text-align: center; ">
+                     <a label=3D"Header-Logo" style=3D"text-decoration: non=
+e" target=3D"_blank" href=3D"https://t.eml.walgreens.com/r/=3Fid=3Dhbddb6d6=
+0,4800be0,8aa494&cid=3D_4eq708zjlp_e3k84e2won_vqv84739r3_0_2026_04_18_11_30=
+_AM_UTC&wag_mid=3D60869352&bid=3D-555-123-4567&p1=3D60869352&p2=3DuBzcCTCwzlT=
+R_F1lvmAmQw=3D=3D&p3=3DMICHAEL&p4=3DCore_Retail_DemandGen&p5=3D20260418&p6=
+=3Dv3.eJx1kL1LQlEUwLvvvvc8PshuN8jnw-E-h3y1lI3SVA3i2FTa4JZDc4NrNAjPoX8gIgqFU=
+jHRoqkPVGgxiKQhaA9yamgJOjcNTHK558c598f5MBRY5QDv-d22zqg1Dk9Zg3vgbYKpJg_5oZPd=
+xrQOl51cWw_9Fub2KEofrWlGTDX0qfBJKNsOjatAGFn7ebkJeZsRhwwm1zdTBcL9ULGZMlRJppI=
+8AKc2o0OFApFOBIpB7EwEcZRlA-47PrOria4WN-QnqycMcDrM56EUZFpfOHr2mTUqanSkMNsT9L=
+6QQ8Glwh0tOD3B0xfaOFKdivpoIYwLntsMhhZ01ZSr8iko2czrqH9uGICizYz_DmIe6qKhLAKUW=
+YjCcQypJeklFtXgccYaw1CJYfDCwwr2PzkgUYCzBYvC1w5SQyBVN5BuI0jNTALgWnAKpS1JEaSq=
+zN1IupJ0J-k1k_BCc4mrcLFP0uQb4pBlwQ=3D=3D&p7=3Dd715bd6626dce266"><img src=3D=
+"https://mi.walgreens.com/p/rp/0f2441b2d1a9d294.png=3Fmi_u=3D60869352&mi_me=
+mber_id=3DuBzcCTCwzlTR_F1lvmAmQw=3D=3D&mi_fname=3DMICHAEL" alt=3D"Walgreens=
+" title=3D"Walgreens" width=3D"640" style=3D"-ms-interpolation-mode: bicubi=
+c; display: block; width: 640px; max-width: 100%; min-width: 640px;">
+                     </a>
+                  </td>
+               </tr>
+            </tbody>
+         </table>
+      </td>
+   </tr>
+</table>
+            
+                <table role=3D"presentation" border=3D"0" cellpadding=3D"0"=
+ cellspacing=3D"0" align=3D"center" width=3D"640" style=3D"border-collapse:=
+ collapse; width: 640px;" class=3D"contenttable">
+=09<tbody>
+=09=09<tr>
+=09=09=09<td align=3D"left" valign=3D"top" height=3D"0" width=3D"393" class=
+=3D"ac-content-cell" style=3D"border-collapse: collapse; mso-table-lspace: =
+0; mso-table-rspace: 0; vertical-align: top; mso-line-height-rule: exactly;=
+ text-align: left; width: 393px; height: 0px; background-color: #f3f2ee; pa=
+dding: 0px;">
+=09=09=09=09<table role=3D"presentation" border=3D"0" cellpadding=3D"0" cel=
+lspacing=3D"0" width=3D"100%" style=3D"border-collapse: collapse; width: 10=
+0%">
+=09=09=09=09=09<tbody>
+=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09<td align=3D"left" valign=3D"top" class=3D"ac-content-=
+cell" style=3D"border-collapse: collapse; mso-table-lspace: 0; mso-table-rs=
+pace: 0; vertical-align: top; mso-line-height-rule: exactly; text-align: le=
+ft; padding: 0px; margin: 0px; width: 33%;">
+=09=09=09=09=09=09=09=09<table role=3D"presentation" border=3D"0" cellpaddi=
+ng=3D"0" cellspacing=3D"0" width=3D"100%" style=3D"border-collapse: collaps=
+e; width: 100%">
+=09=09=09=09=09=09=09=09=09<tbody>
+=09=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09=09<td align=3D"center" valign=3D"middle" cla=
+ss=3D"ac-content-cell" style=3D"border-collapse: collapse; mso-table-lspace=
+: 0; mso-table-rspace: 0; vertical-align: middle; mso-line-height-rule: exa=
+ctly; text-align: center;">
+=09=09=09=09=09=09=09=09=09=09=09=09<a _label=3D"Header-Pharmacy" style=3D"=
+text-decoration: none" target=3D"_blank" href=3D"https://t.eml.walgreens.co=
+m/r/=3Fid=3Dhbddb6d60,4800be0,8aa495&cid=3D_4eq708zjlp_e3k84e2won_vqv84739r=
+3_0_2026_04_18_11_30_AM_UTC&wag_mid=3D60869352&bid=3D-555-123-4567&p1=3D60869=
+352&p2=3DCore_Retail_DemandGen&p3=3D20260418&p4=3Dv3.eJx1kL1LQlEUwLvvvvc8Ps=
+huN8jnw-E-h3y1lI3SVA3i2FTa4JZDc4NrNAjPoX8gIgqFUjHRoqkPVGgxiKQhaA9yamgJOjcNT=
+HK558c598f5MBRY5QDv-d22zqg1Dk9Zg3vgbYKpJg_5oZPdxrQOl51cWw_9Fub2KEofrWlGTDX0=
+qfBJKNsOjatAGFn7ebkJeZsRhwwm1zdTBcL9ULGZMlRJppI8AKc2o0OFApFOBIpB7EwEcZRlA-4=
+7PrOria4WN-QnqycMcDrM56EUZFpfOHr2mTUqanSkMNsT9L6QQ8Glwh0tOD3B0xfaOFKdivpoIY=
+wLntsMhhZ01ZSr8iko2czrqH9uGICizYz_DmIe6qKhLAKUWYjCcQypJeklFtXgccYaw1CJYfDCw=
+wr2PzkgUYCzBYvC1w5SQyBVN5BuI0jNTALgWnAKpS1JEaSqzN1IupJ0J-k1k_BCc4mrcLFP0uQb=
+4pBlwQ=3D=3D&p5=3Dd715bd6626dce266"><img src=3D"https://mi.walgreens.com/p/=
+rp/d78605d96ea0c06a.png=3Fmi_u=3D60869352" alt=3D"Rx" title=3D"Rx" width=3D=
+"129" style=3D"-ms-interpolation-mode: bicubic; display: block; width: 129p=
+x; max-width: 100%; min-width: 129px;">
+=09=09=09=09=09=09=09=09=09=09=09=09</a>
+=09=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09=09</tbody>
+=09=09=09=09=09=09=09=09</table>
+=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09<td align=3D"left" valign=3D"top" class=3D"ac-content-=
+cell" style=3D"border-collapse: collapse; mso-table-lspace: 0; mso-table-rs=
+pace: 0; vertical-align: top; mso-line-height-rule: exactly; text-align: le=
+ft; padding: 0px; margin: 0px; width: 33%;">
+=09=09=09=09=09=09=09=09<table role=3D"presentation" border=3D"0" cellpaddi=
+ng=3D"0" cellspacing=3D"0" width=3D"100%" style=3D"border-collapse: collaps=
+e; width: 100%">
+=09=09=09=09=09=09=09=09=09<tbody>
+=09=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09=09<td align=3D"center" valign=3D"middle" cla=
+ss=3D"ac-content-cell" style=3D"border-collapse: collapse; mso-table-lspace=
+: 0; mso-table-rspace: 0; vertical-align: middle; mso-line-height-rule: exa=
+ctly; text-align: center;">
+=09=09=09=09=09=09=09=09=09=09=09=09<a _label=3D"Header-Coupon" style=3D"te=
+xt-decoration: none" target=3D"_blank" href=3D"https://t.eml.walgreens.com/=
+r/=3Fid=3Dhbddb6d60,4800be0,8aa496&cid=3D_4eq708zjlp_e3k84e2won_vqv84739r3_=
+0_2026_04_18_11_30_AM_UTC&wag_mid=3D60869352&bid=3D-555-123-4567&p1=3D6086935=
+2&p2=3DuBzcCTCwzlTR_F1lvmAmQw=3D=3D&p3=3DCore_Retail_DemandGen&p4=3D2026041=
+8&p5=3Dv3.eJx1kL1LQlEUwLvvvvc8PshuN8jnw-E-h3y1lI3SVA3i2FTa4JZDc4NrNAjPoX8gI=
+gqFUjHRoqkPVGgxiKQhaA9yamgJOjcNTHK558c598f5MBRY5QDv-d22zqg1Dk9Zg3vgbYKpJg_5=
+oZPdxrQOl51cWw_9Fub2KEofrWlGTDX0qfBJKNsOjatAGFn7ebkJeZsRhwwm1zdTBcL9ULGZMlR=
+JppI8AKc2o0OFApFOBIpB7EwEcZRlA-47PrOria4WN-QnqycMcDrM56EUZFpfOHr2mTUqanSkMN=
+sT9L6QQ8Glwh0tOD3B0xfaOFKdivpoIYwLntsMhhZ01ZSr8iko2czrqH9uGICizYz_DmIe6qKhL=
+AKUWYjCcQypJeklFtXgccYaw1CJYfDCwwr2PzkgUYCzBYvC1w5SQyBVN5BuI0jNTALgWnAKpS1J=
+EaSqzN1IupJ0J-k1k_BCc4mrcLFP0uQb4pBlwQ=3D=3D&p6=3Dd715bd6626dce266"><img sr=
+c=3D"https://mi.walgreens.com/p/rp/8a5ac8abe26b81c0.png=3Fmi_u=3D60869352&m=
+i_member_id=3DuBzcCTCwzlTR_F1lvmAmQw=3D=3D" alt=3D"Coupon" title=3D"Coupon"=
+ width=3D"137" style=3D"-ms-interpolation-mode: bicubic; display: block; wi=
+dth: 137px; max-width: 100%; min-width: 137px;">
+=09=09=09=09=09=09=09=09=09=09=09=09</a>
+=09=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09=09</tbody>
+=09=09=09=09=09=09=09=09</table>
+=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09<td align=3D"left" valign=3D"top" class=3D"ac-content-=
+cell" style=3D"border-collapse: collapse; mso-table-lspace: 0; mso-table-rs=
+pace: 0; vertical-align: top; mso-line-height-rule: exactly; text-align: le=
+ft; padding: 0px; margin: 0px; width: 33%;">
+=09=09=09=09=09=09=09=09<table role=3D"presentation" border=3D"0" cellpaddi=
+ng=3D"0" cellspacing=3D"0" width=3D"100%" style=3D"border-collapse: collaps=
+e; width: 100%">
+=09=09=09=09=09=09=09=09=09<tbody>
+=09=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09=09<td align=3D"center" valign=3D"middle" cla=
+ss=3D"ac-content-cell" style=3D"border-collapse: collapse; mso-table-lspace=
+: 0; mso-table-rspace: 0; vertical-align: middle; mso-line-height-rule: exa=
+ctly; text-align: center;">
+=09=09=09=09=09=09=09=09=09=09=09=09<a _label=3D"Header-Logo" style=3D"text=
+-decoration: none" target=3D"_blank" href=3D"https://t.eml.walgreens.com/r/=
+=3Fid=3Dhbddb6d60,4800be0,8aa497&cid=3D_4eq708zjlp_e3k84e2won_vqv84739r3_0_=
+2026_04_18_11_30_AM_UTC&wag_mid=3D60869352&bid=3D-555-123-4567&p1=3D60869352&=
+p2=3DuBzcCTCwzlTR_F1lvmAmQw=3D=3D&p3=3DCore_Retail_DemandGen&p4=3D20260418&=
+p5=3Dv3.eJx1kL1LQlEUwLvvvvc8PshuN8jnw-E-h3y1lI3SVA3i2FTa4JZDc4NrNAjPoX8gIgq=
+FUjHRoqkPVGgxiKQhaA9yamgJOjcNTHK558c598f5MBRY5QDv-d22zqg1Dk9Zg3vgbYKpJg_5oZ=
+PdxrQOl51cWw_9Fub2KEofrWlGTDX0qfBJKNsOjatAGFn7ebkJeZsRhwwm1zdTBcL9ULGZMlRJp=
+pI8AKc2o0OFApFOBIpB7EwEcZRlA-47PrOria4WN-QnqycMcDrM56EUZFpfOHr2mTUqanSkMNsT=
+9L6QQ8Glwh0tOD3B0xfaOFKdivpoIYwLntsMhhZ01ZSr8iko2czrqH9uGICizYz_DmIe6qKhLAK=
+UWYjCcQypJeklFtXgccYaw1CJYfDCwwr2PzkgUYCzBYvC1w5SQyBVN5BuI0jNTALgWnAKpS1JEa=
+SqzN1IupJ0J-k1k_BCc4mrcLFP0uQb4pBlwQ=3D=3D&p6=3Dd715bd6626dce266"><img src=
+=3D"https://mi.walgreens.com/p/rp/5fdcd8366cdfde8f.png=3Fmi_u=3D60869352&mi=
+_member_id=3DuBzcCTCwzlTR_F1lvmAmQw=3D=3D" alt=3D"Shop" title=3D"Shop" widt=
+h=3D"127" style=3D"-ms-interpolation-mode: bicubic; display: block; width: =
+127px; max-width: 100%; min-width: 127px;">
+=09=09=09=09=09=09=09=09=09=09=09=09</a>
+=09=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09=09</tbody>
+=09=09=09=09=09=09=09=09</table>
+=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09</tr>
+=09=09=09=09=09</tbody>
+=09=09=09=09</table>
+=09=09=09</td>
+=09=09=09<td align=3D"left" valign=3D"top" height=3D"0" width=3D"247" class=
+=3D"ac-content-cell" style=3D"border-collapse: collapse; mso-table-lspace: =
+0; mso-table-rspace: 0; vertical-align: top; mso-line-height-rule: exactly;=
+ text-align: left; width: 247px; height: 0px; background-color: #f3f2ee; pa=
+dding: 0px;">
+=09=09=09=09<table role=3D"presentation" border=3D"0" cellpadding=3D"0" cel=
+lspacing=3D"0" width=3D"100%" style=3D"border-collapse: collapse; width: 10=
+0%">
+=09=09=09=09=09<tbody>
+=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09<td align=3D"left" valign=3D"top" class=3D"ac-content-=
+cell" style=3D"border-collapse: collapse; mso-table-lspace: 0; mso-table-rs=
+pace: 0; vertical-align: top; mso-line-height-rule: exactly; text-align: le=
+ft; padding: 0px; margin: 0px; width: 50%;">
+=09=09=09=09=09=09=09=09<table role=3D"presentation" border=3D"0" cellpaddi=
+ng=3D"0" cellspacing=3D"0" width=3D"100%" style=3D"border-collapse: collaps=
+e; width: 100%">
+=09=09=09=09=09=09=09=09=09<tbody>
+=09=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09=09<td align=3D"center" valign=3D"middle" cla=
+ss=3D"ac-content-cell" style=3D"border-collapse: collapse; mso-table-lspace=
+: 0; mso-table-rspace: 0; vertical-align: middle; mso-line-height-rule: exa=
+ctly; text-align: center;">
+=09=09=09=09=09=09=09=09=09=09=09=09<a _label=3D"Header-Shop" style=3D"text=
+-decoration: none" target=3D"_blank" href=3D"https://t.eml.walgreens.com/r/=
+=3Fid=3Dhbddb6d60,4800be0,8aa498&cid=3D_4eq708zjlp_e3k84e2won_vqv84739r3_0_=
+2026_04_18_11_30_AM_UTC&wag_mid=3D60869352&bid=3D-555-123-4567&p1=3D60869352&=
+p2=3DuBzcCTCwzlTR_F1lvmAmQw=3D=3D&p3=3DCore_Retail_DemandGen&p4=3D20260418&=
+p5=3Dv3.eJx1kL1LQlEUwLvvvvc8PshuN8jnw-E-h3y1lI3SVA3i2FTa4JZDc4NrNAjPoX8gIgq=
+FUjHRoqkPVGgxiKQhaA9yamgJOjcNTHK558c598f5MBRY5QDv-d22zqg1Dk9Zg3vgbYKpJg_5oZ=
+PdxrQOl51cWw_9Fub2KEofrWlGTDX0qfBJKNsOjatAGFn7ebkJeZsRhwwm1zdTBcL9ULGZMlRJp=
+pI8AKc2o0OFApFOBIpB7EwEcZRlA-47PrOria4WN-QnqycMcDrM56EUZFpfOHr2mTUqanSkMNsT=
+9L6QQ8Glwh0tOD3B0xfaOFKdivpoIYwLntsMhhZ01ZSr8iko2czrqH9uGICizYz_DmIe6qKhLAK=
+UWYjCcQypJeklFtXgccYaw1CJYfDCwwr2PzkgUYCzBYvC1w5SQyBVN5BuI0jNTALgWnAKpS1JEa=
+SqzN1IupJ0J-k1k_BCc4mrcLFP0uQb4pBlwQ=3D=3D&p6=3Dd715bd6626dce266"><img src=
+=3D"https://mi.walgreens.com/p/rp/cc21a0bfc3866c1a.png=3Fmi_u=3D60869352&mi=
+_member_id=3DuBzcCTCwzlTR_F1lvmAmQw=3D=3D" alt=3D"Photo" title=3D"Photo" wi=
+dth=3D"117" style=3D"-ms-interpolation-mode: bicubic; display: block; width=
+: 117px; max-width: 100%; min-width: 117px;">
+=09=09=09=09=09=09=09=09=09=09=09=09</a>
+=09=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09=09</tbody>
+=09=09=09=09=09=09=09=09</table>
+=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09<td align=3D"left" valign=3D"top" class=3D"ac-content-=
+cell" style=3D"border-collapse: collapse; mso-table-lspace: 0; mso-table-rs=
+pace: 0; vertical-align: top; mso-line-height-rule: exactly; text-align: le=
+ft; padding: 0px; margin: 0px; width: 50%;">
+=09=09=09=09=09=09=09=09<table role=3D"presentation" border=3D"0" cellpaddi=
+ng=3D"0" cellspacing=3D"0" width=3D"100%" style=3D"border-collapse: collaps=
+e; width: 100%">
+=09=09=09=09=09=09=09=09=09<tbody>
+=09=09=09=09=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09=09=09=09=09=09<td align=3D"center" valign=3D"middle" cla=
+ss=3D"ac-content-cell" style=3D"border-collapse: collapse; mso-table-lspace=
+: 0; mso-table-rspace: 0; vertical-align: middle; mso-line-height-rule: exa=
+ctly; text-align: center;">
+=09=09=09=09=09=09=09=09=09=09=09=09<a _label=3D"Header-Photo" style=3D"tex=
+t-decoration: none" target=3D"_blank" href=3D"https://t.eml.walgreens.com/r=
+/=3Fid=3Dhbddb6d60,4800be0,8aa499&cid=3D_4eq708zjlp_e3k84e2won_vqv84739r3_0=
+_2026_04_18_11_30_AM_UTC&wag_mid=3D60869352&bid=3D-555-123-4567&p1=3D60869352=
+&p2=3DCore_Retail_DemandGen&p3=3D20260418&p4=3Dv3.eJx1kL1LQlEUwLvvvvc8PshuN=
+8jnw-E-h3y1lI3SVA3i2FTa4JZDc4NrNAjPoX8gIgqFUjHRoqkPVGgxiKQhaA9yamgJOjcNTHK5=
+58c598f5MBRY5QDv-d22zqg1Dk9Zg3vgbYKpJg_5oZPdxrQOl51cWw_9Fub2KEofrWlGTDX0qfB=
+JKNsOjatAGFn7ebkJeZsRhwwm1zdTBcL9ULGZMlRJppI8AKc2o0OFApFOBIpB7EwEcZRlA-47Pr=
+Oria4WN-QnqycMcDrM56EUZFpfOHr2mTUqanSkMNsT9L6QQ8Glwh0tOD3B0xfaOFKdivpoIYwLn=
+tsMhhZ01ZSr8iko2czrqH9uGICizYz_DmIe6qKhLAKUWYjCcQypJeklFtXgccYaw1CJYfDCwwr2=
+PzkgUYCzBYvC1w5SQyBVN5BuI0jNTALgWnAKpS1JEaSqzN1IupJ0J-k1k_BCc4mrcLFP0uQb4pB=
+lwQ=3D=3D&p5=3Dd715bd6626dce266"><img src=3D"https://mi.walgreens.com/p/rp/=
+d9cec2c678fc331f.png=3Fmi_u=3D60869352" alt=3D"myWalgreens Wallet" title=3D=
+"myWalgreens Wallet" width=3D"130" style=3D"-ms-interpolation-mode: bicubic=
+; display: block; width: 130px; max-width: 100%; min-width: 130px;">
+=09=09=09=09=09=09=09=09=09=09=09=09</a>
+=09=09=09=09=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09=09=09=09</tbody>
+=09=09=09=09=09=09=09=09</table>
+=09=09=09=09=09=09=09</td>
+=09=09=09=09=09=09</tr>
+=09=09=09=09=09</tbody>
+=09=09=09=09</table>
+=09=09=09</td>
+=09=09</tr>
+=09</tbody>
+</table>
+<table role=3D"presentation" width=3D"1" height=3D"1" cellpadding=3D"0" cel=
+lspacing=3D"0" border=3D"0" class=3D"contenttable">
+=09<tbody>
+=09=09<tr>
+=09=09=09<td style=3D"font-size: 0px; line-height: 0px">
+=09=09=09=09<img src=3D"https://mi.walgreens.com/p/cp/4c49104aeede1879/o.gi=
+f=3Fmi_u=3D60869352" width=3D"1" height=3D"1" alt=3D"" aria-hidden=3D"true"=
+>
+=09=09=09</td>
+=09=09</tr>
+=09</tbody>
+</table>
+<table role=3D"presentation" border=3D"0" cellpadding=3D"0" cellspacing=3D"=
+0" align=3D"center" width=3D"640" style=3D"border-collapse: collapse; width=
+: 640px;" class=3D"contenttable">
+=09<tbody>
+=09=09<tr>
+=09=09=09<td align=3D"center" valign=3D"middle" class=3D"ac-content-cell" s=
+tyle=3D" border-collapse: collapse; mso-table-lspace: 0; mso-table-rspace: =
+0; vertical-align: middle; mso-line-height-rule: exactly; text-align: cente=
+r;">
+=09=09=09=09<a _label=3D"Header-Banner" style=3D"text-decoration: none" tar=
+get=3D"_blank" href=3D"https://t.eml.walgreens.com/r/=3Fid=3Dhbddb6d60,4800=
+be0,8aa49a&cid=3D_4eq708zjlp_e3k84e2won_vqv84739r3_0_2026_04_18_11_30_AM_UT=
+C&wag_mid=3D60869352&bid=3D-555-123-4567&p1=3D60869352&p2=3D&p3=3DuBzcCTCwzlT=
+R_F1lvmAmQw=3D=3D&p4=3Dundefined&p5=3D3788&p6=3DMICHAEL&p7=3Dtrue&p8=3Dfals=
+e&p9=3DWA&p10=3DCore_Retail_DemandGen&p11=3D20260418&p12=3Dv3.eJx1kL1LQlEUw=
+Lvvvvc8PshuN8jnw-E-h3y1lI3SVA3i2FTa4JZDc4NrNAjPoX8gIgqFUjHRoqkPVGgxiKQhaA9y=
+amgJOjcNTHK558c598f5MBRY5QDv-d22zqg1Dk9Zg3vgbYKpJg_5oZPdxrQOl51cWw_9Fub2KEo=
+frWlGTDX0qfBJKNsOjatAGFn7ebkJeZsRhwwm1zdTBcL9ULGZMlRJppI8AKc2o0OFApFOBIpB7E=
+wEcZRlA-47PrOria4WN-QnqycMcDrM56EUZFpfOHr2mTUqanSkMNsT9L6QQ8Glwh0tOD3B0xfaO=
+FKdivpoIYwLntsMhhZ01ZSr8iko2czrqH9uGICizYz_DmIe6qKhLAKUWYjCcQypJeklFtXgccYa=
+w1CJYfDCwwr2PzkgUYCzBYvC1w5SQyBVN5BuI0jNTALgWnAKpS1JEaSqzN1IupJ0J-k1k_BCc4m=
+rcLFP0uQb4pBlwQ=3D=3D&p13=3Dd715bd6626dce266"><img src=3D"https://mi.walgre=
+ens.com/p/rp/a6f09cf05802d2ce.png=3Fmi_u=3D60869352&mi_cc_user=3D&mi_member=
+_id=3DuBzcCTCwzlTR_F1lvmAmQw=3D=3D&mi_zip=3Dundefined&mi_homestore=3D3788&m=
+i_fname=3DMICHAEL&mi_app=3Dtrue&mi_push=3Dfalse&mi_state=3DWA" alt=3D"Displ=
+ay images to show real-time content" title=3D"Display images to show real-t=
+ime content" width=3D"640" style=3D"-ms-interpolation-mode: bicubic; displa=
+y: block; width: 640px; max-width: 100%; min-width: 640px;">
+=09=09=09=09</a>
+=09=09=09</td>
+=09=09</tr>
+=09</tbody>
+</table>
+            
+                <!-- Start ContentBlock: 7gken7zk8j -->
+
+<!--Editor Render Code-->
+
+<!--End Editor Render Code ; Start Legacy Layout Builder-->
+
+<!-- Main Story v0 Start -->
+<table class=3D"contenttable" align=3D"center" width=3D"640" border=3D"0" c=
+ellspacing=3D"0" cellpadding=3D"0" role=3D"presentation">
+    <tr>
+        <td style=3D"padding-top: 10px;">
+    =09    <table cellpadding=3D"0" cellspacing=3D"0" border=3D"0" align=3D=
+"center" width=3D"100%"  role=3D"presentation" >
+    =09        <tr>
+    =09                        <td>
+    =09                            
+    =09                                <a style=3D"display: block" href=3D"=
+https://t.eml.walgreens.com/r/=3Fid=3Dhbddb6d60,4800be0,8aa518&cid=3D_4eq70=
+8zjlp_e3k84e2won_vqv84739r3_0_2026_04_18_11_30_AM_UTC&wag_mid=3D60869352&bi=
+d=3D-555-123-4567&p1=3DCore_Retail_DemandGen&p2=3D20260418&p3=3Dv3.eJx1kL1LQl=
+EUwLvvvvc8PshuN8jnw-E-h3y1lI3SVA3i2FTa4JZDc4NrNAjPoX8gIgqFUjHRoqkPVGgxiKQha=
+A9yamgJOjcNTHK558c598f5MBRY5QDv-d22zqg1Dk9Zg3vgbYKpJg_5oZPdxrQOl51cWw_9Fub2=
+KEofrWlGTDX0qfBJKNsOjatAGFn7ebkJeZsRhwwm1zdTBcL9ULGZMlRJppI8AKc2o0OFApFOBIp=
+B7EwEcZRlA-47PrOria4WN-QnqycMcDrM56EUZFpfOHr2mTUqanSkMNsT9L6QQ8Glwh0tOD3B0x=
+faOFKdivpoIYwLntsMhhZ01ZSr8iko2czrqH9uGICizYz_DmIe6qKhLAKUWYjCcQypJeklFtXgc=
+cYaw1CJYfDCwwr2PzkgUYCzBYvC1w5SQyBVN5BuI0jNTALgWnAKpS1JEaSqzN1IupJ0J-k1k_BC=
+c4mrcLFP0uQb4pBlwQ=3D=3D&p4=3Dd715bd6626dce266"><img width=3D"640" style=3D=
+"display:block;-ms-interpolation-mode:bicubic;max-width:100%;width:640px;mi=
+n-width:640px;" border=3D"0" src=3D"https://res.eml.walgreens.com/res/walgr=
+ee_mid_prod3/bfeb3e613c3b40dc158039f7bcaadefe8cf43b2e1c778942fad643ee72e392=
+38.jpg" title=3D"OE_Sale_NTL_Hero">
+                                    
+    =09                                </a>
+    =09                            
+    =09                        </td>
+    =09                    </tr>
+    =09                </table>
+        </td>
+    </tr>
+</table>
+<!-- Main Story v0 End -->
+
+ <!--End Editor Render-->
+
+<!-- End ContentBlock: 7gken7zk8j -->
+            
+                <!-- Start ContentBlock: 3wkgmxmkyl -->
+
+<!--Editor Render Code-->
+
+<!--End Editor Render Code ; Start Legacy Layout Builder-->
+
+<!--  Secondary Story v0 Start -->
+<!-- START Secondary -->
+<table class=3D"contenttable" align=3D"center" width=3D"640" border=3D"0" c=
+ellspacing=3D"0" cellpadding=3D"0" role=3D"presentation">
+    <tr>
+        <td style=3D"padding-top: 30px;">
+           <table cellpadding=3D"0" cellspacing=3D"0" border=3D"0" align=3D=
+"center" width=3D"100%"  role=3D"presentation" >
+               <tr>
+                               <td style=3D"padding-top: 30px;">
+                                   
+                                       <a style=3D"display: block" href=3D"=
+https://t.eml.walgreens.com/r/=3Fid=3Dhbddb6d60,4800be0,8aa561&cid=3D_4eq70=
+8zjlp_e3k84e2won_vqv84739r3_0_2026_04_18_11_30_AM_UTC&wag_mid=3D60869352&bi=
+d=3D-555-123-4567&p1=3DCore_Retail_DemandGen&p2=3D20260418&p3=3Dv3.eJx1kL1LQl=
+EUwLvvvvc8PshuN8jnw-E-h3y1lI3SVA3i2FTa4JZDc4NrNAjPoX8gIgqFUjHRoqkPVGgxiKQha=
+A9yamgJOjcNTHK558c598f5MBRY5QDv-d22zqg1Dk9Zg3vgbYKpJg_5oZPdxrQOl51cWw_9Fub2=
+KEofrWlGTDX0qfBJKNsOjatAGFn7ebkJeZsRhwwm1zdTBcL9ULGZMlRJppI8AKc2o0OFApFOBIp=
+B7EwEcZRlA-47PrOria4WN-QnqycMcDrM56EUZFpfOHr2mTUqanSkMNsT9L6QQ8Glwh0tOD3B0x=
+faOFKdivpoIYwLntsMhhZ01ZSr8iko2czrqH9uGICizYz_DmIe6qKhLAKUWYjCcQypJeklFtXgc=
+cYaw1CJYfDCwwr2PzkgUYCzBYvC1w5SQyBVN5BuI0jNTALgWnAKpS1JEaSqzN1IupJ0J-k1k_BC=
+c4mrcLFP0uQb4pBlwQ=3D=3D&p4=3Dd715bd6626dce266"><img width=3D"640" class=3D=
+"photo" style=3D"border: 0; display: block;" border=3D"0" alt=3D"Display im=
+ages to show real-time content" src=3D"https://res.eml.walgreens.com/res/wa=
+lgree_mid_prod3/9acfc23b75b9ac243b79b3a7dc112cf37ce8eb3a7fa62e470140f1eae9a=
+d6b28.jpg" title=3D"5515823_April_Loyalty_Offer_creative_Offer1_Crosscell.j=
+pg">
+                                    
+                                       </a>
+                                   
+                               </td>
+                           </tr>
+                       </table>
+        </td>
+    </tr>
+ </table>
+ <!-- END Secondary -->
+<!-- Secondary Story v0 End -->
+
+ <!--End Editor Render-->
+
+<!-- End ContentBlock: 3wkgmxmkyl -->
+            
+                <!-- Start ContentBlock: 3wkgmxmkyl -->
+
+<!--Editor Render Code-->
+
+<!--End Editor Render Code ; Start Legacy Layout Builder-->
+
+<!--  Secondary Story v0 Start -->
+<!-- START Secondary -->
+<table class=3D"contenttable" align=3D"center" width=3D"640" border=3D"0" c=
+ellspacing=3D"0" cellpadding=3D"0" role=3D"presentation">
+    <tr>
+        <td style=3D"padding-top: 30px;">
+           <table cellpadding=3D"0" cellspacing=3D"0" border=3D"0" align=3D=
+"center" width=3D"100%"  role=3D"presentation" >
+               <tr>
+                               <td style=3D"padding-top: 30px;">
+                                   
+                                       <a style=3D"display: block" href=3D"=
+https://t.eml.walgreens.com/r/=3Fid=3Dhbddb6d60,4800be0,8aa5d9&cid=3D_4eq70=
+8zjlp_e3k84e2won_vqv84739r3_0_2026_04_18_11_30_AM_UTC&wag_mid=3D60869352&bi=
+d=3D-555-123-4567&p1=3DCore_Retail_DemandGen&p2=3D20260418&p3=3Dv3.eJx1kL1LQl=
+EUwLvvvvc8PshuN8jnw-E-h3y1lI3SVA3i2FTa4JZDc4NrNAjPoX8gIgqFUjHRoqkPVGgxiKQha=
+A9yamgJOjcNTHK558c598f5MBRY5QDv-d22zqg1Dk9Zg3vgbYKpJg_5oZPdxrQOl51cWw_9Fub2=
+KEofrWlGTDX0qfBJKNsOjatAGFn7ebkJeZsRhwwm1zdTBcL9ULGZMlRJppI8AKc2o0OFApFOBIp=
+B7EwEcZRlA-47PrOria4WN-QnqycMcDrM56EUZFpfOHr2mTUqanSkMNsT9L6QQ8Glwh0tOD3B0x=
+faOFKdivpoIYwLntsMhhZ01ZSr8iko2czrqH9uGICizYz_DmIe6qKhLAKUWYjCcQypJeklFtXgc=
+cYaw1CJYfDCwwr2PzkgUYCzBYvC1w5SQyBVN5BuI0jNTALgWnAKpS1JEaSqzN1IupJ0J-k1k_BC=
+c4mrcLFP0uQb4pBlwQ=3D=3D&p4=3Dd715bd6626dce266"><img width=3D"640" class=3D=
+"photo" style=3D"border: 0; display: block;" border=3D"0" alt=3D"Display im=
+ages to show real-time content" src=3D"https://res.eml.walgreens.com/res/wa=
+lgree_mid_prod3/e1f4742087641dcdb57182e12c8dddfa6304d63ed7ce8f69eb1131d1eb1=
+4f36d.jpg" title=3D"A-N586-A-01-0000-0036-0005_092825_PE_T_NTL_ Cross">
+                                    
+                                       </a>
+                                   
+                               </td>
+                           </tr>
+                       </table>
+        </td>
+    </tr>
+ </table>
+ <!-- END Secondary -->
+<!-- Secondary Story v0 End -->
+
+ <!--End Editor Render-->
+
+<!-- End ContentBlock: 3wkgmxmkyl -->
+            
+                <!-- Start ContentBlock: 3wkgmxmkyl -->
+
+<!--Editor Render Code-->
+
+<!--End Editor Render Code ; Start Legacy Layout Builder-->
+
+<!--  Secondary Story v0 Start -->
+<!-- START Secondary -->
+<table class=3D"contenttable" align=3D"center" width=3D"640" border=3D"0" c=
+ellspacing=3D"0" cellpadding=3D"0" role=3D"presentation">
+    <tr>
+        <td style=3D"padding-top: 30px;">
+           <table cellpadding=3D"0" cellspacing=3D"0" border=3D"0" align=3D=
+"center" width=3D"100%"  role=3D"presentation" >
+               <tr>
+                               <td style=3D"padding-top: 30px;">
+                                   
+                                       <a style=3D"display: block" href=3D"=
+https://t.eml.walgreens.com/r/=3Fid=3Dhbddb6d60,4800be0,8aa606&cid=3D_4eq70=
+8zjlp_e3k84e2won_vqv84739r3_0_2026_04_18_11_30_AM_UTC&wag_mid=3D60869352&bi=
+d=3D-555-123-4567&p1=3DCore_Retail_DemandGen&p2=3D20260418&p3=3Dv3.eJx1kL1LQl=
+EUwLvvvvc8PshuN8jnw-E-h3y1lI3SVA3i2FTa4JZDc4NrNAjPoX8gIgqFUjHRoqkPVGgxiKQha=
+A9yamgJOjcNTHK558c598f5MBRY5QDv-d22zqg1Dk9Zg3vgbYKpJg_5oZPdxrQOl51cWw_9Fub2=
+KEofrWlGTDX0qfBJKNsOjatAGFn7ebkJeZsRhwwm1zdTBcL9ULGZMlRJppI8AKc2o0OFApFOBIp=
+B7EwEcZRlA-47PrOria4WN-QnqycMcDrM56EUZFpfOHr2mTUqanSkMNsT9L6QQ8Glwh0tOD3B0x=
+faOFKdivpoIYwLntsMhhZ01ZSr8iko2czrqH9uGICizYz_DmIe6qKhLAKUWYjCcQypJeklFtXgc=
+cYaw1CJYfDCwwr2PzkgUYCzBYvC1w5SQyBVN5BuI0jNTALgWnAKpS1JEaSqzN1IupJ0J-k1k_BC=
+c4mrcLFP0uQb4pBlwQ=3D=3D&p4=3Dd715bd6626dce266"><img width=3D"640" class=3D=
+"photo" style=3D"border: 0; display: block;" border=3D"0" alt=3D"Display im=
+ages to show real-time content" src=3D"https://res.eml.walgreens.com/res/wa=
+lgree_mid_prod3/ae7b4c64b1ae352b732c42c1d3ab83934c84b6b04da23e8c5b129fbe283=
+b19d3.jpg" title=3D"EBC _ FY26 _ Q1 _ COVID-19 Vaccine Email Cross-Sells _ =
+#343.jpg">
+                                    
+                                       </a>
+                                   
+                               </td>
+                           </tr>
+                       </table>
+        </td>
+    </tr>
+ </table>
+ <!-- END Secondary -->
+<!-- Secondary Story v0 End -->
+
+ <!--End Editor Render-->
+
+<!-- End ContentBlock: 3wkgmxmkyl -->
+            
+                <table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" wid=
+th=3D"100%" style=3D"border-collapse:collapse;width:100%;clear:both;backgro=
+und-color: #FFFFFF;">
+    <tbody><tr>
+        <td align=3D"center" valign=3D"middle" class=3D"ac-content-cell" st=
+yle=3D"border-collapse:collapse; mso-table-lspace:0; mso-table-rspace:0; ve=
+rtical-align:middle; mso-line-height-rule:exactly; text-align:center; paddi=
+ng: 20px 0 0 0;"> 
+        </td>
+    </tr>
+</tbody>
+</table>
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"640" style=
+=3D"border-collapse:collapse;width: 640px;" align=3D"center" class=3D"conte=
+nttable">
+<tbody>
+    <tr>
+        <td align=3D"center" valign=3D"middle" class=3D"ac-content-cell"
+            style=3D"border-collapse:collapse; mso-table-lspace:0;mso-table=
+-rspace:0;vertical-align:middle;mso-line-height-rule:exactly;text-align:cen=
+ter;">
+            <a _label=3D"p09loyaltybar" style=3D"text-decoration: none;" ta=
+rget=3D"_blank" href=3D"https://br.eml.walgreens.com/r/=3Fid=3Dhbddb6d60,48=
+00be0,8aa63e&cid=3D_4eq708zjlp_e3k84e2won_vqv84739r3_0_2026_04_18_11_30_AM_=
+UTC&wag_mid=3D60869352&bid=3D-555-123-4567&p1=3DCore_Retail_DemandGen&p2=3D20=
+260418&p3=3Dv3.eJx1kL1LQlEUwLvvvvc8PshuN8jnw-E-h3y1lI3SVA3i2FTa4JZDc4NrNAjP=
+oX8gIgqFUjHRoqkPVGgxiKQhaA9yamgJOjcNTHK558c598f5MBRY5QDv-d22zqg1Dk9Zg3vgbYK=
+pJg_5oZPdxrQOl51cWw_9Fub2KEofrWlGTDX0qfBJKNsOjatAGFn7ebkJeZsRhwwm1zdTBcL9UL=
+GZMlRJppI8AKc2o0OFApFOBIpB7EwEcZRlA-47PrOria4WN-QnqycMcDrM56EUZFpfOHr2mTUqa=
+nSkMNsT9L6QQ8Glwh0tOD3B0xfaOFKdivpoIYwLntsMhhZ01ZSr8iko2czrqH9uGICizYz_DmIe=
+6qKhLAKUWYjCcQypJeklFtXgccYaw1CJYfDCwwr2PzkgUYCzBYvC1w5SQyBVN5BuI0jNTALgWnA=
+KpS1JEaSqzN1IupJ0J-k1k_BCc4mrcLFP0uQb4pBlwQ=3D=3D&p4=3Dd715bd6626dce266"><i=
+mg src=3D"https://mi.walgreens.com/p/rp/11df14e3502df528.png=3Fmi_u=3D60869=
+352&mi_fname=3DMICHAEL&mi_member_id=3DuBzcCTCwzlTR_F1lvmAmQw=3D=3D" alt=3D"=
+Display images to show real-time content" title=3D"Display images to show r=
+eal-time content" width=3D"640" style=3D"-ms-interpolation-mode:bicubic;dis=
+play:block;width:640px;max-width:100%;min-width:640px;">
+            </a>
+        </td>
+    </tr>
+</tbody>
+</table>
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" styl=
+e=3D"border-collapse:collapse;width:100%;clear:both;background-color: #FFFF=
+FF;">
+    <tbody><tr>
+        <td align=3D"center" valign=3D"middle" class=3D"ac-content-cell" st=
+yle=3D"border-collapse:collapse; mso-table-lspace:0; mso-table-rspace:0; ve=
+rtical-align:middle; mso-line-height-rule:exactly; text-align:center; paddi=
+ng: 20px 0 0 0;"> 
+        </td>
+    </tr>
+</tbody>
+</table>
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"640" style=
+=3D"border-collapse:collapse;width: 640px;" align=3D"center" class=3D"conte=
+nttable">
+   <tbody>
+      <tr>
+         <td align=3D"center" valign=3D"middle" class=3D"ac-content-cell"
+            style=3D"border-collapse:collapse;mso-table-lspace:0;mso-table-=
+rspace:0;vertical-align:middle;mso-line-height-rule:exactly;text-align:cent=
+er">
+            <a _label=3D"p13mobila" style=3D"text-decoration:none" target=
+=3D"_blank" href=3D"https://br.eml.walgreens.com/r/=3Fid=3Dhbddb6d60,4800be=
+0,8aa639&cid=3D_4eq708zjlp_e3k84e2won_vqv84739r3_0_2026_04_18_11_30_AM_UTC&=
+wag_mid=3D60869352&bid=3D-555-123-4567&p1=3D60869352&p2=3DmyW&p3=3Dtrue&p4=3D=
+false&p5=3D20260418&p6=3DCore_Retail_DemandGen&p7=3Dv3.eJx1kL1LQlEUwLvvvvc8=
+PshuN8jnw-E-h3y1lI3SVA3i2FTa4JZDc4NrNAjPoX8gIgqFUjHRoqkPVGgxiKQhaA9yamgJOjc=
+NTHK558c598f5MBRY5QDv-d22zqg1Dk9Zg3vgbYKpJg_5oZPdxrQOl51cWw_9Fub2KEofrWlGTD=
+X0qfBJKNsOjatAGFn7ebkJeZsRhwwm1zdTBcL9ULGZMlRJppI8AKc2o0OFApFOBIpB7EwEcZRlA=
+-47PrOria4WN-QnqycMcDrM56EUZFpfOHr2mTUqanSkMNsT9L6QQ8Glwh0tOD3B0xfaOFKdivpo=
+IYwLntsMhhZ01ZSr8iko2czrqH9uGICizYz_DmIe6qKhLAKUWYjCcQypJeklFtXgccYaw1CJYfD=
+Cwwr2PzkgUYCzBYvC1w5SQyBVN5BuI0jNTALgWnAKpS1JEaSqzN1IupJ0J-k1k_BCc4mrcLFP0u=
+Qb4pBlwQ=3D=3D&p8=3Dd715bd6626dce266"><img src=3D"https://mi.walgreens.com/=
+p/rp/7d6cb202770720fd.png=3Fmi_u=3D60869352&loyaltyFlag=3DmyW&activeAppUser=
+=3Dtrue&pushOptIn=3Dfalse" alt=3D"Display images to show real-time content"=
+ title=3D"Display images to show real-time content" width=3D"640" style=3D"=
+-ms-interpolation-mode:bicubic;display:block;width:640px;max-width:100%;min=
+-width:640px"></a>
+         </td>
+      </tr>
+   </tbody>
+</table>
+<table width=3D"1" height=3D"1" cellpadding=3D"0" width=3D"640" style=3D"bo=
+rder-collapse:collapse;width: 640px;" cellspacing=3D"0" border=3D"0" align=
+=3D"center" class=3D"contenttable">
+   <tbody>
+      <tr>
+         <td style=3D"font-size:0;line-height:0"><img src=3D"https://mi.wal=
+greens.com/p/cp/819a8de94d9092d8/o.gif=3Fmi_u=3D60869352" width=3D"1" heigh=
+t=3D"1" alt=3D"" aria-hidden=3D"true"></td>
+      </tr>
+   </tbody>
+</table>
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"640"
+   style=3D"border-collapse:collapse;width: 640px;clear:both;background-col=
+or:#fff" align=3D"center" class=3D"contenttable">
+   <tbody>
+      <tr>
+         <td align=3D"center" valign=3D"middle" class=3D"ac-content-cell"
+            style=3D"border-collapse:collapse;mso-table-lspace:0;mso-table-=
+rspace:0;vertical-align:middle;mso-line-height-rule:exactly;text-align:cent=
+er;padding:30px 0 0 0">
+         </td>
+      </tr>
+   </tbody>
+</table>
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"640" style=
+=3D"border-collapse:collapse;width: 640px;" align=3D"center" class=3D"conte=
+nttable">
+   <tbody>
+      <tr>
+         <td align=3D"center" valign=3D"top" class=3D"ac-content-cell"
+            style=3D"border-collapse:collapse;mso-table-lspace:0;mso-table-=
+rspace:0;vertical-align:top;mso-line-height-rule:exactly;text-align:center;=
+padding:0 0;margin:0 0;width:50%">
+            <table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=
+=3D"100%" style=3D"border-collapse:collapse;width:100%">
+               <tbody>
+                  <tr>
+                     <td align=3D"center" valign=3D"middle" class=3D"ac-con=
+tent-cell"
+                        style=3D"border-collapse:collapse;mso-table-lspace:=
+0;mso-table-rspace:0;vertical-align:middle;mso-line-height-rule:exactly;tex=
+t-align:center">
+                        <a target=3D"_blank" style=3D"text-decoration:none"=
+ href=3D"https://br.eml.walgreens.com/r/=3Fid=3Dhbddb6d60,4800be0,8aa63a&ci=
+d=3D_4eq708zjlp_e3k84e2won_vqv84739r3_0_2026_04_18_11_30_AM_UTC&wag_mid=3D6=
+0869352&bid=3D-555-123-4567&p1=3DCore_Retail_DemandGen&p2=3D20260418&p3=3Dv3.=
+eJx1kL1LQlEUwLvvvvc8PshuN8jnw-E-h3y1lI3SVA3i2FTa4JZDc4NrNAjPoX8gIgqFUjHRoqk=
+PVGgxiKQhaA9yamgJOjcNTHK558c598f5MBRY5QDv-d22zqg1Dk9Zg3vgbYKpJg_5oZPdxrQOl5=
+1cWw_9Fub2KEofrWlGTDX0qfBJKNsOjatAGFn7ebkJeZsRhwwm1zdTBcL9ULGZMlRJppI8AKc2o=
+0OFApFOBIpB7EwEcZRlA-47PrOria4WN-QnqycMcDrM56EUZFpfOHr2mTUqanSkMNsT9L6QQ8Gl=
+wh0tOD3B0xfaOFKdivpoIYwLntsMhhZ01ZSr8iko2czrqH9uGICizYz_DmIe6qKhLAKUWYjCcQy=
+pJeklFtXgccYaw1CJYfDCwwr2PzkgUYCzBYvC1w5SQyBVN5BuI0jNTALgWnAKpS1JEaSqzN1Iup=
+J0J-k1k_BCc4mrcLFP0uQb4pBlwQ=3D=3D&p4=3Dd715bd6626dce266"><img src=3D"https=
+://campaigns.walgreens.com/content/dam/walgreens-email/marketing/wip/creati=
+ve/images/lifecycle/ob-skin-premium-10-29/4351647_FY25_FoSEmailFooterCopyUp=
+date_30mins_pick_up.jpg" alt=3D"30 minute - Pickup" width=3D"320" style=3D"=
+-ms-interpolation-mode:bicubic;max-width:100%;width:320px;min-width:320px;d=
+isplay:block" valign=3D"middle"></a></td>
+                  </tr>
+               </tbody>
+            </table>
+            <table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=
+=3D"100%" style=3D"border-collapse:collapse;width:100%">
+               <tbody>
+                  <tr>
+                     <td align=3D"center" valign=3D"middle" class=3D"ac-con=
+tent-cell"
+                        style=3D"border-collapse:collapse;mso-table-lspace:=
+0;mso-table-rspace:0;vertical-align:middle;mso-line-height-rule:exactly;tex=
+t-align:center">
+                        <a target=3D"_blank" style=3D"text-decoration:none"=
+ href=3D"https://br.eml.walgreens.com/r/=3Fid=3Dhbddb6d60,4800be0,8aa63b&ci=
+d=3D_4eq708zjlp_e3k84e2won_vqv84739r3_0_2026_04_18_11_30_AM_UTC&wag_mid=3D6=
+0869352&bid=3D-555-123-4567&p1=3DCore_Retail_DemandGen&p2=3D20260418&p3=3Dv3.=
+eJx1kL1LQlEUwLvvvvc8PshuN8jnw-E-h3y1lI3SVA3i2FTa4JZDc4NrNAjPoX8gIgqFUjHRoqk=
+PVGgxiKQhaA9yamgJOjcNTHK558c598f5MBRY5QDv-d22zqg1Dk9Zg3vgbYKpJg_5oZPdxrQOl5=
+1cWw_9Fub2KEofrWlGTDX0qfBJKNsOjatAGFn7ebkJeZsRhwwm1zdTBcL9ULGZMlRJppI8AKc2o=
+0OFApFOBIpB7EwEcZRlA-47PrOria4WN-QnqycMcDrM56EUZFpfOHr2mTUqanSkMNsT9L6QQ8Gl=
+wh0tOD3B0xfaOFKdivpoIYwLntsMhhZ01ZSr8iko2czrqH9uGICizYz_DmIe6qKhLAKUWYjCcQy=
+pJeklFtXgccYaw1CJYfDCwwr2PzkgUYCzBYvC1w5SQyBVN5BuI0jNTALgWnAKpS1JEaSqzN1Iup=
+J0J-k1k_BCc4mrcLFP0uQb4pBlwQ=3D=3D&p4=3Dd715bd6626dce266"><img src=3D"https=
+://campaigns.walgreens.com/content/dam/walgreens-email/marketing/wip/creati=
+ve/images/lifecycle/ob-skin-premium-10-29/4351647_FY25_FoSEmailFooterCopyUp=
+date_Free_shipping_at_35.jpg" alt=3D"FREE shipping on $35" width=3D"320" st=
+yle=3D"-ms-interpolation-mode:bicubic;max-width:100%;width:320px;min-width:=
+320px;display:block" valign=3D"middle"></a></td>
+                  </tr>
+               </tbody>
+            </table>
+         </td>
+         <td align=3D"center" valign=3D"top" class=3D"ac-content-cell"
+            style=3D"border-collapse:collapse;mso-table-lspace:0;mso-table-=
+rspace:0;vertical-align:top;mso-line-height-rule:exactly;text-align:center;=
+padding:0 0;margin:0 0;width:50%">
+            <table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=
+=3D"100%" style=3D"border-collapse:collapse;width:100%">
+               <tbody>
+                  <tr>
+                     <td align=3D"center" valign=3D"middle" class=3D"ac-con=
+tent-cell"
+                        style=3D"border-collapse:collapse;mso-table-lspace:=
+0;mso-table-rspace:0;vertical-align:middle;mso-line-height-rule:exactly;tex=
+t-align:center">
+                        <a target=3D"_blank" style=3D"text-decoration:none"=
+ href=3D"https://br.eml.walgreens.com/r/=3Fid=3Dhbddb6d60,4800be0,8aa63c&ci=
+d=3D_4eq708zjlp_e3k84e2won_vqv84739r3_0_2026_04_18_11_30_AM_UTC&wag_mid=3D6=
+0869352&bid=3D-555-123-4567&p1=3DCore_Retail_DemandGen&p2=3D20260418&p3=3Dv3.=
+eJx1kL1LQlEUwLvvvvc8PshuN8jnw-E-h3y1lI3SVA3i2FTa4JZDc4NrNAjPoX8gIgqFUjHRoqk=
+PVGgxiKQhaA9yamgJOjcNTHK558c598f5MBRY5QDv-d22zqg1Dk9Zg3vgbYKpJg_5oZPdxrQOl5=
+1cWw_9Fub2KEofrWlGTDX0qfBJKNsOjatAGFn7ebkJeZsRhwwm1zdTBcL9ULGZMlRJppI8AKc2o=
+0OFApFOBIpB7EwEcZRlA-47PrOria4WN-QnqycMcDrM56EUZFpfOHr2mTUqanSkMNsT9L6QQ8Gl=
+wh0tOD3B0xfaOFKdivpoIYwLntsMhhZ01ZSr8iko2czrqH9uGICizYz_DmIe6qKhLAKUWYjCcQy=
+pJeklFtXgccYaw1CJYfDCwwr2PzkgUYCzBYvC1w5SQyBVN5BuI0jNTALgWnAKpS1JEaSqzN1Iup=
+J0J-k1k_BCc4mrcLFP0uQb4pBlwQ=3D=3D&p4=3Dd715bd6626dce266"><img src=3D"https=
+://campaigns.walgreens.com/content/dam/walgreens-email/marketing/wip/creati=
+ve/images/lifecycle/ob-skin-premium-10-29/4351647_FY25_FoSEmailFooterCopyUp=
+date_1hour_delivery.jpg" alt=3D"1 - hour delivery" width=3D"320" style=3D"-=
+ms-interpolation-mode:bicubic;max-width:100%;width:320px;min-width:320px;di=
+splay:block" valign=3D"middle"></a></td>
+                  </tr>
+               </tbody>
+            </table>
+            <table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=
+=3D"100%" style=3D"border-collapse:collapse;width:100%">
+               <tbody>
+                  <tr>
+                     <td align=3D"center" valign=3D"middle" class=3D"ac-con=
+tent-cell"
+                        style=3D"border-collapse:collapse;mso-table-lspace:=
+0;mso-table-rspace:0;vertical-align:middle;mso-line-height-rule:exactly;tex=
+t-align:center">
+                        <a target=3D"_blank" style=3D"text-decoration:none"=
+ href=3D"https://br.eml.walgreens.com/r/=3Fid=3Dhbddb6d60,4800be0,8aa63d&ci=
+d=3D_4eq708zjlp_e3k84e2won_vqv84739r3_0_2026_04_18_11_30_AM_UTC&wag_mid=3D6=
+0869352&bid=3D-555-123-4567&p1=3DCore_Retail_DemandGen&p2=3D20260418&p3=3Dv3.=
+eJx1kL1LQlEUwLvvvvc8PshuN8jnw-E-h3y1lI3SVA3i2FTa4JZDc4NrNAjPoX8gIgqFUjHRoqk=
+PVGgxiKQhaA9yamgJOjcNTHK558c598f5MBRY5QDv-d22zqg1Dk9Zg3vgbYKpJg_5oZPdxrQOl5=
+1cWw_9Fub2KEofrWlGTDX0qfBJKNsOjatAGFn7ebkJeZsRhwwm1zdTBcL9ULGZMlRJppI8AKc2o=
+0OFApFOBIpB7EwEcZRlA-47PrOria4WN-QnqycMcDrM56EUZFpfOHr2mTUqanSkMNsT9L6QQ8Gl=
+wh0tOD3B0xfaOFKdivpoIYwLntsMhhZ01ZSr8iko2czrqH9uGICizYz_DmIe6qKhLAKUWYjCcQy=
+pJeklFtXgccYaw1CJYfDCwwr2PzkgUYCzBYvC1w5SQyBVN5BuI0jNTALgWnAKpS1JEaSqzN1Iup=
+J0J-k1k_BCc4mrcLFP0uQb4pBlwQ=3D=3D&p4=3Dd715bd6626dce266"><img src=3D"https=
+://campaigns.walgreens.com/content/dam/walgreens-email/marketing/wip/creati=
+ve/images/lifecycle/ob-skin-premium-10-29/4351647_FY25_FoSEmailFooterCopyUp=
+date_Local_store_hours.jpg" alt=3D"Local store hours" width=3D"320" style=
+=3D"-ms-interpolation-mode:bicubic;max-width:100%;width:320px;min-width:320=
+px;display:block" valign=3D"middle"></a></td>
+                  </tr>
+               </tbody>
+            </table>
+         </td>
+      </tr>
+   </tbody>
+</table>
+            
+                <table border=3D"0" align=3D"center" cellpadding=3D"0" cell=
+spacing=3D"0" width=3D"640" style=3D"border-collapse: collapse; width: 640p=
+x" class=3D"contenttable"><tr><td align=3D"left" valign=3D"top" width=3D"64=
+0" class=3D"ac-content-cell" style=3D"border-collapse: collapse; mso-table-=
+lspace: 0; mso-table-rspace: 0; vertical-align: top; mso-line-height-rule: =
+exactly; text-align: left; padding: 20px 20px 0 20px; background-color: #ff=
+ffff;"><p style=3D"padding:0;margin:0;line-height:28px;font-size:18px;font-=
+family:'Source Sans Pro', Helvetica, Arial, Sans-Serif;color:#284B9B;text-a=
+lign:left;" align=3D"left">Offer details</p>
+<span style=3D"font-family:'Source Sans Pro', Helvetica, Arial; font-size:1=
+2px; color:#000;line-height:18px;" align=3D"left"><!-- Creative disclaimer =
+Start -->    
+<!-- Creative disclaimer Start --> Earn $7 W Cash rewards on $30+ spent in =
+Health &amp; Wellness:&nbsp;*Must be a myWalgreens&reg; member and clip off=
+er to your myWalgreens&reg; account to use in store and online. Single use =
+offer valid 4/12/26-4/18/26. Eligible purchases include items in the follow=
+ing categories: Allergy, Antacids, Baby Essentials &amp; Formula, Disposabl=
+e Diapers/Wipes, Condoms, Convalescence Needs, Cough Cold, Diabetes, Elasti=
+c Goods, Eye/Ear, Family Planning, Feminine Health, First Aid, Foot Needs, =
+Health Testing, Incontinence, Laxatives, Nutritional Supplements, Pain, Ped=
+iatrics, Reader Glasses, Sanitary, Sleep, Smoking Cessation, Vitamins, Weig=
+ht Management. Walgreens Cash rewards are not legal tender. No cash back. W=
+algreens Cash rewards good on future purchases. Purchase requirement must b=
+e met in a single transaction, before taxes and shipping, and after discoun=
+ts, store credit and redemption dollars are applied. Walgreens Cash rewards=
+ applied after all discounts, percentages off and manufacturers&rsquo; coup=
+ons but before sales tax. Other exclusions apply. Complete details, includi=
+ng Walgreens Cash rewards expiration dates, at myWalgreens.com.=E2=80=8B&nb=
+sp;<br>
+<br>
+&nbsp;<!-- Creative disclaimer End -->
+  
+<!-- Creative disclaimer Start --> Photo Acrylic Blocks: Must use code 1PLU=
+S2 to receive 2 free Acrylic Blocks when you purchase one Acrylic Block at =
+the regular price through a logged in registered Walgreens.com/Photo online=
+ account or in store on photo kiosk. Code must be entered at time of online=
+ or in store photo kiosk to apply discount. Offer not valid through the Wal=
+greens Mobile App. Offer expires at 11:59 p.m. CT on April 18, 2026. Timing=
+ is determined by Walgreens server clock. Cart must include 3+ Acrylic Bloc=
+ks at time of online or in-store kiosk checkout to apply discount. Order mu=
+st be placed for Same Day Pick-up or Local Express Delivery only to apply d=
+iscount. Discount does not apply to orders placed for Ship to You, Ship to =
+Store, Economy Shipping, Standard Shipping, Expedited Shipping, or Overnigh=
+t Shipping. If ordering more than one item, up to three coupons or strike t=
+hrough sale discounts can be used in the online cart. Only one coupon code =
+or strike through sale pricing discount can be applied per item.&nbsp; Acco=
+unt product credits are applied first and cannot be combined with coupon co=
+des or strike through sale pricing. Void if transferred, reproduced or copi=
+ed and where prohibited by law. Discount does not apply to previous purchas=
+es, taxes or shipping charges. Offer is subject to change or cancellation a=
+t any time.<br>
+<br>
+&nbsp;<!-- Creative disclaimer End -->
+  
+<!-- Creative disclaimer Start --> Vaccinations:&nbsp;Vaccines subject to a=
+vailability. State-, age- and health-related restrictions may apply.<br>
+&nbsp;<!-- Creative disclaimer End -->
+ <!-- Creative disclaimer End --> </span><span style=3D"font-family:'Source=
+ Sans Pro', Helvetica, Arial; font-size:12px; color:#000;line-height:18px;"=
+ align=3D"left"><br><br><b>General: </b>
+Available at Walgreens stores and www.Walgreens.com while supplies last. We=
+ekly Ad and coupon prices good April 12, 2026 - April 18, 2026 except when =
+otherwise noted. myWalgreens membership required for sale pricing. Not all =
+products and prices available in all stores in the following markets: U.S. =
+Virgin Islands, Puerto Rico, Hawaii, Alaska, San Francisco and New York Bor=
+oughs: Manhattan, Brooklyn, Bronx, Queens and Staten Island. Void where pro=
+hibited by law. Unless stated otherwise, all coupons have no cash value. Te=
+rms of promotion subject to change. For myWalgreens membership details, vis=
+it myWalgreens.com.
+<br><br><b>Walgreens Cash rewards: </b>
+* Must be a myWalgreens member. Walgreens Cash rewards are not legal tender=
+. No cash back. 5% Walgreens Cash rewards can only be earned on Walgreens b=
+randed products. Walgreens Cash rewards good on future purchases. Purchase =
+requirement must be met in a single transaction, before taxes and shipping,=
+ and after discounts, store credit and redemption dollars are applied. Rewa=
+rds cannot be earned on photo orders not picked up in store, alcohol, dairy=
+, tobacco, gift cards, sales tax and shipping, or items or services sold by=
+ third-party partners. Rewards promotions based on prescriptions or other p=
+harmacy purchases limited to $65 Walgreens Cash rewards per calendar year, =
+but cannot be earned on prescriptions or services purchased from AR, NJ or =
+NY pharmacies or prescriptions transferred to a Participating Store located=
+ in AL, MS, OR, PR, TN, or VA, prescriptions received through mail-order se=
+rvices. Only prescriptions picked up in store are eligible to earn rewards.=
+ Walgreens Cash rewards applied after all discounts, percentages off and ma=
+nufacturers' coupons but before sales tax. Other exclusions apply. For comp=
+lete details, see myWalgreens.com.
+<p></p><br><br><b>myW Credit Card: </b>
+*Rewards on prescriptions, pharmacy items and services cannot be earned in =
+AR, NJ or NY. Only completed prescription transactions are eligible to earn=
+ rewards. Must be a myWalgreens member and use a myWalgreens=C2=AE Credit C=
+ard. Walgreens Cash rewards are not legal tender. No cash back. Walgreens C=
+ash rewards good on future purchases and subject to expirations dates. Rewa=
+rds will be deducted for any returns. Purchases with a myWalgreens credit c=
+ard are subject to credit approval. Exclusions apply. Complete Reward and p=
+rogram details at myWalgreens=C2=AE Terms and Conditions and credit card re=
+ward program terms.
+<p></p><br><br><b>Pickup Details: </b>
+Pickup in as little as 30 minutes based on national averages, actual times =
+may vary. Exclusions and restrictions apply. Pickup or 30-minute Pickup is =
+available for eligible items when your order is $10 or more (after promo co=
+des and paperless coupons are applied and before taxes). There is no additi=
+onal fee for pickup. For Walgreens store locations that are not open 24 hou=
+rs, orders must be placed at least one hour prior to store closing to be el=
+igible for 3-minute Pickup. Otherwise, the order will be ready next busines=
+s day. You will receive an email or text (if opted in) when your order is r=
+eady for pickup. Orders are not guaranteed to be ready within the 30-minute=
+ time window. We will notify you if there is a delay and will hold your ord=
+er for 72 hours before canceling. Photo orders are not eligible for 30-minu=
+te Pickup, but may be ordered for Same Day Pickup. Depending on your select=
+ed pickup store, you may have up to three options for pickup: curbside, dri=
+ve-thru or in-store pickup. Orders containing prescriptions may be picked u=
+p at the pharmacy counter or drive-thru. Select items (e.g., liquids, peris=
+hables, bulky items) are not compatible with drive-thru pickup. If your ord=
+er contains such an item, you may be asked to pick it up curbside or in sto=
+re. Orders containing age-restricted items are not eligible for curbside pi=
+ckup. If your order contains age-restricted items, you will need to pick up=
+ your order in store or at the drive-thru and provide a valid government ID=
+ to verify your age. Available pickup hours for select age-restricted items=
+ may vary by store location.
+<br><br><b>Delivery Details: </b>
+Delivery in as little as 1 hour based on national averages, actual times ma=
+y vary. Exclusions and restrictions apply. Free 1-hour Delivery has a minim=
+um purchase requirement of $35 which must be met in a single transaction af=
+ter discounts and before taxes, shipping fees, store credit, and FREE redem=
+ption dollars are applied. Free Delivery does not apply to shipped orders, =
+30-minute Pickup orders, photo orders, pharmacy, or taxes, and cannot be co=
+mbined with other promotional offers on delivery charges. Delivery charges =
+apply if order does not meet Free Delivery requirements. Delivery or 1-hour=
+ Delivery is available daily from 9 am to 10 pm for eligible items. However=
+, delivery hours and order cut-off times may vary by store location. Some d=
+eliveries may not be eligible for 1-hour Delivery or Delivery in as little =
+as 1 hour due to delivery address, holidays, weather, or other delivery con=
+straints. Photo and Pharmacy orders are not eligible for 1-hour Delivery, b=
+ut prescriptions may be eligible for delivery through Walgreens Express=C2=
+=AE. At this time, delivery of orders containing alcohol is limited to sele=
+ct IL and FL stores. Available delivery hours for select age-restricted ite=
+ms may vary by store location. Deliveries must either be entirely accepted =
+or rejected. No partial order acceptance is permitted. Most deliveries do n=
+ot require an individual's presence or signature. However, if your order co=
+ntains an age-restricted item, you will be required to show a valid governm=
+ent ID to verify age. A signature may also be required to accept orders con=
+taining alcohol.
+</span></td></tr></table>
+            
+                <table role=3D"presentation" align=3D"center" border=3D"0" =
+cellpadding=3D"0" cellspacing=3D"0" width=3D"640" class=3D"wba-main-footer"=
+ style=3D"border-collapse: collapse; width: 640px;">
+   <tbody>
+       <tr>
+           <td align=3D"left" valign=3D"top" width=3D"640" class=3D"ac-cont=
+ent-cell" style=3D"border-collapse: collapse; mso-table-lspace:0; mso-table=
+-rspace:0; vertical-align:top; mso-line-height-rule:exactly; text-align:lef=
+t; padding:20px 20px 0 20px; background-color:#ffffff; font-size: 12px; fon=
+t-family: 'Source Sans Pro', Helvetica, Arial, Sans-Serif; color: #000000; =
+line-height: 18px;">
+               <p style=3D"text-align: left;">
+                   Apple and the Apple logo are trademarks of Apple Inc., r=
+egistered in the U.S. and other countries. App Store logo is a service mark=
+ of Apple Inc., registered in the U.S. and other countries.&nbsp;
+               </p>
+               <p style=3D"text-align: left;">
+                   Google Play and the Google Play logo are trademarks of G=
+oogle LLC.
+               </p>
+           </td>
+       </tr>
+       <tr>
+           <td align=3D"left" valign=3D"top" width=3D"640" class=3D"ac-cont=
+ent-cell" style=3D"border-collapse: collapse; mso-table-lspace: 0; mso-tabl=
+e-rspace: 0; vertical-align: top; mso-line-height-rule: exactly; text-align=
+: left; padding: 20px 20px 0 20px; background-color: #ffffff;">
+               <p style=3D"padding: 0; margin: 0; line-height: 22px; font-s=
+ize: 18px; font-family: 'Source Sans Pro', Helvetica, Arial, Sans-Serif; co=
+lor: #000000 ;margin: 0; padding: 0; text-align: left;">
+                   Preferences
+               </p>
+           </td>
+       </tr>
+       <tr>
+           <td align=3D"left" valign=3D"top" width=3D"640" class=3D"ac-cont=
+ent-cell" style=3D"border-collapse: collapse; mso-table-lspace: 0; mso-tabl=
+e-rspace: 0; vertical-align: top; mso-line-height-rule: exactly; text-align=
+: left; padding-bottom: 20px; padding-left: 20px; width: 640px; background-=
+color: #ffffff;">
+               <p style=3D"font-size: 12px; font-family: 'Source Sans Pro',=
+ Helvetica, Arial, Sans-Serif; color: #000000; line-height: 18px; margin: 0=
+; padding: 0; text-align: left;">
+                   Was this forwarded from a friend=3F Click <a _label=3D"S=
+ubscribe" style=3D"font-size: 12px; font-family: 'Source Sans Pro', Helveti=
+ca, Arial, Sans-Serif; color: #284B9B; margin: 0; padding: 0; text-decorati=
+on: none;" href=3D"https://t.eml.walgreens.com/r/=3Fid=3Dhbddb6d60,4800be0,=
+8aa63f&cid=3D_4eq708zjlp_e3k84e2won_vqv84739r3_0_2026_04_18_11_30_AM_UTC&wa=
+g_mid=3D60869352&bid=3D-555-123-4567&p1=3Dv3.eJx1kL1LQlEUwLvvvvc8PshuN8jnw-E-=
+h3y1lI3SVA3i2FTa4JZDc4NrNAjPoX8gIgqFUjHRoqkPVGgxiKQhaA9yamgJOjcNTHK558c598f=
+5MBRY5QDv-d22zqg1Dk9Zg3vgbYKpJg_5oZPdxrQOl51cWw_9Fub2KEofrWlGTDX0qfBJKNsOja=
+tAGFn7ebkJeZsRhwwm1zdTBcL9ULGZMlRJppI8AKc2o0OFApFOBIpB7EwEcZRlA-47PrOria4WN=
+-QnqycMcDrM56EUZFpfOHr2mTUqanSkMNsT9L6QQ8Glwh0tOD3B0xfaOFKdivpoIYwLntsMhhZ0=
+1ZSr8iko2czrqH9uGICizYz_DmIe6qKhLAKUWYjCcQypJeklFtXgccYaw1CJYfDCwwr2PzkgUYC=
+zBYvC1w5SQyBVN5BuI0jNTALgWnAKpS1JEaSqzN1IupJ0J-k1k_BCc4mrcLFP0uQb4pBlwQ=3D=
+=3D&p2=3Dd715bd6626dce266">here</a> to join the fun and officially subscrib=
+e.
+               </p>
+               <p style=3D"font-size: 12px; font-family: 'Source Sans Pro',=
+ Helvetica, Arial, Sans-Serif; color: #000000; line-height: 18px; margin: 0=
+; padding: 0; text-align: left;">
+                   You are receiving this email because mstowe@baddomain.co=
+m is signed up to receive Walgreens communications. If you no longer wish t=
+o receive these emails, please click <a _label=3D"Opt-out link" _type=3D"op=
+tout" style=3D"font-size: 12px; font-family: 'Source Sans Pro', Helvetica, =
+Arial, Sans-Serif; color: #284B9B; margin: 0; padding: 0; text-decoration: =
+none;" href=3D"https://t.eml.walgreens.com/r/=3Fid=3Dhbddb6d60,4800be0,8aa6=
+43&cid=3D_4eq708zjlp_e3k84e2won_vqv84739r3_0_2026_04_18_11_30_AM_UTC&wag_mi=
+d=3D60869352&bid=3D-555-123-4567&p1=3Duser@example.com&p2=3DCore_Retail_D=
+emandGen&p3=3D20260418&p4=3DCore_Retail_DemandGen&p5=3D20260418&p6=3Dv3.eJx=
+1kL1LQlEUwLvvvvc8PshuN8jnw-E-h3y1lI3SVA3i2FTa4JZDc4NrNAjPoX8gIgqFUjHRoqkPVG=
+gxiKQhaA9yamgJOjcNTHK558c598f5MBRY5QDv-d22zqg1Dk9Zg3vgbYKpJg_5oZPdxrQOl51cW=
+w_9Fub2KEofrWlGTDX0qfBJKNsOjatAGFn7ebkJeZsRhwwm1zdTBcL9ULGZMlRJppI8AKc2o0OF=
+ApFOBIpB7EwEcZRlA-47PrOria4WN-QnqycMcDrM56EUZFpfOHr2mTUqanSkMNsT9L6QQ8Glwh0=
+tOD3B0xfaOFKdivpoIYwLntsMhhZ01ZSr8iko2czrqH9uGICizYz_DmIe6qKhLAKUWYjCcQypJe=
+klFtXgccYaw1CJYfDCwwr2PzkgUYCzBYvC1w5SQyBVN5BuI0jNTALgWnAKpS1JEaSqzN1IupJ0J=
+-k1k_BCc4mrcLFP0uQb4pBlwQ=3D=3D&p7=3Dd715bd6626dce266">here</a>. We're alwa=
+ys here if you'd like to come back.
+               </p>
+           </td>
+       </tr>
+       <tr>
+           <td align=3D"left" valign=3D"top" width=3D"640" class=3D"ac-cont=
+ent-cell" style=3D"border-collapse: collapse; mso-table-lspace: 0; mso-tabl=
+e-rspace: 0; vertical-align: top; mso-line-height-rule: exactly; width: 640=
+px; text-align: left; padding: 20px; background-color: #ffffff;">
+               <p style=3D"padding: 0; margin: 0; line-height: 22px; text-a=
+lign: left;">
+                   <a _label=3D"Contact us" style=3D"font-size:18px; font-f=
+amily: 'Source Sans Pro', Helvetica, Arial, Sans-Serif; color:#284B9B; marg=
+in: 0; padding:0;text-decoration:none;" href=3D"https://t.eml.walgreens.com=
+/r/=3Fid=3Dhbddb6d60,4800be0,8aa640&cid=3D_4eq708zjlp_e3k84e2won_vqv84739r3=
+_0_2026_04_18_11_30_AM_UTC&wag_mid=3D60869352&bid=3D-555-123-4567&p1=3Dv3.eJx=
+1kL1LQlEUwLvvvvc8PshuN8jnw-E-h3y1lI3SVA3i2FTa4JZDc4NrNAjPoX8gIgqFUjHRoqkPVG=
+gxiKQhaA9yamgJOjcNTHK558c598f5MBRY5QDv-d22zqg1Dk9Zg3vgbYKpJg_5oZPdxrQOl51cW=
+w_9Fub2KEofrWlGTDX0qfBJKNsOjatAGFn7ebkJeZsRhwwm1zdTBcL9ULGZMlRJppI8AKc2o0OF=
+ApFOBIpB7EwEcZRlA-47PrOria4WN-QnqycMcDrM56EUZFpfOHr2mTUqanSkMNsT9L6QQ8Glwh0=
+tOD3B0xfaOFKdivpoIYwLntsMhhZ01ZSr8iko2czrqH9uGICizYz_DmIe6qKhLAKUWYjCcQypJe=
+klFtXgccYaw1CJYfDCwwr2PzkgUYCzBYvC1w5SQyBVN5BuI0jNTALgWnAKpS1JEaSqzN1IupJ0J=
+-k1k_BCc4mrcLFP0uQb4pBlwQ=3D=3D&p2=3Dd715bd6626dce266">                    =
+   Contact us
+                   </a>
+               </p>
+               <p style=3D"font-size:12px;font-family: 'Source Sans Pro', H=
+elvetica, Arial, Sans-Serif; color: #000000; line-height: 18px; margin: 0; =
+padding: 0; text-align: left;">
+                   Have questions, comments or just want to drop us a line=
+=3F We're always here to listen, so contact us. Our mailing address is Walg=
+reen Co., 108 Wilmot Rd., Deerfield, IL 60015. All rights reserved.
+               </p>
+           </td>
+       </tr>
+   </tbody>
+</table>
+
+<table role=3D"presentation" align=3D"center" border=3D"0" cellpadding=3D"0=
+" cellspacing=3D"0" width=3D"640" class=3D"wba-main-footer" style=3D"border=
+-collapse: collapse; width: 640px">
+   <tbody>
+       <tr>
+           <td align=3D"left" valign=3D"top" width=3D"320" class=3D"ac-cont=
+ent-cell" style=3D"border-collapse: collapse; mso-table-lspace: 0; mso-tabl=
+e-rspace: 0; vertical-align: top; mso-line-height-rule: exactly; text-align=
+: left; padding-left: 20px; width: 320px; background-color: #ffffff;">
+               <p style=3D"font-size: 12px; font-family: 'Source Sans Pro',=
+ Helvetica, Arial, Sans-Serif; line-height: 18px; color:#284B9B; padding: 0=
+; margin: 0; line-height: 22px; text-align: left;">
+                   <a href=3D"https://t.eml.walgreens.com/r/=3Fid=3Dhbddb6d=
+60,4800be0,8aa641&cid=3D_4eq708zjlp_e3k84e2won_vqv84739r3_0_2026_04_18_11_3=
+0_AM_UTC&wag_mid=3D60869352&bid=3D-555-123-4567&p1=3D%40xky6Wrea4k%2FLSbPzCPM=
+f8%2BfK%2BNkk2q9%2BGwx5%2BHmnqbI%3D" _label=3D"Mirror Page" style=3D"font-s=
+ize:12px;font-family:'Source Sans Pro',Helvetica,Arial,Sans-Serif;line-heig=
+ht:18px;color:#284B9B;margin:0;padding:0;text-decoration:none;">           =
+            View as webpage
+                   </a>
+                   |
+                   <a _label=3D"Privacy Policy" style=3D"font-size:12px;fon=
+t-family:'Source Sans Pro', Helvetica, Arial, Sans-Serif;color:#284B9B;line=
+-height:18px;margin:0;padding:0;text-decoration:none;" href=3D"https://t.em=
+l.walgreens.com/r/=3Fid=3Dhbddb6d60,4800be0,8aa642&cid=3D_4eq708zjlp_e3k84e=
+2won_vqv84739r3_0_2026_04_18_11_30_AM_UTC&wag_mid=3D60869352&bid=3D-1109693=
+088&p1=3Dv3.eJx1kL1LQlEUwLvvvvc8PshuN8jnw-E-h3y1lI3SVA3i2FTa4JZDc4NrNAjPoX8=
+gIgqFUjHRoqkPVGgxiKQhaA9yamgJOjcNTHK558c598f5MBRY5QDv-d22zqg1Dk9Zg3vgbYKpJg=
+_5oZPdxrQOl51cWw_9Fub2KEofrWlGTDX0qfBJKNsOjatAGFn7ebkJeZsRhwwm1zdTBcL9ULGZM=
+lRJppI8AKc2o0OFApFOBIpB7EwEcZRlA-47PrOria4WN-QnqycMcDrM56EUZFpfOHr2mTUqanSk=
+MNsT9L6QQ8Glwh0tOD3B0xfaOFKdivpoIYwLntsMhhZ01ZSr8iko2czrqH9uGICizYz_DmIe6qK=
+hLAKUWYjCcQypJeklFtXgccYaw1CJYfDCwwr2PzkgUYCzBYvC1w5SQyBVN5BuI0jNTALgWnAKpS=
+1JEaSqzN1IupJ0J-k1k_BCc4mrcLFP0uQb4pBlwQ=3D=3D&p2=3Dd715bd6626dce266">     =
+                  Privacy Policy
+                   </a>
+               </p>
+           </td>
+           
+           <td align=3D"right" valign=3D"top" width=3D"320" class=3D"ac-con=
+tent-cell" style=3D"border-collapse: collapse; mso-table-lspace: 0; mso-tab=
+le-rspace: 0; vertical-align: top; mso-line-height-rule: exactly; text-alig=
+n: right; padding-right: 20px; width: 320px; background-color: #ffffff;">
+               <p style=3D"font-size:12px;font-family:'Source Sans Pro', He=
+lvetica, Arial, Sans-Serif; color:#284B9B;line-height:18px;margin:0;padding=
+:0;word-break:break-all; text-align: right;">
+                   ACC: :_4eq708zjlp_e3k84e2won_vqv84739r3_0_2026_04_18_11_=
+30_AM_UTC
+               </p>
+           </td>
+       </tr>
+   </tbody>
+</table>
+
+<img src=3D"https://walgreens.demdex.net/event=3Fd_src=3D1052121&c_event=3D=
+email_opens&c_campaign=3D" width=3D"0" height=3D"0" alt=3D"" title=3D"" sty=
+le=3D"width: 0px; height: 0px; border: none">
+                    =09        =09        
+=09=09</td>
+    </tr>
+</table>
+<!-- CP/DV Open Pixel -->
+<img src=3D"https://dv.walgreens.com/o/10105f3f-cef6-48af-8619-8442548c78c5=
+=3Fcp_tp=3Dv3.eJx1kL1LQlEUwLvvvvc8PshuN8jnw-E-h3y1lI3SVA3i2FTa4JZDc4NrNAjPo=
+X8gIgqFUjHRoqkPVGgxiKQhaA9yamgJOjcNTHK558c598f5MBRY5QDv-d22zqg1Dk9Zg3vgbYKp=
+Jg_5oZPdxrQOl51cWw_9Fub2KEofrWlGTDX0qfBJKNsOjatAGFn7ebkJeZsRhwwm1zdTBcL9ULG=
+ZMlRJppI8AKc2o0OFApFOBIpB7EwEcZRlA-47PrOria4WN-QnqycMcDrM56EUZFpfOHr2mTUqan=
+SkMNsT9L6QQ8Glwh0tOD3B0xfaOFKdivpoIYwLntsMhhZ01ZSr8iko2czrqH9uGICizYz_DmIe6=
+qKhLAKUWYjCcQypJeklFtXgccYaw1CJYfDCwwr2PzkgUYCzBYvC1w5SQyBVN5BuI0jNTALgWnAK=
+pS1JEaSqzN1IupJ0J-k1k_BCc4mrcLFP0uQb4pBlwQ=3D=3D&cp_cid=3Dd715bd6626dce266"=
+ width=3D"1" height=3D"1">
+<!-- Studio Universal Tracking Pixel -->
+<table width=3D"1" height=3D"1" cellpadding=3D"0" cellspacing=3D"0" border=
+=3D"0">
+  <tr><td style=3D"font-size:0px; line-height:0px;">
+    <img src=3D"https://mi.walgreens.com/p/up/85f25e3c7915a40da0407d3f7405e=
+422/o.gif=3Fmi_u=3D60869352&mi_ecmp=3DEML_20260418_Core_Retail_DemandGen" w=
+idth=3D"1" height=3D"1" alt=3D"" aria-hidden=3D"true" />
+  </td></tr>
+</table>
+</body>
+</html><img height=3D'0' width=3D'0' alt=3D'' src=3D'https://t.eml.walgreen=
+s.com/r/=3Fid=3Dhbddb6d60,4800be0,1'/>
+
+

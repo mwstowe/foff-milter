@@ -113,7 +113,15 @@ impl FeatureExtractor for HealthSpamAnalyzer {
             || return_path.contains("mcsv.net")
             || return_path.contains("list-manage.com")
             || return_path.contains("ccsend.com");
-        if is_newsletter_esp {
+        let is_trusted_esp =
+            is_newsletter_esp || crate::features::esp_validation::is_from_trusted_esp(context);
+        // Check DKIM alignment for trusted ESP
+        let has_dkim_aligned = context
+            .headers
+            .get("authentication-results")
+            .map(|v| v.contains("dkim=pass"))
+            .unwrap_or(false);
+        if is_trusted_esp && has_dkim_aligned {
             return FeatureScore {
                 feature_name: "Health Spam".to_string(),
                 score: 0,
@@ -479,6 +487,11 @@ impl FeatureExtractor for HealthSpamAnalyzer {
             "myco",
             "supplement",
             "remedy",
+            "male solution",
+            "male enhancement",
+            "testosterone",
+            "libido",
+            "erectile",
         ];
         if health_display_keywords
             .iter()

@@ -223,12 +223,38 @@ pub fn is_from_trusted_esp(context: &MailContext) -> bool {
                 "sparkpostmail.com",
                 "mandrill.com",
                 "postmarkapp.com",
+                "klaviyodns.com",
+                "klaviyomail.com",
             ];
 
             for esp in &trusted_esps {
                 if domain_lower.contains(esp) {
                     return true;
                 }
+            }
+        }
+    }
+
+    // Also check DKIM signatures for ESP domains
+    let dkim_esps = [
+        "sendgrid.info",
+        "salesforce.com",
+        "sparkpostmail.com",
+        "ccsend.com",
+    ];
+    for (_, v) in context
+        .headers
+        .iter()
+        .filter(|(k, _)| k.starts_with("dkim-signature"))
+    {
+        let d_field = v
+            .split(';')
+            .find(|p| p.trim().starts_with("d="))
+            .map(|p| p.trim().trim_start_matches("d=").trim().to_lowercase())
+            .unwrap_or_default();
+        for esp in &dkim_esps {
+            if d_field.contains(esp) {
+                return true;
             }
         }
     }

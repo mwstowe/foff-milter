@@ -179,6 +179,11 @@ rules:
                 pattern: ".*@.*withings.*"
               - type: "SenderPattern"
                 pattern: ".*@.*(1800flowers|celebrations|wolfermans|nytimes).*"
+              - type: "SenderPattern"
+                pattern: ".*@.*(walgreens|cvs|riteaid|pharmacy|optum|health|medical)\\.(com|net|org)$"
+              - type: "FeatureAnalysis"
+                feature_name: "Authentication Analysis"
+                evidence_pattern: "DKIM domain properly aligned"
     score: 75
     description: "Diabetes and blood sugar misinformation and miracle cure claims"
 
@@ -1452,12 +1457,23 @@ rules:
   # VPN offer spam
   - name: "VPN Offer Spam"
     criteria:
-      type: Or
+      type: And
       criteria:
-        - type: SubjectPattern
-          pattern: "(?i).{0,100}(secure.{0,100}my.{0,100}connection|vpn.{0,100}offer|connection.{0,100}security|vpn.{0,100}protection|unlocator.{0,100}vpn).*"
-        - type: BodyPattern
-          pattern: "(?i).{0,100}(secure.{0,100}my.{0,100}connection|vpn.{0,100}offer|connection.{0,100}security|vpn.{0,100}protection|unlocator.{0,100}vpn).*"
+        - type: Or
+          criteria:
+            - type: SubjectPattern
+              pattern: "(?i).{0,100}(secure.{0,100}my.{0,100}connection|vpn.{0,100}offer|connection.{0,100}security|vpn.{0,100}protection|unlocator.{0,100}vpn).*"
+            - type: BodyPattern
+              pattern: "(?i).{0,100}(secure.{0,100}my.{0,100}connection|vpn.{0,100}offer|connection.{0,100}security|vpn.{0,100}protection|unlocator.{0,100}vpn).*"
+        - type: Not
+          criteria:
+            type: Or
+            criteria:
+              - type: SenderPattern
+                pattern: ".*@.*(asus|nedm\\.asus|linksys|netgear|tp-link|ubiquiti|cisco|synology|qnap|saily|nordvpn|expressvpn|surfshark)\\.(com|net|org)$"
+              - type: FeatureAnalysis
+                feature_name: "Authentication Analysis"
+                evidence_pattern: "DKIM domain properly aligned"
     score: 180
   # Security camera light socket spam
   - name: "Security Camera Light Socket Spam"
@@ -1544,8 +1560,15 @@ rules:
               pattern: "(?i).{0,100}(eyesight.{0,100}flower|test.{0,100}eyesight|vision.{0,100}test|eye.{0,100}health.{0,100}test).*"
         - type: Not
           criteria:
-            type: SenderPattern
-            pattern: ".*@.*(nytimes|washingtonpost|cnn|bbc|reuters|ap|wsj|usatoday)\\.(com|org)$"
+            type: Or
+            criteria:
+              - type: SenderPattern
+                pattern: ".*@.*(nytimes|washingtonpost|cnn|bbc|reuters|ap|wsj|usatoday)\\.(com|org)$"
+              - type: SenderPattern
+                pattern: ".*@.*(walgreens|cvs|riteaid|pharmacy|optum|lenscrafters|visionworks)\\.(com|net|org)$"
+              - type: FeatureAnalysis
+                feature_name: "Authentication Analysis"
+                evidence_pattern: "DKIM domain properly aligned"
     score: 180
 
   # Holiday shipping sleep spam

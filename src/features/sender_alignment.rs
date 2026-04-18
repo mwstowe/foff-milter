@@ -1682,7 +1682,15 @@ impl FeatureExtractor for SenderAlignmentAnalyzer {
                         || (from_domain.contains("ourvet.com") && reply_to_domain.contains("vetcove.com"))
                         || (from_root.contains("vetcove") && reply_to_root.contains("vetcove"))
                         || (from_domain.contains("mtasv.net") && reply_to_domain.contains("ourvet.com"))
-                        || (from_domain.contains("mtasv.net") && reply_to_domain.contains("vetcove.com"));
+                        || (from_domain.contains("mtasv.net") && reply_to_domain.contains("vetcove.com"))
+                        // Brand + "mail" suffix pattern (geico.com → geicomail.com)
+                        || {
+                            let from_base = from_root.trim_end_matches("mail");
+                            let reply_base = reply_to_root.trim_end_matches("mail");
+                            !from_base.is_empty() && (from_base == reply_to_root
+                                || reply_base == from_root
+                                || from_base == reply_base)
+                        };
 
                     // Check for email address mismatch
                     if from_email != reply_to_email {

@@ -108,6 +108,12 @@ impl BrandImpersonationFeature {
             vec!["delta.com".to_string(), "delta-air.com".to_string()],
         );
 
+        brand_patterns.insert("pandora".to_string(), vec![r"(?i)\bpandora\b".to_string()]);
+        legitimate_domains.insert(
+            "pandora".to_string(),
+            vec!["pandora.net".to_string(), "pandora.com".to_string()],
+        );
+
         brand_patterns.insert(
             "mcdonalds".to_string(),
             vec![
@@ -268,6 +274,7 @@ impl BrandImpersonationFeature {
             vec![
                 r"(?i)\btractor\s*supply\b".to_string(),
                 r"(?i)\btractor-supply\b".to_string(),
+                r"(?i)\btsc\b".to_string(),
                 r"(?i)\bts\s*co\b".to_string(),
             ],
         );
@@ -275,6 +282,15 @@ impl BrandImpersonationFeature {
             "tractor_supply".to_string(),
             vec!["tractorsupply.com".to_string()],
         );
+
+        brand_patterns.insert(
+            "fedex".to_string(),
+            vec![
+                r"(?i)\bfed\s*ex\b".to_string(),
+                r"(?i)\bfedex\b".to_string(),
+            ],
+        );
+        legitimate_domains.insert("fedex".to_string(), vec!["fedex.com".to_string()]);
 
         brand_patterns.insert(
             "tmobile".to_string(),

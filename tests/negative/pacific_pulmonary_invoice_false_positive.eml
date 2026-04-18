@@ -1,57 +1,57 @@
-Return-Path: <bounces+8061365-33bd-user=example.com@u8061365.wl116.sendgrid.net>
-Received: from hotel.example.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
-	by juliett.example.com (8.18.1/8.18.1) with ESMTPS id 5A6J0GNn060647
+✅ Loading modern TOML configuration: ../foff-milter.toml
+Return-Path: <bounces+8061365-33bd-mstowe=baddomain.com@u8061365.wl116.sendgrid.net>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.2/8.18.1) with ESMTPS id 63IJ0PIA014965
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
-	for <user@example.com>; Thu, 6 Nov 2025 19:00:17 GMT
-	(envelope-from bounces+8061365-33bd-user=example.com@u8061365.wl116.sendgrid.net)
-Authentication-Results: juliett.example.com;
-	dkim=pass (2048-bit key; unprotected) header.d=adapthealth.com header.i=@adapthealth.com header.b=A1TDRC8q
-X-Authentication-Warning: juliett.example.com: Host 23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged) claimed to be hotel.example.com
+	for <user@example.com>; Sat, 18 Apr 2026 19:00:26 GMT
+	(envelope-from bounces+8061365-33bd-mstowe=baddomain.com@u8061365.wl116.sendgrid.net)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (2048-bit key; unprotected) header.d=adapthealth.com header.i=@adapthealth.com header.b=HrEl78xf
 Received: from o168-245-123-173.outbound-mail.sendgrid.net (o168-245-123-173.outbound-mail.sendgrid.net [168.245.123.173])
-	by hotel.example.com (8.16.1/8.16.1) with ESMTPS id 5A6J0F7q055362
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 63IJ0HXD072493
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO)
-	for <user@example.com>; Thu, 6 Nov 2025 13:00:16 -0600
-DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.example.com 5A6J0F7q055362
-Authentication-Results: hotel.example.com;
-	dkim=pass (2048-bit key, unprotected) header.d=adapthealth.com header.i=@adapthealth.com header.a=rsa-sha256 header.s=BPC header.b=A1TDRC8q
+	for <user@example.com>; Sat, 18 Apr 2026 14:00:18 -0500
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 63IJ0HXD072493
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (2048-bit key, unprotected) header.d=adapthealth.com header.i=@adapthealth.com header.a=rsa-sha256 header.s=BPC header.b=HrEl78xf
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=adapthealth.com;
 	h=content-transfer-encoding:content-type:date:from:mime-version:subject:
 	to:cc:content-type:date:from:subject:to;
-	s=BPC; bh=kNRpavIrZ+tT1/ti1z24l1KNJOkeOAYoaCQX8LrJ/3s=;
-	b=A1TDRC8qeBT0duG1iF1TRCLRPNkFTycD2rKV2gJLDh8LXzMncWZ4f3t7avgQuavz1Gde
-	W7EP5oJVMJeOVFnuwqYcyhPeQSlzgFt1CZHwP3Rd83iYmaJrJvTAwFXYP9FE5+258vq4if
-	7fCor/rnSo4El/oNSNyAQrP+g/a65GZUlMWevvQHPYI6aDrUV7AOkodfibAXqvPhEFqNnc
-	oUWgh2y2hq8Po8bvWz+QFxech3IHyeyavHCFiaUrSL6Cr6C7UgHA/mpTpbJ3PMdt7CPXPt
-	TB6rFqWhOEIdT4+uK9BRXKFnx/X4akt3ZbB6UhjuWthPnerEXehmYaxzjBn836nw==
-Received: by recvd-54dc8b95d5-tmqft with SMTP id recvd-54dc8b95d5-tmqft-1-690C667C-2D
-	2025-11-06 09:12:28.758071381 +0000 UTC m=+206657.085343292
+	s=BPC; t=555-123-4567; bh=ttYTz7cSELmpfBxRQeqM00tELp/R1xcIADlNyLwxhmQ=;
+	b=HrEl78xfW3SjTqpr2Ic5gDHL32Y5tO8MgEkkxrLYLuIuvp1UfrI8AHpPHMOBzcU6KzqW
+	0my09kSYlpOcqT+TSEKaxut3vFyTjnb1XF8Nn949sb2SpsAwT1e4+Qc8flSovfZYIXKGO8
+	WeG4A0elQQ0X+IoVL77U82arhZehMqFrcwlHWZTJRfDYvhLCT9E+DuJxJj5/Z8iJbtU3lA
+	I7m3I1pi7uSGgJV+N2AEYTYvFb0eTKdG0Se9aqF2g8OPt8B/XpYVWRuw+1Ih1xHvftIZ3x
+	oEmNm6hM8bM9QWyXD6fX7/o2wj4Q/HqpiyhZ5bMkOXCDjj9Fgo28XcjovPFraGDQ==
+Received: by recvd-85cc48b969-nmf5d with SMTP id recvd-85cc48b969-nmf5d-1-69E32F22-29
+	2026-04-18 07:13:38.627628716 +0000 UTC m=+655808.615578412
 Received: from ODA2MTM2NQ (unknown)
-	by geopod-ismtpd-20 (SG) with HTTP
-	id idXu9WEwRXiGW6GBHKSJCA
-	Thu, 06 Nov 2025 09:12:28.749 +0000 (UTC)
+	by geopod-ismtpd-canary-0 (SG) with HTTP
+	id eiHY2J0oTOWRMeLiBlr5SQ
+	Sat, 18 Apr 2026 07:13:38.597 +0000 (UTC)
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/html; charset=utf-8
-Date: Thu, 06 Nov 2025 19:00:00 +0000 (UTC)
+Date: Sat, 18 Apr 2026 19:00:00 +0000 (UTC)
 From: AdaptHealth <noreply@adapthealth.com>
 Mime-Version: 1.0
-Message-ID: <idXu9WEwRXiGW6GBHKSJCA@geopod-ismtpd-20>
+Message-ID: <eiHY2J0oTOWRMeLiBlr5SQ@geopod-ismtpd-canary-0>
 Subject: Your invoice from Pacific Pulmonary Services is scheduled with
  AutoPAY
 X-SG-EID: 
  =?us-ascii?Q?u001=2EsQT+VcTwoqKimU7M1+w9bc7M3YUCy2eTpVROVxt78d6n=2FIFsqJc+QOYsv?=
- =?us-ascii?Q?uwk6vGlyOiQsz5uL96mp7qSMTjB8V1JdAMOKeN9?=
- =?us-ascii?Q?OHkTEA9cBF7oXKIJMczWlmndWYhK0Xa1jTdy+fh?=
- =?us-ascii?Q?Cd3x=2FqLPPVPWO2x5FVFiw1jPaBrgWTIiMZo3eLY?=
- =?us-ascii?Q?W05WllnnkAHPTPhOuQGpr+APBznh5J0UMj9Sf5D?=
- =?us-ascii?Q?n7VSb3Cyt9VPrXLmel8jyh7xYa3GRKqRTDnzFns?= =?us-ascii?Q?bCEj?=
+ =?us-ascii?Q?uwk6vGlyOiQsz5uL96mp7qSMTjB8QT2UIwWykiq?=
+ =?us-ascii?Q?Kwo3cbjaqkX7PvjtI43K9Y7dEOWl1+Q8+BzX0qT?=
+ =?us-ascii?Q?PJkhEzZgKanOyLi+X7nuSrcMv4Cqc3V14HhXGfw?=
+ =?us-ascii?Q?U9SQ9tXUutyljm6oYFMB8JhbIH1Um36GW+NVaKo?=
+ =?us-ascii?Q?pJYml19a3XW7oIlD7FkJETdY8zR4kocyL2AA4Wu?= =?us-ascii?Q?ZZLx?=
 X-SG-ID: 
  =?us-ascii?Q?u001=2ESdBcvi+Evd=2FbQef8eZF3BtTacCMBPMAZCO6FMlAjBNVTtsCzhrPTYpJku?=
- =?us-ascii?Q?NP2qLvybt8OmeDzfFFTJGrrSsY05QsrRMfBkp1w?=
- =?us-ascii?Q?M78L=2FUcpLQk=3D?=
+ =?us-ascii?Q?NP2qLvyjaWhX3jgprkqhKpXcFtwnJDF=2FVejbhiD?=
+ =?us-ascii?Q?jtcMV9=2FlpAo=3D?=
 To: user@example.com
 X-Entity-ID: u001.kU4Da13cKtysfnQKcYidBA==
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.example.com [172.31.18.8]); Thu, 06 Nov 2025 19:00:17 +0000 (UTC)
-X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.example.com [23.95.222.152]); Thu, 06 Nov 2025 13:00:16 -0600 (CST)
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Sat, 18 Apr 2026 19:00:26 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Sat, 18 Apr 2026 14:00:19 -0500 (CDT)
 X-Spam-Flag: YES
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.=
@@ -330,14 +330,14 @@ t;" valign=3D"top"><font face=3D"Inter, Arial, sans-serif" color=3D"#37577b=
 " size=3D"1" style=3D"font-size:12px; line-height:17px;word-break: break-al=
 l;text-align: left;"><a href=3D"https://u8061365.ct.sendgrid.net/ls/click?u=
 pn=3Du001.qu28nj9GU89IIIJfrmuc0E8-2Fn1sp-2Fi-2BTPG2qEgFdDhIzjDs9O2vXyT5RItA=
-TM65M0a7x_V7kBwY5I2TsOebXbQ0Sm7IJqzVbkd2dTGDaACJUi1391-2FAsbj-2BMnfn28iPqeB=
-Irs-2FRlMAA-2B7cBFNrlcKSh2WIcFs4I6cVkjhRurzhssiODTK3GtLpltofhbwe-2BzMkR9aoU=
-4mLcFi6e3cXA-2FyQgEoV8DRyxMaSkCdDCrK3xldL1ANq8Zo6lmMAB-2BwGACsBEOlFCgx-2BpE=
-VAwQP-2BedZ8NJ8L7IE-2F3cKsAQVbQnvWQsnrwuAJjh46cirF3jqHZVgrzbJ-2Fqod28NebqbV=
-e-2BQPrhM88fb4645J0NKFL41vTKTjcqY-3D" style=3D"font-family: Inter, Arial, s=
-ans-serif; font-style: normal; font-weight: 400; font-size: 12px;text-decor=
-ation-line: underline; color: #337CB1;" target=3D"_blank">https://adaptheal=
-th.com/contact/</a></font></td>
+TM65Mkbvd_V7kBwY5I2TsOebXbQ0Sm7IJqzVbkd2dTGDaACJUi1391-2FAsbj-2BMnfn28iPqeB=
+IrsmfWqMzhwO9C3-2B-2B-2FNGTCPjZcFgWxmRvOyz4FsXdTIzWcjwoMBNzpZQcYUoAeVA45nke=
+dRG3wT32twCxqwXrHKOwquDsJ5Ubtv3F3XFIGx4gd2xMhwuzTwA0iF8UeVZu7RNetwa1J80IUhX=
+FCleP0M4R7t2F3oKbugr4uUFCq1MVwHmNlkvWvoc-2B2NRfRy-2BG5WMvzQaP35APzdpVWjuE-2=
+Bk53tD2Rlb0yPqnJ6aQSFqbZc-3D" style=3D"font-family: Inter, Arial, sans-seri=
+f; font-style: normal; font-weight: 400; font-size: 12px;text-decoration-li=
+ne: underline; color: #337CB1;" target=3D"_blank">https://adapthealth.com/c=
+ontact/</a></font></td>
                                                                            =
                  </tr>
                                                                            =
@@ -489,9 +489,9 @@ e: normal; font-weight: 400; font-size: 14px; color: #0E2752;line-height: 1=
 .5em;" align=3D"left">
                                                                            =
                                                              Your upcoming =
-AutoPAY payment has been scheduled for November 15, 2025. Your payment meth=
-od ending xxx2462 will be charged $4.51. No further action is needed at thi=
-s time.
+AutoPAY payment has been scheduled for April 27, 2026. Your payment method =
+ending xxx2462 will be charged $24.78. No further action is needed at this =
+time.
                                                                            =
                                                      </td>
                                                                            =
@@ -581,7 +581,482 @@ er, Arial, sans-serif; font-style: normal; font-weight: 400; font-size: 14p=
 x; line-height: 17px; color: #898F98;" align=3D"left">
                                                                            =
                                                                            =
-  Invoice # 278661738
+  Invoices
+                                                                           =
+                                                                         </=
+td>
+                                                                           =
+                                                                     </tr>
+                                                                           =
+                                                                     <tr>
+                                                                           =
+                                                                         <t=
+d bgcolor=3D"#ffffff">
+                                                                           =
+                                                                           =
+  <table cellpadding=3D"0" cellspacing=3D"0" border=3D"0" width=3D"100%">
+                                                                           =
+                                                                           =
+      <tbody>
+                                                                           =
+                                                                           =
+          <tr>
+                                                                           =
+                                                                           =
+              <td class=3D"content-pd p-t-0" style=3D"width:100%">
+                                                                           =
+                                                                           =
+                  <table cellpadding=3D"0" cellspacing=3D"0" border=3D"0" w=
+idth=3D"100%">
+                                                                           =
+                                                                           =
+                      <tbody>
+                                                                           =
+                                                                           =
+                          <tr>
+                                                                           =
+                                                                           =
+                              <td>
+                                                                           =
+                                                                           =
+                                  <table border=3D"0" cellspacing=3D"0" cel=
+lpadding=3D"0" width=3D"100%">
+                                                                           =
+                                                                           =
+                                      <tbody>
+                                                                           =
+                                                                           =
+                                          <tr>
+                                                                           =
+                                                                           =
+                                              <td style=3D"">
+                                                                           =
+                                                                           =
+                                                  <table border=3D"0" cells=
+pacing=3D"0" cellpadding=3D"0" width=3D"100%">
+                                                                           =
+                                                                           =
+                                                      <tbody>
+                                                                           =
+                                                                           =
+                                                          <tr>
+                                                                           =
+                                                                           =
+                                                              <td>
+                                                                           =
+                                                                           =
+                                                                  <table bo=
+rder=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"100%">
+                                                                           =
+                                                                           =
+                                                                      <tbod=
+y>
+                                                                           =
+                                                                           =
+                                                                          <=
+tr style=3D"line-height:2px">
+                                                                           =
+                                                                           =
+                                                                           =
+   <td colspan=3D"2" height=3D"6"></td>
+                                                                           =
+                                                                           =
+                                                                          <=
+/tr>
+                                                                           =
+                                                                           =
+                                                                          <=
+tr style=3D"line-height:2px">
+                                                                           =
+                                                                           =
+                                                                           =
+   <td colspan=3D"2" height=3D"6"></td>
+                                                                           =
+                                                                           =
+                                                                          <=
+/tr>
+                                                                           =
+                                                                           =
+                                                                          <=
+tr>
+                                                                           =
+                                                                           =
+                                                                           =
+   <td class=3D"p-l-0 p-r-0 p-b-0 font-16" colspan=3D"3" align=3D"left" sty=
+le=3D"font-family:Inter,Arial,sans-serif; font-style:normal; font-weight:40=
+0; font-size:14px; line-height:17px; color:#0E2752">
+                                                                           =
+                                                                           =
+                                                                           =
+       The balance includes the following invoices:
+                                                                           =
+                                                                           =
+                                                                           =
+   </td>
+                                                                           =
+                                                                           =
+                                                                          <=
+/tr>
+                                                                           =
+                                                                           =
+                                                                          <=
+tr style=3D"line-height:2px">
+                                                                           =
+                                                                           =
+                                                                           =
+   <td colspan=3D"2" height=3D"6"></td>
+                                                                           =
+                                                                           =
+                                                                          <=
+/tr>
+                                                                           =
+                                                                           =
+                                                                          <=
+tr style=3D"line-height:2px">
+                                                                           =
+                                                                           =
+                                                                           =
+   <td colspan=3D"2" height=3D"6"></td>
+                                                                           =
+                                                                           =
+                                                                          <=
+/tr>
+                                                                           =
+                                                                           =
+                                                                          <=
+tr style=3D"line-height:2px">
+                                                                           =
+                                                                           =
+                                                                           =
+   <td colspan=3D"2" height=3D"6"></td>
+                                                                           =
+                                                                           =
+                                                                          <=
+/tr>
+                                                                           =
+                                                                           =
+                                                                          <=
+tr>
+                                                                           =
+                                                                           =
+                                                                           =
+   <th class=3D"p-l-0 p-r-0 p-b-0" align=3D"left" style=3D"font-family:Inte=
+r,Arial,sans-serif; font-style:normal; font-weight:400; font-size:12px; lin=
+e-height:165%; color:#898F98; background:#F6F6F6; border-radius:2px">
+                                                                           =
+                                                                           =
+                                                                           =
+       <table border=3D"0" cellspacing=3D"0" cellpadding=3D"0">
+                                                                           =
+                                                                           =
+                                                                           =
+           <tbody>
+                                                                           =
+                                                                           =
+                                                                           =
+               <tr style=3D"font-size:13px; line-height:17px">
+                                                                           =
+                                                                           =
+                                                                           =
+                   <td style=3D"padding: 4px 10px;">
+                                                                           =
+                                                                           =
+                                                                           =
+                       <font face=3D"Inter, Arial, sans-serif" color=3D"#37=
+577b" size=3D"1" class=3D"font-14" style=3D"font-family:Inter,Arial,sans-se=
+rif; font-style:normal; font-weight:700; font-size:14px; line-height:165%; =
+color:#898F98">Invoice #</font>
+                                                                           =
+                                                                           =
+                                                                           =
+                   </td>
+                                                                           =
+                                                                           =
+                                                                           =
+               </tr>
+                                                                           =
+                                                                           =
+                                                                           =
+           </tbody>
+                                                                           =
+                                                                           =
+                                                                           =
+       </table>
+                                                                           =
+                                                                           =
+                                                                           =
+   </th>
+                                                                           =
+                                                                           =
+                                                                           =
+   <th class=3D"p-l-0 p-r-0 p-b-0" align=3D"left" style=3D"font-family:Inte=
+r,Arial,sans-serif; font-style:normal; font-weight:400; font-size:12px; lin=
+e-height:165%; color:#898F98; background:#F6F6F6; border-radius:2px">
+                                                                           =
+                                                                           =
+                                                                           =
+       <table border=3D"0" cellspacing=3D"0" cellpadding=3D"0" style=3D"wid=
+th: 100%;text-align: right;">
+                                                                           =
+                                                                           =
+                                                                           =
+           <tbody>
+                                                                           =
+                                                                           =
+                                                                           =
+               <tr style=3D"font-size:13px; line-height:17px">
+                                                                           =
+                                                                           =
+                                                                           =
+                   <td style=3D"padding: 4px 10px;">
+                                                                           =
+                                                                           =
+                                                                           =
+                       <font face=3D"Inter, Arial, sans-serif" color=3D"#37=
+577b" size=3D"1" class=3D"font-14" style=3D"font-family:Inter,Arial,sans-se=
+rif; font-style:normal; font-weight:700; font-size:14px; line-height:165%; =
+color:#898F98">Balance ($)</font>
+                                                                           =
+                                                                           =
+                                                                           =
+                   </td>
+                                                                           =
+                                                                           =
+                                                                           =
+               </tr>
+                                                                           =
+                                                                           =
+                                                                           =
+           </tbody>
+                                                                           =
+                                                                           =
+                                                                           =
+       </table>
+                                                                           =
+                                                                           =
+                                                                           =
+   </th>
+                                                                           =
+                                                                           =
+                                                                          <=
+/tr>
+                                                                           =
+                                                                           =
+                                                                           =
+   <tr>
+                                                                           =
+                                                                           =
+                                                                           =
+       <td class=3D"p-l-0 p-r-0 p-b-0" align=3D"left" style=3D"font-family:=
+Inter,Arial,sans-serif; font-style:normal; font-weight:400; font-size:12px;=
+ line-height:165%; color:#898F98">
+                                                                           =
+                                                                           =
+                                                                           =
+           <table border=3D"0" cellspacing=3D"0" cellpadding=3D"0">
+                                                                           =
+                                                                           =
+                                                                           =
+               <tbody>
+                                                                           =
+                                                                           =
+                                                                           =
+                   <tr style=3D"font-size:13px; line-height:17px">
+                                                                           =
+                                                                           =
+                                                                           =
+                       <td style=3D"padding: 10px 10px;">
+                                                                           =
+                                                                           =
+                                                                           =
+                           <font face=3D"Inter, Arial, sans-serif" color=3D=
+"#37577b" size=3D"1" class=3D"font-14" style=3D"font-family:Inter,Arial,san=
+s-serif;font-style:normal;font-weight: 700;font-size: 14px;line-height:165%=
+;color: #0E2752;">300451637</font>
+                                                                           =
+                                                                           =
+                                                                           =
+                       </td>
+                                                                           =
+                                                                           =
+                                                                           =
+                   </tr>
+                                                                           =
+                                                                           =
+                                                                           =
+                   <tr style=3D"line-height:2px"><td colspan=3D"2" height=
+=3D"2"></td></tr>
+                                                                           =
+                                                                           =
+                                                                           =
+               </tbody>
+                                                                           =
+                                                                           =
+                                                                           =
+           </table>
+                                                                           =
+                                                                           =
+                                                                           =
+       </td>
+                                                                           =
+                                                                           =
+                                                                           =
+       <td class=3D"p-l-0 p-r-0 p-b-0" align=3D"left" style=3D"font-family:=
+Inter,Arial,sans-serif; font-style:normal; font-weight:400; font-size:12px;=
+ line-height:165%; color:#898F98"><table border=3D"0" cellspacing=3D"0" cel=
+lpadding=3D"0" style=3D"width: 100%;text-align: right;"><tbody><tr style=3D=
+"font-size:13px; line-height:17px"><td style=3D"padding: 10px 10px;"><font =
+face=3D"Inter, Arial, sans-serif" color=3D"#37577b" size=3D"1" class=3D"fon=
+t-14" style=3D"font-family:Inter,Arial,sans-serif;font-style:normal;font-we=
+ight: 400;font-size: 14px;line-height:165%;color: #0E2752;">$20.27</font></=
+td></tr><tr style=3D"line-height:2px"><td colspan=3D"2" height=3D"2"></td><=
+/tr></tbody></table></td>
+                                                                           =
+                                                                           =
+                                                                           =
+   </tr>
+                                                                           =
+                                                                           =
+                                                                           =
+   <tr><td bgcolor=3D"#ffffff" colspan=3D"2"><table width=3D"100%" border=
+=3D"0" cellspacing=3D"0" cellpadding=3D"0"><tbody><tr><td style=3D"height:1=
+px; background:#F6F6F6"></td></tr></tbody></table></td></tr>
+                                                                           =
+                                                                           =
+                                                                           =
+   <tr>
+                                                                           =
+                                                                           =
+                                                                           =
+       <td class=3D"p-l-0 p-r-0 p-b-0" align=3D"left" style=3D"font-family:=
+Inter,Arial,sans-serif; font-style:normal; font-weight:400; font-size:12px;=
+ line-height:165%; color:#898F98">
+                                                                           =
+                                                                           =
+                                                                           =
+           <table border=3D"0" cellspacing=3D"0" cellpadding=3D"0">
+                                                                           =
+                                                                           =
+                                                                           =
+               <tbody>
+                                                                           =
+                                                                           =
+                                                                           =
+                   <tr style=3D"font-size:13px; line-height:17px">
+                                                                           =
+                                                                           =
+                                                                           =
+                       <td style=3D"padding: 10px 10px;">
+                                                                           =
+                                                                           =
+                                                                           =
+                           <font face=3D"Inter, Arial, sans-serif" color=3D=
+"#37577b" size=3D"1" class=3D"font-14" style=3D"font-family:Inter,Arial,san=
+s-serif;font-style:normal;font-weight: 700;font-size: 14px;line-height:165%=
+;color: #0E2752;">300451639</font>
+                                                                           =
+                                                                           =
+                                                                           =
+                       </td>
+                                                                           =
+                                                                           =
+                                                                           =
+                   </tr>
+                                                                           =
+                                                                           =
+                                                                           =
+                   <tr style=3D"line-height:2px"><td colspan=3D"2" height=
+=3D"2"></td></tr>
+                                                                           =
+                                                                           =
+                                                                           =
+               </tbody>
+                                                                           =
+                                                                           =
+                                                                           =
+           </table>
+                                                                           =
+                                                                           =
+                                                                           =
+       </td>
+                                                                           =
+                                                                           =
+                                                                           =
+       <td class=3D"p-l-0 p-r-0 p-b-0" align=3D"left" style=3D"font-family:=
+Inter,Arial,sans-serif; font-style:normal; font-weight:400; font-size:12px;=
+ line-height:165%; color:#898F98"><table border=3D"0" cellspacing=3D"0" cel=
+lpadding=3D"0" style=3D"width: 100%;text-align: right;"><tbody><tr style=3D=
+"font-size:13px; line-height:17px"><td style=3D"padding: 10px 10px;"><font =
+face=3D"Inter, Arial, sans-serif" color=3D"#37577b" size=3D"1" class=3D"fon=
+t-14" style=3D"font-family:Inter,Arial,sans-serif;font-style:normal;font-we=
+ight: 400;font-size: 14px;line-height:165%;color: #0E2752;">$4.51</font></t=
+d></tr><tr style=3D"line-height:2px"><td colspan=3D"2" height=3D"2"></td></=
+tr></tbody></table></td>
+                                                                           =
+                                                                           =
+                                                                           =
+   </tr>
+                                                                           =
+                                                                           =
+                                                                           =
+   <tr><td bgcolor=3D"#ffffff" colspan=3D"2"><table width=3D"100%" border=
+=3D"0" cellspacing=3D"0" cellpadding=3D"0"><tbody><tr><td style=3D"height:1=
+px; background:#F6F6F6"></td></tr></tbody></table></td></tr>
+                                                                           =
+                                                                           =
+                                                                      </tbo=
+dy>
+                                                                           =
+                                                                           =
+                                                                  </table>
+                                                                           =
+                                                                           =
+                                                              </td>
+                                                                           =
+                                                                           =
+                                                          </tr>
+                                                                           =
+                                                                           =
+                                                      </tbody>
+                                                                           =
+                                                                           =
+                                                  </table>
+                                                                           =
+                                                                           =
+                                              </td>
+                                                                           =
+                                                                           =
+                                          </tr>
+                                                                           =
+                                                                           =
+                                      </tbody>
+                                                                           =
+                                                                           =
+                                  </table>
+                                                                           =
+                                                                           =
+                              </td>
+                                                                           =
+                                                                           =
+                          </tr>
+                                                                           =
+                                                                           =
+                      </tbody>
+                                                                           =
+                                                                           =
+                  </table>
+                                                                           =
+                                                                           =
+              </td>
+                                                                           =
+                                                                           =
+          </tr>
+                                                                           =
+                                                                           =
+      </tbody>
+                                                                           =
+                                                                           =
+  </table>
                                                                            =
                                                                          </=
 td>
@@ -603,8 +1078,8 @@ ass=3D"p-l-0 p-r-0 p-b-0" style=3D"font-family: Inter, Arial, sans-serif; f=
 ont-style: normal; font-weight: 700; font-size: 45px; line-height: 54px; te=
 xt-align: center; color: #0E2752;" align=3D"center">
                                                                            =
-                                                                         $4=
-.51
+                                                                         $2=
+4.78
                                                                            =
                                                                      </td>
                                                                            =
@@ -626,7 +1101,7 @@ serif; font-style: normal; font-weight: 400; font-size: 14px; line-height: =
 17px; text-align: center; color: #337CB1;" align=3D"center">
                                                                            =
                                                                          Ba=
-lance Due  November 15, 2025
+lance Due  April 27, 2026
                                                                            =
                                                                      </td>
                                                                            =
@@ -667,13 +1142,13 @@ able width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=3D"0">
                       <a rel=3D"noopener" href=3D"https://u8061365.ct.sendg=
 rid.net/ls/click?upn=3Du001.qu28nj9GU89IIIJfrmuc0Lhs-2BCoJ-2Feb-2FAFflnv-2B=
 zbLhFOJ9VU-2FL4BcuQ4bN-2BoLaBpO8-2BC5zXOh7BHgmQUF7BSjeeCTos4QVnAQcXibuDQIuw=
-wak5AIHavNPoyc2yuYYhD7RH1YIaMtDtmoOypI99vYwIuW-2BweogaKUcX32rp0v9avRnqty6Vq=
-wQdBqn80PbF3ekoiLJPbEhdMTE5h-2Fmt2YOCnvxoViCtIIHgZJKt7UI-3D3gOU_V7kBwY5I2Ts=
-OebXbQ0Sm7IJqzVbkd2dTGDaACJUi1391-2FAsbj-2BMnfn28iPqeBIrs-2FRlMAA-2B7cBFNrl=
-cKSh2WIcFs4I6cVkjhRurzhssiODSshXqe8PC6YxxiCGjKB7dVhwDW6FjZ9OsIYLK09pk1X8VAl=
-xxZWaKVDAWosGsW2rMuUFuB3abykRoCl4l2DiSXtjKVtfpKLUsnwSvxxZs0qzWa5mDSAnn4Pbl5=
-mLWbb9oovi0eEvrycoy2lqS-2FlnpDEtq-2BsH-2Bsn0LI-2FR2hCPTm3nocPsPRAzYDfaDHS7x=
-7G8E-3D" target=3D"_blank">
+wak5AIHavNPoyc2yuYYhWZXfZ-2BKcUHFtn6x-2BPcyQQwVQwt7pvoOzJJOgvlBb0k2iaB4ZD0A=
+BFIPnhW0gt38my5UEWx2NJmy4fymynDeVXcywEU0P08p5fQdzEbysucY-3D8S-y_V7kBwY5I2Ts=
+OebXbQ0Sm7IJqzVbkd2dTGDaACJUi1391-2FAsbj-2BMnfn28iPqeBIrsmfWqMzhwO9C3-2B-2B=
+-2FNGTCPjZcFgWxmRvOyz4FsXdTIzWckcUGA13BIQGO40zthUX-2FlyHIvyT3tKoKMcHivYi9Vl=
+YhYXyhBRy4vxWPhxYV9ZdEv44DozC7pxS3gZz4v7r4IVs4CS3KE02ZoyEJ9YtERjBNf3BBNc2zH=
+uSgDY6IuRGxfTmDrzUNkqvH3Oy0J-2F7PQTTZf18ujymmzRST-2Bx3PO-2BryfoCQVOFWyZrs-2=
+FGZhsjxo-3D" target=3D"_blank">
                                                                            =
                                                                            =
                           <img height=3D"47" width=3D"234" src=3D"https://i=
@@ -1037,13 +1512,13 @@ tyle=3D"width: 100%">
                                   <a rel=3D"noopener" href=3D"https://u8061=
 365.ct.sendgrid.net/ls/click?upn=3Du001.qu28nj9GU89IIIJfrmuc0Lhs-2BCoJ-2Feb=
 -2FAFflnv-2BzbLhFOJ9VU-2FL4BcuQ4bN-2BoLaBpO8-2BC5zXOh7BHgmQUF7BSjeeCTos4QVn=
-AQcXibuDQIuwwak5AIHavNPoyc2yuYYhD7RH1YIaMtDtmoOypI99vYwIuW-2BweogaKUcX32rp0=
-v9avRnqty6VqwQdBqn80PbF3ekoiLJPbEhdMTE5h-2Fmt2YOCnvxoViCtIIHgZJKt7UI-3D9bNM=
-_V7kBwY5I2TsOebXbQ0Sm7IJqzVbkd2dTGDaACJUi1391-2FAsbj-2BMnfn28iPqeBIrs-2FRlM=
-AA-2B7cBFNrlcKSh2WIcFs4I6cVkjhRurzhssiODSV1MUl9Hp9yOnCqz3mupw-2BUrcTDMCxSmJ=
-OuWr-2BEPkcGVZRCxDc0puOgzkkfOQhjSbA-2BPBhAStc8CnhauPCPykyywlB8-2BnNrxqmK2Dh=
-dyXV6t5avQvsrAbQR97AbO568R-2BoEqXPrZXlgiU-2Bh1o1Vezt8ozTv-2FnMwump6y-2FhJIj=
-5hiQvq7AjFgH3hhtkeH5MK38-3D" target=3D"_blank">
+AQcXibuDQIuwwak5AIHavNPoyc2yuYYhWZXfZ-2BKcUHFtn6x-2BPcyQQwVQwt7pvoOzJJOgvlB=
+b0k2iaB4ZD0ABFIPnhW0gt38my5UEWx2NJmy4fymynDeVXcywEU0P08p5fQdzEbysucY-3DMAyz=
+_V7kBwY5I2TsOebXbQ0Sm7IJqzVbkd2dTGDaACJUi1391-2FAsbj-2BMnfn28iPqeBIrsmfWqMz=
+hwO9C3-2B-2B-2FNGTCPjZcFgWxmRvOyz4FsXdTIzWcBl0wikZjY5ObjnUw1cixTegJ-2FcUg3r=
+kYRDea6FqF9b8AGqhvnKVh3L2xOCoBKXZZwufhxIRghd2M-2FrpzjCrlQgqS5s0JZqyJuW2YfLq=
+AbZgsAKj-2Bwo78xzbPRU-2BGI1aBe0xgM003WIjsLeEa4-2BQYpQ5UowetYLfP5mLfUzB8B-2B=
+QiBGvsk6UQNUN4Id-2BqWTmI-3D" target=3D"_blank">
                                                                            =
                                                                            =
                                       <img height=3D"40" width=3D"112" clas=
@@ -1203,15 +1678,15 @@ subscribe from these emails, please click <font face=3D'Inter, Arial, sans =
 1365.ct.sendgrid.net/ls/click?upn=3Du001.qu28nj9GU89IIIJfrmuc0Lhs-2BCoJ-2Fe=
 b-2FAFflnv-2BzbLhFOJ9VU-2FL4BcuQ4bN-2BoLaBwi67AIfKVLdvrn4dOAcFa0v1RJdBkYbeQ=
 5-2BQudxWiUWn-2FOfpbosAg0-2FZ7171GuuaCtjFadv14r87z3C86brWKQXeeLwOLRrtB2Ituq=
-rQgcaJy28h6Ool-2Bux-2FHXGoug8UDHOiNaWvO0JzD-2BGCiUNLSw-3D-3DIsjN_V7kBwY5I2T=
-sOebXbQ0Sm7IJqzVbkd2dTGDaACJUi1391-2FAsbj-2BMnfn28iPqeBIrs-2FRlMAA-2B7cBFNr=
-lcKSh2WIcFs4I6cVkjhRurzhssiODRqGgNFFNQolBr04ZW-2BxJpJotpwaZSf-2B3R53Z0mNv5b=
-LJTiHp7gMHNgMcGZ6L10XEup-2FF1t9je9rDwXRMhuNa73bsSFwoNz7KstbH2mdsTS2yV-2BbRG=
-0otstmzqNX-2F9t6hRcuSYvhv5RspO2tq3szrbaceSzEYK-2BDNa3a5oZYekb-2FbeavL5Rewfw=
-sQSPOeEvPwM-3D" style=3D'font-family: Inter, Arial, sans-serif; font-style:=
- normal; font-weight: 400; font-size: 12px;text-decoration-line: underline;=
- color: #ABC9EA;word-break: break-word;display: block;' target=3D'_blank'>u=
-nsubscribe</a></font>.
+rQgcaJy28h6Ool-2Bux-2FHXGoug8UDHOiNaWvO0JzD-2BGCiUNLSw-3D-3DAmBk_V7kBwY5I2T=
+sOebXbQ0Sm7IJqzVbkd2dTGDaACJUi1391-2FAsbj-2BMnfn28iPqeBIrsmfWqMzhwO9C3-2B-2=
+B-2FNGTCPjZcFgWxmRvOyz4FsXdTIzWc58BXOXbm26rkZN6DQNCJdZ8Bo2PmeE686bBu0KinCZD=
+JjjRnpU2d90mmgkfLVMsYPAi-2FQP9oZ2i83jc0anPy0xHghr-2B6JTGlKPMASPuWp-2BsYG3fH=
+vIOE4HSP5ylg962-2BEatH-2Buf6gxLvkDfVM2vRUEXu7p7rtc0uAp6a2TJGh6zidsC96shQQfu=
+qmkinJe5Q-3D" style=3D'font-family: Inter, Arial, sans-serif; font-style: n=
+ormal; font-weight: 400; font-size: 12px;text-decoration-line: underline; c=
+olor: #ABC9EA;word-break: break-word;display: block;' target=3D'_blank'>uns=
+ubscribe</a></font>.
                                                                            =
                                                      </td>
                                                                            =
@@ -1355,13 +1830,14 @@ ne-height:20px">
 
 
 <img src=3D"https://u8061365.ct.sendgrid.net/wf/open?upn=3Du001.KhsRizq2Z6o=
-1k6N-2B9UC7eJSxcSbN5nDd-2F-2FP4kWiEiHnQ2qVvKG64u3EerfC6oXote6lhGWKwt2ekww9p=
-jBnlGWMoSYTXUQEFWw5-2FRNqJSQ-2BKzMsQ1teQwKRadpdr0OG7Q8GzTy7bdhI48eW7FspaPsp=
-sG67RGyhoflDzmPuP-2FmGwC-2B-2BsaJg7nJ57Ku8hO8BxVFH17Z3FeWsG7or5uY4aelcDugo5=
-KXZEKxgcS2MaErd5orG3xdSVJYtIt6q62Vh-2BgqNJT8RzrG9eGZEWF2tEb-2BvvYmqRXnd8VJi=
--2BibkD8Ro-3D" alt=3D"" width=3D"1" height=3D"1" border=3D"0" style=3D"heig=
-ht:1px !important;width:1px !important;border-width:0 !important;margin-top=
-:0 !important;margin-bottom:0 !important;margin-right:0 !important;margin-l=
-eft:0 !important;padding-top:0 !important;padding-bottom:0 !important;paddi=
-ng-right:0 !important;padding-left:0 !important;"/></body>
+1k6N-2B9UC7eJSxcSbN5nDd-2F-2FP4kWiEiHnQ2qVvKG64u3EerfC6oXot-2FUlw16y7nIOnSD=
+okPH1FoE4bizHGF5RnKgKSf6gS4onejK3HT2uJWJ2kyiZ9ctJOo3i4PUiO6jvUqY71Drbb4lIKj=
+BHdbzTcJ55-2B4WTvtinu3paRJjb-2Fw864Ay8U0PVCVSVlfREFl79jIKKkzLfBgsUaWQr3c7x5=
+kLMy4ZbvyJGBsK18fYJm1u3Igy7BPVwv6Uc3hZADyYerQOBeppuNsM2DvLd9BnCyKwn1K3pvMfU=
+-3D" alt=3D"" width=3D"1" height=3D"1" border=3D"0" style=3D"height:1px !im=
+portant;width:1px !important;border-width:0 !important;margin-top:0 !import=
+ant;margin-bottom:0 !important;margin-right:0 !important;margin-left:0 !imp=
+ortant;padding-top:0 !important;padding-bottom:0 !important;padding-right:0=
+ !important;padding-left:0 !important;"/></body>
 </html>
+

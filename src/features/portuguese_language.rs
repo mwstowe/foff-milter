@@ -83,7 +83,8 @@ impl FeatureExtractor for PortugueseLanguageAnalyzer {
             let is_legitimate_retail = legitimate_retail_domains
                 .iter()
                 .any(|domain| sender_domain.contains(domain))
-                || is_newsletter_esp;
+                || is_newsletter_esp
+                || crate::features::esp_validation::is_from_trusted_esp(context);
 
             if !is_legitimate_retail {
                 // High penalty since no Portuguese emails are expected

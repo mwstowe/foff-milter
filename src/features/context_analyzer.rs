@@ -1843,8 +1843,15 @@ impl FeatureExtractor for ContextAnalyzer {
         );
 
         // Giveaway language patterns with industry awareness
+        // Check if sender is DKIM-aligned (used to suppress giveaway/prize FPs for legit brands)
+        let is_dkim_aligned_brand = context
+            .headers
+            .get("authentication-results")
+            .map(|v| v.contains("dkim=pass"))
+            .unwrap_or(false);
+
         let giveaway_language_regex = Regex::new(r"(?i)\b(your.*(prize|gift).*awaits|claim.*your.*(prize|gift)|congratulations.*winner|you.*have.*won)\b").unwrap();
-        if giveaway_language_regex.is_match(&combined_text) {
+        if giveaway_language_regex.is_match(&combined_text) && !is_dkim_aligned_brand {
             let base_score = 35;
             let industry_multiplier = if let Some(industry) = &industry_context {
                 self.get_industry_urgency_multiplier(industry)
@@ -1884,7 +1891,7 @@ impl FeatureExtractor for ContextAnalyzer {
                 .iter()
                 .any(|domain| sender_domain.contains(domain));
 
-            if !is_legitimate_news {
+            if !is_legitimate_news && !is_dkim_aligned_brand {
                 total_score += 50;
                 all_evidence.push("Product prize scam pattern detected".to_string());
             }

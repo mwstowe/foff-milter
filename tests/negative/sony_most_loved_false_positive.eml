@@ -1,0 +1,751 @@
+✅ Loading modern TOML configuration: ../foff-milter.toml
+Return-Path: <bounce-DAVBLQV2RRQEDM73DIII4BC53Y.60255@bounce.email.sel.sony.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.2/8.18.1) with ESMTPS id 63HNDqRY030456
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <user@example.com>; Fri, 17 Apr 2026 23:13:53 GMT
+	(envelope-from bounce-DAVBLQV2RRQEDM73DIII4BC53Y.60255@bounce.email.sel.sony.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (1024-bit key; unprotected) header.d=email.sel.sony.com header.i=Sony-Electronics@email.sel.sony.com header.b=Xu8n/rKF;
+	dkim=pass (2048-bit key; unprotected) header.d=s6.y.mc.salesforce.com header.i=@s6.y.mc.salesforce.com header.b=ZNAn2LbT
+Received: from mta4.email.sel.sony.com (mta4.email.sel.sony.com [199.122.123.175])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 63HNDntW052908
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO)
+	for <user@example.com>; Fri, 17 Apr 2026 18:13:50 -0500
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 63HNDntW052908
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (1024-bit key, unprotected) header.d=email.sel.sony.com header.i=Sony-Electronics@email.sel.sony.com header.a=rsa-sha256 header.s=200608 header.b=Xu8n/rKF;
+	dkim=pass (2048-bit key, unprotected) header.d=s6.y.mc.salesforce.com header.i=@s6.y.mc.salesforce.com header.a=rsa-sha256 header.s=fbldkim6 header.b=ZNAn2LbT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=200608; d=email.sel.sony.com;
+ h=From:To:Subject:Date:List-Unsubscribe:List-Unsubscribe-Post:MIME-Version:
+ Reply-To:Message-ID:Content-Type; i=Sony-Electronics@email.sel.sony.com;
+ bh=yFU3kZzewCSSlYdruaunpW8j852Kw44IA9psIjQBmBM=;
+ b=Xu8n/rKFgOG822eaRXqOyrK22xXwPOSBA/Ttg430BdiYVLu5OS/bw4341KbP8ZgPopMHytPmeksS
+   zljI7+sdt6cv0DORS5d2LzT8Yc7eO87yyKuOsY9vRrrQpfSONk0GusDfyxInhJ9sBVofkRk0yNYu
+   gvdLhX7lx6OzCXd1UIg=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=fbldkim6; d=s6.y.mc.salesforce.com;
+ h=From:To:Subject:Date:List-Unsubscribe:MIME-Version:Reply-To:Message-ID:
+ Content-Type;
+ bh=yFU3kZzewCSSlYdruaunpW8j852Kw44IA9psIjQBmBM=;
+ b=ZNAn2LbT9NBIglU+onaYKsv+3hKrgecwMToh/LhDN0IWTN/xzEs0FOQwsVxNlhDEKBoqXLWcchb+
+   L8ivSXuzM4rsNsekW8Hm4rRXZYgeltkhkCi2XqrG2nnQUepesTmPfBLPoKJ33Z2SwZKcaIP8R4dt
+   NOuc9Viw7Lyztp0f9eegezk3JLoCU3wkUe4IAX9utyvJesXSbKUt8xWUtFEWO1zkK87DGR7P8DiA
+   rHen3zgzwyCP2FjJorrofSTpcnIl6uc5nbor7Rz17XX34c76mkAm+DYOLruO6v34ADK2MuVArnWP
+   E/1dJslkaGDlXWPZsuY8fUQtaZyw47qSk9KCAQ==
+Received: by mta4.email.sel.sony.com id hsavas2fmd4s for <user@example.com>; Fri, 17 Apr 2026 23:13:49 +0000 (envelope-from <bounce-DAVBLQV2RRQEDM73DIII4BC53Y.60255@bounce.email.sel.sony.com>)
+From: "Sony Electronics" <Sony-Electronics@email.sel.sony.com>
+To: <user@example.com>
+Subject: See What's Most Loved, Viewed, & Talked About This Month
+Date: Fri, 17 Apr 2026 17:13:48 -0600
+List-Unsubscribe: <https://click.email.sel.sony.com/subscription_center.aspx?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtaWQiOiI2Mzg3MjgyIiwicyI6IjYwNjU5MzQ0IiwibGlkIjoiMjkiLCJqIjoiMTAxMDQwMCIsImpiIjoiMzA0NCIsImQiOiI2MDI1NSJ9.kp6Xse9JdKPdspfwZ__ZnLgRmnuyOlDdkJy5GcFWyss>, <mailto:leave-LP7KL63LH7ZUTGCQCGDOPMSOUE.60255@leave.email.sel.sony.com>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+MIME-Version: 1.0
+Reply-To: "Sony Electronics" <reply-WM2SENQCPH2EPAOP4SN6GDWQRU.60255@email.sel.sony.com>
+X-SFMC-Stack: 6
+x-job: 6387282_1010400
+Message-ID: <26d72d05-3e92-4fa1-a936-85a0ded5383b@ind1s06mta1564.xt.local>
+Content-Type: multipart/alternative;
+	boundary="iPK34HSEwR5W=_?:"
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Fri, 17 Apr 2026 23:13:53 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Fri, 17 Apr 2026 18:13:50 -0500 (CDT)
+X-Spam-Flag: YES
+
+This is a multi-part message in MIME format.
+
+--iPK34HSEwR5W=_?:
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+Sony USA Email
+
+From BRAVIA, to ULT, to cameras, check them all out 
+
+https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSuDdeR9BKLnZntw2UQsod_Bxfd7e0pLujOBaJs5On8dOrHcDsyIf35Gn-SWm-M285dlT9mhWkIAJHRuel2H0Pu18wmfEAEf 
+VIEW IN BROWSER
+
+ 
+
+https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSuEDp8L5DlOnZono0aZsKRuMKYkB847cgxyaE2L81-8Lhk4OAukBzZnmtKDhVyMMMK8Wq8As1010x0c9tm85mbc1rWt5A9N 
+
+
+
+ 
+ 
+https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSuFhgz4MqWh0W7K-Wh6E8i4BI6GpXrJzXpcQb-rxAxdug-MAz_wy_OM9acQvBJ67YdnCjJnsg92aVuxGfK82pljuRlt1m7i 
+
+https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSuGy4zWaq0Tu76Mjqhjoqu6X_Rw2QAWxUOME6XGJFksLZzB1GMRGkNtyLmNF0yXkiSdb5K7KkfvXdN5Eh-e3kEwCUH2NU9D 
+
+https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSuH7i0NSjPcUA_npggLpYywr4EMT5Fq26tkLVki04AXxGandwyjxGmybl4ThHO0Wg7uZTxveTigNRHMTA_msyPtIXr64dMI 
+
+https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSuI_JV9It9C2H20Rr29uDY3V6Zd5iWdXQQyDLrafo7dJMpDwKLI0GIwkal-ACGohR1Hws9cjVtBZxEay3OTxPsfzdMa2Q9R 
+
+ 
+
+https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSuJzu4NfMbLn316OdcJBu-QS-r6G799Igl4PjN2mr0peeLo5IUSNsED7-iEuDRKU11SqunoktWA2qu6HavF8l2IvmTCHTXL 
+
+https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSuK-pJ3PDZED_ok8psm4y5NfHQd1edZ5cAhDysz11XDUpgs1okBNQ1beVbbZnk6otcYF8b2L7u21KUrgUrnEwkChHEGhmEy 
+
+https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSuLG_J3vvF-rBuOkB_bgH3i4aDsotdv29oBnR4CIVD8uOmnyIEqas8dUyE5lS-xVfMIOeltKIL0eJhX9C3pfg1mikiVmM9j 
+
+https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSuMtP1qqUJtBZW-Gdje4_au69u6XNf2hHH71T-zPMth5nxSKqlxBlkiulahzPwHJYK8NiHTnm-dAa6lY8vw0gGi21mPzhOh 
+
+https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSuNbAflmM2uJcwzJHKNam5ZJhmSdC5jlt451YD8slhft_2yf-LYAKI3E9oCxaT3JhPp8TmtIRl8xDSaeiKnexX1mwmbR1y7 
+
+https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSuObURXfMSvDnBtwduAwjQC8iZ3tSJDFRBaGLTOEZv_kDLvuxXPgaLks1PgiyT68EBR0kao8YED1Oa1OVYc4_xW-PkFBHY2 
+
+https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSuPuqWkgguMFoccb3rF-BLM0cBCx9ymcCIOejvLD-jkAwQTOyMvaFIulf0IRnbv-GQXCgR1LYqmaXpmRcgDV42edCHNlkR8 
+
+https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSuQDNXl9_POlI7eso0gNuEE1YrTzax74eU74uP6Vrk2CqxyZCL-X8EusH2N8ZsLe9rHkOhEb7oe1jPSl24OvhslkzZGzE51 
+
+https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSuRD4D_C1NyFmuEOLoibtj6bEIMV0gfMyFnAw8AQ_BpIlttZRciKE8H0sLYuSjWHRlTQ10VY37brdXoEWTVxm64Ta8NCZmO 
+
+ 
+
+
+https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSuSchveP3qAhGzVU7NRu-pmoq792HS-Jibc7qqPE0SadJYw5JbdvWtlKV_RLMutB7RwgggZuCAA2-5ALS6trw_dffPuKU7_ 
+
+https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSuTb-3RgqSLfmXxDwJJ3Y-_TC9mF5qPRlN3t7BgUKZNhsxuO7a29_-UZYDzRqm77g_YDmoCJaao4gBP52pSaatBqDr7w9sK 
+
+https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSuU7Mfmb-UQ1pPtKYLGlGbxCz_hDXCdHvynReprpVBEib3jdpF5IcKnWCp116ehRypmbyFeRdk6x1ZWP--40S6-sMH_uRZb 
+
+https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSuVxm2czJ9tphBp79puCwkvHLWlDWnYvPrbcA3twEjWUgfTWJurtfbfhkYlds9X70Jhr5X0Wvkf6F4G_Z2Kd_KcxHL8N8QS 
+
+https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSuWJUz4QNIZB7JdSLutfEXW_KBOI7xEHgxvKpZUESwNMAbsW30jI59wkR-mvXuQEnsOzMPkDkkm3UHyvLrPjaS8TGPSbBlv 
+
+https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSuXOTKxk3KWGYEjt5F46N9N30BN1JS65Jt7YkygTRAxAFYvs81ii_mtN1q1sxETLi-5-_kQBNg15BH9dRHRsaCzYf0c1tvs 
+
+
+
+ 
+ 
+
+
+https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSuYnruGCYTXZ1M52BeeFWomaMgpRlFp0rMPMwTWlM3ACLlKPKHsp1-9B0CXT2v8K6K2FbOGNpC3WEkImlIpOEDzu_vsYbP0 
+
+https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSuZf5At3_69lw_z0fjr1571fRBwpgy6jsNRuXUAzJvBzAhEGV2U_zHmjmAJ0W0OoCOzEFKpyTUxF8yq01GalQnZh48fhTq- 
+
+
+
+ 
+ 
+
+
+https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSuaLTmoIwpPDbrVFK8wJhK0lRT46ZXeQJzHa6uBSPJ9p0tyyE5E5BkZpcWDRkIENFFBAtm7Zbrs4QmlCn58vNRvoupVKWOd 
+
+https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSubJBodnbLppkPvcnNk5FmiX7GdgKtUP9QbykWvChjzoSq9RYyfvj6L0NKOTCk4mH_oD1tfXPxak6egbGnjMpXRiZa1cvBp 
+
+https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSucE4oLcXl5bbflQQzmTc2VVKJUunrzdt9pmYqe26f9zWJUEuAL1sSjC7Xjnd0cUICAma3LFRA7oUlVwNu0gv5cU4oVGVGu 
+
+https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSudywXO8E3EEb9aI_BMDTvqj_CQ6G2ma3ILyijZif5DT_mvVkrCJLwyvQEVM_9jcrv3xFbM4sjcX3HFMcjmcJtbaPjbjq0j 
+
+https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSuebJ1adbHK6LI9czfL-1ZCikqF80hCsh-V0e4lNGksiLml0GGdQu_78fwnI_1dFIKB81ouKF4R6Tu7H5qLUwskA4M3P-E5 
+
+
+
+ 
+
+ 
+
+
+Email preferences
+
+https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSufCKRtAu6bdCzL6P5PyYXmmCdct-E44LPV3oCHatW5senLNZGICXW0tGcvSctj0YuFyhrtsFG0W5THl1GZ_TaTPzeihWFVjUZvJg 
+Unsubscribe | 
+https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSugfUWaPWy7hu1UL_VjzxK5fMhPhzwkXMoueBdNHwqwCvaR02276zKqYBuig3CC1xHJk6uFPXbVPuIYcRhiOFHjcTa_NLcV0XcF7g 
+Update preferences | 
+https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSuhYGV1urw5By4Pn64KvpNDago77fvr7p9gIDx-66i_f_opDZXbLXQAALAneyEq69QNtLy_w97NX5r8NX09lrK0UoEc-4j2 
+Sign up to receive Sony emails
+
+
+
+ 
+
+ To ensure delivery of emails from Sony, add 
+mailto:Sony-Electronics@email.sel.sony.com 
+Sony-Electronics&#x200b;@email.sel.sony.com to your Address Book. 
+
+
+ Screen images simulated. 
+
+
+ For more information on products, visit 
+https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSuiCA_1k__evJZ3NX7SRIAJC70MPMHak7S8Caycj6--VZCKxWdDap7Qky_mo733ei0R6N0FrQK5BGtpKSivyireAeOE41YL 
+https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSuj5LcYjRe9bsksaATpjE0eDAqjKyWz2ZX-TsEmWyjJCfalN5W08D7oLX-r4h45C23G24esG8Wl68YxXDzwLOHV-mwRSffC
+
+13840 x 2160 pixels. Requires HDR-compatible content from supported streaming services or HDR-compatible content device connected via HDMI® input (sold separately).
+
+
+
+
+2User must accept 
+https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSuk9YfA3XEFUODp6Rb7xFm-v7TNh0QDlJb4zszRc3S2pYnPa5JhLDfaw20V01IW8hDX1dxVSVoQadSAsRuhlFiJqjyIr8mG 
+Google Terms of Service, 
+https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSulCADIhIJ2Wl4g7CukAluSUNDRAL6pdAzOMHAYFlRWDYjR5ZWJcx9H2GGhEn-jyqE353ifUXRE41Wsc_M9MqNX02fpko8F 
+Play Terms of Service and 
+https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSumfW3HY7_4jwlDOnr_GDR3t6zy0rDbkQVqkDziL21iu8sduuyyHb_cz1qQaAIMfgqYw8ZyePL4HHobrsIQOuUHf-cB8iZA 
+Privacy Policy to use TV. User must connect to a Google account to use certain advertised features, including voice to activate linked apps, and install certain apps and operating software during setup. Use of TV without connecting to a Google account allows only basic TV features and certain apps. Wireless connectivity requires 802.11 home network (802.11n recommended). Network services, content, operating system and software of this product may be subject to separate or third-party terms and conditions and changed, interrupted or discontinued at any time and may require fees, registration and credit card information. Apps must be compatible with TV. App availability varies by region and device.
+
+
+3IP67 Requires that all ports and covers are firmly closed. Waterproof and Dustproof is effective only when the cap is closed. Not guaranteed for all situations. 
+
+
+
+4Do not use any strap other than the supplied shoulder strap. When using the shoulder strap, note the following: Be aware that the shoulder strap may catch on surrounding objects. This may cause it to tighten around your neck. Do not engage in strenuous exercise. Wear the shoulder strap diagonally across your body while carrying the speaker. Otherwise, you may accidentally drop the speaker. If the hook of the shoulder strap is not fully passed through the attachment loop, the speaker may fall.
+
+
+
+
+
+ 
+ 
+ 
+&dagger;NO PURCHASE OR PAYMENT NECESSARY. Open to legal residents of 50 U.S./D.C., 18+ (AL and NE, 19+) at time of entry. 06/01/25&#8209;05/31/26. See Official Rules, including prizes, entry instructions, and odds of winning 
+https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSunmxLu94ngIj7uZcHws0kL_zj8TXbe1H8TFgynKgqlvLLtC217A1AVzAPhHTuQJnAYq42UOPjWv50miNxLlLW-rNW_RpSe 
+here. Void in U.S. territories and where prohibited. Sponsor: Sony Electronics Inc., 16535 Via Esprillo, San Diego, CA 92127. The Visa(R) Gift Card is issued by The Bancorp Bank, Member FDIC, pursuant to a license from Visa U.S.A. Inc. and can be used everywhere Visa debit cards are accepted around the world. Limited warranty rights are not diminished if you do not complete and submit this registration form.
+ 
+
+
+
+ Prices and offers non&#8209;redeemable for cash, non&#8209;transferable, and may not be combinable with other offers/discounts. Reseller shipping and prices may vary. Specifications, availability, prices, and terms of offer are subject to change without notice. Sony is not responsible for photographic, typographic, or system errors.
+
+https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSuowtutYbAz9CtqhaWkja90mtYzUqG2vjyB95som1GAu6H5VOxIW26DDhDA1n7dHH_AeCGqhIe48O1E80yUl-zoiYsmwbbz 
+View Terms and Conditions
+
+Sony Electronics Inc. | Personal Information Management Office | 16535 Via Esprillo, San Diego, CA 92127
+
+https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSupUUXlvro-WjUKSGmmszT_3jZzEIHqwTaUMcqT_mrqBsrI_pp-9_BSaHiBQxKnbbv-hWuaqr7f1CGGnJR-fO8y0a0FqHdA 
+View Privacy Policy/California Privacy Rights
+
+
+ 
+
+ (c) 2026 Sony Electronics Inc., Sony and Sony Rewards are trademarks of the Sony Group Corporation. All rights reserved. Reproduction in whole or in part without written permission is prohibited.
+
+                                
+
+--iPK34HSEwR5W=_?:
+Content-Type: text/html;
+	charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" lang="en" xml:lang="en">
+<head>
+<!--[if gte mso 9]> <xml> <o:OfficeDocumentSettings> <o:AllowPNG/> <o:PixelsPerInch>96</o:PixelsPerInch> </o:OfficeDocumentSettings> </xml> <![endif]-->
+<title>Sony USA Email</title>
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+<meta name="format-detection" content="telephone=no"/>
+<link rel="Shortcut Icon" type="image/x-icon" href="https://electronics.sony.com/assets/icons/Favicon_144x144.png" />
+<!--[if !mso]><!-->
+<link href="https://www.emailimagecdn606b.com/shared/fonts/SST-Pro/SST-Pro.css" rel="stylesheet" type="text/css"/>
+<!--<![endif]-->
+<style type="text/css">
+* {
+    -webkit-text-size-adjust: none !important;
+}
+a, a:link, a:visited, a:hover, a:active {
+    color: #000001;
+    text-decoration: underline;
+}
+body {
+    width: 100% !important;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff;
+    font-family: Arial, sans-serif;
+}
+/* Outlook.com,Hotmail reset */
+.ExternalClass {
+    width: 100%;
+}
+.ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div {
+    mso-line-height-rule: exactly;
+    line-height: 100%;
+}
+table, td {
+    border-collapse: collapse;
+}
+/* remove table and td extra spacing in some email clients */
+table {
+    mso-table-lspace: 0pt;
+    mso-table-rspace: 0pt;
+    mso-cellspacing: 0px;
+    mso-padding-alt: 0px 0px 0px 0px;
+}
+/* fix tables extra spacing in Outlook */
+/************ iPhone,iPad auto-link styles ************/
+.mobile_link a {
+    color: #000000 !important;
+    text-decoration: default;
+    pointer-events: auto;
+    cursor: default;
+}
+a[href^="tel"], a[href^="sms"], .ios_link a {
+    color: #000000;
+    color: inherit;
+    text-decoration: none;
+    pointer-events: none;
+    cursor: default;
+}
+.ios_link {
+    color: inherit;
+    text-decoration: none;
+    pointer-events: none;
+    cursor: default;
+}
+.mobile_link a:hover, a[href^="tel"]:hover, a[href^="sms"]:hover, .ios_link a:hover {
+    text-decoration: underline;
+}
+a {
+    color: #284baf;
+}
+/*Iphone fix for the address text*/
+.appleLinks {
+    color: inherit!important;
+    text-decoration: none!important;
+}
+.appleLinks a {
+    color: inherit!important;
+    text-decoration: none!important;
+}
+.appleLinks span {
+    border-bottom-width: 0px!important;
+    color: inherit!important;
+    cursor: text!important;
+}
+.gmailfix {
+    display: none;
+    display: none!important;
+}
+sup {
+    font-size: 8px !important;
+    vertical-align: 5px !important;
+    line-height: normal !important;/*
+color: inherit !important;
+font-weight: normal !important;
+*/
+}
+
+/* Gmail only */
+@media only screen and (max-width: 767px) {
+u + .body .copy-wrapper {
+    padding-left: 90px !important;
+}
+}
+/* eo Gmail only */
+</style>
+</head>
+<body bgcolor="#ffffff" style="padding:0px; margin:0px; background-color:#ffffff;" class="body">
+<!-- start-->
+<table cellpadding="0" cellspacing="0" width="100%" align="center" border="0" bgcolor="#ffffff" style="margin:0; padding:0; width:100% !important;">
+  <tr>
+    <td align="center" valign="top" bgcolor="#ffffff"><!-- main table -->
+      
+      <table align="center" width="520" border="0" cellspacing="0" cellpadding="0" style="width:520px; margin: 0 auto;">
+        <!-- preheader -->
+        <tr>
+          <td align="center" valign="top" width="520" style="width:520px; padding-top: 10px;" id="preheader"><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper">
+              <tr>
+                <td class="stylingblock-content-wrapper camarker-inner"><table width="520" border="0" cellspacing="0" cellpadding="0" style="width:520px;">
+                    <tr>
+                      <td width="515" align="left" valign="top" style="width:515px; font-family:Arial, sans-serif; font-size:10px; color:#111c24; line-height:14px; padding: 0px 0px 0px 5px;"></td>
+                    </tr>
+                  </table></td>
+              </tr>
+            </table></td>
+        </tr>
+        <tr>
+          <td align="center" valign="top" width="520" style="width:520px;"><table width="520" border="0" cellspacing="0" cellpadding="0" style="width:520px;">
+              <tr>
+                <td width="515" align="left" valign="top" style="width:515px; font-family:Arial, sans-serif; font-size:10px; color:#111c24; line-height:14px; padding: 0px 0px 10px 5px;">From BRAVIA, to ULT, to cameras, check them all out <br>
+                  <a href="https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLStd3reyt7kugpsNAzlzrppE1ZIOBK3lYYlE_wdjrmpQt_Cnk8emyTpgFnN9dYaOKKh1jcAeq7MYvAZVE2pey3Ex2-0bEaDi" style="color:#111c24; text-decoration:underline;" target="_blank" ><span style="color:#111c24; text-decoration:underline;">VIEW IN BROWSER</span></a></td>
+              </tr>
+            </table></td>
+        </tr>
+        <!-- /preheader --> 
+        <!-- header -->
+        <tr>
+          <td width="520" align="center" valign="top" style="width:520px; max-width:520px;" bgcolor="#ffffff" id="logo"> <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner">
+<table role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper" width="100%" cellspacing="0" cellpadding="0"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- logo -->
+<table style="width:520px; max-width:520px;" width="520" cellspacing="0" cellpadding="0" border="0" align="center">
+<tr>
+<td style="width:520px; height:64px;" width="520" valign="top" height="64" align="center">
+<a href="https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSteGQn4lw_0r2TKR6ZcQDtM512B-d_Wx9Eduh2CUtU1rAV-LfF-IWjXW70yO1FJEnOF78pbvfo1zJj3WsOvzjyjKKxRQIvD" target="_blank" ><img src="https://image.email.sel.sony.com/lib/fe8b12737d63067577/m/32/SNNY_logo.jpg" style="margin:0px; display: block;" alt="SONY" width="520" height="64" border="0"></a>
+</td>
+</tr>
+</table>
+<!-- /logo -->
+</td></tr></table>
+</td></tr></table> </td>
+        </tr>
+        <!-- /header --> 
+        <!-- nav -->
+        <tr>
+          <td align="center" valign="top" width="520" style="width:520px;" bgcolor="#000001" id="staticnav"> <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><table style="width:520px;" width="520" cellspacing="0" cellpadding="0" border="0" bgcolor="#000000" align="center">
+<tr>
+<td style="width:130px;" width="130" valign="middle" align="center">
+<a href="https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLStfjT0G_BPUKS5ZiGk0Xn3rh7xhkTgEqdOUdAQ4NQzNcgva7yopLryeKy6V6SuqWPrPd47niyRgIpM7wNpHGdbYOj3HQb4h" target="_blank" >
+<img src="https://image.email.sel.sony.com/lib/fe8b12737d63067577/m/1/US_FY25_CrossCat_NAVUpdate_08192025_Slice2.jpg" style="display:block; margin:0px; color:#ffffff;" alt="TV &amp; Home Theatre" width="185" height="39" border="0">
+</a>
+</td>
+<td style="width:130px;" width="130" valign="middle" align="center">
+<a href="https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLStg3DZquixST3p1TdE8rFTEBs_0yxr0CyptCxXYSnOR-pCD_dIp4rVRk2W9PgeOqgfNNl3TYvHgLzGay1GHXVNVfnI7CNt4" target="_blank" >
+<img src="https://image.email.sel.sony.com/lib/fe8b12737d63067577/m/1/US_FY25_CrossCat_NAVUpdate_08192025_Slice3.jpg" style="display:block; margin:0px; color:#ffffff;" alt="Imaging" width="101" height="39" border="0">
+</a>
+</td>
+<td style="width:120px;" width="120" valign="middle" align="center">
+<a href="https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSthwT8d2r60IXFHzm3TnW33l9bl9SRn47DHR-TfrUWKfM5mNq9tuk0RANvUYlgwNmLpETo0K_X4laZwIQibKiKz5OEeww00" target="_blank" >
+<img src="https://image.email.sel.sony.com/lib/fe8b12737d63067577/m/1/US_FY25_CrossCat_NAVUpdate_08192025_Slice4.jpg" style="display:block; margin:0px; color:#ffffff;" alt="Audio" width="104" height="39" border="0">
+</a>
+</td>
+<td style="width:140px;" width="140" valign="middle" align="center">
+<a href="https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLStiKG-as-bYoy8prWZd21XQjYgrsDjQIhgfcWxp86P2tpkQVdF9YshG7lbTgCs8TTRdenOfOcFEHrYBiqf_S0gW1UDzbcS-" target="_blank" >
+<img src="https://image.email.sel.sony.com/lib/fe8b12737d63067577/m/1/US_FY25_CrossCat_NAVUpdate_08192025_Slice5.jpg" style="display:block; margin:0px; color:#ffffff;" alt="Gaming Gear" width="130" height="39" border="0">
+</a>
+</td>
+</tr>
+</table>  </td></tr></table> </td>
+        </tr>
+        <!-- /nav --> 
+        <!-- content -->
+        <tr>
+          <td align="center" valign="top" width="520" style="width:520px; max-width: 520px;"><table width="520" border="0" cellspacing="0" cellpadding="0" style="width:520px; mso-cellspacing:0px; mso-padding-alt:0px 0px 0px 0px; display:block !important; max-width:520px !important;" bgcolor="#ffffff">
+              <!-- hero -->
+              <tr>
+                <td align="center" valign="top" width="520" style="width:520px;" bgcolor="#ffffff" id="hero"><table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper">
+                    <tr>
+                      <td class="stylingblock-content-wrapper camarker-inner"><table style="width:520px;" width="520" cellspacing="0" cellpadding="0" border="0" align="center">
+                          <tr>
+                            <td style="width:520px; " width="520" valign="middle"  align="center"> <img src="https://image.email.sel.sony.com/lib/fe8b12737d63067577/m/1/US_FY25_Cross-Cat_AprilMostBest_04172026_Slice01.jpg" style="display:block; border:none; margin:0px; color:#000001; font-family:Arial, sans-serif; font-size:28px;" alt="Sony's top tech trends" width="520"  border="0"></td>
+                          </tr>
+                          <tr>
+                            <td style="width:520px; " width="520" valign="middle"  align="center"><a href="https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLStjOtw3XRXe-mVzG-c5ZESzKKSE0GQjet7K_tlfj9MtGmwhNAqQu4vPJmkGUQm_FGPRqdICCeL-IU7X0TQObQOBKOgp-PAE" target="_blank" > <img src="https://image.email.sel.sony.com/lib/fe8b12737d63067577/m/1/US_FY25_Cross-Cat_AprilMostBest_04172026_Slice02.jpg" style="display:block; border:none; margin:0px; color:#000001; font-family:Arial, sans-serif; font-size:28px;" alt="Socially active | WF-1000XM6 | Shop now" width="520"  border="0"></a></td>
+                          </tr> <tr>
+                            <td style="width:520px; " width="520" valign="middle"  align="center"><a href="https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLStk188s8Snk7nf8cr66MrusvJ3Shdl5joMKx5p356xA5WCHEfB--WI5OU_0cV3OJMfJa5SekCs8Bo7LNVRf1HvGVgQPTCpp" target="_blank" > <img src="https://image.email.sel.sony.com/lib/fe8b12737d63067577/m/1/US_FY25_Cross-Cat_AprilMostBest_04172026_Slice03.jpg" style="display:block; border:none; margin:0px; color:#000001; font-family:Arial, sans-serif; font-size:28px;" alt="BRAVIA Theater Bar 9 | Shop now" width="520"  border="0"></a></td>
+                          </tr>
+                          <tr>
+                            <td style="width:520px;" width="520" valign="middle"  align="center"> <img src="https://image.email.sel.sony.com/lib/fe8b12737d63067577/m/1/US_FY25_Cross-Cat_AprilMostBest_04172026_Slice04.jpg" style="display:block; border:none; margin:0px; color:#000001; font-family:Arial, sans-serif; font-size:28px;" alt="" width="520"  border="0"></td>
+                          </tr> <tr>
+                            <td style="width:520px;" width="520" valign="middle"  align="center"><a href="https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLStl9XswC_YDVHiP0-EY9q74qRL-qQLgMBDgxmn9bPRp32FgQFMsT47Uoxq3tbucHWnEj77neCIlrtN0RN2MjVAc06t6zjri" target="_blank" > <img src="https://image.email.sel.sony.com/lib/fe8b12737d63067577/m/1/US_FY25_Cross-Cat_AprilMostBest_04172026_Slice05.jpg" style="display:block; border:none; margin:0px; color:#000001; font-family:Arial, sans-serif; font-size:28px;" alt="Star of the show | ULT TOWER 10 | Shop now" width="520"  border="0"></a></td>
+                          </tr> <tr>
+                            <td style="width:520px;" width="520" valign="middle"  align="center"><a href="https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLStm20BRiLPigorE969lQdvGpVMv_nnEYVBJhhKpPw7gLb4icicpZkLCt4hkoiocgHzyNQJuZRxZo5K7-mjBwp38-qOT64KZ" target="_blank" > <img src="https://image.email.sel.sony.com/lib/fe8b12737d63067577/m/1/US_FY25_Cross-Cat_AprilMostBest_04172026_Slice06.jpg" style="display:block; border:none; margin:0px; color:#000001; font-family:Arial, sans-serif; font-size:28px;" alt="Alpha 7 V | Shop now" width="520"  border="0"></a></td>
+                          </tr> <tr>
+                            <td style="width:520px;" width="520" valign="middle"  align="center"><img src="https://image.email.sel.sony.com/lib/fe8b12737d63067577/m/1/US_FY25_Cross-Cat_AprilMostBest_04172026_Slice07.jpg" style="display:block; border:none; margin:0px; color:#000001; font-family:Arial, sans-serif; font-size:28px;" alt="" width="520"  border="0"></td>
+                          </tr> <tr>
+                            <td style="width:520px;" width="520" valign="middle"  align="center"><a href="https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLStnA9FZ7krLFoMZwYAN-LMVNcXlr3mRnvqs9Y5q2JWk-wA_6zonn5F9UBS7OfUcXVQpzeK2SZNdPngeUFS2mweIXVPEby-q" target="_blank" > <img src="https://image.email.sel.sony.com/lib/fe8b12737d63067577/m/1/US_FY25_Cross-Cat_AprilMostBest_04172026_Slice08.jpg" style="display:block; border:none; margin:0px; color:#000001; font-family:Arial, sans-serif; font-size:28px;" alt="Incredible views | BRAVIA 9 | Shop now" width="520"  border="0"></a></td>
+                          </tr> <tr>
+                            <td style="width:520px;" width="520" valign="middle"  align="center"><a href="https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSto_jU8rF-wbH1RfIu7mwLrI2RBXvZmx9xjdKvW65rH7fkDDenIuKtJXAadSdkbWpO8gWdKdQohy5ZLN5nL2Q7eJ8qSIU8a" target="_blank" > <img src="https://image.email.sel.sony.com/lib/fe8b12737d63067577/m/1/US_FY25_Cross-Cat_AprilMostBest_04172026_Slice09.jpg" style="display:block; border:none; margin:0px; color:#000001; font-family:Arial, sans-serif; font-size:28px;" alt="ULT FIELD 3 | Shop now" width="520"  border="0"></a></td>
+                          </tr> <tr>
+                            <td style="width:520px;" width="520" valign="middle"  align="center"> <img src="https://image.email.sel.sony.com/lib/fe8b12737d63067577/m/1/US_FY25_Cross-Cat_AprilMostBest_04172026_Slice10.jpg" style="display:block; border:none; margin:0px; color:#000001; font-family:Arial, sans-serif; font-size:28px;" alt="" width="520"  border="0"></td>
+                          </tr> <tr>
+                            <td style="width:520px;" width="520" valign="middle"  align="center"><a href="https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLStpQIsC4Z9Mg0nlhf2oW2joK8EpLhZwP_ahM2clxhnp8C32hB3dF6zgeJeeYupYFQ2Hs_5-XzvJk8_2gkGps-C6fKCUrPLF" target="_blank" > <img src="https://image.email.sel.sony.com/lib/fe8b12737d63067577/m/1/US_FY25_Cross-Cat_AprilMostBest_04172026_Slice11.jpg" style="display:block; border:none; margin:0px; color:#000001; font-family:Arial, sans-serif; font-size:28px;" alt="What everyone wants | ZV-1 II | Shop now" width="520"  border="0"></a></td>
+                          </tr> <tr>
+                            <td style="width:520px;" width="520" valign="middle"  align="center"><a href="https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLStqfvaar3E5St1T1NJzOm_9PZAbKub6BrY0JfI7BDjbxg5OPdJUzTrBmYpr41TpPzHNfshYIKI4kybn5sz_osQzXtvzfX8x" target="_blank" > <img src="https://image.email.sel.sony.com/lib/fe8b12737d63067577/m/1/US_FY25_Cross-Cat_AprilMostBest_04172026_Slice12.jpg" style="display:block; border:none; margin:0px; color:#000001; font-family:Arial, sans-serif; font-size:28px;" alt="BRAVIA 8 | Shop now" width="520"  border="0"></a></td>
+                          </tr> <tr>
+                            <td style="width:520px;" width="520" valign="middle"  align="center"><a href="https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLStrHVTtlMrVt5ocvtljc75tn73rJxzs5Btq8iIanfHKtYxzMRdR3XuXussbJ9pB2Zf6_01fYGuU0fOwcMD3nXGja6flycFa" target="_blank" > <img src="https://image.email.sel.sony.com/lib/fe8b12737d63067577/m/1/US_FY25_Cross-Cat_AprilMostBest_04172026_Slice13.jpg" style="display:block; border:none; margin:0px; color:#000001; font-family:Arial, sans-serif; font-size:28px;" alt="Want to explore more? Shop deals" width="520"  border="0"></a></td>
+                          </tr> 
+                          
+                        </table></td>
+                    </tr>
+                  </table></td>
+              </tr>
+              <!-- /hero --> 
+              
+              <!-- banner1 --> 
+              
+              <!-- /banner1 --> 
+              
+              <!-- footnotes -->
+              <tr>
+                <td align="center" valign="top" width="520" style="width:520px;"><table align="center" width="520" border="0" cellspacing="0" cellpadding="0" style="width:520px;">
+                    <!-- empref -->
+                    <tr>
+                      <td align="center" valign="top" id="empreferences"><table width="480" border="0" cellspacing="0" cellpadding="0" style="width:480px;">
+                          <tr>
+                            <td align="center" valign="middle" style="font-family:Arial, sans-serif;font-size:12px; color:#111c24; line-height:16px; font-weight:bold;"> <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner">
+<table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- shopdirect -->
+<table style="width:520px;" width="520" cellspacing="0" cellpadding="0" border="0" align="center">
+<tr>
+<td style="width:520px; height:60px;" width="520" valign="top" height="60" align="center">
+<img src="https://image.email.sel.sony.com/lib/fe8b12737d63067577/m/49/SNNY24988_1222_ftr_header.jpg" style="display:block; border:none; margin:0px; background-color:#000000; color:#ffffff; font-family:Arial, sans-serif; font-size:22px;" alt="Shop direct with Sony" width="520" height="60" border="0">
+</td>
+</tr>
+<tr>
+<td style="width:520px; background-color: #ffffff" width="520" valign="top" bgcolor="#ffffff" align="center">
+<table style="width:520px;" width="520" cellspacing="0" cellpadding="0" border="0">
+<tr>
+<td style="width:197px;" valign="top" align="center">
+<a href="https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLStsI-ksuYDnF4sC6CXheqDX5Nk4sv4t5TlazTERZa2rdCxyPXW06uQNhk9HfTWY8-3Kt-8CueApgfLxqxdZv5XV4BuoGHNd" style="text-decoration: none;" target="_blank" ><img src="https://image.email.sel.sony.com/lib/fe8b12737d63067577/m/1/US_FY26_Cross+Cat_Email+Footer+Update_03312026_02.jpg" style="display:block; border:none; margin:0px; color:#000000; font-family:Arial, sans-serif; font-size:18px;" alt="My Sony | Earn 5% back in points" width="197" border="0"></a>
+</td>
+<td style="width:152px; " width="152" valign="top" align="center">
+<a href="https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSttF8yR650rgFhRCAu0XxTj6rp4P0mGLbqcz8nOrjPZGXCRA2OocQgVl87dxWDGcnP5ZKt7T0VJiLkQBoXAiKoCoZc3wVpU" style="text-decoration: none;" target="_blank" ><img src="https://image.email.sel.sony.com/lib/fe8b12737d63067577/m/1/US_FY26_Cross+Cat_Email+Footer+Update_03312026_03.jpg" style="display:block; border:none; margin:0px; color:#000000; font-family:Arial, sans-serif; font-size:18px;" alt="Fast free shipping" width="152" border="0"></a>
+</td>
+<td style="width:171px;" width="171" valign="top" align="center">
+<a href="https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLStu-Q_hy7apySpV13stssebUlpMvUWAzqvVAkLQY4gT8hElEYtlAs77Z8SwpPYBi1dP3tkGLEDuBU-u1yph-cWKMXbg0gYT" style="text-decoration: none;" target="_blank" ><img src="https://image.email.sel.sony.com/lib/fe8b12737d63067577/m/1/US_FY26_Cross+Cat_Email+Footer+Update_03312026_04.jpg" style="display:block; border:none; margin:0px; color:#000000; font-family:Arial, sans-serif; font-size:18px;" alt="Eash 30-day returns" width="171" border="0"></a>
+</td>
+</tr>
+<tr>
+<td style="width:197px; " width="197" valign="top" align="center">
+<a href="https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLStvw-xh1jGh_N9IkpGoNMzTon2jqMVStyi5duVksvodQKOsEDFDahPhB5N41VoDeFJlTUhuZVDMhobgtaeyrqK5vw2i9g2Z" style="text-decoration: none;" target="_blank" ><img src="https://image.email.sel.sony.com/lib/fe8b12737d63067577/m/1/US_FY26_Cross+Cat_Email+Footer+Update_03312026_05.jpg" style="display:block; border:none; margin:0px; color:#000000; font-family:Arial, sans-serif; font-size:18px;" alt="Visit our FAQ for details" width="197" border="0"></a>
+</td>
+<td style="width:152px; " width="152" valign="top" align="center">
+<a href="https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLStwSF1eeXRSdUVBmfJavCOUTx16M4stsx8YMDnzN_PL6JJs8PdH4MzrlmRoFPmTwi_dDHjrB0YNQz5raYsoMT0rSigIEGSF" style="text-decoration: none;" target="_blank" ><img src="https://image.email.sel.sony.com/lib/fe8b12737d63067577/m/1/US_FY26_Cross+Cat_Email+Footer+Update_03312026_06.jpg" style="display:block; border:none; margin:0px; color:#000000; font-family:Arial, sans-serif; font-size:18px;" alt="Affirm | Pay over time" width="152" border="0"></a>
+</td>
+<td style="width:171px; " width="171" valign="top" align="center">
+<a href="https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLStxVoirAO-t8DI5-sdlC8-hWxGZ-pUiIUH9BnG75YSOOO5RQIOuxoOZBZ-CxQBjhkiIpy1qvh5USB1WWRTBEQHb0i8mPGuC" style="text-decoration: none;" target="_blank" ><img src="https://image.email.sel.sony.com/lib/fe8b12737d63067577/m/1/US_FY26_Cross+Cat_Email+Footer+Update_03312026_07.jpg" style="display:block; border:none; margin:0px; color:#000000; font-family:Arial, sans-serif; font-size:18px;" alt="ID.me | Special offers program" width="171" border="0"></a>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+<!-- /shopdirect -->
+</td></tr></table>
+</td></tr></table> </td>
+                          </tr>
+                          <tr>
+                            <td align="center" valign="middle" style="font-family:Arial, sans-serif;font-size:12px; color:#111c24; line-height:16px; font-weight:bold;"> <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner">
+<table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- regsupt -->
+<table style="width:520px; background-color: ##000001;" width="520" cellspacing="0" cellpadding="0" border="0" bgcolor="#000001" align="center">
+<tr>
+<td style="background: linear-gradient(#000001, #000001);width:28px; font-size:0px; line-height:0px;" width="28" valign="top" align="center">
+<img src="https://image.email.sel.sony.com/lib/fe8b12737d63067577/m/49/SNNY24988_1222_spacer.gif" style="display:block; margin:0px;" alt="" width="28" height="1" border="0">
+</td>
+<!-- REGISTER -->
+<td style="background: linear-gradient(#000001, #000001);width:200px; padding: 18px 0px 18px;" width="200" valign="top" align="center">
+<table cellspacing="0" cellpadding="0" border="0">
+<tr>
+<td style="width:200px; height:45px;" width="200" valign="top" height="55" align="center">
+<img src="https://image.email.sel.sony.com/lib/fe8b12737d63067577/m/1/US_FY24_Standard-Footer-Change_Reg_01.jpg" style="margin:0px; display:block; color:#ffffff; font-family:Arial, sans-serif; font-weight:bold; font-size:16px;" alt="Register your product for:" width="200" height="45" border="0">
+</td>
+</tr>
+<tr>
+<td style="width:200px; height:88px;" width="200" valign="top" height="88" align="center">
+<img src="https://image.email.sel.sony.com/lib/fe8b12737d63067577/m/1/US_FY25_CrossCat_ProdReg_SweepsUpdate_06012025_03.jpg" style="margin:0px; display:block; color:#ffffff; font-family:Arial, sans-serif; font-size:14px; line-height:16px;" alt="Proof of ownership | Warranty information | And more" width="200" height="88" border="0">
+</td>
+</tr>
+<!-- CTA -->
+<tr>
+<td style="width:200px; height:35px; font-size:0px; line-height:0px;" width="200" valign="top" height="35" align="center">
+<a href="https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSty9CROQ6aH4dzet0zXXQRhB3pz_WMrxHV2ABfm8lWVzE2IeDjQcNlpF2cQRzN-JzQX3ZEhuNfg4omLsEYd9dLKBl5NnFaz" target="_blank" >
+<img src="https://image.email.sel.sony.com/lib/fe8b12737d63067577/m/1/US_FY24_Standard-Footer-Change_Reg_03.jpg" style="margin:0px; display:block; color:#ffffff; font-family:Arial, sans-serif; font-weight:bold; font-size:14px; line-height:normal;" alt="Register now" width="200" height="31" border="0">
+</a>
+</td>
+</tr>
+<!-- / CTA -->
+</table>
+</td>
+<!-- / REGISTER -->
+<td style="background: linear-gradient(#000001, #000001);width:26px; font-size:0px; line-height:0px;" width="26" valign="top" align="center">
+<img src="https://image.email.sel.sony.com/lib/fe8b12737d63067577/m/49/SNNY24988_1222_spacer.gif" style="display:block; margin:0px;" alt="" width="26" height="1" border="0">
+</td>
+<td style="width:2px;line-height:0px;font-size:0px; background-color: #ffffff" width="2" valign="top" align="center">
+<img src="https://image.email.sel.sony.com/lib/fe8b12737d63067577/m/49/SNNY24988_1222_spacer.gif" style="margin:0px;display:block;" alt="" width="2" height="1" border="0">
+</td>
+<td style="background: linear-gradient(#000001, #000001);width:25px; font-size:0px; line-height:0px;" width="25" valign="top" align="center">
+<img src="https://image.email.sel.sony.com/lib/fe8b12737d63067577/m/49/SNNY24988_1222_spacer.gif" style="display:block; margin:0px;" alt="" width="25" height="1" border="0">
+</td>
+<!-- eSUPPORT -->
+<td style="background: linear-gradient(#000001, #000001);width:210px; padding: 18px 0px 18px 0px;" width="210" valign="top" align="center">
+<table cellspacing="0" cellpadding="0" border="0">
+<tr>
+<td style="width:200px; height:45px;" width="200" valign="top" height="45" align="center">
+<img src="https://image.email.sel.sony.com/lib/fe8b12737d63067577/m/1/US_FY24_Standard-Footer-Change_Support_01.jpg" style="margin:0px; display:block; color:#ffffff; font-family:Arial, sans-serif; font-weight:bold; font-size:16px;" alt="Visit Sony Support for:" width="210" height="45" border="0">
+</td>
+</tr>
+<tr>
+<td style="background: linear-gradient(#000001, #000001);width:200px; height:88px;" width="200" valign="top" height="88" align="center">
+<img src="https://image.email.sel.sony.com/lib/fe8b12737d63067577/m/1/US_FY24_Standard-Footer-Change_Support_02.jpg" style="margin:0px; display:block; color:#ffffff; font-family:Arial, sans-serif; font-size:14px; line-height:16px;" alt="Help and how-to information | Software updates | User manuals" width="200" height="88" border="0">
+</td>
+</tr>
+<!-- CTA -->
+<tr>
+<td style="width:200px; height:35px; font-size:0px; line-height:0px;" width="200" valign="top" height="35" align="center">
+<a href="https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLStz_FnSmeN4IYrg-CTGa2hjHPzDhZCEbxdQCC3BdjRr7MIIMii-dheoltrOVYxbtNHDm4j58Y4hLVqikloJ61QsKlx4FvlD" target="_blank" >
+<img src="https://image.email.sel.sony.com/lib/fe8b12737d63067577/m/1/US_FY24_Standard-Footer-Change_Support_03.jpg" style="margin:0px; display:block; color:#ffffff; font-family:Arial, sans-serif; font-weight:bold; font-size:14px; line-height:normal;" alt="Get product support" width="200" height="31" border="0">
+</a>
+</td>
+</tr>
+<!-- / CTA -->
+</table>
+</td>
+<!-- / eSUPPORT -->
+<td style="background: linear-gradient(#000001, #000001);width:29px; font-size:0px; line-height:0px;" width="29" valign="top" align="center">
+<img src="https://image.email.sel.sony.com/lib/fe8b12737d63067577/m/49/SNNY24988_1222_spacer.gif" style="display:block; margin:0px;" alt="" width="29" height="1" border="0">
+</td>
+</tr>
+</table></td></tr></table>
+</td></tr></table> </td>
+                          </tr>
+                          <tr>
+                            <td align="center" valign="middle" style="font-family:Arial, sans-serif;font-size:12px; color:#111c24; line-height:16px; font-weight:bold;"> <table role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper" width="100%" cellspacing="0" cellpadding="0"><tr><td class="stylingblock-content-wrapper camarker-inner">
+<table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><!-- social -->
+<table style="width:520px; background-color: #000001;" width="520" cellspacing="0" cellpadding="0" border="0" bgcolor="#000001" align="center">
+<tr>
+<td style="height:2px; font-size:0px; line-height:0px; background-color: #ffffff;" valign="top" height="2" bgcolor="#ffffff" align="center">
+<img src="https://image.email.sel.sony.com/lib/fe8b12737d63067577/m/48/SNNY24988_spacer.gif" style="display:block; margin:0px;" alt="" width="1" height="2" border="0">
+</td>
+</tr>
+<tr>
+<td style="background: linear-gradient(#000001, #000001); background-color: #000001; padding: 15px 0px 10px 0px;" valign="top" align="center">
+<table style="width:303px;" width="303" cellspacing="0" cellpadding="0" border="0" align="center">
+<tr>
+<td style="width:38px;height:38px;" width="38" valign="top" height="38" align="center">
+<a href="https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSt0kP8-ymHEwpPPKfzB8pV9KNtnfeGFfOnlq7pWiRozLQl_rej-b3Su95GpdU3-Of5ny0_qsJdYzkDL7I3SA0i01tv9yGbp" target="_blank" >
+<img src="https://image.email.sel.sony.com/lib/fe8b12737d63067577/m/49/SNNY24988_1222_FB.jpg" style="display:block; margin:0px; color:#ffffff; font-family:Arial, sans-serif; font-size:12px; line-height:16px;" alt="Facebook" width="38" height="38" border="0">
+</a>
+</td>
+<td style="width:25px; font-size:0px; line-height:0px;" width="25" valign="top" align="center">
+<img src="https://image.email.sel.sony.com/lib/fe8b12737d63067577/m/49/SNNY24988_1222_spacer.gif" style="display:block; margin:0px;" alt="" width="25" height="1" border="0">
+</td>
+<td style="width:42px;height:38px;" width="42" valign="top" height="38" align="center">
+<a href="https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSt1c74Apc1V2nGpN4PbB2hvpuweUe86GAQrPhJ8wEEx9V_yHWCz0Zj00gKuo1knJ62xdxM0m0PSXdQpUB6ZfIKBRkB4JxY5" target="_blank" >
+<img src="https://image.email.sel.sony.com/lib/fe8b12737d63067577/m/49/SNNY24988_1222_TW.jpg" style="display:block; margin:0px; color:#ffffff; font-family:Arial, sans-serif; font-size:12px; line-height:16px;" alt="Twitter" width="42" height="38" border="0">
+</a>
+</td>
+<td style="width:25px; font-size:0px; line-height:0px;" width="25" valign="top" align="center">
+<img src="https://image.email.sel.sony.com/lib/fe8b12737d63067577/m/49/SNNY24988_1222_spacer.gif" style="display:block; margin:0px;" alt="" width="25" height="1" border="0">
+</td>
+<td style="width:38px;height:38px;" width="38" valign="top" height="38" align="center">
+<a href="https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSt2a9B68yL0J0aomYUjpP2Ho7f9Dbubiaf_d1uMtxRmDqwFxjhXzjRhfNc57fiGwRZifSBiD1X7dmCho89m7rQu23qdTa_3" target="_blank" >
+<img src="https://image.email.sel.sony.com/lib/fe8b12737d63067577/m/49/SNNY24988_1222_TK.jpg" style="display:block; margin:0px; color:#ffffff; font-family:Arial, sans-serif; font-size:12px; line-height:16px;" alt="TikTok" width="38" height="38" border="0">
+</a>
+</td>
+<td style="width:25px; font-size:0px; line-height:0px;" width="25" valign="top" align="center">
+<img src="https://image.email.sel.sony.com/lib/fe8b12737d63067577/m/49/SNNY24988_1222_spacer.gif" style="display:block; margin:0px;" alt="" width="25" height="1" border="0">
+</td>
+<td style="width:40px;height:38px;" width="40" valign="top" height="38" align="center">
+<a href="https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSt31e7AD_hSN3myeWrDyvoNvECfwt-3abEL-H3sx4pDpZ3WpsN4VZ3hXS4B2rUFy44OGxEq-YA4pI-4VWaRsihu51NVvo5a" target="_blank" >
+<img src="https://image.email.sel.sony.com/lib/fe8b12737d63067577/m/49/SNNY24988_1222_IN.jpg" style="display:block; margin:0px; color:#ffffff; font-family:Arial, sans-serif; font-size:12px; line-height:16px;" alt="Instagram" width="40" height="38" border="0">
+</a>
+</td>
+<td style="width:25px; font-size:0px; line-height:0px;" width="25" valign="top" align="center">
+<img src="https://image.email.sel.sony.com/lib/fe8b12737d63067577/m/49/SNNY24988_1222_spacer.gif" style="display:block; margin:0px;" alt="" width="25" height="1" border="0">
+</td>
+<td style="width:45px;height:38px;" width="45" valign="top" height="38" align="center">
+<a href="https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSt4OKSovtX2hE5M6Fu4Ugwg6KwNRphQ5bns9t3IBo-OEgRSQP1AQXXo9mxvQy0A096qLV2D0LDUkac3NefygfAXC-Q_wp3D" target="_blank" >
+<img src="https://image.email.sel.sony.com/lib/fe8b12737d63067577/m/49/SNNY24988_1222_YT.jpg" style="display:block; margin:0px; color:#ffffff; font-family:Arial, sans-serif; font-size:12px; line-height:16px;" alt="YouTube" width="45" height="38" border="0">
+</a>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+<!-- /social -->
+</td></tr></table>
+</td></tr></table> </td>
+                          </tr>
+                          <tr>
+                            <td height="25" align="center" valign="top" style="height:10px; font-size:0px; line-height:0px;"><img src="https://image.email.sel.sony.com/lib/fe8b12737d63067577/m/20/SNNY16989_spacer.gif" style="display:block; margin:0px;" width="1" height="25" border="0" alt="" /></td>
+                          </tr>
+                          <tr>
+                            <td align="center" valign="middle" style="font-family:Arial, sans-serif;font-size:12px; color:#111c24; line-height:16px; font-weight:bold;"> <table role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper" width="100%" cellspacing="0" cellpadding="0"><tr><td class="stylingblock-content-wrapper camarker-inner">
+<table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner">
+
+<!-- empref --> 
+<table width="520" align="center" valign="top" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td align="center" valign="middle" style="font-family:Arial; font-size:14px; color:#111c24; line-height:17px; font-weight:bold;"><span style="font-family:Arial; font-size:14px;line-height:17px;color:#111c24;font-weight:bold;">Email preferences</span></td>
+</tr>
+<tr>
+<td height="7" align="left" valign="top" style="font-size:0px; line-height:0px; height:7px;"><img src="https://image.email.sel.sony.com/lib/fe8b12737d63067577/m/21/SNNY17233_spacer.gif" style="display:block; margin:0px;" width="1" height="7" border="0" alt=""></td>
+</tr>
+<tr>
+<td align="center" valign="middle" style="font-family:Arial; font-size:12px; color:#000001; line-height:16px; font-weight:bold;"><a href="https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSt5dC7rZ9lKh3QbrH4dHWNUGIlppILplGLwEf0V2C9G0rFbb2OczwxMOJzEDcNGKllNXmurV49tINLipVOeG_xg3I8pU-Gq-aWC-Q" style="color:#000001; font-weight:bold; text-decoration:underline;" target="_blank" ><span style="color:#111c24; text-decoration:underline;">Unsubscribe</span></a> | <a href="https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSt6jQeN5DEGxz_hkf2pnvyKZeBVr-SSz3XVVmwa8EZ4n586IRmNKQFSdl1Sp39n-U_WAC3etGn_V3qHAlg3aoLrZFWzeeXOSwCZAw" style="color:#000001; font-weight:bold; text-decoration:underline;" target="_blank" ><span style="color:#111c24; text-decoration:underline;">Update preferences</span></a> | 
+<a href="https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSt71y6tTEIiK_IKeK3Ffm7YESJpgwsV7VcI362t1AD5SCalkK-ODLux4fKa_bP5Hg3T3fHpNfObt5iKMXoaD3cKDV6gqMXC" style="color:#000001; font-weight:bold; text-decoration:underline;" target="_blank" >
+<span style="color:#111c24; text-decoration:underline;">Sign up to receive Sony emails</span></a></td>
+</tr>
+</table>
+<!-- /empref --></td></tr></table>
+</td></tr></table> </td>
+                          </tr>
+                          <tr>
+                            <td height="25" align="center" valign="top" style="height:10px; font-size:0px; line-height:0px;"><img src="https://image.email.sel.sony.com/lib/fe8b12737d63067577/m/20/SNNY16989_spacer.gif" style="display:block; margin:0px;" width="1" height="25" border="0" alt="" /></td>
+                          </tr>
+                        </table></td>
+                    </tr>
+                    <!-- /empref --> 
+                    
+                    <!-- disc_top -->
+                    <tr>
+                      <td align="center" valign="top" id="footertop"><table width="480" border="0" cellspacing="0" cellpadding="0" style="width:480px;">
+                          <tr>
+                            <td width="480" align="left" valign="top" style="width:480px; font-family:Arial, sans-serif;font-size:12px;line-height:15px; color:#111c24;"> To ensure delivery of emails from Sony, add <a href="mailto:Sony-Electronics@email.sel.sony.com" style="color:#111c24;text-decoration:underline;" target="_blank" alias="FTL6EMAIL"><span style="color:#111c24;text-decoration:underline;white-space: nowrap;">Sony-Electronics&#x200b;@email.sel.sony.com</span></a> to&nbsp;your Address Book. <br />
+                              <br />
+                              Screen images simulated. <br />
+                              <br />
+                              For more information on products, visit <a href="https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSt8SJNXOPE-7trqGJOFYlGRbq7FjiKMVG3MTui_shR2C21zRZ0ora6Nd9o_e8kB-dTe0uLhaVloO6VKXCXO8F02Z7uJsqyQ" style="color:#111c24;text-decoration:underline;" target="_blank" ><span style="color:#111c24;text-decoration:underline; display:inline-block;">https://electronics.sony.com</span></a>.<br />
+                              <br /><span style="font-size:8px; line-height:0px; vertical-align:4px;">1</span>3840 x 2160 pixels. Requires HDR-compatible content from supported streaming services or HDR-compatible content device connected via HDMI® input (sold separately).
+
+
+<br />
+                              <br />
+                              <span style="font-size:8px; line-height:0px; vertical-align:4px;">2</span>User must accept <a href="https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSt9m7PtZGaOov9GXopFkxuZHt_RD0UsX_vgOFhLvstOAEWtEv0gi7DnK3FDT-HXdZO5XOEVltOf-i3-ZWw4YWeh7IDR4Hzz" style="color:#111c24;text-decoration:underline;" target="_blank" ><span style="color:#111c24;text-decoration:underline; display:inline-block;">Google Terms of Service</span></a>, <a href="https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSt-8xUJscmKZ5kMTICJYJdyqB28WjHQtQgzkuE_seHA67o_QBbdw87qXJN48HC8yo7ADr3R-0ZpRHYnLuaO2aQ0VRTh2bVX" style="color:#111c24;text-decoration:underline;" target="_blank" ><span style="color:#111c24;text-decoration:underline; display:inline-block;">Play Terms of Service</span></a> and 
+<a href="https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSt_ow4ewHSDS2_4qigkyz7bM-7Au-FtVLtTy1o-5rdonv-ULJ3UKgSF80-Zd4zi7xZoO5F2PqmVZzQqkWtHBxklFg2chHwy" style="color:#111c24;text-decoration:underline;" target="_blank" >
+<span style="color:#111c24;text-decoration:underline; display:inline-block;">Privacy Policy</span></a> to use TV. User must connect to a Google account to use certain advertised features, including voice to activate linked apps, and install certain apps and operating software during setup. Use of TV without connecting to a Google account allows only basic TV features and certain apps. Wireless connectivity requires 802.11 home network (802.11n recommended). Network services, content, operating system and software of this product may be subject to separate or third-party terms and conditions and changed, interrupted or discontinued at any time and may require fees, registration and credit card information. Apps must be compatible with TV. App availability varies by region and device.
+<br />
+                              <br /><span style="font-size:8px; line-height:0px; vertical-align:4px;">3</span>IP67 Requires that all ports and covers are firmly closed. Waterproof and Dustproof is effective only when the cap is closed. Not guaranteed for all situations. 
+
+<br />
+                              <br />
+                              <span style="font-size:8px; line-height:0px; vertical-align:4px;">4</span>Do not use any strap other than the supplied shoulder strap. When using the shoulder strap, note the following: Be aware that the shoulder strap may catch on surrounding objects. This may cause it to tighten around your neck. Do not engage in strenuous exercise. Wear the shoulder strap diagonally across your body while carrying the speaker. Otherwise, you may accidentally drop the speaker. If the hook of the shoulder strap is not fully passed through the attachment loop, the speaker may fall.
+
+
+<br />
+                              <br />
+                            
+                              
+                              <table role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper" width="100%" cellspacing="0" cellpadding="0"><tr><td class="stylingblock-content-wrapper camarker-inner">
+<table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="min-width: 100%; " class="stylingblock-content-wrapper"><tr><td class="stylingblock-content-wrapper camarker-inner"><span style="font-family:Arial; font-size:12px; color:#111c24; line-height:14px; display:inline-block;">
+<span style="font-size:8px; line-height:0px; vertical-align:4px;">&dagger;</span>NO PURCHASE OR PAYMENT NECESSARY. Open to legal residents of 50 U.S./D.C., 18+ (AL and NE, 19+) at time of entry. 06/01/25&#8209;05/31/26. See Official Rules, including prizes, entry instructions, and odds of winning <a href="https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSuA-01w9YV_WyinuP4JqV7v2qX2D8aNB7tb4Wy4IwI3Zt9k9b1hDje2I2wcnLIPChKBa1cmzHJcZto9SCx9rcevA2qsOVVd" style="color:#111c24; text-decoration:underline;" target="_blank" ><span style="color:#111c24; text-decoration:underline;">here</span></a>. Void in U.S. territories and where prohibited. <span class="appleLinks">Sponsor: Sony Electronics Inc., 16535 Via Esprillo, San Diego, CA 92127.</span> The Visa<span style="font-size:9px; line-height:0px; vertical-align:3px;">&reg;
+</span> Gift Card is issued by The Bancorp Bank, Member FDIC, pursuant to a license from Visa&nbsp;U.S.A.&nbsp;Inc. and can be used everywhere Visa debit cards are accepted around the world. Limited warranty rights are not diminished if you do not complete and submit this registration form.
+  <br><br>
+</span></td></tr></table>
+</td></tr></table> <strong>Prices and offers <nobr>non&#8209;redeemable</nobr> for cash, <nobr>non&#8209;transferable,</nobr> and may not be combinable with other <nobr>offers/discounts.</nobr> Reseller shipping and prices may vary. Specifications, availability, prices, and terms of offer are subject to change without notice. Sony is not responsible for photographic, typographic, or system&nbsp;errors.</strong> <br />
+                              <br />
+                              <a href="https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSuB3lhvs08rEbB_WMDiP6nkmC4S2FDr1A8X533a-xa2jkbMo_-mAzZiFTQCd84-wM22ZeN8g1uBndUzJ9Y8F14CjfcXEE05" style="color:#111c24;text-decoration:underline;" target="_blank" ><span style="color:#111c24;text-decoration:underline;">View Terms and Conditions</span></a> <br />
+                              <br />
+                              <span class="appleLinks">Sony Electronics Inc. | Personal Information Management Office | 16535 Via Esprillo, San Diego, CA 92127</span> <br />
+                              <br />
+                              <a href="https://click.email.sel.sony.com/?qs=ABB7InYiOjEsImQiOjQ4NDl9AAYAAAAAABtBLSuCB6E_n-8gtq5riIYrhNuz0cG2VGJhI1sqMXAsEpzK67QraeQPSLyDwKc7Nh7yDVJMtMWT-qGFcNbsmBtkazfRXhK9vWKj" style="color:#111c24;text-decoration:underline;" target="_blank" ><span style="color:#111c24;text-decoration:underline;">View Privacy Policy/California Privacy Rights</span></a> <br />
+                              <br />
+ 
+
+                              <strong>&#169; 2026 Sony Electronics Inc., Sony and Sony Rewards are trademarks of the Sony Group Corporation. All rights reserved. Reproduction in whole or in part without written permission is prohibited.</strong></td>
+                          </tr>
+                        </table></td>
+                    </tr>
+                    <!-- /disc_bottom -->
+                    
+                    <tr>
+                      <td width="520" height="25" align="center" valign="top" style="width:520px;height:25px;font-size:0px;line-height:0px;"><img src="https://image.email.sel.sony.com/lib/fe8b12737d63067577/m/16/SNNY15552_spacer.gif" style="display:block;margin:0px" width="520" height="25" border="0" alt="" /></td>
+                    </tr>
+                  </table></td>
+              </tr>
+              <!-- /footnotes -->
+            </table></td>
+        </tr>
+        <!-- /content -->
+      </table>
+      
+      <!-- /maintable --></td>
+  </tr>
+</table>
+<!-- tracking --> 
+<!-- ET TRACKING PIXEL -->
+<img src="https://click.email.sel.sony.com/open.aspx?EHBBJ7P7SBEULNMOTVYSRQ7QFA.60255&d=60255&bmt=0" width="1" height="1" alt="">
+<!-- / ET TRACKING PIXEL --> 
+
+<!-- /TRACKING --> 
+<!-- /tracking -->
+<div class="gmailfix" style="white-space:nowrap; font:15px courier; line-height:0; width:520px; min-width:520px; max-width:520px;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </div>
+</body>
+</html>
+
+--iPK34HSEwR5W=_?:--
+
+

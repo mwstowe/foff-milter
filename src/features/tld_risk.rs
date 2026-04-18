@@ -524,6 +524,18 @@ impl TldRiskFeature {
             },
         );
 
+        tlds.insert(
+            "blog".to_string(),
+            TldInfo {
+                risk_level: TldRisk::Suspicious,
+                abuse_score: 40,
+                description: "Blog domain - frequently used for spam operations".to_string(),
+                common_uses: vec![
+                    "Blogging, but heavily abused for brand impersonation spam".to_string()
+                ],
+            },
+        );
+
         let config = TldRiskConfig {
             tlds,
             default_risk: TldRisk::Suspicious, // Unknown TLDs are suspicious by default
