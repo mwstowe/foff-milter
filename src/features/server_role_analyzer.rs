@@ -182,6 +182,15 @@ impl ServerRoleAnalyzer {
     }
 
     fn should_reduce_auth_bonus(&self, context: &MailContext) -> (bool, String) {
+        // Don't reduce auth bonus for Trusted ESP senders with DKIM
+        let has_dkim = context
+            .headers
+            .get("authentication-results")
+            .map(|v| v.contains("dkim=pass"))
+            .unwrap_or(false);
+        if has_dkim && crate::features::esp_validation::is_from_trusted_esp(context) {
+            return (false, String::new());
+        }
         if let Some(domain) = self.extract_sender_domain(context) {
             if self.is_suspicious_domain(&domain) {
                 return (true, format!("Suspicious domain: {}", domain));

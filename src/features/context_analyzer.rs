@@ -1766,9 +1766,34 @@ impl FeatureExtractor for ContextAnalyzer {
             1.0
         };
 
+        // Check if sender is DKIM-aligned (used to suppress scam FPs for legit brands)
+        // Excludes suspicious TLDs and domains without DMARC that are flagged as suspicious
+        let is_dkim_aligned_brand = {
+            let has_dkim = context
+                .headers
+                .get("authentication-results")
+                .map(|v| v.contains("dkim=pass"))
+                .unwrap_or(false);
+            let sender_domain = context
+                .from_header
+                .as_deref()
+                .and_then(|f| f.split('@').nth(1))
+                .unwrap_or("")
+                .trim_end_matches('>')
+                .to_lowercase();
+            let suspicious_tlds = [
+                ".help", ".shop", ".tk", ".ml", ".ga", ".cf", ".click", ".link", ".space",
+                ".name", ".blog", ".icu", ".top", ".download", ".loan", ".win",
+            ];
+            let has_suspicious_tld = suspicious_tlds.iter().any(|t| sender_domain.ends_with(t));
+            has_dkim && !has_suspicious_tld
+        };
+
         // Check for Medicare/healthcare scam patterns
         let medicare_issues = self.analyze_medicare_scam_patterns(context);
-        total_score += (medicare_issues.len() as f32 * 60.0 * promo_discount) as i32;
+        if !is_dkim_aligned_brand {
+            total_score += (medicare_issues.len() as f32 * 60.0 * promo_discount) as i32;
+        }
         all_evidence.extend(medicare_issues);
 
         // Check for wire transfer fraud patterns
@@ -1843,13 +1868,6 @@ impl FeatureExtractor for ContextAnalyzer {
         );
 
         // Giveaway language patterns with industry awareness
-        // Check if sender is DKIM-aligned (used to suppress giveaway/prize FPs for legit brands)
-        let is_dkim_aligned_brand = context
-            .headers
-            .get("authentication-results")
-            .map(|v| v.contains("dkim=pass"))
-            .unwrap_or(false);
-
         let giveaway_language_regex = Regex::new(r"(?i)\b(your.*(prize|gift).*awaits|claim.*your.*(prize|gift)|congratulations.*winner|you.*have.*won)\b").unwrap();
         if giveaway_language_regex.is_match(&combined_text) && !is_dkim_aligned_brand {
             let base_score = 35;
@@ -1940,7 +1958,9 @@ impl FeatureExtractor for ContextAnalyzer {
         // Employment scam detection
         let (employment_scam_score, employment_scam_evidence) =
             self.detect_employment_scam(&combined_text, sender);
-        total_score += employment_scam_score;
+        if !is_dkim_aligned_brand {
+            total_score += employment_scam_score;
+        }
         all_evidence.extend(employment_scam_evidence);
 
         // Rambling text evasion detection
@@ -2171,7 +2191,11 @@ impl FeatureExtractor for ContextAnalyzer {
             }
         }
 
-        if authority_match && !sender.contains(".gov") && !sender.contains(".mil") {
+        if authority_match
+            && !sender.contains(".gov")
+            && !sender.contains(".mil")
+            && !is_dkim_aligned_brand
+        {
             total_score += 60;
             all_evidence.push("Authority impersonation: Claims government/official status from non-government sender".to_string());
         }
