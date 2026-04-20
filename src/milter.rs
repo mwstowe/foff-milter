@@ -148,41 +148,44 @@ pub fn decode_mime_header(header_value: &str) -> String {
             // Parse =?charset?encoding?data?=
             let parts: Vec<&str> = encoded_part[2..encoded_part.len() - 2].split('?').collect();
             if parts.len() == 3 {
-                let _charset = parts[0];
+                let charset = parts[0];
                 let encoding = parts[1].to_uppercase();
                 let data = parts[2];
 
-                match encoding.as_str() {
-                    "B" => {
-                        // Base64 decode
-                        if let Ok(decoded_bytes) =
-                            base64::engine::general_purpose::STANDARD.decode(data)
-                        {
-                            if let Ok(decoded_str) = String::from_utf8(decoded_bytes) {
-                                result.push_str(&decoded_str);
-                                last_was_encoded = true;
-                            } else {
-                                result.push_str(encoded_part); // Fallback to original
-                                last_was_encoded = false;
-                            }
-                        } else {
-                            result.push_str(encoded_part); // Fallback to original
-                            last_was_encoded = false;
-                        }
-                    }
+                let decoded_bytes = match encoding.as_str() {
+                    "B" => base64::engine::general_purpose::STANDARD.decode(data).ok(),
                     "Q" => {
-                        // Quoted-printable decode (simplified)
-                        let decoded = data
-                            .replace('_', " ")
-                            .replace("=20", " ")
-                            .replace("=3D", "=");
-                        result.push_str(&decoded);
-                        last_was_encoded = true;
+                        let mut bytes = Vec::new();
+                        let mut chars = data.chars().peekable();
+                        while let Some(ch) = chars.next() {
+                            match ch {
+                                '_' => bytes.push(b' '),
+                                '=' => {
+                                    if let (Some(h1), Some(h2)) = (chars.next(), chars.next()) {
+                                        if let (Some(d1), Some(d2)) =
+                                            (h1.to_digit(16), h2.to_digit(16))
+                                        {
+                                            bytes.push((d1 * 16 + d2) as u8);
+                                        }
+                                    }
+                                }
+                                _ => bytes.push(ch as u8),
+                            }
+                        }
+                        Some(bytes)
                     }
-                    _ => {
-                        result.push_str(encoded_part); // Unknown encoding, keep original
-                        last_was_encoded = false;
-                    }
+                    _ => None,
+                };
+
+                if let Some(bytes) = decoded_bytes {
+                    let enc = encoding_rs::Encoding::for_label(charset.as_bytes())
+                        .unwrap_or(encoding_rs::UTF_8);
+                    let (decoded_text, _, _) = enc.decode(&bytes);
+                    result.push_str(&decoded_text);
+                    last_was_encoded = true;
+                } else {
+                    result.push_str(encoded_part);
+                    last_was_encoded = false;
                 }
             } else {
                 result.push_str(encoded_part); // Malformed, keep original

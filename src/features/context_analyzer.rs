@@ -1782,8 +1782,22 @@ impl FeatureExtractor for ContextAnalyzer {
                 .trim_end_matches('>')
                 .to_lowercase();
             let suspicious_tlds = [
-                ".help", ".shop", ".tk", ".ml", ".ga", ".cf", ".click", ".link", ".space",
-                ".name", ".blog", ".icu", ".top", ".download", ".loan", ".win",
+                ".help",
+                ".shop",
+                ".tk",
+                ".ml",
+                ".ga",
+                ".cf",
+                ".click",
+                ".link",
+                ".space",
+                ".name",
+                ".blog",
+                ".icu",
+                ".top",
+                ".download",
+                ".loan",
+                ".win",
             ];
             let has_suspicious_tld = suspicious_tlds.iter().any(|t| sender_domain.ends_with(t));
             has_dkim && !has_suspicious_tld

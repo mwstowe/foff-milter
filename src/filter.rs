@@ -339,10 +339,10 @@ pub struct UpstreamTrustResult {
 
 impl FilterEngine {
     /// Decode email body based on Content-Transfer-Encoding
-    fn decode_body(&self, body: &str, encoding: &str) -> String {
-        match encoding.to_lowercase().as_str() {
+    fn decode_body(&self, body: &str, encoding: &str, charset: &str) -> String {
+        let raw_bytes = match encoding.to_lowercase().as_str() {
             "quoted-printable" => {
-                let mut decoded = String::new();
+                let mut decoded = Vec::new();
                 let mut chars = body.chars().peekable();
                 while let Some(ch) = chars.next() {
                     if ch == '=' {
@@ -361,15 +361,17 @@ impl FilterEngine {
                             if let Ok(byte_val) =
                                 u8::from_str_radix(&format!("{}{}", hex1, hex2), 16)
                             {
-                                decoded.push(byte_val as char);
+                                decoded.push(byte_val);
                             } else {
-                                decoded.push('=');
-                                decoded.push(hex1);
-                                decoded.push(hex2);
+                                decoded.push(b'=');
+                                decoded.push(hex1 as u8);
+                                decoded.push(hex2 as u8);
                             }
                         }
                     } else {
-                        decoded.push(ch);
+                        // For non-ASCII chars already decoded, push UTF-8 bytes
+                        let mut buf = [0u8; 4];
+                        decoded.extend_from_slice(ch.encode_utf8(&mut buf).as_bytes());
                     }
                 }
                 decoded
@@ -380,13 +382,18 @@ impl FilterEngine {
                     .chars()
                     .filter(|c| !c.is_whitespace())
                     .collect::<String>();
-                match general_purpose::STANDARD.decode(&cleaned) {
-                    Ok(bytes) => String::from_utf8_lossy(&bytes).to_string(),
-                    Err(_) => body.to_string(),
-                }
+                general_purpose::STANDARD
+                    .decode(&cleaned)
+                    .unwrap_or_else(|_| body.as_bytes().to_vec())
             }
-            _ => body.to_string(),
-        }
+            _ => body.as_bytes().to_vec(),
+        };
+
+        // Convert from declared charset to UTF-8
+        let enc =
+            encoding_rs::Encoding::for_label(charset.as_bytes()).unwrap_or(encoding_rs::UTF_8);
+        let (decoded_text, _, _) = enc.decode(&raw_bytes);
+        decoded_text.to_string()
     }
 
     /// Extract the best text part from a multipart MIME body
@@ -462,8 +469,24 @@ impl FilterEngine {
             if part_ct.contains("text/html")
                 || (part_ct.contains("text/plain") && best_part.is_empty())
             {
+                // Extract charset from content-type
+                let part_charset = part_ct
+                    .find("charset")
+                    .and_then(|i| {
+                        let rest = &part_ct[i..];
+                        rest.find('=').map(|eq| {
+                            rest[eq + 1..]
+                                .trim()
+                                .trim_matches('"')
+                                .split(';')
+                                .next()
+                                .unwrap_or("utf-8")
+                                .trim()
+                        })
+                    })
+                    .unwrap_or("utf-8");
                 let decoded = if !part_enc.is_empty() {
-                    self.decode_body(&part_body, &part_enc)
+                    self.decode_body(&part_body, &part_enc, part_charset)
                 } else {
                     part_body
                 };
@@ -548,7 +571,7 @@ impl FilterEngine {
 
                 // For legitimate senders with valid DKIM, encoding is usually for internationalization
                 if has_valid_dkim {
-                    let reduced_score = base_score / 20; // Reduce by 95% for DKIM-authenticated senders
+                    let reduced_score = base_score / 100; // Reduce by 99% for DKIM-authenticated senders
                     log::debug!(
                         "Reducing encoding evasion score for DKIM-authenticated sender from {} to {}",
                         base_score,
@@ -559,7 +582,7 @@ impl FilterEngine {
 
                 // Check if this is likely legitimate encoding (single layer, standard patterns)
                 if self.is_likely_legitimate_encoding(normalized) {
-                    let reduced_score = base_score / 5; // Reduce by 80% for likely legitimate encoding
+                    let reduced_score = base_score / 20; // Reduce by 95% for likely legitimate encoding
                     log::debug!(
                         "Reducing encoding evasion score for likely legitimate encoding from {} to {}",
                         base_score,
@@ -2058,7 +2081,27 @@ impl FilterEngine {
                     .get("content-transfer-encoding")
                     .or_else(|| context.headers.get("Content-Transfer-Encoding"))
                 {
-                    let decoded = self.decode_body(body, encoding);
+                    let ct = context
+                        .headers
+                        .get("content-type")
+                        .map(|s| s.to_lowercase())
+                        .unwrap_or_default();
+                    let charset = ct
+                        .find("charset")
+                        .and_then(|i| {
+                            ct[i..].find('=').map(|eq| {
+                                ct[i + eq + 1..]
+                                    .trim()
+                                    .trim_matches('"')
+                                    .split(';')
+                                    .next()
+                                    .unwrap_or("utf-8")
+                                    .trim()
+                                    .to_string()
+                            })
+                        })
+                        .unwrap_or_else(|| "utf-8".to_string());
+                    let decoded = self.decode_body(body, encoding, &charset);
                     context.body = Some(decoded);
                 }
             }
