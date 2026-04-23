@@ -176,6 +176,7 @@ impl BrandImpersonationFeature {
             vec![
                 r"(?i)\bace\s*hardware\b".to_string(),
                 r"(?i)\bace\s*stores?\b".to_string(),
+                r"(?i)\bhardware\s*ace\b".to_string(),
             ],
         );
         legitimate_domains.insert(
@@ -190,6 +191,12 @@ impl BrandImpersonationFeature {
         legitimate_domains.insert(
             "harbor_freight".to_string(),
             vec!["harborfreight.com".to_string()],
+        );
+
+        brand_patterns.insert("yeti".to_string(), vec![r"(?i)\byeti\b".to_string()]);
+        legitimate_domains.insert(
+            "yeti".to_string(),
+            vec!["yeti.com".to_string(), "yeticoolers.com".to_string()],
         );
 
         brand_patterns.insert(
@@ -218,6 +225,8 @@ impl BrandImpersonationFeature {
             vec![
                 r"(?i)\bsam'?s\s*club\b".to_string(),
                 r"(?i)\bsamsclub\b".to_string(),
+                r"(?i)\bclub\b.*\bsams?\b".to_string(),
+                r"(?i)clubvp\s*sams?\b".to_string(),
             ],
         );
         legitimate_domains.insert("sams_club".to_string(), vec!["samsclub.com".to_string()]);

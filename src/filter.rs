@@ -2423,19 +2423,42 @@ impl FilterEngine {
         let has_brand_impersonation = {
             let bi_feature = crate::features::brand_impersonation::BrandImpersonationFeature::new();
             let bi_result = bi_feature.extract(&context_with_attachments);
-            bi_result
+            let bi_detected = bi_result
                 .evidence
                 .iter()
-                .any(|e| e.contains("Claims to be"))
+                .any(|e| e.contains("Claims to be"));
+            // Also check Sender Alignment for brand claims
+            let sa_feature = crate::features::sender_alignment::SenderAlignmentAnalyzer::new();
+            let sa_result = sa_feature.extract(&context_with_attachments);
+            let sa_detected = sa_result
+                .evidence
+                .iter()
+                .any(|e| e.contains("Brand impersonation") || e.contains("Claims"));
+            // Also check Health Spam for health brand impersonation
+            let hs_feature = crate::features::health_spam::HealthSpamAnalyzer::new();
+            let hs_result = hs_feature.extract(&context_with_attachments);
+            let hs_detected = hs_result
+                .evidence
+                .iter()
+                .any(|e| e.contains("impersonation"));
+            bi_detected || sa_detected || hs_detected
         };
-        // Check if domain reputation is suspicious (suppresses mailing list bonus)
+        // Check if domain is suspicious (suppresses mailing list bonus)
         let has_suspicious_domain_reputation = {
             let dr_feature = crate::features::domain_reputation::DomainReputationFeature::new();
             let dr_result = dr_feature.extract(&context_with_attachments);
-            dr_result
+            let dr_detected = dr_result
                 .evidence
                 .iter()
-                .any(|e| e.contains("Suspicious domain pattern detected"))
+                .any(|e| e.contains("Suspicious domain pattern detected"));
+            // Also check Server Role Analysis
+            let sr_feature = crate::features::server_role_analyzer::ServerRoleAnalyzer::new();
+            let sr_result = sr_feature.extract(&context_with_attachments);
+            let sr_detected = sr_result
+                .evidence
+                .iter()
+                .any(|e| e.contains("Authentication bonus should be reduced"));
+            dr_detected || sr_detected
         };
         // Check DMARC - suspicious domains with DMARC pass are OK
         let has_dmarc_pass = context_with_attachments
@@ -8689,7 +8712,42 @@ impl FilterEngine {
     }
 
     /// Detect insurance spam patterns
+    fn get_from_domain(context: &MailContext) -> String {
+        context
+            .from_header
+            .as_deref()
+            .and_then(|f| f.split('@').nth(1))
+            .unwrap_or("")
+            .trim_end_matches('>')
+            .to_lowercase()
+    }
+
+    fn is_known_news_domain(from_domain: &str) -> bool {
+        let news_domains = [
+            "nytimes.com",
+            "washingtonpost.com",
+            "wsj.com",
+            "cnn.com",
+            "bbc.com",
+            "reuters.com",
+            "apnews.com",
+            "usatoday.com",
+            "npr.org",
+            "politico.com",
+            "thehill.com",
+            "axios.com",
+            "bloomberg.com",
+            "forbes.com",
+            "economist.com",
+        ];
+        news_domains.iter().any(|d| from_domain.contains(d))
+    }
+
     fn get_insurance_spam_score(&self, context: &MailContext) -> i32 {
+        if Self::is_known_news_domain(&Self::get_from_domain(context)) {
+            return 0;
+        }
+
         let domain = self
             .extract_sender_domain(context)
             .unwrap_or_default()
@@ -8799,6 +8857,10 @@ impl FilterEngine {
 
     /// Detect solar/energy spam patterns
     fn get_solar_energy_spam_score(&self, context: &MailContext) -> i32 {
+        if Self::is_known_news_domain(&Self::get_from_domain(context)) {
+            return 0;
+        }
+
         // Skip for newsletters sent via known ESPs
         let return_path = context
             .headers
@@ -8876,6 +8938,18 @@ impl FilterEngine {
             .extract_sender_domain(context)
             .unwrap_or_default()
             .to_lowercase();
+
+        // Also check From header domain (envelope may differ for forwarded mail)
+        let from_domain = Self::get_from_domain(context);
+
+        // Known spam domains
+        let known_spam_domains = ["pricedirector.com"];
+        if known_spam_domains
+            .iter()
+            .any(|d| domain.contains(d) || from_domain.contains(d))
+        {
+            return 200;
+        }
 
         // Suspicious domain patterns
         let suspicious_patterns = [

@@ -1240,6 +1240,68 @@ impl FeatureExtractor for ContextAnalyzer {
             .trim_end_matches('>')
             .to_lowercase();
 
+        // Detect undisclosed-recipients from consumer email (BCC mass mailing)
+        let consumer_domains = [
+            "hotmail.com",
+            "gmail.com",
+            "yahoo.com",
+            "outlook.com",
+            "aol.com",
+            "live.com",
+        ];
+        let is_consumer = consumer_domains.iter().any(|d| sender_domain.contains(d));
+        if let Some(to_header) = context.headers.get("to") {
+            if to_header.contains("undisclosed-recipients") && is_consumer {
+                total_score += 80;
+                all_evidence.push(
+                    "BCC mass mailing from consumer email (undisclosed-recipients)".to_string(),
+                );
+            }
+        }
+
+        // Detect spaced brand names in body (evasion: "Amaz on", "Pay Pal")
+        if is_consumer {
+            let body_lower = body.to_lowercase();
+            let spaced_brands = [
+                ("amaz on", "Amazon"),
+                ("pay pal", "PayPal"),
+                ("wal mart", "Walmart"),
+                ("app le", "Apple"),
+                ("micro soft", "Microsoft"),
+                ("net flix", "Netflix"),
+            ];
+            for (pattern, brand) in &spaced_brands {
+                if body_lower.contains(pattern) {
+                    total_score += 80;
+                    all_evidence.push(format!(
+                        "Spaced brand evasion in body: '{}' ({})",
+                        pattern, brand
+                    ));
+                    break;
+                }
+            }
+        }
+
+        // Detect number obfuscation (digit/letter-O mixing: "1OO", "5OO", "1O,OOO")
+        {
+            let re = Regex::new(r"\d[Oo][Oo]|[Oo][Oo]\d|\d[Oo],?[Oo]{2}").unwrap();
+            if re.is_match(subject) {
+                total_score += 50;
+                all_evidence
+                    .push("Number obfuscation in subject (digit/letter-O mixing)".to_string());
+            }
+        }
+
+        // Detect I-for-l homoglyph evasion in subject (e.g., "pIan" for "plan")
+        {
+            let re = Regex::new(r"[a-z]I[a-z]").unwrap();
+            if re.is_match(subject) {
+                total_score += 50;
+                all_evidence
+                    .push("Homoglyph evasion in subject (I-for-l substitution)".to_string());
+            }
+        }
+
         if sender_domain.contains("firebaseapp.com") {
             // No legitimate business sends from firebaseapp.com - base score
             total_score += 55;
@@ -1502,6 +1564,113 @@ impl FeatureExtractor for ContextAnalyzer {
             all_evidence.push("Unsolicited home repair scam detected".to_string());
         }
 
+        // Online gambling spam detection
+        {
+            let combined_lower = format!("{} {}", subject_lower, body_lower);
+            let gambling_keywords = [
+                "free spins",
+                "no deposit",
+                "100-play",
+                "bonus spins",
+                "casino bonus",
+                "slot machine",
+                "jackpot",
+                "play session",
+            ];
+            let gambling_count = gambling_keywords
+                .iter()
+                .filter(|k| combined_lower.contains(*k))
+                .count();
+            if gambling_count >= 1 {
+                total_score += 80;
+                all_evidence.push("Online gambling spam detected".to_string());
+            }
+        }
+
+        // Detect unresolved template placeholders (strong spam signal)
+        if body.contains("_PRODUCT_LINK_") || body.contains("_TRACKING_") {
+            total_score += 60;
+            all_evidence.push("Unresolved email template placeholders detected".to_string());
+        }
+
+        // Broad investment/stock spam detection
+        {
+            let combined_lower = format!("{} {}", subject_lower, body_lower);
+            let investment_keywords = [
+                "options trade",
+                "options setup",
+                "chart analysis",
+                "tickers",
+                "penny stock",
+                "stock pick",
+                "trading signal",
+                "trading alert",
+                "wall street",
+                "hedge fund",
+                "dividend",
+                "bull market",
+                "bear market",
+                "energy crisis",
+                "gas discovery",
+                "oil discovery",
+                "smart money",
+                "powerbank",
+                "drinking water",
+            ];
+            let pitch_keywords = [
+                "click here",
+                "act now",
+                "free report",
+                "free access",
+                "does the heavy lifting",
+                "high-probability",
+                "before the crowd",
+                "you can use it free",
+                "millions of data points",
+                "shocking",
+                "they don't want you",
+                "compromised",
+            ];
+            let inv_count = investment_keywords
+                .iter()
+                .filter(|k| combined_lower.contains(*k))
+                .count();
+            let pitch_count = pitch_keywords
+                .iter()
+                .filter(|k| combined_lower.contains(*k))
+                .count();
+            if inv_count >= 1 && pitch_count >= 1 {
+                let financial_domains = [
+                    "finance",
+                    "invest",
+                    "capital",
+                    "fund",
+                    "trade",
+                    "stock",
+                    "wealth",
+                    "fidelity",
+                    "schwab",
+                    "vanguard",
+                    "oxford",
+                    "motley",
+                    "fool",
+                    "barrons",
+                    "bloomberg",
+                    "marketwatch",
+                    "cnbc",
+                    "reuters",
+                ];
+                let is_financial = financial_domains.iter().any(|d| sender_domain.contains(d));
+                if !is_financial {
+                    total_score += 80;
+                    all_evidence.push(format!(
+                        "Investment/stock spam: {} investment + {} pitch keywords from non-financial domain",
+                        inv_count, pitch_count
+                    ));
+                }
+            }
+        }
+
         // Check for investment/stock pump scams from unrelated domains
         if (subject_lower.contains("stock") || subject_lower.contains("ipo"))
             && (subject_lower.contains("buy") || subject_lower.contains("#1"))
@@ -1516,6 +1685,17 @@ impl FeatureExtractor for ContextAnalyzer {
                 total_score += 80;
                 all_evidence.push("Investment/stock scam from non-financial domain".to_string());
             }
+        }
+
+        // Detect "Sam's" + "membership" scam from non-samsclub domains
+        let subject_lower = subject.to_lowercase();
+        if subject_lower.contains("sam")
+            && subject_lower.contains("membership")
+            && !sender_domain.contains("samsclub")
+            && !sender_domain.contains("walmart")
+        {
+            total_score += 60;
+            all_evidence.push("Sam's Club membership scam from non-official domain".to_string());
         }
 
         // Check for unsolicited SEO/marketing solicitation spam
@@ -1536,6 +1716,18 @@ impl FeatureExtractor for ContextAnalyzer {
         {
             total_score += 80;
             all_evidence.push("Unsolicited marketing solicitation spam".to_string());
+        } else if is_consumer
+            && (body_lower.contains("bounce rate")
+                || body_lower.contains("backlink")
+                || body_lower.contains("landing page")
+                || body_lower.contains("hard redirect"))
+            && (body_lower.contains("your site")
+                || body_lower.contains("your website")
+                || body_lower.contains("your online")
+                || body_lower.contains("your domain"))
+        {
+            total_score += 80;
+            all_evidence.push("SEO solicitation from consumer email".to_string());
         }
 
         // Check for business register scams
@@ -1558,6 +1750,20 @@ impl FeatureExtractor for ContextAnalyzer {
         if email_in_subject.is_match(subject) {
             total_score += 20;
             all_evidence.push("Email address embedded in subject".to_string());
+        }
+
+        // Email deactivation / account deletion phishing
+        let subject_lower = subject.to_lowercase();
+        if (subject_lower.contains("deactivat")
+            || subject_lower.contains("will be deleted")
+            || subject_lower.contains("permanently deleted")
+            || subject_lower.contains("account closure"))
+            && (subject_lower.contains("email")
+                || subject_lower.contains("account")
+                || subject_lower.contains("action required"))
+        {
+            total_score += 80;
+            all_evidence.push("Email deactivation/deletion phishing pattern".to_string());
         }
 
         // Check for Japanese delivery/order phishing from non-Japanese domains

@@ -946,6 +946,9 @@ rules:
                 pattern: ".*@.*(gov|edu|mil|org)$"
               - type: SenderPattern
                 pattern: ".*@mail\\.(fidelity|amazon|disney|britishairways|cdw|iheart)\\.(com|net)$"
+              - type: FeatureAnalysis
+                feature_name: "Authentication Analysis"
+                evidence_pattern: "DKIM domain properly aligned"
     score: 80
     description: "Random-looking sender address (12+ consecutive lowercase letters)"
 

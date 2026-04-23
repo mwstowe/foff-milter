@@ -103,6 +103,33 @@ impl FeatureExtractor for HealthSpamAnalyzer {
             };
         }
 
+        // Skip health spam for known news organizations (check From domain)
+        let news_domains = [
+            "nytimes.com",
+            "washingtonpost.com",
+            "wsj.com",
+            "cnn.com",
+            "bbc.com",
+            "reuters.com",
+            "apnews.com",
+            "usatoday.com",
+            "npr.org",
+            "politico.com",
+            "thehill.com",
+            "axios.com",
+            "bloomberg.com",
+            "forbes.com",
+            "economist.com",
+        ];
+        if news_domains.iter().any(|d| sender_domain.contains(d)) {
+            return FeatureScore {
+                feature_name: "Health Spam".to_string(),
+                score: 0,
+                confidence: 0.0,
+                evidence: vec![],
+            };
+        }
+
         // Skip health spam for newsletters sent via known ESPs
         let return_path = context
             .headers

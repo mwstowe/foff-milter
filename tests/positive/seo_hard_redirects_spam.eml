@@ -1,0 +1,169 @@
+✅ Loading modern TOML configuration: ../foff-milter.toml
+Return-Path: <Lynda.reid202@outlook.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.2/8.18.1) with ESMTPS id 63MDot5J004769
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <user@example.com>; Wed, 22 Apr 2026 13:50:55 GMT
+	(envelope-from Lynda.reid202@outlook.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (2048-bit key; unprotected) header.d=outlook.com header.i=@outlook.com header.b=NnNoDzRn
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazolkn19013082.outbound.protection.outlook.com [52.103.51.82])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 63MDoq4b037675
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK)
+	for <user@example.com>; Wed, 22 Apr 2026 08:50:53 -0500
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 63MDoq4b037675
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (2048-bit key, unprotected) header.d=outlook.com header.i=@outlook.com header.a=rsa-sha256 header.s=selector1 header.b=NnNoDzRn
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=KZYwRPOjVDzYSjEM0OJ6IWxf4oMGE/Ko20Ss11B9d2348rVtY6KpN2rmQjp+ln9mq25mQSJpi5xHxgclK6Op2y9BuhVbB1hiBB8ctUgVnoSdqM+i4/sN+Yo/zrxKItRUQYulEcg+ZfiZnWvu5GLm4rqM19T5CPFdD3S78QXkarj7r+3XFTAQc0T1bKqntsJpPAqWODcR8tN5PMbxG1vDh6SDGcdMCZdM63xoAlflSoQtQDOmWebBz3+VmIaA8AfU6ZhKCb/+tTbDArfanlAY4ohyCXaLOt73yQXuD0QR3MQrWUoJPQR26VFRas47BBmRqnFooaBeKbs08Wn5AmC15w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=3OmJxHoiqkbstptl0vllncUR+PjL5Z8kGRSlNnjCJCY=;
+ b=WN+RU/SfnYQvt7y2vbNJXs9s8BMETI0puK8LgbJqFH/ZV9F1ExXR6zvzMGBrGBihvAhIbr5oLIgGGyxyYqC19wl9knvJlSWzqcSgGn7H7gg8aDbNGtOYHngYMKSg5IHHVEH/5gca03p6b7qV+gN0JqCEuGPYdrByItOmMPZt+nKeYUe11Ly0cBzfDSBDY9L9Fk2fIp6Ny6ojEJT7UzWgcBKuFOOJtjU10R5J9Y6keTf5O5kE9hAonPxWIlNJlT4inGy4NCdxPQwTtWWn0XYHM53WGQPJ/IRlansZSd581CMCcfqOg/tVf4vcZQ6HxM1wRxnoD+Xv3/exPgn3WFgNjQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=3OmJxHoiqkbstptl0vllncUR+PjL5Z8kGRSlNnjCJCY=;
+ b=NnNoDzRn0H3q8fsgAhK8GJ5p679QpC3zXIyZIs+NWZuj8QmteogsR/AaYmbKIsOXojdAF7NORcAYcrw4AEkc4VapPvwfC4M2SrrucwUYqQIIGK5x1bp5A2GRI5Sb/b7yhhgx66pU4xXaHeq2NLNx4N03/RR4AWMvcwqu7/MKUf7y2Amh8m3JHZp+jXBDPxbT4o+jRI8+WjnfXyFRrYtsdJk4nNSRxGta37xGyWISs4UQsbSPWIE4JT99I/q7Trzs7kb/aY/dLsgpGLY8sRubNytQ2FD7eOUvvQ6Nm7C0/NewyMIpzkGiiqzy5HG3Hub3Crnis+/CBJkyCbAIXur8rw==
+Received: from PAXPR10MB7950.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:102:23d::19)
+ by DU0PR10MB5584.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:10:318::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9818.32; Wed, 22 Apr
+ 2026 13:50:45 +0000
+Received: from PAXPR10MB7950.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::32f2:8ae:7def:590b]) by PAXPR10MB7950.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::32f2:8ae:7def:590b%6]) with mapi id 15.20.9846.016; Wed, 22 Apr 2026
+ 13:50:45 +0000
+From: Lynda Reid <Lynda.reid202@outlook.com>
+To: "user@example.com" <user@example.com>
+Subject: Hard Redirects Detected Overlooked
+Thread-Topic: Hard Redirects Detected Overlooked
+Thread-Index: AdzSQh3HKsjug9COSiCoocfdbMsZMg==
+Date: Wed, 22 Apr 2026 13:50:45 +0000
+Message-ID:
+ <PAXPR10MB7950626FD21696A3CEB30185A62D2@PAXPR10MB7950.EURPRD10.PROD.OUTLOOK.COM>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR10MB7950:EE_|DU0PR10MB5584:EE_
+x-ms-office365-filtering-correlation-id: af1f9102-a49a-404b-8003-08dea0762706
+x-microsoft-antispam:
+ BCL:0;ARA:14566002|31061999003|13091999003|39105399006|20031999006|12121999013|30051999003|1234-5678-9012-3456|15080799012|704163111799003|19110799012|555-123-4567|555-123-4567|16051099003|55001999006|24071999003|461199028|555-123-4567|24121999003|37011999003|22091999003|13041999003|35041999009|40105399003|555-123-4567|440099028|102099032;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?2+Sqb14MNY4m7mIoQNMjMW1nrvnxQ++EtuYjYZdCToHAA6tKdFR8KO+/CPPL?=
+ =?us-ascii?Q?wTiSjt5Lvwp3NlVj6P954zJ7eBsVZQfUCWyzBDJtSS8s9kgPft0kz2AzG4/O?=
+ =?us-ascii?Q?TKpAUS3hjILxOPWax92hlnY1oODCypNgP4tywxuieLIy8/IEjFN8vZkA9r1+?=
+ =?us-ascii?Q?lucERGGKtVxl7YqeajaRSmK6g6yQ3dAsLm02ouM5JxI1ROifuLDwq4lMMxzG?=
+ =?us-ascii?Q?5LfeWNsE0mZ1EdbAC9cXmupoLzF3O5bdklIy/uMSpq0aTnhznahvK/AELX5R?=
+ =?us-ascii?Q?Dvw+9bXSP+wzrZAtzeMK2QFHUys9pYnp1WRCodjHKFcKbUfEmhHZU3Tq+/8Q?=
+ =?us-ascii?Q?wES8690WIhqGZQ/QTb8nAKV/n44KH+k4ek5kWvWkyjNZfdUe+jogUoMJoiAm?=
+ =?us-ascii?Q?e5h+LL5jGPZPAqy1fO+jz1wJvQw82JfzwnxdtzevYSNc+EsWnmgH8khYGPtQ?=
+ =?us-ascii?Q?MwGOJNmVbEEDTohvXgC2Itl0wXwiiy+Zlc1Z60SYybLpZrD36YNVuU5l/8K1?=
+ =?us-ascii?Q?6xymNcXYNMX/il3tj4FJWl8be9GqbwNWddeIqltVQw07iXW6a/EvB8fdoOsM?=
+ =?us-ascii?Q?DIvjmt9K/sqfmd76DI2LoEjS6NL0ZOaofC1JYPk8IXnVz/1naMPemNH2eHbU?=
+ =?us-ascii?Q?ef+sV6gpombkPD6MnagknkvpIsCx3/betIQnhCWPnBDqbqfm4D+LG1aQkE2K?=
+ =?us-ascii?Q?XArKZk1XdvHN2r/Zu6Xc8R/9Ova9xCfo9gxQbK5mk+VtL9XtthO42eF9bBOu?=
+ =?us-ascii?Q?6gObeYnvJaDrCCKR1eSVlyV3j0KSG7m+JEyS42yRgKV4C4qKcS+ivnmFEYwB?=
+ =?us-ascii?Q?We72UWl2ywdUBVb5oHZ5D7Jkh0ivVQQeDmYBisP3RIH49WulCiNzYQxgUtLF?=
+ =?us-ascii?Q?AtdwxTi9N2gJ/RQxthjqnu1y9oBdxoW4VQ7foOCC8TjPksZLiDZwWuYaP+KR?=
+ =?us-ascii?Q?DvzJ4PJM8jlIFFpoezw1pfZRUvLgMme8n7bch7TWLmLOT+TDMWhnB3IcGBXT?=
+ =?us-ascii?Q?RAMAPddN4C8VWdcQlikY7mBntGAnB/YHlapk1lgpEdLkYK36aG2zp2DKcauK?=
+ =?us-ascii?Q?VwfhcqtcDd0OkMJVRIAPJllR3dMyO9FyCThzU1ePg6TQ7MBGg+18eVulJQi3?=
+ =?us-ascii?Q?3afjfm1T+Nevl7DL3TJeaofDvAMhpy6puEtYMdLTftkx/dWI3oe7aMMndvdX?=
+ =?us-ascii?Q?1VHQoEqvnhTvxIqzvADuanS/t25CN3zpLcRS1BytxCcVM0yi7/Vz/cBBGwj5?=
+ =?us-ascii?Q?XBPAn89t1xPIYSRT/HXQrVEmHceGZzZXwJBUcJRZt3T4Ql6pTX0q5tO/1Il3?=
+ =?us-ascii?Q?oLtdjJsuIgXpMtYgqmCmc1xMbcbnbRofmniWUnTDxmCtyJcqW7HeMxSQ0UWG?=
+ =?us-ascii?Q?yf/Rlp1obrD9EzFb8NYGgFdljr3zU/ssEZ1wHxY+7+xeguTB4g=3D=3D?=
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?ELRo0Tkma4ozUQwJ/Hzx3/iYzucaSjZcBYG/e+JLOYfwJea8drQ3MYL0Ku5i?=
+ =?us-ascii?Q?3q7qQFfghlRo6urBuo/YTLWugT+DM1P/VwTt2++2v/yMgmJdkHcz6nj5vHYC?=
+ =?us-ascii?Q?vpl3hl6rRmscrsiPBbzhuHavOqGPHmZLvmQLewLsXEKmWTDMDojXeZdtq4N/?=
+ =?us-ascii?Q?YpsF3Aq1ami4Vc/MnVcNULFdZjta/IcTQyeRJXqiWk3TabPM8WGRiwgr47j7?=
+ =?us-ascii?Q?RezhNGWuUZJvyi7cXkLfd+/4xgzAzEpBMGD+vJx9hhKTMc9fpy7CyylfvCXs?=
+ =?us-ascii?Q?ukgr/YdkeadLHHwafjlf1onYYXFxmsQaQLfk7npubb12Ot9WfODMOKSXwxa8?=
+ =?us-ascii?Q?tas6aOhR4Rxo3R3pPkR4tTfs0vvwTeITasY3bc2uw9tUJwmaz6ywp8Uinpkr?=
+ =?us-ascii?Q?sKBZP7YhSlO6h4UaXs7mOJoEjsLZYQd5nx2n9NaiQa72/hb1pJD8yAN9X0+h?=
+ =?us-ascii?Q?jYg2TDT2pe1ClTAUHbf4vwv981OzYIw3w61NY/aciMx6/wuE0N+bnRdIxWBZ?=
+ =?us-ascii?Q?9VwE8oZwj+JG4Lj5YykE5AV1LYIJjmo+mT+jmai0Xf30TIsVnUfOFlxzxGUU?=
+ =?us-ascii?Q?zA/XO2yWodwVT1Gkl9nvAGQcsPRMT0+HZFt84jbR/AfIYAgnzyGtoxS2dhod?=
+ =?us-ascii?Q?NxX7nj5Gshw1o2G+zc7Lqx93V59/bLnTbCHjl+5SvdEpZM4n0yVUY8hQLiCx?=
+ =?us-ascii?Q?dnEHuCQf3mUC11VHKCwLyLB7RuorvhCZjZQyr+z9VKsvF7xy4riw6wVBV//S?=
+ =?us-ascii?Q?wb/w7RPmbgV7UaJJ930twU1HSqGct2FkCcMrfeNkhLNZTYUyhWtjIAVtN6iA?=
+ =?us-ascii?Q?yY1NUbxwYzntw6Q+DADz/cecI4wccc0UbuSAJjDS623PX6CgFnyLzlC7enyj?=
+ =?us-ascii?Q?g1WAhUHTLky3mZrl378xIQmS2Yh706t/3/E6UhtK7wuKUBd8L9KE8ZCObRgQ?=
+ =?us-ascii?Q?wBF8xFgAA7QnNLXmSauDjf5zuRuORBG86ch8sjPlyggExsuPzRBNz7LcM7kC?=
+ =?us-ascii?Q?sj5su98xoseUljPTLA3qH9osLj2aRHuolXMfVeTIZMSCa6FsPCBB3NpSvE8T?=
+ =?us-ascii?Q?AfGaXkgBhniuqxTHagN5snEW17cf66b63zo2L6oZbKYF04Uc1QsQpbywo3Tz?=
+ =?us-ascii?Q?dFDWMwzNZkfwUoGtBpd9lu9H0NDH2HBVxx5g91V7UtItibekqGneahB+mKpz?=
+ =?us-ascii?Q?5wEQtPS5nol5bY5z/nBJOz0UGRh/o34IoNYjxUwhxTzZSOYX81kCchqpeujk?=
+ =?us-ascii?Q?Qj2qCh7DKd9WHVmCH/kVc5j123aoBpQEG1keN5IE3IlaL/ghytwJu9wYS6Cc?=
+ =?us-ascii?Q?ZSYAcb+QNMCFc9YO5y4yll2gn/YOoRHmJfLiLHxjmKD376HMPU+Ix0AJryrQ?=
+ =?us-ascii?Q?boYnISoNlWrO9NuOesF+X2URK0c4y1FH6kn10EstqkBx/qkwmFAEncvP8GgU?=
+ =?us-ascii?Q?TDVnftYduUMygz+rrMh9APnJSh7ltE8F?=
+Content-Type: multipart/alternative;
+	boundary="_000_PAXPR10MB7950626FD21696A3CEB30185A62D2PAXPR10MB7950EURP_"
+MIME-Version: 1.0
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR10MB7950.EURPRD10.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 1234-5678-9012-3456-1234-5678-9012-3456
+X-MS-Exchange-CrossTenant-Network-Message-Id: af1f9102-a49a-404b-8003-08dea0762706
+X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Apr 2026 13:50:45.4319
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 1234-5678-9012-3456-1234-5678-9012-3456
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR10MB5584
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Wed, 22 Apr 2026 13:50:55 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Wed, 22 Apr 2026 08:50:53 -0500 (CDT)
+
+--_000_PAXPR10MB7950626FD21696A3CEB30185A62D2PAXPR10MB7950EURP_
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+Hey, user@example.com
+
+I trust you're doing well.
+
+Took a quick look at your online presence recently. More precisely, your bo=
+unce rate on key landing pages is signaling poor user experience to Google.=
+ The upside is that the fix is straightforward and the payoff in organic vi=
+sibility is very real. I can have it in your inbox within the hour.
+
+Reply CHECK and I will get it to you immediately.
+
+Thanks,
+Lynda Reid
+
+--_000_PAXPR10MB7950626FD21696A3CEB30185A62D2PAXPR10MB7950EURP_
+Content-Type: text/html; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+<html>
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dus-ascii"=
+>
+</head>
+<body style=3D"font-size:10pt; font-family:Arial">
+<p>Hey, user@example.com</p>
+<p>I trust you&#8217;re doing well.</p>
+<p>Took a quick look at your online presence recently. More precisely, your=
+ <strong>
+bounce rate</strong> on key landing pages is signaling poor user experience=
+ to Google. The upside is that the fix is straightforward and the
+<strong>payoff in organic visibility</strong> is very real. I can have it i=
+n your inbox within the hour.</p>
+<p>Reply <strong>CHECK</strong> and I will get it to you immediately.</p>
+<p>Thanks,<br>
+<strong>Lynda Reid</strong></p>
+</body>
+</html>
+
+--_000_PAXPR10MB7950626FD21696A3CEB30185A62D2PAXPR10MB7950EURP_--
+
