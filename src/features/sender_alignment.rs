@@ -764,7 +764,11 @@ impl SenderAlignmentAnalyzer {
         issues
     }
 
-    fn analyze_domain_consistency(&self, sender_info: &SenderInfo) -> Vec<String> {
+    fn analyze_domain_consistency(
+        &self,
+        sender_info: &SenderInfo,
+        headers: &std::collections::HashMap<String, String>,
+    ) -> Vec<String> {
         let mut issues = Vec::new();
 
         // Skip domain consistency checks for legitimate platforms
@@ -807,11 +811,20 @@ impl SenderAlignmentAnalyzer {
             .any(|domain| sender_info.return_path_domain.ends_with(domain));
 
         // If From is consumer email but infrastructure is not, this is highly suspicious
+        // BUT skip if mailing list headers are present (normal for Google Groups, etc.)
+        let has_mailing_list_headers = headers.contains_key("list-id")
+            || headers.contains_key("mailing-list")
+            || headers
+                .get("precedence")
+                .map(|v| v.to_lowercase().contains("list") || v.to_lowercase().contains("bulk"))
+                .unwrap_or(false);
+
         if is_consumer_from
             && !sender_info.sender_domain.is_empty()
             && sender_info.sender_domain != "unknown"
             && !is_consumer_sender
             && !self.is_legitimate_email_service(&sender_info.sender_domain)
+            && !has_mailing_list_headers
         {
             issues.push(format!(
                 "Consumer email domain ({}) sent through non-consumer infrastructure ({}) - likely spoofed",
@@ -824,6 +837,7 @@ impl SenderAlignmentAnalyzer {
             && sender_info.return_path_domain != "unknown"
             && !is_consumer_return_path
             && !self.is_legitimate_email_service(&sender_info.return_path_domain)
+            && !has_mailing_list_headers
         {
             issues.push(format!(
                 "Consumer email domain ({}) with non-consumer Return-Path ({}) - likely spoofed",
@@ -1763,7 +1777,7 @@ impl FeatureExtractor for SenderAlignmentAnalyzer {
         evidence.extend(brand_issues);
 
         // Analyze domain consistency
-        let domain_issues = self.analyze_domain_consistency(&sender_info);
+        let domain_issues = self.analyze_domain_consistency(&sender_info, &context.headers);
         // Score consumer email spoofing higher (100 points) than regular domain mismatches (20 points)
         for issue in &domain_issues {
             if issue.contains("Consumer email domain") && issue.contains("likely spoofed") {

@@ -1,0 +1,445 @@
+✅ Loading modern TOML configuration: ../foff-milter.toml
+Return-Path: <all+bncBCFPLDOI4MCRBV4KWHHQMGQEBNXNJCY@llandover.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.2/8.18.1) with ESMTPS id 63P4cvFG045742
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <mstowe@baddomain.com>; Sat, 25 Apr 2026 04:38:57 GMT
+	(envelope-from all+bncBCFPLDOI4MCRBV4KWHHQMGQEBNXNJCY@llandover.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (2048-bit key; unprotected) header.d=llandover-com.20251104.gappssmtp.com header.i=@llandover-com.20251104.gappssmtp.com header.b=qIs3M5x3
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 63P4crIs062701
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=OK)
+	for <mstowe@baddomain.com>; Fri, 24 Apr 2026 23:38:54 -0500
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 63P4crIs062701
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (2048-bit key, unprotected) header.d=llandover-com.20251104.gappssmtp.com header.i=@llandover-com.20251104.gappssmtp.com header.a=rsa-sha256 header.s=20251104 header.b=qIs3M5x3
+Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-c798e905c29sf3306820a12.3
+        for <mstowe@baddomain.com>; Fri, 24 Apr 2026 21:38:54 -0700 (PDT)
+ARC-Seal: i=2; a=rsa-sha256; t=555-123-4567; cv=pass;
+        d=google.com; s=arc-20240605;
+        b=gki26FYy0Hemdt56XjxNnqqDhKem7EVGeXNOdsAQrJvcpXCWZN6hm+5jWhoY2J1AAY
+         pOKqSFCv8G5keeO6tUvIS8DZ+ngyC/BzCGtPfhL9rj+q/DWuQWpCH60tCkR+9P5AsuRb
+         XyKtLEAmAAAInVgzfcfbtOXQo0xtjP7+pt86z9GmVFkhnTgwLRpq19s2VbsOHDDaTuyE
+         XKLV4z4z7FXPBQRGcdjK4mbcLIjXjtCMTm0vUcMPf34khOKFxUP1ue+2heUrRuf4v/N5
+         b0iYuQNB1xrBoK40vyyuBTMp7vHYFEMg2GoANacozubZxDYV33Gfu93+OvZmO9Qm5vMt
+         0exg==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=list-unsubscribe:list-archive:list-help:list-post:list-id
+         :mailing-list:precedence:references:to:cc:in-reply-to:date:subject
+         :mime-version:message-id:from:dkim-signature;
+        bh=vu9itn5dOepT2xh6/aRbp6700z47fr4BB0Mef09TStM=;
+        fh=z7pJ4sYM8OO7Sh8SMDUgdFV4E6uJS0TUbKSlyjBLEXc=;
+        b=TAyZYKfAuNZtUtBTJb4elgsqoRKnzZ1osmmu95sMkrTXZsZYzVv7T8Pyf9BckuiZRI
+         QisD85BszfvELcR27uUFWme+9L1tq04UN25jfFaAWjkjMjwjgSzRT7Rsy2F7DLlfGcve
+         MzVEbEmVVkJXOc71AH3OeMAiTUrlTfMRSBNrygL+gSIWw2X+N/toiqE0SY69YEmrnyDB
+         m5gA00AJ0XAoSJOu0CsuNdUWwm86shJWC+3H6o2lNBsArrwf+Kn/LfbfZ8mF5YlrZWLk
+         KorR82+1ZqfGG9iVDC4lNk9Dh7VvQKuIVtsSiw0tuiFV1UefjkrwFlR5hOgBy0eQ3RHg
+         hA0g==;
+        darn=baddomain.com
+ARC-Authentication-Results: i=2; mx.google.com;
+       dkim=pass header.i=@gmail.com header.s=20251104 header.b=M+5OCfYl;
+       spf=pass (google.com: domain of tgmarson@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=tgmarson@gmail.com;
+       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com;
+       dara=neutral header.i=@llandover.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=llandover-com.20251104.gappssmtp.com; s=20251104; t=555-123-4567; x=555-123-4567; darn=baddomain.com;
+        h=list-unsubscribe:list-archive:list-help:list-post:list-id
+         :mailing-list:precedence:x-original-authentication-results
+         :x-original-sender:references:to:cc:in-reply-to:date:subject
+         :mime-version:message-id:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vu9itn5dOepT2xh6/aRbp6700z47fr4BB0Mef09TStM=;
+        b=qIs3M5x3N/VtdIo7kANRz6B8BaStF9RF7+f1t1dnI47Eb26aQGu7GyjfWInxeHnvDo
+         GQgqyJrcJSmjihgCSHrEpkvVAjvM3ENkcPPiNCJbFnFPYqFGEZtVDvmWYrQuFQZHQ2AJ
+         ArHwwxIMMKfFvcjjjXHok7QGTY5kYOTWz5UWJJkXbXn3v/tHrKeeVIbePEgLKln8cVGl
+         P/1APW6PzzbzQp3uRhSejJ6Ky5yKAzRmI12WHfpLH0X77P0OmaoFXRegbsyB83FphwVU
+         LydXyMfHbwXQEAvFch6wrlOdvMl/DqySkU2Hn8WCLQRMQHsfzpHzOzA9Y72Gm/Sm6gT+
+         +lhg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=555-123-4567; x=555-123-4567;
+        h=list-unsubscribe:list-archive:list-help:list-post
+         :x-spam-checked-in-group:list-id:mailing-list:precedence
+         :x-original-authentication-results:x-original-sender:references:to
+         :cc:in-reply-to:date:subject:mime-version:message-id:from:x-gm-gg
+         :x-beenthere:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vu9itn5dOepT2xh6/aRbp6700z47fr4BB0Mef09TStM=;
+        b=GrQfkiCOEvrZbHN9AYnHihVQT5LvsuVVLGk+312xZe5cpIPH5l0KNZwDjuexaX73TP
+         fz3+1KbAvvAlORVApoA090uyvAVWH05GKxEo8y8De23NCCjntXXafWg9J82gYGOEfr4v
+         iUgjpZZLTQd+sx+Lct+yR1oj1wlBDZxhQwwqCKLAOaERlNSCjiJ1D+GKBq0tznR1Cd8f
+         MHIeFZoYc420hQsgI4c5jvaEPeju/rEXoApgCQDLsN/wga33wq/RFQNzxFx8tTo6V4Fc
+         I5MnojKcRtyYjBjxi3Nr4erppspOhsUuxnObpm9eET7miUSquEMzDrv/WeWuDURUpOUG
+         gTVg==
+X-Forwarded-Encrypted: i=2; AFNElJ//FHzReJ8dupx5/E6rhzeknObNGqoO8V6TMEMsVB2f5Av7ABj+lqdzeg1lBgeFCXUc0K/X66I=@baddomain.com
+X-Gm-Message-State: AOJu0YyukFmlcy5yEtoLlb5VSki0OeWPVhJ4bdfZgjpM9JmC5bjrIshc
+	K46mPFOlEmGXi2Y9nTMgZ/9XbGMTMrgT4j0LIreJ+YaPKIdu2N2Slp6l0mLPNvP34bQ=
+X-Received: by 2002:a05:6a20:9187:b0:3a2:dd8a:5087 with SMTP id adf61e73a8af0-3a2dd8a5ca7mr24070263637.46.1777091928100;
+        Fri, 24 Apr 2026 21:38:48 -0700 (PDT)
+X-BeenThere: all@llandover.com; h="AYAyTiJVQUPfcqYKtNEL+s0qJG4RXNugeMJbVf9QJLMicPn3TQ=="
+Received: by 2002:a05:6a00:198c:b0:82a:646a:ab3d with SMTP id
+ d2e1a72fcca58-82f76d3fb01ls9467272b3a.0.-pod-prod-05-us; Fri, 24 Apr 2026
+ 21:38:47 -0700 (PDT)
+X-Received: by 2002:a05:6a00:299a:b0:82c:7876:a027 with SMTP id d2e1a72fcca58-82f8c86b4c1mr38153114b3a.18.1777091926622;
+        Fri, 24 Apr 2026 21:38:46 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=555-123-4567; cv=none;
+        d=google.com; s=arc-20240605;
+        b=jLBKSIBlCBAC2M/9tppSZgHhh36rqWkFP9R/h8QerMsLioHF2ah5nf7JpFAg1feHJt
+         bIwDaXnxCNjrNSEbTS3Uz5MLjCgNEYKCQF0GFeAzNmjPQ/pjcSNwXxR1xtydtcIvC0V5
+         3usxYF3Y2Ur3Vz3VH4p1TqNWO7qA1ROtDoGEAVyUUegm9wU+3+GE9oC6gsL9jI3VwnRk
+         z2Q+VgBjOedR1SIkeQ5EZ42tk+W9lLoQd6DGnaRNrSjti4WvFryyWid12ynDB4cdResk
+         9fbbPvbh4Flv/SUkJov1AV/Ag1cn1w2GVF6zAZl1PSqXJZTIaXiCl60OESBSxb+G7Vzz
+         GVAg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=references:to:cc:in-reply-to:date:subject:mime-version:message-id
+         :from:dkim-signature;
+        bh=ksFKQKwOnh2bTbos0RuhLYjW/kAZ9DguWPdo2QOcIyg=;
+        fh=uTeHxjj0Fw4Hxfd5Z30OZsAK0/P8i/FhqOES/Q8znr8=;
+        b=hcksxmtidlwoQ+8nzY0l9EHJdENn+qQNbwwUu6nx7+taWqAF1tvS68xf6h+OdLLY1d
+         a/o9F6kwqfKPOHAeBHEWoJJQAU2gIAqS4l0ElvB8KMPFQiXKxG4VZDEa5qBRoaO8/d8H
+         ny7ePcRIVTCPX+wbboNsfGW+8fkMxNzGMJ4BgbZWNUQq/oYLDJL1qs4wDcTOAKWSTQQQ
+         gwkh7/4Mh/IbAD816hdDuJviLslD8bwlkCrZi4PvMOHAI3tTkWBCazBESPJfWiqokgrj
+         EGa4+ZwEja6+NmxeL91SmIS6nNREzFtMK11uaGZigETtkz8ER7f5KZikgPzM23zJkNIp
+         OYaA==;
+        dara=google.com
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@gmail.com header.s=20251104 header.b=M+5OCfYl;
+       spf=pass (google.com: domain of tgmarson@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=tgmarson@gmail.com;
+       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com;
+       dara=neutral header.i=@llandover.com
+Received: from mail-sor-f41.google.com (mail-sor-f41.google.com. [209.85.220.41])
+        by mx.google.com with SMTPS id d2e1a72fcca58-82f8eb72b8bsor8399557b3a.6.2026.04.24.21.38.46
+        for <all@llandover.com>
+        (Google Transport Security);
+        Fri, 24 Apr 2026 21:38:46 -0700 (PDT)
+Received-SPF: pass (google.com: domain of tgmarson@gmail.com designates 209.85.220.41 as permitted sender) client-ip=209.85.220.41;
+X-Gm-Gg: AeBDiesTKdXIKMxTzQvGj8snRXGbUxfYqFeUU0eJbIs4PHQXlKMaELx+F7MT+uQxOuW
+	qQAsc+WSgkQJOVPmEpjygL5qV3pLS+kqVB7N+CP5+7NUQ87K4m+Y25p3fp6m0hKZoYWWsGJ4VTB
+	qpcI8VBekwXy6BGhZlTk3zd2PTGMtyhpv/FMM52PmZmKcX1/oiSzj2a/xM7EFBieBZl/8L26KKt
+	szU0f6bnlTAtLdBUPwPPuBkkNMsRBjrPzjbxqQhgv9duhsj0oSEJ9Fd7hgmqgQC20iLxLBtposz
+	6KNAutimnHgjbryYgLDnzNKFtg5lIrTTBhFRz6Y4B0RlW7UG3F9i6PhJJ6oN9gJqTfOkEbdKJ9+
+	7ZVgTB9POL7QSWWmdmLXszB58TjVLMuZ6io0EAoKOm4DdCrg7csGV1C9zTK6VDla5zt+O97YoH9
+	T4Vl/nqZv8uwUZqOgWCmSd7MlFylDiKGbS2r3WUytjRE/hn53hsM6hzHePR4c+gQQGf4cnJE4le
+	n7NpUeJnLn7KI9R0d9N0w==
+X-Received: by 2002:a05:6a00:3e07:b0:82a:6f69:7f72 with SMTP id d2e1a72fcca58-82f8c9785aemr36762236b3a.47.1777091926181;
+        Fri, 24 Apr 2026 21:38:46 -0700 (PDT)
+Received: from smtpclient.apple (c-67-168-20-66.hsd1.wa.comcast.net. [67.168.20.66])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f8e9d6adbsm31973702b3a.18.2026.04.24.21.38.44
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 24 Apr 2026 21:38:45 -0700 (PDT)
+From: Tamara Marson <tgmarson@gmail.com>
+Message-Id: <9E65B0CD-6D18-4134-8516-7C33B88974B3@gmail.com>
+Content-Type: multipart/alternative;
+	boundary="Apple-Mail=_3A5BD333-B01B-4EED-8FD5-53C7B7EF48F4"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81.1.4\))
+Subject: Re: Llandover View Preservation
+Date: Fri, 24 Apr 2026 21:38:33 -0700
+In-Reply-To: <SJ0PR11MB581651D1BC155619543B0C0DCF2B2@SJ0PR11MB5816.namprd11.prod.outlook.com>
+Cc: All Llandover Residents <all@llandover.com>, Matt Williams <mw@edgy.org>,
+        Rhonda Gallagher <rlg.seattleme@gmail.com>,
+        John Kvasnosky <johnkvasnosky@gmail.com>,
+        Wendy Blight <blightwk@hotmail.com>
+To: Anne Carrihill <user@example.com>
+References: <CAMh9NRekqsRhS_b_qwX0c8vh1WgyR1FqWSi-sb0z0Myv8CpqTw@mail.gmail.com>
+ <SJ0PR11MB581651D1BC155619543B0C0DCF2B2@SJ0PR11MB5816.namprd11.prod.outlook.com>
+X-Mailer: Apple Mail (2.3826.700.81.1.4)
+X-Original-Sender: tgmarson@gmail.com
+X-Original-Authentication-Results: mx.google.com;       dkim=pass
+ header.i=@gmail.com header.s=20251104 header.b=M+5OCfYl;       spf=pass
+ (google.com: domain of tgmarson@gmail.com designates 209.85.220.41 as
+ permitted sender) smtp.mailfrom=tgmarson@gmail.com;       dmarc=pass (p=NONE
+ sp=QUARANTINE dis=NONE) header.from=gmail.com;       dara=neutral header.i=@llandover.com
+Precedence: list
+Mailing-list: list all@llandover.com; contact all+owners@llandover.com
+List-ID: <all.llandover.com>
+X-Spam-Checked-In-Group: all@llandover.com
+X-Google-Group-Id: 546232065490
+List-Post: <https://groups.google.com/a/llandover.com/group/all/post>, <mailto:all@llandover.com>
+List-Help: <https://support.google.com/a/llandover.com/bin/topic.py?topic=25838>,
+ <mailto:all+help@llandover.com>
+List-Archive: <https://groups.google.com/a/llandover.com/group/all/>
+List-Unsubscribe: <mailto:googlegroups-manage+546232065490+unsubscribe@googlegroups.com>,
+ <https://groups.google.com/a/llandover.com/group/all/subscribe>
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Sat, 25 Apr 2026 04:38:57 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Fri, 24 Apr 2026 23:38:54 -0500 (CDT)
+X-Spam-Flag: YES
+
+
+--Apple-Mail=_3A5BD333-B01B-4EED-8FD5-53C7B7EF48F4
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="UTF-8"
+
+Thanks everyone for your work on this important issue.
+
+FYI, We hired Tree solutions in December to do a site visit with us and pla=
+n for future projects.  I=E2=80=99ve been meaning to hire someone to do som=
+e trimming but since Out on a Limb sold, I haven=E2=80=99t found a suitable=
+ replacement vendor.  Look forward to us all sharing resources.
+
+Best,
+Tamara Marson
+
+Sent from Gmail Mobile
+
+
+On Fri, Apr 24, 2026 at 1:25=E2=80=AFPM Wendy Blight <blightwk@hotmail.com =
+<mailto:blightwk@hotmail.com>> wrote:
+> Very glad to hear about this, Anne, and will do my best to come to lunch =
+if you can arrange it.
+>=20
+> Our view is about gone, but there are a few branches off in the distance =
+that could improve our view just a bit if they were removed. I need a tree =
+company to determine which trees they are before I can even know which neig=
+hbors to approach.
+>=20
+> At any rate, whether it helps us or not, I am in support of efforts to ag=
+reeably improve our views as a neighborhood.
+>=20
+> All the best,
+> Wendy
+>=20
+> Wendy Blight
+> blightwk@hotmail.com <mailto:blightwk@hotmail.com>
+> 555-123-4567
+> From: Anne Carrihill <user@example.com <mailto:anne.carrihill@gma=
+il.com>>
+> Sent: Friday, April 24, 2026 10:30 AM
+> To: Llandover Neighborhood <all@llandover.com <mailto:all@llandover.com>>
+> Cc: Matt Williams <mw@edgy.org <mailto:mw@edgy.org>>; Rhonda Gallagher <r=
+lg.seattleme@gmail.com <mailto:rlg.seattleme@gmail.com>>; John Kvasnosky <j=
+ohnkvasnosky@gmail.com <mailto:johnkvasnosky@gmail.com>>; Anne Carrihill <a=
+nne.carrihill@gmail.com <mailto:user@example.com>>
+> Subject: Llandover View Preservation
+> =20
+> All,
+>=20
+> We are re-igniting the next chapter of our Llandover neighborhood View Pr=
+eservation efforts. The attached document covers the following:
+>=20
+> - What view preservation in Llandover means in our CC&Rs
+> - Role of the HOA's View Preservation Committee (VPC)
+> - The 2015 era View Corridors plan and definitions
+> - The process and recommendations for homeowners in a View Corridor
+> - Neighbor referrals for local tree services
+>=20
+> In the coming weeks, we will host an optional lunch & learn call with Tre=
+e Solutions (who created the 2015 View Corridors Plan) on what has changed =
+since, best practices, and considerations for view preservation work (with =
+Q&A of course). Keep a lookout for the invitation.
+>=20
+> To connect with neighbors in your view corridors (as interested), please =
+refer to the neighborhood directory attached and utilize the recommended pr=
+ocess.=20
+>=20
+> As outlined in the document, please reach out to VPC committee member Rho=
+nda Gallagher (rlg.seattleme@gmail.com <mailto:rlg.seattleme@gmail.com>) if=
+ you will be doing view preservation work in your corridor so that we can u=
+nderstand what work is in progress in the neighborhood and, as you need it,=
+ help.
+>=20
+> Please reach out if you have any questions (to those in CC:).
+>=20
+> Your Llandover VPC,
+> Rhonda, Anne & John + HOA President Matt
+>=20
+>=20
+> --
+> Anne Carrihill
+> (917) 612-0345
+> user@example.com <mailto:user@example.com>
+>=20
+> To unsubscribe from this group and stop receiving emails from it, send an=
+ email to all+unsubscribe@llandover.com <mailto:all+unsubscribe@llandover.c=
+om>.
+>=20
+> To unsubscribe from this group and stop receiving emails from it, send an=
+ email to all+unsubscribe@llandover.com <mailto:all+unsubscribe@llandover.c=
+om>.
+
+To unsubscribe from this group and stop receiving emails from it, send an e=
+mail to all+unsubscribe@llandover.com.
+
+--Apple-Mail=_3A5BD333-B01B-4EED-8FD5-53C7B7EF48F4
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html; charset="UTF-8"
+
+<html><head><meta http-equiv=3D"content-type" content=3D"text/html; charset=
+=3Dutf-8"></head><body style=3D"overflow-wrap: break-word; -webkit-nbsp-mod=
+e: space; line-break: after-white-space;"><div dir=3D"auto">Thanks everyone=
+ for your work on this important issue.</div><div dir=3D"auto"><br></div><d=
+iv dir=3D"auto">FYI, We hired Tree solutions in December to do a site visit=
+ with us and plan for future projects. &nbsp;I=E2=80=99ve been meaning to h=
+ire someone to do some trimming but since Out on a Limb sold, I haven=E2=80=
+=99t found a suitable replacement vendor. &nbsp;Look forward to us all shar=
+ing resources.</div><div dir=3D"auto"><br></div><div dir=3D"auto">Best,</di=
+v><div dir=3D"auto">Tamara Marson</div><div dir=3D"auto"><br clear=3D"all">=
+<div dir=3D"auto"><div dir=3D"ltr" class=3D"gmail_signature" data-smartmail=
+=3D"gmail_signature">Sent from Gmail Mobile</div></div></div><div><br></div=
+><div><br><div class=3D"gmail_quote gmail_quote_container"><div dir=3D"ltr"=
+ class=3D"gmail_attr">On Fri, Apr 24, 2026 at 1:25=E2=80=AFPM Wendy Blight =
+&lt;<a href=3D"mailto:blightwk@hotmail.com">blightwk@hotmail.com</a>&gt; wr=
+ote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;=
+border-left:1px #ccc solid;padding-left:1ex">
+
+
+
+
+<div dir=3D"ltr">
+<div style=3D"font-family:Calibri,Helvetica,sans-serif;font-size:12pt;color=
+:rgb(0,0,0)">
+Very glad to hear about this, Anne, and will do my best to come to lunch if=
+ you can arrange it.</div>
+<div style=3D"font-family:Calibri,Helvetica,sans-serif;font-size:12pt;color=
+:rgb(0,0,0)">
+<br>
+</div>
+<div style=3D"font-family:Calibri,Helvetica,sans-serif;font-size:12pt;color=
+:rgb(0,0,0)">
+Our view is about gone, but there are a few branches off in the distance th=
+at could improve our view just a bit if they were removed. I need a tree co=
+mpany to determine which trees they are before I can even know which neighb=
+ors to approach.</div>
+<div style=3D"font-family:Calibri,Helvetica,sans-serif;font-size:12pt;color=
+:rgb(0,0,0)">
+<br>
+</div>
+<div style=3D"font-family:Calibri,Helvetica,sans-serif;font-size:12pt;color=
+:rgb(0,0,0)">
+At any rate, whether it helps us or not, I am in support of efforts to agre=
+eably improve our views as a neighborhood.</div>
+<div style=3D"font-family:Calibri,Helvetica,sans-serif;font-size:12pt;color=
+:rgb(0,0,0)">
+<br>
+</div>
+<div style=3D"font-family:Calibri,Helvetica,sans-serif;font-size:12pt;color=
+:rgb(0,0,0)">
+All the best,</div>
+<div style=3D"font-family:Calibri,Helvetica,sans-serif;font-size:12pt;color=
+:rgb(0,0,0)">
+Wendy</div>
+<div id=3D"m_-9155410065121847329Signature">
+<div style=3D"font-family:Calibri,Helvetica,sans-serif;font-size:12pt;color=
+:rgb(0,0,0)">
+<br>
+</div>
+<div style=3D"font-family:Calibri,Helvetica,sans-serif;font-size:12pt;color=
+:rgb(0,0,0)">
+Wendy Blight</div>
+<div style=3D"font-family:Calibri,Helvetica,sans-serif;font-size:12pt;color=
+:rgb(0,0,0)">
+<a href=3D"mailto:blightwk@hotmail.com" target=3D"_blank">blightwk@hotmail.=
+com</a></div>
+<div style=3D"font-family:Calibri,Helvetica,sans-serif;font-size:12pt;color=
+:rgb(0,0,0)">
+555-123-4567</div>
+</div>
+<div id=3D"m_-9155410065121847329appendonsend"></div>
+<hr style=3D"display:inline-block;width:98%">
+<div id=3D"m_-9155410065121847329divRplyFwdMsg" dir=3D"ltr"><font face=3D"C=
+alibri, sans-serif" style=3D"font-size:11pt" color=3D"#000000"><b>From:</b>=
+ Anne Carrihill &lt;<a href=3D"mailto:user@example.com" target=3D"_=
+blank">user@example.com</a>&gt;<br>
+<b>Sent:</b> Friday, April 24, 2026 10:30 AM<br>
+<b>To:</b> Llandover Neighborhood &lt;<a href=3D"mailto:all@llandover.com" =
+target=3D"_blank">all@llandover.com</a>&gt;<br>
+<b>Cc:</b> Matt Williams &lt;<a href=3D"mailto:mw@edgy.org" target=3D"_blan=
+k">mw@edgy.org</a>&gt;; Rhonda Gallagher &lt;<a href=3D"mailto:rlg.seattlem=
+e@gmail.com" target=3D"_blank">rlg.seattleme@gmail.com</a>&gt;; John Kvasno=
+sky &lt;<a href=3D"mailto:johnkvasnosky@gmail.com" target=3D"_blank">johnkv=
+asnosky@gmail.com</a>&gt;; Anne Carrihill &lt;<a href=3D"mailto:anne.carrih=
+ill@gmail.com" target=3D"_blank">user@example.com</a>&gt;<br>
+<b>Subject:</b> Llandover View Preservation</font>
+<div>&nbsp;</div>
+</div>
+<div>
+<div dir=3D"ltr">
+<div><span>
+<div><span style=3D"font-family:tahoma,sans-serif">All,</span></div>
+<div><span style=3D"font-family:tahoma,sans-serif"><br>
+</span></div>
+<div><span style=3D"font-family:tahoma,sans-serif">We are re-igniting the n=
+ext chapter of our Llandover neighborhood View Preservation efforts. The at=
+tached document covers the following:</span></div>
+<div><span style=3D"font-family:tahoma,sans-serif"><br>
+</span></div>
+<div><span style=3D"font-family:tahoma,sans-serif">- What view preservation=
+ in Llandover means in our CC&amp;Rs</span></div>
+<div><span style=3D"font-family:tahoma,sans-serif">- Role of the HOA's View=
+ Preservation Committee (VPC)</span></div>
+<div><span style=3D"font-family:tahoma,sans-serif">- The 2015 era View Corr=
+idors plan and definitions</span></div>
+<div><span style=3D"font-family:tahoma,sans-serif">- The process and recomm=
+endations for homeowners in a View Corridor</span></div>
+<div><span style=3D"font-family:tahoma,sans-serif">- Neighbor referrals for=
+ local tree services</span></div>
+<div><span style=3D"font-family:tahoma,sans-serif"><br>
+</span></div>
+<div><span style=3D"font-family:tahoma,sans-serif">In the coming weeks, we =
+will host an optional lunch &amp; learn call with Tree Solutions (who creat=
+ed the 2015 View Corridors Plan) on what has changed since, best practices,=
+ and considerations for view preservation
+ work (with Q&amp;A of course). Keep a lookout for the invitation.</span></=
+div>
+<div><span style=3D"font-family:tahoma,sans-serif"><br>
+</span></div>
+</span>
+<div><span style=3D"font-family:tahoma,sans-serif">To connect with neighbor=
+s in your view corridors (as interested), please refer to the neighborhood =
+directory attached and utilize the recommended process.&nbsp;</span></div>
+<div><span style=3D"font-family:tahoma,sans-serif"><br>
+</span></div>
+<div><span style=3D"font-family:tahoma,sans-serif">As outlined in the docum=
+ent, please reach out to VPC committee member Rhonda Gallagher (<a href=3D"=
+mailto:rlg.seattleme@gmail.com" target=3D"_blank">rlg.seattleme@gmail.com</=
+a>) if you will be doing</span><span style=3D"font-family:tahoma,sans-serif=
+">&nbsp;view
+ preservation work in your corridor</span> <span style=3D"font-family:tahom=
+a,sans-serif">
+so that we can understand what work is in progress in the neighborhood and,=
+ as you need it, help.</span></div>
+<div>
+<div><span style=3D"font-family:tahoma,sans-serif"><br>
+</span></div>
+<div><span style=3D"font-family:tahoma,sans-serif">Please reach out if you =
+have any questions (<u>to those in CC:</u>).</span></div>
+<div><span style=3D"font-family:tahoma,sans-serif"><br>
+</span></div>
+<div><span style=3D"font-family:tahoma,sans-serif">Your Llandover VPC,</spa=
+n></div>
+<div><span style=3D"font-family:tahoma,sans-serif">Rhonda, Anne &amp; John&=
+nbsp;+ HOA President Matt</span></div></div></div></div></div></div><div di=
+r=3D"ltr"><div><div dir=3D"ltr"><div><div>
+</div>
+<br clear=3D"all">
+</div>
+<br>
+<span>-- </span><br>
+<div dir=3D"ltr" data-smartmail=3D"gmail_signature">
+<div><font face=3D"trebuchet ms,sans-serif">Anne Carrihill</font></div>
+<div><font face=3D"Trebuchet MS">(917) 612-0345</font></div>
+<div><font face=3D"Trebuchet MS"><a href=3D"mailto:user@example.com=
+" target=3D"_blank">user@example.com</a>
+</font></div>
+</div>
+</div><div><br class=3D"webkit-block-placeholder"></div>
+To unsubscribe from this group and stop receiving emails from it, send an e=
+mail to
+<a href=3D"mailto:all+unsubscribe@llandover.com" target=3D"_blank">all+unsu=
+bscribe@llandover.com</a>.<br>
+</div>
+</div><div><br class=3D"webkit-block-placeholder"></div>
+
+To unsubscribe from this group and stop receiving emails from it, send an e=
+mail to <a href=3D"mailto:all+unsubscribe@llandover.com" target=3D"_blank">=
+all+unsubscribe@llandover.com</a>.<br>
+</blockquote></div></div>
+</body></html>
+
+<p></p>
+
+To unsubscribe from this group and stop receiving emails from it, send an e=
+mail to <a href=3D"mailto:all+unsubscribe@llandover.com">all+unsubscribe@ll=
+andover.com</a>.<br />
+
+--Apple-Mail=_3A5BD333-B01B-4EED-8FD5-53C7B7EF48F4--
+

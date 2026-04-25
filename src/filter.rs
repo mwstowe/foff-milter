@@ -9021,7 +9021,9 @@ impl FilterEngine {
             "cloud", "data", "soft", "ware", "group", "team", "work", "trade", "market", "world",
             "global", "smart", "fast", "best", "real", "safe", "free", "easy", "star", "blue",
             "green", "black", "white", "gold", "silver", "fire", "water", "light", "dark", "think",
-            "drive", "sign", "east", "west", "north", "south", "mini", "mega",
+            "drive", "sign", "east", "west", "north", "south", "mini", "mega", "street", "vintage",
+            "antique", "craft", "avenue", "lane", "park", "square", "place", "hill", "creek",
+            "bridge", "lake", "river", "lander", "bull", "strap",
         ];
         if common_words.iter().any(|w| name.contains(w)) {
             return 0;
