@@ -403,6 +403,14 @@ impl DomainReputationFeature {
                 if let Some(dkim_esp) = self.find_esp_in_dkim(context) {
                     return dkim_esp;
                 }
+                // Resolve CNAME to detect custom ESP return-path domains
+                if let Some(cname) =
+                    crate::features::esp_validation::EspValidationFeature::resolve_cname(env_domain)
+                {
+                    if self.analyzer.is_esp_domain(&cname) {
+                        return cname;
+                    }
+                }
             }
             return env_domain.clone();
         }

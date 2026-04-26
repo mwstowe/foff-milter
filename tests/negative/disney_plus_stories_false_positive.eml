@@ -1,0 +1,1243 @@
+✅ Loading modern TOML configuration: ../foff-milter.toml
+Return-Path: <msprvs1=20575s86JeebC=bounces-555-123-4567@sparkpostmail.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.2/8.18.1) with ESMTPS id 63PJ8Old076404
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <user@example.com>; Sat, 25 Apr 2026 19:08:24 GMT
+	(envelope-from msprvs1=20575s86JeebC=bounces-555-123-4567@sparkpostmail.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messaging.disneyplus.com header.i=@messaging.disneyplus.com header.b=1m1CgnKp
+Received: from oqyktrox.messaging.disneyplus.com (oqyktrox.messaging.disneyplus.com [137.22.232.57])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 63PJ8K3R083564
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK)
+	for <user@example.com>; Sat, 25 Apr 2026 14:08:21 -0500
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 63PJ8K3R083564
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (2048-bit key, unprotected) header.d=messaging.disneyplus.com header.i=@messaging.disneyplus.com header.a=rsa-sha256 header.s=scph1024 header.b=1m1CgnKp
+X-MSFBL: 27RKyMDnEhstk6sM7+4OJo9gwlI5L+GHP7YFmo6dCOw=|eyJtZXNzYWdlX2lkIjo
+	iNjllYTFlMTFlZDY5NmUwMzNmYTMiLCJyIjoibXN0b3dlQGJhZGRvbWFpbi5jb20
+	iLCJ0ZW5hbnRfaWQiOiJzcGMiLCJzdWJhY2NvdW50X2lkIjoiMTQ0MCIsImN1c3R
+	vbWVyX2lkIjoiMjY2NjkzIn0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=messaging.disneyplus.com; s=scph1024; t=555-123-4567;
+	i=@messaging.disneyplus.com;
+	bh=cYs7KVdUy2xsh/Qjp4MVwHHdCnI5IBP80GcpH8FFnqs=;
+	h=To:Message-ID:Date:Content-Type:From:List-Unsubscribe-Post:
+	 Subject:List-Unsubscribe:From:To:Cc:Subject;
+	b=1m1CgnKpaFE9UdKnIacLVm8/nXHHBofIlUp8haFQ3Evaf2KrL7HCVShDpcIPZrE6g
+	 NmoscHEF/70zSzcU5XwH0PvRePVVItRypjt48Vl0VpOYU0vvKml0bjS5dUEycqfMqe
+	 PxzscTKtte4BhjIaIFNk36xrX53SVEBihJbhHxCYP1ERq9+0F846D/+bojAT6AbEVf
+	 ugTSiO2wuvXyYQTlKOEXuENcYU+ZVVae8RAtke3qO5E6YB80nyfjE1v/ZZ3YlylXNI
+	 LajxFfeSA3xkTkCHD4FBmSPoDxgAuvvaAWadOfCOLT8kG+nEMVRLrMcJiFb+canEGy
+	 3IDXVynNC2ujg==
+Received: from [10.90.9.37] ([10.90.9.37])
+	by i-01c5b14b64ea2846c.mta1vrest.sd.prd.sparkpost (ecelerity 5.2.0.75597 r(msys-ecelerity:tags/5.2.0.19)) with REST
+	id 3A/F3-10487-E111DE96; Sat, 25 Apr 2026 19:08:14 +0000
+To: user@example.com
+Message-ID: <3A.F3.10487.E111DE96@i-01c5b14b64ea2846c.mta1vrest.sd.prd.sparkpost>
+Date: Sat, 25 Apr 2026 19:08:14 +0000
+Content-Type: multipart/alternative; boundary="_----fVSwLtqhM6qsLS5KjTD6YQ===_D9/F3-10487-E111DE96"
+MIME-Version: 1.0
+From: "Disney+" <disneyplus@sparkpostmail.com>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+Subject: New stories to watch tonight
+List-Unsubscribe: <https://03.emailinboundprocessing.com/enc_user/list_unsubscribe?d=%241%24by2nFv7LUjVsoQkw1VStGQ%3D%3D%24quTOaLq6X%2BVwHUG2ZLOPKtJpfVqI0AAbZ14CsoNmQDKSeo3Gc7xJSZWat4Fo%0A4A89SWrAO2DZlwofNBKjJjx0aqZ3Hwi7DZSF6DXdKztd1kQjDBD5Hcfx1otc%0A4GKSBTJCR8ClIH1fMAmcDGbuw9BtUPD0US%2BWFy730QcXNgCBvMptngy9ReW0%0AaOq6VxnEWHzKDi%2FLrdG6CBaHKNuQEIOtgfQilvWBE%2FAp7m6WLzNmboRmda5b%0A3HrGiEmy9Q9yDm4GJJT0Go3tmrw%2Fo37uqDMNWoSlkjpt4uYG5KiSL6bjij%2FJ%0AuUk61IoSY3i2i%2BlztEQ%2FqqeBD2HiEm9Kf%2BpHzmGHgJttlJ0IWn2KbJma67D0%0AJMl%2FYW87RnXHpoJXvJP%2B26Gc1yOjfVFEVrXAVRd%2Ft1kR7RwFTlhixcOm1Iox%0A8Txgovs%3D&1=1>
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Sat, 25 Apr 2026 19:08:24 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Sat, 25 Apr 2026 14:08:21 -0500 (CDT)
+X-Spam-Flag: YES
+
+--_----fVSwLtqhM6qsLS5KjTD6YQ===_D9/F3-10487-E111DE96
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="UTF-8"
+
+Here's what we just added =0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0Atd, a { font-family: Ari=
+al, sans-serif !important; }=0A.buttonLink, .button2Link { background-color=
+:transparent=0A!important; border: transparent !important; }       96    Ne=
+w=0Astories to watch tonight  =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C=0A=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =
+=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C=0A=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C=
+ =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C=0A=E2=80=8C =E2=80=8C =E2=80=8C=
+ =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =
+=E2=80=8C=0A=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =
+=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C=0A=E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =
+=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C=0A=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =
+=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C=0A=E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =
+=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C=0A=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C=
+ =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C=0A=E2=80=8C=
+ =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =
+=E2=80=8C =E2=80=8C =E2=80=8C=0A=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=
+=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=
+=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =
+=E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C =E2=80=8C=0A=0A=
+    Disney+ =0A( https://links.messaging.disneyplus.com/f/a/KMaIAV09XkOG-2V=
+IodQw1w~~/AAQRxRA~/qw6OvuNW0MdYuAbFh1pLsGi2C7yJT67twOD_vyO-XE7fKlfWo4MBm4qR=
+4tMqjll8XYCB5VnR3HXkaGoqtyMYfXN7EMwYL2MfNzH6I9hu0SK0_JDmeBwxPrH8j1-vQWNVw15=
+QySVH3MG0FkBeFvTsHg~~ )=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0ANewly added=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0ANikki Glaser: Good Girl (=0Ahttps://links.=
+messaging.disneyplus.com/f/a/ydf26f35nXNf3zbfDbGM9w~~/AAQRxRA~/ay4d63hSyhK-=
+tdFyRiVHWTzQSh3tXgJmPeOiukEPP4CaV_l1fQLmYp5y9wW9UUkgrJS480vAL1NRxGuO7v_hbzj=
+jKVNQCQjhoxhWu65Eo2hPsLBICS8heZKaaE9Yq4Gjyq08-zD16Ek-ZgaGVlvLLb4uRBGdRLMYbv=
+b-wiVC6QcYOqNMpHcQ-E9Kzxxb_8wTg6KxauD76E0UncmdX0VzsdvfCtl2ibEgrXGiyxRcXkA~=
+=0A)   =0AMickey Mouse Clubhouse+ (=0Ahttps://links.messaging.disneyplus.co=
+m/f/a/iDAMR5IkzUlV8hQ9-WAmbg~~/AAQRxRA~/ay4d63hSyhK-tdFyRiVHWTzQSh3tXgJmPeO=
+iukEPP4CaV_l1fQLmYp5y9wW9UUkg7tz_n0C4tH7lQFMqU1RLRSE1Nco9AIt6EdBFnXmTeTTiRs=
+QM7vRJ6Und5Ct90L2YHOPjc0mt-gilPv8fFcjgPWEXbgIFcFRwp2f7iXY8Jlc6Rb29AAGGq9ReH=
+8q_w_upN6gS40GjI3lXiQ-KSZtC34Xetzrf_j8-OcHwHG8Ql1Q~=0A)   =0AGood Boy (=0Ah=
+ttps://links.messaging.disneyplus.com/f/a/UfOLfLI-p518ghQiEMEp5A~~/AAQRxRA~=
+/ay4d63hSyhK-tdFyRiVHWTzQSh3tXgJmPeOiukEPP4CaV_l1fQLmYp5y9wW9UUkgLb8sg6gU_W=
+jElFHAnVo391mRU1RIwgZn3Ih7sHUQIccz28Ytp1UblJTmDhZvs-R2czQX47MGO7H2wBeYOxO72=
+8sW1YiksIiuPsEdy0ptOETSJBqtTBcKcEvjrLs9EhxDSu_sOCmpGFsRM0Dk1lYCiUtDlA6PfX-M=
+iZN89sjUS9o~=0A)   =0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0AMasterChef (=0Ahttps://links.messaging.disneyplus.c=
+om/f/a/VVXiVvmUcJutI3CPOZLaVA~~/AAQRxRA~/ay4d63hSyhK-tdFyRiVHWTzQSh3tXgJmPe=
+OiukEPP4CaV_l1fQLmYp5y9wW9UUkgMjxC1X_VElZH3MsJgAgz104iFr7URzgRlnJPUYAAPNkXy=
+MW5DtX5Tjj7-80HBEQMI2AYzI0d_wWkfFXFk9EabEcilC2kY_p3d9J7Dyw2UCnk1GQ2TyQWhxTx=
+IMD6oJbnL40xldFBTlY-v3Zz2Pseyt_uGkqlArgGLAHkMZqyBX0~=0A)   =0AOrangutan (=
+=0Ahttps://links.messaging.disneyplus.com/f/a/Ebgu9endrWtDMq15t0TxHQ~~/AAQR=
+xRA~/ay4d63hSyhK-tdFyRiVHWTzQSh3tXgJmPeOiukEPP4CaV_l1fQLmYp5y9wW9UUkgdO1eYi=
+uK_Brm2bEX9noiOa5R5w7c3fEp-ytCMvUS3PN9WJo9-IOr5b6hyOtgdN6oeq-wyzhnnpq9leA0t=
+o9TjKDawoDnGprJNCOjF3bHySUmqo0uazsjfNtY6tMdole38cxi-C993BayGdS7sjqwZAwLvpl9=
+lU4sQMJ6wKo2__4~=0A)   =0ANo Other Choice (=0Ahttps://links.messaging.disne=
+yplus.com/f/a/S_Ox_4-lo-l6gb6LQsUbNg~~/AAQRxRA~/ay4d63hSyhK-tdFyRiVHWTzQSh3=
+tXgJmPeOiukEPP4CaV_l1fQLmYp5y9wW9UUkgthdqKO26WD8TwT-Alj05hQgwoumhqcCQtVk29e=
+28fDnC9kRtsDYmZJFqehRSxkHEgT1ytVg74qQIomC3uP5U94QWFVfG0_jbxcQ1rOpTsQsGBF3eh=
+yrTG5ziMg5x7gmCK3IINq44tG25A_giRAzo603Bnz6su74bNXTsBr_g-E8~=0A)   =0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A         Stream Now =0A( https://links.messaging.disneyplus.com/f/a/4QyJ=
+f_Nv6RhePXQ_Dla_rw~~/AAQRxRA~/7xqUQMD9QeP8R-9J_BTQ0KuGjugAR4HRev_p1mqh_WzIa=
+0lNXWMpERy1lH9yUHDtzllBQrUXoqPkcLp_cR5S7W8UCXBjB58XJJ16eehwNstTU-pIKMEPow_0=
+rhb565dUc1sOYFw7fmDUIqssmzoHJQ~~ )=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0AAll of these and more no=
+w&nbsp;streaming=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0AFollow us=0A    Instagram (=0Ahttps://links.messaging.disney=
+plus.com/f/a/wzIyQze1ohUdV3QqGp4DAQ~~/AAQRxRA~/xneSzFZXfYrnwHDu4DRjCayu_Zvg=
+pXKIqESmXER8DCq7IgWHnWfJ8phf9B8bAZB4D3aZ--qjclH-oUEXxuFP67Nf387KPtaaYed76Sm=
+vjAl9pY5y-3_9K8iouX-zqohJlzTP_ZGxRgfsJFaRYVnVhA~~ )   TikTok (=0Ahttps://li=
+nks.messaging.disneyplus.com/f/a/xx3NfH3l8LihbDiU2ETbuQ~~/AAQRxRA~/86qr1DJp=
+Qh6Fby9kN-1Ne24-gcfaVvq1Y4MlysjYdY95uIvaKrSuzAAFSH30hUpUrmQ_QuB0v_ZXpKDs6l-=
+TRN1Ss01LqUMCFpxm2I3Jw7eLCDzkHmrGCqF94ieu1spMEYcsFVogBkHxIufFF68fyQ~~ )   F=
+acebook=0A( https://links.messaging.disneyplus.com/f/a/zIPvcWgEovkA5TOnjOzt=
+YQ~~/AAQRxRA~/KriS37Zvs081Ksbx2s3JbCTUQAjfRmebOsJpghfM6aeVdngu8DV664bhSxcHe=
+qmuJdc3oo2US8x2eigj78nAfQb1avhhEHzP3HYJp7wlzYtbw5GYK0tF_n3AYxmzWiXR8Hi8nfFP=
+pizgsiti_WdiSA~~ )   Twitter=0A( https://links.messaging.disneyplus.com/f/a=
+/ZvFJeXB9cEW-tEJyCxxGbQ~~/AAQRxRA~/rGY6P2K180BwIk35KoDlFxbiopIue1KL3tLeak5b=
+A3LMcEo0YibSEKBXkPkm9mB-AUZQqxtv6xCab5to0ykjEl95XC3Pk-4YGZoE78yJcoJmRwo2AT4=
+87ykq369lAL5- )=0A=0A=0A=0A=0A=0A=0A=0A=0AFor more information, please visi=
+t ourHelp Center=0A( https://links.messaging.disneyplus.com/f/a/CyTkUGmjT5p=
+KdEcZheCdTQ~~/AAQRxRA~/_ohmeqefHrYJRx_LuWIfxy68xI1WZN7aPXMBT3DtErnmVEd7nP-R=
+ohC8hAfjKYshgyUKu-MO7bIBbGwlrCQY1A6BCRwC1Ey0Qu7CYib5nzcs-N_MVHxL6lvPXdrmcZd=
+ZM5_TAH5yYDwokXWLPmAuTQG3fzrKaARnSIwIihyB6VDIsuSsLwXUZTmUzQ_MmAPYDatbs0AHqV=
+KYeRL-eL3RxZ-K7X9bDvCCcqnOD8W77Go~=0A)=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0AContent r=
+ecommendations based on your current subscription(s). Content availability =
+subject to change.=0AThis email was sent to: <a href=3D"#" style=3D"text-de=
+coration:none;color: #C0C0C0; cursor:text;word-break: break-word; overflow-=
+wrap: break-word;">user@example.com</a>. Please do not reply to this em=
+ail as this address is not monitored. This email contains an advertisement =
+from: Disney Streaming Services, LLC, <a href=3D"#" style=3D"text-decoratio=
+n:none;color: #C0C0C0; cursor:text;">500 S. Buena Vista St., Burbank, CA 91=
+521</a>.</td></tr><tr><td width=3D"400" class=3D"appleLinksGray5UL" style=
+=3D"font-family:Inspire, InspireTWDC, 'Trebuchet MS', Arial, sans-serif;fon=
+t-size:11px;line-height:15px;mso-line-height-rule:exactly; color: #c0c0c0; =
+padding-top:24px; max-width: 400px; word-break: normal;" align=3D"left">If =
+you do not want to receive future marketing email messages from Disney+, pl=
+ease =0A=0A=0A<a  href=3D"https://links.messaging.disneyplus.com/f/a/tn5UZw=
+BtrneU7tyiLTDnzw~~/AAQRxRA~/D58axNJTRTlA_A9bTw8rYBoCvw6QZ1ehB-eqcdoCBwzPexq=
+0yFBf8AxPtQ9NrNvQ8KybUNuTMPH_dW2Wuzlc9V1zr6zJ8O_nbzQhOPe0WVlqzi6IfnPReiYmBc=
+SH0r_mAUhOPydzidLzv_bMzecg00ZeUXmjbsu6gtIYxh_6mf-G7x4LxZIbjWW14MOfT19HGtCzE=
+xf9CL8ZPx-4SC1vz0kpZz3AXUQSo39RT7bImJcLFB8O23tgmFLOw0M7Si64DEpD2AelbwCbyiT9=
+m-MORA2XGQSxrbn5hCXKGEvyYHnnb4ib0JVtZiNzPV0qPHB4UbHeB_PP8svNXPMhxd6plo41OhU=
+N9NHs76Z6OeDaxhZOTAFXl8Jr4v2vXImgQuCwuJLvm95iiIAJZd8Nnhh76fKi0deNV1Lo2eAYkz=
+quJO5GRpYOG3W7v-OTa_NcHHyh_ShNu-1qWutSZqU0WrltcYwAJodVT0CjRmIMmPtPLnI~ alia=
+s=3D"optout" style=3D"text-decoration:underline;color:#c0c0c0;"><strong>opt=
+-out</strong></a>.</td></tr><tr><td width=3D"400" class=3D"appleLinksGray5U=
+L" style=3D"font-family:Inspire, InspireTWDC, 'Trebuchet MS', Arial, sans-s=
+erif;font-size:11px;line-height:15px;mso-line-height-rule:exactly; color: #=
+c0c0c0; padding-top:24px; max-width: 400px; word-break: normal;" align=3D"l=
+eft">&copy; 2026 Disney and its related entities. All Rights Reserved.=0ASR=
+C:69ed11101e090ba06b4541e79675334a_EN_US
+--_----fVSwLtqhM6qsLS5KjTD6YQ===_D9/F3-10487-E111DE96
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html; charset="UTF-8"
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.=
+w3.org/TR/html4/loose.dtd">=0A<html>=0A<head>=0A<meta http-equiv=3D"Content=
+-Type" content=3D"text/html; charset=3DUTF-8">=0A<style>.ExternalClass {=0A=
+width: 100%;=0A}=0A.ExternalClass {=0Aline-height: 100%;=0A}=0Abody {=0Ahei=
+ght: 100% !important; margin: 0 auto !important; padding: 0; width: 100% !i=
+mportant;=0A}=0A@media only screen and (max-width: 480px) {=0A  #background=
+ {=0A    background-color: #ffffff !important;=0A  }=0A}=0A@media only scre=
+en and (max-width: 580px) {=0A  .module {=0A    margin-bottom: -1px !import=
+ant; border-width: 1px !important;=0A  }=0A}=0A@media (prefers-color-scheme=
+: dark) {=0A  td.appleLinksWhite {=0A    -webkit-text-fill-color: #ffffff !=
+important;=0A  }=0A  .module_1 {=0A    background-color: #202124 !important=
+; -webkit-text-fill-color: #ffffff !important;=0A  }=0A}=0A</style>=0A</hea=
+d>=0A<body style=3D"height: 100% !important; width: 100% !important; margin=
+: 0 auto; padding: 0;">=0A<div style=3D"display:none !important;visibility:=
+hidden;mso-hide:all;font-size:1px;color:#ffffff;line-height:1px;max-height:=
+0px;max-width:0px;opacity:0;overflow:hidden;">Here's what we just added</di=
+v>=0A<div style=3D"display:none !important;visibility:hidden;mso-hide:all;f=
+ont-size:1px;color:#ffffff;line-height:1px;max-height:0px;max-width:0px;opa=
+city:0;overflow:hidden;">=CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F=
+ =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=
+=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =
+=E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=
+=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=
+=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=
+=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=
+=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =
+=CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=
+=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =
+=C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=
+=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =
+=EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=
+=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =
+=E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=
+=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =
+=E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=
+=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=
+=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=
+=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=
+=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =
+=CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=
+=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =
+=C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=
+=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =
+=EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=
+=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =
+=E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=
+=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =
+=E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=
+=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=
+=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=
+=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=
+=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =
+=CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=
+=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =
+=C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=
+=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =
+=EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=
+=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =
+=E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=
+=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =
+=E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=
+=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=
+=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=
+=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=
+=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =
+=CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=
+=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =
+=C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=
+=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =
+=EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=
+=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =
+=E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=
+=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =
+=E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=
+=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=
+=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=
+=80=87 =EF=BB=BF =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =EF=BB=BF =CD=8F =E2=80=
+=8C =C2=A0 =E2=80=87 =EF=BB=BF </div>=0A<p style=3D"-webkit-font-smoothing:=
+ antialiased; margin: 0; padding: 0;">=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0D=0A=0D=0A  =0D=0A=0D=0A=0D=0A=0D=0A  =0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=
+=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0D=0A=0D=0A  =0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A =0D=0A=0D=0A=0D=0A=
+=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=
+=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=
+=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=
+=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0A=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=
+=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=
+=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=
+=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0A=0A=0A=0A=0A=0A =0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A =0A=0A=0A=0A =0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=
+=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A =0A=0A =0A=0A=0A=0A=0A=0A =0A=0A=
+=0A =0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A=0A    </p>=
+=0A        <meta http-equiv=3D"Content-Type" content=3D"text/html;" charset=
+=3D"utf-8">=0A        <meta name=3D"viewport" content=3D"width=3Ddevice-wid=
+th, initial-scale=3D1.0">=0A        <!--[if !mso]><!-->=0A        <meta htt=
+p-equiv=3D"X-UA-Compatible" content=3D"IE=3Dedge">=0A        <!--<![endif]-=
+->=0A        <meta name=3D"color-scheme" content=3D"light">=0A        <meta=
+ name=3D"supported-color-schemes" content=3D"light">=0A        =0A        <=
+!--[if mso]>=0A        <style>=0A        td, a {=0A        font-family: Ari=
+al, sans-serif !important;=0A        }=0A        .buttonLink, .button2Link =
+{=0A        background-color:transparent !important;=0A        border: tran=
+sparent !important;=0A        }=0A        </style>=0A        <![endif]-->=
+=0A        <!--[if gte mso 9]>=0A        <xml>=0A        <o:OfficeDocumentS=
+ettings>=0A        <o:AllowPNG/>=0A        <o:PixelsPerInch>96</o:PixelsPer=
+Inch>=0A        </o:OfficeDocumentSettings>=0A        </xml>=0A        <![e=
+ndif]-->=0A        <title>New stories to watch tonight</title>=0A    =0A   =
+ =0A        <span class=3D"preheader" style=3D"color: #eaeaea; display: non=
+e !important; font-size: 1px; line-height: 1px; max-height: 0; max-width: 0=
+; mso-hide: all !important; opacity: 0; overflow: hidden; visibility: hidde=
+n; -webkit-font-smoothing: antialiased;">&nbsp;</span>=0A        <!-- Inser=
+t &zwnj;&nbsp; hack after hidden preview text -->=0A        <div style=3D"d=
+isplay: none; max-height: 0px; overflow: hidden;"> &nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C=0A            &nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C=0A            &nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=0A      =
+      &nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=0A            &nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=0A            &nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C=0A            &nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C=0A            &nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=0A      =
+      &nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=0A            &nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=0A            &nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C=0A            &nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C=0A            &nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=0A      =
+      &nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=0A            &nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=0A            &nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C=0A            &nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C=0A            &nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=0A      =
+      &nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=0A            &nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C=0A            &nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=80=8C&nbsp;=E2=
+=80=8C&nbsp;=E2=80=8C=0A        </div>=0A        <table id=3D"background" r=
+ole=3D"presentation" cellpadding=3D"0" cellspacing=3D"0" border=3D"0" align=
+=3D"center" width=3D"100%" bgcolor=3D"#eaeaea" style=3D"border-collapse: co=
+llapse;">=0A            <tr>=0A                <td style=3D"border-collapse=
+: collapse; -webkit-font-smoothing: antialiased;">=0A                    <t=
+able role=3D"presentation" cellpadding=3D"0" cellspacing=3D"0" border=3D"0"=
+ align=3D"center" width=3D"480" bgcolor=3D"#02172A" style=3D"width: 480px !=
+important; border-collapse: collapse;">=0A                        <tr>=0A  =
+                          <td align=3D"center" style=3D"border-collapse: co=
+llapse; -webkit-font-smoothing: antialiased;">=0A                          =
+      <table role=3D"presentation" cellpadding=3D"0" cellspacing=3D"0" bord=
+er=3D"0" width=3D"100%" style=3D"border-collapse: collapse;">=0A           =
+                         <tr>=0A                                       <td =
+style=3D"border-collapse: collapse; -webkit-font-smoothing: antialiased;">=
+=0A<!-- START Header_A1_null_null -->=0D=0A=0D=0A=0D=0A<table class=3D"modu=
+le" role=3D"presentation" cellpadding=3D"0" cellspacing=3D"0" border=3D"0" =
+width=3D"100%" align=3D"center" bgcolor=3D"#02172A" style=3D"border-collaps=
+e: collapse; border-spacing: 0; mso-table-lspace: 0pt; mso-table-rspace: 0p=
+t; margin: 0; padding: 0; border-style: none;">=0D=0A    <tr>=0D=0A        =
+<td align=3D"center" style=3D"border-collapse: collapse; -webkit-font-smoot=
+hing: antialiased;">=0D=0A           <a href=3D"https://links.messaging.dis=
+neyplus.com/f/open-in-app/MdRNa3YGvwFIeb6dA3aglg~~/AAQRxRA~/fFnGDx6N0kj6h42=
+93cSqqZsGC10vNCbPF6TKEU2UaRwnOirk_nrifDeFx7ey2IzV6Gj2E_XfTZuf7lSQg_6PlIQSyC=
+715HUmUWl_D8GwJ8TbAdoRRg6XouuYWBmev-ad2aMvqYd1xoQDoszPvcNR9V-SblfzYFNaJCBV5=
+6A9tmeNhTMLEf6ebLTfLVJ1GIvAp_o97_NNR8eFcxjOaWlcu0pvKM2pVvEuGi-7QJh08zID_KHp=
+tsAkf5EKUxO0kl2ipb5kOBuacN-r0oo7tw13Bj4i7bUjvIMzXIWTkyUolWqn6UUYs-4eoC13cwC=
+E8rNmORZ2-kJx7NKCuGwBNnxuvkTtHBLgM1M2Ew2N8-mhP5OJQFLTHimfXLvg8_eLqKhxkM-QK8=
+27DAqaCW-VRKVv99bj8kRWNFyRZiDfj52dhbaIMR-MVqUL-SsDvcKP_7khGpvVU6uYJTG1Q2Lwj=
+pfoDjcPPZkFraUeDW4mlekZvbO-S1zvxZOzXksdzKvYhkREqF00SEJi3Mxb2PJAFwuOsA~~" st=
+yle=3D"text-decoration: none; -webkit-font-smoothing: antialiased;"><img sr=
+c=3D"https://braze-images.com/appboy/communication/assets/image_assets/imag=
+es/6751c52d3e254d006601549c/original.png=3F1733412141" alt=3D"Disney+" styl=
+e=3D"display: block; height: auto; color: #ffffff; font-family: Inspire, In=
+spireTWDC, 'Trebuchet MS', Arial, sans-serif; font-size: 16px; text-align: =
+center; font-weight: normal; line-height: 22px;" width=3D"480" border=3D"0"=
+></a>=0D=0A        </td>=0D=0A    </tr>=0D=0A</table>=0D=0A<!-- END Header_=
+A1_null_null -->=0A</td> =0A                                    </tr>=0A   =
+                                 <!-- =3D=3D=3D=3D=3D=3D START Body Modules=
+ =3D=3D=3D=3D=3D=3D -->=0A=0A                                    =0D=0A=0D=
+=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A  =0D=0A=0D=0A=0D=0A=0D=0A  =0D=0A=0D=0A=
+=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A =0D=0A=0D=0A=
+=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=
+=0A=0D=0A=0D=0A =0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=
+=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A  =0D=
+=0A  =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=
+=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=
+=0A=0D=0A=0D=0A=0D=0A  =0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=
+=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=
+=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A  =0D=0A  =0D=0A  =0D=0A  =0D=0A    =0D=
+=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A  =0D=0A=0D=
+=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A  =0D=0A  =
+=0D=0A  =0D=0A  =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A=0D=0A=09=0D=0A  =
+  =0D=0A=0D=0A=0D=0A =0D=0A=0D=0A=0D=0A =0D=0A    =0D=0A      =0D=0A      =
+=0D=0A      =0D=0A    =0D=0A  =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A=0D=
+=0A=09=0D=0A    =0D=0A=0D=0A=0D=0A =0D=0A=0D=0A=0D=0A =0D=0A    =0D=0A     =
+ =0D=0A      =0D=0A      =0D=0A    =0D=0A  =0D=0A    =0D=0A    =0D=0A=0D=0A=
+    =0D=0A=0D=0A=09=0D=0A    =0D=0A=0D=0A=0D=0A =0D=0A=0D=0A=0D=0A =0D=0A  =
+  =0D=0A      =0D=0A      =0D=0A      =0D=0A    =0D=0A  =0D=0A    =0D=0A   =
+ =0D=0A=0D=0A    =0D=0A=0D=0A=09=0D=0A    =0D=0A=0D=0A=0D=0A =0D=0A=0D=0A=
+=0D=0A =0D=0A    =0D=0A      =0D=0A      =0D=0A      =0D=0A    =0D=0A  =0D=
+=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A=0D=0A=09=0D=0A    =0D=0A=0D=0A=0D=
+=0A =0D=0A=0D=0A=0D=0A =0D=0A    =0D=0A      =0D=0A      =0D=0A      =0D=0A=
+    =0D=0A  =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A=0D=0A=09=0D=0A    =
+=0D=0A=0D=0A=0D=0A =0D=0A=0D=0A=0D=0A =0D=0A    =0D=0A      =0D=0A      =0D=
+=0A      =0D=0A    =0D=0A  =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A=0D=0A=
+=09=0D=0A    =0D=0A=0D=0A=0D=0A =0D=0A=0D=0A=0D=0A =0D=0A    =0D=0A      =
+=0D=0A      =0D=0A      =0D=0A    =0D=0A  =0D=0A    =0D=0A    =0D=0A=0D=0A =
+   =0D=0A=0D=0A=09=0D=0A    =0D=0A=0D=0A=0D=0A =0D=0A=0D=0A=0D=0A =0D=0A   =
+ =0D=0A      =0D=0A      =0D=0A      =0D=0A    =0D=0A  =0D=0A    =0D=0A    =
+=0D=0A=0D=0A    =0D=0A=0D=0A=09=0D=0A    =0D=0A=0D=0A=0D=0A =0D=0A=0D=0A=0D=
+=0A =0D=0A    =0D=0A      =0D=0A      =0D=0A      =0D=0A    =0D=0A  =0D=0A =
+   =0D=0A    =0D=0A=0D=0A    =0D=0A=0D=0A=09=0D=0A    =0D=0A=0D=0A=0D=0A =
+=0D=0A=0D=0A=0D=0A =0D=0A    =0D=0A      =0D=0A      =0D=0A      =0D=0A    =
+=0D=0A  =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A=0D=0A=09=0D=0A    =0D=0A=
+=0D=0A=0D=0A =0D=0A=0D=0A=0D=0A =0D=0A    =0D=0A      =0D=0A      =0D=0A   =
+   =0D=0A    =0D=0A  =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A=0D=0A=09=0D=
+=0A    =0D=0A=0D=0A=0D=0A =0D=0A=0D=0A=0D=0A =0D=0A    =0D=0A      =0D=0A  =
+    =0D=0A      =0D=0A    =0D=0A  =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=
+=0A=0D=0A=09=0D=0A    =0D=0A=0D=0A=0D=0A =0D=0A=0D=0A=0D=0A =0D=0A    =0D=
+=0A      =0D=0A      =0D=0A      =0D=0A    =0D=0A  =0D=0A    =0D=0A    =0D=
+=0A=0D=0A    =0D=0A=0D=0A=09=0D=0A    =0D=0A=0D=0A=0D=0A =0D=0A=0D=0A=0D=0A=
+ =0D=0A    =0D=0A      =0D=0A      =0D=0A      =0D=0A    =0D=0A  =0D=0A    =
+=0D=0A    =0D=0A=0D=0A    =0D=0A=0D=0A=09=0D=0A    =0D=0A=0D=0A=0D=0A =0D=
+=0A=0D=0A=0D=0A =0D=0A    =0D=0A      =0D=0A      =0D=0A      =0D=0A    =0D=
+=0A  =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A=0D=0A=09=0D=0A    =0D=0A=0D=
+=0A=0D=0A =0D=0A=0D=0A=0D=0A =0D=0A    =0D=0A      =0D=0A      =0D=0A      =
+=0D=0A    =0D=0A  =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A=0D=0A=09=0D=0A=
+    =0D=0A=0D=0A=0D=0A =0D=0A=0D=0A=0D=0A =0D=0A    =0D=0A      =0D=0A     =
+ =0D=0A      =0D=0A    =0D=0A  =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A=
+=0D=0A=09=0D=0A    =0D=0A=0D=0A=0D=0A =0D=0A=0D=0A=0D=0A =0D=0A    =0D=0A  =
+    =0D=0A      =0D=0A      =0D=0A    =0D=0A  =0D=0A    =0D=0A    =0D=0A=0D=
+=0A    =0D=0A=0D=0A=09=0D=0A    =0D=0A=0D=0A=0D=0A =0D=0A=0D=0A=0D=0A =0D=
+=0A    =0D=0A      =0D=0A      =0D=0A      =0D=0A    =0D=0A  =0D=0A    =0D=
+=0A    =0D=0A=0D=0A    =0D=0A=0D=0A=09=0D=0A    =0D=0A=0D=0A=0D=0A =0D=0A=
+=0D=0A=0D=0A =0D=0A    =0D=0A      =0D=0A      =0D=0A      =0D=0A    =0D=0A=
+  =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A=0D=0A=09=0D=0A    =0D=0A=0D=0A=
+=0D=0A =0D=0A=0D=0A=0D=0A =0D=0A    =0D=0A      =0D=0A      =0D=0A      =0D=
+=0A    =0D=0A  =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A=0D=0A=09=0D=0A   =
+ =0D=0A=0D=0A=0D=0A =0D=0A=0D=0A=0D=0A =0D=0A    =0D=0A      =0D=0A      =
+=0D=0A      =0D=0A    =0D=0A  =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A=0D=
+=0A=09=0D=0A    =0D=0A=0D=0A=0D=0A =0D=0A=0D=0A=0D=0A =0D=0A    =0D=0A     =
+ =0D=0A      =0D=0A      =0D=0A    =0D=0A  =0D=0A    =0D=0A    =0D=0A=0D=0A=
+    =0D=0A=0D=0A=09=0D=0A    =0D=0A=0D=0A=0D=0A =0D=0A=0D=0A=0D=0A =0D=0A  =
+  =0D=0A      =0D=0A      =0D=0A      =0D=0A    =0D=0A  =0D=0A    =0D=0A   =
+ =0D=0A=0D=0A    =0D=0A=0D=0A=09=0D=0A    =0D=0A=0D=0A=0D=0A =0D=0A=0D=0A=
+=0D=0A =0D=0A    =0D=0A      =0D=0A      =0D=0A      =0D=0A    =0D=0A  =0D=
+=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A=0D=0A=09=0D=0A    =0D=0A=0D=0A=0D=
+=0A =0D=0A=0D=0A=0D=0A =0D=0A    =0D=0A      =0D=0A      =0D=0A      =0D=0A=
+    =0D=0A  =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A=0D=0A=09=0D=0A    =
+=0D=0A=0D=0A=0D=0A =0D=0A=0D=0A=0D=0A =0D=0A    =0D=0A      =0D=0A      =0D=
+=0A      =0D=0A    =0D=0A  =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A=0D=0A=
+=09=0D=0A    =0D=0A=0D=0A=0D=0A =0D=0A=0D=0A=0D=0A =0D=0A    =0D=0A      =
+=0D=0A      =0D=0A      =0D=0A    =0D=0A  =0D=0A    =0D=0A    =0D=0A=0D=0A =
+   =0D=0A=0D=0A=09=0D=0A    =0D=0A=0D=0A=0D=0A =0D=0A=0D=0A=0D=0A =0D=0A   =
+ =0D=0A      =0D=0A      =0D=0A      =0D=0A    =0D=0A  =0D=0A    =0D=0A    =
+=0D=0A=0D=0A    =0D=0A=0D=0A=09=0D=0A    =0D=0A=0D=0A=0D=0A =0D=0A=0D=0A=0D=
+=0A =0D=0A    =0D=0A      =0D=0A      =0D=0A      =0D=0A    =0D=0A  =0D=0A =
+   =0D=0A    =0D=0A=0D=0A    =0D=0A=0D=0A=09=0D=0A    =0D=0A=0D=0A=0D=0A =
+=0D=0A=0D=0A=0D=0A =0D=0A    =0D=0A      =0D=0A      =0D=0A      =0D=0A    =
+=0D=0A  =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A=0D=0A=09=0D=0A    =0D=0A=
+=0D=0A=0D=0A =0D=0A=0D=0A=0D=0A =0D=0A    =0D=0A      =0D=0A      =0D=0A   =
+   =0D=0A    =0D=0A  =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A=0D=0A=09=0D=
+=0A    =0D=0A=0D=0A=0D=0A =0D=0A=0D=0A=0D=0A =0D=0A    =0D=0A      =0D=0A  =
+    =0D=0A      =0D=0A    =0D=0A  =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=
+=0A=0D=0A=09=0D=0A    =0D=0A=0D=0A=0D=0A =0D=0A=0D=0A=0D=0A =0D=0A    =0D=
+=0A      =0D=0A      =0D=0A      =0D=0A    =0D=0A  =0D=0A    =0D=0A    =0D=
+=0A=0D=0A    =0D=0A=0D=0A=09=0D=0A    =0D=0A=0D=0A=0D=0A =0D=0A=0D=0A=0D=0A=
+ =0D=0A    =0D=0A      =0D=0A      =0D=0A      =0D=0A    =0D=0A  =0D=0A    =
+=0D=0A    =0D=0A=0D=0A    =0D=0A=0D=0A=09=0D=0A    =0D=0A=0D=0A=0D=0A =0D=
+=0A=0D=0A=0D=0A =0D=0A    =0D=0A      =0D=0A      =0D=0A      =0D=0A    =0D=
+=0A  =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A=0D=0A=09=0D=0A    =0D=0A=0D=
+=0A=0D=0A =0D=0A=0D=0A=0D=0A =0D=0A    =0D=0A      =0D=0A      =0D=0A      =
+=0D=0A    =0D=0A  =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A=0D=0A=09=0D=0A=
+    =0D=0A=0D=0A=0D=0A =0D=0A=0D=0A=0D=0A =0D=0A    =0D=0A      =0D=0A     =
+ =0D=0A      =0D=0A    =0D=0A  =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A=
+=0D=0A=09=0D=0A    =0D=0A=0D=0A=0D=0A =0D=0A=0D=0A=0D=0A =0D=0A    =0D=0A  =
+    =0D=0A      =0D=0A      =0D=0A    =0D=0A  =0D=0A    =0D=0A    =0D=0A=0D=
+=0A    =0D=0A=0D=0A=09=0D=0A    =0D=0A=0D=0A=0D=0A =0D=0A=0D=0A=0D=0A =0D=
+=0A    =0D=0A      =0D=0A      =0D=0A      =0D=0A    =0D=0A  =0D=0A    =0D=
+=0A    =0D=0A=0D=0A    =0D=0A=0D=0A=09=0D=0A    =0D=0A=0D=0A=0D=0A =0D=0A=
+=0D=0A=0D=0A =0D=0A    =0D=0A      =0D=0A      =0D=0A      =0D=0A    =0D=0A=
+  =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A=0D=0A=09=0D=0A    =0D=0A=0D=0A=
+=0D=0A =0D=0A=0D=0A=0D=0A =0D=0A    =0D=0A      =0D=0A      =0D=0A      =0D=
+=0A    =0D=0A  =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A=0D=0A=09=0D=0A   =
+ =0D=0A=0D=0A=0D=0A =0D=0A=0D=0A=0D=0A =0D=0A    =0D=0A      =0D=0A      =
+=0D=0A      =0D=0A    =0D=0A  =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A=0D=
+=0A=09=0D=0A    =0D=0A=0D=0A=0D=0A =0D=0A=0D=0A=0D=0A =0D=0A    =0D=0A     =
+ =0D=0A      =0D=0A      =0D=0A    =0D=0A  =0D=0A    =0D=0A    =0D=0A=0D=0A=
+    =0D=0A=0D=0A=09=0D=0A    =0D=0A=0D=0A=0D=0A =0D=0A=0D=0A=0D=0A =0D=0A  =
+  =0D=0A      =0D=0A      =0D=0A      =0D=0A    =0D=0A  =0D=0A    =0D=0A   =
+ =0D=0A=0D=0A    =0D=0A=0D=0A=09=0D=0A    =0D=0A=0D=0A=0D=0A =0D=0A=0D=0A=
+=0D=0A =0D=0A    =0D=0A      =0D=0A      =0D=0A      =0D=0A    =0D=0A  =0D=
+=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A=0D=0A=09=0D=0A    =0D=0A=0D=0A=0D=
+=0A =0D=0A=0D=0A=0D=0A =0D=0A    =0D=0A      =0D=0A      =0D=0A      =0D=0A=
+    =0D=0A  =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A=0D=0A=09=0D=0A    =
+=0D=0A=0D=0A=0D=0A =0D=0A=0D=0A=0D=0A =0D=0A    =0D=0A      =0D=0A      =0D=
+=0A      =0D=0A    =0D=0A  =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A=0D=0A=
+=09=0D=0A    =0D=0A=0D=0A=0D=0A =0D=0A=0D=0A=0D=0A =0D=0A    =0D=0A      =
+=0D=0A      =0D=0A      =0D=0A    =0D=0A  =0D=0A    =0D=0A    =0D=0A=0D=0A =
+   =0D=0A=0D=0A=09=0D=0A    =0D=0A=0D=0A=0D=0A =0D=0A=0D=0A=0D=0A =0D=0A   =
+ =0D=0A      =0D=0A      =0D=0A      =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=0A=
+  =0D=0A  =0D=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A    =0D=0A    =0D=
+=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A  =0D=0A=0D=0A=0A                         =
+           =0A=09=09=09=09=09=09=09=09=09=0A=09=09=09=09=09=0A=09=09=09=09=
+=09=09=09=09=09=0A                                    =0D=0A=0D=0A   =0D=0A=
+  =0D=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A =
+ =0D=0A  =0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A    =
+=0D=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=0A   =
+ =0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A    =0D=
+=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=0A  =
+=0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=0A  =
+=0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A =
+   =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A    =0D=0A    =
+=0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A   =
+ =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=
+=0A  =0D=0A  =0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A=
+    =0D=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=
+=0A    =0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A  =
+  =0D=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=
+=0A  =0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=
+=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=0A    =
+=0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A    =0D=
+=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=0A  =
+=0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=0A  =
+=0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A =
+   =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A    =0D=0A    =
+=0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A   =
+ =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=
+=0A  =0D=0A  =0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A=
+    =0D=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=
+=0A    =0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A  =
+  =0D=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=
+=0A  =0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=
+=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=0A    =
+=0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A    =0D=
+=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=0A  =
+=0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=0A  =
+=0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A =
+   =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A    =0D=0A    =
+=0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A   =
+ =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=
+=0A  =0D=0A  =0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A=
+    =0D=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=
+=0A    =0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A  =
+  =0D=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=
+=0A  =0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=
+=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=0A    =
+=0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A    =0D=
+=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=0A  =
+=0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=0A  =
+=0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A =
+   =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A    =0D=0A    =
+=0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A   =
+ =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=
+=0A  =0D=0A  =0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A=
+    =0D=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=
+=0A    =0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A  =
+  =0D=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=
+=0A  =0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=
+=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=0A    =
+=0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A    =0D=
+=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=0A  =
+=0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=0A  =
+=0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A =
+   =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A    =0D=0A    =
+=0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A   =
+ =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=
+=0A  =0D=0A  =0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A=
+    =0D=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=
+=0A    =0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A  =
+  =0D=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=0A=0D=0A=
+=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A  =0D=0A  =0D=0A  =0D=0A  =
+=0D=0A  =0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A =
+   =0D=0A    =0D=0A    =0D=0A    =0D=0A    =0D=0A  =0D=0A    =0D=0A  =0D=0A=
+  =0D=0A  =0D=0A=0D=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A=0D=0A    =0D=0A    =0D=
+=0A      =0D=0A        =0D=0A        =0D=0A        =0D=0A        =0D=0A    =
+  =0D=0A      =0D=0A      =0D=0A=0D=0A      =0D=0A        <!-- START Banner=
+_E1_Streaming_null_Dusk -->=0D=0A        =0D=0A        =0D=0A        <tr>=
+=0D=0A          <td algin=3D"center" style=3D"border-collapse: collapse; -w=
+ebkit-font-smoothing: antialiased;">=0D=0A            <table class=3D"modul=
+e" role=3D"presentation" cellpadding=3D"0" cellspacing=3D"0" border=3D"0" w=
+idth=3D"100%" bgcolor=3D"#054553" style=3D"border-bottom-width: 1px; direct=
+ion: ltr; text-align: center; border-collapse: collapse; margin: 0; border-=
+style: none;">=0D=0A              <tr>=0D=0A                <td align=3D"ce=
+nter" style=3D"font-size: 28px; font-weight: 900; color: #ffffff; font-fami=
+ly: Inspire, InspireTWDC, 'Trebuchet MS', Arial, sans-serif; line-height: 3=
+4px; letter-spacing: 0px; mso-line-height-rule: exactly; word-break: normal=
+; border-collapse: collapse; -webkit-font-smoothing: antialiased; padding: =
+48px 40px 24px;" class=3D"appleLinksWhite">=0D=0A                  Newly ad=
+ded=0D=0A                </td> =0D=0A              </tr>=0D=0A            <=
+/table>=0D=0A          </td>=0D=0A        </tr>=0D=0A        <!-- END Banne=
+r_E1_Streaming_null_Dusk -->=0D=0A      =0D=0A      =0D=0A      =0D=0A    =
+=0D=0A    =0D=0A=0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=0A    =0D=0A    =0D=
+=0A    =0D=0A    =0D=0A    =0D=0A    =0D=0A    =0D=0A    =0D=0A    =0D=0A  =
+  =0D=0A=0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=0A    =0D=0A    =0D=0A    =
+=0D=0A    =0D=0A    =0D=0A    =0D=0A        =0D=0A    =0D=0A    =0D=0A    =
+=0D=0A        =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A=0D=0A=0D=
+=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A    =0D=0A    <!-- START Title_H2_3up_Dusk=
+ -->=0D=0A    =0D=0A    =0D=0A    <tr>=0D=0A      <td algin=3D"center" styl=
+e=3D"border-collapse: collapse; -webkit-font-smoothing: antialiased;">=0D=
+=0A        <table class=3D"module" role=3D"presentation" cellpadding=3D"0" =
+cellspacing=3D"0" border=3D"0" width=3D"100%" align=3D"center" bgcolor=3D"#=
+054553" style=3D"border-bottom-width: 1px; direction: ltr; text-align: cent=
+er; border-collapse: collapse; margin: 0; border-style: none;">=0D=0A      =
+    <tr>=0D=0A            <td align=3D"center" style=3D"border-collapse: co=
+llapse; -webkit-font-smoothing: antialiased; padding: 0 40px 48px;">=0D=0A =
+             <table role=3D"presentation" cellpadding=3D"0" cellspacing=3D"=
+0" border=3D"0" width=3D"100%" style=3D"border-collapse: collapse;">=0D=0A =
+               <tr>=0D=0A                  <td align=3D"left" style=3D"bord=
+er-collapse: collapse; -webkit-font-smoothing: antialiased;">=0D=0A        =
+            <table role=3D"presentation" cellpadding=3D"0" cellspacing=3D"0=
+" border=3D"0" width=3D"100%" style=3D"border-collapse: collapse;">=0D=0A  =
+                    <tr>=0D=0A                        <td align=3D"left" st=
+yle=3D"border-collapse: collapse; -webkit-font-smoothing: antialiased;">=0D=
+=0A                        <a href=3D"https://links.messaging.disneyplus.co=
+m/f/open-in-app/XUYx9WafPVwMwhb_6Ix6GA~~/AAQRxRA~/M_IFnsh2f4fXcPhuHC8bbVNgA=
+vg0d--o1_nwrRi9mWzRFIiO26YH3rShNNBVJm8TKHMHKwwXiPxIBrN7n7AwNy5EBq9Zlz3151ln=
+pQ-NKZ0mcNb0vi67mlz3PR0FxyZZh4cwYNN_oGBVaTZmVUiKVkX2FsoWmJoQzQp1YqPVvLXLJ9a=
+NANw6WeCcwBt-EnV9DxSITl1GkgpRnbi94V1_KyhpBISlwzhfLXuYlyoM6ri83WZgLMft3JJFBl=
+mXDoKsLmI9RNRIVjQ0b3_07-TRygVanEqaKlMrpkpjpbJEJv-P0j2oVgsfiPJIVqrIRxb4eYMAL=
+zizil23wjzmlIQ0UxI7N8SSZi_u1-04J5eZCV9UIEyirqdKq3f8v8wW24Xv4Kg4FWic1k_lP63x=
+v2t_IgTkhwnnXxeE2PhckI4GOsz3ATZHVVwn7qB1yyrhpo005yLEFe2HFQKceUAL0z_hhrzDUoD=
+c2_2onUkeYueE51EA0xk2CYAzxDyN4aolQJbMfj8CEJ9d_uV_dTliF_4u-8NgQJseHX0JDRZKXK=
+vPJIto7U4bWu52F5oTnLRwwbL9Bo0lkdUrONDYvWs4SFCLaPlhYhG-Qt_NT7WF2-BX68IiMSbLI=
+57WFj_hMJjXXG8o"  target=3D"_blank" alias=3D"srail-newly_added-1" style=3D"=
+text-decoration: none; -webkit-font-smoothing: antialiased;"><img src=3D"ht=
+tps://disney.images.edge.bamgrid.com/ripcut-delivery/v1/variant/disney/019d=
+640c-5564-76f6-a9cd-52f02cbc8e40/compose=3Fformat=3Dpng&label=3Dstandard_ar=
+t_hulu-original-series_071&width=3D548" alt=3D"Nikki Glaser: Good Girl" bor=
+der=3D"0" width=3D"127" height=3D"179" style=3D"display: block; color: #fff=
+fff; font-family: Inspire, InspireTWDC, 'Trebuchet MS', Arial, sans-serif; =
+font-size: 16px; text-align: center; font-weight: normal; line-height: 22px=
+;"></a>=0D=0A                        </td>=0D=0A                      </tr>=
+=0D=0A                      =0D=0A                    </table>=0D=0A       =
+           </td>=0D=0A=0D=0A                  <td align=3D"center" style=3D=
+"border-collapse: collapse; -webkit-font-smoothing: antialiased;">=0D=0A   =
+                 <table role=3D"presentation" cellpadding=3D"0" cellspacing=
+=3D"0" border=3D"0" width=3D"100%" style=3D"border-collapse: collapse;">=0D=
+=0A                      <tr>=0D=0A                        <td align=3D"cen=
+ter" style=3D"border-collapse: collapse; -webkit-font-smoothing: antialiase=
+d;">=0D=0A                        <a href=3D"https://links.messaging.disney=
+plus.com/f/open-in-app/YOVaO-bhiSMMglpGQLcwpw~~/AAQRxRA~/M_IFnsh2f4fXcPhuHC=
+8bbVNgAvg0d--o1_nwrRi9mWzRFIiO26YH3rShNNBVJm8TqxGpQroVGnn6zX4J7ZnlqDYNVYR2a=
+Vza8RE6pLWRnRLytpzXyYrGmzbCPJJ5DZF5Kx2c2brzohZ36uzOFnJ8mu2oZiexHNrRd7Rt21FD=
+vXXHtHdw7NmxfUJSfXIqFe8Yk86LQpdDHuE1IhY5XdvccZIUxDfEbwI8IodW_iYHq0nFK0f4KxK=
+c4K0nIgAzKfz5m7YtrdAKOD7y5KCP4VakWZp0i6lhrFGuGXgDk6bGzwuhwToGVcbVO0CssmwAOM=
+xEpzSzWEa8Fqy6488XlmxmAZ8JP3OkYFWXvWpafjq5S4MdySxGIDRD-NVwkwjYqchwwUVp48SfO=
+kcb_YlXgjEZY8XABUQoB3kiiZ25bdQ8o9EnM1krE3jxCKKku_MQ4X60goCUcTzrXt3VcNd45KyL=
+UmKcEEtYQegt-2bIfEPEszBSyoP9eqn3_iT87QHS7-ijr9Y3DEKiOQoB2h_zzuqSJlcDQV3toHe=
+C2ICmn7yG_zGnVqyzARbkN_kXZHKJ1m9ek8pjggmgRkM9uIWLX2mwaf9DFi3G7_qlF5Dfdlq8Ob=
+DIgGEJ2yzqJgJyGjq5CY2K"  target=3D"_blank" alias=3D"srail-newly_added-2" st=
+yle=3D"text-decoration: none; -webkit-font-smoothing: antialiased;"><img sr=
+c=3D"https://disney.images.edge.bamgrid.com/ripcut-delivery/v1/variant/disn=
+ey/9c12be53-02ed-4e25-8d5d-04f219479511/scale=3Fformat=3Dpng&width=3D548" a=
+lt=3D"Mickey Mouse Clubhouse+" border=3D"0" width=3D"127" height=3D"179" st=
+yle=3D"display: block; color: #ffffff; font-family: Inspire, InspireTWDC, '=
+Trebuchet MS', Arial, sans-serif; font-size: 16px; text-align: center; font=
+-weight: normal; line-height: 22px;"></a>=0D=0A                        </td=
+>=0D=0A                      </tr>=0D=0A                      =0D=0A       =
+             </table>=0D=0A                  </td>=0D=0A                  <=
+td align=3D"right" style=3D"border-collapse: collapse; -webkit-font-smoothi=
+ng: antialiased;">=0D=0A                    <table role=3D"presentation" ce=
+llpadding=3D"0" cellspacing=3D"0" border=3D"0" width=3D"100%" style=3D"bord=
+er-collapse: collapse;">=0D=0A                      <tr>=0D=0A             =
+           <td align=3D"right" style=3D"border-collapse: collapse; -webkit-=
+font-smoothing: antialiased;">=0D=0A                          <a href=3D"ht=
+tps://links.messaging.disneyplus.com/f/open-in-app/idCWtAc9Emhp_huz3f1MuA~~=
+/AAQRxRA~/M_IFnsh2f4fXcPhuHC8bbVNgAvg0d--o1_nwrRi9mWzRFIiO26YH3rShNNBVJm8Tm=
+nPgCFeePdAAJFNBiP9sGENNjzra1u-sgSYALxjSFaPtSNzCaidhDqAYSvV2abVQoN7ADu8SZJRJ=
+6np_T3cMk8JcJaP-IYQ0vCTHWiqsxy_EciAdSSSiW-zFLgJpczYMHKESyceE899IvCwbODI9mN3=
+HSxMiynS3gzaAidYbxwVGB9x8wjZLK_z7yF_cTRmGewWpePUVaE4B-7OSq03oFQIypAHrH5N896=
+eueOJJ77m2Emu7EduoGz49dBg8N9LYmTfQaujXzrvgBrwa7UbEE9qoTU7FRBjsnaMRajudO1mMU=
+widq2zzxK1IjlL5X23D4tUbIXEmBom84KTRhUM_7xlLmS961LJzlQY5OcM5r0x4o03Q16YdRBO-=
+wjBEsaOaQgQLDznJly3YYW8PSolC1qEx_sdE4fq1yyWNyzbflIeoUCGIv8gf5rPTJgaWrD4gL2S=
+1MnWAwz3QC5sQs43VPgVTiYPz0o-GYXyUXvfZj1auu_53BNdhlD0qDIY9HrE9XAHKo1V1vaNjlA=
+JPyyswUfm-3mKqkBw-Yvv8Q15EHf5MT5oFu0NZpzBlRZWxMSPv"  target=3D"_blank" alia=
+s=3D"srail-newly_added-3" style=3D"text-decoration: none; -webkit-font-smoo=
+thing: antialiased;"><img src=3D"https://disney.images.edge.bamgrid.com/rip=
+cut-delivery/v1/variant/disney/019d985b-cdb5-7fc9-819e-4767048f039c/scale=
+=3Fformat=3Dpng&width=3D548" alt=3D"Good Boy" border=3D"0" width=3D"127" he=
+ight=3D"179" style=3D"display: block; color: #ffffff; font-family: Inspire,=
+ InspireTWDC, 'Trebuchet MS', Arial, sans-serif; font-size: 16px; text-alig=
+n: center; font-weight: normal; line-height: 22px;"></a>=0D=0A             =
+           </td>=0D=0A                      </tr>=0D=0A                    =
+  =0D=0A                    </table>=0D=0A                  </td>=0D=0A    =
+            </tr>=0D=0A              </table>=0D=0A            </td>=0D=0A =
+         </tr>=0D=0A        </table>=0D=0A      </td>=0D=0A    </tr>=0D=0A =
+   <!-- END Title_H2_3up_Dusk -->=0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=0A=
+    =0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=0A   =0D=0A =0A          =
+                          =0D=0A=0D=0A   =0D=0A  =0D=0A  =0D=0A=0D=0A  =0D=
+=0A  =0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A  =
+  =0D=0A  =0D=0A  =0D=0A    =0D=0A    =0D=0A  =0D=0A  =0D=0A    =0D=0A    =
+=0D=0A  =0D=0A  =0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A    =0D=
+=0A    =0D=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A    =0D=0A    =0D=0A=
+=0D=0A    =0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=
+=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=0A  =
+=0D=0A  =0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A    =
+=0D=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=0A   =
+ =0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A    =0D=
+=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=0A  =
+=0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=0A  =
+=0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A =
+   =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A    =0D=0A    =
+=0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A   =
+ =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=
+=0A  =0D=0A  =0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A=
+    =0D=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=
+=0A    =0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A  =
+  =0D=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=
+=0A  =0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=
+=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=0A    =
+=0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A    =0D=
+=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=0A  =
+=0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=0A  =
+=0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A =
+   =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A    =0D=0A    =
+=0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A   =
+ =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=
+=0A  =0D=0A  =0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A=
+    =0D=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=
+=0A    =0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A  =
+  =0D=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=
+=0A  =0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=
+=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=0A    =
+=0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A    =0D=
+=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=0A  =
+=0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=0A  =
+=0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A =
+   =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A    =0D=0A    =
+=0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A   =
+ =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=
+=0A  =0D=0A  =0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A=
+    =0D=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=
+=0A    =0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A  =
+  =0D=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=
+=0A  =0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=
+=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=0A    =
+=0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A    =0D=
+=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=0A  =
+=0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=0A  =
+=0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A =
+   =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A    =0D=0A    =
+=0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A   =
+ =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=
+=0A  =0D=0A  =0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A=
+    =0D=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=
+=0A    =0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A  =
+  =0D=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=
+=0A  =0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=
+=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=0A    =
+=0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A    =0D=0A    =0D=
+=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=0A  =
+=0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=0A  =
+=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A  =0D=0A =
+ =0D=0A  =0D=0A  =0D=0A  =0D=0A    =0D=0A    =0D=0A  =0D=0A=0D=0A  =0D=0A  =
+=0D=0A    =0D=0A    =0D=0A    =0D=0A    =0D=0A    =0D=0A    =0D=0A  =0D=0A =
+   =0D=0A  =0D=0A  =0D=0A  =0D=0A=0D=0A  =0D=0A=0D=0A  =0D=0A  =0D=0A=0D=0A=
+    =0D=0A    =0D=0A    =0D=0A=0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=0A   =
+ =0D=0A    =0D=0A    =0D=0A    =0D=0A    =0D=0A    =0D=0A    =0D=0A    =0D=
+=0A    =0D=0A    =0D=0A=0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=0A    =0D=0A=
+    =0D=0A    =0D=0A    =0D=0A    =0D=0A    =0D=0A        =0D=0A    =0D=0A =
+   =0D=0A    =0D=0A        =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A    =
+=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A    =0D=0A    <!-- START Ti=
+tle_H2_3up_Dusk -->=0D=0A    =0D=0A    =0D=0A    <tr>=0D=0A      <td algin=
+=3D"center" style=3D"border-collapse: collapse; -webkit-font-smoothing: ant=
+ialiased;">=0D=0A        <table class=3D"module" role=3D"presentation" cell=
+padding=3D"0" cellspacing=3D"0" border=3D"0" width=3D"100%" align=3D"center=
+" bgcolor=3D"#054553" style=3D"border-bottom-width: 1px; direction: ltr; te=
+xt-align: center; border-collapse: collapse; margin: 0; border-style: none;=
+">=0D=0A          <tr>=0D=0A            <td align=3D"center" style=3D"borde=
+r-collapse: collapse; -webkit-font-smoothing: antialiased; padding: 0 40px =
+48px;">=0D=0A              <table role=3D"presentation" cellpadding=3D"0" c=
+ellspacing=3D"0" border=3D"0" width=3D"100%" style=3D"border-collapse: coll=
+apse;">=0D=0A                <tr>=0D=0A                  <td align=3D"left"=
+ style=3D"border-collapse: collapse; -webkit-font-smoothing: antialiased;">=
+=0D=0A                    <table role=3D"presentation" cellpadding=3D"0" ce=
+llspacing=3D"0" border=3D"0" width=3D"100%" style=3D"border-collapse: colla=
+pse;">=0D=0A                      <tr>=0D=0A                        <td ali=
+gn=3D"left" style=3D"border-collapse: collapse; -webkit-font-smoothing: ant=
+ialiased;">=0D=0A                        <a href=3D"https://links.messaging=
+.disneyplus.com/f/open-in-app/YVa7X6KEeeCrf9bqXT9ieA~~/AAQRxRA~/M_IFnsh2f4=
+fXcPhuHC8bbVNgAvg0d--o1_nwrRi9mWzRFIiO26YH3rShNNBVJm8TlNCaEj7XInTMmI9hQ27Ak=
+IXcpyDdeC5qXbOi1-wfhOeOpnKKvS-KyL8d39j3CLpmiI1Dqv6Jbr-HiG4ItlYJSfExxkx2TI2v=
+Mm8kcxG-oj5-eWq7VfmZTsmrdFT2wuiTlpqlXdnBBQ8LVW-W7Upv51vbRRu6C4052uNk3nFMbZS=
+Gw8xzWA_8qEDErp3yfyzYE4lGOH2Jviult7FuSgoR9tvu1vYkIP2cRzIJDjydl0cl7rKnRMXyXY=
+IDoL1zW9USV5PGd9rK_ajKA6uIK3j0-IMpzttaa5F7SXm9IIklKIwhMiNnl-1L4Av3puGnbtoyW=
+oIKSCTxukKFWVxKWdm33ZXMdhGKbCAMRHVFTo4py3fwuZuUAmechBEEHDDWej5RdWbc3Qinelds=
+9M5-Q1da56LZVzNxec532hFN3LdT_WemGhaC2DjWj0zsBqwmeaTaKX-cjmMgpQwQsfnc5wuVD6T=
+75Z3KyNnA62r2zBkrZItNvfF-CnhScoQ8M7xePXwt6bIMDzTeS5JLZjgEF0QGRIPDwkITkNe3sv=
+6KUvVqY7dzOlEtNizJgHb92G64C-M9"  target=3D"_blank" alias=3D"srail-newly_add=
+ed-4" style=3D"text-decoration: none; -webkit-font-smoothing: antialiased;"=
+><img src=3D"https://disney.images.edge.bamgrid.com/ripcut-delivery/v1/vari=
+ant/disney/019d45ad-b355-74c5-a25e-2e272ec15527/compose=3Fformat=3Dpng&labe=
+l=3Dstandard_art_fox_071&width=3D548" alt=3D"MasterChef" border=3D"0" width=
+=3D"127" height=3D"179" style=3D"display: block; color: #ffffff; font-famil=
+y: Inspire, InspireTWDC, 'Trebuchet MS', Arial, sans-serif; font-size: 16px=
+; text-align: center; font-weight: normal; line-height: 22px;"></a>=0D=0A  =
+                      </td>=0D=0A                      </tr>=0D=0A         =
+             =0D=0A                    </table>=0D=0A                  </td=
+>=0D=0A=0D=0A                  <td align=3D"center" style=3D"border-collaps=
+e: collapse; -webkit-font-smoothing: antialiased;">=0D=0A                  =
+  <table role=3D"presentation" cellpadding=3D"0" cellspacing=3D"0" border=
+=3D"0" width=3D"100%" style=3D"border-collapse: collapse;">=0D=0A          =
+            <tr>=0D=0A                        <td align=3D"center" style=3D=
+"border-collapse: collapse; -webkit-font-smoothing: antialiased;">=0D=0A   =
+                     <a href=3D"https://links.messaging.disneyplus.com/f/op=
+en-in-app/o41qbFWUdmBBcEz96y3jEQ~~/AAQRxRA~/M_IFnsh2f4fXcPhuHC8bbVNgAvg0d--=
+o1_nwrRi9mWzRFIiO26YH3rShNNBVJm8TPhjva9JmNAIqzKa-gsc3PxhySXF1qo0QyyImyx9l0Q=
+yGMq3YLeFzml6kmD-M6Pza9_CAwXHZs2rLJCEOgigmQN-H6Di96S1_lbS9MjT7eQXmoe0vSXBYM=
+WK9ojIKjp1m16k823c4dHjyVpyI-7T_sXfTzDe-WlWFl9jR2pDXIBi-V5ArTnOpIeP0aU6YNwKo=
+cP0FKPFXy30D2fjx1-8STbeU0tbWL5u8lTmr2MbS0Pze25SqWDehOkZ0foiZzlBQufRb9gj4DFr=
+uGeTxsKymutOITQtnqYeV_Pa0KEMvGsgUREbw99CtHZIxUmM_icbgG1hQya_-7zSLTb-ht0k3V-=
+b_eT08WnCJIkTSRciYuUWLwbkyrOs-kDRza41aeFY6J8KiWPqLpHjuLlRyigQIRmgJPoODjP--8=
+8EMatAe-xaoAbiGDBfLhHv9Qt9GBk9OXWORjJIGoySgVl6kyNj_df9z-Ncfl2kkk30VuGUBox_n=
+AKPpLjwspM55bWjcawTmmVyNVmaL0hAuFudfecIExa5J3pjBgN7Wvprm7OmO43i7e7T_bqy8-q2=
+0UYwDbLo_"  target=3D"_blank" alias=3D"srail-newly_added-5" style=3D"text-d=
+ecoration: none; -webkit-font-smoothing: antialiased;"><img src=3D"https://=
+disney.images.edge.bamgrid.com/ripcut-delivery/v1/variant/disney/019d9897-0=
+3a6-7ea7-803e-392949b540b5/compose=3Fformat=3Dpng&label=3Dstandard_art_disn=
+ey-original_071&width=3D548" alt=3D"Orangutan" border=3D"0" width=3D"127" h=
+eight=3D"179" style=3D"display: block; color: #ffffff; font-family: Inspire=
+, InspireTWDC, 'Trebuchet MS', Arial, sans-serif; font-size: 16px; text-ali=
+gn: center; font-weight: normal; line-height: 22px;"></a>=0D=0A            =
+            </td>=0D=0A                      </tr>=0D=0A                   =
+   =0D=0A                    </table>=0D=0A                  </td>=0D=0A   =
+               <td align=3D"right" style=3D"border-collapse: collapse; -web=
+kit-font-smoothing: antialiased;">=0D=0A                    <table role=3D"=
+presentation" cellpadding=3D"0" cellspacing=3D"0" border=3D"0" width=3D"100=
+%" style=3D"border-collapse: collapse;">=0D=0A                      <tr>=0D=
+=0A                        <td align=3D"right" style=3D"border-collapse: co=
+llapse; -webkit-font-smoothing: antialiased;">=0D=0A                       =
+   <a href=3D"https://links.messaging.disneyplus.com/f/open-in-app/noxiiRdd=
+OC7adyCbyAZJkg~~/AAQRxRA~/M_IFnsh2f4fXcPhuHC8bbVNgAvg0d--o1_nwrRi9mWzRFIiO2=
+6YH3rShNNBVJm8TTws6dXTZlKEkEXthCqG_7190VMsf7xyLz4eJZvXg7h1BAeu7nR3fOuCfta6e=
+T2aEDb3Y4TthGGn3i4nAbWYxJCgG6OUJdDvRfU_KQnAs2emOY0QxfOkA4sXoB_Lstg0so1ixign=
+KUW0tfys7MCi4kX3OD7mJiipD2rCVYjoCQsItphwcdnF6wKpsT7eVqXJrO2rUF6TEdRKxbRKqJr=
+IJMYF0562OUYoYslSai114Li1NRNXlmSepy6HVdv8WRfkEBNLcGxoopS-rr1-J8ECVZPkz6lK7o=
+PLHUXXrU6ZYwX4H0FxmFDvYJiGX19QJ8-4ob0HsTxX0j_evedn1f37HuiicsHez2QjmUBwFj0Cy=
+e5iKg_6E3xdgkUCCEPfj_elzu4Rc7yxky_3_oCncQ-nW2H_cdxL9lOvKiAteYmZ2373IIsMR9CZ=
+o4xV_cMBpmSJvnAFB38VRjHZTwvVL1eVIyeSoNvaaayxUS40clLBmGQjQPa2YkuWnikLpmSt0wV=
+tiRbRKR6Mmi1VFjkvqsUyk9ts-V_ho4FSPZMTLoOBk7B2ScCWLq_8OQKMQfVEu97ny"  target=
+=3D"_blank" alias=3D"srail-newly_added-6" style=3D"text-decoration: none; -=
+webkit-font-smoothing: antialiased;"><img src=3D"https://disney.images.edge=
+.bamgrid.com/ripcut-delivery/v1/variant/disney/019d755f-bc17-7e7c-ba3f-cef=
+ff3ec30c9/scale=3Fformat=3Dpng&width=3D548" alt=3D"No Other Choice" border=
+=3D"0" width=3D"127" height=3D"179" style=3D"display: block; color: #ffffff=
+; font-family: Inspire, InspireTWDC, 'Trebuchet MS', Arial, sans-serif; fon=
+t-size: 16px; text-align: center; font-weight: normal; line-height: 22px;">=
+</a>=0D=0A                        </td>=0D=0A                      </tr>=0D=
+=0A                      =0D=0A                    </table>=0D=0A          =
+        </td>=0D=0A                </tr>=0D=0A              </table>=0D=0A =
+           </td>=0D=0A          </tr>=0D=0A        </table>=0D=0A      </td=
+>=0D=0A    </tr>=0D=0A    <!-- END Title_H2_3up_Dusk -->=0D=0A=0D=0A    =0D=
+=0A    =0D=0A    =0D=0A    =0D=0A=0D=0A    =0D=0A    =0D=0A    =0D=0A=0D=0A=
+   =0D=0A =0A                                    =0A=09=09<!-- START Banner=
+_A2_null_Dusk -->=0A=0A=0A=0D=0A=0D=0A  =0D=0A=0D=0A=0D=0A=0D=0A  =0D=0A=0D=
+=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=
+=0D=0A=0A<tr>=0A    <td align=3D"center" style=3D"border-collapse: collapse=
+; -webkit-font-smoothing: antialiased;">=0A        <table class=3D"module" =
+role=3D"presentation" cellpadding=3D"0" cellspacing=3D"0" border=3D"0" widt=
+h=3D"100%" align=3D"center" bgcolor=3D"#054553" style=3D"border-bottom-widt=
+h: 1px; border-bottom-color: #054553; border-collapse: collapse; margin: 0;=
+ border-style: none;">=0A            <tr>=0A                <td align=3D"ce=
+nter" style=3D"border-collapse: collapse; -webkit-font-smoothing: antialias=
+ed; padding: 5px 0px 50px;" class=3D"appleLinksBlack">=0A                  =
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentatio=
+n" style=3D"border-collapse: separate; line-height: 100%;">=0A             =
+       <tr>=0A                      <td align=3D"center" bgcolor=3D"#02D6E8=
+" role=3D"presentation" style=3D"border-radius: 4px; width: 375px; height: =
+50px; border-collapse: collapse; -webkit-font-smoothing: antialiased; borde=
+r-style: none;" valign=3D"middle">=0A                        <a href=3D"htt=
+ps://links.messaging.disneyplus.com/f/open-in-app/jLzIHwIUjuPuLBHt5snyWg~~/=
+AAQRxRA~/mwF7JaudPbrpd35ZT75l8Lh41BriITI09FRj1HklRUq5PyRPysl6eE3S3hbOiFP1z1=
+afWwUzhU-Be5AA6v9wlrrj8w0RKzOPV0fL_OReD91KuR5dFtsKHLU7Ta-c0UYfOnUWvL_lc1cAV=
+1G2941RNwp7bNguY8sOTLXqp7uizy-Z1-uCj_tiKLPGyLe3YexBTY2eCach4Y5orU1X9rRkwIxM=
+WzplNXDGlM4_pcZr-9FAzEvEDmEnohz_Ao1CBVfbxNt5gl0fghSALV_-KNZDQzg9JhBqYX4Yvbi=
+9s7LkpDyjCEbKMx4_r9ANndYx3B2oxjmhuqlAwz9R7FNjyG723mIeDmfT6AelhFuNivIZ9embQw=
+7fh6on8K8PvkEcQTTQK9eladJBE2Um4CbnlFsJs59xowb-ju6RAAN0Fp88nuOcCEWIpdUBnzEuV=
+7B2Oj1pp7OmLY910QHoFr2hx6jqslvbPT_dbENNAIr_KUJ7_CFmWefhrHjW3L9y4ea-aFTgx8Tm=
+PWiTccAM4wHp46e2ZA~~" class=3D"buttonLink" style=3D"background-color: #02D6=
+E8; background-image: linear-gradient(#02D6E8,#02D6E8) !important; box-shad=
+ow: inset 0px 50px #02D6E8; border-radius: 4px; display: inline-block; colo=
+r: #000000; font-family: Inspire, InspireTWDC, 'Trebuchet MS', Arial, sans-=
+serif; font-size: 16px; font-weight: bold; line-height: 50px; text-align: c=
+enter; text-decoration: none; text-transform: uppercase; letter-spacing: 1.=
+6px; width: 375px; height: 50px; -webkit-text-size-adjust: none; mso-line-h=
+eight-rule: exactly; -webkit-font-smoothing: antialiased;">=0A             =
+      Stream Now=0A                        </a>=0A                      </t=
+d>=0A                    </tr>=0A                </table>=0A               =
+ </td>=0A            </tr>=0A        </table>=0A    </td>=0A</tr>=0A<!-- EN=
+D Banner_A2_null_Dusk -->=0A=0A=0A=0A=09=09=09=09=09=09=09=09=09<!-- START =
+Banner_E1_Streaming_null_Twilight -->=0A=0A=0A=0D=0A=0D=0A  =0D=0A=0D=0A=0D=
+=0A=0D=0A  =0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=
+=0A=0D=0A=0D=0A=0D=0A=0D=0A=0A=0D=0A=0D=0A  =0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=
+=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=
+=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=
+=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=
+=0A=0D=0A=0D=0A=0D=0A=0A<tr>=0A  <td align=3D"center" style=3D"border-colla=
+pse: collapse; -webkit-font-smoothing: antialiased;">=0A    <table class=3D=
+"module" role=3D"presentation" cellpadding=3D"0" cellspacing=3D"0" border=
+=3D"0" width=3D"100%" bgcolor=3D"#02172A" style=3D"border-bottom-width: 1px=
+; border-bottom-color: #02172A; border-collapse: collapse; margin: 0; borde=
+r-style: none;">=0A      <tr>=0A        <td align=3D"center" style=3D"font-=
+size: 20px; font-weight: 700; text-transform: none; color: #ffffff; font-fa=
+mily: Inspire, InspireTWDC, 'Trebuchet MS', Arial, sans-serif; letter-spaci=
+ng: 0px; line-height: 26px; mso-line-height-rule: exactly; border-collapse:=
+ collapse; -webkit-font-smoothing: antialiased; padding: 24px 40px;">=0A   =
+       All of these and more now&nbsp;streaming=0A        </td>=0A      </t=
+r>=0A    </table>=0A  </td>=0A</tr>=0A<!-- END Banner_E1_Streaming_null_Twi=
+light -->=0A=0A                                    <!-- =3D=3D=3D=3D=3D=3D =
+END Body Modules =3D=3D=3D=3D=3D=3D=3D=3D -->=0A                           =
+     </table>=0A                            </td>=0A                       =
+ </tr>=0A                        <tr>=0A                            <td ali=
+gn=3D"center" style=3D"border-collapse: collapse; -webkit-font-smoothing: a=
+ntialiased;">=0A                                <table class=3D"module" rol=
+e=3D"presentation" cellpadding=3D"0" cellspacing=3D"0" border=3D"0" width=
+=3D"100%" bgcolor=3D"#02172A" style=3D"border-bottom-width: 1px; border-bot=
+tom-color: #02172A; border-collapse: collapse; margin: 0; border-style: non=
+e;">=0A                                    <tr>=0A                         =
+               <td style=3D"border-collapse: collapse; -webkit-font-smoothi=
+ng: antialiased;">=0A                                            <table rol=
+e=3D"presentation" cellpadding=3D"0" cellspacing=3D"0" border=3D"0" width=
+=3D"100%" style=3D"border-collapse: collapse;">=0A                         =
+                       <tr>=0A                                             =
+       <td align=3D"center" style=3D"border-collapse: collapse; -webkit-fon=
+t-smoothing: antialiased;">=0D=0A=0D=0A  =0D=0A=0D=0A=0D=0A=0D=0A  =0D=0A=
+=0D=0A=0D=0A<!-- START FooterSocial_A1_null_Twilight -->=0D=0A=0D=0A=0D=0A=
+=0D=0A=0D=0A=0D=0A  =0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A =0D=0A=0D=0A=0D=0A=
+=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=
+=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=
+=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=
+=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A<table role=3D"presentation" w=
+idth=3D"100%" cellspacing=3D"0" cellpadding=3D"0" border=3D"0" style=3D"bor=
+der-collapse: collapse;">=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=
+=0D=0A=0D=0A=0D=0A    =0D=0A   =0D=0A    <tr>=0D=0A        <td style=3D"fon=
+t-family: Inspire, InspireTWDC, 'Trebuchet MS', Arial, sans-serif; font-siz=
+e: 20px; font-weight: bold; line-height: 26px; color: #ffffff; padding-top:=
+ 20px; padding-left: 40px; padding-right: 40px; padding-bottom: 20px; mso-l=
+ine-height-rule: exactly; direction: ltr; border-collapse: collapse; -webki=
+t-font-smoothing: antialiased;" align=3D"center">Follow us=0D=0A        </t=
+d>=0D=0A    </tr>=0D=0A    <tr>=0D=0A        <td align=3D"center" style=3D"=
+border-collapse: collapse; -webkit-font-smoothing: antialiased;">=0D=0A    =
+        =0D=0A            <table role=3D"presentation" cellspacing=3D"0" ce=
+llpadding=3D"0" border=3D"0" style=3D"direction: ltr; text-align: left; bor=
+der-collapse: collapse;">=0D=0A                <tr>=0D=0A                  =
+  <td align=3D"center" width=3D"35" style=3D"border-collapse: collapse; -we=
+bkit-font-smoothing: antialiased;">=0D=0A                        <a href=3D=
+"https://links.messaging.disneyplus.com/f/a/P22E_0UfbDantNUyaxqQOw~~/AAQRxR=
+A~/65_q0SrsQ_TuDyrr9cAgVaMPxRtP3H0heZX328qOnlPwc18DNx_7blGBSb2zCClgwj6vcOeX=
+ajFkHcj0tCv8sMxjjEUNnq26ETEAcGUTx7to2w1apmYxCWCzGtfPjLjMRUVzjzTYxE_Q2hNQlQu=
+Is0iC7O0x7LZMOWz_f8rgVTwkacBCbw4CENxZLdykzMHG1_JTik5G0fFmxOSQoBwL_z02qwem52=
+xoM2kb2nn2u4JujqcCL6lCUgDGCoi4wlWn7pUcr6YxqWqqxeUdkqhVsFIO_xhDByhwCZZ2yr4Rr=
+9j_I9yeeGp10F3eY80cY-1wEbaK0OJEQtloCw9mpPk1BoFzl869lXgjaxo_M2BjVuHHDlVHZjjq=
+XILn6jUOdOL9vyQNIiHC6Eegim_11N8Kx6i1q2jJ9HvGiIssdHUSXAdncfEvBRj99YPgZPy1yZK=
+ViKJpZFwtCGS3Egdv9n6asWu3lKU_PdpMwC-9afZFqBXmQKEDZlKq8i_kEbchmjVsWOV2RwVZ2T=
+Ox_ROrmgTzLAxlwmcyqIyf_J21wJup208~" target=3D"_blank" alias=3D"Instagram_lo=
+go" style=3D"color: #ffffff; text-decoration: none; -webkit-font-smoothing:=
+ antialiased;"><img src=3D"https://braze-images.com/appboy/communication/as=
+sets/image_assets/images/6751c52e9daf3400663f5a49/original.png=3F1733412141=
+" alt=3D"Instagram" style=3D"display: block; height: auto; color: #ffffff; =
+font-family: Inspire, InspireTWDC, 'Trebuchet MS', Arial, sans-serif; font-=
+size: 16px; text-align: center;" width=3D"34" border=3D"0"></a>=0D=0A      =
+              </td>=0D=0A                    <td style=3D"padding-left: 40p=
+x; padding-right: 20px; border-collapse: collapse; -webkit-font-smoothing: =
+antialiased;" align=3D"center">=0D=0A                        <a href=3D"htt=
+ps://links.messaging.disneyplus.com/f/a/cgqN1AQHZW6wfibLEmMi_Q~~/AAQRxRA~/h=
+V_0IK1tUyS2N7kABwZeXXDkJqk0GvT4k0NqByqoGIPWAyRzJW6rii8gt0yDxgacsqiTpWwdeCUF=
+QxphC04WO25Tq10lezwSS4T1nf5doB7M4CSetV88jna-aeBogM2MXBiQrt1Jyr512fkh6dTX5gj=
+FNv3C08Xr3Tiet3zJJChsaiSqTA2m_n76q8bxpH-d85QV9iVucO__b5iuhHsxK8qFcSZD4FoJSa=
+0_QeUZEsKGsaarbvRx00RIkv_zOGKPqlsBo-mGvOq5QCsME7qXPC4zj14ShWIjBtC5nwplHJ3hS=
+K8wwb88PDP6Pnpp5-Ic4sNUo6dEBim4FLmWUH05U1TyrqUuRM36rwqGIz2VPlGPYDxAFIBM0lNw=
+ZQgqMYiAaFFJX33JEA8BlfsMnNZTWp_wyJM28JvJgwLcVIZKhbCGqao0AhDQrWaCx2kKar3UcS3=
+ss5zi4Y-TXsiILMwVtbSGBFwSrWs8xpOMpV9SCkZzsTjQ9C3Ga0eqkOI3KXe-hIIF9gJAwilml1=
+tbWhF5CUbpE0vgnIuUEEVBPXC8k2A~" target=3D"_blank" alias=3D"TikTok_logo" sty=
+le=3D"color: #ffffff; text-decoration: none; -webkit-font-smoothing: antial=
+iased;"><img src=3D"https://braze-images.com/appboy/communication/assets/im=
+age_assets/images/6751c52d9afe6f20b0ae4a94/original.png=3F1733412141" alt=
+=3D"TikTok" style=3D"display: block; height: auto; color: #ffffff; font-fam=
+ily: Inspire, InspireTWDC, 'Trebuchet MS', Arial, sans-serif; font-size: 16=
+px; text-align: center;" width=3D"34" border=3D"0"></a>=0D=0A              =
+      </td>=0D=0A                    <td style=3D"padding-left: 20px; paddi=
+ng-right: 40px; border-collapse: collapse; -webkit-font-smoothing: antialia=
+sed;" align=3D"center">=0D=0A                        <a href=3D"https://lin=
+ks.messaging.disneyplus.com/f/a/0zufe6zAqeG3RGuIFbjqJQ~~/AAQRxRA~/xJCmSZmHs=
+oBje_3C160GiHin4V-TluOCOdzUw1X_ZGZ1Bi6NF_MhwdbZDlzd_aCI5RyQiEAras_KpERDJFwj=
+OseGUWEdX7Bm_RgYrP1hVKqElpaDJSW2E58PCs_iVl57Vj4gg1bITuw1uloQ09Q8HHR_Q8btbQf=
+nbbbgyxBtHFPVtHO3At6ZRMAc1f0KHCb1xSf9pBs-tVA-aiLyLlDrOS-pg8E6yJ7DRc3a0PZ5AJ=
+zP4Mh200lSkqqPiSm7pBqOafdHyxlCfZ_btNwgy-wu0TzszaQtQyjfp3feXOQsp_ljvIQupxrxa=
+_VFj6F-qxiYvibhdNLudVOrADHy7i02QSk1RPIblYW2L2u-5Jkwe1DKhmaLpmMt_Pk2uOtN0eB3=
+HgwMTRSz5_HbHjp55Yh3PkrqCOnZAiTRqolku8hIF_4K583Z2jCdcP25KPJkw7I2WDyOM5N6P5r=
+hSpoke_gUEFr3x4iwcAgpbxwPRGS-NyEMI8JuFmX8ag4trAAdq1YVoYy217vvlW6H-QU7-IQXrz=
+PFfHB2JzDta_Vjo9e5Y3Q~" target=3D"_blank" alias=3D"Facebook_logo" style=3D"=
+color: #ffffff; text-decoration: none; -webkit-font-smoothing: antialiased;=
+"><img src=3D"https://braze-images.com/appboy/communication/assets/image_as=
+sets/images/6751c52d17256c00641404ad/original.png=3F1733412141" alt=3D"Face=
+book" style=3D"display: block; height: auto; color: #ffffff; font-family: I=
+nspire, InspireTWDC, 'Trebuchet MS', Arial, sans-serif; font-size: 16px; te=
+xt-align: center;" width=3D"34" border=3D"0"></a>=0D=0A                    =
+</td>=0D=0A                    <td align=3D"center" width=3D"36" style=3D"b=
+order-collapse: collapse; -webkit-font-smoothing: antialiased;">=0D=0A     =
+                   <a href=3D"https://links.messaging.disneyplus.com/f/a/P-=
+t9IbsORXmH4jsaadfJzQ~~/AAQRxRA~/rhnlVRJsKHAXCOhyr1e1JFwKZrRLd0hOXGD11LNLUjd=
+Tr_PI8ZI0GbxUKaeO6d_YXHWJgWr-9qLdtYCgdkoewxPJKOrEfy54yIOlk1ZdBkZTTWPWbijk3_=
+q39dxk7gTs_U1viDxbtEaXLTuWYWzj2olasPOPrYE7wpLrSJkds1u5C0Nr1ABUOQZy4GyjJnJ_K=
+rjfrA7imr_DoJewqtwJUYb_aRRFCyx1O9OFaQrEEq-F95_CLBwIk-ibt-gZtXyZ4CGCzeeoCQOU=
+2IOG0tc395zHr1tTjjH5Ix_5fF_F08t3kdmZgm30Z9wZmmEaeESFP-ABJHVS8GKgOp9e_DIc-Q6=
+sro8spRPwB4Vwvfg6dmJZ6aw6NA7iO-wXdNpTOwjN2iuJY1_9Pm-tYUXOWbWidBYLDJhZfeVBxy=
+vI27ZEkZ0Pdg6eYYEiJHXNkNIjde1NDP67nEmraZMNSxuVxo8wVsQTebdEKhzsefL7b5Orh4bSf=
+dmlRNu29LkuJKGExgK__ak4kiX5ys8Mybs81P23CWgMJgWbkr0h_H1jFlMOHAc~" target=3D"=
+_blank" alias=3D"Twitter_logo" style=3D"color: #ffffff; text-decoration: no=
+ne; -webkit-font-smoothing: antialiased;"><img src=3D"https://braze-images.=
+com/appboy/communication/assets/image_assets/images/6751c52dfefb7a0075fb0d3=
+1/original.png=3F1733412141" alt=3D"Twitter" style=3D"display: block; heigh=
+t: auto; color: #ffffff; font-family: Inspire, InspireTWDC, 'Trebuchet MS',=
+ Arial, sans-serif; font-size: 16px; text-align: center;" width=3D"34" bord=
+er=3D"0"></a>=0D=0A                    </td>=0D=0A                </tr>=0D=
+=0A            </table>=0D=0A        </td>=0D=0A    </tr>=0D=0A   =0D=0A   =
+ <tr>=0D=0A        <td style=3D"font-size: 0; border-collapse: collapse; -w=
+ebkit-font-smoothing: antialiased;">=0D=0A            <img src=3D"https://b=
+raze-images.com/appboy/communication/assets/image_assets/images/6751c595a89=
+b670066c2dbf4/original.gif=3F1733412245" alt=3D"" width=3D"1" height=3D"8" =
+style=3D"display: block;" border=3D"0">=0D=0A        </td>=0D=0A    </tr>=
+=0D=0A</table>=0D=0A<!-- END FooterSocial_A1_null_Twilight -->=0A</td>=0A  =
+                                              </tr>=0A                     =
+                           <tr>=0A                                         =
+           <td align=3D"center" style=3D"border-collapse: collapse; -webkit=
+-font-smoothing: antialiased;">=0D=0A=0D=0A  =0D=0A=0D=0A=0D=0A<!-- START F=
+ooterHelp_A1_null_Twilight -->=0D=0A=0D=0A=0D=0A=0D=0A<table role=3D"presen=
+tation" width=3D"100%" cellspacing=3D"0" cellpadding=3D"0" border=3D"0" sty=
+le=3D"direction: ltr; text-align: left; border-collapse: collapse;">=0D=0A =
+ <tr>=0D=0A    <td align=3D"center" style=3D"font-family: Inspire, InspireT=
+WDC, 'Trebuchet MS', Arial, sans-serif; font-size: 16px; color: #ffffff; li=
+ne-height: 22px; mso-line-height-rule: exactly; max-width: 400px; word-brea=
+k: normal; border-collapse: collapse; -webkit-font-smoothing: antialiased; =
+padding: 24px 40px;">=0D=0A=09=09For more information, please visit our&nbs=
+p;<a href=3D"https://links.messaging.disneyplus.com/f/a/CyTkUGmjT5pKdEcZheC=
+dTQ~~/AAQRxRA~/_ohmeqefHrYJRx_LuWIfxy68xI1WZN7aPXMBT3DtErnmVEd7nP-RohC8hAfj=
+KYshgyUKu-MO7bIBbGwlrCQY1A6BCRwC1Ey0Qu7CYib5nzcs-N_MVHxL6lvPXdrmcZdZM5_TAH5=
+yYDwokXWLPmAuTQG3fzrKaARnSIwIihyB6VDIsuSsLwXUZTmUzQ_MmAPYDatbs0AHqVKYeRL-eL=
+3RxZ-K7X9bDvCCcqnOD8W77Go~" target=3D"_blank" alias=3D"Help_Center" class=
+=3D"appleLinksWhite" style=3D"color: #ffffff; text-decoration: underline; w=
+hite-space: nowrap; -webkit-font-smoothing: antialiased;">Help Center</a>=
+=0D=0A    </td>=0D=0A  </tr>=0D=0A</table>=0D=0A<!-- END FooterHelp_A1_null=
+_Twilight -->=0A</td>=0A                                                </t=
+r>=0A                                                =0A                   =
+                             <tr>=0A                                       =
+             <td bgcolor=3D"#757679" style=3D"font-size: 0; border-collapse=
+: collapse; -webkit-font-smoothing: antialiased;">=0A                      =
+                                  <img src=3D"https://braze-images.com/appb=
+oy/communication/assets/image_assets/images/6781931dbd4d0000634da106/origin=
+al.gif" alt=3D"" width=3D"1" height=3D"1" style=3D"display: block;" border=
+=3D"0">=0A                                                    </td>=0A     =
+                                           </tr>=0A                        =
+                        <tr>=0A                                            =
+        <td style=3D"border-collapse: collapse; -webkit-font-smoothing: ant=
+ialiased;">=0D=0A=0D=0A  =0D=0A=0D=0A=0D=0A<!-- START Footer5b_A1_null_Twil=
+ight -->=0D=0A=0D=0A    =0D=0A=0D=0A<table cellspacing=3D"0" cellpadding=3D=
+"0" border=3D"0" align=3D"center" style=3D"border-collapse: collapse;">=0D=
+=0A    <tr>=0D=0A        <td align=3D"center" style=3D"border-collapse: col=
+lapse; -webkit-font-smoothing: antialiased;">=0D=0A            =0D=0A      =
+          <img src=3D"https://braze-images.com/appboy/communication/assets/=
+image_assets/images/69ea8571f80b8a0065a28551/original.png=3F1776977265" alt=
+=3D"" style=3D"display: block;" width=3D"480" height=3D"73" border=3D"0">=
+=0D=0A            =0D=0A        </td>=0D=0A    </tr>=0D=0A</table>=0D=0A=0D=
+=0A<!-- END Footer5b_A1_null_Twilight -->=0A</td>=0A                       =
+                         </tr>=0A                                          =
+      <!-- =3D=3D=3D=3D=3D=3D Custom Footer text can be added here with Foo=
+terAdditional_A1 =3D=3D=3D=3D=3D=3D=3D=3D -->=0A                           =
+                     <tr>=0A                                               =
+     <td style=3D"border-collapse: collapse; -webkit-font-smoothing: antial=
+iased;">=0A                                                        <!-- Ass=
+ign valid region -->=0A                                                    =
+    =0A                                                          =0D=0A=0D=
+=0A  =0D=0A=0D=0A=0D=0A=0D=0A  =0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A<!-- Ass=
+ign unsublanguage from Catalog using language  -->=0D=0A=0D=0A=0D=0A=0D=0A<=
+!-- Assign variables from One_ID  -->=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=
+=0D=0A<!-- Assign URLs -->=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A<!-- Assign Default=
+ lookup -->=0D=0A=0D=0A=0D=0A =0D=0A=0D=0A=0D=0A=0D=0A=0D=0A=0D=0A<table ro=
+le=3D"presentation" width=3D"100%" cellspacing=3D"0" cellpadding=3D"0" bord=
+er=3D"0" style=3D"border-collapse: collapse;">=0D=0A  <tr>=0D=0A    <td ali=
+gn=3D"left" style=3D"border-collapse: collapse; -webkit-font-smoothing: ant=
+ialiased; padding: 24px 40px 39px;">=0D=0A=09  <table role=3D"presentation"=
+ width=3D"100%" cellspacing=3D"0" cellpadding=3D"0" border=3D"0" style=3D"b=
+order-collapse: collapse;">=0D=0A        <tr>=0D=0A          <td width=3D"4=
+00" style=3D"font-size: 11px; font-family: Inspire, InspireTWDC, 'Trebuchet=
+ MS', Arial, sans-serif; line-height: 15px; color: #C0C0C0; max-width: 400p=
+x; word-break: normal; border-collapse: collapse; -webkit-font-smoothing: a=
+ntialiased;" align=3D"left">Content recommendations based on your current s=
+ubscription(s). Content availability subject to change.</td>=0D=0A        <=
+/tr>=0D=0A        <tr>=0D=0A          <td width=3D"400" style=3D"font-size:=
+ 11px; font-family: Inspire, InspireTWDC, 'Trebuchet MS', Arial, sans-serif=
+; line-height: 15px; color: #C0C0C0; padding-top: 24px; max-width: 400px; w=
+ord-break: normal; border-collapse: collapse; -webkit-font-smoothing: antia=
+liased;" align=3D"left">This email was sent to: <a href=3D"#" style=3D"text=
+-decoration:none;color: #C0C0C0; cursor:text;word-break: break-word; overfl=
+ow-wrap: break-word;">user@example.com</a>. Please do not reply to this=
+ email as this address is not monitored. This email contains an advertiseme=
+nt from: Disney Streaming Services, LLC, <a href=3D"#" style=3D"text-decora=
+tion:none;color: #C0C0C0; cursor:text;">500 S. Buena Vista St., Burbank, CA=
+ 91521</a>.</td></tr><tr><td width=3D"400" class=3D"appleLinksGray5UL" styl=
+e=3D"font-family:Inspire, InspireTWDC, 'Trebuchet MS', Arial, sans-serif;fo=
+nt-size:11px;line-height:15px;mso-line-height-rule:exactly; color: #c0c0c0;=
+ padding-top:24px; max-width: 400px; word-break: normal;" align=3D"left">If=
+ you do not want to receive future marketing email messages from Disney+, p=
+lease =0A=0A=0A<a  href=3D"https://links.messaging.disneyplus.com/f/a/KdwDe=
+uZHSQeVM4fYklu7xQ~~/AAQRxRA~/su--enmLoCqR6clFjtDxbIkq0exNcnfW_olMJs6NFrBONm=
+-g5MU7AlfX2TAC59Y_T95lX8UyOwtYzK3psQZFyt1W0DSfSgZPSPvVShe1WbXk1KzxrgYRcUzDu=
+Bnk2yX7keC_30rcHBsRR5LYmHkmoIEK5YCIrJRwcqR1h8dSyLGg5R9gsVoymNF0vLeyY9QZ9Zde=
+_f0kD9CPl5N7VS2U2QHtivjuM50mBmJm6kTC-6Av-2w4xBfnkubAdPPudfUCGZlHeVhJWKetOuC=
+4pQmDYom9CB4LSjhQMR675R6jpscCsrxZSmmavWTNmntTpyYvLYI4eLttsBzyS74Xvzi_mUbgjE=
+Rdj_3O8p1nk7tp5g4SQBATjxwj4vVMKxryzFp4TxPzosEotjKOok-bwkGavn8C4xW-ilxIPBz1h=
+V94vnxYaSJX-JESQ8niCNWHvT216M0iqXLgUn9X80jm3Miuykr3wun6VW5bWjP64UUbh-c~" al=
+ias=3D"optout" style=3D"text-decoration:underline;color:#c0c0c0;"><strong>o=
+pt-out</strong></a>.</td></tr><tr><td width=3D"400" class=3D"appleLinksGray=
+5UL" style=3D"font-family:Inspire, InspireTWDC, 'Trebuchet MS', Arial, sans=
+-serif;font-size:11px;line-height:15px;mso-line-height-rule:exactly; color:=
+ #c0c0c0; padding-top:24px; max-width: 400px; word-break: normal;" align=3D=
+"left">&copy; 2026 Disney and its related entities. All Rights Reserved.</t=
+d>=0D=0A        </tr>=0D=0A        <!-- START SRC CODE -->=0D=0A        <tr=
+>=0D=0A          <td width=3D"400" style=3D"font-size: 11px; font-family: I=
+nspire, InspireTWDC, 'Trebuchet MS', Arial, sans-serif; line-height: 15px; =
+color: #C0C0C0; mso-line-height-rule: exactly; padding-top: 24px; max-width=
+: 400px; border-collapse: collapse; -webkit-font-smoothing: antialiased;" a=
+lign=3D"left">SRC:69ed11101e090ba06b4541e79675334a_EN_US</td>=0D=0A        =
+</tr>=0D=0A        <!-- END SRC CODE --> =0D=0A      </table>=0D=0A    </td=
+>=0D=0A  </tr>=0D=0A</table>=0A                                            =
+            =0A                                                    </td>=0A=
+                                                </tr>=0A                   =
+                         </table>=0A                                       =
+ </td>=0A                                    </tr>=0A                      =
+              <tr>=0A                                        <td style=3D"p=
+adding-left: 240px; padding-right: 240px; border-collapse: collapse; -webki=
+t-font-smoothing: antialiased;"></td>=0A                                   =
+ </tr>=0A                                </table>=0A                       =
+     </td>=0A                        </tr>=0A                    </table>=
+=0A                </td>=0A            </tr>=0A        </table>=0A    =0A=
+=0D=0A<img border=3D"0" width=3D"1" height=3D"1" alt=3D"" src=3D"https://li=
+nks.messaging.disneyplus.com/q/uIdZO4L4s9LA99A3Ckyx8Q~~/AAQRxRA~/YuF3EUzJkU=
+E6FVWtri-mPKjZH3d15d8Mz1864GjK6y86ZF2wAWsEvZ4dNwA9agFmVaxPQeqzk7eD40nHfZDEl=
+A~~">=0D=0A</body>=0A</html>
+--_----fVSwLtqhM6qsLS5KjTD6YQ===_D9/F3-10487-E111DE96--
+
+

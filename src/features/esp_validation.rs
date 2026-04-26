@@ -274,6 +274,23 @@ impl Default for EspValidationFeature {
 }
 
 impl EspValidationFeature {
+    /// Resolve CNAME for a domain to detect custom ESP return-path domains
+    pub fn resolve_cname(domain: &str) -> Option<String> {
+        use std::process::Command;
+        // Use dig for CNAME resolution (fast, no async needed)
+        let output = Command::new("dig")
+            .args(["+short", "+time=2", "+tries=1", domain, "CNAME"])
+            .output()
+            .ok()?;
+        let result = String::from_utf8_lossy(&output.stdout);
+        let cname = result.trim().trim_end_matches('.').to_lowercase();
+        if cname.is_empty() || cname == domain {
+            None
+        } else {
+            Some(cname)
+        }
+    }
+
     pub fn new() -> Self {
         // Default configuration with major ESPs
         let mut providers = HashMap::new();
@@ -436,7 +453,27 @@ impl FeatureExtractor for EspValidationFeature {
 
         // Get sender domain from envelope sender
         let sender_domain = if let Some(sender) = &context.sender {
-            self.analyzer.extract_domain(sender)
+            let domain = self.analyzer.extract_domain(sender);
+            // If domain isn't a known ESP, resolve CNAME to check for custom ESP domains
+            // (e.g., em4475.colocrossing.com -> u26807539.wl040.sendgrid.net)
+            if let Some(ref d) = domain {
+                if !self.analyzer.is_esp_domain(d) {
+                    if let Some(cname) = Self::resolve_cname(d) {
+                        log::info!("ESP Validation: CNAME {} -> {}", d, cname);
+                        if self.analyzer.is_esp_domain(&cname) {
+                            Some(cname)
+                        } else {
+                            domain
+                        }
+                    } else {
+                        domain
+                    }
+                } else {
+                    domain
+                }
+            } else {
+                domain
+            }
         } else {
             None
         };
