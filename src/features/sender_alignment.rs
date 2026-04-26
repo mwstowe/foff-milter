@@ -1875,6 +1875,22 @@ impl FeatureExtractor for SenderAlignmentAnalyzer {
         score += sender_length_score.0;
         evidence.extend(sender_length_score.1);
 
+        // Check if display name matches subject (phishing technique)
+        if !display_name.is_empty() {
+            if let Some(subject) = &context.subject {
+                let dn = display_name.trim().to_lowercase();
+                let subj = subject.trim().to_lowercase();
+                if dn.len() > 10
+                    && subj.len() > 10
+                    && (dn == subj || subj.starts_with(&dn) || dn.starts_with(&subj))
+                {
+                    score += 40;
+                    evidence
+                        .push("Display name matches subject line (phishing technique)".to_string());
+                }
+            }
+        }
+
         FeatureScore {
             feature_name: "Sender Alignment".to_string(),
             score,
@@ -1986,6 +2002,31 @@ impl SenderAlignmentAnalyzer {
                             "Very long sender email address ({} characters)",
                             email_length
                         ));
+                    }
+
+                    // Check for random name + numbers pattern from non-consumer domains
+                    // e.g., virginia_young6782@globalsolutionnetworkexpress.com
+                    let local_part = email.split('@').next().unwrap_or("");
+                    let domain = email.split('@').nth(1).unwrap_or("").to_lowercase();
+                    let consumer_domains = [
+                        "gmail.com",
+                        "yahoo.com",
+                        "hotmail.com",
+                        "outlook.com",
+                        "aol.com",
+                        "icloud.com",
+                        "live.com",
+                        "protonmail.com",
+                    ];
+                    if !consumer_domains.iter().any(|d| domain == *d) {
+                        let re = regex::Regex::new(r"^[a-z]+[._][a-z]+\d{2,}$").unwrap();
+                        if re.is_match(local_part) {
+                            score += 25;
+                            evidence.push(
+                                "Random name with numbers from non-consumer domain (likely fake)"
+                                    .to_string(),
+                            );
+                        }
                     }
                 }
             }

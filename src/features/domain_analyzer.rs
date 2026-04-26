@@ -195,7 +195,7 @@ impl DomainAnalyzer {
         }
 
         if let Some(main_part) = parts.first() {
-            if main_part.len() > 20 {
+            if main_part.len() > 25 {
                 // Skip long domain penalty for legitimate ESP services and known publishers
                 if !domain.contains("msgfocus") && !domain.contains("gardensillustrated") {
                     score += 15;

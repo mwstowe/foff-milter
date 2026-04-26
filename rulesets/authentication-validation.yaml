@@ -247,6 +247,19 @@ rules:
               - type: "FeatureAnalysis"
                 feature_name: "Context Analysis"
                 evidence_pattern: "scam pattern detected"
+              - type: "And"
+                criteria:
+                  - type: "FeatureAnalysis"
+                    feature_name: "Domain Reputation"
+                    evidence_pattern: "Suspicious domain pattern detected"
+                  - type: "FeatureAnalysis"
+                    feature_name: "Domain Reputation"
+                    evidence_pattern: "Excessively long domain name"
+                  - type: "Not"
+                    criteria:
+                      type: "HeaderPattern"
+                      header: "Authentication-Results"
+                      pattern: "dmarc=pass"
     score: -30
     description: "Perfect authentication using feature analysis (Secure risk level)"
 
