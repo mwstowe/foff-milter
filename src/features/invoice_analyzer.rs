@@ -199,6 +199,7 @@ impl FeatureExtractor for InvoiceAnalyzer {
         let subject = context
             .headers
             .get("Subject")
+            .or_else(|| context.headers.get("subject"))
             .map(|s| s.as_str())
             .unwrap_or("");
         let full_text = format!("{} {}", subject, body);
@@ -253,6 +254,34 @@ impl FeatureExtractor for InvoiceAnalyzer {
         if is_medical {
             score = (score as f32 * 0.1) as i32; // 90% reduction for medical institutions
             evidence.push("Medical institution detected - score reduced".to_string());
+        }
+
+        // Skip invoice analysis for medical appointment confirmations
+        let subject_for_check = context
+            .subject
+            .as_deref()
+            .or(Some(subject))
+            .unwrap_or("")
+            .to_lowercase();
+        let from_lower = from_header.to_lowercase();
+        let sender_lower = sender.to_lowercase();
+        let is_medical_appointment = (subject_for_check.contains("appointment")
+            || subject_for_check.contains("visit"))
+            && (subject_for_check.contains(" md")
+                || subject_for_check.contains("dr.")
+                || subject_for_check.contains("doctor")
+                || from_lower.contains("dermatology")
+                || from_lower.contains("medical")
+                || from_lower.contains("clinic")
+                || from_lower.contains("health")
+                || sender_lower.contains("nextpatient"));
+        if is_medical_appointment {
+            return FeatureScore {
+                feature_name: "Invoice Analysis".to_string(),
+                score: 0,
+                confidence: 0.0,
+                evidence: vec![],
+            };
         }
 
         // Check for invoice scam indicators with context awareness

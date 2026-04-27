@@ -224,6 +224,8 @@ impl SenderAlignmentAnalyzer {
             "bounce.e.onestopplus.com",   // OneStopPlus ESP
             "charmtracker.com",           // Healthcare EHR
             "mailerehr.charmtracker.com", // CharmTracker EHR
+            "nextpatient.co",             // Medical scheduling platform
+            "14westmail.net",             // 14West publishing ESP
         ];
 
         legitimate_services

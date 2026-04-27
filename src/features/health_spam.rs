@@ -120,6 +120,7 @@ impl FeatureExtractor for HealthSpamAnalyzer {
             "bloomberg.com",
             "forbes.com",
             "economist.com",
+            "oxfordclub.com",
         ];
         if news_domains.iter().any(|d| sender_domain.contains(d)) {
             return FeatureScore {
@@ -139,7 +140,8 @@ impl FeatureExtractor for HealthSpamAnalyzer {
         let is_newsletter_esp = return_path.contains("rsgsv.net")
             || return_path.contains("mcsv.net")
             || return_path.contains("list-manage.com")
-            || return_path.contains("ccsend.com");
+            || return_path.contains("ccsend.com")
+            || return_path.contains("14westmail.net");
         let is_trusted_esp =
             is_newsletter_esp || crate::features::esp_validation::is_from_trusted_esp(context);
         // Check DKIM alignment for trusted ESP

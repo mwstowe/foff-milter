@@ -1225,6 +1225,25 @@ impl FilterEngine {
         let sender = context.sender.as_deref().unwrap_or("");
         let from_header = context.from_header.as_deref().unwrap_or("");
 
+        // Skip for medical appointment confirmations
+        let subject_lower = subject.to_lowercase();
+        let from_lower = from_header.to_lowercase();
+        if (subject_lower.contains("appointment") || subject_lower.contains("visit"))
+            && (subject_lower.contains(" md")
+                || subject_lower.contains("dr.")
+                || from_lower.contains("dermatology")
+                || from_lower.contains("medical")
+                || from_lower.contains("clinic")
+                || sender.to_lowercase().contains("nextpatient"))
+        {
+            return InvoiceAnalysis {
+                is_fake_invoice: false,
+                confidence_score: 0.0,
+                detected_patterns: vec![],
+                risk_factors: vec![],
+            };
+        }
+
         // Extract domain for business recognition
         let domain = self
             .extract_sender_domain(context)
@@ -8602,6 +8621,7 @@ impl FilterEngine {
             "aliexpress.com",
             "temu.com",
             "temuemail.com",
+            "temuofficial.com",
             "ebay.com",
             "walmart.com",
             "target.com",
@@ -8722,6 +8742,19 @@ impl FilterEngine {
             .to_lowercase()
     }
 
+    fn is_newsletter_esp_return_path(context: &MailContext) -> bool {
+        let rp = context
+            .headers
+            .get("return-path")
+            .map(|s| s.to_lowercase())
+            .unwrap_or_default();
+        rp.contains("rsgsv.net")
+            || rp.contains("mcsv.net")
+            || rp.contains("list-manage.com")
+            || rp.contains("ccsend.com")
+            || rp.contains("14westmail.net")
+    }
+
     fn is_known_news_domain(from_domain: &str) -> bool {
         let news_domains = [
             "nytimes.com",
@@ -8745,6 +8778,9 @@ impl FilterEngine {
 
     fn get_insurance_spam_score(&self, context: &MailContext) -> i32 {
         if Self::is_known_news_domain(&Self::get_from_domain(context)) {
+            return 0;
+        }
+        if Self::is_newsletter_esp_return_path(context) {
             return 0;
         }
 
@@ -8860,18 +8896,7 @@ impl FilterEngine {
         if Self::is_known_news_domain(&Self::get_from_domain(context)) {
             return 0;
         }
-
-        // Skip for newsletters sent via known ESPs
-        let return_path = context
-            .headers
-            .get("return-path")
-            .map(|s| s.to_lowercase())
-            .unwrap_or_default();
-        if return_path.contains("rsgsv.net")
-            || return_path.contains("mcsv.net")
-            || return_path.contains("list-manage.com")
-            || return_path.contains("ccsend.com")
-        {
+        if Self::is_newsletter_esp_return_path(context) {
             return 0;
         }
 
@@ -9384,6 +9409,7 @@ impl FilterEngine {
             "aliexpress.com",
             "temu.com",
             "temuemail.com",
+            "temuofficial.com",
             "ebay.com",
             "walmart.com",
             "target.com",
@@ -9428,6 +9454,7 @@ impl FilterEngine {
             "aliexpress.com",
             "temu.com",
             "temuemail.com",
+            "temuofficial.com",
             "ebay.com",
             "walmart.com",
             "target.com",
