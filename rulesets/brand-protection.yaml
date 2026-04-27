@@ -226,6 +226,9 @@ rules:
               - type: HeaderPattern
                 header: "Authentication-Results"
                 pattern: "dkim=pass.{0,100}\\.(medium|backerkit|joinhoney|williams-sonoma|lovepop|shutterfly|resmed|quora)\\.(com|org)"
+              - type: HeaderPattern
+                header: "Authentication-Results"
+                pattern: "dmarc=pass"
     score: 200
     description: "Brand impersonation with authentication failure (excluding legitimate newsletters)"
 

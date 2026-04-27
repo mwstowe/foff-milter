@@ -168,8 +168,15 @@ rules:
   - name: "Major ESP Infrastructure"
     enabled: true
     criteria:
-      type: "SenderPattern"
-      pattern: ".*@.*(amazonses|sendgrid|mailchimp|constantcontact|mailgun|sparkpost|postmark|mandrill|adobe-campaign|akamaiedge)\\.(com|net)$"
+      type: "And"
+      criteria:
+        - type: "SenderPattern"
+          pattern: ".*@.*(amazonses|sendgrid|mailchimp|constantcontact|mailgun|sparkpost|postmark|mandrill|adobe-campaign|akamaiedge)\\.(com|net)$"
+        - type: "Not"
+          criteria:
+            type: "FeatureAnalysis"
+            feature_name: "Context Analysis"
+            evidence_pattern: "Japanese .* from non-Japanese domain"
     score: -100
     description: "Major email service providers with established reputation"
 

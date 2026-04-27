@@ -1,0 +1,103 @@
+✅ Loading modern TOML configuration: ../foff-milter.toml
+Return-Path: <SRS0=PT72=C2=email-od.com=35d0.82.61ae40000393cfe.d1850e91a6338b8462b3d9864b7c6dfe@eforward.registrar-servers.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.2/8.18.1) with ESMTPS id 63R5fLwM091297
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <mstowe@baddomain.com>; Mon, 27 Apr 2026 05:41:22 GMT
+	(envelope-from SRS0=PT72=C2=email-od.com=35d0.82.61ae40000393cfe.d1850e91a6338b8462b3d9864b7c6dfe@eforward.registrar-servers.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=eforward.registrar-servers.com header.i=@eforward.registrar-servers.com header.b=jCIAhVrL;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=mozilla.org header.i=@mozilla.org header.b=jzQRr3UB;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=email-od.com header.i=@email-od.com header.b=rtJBD6I0
+Received: from eforward1e-1.registrar-servers.com (eforward1e-1.registrar-servers.com [198.54.122.12])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 63R5fILP128170
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <mstowe@baddomain.com>; Mon, 27 Apr 2026 00:41:19 -0500
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 63R5fILP128170
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (2048-bit key, unprotected) header.d=eforward.registrar-servers.com header.i=@eforward.registrar-servers.com header.a=rsa-sha256 header.s=default header.b=jCIAhVrL;
+	dkim=pass (2048-bit key, unprotected) header.d=mozilla.org header.i=@mozilla.org header.a=rsa-sha256 header.s=amoprod header.b=jzQRr3UB;
+	dkim=pass (1024-bit key, unprotected) header.d=email-od.com header.i=@email-od.com header.a=rsa-sha256 header.s=dkim header.b=rtJBD6I0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=eforward.registrar-servers.com; s=default; t=555-123-4567;
+	bh=4Can44phi48xsgU46YGfwKjYXHeDwC7KH+pLJ0Xq1UE=;
+	h=Content-Type:MIME-Version:Content-Transfer-Encoding:Subject:From:
+	 To:Reply-To:Date:In-Reply-To:References:Message-ID:From:Sender:
+	 Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Content-Language;
+	b=jCIAhVrL/rP2o2JUs7q5f76kPrPCMcmNqDmWXBImeFtkM8bSFpTVTCjqHSiA414iB
+	 A3P76mRBqBsHYgVEUAVQGhu4HCgIWtotD10tyuPGQLb2HkkUuSg+dtDz7mUeGI+Gkb
+	 UKIhUnqw421MxX3RQY7vDAGLCN5D+I25b3vvHzqhy2cVn8r2Jj7LLcAVlrY6xxKAnS
+	 UQ/lMcj9WVdcpLgel5wU+FRj0gQsxyzdI1MK+1nUVqQ/p0GjsT2tP8XXuVtw2/+VPC
+	 tVtDTNqhWb5qtE3lB7dp05CyxnbwHW9fp7ueUeGmPq5RI/W2ikoJlDAsghkWsym1GJ
+	 ZdmshO/S+UgUQ==
+Received: from asp-relay.et.namecheap.tech (unknown [10.27.8.204])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519)
+	(No client certificate requested)
+	by eforward.registrar-servers.com (Postfix) with ESMTPS id 4g3sqs3Xs0zC87W5
+	for <info@whitehatblackrabbit.com>; Mon, 27 Apr 2026 05:41:13 +0000 (UTC)
+Authentication-Results: asp-relay.et.namecheap.tech;
+	dkim=pass header.d=mozilla.org header.s=amoprod header.b=jzQRr3UB;
+	dkim=pass header.d=email-od.com header.s=dkim header.b=rtJBD6I0;
+	dmarc=pass (policy=reject) header.from=mozilla.org;
+	spf=pass (asp-relay.et.namecheap.tech: domain of 35d0.82.61ae40000393cfe.d1850e91a6338b8462b3d9864b7c6dfe@email-od.com designates 142.0.177.102 as permitted sender) smtp.mailfrom=35d0.82.61ae40000393cfe.d1850e91a6338b8462b3d9864b7c6dfe@email-od.com
+X-Original-To: <info@whitehatblackrabbit.com>
+Received: from s1-b166.socketlabs.email-od.com (s1-b166.socketlabs.email-od.com [142.0.177.102])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by asp-relay.et.namecheap.tech (Postfix) with ESMTPS id 4g3sql49lhz4vyc
+	for <info@whitehatblackrabbit.com>; Mon, 27 Apr 2026 05:41:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; d=mozilla.org;s=amoprod;
+	c=relaxed/relaxed; q=dns/txt; t=555-123-4567; x=555-123-4567;
+	h=message-id:references:in-reply-to:date:reply-to:to:from:subject:content-transfer-encoding:mime-version:content-type:x-thread-info:subject:to:from:cc:reply-to;
+	bh=4Can44phi48xsgU46YGfwKjYXHeDwC7KH+pLJ0Xq1UE=;
+	b=jzQRr3UBfrYgH6b7J3/yqATo/PcWsWg2vNrUlEx/yJ5OvqrlDzy/iprS1vgylZ1wridL14GYI2/IYr7OnciXF34mrsHgztAiQ1IZAD9AD5zb7bV6p/PPNv0Ae81hg6dFj3iDpYY+1pq/KFZL12wHMN4K5yYxU55YQJ5Mk8UqhvpyCd7kby5jkHlfqH0VVQT3DrTqkYDp43+mt5IE401cQ2qepL/TgJOMg8O3D079HKaOft5fYzBIs2ENxE+X/Pu2TNQyftP9IxeFIDoyOQe/9irj1Z2KPtM/4Zw/T9HXg3nMDtu0xSBLV4SY+cxUmCbo6FpNupmUqqqTrgD7JHNYgA==
+DKIM-Signature: v=1; a=rsa-sha256; d=email-od.com;i=@email-od.com;s=dkim;
+	c=relaxed/relaxed; q=dns/txt; t=555-123-4567; x=555-123-4567;
+	h=message-id:references:in-reply-to:date:reply-to:to:from:subject:content-transfer-encoding:mime-version:content-type:x-thread-info:subject:to:from:cc:reply-to;
+	bh=4Can44phi48xsgU46YGfwKjYXHeDwC7KH+pLJ0Xq1UE=;
+	b=rtJBD6I0qVaC7xGFehb//xAwq6zGJDXuKY8M+kb3QOU0eJXziCPuXenoZXhCSAuQ/bBrUzSVMXaQZ3r+zGmV0ew+G6Y+z6OHU1H8k26piWLAHfc+s4mALlWln9jjUJQQPc9Du4T1o2c3FuqbcesnfB0wro30CIppFhguwVPctsc=
+X-Thread-Info: MzVkMC4xMi42MWFlNDAwMDAzOTNjZmUuaW5mbz13aGl0ZWhhdGJsYWNrcmFiYml0LmNvbQ==
+x-xsSpam: eyJTY29yZSI6MCwiRGV0YWlscyI6bnVsbH0=
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Subject: Mozilla Add-ons: Amazon Auto-Buy [ref:Addon#2957808]
+From: Mozilla Add-ons <nobody@mozilla.org>
+To: user@example.com
+Reply-To: reviewreply+8fecae11bc7541cfb8ad597e5046ae1b@addons.mozilla.org
+Date: Mon, 27 Apr 2026 05:41:04 -0000
+In-Reply-To: <2957808/6236868@addons.mozilla.org>
+References: <2957808/6236868@addons.mozilla.org>
+Message-ID: <2957808/6236868/87461469@addons.mozilla.org>
+X-Auto-Response-Suppress: RN, NRN, OOF, AutoReply
+Auto-Submitted: auto-generated
+X-Jellyfish-No-Auto-Response: 1
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Mon, 27 Apr 2026 05:41:22 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Mon, 27 Apr 2026 00:41:19 -0500 (CDT)
+X-Spam-Flag: YES
+
+Hello,
+
+
+Your Extension has been automatically screened and tentatively approved. It is now available at https://addons.mozilla.org/addon/amazon-auto-buy/.
+
+Your add-on can be subject to human review at any time. Reviewers may determine that it requires changes or should be removed. If that occurs, you will receive a separate notification with details and next steps.
+
+Approved versions: 1.2.0
+
+Comments: This version has been screened and approved for the public. Keep in mind that other reviewers may look into this version in the future and determine that it requires changes or should be taken down.
+
+Thank you!.
+
+
+Thank you.
+
+More information about Mozilla's add-on policies can be found at https://extensionworkshop.com/documentation/publish/add-on-policies/.
+
+[ref:Addon#2957808]
+--
+Mozilla Add-ons Team
+https://addons.mozilla.org
+

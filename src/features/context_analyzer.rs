@@ -1827,7 +1827,10 @@ impl FeatureExtractor for ContextAnalyzer {
             }
         }
 
-        if jp_delivery_keywords.iter().any(|kw| subject.contains(kw)) {
+        // Check subject AND body for Japanese phishing keywords
+        let jp_text = format!("{} {}", subject, body);
+
+        if jp_delivery_keywords.iter().any(|kw| jp_text.contains(kw)) {
             let sender_domain = sender
                 .split('@')
                 .nth(1)
@@ -1846,7 +1849,7 @@ impl FeatureExtractor for ContextAnalyzer {
 
         // Check for Japanese billing/payment phishing from non-Japanese domains
         let jp_billing_keywords = ["お支払い", "未払い", "料金", "請求", "口座"];
-        if jp_billing_keywords.iter().any(|kw| subject.contains(kw)) {
+        if jp_billing_keywords.iter().any(|kw| jp_text.contains(kw)) {
             let sender_domain = sender
                 .split('@')
                 .nth(1)
@@ -1859,6 +1862,24 @@ impl FeatureExtractor for ContextAnalyzer {
             {
                 total_score += 80;
                 all_evidence.push("Japanese billing scam from non-Japanese domain".to_string());
+            }
+        }
+
+        // Check for Japanese points/card phishing from non-Japanese domains
+        let jp_points_keywords = ["ポイント", "有効期限", "失効", "カード"];
+        if jp_points_keywords.iter().any(|kw| jp_text.contains(kw)) {
+            let sender_domain = sender
+                .split('@')
+                .nth(1)
+                .unwrap_or("")
+                .trim_end_matches('>')
+                .to_lowercase();
+            if !sender_domain.ends_with(".jp")
+                && !sender_domain.contains("amazon")
+                && !sender_domain.contains("rakuten")
+            {
+                total_score += 80;
+                all_evidence.push("Japanese points/card scam from non-Japanese domain".to_string());
             }
         }
 

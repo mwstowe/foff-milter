@@ -143,6 +143,7 @@ impl ServerRoleAnalyzer {
             "consumerreports.org",    // Consumer Reports
             "iheart.com",             // iHeart Media
             "hubitat.com",            // Hubitat smart home
+            "mozilla.org",            // Mozilla Foundation
         ];
 
         for legitimate in &legitimate_domains {

@@ -641,6 +641,48 @@ impl FeatureExtractor for BrandImpersonationFeature {
             };
         }
 
+        // Skip brand impersonation for DMARC-passing senders with established domains
+        // A verified sender from a known org mentioning another brand in the subject
+        // is contextual (e.g., "Mozilla Add-ons: Amazon Auto-Buy"), not impersonation
+        let has_dmarc_pass = context
+            .headers
+            .get("authentication-results")
+            .or_else(|| context.headers.get("Authentication-Results"))
+            .map(|ar| ar.contains("dmarc=pass"))
+            .unwrap_or(false);
+        let established_dmarc_domains = [
+            "mozilla.org",
+            "google.com",
+            "microsoft.com",
+            "apple.com",
+            "amazon.com",
+            "github.com",
+            "gitlab.com",
+            "mozilla.com",
+            "redhat.com",
+            "canonical.com",
+            "ubuntu.com",
+            "debian.org",
+            "apache.org",
+            "linux.org",
+            "fsf.org",
+            "eff.org",
+            "wikipedia.org",
+            "wikimedia.org",
+        ];
+        if has_dmarc_pass
+            && established_dmarc_domains
+                .iter()
+                .any(|d| sender_domain.ends_with(d))
+        {
+            return FeatureScore {
+                feature_name: "Brand Impersonation".to_string(),
+                score: 0,
+                confidence: 0.0,
+                evidence: vec![],
+            };
+        }
+
         // Check for recipient domain impersonation in display name
         if let Some(to_header) = context.headers.get("to") {
             if let Some(recipient_domain) = self.extract_domain(to_header) {
