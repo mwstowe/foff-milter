@@ -2485,8 +2485,23 @@ impl FilterEngine {
             .get("authentication-results")
             .map(|v| v.contains("dmarc=pass"))
             .unwrap_or(false);
-        let suppress_mailing_list =
-            has_brand_impersonation || (has_suspicious_domain_reputation && !has_dmarc_pass);
+        // Also check context analysis for high spam signals
+        let has_high_spam_signals = {
+            let ca_feature = crate::features::context_analyzer::ContextAnalyzer::new();
+            let ca_result = ca_feature.extract(&context_with_attachments);
+            let has_homoglyph = ca_result
+                .evidence
+                .iter()
+                .any(|e| e.contains("Homoglyph evasion") || e.contains("Number obfuscation"));
+            ca_result.score >= 100 || has_homoglyph
+        };
+        // Check for gibberish username from consumer email
+        let has_gibberish_consumer_sender =
+            self.get_gibberish_username_score(&context_with_attachments) > 0;
+        let suppress_mailing_list = has_brand_impersonation
+            || (has_suspicious_domain_reputation && !has_dmarc_pass)
+            || has_high_spam_signals
+            || has_gibberish_consumer_sender;
         if is_mailing_list
             && !has_via_gibberish
             && !has_suspicious_list_id
@@ -2584,6 +2599,16 @@ impl FilterEngine {
             ));
         }
 
+        // Check for gibberish username from consumer email providers
+        let gibberish_username_score = self.get_gibberish_username_score(&context_with_attachments);
+        if gibberish_username_score > 0 {
+            total_score += gibberish_username_score;
+            scoring_rules.push(format!(
+                "Gibberish Username: Random username from consumer email (+{})",
+                gibberish_username_score
+            ));
+        }
+
         // Add media/OCR spam score from image analysis
         if context_with_attachments.media_spam_score > 0 {
             total_score += context_with_attachments.media_spam_score;
@@ -2593,18 +2618,43 @@ impl FilterEngine {
             ));
         }
 
+        // Check for Google Calendar invites (skip mass-recipient penalty)
+        let is_google_calendar = context_with_attachments.headers.iter().any(|(k, v)| {
+            let kl = k.to_lowercase();
+            (kl == "sender"
+                && v.to_lowercase()
+                    .contains("calendar-notification@google.com"))
+                || (kl == "message-id" && v.contains("calendar-") && v.contains("@google.com"))
+        }) || {
+            // Fallback: "Invitation:" subject + DKIM from google.com
+            let inv_subj = context_with_attachments
+                .subject
+                .as_deref()
+                .is_some_and(|s| s.starts_with("Invitation"));
+            let google_dkim = context_with_attachments.headers.iter().any(|(k, v)| {
+                k.to_lowercase().contains("authentication-results")
+                    && v.contains("dkim=pass")
+                    && v.contains("google.com")
+            });
+            inv_subj && google_dkim
+        };
+
         // Check for mass-recipient To: header (10+ addresses = spam indicator)
-        if let Some(to_header) = context_with_attachments.headers.get("to") {
-            let addr_count = to_header.matches('@').count();
-            if addr_count >= 10 {
-                let mass_score = 50;
-                total_score += mass_score;
-                scoring_rules.push(format!(
-                    "Mass Recipient: {} addresses in To: header (+{})",
-                    addr_count, mass_score
-                ));
+        if !is_google_calendar {
+            if let Some(to_header) = context_with_attachments.headers.get("to") {
+                let addr_count = to_header.matches('@').count();
+                if addr_count >= 10 {
+                    let mass_score = 50;
+                    total_score += mass_score;
+                    scoring_rules.push(format!(
+                        "Mass Recipient: {} addresses in To: header (+{})",
+                        addr_count, mass_score
+                    ));
+                }
             }
         }
+
+        // Calendar adjustment moved to after all scoring
 
         // Check for income/money-making scam content
         {
@@ -3285,6 +3335,18 @@ impl FilterEngine {
                         "User Forwarding Analysis: Forwarding adjustment ({:+})",
                         user_forwarding_adjustment
                     ));
+                }
+
+                // Reduce score for Google Calendar invites
+                if is_google_calendar && total_score > 0 {
+                    let reduction = (total_score / 2).min(50);
+                    total_score -= reduction;
+                    if reduction > 0 {
+                        scoring_rules.push(format!(
+                            "Google Calendar: Calendar invite adjustment (-{})",
+                            reduction
+                        ));
+                    }
                 }
 
                 log::info!(
@@ -9088,6 +9150,69 @@ impl FilterEngine {
 
         0
     }
+    /// Detect gibberish usernames from consumer email providers
+    fn get_gibberish_username_score(&self, context: &MailContext) -> i32 {
+        let from = context.from_header.as_deref().unwrap_or("");
+        let email = if let Some(start) = from.find('<') {
+            let end = from[start..]
+                .find('>')
+                .map(|i| start + i)
+                .unwrap_or(from.len());
+            &from[start + 1..end]
+        } else if from.contains('@') {
+            from.trim()
+        } else {
+            return 0;
+        };
+
+        let parts: Vec<&str> = email.split('@').collect();
+        if parts.len() != 2 {
+            return 0;
+        }
+        let user = parts[0].to_lowercase();
+        let domain = parts[1].to_lowercase();
+
+        let consumer_domains = [
+            "gmail.com",
+            "hotmail.com",
+            "outlook.com",
+            "yahoo.com",
+            "aol.com",
+            "live.com",
+        ];
+        if !consumer_domains.iter().any(|d| domain == *d) {
+            return 0;
+        }
+
+        // Check for gibberish patterns in username
+        let case_transitions = email
+            .split('@')
+            .next()
+            .unwrap_or("")
+            .as_bytes()
+            .windows(2)
+            .filter(|w| {
+                (w[0].is_ascii_lowercase() && w[1].is_ascii_uppercase())
+                    || (w[0].is_ascii_uppercase() && w[1].is_ascii_lowercase())
+            })
+            .count();
+
+        let digit_count = user.chars().filter(|c| c.is_ascii_digit()).count();
+        let has_long_digits = digit_count >= 5;
+        let is_long = user.len() >= 20;
+
+        // Long random username with many digits
+        if is_long && has_long_digits {
+            return 40;
+        }
+        // Many case transitions (mixed case gibberish)
+        if case_transitions > 5 {
+            return 35;
+        }
+
+        0
+    }
+
     fn get_product_sales_spam_score(&self, context: &MailContext) -> i32 {
         let domain = self
             .extract_sender_domain(context)

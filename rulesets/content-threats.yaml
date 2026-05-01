@@ -1665,7 +1665,7 @@ rules:
               - type: "SenderPattern"
                 pattern: ".*@.*(gov|edu|mil)$"
               - type: "SenderPattern"
-                pattern: ".*@.*(rejuvenation|westelm|potterybarn|crateandbarrel|wayfair|homedepot|lowes)\\.(com|net)$"
+                pattern: ".*@.*(rejuvenation|westelm|potterybarn|crateandbarrel|wayfair|homedepot|lowes|onestopplus)\\.(com|net)$"
     score: 180
   # Septic tank spam
   - name: "Septic Tank Spam"
@@ -1915,7 +1915,14 @@ rules:
   - name: "External Contact Redirect"
     enabled: true
     criteria:
-      type: "BodyPattern"
-      pattern: "(?i)@yahoo\\.com|@hotmail\\.com"
+      type: "And"
+      criteria:
+        - type: "BodyPattern"
+          pattern: "(?i)@yahoo\\.com|@hotmail\\.com"
+        - type: "Not"
+          criteria:
+            type: "HeaderPattern"
+            header: "Sender"
+            pattern: "(?i)calendar-notification@google\\.com"
     score: 50
     description: "Redirects to suspicious email providers"

@@ -232,6 +232,18 @@ impl BrandImpersonationFeature {
         legitimate_domains.insert("sams_club".to_string(), vec!["samsclub.com".to_string()]);
 
         brand_patterns.insert(
+            "walmart".to_string(),
+            vec![
+                r"(?i)\bwalmart\b".to_string(),
+                r"(?i)\bwal-?mart\b".to_string(),
+            ],
+        );
+        legitimate_domains.insert(
+            "walmart".to_string(),
+            vec!["walmart.com".to_string(), "wal-mart.com".to_string()],
+        );
+
+        brand_patterns.insert(
             "tmobile".to_string(),
             vec![
                 r"(?i)\bt-?mobile\b".to_string(),

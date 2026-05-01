@@ -1,0 +1,226 @@
+✅ Loading modern TOML configuration: ../foff-milter.toml
+Return-Path: <commercial.keywords107+bncBCO4ZQGQ4IOBBLO7ZDHQMGQEZZLLV5Y@wntvirtualservices.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.2/8.18.1) with ESMTPS id 63TGM16V020895
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <michael@baddomain.com>; Wed, 29 Apr 2026 16:22:01 GMT
+	(envelope-from commercial.keywords107+bncBCO4ZQGQ4IOBBLO7ZDHQMGQEZZLLV5Y@wntvirtualservices.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (2048-bit key; unprotected) header.d=wntvirtualservices-com.20251104.gappssmtp.com header.i=@wntvirtualservices-com.20251104.gappssmtp.com header.b=tZZJcp9L
+Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com [209.85.167.70])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 63TGLujo239395
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=OK)
+	for <michael@baddomain.com>; Wed, 29 Apr 2026 11:21:58 -0500
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 63TGLujo239395
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (2048-bit key, unprotected) header.d=wntvirtualservices-com.20251104.gappssmtp.com header.i=@wntvirtualservices-com.20251104.gappssmtp.com header.a=rsa-sha256 header.s=20251104 header.b=tZZJcp9L
+Received: by mail-lf1-f70.google.com with SMTP id 2adb3069b0e04-5a118530219sf6297716e87.1
+        for <michael@baddomain.com>; Wed, 29 Apr 2026 09:21:58 -0700 (PDT)
+ARC-Seal: i=3; a=rsa-sha256; t=555-123-4567; cv=pass;
+        d=google.com; s=arc-20240605;
+        b=BXLecLPmLhJt7pxl5chVghs5dJjxjHucPlb31TeNH5Vfox+0PBLKewAF2fXtPCzZiz
+         LLTXeoS/VueA65xoAJoY3bSB45qZKMxPwtrpNlNb852p8Wbkd8BEFVPyFMIMzew5+8uh
+         71o0SLc0YXR6cmJdNwQqT3mtbh41rnjoivIsirZYtdVShpcrq63fXIqLu7Q1dwsJgYaX
+         2tm9viI3dm/UcN0ZQMmHd76vpIZO9Ne1ww96DIeXE3E281+vz3MkPDZq2BAaNcBvK8Q0
+         FwIdRtnDRXj4j1HZaifF+v67go/aaTP4qklZ5EyEcYjH8fizerd0FL1vDAfMS8dNrU8w
+         8nCw==
+ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=list-unsubscribe:list-subscribe:list-archive:list-help:list-post
+         :list-id:mailing-list:precedence:to:subject:message-id:date:from
+         :mime-version:dkim-signature;
+        bh=Lh1Fi6YYTFmYODOyg/5UlH3kjbGSe5C3AtgBkXHNC38=;
+        fh=LmnPnnapbfkKsO+d+hAGWwzR4JzC76V0luu8CRc81Jg=;
+        b=MbXJW7O0apXWwbGByfTsZ9/pTPok8RrKum9dqOzWYloF8fRDiL+PkpWFjY7iLOWJUa
+         7/pBOtACTCiq5pu4hHhCWzUr07v6qT/ZA3jDBBmsocuRVs9SQfAlD6dqBxfQGL7SXInL
+         AOrVJfa1GpfFG+3zU1nWDFLSLaexnL4xfpUED2nyjh24Vyy8gszr4mJtcszl+HQpeqhk
+         osQISJtlWx4brXrxsMYzhjSl8H4mQCSg3ST9NvgFmu4jEInWDIJBpNhaAibP8ZLHiTnc
+         FDVmMTtDk6hMIPSx9CvgT5OUjdLoeAghjyXuWeR6d46tBMjes81g54ZxyI4BOHvjAWAb
+         rSEA==;
+        darn=baddomain.com
+ARC-Authentication-Results: i=3; mx.google.com;
+       dkim=pass header.i=@gmail.com header.s=20251104 header.b=k+DD8mn0;
+       arc=pass (i=1);
+       spf=pass (google.com: domain of mcgrathmcgmvtea95330@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=mcgrathmcgmvtea95330@gmail.com;
+       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com;
+       dara=fail header.i=@wntvirtualservices.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=wntvirtualservices-com.20251104.gappssmtp.com; s=20251104; t=555-123-4567; x=555-123-4567; darn=baddomain.com;
+        h=list-unsubscribe:list-subscribe:list-archive:list-help:list-post
+         :list-id:mailing-list:precedence:x-original-authentication-results
+         :x-original-sender:to:subject:message-id:date:from:mime-version:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Lh1Fi6YYTFmYODOyg/5UlH3kjbGSe5C3AtgBkXHNC38=;
+        b=tZZJcp9LkHDc4gkL+ylPNE5hLQKrPjIEXkJOzhs1CTtTUZmaCCdgiOg3OkDxsSMCEl
+         l6OL49JwDY9plRjcYKLjmhKebY449IpdXbc/YkO26FzT+8GnuC4HsnszC7J+HEn/Ygd8
+         DHaJQ+4Ew/3QwTMGPgqYCUVVDkVuo8afDTQpilC46iE1tpQzHthakU5cG4+t5qcheSSg
+         tKfXwJlO6w0x6TFna4nlxue44Z8F3+Vkz4jkRRzRaFOZaK9/rUc8TfLEve2RxanuoN7v
+         wQ5SlQSVFXQknsQq5zNzsVVvA0DEuZnr96jFG/ynaA9vqfL3hHmr5piK9fYj1ZSKlZs/
+         NSJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=555-123-4567; x=555-123-4567;
+        h=list-unsubscribe:list-subscribe:list-archive:list-help:list-post
+         :x-spam-checked-in-group:list-id:mailing-list:precedence
+         :x-original-authentication-results:x-original-sender:to:subject
+         :message-id:date:from:mime-version:x-gm-gg:x-beenthere
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Lh1Fi6YYTFmYODOyg/5UlH3kjbGSe5C3AtgBkXHNC38=;
+        b=oxW/N8tAnbkSbQDFe3CwV+8+vDD45hSj/aKjABHMZNaExGcgsnAFwnCF+891i8uZ+7
+         UIR2nPhGouKqXm6OqewStuf6hKY5GL/JjF8NRxm5N2ceF5VFTjz3RlbR7NlkrJpqmXof
+         ISdIHSXrwF0NoPN6wFD+ej85+H9/cZnszE4ugKvGliYfCq4fuevSu4RvcC9mucDtC4EP
+         qdzuEQOzqn8wltizg3Zh9IDUVf1dRmwR2GAhp57/G28F7E2QGhal5pgXXrd9qvXrvfvx
+         4T4B9tj4T7oB5kMSGFrcKnX3B3alk+jMf+tE9EW3U8erIQ23ZHrJOBCHD8wGxlh5T0JY
+         lzsQ==
+X-Forwarded-Encrypted: i=3; AFNElJ8G8g70A0v9mYOnvhGU6ACdmibX27evXfO49KguTxhmfrYUDSyKgPcD/5M7AZgo8dgRo0AtwvL6@baddomain.com
+X-Gm-Message-State: AOJu0YyWsA96MDqqfMSdtYwiXWvG7mHs24kZscbk9LVseBb9JhfMatVK
+	pLZgczgMd3UYpLiSiQPcl/NRiGBPDvA77GPc/MLsh8mJ74OVpFpZAKzfqWIVbThtjag=
+X-Received: by 2002:a05:6512:2381:b0:5a2:a13e:9082 with SMTP id 2adb3069b0e04-5a74662a7a2mr3738656e87.35.1777479710573;
+        Wed, 29 Apr 2026 09:21:50 -0700 (PDT)
+X-BeenThere: user@example.com; h="AUV6zMMg1q2Iqu5UDMJ003N4y3lMJRBqVYx8hG0JlpydzsZNLQ=="
+Received: by 2002:a2e:964d:0:b0:38c:bd47:99fc with SMTP id 38308e7fff4ca-38eab9fd57fls28212451fa.2.-pod-prod-04-eu;
+ Wed, 29 Apr 2026 09:19:56 -0700 (PDT)
+X-Received: by 2002:a2e:9fc8:0:b0:38e:4a7:89e7 with SMTP id 38308e7fff4ca-39240cc18afmr31839281fa.3.1777479595558;
+        Wed, 29 Apr 2026 09:19:55 -0700 (PDT)
+ARC-Seal: i=2; a=rsa-sha256; t=555-123-4567; cv=pass;
+        d=google.com; s=arc-20240605;
+        b=ja3Za89Kql80rgdkWEcYS2aUSuPEGMJR/RNbYQAWfH2wngBsUA1FptixcqTu5aOg+C
+         Sp8jx/R2cNmESc2urJoRct1G2/4gOMeqlu0214x5pKTW29tAd38yb9vCz4epyXEmfRIc
+         Tx3TJ91AQQ5QQa4Yl3n9ru+ZySF0hcI5T6wqDlBsewlv5vNkntFpxCdV94ODVbsp11HO
+         zcQSYClQy5AFHv9Ql3xz7fX9jy1PTnUc3Ck0BC684ilztcIG9IzdVXayHgAd3l0mwgbH
+         ykbUoemyc7MbEkpITBb6GYLvpTxfqStM548uXtGTEctG8myF/XXsFwtuskSlTkuWYBTn
+         nY/Q==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=piz3i+JPXh2AvS0lVe2YZjc68OlcJNs5Q5O19uWAiWY=;
+        fh=0wHGelSeRHgUpsPqUZ+n9H+3Yo9LYpVVSBExKVXwsn0=;
+        b=i/H1amglKzUfm74FD1xfKu0ho+n+j0b0x0BOi7NhTVZUMcyWtYXkELQtwxdWHE4AjN
+         trlkwicAXPr7vEtVTGSUNLITXjfg/A/1yoO3p/epM+bVXV53lTaYmPmVdF+zmRjJHjnz
+         fwfdIc0Q+OvGXON6umcRIhryE1c8LJpJz35CTT/91IK0d30SzYuRvIADI3AJ0g9NiqWg
+         7lxhtYzBECzq5FRio3lm0ukNR58QT3R2dGrtp5UpES4xx7d3hp+3JSF25l3PRjbGf4Tc
+         8HwunAodFFUdbO41oROaWvdewOS3bejB5fXYBR5ZKKeRF9UAjTRESNgLMQ1kCbGyylTK
+         PeWg==;
+        dara=google.com
+ARC-Authentication-Results: i=2; mx.google.com;
+       dkim=pass header.i=@gmail.com header.s=20251104 header.b=k+DD8mn0;
+       arc=pass (i=1);
+       spf=pass (google.com: domain of mcgrathmcgmvtea95330@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=mcgrathmcgmvtea95330@gmail.com;
+       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com;
+       dara=fail header.i=@wntvirtualservices.com
+Received: from mail-sor-f41.google.com (mail-sor-f41.google.com. [209.85.220.41])
+        by mx.google.com with SMTPS id 38308e7fff4ca-3924fa1b30asor4250521fa.12.2026.04.29.09.19.55
+        for <user@example.com>
+        (Google Transport Security);
+        Wed, 29 Apr 2026 09:19:55 -0700 (PDT)
+Received-SPF: pass (google.com: domain of mcgrathmcgmvtea95330@gmail.com designates 209.85.220.41 as permitted sender) client-ip=209.85.220.41;
+ARC-Seal: i=1; a=rsa-sha256; t=555-123-4567; cv=none;
+        d=google.com; s=arc-20240605;
+        b=BuTGMZMOumovJokSZnsbpOSqkSWTJdlMLQY+5jrqvD/4IbWY06Z0A+joZ2ix7N/N5R
+         RHpDK15Tq5IkpQR9pECS8h31tJwxF3htkFNFGUtpn3ZpJLPQyhF9iAzsaVwwZjCHBdzY
+         iNdAbT3+rSLc7ZKJLylwHNSEIeMo8flsmdFPRs/pwC4oLQkEQGIA5I0ykTLyfbiBhL8d
+         GZBFx2NXvIJlKwlJtebmEDlPrtKxFWvOlpPTqQOqpo2ghWUdPPcR71V7ljILvCk19J2D
+         YnIVtcNGg183sBvbcigHQrtvioA4vHjOWBaGYicuz0PD9LDbyjEAc30VyL5aejqCKuLq
+         DOhA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=piz3i+JPXh2AvS0lVe2YZjc68OlcJNs5Q5O19uWAiWY=;
+        fh=0wHGelSeRHgUpsPqUZ+n9H+3Yo9LYpVVSBExKVXwsn0=;
+        b=e2vwi1WLod3QqsRciVnLfcVgG9Qi226UgdEII1DYUHDjJX9nFOKwB1gf/NBCBw9rf/
+         9tjumPu03nAS5YcBP5Sa/lYixcTYn8rLkXQT2M5bKoT8cje6ufqk1+aj3Oo28or3lRvy
+         QGCyaIdKuX+QaI6PgwcGUrDFnfkHwReJj411LnvgWDkoIeEmKswJLvChAisA5gFuFpOg
+         IR2Py6B2RDqQU/BxlaJceD9fukNF9FJUGHc09CeuzeCVbEFcP6GEcbbC27I1uy91Gcqj
+         NJb+yCyqlE/LiCl2Jx+OKg29csmpnKkxXwXpdARsE3Jgu2vUm23dGoKccR7ZY7FIIxb3
+         WQCA==;
+        darn=wntvirtualservices.com
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+X-Gm-Gg: AeBDiesMcl6c9NNAPpZWRLqCpFDD/u4VTZkaHFtxLeY3mLD9zSZ1VGSV3GaROg31BsO
+	EFYOc/MrxAAM9gXAPgbTrsupPlkdjf541Z1Rd0pSvDrAIccHE4tiBK2MkRfSVtWB5DjBBuVMnJl
+	gFXjo8ozaU05mpgGGd49tu0A+at2fyyDR7v+rHGPYhk9MUHYPQB+pjqEKfwJKR32jTlgbIQon7Q
+	eCuKYGqYIDN2JGoXigltwX0/3cVJKvtKdZxnKklMtUncDxho38RywfGgJBXKbXg5rqKbSCy4s0v
+	YKksuv8/oJTp9eMXI4TWba1AGa7lSBZ0zuf28plMZqkQmEFukK4=
+X-Received: by 2002:a05:651c:1990:b0:38a:4dd9:23f5 with SMTP id
+ 38308e7fff4ca-39240f9f732mr27627441fa.22.1777479594397; Wed, 29 Apr 2026
+ 09:19:54 -0700 (PDT)
+MIME-Version: 1.0
+From: McGrath Teaff <mcgrathmcgmvtea95330@gmail.com>
+Date: Wed, 29 Apr 2026 21:49:42 +0530
+X-Gm-Features: AVHnY4Lg_ar8IeAaOp9EmfHekSMVwo077IkGw9B3sYrCakrtjryU4fxWdFPtOO8
+Message-ID: <CAJ40uKFktDGc-n6QQ1t0Pff9ctY91y31vw324cwaXGTT2_wTCQ@mail.gmail.com>
+Subject: =?UTF-8?Q?You=E2=80=99re_Losing_Customers_on_Google_=E2=80=94_Let=E2=80=99s_Fix_?=
+	=?UTF-8?Q?That?=
+To: user@example.com
+Content-Type: multipart/alternative; boundary="000000000000d1d3be06509bb7d8"
+X-Original-Sender: mcgrathmcgmvtea95330@gmail.com
+X-Original-Authentication-Results: mx.google.com;       dkim=pass
+ header.i=@gmail.com header.s=20251104 header.b=k+DD8mn0;       arc=pass
+ (i=1);       spf=pass (google.com: domain of mcgrathmcgmvtea95330@gmail.com
+ designates 209.85.220.41 as permitted sender) smtp.mailfrom=mcgrathmcgmvtea95330@gmail.com;
+       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com;
+       dara=fail header.i=@wntvirtualservices.com
+Precedence: list
+Mailing-list: list user@example.com; contact commercial.keywords107+owners@wntvirtualservices.com
+List-ID: <commercial.keywords107.wntvirtualservices.com>
+X-Spam-Checked-In-Group: user@example.com
+X-Google-Group-Id: 704721709802
+List-Post: <https://groups.google.com/a/wntvirtualservices.com/group/commercial.keywords107/post>,
+ <mailto:user@example.com>
+List-Help: <https://support.google.com/a/wntvirtualservices.com/bin/topic.py?topic=25838>,
+ <mailto:commercial.keywords107+help@wntvirtualservices.com>
+List-Archive: <https://groups.google.com/a/wntvirtualservices.com/group/commercial.keywords107/>
+List-Subscribe: <https://groups.google.com/a/wntvirtualservices.com/group/commercial.keywords107/subscribe>,
+ <mailto:commercial.keywords107+subscribe@wntvirtualservices.com>
+List-Unsubscribe: <mailto:googlegroups-manage+704721709802+unsubscribe@googlegroups.com>,
+ <https://groups.google.com/a/wntvirtualservices.com/group/commercial.keywords107/subscribe>
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Wed, 29 Apr 2026 16:22:01 +0000 (UTC)
+X-Greylist: ACL 173 matched, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Wed, 29 Apr 2026 11:21:59 -0500 (CDT)
+
+--000000000000d1d3be06509bb7d8
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+*Hello,*
+
+Most businesses* lose potential customers* simply because they=E2=80=99re *=
+not
+visible on Google when it matters most.*
+
+*We help you fix that by:*
+=E2=9C=94 *Ranking your website* where buyers are searching
+=E2=9C=94 Bringing in *targeted traffic that converts*
+=E2=9C=94 Building *long-term growth* without relying on ads
+
+This means *more inquiries, more sales, and predictable growth.*
+
+Want to see what this could look like for your business?
+
+Reply *=E2=80=9CYES=E2=80=9D* and I=E2=80=99ll send a quick plan + pricing.
+
+
+*Best,Ben*
+
+To unsubscribe from this group and stop receiving emails from it, send an e=
+mail to commercial.keywords107+unsubscribe@wntvirtualservices.com.
+
+--000000000000d1d3be06509bb7d8
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><p><b>Hello,</b></p><p>Most businesses<b>=C2=A0lose potent=
+ial customers</b>=C2=A0simply because they=E2=80=99re=C2=A0<b>not visible o=
+n Google when it matters most.</b></p><p><b>We help you fix that by:</b><br=
+>=E2=9C=94=C2=A0<b>Ranking your website</b>=C2=A0where buyers are searching=
+<br>=E2=9C=94=C2=A0Bringing in=C2=A0<b>targeted traffic that converts</b><b=
+r>=E2=9C=94=C2=A0Building=C2=A0<b>long-term growth</b>=C2=A0without relying=
+ on ads</p><p>This means=C2=A0<strong>more inquiries, more sales, and predi=
+ctable growth.</strong></p><p>Want to see what this could look like for you=
+r business?</p><p>Reply=C2=A0<strong>=E2=80=9CYES=E2=80=9D</strong>=C2=A0an=
+d I=E2=80=99ll send a quick plan + pricing.</p><p><b>Best,<br>Ben</b></p></=
+div>
+
+<p></p>
+
+To unsubscribe from this group and stop receiving emails from it, send an e=
+mail to <a href=3D"mailto:commercial.keywords107+unsubscribe@wntvirtualserv=
+ices.com">commercial.keywords107+unsubscribe@wntvirtualservices.com</a>.<br=
+ />
+
+--000000000000d1d3be06509bb7d8--
+

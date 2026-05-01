@@ -2204,6 +2204,55 @@ impl FeatureExtractor for ContextAnalyzer {
         }
         all_evidence.extend(employment_scam_evidence);
 
+        // Subscription renewal scam detection
+        {
+            let subject_lower = context.subject.as_deref().unwrap_or("").to_lowercase();
+            let sender_lower = sender.to_lowercase();
+            let consumer_domains = [
+                "gmail.com",
+                "outlook.com",
+                "hotmail.com",
+                "yahoo.com",
+                "aol.com",
+                "live.com",
+            ];
+            let is_consumer = consumer_domains.iter().any(|d| sender_lower.contains(d));
+            if is_consumer
+                && (subject_lower.contains("update your subscription")
+                    || subject_lower.contains("renew your subscription")
+                    || subject_lower.contains("subscription expired")
+                    || subject_lower.contains("subscription expiring")
+                    || (subject_lower.contains("final reminder")
+                        && subject_lower.contains("subscription")))
+            {
+                total_score += 50;
+                all_evidence.push("Subscription renewal scam from consumer email".to_string());
+            }
+        }
+
+        // B2B spam solicitation / casino / gambling detection
+        {
+            let subject_lower = context.subject.as_deref().unwrap_or("").to_lowercase();
+            let body_lower = context.body.as_deref().unwrap_or("").to_lowercase();
+            let combined = format!("{} {}", subject_lower, body_lower);
+            let solicitation_patterns = [
+                r"(?i)leads?\s+for\s+sale",
+                r"(?i)casino\s+(leads?|database|bases?|list)",
+                r"(?i)gambling\s+(leads?|database|list)",
+                r"(?i)buy\s+(email\s+)?leads",
+                r"(?i)complete\s+(casino|gambling)\s+bases?",
+            ];
+            for pattern in &solicitation_patterns {
+                if let Ok(re) = regex::Regex::new(pattern) {
+                    if re.is_match(&combined) {
+                        total_score += 60;
+                        all_evidence.push("B2B spam solicitation detected".to_string());
+                        break;
+                    }
+                }
+            }
+        }
+
         // Rambling text evasion detection
         // Skip for legitimate invoices and business communications
         let is_invoice = body.to_lowercase().contains("invoice")
