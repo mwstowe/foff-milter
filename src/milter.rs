@@ -409,6 +409,12 @@ impl Milter {
                         match state.lock() {
                             Ok(mut guard) => {
                                 guard.insert(session_id, mail_ctx);
+                                if guard.len() % 10 == 0 {
+                                    log::info!(
+                                        "StateMap: {} active sessions",
+                                        guard.len()
+                                    );
+                                }
                             }
                             Err(e) => {
                                 log::error!("Mutex poisoned in connect handler: {}", e);
@@ -1224,7 +1230,7 @@ impl Milter {
                                         mail_ctx.subject = None;
                                         mail_ctx.sender = None;
                                         mail_ctx.from_header = None;
-                                        log::debug!(
+                                        log::info!(
                                             "Abort: cleared message data for session {}",
                                             session_id
                                         );
@@ -1250,7 +1256,7 @@ impl Milter {
                             match state.lock() {
                                 Ok(mut guard) => {
                                     guard.remove(session_id);
-                                    log::debug!(
+                                    log::info!(
                                         "Close: removed session {} (active sessions: {})",
                                         session_id,
                                         guard.len()
