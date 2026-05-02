@@ -788,7 +788,13 @@ impl Milter {
                         // Token will automatically decrement counter when dropped
 
                         // Intelligent DKIM completion detection
-                        let mail_ctx_for_check = state.lock().unwrap().get(&session_id).cloned();
+                        let mail_ctx_for_check = match state.lock() {
+                            Ok(guard) => guard.get(&session_id).cloned(),
+                            Err(e) => {
+                                log::error!("Mutex poisoned in eom handler: {}", e);
+                                return Status::Tempfail;
+                            }
+                        };
 
                         if let Some(mail_ctx) = mail_ctx_for_check {
                             // Check if DKIM processing has started (DKIM-Filter header present)
@@ -800,8 +806,13 @@ impl Milter {
                                 let max_attempts = 10; // 10 attempts * 50ms = 500ms max
 
                                 while attempts < max_attempts {
-                                    let current_ctx =
-                                        state.lock().unwrap().get(&session_id).cloned();
+                                    let current_ctx = match state.lock() {
+                                        Ok(guard) => guard.get(&session_id).cloned(),
+                                        Err(e) => {
+                                            log::error!("Mutex poisoned in eom handler: {}", e);
+                                            return Status::Tempfail;
+                                        }
+                                    };
 
                                     if let Some(ctx) = current_ctx {
                                         if ctx.headers.contains_key("authentication-results") {
@@ -824,7 +835,13 @@ impl Milter {
                         }
 
                         // Clone mail context to avoid holding mutex across await (use session ID)
-                        let mail_ctx_clone = state.lock().unwrap().get(&session_id).cloned();
+                        let mail_ctx_clone = match state.lock() {
+                            Ok(guard) => guard.get(&session_id).cloned(),
+                            Err(e) => {
+                                log::error!("Mutex poisoned in eom handler: {}", e);
+                                return Status::Tempfail;
+                            }
+                        };
 
                         if let Some(mut mail_ctx) = mail_ctx_clone {
                             // Add legitimate business detection
@@ -1181,6 +1198,70 @@ impl Milter {
                         }
 
                         Status::Accept
+                    })
+                }
+            })),
+
+            abort: Some(Box::new({
+                let state = state.clone();
+                move |ctx: &mut indymilter::Context<String>| {
+                    let state = state.clone();
+                    Box::pin(async move {
+                        // Abort is called when a message is aborted mid-processing.
+                        // Clear message data but keep the session for potential next message.
+                        if let Some(session_id) = ctx.data.as_ref() {
+                            match state.lock() {
+                                Ok(mut guard) => {
+                                    if let Some(mail_ctx) = guard.get_mut(session_id) {
+                                        // Reset message-specific fields
+                                        mail_ctx.body = None;
+                                        mail_ctx.raw_body = None;
+                                        mail_ctx.normalized = None;
+                                        mail_ctx.headers.clear();
+                                        mail_ctx.recipients.clear();
+                                        mail_ctx.attachments.clear();
+                                        mail_ctx.extracted_media_text.clear();
+                                        mail_ctx.subject = None;
+                                        mail_ctx.sender = None;
+                                        mail_ctx.from_header = None;
+                                        log::debug!(
+                                            "Abort: cleared message data for session {}",
+                                            session_id
+                                        );
+                                    }
+                                }
+                                Err(e) => {
+                                    log::error!("Mutex poisoned in abort handler: {}", e);
+                                }
+                            }
+                        }
+                        Status::Continue
+                    })
+                }
+            })),
+
+            close: Some(Box::new({
+                let state = state.clone();
+                move |ctx: &mut indymilter::Context<String>| {
+                    let state = state.clone();
+                    Box::pin(async move {
+                        // Close is called when the connection ends. Remove all session state.
+                        if let Some(session_id) = ctx.data.as_ref() {
+                            match state.lock() {
+                                Ok(mut guard) => {
+                                    guard.remove(session_id);
+                                    log::debug!(
+                                        "Close: removed session {} (active sessions: {})",
+                                        session_id,
+                                        guard.len()
+                                    );
+                                }
+                                Err(e) => {
+                                    log::error!("Mutex poisoned in close handler: {}", e);
+                                }
+                            }
+                        }
+                        Status::Continue
                     })
                 }
             })),
