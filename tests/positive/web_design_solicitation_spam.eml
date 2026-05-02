@@ -1,0 +1,231 @@
+✅ Loading modern TOML configuration: ../foff-milter.toml
+Return-Path: <user@example.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.2/8.18.1) with ESMTPS id 6419Lc2W062865
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <michael@baddomain.com>; Fri, 1 May 2026 09:21:38 GMT
+	(envelope-from user@example.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (2048-bit key; unprotected) header.d=outlook.com header.i=@outlook.com header.b=uSC1Rj4r
+Received: from TYPPR03CU001.outbound.protection.outlook.com (mail-japaneastazolkn19012062.outbound.protection.outlook.com [52.103.43.62])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 6419LYOG320798
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK)
+	for <michael@baddomain.com>; Fri, 1 May 2026 04:21:35 -0500
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 6419LYOG320798
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (2048-bit key, unprotected) header.d=outlook.com header.i=@outlook.com header.a=rsa-sha256 header.s=selector1 header.b=uSC1Rj4r
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=r4DH22zXhdgvQRMpel/meMmur59Bl+UWNWvSe5RuhcCOB4stO+D2wCwGPKX6U/IaUZe4MvxIUOsdPsQtcn7KDM1hdEJci07ll6x0c0WPFqFe3kcbQJ0IpPxna17qVy5imvGx9pFSKheAhTK0ioqLEl8OpGiXv1REbYM5r7b0NLSq2l0BuLmAUkROHGqbo2rfb++8EtT+Opa8UPeJkJ5gwUm3uGkzBezw3FPk+WnvRIucDp+s/IeFqeOYYYX6DP/cYBWe0XdqgqGm8sgju7o8UxtOLDcEmpIRhGFdomJq5XSQ1gZd4JheD6hqze1yj2DXLwNqDk0yXYn+RAyePxrQBg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=+L8HGF1t/ktqhx3Mdp7iRP4slIbWCis4B6K/nt4u/Js=;
+ b=LqofvD+mrHlbRB9ecYpokviYExbXnLk8sAAX4zpqBnkQQPs0yDXVZnnio8uX5wbuABFuLJrf8wVaN1clrfHwSeC2Lm0W4l7nH2jRvjOm09emq0xbN5MMWHmzb0GezFcTTJoejl6t4dTHyVraZC0yvT97Fz/J73dFGzZhWK4URvKI4FNXUs5LXzvDKaPeyNDSWLPq7Ha/H1/oDLhfYuuWgTSSnV3DYkCmfh1PgoTdfJvgBtmREx0d3jnS+6QFvkC0+4fOn+bIwRc3tL/XYR0V/SL9MjN0S1pgq94YfX7MmyD02KqrvFUwAZBwhDNppo8G6bHfBeG0n6nMrt+hPfLVtg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+L8HGF1t/ktqhx3Mdp7iRP4slIbWCis4B6K/nt4u/Js=;
+ b=uSC1Rj4rcVIaLqFUVMPmKrPFSodSuSxhaJkdrKJ3Kfhu61G25nZr5rz/PS74poghNQ3YX/m11q8bQMwQxcst8dfOU0O4csugnG5zIwccgacPzmsCy5/97MKVS5r1GjxS3CuN2vJobI9RyVPI304IpuptyR38lMNqy/Nj1RTUbKbI47TOcwuAHe1ms9RIgUXYBEWohoon2GRfUWbaukfBW2Z4+Bx2X/LYDk/8xoZGAuDDabk1Hpz0w3JCCV3lXBkX8LqPVeiA4sjC1b192uYcJltSVijvoQ2ZqALaeqTxZMmAHenKkrX5HYlBiNWLJkSMwsaZZ0ASMjbeEsC0p0fwIQ==
+Received: from TYZPR01MB7929.apcprd01.prod.exchangelabs.com
+ (2603:1096:405:399::18) by KL1PR01MB6016.apcprd01.prod.exchangelabs.com
+ (2603:1096:820:12d::10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.22; Fri, 1 May
+ 2026 09:21:03 +0000
+Received: from TYZPR01MB7929.apcprd01.prod.exchangelabs.com
+ ([fe80::59e0:2387:fcab:b12]) by TYZPR01MB7929.apcprd01.prod.exchangelabs.com
+ ([fe80::59e0:2387:fcab:b12%3]) with mapi id 15.20.9870.020; Fri, 1 May 2026
+ 09:21:03 +0000
+From: rachna Mathur <user@example.com>
+To: rachna Mathur <user@example.com>
+Subject: Re:
+Thread-Topic: Re:
+Thread-Index:
+ AQHc0v6SJXUBgM5DY0OBdz1n0uRKQbXt9US4gATLJYGAAAAotoABfYK9gAGNaCiAAAAbhoABjchIgAGXY2qAAADkHA==
+Date: Fri, 1 May 2026 09:21:02 +0000
+Message-ID:
+ <TYZPR01MB7929B543FA6DCBCB240A71C9E8322@TYZPR01MB7929.apcprd01.prod.exchangelabs.com>
+References:
+ <TYZPR01MB792934605FFD2C8E530EA6BCE85BA@TYZPR01MB7929.apcprd01.prod.exchangelabs.com>
+ <TYZPR01MB7929C990DB2B871054827AE6E85BA@TYZPR01MB7929.apcprd01.prod.exchangelabs.com>
+ <TYZPR01MB7929CF9C33D9E9D7452466EDE8582@TYZPR01MB7929.apcprd01.prod.exchangelabs.com>
+ <TYZPR01MB79294F2B5F976FFB969A8604E8592@TYZPR01MB7929.apcprd01.prod.exchangelabs.com>
+ <TYZPR01MB79296F5FD4399408156CA95CE8592@TYZPR01MB7929.apcprd01.prod.exchangelabs.com>
+ <TYZPR01MB79295D51D36F10260E88E26FE8242@TYZPR01MB7929.apcprd01.prod.exchangelabs.com>
+ <TYZPR01MB7929F02606D922CFA120A447E8222@TYZPR01MB7929.apcprd01.prod.exchangelabs.com>
+ <TYZPR01MB7929AAB9BF35CF3038699B82E8232@TYZPR01MB7929.apcprd01.prod.exchangelabs.com>
+ <TYZPR01MB79291A5A251DF76F6B177F01E8202@TYZPR01MB7929.apcprd01.prod.exchangelabs.com>
+ <TYZPR01MB792987D615540D89E6AFFF4DE8202@TYZPR01MB7929.apcprd01.prod.exchangelabs.com>
+ <TYZPR01MB7929F5CCAADCABB06B7AE6ACE82F2@TYZPR01MB7929.apcprd01.prod.exchangelabs.com>
+ <TYZPR01MB79293C6B174286CA07CD6624E82C2@TYZPR01MB7929.apcprd01.prod.exchangelabs.com>
+ <TYZPR01MB7929F90BBE834771FE4EB754E82C2@TYZPR01MB7929.apcprd01.prod.exchangelabs.com>
+ <TYZPR01MB79298D5F0FE7C4ECC01106FCE82D2@TYZPR01MB7929.apcprd01.prod.exchangelabs.com>
+ <TYZPR01MB79294855F8CDB3995590D98EE82A2@TYZPR01MB7929.apcprd01.prod.exchangelabs.com>
+ <TYZPR01MB79297D745B991384183E033AE82A2@TYZPR01MB7929.apcprd01.prod.exchangelabs.com>
+ <TYZPR01MB79291062D68C3294DDDE584AE82B2@TYZPR01MB7929.apcprd01.prod.exchangelabs.com>
+ <TYZPR01MB79294E270740F82C9F1D3569E8362@TYZPR01MB7929.apcprd01.prod.exchangelabs.com>
+ <TYZPR01MB7929FBBF3257174C84DA67B5E8362@TYZPR01MB7929.apcprd01.prod.exchangelabs.com>
+ <TYZPR01MB7929027771F47900C1FF42F2E8372@TYZPR01MB7929.apcprd01.prod.exchangelabs.com>
+ <TYZPR01MB7929278E3FDE0450FB2B8392E8342@TYZPR01MB7929.apcprd01.prod.exchangelabs.com>
+ <TYZPR01MB7929167B3B46BA91949BAA5FE8342@TYZPR01MB7929.apcprd01.prod.exchangelabs.com>
+ <TYZPR01MB7929377013B663E8612A0D83E8352@TYZPR01MB7929.apcprd01.prod.exchangelabs.com>
+ <TYZPR01MB7929971DC6FDA4AE05D7C31BE8322@TYZPR01MB7929.apcprd01.prod.exchangelabs.com>
+In-Reply-To:
+ <TYZPR01MB7929971DC6FDA4AE05D7C31BE8322@TYZPR01MB7929.apcprd01.prod.exchangelabs.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-GB
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: TYZPR01MB7929:EE_|KL1PR01MB6016:EE_
+x-ms-office365-filtering-correlation-id: 58bcc547-b932-4d87-499c-08dea762f746
+x-microsoft-antispam:
+ BCL:0;ARA:14566002|19101099003|55001999006|16051099003|461199028|31061999003|22091999003|37011999003|24121999003|15001099006|20101099007|704163111799003|1234-5678-9012-3456|15080799012|15030799006|19110799012|555-123-4567|555-123-4567|39105399006|555-123-4567|440099028|18071099003|102099032|41105399003|39145399003|40105399003|555-123-4567;
+x-microsoft-antispam-message-info:
+ =?Windows-1252?Q?veqMF5PiG2b5aFQarl7tmB405BnjWpuBzKXN79Laz7H7XgANjdxUK+XL?=
+ =?Windows-1252?Q?NPIJ87ZvzIdbwVcZ6C6fg1i3mdpE8IOvM/GFpAtvWxrh6iTvWKZ1i548?=
+ =?Windows-1252?Q?vP6bxdr1SsSQ3HCEmzDbWgjuAxkjTBtDRElvv+2NB8JYxcRaMbyTce3M?=
+ =?Windows-1252?Q?qqYgbG+WwM4YDkRhDc2s75RUMi0b0ED0JQc5ec9J1t5j7HX1clXCK5Gl?=
+ =?Windows-1252?Q?aXPIN1uin9pkhmQdc1rmol3A6hT9baH4I50GFfATT7nWWTM7txfyK3pY?=
+ =?Windows-1252?Q?QpXWHtv5ztDuvicPTihGtkASEmx3dMHCb/rlMlCuXPFoYliMZyqiaygs?=
+ =?Windows-1252?Q?WbknYCB/ZmdCwbmI+W5f6fB4/WtrrsBzX8jokSSvgQ8rFGsN7XSVxzq9?=
+ =?Windows-1252?Q?obwfXrZbkuw8v/+RhaRkl4whyzLwl8y9Wc6Y3QzEF/IUWjqIXvkwv3GY?=
+ =?Windows-1252?Q?bgd2TxsMmVXSDrNyTM4QhK/eQZn/uKmQ16Wdj+okqZOrRxpshLSbqj7Q?=
+ =?Windows-1252?Q?ZwCqtcSEprcS+k/zrIoHY7r6dIfHnQpMyd+WkPGaqzf28JrusnGWvaRs?=
+ =?Windows-1252?Q?NL9+vSC176nWrSd+kDtwnlL55/37GdbvRRldRSnvM6oVHIgB0bZJHLmc?=
+ =?Windows-1252?Q?QO9QEGTJBeI4e5PEKvVsZJi9QfZrkDZxlWGson+EMFjYUss0+lqGU2qT?=
+ =?Windows-1252?Q?u1605VoB6hot1uxGxBZTFobL/6nIfDAs5uZg7dpjp/STlxJ8VZwcArUh?=
+ =?Windows-1252?Q?V3ZBG9jL+qhFBi4gNbPziIlo8MS2HcVDNGsR/u+WXHmh2kk2pbGdrl0M?=
+ =?Windows-1252?Q?bYM2k/OY+D2jwYSyDw0OaMAHYyc5jXbvtdj3yeZyHHz6C7J7eFZbIbgr?=
+ =?Windows-1252?Q?yvWgztQpyTioLUytQsVRyBBEzro/gad0dIXdVXGrHTx+WHrAXy0tV6ng?=
+ =?Windows-1252?Q?4qwHojHtPphINbFWZXi7GDhB8cw4C687RmsUXti6WHjRBnntic3CSYjk?=
+ =?Windows-1252?Q?HgaB++xTIobvWLuL0PSf3DF6swL711lxLpBEx1YD9ccpDKk9bp7A9sBK?=
+ =?Windows-1252?Q?scKrd0UFOjgA54WDALbGJAhXPlK726ej6sg4O0+LZEm3HhxX22qr6W/x?=
+ =?Windows-1252?Q?qvDmew5pLxUyLTFhE5Y9hQylPQM0+xB1FBo7kFTCWNSXIpBlTQOp0q2g?=
+ =?Windows-1252?Q?cFpeoZzbzPZl5mhAbt8CxONk+1mae4MbliqpldxzuvBz3alaPyldpxmA?=
+ =?Windows-1252?Q?+1hupEOKsY5iVNTak2dSqhonfRGBUxQBd+8zgWcSu635gIjGNcqQMqJo?=
+ =?Windows-1252?Q?Mccy7q0VitErTC4uV57XBDwVWFKfCyI4uHhnQg8S6iBB0YbuoBDnThQ5?=
+ =?Windows-1252?Q?QLtiWq4+Ggl3/LXoXU3LRJ+TDJ+lS8UjpaVEoZ35CIsVI1/W93FXvxtG?=
+ =?Windows-1252?Q?Z4RkNS5i+bm6tWNUWv5M5h2URhTV7CeyJp0eNK+9U2dmsDW86PyXDQ8i?=
+ =?Windows-1252?Q?xstYLXmHyk/Nq7QVmVVCFMNAARn1qg=3D=3D?=
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?Windows-1252?Q?EGvQ9OVUrEusb1YAveB9WwEOdxwtPc/miFHAjZYeHU35f25Qn2nAO2VE?=
+ =?Windows-1252?Q?1G2BUfw+R2eCYg/i6kwDVc9axFG6XvpLFThvQzrTwCcfn1HHHVpLbwi5?=
+ =?Windows-1252?Q?JK66fzZJyK4d2l5pg0J1js5Nbqlfck1wcjVEiOM3X6unRae+RIK+B/nW?=
+ =?Windows-1252?Q?VmrpZhmHKaWSHeYHtd1ZoFoFhmAiiLf3nOTjQzFHMBCMKP0+GCJpV5r6?=
+ =?Windows-1252?Q?UoffWtcMIjP9icI9q17mSSisfgaXxjD8i5vFwMRlsfktNQ3bZYNnpzP+?=
+ =?Windows-1252?Q?ZOHLYAg8ZkrhQwP241OlamAtsEjuBJ+Wd7Jfn+KS9RFbAzfxJdZnaYOg?=
+ =?Windows-1252?Q?AvNLTQH60feqHQK5zfHowWKz6cHs/h50W5sFPv8b+cSTLtzAI4q8JYfj?=
+ =?Windows-1252?Q?ilMv+bBlDBHLUbyu/BsaEPCvIBbjWajh60AWlmxnoa/HZ/WrIeQj81WV?=
+ =?Windows-1252?Q?Q5CKCn4lHTHzWkZ2fVr9y2Wlk66BjHMt6oU7UpZV5xJanZpKmtyxH/HN?=
+ =?Windows-1252?Q?7rECJUTJyHTfaCGg1mvHqILbo0duaq++sYnlXPkk0nGB/gaR9InhBkqH?=
+ =?Windows-1252?Q?nnuYMuhWgACiGbAO6BlmOqeJsiWyOJxZ687HEVx//BgN1iA5Pj5A6QdT?=
+ =?Windows-1252?Q?jmrWMuJE+YvKJYeNz/4aiXaWbhCE5t2fo0fL1JLk0tSZUBAjkN1oN8Q8?=
+ =?Windows-1252?Q?jtfrujJMU5o6e6mHI7MsqBwfoUNX+J/sbjDu3XZSNL+yD/e8nbuIFwHu?=
+ =?Windows-1252?Q?KD9KVmScMc72mJrm5U76/Qmmt+8Ve51Duo/h2E2xmfRI0uZ/KVL2nN86?=
+ =?Windows-1252?Q?UUdFK5KL2EbHC/EFEcBU21YxxKAIN3t1BNqTNI0Jok5VvS9l8jnFe27i?=
+ =?Windows-1252?Q?IItBhAuCzDMmPr31/dQXTI7cW3PSDPuNrpLlQGvyXgmhEM0vZIC6XzTI?=
+ =?Windows-1252?Q?CGWomKNNR52kLiFQdYtIjJeP5S7BFhhDq8c5jF0qBMJxLm8hlrLOHXSu?=
+ =?Windows-1252?Q?NsKGyPMtoOuAnMZACI1/qMKIBA3Gqng0uh0u7VECCHXXxb3qphNrMfDk?=
+ =?Windows-1252?Q?aK2/0cchufEH/7tVK4hQ+kxcEea3xwuo8u1CtUIrOI3CoiFblWYBWvDL?=
+ =?Windows-1252?Q?RJgu3Z8qXSTbnc4kgIMVSWifXas1LhUbcJlvAxPlN0MF20LgpFVO9FT9?=
+ =?Windows-1252?Q?MR5Ubae+S1nVddY94THwjmDchrM4ezflysS9tVtVNZ/oc/ot2K+QR70h?=
+ =?Windows-1252?Q?wWmF+g5DRhiUnqkhMweyb4tbkmSgmm2bwbv7HONtOt2RBEX6sfPTCBhG?=
+ =?Windows-1252?Q?mVZJim9fK1RmlsqfaqRxI+YhQJJs1sl6S7u/r5D2bS2TdkyBi7Fq4wCU?=
+ =?Windows-1252?Q?DwvcoAsHJmO0HLCdjNf+2lUrufBuu8jFTGZ35R2uMLWNdxv0oXdVAei/?=
+ =?Windows-1252?Q?wE5z7RrYvRzgaAZ+d336f/X7IUulZCFPcWJ9e0XTyKIupnmPPEP/TylQ?=
+ =?Windows-1252?Q?rHrNOEki?=
+Content-Type: multipart/alternative;
+	boundary="_000_TYZPR01MB7929B543FA6DCBCB240A71C9E8322TYZPR01MB7929apcp_"
+MIME-Version: 1.0
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: TYZPR01MB7929.apcprd01.prod.exchangelabs.com
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 1234-5678-9012-3456-1234-5678-9012-3456
+X-MS-Exchange-CrossTenant-Network-Message-Id: 58bcc547-b932-4d87-499c-08dea762f746
+X-MS-Exchange-CrossTenant-originalarrivaltime: 01 May 2026 09:21:02.9739
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 1234-5678-9012-3456-1234-5678-9012-3456
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: KL1PR01MB6016
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Fri, 01 May 2026 09:21:38 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Fri, 01 May 2026 04:21:36 -0500 (CDT)
+
+--_000_TYZPR01MB7929B543FA6DCBCB240A71C9E8322TYZPR01MB7929apcp_
+Content-Type: text/plain; charset="Windows-1252"
+Content-Transfer-Encoding: quoted-printable
+
+Hi,
+
+Are you planning redesign your website?
+
+If you=92re open to it, I=92d be happy to send over a short proposal and fe=
+w samples ?
+
+If you are interested let me know and schedule a meeting of your time zone
+
+Thanks
+
+--_000_TYZPR01MB7929B543FA6DCBCB240A71C9E8322TYZPR01MB7929apcp_
+Content-Type: text/html; charset="Windows-1252"
+Content-Transfer-Encoding: quoted-printable
+
+<html>
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3DWindows-1=
+252">
+<style type=3D"text/css" style=3D"display:none;"> P {margin-top:0;margin-bo=
+ttom:0;} </style>
+</head>
+<body dir=3D"ltr">
+<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
+nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; c=
+olor: rgb(0, 0, 0);">
+Hi,</div>
+<div style=3D"direction: ltr; font-family: Aptos, Aptos_EmbeddedFont, Aptos=
+_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb=
+(0, 0, 0);">
+<br>
+</div>
+<div style=3D"direction: ltr; font-family: Aptos, Aptos_EmbeddedFont, Aptos=
+_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb=
+(0, 0, 0);">
+Are you planning redesign your website?</div>
+<div style=3D"direction: ltr; font-family: Aptos, Aptos_EmbeddedFont, Aptos=
+_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb=
+(0, 0, 0);">
+<br>
+</div>
+<div style=3D"direction: ltr; font-family: Aptos, Aptos_EmbeddedFont, Aptos=
+_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb=
+(0, 0, 0);">
+If you=92re open to it, I=92d be happy to send over a short proposal and fe=
+w samples ?</div>
+<div style=3D"direction: ltr; font-family: Aptos, Aptos_EmbeddedFont, Aptos=
+_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb=
+(0, 0, 0);">
+<br>
+</div>
+<div style=3D"direction: ltr; font-family: Aptos, Aptos_EmbeddedFont, Aptos=
+_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb=
+(0, 0, 0);">
+If you are interested let me know&nbsp;and schedule a meeting of your time =
+zone</div>
+<div style=3D"direction: ltr; font-family: Aptos, Aptos_EmbeddedFont, Aptos=
+_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb=
+(0, 0, 0);">
+<br>
+</div>
+<div style=3D"direction: ltr; font-family: Aptos, Aptos_EmbeddedFont, Aptos=
+_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; color: rgb=
+(0, 0, 0);">
+Thanks</div>
+</body>
+</html>
+
+--_000_TYZPR01MB7929B543FA6DCBCB240A71C9E8322TYZPR01MB7929apcp_--
+

@@ -2204,6 +2204,36 @@ impl FeatureExtractor for ContextAnalyzer {
         }
         all_evidence.extend(employment_scam_evidence);
 
+        // Survey/reward scam detection
+        {
+            let text_lower = combined_text.to_lowercase();
+            let sender_lower = sender.to_lowercase();
+            let is_legitimate_survey_sender = sender_lower.contains("geico")
+                || sender_lower.contains("consumerreports")
+                || sender_lower.contains("nps")
+                || sender_lower.contains("feedback");
+            if !is_legitimate_survey_sender {
+                let has_survey = text_lower.contains("complete a short survey")
+                    || text_lower.contains("complete a brief survey")
+                    || text_lower.contains("take a quick survey")
+                    || text_lower.contains("complete this survey")
+                    || (text_lower.contains("survey")
+                        && text_lower.contains("exclusive invitation"))
+                    || (text_lower.contains("survey")
+                        && text_lower.contains("reward")
+                        && text_lower.contains("claim"));
+                let has_reward = text_lower.contains("to receive")
+                    || text_lower.contains("to claim")
+                    || text_lower.contains("reward")
+                    || text_lower.contains("set aside")
+                    || text_lower.contains("has been reserved");
+                if has_survey && has_reward {
+                    total_score += 55;
+                    all_evidence.push("Survey reward scam pattern detected".to_string());
+                }
+            }
+        }
+
         // Subscription renewal scam detection
         {
             let subject_lower = context.subject.as_deref().unwrap_or("").to_lowercase();

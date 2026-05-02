@@ -1,0 +1,104 @@
+✅ Loading modern TOML configuration: ../foff-milter.toml
+Return-Path: <0100019de5bc2c2c-b3749adf-f309-4740-a8c8-a7ec27b3926f-000000@amazonses.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.2/8.18.1) with ESMTPS id 641MoNpX097304
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <user@example.com>; Fri, 1 May 2026 22:50:23 GMT
+	(envelope-from 0100019de5bc2c2c-b3749adf-f309-4740-a8c8-a7ec27b3926f-000000@amazonses.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=pass (2048-bit key; unprotected) header.d=aws.com header.i=@aws.com header.b=TnOvwGG9;
+	dkim=pass (1024-bit key; unprotected) header.d=amazonses.com header.i=@amazonses.com header.b=G6+ZUgPV
+Received: from a9-98.smtp-out.amazonses.com (a9-98.smtp-out.amazonses.com [54.240.9.98])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 641MoDr3349876
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO)
+	for <user@example.com>; Fri, 1 May 2026 17:50:19 -0500
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 641MoDr3349876
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (2048-bit key, unprotected) header.d=aws.com header.i=@aws.com header.a=rsa-sha256 header.s=aijzh4uccm5n7kco4o45qhbzkt62a65y header.b=TnOvwGG9;
+	dkim=pass (1024-bit key, unprotected) header.d=amazonses.com header.i=@amazonses.com header.a=rsa-sha256 header.s=224i4yxa5dv7c2xz3womw6peuasteono header.b=G6+ZUgPV
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=aijzh4uccm5n7kco4o45qhbzkt62a65y; d=aws.com; t=555-123-4567;
+	h=Date:From:To:Message-ID:Subject:MIME-Version:Content-Type;
+	bh=DyIvQac8dymO9/znZFiI704guJcZt5tzi97d36KDS28=;
+	b=TnOvwGG9yTO+2+yvkgAlLVJhwsGkFMf9topbAgJVqUv0/WwJE5vaHyVkzkbTsUc+
+	l0WTHo/HNBkQuj0u586S32FRhxTJDdLZQxZRRMHnxYwCRwwlzNQA+LAX9N+/S5Gr5r/
+	fdiby7G5ilx5dURnskl2tRjEiM86RL6hOj6YUgNkdvdX8oR1gL+TMNBzboARkomSEom
+	sAwxVvigy6Cic8Zxr+iYZGMIAGjX5bfcyM7elgpMjsnOtDR59xI50dT21V+SUtCPfNP
+	W04xj5DDm1fHNomWv3Ek+ZAFIXj65edLfvTRD2TRqHNu76XN89a+BN4r1QNsDvi8oJP
+	2S9a9MUJJQ==
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=224i4yxa5dv7c2xz3womw6peuasteono; d=amazonses.com; t=555-123-4567;
+	h=Date:From:To:Message-ID:Subject:MIME-Version:Content-Type:Feedback-ID;
+	bh=DyIvQac8dymO9/znZFiI704guJcZt5tzi97d36KDS28=;
+	b=G6+ZUgPVVGAdXN4KqxdWv7mj/xkZWCe47z5UNXbfIErv8c1fwwxMzmj2hpX6eHc5
+	eFSQVt2BnysI2UYzqb9YR+1B+GO52sGAYyVI6qI+9EWTKygaRMzo2jSY523nLUyNWF+
+	LYrj+eUn3ikpKz2lX82Pwl4ha4b4PEXJmKLZYfMM=
+Date: Fri, 1 May 2026 22:50:07 +0000
+From: Amazon Web Services <invoicing@aws.com>
+To: user@example.com
+Message-ID: <0100019de5bc2c2c-b3749adf-f309-4740-a8c8-a7ec27b3926f-000000@email.amazonses.com>
+Subject: Amazon Web Services Billing Statement Available [Account:
+ 502138449085]
+MIME-Version: 1.0
+Content-Type: multipart/mixed; 
+	boundary="----=_Part_3256323_767521820.1777675807784"
+Feedback-ID: ::1.us-east-1.Rw0MSDPPRrmKml4jfhsJEjYaidP5InuWMFSjPRflgpM=:AmazonSES
+X-SES-Outgoing: 2026.05.01-54.240.9.98
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Fri, 01 May 2026 22:50:23 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Fri, 01 May 2026 17:50:19 -0500 (CDT)
+X-Spam-Flag: YES
+
+------=_Part_3256323_767521820.1777675807784
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_3256324_482231340.1777675807784"
+
+------=_Part_3256324_482231340.1777675807784
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"><body width="100%" bgcolor="#F0F2F3" style="margin: 0;"><center style="width: 100%; background: #F0F2F3; text-align: left;"><div style="margin: auto; max-width: 600px; padding-top: 50px;"><!-- Email Header : BEGIN --><table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center" width="100%" id="logoContainer" style="background: #252F3D; border-radius: 3px 3px 0 0; max-width: 600px;"><tr>
+  <td style="background: #252F3D; border-radius: 3px 3px 0 0; padding: 20px 0 10px 0; text-align: center;">
+    <a href="https://p6li1chk.r.us-east-1.awstrack.me/L0/https:%2F%2Faws.amazon.com/1/0100019de5bc2c2c-b3749adf-f309-4740-a8c8-a7ec27b3926f-000000/PjAkJbl8Ynng8dnAD-i5PXGGDYM=473" target="_blank" title="Amazon Web Services">
+      <img src="https://m.media-amazon.com/images/G/01/amazonwebservices/AWS_logo_RGB_REV.png" width="75" height="45" alt="AWS logo" border="0" style="font-family: sans-serif; font-size: 15px; line-height: 140%; color: #555555;">
+    </a>
+  </td>
+</tr></table><!-- Email Header : END --><!-- Email Body : BEGIN --><table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center" width="100%" id="emailBodyContainer" style="border: 0px; border-bottom: 1px solid #D6D6D6; max-width: 600px; table-layout:fixed;"><tr><td style="background-color: #FFF; color: #444; font-family: 'Amazon Ember', 'Helvetica Neue', Roboto, Arial, sans-serif; font-size: 14px; line-height: 140%; padding: 25px 35px;"><div>Greetings from Amazon Web Services,<br>
+<br>
+This e-mail confirms that your latest billing statement, for the account ending in ****9085, is available on the AWS web site. Your account will be charged the following:<br>
+<br>
+Total: $37.16<br>
+<br>
+<br>
+The credit card ending in 0335 is currently your default payment method for your AWS charges. We will automatically charge the total amount due shown above to your default credit card unless your bank requires additional verification from you. Please visit the Payment History page in your Billing and Cost Management Console https://console.aws.amazon.com/billing/home#/paymenthistory to review the invoice status and complete any required payments to avoid service disruptions.<br>
+<br>
+<br>
+<br>
+You can see a complete break down of all charges on the Billing & Cost Management page located here:<br>
+<br>
+https://console.aws.amazon.com/billing/home#/bills?year=2026&month=4<br>
+<br>
+To receive future invoices in the PDF format, sign in to the AWS Management Console and open the AWS Billing console at https://console.aws.amazon.com/billing/ and opt-in to PDF invoices delivered by email under Invoice delivery preferences<br>
+<br>
+To protect your privacy, we can only communicate account information to the e-mail address on file for your account.<br>
+<br>
+Thank you for using Amazon Web Services.<br>
+<br>
+Sincerely,<br>
+<br>
+Amazon Web Services<br>
+<br>
+To learn more about managing your AWS costs with Cost Allocation and Tagging, visit http://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/cost-alloc-tags.html<br>
+<br>
+This message was produced and distributed by Amazon Web Services, Inc. and affiliates, 410 Terry Ave. North, Seattle, WA 98109-5210.<br>
+<br>
+AWS will not be bound by, and specifically objects to, any term, condition or other provision which is different from or in addition to the provisions of the AWS Customer Agreement or AWS Enterprise Agreement between AWS and you (whether or not it would materially alter such AWS Customer Agreement or AWS Enterprise Agreement) and which is submitted in any order, receipt, acceptance, confirmation, correspondence or otherwise, unless AWS specifically agrees to such provision in a written instrument signed by AWS.<br>
+<br>
+The current AWS Customer Agreement is available at https://aws.amazon.com/agreement/. You can see more information about these changes at https://aws.amazon.com/agreement/recent-changes/.<br>
+<br>
+Submit feedback on your Invoice Experience here https://amazonmr.au1.qualtrics.com/jfe/form/SV_1LYl8aAqrflQhXo.</div><br>
+</td></tr></table><!-- Email Body : END --></div></center><img alt="" src="https://p6li1chk.r.us-east-1.awstrack.me/I0/0100019de5bc2c2c-b3749adf-f309-4740-a8c8-a7ec27b3926f-000000/IROu5sJwegiMbQSIoXxL3dZhCeE=473" style="display: none; width: 1px; height: 1px;">
+</body></html>
+------=_Part_3256324_482231340.1777675807784--
+
+------=_Part_3256323_767521820.1777675807784--
+

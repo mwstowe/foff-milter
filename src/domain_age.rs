@@ -361,7 +361,7 @@ impl DomainAgeChecker {
 
         use hickory_resolver::Resolver;
 
-        let resolver = Resolver::builder_tokio().map(|b| b.build())?;
+        let resolver = Resolver::builder_tokio().and_then(|b| b.build())?;
 
         match resolver.lookup_ip(domain).await {
             Ok(_) => {

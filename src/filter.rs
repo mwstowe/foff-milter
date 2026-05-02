@@ -1560,7 +1560,7 @@ impl FilterEngine {
     async fn validate_email_domain_dns(&self, domain: &str, timeout_seconds: u64) -> bool {
         log::debug!("Checking email domain DNS for: {domain} (timeout: {timeout_seconds}s)");
 
-        let resolver = match Resolver::builder_tokio().map(|b| b.build()) {
+        let resolver = match Resolver::builder_tokio().and_then(|b| b.build()) {
             Ok(resolver) => resolver,
             Err(e) => {
                 log::warn!("Failed to create DNS resolver for {domain}: {e}");
@@ -1570,23 +1570,15 @@ impl FilterEngine {
 
         // First, try MX record lookup (most appropriate for email domains)
         log::debug!("Checking MX records for {domain}");
-        let mx_future = resolver.mx_lookup(domain);
+        let mx_future = resolver.lookup(domain, hickory_resolver::proto::rr::RecordType::MX);
         let mx_timeout_future =
             tokio::time::timeout(Duration::from_secs(timeout_seconds), mx_future);
 
         match mx_timeout_future.await {
             Ok(Ok(mx_response)) => {
-                let mx_count = mx_response.iter().count();
+                let mx_count = mx_response.answers().len();
                 if mx_count > 0 {
                     log::debug!("MX record validation successful for {domain} ({mx_count} MX records found)");
-                    for mx in mx_response.iter().take(3) {
-                        // Limit logging
-                        log::debug!(
-                            "MX record for {domain}: {} (priority {})",
-                            mx.exchange(),
-                            mx.preference()
-                        );
-                    }
                     return true;
                 }
                 log::debug!("No MX records found for {domain}, falling back to A/AAAA lookup");
@@ -1608,7 +1600,7 @@ impl FilterEngine {
     async fn validate_domain_dns(&self, domain: &str, timeout_seconds: u64) -> bool {
         log::debug!("Checking DNS for domain: {domain} (timeout: {timeout_seconds}s)");
 
-        let resolver = match Resolver::builder_tokio().map(|b| b.build()) {
+        let resolver = match Resolver::builder_tokio().and_then(|b| b.build()) {
             Ok(resolver) => resolver,
             Err(e) => {
                 log::warn!("Failed to create DNS resolver for {domain}: {e}");
@@ -3412,6 +3404,21 @@ impl FilterEngine {
                             seasonal_adjustment
                         ),
                     ));
+                }
+
+                // Reverse mailing list bonus if brand impersonation was detected by YAML rules
+                if matched_rules
+                    .iter()
+                    .any(|r| r.contains("Known brand from suspicious domain"))
+                    && scoring_rules
+                        .iter()
+                        .any(|r| r.contains("Legitimate mailing list"))
+                {
+                    total_score += 200;
+                    scoring_rules.push(
+                        "Mailing List Override: Brand impersonation detected (+200)".to_string(),
+                    );
+                    log::info!("Mailing list bonus reversed due to brand impersonation");
                 }
 
                 // Determine action based on thresholds
@@ -5600,15 +5607,16 @@ impl FilterEngine {
                                 log::debug!("Validating reply-to domain: {domain}");
 
                                 // Check DNS resolution
-                                let resolver = match Resolver::builder_tokio().map(|b| b.build()) {
-                                    Ok(resolver) => resolver,
-                                    Err(e) => {
-                                        log::warn!(
-                                            "Failed to create DNS resolver for {domain}: {e}"
-                                        );
-                                        return true; // Treat resolver failure as suspicious
-                                    }
-                                };
+                                let resolver =
+                                    match Resolver::builder_tokio().and_then(|b| b.build()) {
+                                        Ok(resolver) => resolver,
+                                        Err(e) => {
+                                            log::warn!(
+                                                "Failed to create DNS resolver for {domain}: {e}"
+                                            );
+                                            return true; // Treat resolver failure as suspicious
+                                        }
+                                    };
 
                                 // Check A/AAAA records first
                                 let lookup_future = resolver.lookup_ip(domain);
@@ -5647,7 +5655,7 @@ impl FilterEngine {
 
                                     match mx_timeout_future.await {
                                         Ok(Ok(response)) => {
-                                            let has_mx = response.iter().count() > 0;
+                                            let has_mx = !response.answers().is_empty();
                                             if has_mx {
                                                 log::debug!("Found MX records for {domain}");
                                             } else {

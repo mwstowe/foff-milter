@@ -410,10 +410,7 @@ impl Milter {
                             Ok(mut guard) => {
                                 guard.insert(session_id, mail_ctx);
                                 if guard.len() % 10 == 0 {
-                                    log::info!(
-                                        "StateMap: {} active sessions",
-                                        guard.len()
-                                    );
+                                    log::info!("StateMap: {} active sessions", guard.len());
                                 }
                             }
                             Err(e) => {
@@ -1230,7 +1227,7 @@ impl Milter {
                                         mail_ctx.subject = None;
                                         mail_ctx.sender = None;
                                         mail_ctx.from_header = None;
-                                        log::info!(
+                                        log::debug!(
                                             "Abort: cleared message data for session {}",
                                             session_id
                                         );
@@ -1256,7 +1253,7 @@ impl Milter {
                             match state.lock() {
                                 Ok(mut guard) => {
                                     guard.remove(session_id);
-                                    log::info!(
+                                    log::debug!(
                                         "Close: removed session {} (active sessions: {})",
                                         session_id,
                                         guard.len()

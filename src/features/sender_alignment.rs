@@ -511,7 +511,10 @@ impl SenderAlignmentAnalyzer {
         // Major brands that should have proper corporate infrastructure
         const MAJOR_BRANDS: &[(&str, &[&str])] = &[
             ("walmart", &["walmart.com", "wal-mart.com"]),
-            ("amazon", &["amazon.com", "amazonses.com", "amazon.co.uk"]),
+            (
+                "amazon",
+                &["amazon.com", "amazonses.com", "amazon.co.uk", "aws.com"],
+            ),
             ("target", &["target.com"]),
             ("bestbuy", &["bestbuy.com"]),
             ("costco", &["costco.com"]),
@@ -624,7 +627,7 @@ impl SenderAlignmentAnalyzer {
                 "microsoft",
                 vec!["microsoft.com", "outlook.com", "hotmail.com"],
             ),
-            ("amazon", vec!["amazon.com", "amazonses.com"]),
+            ("amazon", vec!["amazon.com", "amazonses.com", "aws.com"]),
             ("paypal", vec!["paypal.com", "paypal.me"]),
         ];
 

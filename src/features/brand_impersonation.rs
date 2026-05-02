@@ -55,6 +55,8 @@ impl BrandImpersonationFeature {
                 "amazon.co.uk".to_string(),
                 "amazon.co.jp".to_string(),
                 "amazonmusic.com".to_string(),
+                "aws.com".to_string(),
+                "amazonses.com".to_string(),
             ],
         );
 
@@ -182,6 +184,19 @@ impl BrandImpersonationFeature {
         legitimate_domains.insert(
             "ace_hardware".to_string(),
             vec!["acehardware.com".to_string(), "acehdwr.com".to_string()],
+        );
+
+        brand_patterns.insert(
+            "dicks_sporting".to_string(),
+            vec![
+                r"(?i)\bdick'?s\s*sporting\b".to_string(),
+                r"(?i)\bdicks\s*brief\b".to_string(),
+                r"(?i)\byour\s*dicks?\b".to_string(),
+            ],
+        );
+        legitimate_domains.insert(
+            "dicks_sporting".to_string(),
+            vec!["dickssportinggoods.com".to_string()],
         );
 
         brand_patterns.insert(
@@ -668,6 +683,7 @@ impl FeatureExtractor for BrandImpersonationFeature {
             "microsoft.com",
             "apple.com",
             "amazon.com",
+            "aws.com",
             "github.com",
             "gitlab.com",
             "mozilla.com",
