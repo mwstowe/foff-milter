@@ -129,7 +129,7 @@ impl FeatureEngine {
                 Box::new(invoice_analyzer::InvoiceAnalyzer::from_config(
                     &config.feature_scoring.invoice_analysis,
                 )),
-                Box::new(domain_analyzer::DomainAnalyzer::new()),
+                // Box::new(domain_analyzer::DomainAnalyzer::new()),
                 Box::new(domain_reputation::DomainReputationFeature::new()),
                 Box::new(brand_impersonation::BrandImpersonationFeature::new()),
                 Box::new(financial_validation::FinancialValidationFeature::new()),
@@ -158,7 +158,7 @@ impl FeatureEngine {
                 Box::new(sender_alignment::SenderAlignmentAnalyzer::new()),
                 Box::new(context_analyzer::ContextAnalyzer::new()),
                 Box::new(invoice_analyzer::InvoiceAnalyzer::new()),
-                Box::new(domain_analyzer::DomainAnalyzer::new()),
+                // Box::new(domain_analyzer::DomainAnalyzer::new()),
                 Box::new(domain_reputation::DomainReputationFeature::new()),
                 Box::new(brand_impersonation::BrandImpersonationFeature::new()),
                 Box::new(financial_validation::FinancialValidationFeature::new()),

@@ -345,6 +345,35 @@ impl FeatureExtractor for DomainReputationFeature {
             }
         }
 
+        // Check for suspicious domain patterns (merged from domain_analyzer)
+        if !primary_domain.is_empty() && score >= 0 {
+            let d = primary_domain.to_lowercase();
+            let is_legit = context
+                .domain_registry
+                .as_ref()
+                .map(|r| r.is_legitimate(&d))
+                .unwrap_or(false);
+            if !is_legit {
+                let suspicious_domain_patterns = [
+                    (r"(?i)[a-z]{2,}[0-9]+[a-z]{2,}", "Mixed alphanumeric"),
+                    (r"(?i)(gacor|park.*for|temp.*site)", "Parking/gambling"),
+                ];
+                for (pattern, desc) in &suspicious_domain_patterns {
+                    if let Ok(re) = regex::Regex::new(pattern) {
+                        if re.is_match(&d) {
+                            score += 30;
+                            evidence.push(format!(
+                                "Suspicious domain pattern detected: {} ({})",
+                                primary_domain, desc
+                            ));
+                            confidence += 0.7;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
         FeatureScore {
             feature_name: "Domain Reputation".to_string(),
             score,
