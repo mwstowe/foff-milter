@@ -332,6 +332,7 @@ mod tests {
             trusted_esp: None,
             raw_body: None,
             media_spam_score: 0,
+            domain_registry: None,
         };
 
         // Test SendGrid abuse reporting (will log since no SMTP configured)
@@ -385,6 +386,7 @@ mod tests {
             trusted_esp: None,
             raw_body: None,
             media_spam_score: 0,
+            domain_registry: None,
         };
 
         let result = reporter

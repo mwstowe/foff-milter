@@ -1,0 +1,389 @@
+# FOFF Milter Domain Registry
+# Single source of truth for all domain classifications.
+# Categories are not mutually exclusive — a domain can appear in multiple lists.
+
+[esp]
+# Trusted ESPs get authentication bypass and score reduction
+trusted = [
+    "sendgrid.net", "sendgrid.com", "sendgrid.info",
+    "mailgun.org", "mailgun.com",
+    "mailchimp.com", "mcsv.net", "mcdlv.net", "rsgsv.net", "list-manage.com", "mailchimpapp.com",
+    "amazonses.com", "ses.amazonaws.com",
+    "sparkpostmail.com", "sparkpost.com", "spmailtechno.com", "sparkpostmail2.com",
+    "klaviyomail.com", "klaviyodns.com",
+    "salesforce.com", "pd25.com", "exacttarget.com", "pardot.com",
+    "cjm.adobe.com", "cname.cjm.adobe.com",
+    "bmsend.com", "14westmail.net", "emsend1.com",
+    "postmarkapp.com", "mandrill.com", "mandrillapp.com",
+    "mailjet.com", "sendinblue.com",
+]
+# Known ESPs that are legitimate but lower trust
+known = [
+    "constantcontact.com", "ccsend.com", "ctctcdn.com",
+    "campaignmonitor.com", "createsend.com",
+    "aweber.com", "getresponse.com", "convertkit.com",
+    "activecampaign.com", "drip.com",
+    "hubspot.com", "marketo.com", "eloqua.com",
+    "emailsp.net", "musvc.com", "mailin.fr",
+    "salesmanago.com",
+    "narvar.com",
+    "oracleemaildelivery.com",
+]
+# Return-Path patterns that indicate ESP infrastructure
+return_path_patterns = [
+    "rsgsv.net", "mcsv.net", "mcdlv.net", "list-manage.com",
+    "ccsend.com", "sendgrid.net", "sparkpostmail.com",
+]
+
+[consumer_email]
+domains = [
+    "gmail.com", "googlemail.com",
+    "outlook.com", "hotmail.com", "live.com",
+    "yahoo.com",
+    "aol.com",
+    "icloud.com", "me.com", "mac.com",
+    "mail.com",
+    "protonmail.com",
+    "zoho.com",
+]
+
+[brands]
+# Brand name -> legitimate domains mapping
+# Used for brand impersonation detection
+
+[brands.starbucks]
+domains = ["starbucks.com", "starbucks.co.uk"]
+patterns = ['(?i)\bstarbucks?\b']
+
+[brands.amazon]
+domains = ["amazon.com", "amazon.co.uk", "amazon.co.jp", "amazonmusic.com", "aws.com", "amazonses.com"]
+patterns = ['(?i)\bamazon\b', 'アマゾン']
+
+[brands.americanexpress]
+domains = ["americanexpress.com", "aexp.com"]
+patterns = ['(?i)\bamerican\s*express\b', '(?i)\bamex\b', 'アメリカン・エキスプレス']
+
+[brands.paypal]
+domains = ["paypal.com", "paypal.me"]
+patterns = ['(?i)\bpaypal\b']
+
+[brands.microsoft]
+domains = ["microsoft.com", "outlook.com", "live.com"]
+patterns = ['(?i)\bmicrosoft\b']
+
+[brands.google]
+domains = ["google.com", "gmail.com", "googlemail.com"]
+patterns = ['(?i)\bgoogle\b']
+
+[brands.apple]
+domains = ["apple.com", "icloud.com"]
+patterns = ['(?i)\bapple\b']
+
+[brands.coinbase]
+domains = ["coinbase.com"]
+patterns = ['(?i)\bcoinbase\b']
+
+[brands.twilio]
+domains = ["twilio.com", "sendgrid.com", "sendgrid.net"]
+patterns = ['(?i)\btwilio\b', '(?i)\bsendgrid\b']
+
+[brands.marriott]
+domains = ["marriott.com"]
+patterns = ['(?i)\bmarriott?\b']
+
+[brands.skymiles]
+domains = ["delta.com", "delta-air.com"]
+patterns = ['(?i)\bsky\s*miles\b']
+
+[brands.mcdonalds]
+domains = ["mcdonalds.com", "sparkpostmail.com"]
+patterns = ['(?i)\bmcdonalds?\b', '(?i)\bmcd\b']
+
+[brands.omaha_steaks]
+domains = ["omahasteaks.com"]
+patterns = ['(?i)\bomaha\s*steaks?\b', '(?i)\bomaha\b']
+
+[brands.butcherbox]
+domains = ["butcherbox.com"]
+patterns = ['(?i)\bbutcher\s*box\b']
+
+[brands.aldi]
+domains = ["aldi.com", "aldi.us"]
+patterns = ['(?i)\baldi\b']
+
+[brands.publix]
+domains = ["publix.com"]
+patterns = ['(?i)\bpublix\b']
+
+[brands.endurance]
+domains = ["endurancewarranty.com", "endurance.com"]
+patterns = ['(?i)\bendurance\b']
+
+[brands.kroger]
+domains = ["kroger.com", "krogeremail.com"]
+patterns = ['(?i)\bkroger\b']
+
+[brands.ahs]
+domains = ["ahs.com"]
+patterns = ['(?i)\bahs\b', '(?i)\bamerican\s*home\s*shield\b']
+
+[brands.ace_hardware]
+domains = ["acehardware.com", "acehdwr.com"]
+patterns = ['(?i)\bace\s*hardware\b', '(?i)\bace\s*stores?\b']
+
+[brands.dicks_sporting]
+domains = ["dickssportinggoods.com"]
+patterns = ['(?i)\bdick.?s\s*sporting\b', '(?i)\bdicks\s*brief\b', '(?i)\byour\s*dicks?\b']
+
+[brands.harbor_freight]
+domains = ["harborfreight.com"]
+patterns = ['(?i)\bharbor\s*freight\b']
+
+[brands.yeti]
+domains = ["yeti.com", "yeticoolers.com"]
+patterns = ['(?i)\byeti\b']
+
+[brands.home_depot]
+domains = ["homedepot.com"]
+patterns = ['(?i)\bhome\s*depot\b']
+
+[brands.lowes]
+domains = ["lowes.com", "mail.capitaloneshopping.com"]
+patterns = ['(?i)\blowe.?s\b']
+
+[brands.sams_club]
+domains = ["samsclub.com"]
+patterns = ['(?i)\bsam.?s\s*club\b', '(?i)\bsamsclub\b']
+
+[brands.walmart]
+domains = ["walmart.com", "wal-mart.com"]
+patterns = ['(?i)\bwalmart\b', '(?i)\bwal-mart\b']
+
+[brands.tmobile]
+domains = ["tmobile.com", "t-mobile.com"]
+patterns = ['(?i)\bt-?mobile\b']
+
+[brands.norton]
+domains = ["norton.com", "nortonlifelock.com", "symantec.com"]
+patterns = ['(?i)\bnorton\b']
+
+[brands.tinnitus]
+domains = ["hearingaid.com"]
+patterns = ['(?i)\btinnitus\s*\d+\b', '(?i)\bhearing\s*(aid|device)\b']
+
+[brands.aaa]
+domains = ["aaa.com", "aaa.org"]
+patterns = ['(?i)\baaa\b', '(?i)\btriple\s*a\b']
+
+[brands.tractor_supply]
+domains = ["tractorsupply.com"]
+patterns = ['(?i)\btractor\s*supply\b']
+
+[brands.pandora]
+domains = ["pandora.net", "pandora.com"]
+patterns = ['(?i)\bpandora\b']
+
+[brands.fedex]
+domains = ["fedex.com"]
+patterns = ['(?i)\bfedex\b']
+
+[brands.att]
+domains = ["att.com"]
+patterns = ['(?i)\bat&t\b']
+
+[brands.verizon]
+domains = ["verizon.com", "verizon.net"]
+patterns = ['(?i)\bverizon\b']
+
+[brands.costco]
+domains = ["costco.com", "costco.ca"]
+patterns = ['(?i)\bcostco\b', '(?i)\bc0stc0\b']
+
+[brands.keurig]
+domains = ["keurig.com", "keurig.ca"]
+patterns = ['(?i)\bkeurig\b']
+
+[brands.fidelity]
+domains = ["fidelity.com", "fidelityinvestments.com"]
+patterns = ['(?i)\bfidelity\s*investments?\b']
+
+[brands.schwab]
+domains = ["schwab.com", "aboutschwab.com"]
+patterns = ['(?i)\bschwab\b', '(?i)\bcharles\s*schwab\b']
+
+[brands.geico]
+domains = ["geico.com"]
+patterns = ['(?i)\bgeico\b']
+
+[retailers]
+# Legitimate retail/ecommerce domains
+domains = [
+    "amazon.com", "amazonmusic.com", "aws.com",
+    "walmart.com", "wal-mart.com",
+    "target.com", "bestbuy.com",
+    "costco.com", "costco.ca",
+    "homedepot.com", "lowes.com",
+    "macys.com", "nordstrom.com", "bloomingdales.com", "saks.com",
+    "kohls.com", "jcpenney.com", "sears.com",
+    "oldnavy.com", "gap.com", "bananarepublic.com",
+    "levi.com", "nike.com", "adidas.com", "puma.com",
+    "wayfair.com", "overstock.com", "newegg.com",
+    "etsy.com", "ebay.com",
+    "poshmark.com", "mercari.com",
+    "williams-sonoma.com", "rejuvenation.com",
+    "onestopplus.com", "torrid.com",
+    "shutterfly.com", "michaels.com",
+    "uncommongoods.com",
+    "ikea.com", "ikea.us",
+    "eyebuydirect.com", "warbyparker.com",
+    "secretlab.co",
+    "bedjet.com", "ladyyum.com",
+    "humblebundle.com",
+    "woot.com",
+    "aliexpress.com", "temu.com", "temuemail.com",
+    "dickssportinggoods.com",
+    "acehardware.com",
+    "walgreens.com",
+    "harborfreight.com",
+    "tractorsupply.com",
+    "omahasteaks.com",
+    "1800flowers.com", "ftd.com", "teleflora.com",
+    "aransweatermarket.com",
+    "esprovisions.com",
+    "silhouettedesignstore.co",
+    "thesmartesthouse.com",
+    "reolink.com", "reolinksupport.com",
+    "americanmeadows.com",
+    "snowjoe.com",
+    "partsexpress.com", "mouser.com", "digikey.com", "adafruit.com",
+]
+
+[financial]
+domains = [
+    "paypal.com",
+    "chase.com", "jpmorgan.com",
+    "bankofamerica.com",
+    "wellsfargo.com",
+    "citi.com", "citibank.com",
+    "capitalone.com", "capitaloneshopping.com",
+    "americanexpress.com", "aexp.com",
+    "discover.com",
+    "usbank.com",
+    "fidelity.com", "fidelityinvestments.com",
+    "schwab.com", "aboutschwab.com",
+    "creditkarma.com",
+    "stripe.com", "square.com",
+    "synchrony.com", "comenity.com", "barclays.com",
+    "empower.com",
+    "ally.com",
+    "geico.com",
+]
+
+[news_media]
+domains = [
+    "nytimes.com", "washingtonpost.com", "wsj.com",
+    "cnn.com", "bbc.com", "bbc.co.uk",
+    "reuters.com", "apnews.com", "ap.org",
+    "usatoday.com", "npr.org",
+    "politico.com", "thehill.com", "axios.com",
+    "bloomberg.com", "forbes.com", "economist.com",
+    "oxfordclub.com",
+    "consumerreports.org",
+    "medium.com", "substack.com",
+]
+
+[healthcare]
+domains = [
+    "commonspirit.org",
+    "zoomcare.com",
+    "labcorp.com", "quest.com",
+    "mayo.org", "mayo.edu",
+    "clevelandclinic.org",
+    "johnshopkins.org",
+    "mountsinai.org", "cedars-sinai.org",
+    "adapthealth.com", "adapthealthmarketplace.com",
+    "athenahealth.com", "epic.com", "cerner.com",
+    "batemanhornecenter.org",
+]
+# Keywords in domain that indicate healthcare
+domain_keywords = [
+    "health", "hospital", "medical", "clinic", "care",
+    "physician", "doctor", "patient",
+    "commonspirit", "providence", "kaiser", "mayo", "cedars",
+    "virginiamason", "franciscan",
+]
+
+[technology]
+domains = [
+    "microsoft.com", "google.com", "apple.com",
+    "amazon.com", "aws.com",
+    "github.com", "gitlab.com", "bitbucket.org",
+    "atlassian.com", "slack.com", "discord.com",
+    "zoom.us", "dropbox.com", "box.com",
+    "adobe.com", "autodesk.com",
+    "shopify.com", "wordpress.com", "woocommerce.com",
+    "cloudflare.com", "digitalocean.com",
+    "namecheap.com", "godaddy.com",
+    "mozilla.org", "mozilla.com",
+    "redhat.com", "canonical.com", "ubuntu.com",
+    "debian.org", "apache.org", "linux.org",
+    "fsf.org", "eff.org",
+    "wikipedia.org", "wikimedia.org",
+    "ecoflow.com", "hubitat.com",
+    "kiwico.com",
+    "docusign.com", "docusign.net",
+    "bcdtravel.com",
+    "concurcompleat.com", "concur.com", "expensify.com",
+    "netsuite.com", "oracle.com",
+    "technews.com",
+    "backstage.com",
+    "tokyo-tiger.com",
+    "daburns.com",
+    "backerhome.com",
+    "suncadia.com",
+    "portlandnursery.com",
+    "pbteen.com",
+]
+
+[social_media]
+domains = [
+    "facebook.com", "facebookmail.com",
+    "instagram.com", "mail.instagram.com",
+    "twitter.com", "x.com",
+    "linkedin.com",
+    "youtube.com",
+    "tiktok.com",
+    "snapchat.com",
+    "pinterest.com",
+    "reddit.com",
+    "nextdoor.com",
+    "quora.com",
+]
+
+[shipping]
+domains = [
+    "ups.com", "fedex.com", "usps.com", "dhl.com",
+    "narvar.com", "shipstation.com", "aftership.com", "route.com",
+]
+
+[entertainment]
+domains = [
+    "netflix.com",
+    "disneyplus.com", "waltdisneypictures.com", "d23.com",
+    "siriusxm.com",
+    "iheart.com",
+    "backerkit.com", "kickstarter.com",
+    "delta.com", "united.com", "southwest.com",
+    "doordash.com", "uber.com", "lyft.com",
+    "airbnb.com",
+]
+
+[suspicious_tlds]
+# TLD -> risk score
+high_risk = [".tk", ".ml", ".ga", ".cf", ".gq"]
+suspicious = [
+    ".shop", ".click", ".link", ".space", ".name",
+    ".icu", ".top", ".download", ".loan", ".win",
+    ".blog", ".pro", ".live",
+    ".za.com", ".sa.com",
+]

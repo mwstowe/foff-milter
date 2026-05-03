@@ -222,6 +222,7 @@ mod tests {
             trusted_esp: None,
             raw_body: None,
             media_spam_score: 0,
+            domain_registry: None,
         }
     }
 

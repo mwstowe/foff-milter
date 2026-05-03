@@ -715,6 +715,7 @@ async fn analyze_email_file(
         trusted_esp: None,
         raw_body: Some(body_content.clone()),
         media_spam_score: 0,
+        domain_registry: None,
     };
 
     // Pre-compute DKIM verification (first hop behavior - must be done before any header modifications)
@@ -2355,6 +2356,7 @@ async fn test_email_file(
         trusted_esp: None,       // Will be detected by ESP validation feature
         raw_body: Some(body),
         media_spam_score: 0,
+        domain_registry: None,
     };
 
     // Populate DKIM verification for test mode

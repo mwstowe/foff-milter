@@ -1,3 +1,4 @@
+use crate::domain_registry::DomainRegistry;
 use crate::features::{FeatureExtractor, FeatureScore};
 use crate::MailContext;
 use regex::Regex;
@@ -42,22 +43,13 @@ impl ServerRoleAnalyzer {
     }
 
     fn is_receiving_server(&self, context: &MailContext) -> bool {
-        // Check if we're the final receiving server by looking at the Received headers
-        // The receiving server is typically the last one in the chain that processes "for <recipient>"
-
         if let Some(received_headers) = context.headers.get("Received") {
             let received_lines: Vec<&str> = received_headers.lines().collect();
-
-            // Look for our server name in the final Received header
             if let Some(first_received) = received_lines.first() {
-                // If the first Received header contains "for <recipient>" and matches our processing,
-                // we're likely the receiving server
                 return first_received.contains("for <")
                     && (first_received.contains("juliett.") || first_received.contains("hotel."));
             }
         }
-
-        // Fallback: assume we're receiving server if we can't determine otherwise
         true
     }
 
@@ -71,7 +63,6 @@ impl ServerRoleAnalyzer {
                     }
                 }
             }
-            // Fallback: try to extract domain from the header directly
             if let Some(at_pos) = from_header.rfind('@') {
                 let after_at = &from_header[at_pos + 1..];
                 if let Some(space_pos) = after_at.find(' ') {
@@ -84,78 +75,89 @@ impl ServerRoleAnalyzer {
         None
     }
 
-    fn is_suspicious_domain(&self, domain: &str) -> bool {
+    fn is_suspicious_domain(&self, domain: &str, registry: Option<&DomainRegistry>) -> bool {
         let domain_lower = domain.to_lowercase();
 
         // Skip legitimate business domains
-        let legitimate_domains = [
-            "docusign.com",
-            "docusign.net",
-            "adobe.com",
-            "microsoft.com",
-            "google.com",
-            "amazon.com",
-            "amazonmusic.com", // Amazon Music service
-            "salesforce.com",
-            "hubspot.com",
-            "mailchimp.com",
-            "constantcontact.com",
-            "sendgrid.net",
-            "medium.com",      // Medium publishing platform
-            "kiwico.com",      // KiwiCo educational kits
-            "empower.com",     // Empower financial services
-            "builtsquare.com", // Built Square construction
-            "sendgrid.info",
-            "bcdtravel.com",
-            "concurcompleat.com",
-            "concur.com",
-            "expensify.com",
-            "netsuite.com",
-            "oracle.com",
-            "backerhome.com",
-            "gmail.com",
-            "outlook.com",
-            "hotmail.com", // Microsoft consumer email
-            "yahoo.com",
-            "technews.com",
-            "ecoflow.com",
-            "nytimes.com",
-            "salesmanago.com",        // Marketing automation platform
-            "kickstarter.com",        // Kickstarter crowdfunding platform
-            "backstage.com",          // Backstage job board
-            "pbteen.com",             // Pottery Barn Teen retail
-            "mail.instagram.com",     // Instagram social platform
-            "woot.com",               // Woot marketplace (Amazon)
-            "evgo.com",               // EVgo EV charging service
-            "rejuvenation.com",       // Rejuvenation retail
-            "tokyo-tiger.com",        // Tokyo Tiger retail
-            "waltdisneypictures.com", // Walt Disney Pictures
-            "doordash.com",           // DoorDash food delivery
-            "daburns.com",            // D.A. Burns service provider
-            "blinkcharging.com",      // Blink Charging
-            "oxfordclub.com",         // Oxford Club newsletter
-            "disneyplus.com",         // Disney+
-            "sparkpostmail.com",      // SparkPost ESP
-            "suncadia.com",           // Suncadia Resort
-            "americanmeadows.com",    // American Meadows
-            "portlandnursery.com",    // Portland Nursery
-            "ccsend.com",             // Constant Contact ESP
-            "consumerreports.org",    // Consumer Reports
-            "iheart.com",             // iHeart Media
-            "hubitat.com",            // Hubitat smart home
-            "mozilla.org",            // Mozilla Foundation
-        ];
-
-        for legitimate in &legitimate_domains {
-            if domain_lower.contains(legitimate) {
+        if let Some(reg) = registry {
+            if reg.is_legitimate(&domain_lower) {
                 return false;
+            }
+        } else {
+            let legitimate_domains = [
+                "docusign.com",
+                "docusign.net",
+                "adobe.com",
+                "microsoft.com",
+                "google.com",
+                "amazon.com",
+                "amazonmusic.com",
+                "salesforce.com",
+                "hubspot.com",
+                "mailchimp.com",
+                "constantcontact.com",
+                "sendgrid.net",
+                "medium.com",
+                "kiwico.com",
+                "empower.com",
+                "builtsquare.com",
+                "sendgrid.info",
+                "bcdtravel.com",
+                "concurcompleat.com",
+                "concur.com",
+                "expensify.com",
+                "netsuite.com",
+                "oracle.com",
+                "backerhome.com",
+                "gmail.com",
+                "outlook.com",
+                "hotmail.com",
+                "yahoo.com",
+                "technews.com",
+                "ecoflow.com",
+                "nytimes.com",
+                "salesmanago.com",
+                "kickstarter.com",
+                "backstage.com",
+                "pbteen.com",
+                "mail.instagram.com",
+                "woot.com",
+                "evgo.com",
+                "rejuvenation.com",
+                "tokyo-tiger.com",
+                "waltdisneypictures.com",
+                "doordash.com",
+                "daburns.com",
+                "blinkcharging.com",
+                "oxfordclub.com",
+                "disneyplus.com",
+                "sparkpostmail.com",
+                "suncadia.com",
+                "americanmeadows.com",
+                "portlandnursery.com",
+                "ccsend.com",
+                "consumerreports.org",
+                "iheart.com",
+                "hubitat.com",
+                "mozilla.org",
+            ];
+            for legitimate in &legitimate_domains {
+                if domain_lower.contains(legitimate) {
+                    return false;
+                }
             }
         }
 
         // Check suspicious TLDs
-        for tld in &self.suspicious_tlds {
-            if domain_lower.ends_with(tld) {
+        if let Some(reg) = registry {
+            if reg.has_suspicious_tld(&domain_lower) {
                 return true;
+            }
+        } else {
+            for tld in &self.suspicious_tlds {
+                if domain_lower.ends_with(tld) {
+                    return true;
+                }
             }
         }
 
@@ -183,7 +185,6 @@ impl ServerRoleAnalyzer {
     }
 
     fn should_reduce_auth_bonus(&self, context: &MailContext) -> (bool, String) {
-        // Don't reduce auth bonus for Trusted ESP senders with DKIM
         let has_dkim = context
             .headers
             .get("authentication-results")
@@ -193,7 +194,8 @@ impl ServerRoleAnalyzer {
             return (false, String::new());
         }
         if let Some(domain) = self.extract_sender_domain(context) {
-            if self.is_suspicious_domain(&domain) {
+            let registry = context.domain_registry.as_ref().map(|arc| arc.as_ref());
+            if self.is_suspicious_domain(&domain, registry) {
                 return (true, format!("Suspicious domain: {}", domain));
             }
         }
@@ -207,22 +209,19 @@ impl FeatureExtractor for ServerRoleAnalyzer {
         let mut evidence = Vec::new();
         let mut confidence = 0.0;
 
-        // Determine if we're the receiving server
         let is_receiving = self.is_receiving_server(context);
 
         if is_receiving {
             evidence.push("Processing as receiving server".to_string());
         } else {
             evidence.push("Processing as intermediate server".to_string());
-            // For intermediate servers, we should be more conservative with authentication bonuses
-            score += 5; // Small penalty for intermediate processing
+            score += 5;
             confidence += 0.2;
         }
 
-        // Check if we should reduce authentication bonuses for suspicious domains
         let (should_reduce, reason) = self.should_reduce_auth_bonus(context);
         if should_reduce {
-            score += 25; // Penalty for suspicious domain with good auth
+            score += 25;
             evidence.push(format!(
                 "Authentication bonus should be reduced: {}",
                 reason
@@ -230,7 +229,6 @@ impl FeatureExtractor for ServerRoleAnalyzer {
             confidence += 0.7;
         }
 
-        // If we're not the receiving server, note that DKIM results might be different
         if !is_receiving {
             evidence.push("DKIM results may differ from receiving server".to_string());
         }

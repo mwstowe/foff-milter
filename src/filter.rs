@@ -207,6 +207,8 @@ pub struct FilterEngine {
     seasonal_analyzer: crate::seasonal_behavioral::SeasonalBehavioralAnalyzer,
     // Email normalization engine
     normalizer: EmailNormalizer,
+    // Shared domain registry
+    pub domain_registry: std::sync::Arc<crate::domain_registry::DomainRegistry>,
 }
 
 #[derive(Debug, Clone)]
@@ -233,6 +235,7 @@ pub struct MailContext {
     pub trusted_esp: Option<String>,      // Detected trusted ESP (mailchimp, sendgrid, etc.)
     pub raw_body: Option<String>,         // Raw MIME body for attachment analysis
     pub media_spam_score: i32,            // Spam score from OCR/media analysis
+    pub domain_registry: Option<std::sync::Arc<crate::domain_registry::DomainRegistry>>,
 }
 
 impl Default for MailContext {
@@ -260,6 +263,7 @@ impl Default for MailContext {
             trusted_esp: None,
             raw_body: None,
             media_spam_score: 0,
+            domain_registry: None,
         }
     }
 }
@@ -937,6 +941,7 @@ impl FilterEngine {
                 trusted_esp: context.trusted_esp.clone(),
                 raw_body: context.raw_body.clone(),
                 media_spam_score: context.media_spam_score,
+                domain_registry: context.domain_registry.clone(),
             }
         } else {
             // Fallback to simple normalization if proper normalization not available
@@ -977,6 +982,7 @@ impl FilterEngine {
             trusted_esp: context.trusted_esp.clone(),
             raw_body: context.raw_body.clone(),
             media_spam_score: context.media_spam_score,
+            domain_registry: context.domain_registry.clone(),
         }
     }
 
@@ -1062,6 +1068,7 @@ impl FilterEngine {
             business_analyzer: crate::business_context::BusinessContextAnalyzer::new(),
             seasonal_analyzer: crate::seasonal_behavioral::SeasonalBehavioralAnalyzer::new(),
             normalizer: EmailNormalizer::new(),
+            domain_registry: std::sync::Arc::new(crate::domain_registry::DomainRegistry::default()),
         };
 
         // Pre-compile all regex patterns for better performance
@@ -2316,6 +2323,7 @@ impl FilterEngine {
 
         // Use proper Unicode normalization for rule evaluation
         let mut context_with_attachments = self.get_normalized_context_for_rules(&context);
+        context_with_attachments.domain_registry = Some(self.domain_registry.clone());
 
         // Analyze attachments (uses raw_body for MIME parsing)
         self.analyze_attachments(&mut context_with_attachments);
@@ -3046,21 +3054,7 @@ impl FilterEngine {
                     from_user.contains('-') || from_user.contains('_') || from_user.contains('.');
                 let is_gibberish_user =
                     (from_user.len() > 30 && !has_structure) || case_transitions > 5;
-                let is_consumer_email = [
-                    "gmail.com",
-                    "hotmail.com",
-                    "outlook.com",
-                    "yahoo.com",
-                    "aol.com",
-                    "live.com",
-                    "icloud.com",
-                    "me.com",
-                    "mail.com",
-                    "protonmail.com",
-                    "zoho.com",
-                ]
-                .iter()
-                .any(|d| from_domain == *d);
+                let is_consumer_email = self.domain_registry.is_consumer_email(&from_domain);
                 dmarc_pass && has_strong_dmarc && !is_consumer_email && !is_gibberish_user
             };
 
@@ -8746,45 +8740,24 @@ impl FilterEngine {
             .to_lowercase()
     }
 
-    fn is_newsletter_esp_return_path(context: &MailContext) -> bool {
+    fn is_newsletter_esp_return_path(&self, context: &MailContext) -> bool {
         let rp = context
             .headers
             .get("return-path")
             .map(|s| s.to_lowercase())
             .unwrap_or_default();
-        rp.contains("rsgsv.net")
-            || rp.contains("mcsv.net")
-            || rp.contains("list-manage.com")
-            || rp.contains("ccsend.com")
-            || rp.contains("14westmail.net")
+        self.domain_registry.is_esp_return_path(&rp)
     }
 
-    fn is_known_news_domain(from_domain: &str) -> bool {
-        let news_domains = [
-            "nytimes.com",
-            "washingtonpost.com",
-            "wsj.com",
-            "cnn.com",
-            "bbc.com",
-            "reuters.com",
-            "apnews.com",
-            "usatoday.com",
-            "npr.org",
-            "politico.com",
-            "thehill.com",
-            "axios.com",
-            "bloomberg.com",
-            "forbes.com",
-            "economist.com",
-        ];
-        news_domains.iter().any(|d| from_domain.contains(d))
+    fn is_known_news_domain(&self, from_domain: &str) -> bool {
+        self.domain_registry.is_news_media(from_domain)
     }
 
     fn get_insurance_spam_score(&self, context: &MailContext) -> i32 {
-        if Self::is_known_news_domain(&Self::get_from_domain(context)) {
+        if self.is_known_news_domain(&Self::get_from_domain(context)) {
             return 0;
         }
-        if Self::is_newsletter_esp_return_path(context) {
+        if self.is_newsletter_esp_return_path(context) {
             return 0;
         }
 
@@ -8897,10 +8870,10 @@ impl FilterEngine {
 
     /// Detect solar/energy spam patterns
     fn get_solar_energy_spam_score(&self, context: &MailContext) -> i32 {
-        if Self::is_known_news_domain(&Self::get_from_domain(context)) {
+        if self.is_known_news_domain(&Self::get_from_domain(context)) {
             return 0;
         }
-        if Self::is_newsletter_esp_return_path(context) {
+        if self.is_newsletter_esp_return_path(context) {
             return 0;
         }
 
@@ -9455,90 +9428,13 @@ impl FilterEngine {
 
     /// Check if domain is an established business
     fn is_established_business_domain(&self, domain: &str) -> bool {
-        let established_patterns = [
-            "williams-sonoma.com",
-            "creditkarma.com",
-            "joinhoney.com",
-            "reolink",
-            "silhouettedesignstore.co",
-            "esprovisions.com",
-            "adapthealth",
-            "adapthealthmarketplace.com",
-            "duluth",
-            "toast-restaurants.com",
-            "quora.com",
-            "uncommongoods.com",
-            "narvar.com",
-            "capitalone.com",
-            "thesmartesthouse.com",
-            // Major e-commerce platforms (case-sensitive)
-            "amazon.com",
-            "aliexpress.com",
-            "temu.com",
-            "temuemail.com",
-            "temuofficial.com",
-            "ebay.com",
-            "walmart.com",
-            "target.com",
-            "bestbuy.com",
-            // Major department stores and retailers
-            "macys.com",
-            "nordstrom.com",
-            "bloomingdales.com",
-            "saks.com",
-            "aransweatermarket.com",
-            "nextdoor.com",
-            // Additional legitimate domains
-            "reolinksupport.com",
-        ];
-
-        // Use case-sensitive exact matching or subdomain matching for security
-        let domain_lower = domain.to_lowercase();
-        for pattern in established_patterns {
-            if self.is_subdomain_of(&domain_lower, pattern) || domain_lower == pattern {
-                return true;
-            }
-        }
-
-        false
+        self.domain_registry.is_legitimate(domain)
+            && !self.domain_registry.is_consumer_email(domain)
     }
 
     /// Check if domain is a legitimate retailer
     fn is_legitimate_retailer(&self, domain: &str) -> bool {
-        let retailer_patterns = [
-            "williams-sonoma.com",
-            "esprovisions.com",
-            "reolink",
-            "silhouettedesignstore.co",
-            "adapthealth",
-            "adapthealthmarketplace.com",
-            "duluth",
-            "toast-restaurants.com",
-            "uncommongoods.com",
-            "thesmartesthouse.com",
-            // Major e-commerce platforms (case-sensitive)
-            "amazon.com",
-            "aliexpress.com",
-            "temu.com",
-            "temuemail.com",
-            "temuofficial.com",
-            "ebay.com",
-            "walmart.com",
-            "target.com",
-            "bestbuy.com",
-            // Additional legitimate retailers
-            "reolinksupport.com",
-        ];
-
-        // Use case-sensitive exact matching or subdomain matching for security
-        let domain_lower = domain.to_lowercase();
-        for pattern in retailer_patterns {
-            if self.is_subdomain_of(&domain_lower, pattern) || domain_lower == pattern {
-                return true;
-            }
-        }
-
-        false
+        self.domain_registry.is_retailer(domain)
     }
 
     /// Check for legitimate promotional content
@@ -9583,49 +9479,12 @@ impl FilterEngine {
 
     /// Check if domain is a legitimate email service provider
     fn is_legitimate_email_service_provider(&self, domain: &str) -> bool {
-        let esp_patterns = [
-            "klaviyodns.com",
-            "constantcontact.com",
-            "sendgrid.net",
-            "mailchimp.com",
-            "campaignmonitor.com",
-            "aweber.com",
-            "narvar.com",
-            // Political and civic organizations
-            "imcivicaction.org",
-        ];
-
-        for pattern in esp_patterns {
-            if self.is_subdomain_of(domain, pattern)
-                || domain == pattern
-                || domain.contains(pattern)
-            {
-                return true;
-            }
-        }
-
-        false
+        self.domain_registry.is_esp(domain)
     }
 
     /// Check if domain is an established financial service
     fn is_established_financial_service(&self, domain: &str) -> bool {
-        let financial_patterns = [
-            "creditkarma.com",
-            "joinhoney.com",
-            "paypal.com",
-            "capitalone.com",
-        ];
-
-        for pattern in financial_patterns {
-            if self.is_subdomain_of(domain, pattern)
-                || domain == pattern
-                || domain.contains(pattern)
-            {
-                return true;
-            }
-        }
-
-        false
+        self.domain_registry.is_financial(domain)
     }
 
     /// Check if domain is a known legitimate partner for a brand
