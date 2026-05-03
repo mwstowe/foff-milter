@@ -8343,199 +8343,133 @@ impl FilterEngine {
         }
     }
 
-    /// Detects semantic mismatches between domain and email content
+    /// Detects domain-content disconnect: sender domain has no semantic relationship to email content
     fn get_domain_content_mismatch_score(&self, context: &MailContext) -> i32 {
-        // Extract domain category
-        let domain_category = self.classify_domain_semantics(context);
+        let domain = self
+            .extract_sender_domain(context)
+            .unwrap_or_default()
+            .to_lowercase();
 
-        // Extract content category
-        let content_category = self.classify_content_semantics(context);
+        if domain.is_empty() || self.is_established_business_domain(&domain) {
+            return 0;
+        }
 
-        // Check for mismatch
-        if let (Some(domain_cat), Some(content_cat)) = (domain_category, content_category) {
-            if domain_cat != content_cat
-                && self.is_high_confidence_mismatch(&domain_cat, &content_cat)
-            {
-                log::debug!(
-                    "Domain-content mismatch: {} domain sending {} content",
-                    domain_cat,
-                    content_cat
-                );
-                return 100; // Strong mismatch indicator
+        // Skip if DMARC passes with clean SPF (not softfail/fail — indicates compromised domain)
+        if let Some(auth) = context.headers.get("authentication-results") {
+            if auth.contains("dmarc=pass") && auth.contains("spf=pass") {
+                return 0;
             }
         }
 
-        0
-    }
+        // Extract domain name parts (skip TLD and common subdomains)
+        let skip_parts: std::collections::HashSet<&str> = [
+            "com",
+            "net",
+            "org",
+            "co",
+            "uk",
+            "jp",
+            "tv",
+            "io",
+            "us",
+            "info",
+            "name",
+            "pro",
+            "www",
+            "mail",
+            "email",
+            "orders",
+            "notifications",
+            "bounce",
+            "news",
+            "support",
+            "noreply",
+            "send",
+            "reply",
+        ]
+        .iter()
+        .copied()
+        .collect();
 
-    /// Classify domain based on semantic analysis of domain name
-    fn classify_domain_semantics(&self, context: &MailContext) -> Option<String> {
-        if let Some(from_header) = &context.from_header {
-            if let Some(at_pos) = from_header.rfind('@') {
-                let domain = if let Some(end_pos) = from_header[at_pos..].find('>') {
-                    &from_header[at_pos + 1..at_pos + end_pos]
-                } else {
-                    from_header[at_pos + 1..].trim()
-                };
+        let domain_parts: Vec<&str> = domain
+            .split('.')
+            .filter(|p| p.len() >= 3 && !skip_parts.contains(p))
+            .collect();
+        let domain_name = domain_parts.join("");
 
-                let domain_lower = domain.to_lowercase();
-
-                // Medical/Health keywords
-                if domain_lower.contains("medical")
-                    || domain_lower.contains("health")
-                    || domain_lower.contains("doctor")
-                    || domain_lower.contains("gastric")
-                    || domain_lower.contains("surgery")
-                    || domain_lower.contains("clinic")
-                {
-                    return Some("medical".to_string());
-                }
-
-                // Agriculture/Food keywords
-                if domain_lower.contains("dairy")
-                    || domain_lower.contains("farm")
-                    || domain_lower.contains("agriculture")
-                    || domain_lower.contains("food")
-                {
-                    return Some("agriculture".to_string());
-                }
-
-                // Technology keywords
-                if domain_lower.contains("tech")
-                    || domain_lower.contains("software")
-                    || domain_lower.contains("app")
-                    || domain_lower.contains("digital")
-                {
-                    return Some("technology".to_string());
-                }
-
-                // Generic business domains (suspicious when used for specific industries)
-                if domain_lower.contains("business")
-                    || domain_lower.contains("services")
-                    || domain_lower.contains("solutions")
-                    || domain_lower.contains("group")
-                {
-                    return Some("generic".to_string());
-                }
-            }
+        if domain_name.len() < 4 {
+            return 0;
         }
 
-        None
-    }
-
-    /// Classify email content based on semantic keyword analysis
-    fn classify_content_semantics(&self, context: &MailContext) -> Option<String> {
+        // Build content from subject + body + display name + normalized body
         let mut content = String::new();
-
-        // Combine subject and body for analysis
         if let Some(subject) = &context.subject {
             content.push_str(subject);
             content.push(' ');
         }
         if let Some(body) = &context.body {
-            // Safely truncate at character boundary, not byte boundary
-            let truncated = if body.len() > 500 {
-                body.chars().take(500).collect::<String>()
-            } else {
-                body.clone()
-            };
+            let truncated: String = body.chars().take(2000).collect();
             content.push_str(&truncated);
         }
-
-        let content_lower = content.to_lowercase();
-
-        // Financial/Debt keywords
-        let financial_keywords = [
-            "debt",
-            "credit",
-            "loan",
-            "rates",
-            "payment",
-            "financial",
-            "money",
-            "aarp",
-            "membership",
-            "insurance",
-            "relief",
-        ];
-        let financial_count = financial_keywords
-            .iter()
-            .filter(|&keyword| content_lower.contains(keyword))
-            .count();
-
-        // Retail/Commerce keywords
-        let retail_keywords = [
-            "order",
-            "shipping",
-            "product",
-            "sale",
-            "buy",
-            "purchase",
-            "confirmation",
-            "delivery",
-            "item",
-            "price",
-        ];
-        let retail_count = retail_keywords
-            .iter()
-            .filter(|&keyword| content_lower.contains(keyword))
-            .count();
-
-        // Technology keywords
-        let tech_keywords = [
-            "software", "app", "device", "upgrade", "download", "install", "system", "computer",
-            "tech", "digital",
-        ];
-        let tech_count = tech_keywords
-            .iter()
-            .filter(|&keyword| content_lower.contains(keyword))
-            .count();
-
-        // Health/Medical keywords
-        let health_keywords = [
-            "health",
-            "medical",
-            "doctor",
-            "treatment",
-            "medicine",
-            "care",
-            "wellness",
-            "therapy",
-            "clinic",
-            "hospital",
-        ];
-        let health_count = health_keywords
-            .iter()
-            .filter(|&keyword| content_lower.contains(keyword))
-            .count();
-
-        // Return category with highest confidence (minimum 1 keyword for high-confidence terms)
-        let counts = [financial_count, retail_count, tech_count, health_count];
-        let max_count = *counts.iter().max().unwrap();
-
-        // Lower threshold for financial terms (credit card, debt, etc.)
-        let min_threshold = if financial_count > 0 && content_lower.contains("credit") {
-            1
-        } else {
-            2
-        };
-
-        if max_count >= min_threshold {
-            if financial_count == max_count {
-                return Some("financial".to_string());
-            }
-            if retail_count == max_count {
-                return Some("retail".to_string());
-            }
-            if tech_count == max_count {
-                return Some("technology".to_string());
-            }
-            if health_count == max_count {
-                return Some("medical".to_string());
+        if let Some(normalized) = &context.normalized {
+            let norm_body: String = normalized.body_text.normalized.chars().take(2000).collect();
+            content.push_str(&norm_body);
+        }
+        if !context.extracted_media_text.is_empty() {
+            content.push(' ');
+            content.push_str(&context.extracted_media_text);
+        }
+        if let Some(from) = &context.from_header {
+            if let Some(angle) = from.find('<') {
+                content.push(' ');
+                content.push_str(&from[..angle]);
             }
         }
+        let content_lower = content.to_lowercase();
+        let content_words: Vec<&str> = regex::Regex::new(r"[a-z]{5,}")
+            .unwrap()
+            .find_iter(&content_lower)
+            .map(|m| m.as_str())
+            .collect();
 
-        None
+        // Bidirectional overlap check
+        let content_in_domain = content_words
+            .iter()
+            .any(|word| word.len() >= 5 && domain_name.contains(word));
+        let domain_in_content = domain_parts
+            .iter()
+            .any(|part| part.len() >= 5 && content_lower.contains(part));
+
+        if content_in_domain || domain_in_content {
+            return 0; // Domain relates to content
+        }
+
+        // No overlap — only score if email has reward/offer/claim language
+        let has_reward_language = content_lower.contains("reward")
+            || content_lower.contains("claim")
+            || content_lower.contains("set aside")
+            || content_lower.contains("reserved for you")
+            || content_lower.contains("exclusive invitation")
+            || content_lower.contains("complete a")
+            || content_lower.contains("expires today")
+            || content_lower.contains("expire tomorrow")
+            || content_lower.contains("thank you from")
+            || content_lower.contains("yours to claim")
+            || content_lower.contains("been chosen")
+            || content_lower.contains("membership update")
+            || content_lower.contains("act fast")
+            || content_lower.contains("rates as low")
+            || content_lower.contains("limited time");
+
+        if has_reward_language {
+            log::info!(
+                "Domain-content disconnect: '{}' unrelated to content + reward language",
+                domain
+            );
+            return 75;
+        }
+
+        0
     }
 
     /// Detect brand impersonation (major brands on unrelated domains)
@@ -9880,21 +9814,6 @@ impl FilterEngine {
     }
 
     /// Determine if domain-content mismatch is high confidence
-    fn is_high_confidence_mismatch(&self, domain_category: &str, content_category: &str) -> bool {
-        match (domain_category, content_category) {
-            // High confidence mismatches
-            ("agriculture", "financial") => true, // Dairy domain sending debt relief
-            ("agriculture", "technology") => true, // Farm domain sending tech offers
-            ("agriculture", "retail") => true,    // Farm domain sending products
-            ("medical", "financial") => true,     // Medical domain sending AARP offers
-            ("medical", "retail") => true,        // Medical domain sending Christmas lights
-            ("medical", "technology") => true,    // Medical domain sending tech offers
-            ("generic", "financial") => true,     // Generic domain claiming financial services
-            ("generic", "medical") => true,       // Generic domain claiming medical services
-            _ => false,
-        }
-    }
-
     /// Detects suspicious unsubscribe links that indicate fake mailing lists
     fn has_suspicious_unsubscribe_links(&self, context: &MailContext) -> bool {
         // Skip unsubscribe check for Google Groups - they have legitimate unsubscribe links
