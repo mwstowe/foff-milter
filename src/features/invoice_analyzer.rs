@@ -281,6 +281,7 @@ impl FeatureExtractor for InvoiceAnalyzer {
                 score: 0,
                 confidence: 0.0,
                 evidence: vec![],
+                tags: vec![],
             };
         }
 
@@ -461,6 +462,7 @@ impl FeatureExtractor for InvoiceAnalyzer {
             score,
             confidence,
             evidence,
+            tags: vec![],
         }
     }
 

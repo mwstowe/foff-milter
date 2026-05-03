@@ -572,6 +572,7 @@ impl FeatureExtractor for TldRiskFeature {
                 score: 0,
                 confidence: 0.0,
                 evidence: vec!["No valid domain found in any header".to_string()],
+                tags: vec![],
             };
         }
 
@@ -615,6 +616,7 @@ impl FeatureExtractor for TldRiskFeature {
             score,
             confidence: confidence.min(1.0),
             evidence,
+            tags: vec![],
         }
     }
 

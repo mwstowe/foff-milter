@@ -679,6 +679,27 @@ impl AuthenticationFeature {
 impl FeatureExtractor for AuthenticationFeature {
     fn extract(&self, context: &MailContext) -> FeatureScore {
         let (risk_level, mut score, mut evidence) = self.analyzer.analyze_authentication(context);
+        let mut tags: Vec<crate::features::FeatureTag> = Vec::new();
+
+        // Emit structured tags for DKIM/alignment status
+        if evidence
+            .iter()
+            .any(|e| e.contains("DKIM authentication passed"))
+        {
+            tags.push(crate::features::FeatureTag::DkimPassed);
+        }
+        if evidence
+            .iter()
+            .any(|e| e.contains("DKIM domain properly aligned"))
+        {
+            tags.push(crate::features::FeatureTag::DkimAligned);
+        }
+        if evidence
+            .iter()
+            .any(|e| e.contains("DKIM domain misaligned but legitimate ESP"))
+        {
+            tags.push(crate::features::FeatureTag::DkimMisalignedLegitimateEsp);
+        }
 
         // Check for brand impersonation to reduce authentication bonuses
         let has_brand_impersonation = self.detect_brand_impersonation(context);
@@ -902,6 +923,7 @@ impl FeatureExtractor for AuthenticationFeature {
             score,
             confidence,
             evidence: final_evidence,
+            tags,
         }
     }
 

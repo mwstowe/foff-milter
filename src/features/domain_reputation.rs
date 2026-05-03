@@ -350,6 +350,7 @@ impl FeatureExtractor for DomainReputationFeature {
             score,
             confidence: confidence.min(1.0),
             evidence,
+            tags: vec![],
         }
     }
 

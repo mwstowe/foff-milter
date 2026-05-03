@@ -147,6 +147,7 @@ impl FeatureExtractor for DomainBusinessMismatchAnalyzer {
             score,
             confidence,
             evidence,
+            tags: vec![],
         }
     }
 

@@ -2443,9 +2443,13 @@ impl FilterEngine {
             let bi_feature = crate::features::brand_impersonation::BrandImpersonationFeature::new();
             let bi_result = bi_feature.extract(&context_with_attachments);
             let bi_detected = bi_result
-                .evidence
+                .tags
                 .iter()
-                .any(|e| e.contains("Claims to be"));
+                .any(|t| matches!(t, crate::features::FeatureTag::BrandImpersonation(_)))
+                || bi_result
+                    .evidence
+                    .iter()
+                    .any(|e| e.contains("Claims to be"));
             // Also check Sender Alignment for brand claims
             let sa_feature = crate::features::sender_alignment::SenderAlignmentAnalyzer::new();
             let sa_result = sa_feature.extract(&context_with_attachments);
@@ -2474,9 +2478,12 @@ impl FilterEngine {
             let sr_feature = crate::features::server_role_analyzer::ServerRoleAnalyzer::new();
             let sr_result = sr_feature.extract(&context_with_attachments);
             let sr_detected = sr_result
-                .evidence
-                .iter()
-                .any(|e| e.contains("Authentication bonus should be reduced"));
+                .tags
+                .contains(&crate::features::FeatureTag::SuspiciousDomain)
+                || sr_result
+                    .evidence
+                    .iter()
+                    .any(|e| e.contains("Authentication bonus should be reduced"));
             dr_detected || sr_detected
         };
         // Check DMARC - suspicious domains with DMARC pass are OK
@@ -3062,20 +3069,26 @@ impl FilterEngine {
             // ESPs enforce anti-spam policies, so DKIM aligned + ESP = legitimate
             // But only if feature analysis doesn't already flag it as suspicious
             let is_esp_authenticated = if !is_authenticated_sender {
-                let evidence_text = headers_to_add
+                use crate::features::FeatureTag;
+                let all_tags: Vec<&FeatureTag> = feature_analysis
+                    .scores
                     .iter()
-                    .filter(|(k, _)| k == "X-FOFF-Feature-Evidence")
-                    .map(|(_, v)| v.as_str())
-                    .collect::<Vec<_>>()
-                    .join(" ");
-                let dkim_aligned = evidence_text.contains("DKIM domain properly aligned")
-                    || evidence_text.contains("DKIM domain misaligned but legitimate ESP")
-                    || (evidence_text.contains("DKIM authentication passed")
-                        && evidence_text.contains("Trusted ESP:"));
-                let has_esp = evidence_text.contains("Trusted ESP:")
-                    || evidence_text.contains("Legitimate financial institution");
-                let no_brand_impersonation =
-                    !evidence_text.contains("Brand impersonation: Claims to be");
+                    .flat_map(|s| s.tags.iter())
+                    .collect();
+
+                let dkim_aligned = all_tags.contains(&&FeatureTag::DkimAligned)
+                    || all_tags.contains(&&FeatureTag::DkimMisalignedLegitimateEsp)
+                    || (all_tags.contains(&&FeatureTag::DkimPassed)
+                        && all_tags
+                            .iter()
+                            .any(|t| matches!(t, FeatureTag::TrustedEsp(_))));
+                let has_esp = all_tags
+                    .iter()
+                    .any(|t| matches!(t, FeatureTag::TrustedEsp(_)))
+                    || all_tags.contains(&&FeatureTag::LegitimateFinancial);
+                let no_brand_impersonation = !all_tags
+                    .iter()
+                    .any(|t| matches!(t, FeatureTag::BrandImpersonation(_)));
                 dkim_aligned && has_esp && no_brand_impersonation
             } else {
                 false

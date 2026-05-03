@@ -207,6 +207,7 @@ impl FeatureExtractor for ServerRoleAnalyzer {
     fn extract(&self, context: &MailContext) -> FeatureScore {
         let mut score = 0;
         let mut evidence = Vec::new();
+        let mut tags: Vec<crate::features::FeatureTag> = Vec::new();
         let mut confidence = 0.0;
 
         let is_receiving = self.is_receiving_server(context);
@@ -226,6 +227,7 @@ impl FeatureExtractor for ServerRoleAnalyzer {
                 "Authentication bonus should be reduced: {}",
                 reason
             ));
+            tags.push(crate::features::FeatureTag::SuspiciousDomain);
             confidence += 0.7;
         }
 
@@ -238,6 +240,7 @@ impl FeatureExtractor for ServerRoleAnalyzer {
             score,
             confidence,
             evidence,
+            tags,
         }
     }
 

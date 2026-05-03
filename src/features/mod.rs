@@ -37,15 +37,30 @@ pub fn get_header_case_insensitive<'a>(
         .map(|(_, v)| v)
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+/// Structured tags for inter-feature communication.
+/// Features emit tags alongside evidence strings. The trust system and other
+/// consumers read tags instead of parsing evidence text, giving compile-time safety.
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub enum FeatureTag {
+    DkimPassed,
+    DkimAligned,
+    DkimMisalignedLegitimateEsp,
+    TrustedEsp(String),
+    LegitimateFinancial,
+    BrandImpersonation(String),
+    SuspiciousDomain,
+}
+
+#[derive(Debug, Clone)]
 pub struct FeatureScore {
     pub feature_name: String,
     pub score: i32,
     pub confidence: f32,
     pub evidence: Vec<String>,
+    pub tags: Vec<FeatureTag>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone)]
 pub struct FeatureAnalysis {
     pub scores: Vec<FeatureScore>,
     pub total_score: i32,

@@ -450,6 +450,7 @@ impl FeatureExtractor for EspValidationFeature {
         let mut score = 0;
         let mut evidence = Vec::new();
         let mut confidence = 0.0f32;
+        let mut tags: Vec<crate::features::FeatureTag> = Vec::new();
 
         // Get sender domain from envelope sender
         let sender_domain = if let Some(sender) = &context.sender {
@@ -548,6 +549,9 @@ impl FeatureExtractor for EspValidationFeature {
                                 score: -15,
                                 confidence: 0.9,
                                 evidence: vec![format!("Trusted ESP: {}", esp_name)],
+                                tags: vec![crate::features::FeatureTag::TrustedEsp(
+                                    esp_name.to_string(),
+                                )],
                             };
                         }
                     }
@@ -556,6 +560,7 @@ impl FeatureExtractor for EspValidationFeature {
                         score: 0,
                         confidence: 0.0,
                         evidence: vec!["No ESP domain found in envelope or Return-Path".to_string()],
+                        tags: vec![],
                     };
                 }
             } else if let Some(ref dkim_domain) = dkim_esp_domain {
@@ -566,6 +571,7 @@ impl FeatureExtractor for EspValidationFeature {
                     score: 0,
                     confidence: 0.0,
                     evidence: vec!["No valid sender domain found".to_string()],
+                    tags: vec![],
                 };
             }
         } else if let Some(ref rp_domain) = return_path_domain {
@@ -594,6 +600,9 @@ impl FeatureExtractor for EspValidationFeature {
                             score: -15,
                             confidence: 0.9,
                             evidence: vec![format!("Trusted ESP: {}", esp_name)],
+                            tags: vec![crate::features::FeatureTag::TrustedEsp(
+                                esp_name.to_string(),
+                            )],
                         };
                     }
                 }
@@ -602,6 +611,7 @@ impl FeatureExtractor for EspValidationFeature {
                     score: 0,
                     confidence: 0.0,
                     evidence: vec!["No ESP domain found".to_string()],
+                    tags: vec![],
                 };
             }
         } else {
@@ -610,6 +620,7 @@ impl FeatureExtractor for EspValidationFeature {
                 score: 0,
                 confidence: 0.0,
                 evidence: vec!["No sender found".to_string()],
+                tags: vec![],
             };
         };
 
@@ -623,6 +634,7 @@ impl FeatureExtractor for EspValidationFeature {
                 match reputation {
                     EspReputation::Trusted => {
                         evidence.push(format!("Trusted ESP: {}", esp_name));
+                        tags.push(crate::features::FeatureTag::TrustedEsp(esp_name.clone()));
                         confidence += 0.9;
 
                         // Additional bonus for legitimate retailers using trusted ESPs
@@ -684,6 +696,7 @@ impl FeatureExtractor for EspValidationFeature {
             score,
             confidence: confidence.min(1.0),
             evidence,
+            tags,
         }
     }
 

@@ -144,6 +144,7 @@ impl FeatureExtractor for AdobeCampaignAnalyzer {
             score,
             confidence,
             evidence,
+            tags: vec![],
         }
     }
 }

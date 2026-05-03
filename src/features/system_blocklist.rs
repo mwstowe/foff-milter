@@ -122,6 +122,7 @@ impl FeatureExtractor for SystemBlocklistFeature {
             score,
             confidence: if score > 0 { 0.95 } else { 0.0 },
             evidence,
+            tags: vec![],
         }
     }
 

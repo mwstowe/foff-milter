@@ -54,6 +54,7 @@ impl FeatureExtractor for ConsumerEmailEspAnalyzer {
                 score: 0,
                 confidence: 0.0,
                 evidence: Vec::new(),
+                tags: vec![],
             };
         }
 
@@ -116,6 +117,7 @@ impl FeatureExtractor for ConsumerEmailEspAnalyzer {
             score,
             confidence: if score > 0 { 0.95 } else { 0.0 },
             evidence,
+            tags: vec![],
         }
     }
 

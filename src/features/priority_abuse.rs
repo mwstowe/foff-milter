@@ -55,6 +55,7 @@ impl FeatureExtractor for PriorityAbuseFeature {
             score,
             confidence: if score > 0 { 0.8 } else { 0.0 },
             evidence,
+            tags: vec![],
         }
     }
 

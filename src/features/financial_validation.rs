@@ -316,6 +316,7 @@ impl FeatureExtractor for FinancialValidationFeature {
     fn extract(&self, context: &MailContext) -> FeatureScore {
         let mut score = 0;
         let mut evidence = Vec::new();
+        let mut tags: Vec<crate::features::FeatureTag> = Vec::new();
         let mut confidence = 0.0f32;
 
         // Get sender domain
@@ -328,6 +329,7 @@ impl FeatureExtractor for FinancialValidationFeature {
                     score: 0,
                     confidence: 0.0,
                     evidence: vec!["No valid sender domain found".to_string()],
+                    tags: vec![],
                 };
             }
         } else {
@@ -336,6 +338,7 @@ impl FeatureExtractor for FinancialValidationFeature {
                 score: 0,
                 confidence: 0.0,
                 evidence: vec!["No sender found".to_string()],
+                tags: vec![],
             };
         };
 
@@ -365,6 +368,7 @@ impl FeatureExtractor for FinancialValidationFeature {
             if let Some(institution) = self.analyzer.get_institution_from_domain(&sender_domain) {
                 score -= 15; // Boost legitimate financial institutions
                 evidence.push(format!("Legitimate financial institution: {}", institution));
+                tags.push(crate::features::FeatureTag::LegitimateFinancial);
                 confidence += 0.7;
             }
         }
@@ -374,6 +378,7 @@ impl FeatureExtractor for FinancialValidationFeature {
             score,
             confidence: confidence.min(1.0),
             evidence,
+            tags,
         }
     }
 

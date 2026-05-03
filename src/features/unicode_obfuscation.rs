@@ -68,6 +68,7 @@ impl FeatureExtractor for UnicodeObfuscationAnalyzer {
             score,
             confidence: if score > 0 { 0.9 } else { 0.0 },
             evidence,
+            tags: vec![],
         }
     }
 

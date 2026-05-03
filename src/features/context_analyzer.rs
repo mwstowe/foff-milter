@@ -2612,6 +2612,7 @@ impl FeatureExtractor for ContextAnalyzer {
             },
             confidence,
             evidence: all_evidence,
+            tags: vec![],
         }
     }
 

@@ -1155,6 +1155,7 @@ impl FeatureExtractor for LinkAnalyzer {
             score,
             confidence,
             evidence,
+            tags: vec![],
         }
     }
 

@@ -1385,6 +1385,7 @@ impl FeatureExtractor for SenderAlignmentAnalyzer {
                                 "Legitimate {} partnership with {}",
                                 brand, partner
                             )],
+                            tags: vec![],
                         };
                     }
                 }
@@ -1410,6 +1411,7 @@ impl FeatureExtractor for SenderAlignmentAnalyzer {
                 score: 0,
                 confidence: 0.1,
                 evidence: vec!["Legitimate business service ESP".to_string()],
+                tags: vec![],
             };
         }
 
@@ -1901,6 +1903,7 @@ impl FeatureExtractor for SenderAlignmentAnalyzer {
             score,
             confidence,
             evidence,
+            tags: vec![],
         }
     }
 

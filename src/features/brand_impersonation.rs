@@ -622,6 +622,7 @@ impl FeatureExtractor for BrandImpersonationFeature {
         let mut score = 0;
         let mut evidence = Vec::new();
         let mut confidence: f32 = 0.0;
+        let mut tags: Vec<crate::features::FeatureTag> = Vec::new();
 
         // Skip brand impersonation detection for legitimate newsletters and ESPs
         // Check from_header first as it's more reliable for ESP detection
@@ -665,6 +666,7 @@ impl FeatureExtractor for BrandImpersonationFeature {
                 score: 0,
                 confidence: 0.0,
                 evidence: vec![],
+                tags: vec![],
             };
         }
 
@@ -708,6 +710,7 @@ impl FeatureExtractor for BrandImpersonationFeature {
                 score: 0,
                 confidence: 0.0,
                 evidence: vec![],
+                tags: vec![],
             };
         }
 
@@ -845,6 +848,9 @@ impl FeatureExtractor for BrandImpersonationFeature {
                             brand, domain
                         ));
                     }
+                    tags.push(crate::features::FeatureTag::BrandImpersonation(
+                        brand.clone(),
+                    ));
                     confidence += 0.9;
                 }
             }
@@ -879,6 +885,7 @@ impl FeatureExtractor for BrandImpersonationFeature {
             score,
             confidence: confidence.min(1.0),
             evidence,
+            tags,
         }
     }
 

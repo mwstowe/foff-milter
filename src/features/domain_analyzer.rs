@@ -325,6 +325,7 @@ impl FeatureExtractor for DomainAnalyzer {
             confidence: if total_score > 0 { 85.0 } else { 0.0 },
             evidence: all_evidence,
             feature_name: "Domain Reputation".to_string(),
+            tags: vec![],
         }
     }
 }

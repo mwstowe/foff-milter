@@ -84,6 +84,7 @@ impl FeatureExtractor for GeographicMismatchFeature {
                 score: 0,
                 confidence: 0.0,
                 evidence: vec!["No sender domain found".to_string()],
+                tags: vec![],
             };
         };
 
@@ -96,6 +97,7 @@ impl FeatureExtractor for GeographicMismatchFeature {
                     score: 0,
                     confidence: 0.0,
                     evidence: vec!["Could not extract TLD".to_string()],
+                    tags: vec![],
                 }
             }
         };
@@ -109,6 +111,7 @@ impl FeatureExtractor for GeographicMismatchFeature {
                     score: 0,
                     confidence: 0.0,
                     evidence: vec![format!("TLD .{} not in country mapping", tld)],
+                    tags: vec![],
                 }
             }
         };
@@ -144,6 +147,7 @@ impl FeatureExtractor for GeographicMismatchFeature {
             score,
             confidence,
             evidence,
+            tags: vec![],
         }
     }
 

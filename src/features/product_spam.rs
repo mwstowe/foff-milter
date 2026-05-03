@@ -40,6 +40,7 @@ impl FeatureExtractor for ProductSpamAnalyzer {
                 score: 0,
                 confidence: 0.0,
                 evidence: vec![],
+                tags: vec![],
             };
         }
 
@@ -61,6 +62,7 @@ impl FeatureExtractor for ProductSpamAnalyzer {
                 score: 0,
                 confidence: 0.0,
                 evidence: vec![],
+                tags: vec![],
             };
         }
 
@@ -271,6 +273,7 @@ impl FeatureExtractor for ProductSpamAnalyzer {
             score: final_score,
             confidence,
             evidence,
+            tags: vec![],
         }
     }
 }
