@@ -897,6 +897,39 @@ impl FeatureExtractor for AuthenticationFeature {
             score -= 91; // Ultimate bonus for legitimate greeting card retailer authentication
         }
 
+        // Consumer email via ESP detection (merged from consumer_email_esp)
+        let is_consumer_from = context
+            .domain_registry
+            .as_ref()
+            .map(|r| r.is_consumer_email(&sender_domain))
+            .unwrap_or(false);
+        if is_consumer_from {
+            let envelope = context
+                .sender
+                .as_deref()
+                .and_then(|s| s.split('@').nth(1))
+                .unwrap_or("")
+                .to_lowercase();
+            let rp = context
+                .headers
+                .get("return-path")
+                .map(|r| r.to_lowercase())
+                .unwrap_or_default();
+            let via_esp = context
+                .domain_registry
+                .as_ref()
+                .map(|r| r.is_esp(&envelope) || r.is_esp_return_path(&rp))
+                .unwrap_or(false);
+            if via_esp {
+                score += 200;
+                tags.push(crate::features::FeatureTag::SuspiciousDomain);
+                evidence.push(format!(
+                    "Consumer email domain ({}) sent through ESP - likely spoofed",
+                    sender_domain
+                ));
+            }
+        }
+
         let confidence = match risk_level {
             AuthenticationRisk::Secure => 0.9,
             AuthenticationRisk::Standard => 0.8,
