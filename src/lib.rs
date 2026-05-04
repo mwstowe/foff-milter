@@ -3,6 +3,7 @@ pub mod advanced_security;
 pub mod analytics;
 pub mod anonymize;
 pub mod attachment_analyzer;
+pub mod builtin_rules;
 pub mod business_context;
 pub mod config;
 pub mod config_loader;

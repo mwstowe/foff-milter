@@ -990,41 +990,40 @@ impl FilterEngine {
         println!("DEBUG: FilterEngine::new called");
         println!("DEBUG: module_config_dir = {:?}", config.module_config_dir);
 
-        // Load modules if modular system is configured
-        let modules = if let Some(module_dir) = &config.module_config_dir {
-            println!("DEBUG: Loading modules from: {}", module_dir);
+        // Load built-in rules (compiled into binary)
+        let mut modules = crate::builtin_rules::builtin_modules();
+        log::info!(
+            "Loaded {} built-in modules with {} rules",
+            modules.len(),
+            modules.iter().map(|m| m.rules.len()).sum::<usize>()
+        );
+
+        // Optionally overlay YAML rules if directory is configured
+        if let Some(module_dir) = &config.module_config_dir {
             match load_modules(module_dir) {
-                Ok(modules) => {
-                    println!("DEBUG: Successfully loaded {} modules", modules.len());
-                    log::info!("Loaded {} modules from {}", modules.len(), module_dir);
-                    if modules.is_empty() {
-                        log::warn!("⚠️  WARNING: No modules loaded from {}! Email security severely reduced!", module_dir);
-                        eprintln!("⚠️  WARNING: No modules loaded from {}! Email security severely reduced!", module_dir);
-                    }
-                    modules
+                Ok(yaml_modules) if !yaml_modules.is_empty() => {
+                    log::info!(
+                        "Overlaying {} YAML modules from {}",
+                        yaml_modules.len(),
+                        module_dir
+                    );
+                    modules = yaml_modules;
+                }
+                Ok(_) => {
+                    log::info!(
+                        "No YAML modules found in {}, using built-in rules",
+                        module_dir
+                    );
                 }
                 Err(e) => {
-                    println!("DEBUG: Failed to load modules: {}", e);
-                    log::error!(
-                        "❌ CRITICAL: Failed to load modules from {}: {}",
+                    log::warn!(
+                        "Failed to load YAML modules from {}: {}, using built-in rules",
                         module_dir,
                         e
                     );
-                    log::error!("❌ CRITICAL: Running with severely reduced email security!");
-                    eprintln!(
-                        "❌ CRITICAL: Failed to load modules from {}: {}",
-                        module_dir, e
-                    );
-                    eprintln!("❌ CRITICAL: Running with severely reduced email security!");
-                    Vec::new()
                 }
             }
-        } else {
-            println!("DEBUG: No module_config_dir configured, using heuristic rules");
-            log::warn!("⚠️  WARNING: No module directory configured! Running in heuristic mode with reduced security!");
-            eprintln!("⚠️  WARNING: No module directory configured! Running in heuristic mode with reduced security!");
-            Vec::new()
-        };
+        }
 
         // Extract feature config directory before moving config
         let feature_config_dir = config.feature_config_dir.clone();
