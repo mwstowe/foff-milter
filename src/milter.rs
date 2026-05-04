@@ -279,8 +279,8 @@ impl Milter {
                 "🚨 PRODUCTION WARNING: Milter started without module directory configured!"
             );
             log::error!("🚨 Email security is severely compromised - only heuristic rules active!");
-            eprintln!("🚨 PRODUCTION WARNING: Milter started without module directory configured!");
-            eprintln!("🚨 Email security is severely compromised - only heuristic rules active!");
+            log::warn!(" Milter started without module directory configured!");
+            log::warn!("Email security is severely compromised - only heuristic rules active!");
         } else if let Some(module_dir) = &config.module_config_dir {
             // Check if the directory exists and has modules
             if let Ok(entries) = std::fs::read_dir(module_dir) {
@@ -303,7 +303,7 @@ impl Milter {
                         "🚨 PRODUCTION WARNING: Module directory '{}' contains no YAML files!",
                         module_dir
                     );
-                    eprintln!("🚨 Email security is severely compromised!");
+                    log::warn!("Email security is severely compromised!");
                 }
             }
         }

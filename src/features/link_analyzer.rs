@@ -1019,8 +1019,8 @@ impl FeatureExtractor for LinkAnalyzer {
             // Use lowercase 'from'
             log::debug!(" Checking From header: {}", sender);
             if sender.to_lowercase().contains("humblebundle") {
-                eprintln!(
-                    "DEBUG: Humble Bundle detected in From header, reducing score from {} to 10",
+                log::debug!(
+                    "Humble Bundle detected in From header, reducing score from {} to 10",
                     score
                 );
                 score = score.min(10); // Cap at 10 points for Humble Bundle

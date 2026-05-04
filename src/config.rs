@@ -373,7 +373,7 @@ pub fn load_modules(module_dir: &str) -> Result<Vec<Module>, Box<dyn std::error:
                 }
             }
             Err(e) => {
-                eprintln!("Failed to load module {:?}: {}", yaml_file, e);
+                log::warn!("Failed to load module {:?}: {}", yaml_file, e);
             }
         }
     }

@@ -158,6 +158,17 @@ use std::sync::Mutex;
 use std::time::{Duration, Instant};
 use url::Url;
 
+// Common regexes compiled once and reused across all email processing
+lazy_static! {
+    static ref RE_HTML_TAGS: Regex = Regex::new(r"<[^>]+>").unwrap();
+    static ref RE_URL: Regex = Regex::new(r"https?://[^\s<>]+").unwrap();
+    static ref RE_EMAIL_ADDR: Regex =
+        Regex::new(r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}").unwrap();
+    static ref RE_WHITESPACE: Regex = Regex::new(r"\s+").unwrap();
+    static ref RE_MIME_BOUNDARY: Regex = Regex::new(r"--[a-zA-Z0-9]+\r?\n").unwrap();
+    static ref RE_CONTENT_WORDS: Regex = Regex::new(r"[a-z]{5,}").unwrap();
+}
+
 // Cache for unsubscribe link validation results
 #[derive(Clone)]
 struct ValidationResult {
@@ -318,7 +329,9 @@ impl MailContext {
             self.dkim_verification = Some(DkimVerifier::verify(&self.headers, sender_domain));
         }
 
-        self.dkim_verification.as_ref().unwrap()
+        self.dkim_verification
+            .as_ref()
+            .expect("dkim_verification must be populated before access")
     }
 
     /// Get DKIM verification result without mutable access (returns default if not cached)
@@ -987,9 +1000,6 @@ impl FilterEngine {
     }
 
     pub fn new(config: Config) -> anyhow::Result<Self> {
-        println!("DEBUG: FilterEngine::new called");
-        println!("DEBUG: module_config_dir = {:?}", config.module_config_dir);
-
         // Load built-in rules (compiled into binary)
         let mut modules = crate::builtin_rules::builtin_modules();
         log::info!(
@@ -2288,11 +2298,8 @@ impl FilterEngine {
             );
         }
 
-        // Normalize encoding in the context to handle malformed UTF-8 and encoding evasion
-        let normalized_context = self.normalize_mail_context(&context);
-
-        // Check sender blocking patterns first - highest priority
-        if let Some(blocked_sender) = self.check_sender_blocking(&normalized_context) {
+        // Check sender blocking patterns first - highest priority (no normalization needed)
+        if let Some(blocked_sender) = self.check_sender_blocking(&context) {
             log::warn!("Email blocked by sender pattern: {}", blocked_sender);
             let headers = vec![(
                 "X-FOFF-Score".to_string(),
@@ -2304,7 +2311,7 @@ impl FilterEngine {
             )];
 
             // Apply selective reject based on hop detection
-            let action = if normalized_context.is_first_hop {
+            let action = if context.is_first_hop {
                 self.sender_blocking_action.clone()
             } else {
                 // Convert reject to tag for forwarded emails
@@ -2941,7 +2948,7 @@ impl FilterEngine {
                 .unwrap_or(50);
 
             // Still run feature analysis but skip threat detection rules
-            let feature_results = self.feature_engine.analyze(&normalized_context);
+            let feature_results = self.feature_engine.analyze(&context_with_attachments);
             let feature_score: i32 = feature_results.scores.iter().map(|s| s.score).sum();
 
             log::info!(
@@ -3587,8 +3594,8 @@ impl FilterEngine {
         let (final_action, headers_to_add) = if let Some(ref toml_config) = self.toml_config {
             // Check if reject_to_tag is enabled OR if this is not the first hop OR if user forwarding
             let should_convert_reject = toml_config.system.as_ref().is_none_or(|s| s.reject_to_tag)
-                || !normalized_context.is_first_hop
-                || normalized_context
+                || !context_with_attachments.is_first_hop
+                || context_with_attachments
                     .forwarding_info
                     .as_ref()
                     .map(|f| f.forwarding_type == ForwardingType::UserInitiated)
@@ -3598,14 +3605,14 @@ impl FilterEngine {
                 if let Action::Reject { message } = final_action {
                     // Add both the conversion header and the standard spam flag
                     let mut headers = headers_to_add;
-                    let reason = if normalized_context
+                    let reason = if context_with_attachments
                         .forwarding_info
                         .as_ref()
                         .map(|f| f.forwarding_type == ForwardingType::UserInitiated)
                         .unwrap_or(false)
                     {
                         "USER-FORWARDED-REJECT-TO-TAG"
-                    } else if !normalized_context.is_first_hop {
+                    } else if !context_with_attachments.is_first_hop {
                         "FORWARDED-EMAIL-REJECT-TO-TAG"
                     } else {
                         "WOULD-REJECT"
@@ -3624,8 +3631,8 @@ impl FilterEngine {
             }
         } else {
             // No TOML config - apply hop-based logic including user forwarding
-            if !normalized_context.is_first_hop
-                || normalized_context
+            if !context_with_attachments.is_first_hop
+                || context_with_attachments
                     .forwarding_info
                     .as_ref()
                     .map(|f| f.forwarding_type == ForwardingType::UserInitiated)
@@ -3633,7 +3640,7 @@ impl FilterEngine {
             {
                 if let Action::Reject { message } = final_action {
                     let mut headers = headers_to_add;
-                    let reason = if normalized_context
+                    let reason = if context_with_attachments
                         .forwarding_info
                         .as_ref()
                         .map(|f| f.forwarding_type == ForwardingType::UserInitiated)
@@ -4011,7 +4018,7 @@ impl FilterEngine {
         text = url_regex.replace_all(&text, " ").to_string();
 
         // Remove email addresses
-        let email_regex = Regex::new(r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}").unwrap();
+        let email_regex = &*RE_EMAIL_ADDR;
         text = email_regex.replace_all(&text, " ").to_string();
 
         // Remove common email artifacts
@@ -4391,7 +4398,7 @@ impl FilterEngine {
         text = url_regex.replace_all(&text, " ").to_string();
 
         // Remove email addresses
-        let email_regex = Regex::new(r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}").unwrap();
+        let email_regex = &*RE_EMAIL_ADDR;
         text = email_regex.replace_all(&text, " ").to_string();
 
         // Remove common email artifacts
@@ -4491,7 +4498,7 @@ impl FilterEngine {
         text = url_regex.replace_all(&text, " ").to_string();
 
         // Remove email addresses
-        let email_regex = Regex::new(r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}").unwrap();
+        let email_regex = &*RE_EMAIL_ADDR;
         text = email_regex.replace_all(&text, " ").to_string();
 
         // Remove common empty content patterns
@@ -4753,8 +4760,8 @@ impl FilterEngine {
 
                         // Strip HTML tags for rule matching to avoid false positives
                         // on CSS, tracking URLs, and template code
-                        let html_re = regex::Regex::new(r"<[^>]+>").unwrap();
-                        let stripped = html_re.replace_all(body_text, " ");
+
+                        let stripped = RE_HTML_TAGS.replace_all(body_text, " ");
 
                         // Check stripped body text
                         if regex.is_match(&stripped) {
@@ -4789,8 +4796,8 @@ impl FilterEngine {
                         };
 
                         // Strip HTML tags for rule matching
-                        let html_re = regex::Regex::new(r"<[^>]+>").unwrap();
-                        let stripped = html_re.replace_all(body_text, " ");
+
+                        let stripped = RE_HTML_TAGS.replace_all(body_text, " ");
 
                         if regex.is_match(&stripped) {
                             return true;
@@ -4834,7 +4841,7 @@ impl FilterEngine {
                                 "DEBUG: authentication-results header value: '{}'",
                                 header_value
                             );
-                            log::info!("DEBUG: pattern to match: '{}'", pattern);
+                            log::debug!("pattern to match: '{}'", pattern);
                         }
 
                         if let Some(regex) = self.compiled_patterns.get(pattern) {
@@ -4844,14 +4851,14 @@ impl FilterEngine {
 
                             // DEBUG: Log pattern matching result for authentication-results
                             if header == "authentication-results" {
-                                log::info!("DEBUG: decoded value: '{}'", decoded_value);
-                                log::info!("DEBUG: regex match result: {}", matches);
+                                log::debug!("decoded value: '{}'", decoded_value);
+                                log::debug!("regex match result: {}", matches);
                             }
 
                             return matches;
                         }
                     } else if header == "authentication-results" {
-                        log::info!("DEBUG: authentication-results header NOT FOUND in context");
+                        log::debug!("authentication-results header NOT FOUND in context");
                         log::info!(
                             "DEBUG: available headers: {:?}",
                             context.headers.keys().collect::<Vec<_>>()
@@ -8432,8 +8439,7 @@ impl FilterEngine {
             }
         }
         let content_lower = content.to_lowercase();
-        let content_words: Vec<&str> = regex::Regex::new(r"[a-z]{5,}")
-            .unwrap()
+        let content_words: Vec<&str> = RE_CONTENT_WORDS
             .find_iter(&content_lower)
             .map(|m| m.as_str())
             .collect();

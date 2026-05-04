@@ -30,7 +30,6 @@ impl Module {
 }
 
 pub fn load_modules(module_dir: &str) -> Result<Vec<Module>, Box<dyn std::error::Error>> {
-    println!("DEBUG: Attempting to load modules from: {}", module_dir);
     let mut modules = Vec::new();
 
     // Read all .yaml files from the modules directory
@@ -63,8 +62,6 @@ pub fn load_modules(module_dir: &str) -> Result<Vec<Module>, Box<dyn std::error:
 
     for path in &yaml_files {
         let file_name = path.file_name().unwrap().to_string_lossy();
-        println!("DEBUG: Checking file: {:?}", path);
-        println!("DEBUG: File exists, attempting to load: {}", file_name);
         match Module::load_from_file(path) {
             Ok(module) => {
                 println!(
@@ -76,13 +73,11 @@ pub fn load_modules(module_dir: &str) -> Result<Vec<Module>, Box<dyn std::error:
                 }
             }
             Err(e) => {
-                println!("DEBUG: Failed to load module {}: {}", file_name, e);
-                eprintln!("Warning: Failed to load module {}: {}", file_name, e);
+                log::warn!("Failed to load module {}: {}", file_name, e);
             }
         }
     }
 
-    println!("DEBUG: Total modules loaded: {}", modules.len());
     Ok(modules)
 }
 
