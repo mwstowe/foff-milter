@@ -2028,79 +2028,9 @@ fn load_config(
     }
 }
 
-fn generate_modular_configs(dir_path: &str) {
-    use std::fs;
-    use std::path::Path;
-
-    let target_dir = Path::new(dir_path);
-
-    // Create directory if it doesn't exist
-    if let Err(e) = fs::create_dir_all(target_dir) {
-        eprintln!("❌ Error creating directory {}: {}", dir_path, e);
-        process::exit(1);
-    }
-
-    println!("🔧 Generating modular configuration files in: {}", dir_path);
-    println!();
-
-    // Embedded module configurations
-    let modules = [
-        (
-            "authentication-validation.yaml",
-            include_str!("../rulesets/authentication-validation.yaml"),
-        ),
-        (
-            "brand-protection.yaml",
-            include_str!("../rulesets/brand-protection.yaml"),
-        ),
-        (
-            "content-threats.yaml",
-            include_str!("../rulesets/content-threats.yaml"),
-        ),
-        (
-            "esp-infrastructure.yaml",
-            include_str!("../rulesets/esp-infrastructure.yaml"),
-        ),
-        (
-            "phishing-threats.yaml",
-            include_str!("../rulesets/phishing-threats.yaml"),
-        ),
-    ];
-
-    let mut created = 0;
-    let mut failed = 0;
-
-    for (filename, content) in &modules {
-        let target_path = target_dir.join(filename);
-
-        match fs::write(&target_path, content) {
-            Ok(_) => {
-                println!("✅ Generated: {}", filename);
-                created += 1;
-            }
-            Err(e) => {
-                eprintln!("❌ Failed to create {}: {}", filename, e);
-                failed += 1;
-            }
-        }
-    }
-
-    println!();
-    println!("📊 Generation Summary:");
-    println!("  ✅ Successfully generated: {} modules", created);
-    if failed > 0 {
-        println!("  ❌ Failed: {} modules", failed);
-    }
-    println!();
-
-    if created > 0 {
-        println!("🎯 Next Steps:");
-        println!("  1. Update your main config to use modular system:");
-        println!("     module_config_dir: \"{}\"", dir_path);
-        println!("  2. Customize individual module configurations as needed");
-        println!("  3. Test configuration: foff-milter --test-config");
-        println!("  4. List modules: foff-milter --list-modules");
-    }
+fn generate_modular_configs(_dir_path: &str) {
+    println!("Rules are now compiled into the binary. YAML rulesets are no longer needed.");
+    println!("The built-in rules are used automatically.");
 }
 
 fn truncate_string(s: &str, max_len: usize) -> String {

@@ -1,14 +1,10 @@
-pub mod adobe_campaign_analyzer;
 pub mod authentication_analysis;
 pub mod brand_impersonation;
-pub mod consumer_email_esp;
 pub mod context_analyzer;
-pub mod domain_analyzer;
 pub mod domain_business_mismatch;
 pub mod domain_reputation;
 pub mod esp_validation;
 pub mod financial_validation;
-pub mod geographic_mismatch;
 pub mod health_spam;
 pub mod invoice_analyzer;
 pub mod link_analyzer;
@@ -129,15 +125,12 @@ impl FeatureEngine {
                 Box::new(invoice_analyzer::InvoiceAnalyzer::from_config(
                     &config.feature_scoring.invoice_analysis,
                 )),
-                // Box::new(domain_analyzer::DomainAnalyzer::new()),
                 Box::new(domain_reputation::DomainReputationFeature::new()),
                 Box::new(brand_impersonation::BrandImpersonationFeature::new()),
                 Box::new(financial_validation::FinancialValidationFeature::new()),
                 Box::new(esp_validation::EspValidationFeature::new()),
                 Box::new(tld_risk::TldRiskFeature::new()),
                 Box::new(authentication_analysis::AuthenticationFeature::new()),
-                // Box::new(adobe_campaign_analyzer::AdobeCampaignAnalyzer::new()),
-                // Box::new(consumer_email_esp::ConsumerEmailEspAnalyzer::new()),
                 Box::new(domain_business_mismatch::DomainBusinessMismatchAnalyzer::new()),
                 Box::new(system_blocklist::SystemBlocklistFeature::new()),
                 Box::new(priority_abuse::PriorityAbuseFeature::new()),
@@ -145,7 +138,6 @@ impl FeatureEngine {
                 Box::new(portuguese_language::PortugueseLanguageAnalyzer::new()),
                 Box::new(health_spam::HealthSpamAnalyzer::new()),
                 Box::new(product_spam::ProductSpamAnalyzer::new()),
-                // Box::new(geographic_mismatch::GeographicMismatchFeature::new()),
                 Box::new(server_role_analyzer::ServerRoleAnalyzer::new()),
             ],
         }
@@ -158,15 +150,12 @@ impl FeatureEngine {
                 Box::new(sender_alignment::SenderAlignmentAnalyzer::new()),
                 Box::new(context_analyzer::ContextAnalyzer::new()),
                 Box::new(invoice_analyzer::InvoiceAnalyzer::new()),
-                // Box::new(domain_analyzer::DomainAnalyzer::new()),
                 Box::new(domain_reputation::DomainReputationFeature::new()),
                 Box::new(brand_impersonation::BrandImpersonationFeature::new()),
                 Box::new(financial_validation::FinancialValidationFeature::new()),
                 Box::new(esp_validation::EspValidationFeature::new()),
                 Box::new(tld_risk::TldRiskFeature::new()),
                 Box::new(authentication_analysis::AuthenticationFeature::new()),
-                // Box::new(adobe_campaign_analyzer::AdobeCampaignAnalyzer::new()),
-                // Box::new(consumer_email_esp::ConsumerEmailEspAnalyzer::new()),
                 Box::new(domain_business_mismatch::DomainBusinessMismatchAnalyzer::new()),
                 Box::new(system_blocklist::SystemBlocklistFeature::new()),
                 Box::new(priority_abuse::PriorityAbuseFeature::new()),
@@ -174,7 +163,6 @@ impl FeatureEngine {
                 Box::new(portuguese_language::PortugueseLanguageAnalyzer::new()),
                 Box::new(health_spam::HealthSpamAnalyzer::new()),
                 Box::new(product_spam::ProductSpamAnalyzer::new()),
-                // Box::new(geographic_mismatch::GeographicMismatchFeature::new()),
                 Box::new(server_role_analyzer::ServerRoleAnalyzer::new()),
             ],
         }
