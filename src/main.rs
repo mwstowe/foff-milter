@@ -1865,6 +1865,8 @@ async fn main() {
     if daemon_mode && !demo_mode {
         #[cfg(unix)]
         {
+            // SAFETY: fork() is called before any threads are spawned (Tokio runtime
+            // starts after this). No shared mutable state or async resources exist yet.
             match unsafe { libc::fork() } {
                 -1 => std::process::exit(1),
                 0 => {}                     // Child continues
