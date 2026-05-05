@@ -1,3 +1,7 @@
+#[cfg(not(target_env = "msvc"))]
+#[global_allocator]
+static GLOBAL: tikv_jemallocator::Jemalloc = tikv_jemallocator::Jemalloc;
+
 use clap::{Arg, Command};
 use encoding_rs::WINDOWS_1252;
 use foff_milter::anonymize::EmailAnonymizer;

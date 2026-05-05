@@ -4,20 +4,15 @@ use regex::Regex;
 #[cfg(feature = "ocr")]
 use tesseract_rs::TesseractAPI;
 
+#[cfg(feature = "ocr")]
+use std::sync::OnceLock;
+
+#[cfg(feature = "ocr")]
+static TESSERACT_API: OnceLock<Option<TesseractAPI>> = OnceLock::new();
+
 #[derive(Clone)]
 pub struct MediaAnalyzer {
     spam_patterns: Vec<Regex>,
-    #[cfg(feature = "ocr")]
-    tesseract: Option<TesseractAPI>,
-}
-
-#[cfg(feature = "ocr")]
-impl Drop for MediaAnalyzer {
-    fn drop(&mut self) {
-        if let Some(ref mut api) = self.tesseract {
-            let _ = api.end();
-        }
-    }
 }
 
 #[derive(Debug, Clone)]
@@ -57,27 +52,26 @@ impl MediaAnalyzer {
                 Regex::new(r"(?i)(paypal|amazon|apple|norton|mcafee).{0,50}(invoice|overdue)")
                     .unwrap(),
             ],
-            #[cfg(feature = "ocr")]
-            tesseract: Self::init_tesseract(),
         }
     }
 
     #[cfg(feature = "ocr")]
-    fn init_tesseract() -> Option<TesseractAPI> {
-        let api = TesseractAPI::new();
-        match api.init_embedded("eng") {
-            Ok(_) => {
-                log::info!("OCR capability enabled with embedded English tessdata");
-                Some(api)
-            }
-            Err(e) => {
-                log::warn!(
-                    "Failed to initialize tesseract with embedded data: {}. OCR disabled.",
-                    e
-                );
-                None
-            }
-        }
+    fn get_tesseract() -> Option<&'static TesseractAPI> {
+        TESSERACT_API
+            .get_or_init(|| {
+                let api = TesseractAPI::new();
+                match api.init_embedded("eng") {
+                    Ok(_) => {
+                        log::info!("OCR engine initialized on first use");
+                        Some(api)
+                    }
+                    Err(e) => {
+                        log::warn!("Failed to initialize tesseract: {}. OCR disabled.", e);
+                        None
+                    }
+                }
+            })
+            .as_ref()
     }
 
     pub fn analyze_attachment(&self, filename: &str, content: &[u8]) -> MediaAnalysis {
@@ -134,7 +128,7 @@ impl MediaAnalyzer {
     fn extract_image_text(&self, content: &[u8]) -> String {
         #[cfg(feature = "ocr")]
         {
-            if let Some(ref tesseract) = self.tesseract {
+            if let Some(tesseract) = Self::get_tesseract() {
                 return self.extract_text_with_ocr(content, tesseract);
             }
         }
