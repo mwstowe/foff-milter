@@ -1,0 +1,18 @@
+# Minimal configuration for CI testing
+
+[system]
+socket_path = "/tmp/foff-milter-test.sock"
+reject_to_tag = true
+
+[rulesets]
+enabled = true
+config_dir = "rulesets"
+
+[features]
+enabled = true
+config_dir = "features"
+
+[heuristics]
+reject_threshold = 350
+spam_threshold = 50
+accept_threshold = 0

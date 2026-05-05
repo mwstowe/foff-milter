@@ -2726,9 +2726,9 @@ impl FilterEngine {
                 || subject.contains("invoice #")
                 || subject.contains("payment confirmation");
             if is_consumer && is_order {
-                total_score += 40;
+                total_score += 55;
                 scoring_rules
-                    .push("Fake Order: Order confirmation from consumer email (+40)".to_string());
+                    .push("Fake Order: Order confirmation from consumer email (+55)".to_string());
             }
         }
 
