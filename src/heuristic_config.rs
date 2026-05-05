@@ -1,9 +1,5 @@
 use chrono;
 use serde::{Deserialize, Serialize};
-use std::collections::hash_map::DefaultHasher;
-use std::fs;
-use std::hash::{Hash, Hasher};
-use std::path::Path;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -13,72 +9,6 @@ pub struct Module {
     pub rules: Vec<FilterRule>,
     #[serde(skip)]
     pub hash: String,
-}
-
-impl Module {
-    pub fn load_from_file(path: &Path) -> Result<Self, Box<dyn std::error::Error>> {
-        let content = fs::read_to_string(path)?;
-        let mut module: Module = yaml_serde::from_str(&content)?;
-
-        // Calculate hash of the module content
-        let mut hasher = DefaultHasher::new();
-        content.hash(&mut hasher);
-        module.hash = format!("{:x}", hasher.finish())[..8].to_string();
-
-        Ok(module)
-    }
-}
-
-pub fn load_modules(module_dir: &str) -> Result<Vec<Module>, Box<dyn std::error::Error>> {
-    let mut modules = Vec::new();
-
-    // Read all .yaml files from the modules directory
-    let dir_path = Path::new(module_dir);
-    if !dir_path.exists() {
-        return Err(format!("Module directory does not exist: {}", module_dir).into());
-    }
-
-    let mut yaml_files = Vec::new();
-    for entry in fs::read_dir(dir_path)? {
-        let entry = entry?;
-        let path = entry.path();
-        if path.is_file() {
-            if let Some(extension) = path.extension() {
-                if extension == "yaml" || extension == "yml" {
-                    yaml_files.push(path);
-                }
-            }
-        }
-    }
-
-    // Sort files for consistent loading order
-    yaml_files.sort();
-
-    println!(
-        "DEBUG: Found {} YAML files in {}",
-        yaml_files.len(),
-        module_dir
-    );
-
-    for path in &yaml_files {
-        let file_name = path.file_name().unwrap().to_string_lossy();
-        match Module::load_from_file(path) {
-            Ok(module) => {
-                println!(
-                    "DEBUG: Successfully loaded module: {} (enabled: {})",
-                    module.name, module.enabled
-                );
-                if module.enabled {
-                    modules.push(module);
-                }
-            }
-            Err(e) => {
-                log::warn!("Failed to load module {}: {}", file_name, e);
-            }
-        }
-    }
-
-    Ok(modules)
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

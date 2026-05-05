@@ -4,7 +4,7 @@ use crate::dkim_verification::{DkimVerificationResult, DkimVerifier};
 use crate::domain_age::DomainAgeChecker;
 use crate::domain_utils::DomainUtils;
 use crate::features::{FeatureEngine, FeatureExtractor};
-use crate::heuristic_config::{load_modules, Action, Config, Criteria, Module};
+use crate::heuristic_config::{Action, Config, Criteria, Module};
 use crate::invoice_analyzer::{InvoiceAnalysis, InvoiceAnalyzer};
 use crate::language::LanguageDetector;
 use crate::media_analyzer::MediaAnalyzer;
@@ -1000,40 +1000,12 @@ impl FilterEngine {
     }
 
     pub fn new(config: Config) -> anyhow::Result<Self> {
-        // Load built-in rules (compiled into binary)
-        let mut modules = crate::builtin_rules::builtin_modules();
+        let modules = crate::builtin_rules::builtin_modules();
         log::info!(
             "Loaded {} built-in modules with {} rules",
             modules.len(),
             modules.iter().map(|m| m.rules.len()).sum::<usize>()
         );
-
-        // Optionally overlay YAML rules if directory is configured
-        if let Some(module_dir) = &config.module_config_dir {
-            match load_modules(module_dir) {
-                Ok(yaml_modules) if !yaml_modules.is_empty() => {
-                    log::info!(
-                        "Overlaying {} YAML modules from {}",
-                        yaml_modules.len(),
-                        module_dir
-                    );
-                    modules = yaml_modules;
-                }
-                Ok(_) => {
-                    log::info!(
-                        "No YAML modules found in {}, using built-in rules",
-                        module_dir
-                    );
-                }
-                Err(e) => {
-                    log::warn!(
-                        "Failed to load YAML modules from {}: {}, using built-in rules",
-                        module_dir,
-                        e
-                    );
-                }
-            }
-        }
 
         // Extract feature config directory before moving config
         let feature_config_dir = config.feature_config_dir.clone();
