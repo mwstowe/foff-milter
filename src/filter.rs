@@ -8433,6 +8433,8 @@ impl FilterEngine {
             || content_lower.contains("complete a")
             || content_lower.contains("expires today")
             || content_lower.contains("expire tomorrow")
+            || content_lower.contains("will expire today")
+            || content_lower.contains("points expire")
             || content_lower.contains("thank you from")
             || content_lower.contains("yours to claim")
             || content_lower.contains("been chosen")
