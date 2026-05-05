@@ -1,4 +1,3 @@
-use crate::abuse_reporter::AbuseReporter;
 use crate::attachment_analyzer::AttachmentAnalyzer;
 use crate::dkim_verification::{DkimVerificationResult, DkimVerifier};
 use crate::domain_age::DomainAgeChecker;
@@ -189,8 +188,6 @@ pub struct FilterEngine {
     toml_config: Option<crate::toml_config::TomlConfig>,
     modules: Vec<Module>,
     compiled_patterns: HashMap<String, Regex>,
-    #[allow(dead_code)] // TODO: Implement full abuse reporting integration
-    abuse_reporter: AbuseReporter,
     // Heuristic actions
     heuristic_reject: Action,
     heuristic_spam: Action,
@@ -1011,7 +1008,6 @@ impl FilterEngine {
         let feature_config_dir = config.feature_config_dir.clone();
 
         let mut engine = FilterEngine {
-            abuse_reporter: AbuseReporter::with_smtp_config(config.smtp.clone()),
             config,
             toml_config: None,
             modules,

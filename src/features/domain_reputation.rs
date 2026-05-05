@@ -24,8 +24,6 @@ pub enum DomainReputation {
 
 #[derive(Debug, Clone)]
 pub struct DomainReputationAnalyzer {
-    #[allow(dead_code)]
-    config: DomainReputationConfig,
     financial_domains: HashMap<String, bool>,
     esp_domains: HashMap<String, bool>,
     suspicious_tlds: HashMap<String, bool>,
@@ -41,7 +39,6 @@ impl DomainReputationAnalyzer {
             suspicious_tlds: HashMap::new(),
             legitimate_domains: HashMap::new(),
             malicious_domains: HashMap::new(),
-            config: config.clone(),
         };
 
         // Build lookup tables for performance

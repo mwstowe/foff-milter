@@ -1,4 +1,3 @@
-pub mod abuse_reporter;
 pub mod anonymize;
 pub mod attachment_analyzer;
 pub mod builtin_rules;

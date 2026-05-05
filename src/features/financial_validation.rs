@@ -22,14 +22,11 @@ pub struct FinancialValidationConfig {
 pub struct FinancialValidationAnalyzer {
     config: FinancialValidationConfig,
     institution_domains: HashMap<String, String>, // domain -> institution_name
-    #[allow(dead_code)]
-    institution_aliases: HashMap<String, String>, // alias -> institution_name
 }
 
 impl FinancialValidationAnalyzer {
     pub fn new(config: FinancialValidationConfig) -> Self {
         let mut institution_domains = HashMap::new();
-        let mut institution_aliases = HashMap::new();
 
         // Build lookup tables
         for (institution_name, institution) in &config.institutions {
@@ -37,17 +34,11 @@ impl FinancialValidationAnalyzer {
             for domain in &institution.domains {
                 institution_domains.insert(domain.to_lowercase(), institution_name.clone());
             }
-
-            // Map aliases to institution
-            for alias in &institution.aliases {
-                institution_aliases.insert(alias.to_lowercase(), institution_name.clone());
-            }
         }
 
         Self {
             config,
             institution_domains,
-            institution_aliases,
         }
     }
 
