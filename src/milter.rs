@@ -1226,6 +1226,9 @@ impl Milter {
                                         session_id,
                                         guard.len()
                                     );
+                                    // Unload OCR if idle
+                                    #[cfg(feature = "ocr")]
+                                    crate::media_analyzer::MediaAnalyzer::maybe_unload_ocr();
                                 }
                                 Err(e) => {
                                     log::error!("Mutex poisoned in close handler: {}", e);

@@ -5,10 +5,21 @@ use regex::Regex;
 use tesseract_rs::TesseractAPI;
 
 #[cfg(feature = "ocr")]
-use std::sync::OnceLock;
+use std::sync::Mutex;
+#[cfg(feature = "ocr")]
+use std::time::Instant;
+
+/// Tesseract is loaded on first image and unloaded after 5 minutes of inactivity.
+#[cfg(feature = "ocr")]
+static TESSERACT_CACHE: std::sync::LazyLock<Mutex<OcrCache>> =
+    std::sync::LazyLock::new(|| Mutex::new(OcrCache::default()));
 
 #[cfg(feature = "ocr")]
-static TESSERACT_API: OnceLock<Option<TesseractAPI>> = OnceLock::new();
+#[derive(Default)]
+struct OcrCache {
+    api: Option<TesseractAPI>,
+    last_used: Option<Instant>,
+}
 
 #[derive(Clone)]
 pub struct MediaAnalyzer {
@@ -56,22 +67,44 @@ impl MediaAnalyzer {
     }
 
     #[cfg(feature = "ocr")]
-    fn get_tesseract() -> Option<&'static TesseractAPI> {
-        TESSERACT_API
-            .get_or_init(|| {
-                let api = TesseractAPI::new();
-                match api.init_embedded("eng") {
-                    Ok(_) => {
-                        log::info!("OCR engine initialized on first use");
-                        Some(api)
-                    }
-                    Err(e) => {
-                        log::warn!("Failed to initialize tesseract: {}. OCR disabled.", e);
-                        None
-                    }
+    fn with_tesseract<F, R>(f: F) -> Option<R>
+    where
+        F: FnOnce(&TesseractAPI) -> R,
+    {
+        let mut cache = TESSERACT_CACHE.lock().ok()?;
+
+        // Initialize if not loaded
+        if cache.api.is_none() {
+            let api = TesseractAPI::new();
+            match api.init_embedded("eng") {
+                Ok(_) => {
+                    log::info!("OCR engine loaded (will unload after 5 min idle)");
+                    cache.api = Some(api);
                 }
-            })
-            .as_ref()
+                Err(e) => {
+                    log::warn!("Failed to initialize tesseract: {}. OCR disabled.", e);
+                    return None;
+                }
+            }
+        }
+
+        cache.last_used = Some(Instant::now());
+        cache.api.as_ref().map(f)
+    }
+
+    /// Call periodically to unload OCR if idle for 5+ minutes
+    #[cfg(feature = "ocr")]
+    pub fn maybe_unload_ocr() {
+        if let Ok(mut cache) = TESSERACT_CACHE.lock() {
+            if let Some(last_used) = cache.last_used {
+                if last_used.elapsed() > std::time::Duration::from_secs(300) && cache.api.is_some()
+                {
+                    cache.api = None;
+                    cache.last_used = None;
+                    log::info!("OCR engine unloaded after 5 min idle");
+                }
+            }
+        }
     }
 
     pub fn analyze_attachment(&self, filename: &str, content: &[u8]) -> MediaAnalysis {
@@ -128,8 +161,9 @@ impl MediaAnalyzer {
     fn extract_image_text(&self, content: &[u8]) -> String {
         #[cfg(feature = "ocr")]
         {
-            if let Some(tesseract) = Self::get_tesseract() {
-                return self.extract_text_with_ocr(content, tesseract);
+            if let Some(text) = Self::with_tesseract(|api| self.extract_text_with_ocr(content, api))
+            {
+                return text;
             }
         }
 
