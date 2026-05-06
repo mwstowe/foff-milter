@@ -2234,6 +2234,22 @@ impl FeatureExtractor for ContextAnalyzer {
             }
         }
 
+        // Account deactivation phishing detection
+        {
+            let text_lower = combined_text.to_lowercase();
+            let has_deactivation = text_lower.contains("deactivat")
+                || text_lower.contains("permanently deleted")
+                || text_lower.contains("account will be")
+                    && (text_lower.contains("deleted") || text_lower.contains("suspended"));
+            let has_verify = text_lower.contains("verify")
+                || text_lower.contains("confirm")
+                || text_lower.contains("not a robot");
+            if has_deactivation && has_verify {
+                total_score += 60;
+                all_evidence.push("Account deactivation phishing detected".to_string());
+            }
+        }
+
         // Subscription renewal scam detection
         {
             let subject_lower = context.subject.as_deref().unwrap_or("").to_lowercase();

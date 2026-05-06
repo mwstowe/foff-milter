@@ -8441,7 +8441,12 @@ impl FilterEngine {
             || content_lower.contains("membership update")
             || content_lower.contains("act fast")
             || content_lower.contains("rates as low")
-            || content_lower.contains("limited time");
+            || content_lower.contains("limited time")
+            || content_lower.contains("fiduciary")
+            || content_lower.contains("disbursement")
+            || content_lower.contains("provisioning record")
+            || content_lower.contains("unclaimed fund")
+            || content_lower.contains("beneficiary");
 
         if has_reward_language {
             log::info!(
@@ -8966,10 +8971,23 @@ impl FilterEngine {
 
     /// Detect gibberish/random sender domains used by spammers
     fn get_gibberish_domain_score(&self, context: &MailContext) -> i32 {
-        let domain = self
+        let envelope_domain = self
             .extract_sender_domain(context)
             .unwrap_or_default()
             .to_lowercase();
+        let from_domain = context
+            .from_header
+            .as_deref()
+            .and_then(|f| f.split('@').nth(1))
+            .map(|d| d.trim_end_matches('>').to_lowercase())
+            .unwrap_or_default();
+        // Use From domain if envelope is a known legitimate domain (e.g., gmail forwarding)
+        let domain =
+            if self.is_established_business_domain(&envelope_domain) && !from_domain.is_empty() {
+                from_domain
+            } else {
+                envelope_domain
+            };
 
         if domain.is_empty() {
             return 0;

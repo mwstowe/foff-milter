@@ -1,0 +1,733 @@
+✅ Loading modern TOML configuration: ../foff-milter.toml
+Return-Path: <mstowe+caf_=mstowe=baddomain.com@gmail.com>
+Received: from hotel.baddomain.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.baddomain.com (8.18.2/8.18.1) with ESMTPS id 645BjeCC087943
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <mstowe@baddomain.com>; Tue, 5 May 2026 11:45:41 GMT
+	(envelope-from mstowe+caf_=mstowe=baddomain.com@gmail.com)
+Authentication-Results: juliett.baddomain.com;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=qeyovomr-polvyn-lol.20251104.gappssmtp.com header.i=@qeyovomr-polvyn-lol.20251104.gappssmtp.com header.b=gksyYbCM
+Received: from 64.r1.unverified-forwarding.1e100.net (64.r1.unverified-forwarding.1e100.net [108.177.16.64])
+	by hotel.baddomain.com (8.16.1/8.16.1) with ESMTPS id 645BjaLE133344
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=OK)
+	for <mstowe@baddomain.com>; Tue, 5 May 2026 06:45:38 -0500
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.baddomain.com 645BjaLE133344
+Authentication-Results: hotel.baddomain.com;
+	dkim=pass (2048-bit key, unprotected) header.d=qeyovomr-polvyn-lol.20251104.gappssmtp.com header.i=@qeyovomr-polvyn-lol.20251104.gappssmtp.com header.a=rsa-sha256 header.s=20251104 header.b=gksyYbCM
+Received: by 64.r1.unverified-forwarding.1e100.net with SMTP id a640c23a62f3a-ba2690be1f7so77389366b.3
+        for <mstowe@baddomain.com>; Tue, 05 May 2026 04:45:37 -0700 (PDT)
+ARC-Seal: i=2; a=rsa-sha256; t=555-123-4567; cv=pass;
+        d=google.com; s=arc-20240605;
+        b=FW7z7TdVi76DALM9R9outVQNACLhxRdHwwAg0EO/7gqlkC9VQ27O6hXuLFOf1/JjYg
+         swE/61Hp1AaVDkZdMij7/KDzM17WhUtISPikgn91bKPkBgt9dM12ZZkhr3gUvBqMw2uT
+         u6/ZtyRc4opYqGuEtj2SMKeUGlU56BNLWYnDZBvZHQw9bttzCYCQNV+6vYGXGyCeKc3b
+         NdT7D1YLQU6Lf7+AyHs1d8UuMuGtHTM555PX4S/33TbnDjtNS40HwF5MHUoFEAkO2Lat
+         +n8paMD1YbimOy50tYB4eF7G+X+44NLNLf9/Dc5RzYBXverky2UmITnvqiIluOYnJH2r
+         lkbQ==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=subject:date:to:message-id:precedence:mime-version:from
+         :dkim-signature:delivered-to;
+        bh=xxZrqxQtpmpNnkgoKZ7PjLh5B1PvY0sPR69RD2EtGMI=;
+        fh=aXgEwxPLSh4CNo7El+ZDTQNehLw4pIG2Bvw/9itGdWQ=;
+        b=cEgwQUbXjyrbAmYI1XVPH07EyFonvpM9rmDqwpwBMO7vWw2IYs3LjNMvk84lTrr+g7
+         IRYbF63LUTnnxHVnQN0CMAe1Uf35EQY01j7B3zZ5BHDT9qYMOtz1srYgjIHEnTocrD45
+         p0oyhncArLW0hFlwQdSaU1QT4axgq14AAd0CzeRGhLrZcZPS4t3MljF6wZMLIIGlHDI1
+         If5xRE2rDzZFnWJvPDy+z7j29PLMHAxF52B5rrBDPyQMjsnIiSlBbWPSbVzG5GjdAcjH
+         oBF5LLYWfDZetMTci0yfhArnrWSmuUtOnJSh5cnTXAuD/G9HYklK/rESluvhmJ/LYqKF
+         qjCg==;
+        darn=baddomain.com
+ARC-Authentication-Results: i=2; mx.google.com;
+       dkim=pass header.i=@qeyovomr-polvyn-lol.20251104.gappssmtp.com header.s=20251104 header.b=gksyYbCM;
+       spf=softfail (google.com: domain of transitioning alexander_walker_271@qeyovomr.polvyn.lol does not designate 209.85.220.41 as permitted sender) smtp.mailfrom=alexander_walker_271@qeyovomr.polvyn.lol;
+       dara=pass header.i=@gmail.com
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=555-123-4567; x=555-123-4567;
+        h=subject:date:to:message-id:precedence:mime-version:from:x-gm-gg
+         :dkim-signature:delivered-to:x-forwarded-for:x-forwarded-to
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=xxZrqxQtpmpNnkgoKZ7PjLh5B1PvY0sPR69RD2EtGMI=;
+        b=e06qfA4EcqkrPIrsivDCuZ/OkrKWl/XA0pCJCNG/QwOeIjKpJz8gouTstjpP49pMi/
+         nSGl8NC/oyWFmksZiA/1jetnSL9FuBO5P/EHAGjc/Xh5emE7gH13MxxCktcbYVN5bPmc
+         PXeYKBakXFwKl9rch4HG1TqnM9b580YnPrToFHPrmBHROB29Z8+Vzey0Uv3bjKncY3QY
+         sRhwFEG4ETShk26eCvi0GJpOilXQyPS1yByXeEyVad2Udklav3rPHpp/4Z9ApFIImukc
+         TUb0vHYwPXJ4qSBy80Qke1OvK5O4gwZOCI8YHp98uDDVlGbB1v2i3Z1Df37J34Pt+iss
+         QD1g==
+X-Forwarded-Encrypted: i=2; AFNElJ+AKu5TRbh67Drb0mQCAxC5ZTJZ3QCJGYnzVOW1DfPGl+ENsj7UvsKtEDvMifVtdGOziwzD+fc=@baddomain.com
+X-Gm-Message-State: AOJu0YwYhOMjN2vKywL0wMqH7NjCDz3VBD8ttNLkXzNa10pv6PrMDr16
+	W580n0t9rSmfOvZ782l2+o/Xa1gymq/czM6NOayzZ7Xi62Z5vee/6m+t9+SYPvp5EWq1B94Y88m
+	R6utQ14VgXH55LCvztU26EKOyQUTj573APBdj2H/J0c/MX/kqsBkH9I6r1FJ8Xg==
+X-Received: by 2002:a17:906:4fc5:b0:ba8:2ebd:dfb6 with SMTP id a640c23a62f3a-bbffaf48691mr887077266b.23.1777981530882;
+        Tue, 05 May 2026 04:45:30 -0700 (PDT)
+X-Forwarded-To: mstowe@baddomain.com
+X-Forwarded-For: user@example.com mstowe@baddomain.com
+Delivered-To: user@example.com
+Received: by 2002:a54:324b:0:b0:2d0:8c76:575a with SMTP id g11csp2213135ecs;
+        Tue, 5 May 2026 04:45:28 -0700 (PDT)
+X-Received: by 2002:a05:620a:4106:b0:8ef:ca26:dcf8 with SMTP id af79cd13be357-8fd12d929cemr2220941085a.0.1777981528412;
+        Tue, 05 May 2026 04:45:28 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=555-123-4567; cv=none;
+        d=google.com; s=arc-20240605;
+        b=ITxM0yrLjk4crr3MeGoiPxVq9pC7IrKY1CsbltLciQQLjDOd5rtxWsM7uxuSKUubN6
+         xNGqI+IW2rNHS2De2XWcX7a59os8SfrHE3p0XbAa0uXMbATmzQ2DoithQko3dfcdL62C
+         UVoG9H0mp1RZawkCxusc5l4T89eI5plEALNeyKG75B8lGvo5GH9aFHGvctv16XcQNm9/
+         Y3pe/yan4e9rLStw+QqqkPxvkWnZrVOn7F1YwyuxP8tnlxQmJiGT3MpMY9D2UNdksFuJ
+         lxbG3mGSMUOtcf+KO4GePaf5OhAPb/oDtxpvcr2XMAfT/qhJiAqFkUoh8nqj5CYzeuJD
+         mjjg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=subject:date:to:message-id:precedence:mime-version:from
+         :dkim-signature;
+        bh=xxZrqxQtpmpNnkgoKZ7PjLh5B1PvY0sPR69RD2EtGMI=;
+        fh=mT0Hi1oeQuwKdVkoCKIRR+MEHYH9sEP9ymI/x2O5QRU=;
+        b=jylU6Lqt4O40Oa1EOdWAAqz4eyk5QiT7mRkFpPs5/K5Qua7/ZOdR9qYwj/9Ev8HV9w
+         5DtZI7rJjJK7sr9pLNG37nm95CgdqSDFXZ6tBNzgPcsMr2sOt9pnCUc7IQijdp30CBIW
+         CxAwoswxV7AfwXMkt/ogfVPeSNouoK4hLLKbgAsF8GAIq5z03EnmOGHl7+WoKdJwRh/w
+         Y7Ayqj0suX2IKbMazUm2RNOfke9iRBnqD6IEklTvJnzMFXqqQU9Q7Glbg2DTZ+HVnDsn
+         fBLAHCdipao7n/VT+1sq4ai61+6t68rZqaascr52UWbzEOJIbiZ+4/goxnTl98CaK+4W
+         DrKA==;
+        dara=google.com
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@qeyovomr-polvyn-lol.20251104.gappssmtp.com header.s=20251104 header.b=gksyYbCM;
+       spf=softfail (google.com: domain of transitioning alexander_walker_271@qeyovomr.polvyn.lol does not designate 209.85.220.41 as permitted sender) smtp.mailfrom=alexander_walker_271@qeyovomr.polvyn.lol;
+       dara=pass header.i=@gmail.com
+Received: from mail-sor-f41.google.com (mail-sor-f41.google.com. [209.85.220.41])
+        by mx.google.com with SMTPS id 6a1803df08f44-8b538a291cfsor85318706d6.4.2026.05.05.04.45.28
+        for <user@example.com>
+        (Google Transport Security);
+        Tue, 05 May 2026 04:45:28 -0700 (PDT)
+Received-SPF: softfail (google.com: domain of transitioning alexander_walker_271@qeyovomr.polvyn.lol does not designate 209.85.220.41 as permitted sender) client-ip=209.85.220.41;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@qeyovomr-polvyn-lol.20251104.gappssmtp.com header.s=20251104 header.b=gksyYbCM;
+       spf=softfail (google.com: domain of transitioning alexander_walker_271@qeyovomr.polvyn.lol does not designate 209.85.220.41 as permitted sender) smtp.mailfrom=alexander_walker_271@qeyovomr.polvyn.lol;
+       dara=pass header.i=@gmail.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=qeyovomr-polvyn-lol.20251104.gappssmtp.com; s=20251104; t=555-123-4567; x=555-123-4567; dara=google.com;
+        h=subject:date:to:message-id:precedence:mime-version:from:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xxZrqxQtpmpNnkgoKZ7PjLh5B1PvY0sPR69RD2EtGMI=;
+        b=gksyYbCMzIe1jnuSbeP5apuMwkbUT7bi+wxqmhHgkxktYNijYewW/vIsb5O9sG6n89
+         pbJp+s7uasAy3fmJpOoC+HD8lOstxE4N/8ko0qFqqMbY7Na+TIyyYnR5BPcqn0piKttH
+         UjTZ4JAh1yzHPJrZlfbStV48t2o++0ype7BxllnMES2zP5he7ZUdwH6ROfLzaX4ugF4h
+         UN3kRSZw882bdj/JgWoLvCm1pX4oKN5jeZeH5FmmVSko3CN6yv25PaR8tFR4Qqo7Mjjl
+         5Lcxm8k+hKPkXP7IahBtyhgCBuxESZOAias/VbAU3ZzeFog9GBXe+1udPWbhFqIA8LRo
+         rZrw==
+X-Gm-Gg: AeBDieupqzFEps+sTkIedw+PwpWDTzCVVnhI3UXl+TFcDyuvCbUVv0sFv61pi6qVhvj
+	0WFnmTkgDuUqwLUMXIs1aZJtPNvEvGFSIQSklIu1widLFpPikS8DXe5l5ITsBjwJt6SC5Gc8Mvb
+	QGcafSzpiLQ1PGWiP/U1LaPivwJGAM1110O5nNhvFMNNPBeIUHYhgdVNdAP1FPJNziRWBX8I4Xy
+	XLpkkFwNipau8/5BrH6S0NPQAyLb0HMyPJKSwN5BTA6ge+PsWeGpsDGdZb28wIBnb5fTnY6m8Pt
+	wSlzE3Oj2ipHwlWwtEdXi1SWjEekmmUdhTkzrWGufvDDhGioiFCt7TYCICZ3Y82BdHHDREFeUhD
+	iKHYUJAwGVz90UCG7uphH8s2IyQ4X44sU+heVKZdca7ViekitLNEBPyQhUpqAzt3F3QS8EGO/ZQ
+	tQCh5kDkVu1Mu4ilX4UO/ENVjB2Bq4PjS1sglpdyA=
+X-Received: by 2002:a05:6214:5d89:b0:8b3:f911:c1df with SMTP id 6a1803df08f44-8b666be37bamr243781976d6.21.1777981527368;
+        Tue, 05 May 2026 04:45:27 -0700 (PDT)
+Received: from hv7nn3mq5pl.biz (ec2-98-88-210-65.compute-1.amazonaws.com. [98.88.210.65])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8b534ac8ef3sm153752316d6.0.2026.05.05.04.45.26
+        for <user@example.com>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 05 May 2026 04:45:27 -0700 (PDT)
+From: Fiduciary Disbursement Bureau <alexander_walker_271@qeyovomr.polvyn.lol>
+X-Google-Original-From: "Fiduciary Disbursement Bureau" <jxndafcvefjfeee@ekzdqswfs.lukas.io>
+X-JMailer: aws-campaign-mailer-16.sailthru.cloud
+MIME-Version: 1.0
+Precedence: bulk
+X-RP: 201-17519
+Content-Type: multipart/report; boundary="-------rjtoi949--==--6r68-==--rjtoi949--==--"; type="multipart/alternative"
+Message-ID: <174265686389883.97771965.428224@sailthru.com>
+X-Mailer: sailthru.com
+To: user@example.com
+Date: Tue, 05 May 2026 11:44:36 +0000
+Received: from aws1-mta-relay10.sailthru.cloud (10.55.89.163) by pmta181-11.sailthru.com id h7338o3791sm for <user@example.com>; Tue, 05 May 2026 11:44:36 +0000 (envelope-from <delivery_941500792185467.38025823.820447@mx.sailthru.com>)
+Subject: STRATEGIC RESOURCE PROVISIONING RECORD
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.baddomain.com [172.31.18.8]); Tue, 05 May 2026 11:45:41 +0000 (UTC)
+X-Greylist: ACL 173 matched, not delayed by milter-greylist-4.6.4 (hotel.baddomain.com [23.95.222.152]); Tue, 05 May 2026 06:45:38 -0500 (CDT)
+
+---------rjtoi949--==--6r68-==--rjtoi949--==--
+Content-Type: multipart/encrypted; boundary="_-------4wcwjkryruhvt9rkkiis.co3mo240mlui5jc-7046538463064974wcwjkryruhvt9rkkiis.co3mo240mlui5jc=:"
+
+
+
+--_-------4wcwjkryruhvt9rkkiis.co3mo240mlui5jc-7046538463064974wcwjkryruhvt9rkkiis.co3mo240mlui5jc=:
+Content-Type: text/html;charset="UTF-8"
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>dti9az1wuxs2</title>
+
+  <style>
+    body.alert-mail {
+      margin: 0;
+      padding: 48px 0;
+      background-color: #fff1f2;
+      font-family: Arial, Helvetica, sans-serif;
+      text-align: center;
+    }
+
+    table.alert-wrap {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    table.alert-core {
+      width: 95%;
+      max-width: 720px;
+      background-color: #ffffff;
+      border-radius: 14px;
+      box-shadow: 0 12px 28px rgba(220, 38, 38, 0.28);
+      overflow: hidden;
+    }
+
+    td.alert-head {
+      background: linear-gradient(135deg, #1e1c5e, #4475b3);
+      padding: 36px;
+      text-align: center;
+      position: relative;
+    }
+
+    td.alert-head::after {
+      content: "";
+      display: block;
+      width: 100%;
+      height: 4px;
+      background-color: #fecaca;
+      margin-top: 18px;
+    }
+
+    a.alert-title {
+      color: #ffffff;
+      font-size: 27px;
+      font-weight: 700;
+      text-decoration: none;
+      letter-spacing: 0.6px;
+    }
+
+    td.alert-media img {
+      display: block;
+      width: 100%;
+      max-width: 720px;
+      border: 0;
+    }
+
+    td.alert-foot {
+      background-color: #fef2f2;
+      padding: 24px;
+      font-size: 12px;
+      color: #7f1d1d;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body class="alert-mail">
+
+  <table class="alert-wrap" cellpadding="0" cellspacing="0" border="0">
+    <tr>
+      <td align="center">
+
+        <table class="alert-core" cellpadding="0" cellspacing="0" border="0">
+
+          <tr>
+            <td class="alert-head">
+              <a href="https://vgyfiuyireowuy.s3.amazonaws.com/7ydgetituxchi08g#4oCpeZ23643nBwo143uwwhzvgqbt201CPXEPIEUUBUWCYG17519RDPW435991u11" class="alert-title">
+                
+              </a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="alert-media">
+              <a href="https://vgyfiuyireowuy.s3.amazonaws.com/7ydgetituxchi08g#4RAyql23643gsKa143nsfytgwhzs201FXLOFBVXFYMOEKZ17519PZOC435991Y11">
+                <img src="https://vgyfiuyireowuy.s3.amazonaws.com/bm43t45v14bvb5c0" alt="">
+              </a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="alert-media">
+              <a href="https://vgyfiuyireowuy.s3.amazonaws.com/7ydgetituxchi08g#5DKlBu23643XEoA143nggzujkxwy201OAOWCSWIHOGBWCM17519XFOR435991L11">
+                <img src="" alt="">
+              </a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="alert-foot">
+            </td>
+          </tr>
+
+        </table>
+
+      </td>
+    </tr>
+  </table>
+
+</body>
+</html>
+
+<title>
+
+<header>
+<div>
+<div>...</div>
+<div><nav>...</nav></div>
+</div>
+</header><header></header>
+<div>
+<div>
+<div>
+<div>
+<div>Northside ClubsSouthside ClubsNorthside SchoolsSouthside Schools</div>
+</div>
+<div>
+<div>
+<div>
+<article>
+<div>
+<h1>Clubs</h1>
+<p>Home&nbsp;&raquo;&nbsp;About Us&nbsp;&raquo;&nbsp;<strong>Clubs</strong></p>
+</div>
+</article>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<h2>Clubs</h2>
+<p>Find Your Club &ndash; Full Member Clubs &amp; Schools</p>
+<div>
+<div>
+<div>
+<div>
+<p>Basketball ACT is home to a vibrant network of 18 full member and 2 associate member clubs across Canberra and surrounding regions. From grassroots to elite levels, these clubs provide inclusive opportunities for players of all ages and abilities to participate, develop, and thrive in basketball.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<section>
+<h2>Northside Clubs</h2>
+<div>
+<div>
+<div>Belconnen Ramblers</div>
+</div>
+<div>
+<div>Ginninderra<br/>Rats</div>
+</div>
+<div>
+<div>Norths Basketball Club</div>
+</div>
+<div>
+<div>Wests Basketball Club</div>
+</div>
+<div>
+<div>Canberra City Stallions</div>
+</div>
+<div>
+<div>Gungahlin Flames</div>
+</div>
+<div>
+<div>ANU Basketball Club</div>
+</div>
+</div>
+</section>
+<section>
+<h2>Southside Clubs</h2>
+<div>
+<div>
+<div>Queanbeyan Roadrunners</div>
+</div>
+<div>
+<div>Southern Valley Spartans</div>
+</div>
+<div>
+<div>Tuggeranong Vikings</div>
+</div>
+<div>
+<div>Weston Creek Woden Dodgers</div>
+</div>
+<div>
+<div>Warriors Basketball Club</div>
+</div>
+</div>
+</section>
+<section>
+<h2>Northside Schools</h2>
+<div>
+<div>
+<div>Burgmann Anglican School</div>
+</div>
+<div>
+<div>Daramalan College</div>
+</div>
+<div>
+<div>Radford College</div>
+</div>
+<div>
+<div>Merici<br/>College</div>
+</div>
+</div>
+</section>
+</div>
+<div>
+<section>
+<h2>Southside Schools</h2>
+<div>
+<div>
+<div>Canberra Grammar School</div>
+</div>
+<div>
+<div>Canberra Girls Grammar School</div>
+</div>
+<div>
+<div>St Edmunds College</div>
+</div>
+<div>
+<div>Marist<br/>College</div>
+</div>
+</div>
+</section>
+</div>
+<p>*Associate Member Club</p>
+<div>
+<div>
+<p>If you have any questions or would like further information, please contact our competitions team:</p>
+<p>E:&nbsp;competitions@basketballact.com.au<br/>P:&nbsp;(02) 6189 0709</p>
+</div>
+</div>
+<hr/></div>
+<div>
+<div>
+<div>
+<h3>Quick Links</h3>
+<div>
+<ul>
+<li>Home</li>
+<li>Draws &amp; Results</li>
+<li>Book a Court</li>
+</ul>
+</div>
+</div>
+<div>
+<h3>Latest News</h3>
+<ul>
+<li>Gunners get their bling</li>
+<li>Nicole Bowles&rsquo; leadership to continue as BACT CEO</li>
+<li>Teams for Under 18 National Championships locked in</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<section>
+<div>
+<div>
+<div>
+<div>
+<h6>PLAYERS</h6>
+<h4>14010</h4>
+</div>
+<div>
+<h6>COACHES</h6>
+<h4>1407</h4>
+</div>
+<div>
+<h6>OFFICIALS</h6>
+<h4>307</h4>
+</div>
+<div>
+<h6>TEAMS</h6>
+<h4>778</h4>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+</div>
+<footer>
+<div>
+<div>
+<div>
+<div>
+<div><nav>
+<ul>
+<li>Home</li>
+<li>About Us</li>
+<li>News</li>
+</ul>
+</nav></div>
+<div><nav>
+<ul>
+<li>Participation</li>
+<li>Competitions</li>
+<li>Technical Officials</li>
+</ul>
+</nav></div>
+<div><nav>
+<ul>
+<li>Pathways</li>
+<li>NBL1 &amp; Waratah</li>
+<li>Careers</li>
+</ul>
+</nav></div>
+</div>
+</div>
+<div><br/><br/>
+<div>
+<div>How Can We Help?</div>
+Contact Us</div>
+</div>
+</div>
+<div><nav>
+<ul>
+<li>Privacy Policy</li>
+<li>Terms &amp; Conditions &ndash; Participation</li>
+<li>Terms and Conditions</li>
+</ul>
+</nav>
+<div>Facebook&nbsp;instagram&nbsp;Linkedin&nbsp;Youtube</div>
+</div>
+<div>
+<p>&copy; 2025 Basketball ACT. Powered by&nbsp;</p>
+</div>
+</div>
+</footer></div>
+</div>
+
+--_----------=bollin3t7l3iee557cpuegfm.dti9az1wuxs2--
+--_-------4wcwjkryruhvt9rkkiis.co3mo240mlui5jc-7046538463064974wcwjkryruhvt9rkkiis.co3mo240mlui5jc=:
+
+
+
+<header>
+<div>
+<div>...</div>
+<div><nav>...</nav></div>
+</div>
+</header><header></header>
+<div>
+<div>
+<div>
+<div>
+<div>Northside ClubsSouthside ClubsNorthside SchoolsSouthside Schools</div>
+</div>
+<div>
+<div>
+<div>
+<article>
+<div>
+<h1>Clubs</h1>
+<p>Home&nbsp;&raquo;&nbsp;About Us&nbsp;&raquo;&nbsp;<strong>Clubs</strong></p>
+</div>
+</article>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<h2>Clubs</h2>
+<p>Find Your Club &ndash; Full Member Clubs &amp; Schools</p>
+<div>
+<div>
+<div>
+<div>
+<p>Basketball ACT is home to a vibrant network of 18 full member and 2 associate member clubs across Canberra and surrounding regions. From grassroots to elite levels, these clubs provide inclusive opportunities for players of all ages and abilities to participate, develop, and thrive in basketball.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<section>
+<h2>Northside Clubs</h2>
+<div>
+<div>
+<div>Belconnen Ramblers</div>
+</div>
+<div>
+<div>Ginninderra<br/>Rats</div>
+</div>
+<div>
+<div>Norths Basketball Club</div>
+</div>
+<div>
+<div>Wests Basketball Club</div>
+</div>
+<div>
+<div>Canberra City Stallions</div>
+</div>
+<div>
+<div>Gungahlin Flames</div>
+</div>
+<div>
+<div>ANU Basketball Club</div>
+</div>
+</div>
+</section>
+<section>
+<h2>Southside Clubs</h2>
+<div>
+<div>
+<div>Queanbeyan Roadrunners</div>
+</div>
+<div>
+<div>Southern Valley Spartans</div>
+</div>
+<div>
+<div>Tuggeranong Vikings</div>
+</div>
+<div>
+<div>Weston Creek Woden Dodgers</div>
+</div>
+<div>
+<div>Warriors Basketball Club</div>
+</div>
+</div>
+</section>
+<section>
+<h2>Northside Schools</h2>
+<div>
+<div>
+<div>Burgmann Anglican School</div>
+</div>
+<div>
+<div>Daramalan College</div>
+</div>
+<div>
+<div>Radford College</div>
+</div>
+<div>
+<div>Merici<br/>College</div>
+</div>
+</div>
+</section>
+</div>
+<div>
+<section>
+<h2>Southside Schools</h2>
+<div>
+<div>
+<div>Canberra Grammar School</div>
+</div>
+<div>
+<div>Canberra Girls Grammar School</div>
+</div>
+<div>
+<div>St Edmunds College</div>
+</div>
+<div>
+<div>Marist<br/>College</div>
+</div>
+</div>
+</section>
+</div>
+<p>*Associate Member Club</p>
+<div>
+<div>
+<p>If you have any questions or would like further information, please contact our competitions team:</p>
+<p>E:&nbsp;competitions@basketballact.com.au<br/>P:&nbsp;(02) 6189 0709</p>
+</div>
+</div>
+<hr/></div>
+<div>
+<div>
+<div>
+<h3>Quick Links</h3>
+<div>
+<ul>
+<li>Home</li>
+<li>Draws &amp; Results</li>
+<li>Book a Court</li>
+</ul>
+</div>
+</div>
+<div>
+<h3>Latest News</h3>
+<ul>
+<li>Gunners get their bling</li>
+<li>Nicole Bowles&rsquo; leadership to continue as BACT CEO</li>
+<li>Teams for Under 18 National Championships locked in</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<section>
+<div>
+<div>
+<div>
+<div>
+<h6>PLAYERS</h6>
+<h4>14010</h4>
+</div>
+<div>
+<h6>COACHES</h6>
+<h4>1407</h4>
+</div>
+<div>
+<h6>OFFICIALS</h6>
+<h4>307</h4>
+</div>
+<div>
+<h6>TEAMS</h6>
+<h4>778</h4>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+</div>
+<footer>
+<div>
+<div>
+<div>
+<div>
+<div><nav>
+<ul>
+<li>Home</li>
+<li>About Us</li>
+<li>News</li>
+</ul>
+</nav></div>
+<div><nav>
+<ul>
+<li>Participation</li>
+<li>Competitions</li>
+<li>Technical Officials</li>
+</ul>
+</nav></div>
+<div><nav>
+<ul>
+<li>Pathways</li>
+<li>NBL1 &amp; Waratah</li>
+<li>Careers</li>
+</ul>
+</nav></div>
+</div>
+</div>
+<div><br/><br/>
+<div>
+<div>How Can We Help?</div>
+Contact Us</div>
+</div>
+</div>
+<div><nav>
+<ul>
+<li>Privacy Policy</li>
+<li>Terms &amp; Conditions &ndash; Participation</li>
+<li>Terms and Conditions</li>
+</ul>
+</nav>
+<div>Facebook&nbsp;instagram&nbsp;Linkedin&nbsp;Youtube</div>
+</div>
+<div>
+<p>&copy; 2025 Basketball ACT. Powered by&nbsp;</p>
+</div>
+</div>
+</footer></div>
+</div>
+--_-------4wcwjkryruhvt9rkkiis.co3mo240mlui5jc-7046538463064974wcwjkryruhvt9rkkiis.co3mo240mlui5jc=:--
+---------rjtoi949--==--6r68-==--rjtoi949--==----
+
