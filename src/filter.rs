@@ -9005,6 +9005,20 @@ impl FilterEngine {
             }
         }
 
+        // Skip for newsletters sent via known ESPs (Return-Path indicates ESP)
+        let return_path = context
+            .headers
+            .get("return-path")
+            .map(|s| s.to_lowercase())
+            .unwrap_or_default();
+        if return_path.contains("rsgsv.net")
+            || return_path.contains("mcsv.net")
+            || return_path.contains("list-manage.com")
+            || return_path.contains("ccsend.com")
+        {
+            return 0;
+        }
+
         // Extract the registrable domain name (before TLD)
         let name = domain.split('.').next().unwrap_or("");
         if name.len() < 7 {
@@ -9033,7 +9047,17 @@ impl FilterEngine {
             "antique", "craft", "avenue", "lane", "park", "square", "place", "hill", "creek",
             "bridge", "lake", "river", "lander", "bull", "strap",
         ];
-        if common_words.iter().any(|w| name.contains(w)) {
+        if common_words.iter().any(|w| {
+            // Require whole-word match: word must be bounded by start/end or non-alpha char
+            if let Some(pos) = name.find(w) {
+                let before_ok = pos == 0 || !name.as_bytes()[pos - 1].is_ascii_alphabetic();
+                let after_ok = pos + w.len() == name.len()
+                    || !name.as_bytes()[pos + w.len()].is_ascii_alphabetic();
+                before_ok && after_ok
+            } else {
+                false
+            }
+        }) {
             return 0;
         }
 

@@ -789,8 +789,10 @@ impl FeatureExtractor for AuthenticationFeature {
         if should_reduce_bonus {
             // Only apply significant reduction for brand impersonation (not Portuguese content)
             if has_brand_impersonation {
-                // Reduce authentication bonus by 75% when brand impersonation detected
-                score = (score as f32 * 0.25) as i32;
+                // No authentication bonus when brand impersonation detected
+                if score < 0 {
+                    score = 0;
+                }
                 evidence
                     .push("Authentication bonus reduced due to brand impersonation".to_string());
             } else if is_suspicious_domain {

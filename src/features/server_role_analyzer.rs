@@ -26,6 +26,7 @@ impl ServerRoleAnalyzer {
             ".link".to_string(),
             ".space".to_string(),
             ".name".to_string(),
+            ".sbs".to_string(),
         ];
 
         let suspicious_domain_patterns = vec![

@@ -2553,6 +2553,42 @@ impl FeatureExtractor for ContextAnalyzer {
             all_evidence.push("Information harvesting request detected".to_string());
         }
 
+        // Fake security/protection alert detection (tech support scam)
+        let fake_security_patterns = [
+            r"(?i)\b(protection|security).{0,30}(status|update|expired?|lapsed?|inactive)\b",
+            r"(?i)\bdevice.{0,30}(no longer|not).{0,20}(protected|secure|covered)\b",
+            r"(?i)\b(reactivate|renew|restore).{0,30}(protection|coverage|security|subscription)\b",
+        ];
+        let fake_security_hits = fake_security_patterns
+            .iter()
+            .filter(|p| Regex::new(p).unwrap().is_match(&combined_text))
+            .count();
+        if fake_security_hits >= 2 {
+            total_score += 60;
+            all_evidence.push("Fake security/protection alert detected".to_string());
+        } else if fake_security_hits == 1
+            && (subject_lower.contains("protection")
+                || subject_lower.contains("security")
+                || subject_lower.contains("status"))
+        {
+            total_score += 40;
+            all_evidence.push("Fake security/protection alert detected".to_string());
+        }
+
+        // Challenge-response allow-list spam detection
+        if (subject_lower.contains("allow list")
+            || subject_lower.contains("allowlist")
+            || subject_lower.contains("whitelist")
+            || subject_lower.contains("white list"))
+            && (body_lower.contains("allow list")
+                || body_lower.contains("allowlist")
+                || body_lower.contains("whitelist")
+                || body_lower.contains("click") && body_lower.contains("verify"))
+        {
+            total_score += 80;
+            all_evidence.push("Challenge-response allow-list spam detected".to_string());
+        }
+
         // Analyze urgency vs legitimacy with industry awareness
         let (base_urgency_score, mut urgency_evidence) =
             self.analyze_urgency_vs_legitimacy(context);
