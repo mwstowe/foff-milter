@@ -1282,6 +1282,15 @@ impl FeatureExtractor for ContextAnalyzer {
             }
         }
 
+        // Consumer email sending corporate IT/authentication content (reply-bait scam)
+        if is_consumer {
+            let corp_it_pattern = Regex::new(r"(?i)(authentication required|approval to maintain access|verify your identity|account (access|verification|suspended)|password expir|security (update|alert)|ticket.{0,5}[A-Z]{2,5}-\d{4,})").unwrap();
+            if corp_it_pattern.is_match(subject) {
+                total_score += 60;
+                all_evidence.push("Corporate IT impersonation from consumer email".to_string());
+            }
+        }
+
         // Detect number obfuscation (digit/letter-O mixing: "1OO", "5OO", "1O,OOO")
         {
             let re = Regex::new(r"\d[Oo][Oo]|[Oo][Oo]\d|\d[Oo],?[Oo]{2}").unwrap();
@@ -1299,6 +1308,18 @@ impl FeatureExtractor for ContextAnalyzer {
                 total_score += 50;
                 all_evidence
                     .push("Homoglyph evasion in subject (I-for-l substitution)".to_string());
+            }
+            // Also check display name (e.g., "AcETooIs" for "AceTools")
+            let display_name = context
+                .from_header
+                .as_deref()
+                .and_then(|f| f.find('<').map(|i| &f[..i]))
+                .unwrap_or("")
+                .trim();
+            if re.is_match(display_name) {
+                total_score += 50;
+                all_evidence
+                    .push("Homoglyph evasion in display name (I-for-l substitution)".to_string());
             }
         }
 
