@@ -656,6 +656,7 @@ impl FeatureExtractor for BrandImpersonationFeature {
             "blinkcharging.com",
             "oxfordclub.com",
             "bmsend.com",
+            "nextdoor.com",
         ];
         if legitimate_newsletter_esps
             .iter()

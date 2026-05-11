@@ -9053,7 +9053,13 @@ impl FilterEngine {
                 let before_ok = pos == 0 || !name.as_bytes()[pos - 1].is_ascii_alphabetic();
                 let after_ok = pos + w.len() == name.len()
                     || !name.as_bytes()[pos + w.len()].is_ascii_alphabetic();
-                before_ok && after_ok
+                // Don't exempt short words before a hyphen in longer domains
+                // e.g., "blue-cakex" or "green-lighta" are spam patterns
+                let is_short_prefix_before_hyphen = w.len() <= 5
+                    && pos == 0
+                    && pos + w.len() < name.len()
+                    && name.as_bytes()[pos + w.len()] == b'-';
+                before_ok && after_ok && !is_short_prefix_before_hyphen
             } else {
                 false
             }

@@ -2623,6 +2623,56 @@ impl FeatureExtractor for ContextAnalyzer {
             all_evidence.push("Webmail inbox phishing detected".to_string());
         }
 
+        // Points/rewards expiration scam (brand impersonation + urgency)
+        if (subject_lower.contains("points") || subject_lower.contains("reward"))
+            && (subject_lower.contains("expire")
+                || subject_lower.contains("expiring")
+                || subject_lower.contains("last chance"))
+            && !sender_lower.contains("costco")
+            && !sender_lower.contains("starbucks")
+            && !sender_lower.contains("acehardware")
+            && !sender_lower.contains("kroger")
+            && !sender_lower.contains("capitalone")
+        {
+            total_score += 60;
+            all_evidence.push("Points/rewards expiration scam detected".to_string());
+        }
+
+        // Bayesian poisoning detection: promotional/reward subject but body opens
+        // with unrelated personal conversation (filler text to evade filters)
+        let has_reward_subject = subject_lower.contains("reward")
+            || subject_lower.contains("points")
+            || subject_lower.contains("doorbell")
+            || subject_lower.contains("gift")
+            || subject_lower.contains("thanks from")
+            || subject_lower.contains("courtesy of");
+        if has_reward_subject {
+            // Strip HTML tags to get visible text, check first 600 chars
+            let stripped = Regex::new(r"<[^>]+>")
+                .unwrap()
+                .replace_all(&body_lower, " ");
+            let body_start = &stripped[..stripped.len().min(600)];
+            let conversational_openers = [
+                "i meant to reply",
+                "i saw what you meant",
+                "the afternoon got away",
+                "i found the notebook",
+                "i finally tried the shortcut",
+                "yes, saturday works",
+                "i checked the weather",
+            ];
+            if conversational_openers
+                .iter()
+                .any(|p| body_start.contains(p))
+            {
+                total_score += 60;
+                all_evidence.push(
+                    "Bayesian poisoning: reward subject with conversational filler body"
+                        .to_string(),
+                );
+            }
+        }
+
         // Analyze urgency vs legitimacy with industry awareness
         let (base_urgency_score, mut urgency_evidence) =
             self.analyze_urgency_vs_legitimacy(context);

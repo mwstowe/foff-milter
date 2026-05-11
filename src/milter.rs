@@ -629,13 +629,13 @@ impl Milter {
 
                                         // Extract envelope-from from Received header to fix
                                         // sendmail envelope rewriting parity issue
-                                        // Use the LAST envelope-from (most recent = our server's)
+                                        // Use the FIRST envelope-from (most recent = our server's)
                                         if header_key == "received" {
                                             let envelope_addr = mail_ctx
                                                 .headers
                                                 .get("received")
                                                 .and_then(|val| {
-                                                    val.rfind("envelope-from ").map(|start| {
+                                                    val.find("envelope-from ").map(|start| {
                                                         let rest = &val[start + 14..];
                                                         rest.split(')')
                                                             .next()
