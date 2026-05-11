@@ -8026,18 +8026,40 @@ impl FilterEngine {
         let subject = context.subject.as_deref().unwrap_or("");
         let from_header = context.from_header.as_deref().unwrap_or("");
 
-        // Unicode characters commonly used in mailing list spoofing
-        let suspicious_unicode = [
-            'ㆅ', // Hangul letter
-            '✦',  // Star symbol
-            '«',  // Left quotation mark
-            '»',  // Right quotation mark
-            'ɑ',  // Latin small letter alpha
-        ];
-
+        // Check for Mathematical Alphanumeric Symbols (U+1D400-1D7FF) in subject/from
+        // These are used to evade text filters: 𝐑𝐞𝐯𝐢𝐞𝐰, 𝙀𝙭𝙥𝙤𝙨𝙚𝙙, etc.
         for ch in subject.chars().chain(from_header.chars()) {
-            if suspicious_unicode.contains(&ch) {
-                log::debug!("Detected Unicode obfuscation character in headers: {}", ch);
+            let cp = ch as u32;
+            if (0x1D400..=0x1D7FF).contains(&cp) {
+                return true;
+            }
+            // Also check specific suspicious characters
+            if matches!(ch, 'ㆅ' | '✦' | '«' | '»' | 'ɑ') {
+                return true;
+            }
+        }
+
+        // Gibberish .onmicrosoft.com subdomain (abused M365 trial accounts)
+        let sender = context.from_header.as_deref().unwrap_or("").to_lowercase();
+        if sender.contains(".onmicrosoft.com") {
+            if let Some(at_pos) = sender.rfind('@') {
+                let domain = &sender[at_pos + 1..];
+                let sub = domain.split('.').next().unwrap_or("");
+                // Gibberish: 6+ chars, all lowercase alpha, no common words
+                if sub.len() >= 6
+                    && sub.chars().all(|c| c.is_ascii_lowercase())
+                    && !["outlook", "hotmail", "office", "microsoft"]
+                        .iter()
+                        .any(|w| sub.contains(w))
+                {
+                    return true;
+                }
+            }
+        }
+
+        // MAILER-DAEMON Return-Path (no real bounce address)
+        if let Some(rp) = context.headers.get("return-path") {
+            if rp.contains("MAILER-DAEMON") || rp.contains("mailer-daemon") {
                 return true;
             }
         }

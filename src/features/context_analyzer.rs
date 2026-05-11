@@ -2638,6 +2638,21 @@ impl FeatureExtractor for ContextAnalyzer {
             all_evidence.push("Points/rewards expiration scam detected".to_string());
         }
 
+        // Unsolicited voucher/gift offer scam (brand in subject + voucher/gift from unrelated domain)
+        let sender_domain_lower = sender_lower.split('@').nth(1).unwrap_or("");
+        if (subject_lower.contains("voucher")
+            || subject_lower.contains("gift card")
+            || (subject_lower.contains("offers you") && subject_lower.contains("free")))
+            && !sender_domain_lower.contains("costco")
+            && !sender_domain_lower.contains("starbucks")
+            && !sender_domain_lower.contains("cheesecakefactory")
+            && !sender_domain_lower.contains("target")
+            && !sender_domain_lower.contains("amazon")
+        {
+            total_score += 60;
+            all_evidence.push("Unsolicited voucher/gift offer scam detected".to_string());
+        }
+
         // Bayesian poisoning detection: promotional/reward subject but body opens
         // with unrelated personal conversation (filler text to evade filters)
         let has_reward_subject = subject_lower.contains("reward")
