@@ -2610,6 +2610,19 @@ impl FeatureExtractor for ContextAnalyzer {
             all_evidence.push("Challenge-response allow-list spam detected".to_string());
         }
 
+        // Webmail/inbox phishing detection (fake "unread messages" notifications)
+        if (subject_lower.contains("unread message")
+            || subject_lower.contains("messages in your inbox")
+            || subject_lower.contains("messages in your queue")
+            || (subject_lower.contains("action needed") && subject_lower.contains("message")))
+            && (body_lower.contains("release")
+                || body_lower.contains("queue")
+                || body_lower.contains("review them"))
+        {
+            total_score += 80;
+            all_evidence.push("Webmail inbox phishing detected".to_string());
+        }
+
         // Analyze urgency vs legitimacy with industry awareness
         let (base_urgency_score, mut urgency_evidence) =
             self.analyze_urgency_vs_legitimacy(context);
