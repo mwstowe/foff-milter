@@ -430,6 +430,17 @@ impl Milter {
                         match state.lock() {
                             Ok(mut guard) => {
                                 if let Some(mail_ctx) = guard.get_mut(&session_id) {
+                                    // Reset message-specific fields for new message on same connection
+                                    mail_ctx.body = None;
+                                    mail_ctx.raw_body = None;
+                                    mail_ctx.normalized = None;
+                                    mail_ctx.headers.clear();
+                                    mail_ctx.recipients.clear();
+                                    mail_ctx.attachments.clear();
+                                    mail_ctx.extracted_media_text.clear();
+                                    mail_ctx.subject = None;
+                                    mail_ctx.from_header = None;
+
                                     mail_ctx.sender = Some(sender_clean.clone());
                                     mail_ctx.headers.insert(
                                         "return-path".to_string(),
