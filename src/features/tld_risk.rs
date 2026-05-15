@@ -536,6 +536,16 @@ impl TldRiskFeature {
             },
         );
 
+        tlds.insert(
+            "cfd".to_string(),
+            TldInfo {
+                risk_level: TldRisk::Suspicious,
+                abuse_score: 45,
+                description: "CFD domain - heavily abused for spam".to_string(),
+                common_uses: vec!["Cheap domain, heavily abused for product spam".to_string()],
+            },
+        );
+
         let config = TldRiskConfig {
             tlds,
             default_risk: TldRisk::Suspicious, // Unknown TLDs are suspicious by default

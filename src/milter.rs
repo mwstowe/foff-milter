@@ -142,7 +142,20 @@ pub fn decode_mime_header(header_value: &str) -> String {
             result.push_str(before_text);
         }
 
-        if let Some(end) = remaining[start..].find("?=") {
+        // Find the end of the encoded word: skip past =?charset?encoding? then find ?=
+        let after_start = &remaining[start + 2..]; // Skip "=?"
+                                                   // Find the third ? (after charset and encoding)
+        let data_start = after_start
+            .match_indices('?')
+            .nth(1) // Second ? after =? (i.e., the one after encoding)
+            .map(|(i, _)| i + 1);
+        let end = if let Some(ds) = data_start {
+            // Search for ?= only in the data portion
+            after_start[ds..].find("?=").map(|p| p + ds + 2) // +2 for "=?" prefix we skipped
+        } else {
+            None
+        };
+        if let Some(end) = end {
             let encoded_part = &remaining[start..start + end + 2];
 
             // Parse =?charset?encoding?data?=

@@ -400,6 +400,38 @@ impl BrandImpersonationFeature {
 
         legitimate_domains.insert("paypal".to_string(), vec!["paypal.com".to_string()]);
 
+        brand_patterns.insert(
+            "apple".to_string(),
+            vec![
+                r"(?i)\biphone\b".to_string(),
+                r"(?i)\bipad\b".to_string(),
+                r"(?i)\bapple\b".to_string(),
+            ],
+        );
+        legitimate_domains.insert(
+            "apple".to_string(),
+            vec![
+                "apple.com".to_string(),
+                "icloud.com".to_string(),
+                "applecard.apple".to_string(),
+            ],
+        );
+
+        brand_patterns.insert(
+            "cheesecake_factory".to_string(),
+            vec![r"(?i)\bcheesecake\s*(factory|cafe)\b".to_string()],
+        );
+        legitimate_domains.insert(
+            "cheesecake_factory".to_string(),
+            vec!["thecheesecakefactory.com".to_string()],
+        );
+
+        brand_patterns.insert("kobalt".to_string(), vec![r"(?i)\bkobalt\b".to_string()]);
+        legitimate_domains.insert(
+            "kobalt".to_string(),
+            vec!["lowes.com".to_string(), "kobalttools.com".to_string()],
+        );
+
         Self {
             brand_patterns,
             legitimate_domains,
@@ -819,10 +851,55 @@ impl FeatureExtractor for BrandImpersonationFeature {
         };
 
         let has_evasion = !evasion_brands.is_empty();
+
+        // Prefix-match fallback: check if display name or local-part starts with a brand
+        // Catches "LoweMy", "Iphone17", "thecheesecakecafe", etc.
+        let prefix_brands: Vec<String> = if detected_brands.is_empty() && evasion_brands.is_empty()
+        {
+            let display_lower = from_display_name
+                .to_lowercase()
+                .replace([' ', '\'', '-'], "");
+            let local_part = context
+                .from_header
+                .as_deref()
+                .and_then(|f| f.split('<').nth(1))
+                .and_then(|f| f.split('@').next())
+                .unwrap_or("")
+                .to_lowercase();
+
+            let brand_stems: &[(&str, &str)] = &[
+                ("lowe", "lowes"),
+                ("iphone", "apple"),
+                ("ipad", "apple"),
+                ("cheesecake", "cheesecake_factory"),
+                ("kobalt", "kobalt"),
+                ("amazon", "amazon"),
+                ("costco", "costco"),
+                ("walmart", "walmart"),
+                ("netflix", "netflix"),
+                ("fedex", "fedex"),
+                ("starbuck", "starbucks"),
+            ];
+
+            brand_stems
+                .iter()
+                .filter(|(stem, _)| {
+                    display_lower.starts_with(stem)
+                        || local_part.starts_with(stem)
+                        || local_part.contains(stem)
+                })
+                .map(|(_, brand)| brand.to_string())
+                .collect()
+        } else {
+            vec![]
+        };
+
         let all_brands = if has_evasion {
             &evasion_brands
-        } else {
+        } else if !detected_brands.is_empty() {
             &detected_brands
+        } else {
+            &prefix_brands
         };
 
         if let Some(domain) = &sender_domain {

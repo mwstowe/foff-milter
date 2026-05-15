@@ -78,7 +78,8 @@ impl FeatureExtractor for PortugueseLanguageAnalyzer {
             let is_newsletter_esp = return_path.contains("rsgsv.net")
                 || return_path.contains("list-manage.com")
                 || return_path.contains("mailchimp.com")
-                || return_path.contains("ccsend.com");
+                || return_path.contains("ccsend.com")
+                || return_path.contains("14westmail.net");
 
             let is_legitimate_retail = legitimate_retail_domains
                 .iter()

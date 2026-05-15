@@ -2075,6 +2075,21 @@ impl FeatureExtractor for ContextAnalyzer {
             ));
         }
 
+        // Heavy subject-only obfuscation (entire subject in mathematical unicode)
+        // Use raw subject header (MIME-decoded) since context.subject is already normalized
+        let raw_subject_header = context
+            .headers
+            .get("subject")
+            .or_else(|| context.headers.get("Subject"))
+            .cloned()
+            .unwrap_or_default();
+        let decoded_original_subject = crate::milter::decode_mime_header(&raw_subject_header);
+        let (subj_obfuscated, subj_ratio) =
+            self.detect_unicode_obfuscation(&decoded_original_subject);
+        if subj_obfuscated && subj_ratio >= 40.0 {
+            all_evidence.push("Heavy unicode obfuscation in subject line".to_string());
+        }
+
         // Check for HTML entity obfuscation
         let (has_html_obfuscation, html_ratio) = (false, 0.0); // Temporarily disabled
         if has_html_obfuscation {
@@ -2743,9 +2758,20 @@ impl FeatureExtractor for ContextAnalyzer {
                     * craft_discount
                     * card_discount) as i32;
 
+                // Add heavy subject unicode obfuscation bonus (bypasses discounts)
+                let (subj_obfuscated, subj_ratio) =
+                    self.detect_unicode_obfuscation(&decoded_original_subject);
+                let unicode_subject_bonus = if subj_obfuscated && subj_ratio >= 40.0 {
+                    50
+                } else {
+                    0
+                };
+
+                let final_score = base_score + unicode_subject_bonus;
+
                 // Safety check: Don't allow negative scores for emails with authentication failures
                 // and suspicious characteristics (prevents spam from getting negative scores)
-                if base_score < 0 && sender.contains("@") {
+                if final_score < 0 && sender.contains("@") {
                     let has_random_sender = sender.chars().filter(|c| c.is_alphanumeric()).count()
                         > 8
                         && (sender.chars().filter(|c| c.is_alphabetic()).count() as f32
@@ -2755,10 +2781,10 @@ impl FeatureExtractor for ContextAnalyzer {
                     if has_random_sender {
                         0 // Don't allow negative scores for suspicious emails with random senders
                     } else {
-                        base_score
+                        final_score
                     }
                 } else {
-                    base_score
+                    final_score
                 }
             },
             confidence,
