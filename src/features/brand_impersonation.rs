@@ -511,6 +511,7 @@ impl BrandImpersonationFeature {
                 'с' => 'c',
                 'Р' => 'P', // Cyrillic Er
                 'р' => 'p',
+                '0' => 'O', // Zero used as O (e.g., "0maha" for "Omaha")
                 _ => c,
             })
             .collect();
