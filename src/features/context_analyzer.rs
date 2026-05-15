@@ -207,6 +207,8 @@ impl ContextAnalyzer {
             "gardensillustrated.com",
             "swansonsnursery.com",
             "nytimes.com",
+            "discover.com",
+            "discovercard.com",
         ];
 
         // Check if matches service alert pattern
@@ -1563,6 +1565,25 @@ impl FeatureExtractor for ContextAnalyzer {
         {
             total_score += 30;
             all_evidence.push("Gift card scam pattern detected".to_string());
+        }
+
+        // Fake order confirmation from consumer email (gmail/yahoo/hotmail)
+        let consumer_sender = sender_domain.ends_with("gmail.com")
+            || sender_domain.ends_with("yahoo.com")
+            || sender_domain.ends_with("hotmail.com")
+            || sender_domain.ends_with("outlook.com");
+        if consumer_sender
+            && (subject_lower.contains("order")
+                || subject_lower.contains("invoice")
+                || subject_lower.contains("receipt")
+                || subject_lower.contains("payment"))
+        {
+            // Check for random alphanumeric codes in subject (order IDs)
+            let has_random_code = Regex::new(r"[A-Z0-9]{6,}").unwrap().is_match(subject);
+            if has_random_code {
+                total_score += 80;
+                all_evidence.push("Fake order/invoice from consumer email address".to_string());
+            }
         }
 
         // Check for unclaimed funds / asset scam

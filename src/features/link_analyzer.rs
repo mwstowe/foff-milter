@@ -767,6 +767,7 @@ impl LinkAnalyzer {
             "software-newsletter.musvc3.net",
             "sng.link",       // Uber's link shortener
             "rides.sng.link", // Uber rides
+            "awstrack.me",    // AWS SES click tracking
         ];
         if legitimate_esp_domains
             .iter()
