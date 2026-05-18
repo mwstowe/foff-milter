@@ -1595,6 +1595,23 @@ impl FeatureExtractor for ContextAnalyzer {
             all_evidence.push("Unclaimed funds scam pattern detected".to_string());
         }
 
+        // Fake account statement/invoice from non-financial domain
+        if (subject_lower.contains("statement for account")
+            || subject_lower.contains("invoice for account")
+            || subject_lower.contains("statement for acct"))
+            && !sender_domain.contains("bank")
+            && !sender_domain.contains("fidelity")
+            && !sender_domain.contains("schwab")
+            && !sender_domain.contains("chase")
+            && !sender_domain.contains("wells")
+            && !sender_domain.contains("capital")
+            && !sender_domain.contains("discover")
+            && !sender_domain.contains("amex")
+        {
+            total_score += 50;
+            all_evidence.push("Fake account statement from non-financial domain".to_string());
+        }
+
         // Check for unsolicited home repair scam (roofing, etc)
         if (subject_lower.contains("shingle") || subject_lower.contains("roof"))
             && (subject_lower.contains("crack")

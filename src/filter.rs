@@ -729,6 +729,24 @@ impl FilterEngine {
             is_legitimate_domain || is_business_subject
         );
 
+        // Don't grant business status based on subject alone if sender looks suspicious
+        let has_numeric_username = context
+            .from_header
+            .as_deref()
+            .and_then(|f| f.split('@').next())
+            .and_then(|local| local.split('<').next_back())
+            .map(|local| local.chars().filter(|c| c.is_ascii_digit()).count() > 5)
+            .unwrap_or(false);
+        let is_short_random_domain = sender_domain
+            .split('.')
+            .next()
+            .map(|n| n.len() <= 5 && n.chars().any(|c| c.is_ascii_digit()))
+            .unwrap_or(false);
+
+        if has_numeric_username || is_short_random_domain {
+            return is_legitimate_domain; // Only domain list, not subject
+        }
+
         is_legitimate_domain || is_business_subject
     }
 
@@ -2592,10 +2610,20 @@ impl FilterEngine {
 
         // Add media/OCR spam score from image analysis
         if context_with_attachments.media_spam_score > 0 {
-            total_score += context_with_attachments.media_spam_score;
+            let mut image_score = context_with_attachments.media_spam_score;
+            // Boost image spam score when sender domain is suspicious (no DMARC)
+            let has_dmarc = context_with_attachments
+                .headers
+                .get("authentication-results")
+                .map(|a| a.contains("dmarc=pass"))
+                .unwrap_or(false);
+            if !has_dmarc {
+                image_score += 25; // Extra penalty for image spam from unauthenticated sender
+            }
+            total_score += image_score;
             scoring_rules.push(format!(
                 "Image Spam: OCR detected spam content in image (+{})",
-                context_with_attachments.media_spam_score
+                image_score
             ));
         }
 
