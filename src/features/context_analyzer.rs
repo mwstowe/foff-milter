@@ -2465,7 +2465,16 @@ impl FeatureExtractor for ContextAnalyzer {
             r"(?i)\b(you'?ll?\s+receive.*\$\d+.*gift\s*card|win.*\$\d+.*gift\s*card|\$\d+.*gift\s*card.*(participation|survey|review)|explore.*gift\s*card|gift\s*card\s*information|learn.*about.*gift\s*card)\b",
         )
         .unwrap();
-        if gift_card_scam_regex.is_match(&combined_text) {
+        let return_path_lower = context
+            .headers
+            .get("return-path")
+            .map(|s| s.to_lowercase())
+            .unwrap_or_default();
+        let is_known_esp_sender = return_path_lower.contains("hubspot")
+            || return_path_lower.contains("sendgrid")
+            || return_path_lower.contains("mailchimp")
+            || return_path_lower.contains("constantcontact");
+        if gift_card_scam_regex.is_match(&combined_text) && !is_known_esp_sender {
             total_score += 60;
             all_evidence.push("Gift card survey scam pattern detected".to_string());
         }
@@ -2701,6 +2710,8 @@ impl FeatureExtractor for ContextAnalyzer {
             && !sender_domain_lower.contains("cheesecakefactory")
             && !sender_domain_lower.contains("target")
             && !sender_domain_lower.contains("amazon")
+            && !sender_domain_lower.contains("pagliacci")
+            && !is_known_esp_sender
         {
             total_score += 60;
             all_evidence.push("Unsolicited voucher/gift offer scam detected".to_string());

@@ -210,6 +210,7 @@ impl SenderAlignmentAnalyzer {
             "wdc02.mcdlv.net",        // MailChimp WDC02 delivery
             "rsgsv.net",              // Retail Solutions Group ESP
             "hubspotemail.net",       // HubSpot email delivery
+            "hubspotservicehub.com",  // HubSpot Service Hub
             "emailsp.net",            // Email Service Provider
             "musvc.com",              // Marketing/Email service
             // Veterinary/Medical ESP Platforms

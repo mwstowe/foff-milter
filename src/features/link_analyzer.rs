@@ -1097,11 +1097,25 @@ impl FeatureExtractor for LinkAnalyzer {
                             ];
                             spam_words.iter().any(|w| d.contains(w))
                         });
+                        // Also flag when ALL links go to a single unrelated domain
+                        let single_unrelated_domain = if unrelated_links.len() >= 3 {
+                            let first_domain = unrelated_links[0].domain.to_lowercase();
+                            unrelated_links
+                                .iter()
+                                .all(|l| l.domain.to_lowercase() == first_domain)
+                        } else {
+                            false
+                        };
                         if spammy_link_domain {
                             evidence.push(
                                 "Suspicious cross-domain links to spam-like domain".to_string(),
                             );
                             score += 60;
+                        } else if single_unrelated_domain {
+                            evidence.push(
+                                "Suspicious cross-domain links to spam-like domain".to_string(),
+                            );
+                            score += 40;
                         } else {
                             // Check if links use URL shorteners
                             let shortener_domains = [

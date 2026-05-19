@@ -453,6 +453,14 @@ impl Milter {
                                     mail_ctx.extracted_media_text.clear();
                                     mail_ctx.subject = None;
                                     mail_ctx.from_header = None;
+                                    mail_ctx.last_header_name = None;
+                                    mail_ctx.trusted_esp = None;
+                                    mail_ctx.dkim_verification = None;
+                                    mail_ctx.is_legitimate_business = false;
+                                    mail_ctx.forwarding_info = None;
+                                    mail_ctx.forwarding_source = None;
+                                    mail_ctx.proximate_mailer = None;
+                                    mail_ctx.media_spam_score = 0;
 
                                     mail_ctx.sender = Some(sender_clean.clone());
                                     mail_ctx.headers.insert(
@@ -879,6 +887,12 @@ impl Milter {
                         };
 
                         if let Some(mut mail_ctx) = mail_ctx_clone {
+                            // Ensure from_header is consistent with headers map
+                            // (guards against context bleed from previous messages)
+                            if let Some(from_in_headers) = mail_ctx.headers.get("from") {
+                                mail_ctx.from_header = Some(from_in_headers.clone());
+                            }
+
                             // Add legitimate business detection
                             mail_ctx.is_legitimate_business =
                                 is_legitimate_business_sender(&mail_ctx);
@@ -1259,6 +1273,14 @@ impl Milter {
                                         mail_ctx.subject = None;
                                         mail_ctx.sender = None;
                                         mail_ctx.from_header = None;
+                                        mail_ctx.last_header_name = None;
+                                        mail_ctx.trusted_esp = None;
+                                        mail_ctx.dkim_verification = None;
+                                        mail_ctx.is_legitimate_business = false;
+                                        mail_ctx.forwarding_info = None;
+                                        mail_ctx.forwarding_source = None;
+                                        mail_ctx.proximate_mailer = None;
+                                        mail_ctx.media_spam_score = 0;
                                         log::debug!(
                                             "Abort: cleared message data for session {}",
                                             session_id

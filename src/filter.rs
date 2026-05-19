@@ -2399,7 +2399,7 @@ impl FilterEngine {
             .trim_matches('"')
             .to_lowercase();
         let has_via_gibberish = {
-            let re = regex::Regex::new(r"via\s+([a-z]{6,})\s*'?\s*$").unwrap();
+            let re = regex::Regex::new(r"via\s+([a-z0-9]{3,})\s*'?\s*$").unwrap();
             re.captures(&from_display_ml)
                 .map(|c| {
                     let name = &c[1];
