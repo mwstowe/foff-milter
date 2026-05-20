@@ -1586,6 +1586,18 @@ impl FeatureExtractor for ContextAnalyzer {
             }
         }
 
+        // Fake subscription/service confirmation from consumer email
+        if consumer_sender
+            && (subject_lower.contains("subscription confirmation")
+                || subject_lower.contains("subscription renewal")
+                || subject_lower.contains("service confirmation")
+                || (subject_lower.contains("confirmation")
+                    && subject_lower.contains("your service")))
+        {
+            total_score += 60;
+            all_evidence.push("Fake subscription confirmation from consumer email".to_string());
+        }
+
         // Check for unclaimed funds / asset scam
         if subject_lower.contains("asset located")
             || subject_lower.contains("unclaimed")

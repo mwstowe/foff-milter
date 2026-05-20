@@ -4404,6 +4404,14 @@ pub fn builtin_modules() -> Vec<Module> {
                                 Criteria::HeaderPattern { header: "From".to_string(), pattern: "\"[^\"@]+\"\\s*<[^@]+@.*sendgrid\\.(com|net)>".to_string() },
                                 Criteria::HeaderPattern { header: "From".to_string(), pattern: "\"[^\"@]+\"\\s*<[^@]+@.*e\\.williams-sonoma\\.com>".to_string() },
                                 Criteria::HeaderPattern { header: "From".to_string(), pattern: "\"499inks\\.com\"\\s*<[^@]+@499inks\\.com>".to_string() },
+                                Criteria::HeaderPattern { header: "From".to_string(), pattern: "\"[^\"@]+\"\\s*<[^@]+@.*lensdirect\\.(com|net)>".to_string() },
+                                Criteria::FeatureAnalysis {
+                                    feature_name: "Authentication Analysis".to_string(),
+                                    min_score: None,
+                                    max_score: None,
+                                    evidence_pattern: Some("DKIM domain properly aligned".to_string()),
+                                    invert: None,
+                                },
                                 ],
                             }
                             ),
@@ -4596,7 +4604,7 @@ pub fn builtin_modules() -> Vec<Module> {
                             criteria: Box::new(
                             Criteria::Or {
                                 criteria: vec![
-                                Criteria::SenderPattern { pattern: ".*<.*@.*(dominos|doordash|butcherbox|amazon|walmart|target|bestbuy|walgreens|barnesandnoble|torrid|americanmeadows)\\.(com|net|org)>.*|.*@.*(dominos|doordash|butcherbox|amazon|walmart|target|bestbuy|walgreens|barnesandnoble|torrid|americanmeadows)\\.(com|net|org)$".to_string() },
+                                Criteria::SenderPattern { pattern: ".*<.*@.*(dominos|doordash|butcherbox|amazon|walmart|target|bestbuy|walgreens|barnesandnoble|torrid|americanmeadows|lensdirect)\\.(com|net|org)>.*|.*@.*(dominos|doordash|butcherbox|amazon|walmart|target|bestbuy|walgreens|barnesandnoble|torrid|americanmeadows|lensdirect)\\.(com|net|org)$".to_string() },
                                 Criteria::SenderPattern { pattern: ".*<.*@(mail\\.duluthtrading|em\\.michaelscustomframing|dt\\.torrid)\\.(com|net|org)>.*|.*@(mail\\.duluthtrading|em\\.michaelscustomframing|dt\\.torrid)\\.(com|net|org)$".to_string() },
                                 Criteria::SenderPattern { pattern: ".*<.*@.*(charmtracker|acemedseattle|mailerehr\\.charmtracker)\\.(com|net|org)>.*|.*@.*(charmtracker|acemedseattle|mailerehr\\.charmtracker)\\.(com|net|org)$".to_string() },
                                 Criteria::SenderPattern { pattern: ".*<.*@.*(mtasv|batemanhornecenter)\\.(com|net|org)>.*|.*@.*(mtasv|batemanhornecenter)\\.(com|net|org)$".to_string() },
