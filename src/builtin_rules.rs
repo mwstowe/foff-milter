@@ -346,6 +346,23 @@ pub fn builtin_modules() -> Vec<Module> {
                                     },
                                     ],
                                 },
+                                // Block Perfect Auth when TLD is suspicious and no DMARC
+                                Criteria::And {
+                                    criteria: vec![
+                                    Criteria::FeatureAnalysis {
+                                        feature_name: "TLD Risk Assessment".to_string(),
+                                        min_score: None,
+                                        max_score: None,
+                                        evidence_pattern: Some("Suspicious TLD".to_string()),
+                                        invert: None,
+                                    },
+                                    Criteria::Not {
+                                        criteria: Box::new(
+                                        Criteria::HeaderPattern { header: "Authentication-Results".to_string(), pattern: "dmarc=pass".to_string() }
+                                        ),
+                                    },
+                                    ],
+                                },
                                 ],
                             }
                             ),
