@@ -181,6 +181,8 @@ impl SenderAlignmentAnalyzer {
             "mcsv.net",         // MailChimp server domain
             "constantcontact.com",
             "campaignmonitor.com",
+            "cmail19.com", // Campaign Monitor delivery
+            "cmail20.com", // Campaign Monitor delivery
             "aweber.com",
             "getresponse.com",
             "convertkit.com",

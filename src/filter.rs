@@ -9065,6 +9065,8 @@ impl FilterEngine {
             || return_path.contains("mcsv.net")
             || return_path.contains("list-manage.com")
             || return_path.contains("ccsend.com")
+            || return_path.contains("cmail20.com")
+            || return_path.contains("cmail19.com")
         {
             return 0;
         }

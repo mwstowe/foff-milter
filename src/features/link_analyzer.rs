@@ -1100,9 +1100,16 @@ impl FeatureExtractor for LinkAnalyzer {
                         // Also flag when ALL links go to a single unrelated domain
                         let single_unrelated_domain = if unrelated_links.len() >= 3 {
                             let first_domain = unrelated_links[0].domain.to_lowercase();
-                            unrelated_links
-                                .iter()
-                                .all(|l| l.domain.to_lowercase() == first_domain)
+                            let is_esp_tracking = first_domain.contains("list-manage.com")
+                                || first_domain.contains("mailchimp.com")
+                                || first_domain.contains("sendgrid.net")
+                                || first_domain.contains("awstrack.me")
+                                || first_domain.contains("cmail20.com")
+                                || first_domain.contains("constantcontact.com");
+                            !is_esp_tracking
+                                && unrelated_links
+                                    .iter()
+                                    .all(|l| l.domain.to_lowercase() == first_domain)
                         } else {
                             false
                         };

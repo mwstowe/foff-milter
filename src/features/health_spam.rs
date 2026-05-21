@@ -450,6 +450,7 @@ impl FeatureExtractor for HealthSpamAnalyzer {
                 "consumerreports",
                 "ugg.com",
                 "aliexpress",
+                "23andme",
             ];
             let is_legitimate_retailer = legitimate_retailers
                 .iter()

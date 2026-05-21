@@ -141,6 +141,7 @@ impl ServerRoleAnalyzer {
                 "iheart.com",
                 "hubitat.com",
                 "mozilla.org",
+                "23andme.com",
             ];
             for legitimate in &legitimate_domains {
                 if domain_lower.contains(legitimate) {
