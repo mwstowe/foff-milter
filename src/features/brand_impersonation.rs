@@ -353,6 +353,22 @@ impl BrandImpersonationFeature {
         );
 
         brand_patterns.insert(
+            "xfinity".to_string(),
+            vec![
+                r"(?i)\bxfinity\b".to_string(),
+                r"(?i)\bcomcast\b".to_string(),
+            ],
+        );
+        legitimate_domains.insert(
+            "xfinity".to_string(),
+            vec![
+                "xfinity.com".to_string(),
+                "comcast.net".to_string(),
+                "comcast.com".to_string(),
+            ],
+        );
+
+        brand_patterns.insert(
             "costco".to_string(),
             vec![
                 r"(?i)\bcostco\b".to_string(),
@@ -880,6 +896,8 @@ impl FeatureExtractor for BrandImpersonationFeature {
                 ("netflix", "netflix"),
                 ("fedex", "fedex"),
                 ("starbuck", "starbucks"),
+                ("xfinity", "xfinity"),
+                ("comcast", "xfinity"),
             ];
 
             brand_stems
