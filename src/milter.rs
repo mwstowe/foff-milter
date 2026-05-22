@@ -707,6 +707,7 @@ impl Milter {
                                                 "mailgun.org",
                                                 "rsgsv.net",
                                                 "ccsend.com",
+                                                "bloomerang-mail.com",
                                             ];
                                             if esp_domains.iter().any(|esp| rp_value.contains(esp))
                                             {

@@ -225,6 +225,7 @@ pub fn is_from_trusted_esp(context: &MailContext) -> bool {
                 "postmarkapp.com",
                 "klaviyodns.com",
                 "klaviyomail.com",
+                "bloomerang-mail.com",
             ];
 
             for esp in &trusted_esps {

@@ -1700,6 +1700,7 @@ impl FeatureExtractor for SenderAlignmentAnalyzer {
                         || reply_to_domain.contains("rsgsv.net")
                         || reply_to_domain.contains("sendgrid.net")
                         || reply_to_domain.contains("ccsend.com")
+                        || from_domain.contains("bloomerang-mail.com")
                         // Medical billing services
                         || (from_domain.contains("docugateway.com") && reply_to_domain.ends_with(".org"))
                         || (from_root.contains("virginiamason") && reply_to_root.contains("virginiamason"))

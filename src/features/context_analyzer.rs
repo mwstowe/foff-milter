@@ -1954,6 +1954,36 @@ impl FeatureExtractor for ContextAnalyzer {
             }
         }
 
+        // Japanese account restriction/verification phishing from non-Japanese domains
+        let jp_account_keywords = [
+            "制限",
+            "認証",
+            "確認",
+            "解除",
+            "停止",
+            "凍結",
+            "本人確認",
+            "利用制限",
+        ];
+        if jp_account_keywords.iter().any(|kw| jp_text.contains(kw)) {
+            let sender_domain = sender
+                .split('@')
+                .nth(1)
+                .unwrap_or("")
+                .trim_end_matches('>')
+                .to_lowercase();
+            if !sender_domain.ends_with(".jp")
+                && !sender_domain.contains("amazon")
+                && !sender_domain.contains("rakuten")
+                && !sender_domain.contains("apple")
+            {
+                total_score += 80;
+                all_evidence.push(
+                    "Japanese account restriction phishing from non-Japanese domain".to_string(),
+                );
+            }
+        }
+
         // Detect industry context for appropriate scoring adjustments
         let combined_content = format!("{} {}", subject, body);
         let industry_context = self.detect_industry_context(sender, &combined_content, subject);
