@@ -14,12 +14,15 @@ StandardOutput=journal
 StandardError=journal
 SyslogIdentifier=foff-milter
 
-[Install]
-WantedBy=multi-user.target
 PrivateTmp=true
 ProtectSystem=strict
 ProtectHome=true
 ReadWritePaths=/var/lib/foff-milter /var/run/foff-milter
+
+# Might be needed for postfix milter
+# User=root
+# Group=postfix
+# UMask=0007
 
 [Install]
 WantedBy=multi-user.target
