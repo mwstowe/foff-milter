@@ -834,6 +834,7 @@ pub fn builtin_modules() -> Vec<Module> {
                                 Criteria::SenderPattern { pattern: ".*@.*(sparkpostmail|sendgrid|mailchimp|mailchimpapp|amazonses|constantcontact|mailgun|facebookmail|zoomcare|pb-dynmktg|pardot|marketo|eloqua|hubspot|campaignmonitor)\\.(com|net)$".to_string() },
                                 Criteria::SenderPattern { pattern: ".*paypal.{0,100}adobe.*".to_string() },
                                 Criteria::SenderPattern { pattern: ".*@.*iheart\\.(com|net)$".to_string() },
+                                Criteria::SenderPattern { pattern: ".*@.*(westinghouse|wpowereq)\\.(com|net)$".to_string() },
                                 ],
                             }
                             ),

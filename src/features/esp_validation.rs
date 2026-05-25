@@ -279,6 +279,27 @@ pub fn is_from_trusted_esp(context: &MailContext) -> bool {
         }
     }
 
+    // Check Received headers for ESP infrastructure indicators
+    for (_, v) in context
+        .headers
+        .iter()
+        .filter(|(k, _)| k.starts_with("received"))
+    {
+        let v_lower = v.to_lowercase();
+        if v_lower.contains("(sg)") || v_lower.contains("sendgrid.net") {
+            return true;
+        }
+        if v_lower.contains("mandrillapp.com") || v_lower.contains("mailchimp") {
+            return true;
+        }
+        if v_lower.contains("sparkpostmail.com") || v_lower.contains("sparkpost") {
+            return true;
+        }
+        if v_lower.contains("amazonses.com") {
+            return true;
+        }
+    }
+
     false
 }
 
@@ -546,7 +567,27 @@ impl FeatureExtractor for EspValidationFeature {
             .and_then(|f| self.analyzer.extract_domain(f))
             .filter(|d| self.analyzer.is_esp_domain(d));
 
-        // Use whichever domain is an ESP (priority: envelope > return-path > DKIM > From)
+        // Check Received headers for ESP infrastructure (e.g., "(SG)" for SendGrid)
+        let received_esp_domain = context
+            .headers
+            .iter()
+            .filter(|(k, _)| k.starts_with("received"))
+            .find_map(|(_, v)| {
+                let v_lower = v.to_lowercase();
+                if v_lower.contains("(sg)") || v_lower.contains("sendgrid.net") {
+                    Some("sendgrid.net".to_string())
+                } else if v_lower.contains("sparkpostmail.com") {
+                    Some("sparkpostmail.com".to_string())
+                } else if v_lower.contains("amazonses.com") {
+                    Some("amazonses.com".to_string())
+                } else if v_lower.contains("mandrillapp.com") {
+                    Some("mandrillapp.com".to_string())
+                } else {
+                    None
+                }
+            });
+
+        // Use whichever domain is an ESP (priority: envelope > return-path > DKIM > From > Received)
         let sender_domain = if let Some(ref domain) = sender_domain {
             if self.analyzer.is_esp_domain(domain) {
                 domain.clone()
@@ -584,6 +625,8 @@ impl FeatureExtractor for EspValidationFeature {
                     }
                     if let Some(ref from_domain) = from_esp_domain {
                         from_domain.clone()
+                    } else if let Some(ref recv_domain) = received_esp_domain {
+                        recv_domain.clone()
                     } else {
                         return FeatureScore {
                             feature_name: "ESP Validation".to_string(),
@@ -600,6 +643,8 @@ impl FeatureExtractor for EspValidationFeature {
                 dkim_domain.clone()
             } else if let Some(ref from_domain) = from_esp_domain {
                 from_domain.clone()
+            } else if let Some(ref recv_domain) = received_esp_domain {
+                recv_domain.clone()
             } else {
                 return FeatureScore {
                     feature_name: "ESP Validation".to_string(),
@@ -643,6 +688,8 @@ impl FeatureExtractor for EspValidationFeature {
                 }
                 if let Some(ref from_domain) = from_esp_domain {
                     from_domain.clone()
+                } else if let Some(ref recv_domain) = received_esp_domain {
+                    recv_domain.clone()
                 } else {
                     return FeatureScore {
                         feature_name: "ESP Validation".to_string(),
@@ -655,6 +702,8 @@ impl FeatureExtractor for EspValidationFeature {
             }
         } else if let Some(ref from_domain) = from_esp_domain {
             from_domain.clone()
+        } else if let Some(ref recv_domain) = received_esp_domain {
+            recv_domain.clone()
         } else {
             return FeatureScore {
                 feature_name: "ESP Validation".to_string(),

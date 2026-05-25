@@ -1,5 +1,6 @@
 use crate::features::{FeatureExtractor, FeatureScore};
 use crate::MailContext;
+use regex::Regex;
 
 pub struct HealthSpamAnalyzer;
 
@@ -215,7 +216,15 @@ impl FeatureExtractor for HealthSpamAnalyzer {
         ];
 
         for brand in &hotel_brands {
-            if content.contains(brand) {
+            // Use word boundary check to avoid substring matches (e.g., "westin" in "westinghouse")
+            let brand_match = if brand.contains(' ') {
+                content.contains(brand)
+            } else {
+                Regex::new(&format!(r"(?i)\b{}\b", regex::escape(brand)))
+                    .map(|re| re.is_match(&content))
+                    .unwrap_or(false)
+            };
+            if brand_match {
                 let sender_domain_clean = sender_domain.replace(".", "").replace("-", "");
                 let brand_clean = brand.replace(" ", "").replace(".", "").replace("-", "");
 
