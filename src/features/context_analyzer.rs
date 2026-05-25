@@ -2772,7 +2772,12 @@ impl FeatureExtractor for ContextAnalyzer {
             let stripped = Regex::new(r"<[^>]+>")
                 .unwrap()
                 .replace_all(&body_lower, " ");
-            let body_start = &stripped[..stripped.len().min(600)];
+            let body_start = &stripped[..stripped
+                .char_indices()
+                .take_while(|(i, _)| *i < 600)
+                .last()
+                .map(|(i, c)| i + c.len_utf8())
+                .unwrap_or(stripped.len().min(600))];
             let conversational_openers = [
                 "i meant to reply",
                 "i saw what you meant",

@@ -260,6 +260,25 @@ pub fn is_from_trusted_esp(context: &MailContext) -> bool {
         }
     }
 
+    // Also check From header domain (critical for milter parity when envelope is rewritten)
+    if let Some(from) = &context.from_header {
+        if let Some(domain) = from.split('@').nth(1) {
+            let domain_lower = domain.trim_end_matches('>').to_lowercase();
+            let trusted_esps = [
+                "sendgrid.net",
+                "sparkpostmail.com",
+                "mailchimp.com",
+                "klaviyomail.com",
+                "bloomerang-mail.com",
+            ];
+            for esp in &trusted_esps {
+                if domain_lower.contains(esp) {
+                    return true;
+                }
+            }
+        }
+    }
+
     false
 }
 
@@ -520,7 +539,14 @@ impl FeatureExtractor for EspValidationFeature {
             None
         };
 
-        // Use whichever domain is an ESP (priority: envelope > return-path > DKIM signature)
+        // Also check From header domain for ESP (critical for milter parity)
+        let from_esp_domain = context
+            .from_header
+            .as_deref()
+            .and_then(|f| self.analyzer.extract_domain(f))
+            .filter(|d| self.analyzer.is_esp_domain(d));
+
+        // Use whichever domain is an ESP (priority: envelope > return-path > DKIM > From)
         let sender_domain = if let Some(ref domain) = sender_domain {
             if self.analyzer.is_esp_domain(domain) {
                 domain.clone()
@@ -556,16 +582,24 @@ impl FeatureExtractor for EspValidationFeature {
                             };
                         }
                     }
-                    return FeatureScore {
-                        feature_name: "ESP Validation".to_string(),
-                        score: 0,
-                        confidence: 0.0,
-                        evidence: vec!["No ESP domain found in envelope or Return-Path".to_string()],
-                        tags: vec![],
-                    };
+                    if let Some(ref from_domain) = from_esp_domain {
+                        from_domain.clone()
+                    } else {
+                        return FeatureScore {
+                            feature_name: "ESP Validation".to_string(),
+                            score: 0,
+                            confidence: 0.0,
+                            evidence: vec![
+                                "No ESP domain found in envelope or Return-Path".to_string()
+                            ],
+                            tags: vec![],
+                        };
+                    }
                 }
             } else if let Some(ref dkim_domain) = dkim_esp_domain {
                 dkim_domain.clone()
+            } else if let Some(ref from_domain) = from_esp_domain {
+                from_domain.clone()
             } else {
                 return FeatureScore {
                     feature_name: "ESP Validation".to_string(),
@@ -607,14 +641,20 @@ impl FeatureExtractor for EspValidationFeature {
                         };
                     }
                 }
-                return FeatureScore {
-                    feature_name: "ESP Validation".to_string(),
-                    score: 0,
-                    confidence: 0.0,
-                    evidence: vec!["No ESP domain found".to_string()],
-                    tags: vec![],
-                };
+                if let Some(ref from_domain) = from_esp_domain {
+                    from_domain.clone()
+                } else {
+                    return FeatureScore {
+                        feature_name: "ESP Validation".to_string(),
+                        score: 0,
+                        confidence: 0.0,
+                        evidence: vec!["No ESP domain found".to_string()],
+                        tags: vec![],
+                    };
+                }
             }
+        } else if let Some(ref from_domain) = from_esp_domain {
+            from_domain.clone()
         } else {
             return FeatureScore {
                 feature_name: "ESP Validation".to_string(),
