@@ -1,4 +1,4 @@
-# FOFF Milter v0.9.18
+# FOFF Milter v0.9.19
 
 A comprehensive, enterprise-grade email security platform written in Rust featuring intelligent threat detection, modular rulesets, and zero-configuration deployment.
 

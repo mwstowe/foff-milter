@@ -642,6 +642,36 @@ impl Milter {
                                                     .headers
                                                     .insert(header_key.clone(), value_str);
                                             }
+                                        } else if header_key == "return-path" {
+                                            // Never concatenate Return-Path — only override if ESP domain detected
+                                            let esp_domains = [
+                                                "sendgrid.net",
+                                                "amazonses.com",
+                                                "sparkpostmail.com",
+                                                "mandrillapp.com",
+                                                "mailgun.org",
+                                                "rsgsv.net",
+                                                "ccsend.com",
+                                                "bloomerang-mail.com",
+                                            ];
+                                            if esp_domains.iter().any(|esp| value_str.contains(esp))
+                                            {
+                                                let addr = value_str
+                                                    .trim_matches(['<', '>', ' '])
+                                                    .to_string();
+                                                if addr.contains('@') {
+                                                    mail_ctx.sender = Some(addr.clone());
+                                                    mail_ctx.headers.insert(
+                                                        "return-path".to_string(),
+                                                        format!("<{}>", addr),
+                                                    );
+                                                    log::info!(
+                                                        "MILTER: Updated sender from Return-Path header (ESP): {}",
+                                                        addr
+                                                    );
+                                                }
+                                            }
+                                            // Otherwise ignore — keep MAIL FROM value
                                         } else {
                                             // For other headers, concatenate with existing value (match test mode behavior)
                                             if let Some(existing_value) =
@@ -688,47 +718,6 @@ impl Milter {
                                                     "MILTER: Updated sender from envelope-from: {}",
                                                     addr
                                                 );
-                                            }
-                                        }
-
-                                        // If a Return-Path header arrives in the message with an
-                                        // ESP domain, use it (upstream MTA preserved original sender)
-                                        if header_key == "return-path" {
-                                            let rp_value = mail_ctx
-                                                .headers
-                                                .get("return-path")
-                                                .cloned()
-                                                .unwrap_or_default();
-                                            let esp_domains = [
-                                                "sendgrid.net",
-                                                "amazonses.com",
-                                                "sparkpostmail.com",
-                                                "mandrillapp.com",
-                                                "mailgun.org",
-                                                "rsgsv.net",
-                                                "ccsend.com",
-                                                "bloomerang-mail.com",
-                                            ];
-                                            if esp_domains.iter().any(|esp| rp_value.contains(esp))
-                                            {
-                                                let addr = rp_value
-                                                    .trim_matches(['<', '>', ' '])
-                                                    .split_whitespace()
-                                                    .last()
-                                                    .unwrap_or("")
-                                                    .trim_matches(['<', '>'])
-                                                    .to_string();
-                                                if addr.contains('@') {
-                                                    mail_ctx.sender = Some(addr.clone());
-                                                    mail_ctx.headers.insert(
-                                                        "return-path".to_string(),
-                                                        format!("<{}>", addr),
-                                                    );
-                                                    log::info!(
-                                                        "MILTER: Updated sender from Return-Path header (ESP): {}",
-                                                        addr
-                                                    );
-                                                }
                                             }
                                         }
 

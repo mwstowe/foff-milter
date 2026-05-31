@@ -260,6 +260,16 @@ impl TldRiskFeature {
             },
         );
 
+        tlds.insert(
+            "apple".to_string(),
+            TldInfo {
+                risk_level: TldRisk::Trusted,
+                abuse_score: -10,
+                description: "Apple Inc. brand TLD".to_string(),
+                common_uses: vec!["Apple Inc. services".to_string()],
+            },
+        );
+
         // Standard TLDs
         tlds.insert(
             "com".to_string(),
