@@ -9356,6 +9356,9 @@ impl FilterEngine {
                     "juliett.baddomain.com",
                     "localhost",
                     "127.0.0.1",
+                    "[10.",
+                    "[192.168.",
+                    "[172.16.",
                 ];
                 // Find the LAST "from" in Received (original source)
                 if let Some(last_from) = received.rfind("from ") {
@@ -9364,7 +9367,10 @@ impl FilterEngine {
                         .split(|c: char| c.is_whitespace() || c == '(')
                         .next()
                         .unwrap_or("");
-                    let is_trusted = trusted_hosts.iter().any(|h| connecting_host.contains(h));
+                    // Check for authenticated submission (ESMTPSA)
+                    let is_authenticated = received.contains("esmtpsa");
+                    let is_trusted = trusted_hosts.iter().any(|h| connecting_host.contains(h))
+                        || is_authenticated;
                     if !is_trusted {
                         log::warn!(
                             "Same-server email REJECTED: external host '{}' spoofing {}",
