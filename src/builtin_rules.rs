@@ -363,6 +363,14 @@ pub fn builtin_modules() -> Vec<Module> {
                                     },
                                     ],
                                 },
+                                // Block Perfect Auth when subject has heavy unicode obfuscation (always spam)
+                                Criteria::FeatureAnalysis {
+                                    feature_name: "Context Analysis".to_string(),
+                                    min_score: None,
+                                    max_score: None,
+                                    evidence_pattern: Some("Heavy unicode obfuscation in subject line".to_string()),
+                                    invert: None,
+                                },
                                 ],
                             }
                             ),
