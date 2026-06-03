@@ -2736,11 +2736,11 @@ impl FeatureExtractor for ContextAnalyzer {
                 || subject_lower.contains("end tonight")
                 || subject_lower.contains("ends tomorrow")
                 || subject_lower.contains("ends tonight"))
-            && !sender_lower.contains("costco")
-            && !sender_lower.contains("starbucks")
-            && !sender_lower.contains("acehardware")
-            && !sender_lower.contains("kroger")
-            && !sender_lower.contains("capitalone")
+            && !sender_domain.contains("costco")
+            && !sender_domain.contains("starbucks")
+            && !sender_domain.contains("acehardware")
+            && !sender_domain.contains("kroger")
+            && !sender_domain.contains("capitalone")
         {
             total_score += 60;
             all_evidence.push("Points/rewards expiration scam detected".to_string());
