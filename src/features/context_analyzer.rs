@@ -333,6 +333,7 @@ impl ContextAnalyzer {
             || sender.to_lowercase().contains("batemanhornecenter")
             || sender.to_lowercase().contains("livenation")
             || sender.to_lowercase().contains("silhouetteamerica")
+            || sender.to_lowercase().contains("arrived.com")
             || text.to_lowercase().contains("in-store")
             || text.to_lowercase().contains("save big");
 
@@ -690,6 +691,16 @@ impl ContextAnalyzer {
         let subject = context.subject.as_deref().unwrap_or("");
         let body = context.body.as_deref().unwrap_or("");
         let from_header = context.from_header.as_deref().unwrap_or("");
+
+        // Skip for legitimate investment/financial platforms
+        let from_lower = from_header.to_lowercase();
+        if from_lower.contains("arrived.com")
+            || from_lower.contains("fidelity.com")
+            || from_lower.contains("schwab.com")
+            || from_lower.contains("vanguard.com")
+        {
+            return issues;
+        }
 
         // Wire transfer fraud indicators - more specific patterns
         let wire_transfer_patterns = [
@@ -2683,10 +2694,15 @@ impl FeatureExtractor for ContextAnalyzer {
             r"(?i)\b(protection|security).{0,30}(status|update|expired?|lapsed?|inactive)\b",
             r"(?i)\bdevice.{0,30}(no longer|not).{0,20}(protected|secure|covered)\b",
             r"(?i)\b(reactivate|renew|restore).{0,30}(protection|coverage|security|subscription)\b",
+            r"(?i)\bservice.{0,20}(expir|cancel|terminat|suspend)",
         ];
         let fake_security_hits = fake_security_patterns
             .iter()
-            .filter(|p| Regex::new(p).unwrap().is_match(&combined_text))
+            .filter(|p| {
+                Regex::new(p)
+                    .unwrap()
+                    .is_match(&format!("{} {}", subject_lower, body_lower))
+            })
             .count();
         if fake_security_hits >= 2 {
             total_score += 60;
@@ -2694,7 +2710,9 @@ impl FeatureExtractor for ContextAnalyzer {
         } else if fake_security_hits == 1
             && (subject_lower.contains("protection")
                 || subject_lower.contains("security")
-                || subject_lower.contains("status"))
+                || subject_lower.contains("status")
+                || subject_lower.contains("expiration")
+                || subject_lower.contains("expired"))
         {
             total_score += 40;
             all_evidence.push("Fake security/protection alert detected".to_string());
