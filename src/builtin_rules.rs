@@ -3913,6 +3913,13 @@ pub fn builtin_modules() -> Vec<Module> {
                                     evidence_pattern: Some("Suspicious domain pattern detected".to_string()),
                                     invert: None,
                                 },
+                                Criteria::FeatureAnalysis {
+                                    feature_name: "Brand Impersonation".to_string(),
+                                    min_score: None,
+                                    max_score: None,
+                                    evidence_pattern: Some("Brand impersonation".to_string()),
+                                    invert: None,
+                                },
                                 ],
                             }
                             ),

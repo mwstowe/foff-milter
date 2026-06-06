@@ -221,6 +221,12 @@ impl BrandImpersonationFeature {
         legitimate_domains.insert("home_depot".to_string(), vec!["homedepot.com".to_string()]);
 
         brand_patterns.insert(
+            "bestbuy".to_string(),
+            vec![r"(?i)\bbest\s*buy\b".to_string()],
+        );
+        legitimate_domains.insert("bestbuy".to_string(), vec!["bestbuy.com".to_string()]);
+
+        brand_patterns.insert(
             "lowes".to_string(),
             vec![
                 r"(?i)\blowe'?s\b".to_string(), // Match "lowes" or "lowe's"
@@ -896,6 +902,7 @@ impl FeatureExtractor for BrandImpersonationFeature {
                 ("netflix", "netflix"),
                 ("fedex", "fedex"),
                 ("starbuck", "starbucks"),
+                ("bestbuy", "bestbuy"),
                 ("xfinity", "xfinity"),
                 ("comcast", "xfinity"),
             ];
@@ -905,7 +912,7 @@ impl FeatureExtractor for BrandImpersonationFeature {
                 .filter(|(stem, _)| {
                     display_lower.starts_with(stem)
                         || local_part.starts_with(stem)
-                        || local_part.contains(stem)
+                        || (stem.len() >= 6 && local_part.contains(stem))
                 })
                 .map(|(_, brand)| brand.to_string())
                 .collect()
