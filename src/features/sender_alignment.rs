@@ -1720,7 +1720,9 @@ impl FeatureExtractor for SenderAlignmentAnalyzer {
                                 || from_base == reply_base)
                         }
                         // Financial institutions with multiple domains
-                        || (from_root.contains("discover") && reply_to_root.contains("discover"));
+                        || (from_root.contains("discover") && reply_to_root.contains("discover"))
+                        // Synchrony uses multiple domains (synchronybank, synchronyfinancial, syf)
+                        || (from_root.contains("synchrony") && reply_to_root.contains("synchrony"));
 
                     // Check for email address mismatch
                     if from_email != reply_to_email {

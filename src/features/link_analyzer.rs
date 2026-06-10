@@ -358,6 +358,8 @@ impl LinkAnalyzer {
             "ngpvan.com",      // Political fundraising
             "everyaction.com", // Political fundraising
             "actblue.com",     // Political fundraising
+            "syf.com",         // Synchrony Financial
+            "synchrony.com",   // Synchrony Financial
         ];
 
         for processor in &payment_processors {
