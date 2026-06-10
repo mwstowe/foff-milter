@@ -208,6 +208,8 @@ impl SenderAlignmentAnalyzer {
             "gmail.com",              // For forwarded emails
             "emails.pitneybowes.com", // Pitney Bowes email service
             "mail.arrived.com",       // Arrived email service
+            "sailthru.com",           // Sailthru ESP (used by Square Enix, etc.)
+            "icontactmail4.com",      // iContact ESP
             "mcdlv.net",              // MailChimp delivery network
             "wdc02.mcdlv.net",        // MailChimp WDC02 delivery
             "rsgsv.net",              // Retail Solutions Group ESP
