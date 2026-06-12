@@ -522,6 +522,7 @@ impl FeatureExtractor for HealthSpamAnalyzer {
             "sciatica",
             "pain",
             "nerve",
+            "neuropathy",
             "arthritis",
             "diabetes",
             "vitamin",
@@ -534,6 +535,11 @@ impl FeatureExtractor for HealthSpamAnalyzer {
             "testosterone",
             "libido",
             "erectile",
+            "vitality",
+            "prostate",
+            "tinnitus",
+            "blood sugar",
+            "weight loss",
         ];
         if health_display_keywords
             .iter()
