@@ -1253,6 +1253,26 @@ impl FeatureExtractor for ContextAnalyzer {
             .trim_end_matches('>')
             .to_lowercase();
 
+        // Detect MAILER-DAEMON Return-Path with non-bounce content (spoofed)
+        let return_path = context
+            .headers
+            .get("return-path")
+            .map(|s| s.to_lowercase())
+            .unwrap_or_default();
+        if return_path.contains("mailer-daemon") {
+            let subj_low = subject.to_lowercase();
+            let is_bounce = subj_low.contains("undeliverable")
+                || subj_low.contains("delivery")
+                || subj_low.contains("failure")
+                || subj_low.contains("returned mail")
+                || subj_low.contains("bounce");
+
+            if !is_bounce {
+                total_score += 50;
+                all_evidence.push("MAILER-DAEMON Return-Path with non-bounce content".to_string());
+            }
+        }
+
         // Detect undisclosed-recipients from consumer email (BCC mass mailing)
         let consumer_domains = [
             "hotmail.com",
@@ -2623,6 +2643,36 @@ impl FeatureExtractor for ContextAnalyzer {
         {
             total_score += 40;
             all_evidence.push("Health spam from non-health domain".to_string());
+        }
+
+        // Government agency display name impersonation from non-.gov domains
+        let from_display = context
+            .from_header
+            .as_deref()
+            .and_then(|f| f.find('<').map(|i| f[..i].trim().to_lowercase()))
+            .unwrap_or_default();
+        let gov_agency_names = [
+            "social security",
+            "ssa",
+            "internal revenue",
+            "irs",
+            "medicare",
+            "medicaid",
+            "homeland security",
+            "fbi",
+            "department of",
+            "us customs",
+        ];
+        if gov_agency_names
+            .iter()
+            .any(|name| from_display.contains(name))
+            && !sender_domain.ends_with(".gov")
+            && !sender_domain.contains("ssa.gov")
+        {
+            total_score += 80;
+            all_evidence.push(
+                "Government agency impersonation in display name from non-.gov domain".to_string(),
+            );
         }
 
         // Authority impersonation detection (improved to avoid false positives from domain names)
