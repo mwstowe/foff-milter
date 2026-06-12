@@ -1288,14 +1288,14 @@ async fn main() {
     let matches = Command::new("foff-milter")
         .version(env!("CARGO_PKG_VERSION"))
         .about("Enterprise-grade email security platform with modular threat detection")
-        .long_about(
-            "FOFF Milter v0.5.0 - A comprehensive email security solution featuring:\n\
-                    • 14 specialized detection modules for superior threat coverage\n\
-                    • Machine learning integration with adaptive intelligence\n\
+        .long_about(format!(
+            "FOFF Milter v{} - A comprehensive email security solution featuring:\n\
+                    • Specialized detection modules for superior threat coverage\n\
                     • Advanced security scanning with deep inspection capabilities\n\
                     • Enterprise analytics and real-time monitoring\n\
                     • Backward compatibility with heuristic rule-based configurations",
-        )
+            env!("CARGO_PKG_VERSION")
+        ))
         .arg(
             Arg::new("config")
                 .short('c')
