@@ -589,6 +589,18 @@ impl BrandImpersonationFeature {
             return true;
         }
 
+        // Legal/claims administration domains legitimately reference brands (lawsuits, settlements)
+        let legal_admin_domains = [
+            "ksadministration.com",
+            "settlementadmin.com",
+            "classaction.org",
+            "kfrnotice.com",
+            "gilardi.com",
+        ];
+        if legal_admin_domains.iter().any(|d| domain.contains(d)) {
+            return true;
+        }
+
         // Check for Adobe Campaign CNAME domains (brand.com.cname.cjm.adobe.com)
         if domain.contains(".cname.cjm.adobe.com") || domain.contains(".campaign.adobe.com") {
             // Extract the brand part before .cname
