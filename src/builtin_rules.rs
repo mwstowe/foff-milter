@@ -850,7 +850,7 @@ pub fn builtin_modules() -> Vec<Module> {
                                 Criteria::SenderPattern { pattern: ".*@.*(sparkpostmail|sendgrid|mailchimp|mailchimpapp|amazonses|constantcontact|mailgun|facebookmail|zoomcare|pb-dynmktg|pardot|marketo|eloqua|hubspot|campaignmonitor)\\.(com|net)$".to_string() },
                                 Criteria::SenderPattern { pattern: ".*paypal.{0,100}adobe.*".to_string() },
                                 Criteria::SenderPattern { pattern: ".*@.*iheart\\.(com|net)$".to_string() },
-                                Criteria::SenderPattern { pattern: ".*@.*(westinghouse|wpowereq)\\.(com|net)$".to_string() },
+                                Criteria::SenderPattern { pattern: ".*@.*(westinghouse|wpowereq|cryochoice|oracleemaildelivery)\\.(com|net)$".to_string() },
                                 ],
                             }
                             ),
@@ -1644,7 +1644,7 @@ pub fn builtin_modules() -> Vec<Module> {
                         Criteria::BodyPattern { pattern: "(?i).{0,100}(\\d+\\.\\d+%|\\d+%|\\$\\d+|\\d+.*USD).*".to_string() },
                         Criteria::Not {
                             criteria: Box::new(
-                            Criteria::SenderPattern { pattern: ".*@.*(oxford|nytimes|washingtonpost|cnn|bbc|reuters|ap|wsj|usatoday|ugg|torrid)\\.(com|org)$".to_string() }
+                            Criteria::SenderPattern { pattern: ".*@.*(oxford|nytimes|washingtonpost|cnn|bbc|reuters|ap|wsj|usatoday|ugg|torrid|miniusa|dataclover)\\.(com|org)$".to_string() }
                             ),
                         },
                         ],

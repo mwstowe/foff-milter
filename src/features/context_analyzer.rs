@@ -2799,6 +2799,7 @@ impl FeatureExtractor for ContextAnalyzer {
         if (subject_lower.contains("points") || subject_lower.contains("reward"))
             && (subject_lower.contains("expire")
                 || subject_lower.contains("expiring")
+                || subject_lower.contains("expiration")
                 || subject_lower.contains("last chance")
                 || subject_lower.contains("end tomorrow")
                 || subject_lower.contains("end tonight")
