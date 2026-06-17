@@ -1172,6 +1172,24 @@ impl FeatureExtractor for LinkAnalyzer {
             }
         }
 
+        // Detect links to cloud object storage (commonly abused for phishing landing pages)
+        let cloud_storage_domains = [
+            "digitaloceanspaces.com",
+            "s3.amazonaws.com",
+            "storage.googleapis.com",
+            "blob.core.windows.net",
+            "firebasestorage.googleapis.com",
+            "r2.cloudflarestorage.com",
+        ];
+        let has_cloud_storage_links = links.iter().any(|link| {
+            let d = link.domain.to_lowercase();
+            cloud_storage_domains.iter().any(|cs| d.contains(cs))
+        });
+        if has_cloud_storage_links {
+            evidence.push("Links to cloud object storage (phishing hosting)".to_string());
+            score += 40;
+        }
+
         let confidence = if total_links > 0 { 0.8 } else { 0.3 };
 
         FeatureScore {

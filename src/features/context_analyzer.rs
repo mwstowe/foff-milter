@@ -1324,6 +1324,49 @@ impl FeatureExtractor for ContextAnalyzer {
             }
         }
 
+        // Gibberish consumer email username (random letters, no real name structure)
+        if is_consumer {
+            let local_part = sender
+                .rfind('<')
+                .and_then(|start| sender[start + 1..].split('@').next())
+                .or_else(|| sender.split('@').next())
+                .unwrap_or("")
+                .to_lowercase();
+            let is_gibberish_username =
+                local_part.len() >= 8 && local_part.chars().all(|c| c.is_ascii_lowercase()) && {
+                    // Check for consonant clusters (3+) = gibberish
+                    let mut max_run = 0u32;
+                    let mut run = 0u32;
+                    for c in local_part.chars() {
+                        if !"aeiou".contains(c) {
+                            run += 1;
+                            max_run = max_run.max(run);
+                        } else {
+                            run = 0;
+                        }
+                    }
+                    max_run >= 3
+                };
+            if is_gibberish_username {
+                // Check if body has links to cloud storage or minimal text
+                let body_lower = body.to_lowercase();
+                let has_cloud_links = body_lower.contains("digitaloceanspaces.com")
+                    || body_lower.contains("s3.amazonaws.com")
+                    || body_lower.contains("storage.googleapis.com")
+                    || body_lower.contains("blob.core.windows.net")
+                    || body_lower.contains("firebasestorage.googleapis.com");
+                if has_cloud_links {
+                    total_score += 80;
+                    all_evidence.push(
+                        "Gibberish consumer email with cloud-hosted phishing content".to_string(),
+                    );
+                } else {
+                    total_score += 30;
+                    all_evidence.push("Gibberish consumer email username".to_string());
+                }
+            }
+        }
+
         // Detect number obfuscation (digit/letter-O mixing: "1OO", "5OO", "1O,OOO")
         {
             let re = Regex::new(r"\d[Oo][Oo]|[Oo][Oo]\d|\d[Oo],?[Oo]{2}").unwrap();
@@ -2807,7 +2850,9 @@ impl FeatureExtractor for ContextAnalyzer {
                 || subject_lower.contains("ends tonight")
                 || subject_lower.contains("wiped")
                 || subject_lower.contains("deleted")
-                || subject_lower.contains("forfeited"))
+                || subject_lower.contains("forfeited")
+                || subject_lower.contains("gone tomorrow")
+                || subject_lower.contains("gone tonight"))
             && !sender_domain.contains("costco")
             && !sender_domain.contains("starbucks")
             && !sender_domain.contains("acehardware")
