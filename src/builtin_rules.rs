@@ -371,6 +371,14 @@ pub fn builtin_modules() -> Vec<Module> {
                                     evidence_pattern: Some("Heavy unicode obfuscation in subject line".to_string()),
                                     invert: None,
                                 },
+                                // Block Perfect Auth for punctuation insertion evasion
+                                Criteria::FeatureAnalysis {
+                                    feature_name: "Context Analysis".to_string(),
+                                    min_score: None,
+                                    max_score: None,
+                                    evidence_pattern: Some("Punctuation insertion evasion".to_string()),
+                                    invert: None,
+                                },
                                 // Block Perfect Auth when display name uses non-ASCII spoofing
                                 Criteria::FeatureAnalysis {
                                     feature_name: "Sender Alignment".to_string(),

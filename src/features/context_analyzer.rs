@@ -1399,6 +1399,24 @@ impl FeatureExtractor for ContextAnalyzer {
             }
         }
 
+        // Detect punctuation insertion evasion in subject (e.g., "elig;ible", "Disco:unts")
+        {
+            // Exclude legitimate colon uses: ref:, re:, vs:, id:, no:, fwd:
+            let cleaned_subj = Regex::new(r"(?i)\b(ref|re|vs|id|no|fwd|fw):")
+                .unwrap()
+                .replace_all(subject, "___")
+                .to_string();
+            let re = Regex::new(r"[a-zA-Z][;:][a-zA-Z]").unwrap();
+            let punct_splits = re.find_iter(&cleaned_subj).count();
+            if punct_splits >= 2 {
+                total_score += 70;
+                all_evidence.push("Punctuation insertion evasion in subject".to_string());
+            } else if punct_splits == 1 {
+                total_score += 40;
+                all_evidence.push("Punctuation insertion evasion in subject".to_string());
+            }
+        }
+
         if sender_domain.contains("firebaseapp.com") {
             // No legitimate business sends from firebaseapp.com - base score
             total_score += 55;

@@ -1267,6 +1267,8 @@ impl FilterEngine {
             "netsuite.com",
             "sent-via.netsuite.com",
             "oracleemaildelivery.com",
+            "pb.com",
+            "pitneybowes.com",
         ];
 
         for financial_domain in &legitimate_financial {
