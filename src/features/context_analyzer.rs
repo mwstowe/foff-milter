@@ -1417,6 +1417,72 @@ impl FeatureExtractor for ContextAnalyzer {
             }
         }
 
+        // Detect Received header stuffing: multiple different recipients in "for <>" clauses
+        // Legitimate email has one recipient throughout; stolen headers show different people
+        if let Some(received) = context.headers.get("received") {
+            let received_lower = received.to_lowercase();
+            let for_users: std::collections::HashSet<&str> = received_lower
+                .split("for <")
+                .skip(1)
+                .filter_map(|s| s.split('>').next())
+                .filter(|a| a.contains('@'))
+                .filter_map(|a| a.split('@').next())
+                .collect();
+            // 3+ distinct usernames in "for" clauses = header stuffing
+            if for_users.len() >= 3 {
+                total_score += 80;
+                all_evidence.push(
+                    "Received header stuffing: headers addressed to unrelated recipients"
+                        .to_string(),
+                );
+            }
+        }
+
+        // Detect hidden text via CSS (Bayesian poisoning with transparent/invisible text)
+        if let Some(raw_body) = &context.raw_body {
+            let body_lower = raw_body.to_lowercase();
+            // Only detect truly invisible text (not responsive design hiding)
+            // Transparent color (#ffffff00 = fully transparent) or near-zero opacity with content
+            let has_transparent_text = body_lower.contains("color:#ffffff00")
+                || body_lower.contains("color: #ffffff00")
+                || (body_lower.contains("opacity: 0.1") || body_lower.contains("opacity:0.1"));
+            if has_transparent_text {
+                total_score += 50;
+                all_evidence.push("Hidden text via CSS (Bayesian poisoning)".to_string());
+            }
+        }
+
+        // Detect sender domain in subject line (no legitimate email does this)
+        if !sender_domain.is_empty()
+            && sender_domain.len() > 5
+            && subject.to_lowercase().contains(&sender_domain)
+            && !sender_domain.contains("gmail")
+            && !sender_domain.contains("yahoo")
+            && !sender_domain.contains("outlook")
+        {
+            total_score += 60;
+            all_evidence.push("Sender domain appears in subject line".to_string());
+        }
+
+        // Detect multiple urgency headers (spammers over-specify priority)
+        {
+            let has_x_priority = context
+                .headers
+                .iter()
+                .any(|(k, _)| k.to_lowercase() == "x-priority");
+            let has_importance = context.headers.iter().any(|(k, v)| {
+                k.to_lowercase() == "importance" && v.to_lowercase().contains("high")
+            });
+            let has_priority = context.headers.iter().any(|(k, v)| {
+                k.to_lowercase() == "priority" && v.to_lowercase().contains("urgent")
+            });
+            let urgency_count = has_x_priority as u8 + has_importance as u8 + has_priority as u8;
+            if urgency_count >= 2 {
+                total_score += 40;
+                all_evidence.push("Multiple urgency headers (spam indicator)".to_string());
+            }
+        }
+
         if sender_domain.contains("firebaseapp.com") {
             // No legitimate business sends from firebaseapp.com - base score
             total_score += 55;
