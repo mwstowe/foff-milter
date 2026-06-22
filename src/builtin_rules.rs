@@ -1846,6 +1846,8 @@ pub fn builtin_modules() -> Vec<Module> {
                             criteria: vec![
                             Criteria::BodyPattern { pattern: "(?i).{0,100}(seo.{0,100}services|website.{0,100}optimization|digital.{0,100}marketing|web.{0,100}development|online.{0,100}marketing).*".to_string() },
                             Criteria::SubjectPattern { pattern: "(?i).{0,100}(seo.{0,100}services|website.{0,100}optimization|digital.{0,100}marketing|web.{0,100}development|online.{0,100}marketing).*".to_string() },
+                            Criteria::BodyPattern { pattern: "(?i).{0,100}(customers.{0,30}searching|more.{0,20}inquiries|generate.{0,20}leads|rank.{0,20}higher|search.{0,20}results|local.{0,20}businesses.{0,20}appear).*".to_string() },
+                            Criteria::BodyPattern { pattern: "(?i).{0,100}(reply.{0,10}(sure|yes|interested)|arrange.{0,10}(a|quick).{0,10}call).*".to_string() },
                             ],
                         },
                         ],
