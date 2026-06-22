@@ -162,6 +162,28 @@ impl EmailNormalizer {
         }
     }
 
+    /// Normalize from pre-parsed context components directly, bypassing
+    /// reconstruct_raw_email to ensure milter/test parity.
+    pub fn normalize_from_context(
+        &self,
+        body: &str,
+        subject: &str,
+        headers: &HashMap<String, String>,
+    ) -> NormalizedEmail {
+        let normalized_subject = self.normalize_text(subject);
+        let normalized_body_text = self.normalize_text(body);
+        let normalized_body_html = self.normalize_text(body);
+        let sender_info = self.extract_sender_info(headers);
+
+        NormalizedEmail {
+            headers: headers.clone(),
+            subject: normalized_subject,
+            body_text: normalized_body_text,
+            body_html: normalized_body_html,
+            sender_info,
+        }
+    }
+
     fn normalize_text(&self, text: &str) -> NormalizedText {
         let mut current = text.to_string();
         let mut encoding_layers = Vec::new();

@@ -518,32 +518,6 @@ impl FilterEngine {
         }
     }
 
-    /// Normalize email content and add to context
-    pub fn normalize_email_content(&self, context: &mut MailContext, raw_email: &str) {
-        let normalized = self.normalizer.normalize_email(raw_email);
-        context.normalized = Some(normalized);
-    }
-
-    /// Reconstruct raw email from MailContext for normalization
-    fn reconstruct_raw_email(&self, context: &MailContext) -> String {
-        let mut raw_email = String::new();
-
-        // Add headers
-        for (key, value) in &context.headers {
-            raw_email.push_str(&format!("{}: {}\n", key, value));
-        }
-
-        // Add separator
-        raw_email.push('\n');
-
-        // Add body
-        if let Some(body) = &context.body {
-            raw_email.push_str(body);
-        }
-
-        raw_email
-    }
-
     /// Get evasion score from normalized content with authentication-based exclusions
     pub fn get_evasion_score(&self, context: &MailContext) -> i32 {
         if let Some(normalized) = &context.normalized {
@@ -2137,10 +2111,13 @@ impl FilterEngine {
             }
         }
 
-        // Normalize email content for enhanced analysis
-        if let Some(_body) = &context.body {
-            let raw_email = self.reconstruct_raw_email(&context);
-            self.normalize_email_content(&mut context, &raw_email);
+        // Normalize email content for enhanced analysis (directly from context for milter/test parity)
+        if let Some(body) = &context.body {
+            let subject = context.subject.as_deref().unwrap_or("");
+            let normalized =
+                self.normalizer
+                    .normalize_from_context(body, subject, &context.headers);
+            context.normalized = Some(normalized);
         }
 
         // Detect email hop status and forwarding
