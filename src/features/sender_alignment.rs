@@ -1721,6 +1721,7 @@ impl FeatureExtractor for SenderAlignmentAnalyzer {
                         }
                         // Financial institutions with multiple domains
                         || (from_root.contains("discover") && reply_to_root.contains("discover"))
+                        || (from_domain.contains("hiltongrandvacations") && reply_to_domain.contains("hgv.com"))
                         // Synchrony uses multiple domains (synchronybank, synchronyfinancial, syf)
                         || (from_root.contains("synchrony") && reply_to_root.contains("synchrony"));
 
