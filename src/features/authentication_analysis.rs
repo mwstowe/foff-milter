@@ -274,40 +274,77 @@ impl AuthenticationAnalyzer {
         major_domains.iter().any(|&major| domain.ends_with(major))
     }
 
-    /// Analyze SPF results from headers
-    fn analyze_spf(&self, headers: &HashMap<String, String>) -> SpfResult {
-        for (key, value) in headers {
-            if key.to_lowercase() == "authentication-results" {
-                let value_lower = value.to_lowercase();
-                if value_lower.contains("spf=pass") {
-                    return SpfResult::Pass;
-                } else if value_lower.contains("spf=fail") {
-                    return SpfResult::Fail;
-                } else if value_lower.contains("spf=softfail") {
-                    return SpfResult::SoftFail;
-                } else if value_lower.contains("spf=none") {
-                    return SpfResult::None;
+    /// Get auth-results from edge server only (via Received header detection)
+    fn get_edge_auth_section(&self, headers: &HashMap<String, String>) -> String {
+        let received = match headers.get("received").or_else(|| headers.get("Received")) {
+            Some(r) => r.to_lowercase(),
+            None => {
+                // No Received headers — use all auth-results
+                return headers
+                    .get("authentication-results")
+                    .or_else(|| headers.get("Authentication-Results"))
+                    .map(|v| v.to_lowercase())
+                    .unwrap_or_default();
+            }
+        };
+
+        let auth_results = match headers
+            .get("authentication-results")
+            .or_else(|| headers.get("Authentication-Results"))
+        {
+            Some(a) => a.to_lowercase(),
+            None => return String::new(),
+        };
+
+        // Find edge server: last "by <hostname>" that has auth-results (= edge that verified)
+        let mut edge_hostname = None;
+        for segment in received.split("by ") {
+            if let Some(hostname) = segment.split_whitespace().next() {
+                if hostname.len() > 5 && hostname.contains('.') && auth_results.contains(hostname) {
+                    edge_hostname = Some(hostname.to_string());
                 }
             }
         }
-        SpfResult::Unknown
+
+        // Use auth-results from edge server
+        if let Some(ref edge) = edge_hostname {
+            if let Some(start) = auth_results.find(edge.as_str()) {
+                return auth_results[start..].to_string();
+            }
+        }
+
+        // Fallback — use all auth-results
+        auth_results
+    }
+
+    /// Analyze SPF results from headers
+    fn analyze_spf(&self, headers: &HashMap<String, String>) -> SpfResult {
+        let auth = self.get_edge_auth_section(headers);
+        if auth.contains("spf=pass") {
+            SpfResult::Pass
+        } else if auth.contains("spf=fail") {
+            SpfResult::Fail
+        } else if auth.contains("spf=softfail") {
+            SpfResult::SoftFail
+        } else if auth.contains("spf=none") {
+            SpfResult::None
+        } else {
+            SpfResult::Unknown
+        }
     }
 
     /// Analyze DMARC results from headers
     fn analyze_dmarc(&self, headers: &HashMap<String, String>) -> DmarcResult {
-        for (key, value) in headers {
-            if key.to_lowercase() == "authentication-results" {
-                let value_lower = value.to_lowercase();
-                if value_lower.contains("dmarc=pass") {
-                    return DmarcResult::Pass;
-                } else if value_lower.contains("dmarc=fail") {
-                    return DmarcResult::Fail;
-                } else if value_lower.contains("dmarc=none") {
-                    return DmarcResult::None;
-                }
-            }
+        let auth = self.get_edge_auth_section(headers);
+        if auth.contains("dmarc=pass") {
+            DmarcResult::Pass
+        } else if auth.contains("dmarc=fail") {
+            DmarcResult::Fail
+        } else if auth.contains("dmarc=none") {
+            DmarcResult::None
+        } else {
+            DmarcResult::Unknown
         }
-        DmarcResult::Unknown
     }
 
     /// Detect potential spoofing attempts

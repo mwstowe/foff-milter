@@ -97,38 +97,77 @@ impl DkimVerifier {
     }
 
     fn parse_auth_results(headers: &HashMap<String, String>) -> DkimAuthStatus {
-        // Use the first Authentication-Results header chronologically (first server to analyze)
-        // This ensures we use the analysis from the first server that saw the unmodified message
+        // Find the edge server from Received headers, then only use its auth-results.
+        // This prevents downstream servers' redundant DKIM checks from affecting scoring.
+        let edge_server = Self::detect_edge_server(headers);
 
-        if let Some((_, first_auth_result)) = headers
+        if let Some((_, auth_results)) = headers
             .iter()
             .find(|(key, _)| key.to_lowercase() == "authentication-results")
         {
-            let value_lower = first_auth_result.to_lowercase();
+            let value_lower = auth_results.to_lowercase();
 
-            if value_lower.contains("dkim=pass") {
+            let section = if let Some(ref server) = edge_server {
+                if let Some(start) = value_lower.find(server.as_str()) {
+                    value_lower[start..].to_string()
+                } else {
+                    // Edge server didn't add auth-results — treat as unknown
+                    return DkimAuthStatus::None;
+                }
+            } else {
+                value_lower.to_string()
+            };
+
+            if section.contains("dkim=pass") {
                 return DkimAuthStatus::Pass;
-            } else if value_lower.contains("dkim=fail") {
-                // Extract failure reason if available
-                let reason = if value_lower.contains("signature verification failed") {
+            } else if section.contains("dkim=fail") {
+                let reason = if section.contains("signature verification failed") {
                     "signature verification failed".to_string()
-                } else if value_lower.contains("body hash mismatch") {
+                } else if section.contains("body hash mismatch") {
                     "body hash mismatch".to_string()
+                } else if section.contains("key not found") {
+                    "key not found in DNS".to_string()
                 } else {
                     "unknown failure".to_string()
                 };
                 return DkimAuthStatus::Fail(reason);
-            } else if value_lower.contains("dkim=temperror") {
+            } else if section.contains("dkim=temperror") || section.contains("dkim=tmperror") {
                 return DkimAuthStatus::TempError;
-            } else if value_lower.contains("dkim=permerror") {
+            } else if section.contains("dkim=permerror") {
                 return DkimAuthStatus::PermError;
-            } else if value_lower.contains("dkim=none") {
+            } else if section.contains("dkim=none") {
                 return DkimAuthStatus::None;
             }
         }
 
-        // If no Authentication-Results found, status is none
         DkimAuthStatus::None
+    }
+
+    /// Detect edge server from Received headers.
+    /// The edge is the first server to receive from external (last "by" in header order).
+    /// Returns the edge hostname so we can match it against Authentication-Results.
+    fn detect_edge_server(headers: &HashMap<String, String>) -> Option<String> {
+        let received = headers
+            .get("received")
+            .or_else(|| headers.get("Received"))?;
+        let auth_results = headers
+            .get("authentication-results")
+            .or_else(|| headers.get("Authentication-Results"))?;
+
+        let received_lower = received.to_lowercase();
+        let auth_lower = auth_results.to_lowercase();
+
+        // Find the last "by <hostname>" that has matching auth-results (= edge that verified)
+        let mut edge = None;
+        for segment in received_lower.split("by ") {
+            if let Some(hostname) = segment.split_whitespace().next() {
+                if hostname.len() > 5 && hostname.contains('.') && auth_lower.contains(hostname) {
+                    edge = Some(hostname.to_string());
+                }
+            }
+        }
+
+        edge
     }
 
     fn check_domain_alignment(dkim_domains: &[String], sender_domain: &str) -> DomainAlignment {
