@@ -653,6 +653,8 @@ impl Milter {
                                                 "rsgsv.net",
                                                 "ccsend.com",
                                                 "bloomerang-mail.com",
+                                                "mtasv.net",
+                                                "sendingservice.net",
                                             ];
                                             if esp_domains.iter().any(|esp| value_str.contains(esp))
                                             {

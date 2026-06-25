@@ -210,6 +210,7 @@ impl SenderAlignmentAnalyzer {
             "mail.arrived.com",       // Arrived email service
             "sailthru.com",           // Sailthru ESP (used by Square Enix, etc.)
             "icontactmail4.com",      // iContact ESP
+            "sendingservice.net",     // Sending Service ESP
             "mcdlv.net",              // MailChimp delivery network
             "wdc02.mcdlv.net",        // MailChimp WDC02 delivery
             "rsgsv.net",              // Retail Solutions Group ESP
