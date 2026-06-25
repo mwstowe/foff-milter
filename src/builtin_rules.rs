@@ -3930,6 +3930,13 @@ pub fn builtin_modules() -> Vec<Module> {
                                     evidence_pattern: Some("Brand impersonation".to_string()),
                                     invert: None,
                                 },
+                                Criteria::FeatureAnalysis {
+                                    feature_name: "Context Analysis".to_string(),
+                                    min_score: None,
+                                    max_score: None,
+                                    evidence_pattern: Some("expiration scam".to_string()),
+                                    invert: None,
+                                },
                                 ],
                             }
                             ),
