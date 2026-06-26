@@ -1916,6 +1916,27 @@ impl FeatureExtractor for ContextAnalyzer {
             }
         }
 
+        // Paid promotion / business associate disclosure (stock pump, affiliate spam)
+        {
+            let body_lower = body.to_lowercase();
+            let paid_promo_patterns = [
+                "from one of our business associates",
+                "from our business partners",
+                "paid advertisement",
+                "paid sponsor",
+                "compensated for this",
+                "we were compensated",
+                "this is a paid",
+                "third party advertiser",
+            ];
+            if paid_promo_patterns.iter().any(|p| body_lower.contains(p)) {
+                total_score += 80;
+                all_evidence.push(
+                    "Paid promotion/business associate disclosure (spam network)".to_string(),
+                );
+            }
+        }
+
         // Detect "Sam's" + "membership" scam from non-samsclub domains
         let subject_lower = subject.to_lowercase();
         if subject_lower.contains("sam")
