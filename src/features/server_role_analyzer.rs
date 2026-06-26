@@ -140,6 +140,7 @@ impl ServerRoleAnalyzer {
                 "consumerreports.org",
                 "iheart.com",
                 "hubitat.com",
+                "lyftmail.com",
                 "mozilla.org",
                 "23andme.com",
             ];
