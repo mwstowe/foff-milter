@@ -2683,7 +2683,7 @@ impl FeatureExtractor for ContextAnalyzer {
 
         // Gift card survey scam detection
         let gift_card_scam_regex = Regex::new(
-            r"(?i)\b(you'?ll?\s+receive.*\$\d+.*gift\s*card|win.*\$\d+.*gift\s*card|\$\d+.*gift\s*card.*(participation|survey|review)|explore.*gift\s*card|gift\s*card\s*information|learn.*about.*gift\s*card)\b",
+            r"(?i)\b(you'?ll?\s+receive.*\$\d+.*gift\s*card|win.*\$\d+.*gift\s*card|\$\d+.*gift\s*card.*(participation|survey|review)|explore.*gift\s*card|gift\s*card\s*information|learn.*about.*gift\s*card|earned.*\$\d+.*(card|gift)|you'?ve\s+earned.*\$\d+)\b",
         )
         .unwrap();
         let return_path_lower = context
