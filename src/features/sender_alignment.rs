@@ -210,6 +210,7 @@ impl SenderAlignmentAnalyzer {
             "mail.arrived.com",       // Arrived email service
             "sailthru.com",           // Sailthru ESP (used by Square Enix, etc.)
             "icontactmail4.com",      // iContact ESP
+            "zonda-newsletters.com",  // Zonda Media (construction/architecture)
             "sendingservice.net",     // Sending Service ESP
             "mcdlv.net",              // MailChimp delivery network
             "wdc02.mcdlv.net",        // MailChimp WDC02 delivery
@@ -358,6 +359,7 @@ impl SenderAlignmentAnalyzer {
                             "citi",
                             "chase",
                             "capital one",
+                            "qemailserver", // Qualtrics survey platform (used by PayPal, etc.)
                         ];
                         if financial_cobranding
                             .iter()
@@ -1722,6 +1724,7 @@ impl FeatureExtractor for SenderAlignmentAnalyzer {
                         }
                         // Financial institutions with multiple domains
                         || (from_root.contains("discover") && reply_to_root.contains("discover"))
+                        || (from_domain.contains("zonda") && reply_to_domain.contains("zonda"))
                         || (from_domain.contains("hiltongrandvacations") && reply_to_domain.contains("hgv.com"))
                         // Synchrony uses multiple domains (synchronybank, synchronyfinancial, syf)
                         || (from_root.contains("synchrony") && reply_to_root.contains("synchrony"));

@@ -850,7 +850,7 @@ pub fn builtin_modules() -> Vec<Module> {
                                 Criteria::SenderPattern { pattern: ".*@.*(sparkpostmail|sendgrid|mailchimp|mailchimpapp|amazonses|constantcontact|mailgun|facebookmail|zoomcare|pb-dynmktg|pardot|marketo|eloqua|hubspot|campaignmonitor)\\.(com|net)$".to_string() },
                                 Criteria::SenderPattern { pattern: ".*paypal.{0,100}adobe.*".to_string() },
                                 Criteria::SenderPattern { pattern: ".*@.*iheart\\.(com|net)$".to_string() },
-                                Criteria::SenderPattern { pattern: ".*@.*(westinghouse|wpowereq|cryochoice|oracleemaildelivery)\\.(com|net)$".to_string() },
+                                Criteria::SenderPattern { pattern: ".*@.*(westinghouse|wpowereq|cryochoice|oracleemaildelivery|qemailserver)\\.(com|net)$".to_string() },
                                 ],
                             }
                             ),
@@ -926,7 +926,7 @@ pub fn builtin_modules() -> Vec<Module> {
                             criteria: Box::new(
                             Criteria::Or {
                                 criteria: vec![
-                                Criteria::SenderPattern { pattern: ".*@.*(cvs|unitedhealthcare|medicare|va|veterans|adapthealth|adapthealthmarketplace|sears|searshomeservices|nytimes|newyorktimes)\\.(com|org|gov)$".to_string() },
+                                Criteria::SenderPattern { pattern: ".*@.*(cvs|unitedhealthcare|medicare|va|veterans|adapthealth|adapthealthmarketplace|sears|searshomeservices|nytimes|newyorktimes|zonda-newsletters)\\.(com|org|gov)$".to_string() },
                                 Criteria::BodyPattern { pattern: "(?i).*(loyalty.{0,30}program|rewards.{0,30}program|membership.{0,30}benefits|shipping.{0,30}benefits|passport.{0,30}benefits).*".to_string() },
                                 ],
                             }
