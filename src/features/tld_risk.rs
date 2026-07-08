@@ -175,26 +175,24 @@ impl TldRiskAnalyzer {
 
         // Special handling for specific TLD + content combinations
         match tld {
-            "tk" | "ml" | "ga" | "cf" => {
+            "tk" | "ml" | "ga" | "cf"
                 // Free TLDs with any commercial content
                 if content_lower.contains("buy")
                     || content_lower.contains("sale")
-                    || content_lower.contains("discount")
-                {
-                    additional_score += 15;
-                }
+                    || content_lower.contains("discount") =>
+            {
+                additional_score += 15;
             }
-            "shop" | "fun" | "site" => {
+            "shop" | "fun" | "site"
                 // .shop/.fun/.site domains with health claims
                 if content_lower.contains("health")
                     || content_lower.contains("cure")
                     || content_lower.contains("supplement")
                     || content_lower.contains("memory")
                     || content_lower.contains("cognitive")
-                    || content_lower.contains("fungus")
-                {
-                    additional_score += 30;
-                }
+                    || content_lower.contains("fungus") =>
+            {
+                additional_score += 30;
             }
             "icu" => {
                 // .icu domains are often used for scams

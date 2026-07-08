@@ -1188,9 +1188,7 @@ impl ContextAnalyzer {
         let word_count = text.split_whitespace().count();
 
         // Average words per sentence
-        if sentence_count > 0 {
-            let avg_words_per_sentence = word_count / sentence_count;
-
+        if let Some(avg_words_per_sentence) = word_count.checked_div(sentence_count) {
             // Very long rambling sentences (evasion technique)
             // Require both very long sentences AND many sentences to avoid false positives on HTML emails
             if avg_words_per_sentence > 100 && sentence_count > 10 {

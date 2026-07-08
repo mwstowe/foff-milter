@@ -1,6 +1,6 @@
 [package]
 name = "foff-milter"
-version = "0.10.6"
+version = "0.10.7"
 edition = "2021"
 build = "build.rs"
 
@@ -27,14 +27,14 @@ url = "2.5"
 hickory-resolver = "0.26"
 indymilter = "0.3"
 pdf-extract = "0.12"
-tesseract-rs = { path = "tesseract-rs", features = ["embed-tessdata"], optional = true }
+tesseract-rs = { version = "0.3.0", features = ["embed-tessdata"], optional = true }
 image = { version = "0.25", optional = true, default-features = false, features = ["png", "jpeg", "gif", "bmp", "tiff", "webp"] }
 lettre = { version = "0.11", features = ["tokio1-native-tls", "smtp-transport", "builder"] }
 syslog = "7.0"
 tokio = { version = "1.48", features = ["full"] }
 lazy_static = "1.5"
 rand = "0.10"
-rusqlite = { version = "0.39", features = ["bundled"] }
+rusqlite = { version = "0.40", features = ["bundled"] }
 rar = { path = "rar", optional = true }
 zip = "8.5"
 
