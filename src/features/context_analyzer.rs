@@ -1365,6 +1365,42 @@ impl FeatureExtractor for ContextAnalyzer {
             }
         }
 
+        // Government authority impersonation from non-.gov domains
+        // Catches "G0V Stim AIIocation", "Census Report", "IRS Refund" etc.
+        {
+            let display_name = context
+                .from_header
+                .as_deref()
+                .and_then(|f| f.find('<').map(|i| &f[..i]))
+                .unwrap_or("")
+                .to_lowercase();
+            // Normalize homoglyphs in display name for detection
+            let normalized_display = display_name.replace('0', "o").replace('1', "l");
+            let gov_keywords = [
+                "gov ",
+                "gov.",
+                "government",
+                "stimulus",
+                "census",
+                "irs ",
+                "irs.",
+                "allocation",
+                "social security",
+                "ssa ",
+                "federal",
+                "treasury",
+            ];
+            let has_gov_claim = gov_keywords
+                .iter()
+                .any(|kw| normalized_display.contains(kw));
+            if has_gov_claim && !sender_domain.ends_with(".gov") && !sender_domain.ends_with(".mil")
+            {
+                total_score += 80;
+                all_evidence
+                    .push("Government authority impersonation from non-.gov domain".to_string());
+            }
+        }
+
         // Detect number obfuscation (digit/letter-O mixing: "1OO", "5OO", "1O,OOO")
         {
             let re = Regex::new(r"\d[Oo][Oo]|[Oo][Oo]\d|\d[Oo],?[Oo]{2}").unwrap();

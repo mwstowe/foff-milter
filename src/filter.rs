@@ -8899,6 +8899,27 @@ impl FilterEngine {
             return 0;
         }
 
+        // Skip for personal email conversations (gmail/consumer to gmail/consumer)
+        let from_domain = Self::get_from_domain(context);
+        let to_header = context
+            .headers
+            .get("to")
+            .or_else(|| context.headers.get("To"))
+            .map(|s| s.to_lowercase())
+            .unwrap_or_default();
+        let consumer_domains = [
+            "gmail.com",
+            "yahoo.com",
+            "hotmail.com",
+            "outlook.com",
+            "aol.com",
+        ];
+        let from_is_consumer = consumer_domains.iter().any(|d| from_domain.contains(d));
+        let to_is_consumer = consumer_domains.iter().any(|d| to_header.contains(d));
+        if from_is_consumer && to_is_consumer {
+            return 0;
+        }
+
         let mut content = String::new();
         if let Some(subject) = &context.subject {
             content.push_str(subject);
