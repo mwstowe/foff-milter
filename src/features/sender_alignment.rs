@@ -205,20 +205,21 @@ impl SenderAlignmentAnalyzer {
             "narvar.com",
             "tracking.domain-track.prod20.narvar.com",
             "spmailtechno.com",
-            "gmail.com",              // For forwarded emails
-            "emails.pitneybowes.com", // Pitney Bowes email service
-            "mail.arrived.com",       // Arrived email service
-            "sailthru.com",           // Sailthru ESP (used by Square Enix, etc.)
-            "icontactmail4.com",      // iContact ESP
-            "zonda-newsletters.com",  // Zonda Media (construction/architecture)
-            "sendingservice.net",     // Sending Service ESP
-            "mcdlv.net",              // MailChimp delivery network
-            "wdc02.mcdlv.net",        // MailChimp WDC02 delivery
-            "rsgsv.net",              // Retail Solutions Group ESP
-            "hubspotemail.net",       // HubSpot email delivery
-            "hubspotservicehub.com",  // HubSpot Service Hub
-            "emailsp.net",            // Email Service Provider
-            "musvc.com",              // Marketing/Email service
+            "gmail.com",                // For forwarded emails
+            "emails.pitneybowes.com",   // Pitney Bowes email service
+            "mail.arrived.com",         // Arrived email service
+            "sailthru.com",             // Sailthru ESP (used by Square Enix, etc.)
+            "icontactmail4.com",        // iContact ESP
+            "totalcustomerconnect.com", // Automotive CRM (dealership emails)
+            "zonda-newsletters.com",    // Zonda Media (construction/architecture)
+            "sendingservice.net",       // Sending Service ESP
+            "mcdlv.net",                // MailChimp delivery network
+            "wdc02.mcdlv.net",          // MailChimp WDC02 delivery
+            "rsgsv.net",                // Retail Solutions Group ESP
+            "hubspotemail.net",         // HubSpot email delivery
+            "hubspotservicehub.com",    // HubSpot Service Hub
+            "emailsp.net",              // Email Service Provider
+            "musvc.com",                // Marketing/Email service
             // Veterinary/Medical ESP Platforms
             "ourvet.com",                 // Veterinary practice management
             "outbound.ourvet.com",        // Veterinary email platform
