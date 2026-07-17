@@ -422,6 +422,9 @@ impl BrandImpersonationFeature {
 
         legitimate_domains.insert("paypal".to_string(), vec!["paypal.com".to_string()]);
 
+        brand_patterns.insert("aarp".to_string(), vec![r"(?i)\baarp\b".to_string()]);
+        legitimate_domains.insert("aarp".to_string(), vec!["aarp.org".to_string()]);
+
         brand_patterns.insert(
             "apple".to_string(),
             vec![
