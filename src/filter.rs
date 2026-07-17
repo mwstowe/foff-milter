@@ -8833,10 +8833,8 @@ impl FilterEngine {
             "cheap car insurance",
             "insurance quotes",
             "auto insurance rates",
-            "auto coverage options",
-            "auto coverage estimates",
-            "auto policy changes",
-            "auto policy require",
+            "auto coverage",
+            "auto policy",
             "car coverage",
             "auto protection",
         ];
