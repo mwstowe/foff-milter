@@ -8837,6 +8837,8 @@ impl FilterEngine {
             "auto policy",
             "car coverage",
             "auto protection",
+            "vehicle coverage",
+            "vehicle protection",
         ];
 
         for pattern in auto_insurance_patterns {

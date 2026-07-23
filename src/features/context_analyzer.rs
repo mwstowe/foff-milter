@@ -1729,6 +1729,20 @@ impl FeatureExtractor for ContextAnalyzer {
             all_evidence.push("Reverse mortgage scam pattern detected".to_string());
         }
 
+        // Vague home refinance/stimulus spam (avoids direct "mortgage" in subject)
+        if (subject_lower.contains("home address")
+            || subject_lower.contains("your address")
+            || subject_lower.contains("your residence")
+            || subject_lower.contains("your current address"))
+            && (subject_lower.contains("criteria")
+                || subject_lower.contains("category")
+                || subject_lower.contains("lower rates")
+                || subject_lower.contains("qualif"))
+        {
+            total_score += 50;
+            all_evidence.push("Vague home refinance/stimulus spam pattern".to_string());
+        }
+
         // Check for fake product review/complimentary offer scam
         if body_lower.contains("complimentary")
             && (body_lower.contains("pillow")
