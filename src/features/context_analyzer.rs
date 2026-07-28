@@ -1782,7 +1782,8 @@ impl FeatureExtractor for ContextAnalyzer {
             && (subject_lower.contains("order")
                 || subject_lower.contains("invoice")
                 || subject_lower.contains("receipt")
-                || subject_lower.contains("payment"))
+                || subject_lower.contains("payment")
+                || subject_lower.contains("renewal"))
         {
             // Check for random alphanumeric codes in subject (order IDs)
             let has_random_code = Regex::new(r"[A-Z0-9]{6,}").unwrap().is_match(subject);
