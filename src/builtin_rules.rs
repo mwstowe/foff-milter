@@ -379,6 +379,14 @@ pub fn builtin_modules() -> Vec<Module> {
                                     evidence_pattern: Some("non-ASCII characters".to_string()),
                                     invert: None,
                                 },
+                                // Block Perfect Auth when sender email is excessively long (base64 encoded)
+                                Criteria::FeatureAnalysis {
+                                    feature_name: "Sender Alignment".to_string(),
+                                    min_score: None,
+                                    max_score: None,
+                                    evidence_pattern: Some("Excessively long sender email address".to_string()),
+                                    invert: None,
+                                },
                                 ],
                             }
                             ),

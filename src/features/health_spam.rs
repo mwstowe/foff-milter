@@ -124,6 +124,7 @@ impl FeatureExtractor for HealthSpamAnalyzer {
             "economist.com",
             "oxfordclub.com",
             "zonda-newsletters.com",
+            "quora.com",
         ];
         if news_domains.iter().any(|d| sender_domain.contains(d)) {
             return FeatureScore {

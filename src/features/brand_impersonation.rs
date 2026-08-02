@@ -57,6 +57,7 @@ impl BrandImpersonationFeature {
                 "amazonmusic.com".to_string(),
                 "aws.com".to_string(),
                 "amazonses.com".to_string(),
+                "amazonaws.com".to_string(),
             ],
         );
 
