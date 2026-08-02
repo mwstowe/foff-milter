@@ -2371,6 +2371,34 @@ impl FeatureExtractor for ContextAnalyzer {
         total_score += (wire_fraud_issues.len() as f32 * 150.0) as i32; // High penalty for wire fraud
         all_evidence.extend(wire_fraud_issues);
 
+        // Business Email Compromise (BEC) fake invoice detection
+        let body_lower = body.to_lowercase();
+        let bec_pretexts = [
+            "as directed by my boss",
+            "as instructed by my manager",
+            "tried to reach you over the phone",
+            "tried calling you",
+            "acknowledge receipt of this mail",
+            "acknowledge receipt of this email",
+            "kindly find attached the",
+            "please find attached the signed invoice",
+        ];
+        let bec_pretext_count = bec_pretexts
+            .iter()
+            .filter(|p| body_lower.contains(*p))
+            .count();
+        if bec_pretext_count >= 2 {
+            total_score += 80;
+            all_evidence.push("Business Email Compromise (fake invoice) detected".to_string());
+        } else if bec_pretext_count == 1
+            && (subject_lower.contains("invoice")
+                || subject_lower.contains("payment")
+                || subject_lower.contains("receipt"))
+        {
+            total_score += 60;
+            all_evidence.push("Business Email Compromise (fake invoice) detected".to_string());
+        }
+
         // Check for Unicode obfuscation in subject and body
         let combined_text = format!("{} {}", subject, body);
         let (has_obfuscation, obfuscation_ratio) = self.detect_unicode_obfuscation(&combined_text);
