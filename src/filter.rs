@@ -8839,6 +8839,12 @@ impl FilterEngine {
             "auto protection",
             "vehicle coverage",
             "vehicle protection",
+            "auto insurance coverage",
+            "auto insurance options",
+            "coverage options for your auto",
+            "your auto insurance",
+            "car annual coverage",
+            "annual coverage estimates",
         ];
 
         for pattern in auto_insurance_patterns {

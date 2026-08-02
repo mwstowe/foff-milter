@@ -1840,7 +1840,17 @@ impl FeatureExtractor for SenderAlignmentAnalyzer {
         }
 
         // Apply organization whitelist discount (reduced when domain mismatch present)
-        if self.detect_legitimate_organization(&sender_info.from_domain) {
+        // Skip discount if sender has a base64-encoded local part (spam obfuscation)
+        let has_encoded_sender = context
+            .from_header
+            .as_deref()
+            .and_then(|h| {
+                h.rfind('<')
+                    .and_then(|start| h[start + 1..].split('@').next())
+            })
+            .map(|local| local.len() > 40 && local.contains('='))
+            .unwrap_or(false);
+        if !has_encoded_sender && self.detect_legitimate_organization(&sender_info.from_domain) {
             let reduction_factor = if sender_info.from_domain != sender_info.sender_domain {
                 0.8 // 20% reduction when domain mismatch (was 50%)
             } else {
