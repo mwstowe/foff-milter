@@ -767,11 +767,13 @@ impl LinkAnalyzer {
             "musvc3.net",
             "msgfocus.com",
             "software-newsletter.musvc3.net",
-            "sng.link",        // Uber's link shortener
-            "rides.sng.link",  // Uber rides
-            "awstrack.me",     // AWS SES click tracking
-            "klclick.com",     // Klaviyo click tracking
-            "klaviyomail.com", // Klaviyo email delivery
+            "sng.link",         // Uber's link shortener
+            "rides.sng.link",   // Uber rides
+            "awstrack.me",      // AWS SES click tracking
+            "hubspotlinks.com", // HubSpot click tracking
+            "hubspotemail.net", // HubSpot email delivery
+            "klclick.com",      // Klaviyo click tracking
+            "klaviyomail.com",  // Klaviyo email delivery
         ];
         if legitimate_esp_domains
             .iter()
@@ -1111,7 +1113,8 @@ impl FeatureExtractor for LinkAnalyzer {
                                 || first_domain.contains("cmail20.com")
                                 || first_domain.contains("constantcontact.com")
                                 || first_domain.contains("klclick.com")
-                                || first_domain.contains("klaviyomail.com");
+                                || first_domain.contains("klaviyomail.com")
+                                || first_domain.contains("hubspotlinks.com");
                             !is_esp_tracking
                                 && unrelated_links
                                     .iter()

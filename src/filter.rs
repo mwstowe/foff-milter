@@ -2479,7 +2479,40 @@ impl FilterEngine {
         let suppress_mailing_list = has_brand_impersonation
             || (has_suspicious_domain_reputation && !has_dmarc_pass)
             || has_high_spam_signals
-            || has_gibberish_consumer_sender;
+            || has_gibberish_consumer_sender
+            || {
+                // Suppress mailing list bonus when From domain doesn't match Return-Path domain
+                // (but not for consumer email From addresses — common in mailing lists)
+                let from_domain = context_with_attachments
+                    .from_header
+                    .as_deref()
+                    .and_then(|h| h.rfind('<').and_then(|s| h[s + 1..].split('@').nth(1)))
+                    .unwrap_or("")
+                    .trim_end_matches('>')
+                    .to_lowercase();
+                let rp_domain = context_with_attachments
+                    .headers
+                    .get("return-path")
+                    .and_then(|rp| rp.split('@').nth(1))
+                    .unwrap_or("")
+                    .trim_end_matches('>')
+                    .to_lowercase();
+                let consumer_from = [
+                    "gmail.com",
+                    "yahoo.com",
+                    "hotmail.com",
+                    "outlook.com",
+                    "aol.com",
+                ]
+                .iter()
+                .any(|d| from_domain.contains(d));
+                !from_domain.is_empty()
+                    && !rp_domain.is_empty()
+                    && !consumer_from
+                    && !from_domain.contains(&rp_domain)
+                    && !rp_domain.contains(&from_domain)
+                    && !self.is_legitimate_email_service_provider(&rp_domain)
+            };
         if is_mailing_list
             && !has_via_gibberish
             && !has_suspicious_list_id
@@ -8845,6 +8878,7 @@ impl FilterEngine {
             "your auto insurance",
             "car annual coverage",
             "annual coverage estimates",
+            "car insurance",
         ];
 
         for pattern in auto_insurance_patterns {

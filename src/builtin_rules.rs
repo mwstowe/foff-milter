@@ -4107,7 +4107,7 @@ pub fn builtin_modules() -> Vec<Module> {
                                 criteria: vec![
                                 Criteria::SenderPattern { pattern: ".*@.*(adapthealth|healthcare|medical|clinic|hospital|pulmonary)\\.(com|net|org)$".to_string() },
                                 Criteria::SenderPattern { pattern: ".*@.*(wine|wines|winery|brewery|distillery|spirits|liquor|beverage).{0,100}\\.(com|net|org)$".to_string() },
-                                Criteria::SenderPattern { pattern: ".*@.*(evgo|sparkpostmail|acemedseattle|americanmeadows)\\.(com|net)$".to_string() },
+                                Criteria::SenderPattern { pattern: ".*@.*(evgo|sparkpostmail|acemedseattle|americanmeadows|hubspotemail|sodasense)\\.(com|net)$".to_string() },
                                 Criteria::HeaderPattern { header: "Authentication-Results".to_string(), pattern: "dkim=pass.{0,100}adapthealth\\.com".to_string() },
                                 ],
                             }
