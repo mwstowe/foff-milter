@@ -3769,7 +3769,22 @@ pub fn builtin_modules() -> Vec<Module> {
                     name: "CRM and Business Tools".to_string(),
                     enabled: true,
                     criteria:
-                    Criteria::SenderPattern { pattern: ".*@.*(salesforce|hubspot|zendesk|freshdesk|intercom|drift|calendly)\\.(com|net)$".to_string() },
+                    Criteria::And {
+                        criteria: vec![
+                        Criteria::SenderPattern { pattern: ".*@.*(salesforce|hubspot|zendesk|freshdesk|intercom|drift|calendly)\\\\.(com|net)$".to_string() },
+                        Criteria::Not {
+                            criteria: Box::new(
+                            Criteria::FeatureAnalysis {
+                                feature_name: "Sender Alignment".to_string(),
+                                min_score: None,
+                                max_score: None,
+                                evidence_pattern: Some("doesn't match Sender domain".to_string()),
+                                invert: None,
+                            }
+                            ),
+                        },
+                        ],
+                    },
                     action: None,
                     score: Some(-50),
                     description: Some("Customer relationship management and business tools".to_string()),
@@ -3778,13 +3793,29 @@ pub fn builtin_modules() -> Vec<Module> {
                     name: "Business System Fast Path".to_string(),
                     enabled: true,
                     criteria:
-                    Criteria::Or {
+                    Criteria::And {
                         criteria: vec![
-                        Criteria::HeaderPattern { header: "x-netsuite".to_string(), pattern: ".*".to_string() },
-                        Criteria::SenderPattern { pattern: ".*@.*(netsuite\\.com|oracleemaildelivery\\.com)$".to_string() },
-                        Criteria::SenderPattern { pattern: ".*@.*salesforce\\.com$".to_string() },
-                        Criteria::SenderPattern { pattern: ".*@.*quickbooks\\.com$".to_string() },
-                        Criteria::HeaderPattern { header: "X-Mailer".to_string(), pattern: ".*NetSuite.*".to_string() },
+                        Criteria::Or {
+                            criteria: vec![
+                            Criteria::HeaderPattern { header: "x-netsuite".to_string(), pattern: ".*".to_string() },
+                            Criteria::SenderPattern { pattern: ".*@.*(netsuite\\.com|oracleemaildelivery\\.com)$".to_string() },
+                            Criteria::SenderPattern { pattern: ".*@.*salesforce\\.com$".to_string() },
+                            Criteria::SenderPattern { pattern: ".*@.*quickbooks\\.com$".to_string() },
+                            Criteria::HeaderPattern { header: "X-Mailer".to_string(), pattern: ".*NetSuite.*".to_string() },
+                            ],
+                        },
+                        // Don't give fast path when sender domain is misaligned (possible abuse)
+                        Criteria::Not {
+                            criteria: Box::new(
+                            Criteria::FeatureAnalysis {
+                                feature_name: "Sender Alignment".to_string(),
+                                min_score: None,
+                                max_score: None,
+                                evidence_pattern: Some("doesn't match Sender domain".to_string()),
+                                invert: None,
+                            }
+                            ),
+                        },
                         ],
                     },
                     action: None,

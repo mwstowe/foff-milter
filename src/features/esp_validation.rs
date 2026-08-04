@@ -582,6 +582,8 @@ impl FeatureExtractor for EspValidationFeature {
                     Some("amazonses.com".to_string())
                 } else if v_lower.contains("mandrillapp.com") {
                     Some("mandrillapp.com".to_string())
+                } else if v_lower.contains("salesforce.com") || v_lower.contains(".sfdc-") {
+                    Some("salesforce.com".to_string())
                 } else {
                     None
                 }
