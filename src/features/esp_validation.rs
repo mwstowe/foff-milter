@@ -298,6 +298,33 @@ pub fn is_from_trusted_esp(context: &MailContext) -> bool {
         if v_lower.contains("amazonses.com") {
             return true;
         }
+        if v_lower.contains("klaviyo") {
+            return true;
+        }
+        if v_lower.contains("salesforce.com") || v_lower.contains(".sfdc-") {
+            return true;
+        }
+    }
+
+    // Check Return-Path header for ESP domains (milter parity)
+    if let Some(rp) = context.headers.get("return-path") {
+        let rp_lower = rp.to_lowercase();
+        let rp_esps = [
+            "sendgrid.net",
+            "klaviyodns.com",
+            "klaviyomail.com",
+            "sparkpostmail.com",
+            "amazonses.com",
+            "mailgun.org",
+            "rsgsv.net",
+            "ccsend.com",
+            "bloomerang-mail.com",
+        ];
+        for esp in &rp_esps {
+            if rp_lower.contains(esp) {
+                return true;
+            }
+        }
     }
 
     false
@@ -584,6 +611,8 @@ impl FeatureExtractor for EspValidationFeature {
                     Some("mandrillapp.com".to_string())
                 } else if v_lower.contains("salesforce.com") || v_lower.contains(".sfdc-") {
                     Some("salesforce.com".to_string())
+                } else if v_lower.contains("klaviyo") {
+                    Some("klaviyodns.com".to_string())
                 } else {
                     None
                 }
