@@ -2486,7 +2486,13 @@ impl FilterEngine {
                 let from_domain = context_with_attachments
                     .from_header
                     .as_deref()
-                    .and_then(|h| h.rfind('<').and_then(|s| h[s + 1..].split('@').nth(1)))
+                    .and_then(|h| {
+                        if let Some(start) = h.rfind('<') {
+                            h[start + 1..].split('@').nth(1)
+                        } else {
+                            h.split('@').nth(1)
+                        }
+                    })
                     .unwrap_or("")
                     .trim_end_matches('>')
                     .to_lowercase();

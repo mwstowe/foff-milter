@@ -854,11 +854,12 @@ pub fn builtin_modules() -> Vec<Module> {
                             criteria: Box::new(
                             Criteria::Or {
                                 criteria: vec![
-                                Criteria::SenderPattern { pattern: ".*@.*(mcdonalds|netflix|disney|disneypublishing|disneyonbroadway|starbucks|walmart|amazon|amazonmusic|target|bestbuy|homedepot|lowes|cvs|walgreens|chase|bankofamerica|wellsfargo|citi|capitalone|americanexpress|discover|paypal|venmo|apple|microsoft|google|facebook|instagram|twitter|linkedin|youtube|tiktok|snapchat|whatsapp|telegram|zoom|skype|slack|teams|dropbox|onedrive|icloud|gmail|yahoo|outlook|hotmail|aol|comcast|verizon|att|tmobile|sprint|ups|fedex|usps|dhl|uber|lyft|lyftmail|airbnb|booking|expedia|priceline|hotels|marriott|hilton|hiltongrandvacations|hgv|hyatt|ihg|choice|wyndham|radisson|accor|fidelity|fidelityinvestments|d23|waltdisneypictures|exploringtwdc|waltdisneyrecords|disneymoviesanywhere|disneyplus|disneytickets|synchrony|synchronybank|synchronyfinancial|syf|comenity|barclays|geico)\\.(com|org|net)$".to_string() },
+                                Criteria::SenderPattern { pattern: ".*@.*(mcdonalds|netflix|disney|disneypublishing|disneyonbroadway|starbucks|walmart|amazon|amazonmusic|target|bestbuy|homedepot|lowes|cvs|walgreens|chase|bankofamerica|wellsfargo|citi|capitalone|americanexpress|discover|paypal|venmo|apple|microsoft|google|facebook|instagram|twitter|linkedin|youtube|tiktok|snapchat|whatsapp|telegram|zoom|skype|slack|teams|dropbox|onedrive|icloud|gmail|yahoo|outlook|hotmail|aol|comcast|verizon|att|tmobile|sprint|ups|fedex|usps|dhl|uber|lyft|lyftmail|airbnb|booking|expedia|priceline|hotels|marriott|hilton|hiltongrandvacations|hgv|hyatt|ihg|choice|wyndham|radisson|accor|fidelity|fidelityinvestments|d23|waltdisneypictures|exploringtwdc|waltdisneyrecords|disneymoviesanywhere|disneyplus|disneytickets|synchrony|synchronybank|synchronyfinancial|syf|comenity|barclays|geico|fantuan)\\.(com|org|net)$".to_string() },
                                 Criteria::SenderPattern { pattern: ".*@.*(sparkpostmail|sendgrid|mailchimp|mailchimpapp|amazonses|constantcontact|mailgun|facebookmail|zoomcare|pb-dynmktg|pardot|marketo|eloqua|hubspot|campaignmonitor)\\.(com|net)$".to_string() },
                                 Criteria::SenderPattern { pattern: ".*paypal.{0,100}adobe.*".to_string() },
                                 Criteria::SenderPattern { pattern: ".*@.*iheart\\.(com|net)$".to_string() },
                                 Criteria::SenderPattern { pattern: ".*@.*(westinghouse|wpowereq|cryochoice|oracleemaildelivery|qemailserver)\\.(com|net)$".to_string() },
+                                Criteria::SenderPattern { pattern: ".*@.*(fantuan)\\.ca$".to_string() },
                                 ],
                             }
                             ),
@@ -4310,7 +4311,7 @@ pub fn builtin_modules() -> Vec<Module> {
                             criteria: Box::new(
                             Criteria::Or {
                                 criteria: vec![
-                                Criteria::SenderPattern { pattern: ".*@.*(fidelity|vanguard|schwab|merrill|chase|wellsfargo|bankofamerica|torrid|geico)\\.(com|org)$".to_string() },
+                                Criteria::SenderPattern { pattern: ".*@.*(fidelity|vanguard|schwab|merrill|chase|wellsfargo|bankofamerica|torrid|geico|fantuan)\\.(com|org)$".to_string() },
                                 Criteria::SenderPattern { pattern: ".*@.*docusign\\.(com|net)$".to_string() },
                                 Criteria::SenderPattern { pattern: ".*@(nedm\\.asus|.*\\.asus|dt\\.torrid)\\.(com|net|org)$".to_string() },
                                 Criteria::SenderPattern { pattern: ".*@.*(charmtracker|acemed|acemedseattle|healthcare|medical|clinic|hospital)\\.(com|net|org)$".to_string() },
