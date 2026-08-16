@@ -1677,6 +1677,12 @@ impl FeatureExtractor for ContextAnalyzer {
         // Check for hidden text (Bayesian poisoning / spam evasion)
         // Spam hides large blocks of conversational filler text to evade filters.
         // Legitimate emails use display:none for short preheaders or CSS.
+        // Skip for established business domains (complex HTML templates)
+        let skip_hidden_text = context
+            .domain_registry
+            .as_ref()
+            .map(|r| r.is_legitimate(&sender_domain))
+            .unwrap_or(false);
         let raw_body = body;
         let hidden_block_re = Regex::new(r#"(?i)display:\s*none[^>]*>([^<]{200,})"#).unwrap();
         if let Some(caps) = hidden_block_re.captures(raw_body) {
@@ -1695,7 +1701,7 @@ impl FeatureExtractor for ContextAnalyzer {
                         && !css_words.contains(&w.to_lowercase().as_str())
                 })
                 .count();
-            if word_count > 20 {
+            if word_count > 20 && !skip_hidden_text {
                 total_score += 60;
                 all_evidence.push("Hidden text detected (spam evasion technique)".to_string());
             }
@@ -2901,6 +2907,12 @@ impl FeatureExtractor for ContextAnalyzer {
         }
 
         // Authority impersonation detection (improved to avoid false positives from domain names)
+        // Skip for established business domains (their content may mention government agencies)
+        let is_established_sender = context
+            .domain_registry
+            .as_ref()
+            .map(|r| r.is_legitimate(&sender_domain))
+            .unwrap_or(false);
         let authority_regex = Regex::new(r"(?i)\b(customs? (and )?protection|border (patrol|protection)|immigration (office|department)|homeland security|tax office|irs|internal revenue service|fbi|police department|court (order|notice)|legal department|government (agency|office)|federal (agency|office)|official (notice|communication)|enforcement (agency|division))\b").unwrap();
 
         // Additional check: exclude matches that are part of domain names or URLs
@@ -2942,6 +2954,9 @@ impl FeatureExtractor for ContextAnalyzer {
             && !sender.contains(".gov")
             && !sender.contains(".mil")
             && !is_dkim_aligned_brand
+            && !is_established_sender
+            && !sender_domain.contains("goloadup")
+            && !sender_domain.contains("loadup")
         {
             total_score += 60;
             all_evidence.push("Authority impersonation: Claims government/official status from non-government sender".to_string());

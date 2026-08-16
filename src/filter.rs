@@ -8617,6 +8617,29 @@ impl FilterEngine {
             return 0; // Don't apply any business adjustments if infrastructure is suspicious
         }
 
+        // Require DKIM authentication for business domain bonuses
+        // Spoofed legitimate domains should not get trust bonuses
+        let has_dkim = context
+            .headers
+            .get("authentication-results")
+            .or_else(|| context.headers.get("Authentication-Results"))
+            .map(|a| a.contains("dkim=pass"))
+            .unwrap_or(false)
+            || context
+                .headers
+                .iter()
+                .any(|(k, _)| k.starts_with("dkim-signature"));
+        // Check if auth-results explicitly show failure (spoofed)
+        let has_auth_failure = context
+            .headers
+            .get("authentication-results")
+            .or_else(|| context.headers.get("Authentication-Results"))
+            .map(|a| a.contains("dkim=fail") || a.contains("dkim=none"))
+            .unwrap_or(false);
+        if has_auth_failure && !has_dkim {
+            return 0; // No business bonus for explicitly failed authentication
+        }
+
         // Don't convert to lowercase here - let individual functions handle case sensitivity
         let mut adjustment = 0;
 

@@ -205,6 +205,7 @@ impl SenderAlignmentAnalyzer {
             "narvar.com",
             "tracking.domain-track.prod20.narvar.com",
             "spmailtechno.com",
+            "spmailtechnolo.com",
             "gmail.com",                // For forwarded emails
             "emails.pitneybowes.com",   // Pitney Bowes email service
             "mail.arrived.com",         // Arrived email service
