@@ -1330,13 +1330,16 @@ impl FeatureExtractor for ContextAnalyzer {
                 .or_else(|| sender.split('@').next())
                 .unwrap_or("")
                 .to_lowercase();
-            let is_gibberish_username =
-                local_part.len() >= 8 && local_part.chars().all(|c| c.is_ascii_lowercase()) && {
+            let is_gibberish_username = local_part.len() >= 8
+                && local_part
+                    .chars()
+                    .all(|c| c.is_ascii_lowercase() || c.is_ascii_digit())
+                && {
                     // Check for consonant clusters (3+) = gibberish
                     let mut max_run = 0u32;
                     let mut run = 0u32;
                     for c in local_part.chars() {
-                        if !"aeiou".contains(c) {
+                        if c.is_ascii_alphabetic() && !"aeiou".contains(c) {
                             run += 1;
                             max_run = max_run.max(run);
                         } else {
@@ -1789,6 +1792,7 @@ impl FeatureExtractor for ContextAnalyzer {
                 || subject_lower.contains("invoice")
                 || subject_lower.contains("receipt")
                 || subject_lower.contains("payment")
+                || subject_lower.contains("transaction")
                 || subject_lower.contains("renewal"))
         {
             // Check for random alphanumeric codes in subject (order IDs)
@@ -1846,6 +1850,24 @@ impl FeatureExtractor for ContextAnalyzer {
         {
             total_score += 30;
             all_evidence.push("Unsolicited home repair scam detected".to_string());
+        }
+
+        // Insurance/driving record lead-gen scam
+        // "Your driving record shows a recent change" from non-insurance domains
+        if (subject_lower.contains("driving record")
+            || subject_lower.contains("record shows")
+            || subject_lower.contains("record has changed")
+            || subject_lower.contains("your record") && subject_lower.contains("change"))
+            && !sender_domain.contains("insurance")
+            && !sender_domain.contains("geico")
+            && !sender_domain.contains("progressive")
+            && !sender_domain.contains("statefarm")
+            && !sender_domain.contains("allstate")
+            && !sender_domain.contains("dmv")
+        {
+            total_score += 60;
+            all_evidence
+                .push("Insurance/driving record scam from non-insurance domain".to_string());
         }
 
         // Online gambling spam detection
