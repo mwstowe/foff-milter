@@ -3639,6 +3639,17 @@ pub fn builtin_modules() -> Vec<Module> {
                             }
                             ),
                         },
+                        Criteria::Not {
+                            criteria: Box::new(
+                            Criteria::FeatureAnalysis {
+                                feature_name: "Brand Impersonation".to_string(),
+                                min_score: None,
+                                max_score: None,
+                                evidence_pattern: Some("Claims to be (twilio|sendgrid|mailchimp|sparkpost|mandrill|mailgun|amazonses|postmark)".to_string()),
+                                invert: None,
+                            }
+                            ),
+                        },
                         ],
                     },
                     action: None,
