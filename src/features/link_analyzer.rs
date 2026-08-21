@@ -1192,7 +1192,15 @@ impl FeatureExtractor for LinkAnalyzer {
             let d = link.domain.to_lowercase();
             cloud_storage_domains.iter().any(|cs| d.contains(cs))
         });
-        if has_cloud_storage_links {
+        // Skip cloud storage penalty for established business domains
+        // (they legitimately use cloud CDNs for images)
+        let sender_domain_for_cloud = self.extract_sender_domain(context);
+        let is_established_for_cloud = context
+            .domain_registry
+            .as_ref()
+            .map(|r| r.is_legitimate(&sender_domain_for_cloud))
+            .unwrap_or(false);
+        if has_cloud_storage_links && !is_established_for_cloud {
             evidence.push("Links to cloud object storage (phishing hosting)".to_string());
             score += 40;
         }

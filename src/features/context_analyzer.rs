@@ -1438,6 +1438,13 @@ impl FeatureExtractor for ContextAnalyzer {
 
         // Detect punctuation insertion evasion in subject (e.g., "elig;ible", "Disco:unts")
         {
+            // Also detect underscore-separated letter evasion: "S_e_n_d_g_r_i_d"
+            let underscore_letters = Regex::new(r"(?i)[A-Z](_[A-Z]){4,}").unwrap();
+            if underscore_letters.is_match(subject) {
+                total_score += 80;
+                all_evidence.push("Underscore-separated letter evasion in subject".to_string());
+            }
+
             // Exclude legitimate colon uses: ref:, re:, vs:, id:, no:, fwd:
             let cleaned_subj = Regex::new(r"(?i)\b(ref|re|vs|id|no|fwd|fw):")
                 .unwrap()

@@ -134,7 +134,7 @@ impl EmailNormalizer {
             )
             .unwrap(),
             homoglyph_map,
-            zero_width_chars: vec!['\u{200B}', '\u{200C}', '\u{200D}', '\u{FEFF}'],
+            zero_width_chars: vec!['\u{200B}', '\u{200C}', '\u{200D}', '\u{FEFF}', '\u{2063}'],
         }
     }
 
