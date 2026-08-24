@@ -8041,7 +8041,8 @@ impl FilterEngine {
         let is_legitimate = has_mailing_list_infrastructure
             && !has_spam_content
             && !has_unicode_obfuscation
-            && !self.has_suspicious_unsubscribe_links(context);
+            && !self.has_suspicious_unsubscribe_links(context)
+            && !self.has_suspicious_sender_tld(context);
 
         log::info!(
             "Mailing list legitimacy check: infrastructure={}, spam_content={}, unicode_obfuscation={}, suspicious_unsubscribe={}, is_legitimate={}",
@@ -9973,6 +9974,16 @@ impl FilterEngine {
 
         log::info!("has_suspicious_unsubscribe_links returning false");
         false
+    }
+
+    /// Check if sender has a suspicious/spammy TLD that shouldn't get mailing list trust
+    fn has_suspicious_sender_tld(&self, context: &MailContext) -> bool {
+        let domain = self.extract_sender_domain(context).unwrap_or_default();
+        let suspicious_tlds = [
+            ".skin", ".cfd", ".sbs", ".top", ".xyz", ".click", ".link", ".shop", ".tk", ".ml",
+            ".ga", ".cf", ".living", ".icu",
+        ];
+        suspicious_tlds.iter().any(|tld| domain.ends_with(tld))
     }
 
     /// Detects obvious spam content that should not get mailing list override

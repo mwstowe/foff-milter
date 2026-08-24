@@ -748,7 +748,8 @@ pub fn builtin_modules() -> Vec<Module> {
                                 criteria: vec![
                                 Criteria::SenderPattern { pattern: ".*@.*(company\\.com|organization\\.org|legitimate\\.edu)$".to_string() },
                                 Criteria::SenderPattern { pattern: ".*@.*(govdelivery|public\\.govdelivery|capitaloneshopping)\\.(com|net|org)$".to_string() },
-                                Criteria::SenderPattern { pattern: ".*@.*(nytimes|washingtonpost|cnn|bbc|reuters|ap|wsj|usatoday|acemedseattle)\\.(com|org)$".to_string() },
+                                Criteria::SenderPattern { pattern: ".*@.*(nytimes|nationalgeographic).*".to_string() },
+                                Criteria::SenderPattern { pattern: ".*@.*acemedseattle.*".to_string() },
                                 ],
                             }
                             ),
@@ -823,7 +824,7 @@ pub fn builtin_modules() -> Vec<Module> {
                             criteria: Box::new(
                             Criteria::Or {
                                 criteria: vec![
-                                Criteria::SenderPattern { pattern: ".*@.*(medium|backerkit|joinhoney|williams-sonoma|lovepop|shutterfly|resmed|quora|nytimes)\\.(com|org)$".to_string() },
+                                Criteria::SenderPattern { pattern: ".*@.*(nytimes|nationalgeographic).*".to_string() },
                                 Criteria::SenderPattern { pattern: ".*paypal.{0,100}adobe.*".to_string() },
                                 Criteria::SenderPattern { pattern: ".*@.*sparkpostmail\\.(com|net)$".to_string() },
                                 Criteria::HeaderPattern { header: "Authentication-Results".to_string(), pattern: "dkim=pass.{0,100}\\.(medium|backerkit|joinhoney|williams-sonoma|lovepop|shutterfly|resmed|quora)\\.(com|org)".to_string() },
@@ -887,7 +888,7 @@ pub fn builtin_modules() -> Vec<Module> {
                             criteria: Box::new(
                             Criteria::Or {
                                 criteria: vec![
-                                Criteria::SenderPattern { pattern: ".*@.*nytimes.*".to_string() },
+                                Criteria::SenderPattern { pattern: ".*@.*(nytimes|nationalgeographic).*".to_string() },
                                 Criteria::SenderPattern { pattern: ".*@.*(geico|statefarm|allstate|progressive|libertymutual|nationwide|usaa|farmers|travelers|aaa|erie)\\.(com|net|org)$".to_string() },
                                 ],
                             }
@@ -935,7 +936,7 @@ pub fn builtin_modules() -> Vec<Module> {
                             criteria: Box::new(
                             Criteria::Or {
                                 criteria: vec![
-                                Criteria::SenderPattern { pattern: ".*@.*(cvs|unitedhealthcare|medicare|va|veterans|adapthealth|adapthealthmarketplace|sears|searshomeservices|nytimes|newyorktimes|zonda-newsletters)\\.(com|org|gov)$".to_string() },
+                                Criteria::SenderPattern { pattern: ".*@.*(nytimes|nationalgeographic).*".to_string() },
                                 Criteria::BodyPattern { pattern: "(?i).*(loyalty.{0,30}program|rewards.{0,30}program|membership.{0,30}benefits|shipping.{0,30}benefits|passport.{0,30}benefits).*".to_string() },
                                 ],
                             }
@@ -1131,7 +1132,7 @@ pub fn builtin_modules() -> Vec<Module> {
                         Criteria::BodyPattern { pattern: "(?i).{0,100}(blood.{0,100}pressure|diabetes|a1c|cholesterol|heart.{0,100}disease|weight.{0,100}loss).*".to_string() },
                         Criteria::Not {
                             criteria: Box::new(
-                            Criteria::SenderPattern { pattern: ".*@.*(nytimes|washingtonpost|cnn|bbc|reuters|ap|wsj|usatoday)\\.(com|org)$".to_string() }
+                            Criteria::SenderPattern { pattern: ".*@.*(nytimes|nationalgeographic).*".to_string() }
                             ),
                         },
                         ],
@@ -1310,7 +1311,7 @@ pub fn builtin_modules() -> Vec<Module> {
                                 criteria: vec![
                                 Criteria::SenderPattern { pattern: ".*@.*fidelity.*".to_string() },
                                 Criteria::SenderPattern { pattern: ".*@.*withings.*".to_string() },
-                                Criteria::SenderPattern { pattern: ".*@.*(1800flowers|celebrations|wolfermans|nytimes).*".to_string() },
+                                Criteria::SenderPattern { pattern: ".*@.*(nytimes|nationalgeographic).*".to_string() },
                                 Criteria::SenderPattern { pattern: ".*@.*(walgreens|cvs|riteaid|pharmacy|optum|health|medical)\\.(com|net|org)$".to_string() },
                                 Criteria::FeatureAnalysis {
                                     feature_name: "Authentication Analysis".to_string(),
@@ -1545,7 +1546,7 @@ pub fn builtin_modules() -> Vec<Module> {
                             criteria: Box::new(
                             Criteria::Or {
                                 criteria: vec![
-                                Criteria::SenderPattern { pattern: ".*@.*nytimes.*".to_string() },
+                                Criteria::SenderPattern { pattern: ".*@.*(nytimes|nationalgeographic).*".to_string() },
                                 Criteria::SenderPattern { pattern: ".*@.*(commonspirit|virginiamason|providence|kaiser|hospital|medical|clinic)\\.(com|org|net)$".to_string() },
                                 ],
                             }
@@ -1605,7 +1606,7 @@ pub fn builtin_modules() -> Vec<Module> {
                                 Criteria::SenderPattern { pattern: ".*@.*backerkit.*".to_string() },
                                 Criteria::SenderPattern { pattern: ".*@.*levi.*".to_string() },
                                 Criteria::SenderPattern { pattern: ".*@.*(michaels|costco|walmart|target|amazon|bestbuy|homedepot|lowes)\\.(com|net)$".to_string() },
-                                Criteria::SenderPattern { pattern: ".*@.*(nytimes|washingtonpost|cnn|bbc|reuters|ap|wsj|usatoday|nationalgeographic|torrid|ugg)\\.(com|org)$".to_string() },
+                                Criteria::SenderPattern { pattern: ".*@.*(nytimes|nationalgeographic).*".to_string() },
                                 Criteria::SenderPattern { pattern: ".*@.*(livenation|ticketmaster|stubhub|eventbrite)\\.(com|net)$".to_string() },
                                 Criteria::SubjectPattern { pattern: "(?i).{0,100}(recipe|cooking|breakfast|meal|food|nutrition|diet).*".to_string() },
                                 ],
@@ -1653,7 +1654,7 @@ pub fn builtin_modules() -> Vec<Module> {
                         Criteria::BodyPattern { pattern: "(?i).{0,100}(\\d+\\.\\d+%|\\d+%|\\$\\d+|\\d+.*USD).*".to_string() },
                         Criteria::Not {
                             criteria: Box::new(
-                            Criteria::SenderPattern { pattern: ".*@.*(oxford|nytimes|washingtonpost|cnn|bbc|reuters|ap|wsj|usatoday|ugg|torrid|miniusa|dataclover)\\.(com|org)$".to_string() }
+                            Criteria::SenderPattern { pattern: ".*@.*(nytimes|nationalgeographic).*".to_string() }
                             ),
                         },
                         ],
@@ -1676,7 +1677,7 @@ pub fn builtin_modules() -> Vec<Module> {
                         },
                         Criteria::Not {
                             criteria: Box::new(
-                            Criteria::SenderPattern { pattern: ".*@.*nytimes.*".to_string() }
+                            Criteria::SenderPattern { pattern: ".*@.*(nytimes|nationalgeographic).*".to_string() }
                             ),
                         },
                         ],
@@ -1953,7 +1954,7 @@ pub fn builtin_modules() -> Vec<Module> {
                             criteria: Box::new(
                             Criteria::Or {
                                 criteria: vec![
-                                Criteria::SenderPattern { pattern: ".*@.*(nytimes|washingtonpost|cnn|bbc|reuters|ap|wsj|usatoday)\\.(com|org)$".to_string() },
+                                Criteria::SenderPattern { pattern: ".*@.*(nytimes|nationalgeographic).*".to_string() },
                                 Criteria::SubjectPattern { pattern: "(?i).{0,100}(recipe|cooking|breakfast|meal|food|nutrition).*".to_string() },
                                 ],
                             }
@@ -2037,7 +2038,7 @@ pub fn builtin_modules() -> Vec<Module> {
                             criteria: Box::new(
                             Criteria::Or {
                                 criteria: vec![
-                                Criteria::SenderPattern { pattern: ".*@.*(torrid|mktg\\.torrid|michaels|target|walmart|disney|amazon|nytimes|washingtonpost|cnn|bbc|reuters|ap|wsj|usatoday)\\.(com|net|org)$".to_string() },
+                                Criteria::SenderPattern { pattern: ".*@.*(nytimes|nationalgeographic).*".to_string() },
                                 ],
                             }
                             ),
@@ -2062,7 +2063,7 @@ pub fn builtin_modules() -> Vec<Module> {
                         },
                         Criteria::Not {
                             criteria: Box::new(
-                            Criteria::SenderPattern { pattern: ".*@.*(nytimes|washingtonpost|cnn|bbc|reuters|ap|wsj|usatoday)\\.(com|org)$".to_string() }
+                            Criteria::SenderPattern { pattern: ".*@.*(nytimes|nationalgeographic).*".to_string() }
                             ),
                         },
                         ],
@@ -2113,7 +2114,7 @@ pub fn builtin_modules() -> Vec<Module> {
                         },
                         Criteria::Not {
                             criteria: Box::new(
-                            Criteria::SenderPattern { pattern: ".*@.*nytimes.*".to_string() }
+                            Criteria::SenderPattern { pattern: ".*@.*(nytimes|nationalgeographic).*".to_string() }
                             ),
                         },
                         ],
@@ -2166,7 +2167,7 @@ pub fn builtin_modules() -> Vec<Module> {
                         },
                         Criteria::Not {
                             criteria: Box::new(
-                            Criteria::SenderPattern { pattern: ".*@.*nytimes.*".to_string() }
+                            Criteria::SenderPattern { pattern: ".*@.*(nytimes|nationalgeographic).*".to_string() }
                             ),
                         },
                         ],
@@ -2189,7 +2190,7 @@ pub fn builtin_modules() -> Vec<Module> {
                         },
                         Criteria::Not {
                             criteria: Box::new(
-                            Criteria::SenderPattern { pattern: ".*@.*nytimes.*".to_string() }
+                            Criteria::SenderPattern { pattern: ".*@.*(nytimes|nationalgeographic).*".to_string() }
                             ),
                         },
                         ],
@@ -2270,7 +2271,7 @@ pub fn builtin_modules() -> Vec<Module> {
                         },
                         Criteria::Not {
                             criteria: Box::new(
-                            Criteria::SenderPattern { pattern: ".*@.*(nytimes|washingtonpost|cnn|bbc|reuters|ap|wsj|usatoday)\\.(com|org)$".to_string() }
+                            Criteria::SenderPattern { pattern: ".*@.*(nytimes|nationalgeographic).*".to_string() }
                             ),
                         },
                         ],
@@ -2505,7 +2506,7 @@ pub fn builtin_modules() -> Vec<Module> {
                             criteria: Box::new(
                             Criteria::Or {
                                 criteria: vec![
-                                Criteria::SenderPattern { pattern: ".*@.*(nytimes|washingtonpost|cnn|bbc|reuters|ap|wsj|usatoday)\\.(com|org)$".to_string() },
+                                Criteria::SenderPattern { pattern: ".*@.*(nytimes|nationalgeographic).*".to_string() },
                                 Criteria::SubjectPattern { pattern: "(?i).{0,100}(recipe|cooking|breakfast|meal|food|nutrition).*".to_string() },
                                 ],
                             }
@@ -2587,7 +2588,7 @@ pub fn builtin_modules() -> Vec<Module> {
                         },
                         Criteria::Not {
                             criteria: Box::new(
-                            Criteria::SenderPattern { pattern: ".*@.*(nytimes|washingtonpost|wsj)\\.(com|net)$".to_string() }
+                            Criteria::SenderPattern { pattern: ".*@.*(nytimes|nationalgeographic).*".to_string() }
                             ),
                         },
                         ],
@@ -2642,7 +2643,7 @@ pub fn builtin_modules() -> Vec<Module> {
                                 criteria: vec![
                                 Criteria::SenderPattern { pattern: ".*@.*(democrats|republicans|political|campaign|gov)\\.(org|com|gov)$".to_string() },
                                 Criteria::SenderPattern { pattern: ".*@.*wa-democrats\\.(org|com)$".to_string() },
-                                Criteria::SenderPattern { pattern: ".*@.*(nytimes|washingtonpost|cnn|bbc|reuters|ap|wsj|usatoday)\\.(com|org)$".to_string() },
+                                Criteria::SenderPattern { pattern: ".*@.*(nytimes|nationalgeographic).*".to_string() },
                                 ],
                             }
                             ),
@@ -2786,7 +2787,7 @@ pub fn builtin_modules() -> Vec<Module> {
                                 criteria: vec![
                                 Criteria::SenderPattern { pattern: ".*@.*(democrats|republicans|political|campaign|gov)\\.(org|com|gov)$".to_string() },
                                 Criteria::SenderPattern { pattern: ".*@.*wa-democrats\\.(org|com)$".to_string() },
-                                Criteria::SenderPattern { pattern: ".*@.*(nytimes|washingtonpost|cnn|bbc|reuters|ap|wsj|usatoday)\\.(com|org)$".to_string() },
+                                Criteria::SenderPattern { pattern: ".*@.*(nytimes|nationalgeographic).*".to_string() },
                                 ],
                             }
                             ),
@@ -2916,7 +2917,7 @@ pub fn builtin_modules() -> Vec<Module> {
                         },
                         Criteria::Not {
                             criteria: Box::new(
-                            Criteria::SenderPattern { pattern: ".*@.*(nytimes|newyorktimes)\\.(com|org)$".to_string() }
+                            Criteria::SenderPattern { pattern: ".*@.*(nytimes|nationalgeographic).*".to_string() }
                             ),
                         },
                         ],
@@ -2969,7 +2970,7 @@ pub fn builtin_modules() -> Vec<Module> {
                             criteria: Box::new(
                             Criteria::Or {
                                 criteria: vec![
-                                Criteria::SenderPattern { pattern: ".*@.*(nytimes|washingtonpost|cnn|bbc|reuters|ap|wsj|usatoday)\\.(com|org)$".to_string() },
+                                Criteria::SenderPattern { pattern: ".*@.*(nytimes|nationalgeographic).*".to_string() },
                                 Criteria::SenderPattern { pattern: ".*@.*(walgreens|cvs|riteaid|pharmacy|optum|lenscrafters|visionworks)\\.(com|net|org)$".to_string() },
                                 Criteria::FeatureAnalysis {
                                     feature_name: "Authentication Analysis".to_string(),
@@ -3222,7 +3223,7 @@ pub fn builtin_modules() -> Vec<Module> {
                         },
                         Criteria::Not {
                             criteria: Box::new(
-                            Criteria::SenderPattern { pattern: ".*@.*nytimes.*".to_string() }
+                            Criteria::SenderPattern { pattern: ".*@.*(nytimes|nationalgeographic).*".to_string() }
                             ),
                         },
                         ],
@@ -3338,7 +3339,7 @@ pub fn builtin_modules() -> Vec<Module> {
                         },
                         Criteria::Not {
                             criteria: Box::new(
-                            Criteria::SenderPattern { pattern: ".*@.*(nytimes|washingtonpost|michaels|walgreens|capitaloneshopping|lowes|homedepot|target|walmart|amazon|bestbuy)\\.(com|net)$".to_string() }
+                            Criteria::SenderPattern { pattern: ".*@.*(nytimes|nationalgeographic).*".to_string() }
                             ),
                         },
                         ],
@@ -3415,7 +3416,7 @@ pub fn builtin_modules() -> Vec<Module> {
                             criteria: Box::new(
                             Criteria::Or {
                                 criteria: vec![
-                                Criteria::SenderPattern { pattern: ".*@.*(nytimes|washingtonpost|cnn|bbc|reuters|ap|wsj|usatoday)\\.(com|org)$".to_string() },
+                                Criteria::SenderPattern { pattern: ".*@.*(nytimes|nationalgeographic).*".to_string() },
                                 Criteria::SenderPattern { pattern: ".*@.*(disney|disneyplus|sparkpostmail|nationalgeographic)\\.(com|net)$".to_string() },
                                 ],
                             }
@@ -4104,7 +4105,7 @@ pub fn builtin_modules() -> Vec<Module> {
                         },
                         Criteria::Not {
                             criteria: Box::new(
-                            Criteria::SenderPattern { pattern: ".*@.*(nytimes|washingtonpost|cnn|bbc|reuters|ap|wsj|usatoday)\\.(com|org)$".to_string() }
+                            Criteria::SenderPattern { pattern: ".*@.*(nytimes|nationalgeographic).*".to_string() }
                             ),
                         },
                         ],
@@ -4326,7 +4327,7 @@ pub fn builtin_modules() -> Vec<Module> {
                                 Criteria::SenderPattern { pattern: ".*@.*docusign\\.(com|net)$".to_string() },
                                 Criteria::SenderPattern { pattern: ".*@(nedm\\.asus|.*\\.asus|dt\\.torrid)\\.(com|net|org)$".to_string() },
                                 Criteria::SenderPattern { pattern: ".*@.*(charmtracker|acemed|acemedseattle|healthcare|medical|clinic|hospital)\\.(com|net|org)$".to_string() },
-                                Criteria::SenderPattern { pattern: ".*@.*(nytimes|washingtonpost|cnn|bbc|reuters|ap|wsj|usatoday)\\.(com|org)$".to_string() },
+                                Criteria::SenderPattern { pattern: ".*@.*(nytimes|nationalgeographic).*".to_string() },
                                 Criteria::HeaderPattern { header: "Authentication-Results".to_string(), pattern: "dkim=pass.{0,100}fidelity\\.com".to_string() },
                                 Criteria::BodyPattern { pattern: "(?i).{0,100}(401k|401\\(k\\)|retirement.{0,100}plan|employee.{0,100}benefits|plan.{0,100}information.{0,100}documents).*".to_string() },
                                 ],
@@ -4356,7 +4357,7 @@ pub fn builtin_modules() -> Vec<Module> {
                             Criteria::Or {
                                 criteria: vec![
                                 Criteria::SenderPattern { pattern: ".*@.*docusign\\.(com|net)$".to_string() },
-                                Criteria::SenderPattern { pattern: ".*@.*nytimes.*".to_string() },
+                                Criteria::SenderPattern { pattern: ".*@.*(nytimes|nationalgeographic).*".to_string() },
                                 Criteria::SenderPattern { pattern: ".*@.*(walgreens|eml\\.walgreens)\\.(com|net)$".to_string() },
                                 ],
                             }
@@ -4462,7 +4463,7 @@ pub fn builtin_modules() -> Vec<Module> {
                                 Criteria::SenderPattern { pattern: ".*@.*(charmtracker|medical|healthcare|clinic|hospital|ehr)\\.(com|net|org)$".to_string() },
                                 Criteria::SenderPattern { pattern: ".*@.*(docusign|dropbox|google|microsoft|onedrive|box)\\.(com|net|org)$".to_string() },
                                 Criteria::SenderPattern { pattern: ".*@.*(dominos|doordash|butcherbox|usps|walgreens|xfinity)\\.(com|net|org)$".to_string() },
-                                Criteria::SenderPattern { pattern: ".*@.*(nytimes|washingtonpost|cnn|bbc|reuters|ap|wsj|usatoday)\\.(com|org)$".to_string() },
+                                Criteria::SenderPattern { pattern: ".*@.*(nytimes|nationalgeographic).*".to_string() },
                                 Criteria::HeaderPattern { header: "From".to_string(), pattern: "(?i).{0,100}(AceMed|Medical|Healthcare|Clinic|Hospital|EHR|Patient Portal).*".to_string() },
                                 ],
                             }
