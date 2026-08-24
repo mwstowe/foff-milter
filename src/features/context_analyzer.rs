@@ -209,6 +209,7 @@ impl ContextAnalyzer {
             "nytimes.com",
             "discover.com",
             "discovercard.com",
+            "shs.com",
         ];
 
         // Check if matches service alert pattern

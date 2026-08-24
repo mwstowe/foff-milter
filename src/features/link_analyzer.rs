@@ -767,13 +767,14 @@ impl LinkAnalyzer {
             "musvc3.net",
             "msgfocus.com",
             "software-newsletter.musvc3.net",
-            "sng.link",         // Uber's link shortener
-            "rides.sng.link",   // Uber rides
-            "awstrack.me",      // AWS SES click tracking
-            "hubspotlinks.com", // HubSpot click tracking
-            "hubspotemail.net", // HubSpot email delivery
-            "klclick.com",      // Klaviyo click tracking
-            "klaviyomail.com",  // Klaviyo email delivery
+            "sng.link",             // Uber's link shortener
+            "rides.sng.link",       // Uber rides
+            "awstrack.me",          // AWS SES click tracking
+            "searshomeservices.io", // Sears Home Services tracking
+            "hubspotlinks.com",     // HubSpot click tracking
+            "hubspotemail.net",     // HubSpot email delivery
+            "klclick.com",          // Klaviyo click tracking
+            "klaviyomail.com",      // Klaviyo email delivery
         ];
         if legitimate_esp_domains
             .iter()
