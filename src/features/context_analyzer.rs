@@ -2255,6 +2255,76 @@ impl FeatureExtractor for ContextAnalyzer {
             }
         }
 
+        // German invoice/payment phishing: foreign-language invoice content where the
+        // display name claims a company but the sender domain is unrelated.
+        // Mirrors Japanese phishing logic — invoices in a non-primary language from a
+        // domain that doesn't match the claimed company are highly suspicious.
+        {
+            let de_invoice_keywords = [
+                "rechnung",         // invoice
+                "zahlung",          // payment
+                "mahnung",          // dunning/reminder
+                "erinnerung",       // reminder
+                "offene forderung", // open claim
+                "zahlungsziel",     // payment deadline
+                "überfällig",       // overdue
+                "ueberfaellig",     // overdue (ASCII)
+                "lastschrift",      // direct debit
+                "kontoauszug",      // account statement
+            ];
+            let de_context_keywords = [
+                "sehr geehrte",            // "dear sir/madam" formal opener
+                "mit freundlichen grüßen", // "kind regards"
+                "mit freundlichen gruessen",
+                "im anhang",     // "in the attachment"
+                "herunterladen", // "download"
+            ];
+            let subject_body = format!("{} {}", subject, body).to_lowercase();
+            let has_de_invoice = de_invoice_keywords
+                .iter()
+                .any(|kw| subject_body.contains(kw));
+            let has_de_context = de_context_keywords
+                .iter()
+                .any(|kw| subject_body.contains(kw));
+            if has_de_invoice && has_de_context {
+                // Extract company name from display name
+                let display = sender
+                    .split('<')
+                    .next()
+                    .unwrap_or("")
+                    .trim()
+                    .trim_matches('"')
+                    .to_lowercase();
+                // Company indicators in display name (German legal forms or a brand word)
+                let claims_company = display.contains("gmbh")
+                    || display.contains(" ag")
+                    || display.contains("kg")
+                    || display.contains("mbh")
+                    || display
+                        .split_whitespace()
+                        .next()
+                        .map(|w| w.len() >= 3 && w.chars().all(|c| c.is_alphabetic()))
+                        .unwrap_or(false);
+                // Check if sender domain relates to the claimed company name
+                let company_word = display
+                    .replace("gmbh", "")
+                    .replace("mbh", "")
+                    .split_whitespace()
+                    .next()
+                    .unwrap_or("")
+                    .to_string();
+                let domain_matches_company = !company_word.is_empty()
+                    && company_word.len() >= 3
+                    && sender_domain.contains(&company_word);
+                if claims_company && !domain_matches_company {
+                    total_score += 90;
+                    all_evidence.push(
+                        "German invoice from domain unrelated to claimed company".to_string(),
+                    );
+                }
+            }
+        }
+
         // Detect industry context for appropriate scoring adjustments
         let combined_content = format!("{} {}", subject, body);
         let industry_context = self.detect_industry_context(sender, &combined_content, subject);
