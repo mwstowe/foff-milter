@@ -1252,6 +1252,13 @@ impl FeatureExtractor for ContextAnalyzer {
             .trim_end_matches('>')
             .to_lowercase();
 
+        // Established business sender (from domain registry) - used to suppress false positives
+        let is_established_sender = context
+            .domain_registry
+            .as_ref()
+            .map(|r| r.is_legitimate(&sender_domain))
+            .unwrap_or(false);
+
         // Detect MAILER-DAEMON Return-Path with non-bounce content (spoofed)
         let return_path = context
             .headers
@@ -2808,7 +2815,10 @@ impl FeatureExtractor for ContextAnalyzer {
             || return_path_lower.contains("sendgrid")
             || return_path_lower.contains("mailchimp")
             || return_path_lower.contains("constantcontact");
-        if gift_card_scam_regex.is_match(&combined_text) && !is_known_esp_sender {
+        if gift_card_scam_regex.is_match(&combined_text)
+            && !is_known_esp_sender
+            && !is_established_sender
+        {
             total_score += 60;
             all_evidence.push("Gift card survey scam pattern detected".to_string());
         }
@@ -2938,11 +2948,6 @@ impl FeatureExtractor for ContextAnalyzer {
 
         // Authority impersonation detection (improved to avoid false positives from domain names)
         // Skip for established business domains (their content may mention government agencies)
-        let is_established_sender = context
-            .domain_registry
-            .as_ref()
-            .map(|r| r.is_legitimate(&sender_domain))
-            .unwrap_or(false);
         let authority_regex = Regex::new(r"(?i)\b(customs? (and )?protection|border (patrol|protection)|immigration (office|department)|homeland security|tax office|irs|internal revenue service|fbi|police department|court (order|notice)|legal department|government (agency|office)|federal (agency|office)|official (notice|communication)|enforcement (agency|division))\b").unwrap();
 
         // Additional check: exclude matches that are part of domain names or URLs
