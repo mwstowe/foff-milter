@@ -3372,8 +3372,8 @@ pub fn builtin_modules() -> Vec<Module> {
                             criteria: Box::new(
                             Criteria::Or {
                                 criteria: vec![
-                                Criteria::SenderPattern { pattern: ".*@.*(kickstarter|indiegogo|patreon|gofundme|humblebundle)\\.(com|net)$".to_string() },
-                                Criteria::HeaderPattern { header: "from".to_string(), pattern: ".*@.*(kickstarter|indiegogo|patreon|gofundme|humblebundle)\\.(com|net).*".to_string() },
+                                Criteria::SenderPattern { pattern: ".*@.*(kickstarter|indiegogo|patreon|gofundme|humblebundle|zonda-newsletters|jlconline)\\.(com|net)$".to_string() },
+                                Criteria::HeaderPattern { header: "from".to_string(), pattern: ".*@.*(kickstarter|indiegogo|patreon|gofundme|humblebundle|zonda-newsletters|jlconline)\\.(com|net).*".to_string() },
                                 ],
                             }
                             ),

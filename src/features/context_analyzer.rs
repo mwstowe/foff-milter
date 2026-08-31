@@ -1808,7 +1808,10 @@ impl FeatureExtractor for ContextAnalyzer {
                 || subject_lower.contains("receipt")
                 || subject_lower.contains("payment")
                 || subject_lower.contains("transaction")
-                || subject_lower.contains("renewal"))
+                || subject_lower.contains("renewal")
+                || subject_lower.contains("billing")
+                || subject_lower.contains("account details")
+                || subject_lower.contains("statement"))
         {
             // Check for random alphanumeric codes in subject (order IDs)
             let has_random_code = Regex::new(r"[A-Z0-9]{6,}").unwrap().is_match(subject);
@@ -1854,6 +1857,38 @@ impl FeatureExtractor for ContextAnalyzer {
         {
             total_score += 50;
             all_evidence.push("Fake account statement from non-financial domain".to_string());
+        }
+
+        // Fake domain/hosting expiration scam (impersonating registrars/hosts)
+        let hosting_brands = [
+            "squarespace",
+            "square space",
+            "godaddy",
+            "namecheap",
+            "wix",
+            "bluehost",
+            "hostgator",
+            "domain registration",
+            "domain registry",
+        ];
+        let claims_hosting = hosting_brands
+            .iter()
+            .any(|b| sender.to_lowercase().contains(b) || subject_lower.contains(b));
+        if claims_hosting
+            && (subject_lower.contains("expir")
+                || subject_lower.contains("renew")
+                || subject_lower.contains("suspend"))
+            && !sender_domain.contains("squarespace")
+            && !sender_domain.contains("godaddy")
+            && !sender_domain.contains("namecheap")
+            && !sender_domain.contains("wix.com")
+            && !sender_domain.contains("bluehost")
+            && !sender_domain.contains("hostgator")
+        {
+            total_score += 70;
+            all_evidence.push(
+                "Fake domain/hosting expiration scam (brand from unrelated domain)".to_string(),
+            );
         }
 
         // Check for unsolicited home repair scam (roofing, etc)
