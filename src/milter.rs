@@ -224,15 +224,11 @@ pub fn extract_email_from_header(header_value: &str) -> Option<String> {
     let decoded = decode_mime_header(header_value);
 
     let email = if let Some(start) = decoded.find('<') {
-        if let Some(end) = decoded.find('>') {
-            if start < end {
-                decoded[start + 1..end].to_string()
-            } else {
-                // Malformed - < appears after >
-                return None;
-            }
+        let end = decoded.find('>')?;
+        if start < end {
+            decoded[start + 1..end].to_string()
         } else {
-            // Malformed - no closing >
+            // Malformed - < appears after >
             return None;
         }
     } else if decoded.contains('@') {
@@ -890,7 +886,7 @@ impl Milter {
                             log::debug!(
                                 "PID {} evaluated action: {:?}, matched_rules: {:?}",
                                 std::process::id(),
-                                &action,
+                                action,
                                 matched_rules
                             );
 
