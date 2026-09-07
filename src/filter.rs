@@ -2378,25 +2378,37 @@ impl FilterEngine {
             .trim_matches('"')
             .to_lowercase();
         let has_via_gibberish = {
-            let re = regex::Regex::new(r"via\s+([a-z0-9]{3,})\s*'?\s*$").unwrap();
-            re.captures(&from_display_ml)
-                .map(|c| {
-                    let name = &c[1];
-                    ![
-                        "docusign",
-                        "google",
-                        "groups",
-                        "linkedin",
-                        "facebook",
-                        "outlook",
-                        "microsoft",
-                        "dropbox",
-                        "slack",
-                    ]
-                    .iter()
-                    .any(|l| name.contains(l))
-                })
-                .unwrap_or(false)
+            // Skip if this is a verified Google Groups / mailing list (has X-Google-Group-Id
+            // or List-Post pointing to a real groups platform)
+            let has_google_group_headers = context_with_attachments.headers.iter().any(|(k, v)| {
+                let kl = k.to_lowercase();
+                kl == "x-google-group-id"
+                    || (kl == "list-post" && v.to_lowercase().contains("groups.google.com"))
+                    || (kl == "list-post" && v.to_lowercase().contains("groups.io"))
+            });
+            if has_google_group_headers {
+                false
+            } else {
+                let re = regex::Regex::new(r"via\s+([a-z0-9]{3,})\s*'?\s*$").unwrap();
+                re.captures(&from_display_ml)
+                    .map(|c| {
+                        let name = &c[1];
+                        ![
+                            "docusign",
+                            "google",
+                            "groups",
+                            "linkedin",
+                            "facebook",
+                            "outlook",
+                            "microsoft",
+                            "dropbox",
+                            "slack",
+                        ]
+                        .iter()
+                        .any(|l| name.contains(l))
+                    })
+                    .unwrap_or(false)
+            }
         };
         let has_suspicious_list_id = context_with_attachments.headers.iter().any(|(k, v)| {
             k.to_lowercase() == "list-id" && {
@@ -2476,8 +2488,18 @@ impl FilterEngine {
         // Check for gibberish username from consumer email
         let has_gibberish_consumer_sender =
             self.get_gibberish_username_score(&context_with_attachments) > 0;
+        // Verified Google Groups / mailing list platform (trusted infrastructure)
+        let has_verified_group_platform = context_with_attachments.headers.iter().any(|(k, v)| {
+            let kl = k.to_lowercase();
+            kl == "x-google-group-id"
+                || (kl == "list-post" && v.to_lowercase().contains("groups.google.com"))
+                || (kl == "list-post" && v.to_lowercase().contains("groups.io"))
+        });
+
         let suppress_mailing_list = has_brand_impersonation
-            || (has_suspicious_domain_reputation && !has_dmarc_pass)
+            || (has_suspicious_domain_reputation
+                && !has_dmarc_pass
+                && !has_verified_group_platform)
             || has_high_spam_signals
             || has_gibberish_consumer_sender
             || {
