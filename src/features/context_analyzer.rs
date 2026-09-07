@@ -1620,6 +1620,32 @@ impl FeatureExtractor for ContextAnalyzer {
             .trim()
             .trim_matches('"')
             .to_lowercase();
+
+        // Detect RTL override / zero-width character spoofing in From display name
+        // (e.g., reversed "Amazon.co.jp" with U+202E + zero-width separators)
+        {
+            let decoded_from =
+                crate::filter::decode_mime_words(context.from_header.as_deref().unwrap_or(""));
+            let display_part = decoded_from.split('<').next().unwrap_or("");
+            let has_rtl_override = display_part.chars().any(|c| {
+                matches!(
+                    c,
+                    '\u{202E}' | '\u{202D}' | '\u{2066}' | '\u{2067}' | '\u{2068}'
+                )
+            });
+            let has_zero_width = display_part.chars().any(|c| {
+                matches!(
+                    c,
+                    '\u{200B}' | '\u{200C}' | '\u{200D}' | '\u{FEFF}' | '\u{2060}'
+                )
+            });
+            if has_rtl_override || (has_zero_width && display_part.chars().count() > 3) {
+                total_score += 90;
+                all_evidence
+                    .push("Display name uses RTL override / zero-width spoofing".to_string());
+            }
+        }
+
         let via_gibberish = Regex::new(r"via\s+([a-z]{6,})\s*'?\s*$").unwrap();
         if let Some(caps) = via_gibberish.captures(&from_display) {
             let group_name = &caps[1];
@@ -2040,6 +2066,34 @@ impl FeatureExtractor for ContextAnalyzer {
             if !is_financial {
                 total_score += 80;
                 all_evidence.push("Investment/stock scam from non-financial domain".to_string());
+            }
+        }
+
+        // Crypto "funds added to your portfolio" advance-fee scam
+        {
+            let body_lower = body.to_lowercase();
+            let crypto_terms = body_lower.contains("btc")
+                || body_lower.contains("bitcoin")
+                || body_lower.contains("eth")
+                || body_lower.contains("ethereum")
+                || body_lower.contains("crypto")
+                || body_lower.contains("usdt");
+            let portfolio_added = (body_lower.contains("added to your")
+                || body_lower.contains("has been credited")
+                || body_lower.contains("deposited"))
+                && (body_lower.contains("portfolio")
+                    || body_lower.contains("wallet")
+                    || body_lower.contains("account"));
+            // Spaced-out domain evasion (e.g., "BLOOMKOIN. COM (remove the space)")
+            let spaced_domain = Regex::new(r"(?i)[a-z]{4,}\.\s+com").unwrap().is_match(body)
+                || body_lower.contains("remove the space");
+            if crypto_terms && portfolio_added {
+                total_score += 90;
+                all_evidence.push("Crypto portfolio advance-fee scam detected".to_string());
+                if spaced_domain {
+                    total_score += 30;
+                    all_evidence.push("Spaced-out domain evasion".to_string());
+                }
             }
         }
 
