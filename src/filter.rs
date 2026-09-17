@@ -2497,7 +2497,39 @@ impl FilterEngine {
                 || (kl == "list-post" && v.to_lowercase().contains("groups.io"))
         });
 
+        // Cheap inline check: Japanese account-restriction phishing keywords in
+        // subject/body from a non-.jp domain. Mirrors the ContextAnalyzer detection
+        // but computed here (before full feature analysis) to suppress the mailing
+        // list bonus. Spammers set up DKIM + List-ID to farm the -200 bonus.
+        let has_japanese_phishing = {
+            let subj = context_with_attachments.subject.as_deref().unwrap_or("");
+            let body = context_with_attachments.body.as_deref().unwrap_or("");
+            let jp_text = format!("{} {}", subj, body);
+            let jp_account_keywords = [
+                "制限",
+                "認証",
+                "確認",
+                "解除",
+                "停止",
+                "凍結",
+                "本人確認",
+                "利用制限",
+            ];
+            let sender_domain = context_with_attachments
+                .from_header
+                .as_deref()
+                .and_then(|f| f.split('@').nth(1))
+                .map(|d| d.trim_end_matches('>').to_lowercase())
+                .unwrap_or_default();
+            jp_account_keywords.iter().any(|kw| jp_text.contains(kw))
+                && !sender_domain.ends_with(".jp")
+                && !sender_domain.contains("amazon")
+                && !sender_domain.contains("rakuten")
+                && !sender_domain.contains("apple")
+        };
+
         let suppress_mailing_list = has_brand_impersonation
+            || has_japanese_phishing
             || (has_suspicious_domain_reputation
                 && !has_dmarc_pass
                 && !has_verified_group_platform)
