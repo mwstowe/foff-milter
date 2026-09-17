@@ -1198,6 +1198,22 @@ pub fn builtin_modules() -> Vec<Module> {
                     description: None,
                 },
                 FilterRule {
+                    name: "Double-Relayed Bulk Spam".to_string(),
+                    enabled: true,
+                    criteria:
+                    // Duplicate List-Unsubscribe-Post headers (concatenated into one value
+                    // during parsing) indicate the message was built by one bulk mailer
+                    // and re-injected through a second ESP — a reliable lead-gen spam tell.
+                    // A legitimate single-ESP send produces exactly one such header.
+                    Criteria::HeaderPattern {
+                        header: "List-Unsubscribe-Post".to_string(),
+                        pattern: "(?i)List-Unsubscribe=One-Click.{0,80}List-Unsubscribe=One-Click".to_string(),
+                    },
+                    action: None,
+                    score: Some(80),
+                    description: Some("Duplicate List-Unsubscribe-Post headers (message relayed through two mailers)".to_string()),
+                },
+                FilterRule {
                     name: "Stock Spam and Pump-and-Dump".to_string(),
                     enabled: true,
                     criteria:
