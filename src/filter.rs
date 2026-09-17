@@ -2436,14 +2436,11 @@ impl FilterEngine {
             // Also check Sender Alignment for brand claims
             let sa_feature = crate::features::sender_alignment::SenderAlignmentAnalyzer::new();
             let sa_result = sa_feature.extract(&context_with_attachments);
-            let sa_detected = sa_result
-                .evidence
-                .iter()
-                .any(|e| {
-                    e.contains("Brand impersonation")
-                        || e.contains("Claims")
-                        || e.contains("mentioned but sender domain")
-                });
+            let sa_detected = sa_result.evidence.iter().any(|e| {
+                e.contains("Brand impersonation")
+                    || e.contains("Claims")
+                    || e.contains("mentioned but sender domain")
+            });
             // Also check Health Spam for health brand impersonation
             let hs_feature = crate::features::health_spam::HealthSpamAnalyzer::new();
             let hs_result = hs_feature.extract(&context_with_attachments);
