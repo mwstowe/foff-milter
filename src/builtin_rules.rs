@@ -1198,6 +1198,32 @@ pub fn builtin_modules() -> Vec<Module> {
                     description: None,
                 },
                 FilterRule {
+                    name: "Spoofed Brand Message-ID".to_string(),
+                    enabled: true,
+                    criteria:
+                    // Message-ID domain is a major brand the sender has no authenticated
+                    // relationship with. Legitimate senders use their own domain (or their
+                    // ESP's) in the Message-ID — lead-gen spam borrows a brand domain
+                    // (e.g. @microsoft.com) to look legitimate while the actual From /
+                    // authenticated domain is unrelated.
+                    Criteria::And {
+                        criteria: vec![
+                        Criteria::HeaderPattern {
+                            header: "Message-ID".to_string(),
+                            pattern: "(?i)@(microsoft|outlook|office365|google|gmail|apple|icloud|amazon|paypal|salesforce)\\.com>?$".to_string(),
+                        },
+                        Criteria::Not {
+                            criteria: Box::new(Criteria::SenderPattern {
+                                pattern: "(?i).*@([a-z0-9.-]+\\.)?(microsoft|outlook|office365|google|gmail|apple|icloud|amazon|paypal|salesforce)\\.com>?$".to_string(),
+                            }),
+                        },
+                        ],
+                    },
+                    action: None,
+                    score: Some(120),
+                    description: Some("Message-ID claims a major brand domain unrelated to the authenticated sender".to_string()),
+                },
+                FilterRule {
                     name: "Double-Relayed Bulk Spam".to_string(),
                     enabled: true,
                     criteria:
