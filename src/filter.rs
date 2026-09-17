@@ -2439,7 +2439,11 @@ impl FilterEngine {
             let sa_detected = sa_result
                 .evidence
                 .iter()
-                .any(|e| e.contains("Brand impersonation") || e.contains("Claims"));
+                .any(|e| {
+                    e.contains("Brand impersonation")
+                        || e.contains("Claims")
+                        || e.contains("mentioned but sender domain")
+                });
             // Also check Health Spam for health brand impersonation
             let hs_feature = crate::features::health_spam::HealthSpamAnalyzer::new();
             let hs_result = hs_feature.extract(&context_with_attachments);

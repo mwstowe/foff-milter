@@ -1177,7 +1177,13 @@ pub fn builtin_modules() -> Vec<Module> {
                     name: "Advance Fee Fraud".to_string(),
                     enabled: true,
                     criteria:
-                    Criteria::SubjectPattern { pattern: "(?i).{0,100}(private|confidential|urgent.{0,100}proposal|business.{0,100}proposal|inheritance).*".to_string() },
+                    Criteria::And {
+                        criteria: vec![
+                        Criteria::SubjectPattern { pattern: "(?i).{0,100}(private|confidential|urgent.{0,100}proposal|business.{0,100}proposal|inheritance).*".to_string() },
+                        // Require actual advance-fee-fraud body content, not just the subject word
+                        Criteria::BodyPattern { pattern: "(?i).{0,200}(next of kin|beneficiary|sum of|million (usd|dollars|pounds|euros)|transfer.{0,30}funds|unclaimed (funds|estate|inheritance)|deceased.{0,30}(client|customer|account)|percentage of the (total|sum|amount)|bank.{0,30}(guarantee|draft)|barrister|solicitor.{0,30}(representing|handling)).*".to_string() },
+                        ],
+                    },
                     action: None,
                     score: Some(300),
                     description: None,
