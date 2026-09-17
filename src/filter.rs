@@ -721,7 +721,82 @@ impl FilterEngine {
             return is_legitimate_domain; // Only domain list, not subject
         }
 
-        is_legitimate_domain || is_business_subject
+        // A domain on the explicit allowlist is trusted unconditionally.
+        if is_legitimate_domain {
+            return true;
+        }
+
+        // The subject-keyword heuristic is weak and heavily abused by phishing
+        // (e.g. "Document Summary", "Payment Confirmation"). Only honor it when the
+        // message does not carry hard authentication-fraud or suspicious-infrastructure
+        // signals. This generalizes: any spoofed/misaligned or suspicious-TLD sender
+        // loses the 70% "business discount" regardless of its subject line.
+        if is_business_subject && !self.has_business_discount_disqualifier(context, sender_domain) {
+            return true;
+        }
+
+        false
+    }
+
+    /// Returns true when the sender exhibits authentication-fraud or suspicious-
+    /// infrastructure signals that should disqualify it from the subject-based
+    /// "legitimate business" discount. Kept intentionally generic so it catches a
+    /// pattern (spoofed / misaligned / throwaway-TLD senders) rather than a single email.
+    fn has_business_discount_disqualifier(
+        &self,
+        context: &MailContext,
+        sender_domain: &str,
+    ) -> bool {
+        use crate::dkim_verification::{DkimAuthStatus, DkimVerifier, DomainAlignment};
+
+        // 1. Authentication signal: a misaligned or failing DKIM (not explained by a
+        //    recognized ESP) means the "business-looking" subject cannot be trusted.
+        let dkim = DkimVerifier::verify(&context.headers, Some(sender_domain));
+        let auth_disqualifies = match dkim.auth_status {
+            DkimAuthStatus::Fail(_) | DkimAuthStatus::PermError => true,
+            DkimAuthStatus::Pass => match dkim.domain_alignment {
+                DomainAlignment::Misaligned {
+                    dkim_domain,
+                    sender_domain: aligned_sender,
+                } => {
+                    // Allow recognized ESP misalignment (e.g. mailchimp, sendgrid).
+                    let esp_domains = [
+                        "sendgrid.net",
+                        "mailchimp.com",
+                        "amazonses.com",
+                        "mailgun.org",
+                        "sparkpostmail.com",
+                        "mcsv.net",
+                        "rsgsv.net",
+                    ];
+                    !esp_domains
+                        .iter()
+                        .any(|esp| dkim_domain.contains(esp) || aligned_sender.contains(esp))
+                }
+                _ => false,
+            },
+            _ => false,
+        };
+        if auth_disqualifies {
+            return true;
+        }
+
+        // 2. Infrastructure signal: suspicious / high-risk TLDs are disproportionately
+        //    used for throwaway phishing domains. Keep this list conservative to avoid
+        //    false positives on legitimate senders.
+        const SUSPICIOUS_TLDS: [&str; 18] = [
+            ".tech", ".top", ".xyz", ".online", ".site", ".club", ".icu", ".cyou", ".sbs",
+            ".rest", ".quest", ".click", ".link", ".live", ".shop", ".cfd", ".buzz", ".monster",
+        ];
+        let domain_lc = sender_domain.to_lowercase();
+        if SUSPICIOUS_TLDS
+            .iter()
+            .any(|tld| domain_lc.ends_with(tld))
+        {
+            return true;
+        }
+
+        false
     }
 
     /// Normalize email content for enhanced analysis

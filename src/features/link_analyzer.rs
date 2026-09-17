@@ -77,8 +77,16 @@ impl LinkAnalyzer {
     pub fn extract_links(&self, context: &MailContext) -> Vec<ExtractedLink> {
         let mut links = Vec::new();
 
-        // Extract from body with HTML entity decoding
-        if let Some(body) = &context.body {
+        // Extract from body with HTML entity decoding.
+        //
+        // Prefer `raw_body` (the raw MIME body with HTML markup intact) over `body`.
+        // During rule evaluation the FilterEngine replaces `body` with the plain-text
+        // *normalized* body, which has all HTML tags — including `<a href="...">`
+        // anchors — stripped out. Running the anchor regex against that stripped text
+        // finds zero links, so link-based detections (cross-domain, cloud-storage,
+        // OAuth-consent phishing) never fire. `raw_body` still contains the markup.
+        let body_source = context.raw_body.as_ref().or(context.body.as_ref());
+        if let Some(body) = body_source {
             let decoded_body = self.decode_html_entities(body);
 
             for cap in self.link_regex.captures_iter(&decoded_body) {
@@ -190,6 +198,119 @@ impl LinkAnalyzer {
             }
         }
         "unknown".to_string()
+    }
+
+    /// Detect OAuth consent / token phishing among extracted links.
+    ///
+    /// Returns evidence text when a link points at a known OAuth authorization
+    /// endpoint but carries a redirect target (`redirect_uri` / `uri`) whose
+    /// registrable domain does not match the OAuth provider's domain. This is the
+    /// "illicit consent grant" pattern: the visible link is a legitimate provider
+    /// (e.g. login.microsoftonline.com) so it passes brand/domain checks, while the
+    /// token is redirected to an attacker-controlled domain.
+    fn detect_oauth_consent_phishing(&self, links: &[ExtractedLink]) -> Option<String> {
+        // Known OAuth authorization hosts and the registrable domain we expect their
+        // redirect targets to normally belong to.
+        const OAUTH_PROVIDERS: [(&str, &str); 6] = [
+            ("login.microsoftonline.com", "microsoft"),
+            ("login.live.com", "microsoft"),
+            ("accounts.google.com", "google"),
+            ("login.salesforce.com", "salesforce"),
+            ("github.com/login/oauth", "github"),
+            ("slack.com/oauth", "slack"),
+        ];
+
+        for link in links {
+            let url_lc = link.url.to_lowercase();
+            let host_lc = link.domain.to_lowercase();
+
+            // Must look like an OAuth authorize/consent request.
+            let is_authorize = url_lc.contains("oauth2")
+                || url_lc.contains("/oauth/")
+                || url_lc.contains("authorize")
+                || url_lc.contains("v2.0/authorize");
+            if !is_authorize {
+                continue;
+            }
+            let provider = OAUTH_PROVIDERS
+                .iter()
+                .find(|(host, _)| host_lc.contains(*host) || url_lc.contains(*host));
+            let provider = match provider {
+                Some(p) => p,
+                None => continue,
+            };
+
+            let has_client_id = url_lc.contains("client_id=");
+            let silent_consent = url_lc.contains("prompt=none");
+
+            // Extract the redirect target (redirect_uri= or uri=) and compare its host
+            // against the provider domain.
+            if let Some(redirect_host) = self.extract_oauth_redirect_host(&link.url) {
+                let redirect_lc = redirect_host.to_lowercase();
+                let matches_provider = redirect_lc.contains(provider.1)
+                    // Common first-party redirect hosts for these providers.
+                    || redirect_lc.contains("microsoftonline.com")
+                    || redirect_lc.contains("office.com")
+                    || redirect_lc.contains("live.com")
+                    || redirect_lc.contains("googleapis.com")
+                    || redirect_lc.contains("google.com");
+
+                if !matches_provider && has_client_id {
+                    return Some(format!(
+                        "OAuth consent phishing: {} authorize URL redirects to unrelated host '{}'{}",
+                        provider.0,
+                        redirect_host,
+                        if silent_consent {
+                            " (silent prompt=none)"
+                        } else {
+                            ""
+                        }
+                    ));
+                }
+            } else if has_client_id && silent_consent {
+                // No explicit redirect host parsed, but a silent consent grant with a
+                // client_id delivered via email is itself highly abnormal.
+                return Some(format!(
+                    "OAuth consent phishing: silent {} consent grant (prompt=none) delivered via email",
+                    provider.0
+                ));
+            }
+        }
+
+        None
+    }
+
+    /// Pull the host out of an OAuth redirect target parameter (`redirect_uri=` or
+    /// `uri=`) within a URL's query string. Handles URL-encoded values.
+    fn extract_oauth_redirect_host(&self, url: &str) -> Option<String> {
+        let query = url.split_once('?').map(|(_, q)| q).unwrap_or(url);
+        for pair in query.split('&') {
+            let (key, value) = pair.split_once('=')?;
+            let key_lc = key.to_lowercase();
+            if key_lc == "redirect_uri" || key_lc == "uri" || key_lc == "redirecturl" {
+                // Minimal percent-decoding for the characters that matter for host parsing.
+                let decoded = value
+                    .replace("%3A", ":")
+                    .replace("%2F", "/")
+                    .replace("%3a", ":")
+                    .replace("%2f", "/");
+                // The value may be a bare host or a full URL.
+                if let Ok(parsed) = Url::parse(&decoded) {
+                    if let Some(host) = parsed.host_str() {
+                        return Some(host.to_string());
+                    }
+                }
+                // Fallback: strip scheme and take up to the first slash.
+                let no_scheme = decoded
+                    .trim_start_matches("https://")
+                    .trim_start_matches("http://");
+                let host = no_scheme.split(['/', '?', '#']).next().unwrap_or(no_scheme);
+                if !host.is_empty() {
+                    return Some(host.to_string());
+                }
+            }
+        }
+        None
     }
 
     fn extract_text_from_html(&self, html: &str) -> String {
@@ -1204,6 +1325,21 @@ impl FeatureExtractor for LinkAnalyzer {
         if has_cloud_storage_links && !is_established_for_cloud {
             evidence.push("Links to cloud object storage (phishing hosting)".to_string());
             score += 40;
+        }
+
+        // Detect OAuth consent / token phishing ("illicit consent grant" / AiTM).
+        //
+        // Pattern: a link to a legitimate OAuth authorization endpoint (e.g.
+        // login.microsoftonline.com/.../oauth2/.../authorize, accounts.google.com/o/oauth2)
+        // carrying a client_id and a redirect target (redirect_uri= or uri=) whose host
+        // does not belong to the authorization provider. Attackers use real provider
+        // authorize URLs so the domain looks trustworthy, but redirect the granted token
+        // to an unrelated domain they control. `prompt=none` (silent consent) is a strong
+        // additional signal. This is intentionally provider-generic rather than tied to a
+        // single sender or brand.
+        if let Some(evidence_str) = self.detect_oauth_consent_phishing(&links) {
+            evidence.push(evidence_str);
+            score += 60;
         }
 
         let confidence = if total_links > 0 { 0.8 } else { 0.3 };

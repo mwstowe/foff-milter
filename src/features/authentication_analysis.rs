@@ -24,11 +24,20 @@ pub struct AuthenticationConfig {
 #[derive(Debug, Clone, Deserialize)]
 pub struct AuthenticationScoring {
     pub dkim_pass_boost: i32,
+    /// Penalty applied when DKIM passes but the signing domain is misaligned with
+    /// the From domain and the misalignment is not explained by a recognized ESP.
+    /// Positive value = more suspicious. Replaces the (incorrectly granted) pass bonus.
+    #[serde(default = "default_dkim_misaligned_penalty")]
+    pub dkim_misaligned_penalty: i32,
     pub spf_pass_boost: i32,
     pub dmarc_pass_boost: i32,
     pub auth_failure_penalty: i32,
     pub spoofing_penalty: i32,
     pub missing_auth_penalty: i32,
+}
+
+fn default_dkim_misaligned_penalty() -> i32 {
+    15
 }
 
 #[derive(Debug, Clone)]
@@ -70,12 +79,17 @@ impl AuthenticationAnalyzer {
 
         match dkim_result.auth_status {
             DkimAuthStatus::Pass => {
-                score += self.config.scoring.dkim_pass_boost;
                 evidence.push("DKIM authentication passed".to_string());
 
-                // Check domain alignment
+                // The dkim_pass_boost (a negative "trust" bonus) must only be granted
+                // when the signing domain (d=) is aligned with the From domain, or when
+                // the misalignment is explained by a recognized ESP. A bare "dkim=pass"
+                // on an unrelated throwaway signing domain (e.g. *.gappssmtp.com signing
+                // for a spoofed brand) is a common phishing pattern and must NOT earn the
+                // authentication bonus. See analyze note: misaligned-but-signed phishing.
                 match dkim_result.domain_alignment {
                     DomainAlignment::Aligned => {
+                        score += self.config.scoring.dkim_pass_boost;
                         evidence.push("DKIM domain properly aligned".to_string());
                     }
                     DomainAlignment::Misaligned {
@@ -89,12 +103,17 @@ impl AuthenticationAnalyzer {
                             });
 
                         if is_esp_misalignment {
+                            // Recognized ESP: still trustworthy, keep the pass bonus.
+                            score += self.config.scoring.dkim_pass_boost;
                             evidence.push(format!(
                                 "DKIM domain misaligned but legitimate ESP: {} vs {}",
                                 dkim_domain, sender_domain
                             ));
                             // Don't add risk factor for ESP misalignment
                         } else {
+                            // Genuine misalignment: withhold the pass bonus and treat the
+                            // misalignment as a risk signal instead of a trust signal.
+                            score += self.config.scoring.dkim_misaligned_penalty;
                             evidence.push(format!(
                                 "DKIM domain misaligned: {} vs {}",
                                 dkim_domain, sender_domain
@@ -103,6 +122,7 @@ impl AuthenticationAnalyzer {
                         }
                     }
                     DomainAlignment::Unknown => {
+                        // Alignment could not be established: do not grant the bonus.
                         evidence.push("DKIM domain alignment unknown".to_string());
                         risk_factors += 1;
                     }
@@ -529,6 +549,7 @@ impl AuthenticationFeature {
             ],
             scoring: AuthenticationScoring {
                 dkim_pass_boost: -10,
+                dkim_misaligned_penalty: 15,
                 spf_pass_boost: -5,
                 dmarc_pass_boost: -15,
                 auth_failure_penalty: 25,
@@ -1015,6 +1036,7 @@ mod tests {
             suspicious_patterns: vec!["urgent".to_string()],
             scoring: AuthenticationScoring {
                 dkim_pass_boost: -10,
+                dkim_misaligned_penalty: 15,
                 spf_pass_boost: -5,
                 dmarc_pass_boost: -15,
                 auth_failure_penalty: 25,
