@@ -379,6 +379,17 @@ pub fn builtin_modules() -> Vec<Module> {
                                     evidence_pattern: Some("invoice from domain unrelated to claimed company".to_string()),
                                     invert: None,
                                 },
+                                // Block Perfect Auth when a Portuguese scam pattern is
+                                // detected. A confirmed scam-pattern match must never earn
+                                // the -30 "perfect authentication" trust bonus, even when the
+                                // throwaway domain passes its own aligned DKIM.
+                                Criteria::FeatureAnalysis {
+                                    feature_name: "Portuguese Language".to_string(),
+                                    min_score: None,
+                                    max_score: None,
+                                    evidence_pattern: Some("scam pattern detected".to_string()),
+                                    invert: None,
+                                },
                                 // Block Perfect Auth when display name uses non-ASCII spoofing
                                 Criteria::FeatureAnalysis {
                                     feature_name: "Sender Alignment".to_string(),

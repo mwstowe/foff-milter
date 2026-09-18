@@ -532,6 +532,10 @@ impl AuthenticationFeature {
                 "sendgrid.net".to_string(),
                 "mailgun.org".to_string(),
                 "mailchimp.com".to_string(),
+                "mailchimpapp.net".to_string(), // Mailchimp DKIM signing domain
+                "mcdlv.net".to_string(),        // Mailchimp delivery infrastructure
+                "mcsv.net".to_string(),         // Mailchimp delivery infrastructure
+                "rsgsv.net".to_string(),        // Mailchimp delivery infrastructure
                 "amazonses.com".to_string(),
                 "cjm.adobe.com".to_string(),           // Adobe Campaign
                 "cname.cjm.adobe.com".to_string(),     // Adobe Campaign CNAME
