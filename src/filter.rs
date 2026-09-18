@@ -785,14 +785,11 @@ impl FilterEngine {
         //    used for throwaway phishing domains. Keep this list conservative to avoid
         //    false positives on legitimate senders.
         const SUSPICIOUS_TLDS: [&str; 18] = [
-            ".tech", ".top", ".xyz", ".online", ".site", ".club", ".icu", ".cyou", ".sbs",
-            ".rest", ".quest", ".click", ".link", ".live", ".shop", ".cfd", ".buzz", ".monster",
+            ".tech", ".top", ".xyz", ".online", ".site", ".club", ".icu", ".cyou", ".sbs", ".rest",
+            ".quest", ".click", ".link", ".live", ".shop", ".cfd", ".buzz", ".monster",
         ];
         let domain_lc = sender_domain.to_lowercase();
-        if SUSPICIOUS_TLDS
-            .iter()
-            .any(|tld| domain_lc.ends_with(tld))
-        {
+        if SUSPICIOUS_TLDS.iter().any(|tld| domain_lc.ends_with(tld)) {
             return true;
         }
 
