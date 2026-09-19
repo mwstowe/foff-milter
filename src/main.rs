@@ -162,8 +162,25 @@ async fn analyze_email_file(
                 }
             }
 
-            // Handle header continuation lines by concatenating values (match milter behavior)
-            if let Some(existing_value) = headers.get(&key) {
+            // Handle header continuation lines by concatenating values (match milter behavior).
+            // DKIM-Signature must be kept as separate indexed keys (dkim-signature-N) rather
+            // than concatenated, so DkimVerifier sees each signature (matches test_email_file
+            // and milter behavior). Concatenating them collapses multiple signatures into one
+            // and drops all but the first signing domain, which diverges from production.
+            if key == "dkim-signature" {
+                let mut count = 0;
+                while headers.contains_key(&format!("dkim-signature-{}", count)) {
+                    count += 1;
+                }
+                if headers.contains_key("dkim-signature") {
+                    if let Some(first_sig) = headers.remove("dkim-signature") {
+                        headers.insert("dkim-signature-0".to_string(), first_sig);
+                    }
+                    headers.insert(format!("dkim-signature-{}", count + 1), value);
+                } else {
+                    headers.insert(key, value);
+                }
+            } else if let Some(existing_value) = headers.get(&key) {
                 // Concatenate with existing value (same as milter)
                 let combined_value = format!("{} {}", existing_value, value);
                 headers.insert(key, combined_value);
