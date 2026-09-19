@@ -1,0 +1,407 @@
+Return-Path: <bounce-KWE5JTRSAHHURALTKHCHIF6DIM.510006@bounce.news.capitalsurgeplan.com>
+Received: from hotel.example.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.example.com (8.18.2/8.18.1) with ESMTPS id 68J41GYH011640
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <user@example.com>; Sat, 19 Sep 2026 04:01:16 GMT
+	(envelope-from bounce-KWE5JTRSAHHURALTKHCHIF6DIM.510006@bounce.news.capitalsurgeplan.com)
+Authentication-Results: juliett.example.com;
+	dkim=pass (2048-bit key; unprotected) header.d=news.capitalsurgeplan.com header.i=contact@news.capitalsurgeplan.com header.b=VV2dB1kY;
+	dkim=pass (2048-bit key; unprotected) header.d=s51.y.mc.salesforce.com header.i=@s51.y.mc.salesforce.com header.b=naqhjt84
+Received: from alv134.mta.exacttarget.com (alv134.mta.exacttarget.com [159.92.166.134])
+	by hotel.example.com (8.16.1/8.16.1) with ESMTPS id 68J41ANI046147
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <user@example.com>; Fri, 18 Sep 2026 23:01:12 -0500
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.example.com 68J41ANI046147
+Authentication-Results: hotel.example.com;
+	dkim=pass (2048-bit key, unprotected) header.d=news.capitalsurgeplan.com header.i=contact@news.capitalsurgeplan.com header.a=rsa-sha256 header.s=51dkim1 header.b=VV2dB1kY;
+	dkim=pass (2048-bit key, unprotected) header.d=s51.y.mc.salesforce.com header.i=@s51.y.mc.salesforce.com header.a=rsa-sha256 header.s=fbldkim51 header.b=naqhjt84
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=51dkim1; d=news.capitalsurgeplan.com;
+ h=From:To:Subject:Date:List-Unsubscribe:List-Unsubscribe-Post:MIME-Version:
+ Message-ID:Content-Type; i=contact@news.capitalsurgeplan.com;
+ bh=6Ep0RBeymkhkolFdgN4q3DG/QAv31u46aCphrOuM5PE=;
+ b=VV2dB1kYzWYaYrtZznK7i+BxPTzPia8K5jKhkof4Y05ZSrJvxnuJBnGu331IfSCePzuJjv+mKYKl
+   08ff7XF0iUcJhZilXCAtfHZ8l3DjQYAxuTUCmUUu8xj6OihId9En2c9/Xvk4VNt3t7pjKbEcG/CM
+   NyYgMDmLYbTRz6H57xjGXZskE1vGNvf5I7Jw/+5eB58cKSmlXGLnA/P+5GztN7aJBdMMR+6mL+03
+   9BfkGP7f9grsnvCEmg/XRsacPJWfMbuRcvj2nkeSA4SNtIOll9BU9nxiiPrZy6WdulV7vRqXRNpa
+   sTkX1oytahyzXaBRzsBuwtaLWnOcezbUO5kd+w==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=fbldkim51; d=s51.y.mc.salesforce.com;
+ h=From:To:Subject:Date:List-Unsubscribe:List-Unsubscribe-Post:MIME-Version:
+ Message-ID:Content-Type;
+ bh=6Ep0RBeymkhkolFdgN4q3DG/QAv31u46aCphrOuM5PE=;
+ b=naqhjt84FBXNxnm87Ec6GAs8peye/JsvSU/os4E8UYlajAp64OgGeUduaS7aacz54kuDUGNIT3I4
+   6/PGmncWmWIIICUEJLlxXDHijPaBjyg29mZmGR5k9tHjJ44ZlRfDHUSdGZU8w/B53va6BTzYaDMj
+   sv8BrgD8/o/BcLSTT4djIWmf2+jJCwl3NKDBXwtvBNaBN4hsrGIfNlAlyj18fXcVFd5A1IoJmm2f
+   QXYmDG508FngKn4+zyfa5lS8WWJ+WAJGkG/taAQjiiKct7xv4pSEfxeam9bBgDMHslajcCnHB9Un
+   g8uXEPzbjQ77TbjWe8M6qeRCRQgEQXCb9ZYLUQ==
+Received: by alv134.mta.exacttarget.com id hlo4gc39mjc7 for <user@example.com>; Sat, 19 Sep 2026 04:01:05 +0000 (envelope-from <bounce-KWE5JTRSAHHURALTKHCHIF6DIM.510006@bounce.news.capitalsurgeplan.com>)
+From: "Capital Surge Plan" <contact@news.capitalsurgeplan.com>
+To: <user@example.com>
+Subject: The Fourth Reset Has Begun
+Date: Fri, 18 Sep 2026 22:01:05 -0600
+List-Unsubscribe: <https://click.news.capitalsurgeplan.com/subscription_center.aspx?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtaWQiOiI1MzYwMTA2MzkiLCJzIjoiNDY4NjM4ODYiLCJsaWQiOiI5NCIsImoiOiIyOTkxNjEiLCJqYiI6IjEwMDYiLCJkIjoiNTEwMDA2In0.Ux6qSc1JbH3tGAWvPLb5hPbN1mftml64JT_uPa0u1C4>, <mailto:leave-UQKMH3APJZSE3LIHXP2VCZQMJ4.510006@leave.news.capitalsurgeplan.com>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+MIME-Version: 1.0
+X-SFMC-Stack: 51
+x-job: 536010639_299161
+Message-ID: <9fb6c3a6-751b-4f3f-a946-ac9f7c8b57bc@cdg3s51mta0456.xt.local>
+Content-Type: multipart/alternative;
+	boundary="A1xxWJnAv7mr=_?:"
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.example.com [172.31.18.8]); Sat, 19 Sep 2026 04:01:16 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.example.com [23.95.222.152]); Fri, 18 Sep 2026 23:01:12 -0500 (CDT)
+
+This is a multi-part message in MIME format.
+
+--A1xxWJnAv7mr=_?:
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+
+Editor’s Note: We are dedicated to provide readers like you with unique opportunities. The message below from one of our business associates is one we believe you should take a serious look at.
+
+If you want to know who rules a country, don't look at the flag or the constitution, look at the money. The great rulers of the past had a name for it – the coin of the realm.
+
+Not just a description of currency, but a declaration. Whoever could strike the coin – whoever could put a face on the metal, set its weight, guarantee its value, and demand it be accepted in payment of debts – was the realm itself.
+
+To change the coin was to change the fundamental order of things.
+
+Roman emperors understood the importance of it. In fact, the first act of a new Caesar was almost always to strike a new denarii bearing his face.
+
+When Henry VIII began debasing England's silver coinage in the 1540s – a move remembered as the Great Debasement – he funded his wars against France and Scotland, but he quietly destroyed a generation of English savers in the process.
+
+When Napoleon issued the franc germinal in 1803, he was not reforming a currency, he was declaring a new France.
+
+I want to show you today that 
+https://click.news.capitalsurgeplan.com/?qs=ABB7InYiOjEsImQiOjUwMDR9ADMAAAAAAOaP622AG6SBBSW90jTJevXfUBEOdn2m6rhaayR9yCc3xr0QVaL58VD1yh3jpbTyfV21-2o7qD14vSo_pYdE3HHQ_VTop7Mc9wxbFE8- 
+the coin of the American realm is changing  – for the fourth time in our nation's history. 
+
+And like every prior change, this one will carve a sharp line between those who understand what is happening and those who don’t.
+
+Not Worth A Continental
+
+In June of 1775, the Continental Congress had a problem…
+
+They had declared a war (against Britain) they could not afford. They had no taxing authority, no treasury and an army in the field that needed paying.
+
+So they did what every government in history has done when it ran out of options, they printed.
+
+Over the next six years, Congress issued more than $241 million in what they called Continental currency – paper notes backed by nothing more than the promise that, when the war was eventually won, they would be honored at face value.
+
+By 1780, those notes were worth one-fortieth of their face value. By May of 1781 they had ceased to circulate entirely. The phrase "not worth a Continental" entered the American language and stayed there for two centuries afterward.
+
+Benjamin Franklin made an observation about the Continental currency that its depreciation had acted, in effect, as a tax to pay for the war.
+
+That is the first and most important lesson of American monetary history.
+
+When a government cannot raise money, it raises it through the quiet destruction of the currency. The bill arrives one way or the other. Someone always pays.
+
+The Wildcat Era
+
+What followed the Continental disaster was chaos.
+
+For the first eighty years of American history, there was no single dollar.
+
+The Spanish silver dollar – the original "piece of eight" – circulated alongside the U.S. coin and remained legal tender across the country until 1857.
+
+Mexican silver pesos passed from hand to hand across the southern states.
+
+State-chartered banks issued their own competing notes, each backed by whatever bonds, real estate (or in some cases nothing at all) the bank in question happened to have on its books.
+
+Historians refer to it as the wildcat era.
+
+By the 1830s, an American merchant doing ordinary business might handle a dozen different currencies in a single day.
+
+None of them, in any practical sense, was the true coin of the realm.
+
+America had a flag, a freshly composed anthem and a constitution. But it didn’t yet have sovereign money. And that meant it did not quite yet have a fully sovereign government either.
+
+Lincoln's Quiet Revolution
+
+In 1861, with the Union army needing funds the Treasury did not have, Abraham Lincoln signed legislation authorizing the federal government to issue Demand Notes – the first federal paper currency to achieve wide circulation in the United States.
+
+The notes carried Lincoln's own face on the $10 note, the first time a sitting American president had appeared on the nation's money.
+
+The federal dollar became the sole coin of the realm. Every dollar in every wallet now bore the same imprint, answered to the same authority, and rose or fell on the credibility of the same institution.
+
+For the next century the dollar was anchored, in one form or another, to gold. 
+
+The U.S. Treasury would in principle exchange any paper dollar for a fixed weight of metal. 
+
+That promise was tested through depressions and wars, refined by Roosevelt's gold recall in 1933, and codified at Bretton Woods in 1944 – when the dollar became the centre of the entire global financial system.
+
+Until, very suddenly, it didn’t.
+
+Nixon Pulls The Plug
+
+The promise held until the afternoon of August 15, 1971.
+
+That day, Richard Nixon went on television and informed the world that the United States would no longer convert dollars into gold.
+
+The Bretton Woods system – and with it the gold anchor that had backed the American coin in some form for nearly a century – was finished.
+
+The dollar became just a piece of paper backed by nothing more than the dubious credibility of the issuing government.
+
+To rescue that credibility, in 1974 the United States cut a now-infamous deal with Saudi Arabia. Oil – the commodity every nation on earth desperately needed – would be priced in dollars.
+
+Every other OPEC nation followed within a year. The coin of the realm had a new anchor. Not gold, but oil.
+
+That deal in the desert set in motion the greatest accumulation of private wealth the world has ever seen. America transformed from a country of roughly 180,000 millionaires in 1974 to one of nearly 24 million today.
+
+But that arrangement – the petrodollar – quietly expired in June of 2024.
+
+Which brings me to the underlying reason I am writing to you today.
+
+The Fourth Reset
+
+For the fourth time in American history, 
+https://click.news.capitalsurgeplan.com/?qs=ABB7InYiOjEsImQiOjUwMDR9ADMAAAAAAOaP622Cmd4hgsw6BEAbMQt6j96kxDkCpq_Xptld3ddDWtsgLhCcLtxxBMvragaV_4DPBoli2GynUbn3gmwsYi9JXnqMYFEQqm53EEFR 
+the coin of the realm is being supplanted. 
+
+This isn’t about crypto, or stablecoins, or central bank digital currencies – the things the financial press has been writing about for years now.
+
+In my view, it is something far more consequential. 
+
+https://click.news.capitalsurgeplan.com/?qs=ABB7InYiOjEsImQiOjUwMDR9ADMAAAAAAOaP622EylgVSD30ZvQyHhyUh7Uf48dhEsYtT9zoSXFE0hPsAo1Hgn9TDD1ZYaQ9XExg3sRFBYDFAZwuQ2vhf1K-WVEuknXuJW-GsWOj 
+A new monetary architecture , already signed and sealed in the back rooms of Washington, backed by a coalition of more than sixty nations… 
+
+Being initiated by President Trump through a series of executive orders and bilateral agreements that bypass Congress entirely.
+
+If history’s any guide, what is about to happen will draw a sharp dividing line through this country once again.
+
+On one side, those who understand what is being built and position themselves accordingly.
+
+On the other, those who keep saving, investing, and spending as though the old coin still ruled. As though the realm itself were not being remade beneath their feet.
+
+My team and I have spent months tracing exactly what is being assembled, who is involved, and what it could mean for every dollar you have saved and invested.
+
+The full story is laid out in 
+https://click.news.capitalsurgeplan.com/?qs=ABB7InYiOjEsImQiOjUwMDR9ADMAAAAAAOaP622FYCBGR-fy0O3r0VFJd13w4JpoROi1PR80SfakDQF3ni78FuaGKRuznIPWEqlKwud97UTgcACisst_ueC76VZvoFUT5oCSk6pp 
+my new documentary  – including the name and ticker of one asset I believe gives you immediate exposure to what’s coming.
+
+https://click.news.capitalsurgeplan.com/?qs=ABB7InYiOjEsImQiOjUwMDR9ADMAAAAAAOaP622GNiaVO25BUnjaSWahmHZzEKWeolMkT19DdPGRazsrPLONSjaKAvrNvWDY3AarwF-8TbPkyDps_mHQqeO3XgWlk1tdi1uz3BuS 
+Here’s everything you need to know about America’s new money.  
+
+https://click.news.capitalsurgeplan.com/?qs=ABB7InYiOjEsImQiOjUwMDR9ADMAAAAAAOaP622HqLTqTVr3fTLhuJ7tmSlynesHA58htp35hdDaRBvvLk_07lpRxgZveVnqvHWkQVU_fy3ENu4rGrb0rQdltYkjP81mB8SXpuxa 
+
+Good investing,
+
+Porter Stansberry
+
+This ad is sent on behalf of Porter & Co. 1001 Cathedral Street, Fourth Floor, Baltimore, Maryland 21201. If you’re not interested in this opportunity, please click unsubscribe below and remove yourself from these offers.
+
+Trading involves risk. The information provided is NOT trading advice. Neither the Editors, the Publisher, nor any of their respective affiliates make any guarantee or other promise as to any results that may be obtained from the newsletter. Past performance is no guarantee of future performance. This recipient of this email assumes responsibility for conducting its own due diligence on the aforementioned company or entity and assumes full responsibility, and releases the sender from liability for any purchase or order made from any company or entity mentioned or recommended in this email.
+
+The information provided is for educational purposes only. Please contact your financial advisor for specific financial advice tailored to your personal circumstances. Actual results may differ. Nothing here constitutes a recommendation respecting the particular security illustrated.
+
+If you would like to unsubscribe from receiving offers, click the link below.
+
+This email was sent by: Web Impact LLC
+Al Jerozolimskie 85 Warsaw, Mazowieckie, 02-001, PL
+https://click.news.capitalsurgeplan.com/profile_center.aspx?qs=ABB7InYiOjEsImQiOjUwMDR9ADMAAAAAAOaP622J6dhTEMAFknEeKfJY-pmalQUmIKBByeGh0XO2s51XyCd5bec2-TPzeyr-YqM1B2BKbdo21yNViWMP-8dhVrxmmXpV376wtT99r2MnsvaDhw8 
+Update Profile 
+https://click.news.capitalsurgeplan.com/unsub_center.aspx?qs=ABB7InYiOjEsImQiOjUwMDR9ADMAAAAAAOaP622L2KgUKhlVkKRjziJC-EWYatsADUSvyWI5kgDMIsw6wv8GYl4y1PFGJNz8SRKJIjIJgYWzvR56ddvg1MGM1Vb_CrE6JFu71UxTjPgqsbwj27aMcQ 
+Unsubscribe 
+https://click.news.capitalsurgeplan.com/subscription_center.aspx?qs=ABB7InYiOjEsImQiOjUwMDR9ADMAAAAAAOaP622N5--Y3OTlYpJSdACBgvQ7v-GDf86vV17yY4bsJfua-uYy0O7Zsmfuv7NHYMBL5lg900R-0dUj65Agdc_qyZ1CrtvpDIaVQFsqWyhDZhvf9Ek 
+Manage Subscriptions 
+
+
+--A1xxWJnAv7mr=_?:
+Content-Type: text/html;
+	charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:v="urn:schemas-microsoft-com:vml">
+<head><!--[if gte mso 9]><xml><o:OfficeDocumentSettings><o:AllowPNG/><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml><![endif]--><meta content="text/html; charset=utf-8" http-equiv="Content-Type"/><meta content="width=device-width" name="viewport"/><!--[if !mso]>  <meta content="IE=edge" http-equiv="X-UA-Compatible" /><!--<![endif]-->
+<title></title>
+<!--[if !mso]><!--<![endif]-->
+<style type="text/css">body {
+   margin: 0;
+   padding: 0;
+  }
+
+  table,
+  td,
+  tr {
+   vertical-align: top;
+   border-collapse: collapse;
+  }
+
+  * {
+   line-height: inherit;
+  }
+
+  a[x-apple-data-detectors=true] {
+   color: inherit !important;
+   text-decoration: none !important;
+  }
+	</style>
+<style id="media-query" type="text/css">@media (max-width: 520px) {
+
+   .block-grid,
+   .col {
+    min-width: 320px !important;
+    max-width: 100% !important;
+    display: block !important;
+   }
+
+   .block-grid {
+    width: 100% !important;
+   }
+
+   .col {
+    width: 100% !important;
+   }
+
+   .col_cont {
+    margin: 0 auto;
+   }
+
+   img.fullwidth,
+   img.fullwidthOnMobile {
+    max-width: 100% !important;
+   }
+
+   .no-stack .col {
+    min-width: 0 !important;
+    display: table-cell !important;
+   }
+
+   .no-stack.two-up .col {
+    width: 50% !important;
+   }
+
+   .no-stack .col.num2 {
+    width: 16.6% !important;
+   }
+
+   .no-stack .col.num3 {
+    width: 25% !important;
+   }
+
+   .no-stack .col.num4 {
+    width: 33% !important;
+   }
+
+   .no-stack .col.num5 {
+    width: 41.6% !important;
+   }
+
+   .no-stack .col.num6 {
+    width: 50% !important;
+   }
+
+   .no-stack .col.num7 {
+    width: 58.3% !important;
+   }
+
+   .no-stack .col.num8 {
+    width: 66.6% !important;
+   }
+
+   .no-stack .col.num9 {
+    width: 75% !important;
+   }
+
+   .no-stack .col.num10 {
+    width: 83.3% !important;
+   }
+
+   .video-block {
+    max-width: none !important;
+   }
+
+   .mobile_hide {
+    min-height: 0px;
+    max-height: 0px;
+    max-width: 0px;
+    display: none;
+    overflow: hidden;
+    font-size: 0px;
+   }
+
+   .desktop_hide {
+    display: block !important;
+    max-height: none !important;
+   }
+  }
+	</style>
+</head>
+<body class="clean-body" style="margin: 0; padding: 0; -webkit-text-size-adjust: 100%; background-color: #FFFFFF;"><style type="text/css">
+div.preheader 
+{ display: none !important; } 
+</style>
+<div class="preheader" style="font-size: 1px; display: none !important;">It's no longer theoretical. It's officially in motion.</div><!--[if IE]><div class="ie-browser"><![endif]-->
+<table bgcolor="#FFFFFF" cellpadding="0" cellspacing="0" class="nl-container" role="presentation" style="table-layout: fixed; vertical-align: top; min-width: 320px; border-spacing: 0; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #FFFFFF; width: 100%;" valign="top" width="100%">
+<tbody>
+<tr style="vertical-align: top;" valign="top">
+<td style="word-break: break-word; vertical-align: top;" valign="top"><!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="center" style="background-color:#FFFFFF"><![endif]-->
+<div style="background-color:transparent;">
+<div class="block-grid" style="min-width: 320px; max-width: 500px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; Margin: 0 auto; background-color: transparent;">
+<div style="border-collapse: collapse;display: table;width: 100%;background-color:transparent;"><!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:transparent;"><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:500px"><tr class="layout-full-width" style="background-color:transparent"><![endif]--><!--[if (mso)|(IE)]><td align="center" width="500" style="background-color:transparent;width:500px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+<td style="padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px;"><![endif]-->
+<div class="col num12" style="min-width: 320px; max-width: 500px; display: table-cell; vertical-align: top; width: 500px;">
+<div class="col_cont" style="width:100% !important;"><!--[if (!mso)&(!IE)]>    <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;"><!--<![endif]--><!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Verdana, sans-serif"><![endif]-->
+<div style="color:#393d47;font-family:Verdana, Geneva, sans-serif;line-height:1.5;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
+<div class="txtTinyMce-wrapper" style="font-size: 12px; line-height: 1.5; font-family: Verdana, Geneva, sans-serif; color: #393d47; mso-line-height-alt: 18px;">
+<hr/><p style="margin: 0; line-height: 1.5; word-break: break-word; text-align: justify; font-family: Verdana, Geneva, sans-serif; font-size: 12px; mso-line-height-alt: 18px; margin-top: 0; margin-bottom: 0;"><span>Editor’s Note: We are dedicated to provide readers like you with unique opportunities. The message below from one of our business associates is one we believe you should take a serious look at.</span></p>
+<hr/><p style="font-family: Verdana; font-size: 16px; text-align: justify; padding-top: 0.5em;">If you want to know who rules a country, don't look at the flag or the constitution, look at the money. The great rulers of the past had a name for it – <em>the coin of the realm.</em></p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">Not just a description of currency, but a declaration. Whoever could strike the coin – whoever could put a face on the metal, set its weight, guarantee its value, and demand it be accepted in payment of debts – <em>was</em> the realm itself.</p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">To change the coin was to change the fundamental order of things.</p>
+<p style="font-family: Verdana; font-size: 16px; text-align: justify;">Roman emperors understood the importance of it. In fact, the first act of a new Caesar was almost always to strike a new denarii bearing his face.</p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">When Henry VIII began debasing England's silver coinage in the 1540s – a move remembered as the Great Debasement – he funded his wars against France and Scotland, but he quietly destroyed a generation of English savers in the process.</p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">When Napoleon issued the franc germinal in 1803, he was not reforming a currency, he was declaring a new France.</p>
+<p style="font-family: Verdana; font-size: 16px; text-align: justify;">I want to show you today that <a href="https://click.news.capitalsurgeplan.com/?qs=ABB7InYiOjEsImQiOjUwMDR9ADMAAAAAAOaP621xwUqUq9sGoNHPrOlVEVySm8oIVnQ5iy8FYLWeW0QqK7snw1LDbVJT3LAoY7e9xMVTrlNEy5mGDym6kxblJnJq1jcBznmdjQeb" style="color: #1a5dab; text-decoration: underline;">the coin of the American realm is changing</a> – for the fourth time in our nation's history. </p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">And like every prior change, this one will carve a sharp line between those who understand what is happening and those who don’t.</p><p style="font-family: Verdana; font-size: 16px; text-align: center;"><strong>Not Worth A Continental</strong></p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">In June of 1775, the Continental Congress had a problem…</p>
+<p style="font-family: Verdana; font-size: 16px; text-align: justify;">They had declared a war (against Britain) they could not afford. They had no taxing authority, no treasury and an army in the field that needed paying.</p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">So they did what every government in history has done when it ran out of options, they printed.</p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">Over the next six years, Congress issued more than $241 million in what they called Continental currency – paper notes backed by nothing more than the promise that, when the war was eventually won, they would be honored at face value.</p>
+<p style="font-family: Verdana; font-size: 16px; text-align: justify;">By 1780, those notes were worth one-fortieth of their face value. By May of 1781 they had ceased to circulate entirely. The phrase "not worth a Continental" entered the American language and stayed there for two centuries afterward.</p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">Benjamin Franklin made an observation about the Continental currency that its depreciation had acted, in effect, as a tax to pay for the war.</p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">That is the first and most important lesson of American monetary history.</p>
+<p style="font-family: Verdana; font-size: 16px; text-align: justify;">When a government cannot raise money, it raises it through the quiet destruction of the currency. The bill arrives one way or the other. Someone always pays.</p><p style="font-family: Verdana; font-size: 16px; text-align: center;"><strong>The Wildcat Era</strong></p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">What followed the Continental disaster was chaos.</p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">For the first eighty years of American history, there was no single dollar.</p>
+<p style="font-family: Verdana; font-size: 16px; text-align: justify;">The Spanish silver dollar – the original "piece of eight" – circulated alongside the U.S. coin and remained legal tender across the country until 1857.</p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">Mexican silver pesos passed from hand to hand across the southern states.</p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">State-chartered banks issued their own competing notes, each backed by whatever bonds, real estate (or in some cases nothing at all) the bank in question happened to have on its books.</p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">Historians refer to it as the wildcat era.</p>
+<p style="font-family: Verdana; font-size: 16px; text-align: justify;">By the 1830s, an American merchant doing ordinary business might handle a dozen different currencies in a single day.</p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">None of them, in any practical sense, was the true coin of the realm.</p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">America had a flag, a freshly composed anthem and a constitution. But it didn’t yet have sovereign money. And that meant it did not quite yet have a fully sovereign government either.</p><p style="font-family: Verdana; font-size: 16px; text-align: center;"><strong>Lincoln's Quiet Revolution</strong></p>
+<p style="font-family: Verdana; font-size: 16px; text-align: justify;">In 1861, with the Union army needing funds the Treasury did not have, Abraham Lincoln signed legislation authorizing the federal government to issue Demand Notes – the first federal paper currency to achieve wide circulation in the United States.</p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">The notes carried Lincoln's own face on the $10 note, the first time a sitting American president had appeared on the nation's money.</p>
+<p style="font-family: Verdana; font-size: 16px; text-align: justify;">The federal dollar became the sole coin of the realm. Every dollar in every wallet now bore the same imprint, answered to the same authority, and rose or fell on the credibility of the same institution.</p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">For the next century the dollar was anchored, in one form or another, to gold. </p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">The U.S. Treasury would in principle exchange any paper dollar for a fixed weight of metal. </p>
+<p style="font-family: Verdana; font-size: 16px; text-align: justify;">That promise was tested through depressions and wars, refined by Roosevelt's gold recall in 1933, and codified at Bretton Woods in 1944 – when the dollar became the centre of the entire global financial system.</p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">Until, very suddenly, it didn’t.</p><p style="font-family: Verdana; font-size: 16px; text-align: center;"><strong>Nixon Pulls The Plug</strong></p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">The promise held until the afternoon of August 15, 1971.</p>
+<p style="font-family: Verdana; font-size: 16px; text-align: justify;">That day, Richard Nixon went on television and informed the world that the United States would no longer convert dollars into gold.</p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">The Bretton Woods system – and with it the gold anchor that had backed the American coin in some form for nearly a century – was finished.</p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">The dollar became just a piece of paper backed by nothing more than the dubious credibility of the issuing government.</p>
+<p style="font-family: Verdana; font-size: 16px; text-align: justify;">To rescue that credibility, in 1974 the United States cut a now-infamous deal with Saudi Arabia. Oil – the commodity every nation on earth desperately needed – would be priced in dollars.</p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">Every other OPEC nation followed within a year. The coin of the realm had a new anchor. Not gold, but oil.</p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">That deal in the desert set in motion the greatest accumulation of private wealth the world has ever seen. America transformed from a country of roughly 180,000 millionaires in 1974 to one of nearly 24 million today.</p>
+<p style="font-family: Verdana; font-size: 16px; text-align: justify;">But that arrangement – the petrodollar – quietly expired in June of 2024.</p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">Which brings me to the underlying reason I am writing to you today.</p><p style="font-family: Verdana; font-size: 16px; text-align: center;"><strong>The Fourth Reset</strong></p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">For the fourth time in American history, <a href="https://click.news.capitalsurgeplan.com/?qs=ABB7InYiOjEsImQiOjUwMDR9ADMAAAAAAOaP621yzoXGhzbI5C0rfPiy90jG56WqIH5iMRcscHkWTYqeFXH7azwj0x_oE-aqiCtUXnAjCJHIeuyggKW1a8_5Pqi12CFbKpkXlzTI" style="color: #1a5dab; text-decoration: underline;">the coin of the realm is being supplanted.</a></p>
+<p style="font-family: Verdana; font-size: 16px; text-align: justify;">This isn’t about crypto, or stablecoins, or central bank digital currencies – the things the financial press has been writing about for years now.</p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">In my view, it is something far more consequential. </p><p style="font-family: Verdana; font-size: 16px; text-align: justify;"><a href="https://click.news.capitalsurgeplan.com/?qs=ABB7InYiOjEsImQiOjUwMDR9ADMAAAAAAOaP621z-BL4y46a1kURLn5e7QAZx06ctM1Q-B_-F17rsGhY-VM8HXKE1aGlcMKt3y2OEij3Ws_NPdppHf4iPyryeoYaUAGR_iNSEAfz" style="color: #1a5dab; text-decoration: underline;">A new monetary architecture</a>, already signed and sealed in the back rooms of Washington, backed by a coalition of more than sixty nations… </p>
+<p style="font-family: Verdana; font-size: 16px; text-align: justify;">Being initiated by President Trump through a series of executive orders and bilateral agreements that bypass Congress entirely.</p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">If history’s any guide, what is about to happen will draw a sharp dividing line through this country once again.</p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">On one side, those who understand what is being built and position themselves accordingly.</p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">On the other, those who keep saving, investing, and spending as though the old coin still ruled. As though the realm itself were not being remade beneath their feet.</p>
+<p style="font-family: Verdana; font-size: 16px; text-align: justify;">My team and I have spent months tracing exactly what is being assembled, who is involved, and what it could mean for every dollar you have saved and invested.</p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">The full story is laid out in <a href="https://click.news.capitalsurgeplan.com/?qs=ABB7InYiOjEsImQiOjUwMDR9ADMAAAAAAOaP6211kUocfjIB7t_VykBm_0uQrYbMEasAUsgl_xkHexO4g92xqtrZ0CqltG9jJ6n5kweShH266yjf7pHes19CqQe72CqDySxMax7Y" style="color: #1a5dab; text-decoration: underline;">my new documentary</a> – including the name and ticker of one asset I believe gives you immediate exposure to what’s coming.</p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">
+<a href="https://click.news.capitalsurgeplan.com/?qs=ABB7InYiOjEsImQiOjUwMDR9ADMAAAAAAOaP6212yjmHji2Ut69hKJeWMO849VGUAjS8F0jeGETlZzpUdcVgvP_VurlJ7Jih62tDTm5DvoByWA9k2n1oS5e_0jr2Z5EYtaZP7PHy" style="color: #1a5dab; text-decoration: underline;">Here’s everything you need to know about America’s new money. </a></p><p style="font-family: Verdana; font-size: 16px; text-align: justify;"><a href="https://click.news.capitalsurgeplan.com/?qs=ABB7InYiOjEsImQiOjUwMDR9ADMAAAAAAOaP6213HUgZAwT8rdVQ80Z0rDDnZC8Q990xOJ7wZY7WxX50cxpEW1rqWW3-IGdaw1wyASV5OMCee6F2H2slMnViEfkv8HR4D0ZuiRWv"><img src="https://dxi7l1ul0drll.cloudfront.net/image/PorTrNeDo/PorTrNeDo_13.jpg" style="width: 90%; height: auto; display: block; margin: 0 auto; border-radius: 6px;"/></a></p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">Good investing,</p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">Porter Stansberry</p>
+<p style="font-family: Verdana, Geneva, sans-serif; font-size: 16px; text-align: justify"> </p>
+<p style="font-family: Verdana, Geneva, sans-serif; font-size: 16px; text-align: justify"> </p>
+<p style="font-family: Verdana, Geneva, sans-serif; font-size: 16px; text-align: justify"> </p>
+<div style="color:#393d47;font-family:Verdana, Geneva, sans-serif;line-height:1.5;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
+<div class="txtTinyMce-wrapper" style="font-size: 12px; line-height: 1.5; font-family: Verdana, Geneva, sans-serif; color: #393d47; mso-line-height-alt: 18px;">
+<p style="margin: 0; text-align: justify; line-height: 1.5; word-break: break-word; font-size:10px; font-family: Verdana, Geneva, sans-serif; mso-line-height-alt: 18px; margin-top: 0; margin-bottom: 0;">This ad is sent on behalf of Porter &amp; Co. 1001 Cathedral Street, Fourth Floor, Baltimore, Maryland 21201. If you’re not interested in this opportunity, please click unsubscribe below and remove yourself from these offers.</p>
+<!-- Footer placeholder -->
+<p style="margin: 0; text-align: justify; line-height: 1.5; word-break: break-word; font-family: Verdana, Geneva, sans-serif; font-size: 10px; mso-line-height-alt: 15px; margin-top: 0; margin-bottom: 0;"><br/>
+<span style="font-size:10px;">Trading involves risk. The information provided is NOT trading advice. Neither the Editors, the Publisher, nor any of their respective affiliates make any guarantee or other promise as to any results that may be obtained from the newsletter. Past performance is no guarantee of future performance. This recipient of this email assumes responsibility for conducting its own due diligence on the aforementioned company or entity and assumes full responsibility, and releases the sender from liability for any purchase or order made from any company or entity mentioned or recommended in this email.</span></p>
+<p style="margin: 0; text-align: justify; line-height: 1.5; word-break: break-word; font-family: Verdana, Geneva, sans-serif; font-size: 10px; mso-line-height-alt: 15px; margin-top: 0; margin-bottom: 0;"><br/>
+<span style="font-size: 10px;">The information provided is for educational purposes only. Please contact your financial advisor for specific financial advice tailored to your personal circumstances. Actual results may differ. Nothing here constitutes a recommendation respecting the particular security illustrated.</span></p>
+<p style="margin: 0; text-align: justify; line-height: 1.5; word-break: break-word; font-family: Verdana, Geneva, sans-serif; mso-line-height-alt: 18px; margin-top: 0; margin-bottom: 0;"> </p>
+<p style="margin: 0; line-height: 1.5; word-break: break-word; text-align: center; font-family: Verdana, Geneva, sans-serif; font-size: 10px; mso-line-height-alt: 15px; margin-top: 0; margin-bottom: 0;"><span style="font-size: 10px;">If you would like to unsubscribe from receiving offers, click the link below.</span></p>
+<p style="margin: 0; text-align: justify; line-height: 1.5; word-break: break-word; font-family: Verdana, Geneva, sans-serif; mso-line-height-alt: 18px; margin-top: 0; margin-bottom: 0;"> </p>
+</div>
+</div>
+<!--[if mso]></td></tr></table><![endif]-->
+<div style="font-size:16px;text-align:center;font-family:Arial, Helvetica Neue, Helvetica, sans-serif">
+<div class="our-class" style="text-align: center;"><span style="font-size:9px;"><span style="font-family:verdana,geneva,sans-serif;">This email was sent by: <b>Web Impact LLC</b><br/>
+			Al Jerozolimskie 85 Warsaw, Mazowieckie, 02-001, PL<br/>
+<a href="https://click.news.capitalsurgeplan.com/profile_center.aspx?qs=ABB7InYiOjEsImQiOjUwMDR9ADMAAAAAAOaP6216K5haG2oXJzNy2HpKs5jayx8mouf0uEiMBnxHKqqgsf5umlSUeQZ2FlmixDmYqkI5kHQzLG_wSkgDasGlz2PAhuUcrRTA0Tgp7uAOeil2qhk">Update Profile</a><br/>
+<a href="https://click.news.capitalsurgeplan.com/unsub_center.aspx?qs=ABB7InYiOjEsImQiOjUwMDR9ADMAAAAAAOaP6217yj64giFkjTZbAZIGezElH_EJ9eGML8vfR8tCGA1wirItV9YppU1Q-3sRqZ2xkRZ8vsvTJpDAPBfXGk95aOy_s5VhCkKZ1MA_2aQ1C8uMNdxEnw">Unsubscribe</a><br/>
+<a href="https://click.news.capitalsurgeplan.com/subscription_center.aspx?qs=ABB7InYiOjEsImQiOjUwMDR9ADMAAAAAAOaP6218LecXiMjlDyWAcohdgcYvRCQNVxC8Cjm7N6XlJC8Ijj10FlPZEPUXmDcsP8UMDX4ASxy_Mknq7J1b_ew21-8c_jzUSyzovptv6qe3k-kzhdw">Manage Subscriptions</a></span></span></div>
+</div>
+<!--[if (!mso)&(!IE)]></div>    <!--<![endif]--></div>
+</div>
+<!--[if (mso)|(IE)]></td></tr></table><![endif]--><!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]--></div>
+</div>
+</div>
+<!--[if (mso)|(IE)]></td></tr></table><![endif]--></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<!--[if (IE)]></div><![endif]--><img src="https://click.news.capitalsurgeplan.com/open.aspx?TWMVMH534BIUNEP6WWWJN2NXBA.510006&d=510006&bmt=0" width="1" height="1" alt=""></custom></body>
+</html>
+
+--A1xxWJnAv7mr=_?:--
+
+
