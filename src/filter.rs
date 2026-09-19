@@ -8768,6 +8768,24 @@ impl FilterEngine {
             return 0; // No business bonus for explicitly failed authentication
         }
 
+        // Display-name / brand-domain coherence guard.
+        //
+        // Legitimate senders on a high-value brand domain identify themselves as that
+        // brand in the From display name (e.g. "PayPal" <...@paypal.com>). A message
+        // whose From is on such a domain but whose display name references an unrelated
+        // brand or persona (e.g. "Dr. Oz Cardio Report" <support@paypal.com>) is
+        // exploiting the trusted domain to earn a large business/financial trust bonus.
+        // Withhold the bonus in that case. Generalizes to any brand-domain claim with an
+        // off-brand display name; does not fire when the display name references the
+        // domain's own brand token (so "Discover Card" <...@services.discover.com> is fine).
+        if self.has_offbrand_display_name(context, &domain) {
+            log::debug!(
+                "Off-brand display name for brand domain '{}' - withholding business adjustment",
+                domain
+            );
+            return 0;
+        }
+
         // Don't convert to lowercase here - let individual functions handle case sensitivity
         let mut adjustment = 0;
 
@@ -8822,6 +8840,64 @@ impl FilterEngine {
         }
 
         false
+    }
+
+    /// Detect an off-brand From display name on a high-value brand domain.
+    ///
+    /// Returns true when the sender domain belongs to a known brand (financial /
+    /// e-commerce / major provider) but the From display name references none of that
+    /// brand's tokens — the signature of a spoof exploiting a trusted domain to earn a
+    /// business trust bonus (e.g. "Dr. Oz Cardio Report" <support@paypal.com>).
+    /// Returns false for legitimate senders whose display name matches the domain brand
+    /// (e.g. "Discover Card" <...@services.discover.com>) or when there is no display name.
+    fn has_offbrand_display_name(&self, context: &MailContext, domain: &str) -> bool {
+        // Map of brand-token -> domains that brand legitimately sends from. If the sender
+        // is on one of these domains, the display name is expected to reference the token.
+        const BRAND_DOMAINS: [(&str, &[&str]); 8] = [
+            ("paypal", &["paypal.com", "paypal.me"]),
+            ("discover", &["discover.com"]),
+            ("chase", &["chase.com"]),
+            ("wellsfargo", &["wellsfargo.com"]),
+            ("americanexpress", &["americanexpress.com", "aexp.com"]),
+            ("amazon", &["amazon.com"]),
+            ("apple", &["apple.com", "icloud.com"]),
+            ("microsoft", &["microsoft.com"]),
+        ];
+
+        let domain_lc = domain.to_lowercase();
+        // Find the brand this sender domain belongs to (exact domain or subdomain).
+        let brand = BRAND_DOMAINS.iter().find(|(_, domains)| {
+            domains
+                .iter()
+                .any(|d| domain_lc == *d || domain_lc.ends_with(&format!(".{}", d)))
+        });
+        let (brand_token, _) = match brand {
+            Some(b) => b,
+            None => return false, // Not a tracked brand domain; nothing to enforce.
+        };
+
+        // Extract the From display name (the text before the <email> portion).
+        let from_header = context
+            .from_header
+            .as_deref()
+            .or_else(|| context.headers.get("from").map(|s| s.as_str()))
+            .unwrap_or_default();
+        let display_name = match from_header.rfind('<') {
+            Some(idx) => from_header[..idx].trim(),
+            None => "", // No display name at all -> treat as no display name (don't fire).
+        };
+        let display_lc = display_name
+            .trim_matches(|c| c == '"' || c == '\'')
+            .trim()
+            .to_lowercase();
+
+        // If there is no display name, don't fire (avoid false positives on bare addresses).
+        if display_lc.is_empty() {
+            return false;
+        }
+
+        // Coherent if the display name references the brand token. Off-brand otherwise.
+        !display_lc.contains(brand_token)
     }
 
     /// Check if domain is a major e-commerce platform
