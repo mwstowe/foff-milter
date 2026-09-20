@@ -2117,6 +2117,118 @@ fn strip_xfoff_headers(email_content: &str) -> String {
     result
 }
 
+/// Resolve the envelope sender the way the production milter does at SMTP time.
+///
+/// The milter runs on the boundary MTA and resolves `context.sender` to the first
+/// `envelope-from (...)` in the Received headers it sees *at runtime*. A stored `.eml`
+/// diverges because internal/local delivery hops prepend additional Received headers
+/// (with their own recorded return-path) AFTER the milter ran. Those internal hops sit
+/// at the top of the final message and would otherwise shift a naive "first envelope-from"
+/// to the wrong value (e.g. an intermediate bounce address instead of the true origin).
+///
+/// Rule:
+///  1. Determine the local delivery domain = registrable domain of the TOP Received's
+///     `by` host.
+///  2. Skip the contiguous run of Received headers (from the top) whose `by` host is on
+///     that local domain — these are the post-milter internal hops.
+///  3. Return the first `envelope-from` found among the remaining (external) Received
+///     headers.
+///  4. Return None if nothing qualifies (caller keeps its existing sender).
+///
+/// For ordinary single-hop mail this returns None or the same address the current logic
+/// would pick, so only multi-internal-hop ESP mail changes.
+fn resolve_milter_envelope_sender(email_content: &str) -> Option<String> {
+    // Collect Received header blocks in document order (unfolding continuations).
+    let mut received_blocks: Vec<String> = Vec::new();
+    let mut current: Option<String> = None;
+    for line in email_content.lines() {
+        if line.trim().is_empty() {
+            break; // end of headers
+        }
+        let is_continuation = line.starts_with(' ') || line.starts_with('\t');
+        if is_continuation {
+            if let Some(buf) = current.as_mut() {
+                buf.push(' ');
+                buf.push_str(line.trim());
+            }
+            continue;
+        }
+        // New header line: flush any in-progress Received block.
+        if let Some(buf) = current.take() {
+            received_blocks.push(buf);
+        }
+        let lower = line.to_ascii_lowercase();
+        if lower.starts_with("received:") {
+            current = Some(line.to_string());
+        }
+    }
+    if let Some(buf) = current.take() {
+        received_blocks.push(buf);
+    }
+    if received_blocks.is_empty() {
+        return None;
+    }
+
+    // Helper: extract the `by` host from a Received block.
+    let by_host = |block: &str| -> Option<String> {
+        let lower = block.to_ascii_lowercase();
+        let idx = lower.find(" by ")?;
+        let rest = &block[idx + 4..];
+        rest.split([' ', '\t', ';', '('])
+            .find(|s| !s.is_empty())
+            .map(|s| s.to_string())
+    };
+    // Helper: extract envelope-from address from a Received block.
+    let envelope_from = |block: &str| -> Option<String> {
+        let idx = block.find("envelope-from ")?;
+        let rest = &block[idx + "envelope-from ".len()..];
+        let addr = rest
+            .split(')')
+            .next()
+            .unwrap_or("")
+            .trim()
+            .trim_matches(['<', '>'])
+            .to_string();
+        if addr.contains('@') && !addr.is_empty() {
+            Some(addr)
+        } else {
+            None
+        }
+    };
+    // Registrable-ish domain: last two labels (best-effort, no PSL).
+    let registrable = |host: &str| -> String {
+        let h = host.trim_matches('.').to_ascii_lowercase();
+        let labels: Vec<&str> = h.split('.').collect();
+        if labels.len() >= 2 {
+            labels[labels.len() - 2..].join(".")
+        } else {
+            h
+        }
+    };
+
+    // Local delivery domain from the top Received's `by` host.
+    let local_domain = by_host(&received_blocks[0]).map(|h| registrable(&h));
+
+    // Skip the contiguous top run of Received headers on the local delivery domain.
+    let mut start = 0;
+    if let Some(ref local) = local_domain {
+        while start < received_blocks.len() {
+            match by_host(&received_blocks[start]).map(|h| registrable(&h)) {
+                Some(d) if &d == local => start += 1,
+                _ => break,
+            }
+        }
+    }
+
+    // First envelope-from among the remaining (external) Received headers.
+    for block in &received_blocks[start..] {
+        if let Some(addr) = envelope_from(block) {
+            return Some(addr);
+        }
+    }
+    None
+}
+
 async fn test_email_file(
     config: &HeuristicConfig,
     whitelist_config: &Option<WhitelistConfig>,
@@ -2234,6 +2346,25 @@ async fn test_email_file(
 
     // Pass raw MIME body to filter engine — same as milter mode
     // The filter engine handles decoding and normalization
+
+    // Reproduce the production milter's runtime envelope-sender resolution for
+    // multi-hop / ESP-relayed mail. The raw Return-Path in a stored .eml can point
+    // at an intermediate bounce address that the milter never saw at SMTP time,
+    // which skews Sender Alignment scoring and makes --test-email disagree with prod.
+    // resolve_milter_envelope_sender() replays the milter's rule (skip post-milter
+    // internal delivery hops, take the first upstream envelope-from). For ordinary
+    // single-hop mail it returns None and the existing sender is kept.
+    if let Some(resolved) = resolve_milter_envelope_sender(&email_content) {
+        if resolved != sender {
+            log::debug!(
+                "test-email: envelope-sender resolved to '{}' (was '{}') for milter parity",
+                resolved,
+                sender
+            );
+        }
+        sender = resolved.clone();
+        headers.insert("return-path".to_string(), format!("<{}>", resolved));
+    }
 
     if sender.is_empty() {
         sender = "unknown@example.com".to_string();
@@ -2490,4 +2621,82 @@ fn extract_domain_from_header(header_value: &str) -> String {
         return header_value[start + 1..].to_string();
     }
     "no_domain_found".to_string()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::resolve_milter_envelope_sender;
+
+    #[test]
+    fn multi_internal_hop_skips_local_and_takes_upstream_envelope_from() {
+        // Two internal hops on the local delivery domain (example.com) prepended after
+        // the milter ran; the top one records an intermediate bounce env-from. The
+        // milter only saw the upstream (us-mailer2) hop, whose env-from is the true origin.
+        let email = "\
+Return-Path: <bounce@be3.maropost.com>
+Received: from hotel.example.com (relay [1.2.3.4])
+\tby juliett.example.com (8.18.2/8.18.1) with ESMTPS id ABC
+\t(envelope-from bounce@be3.maropost.com)
+\tfor <user@example.com>; Sat, 19 Sep 2026 20:56:39 GMT
+Received: from mta231022.mp2200.com (mta231022.mp2200.com [5.6.7.8])
+\tby hotel.example.com (8.16.1/8.16.1) with ESMTPS id DEF
+\tfor <user@example.com>; Sat, 19 Sep 2026 15:56:35 -0500
+Received: from <origin@b.unitedrepublicans.us> ([5.6.7.8])
+\tby us-mailer2 (envelope-from origin@b.unitedrepublicans.us)
+\twith ESMTP; Sat, 19 Sep 2026 20:55:01 +0000
+From: Sender <news@unitedrepublicans.us>
+Subject: test
+
+body
+";
+        assert_eq!(
+            resolve_milter_envelope_sender(email).as_deref(),
+            Some("origin@b.unitedrepublicans.us")
+        );
+    }
+
+    #[test]
+    fn single_hop_returns_its_envelope_from() {
+        let email = "\
+Received: from mail.sender.com (mail.sender.com [1.2.3.4])
+\tby mx.example.com (8.16.1/8.16.1) with ESMTPS id XYZ
+\t(envelope-from bounce@sender.com)
+\tfor <user@example.com>; Sat, 19 Sep 2026 15:56:35 -0500
+From: Sender <news@sender.com>
+Subject: test
+
+body
+";
+        // mx.example.com is the local delivery hop (top). It carries the envelope-from,
+        // so after skipping it there is no further Received; nothing external remains.
+        // The milter would have seen this hop at runtime, so its env-from is valid.
+        // With only one hop that is "local", the resolver finds no external env-from
+        // and returns None, leaving the caller's existing sender logic intact.
+        assert_eq!(resolve_milter_envelope_sender(email), None);
+    }
+
+    #[test]
+    fn no_received_headers_returns_none() {
+        let email = "\
+Return-Path: <someone@sender.com>
+From: Sender <someone@sender.com>
+Subject: test
+
+body
+";
+        assert_eq!(resolve_milter_envelope_sender(email), None);
+    }
+
+    #[test]
+    fn no_envelope_from_anywhere_returns_none() {
+        let email = "\
+Received: from a.com (a.com [1.2.3.4]) by mx.example.com; Sat, 19 Sep 2026 15:56:35 -0500
+Received: from b.com (b.com [5.6.7.8]) by a.com; Sat, 19 Sep 2026 15:55:00 -0500
+From: Sender <s@a.com>
+Subject: test
+
+body
+";
+        assert_eq!(resolve_milter_envelope_sender(email), None);
+    }
 }
