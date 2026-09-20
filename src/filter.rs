@@ -3383,6 +3383,26 @@ impl FilterEngine {
                             continue;
                         }
 
+                        // Do not grant ESP-infrastructure trust bonuses to mail that carries
+                        // high-confidence spam-content signals (insurance/solar investment
+                        // pitches). Legitimate ESPs are abused to launder this graymail; the
+                        // large negative "known legitimate mailing service" bonus otherwise
+                        // cancels the content score and lets it through. Generalizes across
+                        // any ESP-infrastructure trust rule.
+                        if rule.score.unwrap_or(0) < 0
+                            && module.name.contains("ESP Infrastructure")
+                            && (insurance_spam_score > 0 || solar_spam_score > 0)
+                        {
+                            log::info!(
+                                "Module '{}' Rule '{}' ESP trust bonus withheld: spam content detected (insurance={}, solar={})",
+                                module.name,
+                                rule.name,
+                                insurance_spam_score,
+                                solar_spam_score
+                            );
+                            continue;
+                        }
+
                         let matches = self
                             .evaluate_criteria(&rule.criteria, &context_with_attachments)
                             .await;
