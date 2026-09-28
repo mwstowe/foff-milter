@@ -1,0 +1,322 @@
+Return-Path: <bounce-7RRMR7WE7OBERKNUO6QET3MRBI.510007@bounce.news.capitalsurgeplan.com>
+Received: from hotel.example.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.example.com (8.18.2/8.18.1) with ESMTPS id 68S41EEp083555
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <user@example.com>; Mon, 28 Sep 2026 04:01:15 GMT
+	(envelope-from bounce-7RRMR7WE7OBERKNUO6QET3MRBI.510007@bounce.news.capitalsurgeplan.com)
+Authentication-Results: juliett.example.com;
+	dkim=pass (2048-bit key; unprotected) header.d=news.capitalsurgeplan.com header.i=contact@news.capitalsurgeplan.com header.b=R7drSfhM;
+	dkim=pass (2048-bit key; unprotected) header.d=s51.y.mc.salesforce.com header.i=@s51.y.mc.salesforce.com header.b=f3kIskm2
+Received: from alv134.mta.exacttarget.com (alv134.mta.exacttarget.com [159.92.166.134])
+	by hotel.example.com (8.16.1/8.16.1) with ESMTPS id 68S41ANv005319
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <user@example.com>; Sun, 27 Sep 2026 23:01:11 -0500
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.example.com 68S41ANv005319
+Authentication-Results: hotel.example.com;
+	dkim=pass (2048-bit key, unprotected) header.d=news.capitalsurgeplan.com header.i=contact@news.capitalsurgeplan.com header.a=rsa-sha256 header.s=51dkim1 header.b=R7drSfhM;
+	dkim=pass (2048-bit key, unprotected) header.d=s51.y.mc.salesforce.com header.i=@s51.y.mc.salesforce.com header.a=rsa-sha256 header.s=fbldkim51 header.b=f3kIskm2
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=51dkim1; d=news.capitalsurgeplan.com;
+ h=From:To:Subject:Date:List-Unsubscribe:List-Unsubscribe-Post:MIME-Version:
+ Message-ID:Content-Type; i=contact@news.capitalsurgeplan.com;
+ bh=nQm8mnuDTmtB5aCje8OMZkoyYcvUEh6VQ69ZKq2DbUw=;
+ b=R7drSfhMjCsLAonZY9q3yd4Z8d7M6v1e5N0snnIfgnLg7BlRMOzsJmJvcI/25mVLJ0+4kPtmtKYE
+   T+Qiu7HAwxhB/NoAqXk218mPOIW8orzE6mzdz3iVZgK0qnGZCimPfUEuSDcLO7CgbQqGkYXTMG6J
+   Z5qpGGY6xhgeLJs8SDWlD3rAmi6uQzoBgrDsIFa0IFji0k/rWFjttVOdH+ZWKfr6sTfNwg325LoW
+   gUmZROTIVaSGFI+KQWQrciBt7MeK35w4tLZqTLEwmp89VK0gAiktmQ4NpkE4/bf58cOPkqGppfb4
+   /NBN+qx03kb8masksng4qIJDh9he6rixV2yBWA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=fbldkim51; d=s51.y.mc.salesforce.com;
+ h=From:To:Subject:Date:List-Unsubscribe:List-Unsubscribe-Post:MIME-Version:
+ Message-ID:Content-Type;
+ bh=nQm8mnuDTmtB5aCje8OMZkoyYcvUEh6VQ69ZKq2DbUw=;
+ b=f3kIskm2CwWYtWeMJztUCZF/s8XLmY1oOaPeifXrgap6uoqMReR2gXeHMlJCZ4dK9FBLcmYifJMr
+   /X1WHL5pkBgGMgL5/az6Ew/9Rbs56hRd9mDes6O6s4SfWj2qbF5U/EdmgbObG4j+F3TQZ6jPzNjy
+   QuzAkbRoGdnmovqETCT4BFtWe/SRibKr8GRSxAjWHC/HWtN/Ne+dBp0SJYPfShaPCDI4qFYvhZ8Z
+   0IobDg0HD9Ti6KTTkaa/9f9YaSpCv8MXifi4RJin7LA77bSghQkIebP6KMAsQVPQ9fj3J56/5mG9
+   3zs7LkTKCxFqQe2ykpCbZH5jLOrXS2WO2j0dLA==
+Received: by alv134.mta.exacttarget.com id hn7j8a39mjcj for <user@example.com>; Mon, 28 Sep 2026 04:01:06 +0000 (envelope-from <bounce-7RRMR7WE7OBERKNUO6QET3MRBI.510007@bounce.news.capitalsurgeplan.com>)
+From: "Capital Surge Plan" <contact@news.capitalsurgeplan.com>
+To: <user@example.com>
+Subject: =?UTF-8?B?TmV3IEZvcm0gb2YgQUkgQ291bGQgSWduaXRlIHRoZSDigJhHcmVh?=
+ =?UTF-8?B?dCBXZWFsdGggUm90YXRpb27igJk=?=
+Date: Sun, 27 Sep 2026 22:01:06 -0600
+List-Unsubscribe: <https://click.news.capitalsurgeplan.com/subscription_center.aspx?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtaWQiOiI1MzYwMTA2MzkiLCJzIjoiNDY4NjM4ODYiLCJsaWQiOiI5NCIsImoiOiIzMDEzMTgiLCJqYiI6IjIwMDQiLCJkIjoiNTEwMDA3In0.r7Twt5GkErb6iIGFdWHN2PvnfwXkIDTIInw_-LBjqgw>, <mailto:leave-74OC35OFKQLUBADW232FHBI254.510007@leave.news.capitalsurgeplan.com>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+MIME-Version: 1.0
+X-SFMC-Stack: 51
+x-job: 536010639_301318
+Message-ID: <88a48415-f404-4fb8-bed8-6726d818b41e@cdg3s51mta0466.xt.local>
+Content-Type: multipart/alternative;
+	boundary="EoI0WRgIC0ek=_?:"
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.example.com [172.31.18.8]); Mon, 28 Sep 2026 04:01:15 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.example.com [23.95.222.152]); Sun, 27 Sep 2026 23:01:12 -0500 (CDT)
+
+This is a multi-part message in MIME format.
+
+--EoI0WRgIC0ek=_?:
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+
+Editor's Note: Wall Street legend Marc Chaikin just issued one of the most unusual predictions of his 60-year career: a new form of AI could trigger a $248 trillion disruption and a "Great Wealth Rotation" before the end of 2026. Please keep reading to get all the details, including his No. 1 money move to prepare...
+
+Dear Reader,
+
+Do not buy or sell shares of a single AI stock until you see 
+https://click.news.capitalsurgeplan.com/?qs=ABB7InYiOjEsImQiOjUwMTN9ADMAAAAAAPPds7TGaWIx-LJe3N_P7kRHNDBK50rVr2azlk4uxJOfJe0fpREtTirW-H-nFxYiDUdsZ1AoHNEesoywZu1sOr_YOBUL91VoSjyEmoDK 
+this interview . 
+
+According to Marc Chaikin, who's spent more than half a century on Wall Street working with the likes of Paul Tudor Jones and Steve Cohen... 
+
+https://click.news.capitalsurgeplan.com/?qs=ABB7InYiOjEsImQiOjUwMTN9ADMAAAAAAPPds7THqLFBGf-kN9ACD5tvfFD0CJ7ysSN44FbR60KQnG29HNIIt7KvWK2OKGRts0oERyf6LuWh2hh5PAdCeGCDc-Y_sc8eod2QIl74 
+A new form of AI – "Sovereign AI" – is about to unleash a $248 trillion economic disruption that could impact millions of people's finances and retirements .
+
+"A lot of people are going to be blindsided," says Chaikin, who built an award-winning system that flashed BULLISH on Nvidia all the way back in 2014, before it went up 52-fold... 
+
+"What's coming next will tear the AI industry down to the studs...and could send countless AI stocks to zero. At the same time, it could send a handful of AI stocks soaring."
+
+https://click.news.capitalsurgeplan.com/?qs=ABB7InYiOjEsImQiOjUwMTN9ADMAAAAAAPPds7TIg085S_bJaKepUq0l2o4PmmdoKWK28o2CSpuWjnIqe6jRYJe42yNtkVnwd-NZeulppX_rfE4TmIQfGSSv4BQKgQ4aVp2kCZqT 
+Marc warns this new form of AI will likely create the 'Great Wealth Rotation' before the end of 2026... 
+
+And it could leave those who see it coming richer... while others could go back to square one. 
+
+Marc has predicted some of the biggest turning points in market history like the 2020 COVID crash, the 2022 bear market, the bull market that followed, and the 2025 tariff sell-off... 
+
+https://click.news.capitalsurgeplan.com/?qs=ABB7InYiOjEsImQiOjUwMTN9ADMAAAAAAPPds7TJMLmqHvuXZE2FaWrKl4QWZV_-An-ldZ3aKPrnkhNWAu1aMmVexWTkJxRGDoMZvauJW1m6_Mp6MoPV85yjInzAGNkrPvG0SniF 
+But he admits this is one of the most  unusual predictions of his 60-year career.
+
+He also says it might be the most lucrative – if you get on the right side. 
+
+Which is why we're posting Marc's full, brand-new presentation, including his No. 1 money move for the "Sovereign AI" shift, to the public on our website today... 
+
+You can watch it for free – while it's still available online. 
+
+https://click.news.capitalsurgeplan.com/?qs=ABB7InYiOjEsImQiOjUwMTN9ADMAAAAAAPPds7TKclVAR6lIW67ajltmiM0Tir_cahBeUOTG0Oh8Lzx4m18nvC9_gMT_K46VptUqqjkY0TzjFRPhiR6HclgzndQPYE18vplpPE3F 
+Click here to see how this 'Great Wealth Rotation' could affect you and your money .
+
+Regards,
+
+Megan JohnsonSenior Manager, Chaikin Analytics
+
+P.S. According to McKinsey, the current AI market is worth $4 trillion. But "Sovereign AI" is about to overturn the entire industry, unleashing a $248 trillion disruption.
+
+How?
+
+By making data centers owned by SpaceX, Google, OpenAI, and Anthropic obsolete (especially when it comes to major scientific breakthroughs).
+
+America's first "Sovereign AI factory" is set to open before the end of the year. One company is poised to profit. 
+https://click.news.capitalsurgeplan.com/?qs=ABB7InYiOjEsImQiOjUwMTN9ADMAAAAAAPPds7TLgIjKF2EdECxvRQqcRKQ-5C8gmUIX_aRXxIGYoK4lcZhTIZ-D5dnLRhwQuiSTEJ6_Ah9HovVeOXIy6GOhwyZV-jtaiNGD6a46 
+Go here for the full story and Marc’s top "Sovereign AI" stock pick now .
+
+This ad is sent on behalf of Chaikin Analytics, 201 King Of Prussia Rd., Suite 650, Radnor, PA 19087. If you would like to optout from receiving offers from Chaikin Analytics please 
+https://click.news.capitalsurgeplan.com/?qs=ABB7InYiOjEsImQiOjUwMTN9ADMAAAAAAPPds7TMLRe4xTMyO3xfNhqlTzyTO-5AleQzu9bYK_GAgb_DJ1_cxMJt7CbUh2aLexdmuHrEdslB1VchvzE_Z_uABLymp0E5NG1g783S 
+click here. 
+
+
+ Trading involves risk. The information provided by Capital Surge Plan is for informational and educational purposes only and does NOT constitute trading or investment advice. Capital Surge Plan, its Editors, Publisher, and affiliates make no guarantee regarding any results that may be obtained from the information provided. Past performance is no guarantee of future results. Recipients are responsible for conducting their own research and due diligence before making any trading, investment, or purchasing decisions and assume full responsibility for any actions taken based on information provided by Capital Surge Plan.
+
+
+
+ If you would like to unsubscribe from receiving offers, click the link below.
+
+
+This email was sent by: Web Impact LLC
+Al Jerozolimskie 85 Warsaw, Mazowieckie, 02-001, PL
+https://click.news.capitalsurgeplan.com/profile_center.aspx?qs=ABB7InYiOjEsImQiOjUwMTN9ADMAAAAAAPPds7TNknY58KOBItakH0oZCgJlgLZQq8Goo6xVEGyEy_SYtEI7S9orI1LXJWSoLCfCOgq6doNHFi86OMBQwUX_5NHJ4HAxIFuF4GuqnhuCPv4xP14 
+Update Profile 
+https://click.news.capitalsurgeplan.com/unsub_center.aspx?qs=ABB7InYiOjEsImQiOjUwMTN9ADMAAAAAAPPds7TOa3uufFxdUgqwdYS1s0N5aYA62x3U61oGm37mGXcAXt6S4-whc8tNz9wTK3uiUQYdkkkO54z7Q2uASbCJIq3paPEZkEJFUP4-4qvSABdNzJzedg 
+Unsubscribe 
+https://click.news.capitalsurgeplan.com/subscription_center.aspx?qs=ABB7InYiOjEsImQiOjUwMTN9ADMAAAAAAPPds7TP2gxWXxeFYiELW7CpYTkkzBCUOVdHML_JSUdjBGjClAf6FQL_kLM6GC5iYevIiZ13qQPNiqhO9DgZv_5B-oRiE6poN52quXtxWVl-iSLB7Bw 
+Manage Subscriptions 
+
+
+--EoI0WRgIC0ek=_?:
+Content-Type: text/html;
+	charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:v="urn:schemas-microsoft-com:vml">
+<head><!--[if gte mso 9]><xml><o:OfficeDocumentSettings><o:AllowPNG/><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml><![endif]--><meta content="text/html; charset=utf-8" http-equiv="Content-Type"/><meta content="width=device-width" name="viewport"/><!--[if !mso]>  <meta content="IE=edge" http-equiv="X-UA-Compatible" /><!--<![endif]-->
+<title></title>
+<!--[if !mso]><!--<![endif]-->
+<style type="text/css">body {
+   margin: 0;
+   padding: 0;
+  }
+
+  table,
+  td,
+  tr {
+   vertical-align: top;
+   border-collapse: collapse;
+  }
+
+  * {
+   line-height: inherit;
+  }
+
+  a[x-apple-data-detectors=true] {
+   color: inherit !important;
+   text-decoration: none !important;
+  }
+	</style>
+<style id="media-query" type="text/css">@media (max-width: 520px) {
+
+   .block-grid,
+   .col {
+    min-width: 320px !important;
+    max-width: 100% !important;
+    display: block !important;
+   }
+
+   .block-grid {
+    width: 100% !important;
+   }
+
+   .col {
+    width: 100% !important;
+   }
+
+   .col_cont {
+    margin: 0 auto;
+   }
+
+   img.fullwidth,
+   img.fullwidthOnMobile {
+    max-width: 100% !important;
+   }
+
+   .no-stack .col {
+    min-width: 0 !important;
+    display: table-cell !important;
+   }
+
+   .no-stack.two-up .col {
+    width: 50% !important;
+   }
+
+   .no-stack .col.num2 {
+    width: 16.6% !important;
+   }
+
+   .no-stack .col.num3 {
+    width: 25% !important;
+   }
+
+   .no-stack .col.num4 {
+    width: 33% !important;
+   }
+
+   .no-stack .col.num5 {
+    width: 41.6% !important;
+   }
+
+   .no-stack .col.num6 {
+    width: 50% !important;
+   }
+
+   .no-stack .col.num7 {
+    width: 58.3% !important;
+   }
+
+   .no-stack .col.num8 {
+    width: 66.6% !important;
+   }
+
+   .no-stack .col.num9 {
+    width: 75% !important;
+   }
+
+   .no-stack .col.num10 {
+    width: 83.3% !important;
+   }
+
+   .video-block {
+    max-width: none !important;
+   }
+
+   .mobile_hide {
+    min-height: 0px;
+    max-height: 0px;
+    max-width: 0px;
+    display: none;
+    overflow: hidden;
+    font-size: 0px;
+   }
+
+   .desktop_hide {
+    display: block !important;
+    max-height: none !important;
+   }
+  }
+	</style>
+</head>
+<body class="clean-body" style="margin: 0; padding: 0; -webkit-text-size-adjust: 100%; background-color: #FFFFFF;"><style type="text/css">
+div.preheader 
+{ display: none !important; } 
+</style>
+<div class="preheader" style="font-size: 1px; display: none !important;">It's no longer theoretical. It's officially in motion.</div><!--[if IE]><div class="ie-browser"><![endif]-->
+<table bgcolor="#FFFFFF" cellpadding="0" cellspacing="0" class="nl-container" role="presentation" style="table-layout: fixed; vertical-align: top; min-width: 320px; border-spacing: 0; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #FFFFFF; width: 100%;" valign="top" width="100%">
+<tbody>
+<tr style="vertical-align: top;" valign="top">
+<td style="word-break: break-word; vertical-align: top;" valign="top"><!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="center" style="background-color:#FFFFFF"><![endif]-->
+<div style="background-color:transparent;">
+<div class="block-grid" style="min-width: 320px; max-width: 500px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; Margin: 0 auto; background-color: transparent;">
+<div style="border-collapse: collapse;display: table;width: 100%;background-color:transparent;"><!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:transparent;"><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:500px"><tr class="layout-full-width" style="background-color:transparent"><![endif]--><!--[if (mso)|(IE)]><td align="center" width="500" style="background-color:transparent;width:500px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+<td style="padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px;"><![endif]-->
+<div class="col num12" style="min-width: 320px; max-width: 500px; display: table-cell; vertical-align: top; width: 500px;">
+<div class="col_cont" style="width:100% !important;"><!--[if (!mso)&(!IE)]>    <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;"><!--<![endif]--><!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Verdana, sans-serif"><![endif]-->
+<div style="color:#393d47;font-family:Verdana, Geneva, sans-serif;line-height:1.5;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
+<div class="txtTinyMce-wrapper" style="font-size: 12px; line-height: 1.5; font-family: Verdana, Geneva, sans-serif; color: #393d47; mso-line-height-alt: 18px;">
+<hr/><p style="margin: 0; line-height: 1.5; word-break: break-word; text-align: justify; font-family: Verdana, Geneva, sans-serif; font-size: 12px; mso-line-height-alt: 18px; margin-top: 0; margin-bottom: 0;"><strong>Editor's Note: </strong>Wall Street legend Marc Chaikin just issued one of the most unusual predictions of his 60-year career: a new form of AI could trigger a $248 trillion disruption and a "Great Wealth Rotation" before the end of 2026. Please keep reading to get all the details, including his No. 1 money move to prepare...</p>
+<hr/><p style="font-family: Verdana; font-size: 16px; text-align: justify;">Dear Reader,</p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">Do not buy or sell shares of a single AI stock until you see <a href="https://click.news.capitalsurgeplan.com/?qs=ABB7InYiOjEsImQiOjUwMTN9ADMAAAAAAPPds7S8LmgbrDWNrbhOi3_K60_DKLsI02P6uOQr_NWSa7_2r6qYcHW82NyB7IDbyqfoIwKtFLjWTbW-1McJsbrlbkK4oL4orEqPrLOx" style="color: #1a5dab; text-decoration: underline;">this interview</a>. </p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">According to Marc Chaikin, who's spent more than half a century on Wall Street working with the likes of Paul Tudor Jones and Steve Cohen... </p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">
+<a href="https://click.news.capitalsurgeplan.com/?qs=ABB7InYiOjEsImQiOjUwMTN9ADMAAAAAAPPds7S9cYlJzM6P7Q3rI9Bunq9SAeyCP1wkViNzfF5xrTJYn7bLIzmW7Llb09uOaqpN83qPok1QPjdqJiVGCKc5U_hEbsS2HM299kJl" style="color: #1a5dab; text-decoration: underline;">A new form of AI – "Sovereign AI" – is about to unleash a $248 trillion economic disruption that could impact millions of people's finances and retirements</a>.</p><p style="font-family: Verdana; font-size: 16px; text-align: justify;"><strong><em>"A lot of people are going to be blindsided,"</em></strong> says Chaikin, who built an award-winning system that flashed BULLISH on Nvidia all the way back in 2014, before it went up 52-fold... </p><p style="font-family: Verdana; font-size: 16px; text-align: justify;"><strong><em>"What's coming next will tear the AI industry down to the studs...</em></strong> <strong>
+<em>and could send countless AI stocks to zero. At the same time, it could send a handful of AI stocks soaring."</em></strong> </p><p style="font-family: Verdana; font-size: 16px; text-align: justify;"><a href="https://click.news.capitalsurgeplan.com/?qs=ABB7InYiOjEsImQiOjUwMTN9ADMAAAAAAPPds7S-gfqZBkVUBuvav00Yi41ki25bMgvXPV0JOJ_6PMKk6QcmRXLxMaTdKD57CiuvhcNgYXAaAALwKgNVAFzyLpIiHW0g8v_CJl7E" style="color: #1a5dab; text-decoration: underline;">Marc warns this new form of AI will likely create the 'Great Wealth Rotation' before the end of 2026...</a> </p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">And it could leave those who see it coming richer... while others could go back to square one. </p>
+<p style="font-family: Verdana; font-size: 16px; text-align: justify;">Marc has predicted some of the biggest turning points in market history like the 2020 COVID crash, the 2022 bear market, the bull market that followed, and the 2025 tariff sell-off... </p><p style="font-family: Verdana; font-size: 16px; text-align: justify;"><a href="https://click.news.capitalsurgeplan.com/?qs=ABB7InYiOjEsImQiOjUwMTN9ADMAAAAAAPPds7S__dxG_fWEljSRHDoKyUKAnq2OhPVSCsknBlkQj9_zjhe2ztE3PgUhI7VcNDV0luD46JZ_vUaahUos8G3NOEEFVNs5A4FYu7LH" style="color: #1a5dab; text-decoration: underline;">But he admits this is one of the most <em>unusual </em>predictions of his 60-year career</a>.</p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">He also says it might be the most lucrative – if you get on the right side. </p>
+<p style="font-family: Verdana; font-size: 16px; text-align: justify;">Which is why we're posting Marc's full, brand-new presentation, including his No. 1 money move for the "Sovereign AI" shift, to the public on our website today... </p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">You can watch it for free – while it's still available online. </p><p style="font-family: Verdana; font-size: 16px; text-align: justify;"><a href="https://click.news.capitalsurgeplan.com/?qs=ABB7InYiOjEsImQiOjUwMTN9ADMAAAAAAPPds7TALbv405nzK1NaLhg9zdQ-MV8E2Vcl750iGAgpOFmiFAXWK8ei4bT7qjMWsegKfVNLW6ru65npJBSPRe0zxkVLwbXZZoEv7Kjm" style="color: #1a5dab; text-decoration: underline;">Click here to see how this 'Great Wealth Rotation' could affect you and your money</a>.</p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">Regards,</p>
+<p style="font-family: Verdana; font-size: 16px; text-align: justify;">Megan Johnson<br/>Senior Manager, Chaikin Analytics</p><p style="font-family: Verdana; font-size: 16px; text-align: justify;"><strong>P.S.</strong> According to McKinsey, the current AI market is worth $4 trillion. But "Sovereign AI" is about to overturn the entire industry, unleashing a $248 trillion disruption.</p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">How?</p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">By making data centers owned by SpaceX, Google, OpenAI, and Anthropic obsolete (especially when it comes to major scientific breakthroughs).</p>
+<p style="font-family: Verdana; font-size: 16px; text-align: justify;">America's first "Sovereign AI factory" is set to open before the end of the year. One company is poised to profit. <a href="https://click.news.capitalsurgeplan.com/?qs=ABB7InYiOjEsImQiOjUwMTN9ADMAAAAAAPPds7TBbhItjfMvYfFYkiKnQsy-MARr3OJSNToiwHPWJTIb-JdWLih2TLVLiTel6Hx22iCz6eCwLV_UrvQC2k2KApBGYwemadKo7a9N" style="color: #1a5dab; text-decoration: underline;">Go here for the full story and Marc’s top "Sovereign AI" stock pick now</a>.</p><p style="font-family: Verdana, Geneva, sans-serif; font-size: 16px; text-align: justify"> </p>
+<p style="font-family: Verdana, Geneva, sans-serif; font-size: 16px; text-align: justify"> </p>
+<p style="font-family: Verdana, Geneva, sans-serif; font-size: 16px; text-align: justify"> </p>
+<div style="color:#393d47;font-family:Verdana, Geneva, sans-serif;line-height:1.5;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
+<div class="txtTinyMce-wrapper" style="font-size: 12px; line-height: 1.5; font-family: Verdana, Geneva, sans-serif; color: #393d47; mso-line-height-alt: 18px;">
+<p style="margin: 0; text-align: justify; line-height: 1.5; word-break: break-word; font-size: 10px; font-family: Verdana, Geneva, sans-serif; mso-line-height-alt: 15px; margin-top: 0; margin-bottom: 0;">This ad is sent on behalf of Chaikin Analytics, 201 King Of Prussia Rd., Suite 650, Radnor, PA 19087. If you would like to optout from receiving offers from Chaikin Analytics please <a href="https://click.news.capitalsurgeplan.com/?qs=ABB7InYiOjEsImQiOjUwMTN9ADMAAAAAAPPds7TCS3vCC35DVmJDwBGkdbuMj1lKJSLw8Pj_5AexQjgA34fauzhfvRnftQnL2Ounohr4W3VBSUqYrx7GPag_N8988RudchNaBU86" rel="noopener noreferrer" target="_blank">click here.</a></p>
+<!-- Footer placeholder -->
+<p style="margin: 0; font-family: Verdana, Geneva, sans-serif; font-size: 10px; line-height: 1.5; mso-line-height-alt: 15px; text-align: justify;"> </p>
+<div style="font-family: Verdana, Geneva, sans-serif; font-size: 10px; line-height: 1.5; mso-line-height-alt: 15px; color: #393d47; text-align: justify; margin: 0; padding: 0;">
+    Trading involves risk. The information provided by Capital Surge Plan is for informational and educational purposes only and does NOT constitute trading or investment advice. Capital Surge Plan, its Editors, Publisher, and affiliates make no guarantee regarding any results that may be obtained from the information provided. Past performance is no guarantee of future results. Recipients are responsible for conducting their own research and due diligence before making any trading, investment, or purchasing decisions and assume full responsibility for any actions taken based on information provided by Capital Surge Plan.
+</div>
+<p style="margin: 0; font-family: Verdana, Geneva, sans-serif; font-size: 10px; line-height: 1.5; mso-line-height-alt: 15px; text-align: justify;"> </p>
+<p style="margin: 0; line-height: 1.5; word-break: break-word; text-align: center; font-family: Verdana, Geneva, sans-serif; font-size: 10px; mso-line-height-alt: 15px;">
+    If you would like to unsubscribe from receiving offers, click the link below.
+</p>
+<p style="margin: 0; font-family: Verdana, Geneva, sans-serif; font-size: 10px; line-height: 1.5; mso-line-height-alt: 15px;"> </p>
+</div>
+</div>
+<!--[if mso]></td></tr></table><![endif]-->
+<div style="font-size:16px;text-align:center;font-family:Arial, Helvetica Neue, Helvetica, sans-serif">
+<div class="our-class" style="text-align: center;"><span style="font-size:9px;"><span style="font-family:verdana,geneva,sans-serif;">This email was sent by: <b>Web Impact LLC</b><br/>
+			Al Jerozolimskie 85 Warsaw, Mazowieckie, 02-001, PL<br/>
+<a href="https://click.news.capitalsurgeplan.com/profile_center.aspx?qs=ABB7InYiOjEsImQiOjUwMTN9ADMAAAAAAPPds7TDS99oA5GQzNZyhbWPZn0c0mA4EAV1K49TIYr8kUilSN5n1j3oF4fyMN6fyONZn9pi81tC5t_--Ct4zm9gKFskrlpbghD7aFnmlozJ9UrbcJQ">Update Profile</a><br/>
+<a href="https://click.news.capitalsurgeplan.com/unsub_center.aspx?qs=ABB7InYiOjEsImQiOjUwMTN9ADMAAAAAAPPds7TEshMzsxOBpKYkQbe3J92oQckBGUd_Ldye3R9XtxSM_EoqVQ8My8s4dLw_eZetyXHdY1u6Y5_MbLbXEkAK9mvDR_-dehTKE_BVLyhTzqnELMgtTg">Unsubscribe</a><br/>
+<a href="https://click.news.capitalsurgeplan.com/subscription_center.aspx?qs=ABB7InYiOjEsImQiOjUwMTN9ADMAAAAAAPPds7TFZHaLsQLaOoB3IQNgWA758h6FE_LhqTrWH3iNsw7F62S-OlkOV_wivdx7yOTgBIfe-L14EY-vFOv6tlYTosfO0Hw6ScpLAFFPS9t6eUwMy84">Manage Subscriptions</a></span></span></div>
+</div>
+<!--[if (!mso)&(!IE)]></div>    <!--<![endif]--></div>
+</div>
+<!--[if (mso)|(IE)]></td></tr></table><![endif]--><!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]--></div>
+</div>
+</div>
+<!--[if (mso)|(IE)]></td></tr></table><![endif]--></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<!--[if (IE)]></div><![endif]--><img src="https://click.news.capitalsurgeplan.com/open.aspx?QZP7NJ4BTVEENIFCOC3CMSIZIE.510007&d=510007&bmt=0" width="1" height="1" alt=""></custom></body>
+</html>
+
+--EoI0WRgIC0ek=_?:--
+
+

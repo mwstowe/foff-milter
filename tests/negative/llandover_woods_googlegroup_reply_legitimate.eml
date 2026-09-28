@@ -1,0 +1,422 @@
+Return-Path: <all+bncBDY2HKEUYEMRBCWT4HKQMGQE35QTUEI@llandover.com>
+Received: from hotel.example.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.example.com (8.18.2/8.18.1) with ESMTPS id 68R0tldP089154
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <user@example.com>; Sun, 27 Sep 2026 00:55:48 GMT
+	(envelope-from all+bncBDY2HKEUYEMRBCWT4HKQMGQE35QTUEI@llandover.com)
+Authentication-Results: juliett.example.com;
+	dkim=pass (2048-bit key; unprotected) header.d=llandover-com.20251104.gappssmtp.com header.i=@llandover-com.20251104.gappssmtp.com header.b=GIHU3vH5
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
+	by hotel.example.com (8.16.1/8.16.1) with ESMTPS id 68R0tiPJ096819
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=OK)
+	for <user@example.com>; Sat, 26 Sep 2026 19:55:45 -0500
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.example.com 68R0tiPJ096819
+Authentication-Results: hotel.example.com;
+	dkim=pass (2048-bit key, unprotected) header.d=llandover-com.20251104.gappssmtp.com header.i=@llandover-com.20251104.gappssmtp.com header.a=rsa-sha256 header.s=20251104 header.b=GIHU3vH5
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-882905daabasf250587b3a.0
+        for <user@example.com>; Sat, 26 Sep 2026 17:55:44 -0700 (PDT)
+ARC-Seal: i=3; a=rsa-sha256; t=555-123-4567; cv=pass;
+        d=google.com; s=arc-20260327;
+        b=StvT04jVg4jx7y1Kk4ty5v+ggKCd24wa0z20woo8R4LJQWKsUdSW8pKFfUZLQm2F3q
+         pqOwKNYdGZ+xVFPlcs3oPJtvktzQcQbmvg84x/AhRenzgUuiDpp0P3ofCX4oukJk2RFP
+         WI3zHS6Fd4uctVLFZgoHOjqyHCh60ihwjFY1P/WXa2+9o8kMj0R+jaWdpbLScxXFWw6J
+         sogFxd0ywBv/RoYDvd980N9SIOmAEaw6f0umdMMY+D2apu1SWqFyZ0jia3DAH5nUEmdL
+         Ox3B5fK048Mn+QObU2iQByxddoQ8XJ/OBgiqjrk1IBU4W/JbIiv3iX7rbmWuiCtJNl/C
+         nfyw==
+ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=list-unsubscribe:list-archive:list-help:list-post:list-id
+         :mailing-list:precedence:mime-version:content-language
+         :accept-language:in-reply-to:references:message-id:date:thread-index
+         :thread-topic:subject:cc:to:from:dkim-signature;
+        bh=ivuBp8zG1k0Py/5+9JFCI8XvHuEef2qr8pR9gG57yzU=;
+        fh=gh6Eq5s+HROnt459MIcexc/AtFfAHoD5k03A4AwuewM=;
+        b=IXq1Pd/DSsKNbW/98w6iN4Ezrk6w1ScLsl+ndbQH+VoOhEwg11amlQ1WziC9s90Kb8
+         IlMXLU3+sbOxa9cqVAtAHEKdo03D5MFRUmuYFdTsUWMuoE5RPc5JI2cj+/GJfCuh1q5K
+         bJhSDWZB8fR0gPY+lVjRtwl79IvpYstufUMYlMvB0IyT2Dc04gxCyLM7MM2ZWym9PDVX
+         mEwK2hElAbpWDQ5jnlUSGrZ4GeApimKnnyVG1J/BkdtkvURn4OGzKqfHsMIXGmrpnI0c
+         B58VoAVt62N8T/B4nca9pyv/ilIlcbrLXw+iO4RzuM5lPMFDloyN4nr8MOE1URRlNdGE
+         /dKQ==;
+        darn=example.com
+ARC-Authentication-Results: i=3; mx.google.com;
+       dkim=pass header.i=@msn.com header.s=selector1 header.b=gpuovUSd;
+       arc=pass (i=1);
+       spf=pass (google.com: domain of gallaghers7@msn.com designates 2a01:111:f403:d116::3 as permitted sender) smtp.mailfrom=gallaghers7@msn.com;
+       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=msn.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=llandover-com.20251104.gappssmtp.com; s=20251104; t=555-123-4567; x=555-123-4567; darn=example.com;
+        h=list-unsubscribe:list-archive:list-help:list-post:list-id
+         :mailing-list:precedence:x-original-authentication-results
+         :x-original-sender:mime-version:content-type:content-language
+         :accept-language:in-reply-to:references:message-id:date:thread-index
+         :thread-topic:subject:cc:to:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=ivuBp8zG1k0Py/5+9JFCI8XvHuEef2qr8pR9gG57yzU=;
+        b=GIHU3vH5EZpfTMscMn7mQlInLepnp2U4YjjrVG81hShEo5cGyc74binTYbtvXfys1a
+         cTcqW724W+SksfZomR7iwolJJAhaQsUmEtxQM/NvJPRIRaAU/+Grc05DGa0IZVzXRijQ
+         mLDsQ/cx3W+Qw35B2pbN+VjdsE/6tIemlm2GK9BlOkPW/vseyuMCT0YiPoCx6ZpKMb97
+         sk3etzMupxs6JueAATq9uv0YGathLRRUAzTV/EWh/jpRi4yejq0pXRkssoaX4gezn2bD
+         7YRgszhUtvleZTjepPQtEXmBW2R4F6jI+uTJDsqdEybxec9n84ahrf+NSlrWfF7HPM60
+         OcNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=555-123-4567; x=555-123-4567;
+        h=list-unsubscribe:list-archive:list-help:list-post
+         :x-spam-checked-in-group:list-id:mailing-list:precedence
+         :x-original-authentication-results:x-original-sender:mime-version
+         :content-type:content-language:accept-language:in-reply-to
+         :references:message-id:date:thread-index:thread-topic:subject:cc:to
+         :from:x-beenthere:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ivuBp8zG1k0Py/5+9JFCI8XvHuEef2qr8pR9gG57yzU=;
+        b=AHuD+l3NNRs2GfcQuZZ/oYPyUt2Vzbb2ncViC3vhsuSPvImf+tzsfEu2eLEIU0HrNI
+         gIxXNbVwft5kMOBXBC2V1R9BWLF7bp4B0mfTU5b2cHdp/PAHiIC7755t88A/8KmWrQza
+         JND4X+wmnItkvEnKwH8gctzb2L769pFNZ1Zc+9XZu4S9/x3yGnHYlTffJxgKsGMB6sTi
+         GajTe0h7l5t91kyrUxj1gG+3WI2sgINUjxrPij2JhCbpKTsxTsGPLyAyvNFz3OprIHDF
+         Ohi2CdBBB/sCoPy9eGDWP2mK457V1Xmk63QlS1+BHCD9yx+BmPzgkhmpcl0ytC3yAcyd
+         XHCQ==
+X-Forwarded-Encrypted: i=3; AKwUvBwyQQTnymzycMo2OBvRlN11wx92Eo/YyNurP9YS/qcTENrzZDzyVWhH4W0zqHzGCUOvG/H6II8=@example.com
+X-Gm-Message-State: AFuF++lj1/qkMJMdzmsl4CcLdOuenGpsnQUcGcrQZ1fZ0yqjjoXfAEFp
+	htckXKeTWkUNT0sCODAZp3Ob1Zpwjo3lg+DjR9tBdeYj5RWUC/iiQERG/ypggYjUdyA=
+X-Received: by 2002:a05:6a00:94d8:b0:881:c60:72b2 with SMTP id d2e1a72fcca58-8810c6fba2cmr3255089b3a.37.1790470538979;
+        Sat, 26 Sep 2026 17:55:38 -0700 (PDT)
+X-BeenThere: all@llandover.com; h="ATskLddK1WslZEJ8QW2z4pcJw8b3KQa3+HJX3U8c5K59Xmbs5A=="
+Received: by 2002:a05:6a00:ad8d:b0:847:894a:65dd with SMTP id
+ d2e1a72fcca58-87fc981ec89ls2243594b3a.2.-pod-prod-08-us; Sat, 26 Sep 2026
+ 17:55:38 -0700 (PDT)
+X-Forwarded-Encrypted: i=3; AKwUvBzT04PY91nQWZGm7zX+8C02D1tnwH2OfLPCoF0hDD9+/4MjS1cGtAoMG66THDUlYwtBPIU=@llandover.com
+X-Received: by 2002:a05:6a20:9392:b0:3dd:a00a:1712 with SMTP id adf61e73a8af0-3de0e88a867mr9930027637.45.1790470537873;
+        Sat, 26 Sep 2026 17:55:37 -0700 (PDT)
+ARC-Seal: i=2; a=rsa-sha256; t=555-123-4567; cv=pass;
+        d=google.com; s=arc-20260327;
+        b=VUW2XbKtd5vr17eeMsBD44qhlnWqsUH/uk1Sr2pSVQ+Eig3aT0i6BoLpyMuUJ4tSiL
+         3kDcW9TpD/fuvwUiHlw8nJcuXmDLd+LRmxvwg5ybxB6BMu0KjbQk0NxJrLaLzgiZuH+e
+         JPHmFwZv4GF1TaHM/e6J8t6TPGtvZdXusZNnCCMjdq3f6jH2eCGmDT4luTqJ9tM0iigd
+         fZy8LjbNqki6d8wCXiyEqvSGZLaknosckmJPkuuseX6//bRFGU0Bos3JvQbrqc/a2rB7
+         7M9zu4Jhliv4KZvCvp8r/yFGuU9d+uYqEga6dDCKK3pehzmPwb73SEnAG/RQdwVtVASX
+         fLlA==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=mime-version:content-language:accept-language:in-reply-to
+         :references:message-id:date:thread-index:thread-topic:subject:cc:to
+         :from:dkim-signature;
+        bh=95MpRxx2CuUIb/QauXB4P6Y3lNfYZwbY7zGbYJVW7iM=;
+        fh=sXiJAJWCNv/mK6sIv2arRzNMwSSxj71lgA1ootQH8RE=;
+        b=iyyXjaZiFXeDATqKNR7DwBguU0KTexPps6iElSamRweVtNvboTkmTSe3tLaXu37Rq7
+         6h08D5/4WZnk5dsHpcN3lP4OtKnCOXDCth8zJvaL2Wy3rF12lUfHBDRU6Zs2ZsWWmN9+
+         2J5/+ArhdcAF3oQnvvR6Ai/i9P0NE9wXaJJahM3StioivNybZZgjNBdWRv1dImdOqThR
+         U86smpCmxsn+q48Cer8edgcM/KOUNOYtezFq42m4xWNIT3vyWmk/qr63mVdvhhJ37xwG
+         KO/Ks+LuU2FT6bGUJIWqVmWfd3NabL83QBKPefTQxPiBD/mM7CF2s6PgoHgtwc0bGLLx
+         qPWA==;
+        dara=google.com
+ARC-Authentication-Results: i=2; mx.google.com;
+       dkim=pass header.i=@msn.com header.s=selector1 header.b=gpuovUSd;
+       arc=pass (i=1);
+       spf=pass (google.com: domain of gallaghers7@msn.com designates 2a01:111:f403:d116::3 as permitted sender) smtp.mailfrom=gallaghers7@msn.com;
+       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=msn.com
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azolkn190110003.outbound.protection.outlook.com. [2a01:111:f403:d116::3])
+        by mx.google.com with ESMTPS id 41be03b00d2f7-cc7941057b8si8136456a12.377.2026.09.26.17.55.37
+        for <all@llandover.com>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 26 Sep 2026 17:55:37 -0700 (PDT)
+Received-SPF: pass (google.com: domain of gallaghers7@msn.com designates 2a01:111:f403:d116::3 as permitted sender) client-ip=2a01:111:f403:d116::3;
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=WuI1s0sCLVBAp2sCr5YZmNv1Kpe0IniuoIe21CYUC6Duywm5Zmghqovq673BMJ02+b3nQwEa4wVFJw7nGu31xu0hzp/ThwwXIbPixL2PBDR1Klb7Q9OYEEqfiz7LOthtRVrsRT/xjK1tjxO/J1PHmpUCmzIVNCKGYl3uyURpwE6NP9n+wmWZ4qelDW2pTg5HwF7os2bOlxQB/DA8o0QC/vv/662AkUjpVBR1z2Sh2DP1oMiugZ0WZzYiKN6E8Nxa9TrsRbQu92zbF+zkfEhAcOoTffzrge14sA5VBwDFd0zUMG6hfMsL5QeACGsYR8Ri2JRdqHSpi3gXLFxOHKOPrA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=95MpRxx2CuUIb/QauXB4P6Y3lNfYZwbY7zGbYJVW7iM=;
+ b=BPRNUrGOIccdXX5qPm60ljIFxiiQqBxcFTUGxMLE3Qq4s0iBQiSw6Skb0Ybg9bDd9Jj9Hh+adJsjBIDEa0Ri1WgqIwzdk6ntPzT0mg1WO1leqM/E3r738gAknAu54m7karZ46d6bnGZKV4RXsstWJ4TOY/C2cxrGeqUmMwfm5op6CttyHLFmpJZcFa97mJ1XQ5v1Oz92LfTuxjTF5de+X13HRH6BTbUnEYZxJpeSAaThmD+a2HngwKBOVvlAPLX8smNTXw1Guto5SvOx+ei34XvLUYuu4SQy1aqNqQb0c6ZDocAvF+Kmjk5KotXoDrXCea2RMvzGL4Xqoid5mWWtIQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+Received: from DM6PR07MB6921.namprd07.prod.outlook.com (2603:10b6:5:1eb::13)
+ by MW4PR07MB8698.namprd07.prod.outlook.com (2603:10b6:303:107::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.19; Sun, 27 Sep
+ 2026 00:55:35 +0000
+Received: from DM6PR07MB6921.namprd07.prod.outlook.com
+ ([fe80::5c01:f20d:6ca5:69b9]) by DM6PR07MB6921.namprd07.prod.outlook.com
+ ([fe80::5c01:f20d:6ca5:69b9%4]) with mapi id 15.21.0451.014; Sun, 27 Sep 2026
+ 00:55:33 +0000
+From: Mike Gallagher <gallaghers7@msn.com>
+To: Laura McGee Kvasnosky <user@example.com>
+CC: Rhonda Gallagher <rlg.seattleme@gmail.com>,
+        "all@llandover.com"
+	<all@llandover.com>
+Subject: Re: Llandover Woods Fort
+Thread-Topic: Llandover Woods Fort
+Thread-Index: AQHdThKs8PmgQ/JnZEmvTGlyjLQj3bbhmAGAgAABl4A=
+Date: Sun, 27 Sep 2026 00:55:33 +0000
+Message-ID: <DM6PR07MB6921D881FF693B80D08E7691FE8E2@DM6PR07MB6921.namprd07.prod.outlook.com>
+References: <2C700A4E-A2E1-44D8-8D93-F14F9E6C8584@comcast.net>
+In-Reply-To: <2C700A4E-A2E1-44D8-8D93-F14F9E6C8584@example.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DM6PR07MB6921:EE_|MW4PR07MB8698:EE_
+x-ms-office365-filtering-correlation-id: ac475d93-b059-46ba-a05b-08df1c320905
+x-ms-exchange-slblob-mailprops: q6Zzr5Fg03EuTjII8LIIKTD3uyhoagb3JaRT447fOmmgjKzdsEcGSNkLQleOYlU4PA5cl1c8FcdP3/rc/S1ifE+pXuGZTG/bLBYnii/IF9zefXNaqsFQ+Xaeb6yI83PVGYEZOjGGMLsCLDKURsdqNmCrgB784p32El+ZdHBm6lBv199lcpvuz+BD38r0qt8DWoMRMHbCxB8XYMs4TOtToHjCpuoqklfwCmQEWsEEICwh17AFjx8SEypHyD9e80n1XqrcHmvZjVEimP47HnoQvc1cKavWBAXh4KkALEmAJNpCeSuDyJNXYT3+7cnydqW6/29BSsZDCVILWisEynQcSdIfMqhOZOEwZuCFgbfnAmKSVcPUy3fzQDKWyq9ABshDHtNcoel2o1s5uCn1j6iEbrW4AFlhWPzIX6l1dpze6EhDYWZip42g6DwRi3CcKdvFzRmXUwDDf2HuAj08xNGZbCyA8VwQ7WswlzjBvdCKPLHUsFpCE2kwZepU+ekviLRUnj9PxDMoQjFef7SchyKg0DqU14F2D0Wl5ELAxVGNw0+qtgph9bbFe7u1pIa8XAhio3VI6SGE3Xo+H04HI/I+RU565Qnqp4GkMpnBHY1kT4sU3KJdj5cifTOZ+xsCb2SVEaEn/z9JC0JxNiehNwnT00r/jGMnitBBHMC0jfms6tYh+MITwDURiREQCyur+cK2
+x-microsoft-antispam: BCL:0;ARA:14566002|24021099003|555-123-4567|14091999006|15080799012|555-123-4567|555-123-4567|555-123-4567|31061999003|19110799012|25010399006|40105399003|52005399003|12091999003|1234-5678-9012-3456|56899033|102099032|440099028|555-123-4567;
+x-microsoft-antispam-message-info: =?utf-8?B?UXRZSjF3eCs0MW5Vd04rRXQvY2xKNXQrVGlTekxLNG83dlJRNW9jOFRWczhS?=
+ =?utf-8?B?RVVnVXJYcms0NDVnTmpIaCtVbzZxN1M4bUR3TkFLQ24yV2lsc0o3NCtITGlV?=
+ =?utf-8?B?algyaDJXVlZmRGNQRi8wa1BraUtzbHZFK2VJS2VRN1p0R29lbUg1aStEa3o4?=
+ =?utf-8?B?bC8wUWt2eHYzckVGY1FJN1ZPMHJuK1dYMnF3UkJiRFFKYVUwZVNmdjdqL1hM?=
+ =?utf-8?B?UmEyU3cvbUV1WHZ1SWQ1Y1IxclhGNlpkUUdRblNacTVSOXc3TGJML1BERUEy?=
+ =?utf-8?B?QmEzMWRucEtHcHZqckI4THVTY21pOTI3NkF4ZWdrM0NuazJCUjRvOVluMTJQ?=
+ =?utf-8?B?QytpQ1I0QW9VcWswYnNPSVdURGxkNWZUV3BlMDB3Vk1YOVVrUzJQT1Z2eGcr?=
+ =?utf-8?B?M1p4ODE2dEpNVm42dlR0RlNPSWRLdm11aTd0UnFMbmZZNjNxdEZaRFNQWDhz?=
+ =?utf-8?B?akp6dklHbktjV3Z3Vjk2Skt3Y1BDTGZreS9RdXFPRHFXMFlRUWk1WkNBS3hI?=
+ =?utf-8?B?ekJNTnNTOFA1NkR0Yk0rTXJNaTBKdzhzNEdDQnY5QXIwTk1oL0dvSXpWY1Jp?=
+ =?utf-8?B?ZFA2cTNDckVSM0t3TTM0ZDlQcHVLclFYOFZqaDdhb2ZHSHZyRnhta09PVkZD?=
+ =?utf-8?B?SWtiQzZORkNJWVBCc0EyN1ZML0FRRjBycnNyVkpzQzYzT2dZM1RadkdMUEpk?=
+ =?utf-8?B?bXhiejRZUTZVUVNKY1kyZVR5ZU9Wc3hkVzEyeFdyd0hDNWxlVUF6YUNtTWFq?=
+ =?utf-8?B?Tm5MOXFZNmRmdStudlBFZVNzWUhNTHkxMGRRTmJBUjVNeEhWVzNxdnVEVTRz?=
+ =?utf-8?B?UzBKeXBUVnluODVyQXZyd2pTdnBXdGhZQWNWUmQ2V0JCcnZQZ3BKck1ITFB3?=
+ =?utf-8?B?WUQ1dVlseTNTODV0WXFvemttWERuMkJQdE9MWHkxN0FjVHJzQnJaMHZDWXBU?=
+ =?utf-8?B?ejZLVFc4NlpySVc0WFNsbjBHNHhNN28yNG9XZWFJYkFSVEVSdnNRbGxobURk?=
+ =?utf-8?B?TnFxaWVGd0prVElZRkJxSDBqWUZuUUVHL0NDOElabUtkdzBpNGxDcE14eTZ3?=
+ =?utf-8?B?UEZpWjJFNURVM2hVWHhDTCt6Y3pXSXNaNG5vMFhMMUpRZVlrRmREYWtxZ05S?=
+ =?utf-8?B?em1OcVZwd3pvOHRmS0hjK21pRXlTa29pTDR2dG9hTGI0bzF6T1dNUlZ1RnUw?=
+ =?utf-8?B?cldOZjdvdjY2Qk5nYlM0OGRybU1rbm5xdlhXN1c0OWE0cUNPZmx5TnF5b2hh?=
+ =?utf-8?B?N2h3L01aSmZmL0FYNnJUS0ROWnVKZTVzc3JOL3BQejhTV2J4L081U3l2ZFZs?=
+ =?utf-8?B?TStIeXIvTzVZZDJ3UkcwOVQrQlMyamo4anhPRmgxc0R1ZThrS3M2aTFEQm5O?=
+ =?utf-8?Q?ZbvHs2FA/R8IVCNhG1U1vnsOFAzX952U=3D?=
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?b3pmc1Z4dHNpQjFseWpCMVlJMmRLV1JPQmVXQmtVbkNCT2FUUnUyeExwUjZm?=
+ =?utf-8?B?UjZZZjZPM2ZrWE9ibFBNYlJmWFgyTXRJUGIvTmlNQktwb0Ntc2xCYmxiaXJJ?=
+ =?utf-8?B?V2tjdXNaTzJ6TXdoZndIckFWTElXMVg0V3VpZFFZZ09jeDZJWnR1cVlJTzUw?=
+ =?utf-8?B?N2ZTOWhIVUVzM1JiQVNKNEJMcFRzcFBKa0FwYllSRVJVOERLTnlGYjJqN1Fm?=
+ =?utf-8?B?SWdORTlMMW1PSWo2dnRxU05pN2U0SDhxWm1iNVlodmdGVnJiV0NNMDNTZkhM?=
+ =?utf-8?B?UmpTbDVLQmJ5QS9jUnhzZCtQbWg4ZTBwMUo3b1J1Mnovd202S2ZIbmZHZURl?=
+ =?utf-8?B?SEcxTDV2bVJQUlRIcW1yMElZQndPY0h5YTNvT1BEM2E0TkdjQnJJUm5KQnhq?=
+ =?utf-8?B?ZHU2YU1LcEhzTzJUMjhlQTFQeWNFczB4R2lBbThTdkhZVFFsdCtyREV3UHN1?=
+ =?utf-8?B?cVpmaVByZzFkQnd1aURHdVdhOUIrRGNuQ29uY3hhOUFIVXhPR0F4K2M3RkZt?=
+ =?utf-8?B?M2VGTzAvMzRJaXgxcVE0VFE2NVdaWWJFT0phNjBqYU4xSG9YWCtwMGN2UTFx?=
+ =?utf-8?B?SGJXN3ZMTitmM2JFek9wTDdMWkpUbzZVV1NOL3duVXBZcTdubzZqVlNzZWVK?=
+ =?utf-8?B?ZFVJRktmaWl2K3FHZ0pnNWhWSk5MY2tEeWg5M25mNlh0dlZINmFrZ2RkN2hj?=
+ =?utf-8?B?S29ER3JrZ2tzcXhRdnFueWswdmNxdFQ5ZUJoRHcwTS9YWkhINE5RdEtrZTNy?=
+ =?utf-8?B?WVM3YmE4a3crWWR6cUpoN043ejQ3cmJ0bnBCQW4vVEtYU2kxT0pQOFNxUEh0?=
+ =?utf-8?B?LzhLR0N2RCtGenlMK1hJTDNMUGxzaDRDWnBkbm1WR0wxUEVZR3ZtNWVkMWxr?=
+ =?utf-8?B?YjlZNWdpVEx4eGdlVENIQlRoVlIxWUoweXlsbERwY2JxMWVlYngwVEhXSE5t?=
+ =?utf-8?B?cUtFRk5SYkxjcmVlemo2aXN3aFh4aWVjMFIveFZhOVlFbmJYYm1ZSGVPMlM0?=
+ =?utf-8?B?NDhLaEhYbEI0RTRTdU90UHB1cHpRMXk4bWxOdkxUSU5sQ3NHREhWelp0Y1Rz?=
+ =?utf-8?B?Y2VERVlZa2NhenVNVDhMTWN3dElRTFRHTkpOMk5jeGpiWUpYclVEM05yejA2?=
+ =?utf-8?B?RG5TMDNJalV5M1RHSllBOWEyR2hBdVBYRW8wSjh2WldUdUdnU3JxbnpBY2Zz?=
+ =?utf-8?B?Y3ZqTVpYUURHWTRRbTFpaXVxUUwwWjJpalFKQzRWSUUza25SUitKR1VZUGNW?=
+ =?utf-8?B?MGszUFJYWDZCSnJjWjI5K1hxc2o4V21kRUppQnV0KzdHb3NsT2RraE1wZnZ4?=
+ =?utf-8?B?TEsxVEpMWWFkZjBBQVpPWlhzR0l1ZEJFOTZSL1R1WENyS3ZmN1lLR1hqZjZ0?=
+ =?utf-8?B?UFZQRjBDTFJ4NEwvSUJxdmtWcW5JVHZQK0xMbFFTY2xGVzkycGMxUkpJQ0F4?=
+ =?utf-8?B?algyck1Hb2RaRFA3MDdMdGo2Q0p2by9UcUZGWXpCYndmZHhiZUV0NnluUlBr?=
+ =?utf-8?B?bXlIVU14UENtejZzaGRBaEpYVkZSUXFXMVRCenpaVTRsUDNDaklzMCsxbHNR?=
+ =?utf-8?B?Y1hxUWNDTnlZN1g3TWMrZDN3QnhZOHhvUkVlUTBjcTVsdVBKTkVLbXRkNlNJ?=
+ =?utf-8?B?Q3ZTNnZ5Z2owQldlN0VzTncyWXJCTGxjc1BTbnB1ZW9SalFsU2hTRUJWcHBu?=
+ =?utf-8?B?bkNDdUxOdFBxY0xqM3BrQlJnTUF6b1RFMGt0ZTFKU0pwZDVhYVB5SUluSzdr?=
+ =?utf-8?B?VVhXZ0Y3SXRNUXl3Vk1qNmp2NzBPWHBWM0hvVWpHSzhSQXVyaFVyYjNsbEVR?=
+ =?utf-8?B?b0pqdEVVS05zaldkdEFPRW1kc1hqTUhaNG1yRk9ORDBvcXovdFNmYWNBMU01?=
+ =?utf-8?Q?GKvbDKPMcWEhe?=
+Content-Type: multipart/alternative;
+	boundary="_000_DM6PR07MB6921D881FF693B80D08E7691FE8E2DM6PR07MB6921namp_"
+MIME-Version: 1.0
+X-OriginatorOrg: sct-15-20-9412-4-msonline-outlook-13ed7.templateTenant
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR07MB6921.namprd07.prod.outlook.com
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 1234-5678-9012-3456-1234-5678-9012-3456
+X-MS-Exchange-CrossTenant-Network-Message-Id: ac475d93-b059-46ba-a05b-08df1c320905
+X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Sep 2026 00:55:33.5094
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 1234-5678-9012-3456-1234-5678-9012-3456
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR07MB8698
+X-Original-Sender: gallaghers7@msn.com
+X-Original-Authentication-Results: mx.google.com;       dkim=pass
+ header.i=@msn.com header.s=selector1 header.b=gpuovUSd;       arc=pass (i=1);
+       spf=pass (google.com: domain of gallaghers7@msn.com designates
+ 2a01:111:f403:d116::3 as permitted sender) smtp.mailfrom=gallaghers7@msn.com;
+       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=msn.com
+Precedence: list
+Mailing-list: list all@llandover.com; contact all+owners@llandover.com
+List-ID: <all.llandover.com>
+X-Spam-Checked-In-Group: all@llandover.com
+X-Google-Group-Id: 546232065490
+List-Post: <https://groups.google.com/a/llandover.com/group/all/post>, <mailto:all@llandover.com>
+List-Help: <https://support.google.com/a/llandover.com/bin/topic.py?topic=25838>,
+ <mailto:all+help@llandover.com>
+List-Archive: <https://groups.google.com/a/llandover.com/group/all/>
+List-Unsubscribe: <mailto:googlegroups-manage+546232065490+unsubscribe@googlegroups.com>,
+ <https://groups.google.com/a/llandover.com/group/all/subscribe>
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.example.com [172.31.18.8]); Sun, 27 Sep 2026 00:55:48 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.example.com [23.95.222.152]); Sat, 26 Sep 2026 19:55:45 -0500 (CDT)
+X-Spam-Flag: YES
+
+--_000_DM6PR07MB6921D881FF693B80D08E7691FE8E2DM6PR07MB6921namp_
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Clearly illegal and shockingly dangerous to our families and homes.
+
+Unacceptable and a wake up call for all of us to be vigilant.
+
+Mike Gallagher
+
+On Sep 26, 2026, at 8:49=E2=80=AFPM, 'Laura McGee Kvasnosky' via All Llando=
+ver Residents <all@llandover.com> wrote:
+
+=EF=BB=BF ingenious and heartbreaking.
+
+On Sep 26, 2026, at 4:56=E2=80=AFPM, Rhonda Gallagher <rlg.seattleme@gmail.=
+com> wrote:
+
+Hello Neighbors and Happy Fall!!
+
+In an effort to keep all informed of security issues in and around our neig=
+hborhood, a
+friendly walker provided attached photos that they took in the Llandover Wo=
+ods trail
+area.
+
+I have contacted the non-emergency Seattle Police Department and they told =
+me to
+fill out a find-it-fix-it online (which I did) and to email the North Preci=
+nct Crime Prevention
+Coordinator. I emailed our coordinator, Katelyn.Yep@Seatle.gov, and I recei=
+ved an auto response to email the other coordinator (which I did), Ana.Carp=
+enter@Seattle.gov, and
+she is out of the office until 10/5/26.
+
+Please feel free to report it yourself. We don't know exactly where it is l=
+ocated in the woods.
+
+If you see anything that is a potential concern, please let the LLandover n=
+eighbors know
+so we can all be vigilant, aware and take action as appropriate.
+
+Best - Rhonda Gallagher
+
+
+
+To unsubscribe from this group and stop receiving emails from it, send an e=
+mail to all+unsubscribe@llandover.com<mailto:all+unsubscribe@llandover.com>=
+.
+<image0.jpeg><image1.jpeg><image2.jpeg><image3.jpeg>
+
+
+To unsubscribe from this group and stop receiving emails from it, send an e=
+mail to all+unsubscribe@llandover.com<mailto:all+unsubscribe@llandover.com>=
+.
+
+To unsubscribe from this group and stop receiving emails from it, send an e=
+mail to all+unsubscribe@llandover.com.
+
+--_000_DM6PR07MB6921D881FF693B80D08E7691FE8E2DM6PR07MB6921namp_
+Content-Type: text/html; charset="UTF-8"
+Content-ID: <D0AC7302DAE49D4B81DA546A0A5AA2A2@sct-15-20-9412-4-msonline-outlook-13ed7.templateTenant>
+Content-Transfer-Encoding: quoted-printable
+
+<html class=3D"apple-mail-supports-explicit-dark-mode">
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8">
+</head>
+<body dir=3D"auto">
+Clearly illegal and shockingly dangerous to our families and homes. &nbsp;
+<div><br>
+</div>
+<div>Unacceptable and a wake up call for all of us to be vigilant.&nbsp;</d=
+iv>
+<div>
+<div dir=3D"ltr">
+<div><br>
+</div>
+<div>Mike Gallagher&nbsp;</div>
+</div>
+<div dir=3D"ltr"><br>
+<blockquote type=3D"cite">On Sep 26, 2026, at 8:49=E2=80=AFPM, 'Laura McGee=
+ Kvasnosky' via All Llandover Residents &lt;all@llandover.com&gt; wrote:<br=
+>
+<br>
+</blockquote>
+</div>
+<blockquote type=3D"cite">
+<div dir=3D"ltr">=EF=BB=BF ingenious and heartbreaking.&nbsp;<br id=3D"line=
+BreakAtBeginningOfMessage">
+<div><br>
+<blockquote type=3D"cite">
+<div>On Sep 26, 2026, at 4:56=E2=80=AFPM, Rhonda Gallagher &lt;rlg.seattlem=
+e@gmail.com&gt; wrote:</div>
+<br class=3D"Apple-interchange-newline">
+<div>
+<div dir=3D"ltr">Hello Neighbors and Happy Fall!!
+<div><br>
+</div>
+<div>In an effort to keep all informed of security issues in and around our=
+ neighborhood, a</div>
+<div>friendly walker provided attached photos that they took in the Llandov=
+er Woods trail</div>
+<div>area.</div>
+<div><br>
+</div>
+<div>I have contacted the non-emergency Seattle Police Department and they =
+told me to</div>
+<div>fill out a find-it-fix-it online (which I did) and to email the North =
+Precinct Crime Prevention</div>
+<div>Coordinator.&nbsp;<span style=3D"background-color:transparent">I email=
+ed our coordinator, Katelyn.Yep@Seatle.gov, and I
+</span>received<span style=3D"background-color:transparent">&nbsp;an auto r=
+esponse to&nbsp;</span><span style=3D"background-color:transparent">email t=
+he other coordinator (which I did), Ana.Carpenter@Seattle.gov, and</span></=
+div>
+<div><span style=3D"background-color:transparent">she is out of the office =
+until&nbsp;</span><span style=3D"background-color:transparent">10/5/26.&nbs=
+p;</span></div>
+<div><span style=3D"background-color:transparent"><br>
+</span></div>
+<div><span style=3D"background-color:transparent">Please feel free to repor=
+t it yourself. We don't know exactly where it is located in the woods.</spa=
+n></div>
+<div><span style=3D"background-color:transparent"><br>
+</span></div>
+<div><span style=3D"background-color:transparent">If you see anything that&=
+nbsp;is a potential concern, please let the LLandover neighbors know</span>=
+</div>
+<div><span style=3D"background-color:transparent">so we can all be vigilant=
+, aware and take action as appropriate.</span></div>
+<div><span style=3D"background-color:transparent"><br>
+</span></div>
+<div><span style=3D"background-color:transparent">Best - Rhonda Gallagher</=
+span></div>
+<div><span style=3D"background-color:transparent"><br>
+</span></div>
+<div><span style=3D"background-color:transparent">&nbsp;</span></div>
+</div>
+<div><br class=3D"webkit-block-placeholder">
+</div>
+To unsubscribe from this group and stop receiving emails from it, send an e=
+mail to
+<a href=3D"mailto:all+unsubscribe@llandover.com">all+unsubscribe@llandover.=
+com</a>.<br>
+<span id=3D"cid:f_muj1b9jd0">&lt;image0.jpeg&gt;</span><span id=3D"cid:f_mu=
+j1bejr1">&lt;image1.jpeg&gt;</span><span id=3D"cid:f_muj1biat2">&lt;image2.=
+jpeg&gt;</span><span id=3D"cid:f_muj1bmn53">&lt;image3.jpeg&gt;</span></div=
+>
+</blockquote>
+</div>
+<br>
+<p></p>
+To unsubscribe from this group and stop receiving emails from it, send an e=
+mail to
+<a href=3D"mailto:all+unsubscribe@llandover.com">all+unsubscribe@llandover.=
+com</a>.<br>
+</div>
+</blockquote>
+</div>
+</body>
+</html>
+
+<p></p>
+
+To unsubscribe from this group and stop receiving emails from it, send an e=
+mail to <a href=3D"mailto:all+unsubscribe@llandover.com">all+unsubscribe@ll=
+andover.com</a>.<br />
+
+--_000_DM6PR07MB6921D881FF693B80D08E7691FE8E2DM6PR07MB6921namp_--
+

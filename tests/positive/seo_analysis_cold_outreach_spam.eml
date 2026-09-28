@@ -1,0 +1,75 @@
+Return-Path: <ryan@webappsconsultants.com>
+Received: from hotel.example.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.example.com (8.18.2/8.18.1) with ESMTPS id 68R9rwco040812
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <user@example.com>; Sun, 27 Sep 2026 09:53:58 GMT
+	(envelope-from ryan@webappsconsultants.com)
+Authentication-Results: juliett.example.com;
+	dkim=pass (2048-bit key; unprotected) header.d=webappsconsultants.com header.i=@webappsconsultants.com header.b=EwqMYNp6
+Received: from mail-dy2-f38.google.com (mail-dy2-f38.google.com [74.125.229.38])
+	by hotel.example.com (8.16.1/8.16.1) with ESMTPS id 68R9rs9S106750
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=OK)
+	for <user@example.com>; Sun, 27 Sep 2026 04:53:54 -0500
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.example.com 68R9rs9S106750
+Authentication-Results: hotel.example.com;
+	dkim=pass (2048-bit key, unprotected) header.d=webappsconsultants.com header.i=@webappsconsultants.com header.a=rsa-sha256 header.s=google header.b=EwqMYNp6
+Received: by mail-dy2-f38.google.com with SMTP id 5a478bee46e88-3437a48f386so1131752eec.3
+        for <user@example.com>; Sun, 27 Sep 2026 02:53:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=webappsconsultants.com; s=google; t=555-123-4567; x=555-123-4567; darn=example.com;
+        h=content-type:mime-version:date:content-transfer-encoding:message-id
+         :subject:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=iYwU0VRxPshvFhlAYSE4VKLhv81iyF+2PCy55n2UZo0=;
+        b=EwqMYNp6aO07kfy/n8079BrwP/F/NNGyrF8ObImB28mGWQptiYc4sqHxtgISqwUNhP
+         ZJWBrOsYn/GkapAvG/ZKQiNaJ/tjLOJY2tyKw6qRzjV9snBis1zc+3qqTZwXT3nRiqHd
+         PL2TqIu6T3+OahDtCKDpX4lMktElclBqQ0CGXmF0enRvcniiZbld87raIpdWNKco1nbQ
+         o5gdhvnawFWqM7QPuZFXhJ9smjUEKrfN8MhwI04DN5kS4FeBvz8FY8RX6lWOehrKLLt3
+         B66oxOn/hW840WumtcDATqJ9sna0DXP2gUbOwjYO25DFui/sED9tK7Vf4ncWJsXg2vss
+         Cv0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=555-123-4567; x=555-123-4567;
+        h=content-type:mime-version:date:content-transfer-encoding:message-id
+         :subject:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=iYwU0VRxPshvFhlAYSE4VKLhv81iyF+2PCy55n2UZo0=;
+        b=yGahN44JJ7gAskH9c7IiMbtHeQ1WPCE0SwUM3c08bNNgRb1rorLSBZWGZDBdQWkwPO
+         LAjo6thR49B4pn+4u0Fo93KWhvExgfdKjplCQZiiXnskzxW0I005N/aDyplmNjxCLP2C
+         6Qx4Ydg4irtH5neGNNXLGxjIBHsktyC7QhsHEj5RVwNAoIOwSfQZ+l3s+ZaaGVN8X4gG
+         0D+Wupx15Dbs01xCuCINHeSXNIjajmj0+tz2xo5yFBCWjFETFtNM1Ii2NdivabPoWcM1
+         EMozKwKGr1zDUDEF4AdKPj6Qk8B2c7HP5cnmlPq9HAxKW2Q3aJzKhH2BpN/zVLx+AKw4
+         23/w==
+X-Gm-Message-State: AFq9FYIqM45xsiI1v2bKg/0rN6XlsoiKovCVma5qpg5FlcwbEn93bdwN
+	Q4y9eSjiQkFw7uWNMTJw92u9Zo9O/m9Ztq9FOaWYMqU3SGOgBUBBLWLNRHetBjQ+a2EGvJPYLAt
+	jnIhG
+X-Gm-Gg: AYBFou3fBxp0+31t+x4lDO2KQz+QQeCUlZE28WCk6uyJy27KGW4afi8pRFWMQ7Fm0Lt
+	hY09BDOOrDfKFZUoZaKihDs0CzhT/kQ955dMxJH+1VeNsV0boBBOYvtxcO3xzM9uJOdQAdksRDL
+	7zmEKTTS+EisCZlBp+YNPZYmTt97z+lVP422ncxi8KhvHsjmuPfnsNixOryIcQ9ugH07VpRcsAW
+	P53MW+Nv5ziFIRYcqPGCX1ilKOb7rd+32mNtK5ew8uyB9PrDfepeKkWX/1fK1poK7uxdMsgmNx6
+	R5y4jTm0unLekKTYqQd1ut3iJTBOmkNmB2pof8mHJcNWMuE/nwzuwyKsfhW/vKueIQPjOSgvk1D
+	Q2ZhVU8Guc35DKo+jTUYbh1p4kql5De4c0C0l2CzgSki8hwaxEdzgwZSNIlAYpmdgFgREzmbpIl
+	WMnkg1SLvx8fhGYIpn3LZ8mwM1XQw8ZYnTKnbcNhS5ROGKSJtMn0S/ezMt/iZqCEW32bCLw42tg
+	zCBVz+fXuBgQVFc/4U=
+X-Received: by 2002:a05:693c:895c:10b0:345:fb04:200d with SMTP id 5a478bee46e88-345fb0423b8mr1179612eec.12.1790502828721;
+        Sun, 27 Sep 2026 02:53:48 -0700 (PDT)
+Received: from [127.0.0.1] ([103.106.232.71])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-341447576b9sm23487398eec.15.2026.09.27.02.53.47
+        for <user@example.com>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 27 Sep 2026 02:53:48 -0700 (PDT)
+From: Ryan <ryan@webappsconsultants.com>
+To: user@example.com
+Subject: SEO Analysis www.example.com ?
+Message-ID: <43ea3a52-5eac-c431-36a4-b34c3f66a464@webappsconsultants.com>
+Content-Transfer-Encoding: quoted-printable
+Date: Sun, 27 Sep 2026 09:53:46 +0000
+MIME-Version: 1.0
+Content-Type: text/html; charset=utf-8
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.example.com [172.31.18.8]); Sun, 27 Sep 2026 09:53:58 +0000 (UTC)
+X-Greylist: ACL 173 matched, not delayed by milter-greylist-4.6.4 (hotel.example.com [23.95.222.152]); Sun, 27 Sep 2026 04:53:54 -0500 (CDT)
+
+<p>Hi,</p><p>Would you be interested in a quick SEO report for www.=
+example.com? We=E2=80=99ll highlight specific areas that can be improved.=
+</p><p>May I send you our quote and proposal?</p><p>Kind Regards,=
+</p><p>Ryan</p>
+

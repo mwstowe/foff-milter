@@ -1,0 +1,321 @@
+Return-Path: <bounce-3ZFGQDUPXMEUVIIU6NSYFL4A4E.510007@bounce.news.getthefinnewsnow.com>
+Received: from hotel.example.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.example.com (8.18.2/8.18.1) with ESMTPS id 68R42Y7p096836
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <user@example.com>; Sun, 27 Sep 2026 04:02:34 GMT
+	(envelope-from bounce-3ZFGQDUPXMEUVIIU6NSYFL4A4E.510007@bounce.news.getthefinnewsnow.com)
+Authentication-Results: juliett.example.com;
+	dkim=pass (2048-bit key; unprotected) header.d=news.getthefinnewsnow.com header.i=reply@news.getthefinnewsnow.com header.b=ZlzTR+e3;
+	dkim=pass (2048-bit key; unprotected) header.d=s51.y.mc.salesforce.com header.i=@s51.y.mc.salesforce.com header.b=WCXP8DFA
+Received: from afy11.mta.exacttarget.com (afy11.mta.exacttarget.com [159.92.157.11])
+	by hotel.example.com (8.16.1/8.16.1) with ESMTPS id 68R42ToP100902
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <user@example.com>; Sat, 26 Sep 2026 23:02:31 -0500
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.example.com 68R42ToP100902
+Authentication-Results: hotel.example.com;
+	dkim=pass (2048-bit key, unprotected) header.d=news.getthefinnewsnow.com header.i=reply@news.getthefinnewsnow.com header.a=rsa-sha256 header.s=51dkim1 header.b=ZlzTR+e3;
+	dkim=pass (2048-bit key, unprotected) header.d=s51.y.mc.salesforce.com header.i=@s51.y.mc.salesforce.com header.a=rsa-sha256 header.s=fbldkim51 header.b=WCXP8DFA
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=51dkim1; d=news.getthefinnewsnow.com;
+ h=From:To:Subject:Date:List-Unsubscribe:List-Unsubscribe-Post:MIME-Version:
+ Reply-To:Message-ID:Content-Type; i=reply@news.getthefinnewsnow.com;
+ bh=TWxFD/byo74Mxyad6iNaTR+yT2NoOHqEJX6dd77eTMg=;
+ b=ZlzTR+e3BhrM/SkJ1Zye/5LtU4KcfmPf0FFkpaLvrszRYraA9JgOFyAGN8/2NxMtTQ2NPyXTeRoq
+   QuqpdznRUCwicSk7vrXnxweiFUvZCp0MDcYESDmPKujckI7+9S8aNlOlbnLJN7NBtp+fcJKZBtjh
+   JargtyaaKGB5DZurdte2THF9DosFgvoRM7e+22WbkI+teRQf7lEHn+FzSQzyLmfzYnE24zEU9QZY
+   AVA5sk/fEVyeS7hniW7YDJXpEf8/18fGdm3seaulK7I84h1Ze3291bE8lhEwI/NCqp9xaHTfYaZV
+   Ixs08VxwYcmcxo3XFcOx/DOa/JA02U5YsLf4PQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=fbldkim51; d=s51.y.mc.salesforce.com;
+ h=From:To:Subject:Date:List-Unsubscribe:List-Unsubscribe-Post:MIME-Version:
+ Reply-To:Message-ID:Content-Type;
+ bh=TWxFD/byo74Mxyad6iNaTR+yT2NoOHqEJX6dd77eTMg=;
+ b=WCXP8DFAF6hW1IAJSy/EGoVaL7NvJpSxJ4kXiHA6EqJ9Y4vpmscn2AuZrskNpTtH4ODkh2+sLn52
+   v5NtUWALd/77iB/46KEBhM9pOl423RkiSbgHs9qRmDv9SLQPaO1iSrp7OYBoBP7zGBXMpnH+J8J9
+   ffOB/YA9+3XKuElBrXcuD/mgDe4Nz8KQx9yGfzIbhGX8WL9vfHgLh8uFzDaCQoUDl0YDoeUsYE/D
+   iL7WZiTMyq8u9EYBqcM+GYe2wf9d/4PP11EBj71l9Y+qJjz9QKByrhZ6tMHnDzy45WyozXJzAcx8
+   zBZ7isaL8jeGDRC7c7XQsZDvE7ZMw7w/D8VDKg==
+Received: by afy11.mta.exacttarget.com id hn2ala39mjci for <user@example.com>; Sun, 27 Sep 2026 04:01:22 +0000 (envelope-from <bounce-3ZFGQDUPXMEUVIIU6NSYFL4A4E.510007@bounce.news.getthefinnewsnow.com>)
+From: "Get The Fin News Now" <reply@news.getthefinnewsnow.com>
+To: <user@example.com>
+Subject: =?UTF-8?B?QmV6b3PigKYgRE9PTUVE?=
+Date: Sat, 26 Sep 2026 22:01:19 -0600
+List-Unsubscribe: <https://click.news.getthefinnewsnow.com/subscription_center.aspx?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtaWQiOiI1MzYwMDUzNTgiLCJzIjoiMzgzMDc1MzUiLCJsaWQiOiI5NCIsImoiOiIzMDExMDciLCJqYiI6IjIwMDMiLCJkIjoiNTEwMDA3In0.nkJ8EEulig8xa9T_txbfHUs08kdrYDKR77uXCEKpco4>, <mailto:leave-TP5WWDARKZPU3BYJQCE44PLL7A.510007@leave.news.getthefinnewsnow.com>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+MIME-Version: 1.0
+Reply-To: "Get The Fin News Now" <reply-KZAZSN2657UEHKVGLEQNX4OLNA.510007@news.getthefinnewsnow.com>
+X-SFMC-Stack: 51
+x-job: 536005358_301107
+Message-ID: <dacbb314-0bae-4b07-820c-ac533d39c85a@cdg3s51mta0068.xt.local>
+Content-Type: multipart/alternative;
+	boundary="hzC9CSVy12WQ=_?:"
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.example.com [172.31.18.8]); Sun, 27 Sep 2026 04:02:34 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.example.com [23.95.222.152]); Sat, 26 Sep 2026 23:02:31 -0500 (CDT)
+
+This is a multi-part message in MIME format.
+
+--hzC9CSVy12WQ=_?:
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+
+Below is an important message from one of our highly valued sponsors. Please read it carefully as they have some special information to share with you.
+
+Dear Reader,
+
+Jeff Bezos is terrified.
+
+He will be down on his knees, hands out, begging Elon for mercy.
+
+Because Elon is about to do something that will:
+
+Cut Amazon out of the AI race ENTIRELY…
+
+Completely DESTROY Blue Origin…
+
+And take control of the potential $25 TRILLION DOLLAR PER YEAR AI INDUSTRY
+
+And in his wake, potentially create 1,806,000 NEW millionaires over the coming years…
+
+Starting September 25.
+
+And this is your chance to be one of them.
+
+Elon Musk is currently quietly planning the biggest project of his entire career.
+
+https://click.news.getthefinnewsnow.com/?qs=ABB7InYiOjEsImQiOjUwMTJ9ADMAAAAAAPKq1v9_qWTlQLf-gJIUnOBgbRWcjcW36M5132i4n_8lJO476ETWFhSvtFwVZ8YZKSbjmvBhdxs0tg_1cIC2mXcACBJt-pX6JaAGldnN 
+And a single FCC filing proves it, click here to see why.
+
+This is bigger than Tesla, SpaceX, and X combined.
+
+And I believe it will not only cement Elon as the winner of the AI race…
+
+It will allow Elon to control the entire industry.
+
+Something of this magnitude has never happened in the history of the human race.
+
+And it’s happening FAST.
+
+According to my timeline, you must act by September 25.
+
+https://click.news.getthefinnewsnow.com/?qs=ABB7InYiOjEsImQiOjUwMTJ9ADMAAAAAAPKq1v-AH494ub3vsO6d28dq6clGlrq-g0EeLmr1qyCqZIQYi42476rcCR56P34BbTKO9UghtibLZ5WEF-CaF_e8dbkwjY8cp_uTTisp 
+I explain everything right here.
+
+>>>This is your free 
+https://click.news.getthefinnewsnow.com/?qs=ABB7InYiOjEsImQiOjUwMTJ9ADMAAAAAAPKq1v-BSXwg6Ufvtci50gcugvHeQzSfH9KyNC60FQIUVM9dj2NmIl6nWrjmnGOUpz_6Ym0qLLwd9Vd_qMxT_uUgfOBIvn-HBxKLgDra 
+Millionaire Maker Masterclass… and it starts right now.
+
+Sincerely,
+
+James Altucher
+
+P.S. I am giving away a gift worth $1,000 to the first 1,000 people who watch and take action on my Masterclass offer today. No purchase necessary. ZERO credit card required. 
+https://click.news.getthefinnewsnow.com/?qs=ABB7InYiOjEsImQiOjUwMTJ9ADMAAAAAAPKq1v-C9hi6TvWYU2g123_tGWMSDCR56CHvHz9RQw18Fw9Plh8pbqUvZUlz5HVM9THbh8qr9bileBy8zPg52Qo2xJ5y_brMk9oXOjo3 
+Just click here to watch my free video, and I’ll show you how to claim yours.
+
+This ad is sent on behalf of Paradigm Press, LLC, at 1001 Cathedral St., Baltimore, MD 21201. If you're not interested in this opportunity from Paradigm Press, LLC, please click 
+https://click.news.getthefinnewsnow.com/?qs=ABB7InYiOjEsImQiOjUwMTJ9ADMAAAAAAPKq1v-EKWgGJngsRb3TWpTOyYqGxpRNdE6p8lIk0g89HsbgdCVLtk7g51GiA6i8yilo0b_cV5uAi54MbPgjrPC4kEbIwDsVfRKPt186 
+here  to remove your email from these offers.
+
+Trading involves risk. The information provided is NOT trading advice. Neither the Editors, the Publisher, nor any of their respective affiliates make any guarantee or other promise as to any results that may be obtained from the newsletter. Past performance is no guarantee of future performance. This recipient of this email assumes responsibility for conducting its own due diligence on the aforementioned company or entity and assumes full responsibility, and releases the sender from liability for any purchase or order made from any company or entity mentioned or recommended in this email.
+
+The information provided is for educational purposes only. Please contact your financial advisor for specific financial advice tailored to your personal circumstances. Actual results may differ. Nothing here constitutes a recommendation respecting the particular security illustrated.
+
+If you would like to unsubscribe from receiving offers, click the link below.
+
+This email was sent by: WI
+Al Jerozolimskie 85 Warsaw, Mazowieckie, 02-001, PL
+https://click.news.getthefinnewsnow.com/profile_center.aspx?qs=ABB7InYiOjEsImQiOjUwMTJ9ADMAAAAAAPKq1v-LWpMUgYmL31FarekEQB3UowDMIlZG2LkIAoU3unsM7sI9UmiTCSPDXBvs543Gc5Lu3iGu1kfihY2uaQZt_wImbSO9G8UthZIz5hCLhRJ1k3U 
+Update Profile 
+https://click.news.getthefinnewsnow.com/unsub_center.aspx?qs=ABB7InYiOjEsImQiOjUwMTJ9ADMAAAAAAPKq1v-OAEQRBiktr-96n6RaQ4BL10Bxec98zTb8_2gtJvg6Wn9UpdthL1qMpV1sNAGw5ClawNEFhfj4_CuU4FdjHDGeRfacgrib3vnVwpVKWOWTEGN9Mw 
+Unsubscribe 
+https://click.news.getthefinnewsnow.com/subscription_center.aspx?qs=ABB7InYiOjEsImQiOjUwMTJ9ADMAAAAAAPKq1v-Ta3Vh8TtVjOaOjDZNxuvRc3rdW1d87QiQauSBkoZbgJGlnZpe1MihKKtgjh8FBWCXWnVUpP0DGKUEtESJpcx0g5PBg5OsiEkBwm3va-8xAYQ 
+Manage Subscriptions 
+
+
+--hzC9CSVy12WQ=_?:
+Content-Type: text/html;
+	charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:v="urn:schemas-microsoft-com:vml">
+<head><!--[if gte mso 9]><xml><o:OfficeDocumentSettings><o:AllowPNG/><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml><![endif]--><meta content="text/html; charset=utf-8" http-equiv="Content-Type"/><meta content="width=device-width" name="viewport"/><!--[if !mso]>  <meta content="IE=edge" http-equiv="X-UA-Compatible" /><!--<![endif]-->
+<title></title>
+<!--[if !mso]><!--<![endif]-->
+<style type="text/css">body {
+   margin: 0;
+   padding: 0;
+  }
+
+  table,
+  td,
+  tr {
+   vertical-align: top;
+   border-collapse: collapse;
+  }
+
+  * {
+   line-height: inherit;
+  }
+
+  a[x-apple-data-detectors=true] {
+   color: inherit !important;
+   text-decoration: none !important;
+  }
+	</style>
+<style id="media-query" type="text/css">@media (max-width: 520px) {
+
+   .block-grid,
+   .col {
+    min-width: 320px !important;
+    max-width: 100% !important;
+    display: block !important;
+   }
+
+   .block-grid {
+    width: 100% !important;
+   }
+
+   .col {
+    width: 100% !important;
+   }
+
+   .col_cont {
+    margin: 0 auto;
+   }
+
+   img.fullwidth,
+   img.fullwidthOnMobile {
+    max-width: 100% !important;
+   }
+
+   .no-stack .col {
+    min-width: 0 !important;
+    display: table-cell !important;
+   }
+
+   .no-stack.two-up .col {
+    width: 50% !important;
+   }
+
+   .no-stack .col.num2 {
+    width: 16.6% !important;
+   }
+
+   .no-stack .col.num3 {
+    width: 25% !important;
+   }
+
+   .no-stack .col.num4 {
+    width: 33% !important;
+   }
+
+   .no-stack .col.num5 {
+    width: 41.6% !important;
+   }
+
+   .no-stack .col.num6 {
+    width: 50% !important;
+   }
+
+   .no-stack .col.num7 {
+    width: 58.3% !important;
+   }
+
+   .no-stack .col.num8 {
+    width: 66.6% !important;
+   }
+
+   .no-stack .col.num9 {
+    width: 75% !important;
+   }
+
+   .no-stack .col.num10 {
+    width: 83.3% !important;
+   }
+
+   .video-block {
+    max-width: none !important;
+   }
+
+   .mobile_hide {
+    min-height: 0px;
+    max-height: 0px;
+    max-width: 0px;
+    display: none;
+    overflow: hidden;
+    font-size: 0px;
+   }
+
+   .desktop_hide {
+    display: block !important;
+    max-height: none !important;
+   }
+  }
+	</style>
+</head>
+<body class="clean-body" style="margin: 0; padding: 0; -webkit-text-size-adjust: 100%; background-color: #FFFFFF;"><style type="text/css">
+div.preheader 
+{ display: none !important; } 
+</style>
+<div class="preheader" style="font-size: 1px; display: none !important;">They're calling it the "Everything Bubble." And when it bursts?</div><!--[if IE]><div class="ie-browser"><![endif]-->
+<table bgcolor="#FFFFFF" cellpadding="0" cellspacing="0" class="nl-container" role="presentation" style="table-layout: fixed; vertical-align: top; min-width: 320px; border-spacing: 0; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #FFFFFF; width: 100%;" valign="top" width="100%">
+<tbody>
+<tr style="vertical-align: top;" valign="top">
+<td style="word-break: break-word; vertical-align: top;" valign="top"><!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="center" style="background-color:#FFFFFF"><![endif]-->
+<div style="background-color:transparent;">
+<div class="block-grid" style="min-width: 320px; max-width: 500px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; Margin: 0 auto; background-color: transparent;">
+<div style="border-collapse: collapse;display: table;width: 100%;background-color:transparent;"><!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:transparent;"><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:500px"><tr class="layout-full-width" style="background-color:transparent"><![endif]--><!--[if (mso)|(IE)]><td align="center" width="500" style="background-color:transparent;width:500px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+<td style="padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px;"><![endif]-->
+<div class="col num12" style="min-width: 320px; max-width: 500px; display: table-cell; vertical-align: top; width: 500px;">
+<div class="col_cont" style="width:100% !important;"><!--[if (!mso)&(!IE)]>    <div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;"><!--<![endif]--><!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: Verdana, sans-serif"><![endif]-->
+<div style="color:#393d47;font-family:Verdana, Geneva, sans-serif;line-height:1.5;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
+<div class="txtTinyMce-wrapper" style="font-size: 12px; line-height: 1.5; font-family: Verdana, Geneva, sans-serif; color: #393d47; mso-line-height-alt: 18px;">
+<hr/><p style="margin: 0; line-height: 1.5; word-break: break-word; text-align: justify; font-family: Verdana, Geneva, sans-serif; font-size: 12px; mso-line-height-alt: 18px; margin-top: 0; margin-bottom: 0;">Below is an important message from one of our highly valued sponsors. Please read it carefully as they have some special information to share with you.</p>
+<hr/><p style="font-family: Verdana; font-size: 16px; text-align: justify; padding-top:0.5em;">Dear Reader,</p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">Jeff Bezos is terrified.</p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">He will be down on his knees, hands out, <i>begging </i>Elon for mercy.</p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">Because Elon is about to do something that will:</p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">Cut Amazon out of the AI race ENTIRELY…</p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">Completely DESTROY Blue Origin…</p>
+<p style="font-family: Verdana; font-size: 16px; text-align: justify;">And take control of the potential $25 TRILLION DOLLAR PER YEAR AI INDUSTRY</p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">And in his wake, potentially create 1,806,000 NEW millionaires over the coming years…</p><p style="font-family: Verdana; font-size: 16px; text-align: justify;"><u>Starting September 25</u>.</p><p style="font-family: Verdana; font-size: 16px; text-align: justify;"><i>And this is your chance to be one of them.</i></p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">Elon Musk is currently quietly planning the biggest project of his entire career.</p><p style="font-family: Verdana; font-size: 16px; text-align: justify;"><b>
+<a href="https://click.news.getthefinnewsnow.com/?qs=ABB7InYiOjEsImQiOjUwMTJ9ADMAAAAAAPKq1v9vsBhH8DIUf8CxeSj0XZwUn4Uh6FHL0ETsb1wWUdZUfTvkdP3ii9re-zFZc2bvZ-FtMEm6LHaHQLktmvN3cnBIX63hblFxMIfD" style="color: #1a5dab; text-decoration: underline;"><u>And a single FCC filing proves it, click here to see why</u></a>.</b></p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">This is bigger than Tesla, SpaceX, and X combined.</p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">And I believe it will not only cement Elon as the winner of the AI race…</p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">It will allow Elon to control the entire industry.</p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">Something of this magnitude has never happened in the history of the human race.</p>
+<p style="font-family: Verdana; font-size: 16px; text-align: justify;">And it’s happening FAST.</p><p style="font-family: Verdana; font-size: 16px; text-align: justify;"><span style="color:#ff0000;">According to my timeline, you must act by September 25.</span></p><p style="font-family: Verdana; font-size: 16px; text-align: justify;"><b><a href="https://click.news.getthefinnewsnow.com/?qs=ABB7InYiOjEsImQiOjUwMTJ9ADMAAAAAAPKq1v9xne2748cA6rIYWQHURymF_O8IqYYDZdtGWX7RbMV5hawy2ZjYNddGNPvm4rR7nMG_wovvilQw1SzzA5mbCdymnuGSzLZUP06s" style="color: #1a5dab; text-decoration: underline;"><u>I explain everything right here</u></a>.</b></p><p style="font-family: Verdana; font-size: 16px; text-align: justify;"><i>&gt;&gt;&gt;This is your free 
+<a href="https://click.news.getthefinnewsnow.com/?qs=ABB7InYiOjEsImQiOjUwMTJ9ADMAAAAAAPKq1v9z9BBob7AqZlnDzbZcNbzShs0WF_eI1V9ZjumzeNJY5LxFjRWxxlEaDjvlNGr6yDXYFhr_dxPGUGyOqBzxx9Hy8UsOWx6PORLc" style="color: #1a5dab; text-decoration: underline;"><b><u>Millionaire Maker Masterclass</u></b></a>… and it starts right now.</i>
+</p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">Sincerely,</p><p style="font-family: Verdana; font-size: 16px; text-align: justify;">James Altucher</p><p style="font-family: Verdana; font-size: 16px; text-align: justify;"><b>P.S.</b> I am giving away a gift worth $1,000 to the first 1,000 people who watch and take action on my Masterclass offer today. No purchase necessary. ZERO credit card required. <b><a href="https://click.news.getthefinnewsnow.com/?qs=ABB7InYiOjEsImQiOjUwMTJ9ADMAAAAAAPKq1v90VSOh4ophSeNRDlrVXx0qRZnA866DZH-6cb8qEtNimjmBhCS0cnZirDS4ZAW7uSoBaTmGh__OVRKsyP-9OKTHOUOXzlVH7g_D" style="color: #1a5dab; text-decoration: underline;"><u>Just click here to watch my free video</u></a>,</b> and I’ll show you how to claim yours.</p><p style="font-family: Verdana, Geneva, sans-serif; font-size: 16px; text-align: justify"> </p>
+<p style="font-family: Verdana, Geneva, sans-serif; font-size: 16px; text-align: justify"> </p>
+<p style="font-family: Verdana, Geneva, sans-serif; font-size: 16px; text-align: justify"> </p>
+<div style="color:#393d47;font-family:Verdana, Geneva, sans-serif;line-height:1.5;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
+<div class="txtTinyMce-wrapper" style="font-size: 12px; line-height: 1.5; font-family: Verdana, Geneva, sans-serif; color: #393d47; mso-line-height-alt: 18px;">
+<p style="margin: 0; text-align: justify; line-height: 1.5; word-break: break-word; font-size:10px; font-family: Verdana, Geneva, sans-serif; mso-line-height-alt: 18px; margin-top: 0; margin-bottom: 0;">This ad is sent on behalf of Paradigm Press, LLC, at 1001 Cathedral St., Baltimore, MD 21201. If you're not interested in this opportunity from Paradigm Press, LLC, please click <a href="https://click.news.getthefinnewsnow.com/?qs=ABB7InYiOjEsImQiOjUwMTJ9ADMAAAAAAPKq1v91LktVnIFJ6WQTrrPoywcw0IYEG-o1Hvq6Xlu206iCMfQOplxOWYC-XDr6i2cOpzEtAflMhKiBNdWVI_BWL9L0GRtyrUdlFZ6i" rel="noopener noreferrer" target="_blank">here</a> to remove your email from these offers.</p>
+<!-- Footer placeholder -->
+<p style="margin: 0; text-align: justify; line-height: 1.5; word-break: break-word; font-family: Verdana, Geneva, sans-serif; font-size: 10px; mso-line-height-alt: 15px; margin-top: 0; margin-bottom: 0;"><br/>
+<span style="font-size:10px;">Trading involves risk. The information provided is NOT trading advice. Neither the Editors, the Publisher, nor any of their respective affiliates make any guarantee or other promise as to any results that may be obtained from the newsletter. Past performance is no guarantee of future performance. This recipient of this email assumes responsibility for conducting its own due diligence on the aforementioned company or entity and assumes full responsibility, and releases the sender from liability for any purchase or order made from any company or entity mentioned or recommended in this email.</span></p>
+<p style="margin: 0; text-align: justify; line-height: 1.5; word-break: break-word; font-family: Verdana, Geneva, sans-serif; font-size: 10px; mso-line-height-alt: 15px; margin-top: 0; margin-bottom: 0;"><br/>
+<span style="font-size: 10px;">The information provided is for educational purposes only. Please contact your financial advisor for specific financial advice tailored to your personal circumstances. Actual results may differ. Nothing here constitutes a recommendation respecting the particular security illustrated.</span></p>
+<p style="margin: 0; text-align: justify; line-height: 1.5; word-break: break-word; font-family: Verdana, Geneva, sans-serif; mso-line-height-alt: 18px; margin-top: 0; margin-bottom: 0;"> </p>
+<p style="margin: 0; line-height: 1.5; word-break: break-word; text-align: center; font-family: Verdana, Geneva, sans-serif; font-size: 10px; mso-line-height-alt: 15px; margin-top: 0; margin-bottom: 0;"><span style="font-size: 10px;">If you would like to unsubscribe from receiving offers, click the link below.</span></p>
+<p style="margin: 0; text-align: justify; line-height: 1.5; word-break: break-word; font-family: Verdana, Geneva, sans-serif; mso-line-height-alt: 18px; margin-top: 0; margin-bottom: 0;"> </p>
+</div>
+</div>
+<!--[if mso]></td></tr></table><![endif]-->
+<div style="font-size:16px;text-align:center;font-family:Arial, Helvetica Neue, Helvetica, sans-serif">
+<div class="our-class" style="text-align: center;"><span style="font-size:9px;"><span style="font-family:verdana,geneva,sans-serif;">This email was sent by: <b>WI</b><br/>
+			Al Jerozolimskie 85 Warsaw, Mazowieckie, 02-001, PL<br/>
+<a href="https://click.news.getthefinnewsnow.com/profile_center.aspx?qs=ABB7InYiOjEsImQiOjUwMTJ9ADMAAAAAAPKq1v94vbKLXpF3HNhnu_VoKhKXT3mrc0n1XN1vXdxe-OuNF1kMArb6SMMcAVo506MKvCvoNLIqaiLfLI-HmvYTQlwCcl7R8E2mr1OWwe1mQ8jCMBo">Update Profile</a><br/>
+<a href="https://click.news.getthefinnewsnow.com/unsub_center.aspx?qs=ABB7InYiOjEsImQiOjUwMTJ9ADMAAAAAAPKq1v962rpwEUmNQr2Ix9YWMT7gGn-lxvxMUfTl_mvJrRXKepEeTaNAZu1xuxfEkngs1tVvcx-Ej0Lj5GJX5WM0_J9rCKB2CKdgnmAtfQeXxM2-yIYiLA">Unsubscribe</a><br/>
+<a href="https://click.news.getthefinnewsnow.com/subscription_center.aspx?qs=ABB7InYiOjEsImQiOjUwMTJ9ADMAAAAAAPKq1v9-4OQUeaCcXXkQAhMsby5pNk8m5OOjl5bjkc53btk_mN7XYrDvH452z33dYjrDFiKmffRwXv37QrXDhLNLeTEIPy5BJ7e2h9wS19V1xk2_hd4">Manage Subscriptions</a></span></span></div>
+</div>
+<!--[if (!mso)&(!IE)]></div>    <!--<![endif]--></div>
+</div>
+<!--[if (mso)|(IE)]></td></tr></table><![endif]--><!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]--></div>
+</div>
+</div>
+<!--[if (mso)|(IE)]></td></tr></table><![endif]--></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<!--[if (IE)]></div><![endif]--><img src="https://click.news.getthefinnewsnow.com/open.aspx?6XJTQMLCRLREPAJROGQ3CWLV7Y.510007&d=510007&bmt=0" width="1" height="1" alt=""></custom></body>
+</html>
+
+--hzC9CSVy12WQ=_?:--
+
+

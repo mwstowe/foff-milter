@@ -1,0 +1,231 @@
+Return-Path: <amy_crawford+bncBCDZBONCRMNBBF644XKQMGQEE62VRTQ@wdtechdigital.com>
+Received: from hotel.example.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.example.com (8.18.2/8.18.1) with ESMTPS id 68RJS4aE063458
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <michael@example.com>; Sun, 27 Sep 2026 19:28:05 GMT
+	(envelope-from amy_crawford+bncBCDZBONCRMNBBF644XKQMGQEE62VRTQ@wdtechdigital.com)
+Authentication-Results: juliett.example.com;
+	dkim=pass (2048-bit key; unprotected) header.d=wdtechdigital.com header.i=@wdtechdigital.com header.b=JqzDOqB4
+Received: from mail-dy1-f197.google.com (mail-dy1-f197.google.com [74.125.82.197])
+	by hotel.example.com (8.16.1/8.16.1) with ESMTPS id 68RJS1Jt120615
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=OK)
+	for <michael@example.com>; Sun, 27 Sep 2026 14:28:02 -0500
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.example.com 68RJS1Jt120615
+Authentication-Results: hotel.example.com;
+	dkim=pass (2048-bit key, unprotected) header.d=wdtechdigital.com header.i=@wdtechdigital.com header.a=rsa-sha256 header.s=google header.b=JqzDOqB4
+Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-34316295d86sf3037184eec.0
+        for <michael@example.com>; Sun, 27 Sep 2026 12:28:01 -0700 (PDT)
+ARC-Seal: i=3; a=rsa-sha256; t=555-123-4567; cv=pass;
+        d=google.com; s=arc-20260327;
+        b=iSH2FdyUT/rVyAdBTkML1qS7nexab5gCs1wjM91tjzod7QjIeTCGTGjF3SlDEA/uJ7
+         raoy0bdZuSE86Olxw9j83IP06aI4TuviPnFc5SJm1+gs7Y3GHAwSsTSKPC9JP+i0E0zh
+         27UVZbl67EC9Q/LtsL6+wPG6oxeiYgnBGT6YkCVmg4EkMBo/EbDMbodi0rhqLptD663q
+         CNrT/cz41oUvpPdzLdfP3FODch/DsFwWXs4yuq95g73lkf9ISWxd+ZiJqiwKvvVHYt8Z
+         na+sIujalvtVOq6etBVe5YQoIneHUMbxiSOEX7fJIR1bT1NdgYinrLUP8W8HMwpO19PM
+         r/Fg==
+ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=list-unsubscribe:list-archive:list-help:list-post:list-id
+         :mailing-list:precedence:reply-to:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=0nDQoTC9x7RKgI0MXRx8PzKggp+OcZP7NlRWpAMOIwg=;
+        fh=sBkQCZ/uj47NiLIGbwZUcreNAUw0ckjdvjRmZFvJqcE=;
+        b=ejF7fSexpCEAIEaTswA7oXYMfLLeCH5BRW/cUSM/SG/C8RNNrqSKWrN6PTgwSTqI9Q
+         j8s9kVGuh8OF9IQ8pvOrpPG+Vj0jmGfXKjkPwJRMQ9YAR9mY1IM+zEZOVT81CAX53xFz
+         ToSAF2IhkRawY7/YG2nrdYcg9c8ysXPPVR356YS30e5oCyQDZk8W5TSRE4csT8hfQYmk
+         qtNTBLq+/9g8pMshEgwTP8w6bBKqhHNyZOVIB5O0eae9/B3RCTdP5nCmjW3/M+ioPxHW
+         KU0gjZBIIuRChmUEhPkvJ8fk8bWb+d+1BcSDBp2sr50zKdGdGzAo9ht/HsVk0KfRoXn2
+         Y3hg==;
+        darn=example.com
+ARC-Authentication-Results: i=3; mx.google.com;
+       dkim=pass header.i=@rankpilotmedia.com header.s=google header.b="ODThL/UQ";
+       arc=pass (i=1);
+       spf=pass (google.com: domain of austin@rankpilotmedia.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=austin@rankpilotmedia.com;
+       dmarc=pass (p=QUARANTINE sp=QUARANTINE dis=NONE) header.from=rankpilotmedia.com;
+       dara=neutral header.i=@wdtechdigital.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=wdtechdigital.com; s=google; t=555-123-4567; x=555-123-4567; darn=example.com;
+        h=list-unsubscribe:list-archive:list-help:list-post:list-id
+         :mailing-list:precedence:reply-to:x-original-authentication-results
+         :x-original-sender:content-type:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=0nDQoTC9x7RKgI0MXRx8PzKggp+OcZP7NlRWpAMOIwg=;
+        b=JqzDOqB4kZl2fIh3MYg/u01B5yHijiOoy3+QobDcvs06ghhxUt6S/tPEXETm0LoOG/
+         ly2jMtNTP9LqXu+5BZItNyxnI5WuARxmZciHM0dp9femtFWRztCgKQ+Lqr/KawZu8STT
+         US6VN/UhsjddLvAz90ALwLVVFuZPQcR1y5716LftCSJVp/ilY6EjuME6ZzY3q55NHM4b
+         bNDr87ERCYAGhiPpU+snvIib39aldc3Uglvgi63GtbPZi+LSRscE/iEA83mnScDhTKgz
+         zcvOEGvcRgGonmb8Ik5LEifb4i3nBAi5OPN792YQMsfDvFxyZCOIQW4bB+c1QrMuc9x3
+         z00Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=555-123-4567; x=555-123-4567;
+        h=list-unsubscribe:list-archive:list-help:list-post
+         :x-spam-checked-in-group:list-id:mailing-list:precedence:reply-to
+         :x-original-authentication-results:x-original-sender:content-type:to
+         :subject:message-id:date:from:in-reply-to:references:mime-version
+         :x-gm-gg:x-beenthere:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=0nDQoTC9x7RKgI0MXRx8PzKggp+OcZP7NlRWpAMOIwg=;
+        b=Ttnq7MrZCDCaC92pu3lTpmXU4V9F+qMvoU9EhVn8i/NPzulZw4vq0NL5zQltVw4Ye7
+         0UXYQz/sx/X0QHPt4aKlB6dvSsTY/ujd477RBt+OjsVGJm8XlNGZEpqSehJ4AJ9XMfvq
+         BwjguIzAoyNYnspAPty7zOb/fkuAP3/YTIWKc4Zy+Yld4hs09K/YsnzG/FXDGHNyCZQL
+         jC9s5ykUu0uZqSiff3c9ZguEmJ9AGp6O7paxb3Fr6UryFM7WzYIGiqn7lHdBzUOTuKDc
+         PLhBNc1LH66Ssp6DujA0zgQ9Djn5n2b2P7ke0wsqloNNNh6lbb9FUXi4S8ly0DNfn34p
+         GUMg==
+X-Forwarded-Encrypted: i=3; AKwUvByQeLI/6tBZmj5pDOdTqKecsTmS6vTVLTSxoanuv7n9tjKsQpeIQrOGwfSmBf78zdugl3JPjNSP@example.com
+X-Gm-Message-State: AFuF++k9tVex8qzF1lq+9kZX4N0ErvTwPC1u6V8S8VrYxs3wOAXAtVLc
+	JnNvQTFmiPTrdxMLuwvTxYbNJgeeOiJHvdO7kqRWnpR7vvNw0oi4ojiizvxPRilmaNc=
+X-Received: by 2002:a05:701b:241a:b0:145:15d:3717 with SMTP id a92af1059eb24-146cdebc52dmr7445668c88.10.1790537275917;
+        Sun, 27 Sep 2026 12:27:55 -0700 (PDT)
+X-BeenThere: user@example.com; h="ATskLdc5BqQccedEC3ugCp7RU5fvD1J0u1MMqYxXL+lJNz5Ekw=="
+Received: by 2002:a05:701b:4542:20b0:143:46a6:b00d with SMTP id
+ a92af1059eb24-1459b13761als1811537c88.3.-pod-prod-09-us; Sun, 27 Sep 2026
+ 12:27:19 -0700 (PDT)
+X-Received: by 2002:a05:7301:5404:b0:33c:259a:759 with SMTP id 5a478bee46e88-342742340e7mr7380528eec.36.1790537238639;
+        Sun, 27 Sep 2026 12:27:18 -0700 (PDT)
+ARC-Seal: i=2; a=rsa-sha256; t=555-123-4567; cv=pass;
+        d=google.com; s=arc-20260327;
+        b=M+zcdKFYRgxvj7REyvuHD+q6u5ciX5kkDCk19/SlKuvyK3BBB27FiHzaCJNo1giRFT
+         FewWmHdzX/OgJ1KlQ06J1Xx5VnIBEb7IqkcjnhqUGK17VCvOvcGCnfnWqPFZHidHYcfU
+         i8dHFO1GWGpxW31yLV9yw0OMNEkYir6QLDJ8WEO4OO6i1GrnibEhta93ooQiATjSzgWh
+         JmQbUzNWZeP9WMKD4PPWlLbbjXVrLHgVmboFniYr8MMoRittEmbQXLvMPGVMp+ETde2l
+         C0iS8GpZgpv1zhoJpfYycuonN8vSTrN5rvuc9AZ65joGSpMfSzhPp5xYrUe3MWhV485O
+         5fMQ==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :dkim-signature;
+        bh=4OFVipHvcyVDfHdYl96VFckx4YLZUg3k023bat7tl4E=;
+        fh=nfAkJJcNvnmPDhAFs+euI4iV0fbIUhujOcygKsMAdYE=;
+        b=SJcoQV1v5VnXidoMz82iWDpVoJoLrFFYnvEvf0D6QY91n7DyWODET8xeS8WuKVEvRD
+         vFP17rri9oYHshQJvwM0UnX2jNK+c+st6BkFcM18NSCyRRuNB4Coi5Bl6FYyCVUrk2US
+         bLRKAXJuU+jUqCQSqBZOsacwkMeQWFCZuvn4QwtPHqVVB6ffxavfhObY5wHlktODJW3r
+         5th1Oj3k/T/BsiOpSoDYUiZ5OPvJYAmZz8n/iIUGvNhMtaTF0z8ZDsJUGddzgvkTj7wy
+         rScoBGYju5HbQFUTMVZwKu4V4Ahm9Ex5sxl9txoTF3EE0dGE4ao83MjP9VasE+eFKrmW
+         PGIQ==;
+        dara=google.com
+ARC-Authentication-Results: i=2; mx.google.com;
+       dkim=pass header.i=@rankpilotmedia.com header.s=google header.b="ODThL/UQ";
+       arc=pass (i=1);
+       spf=pass (google.com: domain of austin@rankpilotmedia.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=austin@rankpilotmedia.com;
+       dmarc=pass (p=QUARANTINE sp=QUARANTINE dis=NONE) header.from=rankpilotmedia.com;
+       dara=neutral header.i=@wdtechdigital.com
+Received: from mail-sor-f41.google.com (mail-sor-f41.google.com. [209.85.220.41])
+        by mx.google.com with SMTPS id 5a478bee46e88-34369cb5565sor639976eec.6.2026.09.27.12.27.18
+        for <user@example.com>
+        (Google Transport Security);
+        Sun, 27 Sep 2026 12:27:18 -0700 (PDT)
+Received-SPF: pass (google.com: domain of austin@rankpilotmedia.com designates 209.85.220.41 as permitted sender) client-ip=209.85.220.41;
+ARC-Seal: i=1; a=rsa-sha256; t=555-123-4567; cv=none;
+        d=google.com; s=arc-20260327;
+        b=VxL/v7GgAItCptc3Iqxy0ZfVMZ9eJB5h1Pja0CIk2uKbX9Ow58cMrQPoAsBT5MavcY
+         PS5bDTO1bQ9ZB6OQKs31wQcEwJvaexQe4nUs8uGhFYjnMq+oK7lDzLzRrTf4qGUAK7Nf
+         /m0Lev4FFe1pqUHreYj/iTj6eDwcPOK2CoCvvVCICnldOayl9oh/PSxTKgzymtppbStU
+         PqUvj/fE2Lg69tzI+0H/6bsfuNGefn96KKwUsgm4p9dxMRQI/bZAtAaXDcvy/PUlwdSD
+         tKqE9d2lztdJ6MTh/bLfuaOLNyf3Ia7QLE8te9YFY6ojiIdDSpNEXGpKxBV63ft+7UP4
+         lDHw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :dkim-signature;
+        bh=4OFVipHvcyVDfHdYl96VFckx4YLZUg3k023bat7tl4E=;
+        fh=nfAkJJcNvnmPDhAFs+euI4iV0fbIUhujOcygKsMAdYE=;
+        b=AUdtxwBDZmf07DuW+sZiMqrCwI8mZUqYaisT/Ln6XAQmVFA8OWsbgR/447J9akzNN8
+         DpX13lOGV7S93zKI9fcyX3+y4i//h7V6mgPO4zBDIrehIv7VCmngEb0vOTPqbNKUWcgb
+         yrJ9JE9BIan+u8sE7E+aDd3EYO84dxqtrMc+BtjaxJrDRHOYhF3BnyxIW7BkLRmCRSZg
+         ehpGDe0HnrfYVH3GMWvWq9r++442hQzYGKVnFDt+FN1z1+fjeE7580oahfY9MWj+7/Ds
+         2hT60o0ZjSFzJdVCNXuvQAHuKT6GTCYDPoEMT2atDjfH+Lhn7S7BTnwCwO3uJzoToiMq
+         MZOw==;
+        darn=wdtechdigital.com
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+X-Gm-Gg: AYBFou1I6HUDeXlKu68Y9nzlLM/0gU3ifgFMXYEZAjUKAoe9fL9keA+DRHgR/W5DH7y
+	x6NZP9QNNrIbRkwlwBVGYtimMIsN+DlRm0GRcFlNfL/mvmJ6BFiLfUzFNnrLfFkOVKHtAQHWLyP
+	T6B4HcFbSoZNeVsdFmEvY0Inel2YC2RvRcsQq585vg88BrgY3UGPmHJJBSdfPmc4Anwu1Mllqp4
+	95dFlHVZrBXQuYq6uyrGjuWNAD+orH7QLDi0ZYD6Ae2x6MkH0TwuV3vywsN/tgGY0Io0tm7P9D1
+	WX1LoCWHghSfQcsW/ZGbh19BPc1tTksiH1op2RzINjLM9vpZ7IFUAQRvaODE0X2aDqmRnBcMWeq
+	XQsoLUYcBnKXYS3YNephuNkSzsnQXSSDut08zNiDVgOQ4dlSGzb3r9QV9AxcoPw7IPLFd3OeWi3
+	DiVUwYpVPg5iMs5kQPmYQgzQTh7/gnzP/YcZH8OQ==
+X-Received: by 2002:a05:7300:3081:b0:343:ff9f:26f3 with SMTP id
+ 5a478bee46e88-343ff9f3572mr5950145eec.9.1790537237953; Sun, 27 Sep 2026
+ 12:27:17 -0700 (PDT)
+MIME-Version: 1.0
+References: <CADxCdrAR_ywWPcRdDnR_-4gptVbb1QL-F95_yKvW8ihz++domg@mail.gmail.com>
+In-Reply-To: <CADxCdrAR_ywWPcRdDnR_-4gptVbb1QL-F95_yKvW8ihz++domg@mail.gmail.com>
+From: "'Austin Murray' via amy_crawford" <user@example.com>
+Date: Mon, 28 Sep 2026 00:57:05 +0530
+X-Gm-Features: AclHuK93phRxC_6JTBL0nOVm5oOrOAIT3k9Jdj9wIHRDSjs_tN_9Q0ksBqOo4h4
+Message-ID: <CADxCdrDyZi+nFdXU7jqz_J4BmkS8HenC-CW1QOX7tjdLayizRg@mail.gmail.com>
+Subject: Re: Few SEO issues stood out when I looked
+To: user@example.com
+Content-Type: multipart/alternative; boundary="00000000000006be89065c7bf0aa"
+X-Original-Sender: austin@rankpilotmedia.com
+X-Original-Authentication-Results: mx.google.com;       dkim=pass
+ header.i=@rankpilotmedia.com header.s=google header.b="ODThL/UQ";
+       arc=pass (i=1);       spf=pass (google.com: domain of
+ austin@rankpilotmedia.com designates 209.85.220.41 as permitted sender)
+ smtp.mailfrom=austin@rankpilotmedia.com;       dmarc=pass (p=QUARANTINE
+ sp=QUARANTINE dis=NONE) header.from=rankpilotmedia.com;       dara=neutral header.i=@wdtechdigital.com
+X-Original-From: Austin Murray <austin@rankpilotmedia.com>
+Reply-To: Austin Murray <austin@rankpilotmedia.com>
+Precedence: list
+Mailing-list: list user@example.com; contact amy_crawford+owners@wdtechdigital.com
+List-ID: <amy_crawford.wdtechdigital.com>
+X-Spam-Checked-In-Group: user@example.com
+X-Google-Group-Id: 837954481162
+List-Post: <https://groups.google.com/a/wdtechdigital.com/group/amy_crawford/post>,
+ <mailto:user@example.com>
+List-Help: <https://support.google.com/a/wdtechdigital.com/bin/topic.py?topic=25838>,
+ <mailto:amy_crawford+help@wdtechdigital.com>
+List-Archive: <https://groups.google.com/a/wdtechdigital.com/group/amy_crawford/>
+List-Unsubscribe: <mailto:googlegroups-manage+837954481162+unsubscribe@googlegroups.com>,
+ <https://groups.google.com/a/wdtechdigital.com/group/amy_crawford/subscribe>
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.example.com [172.31.18.8]); Sun, 27 Sep 2026 19:28:05 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.example.com [23.95.222.152]); Sun, 27 Sep 2026 14:28:02 -0500 (CDT)
+
+--00000000000006be89065c7bf0aa
+Content-Type: text/plain; charset="UTF-8"
+
+Hi,
+
+A few *SEO issues* stood out when I looked at your website.
+
+I noted the important ones. *Want me to share them?*
+
+Thanks.
+
+On Sat, 26 Sept 2026 at 01:13, Austin Murray <austin@rankpilotmedia.com>
+wrote:
+
+> Hi,
+>
+> A few *SEO issues* stood out when I looked at your website.
+>
+> I noted the important ones. *Want me to share them?*
+>
+> Thanks.
+>
+
+To unsubscribe from this group and stop receiving emails from it, send an email to amy_crawford+unsubscribe@wdtechdigital.com.
+
+--00000000000006be89065c7bf0aa
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><p>Hi,</p><p>A few <strong>SEO issues</strong> stood out w=
+hen I looked at your website.</p><p>I noted the important ones. <strong>Wan=
+t me to share them?</strong></p><p>Thanks.</p></div><br><div class=3D"gmail=
+_quote gmail_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">On Sat,=
+ 26 Sept 2026 at 01:13, Austin Murray &lt;<a href=3D"mailto:austin@rankpilo=
+tmedia.com">austin@rankpilotmedia.com</a>&gt; wrote:<br></div><blockquote c=
+lass=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px soli=
+d rgb(204,204,204);padding-left:1ex"><div dir=3D"ltr"><p>Hi,</p><p>A few <s=
+trong>SEO issues</strong> stood out when I looked at your website.</p><p>I =
+noted the important ones. <strong>Want me to share them?</strong></p><p>Tha=
+nks.</p></div>
+</blockquote></div>
+
+<p></p>
+
+To unsubscribe from this group and stop receiving emails from it, send an e=
+mail to <a href=3D"mailto:amy_crawford+unsubscribe@wdtechdigital.com">amy_c=
+rawford+unsubscribe@wdtechdigital.com</a>.<br />
+
+--00000000000006be89065c7bf0aa--
+
