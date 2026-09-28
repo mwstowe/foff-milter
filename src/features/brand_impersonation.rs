@@ -680,6 +680,27 @@ impl BrandImpersonationFeature {
             "coupon.com",
             "valpak.com",
             "redplum.com",
+            // Telecoms / ISPs / carriers legitimately advertise devices (iPhone, Galaxy,
+            // Pixel, etc.) in subject lines. A product mention is not an identity claim,
+            // so these authenticated senders must not be flagged as impersonating the
+            // device brand. Generalizes across carrier promotional mail.
+            "xfinity.com",
+            "comcast.com",
+            "comcast.net",
+            "verizon.com",
+            "verizonwireless.com",
+            "att.com",
+            "att.net",
+            "t-mobile.com",
+            "tmobile.com",
+            "sprint.com",
+            "spectrum.com",
+            "cox.com",
+            "uscellular.com",
+            "boostmobile.com",
+            "metrobyt-mobile.com",
+            "visible.com",
+            "mintmobile.com",
         ];
 
         multi_brand_companies

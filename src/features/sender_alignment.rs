@@ -867,7 +867,8 @@ impl SenderAlignmentAnalyzer {
             && !self.domains_related(&sender_info.from_domain, &sender_info.sender_domain)
             && !self.is_legitimate_email_service(&sender_info.sender_domain)
             && !is_consumer_from
-        // Skip if already flagged above
+            && !has_mailing_list_headers
+        // Skip if already flagged above; mailing lists legitimately rewrite the envelope
         {
             issues.push(format!(
                 "From domain '{}' doesn't match Sender domain '{}'",
@@ -881,7 +882,8 @@ impl SenderAlignmentAnalyzer {
             && !self.domains_related(&sender_info.from_domain, &sender_info.return_path_domain)
             && !self.is_legitimate_email_service(&sender_info.return_path_domain)
             && !is_consumer_from
-        // Skip if already flagged above
+            && !has_mailing_list_headers
+        // Skip if already flagged above; mailing lists legitimately use a list Return-Path
         {
             issues.push(format!(
                 "From domain '{}' doesn't align with Return-Path domain '{}'",

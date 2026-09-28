@@ -257,7 +257,28 @@ impl FeatureExtractor for ProductSpamAnalyzer {
                 .iter()
                 .any(|retailer| sender_domain.contains(retailer));
 
-            if !is_legitimate_retailer {
+            // Medical appointment / telehealth context: "Dr. X has offered to see you",
+            // "appointment", "consultation" trips the offer/get heuristic but is not a
+            // product reward/offer promotion. Require multiple medical markers so a
+            // "free medical device" product scam does not slip through on one word.
+            let medical_markers = [
+                "appointment",
+                "consultation",
+                "prescription",
+                "telehealth",
+                "telemedicine",
+                "urgent care",
+                "your doctor",
+                "see a doctor",
+                "medical service",
+            ];
+            let medical_marker_hits = medical_markers
+                .iter()
+                .filter(|m| content.contains(*m))
+                .count();
+            let is_medical_appointment = medical_marker_hits >= 2;
+
+            if !is_legitimate_retailer && !is_medical_appointment {
                 score += 35;
                 evidence.push("Product reward/offer promotion".to_string());
             }

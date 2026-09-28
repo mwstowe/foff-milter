@@ -2022,25 +2022,28 @@ impl FeatureExtractor for ContextAnalyzer {
                 .filter(|k| combined_lower.contains(*k))
                 .count();
             if inv_count >= 1 && pitch_count >= 1 {
+                // Only exempt *specific* well-known financial institutions. Generic
+                // substrings like "capital"/"invest"/"wealth"/"fund"/"stock" are
+                // self-defeating here — investment-spam throwaway domains are literally
+                // named that way (e.g. capitalsurgeplan.com, getthefinnewsnow.com), so a
+                // broad match would exempt the very senders this rule targets.
                 let financial_domains = [
-                    "finance",
-                    "invest",
-                    "capital",
-                    "fund",
-                    "trade",
-                    "stock",
-                    "wealth",
                     "fidelity",
                     "schwab",
                     "vanguard",
-                    "oxford",
-                    "motley",
-                    "fool",
+                    "oxfordclub",
+                    "motleyfool",
+                    "fool.com",
                     "barrons",
                     "bloomberg",
                     "marketwatch",
                     "cnbc",
                     "reuters",
+                    "morningstar",
+                    "etrade",
+                    "tdameritrade",
+                    "jpmorgan",
+                    "goldmansachs",
                 ];
                 let is_financial = financial_domains.iter().any(|d| sender_domain.contains(d));
                 if !is_financial {
@@ -2109,6 +2112,14 @@ impl FeatureExtractor for ContextAnalyzer {
                 "we were compensated",
                 "this is a paid",
                 "third party advertiser",
+                "from one of our sponsors",
+                "from one of our highly valued sponsors",
+                "message from one of our",
+                "important message from one of our",
+                "highly valued sponsor",
+                "valued sponsor",
+                "our advertising partner",
+                "message from our sponsor",
             ];
             if paid_promo_patterns.iter().any(|p| body_lower.contains(p)) {
                 total_score += 80;

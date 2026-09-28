@@ -1301,6 +1301,12 @@ pub fn builtin_modules() -> Vec<Module> {
                     Criteria::Or {
                         criteria: vec![
                         Criteria::SubjectPattern { pattern: "(?i).{0,100}(package.{0,100}for.{0,100}keywords|seo.{0,100}package|ranking.{0,100}package|backlink.{0,100}package).*".to_string() },
+                        // Cold SEO-audit outreach: "A few SEO issues stood out when I looked
+                        // at your website", "SEO Analysis <domain>", "noticed some SEO
+                        // problems ... want me to share them". Unsolicited lead-gen.
+                        Criteria::SubjectPattern { pattern: "(?i).{0,100}seo.{0,60}(analysis|issues|audit|report|gaps|problems).*".to_string() },
+                        Criteria::BodyPattern { pattern: "(?i)(few|some|couple).{0,20}seo.{0,20}(issues|problems|gaps).{0,60}(stood out|noticed|found|when i looked|on your (web)?site)".to_string() },
+                        Criteria::BodyPattern { pattern: "(?i)seo.{0,40}(issues|problems|gaps).{0,40}(want me to share|shall i share|should i send|let me know)".to_string() },
                         Criteria::And {
                             criteria: vec![
                             Criteria::Or {

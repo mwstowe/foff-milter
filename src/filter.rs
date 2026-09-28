@@ -2549,9 +2549,9 @@ impl FilterEngine {
             .map(|v| v.contains("dmarc=pass"))
             .unwrap_or(false);
         // Also check context analysis for high spam signals
+        let ca_feature = crate::features::context_analyzer::ContextAnalyzer::new();
+        let ca_result = ca_feature.extract(&context_with_attachments);
         let has_high_spam_signals = {
-            let ca_feature = crate::features::context_analyzer::ContextAnalyzer::new();
-            let ca_result = ca_feature.extract(&context_with_attachments);
             let has_homoglyph = ca_result
                 .evidence
                 .iter()
@@ -2598,6 +2598,17 @@ impl FilterEngine {
                 && !sender_domain.contains("amazon")
                 && !sender_domain.contains("rakuten")
                 && !sender_domain.contains("apple")
+                || {
+                    // The raw subject/body may be MIME/ISO-2022-JP encoded here, so the
+                    // keyword scan above can miss. The ContextAnalyzer decodes headers and
+                    // already flags Japanese account/delivery phishing from a non-Japanese
+                    // domain — trust that evidence to suppress the mailing-list bonus.
+                    ca_result.evidence.iter().any(|e| {
+                        e.contains("Japanese delivery notification from non-Japanese domain")
+                            || e.contains("Japanese account")
+                            || e.contains("Japanese phishing")
+                    })
+                }
         };
 
         let suppress_mailing_list = has_brand_impersonation
@@ -3383,18 +3394,20 @@ impl FilterEngine {
                             continue;
                         }
 
-                        // Do not grant ESP-infrastructure trust bonuses to mail that carries
+                        // Do not grant large trust bonuses to mail that carries
                         // high-confidence spam-content signals (insurance/solar investment
-                        // pitches). Legitimate ESPs are abused to launder this graymail; the
-                        // large negative "known legitimate mailing service" bonus otherwise
-                        // cancels the content score and lets it through. Generalizes across
-                        // any ESP-infrastructure trust rule.
+                        // pitches). Legitimate ESPs and DKIM are abused to launder this
+                        // graymail; the "known legitimate mailing service" (-80) and
+                        // "Perfect Authentication" (-30) bonuses otherwise cancel the content
+                        // score and let it through. Generalizes across ESP-infrastructure and
+                        // perfect-authentication trust rules.
                         if rule.score.unwrap_or(0) < 0
-                            && module.name.contains("ESP Infrastructure")
+                            && (module.name.contains("ESP Infrastructure")
+                                || rule.name.contains("Perfect Authentication"))
                             && (insurance_spam_score > 0 || solar_spam_score > 0)
                         {
                             log::info!(
-                                "Module '{}' Rule '{}' ESP trust bonus withheld: spam content detected (insurance={}, solar={})",
+                                "Module '{}' Rule '{}' trust bonus withheld: spam content detected (insurance={}, solar={})",
                                 module.name,
                                 rule.name,
                                 insurance_spam_score,
@@ -8185,11 +8198,25 @@ impl FilterEngine {
         // Check for Unicode obfuscation in mailing list context
         let has_unicode_obfuscation = self.has_unicode_obfuscation_in_headers(context);
 
+        // A self-declared List-ID (not backed by third-party list infrastructure like
+        // Google Groups, a transactional ESP, or a crowdfunding platform) is trivially
+        // forged: a spammer can add List-ID/List-Unsubscribe headers on their own
+        // throwaway domain to claim the large "legitimate mailing list" trust bonus.
+        // Genuine self-hosted lists run on real, established domains, not random/gibberish
+        // ones. Reject the legitimacy claim when the sender domain looks gibberish and the
+        // only list infrastructure is the self-declared List-ID.
+        let self_declared_only = has_list_id
+            && !has_google_groups
+            && !has_transactional_service
+            && !has_crowdfunding_platform;
+        let gibberish_sender_domain = self.get_gibberish_domain_score(context) > 0;
+
         let is_legitimate = has_mailing_list_infrastructure
             && !has_spam_content
             && !has_unicode_obfuscation
             && !self.has_suspicious_unsubscribe_links(context)
-            && !self.has_suspicious_sender_tld(context);
+            && !self.has_suspicious_sender_tld(context)
+            && !(self_declared_only && gibberish_sender_domain);
 
         log::info!(
             "Mailing list legitimacy check: infrastructure={}, spam_content={}, unicode_obfuscation={}, suspicious_unsubscribe={}, is_legitimate={}",
@@ -10249,6 +10276,12 @@ impl FilterEngine {
             "seo gaps",
             "seo services",
             "seo review",
+            "seo issues",
+            "seo analysis",
+            "seo audit",
+            "seo problems",
+            "issues stood out",
+            "stood out when i looked",
             "traffic daily",
             "search ranking",
             "rankings on google",
