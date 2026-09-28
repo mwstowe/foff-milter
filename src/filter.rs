@@ -8210,13 +8210,15 @@ impl FilterEngine {
             && !has_transactional_service
             && !has_crowdfunding_platform;
         let gibberish_sender_domain = self.get_gibberish_domain_score(context) > 0;
+        // Forged/self-declared list on a throwaway domain: disqualifies legitimacy.
+        let is_forged_self_declared_list = self_declared_only && gibberish_sender_domain;
 
         let is_legitimate = has_mailing_list_infrastructure
             && !has_spam_content
             && !has_unicode_obfuscation
             && !self.has_suspicious_unsubscribe_links(context)
             && !self.has_suspicious_sender_tld(context)
-            && !(self_declared_only && gibberish_sender_domain);
+            && !is_forged_self_declared_list;
 
         log::info!(
             "Mailing list legitimacy check: infrastructure={}, spam_content={}, unicode_obfuscation={}, suspicious_unsubscribe={}, is_legitimate={}",
