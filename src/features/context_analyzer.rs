@@ -3092,21 +3092,30 @@ impl FeatureExtractor for ContextAnalyzer {
             .as_deref()
             .and_then(|f| f.find('<').map(|i| f[..i].trim().to_lowercase()))
             .unwrap_or_default();
-        let gov_agency_names = [
+        // Multi-word agency phrases are safe as substrings.
+        let gov_agency_phrases = [
             "social security",
-            "ssa",
             "internal revenue",
-            "irs",
             "medicare",
             "medicaid",
             "homeland security",
-            "fbi",
             "department of",
             "us customs",
         ];
-        if gov_agency_names
+        // Short acronyms must match as whole words — otherwise "irs" matches inside
+        // "FNIRSI", "ssa" inside "vanessa", "fbi" inside "fbimports", etc.
+        let gov_agency_acronyms = ["ssa", "irs", "fbi"];
+        let display_words: Vec<&str> = from_display
+            .split(|c: char| !c.is_alphanumeric())
+            .filter(|w| !w.is_empty())
+            .collect();
+        let matches_gov_agency = gov_agency_phrases
             .iter()
             .any(|name| from_display.contains(name))
+            || gov_agency_acronyms
+                .iter()
+                .any(|acr| display_words.iter().any(|w| w == acr));
+        if matches_gov_agency
             && !sender_domain.ends_with(".gov")
             && !sender_domain.contains("ssa.gov")
         {
