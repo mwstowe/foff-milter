@@ -9447,6 +9447,29 @@ impl FilterEngine {
             return 0;
         }
 
+        // Exempt compound brand names built by concatenating common words, e.g.
+        // "craftcloud" (craft+cloud), "smarthome", "bluewater". These have no
+        // separators so the whole-word check above misses them, and their internal
+        // letter boundaries can create spurious consonant clusters. If two or more
+        // common words are found as substrings and together cover most of the
+        // alphabetic characters, treat it as a legitimate compound name.
+        {
+            let alpha_name: String = name.chars().filter(|c| c.is_ascii_alphabetic()).collect();
+            if alpha_name.len() >= 8 {
+                let mut matched = 0usize;
+                let mut covered = 0usize;
+                for w in &common_words {
+                    if alpha_name.contains(w) {
+                        matched += 1;
+                        covered += w.len();
+                    }
+                }
+                if matched >= 2 && covered * 100 / alpha_name.len().max(1) >= 60 {
+                    return 0;
+                }
+            }
+        }
+
         // Check for consonant clusters (4+ consonants in a row) — sign of gibberish
         let vowels = "aeiouy";
         let mut consonant_run = 0;
