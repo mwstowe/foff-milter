@@ -1,0 +1,1214 @@
+Return-Path: <bounce-kl_29181882132-kl_101101m3ned758159p9y-h-9c04460af7=2@3773999080031061915.klaviyodns.com>
+Received: from hotel.example.com (23-95-222-152-host.colocrossing.com [23.95.222.152] (may be forged))
+	by juliett.example.com (8.18.2/8.18.1) with ESMTPS id 68UFHv60009695
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <user@example.com>; Wed, 30 Sep 2026 15:17:58 GMT
+	(envelope-from bounce-kl_29181882132-kl_101101m3ned758159p9y-h-9c04460af7=2@3773999080031061915.klaviyodns.com)
+Authentication-Results: juliett.example.com;
+	dkim=pass (1024-bit key; unprotected) header.d=shared.klaviyomail.com header.i=@shared.klaviyomail.com header.b=S5qCM3Ja;
+	dkim=pass (1024-bit key; unprotected) header.d=send.fnirsi.com header.i=@send.fnirsi.com header.b=ZBk3q66r
+Received: from kl-203-20-25.kmta.shared.klaviyomail.com (kl-203-20-25.kmta.shared.klaviyomail.com [170.203.20.25])
+	by hotel.example.com (8.16.1/8.16.1) with ESMTPS id 68UFHr9C011657
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO)
+	for <user@example.com>; Wed, 30 Sep 2026 10:17:54 -0500
+DKIM-Filter: OpenDKIM Filter v2.11.0 hotel.example.com 68UFHr9C011657
+Authentication-Results: hotel.example.com;
+	dkim=pass (1024-bit key, unprotected) header.d=shared.klaviyomail.com header.i=@shared.klaviyomail.com header.a=rsa-sha256 header.s=def1 header.b=S5qCM3Ja;
+	dkim=pass (1024-bit key, unprotected) header.d=send.fnirsi.com header.i=@send.fnirsi.com header.a=rsa-sha256 header.s=mtd1 header.b=ZBk3q66r
+X-Mailer-Info-Extra2: 35579b4de2:0Qe5AXO1EDO1cDZl52MtFDMxEDMx8FbrBwcA0
+ 2bj5ibpFWbvRGZhJGQld3b0NXbAIHA1IjL3EjL04CMxAAcvBQNy0CMy0yMwITLstGAu9G
+ A5IjMAk2bA02bj5CbpFWbvlXa2FGbr5CZlJXYoNnLhRXbr5SNy0CMy0yMwITLstGAo9GA
+ z8Vb1lGZl1GAu1GAykTOAkWbA02bj5SazJXauZmLk5WZz5yMrBkM9cjZhBjN0QDMjlTLo
+ 1Se5AXO1EDO1cDZl52MtFDMxEDMx8Fbr1iMzEjM4gTM4ETOy8Fbr1SZj5WdvJGAm1GAz8
+ Vb1lGZl1GAtBgMzEjM4gTM4ETOy8FbrBAbAkVOQlTNxgTN3QURONTTxATMxATMAkGA91n
+ IsFWduFWbiojI4JCLiolRw0EMwE1QFlTOCF1N5MzU4IFOFN1MNFDMiojItRnIsUjN0EDO
+ 3ATO3EjOiQnIsICOHNkWFBTR1QFVZlDU5UTM4UzNEVkTz0UMwIiOi0mIscjN0EDO3ATO3
+ EjOiQHaiwSM6ISbhNmIsIiN4gUaadlI6IyYisnOiolRw0EMwE1QFlTOCF1N5MzU4IFOFN
+ 1MNFDMisHIAMGAkhzYmFzMxIzYiNDN++
+X-Mailer-Info: 10.sGbfJTOxgTM4gjMxMjM.sGbfFDMxEDMx02MuVGZ3UDOxUTOwlTe.02c092d
+ lBkYhRGZv1WYp5mLj9Wb.gsnIwETTzMVR4IFOTNTO3ElQ5kTRDFFMw0EMGplI6snIjJiOiclWphE
+ O2ICLiMWYtJiOxwiIoRnI6EzN5AzN4EDN2cDLi0mI6ICMx00MOVER3UDOxUTOQlTWURVNFBTRaN0
+ R4ICLiQnI6EzN5AzN4EDN2UDLiQXbiojIwETTzMVR4IFOTNTO3ElQ5kTRDFFMw0EMGplIsICeioj
+ ItFmb1FGbi0Xf..EDMxEDMx00MOVER3UDOxUTOQlTW..
+X-Mailer-Info-Extra: 9c04460af7:0QW5AVO1EDO1cDRF50MNFDMxEDMxAQaA0XfiwW
+ Y15WYtJiOignIsIiWGBTTwATUDVUO5IUU3kzMThjU4U0Uz0UMwIiOi0GdiwSN2QTM4cDM
+ 5cTM6ICdiwiI4c0QaVEMFVDVUlVOQlTNxgTN3QURONTTxAjI6ISbiwyN2QTM4cDM5cTM6
+ ICdoJCLxojItF2YiwiI2gDSpp1ViojIjJye6IiWGBTTwATUDVUO5IUU3kzMThjU4U0Uz0
+ UMwIyegAwYA02bj5ibpFWbvRGZhJGQld3b0NXb++
+Received: from unknown (HELO kmta-worker-prod-go-6cf9fc4b95-fggdb) (kmta-send@vmta.klaviyomail.com@10.5.162.51)
+  by kmta-mta-blue-0b4349ff535ed1e62.servers.clovesoftware.com with SMTP; 30 Sep 2026 15:17:47 -0000
+CFBL-Address: fbl@kmta.shared.klaviyomail.com; report=arf
+Date: Wed, 30 Sep 2026 15:17:47 +0000
+List-Unsubscribe:
+ <https://manage.kmail-lists.com/subscriptions/unsubscribe?a=WZiH86&c=01KWJHQZ2BWT2FCAD8Y61WRDZC&k=8ad1b5f58b95107c44cc5a83ac2fad5d&se=user%40example.com&m=01M3NED758159P9YTT5E0EZCG8&r=01M3SE8R8S397QB99ECQ00M0FZ>,
+ <mailto:unsub1-01KWJHQZ2BWT2FCAD8Y61WRDZC-K5NGSSBYGY======@shared.klaviyomail.com?subject=request%20unsubscribe%20ME6VOWTJJA4DMJTDHUYDCS2XJJEFCWRSIJLVIMSGINAUIOCZGYYVOUSELJBSM2Z5HBQWIMLCGVTDKODCHE2TCMBXMM2DIY3DGVQTQM3BMMZGMYLEGVSCM43FHVWXG5DPO5SSKNBQMJQWIZDPNVQWS3ROMNXW2JTNHUYDCTJTJZCUINZVHAYTKOKQHFMVIVBVIUYEKWSDI44CM4R5GAYU2M2TIU4FEOCTGM4TOUKCHE4UKQ2RGAYE2MCGLI======>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+MIME-Version: 1.0
+Message-ID: <01M3SE8R8S397QB99ECQ00M0FZ@klaviyomail.com>
+Subject:
+ =?UTF-8?q?=E2=9C=A8_Meet_the_New_FNIRSI_DPS-150P_=E2=80=94_150W_of_Stable?=
+ =?UTF-8?q?,_Portable_Power?=
+X-Kmail-Account: WZiH86
+X-Kmail-Message: 01M3NED758159P9YTT5E0EZCG8
+X-Kmail-Ops: 01KWJHQZ2BWT2FCAD8Y61WRDZC
+X-Report-Abuse: Please report any spam or abuse to: abuse@klaviyo.com
+DKIM-Signature: a=rsa-sha256; bh=lMDyaGxdHCrCu3b3gP2q1yUaP9LY09c/xE4nE4Sz4ls=;
+ c=relaxed/relaxed; d=shared.klaviyomail.com;
+ h=DKIM-Signature:Message-ID:List-Unsubscribe:List-Unsubscribe-Post:CFBL-Address:Date:Subject:From:To:Subject:From:To:CC:Date:CFBL-Feedback-ID:CFBL-Address;
+ s=def1; t=555-123-4567; v=1;
+ b=S5qCM3JatuyWZ4RMabaAgMFSokecW1pvLaIhns1jMC5RBff6H7o9OC/siXeYyznl+DJk7qvd
+ ZQ0qJSGVDLCBh41upNGa+b8+2bBVlk6rEWOp1UKgiq4F6eyeTAaLeICOjp0LNzLtINVBTDF5xws
+ F2wSauAFqzvzG0c4xE/KJnoU=
+DKIM-Signature: a=rsa-sha256; bh=lMDyaGxdHCrCu3b3gP2q1yUaP9LY09c/xE4nE4Sz4ls=;
+ c=relaxed/relaxed; d=send.fnirsi.com;
+ h=Message-ID:List-Unsubscribe:List-Unsubscribe-Post:CFBL-Address:Date:Subject:From:To:Subject:From:To:CC:Date:CFBL-Feedback-ID:CFBL-Address;
+ s=mtd1; t=555-123-4567; v=1;
+ b=ZBk3q66rGPG8WWwZxbgpG2ZQuLl0ZC2cs3BQhDAz091enSV6OgkTjZN+aauE6LR0m/PCksvY
+ kRLqjtUyQkhkiuyB2XKtG5HK6KoXWH3enPSl0SBdRL/gBVLk8NWQ4PEWujddLaIPxQ+T22iLrWt
+ o0h/Zbzvi02YamtDJa+TBSKA=
+From: "FNIRSI Official Store" <info@fnirsi.com>
+To: "John Doe" <user@example.com>
+Content-Type: multipart/alternative;
+ boundary=a39f3082f5baa3a125a324ba9f41944859a7263983e6fddd9663f441a495
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.4 (juliett.example.com [172.31.18.8]); Wed, 30 Sep 2026 15:17:58 +0000 (UTC)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.6.4 (hotel.example.com [23.95.222.152]); Wed, 30 Sep 2026 10:17:54 -0500 (CDT)
+X-Spam-Flag: YES
+
+--a39f3082f5baa3a125a324ba9f41944859a7263983e6fddd9663f441a495
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+
+[FNIRSI Logo](http://www.fnirsi.com)
+
+INTRODUCING THE NEW
+
+Meet the FNIRSI DPS-150P
+
+150W of portable power, precise current readback,
+and PD3.1 support=E2=80=94all in one compact power supply.
+
+[FNIRSI DPS-150P 150W Portable DC Power Supply](https://www.fnirsi.com/prod=
+ucts/dps-150p)
+
+More Power. More Control.
+
+The FNIRSI DPS-150P is a 150W portable DC power supply designed for electro=
+nics testing, development, repair, and everyday bench work. With PD3.1 supp=
+ort, low-ripple output, and precise current readback, it delivers the power=
+ and control you need in a compact form.
+
+LAUNCH OFFER
+Get 8% OFF
+
+Use code at checkout:
+
+150P8
+
+[SHOP NOW](https://www.fnirsi.com/products/dps-150p)
+
+Built for Stable, Precise Power
+
+Up to 150W of Portable Power
+
+Deliver up to 150W of DC power in a compact, portable design. The DPS-150P =
+gives you the flexibility to power and test electronics wherever your work =
+takes you.
+
+[FNIRSI DPS-150P low ripple output]
+
+Low-Ripple Output for Stable Power Delivery
+
+With =E2=89=A410mVpp full-load output ripple, the DPS-150P helps reduce unw=
+anted output fluctuations when powering sensitive electronic circuits, supp=
+orting more stable power delivery during development and debugging.
+
+[FNIRSI DPS-150P PD3.1 power supply]
+
+PD3.1 Support for Modern Devices
+
+With USB Power Delivery 3.1 support, the DPS-150P is ready for a wide range=
+ of modern USB-C devices and power applications, making high-power testing =
+more convenient and versatile.
+
+[FNIRSI DPS-150P =CE=BCA current readback]
+
+See the Current Down to =CE=BCA
+
+The =CE=BCA current readback gives you greater visibility into low-current =
+consumption, making it easier to monitor standby, sleep, and other low-powe=
+r operating conditions during testing and debugging.
+
+Ready for Your Workbench
+
+150W
+Maximum Output Power	=E2=89=A410mVpp
+Full-Load Output Ripple
+PD3.1
+USB-C Power Delivery	=CE=BCA
+Current Readback
+
+Power Up Your Next Project.
+
+Meet the new FNIRSI DPS-150P and get 8% off with our launch offer.
+
+CODE: 150P8
+[SHOP DPS-150P](https://www.fnirsi.com/products/dps-150p)
+
+[whatsapp](https://chat.whatsapp.com/DwxY7aqXnY65sO9Qq6lpXz)
+[facebook](https://www.facebook.com/FNIRSI)
+[instagram](https://www.instagram.com/fnirsi/)
+[tiktok](https://www.tiktok.com/@fnirsi_official)
+[youtube](https://www.youtube.com/@fnirsi)
+
+FNIRSI Technology Co., Ltd.
+
+=C2=A9 FNIRSI. All rights reserved.
+
+61-65 Chatham Road South, Flat/Rm S239, 2/F, The Capital, Tsim Sha Tsui, Ko=
+wloon Hong Kong SAR
+
+No longer want to receive these emails? =C2=A0[Unsubscribe](https://manage.=
+kmail-lists.com/subscriptions/unsubscribe?a=3DWZiH86&c=3D01KWJHQZ2BWT2FCAD8=
+Y61WRDZC&k=3D8ad1b5f58b95107c44cc5a83ac2fad5d&se=3Duser%40example.com&m=
+=3D01M3NED758159P9YTT5E0EZCG8&r=3D01M3SE8R8S397QB99ECQ00M0FZ)
+
+No longer want to receive these emails? =C2=A0[Unsubscribe](https://manage.=
+kmail-lists.com/subscriptions/unsubscribe?a=3DWZiH86&c=3D01KWJHQZ2BWT2FCAD8=
+Y61WRDZC&k=3D8ad1b5f58b95107c44cc5a83ac2fad5d&se=3Duser%40example.com&m=
+=3D01M3NED758159P9YTT5E0EZCG8&r=3D01M3SE8R8S397QB99ECQ00M0FZ)
+--a39f3082f5baa3a125a324ba9f41944859a7263983e6fddd9663f441a495
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html; charset=UTF-8
+
+<!DOCTYPE html><html xmlns=3D"http://www.w3.org/1999/xhtml" xmlns:o=3D"urn:=
+schemas-microsoft-com:office:office" xmlns:v=3D"urn:schemas-microsoft-com:v=
+ml"><head>
+<title>
+</title>
+<!--[if !mso]><!-->
+<meta content=3D"IE=3Dedge" http-equiv=3D"X-UA-Compatible">
+<!--<![endif]-->
+<meta content=3D"text/html; charset=3Dutf-8" http-equiv=3D"Content-Type">
+<meta content=3D"width=3Ddevice-width, initial-scale=3D1" name=3D"viewport"=
+>
+<!--[if mso]>
+        <noscript>
+        <xml>
+        <o:OfficeDocumentSettings>
+          <o:AllowPNG/>
+          <o:PixelsPerInch>96</o:PixelsPerInch>
+        </o:OfficeDocumentSettings>
+        </xml>
+        </noscript>
+        <![endif]-->
+<!--[if lte mso 11]>
+        <style type=3D"text/css" data-inliner=3D"ignore">
+          .mj-outlook-group-fix { width:100% !important; }
+        </style>
+        <![endif]-->
+<!--[if !mso]><!--><!--<![endif]-->
+<style>a:not([name]) {color:#106CB3;text-decoration:underline}
+a:link {color:#106CB3;text-decoration:underline}
+a:visited {color:#106CB3;text-decoration:underline}
+a:active {color:#106CB3;text-decoration:underline}
+a:hover {color:#106CB3;text-decoration:underline}</style><style>@import url=
+(https://static-forms.klaviyo.com/fonts/api/v1/WZiH86/custom_fonts.css);
+#outlook a {
+    padding: 0
+    }
+body {
+    margin: 0;
+    padding: 0;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%
+    }
+table, td {
+    border-collapse: collapse;
+    mso-table-lspace: 0;
+    mso-table-rspace: 0
+    }
+img {
+    border: 0;
+    line-height: 100%;
+    outline: none;
+    text-decoration: none;
+    -ms-interpolation-mode: bicubic
+    }
+p {
+    display: block;
+    margin: 13px 0
+    }
+@media only screen and (min-width: 480px) {
+    .mj-column-per-100 {
+        width: 100% !important;
+        max-width: 100%
+        }
+    }
+.moz-text-html .mj-column-per-100 {
+    width: 100% !important;
+    max-width: 100%
+    }
+@media only screen and (max-width: 480px) {
+    div.kl-row.colstack div.kl-column {
+        display: block !important;
+        width: 100% !important
+        }
+    }
+.hlb-subblk td {
+    word-break: normal
+    }
+@media only screen and (max-width: 480px) {
+    .hlb-wrapper .hlb-block-settings-content {
+        padding: 9px !important
+        }
+    .hlb-logo {
+        padding-bottom: 9px !important
+        }
+    .r2-tbl {
+        width: 100%
+        }
+    .r2-tbl .lnk {
+        width: 100%
+        }
+    .r2-tbl .hlb-subblk > table {
+        border-spacing: 5px !important;
+        border-collapse: separate !important
+        }
+    .kl-hlb-stack {
+        display: block !important;
+        width: 100% !important;
+        padding-right: 0 !important
+        }
+    .kl-hlb-stack.vspc {
+        margin-bottom: 9px
+        }
+    .kl-hlb-wrap {
+        display: inline-block !important;
+        width: auto !important
+        }
+    .kl-hlb-no-wrap {
+        display: table-cell !important
+        }
+    .kl-hlb-wrap.nospc.nospc {
+        padding-right: 0 !important
+        }
+    }
+@media only screen and (max-width: 480px) {
+    .component-wrapper .mob-no-spc {
+        padding-left: 0 !important;
+        padding-right: 0 !important
+        }
+    }
+@media screen and (max-width: 480px) {
+    .kl-sl-stk {
+        display: block !important;
+        width: 100% !important;
+        padding: 0 0 9px !important;
+        text-align: center !important
+        }
+    .kl-sl-stk.lbls {
+        padding: 0 !important
+        }
+    .kl-sl-stk.spcblk {
+        display: none !important
+        }
+    }
+img {
+    border: 0;
+    height: auto;
+    line-height: 100%;
+    outline: none;
+    text-decoration: none;
+    max-width: 100%
+    }
+.root-container {
+    background-repeat: repeat !important;
+    background-size: auto !important;
+    background-position: left top !important
+    }
+.root-container-spacing {
+    padding-top: 50px !important;
+    padding-bottom: 20px !important;
+    font-size: 0 !important
+    }
+.content-padding {
+    padding-left: 0 !important;
+    padding-right: 0 !important
+    }
+.content-padding.kl-first {
+    padding-top: 0 !important
+    }
+.content-padding.kl-last {
+    padding-bottom: 0 !important
+    }
+@media only screen and (max-width: 480px) {
+    td.mobile-only {
+        display: table-cell !important
+        }
+    div.mobile-only {
+        display: block !important
+        }
+    table.mobile-only {
+        display: table !important
+        }
+    .desktop-only {
+        display: none !important
+        }
+    }
+@media only screen and (max-width: 480px) {
+    .table-mobile-only {
+        display: table-cell !important;
+        max-height: none !important
+        }
+    .table-mobile-only.block {
+        display: block !important
+        }
+    .table-mobile-only.inline-block {
+        display: inline-block !important
+        }
+    .table-desktop-only {
+        max-height: 0 !important;
+        display: none !important;
+        mso-hide: all !important;
+        overflow: hidden !important
+        }
+    }
+p {
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-bottom: 1em
+    }
+@media only screen and (max-width: 480px) {
+    body.mce-content-body, /* NOTE: needed for internal tinymce styles */.k=
+l-text > div, .kl-table-subblock > div, .kl-split-subblock > div {
+        font-size: 14px !important;
+        line-height: 1.3 !important
+        }
+    }
+h1 {
+    color: #0f1419;
+    font-family: Helvetica, Arial;
+    font-size: 40px;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1.1;
+    letter-spacing: 0;
+    margin: 0;
+    margin-bottom: 20px;
+    text-align: left
+    }
+@media only screen and (max-width: 480px) {
+    h1 {
+        font-size: 40px !important;
+        line-height: 1.1 !important
+        }
+    }
+h2 {
+    color: #0f1419;
+    font-family: Helvetica, Arial;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: bold;
+    line-height: 1.1;
+    letter-spacing: 0;
+    margin: 0;
+    margin-bottom: 16px;
+    text-align: left
+    }
+@media only screen and (max-width: 480px) {
+    h2 {
+        font-size: 32px !important;
+        line-height: 1.1 !important
+        }
+    }
+h3 {
+    color: #0f1419;
+    font-family: Helvetica, Arial;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: bold;
+    line-height: 1.1;
+    letter-spacing: 0;
+    margin: 0;
+    margin-bottom: 12px;
+    text-align: left
+    }
+@media only screen and (max-width: 480px) {
+    h3 {
+        font-size: 24px !important;
+        line-height: 1.1 !important
+        }
+    }
+h4 {
+    color: #0f1419;
+    font-family: Helvetica, Arial;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: 0;
+    margin: 0;
+    margin-bottom: 9px;
+    text-align: left
+    }
+@media only screen and (max-width: 480px) {
+    h4 {
+        font-size: 18px !important;
+        line-height: 1.1 !important
+        }
+    }
+@media only screen and (max-width: 480px) {
+    .root-container {
+        width: 100% !important
+        }
+    .root-container-spacing {
+        padding: 10px !important
+        }
+    .content-padding {
+        padding-left: 0 !important;
+        padding-right: 0 !important
+        }
+    .content-padding.kl-first {
+        padding-top: 0 !important
+        }
+    .content-padding.kl-last {
+        padding-bottom: 0 !important
+        }
+    .kl-column > .component-wrapper {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        width: unset !important
+        }
+    .kl-text {
+        padding-right: 18px !important;
+        padding-left: 18px !important
+        }
+    }
+h1, h2, h3, h4 {
+    font-family: Montserrat, Arial, Helvetica, sans-serif
+    }
+h1 {
+    font-size: 32px !important
+    }
+h2 {
+    font-size: 26px !important
+    }
+h3 {
+    font-size: 20px !important
+    }</style></head>
+<body style=3D"word-spacing:normal;background-color:#FFFFFF;">
+<div style=3D"display:none;font-size:1px;color:#ffffff;line-height:1px;max-=
+height:0px;max-width:0px;opacity:0;overflow:hidden;">
+      Low-ripple output, PD3.1 support, and =CE=BCA current readback. Get 8=
+% OFF with code 150P8=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=
+=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=
+=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=
+=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=
+=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =
+=E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =E2=80=87=CD=8F =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =
+=C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD
+    </div>
+<!-- TRACKING_PIXEL_TOP -->
+<div class=3D"root-container" id=3D"bodyTable" style=3D"background-color:#F=
+FFFFF;">
+<div class=3D"root-container-spacing">
+<table align=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" cl=
+ass=3D"kl-section" role=3D"presentation" style=3D"width:100%;">
+<tbody>
+<tr>
+<td>
+<!--[if mso | IE]><table align=3D"center" border=3D"0" cellpadding=3D"0" ce=
+llspacing=3D"0" class=3D"kl-section-outlook" style=3D"width:600px;" width=
+=3D"600" ><tr><td style=3D"line-height:0px;font-size:0px;mso-line-height-ru=
+le:exactly;"><![endif]-->
+<div style=3D"margin:0px auto;max-width:600px;">
+<table align=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" ro=
+le=3D"presentation" style=3D"width:100%;">
+<tbody>
+<tr>
+<td style=3D"direction:ltr;font-size:0px;padding:0px;text-align:center;">
+<!--[if mso | IE]><table role=3D"presentation" border=3D"0" cellpadding=3D"=
+0" cellspacing=3D"0"><table align=3D"center" border=3D"0" cellpadding=3D"0"=
+ cellspacing=3D"0" class=3D"" style=3D"width:600px;" width=3D"600" bgcolor=
+=3D"#FFFFFF" ><tr><td style=3D"line-height:0px;font-size:0px;mso-line-heigh=
+t-rule:exactly;"><![endif]-->
+<div style=3D"background:#FFFFFF;background-color:#FFFFFF;margin:0px auto;b=
+order-radius:0px 0px 0px 0px;max-width:600px;">
+<table align=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" ro=
+le=3D"presentation" style=3D"background:#FFFFFF;background-color:#FFFFFF;wi=
+dth:100%;border-radius:0px 0px 0px 0px;">
+<tbody>
+<tr>
+<td style=3D"direction:ltr;font-size:0px;padding:20px 0;padding-bottom:0px;=
+padding-left:0px;padding-right:0px;padding-top:0px;text-align:center;">
+<!--[if mso | IE]><table role=3D"presentation" border=3D"0" cellpadding=3D"=
+0" cellspacing=3D"0"><![endif]-->
+<div class=3D"content-padding kl-first">
+<!--[if true]><table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=
+=3D"600" style=3D"width:600px;direction:ltr"><tr><![endif]-->
+<div class=3D"kl-row colstack" style=3D"display:table;table-layout:fixed;wi=
+dth:100%;">
+<!--[if true]><td style=3D"vertical-align:top;width:600px;"><![endif]-->
+<div class=3D"kl-column" style=3D"display:table-cell;vertical-align:top;wid=
+th:100%;">
+<div class=3D"mj-column-per-100 mj-outlook-group-fix component-wrapper hlb-=
+wrapper" style=3D"font-size:0px;text-align:left;direction:ltr;vertical-alig=
+n:top;width:100%;">
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentatio=
+n" style=3D"width:100%;" width=3D"100%">
+<tbody>
+<tr>
+<td class=3D"hlb-block-settings-content" style=3D"background-color:#F7F8FA;=
+vertical-align:top;padding-top:16px;padding-right:18px;padding-bottom:9px;p=
+adding-left:18px;">
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentatio=
+n" style=3D"" width=3D"100%">
+<tbody>
+<tr>
+<td align=3D"top" class=3D"kl-header-link-bar" style=3D"font-size:0px;paddi=
+ng:0px 0px 0px 0px;word-break:break-word;">
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" style=3D"color:#000=
+000;font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:13px;line-he=
+ight:22px;table-layout:auto;width:100%;border:0;" width=3D"100%">
+<tbody>
+<tr>
+<td align=3D"center" class=3D"hlb-logo" style=3D"display:table-cell;width:1=
+00%;padding-bottom:10px;">
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" style=3D"border-col=
+lapse:collapse;border-spacing:0px;">
+<tbody>
+<tr>
+<!--[if true]><td style=3D"width:120px;" bgcolor=3D"transparent"><![endif]-=
+->
+<!--[if !true]><!--><td style=3D"width:120px;"><!--<![endif]-->
+<a style=3D"color:#106CB3; text-decoration:underline" target=3D"_blank" hre=
+f=3D"https://ctrk.klclick1.com/l/01M3SE94JQ0WAEKVRHX4P6PW88_0">
+<img alt=3D"FNIRSI Logo" src=3D"https://d3k81ch9hvuctc.cloudfront.net/compa=
+ny/WZiH86/images/71e7f30e-f02d-40b5-a78b-5c200e13db68.png" style=3D"display=
+:block;outline:none;text-decoration:none;height:auto;width:100%;background-=
+color:transparent;" width=3D"120">
+</a>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class=3D"mj-column-per-100 mj-outlook-group-fix component-wrapper" sty=
+le=3D"font-size:0px;text-align:left;direction:ltr;vertical-align:top;width:=
+100%;">
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentatio=
+n" style=3D"width:100%;" width=3D"100%">
+<tbody>
+<tr>
+<td class=3D"" style=3D"vertical-align:top;padding-top:0px;padding-right:0p=
+x;padding-bottom:0px;padding-left:0px;">
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentatio=
+n" style=3D"" width=3D"100%">
+<tbody>
+<tr><td style=3D"color:#0f1419;font-family:Helvetica, Arial;font-size:14px;=
+line-height:1.3;">
+<div style=3D"margin:0; padding:0; background:#f5f7fa; font-family: Montser=
+rat,Arial,Helvetica,sans-serif; color:#1a1a1a;">
+<div style=3D"max-width:680px; margin:0 auto; background:#F6F6F6;">
+<!-- HERO -->
+<div style=3D"text-align:center; padding:42px 28px 30px;">
+<div style=3D"font-size:13px; font-weight:700; letter-spacing:2px; color:#3=
+275FF; text-transform:uppercase; margin-bottom:14px;">
+    INTRODUCING THE NEW
+  </div>
+<h1 style=3D"margin:0 0 16px; line-height:1.15; font-weight:700; color:#111=
+111;text-align:center;font-family: Montserrat,Arial,Helvetica,sans-serif;">
+    Meet the FNIRSI DPS-150P
+  </h1>
+<p style=3D"padding-bottom:0; margin:0 auto; max-width:560px; font-size:17p=
+x; line-height:1.5; color:#555">
+    150W of portable power, precise current readback,<br>
+    and PD3.1 support=E2=80=94all in one compact power supply.
+  </p>
+</div>
+<!-- HERO IMAGE -->
+<div style=3D"padding:0 20px 30px; text-align:center;">
+<a style=3D"color:#106CB3; text-decoration:none" href=3D"https://ctrk.klcli=
+ck1.com/l/01M3SE94JQ0WAEKVRHX4P6PW88_1">
+<img alt=3D"FNIRSI DPS-150P 150W Portable DC Power Supply" src=3D"https://c=
+dn.shopify.com/s/files/1/0694/8310/2426/files/FNIRSI_DPS-150P_150W_Portable=
+_DC_Power_Supply_PD3.1__A_Readback_Details_App_01.webp?v=3D1790231119" styl=
+e=3D"display:block; width:100%; max-width:640px; height:auto; margin:0 auto=
+; border:0;" width=3D"640">
+</a>
+</div>
+<!-- INTRO -->
+<div style=3D"padding:10px 42px 35px; text-align:center;">
+<h2 style=3D"margin:0 0 14px; font-size:26px; line-height:1.3; color:#11111=
+1;text-align:center;">
+    More Power. More Control.
+  </h2>
+<p style=3D"padding-bottom:0; margin:0; font-size:16px; line-height:1.7; co=
+lor:#555">
+    The FNIRSI DPS-150P is a 150W portable DC power supply designed
+    for electronics testing, development, repair, and everyday bench work.
+    With PD3.1 support, low-ripple output, and precise current readback,
+    it delivers the power and control you need in a compact form.
+  </p>
+</div>
+<!-- DISCOUNT -->
+<div style=3D"margin:0 28px 40px; padding:28px 20px; background:#ffffff; bo=
+rder-radius:10px; text-align:center;">
+<div style=3D"font-size:14px; font-weight:700; letter-spacing:1.5px; color:=
+#3275FF; text-transform:uppercase;">
+    LAUNCH OFFER
+  </div>
+<div style=3D"margin:8px 0; font-size:34px; line-height:1.2; font-weight:70=
+0; color:#111111;">
+    Get 8% OFF
+  </div>
+<p style=3D"margin:6px 0 18px; font-size:15px; color:#555555;">
+    Use code at checkout:
+  </p>
+<p style=3D"margin:12px 0 18px;">
+<span style=3D"font-size:36px; color:#3275FF;font-weight:700;border:2px das=
+hed #3275FF;padding:10px 20px;border-radius:6px;">
+      150P8
+    </span>
+</p>
+<a style=3D"color:#fff; text-decoration:none; display:inline-block; padding=
+:14px 32px; background:#3275FF; font-size:15px; font-weight:700; border-rad=
+ius:5px" href=3D"https://ctrk.klclick1.com/l/01M3SE94JQ0WAEKVRHX4P6PW88_2">
+    SHOP NOW
+  </a>
+</div>
+<!-- FEATURES -->
+<div style=3D"padding:0 28px 40px;">
+<h2 style=3D"margin:0 0 24px; text-align:center; font-size:28px; color:#111=
+111;">
+    Built for Stable, Precise Power
+  </h2>
+<!-- FEATURE 1 -->
+<div style=3D"margin-bottom:28px;">
+<h3 style=3D"margin:0 0 7px; font-size:20px; color:#111111;">
+      Up to 150W of Portable Power
+    </h3>
+<p style=3D"padding-bottom:0; margin:0; font-size:15px; line-height:1.5; co=
+lor:#666">
+      Deliver up to 150W of DC power in a compact, portable design.
+      The DPS-150P gives you the flexibility to power and test electronics
+      wherever your work takes you.
+    </p>
+</div>
+<!-- FEATURE 2 -->
+<div style=3D"margin-bottom:28px;">
+<img alt=3D"FNIRSI DPS-150P low ripple output" src=3D"https://cdn.shopify.c=
+om/s/files/1/0694/8310/2426/files/FNIRSI_DPS-150P_150W_Portable_DC_Power_Su=
+pply_PD3.1__A_Readback_Details_App_05.webp?v=3D1790231119" style=3D"display=
+:block; width:100%; height:auto; border:0; margin-bottom:14px;" width=3D"62=
+4">
+<h3 style=3D"margin:0 0 7px; font-size:20px; color:#111111;">
+      Low-Ripple Output for Stable Power Delivery
+    </h3>
+<p style=3D"padding-bottom:0; margin:0; font-size:15px; line-height:1.5; co=
+lor:#666">
+      With =E2=89=A410mVpp full-load output ripple, the DPS-150P helps redu=
+ce
+      unwanted output fluctuations when powering sensitive electronic
+      circuits, supporting more stable power delivery during development
+      and debugging.
+    </p>
+</div>
+<!-- FEATURE 3 -->
+<div style=3D"margin-bottom:28px;">
+<img alt=3D"FNIRSI DPS-150P PD3.1 power supply" src=3D"https://cdn.shopify.=
+com/s/files/1/0694/8310/2426/files/FNIRSI_DPS-150P_150W_Portable_DC_Power_S=
+upply_PD3.1__A_Readback_Details_App_07.webp?v=3D1790231119" style=3D"displa=
+y:block; width:100%; height:auto; border:0; margin-bottom:14px;" width=3D"6=
+24">
+<h3 style=3D"margin:0 0 7px; font-size:20px; color:#111111;">
+      PD3.1 Support for Modern Devices
+    </h3>
+<p style=3D"padding-bottom:0; margin:0; font-size:15px; line-height:1.5; co=
+lor:#666">
+      With USB Power Delivery 3.1 support, the DPS-150P is ready for
+      a wide range of modern USB-C devices and power applications,
+      making high-power testing more convenient and versatile.
+    </p>
+</div>
+<!-- FEATURE 4 -->
+<div style=3D"margin-bottom:10px;">
+<img alt=3D"FNIRSI DPS-150P =CE=BCA current readback" src=3D"https://cdn.sh=
+opify.com/s/files/1/0694/8310/2426/files/FNIRSI_DPS-150P_150W_Portable_DC_P=
+ower_Supply_PD3.1__A_Readback_Details_App_04.webp?v=3D1790231118" style=3D"=
+display:block; width:100%; height:auto; border:0; margin-bottom:14px;" widt=
+h=3D"624">
+<h3 style=3D"margin:0 0 7px; font-size:20px; color:#111111;">
+      See the Current Down to =CE=BCA
+    </h3>
+<p style=3D"padding-bottom:0; margin:0; font-size:15px; line-height:1.5; co=
+lor:#666">
+      The =CE=BCA current readback gives you greater visibility into low-cu=
+rrent
+      consumption, making it easier to monitor standby, sleep, and other
+      low-power operating conditions during testing and debugging.
+    </p>
+</div>
+</div>
+<!-- SPECS -->
+<div style=3D"padding:35px 28px; background:#fcfcfc;">
+<h2 style=3D"margin:0 0 24px; text-align:center; font-size:26px; color:#111=
+111;">
+    Ready for Your Workbench
+  </h2>
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"100%">
+<tbody><tr>
+<td style=3D"padding:12px 8px; text-align:center; border-right:1px solid #d=
+ddddd;" width=3D"50%">
+<strong style=3D"font-size:24px; color:#111111;">150W</strong><br>
+<span style=3D"font-size:13px; color:#666666;">Maximum Output Power</span>
+</td>
+<td style=3D"padding:12px 8px; text-align:center;" width=3D"50%">
+<strong style=3D"font-size:24px; color:#111111;">=E2=89=A410mVpp</strong><b=
+r>
+<span style=3D"font-size:13px; color:#666666;">Full-Load Output Ripple</spa=
+n>
+</td>
+</tr>
+<tr>
+<td style=3D"padding:12px 8px; text-align:center; border-right:1px solid #d=
+ddddd; border-top:1px solid #dddddd;" width=3D"50%">
+<strong style=3D"font-size:24px; color:#111111;">PD3.1</strong><br>
+<span style=3D"font-size:13px; color:#666666;">USB-C Power Delivery</span>
+</td>
+<td style=3D"padding:12px 8px; text-align:center; border-top:1px solid #ddd=
+ddd;" width=3D"50%">
+<strong style=3D"font-size:24px; color:#111111;">=CE=BCA</strong><br>
+<span style=3D"font-size:13px; color:#666666;">Current Readback</span>
+</td>
+</tr>
+</tbody></table>
+</div>
+<!-- FINAL CTA -->
+<div style=3D"padding:42px 28px 45px; text-align:center;">
+<h2 style=3D"margin:0 0 12px; font-size:28px; line-height:1.3; color:#11111=
+1;text-align:center;">
+    Power Up Your Next Project.
+  </h2>
+<p style=3D"margin:0 auto 12px; max-width:520px; font-size:16px; line-heigh=
+t:1.5; color:#555555;">
+    Meet the new FNIRSI DPS-150P and get 8% off
+    with our launch offer.
+  </p>
+<div style=3D"margin-bottom:28px; font-size:28px; font-weight:700; color:#3=
+275FF;">
+    CODE: 150P8
+  </div>
+<a style=3D"color:#fff; text-decoration:none; display:inline-block; padding=
+:15px 38px; background:#3275FF; font-size:16px; font-weight:700; border-rad=
+ius:5px" href=3D"https://ctrk.klclick1.com/l/01M3SE94JQ0WAEKVRHX4P6PW88_3">
+    SHOP DPS-150P
+  </a>
+</div>
+</div>
+</div></td></tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!--[if true]></td><![endif]-->
+</div>
+<!--[if true]></tr></table><![endif]-->
+</div>
+<!--[if mso | IE]></table><![endif]-->
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!--[if mso | IE]></td></tr></table></table><![endif]-->
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!--[if mso | IE]></td></tr></table><![endif]-->
+</td>
+</tr>
+</tbody>
+</table>
+<table align=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" cl=
+ass=3D"kl-section" role=3D"presentation" style=3D"width:100%;">
+<tbody>
+<tr>
+<td>
+<!--[if mso | IE]><table align=3D"center" border=3D"0" cellpadding=3D"0" ce=
+llspacing=3D"0" class=3D"kl-section-outlook" style=3D"width:600px;" width=
+=3D"600" ><tr><td style=3D"line-height:0px;font-size:0px;mso-line-height-ru=
+le:exactly;"><![endif]-->
+<div style=3D"margin:0px auto;max-width:600px;">
+<table align=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" ro=
+le=3D"presentation" style=3D"width:100%;">
+<tbody>
+<tr>
+<td style=3D"direction:ltr;font-size:0px;padding:0px;text-align:center;">
+<!--[if mso | IE]><table role=3D"presentation" border=3D"0" cellpadding=3D"=
+0" cellspacing=3D"0"><table align=3D"center" border=3D"0" cellpadding=3D"0"=
+ cellspacing=3D"0" class=3D"" style=3D"width:600px;" width=3D"600" bgcolor=
+=3D"#F7F8FA" ><tr><td style=3D"line-height:0px;font-size:0px;mso-line-heigh=
+t-rule:exactly;"><![endif]-->
+<div style=3D"background:#F7F8FA;background-color:#F7F8FA;margin:0px auto;b=
+order-radius:0px 0px 0px 0px;max-width:600px;">
+<table align=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" ro=
+le=3D"presentation" style=3D"background:#F7F8FA;background-color:#F7F8FA;wi=
+dth:100%;border-radius:0px 0px 0px 0px;">
+<tbody>
+<tr>
+<td style=3D"direction:ltr;font-size:0px;padding:20px 0;padding-bottom:20px=
+;padding-left:0px;padding-right:0px;padding-top:0px;text-align:center;">
+<!--[if mso | IE]><table role=3D"presentation" border=3D"0" cellpadding=3D"=
+0" cellspacing=3D"0"><![endif]-->
+<div class=3D"content-padding kl-last">
+<!--[if true]><table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=
+=3D"600" style=3D"width:600px;direction:ltr"><tr><![endif]-->
+<div class=3D"kl-row colstack" style=3D"display:table;table-layout:fixed;wi=
+dth:100%;">
+<!--[if true]><td style=3D"vertical-align:top;width:600px;"><![endif]-->
+<div class=3D"kl-column" style=3D"display:table-cell;vertical-align:top;wid=
+th:100%;">
+<div class=3D"mj-column-per-100 mj-outlook-group-fix component-wrapper" sty=
+le=3D"font-size:0px;text-align:left;direction:ltr;vertical-align:top;width:=
+100%;">
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentatio=
+n" style=3D"width:100%;" width=3D"100%">
+<tbody>
+<tr>
+<td class=3D"" style=3D"background-color:#222222;vertical-align:top;padding=
+-top:18px;padding-right:9px;padding-bottom:9px;padding-left:9px;">
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentatio=
+n" style=3D"" width=3D"100%">
+<tbody>
+<tr>
+<td>
+<div style=3D"width:100%;text-align:center">
+<!--[if true]><table style=3D"all:unset;opacity:0;" border=3D"0" cellpaddin=
+g=3D"0" cellspacing=3D"0" ><tr><![endif]-->
+<!--[if !true]><!--><div class=3D"" style=3D"display:inline-block;padding-r=
+ight:10px;"><!--<![endif]-->
+<!--[if true]><td style=3D"padding-right:10px;"><![endif]-->
+<div style=3D"text-align: center;">
+<a style=3D"color:#106CB3; text-decoration:underline" target=3D"_blank" hre=
+f=3D"https://ctrk.klclick1.com/l/01M3SE94JQ0WAEKVRHX4P6PW88_4">
+<img alt=3D"whatsapp" src=3D"https://d3k81ch9hvuctc.cloudfront.net/assets/e=
+mail/buttons/subtleinverse/whatsapp_96.png" style=3D"width:32px;" width=3D"=
+32">
+</a>
+</div>
+<!--[if true]></td><![endif]-->
+<!--[if !true]><!--></div><!--<![endif]-->
+<!--[if !true]><!--><div class=3D"" style=3D"display:inline-block;padding-r=
+ight:10px;"><!--<![endif]-->
+<!--[if true]><td style=3D"padding-right:10px;"><![endif]-->
+<div style=3D"text-align: center;">
+<a style=3D"color:#106CB3; text-decoration:underline" target=3D"_blank" hre=
+f=3D"https://ctrk.klclick1.com/l/01M3SE94JQ0WAEKVRHX4P6PW88_5">
+<img alt=3D"facebook" src=3D"https://d3k81ch9hvuctc.cloudfront.net/assets/e=
+mail/buttons/subtleinverse/facebook_96.png" style=3D"width:32px;" width=3D"=
+32">
+</a>
+</div>
+<!--[if true]></td><![endif]-->
+<!--[if !true]><!--></div><!--<![endif]-->
+<!--[if !true]><!--><div class=3D"" style=3D"display:inline-block;padding-r=
+ight:10px;"><!--<![endif]-->
+<!--[if true]><td style=3D"padding-right:10px;"><![endif]-->
+<div style=3D"text-align: center;">
+<a style=3D"color:#106CB3; text-decoration:underline" target=3D"_blank" hre=
+f=3D"https://ctrk.klclick1.com/l/01M3SE94JQ0WAEKVRHX4P6PW88_6">
+<img alt=3D"instagram" src=3D"https://d3k81ch9hvuctc.cloudfront.net/assets/=
+email/buttons/subtleinverse/instagram_96.png" style=3D"width:32px;" width=
+=3D"32">
+</a>
+</div>
+<!--[if true]></td><![endif]-->
+<!--[if !true]><!--></div><!--<![endif]-->
+<!--[if !true]><!--><div class=3D"" style=3D"display:inline-block;padding-r=
+ight:10px;"><!--<![endif]-->
+<!--[if true]><td style=3D"padding-right:10px;"><![endif]-->
+<div style=3D"text-align: center;">
+<a style=3D"color:#106CB3; text-decoration:underline" target=3D"_blank" hre=
+f=3D"https://ctrk.klclick1.com/l/01M3SE94JQ0WAEKVRHX4P6PW88_7">
+<img alt=3D"tiktok" src=3D"https://d3k81ch9hvuctc.cloudfront.net/assets/ema=
+il/buttons/subtleinverse/tiktok_96.png" style=3D"width:32px;" width=3D"32">
+</a>
+</div>
+<!--[if true]></td><![endif]-->
+<!--[if !true]><!--></div><!--<![endif]-->
+<!--[if !true]><!--><div class=3D"" style=3D"display:inline-block;"><!--<![=
+endif]-->
+<!--[if true]><td style=3D""><![endif]-->
+<div style=3D"text-align: center;">
+<a style=3D"color:#106CB3; text-decoration:underline" target=3D"_blank" hre=
+f=3D"https://ctrk.klclick1.com/l/01M3SE94JQ0WAEKVRHX4P6PW88_8">
+<img alt=3D"youtube" src=3D"https://d3k81ch9hvuctc.cloudfront.net/assets/em=
+ail/buttons/subtleinverse/youtube_96.png" style=3D"width:32px;" width=3D"32=
+">
+</a>
+</div>
+<!--[if true]></td><![endif]-->
+<!--[if !true]><!--></div><!--<![endif]-->
+<!--[if true]></tr></table><![endif]-->
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class=3D"mj-column-per-100 mj-outlook-group-fix component-wrapper" sty=
+le=3D"font-size:0px;text-align:left;direction:ltr;vertical-align:top;width:=
+100%;">
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentatio=
+n" style=3D"width:100%;" width=3D"100%">
+<tbody>
+<tr>
+<td class=3D"" style=3D"background-color:#222222;vertical-align:top;padding=
+-top:5px;padding-right:0px;padding-bottom:5px;padding-left:0px;">
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentatio=
+n" style=3D"" width=3D"100%">
+<tbody>
+<tr>
+<td align=3D"center" style=3D"font-size:0px;padding:0px;word-break:break-wo=
+rd;">
+<p style=3D"padding-bottom:0; border-top:dashed 1px #FFF; font-size:1px; ma=
+rgin:0 auto; width:100%">
+</p>
+<!--[if mso | IE]><table align=3D"center" border=3D"0" cellpadding=3D"0" ce=
+llspacing=3D"0" style=3D"border-top:dashed 1px #FFFFFF;font-size:1px;margin=
+:0px auto;width:600px;" role=3D"presentation" width=3D"600px" ><tr><td styl=
+e=3D"height:0;line-height:0;"> &nbsp;
+</td></tr></table><![endif]-->
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!--[if !mso]><!--><div class=3D"mj-column-per-100 mj-outlook-group-fix com=
+ponent-wrapper mobile-only" style=3D"display:none; font-size:0; text-align:=
+left; direction:ltr; vertical-align:top; width:100%"><table border=3D"0" ce=
+llpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"width:100%=
+;" width=3D"100%"><tbody><tr><td class=3D"" style=3D"background-color:#2222=
+22;vertical-align:top;padding-top:9px;padding-right:0px;padding-bottom:0px;=
+padding-left:0px;"><table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" =
+role=3D"presentation" style=3D"" width=3D"100%"><tbody><tr><td align=3D"lef=
+t" class=3D"kl-text" style=3D"font-size:0px;padding:0px;padding-top:0px;pad=
+ding-right:0px;padding-bottom:0px;padding-left:0px;word-break:break-word;">=
+<div style=3D"font-family:Helvetica, Arial;font-size:12px;font-style:normal=
+;font-weight:400;letter-spacing:0px;line-height:1.3;text-align:left;color:#=
+101010;"><p style=3D"padding-bottom:0; text-align:center"><span style=3D"co=
+lor: rgb(255, 255, 255); font-family: Montserrat, Helvetica, Arial, sans-se=
+rif; font-size: 12px;"><span style=3D"font-weight: 400;">FNIRSI Technology =
+Co., Ltd.</span></span></p></div></td></tr></tbody></table></td></tr></tbod=
+y></table></div><!--<![endif]-->
+<div class=3D"mj-column-per-100 mj-outlook-group-fix component-wrapper desk=
+top-only" style=3D"font-size:0px;text-align:left;direction:ltr;vertical-ali=
+gn:top;width:100%;">
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentatio=
+n" style=3D"width:100%;" width=3D"100%">
+<tbody>
+<tr>
+<td class=3D"" style=3D"background-color:#222222;vertical-align:top;padding=
+-top:9px;padding-right:80px;padding-bottom:0px;padding-left:80px;">
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentatio=
+n" style=3D"" width=3D"100%">
+<tbody>
+<tr>
+<td align=3D"left" class=3D"kl-text" style=3D"font-size:0px;padding:0px;pad=
+ding-top:0px;padding-right:0px;padding-bottom:0px;padding-left:0px;word-bre=
+ak:break-word;">
+<div style=3D"font-family:Helvetica, Arial;font-size:12px;font-style:normal=
+;font-weight:400;letter-spacing:0px;line-height:1.3;text-align:left;color:#=
+101010;"><p style=3D"padding-bottom:0; text-align:center"><span style=3D"co=
+lor: rgb(255, 255, 255); font-family: Montserrat, Helvetica, Arial, sans-se=
+rif;"><span style=3D"font-weight: 400;">=C2=A9 FNIRSI. All rights reserved.=
+</span></span></p></div>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!--[if !mso]><!--><div class=3D"mj-column-per-100 mj-outlook-group-fix com=
+ponent-wrapper mobile-only" style=3D"display:none; font-size:0; text-align:=
+left; direction:ltr; vertical-align:top; width:100%"><table border=3D"0" ce=
+llpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"width:100%=
+;" width=3D"100%"><tbody><tr><td class=3D"" style=3D"background-color:#2222=
+22;vertical-align:top;padding-top:9px;padding-right:0px;padding-bottom:0px;=
+padding-left:0px;"><table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" =
+role=3D"presentation" style=3D"" width=3D"100%"><tbody><tr><td align=3D"lef=
+t" class=3D"kl-text" style=3D"font-size:0px;padding:0px;padding-top:0px;pad=
+ding-right:0px;padding-bottom:0px;padding-left:0px;word-break:break-word;">=
+<div style=3D"font-family:Helvetica, Arial;font-size:12px;font-style:normal=
+;font-weight:400;letter-spacing:0px;line-height:1.3;text-align:left;color:#=
+101010;"><p style=3D"padding-bottom:0; text-align:center"><span style=3D"co=
+lor: rgb(255, 255, 255); font-family: Montserrat, Helvetica, Arial, sans-se=
+rif; font-size: 12px;"><span style=3D"font-weight: 400;">61-65 Chatham Road=
+ South, Flat/Rm S239, 2/F, The Capital, Tsim Sha Tsui, Kowloon Hong Kong SA=
+R</span></span></p></div></td></tr></tbody></table></td></tr></tbody></tabl=
+e></div><!--<![endif]-->
+<div class=3D"mj-column-per-100 mj-outlook-group-fix component-wrapper desk=
+top-only" style=3D"font-size:0px;text-align:left;direction:ltr;vertical-ali=
+gn:top;width:100%;">
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentatio=
+n" style=3D"width:100%;" width=3D"100%">
+<tbody>
+<tr>
+<td class=3D"" style=3D"background-color:#222222;vertical-align:top;padding=
+-top:9px;padding-right:80px;padding-bottom:18px;padding-left:80px;">
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentatio=
+n" style=3D"" width=3D"100%">
+<tbody>
+<tr>
+<td align=3D"left" class=3D"kl-text" style=3D"font-size:0px;padding:0px;pad=
+ding-top:0px;padding-right:0px;padding-bottom:0px;padding-left:0px;word-bre=
+ak:break-word;">
+<div style=3D"font-family:Helvetica, Arial;font-size:12px;font-style:normal=
+;font-weight:400;letter-spacing:0px;line-height:1.3;text-align:left;color:#=
+101010;"><p style=3D"padding-bottom:0; text-align:center"><span style=3D"co=
+lor: rgb(255, 255, 255); font-family: Montserrat, Helvetica, Arial, sans-se=
+rif; font-size: 11px;"><span style=3D"font-weight: 400;">No longer want to =
+receive these emails? &nbsp;</span></span><a rel=3D"noopener noreferrer nof=
+ollow" style=3D"color:rgb(255, 255, 255); text-decoration:underline" target=
+=3D"_blank" href=3D"https://ctrk.klclick1.com/l/01M3SE94JQ0WAEKVRHX4P6PW88_=
+9"><span style=3D"color: rgb(255, 255, 255); font-family: Montserrat, Helve=
+tica, Arial, sans-serif; font-size: 11px;"><span style=3D"font-weight: 400;=
+">Unsubscribe</span></span></a></p></div>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!--[if !mso]><!--><div class=3D"mj-column-per-100 mj-outlook-group-fix com=
+ponent-wrapper mobile-only" style=3D"display:none; font-size:0; text-align:=
+left; direction:ltr; vertical-align:top; width:100%"><table border=3D"0" ce=
+llpadding=3D"0" cellspacing=3D"0" role=3D"presentation" style=3D"width:100%=
+;" width=3D"100%"><tbody><tr><td class=3D"" style=3D"background-color:#2222=
+22;vertical-align:top;padding-top:9px;padding-right:0px;padding-bottom:18px=
+;padding-left:0px;"><table border=3D"0" cellpadding=3D"0" cellspacing=3D"0"=
+ role=3D"presentation" style=3D"" width=3D"100%"><tbody><tr><td align=3D"le=
+ft" class=3D"kl-text" style=3D"font-size:0px;padding:0px;padding-top:0px;pa=
+dding-right:0px;padding-bottom:0px;padding-left:0px;word-break:break-word;"=
+><div style=3D"font-family:Helvetica, Arial;font-size:12px;font-style:norma=
+l;font-weight:400;letter-spacing:0px;line-height:1.3;text-align:left;color:=
+#101010;"><p style=3D"padding-bottom:0; text-align:center"><span style=3D"c=
+olor: rgb(255, 255, 255); font-family: Montserrat, Helvetica, Arial, sans-s=
+erif; font-size: 12px;"><span style=3D"font-weight: 400;">No longer want to=
+ receive these emails? &nbsp;</span></span><a rel=3D"noopener noreferrer no=
+follow" style=3D"color:rgb(255, 255, 255); text-decoration:underline" targe=
+t=3D"_blank" href=3D"https://ctrk.klclick1.com/l/01M3SE94JQ0WAEKVRHX4P6PW88=
+_10"><span style=3D"color: rgb(255, 255, 255); font-family: Montserrat, Hel=
+vetica, Arial, sans-serif; font-size: 12px;"><span style=3D"font-weight: 40=
+0;">Unsubscribe</span></span></a></p></div></td></tr></tbody></table></td><=
+/tr></tbody></table></div><!--<![endif]-->
+</div>
+<!--[if true]></td><![endif]-->
+</div>
+<!--[if true]></tr></table><![endif]-->
+</div>
+<!--[if mso | IE]></table><![endif]-->
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!--[if mso | IE]></td></tr></table></table><![endif]-->
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!--[if mso | IE]></td></tr></table><![endif]-->
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<img src=3D"https://ctrk.klclick1.com/o/01M3SE94JQ0WAEKVRHX4P6PW88" alt=3D"=
+" width=3D"1" height=3D"1" border=3D"0" style=3D"height:1px !important;widt=
+h:1px !important;border-width:0 !important;margin-top:0 !important;margin-b=
+ottom:0 !important;margin-right:0 !important;margin-left:0 !important;paddi=
+ng-top:0 !important;padding-bottom:0 !important;padding-right:0 !important;=
+padding-left:0 !important;"/>
+
+</body></html>
+--a39f3082f5baa3a125a324ba9f41944859a7263983e6fddd9663f441a495--
+
