@@ -1683,7 +1683,32 @@ impl FeatureExtractor for ContextAnalyzer {
                 .trim_end_matches('>')
                 .to_lowercase();
             let dot_count = sender_domain.chars().filter(|c| *c == '.').count();
-            if dot_count >= 3 {
+            // Legitimate marketing-platform CNAME delegations are deeply nested by
+            // design (brand.com.cname.campaign.adobe.com, *.sparkpostmail.com, etc.).
+            // These are not free-hosting abuse — exempt them from the nested-subdomain
+            // penalty. Generalizes across the major ESP CNAME patterns.
+            let legit_cname_patterns = [
+                ".cname.campaign.adobe.com",
+                ".cname.cjm.adobe.com",
+                ".campaign.adobe.com",
+                ".cjm.adobe.com",
+                ".pardot.com",
+                ".hubspot.com",
+                ".hubspotemail.net",
+                ".marketo.com",
+                ".mktomail.com",
+                ".eloqua.com",
+                ".exacttarget.com",
+                ".salesforce.com",
+                ".sparkpostmail.com",
+                ".rsgsv.net",
+                ".mcsv.net",
+                ".sendgrid.net",
+            ];
+            let is_legit_cname = legit_cname_patterns
+                .iter()
+                .any(|p| sender_domain.ends_with(p) || sender_domain.contains(p));
+            if dot_count >= 3 && !is_legit_cname {
                 total_score += 40;
                 all_evidence
                     .push("Deeply nested subdomain (likely free hosting abuse)".to_string());
